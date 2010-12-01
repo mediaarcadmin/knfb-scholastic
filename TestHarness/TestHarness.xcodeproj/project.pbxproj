@@ -1,0 +1,316 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 45;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		01B92AC8117E296200238817 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow.xib */; };
+		01B92AD0117E296200238817 /* Entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = 01EBC3D31178C862008F155E /* Entitlements.plist */; };
+		01B92AD3117E297000238817 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
+		01B92AD4117E297000238817 /* TestHarnessAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* TestHarnessAppDelegate.m */; };
+		C921F5F112265CB1003D3A44 /* OldLady.xps in Resources */ = {isa = PBXBuildFile; fileRef = C921F5F012265CB1003D3A44 /* OldLady.xps */; };
+		C9331D1B11B6A26E0057E0BE /* Three Little Pigs.pdf in Resources */ = {isa = PBXBuildFile; fileRef = C9331D1911B6A26E0057E0BE /* Three Little Pigs.pdf */; };
+		C9331D1C11B6A26E0057E0BE /* Three Little Pigs.xps in Resources */ = {isa = PBXBuildFile; fileRef = C9331D1A11B6A26E0057E0BE /* Three Little Pigs.xps */; };
+		C9336B301180364E00D29256 /* TestHarnessViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9336B2F1180364E00D29256 /* TestHarnessViewController.mm */; };
+		C9B08E401186E8F90041187F /* libXpsSDKipad.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9B08E3E1186E8F80041187F /* libXpsSDKipad.a */; };
+		C9B08ED91186F81D0041187F /* TestHarnessTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B08ED71186F81D0041187F /* TestHarnessTableViewController.m */; };
+		C9B090DC118867CE0041187F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9B090DB118867CE0041187F /* UIKit.framework */; };
+		C9B090E0118867D60041187F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9B090DF118867D60041187F /* CoreGraphics.framework */; };
+		C9B090E4118867DB0041187F /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9B090E3118867DB0041187F /* QuartzCore.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		01B92C22117E3BD700238817 /* TestHarness.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestHarness.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		01EBC3D31178C862008F155E /* Entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Entitlements.plist; sourceTree = "<group>"; };
+		1D3623240D0F684500981E51 /* TestHarnessAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestHarnessAppDelegate.h; sourceTree = "<group>"; };
+		1D3623250D0F684500981E51 /* TestHarnessAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestHarnessAppDelegate.m; sourceTree = "<group>"; };
+		28AD733E0D9D9553002E5188 /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainWindow.xib; sourceTree = "<group>"; };
+		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		32CA4F630368D1EE00C91783 /* TestHarness_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestHarness_Prefix.pch; sourceTree = "<group>"; };
+		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C921F5F012265CB1003D3A44 /* OldLady.xps */ = {isa = PBXFileReference; lastKnownFileType = file; path = OldLady.xps; sourceTree = "<group>"; };
+		C9331D1911B6A26E0057E0BE /* Three Little Pigs.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "Three Little Pigs.pdf"; sourceTree = "<group>"; };
+		C9331D1A11B6A26E0057E0BE /* Three Little Pigs.xps */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Three Little Pigs.xps"; sourceTree = "<group>"; };
+		C9336B2E1180364E00D29256 /* TestHarnessViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestHarnessViewController.h; sourceTree = "<group>"; };
+		C9336B2F1180364E00D29256 /* TestHarnessViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TestHarnessViewController.mm; sourceTree = "<group>"; };
+		C9B08E3E1186E8F80041187F /* libXpsSDKipad.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libXpsSDKipad.a; sourceTree = "<group>"; };
+		C9B08E411186E9410041187F /* XpsSdk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XpsSdk.h; sourceTree = "<group>"; };
+		C9B08ED61186F81D0041187F /* TestHarnessTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestHarnessTableViewController.h; sourceTree = "<group>"; };
+		C9B08ED71186F81D0041187F /* TestHarnessTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestHarnessTableViewController.m; sourceTree = "<group>"; };
+		C9B090DB118867CE0041187F /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		C9B090DF118867D60041187F /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		C9B090E3118867DB0041187F /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		01B92AB3117E18CD00238817 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C9B08E401186E8F90041187F /* libXpsSDKipad.a in Frameworks */,
+				C9B090DC118867CE0041187F /* UIKit.framework in Frameworks */,
+				C9B090E0118867D60041187F /* CoreGraphics.framework in Frameworks */,
+				C9B090E4118867DB0041187F /* QuartzCore.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		080E96DDFE201D6D7F000001 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				C9B08ED61186F81D0041187F /* TestHarnessTableViewController.h */,
+				C9B08ED71186F81D0041187F /* TestHarnessTableViewController.m */,
+				1D3623240D0F684500981E51 /* TestHarnessAppDelegate.h */,
+				1D3623250D0F684500981E51 /* TestHarnessAppDelegate.m */,
+				C9336B2E1180364E00D29256 /* TestHarnessViewController.h */,
+				C9336B2F1180364E00D29256 /* TestHarnessViewController.mm */,
+			);
+			path = Classes;
+			sourceTree = "<group>";
+		};
+		19C28FACFE9D520D11CA2CBB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				01B92C22117E3BD700238817 /* TestHarness.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
+			isa = PBXGroup;
+			children = (
+				C9B08E3E1186E8F80041187F /* libXpsSDKipad.a */,
+				C9B08E411186E9410041187F /* XpsSdk.h */,
+				8D1107310486CEB800E47090 /* Info.plist */,
+				01EBC3D31178C862008F155E /* Entitlements.plist */,
+				080E96DDFE201D6D7F000001 /* Classes */,
+				29B97315FDCFA39411CA2CEA /* Other Sources */,
+				29B97317FDCFA39411CA2CEA /* Resources */,
+				29B97323FDCFA39411CA2CEA /* Frameworks */,
+				19C28FACFE9D520D11CA2CBB /* Products */,
+				C9B090DB118867CE0041187F /* UIKit.framework */,
+				C9B090DF118867D60041187F /* CoreGraphics.framework */,
+				C9B090E3118867DB0041187F /* QuartzCore.framework */,
+			);
+			name = CustomTemplate;
+			sourceTree = "<group>";
+		};
+		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
+			isa = PBXGroup;
+			children = (
+				32CA4F630368D1EE00C91783 /* TestHarness_Prefix.pch */,
+				29B97316FDCFA39411CA2CEA /* main.m */,
+			);
+			name = "Other Sources";
+			sourceTree = "<group>";
+		};
+		29B97317FDCFA39411CA2CEA /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				C921F5F012265CB1003D3A44 /* OldLady.xps */,
+				C9331D1911B6A26E0057E0BE /* Three Little Pigs.pdf */,
+				C9331D1A11B6A26E0057E0BE /* Three Little Pigs.xps */,
+				28AD733E0D9D9553002E5188 /* MainWindow.xib */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		01B92AB4117E18CD00238817 /* TestHarness */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 01B92ABB117E18CE00238817 /* Build configuration list for PBXNativeTarget "TestHarness" */;
+			buildPhases = (
+				01B92AB1117E18CD00238817 /* Resources */,
+				01B92AB2117E18CD00238817 /* Sources */,
+				01B92AB3117E18CD00238817 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TestHarness;
+			productName = IPSXPSViewer_Device;
+			productReference = 01B92C22117E3BD700238817 /* TestHarness.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		29B97313FDCFA39411CA2CEA /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "TestHarness" */;
+			compatibilityVersion = "Xcode 3.1";
+			developmentRegion = English;
+			hasScannedForEncodings = 1;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+			);
+			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				01B92AB4117E18CD00238817 /* TestHarness */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		01B92AB1117E18CD00238817 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				01B92AC8117E296200238817 /* MainWindow.xib in Resources */,
+				01B92AD0117E296200238817 /* Entitlements.plist in Resources */,
+				C9331D1B11B6A26E0057E0BE /* Three Little Pigs.pdf in Resources */,
+				C9331D1C11B6A26E0057E0BE /* Three Little Pigs.xps in Resources */,
+				C921F5F112265CB1003D3A44 /* OldLady.xps in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		01B92AB2117E18CD00238817 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				01B92AD3117E297000238817 /* main.m in Sources */,
+				01B92AD4117E297000238817 /* TestHarnessAppDelegate.m in Sources */,
+				C9336B301180364E00D29256 /* TestHarnessViewController.mm in Sources */,
+				C9B08ED91186F81D0041187F /* TestHarnessTableViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		01B92AB8117E18CE00238817 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = TestHarness_Prefix.pch;
+				INFOPLIST_FILE = Info.plist;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
+				OTHER_LDFLAGS = (
+					"-framework",
+					UIKit,
+					"-framework",
+					Foundation,
+				);
+				PRODUCT_NAME = TestHarness;
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+			};
+			name = Debug;
+		};
+		01B92AB9117E18CE00238817 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = TestHarness_Prefix.pch;
+				INFOPLIST_FILE = Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
+				OTHER_LDFLAGS = (
+					"-framework",
+					UIKit,
+					"-framework",
+					Foundation,
+				);
+				PRODUCT_NAME = TestHarness;
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				SDKROOT = iphoneos4.0;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+		C01FCF4F08A954540054247B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Matthew Farrugia (9B2SKNH6HU)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Matthew Farrugia (9B2SKNH6HU)";
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 3.1.3;
+				ONLY_ACTIVE_ARCH = YES;
+				PREBINDING = NO;
+				SDKROOT = iphoneos4.1;
+			};
+			name = Debug;
+		};
+		C01FCF5008A954540054247B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				PREBINDING = NO;
+				SDKROOT = iphoneos3.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		01B92ABB117E18CE00238817 /* Build configuration list for PBXNativeTarget "TestHarness" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				01B92AB8117E18CE00238817 /* Debug */,
+				01B92AB9117E18CE00238817 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C01FCF4E08A954540054247B /* Build configuration list for PBXProject "TestHarness" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C01FCF4F08A954540054247B /* Debug */,
+				C01FCF5008A954540054247B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 29B97313FDCFA39411CA2CEA /* Project object */;
+}
