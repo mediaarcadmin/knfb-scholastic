@@ -166,8 +166,16 @@
 		528A2CFE12CCFD050053A343 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				528A2CFF12CD026F0053A343 /* BlioLib */,
 			);
 			name = Libraries;
+			sourceTree = "<group>";
+		};
+		528A2CFF12CD026F0053A343 /* BlioLib */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = BlioLib;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
