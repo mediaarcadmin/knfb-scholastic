@@ -21,6 +21,8 @@
 		528A2CD312CCDD9E0053A343 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 528A2CD212CCDD9E0053A343 /* Settings.bundle */; };
 		528A2CDB12CCDE070053A343 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 528A2CDA12CCDE070053A343 /* Localizable.strings */; };
 		528A2CF812CCEAA50053A343 /* ReleaseNotes.tmReleaseNotes in Resources */ = {isa = PBXBuildFile; fileRef = 528A2CF712CCEAA50053A343 /* ReleaseNotes.tmReleaseNotes */; };
+		528A2D6012CDE39C0053A343 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 528A2D5F12CDE39C0053A343 /* RootViewController.m */; };
+		528A2D6212CDE3B10053A343 /* RootViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 528A2D6112CDE3B10053A343 /* RootViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +46,9 @@
 		528A2CD912CCDDB00053A343 /* Entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Entitlements.plist; path = Shared/Entitlements.plist; sourceTree = "<group>"; };
 		528A2CDA12CCDE070053A343 /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = Localizable.strings; path = Shared/Localizable.strings; sourceTree = "<group>"; };
 		528A2CF712CCEAA50053A343 /* ReleaseNotes.tmReleaseNotes */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ReleaseNotes.tmReleaseNotes; sourceTree = "<group>"; };
+		528A2D5E12CDE39C0053A343 /* RootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
+		528A2D5F12CDE39C0053A343 /* RootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
+		528A2D6112CDE3B10053A343 /* RootViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RootViewController.xib; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Scholastic-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Scholastic-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -73,9 +78,12 @@
 		2860E386111B897F00E27156 /* iPhone */ = {
 			isa = PBXGroup;
 			children = (
+				528A2D5E12CDE39C0053A343 /* RootViewController.h */,
+				528A2D5F12CDE39C0053A343 /* RootViewController.m */,
 				2860E387111B897F00E27156 /* AppDelegate_iPhone.h */,
 				2860E388111B897F00E27156 /* AppDelegate_iPhone.m */,
 				2860E389111B897F00E27156 /* MainWindow_iPhone.xib */,
+				528A2D6112CDE3B10053A343 /* RootViewController.xib */,
 			);
 			path = iPhone;
 			sourceTree = "<group>";
@@ -235,6 +243,7 @@
 				528A2CD312CCDD9E0053A343 /* Settings.bundle in Resources */,
 				528A2CDB12CCDE070053A343 /* Localizable.strings in Resources */,
 				528A2CF812CCEAA50053A343 /* ReleaseNotes.tmReleaseNotes in Resources */,
+				528A2D6212CDE3B10053A343 /* RootViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -250,6 +259,7 @@
 				28EEC04B1118E28000187D67 /* AppDelegate_Shared.m in Sources */,
 				2819307D112F81BE00ECF9B4 /* Scholastic.xcdatamodeld in Sources */,
 				2860E38A111B897F00E27156 /* AppDelegate_iPhone.m in Sources */,
+				528A2D6012CDE39C0053A343 /* RootViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -10,8 +10,10 @@
 #import "AppDelegate_Shared.h"
 
 @interface AppDelegate_iPhone : AppDelegate_Shared {
+	UINavigationController *navigationController;
 }
 
+@property (nonatomic, retain) IBOutlet UINavigationController *navigationController;
 
 @end
 
