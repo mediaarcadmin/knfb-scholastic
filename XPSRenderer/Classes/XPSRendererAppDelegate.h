@@ -7,15 +7,17 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "XPSTestViewController.h"
+#import "BWKBookshelfView.h"
 
 @interface XPSRendererAppDelegate : NSObject <UIApplicationDelegate> {
     UIWindow *window;
-	XPSTestViewController *testViewController;
+	BWKBookshelfView *bookshelfView;
+	UINavigationController *navController;
+	
 }
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;
-@property (nonatomic, retain) IBOutlet XPSTestViewController *testViewController;
-
+@property (nonatomic, retain) IBOutlet BWKBookshelfView *bookshelfView;
+@property (nonatomic, retain) UINavigationController *navController;
 @end
 

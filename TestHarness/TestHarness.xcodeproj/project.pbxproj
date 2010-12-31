@@ -226,6 +226,7 @@
 				PRODUCT_NAME = TestHarness;
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				SDKROOT = iphoneos;
 			};
 			name = Debug;
 		};
@@ -255,7 +256,7 @@
 				PRODUCT_NAME = TestHarness;
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
-				SDKROOT = iphoneos4.0;
+				SDKROOT = iphoneos;
 				ZERO_LINK = NO;
 			};
 			name = Release;
@@ -264,15 +265,17 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				CODE_SIGN_IDENTITY = "iPhone Developer: Matthew Farrugia (9B2SKNH6HU)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Matthew Farrugia (9B2SKNH6HU)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Gordon Christie (4G5BDTFU6E)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Gordon Christie (4G5BDTFU6E)";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 3.1.3;
 				ONLY_ACTIVE_ARCH = YES;
 				PREBINDING = NO;
-				SDKROOT = iphoneos4.1;
+				PROVISIONING_PROFILE = "7E30052D-54E7-42C7-A4D9-8A3A1A22E291";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "7E30052D-54E7-42C7-A4D9-8A3A1A22E291";
+				SDKROOT = iphoneos;
 			};
 			name = Debug;
 		};
@@ -285,7 +288,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				PREBINDING = NO;
-				SDKROOT = iphoneos3.0;
+				SDKROOT = iphoneos;
 			};
 			name = Release;
 		};

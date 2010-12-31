@@ -10,7 +10,7 @@
 
 @implementation XPSRendererAppDelegate
 
-@synthesize window, testViewController;
+@synthesize window, bookshelfView, navController;
 
 
 #pragma mark -
@@ -19,10 +19,11 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {    
     
     // Override point for customization after application launch.
-    
-	[self.window addSubview:testViewController.view];
-    [self.window makeKeyAndVisible];
-    
+  
+	self.navController = [[UINavigationController alloc] initWithRootViewController:bookshelfView];
+	[self.window addSubview:self.navController.view];
+	[self.window makeKeyAndVisible];
+	
     return YES;
 }
 
@@ -76,7 +77,8 @@
 
 
 - (void)dealloc {
-    [testViewController release];
+    [bookshelfView release];
+	self.navController = nil;
     [window release];
     [super dealloc];
 }
