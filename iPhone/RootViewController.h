@@ -16,6 +16,9 @@
     NSManagedObjectContext *managedObjectContext_;
 }
 
+@property (nonatomic, retain) IBOutlet UIView *headerView;
+@property (nonatomic, retain) IBOutlet UITableViewController *settingsController;
+
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
 

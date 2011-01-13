@@ -9,6 +9,16 @@
 #import "RootViewController.h"
 
 
+// Cell Icons 
+static NSString * const kRootViewControllerProfileIcon = @"Profile.png";
+static NSString * const kRootViewControllerProfileLockedIcon = @"ProfileLocked.png";
+static NSString * const kRootViewControllerLibraryIcon = @"Library.png";
+static NSString * const kRootViewControllerSettingsIcon = @"Settings.png";
+
+// Static cells
+static NSInteger const kRootViewControllerLibraryRow = 1;
+static NSInteger const kRootViewControllerSettingsRow = 1;
+
 @interface RootViewController ()
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath;
 @end
@@ -16,6 +26,8 @@
 
 @implementation RootViewController
 
+@synthesize headerView;
+@synthesize settingsController;
 @synthesize fetchedResultsController=fetchedResultsController_, managedObjectContext=managedObjectContext_;
 
 
@@ -26,11 +38,19 @@
     [super viewDidLoad];
 
     // Set up the edit and add buttons.
-    self.navigationItem.leftBarButtonItem = self.editButtonItem;
-    
-    UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(insertNewObject)];
-    self.navigationItem.rightBarButtonItem = addButton;
-    [addButton release];
+    UIBarButtonItem *refreshButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refreshTable)];
+    self.navigationItem.rightBarButtonItem = refreshButton;
+    [refreshButton release];
+	
+	// Setup the table view header
+	self.tableView.tableHeaderView = self.headerView;
+}
+
+- (void)viewDidUnload {
+    // Relinquish ownership of anything that can be recreated in viewDidLoad or on demand.
+    // For example: self.myOutlet = nil;
+	
+	self.headerView = nil;			
 }
 
 
@@ -66,36 +86,52 @@
 
 
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
-    
-    NSManagedObject *managedObject = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    cell.textLabel.text = [[managedObject valueForKey:@"timeStamp"] description];
+    id <NSFetchedResultsSectionInfo> sectionInfo = [[self.fetchedResultsController sections] objectAtIndex:indexPath.section];
+	NSInteger managedObjectEnd = [sectionInfo numberOfObjects] - 1;
+	
+	if (indexPath.row == (managedObjectEnd + kRootViewControllerLibraryRow)) {
+		cell.textLabel.text = NSLocalizedString(@"View Library", @"");
+		cell.imageView.image = [UIImage imageNamed:kRootViewControllerLibraryIcon];
+	} else if (indexPath.row == (managedObjectEnd + kRootViewControllerLibraryRow + kRootViewControllerSettingsRow)) {
+		cell.textLabel.text = NSLocalizedString(@"Settings & Parental Controls", @"");
+		cell.imageView.image = [UIImage imageNamed:kRootViewControllerSettingsIcon];		
+	} else {
+		NSManagedObject *managedObject = [self.fetchedResultsController objectAtIndexPath:indexPath];
+		cell.textLabel.text = [NSString stringWithFormat:@"&@&@", 
+							   [[managedObject valueForKey:@"Screenname"] description] , 
+							   NSLocalizedString(@"'s Books", @"")];
+		if ([[managedObject valueForKey:@"ProfilePasswordRequired"] boolValue] == NO) {
+			cell.imageView.image = [UIImage imageNamed:kRootViewControllerProfileLockedIcon];
+		}
+		cell.imageView.image = [UIImage imageNamed:kRootViewControllerProfileLockedIcon];
+	}
 }
 
 
 #pragma mark -
-#pragma mark Add a new object
+#pragma mark Refresh the table
 
-- (void)insertNewObject {
+- (void)refreshTable {
     
-    // Create a new instance of the entity managed by the fetched results controller.
-    NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
-    NSEntityDescription *entity = [[self.fetchedResultsController fetchRequest] entity];
-    NSManagedObject *newManagedObject = [NSEntityDescription insertNewObjectForEntityForName:[entity name] inManagedObjectContext:context];
-    
-    // If appropriate, configure the new managed object.
-    [newManagedObject setValue:[NSDate date] forKey:@"timeStamp"];
-    
-    // Save the context.
-    NSError *error = nil;
-    if (![context save:&error]) {
-        /*
-         Replace this implementation with code to handle the error appropriately.
-         
-         abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. If it is not possible to recover from the error, display an alert panel that instructs the user to quit the application by pressing the Home button.
-         */
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        abort();
-    }
+//    // Create a new instance of the entity managed by the fetched results controller.
+//    NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
+//    NSEntityDescription *entity = [[self.fetchedResultsController fetchRequest] entity];
+//    NSManagedObject *newManagedObject = [NSEntityDescription insertNewObjectForEntityForName:[entity name] inManagedObjectContext:context];
+//    
+//    // If appropriate, configure the new managed object.
+//    [newManagedObject setValue:[NSDate date] forKey:@"timeStamp"];
+//    
+//    // Save the context.
+//    NSError *error = nil;
+//    if (![context save:&error]) {
+//        /*
+//         Replace this implementation with code to handle the error appropriately.
+//         
+//         abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. If it is not possible to recover from the error, display an alert panel that instructs the user to quit the application by pressing the Home button.
+//         */
+//        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+//        abort();
+//    }
 }
 
 
@@ -117,7 +153,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     id <NSFetchedResultsSectionInfo> sectionInfo = [[self.fetchedResultsController sections] objectAtIndex:section];
-    return [sectionInfo numberOfObjects];
+    return [sectionInfo numberOfObjects] + kRootViewControllerLibraryRow + kRootViewControllerSettingsRow;
 }
 
 
@@ -129,6 +165,8 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+		cell.textLabel.textColor = [UIColor whiteColor];
+		cell.textLabel.font = [UIFont systemFontOfSize:14];
     }
     
     // Configure the cell.
@@ -190,6 +228,19 @@
      [self.navigationController pushViewController:detailViewController animated:YES];
      [detailViewController release];
      */
+	
+    id <NSFetchedResultsSectionInfo> sectionInfo = [[self.fetchedResultsController sections] objectAtIndex:indexPath.section];
+	NSInteger managedObjectEnd = [sectionInfo numberOfObjects] - 1;
+	
+	if (indexPath.row == (managedObjectEnd + kRootViewControllerLibraryRow)) {
+		// controller to view book shelf with all books		
+	} else if (indexPath.row == (managedObjectEnd + kRootViewControllerLibraryRow + kRootViewControllerSettingsRow)) {
+		[self.navigationController pushViewController:settingsController animated:YES];
+	} else {
+//		NSManagedObject *selectedObject = [[self fetchedResultsController] objectAtIndexPath:indexPath];
+		// controller to view book shelf with books filtered to profile
+	}
+	
 }
 
 
@@ -208,14 +259,14 @@
     // Create the fetch request for the entity.
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     // Edit the entity name as appropriate.
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Event" inManagedObjectContext:self.managedObjectContext];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"ProfileItem" inManagedObjectContext:self.managedObjectContext];
     [fetchRequest setEntity:entity];
     
     // Set the batch size to a suitable number.
     [fetchRequest setFetchBatchSize:20];
     
     // Edit the sort key as appropriate.
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"timeStamp" ascending:NO];
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"Screenname" ascending:NO];
     NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptor, nil];
     
     [fetchRequest setSortDescriptors:sortDescriptors];
@@ -322,13 +373,6 @@
     
     // Relinquish ownership any cached data, images, etc that aren't in use.
 }
-
-
-- (void)viewDidUnload {
-    // Relinquish ownership of anything that can be recreated in viewDidLoad or on demand.
-    // For example: self.myOutlet = nil;
-}
-
 
 - (void)dealloc {
     [fetchedResultsController_ release];

@@ -18,11 +18,20 @@
 		28AD733F0D9D9553002E5188 /* MainWindow_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow_iPad.xib */; };
 		28EEBFDD1118E19E00187D67 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28EEBFDC1118E19E00187D67 /* CoreData.framework */; };
 		28EEC04B1118E28000187D67 /* AppDelegate_Shared.m in Sources */ = {isa = PBXBuildFile; fileRef = 28EEC04A1118E28000187D67 /* AppDelegate_Shared.m */; };
+		5250C4B212DE078000542055 /* SCHContentMetadataItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5250C4AD12DE078000542055 /* SCHContentMetadataItem.m */; };
+		5250C4B312DE078000542055 /* SCHProfileItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5250C4AF12DE078000542055 /* SCHProfileItem.m */; };
+		5250C4B412DE078000542055 /* SCHSyncEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = 5250C4B112DE078000542055 /* SCHSyncEntity.m */; };
 		528A2CD312CCDD9E0053A343 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 528A2CD212CCDD9E0053A343 /* Settings.bundle */; };
 		528A2CDB12CCDE070053A343 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 528A2CDA12CCDE070053A343 /* Localizable.strings */; };
 		528A2CF812CCEAA50053A343 /* ReleaseNotes.tmReleaseNotes in Resources */ = {isa = PBXBuildFile; fileRef = 528A2CF712CCEAA50053A343 /* ReleaseNotes.tmReleaseNotes */; };
 		528A2D6012CDE39C0053A343 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 528A2D5F12CDE39C0053A343 /* RootViewController.m */; };
 		528A2D6212CDE3B10053A343 /* RootViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 528A2D6112CDE3B10053A343 /* RootViewController.xib */; };
+		529384F912DEF6F800045B44 /* Profile.png in Resources */ = {isa = PBXBuildFile; fileRef = 529384F812DEF6F800045B44 /* Profile.png */; };
+		529384FB12DEF73A00045B44 /* ProfileLocked.png in Resources */ = {isa = PBXBuildFile; fileRef = 529384FA12DEF73A00045B44 /* ProfileLocked.png */; };
+		529384FD12DEF8EF00045B44 /* Library.png in Resources */ = {isa = PBXBuildFile; fileRef = 529384FC12DEF8EF00045B44 /* Library.png */; };
+		529384FF12DEF93900045B44 /* Settings.png in Resources */ = {isa = PBXBuildFile; fileRef = 529384FE12DEF93900045B44 /* Settings.png */; };
+		529385B512DF231800045B44 /* SCHSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 529385B312DF231800045B44 /* SCHSettingsViewController.m */; };
+		529385B612DF231800045B44 /* SCHSettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 529385B412DF231800045B44 /* SCHSettingsViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +51,12 @@
 		28EEC04A1118E28000187D67 /* AppDelegate_Shared.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate_Shared.m; path = Shared/AppDelegate_Shared.m; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Shared/main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* Scholastic_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Scholastic_Prefix.pch; sourceTree = "<group>"; };
+		5250C4AC12DE078000542055 /* SCHContentMetadataItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHContentMetadataItem.h; path = Shared/SCHContentMetadataItem.h; sourceTree = "<group>"; };
+		5250C4AD12DE078000542055 /* SCHContentMetadataItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHContentMetadataItem.m; path = Shared/SCHContentMetadataItem.m; sourceTree = "<group>"; };
+		5250C4AE12DE078000542055 /* SCHProfileItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHProfileItem.h; path = Shared/SCHProfileItem.h; sourceTree = "<group>"; };
+		5250C4AF12DE078000542055 /* SCHProfileItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHProfileItem.m; path = Shared/SCHProfileItem.m; sourceTree = "<group>"; };
+		5250C4B012DE078000542055 /* SCHSyncEntity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHSyncEntity.h; path = Shared/SCHSyncEntity.h; sourceTree = "<group>"; };
+		5250C4B112DE078000542055 /* SCHSyncEntity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHSyncEntity.m; path = Shared/SCHSyncEntity.m; sourceTree = "<group>"; };
 		528A2CD212CCDD9E0053A343 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = Settings.bundle; path = Shared/Settings.bundle; sourceTree = "<group>"; };
 		528A2CD912CCDDB00053A343 /* Entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Entitlements.plist; path = Shared/Entitlements.plist; sourceTree = "<group>"; };
 		528A2CDA12CCDE070053A343 /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = Localizable.strings; path = Shared/Localizable.strings; sourceTree = "<group>"; };
@@ -49,6 +64,13 @@
 		528A2D5E12CDE39C0053A343 /* RootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
 		528A2D5F12CDE39C0053A343 /* RootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
 		528A2D6112CDE3B10053A343 /* RootViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RootViewController.xib; sourceTree = "<group>"; };
+		529384F812DEF6F800045B44 /* Profile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Profile.png; path = Shared/Images/Profile.png; sourceTree = "<group>"; };
+		529384FA12DEF73A00045B44 /* ProfileLocked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ProfileLocked.png; path = Shared/Images/ProfileLocked.png; sourceTree = "<group>"; };
+		529384FC12DEF8EF00045B44 /* Library.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Library.png; path = Shared/Images/Library.png; sourceTree = "<group>"; };
+		529384FE12DEF93900045B44 /* Settings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Settings.png; path = Shared/Images/Settings.png; sourceTree = "<group>"; };
+		529385B212DF231800045B44 /* SCHSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHSettingsViewController.h; sourceTree = "<group>"; };
+		529385B312DF231800045B44 /* SCHSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHSettingsViewController.m; sourceTree = "<group>"; };
+		529385B412DF231800045B44 /* SCHSettingsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SCHSettingsViewController.xib; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Scholastic-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Scholastic-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -78,12 +100,15 @@
 		2860E386111B897F00E27156 /* iPhone */ = {
 			isa = PBXGroup;
 			children = (
-				528A2D5E12CDE39C0053A343 /* RootViewController.h */,
-				528A2D5F12CDE39C0053A343 /* RootViewController.m */,
 				2860E387111B897F00E27156 /* AppDelegate_iPhone.h */,
 				2860E388111B897F00E27156 /* AppDelegate_iPhone.m */,
 				2860E389111B897F00E27156 /* MainWindow_iPhone.xib */,
+				528A2D5E12CDE39C0053A343 /* RootViewController.h */,
+				528A2D5F12CDE39C0053A343 /* RootViewController.m */,
 				528A2D6112CDE3B10053A343 /* RootViewController.xib */,
+				529385B212DF231800045B44 /* SCHSettingsViewController.h */,
+				529385B312DF231800045B44 /* SCHSettingsViewController.m */,
+				529385B412DF231800045B44 /* SCHSettingsViewController.xib */,
 			);
 			path = iPhone;
 			sourceTree = "<group>";
@@ -91,6 +116,7 @@
 		28EEBF621118D79A00187D67 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				5250C4AB12DE075C00542055 /* Models */,
 				528A2CCE12CCDC380053A343 /* Audio */,
 				528A2CCF12CCDC400053A343 /* Images */,
 				528A2CFE12CCFD050053A343 /* Libraries */,
@@ -149,6 +175,19 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		5250C4AB12DE075C00542055 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				5250C4AC12DE078000542055 /* SCHContentMetadataItem.h */,
+				5250C4AD12DE078000542055 /* SCHContentMetadataItem.m */,
+				5250C4AE12DE078000542055 /* SCHProfileItem.h */,
+				5250C4AF12DE078000542055 /* SCHProfileItem.m */,
+				5250C4B012DE078000542055 /* SCHSyncEntity.h */,
+				5250C4B112DE078000542055 /* SCHSyncEntity.m */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
 		528A2CCE12CCDC380053A343 /* Audio */ = {
 			isa = PBXGroup;
 			children = (
@@ -167,6 +206,10 @@
 		528A2CD112CCDC9E0053A343 /* Icons */ = {
 			isa = PBXGroup;
 			children = (
+				529384F812DEF6F800045B44 /* Profile.png */,
+				529384FA12DEF73A00045B44 /* ProfileLocked.png */,
+				529384FC12DEF8EF00045B44 /* Library.png */,
+				529384FE12DEF93900045B44 /* Settings.png */,
 			);
 			name = Icons;
 			sourceTree = "<group>";
@@ -244,6 +287,11 @@
 				528A2CDB12CCDE070053A343 /* Localizable.strings in Resources */,
 				528A2CF812CCEAA50053A343 /* ReleaseNotes.tmReleaseNotes in Resources */,
 				528A2D6212CDE3B10053A343 /* RootViewController.xib in Resources */,
+				529384F912DEF6F800045B44 /* Profile.png in Resources */,
+				529384FB12DEF73A00045B44 /* ProfileLocked.png in Resources */,
+				529384FD12DEF8EF00045B44 /* Library.png in Resources */,
+				529384FF12DEF93900045B44 /* Settings.png in Resources */,
+				529385B612DF231800045B44 /* SCHSettingsViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -260,6 +308,10 @@
 				2819307D112F81BE00ECF9B4 /* Scholastic.xcdatamodeld in Sources */,
 				2860E38A111B897F00E27156 /* AppDelegate_iPhone.m in Sources */,
 				528A2D6012CDE39C0053A343 /* RootViewController.m in Sources */,
+				5250C4B212DE078000542055 /* SCHContentMetadataItem.m in Sources */,
+				5250C4B312DE078000542055 /* SCHProfileItem.m in Sources */,
+				5250C4B412DE078000542055 /* SCHSyncEntity.m in Sources */,
+				529385B512DF231800045B44 /* SCHSettingsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -303,6 +355,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
 				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
@@ -334,6 +387,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
 				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				PREBINDING = NO;
@@ -351,6 +405,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
 				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
