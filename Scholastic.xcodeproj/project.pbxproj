@@ -48,6 +48,9 @@
 		529386BA12DF3A4900045B44 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 529386B912DF3A4900045B44 /* Reachability.m */; };
 		529386C312DF3A8900045B44 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 529386C212DF3A8900045B44 /* CFNetwork.framework */; };
 		529386C512DF3A9000045B44 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 529386C412DF3A9000045B44 /* SystemConfiguration.framework */; };
+		529386FD12DF3ED800045B44 /* BITSyncProcess.m in Sources */ = {isa = PBXBuildFile; fileRef = 529386FC12DF3ED800045B44 /* BITSyncProcess.m */; };
+		5293870612DF3EDF00045B44 /* BITAPIProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293870112DF3EDF00045B44 /* BITAPIProxy.m */; };
+		5293870712DF3EDF00045B44 /* BITSOAPProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293870512DF3EDF00045B44 /* BITSOAPProxy.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -118,6 +121,16 @@
 		529386B912DF3A4900045B44 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		529386C212DF3A8900045B44 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		529386C412DF3A9000045B44 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		529386FA12DF3ED800045B44 /* BITSyncEngineProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BITSyncEngineProtocol.h; sourceTree = "<group>"; };
+		529386FB12DF3ED800045B44 /* BITSyncProcess.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BITSyncProcess.h; sourceTree = "<group>"; };
+		529386FC12DF3ED800045B44 /* BITSyncProcess.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BITSyncProcess.m; sourceTree = "<group>"; };
+		529386FF12DF3EDF00045B44 /* BITAPIError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BITAPIError.h; sourceTree = "<group>"; };
+		5293870012DF3EDF00045B44 /* BITAPIProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BITAPIProxy.h; sourceTree = "<group>"; };
+		5293870112DF3EDF00045B44 /* BITAPIProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BITAPIProxy.m; sourceTree = "<group>"; };
+		5293870212DF3EDF00045B44 /* BITAPIProxyDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BITAPIProxyDelegate.h; sourceTree = "<group>"; };
+		5293870312DF3EDF00045B44 /* BITObjectMapperProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BITObjectMapperProtocol.h; sourceTree = "<group>"; };
+		5293870412DF3EDF00045B44 /* BITSOAPProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BITSOAPProxy.h; sourceTree = "<group>"; };
+		5293870512DF3EDF00045B44 /* BITSOAPProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BITSOAPProxy.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Scholastic-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Scholastic-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -271,6 +284,8 @@
 				5293868D12DF3A3300045B44 /* WSDL2ObjC */,
 				529386A312DF3A3F00045B44 /* TouchXML */,
 				529386B712DF3A4900045B44 /* Reachability */,
+				529386F912DF3ED800045B44 /* SyncEngine */,
+				529386FE12DF3EDF00045B44 /* WebAPI */,
 				528A2CFF12CD026F0053A343 /* BlioLib */,
 			);
 			name = Libraries;
@@ -334,6 +349,32 @@
 			);
 			name = Reachability;
 			path = Shared/Libraries/Reachability;
+			sourceTree = "<group>";
+		};
+		529386F912DF3ED800045B44 /* SyncEngine */ = {
+			isa = PBXGroup;
+			children = (
+				529386FA12DF3ED800045B44 /* BITSyncEngineProtocol.h */,
+				529386FB12DF3ED800045B44 /* BITSyncProcess.h */,
+				529386FC12DF3ED800045B44 /* BITSyncProcess.m */,
+			);
+			name = SyncEngine;
+			path = Shared/Libraries/SyncEngine;
+			sourceTree = "<group>";
+		};
+		529386FE12DF3EDF00045B44 /* WebAPI */ = {
+			isa = PBXGroup;
+			children = (
+				529386FF12DF3EDF00045B44 /* BITAPIError.h */,
+				5293870012DF3EDF00045B44 /* BITAPIProxy.h */,
+				5293870112DF3EDF00045B44 /* BITAPIProxy.m */,
+				5293870212DF3EDF00045B44 /* BITAPIProxyDelegate.h */,
+				5293870312DF3EDF00045B44 /* BITObjectMapperProtocol.h */,
+				5293870412DF3EDF00045B44 /* BITSOAPProxy.h */,
+				5293870512DF3EDF00045B44 /* BITSOAPProxy.m */,
+			);
+			name = WebAPI;
+			path = Shared/Libraries/WebAPI;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -433,6 +474,9 @@
 				529386B512DF3A3F00045B44 /* CXMLNode_PrivateExtensions.m in Sources */,
 				529386B612DF3A3F00045B44 /* CXMLNode_XPathExtensions.m in Sources */,
 				529386BA12DF3A4900045B44 /* Reachability.m in Sources */,
+				529386FD12DF3ED800045B44 /* BITSyncProcess.m in Sources */,
+				5293870612DF3EDF00045B44 /* BITAPIProxy.m in Sources */,
+				5293870712DF3EDF00045B44 /* BITSOAPProxy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
