@@ -32,6 +32,22 @@
 		529384FF12DEF93900045B44 /* Settings.png in Resources */ = {isa = PBXBuildFile; fileRef = 529384FE12DEF93900045B44 /* Settings.png */; };
 		529385B512DF231800045B44 /* SCHSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 529385B312DF231800045B44 /* SCHSettingsViewController.m */; };
 		529385B612DF231800045B44 /* SCHSettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 529385B412DF231800045B44 /* SCHSettingsViewController.xib */; };
+		5293869C12DF3A3300045B44 /* AuthenticateSvc.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293868F12DF3A3300045B44 /* AuthenticateSvc.m */; };
+		5293869D12DF3A3300045B44 /* LibreAccessServiceSvc.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293869112DF3A3300045B44 /* LibreAccessServiceSvc.m */; };
+		5293869E12DF3A3300045B44 /* NSDate+ISO8601Parsing.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293869312DF3A3300045B44 /* NSDate+ISO8601Parsing.m */; };
+		5293869F12DF3A3300045B44 /* NSDate+ISO8601Unparsing.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293869512DF3A3300045B44 /* NSDate+ISO8601Unparsing.m */; };
+		529386A012DF3A3300045B44 /* USAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293869712DF3A3300045B44 /* USAdditions.m */; };
+		529386A112DF3A3300045B44 /* USGlobals.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293869912DF3A3300045B44 /* USGlobals.m */; };
+		529386A212DF3A3300045B44 /* xsd.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293869B12DF3A3300045B44 /* xsd.m */; };
+		529386B112DF3A3F00045B44 /* CXMLDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 529386A512DF3A3F00045B44 /* CXMLDocument.m */; };
+		529386B212DF3A3F00045B44 /* CXMLDocument_PrivateExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 529386A712DF3A3F00045B44 /* CXMLDocument_PrivateExtensions.m */; };
+		529386B312DF3A3F00045B44 /* CXMLElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 529386A912DF3A3F00045B44 /* CXMLElement.m */; };
+		529386B412DF3A3F00045B44 /* CXMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 529386AB12DF3A3F00045B44 /* CXMLNode.m */; };
+		529386B512DF3A3F00045B44 /* CXMLNode_PrivateExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 529386AD12DF3A3F00045B44 /* CXMLNode_PrivateExtensions.m */; };
+		529386B612DF3A3F00045B44 /* CXMLNode_XPathExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 529386AF12DF3A3F00045B44 /* CXMLNode_XPathExtensions.m */; };
+		529386BA12DF3A4900045B44 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 529386B912DF3A4900045B44 /* Reachability.m */; };
+		529386C312DF3A8900045B44 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 529386C212DF3A8900045B44 /* CFNetwork.framework */; };
+		529386C512DF3A9000045B44 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 529386C412DF3A9000045B44 /* SystemConfiguration.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -71,6 +87,37 @@
 		529385B212DF231800045B44 /* SCHSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHSettingsViewController.h; sourceTree = "<group>"; };
 		529385B312DF231800045B44 /* SCHSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHSettingsViewController.m; sourceTree = "<group>"; };
 		529385B412DF231800045B44 /* SCHSettingsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SCHSettingsViewController.xib; sourceTree = "<group>"; };
+		5293868E12DF3A3300045B44 /* AuthenticateSvc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthenticateSvc.h; sourceTree = "<group>"; };
+		5293868F12DF3A3300045B44 /* AuthenticateSvc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthenticateSvc.m; sourceTree = "<group>"; };
+		5293869012DF3A3300045B44 /* LibreAccessServiceSvc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LibreAccessServiceSvc.h; sourceTree = "<group>"; };
+		5293869112DF3A3300045B44 /* LibreAccessServiceSvc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LibreAccessServiceSvc.m; sourceTree = "<group>"; };
+		5293869212DF3A3300045B44 /* NSDate+ISO8601Parsing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+ISO8601Parsing.h"; sourceTree = "<group>"; };
+		5293869312DF3A3300045B44 /* NSDate+ISO8601Parsing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+ISO8601Parsing.m"; sourceTree = "<group>"; };
+		5293869412DF3A3300045B44 /* NSDate+ISO8601Unparsing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+ISO8601Unparsing.h"; sourceTree = "<group>"; };
+		5293869512DF3A3300045B44 /* NSDate+ISO8601Unparsing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+ISO8601Unparsing.m"; sourceTree = "<group>"; };
+		5293869612DF3A3300045B44 /* USAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = USAdditions.h; sourceTree = "<group>"; };
+		5293869712DF3A3300045B44 /* USAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = USAdditions.m; sourceTree = "<group>"; };
+		5293869812DF3A3300045B44 /* USGlobals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = USGlobals.h; sourceTree = "<group>"; };
+		5293869912DF3A3300045B44 /* USGlobals.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = USGlobals.m; sourceTree = "<group>"; };
+		5293869A12DF3A3300045B44 /* xsd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = xsd.h; sourceTree = "<group>"; };
+		5293869B12DF3A3300045B44 /* xsd.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = xsd.m; sourceTree = "<group>"; };
+		529386A412DF3A3F00045B44 /* CXMLDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXMLDocument.h; sourceTree = "<group>"; };
+		529386A512DF3A3F00045B44 /* CXMLDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CXMLDocument.m; sourceTree = "<group>"; };
+		529386A612DF3A3F00045B44 /* CXMLDocument_PrivateExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXMLDocument_PrivateExtensions.h; sourceTree = "<group>"; };
+		529386A712DF3A3F00045B44 /* CXMLDocument_PrivateExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CXMLDocument_PrivateExtensions.m; sourceTree = "<group>"; };
+		529386A812DF3A3F00045B44 /* CXMLElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXMLElement.h; sourceTree = "<group>"; };
+		529386A912DF3A3F00045B44 /* CXMLElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CXMLElement.m; sourceTree = "<group>"; };
+		529386AA12DF3A3F00045B44 /* CXMLNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXMLNode.h; sourceTree = "<group>"; };
+		529386AB12DF3A3F00045B44 /* CXMLNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CXMLNode.m; sourceTree = "<group>"; };
+		529386AC12DF3A3F00045B44 /* CXMLNode_PrivateExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXMLNode_PrivateExtensions.h; sourceTree = "<group>"; };
+		529386AD12DF3A3F00045B44 /* CXMLNode_PrivateExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CXMLNode_PrivateExtensions.m; sourceTree = "<group>"; };
+		529386AE12DF3A3F00045B44 /* CXMLNode_XPathExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXMLNode_XPathExtensions.h; sourceTree = "<group>"; };
+		529386AF12DF3A3F00045B44 /* CXMLNode_XPathExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CXMLNode_XPathExtensions.m; sourceTree = "<group>"; };
+		529386B012DF3A3F00045B44 /* TouchXML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TouchXML.h; sourceTree = "<group>"; };
+		529386B812DF3A4900045B44 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
+		529386B912DF3A4900045B44 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
+		529386C212DF3A8900045B44 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
+		529386C412DF3A9000045B44 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		8D1107310486CEB800E47090 /* Scholastic-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Scholastic-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -83,6 +130,8 @@
 				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
 				288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */,
 				28EEBFDD1118E19E00187D67 /* CoreData.framework in Frameworks */,
+				529386C312DF3A8900045B44 /* CFNetwork.framework in Frameworks */,
+				529386C512DF3A9000045B44 /* SystemConfiguration.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -171,6 +220,8 @@
 				1D30AB110D05D00D00671497 /* Foundation.framework */,
 				288765FC0DF74451002DB57D /* CoreGraphics.framework */,
 				28EEBFDC1118E19E00187D67 /* CoreData.framework */,
+				529386C212DF3A8900045B44 /* CFNetwork.framework */,
+				529386C412DF3A9000045B44 /* SystemConfiguration.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -217,6 +268,9 @@
 		528A2CFE12CCFD050053A343 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				5293868D12DF3A3300045B44 /* WSDL2ObjC */,
+				529386A312DF3A3F00045B44 /* TouchXML */,
+				529386B712DF3A4900045B44 /* Reachability */,
 				528A2CFF12CD026F0053A343 /* BlioLib */,
 			);
 			name = Libraries;
@@ -227,6 +281,59 @@
 			children = (
 			);
 			name = BlioLib;
+			sourceTree = "<group>";
+		};
+		5293868D12DF3A3300045B44 /* WSDL2ObjC */ = {
+			isa = PBXGroup;
+			children = (
+				5293868E12DF3A3300045B44 /* AuthenticateSvc.h */,
+				5293868F12DF3A3300045B44 /* AuthenticateSvc.m */,
+				5293869012DF3A3300045B44 /* LibreAccessServiceSvc.h */,
+				5293869112DF3A3300045B44 /* LibreAccessServiceSvc.m */,
+				5293869212DF3A3300045B44 /* NSDate+ISO8601Parsing.h */,
+				5293869312DF3A3300045B44 /* NSDate+ISO8601Parsing.m */,
+				5293869412DF3A3300045B44 /* NSDate+ISO8601Unparsing.h */,
+				5293869512DF3A3300045B44 /* NSDate+ISO8601Unparsing.m */,
+				5293869612DF3A3300045B44 /* USAdditions.h */,
+				5293869712DF3A3300045B44 /* USAdditions.m */,
+				5293869812DF3A3300045B44 /* USGlobals.h */,
+				5293869912DF3A3300045B44 /* USGlobals.m */,
+				5293869A12DF3A3300045B44 /* xsd.h */,
+				5293869B12DF3A3300045B44 /* xsd.m */,
+			);
+			name = WSDL2ObjC;
+			path = Shared/Libraries/WSDL2ObjC;
+			sourceTree = "<group>";
+		};
+		529386A312DF3A3F00045B44 /* TouchXML */ = {
+			isa = PBXGroup;
+			children = (
+				529386A412DF3A3F00045B44 /* CXMLDocument.h */,
+				529386A512DF3A3F00045B44 /* CXMLDocument.m */,
+				529386A612DF3A3F00045B44 /* CXMLDocument_PrivateExtensions.h */,
+				529386A712DF3A3F00045B44 /* CXMLDocument_PrivateExtensions.m */,
+				529386A812DF3A3F00045B44 /* CXMLElement.h */,
+				529386A912DF3A3F00045B44 /* CXMLElement.m */,
+				529386AA12DF3A3F00045B44 /* CXMLNode.h */,
+				529386AB12DF3A3F00045B44 /* CXMLNode.m */,
+				529386AC12DF3A3F00045B44 /* CXMLNode_PrivateExtensions.h */,
+				529386AD12DF3A3F00045B44 /* CXMLNode_PrivateExtensions.m */,
+				529386AE12DF3A3F00045B44 /* CXMLNode_XPathExtensions.h */,
+				529386AF12DF3A3F00045B44 /* CXMLNode_XPathExtensions.m */,
+				529386B012DF3A3F00045B44 /* TouchXML.h */,
+			);
+			name = TouchXML;
+			path = Shared/Libraries/TouchXML;
+			sourceTree = "<group>";
+		};
+		529386B712DF3A4900045B44 /* Reachability */ = {
+			isa = PBXGroup;
+			children = (
+				529386B812DF3A4900045B44 /* Reachability.h */,
+				529386B912DF3A4900045B44 /* Reachability.m */,
+			);
+			name = Reachability;
+			path = Shared/Libraries/Reachability;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -312,6 +419,20 @@
 				5250C4B312DE078000542055 /* SCHProfileItem.m in Sources */,
 				5250C4B412DE078000542055 /* SCHSyncEntity.m in Sources */,
 				529385B512DF231800045B44 /* SCHSettingsViewController.m in Sources */,
+				5293869C12DF3A3300045B44 /* AuthenticateSvc.m in Sources */,
+				5293869D12DF3A3300045B44 /* LibreAccessServiceSvc.m in Sources */,
+				5293869E12DF3A3300045B44 /* NSDate+ISO8601Parsing.m in Sources */,
+				5293869F12DF3A3300045B44 /* NSDate+ISO8601Unparsing.m in Sources */,
+				529386A012DF3A3300045B44 /* USAdditions.m in Sources */,
+				529386A112DF3A3300045B44 /* USGlobals.m in Sources */,
+				529386A212DF3A3300045B44 /* xsd.m in Sources */,
+				529386B112DF3A3F00045B44 /* CXMLDocument.m in Sources */,
+				529386B212DF3A3F00045B44 /* CXMLDocument_PrivateExtensions.m in Sources */,
+				529386B312DF3A3F00045B44 /* CXMLElement.m in Sources */,
+				529386B412DF3A3F00045B44 /* CXMLNode.m in Sources */,
+				529386B512DF3A3F00045B44 /* CXMLNode_PrivateExtensions.m in Sources */,
+				529386B612DF3A3F00045B44 /* CXMLNode_XPathExtensions.m in Sources */,
+				529386BA12DF3A4900045B44 /* Reachability.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -358,7 +479,11 @@
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				OTHER_CFLAGS = (
+					"-I/usr/include/libxml2",
+					"-DNS_BLOCK_ASSERTIONS=1",
+				);
+				OTHER_LDFLAGS = "-lxml2";
 				PREBINDING = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -390,6 +515,8 @@
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				OTHER_CFLAGS = "-I/usr/include/libxml2";
+				OTHER_LDFLAGS = "-lxml2";
 				PREBINDING = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -408,7 +535,11 @@
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				OTHER_CFLAGS = (
+					"-I/usr/include/libxml2",
+					"-DNS_BLOCK_ASSERTIONS=1",
+				);
+				OTHER_LDFLAGS = "-lxml2";
 				PREBINDING = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
