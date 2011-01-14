@@ -8,6 +8,9 @@
 
 #import "RootViewController.h"
 
+#import "SCHSettingsViewController.h"
+#import "SCHBookShelfViewController.h"
+#import "SCHWebServiceSync.h"
 
 // Cell Icons 
 static NSString * const kRootViewControllerProfileIcon = @"Profile.png";
@@ -28,11 +31,22 @@ static NSInteger const kRootViewControllerSettingsRow = 1;
 
 @synthesize headerView;
 @synthesize settingsController;
+@synthesize bookShelfController;
+@synthesize webServiceSync;
 @synthesize fetchedResultsController=fetchedResultsController_, managedObjectContext=managedObjectContext_;
 
 
 #pragma mark -
 #pragma mark View lifecycle
+
+- (void)awakeFromNib
+{
+	[super awakeFromNib];
+	
+	self.webServiceSync = [[SCHWebServiceSync alloc] init];
+	self.webServiceSync.managedObjectContext = [self.fetchedResultsController managedObjectContext];	
+	[self.webServiceSync release];
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -50,7 +64,9 @@ static NSInteger const kRootViewControllerSettingsRow = 1;
     // Relinquish ownership of anything that can be recreated in viewDidLoad or on demand.
     // For example: self.myOutlet = nil;
 	
-	self.headerView = nil;			
+	self.headerView = nil;
+	self.settingsController = nil;
+	self.bookShelfController = nil;
 }
 
 
@@ -97,13 +113,14 @@ static NSInteger const kRootViewControllerSettingsRow = 1;
 		cell.imageView.image = [UIImage imageNamed:kRootViewControllerSettingsIcon];		
 	} else {
 		NSManagedObject *managedObject = [self.fetchedResultsController objectAtIndexPath:indexPath];
-		cell.textLabel.text = [NSString stringWithFormat:@"&@&@", 
-							   [[managedObject valueForKey:@"Screenname"] description] , 
+		cell.textLabel.text = [NSString stringWithFormat:@"%@%@", 
+							   [[managedObject valueForKey:@"Screenname"] description], 
 							   NSLocalizedString(@"'s Books", @"")];
 		if ([[managedObject valueForKey:@"ProfilePasswordRequired"] boolValue] == NO) {
+			cell.imageView.image = [UIImage imageNamed:kRootViewControllerProfileIcon];
+		} else {
 			cell.imageView.image = [UIImage imageNamed:kRootViewControllerProfileLockedIcon];
 		}
-		cell.imageView.image = [UIImage imageNamed:kRootViewControllerProfileLockedIcon];
 	}
 }
 
@@ -132,6 +149,8 @@ static NSInteger const kRootViewControllerSettingsRow = 1;
 //        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
 //        abort();
 //    }
+	
+	[self.webServiceSync update];
 }
 
 
@@ -233,14 +252,16 @@ static NSInteger const kRootViewControllerSettingsRow = 1;
 	NSInteger managedObjectEnd = [sectionInfo numberOfObjects] - 1;
 	
 	if (indexPath.row == (managedObjectEnd + kRootViewControllerLibraryRow)) {
-		// controller to view book shelf with all books		
+		// controller to view book shelf with all books
+		[self.navigationController pushViewController:self.bookShelfController animated:YES];		
 	} else if (indexPath.row == (managedObjectEnd + kRootViewControllerLibraryRow + kRootViewControllerSettingsRow)) {
-		[self.navigationController pushViewController:settingsController animated:YES];
+		[self.navigationController pushViewController:self.settingsController animated:YES];
 	} else {
 //		NSManagedObject *selectedObject = [[self fetchedResultsController] objectAtIndexPath:indexPath];
 		// controller to view book shelf with books filtered to profile
-	}
-	
+		self.bookShelfController.managedObjectContext = self.managedObjectContext;
+		[self.navigationController pushViewController:self.bookShelfController animated:YES];		
+	}	
 }
 
 
@@ -375,6 +396,11 @@ static NSInteger const kRootViewControllerSettingsRow = 1;
 }
 
 - (void)dealloc {
+	self.headerView = nil;
+	self.settingsController = nil;
+	self.bookShelfController = nil;
+	self.webServiceSync = nil;
+	
     [fetchedResultsController_ release];
     [managedObjectContext_ release];
     [super dealloc];

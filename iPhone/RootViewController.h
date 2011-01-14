@@ -9,6 +9,12 @@
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
 
+
+@class SCHSettingsViewController;
+@class SCHBookShelfViewController;
+@class SCHWebServiceSync;
+
+
 @interface RootViewController : UITableViewController <NSFetchedResultsControllerDelegate> {
 
 @private
@@ -17,7 +23,10 @@
 }
 
 @property (nonatomic, retain) IBOutlet UIView *headerView;
-@property (nonatomic, retain) IBOutlet UITableViewController *settingsController;
+@property (nonatomic, retain) IBOutlet SCHSettingsViewController *settingsController;
+@property (nonatomic, retain) IBOutlet SCHBookShelfViewController *bookShelfController;
+
+@property (nonatomic, retain) SCHWebServiceSync *webServiceSync;
 
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;

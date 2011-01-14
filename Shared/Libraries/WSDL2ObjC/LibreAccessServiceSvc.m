@@ -1667,7 +1667,7 @@ NSString * LibreAccessServiceSvc_TopFavoritesTypes_stringFromEnum(LibreAccessSer
 	}
 	else
 	{
-		nodeName = [NSString stringWithFormat:@"%@:%@", @"LibreAccessServiceSvc", elName];
+		nodeName = elName;
 	}
 	
 	xmlNodePtr node = xmlNewDocNode(doc, NULL, [nodeName xmlString], NULL);
@@ -1687,16 +1687,16 @@ NSString * LibreAccessServiceSvc_TopFavoritesTypes_stringFromEnum(LibreAccessSer
 {
 	
 	if(self.ISBN != 0) {
-		xmlAddChild(node, [self.ISBN xmlNodeForDoc:node->doc elementName:@"ISBN" elementNSPrefix:@"LibreAccessServiceSvc"]);
+		xmlAddChild(node, [self.ISBN xmlNodeForDoc:node->doc elementName:@"ISBN" elementNSPrefix:nil]);
 	}
 	if(self.Format != 0) {
-		xmlAddChild(node, [self.Format xmlNodeForDoc:node->doc elementName:@"Format" elementNSPrefix:@"LibreAccessServiceSvc"]);
+		xmlAddChild(node, [self.Format xmlNodeForDoc:node->doc elementName:@"Format" elementNSPrefix:nil]);
 	}
 	if(self.IdentifierType != 0) {
-		xmlNewChild(node, NULL, (const xmlChar*)"LibreAccessServiceSvc:IdentifierType", [LibreAccessServiceSvc_ContentIdentifierTypes_stringFromEnum(self.IdentifierType) xmlString]);
+		xmlNewChild(node, NULL, (const xmlChar*)"IdentifierType", [LibreAccessServiceSvc_ContentIdentifierTypes_stringFromEnum(self.IdentifierType) xmlString]);
 	}
 	if(self.Qualifier != 0) {
-		xmlNewChild(node, NULL, (const xmlChar*)"LibreAccessServiceSvc:Qualifier", [LibreAccessServiceSvc_drmqualifiers_stringFromEnum(self.Qualifier) xmlString]);
+		xmlNewChild(node, NULL, (const xmlChar*)"Qualifier", [LibreAccessServiceSvc_drmqualifiers_stringFromEnum(self.Qualifier) xmlString]);
 	}
 }
 /* elements */
@@ -19831,8 +19831,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 	}
 	else
 	{
-		nodeName = [NSString stringWithFormat:@"%@", elName];
-//		nodeName = [NSString stringWithFormat:@"%@:%@", @"LibreAccessServiceSvc", elName];		
+		nodeName = elName;		
 	}
 	
 	xmlNodePtr node = xmlNewDocNode(doc, NULL, [nodeName xmlString], NULL);
@@ -19852,19 +19851,19 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 {
 	
 	if(self.ptoken != 0) {
-		xmlAddChild(node, [self.ptoken xmlNodeForDoc:node->doc elementName:@"ptoken" elementNSPrefix:@"LibreAccessServiceSvc"]);
+		xmlAddChild(node, [self.ptoken xmlNodeForDoc:node->doc elementName:@"ptoken" elementNSPrefix:nil]);
 	}
 	if(self.vaid != 0) {
-		xmlAddChild(node, [self.vaid xmlNodeForDoc:node->doc elementName:@"vaid" elementNSPrefix:@"LibreAccessServiceSvc"]);
+		xmlAddChild(node, [self.vaid xmlNodeForDoc:node->doc elementName:@"vaid" elementNSPrefix:nil]);
 	}
 	if(self.deviceKey != 0) {
-		xmlAddChild(node, [self.deviceKey xmlNodeForDoc:node->doc elementName:@"deviceKey" elementNSPrefix:@"LibreAccessServiceSvc"]);
+		xmlAddChild(node, [self.deviceKey xmlNodeForDoc:node->doc elementName:@"deviceKey" elementNSPrefix:nil]);
 	}
 	if(self.impersonationkey != 0) {
-		xmlAddChild(node, [self.impersonationkey xmlNodeForDoc:node->doc elementName:@"impersonationkey" elementNSPrefix:@"LibreAccessServiceSvc"]);
+		xmlAddChild(node, [self.impersonationkey xmlNodeForDoc:node->doc elementName:@"impersonationkey" elementNSPrefix:nil]);
 	}
 	if(self.UserName != 0) {
-		xmlAddChild(node, [self.UserName xmlNodeForDoc:node->doc elementName:@"UserName" elementNSPrefix:@"LibreAccessServiceSvc"]);
+		xmlAddChild(node, [self.UserName xmlNodeForDoc:node->doc elementName:@"UserName" elementNSPrefix:nil]);
 	}
 }
 /* elements */
@@ -21764,7 +21763,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 {
 	
 	if(self.authtoken != 0) {
-		xmlAddChild(node, [self.authtoken xmlNodeForDoc:node->doc elementName:@"authtoken" elementNSPrefix:@"LibreAccessServiceSvc"]);
+		xmlAddChild(node, [self.authtoken xmlNodeForDoc:node->doc elementName:@"authtoken" elementNSPrefix:nil]);
 	}
 }
 /* elements */
@@ -22162,7 +22161,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 	}
 	else
 	{
-		nodeName = [NSString stringWithFormat:@"%@:%@", @"LibreAccessServiceSvc", elName];
+		nodeName = elName;
 	}
 	
 	xmlNodePtr node = xmlNewDocNode(doc, NULL, [nodeName xmlString], NULL);
@@ -22182,14 +22181,14 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 {
 	
 	if(self.authtoken != 0) {
-		xmlAddChild(node, [self.authtoken xmlNodeForDoc:node->doc elementName:@"authtoken" elementNSPrefix:@"LibreAccessServiceSvc"]);
+		xmlAddChild(node, [self.authtoken xmlNodeForDoc:node->doc elementName:@"authtoken" elementNSPrefix:nil]);
 	}
 	if(self.includeurls != 0) {
-		xmlAddChild(node, [self.includeurls xmlNodeForDoc:node->doc elementName:@"includeurls" elementNSPrefix:@"LibreAccessServiceSvc"]);
+		xmlAddChild(node, [self.includeurls xmlNodeForDoc:node->doc elementName:@"includeurls" elementNSPrefix:nil]);
 	}
 	if(self.isbn13s != 0) {
 		for(LibreAccessServiceSvc_isbnItem * child in self.isbn13s) {
-			xmlAddChild(node, [child xmlNodeForDoc:node->doc elementName:@"isbn13s" elementNSPrefix:@"LibreAccessServiceSvc"]);
+			xmlAddChild(node, [child xmlNodeForDoc:node->doc elementName:@"isbn13s" elementNSPrefix:nil]);
 		}
 	}
 }
@@ -24899,7 +24898,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 	}
 	else
 	{
-		nodeName = [NSString stringWithFormat:@"%@:%@", @"LibreAccessServiceSvc", elName];
+		nodeName = elName;
 	}
 	
 	xmlNodePtr node = xmlNewDocNode(doc, NULL, [nodeName xmlString], NULL);
@@ -24919,7 +24918,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 {
 	
 	if(self.authtoken != 0) {
-		xmlAddChild(node, [self.authtoken xmlNodeForDoc:node->doc elementName:@"authtoken" elementNSPrefix:@"LibreAccessServiceSvc"]);
+		xmlAddChild(node, [self.authtoken xmlNodeForDoc:node->doc elementName:@"authtoken" elementNSPrefix:nil]);
 	}
 }
 /* elements */
