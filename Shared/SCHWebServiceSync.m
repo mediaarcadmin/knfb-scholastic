@@ -69,7 +69,7 @@
 	} else if([method compare:kSCHLibreAccessWebServiceGetUserProfiles] == NSOrderedSame) {
 		[self updateProfiles:[result objectForKey:kSCHLibreAccessWebServiceProfileList]];
 	} else if([method compare:kSCHLibreAccessWebServiceListUserContent] == NSOrderedSame) {
-		[self.libreAccessWebService listContentMetadata:aToken includeURLs:YES forBooks:[result objectForKey:kSCHLibreAccessWebServiceUserContentList]];				
+		[self.libreAccessWebService listContentMetadata:aToken includeURLs:NO forBooks:[result objectForKey:kSCHLibreAccessWebServiceUserContentList]];				
 	} else if([method compare:kSCHLibreAccessWebServiceListContentMetadata] == NSOrderedSame) {
 		[self updateBooks:[result objectForKey:kSCHLibreAccessWebServiceContentMetadataList]];
 	}
