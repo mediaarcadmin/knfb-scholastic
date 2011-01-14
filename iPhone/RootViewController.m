@@ -150,6 +150,8 @@ static NSInteger const kRootViewControllerSettingsRow = 1;
 //        abort();
 //    }
 	
+	self.bookShelfController.managedObjectContext = self.managedObjectContext;
+	
 	for(NSManagedObject *managedObject in self.fetchedResultsController.fetchedObjects)
 		[self.managedObjectContext deleteObject:managedObject];
 

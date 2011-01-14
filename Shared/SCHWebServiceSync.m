@@ -22,12 +22,15 @@
 
 @synthesize scholasticWebService;
 @synthesize libreAccessWebService;
+@synthesize aToken;
 @synthesize managedObjectContext;
 
 - (id)init
 {
 	self = [super init];
 	if (self != nil) {
+		self.aToken = nil;
+		
 		self.scholasticWebService = [[SCHScholasticWebService alloc] init];
 		self.scholasticWebService.delegate = self;
 		[self.scholasticWebService release];
@@ -43,6 +46,8 @@
 {
 	self.scholasticWebService = nil;
 	self.libreAccessWebService = nil;
+	self.aToken = nil;
+	self.managedObjectContext = nil;
 	
 	[super dealloc];
 }
@@ -53,23 +58,21 @@
 }
 
 - (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result
-{
-	static NSString *aToken = nil;
-	
+{	
 //	NSLog(@"%@", result);
 	
 	if([method compare:kSCHScholasticWebServiceProcessRemote] == NSOrderedSame) {	
 		[self.libreAccessWebService tokenExchange:[result objectForKey:kSCHScholasticWebServicePToken] forUser:@"eparent15"];
 	} else if([method compare:kSCHLibreAccessWebServiceTokenExchange] == NSOrderedSame) {	
-		if (aToken == nil) {
-			aToken = [result objectForKey:kSCHLibreAccessWebServiceAuthToken];
+		if (self.aToken == nil) {
+			self.aToken = [result objectForKey:kSCHLibreAccessWebServiceAuthToken];
 		}
-		[self.libreAccessWebService getUserProfiles:aToken];
-		[self.libreAccessWebService listUserContent:aToken];		
+		[self.libreAccessWebService getUserProfiles:self.aToken];
+		[self.libreAccessWebService listUserContent:self.aToken];		
 	} else if([method compare:kSCHLibreAccessWebServiceGetUserProfiles] == NSOrderedSame) {
 		[self updateProfiles:[result objectForKey:kSCHLibreAccessWebServiceProfileList]];
 	} else if([method compare:kSCHLibreAccessWebServiceListUserContent] == NSOrderedSame) {
-		[self.libreAccessWebService listContentMetadata:aToken includeURLs:NO forBooks:[result objectForKey:kSCHLibreAccessWebServiceUserContentList]];				
+		[self.libreAccessWebService listContentMetadata:self.aToken includeURLs:NO forBooks:[result objectForKey:kSCHLibreAccessWebServiceUserContentList]];				
 	} else if([method compare:kSCHLibreAccessWebServiceListContentMetadata] == NSOrderedSame) {
 		[self updateBooks:[result objectForKey:kSCHLibreAccessWebServiceContentMetadataList]];
 	}
