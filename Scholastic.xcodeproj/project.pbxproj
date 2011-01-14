@@ -56,6 +56,7 @@
 		5293877F12DF515400045B44 /* SCHWebServiceSync.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293877E12DF515400045B44 /* SCHWebServiceSync.m */; };
 		5293883312E03CD000045B44 /* SCHBookShelfViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293883112E03CD000045B44 /* SCHBookShelfViewController.m */; };
 		5293883412E03CD000045B44 /* SCHBookShelfViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5293883212E03CD000045B44 /* SCHBookShelfViewController.xib */; };
+		52938B3912E08FC400045B44 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 52938B3812E08FC400045B44 /* Icon.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -145,6 +146,7 @@
 		5293883012E03CD000045B44 /* SCHBookShelfViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHBookShelfViewController.h; sourceTree = "<group>"; };
 		5293883112E03CD000045B44 /* SCHBookShelfViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHBookShelfViewController.m; sourceTree = "<group>"; };
 		5293883212E03CD000045B44 /* SCHBookShelfViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SCHBookShelfViewController.xib; sourceTree = "<group>"; };
+		52938B3812E08FC400045B44 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon.png; path = Shared/Images/Icon.png; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Scholastic-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Scholastic-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -288,6 +290,7 @@
 		528A2CD112CCDC9E0053A343 /* Icons */ = {
 			isa = PBXGroup;
 			children = (
+				52938B3812E08FC400045B44 /* Icon.png */,
 				529384F812DEF6F800045B44 /* Profile.png */,
 				529384FA12DEF73A00045B44 /* ProfileLocked.png */,
 				529384FC12DEF8EF00045B44 /* Library.png */,
@@ -472,6 +475,7 @@
 				529384FF12DEF93900045B44 /* Settings.png in Resources */,
 				529385B612DF231800045B44 /* SCHSettingsViewController.xib in Resources */,
 				5293883412E03CD000045B44 /* SCHBookShelfViewController.xib in Resources */,
+				52938B3912E08FC400045B44 /* Icon.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
