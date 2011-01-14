@@ -150,6 +150,12 @@ static NSInteger const kRootViewControllerSettingsRow = 1;
 //        abort();
 //    }
 	
+	for(NSManagedObject *managedObject in self.fetchedResultsController.fetchedObjects)
+		[self.managedObjectContext deleteObject:managedObject];
+
+	for(NSManagedObject *managedObject in self.bookShelfController.fetchedResultsController.fetchedObjects)
+		[self.managedObjectContext deleteObject:managedObject];
+
 	[self.webServiceSync update];
 }
 
