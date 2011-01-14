@@ -85,6 +85,21 @@
 
 - (void)updateProfiles:(NSArray *)profileList
 {	
+	NSError *error = nil;
+	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+	
+	[fetchRequest setEntity:[NSEntityDescription entityForName:@"ProfileItem" inManagedObjectContext:self.managedObjectContext]];	
+	NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+	if (!results) {
+		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+		abort();
+	} else {
+		for (NSManagedObject *managedObject in results) {
+			[self.managedObjectContext deleteObject:managedObject];
+		}
+	}
+	[fetchRequest release], fetchRequest = nil;
+	
 	for (id profile in profileList) {
 		NSManagedObject *newManagedObject = [NSEntityDescription insertNewObjectForEntityForName:@"ProfileItem" inManagedObjectContext:self.managedObjectContext];
 		
@@ -96,7 +111,6 @@
 	}
 	
 	// Save the context.
-	NSError *error = nil;
 	if (![self.managedObjectContext save:&error]) {
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
 		abort();
@@ -104,7 +118,22 @@
 }
 
 - (void)updateBooks:(NSArray *)bookList
-{	
+{
+	NSError *error = nil;
+	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+	
+	[fetchRequest setEntity:[NSEntityDescription entityForName:@"ContentMetadataItem" inManagedObjectContext:self.managedObjectContext]];	
+	NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+	if (!results) {
+		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+		abort();
+	} else {
+		for (NSManagedObject *managedObject in results) {
+			[self.managedObjectContext deleteObject:managedObject];
+		}
+	}
+	[fetchRequest release], fetchRequest = nil;
+	
 	for (id book in bookList) {
 		NSManagedObject *newManagedObject = [NSEntityDescription insertNewObjectForEntityForName:@"ContentMetadataItem" inManagedObjectContext:self.managedObjectContext];
 
@@ -113,7 +142,6 @@
 	}
 	
 	// Save the context.
-	NSError *error = nil;
 	if (![self.managedObjectContext save:&error]) {
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
 		abort();
