@@ -50,8 +50,7 @@
 	NSString *nodeName = nil;
 	if(elNSPrefix != nil && [elNSPrefix length] > 0)
 	{
-		nodeName = [NSString stringWithFormat:@"%@", elName];
-//		nodeName = [NSString stringWithFormat:@"%@:%@", elNSPrefix, elName];		
+		nodeName = [NSString stringWithFormat:@"%@:%@", elNSPrefix, elName];		
 	}
 	else
 	{
@@ -85,8 +84,7 @@
 	NSString *nodeName = nil;
 	if(elNSPrefix != nil && [elNSPrefix length] > 0)
 	{
-		nodeName = [NSString stringWithFormat:@"%@", elName];
-//		nodeName = [NSString stringWithFormat:@"%@:%@", elNSPrefix, elName];		
+		nodeName = [NSString stringWithFormat:@"%@:%@", elNSPrefix, elName];		
 	}
 	else
 	{
