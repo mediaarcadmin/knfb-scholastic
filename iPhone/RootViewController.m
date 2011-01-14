@@ -253,6 +253,7 @@ static NSInteger const kRootViewControllerSettingsRow = 1;
 	
 	if (indexPath.row == (managedObjectEnd + kRootViewControllerLibraryRow)) {
 		// controller to view book shelf with all books
+		self.bookShelfController.managedObjectContext = self.managedObjectContext;
 		[self.navigationController pushViewController:self.bookShelfController animated:YES];		
 	} else if (indexPath.row == (managedObjectEnd + kRootViewControllerLibraryRow + kRootViewControllerSettingsRow)) {
 		[self.navigationController pushViewController:self.settingsController animated:YES];
