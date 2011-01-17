@@ -8,6 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
+typedef enum {
+	kSCHStatusCodesNone = 0,
+	kSCHStatusCodesSuccess,
+	kSCHStatusCodesFail,
+} SCHStatusCodes;
 
 typedef enum {
 	kSCHProfileTypesNone = 0,
@@ -43,6 +48,10 @@ typedef enum {
 
 
 @interface NSNumber (ObjectTypes)
+
++ (NSNumber *)numberWithStatusCode:(SCHStatusCodes)value;
+- (id)initWithStatusCode:(SCHStatusCodes)value;
+- (SCHStatusCodes)statusCodeValue;
 
 + (NSNumber *)numberWithProfileType:(SCHProfileTypes)value;
 - (id)initWithProfileType:(SCHProfileTypes)value;
