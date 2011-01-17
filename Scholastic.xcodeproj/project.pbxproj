@@ -57,6 +57,10 @@
 		5293883312E03CD000045B44 /* SCHBookShelfViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293883112E03CD000045B44 /* SCHBookShelfViewController.m */; };
 		5293883412E03CD000045B44 /* SCHBookShelfViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5293883212E03CD000045B44 /* SCHBookShelfViewController.xib */; };
 		52938B3912E08FC400045B44 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 52938B3812E08FC400045B44 /* Icon.png */; };
+		52D6122212E44B0F0033DA92 /* SCHProfileItem+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D6122112E44B0F0033DA92 /* SCHProfileItem+Extensions.m */; };
+		52D6124312E44CEC0033DA92 /* SCHContentMetadataItem+Extensions.m in Resources */ = {isa = PBXBuildFile; fileRef = 52D6124212E44CEC0033DA92 /* SCHContentMetadataItem+Extensions.m */; };
+		52D6124F12E44D760033DA92 /* SCHSyncEntity+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D6124E12E44D760033DA92 /* SCHSyncEntity+Extensions.m */; };
+		52D612B812E4650B0033DA92 /* NSNumber+ObjectTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D612B712E4650B0033DA92 /* NSNumber+ObjectTypes.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -147,6 +151,14 @@
 		5293883112E03CD000045B44 /* SCHBookShelfViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHBookShelfViewController.m; sourceTree = "<group>"; };
 		5293883212E03CD000045B44 /* SCHBookShelfViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SCHBookShelfViewController.xib; sourceTree = "<group>"; };
 		52938B3812E08FC400045B44 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon.png; path = Shared/Images/Icon.png; sourceTree = "<group>"; };
+		52D6122012E44B0F0033DA92 /* SCHProfileItem+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SCHProfileItem+Extensions.h"; path = "Shared/SCHProfileItem+Extensions.h"; sourceTree = "<group>"; };
+		52D6122112E44B0F0033DA92 /* SCHProfileItem+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SCHProfileItem+Extensions.m"; path = "Shared/SCHProfileItem+Extensions.m"; sourceTree = "<group>"; };
+		52D6124112E44CEC0033DA92 /* SCHContentMetadataItem+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SCHContentMetadataItem+Extensions.h"; path = "Shared/SCHContentMetadataItem+Extensions.h"; sourceTree = "<group>"; };
+		52D6124212E44CEC0033DA92 /* SCHContentMetadataItem+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SCHContentMetadataItem+Extensions.m"; path = "Shared/SCHContentMetadataItem+Extensions.m"; sourceTree = "<group>"; };
+		52D6124D12E44D760033DA92 /* SCHSyncEntity+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SCHSyncEntity+Extensions.h"; path = "Shared/SCHSyncEntity+Extensions.h"; sourceTree = "<group>"; };
+		52D6124E12E44D760033DA92 /* SCHSyncEntity+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SCHSyncEntity+Extensions.m"; path = "Shared/SCHSyncEntity+Extensions.m"; sourceTree = "<group>"; };
+		52D612B612E4650B0033DA92 /* NSNumber+ObjectTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSNumber+ObjectTypes.h"; path = "Shared/NSNumber+ObjectTypes.h"; sourceTree = "<group>"; };
+		52D612B712E4650B0033DA92 /* NSNumber+ObjectTypes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSNumber+ObjectTypes.m"; path = "Shared/NSNumber+ObjectTypes.m"; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Scholastic-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Scholastic-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -264,10 +276,18 @@
 			children = (
 				5250C4AC12DE078000542055 /* SCHContentMetadataItem.h */,
 				5250C4AD12DE078000542055 /* SCHContentMetadataItem.m */,
+				52D6124112E44CEC0033DA92 /* SCHContentMetadataItem+Extensions.h */,
+				52D6124212E44CEC0033DA92 /* SCHContentMetadataItem+Extensions.m */,
 				5250C4AE12DE078000542055 /* SCHProfileItem.h */,
 				5250C4AF12DE078000542055 /* SCHProfileItem.m */,
+				52D6122012E44B0F0033DA92 /* SCHProfileItem+Extensions.h */,
+				52D6122112E44B0F0033DA92 /* SCHProfileItem+Extensions.m */,
 				5250C4B012DE078000542055 /* SCHSyncEntity.h */,
 				5250C4B112DE078000542055 /* SCHSyncEntity.m */,
+				52D6124D12E44D760033DA92 /* SCHSyncEntity+Extensions.h */,
+				52D6124E12E44D760033DA92 /* SCHSyncEntity+Extensions.m */,
+				52D612B612E4650B0033DA92 /* NSNumber+ObjectTypes.h */,
+				52D612B712E4650B0033DA92 /* NSNumber+ObjectTypes.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -476,6 +496,7 @@
 				529385B612DF231800045B44 /* SCHSettingsViewController.xib in Resources */,
 				5293883412E03CD000045B44 /* SCHBookShelfViewController.xib in Resources */,
 				52938B3912E08FC400045B44 /* Icon.png in Resources */,
+				52D6124312E44CEC0033DA92 /* SCHContentMetadataItem+Extensions.m in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -517,6 +538,9 @@
 				5293873012DF43D200045B44 /* SCHScholasticWebService.m in Sources */,
 				5293877F12DF515400045B44 /* SCHWebServiceSync.m in Sources */,
 				5293883312E03CD000045B44 /* SCHBookShelfViewController.m in Sources */,
+				52D6122212E44B0F0033DA92 /* SCHProfileItem+Extensions.m in Sources */,
+				52D6124F12E44D760033DA92 /* SCHSyncEntity+Extensions.m in Sources */,
+				52D612B812E4650B0033DA92 /* NSNumber+ObjectTypes.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

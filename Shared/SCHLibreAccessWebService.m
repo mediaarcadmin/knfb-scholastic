@@ -10,9 +10,12 @@
 
 #import "SCHScholasticWebService.h"
 #import "BITAPIError.h"
+#import "NSNumber+ObjectTypes.h"
+
 
 static NSString * const kSCHLibreAccessWebServiceUndefinedMethod = @"undefined method";
 static NSString * const kSCHLibreAccessWebServiceStatusMessage = @"statusmessage";
+
 
 @interface SCHLibreAccessWebService ()
 
@@ -281,9 +284,9 @@ static NSString * const kSCHLibreAccessWebServiceStatusMessage = @"statusmessage
 		[objects setObject:[self objectFromObject:anObject.screenname] forKey:kSCHLibreAccessWebServiceScreenname];		
 		[objects setObject:[self objectFromObject:anObject.password] forKey:kSCHLibreAccessWebServicePassword];		
 		[objects setObject:[self objectFromObject:anObject.userkey] forKey:kSCHLibreAccessWebServiceUserkey];		
-		[objects setObject:[self objectFromObject:[NSNumber numberWithInt:anObject.type]] forKey:kSCHLibreAccessWebServiceType];		
+		[objects setObject:[self objectFromObject:[NSNumber numberWithProfileType:anObject.type]] forKey:kSCHLibreAccessWebServiceType];		
 		[objects setObject:[self objectFromObject:anObject.id_] forKey:kSCHLibreAccessWebServiceID];		
-		[objects setObject:[self objectFromObject:LibreAccessServiceSvc_BookshelfStyle_stringFromEnum(anObject.BookshelfStyle)] forKey:kSCHLibreAccessWebServiceBookshelfStyle];		
+		[objects setObject:[self objectFromObject:[NSNumber numberWithBookshelfStyle:anObject.BookshelfStyle]] forKey:kSCHLibreAccessWebServiceBookshelfStyle];		
 		[objects setObject:[self objectFromObject:anObject.LastModified] forKey:kSCHLibreAccessWebServiceLastModified];		
 		[objects setObject:[self objectFromObject:anObject.LastScreenNameModified] forKey:kSCHLibreAccessWebServiceLastScreenNameModified];		
 		[objects setObject:[self objectFromObject:anObject.LastPasswordModified] forKey:kSCHLibreAccessWebServiceLastPasswordModified];		
@@ -303,8 +306,8 @@ static NSString * const kSCHLibreAccessWebServiceStatusMessage = @"statusmessage
 		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
 		
 		[objects setObject:[self objectFromObject:anObject.ContentIdentifier] forKey:kSCHLibreAccessWebServiceContentIdentifier];
-		[objects setObject:[self objectFromObject:[NSNumber numberWithInt:anObject.ContentIdentifierType]] forKey:kSCHLibreAccessWebServiceContentIdentifierType];		
-		[objects setObject:[self objectFromObject:[NSNumber numberWithInt:anObject.DRMQualifier]] forKey:kSCHLibreAccessWebServiceDRMQualifier];		
+		[objects setObject:[self objectFromObject:[NSNumber numberWithContentIdentifierType:anObject.ContentIdentifierType]] forKey:kSCHLibreAccessWebServiceContentIdentifierType];		
+		[objects setObject:[self objectFromObject:[NSNumber numberWithDRMQualifier:anObject.DRMQualifier]] forKey:kSCHLibreAccessWebServiceDRMQualifier];		
 		[objects setObject:[self objectFromObject:anObject.Format] forKey:kSCHLibreAccessWebServiceFormat];		
 		[objects setObject:[self objectFromObject:anObject.Version] forKey:kSCHLibreAccessWebServiceVersion];		
 		[objects setObject:[self objectFromObject:[[anObject ContentProfileList] ContentProfileItem]] forKey:kSCHLibreAccessWebServiceProfileList];
@@ -359,18 +362,18 @@ static NSString * const kSCHLibreAccessWebServiceStatusMessage = @"statusmessage
 		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
 		
 		[objects setObject:[self objectFromObject:anObject.ContentIdentifier] forKey:kSCHLibreAccessWebServiceContentIdentifier];
-		[objects setObject:[self objectFromObject:[NSNumber numberWithInt:anObject.ContentIdentifierType]] forKey:kSCHLibreAccessWebServiceContentIdentifierType];
+		[objects setObject:[self objectFromObject:[NSNumber numberWithContentIdentifierType:anObject.ContentIdentifierType]] forKey:kSCHLibreAccessWebServiceContentIdentifierType];
 		[objects setObject:[self objectFromObject:anObject.Title] forKey:kSCHLibreAccessWebServiceTitle];
 		[objects setObject:[self objectFromObject:anObject.Author] forKey:kSCHLibreAccessWebServiceAuthor];
 		[objects setObject:[self objectFromObject:anObject.Description] forKey:kSCHLibreAccessWebServiceDescription];
 		[objects setObject:[self objectFromObject:anObject.Version] forKey:kSCHLibreAccessWebServiceVersion];
 		[objects setObject:[self objectFromObject:anObject.PageNumber] forKey:kSCHLibreAccessWebServicePageNumber];
 		[objects setObject:[self objectFromObject:anObject.FileSize] forKey:kSCHLibreAccessWebServiceFileSize];
-		[objects setObject:[self objectFromObject:LibreAccessServiceSvc_drmqualifiers_stringFromEnum(anObject.DRMQualifier)] forKey:kSCHLibreAccessWebServiceDRMQualifier];
+		[objects setObject:[self objectFromObject:[NSNumber numberWithDRMQualifier:anObject.DRMQualifier]] forKey:kSCHLibreAccessWebServiceDRMQualifier];
 		[objects setObject:[self objectFromObject:anObject.CoverURL] forKey:kSCHLibreAccessWebServiceCoverURL];
 		[objects setObject:[self objectFromObject:anObject.ContentURL] forKey:kSCHLibreAccessWebServiceContentURL];
 //		[objects setObject:[self objectFromObject:anObject.EreaderCategories] forKey:kLibreAccessWebServiceEreaderCategories];
-		[objects setObject:[self objectFromObject:LibreAccessServiceSvc_ProductType_stringFromEnum(anObject.ProductType)] forKey:kSCHLibreAccessWebServiceProductType];
+		[objects setObject:[self objectFromObject:[NSNumber numberWithProductType:anObject.ProductType]] forKey:kSCHLibreAccessWebServiceProductType];
 				
 		ret = objects;					
 	}
