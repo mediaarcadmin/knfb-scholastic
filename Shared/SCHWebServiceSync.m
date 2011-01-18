@@ -15,6 +15,7 @@
 
 - (void)updateProfiles:(NSArray *)profileList;
 - (void)updateBooks:(NSArray *)bookList;
+- (void)updateUserSettings:(NSArray *)settingsList;
 
 @end
 
@@ -69,12 +70,15 @@
 		}
 		[self.libreAccessWebService getUserProfiles:self.aToken];
 		[self.libreAccessWebService listUserContent:self.aToken];		
+		[self.libreAccessWebService listUserSettings:self.aToken];				
 	} else if([method compare:kSCHLibreAccessWebServiceGetUserProfiles] == NSOrderedSame) {
 		[self updateProfiles:[result objectForKey:kSCHLibreAccessWebServiceProfileList]];
 	} else if([method compare:kSCHLibreAccessWebServiceListUserContent] == NSOrderedSame) {
 		[self.libreAccessWebService listContentMetadata:self.aToken includeURLs:NO forBooks:[result objectForKey:kSCHLibreAccessWebServiceUserContentList]];				
 	} else if([method compare:kSCHLibreAccessWebServiceListContentMetadata] == NSOrderedSame) {
 		[self updateBooks:[result objectForKey:kSCHLibreAccessWebServiceContentMetadataList]];
+	} else if([method compare:kSCHLibreAccessWebServiceListUserSettings] == NSOrderedSame) {
+		[self updateUserSettings:[result objectForKey:kSCHLibreAccessWebServiceUserSettingsList]];
 	}
 }
 
@@ -88,7 +92,7 @@
 	NSError *error = nil;
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
 	
-	[fetchRequest setEntity:[NSEntityDescription entityForName:@"ProfileItem" inManagedObjectContext:self.managedObjectContext]];	
+	[fetchRequest setEntity:[NSEntityDescription entityForName:@"SCHProfileItem" inManagedObjectContext:self.managedObjectContext]];	
 	NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
 	if (!results) {
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
@@ -111,7 +115,7 @@
 	
 	
 	for (id profile in profileList) {
-		NSManagedObject *newManagedObject = [NSEntityDescription insertNewObjectForEntityForName:@"ProfileItem" inManagedObjectContext:self.managedObjectContext];
+		NSManagedObject *newManagedObject = [NSEntityDescription insertNewObjectForEntityForName:@"SCHProfileItem" inManagedObjectContext:self.managedObjectContext];
 		
 		[newManagedObject setValue:[profile objectForKey:kSCHLibreAccessWebServiceLastModified] forKey:kSCHLibreAccessWebServiceLastModified];
 		[newManagedObject setValue:[NSNumber numberWithInteger:0] forKey:@"state"];		
@@ -132,7 +136,7 @@
 	NSError *error = nil;
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
 	
-	[fetchRequest setEntity:[NSEntityDescription entityForName:@"ContentMetadataItem" inManagedObjectContext:self.managedObjectContext]];	
+	[fetchRequest setEntity:[NSEntityDescription entityForName:@"SCHContentMetadataItem" inManagedObjectContext:self.managedObjectContext]];	
 	NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
 	if (!results) {
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
@@ -145,10 +149,40 @@
 	[fetchRequest release], fetchRequest = nil;
 	
 	for (id book in bookList) {
-		NSManagedObject *newManagedObject = [NSEntityDescription insertNewObjectForEntityForName:@"ContentMetadataItem" inManagedObjectContext:self.managedObjectContext];
+		NSManagedObject *newManagedObject = [NSEntityDescription insertNewObjectForEntityForName:@"SCHContentMetadataItem" inManagedObjectContext:self.managedObjectContext];
 
 		[newManagedObject setValue:[book objectForKey:kSCHLibreAccessWebServiceTitle] forKey:kSCHLibreAccessWebServiceTitle];
 		[newManagedObject setValue:[book objectForKey:kSCHLibreAccessWebServiceAuthor] forKey:kSCHLibreAccessWebServiceAuthor];
+	}
+	
+	// Save the context.
+	if (![self.managedObjectContext save:&error]) {
+		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+		abort();
+	}	
+}
+- (void)updateUserSettings:(NSArray *)settingsList
+{
+	NSError *error = nil;
+	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+	
+	[fetchRequest setEntity:[NSEntityDescription entityForName:@"SCHUserSettings" inManagedObjectContext:self.managedObjectContext]];	
+	NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+	if (!results) {
+		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+		abort();
+	} else {
+		for (NSManagedObject *managedObject in results) {
+			[self.managedObjectContext deleteObject:managedObject];
+		}
+	}
+	[fetchRequest release], fetchRequest = nil;
+	
+	for (id setting in settingsList) {
+		NSManagedObject *newManagedObject = [NSEntityDescription insertNewObjectForEntityForName:@"SCHUserSettings" inManagedObjectContext:self.managedObjectContext];
+		
+		[newManagedObject setValue:[setting objectForKey:kSCHLibreAccessWebServiceSettingType] forKey:kSCHLibreAccessWebServiceSettingType];
+		[newManagedObject setValue:[setting objectForKey:kSCHLibreAccessWebServiceSettingValue] forKey:kSCHLibreAccessWebServiceSettingValue];
 	}
 	
 	// Save the context.

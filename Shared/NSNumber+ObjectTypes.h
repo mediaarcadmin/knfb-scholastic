@@ -54,6 +54,11 @@ typedef enum {
 	kSCHSaveActionsRemove,
 } SCHSaveActions;
 
+typedef enum {
+	kSCHUserSettingsTypesNone = 0,
+	kSCHUserSettingsTypesStoreReadStat,
+	kSCHUserSettingsTypesDisableAutoAssign,
+} SCHUserSettingsTypes;
 
 @interface NSNumber (ObjectTypes)
 
@@ -84,5 +89,9 @@ typedef enum {
 + (NSNumber *)numberWithSaveAction:(SCHSaveActions)value;
 - (id)initWithSaveAction:(SCHSaveActions)value;
 - (SCHSaveActions)saveActionValue;
+
++ (NSNumber *)numberWithUserSettingsType:(SCHUserSettingsTypes)value;
+- (id)initWithUserSettingsType:(SCHUserSettingsTypes)value;
+- (SCHUserSettingsTypes)userSettingsTypeValue;
 
 @end

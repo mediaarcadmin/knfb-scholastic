@@ -116,4 +116,20 @@
 	return([self intValue]);	
 }
 
++ (NSNumber *)numberWithUserSettingsType:(SCHUserSettingsTypes)value
+{
+	return([NSNumber numberWithInt:value]);		
+}
+
+- (id)initWithUserSettingsType:(SCHUserSettingsTypes)value
+{
+	return([self initWithInt:value]);		
+}
+
+- (SCHUserSettingsTypes)userSettingsTypeValue
+{
+	return([self intValue]);		
+}
+
+
 @end

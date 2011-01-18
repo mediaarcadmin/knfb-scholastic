@@ -15582,7 +15582,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 	}
 	else
 	{
-		nodeName = [NSString stringWithFormat:@"%@:%@", @"LibreAccessServiceSvc", elName];
+		nodeName = elName;
 	}
 	
 	xmlNodePtr node = xmlNewDocNode(doc, NULL, [nodeName xmlString], NULL);
@@ -15602,10 +15602,10 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 {
 	
 	if(self.SettingType != 0) {
-		xmlNewChild(node, NULL, (const xmlChar*)"LibreAccessServiceSvc:SettingType", [LibreAccessServiceSvc_UserSettingsTypes_stringFromEnum(self.SettingType) xmlString]);
+		xmlNewChild(node, NULL, (const xmlChar*)"SettingType", [LibreAccessServiceSvc_UserSettingsTypes_stringFromEnum(self.SettingType) xmlString]);
 	}
 	if(self.SettingValue != 0) {
-		xmlAddChild(node, [self.SettingValue xmlNodeForDoc:node->doc elementName:@"SettingValue" elementNSPrefix:@"LibreAccessServiceSvc"]);
+		xmlAddChild(node, [self.SettingValue xmlNodeForDoc:node->doc elementName:@"SettingValue" elementNSPrefix:nil]);
 	}
 }
 /* elements */
@@ -15714,7 +15714,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 	}
 	else
 	{
-		nodeName = [NSString stringWithFormat:@"%@:%@", @"LibreAccessServiceSvc", elName];
+		nodeName = elName;
 	}
 	
 	xmlNodePtr node = xmlNewDocNode(doc, NULL, [nodeName xmlString], NULL);
@@ -15735,7 +15735,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 	
 	if(self.UserSettingsItem != 0) {
 		for(LibreAccessServiceSvc_UserSettingsItem * child in self.UserSettingsItem) {
-			xmlAddChild(node, [child xmlNodeForDoc:node->doc elementName:@"UserSettingsItem" elementNSPrefix:@"LibreAccessServiceSvc"]);
+			xmlAddChild(node, [child xmlNodeForDoc:node->doc elementName:@"UserSettingsItem" elementNSPrefix:nil]);
 		}
 	}
 }
@@ -30820,7 +30820,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 	}
 	else
 	{
-		nodeName = [NSString stringWithFormat:@"%@:%@", @"LibreAccessServiceSvc", elName];
+		nodeName = elName;
 	}
 	
 	xmlNodePtr node = xmlNewDocNode(doc, NULL, [nodeName xmlString], NULL);
@@ -30840,10 +30840,10 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 {
 	
 	if(self.authtoken != 0) {
-		xmlAddChild(node, [self.authtoken xmlNodeForDoc:node->doc elementName:@"authtoken" elementNSPrefix:@"LibreAccessServiceSvc"]);
+		xmlAddChild(node, [self.authtoken xmlNodeForDoc:node->doc elementName:@"authtoken" elementNSPrefix:nil]);
 	}
 	if(self.UserSettingsList != 0) {
-		xmlAddChild(node, [self.UserSettingsList xmlNodeForDoc:node->doc elementName:@"UserSettingsList" elementNSPrefix:@"LibreAccessServiceSvc"]);
+		xmlAddChild(node, [self.UserSettingsList xmlNodeForDoc:node->doc elementName:@"UserSettingsList" elementNSPrefix:nil]);
 	}
 }
 /* elements */
@@ -31103,7 +31103,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 	}
 	else
 	{
-		nodeName = [NSString stringWithFormat:@"%@:%@", @"LibreAccessServiceSvc", elName];
+		nodeName = elName;
 	}
 	
 	xmlNodePtr node = xmlNewDocNode(doc, NULL, [nodeName xmlString], NULL);
@@ -31123,7 +31123,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 {
 	
 	if(self.authtoken != 0) {
-		xmlAddChild(node, [self.authtoken xmlNodeForDoc:node->doc elementName:@"authtoken" elementNSPrefix:@"LibreAccessServiceSvc"]);
+		xmlAddChild(node, [self.authtoken xmlNodeForDoc:node->doc elementName:@"authtoken" elementNSPrefix:nil]);
 	}
 }
 /* elements */
@@ -31228,7 +31228,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 	}
 	else
 	{
-		nodeName = [NSString stringWithFormat:@"%@:%@", @"LibreAccessServiceSvc", elName];
+		nodeName = elName;
 	}
 	
 	xmlNodePtr node = xmlNewDocNode(doc, NULL, [nodeName xmlString], NULL);
@@ -31248,10 +31248,10 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 {
 	
 	if(self.statusmessage != 0) {
-		xmlAddChild(node, [self.statusmessage xmlNodeForDoc:node->doc elementName:@"statusmessage" elementNSPrefix:@"LibreAccessServiceSvc"]);
+		xmlAddChild(node, [self.statusmessage xmlNodeForDoc:node->doc elementName:@"statusmessage" elementNSPrefix:nil]);
 	}
 	if(self.UserSettingsList != 0) {
-		xmlAddChild(node, [self.UserSettingsList xmlNodeForDoc:node->doc elementName:@"UserSettingsList" elementNSPrefix:@"LibreAccessServiceSvc"]);
+		xmlAddChild(node, [self.UserSettingsList xmlNodeForDoc:node->doc elementName:@"UserSettingsList" elementNSPrefix:nil]);
 	}
 }
 /* elements */

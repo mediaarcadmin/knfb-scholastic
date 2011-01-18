@@ -34,6 +34,7 @@ static NSString * const kSCHLibreAccessWebServiceStatusMessage = @"statusmessage
 
 - (void)fromObject:(NSDictionary *)object intoSaveProfileItem:(LibreAccessServiceSvc_SaveProfileItem **)intoObject;
 - (void)fromObject:(NSDictionary *)object intoISBNItem:(LibreAccessServiceSvc_isbnItem **)intoObject;
+- (void)fromObject:(NSDictionary *)object intoUserSettingsItem:(LibreAccessServiceSvc_UserSettingsItem **)intoObject;
 
 - (id)fromObjectTranslate:(id)anObject;
 
@@ -144,6 +145,37 @@ static NSString * const kSCHLibreAccessWebServiceStatusMessage = @"statusmessage
 	[request release], request = nil;	
 }
 
+- (void)listUserSettings:(NSString *)aToken
+{
+	LibreAccessServiceSvc_ListUserSettingsRequest *request = [LibreAccessServiceSvc_ListUserSettingsRequest new];
+	
+	request.authtoken = aToken;
+	
+	[binding ListUserSettingsAsyncUsingParameters:request delegate:self]; 
+	
+	[request release], request = nil;		
+}
+
+- (void)saveUserSettings:(NSString *)aToken forSettings:(NSArray *)settings
+{
+	LibreAccessServiceSvc_SaveUserSettingsRequest *request = [LibreAccessServiceSvc_SaveUserSettingsRequest new];
+	
+	request.authtoken = aToken;
+	request.UserSettingsList = [[LibreAccessServiceSvc_UserSettingsList alloc] init];
+	LibreAccessServiceSvc_UserSettingsItem *item = nil;
+	for (id setting in settings) {
+		item = [[LibreAccessServiceSvc_UserSettingsItem alloc] init];
+		[self fromObject:setting intoObject:&item];
+		[request.UserSettingsList addUserSettingsItem:item];	
+		[item release], item = nil;
+	}
+	[request.UserSettingsList release];
+	
+	[binding SaveUserSettingsAsyncUsingParameters:request delegate:self]; 
+	
+	[request release], request = nil;		
+}
+
 #pragma mark -
 #pragma mark LibreAccessServiceSoap12BindingResponse Delegate methods
 
@@ -229,6 +261,14 @@ static NSString * const kSCHLibreAccessWebServiceStatusMessage = @"statusmessage
 				  [anObject isKindOfClass:[LibreAccessServiceSvc_SaveUserProfilesResponse class]] == YES ||
 				  [anObject isKindOfClass:[LibreAccessServiceSoap12Binding_SaveUserProfiles class]] == YES) {
 			ret = kSCHLibreAccessWebServiceSaveUserProfiles;				
+		} else if([anObject isKindOfClass:[LibreAccessServiceSvc_ListUserSettingsRequest class]] == YES ||
+				  [anObject isKindOfClass:[LibreAccessServiceSvc_ListUserSettingsResponse class]] == YES ||
+				  [anObject isKindOfClass:[LibreAccessServiceSoap12Binding_ListUserSettings class]] == YES) {
+			ret = kSCHLibreAccessWebServiceListUserSettings;				
+		} else if([anObject isKindOfClass:[LibreAccessServiceSvc_SaveUserSettingsRequest class]] == YES ||
+				  [anObject isKindOfClass:[LibreAccessServiceSvc_SaveUserSettingsResponse class]] == YES ||
+				  [anObject isKindOfClass:[LibreAccessServiceSoap12Binding_SaveUserSettings class]] == YES) {
+			ret = kSCHLibreAccessWebServiceListUserSettings;				
 		}
 		
 	}
@@ -254,6 +294,8 @@ static NSString * const kSCHLibreAccessWebServiceStatusMessage = @"statusmessage
 			ret = [NSDictionary dictionaryWithObject:[self objectFromTranslate:[[anObject ContentMetadataList] ContentMetadataItem]] forKey:kSCHLibreAccessWebServiceContentMetadataList];
 		} else if ([anObject isKindOfClass:[LibreAccessServiceSvc_SaveUserProfilesResponse class]] == YES) {
 			ret = [NSDictionary dictionaryWithObject:[self objectFromTranslate:[[anObject ProfileStatusList] ProfileStatusItem]] forKey:kSCHLibreAccessWebServiceProfileStatusList];
+		} else if ([anObject isKindOfClass:[LibreAccessServiceSvc_ListUserSettingsResponse class]] == YES) {
+			ret = [NSDictionary dictionaryWithObject:[self objectFromTranslate:[[anObject UserSettingsList] UserSettingsItem]] forKey:kSCHLibreAccessWebServiceUserSettingsList];
 		}			
 	}
 	
@@ -267,7 +309,9 @@ static NSString * const kSCHLibreAccessWebServiceStatusMessage = @"statusmessage
 			[self fromObject:object intoSaveProfileItem:intoObject];
 		} else if ([*intoObject isKindOfClass:[LibreAccessServiceSvc_isbnItem class]] == YES) {
 			[self fromObject:object intoISBNItem:intoObject];
-		}		
+		} else if ([*intoObject isKindOfClass:[LibreAccessServiceSvc_UserSettingsItem class]] == YES) {
+			[self fromObject:object intoUserSettingsItem:intoObject];
+		}
 	}
 }
 
@@ -423,6 +467,22 @@ static NSString * const kSCHLibreAccessWebServiceStatusMessage = @"statusmessage
 	return(ret);
 }
 
+- (NSDictionary *)objectFromUserSettingsItem:(LibreAccessServiceSvc_UserSettingsItem *)anObject
+{
+	NSDictionary *ret = nil;
+	
+	if (anObject != nil) {
+		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
+		
+		[objects setObject:[self objectFromTranslate:[NSNumber numberWithUserSettingsType:anObject.SettingType]] forKey:kSCHLibreAccessWebServiceSettingType];
+		[objects setObject:[self objectFromTranslate:anObject.SettingValue] forKey:kSCHLibreAccessWebServiceSettingValue];
+		
+		ret = objects;					
+	}
+	
+	return(ret);
+}
+
 - (id)objectFromTranslate:(id)anObject
 {
 	id ret = nil;
@@ -445,7 +505,9 @@ static NSString * const kSCHLibreAccessWebServiceStatusMessage = @"statusmessage
 				[ret addObject:[self objectFromContentMetadataItem:item]];													
 			} else if ([item isKindOfClass:[LibreAccessServiceSvc_ProfileStatusItem class]] == YES) {
 				[ret addObject:[self objectFromProfileStatusItem:item]];													
-			}		
+			} else if ([item isKindOfClass:[LibreAccessServiceSvc_UserSettingsItem class]] == YES) {
+				[ret addObject:[self objectFromUserSettingsItem:item]];	
+			}
 		}		
 	} else if([anObject isKindOfClass:[USBoolean class]] == YES) {
 		ret = [NSNumber numberWithBool:[anObject boolValue]];
@@ -482,13 +544,21 @@ static NSString * const kSCHLibreAccessWebServiceStatusMessage = @"statusmessage
 - (void)fromObject:(NSDictionary *)object intoISBNItem:(LibreAccessServiceSvc_isbnItem **)intoObject
 {
 	if (object != nil && intoObject != nil) {
-		(*intoObject).ISBN = [object objectForKey:kSCHLibreAccessWebServiceContentIdentifier];
-		(*intoObject).Format = [object objectForKey:kSCHLibreAccessWebServiceFormat];
+		(*intoObject).ISBN = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceContentIdentifier]];
+		(*intoObject).Format = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceFormat]];
 		(*intoObject).IdentifierType = [[object objectForKey:kSCHLibreAccessWebServiceContentIdentifierType] contentIdentifierTypeValue];
 		(*intoObject).Qualifier = [[object objectForKey:kSCHLibreAccessWebServiceDRMQualifier] DRMQualifierValue];
 	}
 }
 
+- (void)fromObject:(NSDictionary *)object intoUserSettingsItem:(LibreAccessServiceSvc_UserSettingsItem **)intoObject
+{
+	if (object != nil && intoObject != nil) {
+		(*intoObject).SettingType = [[object objectForKey:kSCHLibreAccessWebServiceSettingType] userSettingsTypeValue];
+		(*intoObject).SettingValue = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceSettingValue]];
+	}
+}
+	
 - (id)fromObjectTranslate:(id)anObject
 {
 	static Class boolClass = nil;

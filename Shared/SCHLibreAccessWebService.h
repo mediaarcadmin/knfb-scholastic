@@ -95,6 +95,17 @@ static NSString * const kSCHLibreAccessWebServiceStatus = @"status";
 static NSString * const kSCHLibreAccessWebServiceStatuscode = @"statuscode";
 static NSString * const kSCHLibreAccessWebServiceStatusmessage = @"statusmessage";
 
+// ListUserSettings
+static NSString * const kSCHLibreAccessWebServiceListUserSettings = @"ListUserSettings";
+//static NSString * const kSCHLibreAccessWebServiceAuthToken = @"authtoken";
+
+static NSString * const kSCHLibreAccessWebServiceUserSettingsList = @"UserSettingsList";
+static NSString * const kSCHLibreAccessWebServiceSettingType = @"SettingType";
+static NSString * const kSCHLibreAccessWebServiceSettingValue = @"SettingValue";
+
+// SaveUserSettings
+static NSString * const kSCHLibreAccessWebServiceSaveUserSettings = @"SaveUserSettings";
+
 
 @interface SCHLibreAccessWebService : BITSOAPProxy <LibreAccessServiceSoap12BindingResponseDelegate, BITObjectMapperProtocol> {
 	LibreAccessServiceSoap12Binding *binding;
@@ -105,12 +116,14 @@ static NSString * const kSCHLibreAccessWebServiceStatusmessage = @"statusmessage
 - (void)saveUserProfiles:(NSString *)aToken forUserProfiles:(NSArray *)userProfiles;
 - (void)listUserContent:(NSString *)aToken;
 - (void)listContentMetadata:(NSString *)aToken includeURLs:(BOOL)includeURLs forBooks:(NSArray *)bookISBNs;
+- (void)listUserSettings:(NSString *)aToken;
+- (void)saveUserSettings:(NSString *)aToken forSettings:(NSArray *)settings;
 
-//SaveUserSettings
-//ListUserSettings
 //SaveContentProfileAssignment
+
 //SaveProfileContentAnnotations
 //ListProfileContentAnnotations
+
 //SaveReadingStatisticsDetailed
 
 @end
