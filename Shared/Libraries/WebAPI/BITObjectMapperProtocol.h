@@ -12,6 +12,6 @@
 @protocol BITObjectMapperProtocol
 
 - (NSDictionary *)objectFrom:(id)anObject;
-- (id)fromObject:(NSDictionary *)object usingClass:(NSString *)className;
+- (void)fromObject:(NSDictionary *)object intoObject:(id *)intoObject;
 
 @end

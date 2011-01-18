@@ -21,7 +21,7 @@ static NSString * const kSCHLibreAccessWebServiceAuthToken = @"authtoken";
 static NSString * const kSCHLibreAccessWebServiceExpiresIn = @"expiresIn";
 static NSString * const kSCHLibreAccessWebServiceDeviceIsDeregistered = @"deviceIsDeregistered";
 
-// GetUserProfiles
+// UserProfiles
 static NSString * const kSCHLibreAccessWebServiceGetUserProfiles = @"GetUserProfiles";
 
 static NSString * const kSCHLibreAccessWebServiceProfileList = @"ProfileList";
@@ -40,6 +40,8 @@ static NSString * const kSCHLibreAccessWebServiceLastModified = @"LastModified";
 static NSString * const kSCHLibreAccessWebServiceLastScreenNameModified = @"LastScreenNameModified";
 static NSString * const kSCHLibreAccessWebServiceLastPasswordModified = @"LastPasswordModified";
 static NSString * const kSCHLibreAccessWebServiceStoryInteractionEnabled = @"StoryInteractionEnabled";
+
+static NSString * const kSCHLibreAccessWebServiceAction = @"action";
 
 // ListUserContent
 static NSString * const kSCHLibreAccessWebServiceListUserContent = @"ListUserContent";
@@ -82,6 +84,17 @@ static NSString * const kSCHLibreAccessWebServiceContentURL = @"ContentURL";
 static NSString * const kSCHLibreAccessWebServiceEreaderCategories = @"EreaderCategories";
 static NSString * const kSCHLibreAccessWebServiceProductType = @"ProductType";
 
+// SaveUserProfiles
+static NSString * const kSCHLibreAccessWebServiceSaveUserProfiles = @"SaveUserProfiles";
+
+static NSString * const kSCHLibreAccessWebServiceProfileStatusList = @"ProfileStatusList";
+//static NSString * const kSCHLibreAccessWebServiceID = @"id";
+//static NSString * const kSCHLibreAccessWebServiceAction = @"action";
+static NSString * const kSCHLibreAccessWebServiceStatus = @"status";
+//static NSString * const kSCHLibreAccessWebServiceScreenname = @"screenname";
+static NSString * const kSCHLibreAccessWebServiceStatuscode = @"statuscode";
+static NSString * const kSCHLibreAccessWebServiceStatusmessage = @"statusmessage";
+
 
 @interface SCHLibreAccessWebService : BITSOAPProxy <LibreAccessServiceSoap12BindingResponseDelegate, BITObjectMapperProtocol> {
 	LibreAccessServiceSoap12Binding *binding;
@@ -89,7 +102,15 @@ static NSString * const kSCHLibreAccessWebServiceProductType = @"ProductType";
 
 - (void)tokenExchange:(NSString *)pToken forUser:(NSString *)userName;
 - (void)getUserProfiles:(NSString *)aToken;
+- (void)saveUserProfiles:(NSString *)aToken forUserProfiles:(NSArray *)userProfiles;
 - (void)listUserContent:(NSString *)aToken;
 - (void)listContentMetadata:(NSString *)aToken includeURLs:(BOOL)includeURLs forBooks:(NSArray *)bookISBNs;
+
+//SaveUserSettings
+//ListUserSettings
+//SaveContentProfileAssignment
+//SaveProfileContentAnnotations
+//ListProfileContentAnnotations
+//SaveReadingStatisticsDetailed
 
 @end

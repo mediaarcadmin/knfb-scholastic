@@ -96,10 +96,24 @@
 	return([self initWithInt:value]);	
 }
 
-- (SCHProductTypes)ProductTypeValue
+- (SCHProductTypes)productTypeValue
 {
 	return([self intValue]);	
 }
 
++ (NSNumber *)numberWithSaveAction:(SCHSaveActions)value
+{
+	return([NSNumber numberWithInt:value]);	
+}
+
+- (id)initWithSaveAction:(SCHSaveActions)value
+{
+	return([self initWithInt:value]);	
+}
+
+- (SCHSaveActions)saveActionValue
+{
+	return([self intValue]);	
+}
 
 @end

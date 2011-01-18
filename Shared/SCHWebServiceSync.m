@@ -59,7 +59,7 @@
 
 - (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result
 {	
-//	NSLog(@"%@", result);
+	NSLog(@"%@\n%@", method, result);
 	
 	if([method compare:kSCHScholasticWebServiceProcessRemote] == NSOrderedSame) {	
 		[self.libreAccessWebService tokenExchange:[result objectForKey:kSCHScholasticWebServicePToken] forUser:@"eparent15"];
@@ -80,7 +80,7 @@
 
 - (void)method:(NSString *)method didFailWithError:(NSError *)error
 {
-	NSLog(@"%@", error);	
+	NSLog(@"%@\n%@", method, error);	
 }
 
 - (void)updateProfiles:(NSArray *)profileList
@@ -99,6 +99,16 @@
 		}
 	}
 	[fetchRequest release], fetchRequest = nil;
+	
+	// TEST THE SAVE
+//	id profsave = [profileList objectAtIndex:1];
+//	if(profsave != nil) {
+//		[profsave setValue:@"MyName2" forKey:kSCHLibreAccessWebServiceFirstname];
+//		[profsave setValue:@"MyName2" forKey:kSCHLibreAccessWebServiceScreenname];		
+//		[profsave setValue:[NSNumber numberWithInt:3] forKey:kSCHLibreAccessWebServiceAction];		
+//		[self.libreAccessWebService saveUserProfiles:self.aToken forUserProfiles:[NSArray arrayWithObject:profsave]];
+//	}
+	
 	
 	for (id profile in profileList) {
 		NSManagedObject *newManagedObject = [NSEntityDescription insertNewObjectForEntityForName:@"ProfileItem" inManagedObjectContext:self.managedObjectContext];

@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
+
 typedef enum {
 	kSCHStatusCodesNone = 0,
 	kSCHStatusCodesSuccess,
@@ -46,6 +47,13 @@ typedef enum {
 	kSCHProductTypeENH,
 } SCHProductTypes;
 
+typedef enum {
+	kSCHSaveActionsNone = 0,
+	kSCHSaveActionsCreate,
+	kSCHSaveActionsUpdate,
+	kSCHSaveActionsRemove,
+} SCHSaveActions;
+
 
 @interface NSNumber (ObjectTypes)
 
@@ -71,6 +79,10 @@ typedef enum {
 
 + (NSNumber *)numberWithProductType:(SCHProductTypes)value;
 - (id)initWithProductType:(SCHProductTypes)value;
-- (SCHProductTypes)ProductTypeValue;
+- (SCHProductTypes)productTypeValue;
+
++ (NSNumber *)numberWithSaveAction:(SCHSaveActions)value;
+- (id)initWithSaveAction:(SCHSaveActions)value;
+- (SCHSaveActions)saveActionValue;
 
 @end

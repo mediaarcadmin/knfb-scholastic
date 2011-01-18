@@ -3953,7 +3953,7 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
 	}
 	else
 	{
-		nodeName = [NSString stringWithFormat:@"%@:%@", @"LibreAccessServiceSvc", elName];
+		nodeName = elName;
 	}
 	
 	xmlNodePtr node = xmlNewDocNode(doc, NULL, [nodeName xmlString], NULL);
@@ -3973,46 +3973,46 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
 {
 	
 	if(self.AutoAssignContentToProfiles != 0) {
-		xmlAddChild(node, [self.AutoAssignContentToProfiles xmlNodeForDoc:node->doc elementName:@"AutoAssignContentToProfiles" elementNSPrefix:@"LibreAccessServiceSvc"]);
+		xmlAddChild(node, [self.AutoAssignContentToProfiles xmlNodeForDoc:node->doc elementName:@"AutoAssignContentToProfiles" elementNSPrefix:nil]);
 	}
 	if(self.ProfilePasswordRequired != 0) {
-		xmlAddChild(node, [self.ProfilePasswordRequired xmlNodeForDoc:node->doc elementName:@"ProfilePasswordRequired" elementNSPrefix:@"LibreAccessServiceSvc"]);
+		xmlAddChild(node, [self.ProfilePasswordRequired xmlNodeForDoc:node->doc elementName:@"ProfilePasswordRequired" elementNSPrefix:nil]);
 	}
 	if(self.Firstname != 0) {
-		xmlAddChild(node, [self.Firstname xmlNodeForDoc:node->doc elementName:@"Firstname" elementNSPrefix:@"LibreAccessServiceSvc"]);
+		xmlAddChild(node, [self.Firstname xmlNodeForDoc:node->doc elementName:@"Firstname" elementNSPrefix:nil]);
 	}
 	if(self.Lastname != 0) {
-		xmlAddChild(node, [self.Lastname xmlNodeForDoc:node->doc elementName:@"Lastname" elementNSPrefix:@"LibreAccessServiceSvc"]);
+		xmlAddChild(node, [self.Lastname xmlNodeForDoc:node->doc elementName:@"Lastname" elementNSPrefix:nil]);
 	}
 	if(self.BirthDay != 0) {
-		xmlAddChild(node, [self.BirthDay xmlNodeForDoc:node->doc elementName:@"BirthDay" elementNSPrefix:@"LibreAccessServiceSvc"]);
+		xmlAddChild(node, [self.BirthDay xmlNodeForDoc:node->doc elementName:@"BirthDay" elementNSPrefix:nil]);
 	}
 	if(self.LastModified != 0) {
-		xmlAddChild(node, [self.LastModified xmlNodeForDoc:node->doc elementName:@"LastModified" elementNSPrefix:@"LibreAccessServiceSvc"]);
+		xmlAddChild(node, [self.LastModified xmlNodeForDoc:node->doc elementName:@"LastModified" elementNSPrefix:nil]);
 	}
 	if(self.screenname != 0) {
-		xmlAddChild(node, [self.screenname xmlNodeForDoc:node->doc elementName:@"screenname" elementNSPrefix:@"LibreAccessServiceSvc"]);
+		xmlAddChild(node, [self.screenname xmlNodeForDoc:node->doc elementName:@"screenname" elementNSPrefix:nil]);
 	}
 	if(self.password != 0) {
-		xmlAddChild(node, [self.password xmlNodeForDoc:node->doc elementName:@"password" elementNSPrefix:@"LibreAccessServiceSvc"]);
+		xmlAddChild(node, [self.password xmlNodeForDoc:node->doc elementName:@"password" elementNSPrefix:nil]);
 	}
 	if(self.userkey != 0) {
-		xmlAddChild(node, [self.userkey xmlNodeForDoc:node->doc elementName:@"userkey" elementNSPrefix:@"LibreAccessServiceSvc"]);
+		xmlAddChild(node, [self.userkey xmlNodeForDoc:node->doc elementName:@"userkey" elementNSPrefix:nil]);
 	}
 	if(self.type != 0) {
-		xmlNewChild(node, NULL, (const xmlChar*)"LibreAccessServiceSvc:type", [LibreAccessServiceSvc_ProfileTypes_stringFromEnum(self.type) xmlString]);
+		xmlNewChild(node, NULL, (const xmlChar*)"type", [LibreAccessServiceSvc_ProfileTypes_stringFromEnum(self.type) xmlString]);
 	}
 	if(self.id_ != 0) {
-		xmlAddChild(node, [self.id_ xmlNodeForDoc:node->doc elementName:@"id" elementNSPrefix:@"LibreAccessServiceSvc"]);
+		xmlAddChild(node, [self.id_ xmlNodeForDoc:node->doc elementName:@"id" elementNSPrefix:nil]);
 	}
 	if(self.action != 0) {
-		xmlNewChild(node, NULL, (const xmlChar*)"LibreAccessServiceSvc:action", [LibreAccessServiceSvc_SaveActions_stringFromEnum(self.action) xmlString]);
+		xmlNewChild(node, NULL, (const xmlChar*)"action", [LibreAccessServiceSvc_SaveActions_stringFromEnum(self.action) xmlString]);
 	}
 	if(self.BookshelfStyle != 0) {
-		xmlNewChild(node, NULL, (const xmlChar*)"LibreAccessServiceSvc:BookshelfStyle", [LibreAccessServiceSvc_BookshelfStyle_stringFromEnum(self.BookshelfStyle) xmlString]);
+		xmlNewChild(node, NULL, (const xmlChar*)"BookshelfStyle", [LibreAccessServiceSvc_BookshelfStyle_stringFromEnum(self.BookshelfStyle) xmlString]);
 	}
 	if(self.storyInteractionEnabled != 0) {
-		xmlAddChild(node, [self.storyInteractionEnabled xmlNodeForDoc:node->doc elementName:@"storyInteractionEnabled" elementNSPrefix:@"LibreAccessServiceSvc"]);
+		xmlAddChild(node, [self.storyInteractionEnabled xmlNodeForDoc:node->doc elementName:@"storyInteractionEnabled" elementNSPrefix:nil]);
 	}
 }
 /* elements */
@@ -4473,7 +4473,7 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
 	}
 	else
 	{
-		nodeName = [NSString stringWithFormat:@"%@:%@", @"LibreAccessServiceSvc", elName];
+		nodeName = elName;
 	}
 	
 	xmlNodePtr node = xmlNewDocNode(doc, NULL, [nodeName xmlString], NULL);
@@ -4494,7 +4494,7 @@ NSString * LibreAccessServiceSvc_SaveActions_stringFromEnum(LibreAccessServiceSv
 	
 	if(self.SaveProfileItem != 0) {
 		for(LibreAccessServiceSvc_SaveProfileItem * child in self.SaveProfileItem) {
-			xmlAddChild(node, [child xmlNodeForDoc:node->doc elementName:@"SaveProfileItem" elementNSPrefix:@"LibreAccessServiceSvc"]);
+			xmlAddChild(node, [child xmlNodeForDoc:node->doc elementName:@"SaveProfileItem" elementNSPrefix:nil]);
 		}
 	}
 }
@@ -25185,7 +25185,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 	}
 	else
 	{
-		nodeName = [NSString stringWithFormat:@"%@:%@", @"LibreAccessServiceSvc", elName];
+		nodeName = elName;
 	}
 	
 	xmlNodePtr node = xmlNewDocNode(doc, NULL, [nodeName xmlString], NULL);
@@ -25205,10 +25205,10 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 {
 	
 	if(self.authtoken != 0) {
-		xmlAddChild(node, [self.authtoken xmlNodeForDoc:node->doc elementName:@"authtoken" elementNSPrefix:@"LibreAccessServiceSvc"]);
+		xmlAddChild(node, [self.authtoken xmlNodeForDoc:node->doc elementName:@"authtoken" elementNSPrefix:nil]);
 	}
 	if(self.SaveProfileList != 0) {
-		xmlAddChild(node, [self.SaveProfileList xmlNodeForDoc:node->doc elementName:@"SaveProfileList" elementNSPrefix:@"LibreAccessServiceSvc"]);
+		xmlAddChild(node, [self.SaveProfileList xmlNodeForDoc:node->doc elementName:@"SaveProfileList" elementNSPrefix:nil]);
 	}
 }
 /* elements */
