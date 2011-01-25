@@ -15,7 +15,8 @@
 
 @synthesize userName;
 @synthesize password;
-@synthesize cancel;
+@synthesize loginButton;
+@synthesize cancelButton;
 @synthesize spinner;
 
 - (void)awakeFromNib
@@ -34,7 +35,9 @@
 - (void)authenticationManager:(NSNotification *)notification
 {
 	[spinner stopAnimating];
-	
+	self.loginButton.enabled = YES;
+	self.cancelButton.enabled = YES;
+
 	if ([notification.name compare:kSCHAuthenticationManagerSuccess] == NSOrderedSame) {
 		[self dismissModalViewControllerAnimated:YES];	
 	} else {
@@ -54,24 +57,30 @@
 
 - (IBAction)login:(id)sender
 {
-	[userName resignFirstResponder];
-	[password resignFirstResponder];
-					   
-	[[SCHAuthenticationManager sharedAuthenticationManager] authenticateUserName:[userName text] withPassword:[password text]];
+	[self.userName resignFirstResponder];
+	[self.password resignFirstResponder];
+				
+	[[SCHAuthenticationManager sharedAuthenticationManager] authenticateUserName:[self.userName text] withPassword:[self.password text]];
 	[spinner startAnimating];
+	self.loginButton.enabled = NO;
+	self.cancelButton.enabled = NO;
 }
 
 - (IBAction)cancel:(id)sender
 {
-	[userName resignFirstResponder];
-	[password resignFirstResponder];
+	[self.userName resignFirstResponder];
+	[self.password resignFirstResponder];
 	
-	[spinner startAnimating];
+	[self dismissModalViewControllerAnimated:YES];	
 }
 
-- (void)canCancel:(BOOL)canCancel
+- (void)removeCancelButton
 {
-	cancel.hidden = canCancel;
+	CGPoint center = self.loginButton.center;
+	center.x = self.view.superview.center.x;
+	self.loginButton.center = center;
+	
+	self.cancelButton.hidden = YES;
 }
 
 // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.

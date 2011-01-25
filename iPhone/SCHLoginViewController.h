@@ -15,12 +15,13 @@
 
 @property (nonatomic, retain) IBOutlet UITextField *userName;
 @property (nonatomic, retain) IBOutlet UITextField *password;
-@property (nonatomic, retain) IBOutlet UIButton *cancel;
+@property (nonatomic, retain) IBOutlet UIButton *loginButton;
+@property (nonatomic, retain) IBOutlet UIButton *cancelButton;
 @property (nonatomic, retain) IBOutlet UIActivityIndicatorView *spinner;
 
 - (IBAction)login:(id)sender;
 - (IBAction)cancel:(id)sender;
 
-- (void)canCancel:(BOOL)canCancel;
+- (void)removeCancelButton;
 
 @end

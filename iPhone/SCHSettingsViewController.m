@@ -61,7 +61,6 @@
 #pragma mark Login
 
 - (void)login {
-	[self.loginController canCancel:YES];
 	[self presentModalViewController:self.loginController animated:YES];		
 }
 	

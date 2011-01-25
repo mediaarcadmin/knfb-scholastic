@@ -87,6 +87,7 @@ static NSInteger const kRootViewControllerSettingsRow = 1;
 	
 	if ([authenticationManager hasUsernameAndPassword] == NO) {
 		[self presentModalViewController:self.loginController animated:NO];	
+		[self.loginController removeCancelButton];
 	}
 }
 
