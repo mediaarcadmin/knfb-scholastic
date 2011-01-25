@@ -68,7 +68,7 @@
 	} else if([method compare:kSCHLibreAccessWebServiceListUserContent] == NSOrderedSame) {
 		NSArray *books = [result objectForKey:kSCHLibreAccessWebServiceUserContentList];
 		if ([books count] > 0) {
-			[self.libreAccessWebService listContentMetadata:books includeURLs:NO];				
+			[self.libreAccessWebService listContentMetadata:books includeURLs:YES];				
 		} else {
 			[self clearBooks];
 		}
