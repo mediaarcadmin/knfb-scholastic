@@ -21,6 +21,6 @@
 
 @property (retain, nonatomic) NSManagedObjectContext *managedObjectContext;	
 
-- (void)update;
+- (BOOL)update;
 
 @end

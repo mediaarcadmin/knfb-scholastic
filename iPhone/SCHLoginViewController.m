@@ -32,6 +32,14 @@
     [super dealloc];
 }
 
+// Implement viewWillAppear: to do additional setup before the view is presented.
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+	
+	self.userName.text = @"";
+	self.password.text = @"";
+}
+
 - (void)authenticationManager:(NSNotification *)notification
 {
 	[spinner stopAnimating];
@@ -60,10 +68,11 @@
 	[self.userName resignFirstResponder];
 	[self.password resignFirstResponder];
 				
-	[[SCHAuthenticationManager sharedAuthenticationManager] authenticateUserName:[self.userName text] withPassword:[self.password text]];
-	[spinner startAnimating];
-	self.loginButton.enabled = NO;
-	self.cancelButton.enabled = NO;
+	if ([[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithUserName:[self.userName text] withPassword:[self.password text]] == YES) {
+		[spinner startAnimating];
+		self.loginButton.enabled = NO;
+		self.cancelButton.enabled = NO;
+	}
 }
 
 - (IBAction)cancel:(id)sender
@@ -120,6 +129,11 @@
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
+	self.userName = nil;
+	self.password = nil;
+	self.loginButton = nil;
+	self.cancelButton = nil;
+	self.spinner = nil;
 }
 
 

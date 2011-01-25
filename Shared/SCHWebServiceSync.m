@@ -10,11 +10,12 @@
 
 #import "SCHLibreAccessWebService.h"
 #import "NSManagedObjectContext+Extensions.h"
-
+#import "SCHAuthenticationManager.h"
 
 @interface SCHWebServiceSync ()
 
 - (void)updateProfiles:(NSArray *)profileList;
+- (void)clearBooks;
 - (void)updateBooks:(NSArray *)bookList;
 - (void)updateUserSettings:(NSArray *)settingsList;
 
@@ -44,11 +45,18 @@
 	[super dealloc];
 }
 
-- (void)update
+- (BOOL)update
 {
-	[self.libreAccessWebService getUserProfiles];
-	[self.libreAccessWebService listUserContent];		
-	[self.libreAccessWebService listUserSettings];	
+	BOOL ret = YES;
+	
+	if ([self.libreAccessWebService getUserProfiles] == NO ||
+		[self.libreAccessWebService listUserContent] == NO ||
+		[self.libreAccessWebService listUserSettings] == NO) {
+		[[SCHAuthenticationManager sharedAuthenticationManager] authenticate];				
+		ret = NO;
+	}
+	
+	return(ret);
 }
 
 - (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result
@@ -61,6 +69,8 @@
 		NSArray *books = [result objectForKey:kSCHLibreAccessWebServiceUserContentList];
 		if ([books count] > 0) {
 			[self.libreAccessWebService listContentMetadata:books includeURLs:NO];				
+		} else {
+			[self clearBooks];
 		}
 	} else if([method compare:kSCHLibreAccessWebServiceListContentMetadata] == NSOrderedSame) {
 		[self updateBooks:[result objectForKey:kSCHLibreAccessWebServiceContentMetadataList]];
@@ -110,7 +120,7 @@
 	}	
 }
 
-- (void)updateBooks:(NSArray *)bookList
+- (void)clearBooks
 {
 	NSError *error = nil;
 	
@@ -118,6 +128,13 @@
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
 		abort();
 	}	
+}
+
+- (void)updateBooks:(NSArray *)bookList
+{
+	NSError *error = nil;
+	
+	[self clearBooks];
 	
 	for (id book in bookList) {
 		NSManagedObject *newManagedObject = [NSEntityDescription insertNewObjectForEntityForName:@"SCHContentMetadataItem" inManagedObjectContext:self.managedObjectContext];

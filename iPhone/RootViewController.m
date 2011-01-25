@@ -162,7 +162,15 @@ static NSInteger const kRootViewControllerSettingsRow = 1;
 	
 	self.bookShelfController.managedObjectContext = self.managedObjectContext;
 	
-	[self.webServiceSync update];
+	if ([self.webServiceSync update] == NO ) {
+		UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Give me a moment", @"Give me a moment")
+															 message:@"I am just requesting access. Normal service will resume shortly."
+															delegate:nil 
+												   cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+												   otherButtonTitles:nil]; 
+		[errorAlert show]; 
+		[errorAlert release];		
+	}
 }
 
 

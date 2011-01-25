@@ -126,6 +126,7 @@ static NSString * const kSCHLibreAccessWebServiceStatusMessage = @"statusmessage
 		[binding GetUserProfilesAsyncUsingParameters:request delegate:self]; 
 		
 		[request release], request = nil;
+		ret = YES;
 	}
 	
 	return(ret);	
@@ -152,6 +153,7 @@ static NSString * const kSCHLibreAccessWebServiceStatusMessage = @"statusmessage
 		[binding SaveUserProfilesAsyncUsingParameters:request delegate:self]; 
 		
 		[request release], request = nil;
+		ret = YES;
 	}
 	
 	return(ret);		
@@ -169,6 +171,7 @@ static NSString * const kSCHLibreAccessWebServiceStatusMessage = @"statusmessage
 		[binding ListUserContentAsyncUsingBody:request delegate:self]; 
 		
 		[request release], request = nil;	
+		ret = YES;
 	}
 	
 	return(ret);			
@@ -195,7 +198,8 @@ static NSString * const kSCHLibreAccessWebServiceStatusMessage = @"statusmessage
 		
 		[binding ListContentMetadataAsyncUsingBody:request delegate:self]; 
 		
-		[request release], request = nil;	
+		[request release], request = nil;
+		ret = YES;
 	}
 	
 	return(ret);				
@@ -212,7 +216,8 @@ static NSString * const kSCHLibreAccessWebServiceStatusMessage = @"statusmessage
 		
 		[binding ListUserSettingsAsyncUsingParameters:request delegate:self]; 
 		
-		[request release], request = nil;		
+		[request release], request = nil;	
+		ret = YES;
 	}
 	
 	return(ret);					
@@ -238,7 +243,8 @@ static NSString * const kSCHLibreAccessWebServiceStatusMessage = @"statusmessage
 		
 		[binding SaveUserSettingsAsyncUsingParameters:request delegate:self]; 
 		
-		[request release], request = nil;		
+		[request release], request = nil;
+		ret = YES;
 	}
 	
 	return(ret);						
@@ -270,7 +276,8 @@ static NSString * const kSCHLibreAccessWebServiceStatusMessage = @"statusmessage
 		
 		[binding ListProfileContentAnnotationsAsyncUsingParameters:request delegate:self]; 
 		
-		[request release], request = nil;		
+		[request release], request = nil;
+		ret = YES;
 	}
 	
 	return(ret);							
@@ -297,6 +304,7 @@ static NSString * const kSCHLibreAccessWebServiceStatusMessage = @"statusmessage
 		[binding SaveProfileContentAnnotationsAsyncUsingParameters:request delegate:self]; 
 		
 		[request release], request = nil;		
+		ret = YES;
 	}
 	
 	return(ret);								
@@ -322,7 +330,8 @@ static NSString * const kSCHLibreAccessWebServiceStatusMessage = @"statusmessage
 		
 		[binding SaveContentProfileAssignmentAsyncUsingParameters:request delegate:self]; 
 		
-		[request release], request = nil;			
+		[request release], request = nil;	
+		ret = YES;
 	}
 	
 	return(ret);									
@@ -348,7 +357,8 @@ static NSString * const kSCHLibreAccessWebServiceStatusMessage = @"statusmessage
 		
 		[binding SaveReadingStatisticsDetailedAsyncUsingParameters:request delegate:self]; 
 		
-		[request release], request = nil;				
+		[request release], request = nil;	
+		ret = YES;
 	}
 	
 	return(ret);										

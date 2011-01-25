@@ -36,12 +36,14 @@ static NSInteger const kSCHAuthenticationManagerLoginError = 2001;
 
 
 @property (nonatomic, retain) NSString *aToken;
+@property (nonatomic, retain) NSDate *tokenExpires;
 @property (nonatomic, readonly) BOOL isAuthenticated;
 
 
 + (SCHAuthenticationManager *)sharedAuthenticationManager;
 
-- (void)authenticateUserName:(NSString *)userName withPassword:(NSString *)password;
+- (BOOL)authenticateWithUserName:(NSString *)userName withPassword:(NSString *)password;
+- (BOOL)authenticate;
 - (BOOL)hasUsernameAndPassword;
 - (BOOL)isAuthenticated;
 

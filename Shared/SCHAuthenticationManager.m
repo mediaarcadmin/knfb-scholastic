@@ -28,6 +28,7 @@ static NSString * const kSCHAuthenticationManagerServiceName = @"Scholastic";
 @implementation SCHAuthenticationManager
 
 @synthesize aToken;
+@synthesize tokenExpires;
 
 
 #pragma mark -
@@ -80,6 +81,7 @@ static NSString * const kSCHAuthenticationManagerServiceName = @"Scholastic";
 	self = [super init];
 	if (self != nil) {
 		self.aToken = nil;
+		self.tokenExpires = nil;
 		waitingOnResponse = NO;
 		
 		scholasticWebService = [[SCHScholasticWebService alloc] init];
@@ -91,10 +93,11 @@ static NSString * const kSCHAuthenticationManagerServiceName = @"Scholastic";
 	return(self);
 }
 
-- (void)authenticateUserName:(NSString *)username withPassword:(NSString *)password
+- (BOOL)authenticateWithUserName:(NSString *)username withPassword:(NSString *)password
 {
+	BOOL ret = NO;
+	
 	if (waitingOnResponse == NO) {
-		
 		if ([[Reachability reachabilityForInternetConnection] isReachable] == NO) {
 			NSString *storedUsername = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUsername];
 			NSString *storedPassword = nil;
@@ -117,16 +120,52 @@ static NSString * const kSCHAuthenticationManagerServiceName = @"Scholastic";
 		} else {
 			[[NSUserDefaults standardUserDefaults] setObject:username forKey:kSCHAuthenticationManagerUsername];
 			[SFHFKeychainUtils storeUsername:username andPassword:password forServiceName:kSCHAuthenticationManagerServiceName updateExisting:YES error:nil];
-			self.aToken = nil;
 			
-			waitingOnResponse = YES;
-			[scholasticWebService authenticateUserName:username withPassword:password];		
+			ret = [self authenticate];
 		}
+	} else {
+		ret = YES;
+	}	
+	
+	return(ret);
+}
+
+- (BOOL)authenticate
+{
+	NSString *username = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUsername];
+	NSString *password = nil;
+	BOOL ret = NO;
+
+	if (waitingOnResponse == NO) {
+		if ([[Reachability reachabilityForInternetConnection] isReachable] == YES &&
+			username != nil &&
+			[[username stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {
+			password = [SFHFKeychainUtils getPasswordForUsername:username andServiceName:kSCHAuthenticationManagerServiceName error:nil];
+			if (password != nil &&
+				[[password stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {
+				self.aToken = nil;
+				self.tokenExpires = nil;
+				
+				waitingOnResponse = YES;
+				[scholasticWebService authenticateUserName:username withPassword:password];	
+				ret = YES;
+			}
+		}
+	} else {
+		ret = YES;
 	}
+	
+	return(ret);
 }
 
 - (NSString *)aToken
 {
+	
+	if([self.tokenExpires compare:[NSDate date]] == NSOrderedAscending) {
+		aToken = nil;
+		self.tokenExpires = nil;		
+	}
+		
 	return(aToken);
 }
 
@@ -184,6 +223,8 @@ static NSString * const kSCHAuthenticationManagerServiceName = @"Scholastic";
 		[libreAccessWebService tokenExchange:[result objectForKey:kSCHScholasticWebServicePToken] forUser:username];
 	} else if([method compare:kSCHLibreAccessWebServiceTokenExchange] == NSOrderedSame) {	
 		self.aToken = [result objectForKey:kSCHLibreAccessWebServiceAuthToken];
+		NSInteger expiresIn = MAX(0, [[result objectForKey:kSCHLibreAccessWebServiceExpiresIn] integerValue] - 1);
+		self.tokenExpires = [NSDate dateWithTimeIntervalSinceNow:expiresIn * 60];
 		waitingOnResponse = NO;
 		[self postSuccessWithOfflineMode:NO];
 	}
