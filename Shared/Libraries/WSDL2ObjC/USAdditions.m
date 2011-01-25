@@ -1,15 +1,15 @@
 //
-//  USAdditions.m
-//  WSDLParser
+//	USAdditions.m
+//	WSDLParser
 //
-//  Created by John Ogle on 9/5/08.
-//  Copyright 2008 LightSPEED Technologies. All rights reserved.
-//  Modified by Matthew Faupel on 2009-05-06 to use NSDate instead of NSCalendarDate (for iPhone compatibility).
-//  Modifications copyright (c) 2009 Micropraxis Ltd.
-//  Modified by Henri Asseily on 2009-09-04 for SOAP 1.2 faults
+//	Created by John Ogle on 9/5/08.
+//	Copyright 2008 LightSPEED Technologies. All rights reserved.
+//	Modified by Matthew Faupel on 2009-05-06 to use NSDate instead of NSCalendarDate (for iPhone compatibility).
+//	Modifications copyright (c) 2009 Micropraxis Ltd.
+//	Modified by Henri Asseily on 2009-09-04 for SOAP 1.2 faults
 //
 //
-//  NSData (MBBase64) category taken from "MiloBird" at http://www.cocoadev.com/index.pl?BaseSixtyFour
+//	NSData (MBBase64) category taken from "MiloBird" at http://www.cocoadev.com/index.pl?BaseSixtyFour
 //
 
 #import "USAdditions.h"
@@ -50,7 +50,7 @@
 	NSString *nodeName = nil;
 	if(elNSPrefix != nil && [elNSPrefix length] > 0)
 	{
-		nodeName = [NSString stringWithFormat:@"%@:%@", elNSPrefix, elName];		
+		nodeName = [NSString stringWithFormat:@"%@:%@", elNSPrefix, elName];
 	}
 	else
 	{
@@ -65,7 +65,7 @@
 + (NSString *)deserializeNode:(xmlNodePtr)cur
 {
 	xmlChar *elementText = xmlNodeListGetString(cur->doc, cur->children, 1);
-	NSString *elementString = nil;
+	NSString *elementString = @"";
 	
 	if(elementText != NULL) {
 		elementString = [NSString stringWithCString:(char*)elementText encoding:NSUTF8StringEncoding];
@@ -84,7 +84,7 @@
 	NSString *nodeName = nil;
 	if(elNSPrefix != nil && [elNSPrefix length] > 0)
 	{
-		nodeName = [NSString stringWithFormat:@"%@:%@", elNSPrefix, elName];		
+		nodeName = [NSString stringWithFormat:@"%@:%@", elNSPrefix, elName];
 	}
 	else
 	{
@@ -125,7 +125,7 @@
 
 + (NSDate *)deserializeNode:(xmlNodePtr)cur
 {
-	return [NSDate dateWithString:[NSString deserializeNode:cur]];
+	return [NSDate dateForString:[NSString deserializeNode:cur]];
 }
 
 @end
@@ -242,7 +242,7 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
 	if ([self length] == 0)
 		return @"";
 
-    char *characters = malloc((([self length] + 2) / 3) * 4);
+	char *characters = malloc((([self length] + 2) / 3) * 4);
 	if (characters == NULL)
 		return nil;
 	NSUInteger length = 0;
@@ -320,6 +320,19 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
 	return nil;
 }
 
+- (void)encodeWithCoder:(NSCoder*)coder
+{
+	[coder encodeValueOfObjCType:@encode(BOOL) at:&value];
+}
+
+- (id)initWithCoder:(NSCoder*)coder
+{
+	if (self=[super init]) {
+		[coder decodeValueOfObjCType:@encode(BOOL) at:&value];
+	}
+	return self;
+}
+
 @end
 
 @implementation SOAPFault
@@ -381,28 +394,28 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
 			}
 		}
 	}
-  
+
 	return soapFault;
 }
 
 - (NSString *)simpleFaultString
 {
-        NSString *simpleString = [faultstring stringByReplacingOccurrencesOfString: @"System.Web.Services.Protocols.SoapException: " withString: @""];
-        NSRange suffixRange = [simpleString rangeOfString: @"\n   at "];
-        
-        if (suffixRange.length > 0)
-                simpleString = [simpleString substringToIndex: suffixRange.location];
-                
-        return simpleString;
+	NSString *simpleString = [faultstring stringByReplacingOccurrencesOfString: @"System.Web.Services.Protocols.SoapException: " withString: @""];
+	NSRange suffixRange = [simpleString rangeOfString: @"\n   at "];
+
+	if (suffixRange.length > 0)
+		simpleString = [simpleString substringToIndex: suffixRange.location];
+
+	return simpleString;
 }
 
 - (void)dealloc
 {
-        [faultcode release];
-        [faultstring release];
-        [faultactor release];
-        [detail release];
-        [super dealloc];
+	[faultcode release];
+	[faultstring release];
+	[faultactor release];
+	[detail release];
+	[super dealloc];
 }
 
 @end

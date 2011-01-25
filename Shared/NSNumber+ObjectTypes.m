@@ -86,21 +86,6 @@
 	return([self intValue]);	
 }
 
-+ (NSNumber *)numberWithProductType:(SCHProductTypes)value
-{
-	return([NSNumber numberWithInt:value]);	
-}
-
-- (id)initWithProductType:(SCHProductTypes)value
-{
-	return([self initWithInt:value]);	
-}
-
-- (SCHProductTypes)productTypeValue
-{
-	return([self intValue]);	
-}
-
 + (NSNumber *)numberWithSaveAction:(SCHSaveActions)value
 {
 	return([NSNumber numberWithInt:value]);	

@@ -8,14 +8,16 @@
 
 #import "SCHSettingsViewController.h"
 
+#import "SCHLoginViewController.h"
 
 @implementation SCHSettingsViewController
 
+@synthesize loginController;
 
 #pragma mark -
 #pragma mark View lifecycle
 
-/*
+
 - (void)viewDidLoad {
     [super viewDidLoad];
 
@@ -23,9 +25,10 @@
     // self.clearsSelectionOnViewWillAppear = NO;
  
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    UIBarButtonItem *loginButton = [[UIBarButtonItem alloc] initWithTitle:@"Login" style:UIBarButtonItemStyleBordered target:self action:@selector(login)];
+    self.navigationItem.rightBarButtonItem = loginButton;
+    [loginButton release], loginButton = nil;	
 }
-*/
 
 /*
 - (void)viewWillAppear:(BOOL)animated {
@@ -54,6 +57,14 @@
     return YES;
 }
 
+#pragma mark -
+#pragma mark Login
+
+- (void)login {
+	[self.loginController canCancel:YES];
+	[self presentModalViewController:self.loginController animated:YES];		
+}
+	
 
 #pragma mark -
 #pragma mark Table view data source

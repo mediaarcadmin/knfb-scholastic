@@ -2,10 +2,10 @@
 #import "USAdditions.h"
 #import <libxml/tree.h>
 #import "USGlobals.h"
+#import <objc/runtime.h>
 @class AuthenticateSvc_processRemote;
 @class AuthenticateSvc_processRemoteResponse;
-@interface AuthenticateSvc_processRemote : NSObject {
-	
+@interface AuthenticateSvc_processRemote : NSObject <NSCoding> {
 /* elements */
 	NSString * SPSWSXML;
 /* attributes */
@@ -18,12 +18,11 @@
 - (void)deserializeAttributesFromNode:(xmlNodePtr)cur;
 - (void)deserializeElementsFromNode:(xmlNodePtr)cur;
 /* elements */
-@property (retain) NSString * SPSWSXML;
+@property (nonatomic, retain) NSString * SPSWSXML;
 /* attributes */
 - (NSDictionary *)attributes;
 @end
-@interface AuthenticateSvc_processRemoteResponse : NSObject {
-	
+@interface AuthenticateSvc_processRemoteResponse : NSObject <NSCoding> {
 /* elements */
 	NSString * return_;
 /* attributes */
@@ -36,7 +35,7 @@
 - (void)deserializeAttributesFromNode:(xmlNodePtr)cur;
 - (void)deserializeElementsFromNode:(xmlNodePtr)cur;
 /* elements */
-@property (retain) NSString * return_;
+@property (nonatomic, retain) NSString * return_;
 /* attributes */
 - (NSDictionary *)attributes;
 @end
@@ -44,75 +43,11 @@
 #import <libxml/parser.h>
 #import "xsd.h"
 #import "AuthenticateSvc.h"
-@class AuthenticateSoap11Binding;
 @class AuthenticateSoap12Binding;
 @interface AuthenticateSvc : NSObject {
 	
 }
-+ (AuthenticateSoap11Binding *)AuthenticateSoap11Binding;
 + (AuthenticateSoap12Binding *)AuthenticateSoap12Binding;
-@end
-@class AuthenticateSoap11BindingResponse;
-@class AuthenticateSoap11BindingOperation;
-@protocol AuthenticateSoap11BindingResponseDelegate <NSObject>
-- (void) operation:(AuthenticateSoap11BindingOperation *)operation completedWithResponse:(AuthenticateSoap11BindingResponse *)response;
-@end
-@interface AuthenticateSoap11Binding : NSObject <AuthenticateSoap11BindingResponseDelegate> {
-	NSURL *address;
-	NSTimeInterval defaultTimeout;
-	NSMutableArray *cookies;
-	BOOL logXMLInOut;
-	BOOL synchronousOperationComplete;
-	NSString *authUsername;
-	NSString *authPassword;
-}
-@property (copy) NSURL *address;
-@property (assign) BOOL logXMLInOut;
-@property (assign) NSTimeInterval defaultTimeout;
-@property (nonatomic, retain) NSMutableArray *cookies;
-@property (nonatomic, retain) NSString *authUsername;
-@property (nonatomic, retain) NSString *authPassword;
-- (id)initWithAddress:(NSString *)anAddress;
-- (void)sendHTTPCallUsingBody:(NSString *)body soapAction:(NSString *)soapAction forOperation:(AuthenticateSoap11BindingOperation *)operation;
-- (void)addCookie:(NSHTTPCookie *)toAdd;
-- (AuthenticateSoap11BindingResponse *)processRemoteUsingParameters:(AuthenticateSvc_processRemote *)aParameters ;
-- (void)processRemoteAsyncUsingParameters:(AuthenticateSvc_processRemote *)aParameters  delegate:(id<AuthenticateSoap11BindingResponseDelegate>)responseDelegate;
-@end
-@interface AuthenticateSoap11BindingOperation : NSOperation {
-	AuthenticateSoap11Binding *binding;
-	AuthenticateSoap11BindingResponse *response;
-	id<AuthenticateSoap11BindingResponseDelegate> delegate;
-	NSMutableData *responseData;
-	NSURLConnection *urlConnection;
-}
-@property (retain) AuthenticateSoap11Binding *binding;
-@property (readonly) AuthenticateSoap11BindingResponse *response;
-@property (nonatomic, assign) id<AuthenticateSoap11BindingResponseDelegate> delegate;
-@property (nonatomic, retain) NSMutableData *responseData;
-@property (nonatomic, retain) NSURLConnection *urlConnection;
-- (id)initWithBinding:(AuthenticateSoap11Binding *)aBinding delegate:(id<AuthenticateSoap11BindingResponseDelegate>)aDelegate;
-@end
-@interface AuthenticateSoap11Binding_processRemote : AuthenticateSoap11BindingOperation {
-	AuthenticateSvc_processRemote * parameters;
-}
-@property (retain) AuthenticateSvc_processRemote * parameters;
-- (id)initWithBinding:(AuthenticateSoap11Binding *)aBinding delegate:(id<AuthenticateSoap11BindingResponseDelegate>)aDelegate
-	parameters:(AuthenticateSvc_processRemote *)aParameters
-;
-@end
-@interface AuthenticateSoap11Binding_envelope : NSObject {
-}
-+ (AuthenticateSoap11Binding_envelope *)sharedInstance;
-- (NSString *)serializedFormUsingHeaderElements:(NSDictionary *)headerElements bodyElements:(NSDictionary *)bodyElements;
-@end
-@interface AuthenticateSoap11BindingResponse : NSObject {
-	NSArray *headers;
-	NSArray *bodyParts;
-	NSError *error;
-}
-@property (retain) NSArray *headers;
-@property (retain) NSArray *bodyParts;
-@property (retain) NSError *error;
 @end
 @class AuthenticateSoap12BindingResponse;
 @class AuthenticateSoap12BindingOperation;
@@ -121,22 +56,26 @@
 @end
 @interface AuthenticateSoap12Binding : NSObject <AuthenticateSoap12BindingResponseDelegate> {
 	NSURL *address;
-	NSTimeInterval defaultTimeout;
+	NSTimeInterval timeout;
 	NSMutableArray *cookies;
+	NSMutableDictionary *customHeaders;
 	BOOL logXMLInOut;
 	BOOL synchronousOperationComplete;
 	NSString *authUsername;
 	NSString *authPassword;
 }
-@property (copy) NSURL *address;
-@property (assign) BOOL logXMLInOut;
-@property (assign) NSTimeInterval defaultTimeout;
+@property (nonatomic, copy) NSURL *address;
+@property (nonatomic) BOOL logXMLInOut;
+@property (nonatomic) NSTimeInterval timeout;
 @property (nonatomic, retain) NSMutableArray *cookies;
+@property (nonatomic, retain) NSMutableDictionary *customHeaders;
 @property (nonatomic, retain) NSString *authUsername;
 @property (nonatomic, retain) NSString *authPassword;
++ (NSTimeInterval) defaultTimeout;
 - (id)initWithAddress:(NSString *)anAddress;
 - (void)sendHTTPCallUsingBody:(NSString *)body soapAction:(NSString *)soapAction forOperation:(AuthenticateSoap12BindingOperation *)operation;
 - (void)addCookie:(NSHTTPCookie *)toAdd;
+- (NSString *)MIMEType;
 - (AuthenticateSoap12BindingResponse *)processRemoteUsingParameters:(AuthenticateSvc_processRemote *)aParameters ;
 - (void)processRemoteAsyncUsingParameters:(AuthenticateSvc_processRemote *)aParameters  delegate:(id<AuthenticateSoap12BindingResponseDelegate>)responseDelegate;
 @end
@@ -147,8 +86,8 @@
 	NSMutableData *responseData;
 	NSURLConnection *urlConnection;
 }
-@property (retain) AuthenticateSoap12Binding *binding;
-@property (readonly) AuthenticateSoap12BindingResponse *response;
+@property (nonatomic, retain) AuthenticateSoap12Binding *binding;
+@property (nonatomic, readonly) AuthenticateSoap12BindingResponse *response;
 @property (nonatomic, assign) id<AuthenticateSoap12BindingResponseDelegate> delegate;
 @property (nonatomic, retain) NSMutableData *responseData;
 @property (nonatomic, retain) NSURLConnection *urlConnection;
@@ -157,7 +96,7 @@
 @interface AuthenticateSoap12Binding_processRemote : AuthenticateSoap12BindingOperation {
 	AuthenticateSvc_processRemote * parameters;
 }
-@property (retain) AuthenticateSvc_processRemote * parameters;
+@property (nonatomic, retain) AuthenticateSvc_processRemote * parameters;
 - (id)initWithBinding:(AuthenticateSoap12Binding *)aBinding delegate:(id<AuthenticateSoap12BindingResponseDelegate>)aDelegate
 	parameters:(AuthenticateSvc_processRemote *)aParameters
 ;
@@ -165,14 +104,14 @@
 @interface AuthenticateSoap12Binding_envelope : NSObject {
 }
 + (AuthenticateSoap12Binding_envelope *)sharedInstance;
-- (NSString *)serializedFormUsingHeaderElements:(NSDictionary *)headerElements bodyElements:(NSDictionary *)bodyElements;
+- (NSString *)serializedFormUsingHeaderElements:(NSDictionary *)headerElements bodyElements:(NSDictionary *)bodyElements bodyKeys:(NSArray *)bodyKeys;
 @end
 @interface AuthenticateSoap12BindingResponse : NSObject {
 	NSArray *headers;
 	NSArray *bodyParts;
 	NSError *error;
 }
-@property (retain) NSArray *headers;
-@property (retain) NSArray *bodyParts;
-@property (retain) NSError *error;
+@property (nonatomic, retain) NSArray *headers;
+@property (nonatomic, retain) NSArray *bodyParts;
+@property (nonatomic, retain) NSError *error;
 @end

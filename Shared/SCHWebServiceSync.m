@@ -8,8 +8,9 @@
 
 #import "SCHWebServiceSync.h"
 
-#import "SCHScholasticWebService.h"
 #import "SCHLibreAccessWebService.h"
+#import "NSManagedObjectContext+Extensions.h"
+
 
 @interface SCHWebServiceSync ()
 
@@ -21,21 +22,13 @@
 
 @implementation SCHWebServiceSync
 
-@synthesize scholasticWebService;
 @synthesize libreAccessWebService;
-@synthesize aToken;
 @synthesize managedObjectContext;
 
 - (id)init
 {
 	self = [super init];
 	if (self != nil) {
-		self.aToken = nil;
-		
-		self.scholasticWebService = [[SCHScholasticWebService alloc] init];
-		self.scholasticWebService.delegate = self;
-		[self.scholasticWebService release];
-		
 		self.libreAccessWebService = [[SCHLibreAccessWebService alloc] init];	
 		self. libreAccessWebService.delegate = self;
 		[self.libreAccessWebService release];
@@ -44,10 +37,8 @@
 }
 
 - (void)dealloc
-{
-	self.scholasticWebService = nil;
+{	
 	self.libreAccessWebService = nil;
-	self.aToken = nil;
 	self.managedObjectContext = nil;
 	
 	[super dealloc];
@@ -55,26 +46,22 @@
 
 - (void)update
 {
-	[self.scholasticWebService authenticateUserName:@"eparent15" withPassword:@"pass"];	
+	[self.libreAccessWebService getUserProfiles];
+	[self.libreAccessWebService listUserContent];		
+	[self.libreAccessWebService listUserSettings];	
 }
 
 - (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result
 {	
 	NSLog(@"%@\n%@", method, result);
 	
-	if([method compare:kSCHScholasticWebServiceProcessRemote] == NSOrderedSame) {	
-		[self.libreAccessWebService tokenExchange:[result objectForKey:kSCHScholasticWebServicePToken] forUser:@"eparent15"];
-	} else if([method compare:kSCHLibreAccessWebServiceTokenExchange] == NSOrderedSame) {	
-		if (self.aToken == nil) {
-			self.aToken = [result objectForKey:kSCHLibreAccessWebServiceAuthToken];
-		}
-		[self.libreAccessWebService getUserProfiles:self.aToken];
-		[self.libreAccessWebService listUserContent:self.aToken];		
-		[self.libreAccessWebService listUserSettings:self.aToken];				
-	} else if([method compare:kSCHLibreAccessWebServiceGetUserProfiles] == NSOrderedSame) {
+	if([method compare:kSCHLibreAccessWebServiceGetUserProfiles] == NSOrderedSame) {
 		[self updateProfiles:[result objectForKey:kSCHLibreAccessWebServiceProfileList]];
 	} else if([method compare:kSCHLibreAccessWebServiceListUserContent] == NSOrderedSame) {
-		[self.libreAccessWebService listContentMetadata:self.aToken includeURLs:NO forBooks:[result objectForKey:kSCHLibreAccessWebServiceUserContentList]];				
+		NSArray *books = [result objectForKey:kSCHLibreAccessWebServiceUserContentList];
+		if ([books count] > 0) {
+			[self.libreAccessWebService listContentMetadata:books includeURLs:NO];				
+		}
 	} else if([method compare:kSCHLibreAccessWebServiceListContentMetadata] == NSOrderedSame) {
 		[self updateBooks:[result objectForKey:kSCHLibreAccessWebServiceContentMetadataList]];
 	} else if([method compare:kSCHLibreAccessWebServiceListUserSettings] == NSOrderedSame) {
@@ -90,19 +77,11 @@
 - (void)updateProfiles:(NSArray *)profileList
 {	
 	NSError *error = nil;
-	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
 	
-	[fetchRequest setEntity:[NSEntityDescription entityForName:@"SCHProfileItem" inManagedObjectContext:self.managedObjectContext]];	
-	NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
-	if (!results) {
+	if (![self.managedObjectContext emptyEntity:@"SCHProfileItem" error:&error]) {
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
 		abort();
-	} else {
-		for (NSManagedObject *managedObject in results) {
-			[self.managedObjectContext deleteObject:managedObject];
-		}
-	}
-	[fetchRequest release], fetchRequest = nil;
+	}	
 	
 	// TEST THE SAVE
 //	id profsave = [profileList objectAtIndex:1];
@@ -134,19 +113,11 @@
 - (void)updateBooks:(NSArray *)bookList
 {
 	NSError *error = nil;
-	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
 	
-	[fetchRequest setEntity:[NSEntityDescription entityForName:@"SCHContentMetadataItem" inManagedObjectContext:self.managedObjectContext]];	
-	NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
-	if (!results) {
+	if (![self.managedObjectContext emptyEntity:@"SCHContentMetadataItem" error:&error]) {
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
 		abort();
-	} else {
-		for (NSManagedObject *managedObject in results) {
-			[self.managedObjectContext deleteObject:managedObject];
-		}
-	}
-	[fetchRequest release], fetchRequest = nil;
+	}	
 	
 	for (id book in bookList) {
 		NSManagedObject *newManagedObject = [NSEntityDescription insertNewObjectForEntityForName:@"SCHContentMetadataItem" inManagedObjectContext:self.managedObjectContext];
@@ -161,22 +132,15 @@
 		abort();
 	}	
 }
+
 - (void)updateUserSettings:(NSArray *)settingsList
 {
 	NSError *error = nil;
-	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-	
-	[fetchRequest setEntity:[NSEntityDescription entityForName:@"SCHUserSettings" inManagedObjectContext:self.managedObjectContext]];	
-	NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
-	if (!results) {
+
+	if (![self.managedObjectContext emptyEntity:@"SCHUserSettings" error:&error]) {
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
 		abort();
-	} else {
-		for (NSManagedObject *managedObject in results) {
-			[self.managedObjectContext deleteObject:managedObject];
-		}
-	}
-	[fetchRequest release], fetchRequest = nil;
+	}	
 	
 	for (id setting in settingsList) {
 		NSManagedObject *newManagedObject = [NSEntityDescription insertNewObjectForEntityForName:@"SCHUserSettings" inManagedObjectContext:self.managedObjectContext];

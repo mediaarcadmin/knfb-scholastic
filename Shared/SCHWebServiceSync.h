@@ -11,17 +11,14 @@
 
 #import "BITAPIProxyDelegate.h"
 
-@class SCHScholasticWebService;
 @class SCHLibreAccessWebService;
 
 @interface SCHWebServiceSync : NSObject <BITAPIProxyDelegate> {
 	
 }
 
-@property (retain, nonatomic) SCHScholasticWebService *scholasticWebService;
 @property (retain, nonatomic) SCHLibreAccessWebService *libreAccessWebService;	
 
-@property (retain, nonatomic) NSString *aToken;
 @property (retain, nonatomic) NSManagedObjectContext *managedObjectContext;	
 
 - (void)update;

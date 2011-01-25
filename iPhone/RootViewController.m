@@ -11,6 +11,8 @@
 #import "SCHSettingsViewController.h"
 #import "SCHBookShelfViewController.h"
 #import "SCHWebServiceSync.h"
+#import "SCHLoginViewController.h"
+#import "SCHAuthenticationManager.h"
 
 // Cell Icons 
 static NSString * const kRootViewControllerProfileIcon = @"Profile.png";
@@ -32,6 +34,7 @@ static NSInteger const kRootViewControllerSettingsRow = 1;
 @synthesize headerView;
 @synthesize settingsController;
 @synthesize bookShelfController;
+@synthesize loginController;
 @synthesize webServiceSync;
 @synthesize fetchedResultsController=fetchedResultsController_, managedObjectContext=managedObjectContext_;
 
@@ -54,7 +57,7 @@ static NSInteger const kRootViewControllerSettingsRow = 1;
     // Set up the edit and add buttons.
     UIBarButtonItem *refreshButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refreshTable)];
     self.navigationItem.rightBarButtonItem = refreshButton;
-    [refreshButton release];
+    [refreshButton release], refreshButton = nil;
 	
 	// Setup the table view header
 	self.tableView.tableHeaderView = self.headerView;
@@ -76,11 +79,17 @@ static NSInteger const kRootViewControllerSettingsRow = 1;
 }
 
 
-/*
+
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+	
+	SCHAuthenticationManager *authenticationManager = [SCHAuthenticationManager sharedAuthenticationManager];
+	
+	if ([authenticationManager hasUsernameAndPassword] == NO) {
+		[self presentModalViewController:self.loginController animated:NO];	
+	}
 }
-*/
+
 /*
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
@@ -152,12 +161,6 @@ static NSInteger const kRootViewControllerSettingsRow = 1;
 	
 	self.bookShelfController.managedObjectContext = self.managedObjectContext;
 	
-	for(NSManagedObject *managedObject in self.fetchedResultsController.fetchedObjects)
-		[self.managedObjectContext deleteObject:managedObject];
-
-	for(NSManagedObject *managedObject in self.bookShelfController.fetchedResultsController.fetchedObjects)
-		[self.managedObjectContext deleteObject:managedObject];
-
 	[self.webServiceSync update];
 }
 
@@ -192,7 +195,6 @@ static NSInteger const kRootViewControllerSettingsRow = 1;
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
-		cell.textLabel.textColor = [UIColor whiteColor];
 		cell.textLabel.font = [UIFont systemFontOfSize:14];
     }
     

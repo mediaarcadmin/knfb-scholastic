@@ -8,9 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
+@class SCHLoginViewController;
 
 @interface SCHSettingsViewController : UITableViewController {
 
 }
+
+@property (nonatomic, retain) IBOutlet SCHLoginViewController *loginController;
 
 @end

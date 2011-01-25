@@ -91,9 +91,7 @@
     if (cell == nil) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier] autorelease];
 		cell.textLabel.font = [UIFont systemFontOfSize:14.0];
-		cell.textLabel.textColor = [UIColor whiteColor];
 		cell.detailTextLabel.font = [UIFont systemFontOfSize:12.0];
-		cell.detailTextLabel.textColor = [UIColor whiteColor];
     }
     
     // Configure the cell...
