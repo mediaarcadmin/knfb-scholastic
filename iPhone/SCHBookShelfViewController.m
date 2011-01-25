@@ -17,7 +17,7 @@
 @implementation SCHBookShelfViewController
 
 @synthesize fetchedResultsController=fetchedResultsController_, managedObjectContext=managedObjectContext_;
-
+@synthesize profileID;
 
 #pragma mark -
 #pragma mark View lifecycle

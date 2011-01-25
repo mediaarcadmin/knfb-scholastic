@@ -272,13 +272,15 @@ static NSInteger const kRootViewControllerSettingsRow = 1;
 	
 	if (indexPath.row == (managedObjectEnd + kRootViewControllerLibraryRow)) {
 		// controller to view book shelf with all books
+		self.bookShelfController.profileID = nil;
 		self.bookShelfController.managedObjectContext = self.managedObjectContext;
 		[self.navigationController pushViewController:self.bookShelfController animated:YES];		
 	} else if (indexPath.row == (managedObjectEnd + kRootViewControllerLibraryRow + kRootViewControllerSettingsRow)) {
 		[self.navigationController pushViewController:self.settingsController animated:YES];
 	} else {
-//		NSManagedObject *selectedObject = [[self fetchedResultsController] objectAtIndexPath:indexPath];
+		NSManagedObject *selectedObject = [[self fetchedResultsController] objectAtIndexPath:indexPath];
 		// controller to view book shelf with books filtered to profile
+		self.bookShelfController.profileID = [selectedObject valueForKey:@"ID"];
 		self.bookShelfController.managedObjectContext = self.managedObjectContext;
 		[self.navigationController pushViewController:self.bookShelfController animated:YES];		
 	}	
