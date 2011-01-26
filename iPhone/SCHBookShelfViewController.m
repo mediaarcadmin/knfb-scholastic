@@ -7,10 +7,14 @@
 //
 
 #import "SCHBookShelfViewController.h"
+#import "BWKTestPageViewController.h"
+#import "BWKReadingOptionsView.h"
 
 
 @interface SCHBookShelfViewController ()
+#ifndef LOCALDEBUG
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath;
+#endif
 @end
 
 
@@ -19,17 +23,39 @@
 @synthesize fetchedResultsController=fetchedResultsController_, managedObjectContext=managedObjectContext_;
 @synthesize profileID;
 
+#ifdef LOCALDEBUG
+@synthesize xpsFiles;
+#endif
+
 #pragma mark -
 #pragma mark View lifecycle
 
-/*
 - (void)viewDidLoad {
     [super viewDidLoad];
-
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+	
+#ifdef LOCALDEBUG
+	NSError *error = nil;
+	
+	NSString *bundleRoot = [[NSBundle mainBundle] bundlePath];
+	NSArray *dirContents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:bundleRoot error:&error];
+	
+	if (error) {
+		NSLog(@"Error: %@", [error localizedDescription]);
+	}
+	
+	NSArray *xpsContents = [dirContents filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"self ENDSWITH '.xps'"]];
+	
+	NSMutableArray *trimmedXpsContents = [[NSMutableArray alloc] init];
+	for (NSString *item in xpsContents) {
+		[trimmedXpsContents addObject:[item stringByDeletingPathExtension]];
+	}
+	
+	self.xpsFiles = [NSArray arrayWithArray:trimmedXpsContents];
+	[trimmedXpsContents release];
+	
+	self.title = @"Bookshelf (Local)";
+#endif
 }
-*/
 
 /*
 - (void)viewWillAppear:(BOOL)animated {
@@ -58,6 +84,70 @@
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 */
+
+#ifdef LOCALDEBUG
+
+#pragma mark -
+#pragma mark Local Files Table View Methods
+#pragma mark UITableViewDataSource methods
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+	return [self.xpsFiles count];
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	static NSString *cellID = @"bookShelfViewCell";
+	
+	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
+	
+	if (!cell) {
+		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellID] autorelease];
+		cell.textLabel.font = [UIFont systemFontOfSize:14.0];
+		cell.detailTextLabel.font = [UIFont systemFontOfSize:12.0];
+	}
+	
+	cell.textLabel.text = [self.xpsFiles objectAtIndex:indexPath.row];
+	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+	
+	NSString *xpsPath = [[NSBundle mainBundle] pathForResource:[self.xpsFiles objectAtIndex:indexPath.row] ofType:@"xps"];
+	BWKXPSProvider *provider = [[BWKXPSProvider alloc] initWithPath:xpsPath];
+	provider.title = [self.xpsFiles objectAtIndex:indexPath.row];
+	cell.imageView.image = [provider coverThumbForList];
+	[provider release];
+	
+	return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	return 88.0f;
+}
+
+#pragma mark UITableViewDelegate methods
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	
+	BWKTestPageViewController *pageView = [[BWKTestPageViewController alloc] initWithNibName:nil bundle:nil];
+	pageView.xpsPath = [[NSBundle mainBundle] pathForResource:[self.xpsFiles objectAtIndex:indexPath.row] ofType:@"xps"];
+	
+	BWKReadingOptionsView *optionsView = [[BWKReadingOptionsView alloc] initWithNibName:nil bundle:nil];
+	optionsView.pageViewController = pageView;
+	
+	[self.navigationController pushViewController:optionsView animated:YES];
+	[optionsView release];
+	[pageView release];
+	
+}
+
+#else 
+
+#pragma mark -
+#pragma mark Core Data Table View Methods
+
+
 
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {	
 	NSManagedObject *managedObject = [self.fetchedResultsController objectAtIndexPath:indexPath];
@@ -101,46 +191,6 @@
 }
 
 
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source.
-        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
-    }   
-}
-*/
-
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
-
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-
 #pragma mark -
 #pragma mark Table view delegate
 
@@ -155,9 +205,12 @@
     */
 }
 
+#endif
 
 #pragma mark -
 #pragma mark Fetched results controller
+
+#ifndef LOCALDEBUG
 
 - (NSFetchedResultsController *)fetchedResultsController {
     
@@ -265,6 +318,7 @@
     [self.tableView endUpdates];
 }
 
+#endif
 
 /*
  // Implementing the above methods to update the table view in response to individual changes may have performance implications if a large number of changes are made simultaneously. If this proves to be an issue, you can instead just implement controllerDidChangeContent: which notifies the delegate that all section and object changes have been processed. 
@@ -289,6 +343,9 @@
 - (void)viewDidUnload {
     // Relinquish ownership of anything that can be recreated in viewDidLoad or on demand.
     // For example: self.myOutlet = nil;
+#ifdef LOCALDEBUG
+	self.xpsFiles = nil;
+#endif
 }
 
 
@@ -296,6 +353,9 @@
 	
     [fetchedResultsController_ release];
     [managedObjectContext_ release];	
+#ifdef LOCALDEBUG
+	self.xpsFiles = nil;
+#endif
     [super dealloc];
 }
 
