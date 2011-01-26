@@ -20,4 +20,9 @@
 @property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, retain) NSNumber *profileID;
 
+#ifdef LOCALDEBUG
+@property (nonatomic, retain) NSArray *xpsFiles;
+#endif
+
+
 @end

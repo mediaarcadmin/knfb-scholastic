@@ -68,6 +68,101 @@
 		52EF553E12E9EB8500E374F7 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52EF553D12E9EB8500E374F7 /* Security.framework */; };
 		52EF570A12ED977C00E374F7 /* NSManagedObjectContext+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF570912ED977C00E374F7 /* NSManagedObjectContext+Extensions.m */; };
 		52EF579712EDBE6E00E374F7 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF579612EDBE6E00E374F7 /* SFHFKeychainUtils.m */; };
+		F8509E7412F061FE00197EB5 /* libXpsSDKipad.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F8509E7212F061FE00197EB5 /* libXpsSDKipad.a */; };
+		F8509E9C12F0621E00197EB5 /* BlioTimeOrderedCache.m in Sources */ = {isa = PBXBuildFile; fileRef = F8509E8C12F0621E00197EB5 /* BlioTimeOrderedCache.m */; };
+		F8509E9D12F0621E00197EB5 /* BWKXPSProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = F8509E8E12F0621E00197EB5 /* BWKXPSProvider.m */; };
+		F8509E9E12F0621E00197EB5 /* BWKXPSBook.m in Sources */ = {isa = PBXBuildFile; fileRef = F8509E9012F0621E00197EB5 /* BWKXPSBook.m */; };
+		F8509E9F12F0621E00197EB5 /* BWKTestPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F8509E9312F0621E00197EB5 /* BWKTestPageViewController.m */; };
+		F8509EA012F0621E00197EB5 /* BWKTestPageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8509E9412F0621E00197EB5 /* BWKTestPageViewController.xib */; };
+		F8509EA112F0621E00197EB5 /* BWKReadingOptionsView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8509E9712F0621E00197EB5 /* BWKReadingOptionsView.m */; };
+		F8509EA212F0621E00197EB5 /* BWKReadingOptionsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8509E9812F0621E00197EB5 /* BWKReadingOptionsView.xib */; };
+		F8509EA312F0621E00197EB5 /* BWKScrubberView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8509E9B12F0621E00197EB5 /* BWKScrubberView.m */; };
+		F8509EB812F0625100197EB5 /* libstdc++.6.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F8509EB712F0625100197EB5 /* libstdc++.6.dylib */; };
+		F8509EF612F063C900197EB5 /* MainWindow_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow_iPad.xib */; };
+		F8509EF712F063C900197EB5 /* MainWindow_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2860E389111B897F00E27156 /* MainWindow_iPhone.xib */; };
+		F8509EF812F063C900197EB5 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 528A2CD212CCDD9E0053A343 /* Settings.bundle */; };
+		F8509EF912F063C900197EB5 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 528A2CDA12CCDE070053A343 /* Localizable.strings */; };
+		F8509EFA12F063C900197EB5 /* ReleaseNotes.tmReleaseNotes in Resources */ = {isa = PBXBuildFile; fileRef = 528A2CF712CCEAA50053A343 /* ReleaseNotes.tmReleaseNotes */; };
+		F8509EFB12F063C900197EB5 /* RootViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 528A2D6112CDE3B10053A343 /* RootViewController.xib */; };
+		F8509EFC12F063C900197EB5 /* Profile.png in Resources */ = {isa = PBXBuildFile; fileRef = 529384F812DEF6F800045B44 /* Profile.png */; };
+		F8509EFD12F063C900197EB5 /* ProfileLocked.png in Resources */ = {isa = PBXBuildFile; fileRef = 529384FA12DEF73A00045B44 /* ProfileLocked.png */; };
+		F8509EFE12F063C900197EB5 /* Library.png in Resources */ = {isa = PBXBuildFile; fileRef = 529384FC12DEF8EF00045B44 /* Library.png */; };
+		F8509EFF12F063C900197EB5 /* Settings.png in Resources */ = {isa = PBXBuildFile; fileRef = 529384FE12DEF93900045B44 /* Settings.png */; };
+		F8509F0012F063C900197EB5 /* SCHSettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 529385B412DF231800045B44 /* SCHSettingsViewController.xib */; };
+		F8509F0112F063C900197EB5 /* SCHBookShelfViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5293883212E03CD000045B44 /* SCHBookShelfViewController.xib */; };
+		F8509F0212F063C900197EB5 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 52938B3812E08FC400045B44 /* Icon.png */; };
+		F8509F0312F063C900197EB5 /* SCHContentMetadataItem+Extensions.m in Resources */ = {isa = PBXBuildFile; fileRef = 52D6124212E44CEC0033DA92 /* SCHContentMetadataItem+Extensions.m */; };
+		F8509F0412F063C900197EB5 /* SCHLoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52EF4E5E12E6E01C00E374F7 /* SCHLoginViewController.xib */; };
+		F8509F0512F063C900197EB5 /* Clifford.xps in Resources */ = {isa = PBXBuildFile; fileRef = F8509E7612F0620D00197EB5 /* Clifford.xps */; };
+		F8509F0612F063C900197EB5 /* Goosebumps.xps in Resources */ = {isa = PBXBuildFile; fileRef = F8509E7712F0620D00197EB5 /* Goosebumps.xps */; };
+		F8509F0712F063C900197EB5 /* LonelyHeartsClub.xps in Resources */ = {isa = PBXBuildFile; fileRef = F8509E7812F0620E00197EB5 /* LonelyHeartsClub.xps */; };
+		F8509F0812F063C900197EB5 /* MazeOfBones.xps in Resources */ = {isa = PBXBuildFile; fileRef = F8509E7912F0620E00197EB5 /* MazeOfBones.xps */; };
+		F8509F0912F063C900197EB5 /* OldLady.xps in Resources */ = {isa = PBXBuildFile; fileRef = F8509E7A12F0620E00197EB5 /* OldLady.xps */; };
+		F8509F0A12F063C900197EB5 /* Penguins.xps in Resources */ = {isa = PBXBuildFile; fileRef = F8509E7B12F0620F00197EB5 /* Penguins.xps */; };
+		F8509F0B12F063C900197EB5 /* Shiver.xps in Resources */ = {isa = PBXBuildFile; fileRef = F8509E7C12F0620F00197EB5 /* Shiver.xps */; };
+		F8509F0C12F063C900197EB5 /* TooManyToys.xps in Resources */ = {isa = PBXBuildFile; fileRef = F8509E7D12F0620F00197EB5 /* TooManyToys.xps */; };
+		F8509F0D12F063C900197EB5 /* Cars.xps in Resources */ = {isa = PBXBuildFile; fileRef = F8509E7E12F0620F00197EB5 /* Cars.xps */; };
+		F8509F0E12F063C900197EB5 /* Cook Yourself Thin.xps in Resources */ = {isa = PBXBuildFile; fileRef = F8509E7F12F0621000197EB5 /* Cook Yourself Thin.xps */; };
+		F8509F0F12F063C900197EB5 /* BWKTestPageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8509E9412F0621E00197EB5 /* BWKTestPageViewController.xib */; };
+		F8509F1012F063C900197EB5 /* BWKReadingOptionsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8509E9812F0621E00197EB5 /* BWKReadingOptionsView.xib */; };
+		F8509F1212F063C900197EB5 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
+		F8509F1312F063C900197EB5 /* AppDelegate_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* AppDelegate_iPad.m */; };
+		F8509F1412F063C900197EB5 /* AppDelegate_Shared.m in Sources */ = {isa = PBXBuildFile; fileRef = 28EEC04A1118E28000187D67 /* AppDelegate_Shared.m */; };
+		F8509F1512F063C900197EB5 /* Scholastic.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2819307C112F81BE00ECF9B4 /* Scholastic.xcdatamodeld */; };
+		F8509F1612F063C900197EB5 /* AppDelegate_iPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 2860E388111B897F00E27156 /* AppDelegate_iPhone.m */; };
+		F8509F1712F063C900197EB5 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 528A2D5F12CDE39C0053A343 /* RootViewController.m */; };
+		F8509F1812F063C900197EB5 /* SCHContentMetadataItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5250C4AD12DE078000542055 /* SCHContentMetadataItem.m */; };
+		F8509F1912F063C900197EB5 /* SCHProfileItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5250C4AF12DE078000542055 /* SCHProfileItem.m */; };
+		F8509F1A12F063C900197EB5 /* SCHSyncEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = 5250C4B112DE078000542055 /* SCHSyncEntity.m */; };
+		F8509F1B12F063C900197EB5 /* SCHSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 529385B312DF231800045B44 /* SCHSettingsViewController.m */; };
+		F8509F1C12F063C900197EB5 /* AuthenticateSvc.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293868F12DF3A3300045B44 /* AuthenticateSvc.m */; };
+		F8509F1D12F063C900197EB5 /* NSDate+ISO8601Parsing.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293869312DF3A3300045B44 /* NSDate+ISO8601Parsing.m */; };
+		F8509F1E12F063C900197EB5 /* NSDate+ISO8601Unparsing.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293869512DF3A3300045B44 /* NSDate+ISO8601Unparsing.m */; };
+		F8509F1F12F063C900197EB5 /* USAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293869712DF3A3300045B44 /* USAdditions.m */; };
+		F8509F2012F063C900197EB5 /* USGlobals.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293869912DF3A3300045B44 /* USGlobals.m */; };
+		F8509F2112F063C900197EB5 /* xsd.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293869B12DF3A3300045B44 /* xsd.m */; };
+		F8509F2212F063C900197EB5 /* CXMLDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 529386A512DF3A3F00045B44 /* CXMLDocument.m */; };
+		F8509F2312F063C900197EB5 /* CXMLDocument_PrivateExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 529386A712DF3A3F00045B44 /* CXMLDocument_PrivateExtensions.m */; };
+		F8509F2412F063C900197EB5 /* CXMLElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 529386A912DF3A3F00045B44 /* CXMLElement.m */; };
+		F8509F2512F063C900197EB5 /* CXMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 529386AB12DF3A3F00045B44 /* CXMLNode.m */; };
+		F8509F2612F063C900197EB5 /* CXMLNode_PrivateExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 529386AD12DF3A3F00045B44 /* CXMLNode_PrivateExtensions.m */; };
+		F8509F2712F063C900197EB5 /* CXMLNode_XPathExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 529386AF12DF3A3F00045B44 /* CXMLNode_XPathExtensions.m */; };
+		F8509F2812F063C900197EB5 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 529386B912DF3A4900045B44 /* Reachability.m */; };
+		F8509F2912F063C900197EB5 /* BITSyncProcess.m in Sources */ = {isa = PBXBuildFile; fileRef = 529386FC12DF3ED800045B44 /* BITSyncProcess.m */; };
+		F8509F2A12F063C900197EB5 /* BITAPIProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293870112DF3EDF00045B44 /* BITAPIProxy.m */; };
+		F8509F2B12F063C900197EB5 /* BITSOAPProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293870512DF3EDF00045B44 /* BITSOAPProxy.m */; };
+		F8509F2C12F063C900197EB5 /* SCHLibreAccessWebService.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293872C12DF43CB00045B44 /* SCHLibreAccessWebService.m */; };
+		F8509F2D12F063C900197EB5 /* SCHScholasticWebService.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293872F12DF43D200045B44 /* SCHScholasticWebService.m */; };
+		F8509F2E12F063C900197EB5 /* SCHWebServiceSync.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293877E12DF515400045B44 /* SCHWebServiceSync.m */; };
+		F8509F2F12F063C900197EB5 /* SCHBookShelfViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293883112E03CD000045B44 /* SCHBookShelfViewController.m */; };
+		F8509F3012F063C900197EB5 /* SCHProfileItem+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D6122112E44B0F0033DA92 /* SCHProfileItem+Extensions.m */; };
+		F8509F3112F063C900197EB5 /* SCHSyncEntity+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D6124E12E44D760033DA92 /* SCHSyncEntity+Extensions.m */; };
+		F8509F3212F063C900197EB5 /* NSNumber+ObjectTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D612B712E4650B0033DA92 /* NSNumber+ObjectTypes.m */; };
+		F8509F3312F063C900197EB5 /* SCHUserSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 529C991612E5C72C008FBC66 /* SCHUserSettings.m */; };
+		F8509F3412F063C900197EB5 /* SCHLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF4E5D12E6E01C00E374F7 /* SCHLoginViewController.m */; };
+		F8509F3512F063C900197EB5 /* LibreAccessServiceSvc.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF508612E739E900E374F7 /* LibreAccessServiceSvc.m */; };
+		F8509F3612F063C900197EB5 /* SCHAuthenticationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF543F12E9A5D400E374F7 /* SCHAuthenticationManager.m */; };
+		F8509F3712F063C900197EB5 /* NSManagedObjectContext+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF570912ED977C00E374F7 /* NSManagedObjectContext+Extensions.m */; };
+		F8509F3812F063C900197EB5 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF579612EDBE6E00E374F7 /* SFHFKeychainUtils.m */; };
+		F8509F3912F063C900197EB5 /* BlioTimeOrderedCache.m in Sources */ = {isa = PBXBuildFile; fileRef = F8509E8C12F0621E00197EB5 /* BlioTimeOrderedCache.m */; };
+		F8509F3A12F063C900197EB5 /* BWKXPSProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = F8509E8E12F0621E00197EB5 /* BWKXPSProvider.m */; };
+		F8509F3B12F063C900197EB5 /* BWKXPSBook.m in Sources */ = {isa = PBXBuildFile; fileRef = F8509E9012F0621E00197EB5 /* BWKXPSBook.m */; };
+		F8509F3C12F063C900197EB5 /* BWKTestPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F8509E9312F0621E00197EB5 /* BWKTestPageViewController.m */; };
+		F8509F3D12F063C900197EB5 /* BWKReadingOptionsView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8509E9712F0621E00197EB5 /* BWKReadingOptionsView.m */; };
+		F8509F3E12F063C900197EB5 /* BWKScrubberView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8509E9B12F0621E00197EB5 /* BWKScrubberView.m */; };
+		F8509F4012F063C900197EB5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
+		F8509F4112F063C900197EB5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
+		F8509F4212F063C900197EB5 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
+		F8509F4312F063C900197EB5 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28EEBFDC1118E19E00187D67 /* CoreData.framework */; };
+		F8509F4412F063C900197EB5 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 529386C212DF3A8900045B44 /* CFNetwork.framework */; };
+		F8509F4512F063C900197EB5 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 529386C412DF3A9000045B44 /* SystemConfiguration.framework */; };
+		F8509F4612F063C900197EB5 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52EF553D12E9EB8500E374F7 /* Security.framework */; };
+		F8509F4712F063C900197EB5 /* libXpsSDKipad.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F8509E7212F061FE00197EB5 /* libXpsSDKipad.a */; };
+		F8509F4812F063C900197EB5 /* libstdc++.6.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F8509EB712F0625100197EB5 /* libstdc++.6.dylib */; };
+		F8509F8212F0653700197EB5 /* thumbImage.png in Resources */ = {isa = PBXBuildFile; fileRef = F8509F8012F0653700197EB5 /* thumbImage.png */; };
+		F8509F8312F0653700197EB5 /* booktexture-nocover.png in Resources */ = {isa = PBXBuildFile; fileRef = F8509F8112F0653700197EB5 /* booktexture-nocover.png */; };
+		F8509F8F12F0654A00197EB5 /* booktexture-nocover.png in Resources */ = {isa = PBXBuildFile; fileRef = F8509F8112F0653700197EB5 /* booktexture-nocover.png */; };
+		F8509F9012F0654B00197EB5 /* thumbImage.png in Resources */ = {isa = PBXBuildFile; fileRef = F8509F8012F0653700197EB5 /* thumbImage.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -179,6 +274,36 @@
 		52EF579512EDBE6E00E374F7 /* SFHFKeychainUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFHFKeychainUtils.h; sourceTree = "<group>"; };
 		52EF579612EDBE6E00E374F7 /* SFHFKeychainUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFHFKeychainUtils.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Scholastic-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Scholastic-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
+		F8509E7212F061FE00197EB5 /* libXpsSDKipad.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libXpsSDKipad.a; sourceTree = "<group>"; };
+		F8509E7312F061FE00197EB5 /* XpsSdk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XpsSdk.h; sourceTree = "<group>"; };
+		F8509E7612F0620D00197EB5 /* Clifford.xps */ = {isa = PBXFileReference; lastKnownFileType = file; path = Clifford.xps; sourceTree = "<group>"; };
+		F8509E7712F0620D00197EB5 /* Goosebumps.xps */ = {isa = PBXFileReference; lastKnownFileType = file; path = Goosebumps.xps; sourceTree = "<group>"; };
+		F8509E7812F0620E00197EB5 /* LonelyHeartsClub.xps */ = {isa = PBXFileReference; lastKnownFileType = file; path = LonelyHeartsClub.xps; sourceTree = "<group>"; };
+		F8509E7912F0620E00197EB5 /* MazeOfBones.xps */ = {isa = PBXFileReference; lastKnownFileType = file; path = MazeOfBones.xps; sourceTree = "<group>"; };
+		F8509E7A12F0620E00197EB5 /* OldLady.xps */ = {isa = PBXFileReference; lastKnownFileType = file; path = OldLady.xps; sourceTree = "<group>"; };
+		F8509E7B12F0620F00197EB5 /* Penguins.xps */ = {isa = PBXFileReference; lastKnownFileType = file; path = Penguins.xps; sourceTree = "<group>"; };
+		F8509E7C12F0620F00197EB5 /* Shiver.xps */ = {isa = PBXFileReference; lastKnownFileType = file; path = Shiver.xps; sourceTree = "<group>"; };
+		F8509E7D12F0620F00197EB5 /* TooManyToys.xps */ = {isa = PBXFileReference; lastKnownFileType = file; path = TooManyToys.xps; sourceTree = "<group>"; };
+		F8509E7E12F0620F00197EB5 /* Cars.xps */ = {isa = PBXFileReference; lastKnownFileType = file; path = Cars.xps; sourceTree = "<group>"; };
+		F8509E7F12F0621000197EB5 /* Cook Yourself Thin.xps */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Cook Yourself Thin.xps"; sourceTree = "<group>"; };
+		F8509E8B12F0621E00197EB5 /* BlioTimeOrderedCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlioTimeOrderedCache.h; sourceTree = "<group>"; };
+		F8509E8C12F0621E00197EB5 /* BlioTimeOrderedCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlioTimeOrderedCache.m; sourceTree = "<group>"; };
+		F8509E8D12F0621E00197EB5 /* BWKXPSProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BWKXPSProvider.h; sourceTree = "<group>"; };
+		F8509E8E12F0621E00197EB5 /* BWKXPSProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BWKXPSProvider.m; sourceTree = "<group>"; };
+		F8509E8F12F0621E00197EB5 /* BWKXPSBook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BWKXPSBook.h; sourceTree = "<group>"; };
+		F8509E9012F0621E00197EB5 /* BWKXPSBook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BWKXPSBook.m; sourceTree = "<group>"; };
+		F8509E9212F0621E00197EB5 /* BWKTestPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BWKTestPageViewController.h; sourceTree = "<group>"; };
+		F8509E9312F0621E00197EB5 /* BWKTestPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BWKTestPageViewController.m; sourceTree = "<group>"; };
+		F8509E9412F0621E00197EB5 /* BWKTestPageViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BWKTestPageViewController.xib; sourceTree = "<group>"; };
+		F8509E9612F0621E00197EB5 /* BWKReadingOptionsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BWKReadingOptionsView.h; sourceTree = "<group>"; };
+		F8509E9712F0621E00197EB5 /* BWKReadingOptionsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BWKReadingOptionsView.m; sourceTree = "<group>"; };
+		F8509E9812F0621E00197EB5 /* BWKReadingOptionsView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BWKReadingOptionsView.xib; sourceTree = "<group>"; };
+		F8509E9A12F0621E00197EB5 /* BWKScrubberView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BWKScrubberView.h; sourceTree = "<group>"; };
+		F8509E9B12F0621E00197EB5 /* BWKScrubberView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BWKScrubberView.m; sourceTree = "<group>"; };
+		F8509EB712F0625100197EB5 /* libstdc++.6.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libstdc++.6.dylib"; path = "usr/lib/libstdc++.6.dylib"; sourceTree = SDKROOT; };
+		F8509F4D12F063C900197EB5 /* Scholastic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Scholastic.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F8509F8012F0653700197EB5 /* thumbImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = thumbImage.png; sourceTree = "<group>"; };
+		F8509F8112F0653700197EB5 /* booktexture-nocover.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "booktexture-nocover.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -193,6 +318,24 @@
 				529386C312DF3A8900045B44 /* CFNetwork.framework in Frameworks */,
 				529386C512DF3A9000045B44 /* SystemConfiguration.framework in Frameworks */,
 				52EF553E12E9EB8500E374F7 /* Security.framework in Frameworks */,
+				F8509E7412F061FE00197EB5 /* libXpsSDKipad.a in Frameworks */,
+				F8509EB812F0625100197EB5 /* libstdc++.6.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F8509F3F12F063C900197EB5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F8509F4012F063C900197EB5 /* Foundation.framework in Frameworks */,
+				F8509F4112F063C900197EB5 /* UIKit.framework in Frameworks */,
+				F8509F4212F063C900197EB5 /* CoreGraphics.framework in Frameworks */,
+				F8509F4312F063C900197EB5 /* CoreData.framework in Frameworks */,
+				F8509F4412F063C900197EB5 /* CFNetwork.framework in Frameworks */,
+				F8509F4512F063C900197EB5 /* SystemConfiguration.framework in Frameworks */,
+				F8509F4612F063C900197EB5 /* Security.framework in Frameworks */,
+				F8509F4712F063C900197EB5 /* libXpsSDKipad.a in Frameworks */,
+				F8509F4812F063C900197EB5 /* libstdc++.6.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -203,6 +346,7 @@
 			isa = PBXGroup;
 			children = (
 				1D6058910D05DD3D006BFB54 /* Scholastic.app */,
+				F8509F4D12F063C900197EB5 /* Scholastic.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -210,6 +354,10 @@
 		2860E386111B897F00E27156 /* iPhone */ = {
 			isa = PBXGroup;
 			children = (
+				F8509E9912F0621E00197EB5 /* Scrubber View */,
+				F8509E9512F0621E00197EB5 /* Reading Options View */,
+				F8509E9112F0621E00197EB5 /* Page View */,
+				F8509E8A12F0621E00197EB5 /* Renderer */,
 				2860E387111B897F00E27156 /* AppDelegate_iPhone.h */,
 				2860E388111B897F00E27156 /* AppDelegate_iPhone.m */,
 				2860E389111B897F00E27156 /* MainWindow_iPhone.xib */,
@@ -232,6 +380,7 @@
 		28EEBF621118D79A00187D67 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				F8509E7512F0620D00197EB5 /* Debug Books */,
 				5293872912DF436100045B44 /* Web Services */,
 				5250C4AB12DE075C00542055 /* Models */,
 				52EF594712EECA7200E374F7 /* Extensions */,
@@ -285,6 +434,7 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F8509EB712F0625100197EB5 /* libstdc++.6.dylib */,
 				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
 				1D30AB110D05D00D00671497 /* Foundation.framework */,
 				288765FC0DF74451002DB57D /* CoreGraphics.framework */,
@@ -329,6 +479,8 @@
 		528A2CCF12CCDC400053A343 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				F8509F8012F0653700197EB5 /* thumbImage.png */,
+				F8509F8112F0653700197EB5 /* booktexture-nocover.png */,
 				528A2CD112CCDC9E0053A343 /* Icons */,
 			);
 			name = Images;
@@ -356,6 +508,7 @@
 				529386FE12DF3EDF00045B44 /* WebAPI */,
 				52EF579412EDBE6E00E374F7 /* security */,
 				528A2CFF12CD026F0053A343 /* BlioLib */,
+				F8509E7112F061FE00197EB5 /* XPS */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -480,6 +633,74 @@
 			name = Extensions;
 			sourceTree = "<group>";
 		};
+		F8509E7112F061FE00197EB5 /* XPS */ = {
+			isa = PBXGroup;
+			children = (
+				F8509E7212F061FE00197EB5 /* libXpsSDKipad.a */,
+				F8509E7312F061FE00197EB5 /* XpsSdk.h */,
+			);
+			name = XPS;
+			sourceTree = "<group>";
+		};
+		F8509E7512F0620D00197EB5 /* Debug Books */ = {
+			isa = PBXGroup;
+			children = (
+				F8509E7612F0620D00197EB5 /* Clifford.xps */,
+				F8509E7712F0620D00197EB5 /* Goosebumps.xps */,
+				F8509E7812F0620E00197EB5 /* LonelyHeartsClub.xps */,
+				F8509E7912F0620E00197EB5 /* MazeOfBones.xps */,
+				F8509E7A12F0620E00197EB5 /* OldLady.xps */,
+				F8509E7B12F0620F00197EB5 /* Penguins.xps */,
+				F8509E7C12F0620F00197EB5 /* Shiver.xps */,
+				F8509E7D12F0620F00197EB5 /* TooManyToys.xps */,
+				F8509E7E12F0620F00197EB5 /* Cars.xps */,
+				F8509E7F12F0621000197EB5 /* Cook Yourself Thin.xps */,
+			);
+			name = "Debug Books";
+			sourceTree = "<group>";
+		};
+		F8509E8A12F0621E00197EB5 /* Renderer */ = {
+			isa = PBXGroup;
+			children = (
+				F8509E8B12F0621E00197EB5 /* BlioTimeOrderedCache.h */,
+				F8509E8C12F0621E00197EB5 /* BlioTimeOrderedCache.m */,
+				F8509E8D12F0621E00197EB5 /* BWKXPSProvider.h */,
+				F8509E8E12F0621E00197EB5 /* BWKXPSProvider.m */,
+				F8509E8F12F0621E00197EB5 /* BWKXPSBook.h */,
+				F8509E9012F0621E00197EB5 /* BWKXPSBook.m */,
+			);
+			name = Renderer;
+			sourceTree = "<group>";
+		};
+		F8509E9112F0621E00197EB5 /* Page View */ = {
+			isa = PBXGroup;
+			children = (
+				F8509E9212F0621E00197EB5 /* BWKTestPageViewController.h */,
+				F8509E9312F0621E00197EB5 /* BWKTestPageViewController.m */,
+				F8509E9412F0621E00197EB5 /* BWKTestPageViewController.xib */,
+			);
+			name = "Page View";
+			sourceTree = "<group>";
+		};
+		F8509E9512F0621E00197EB5 /* Reading Options View */ = {
+			isa = PBXGroup;
+			children = (
+				F8509E9612F0621E00197EB5 /* BWKReadingOptionsView.h */,
+				F8509E9712F0621E00197EB5 /* BWKReadingOptionsView.m */,
+				F8509E9812F0621E00197EB5 /* BWKReadingOptionsView.xib */,
+			);
+			name = "Reading Options View";
+			sourceTree = "<group>";
+		};
+		F8509E9912F0621E00197EB5 /* Scrubber View */ = {
+			isa = PBXGroup;
+			children = (
+				F8509E9A12F0621E00197EB5 /* BWKScrubberView.h */,
+				F8509E9B12F0621E00197EB5 /* BWKScrubberView.m */,
+			);
+			name = "Scrubber View";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -498,6 +719,23 @@
 			name = Scholastic;
 			productName = Scholastic;
 			productReference = 1D6058910D05DD3D006BFB54 /* Scholastic.app */;
+			productType = "com.apple.product-type.application";
+		};
+		F8509EF412F063C900197EB5 /* Local Files Scholastic */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F8509F4912F063C900197EB5 /* Build configuration list for PBXNativeTarget "Local Files Scholastic" */;
+			buildPhases = (
+				F8509EF512F063C900197EB5 /* Resources */,
+				F8509F1112F063C900197EB5 /* Sources */,
+				F8509F3F12F063C900197EB5 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Local Files Scholastic";
+			productName = Scholastic;
+			productReference = F8509F4D12F063C900197EB5 /* Scholastic.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -523,6 +761,7 @@
 			projectRoot = "";
 			targets = (
 				1D6058900D05DD3D006BFB54 /* Scholastic */,
+				F8509EF412F063C900197EB5 /* Local Files Scholastic */,
 			);
 		};
 /* End PBXProject section */
@@ -547,6 +786,46 @@
 				52938B3912E08FC400045B44 /* Icon.png in Resources */,
 				52D6124312E44CEC0033DA92 /* SCHContentMetadataItem+Extensions.m in Resources */,
 				52EF4E6012E6E01C00E374F7 /* SCHLoginViewController.xib in Resources */,
+				F8509EA012F0621E00197EB5 /* BWKTestPageViewController.xib in Resources */,
+				F8509EA212F0621E00197EB5 /* BWKReadingOptionsView.xib in Resources */,
+				F8509F8212F0653700197EB5 /* thumbImage.png in Resources */,
+				F8509F8312F0653700197EB5 /* booktexture-nocover.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F8509EF512F063C900197EB5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F8509EF612F063C900197EB5 /* MainWindow_iPad.xib in Resources */,
+				F8509EF712F063C900197EB5 /* MainWindow_iPhone.xib in Resources */,
+				F8509EF812F063C900197EB5 /* Settings.bundle in Resources */,
+				F8509EF912F063C900197EB5 /* Localizable.strings in Resources */,
+				F8509EFA12F063C900197EB5 /* ReleaseNotes.tmReleaseNotes in Resources */,
+				F8509EFB12F063C900197EB5 /* RootViewController.xib in Resources */,
+				F8509EFC12F063C900197EB5 /* Profile.png in Resources */,
+				F8509EFD12F063C900197EB5 /* ProfileLocked.png in Resources */,
+				F8509EFE12F063C900197EB5 /* Library.png in Resources */,
+				F8509EFF12F063C900197EB5 /* Settings.png in Resources */,
+				F8509F0012F063C900197EB5 /* SCHSettingsViewController.xib in Resources */,
+				F8509F0112F063C900197EB5 /* SCHBookShelfViewController.xib in Resources */,
+				F8509F0212F063C900197EB5 /* Icon.png in Resources */,
+				F8509F0312F063C900197EB5 /* SCHContentMetadataItem+Extensions.m in Resources */,
+				F8509F0412F063C900197EB5 /* SCHLoginViewController.xib in Resources */,
+				F8509F0512F063C900197EB5 /* Clifford.xps in Resources */,
+				F8509F0612F063C900197EB5 /* Goosebumps.xps in Resources */,
+				F8509F0712F063C900197EB5 /* LonelyHeartsClub.xps in Resources */,
+				F8509F0812F063C900197EB5 /* MazeOfBones.xps in Resources */,
+				F8509F0912F063C900197EB5 /* OldLady.xps in Resources */,
+				F8509F0A12F063C900197EB5 /* Penguins.xps in Resources */,
+				F8509F0B12F063C900197EB5 /* Shiver.xps in Resources */,
+				F8509F0C12F063C900197EB5 /* TooManyToys.xps in Resources */,
+				F8509F0D12F063C900197EB5 /* Cars.xps in Resources */,
+				F8509F0E12F063C900197EB5 /* Cook Yourself Thin.xps in Resources */,
+				F8509F0F12F063C900197EB5 /* BWKTestPageViewController.xib in Resources */,
+				F8509F1012F063C900197EB5 /* BWKReadingOptionsView.xib in Resources */,
+				F8509F8F12F0654A00197EB5 /* booktexture-nocover.png in Resources */,
+				F8509F9012F0654B00197EB5 /* thumbImage.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -596,6 +875,64 @@
 				52EF544012E9A5D400E374F7 /* SCHAuthenticationManager.m in Sources */,
 				52EF570A12ED977C00E374F7 /* NSManagedObjectContext+Extensions.m in Sources */,
 				52EF579712EDBE6E00E374F7 /* SFHFKeychainUtils.m in Sources */,
+				F8509E9C12F0621E00197EB5 /* BlioTimeOrderedCache.m in Sources */,
+				F8509E9D12F0621E00197EB5 /* BWKXPSProvider.m in Sources */,
+				F8509E9E12F0621E00197EB5 /* BWKXPSBook.m in Sources */,
+				F8509E9F12F0621E00197EB5 /* BWKTestPageViewController.m in Sources */,
+				F8509EA112F0621E00197EB5 /* BWKReadingOptionsView.m in Sources */,
+				F8509EA312F0621E00197EB5 /* BWKScrubberView.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F8509F1112F063C900197EB5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F8509F1212F063C900197EB5 /* main.m in Sources */,
+				F8509F1312F063C900197EB5 /* AppDelegate_iPad.m in Sources */,
+				F8509F1412F063C900197EB5 /* AppDelegate_Shared.m in Sources */,
+				F8509F1512F063C900197EB5 /* Scholastic.xcdatamodeld in Sources */,
+				F8509F1612F063C900197EB5 /* AppDelegate_iPhone.m in Sources */,
+				F8509F1712F063C900197EB5 /* RootViewController.m in Sources */,
+				F8509F1812F063C900197EB5 /* SCHContentMetadataItem.m in Sources */,
+				F8509F1912F063C900197EB5 /* SCHProfileItem.m in Sources */,
+				F8509F1A12F063C900197EB5 /* SCHSyncEntity.m in Sources */,
+				F8509F1B12F063C900197EB5 /* SCHSettingsViewController.m in Sources */,
+				F8509F1C12F063C900197EB5 /* AuthenticateSvc.m in Sources */,
+				F8509F1D12F063C900197EB5 /* NSDate+ISO8601Parsing.m in Sources */,
+				F8509F1E12F063C900197EB5 /* NSDate+ISO8601Unparsing.m in Sources */,
+				F8509F1F12F063C900197EB5 /* USAdditions.m in Sources */,
+				F8509F2012F063C900197EB5 /* USGlobals.m in Sources */,
+				F8509F2112F063C900197EB5 /* xsd.m in Sources */,
+				F8509F2212F063C900197EB5 /* CXMLDocument.m in Sources */,
+				F8509F2312F063C900197EB5 /* CXMLDocument_PrivateExtensions.m in Sources */,
+				F8509F2412F063C900197EB5 /* CXMLElement.m in Sources */,
+				F8509F2512F063C900197EB5 /* CXMLNode.m in Sources */,
+				F8509F2612F063C900197EB5 /* CXMLNode_PrivateExtensions.m in Sources */,
+				F8509F2712F063C900197EB5 /* CXMLNode_XPathExtensions.m in Sources */,
+				F8509F2812F063C900197EB5 /* Reachability.m in Sources */,
+				F8509F2912F063C900197EB5 /* BITSyncProcess.m in Sources */,
+				F8509F2A12F063C900197EB5 /* BITAPIProxy.m in Sources */,
+				F8509F2B12F063C900197EB5 /* BITSOAPProxy.m in Sources */,
+				F8509F2C12F063C900197EB5 /* SCHLibreAccessWebService.m in Sources */,
+				F8509F2D12F063C900197EB5 /* SCHScholasticWebService.m in Sources */,
+				F8509F2E12F063C900197EB5 /* SCHWebServiceSync.m in Sources */,
+				F8509F2F12F063C900197EB5 /* SCHBookShelfViewController.m in Sources */,
+				F8509F3012F063C900197EB5 /* SCHProfileItem+Extensions.m in Sources */,
+				F8509F3112F063C900197EB5 /* SCHSyncEntity+Extensions.m in Sources */,
+				F8509F3212F063C900197EB5 /* NSNumber+ObjectTypes.m in Sources */,
+				F8509F3312F063C900197EB5 /* SCHUserSettings.m in Sources */,
+				F8509F3412F063C900197EB5 /* SCHLoginViewController.m in Sources */,
+				F8509F3512F063C900197EB5 /* LibreAccessServiceSvc.m in Sources */,
+				F8509F3612F063C900197EB5 /* SCHAuthenticationManager.m in Sources */,
+				F8509F3712F063C900197EB5 /* NSManagedObjectContext+Extensions.m in Sources */,
+				F8509F3812F063C900197EB5 /* SFHFKeychainUtils.m in Sources */,
+				F8509F3912F063C900197EB5 /* BlioTimeOrderedCache.m in Sources */,
+				F8509F3A12F063C900197EB5 /* BWKXPSProvider.m in Sources */,
+				F8509F3B12F063C900197EB5 /* BWKXPSBook.m in Sources */,
+				F8509F3C12F063C900197EB5 /* BWKTestPageViewController.m in Sources */,
+				F8509F3D12F063C900197EB5 /* BWKReadingOptionsView.m in Sources */,
+				F8509F3E12F063C900197EB5 /* BWKScrubberView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -613,6 +950,10 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Scholastic_Prefix.pch;
 				INFOPLIST_FILE = "Scholastic-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
 				PRODUCT_NAME = Scholastic;
 			};
 			name = Debug;
@@ -626,6 +967,10 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Scholastic_Prefix.pch;
 				INFOPLIST_FILE = "Scholastic-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
 				PRODUCT_NAME = Scholastic;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -663,6 +1008,10 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Scholastic_Prefix.pch;
 				INFOPLIST_FILE = "Scholastic-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
 				PRODUCT_NAME = Scholastic;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -710,6 +1059,121 @@
 			};
 			name = Release;
 		};
+		F8509F4A12F063C900197EB5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = Scholastic_Prefix.pch;
+				INFOPLIST_FILE = "Scholastic-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\\\"$(SRCROOT)\\\"",
+				);
+				PRODUCT_NAME = Scholastic;
+			};
+			name = Debug;
+		};
+		F8509F4B12F063C900197EB5 /* Ad Hoc */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
+				COPY_PHASE_STRIP = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = Scholastic_Prefix.pch;
+				INFOPLIST_FILE = "Scholastic-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\\\"$(SRCROOT)\\\"",
+				);
+				PRODUCT_NAME = Scholastic;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = "Ad Hoc";
+		};
+		F8509F4C12F063C900197EB5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
+				COPY_PHASE_STRIP = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = Scholastic_Prefix.pch;
+				INFOPLIST_FILE = "Scholastic-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\\\"$(SRCROOT)\\\"",
+				);
+				PRODUCT_NAME = Scholastic;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		F8509F5012F0640800197EB5 /* Local Files Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				OTHER_CFLAGS = (
+					"-DLOCALDEBUG",
+					"-I/usr/include/libxml2",
+				);
+				OTHER_LDFLAGS = "-lxml2";
+				PREBINDING = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = "Local Files Debug";
+		};
+		F8509F5112F0640800197EB5 /* Local Files Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = Scholastic_Prefix.pch;
+				INFOPLIST_FILE = "Scholastic-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
+				PRODUCT_NAME = Scholastic;
+			};
+			name = "Local Files Debug";
+		};
+		F8509F5212F0640800197EB5 /* Local Files Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = Scholastic_Prefix.pch;
+				INFOPLIST_FILE = "Scholastic-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
+				PRODUCT_NAME = Scholastic;
+			};
+			name = "Local Files Debug";
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -717,6 +1181,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1D6058940D05DD3E006BFB54 /* Debug */,
+				F8509F5112F0640800197EB5 /* Local Files Debug */,
 				528A2CFA12CCED700053A343 /* Ad Hoc */,
 				1D6058950D05DD3E006BFB54 /* Release */,
 			);
@@ -727,8 +1192,20 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C01FCF4F08A954540054247B /* Debug */,
+				F8509F5012F0640800197EB5 /* Local Files Debug */,
 				528A2CF912CCED700053A343 /* Ad Hoc */,
 				C01FCF5008A954540054247B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F8509F4912F063C900197EB5 /* Build configuration list for PBXNativeTarget "Local Files Scholastic" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F8509F4A12F063C900197EB5 /* Debug */,
+				F8509F5212F0640800197EB5 /* Local Files Debug */,
+				F8509F4B12F063C900197EB5 /* Ad Hoc */,
+				F8509F4C12F063C900197EB5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
