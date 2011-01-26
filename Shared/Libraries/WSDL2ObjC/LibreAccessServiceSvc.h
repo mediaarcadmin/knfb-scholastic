@@ -296,6 +296,7 @@ typedef enum {
 	LibreAccessServiceSvc_ApplicationSettings_AUTHENTICATION_ENDPOINT,
 	LibreAccessServiceSvc_ApplicationSettings_VERSION_INFO_EXPIRES,
 	LibreAccessServiceSvc_ApplicationSettings_UNREGISTERED_DEVICES_LIMIT,
+	LibreAccessServiceSvc_ApplicationSettings_DEACTIVATE_ON_DEREGISTER,
 } LibreAccessServiceSvc_ApplicationSettings;
 LibreAccessServiceSvc_ApplicationSettings LibreAccessServiceSvc_ApplicationSettings_enumFromString(NSString *string);
 NSString * LibreAccessServiceSvc_ApplicationSettings_stringFromEnum(LibreAccessServiceSvc_ApplicationSettings enumValue);
@@ -4429,18 +4430,18 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 #import <libxml/parser.h>
 #import "xsd.h"
 #import "LibreAccessServiceSvc.h"
-@class LibreAccessServiceSoap12Binding;
+@class LibreAccessServiceSoap11Binding;
 @interface LibreAccessServiceSvc : NSObject {
 	
 }
-+ (LibreAccessServiceSoap12Binding *)LibreAccessServiceSoap12Binding;
++ (LibreAccessServiceSoap11Binding *)LibreAccessServiceSoap11Binding;
 @end
-@class LibreAccessServiceSoap12BindingResponse;
-@class LibreAccessServiceSoap12BindingOperation;
-@protocol LibreAccessServiceSoap12BindingResponseDelegate <NSObject>
-- (void) operation:(LibreAccessServiceSoap12BindingOperation *)operation completedWithResponse:(LibreAccessServiceSoap12BindingResponse *)response;
+@class LibreAccessServiceSoap11BindingResponse;
+@class LibreAccessServiceSoap11BindingOperation;
+@protocol LibreAccessServiceSoap11BindingResponseDelegate <NSObject>
+- (void) operation:(LibreAccessServiceSoap11BindingOperation *)operation completedWithResponse:(LibreAccessServiceSoap11BindingResponse *)response;
 @end
-@interface LibreAccessServiceSoap12Binding : NSObject <LibreAccessServiceSoap12BindingResponseDelegate> {
+@interface LibreAccessServiceSoap11Binding : NSObject <LibreAccessServiceSoap11BindingResponseDelegate> {
 	NSURL *address;
 	NSTimeInterval timeout;
 	NSMutableArray *cookies;
@@ -4459,497 +4460,497 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 @property (nonatomic, retain) NSString *authPassword;
 + (NSTimeInterval) defaultTimeout;
 - (id)initWithAddress:(NSString *)anAddress;
-- (void)sendHTTPCallUsingBody:(NSString *)body soapAction:(NSString *)soapAction forOperation:(LibreAccessServiceSoap12BindingOperation *)operation;
+- (void)sendHTTPCallUsingBody:(NSString *)body soapAction:(NSString *)soapAction forOperation:(LibreAccessServiceSoap11BindingOperation *)operation;
 - (void)addCookie:(NSHTTPCookie *)toAdd;
 - (NSString *)MIMEType;
-- (LibreAccessServiceSoap12BindingResponse *)ValidateScreenNameUsingParameters:(LibreAccessServiceSvc_ValidateScreenNameRequest *)aParameters ;
-- (void)ValidateScreenNameAsyncUsingParameters:(LibreAccessServiceSvc_ValidateScreenNameRequest *)aParameters  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate;
-- (LibreAccessServiceSoap12BindingResponse *)ValidateUserKeyUsingParameters:(LibreAccessServiceSvc_ValidateUserKeyRequest *)aParameters ;
-- (void)ValidateUserKeyAsyncUsingParameters:(LibreAccessServiceSvc_ValidateUserKeyRequest *)aParameters  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate;
-- (LibreAccessServiceSoap12BindingResponse *)AcknowledgeLicenseUsingParameters:(LibreAccessServiceSvc_AcknowledgeLicenseRequest *)aParameters ;
-- (void)AcknowledgeLicenseAsyncUsingParameters:(LibreAccessServiceSvc_AcknowledgeLicenseRequest *)aParameters  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate;
-- (LibreAccessServiceSoap12BindingResponse *)SharedTokenExchangeUsingBody:(LibreAccessServiceSvc_SharedTokenExchangeRequest *)aBody ;
-- (void)SharedTokenExchangeAsyncUsingBody:(LibreAccessServiceSvc_SharedTokenExchangeRequest *)aBody  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate;
-- (LibreAccessServiceSoap12BindingResponse *)SaveUserCSRNotesUsingParameters:(LibreAccessServiceSvc_SaveUserCSRNotesRequest *)aParameters ;
-- (void)SaveUserCSRNotesAsyncUsingParameters:(LibreAccessServiceSvc_SaveUserCSRNotesRequest *)aParameters  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate;
-- (LibreAccessServiceSoap12BindingResponse *)HealthCheck:(id)noParameters;
-- (void)HealthCheckAsync:(id)noParameters delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate;
-- (LibreAccessServiceSoap12BindingResponse *)SaveNewDomainUsingParameters:(LibreAccessServiceSvc_SaveNewDomainRequest *)aParameters ;
-- (void)SaveNewDomainAsyncUsingParameters:(LibreAccessServiceSvc_SaveNewDomainRequest *)aParameters  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate;
-- (LibreAccessServiceSoap12BindingResponse *)ListDefaultBooksUsingParameters:(LibreAccessServiceSvc_ListDefaultBooksRequest *)aParameters ;
-- (void)ListDefaultBooksAsyncUsingParameters:(LibreAccessServiceSvc_ListDefaultBooksRequest *)aParameters  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate;
-- (LibreAccessServiceSoap12BindingResponse *)ListReadingStatisticsDetailedUsingParameters:(LibreAccessServiceSvc_ListReadingStatisticsDetailedRequest *)aParameters ;
-- (void)ListReadingStatisticsDetailedAsyncUsingParameters:(LibreAccessServiceSvc_ListReadingStatisticsDetailedRequest *)aParameters  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate;
-- (LibreAccessServiceSoap12BindingResponse *)DeviceCanJoinDomainUsingParameters:(LibreAccessServiceSvc_DeviceCanJoinDomainRequest *)aParameters ;
-- (void)DeviceCanJoinDomainAsyncUsingParameters:(LibreAccessServiceSvc_DeviceCanJoinDomainRequest *)aParameters  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate;
-- (LibreAccessServiceSoap12BindingResponse *)AssignBooksToAllUsersUsingParameters:(LibreAccessServiceSvc_AssignBooksToAllUsersRequest *)aParameters ;
-- (void)AssignBooksToAllUsersAsyncUsingParameters:(LibreAccessServiceSvc_AssignBooksToAllUsersRequest *)aParameters  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate;
-- (LibreAccessServiceSoap12BindingResponse *)GetLastPageLocationUsingParameters:(LibreAccessServiceSvc_GetLastPageLocationRequest *)aParameters ;
-- (void)GetLastPageLocationAsyncUsingParameters:(LibreAccessServiceSvc_GetLastPageLocationRequest *)aParameters  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate;
-- (LibreAccessServiceSoap12BindingResponse *)SaveProfileContentAnnotationsUsingParameters:(LibreAccessServiceSvc_SaveProfileContentAnnotationsRequest *)aParameters ;
-- (void)SaveProfileContentAnnotationsAsyncUsingParameters:(LibreAccessServiceSvc_SaveProfileContentAnnotationsRequest *)aParameters  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate;
-- (LibreAccessServiceSoap12BindingResponse *)RemoveDefaultBooksUsingParameters:(LibreAccessServiceSvc_RemoveDefaultBooksRequest *)aParameters ;
-- (void)RemoveDefaultBooksAsyncUsingParameters:(LibreAccessServiceSvc_RemoveDefaultBooksRequest *)aParameters  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate;
-- (LibreAccessServiceSoap12BindingResponse *)GetLicensableStatusUsingParameters:(LibreAccessServiceSvc_GetLicensableStatusRequest *)aParameters ;
-- (void)GetLicensableStatusAsyncUsingParameters:(LibreAccessServiceSvc_GetLicensableStatusRequest *)aParameters  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate;
-- (LibreAccessServiceSoap12BindingResponse *)SaveLastPageLocationUsingParameters:(LibreAccessServiceSvc_SaveLastPageLocationRequest *)aParameters ;
-- (void)SaveLastPageLocationAsyncUsingParameters:(LibreAccessServiceSvc_SaveLastPageLocationRequest *)aParameters  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate;
-- (LibreAccessServiceSoap12BindingResponse *)ListUserCSRNotesUsingParameters:(LibreAccessServiceSvc_ListUserCSRNotesRequest *)aParameters ;
-- (void)ListUserCSRNotesAsyncUsingParameters:(LibreAccessServiceSvc_ListUserCSRNotesRequest *)aParameters  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate;
-- (LibreAccessServiceSoap12BindingResponse *)RenewTokenUsingBody:(LibreAccessServiceSvc_RenewTokenRequest *)aBody ;
-- (void)RenewTokenAsyncUsingBody:(LibreAccessServiceSvc_RenewTokenRequest *)aBody  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate;
-- (LibreAccessServiceSoap12BindingResponse *)SaveDeviceInfoUsingParameters:(LibreAccessServiceSvc_SaveDeviceInfoRequest *)aParameters ;
-- (void)SaveDeviceInfoAsyncUsingParameters:(LibreAccessServiceSvc_SaveDeviceInfoRequest *)aParameters  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate;
-- (LibreAccessServiceSoap12BindingResponse *)ListReadingStatisticsAggregateUsingParameters:(LibreAccessServiceSvc_ListReadingStatisticsAggregateRequest *)aParameters ;
-- (void)ListReadingStatisticsAggregateAsyncUsingParameters:(LibreAccessServiceSvc_ListReadingStatisticsAggregateRequest *)aParameters  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate;
-- (LibreAccessServiceSoap12BindingResponse *)ListLastNWordsUsingParameters:(LibreAccessServiceSvc_ListLastNWordsRequest *)aParameters ;
-- (void)ListLastNWordsAsyncUsingParameters:(LibreAccessServiceSvc_ListLastNWordsRequest *)aParameters  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate;
-- (LibreAccessServiceSoap12BindingResponse *)DeviceLeftDomainUsingParameters:(LibreAccessServiceSvc_DeviceLeftDomainRequest *)aParameters ;
-- (void)DeviceLeftDomainAsyncUsingParameters:(LibreAccessServiceSvc_DeviceLeftDomainRequest *)aParameters  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate;
-- (LibreAccessServiceSoap12BindingResponse *)ListReadBooksUsingParameters:(LibreAccessServiceSvc_ListReadBooksRequest *)aParameters ;
-- (void)ListReadBooksAsyncUsingParameters:(LibreAccessServiceSvc_ListReadBooksRequest *)aParameters  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate;
-- (LibreAccessServiceSoap12BindingResponse *)GetDeviceInfoUsingParameters:(LibreAccessServiceSvc_GetDeviceInfoRequest *)aParameters ;
-- (void)GetDeviceInfoAsyncUsingParameters:(LibreAccessServiceSvc_GetDeviceInfoRequest *)aParameters  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate;
-- (LibreAccessServiceSoap12BindingResponse *)SaveReadingStatisticsDetailedUsingParameters:(LibreAccessServiceSvc_SaveReadingStatisticsDetailedRequest *)aParameters ;
-- (void)SaveReadingStatisticsDetailedAsyncUsingParameters:(LibreAccessServiceSvc_SaveReadingStatisticsDetailedRequest *)aParameters  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate;
-- (LibreAccessServiceSoap12BindingResponse *)SaveContentProfileAssignmentUsingParameters:(LibreAccessServiceSvc_SaveContentProfileAssignmentRequest *)aParameters ;
-- (void)SaveContentProfileAssignmentAsyncUsingParameters:(LibreAccessServiceSvc_SaveContentProfileAssignmentRequest *)aParameters  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate;
-- (LibreAccessServiceSoap12BindingResponse *)TokenExchangeUsingBody:(LibreAccessServiceSvc_TokenExchange *)aBody ;
-- (void)TokenExchangeAsyncUsingBody:(LibreAccessServiceSvc_TokenExchange *)aBody  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate;
-- (LibreAccessServiceSoap12BindingResponse *)SetAccountPasswordRequiredUsingParameters:(LibreAccessServiceSvc_SetAccountPasswordRequiredRequest *)aParameters ;
-- (void)SetAccountPasswordRequiredAsyncUsingParameters:(LibreAccessServiceSvc_SetAccountPasswordRequiredRequest *)aParameters  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate;
-- (LibreAccessServiceSoap12BindingResponse *)GetVersionUsingParameters:(LibreAccessServiceSvc_GetVersionRequest *)aParameters ;
-- (void)GetVersionAsyncUsingParameters:(LibreAccessServiceSvc_GetVersionRequest *)aParameters  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate;
-- (LibreAccessServiceSoap12BindingResponse *)SaveUserSettingsUsingParameters:(LibreAccessServiceSvc_SaveUserSettingsRequest *)aParameters ;
-- (void)SaveUserSettingsAsyncUsingParameters:(LibreAccessServiceSvc_SaveUserSettingsRequest *)aParameters  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate;
-- (LibreAccessServiceSoap12BindingResponse *)AuthenticateDeviceUsingBody:(LibreAccessServiceSvc_AuthenticateDeviceRequest *)aBody ;
-- (void)AuthenticateDeviceAsyncUsingBody:(LibreAccessServiceSvc_AuthenticateDeviceRequest *)aBody  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate;
-- (LibreAccessServiceSoap12BindingResponse *)ListContentMetadataUsingBody:(LibreAccessServiceSvc_ListContentMetadata *)aBody ;
-- (void)ListContentMetadataAsyncUsingBody:(LibreAccessServiceSvc_ListContentMetadata *)aBody  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate;
-- (LibreAccessServiceSoap12BindingResponse *)ListApplicationSettingsUsingParameters:(LibreAccessServiceSvc_ListApplicationSettingsRequest *)aParameters ;
-- (void)ListApplicationSettingsAsyncUsingParameters:(LibreAccessServiceSvc_ListApplicationSettingsRequest *)aParameters  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate;
-- (LibreAccessServiceSoap12BindingResponse *)ListTopFavoritesUsingParameters:(LibreAccessServiceSvc_ListTopFavoritesRequest *)aParameters ;
-- (void)ListTopFavoritesAsyncUsingParameters:(LibreAccessServiceSvc_ListTopFavoritesRequest *)aParameters  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate;
-- (LibreAccessServiceSoap12BindingResponse *)ListLastNProfileReadBooksUsingParameters:(LibreAccessServiceSvc_ListLastNProfileReadBooksRequest *)aParameters ;
-- (void)ListLastNProfileReadBooksAsyncUsingParameters:(LibreAccessServiceSvc_ListLastNProfileReadBooksRequest *)aParameters  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate;
-- (LibreAccessServiceSoap12BindingResponse *)SaveUserProfilesUsingParameters:(LibreAccessServiceSvc_SaveUserProfilesRequest *)aParameters ;
-- (void)SaveUserProfilesAsyncUsingParameters:(LibreAccessServiceSvc_SaveUserProfilesRequest *)aParameters  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate;
-- (LibreAccessServiceSoap12BindingResponse *)GetUserProfilesUsingParameters:(LibreAccessServiceSvc_GetUserProfilesRequest *)aParameters ;
-- (void)GetUserProfilesAsyncUsingParameters:(LibreAccessServiceSvc_GetUserProfilesRequest *)aParameters  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate;
-- (LibreAccessServiceSoap12BindingResponse *)DeleteBookShelfEntryUsingParameters:(LibreAccessServiceSvc_DeleteBookShelfEntryRequest *)aParameters ;
-- (void)DeleteBookShelfEntryAsyncUsingParameters:(LibreAccessServiceSvc_DeleteBookShelfEntryRequest *)aParameters  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate;
-- (LibreAccessServiceSoap12BindingResponse *)ListUserSettingsUsingParameters:(LibreAccessServiceSvc_ListUserSettingsRequest *)aParameters ;
-- (void)ListUserSettingsAsyncUsingParameters:(LibreAccessServiceSvc_ListUserSettingsRequest *)aParameters  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate;
-- (LibreAccessServiceSoap12BindingResponse *)IsEntitledToLicenseUsingParameters:(LibreAccessServiceSvc_EntitledToLicenceRequest *)aParameters ;
-- (void)IsEntitledToLicenseAsyncUsingParameters:(LibreAccessServiceSvc_EntitledToLicenceRequest *)aParameters  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate;
-- (LibreAccessServiceSoap12BindingResponse *)RemoveOrderUsingParameters:(LibreAccessServiceSvc_RemoveOrderRequest *)aParameters ;
-- (void)RemoveOrderAsyncUsingParameters:(LibreAccessServiceSvc_RemoveOrderRequest *)aParameters  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate;
-- (LibreAccessServiceSoap12BindingResponse *)ListProfileContentAnnotationsUsingParameters:(LibreAccessServiceSvc_ListProfileContentAnnotationsRequest *)aParameters ;
-- (void)ListProfileContentAnnotationsAsyncUsingParameters:(LibreAccessServiceSvc_ListProfileContentAnnotationsRequest *)aParameters  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate;
-- (LibreAccessServiceSoap12BindingResponse *)ListUserContentUsingBody:(LibreAccessServiceSvc_ListUserContent *)aBody ;
-- (void)ListUserContentAsyncUsingBody:(LibreAccessServiceSvc_ListUserContent *)aBody  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate;
-- (LibreAccessServiceSoap12BindingResponse *)ListFavoriteTypesUsingParameters:(LibreAccessServiceSvc_ListFavoriteTypesRequest *)aParameters ;
-- (void)ListFavoriteTypesAsyncUsingParameters:(LibreAccessServiceSvc_ListFavoriteTypesRequest *)aParameters  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate;
-- (LibreAccessServiceSoap12BindingResponse *)GetKeyIdUsingParameters:(LibreAccessServiceSvc_GetKeyIdRequest *)aParameters ;
-- (void)GetKeyIdAsyncUsingParameters:(LibreAccessServiceSvc_GetKeyIdRequest *)aParameters  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate;
-- (LibreAccessServiceSoap12BindingResponse *)SaveDefaultBooksUsingParameters:(LibreAccessServiceSvc_SaveDefaultBooksRequest *)aParameters ;
-- (void)SaveDefaultBooksAsyncUsingParameters:(LibreAccessServiceSvc_SaveDefaultBooksRequest *)aParameters  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate;
-- (LibreAccessServiceSoap12BindingResponse *)SetAccountAutoAssignUsingParameters:(LibreAccessServiceSvc_SetAccountAutoAssignRequest *)aParameters ;
-- (void)SetAccountAutoAssignAsyncUsingParameters:(LibreAccessServiceSvc_SetAccountAutoAssignRequest *)aParameters  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate;
+- (LibreAccessServiceSoap11BindingResponse *)ValidateScreenNameUsingParameters:(LibreAccessServiceSvc_ValidateScreenNameRequest *)aParameters ;
+- (void)ValidateScreenNameAsyncUsingParameters:(LibreAccessServiceSvc_ValidateScreenNameRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate;
+- (LibreAccessServiceSoap11BindingResponse *)ValidateUserKeyUsingParameters:(LibreAccessServiceSvc_ValidateUserKeyRequest *)aParameters ;
+- (void)ValidateUserKeyAsyncUsingParameters:(LibreAccessServiceSvc_ValidateUserKeyRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate;
+- (LibreAccessServiceSoap11BindingResponse *)AcknowledgeLicenseUsingParameters:(LibreAccessServiceSvc_AcknowledgeLicenseRequest *)aParameters ;
+- (void)AcknowledgeLicenseAsyncUsingParameters:(LibreAccessServiceSvc_AcknowledgeLicenseRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate;
+- (LibreAccessServiceSoap11BindingResponse *)SharedTokenExchangeUsingBody:(LibreAccessServiceSvc_SharedTokenExchangeRequest *)aBody ;
+- (void)SharedTokenExchangeAsyncUsingBody:(LibreAccessServiceSvc_SharedTokenExchangeRequest *)aBody  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate;
+- (LibreAccessServiceSoap11BindingResponse *)SaveUserCSRNotesUsingParameters:(LibreAccessServiceSvc_SaveUserCSRNotesRequest *)aParameters ;
+- (void)SaveUserCSRNotesAsyncUsingParameters:(LibreAccessServiceSvc_SaveUserCSRNotesRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate;
+- (LibreAccessServiceSoap11BindingResponse *)HealthCheck:(id)noParameters;
+- (void)HealthCheckAsync:(id)noParameters delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate;
+- (LibreAccessServiceSoap11BindingResponse *)SaveNewDomainUsingParameters:(LibreAccessServiceSvc_SaveNewDomainRequest *)aParameters ;
+- (void)SaveNewDomainAsyncUsingParameters:(LibreAccessServiceSvc_SaveNewDomainRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate;
+- (LibreAccessServiceSoap11BindingResponse *)ListDefaultBooksUsingParameters:(LibreAccessServiceSvc_ListDefaultBooksRequest *)aParameters ;
+- (void)ListDefaultBooksAsyncUsingParameters:(LibreAccessServiceSvc_ListDefaultBooksRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate;
+- (LibreAccessServiceSoap11BindingResponse *)ListReadingStatisticsDetailedUsingParameters:(LibreAccessServiceSvc_ListReadingStatisticsDetailedRequest *)aParameters ;
+- (void)ListReadingStatisticsDetailedAsyncUsingParameters:(LibreAccessServiceSvc_ListReadingStatisticsDetailedRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate;
+- (LibreAccessServiceSoap11BindingResponse *)DeviceCanJoinDomainUsingParameters:(LibreAccessServiceSvc_DeviceCanJoinDomainRequest *)aParameters ;
+- (void)DeviceCanJoinDomainAsyncUsingParameters:(LibreAccessServiceSvc_DeviceCanJoinDomainRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate;
+- (LibreAccessServiceSoap11BindingResponse *)AssignBooksToAllUsersUsingParameters:(LibreAccessServiceSvc_AssignBooksToAllUsersRequest *)aParameters ;
+- (void)AssignBooksToAllUsersAsyncUsingParameters:(LibreAccessServiceSvc_AssignBooksToAllUsersRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate;
+- (LibreAccessServiceSoap11BindingResponse *)GetLastPageLocationUsingParameters:(LibreAccessServiceSvc_GetLastPageLocationRequest *)aParameters ;
+- (void)GetLastPageLocationAsyncUsingParameters:(LibreAccessServiceSvc_GetLastPageLocationRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate;
+- (LibreAccessServiceSoap11BindingResponse *)SaveProfileContentAnnotationsUsingParameters:(LibreAccessServiceSvc_SaveProfileContentAnnotationsRequest *)aParameters ;
+- (void)SaveProfileContentAnnotationsAsyncUsingParameters:(LibreAccessServiceSvc_SaveProfileContentAnnotationsRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate;
+- (LibreAccessServiceSoap11BindingResponse *)RemoveDefaultBooksUsingParameters:(LibreAccessServiceSvc_RemoveDefaultBooksRequest *)aParameters ;
+- (void)RemoveDefaultBooksAsyncUsingParameters:(LibreAccessServiceSvc_RemoveDefaultBooksRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate;
+- (LibreAccessServiceSoap11BindingResponse *)GetLicensableStatusUsingParameters:(LibreAccessServiceSvc_GetLicensableStatusRequest *)aParameters ;
+- (void)GetLicensableStatusAsyncUsingParameters:(LibreAccessServiceSvc_GetLicensableStatusRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate;
+- (LibreAccessServiceSoap11BindingResponse *)SaveLastPageLocationUsingParameters:(LibreAccessServiceSvc_SaveLastPageLocationRequest *)aParameters ;
+- (void)SaveLastPageLocationAsyncUsingParameters:(LibreAccessServiceSvc_SaveLastPageLocationRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate;
+- (LibreAccessServiceSoap11BindingResponse *)ListUserCSRNotesUsingParameters:(LibreAccessServiceSvc_ListUserCSRNotesRequest *)aParameters ;
+- (void)ListUserCSRNotesAsyncUsingParameters:(LibreAccessServiceSvc_ListUserCSRNotesRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate;
+- (LibreAccessServiceSoap11BindingResponse *)RenewTokenUsingBody:(LibreAccessServiceSvc_RenewTokenRequest *)aBody ;
+- (void)RenewTokenAsyncUsingBody:(LibreAccessServiceSvc_RenewTokenRequest *)aBody  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate;
+- (LibreAccessServiceSoap11BindingResponse *)SaveDeviceInfoUsingParameters:(LibreAccessServiceSvc_SaveDeviceInfoRequest *)aParameters ;
+- (void)SaveDeviceInfoAsyncUsingParameters:(LibreAccessServiceSvc_SaveDeviceInfoRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate;
+- (LibreAccessServiceSoap11BindingResponse *)ListReadingStatisticsAggregateUsingParameters:(LibreAccessServiceSvc_ListReadingStatisticsAggregateRequest *)aParameters ;
+- (void)ListReadingStatisticsAggregateAsyncUsingParameters:(LibreAccessServiceSvc_ListReadingStatisticsAggregateRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate;
+- (LibreAccessServiceSoap11BindingResponse *)ListLastNWordsUsingParameters:(LibreAccessServiceSvc_ListLastNWordsRequest *)aParameters ;
+- (void)ListLastNWordsAsyncUsingParameters:(LibreAccessServiceSvc_ListLastNWordsRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate;
+- (LibreAccessServiceSoap11BindingResponse *)DeviceLeftDomainUsingParameters:(LibreAccessServiceSvc_DeviceLeftDomainRequest *)aParameters ;
+- (void)DeviceLeftDomainAsyncUsingParameters:(LibreAccessServiceSvc_DeviceLeftDomainRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate;
+- (LibreAccessServiceSoap11BindingResponse *)ListReadBooksUsingParameters:(LibreAccessServiceSvc_ListReadBooksRequest *)aParameters ;
+- (void)ListReadBooksAsyncUsingParameters:(LibreAccessServiceSvc_ListReadBooksRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate;
+- (LibreAccessServiceSoap11BindingResponse *)GetDeviceInfoUsingParameters:(LibreAccessServiceSvc_GetDeviceInfoRequest *)aParameters ;
+- (void)GetDeviceInfoAsyncUsingParameters:(LibreAccessServiceSvc_GetDeviceInfoRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate;
+- (LibreAccessServiceSoap11BindingResponse *)SaveReadingStatisticsDetailedUsingParameters:(LibreAccessServiceSvc_SaveReadingStatisticsDetailedRequest *)aParameters ;
+- (void)SaveReadingStatisticsDetailedAsyncUsingParameters:(LibreAccessServiceSvc_SaveReadingStatisticsDetailedRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate;
+- (LibreAccessServiceSoap11BindingResponse *)SaveContentProfileAssignmentUsingParameters:(LibreAccessServiceSvc_SaveContentProfileAssignmentRequest *)aParameters ;
+- (void)SaveContentProfileAssignmentAsyncUsingParameters:(LibreAccessServiceSvc_SaveContentProfileAssignmentRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate;
+- (LibreAccessServiceSoap11BindingResponse *)TokenExchangeUsingBody:(LibreAccessServiceSvc_TokenExchange *)aBody ;
+- (void)TokenExchangeAsyncUsingBody:(LibreAccessServiceSvc_TokenExchange *)aBody  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate;
+- (LibreAccessServiceSoap11BindingResponse *)SetAccountPasswordRequiredUsingParameters:(LibreAccessServiceSvc_SetAccountPasswordRequiredRequest *)aParameters ;
+- (void)SetAccountPasswordRequiredAsyncUsingParameters:(LibreAccessServiceSvc_SetAccountPasswordRequiredRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate;
+- (LibreAccessServiceSoap11BindingResponse *)GetVersionUsingParameters:(LibreAccessServiceSvc_GetVersionRequest *)aParameters ;
+- (void)GetVersionAsyncUsingParameters:(LibreAccessServiceSvc_GetVersionRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate;
+- (LibreAccessServiceSoap11BindingResponse *)SaveUserSettingsUsingParameters:(LibreAccessServiceSvc_SaveUserSettingsRequest *)aParameters ;
+- (void)SaveUserSettingsAsyncUsingParameters:(LibreAccessServiceSvc_SaveUserSettingsRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate;
+- (LibreAccessServiceSoap11BindingResponse *)AuthenticateDeviceUsingBody:(LibreAccessServiceSvc_AuthenticateDeviceRequest *)aBody ;
+- (void)AuthenticateDeviceAsyncUsingBody:(LibreAccessServiceSvc_AuthenticateDeviceRequest *)aBody  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate;
+- (LibreAccessServiceSoap11BindingResponse *)ListContentMetadataUsingBody:(LibreAccessServiceSvc_ListContentMetadata *)aBody ;
+- (void)ListContentMetadataAsyncUsingBody:(LibreAccessServiceSvc_ListContentMetadata *)aBody  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate;
+- (LibreAccessServiceSoap11BindingResponse *)ListApplicationSettingsUsingParameters:(LibreAccessServiceSvc_ListApplicationSettingsRequest *)aParameters ;
+- (void)ListApplicationSettingsAsyncUsingParameters:(LibreAccessServiceSvc_ListApplicationSettingsRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate;
+- (LibreAccessServiceSoap11BindingResponse *)ListTopFavoritesUsingParameters:(LibreAccessServiceSvc_ListTopFavoritesRequest *)aParameters ;
+- (void)ListTopFavoritesAsyncUsingParameters:(LibreAccessServiceSvc_ListTopFavoritesRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate;
+- (LibreAccessServiceSoap11BindingResponse *)ListLastNProfileReadBooksUsingParameters:(LibreAccessServiceSvc_ListLastNProfileReadBooksRequest *)aParameters ;
+- (void)ListLastNProfileReadBooksAsyncUsingParameters:(LibreAccessServiceSvc_ListLastNProfileReadBooksRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate;
+- (LibreAccessServiceSoap11BindingResponse *)SaveUserProfilesUsingParameters:(LibreAccessServiceSvc_SaveUserProfilesRequest *)aParameters ;
+- (void)SaveUserProfilesAsyncUsingParameters:(LibreAccessServiceSvc_SaveUserProfilesRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate;
+- (LibreAccessServiceSoap11BindingResponse *)GetUserProfilesUsingParameters:(LibreAccessServiceSvc_GetUserProfilesRequest *)aParameters ;
+- (void)GetUserProfilesAsyncUsingParameters:(LibreAccessServiceSvc_GetUserProfilesRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate;
+- (LibreAccessServiceSoap11BindingResponse *)DeleteBookShelfEntryUsingParameters:(LibreAccessServiceSvc_DeleteBookShelfEntryRequest *)aParameters ;
+- (void)DeleteBookShelfEntryAsyncUsingParameters:(LibreAccessServiceSvc_DeleteBookShelfEntryRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate;
+- (LibreAccessServiceSoap11BindingResponse *)ListUserSettingsUsingParameters:(LibreAccessServiceSvc_ListUserSettingsRequest *)aParameters ;
+- (void)ListUserSettingsAsyncUsingParameters:(LibreAccessServiceSvc_ListUserSettingsRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate;
+- (LibreAccessServiceSoap11BindingResponse *)IsEntitledToLicenseUsingParameters:(LibreAccessServiceSvc_EntitledToLicenceRequest *)aParameters ;
+- (void)IsEntitledToLicenseAsyncUsingParameters:(LibreAccessServiceSvc_EntitledToLicenceRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate;
+- (LibreAccessServiceSoap11BindingResponse *)RemoveOrderUsingParameters:(LibreAccessServiceSvc_RemoveOrderRequest *)aParameters ;
+- (void)RemoveOrderAsyncUsingParameters:(LibreAccessServiceSvc_RemoveOrderRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate;
+- (LibreAccessServiceSoap11BindingResponse *)ListProfileContentAnnotationsUsingParameters:(LibreAccessServiceSvc_ListProfileContentAnnotationsRequest *)aParameters ;
+- (void)ListProfileContentAnnotationsAsyncUsingParameters:(LibreAccessServiceSvc_ListProfileContentAnnotationsRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate;
+- (LibreAccessServiceSoap11BindingResponse *)ListUserContentUsingBody:(LibreAccessServiceSvc_ListUserContent *)aBody ;
+- (void)ListUserContentAsyncUsingBody:(LibreAccessServiceSvc_ListUserContent *)aBody  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate;
+- (LibreAccessServiceSoap11BindingResponse *)ListFavoriteTypesUsingParameters:(LibreAccessServiceSvc_ListFavoriteTypesRequest *)aParameters ;
+- (void)ListFavoriteTypesAsyncUsingParameters:(LibreAccessServiceSvc_ListFavoriteTypesRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate;
+- (LibreAccessServiceSoap11BindingResponse *)GetKeyIdUsingParameters:(LibreAccessServiceSvc_GetKeyIdRequest *)aParameters ;
+- (void)GetKeyIdAsyncUsingParameters:(LibreAccessServiceSvc_GetKeyIdRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate;
+- (LibreAccessServiceSoap11BindingResponse *)SaveDefaultBooksUsingParameters:(LibreAccessServiceSvc_SaveDefaultBooksRequest *)aParameters ;
+- (void)SaveDefaultBooksAsyncUsingParameters:(LibreAccessServiceSvc_SaveDefaultBooksRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate;
+- (LibreAccessServiceSoap11BindingResponse *)SetAccountAutoAssignUsingParameters:(LibreAccessServiceSvc_SetAccountAutoAssignRequest *)aParameters ;
+- (void)SetAccountAutoAssignAsyncUsingParameters:(LibreAccessServiceSvc_SetAccountAutoAssignRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate;
 @end
-@interface LibreAccessServiceSoap12BindingOperation : NSOperation {
-	LibreAccessServiceSoap12Binding *binding;
-	LibreAccessServiceSoap12BindingResponse *response;
-	id<LibreAccessServiceSoap12BindingResponseDelegate> delegate;
+@interface LibreAccessServiceSoap11BindingOperation : NSOperation {
+	LibreAccessServiceSoap11Binding *binding;
+	LibreAccessServiceSoap11BindingResponse *response;
+	id<LibreAccessServiceSoap11BindingResponseDelegate> delegate;
 	NSMutableData *responseData;
 	NSURLConnection *urlConnection;
 }
-@property (nonatomic, retain) LibreAccessServiceSoap12Binding *binding;
-@property (nonatomic, readonly) LibreAccessServiceSoap12BindingResponse *response;
-@property (nonatomic, assign) id<LibreAccessServiceSoap12BindingResponseDelegate> delegate;
+@property (nonatomic, retain) LibreAccessServiceSoap11Binding *binding;
+@property (nonatomic, readonly) LibreAccessServiceSoap11BindingResponse *response;
+@property (nonatomic, assign) id<LibreAccessServiceSoap11BindingResponseDelegate> delegate;
 @property (nonatomic, retain) NSMutableData *responseData;
 @property (nonatomic, retain) NSURLConnection *urlConnection;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)aDelegate;
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)aDelegate;
 @end
-@interface LibreAccessServiceSoap12Binding_ValidateScreenName : LibreAccessServiceSoap12BindingOperation {
+@interface LibreAccessServiceSoap11Binding_ValidateScreenName : LibreAccessServiceSoap11BindingOperation {
 	LibreAccessServiceSvc_ValidateScreenNameRequest * parameters;
 }
 @property (nonatomic, retain) LibreAccessServiceSvc_ValidateScreenNameRequest * parameters;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)aDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)aDelegate
 	parameters:(LibreAccessServiceSvc_ValidateScreenNameRequest *)aParameters
 ;
 @end
-@interface LibreAccessServiceSoap12Binding_ValidateUserKey : LibreAccessServiceSoap12BindingOperation {
+@interface LibreAccessServiceSoap11Binding_ValidateUserKey : LibreAccessServiceSoap11BindingOperation {
 	LibreAccessServiceSvc_ValidateUserKeyRequest * parameters;
 }
 @property (nonatomic, retain) LibreAccessServiceSvc_ValidateUserKeyRequest * parameters;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)aDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)aDelegate
 	parameters:(LibreAccessServiceSvc_ValidateUserKeyRequest *)aParameters
 ;
 @end
-@interface LibreAccessServiceSoap12Binding_AcknowledgeLicense : LibreAccessServiceSoap12BindingOperation {
+@interface LibreAccessServiceSoap11Binding_AcknowledgeLicense : LibreAccessServiceSoap11BindingOperation {
 	LibreAccessServiceSvc_AcknowledgeLicenseRequest * parameters;
 }
 @property (nonatomic, retain) LibreAccessServiceSvc_AcknowledgeLicenseRequest * parameters;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)aDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)aDelegate
 	parameters:(LibreAccessServiceSvc_AcknowledgeLicenseRequest *)aParameters
 ;
 @end
-@interface LibreAccessServiceSoap12Binding_SharedTokenExchange : LibreAccessServiceSoap12BindingOperation {
+@interface LibreAccessServiceSoap11Binding_SharedTokenExchange : LibreAccessServiceSoap11BindingOperation {
 	LibreAccessServiceSvc_SharedTokenExchangeRequest * body;
 }
 @property (nonatomic, retain) LibreAccessServiceSvc_SharedTokenExchangeRequest * body;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)aDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)aDelegate
 	body:(LibreAccessServiceSvc_SharedTokenExchangeRequest *)aBody
 ;
 @end
-@interface LibreAccessServiceSoap12Binding_SaveUserCSRNotes : LibreAccessServiceSoap12BindingOperation {
+@interface LibreAccessServiceSoap11Binding_SaveUserCSRNotes : LibreAccessServiceSoap11BindingOperation {
 	LibreAccessServiceSvc_SaveUserCSRNotesRequest * parameters;
 }
 @property (nonatomic, retain) LibreAccessServiceSvc_SaveUserCSRNotesRequest * parameters;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)aDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)aDelegate
 	parameters:(LibreAccessServiceSvc_SaveUserCSRNotesRequest *)aParameters
 ;
 @end
-@interface LibreAccessServiceSoap12Binding_HealthCheck : LibreAccessServiceSoap12BindingOperation {
+@interface LibreAccessServiceSoap11Binding_HealthCheck : LibreAccessServiceSoap11BindingOperation {
 }
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)aDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)aDelegate
 ;
 @end
-@interface LibreAccessServiceSoap12Binding_SaveNewDomain : LibreAccessServiceSoap12BindingOperation {
+@interface LibreAccessServiceSoap11Binding_SaveNewDomain : LibreAccessServiceSoap11BindingOperation {
 	LibreAccessServiceSvc_SaveNewDomainRequest * parameters;
 }
 @property (nonatomic, retain) LibreAccessServiceSvc_SaveNewDomainRequest * parameters;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)aDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)aDelegate
 	parameters:(LibreAccessServiceSvc_SaveNewDomainRequest *)aParameters
 ;
 @end
-@interface LibreAccessServiceSoap12Binding_ListDefaultBooks : LibreAccessServiceSoap12BindingOperation {
+@interface LibreAccessServiceSoap11Binding_ListDefaultBooks : LibreAccessServiceSoap11BindingOperation {
 	LibreAccessServiceSvc_ListDefaultBooksRequest * parameters;
 }
 @property (nonatomic, retain) LibreAccessServiceSvc_ListDefaultBooksRequest * parameters;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)aDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)aDelegate
 	parameters:(LibreAccessServiceSvc_ListDefaultBooksRequest *)aParameters
 ;
 @end
-@interface LibreAccessServiceSoap12Binding_ListReadingStatisticsDetailed : LibreAccessServiceSoap12BindingOperation {
+@interface LibreAccessServiceSoap11Binding_ListReadingStatisticsDetailed : LibreAccessServiceSoap11BindingOperation {
 	LibreAccessServiceSvc_ListReadingStatisticsDetailedRequest * parameters;
 }
 @property (nonatomic, retain) LibreAccessServiceSvc_ListReadingStatisticsDetailedRequest * parameters;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)aDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)aDelegate
 	parameters:(LibreAccessServiceSvc_ListReadingStatisticsDetailedRequest *)aParameters
 ;
 @end
-@interface LibreAccessServiceSoap12Binding_DeviceCanJoinDomain : LibreAccessServiceSoap12BindingOperation {
+@interface LibreAccessServiceSoap11Binding_DeviceCanJoinDomain : LibreAccessServiceSoap11BindingOperation {
 	LibreAccessServiceSvc_DeviceCanJoinDomainRequest * parameters;
 }
 @property (nonatomic, retain) LibreAccessServiceSvc_DeviceCanJoinDomainRequest * parameters;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)aDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)aDelegate
 	parameters:(LibreAccessServiceSvc_DeviceCanJoinDomainRequest *)aParameters
 ;
 @end
-@interface LibreAccessServiceSoap12Binding_AssignBooksToAllUsers : LibreAccessServiceSoap12BindingOperation {
+@interface LibreAccessServiceSoap11Binding_AssignBooksToAllUsers : LibreAccessServiceSoap11BindingOperation {
 	LibreAccessServiceSvc_AssignBooksToAllUsersRequest * parameters;
 }
 @property (nonatomic, retain) LibreAccessServiceSvc_AssignBooksToAllUsersRequest * parameters;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)aDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)aDelegate
 	parameters:(LibreAccessServiceSvc_AssignBooksToAllUsersRequest *)aParameters
 ;
 @end
-@interface LibreAccessServiceSoap12Binding_GetLastPageLocation : LibreAccessServiceSoap12BindingOperation {
+@interface LibreAccessServiceSoap11Binding_GetLastPageLocation : LibreAccessServiceSoap11BindingOperation {
 	LibreAccessServiceSvc_GetLastPageLocationRequest * parameters;
 }
 @property (nonatomic, retain) LibreAccessServiceSvc_GetLastPageLocationRequest * parameters;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)aDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)aDelegate
 	parameters:(LibreAccessServiceSvc_GetLastPageLocationRequest *)aParameters
 ;
 @end
-@interface LibreAccessServiceSoap12Binding_SaveProfileContentAnnotations : LibreAccessServiceSoap12BindingOperation {
+@interface LibreAccessServiceSoap11Binding_SaveProfileContentAnnotations : LibreAccessServiceSoap11BindingOperation {
 	LibreAccessServiceSvc_SaveProfileContentAnnotationsRequest * parameters;
 }
 @property (nonatomic, retain) LibreAccessServiceSvc_SaveProfileContentAnnotationsRequest * parameters;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)aDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)aDelegate
 	parameters:(LibreAccessServiceSvc_SaveProfileContentAnnotationsRequest *)aParameters
 ;
 @end
-@interface LibreAccessServiceSoap12Binding_RemoveDefaultBooks : LibreAccessServiceSoap12BindingOperation {
+@interface LibreAccessServiceSoap11Binding_RemoveDefaultBooks : LibreAccessServiceSoap11BindingOperation {
 	LibreAccessServiceSvc_RemoveDefaultBooksRequest * parameters;
 }
 @property (nonatomic, retain) LibreAccessServiceSvc_RemoveDefaultBooksRequest * parameters;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)aDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)aDelegate
 	parameters:(LibreAccessServiceSvc_RemoveDefaultBooksRequest *)aParameters
 ;
 @end
-@interface LibreAccessServiceSoap12Binding_GetLicensableStatus : LibreAccessServiceSoap12BindingOperation {
+@interface LibreAccessServiceSoap11Binding_GetLicensableStatus : LibreAccessServiceSoap11BindingOperation {
 	LibreAccessServiceSvc_GetLicensableStatusRequest * parameters;
 }
 @property (nonatomic, retain) LibreAccessServiceSvc_GetLicensableStatusRequest * parameters;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)aDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)aDelegate
 	parameters:(LibreAccessServiceSvc_GetLicensableStatusRequest *)aParameters
 ;
 @end
-@interface LibreAccessServiceSoap12Binding_SaveLastPageLocation : LibreAccessServiceSoap12BindingOperation {
+@interface LibreAccessServiceSoap11Binding_SaveLastPageLocation : LibreAccessServiceSoap11BindingOperation {
 	LibreAccessServiceSvc_SaveLastPageLocationRequest * parameters;
 }
 @property (nonatomic, retain) LibreAccessServiceSvc_SaveLastPageLocationRequest * parameters;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)aDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)aDelegate
 	parameters:(LibreAccessServiceSvc_SaveLastPageLocationRequest *)aParameters
 ;
 @end
-@interface LibreAccessServiceSoap12Binding_ListUserCSRNotes : LibreAccessServiceSoap12BindingOperation {
+@interface LibreAccessServiceSoap11Binding_ListUserCSRNotes : LibreAccessServiceSoap11BindingOperation {
 	LibreAccessServiceSvc_ListUserCSRNotesRequest * parameters;
 }
 @property (nonatomic, retain) LibreAccessServiceSvc_ListUserCSRNotesRequest * parameters;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)aDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)aDelegate
 	parameters:(LibreAccessServiceSvc_ListUserCSRNotesRequest *)aParameters
 ;
 @end
-@interface LibreAccessServiceSoap12Binding_RenewToken : LibreAccessServiceSoap12BindingOperation {
+@interface LibreAccessServiceSoap11Binding_RenewToken : LibreAccessServiceSoap11BindingOperation {
 	LibreAccessServiceSvc_RenewTokenRequest * body;
 }
 @property (nonatomic, retain) LibreAccessServiceSvc_RenewTokenRequest * body;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)aDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)aDelegate
 	body:(LibreAccessServiceSvc_RenewTokenRequest *)aBody
 ;
 @end
-@interface LibreAccessServiceSoap12Binding_SaveDeviceInfo : LibreAccessServiceSoap12BindingOperation {
+@interface LibreAccessServiceSoap11Binding_SaveDeviceInfo : LibreAccessServiceSoap11BindingOperation {
 	LibreAccessServiceSvc_SaveDeviceInfoRequest * parameters;
 }
 @property (nonatomic, retain) LibreAccessServiceSvc_SaveDeviceInfoRequest * parameters;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)aDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)aDelegate
 	parameters:(LibreAccessServiceSvc_SaveDeviceInfoRequest *)aParameters
 ;
 @end
-@interface LibreAccessServiceSoap12Binding_ListReadingStatisticsAggregate : LibreAccessServiceSoap12BindingOperation {
+@interface LibreAccessServiceSoap11Binding_ListReadingStatisticsAggregate : LibreAccessServiceSoap11BindingOperation {
 	LibreAccessServiceSvc_ListReadingStatisticsAggregateRequest * parameters;
 }
 @property (nonatomic, retain) LibreAccessServiceSvc_ListReadingStatisticsAggregateRequest * parameters;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)aDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)aDelegate
 	parameters:(LibreAccessServiceSvc_ListReadingStatisticsAggregateRequest *)aParameters
 ;
 @end
-@interface LibreAccessServiceSoap12Binding_ListLastNWords : LibreAccessServiceSoap12BindingOperation {
+@interface LibreAccessServiceSoap11Binding_ListLastNWords : LibreAccessServiceSoap11BindingOperation {
 	LibreAccessServiceSvc_ListLastNWordsRequest * parameters;
 }
 @property (nonatomic, retain) LibreAccessServiceSvc_ListLastNWordsRequest * parameters;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)aDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)aDelegate
 	parameters:(LibreAccessServiceSvc_ListLastNWordsRequest *)aParameters
 ;
 @end
-@interface LibreAccessServiceSoap12Binding_DeviceLeftDomain : LibreAccessServiceSoap12BindingOperation {
+@interface LibreAccessServiceSoap11Binding_DeviceLeftDomain : LibreAccessServiceSoap11BindingOperation {
 	LibreAccessServiceSvc_DeviceLeftDomainRequest * parameters;
 }
 @property (nonatomic, retain) LibreAccessServiceSvc_DeviceLeftDomainRequest * parameters;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)aDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)aDelegate
 	parameters:(LibreAccessServiceSvc_DeviceLeftDomainRequest *)aParameters
 ;
 @end
-@interface LibreAccessServiceSoap12Binding_ListReadBooks : LibreAccessServiceSoap12BindingOperation {
+@interface LibreAccessServiceSoap11Binding_ListReadBooks : LibreAccessServiceSoap11BindingOperation {
 	LibreAccessServiceSvc_ListReadBooksRequest * parameters;
 }
 @property (nonatomic, retain) LibreAccessServiceSvc_ListReadBooksRequest * parameters;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)aDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)aDelegate
 	parameters:(LibreAccessServiceSvc_ListReadBooksRequest *)aParameters
 ;
 @end
-@interface LibreAccessServiceSoap12Binding_GetDeviceInfo : LibreAccessServiceSoap12BindingOperation {
+@interface LibreAccessServiceSoap11Binding_GetDeviceInfo : LibreAccessServiceSoap11BindingOperation {
 	LibreAccessServiceSvc_GetDeviceInfoRequest * parameters;
 }
 @property (nonatomic, retain) LibreAccessServiceSvc_GetDeviceInfoRequest * parameters;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)aDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)aDelegate
 	parameters:(LibreAccessServiceSvc_GetDeviceInfoRequest *)aParameters
 ;
 @end
-@interface LibreAccessServiceSoap12Binding_SaveReadingStatisticsDetailed : LibreAccessServiceSoap12BindingOperation {
+@interface LibreAccessServiceSoap11Binding_SaveReadingStatisticsDetailed : LibreAccessServiceSoap11BindingOperation {
 	LibreAccessServiceSvc_SaveReadingStatisticsDetailedRequest * parameters;
 }
 @property (nonatomic, retain) LibreAccessServiceSvc_SaveReadingStatisticsDetailedRequest * parameters;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)aDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)aDelegate
 	parameters:(LibreAccessServiceSvc_SaveReadingStatisticsDetailedRequest *)aParameters
 ;
 @end
-@interface LibreAccessServiceSoap12Binding_SaveContentProfileAssignment : LibreAccessServiceSoap12BindingOperation {
+@interface LibreAccessServiceSoap11Binding_SaveContentProfileAssignment : LibreAccessServiceSoap11BindingOperation {
 	LibreAccessServiceSvc_SaveContentProfileAssignmentRequest * parameters;
 }
 @property (nonatomic, retain) LibreAccessServiceSvc_SaveContentProfileAssignmentRequest * parameters;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)aDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)aDelegate
 	parameters:(LibreAccessServiceSvc_SaveContentProfileAssignmentRequest *)aParameters
 ;
 @end
-@interface LibreAccessServiceSoap12Binding_TokenExchange : LibreAccessServiceSoap12BindingOperation {
+@interface LibreAccessServiceSoap11Binding_TokenExchange : LibreAccessServiceSoap11BindingOperation {
 	LibreAccessServiceSvc_TokenExchange * body;
 }
 @property (nonatomic, retain) LibreAccessServiceSvc_TokenExchange * body;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)aDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)aDelegate
 	body:(LibreAccessServiceSvc_TokenExchange *)aBody
 ;
 @end
-@interface LibreAccessServiceSoap12Binding_SetAccountPasswordRequired : LibreAccessServiceSoap12BindingOperation {
+@interface LibreAccessServiceSoap11Binding_SetAccountPasswordRequired : LibreAccessServiceSoap11BindingOperation {
 	LibreAccessServiceSvc_SetAccountPasswordRequiredRequest * parameters;
 }
 @property (nonatomic, retain) LibreAccessServiceSvc_SetAccountPasswordRequiredRequest * parameters;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)aDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)aDelegate
 	parameters:(LibreAccessServiceSvc_SetAccountPasswordRequiredRequest *)aParameters
 ;
 @end
-@interface LibreAccessServiceSoap12Binding_GetVersion : LibreAccessServiceSoap12BindingOperation {
+@interface LibreAccessServiceSoap11Binding_GetVersion : LibreAccessServiceSoap11BindingOperation {
 	LibreAccessServiceSvc_GetVersionRequest * parameters;
 }
 @property (nonatomic, retain) LibreAccessServiceSvc_GetVersionRequest * parameters;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)aDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)aDelegate
 	parameters:(LibreAccessServiceSvc_GetVersionRequest *)aParameters
 ;
 @end
-@interface LibreAccessServiceSoap12Binding_SaveUserSettings : LibreAccessServiceSoap12BindingOperation {
+@interface LibreAccessServiceSoap11Binding_SaveUserSettings : LibreAccessServiceSoap11BindingOperation {
 	LibreAccessServiceSvc_SaveUserSettingsRequest * parameters;
 }
 @property (nonatomic, retain) LibreAccessServiceSvc_SaveUserSettingsRequest * parameters;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)aDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)aDelegate
 	parameters:(LibreAccessServiceSvc_SaveUserSettingsRequest *)aParameters
 ;
 @end
-@interface LibreAccessServiceSoap12Binding_AuthenticateDevice : LibreAccessServiceSoap12BindingOperation {
+@interface LibreAccessServiceSoap11Binding_AuthenticateDevice : LibreAccessServiceSoap11BindingOperation {
 	LibreAccessServiceSvc_AuthenticateDeviceRequest * body;
 }
 @property (nonatomic, retain) LibreAccessServiceSvc_AuthenticateDeviceRequest * body;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)aDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)aDelegate
 	body:(LibreAccessServiceSvc_AuthenticateDeviceRequest *)aBody
 ;
 @end
-@interface LibreAccessServiceSoap12Binding_ListContentMetadata : LibreAccessServiceSoap12BindingOperation {
+@interface LibreAccessServiceSoap11Binding_ListContentMetadata : LibreAccessServiceSoap11BindingOperation {
 	LibreAccessServiceSvc_ListContentMetadata * body;
 }
 @property (nonatomic, retain) LibreAccessServiceSvc_ListContentMetadata * body;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)aDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)aDelegate
 	body:(LibreAccessServiceSvc_ListContentMetadata *)aBody
 ;
 @end
-@interface LibreAccessServiceSoap12Binding_ListApplicationSettings : LibreAccessServiceSoap12BindingOperation {
+@interface LibreAccessServiceSoap11Binding_ListApplicationSettings : LibreAccessServiceSoap11BindingOperation {
 	LibreAccessServiceSvc_ListApplicationSettingsRequest * parameters;
 }
 @property (nonatomic, retain) LibreAccessServiceSvc_ListApplicationSettingsRequest * parameters;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)aDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)aDelegate
 	parameters:(LibreAccessServiceSvc_ListApplicationSettingsRequest *)aParameters
 ;
 @end
-@interface LibreAccessServiceSoap12Binding_ListTopFavorites : LibreAccessServiceSoap12BindingOperation {
+@interface LibreAccessServiceSoap11Binding_ListTopFavorites : LibreAccessServiceSoap11BindingOperation {
 	LibreAccessServiceSvc_ListTopFavoritesRequest * parameters;
 }
 @property (nonatomic, retain) LibreAccessServiceSvc_ListTopFavoritesRequest * parameters;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)aDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)aDelegate
 	parameters:(LibreAccessServiceSvc_ListTopFavoritesRequest *)aParameters
 ;
 @end
-@interface LibreAccessServiceSoap12Binding_ListLastNProfileReadBooks : LibreAccessServiceSoap12BindingOperation {
+@interface LibreAccessServiceSoap11Binding_ListLastNProfileReadBooks : LibreAccessServiceSoap11BindingOperation {
 	LibreAccessServiceSvc_ListLastNProfileReadBooksRequest * parameters;
 }
 @property (nonatomic, retain) LibreAccessServiceSvc_ListLastNProfileReadBooksRequest * parameters;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)aDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)aDelegate
 	parameters:(LibreAccessServiceSvc_ListLastNProfileReadBooksRequest *)aParameters
 ;
 @end
-@interface LibreAccessServiceSoap12Binding_SaveUserProfiles : LibreAccessServiceSoap12BindingOperation {
+@interface LibreAccessServiceSoap11Binding_SaveUserProfiles : LibreAccessServiceSoap11BindingOperation {
 	LibreAccessServiceSvc_SaveUserProfilesRequest * parameters;
 }
 @property (nonatomic, retain) LibreAccessServiceSvc_SaveUserProfilesRequest * parameters;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)aDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)aDelegate
 	parameters:(LibreAccessServiceSvc_SaveUserProfilesRequest *)aParameters
 ;
 @end
-@interface LibreAccessServiceSoap12Binding_GetUserProfiles : LibreAccessServiceSoap12BindingOperation {
+@interface LibreAccessServiceSoap11Binding_GetUserProfiles : LibreAccessServiceSoap11BindingOperation {
 	LibreAccessServiceSvc_GetUserProfilesRequest * parameters;
 }
 @property (nonatomic, retain) LibreAccessServiceSvc_GetUserProfilesRequest * parameters;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)aDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)aDelegate
 	parameters:(LibreAccessServiceSvc_GetUserProfilesRequest *)aParameters
 ;
 @end
-@interface LibreAccessServiceSoap12Binding_DeleteBookShelfEntry : LibreAccessServiceSoap12BindingOperation {
+@interface LibreAccessServiceSoap11Binding_DeleteBookShelfEntry : LibreAccessServiceSoap11BindingOperation {
 	LibreAccessServiceSvc_DeleteBookShelfEntryRequest * parameters;
 }
 @property (nonatomic, retain) LibreAccessServiceSvc_DeleteBookShelfEntryRequest * parameters;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)aDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)aDelegate
 	parameters:(LibreAccessServiceSvc_DeleteBookShelfEntryRequest *)aParameters
 ;
 @end
-@interface LibreAccessServiceSoap12Binding_ListUserSettings : LibreAccessServiceSoap12BindingOperation {
+@interface LibreAccessServiceSoap11Binding_ListUserSettings : LibreAccessServiceSoap11BindingOperation {
 	LibreAccessServiceSvc_ListUserSettingsRequest * parameters;
 }
 @property (nonatomic, retain) LibreAccessServiceSvc_ListUserSettingsRequest * parameters;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)aDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)aDelegate
 	parameters:(LibreAccessServiceSvc_ListUserSettingsRequest *)aParameters
 ;
 @end
-@interface LibreAccessServiceSoap12Binding_IsEntitledToLicense : LibreAccessServiceSoap12BindingOperation {
+@interface LibreAccessServiceSoap11Binding_IsEntitledToLicense : LibreAccessServiceSoap11BindingOperation {
 	LibreAccessServiceSvc_EntitledToLicenceRequest * parameters;
 }
 @property (nonatomic, retain) LibreAccessServiceSvc_EntitledToLicenceRequest * parameters;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)aDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)aDelegate
 	parameters:(LibreAccessServiceSvc_EntitledToLicenceRequest *)aParameters
 ;
 @end
-@interface LibreAccessServiceSoap12Binding_RemoveOrder : LibreAccessServiceSoap12BindingOperation {
+@interface LibreAccessServiceSoap11Binding_RemoveOrder : LibreAccessServiceSoap11BindingOperation {
 	LibreAccessServiceSvc_RemoveOrderRequest * parameters;
 }
 @property (nonatomic, retain) LibreAccessServiceSvc_RemoveOrderRequest * parameters;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)aDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)aDelegate
 	parameters:(LibreAccessServiceSvc_RemoveOrderRequest *)aParameters
 ;
 @end
-@interface LibreAccessServiceSoap12Binding_ListProfileContentAnnotations : LibreAccessServiceSoap12BindingOperation {
+@interface LibreAccessServiceSoap11Binding_ListProfileContentAnnotations : LibreAccessServiceSoap11BindingOperation {
 	LibreAccessServiceSvc_ListProfileContentAnnotationsRequest * parameters;
 }
 @property (nonatomic, retain) LibreAccessServiceSvc_ListProfileContentAnnotationsRequest * parameters;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)aDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)aDelegate
 	parameters:(LibreAccessServiceSvc_ListProfileContentAnnotationsRequest *)aParameters
 ;
 @end
-@interface LibreAccessServiceSoap12Binding_ListUserContent : LibreAccessServiceSoap12BindingOperation {
+@interface LibreAccessServiceSoap11Binding_ListUserContent : LibreAccessServiceSoap11BindingOperation {
 	LibreAccessServiceSvc_ListUserContent * body;
 }
 @property (nonatomic, retain) LibreAccessServiceSvc_ListUserContent * body;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)aDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)aDelegate
 	body:(LibreAccessServiceSvc_ListUserContent *)aBody
 ;
 @end
-@interface LibreAccessServiceSoap12Binding_ListFavoriteTypes : LibreAccessServiceSoap12BindingOperation {
+@interface LibreAccessServiceSoap11Binding_ListFavoriteTypes : LibreAccessServiceSoap11BindingOperation {
 	LibreAccessServiceSvc_ListFavoriteTypesRequest * parameters;
 }
 @property (nonatomic, retain) LibreAccessServiceSvc_ListFavoriteTypesRequest * parameters;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)aDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)aDelegate
 	parameters:(LibreAccessServiceSvc_ListFavoriteTypesRequest *)aParameters
 ;
 @end
-@interface LibreAccessServiceSoap12Binding_GetKeyId : LibreAccessServiceSoap12BindingOperation {
+@interface LibreAccessServiceSoap11Binding_GetKeyId : LibreAccessServiceSoap11BindingOperation {
 	LibreAccessServiceSvc_GetKeyIdRequest * parameters;
 }
 @property (nonatomic, retain) LibreAccessServiceSvc_GetKeyIdRequest * parameters;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)aDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)aDelegate
 	parameters:(LibreAccessServiceSvc_GetKeyIdRequest *)aParameters
 ;
 @end
-@interface LibreAccessServiceSoap12Binding_SaveDefaultBooks : LibreAccessServiceSoap12BindingOperation {
+@interface LibreAccessServiceSoap11Binding_SaveDefaultBooks : LibreAccessServiceSoap11BindingOperation {
 	LibreAccessServiceSvc_SaveDefaultBooksRequest * parameters;
 }
 @property (nonatomic, retain) LibreAccessServiceSvc_SaveDefaultBooksRequest * parameters;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)aDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)aDelegate
 	parameters:(LibreAccessServiceSvc_SaveDefaultBooksRequest *)aParameters
 ;
 @end
-@interface LibreAccessServiceSoap12Binding_SetAccountAutoAssign : LibreAccessServiceSoap12BindingOperation {
+@interface LibreAccessServiceSoap11Binding_SetAccountAutoAssign : LibreAccessServiceSoap11BindingOperation {
 	LibreAccessServiceSvc_SetAccountAutoAssignRequest * parameters;
 }
 @property (nonatomic, retain) LibreAccessServiceSvc_SetAccountAutoAssignRequest * parameters;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)aDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)aDelegate
 	parameters:(LibreAccessServiceSvc_SetAccountAutoAssignRequest *)aParameters
 ;
 @end
-@interface LibreAccessServiceSoap12Binding_envelope : NSObject {
+@interface LibreAccessServiceSoap11Binding_envelope : NSObject {
 }
-+ (LibreAccessServiceSoap12Binding_envelope *)sharedInstance;
++ (LibreAccessServiceSoap11Binding_envelope *)sharedInstance;
 - (NSString *)serializedFormUsingHeaderElements:(NSDictionary *)headerElements bodyElements:(NSDictionary *)bodyElements bodyKeys:(NSArray *)bodyKeys;
 @end
-@interface LibreAccessServiceSoap12BindingResponse : NSObject {
+@interface LibreAccessServiceSoap11BindingResponse : NSObject {
 	NSArray *headers;
 	NSArray *bodyParts;
 	NSError *error;

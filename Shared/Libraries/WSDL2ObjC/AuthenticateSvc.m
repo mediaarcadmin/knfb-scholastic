@@ -333,12 +333,12 @@
 	[[USGlobals sharedInstance].wsdlStandardNamespaces setObject:@"xsd" forKey:@"http://www.w3.org/2001/XMLSchema"];
 	[[USGlobals sharedInstance].wsdlStandardNamespaces setObject:@"AuthenticateSvc" forKey:@"http://sps.schws.scholastic.com"];
 }
-+ (AuthenticateSoap12Binding *)AuthenticateSoap12Binding
++ (AuthenticateSoap11Binding *)AuthenticateSoap11Binding
 {
-	return [[[AuthenticateSoap12Binding alloc] initWithAddress:@"http://esvcs.scholastic.com:80/SchWS/services/SPS/Authenticate.AuthenticateHttpSoap12Endpoint/"] autorelease];
+	return [[[AuthenticateSoap11Binding alloc] initWithAddress:@"http://esvcs.scholastic.com:80/SchWS/services/SPS/Authenticate.AuthenticateHttpSoap11Endpoint/"] autorelease];
 }
 @end
-@implementation AuthenticateSoap12Binding
+@implementation AuthenticateSoap11Binding
 @synthesize address;
 @synthesize timeout;
 @synthesize logXMLInOut;
@@ -373,7 +373,7 @@
 }
 - (NSString *)MIMEType
 {
-	return @"application/soap+xml";
+	return @"text/xml";
 }
 - (void)addCookie:(NSHTTPCookie *)toAdd
 {
@@ -382,7 +382,7 @@
 		[cookies addObject:toAdd];
 	}
 }
-- (AuthenticateSoap12BindingResponse *)performSynchronousOperation:(AuthenticateSoap12BindingOperation *)operation
+- (AuthenticateSoap11BindingResponse *)performSynchronousOperation:(AuthenticateSoap11BindingOperation *)operation
 {
 	synchronousOperationComplete = NO;
 	[operation start];
@@ -393,27 +393,27 @@
 	while (!synchronousOperationComplete && [theRL runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]]);
 	return operation.response;
 }
-- (void)performAsynchronousOperation:(AuthenticateSoap12BindingOperation *)operation
+- (void)performAsynchronousOperation:(AuthenticateSoap11BindingOperation *)operation
 {
 	[operation start];
 }
-- (void) operation:(AuthenticateSoap12BindingOperation *)operation completedWithResponse:(AuthenticateSoap12BindingResponse *)response
+- (void) operation:(AuthenticateSoap11BindingOperation *)operation completedWithResponse:(AuthenticateSoap11BindingResponse *)response
 {
 	synchronousOperationComplete = YES;
 }
-- (AuthenticateSoap12BindingResponse *)processRemoteUsingParameters:(AuthenticateSvc_processRemote *)aParameters 
+- (AuthenticateSoap11BindingResponse *)processRemoteUsingParameters:(AuthenticateSvc_processRemote *)aParameters 
 {
-	return [self performSynchronousOperation:[[(AuthenticateSoap12Binding_processRemote*)[AuthenticateSoap12Binding_processRemote alloc] initWithBinding:self delegate:self
+	return [self performSynchronousOperation:[[(AuthenticateSoap11Binding_processRemote*)[AuthenticateSoap11Binding_processRemote alloc] initWithBinding:self delegate:self
 																							parameters:aParameters
 																							] autorelease]];
 }
-- (void)processRemoteAsyncUsingParameters:(AuthenticateSvc_processRemote *)aParameters  delegate:(id<AuthenticateSoap12BindingResponseDelegate>)responseDelegate
+- (void)processRemoteAsyncUsingParameters:(AuthenticateSvc_processRemote *)aParameters  delegate:(id<AuthenticateSoap11BindingResponseDelegate>)responseDelegate
 {
-	[self performAsynchronousOperation: [[(AuthenticateSoap12Binding_processRemote*)[AuthenticateSoap12Binding_processRemote alloc] initWithBinding:self delegate:responseDelegate
+	[self performAsynchronousOperation: [[(AuthenticateSoap11Binding_processRemote*)[AuthenticateSoap11Binding_processRemote alloc] initWithBinding:self delegate:responseDelegate
 																							 parameters:aParameters
 																							 ] autorelease]];
 }
-- (void)sendHTTPCallUsingBody:(NSString *)outputBody soapAction:(NSString *)soapAction forOperation:(AuthenticateSoap12BindingOperation *)operation
+- (void)sendHTTPCallUsingBody:(NSString *)outputBody soapAction:(NSString *)soapAction forOperation:(AuthenticateSoap11BindingOperation *)operation
 {
 	NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:self.address 
 																												 cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData
@@ -455,13 +455,13 @@
 	[super dealloc];
 }
 @end
-@implementation AuthenticateSoap12BindingOperation
+@implementation AuthenticateSoap11BindingOperation
 @synthesize binding;
 @synthesize response;
 @synthesize delegate;
 @synthesize responseData;
 @synthesize urlConnection;
-- (id)initWithBinding:(AuthenticateSoap12Binding *)aBinding delegate:(id<AuthenticateSoap12BindingResponseDelegate>)aDelegate
+- (id)initWithBinding:(AuthenticateSoap11Binding *)aBinding delegate:(id<AuthenticateSoap11BindingResponseDelegate>)aDelegate
 {
 	if ((self = [super init])) {
 		self.binding = aBinding;
@@ -510,12 +510,12 @@
 			NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:[NSHTTPURLResponse localizedStringForStatusCode:[httpResponse statusCode]],NSLocalizedDescriptionKey,
                                                                           httpResponse.URL, NSURLErrorKey,nil];
 				
-			error = [NSError errorWithDomain:@"AuthenticateSoap12BindingResponseHTTP" code:[httpResponse statusCode] userInfo:userInfo];
+			error = [NSError errorWithDomain:@"AuthenticateSoap11BindingResponseHTTP" code:[httpResponse statusCode] userInfo:userInfo];
 		} else {
 			NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
 	 												[NSString stringWithFormat: @"Unexpected response MIME type to SOAP call:%@", urlResponse.MIMEType],NSLocalizedDescriptionKey,
                                                                           httpResponse.URL, NSURLErrorKey,nil];
-			error = [NSError errorWithDomain:@"AuthenticateSoap12BindingResponseHTTP" code:1 userInfo:userInfo];
+			error = [NSError errorWithDomain:@"AuthenticateSoap11BindingResponseHTTP" code:1 userInfo:userInfo];
 		}
 				
 		[self connection:connection didFailWithError:error];
@@ -548,9 +548,9 @@
 	[super dealloc];
 }
 @end
-@implementation AuthenticateSoap12Binding_processRemote
+@implementation AuthenticateSoap11Binding_processRemote
 @synthesize parameters;
-- (id)initWithBinding:(AuthenticateSoap12Binding *)aBinding delegate:(id<AuthenticateSoap12BindingResponseDelegate>)responseDelegate
+- (id)initWithBinding:(AuthenticateSoap11Binding *)aBinding delegate:(id<AuthenticateSoap11BindingResponseDelegate>)responseDelegate
 parameters:(AuthenticateSvc_processRemote *)aParameters
 {
 	if((self = [super initWithBinding:aBinding delegate:responseDelegate])) {
@@ -568,9 +568,9 @@ parameters:(AuthenticateSvc_processRemote *)aParameters
 - (void)main
 {
 	[response autorelease];
-	response = [AuthenticateSoap12BindingResponse new];
+	response = [AuthenticateSoap11BindingResponse new];
 	
-	AuthenticateSoap12Binding_envelope *envelope = [AuthenticateSoap12Binding_envelope sharedInstance];
+	AuthenticateSoap11Binding_envelope *envelope = [AuthenticateSoap11Binding_envelope sharedInstance];
 	
 	NSMutableDictionary *headerElements = nil;
 	headerElements = [NSMutableDictionary dictionary];
@@ -611,7 +611,7 @@ parameters:(AuthenticateSvc_processRemote *)aParameters
 		if (doc == NULL) {
 			NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"Errors while parsing returned XML" forKey:NSLocalizedDescriptionKey];
 			
-			response.error = [NSError errorWithDomain:@"AuthenticateSoap12BindingResponseXML" code:1 userInfo:userInfo];
+			response.error = [NSError errorWithDomain:@"AuthenticateSoap11BindingResponseXML" code:1 userInfo:userInfo];
 			[delegate operation:self completedWithResponse:response];
 		} else {
 			cur = xmlDocGetRootElement(doc);
@@ -653,15 +653,15 @@ parameters:(AuthenticateSvc_processRemote *)aParameters
 	}
 }
 @end
-static AuthenticateSoap12Binding_envelope *AuthenticateSoap12BindingSharedEnvelopeInstance = nil;
-@implementation AuthenticateSoap12Binding_envelope
-+ (AuthenticateSoap12Binding_envelope *)sharedInstance
+static AuthenticateSoap11Binding_envelope *AuthenticateSoap11BindingSharedEnvelopeInstance = nil;
+@implementation AuthenticateSoap11Binding_envelope
++ (AuthenticateSoap11Binding_envelope *)sharedInstance
 {
-	if(AuthenticateSoap12BindingSharedEnvelopeInstance == nil) {
-		AuthenticateSoap12BindingSharedEnvelopeInstance = [AuthenticateSoap12Binding_envelope new];
+	if(AuthenticateSoap11BindingSharedEnvelopeInstance == nil) {
+		AuthenticateSoap11BindingSharedEnvelopeInstance = [AuthenticateSoap11Binding_envelope new];
 	}
 	
-	return AuthenticateSoap12BindingSharedEnvelopeInstance;
+	return AuthenticateSoap11BindingSharedEnvelopeInstance;
 }
 - (NSString *)serializedFormUsingHeaderElements:(NSDictionary *)headerElements bodyElements:(NSDictionary *)bodyElements bodyKeys:(NSArray *)bodyKeys
 {
@@ -676,7 +676,7 @@ static AuthenticateSoap12Binding_envelope *AuthenticateSoap12BindingSharedEnvelo
 	xmlNodePtr root = xmlNewDocNode(doc, NULL, (const xmlChar*)"Envelope", NULL);
 	xmlDocSetRootElement(doc, root);
 	
-	xmlNsPtr soapEnvelopeNs = xmlNewNs(root, (const xmlChar*)"http://www.w3.org/2003/05/soap-envelope", (const xmlChar*)"soap");
+	xmlNsPtr soapEnvelopeNs = xmlNewNs(root, (const xmlChar*)"http://schemas.xmlsoap.org/soap/envelope/", (const xmlChar*)"soap");
 	xmlSetNs(root, soapEnvelopeNs);
 	
 	xmlNsPtr xslNs = xmlNewNs(root, (const xmlChar*)"http://www.w3.org/1999/XSL/Transform", (const xmlChar*)"xsl");
@@ -718,7 +718,7 @@ static AuthenticateSoap12Binding_envelope *AuthenticateSoap12BindingSharedEnvelo
 	return serializedForm;
 }
 @end
-@implementation AuthenticateSoap12BindingResponse
+@implementation AuthenticateSoap11BindingResponse
 @synthesize headers;
 @synthesize bodyParts;
 @synthesize error;

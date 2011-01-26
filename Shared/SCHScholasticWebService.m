@@ -36,7 +36,7 @@ static NSString * const kSCHScholasticWebServiceAttributeErrorDesc = @"errorDesc
 {
 	self = [super init];
 	if (self != nil) {
-		binding = [[AuthenticateSvc AuthenticateSoap12Binding] retain];
+		binding = [[AuthenticateSvc AuthenticateSoap11Binding] retain];
 		binding.logXMLInOut = NO;		
 	}
 	
@@ -67,7 +67,7 @@ static NSString * const kSCHScholasticWebServiceAttributeErrorDesc = @"errorDesc
 #pragma mark -
 #pragma mark AuthenticateSoap12BindingResponse Delegate methods
 
-- (void)operation:(AuthenticateSoap12BindingOperation *)operation completedWithResponse:(AuthenticateSoap12BindingResponse *)response
+- (void)operation:(AuthenticateSoap11BindingOperation *)operation completedWithResponse:(AuthenticateSoap11BindingResponse *)response
 {	
 	if (operation.response.error != nil && [(id)self.delegate respondsToSelector:@selector(method:didFailWithError:)]) {
 		[(id)self.delegate method:kSCHScholasticWebServiceProcessRemote didFailWithError:operation.response.error];

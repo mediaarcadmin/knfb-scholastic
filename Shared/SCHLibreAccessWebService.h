@@ -118,8 +118,8 @@ static NSString * const kSCHLibreAccessWebServiceX = @"x";
 static NSString * const kSCHLibreAccessWebServiceY = @"y";
 
 
-@interface SCHLibreAccessWebService : BITSOAPProxy <LibreAccessServiceSoap12BindingResponseDelegate, BITObjectMapperProtocol> {
-	LibreAccessServiceSoap12Binding *binding;
+@interface SCHLibreAccessWebService : BITSOAPProxy <LibreAccessServiceSoap11BindingResponseDelegate, BITObjectMapperProtocol> {
+	LibreAccessServiceSoap11Binding *binding;
 }
 
 - (void)tokenExchange:(NSString *)pToken forUser:(NSString *)userName;

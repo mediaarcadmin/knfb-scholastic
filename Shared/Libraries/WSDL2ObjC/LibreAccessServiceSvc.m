@@ -576,6 +576,9 @@ LibreAccessServiceSvc_ApplicationSettings LibreAccessServiceSvc_ApplicationSetti
 	if([string isEqualToString:@"UNREGISTERED_DEVICES_LIMIT"]) {
 		return LibreAccessServiceSvc_ApplicationSettings_UNREGISTERED_DEVICES_LIMIT;
 	}
+	if([string isEqualToString:@"DEACTIVATE_ON_DEREGISTER"]) {
+		return LibreAccessServiceSvc_ApplicationSettings_DEACTIVATE_ON_DEREGISTER;
+	}
 	
 	return LibreAccessServiceSvc_ApplicationSettings_none;
 }
@@ -638,6 +641,9 @@ NSString * LibreAccessServiceSvc_ApplicationSettings_stringFromEnum(LibreAccessS
 			break;
 		case LibreAccessServiceSvc_ApplicationSettings_UNREGISTERED_DEVICES_LIMIT:
 			return @"UNREGISTERED_DEVICES_LIMIT";
+			break;
+		case LibreAccessServiceSvc_ApplicationSettings_DEACTIVATE_ON_DEREGISTER:
+			return @"DEACTIVATE_ON_DEREGISTER";
 			break;
 		default:
 			return @"";
@@ -44309,12 +44315,12 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 	[[USGlobals sharedInstance].wsdlStandardNamespaces setObject:@"xsd" forKey:@"http://www.w3.org/2001/XMLSchema"];
 	[[USGlobals sharedInstance].wsdlStandardNamespaces setObject:@"LibreAccessServiceSvc" forKey:@"http://webservices.libredigital.com/LibreAccess/2010-02-10"];
 }
-+ (LibreAccessServiceSoap12Binding *)LibreAccessServiceSoap12Binding
++ (LibreAccessServiceSoap11Binding *)LibreAccessServiceSoap11Binding
 {
-	return [[[LibreAccessServiceSoap12Binding alloc] initWithAddress:@"http://laesb.devint.cld.libredigital.com/services/LibreAccessService.LibreAccessServiceHttpSoap12Endpoint"] autorelease];
+	return [[[LibreAccessServiceSoap11Binding alloc] initWithAddress:@"http://laesb.devint.cld.libredigital.com/services/LibreAccessService.LibreAccessServiceHttpSoap11Endpoint"] autorelease];
 }
 @end
-@implementation LibreAccessServiceSoap12Binding
+@implementation LibreAccessServiceSoap11Binding
 @synthesize address;
 @synthesize timeout;
 @synthesize logXMLInOut;
@@ -44349,7 +44355,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 }
 - (NSString *)MIMEType
 {
-	return @"application/soap+xml";
+	return @"text/xml";
 }
 - (void)addCookie:(NSHTTPCookie *)toAdd
 {
@@ -44358,7 +44364,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 		[cookies addObject:toAdd];
 	}
 }
-- (LibreAccessServiceSoap12BindingResponse *)performSynchronousOperation:(LibreAccessServiceSoap12BindingOperation *)operation
+- (LibreAccessServiceSoap11BindingResponse *)performSynchronousOperation:(LibreAccessServiceSoap11BindingOperation *)operation
 {
 	synchronousOperationComplete = NO;
 	[operation start];
@@ -44369,577 +44375,577 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 	while (!synchronousOperationComplete && [theRL runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]]);
 	return operation.response;
 }
-- (void)performAsynchronousOperation:(LibreAccessServiceSoap12BindingOperation *)operation
+- (void)performAsynchronousOperation:(LibreAccessServiceSoap11BindingOperation *)operation
 {
 	[operation start];
 }
-- (void) operation:(LibreAccessServiceSoap12BindingOperation *)operation completedWithResponse:(LibreAccessServiceSoap12BindingResponse *)response
+- (void) operation:(LibreAccessServiceSoap11BindingOperation *)operation completedWithResponse:(LibreAccessServiceSoap11BindingResponse *)response
 {
 	synchronousOperationComplete = YES;
 }
-- (LibreAccessServiceSoap12BindingResponse *)ValidateScreenNameUsingParameters:(LibreAccessServiceSvc_ValidateScreenNameRequest *)aParameters 
+- (LibreAccessServiceSoap11BindingResponse *)ValidateScreenNameUsingParameters:(LibreAccessServiceSvc_ValidateScreenNameRequest *)aParameters 
 {
-	return [self performSynchronousOperation:[[(LibreAccessServiceSoap12Binding_ValidateScreenName*)[LibreAccessServiceSoap12Binding_ValidateScreenName alloc] initWithBinding:self delegate:self
+	return [self performSynchronousOperation:[[(LibreAccessServiceSoap11Binding_ValidateScreenName*)[LibreAccessServiceSoap11Binding_ValidateScreenName alloc] initWithBinding:self delegate:self
 																							parameters:aParameters
 																							] autorelease]];
 }
-- (void)ValidateScreenNameAsyncUsingParameters:(LibreAccessServiceSvc_ValidateScreenNameRequest *)aParameters  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (void)ValidateScreenNameAsyncUsingParameters:(LibreAccessServiceSvc_ValidateScreenNameRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 {
-	[self performAsynchronousOperation: [[(LibreAccessServiceSoap12Binding_ValidateScreenName*)[LibreAccessServiceSoap12Binding_ValidateScreenName alloc] initWithBinding:self delegate:responseDelegate
+	[self performAsynchronousOperation: [[(LibreAccessServiceSoap11Binding_ValidateScreenName*)[LibreAccessServiceSoap11Binding_ValidateScreenName alloc] initWithBinding:self delegate:responseDelegate
 																							 parameters:aParameters
 																							 ] autorelease]];
 }
-- (LibreAccessServiceSoap12BindingResponse *)ValidateUserKeyUsingParameters:(LibreAccessServiceSvc_ValidateUserKeyRequest *)aParameters 
+- (LibreAccessServiceSoap11BindingResponse *)ValidateUserKeyUsingParameters:(LibreAccessServiceSvc_ValidateUserKeyRequest *)aParameters 
 {
-	return [self performSynchronousOperation:[[(LibreAccessServiceSoap12Binding_ValidateUserKey*)[LibreAccessServiceSoap12Binding_ValidateUserKey alloc] initWithBinding:self delegate:self
+	return [self performSynchronousOperation:[[(LibreAccessServiceSoap11Binding_ValidateUserKey*)[LibreAccessServiceSoap11Binding_ValidateUserKey alloc] initWithBinding:self delegate:self
 																							parameters:aParameters
 																							] autorelease]];
 }
-- (void)ValidateUserKeyAsyncUsingParameters:(LibreAccessServiceSvc_ValidateUserKeyRequest *)aParameters  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (void)ValidateUserKeyAsyncUsingParameters:(LibreAccessServiceSvc_ValidateUserKeyRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 {
-	[self performAsynchronousOperation: [[(LibreAccessServiceSoap12Binding_ValidateUserKey*)[LibreAccessServiceSoap12Binding_ValidateUserKey alloc] initWithBinding:self delegate:responseDelegate
+	[self performAsynchronousOperation: [[(LibreAccessServiceSoap11Binding_ValidateUserKey*)[LibreAccessServiceSoap11Binding_ValidateUserKey alloc] initWithBinding:self delegate:responseDelegate
 																							 parameters:aParameters
 																							 ] autorelease]];
 }
-- (LibreAccessServiceSoap12BindingResponse *)AcknowledgeLicenseUsingParameters:(LibreAccessServiceSvc_AcknowledgeLicenseRequest *)aParameters 
+- (LibreAccessServiceSoap11BindingResponse *)AcknowledgeLicenseUsingParameters:(LibreAccessServiceSvc_AcknowledgeLicenseRequest *)aParameters 
 {
-	return [self performSynchronousOperation:[[(LibreAccessServiceSoap12Binding_AcknowledgeLicense*)[LibreAccessServiceSoap12Binding_AcknowledgeLicense alloc] initWithBinding:self delegate:self
+	return [self performSynchronousOperation:[[(LibreAccessServiceSoap11Binding_AcknowledgeLicense*)[LibreAccessServiceSoap11Binding_AcknowledgeLicense alloc] initWithBinding:self delegate:self
 																							parameters:aParameters
 																							] autorelease]];
 }
-- (void)AcknowledgeLicenseAsyncUsingParameters:(LibreAccessServiceSvc_AcknowledgeLicenseRequest *)aParameters  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (void)AcknowledgeLicenseAsyncUsingParameters:(LibreAccessServiceSvc_AcknowledgeLicenseRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 {
-	[self performAsynchronousOperation: [[(LibreAccessServiceSoap12Binding_AcknowledgeLicense*)[LibreAccessServiceSoap12Binding_AcknowledgeLicense alloc] initWithBinding:self delegate:responseDelegate
+	[self performAsynchronousOperation: [[(LibreAccessServiceSoap11Binding_AcknowledgeLicense*)[LibreAccessServiceSoap11Binding_AcknowledgeLicense alloc] initWithBinding:self delegate:responseDelegate
 																							 parameters:aParameters
 																							 ] autorelease]];
 }
-- (LibreAccessServiceSoap12BindingResponse *)SharedTokenExchangeUsingBody:(LibreAccessServiceSvc_SharedTokenExchangeRequest *)aBody 
+- (LibreAccessServiceSoap11BindingResponse *)SharedTokenExchangeUsingBody:(LibreAccessServiceSvc_SharedTokenExchangeRequest *)aBody 
 {
-	return [self performSynchronousOperation:[[(LibreAccessServiceSoap12Binding_SharedTokenExchange*)[LibreAccessServiceSoap12Binding_SharedTokenExchange alloc] initWithBinding:self delegate:self
+	return [self performSynchronousOperation:[[(LibreAccessServiceSoap11Binding_SharedTokenExchange*)[LibreAccessServiceSoap11Binding_SharedTokenExchange alloc] initWithBinding:self delegate:self
 																							body:aBody
 																							] autorelease]];
 }
-- (void)SharedTokenExchangeAsyncUsingBody:(LibreAccessServiceSvc_SharedTokenExchangeRequest *)aBody  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (void)SharedTokenExchangeAsyncUsingBody:(LibreAccessServiceSvc_SharedTokenExchangeRequest *)aBody  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 {
-	[self performAsynchronousOperation: [[(LibreAccessServiceSoap12Binding_SharedTokenExchange*)[LibreAccessServiceSoap12Binding_SharedTokenExchange alloc] initWithBinding:self delegate:responseDelegate
+	[self performAsynchronousOperation: [[(LibreAccessServiceSoap11Binding_SharedTokenExchange*)[LibreAccessServiceSoap11Binding_SharedTokenExchange alloc] initWithBinding:self delegate:responseDelegate
 																							 body:aBody
 																							 ] autorelease]];
 }
-- (LibreAccessServiceSoap12BindingResponse *)SaveUserCSRNotesUsingParameters:(LibreAccessServiceSvc_SaveUserCSRNotesRequest *)aParameters 
+- (LibreAccessServiceSoap11BindingResponse *)SaveUserCSRNotesUsingParameters:(LibreAccessServiceSvc_SaveUserCSRNotesRequest *)aParameters 
 {
-	return [self performSynchronousOperation:[[(LibreAccessServiceSoap12Binding_SaveUserCSRNotes*)[LibreAccessServiceSoap12Binding_SaveUserCSRNotes alloc] initWithBinding:self delegate:self
+	return [self performSynchronousOperation:[[(LibreAccessServiceSoap11Binding_SaveUserCSRNotes*)[LibreAccessServiceSoap11Binding_SaveUserCSRNotes alloc] initWithBinding:self delegate:self
 																							parameters:aParameters
 																							] autorelease]];
 }
-- (void)SaveUserCSRNotesAsyncUsingParameters:(LibreAccessServiceSvc_SaveUserCSRNotesRequest *)aParameters  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (void)SaveUserCSRNotesAsyncUsingParameters:(LibreAccessServiceSvc_SaveUserCSRNotesRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 {
-	[self performAsynchronousOperation: [[(LibreAccessServiceSoap12Binding_SaveUserCSRNotes*)[LibreAccessServiceSoap12Binding_SaveUserCSRNotes alloc] initWithBinding:self delegate:responseDelegate
+	[self performAsynchronousOperation: [[(LibreAccessServiceSoap11Binding_SaveUserCSRNotes*)[LibreAccessServiceSoap11Binding_SaveUserCSRNotes alloc] initWithBinding:self delegate:responseDelegate
 																							 parameters:aParameters
 																							 ] autorelease]];
 }
-- (LibreAccessServiceSoap12BindingResponse *)HealthCheck:(id)noParameters
+- (LibreAccessServiceSoap11BindingResponse *)HealthCheck:(id)noParameters
 {
-	return [self performSynchronousOperation:[[(LibreAccessServiceSoap12Binding_HealthCheck*)[LibreAccessServiceSoap12Binding_HealthCheck alloc] initWithBinding:self delegate:self
+	return [self performSynchronousOperation:[[(LibreAccessServiceSoap11Binding_HealthCheck*)[LibreAccessServiceSoap11Binding_HealthCheck alloc] initWithBinding:self delegate:self
 																							] autorelease]];
 }
-- (void)HealthCheckAsync:(id)noParameters delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (void)HealthCheckAsync:(id)noParameters delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 {
-	[self performAsynchronousOperation: [[(LibreAccessServiceSoap12Binding_HealthCheck*)[LibreAccessServiceSoap12Binding_HealthCheck alloc] initWithBinding:self delegate:responseDelegate
+	[self performAsynchronousOperation: [[(LibreAccessServiceSoap11Binding_HealthCheck*)[LibreAccessServiceSoap11Binding_HealthCheck alloc] initWithBinding:self delegate:responseDelegate
 																							 ] autorelease]];
 }
-- (LibreAccessServiceSoap12BindingResponse *)SaveNewDomainUsingParameters:(LibreAccessServiceSvc_SaveNewDomainRequest *)aParameters 
+- (LibreAccessServiceSoap11BindingResponse *)SaveNewDomainUsingParameters:(LibreAccessServiceSvc_SaveNewDomainRequest *)aParameters 
 {
-	return [self performSynchronousOperation:[[(LibreAccessServiceSoap12Binding_SaveNewDomain*)[LibreAccessServiceSoap12Binding_SaveNewDomain alloc] initWithBinding:self delegate:self
+	return [self performSynchronousOperation:[[(LibreAccessServiceSoap11Binding_SaveNewDomain*)[LibreAccessServiceSoap11Binding_SaveNewDomain alloc] initWithBinding:self delegate:self
 																							parameters:aParameters
 																							] autorelease]];
 }
-- (void)SaveNewDomainAsyncUsingParameters:(LibreAccessServiceSvc_SaveNewDomainRequest *)aParameters  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (void)SaveNewDomainAsyncUsingParameters:(LibreAccessServiceSvc_SaveNewDomainRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 {
-	[self performAsynchronousOperation: [[(LibreAccessServiceSoap12Binding_SaveNewDomain*)[LibreAccessServiceSoap12Binding_SaveNewDomain alloc] initWithBinding:self delegate:responseDelegate
+	[self performAsynchronousOperation: [[(LibreAccessServiceSoap11Binding_SaveNewDomain*)[LibreAccessServiceSoap11Binding_SaveNewDomain alloc] initWithBinding:self delegate:responseDelegate
 																							 parameters:aParameters
 																							 ] autorelease]];
 }
-- (LibreAccessServiceSoap12BindingResponse *)ListDefaultBooksUsingParameters:(LibreAccessServiceSvc_ListDefaultBooksRequest *)aParameters 
+- (LibreAccessServiceSoap11BindingResponse *)ListDefaultBooksUsingParameters:(LibreAccessServiceSvc_ListDefaultBooksRequest *)aParameters 
 {
-	return [self performSynchronousOperation:[[(LibreAccessServiceSoap12Binding_ListDefaultBooks*)[LibreAccessServiceSoap12Binding_ListDefaultBooks alloc] initWithBinding:self delegate:self
+	return [self performSynchronousOperation:[[(LibreAccessServiceSoap11Binding_ListDefaultBooks*)[LibreAccessServiceSoap11Binding_ListDefaultBooks alloc] initWithBinding:self delegate:self
 																							parameters:aParameters
 																							] autorelease]];
 }
-- (void)ListDefaultBooksAsyncUsingParameters:(LibreAccessServiceSvc_ListDefaultBooksRequest *)aParameters  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (void)ListDefaultBooksAsyncUsingParameters:(LibreAccessServiceSvc_ListDefaultBooksRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 {
-	[self performAsynchronousOperation: [[(LibreAccessServiceSoap12Binding_ListDefaultBooks*)[LibreAccessServiceSoap12Binding_ListDefaultBooks alloc] initWithBinding:self delegate:responseDelegate
+	[self performAsynchronousOperation: [[(LibreAccessServiceSoap11Binding_ListDefaultBooks*)[LibreAccessServiceSoap11Binding_ListDefaultBooks alloc] initWithBinding:self delegate:responseDelegate
 																							 parameters:aParameters
 																							 ] autorelease]];
 }
-- (LibreAccessServiceSoap12BindingResponse *)ListReadingStatisticsDetailedUsingParameters:(LibreAccessServiceSvc_ListReadingStatisticsDetailedRequest *)aParameters 
+- (LibreAccessServiceSoap11BindingResponse *)ListReadingStatisticsDetailedUsingParameters:(LibreAccessServiceSvc_ListReadingStatisticsDetailedRequest *)aParameters 
 {
-	return [self performSynchronousOperation:[[(LibreAccessServiceSoap12Binding_ListReadingStatisticsDetailed*)[LibreAccessServiceSoap12Binding_ListReadingStatisticsDetailed alloc] initWithBinding:self delegate:self
+	return [self performSynchronousOperation:[[(LibreAccessServiceSoap11Binding_ListReadingStatisticsDetailed*)[LibreAccessServiceSoap11Binding_ListReadingStatisticsDetailed alloc] initWithBinding:self delegate:self
 																							parameters:aParameters
 																							] autorelease]];
 }
-- (void)ListReadingStatisticsDetailedAsyncUsingParameters:(LibreAccessServiceSvc_ListReadingStatisticsDetailedRequest *)aParameters  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (void)ListReadingStatisticsDetailedAsyncUsingParameters:(LibreAccessServiceSvc_ListReadingStatisticsDetailedRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 {
-	[self performAsynchronousOperation: [[(LibreAccessServiceSoap12Binding_ListReadingStatisticsDetailed*)[LibreAccessServiceSoap12Binding_ListReadingStatisticsDetailed alloc] initWithBinding:self delegate:responseDelegate
+	[self performAsynchronousOperation: [[(LibreAccessServiceSoap11Binding_ListReadingStatisticsDetailed*)[LibreAccessServiceSoap11Binding_ListReadingStatisticsDetailed alloc] initWithBinding:self delegate:responseDelegate
 																							 parameters:aParameters
 																							 ] autorelease]];
 }
-- (LibreAccessServiceSoap12BindingResponse *)DeviceCanJoinDomainUsingParameters:(LibreAccessServiceSvc_DeviceCanJoinDomainRequest *)aParameters 
+- (LibreAccessServiceSoap11BindingResponse *)DeviceCanJoinDomainUsingParameters:(LibreAccessServiceSvc_DeviceCanJoinDomainRequest *)aParameters 
 {
-	return [self performSynchronousOperation:[[(LibreAccessServiceSoap12Binding_DeviceCanJoinDomain*)[LibreAccessServiceSoap12Binding_DeviceCanJoinDomain alloc] initWithBinding:self delegate:self
+	return [self performSynchronousOperation:[[(LibreAccessServiceSoap11Binding_DeviceCanJoinDomain*)[LibreAccessServiceSoap11Binding_DeviceCanJoinDomain alloc] initWithBinding:self delegate:self
 																							parameters:aParameters
 																							] autorelease]];
 }
-- (void)DeviceCanJoinDomainAsyncUsingParameters:(LibreAccessServiceSvc_DeviceCanJoinDomainRequest *)aParameters  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (void)DeviceCanJoinDomainAsyncUsingParameters:(LibreAccessServiceSvc_DeviceCanJoinDomainRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 {
-	[self performAsynchronousOperation: [[(LibreAccessServiceSoap12Binding_DeviceCanJoinDomain*)[LibreAccessServiceSoap12Binding_DeviceCanJoinDomain alloc] initWithBinding:self delegate:responseDelegate
+	[self performAsynchronousOperation: [[(LibreAccessServiceSoap11Binding_DeviceCanJoinDomain*)[LibreAccessServiceSoap11Binding_DeviceCanJoinDomain alloc] initWithBinding:self delegate:responseDelegate
 																							 parameters:aParameters
 																							 ] autorelease]];
 }
-- (LibreAccessServiceSoap12BindingResponse *)AssignBooksToAllUsersUsingParameters:(LibreAccessServiceSvc_AssignBooksToAllUsersRequest *)aParameters 
+- (LibreAccessServiceSoap11BindingResponse *)AssignBooksToAllUsersUsingParameters:(LibreAccessServiceSvc_AssignBooksToAllUsersRequest *)aParameters 
 {
-	return [self performSynchronousOperation:[[(LibreAccessServiceSoap12Binding_AssignBooksToAllUsers*)[LibreAccessServiceSoap12Binding_AssignBooksToAllUsers alloc] initWithBinding:self delegate:self
+	return [self performSynchronousOperation:[[(LibreAccessServiceSoap11Binding_AssignBooksToAllUsers*)[LibreAccessServiceSoap11Binding_AssignBooksToAllUsers alloc] initWithBinding:self delegate:self
 																							parameters:aParameters
 																							] autorelease]];
 }
-- (void)AssignBooksToAllUsersAsyncUsingParameters:(LibreAccessServiceSvc_AssignBooksToAllUsersRequest *)aParameters  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (void)AssignBooksToAllUsersAsyncUsingParameters:(LibreAccessServiceSvc_AssignBooksToAllUsersRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 {
-	[self performAsynchronousOperation: [[(LibreAccessServiceSoap12Binding_AssignBooksToAllUsers*)[LibreAccessServiceSoap12Binding_AssignBooksToAllUsers alloc] initWithBinding:self delegate:responseDelegate
+	[self performAsynchronousOperation: [[(LibreAccessServiceSoap11Binding_AssignBooksToAllUsers*)[LibreAccessServiceSoap11Binding_AssignBooksToAllUsers alloc] initWithBinding:self delegate:responseDelegate
 																							 parameters:aParameters
 																							 ] autorelease]];
 }
-- (LibreAccessServiceSoap12BindingResponse *)GetLastPageLocationUsingParameters:(LibreAccessServiceSvc_GetLastPageLocationRequest *)aParameters 
+- (LibreAccessServiceSoap11BindingResponse *)GetLastPageLocationUsingParameters:(LibreAccessServiceSvc_GetLastPageLocationRequest *)aParameters 
 {
-	return [self performSynchronousOperation:[[(LibreAccessServiceSoap12Binding_GetLastPageLocation*)[LibreAccessServiceSoap12Binding_GetLastPageLocation alloc] initWithBinding:self delegate:self
+	return [self performSynchronousOperation:[[(LibreAccessServiceSoap11Binding_GetLastPageLocation*)[LibreAccessServiceSoap11Binding_GetLastPageLocation alloc] initWithBinding:self delegate:self
 																							parameters:aParameters
 																							] autorelease]];
 }
-- (void)GetLastPageLocationAsyncUsingParameters:(LibreAccessServiceSvc_GetLastPageLocationRequest *)aParameters  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (void)GetLastPageLocationAsyncUsingParameters:(LibreAccessServiceSvc_GetLastPageLocationRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 {
-	[self performAsynchronousOperation: [[(LibreAccessServiceSoap12Binding_GetLastPageLocation*)[LibreAccessServiceSoap12Binding_GetLastPageLocation alloc] initWithBinding:self delegate:responseDelegate
+	[self performAsynchronousOperation: [[(LibreAccessServiceSoap11Binding_GetLastPageLocation*)[LibreAccessServiceSoap11Binding_GetLastPageLocation alloc] initWithBinding:self delegate:responseDelegate
 																							 parameters:aParameters
 																							 ] autorelease]];
 }
-- (LibreAccessServiceSoap12BindingResponse *)SaveProfileContentAnnotationsUsingParameters:(LibreAccessServiceSvc_SaveProfileContentAnnotationsRequest *)aParameters 
+- (LibreAccessServiceSoap11BindingResponse *)SaveProfileContentAnnotationsUsingParameters:(LibreAccessServiceSvc_SaveProfileContentAnnotationsRequest *)aParameters 
 {
-	return [self performSynchronousOperation:[[(LibreAccessServiceSoap12Binding_SaveProfileContentAnnotations*)[LibreAccessServiceSoap12Binding_SaveProfileContentAnnotations alloc] initWithBinding:self delegate:self
+	return [self performSynchronousOperation:[[(LibreAccessServiceSoap11Binding_SaveProfileContentAnnotations*)[LibreAccessServiceSoap11Binding_SaveProfileContentAnnotations alloc] initWithBinding:self delegate:self
 																							parameters:aParameters
 																							] autorelease]];
 }
-- (void)SaveProfileContentAnnotationsAsyncUsingParameters:(LibreAccessServiceSvc_SaveProfileContentAnnotationsRequest *)aParameters  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (void)SaveProfileContentAnnotationsAsyncUsingParameters:(LibreAccessServiceSvc_SaveProfileContentAnnotationsRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 {
-	[self performAsynchronousOperation: [[(LibreAccessServiceSoap12Binding_SaveProfileContentAnnotations*)[LibreAccessServiceSoap12Binding_SaveProfileContentAnnotations alloc] initWithBinding:self delegate:responseDelegate
+	[self performAsynchronousOperation: [[(LibreAccessServiceSoap11Binding_SaveProfileContentAnnotations*)[LibreAccessServiceSoap11Binding_SaveProfileContentAnnotations alloc] initWithBinding:self delegate:responseDelegate
 																							 parameters:aParameters
 																							 ] autorelease]];
 }
-- (LibreAccessServiceSoap12BindingResponse *)RemoveDefaultBooksUsingParameters:(LibreAccessServiceSvc_RemoveDefaultBooksRequest *)aParameters 
+- (LibreAccessServiceSoap11BindingResponse *)RemoveDefaultBooksUsingParameters:(LibreAccessServiceSvc_RemoveDefaultBooksRequest *)aParameters 
 {
-	return [self performSynchronousOperation:[[(LibreAccessServiceSoap12Binding_RemoveDefaultBooks*)[LibreAccessServiceSoap12Binding_RemoveDefaultBooks alloc] initWithBinding:self delegate:self
+	return [self performSynchronousOperation:[[(LibreAccessServiceSoap11Binding_RemoveDefaultBooks*)[LibreAccessServiceSoap11Binding_RemoveDefaultBooks alloc] initWithBinding:self delegate:self
 																							parameters:aParameters
 																							] autorelease]];
 }
-- (void)RemoveDefaultBooksAsyncUsingParameters:(LibreAccessServiceSvc_RemoveDefaultBooksRequest *)aParameters  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (void)RemoveDefaultBooksAsyncUsingParameters:(LibreAccessServiceSvc_RemoveDefaultBooksRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 {
-	[self performAsynchronousOperation: [[(LibreAccessServiceSoap12Binding_RemoveDefaultBooks*)[LibreAccessServiceSoap12Binding_RemoveDefaultBooks alloc] initWithBinding:self delegate:responseDelegate
+	[self performAsynchronousOperation: [[(LibreAccessServiceSoap11Binding_RemoveDefaultBooks*)[LibreAccessServiceSoap11Binding_RemoveDefaultBooks alloc] initWithBinding:self delegate:responseDelegate
 																							 parameters:aParameters
 																							 ] autorelease]];
 }
-- (LibreAccessServiceSoap12BindingResponse *)GetLicensableStatusUsingParameters:(LibreAccessServiceSvc_GetLicensableStatusRequest *)aParameters 
+- (LibreAccessServiceSoap11BindingResponse *)GetLicensableStatusUsingParameters:(LibreAccessServiceSvc_GetLicensableStatusRequest *)aParameters 
 {
-	return [self performSynchronousOperation:[[(LibreAccessServiceSoap12Binding_GetLicensableStatus*)[LibreAccessServiceSoap12Binding_GetLicensableStatus alloc] initWithBinding:self delegate:self
+	return [self performSynchronousOperation:[[(LibreAccessServiceSoap11Binding_GetLicensableStatus*)[LibreAccessServiceSoap11Binding_GetLicensableStatus alloc] initWithBinding:self delegate:self
 																							parameters:aParameters
 																							] autorelease]];
 }
-- (void)GetLicensableStatusAsyncUsingParameters:(LibreAccessServiceSvc_GetLicensableStatusRequest *)aParameters  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (void)GetLicensableStatusAsyncUsingParameters:(LibreAccessServiceSvc_GetLicensableStatusRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 {
-	[self performAsynchronousOperation: [[(LibreAccessServiceSoap12Binding_GetLicensableStatus*)[LibreAccessServiceSoap12Binding_GetLicensableStatus alloc] initWithBinding:self delegate:responseDelegate
+	[self performAsynchronousOperation: [[(LibreAccessServiceSoap11Binding_GetLicensableStatus*)[LibreAccessServiceSoap11Binding_GetLicensableStatus alloc] initWithBinding:self delegate:responseDelegate
 																							 parameters:aParameters
 																							 ] autorelease]];
 }
-- (LibreAccessServiceSoap12BindingResponse *)SaveLastPageLocationUsingParameters:(LibreAccessServiceSvc_SaveLastPageLocationRequest *)aParameters 
+- (LibreAccessServiceSoap11BindingResponse *)SaveLastPageLocationUsingParameters:(LibreAccessServiceSvc_SaveLastPageLocationRequest *)aParameters 
 {
-	return [self performSynchronousOperation:[[(LibreAccessServiceSoap12Binding_SaveLastPageLocation*)[LibreAccessServiceSoap12Binding_SaveLastPageLocation alloc] initWithBinding:self delegate:self
+	return [self performSynchronousOperation:[[(LibreAccessServiceSoap11Binding_SaveLastPageLocation*)[LibreAccessServiceSoap11Binding_SaveLastPageLocation alloc] initWithBinding:self delegate:self
 																							parameters:aParameters
 																							] autorelease]];
 }
-- (void)SaveLastPageLocationAsyncUsingParameters:(LibreAccessServiceSvc_SaveLastPageLocationRequest *)aParameters  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (void)SaveLastPageLocationAsyncUsingParameters:(LibreAccessServiceSvc_SaveLastPageLocationRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 {
-	[self performAsynchronousOperation: [[(LibreAccessServiceSoap12Binding_SaveLastPageLocation*)[LibreAccessServiceSoap12Binding_SaveLastPageLocation alloc] initWithBinding:self delegate:responseDelegate
+	[self performAsynchronousOperation: [[(LibreAccessServiceSoap11Binding_SaveLastPageLocation*)[LibreAccessServiceSoap11Binding_SaveLastPageLocation alloc] initWithBinding:self delegate:responseDelegate
 																							 parameters:aParameters
 																							 ] autorelease]];
 }
-- (LibreAccessServiceSoap12BindingResponse *)ListUserCSRNotesUsingParameters:(LibreAccessServiceSvc_ListUserCSRNotesRequest *)aParameters 
+- (LibreAccessServiceSoap11BindingResponse *)ListUserCSRNotesUsingParameters:(LibreAccessServiceSvc_ListUserCSRNotesRequest *)aParameters 
 {
-	return [self performSynchronousOperation:[[(LibreAccessServiceSoap12Binding_ListUserCSRNotes*)[LibreAccessServiceSoap12Binding_ListUserCSRNotes alloc] initWithBinding:self delegate:self
+	return [self performSynchronousOperation:[[(LibreAccessServiceSoap11Binding_ListUserCSRNotes*)[LibreAccessServiceSoap11Binding_ListUserCSRNotes alloc] initWithBinding:self delegate:self
 																							parameters:aParameters
 																							] autorelease]];
 }
-- (void)ListUserCSRNotesAsyncUsingParameters:(LibreAccessServiceSvc_ListUserCSRNotesRequest *)aParameters  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (void)ListUserCSRNotesAsyncUsingParameters:(LibreAccessServiceSvc_ListUserCSRNotesRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 {
-	[self performAsynchronousOperation: [[(LibreAccessServiceSoap12Binding_ListUserCSRNotes*)[LibreAccessServiceSoap12Binding_ListUserCSRNotes alloc] initWithBinding:self delegate:responseDelegate
+	[self performAsynchronousOperation: [[(LibreAccessServiceSoap11Binding_ListUserCSRNotes*)[LibreAccessServiceSoap11Binding_ListUserCSRNotes alloc] initWithBinding:self delegate:responseDelegate
 																							 parameters:aParameters
 																							 ] autorelease]];
 }
-- (LibreAccessServiceSoap12BindingResponse *)RenewTokenUsingBody:(LibreAccessServiceSvc_RenewTokenRequest *)aBody 
+- (LibreAccessServiceSoap11BindingResponse *)RenewTokenUsingBody:(LibreAccessServiceSvc_RenewTokenRequest *)aBody 
 {
-	return [self performSynchronousOperation:[[(LibreAccessServiceSoap12Binding_RenewToken*)[LibreAccessServiceSoap12Binding_RenewToken alloc] initWithBinding:self delegate:self
+	return [self performSynchronousOperation:[[(LibreAccessServiceSoap11Binding_RenewToken*)[LibreAccessServiceSoap11Binding_RenewToken alloc] initWithBinding:self delegate:self
 																							body:aBody
 																							] autorelease]];
 }
-- (void)RenewTokenAsyncUsingBody:(LibreAccessServiceSvc_RenewTokenRequest *)aBody  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (void)RenewTokenAsyncUsingBody:(LibreAccessServiceSvc_RenewTokenRequest *)aBody  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 {
-	[self performAsynchronousOperation: [[(LibreAccessServiceSoap12Binding_RenewToken*)[LibreAccessServiceSoap12Binding_RenewToken alloc] initWithBinding:self delegate:responseDelegate
+	[self performAsynchronousOperation: [[(LibreAccessServiceSoap11Binding_RenewToken*)[LibreAccessServiceSoap11Binding_RenewToken alloc] initWithBinding:self delegate:responseDelegate
 																							 body:aBody
 																							 ] autorelease]];
 }
-- (LibreAccessServiceSoap12BindingResponse *)SaveDeviceInfoUsingParameters:(LibreAccessServiceSvc_SaveDeviceInfoRequest *)aParameters 
+- (LibreAccessServiceSoap11BindingResponse *)SaveDeviceInfoUsingParameters:(LibreAccessServiceSvc_SaveDeviceInfoRequest *)aParameters 
 {
-	return [self performSynchronousOperation:[[(LibreAccessServiceSoap12Binding_SaveDeviceInfo*)[LibreAccessServiceSoap12Binding_SaveDeviceInfo alloc] initWithBinding:self delegate:self
+	return [self performSynchronousOperation:[[(LibreAccessServiceSoap11Binding_SaveDeviceInfo*)[LibreAccessServiceSoap11Binding_SaveDeviceInfo alloc] initWithBinding:self delegate:self
 																							parameters:aParameters
 																							] autorelease]];
 }
-- (void)SaveDeviceInfoAsyncUsingParameters:(LibreAccessServiceSvc_SaveDeviceInfoRequest *)aParameters  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (void)SaveDeviceInfoAsyncUsingParameters:(LibreAccessServiceSvc_SaveDeviceInfoRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 {
-	[self performAsynchronousOperation: [[(LibreAccessServiceSoap12Binding_SaveDeviceInfo*)[LibreAccessServiceSoap12Binding_SaveDeviceInfo alloc] initWithBinding:self delegate:responseDelegate
+	[self performAsynchronousOperation: [[(LibreAccessServiceSoap11Binding_SaveDeviceInfo*)[LibreAccessServiceSoap11Binding_SaveDeviceInfo alloc] initWithBinding:self delegate:responseDelegate
 																							 parameters:aParameters
 																							 ] autorelease]];
 }
-- (LibreAccessServiceSoap12BindingResponse *)ListReadingStatisticsAggregateUsingParameters:(LibreAccessServiceSvc_ListReadingStatisticsAggregateRequest *)aParameters 
+- (LibreAccessServiceSoap11BindingResponse *)ListReadingStatisticsAggregateUsingParameters:(LibreAccessServiceSvc_ListReadingStatisticsAggregateRequest *)aParameters 
 {
-	return [self performSynchronousOperation:[[(LibreAccessServiceSoap12Binding_ListReadingStatisticsAggregate*)[LibreAccessServiceSoap12Binding_ListReadingStatisticsAggregate alloc] initWithBinding:self delegate:self
+	return [self performSynchronousOperation:[[(LibreAccessServiceSoap11Binding_ListReadingStatisticsAggregate*)[LibreAccessServiceSoap11Binding_ListReadingStatisticsAggregate alloc] initWithBinding:self delegate:self
 																							parameters:aParameters
 																							] autorelease]];
 }
-- (void)ListReadingStatisticsAggregateAsyncUsingParameters:(LibreAccessServiceSvc_ListReadingStatisticsAggregateRequest *)aParameters  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (void)ListReadingStatisticsAggregateAsyncUsingParameters:(LibreAccessServiceSvc_ListReadingStatisticsAggregateRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 {
-	[self performAsynchronousOperation: [[(LibreAccessServiceSoap12Binding_ListReadingStatisticsAggregate*)[LibreAccessServiceSoap12Binding_ListReadingStatisticsAggregate alloc] initWithBinding:self delegate:responseDelegate
+	[self performAsynchronousOperation: [[(LibreAccessServiceSoap11Binding_ListReadingStatisticsAggregate*)[LibreAccessServiceSoap11Binding_ListReadingStatisticsAggregate alloc] initWithBinding:self delegate:responseDelegate
 																							 parameters:aParameters
 																							 ] autorelease]];
 }
-- (LibreAccessServiceSoap12BindingResponse *)ListLastNWordsUsingParameters:(LibreAccessServiceSvc_ListLastNWordsRequest *)aParameters 
+- (LibreAccessServiceSoap11BindingResponse *)ListLastNWordsUsingParameters:(LibreAccessServiceSvc_ListLastNWordsRequest *)aParameters 
 {
-	return [self performSynchronousOperation:[[(LibreAccessServiceSoap12Binding_ListLastNWords*)[LibreAccessServiceSoap12Binding_ListLastNWords alloc] initWithBinding:self delegate:self
+	return [self performSynchronousOperation:[[(LibreAccessServiceSoap11Binding_ListLastNWords*)[LibreAccessServiceSoap11Binding_ListLastNWords alloc] initWithBinding:self delegate:self
 																							parameters:aParameters
 																							] autorelease]];
 }
-- (void)ListLastNWordsAsyncUsingParameters:(LibreAccessServiceSvc_ListLastNWordsRequest *)aParameters  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (void)ListLastNWordsAsyncUsingParameters:(LibreAccessServiceSvc_ListLastNWordsRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 {
-	[self performAsynchronousOperation: [[(LibreAccessServiceSoap12Binding_ListLastNWords*)[LibreAccessServiceSoap12Binding_ListLastNWords alloc] initWithBinding:self delegate:responseDelegate
+	[self performAsynchronousOperation: [[(LibreAccessServiceSoap11Binding_ListLastNWords*)[LibreAccessServiceSoap11Binding_ListLastNWords alloc] initWithBinding:self delegate:responseDelegate
 																							 parameters:aParameters
 																							 ] autorelease]];
 }
-- (LibreAccessServiceSoap12BindingResponse *)DeviceLeftDomainUsingParameters:(LibreAccessServiceSvc_DeviceLeftDomainRequest *)aParameters 
+- (LibreAccessServiceSoap11BindingResponse *)DeviceLeftDomainUsingParameters:(LibreAccessServiceSvc_DeviceLeftDomainRequest *)aParameters 
 {
-	return [self performSynchronousOperation:[[(LibreAccessServiceSoap12Binding_DeviceLeftDomain*)[LibreAccessServiceSoap12Binding_DeviceLeftDomain alloc] initWithBinding:self delegate:self
+	return [self performSynchronousOperation:[[(LibreAccessServiceSoap11Binding_DeviceLeftDomain*)[LibreAccessServiceSoap11Binding_DeviceLeftDomain alloc] initWithBinding:self delegate:self
 																							parameters:aParameters
 																							] autorelease]];
 }
-- (void)DeviceLeftDomainAsyncUsingParameters:(LibreAccessServiceSvc_DeviceLeftDomainRequest *)aParameters  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (void)DeviceLeftDomainAsyncUsingParameters:(LibreAccessServiceSvc_DeviceLeftDomainRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 {
-	[self performAsynchronousOperation: [[(LibreAccessServiceSoap12Binding_DeviceLeftDomain*)[LibreAccessServiceSoap12Binding_DeviceLeftDomain alloc] initWithBinding:self delegate:responseDelegate
+	[self performAsynchronousOperation: [[(LibreAccessServiceSoap11Binding_DeviceLeftDomain*)[LibreAccessServiceSoap11Binding_DeviceLeftDomain alloc] initWithBinding:self delegate:responseDelegate
 																							 parameters:aParameters
 																							 ] autorelease]];
 }
-- (LibreAccessServiceSoap12BindingResponse *)ListReadBooksUsingParameters:(LibreAccessServiceSvc_ListReadBooksRequest *)aParameters 
+- (LibreAccessServiceSoap11BindingResponse *)ListReadBooksUsingParameters:(LibreAccessServiceSvc_ListReadBooksRequest *)aParameters 
 {
-	return [self performSynchronousOperation:[[(LibreAccessServiceSoap12Binding_ListReadBooks*)[LibreAccessServiceSoap12Binding_ListReadBooks alloc] initWithBinding:self delegate:self
+	return [self performSynchronousOperation:[[(LibreAccessServiceSoap11Binding_ListReadBooks*)[LibreAccessServiceSoap11Binding_ListReadBooks alloc] initWithBinding:self delegate:self
 																							parameters:aParameters
 																							] autorelease]];
 }
-- (void)ListReadBooksAsyncUsingParameters:(LibreAccessServiceSvc_ListReadBooksRequest *)aParameters  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (void)ListReadBooksAsyncUsingParameters:(LibreAccessServiceSvc_ListReadBooksRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 {
-	[self performAsynchronousOperation: [[(LibreAccessServiceSoap12Binding_ListReadBooks*)[LibreAccessServiceSoap12Binding_ListReadBooks alloc] initWithBinding:self delegate:responseDelegate
+	[self performAsynchronousOperation: [[(LibreAccessServiceSoap11Binding_ListReadBooks*)[LibreAccessServiceSoap11Binding_ListReadBooks alloc] initWithBinding:self delegate:responseDelegate
 																							 parameters:aParameters
 																							 ] autorelease]];
 }
-- (LibreAccessServiceSoap12BindingResponse *)GetDeviceInfoUsingParameters:(LibreAccessServiceSvc_GetDeviceInfoRequest *)aParameters 
+- (LibreAccessServiceSoap11BindingResponse *)GetDeviceInfoUsingParameters:(LibreAccessServiceSvc_GetDeviceInfoRequest *)aParameters 
 {
-	return [self performSynchronousOperation:[[(LibreAccessServiceSoap12Binding_GetDeviceInfo*)[LibreAccessServiceSoap12Binding_GetDeviceInfo alloc] initWithBinding:self delegate:self
+	return [self performSynchronousOperation:[[(LibreAccessServiceSoap11Binding_GetDeviceInfo*)[LibreAccessServiceSoap11Binding_GetDeviceInfo alloc] initWithBinding:self delegate:self
 																							parameters:aParameters
 																							] autorelease]];
 }
-- (void)GetDeviceInfoAsyncUsingParameters:(LibreAccessServiceSvc_GetDeviceInfoRequest *)aParameters  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (void)GetDeviceInfoAsyncUsingParameters:(LibreAccessServiceSvc_GetDeviceInfoRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 {
-	[self performAsynchronousOperation: [[(LibreAccessServiceSoap12Binding_GetDeviceInfo*)[LibreAccessServiceSoap12Binding_GetDeviceInfo alloc] initWithBinding:self delegate:responseDelegate
+	[self performAsynchronousOperation: [[(LibreAccessServiceSoap11Binding_GetDeviceInfo*)[LibreAccessServiceSoap11Binding_GetDeviceInfo alloc] initWithBinding:self delegate:responseDelegate
 																							 parameters:aParameters
 																							 ] autorelease]];
 }
-- (LibreAccessServiceSoap12BindingResponse *)SaveReadingStatisticsDetailedUsingParameters:(LibreAccessServiceSvc_SaveReadingStatisticsDetailedRequest *)aParameters 
+- (LibreAccessServiceSoap11BindingResponse *)SaveReadingStatisticsDetailedUsingParameters:(LibreAccessServiceSvc_SaveReadingStatisticsDetailedRequest *)aParameters 
 {
-	return [self performSynchronousOperation:[[(LibreAccessServiceSoap12Binding_SaveReadingStatisticsDetailed*)[LibreAccessServiceSoap12Binding_SaveReadingStatisticsDetailed alloc] initWithBinding:self delegate:self
+	return [self performSynchronousOperation:[[(LibreAccessServiceSoap11Binding_SaveReadingStatisticsDetailed*)[LibreAccessServiceSoap11Binding_SaveReadingStatisticsDetailed alloc] initWithBinding:self delegate:self
 																							parameters:aParameters
 																							] autorelease]];
 }
-- (void)SaveReadingStatisticsDetailedAsyncUsingParameters:(LibreAccessServiceSvc_SaveReadingStatisticsDetailedRequest *)aParameters  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (void)SaveReadingStatisticsDetailedAsyncUsingParameters:(LibreAccessServiceSvc_SaveReadingStatisticsDetailedRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 {
-	[self performAsynchronousOperation: [[(LibreAccessServiceSoap12Binding_SaveReadingStatisticsDetailed*)[LibreAccessServiceSoap12Binding_SaveReadingStatisticsDetailed alloc] initWithBinding:self delegate:responseDelegate
+	[self performAsynchronousOperation: [[(LibreAccessServiceSoap11Binding_SaveReadingStatisticsDetailed*)[LibreAccessServiceSoap11Binding_SaveReadingStatisticsDetailed alloc] initWithBinding:self delegate:responseDelegate
 																							 parameters:aParameters
 																							 ] autorelease]];
 }
-- (LibreAccessServiceSoap12BindingResponse *)SaveContentProfileAssignmentUsingParameters:(LibreAccessServiceSvc_SaveContentProfileAssignmentRequest *)aParameters 
+- (LibreAccessServiceSoap11BindingResponse *)SaveContentProfileAssignmentUsingParameters:(LibreAccessServiceSvc_SaveContentProfileAssignmentRequest *)aParameters 
 {
-	return [self performSynchronousOperation:[[(LibreAccessServiceSoap12Binding_SaveContentProfileAssignment*)[LibreAccessServiceSoap12Binding_SaveContentProfileAssignment alloc] initWithBinding:self delegate:self
+	return [self performSynchronousOperation:[[(LibreAccessServiceSoap11Binding_SaveContentProfileAssignment*)[LibreAccessServiceSoap11Binding_SaveContentProfileAssignment alloc] initWithBinding:self delegate:self
 																							parameters:aParameters
 																							] autorelease]];
 }
-- (void)SaveContentProfileAssignmentAsyncUsingParameters:(LibreAccessServiceSvc_SaveContentProfileAssignmentRequest *)aParameters  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (void)SaveContentProfileAssignmentAsyncUsingParameters:(LibreAccessServiceSvc_SaveContentProfileAssignmentRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 {
-	[self performAsynchronousOperation: [[(LibreAccessServiceSoap12Binding_SaveContentProfileAssignment*)[LibreAccessServiceSoap12Binding_SaveContentProfileAssignment alloc] initWithBinding:self delegate:responseDelegate
+	[self performAsynchronousOperation: [[(LibreAccessServiceSoap11Binding_SaveContentProfileAssignment*)[LibreAccessServiceSoap11Binding_SaveContentProfileAssignment alloc] initWithBinding:self delegate:responseDelegate
 																							 parameters:aParameters
 																							 ] autorelease]];
 }
-- (LibreAccessServiceSoap12BindingResponse *)TokenExchangeUsingBody:(LibreAccessServiceSvc_TokenExchange *)aBody 
+- (LibreAccessServiceSoap11BindingResponse *)TokenExchangeUsingBody:(LibreAccessServiceSvc_TokenExchange *)aBody 
 {
-	return [self performSynchronousOperation:[[(LibreAccessServiceSoap12Binding_TokenExchange*)[LibreAccessServiceSoap12Binding_TokenExchange alloc] initWithBinding:self delegate:self
+	return [self performSynchronousOperation:[[(LibreAccessServiceSoap11Binding_TokenExchange*)[LibreAccessServiceSoap11Binding_TokenExchange alloc] initWithBinding:self delegate:self
 																							body:aBody
 																							] autorelease]];
 }
-- (void)TokenExchangeAsyncUsingBody:(LibreAccessServiceSvc_TokenExchange *)aBody  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (void)TokenExchangeAsyncUsingBody:(LibreAccessServiceSvc_TokenExchange *)aBody  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 {
-	[self performAsynchronousOperation: [[(LibreAccessServiceSoap12Binding_TokenExchange*)[LibreAccessServiceSoap12Binding_TokenExchange alloc] initWithBinding:self delegate:responseDelegate
+	[self performAsynchronousOperation: [[(LibreAccessServiceSoap11Binding_TokenExchange*)[LibreAccessServiceSoap11Binding_TokenExchange alloc] initWithBinding:self delegate:responseDelegate
 																							 body:aBody
 																							 ] autorelease]];
 }
-- (LibreAccessServiceSoap12BindingResponse *)SetAccountPasswordRequiredUsingParameters:(LibreAccessServiceSvc_SetAccountPasswordRequiredRequest *)aParameters 
+- (LibreAccessServiceSoap11BindingResponse *)SetAccountPasswordRequiredUsingParameters:(LibreAccessServiceSvc_SetAccountPasswordRequiredRequest *)aParameters 
 {
-	return [self performSynchronousOperation:[[(LibreAccessServiceSoap12Binding_SetAccountPasswordRequired*)[LibreAccessServiceSoap12Binding_SetAccountPasswordRequired alloc] initWithBinding:self delegate:self
+	return [self performSynchronousOperation:[[(LibreAccessServiceSoap11Binding_SetAccountPasswordRequired*)[LibreAccessServiceSoap11Binding_SetAccountPasswordRequired alloc] initWithBinding:self delegate:self
 																							parameters:aParameters
 																							] autorelease]];
 }
-- (void)SetAccountPasswordRequiredAsyncUsingParameters:(LibreAccessServiceSvc_SetAccountPasswordRequiredRequest *)aParameters  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (void)SetAccountPasswordRequiredAsyncUsingParameters:(LibreAccessServiceSvc_SetAccountPasswordRequiredRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 {
-	[self performAsynchronousOperation: [[(LibreAccessServiceSoap12Binding_SetAccountPasswordRequired*)[LibreAccessServiceSoap12Binding_SetAccountPasswordRequired alloc] initWithBinding:self delegate:responseDelegate
+	[self performAsynchronousOperation: [[(LibreAccessServiceSoap11Binding_SetAccountPasswordRequired*)[LibreAccessServiceSoap11Binding_SetAccountPasswordRequired alloc] initWithBinding:self delegate:responseDelegate
 																							 parameters:aParameters
 																							 ] autorelease]];
 }
-- (LibreAccessServiceSoap12BindingResponse *)GetVersionUsingParameters:(LibreAccessServiceSvc_GetVersionRequest *)aParameters 
+- (LibreAccessServiceSoap11BindingResponse *)GetVersionUsingParameters:(LibreAccessServiceSvc_GetVersionRequest *)aParameters 
 {
-	return [self performSynchronousOperation:[[(LibreAccessServiceSoap12Binding_GetVersion*)[LibreAccessServiceSoap12Binding_GetVersion alloc] initWithBinding:self delegate:self
+	return [self performSynchronousOperation:[[(LibreAccessServiceSoap11Binding_GetVersion*)[LibreAccessServiceSoap11Binding_GetVersion alloc] initWithBinding:self delegate:self
 																							parameters:aParameters
 																							] autorelease]];
 }
-- (void)GetVersionAsyncUsingParameters:(LibreAccessServiceSvc_GetVersionRequest *)aParameters  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (void)GetVersionAsyncUsingParameters:(LibreAccessServiceSvc_GetVersionRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 {
-	[self performAsynchronousOperation: [[(LibreAccessServiceSoap12Binding_GetVersion*)[LibreAccessServiceSoap12Binding_GetVersion alloc] initWithBinding:self delegate:responseDelegate
+	[self performAsynchronousOperation: [[(LibreAccessServiceSoap11Binding_GetVersion*)[LibreAccessServiceSoap11Binding_GetVersion alloc] initWithBinding:self delegate:responseDelegate
 																							 parameters:aParameters
 																							 ] autorelease]];
 }
-- (LibreAccessServiceSoap12BindingResponse *)SaveUserSettingsUsingParameters:(LibreAccessServiceSvc_SaveUserSettingsRequest *)aParameters 
+- (LibreAccessServiceSoap11BindingResponse *)SaveUserSettingsUsingParameters:(LibreAccessServiceSvc_SaveUserSettingsRequest *)aParameters 
 {
-	return [self performSynchronousOperation:[[(LibreAccessServiceSoap12Binding_SaveUserSettings*)[LibreAccessServiceSoap12Binding_SaveUserSettings alloc] initWithBinding:self delegate:self
+	return [self performSynchronousOperation:[[(LibreAccessServiceSoap11Binding_SaveUserSettings*)[LibreAccessServiceSoap11Binding_SaveUserSettings alloc] initWithBinding:self delegate:self
 																							parameters:aParameters
 																							] autorelease]];
 }
-- (void)SaveUserSettingsAsyncUsingParameters:(LibreAccessServiceSvc_SaveUserSettingsRequest *)aParameters  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (void)SaveUserSettingsAsyncUsingParameters:(LibreAccessServiceSvc_SaveUserSettingsRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 {
-	[self performAsynchronousOperation: [[(LibreAccessServiceSoap12Binding_SaveUserSettings*)[LibreAccessServiceSoap12Binding_SaveUserSettings alloc] initWithBinding:self delegate:responseDelegate
+	[self performAsynchronousOperation: [[(LibreAccessServiceSoap11Binding_SaveUserSettings*)[LibreAccessServiceSoap11Binding_SaveUserSettings alloc] initWithBinding:self delegate:responseDelegate
 																							 parameters:aParameters
 																							 ] autorelease]];
 }
-- (LibreAccessServiceSoap12BindingResponse *)AuthenticateDeviceUsingBody:(LibreAccessServiceSvc_AuthenticateDeviceRequest *)aBody 
+- (LibreAccessServiceSoap11BindingResponse *)AuthenticateDeviceUsingBody:(LibreAccessServiceSvc_AuthenticateDeviceRequest *)aBody 
 {
-	return [self performSynchronousOperation:[[(LibreAccessServiceSoap12Binding_AuthenticateDevice*)[LibreAccessServiceSoap12Binding_AuthenticateDevice alloc] initWithBinding:self delegate:self
+	return [self performSynchronousOperation:[[(LibreAccessServiceSoap11Binding_AuthenticateDevice*)[LibreAccessServiceSoap11Binding_AuthenticateDevice alloc] initWithBinding:self delegate:self
 																							body:aBody
 																							] autorelease]];
 }
-- (void)AuthenticateDeviceAsyncUsingBody:(LibreAccessServiceSvc_AuthenticateDeviceRequest *)aBody  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (void)AuthenticateDeviceAsyncUsingBody:(LibreAccessServiceSvc_AuthenticateDeviceRequest *)aBody  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 {
-	[self performAsynchronousOperation: [[(LibreAccessServiceSoap12Binding_AuthenticateDevice*)[LibreAccessServiceSoap12Binding_AuthenticateDevice alloc] initWithBinding:self delegate:responseDelegate
+	[self performAsynchronousOperation: [[(LibreAccessServiceSoap11Binding_AuthenticateDevice*)[LibreAccessServiceSoap11Binding_AuthenticateDevice alloc] initWithBinding:self delegate:responseDelegate
 																							 body:aBody
 																							 ] autorelease]];
 }
-- (LibreAccessServiceSoap12BindingResponse *)ListContentMetadataUsingBody:(LibreAccessServiceSvc_ListContentMetadata *)aBody 
+- (LibreAccessServiceSoap11BindingResponse *)ListContentMetadataUsingBody:(LibreAccessServiceSvc_ListContentMetadata *)aBody 
 {
-	return [self performSynchronousOperation:[[(LibreAccessServiceSoap12Binding_ListContentMetadata*)[LibreAccessServiceSoap12Binding_ListContentMetadata alloc] initWithBinding:self delegate:self
+	return [self performSynchronousOperation:[[(LibreAccessServiceSoap11Binding_ListContentMetadata*)[LibreAccessServiceSoap11Binding_ListContentMetadata alloc] initWithBinding:self delegate:self
 																							body:aBody
 																							] autorelease]];
 }
-- (void)ListContentMetadataAsyncUsingBody:(LibreAccessServiceSvc_ListContentMetadata *)aBody  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (void)ListContentMetadataAsyncUsingBody:(LibreAccessServiceSvc_ListContentMetadata *)aBody  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 {
-	[self performAsynchronousOperation: [[(LibreAccessServiceSoap12Binding_ListContentMetadata*)[LibreAccessServiceSoap12Binding_ListContentMetadata alloc] initWithBinding:self delegate:responseDelegate
+	[self performAsynchronousOperation: [[(LibreAccessServiceSoap11Binding_ListContentMetadata*)[LibreAccessServiceSoap11Binding_ListContentMetadata alloc] initWithBinding:self delegate:responseDelegate
 																							 body:aBody
 																							 ] autorelease]];
 }
-- (LibreAccessServiceSoap12BindingResponse *)ListApplicationSettingsUsingParameters:(LibreAccessServiceSvc_ListApplicationSettingsRequest *)aParameters 
+- (LibreAccessServiceSoap11BindingResponse *)ListApplicationSettingsUsingParameters:(LibreAccessServiceSvc_ListApplicationSettingsRequest *)aParameters 
 {
-	return [self performSynchronousOperation:[[(LibreAccessServiceSoap12Binding_ListApplicationSettings*)[LibreAccessServiceSoap12Binding_ListApplicationSettings alloc] initWithBinding:self delegate:self
+	return [self performSynchronousOperation:[[(LibreAccessServiceSoap11Binding_ListApplicationSettings*)[LibreAccessServiceSoap11Binding_ListApplicationSettings alloc] initWithBinding:self delegate:self
 																							parameters:aParameters
 																							] autorelease]];
 }
-- (void)ListApplicationSettingsAsyncUsingParameters:(LibreAccessServiceSvc_ListApplicationSettingsRequest *)aParameters  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (void)ListApplicationSettingsAsyncUsingParameters:(LibreAccessServiceSvc_ListApplicationSettingsRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 {
-	[self performAsynchronousOperation: [[(LibreAccessServiceSoap12Binding_ListApplicationSettings*)[LibreAccessServiceSoap12Binding_ListApplicationSettings alloc] initWithBinding:self delegate:responseDelegate
+	[self performAsynchronousOperation: [[(LibreAccessServiceSoap11Binding_ListApplicationSettings*)[LibreAccessServiceSoap11Binding_ListApplicationSettings alloc] initWithBinding:self delegate:responseDelegate
 																							 parameters:aParameters
 																							 ] autorelease]];
 }
-- (LibreAccessServiceSoap12BindingResponse *)ListTopFavoritesUsingParameters:(LibreAccessServiceSvc_ListTopFavoritesRequest *)aParameters 
+- (LibreAccessServiceSoap11BindingResponse *)ListTopFavoritesUsingParameters:(LibreAccessServiceSvc_ListTopFavoritesRequest *)aParameters 
 {
-	return [self performSynchronousOperation:[[(LibreAccessServiceSoap12Binding_ListTopFavorites*)[LibreAccessServiceSoap12Binding_ListTopFavorites alloc] initWithBinding:self delegate:self
+	return [self performSynchronousOperation:[[(LibreAccessServiceSoap11Binding_ListTopFavorites*)[LibreAccessServiceSoap11Binding_ListTopFavorites alloc] initWithBinding:self delegate:self
 																							parameters:aParameters
 																							] autorelease]];
 }
-- (void)ListTopFavoritesAsyncUsingParameters:(LibreAccessServiceSvc_ListTopFavoritesRequest *)aParameters  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (void)ListTopFavoritesAsyncUsingParameters:(LibreAccessServiceSvc_ListTopFavoritesRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 {
-	[self performAsynchronousOperation: [[(LibreAccessServiceSoap12Binding_ListTopFavorites*)[LibreAccessServiceSoap12Binding_ListTopFavorites alloc] initWithBinding:self delegate:responseDelegate
+	[self performAsynchronousOperation: [[(LibreAccessServiceSoap11Binding_ListTopFavorites*)[LibreAccessServiceSoap11Binding_ListTopFavorites alloc] initWithBinding:self delegate:responseDelegate
 																							 parameters:aParameters
 																							 ] autorelease]];
 }
-- (LibreAccessServiceSoap12BindingResponse *)ListLastNProfileReadBooksUsingParameters:(LibreAccessServiceSvc_ListLastNProfileReadBooksRequest *)aParameters 
+- (LibreAccessServiceSoap11BindingResponse *)ListLastNProfileReadBooksUsingParameters:(LibreAccessServiceSvc_ListLastNProfileReadBooksRequest *)aParameters 
 {
-	return [self performSynchronousOperation:[[(LibreAccessServiceSoap12Binding_ListLastNProfileReadBooks*)[LibreAccessServiceSoap12Binding_ListLastNProfileReadBooks alloc] initWithBinding:self delegate:self
+	return [self performSynchronousOperation:[[(LibreAccessServiceSoap11Binding_ListLastNProfileReadBooks*)[LibreAccessServiceSoap11Binding_ListLastNProfileReadBooks alloc] initWithBinding:self delegate:self
 																							parameters:aParameters
 																							] autorelease]];
 }
-- (void)ListLastNProfileReadBooksAsyncUsingParameters:(LibreAccessServiceSvc_ListLastNProfileReadBooksRequest *)aParameters  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (void)ListLastNProfileReadBooksAsyncUsingParameters:(LibreAccessServiceSvc_ListLastNProfileReadBooksRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 {
-	[self performAsynchronousOperation: [[(LibreAccessServiceSoap12Binding_ListLastNProfileReadBooks*)[LibreAccessServiceSoap12Binding_ListLastNProfileReadBooks alloc] initWithBinding:self delegate:responseDelegate
+	[self performAsynchronousOperation: [[(LibreAccessServiceSoap11Binding_ListLastNProfileReadBooks*)[LibreAccessServiceSoap11Binding_ListLastNProfileReadBooks alloc] initWithBinding:self delegate:responseDelegate
 																							 parameters:aParameters
 																							 ] autorelease]];
 }
-- (LibreAccessServiceSoap12BindingResponse *)SaveUserProfilesUsingParameters:(LibreAccessServiceSvc_SaveUserProfilesRequest *)aParameters 
+- (LibreAccessServiceSoap11BindingResponse *)SaveUserProfilesUsingParameters:(LibreAccessServiceSvc_SaveUserProfilesRequest *)aParameters 
 {
-	return [self performSynchronousOperation:[[(LibreAccessServiceSoap12Binding_SaveUserProfiles*)[LibreAccessServiceSoap12Binding_SaveUserProfiles alloc] initWithBinding:self delegate:self
+	return [self performSynchronousOperation:[[(LibreAccessServiceSoap11Binding_SaveUserProfiles*)[LibreAccessServiceSoap11Binding_SaveUserProfiles alloc] initWithBinding:self delegate:self
 																							parameters:aParameters
 																							] autorelease]];
 }
-- (void)SaveUserProfilesAsyncUsingParameters:(LibreAccessServiceSvc_SaveUserProfilesRequest *)aParameters  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (void)SaveUserProfilesAsyncUsingParameters:(LibreAccessServiceSvc_SaveUserProfilesRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 {
-	[self performAsynchronousOperation: [[(LibreAccessServiceSoap12Binding_SaveUserProfiles*)[LibreAccessServiceSoap12Binding_SaveUserProfiles alloc] initWithBinding:self delegate:responseDelegate
+	[self performAsynchronousOperation: [[(LibreAccessServiceSoap11Binding_SaveUserProfiles*)[LibreAccessServiceSoap11Binding_SaveUserProfiles alloc] initWithBinding:self delegate:responseDelegate
 																							 parameters:aParameters
 																							 ] autorelease]];
 }
-- (LibreAccessServiceSoap12BindingResponse *)GetUserProfilesUsingParameters:(LibreAccessServiceSvc_GetUserProfilesRequest *)aParameters 
+- (LibreAccessServiceSoap11BindingResponse *)GetUserProfilesUsingParameters:(LibreAccessServiceSvc_GetUserProfilesRequest *)aParameters 
 {
-	return [self performSynchronousOperation:[[(LibreAccessServiceSoap12Binding_GetUserProfiles*)[LibreAccessServiceSoap12Binding_GetUserProfiles alloc] initWithBinding:self delegate:self
+	return [self performSynchronousOperation:[[(LibreAccessServiceSoap11Binding_GetUserProfiles*)[LibreAccessServiceSoap11Binding_GetUserProfiles alloc] initWithBinding:self delegate:self
 																							parameters:aParameters
 																							] autorelease]];
 }
-- (void)GetUserProfilesAsyncUsingParameters:(LibreAccessServiceSvc_GetUserProfilesRequest *)aParameters  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (void)GetUserProfilesAsyncUsingParameters:(LibreAccessServiceSvc_GetUserProfilesRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 {
-	[self performAsynchronousOperation: [[(LibreAccessServiceSoap12Binding_GetUserProfiles*)[LibreAccessServiceSoap12Binding_GetUserProfiles alloc] initWithBinding:self delegate:responseDelegate
+	[self performAsynchronousOperation: [[(LibreAccessServiceSoap11Binding_GetUserProfiles*)[LibreAccessServiceSoap11Binding_GetUserProfiles alloc] initWithBinding:self delegate:responseDelegate
 																							 parameters:aParameters
 																							 ] autorelease]];
 }
-- (LibreAccessServiceSoap12BindingResponse *)DeleteBookShelfEntryUsingParameters:(LibreAccessServiceSvc_DeleteBookShelfEntryRequest *)aParameters 
+- (LibreAccessServiceSoap11BindingResponse *)DeleteBookShelfEntryUsingParameters:(LibreAccessServiceSvc_DeleteBookShelfEntryRequest *)aParameters 
 {
-	return [self performSynchronousOperation:[[(LibreAccessServiceSoap12Binding_DeleteBookShelfEntry*)[LibreAccessServiceSoap12Binding_DeleteBookShelfEntry alloc] initWithBinding:self delegate:self
+	return [self performSynchronousOperation:[[(LibreAccessServiceSoap11Binding_DeleteBookShelfEntry*)[LibreAccessServiceSoap11Binding_DeleteBookShelfEntry alloc] initWithBinding:self delegate:self
 																							parameters:aParameters
 																							] autorelease]];
 }
-- (void)DeleteBookShelfEntryAsyncUsingParameters:(LibreAccessServiceSvc_DeleteBookShelfEntryRequest *)aParameters  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (void)DeleteBookShelfEntryAsyncUsingParameters:(LibreAccessServiceSvc_DeleteBookShelfEntryRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 {
-	[self performAsynchronousOperation: [[(LibreAccessServiceSoap12Binding_DeleteBookShelfEntry*)[LibreAccessServiceSoap12Binding_DeleteBookShelfEntry alloc] initWithBinding:self delegate:responseDelegate
+	[self performAsynchronousOperation: [[(LibreAccessServiceSoap11Binding_DeleteBookShelfEntry*)[LibreAccessServiceSoap11Binding_DeleteBookShelfEntry alloc] initWithBinding:self delegate:responseDelegate
 																							 parameters:aParameters
 																							 ] autorelease]];
 }
-- (LibreAccessServiceSoap12BindingResponse *)ListUserSettingsUsingParameters:(LibreAccessServiceSvc_ListUserSettingsRequest *)aParameters 
+- (LibreAccessServiceSoap11BindingResponse *)ListUserSettingsUsingParameters:(LibreAccessServiceSvc_ListUserSettingsRequest *)aParameters 
 {
-	return [self performSynchronousOperation:[[(LibreAccessServiceSoap12Binding_ListUserSettings*)[LibreAccessServiceSoap12Binding_ListUserSettings alloc] initWithBinding:self delegate:self
+	return [self performSynchronousOperation:[[(LibreAccessServiceSoap11Binding_ListUserSettings*)[LibreAccessServiceSoap11Binding_ListUserSettings alloc] initWithBinding:self delegate:self
 																							parameters:aParameters
 																							] autorelease]];
 }
-- (void)ListUserSettingsAsyncUsingParameters:(LibreAccessServiceSvc_ListUserSettingsRequest *)aParameters  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (void)ListUserSettingsAsyncUsingParameters:(LibreAccessServiceSvc_ListUserSettingsRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 {
-	[self performAsynchronousOperation: [[(LibreAccessServiceSoap12Binding_ListUserSettings*)[LibreAccessServiceSoap12Binding_ListUserSettings alloc] initWithBinding:self delegate:responseDelegate
+	[self performAsynchronousOperation: [[(LibreAccessServiceSoap11Binding_ListUserSettings*)[LibreAccessServiceSoap11Binding_ListUserSettings alloc] initWithBinding:self delegate:responseDelegate
 																							 parameters:aParameters
 																							 ] autorelease]];
 }
-- (LibreAccessServiceSoap12BindingResponse *)IsEntitledToLicenseUsingParameters:(LibreAccessServiceSvc_EntitledToLicenceRequest *)aParameters 
+- (LibreAccessServiceSoap11BindingResponse *)IsEntitledToLicenseUsingParameters:(LibreAccessServiceSvc_EntitledToLicenceRequest *)aParameters 
 {
-	return [self performSynchronousOperation:[[(LibreAccessServiceSoap12Binding_IsEntitledToLicense*)[LibreAccessServiceSoap12Binding_IsEntitledToLicense alloc] initWithBinding:self delegate:self
+	return [self performSynchronousOperation:[[(LibreAccessServiceSoap11Binding_IsEntitledToLicense*)[LibreAccessServiceSoap11Binding_IsEntitledToLicense alloc] initWithBinding:self delegate:self
 																							parameters:aParameters
 																							] autorelease]];
 }
-- (void)IsEntitledToLicenseAsyncUsingParameters:(LibreAccessServiceSvc_EntitledToLicenceRequest *)aParameters  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (void)IsEntitledToLicenseAsyncUsingParameters:(LibreAccessServiceSvc_EntitledToLicenceRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 {
-	[self performAsynchronousOperation: [[(LibreAccessServiceSoap12Binding_IsEntitledToLicense*)[LibreAccessServiceSoap12Binding_IsEntitledToLicense alloc] initWithBinding:self delegate:responseDelegate
+	[self performAsynchronousOperation: [[(LibreAccessServiceSoap11Binding_IsEntitledToLicense*)[LibreAccessServiceSoap11Binding_IsEntitledToLicense alloc] initWithBinding:self delegate:responseDelegate
 																							 parameters:aParameters
 																							 ] autorelease]];
 }
-- (LibreAccessServiceSoap12BindingResponse *)RemoveOrderUsingParameters:(LibreAccessServiceSvc_RemoveOrderRequest *)aParameters 
+- (LibreAccessServiceSoap11BindingResponse *)RemoveOrderUsingParameters:(LibreAccessServiceSvc_RemoveOrderRequest *)aParameters 
 {
-	return [self performSynchronousOperation:[[(LibreAccessServiceSoap12Binding_RemoveOrder*)[LibreAccessServiceSoap12Binding_RemoveOrder alloc] initWithBinding:self delegate:self
+	return [self performSynchronousOperation:[[(LibreAccessServiceSoap11Binding_RemoveOrder*)[LibreAccessServiceSoap11Binding_RemoveOrder alloc] initWithBinding:self delegate:self
 																							parameters:aParameters
 																							] autorelease]];
 }
-- (void)RemoveOrderAsyncUsingParameters:(LibreAccessServiceSvc_RemoveOrderRequest *)aParameters  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (void)RemoveOrderAsyncUsingParameters:(LibreAccessServiceSvc_RemoveOrderRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 {
-	[self performAsynchronousOperation: [[(LibreAccessServiceSoap12Binding_RemoveOrder*)[LibreAccessServiceSoap12Binding_RemoveOrder alloc] initWithBinding:self delegate:responseDelegate
+	[self performAsynchronousOperation: [[(LibreAccessServiceSoap11Binding_RemoveOrder*)[LibreAccessServiceSoap11Binding_RemoveOrder alloc] initWithBinding:self delegate:responseDelegate
 																							 parameters:aParameters
 																							 ] autorelease]];
 }
-- (LibreAccessServiceSoap12BindingResponse *)ListProfileContentAnnotationsUsingParameters:(LibreAccessServiceSvc_ListProfileContentAnnotationsRequest *)aParameters 
+- (LibreAccessServiceSoap11BindingResponse *)ListProfileContentAnnotationsUsingParameters:(LibreAccessServiceSvc_ListProfileContentAnnotationsRequest *)aParameters 
 {
-	return [self performSynchronousOperation:[[(LibreAccessServiceSoap12Binding_ListProfileContentAnnotations*)[LibreAccessServiceSoap12Binding_ListProfileContentAnnotations alloc] initWithBinding:self delegate:self
+	return [self performSynchronousOperation:[[(LibreAccessServiceSoap11Binding_ListProfileContentAnnotations*)[LibreAccessServiceSoap11Binding_ListProfileContentAnnotations alloc] initWithBinding:self delegate:self
 																							parameters:aParameters
 																							] autorelease]];
 }
-- (void)ListProfileContentAnnotationsAsyncUsingParameters:(LibreAccessServiceSvc_ListProfileContentAnnotationsRequest *)aParameters  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (void)ListProfileContentAnnotationsAsyncUsingParameters:(LibreAccessServiceSvc_ListProfileContentAnnotationsRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 {
-	[self performAsynchronousOperation: [[(LibreAccessServiceSoap12Binding_ListProfileContentAnnotations*)[LibreAccessServiceSoap12Binding_ListProfileContentAnnotations alloc] initWithBinding:self delegate:responseDelegate
+	[self performAsynchronousOperation: [[(LibreAccessServiceSoap11Binding_ListProfileContentAnnotations*)[LibreAccessServiceSoap11Binding_ListProfileContentAnnotations alloc] initWithBinding:self delegate:responseDelegate
 																							 parameters:aParameters
 																							 ] autorelease]];
 }
-- (LibreAccessServiceSoap12BindingResponse *)ListUserContentUsingBody:(LibreAccessServiceSvc_ListUserContent *)aBody 
+- (LibreAccessServiceSoap11BindingResponse *)ListUserContentUsingBody:(LibreAccessServiceSvc_ListUserContent *)aBody 
 {
-	return [self performSynchronousOperation:[[(LibreAccessServiceSoap12Binding_ListUserContent*)[LibreAccessServiceSoap12Binding_ListUserContent alloc] initWithBinding:self delegate:self
+	return [self performSynchronousOperation:[[(LibreAccessServiceSoap11Binding_ListUserContent*)[LibreAccessServiceSoap11Binding_ListUserContent alloc] initWithBinding:self delegate:self
 																							body:aBody
 																							] autorelease]];
 }
-- (void)ListUserContentAsyncUsingBody:(LibreAccessServiceSvc_ListUserContent *)aBody  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (void)ListUserContentAsyncUsingBody:(LibreAccessServiceSvc_ListUserContent *)aBody  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 {
-	[self performAsynchronousOperation: [[(LibreAccessServiceSoap12Binding_ListUserContent*)[LibreAccessServiceSoap12Binding_ListUserContent alloc] initWithBinding:self delegate:responseDelegate
+	[self performAsynchronousOperation: [[(LibreAccessServiceSoap11Binding_ListUserContent*)[LibreAccessServiceSoap11Binding_ListUserContent alloc] initWithBinding:self delegate:responseDelegate
 																							 body:aBody
 																							 ] autorelease]];
 }
-- (LibreAccessServiceSoap12BindingResponse *)ListFavoriteTypesUsingParameters:(LibreAccessServiceSvc_ListFavoriteTypesRequest *)aParameters 
+- (LibreAccessServiceSoap11BindingResponse *)ListFavoriteTypesUsingParameters:(LibreAccessServiceSvc_ListFavoriteTypesRequest *)aParameters 
 {
-	return [self performSynchronousOperation:[[(LibreAccessServiceSoap12Binding_ListFavoriteTypes*)[LibreAccessServiceSoap12Binding_ListFavoriteTypes alloc] initWithBinding:self delegate:self
+	return [self performSynchronousOperation:[[(LibreAccessServiceSoap11Binding_ListFavoriteTypes*)[LibreAccessServiceSoap11Binding_ListFavoriteTypes alloc] initWithBinding:self delegate:self
 																							parameters:aParameters
 																							] autorelease]];
 }
-- (void)ListFavoriteTypesAsyncUsingParameters:(LibreAccessServiceSvc_ListFavoriteTypesRequest *)aParameters  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (void)ListFavoriteTypesAsyncUsingParameters:(LibreAccessServiceSvc_ListFavoriteTypesRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 {
-	[self performAsynchronousOperation: [[(LibreAccessServiceSoap12Binding_ListFavoriteTypes*)[LibreAccessServiceSoap12Binding_ListFavoriteTypes alloc] initWithBinding:self delegate:responseDelegate
+	[self performAsynchronousOperation: [[(LibreAccessServiceSoap11Binding_ListFavoriteTypes*)[LibreAccessServiceSoap11Binding_ListFavoriteTypes alloc] initWithBinding:self delegate:responseDelegate
 																							 parameters:aParameters
 																							 ] autorelease]];
 }
-- (LibreAccessServiceSoap12BindingResponse *)GetKeyIdUsingParameters:(LibreAccessServiceSvc_GetKeyIdRequest *)aParameters 
+- (LibreAccessServiceSoap11BindingResponse *)GetKeyIdUsingParameters:(LibreAccessServiceSvc_GetKeyIdRequest *)aParameters 
 {
-	return [self performSynchronousOperation:[[(LibreAccessServiceSoap12Binding_GetKeyId*)[LibreAccessServiceSoap12Binding_GetKeyId alloc] initWithBinding:self delegate:self
+	return [self performSynchronousOperation:[[(LibreAccessServiceSoap11Binding_GetKeyId*)[LibreAccessServiceSoap11Binding_GetKeyId alloc] initWithBinding:self delegate:self
 																							parameters:aParameters
 																							] autorelease]];
 }
-- (void)GetKeyIdAsyncUsingParameters:(LibreAccessServiceSvc_GetKeyIdRequest *)aParameters  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (void)GetKeyIdAsyncUsingParameters:(LibreAccessServiceSvc_GetKeyIdRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 {
-	[self performAsynchronousOperation: [[(LibreAccessServiceSoap12Binding_GetKeyId*)[LibreAccessServiceSoap12Binding_GetKeyId alloc] initWithBinding:self delegate:responseDelegate
+	[self performAsynchronousOperation: [[(LibreAccessServiceSoap11Binding_GetKeyId*)[LibreAccessServiceSoap11Binding_GetKeyId alloc] initWithBinding:self delegate:responseDelegate
 																							 parameters:aParameters
 																							 ] autorelease]];
 }
-- (LibreAccessServiceSoap12BindingResponse *)SaveDefaultBooksUsingParameters:(LibreAccessServiceSvc_SaveDefaultBooksRequest *)aParameters 
+- (LibreAccessServiceSoap11BindingResponse *)SaveDefaultBooksUsingParameters:(LibreAccessServiceSvc_SaveDefaultBooksRequest *)aParameters 
 {
-	return [self performSynchronousOperation:[[(LibreAccessServiceSoap12Binding_SaveDefaultBooks*)[LibreAccessServiceSoap12Binding_SaveDefaultBooks alloc] initWithBinding:self delegate:self
+	return [self performSynchronousOperation:[[(LibreAccessServiceSoap11Binding_SaveDefaultBooks*)[LibreAccessServiceSoap11Binding_SaveDefaultBooks alloc] initWithBinding:self delegate:self
 																							parameters:aParameters
 																							] autorelease]];
 }
-- (void)SaveDefaultBooksAsyncUsingParameters:(LibreAccessServiceSvc_SaveDefaultBooksRequest *)aParameters  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (void)SaveDefaultBooksAsyncUsingParameters:(LibreAccessServiceSvc_SaveDefaultBooksRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 {
-	[self performAsynchronousOperation: [[(LibreAccessServiceSoap12Binding_SaveDefaultBooks*)[LibreAccessServiceSoap12Binding_SaveDefaultBooks alloc] initWithBinding:self delegate:responseDelegate
+	[self performAsynchronousOperation: [[(LibreAccessServiceSoap11Binding_SaveDefaultBooks*)[LibreAccessServiceSoap11Binding_SaveDefaultBooks alloc] initWithBinding:self delegate:responseDelegate
 																							 parameters:aParameters
 																							 ] autorelease]];
 }
-- (LibreAccessServiceSoap12BindingResponse *)SetAccountAutoAssignUsingParameters:(LibreAccessServiceSvc_SetAccountAutoAssignRequest *)aParameters 
+- (LibreAccessServiceSoap11BindingResponse *)SetAccountAutoAssignUsingParameters:(LibreAccessServiceSvc_SetAccountAutoAssignRequest *)aParameters 
 {
-	return [self performSynchronousOperation:[[(LibreAccessServiceSoap12Binding_SetAccountAutoAssign*)[LibreAccessServiceSoap12Binding_SetAccountAutoAssign alloc] initWithBinding:self delegate:self
+	return [self performSynchronousOperation:[[(LibreAccessServiceSoap11Binding_SetAccountAutoAssign*)[LibreAccessServiceSoap11Binding_SetAccountAutoAssign alloc] initWithBinding:self delegate:self
 																							parameters:aParameters
 																							] autorelease]];
 }
-- (void)SetAccountAutoAssignAsyncUsingParameters:(LibreAccessServiceSvc_SetAccountAutoAssignRequest *)aParameters  delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (void)SetAccountAutoAssignAsyncUsingParameters:(LibreAccessServiceSvc_SetAccountAutoAssignRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 {
-	[self performAsynchronousOperation: [[(LibreAccessServiceSoap12Binding_SetAccountAutoAssign*)[LibreAccessServiceSoap12Binding_SetAccountAutoAssign alloc] initWithBinding:self delegate:responseDelegate
+	[self performAsynchronousOperation: [[(LibreAccessServiceSoap11Binding_SetAccountAutoAssign*)[LibreAccessServiceSoap11Binding_SetAccountAutoAssign alloc] initWithBinding:self delegate:responseDelegate
 																							 parameters:aParameters
 																							 ] autorelease]];
 }
-- (void)sendHTTPCallUsingBody:(NSString *)outputBody soapAction:(NSString *)soapAction forOperation:(LibreAccessServiceSoap12BindingOperation *)operation
+- (void)sendHTTPCallUsingBody:(NSString *)outputBody soapAction:(NSString *)soapAction forOperation:(LibreAccessServiceSoap11BindingOperation *)operation
 {
 	NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:self.address 
 																												 cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData
@@ -44981,13 +44987,13 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 	[super dealloc];
 }
 @end
-@implementation LibreAccessServiceSoap12BindingOperation
+@implementation LibreAccessServiceSoap11BindingOperation
 @synthesize binding;
 @synthesize response;
 @synthesize delegate;
 @synthesize responseData;
 @synthesize urlConnection;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)aDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)aDelegate
 {
 	if ((self = [super init])) {
 		self.binding = aBinding;
@@ -45036,12 +45042,12 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 			NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:[NSHTTPURLResponse localizedStringForStatusCode:[httpResponse statusCode]],NSLocalizedDescriptionKey,
                                                                           httpResponse.URL, NSURLErrorKey,nil];
 				
-			error = [NSError errorWithDomain:@"LibreAccessServiceSoap12BindingResponseHTTP" code:[httpResponse statusCode] userInfo:userInfo];
+			error = [NSError errorWithDomain:@"LibreAccessServiceSoap11BindingResponseHTTP" code:[httpResponse statusCode] userInfo:userInfo];
 		} else {
 			NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
 	 												[NSString stringWithFormat: @"Unexpected response MIME type to SOAP call:%@", urlResponse.MIMEType],NSLocalizedDescriptionKey,
                                                                           httpResponse.URL, NSURLErrorKey,nil];
-			error = [NSError errorWithDomain:@"LibreAccessServiceSoap12BindingResponseHTTP" code:1 userInfo:userInfo];
+			error = [NSError errorWithDomain:@"LibreAccessServiceSoap11BindingResponseHTTP" code:1 userInfo:userInfo];
 		}
 				
 		[self connection:connection didFailWithError:error];
@@ -45074,9 +45080,9 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 	[super dealloc];
 }
 @end
-@implementation LibreAccessServiceSoap12Binding_ValidateScreenName
+@implementation LibreAccessServiceSoap11Binding_ValidateScreenName
 @synthesize parameters;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 parameters:(LibreAccessServiceSvc_ValidateScreenNameRequest *)aParameters
 {
 	if((self = [super initWithBinding:aBinding delegate:responseDelegate])) {
@@ -45094,9 +45100,9 @@ parameters:(LibreAccessServiceSvc_ValidateScreenNameRequest *)aParameters
 - (void)main
 {
 	[response autorelease];
-	response = [LibreAccessServiceSoap12BindingResponse new];
+	response = [LibreAccessServiceSoap11BindingResponse new];
 	
-	LibreAccessServiceSoap12Binding_envelope *envelope = [LibreAccessServiceSoap12Binding_envelope sharedInstance];
+	LibreAccessServiceSoap11Binding_envelope *envelope = [LibreAccessServiceSoap11Binding_envelope sharedInstance];
 	
 	NSMutableDictionary *headerElements = nil;
 	headerElements = [NSMutableDictionary dictionary];
@@ -45137,7 +45143,7 @@ parameters:(LibreAccessServiceSvc_ValidateScreenNameRequest *)aParameters
 		if (doc == NULL) {
 			NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"Errors while parsing returned XML" forKey:NSLocalizedDescriptionKey];
 			
-			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap12BindingResponseXML" code:1 userInfo:userInfo];
+			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap11BindingResponseXML" code:1 userInfo:userInfo];
 			[delegate operation:self completedWithResponse:response];
 		} else {
 			cur = xmlDocGetRootElement(doc);
@@ -45179,9 +45185,9 @@ parameters:(LibreAccessServiceSvc_ValidateScreenNameRequest *)aParameters
 	}
 }
 @end
-@implementation LibreAccessServiceSoap12Binding_ValidateUserKey
+@implementation LibreAccessServiceSoap11Binding_ValidateUserKey
 @synthesize parameters;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 parameters:(LibreAccessServiceSvc_ValidateUserKeyRequest *)aParameters
 {
 	if((self = [super initWithBinding:aBinding delegate:responseDelegate])) {
@@ -45199,9 +45205,9 @@ parameters:(LibreAccessServiceSvc_ValidateUserKeyRequest *)aParameters
 - (void)main
 {
 	[response autorelease];
-	response = [LibreAccessServiceSoap12BindingResponse new];
+	response = [LibreAccessServiceSoap11BindingResponse new];
 	
-	LibreAccessServiceSoap12Binding_envelope *envelope = [LibreAccessServiceSoap12Binding_envelope sharedInstance];
+	LibreAccessServiceSoap11Binding_envelope *envelope = [LibreAccessServiceSoap11Binding_envelope sharedInstance];
 	
 	NSMutableDictionary *headerElements = nil;
 	headerElements = [NSMutableDictionary dictionary];
@@ -45242,7 +45248,7 @@ parameters:(LibreAccessServiceSvc_ValidateUserKeyRequest *)aParameters
 		if (doc == NULL) {
 			NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"Errors while parsing returned XML" forKey:NSLocalizedDescriptionKey];
 			
-			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap12BindingResponseXML" code:1 userInfo:userInfo];
+			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap11BindingResponseXML" code:1 userInfo:userInfo];
 			[delegate operation:self completedWithResponse:response];
 		} else {
 			cur = xmlDocGetRootElement(doc);
@@ -45284,9 +45290,9 @@ parameters:(LibreAccessServiceSvc_ValidateUserKeyRequest *)aParameters
 	}
 }
 @end
-@implementation LibreAccessServiceSoap12Binding_AcknowledgeLicense
+@implementation LibreAccessServiceSoap11Binding_AcknowledgeLicense
 @synthesize parameters;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 parameters:(LibreAccessServiceSvc_AcknowledgeLicenseRequest *)aParameters
 {
 	if((self = [super initWithBinding:aBinding delegate:responseDelegate])) {
@@ -45304,9 +45310,9 @@ parameters:(LibreAccessServiceSvc_AcknowledgeLicenseRequest *)aParameters
 - (void)main
 {
 	[response autorelease];
-	response = [LibreAccessServiceSoap12BindingResponse new];
+	response = [LibreAccessServiceSoap11BindingResponse new];
 	
-	LibreAccessServiceSoap12Binding_envelope *envelope = [LibreAccessServiceSoap12Binding_envelope sharedInstance];
+	LibreAccessServiceSoap11Binding_envelope *envelope = [LibreAccessServiceSoap11Binding_envelope sharedInstance];
 	
 	NSMutableDictionary *headerElements = nil;
 	headerElements = [NSMutableDictionary dictionary];
@@ -45347,7 +45353,7 @@ parameters:(LibreAccessServiceSvc_AcknowledgeLicenseRequest *)aParameters
 		if (doc == NULL) {
 			NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"Errors while parsing returned XML" forKey:NSLocalizedDescriptionKey];
 			
-			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap12BindingResponseXML" code:1 userInfo:userInfo];
+			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap11BindingResponseXML" code:1 userInfo:userInfo];
 			[delegate operation:self completedWithResponse:response];
 		} else {
 			cur = xmlDocGetRootElement(doc);
@@ -45389,9 +45395,9 @@ parameters:(LibreAccessServiceSvc_AcknowledgeLicenseRequest *)aParameters
 	}
 }
 @end
-@implementation LibreAccessServiceSoap12Binding_SharedTokenExchange
+@implementation LibreAccessServiceSoap11Binding_SharedTokenExchange
 @synthesize body;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 body:(LibreAccessServiceSvc_SharedTokenExchangeRequest *)aBody
 {
 	if((self = [super initWithBinding:aBinding delegate:responseDelegate])) {
@@ -45409,9 +45415,9 @@ body:(LibreAccessServiceSvc_SharedTokenExchangeRequest *)aBody
 - (void)main
 {
 	[response autorelease];
-	response = [LibreAccessServiceSoap12BindingResponse new];
+	response = [LibreAccessServiceSoap11BindingResponse new];
 	
-	LibreAccessServiceSoap12Binding_envelope *envelope = [LibreAccessServiceSoap12Binding_envelope sharedInstance];
+	LibreAccessServiceSoap11Binding_envelope *envelope = [LibreAccessServiceSoap11Binding_envelope sharedInstance];
 	
 	NSMutableDictionary *headerElements = nil;
 	headerElements = [NSMutableDictionary dictionary];
@@ -45452,7 +45458,7 @@ body:(LibreAccessServiceSvc_SharedTokenExchangeRequest *)aBody
 		if (doc == NULL) {
 			NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"Errors while parsing returned XML" forKey:NSLocalizedDescriptionKey];
 			
-			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap12BindingResponseXML" code:1 userInfo:userInfo];
+			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap11BindingResponseXML" code:1 userInfo:userInfo];
 			[delegate operation:self completedWithResponse:response];
 		} else {
 			cur = xmlDocGetRootElement(doc);
@@ -45494,9 +45500,9 @@ body:(LibreAccessServiceSvc_SharedTokenExchangeRequest *)aBody
 	}
 }
 @end
-@implementation LibreAccessServiceSoap12Binding_SaveUserCSRNotes
+@implementation LibreAccessServiceSoap11Binding_SaveUserCSRNotes
 @synthesize parameters;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 parameters:(LibreAccessServiceSvc_SaveUserCSRNotesRequest *)aParameters
 {
 	if((self = [super initWithBinding:aBinding delegate:responseDelegate])) {
@@ -45514,9 +45520,9 @@ parameters:(LibreAccessServiceSvc_SaveUserCSRNotesRequest *)aParameters
 - (void)main
 {
 	[response autorelease];
-	response = [LibreAccessServiceSoap12BindingResponse new];
+	response = [LibreAccessServiceSoap11BindingResponse new];
 	
-	LibreAccessServiceSoap12Binding_envelope *envelope = [LibreAccessServiceSoap12Binding_envelope sharedInstance];
+	LibreAccessServiceSoap11Binding_envelope *envelope = [LibreAccessServiceSoap11Binding_envelope sharedInstance];
 	
 	NSMutableDictionary *headerElements = nil;
 	headerElements = [NSMutableDictionary dictionary];
@@ -45557,7 +45563,7 @@ parameters:(LibreAccessServiceSvc_SaveUserCSRNotesRequest *)aParameters
 		if (doc == NULL) {
 			NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"Errors while parsing returned XML" forKey:NSLocalizedDescriptionKey];
 			
-			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap12BindingResponseXML" code:1 userInfo:userInfo];
+			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap11BindingResponseXML" code:1 userInfo:userInfo];
 			[delegate operation:self completedWithResponse:response];
 		} else {
 			cur = xmlDocGetRootElement(doc);
@@ -45599,8 +45605,8 @@ parameters:(LibreAccessServiceSvc_SaveUserCSRNotesRequest *)aParameters
 	}
 }
 @end
-@implementation LibreAccessServiceSoap12Binding_HealthCheck
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+@implementation LibreAccessServiceSoap11Binding_HealthCheck
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 {
 	if((self = [super initWithBinding:aBinding delegate:responseDelegate])) {
 	}
@@ -45615,9 +45621,9 @@ parameters:(LibreAccessServiceSvc_SaveUserCSRNotesRequest *)aParameters
 - (void)main
 {
 	[response autorelease];
-	response = [LibreAccessServiceSoap12BindingResponse new];
+	response = [LibreAccessServiceSoap11BindingResponse new];
 	
-	LibreAccessServiceSoap12Binding_envelope *envelope = [LibreAccessServiceSoap12Binding_envelope sharedInstance];
+	LibreAccessServiceSoap11Binding_envelope *envelope = [LibreAccessServiceSoap11Binding_envelope sharedInstance];
 	
 	NSMutableDictionary *headerElements = nil;
 	headerElements = [NSMutableDictionary dictionary];
@@ -45653,7 +45659,7 @@ parameters:(LibreAccessServiceSvc_SaveUserCSRNotesRequest *)aParameters
 		if (doc == NULL) {
 			NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"Errors while parsing returned XML" forKey:NSLocalizedDescriptionKey];
 			
-			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap12BindingResponseXML" code:1 userInfo:userInfo];
+			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap11BindingResponseXML" code:1 userInfo:userInfo];
 			[delegate operation:self completedWithResponse:response];
 		} else {
 			cur = xmlDocGetRootElement(doc);
@@ -45695,9 +45701,9 @@ parameters:(LibreAccessServiceSvc_SaveUserCSRNotesRequest *)aParameters
 	}
 }
 @end
-@implementation LibreAccessServiceSoap12Binding_SaveNewDomain
+@implementation LibreAccessServiceSoap11Binding_SaveNewDomain
 @synthesize parameters;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 parameters:(LibreAccessServiceSvc_SaveNewDomainRequest *)aParameters
 {
 	if((self = [super initWithBinding:aBinding delegate:responseDelegate])) {
@@ -45715,9 +45721,9 @@ parameters:(LibreAccessServiceSvc_SaveNewDomainRequest *)aParameters
 - (void)main
 {
 	[response autorelease];
-	response = [LibreAccessServiceSoap12BindingResponse new];
+	response = [LibreAccessServiceSoap11BindingResponse new];
 	
-	LibreAccessServiceSoap12Binding_envelope *envelope = [LibreAccessServiceSoap12Binding_envelope sharedInstance];
+	LibreAccessServiceSoap11Binding_envelope *envelope = [LibreAccessServiceSoap11Binding_envelope sharedInstance];
 	
 	NSMutableDictionary *headerElements = nil;
 	headerElements = [NSMutableDictionary dictionary];
@@ -45758,7 +45764,7 @@ parameters:(LibreAccessServiceSvc_SaveNewDomainRequest *)aParameters
 		if (doc == NULL) {
 			NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"Errors while parsing returned XML" forKey:NSLocalizedDescriptionKey];
 			
-			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap12BindingResponseXML" code:1 userInfo:userInfo];
+			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap11BindingResponseXML" code:1 userInfo:userInfo];
 			[delegate operation:self completedWithResponse:response];
 		} else {
 			cur = xmlDocGetRootElement(doc);
@@ -45800,9 +45806,9 @@ parameters:(LibreAccessServiceSvc_SaveNewDomainRequest *)aParameters
 	}
 }
 @end
-@implementation LibreAccessServiceSoap12Binding_ListDefaultBooks
+@implementation LibreAccessServiceSoap11Binding_ListDefaultBooks
 @synthesize parameters;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 parameters:(LibreAccessServiceSvc_ListDefaultBooksRequest *)aParameters
 {
 	if((self = [super initWithBinding:aBinding delegate:responseDelegate])) {
@@ -45820,9 +45826,9 @@ parameters:(LibreAccessServiceSvc_ListDefaultBooksRequest *)aParameters
 - (void)main
 {
 	[response autorelease];
-	response = [LibreAccessServiceSoap12BindingResponse new];
+	response = [LibreAccessServiceSoap11BindingResponse new];
 	
-	LibreAccessServiceSoap12Binding_envelope *envelope = [LibreAccessServiceSoap12Binding_envelope sharedInstance];
+	LibreAccessServiceSoap11Binding_envelope *envelope = [LibreAccessServiceSoap11Binding_envelope sharedInstance];
 	
 	NSMutableDictionary *headerElements = nil;
 	headerElements = [NSMutableDictionary dictionary];
@@ -45863,7 +45869,7 @@ parameters:(LibreAccessServiceSvc_ListDefaultBooksRequest *)aParameters
 		if (doc == NULL) {
 			NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"Errors while parsing returned XML" forKey:NSLocalizedDescriptionKey];
 			
-			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap12BindingResponseXML" code:1 userInfo:userInfo];
+			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap11BindingResponseXML" code:1 userInfo:userInfo];
 			[delegate operation:self completedWithResponse:response];
 		} else {
 			cur = xmlDocGetRootElement(doc);
@@ -45905,9 +45911,9 @@ parameters:(LibreAccessServiceSvc_ListDefaultBooksRequest *)aParameters
 	}
 }
 @end
-@implementation LibreAccessServiceSoap12Binding_ListReadingStatisticsDetailed
+@implementation LibreAccessServiceSoap11Binding_ListReadingStatisticsDetailed
 @synthesize parameters;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 parameters:(LibreAccessServiceSvc_ListReadingStatisticsDetailedRequest *)aParameters
 {
 	if((self = [super initWithBinding:aBinding delegate:responseDelegate])) {
@@ -45925,9 +45931,9 @@ parameters:(LibreAccessServiceSvc_ListReadingStatisticsDetailedRequest *)aParame
 - (void)main
 {
 	[response autorelease];
-	response = [LibreAccessServiceSoap12BindingResponse new];
+	response = [LibreAccessServiceSoap11BindingResponse new];
 	
-	LibreAccessServiceSoap12Binding_envelope *envelope = [LibreAccessServiceSoap12Binding_envelope sharedInstance];
+	LibreAccessServiceSoap11Binding_envelope *envelope = [LibreAccessServiceSoap11Binding_envelope sharedInstance];
 	
 	NSMutableDictionary *headerElements = nil;
 	headerElements = [NSMutableDictionary dictionary];
@@ -45968,7 +45974,7 @@ parameters:(LibreAccessServiceSvc_ListReadingStatisticsDetailedRequest *)aParame
 		if (doc == NULL) {
 			NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"Errors while parsing returned XML" forKey:NSLocalizedDescriptionKey];
 			
-			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap12BindingResponseXML" code:1 userInfo:userInfo];
+			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap11BindingResponseXML" code:1 userInfo:userInfo];
 			[delegate operation:self completedWithResponse:response];
 		} else {
 			cur = xmlDocGetRootElement(doc);
@@ -46010,9 +46016,9 @@ parameters:(LibreAccessServiceSvc_ListReadingStatisticsDetailedRequest *)aParame
 	}
 }
 @end
-@implementation LibreAccessServiceSoap12Binding_DeviceCanJoinDomain
+@implementation LibreAccessServiceSoap11Binding_DeviceCanJoinDomain
 @synthesize parameters;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 parameters:(LibreAccessServiceSvc_DeviceCanJoinDomainRequest *)aParameters
 {
 	if((self = [super initWithBinding:aBinding delegate:responseDelegate])) {
@@ -46030,9 +46036,9 @@ parameters:(LibreAccessServiceSvc_DeviceCanJoinDomainRequest *)aParameters
 - (void)main
 {
 	[response autorelease];
-	response = [LibreAccessServiceSoap12BindingResponse new];
+	response = [LibreAccessServiceSoap11BindingResponse new];
 	
-	LibreAccessServiceSoap12Binding_envelope *envelope = [LibreAccessServiceSoap12Binding_envelope sharedInstance];
+	LibreAccessServiceSoap11Binding_envelope *envelope = [LibreAccessServiceSoap11Binding_envelope sharedInstance];
 	
 	NSMutableDictionary *headerElements = nil;
 	headerElements = [NSMutableDictionary dictionary];
@@ -46073,7 +46079,7 @@ parameters:(LibreAccessServiceSvc_DeviceCanJoinDomainRequest *)aParameters
 		if (doc == NULL) {
 			NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"Errors while parsing returned XML" forKey:NSLocalizedDescriptionKey];
 			
-			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap12BindingResponseXML" code:1 userInfo:userInfo];
+			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap11BindingResponseXML" code:1 userInfo:userInfo];
 			[delegate operation:self completedWithResponse:response];
 		} else {
 			cur = xmlDocGetRootElement(doc);
@@ -46115,9 +46121,9 @@ parameters:(LibreAccessServiceSvc_DeviceCanJoinDomainRequest *)aParameters
 	}
 }
 @end
-@implementation LibreAccessServiceSoap12Binding_AssignBooksToAllUsers
+@implementation LibreAccessServiceSoap11Binding_AssignBooksToAllUsers
 @synthesize parameters;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 parameters:(LibreAccessServiceSvc_AssignBooksToAllUsersRequest *)aParameters
 {
 	if((self = [super initWithBinding:aBinding delegate:responseDelegate])) {
@@ -46135,9 +46141,9 @@ parameters:(LibreAccessServiceSvc_AssignBooksToAllUsersRequest *)aParameters
 - (void)main
 {
 	[response autorelease];
-	response = [LibreAccessServiceSoap12BindingResponse new];
+	response = [LibreAccessServiceSoap11BindingResponse new];
 	
-	LibreAccessServiceSoap12Binding_envelope *envelope = [LibreAccessServiceSoap12Binding_envelope sharedInstance];
+	LibreAccessServiceSoap11Binding_envelope *envelope = [LibreAccessServiceSoap11Binding_envelope sharedInstance];
 	
 	NSMutableDictionary *headerElements = nil;
 	headerElements = [NSMutableDictionary dictionary];
@@ -46178,7 +46184,7 @@ parameters:(LibreAccessServiceSvc_AssignBooksToAllUsersRequest *)aParameters
 		if (doc == NULL) {
 			NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"Errors while parsing returned XML" forKey:NSLocalizedDescriptionKey];
 			
-			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap12BindingResponseXML" code:1 userInfo:userInfo];
+			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap11BindingResponseXML" code:1 userInfo:userInfo];
 			[delegate operation:self completedWithResponse:response];
 		} else {
 			cur = xmlDocGetRootElement(doc);
@@ -46220,9 +46226,9 @@ parameters:(LibreAccessServiceSvc_AssignBooksToAllUsersRequest *)aParameters
 	}
 }
 @end
-@implementation LibreAccessServiceSoap12Binding_GetLastPageLocation
+@implementation LibreAccessServiceSoap11Binding_GetLastPageLocation
 @synthesize parameters;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 parameters:(LibreAccessServiceSvc_GetLastPageLocationRequest *)aParameters
 {
 	if((self = [super initWithBinding:aBinding delegate:responseDelegate])) {
@@ -46240,9 +46246,9 @@ parameters:(LibreAccessServiceSvc_GetLastPageLocationRequest *)aParameters
 - (void)main
 {
 	[response autorelease];
-	response = [LibreAccessServiceSoap12BindingResponse new];
+	response = [LibreAccessServiceSoap11BindingResponse new];
 	
-	LibreAccessServiceSoap12Binding_envelope *envelope = [LibreAccessServiceSoap12Binding_envelope sharedInstance];
+	LibreAccessServiceSoap11Binding_envelope *envelope = [LibreAccessServiceSoap11Binding_envelope sharedInstance];
 	
 	NSMutableDictionary *headerElements = nil;
 	headerElements = [NSMutableDictionary dictionary];
@@ -46283,7 +46289,7 @@ parameters:(LibreAccessServiceSvc_GetLastPageLocationRequest *)aParameters
 		if (doc == NULL) {
 			NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"Errors while parsing returned XML" forKey:NSLocalizedDescriptionKey];
 			
-			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap12BindingResponseXML" code:1 userInfo:userInfo];
+			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap11BindingResponseXML" code:1 userInfo:userInfo];
 			[delegate operation:self completedWithResponse:response];
 		} else {
 			cur = xmlDocGetRootElement(doc);
@@ -46325,9 +46331,9 @@ parameters:(LibreAccessServiceSvc_GetLastPageLocationRequest *)aParameters
 	}
 }
 @end
-@implementation LibreAccessServiceSoap12Binding_SaveProfileContentAnnotations
+@implementation LibreAccessServiceSoap11Binding_SaveProfileContentAnnotations
 @synthesize parameters;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 parameters:(LibreAccessServiceSvc_SaveProfileContentAnnotationsRequest *)aParameters
 {
 	if((self = [super initWithBinding:aBinding delegate:responseDelegate])) {
@@ -46345,9 +46351,9 @@ parameters:(LibreAccessServiceSvc_SaveProfileContentAnnotationsRequest *)aParame
 - (void)main
 {
 	[response autorelease];
-	response = [LibreAccessServiceSoap12BindingResponse new];
+	response = [LibreAccessServiceSoap11BindingResponse new];
 	
-	LibreAccessServiceSoap12Binding_envelope *envelope = [LibreAccessServiceSoap12Binding_envelope sharedInstance];
+	LibreAccessServiceSoap11Binding_envelope *envelope = [LibreAccessServiceSoap11Binding_envelope sharedInstance];
 	
 	NSMutableDictionary *headerElements = nil;
 	headerElements = [NSMutableDictionary dictionary];
@@ -46388,7 +46394,7 @@ parameters:(LibreAccessServiceSvc_SaveProfileContentAnnotationsRequest *)aParame
 		if (doc == NULL) {
 			NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"Errors while parsing returned XML" forKey:NSLocalizedDescriptionKey];
 			
-			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap12BindingResponseXML" code:1 userInfo:userInfo];
+			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap11BindingResponseXML" code:1 userInfo:userInfo];
 			[delegate operation:self completedWithResponse:response];
 		} else {
 			cur = xmlDocGetRootElement(doc);
@@ -46430,9 +46436,9 @@ parameters:(LibreAccessServiceSvc_SaveProfileContentAnnotationsRequest *)aParame
 	}
 }
 @end
-@implementation LibreAccessServiceSoap12Binding_RemoveDefaultBooks
+@implementation LibreAccessServiceSoap11Binding_RemoveDefaultBooks
 @synthesize parameters;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 parameters:(LibreAccessServiceSvc_RemoveDefaultBooksRequest *)aParameters
 {
 	if((self = [super initWithBinding:aBinding delegate:responseDelegate])) {
@@ -46450,9 +46456,9 @@ parameters:(LibreAccessServiceSvc_RemoveDefaultBooksRequest *)aParameters
 - (void)main
 {
 	[response autorelease];
-	response = [LibreAccessServiceSoap12BindingResponse new];
+	response = [LibreAccessServiceSoap11BindingResponse new];
 	
-	LibreAccessServiceSoap12Binding_envelope *envelope = [LibreAccessServiceSoap12Binding_envelope sharedInstance];
+	LibreAccessServiceSoap11Binding_envelope *envelope = [LibreAccessServiceSoap11Binding_envelope sharedInstance];
 	
 	NSMutableDictionary *headerElements = nil;
 	headerElements = [NSMutableDictionary dictionary];
@@ -46493,7 +46499,7 @@ parameters:(LibreAccessServiceSvc_RemoveDefaultBooksRequest *)aParameters
 		if (doc == NULL) {
 			NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"Errors while parsing returned XML" forKey:NSLocalizedDescriptionKey];
 			
-			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap12BindingResponseXML" code:1 userInfo:userInfo];
+			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap11BindingResponseXML" code:1 userInfo:userInfo];
 			[delegate operation:self completedWithResponse:response];
 		} else {
 			cur = xmlDocGetRootElement(doc);
@@ -46535,9 +46541,9 @@ parameters:(LibreAccessServiceSvc_RemoveDefaultBooksRequest *)aParameters
 	}
 }
 @end
-@implementation LibreAccessServiceSoap12Binding_GetLicensableStatus
+@implementation LibreAccessServiceSoap11Binding_GetLicensableStatus
 @synthesize parameters;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 parameters:(LibreAccessServiceSvc_GetLicensableStatusRequest *)aParameters
 {
 	if((self = [super initWithBinding:aBinding delegate:responseDelegate])) {
@@ -46555,9 +46561,9 @@ parameters:(LibreAccessServiceSvc_GetLicensableStatusRequest *)aParameters
 - (void)main
 {
 	[response autorelease];
-	response = [LibreAccessServiceSoap12BindingResponse new];
+	response = [LibreAccessServiceSoap11BindingResponse new];
 	
-	LibreAccessServiceSoap12Binding_envelope *envelope = [LibreAccessServiceSoap12Binding_envelope sharedInstance];
+	LibreAccessServiceSoap11Binding_envelope *envelope = [LibreAccessServiceSoap11Binding_envelope sharedInstance];
 	
 	NSMutableDictionary *headerElements = nil;
 	headerElements = [NSMutableDictionary dictionary];
@@ -46598,7 +46604,7 @@ parameters:(LibreAccessServiceSvc_GetLicensableStatusRequest *)aParameters
 		if (doc == NULL) {
 			NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"Errors while parsing returned XML" forKey:NSLocalizedDescriptionKey];
 			
-			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap12BindingResponseXML" code:1 userInfo:userInfo];
+			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap11BindingResponseXML" code:1 userInfo:userInfo];
 			[delegate operation:self completedWithResponse:response];
 		} else {
 			cur = xmlDocGetRootElement(doc);
@@ -46640,9 +46646,9 @@ parameters:(LibreAccessServiceSvc_GetLicensableStatusRequest *)aParameters
 	}
 }
 @end
-@implementation LibreAccessServiceSoap12Binding_SaveLastPageLocation
+@implementation LibreAccessServiceSoap11Binding_SaveLastPageLocation
 @synthesize parameters;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 parameters:(LibreAccessServiceSvc_SaveLastPageLocationRequest *)aParameters
 {
 	if((self = [super initWithBinding:aBinding delegate:responseDelegate])) {
@@ -46660,9 +46666,9 @@ parameters:(LibreAccessServiceSvc_SaveLastPageLocationRequest *)aParameters
 - (void)main
 {
 	[response autorelease];
-	response = [LibreAccessServiceSoap12BindingResponse new];
+	response = [LibreAccessServiceSoap11BindingResponse new];
 	
-	LibreAccessServiceSoap12Binding_envelope *envelope = [LibreAccessServiceSoap12Binding_envelope sharedInstance];
+	LibreAccessServiceSoap11Binding_envelope *envelope = [LibreAccessServiceSoap11Binding_envelope sharedInstance];
 	
 	NSMutableDictionary *headerElements = nil;
 	headerElements = [NSMutableDictionary dictionary];
@@ -46703,7 +46709,7 @@ parameters:(LibreAccessServiceSvc_SaveLastPageLocationRequest *)aParameters
 		if (doc == NULL) {
 			NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"Errors while parsing returned XML" forKey:NSLocalizedDescriptionKey];
 			
-			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap12BindingResponseXML" code:1 userInfo:userInfo];
+			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap11BindingResponseXML" code:1 userInfo:userInfo];
 			[delegate operation:self completedWithResponse:response];
 		} else {
 			cur = xmlDocGetRootElement(doc);
@@ -46745,9 +46751,9 @@ parameters:(LibreAccessServiceSvc_SaveLastPageLocationRequest *)aParameters
 	}
 }
 @end
-@implementation LibreAccessServiceSoap12Binding_ListUserCSRNotes
+@implementation LibreAccessServiceSoap11Binding_ListUserCSRNotes
 @synthesize parameters;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 parameters:(LibreAccessServiceSvc_ListUserCSRNotesRequest *)aParameters
 {
 	if((self = [super initWithBinding:aBinding delegate:responseDelegate])) {
@@ -46765,9 +46771,9 @@ parameters:(LibreAccessServiceSvc_ListUserCSRNotesRequest *)aParameters
 - (void)main
 {
 	[response autorelease];
-	response = [LibreAccessServiceSoap12BindingResponse new];
+	response = [LibreAccessServiceSoap11BindingResponse new];
 	
-	LibreAccessServiceSoap12Binding_envelope *envelope = [LibreAccessServiceSoap12Binding_envelope sharedInstance];
+	LibreAccessServiceSoap11Binding_envelope *envelope = [LibreAccessServiceSoap11Binding_envelope sharedInstance];
 	
 	NSMutableDictionary *headerElements = nil;
 	headerElements = [NSMutableDictionary dictionary];
@@ -46808,7 +46814,7 @@ parameters:(LibreAccessServiceSvc_ListUserCSRNotesRequest *)aParameters
 		if (doc == NULL) {
 			NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"Errors while parsing returned XML" forKey:NSLocalizedDescriptionKey];
 			
-			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap12BindingResponseXML" code:1 userInfo:userInfo];
+			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap11BindingResponseXML" code:1 userInfo:userInfo];
 			[delegate operation:self completedWithResponse:response];
 		} else {
 			cur = xmlDocGetRootElement(doc);
@@ -46850,9 +46856,9 @@ parameters:(LibreAccessServiceSvc_ListUserCSRNotesRequest *)aParameters
 	}
 }
 @end
-@implementation LibreAccessServiceSoap12Binding_RenewToken
+@implementation LibreAccessServiceSoap11Binding_RenewToken
 @synthesize body;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 body:(LibreAccessServiceSvc_RenewTokenRequest *)aBody
 {
 	if((self = [super initWithBinding:aBinding delegate:responseDelegate])) {
@@ -46870,9 +46876,9 @@ body:(LibreAccessServiceSvc_RenewTokenRequest *)aBody
 - (void)main
 {
 	[response autorelease];
-	response = [LibreAccessServiceSoap12BindingResponse new];
+	response = [LibreAccessServiceSoap11BindingResponse new];
 	
-	LibreAccessServiceSoap12Binding_envelope *envelope = [LibreAccessServiceSoap12Binding_envelope sharedInstance];
+	LibreAccessServiceSoap11Binding_envelope *envelope = [LibreAccessServiceSoap11Binding_envelope sharedInstance];
 	
 	NSMutableDictionary *headerElements = nil;
 	headerElements = [NSMutableDictionary dictionary];
@@ -46913,7 +46919,7 @@ body:(LibreAccessServiceSvc_RenewTokenRequest *)aBody
 		if (doc == NULL) {
 			NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"Errors while parsing returned XML" forKey:NSLocalizedDescriptionKey];
 			
-			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap12BindingResponseXML" code:1 userInfo:userInfo];
+			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap11BindingResponseXML" code:1 userInfo:userInfo];
 			[delegate operation:self completedWithResponse:response];
 		} else {
 			cur = xmlDocGetRootElement(doc);
@@ -46955,9 +46961,9 @@ body:(LibreAccessServiceSvc_RenewTokenRequest *)aBody
 	}
 }
 @end
-@implementation LibreAccessServiceSoap12Binding_SaveDeviceInfo
+@implementation LibreAccessServiceSoap11Binding_SaveDeviceInfo
 @synthesize parameters;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 parameters:(LibreAccessServiceSvc_SaveDeviceInfoRequest *)aParameters
 {
 	if((self = [super initWithBinding:aBinding delegate:responseDelegate])) {
@@ -46975,9 +46981,9 @@ parameters:(LibreAccessServiceSvc_SaveDeviceInfoRequest *)aParameters
 - (void)main
 {
 	[response autorelease];
-	response = [LibreAccessServiceSoap12BindingResponse new];
+	response = [LibreAccessServiceSoap11BindingResponse new];
 	
-	LibreAccessServiceSoap12Binding_envelope *envelope = [LibreAccessServiceSoap12Binding_envelope sharedInstance];
+	LibreAccessServiceSoap11Binding_envelope *envelope = [LibreAccessServiceSoap11Binding_envelope sharedInstance];
 	
 	NSMutableDictionary *headerElements = nil;
 	headerElements = [NSMutableDictionary dictionary];
@@ -47018,7 +47024,7 @@ parameters:(LibreAccessServiceSvc_SaveDeviceInfoRequest *)aParameters
 		if (doc == NULL) {
 			NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"Errors while parsing returned XML" forKey:NSLocalizedDescriptionKey];
 			
-			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap12BindingResponseXML" code:1 userInfo:userInfo];
+			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap11BindingResponseXML" code:1 userInfo:userInfo];
 			[delegate operation:self completedWithResponse:response];
 		} else {
 			cur = xmlDocGetRootElement(doc);
@@ -47060,9 +47066,9 @@ parameters:(LibreAccessServiceSvc_SaveDeviceInfoRequest *)aParameters
 	}
 }
 @end
-@implementation LibreAccessServiceSoap12Binding_ListReadingStatisticsAggregate
+@implementation LibreAccessServiceSoap11Binding_ListReadingStatisticsAggregate
 @synthesize parameters;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 parameters:(LibreAccessServiceSvc_ListReadingStatisticsAggregateRequest *)aParameters
 {
 	if((self = [super initWithBinding:aBinding delegate:responseDelegate])) {
@@ -47080,9 +47086,9 @@ parameters:(LibreAccessServiceSvc_ListReadingStatisticsAggregateRequest *)aParam
 - (void)main
 {
 	[response autorelease];
-	response = [LibreAccessServiceSoap12BindingResponse new];
+	response = [LibreAccessServiceSoap11BindingResponse new];
 	
-	LibreAccessServiceSoap12Binding_envelope *envelope = [LibreAccessServiceSoap12Binding_envelope sharedInstance];
+	LibreAccessServiceSoap11Binding_envelope *envelope = [LibreAccessServiceSoap11Binding_envelope sharedInstance];
 	
 	NSMutableDictionary *headerElements = nil;
 	headerElements = [NSMutableDictionary dictionary];
@@ -47123,7 +47129,7 @@ parameters:(LibreAccessServiceSvc_ListReadingStatisticsAggregateRequest *)aParam
 		if (doc == NULL) {
 			NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"Errors while parsing returned XML" forKey:NSLocalizedDescriptionKey];
 			
-			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap12BindingResponseXML" code:1 userInfo:userInfo];
+			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap11BindingResponseXML" code:1 userInfo:userInfo];
 			[delegate operation:self completedWithResponse:response];
 		} else {
 			cur = xmlDocGetRootElement(doc);
@@ -47165,9 +47171,9 @@ parameters:(LibreAccessServiceSvc_ListReadingStatisticsAggregateRequest *)aParam
 	}
 }
 @end
-@implementation LibreAccessServiceSoap12Binding_ListLastNWords
+@implementation LibreAccessServiceSoap11Binding_ListLastNWords
 @synthesize parameters;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 parameters:(LibreAccessServiceSvc_ListLastNWordsRequest *)aParameters
 {
 	if((self = [super initWithBinding:aBinding delegate:responseDelegate])) {
@@ -47185,9 +47191,9 @@ parameters:(LibreAccessServiceSvc_ListLastNWordsRequest *)aParameters
 - (void)main
 {
 	[response autorelease];
-	response = [LibreAccessServiceSoap12BindingResponse new];
+	response = [LibreAccessServiceSoap11BindingResponse new];
 	
-	LibreAccessServiceSoap12Binding_envelope *envelope = [LibreAccessServiceSoap12Binding_envelope sharedInstance];
+	LibreAccessServiceSoap11Binding_envelope *envelope = [LibreAccessServiceSoap11Binding_envelope sharedInstance];
 	
 	NSMutableDictionary *headerElements = nil;
 	headerElements = [NSMutableDictionary dictionary];
@@ -47228,7 +47234,7 @@ parameters:(LibreAccessServiceSvc_ListLastNWordsRequest *)aParameters
 		if (doc == NULL) {
 			NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"Errors while parsing returned XML" forKey:NSLocalizedDescriptionKey];
 			
-			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap12BindingResponseXML" code:1 userInfo:userInfo];
+			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap11BindingResponseXML" code:1 userInfo:userInfo];
 			[delegate operation:self completedWithResponse:response];
 		} else {
 			cur = xmlDocGetRootElement(doc);
@@ -47270,9 +47276,9 @@ parameters:(LibreAccessServiceSvc_ListLastNWordsRequest *)aParameters
 	}
 }
 @end
-@implementation LibreAccessServiceSoap12Binding_DeviceLeftDomain
+@implementation LibreAccessServiceSoap11Binding_DeviceLeftDomain
 @synthesize parameters;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 parameters:(LibreAccessServiceSvc_DeviceLeftDomainRequest *)aParameters
 {
 	if((self = [super initWithBinding:aBinding delegate:responseDelegate])) {
@@ -47290,9 +47296,9 @@ parameters:(LibreAccessServiceSvc_DeviceLeftDomainRequest *)aParameters
 - (void)main
 {
 	[response autorelease];
-	response = [LibreAccessServiceSoap12BindingResponse new];
+	response = [LibreAccessServiceSoap11BindingResponse new];
 	
-	LibreAccessServiceSoap12Binding_envelope *envelope = [LibreAccessServiceSoap12Binding_envelope sharedInstance];
+	LibreAccessServiceSoap11Binding_envelope *envelope = [LibreAccessServiceSoap11Binding_envelope sharedInstance];
 	
 	NSMutableDictionary *headerElements = nil;
 	headerElements = [NSMutableDictionary dictionary];
@@ -47333,7 +47339,7 @@ parameters:(LibreAccessServiceSvc_DeviceLeftDomainRequest *)aParameters
 		if (doc == NULL) {
 			NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"Errors while parsing returned XML" forKey:NSLocalizedDescriptionKey];
 			
-			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap12BindingResponseXML" code:1 userInfo:userInfo];
+			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap11BindingResponseXML" code:1 userInfo:userInfo];
 			[delegate operation:self completedWithResponse:response];
 		} else {
 			cur = xmlDocGetRootElement(doc);
@@ -47375,9 +47381,9 @@ parameters:(LibreAccessServiceSvc_DeviceLeftDomainRequest *)aParameters
 	}
 }
 @end
-@implementation LibreAccessServiceSoap12Binding_ListReadBooks
+@implementation LibreAccessServiceSoap11Binding_ListReadBooks
 @synthesize parameters;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 parameters:(LibreAccessServiceSvc_ListReadBooksRequest *)aParameters
 {
 	if((self = [super initWithBinding:aBinding delegate:responseDelegate])) {
@@ -47395,9 +47401,9 @@ parameters:(LibreAccessServiceSvc_ListReadBooksRequest *)aParameters
 - (void)main
 {
 	[response autorelease];
-	response = [LibreAccessServiceSoap12BindingResponse new];
+	response = [LibreAccessServiceSoap11BindingResponse new];
 	
-	LibreAccessServiceSoap12Binding_envelope *envelope = [LibreAccessServiceSoap12Binding_envelope sharedInstance];
+	LibreAccessServiceSoap11Binding_envelope *envelope = [LibreAccessServiceSoap11Binding_envelope sharedInstance];
 	
 	NSMutableDictionary *headerElements = nil;
 	headerElements = [NSMutableDictionary dictionary];
@@ -47438,7 +47444,7 @@ parameters:(LibreAccessServiceSvc_ListReadBooksRequest *)aParameters
 		if (doc == NULL) {
 			NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"Errors while parsing returned XML" forKey:NSLocalizedDescriptionKey];
 			
-			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap12BindingResponseXML" code:1 userInfo:userInfo];
+			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap11BindingResponseXML" code:1 userInfo:userInfo];
 			[delegate operation:self completedWithResponse:response];
 		} else {
 			cur = xmlDocGetRootElement(doc);
@@ -47480,9 +47486,9 @@ parameters:(LibreAccessServiceSvc_ListReadBooksRequest *)aParameters
 	}
 }
 @end
-@implementation LibreAccessServiceSoap12Binding_GetDeviceInfo
+@implementation LibreAccessServiceSoap11Binding_GetDeviceInfo
 @synthesize parameters;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 parameters:(LibreAccessServiceSvc_GetDeviceInfoRequest *)aParameters
 {
 	if((self = [super initWithBinding:aBinding delegate:responseDelegate])) {
@@ -47500,9 +47506,9 @@ parameters:(LibreAccessServiceSvc_GetDeviceInfoRequest *)aParameters
 - (void)main
 {
 	[response autorelease];
-	response = [LibreAccessServiceSoap12BindingResponse new];
+	response = [LibreAccessServiceSoap11BindingResponse new];
 	
-	LibreAccessServiceSoap12Binding_envelope *envelope = [LibreAccessServiceSoap12Binding_envelope sharedInstance];
+	LibreAccessServiceSoap11Binding_envelope *envelope = [LibreAccessServiceSoap11Binding_envelope sharedInstance];
 	
 	NSMutableDictionary *headerElements = nil;
 	headerElements = [NSMutableDictionary dictionary];
@@ -47543,7 +47549,7 @@ parameters:(LibreAccessServiceSvc_GetDeviceInfoRequest *)aParameters
 		if (doc == NULL) {
 			NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"Errors while parsing returned XML" forKey:NSLocalizedDescriptionKey];
 			
-			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap12BindingResponseXML" code:1 userInfo:userInfo];
+			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap11BindingResponseXML" code:1 userInfo:userInfo];
 			[delegate operation:self completedWithResponse:response];
 		} else {
 			cur = xmlDocGetRootElement(doc);
@@ -47585,9 +47591,9 @@ parameters:(LibreAccessServiceSvc_GetDeviceInfoRequest *)aParameters
 	}
 }
 @end
-@implementation LibreAccessServiceSoap12Binding_SaveReadingStatisticsDetailed
+@implementation LibreAccessServiceSoap11Binding_SaveReadingStatisticsDetailed
 @synthesize parameters;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 parameters:(LibreAccessServiceSvc_SaveReadingStatisticsDetailedRequest *)aParameters
 {
 	if((self = [super initWithBinding:aBinding delegate:responseDelegate])) {
@@ -47605,9 +47611,9 @@ parameters:(LibreAccessServiceSvc_SaveReadingStatisticsDetailedRequest *)aParame
 - (void)main
 {
 	[response autorelease];
-	response = [LibreAccessServiceSoap12BindingResponse new];
+	response = [LibreAccessServiceSoap11BindingResponse new];
 	
-	LibreAccessServiceSoap12Binding_envelope *envelope = [LibreAccessServiceSoap12Binding_envelope sharedInstance];
+	LibreAccessServiceSoap11Binding_envelope *envelope = [LibreAccessServiceSoap11Binding_envelope sharedInstance];
 	
 	NSMutableDictionary *headerElements = nil;
 	headerElements = [NSMutableDictionary dictionary];
@@ -47648,7 +47654,7 @@ parameters:(LibreAccessServiceSvc_SaveReadingStatisticsDetailedRequest *)aParame
 		if (doc == NULL) {
 			NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"Errors while parsing returned XML" forKey:NSLocalizedDescriptionKey];
 			
-			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap12BindingResponseXML" code:1 userInfo:userInfo];
+			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap11BindingResponseXML" code:1 userInfo:userInfo];
 			[delegate operation:self completedWithResponse:response];
 		} else {
 			cur = xmlDocGetRootElement(doc);
@@ -47690,9 +47696,9 @@ parameters:(LibreAccessServiceSvc_SaveReadingStatisticsDetailedRequest *)aParame
 	}
 }
 @end
-@implementation LibreAccessServiceSoap12Binding_SaveContentProfileAssignment
+@implementation LibreAccessServiceSoap11Binding_SaveContentProfileAssignment
 @synthesize parameters;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 parameters:(LibreAccessServiceSvc_SaveContentProfileAssignmentRequest *)aParameters
 {
 	if((self = [super initWithBinding:aBinding delegate:responseDelegate])) {
@@ -47710,9 +47716,9 @@ parameters:(LibreAccessServiceSvc_SaveContentProfileAssignmentRequest *)aParamet
 - (void)main
 {
 	[response autorelease];
-	response = [LibreAccessServiceSoap12BindingResponse new];
+	response = [LibreAccessServiceSoap11BindingResponse new];
 	
-	LibreAccessServiceSoap12Binding_envelope *envelope = [LibreAccessServiceSoap12Binding_envelope sharedInstance];
+	LibreAccessServiceSoap11Binding_envelope *envelope = [LibreAccessServiceSoap11Binding_envelope sharedInstance];
 	
 	NSMutableDictionary *headerElements = nil;
 	headerElements = [NSMutableDictionary dictionary];
@@ -47753,7 +47759,7 @@ parameters:(LibreAccessServiceSvc_SaveContentProfileAssignmentRequest *)aParamet
 		if (doc == NULL) {
 			NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"Errors while parsing returned XML" forKey:NSLocalizedDescriptionKey];
 			
-			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap12BindingResponseXML" code:1 userInfo:userInfo];
+			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap11BindingResponseXML" code:1 userInfo:userInfo];
 			[delegate operation:self completedWithResponse:response];
 		} else {
 			cur = xmlDocGetRootElement(doc);
@@ -47795,9 +47801,9 @@ parameters:(LibreAccessServiceSvc_SaveContentProfileAssignmentRequest *)aParamet
 	}
 }
 @end
-@implementation LibreAccessServiceSoap12Binding_TokenExchange
+@implementation LibreAccessServiceSoap11Binding_TokenExchange
 @synthesize body;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 body:(LibreAccessServiceSvc_TokenExchange *)aBody
 {
 	if((self = [super initWithBinding:aBinding delegate:responseDelegate])) {
@@ -47815,9 +47821,9 @@ body:(LibreAccessServiceSvc_TokenExchange *)aBody
 - (void)main
 {
 	[response autorelease];
-	response = [LibreAccessServiceSoap12BindingResponse new];
+	response = [LibreAccessServiceSoap11BindingResponse new];
 	
-	LibreAccessServiceSoap12Binding_envelope *envelope = [LibreAccessServiceSoap12Binding_envelope sharedInstance];
+	LibreAccessServiceSoap11Binding_envelope *envelope = [LibreAccessServiceSoap11Binding_envelope sharedInstance];
 	
 	NSMutableDictionary *headerElements = nil;
 	headerElements = [NSMutableDictionary dictionary];
@@ -47858,7 +47864,7 @@ body:(LibreAccessServiceSvc_TokenExchange *)aBody
 		if (doc == NULL) {
 			NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"Errors while parsing returned XML" forKey:NSLocalizedDescriptionKey];
 			
-			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap12BindingResponseXML" code:1 userInfo:userInfo];
+			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap11BindingResponseXML" code:1 userInfo:userInfo];
 			[delegate operation:self completedWithResponse:response];
 		} else {
 			cur = xmlDocGetRootElement(doc);
@@ -47900,9 +47906,9 @@ body:(LibreAccessServiceSvc_TokenExchange *)aBody
 	}
 }
 @end
-@implementation LibreAccessServiceSoap12Binding_SetAccountPasswordRequired
+@implementation LibreAccessServiceSoap11Binding_SetAccountPasswordRequired
 @synthesize parameters;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 parameters:(LibreAccessServiceSvc_SetAccountPasswordRequiredRequest *)aParameters
 {
 	if((self = [super initWithBinding:aBinding delegate:responseDelegate])) {
@@ -47920,9 +47926,9 @@ parameters:(LibreAccessServiceSvc_SetAccountPasswordRequiredRequest *)aParameter
 - (void)main
 {
 	[response autorelease];
-	response = [LibreAccessServiceSoap12BindingResponse new];
+	response = [LibreAccessServiceSoap11BindingResponse new];
 	
-	LibreAccessServiceSoap12Binding_envelope *envelope = [LibreAccessServiceSoap12Binding_envelope sharedInstance];
+	LibreAccessServiceSoap11Binding_envelope *envelope = [LibreAccessServiceSoap11Binding_envelope sharedInstance];
 	
 	NSMutableDictionary *headerElements = nil;
 	headerElements = [NSMutableDictionary dictionary];
@@ -47963,7 +47969,7 @@ parameters:(LibreAccessServiceSvc_SetAccountPasswordRequiredRequest *)aParameter
 		if (doc == NULL) {
 			NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"Errors while parsing returned XML" forKey:NSLocalizedDescriptionKey];
 			
-			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap12BindingResponseXML" code:1 userInfo:userInfo];
+			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap11BindingResponseXML" code:1 userInfo:userInfo];
 			[delegate operation:self completedWithResponse:response];
 		} else {
 			cur = xmlDocGetRootElement(doc);
@@ -48005,9 +48011,9 @@ parameters:(LibreAccessServiceSvc_SetAccountPasswordRequiredRequest *)aParameter
 	}
 }
 @end
-@implementation LibreAccessServiceSoap12Binding_GetVersion
+@implementation LibreAccessServiceSoap11Binding_GetVersion
 @synthesize parameters;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 parameters:(LibreAccessServiceSvc_GetVersionRequest *)aParameters
 {
 	if((self = [super initWithBinding:aBinding delegate:responseDelegate])) {
@@ -48025,9 +48031,9 @@ parameters:(LibreAccessServiceSvc_GetVersionRequest *)aParameters
 - (void)main
 {
 	[response autorelease];
-	response = [LibreAccessServiceSoap12BindingResponse new];
+	response = [LibreAccessServiceSoap11BindingResponse new];
 	
-	LibreAccessServiceSoap12Binding_envelope *envelope = [LibreAccessServiceSoap12Binding_envelope sharedInstance];
+	LibreAccessServiceSoap11Binding_envelope *envelope = [LibreAccessServiceSoap11Binding_envelope sharedInstance];
 	
 	NSMutableDictionary *headerElements = nil;
 	headerElements = [NSMutableDictionary dictionary];
@@ -48068,7 +48074,7 @@ parameters:(LibreAccessServiceSvc_GetVersionRequest *)aParameters
 		if (doc == NULL) {
 			NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"Errors while parsing returned XML" forKey:NSLocalizedDescriptionKey];
 			
-			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap12BindingResponseXML" code:1 userInfo:userInfo];
+			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap11BindingResponseXML" code:1 userInfo:userInfo];
 			[delegate operation:self completedWithResponse:response];
 		} else {
 			cur = xmlDocGetRootElement(doc);
@@ -48110,9 +48116,9 @@ parameters:(LibreAccessServiceSvc_GetVersionRequest *)aParameters
 	}
 }
 @end
-@implementation LibreAccessServiceSoap12Binding_SaveUserSettings
+@implementation LibreAccessServiceSoap11Binding_SaveUserSettings
 @synthesize parameters;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 parameters:(LibreAccessServiceSvc_SaveUserSettingsRequest *)aParameters
 {
 	if((self = [super initWithBinding:aBinding delegate:responseDelegate])) {
@@ -48130,9 +48136,9 @@ parameters:(LibreAccessServiceSvc_SaveUserSettingsRequest *)aParameters
 - (void)main
 {
 	[response autorelease];
-	response = [LibreAccessServiceSoap12BindingResponse new];
+	response = [LibreAccessServiceSoap11BindingResponse new];
 	
-	LibreAccessServiceSoap12Binding_envelope *envelope = [LibreAccessServiceSoap12Binding_envelope sharedInstance];
+	LibreAccessServiceSoap11Binding_envelope *envelope = [LibreAccessServiceSoap11Binding_envelope sharedInstance];
 	
 	NSMutableDictionary *headerElements = nil;
 	headerElements = [NSMutableDictionary dictionary];
@@ -48173,7 +48179,7 @@ parameters:(LibreAccessServiceSvc_SaveUserSettingsRequest *)aParameters
 		if (doc == NULL) {
 			NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"Errors while parsing returned XML" forKey:NSLocalizedDescriptionKey];
 			
-			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap12BindingResponseXML" code:1 userInfo:userInfo];
+			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap11BindingResponseXML" code:1 userInfo:userInfo];
 			[delegate operation:self completedWithResponse:response];
 		} else {
 			cur = xmlDocGetRootElement(doc);
@@ -48215,9 +48221,9 @@ parameters:(LibreAccessServiceSvc_SaveUserSettingsRequest *)aParameters
 	}
 }
 @end
-@implementation LibreAccessServiceSoap12Binding_AuthenticateDevice
+@implementation LibreAccessServiceSoap11Binding_AuthenticateDevice
 @synthesize body;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 body:(LibreAccessServiceSvc_AuthenticateDeviceRequest *)aBody
 {
 	if((self = [super initWithBinding:aBinding delegate:responseDelegate])) {
@@ -48235,9 +48241,9 @@ body:(LibreAccessServiceSvc_AuthenticateDeviceRequest *)aBody
 - (void)main
 {
 	[response autorelease];
-	response = [LibreAccessServiceSoap12BindingResponse new];
+	response = [LibreAccessServiceSoap11BindingResponse new];
 	
-	LibreAccessServiceSoap12Binding_envelope *envelope = [LibreAccessServiceSoap12Binding_envelope sharedInstance];
+	LibreAccessServiceSoap11Binding_envelope *envelope = [LibreAccessServiceSoap11Binding_envelope sharedInstance];
 	
 	NSMutableDictionary *headerElements = nil;
 	headerElements = [NSMutableDictionary dictionary];
@@ -48278,7 +48284,7 @@ body:(LibreAccessServiceSvc_AuthenticateDeviceRequest *)aBody
 		if (doc == NULL) {
 			NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"Errors while parsing returned XML" forKey:NSLocalizedDescriptionKey];
 			
-			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap12BindingResponseXML" code:1 userInfo:userInfo];
+			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap11BindingResponseXML" code:1 userInfo:userInfo];
 			[delegate operation:self completedWithResponse:response];
 		} else {
 			cur = xmlDocGetRootElement(doc);
@@ -48320,9 +48326,9 @@ body:(LibreAccessServiceSvc_AuthenticateDeviceRequest *)aBody
 	}
 }
 @end
-@implementation LibreAccessServiceSoap12Binding_ListContentMetadata
+@implementation LibreAccessServiceSoap11Binding_ListContentMetadata
 @synthesize body;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 body:(LibreAccessServiceSvc_ListContentMetadata *)aBody
 {
 	if((self = [super initWithBinding:aBinding delegate:responseDelegate])) {
@@ -48340,9 +48346,9 @@ body:(LibreAccessServiceSvc_ListContentMetadata *)aBody
 - (void)main
 {
 	[response autorelease];
-	response = [LibreAccessServiceSoap12BindingResponse new];
+	response = [LibreAccessServiceSoap11BindingResponse new];
 	
-	LibreAccessServiceSoap12Binding_envelope *envelope = [LibreAccessServiceSoap12Binding_envelope sharedInstance];
+	LibreAccessServiceSoap11Binding_envelope *envelope = [LibreAccessServiceSoap11Binding_envelope sharedInstance];
 	
 	NSMutableDictionary *headerElements = nil;
 	headerElements = [NSMutableDictionary dictionary];
@@ -48383,7 +48389,7 @@ body:(LibreAccessServiceSvc_ListContentMetadata *)aBody
 		if (doc == NULL) {
 			NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"Errors while parsing returned XML" forKey:NSLocalizedDescriptionKey];
 			
-			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap12BindingResponseXML" code:1 userInfo:userInfo];
+			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap11BindingResponseXML" code:1 userInfo:userInfo];
 			[delegate operation:self completedWithResponse:response];
 		} else {
 			cur = xmlDocGetRootElement(doc);
@@ -48425,9 +48431,9 @@ body:(LibreAccessServiceSvc_ListContentMetadata *)aBody
 	}
 }
 @end
-@implementation LibreAccessServiceSoap12Binding_ListApplicationSettings
+@implementation LibreAccessServiceSoap11Binding_ListApplicationSettings
 @synthesize parameters;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 parameters:(LibreAccessServiceSvc_ListApplicationSettingsRequest *)aParameters
 {
 	if((self = [super initWithBinding:aBinding delegate:responseDelegate])) {
@@ -48445,9 +48451,9 @@ parameters:(LibreAccessServiceSvc_ListApplicationSettingsRequest *)aParameters
 - (void)main
 {
 	[response autorelease];
-	response = [LibreAccessServiceSoap12BindingResponse new];
+	response = [LibreAccessServiceSoap11BindingResponse new];
 	
-	LibreAccessServiceSoap12Binding_envelope *envelope = [LibreAccessServiceSoap12Binding_envelope sharedInstance];
+	LibreAccessServiceSoap11Binding_envelope *envelope = [LibreAccessServiceSoap11Binding_envelope sharedInstance];
 	
 	NSMutableDictionary *headerElements = nil;
 	headerElements = [NSMutableDictionary dictionary];
@@ -48488,7 +48494,7 @@ parameters:(LibreAccessServiceSvc_ListApplicationSettingsRequest *)aParameters
 		if (doc == NULL) {
 			NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"Errors while parsing returned XML" forKey:NSLocalizedDescriptionKey];
 			
-			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap12BindingResponseXML" code:1 userInfo:userInfo];
+			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap11BindingResponseXML" code:1 userInfo:userInfo];
 			[delegate operation:self completedWithResponse:response];
 		} else {
 			cur = xmlDocGetRootElement(doc);
@@ -48530,9 +48536,9 @@ parameters:(LibreAccessServiceSvc_ListApplicationSettingsRequest *)aParameters
 	}
 }
 @end
-@implementation LibreAccessServiceSoap12Binding_ListTopFavorites
+@implementation LibreAccessServiceSoap11Binding_ListTopFavorites
 @synthesize parameters;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 parameters:(LibreAccessServiceSvc_ListTopFavoritesRequest *)aParameters
 {
 	if((self = [super initWithBinding:aBinding delegate:responseDelegate])) {
@@ -48550,9 +48556,9 @@ parameters:(LibreAccessServiceSvc_ListTopFavoritesRequest *)aParameters
 - (void)main
 {
 	[response autorelease];
-	response = [LibreAccessServiceSoap12BindingResponse new];
+	response = [LibreAccessServiceSoap11BindingResponse new];
 	
-	LibreAccessServiceSoap12Binding_envelope *envelope = [LibreAccessServiceSoap12Binding_envelope sharedInstance];
+	LibreAccessServiceSoap11Binding_envelope *envelope = [LibreAccessServiceSoap11Binding_envelope sharedInstance];
 	
 	NSMutableDictionary *headerElements = nil;
 	headerElements = [NSMutableDictionary dictionary];
@@ -48593,7 +48599,7 @@ parameters:(LibreAccessServiceSvc_ListTopFavoritesRequest *)aParameters
 		if (doc == NULL) {
 			NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"Errors while parsing returned XML" forKey:NSLocalizedDescriptionKey];
 			
-			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap12BindingResponseXML" code:1 userInfo:userInfo];
+			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap11BindingResponseXML" code:1 userInfo:userInfo];
 			[delegate operation:self completedWithResponse:response];
 		} else {
 			cur = xmlDocGetRootElement(doc);
@@ -48635,9 +48641,9 @@ parameters:(LibreAccessServiceSvc_ListTopFavoritesRequest *)aParameters
 	}
 }
 @end
-@implementation LibreAccessServiceSoap12Binding_ListLastNProfileReadBooks
+@implementation LibreAccessServiceSoap11Binding_ListLastNProfileReadBooks
 @synthesize parameters;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 parameters:(LibreAccessServiceSvc_ListLastNProfileReadBooksRequest *)aParameters
 {
 	if((self = [super initWithBinding:aBinding delegate:responseDelegate])) {
@@ -48655,9 +48661,9 @@ parameters:(LibreAccessServiceSvc_ListLastNProfileReadBooksRequest *)aParameters
 - (void)main
 {
 	[response autorelease];
-	response = [LibreAccessServiceSoap12BindingResponse new];
+	response = [LibreAccessServiceSoap11BindingResponse new];
 	
-	LibreAccessServiceSoap12Binding_envelope *envelope = [LibreAccessServiceSoap12Binding_envelope sharedInstance];
+	LibreAccessServiceSoap11Binding_envelope *envelope = [LibreAccessServiceSoap11Binding_envelope sharedInstance];
 	
 	NSMutableDictionary *headerElements = nil;
 	headerElements = [NSMutableDictionary dictionary];
@@ -48698,7 +48704,7 @@ parameters:(LibreAccessServiceSvc_ListLastNProfileReadBooksRequest *)aParameters
 		if (doc == NULL) {
 			NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"Errors while parsing returned XML" forKey:NSLocalizedDescriptionKey];
 			
-			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap12BindingResponseXML" code:1 userInfo:userInfo];
+			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap11BindingResponseXML" code:1 userInfo:userInfo];
 			[delegate operation:self completedWithResponse:response];
 		} else {
 			cur = xmlDocGetRootElement(doc);
@@ -48740,9 +48746,9 @@ parameters:(LibreAccessServiceSvc_ListLastNProfileReadBooksRequest *)aParameters
 	}
 }
 @end
-@implementation LibreAccessServiceSoap12Binding_SaveUserProfiles
+@implementation LibreAccessServiceSoap11Binding_SaveUserProfiles
 @synthesize parameters;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 parameters:(LibreAccessServiceSvc_SaveUserProfilesRequest *)aParameters
 {
 	if((self = [super initWithBinding:aBinding delegate:responseDelegate])) {
@@ -48760,9 +48766,9 @@ parameters:(LibreAccessServiceSvc_SaveUserProfilesRequest *)aParameters
 - (void)main
 {
 	[response autorelease];
-	response = [LibreAccessServiceSoap12BindingResponse new];
+	response = [LibreAccessServiceSoap11BindingResponse new];
 	
-	LibreAccessServiceSoap12Binding_envelope *envelope = [LibreAccessServiceSoap12Binding_envelope sharedInstance];
+	LibreAccessServiceSoap11Binding_envelope *envelope = [LibreAccessServiceSoap11Binding_envelope sharedInstance];
 	
 	NSMutableDictionary *headerElements = nil;
 	headerElements = [NSMutableDictionary dictionary];
@@ -48803,7 +48809,7 @@ parameters:(LibreAccessServiceSvc_SaveUserProfilesRequest *)aParameters
 		if (doc == NULL) {
 			NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"Errors while parsing returned XML" forKey:NSLocalizedDescriptionKey];
 			
-			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap12BindingResponseXML" code:1 userInfo:userInfo];
+			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap11BindingResponseXML" code:1 userInfo:userInfo];
 			[delegate operation:self completedWithResponse:response];
 		} else {
 			cur = xmlDocGetRootElement(doc);
@@ -48845,9 +48851,9 @@ parameters:(LibreAccessServiceSvc_SaveUserProfilesRequest *)aParameters
 	}
 }
 @end
-@implementation LibreAccessServiceSoap12Binding_GetUserProfiles
+@implementation LibreAccessServiceSoap11Binding_GetUserProfiles
 @synthesize parameters;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 parameters:(LibreAccessServiceSvc_GetUserProfilesRequest *)aParameters
 {
 	if((self = [super initWithBinding:aBinding delegate:responseDelegate])) {
@@ -48865,9 +48871,9 @@ parameters:(LibreAccessServiceSvc_GetUserProfilesRequest *)aParameters
 - (void)main
 {
 	[response autorelease];
-	response = [LibreAccessServiceSoap12BindingResponse new];
+	response = [LibreAccessServiceSoap11BindingResponse new];
 	
-	LibreAccessServiceSoap12Binding_envelope *envelope = [LibreAccessServiceSoap12Binding_envelope sharedInstance];
+	LibreAccessServiceSoap11Binding_envelope *envelope = [LibreAccessServiceSoap11Binding_envelope sharedInstance];
 	
 	NSMutableDictionary *headerElements = nil;
 	headerElements = [NSMutableDictionary dictionary];
@@ -48908,7 +48914,7 @@ parameters:(LibreAccessServiceSvc_GetUserProfilesRequest *)aParameters
 		if (doc == NULL) {
 			NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"Errors while parsing returned XML" forKey:NSLocalizedDescriptionKey];
 			
-			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap12BindingResponseXML" code:1 userInfo:userInfo];
+			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap11BindingResponseXML" code:1 userInfo:userInfo];
 			[delegate operation:self completedWithResponse:response];
 		} else {
 			cur = xmlDocGetRootElement(doc);
@@ -48950,9 +48956,9 @@ parameters:(LibreAccessServiceSvc_GetUserProfilesRequest *)aParameters
 	}
 }
 @end
-@implementation LibreAccessServiceSoap12Binding_DeleteBookShelfEntry
+@implementation LibreAccessServiceSoap11Binding_DeleteBookShelfEntry
 @synthesize parameters;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 parameters:(LibreAccessServiceSvc_DeleteBookShelfEntryRequest *)aParameters
 {
 	if((self = [super initWithBinding:aBinding delegate:responseDelegate])) {
@@ -48970,9 +48976,9 @@ parameters:(LibreAccessServiceSvc_DeleteBookShelfEntryRequest *)aParameters
 - (void)main
 {
 	[response autorelease];
-	response = [LibreAccessServiceSoap12BindingResponse new];
+	response = [LibreAccessServiceSoap11BindingResponse new];
 	
-	LibreAccessServiceSoap12Binding_envelope *envelope = [LibreAccessServiceSoap12Binding_envelope sharedInstance];
+	LibreAccessServiceSoap11Binding_envelope *envelope = [LibreAccessServiceSoap11Binding_envelope sharedInstance];
 	
 	NSMutableDictionary *headerElements = nil;
 	headerElements = [NSMutableDictionary dictionary];
@@ -49013,7 +49019,7 @@ parameters:(LibreAccessServiceSvc_DeleteBookShelfEntryRequest *)aParameters
 		if (doc == NULL) {
 			NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"Errors while parsing returned XML" forKey:NSLocalizedDescriptionKey];
 			
-			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap12BindingResponseXML" code:1 userInfo:userInfo];
+			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap11BindingResponseXML" code:1 userInfo:userInfo];
 			[delegate operation:self completedWithResponse:response];
 		} else {
 			cur = xmlDocGetRootElement(doc);
@@ -49055,9 +49061,9 @@ parameters:(LibreAccessServiceSvc_DeleteBookShelfEntryRequest *)aParameters
 	}
 }
 @end
-@implementation LibreAccessServiceSoap12Binding_ListUserSettings
+@implementation LibreAccessServiceSoap11Binding_ListUserSettings
 @synthesize parameters;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 parameters:(LibreAccessServiceSvc_ListUserSettingsRequest *)aParameters
 {
 	if((self = [super initWithBinding:aBinding delegate:responseDelegate])) {
@@ -49075,9 +49081,9 @@ parameters:(LibreAccessServiceSvc_ListUserSettingsRequest *)aParameters
 - (void)main
 {
 	[response autorelease];
-	response = [LibreAccessServiceSoap12BindingResponse new];
+	response = [LibreAccessServiceSoap11BindingResponse new];
 	
-	LibreAccessServiceSoap12Binding_envelope *envelope = [LibreAccessServiceSoap12Binding_envelope sharedInstance];
+	LibreAccessServiceSoap11Binding_envelope *envelope = [LibreAccessServiceSoap11Binding_envelope sharedInstance];
 	
 	NSMutableDictionary *headerElements = nil;
 	headerElements = [NSMutableDictionary dictionary];
@@ -49118,7 +49124,7 @@ parameters:(LibreAccessServiceSvc_ListUserSettingsRequest *)aParameters
 		if (doc == NULL) {
 			NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"Errors while parsing returned XML" forKey:NSLocalizedDescriptionKey];
 			
-			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap12BindingResponseXML" code:1 userInfo:userInfo];
+			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap11BindingResponseXML" code:1 userInfo:userInfo];
 			[delegate operation:self completedWithResponse:response];
 		} else {
 			cur = xmlDocGetRootElement(doc);
@@ -49160,9 +49166,9 @@ parameters:(LibreAccessServiceSvc_ListUserSettingsRequest *)aParameters
 	}
 }
 @end
-@implementation LibreAccessServiceSoap12Binding_IsEntitledToLicense
+@implementation LibreAccessServiceSoap11Binding_IsEntitledToLicense
 @synthesize parameters;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 parameters:(LibreAccessServiceSvc_EntitledToLicenceRequest *)aParameters
 {
 	if((self = [super initWithBinding:aBinding delegate:responseDelegate])) {
@@ -49180,9 +49186,9 @@ parameters:(LibreAccessServiceSvc_EntitledToLicenceRequest *)aParameters
 - (void)main
 {
 	[response autorelease];
-	response = [LibreAccessServiceSoap12BindingResponse new];
+	response = [LibreAccessServiceSoap11BindingResponse new];
 	
-	LibreAccessServiceSoap12Binding_envelope *envelope = [LibreAccessServiceSoap12Binding_envelope sharedInstance];
+	LibreAccessServiceSoap11Binding_envelope *envelope = [LibreAccessServiceSoap11Binding_envelope sharedInstance];
 	
 	NSMutableDictionary *headerElements = nil;
 	headerElements = [NSMutableDictionary dictionary];
@@ -49223,7 +49229,7 @@ parameters:(LibreAccessServiceSvc_EntitledToLicenceRequest *)aParameters
 		if (doc == NULL) {
 			NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"Errors while parsing returned XML" forKey:NSLocalizedDescriptionKey];
 			
-			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap12BindingResponseXML" code:1 userInfo:userInfo];
+			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap11BindingResponseXML" code:1 userInfo:userInfo];
 			[delegate operation:self completedWithResponse:response];
 		} else {
 			cur = xmlDocGetRootElement(doc);
@@ -49265,9 +49271,9 @@ parameters:(LibreAccessServiceSvc_EntitledToLicenceRequest *)aParameters
 	}
 }
 @end
-@implementation LibreAccessServiceSoap12Binding_RemoveOrder
+@implementation LibreAccessServiceSoap11Binding_RemoveOrder
 @synthesize parameters;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 parameters:(LibreAccessServiceSvc_RemoveOrderRequest *)aParameters
 {
 	if((self = [super initWithBinding:aBinding delegate:responseDelegate])) {
@@ -49285,9 +49291,9 @@ parameters:(LibreAccessServiceSvc_RemoveOrderRequest *)aParameters
 - (void)main
 {
 	[response autorelease];
-	response = [LibreAccessServiceSoap12BindingResponse new];
+	response = [LibreAccessServiceSoap11BindingResponse new];
 	
-	LibreAccessServiceSoap12Binding_envelope *envelope = [LibreAccessServiceSoap12Binding_envelope sharedInstance];
+	LibreAccessServiceSoap11Binding_envelope *envelope = [LibreAccessServiceSoap11Binding_envelope sharedInstance];
 	
 	NSMutableDictionary *headerElements = nil;
 	headerElements = [NSMutableDictionary dictionary];
@@ -49328,7 +49334,7 @@ parameters:(LibreAccessServiceSvc_RemoveOrderRequest *)aParameters
 		if (doc == NULL) {
 			NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"Errors while parsing returned XML" forKey:NSLocalizedDescriptionKey];
 			
-			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap12BindingResponseXML" code:1 userInfo:userInfo];
+			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap11BindingResponseXML" code:1 userInfo:userInfo];
 			[delegate operation:self completedWithResponse:response];
 		} else {
 			cur = xmlDocGetRootElement(doc);
@@ -49370,9 +49376,9 @@ parameters:(LibreAccessServiceSvc_RemoveOrderRequest *)aParameters
 	}
 }
 @end
-@implementation LibreAccessServiceSoap12Binding_ListProfileContentAnnotations
+@implementation LibreAccessServiceSoap11Binding_ListProfileContentAnnotations
 @synthesize parameters;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 parameters:(LibreAccessServiceSvc_ListProfileContentAnnotationsRequest *)aParameters
 {
 	if((self = [super initWithBinding:aBinding delegate:responseDelegate])) {
@@ -49390,9 +49396,9 @@ parameters:(LibreAccessServiceSvc_ListProfileContentAnnotationsRequest *)aParame
 - (void)main
 {
 	[response autorelease];
-	response = [LibreAccessServiceSoap12BindingResponse new];
+	response = [LibreAccessServiceSoap11BindingResponse new];
 	
-	LibreAccessServiceSoap12Binding_envelope *envelope = [LibreAccessServiceSoap12Binding_envelope sharedInstance];
+	LibreAccessServiceSoap11Binding_envelope *envelope = [LibreAccessServiceSoap11Binding_envelope sharedInstance];
 	
 	NSMutableDictionary *headerElements = nil;
 	headerElements = [NSMutableDictionary dictionary];
@@ -49433,7 +49439,7 @@ parameters:(LibreAccessServiceSvc_ListProfileContentAnnotationsRequest *)aParame
 		if (doc == NULL) {
 			NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"Errors while parsing returned XML" forKey:NSLocalizedDescriptionKey];
 			
-			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap12BindingResponseXML" code:1 userInfo:userInfo];
+			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap11BindingResponseXML" code:1 userInfo:userInfo];
 			[delegate operation:self completedWithResponse:response];
 		} else {
 			cur = xmlDocGetRootElement(doc);
@@ -49475,9 +49481,9 @@ parameters:(LibreAccessServiceSvc_ListProfileContentAnnotationsRequest *)aParame
 	}
 }
 @end
-@implementation LibreAccessServiceSoap12Binding_ListUserContent
+@implementation LibreAccessServiceSoap11Binding_ListUserContent
 @synthesize body;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 body:(LibreAccessServiceSvc_ListUserContent *)aBody
 {
 	if((self = [super initWithBinding:aBinding delegate:responseDelegate])) {
@@ -49495,9 +49501,9 @@ body:(LibreAccessServiceSvc_ListUserContent *)aBody
 - (void)main
 {
 	[response autorelease];
-	response = [LibreAccessServiceSoap12BindingResponse new];
+	response = [LibreAccessServiceSoap11BindingResponse new];
 	
-	LibreAccessServiceSoap12Binding_envelope *envelope = [LibreAccessServiceSoap12Binding_envelope sharedInstance];
+	LibreAccessServiceSoap11Binding_envelope *envelope = [LibreAccessServiceSoap11Binding_envelope sharedInstance];
 	
 	NSMutableDictionary *headerElements = nil;
 	headerElements = [NSMutableDictionary dictionary];
@@ -49538,7 +49544,7 @@ body:(LibreAccessServiceSvc_ListUserContent *)aBody
 		if (doc == NULL) {
 			NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"Errors while parsing returned XML" forKey:NSLocalizedDescriptionKey];
 			
-			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap12BindingResponseXML" code:1 userInfo:userInfo];
+			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap11BindingResponseXML" code:1 userInfo:userInfo];
 			[delegate operation:self completedWithResponse:response];
 		} else {
 			cur = xmlDocGetRootElement(doc);
@@ -49580,9 +49586,9 @@ body:(LibreAccessServiceSvc_ListUserContent *)aBody
 	}
 }
 @end
-@implementation LibreAccessServiceSoap12Binding_ListFavoriteTypes
+@implementation LibreAccessServiceSoap11Binding_ListFavoriteTypes
 @synthesize parameters;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 parameters:(LibreAccessServiceSvc_ListFavoriteTypesRequest *)aParameters
 {
 	if((self = [super initWithBinding:aBinding delegate:responseDelegate])) {
@@ -49600,9 +49606,9 @@ parameters:(LibreAccessServiceSvc_ListFavoriteTypesRequest *)aParameters
 - (void)main
 {
 	[response autorelease];
-	response = [LibreAccessServiceSoap12BindingResponse new];
+	response = [LibreAccessServiceSoap11BindingResponse new];
 	
-	LibreAccessServiceSoap12Binding_envelope *envelope = [LibreAccessServiceSoap12Binding_envelope sharedInstance];
+	LibreAccessServiceSoap11Binding_envelope *envelope = [LibreAccessServiceSoap11Binding_envelope sharedInstance];
 	
 	NSMutableDictionary *headerElements = nil;
 	headerElements = [NSMutableDictionary dictionary];
@@ -49643,7 +49649,7 @@ parameters:(LibreAccessServiceSvc_ListFavoriteTypesRequest *)aParameters
 		if (doc == NULL) {
 			NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"Errors while parsing returned XML" forKey:NSLocalizedDescriptionKey];
 			
-			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap12BindingResponseXML" code:1 userInfo:userInfo];
+			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap11BindingResponseXML" code:1 userInfo:userInfo];
 			[delegate operation:self completedWithResponse:response];
 		} else {
 			cur = xmlDocGetRootElement(doc);
@@ -49685,9 +49691,9 @@ parameters:(LibreAccessServiceSvc_ListFavoriteTypesRequest *)aParameters
 	}
 }
 @end
-@implementation LibreAccessServiceSoap12Binding_GetKeyId
+@implementation LibreAccessServiceSoap11Binding_GetKeyId
 @synthesize parameters;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 parameters:(LibreAccessServiceSvc_GetKeyIdRequest *)aParameters
 {
 	if((self = [super initWithBinding:aBinding delegate:responseDelegate])) {
@@ -49705,9 +49711,9 @@ parameters:(LibreAccessServiceSvc_GetKeyIdRequest *)aParameters
 - (void)main
 {
 	[response autorelease];
-	response = [LibreAccessServiceSoap12BindingResponse new];
+	response = [LibreAccessServiceSoap11BindingResponse new];
 	
-	LibreAccessServiceSoap12Binding_envelope *envelope = [LibreAccessServiceSoap12Binding_envelope sharedInstance];
+	LibreAccessServiceSoap11Binding_envelope *envelope = [LibreAccessServiceSoap11Binding_envelope sharedInstance];
 	
 	NSMutableDictionary *headerElements = nil;
 	headerElements = [NSMutableDictionary dictionary];
@@ -49748,7 +49754,7 @@ parameters:(LibreAccessServiceSvc_GetKeyIdRequest *)aParameters
 		if (doc == NULL) {
 			NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"Errors while parsing returned XML" forKey:NSLocalizedDescriptionKey];
 			
-			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap12BindingResponseXML" code:1 userInfo:userInfo];
+			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap11BindingResponseXML" code:1 userInfo:userInfo];
 			[delegate operation:self completedWithResponse:response];
 		} else {
 			cur = xmlDocGetRootElement(doc);
@@ -49790,9 +49796,9 @@ parameters:(LibreAccessServiceSvc_GetKeyIdRequest *)aParameters
 	}
 }
 @end
-@implementation LibreAccessServiceSoap12Binding_SaveDefaultBooks
+@implementation LibreAccessServiceSoap11Binding_SaveDefaultBooks
 @synthesize parameters;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 parameters:(LibreAccessServiceSvc_SaveDefaultBooksRequest *)aParameters
 {
 	if((self = [super initWithBinding:aBinding delegate:responseDelegate])) {
@@ -49810,9 +49816,9 @@ parameters:(LibreAccessServiceSvc_SaveDefaultBooksRequest *)aParameters
 - (void)main
 {
 	[response autorelease];
-	response = [LibreAccessServiceSoap12BindingResponse new];
+	response = [LibreAccessServiceSoap11BindingResponse new];
 	
-	LibreAccessServiceSoap12Binding_envelope *envelope = [LibreAccessServiceSoap12Binding_envelope sharedInstance];
+	LibreAccessServiceSoap11Binding_envelope *envelope = [LibreAccessServiceSoap11Binding_envelope sharedInstance];
 	
 	NSMutableDictionary *headerElements = nil;
 	headerElements = [NSMutableDictionary dictionary];
@@ -49853,7 +49859,7 @@ parameters:(LibreAccessServiceSvc_SaveDefaultBooksRequest *)aParameters
 		if (doc == NULL) {
 			NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"Errors while parsing returned XML" forKey:NSLocalizedDescriptionKey];
 			
-			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap12BindingResponseXML" code:1 userInfo:userInfo];
+			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap11BindingResponseXML" code:1 userInfo:userInfo];
 			[delegate operation:self completedWithResponse:response];
 		} else {
 			cur = xmlDocGetRootElement(doc);
@@ -49895,9 +49901,9 @@ parameters:(LibreAccessServiceSvc_SaveDefaultBooksRequest *)aParameters
 	}
 }
 @end
-@implementation LibreAccessServiceSoap12Binding_SetAccountAutoAssign
+@implementation LibreAccessServiceSoap11Binding_SetAccountAutoAssign
 @synthesize parameters;
-- (id)initWithBinding:(LibreAccessServiceSoap12Binding *)aBinding delegate:(id<LibreAccessServiceSoap12BindingResponseDelegate>)responseDelegate
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate
 parameters:(LibreAccessServiceSvc_SetAccountAutoAssignRequest *)aParameters
 {
 	if((self = [super initWithBinding:aBinding delegate:responseDelegate])) {
@@ -49915,9 +49921,9 @@ parameters:(LibreAccessServiceSvc_SetAccountAutoAssignRequest *)aParameters
 - (void)main
 {
 	[response autorelease];
-	response = [LibreAccessServiceSoap12BindingResponse new];
+	response = [LibreAccessServiceSoap11BindingResponse new];
 	
-	LibreAccessServiceSoap12Binding_envelope *envelope = [LibreAccessServiceSoap12Binding_envelope sharedInstance];
+	LibreAccessServiceSoap11Binding_envelope *envelope = [LibreAccessServiceSoap11Binding_envelope sharedInstance];
 	
 	NSMutableDictionary *headerElements = nil;
 	headerElements = [NSMutableDictionary dictionary];
@@ -49958,7 +49964,7 @@ parameters:(LibreAccessServiceSvc_SetAccountAutoAssignRequest *)aParameters
 		if (doc == NULL) {
 			NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"Errors while parsing returned XML" forKey:NSLocalizedDescriptionKey];
 			
-			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap12BindingResponseXML" code:1 userInfo:userInfo];
+			response.error = [NSError errorWithDomain:@"LibreAccessServiceSoap11BindingResponseXML" code:1 userInfo:userInfo];
 			[delegate operation:self completedWithResponse:response];
 		} else {
 			cur = xmlDocGetRootElement(doc);
@@ -50000,15 +50006,15 @@ parameters:(LibreAccessServiceSvc_SetAccountAutoAssignRequest *)aParameters
 	}
 }
 @end
-static LibreAccessServiceSoap12Binding_envelope *LibreAccessServiceSoap12BindingSharedEnvelopeInstance = nil;
-@implementation LibreAccessServiceSoap12Binding_envelope
-+ (LibreAccessServiceSoap12Binding_envelope *)sharedInstance
+static LibreAccessServiceSoap11Binding_envelope *LibreAccessServiceSoap11BindingSharedEnvelopeInstance = nil;
+@implementation LibreAccessServiceSoap11Binding_envelope
++ (LibreAccessServiceSoap11Binding_envelope *)sharedInstance
 {
-	if(LibreAccessServiceSoap12BindingSharedEnvelopeInstance == nil) {
-		LibreAccessServiceSoap12BindingSharedEnvelopeInstance = [LibreAccessServiceSoap12Binding_envelope new];
+	if(LibreAccessServiceSoap11BindingSharedEnvelopeInstance == nil) {
+		LibreAccessServiceSoap11BindingSharedEnvelopeInstance = [LibreAccessServiceSoap11Binding_envelope new];
 	}
 	
-	return LibreAccessServiceSoap12BindingSharedEnvelopeInstance;
+	return LibreAccessServiceSoap11BindingSharedEnvelopeInstance;
 }
 - (NSString *)serializedFormUsingHeaderElements:(NSDictionary *)headerElements bodyElements:(NSDictionary *)bodyElements bodyKeys:(NSArray *)bodyKeys
 {
@@ -50023,7 +50029,7 @@ static LibreAccessServiceSoap12Binding_envelope *LibreAccessServiceSoap12Binding
 	xmlNodePtr root = xmlNewDocNode(doc, NULL, (const xmlChar*)"Envelope", NULL);
 	xmlDocSetRootElement(doc, root);
 	
-	xmlNsPtr soapEnvelopeNs = xmlNewNs(root, (const xmlChar*)"http://www.w3.org/2003/05/soap-envelope", (const xmlChar*)"soap");
+	xmlNsPtr soapEnvelopeNs = xmlNewNs(root, (const xmlChar*)"http://schemas.xmlsoap.org/soap/envelope/", (const xmlChar*)"soap");
 	xmlSetNs(root, soapEnvelopeNs);
 	
 	xmlNsPtr xslNs = xmlNewNs(root, (const xmlChar*)"http://www.w3.org/1999/XSL/Transform", (const xmlChar*)"xsl");
@@ -50065,7 +50071,7 @@ static LibreAccessServiceSoap12Binding_envelope *LibreAccessServiceSoap12Binding
 	return serializedForm;
 }
 @end
-@implementation LibreAccessServiceSoap12BindingResponse
+@implementation LibreAccessServiceSoap11BindingResponse
 @synthesize headers;
 @synthesize bodyParts;
 @synthesize error;

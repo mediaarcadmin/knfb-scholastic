@@ -82,7 +82,7 @@ static NSString * const kSCHLibreAccessWebServiceStatusMessage = @"statusmessage
 {
 	self = [super init];
 	if (self != nil) {
-		binding = [[LibreAccessServiceSvc LibreAccessServiceSoap12Binding] retain];
+		binding = [[LibreAccessServiceSvc LibreAccessServiceSoap11Binding] retain];
 		binding.logXMLInOut = NO;		
 	}
 	
@@ -367,7 +367,7 @@ static NSString * const kSCHLibreAccessWebServiceStatusMessage = @"statusmessage
 #pragma mark -
 #pragma mark LibreAccessServiceSoap12BindingResponse Delegate methods
 
-- (void)operation:(LibreAccessServiceSoap12BindingOperation *)operation completedWithResponse:(LibreAccessServiceSoap12BindingResponse *)response
+- (void)operation:(LibreAccessServiceSoap11BindingOperation *)operation completedWithResponse:(LibreAccessServiceSoap11BindingResponse *)response
 {	
 	NSString *methodName = [self methodNameFromObject:operation];
 	
@@ -431,43 +431,43 @@ static NSString * const kSCHLibreAccessWebServiceStatusMessage = @"statusmessage
 	if (anObject != nil) {
 		if([anObject isKindOfClass:[LibreAccessServiceSvc_TokenExchange class]] == YES ||
 		   [anObject isKindOfClass:[LibreAccessServiceSvc_TokenExchangeResponse class]] == YES ||		   
-		   [anObject isKindOfClass:[LibreAccessServiceSoap12Binding_TokenExchange class]] == YES) {
+		   [anObject isKindOfClass:[LibreAccessServiceSoap11Binding_TokenExchange class]] == YES) {
 			ret = kSCHLibreAccessWebServiceTokenExchange;	
 		} else if([anObject isKindOfClass:[LibreAccessServiceSvc_GetUserProfilesRequest class]] == YES ||
 				  [anObject isKindOfClass:[LibreAccessServiceSvc_GetUserProfilesResponse class]] == YES ||
-				  [anObject isKindOfClass:[LibreAccessServiceSoap12Binding_GetUserProfiles class]] == YES) {
+				  [anObject isKindOfClass:[LibreAccessServiceSoap11Binding_GetUserProfiles class]] == YES) {
 			ret = kSCHLibreAccessWebServiceGetUserProfiles;	
 		} else if([anObject isKindOfClass:[LibreAccessServiceSvc_ListUserContent class]] == YES ||
 				  [anObject isKindOfClass:[LibreAccessServiceSvc_ListUserContentResponse class]] == YES ||
-				  [anObject isKindOfClass:[LibreAccessServiceSoap12Binding_ListUserContent class]] == YES) {
+				  [anObject isKindOfClass:[LibreAccessServiceSoap11Binding_ListUserContent class]] == YES) {
 			ret = kSCHLibreAccessWebServiceListUserContent;	
 		} else if([anObject isKindOfClass:[LibreAccessServiceSvc_ListContentMetadata class]] == YES ||
 				  [anObject isKindOfClass:[LibreAccessServiceSvc_ListContentMetadataResponse class]] == YES ||
-				  [anObject isKindOfClass:[LibreAccessServiceSoap12Binding_ListContentMetadata class]] == YES) {
+				  [anObject isKindOfClass:[LibreAccessServiceSoap11Binding_ListContentMetadata class]] == YES) {
 			ret = kSCHLibreAccessWebServiceListContentMetadata;				
 		} else if([anObject isKindOfClass:[LibreAccessServiceSvc_SaveUserProfilesRequest class]] == YES ||
 				  [anObject isKindOfClass:[LibreAccessServiceSvc_SaveUserProfilesResponse class]] == YES ||
-				  [anObject isKindOfClass:[LibreAccessServiceSoap12Binding_SaveUserProfiles class]] == YES) {
+				  [anObject isKindOfClass:[LibreAccessServiceSoap11Binding_SaveUserProfiles class]] == YES) {
 			ret = kSCHLibreAccessWebServiceSaveUserProfiles;				
 		} else if([anObject isKindOfClass:[LibreAccessServiceSvc_ListUserSettingsRequest class]] == YES ||
 				  [anObject isKindOfClass:[LibreAccessServiceSvc_ListUserSettingsResponse class]] == YES ||
-				  [anObject isKindOfClass:[LibreAccessServiceSoap12Binding_ListUserSettings class]] == YES) {
+				  [anObject isKindOfClass:[LibreAccessServiceSoap11Binding_ListUserSettings class]] == YES) {
 			ret = kSCHLibreAccessWebServiceListUserSettings;				
 		} else if([anObject isKindOfClass:[LibreAccessServiceSvc_SaveUserSettingsRequest class]] == YES ||
 				  [anObject isKindOfClass:[LibreAccessServiceSvc_SaveUserSettingsResponse class]] == YES ||
-				  [anObject isKindOfClass:[LibreAccessServiceSoap12Binding_SaveUserSettings class]] == YES) {
+				  [anObject isKindOfClass:[LibreAccessServiceSoap11Binding_SaveUserSettings class]] == YES) {
 			ret = kSCHLibreAccessWebServiceListUserSettings;				
 		} else if([anObject isKindOfClass:[LibreAccessServiceSvc_ListProfileContentAnnotationsRequest class]] == YES ||
 				  [anObject isKindOfClass:[LibreAccessServiceSvc_ListProfileContentAnnotationsResponse class]] == YES ||
-				  [anObject isKindOfClass:[LibreAccessServiceSoap12Binding_ListProfileContentAnnotations class]] == YES) {
+				  [anObject isKindOfClass:[LibreAccessServiceSoap11Binding_ListProfileContentAnnotations class]] == YES) {
 			ret = kSCHLibreAccessWebServiceListProfileContentAnnotations;				
 		} else if([anObject isKindOfClass:[LibreAccessServiceSvc_SaveProfileContentAnnotationsRequest class]] == YES ||
 				  [anObject isKindOfClass:[LibreAccessServiceSvc_SaveProfileContentAnnotationsResponse class]] == YES ||
-				  [anObject isKindOfClass:[LibreAccessServiceSoap12Binding_SaveProfileContentAnnotations class]] == YES) {
+				  [anObject isKindOfClass:[LibreAccessServiceSoap11Binding_SaveProfileContentAnnotations class]] == YES) {
 			ret = kSCHLibreAccessWebServiceSaveProfileContentAnnotations;
 		} else if([anObject isKindOfClass:[LibreAccessServiceSvc_SaveContentProfileAssignmentRequest class]] == YES ||
 				  [anObject isKindOfClass:[LibreAccessServiceSvc_SaveContentProfileAssignmentResponse class]] == YES ||
-				  [anObject isKindOfClass:[LibreAccessServiceSoap12Binding_SaveContentProfileAssignment class]] == YES) {
+				  [anObject isKindOfClass:[LibreAccessServiceSoap11Binding_SaveContentProfileAssignment class]] == YES) {
 			ret = kSCHLibreAccessWebServiceSaveContentProfileAssignment;
 		}
 	}
