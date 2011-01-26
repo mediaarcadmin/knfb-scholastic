@@ -68,6 +68,12 @@
 		52EF553E12E9EB8500E374F7 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52EF553D12E9EB8500E374F7 /* Security.framework */; };
 		52EF570A12ED977C00E374F7 /* NSManagedObjectContext+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF570912ED977C00E374F7 /* NSManagedObjectContext+Extensions.m */; };
 		52EF579712EDBE6E00E374F7 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF579612EDBE6E00E374F7 /* SFHFKeychainUtils.m */; };
+		C923A27A12F06FE60054426F /* MRGridView.m in Sources */ = {isa = PBXBuildFile; fileRef = C923A27312F06FE60054426F /* MRGridView.m */; };
+		C923A27B12F06FE60054426F /* MRGridViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C923A27512F06FE60054426F /* MRGridViewCell.m */; };
+		C923A27C12F06FE60054426F /* MRGridViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C923A27712F06FE60054426F /* MRGridViewController.m */; };
+		C923A27D12F06FE60054426F /* MRGridView.m in Sources */ = {isa = PBXBuildFile; fileRef = C923A27312F06FE60054426F /* MRGridView.m */; };
+		C923A27E12F06FE60054426F /* MRGridViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C923A27512F06FE60054426F /* MRGridViewCell.m */; };
+		C923A27F12F06FE60054426F /* MRGridViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C923A27712F06FE60054426F /* MRGridViewController.m */; };
 		F8509E7412F061FE00197EB5 /* libXpsSDKipad.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F8509E7212F061FE00197EB5 /* libXpsSDKipad.a */; };
 		F8509E9C12F0621E00197EB5 /* BlioTimeOrderedCache.m in Sources */ = {isa = PBXBuildFile; fileRef = F8509E8C12F0621E00197EB5 /* BlioTimeOrderedCache.m */; };
 		F8509E9D12F0621E00197EB5 /* BWKXPSProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = F8509E8E12F0621E00197EB5 /* BWKXPSProvider.m */; };
@@ -274,6 +280,14 @@
 		52EF579512EDBE6E00E374F7 /* SFHFKeychainUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFHFKeychainUtils.h; sourceTree = "<group>"; };
 		52EF579612EDBE6E00E374F7 /* SFHFKeychainUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFHFKeychainUtils.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Scholastic-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Scholastic-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
+		C923A27212F06FE60054426F /* MRGridView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MRGridView.h; path = Shared/Libraries/MRGridView/MRGridView.h; sourceTree = "<group>"; };
+		C923A27312F06FE60054426F /* MRGridView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MRGridView.m; path = Shared/Libraries/MRGridView/MRGridView.m; sourceTree = "<group>"; };
+		C923A27412F06FE60054426F /* MRGridViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MRGridViewCell.h; path = Shared/Libraries/MRGridView/MRGridViewCell.h; sourceTree = "<group>"; };
+		C923A27512F06FE60054426F /* MRGridViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MRGridViewCell.m; path = Shared/Libraries/MRGridView/MRGridViewCell.m; sourceTree = "<group>"; };
+		C923A27612F06FE60054426F /* MRGridViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MRGridViewController.h; path = Shared/Libraries/MRGridView/MRGridViewController.h; sourceTree = "<group>"; };
+		C923A27712F06FE60054426F /* MRGridViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MRGridViewController.m; path = Shared/Libraries/MRGridView/MRGridViewController.m; sourceTree = "<group>"; };
+		C923A27812F06FE60054426F /* MRGridViewDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MRGridViewDataSource.h; path = Shared/Libraries/MRGridView/MRGridViewDataSource.h; sourceTree = "<group>"; };
+		C923A27912F06FE60054426F /* MRGridViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MRGridViewDelegate.h; path = Shared/Libraries/MRGridView/MRGridViewDelegate.h; sourceTree = "<group>"; };
 		F8509E7212F061FE00197EB5 /* libXpsSDKipad.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libXpsSDKipad.a; sourceTree = "<group>"; };
 		F8509E7312F061FE00197EB5 /* XpsSdk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XpsSdk.h; sourceTree = "<group>"; };
 		F8509E7612F0620D00197EB5 /* Clifford.xps */ = {isa = PBXFileReference; lastKnownFileType = file; path = Clifford.xps; sourceTree = "<group>"; };
@@ -501,6 +515,7 @@
 		528A2CFE12CCFD050053A343 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				C923A25F12F06DBE0054426F /* MRGridView */,
 				5293868D12DF3A3300045B44 /* WSDL2ObjC */,
 				529386A312DF3A3F00045B44 /* TouchXML */,
 				529386B712DF3A4900045B44 /* Reachability */,
@@ -631,6 +646,21 @@
 				52EF570912ED977C00E374F7 /* NSManagedObjectContext+Extensions.m */,
 			);
 			name = Extensions;
+			sourceTree = "<group>";
+		};
+		C923A25F12F06DBE0054426F /* MRGridView */ = {
+			isa = PBXGroup;
+			children = (
+				C923A27212F06FE60054426F /* MRGridView.h */,
+				C923A27312F06FE60054426F /* MRGridView.m */,
+				C923A27412F06FE60054426F /* MRGridViewCell.h */,
+				C923A27512F06FE60054426F /* MRGridViewCell.m */,
+				C923A27612F06FE60054426F /* MRGridViewController.h */,
+				C923A27712F06FE60054426F /* MRGridViewController.m */,
+				C923A27812F06FE60054426F /* MRGridViewDataSource.h */,
+				C923A27912F06FE60054426F /* MRGridViewDelegate.h */,
+			);
+			name = MRGridView;
 			sourceTree = "<group>";
 		};
 		F8509E7112F061FE00197EB5 /* XPS */ = {
@@ -881,6 +911,9 @@
 				F8509E9F12F0621E00197EB5 /* BWKTestPageViewController.m in Sources */,
 				F8509EA112F0621E00197EB5 /* BWKReadingOptionsView.m in Sources */,
 				F8509EA312F0621E00197EB5 /* BWKScrubberView.m in Sources */,
+				C923A27D12F06FE60054426F /* MRGridView.m in Sources */,
+				C923A27E12F06FE60054426F /* MRGridViewCell.m in Sources */,
+				C923A27F12F06FE60054426F /* MRGridViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -933,6 +966,9 @@
 				F8509F3C12F063C900197EB5 /* BWKTestPageViewController.m in Sources */,
 				F8509F3D12F063C900197EB5 /* BWKReadingOptionsView.m in Sources */,
 				F8509F3E12F063C900197EB5 /* BWKScrubberView.m in Sources */,
+				C923A27A12F06FE60054426F /* MRGridView.m in Sources */,
+				C923A27B12F06FE60054426F /* MRGridViewCell.m in Sources */,
+				C923A27C12F06FE60054426F /* MRGridViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
