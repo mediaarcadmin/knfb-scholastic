@@ -14,6 +14,8 @@
 @interface SCHBookShelfViewController ()
 #ifndef LOCALDEBUG
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath;
+#else
+- (void) checkAndCopyLocalFilesToApplicationSupport;
 #endif
 @end
 
@@ -36,13 +38,19 @@
 #ifdef LOCALDEBUG
 	NSError *error = nil;
 	
-	NSString *bundleRoot = [[NSBundle mainBundle] bundlePath];
-	NSArray *dirContents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:bundleRoot error:&error];
+	[self checkAndCopyLocalFilesToApplicationSupport];
+
+//	NSString *bundleRoot = [[NSBundle mainBundle] bundlePath];
+	
+	NSArray  *applicationSupportPaths = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);
+    NSString *applicationSupportPath = ([applicationSupportPaths count] > 0) ? [applicationSupportPaths objectAtIndex:0] : nil;
+	
+	NSArray *dirContents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:applicationSupportPath error:&error];
 	
 	if (error) {
 		NSLog(@"Error: %@", [error localizedDescription]);
 	}
-	
+
 	NSArray *xpsContents = [dirContents filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"self ENDSWITH '.xps'"]];
 	
 	NSMutableArray *trimmedXpsContents = [[NSMutableArray alloc] init];
@@ -54,8 +62,84 @@
 	[trimmedXpsContents release];
 	
 	self.title = @"Bookshelf (Local)";
+	
 #endif
 }
+
+#ifdef LOCALDEBUG
+
+- (void) checkAndCopyLocalFilesToApplicationSupport
+{
+
+	// first, check the application support directory exists, and if
+	// not, create it. (code from Blio)
+	NSArray  *applicationSupportPaths = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);
+    NSString *applicationSupportPath = ([applicationSupportPaths count] > 0) ? [applicationSupportPaths objectAtIndex:0] : nil;
+	
+	BOOL isDir;
+	if (![[NSFileManager defaultManager] fileExistsAtPath:applicationSupportPath isDirectory:&isDir] || !isDir) {
+		NSError * createApplicationSupportDirError = nil;
+		
+		if (![[NSFileManager defaultManager] createDirectoryAtPath:applicationSupportPath 
+									   withIntermediateDirectories:YES 
+														attributes:nil 
+															 error:&createApplicationSupportDirError]) 
+		{
+			NSLog(@"Error: could not create Application Support directory in the Library directory! %@, %@", 
+				  createApplicationSupportDirError, [createApplicationSupportDirError userInfo]);
+			return;
+		} else {
+			NSLog(@"Created Application Support directory within Library.");
+		}
+	}
+	
+	
+	// now create a list of bundle XPS files
+	NSError *error = nil;
+	NSString *bundleRoot = [[NSBundle mainBundle] bundlePath];
+	NSArray *bundleDirContents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:bundleRoot error:&error];
+	
+	if (error) {
+		NSLog(@"Error: %@", [error localizedDescription]);
+		return;
+	}
+	
+	NSArray *bundleXPSContents = [bundleDirContents filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"self ENDSWITH '.xps'"]];
+
+	NSArray *appDirContents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:applicationSupportPath error:&error];
+	if (error) {
+		NSLog(@"Error: %@", [error localizedDescription]);
+		return;
+	}
+
+	NSArray *supportDirXPSContents = [appDirContents filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"self ENDSWITH '.xps'"]];
+
+	
+	for (NSString *item in bundleXPSContents) {
+		
+		bool fileAlreadyCopied = NO;
+		
+		for (NSString *appItem in supportDirXPSContents) {
+			if ([[item stringByDeletingPathExtension] compare:[appItem stringByDeletingPathExtension]] == NSOrderedSame) {
+				fileAlreadyCopied = YES;
+				break;
+			}
+		}
+		
+		if (!fileAlreadyCopied) {
+			NSString *fullSourcePath = [NSString stringWithFormat:@"%@/%@", bundleRoot, item];
+			NSString *fullDestinationPath = [NSString stringWithFormat:@"%@/%@", applicationSupportPath, item];
+			
+			[[NSFileManager defaultManager] copyItemAtPath:fullSourcePath toPath:fullDestinationPath error:&error];
+			if (error) {
+				NSLog(@"File copy error: %@, %@",
+					  error, [error userInfo]);
+			}
+		}
+	}
+}
+
+#endif
 
 /*
 - (void)viewWillAppear:(BOOL)animated {
