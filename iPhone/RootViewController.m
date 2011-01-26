@@ -82,13 +82,14 @@ static NSInteger const kRootViewControllerSettingsRow = 1;
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-	
+#ifndef LOCALDEBUG	
 	SCHAuthenticationManager *authenticationManager = [SCHAuthenticationManager sharedAuthenticationManager];
 	
 	if ([authenticationManager hasUsernameAndPassword] == NO) {
 		[self presentModalViewController:self.loginController animated:NO];	
 		[self.loginController removeCancelButton];
 	}
+#endif
 }
 
 /*
