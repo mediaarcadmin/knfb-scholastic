@@ -1,5 +1,5 @@
 //
-//  SCHUserSettings.h
+//  SCHUserSettingsItem.h
 //  Scholastic
 //
 //  Created by John S. Eddie on 18/01/2011.
@@ -9,7 +9,7 @@
 #import <CoreData/CoreData.h>
 
 
-@interface SCHUserSettings :  NSManagedObject  
+@interface SCHUserSettingsItem :  NSManagedObject  
 {
 }
 

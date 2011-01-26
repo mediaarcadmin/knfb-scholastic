@@ -56,7 +56,7 @@
 		5293883312E03CD000045B44 /* SCHBookShelfViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293883112E03CD000045B44 /* SCHBookShelfViewController.m */; };
 		5293883412E03CD000045B44 /* SCHBookShelfViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5293883212E03CD000045B44 /* SCHBookShelfViewController.xib */; };
 		52938B3912E08FC400045B44 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 52938B3812E08FC400045B44 /* Icon.png */; };
-		529C991712E5C72C008FBC66 /* SCHUserSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 529C991612E5C72C008FBC66 /* SCHUserSettings.m */; };
+		529C991712E5C72C008FBC66 /* SCHUserSettingsItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 529C991612E5C72C008FBC66 /* SCHUserSettingsItem.m */; };
 		52D6122212E44B0F0033DA92 /* SCHProfileItem+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D6122112E44B0F0033DA92 /* SCHProfileItem+Extensions.m */; };
 		52D6124312E44CEC0033DA92 /* SCHContentMetadataItem+Extensions.m in Resources */ = {isa = PBXBuildFile; fileRef = 52D6124212E44CEC0033DA92 /* SCHContentMetadataItem+Extensions.m */; };
 		52D6124F12E44D760033DA92 /* SCHSyncEntity+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D6124E12E44D760033DA92 /* SCHSyncEntity+Extensions.m */; };
@@ -144,7 +144,7 @@
 		F8509F3012F063C900197EB5 /* SCHProfileItem+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D6122112E44B0F0033DA92 /* SCHProfileItem+Extensions.m */; };
 		F8509F3112F063C900197EB5 /* SCHSyncEntity+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D6124E12E44D760033DA92 /* SCHSyncEntity+Extensions.m */; };
 		F8509F3212F063C900197EB5 /* NSNumber+ObjectTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D612B712E4650B0033DA92 /* NSNumber+ObjectTypes.m */; };
-		F8509F3312F063C900197EB5 /* SCHUserSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 529C991612E5C72C008FBC66 /* SCHUserSettings.m */; };
+		F8509F3312F063C900197EB5 /* SCHUserSettingsItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 529C991612E5C72C008FBC66 /* SCHUserSettingsItem.m */; };
 		F8509F3412F063C900197EB5 /* SCHLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF4E5D12E6E01C00E374F7 /* SCHLoginViewController.m */; };
 		F8509F3512F063C900197EB5 /* LibreAccessServiceSvc.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF508612E739E900E374F7 /* LibreAccessServiceSvc.m */; };
 		F8509F3612F063C900197EB5 /* SCHAuthenticationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF543F12E9A5D400E374F7 /* SCHAuthenticationManager.m */; };
@@ -257,8 +257,8 @@
 		5293883112E03CD000045B44 /* SCHBookShelfViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHBookShelfViewController.m; sourceTree = "<group>"; };
 		5293883212E03CD000045B44 /* SCHBookShelfViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SCHBookShelfViewController.xib; sourceTree = "<group>"; };
 		52938B3812E08FC400045B44 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon.png; path = Shared/Images/Icon.png; sourceTree = "<group>"; };
-		529C991512E5C72C008FBC66 /* SCHUserSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHUserSettings.h; path = Shared/SCHUserSettings.h; sourceTree = "<group>"; };
-		529C991612E5C72C008FBC66 /* SCHUserSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHUserSettings.m; path = Shared/SCHUserSettings.m; sourceTree = "<group>"; };
+		529C991512E5C72C008FBC66 /* SCHUserSettingsItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHUserSettingsItem.h; path = Shared/SCHUserSettingsItem.h; sourceTree = "<group>"; };
+		529C991612E5C72C008FBC66 /* SCHUserSettingsItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHUserSettingsItem.m; path = Shared/SCHUserSettingsItem.m; sourceTree = "<group>"; };
 		52D6122012E44B0F0033DA92 /* SCHProfileItem+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SCHProfileItem+Extensions.h"; path = "Shared/SCHProfileItem+Extensions.h"; sourceTree = "<group>"; };
 		52D6122112E44B0F0033DA92 /* SCHProfileItem+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SCHProfileItem+Extensions.m"; path = "Shared/SCHProfileItem+Extensions.m"; sourceTree = "<group>"; };
 		52D6124112E44CEC0033DA92 /* SCHContentMetadataItem+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SCHContentMetadataItem+Extensions.h"; path = "Shared/SCHContentMetadataItem+Extensions.h"; sourceTree = "<group>"; };
@@ -475,8 +475,8 @@
 				5250C4B112DE078000542055 /* SCHSyncEntity.m */,
 				52D6124D12E44D760033DA92 /* SCHSyncEntity+Extensions.h */,
 				52D6124E12E44D760033DA92 /* SCHSyncEntity+Extensions.m */,
-				529C991512E5C72C008FBC66 /* SCHUserSettings.h */,
-				529C991612E5C72C008FBC66 /* SCHUserSettings.m */,
+				529C991512E5C72C008FBC66 /* SCHUserSettingsItem.h */,
+				529C991612E5C72C008FBC66 /* SCHUserSettingsItem.m */,
 				52D612B612E4650B0033DA92 /* NSNumber+ObjectTypes.h */,
 				52D612B712E4650B0033DA92 /* NSNumber+ObjectTypes.m */,
 			);
@@ -899,7 +899,7 @@
 				52D6122212E44B0F0033DA92 /* SCHProfileItem+Extensions.m in Sources */,
 				52D6124F12E44D760033DA92 /* SCHSyncEntity+Extensions.m in Sources */,
 				52D612B812E4650B0033DA92 /* NSNumber+ObjectTypes.m in Sources */,
-				529C991712E5C72C008FBC66 /* SCHUserSettings.m in Sources */,
+				529C991712E5C72C008FBC66 /* SCHUserSettingsItem.m in Sources */,
 				52EF4E5F12E6E01C00E374F7 /* SCHLoginViewController.m in Sources */,
 				52EF508712E739E900E374F7 /* LibreAccessServiceSvc.m in Sources */,
 				52EF544012E9A5D400E374F7 /* SCHAuthenticationManager.m in Sources */,
@@ -954,7 +954,7 @@
 				F8509F3012F063C900197EB5 /* SCHProfileItem+Extensions.m in Sources */,
 				F8509F3112F063C900197EB5 /* SCHSyncEntity+Extensions.m in Sources */,
 				F8509F3212F063C900197EB5 /* NSNumber+ObjectTypes.m in Sources */,
-				F8509F3312F063C900197EB5 /* SCHUserSettings.m in Sources */,
+				F8509F3312F063C900197EB5 /* SCHUserSettingsItem.m in Sources */,
 				F8509F3412F063C900197EB5 /* SCHLoginViewController.m in Sources */,
 				F8509F3512F063C900197EB5 /* LibreAccessServiceSvc.m in Sources */,
 				F8509F3612F063C900197EB5 /* SCHAuthenticationManager.m in Sources */,
