@@ -154,13 +154,13 @@
 {
 	NSError *error = nil;
 
-	if (![self.managedObjectContext emptyEntity:@"SCHUserSettings" error:&error]) {
+	if (![self.managedObjectContext emptyEntity:@"SCHUserSettingsItem" error:&error]) {
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
 		abort();
 	}	
 	
 	for (id setting in settingsList) {
-		NSManagedObject *newManagedObject = [NSEntityDescription insertNewObjectForEntityForName:@"SCHUserSettings" inManagedObjectContext:self.managedObjectContext];
+		NSManagedObject *newManagedObject = [NSEntityDescription insertNewObjectForEntityForName:@"SCHUserSettingsItem" inManagedObjectContext:self.managedObjectContext];
 		
 		[newManagedObject setValue:[setting objectForKey:kSCHLibreAccessWebServiceSettingType] forKey:kSCHLibreAccessWebServiceSettingType];
 		[newManagedObject setValue:[setting objectForKey:kSCHLibreAccessWebServiceSettingValue] forKey:kSCHLibreAccessWebServiceSettingValue];
