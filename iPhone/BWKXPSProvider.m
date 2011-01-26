@@ -170,7 +170,7 @@ void XPSPageCompleteCallback(void *userdata, RasterImageInfo *data) {
     
     XPS_FILE_PACKAGE_INFO packageInfo;
     [contentsLock lock];
-	NSLog(@"Path is %@", path);
+
     int ret = XPS_GetComponentInfo(xpsHandle, (char *)[path UTF8String], &packageInfo);
     [contentsLock unlock];
     if (!ret) {
