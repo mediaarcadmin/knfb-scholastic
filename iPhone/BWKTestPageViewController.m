@@ -151,8 +151,8 @@
 			default:
 				break;
 		}
-		
-		[self loadImageForCurrentPage];
+
+		[pageLabel setText:[NSString stringWithFormat:@"Page %d of %d", currentPage, [testRenderer pageCount]]];
 	}
 }
 
@@ -160,6 +160,8 @@
 {
 	NSLog(@"Starting changes...");
 	[scrubberInfoView setAlpha:1.0f];
+	[self cancelInitialTimer];
+	
 }
 
 - (void) scrubberView:(BWKScrubberView *)scrubberView endScrubbingWithValue:(float)currentValue
@@ -171,6 +173,9 @@
 	[UIView setAnimationBeginsFromCurrentState:YES];
 	[scrubberInfoView setAlpha:0.0f];
 	[UIView commitAnimations];
+	
+	[self loadImageForCurrentPage];
+	
 }
 
 
@@ -199,7 +204,6 @@
 	
 	[scrollView setContentSize: CGSizeMake(imageView.bounds.size.width, imageView.bounds.size.height)];
 	
-	[pageLabel setText:[NSString stringWithFormat:@"Page %d of %d", currentPage, [testRenderer pageCount]]];
 	//[scrollView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
 	
 	//[pageSlider setValue:currentPage];
