@@ -555,7 +555,7 @@ static NSString * const kSCHLibreAccessWebServiceStatusHolderStatusMessage = @"s
 		[objects setObject:[self objectFromTranslate:anObject.AutoAssignContentToProfiles] forKey:kSCHLibreAccessWebServiceAutoAssignContentToProfiles];
 		[objects setObject:[self objectFromTranslate:anObject.ProfilePasswordRequired] forKey:kSCHLibreAccessWebServiceProfilePasswordRequired];		
 		[objects setObject:[self objectFromTranslate:anObject.Firstname] forKey:kSCHLibreAccessWebServiceFirstName];		
-		[objects setObject:[self objectFromTranslate:anObject.Lastname] forKey:kSCHLibreAccessWebServiceLastname];		
+		[objects setObject:[self objectFromTranslate:anObject.Lastname] forKey:kSCHLibreAccessWebServiceLastName];		
 		[objects setObject:[self objectFromTranslate:anObject.BirthDay] forKey:kSCHLibreAccessWebServiceBirthday];		
 		[objects setObject:[self objectFromTranslate:anObject.screenname] forKey:kSCHLibreAccessWebServiceScreenName];		
 		[objects setObject:[self objectFromTranslate:anObject.password] forKey:kSCHLibreAccessWebServicePassword];		
@@ -965,7 +965,7 @@ static NSString * const kSCHLibreAccessWebServiceStatusHolderStatusMessage = @"s
 		intoObject.AutoAssignContentToProfiles = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceAutoAssignContentToProfiles]];
 		intoObject.ProfilePasswordRequired = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceProfilePasswordRequired]];
 		intoObject.Firstname = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceFirstName]];
-		intoObject.Lastname = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceLastname]];
+		intoObject.Lastname = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceLastName]];
 		intoObject.BirthDay = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceBirthday]];
 		intoObject.LastModified = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceLastModified]];
 		intoObject.screenname = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceScreenName]];
