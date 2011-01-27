@@ -91,6 +91,26 @@
 		C923A27D12F06FE60054426F /* MRGridView.m in Sources */ = {isa = PBXBuildFile; fileRef = C923A27312F06FE60054426F /* MRGridView.m */; };
 		C923A27E12F06FE60054426F /* MRGridViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C923A27512F06FE60054426F /* MRGridViewCell.m */; };
 		C923A27F12F06FE60054426F /* MRGridViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C923A27712F06FE60054426F /* MRGridViewController.m */; };
+		F837C6A112F1798800833448 /* SCHAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A7A12F0EF5600BBBCE6 /* SCHAnnotation.m */; };
+		F837C6A212F1798900833448 /* SCHAnnotationsContentItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A7812F0EF5600BBBCE6 /* SCHAnnotationsContentItem.m */; };
+		F837C6A312F1798900833448 /* SCHAnnotationsItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A8412F0EF5600BBBCE6 /* SCHAnnotationsItem.m */; };
+		F837C6A412F1798B00833448 /* SCHBookmark.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A7212F0EF5600BBBCE6 /* SCHBookmark.m */; };
+		F837C6A512F1798E00833448 /* SCHContentItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A7412F0EF5600BBBCE6 /* SCHContentItem.m */; };
+		F837C6A612F1798E00833448 /* SCHContentMetadataItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6212F0EF5600BBBCE6 /* SCHContentMetadataItem.m */; };
+		F837C6A712F1798F00833448 /* SCHContentProfileItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6E12F0EF5600BBBCE6 /* SCHContentProfileItem.m */; };
+		F837C6A812F1798F00833448 /* SCHCoords.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A8012F0EF5600BBBCE6 /* SCHCoords.m */; };
+		F837C6A912F1799100833448 /* SCHFavorite.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A7C12F0EF5600BBBCE6 /* SCHFavorite.m */; };
+		F837C6AA12F1799200833448 /* SCHHighlight.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A8612F0EF5600BBBCE6 /* SCHHighlight.m */; };
+		F837C6AB12F1799300833448 /* SCHLastPage.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6412F0EF5600BBBCE6 /* SCHLastPage.m */; };
+		F837C6AC12F1799500833448 /* SCHLocationText.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6612F0EF5600BBBCE6 /* SCHLocationText.m */; };
+		F837C6AD12F1799600833448 /* SCHLocationGraphics.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A8212F0EF5600BBBCE6 /* SCHLocationGraphics.m */; };
+		F837C6AE12F179A600833448 /* SCHOrderItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6A12F0EF5600BBBCE6 /* SCHOrderItem.m */; };
+		F837C6AF12F179A800833448 /* SCHProfileItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A7E12F0EF5600BBBCE6 /* SCHProfileItem.m */; };
+		F837C6B012F179A900833448 /* SCHProfileStatusItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A7612F0EF5600BBBCE6 /* SCHProfileStatusItem.m */; };
+		F837C6B112F179AD00833448 /* SCHSyncEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A7012F0EF5600BBBCE6 /* SCHSyncEntity.m */; };
+		F837C6B212F179AE00833448 /* SCHUserContentItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6812F0EF5600BBBCE6 /* SCHUserContentItem.m */; };
+		F837C6B312F179AF00833448 /* SCHUserSettingsItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6012F0EF5600BBBCE6 /* SCHUserSettingsItem.m */; };
+		F837C6B412F179B100833448 /* SCHWordIndex.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6C12F0EF5600BBBCE6 /* SCHWordIndex.m */; };
 		F8509E7412F061FE00197EB5 /* libXpsSDKipad.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F8509E7212F061FE00197EB5 /* libXpsSDKipad.a */; };
 		F8509E9C12F0621E00197EB5 /* BlioTimeOrderedCache.m in Sources */ = {isa = PBXBuildFile; fileRef = F8509E8C12F0621E00197EB5 /* BlioTimeOrderedCache.m */; };
 		F8509E9D12F0621E00197EB5 /* BWKXPSProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = F8509E8E12F0621E00197EB5 /* BWKXPSProvider.m */; };
@@ -1063,6 +1083,26 @@
 				C923A27A12F06FE60054426F /* MRGridView.m in Sources */,
 				C923A27B12F06FE60054426F /* MRGridViewCell.m in Sources */,
 				C923A27C12F06FE60054426F /* MRGridViewController.m in Sources */,
+				F837C6A112F1798800833448 /* SCHAnnotation.m in Sources */,
+				F837C6A212F1798900833448 /* SCHAnnotationsContentItem.m in Sources */,
+				F837C6A312F1798900833448 /* SCHAnnotationsItem.m in Sources */,
+				F837C6A412F1798B00833448 /* SCHBookmark.m in Sources */,
+				F837C6A512F1798E00833448 /* SCHContentItem.m in Sources */,
+				F837C6A612F1798E00833448 /* SCHContentMetadataItem.m in Sources */,
+				F837C6A712F1798F00833448 /* SCHContentProfileItem.m in Sources */,
+				F837C6A812F1798F00833448 /* SCHCoords.m in Sources */,
+				F837C6A912F1799100833448 /* SCHFavorite.m in Sources */,
+				F837C6AA12F1799200833448 /* SCHHighlight.m in Sources */,
+				F837C6AB12F1799300833448 /* SCHLastPage.m in Sources */,
+				F837C6AC12F1799500833448 /* SCHLocationText.m in Sources */,
+				F837C6AD12F1799600833448 /* SCHLocationGraphics.m in Sources */,
+				F837C6AE12F179A600833448 /* SCHOrderItem.m in Sources */,
+				F837C6AF12F179A800833448 /* SCHProfileItem.m in Sources */,
+				F837C6B012F179A900833448 /* SCHProfileStatusItem.m in Sources */,
+				F837C6B112F179AD00833448 /* SCHSyncEntity.m in Sources */,
+				F837C6B212F179AE00833448 /* SCHUserContentItem.m in Sources */,
+				F837C6B312F179AF00833448 /* SCHUserSettingsItem.m in Sources */,
+				F837C6B412F179B100833448 /* SCHWordIndex.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
