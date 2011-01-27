@@ -359,20 +359,20 @@
 		C923A27712F06FE60054426F /* MRGridViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MRGridViewController.m; path = Shared/Libraries/MRGridView/MRGridViewController.m; sourceTree = "<group>"; };
 		C923A27812F06FE60054426F /* MRGridViewDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MRGridViewDataSource.h; path = Shared/Libraries/MRGridView/MRGridViewDataSource.h; sourceTree = "<group>"; };
 		C923A27912F06FE60054426F /* MRGridViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MRGridViewDelegate.h; path = Shared/Libraries/MRGridView/MRGridViewDelegate.h; sourceTree = "<group>"; };
-		F837CA0012F1B4BC00833448 /* gear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gear.png; sourceTree = "<group>"; };
-		F837CA0112F1B4BC00833448 /* gear@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gear@2x.png"; sourceTree = "<group>"; };
-		F8509E7212F061FE00197EB5 /* libXpsSDKipad.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libXpsSDKipad.a; sourceTree = "<group>"; };
-		F8509E7312F061FE00197EB5 /* XpsSdk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XpsSdk.h; sourceTree = "<group>"; };
-		F8509E7612F0620D00197EB5 /* Clifford.xps */ = {isa = PBXFileReference; lastKnownFileType = file; path = Clifford.xps; sourceTree = "<group>"; };
-		F8509E7712F0620D00197EB5 /* Goosebumps.xps */ = {isa = PBXFileReference; lastKnownFileType = file; path = Goosebumps.xps; sourceTree = "<group>"; };
-		F8509E7812F0620E00197EB5 /* LonelyHeartsClub.xps */ = {isa = PBXFileReference; lastKnownFileType = file; path = LonelyHeartsClub.xps; sourceTree = "<group>"; };
-		F8509E7912F0620E00197EB5 /* MazeOfBones.xps */ = {isa = PBXFileReference; lastKnownFileType = file; path = MazeOfBones.xps; sourceTree = "<group>"; };
-		F8509E7A12F0620E00197EB5 /* OldLady.xps */ = {isa = PBXFileReference; lastKnownFileType = file; path = OldLady.xps; sourceTree = "<group>"; };
-		F8509E7B12F0620F00197EB5 /* Penguins.xps */ = {isa = PBXFileReference; lastKnownFileType = file; path = Penguins.xps; sourceTree = "<group>"; };
-		F8509E7C12F0620F00197EB5 /* Shiver.xps */ = {isa = PBXFileReference; lastKnownFileType = file; path = Shiver.xps; sourceTree = "<group>"; };
-		F8509E7D12F0620F00197EB5 /* TooManyToys.xps */ = {isa = PBXFileReference; lastKnownFileType = file; path = TooManyToys.xps; sourceTree = "<group>"; };
-		F8509E7E12F0620F00197EB5 /* Cars.xps */ = {isa = PBXFileReference; lastKnownFileType = file; path = Cars.xps; sourceTree = "<group>"; };
-		F8509E7F12F0621000197EB5 /* Cook Yourself Thin.xps */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Cook Yourself Thin.xps"; sourceTree = "<group>"; };
+		F837CA0012F1B4BC00833448 /* gear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = gear.png; path = Shared/Images/gear.png; sourceTree = "<group>"; };
+		F837CA0112F1B4BC00833448 /* gear@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "gear@2x.png"; path = "Shared/Images/gear@2x.png"; sourceTree = "<group>"; };
+		F8509E7212F061FE00197EB5 /* libXpsSDKipad.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libXpsSDKipad.a; path = Shared/Libraries/XPS/libXpsSDKipad.a; sourceTree = "<group>"; };
+		F8509E7312F061FE00197EB5 /* XpsSdk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XpsSdk.h; path = Shared/Libraries/XPS/XpsSdk.h; sourceTree = "<group>"; };
+		F8509E7612F0620D00197EB5 /* Clifford.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = Clifford.xps; path = "Shared/Debug Books/Clifford.xps"; sourceTree = "<group>"; };
+		F8509E7712F0620D00197EB5 /* Goosebumps.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = Goosebumps.xps; path = "Shared/Debug Books/Goosebumps.xps"; sourceTree = "<group>"; };
+		F8509E7812F0620E00197EB5 /* LonelyHeartsClub.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = LonelyHeartsClub.xps; path = "Shared/Debug Books/LonelyHeartsClub.xps"; sourceTree = "<group>"; };
+		F8509E7912F0620E00197EB5 /* MazeOfBones.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = MazeOfBones.xps; path = "Shared/Debug Books/MazeOfBones.xps"; sourceTree = "<group>"; };
+		F8509E7A12F0620E00197EB5 /* OldLady.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = OldLady.xps; path = "Shared/Debug Books/OldLady.xps"; sourceTree = "<group>"; };
+		F8509E7B12F0620F00197EB5 /* Penguins.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = Penguins.xps; path = "Shared/Debug Books/Penguins.xps"; sourceTree = "<group>"; };
+		F8509E7C12F0620F00197EB5 /* Shiver.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = Shiver.xps; path = "Shared/Debug Books/Shiver.xps"; sourceTree = "<group>"; };
+		F8509E7D12F0620F00197EB5 /* TooManyToys.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = TooManyToys.xps; path = "Shared/Debug Books/TooManyToys.xps"; sourceTree = "<group>"; };
+		F8509E7E12F0620F00197EB5 /* Cars.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = Cars.xps; path = "Shared/Debug Books/Cars.xps"; sourceTree = "<group>"; };
+		F8509E7F12F0621000197EB5 /* Cook Yourself Thin.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Cook Yourself Thin.xps"; path = "Shared/Debug Books/Cook Yourself Thin.xps"; sourceTree = "<group>"; };
 		F8509E8B12F0621E00197EB5 /* BlioTimeOrderedCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlioTimeOrderedCache.h; sourceTree = "<group>"; };
 		F8509E8C12F0621E00197EB5 /* BlioTimeOrderedCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlioTimeOrderedCache.m; sourceTree = "<group>"; };
 		F8509E8D12F0621E00197EB5 /* BWKXPSProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BWKXPSProvider.h; sourceTree = "<group>"; };
@@ -389,8 +389,8 @@
 		F8509E9B12F0621E00197EB5 /* BWKScrubberView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BWKScrubberView.m; sourceTree = "<group>"; };
 		F8509EB712F0625100197EB5 /* libstdc++.6.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libstdc++.6.dylib"; path = "usr/lib/libstdc++.6.dylib"; sourceTree = SDKROOT; };
 		F8509F4D12F063C900197EB5 /* Scholastic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Scholastic.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		F8509F8012F0653700197EB5 /* thumbImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = thumbImage.png; sourceTree = "<group>"; };
-		F8509F8112F0653700197EB5 /* booktexture-nocover.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "booktexture-nocover.png"; sourceTree = "<group>"; };
+		F8509F8012F0653700197EB5 /* thumbImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = thumbImage.png; path = Shared/Images/thumbImage.png; sourceTree = "<group>"; };
+		F8509F8112F0653700197EB5 /* booktexture-nocover.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "booktexture-nocover.png"; path = "Shared/Images/booktexture-nocover.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1133,6 +1133,7 @@
 				GCC_PREFIX_HEADER = Scholastic_Prefix.pch;
 				INFOPLIST_FILE = "Scholastic-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
+					"Shared/Libraries//**",
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
 				);
@@ -1150,6 +1151,7 @@
 				GCC_PREFIX_HEADER = Scholastic_Prefix.pch;
 				INFOPLIST_FILE = "Scholastic-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
+					"Shared/Libraries//**",
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
 				);
@@ -1191,6 +1193,7 @@
 				GCC_PREFIX_HEADER = Scholastic_Prefix.pch;
 				INFOPLIST_FILE = "Scholastic-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
+					"Shared/Libraries//**",
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
 				);
@@ -1330,6 +1333,7 @@
 				GCC_PREFIX_HEADER = Scholastic_Prefix.pch;
 				INFOPLIST_FILE = "Scholastic-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
+					"Shared/Libraries//**",
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
 				);
