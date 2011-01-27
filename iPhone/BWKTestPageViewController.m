@@ -62,13 +62,23 @@
 	
 	self.navigationController.navigationBarHidden = YES;
 	
-	UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self
-																				 action:@selector(scrollViewSingleTap:)];
-	tapGesture.numberOfTapsRequired = 1;
-	tapGesture.cancelsTouchesInView = YES;
+	UITapGestureRecognizer *doubleTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self
+																					   action:@selector(scrollViewDoubleTap:)];
+	doubleTapGesture.numberOfTapsRequired = 2;
+	doubleTapGesture.cancelsTouchesInView = YES;
+	[scrollView addGestureRecognizer:doubleTapGesture];
 	
-	[scrollView addGestureRecognizer:tapGesture];
-	[tapGesture release];
+	UITapGestureRecognizer *singleTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self
+																				 action:@selector(scrollViewSingleTap:)];
+	singleTapGesture.numberOfTapsRequired = 1;
+	singleTapGesture.cancelsTouchesInView = YES;
+	[singleTapGesture requireGestureRecognizerToFail:doubleTapGesture];
+	
+	[scrollView addGestureRecognizer:singleTapGesture];
+
+	[doubleTapGesture release];
+	[singleTapGesture release];
+	
 }
 
 // Override to allow orientations other than the default portrait orientation.
@@ -205,17 +215,33 @@
 
 - (void) scrollViewSingleTap: (UIGestureRecognizer *)gestureRecognizer
 {
-	[self cancelInitialTimer];
-
 	if ([gestureRecognizer numberOfTouches] == 1) {
-
-		if ([gestureRecognizer locationInView:self.view].x < 100) {
+		
+		if ([gestureRecognizer locationInView:self.view].x < TESTPAGEVIEW_PAGETAPWIDTH) {
 			[self previousPage:nil];
-		} else if ([gestureRecognizer locationInView:self.view].x > (self.view.frame.size.width - 100)) {
+		} else if ([gestureRecognizer locationInView:self.view].x > (self.view.frame.size.width - TESTPAGEVIEW_PAGETAPWIDTH)) {
 			[self nextPage:nil];
 		} else {
 			[self toggleToolbarVisibility];
+			[self cancelInitialTimer];
 		}
+	}
+}
+
+- (void) scrollViewDoubleTap: (UIGestureRecognizer *)gestureRecognizer
+{
+//	[self cancelInitialTimer];
+	
+	if ([gestureRecognizer numberOfTouches] == 1) {
+		
+		NSLog(@"Scrollview zoom: %f", scrollView.zoomScale);
+		
+		if (scrollView.zoomScale > scrollView.minimumZoomScale) {
+			[scrollView setZoomScale:scrollView.minimumZoomScale animated:YES];
+		} else {
+			[scrollView setZoomScale:scrollView.maximumZoomScale animated:YES];
+		}
+		
 	}
 }
 

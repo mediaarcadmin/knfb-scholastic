@@ -64,8 +64,8 @@
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<bool key="IBUIMultipleTouchEnabled">YES</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-						<float key="IBUIMinimumZoomScale">0.5</float>
-						<float key="IBUIMaximumZoomScale">2</float>
+						<float key="IBUIMinimumZoomScale">0.40000000596046448</float>
+						<float key="IBUIMaximumZoomScale">1.7000000476837158</float>
 					</object>
 					<object class="IBUIToolbar" id="697704350">
 						<reference key="NSNextResponder" ref="191373211"/>

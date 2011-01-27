@@ -10,6 +10,8 @@
 #import "BWKXPSProvider.h"
 #import "BWKScrubberView.h"
 
+#define TESTPAGEVIEW_PAGETAPWIDTH 75
+
 @interface BWKTestPageViewController : UIViewController <UIScrollViewDelegate, BWKScrubberViewDelegate> {
 	IBOutlet UIView *pageView;
 	IBOutlet UIScrollView *scrollView;
