@@ -33,15 +33,14 @@
 	toolbarsVisible = YES;
 	testRenderer = [[BWKXPSProvider alloc] initWithPath:self.xpsPath];
 	
-	pageSlider.value = currentPage;
-	pageSlider.minimumValue = 1;
-	pageSlider.maximumValue = [testRenderer pageCount];
-	
 	pageScrubber.delegate = self;
 	pageScrubber.minimumValue = 1;
 	pageScrubber.maximumValue = [testRenderer pageCount];
+//	pageScrubber.maximumValue = 3;
 	pageScrubber.continuous = YES;
 	pageScrubber.value = currentPage;
+	
+	panSpeedLabel.text = @"";
 	
 	[self loadImageForCurrentPage];
 }
@@ -87,6 +86,7 @@
 {
 	if (currentPage > 1) {
 		currentPage--;
+		[pageScrubber setValue:currentPage];
 		[self loadImageForCurrentPage];
 	}
 }
@@ -95,6 +95,7 @@
 {
 	if (currentPage < [testRenderer pageCount]) {
 		currentPage++;
+		[pageScrubber setValue:currentPage];
 		[self loadImageForCurrentPage];
 	}
 }
@@ -115,40 +116,27 @@
 }
 
 #pragma mark -
-#pragma mark Slider Actions
-
-- (IBAction) sliderValueChanged: (id) sender
-{
-	if (sender == pageSlider) {
-		currentPage = [pageSlider value];
-		[self loadImageForCurrentPage];
-	}
-}
-
-- (IBAction) sliderChangesStarted: (id) sender
-{
-	NSLog(@"Starting changes...");
-	[scrubberInfoView setAlpha:1.0f];
-}
-
-- (IBAction) sliderChangesEnded: (id) sender
-{
-	NSLog(@"Ending changes...");
-	[UIView beginAnimations:@"scrubHide" context:nil];
-	[UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
-	[UIView setAnimationDelay:0.2f];
-	[UIView setAnimationBeginsFromCurrentState:YES];
-	[scrubberInfoView setAlpha:0.0f];
-	[UIView commitAnimations];
-}
-
-#pragma mark -
 #pragma mark Scrubber Actions
 
 - (void) scrubberView:(BWKScrubberView *)scrubberView scrubberValueUpdated:(float)currentValue
 {
 	if (scrubberView == pageScrubber) {
 		currentPage = (int) currentValue;
+		
+		switch (scrubberView.scrubSpeed) {
+			case kBWKScrubberScrubSpeedNormal:
+				panSpeedLabel.text = @"Hi-speed Scrubbing";
+				break;
+			case kBWKScrubberScrubSpeedHalf:
+				panSpeedLabel.text = @"Half Speed Scrubbing";
+				break;
+			case kBWKScrubberScrubSpeedQuarter:
+				panSpeedLabel.text = @"Slow Scrubbing";
+				break;
+			default:
+				break;
+		}
+		
 		[self loadImageForCurrentPage];
 	}
 }
@@ -199,7 +187,8 @@
 	[pageLabel setText:[NSString stringWithFormat:@"Page %d of %d", currentPage, [testRenderer pageCount]]];
 	//[scrollView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
 	
-	[pageSlider setValue:currentPage];
+	//[pageSlider setValue:currentPage];
+	//[pageScrubber setValue:currentPage];
 	
 	[self checkButtonStatus];
 }	
@@ -237,11 +226,9 @@
 	if (toolbarsVisible) {
 		[topToolbar setAlpha:1.0f];
 		[bottomToolbar setAlpha:1.0f];
-		[secondBottomToolbar setAlpha:1.0f];
 	} else {
 		[topToolbar setAlpha:0.0f];
 		[bottomToolbar setAlpha:0.0f];
-		[secondBottomToolbar setAlpha:0.0f];
 	}
 	
 	if (animated) {

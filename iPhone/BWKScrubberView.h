@@ -21,6 +21,18 @@
 @end
 
 
+typedef enum {
+	kBWKScrubberScrubSpeedNormal = 0,
+	kBWKScrubberScrubSpeedHalf,
+	kBWKScrubberScrubSpeedQuarter,
+	kBWKScrubberScrubSpeedFine	
+} BWKScrubberScrubSpeed;
+
+
+
+#pragma mark -
+#pragma mark BWKScrubberView
+
 @interface BWKScrubberView : UIView {
 
 }
@@ -31,5 +43,7 @@
 @property (nonatomic) float maximumValue;
 @property (nonatomic) float value;
 @property (nonatomic, getter=isContinuous) BOOL continuous;
+@property (nonatomic, retain) UIImage *currentThumbImage;
+@property (readonly) BWKScrubberScrubSpeed scrubSpeed;
 
 @end

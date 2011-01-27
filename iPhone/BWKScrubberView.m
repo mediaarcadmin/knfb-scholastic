@@ -13,8 +13,12 @@
 
 @interface BWKScrubberView()
 
+- (void) initValues;
+
 @property (nonatomic) float currentMultiplier;
 @property (nonatomic) float currentPercentage;
+@property (nonatomic, retain) UIImage *defaultThumbImage;
+@property (readwrite) BWKScrubberScrubSpeed scrubSpeed;
 
 @end
 
@@ -28,23 +32,42 @@
 @synthesize maximumValue;
 @synthesize value;
 @synthesize continuous;
+@synthesize currentThumbImage;
+@synthesize scrubSpeed;
 
 @synthesize currentMultiplier;
 @synthesize currentPercentage;
+@synthesize defaultThumbImage;
 
-- (id)initWithFrame:(CGRect)frame {
-    
+- (id)initWithFrame:(CGRect)frame 
+{
     self = [super initWithFrame:frame];
     if (self) {
-        // Initialise with useful defaults
-		self.continuous = YES;
-		self.minimumValue = 1.0f;
-		self.maximumValue = 100.0f;
-		self.value = 50.0f;
-		self.currentMultiplier = 1.0f;
-		self.currentPercentage = 0.5f;
+		[self initValues];
     }
     return self;
+}
+
+- (id) initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    if (self) {
+		[self initValues];
+    }
+    return self;
+	
+}
+
+- (void) initValues
+{
+	// Initialise with useful defaults
+	self.continuous = YES;
+	self.minimumValue = 1.0f;
+	self.maximumValue = 100.0f;
+	self.value = 50.0f;
+	self.currentMultiplier = 1.0f;
+	
+	self.defaultThumbImage = [UIImage imageNamed:@"thumbImage.png"];
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
@@ -60,8 +83,12 @@
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {
 	if ([touches count] == 1) {
+		//int oldValue = self.value;
 		UITouch *touch = [[touches allObjects] objectAtIndex:0];
 		//NSLog(@"Touch: %@", NSStringFromCGPoint([touch locationInView:self]));
+		
+		NSLog(@"Diff: %f", [touch locationInView:self].x - [touch previousLocationInView:self].x);
+
 		
 		int yDistance = 0;
 		
@@ -73,25 +100,57 @@
 		
 		if (yDistance < 40) {
 			self.currentMultiplier = 1.0f;
+			self.scrubSpeed = kBWKScrubberScrubSpeedNormal;
 		} else if (yDistance < 80) {
 			self.currentMultiplier = 0.5f;
+			self.scrubSpeed = kBWKScrubberScrubSpeedHalf;
 		} else if (yDistance < 120) {
 			self.currentMultiplier = 0.25f;
+			self.scrubSpeed = kBWKScrubberScrubSpeedQuarter;
 		} else {
-			self.currentMultiplier = 0.125f;
+			self.currentMultiplier = 0.1f;
+			self.scrubSpeed = kBWKScrubberScrubSpeedFine;
 		}
 		
-		self.currentPercentage = [touch locationInView:self].x / self.frame.size.width;
+		if (self.currentMultiplier == 1.0f) {
+			float currentX = [touch locationInView:self].x;
+			if (currentX < 0) {
+				currentX = 0;
+			} else if (currentX > self.frame.size.width) {
+				currentX = self.frame.size.width;
+			}
+			
+			
+			self.currentPercentage = currentX / self.frame.size.width;
+			NSLog(@"percent: %f multiplier: %f", self.currentPercentage, self.currentMultiplier);
+		} else {
+			float percentageChange = ([touch locationInView:self].x - [touch previousLocationInView:self].x) / self.frame.size.width;
+			
+			percentageChange = percentageChange * self.currentMultiplier;
+			
+			self.currentPercentage += percentageChange;
+		}		
 		
-		self.value = self.minimumValue + ((self.maximumValue - self.minimumValue) * currentPercentage);
+		if (self.currentPercentage < 0) {
+			self.currentPercentage = 0;
+		}
 		
-//		NSLog(@"Current value: %f", self.value);
+		if (self.currentPercentage > 1) {
+			self.currentPercentage = 1;
+		}
 		
+		// uses ivar directly to avoid resetting the percentage
+		value = self.minimumValue + ((self.maximumValue - self.minimumValue) * currentPercentage);
+//		NSLog(@"Current value: %f percentage: %f", self.value, self.currentPercentage);
+
 		if (self.continuous && delegate && [delegate respondsToSelector:@selector(scrubberView:scrubberValueUpdated:)]) {
 			[delegate scrubberView:self scrubberValueUpdated:self.value];
 		}
 		
-		[self setNeedsDisplay];
+		//if (oldValue != (int) self.value) {
+			[self setNeedsDisplay];
+		//}
+		
 	}
 
 }
@@ -105,6 +164,18 @@
 	}
 }
 
+- (void) setValue:(float) newValue
+{
+	NSLog(@"Current percentage (before setValue): %f", self.currentPercentage);
+	value = newValue;
+	
+	float diff = value - self.minimumValue;
+	float range = self.maximumValue - self.minimumValue;
+	self.currentPercentage = diff/range;
+	
+	NSLog(@"Current percentage (after setValue): %f", self.currentPercentage);
+	[self setNeedsDisplay];
+}
 
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.
@@ -114,16 +185,35 @@
     CGContextRef ctx = UIGraphicsGetCurrentContext();
     CGContextClearRect(ctx, rect);
 	
-    //CGContextSetRGBFillColor(ctx, 0.65f, 0.65f, 0.65f, 0.3f);
-	//CGContextFillRect(ctx, CGRectMake(self.currentPercentage * CGRectGetWidth(rect) - 5, 0, 10, CGRectGetHeight(rect)));
+    CGContextSetRGBFillColor(ctx, 0.65f, 0.65f, 0.65f, 0.3f);
+	CGContextFillRect(ctx, CGRectMake(self.currentPercentage * CGRectGetWidth(rect) - 5, 0, 10, CGRectGetHeight(rect)));
 	
-	UIImage *thumbImage = [UIImage imageNamed:@"thumbImage.png"];
+	// get the current thumb image, then get the width
+	UIImage *thumbImage = nil;
+	float currentThumbWidth = 0;
 	
-	CGContextDrawImage(ctx, CGRectMake(self.currentPercentage * CGRectGetWidth(rect) - 10, 2, 20, CGRectGetHeight(rect) - 4), thumbImage.CGImage);
+	thumbImage = self.currentThumbImage;
+	
+	if (!thumbImage) {
+		thumbImage = self.defaultThumbImage;
+	}
+	
+	if (thumbImage) {
+		currentThumbWidth = thumbImage.size.width;
+	} 
+	
+	
+	//float minThumbX = 0;
+	float maxThumbX = CGRectGetWidth(rect) - currentThumbWidth;
+	
+	float currentThumbX = maxThumbX * currentPercentage;
+	
+	CGContextDrawImage(ctx, CGRectMake(currentThumbX, 7, currentThumbWidth, CGRectGetHeight(rect) - 14), thumbImage.CGImage);
 }
 
 
 - (void)dealloc {
+	[defaultThumbImage release], defaultThumbImage = nil;
     [super dealloc];
 }
 

@@ -14,14 +14,13 @@
 	IBOutlet UIView *pageView;
 	IBOutlet UIScrollView *scrollView;
 	IBOutlet UILabel *pageLabel;
+	IBOutlet UILabel *panSpeedLabel;
 	IBOutlet UIBarButtonItem *previousButton;
 	IBOutlet UIBarButtonItem *nextButton;
 	
 	IBOutlet UIToolbar *topToolbar;
 	IBOutlet UIToolbar *bottomToolbar;
-	IBOutlet UIToolbar *secondBottomToolbar;
 	
-	IBOutlet UISlider *pageSlider;
 	IBOutlet BWKScrubberView *pageScrubber;
 	IBOutlet UIView *scrubberInfoView;
 	
@@ -39,9 +38,9 @@
 - (IBAction) previousPage: (id) sender;
 - (IBAction) nextPage: (id) sender;	
 - (IBAction) backAction: (id) sender;
-- (IBAction) sliderValueChanged: (id) sender;
-- (IBAction) sliderChangesStarted: (id) sender;
-- (IBAction) sliderChangesEnded: (id) sender;
+//- (IBAction) sliderValueChanged: (id) sender;
+//- (IBAction) sliderChangesStarted: (id) sender;
+//- (IBAction) sliderChangesEnded: (id) sender;
 
 
 
