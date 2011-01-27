@@ -25,6 +25,8 @@
 #pragma mark -
 #pragma mark BWKScrubberView implementation
 
+#define TRACK_DOT_WIDTH 2
+
 @implementation BWKScrubberView
 
 @synthesize delegate;
@@ -68,6 +70,9 @@
 	self.currentMultiplier = 1.0f;
 	
 	self.defaultThumbImage = [UIImage imageNamed:@"thumbImage.png"];
+	
+	self.contentMode = UIViewContentModeRedraw; 
+
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
@@ -83,11 +88,11 @@
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {
 	if ([touches count] == 1) {
-		//int oldValue = self.value;
+		int oldValue = self.value;
 		UITouch *touch = [[touches allObjects] objectAtIndex:0];
 		//NSLog(@"Touch: %@", NSStringFromCGPoint([touch locationInView:self]));
 		
-		NSLog(@"Diff: %f", [touch locationInView:self].x - [touch previousLocationInView:self].x);
+		//NSLog(@"Diff: %f", [touch locationInView:self].x - [touch previousLocationInView:self].x);
 
 		
 		int yDistance = 0;
@@ -122,7 +127,7 @@
 			
 			
 			self.currentPercentage = currentX / self.frame.size.width;
-			NSLog(@"percent: %f multiplier: %f", self.currentPercentage, self.currentMultiplier);
+			//NSLog(@"percent: %f multiplier: %f", self.currentPercentage, self.currentMultiplier);
 		} else {
 			float percentageChange = ([touch locationInView:self].x - [touch previousLocationInView:self].x) / self.frame.size.width;
 			
@@ -147,9 +152,9 @@
 			[delegate scrubberView:self scrubberValueUpdated:self.value];
 		}
 		
-		//if (oldValue != (int) self.value) {
+		if (oldValue != (int) self.value) {
 			[self setNeedsDisplay];
-		//}
+		}
 		
 	}
 
@@ -185,9 +190,6 @@
     CGContextRef ctx = UIGraphicsGetCurrentContext();
     CGContextClearRect(ctx, rect);
 	
-    CGContextSetRGBFillColor(ctx, 0.65f, 0.65f, 0.65f, 0.3f);
-	CGContextFillRect(ctx, CGRectMake(self.currentPercentage * CGRectGetWidth(rect) - 5, 0, 10, CGRectGetHeight(rect)));
-	
 	// get the current thumb image, then get the width
 	UIImage *thumbImage = nil;
 	float currentThumbWidth = 0;
@@ -201,6 +203,31 @@
 	if (thumbImage) {
 		currentThumbWidth = thumbImage.size.width;
 	} 
+	
+	float pixelRange = (self.maximumValue - self.minimumValue);
+	
+//	NSLog(@"Rect width: %f, range: %f", CGRectGetWidth(rect), pixelRange);
+	if (CGRectGetWidth(rect) <= (pixelRange * TRACK_DOT_WIDTH)) {
+		CGContextSetRGBFillColor(ctx, 0.65f, 0.65f, 0.65f, 0.7f);
+		CGContextFillRect(ctx, CGRectMake(currentThumbWidth / 2, (CGRectGetHeight(rect)/2) - 2, CGRectGetWidth(rect) - currentThumbWidth, 4));
+	} else {
+		// draw dots
+		float dotGap = (CGRectGetWidth(rect) - (pixelRange * TRACK_DOT_WIDTH)) / pixelRange;
+//		NSLog(@"dot gap: %f", dotGap);
+
+		int i = 0;
+		for (float f = (currentThumbWidth / 2); f < CGRectGetWidth(rect) - (currentThumbWidth / 2); f += dotGap) {
+			
+			if (i == 9) { 
+				CGContextSetRGBFillColor(ctx, 0.930f, 0.653f, 0.321f, 0.9f);
+				i = 0;
+			} else {
+				CGContextSetRGBFillColor(ctx, 0.65f, 0.65f, 0.65f, 0.7f);
+				i++;
+			}
+			CGContextFillRect(ctx, CGRectMake(f, (CGRectGetHeight(rect)/2) - 2, TRACK_DOT_WIDTH, 4));
+		}
+	}
 	
 	
 	//float minThumbX = 0;
