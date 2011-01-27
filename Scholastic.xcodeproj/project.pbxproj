@@ -111,6 +111,10 @@
 		F837C6B212F179AE00833448 /* SCHUserContentItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6812F0EF5600BBBCE6 /* SCHUserContentItem.m */; };
 		F837C6B312F179AF00833448 /* SCHUserSettingsItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6012F0EF5600BBBCE6 /* SCHUserSettingsItem.m */; };
 		F837C6B412F179B100833448 /* SCHWordIndex.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6C12F0EF5600BBBCE6 /* SCHWordIndex.m */; };
+		F837CA0212F1B4BC00833448 /* gear.png in Resources */ = {isa = PBXBuildFile; fileRef = F837CA0012F1B4BC00833448 /* gear.png */; };
+		F837CA0312F1B4BC00833448 /* gear@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F837CA0112F1B4BC00833448 /* gear@2x.png */; };
+		F837CA0E12F1B4E900833448 /* gear.png in Resources */ = {isa = PBXBuildFile; fileRef = F837CA0012F1B4BC00833448 /* gear.png */; };
+		F837CA0F12F1B4E900833448 /* gear@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F837CA0112F1B4BC00833448 /* gear@2x.png */; };
 		F8509E7412F061FE00197EB5 /* libXpsSDKipad.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F8509E7212F061FE00197EB5 /* libXpsSDKipad.a */; };
 		F8509E9C12F0621E00197EB5 /* BlioTimeOrderedCache.m in Sources */ = {isa = PBXBuildFile; fileRef = F8509E8C12F0621E00197EB5 /* BlioTimeOrderedCache.m */; };
 		F8509E9D12F0621E00197EB5 /* BWKXPSProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = F8509E8E12F0621E00197EB5 /* BWKXPSProvider.m */; };
@@ -355,6 +359,8 @@
 		C923A27712F06FE60054426F /* MRGridViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MRGridViewController.m; path = Shared/Libraries/MRGridView/MRGridViewController.m; sourceTree = "<group>"; };
 		C923A27812F06FE60054426F /* MRGridViewDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MRGridViewDataSource.h; path = Shared/Libraries/MRGridView/MRGridViewDataSource.h; sourceTree = "<group>"; };
 		C923A27912F06FE60054426F /* MRGridViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MRGridViewDelegate.h; path = Shared/Libraries/MRGridView/MRGridViewDelegate.h; sourceTree = "<group>"; };
+		F837CA0012F1B4BC00833448 /* gear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gear.png; sourceTree = "<group>"; };
+		F837CA0112F1B4BC00833448 /* gear@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gear@2x.png"; sourceTree = "<group>"; };
 		F8509E7212F061FE00197EB5 /* libXpsSDKipad.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libXpsSDKipad.a; sourceTree = "<group>"; };
 		F8509E7312F061FE00197EB5 /* XpsSdk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XpsSdk.h; sourceTree = "<group>"; };
 		F8509E7612F0620D00197EB5 /* Clifford.xps */ = {isa = PBXFileReference; lastKnownFileType = file; path = Clifford.xps; sourceTree = "<group>"; };
@@ -604,6 +610,8 @@
 		528A2CD112CCDC9E0053A343 /* Icons */ = {
 			isa = PBXGroup;
 			children = (
+				F837CA0012F1B4BC00833448 /* gear.png */,
+				F837CA0112F1B4BC00833448 /* gear@2x.png */,
 				52938B3812E08FC400045B44 /* Icon.png */,
 				529384F812DEF6F800045B44 /* Profile.png */,
 				529384FA12DEF73A00045B44 /* ProfileLocked.png */,
@@ -921,6 +929,8 @@
 				F8509EA212F0621E00197EB5 /* BWKReadingOptionsView.xib in Resources */,
 				F8509F8212F0653700197EB5 /* thumbImage.png in Resources */,
 				F8509F8312F0653700197EB5 /* booktexture-nocover.png in Resources */,
+				F837CA0212F1B4BC00833448 /* gear.png in Resources */,
+				F837CA0312F1B4BC00833448 /* gear@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -957,6 +967,8 @@
 				F8509F1012F063C900197EB5 /* BWKReadingOptionsView.xib in Resources */,
 				F8509F8F12F0654A00197EB5 /* booktexture-nocover.png in Resources */,
 				F8509F9012F0654B00197EB5 /* thumbImage.png in Resources */,
+				F837CA0E12F1B4E900833448 /* gear.png in Resources */,
+				F837CA0F12F1B4E900833448 /* gear@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

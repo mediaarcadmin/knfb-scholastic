@@ -41,13 +41,18 @@
 	pageScrubber.value = currentPage;
 	
 	panSpeedLabel.text = @"";
-	
-	[self loadImageForCurrentPage];
 }
 
 - (void) viewWillAppear:(BOOL)animated
 {
 	[super viewWillAppear:animated];
+	
+	[self loadImageForCurrentPage];
+	
+	scrubberInfoView.layer.cornerRadius = 5.0f;
+	scrubberInfoView.layer.masksToBounds = YES;
+
+	[self setToolbarVisibility:YES animated:NO];
 	
 	initialFadeTimer = [NSTimer scheduledTimerWithTimeInterval:2.0f
 														target:self
@@ -226,9 +231,12 @@
 	if (toolbarsVisible) {
 		[topToolbar setAlpha:1.0f];
 		[bottomToolbar setAlpha:1.0f];
+		[scrollView setContentInset:UIEdgeInsetsMake(44, 0, 0, 0)];
+		[scrollView setContentOffset:CGPointMake(scrollView.contentOffset.x, scrollView.contentOffset.y - 44)];
 	} else {
 		[topToolbar setAlpha:0.0f];
 		[bottomToolbar setAlpha:0.0f];
+		[scrollView setContentInset:UIEdgeInsetsMake(0, 0, 0, 0)];
 	}
 	
 	if (animated) {
