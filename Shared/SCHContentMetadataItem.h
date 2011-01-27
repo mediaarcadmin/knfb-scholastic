@@ -3,7 +3,7 @@
 //  Scholastic
 //
 //  Created by John S. Eddie on 27/01/2011.
-//  Copyright 2011 Zicron Software Limited. All rights reserved.
+//  Copyright 2011 BitWink Limited. All rights reserved.
 //
 
 #import <CoreData/CoreData.h>
@@ -22,6 +22,7 @@
 @property (nonatomic, retain) NSString * ContentURL;
 @property (nonatomic, retain) NSNumber * PageNumber;
 @property (nonatomic, retain) NSString * Title;
+@property (nonatomic, retain) NSString * FileName;
 @property (nonatomic, retain) NSString * Description;
 
 @end

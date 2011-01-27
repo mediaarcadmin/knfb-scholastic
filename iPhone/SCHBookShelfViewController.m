@@ -11,12 +11,13 @@
 #import "BWKReadingOptionsView.h"
 #import "SCHLibreAccessWebService.h"
 #import "SCHContentMetadataItem.h"
+#import "SCHLocalDebug.h"
 
 
 @interface SCHBookShelfViewController ()
-#ifndef LOCALDEBUG
+
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath;
-#else
+#ifdef LOCALDEBUG
 - (void) checkAndCopyLocalFilesToApplicationSupport;
 #endif
 @end
@@ -27,10 +28,6 @@
 @synthesize fetchedResultsController=fetchedResultsController_, managedObjectContext=managedObjectContext_;
 @synthesize profileID;
 
-#ifdef LOCALDEBUG
-@synthesize xpsFiles;
-#endif
-
 #pragma mark -
 #pragma mark View lifecycle
 
@@ -39,6 +36,7 @@
 	
 #ifdef LOCALDEBUG
 	NSError *error = nil;
+	NSArray *xpsFiles = nil;
 	
 	[self checkAndCopyLocalFilesToApplicationSupport];
 
@@ -60,11 +58,15 @@
 		[trimmedXpsContents addObject:[item stringByDeletingPathExtension]];
 	}
 	
-	self.xpsFiles = [NSArray arrayWithArray:trimmedXpsContents];
+	xpsFiles = [NSArray arrayWithArray:trimmedXpsContents];
 	[trimmedXpsContents release];
 	
-	self.title = @"Bookshelf (Local)";
+	SCHLocalDebug *localDebug = [[SCHLocalDebug alloc] init];
+	localDebug.managedObjectContext = self.managedObjectContext;
+	[localDebug setupLocalDataWithXPSFiles:xpsFiles];
+	[localDebug release], localDebug = nil;
 	
+	self.title = @"Bookshelf (Local)";
 #endif
 }
 
@@ -171,74 +173,25 @@
 }
 */
 
-#ifdef LOCALDEBUG
-
-#pragma mark -
-#pragma mark Local Files Table View Methods
-#pragma mark UITableViewDataSource methods
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-	return [self.xpsFiles count];
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-	static NSString *cellID = @"bookShelfViewCell";
-	
-	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
-	
-	if (!cell) {
-		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellID] autorelease];
-		cell.textLabel.font = [UIFont systemFontOfSize:14.0];
-		cell.detailTextLabel.font = [UIFont systemFontOfSize:12.0];
-	}
-	
-	cell.textLabel.text = [self.xpsFiles objectAtIndex:indexPath.row];
-	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-	
-	NSString *xpsPath = [[NSBundle mainBundle] pathForResource:[self.xpsFiles objectAtIndex:indexPath.row] ofType:@"xps"];
-	BWKXPSProvider *provider = [[BWKXPSProvider alloc] initWithPath:xpsPath];
-	provider.title = [self.xpsFiles objectAtIndex:indexPath.row];
-	cell.imageView.image = [provider coverThumbForList];
-	[provider release];
-	
-	return cell;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-	return 88.0f;
-}
-
-#pragma mark UITableViewDelegate methods
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-	
-	BWKTestPageViewController *pageView = [[BWKTestPageViewController alloc] initWithNibName:nil bundle:nil];
-	pageView.xpsPath = [[NSBundle mainBundle] pathForResource:[self.xpsFiles objectAtIndex:indexPath.row] ofType:@"xps"];
-	
-	BWKReadingOptionsView *optionsView = [[BWKReadingOptionsView alloc] initWithNibName:nil bundle:nil];
-	optionsView.pageViewController = pageView;
-	
-	[self.navigationController pushViewController:optionsView animated:YES];
-	[optionsView release];
-	[pageView release];
-	
-}
-
-#else 
 
 #pragma mark -
 #pragma mark Core Data Table View Methods
 
-
-
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {	
-	SCHContentMetadataItem *managedObject = [self.fetchedResultsController objectAtIndexPath:indexPath];
-	cell.textLabel.text = managedObject.Title; 
-	cell.detailTextLabel.text = managedObject.Author;
+	SCHContentMetadataItem *contentMetadataItem = [self.fetchedResultsController objectAtIndexPath:indexPath];
+	
+	cell.textLabel.text = contentMetadataItem.Title; 
+	cell.detailTextLabel.text = contentMetadataItem.Author;
+
+	if (contentMetadataItem.FileName != nil) {
+		NSString *xpsPath = [[NSBundle mainBundle] pathForResource:contentMetadataItem.FileName ofType:@"xps"];
+		BWKXPSProvider *provider = [[BWKXPSProvider alloc] initWithPath:xpsPath];
+		provider.title = contentMetadataItem.FileName;
+		cell.imageView.image = [provider coverThumbForList];
+		[provider release], provider = nil;	
+	} else {
+		cell.imageView.image = nil;
+	}
 }
 
 
@@ -268,6 +221,7 @@
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier] autorelease];
 		cell.textLabel.font = [UIFont systemFontOfSize:14.0];
 		cell.detailTextLabel.font = [UIFont systemFontOfSize:12.0];
+		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     
     // Configure the cell...
@@ -289,14 +243,28 @@
     [self.navigationController pushViewController:detailViewController animated:YES];
     [detailViewController release];
     */
+	
+	SCHContentMetadataItem *contentMetadataItem = [self.fetchedResultsController objectAtIndexPath:indexPath];
+	
+	BWKTestPageViewController *pageView = [[BWKTestPageViewController alloc] initWithNibName:nil bundle:nil];
+	pageView.xpsPath = [[NSBundle mainBundle] pathForResource:contentMetadataItem.FileName ofType:@"xps"];
+	
+	BWKReadingOptionsView *optionsView = [[BWKReadingOptionsView alloc] initWithNibName:nil bundle:nil];
+	optionsView.pageViewController = pageView;
+	
+	[self.navigationController pushViewController:optionsView animated:YES];
+	[optionsView release];
+	[pageView release];	
 }
 
-#endif
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	return 88.0f;
+}
 
 #pragma mark -
 #pragma mark Fetched results controller
 
-#ifndef LOCALDEBUG
 
 - (NSFetchedResultsController *)fetchedResultsController {
     
@@ -404,8 +372,6 @@
     [self.tableView endUpdates];
 }
 
-#endif
-
 /*
  // Implementing the above methods to update the table view in response to individual changes may have performance implications if a large number of changes are made simultaneously. If this proves to be an issue, you can instead just implement controllerDidChangeContent: which notifies the delegate that all section and object changes have been processed. 
  
@@ -429,9 +395,6 @@
 - (void)viewDidUnload {
     // Relinquish ownership of anything that can be recreated in viewDidLoad or on demand.
     // For example: self.myOutlet = nil;
-#ifdef LOCALDEBUG
-	self.xpsFiles = nil;
-#endif
 }
 
 
@@ -439,9 +402,7 @@
 	
     [fetchedResultsController_ release];
     [managedObjectContext_ release];	
-#ifdef LOCALDEBUG
-	self.xpsFiles = nil;
-#endif
+
     [super dealloc];
 }
 

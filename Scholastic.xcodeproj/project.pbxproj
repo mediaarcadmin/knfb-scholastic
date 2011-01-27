@@ -78,6 +78,8 @@
 		52D6124312E44CEC0033DA92 /* SCHContentMetadataItem+Extensions.m in Resources */ = {isa = PBXBuildFile; fileRef = 52D6124212E44CEC0033DA92 /* SCHContentMetadataItem+Extensions.m */; };
 		52D6124F12E44D760033DA92 /* SCHSyncEntity+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D6124E12E44D760033DA92 /* SCHSyncEntity+Extensions.m */; };
 		52D612B812E4650B0033DA92 /* NSNumber+ObjectTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D612B712E4650B0033DA92 /* NSNumber+ObjectTypes.m */; };
+		52E4692012F1D94E00ECC97A /* SCHLocalDebug.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E4691F12F1D94E00ECC97A /* SCHLocalDebug.m */; };
+		52E4697512F1F33200ECC97A /* SCHLocalDebug.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E4691F12F1D94E00ECC97A /* SCHLocalDebug.m */; };
 		52EF4E5F12E6E01C00E374F7 /* SCHLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF4E5D12E6E01C00E374F7 /* SCHLoginViewController.m */; };
 		52EF4E6012E6E01C00E374F7 /* SCHLoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52EF4E5E12E6E01C00E374F7 /* SCHLoginViewController.xib */; };
 		52EF508712E739E900E374F7 /* LibreAccessServiceSvc.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF508612E739E900E374F7 /* LibreAccessServiceSvc.m */; };
@@ -338,6 +340,8 @@
 		52D6124E12E44D760033DA92 /* SCHSyncEntity+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SCHSyncEntity+Extensions.m"; path = "Shared/SCHSyncEntity+Extensions.m"; sourceTree = "<group>"; };
 		52D612B612E4650B0033DA92 /* NSNumber+ObjectTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSNumber+ObjectTypes.h"; path = "Shared/NSNumber+ObjectTypes.h"; sourceTree = "<group>"; };
 		52D612B712E4650B0033DA92 /* NSNumber+ObjectTypes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSNumber+ObjectTypes.m"; path = "Shared/NSNumber+ObjectTypes.m"; sourceTree = "<group>"; };
+		52E4691E12F1D94E00ECC97A /* SCHLocalDebug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHLocalDebug.h; path = Shared/SCHLocalDebug.h; sourceTree = "<group>"; };
+		52E4691F12F1D94E00ECC97A /* SCHLocalDebug.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHLocalDebug.m; path = Shared/SCHLocalDebug.m; sourceTree = "<group>"; };
 		52EF4E5C12E6E01C00E374F7 /* SCHLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHLoginViewController.h; sourceTree = "<group>"; };
 		52EF4E5D12E6E01C00E374F7 /* SCHLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHLoginViewController.m; sourceTree = "<group>"; };
 		52EF4E5E12E6E01C00E374F7 /* SCHLoginViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SCHLoginViewController.xib; sourceTree = "<group>"; };
@@ -784,6 +788,8 @@
 		F8509E7512F0620D00197EB5 /* Debug Books */ = {
 			isa = PBXGroup;
 			children = (
+				52E4691E12F1D94E00ECC97A /* SCHLocalDebug.h */,
+				52E4691F12F1D94E00ECC97A /* SCHLocalDebug.m */,
 				F8509E7612F0620D00197EB5 /* Clifford.xps */,
 				F8509E7712F0620D00197EB5 /* Goosebumps.xps */,
 				F8509E7812F0620E00197EB5 /* LonelyHeartsClub.xps */,
@@ -1044,6 +1050,7 @@
 				52298A9912F0EF5600BBBCE6 /* SCHLocationGraphics.m in Sources */,
 				52298A9A12F0EF5600BBBCE6 /* SCHAnnotationsItem.m in Sources */,
 				52298A9B12F0EF5600BBBCE6 /* SCHHighlight.m in Sources */,
+				52E4692012F1D94E00ECC97A /* SCHLocalDebug.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1115,6 +1122,7 @@
 				F837C6B212F179AE00833448 /* SCHUserContentItem.m in Sources */,
 				F837C6B312F179AF00833448 /* SCHUserSettingsItem.m in Sources */,
 				F837C6B412F179B100833448 /* SCHWordIndex.m in Sources */,
+				52E4697512F1F33200ECC97A /* SCHLocalDebug.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1256,6 +1264,7 @@
 				GCC_PREFIX_HEADER = Scholastic_Prefix.pch;
 				INFOPLIST_FILE = "Scholastic-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
+					"Shared/Libraries//**",
 					"$(inherited)",
 					"\\\"$(SRCROOT)\\\"",
 				);
@@ -1273,6 +1282,7 @@
 				GCC_PREFIX_HEADER = Scholastic_Prefix.pch;
 				INFOPLIST_FILE = "Scholastic-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
+					"Shared/Libraries//**",
 					"$(inherited)",
 					"\\\"$(SRCROOT)\\\"",
 				);
@@ -1291,6 +1301,7 @@
 				GCC_PREFIX_HEADER = Scholastic_Prefix.pch;
 				INFOPLIST_FILE = "Scholastic-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
+					"Shared/Libraries//**",
 					"$(inherited)",
 					"\\\"$(SRCROOT)\\\"",
 				);
@@ -1353,6 +1364,7 @@
 				GCC_PREFIX_HEADER = Scholastic_Prefix.pch;
 				INFOPLIST_FILE = "Scholastic-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
+					"Shared/Libraries//**",
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
 				);
