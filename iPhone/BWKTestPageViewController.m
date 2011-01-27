@@ -203,10 +203,20 @@
 	return pageView;
 }
 
-- (void) scrollViewSingleTap: (id) sender
+- (void) scrollViewSingleTap: (UIGestureRecognizer *)gestureRecognizer
 {
 	[self cancelInitialTimer];
-	[self toggleToolbarVisibility];
+
+	if ([gestureRecognizer numberOfTouches] == 1) {
+
+		if ([gestureRecognizer locationInView:self.view].x < 100) {
+			[self previousPage:nil];
+		} else if ([gestureRecognizer locationInView:self.view].x > (self.view.frame.size.width - 100)) {
+			[self nextPage:nil];
+		} else {
+			[self toggleToolbarVisibility];
+		}
+	}
 }
 
 - (void) hideToolbarsFromTimer
