@@ -17,9 +17,11 @@
 
 @interface SCHWebServiceSync ()
 
+- (void)clearProfiles;
 - (void)updateProfiles:(NSArray *)profileList;
 - (void)clearBooks;
 - (void)updateBooks:(NSArray *)bookList;
+- (void)clearUserSettings;
 - (void)updateUserSettings:(NSArray *)settingsList;
 - (id)makeNullNil:(id)object;
 
@@ -88,14 +90,21 @@
 	NSLog(@"%@\n%@", method, error);	
 }
 
-- (void)updateProfiles:(NSArray *)profileList
-{	
+- (void)clearProfiles
+{
 	NSError *error = nil;
 	
 	if (![self.managedObjectContext emptyEntity:@"SCHProfileItem" error:&error]) {
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
 		abort();
-	}	
+	}		
+}
+
+- (void)updateProfiles:(NSArray *)profileList
+{	
+	NSError *error = nil;
+	
+	[self clearProfiles];
 	
 	// TEST THE SAVE
 //	id profsave = [profileList objectAtIndex:1];
@@ -135,11 +144,6 @@
 	}	
 }
 
-- (id)makeNullNil:(id)object
-{
-	return(object == [NSNull null] ? nil : object);
-}
-
 - (void)clearBooks
 {
 	NSError *error = nil;
@@ -177,7 +181,7 @@
 	}	
 }
 
-- (void)updateUserSettings:(NSArray *)settingsList
+- (void)clearUserSettings
 {
 	NSError *error = nil;
 
@@ -185,6 +189,13 @@
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
 		abort();
 	}	
+}
+
+- (void)updateUserSettings:(NSArray *)settingsList
+{
+	NSError *error = nil;
+
+	[self clearUserSettings];
 	
 	for (id setting in settingsList) {
 		SCHUserSettingsItem *newUserSettingsItem = [NSEntityDescription insertNewObjectForEntityForName:@"SCHUserSettingsItem" inManagedObjectContext:self.managedObjectContext];
@@ -200,5 +211,9 @@
 	}	
 }
 
+- (id)makeNullNil:(id)object
+{
+	return(object == [NSNull null] ? nil : object);
+}
 
 @end
