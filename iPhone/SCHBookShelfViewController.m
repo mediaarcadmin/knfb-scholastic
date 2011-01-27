@@ -12,7 +12,6 @@
 #import "SCHLibreAccessWebService.h"
 #import "SCHContentMetadataItem.h"
 
-
 @interface SCHBookShelfViewController ()
 #ifndef LOCALDEBUG
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath;
@@ -30,6 +29,17 @@
 #ifdef LOCALDEBUG
 @synthesize xpsFiles;
 #endif
+
+@synthesize tableView, gridView;
+
+- (void)releaseViewObjects 
+{
+#ifdef LOCALDEBUG
+	self.xpsFiles = nil;
+#endif
+	self.gridView = nil;
+	self.tableView = nil;
+}
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -66,6 +76,18 @@
 	self.title = @"Bookshelf (Local)";
 	
 #endif
+	
+	UISegmentedControl *bookshelfToggle = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObjects:@"List", @"Grid", nil]];
+	bookshelfToggle.selectedSegmentIndex = 0;
+	bookshelfToggle.segmentedControlStyle = UISegmentedControlStyleBar;
+	[bookshelfToggle addTarget:self action:@selector(bookshelfToggled:) forControlEvents:UIControlEventValueChanged];
+
+	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:bookshelfToggle] autorelease];
+	[bookshelfToggle release];
+	
+	[self.gridView setCellSize:CGSizeMake(80,118) withBorderSize:20];
+	[self.gridView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"Shelf"]]];
+
 }
 
 #ifdef LOCALDEBUG
@@ -182,11 +204,11 @@
 	return [self.xpsFiles count];
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+- (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	static NSString *cellID = @"bookShelfViewCell";
 	
-	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
+	UITableViewCell *cell = [aTableView dequeueReusableCellWithIdentifier:cellID];
 	
 	if (!cell) {
 		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellID] autorelease];
@@ -228,6 +250,75 @@
 	
 }
 
+#pragma mark -
+#pragma mark Local Files Grid View Methods
+#pragma mark MRGridViewDataSource methods
+
+-(MRGridViewCell*)gridView:(MRGridView*)aGridView cellForGridIndex: (NSInteger)index 
+{
+	static NSString* cellIdentifier = @"ScholasticGridViewCell";
+	MRGridViewCell* gridCell = [aGridView dequeueReusableCellWithIdentifier:cellIdentifier];
+	if (gridCell == nil) {
+		gridCell = [[[MRGridViewCell alloc]initWithFrame:[aGridView frameForCellAtGridIndex: index] reuseIdentifier:cellIdentifier] autorelease];
+		UIImageView *coverView = [[UIImageView alloc] init];
+		coverView.contentMode = UIViewContentModeScaleToFill;
+		coverView.tag = 666;
+		[gridCell.contentView addSubview:coverView];
+		[coverView release];
+	}
+	else {
+		gridCell.frame = [aGridView frameForCellAtGridIndex: index];
+	}
+	
+	NSString *xpsPath = [[NSBundle mainBundle] pathForResource:[self.xpsFiles objectAtIndex:index] ofType:@"xps"];
+	BWKXPSProvider *provider = [[BWKXPSProvider alloc] initWithPath:xpsPath];
+	provider.title = [self.xpsFiles objectAtIndex:index];
+	UIImage *thumb = [provider coverThumbForList];
+	[provider release];
+	
+	CGRect maxRect = UIEdgeInsetsInsetRect(gridCell.bounds, UIEdgeInsetsMake(0, 0, 23, 0));
+	CGFloat fitScale = MAX(thumb.size.width / maxRect.size.width, thumb.size.height / maxRect.size.height);
+	
+	CGRect fitRect = CGRectZero;
+	fitRect.size.width = thumb.size.width / fitScale;
+	fitRect.size.height = thumb.size.height / fitScale;
+	fitRect.origin.x = maxRect.origin.x + (maxRect.size.width - fitRect.size.width)/2.0f;
+	fitRect.origin.y = maxRect.origin.y + (maxRect.size.height - fitRect.size.height);
+	
+	UIImageView *coverView = (UIImageView *)[gridCell viewWithTag:666];
+	coverView.frame = fitRect;
+	coverView.image = thumb;
+	
+	return gridCell;
+}
+
+-(NSInteger)numberOfItemsInGridView:(MRGridView*)gridView 
+{
+	return [self.xpsFiles count];
+}
+
+-(NSString*)contentDescriptionForCellAtIndex:(NSInteger)index 
+{
+	return nil;
+}
+
+-(BOOL) gridView:(MRGridView*)gridView canMoveCellAtIndex: (NSInteger)index { return NO;}
+-(void) gridView:(MRGridView*)gridView moveCellAtIndex: (NSInteger)fromIndex toIndex: (NSInteger)toIndex{}
+-(void) gridView:(MRGridView*)gridView finishedMovingCellToIndex:(NSInteger)toIndex{}
+-(void) gridView:(MRGridView*)gridView commitEditingStyle:(MRGridViewCellEditingStyle)editingStyle forIndex:(NSInteger)index{}
+
+#pragma mark MRGridViewDelegate methods
+
+-(void)gridView:(MRGridView *)gridView didSelectCellAtIndex:(NSInteger)index 
+{
+	
+}
+
+-(void)gridView:(MRGridView *)gridView confirmationForDeletionAtIndex:(NSInteger)index 
+{
+	
+}
+
 #else 
 
 #pragma mark -
@@ -259,11 +350,11 @@
 
 
 // Customize the appearance of table view cells.
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     static NSString *CellIdentifier = @"BookCell";
     
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    UITableViewCell *cell = [aTableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier] autorelease];
 		cell.textLabel.font = [UIFont systemFontOfSize:14.0];
@@ -289,6 +380,63 @@
     [self.navigationController pushViewController:detailViewController animated:YES];
     [detailViewController release];
     */
+}
+
+#pragma mark -
+#pragma mark Core Data Grid View Methods
+#pragma mark MRGridViewDataSource methods
+
+-(MRGridViewCell*)gridView:(MRGridView*)aGridView cellForGridIndex: (NSInteger)index 
+{
+	static NSString* cellIdentifier = @"ScholasticGridViewCell";
+	MRGridViewCell* gridCell = [aGridView dequeueReusableCellWithIdentifier:cellIdentifier];
+	if (gridCell == nil) {
+		gridCell = [[[MRGridViewCell alloc]initWithFrame:[aGridView frameForCellAtGridIndex: index] reuseIdentifier:cellIdentifier] autorelease];
+		UIImageView *coverView = [[UIImageView alloc] init];
+		coverView.contentMode = UIViewContentModeScaleToFill;
+		coverView.tag = 666;
+		[gridCell.contentView addSubview:coverView];
+		[coverView release];
+	}
+	else {
+		gridCell.frame = [aGridView frameForCellAtGridIndex: index];
+	}
+	
+	CGRect maxRect = UIEdgeInsetsInsetRect(gridCell.bounds, UIEdgeInsetsMake(0, 0, 23, 0));
+	UIImageView *coverView = (UIImageView *)[gridCell viewWithTag:666];
+	coverView.frame = maxRect;
+	coverView.image = [UIImage imageNamed:@"PlaceholderBook"];
+	
+	return gridCell;
+	
+}
+
+-(NSInteger)numberOfItemsInGridView:(MRGridView*)gridView 
+{
+	id <NSFetchedResultsSectionInfo> sectionInfo = [[self.fetchedResultsController sections] objectAtIndex:0];
+    return [sectionInfo numberOfObjects];
+}
+
+-(NSString*)contentDescriptionForCellAtIndex:(NSInteger)index 
+{
+	return nil;
+}
+
+-(BOOL) gridView:(MRGridView*)gridView canMoveCellAtIndex: (NSInteger)index { return NO;}
+-(void) gridView:(MRGridView*)gridView moveCellAtIndex: (NSInteger)fromIndex toIndex: (NSInteger)toIndex{}
+-(void) gridView:(MRGridView*)gridView finishedMovingCellToIndex:(NSInteger)toIndex{}
+-(void) gridView:(MRGridView*)gridView commitEditingStyle:(MRGridViewCellEditingStyle)editingStyle forIndex:(NSInteger)index{}
+
+#pragma mark MRGridViewDelegate methods
+
+-(void)gridView:(MRGridView *)gridView didSelectCellAtIndex:(NSInteger)index 
+{
+	
+}
+
+-(void)gridView:(MRGridView *)gridView confirmationForDeletionAtIndex:(NSInteger)index 
+{
+	
 }
 
 #endif
@@ -376,25 +524,25 @@
        atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type
       newIndexPath:(NSIndexPath *)newIndexPath {
     
-    UITableView *tableView = self.tableView;
+    UITableView *aTableView = self.tableView;
     
     switch(type) {
             
         case NSFetchedResultsChangeInsert:
-            [tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+            [aTableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
             break;
             
         case NSFetchedResultsChangeDelete:
-            [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            [aTableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
             break;
             
         case NSFetchedResultsChangeUpdate:
-            [self configureCell:[tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
+            [self configureCell:[aTableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
             break;
             
         case NSFetchedResultsChangeMove:
-            [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-            [tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath]withRowAnimation:UITableViewRowAnimationFade];
+            [aTableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            [aTableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath]withRowAnimation:UITableViewRowAnimationFade];
             break;
     }
 }
@@ -415,6 +563,27 @@
  }
  */
 
+#pragma mark -
+#pragma mark Actions
+
+- (void)bookshelfToggled:(id)sender 
+{
+	NSUInteger selectedSegment = [(UISegmentedControl *)sender selectedSegmentIndex];
+	
+	switch (selectedSegment) {
+		case 0:
+			[self.view bringSubviewToFront:self.tableView];
+			break;
+		case 1:
+			[self.view bringSubviewToFront:self.gridView];
+			//[self.gridView setFrame:CGRectMake(0, 0, 320, 460)];
+//			[self.gridView reloadData];
+
+			break;
+		default:
+			break;
+	}
+}
 
 #pragma mark -
 #pragma mark Memory management
@@ -429,19 +598,17 @@
 - (void)viewDidUnload {
     // Relinquish ownership of anything that can be recreated in viewDidLoad or on demand.
     // For example: self.myOutlet = nil;
-#ifdef LOCALDEBUG
-	self.xpsFiles = nil;
-#endif
+	[self releaseViewObjects];
+
 }
 
 
 - (void)dealloc {
-	
     [fetchedResultsController_ release];
     [managedObjectContext_ release];	
-#ifdef LOCALDEBUG
-	self.xpsFiles = nil;
-#endif
+
+	[self releaseViewObjects];
+	
     [super dealloc];
 }
 
