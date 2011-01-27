@@ -18,9 +18,27 @@
 		28AD733F0D9D9553002E5188 /* MainWindow_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow_iPad.xib */; };
 		28EEBFDD1118E19E00187D67 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28EEBFDC1118E19E00187D67 /* CoreData.framework */; };
 		28EEC04B1118E28000187D67 /* AppDelegate_Shared.m in Sources */ = {isa = PBXBuildFile; fileRef = 28EEC04A1118E28000187D67 /* AppDelegate_Shared.m */; };
-		5250C4B212DE078000542055 /* SCHContentMetadataItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5250C4AD12DE078000542055 /* SCHContentMetadataItem.m */; };
-		5250C4B312DE078000542055 /* SCHProfileItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5250C4AF12DE078000542055 /* SCHProfileItem.m */; };
-		5250C4B412DE078000542055 /* SCHSyncEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = 5250C4B112DE078000542055 /* SCHSyncEntity.m */; };
+		52298A8712F0EF5600BBBCE6 /* SCHNote.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A5E12F0EF5600BBBCE6 /* SCHNote.m */; };
+		52298A8812F0EF5600BBBCE6 /* SCHUserSettingsItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6012F0EF5600BBBCE6 /* SCHUserSettingsItem.m */; };
+		52298A8912F0EF5600BBBCE6 /* SCHContentMetadataItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6212F0EF5600BBBCE6 /* SCHContentMetadataItem.m */; };
+		52298A8A12F0EF5600BBBCE6 /* SCHLastPage.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6412F0EF5600BBBCE6 /* SCHLastPage.m */; };
+		52298A8B12F0EF5600BBBCE6 /* SCHLocationText.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6612F0EF5600BBBCE6 /* SCHLocationText.m */; };
+		52298A8C12F0EF5600BBBCE6 /* SCHUserContentItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6812F0EF5600BBBCE6 /* SCHUserContentItem.m */; };
+		52298A8D12F0EF5600BBBCE6 /* SCHOrderItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6A12F0EF5600BBBCE6 /* SCHOrderItem.m */; };
+		52298A8E12F0EF5600BBBCE6 /* SCHWordIndex.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6C12F0EF5600BBBCE6 /* SCHWordIndex.m */; };
+		52298A8F12F0EF5600BBBCE6 /* SCHContentProfileItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6E12F0EF5600BBBCE6 /* SCHContentProfileItem.m */; };
+		52298A9012F0EF5600BBBCE6 /* SCHSyncEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A7012F0EF5600BBBCE6 /* SCHSyncEntity.m */; };
+		52298A9112F0EF5600BBBCE6 /* SCHBookmark.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A7212F0EF5600BBBCE6 /* SCHBookmark.m */; };
+		52298A9212F0EF5600BBBCE6 /* SCHContentItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A7412F0EF5600BBBCE6 /* SCHContentItem.m */; };
+		52298A9312F0EF5600BBBCE6 /* SCHProfileStatusItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A7612F0EF5600BBBCE6 /* SCHProfileStatusItem.m */; };
+		52298A9412F0EF5600BBBCE6 /* SCHAnnotationsContentItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A7812F0EF5600BBBCE6 /* SCHAnnotationsContentItem.m */; };
+		52298A9512F0EF5600BBBCE6 /* SCHAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A7A12F0EF5600BBBCE6 /* SCHAnnotation.m */; };
+		52298A9612F0EF5600BBBCE6 /* SCHFavorite.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A7C12F0EF5600BBBCE6 /* SCHFavorite.m */; };
+		52298A9712F0EF5600BBBCE6 /* SCHProfileItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A7E12F0EF5600BBBCE6 /* SCHProfileItem.m */; };
+		52298A9812F0EF5600BBBCE6 /* SCHCoords.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A8012F0EF5600BBBCE6 /* SCHCoords.m */; };
+		52298A9912F0EF5600BBBCE6 /* SCHLocationGraphics.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A8212F0EF5600BBBCE6 /* SCHLocationGraphics.m */; };
+		52298A9A12F0EF5600BBBCE6 /* SCHAnnotationsItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A8412F0EF5600BBBCE6 /* SCHAnnotationsItem.m */; };
+		52298A9B12F0EF5600BBBCE6 /* SCHHighlight.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A8612F0EF5600BBBCE6 /* SCHHighlight.m */; };
 		528A2CD312CCDD9E0053A343 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 528A2CD212CCDD9E0053A343 /* Settings.bundle */; };
 		528A2CDB12CCDE070053A343 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 528A2CDA12CCDE070053A343 /* Localizable.strings */; };
 		528A2CF812CCEAA50053A343 /* ReleaseNotes.tmReleaseNotes in Resources */ = {isa = PBXBuildFile; fileRef = 528A2CF712CCEAA50053A343 /* ReleaseNotes.tmReleaseNotes */; };
@@ -56,7 +74,6 @@
 		5293883312E03CD000045B44 /* SCHBookShelfViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293883112E03CD000045B44 /* SCHBookShelfViewController.m */; };
 		5293883412E03CD000045B44 /* SCHBookShelfViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5293883212E03CD000045B44 /* SCHBookShelfViewController.xib */; };
 		52938B3912E08FC400045B44 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 52938B3812E08FC400045B44 /* Icon.png */; };
-		529C991712E5C72C008FBC66 /* SCHUserSettingsItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 529C991612E5C72C008FBC66 /* SCHUserSettingsItem.m */; };
 		52D6122212E44B0F0033DA92 /* SCHProfileItem+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D6122112E44B0F0033DA92 /* SCHProfileItem+Extensions.m */; };
 		52D6124312E44CEC0033DA92 /* SCHContentMetadataItem+Extensions.m in Resources */ = {isa = PBXBuildFile; fileRef = 52D6124212E44CEC0033DA92 /* SCHContentMetadataItem+Extensions.m */; };
 		52D6124F12E44D760033DA92 /* SCHSyncEntity+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D6124E12E44D760033DA92 /* SCHSyncEntity+Extensions.m */; };
@@ -117,9 +134,6 @@
 		F8509F1512F063C900197EB5 /* Scholastic.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2819307C112F81BE00ECF9B4 /* Scholastic.xcdatamodeld */; };
 		F8509F1612F063C900197EB5 /* AppDelegate_iPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 2860E388111B897F00E27156 /* AppDelegate_iPhone.m */; };
 		F8509F1712F063C900197EB5 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 528A2D5F12CDE39C0053A343 /* RootViewController.m */; };
-		F8509F1812F063C900197EB5 /* SCHContentMetadataItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5250C4AD12DE078000542055 /* SCHContentMetadataItem.m */; };
-		F8509F1912F063C900197EB5 /* SCHProfileItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5250C4AF12DE078000542055 /* SCHProfileItem.m */; };
-		F8509F1A12F063C900197EB5 /* SCHSyncEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = 5250C4B112DE078000542055 /* SCHSyncEntity.m */; };
 		F8509F1B12F063C900197EB5 /* SCHSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 529385B312DF231800045B44 /* SCHSettingsViewController.m */; };
 		F8509F1C12F063C900197EB5 /* AuthenticateSvc.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293868F12DF3A3300045B44 /* AuthenticateSvc.m */; };
 		F8509F1D12F063C900197EB5 /* NSDate+ISO8601Parsing.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293869312DF3A3300045B44 /* NSDate+ISO8601Parsing.m */; };
@@ -144,7 +158,6 @@
 		F8509F3012F063C900197EB5 /* SCHProfileItem+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D6122112E44B0F0033DA92 /* SCHProfileItem+Extensions.m */; };
 		F8509F3112F063C900197EB5 /* SCHSyncEntity+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D6124E12E44D760033DA92 /* SCHSyncEntity+Extensions.m */; };
 		F8509F3212F063C900197EB5 /* NSNumber+ObjectTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D612B712E4650B0033DA92 /* NSNumber+ObjectTypes.m */; };
-		F8509F3312F063C900197EB5 /* SCHUserSettingsItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 529C991612E5C72C008FBC66 /* SCHUserSettingsItem.m */; };
 		F8509F3412F063C900197EB5 /* SCHLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF4E5D12E6E01C00E374F7 /* SCHLoginViewController.m */; };
 		F8509F3512F063C900197EB5 /* LibreAccessServiceSvc.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF508612E739E900E374F7 /* LibreAccessServiceSvc.m */; };
 		F8509F3612F063C900197EB5 /* SCHAuthenticationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF543F12E9A5D400E374F7 /* SCHAuthenticationManager.m */; };
@@ -188,12 +201,48 @@
 		28EEC04A1118E28000187D67 /* AppDelegate_Shared.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate_Shared.m; path = Shared/AppDelegate_Shared.m; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Shared/main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* Scholastic_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Scholastic_Prefix.pch; sourceTree = "<group>"; };
-		5250C4AC12DE078000542055 /* SCHContentMetadataItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHContentMetadataItem.h; path = Shared/SCHContentMetadataItem.h; sourceTree = "<group>"; };
-		5250C4AD12DE078000542055 /* SCHContentMetadataItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHContentMetadataItem.m; path = Shared/SCHContentMetadataItem.m; sourceTree = "<group>"; };
-		5250C4AE12DE078000542055 /* SCHProfileItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHProfileItem.h; path = Shared/SCHProfileItem.h; sourceTree = "<group>"; };
-		5250C4AF12DE078000542055 /* SCHProfileItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHProfileItem.m; path = Shared/SCHProfileItem.m; sourceTree = "<group>"; };
-		5250C4B012DE078000542055 /* SCHSyncEntity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHSyncEntity.h; path = Shared/SCHSyncEntity.h; sourceTree = "<group>"; };
-		5250C4B112DE078000542055 /* SCHSyncEntity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHSyncEntity.m; path = Shared/SCHSyncEntity.m; sourceTree = "<group>"; };
+		52298A5D12F0EF5600BBBCE6 /* SCHNote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHNote.h; path = Shared/SCHNote.h; sourceTree = "<group>"; };
+		52298A5E12F0EF5600BBBCE6 /* SCHNote.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHNote.m; path = Shared/SCHNote.m; sourceTree = "<group>"; };
+		52298A5F12F0EF5600BBBCE6 /* SCHUserSettingsItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHUserSettingsItem.h; path = Shared/SCHUserSettingsItem.h; sourceTree = "<group>"; };
+		52298A6012F0EF5600BBBCE6 /* SCHUserSettingsItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHUserSettingsItem.m; path = Shared/SCHUserSettingsItem.m; sourceTree = "<group>"; };
+		52298A6112F0EF5600BBBCE6 /* SCHContentMetadataItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHContentMetadataItem.h; path = Shared/SCHContentMetadataItem.h; sourceTree = "<group>"; };
+		52298A6212F0EF5600BBBCE6 /* SCHContentMetadataItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHContentMetadataItem.m; path = Shared/SCHContentMetadataItem.m; sourceTree = "<group>"; };
+		52298A6312F0EF5600BBBCE6 /* SCHLastPage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHLastPage.h; path = Shared/SCHLastPage.h; sourceTree = "<group>"; };
+		52298A6412F0EF5600BBBCE6 /* SCHLastPage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHLastPage.m; path = Shared/SCHLastPage.m; sourceTree = "<group>"; };
+		52298A6512F0EF5600BBBCE6 /* SCHLocationText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHLocationText.h; path = Shared/SCHLocationText.h; sourceTree = "<group>"; };
+		52298A6612F0EF5600BBBCE6 /* SCHLocationText.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHLocationText.m; path = Shared/SCHLocationText.m; sourceTree = "<group>"; };
+		52298A6712F0EF5600BBBCE6 /* SCHUserContentItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHUserContentItem.h; path = Shared/SCHUserContentItem.h; sourceTree = "<group>"; };
+		52298A6812F0EF5600BBBCE6 /* SCHUserContentItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHUserContentItem.m; path = Shared/SCHUserContentItem.m; sourceTree = "<group>"; };
+		52298A6912F0EF5600BBBCE6 /* SCHOrderItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHOrderItem.h; path = Shared/SCHOrderItem.h; sourceTree = "<group>"; };
+		52298A6A12F0EF5600BBBCE6 /* SCHOrderItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHOrderItem.m; path = Shared/SCHOrderItem.m; sourceTree = "<group>"; };
+		52298A6B12F0EF5600BBBCE6 /* SCHWordIndex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHWordIndex.h; path = Shared/SCHWordIndex.h; sourceTree = "<group>"; };
+		52298A6C12F0EF5600BBBCE6 /* SCHWordIndex.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHWordIndex.m; path = Shared/SCHWordIndex.m; sourceTree = "<group>"; };
+		52298A6D12F0EF5600BBBCE6 /* SCHContentProfileItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHContentProfileItem.h; path = Shared/SCHContentProfileItem.h; sourceTree = "<group>"; };
+		52298A6E12F0EF5600BBBCE6 /* SCHContentProfileItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHContentProfileItem.m; path = Shared/SCHContentProfileItem.m; sourceTree = "<group>"; };
+		52298A6F12F0EF5600BBBCE6 /* SCHSyncEntity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHSyncEntity.h; path = Shared/SCHSyncEntity.h; sourceTree = "<group>"; };
+		52298A7012F0EF5600BBBCE6 /* SCHSyncEntity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHSyncEntity.m; path = Shared/SCHSyncEntity.m; sourceTree = "<group>"; };
+		52298A7112F0EF5600BBBCE6 /* SCHBookmark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookmark.h; path = Shared/SCHBookmark.h; sourceTree = "<group>"; };
+		52298A7212F0EF5600BBBCE6 /* SCHBookmark.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookmark.m; path = Shared/SCHBookmark.m; sourceTree = "<group>"; };
+		52298A7312F0EF5600BBBCE6 /* SCHContentItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHContentItem.h; path = Shared/SCHContentItem.h; sourceTree = "<group>"; };
+		52298A7412F0EF5600BBBCE6 /* SCHContentItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHContentItem.m; path = Shared/SCHContentItem.m; sourceTree = "<group>"; };
+		52298A7512F0EF5600BBBCE6 /* SCHProfileStatusItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHProfileStatusItem.h; path = Shared/SCHProfileStatusItem.h; sourceTree = "<group>"; };
+		52298A7612F0EF5600BBBCE6 /* SCHProfileStatusItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHProfileStatusItem.m; path = Shared/SCHProfileStatusItem.m; sourceTree = "<group>"; };
+		52298A7712F0EF5600BBBCE6 /* SCHAnnotationsContentItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAnnotationsContentItem.h; path = Shared/SCHAnnotationsContentItem.h; sourceTree = "<group>"; };
+		52298A7812F0EF5600BBBCE6 /* SCHAnnotationsContentItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHAnnotationsContentItem.m; path = Shared/SCHAnnotationsContentItem.m; sourceTree = "<group>"; };
+		52298A7912F0EF5600BBBCE6 /* SCHAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAnnotation.h; path = Shared/SCHAnnotation.h; sourceTree = "<group>"; };
+		52298A7A12F0EF5600BBBCE6 /* SCHAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHAnnotation.m; path = Shared/SCHAnnotation.m; sourceTree = "<group>"; };
+		52298A7B12F0EF5600BBBCE6 /* SCHFavorite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHFavorite.h; path = Shared/SCHFavorite.h; sourceTree = "<group>"; };
+		52298A7C12F0EF5600BBBCE6 /* SCHFavorite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHFavorite.m; path = Shared/SCHFavorite.m; sourceTree = "<group>"; };
+		52298A7D12F0EF5600BBBCE6 /* SCHProfileItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHProfileItem.h; path = Shared/SCHProfileItem.h; sourceTree = "<group>"; };
+		52298A7E12F0EF5600BBBCE6 /* SCHProfileItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHProfileItem.m; path = Shared/SCHProfileItem.m; sourceTree = "<group>"; };
+		52298A7F12F0EF5600BBBCE6 /* SCHCoords.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHCoords.h; path = Shared/SCHCoords.h; sourceTree = "<group>"; };
+		52298A8012F0EF5600BBBCE6 /* SCHCoords.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHCoords.m; path = Shared/SCHCoords.m; sourceTree = "<group>"; };
+		52298A8112F0EF5600BBBCE6 /* SCHLocationGraphics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHLocationGraphics.h; path = Shared/SCHLocationGraphics.h; sourceTree = "<group>"; };
+		52298A8212F0EF5600BBBCE6 /* SCHLocationGraphics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHLocationGraphics.m; path = Shared/SCHLocationGraphics.m; sourceTree = "<group>"; };
+		52298A8312F0EF5600BBBCE6 /* SCHAnnotationsItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAnnotationsItem.h; path = Shared/SCHAnnotationsItem.h; sourceTree = "<group>"; };
+		52298A8412F0EF5600BBBCE6 /* SCHAnnotationsItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHAnnotationsItem.m; path = Shared/SCHAnnotationsItem.m; sourceTree = "<group>"; };
+		52298A8512F0EF5600BBBCE6 /* SCHHighlight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHHighlight.h; path = Shared/SCHHighlight.h; sourceTree = "<group>"; };
+		52298A8612F0EF5600BBBCE6 /* SCHHighlight.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHHighlight.m; path = Shared/SCHHighlight.m; sourceTree = "<group>"; };
 		528A2CD212CCDD9E0053A343 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = Settings.bundle; path = Shared/Settings.bundle; sourceTree = "<group>"; };
 		528A2CD912CCDDB00053A343 /* Entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Entitlements.plist; sourceTree = "<group>"; };
 		528A2CDA12CCDE070053A343 /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = Localizable.strings; path = Shared/Localizable.strings; sourceTree = "<group>"; };
@@ -257,8 +306,6 @@
 		5293883112E03CD000045B44 /* SCHBookShelfViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHBookShelfViewController.m; sourceTree = "<group>"; };
 		5293883212E03CD000045B44 /* SCHBookShelfViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SCHBookShelfViewController.xib; sourceTree = "<group>"; };
 		52938B3812E08FC400045B44 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon.png; path = Shared/Images/Icon.png; sourceTree = "<group>"; };
-		529C991512E5C72C008FBC66 /* SCHUserSettingsItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHUserSettingsItem.h; path = Shared/SCHUserSettingsItem.h; sourceTree = "<group>"; };
-		529C991612E5C72C008FBC66 /* SCHUserSettingsItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHUserSettingsItem.m; path = Shared/SCHUserSettingsItem.m; sourceTree = "<group>"; };
 		52D6122012E44B0F0033DA92 /* SCHProfileItem+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SCHProfileItem+Extensions.h"; path = "Shared/SCHProfileItem+Extensions.h"; sourceTree = "<group>"; };
 		52D6122112E44B0F0033DA92 /* SCHProfileItem+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SCHProfileItem+Extensions.m"; path = "Shared/SCHProfileItem+Extensions.m"; sourceTree = "<group>"; };
 		52D6124112E44CEC0033DA92 /* SCHContentMetadataItem+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SCHContentMetadataItem+Extensions.h"; path = "Shared/SCHContentMetadataItem+Extensions.h"; sourceTree = "<group>"; };
@@ -463,20 +510,54 @@
 		5250C4AB12DE075C00542055 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				5250C4AC12DE078000542055 /* SCHContentMetadataItem.h */,
-				5250C4AD12DE078000542055 /* SCHContentMetadataItem.m */,
+				52298A5D12F0EF5600BBBCE6 /* SCHNote.h */,
+				52298A5E12F0EF5600BBBCE6 /* SCHNote.m */,
+				52298A5F12F0EF5600BBBCE6 /* SCHUserSettingsItem.h */,
+				52298A6012F0EF5600BBBCE6 /* SCHUserSettingsItem.m */,
+				52298A6112F0EF5600BBBCE6 /* SCHContentMetadataItem.h */,
+				52298A6212F0EF5600BBBCE6 /* SCHContentMetadataItem.m */,
+				52298A6312F0EF5600BBBCE6 /* SCHLastPage.h */,
+				52298A6412F0EF5600BBBCE6 /* SCHLastPage.m */,
+				52298A6512F0EF5600BBBCE6 /* SCHLocationText.h */,
+				52298A6612F0EF5600BBBCE6 /* SCHLocationText.m */,
+				52298A6712F0EF5600BBBCE6 /* SCHUserContentItem.h */,
+				52298A6812F0EF5600BBBCE6 /* SCHUserContentItem.m */,
+				52298A6912F0EF5600BBBCE6 /* SCHOrderItem.h */,
+				52298A6A12F0EF5600BBBCE6 /* SCHOrderItem.m */,
+				52298A6B12F0EF5600BBBCE6 /* SCHWordIndex.h */,
+				52298A6C12F0EF5600BBBCE6 /* SCHWordIndex.m */,
+				52298A6D12F0EF5600BBBCE6 /* SCHContentProfileItem.h */,
+				52298A6E12F0EF5600BBBCE6 /* SCHContentProfileItem.m */,
+				52298A6F12F0EF5600BBBCE6 /* SCHSyncEntity.h */,
+				52298A7012F0EF5600BBBCE6 /* SCHSyncEntity.m */,
+				52298A7112F0EF5600BBBCE6 /* SCHBookmark.h */,
+				52298A7212F0EF5600BBBCE6 /* SCHBookmark.m */,
+				52298A7312F0EF5600BBBCE6 /* SCHContentItem.h */,
+				52298A7412F0EF5600BBBCE6 /* SCHContentItem.m */,
+				52298A7512F0EF5600BBBCE6 /* SCHProfileStatusItem.h */,
+				52298A7612F0EF5600BBBCE6 /* SCHProfileStatusItem.m */,
+				52298A7712F0EF5600BBBCE6 /* SCHAnnotationsContentItem.h */,
+				52298A7812F0EF5600BBBCE6 /* SCHAnnotationsContentItem.m */,
+				52298A7912F0EF5600BBBCE6 /* SCHAnnotation.h */,
+				52298A7A12F0EF5600BBBCE6 /* SCHAnnotation.m */,
+				52298A7B12F0EF5600BBBCE6 /* SCHFavorite.h */,
+				52298A7C12F0EF5600BBBCE6 /* SCHFavorite.m */,
+				52298A7D12F0EF5600BBBCE6 /* SCHProfileItem.h */,
+				52298A7E12F0EF5600BBBCE6 /* SCHProfileItem.m */,
+				52298A7F12F0EF5600BBBCE6 /* SCHCoords.h */,
+				52298A8012F0EF5600BBBCE6 /* SCHCoords.m */,
+				52298A8112F0EF5600BBBCE6 /* SCHLocationGraphics.h */,
+				52298A8212F0EF5600BBBCE6 /* SCHLocationGraphics.m */,
+				52298A8312F0EF5600BBBCE6 /* SCHAnnotationsItem.h */,
+				52298A8412F0EF5600BBBCE6 /* SCHAnnotationsItem.m */,
+				52298A8512F0EF5600BBBCE6 /* SCHHighlight.h */,
+				52298A8612F0EF5600BBBCE6 /* SCHHighlight.m */,
 				52D6124112E44CEC0033DA92 /* SCHContentMetadataItem+Extensions.h */,
 				52D6124212E44CEC0033DA92 /* SCHContentMetadataItem+Extensions.m */,
-				5250C4AE12DE078000542055 /* SCHProfileItem.h */,
-				5250C4AF12DE078000542055 /* SCHProfileItem.m */,
 				52D6122012E44B0F0033DA92 /* SCHProfileItem+Extensions.h */,
 				52D6122112E44B0F0033DA92 /* SCHProfileItem+Extensions.m */,
-				5250C4B012DE078000542055 /* SCHSyncEntity.h */,
-				5250C4B112DE078000542055 /* SCHSyncEntity.m */,
 				52D6124D12E44D760033DA92 /* SCHSyncEntity+Extensions.h */,
 				52D6124E12E44D760033DA92 /* SCHSyncEntity+Extensions.m */,
-				529C991512E5C72C008FBC66 /* SCHUserSettingsItem.h */,
-				529C991612E5C72C008FBC66 /* SCHUserSettingsItem.m */,
 				52D612B612E4650B0033DA92 /* NSNumber+ObjectTypes.h */,
 				52D612B712E4650B0033DA92 /* NSNumber+ObjectTypes.m */,
 			);
@@ -872,9 +953,6 @@
 				2819307D112F81BE00ECF9B4 /* Scholastic.xcdatamodeld in Sources */,
 				2860E38A111B897F00E27156 /* AppDelegate_iPhone.m in Sources */,
 				528A2D6012CDE39C0053A343 /* RootViewController.m in Sources */,
-				5250C4B212DE078000542055 /* SCHContentMetadataItem.m in Sources */,
-				5250C4B312DE078000542055 /* SCHProfileItem.m in Sources */,
-				5250C4B412DE078000542055 /* SCHSyncEntity.m in Sources */,
 				529385B512DF231800045B44 /* SCHSettingsViewController.m in Sources */,
 				5293869C12DF3A3300045B44 /* AuthenticateSvc.m in Sources */,
 				5293869E12DF3A3300045B44 /* NSDate+ISO8601Parsing.m in Sources */,
@@ -899,7 +977,6 @@
 				52D6122212E44B0F0033DA92 /* SCHProfileItem+Extensions.m in Sources */,
 				52D6124F12E44D760033DA92 /* SCHSyncEntity+Extensions.m in Sources */,
 				52D612B812E4650B0033DA92 /* NSNumber+ObjectTypes.m in Sources */,
-				529C991712E5C72C008FBC66 /* SCHUserSettingsItem.m in Sources */,
 				52EF4E5F12E6E01C00E374F7 /* SCHLoginViewController.m in Sources */,
 				52EF508712E739E900E374F7 /* LibreAccessServiceSvc.m in Sources */,
 				52EF544012E9A5D400E374F7 /* SCHAuthenticationManager.m in Sources */,
@@ -914,6 +991,27 @@
 				C923A27D12F06FE60054426F /* MRGridView.m in Sources */,
 				C923A27E12F06FE60054426F /* MRGridViewCell.m in Sources */,
 				C923A27F12F06FE60054426F /* MRGridViewController.m in Sources */,
+				52298A8712F0EF5600BBBCE6 /* SCHNote.m in Sources */,
+				52298A8812F0EF5600BBBCE6 /* SCHUserSettingsItem.m in Sources */,
+				52298A8912F0EF5600BBBCE6 /* SCHContentMetadataItem.m in Sources */,
+				52298A8A12F0EF5600BBBCE6 /* SCHLastPage.m in Sources */,
+				52298A8B12F0EF5600BBBCE6 /* SCHLocationText.m in Sources */,
+				52298A8C12F0EF5600BBBCE6 /* SCHUserContentItem.m in Sources */,
+				52298A8D12F0EF5600BBBCE6 /* SCHOrderItem.m in Sources */,
+				52298A8E12F0EF5600BBBCE6 /* SCHWordIndex.m in Sources */,
+				52298A8F12F0EF5600BBBCE6 /* SCHContentProfileItem.m in Sources */,
+				52298A9012F0EF5600BBBCE6 /* SCHSyncEntity.m in Sources */,
+				52298A9112F0EF5600BBBCE6 /* SCHBookmark.m in Sources */,
+				52298A9212F0EF5600BBBCE6 /* SCHContentItem.m in Sources */,
+				52298A9312F0EF5600BBBCE6 /* SCHProfileStatusItem.m in Sources */,
+				52298A9412F0EF5600BBBCE6 /* SCHAnnotationsContentItem.m in Sources */,
+				52298A9512F0EF5600BBBCE6 /* SCHAnnotation.m in Sources */,
+				52298A9612F0EF5600BBBCE6 /* SCHFavorite.m in Sources */,
+				52298A9712F0EF5600BBBCE6 /* SCHProfileItem.m in Sources */,
+				52298A9812F0EF5600BBBCE6 /* SCHCoords.m in Sources */,
+				52298A9912F0EF5600BBBCE6 /* SCHLocationGraphics.m in Sources */,
+				52298A9A12F0EF5600BBBCE6 /* SCHAnnotationsItem.m in Sources */,
+				52298A9B12F0EF5600BBBCE6 /* SCHHighlight.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -927,9 +1025,6 @@
 				F8509F1512F063C900197EB5 /* Scholastic.xcdatamodeld in Sources */,
 				F8509F1612F063C900197EB5 /* AppDelegate_iPhone.m in Sources */,
 				F8509F1712F063C900197EB5 /* RootViewController.m in Sources */,
-				F8509F1812F063C900197EB5 /* SCHContentMetadataItem.m in Sources */,
-				F8509F1912F063C900197EB5 /* SCHProfileItem.m in Sources */,
-				F8509F1A12F063C900197EB5 /* SCHSyncEntity.m in Sources */,
 				F8509F1B12F063C900197EB5 /* SCHSettingsViewController.m in Sources */,
 				F8509F1C12F063C900197EB5 /* AuthenticateSvc.m in Sources */,
 				F8509F1D12F063C900197EB5 /* NSDate+ISO8601Parsing.m in Sources */,
@@ -954,7 +1049,6 @@
 				F8509F3012F063C900197EB5 /* SCHProfileItem+Extensions.m in Sources */,
 				F8509F3112F063C900197EB5 /* SCHSyncEntity+Extensions.m in Sources */,
 				F8509F3212F063C900197EB5 /* NSNumber+ObjectTypes.m in Sources */,
-				F8509F3312F063C900197EB5 /* SCHUserSettingsItem.m in Sources */,
 				F8509F3412F063C900197EB5 /* SCHLoginViewController.m in Sources */,
 				F8509F3512F063C900197EB5 /* LibreAccessServiceSvc.m in Sources */,
 				F8509F3612F063C900197EB5 /* SCHAuthenticationManager.m in Sources */,

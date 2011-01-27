@@ -1,17 +1,17 @@
 // 
-//  SCHUserSettingsItem.m
+//  SCHWordIndex.m
 //  Scholastic
 //
 //  Created by John S. Eddie on 27/01/2011.
 //  Copyright 2011 Zicron Software Limited. All rights reserved.
 //
 
-#import "SCHUserSettingsItem.h"
+#import "SCHWordIndex.h"
 
 
-@implementation SCHUserSettingsItem 
+@implementation SCHWordIndex 
 
-@dynamic SettingValue;
-@dynamic SettingType;
+@dynamic Start;
+@dynamic End;
 
 @end

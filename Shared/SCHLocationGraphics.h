@@ -1,5 +1,5 @@
 //
-//  SCHSyncEntity.h
+//  SCHLocationGraphics.h
 //  Scholastic
 //
 //  Created by John S. Eddie on 27/01/2011.
@@ -9,12 +9,12 @@
 #import <CoreData/CoreData.h>
 
 
-@interface SCHSyncEntity :  NSManagedObject  
+@interface SCHLocationGraphics :  NSManagedObject  
 {
 }
 
-@property (nonatomic, retain) NSDate * LastModified;
-@property (nonatomic, retain) NSNumber * State;
+@property (nonatomic, retain) NSNumber * Page;
+@property (nonatomic, retain) NSNumber * WordIndex;
 
 @end
 

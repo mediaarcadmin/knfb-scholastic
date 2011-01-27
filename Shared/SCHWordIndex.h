@@ -1,5 +1,5 @@
 //
-//  SCHSyncEntity.h
+//  SCHWordIndex.h
 //  Scholastic
 //
 //  Created by John S. Eddie on 27/01/2011.
@@ -9,12 +9,12 @@
 #import <CoreData/CoreData.h>
 
 
-@interface SCHSyncEntity :  NSManagedObject  
+@interface SCHWordIndex :  NSManagedObject  
 {
 }
 
-@property (nonatomic, retain) NSDate * LastModified;
-@property (nonatomic, retain) NSNumber * State;
+@property (nonatomic, retain) NSNumber * Start;
+@property (nonatomic, retain) NSNumber * End;
 
 @end
 

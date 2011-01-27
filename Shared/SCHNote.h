@@ -1,5 +1,5 @@
 //
-//  SCHSyncEntity.h
+//  SCHNote.h
 //  Scholastic
 //
 //  Created by John S. Eddie on 27/01/2011.
@@ -7,14 +7,15 @@
 //
 
 #import <CoreData/CoreData.h>
+#import "SCHAnnotation.h"
 
 
-@interface SCHSyncEntity :  NSManagedObject  
+@interface SCHNote :  SCHAnnotation  
 {
 }
 
-@property (nonatomic, retain) NSDate * LastModified;
-@property (nonatomic, retain) NSNumber * State;
+@property (nonatomic, retain) NSString * Color;
+@property (nonatomic, retain) NSString * Value;
 
 @end
 

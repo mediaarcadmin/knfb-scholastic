@@ -1,17 +1,18 @@
 // 
-//  SCHUserSettingsItem.m
+//  SCHLastPage.m
 //  Scholastic
 //
 //  Created by John S. Eddie on 27/01/2011.
 //  Copyright 2011 Zicron Software Limited. All rights reserved.
 //
 
-#import "SCHUserSettingsItem.h"
+#import "SCHLastPage.h"
 
 
-@implementation SCHUserSettingsItem 
+@implementation SCHLastPage 
 
-@dynamic SettingValue;
-@dynamic SettingType;
+@dynamic Percentage;
+@dynamic Component;
+@dynamic LastPageLocation;
 
 @end

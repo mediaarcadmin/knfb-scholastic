@@ -1,17 +1,16 @@
 // 
-//  SCHUserSettingsItem.m
+//  SCHLocationText.m
 //  Scholastic
 //
 //  Created by John S. Eddie on 27/01/2011.
 //  Copyright 2011 Zicron Software Limited. All rights reserved.
 //
 
-#import "SCHUserSettingsItem.h"
+#import "SCHLocationText.h"
 
 
-@implementation SCHUserSettingsItem 
+@implementation SCHLocationText 
 
-@dynamic SettingValue;
-@dynamic SettingType;
+@dynamic Page;
 
 @end
