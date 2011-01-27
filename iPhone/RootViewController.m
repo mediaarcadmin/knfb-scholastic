@@ -13,6 +13,7 @@
 #import "SCHWebServiceSync.h"
 #import "SCHLoginViewController.h"
 #import "SCHAuthenticationManager.h"
+#import "SCHLibreAccessWebService.h"
 
 // Cell Icons 
 static NSString * const kRootViewControllerProfileIcon = @"Profile.png";
@@ -125,9 +126,9 @@ static NSInteger const kRootViewControllerSettingsRow = 1;
 	} else {
 		NSManagedObject *managedObject = [self.fetchedResultsController objectAtIndexPath:indexPath];
 		cell.textLabel.text = [NSString stringWithFormat:@"%@%@", 
-							   [[managedObject valueForKey:@"Screenname"] description], 
+							   [[managedObject valueForKey:kSCHLibreAccessWebServiceScreenName] description], 
 							   NSLocalizedString(@"'s Books", @"")];
-		if ([[managedObject valueForKey:@"ProfilePasswordRequired"] boolValue] == NO) {
+		if ([[managedObject valueForKey:kSCHLibreAccessWebServiceProfilePasswordRequired] boolValue] == NO) {
 			cell.imageView.image = [UIImage imageNamed:kRootViewControllerProfileIcon];
 		} else {
 			cell.imageView.image = [UIImage imageNamed:kRootViewControllerProfileLockedIcon];
@@ -164,7 +165,7 @@ static NSInteger const kRootViewControllerSettingsRow = 1;
 	self.bookShelfController.managedObjectContext = self.managedObjectContext;
 	
 	if ([self.webServiceSync update] == NO ) {
-		UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Give me a moment", @"Give me a moment")
+		UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:@"Give me a moment"
 															 message:@"I am just requesting access. Normal service will resume shortly."
 															delegate:nil 
 												   cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
@@ -281,7 +282,7 @@ static NSInteger const kRootViewControllerSettingsRow = 1;
 	} else {
 		NSManagedObject *selectedObject = [[self fetchedResultsController] objectAtIndexPath:indexPath];
 		// controller to view book shelf with books filtered to profile
-		self.bookShelfController.profileID = [selectedObject valueForKey:@"ID"];
+		self.bookShelfController.profileID = [selectedObject valueForKey:kSCHLibreAccessWebServiceID];
 		self.bookShelfController.managedObjectContext = self.managedObjectContext;
 		[self.navigationController pushViewController:self.bookShelfController animated:YES];		
 	}	
@@ -310,7 +311,7 @@ static NSInteger const kRootViewControllerSettingsRow = 1;
     [fetchRequest setFetchBatchSize:20];
     
     // Edit the sort key as appropriate.
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"Screenname" ascending:NO];
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:kSCHLibreAccessWebServiceScreenName ascending:NO];
     NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptor, nil];
     
     [fetchRequest setSortDescriptors:sortDescriptors];

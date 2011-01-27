@@ -15,7 +15,7 @@
 
 
 static NSString * const kSCHLibreAccessWebServiceUndefinedMethod = @"undefined method";
-static NSString * const kSCHLibreAccessWebServiceStatusMessage = @"statusmessage";
+static NSString * const kSCHLibreAccessWebServiceStatusHolderStatusMessage = @"statusmessage";
 
 
 @interface SCHLibreAccessWebService ()
@@ -382,7 +382,7 @@ static NSString * const kSCHLibreAccessWebServiceStatusMessage = @"statusmessage
 			
 			LibreAccessServiceSvc_StatusHolder *status = nil;
 			@try {
-				status = (LibreAccessServiceSvc_StatusHolder *)[bodyPart valueForKey:kSCHLibreAccessWebServiceStatusMessage];
+				status = (LibreAccessServiceSvc_StatusHolder *)[bodyPart valueForKey:kSCHLibreAccessWebServiceStatusHolderStatusMessage];
 			}
 			@catch (NSException * e) {
 				// everything has a status message however be defensive
@@ -554,12 +554,12 @@ static NSString * const kSCHLibreAccessWebServiceStatusMessage = @"statusmessage
 		
 		[objects setObject:[self objectFromTranslate:anObject.AutoAssignContentToProfiles] forKey:kSCHLibreAccessWebServiceAutoAssignContentToProfiles];
 		[objects setObject:[self objectFromTranslate:anObject.ProfilePasswordRequired] forKey:kSCHLibreAccessWebServiceProfilePasswordRequired];		
-		[objects setObject:[self objectFromTranslate:anObject.Firstname] forKey:kSCHLibreAccessWebServiceFirstname];		
+		[objects setObject:[self objectFromTranslate:anObject.Firstname] forKey:kSCHLibreAccessWebServiceFirstName];		
 		[objects setObject:[self objectFromTranslate:anObject.Lastname] forKey:kSCHLibreAccessWebServiceLastname];		
-		[objects setObject:[self objectFromTranslate:anObject.BirthDay] forKey:kSCHLibreAccessWebServiceBirthDay];		
-		[objects setObject:[self objectFromTranslate:anObject.screenname] forKey:kSCHLibreAccessWebServiceScreenname];		
+		[objects setObject:[self objectFromTranslate:anObject.BirthDay] forKey:kSCHLibreAccessWebServiceBirthday];		
+		[objects setObject:[self objectFromTranslate:anObject.screenname] forKey:kSCHLibreAccessWebServiceScreenName];		
 		[objects setObject:[self objectFromTranslate:anObject.password] forKey:kSCHLibreAccessWebServicePassword];		
-		[objects setObject:[self objectFromTranslate:anObject.userkey] forKey:kSCHLibreAccessWebServiceUserkey];		
+		[objects setObject:[self objectFromTranslate:anObject.userkey] forKey:kSCHLibreAccessWebServiceUserKey];		
 		[objects setObject:[self objectFromTranslate:[NSNumber numberWithProfileType:anObject.type]] forKey:kSCHLibreAccessWebServiceType];		
 		[objects setObject:[self objectFromTranslate:anObject.id_] forKey:kSCHLibreAccessWebServiceID];		
 		[objects setObject:[self objectFromTranslate:[NSNumber numberWithBookshelfStyle:anObject.BookshelfStyle]] forKey:kSCHLibreAccessWebServiceBookshelfStyle];		
@@ -669,9 +669,9 @@ static NSString * const kSCHLibreAccessWebServiceStatusMessage = @"statusmessage
 		[objects setObject:[self objectFromTranslate:anObject.id_] forKey:kSCHLibreAccessWebServiceID];
 		[objects setObject:[self objectFromTranslate:[NSNumber numberWithSaveAction:anObject.action]] forKey:kSCHLibreAccessWebServiceAction];
 		[objects setObject:[self objectFromTranslate:[NSNumber numberWithStatusCode:anObject.status]] forKey:kSCHLibreAccessWebServiceStatus];
-		[objects setObject:[self objectFromTranslate:anObject.screenname] forKey:kSCHLibreAccessWebServiceScreenname];
-		[objects setObject:[self objectFromTranslate:anObject.statuscode] forKey:kSCHLibreAccessWebServiceStatuscode];
-		[objects setObject:[self objectFromTranslate:anObject.statusmessage] forKey:kSCHLibreAccessWebServiceStatusmessage];
+		[objects setObject:[self objectFromTranslate:anObject.screenname] forKey:kSCHLibreAccessWebServiceScreenName];
+		[objects setObject:[self objectFromTranslate:anObject.statuscode] forKey:kSCHLibreAccessWebServiceStatusCode];
+		[objects setObject:[self objectFromTranslate:anObject.statusmessage] forKey:kSCHLibreAccessWebServiceStatusMessage];
 		
 		ret = objects;					
 	}
@@ -964,13 +964,13 @@ static NSString * const kSCHLibreAccessWebServiceStatusMessage = @"statusmessage
 	if (object != nil && intoObject != nil) {
 		intoObject.AutoAssignContentToProfiles = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceAutoAssignContentToProfiles]];
 		intoObject.ProfilePasswordRequired = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceProfilePasswordRequired]];
-		intoObject.Firstname = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceFirstname]];
+		intoObject.Firstname = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceFirstName]];
 		intoObject.Lastname = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceLastname]];
-		intoObject.BirthDay = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceBirthDay]];
+		intoObject.BirthDay = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceBirthday]];
 		intoObject.LastModified = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceLastModified]];
-		intoObject.screenname = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceScreenname]];
+		intoObject.screenname = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceScreenName]];
 		intoObject.password = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServicePassword]];
-		intoObject.userkey = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceUserkey]];
+		intoObject.userkey = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceUserKey]];
 		intoObject.type = [[object objectForKey:kSCHLibreAccessWebServiceType] profileTypeValue];
 		intoObject.id_ = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceID]];
 		intoObject.action = [[object objectForKey:kSCHLibreAccessWebServiceAction] saveActionValue];

@@ -197,7 +197,7 @@ static NSString * const kSCHAuthenticationManagerServiceName = @"Scholastic";
 {
 	NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
 	
-	[userInfo setObject:self.aToken forKey:kSCHAuthenticationManagerAToken];
+	[userInfo setObject:(self.aToken == nil ? (id)[NSNull null] : self.aToken) forKey:kSCHAuthenticationManagerAToken];
 	[userInfo setObject:[NSNumber numberWithBool:offlineMode] forKey:kSCHAuthenticationManagerOfflineMode];
 	
 	[[NSNotificationCenter defaultCenter] postNotificationName:kSCHAuthenticationManagerSuccess 

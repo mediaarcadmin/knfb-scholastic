@@ -11,6 +11,9 @@
 #import "SCHLibreAccessWebService.h"
 #import "NSManagedObjectContext+Extensions.h"
 #import "SCHAuthenticationManager.h"
+#import "SCHUserSettingsItem.h"
+#import "SCHProfileItem.h"
+#import "SCHContentMetadataItem.h"
 
 @interface SCHWebServiceSync ()
 
@@ -68,7 +71,7 @@
 	} else if([method compare:kSCHLibreAccessWebServiceListUserContent] == NSOrderedSame) {
 		NSArray *books = [result objectForKey:kSCHLibreAccessWebServiceUserContentList];
 		if ([books count] > 0) {
-			[self.libreAccessWebService listContentMetadata:books includeURLs:YES];				
+			[self.libreAccessWebService listContentMetadata:books includeURLs:NO];				
 		} else {
 			[self clearBooks];
 		}
@@ -104,13 +107,13 @@
 	
 	
 	for (id profile in profileList) {
-		NSManagedObject *newManagedObject = [NSEntityDescription insertNewObjectForEntityForName:@"SCHProfileItem" inManagedObjectContext:self.managedObjectContext];
+		SCHProfileItem *newManagedObject = [NSEntityDescription insertNewObjectForEntityForName:@"SCHProfileItem" inManagedObjectContext:self.managedObjectContext];
 		
-		[newManagedObject setValue:[profile objectForKey:kSCHLibreAccessWebServiceLastModified] forKey:kSCHLibreAccessWebServiceLastModified];
-		[newManagedObject setValue:[NSNumber numberWithInteger:0] forKey:@"state"];		
-		[newManagedObject setValue:[profile objectForKey:kSCHLibreAccessWebServiceID] forKey:kSCHLibreAccessWebServiceID];
-		[newManagedObject setValue:[profile objectForKey:kSCHLibreAccessWebServiceScreenname] forKey:kSCHLibreAccessWebServiceScreenname];
-		[newManagedObject setValue:[profile objectForKey:kSCHLibreAccessWebServiceProfilePasswordRequired] forKey:kSCHLibreAccessWebServiceProfilePasswordRequired];		
+		newManagedObject.LastModified = [profile objectForKey:kSCHLibreAccessWebServiceLastModified];
+		newManagedObject.State = [NSNumber numberWithInteger:0];		
+		newManagedObject.ID = [profile objectForKey:kSCHLibreAccessWebServiceID];
+		newManagedObject.ScreenName = [profile objectForKey:kSCHLibreAccessWebServiceScreenName];
+		newManagedObject.ProfilePasswordRequired = [profile objectForKey:kSCHLibreAccessWebServiceProfilePasswordRequired];		
 	}
 	
 	// Save the context.
@@ -137,10 +140,10 @@
 	[self clearBooks];
 	
 	for (id book in bookList) {
-		NSManagedObject *newManagedObject = [NSEntityDescription insertNewObjectForEntityForName:@"SCHContentMetadataItem" inManagedObjectContext:self.managedObjectContext];
+		SCHContentMetadataItem *newManagedObject = [NSEntityDescription insertNewObjectForEntityForName:@"SCHContentMetadataItem" inManagedObjectContext:self.managedObjectContext];
 
-		[newManagedObject setValue:[book objectForKey:kSCHLibreAccessWebServiceTitle] forKey:kSCHLibreAccessWebServiceTitle];
-		[newManagedObject setValue:[book objectForKey:kSCHLibreAccessWebServiceAuthor] forKey:kSCHLibreAccessWebServiceAuthor];
+		newManagedObject.Title = [book objectForKey:kSCHLibreAccessWebServiceTitle];
+		newManagedObject.Author = [book objectForKey:kSCHLibreAccessWebServiceAuthor];
 	}
 	
 	// Save the context.
@@ -160,10 +163,10 @@
 	}	
 	
 	for (id setting in settingsList) {
-		NSManagedObject *newManagedObject = [NSEntityDescription insertNewObjectForEntityForName:@"SCHUserSettingsItem" inManagedObjectContext:self.managedObjectContext];
+		SCHUserSettingsItem *newManagedObject = [NSEntityDescription insertNewObjectForEntityForName:@"SCHUserSettingsItem" inManagedObjectContext:self.managedObjectContext];
 		
-		[newManagedObject setValue:[setting objectForKey:kSCHLibreAccessWebServiceSettingType] forKey:kSCHLibreAccessWebServiceSettingType];
-		[newManagedObject setValue:[setting objectForKey:kSCHLibreAccessWebServiceSettingValue] forKey:kSCHLibreAccessWebServiceSettingValue];
+		newManagedObject.SettingType = [setting objectForKey:kSCHLibreAccessWebServiceSettingType];
+		newManagedObject.SettingValue = [setting objectForKey:kSCHLibreAccessWebServiceSettingValue];
 	}
 	
 	// Save the context.

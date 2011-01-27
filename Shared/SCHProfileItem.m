@@ -11,17 +11,17 @@
 
 @implementation SCHProfileItem 
 
-@dynamic Lastname;
+@dynamic LastName;
 @dynamic StoryInteractionEnabled;
 @dynamic ID;
 @dynamic LastPasswordModified;
-@dynamic BirthDay;
+@dynamic Birthday;
 @dynamic Password;
-@dynamic Screenname;
-@dynamic Userkey;
+@dynamic ScreenName;
+@dynamic UserKey;
 @dynamic ProfilePasswordRequired;
 @dynamic Type;
-@dynamic Firstname;
+@dynamic FirstName;
 @dynamic AutoAssignContentToProfiles;
 @dynamic LastScreenNameModified;
 @dynamic BookshelfStyle;

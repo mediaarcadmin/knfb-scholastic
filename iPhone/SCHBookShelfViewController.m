@@ -9,6 +9,8 @@
 #import "SCHBookShelfViewController.h"
 #import "BWKTestPageViewController.h"
 #import "BWKReadingOptionsView.h"
+#import "SCHLibreAccessWebService.h"
+#import "SCHContentMetadataItem.h"
 
 
 @interface SCHBookShelfViewController ()
@@ -234,9 +236,9 @@
 
 
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {	
-	NSManagedObject *managedObject = [self.fetchedResultsController objectAtIndexPath:indexPath];
-	cell.textLabel.text = [[managedObject valueForKey:@"Title"] description]; 
-	cell.detailTextLabel.text = [[managedObject valueForKey:@"Author"] description];
+	SCHContentMetadataItem *managedObject = [self.fetchedResultsController objectAtIndexPath:indexPath];
+	cell.textLabel.text = managedObject.Title; 
+	cell.detailTextLabel.text = managedObject.Author;
 }
 
 
@@ -315,7 +317,7 @@
     [fetchRequest setFetchBatchSize:20];
     
     // Edit the sort key as appropriate.
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"Title" ascending:NO];
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:kSCHLibreAccessWebServiceTitle ascending:NO];
     NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptor, nil];
     
     [fetchRequest setSortDescriptors:sortDescriptors];

@@ -12,6 +12,6 @@
 @implementation SCHSyncEntity 
 
 @dynamic LastModified;
-@dynamic state;
+@dynamic State;
 
 @end

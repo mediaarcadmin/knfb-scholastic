@@ -14,7 +14,7 @@
 }
 
 @property (nonatomic, retain) NSDate * LastModified;
-@property (nonatomic, retain) NSNumber * state;
+@property (nonatomic, retain) NSNumber * State;
 
 @end
 
