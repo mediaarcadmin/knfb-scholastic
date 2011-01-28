@@ -82,6 +82,11 @@
 	
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackTranslucent];	
 	[self setWantsFullScreenLayout:YES];
+	CGRect frame = topToolbar.frame;
+	frame.origin.y = 20;
+	topToolbar.frame = frame;
+	
+	
 }
 
 // Override to allow orientations other than the default portrait orientation.
@@ -267,25 +272,21 @@
 	if (animated) {
 		[UIView beginAnimations:@"toolbarFade" context:nil];
 		[UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
-		[UIView setAnimationDuration:0.30f];
+		[UIView setAnimationDuration:0.3f];
 		[UIView setAnimationBeginsFromCurrentState:YES];
 	}
 	
 	if (toolbarsVisible) {
 		[topToolbar setAlpha:1.0f];
 		[bottomToolbar setAlpha:1.0f];
-		[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
-		CGRect frame = topToolbar.frame;
-		frame.origin.y = 20;
-		topToolbar.frame = frame;
-		
+		[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
 	} else {
 		[topToolbar setAlpha:0.0f];
 		[bottomToolbar setAlpha:0.0f];
-		[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
-		CGRect frame = topToolbar.frame;
-		frame.origin.y = 0;
-		topToolbar.frame = frame;
+		[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+//		CGRect frame = topToolbar.frame;
+//		frame.origin.y = 0;
+//		topToolbar.frame = frame;
 	}
 	
 	if (animated) {
