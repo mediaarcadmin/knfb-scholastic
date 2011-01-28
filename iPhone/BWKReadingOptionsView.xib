@@ -115,16 +115,17 @@
 						<reference key="IBUINormalTitleColor" ref="39938268"/>
 						<reference key="IBUINormalTitleShadowColor" ref="677504467"/>
 					</object>
-					<object class="IBUIView" id="611956490">
+					<object class="IBUIView" id="587623915">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">292</int>
 						<object class="NSMutableArray" key="NSSubviews">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<object class="IBUIImageView" id="502184941">
-								<reference key="NSNextResponder" ref="611956490"/>
+							<object class="IBUIImageView" id="1008867463">
+								<reference key="NSNextResponder" ref="587623915"/>
 								<int key="NSvFlags">274</int>
 								<string key="NSFrameSize">{320, 420}</string>
-								<reference key="NSSuperview" ref="611956490"/>
+								<reference key="NSSuperview" ref="587623915"/>
+								<int key="IBUIContentMode">1</int>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<object class="NSCustomResource" key="IBUIImage">
@@ -132,11 +133,11 @@
 									<string key="NSResourceName">booktexture-nocover.png</string>
 								</object>
 							</object>
-							<object class="IBUIButton" id="305445005">
-								<reference key="NSNextResponder" ref="611956490"/>
+							<object class="IBUIButton" id="1060258378">
+								<reference key="NSNextResponder" ref="587623915"/>
 								<int key="NSvFlags">292</int>
 								<string key="NSFrameSize">{320, 420}</string>
-								<reference key="NSSuperview" ref="611956490"/>
+								<reference key="NSSuperview" ref="587623915"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<int key="IBUIContentHorizontalAlignment">0</int>
@@ -158,10 +159,7 @@
 						<reference key="NSSuperview" ref="191373211"/>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">3</int>
-							<bytes key="NSWhite">MQA</bytes>
-							<object class="NSColorSpace" key="NSCustomColorSpace">
-								<int key="NSID">2</int>
-							</object>
+							<bytes key="NSWhite">MC4zMzMzMzMzMzMzAA</bytes>
 						</object>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 					</object>
@@ -211,7 +209,7 @@
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">coverImageView</string>
 						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="502184941"/>
+						<reference key="destination" ref="1008867463"/>
 					</object>
 					<int key="connectionID">12</int>
 				</object>
@@ -219,14 +217,14 @@
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">bookCoverView</string>
 						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="611956490"/>
+						<reference key="destination" ref="587623915"/>
 					</object>
 					<int key="connectionID">13</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
 						<string key="label">tapBookCover:</string>
-						<reference key="source" ref="305445005"/>
+						<reference key="source" ref="1060258378"/>
 						<reference key="destination" ref="372490531"/>
 						<int key="IBEventType">7</int>
 					</object>
@@ -251,7 +249,7 @@
 							<reference ref="92831743"/>
 							<reference ref="838941646"/>
 							<reference ref="94263054"/>
-							<reference ref="611956490"/>
+							<reference ref="587623915"/>
 						</object>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -288,24 +286,24 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">11</int>
-						<reference key="object" ref="611956490"/>
+						<reference key="object" ref="587623915"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="502184941"/>
-							<reference ref="305445005"/>
+							<reference ref="1008867463"/>
+							<reference ref="1060258378"/>
 						</object>
 						<reference key="parent" ref="191373211"/>
 						<string key="objectName">Cover View</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">10</int>
-						<reference key="object" ref="502184941"/>
-						<reference key="parent" ref="611956490"/>
+						<reference key="object" ref="1008867463"/>
+						<reference key="parent" ref="587623915"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">14</int>
-						<reference key="object" ref="305445005"/>
-						<reference key="parent" ref="611956490"/>
+						<reference key="object" ref="1060258378"/>
+						<reference key="parent" ref="587623915"/>
 					</object>
 				</object>
 			</object>
@@ -424,34 +422,24 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>authorLabel</string>
 							<string>bookCoverView</string>
 							<string>coverImageView</string>
-							<string>titleLabel</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>UILabel</string>
 							<string>UIView</string>
 							<string>UIImageView</string>
-							<string>UILabel</string>
 						</object>
 					</object>
 					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>authorLabel</string>
 							<string>bookCoverView</string>
 							<string>coverImageView</string>
-							<string>titleLabel</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<object class="IBToOneOutletInfo">
-								<string key="name">authorLabel</string>
-								<string key="candidateClassName">UILabel</string>
-							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">bookCoverView</string>
 								<string key="candidateClassName">UIView</string>
@@ -459,10 +447,6 @@
 							<object class="IBToOneOutletInfo">
 								<string key="name">coverImageView</string>
 								<string key="candidateClassName">UIImageView</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">titleLabel</string>
-								<string key="candidateClassName">UILabel</string>
 							</object>
 						</object>
 					</object>
@@ -587,14 +571,6 @@
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBFrameworkSource</string>
 						<string key="minorKey">UIKit.framework/Headers/UIImageView.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">UILabel</string>
-					<string key="superclassName">UIView</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBFrameworkSource</string>
-						<string key="minorKey">UIKit.framework/Headers/UILabel.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
