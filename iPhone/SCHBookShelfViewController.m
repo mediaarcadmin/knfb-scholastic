@@ -311,7 +311,15 @@
 
 -(void)gridView:(MRGridView *)gridView didSelectCellAtIndex:(NSInteger)index 
 {
+	BWKTestPageViewController *pageView = [[BWKTestPageViewController alloc] initWithNibName:nil bundle:nil];
+	pageView.xpsPath = [[NSBundle mainBundle] pathForResource:[self.xpsFiles objectAtIndex:index] ofType:@"xps"];
 	
+	BWKReadingOptionsView *optionsView = [[BWKReadingOptionsView alloc] initWithNibName:nil bundle:nil];
+	optionsView.pageViewController = pageView;
+	
+	[self.navigationController pushViewController:optionsView animated:YES];
+	[optionsView release];
+	[pageView release];
 }
 
 -(void)gridView:(MRGridView *)gridView confirmationForDeletionAtIndex:(NSInteger)index 
