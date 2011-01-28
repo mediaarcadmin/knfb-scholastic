@@ -9,6 +9,7 @@
 #import "BWKXPSProvider.h"
 #import "BlioTimeOrderedCache.h"
 #import "zlib.h"
+#import "TouchXML.h"
 
 
 @interface BlioXPSBitmapReleaseCallback : NSObject {
@@ -31,6 +32,7 @@
 @property (nonatomic, retain) NSString *xpsPagesDirectory;
 @property (nonatomic, retain) NSMutableArray *uriMap;
 
+- (void)parseMetadata:(NSData *)metadataFile;
 - (void)deleteTemporaryDirectoryAtPath:(NSString *)path;
 - (NSData *)decompressWithRawDeflate:(NSData *)data;
 - (NSData *)decompressWithGZipCompression:(NSData *)data;
@@ -48,7 +50,7 @@
 
 @implementation BWKXPSProvider
 
-@synthesize imageInfo, tempDirectory, xpsData, componentCache, xpsPath, pageCount, pageCropsCache, viewTransformsCache, xpsPagesDirectory, uriMap, title;
+@synthesize imageInfo, tempDirectory, xpsData, componentCache, xpsPath, pageCount, fileSize, ISBN, author, type, pageCropsCache, viewTransformsCache, xpsPagesDirectory, uriMap, title;
 
 void XPSPageCompleteCallback(void *userdata, RasterImageInfo *data) {
 	BWKXPSProvider *provider = (BWKXPSProvider *)userdata;	
@@ -132,6 +134,11 @@ void XPSPageCompleteCallback(void *userdata, RasterImageInfo *data) {
         XPS_SetAntiAliasMode(xpsHandle, XPS_ANTIALIAS_ON);
         pageCount = XPS_GetNumberPages(xpsHandle, 0);
         
+		NSDictionary *fileAttributes = [[NSFileManager defaultManager] attributesOfItemAtPath:self.xpsPath error:nil];
+		self.fileSize = fileAttributes.fileSize;
+		
+		[self parseMetadata:[self dataForComponentAtPath:BlioXPSEncryptedMetadata]];
+		
         self.xpsData = [NSMutableDictionary dictionary];
         
         BlioTimeOrderedCache *aCache = [[BlioTimeOrderedCache alloc] init];
@@ -147,6 +154,42 @@ void XPSPageCompleteCallback(void *userdata, RasterImageInfo *data) {
     return self;
 	
 	
+}
+
+- (void)parseMetadata:(NSData *)metadataFile
+{
+	NSError *error = nil;
+	CXMLDocument *doc = [[CXMLDocument alloc] initWithData:metadataFile options:0 error:&error];
+	NSArray *nodes = nil;
+	
+	if (error == nil) {
+		nodes = [doc nodesForXPath:@"//Title" error:&error];
+		if (error == nil) {		
+			for (CXMLElement *node in nodes) {
+				self.title = [[node attributeForName:@"Main"] stringValue];
+			}	
+		}
+		nodes = [doc nodesForXPath:@"//Contributor" error:&error];
+		if (error == nil) {		
+			for (CXMLElement *node in nodes) {
+				self.author = [[node attributeForName:@"Author"] stringValue];
+			}	
+		}		
+		nodes = [doc nodesForXPath:@"//Identifier" error:&error];
+		if (error == nil) {		
+			for (CXMLElement *node in nodes) {
+				self.ISBN = [[node attributeForName:@"ISBN"] stringValue];
+			}	
+		}		
+		nodes = [doc nodesForXPath:@"//Source" error:&error];
+		if (error == nil) {		
+			for (CXMLElement *node in nodes) {
+				self.type = [[node attributeForName:@"Type"] stringValue];
+			}	
+		}		
+	}
+	
+	[doc release], doc = nil;
 }
 
 - (void)deleteTemporaryDirectoryAtPath:(NSString *)path {

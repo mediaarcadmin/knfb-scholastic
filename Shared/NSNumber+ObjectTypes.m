@@ -11,6 +11,21 @@
 
 @implementation NSNumber (ObjectTypes)
 
++ (NSNumber *)numberWithStatus:(SCHStatus)value
+{
+	return([NSNumber numberWithInt:value]);	
+}
+
+- (id)initWithStatus:(SCHStatus)value
+{
+	return([self initWithInt:value]);
+}
+
+- (SCHStatus)statusValue
+{
+	return([self intValue]);
+}
+
 + (NSNumber *)numberWithStatusCode:(SCHStatusCodes)value
 {
 	return([NSNumber numberWithInt:value]);	

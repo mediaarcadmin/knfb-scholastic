@@ -14,6 +14,8 @@
 #import "SCHUserSettingsItem.h"
 #import "SCHProfileItem.h"
 #import "SCHContentMetadataItem.h"
+#import "BWKXPSProvider.h"
+#import "NSNumber+ObjectTypes.h"
 
 @interface SCHLocalDebug ()
 
@@ -48,16 +50,29 @@
 	for (NSString *xpsFile in XPSFiles) {
 		newContentMetadataItem = [NSEntityDescription insertNewObjectForEntityForName:@"SCHContentMetadataItem" inManagedObjectContext:self.managedObjectContext];
 		
-		//	newContentMetadataItem.Author = [self makeNullNil:[book objectForKey:kSCHLibreAccessWebServiceAuthor]];
+		NSString *xpsPath = [[NSBundle mainBundle] pathForResource:xpsFile ofType:@"xps"];
+		BWKXPSProvider *provider = [[BWKXPSProvider alloc] initWithPath:xpsPath];
+		
+		//	newContentMetadataItem.DRMQualifier = provider.author;
+		if (provider.ISBN != nil && [[provider.ISBN stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {
+			newContentMetadataItem.ContentIdentifierType = [NSNumber numberWithContentIdentifierType:kSCHContentItemContentIdentifierTypesISBN13];
+		} else {
+			newContentMetadataItem.ContentIdentifierType = [NSNumber numberWithContentIdentifierType:kSCHContentIdentifierTypesNone];			
+		}
+		newContentMetadataItem.ContentIdentifier = provider.ISBN;
+
+		newContentMetadataItem.Author = provider.author;
 		//	newContentMetadataItem.Version = [self makeNullNil:[book objectForKey:kSCHLibreAccessWebServiceVersion]];
-		//	newContentMetadataItem.ProductType = [self makeNullNil:[book objectForKey:kSCHLibreAccessWebServiceProductType]];
-		//	newContentMetadataItem.FileSize = [self makeNullNil:[book objectForKey:kSCHLibreAccessWebServiceFileSize]];
+		//newContentMetadataItem.ProductType = [self makeNullNil:[book objectForKey:kSCHLibreAccessWebServiceProductType]];
+		newContentMetadataItem.FileSize = [NSNumber numberWithLongLong:provider.fileSize];
 		//	newContentMetadataItem.CoverURL = [self makeNullNil:[book objectForKey:kSCHLibreAccessWebServiceCoverURL]];
 		//	newContentMetadataItem.ContentURL = [self makeNullNil:[book objectForKey:kSCHLibreAccessWebServiceContentURL]];
-		//	newContentMetadataItem.PageNumber = [self makeNullNil:[book objectForKey:kSCHLibreAccessWebServicePageNumber]];
-		newContentMetadataItem.Title = xpsFile;
+		newContentMetadataItem.PageNumber = [NSNumber numberWithInteger:provider.pageCount];
+		newContentMetadataItem.Title = provider.title;
 		newContentMetadataItem.FileName = xpsFile;		
 		//	newContentMetadataItem.Description = [self makeNullNil:[book objectForKey:kSCHLibreAccessWebServiceDescription]];
+		
+		[provider release], provider = nil;
 	}
 
 	// Save the context.
