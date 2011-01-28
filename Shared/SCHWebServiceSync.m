@@ -15,11 +15,16 @@
 #import "SCHProfileItem.h"
 #import "SCHContentMetadataItem.h"
 #import "NSNumber+ObjectTypes.h"
+#import "SCHUserContentItem.h"
+#import "SCHOrderItem.h"
+#import "SCHContentProfileItem.h"
 
 @interface SCHWebServiceSync ()
 
 - (void)clearProfiles;
 - (void)updateProfiles:(NSArray *)profileList;
+- (void)clearUserContentItems;
+- (void)updateUserContentItems:(NSArray *)userContentList;
 - (void)clearBooks;
 - (void)updateBooks:(NSArray *)bookList;
 - (void)clearUserSettings;
@@ -73,6 +78,7 @@
 	if([method compare:kSCHLibreAccessWebServiceGetUserProfiles] == NSOrderedSame) {
 		[self updateProfiles:[result objectForKey:kSCHLibreAccessWebServiceProfileList]];
 	} else if([method compare:kSCHLibreAccessWebServiceListUserContent] == NSOrderedSame) {
+		[self updateUserContentItems:[result objectForKey:kSCHLibreAccessWebServiceUserContentList]];
 		NSArray *books = [result objectForKey:kSCHLibreAccessWebServiceUserContentList];
 		if ([books count] > 0) {
 			[self.libreAccessWebService listContentMetadata:books includeURLs:NO];				
@@ -139,6 +145,71 @@
 		newProfileItem.LastName = [self makeNullNil:[profile objectForKey:kSCHLibreAccessWebServiceLastName]];
 		newProfileItem.LastModified = [self makeNullNil:[profile objectForKey:kSCHLibreAccessWebServiceLastModified]];
 		newProfileItem.State = [NSNumber numberWithInteger:0];				
+	}
+	
+	// Save the context.
+	if (![self.managedObjectContext save:&error]) {
+		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+		abort();
+	}	
+}
+
+- (void)clearUserContentItems
+{
+	NSError *error = nil;
+	
+	if (![self.managedObjectContext emptyEntity:@"SCHUserContentItem" error:&error] ||
+		![self.managedObjectContext emptyEntity:@"SCHOrderItem" error:&error] ||
+		![self.managedObjectContext emptyEntity:@"SCHContentProfileItem" error:&error]) {
+		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+		abort();
+	}		
+}
+
+- (void)updateUserContentItems:(NSArray *)userContentList
+{
+	NSError *error = nil;
+	
+	[self clearUserContentItems];
+	
+	for (id userContentItem in userContentList) {
+		SCHUserContentItem *newUserContentItem = [NSEntityDescription insertNewObjectForEntityForName:@"SCHUserContentItem" inManagedObjectContext:self.managedObjectContext];
+		
+		newUserContentItem.LastModified = [self makeNullNil:[userContentItem objectForKey:kSCHLibreAccessWebServiceLastModified]];
+		newUserContentItem.State = [NSNumber numberWithStatus:kSCHStatusCreated];
+
+		newUserContentItem.DRMQualifier = [self makeNullNil:[userContentItem objectForKey:kSCHLibreAccessWebServiceDRMQualifier]];
+		newUserContentItem.Version = [self makeNullNil:[userContentItem objectForKey:kSCHLibreAccessWebServiceVersion]];
+		newUserContentItem.ContentIdentifier = [self makeNullNil:[userContentItem objectForKey:kSCHLibreAccessWebServiceContentIdentifier]];
+		newUserContentItem.Format = [self makeNullNil:[userContentItem objectForKey:kSCHLibreAccessWebServiceFormat]];		
+		newUserContentItem.DefaultAssignment = [self makeNullNil:[userContentItem objectForKey:kSCHLibreAccessWebServiceDefaultAssignment]];		
+		newUserContentItem.ContentIdentifierType = [self makeNullNil:[userContentItem objectForKey:kSCHLibreAccessWebServiceContentIdentifierType]];				
+		
+		NSArray *orderList = [self makeNullNil:[userContentItem objectForKey:kSCHLibreAccessWebServiceOrderList]];
+		for (NSDictionary *orderItem in orderList) {
+			SCHOrderItem *newOrderItem = [NSEntityDescription insertNewObjectForEntityForName:@"SCHOrderItem" inManagedObjectContext:self.managedObjectContext];			
+
+			newOrderItem.OrderID = [self makeNullNil:[userContentItem objectForKey:kSCHLibreAccessWebServiceOrderID]];
+			newOrderItem.OrderDate = [self makeNullNil:[userContentItem objectForKey:kSCHLibreAccessWebServiceOrderDate]];
+
+			[newUserContentItem addOrderListObject:newOrderItem];
+		}
+		
+		NSArray *profileList = [self makeNullNil:[userContentItem objectForKey:kSCHLibreAccessWebServiceProfileList]];
+		for (NSDictionary *profileItem in profileList) {
+			SCHContentProfileItem *newContentProfileItem = [NSEntityDescription insertNewObjectForEntityForName:@"SCHContentProfileItem" inManagedObjectContext:self.managedObjectContext];			
+			
+			newContentProfileItem.LastModified = [self makeNullNil:[profileItem objectForKey:kSCHLibreAccessWebServiceLastModified]];
+			newContentProfileItem.State = [NSNumber numberWithStatus:kSCHStatusCreated];
+			
+			newContentProfileItem.IsFavorite = [self makeNullNil:[profileItem objectForKey:kSCHLibreAccessWebServiceIsFavorite]];
+
+			newContentProfileItem.ProfileID = [self makeNullNil:[profileItem objectForKey:kSCHLibreAccessWebServiceProfileID]];
+			newContentProfileItem.LastPageLocation = [self makeNullNil:[profileItem objectForKey:kSCHLibreAccessWebServiceLastPageLocation]];
+			
+			[newUserContentItem addProfileListObject:newContentProfileItem];
+		}
+		
 	}
 	
 	// Save the context.

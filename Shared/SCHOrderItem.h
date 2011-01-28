@@ -8,6 +8,7 @@
 
 #import <CoreData/CoreData.h>
 
+@class SCHUserContentItem;
 
 @interface SCHOrderItem :  NSManagedObject  
 {
@@ -15,6 +16,7 @@
 
 @property (nonatomic, retain) NSString * OrderID;
 @property (nonatomic, retain) NSDate * OrderDate;
+@property (nonatomic, retain) SCHUserContentItem * UserContentItem;
 
 @end
 

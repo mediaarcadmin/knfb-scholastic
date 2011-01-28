@@ -8,10 +8,12 @@
 
 #import "SCHOrderItem.h"
 
+#import "SCHUserContentItem.h"
 
 @implementation SCHOrderItem 
 
 @dynamic OrderID;
 @dynamic OrderDate;
+@dynamic UserContentItem;
 
 @end

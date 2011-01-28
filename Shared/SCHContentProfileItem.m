@@ -8,10 +8,12 @@
 
 #import "SCHContentProfileItem.h"
 
+#import "SCHUserContentItem.h"
 
 @implementation SCHContentProfileItem 
 
 @dynamic ProfileID;
 @dynamic LastPageLocation;
+@dynamic UserContentItem;
 
 @end

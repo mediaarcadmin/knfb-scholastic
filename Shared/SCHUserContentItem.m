@@ -8,14 +8,18 @@
 
 #import "SCHUserContentItem.h"
 
+#import "SCHContentProfileItem.h"
+#import "SCHOrderItem.h"
 
 @implementation SCHUserContentItem 
 
-@dynamic DRMQualifier;
-@dynamic Version;
-@dynamic ContentIdentifier;
 @dynamic Format;
-@dynamic DefaultAssignment;
+@dynamic Version;
 @dynamic ContentIdentifierType;
+@dynamic ContentIdentifier;
+@dynamic DefaultAssignment;
+@dynamic DRMQualifier;
+@dynamic OrderList;
+@dynamic ProfileList;
 
 @end
