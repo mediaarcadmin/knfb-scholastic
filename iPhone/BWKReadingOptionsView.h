@@ -26,6 +26,7 @@
 @property (readwrite, retain) UIImage *thumbnailImage;
 
 - (IBAction) showBookView: (id) sender;
+- (IBAction) showBookViewAtStart: (id) sender;
 - (IBAction) tapBookCover: (id) sender;
 - (void) cancelInitialTimer;
 

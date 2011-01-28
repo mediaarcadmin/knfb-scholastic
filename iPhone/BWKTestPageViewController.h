@@ -40,6 +40,7 @@
 - (IBAction) previousPage: (id) sender;
 - (IBAction) nextPage: (id) sender;	
 - (IBAction) backAction: (id) sender;
+- (void) goToFirstPage;
 //- (IBAction) sliderValueChanged: (id) sender;
 //- (IBAction) sliderChangesStarted: (id) sender;
 //- (IBAction) sliderChangesEnded: (id) sender;

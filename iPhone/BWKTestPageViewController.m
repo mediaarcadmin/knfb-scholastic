@@ -123,6 +123,13 @@
 	}
 }
 
+- (void) goToFirstPage;
+{
+	currentPage = 1;
+	[pageScrubber setValue:currentPage];
+	[self loadImageForCurrentPage];
+}
+
 - (void) checkButtonStatus
 {
 	if (currentPage == 1) {
