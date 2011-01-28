@@ -48,7 +48,7 @@
 
 @implementation BWKXPSProvider
 
-@synthesize imageInfo, tempDirectory, xpsData, componentCache, xpsPath, pageCount, pageCropsCache, viewTransformsCache, xpsPagesDirectory, uriMap, title;
+@synthesize imageInfo, tempDirectory, xpsData, componentCache, xpsPath, pageCount, fileSize, pageCropsCache, viewTransformsCache, xpsPagesDirectory, uriMap, title;
 
 void XPSPageCompleteCallback(void *userdata, RasterImageInfo *data) {
 	BWKXPSProvider *provider = (BWKXPSProvider *)userdata;	
@@ -132,6 +132,9 @@ void XPSPageCompleteCallback(void *userdata, RasterImageInfo *data) {
         XPS_SetAntiAliasMode(xpsHandle, XPS_ANTIALIAS_ON);
         pageCount = XPS_GetNumberPages(xpsHandle, 0);
         
+		NSDictionary *fileAttributes = [[NSFileManager defaultManager] attributesOfItemAtPath:self.xpsPath error:nil];
+		self.fileSize = fileAttributes.fileSize;
+		
         self.xpsData = [NSMutableDictionary dictionary];
         
         BlioTimeOrderedCache *aCache = [[BlioTimeOrderedCache alloc] init];

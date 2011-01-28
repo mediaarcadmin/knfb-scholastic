@@ -14,6 +14,7 @@
 #import "SCHUserSettingsItem.h"
 #import "SCHProfileItem.h"
 #import "SCHContentMetadataItem.h"
+#import "BWKXPSProvider.h"
 
 @interface SCHLocalDebug ()
 
@@ -48,16 +49,22 @@
 	for (NSString *xpsFile in XPSFiles) {
 		newContentMetadataItem = [NSEntityDescription insertNewObjectForEntityForName:@"SCHContentMetadataItem" inManagedObjectContext:self.managedObjectContext];
 		
+		NSString *xpsPath = [[NSBundle mainBundle] pathForResource:xpsFile ofType:@"xps"];
+		BWKXPSProvider *provider = [[BWKXPSProvider alloc] initWithPath:xpsPath];
+		provider.title = xpsFile;
+		
 		//	newContentMetadataItem.Author = [self makeNullNil:[book objectForKey:kSCHLibreAccessWebServiceAuthor]];
 		//	newContentMetadataItem.Version = [self makeNullNil:[book objectForKey:kSCHLibreAccessWebServiceVersion]];
 		//	newContentMetadataItem.ProductType = [self makeNullNil:[book objectForKey:kSCHLibreAccessWebServiceProductType]];
-		//	newContentMetadataItem.FileSize = [self makeNullNil:[book objectForKey:kSCHLibreAccessWebServiceFileSize]];
+		newContentMetadataItem.FileSize = [NSNumber numberWithLongLong:provider.fileSize];
 		//	newContentMetadataItem.CoverURL = [self makeNullNil:[book objectForKey:kSCHLibreAccessWebServiceCoverURL]];
 		//	newContentMetadataItem.ContentURL = [self makeNullNil:[book objectForKey:kSCHLibreAccessWebServiceContentURL]];
-		//	newContentMetadataItem.PageNumber = [self makeNullNil:[book objectForKey:kSCHLibreAccessWebServicePageNumber]];
+		newContentMetadataItem.PageNumber = [NSNumber numberWithInteger:provider.pageCount];
 		newContentMetadataItem.Title = xpsFile;
 		newContentMetadataItem.FileName = xpsFile;		
 		//	newContentMetadataItem.Description = [self makeNullNil:[book objectForKey:kSCHLibreAccessWebServiceDescription]];
+		
+		[provider release], provider = nil;
 	}
 
 	// Save the context.
