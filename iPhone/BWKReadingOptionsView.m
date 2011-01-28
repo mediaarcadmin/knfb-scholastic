@@ -7,7 +7,7 @@
 //
 
 #import "BWKReadingOptionsView.h"
-
+#import <QuartzCore/QuartzCore.h>
 
 @implementation BWKReadingOptionsView
 @synthesize pageViewController;
@@ -25,12 +25,14 @@
 }
 */
 
-/*
+
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
+	optionsView.layer.cornerRadius = 5.0f;
+	optionsView.layer.masksToBounds = YES;
 }
-*/
+
 
 - (void) viewDidAppear:(BOOL)animated
 {

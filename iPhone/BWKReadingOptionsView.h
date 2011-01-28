@@ -14,6 +14,7 @@
 
 	IBOutlet UIImageView *coverImageView;
 	IBOutlet UIView *bookCoverView;
+	IBOutlet UIView *optionsView;
 //	IBOutlet UILabel *titleLabel;
 //	IBOutlet UILabel *authorLabel;
 	
