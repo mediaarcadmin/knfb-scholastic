@@ -17,32 +17,45 @@
 @implementation MRGridView
 @synthesize gridDataSource, gridDelegate, currDraggedCell,currentScrollOffset,reusableCells,cellIndices,editing,moveStyle;
 
+- (void)initialiseView {
+	[self setBouncesZoom:YES];
+	[self setScrollEnabled:YES];
+	self.autoresizingMask = (UIViewAutoresizingFlexibleHeight|
+							 UIViewAutoresizingFlexibleWidth);	
+	
+	gridView = [[UIView alloc]initWithFrame:self.frame];
+	gridView.autoresizingMask = (UIViewAutoresizingFlexibleWidth
+								 );	
+	self.delegate = self;
+	reusableCells = [[NSMutableDictionary dictionary]retain];
+	cellIndices = [[NSMutableDictionary dictionary]retain];
+	[self addSubview:gridView];
+	moveStyle = MRGridViewMoveStyleDisplace;
+	currDraggedCell = nil;
+	currDraggedCellIndex = -1;
+	currentHoveredIndex = -1;
+	minimumBorderSize = 0;
+	cellDragging = NO;
+	scrollTimer = nil;
+	_activeTouch = nil;	
+}
+
 - (id)initWithFrame:(CGRect)frame {
     if ((self = [super initWithFrame:frame])) {
         // Initialization code
-		[self setBouncesZoom:YES];
-		[self setScrollEnabled:YES];
-		self.autoresizingMask = (UIViewAutoresizingFlexibleHeight|
-								 UIViewAutoresizingFlexibleWidth);	
-		
-		gridView = [[UIView alloc]initWithFrame:frame];
-		gridView.autoresizingMask = (UIViewAutoresizingFlexibleWidth
-									 );	
-		self.delegate = self;
-		reusableCells = [[NSMutableDictionary dictionary]retain];
-		cellIndices = [[NSMutableDictionary dictionary]retain];
-		[self addSubview:gridView];
-		moveStyle = MRGridViewMoveStyleDisplace;
-		currDraggedCell = nil;
-		currDraggedCellIndex = -1;
-		currentHoveredIndex = -1;
-		minimumBorderSize = 0;
-		cellDragging = NO;
-		scrollTimer = nil;
-		_activeTouch = nil;
+		[self initialiseView];
 	}
     return self;
 }
+
+- (id)initWithCoder:(NSCoder *)aDecoder {
+	if ((self = [super initWithCoder:aDecoder])) {
+        // Initialization code
+		[self initialiseView];
+	}
+    return self;
+}
+	
 
 -(void)accessibilityFocusedOnCell:(id)object {
 	//		NSLog(@"[BlioLibraryGridView accessibilityFocusedOnCell entered REPETITIVELY. object: %@",((BlioLibraryGridViewCell*)object).book.title);
