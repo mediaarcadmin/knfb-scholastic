@@ -21,12 +21,10 @@
 #endif
 @end
 
-
 @implementation SCHBookShelfViewController
 
 @synthesize fetchedResultsController=fetchedResultsController_, managedObjectContext=managedObjectContext_;
 @synthesize profileID;
-
 @synthesize tableView, gridView;
 
 - (void)releaseViewObjects 
@@ -91,7 +89,7 @@
 
 #ifdef LOCALDEBUG
 
-- (void) checkAndCopyLocalFilesToApplicationSupport
+- (void)checkAndCopyLocalFilesToApplicationSupport
 {
 
 	// first, check the application support directory exists, and if
@@ -192,119 +190,25 @@
 }
 */
 
-
 #pragma mark -
 #pragma mark Core Data Table View Methods
 
-- (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-	static NSString *cellID = @"bookShelfViewCell";
+- (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {	
+	SCHContentMetadataItem *contentMetadataItem = [self.fetchedResultsController objectAtIndexPath:indexPath];
 	
-	UITableViewCell *cell = [aTableView dequeueReusableCellWithIdentifier:cellID];
+	cell.textLabel.text = contentMetadataItem.Title; 
+	cell.detailTextLabel.text = contentMetadataItem.Author;
 	
-	if (!cell) {
-		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellID] autorelease];
-		cell.textLabel.font = [UIFont systemFontOfSize:14.0];
-		cell.detailTextLabel.font = [UIFont systemFontOfSize:12.0];
+	if (contentMetadataItem.FileName != nil) {
+		NSString *xpsPath = [[NSBundle mainBundle] pathForResource:contentMetadataItem.FileName ofType:@"xps"];
+		BWKXPSProvider *provider = [[BWKXPSProvider alloc] initWithPath:xpsPath];
+		provider.title = contentMetadataItem.FileName;
+		cell.imageView.image = [provider coverThumbForList];
+		[provider release], provider = nil;	
+	} else {
+		cell.imageView.image = nil;
 	}
 }
-
-
-#pragma mark UITableViewDelegate methods
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-	
-	BWKTestPageViewController *pageView = [[BWKTestPageViewController alloc] initWithNibName:nil bundle:nil];
-	pageView.xpsPath = [[NSBundle mainBundle] pathForResource:[self.xpsFiles objectAtIndex:indexPath.row] ofType:@"xps"];
-	
-	BWKReadingOptionsView *optionsView = [[BWKReadingOptionsView alloc] initWithNibName:nil bundle:nil];
-	optionsView.pageViewController = pageView;
-	
-	[self.navigationController pushViewController:optionsView animated:YES];
-	[optionsView release];
-	[pageView release];
-	
-}
-
-#pragma mark -
-#pragma mark Local Files Grid View Methods
-#pragma mark MRGridViewDataSource methods
-
--(MRGridViewCell*)gridView:(MRGridView*)aGridView cellForGridIndex: (NSInteger)index 
-{
-	static NSString* cellIdentifier = @"ScholasticGridViewCell";
-	MRGridViewCell* gridCell = [aGridView dequeueReusableCellWithIdentifier:cellIdentifier];
-	if (gridCell == nil) {
-		gridCell = [[[MRGridViewCell alloc]initWithFrame:[aGridView frameForCellAtGridIndex: index] reuseIdentifier:cellIdentifier] autorelease];
-		UIImageView *coverView = [[UIImageView alloc] init];
-		coverView.contentMode = UIViewContentModeScaleToFill;
-		coverView.tag = 666;
-		[gridCell.contentView addSubview:coverView];
-		[coverView release];
-	}
-	else {
-		gridCell.frame = [aGridView frameForCellAtGridIndex: index];
-	}
-	
-	NSString *xpsPath = [[NSBundle mainBundle] pathForResource:[self.xpsFiles objectAtIndex:index] ofType:@"xps"];
-	BWKXPSProvider *provider = [[BWKXPSProvider alloc] initWithPath:xpsPath];
-	provider.title = [self.xpsFiles objectAtIndex:index];
-	UIImage *thumb = [provider coverThumbForList];
-	[provider release];
-	
-	CGRect maxRect = UIEdgeInsetsInsetRect(gridCell.bounds, UIEdgeInsetsMake(0, 0, 23, 0));
-	CGFloat fitScale = MAX(thumb.size.width / maxRect.size.width, thumb.size.height / maxRect.size.height);
-	
-	CGRect fitRect = CGRectZero;
-	fitRect.size.width = thumb.size.width / fitScale;
-	fitRect.size.height = thumb.size.height / fitScale;
-	fitRect.origin.x = maxRect.origin.x + (maxRect.size.width - fitRect.size.width)/2.0f;
-	fitRect.origin.y = maxRect.origin.y + (maxRect.size.height - fitRect.size.height);
-	
-	UIImageView *coverView = (UIImageView *)[gridCell viewWithTag:666];
-	coverView.frame = fitRect;
-	coverView.image = thumb;
-	
-	return gridCell;
-}
-
--(NSInteger)numberOfItemsInGridView:(MRGridView*)gridView 
-{
-	return [self.xpsFiles count];
-}
-
--(NSString*)contentDescriptionForCellAtIndex:(NSInteger)index 
-{
-	return nil;
-}
-
--(BOOL) gridView:(MRGridView*)gridView canMoveCellAtIndex: (NSInteger)index { return NO;}
--(void) gridView:(MRGridView*)gridView moveCellAtIndex: (NSInteger)fromIndex toIndex: (NSInteger)toIndex{}
--(void) gridView:(MRGridView*)gridView finishedMovingCellToIndex:(NSInteger)toIndex{}
--(void) gridView:(MRGridView*)gridView commitEditingStyle:(MRGridViewCellEditingStyle)editingStyle forIndex:(NSInteger)index{}
-
-#pragma mark MRGridViewDelegate methods
-
--(void)gridView:(MRGridView *)gridView didSelectCellAtIndex:(NSInteger)index 
-{
-	BWKTestPageViewController *pageView = [[BWKTestPageViewController alloc] initWithNibName:nil bundle:nil];
-	pageView.xpsPath = [[NSBundle mainBundle] pathForResource:[self.xpsFiles objectAtIndex:index] ofType:@"xps"];
-	
-	BWKReadingOptionsView *optionsView = [[BWKReadingOptionsView alloc] initWithNibName:nil bundle:nil];
-	optionsView.pageViewController = pageView;
-	
-	[self.navigationController pushViewController:optionsView animated:YES];
-	[optionsView release];
-	[pageView release];
-}
-
--(void)gridView:(MRGridView *)gridView confirmationForDeletionAtIndex:(NSInteger)index 
-{
-	
-}
-
-#else 
 
 #pragma mark -
 #pragma mark Table view data source
@@ -372,11 +276,12 @@
 {
 	return 88.0f;
 }
+
 #pragma mark -
 #pragma mark Core Data Grid View Methods
 #pragma mark MRGridViewDataSource methods
 
--(MRGridViewCell*)gridView:(MRGridView*)aGridView cellForGridIndex: (NSInteger)index 
+-(MRGridViewCell*)gridView:(MRGridView*)aGridView cellForGridIndex:(NSInteger)index 
 {
 	static NSString* cellIdentifier = @"ScholasticGridViewCell";
 	MRGridViewCell* gridCell = [aGridView dequeueReusableCellWithIdentifier:cellIdentifier];
@@ -392,13 +297,33 @@
 		gridCell.frame = [aGridView frameForCellAtGridIndex: index];
 	}
 	
+	SCHContentMetadataItem *contentMetadataItem = [self.fetchedResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
+	UIImage *thumb = nil;
+	
+	if (contentMetadataItem.FileName == nil) {
+		thumb = [UIImage imageNamed:@"PlaceholderBook"];
+	} else {
+		NSString *xpsPath = [[NSBundle mainBundle] pathForResource:contentMetadataItem.FileName ofType:@"xps"];
+		BWKXPSProvider *provider = [[BWKXPSProvider alloc] initWithPath:xpsPath];
+		provider.title = contentMetadataItem.FileName;
+		thumb = [provider coverThumbForList];
+		[provider release];
+	}
+		
 	CGRect maxRect = UIEdgeInsetsInsetRect(gridCell.bounds, UIEdgeInsetsMake(0, 0, 23, 0));
+	CGFloat fitScale = MAX(thumb.size.width / maxRect.size.width, thumb.size.height / maxRect.size.height);
+	
+	CGRect fitRect = CGRectZero;
+	fitRect.size.width = thumb.size.width / fitScale;
+	fitRect.size.height = thumb.size.height / fitScale;
+	fitRect.origin.x = maxRect.origin.x + (maxRect.size.width - fitRect.size.width)/2.0f;
+	fitRect.origin.y = maxRect.origin.y + (maxRect.size.height - fitRect.size.height);
+	
 	UIImageView *coverView = (UIImageView *)[gridCell viewWithTag:666];
-	coverView.frame = maxRect;
-	coverView.image = [UIImage imageNamed:@"PlaceholderBook"];
-	
+	coverView.frame = fitRect;
+	coverView.image = thumb;		
+
 	return gridCell;
-	
 }
 
 -(NSInteger)numberOfItemsInGridView:(MRGridView*)gridView 
@@ -421,15 +346,22 @@
 
 -(void)gridView:(MRGridView *)gridView didSelectCellAtIndex:(NSInteger)index 
 {
+	SCHContentMetadataItem *contentMetadataItem = [self.fetchedResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
+	BWKTestPageViewController *pageView = [[BWKTestPageViewController alloc] initWithNibName:nil bundle:nil];
+	pageView.xpsPath = [[NSBundle mainBundle] pathForResource:contentMetadataItem.FileName ofType:@"xps"];
 	
+	BWKReadingOptionsView *optionsView = [[BWKReadingOptionsView alloc] initWithNibName:nil bundle:nil];
+	optionsView.pageViewController = pageView;
+	
+	[self.navigationController pushViewController:optionsView animated:YES];
+	[optionsView release];
+	[pageView release];	
 }
 
 -(void)gridView:(MRGridView *)gridView confirmationForDeletionAtIndex:(NSInteger)index 
 {
 	
 }
-
-#endif
 
 #pragma mark -
 #pragma mark Fetched results controller
