@@ -110,6 +110,11 @@
 	if (currentPage > 1) {
 		currentPage--;
 		[pageScrubber setValue:currentPage];
+		
+		if (sender) {
+			[self cancelInitialTimer];
+		}
+		
 		[self loadImageForCurrentPage];
 	}
 }
@@ -119,6 +124,11 @@
 	if (currentPage < [testRenderer pageCount]) {
 		currentPage++;
 		[pageScrubber setValue:currentPage];
+
+		if (sender) {
+			[self cancelInitialTimer];
+		}
+		
 		[self loadImageForCurrentPage];
 	}
 }
@@ -196,8 +206,6 @@
 
 - (void) loadImageForCurrentPage
 {
-	[self cancelInitialTimer];
-
 	id context;
 	UIView *oldImageView = [pageView viewWithTag:9999];
 	
