@@ -42,6 +42,11 @@
 	
 	// xps file size
 	unsigned long long fileSize;
+	
+	// XPS metadata info
+	NSString *ISBN;
+	NSString *author;
+	NSString *type;
 
 	// first page crop rect, to prevent repeated visits to the XPS
 	CGRect firstPageCrop;
@@ -59,6 +64,9 @@
 @property (nonatomic, retain) NSString *title;
 @property (nonatomic) NSInteger pageCount;
 @property (nonatomic) unsigned long long fileSize;
+@property (nonatomic, retain) NSString *ISBN;
+@property (nonatomic, retain) NSString *author;
+@property (nonatomic, retain) NSString *type;
 
 - (id) initWithPath: (NSString *) path;
 - (CGContextRef)RGBABitmapContextForPage:(NSUInteger)page

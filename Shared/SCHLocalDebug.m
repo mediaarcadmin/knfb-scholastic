@@ -15,6 +15,7 @@
 #import "SCHProfileItem.h"
 #import "SCHContentMetadataItem.h"
 #import "BWKXPSProvider.h"
+#import "NSNumber+ObjectTypes.h"
 
 @interface SCHLocalDebug ()
 
@@ -51,16 +52,23 @@
 		
 		NSString *xpsPath = [[NSBundle mainBundle] pathForResource:xpsFile ofType:@"xps"];
 		BWKXPSProvider *provider = [[BWKXPSProvider alloc] initWithPath:xpsPath];
-		provider.title = xpsFile;
 		
-		//	newContentMetadataItem.Author = [self makeNullNil:[book objectForKey:kSCHLibreAccessWebServiceAuthor]];
+		//	newContentMetadataItem.DRMQualifier = provider.author;
+		if (provider.ISBN != nil && [[provider.ISBN stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {
+			newContentMetadataItem.ContentIdentifierType = [NSNumber numberWithContentIdentifierType:kSCHContentItemContentIdentifierTypesISBN13];
+		} else {
+			newContentMetadataItem.ContentIdentifierType = [NSNumber numberWithContentIdentifierType:kSCHContentIdentifierTypesNone];			
+		}
+		newContentMetadataItem.ContentIdentifier = provider.ISBN;
+
+		newContentMetadataItem.Author = provider.author;
 		//	newContentMetadataItem.Version = [self makeNullNil:[book objectForKey:kSCHLibreAccessWebServiceVersion]];
-		//	newContentMetadataItem.ProductType = [self makeNullNil:[book objectForKey:kSCHLibreAccessWebServiceProductType]];
+		//newContentMetadataItem.ProductType = [self makeNullNil:[book objectForKey:kSCHLibreAccessWebServiceProductType]];
 		newContentMetadataItem.FileSize = [NSNumber numberWithLongLong:provider.fileSize];
 		//	newContentMetadataItem.CoverURL = [self makeNullNil:[book objectForKey:kSCHLibreAccessWebServiceCoverURL]];
 		//	newContentMetadataItem.ContentURL = [self makeNullNil:[book objectForKey:kSCHLibreAccessWebServiceContentURL]];
 		newContentMetadataItem.PageNumber = [NSNumber numberWithInteger:provider.pageCount];
-		newContentMetadataItem.Title = xpsFile;
+		newContentMetadataItem.Title = provider.title;
 		newContentMetadataItem.FileName = xpsFile;		
 		//	newContentMetadataItem.Description = [self makeNullNil:[book objectForKey:kSCHLibreAccessWebServiceDescription]];
 		
