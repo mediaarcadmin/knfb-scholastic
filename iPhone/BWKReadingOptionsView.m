@@ -34,7 +34,7 @@
 
 - (void) viewDidAppear:(BOOL)animated
 {
-	initialFadeTimer = [NSTimer scheduledTimerWithTimeInterval:2.0f
+	initialFadeTimer = [NSTimer scheduledTimerWithTimeInterval:1.0f
 														target:self
 													  selector:@selector(tapBookCover:)
 													  userInfo:nil
@@ -73,7 +73,7 @@
 - (IBAction) tapBookCover: (id) sender
 {
 	[UIView beginAnimations:@"coverHide" context:nil];
-	[UIView setAnimationDuration:0.3f];
+	[UIView setAnimationDuration:0.15f];
 	
 	[bookCoverView setAlpha:0.0f];
 	
