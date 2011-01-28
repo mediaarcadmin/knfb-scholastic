@@ -41,6 +41,7 @@
 	pageScrubber.value = currentPage;
 	
 	panSpeedLabel.text = @"";
+	
 }
 
 - (void) viewWillAppear:(BOOL)animated
@@ -78,6 +79,13 @@
 
 	[doubleTapGesture release];
 	[singleTapGesture release];
+	
+	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackTranslucent];	
+	[self setWantsFullScreenLayout:YES];
+	CGRect frame = topToolbar.frame;
+	frame.origin.y = 20;
+	topToolbar.frame = frame;
+	
 	
 }
 
@@ -263,20 +271,22 @@
 	
 	if (animated) {
 		[UIView beginAnimations:@"toolbarFade" context:nil];
-		[UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-		[UIView setAnimationDuration:0.25f];
+		[UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
+		[UIView setAnimationDuration:0.3f];
 		[UIView setAnimationBeginsFromCurrentState:YES];
 	}
 	
 	if (toolbarsVisible) {
 		[topToolbar setAlpha:1.0f];
 		[bottomToolbar setAlpha:1.0f];
-		[scrollView setContentInset:UIEdgeInsetsMake(44, 0, 0, 0)];
-		[scrollView setContentOffset:CGPointMake(scrollView.contentOffset.x, scrollView.contentOffset.y - 44)];
+		[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
 	} else {
 		[topToolbar setAlpha:0.0f];
 		[bottomToolbar setAlpha:0.0f];
-		[scrollView setContentInset:UIEdgeInsetsMake(0, 0, 0, 0)];
+		[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+//		CGRect frame = topToolbar.frame;
+//		frame.origin.y = 0;
+//		topToolbar.frame = frame;
 	}
 	
 	if (animated) {
