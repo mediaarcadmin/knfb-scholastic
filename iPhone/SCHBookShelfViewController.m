@@ -268,6 +268,12 @@
 	optionsView.pageViewController = pageView;
 	optionsView.metadataItem = contentMetadataItem;
 	
+	NSString *xpsPath = [[NSBundle mainBundle] pathForResource:contentMetadataItem.FileName ofType:@"xps"];
+	BWKXPSProvider *provider = [[BWKXPSProvider alloc] initWithPath:xpsPath];
+	provider.title = contentMetadataItem.FileName;
+	optionsView.thumbnailImage = [provider coverThumbForList];
+	[provider release];
+	
 	[self.navigationController pushViewController:optionsView animated:YES];
 	[optionsView release];
 	[pageView release];	
@@ -353,6 +359,13 @@
 	
 	BWKReadingOptionsView *optionsView = [[BWKReadingOptionsView alloc] initWithNibName:nil bundle:nil];
 	optionsView.pageViewController = pageView;
+	optionsView.metadataItem = contentMetadataItem;
+
+	NSString *xpsPath = [[NSBundle mainBundle] pathForResource:contentMetadataItem.FileName ofType:@"xps"];
+	BWKXPSProvider *provider = [[BWKXPSProvider alloc] initWithPath:xpsPath];
+	provider.title = contentMetadataItem.FileName;
+	optionsView.thumbnailImage = [provider coverThumbForList];
+	[provider release];
 	
 	[self.navigationController pushViewController:optionsView animated:YES];
 	[optionsView release];

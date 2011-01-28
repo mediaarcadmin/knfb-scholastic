@@ -14,7 +14,8 @@
 
 	IBOutlet UIImageView *coverImageView;
 	IBOutlet UIView *bookCoverView;
-	IBOutlet UILabel *authorLabel;
+//	IBOutlet UILabel *titleLabel;
+//	IBOutlet UILabel *authorLabel;
 	
 	NSTimer *initialFadeTimer;
 	
@@ -22,6 +23,7 @@
 
 @property (readwrite, retain) BWKTestPageViewController *pageViewController;
 @property (readwrite, retain) SCHContentMetadataItem *metadataItem;
+@property (readwrite, retain) UIImage *thumbnailImage;
 
 - (IBAction) showBookView: (id) sender;
 - (IBAction) tapBookCover: (id) sender;

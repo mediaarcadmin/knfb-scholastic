@@ -12,6 +12,7 @@
 @implementation BWKReadingOptionsView
 @synthesize pageViewController;
 @synthesize metadataItem;
+@synthesize thumbnailImage;
 
 // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
 /*
@@ -53,8 +54,14 @@
 	
 	self.navigationController.navigationBarHidden = NO;
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];	
-//	NSLog(@"Item: %@", metadataItem);
-	authorLabel.text = [NSString stringWithFormat:@"Author: %@", metadataItem.Author];
+	NSLog(@"Item: %@", metadataItem);
+	
+	if (self.thumbnailImage) {
+		[coverImageView setImage:self.thumbnailImage];
+	}
+	
+//	titleLabel.text = [NSString stringWithFormat:@"%@", metadataItem.Title];
+//	authorLabel.text = [NSString stringWithFormat:@"Author: %@", metadataItem.Author];
 }
 
 
