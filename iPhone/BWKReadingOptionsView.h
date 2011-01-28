@@ -8,14 +8,23 @@
 
 #import <UIKit/UIKit.h>
 #import "BWKTestPageViewController.h"
-
+#import "SCHContentMetadataItem.h"
 
 @interface BWKReadingOptionsView : UIViewController {
 
+	IBOutlet UIImageView *coverImageView;
+	IBOutlet UIView *bookCoverView;
+	IBOutlet UILabel *authorLabel;
+	
+	NSTimer *initialFadeTimer;
+	
 }
 
 @property (readwrite, retain) BWKTestPageViewController *pageViewController;
+@property (readwrite, retain) SCHContentMetadataItem *metadataItem;
 
 - (IBAction) showBookView: (id) sender;
+- (IBAction) tapBookCover: (id) sender;
+- (void) cancelInitialTimer;
 
 @end

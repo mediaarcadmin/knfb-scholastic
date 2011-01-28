@@ -11,6 +11,7 @@
 
 @implementation BWKReadingOptionsView
 @synthesize pageViewController;
+@synthesize metadataItem;
 
 // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
 /*
@@ -30,6 +31,14 @@
 }
 */
 
+- (void) viewDidAppear:(BOOL)animated
+{
+	initialFadeTimer = [NSTimer scheduledTimerWithTimeInterval:2.0f
+														target:self
+													  selector:@selector(tapBookCover:)
+													  userInfo:nil
+													   repeats:NO];
+}	
 
 // Override to allow orientations other than the default portrait orientation.
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
@@ -43,6 +52,9 @@
 	[super viewWillAppear:animated];
 	
 	self.navigationController.navigationBarHidden = NO;
+	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];	
+//	NSLog(@"Item: %@", metadataItem);
+	authorLabel.text = [NSString stringWithFormat:@"Author: %@", metadataItem.Author];
 }
 
 
@@ -50,6 +62,27 @@
 {
 	[self.navigationController pushViewController:pageViewController animated:YES];
 }
+
+- (IBAction) tapBookCover: (id) sender
+{
+	[UIView beginAnimations:@"coverHide" context:nil];
+	[UIView setAnimationDuration:0.3f];
+	
+	[bookCoverView setAlpha:0.0f];
+	
+	[UIView commitAnimations];
+	[self cancelInitialTimer];
+}
+
+- (void) cancelInitialTimer
+{
+	if (initialFadeTimer && [initialFadeTimer isValid]) {
+		[initialFadeTimer invalidate];
+		initialFadeTimer = nil;
+	}
+}	
+
+
 
 - (void)didReceiveMemoryWarning {
     // Releases the view if it doesn't have a superview.

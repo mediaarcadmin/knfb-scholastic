@@ -266,6 +266,7 @@
 	
 	BWKReadingOptionsView *optionsView = [[BWKReadingOptionsView alloc] initWithNibName:nil bundle:nil];
 	optionsView.pageViewController = pageView;
+	optionsView.metadataItem = contentMetadataItem;
 	
 	[self.navigationController pushViewController:optionsView animated:YES];
 	[optionsView release];
