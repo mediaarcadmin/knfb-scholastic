@@ -286,7 +286,9 @@ static NSInteger const kRootViewControllerSettingsRow = 1;
 			abort();
 		}		
 		[request release], request = nil;
-		
+#ifdef LOCALDEBUG
+		self.bookShelfController.managedObjectContext = self.managedObjectContext;
+#endif
 		self.bookShelfController.books = books;
 		[self.navigationController pushViewController:self.bookShelfController animated:YES];		
 	} else if (indexPath.row == (managedObjectEnd + kRootViewControllerLibraryRow + kRootViewControllerSettingsRow)) {

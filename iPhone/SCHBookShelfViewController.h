@@ -19,6 +19,9 @@
 @property (nonatomic, retain) IBOutlet UITableView *tableView;
 @property (nonatomic, retain) IBOutlet MRGridView *gridView;
 
+#ifdef LOCALDEBUG
+@property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
+#endif
 @property (nonatomic, retain) NSArray *books;
 
 

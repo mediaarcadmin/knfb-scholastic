@@ -28,6 +28,9 @@ NSInteger bookSort(SCHContentMetadataItem *book1, SCHContentMetadataItem *book2,
 
 @implementation SCHBookShelfViewController
 
+#ifdef LOCALDEBUG
+@synthesize managedObjectContext;
+#endif
 @synthesize books;
 @synthesize tableView, gridView;
 
@@ -44,38 +47,43 @@ NSInteger bookSort(SCHContentMetadataItem *book1, SCHContentMetadataItem *book2,
     [super viewDidLoad];
 	
 #ifdef LOCALDEBUG
-	NSError *error = nil;
-	NSArray *xpsFiles = nil;
+	static BOOL runOnce = NO;
 	
-	[self checkAndCopyLocalFilesToApplicationSupport];
-
-//	NSString *bundleRoot = [[NSBundle mainBundle] bundlePath];
-	
-	NSArray  *applicationSupportPaths = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);
-    NSString *applicationSupportPath = ([applicationSupportPaths count] > 0) ? [applicationSupportPaths objectAtIndex:0] : nil;
-	
-	NSArray *dirContents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:applicationSupportPath error:&error];
-	
-	if (error) {
-		NSLog(@"Error: %@", [error localizedDescription]);
+	if (runOnce == NO) {
+		runOnce = YES;
+		NSError *error = nil;
+		NSArray *xpsFiles = nil;
+		
+		[self checkAndCopyLocalFilesToApplicationSupport];
+		
+		//	NSString *bundleRoot = [[NSBundle mainBundle] bundlePath];
+		
+		NSArray  *applicationSupportPaths = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);
+		NSString *applicationSupportPath = ([applicationSupportPaths count] > 0) ? [applicationSupportPaths objectAtIndex:0] : nil;
+		
+		NSArray *dirContents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:applicationSupportPath error:&error];
+		
+		if (error) {
+			NSLog(@"Error: %@", [error localizedDescription]);
+		}
+		
+		NSArray *xpsContents = [dirContents filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"self ENDSWITH '.xps'"]];
+		
+		NSMutableArray *trimmedXpsContents = [[NSMutableArray alloc] init];
+		for (NSString *item in xpsContents) {
+			[trimmedXpsContents addObject:[item stringByDeletingPathExtension]];
+		}
+		
+		xpsFiles = [NSArray arrayWithArray:trimmedXpsContents];
+		[trimmedXpsContents release];
+		
+		SCHLocalDebug *localDebug = [[SCHLocalDebug alloc] init];
+		localDebug.managedObjectContext = self.managedObjectContext;
+		[localDebug setupLocalDataWithXPSFiles:xpsFiles];
+		[localDebug release], localDebug = nil;
+		
+		self.title = @"Bookshelf (Local)";
 	}
-
-	NSArray *xpsContents = [dirContents filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"self ENDSWITH '.xps'"]];
-	
-	NSMutableArray *trimmedXpsContents = [[NSMutableArray alloc] init];
-	for (NSString *item in xpsContents) {
-		[trimmedXpsContents addObject:[item stringByDeletingPathExtension]];
-	}
-	
-	xpsFiles = [NSArray arrayWithArray:trimmedXpsContents];
-	[trimmedXpsContents release];
-	
-	SCHLocalDebug *localDebug = [[SCHLocalDebug alloc] init];
-	localDebug.managedObjectContext = self.managedObjectContext;
-	[localDebug setupLocalDataWithXPSFiles:xpsFiles];
-	[localDebug release], localDebug = nil;
-	
-	self.title = @"Bookshelf (Local)";
 #endif
 	
 	UISegmentedControl *bookshelfToggle = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObjects:@"List", @"Grid", nil]];
@@ -201,7 +209,7 @@ NSInteger bookSort(SCHContentMetadataItem *book1, SCHContentMetadataItem *book2,
 	[books retain];
 	
 	[self.tableView reloadData];
-	[gridView reloadData];
+	[self.gridView reloadData];
 }
 
 #pragma mark -
