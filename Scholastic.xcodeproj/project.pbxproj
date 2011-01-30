@@ -18,6 +18,14 @@
 		28AD733F0D9D9553002E5188 /* MainWindow_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow_iPad.xib */; };
 		28EEBFDD1118E19E00187D67 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28EEBFDC1118E19E00187D67 /* CoreData.framework */; };
 		28EEC04B1118E28000187D67 /* AppDelegate_Shared.m in Sources */ = {isa = PBXBuildFile; fileRef = 28EEC04A1118E28000187D67 /* AppDelegate_Shared.m */; };
+		5222FBF812F4E023000A4624 /* SCHContentProfileItem+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5222FBF712F4E023000A4624 /* SCHContentProfileItem+Extensions.m */; };
+		5222FBF912F4E023000A4624 /* SCHContentProfileItem+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5222FBF712F4E023000A4624 /* SCHContentProfileItem+Extensions.m */; };
+		5222FC1F12F4E37B000A4624 /* SCHUserSettingsItem+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5222FC1E12F4E37B000A4624 /* SCHUserSettingsItem+Extensions.m */; };
+		5222FC2012F4E37B000A4624 /* SCHUserSettingsItem+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5222FC1E12F4E37B000A4624 /* SCHUserSettingsItem+Extensions.m */; };
+		5222FC2C12F4E41F000A4624 /* SCHOrderItem+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5222FC2B12F4E41F000A4624 /* SCHOrderItem+Extensions.m */; };
+		5222FC2D12F4E41F000A4624 /* SCHOrderItem+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5222FC2B12F4E41F000A4624 /* SCHOrderItem+Extensions.m */; };
+		5222FC3512F4E4AB000A4624 /* SCHUserContentItem+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5222FC3412F4E4AB000A4624 /* SCHUserContentItem+Extensions.m */; };
+		5222FC3612F4E4AB000A4624 /* SCHUserContentItem+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5222FC3412F4E4AB000A4624 /* SCHUserContentItem+Extensions.m */; };
 		52298A8712F0EF5600BBBCE6 /* SCHNote.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A5E12F0EF5600BBBCE6 /* SCHNote.m */; };
 		52298A8812F0EF5600BBBCE6 /* SCHUserSettingsItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6012F0EF5600BBBCE6 /* SCHUserSettingsItem.m */; };
 		52298A8912F0EF5600BBBCE6 /* SCHContentMetadataItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6212F0EF5600BBBCE6 /* SCHContentMetadataItem.m */; };
@@ -231,6 +239,14 @@
 		28EEC04A1118E28000187D67 /* AppDelegate_Shared.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate_Shared.m; path = Shared/AppDelegate_Shared.m; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Shared/main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* Scholastic_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Scholastic_Prefix.pch; sourceTree = "<group>"; };
+		5222FBF612F4E023000A4624 /* SCHContentProfileItem+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SCHContentProfileItem+Extensions.h"; path = "Shared/SCHContentProfileItem+Extensions.h"; sourceTree = "<group>"; };
+		5222FBF712F4E023000A4624 /* SCHContentProfileItem+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SCHContentProfileItem+Extensions.m"; path = "Shared/SCHContentProfileItem+Extensions.m"; sourceTree = "<group>"; };
+		5222FC1D12F4E37B000A4624 /* SCHUserSettingsItem+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SCHUserSettingsItem+Extensions.h"; path = "Shared/SCHUserSettingsItem+Extensions.h"; sourceTree = "<group>"; };
+		5222FC1E12F4E37B000A4624 /* SCHUserSettingsItem+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SCHUserSettingsItem+Extensions.m"; path = "Shared/SCHUserSettingsItem+Extensions.m"; sourceTree = "<group>"; };
+		5222FC2A12F4E41F000A4624 /* SCHOrderItem+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SCHOrderItem+Extensions.h"; path = "Shared/SCHOrderItem+Extensions.h"; sourceTree = "<group>"; };
+		5222FC2B12F4E41F000A4624 /* SCHOrderItem+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SCHOrderItem+Extensions.m"; path = "Shared/SCHOrderItem+Extensions.m"; sourceTree = "<group>"; };
+		5222FC3312F4E4AB000A4624 /* SCHUserContentItem+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SCHUserContentItem+Extensions.h"; path = "Shared/SCHUserContentItem+Extensions.h"; sourceTree = "<group>"; };
+		5222FC3412F4E4AB000A4624 /* SCHUserContentItem+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SCHUserContentItem+Extensions.m"; path = "Shared/SCHUserContentItem+Extensions.m"; sourceTree = "<group>"; };
 		52298A5D12F0EF5600BBBCE6 /* SCHNote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHNote.h; path = Shared/SCHNote.h; sourceTree = "<group>"; };
 		52298A5E12F0EF5600BBBCE6 /* SCHNote.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHNote.m; path = Shared/SCHNote.m; sourceTree = "<group>"; };
 		52298A5F12F0EF5600BBBCE6 /* SCHUserSettingsItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHUserSettingsItem.h; path = Shared/SCHUserSettingsItem.h; sourceTree = "<group>"; };
@@ -461,12 +477,12 @@
 				528A2D5E12CDE39C0053A343 /* RootViewController.h */,
 				528A2D5F12CDE39C0053A343 /* RootViewController.m */,
 				528A2D6112CDE3B10053A343 /* RootViewController.xib */,
-				529385B212DF231800045B44 /* SCHSettingsViewController.h */,
-				529385B312DF231800045B44 /* SCHSettingsViewController.m */,
-				529385B412DF231800045B44 /* SCHSettingsViewController.xib */,
 				5293883012E03CD000045B44 /* SCHBookShelfViewController.h */,
 				5293883112E03CD000045B44 /* SCHBookShelfViewController.m */,
 				5293883212E03CD000045B44 /* SCHBookShelfViewController.xib */,
+				529385B212DF231800045B44 /* SCHSettingsViewController.h */,
+				529385B312DF231800045B44 /* SCHSettingsViewController.m */,
+				529385B412DF231800045B44 /* SCHSettingsViewController.xib */,
 				52EF4E5C12E6E01C00E374F7 /* SCHLoginViewController.h */,
 				52EF4E5D12E6E01C00E374F7 /* SCHLoginViewController.m */,
 				52EF4E5E12E6E01C00E374F7 /* SCHLoginViewController.xib */,
@@ -546,54 +562,62 @@
 		5250C4AB12DE075C00542055 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				52298A5D12F0EF5600BBBCE6 /* SCHNote.h */,
-				52298A5E12F0EF5600BBBCE6 /* SCHNote.m */,
-				52298A5F12F0EF5600BBBCE6 /* SCHUserSettingsItem.h */,
-				52298A6012F0EF5600BBBCE6 /* SCHUserSettingsItem.m */,
-				52298A6112F0EF5600BBBCE6 /* SCHContentMetadataItem.h */,
-				52298A6212F0EF5600BBBCE6 /* SCHContentMetadataItem.m */,
-				52298A6312F0EF5600BBBCE6 /* SCHLastPage.h */,
-				52298A6412F0EF5600BBBCE6 /* SCHLastPage.m */,
-				52298A6512F0EF5600BBBCE6 /* SCHLocationText.h */,
-				52298A6612F0EF5600BBBCE6 /* SCHLocationText.m */,
-				52298A6712F0EF5600BBBCE6 /* SCHUserContentItem.h */,
-				52298A6812F0EF5600BBBCE6 /* SCHUserContentItem.m */,
-				52298A6912F0EF5600BBBCE6 /* SCHOrderItem.h */,
-				52298A6A12F0EF5600BBBCE6 /* SCHOrderItem.m */,
-				52298A6B12F0EF5600BBBCE6 /* SCHWordIndex.h */,
-				52298A6C12F0EF5600BBBCE6 /* SCHWordIndex.m */,
-				52298A6D12F0EF5600BBBCE6 /* SCHContentProfileItem.h */,
-				52298A6E12F0EF5600BBBCE6 /* SCHContentProfileItem.m */,
-				52298A6F12F0EF5600BBBCE6 /* SCHSyncEntity.h */,
-				52298A7012F0EF5600BBBCE6 /* SCHSyncEntity.m */,
+				52298A7912F0EF5600BBBCE6 /* SCHAnnotation.h */,
+				52298A7A12F0EF5600BBBCE6 /* SCHAnnotation.m */,
+				52298A7712F0EF5600BBBCE6 /* SCHAnnotationsContentItem.h */,
+				52298A7812F0EF5600BBBCE6 /* SCHAnnotationsContentItem.m */,
+				52298A8312F0EF5600BBBCE6 /* SCHAnnotationsItem.h */,
+				52298A8412F0EF5600BBBCE6 /* SCHAnnotationsItem.m */,
 				52298A7112F0EF5600BBBCE6 /* SCHBookmark.h */,
 				52298A7212F0EF5600BBBCE6 /* SCHBookmark.m */,
 				52298A7312F0EF5600BBBCE6 /* SCHContentItem.h */,
 				52298A7412F0EF5600BBBCE6 /* SCHContentItem.m */,
-				52298A7512F0EF5600BBBCE6 /* SCHProfileStatusItem.h */,
-				52298A7612F0EF5600BBBCE6 /* SCHProfileStatusItem.m */,
-				52298A7712F0EF5600BBBCE6 /* SCHAnnotationsContentItem.h */,
-				52298A7812F0EF5600BBBCE6 /* SCHAnnotationsContentItem.m */,
-				52298A7912F0EF5600BBBCE6 /* SCHAnnotation.h */,
-				52298A7A12F0EF5600BBBCE6 /* SCHAnnotation.m */,
-				52298A7B12F0EF5600BBBCE6 /* SCHFavorite.h */,
-				52298A7C12F0EF5600BBBCE6 /* SCHFavorite.m */,
-				52298A7D12F0EF5600BBBCE6 /* SCHProfileItem.h */,
-				52298A7E12F0EF5600BBBCE6 /* SCHProfileItem.m */,
+				52298A6112F0EF5600BBBCE6 /* SCHContentMetadataItem.h */,
+				52298A6212F0EF5600BBBCE6 /* SCHContentMetadataItem.m */,
+				52298A6D12F0EF5600BBBCE6 /* SCHContentProfileItem.h */,
+				52298A6E12F0EF5600BBBCE6 /* SCHContentProfileItem.m */,
 				52298A7F12F0EF5600BBBCE6 /* SCHCoords.h */,
 				52298A8012F0EF5600BBBCE6 /* SCHCoords.m */,
-				52298A8112F0EF5600BBBCE6 /* SCHLocationGraphics.h */,
-				52298A8212F0EF5600BBBCE6 /* SCHLocationGraphics.m */,
-				52298A8312F0EF5600BBBCE6 /* SCHAnnotationsItem.h */,
-				52298A8412F0EF5600BBBCE6 /* SCHAnnotationsItem.m */,
+				52298A7B12F0EF5600BBBCE6 /* SCHFavorite.h */,
+				52298A7C12F0EF5600BBBCE6 /* SCHFavorite.m */,
 				52298A8512F0EF5600BBBCE6 /* SCHHighlight.h */,
 				52298A8612F0EF5600BBBCE6 /* SCHHighlight.m */,
+				52298A6312F0EF5600BBBCE6 /* SCHLastPage.h */,
+				52298A6412F0EF5600BBBCE6 /* SCHLastPage.m */,
+				52298A8112F0EF5600BBBCE6 /* SCHLocationGraphics.h */,
+				52298A8212F0EF5600BBBCE6 /* SCHLocationGraphics.m */,
+				52298A6512F0EF5600BBBCE6 /* SCHLocationText.h */,
+				52298A6612F0EF5600BBBCE6 /* SCHLocationText.m */,
+				52298A5D12F0EF5600BBBCE6 /* SCHNote.h */,
+				52298A5E12F0EF5600BBBCE6 /* SCHNote.m */,
+				52298A6912F0EF5600BBBCE6 /* SCHOrderItem.h */,
+				52298A6A12F0EF5600BBBCE6 /* SCHOrderItem.m */,
+				52298A7D12F0EF5600BBBCE6 /* SCHProfileItem.h */,
+				52298A7E12F0EF5600BBBCE6 /* SCHProfileItem.m */,
+				52298A7512F0EF5600BBBCE6 /* SCHProfileStatusItem.h */,
+				52298A7612F0EF5600BBBCE6 /* SCHProfileStatusItem.m */,
+				52298A6F12F0EF5600BBBCE6 /* SCHSyncEntity.h */,
+				52298A7012F0EF5600BBBCE6 /* SCHSyncEntity.m */,
+				52298A6712F0EF5600BBBCE6 /* SCHUserContentItem.h */,
+				52298A6812F0EF5600BBBCE6 /* SCHUserContentItem.m */,
+				52298A5F12F0EF5600BBBCE6 /* SCHUserSettingsItem.h */,
+				52298A6012F0EF5600BBBCE6 /* SCHUserSettingsItem.m */,
+				52298A6B12F0EF5600BBBCE6 /* SCHWordIndex.h */,
+				52298A6C12F0EF5600BBBCE6 /* SCHWordIndex.m */,
 				52D6124112E44CEC0033DA92 /* SCHContentMetadataItem+Extensions.h */,
 				52D6124212E44CEC0033DA92 /* SCHContentMetadataItem+Extensions.m */,
+				5222FBF612F4E023000A4624 /* SCHContentProfileItem+Extensions.h */,
+				5222FBF712F4E023000A4624 /* SCHContentProfileItem+Extensions.m */,
+				5222FC2A12F4E41F000A4624 /* SCHOrderItem+Extensions.h */,
+				5222FC2B12F4E41F000A4624 /* SCHOrderItem+Extensions.m */,
 				52D6122012E44B0F0033DA92 /* SCHProfileItem+Extensions.h */,
 				52D6122112E44B0F0033DA92 /* SCHProfileItem+Extensions.m */,
 				52D6124D12E44D760033DA92 /* SCHSyncEntity+Extensions.h */,
 				52D6124E12E44D760033DA92 /* SCHSyncEntity+Extensions.m */,
+				5222FC3312F4E4AB000A4624 /* SCHUserContentItem+Extensions.h */,
+				5222FC3412F4E4AB000A4624 /* SCHUserContentItem+Extensions.m */,
+				5222FC1D12F4E37B000A4624 /* SCHUserSettingsItem+Extensions.h */,
+				5222FC1E12F4E37B000A4624 /* SCHUserSettingsItem+Extensions.m */,
 				52D612B612E4650B0033DA92 /* NSNumber+ObjectTypes.h */,
 				52D612B712E4650B0033DA92 /* NSNumber+ObjectTypes.m */,
 			);
@@ -1063,6 +1087,10 @@
 				52298A9A12F0EF5600BBBCE6 /* SCHAnnotationsItem.m in Sources */,
 				52298A9B12F0EF5600BBBCE6 /* SCHHighlight.m in Sources */,
 				52E4692012F1D94E00ECC97A /* SCHLocalDebug.m in Sources */,
+				5222FBF812F4E023000A4624 /* SCHContentProfileItem+Extensions.m in Sources */,
+				5222FC1F12F4E37B000A4624 /* SCHUserSettingsItem+Extensions.m in Sources */,
+				5222FC2C12F4E41F000A4624 /* SCHOrderItem+Extensions.m in Sources */,
+				5222FC3512F4E4AB000A4624 /* SCHUserContentItem+Extensions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1135,6 +1163,10 @@
 				F837C6B312F179AF00833448 /* SCHUserSettingsItem.m in Sources */,
 				F837C6B412F179B100833448 /* SCHWordIndex.m in Sources */,
 				52E4697512F1F33200ECC97A /* SCHLocalDebug.m in Sources */,
+				5222FBF912F4E023000A4624 /* SCHContentProfileItem+Extensions.m in Sources */,
+				5222FC2012F4E37B000A4624 /* SCHUserSettingsItem+Extensions.m in Sources */,
+				5222FC2D12F4E41F000A4624 /* SCHOrderItem+Extensions.m in Sources */,
+				5222FC3612F4E4AB000A4624 /* SCHUserContentItem+Extensions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

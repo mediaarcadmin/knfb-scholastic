@@ -11,13 +11,13 @@
 #import "SCHLibreAccessWebService.h"
 #import "NSManagedObjectContext+Extensions.h"
 #import "SCHAuthenticationManager.h"
-#import "SCHUserSettingsItem.h"
-#import "SCHProfileItem.h"
-#import "SCHContentMetadataItem.h"
+#import "SCHUserSettingsItem+Extensions.h"
+#import "SCHProfileItem+Extensions.h"
+#import "SCHContentMetadataItem+Extensions.h"
 #import "NSNumber+ObjectTypes.h"
-#import "SCHUserContentItem.h"
-#import "SCHOrderItem.h"
-#import "SCHContentProfileItem.h"
+#import "SCHUserContentItem+Extensions.h"
+#import "SCHOrderItem+Extensions.h"
+#import "SCHContentProfileItem+Extensions.h"
 
 @interface SCHWebServiceSync ()
 
@@ -101,7 +101,7 @@
 {
 	NSError *error = nil;
 	
-	if (![self.managedObjectContext emptyEntity:@"SCHProfileItem" error:&error]) {
+	if (![self.managedObjectContext emptyEntity:kSCHProfileItem error:&error]) {
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
 		abort();
 	}		
@@ -124,7 +124,7 @@
 	
 	
 	for (id profile in profileList) {
-		SCHProfileItem *newProfileItem = [NSEntityDescription insertNewObjectForEntityForName:@"SCHProfileItem" inManagedObjectContext:self.managedObjectContext];
+		SCHProfileItem *newProfileItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHProfileItem inManagedObjectContext:self.managedObjectContext];
 		
 		newProfileItem.LastModified = [self makeNullNil:[profile objectForKey:kSCHLibreAccessWebServiceLastModified]];
 		newProfileItem.State = [NSNumber numberWithStatus:kSCHStatusCreated];
@@ -158,9 +158,9 @@
 {
 	NSError *error = nil;
 	
-	if (![self.managedObjectContext emptyEntity:@"SCHUserContentItem" error:&error] ||
-		![self.managedObjectContext emptyEntity:@"SCHOrderItem" error:&error] ||
-		![self.managedObjectContext emptyEntity:@"SCHContentProfileItem" error:&error]) {
+	if (![self.managedObjectContext emptyEntity:kSCHUserContentItem error:&error] ||
+		![self.managedObjectContext emptyEntity:kSCHOrderItem error:&error] ||
+		![self.managedObjectContext emptyEntity:kSCHContentProfileItem error:&error]) {
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
 		abort();
 	}		
@@ -173,7 +173,7 @@
 	[self clearUserContentItems];
 	
 	for (id userContentItem in userContentList) {
-		SCHUserContentItem *newUserContentItem = [NSEntityDescription insertNewObjectForEntityForName:@"SCHUserContentItem" inManagedObjectContext:self.managedObjectContext];
+		SCHUserContentItem *newUserContentItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHUserContentItem inManagedObjectContext:self.managedObjectContext];
 		
 		newUserContentItem.LastModified = [self makeNullNil:[userContentItem objectForKey:kSCHLibreAccessWebServiceLastModified]];
 		newUserContentItem.State = [NSNumber numberWithStatus:kSCHStatusCreated];
@@ -187,7 +187,7 @@
 		
 		NSArray *orderList = [self makeNullNil:[userContentItem objectForKey:kSCHLibreAccessWebServiceOrderList]];
 		for (NSDictionary *orderItem in orderList) {
-			SCHOrderItem *newOrderItem = [NSEntityDescription insertNewObjectForEntityForName:@"SCHOrderItem" inManagedObjectContext:self.managedObjectContext];			
+			SCHOrderItem *newOrderItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHOrderItem inManagedObjectContext:self.managedObjectContext];			
 
 			newOrderItem.OrderID = [self makeNullNil:[userContentItem objectForKey:kSCHLibreAccessWebServiceOrderID]];
 			newOrderItem.OrderDate = [self makeNullNil:[userContentItem objectForKey:kSCHLibreAccessWebServiceOrderDate]];
@@ -197,7 +197,7 @@
 		
 		NSArray *profileList = [self makeNullNil:[userContentItem objectForKey:kSCHLibreAccessWebServiceProfileList]];
 		for (NSDictionary *profileItem in profileList) {
-			SCHContentProfileItem *newContentProfileItem = [NSEntityDescription insertNewObjectForEntityForName:@"SCHContentProfileItem" inManagedObjectContext:self.managedObjectContext];			
+			SCHContentProfileItem *newContentProfileItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHContentProfileItem inManagedObjectContext:self.managedObjectContext];			
 			
 			newContentProfileItem.LastModified = [self makeNullNil:[profileItem objectForKey:kSCHLibreAccessWebServiceLastModified]];
 			newContentProfileItem.State = [NSNumber numberWithStatus:kSCHStatusCreated];
@@ -223,7 +223,7 @@
 {
 	NSError *error = nil;
 	
-	if (![self.managedObjectContext emptyEntity:@"SCHContentMetadataItem" error:&error]) {
+	if (![self.managedObjectContext emptyEntity:kSCHContentMetadataItem error:&error]) {
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
 		abort();
 	}	
@@ -236,7 +236,7 @@
 	[self clearBooks];
 	
 	for (id book in bookList) {
-		SCHContentMetadataItem *newContentMetadataItem = [NSEntityDescription insertNewObjectForEntityForName:@"SCHContentMetadataItem" inManagedObjectContext:self.managedObjectContext];
+		SCHContentMetadataItem *newContentMetadataItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHContentMetadataItem inManagedObjectContext:self.managedObjectContext];
 		
 		newContentMetadataItem.DRMQualifier = [self makeNullNil:[book objectForKey:kSCHLibreAccessWebServiceDRMQualifier]];
 		newContentMetadataItem.ContentIdentifierType = [self makeNullNil:[book objectForKey:kSCHLibreAccessWebServiceContentIdentifierType]];
@@ -264,7 +264,7 @@
 {
 	NSError *error = nil;
 
-	if (![self.managedObjectContext emptyEntity:@"SCHUserSettingsItem" error:&error]) {
+	if (![self.managedObjectContext emptyEntity:kSCHUserSettingsItem error:&error]) {
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
 		abort();
 	}	
@@ -277,7 +277,7 @@
 	[self clearUserSettings];
 	
 	for (id setting in settingsList) {
-		SCHUserSettingsItem *newUserSettingsItem = [NSEntityDescription insertNewObjectForEntityForName:@"SCHUserSettingsItem" inManagedObjectContext:self.managedObjectContext];
+		SCHUserSettingsItem *newUserSettingsItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHUserSettingsItem inManagedObjectContext:self.managedObjectContext];
 		
 		newUserSettingsItem.SettingType = [self makeNullNil:[setting objectForKey:kSCHLibreAccessWebServiceSettingType]];
 		newUserSettingsItem.SettingValue = [self makeNullNil:[setting objectForKey:kSCHLibreAccessWebServiceSettingValue]];

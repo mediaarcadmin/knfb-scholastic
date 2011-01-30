@@ -12,19 +12,14 @@
 #import "MRGridViewDelegate.h"
 #import "MRGridViewDataSource.h"
 
-@interface SCHBookShelfViewController : UIViewController <NSFetchedResultsControllerDelegate, UITableViewDelegate, UITableViewDataSource, MRGridViewDelegate, MRGridViewDataSource> {
+@interface SCHBookShelfViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, MRGridViewDelegate, MRGridViewDataSource> {
 
-@private
-    NSFetchedResultsController *fetchedResultsController_;
-    NSManagedObjectContext *managedObjectContext_;	
 }
 
 @property (nonatomic, retain) IBOutlet UITableView *tableView;
 @property (nonatomic, retain) IBOutlet MRGridView *gridView;
 
-@property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
-@property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
-@property (nonatomic, retain) NSNumber *profileID;
+@property (nonatomic, retain) NSArray *books;
 
 
 @end

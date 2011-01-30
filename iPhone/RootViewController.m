@@ -14,6 +14,9 @@
 #import "SCHLoginViewController.h"
 #import "SCHAuthenticationManager.h"
 #import "SCHLibreAccessWebService.h"
+#import "SCHContentProfileItem+Extensions.h"
+#import "SCHProfileItem+Extensions.h"
+#import "SCHContentMetadataItem+Extensions.h"
 
 // Cell Icons 
 static NSString * const kRootViewControllerProfileIcon = @"Profile.png";
@@ -162,8 +165,6 @@ static NSInteger const kRootViewControllerSettingsRow = 1;
 //        abort();
 //    }
 	
-	self.bookShelfController.managedObjectContext = self.managedObjectContext;
-	
 	if ([self.webServiceSync update] == NO ) {
 		UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:@"Give me a moment"
 															 message:@"I am just requesting access. Normal service will resume shortly."
@@ -274,16 +275,34 @@ static NSInteger const kRootViewControllerSettingsRow = 1;
 	
 	if (indexPath.row == (managedObjectEnd + kRootViewControllerLibraryRow)) {
 		// controller to view book shelf with all books
-		self.bookShelfController.profileID = nil;
-		self.bookShelfController.managedObjectContext = self.managedObjectContext;
+		NSEntityDescription *entityDescription = [NSEntityDescription entityForName:kSCHContentMetadataItem inManagedObjectContext:self.managedObjectContext];
+		NSFetchRequest *request = [[NSFetchRequest alloc] init];
+		[request setEntity:entityDescription];
+
+		NSError *error = nil;				
+		NSArray *books = [self.managedObjectContext executeFetchRequest:request error:&error];
+		if (!books) {
+			NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+			abort();
+		}		
+		[request release], request = nil;
+		
+		self.bookShelfController.books = books;
 		[self.navigationController pushViewController:self.bookShelfController animated:YES];		
 	} else if (indexPath.row == (managedObjectEnd + kRootViewControllerLibraryRow + kRootViewControllerSettingsRow)) {
 		[self.navigationController pushViewController:self.settingsController animated:YES];
 	} else {
+		// controller to view book shelf with books filtered to profile		
 		NSManagedObject *selectedObject = [[self fetchedResultsController] objectAtIndexPath:indexPath];
-		// controller to view book shelf with books filtered to profile
-		self.bookShelfController.profileID = [selectedObject valueForKey:kSCHLibreAccessWebServiceID];
-		self.bookShelfController.managedObjectContext = self.managedObjectContext;
+		
+		NSMutableArray *books = [NSMutableArray array];
+		for (SCHContentProfileItem *contentProfileItem in [selectedObject valueForKey:@"ContentProfileItem"]) {
+			for (SCHContentMetadataItem *contentMetadataItem in [contentProfileItem valueForKeyPath:@"UserContentItem.ContentMetadataItem"]) {
+				[books addObject:contentMetadataItem];
+			}
+		}
+		
+		self.bookShelfController.books = books;
 		[self.navigationController pushViewController:self.bookShelfController animated:YES];		
 	}	
 }
@@ -304,7 +323,7 @@ static NSInteger const kRootViewControllerSettingsRow = 1;
     // Create the fetch request for the entity.
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     // Edit the entity name as appropriate.
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"SCHProfileItem" inManagedObjectContext:self.managedObjectContext];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:kSCHProfileItem inManagedObjectContext:self.managedObjectContext];
     [fetchRequest setEntity:entity];
     
     // Set the batch size to a suitable number.

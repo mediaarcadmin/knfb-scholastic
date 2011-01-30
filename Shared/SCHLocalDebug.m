@@ -13,7 +13,7 @@
 #import "SCHAuthenticationManager.h"
 #import "SCHUserSettingsItem.h"
 #import "SCHProfileItem.h"
-#import "SCHContentMetadataItem.h"
+#import "SCHContentMetadataItem+Extensions.h"
 #import "BWKXPSProvider.h"
 #import "NSNumber+ObjectTypes.h"
 
@@ -48,7 +48,7 @@
 	SCHContentMetadataItem *newContentMetadataItem = nil;
 	
 	for (NSString *xpsFile in XPSFiles) {
-		newContentMetadataItem = [NSEntityDescription insertNewObjectForEntityForName:@"SCHContentMetadataItem" inManagedObjectContext:self.managedObjectContext];
+		newContentMetadataItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHContentMetadataItem inManagedObjectContext:self.managedObjectContext];
 		
 		NSString *xpsPath = [[NSBundle mainBundle] pathForResource:xpsFile ofType:@"xps"];
 		BWKXPSProvider *provider = [[BWKXPSProvider alloc] initWithPath:xpsPath];

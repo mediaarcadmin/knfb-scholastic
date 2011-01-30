@@ -10,6 +10,7 @@
 
 #import "SCHProfileItem.h"
 
+static NSString * const kSCHProfileItem = @"SCHProfileItem";
 
 @interface SCHProfileItem (SCHProfileItemExtensions)
 

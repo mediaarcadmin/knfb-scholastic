@@ -10,6 +10,7 @@
 
 #import "SCHContentMetadataItem.h"
 
+static NSString * const kSCHContentMetadataItem = @"SCHContentMetadataItem";
 
 @interface SCHContentMetadataItem (SCHContentMetadataItemExtensions)
 
