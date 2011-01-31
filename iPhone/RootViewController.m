@@ -17,6 +17,7 @@
 #import "SCHContentProfileItem+Extensions.h"
 #import "SCHProfileItem+Extensions.h"
 #import "SCHContentMetadataItem+Extensions.h"
+#import "SCHMultipleBookshelvesController.h"
 
 // Cell Icons 
 static NSString * const kRootViewControllerProfileIcon = @"Profile.png";
@@ -37,7 +38,6 @@ static NSInteger const kRootViewControllerSettingsRow = 1;
 
 @synthesize headerView;
 @synthesize settingsController;
-@synthesize bookShelfController;
 @synthesize loginController;
 @synthesize webServiceSync;
 @synthesize fetchedResultsController=fetchedResultsController_, managedObjectContext=managedObjectContext_;
@@ -52,7 +52,7 @@ static NSInteger const kRootViewControllerSettingsRow = 1;
 	
 	self.webServiceSync = [[SCHWebServiceSync alloc] init];
 	self.webServiceSync.managedObjectContext = [self.fetchedResultsController managedObjectContext];	
-	[self.webServiceSync release];
+	[self.webServiceSync release];	
 }
 
 - (void)viewDidLoad {
@@ -73,7 +73,6 @@ static NSInteger const kRootViewControllerSettingsRow = 1;
 	
 	self.headerView = nil;
 	self.settingsController = nil;
-	self.bookShelfController = nil;
 }
 
 
@@ -255,6 +254,16 @@ static NSInteger const kRootViewControllerSettingsRow = 1;
     return NO;
 }
 
+- (void)pushBookshelvesControllerWithBooks:(NSArray *)books
+ {
+	SCHMultipleBookshelvesController *bookshelvesController = nil;
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+		bookshelvesController = [[SCHMultipleBookshelvesController alloc] initWithNibName:NSStringFromClass([SCHMultipleBookshelvesController class]) bundle:nil managedObjectContext:self.managedObjectContext books:books];
+	}
+		
+	[self.navigationController pushViewController:bookshelvesController animated:YES];
+
+}
 
 #pragma mark -
 #pragma mark Table view delegate
@@ -286,11 +295,9 @@ static NSInteger const kRootViewControllerSettingsRow = 1;
 			abort();
 		}		
 		[request release], request = nil;
-#ifdef LOCALDEBUG
-		self.bookShelfController.managedObjectContext = self.managedObjectContext;
-#endif
-		self.bookShelfController.books = books;
-		[self.navigationController pushViewController:self.bookShelfController animated:YES];		
+
+		[self pushBookshelvesControllerWithBooks:books];
+		
 	} else if (indexPath.row == (managedObjectEnd + kRootViewControllerLibraryRow + kRootViewControllerSettingsRow)) {
 		[self.navigationController pushViewController:self.settingsController animated:YES];
 	} else {
@@ -304,8 +311,7 @@ static NSInteger const kRootViewControllerSettingsRow = 1;
 			}
 		}
 		
-		self.bookShelfController.books = books;
-		[self.navigationController pushViewController:self.bookShelfController animated:YES];		
+		[self pushBookshelvesControllerWithBooks:books];
 	}	
 }
 
@@ -443,7 +449,6 @@ static NSInteger const kRootViewControllerSettingsRow = 1;
 - (void)dealloc {
 	self.headerView = nil;
 	self.settingsController = nil;
-	self.bookShelfController = nil;
 	self.webServiceSync = nil;
 	
     [fetchedResultsController_ release];

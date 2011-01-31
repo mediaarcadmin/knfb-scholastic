@@ -12,13 +12,12 @@
 #import "SCHLibreAccessWebService.h"
 #import "SCHContentMetadataItem.h"
 #import "SCHLocalDebug.h"
+#import "SCHMultipleBookshelvesController.h"
 
 @interface SCHBookShelfViewController ()
 
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath;
-#ifdef LOCALDEBUG
-- (void) checkAndCopyLocalFilesToApplicationSupport;
-#endif
+
 @end
 
 NSInteger bookSort(SCHContentMetadataItem *book1, SCHContentMetadataItem *book2, void *context)
@@ -28,6 +27,7 @@ NSInteger bookSort(SCHContentMetadataItem *book1, SCHContentMetadataItem *book2,
 
 @implementation SCHBookShelfViewController
 
+@synthesize bookshelvesController;
 #ifdef LOCALDEBUG
 @synthesize managedObjectContext;
 #endif
@@ -45,140 +45,19 @@ NSInteger bookSort(SCHContentMetadataItem *book1, SCHContentMetadataItem *book2,
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-	
-#ifdef LOCALDEBUG
-	static BOOL runOnce = NO;
-	
-	if (runOnce == NO) {
-		runOnce = YES;
-		NSError *error = nil;
-		NSArray *xpsFiles = nil;
 		
-		[self checkAndCopyLocalFilesToApplicationSupport];
-		
-		//	NSString *bundleRoot = [[NSBundle mainBundle] bundlePath];
-		
-		NSArray  *applicationSupportPaths = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);
-		NSString *applicationSupportPath = ([applicationSupportPaths count] > 0) ? [applicationSupportPaths objectAtIndex:0] : nil;
-		
-		NSArray *dirContents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:applicationSupportPath error:&error];
-		
-		if (error) {
-			NSLog(@"Error: %@", [error localizedDescription]);
-		}
-		
-		NSArray *xpsContents = [dirContents filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"self ENDSWITH '.xps'"]];
-		
-		NSMutableArray *trimmedXpsContents = [[NSMutableArray alloc] init];
-		for (NSString *item in xpsContents) {
-			[trimmedXpsContents addObject:[item stringByDeletingPathExtension]];
-		}
-		
-		xpsFiles = [NSArray arrayWithArray:trimmedXpsContents];
-		[trimmedXpsContents release];
-		
-		SCHLocalDebug *localDebug = [[SCHLocalDebug alloc] init];
-		localDebug.managedObjectContext = self.managedObjectContext;
-		[localDebug setupLocalDataWithXPSFiles:xpsFiles];
-		[localDebug release], localDebug = nil;
-		
-		self.title = @"Bookshelf (Local)";
-	}
-#endif
-	
-	UISegmentedControl *bookshelfToggle = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObjects:@"List", @"Grid", nil]];
-	bookshelfToggle.selectedSegmentIndex = 0;
-	bookshelfToggle.segmentedControlStyle = UISegmentedControlStyleBar;
-	[bookshelfToggle addTarget:self action:@selector(bookshelfToggled:) forControlEvents:UIControlEventValueChanged];
-
-	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:bookshelfToggle] autorelease];
-	[bookshelfToggle release];
-	
 	[self.gridView setCellSize:CGSizeMake(80,118) withBorderSize:20];
 	[self.gridView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"Shelf"]]];
-
-}
-
+	
 #ifdef LOCALDEBUG
-
-- (void)checkAndCopyLocalFilesToApplicationSupport
-{
-
-	// first, check the application support directory exists, and if
-	// not, create it. (code from Blio)
-	NSArray  *applicationSupportPaths = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);
-    NSString *applicationSupportPath = ([applicationSupportPaths count] > 0) ? [applicationSupportPaths objectAtIndex:0] : nil;
-	
-	BOOL isDir;
-	if (![[NSFileManager defaultManager] fileExistsAtPath:applicationSupportPath isDirectory:&isDir] || !isDir) {
-		NSError * createApplicationSupportDirError = nil;
-		
-		if (![[NSFileManager defaultManager] createDirectoryAtPath:applicationSupportPath 
-									   withIntermediateDirectories:YES 
-														attributes:nil 
-															 error:&createApplicationSupportDirError]) 
-		{
-			NSLog(@"Error: could not create Application Support directory in the Library directory! %@, %@", 
-				  createApplicationSupportDirError, [createApplicationSupportDirError userInfo]);
-			return;
-		} else {
-			NSLog(@"Created Application Support directory within Library.");
-		}
-	}
-	
-	
-	// now create a list of bundle XPS files
-	NSError *error = nil;
-	NSString *bundleRoot = [[NSBundle mainBundle] bundlePath];
-	NSArray *bundleDirContents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:bundleRoot error:&error];
-	
-	if (error) {
-		NSLog(@"Error: %@", [error localizedDescription]);
-		return;
-	}
-	
-	NSArray *bundleXPSContents = [bundleDirContents filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"self ENDSWITH '.xps'"]];
-
-	NSArray *appDirContents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:applicationSupportPath error:&error];
-	if (error) {
-		NSLog(@"Error: %@", [error localizedDescription]);
-		return;
-	}
-
-	NSArray *supportDirXPSContents = [appDirContents filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"self ENDSWITH '.xps'"]];
-
-	
-	for (NSString *item in bundleXPSContents) {
-		
-		bool fileAlreadyCopied = NO;
-		
-		for (NSString *appItem in supportDirXPSContents) {
-			if ([[item stringByDeletingPathExtension] compare:[appItem stringByDeletingPathExtension]] == NSOrderedSame) {
-				fileAlreadyCopied = YES;
-				break;
-			}
-		}
-		
-		if (!fileAlreadyCopied) {
-			NSString *fullSourcePath = [NSString stringWithFormat:@"%@/%@", bundleRoot, item];
-			NSString *fullDestinationPath = [NSString stringWithFormat:@"%@/%@", applicationSupportPath, item];
-			
-			[[NSFileManager defaultManager] copyItemAtPath:fullSourcePath toPath:fullDestinationPath error:&error];
-			if (error) {
-				NSLog(@"File copy error: %@, %@",
-					  error, [error userInfo]);
-			}
-		}
-	}
-}
-
+	self.bookshelvesController.navigationItem.title = @"Bookshelf (Local)";
 #endif
+	
 
-/*
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
 }
-*/
+
+
+
 /*
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
@@ -263,7 +142,9 @@ NSInteger bookSort(SCHContentMetadataItem *book1, SCHContentMetadataItem *book2,
 #pragma mark -
 #pragma mark Table view delegate
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	[aTableView deselectRowAtIndexPath:indexPath animated:YES];
+	
     // Navigation logic may go here. Create and push another view controller.
     /*
     <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
@@ -288,7 +169,7 @@ NSInteger bookSort(SCHContentMetadataItem *book1, SCHContentMetadataItem *book2,
 	optionsView.thumbnailImage = [provider coverThumbForList];
 	[provider release];
 	
-	[self.navigationController pushViewController:optionsView animated:YES];
+	[self.bookshelvesController.navigationController pushViewController:optionsView animated:YES];
 	[optionsView release];
 	[pageView release];	
 }
@@ -393,19 +274,16 @@ NSInteger bookSort(SCHContentMetadataItem *book1, SCHContentMetadataItem *book2,
 #pragma mark -
 #pragma mark Actions
 
-- (void)bookshelfToggled:(id)sender 
-{
-	NSUInteger selectedSegment = [(UISegmentedControl *)sender selectedSegmentIndex];
-	
+- (void)bookshelfToggled:(NSUInteger)selectedSegment 
+{	
 	switch (selectedSegment) {
 		case 0:
 			[self.view bringSubviewToFront:self.tableView];
+			[self.tableView reloadData];
 			break;
 		case 1:
 			[self.view bringSubviewToFront:self.gridView];
-			//[self.gridView setFrame:CGRectMake(0, 0, 320, 460)];
-//			[self.gridView reloadData];
-
+			[self.gridView reloadData];
 			break;
 		default:
 			break;
@@ -432,9 +310,9 @@ NSInteger bookSort(SCHContentMetadataItem *book1, SCHContentMetadataItem *book2,
 
 - (void)dealloc {
     self.books = nil;
-
 	[self releaseViewObjects];
 	
+	bookshelvesController = nil;
     [super dealloc];
 }
 

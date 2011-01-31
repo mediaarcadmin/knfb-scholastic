@@ -105,6 +105,10 @@
 		C923A6C712F1E7D50054426F /* Shelf.png in Resources */ = {isa = PBXBuildFile; fileRef = C923A6C512F1E7D50054426F /* Shelf.png */; };
 		C923A7A112F1F11C0054426F /* PlaceholderBook.png in Resources */ = {isa = PBXBuildFile; fileRef = C923A7A012F1F11C0054426F /* PlaceholderBook.png */; };
 		C923A7A212F1F11C0054426F /* PlaceholderBook.png in Resources */ = {isa = PBXBuildFile; fileRef = C923A7A012F1F11C0054426F /* PlaceholderBook.png */; };
+		C923B14112F6AFC60054426F /* SCHMultipleBookshelvesController.m in Sources */ = {isa = PBXBuildFile; fileRef = C923B13F12F6AFC60054426F /* SCHMultipleBookshelvesController.m */; };
+		C923B14312F6AFC60054426F /* SCHMultipleBookshelvesController.m in Sources */ = {isa = PBXBuildFile; fileRef = C923B13F12F6AFC60054426F /* SCHMultipleBookshelvesController.m */; };
+		C923B15B12F6B0280054426F /* SCHMultipleBookshelvesController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C923B15A12F6B0280054426F /* SCHMultipleBookshelvesController.xib */; };
+		C923B15C12F6B0280054426F /* SCHMultipleBookshelvesController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C923B15A12F6B0280054426F /* SCHMultipleBookshelvesController.xib */; };
 		F837C6A112F1798800833448 /* SCHAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A7A12F0EF5600BBBCE6 /* SCHAnnotation.m */; };
 		F837C6A212F1798900833448 /* SCHAnnotationsContentItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A7812F0EF5600BBBCE6 /* SCHAnnotationsContentItem.m */; };
 		F837C6A312F1798900833448 /* SCHAnnotationsItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A8412F0EF5600BBBCE6 /* SCHAnnotationsItem.m */; };
@@ -348,9 +352,9 @@
 		5293872F12DF43D200045B44 /* SCHScholasticWebService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHScholasticWebService.m; path = Shared/SCHScholasticWebService.m; sourceTree = "<group>"; };
 		5293877D12DF515400045B44 /* SCHWebServiceSync.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHWebServiceSync.h; path = Shared/SCHWebServiceSync.h; sourceTree = "<group>"; };
 		5293877E12DF515400045B44 /* SCHWebServiceSync.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHWebServiceSync.m; path = Shared/SCHWebServiceSync.m; sourceTree = "<group>"; };
-		5293883012E03CD000045B44 /* SCHBookShelfViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHBookShelfViewController.h; sourceTree = "<group>"; };
-		5293883112E03CD000045B44 /* SCHBookShelfViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHBookShelfViewController.m; sourceTree = "<group>"; };
-		5293883212E03CD000045B44 /* SCHBookShelfViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SCHBookShelfViewController.xib; sourceTree = "<group>"; };
+		5293883012E03CD000045B44 /* SCHBookShelfViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookShelfViewController.h; path = iPhone/SCHBookShelfViewController.h; sourceTree = "<group>"; };
+		5293883112E03CD000045B44 /* SCHBookShelfViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookShelfViewController.m; path = iPhone/SCHBookShelfViewController.m; sourceTree = "<group>"; };
+		5293883212E03CD000045B44 /* SCHBookShelfViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = SCHBookShelfViewController.xib; path = iPhone/SCHBookShelfViewController.xib; sourceTree = "<group>"; };
 		52938B3812E08FC400045B44 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon.png; path = Shared/Images/Icon.png; sourceTree = "<group>"; };
 		52D6122012E44B0F0033DA92 /* SCHProfileItem+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SCHProfileItem+Extensions.h"; path = "Shared/SCHProfileItem+Extensions.h"; sourceTree = "<group>"; };
 		52D6122112E44B0F0033DA92 /* SCHProfileItem+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SCHProfileItem+Extensions.m"; path = "Shared/SCHProfileItem+Extensions.m"; sourceTree = "<group>"; };
@@ -385,6 +389,9 @@
 		C923A27912F06FE60054426F /* MRGridViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MRGridViewDelegate.h; path = Shared/Libraries/MRGridView/MRGridViewDelegate.h; sourceTree = "<group>"; };
 		C923A6C512F1E7D50054426F /* Shelf.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Shelf.png; path = Shared/Images/Shelf.png; sourceTree = "<group>"; };
 		C923A7A012F1F11C0054426F /* PlaceholderBook.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PlaceholderBook.png; path = Shared/Images/PlaceholderBook.png; sourceTree = "<group>"; };
+		C923B13E12F6AFC60054426F /* SCHMultipleBookshelvesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHMultipleBookshelvesController.h; path = iPhone/SCHMultipleBookshelvesController.h; sourceTree = "<group>"; };
+		C923B13F12F6AFC60054426F /* SCHMultipleBookshelvesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHMultipleBookshelvesController.m; path = iPhone/SCHMultipleBookshelvesController.m; sourceTree = "<group>"; };
+		C923B15A12F6B0280054426F /* SCHMultipleBookshelvesController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = SCHMultipleBookshelvesController.xib; path = iPhone/SCHMultipleBookshelvesController.xib; sourceTree = "<group>"; };
 		F837CA0012F1B4BC00833448 /* gear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = gear.png; path = Shared/Images/gear.png; sourceTree = "<group>"; };
 		F837CA0112F1B4BC00833448 /* gear@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "gear@2x.png"; path = "Shared/Images/gear@2x.png"; sourceTree = "<group>"; };
 		F8509E7212F061FE00197EB5 /* libXpsSDKipad.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libXpsSDKipad.a; path = Shared/Libraries/XPS/libXpsSDKipad.a; sourceTree = "<group>"; };
@@ -477,9 +484,6 @@
 				528A2D5E12CDE39C0053A343 /* RootViewController.h */,
 				528A2D5F12CDE39C0053A343 /* RootViewController.m */,
 				528A2D6112CDE3B10053A343 /* RootViewController.xib */,
-				5293883012E03CD000045B44 /* SCHBookShelfViewController.h */,
-				5293883112E03CD000045B44 /* SCHBookShelfViewController.m */,
-				5293883212E03CD000045B44 /* SCHBookShelfViewController.xib */,
 				529385B212DF231800045B44 /* SCHSettingsViewController.h */,
 				529385B312DF231800045B44 /* SCHSettingsViewController.m */,
 				529385B412DF231800045B44 /* SCHSettingsViewController.xib */,
@@ -493,6 +497,7 @@
 		28EEBF621118D79A00187D67 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				C923B14612F6AFE10054426F /* Bookshelves */,
 				F8509E7512F0620D00197EB5 /* Debug Books */,
 				5293872912DF436100045B44 /* Web Services */,
 				5250C4AB12DE075C00542055 /* Models */,
@@ -808,6 +813,19 @@
 			name = MRGridView;
 			sourceTree = "<group>";
 		};
+		C923B14612F6AFE10054426F /* Bookshelves */ = {
+			isa = PBXGroup;
+			children = (
+				C923B13E12F6AFC60054426F /* SCHMultipleBookshelvesController.h */,
+				C923B13F12F6AFC60054426F /* SCHMultipleBookshelvesController.m */,
+				C923B15A12F6B0280054426F /* SCHMultipleBookshelvesController.xib */,
+				5293883012E03CD000045B44 /* SCHBookShelfViewController.h */,
+				5293883112E03CD000045B44 /* SCHBookShelfViewController.m */,
+				5293883212E03CD000045B44 /* SCHBookShelfViewController.xib */,
+			);
+			name = Bookshelves;
+			sourceTree = "<group>";
+		};
 		F8509E7112F061FE00197EB5 /* XPS */ = {
 			isa = PBXGroup;
 			children = (
@@ -971,6 +989,7 @@
 				F837CA0312F1B4BC00833448 /* gear@2x.png in Resources */,
 				C923A6C712F1E7D50054426F /* Shelf.png in Resources */,
 				C923A7A212F1F11C0054426F /* PlaceholderBook.png in Resources */,
+				C923B15C12F6B0280054426F /* SCHMultipleBookshelvesController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1011,6 +1030,7 @@
 				F837CA0F12F1B4E900833448 /* gear@2x.png in Resources */,
 				C923A6C612F1E7D50054426F /* Shelf.png in Resources */,
 				C923A7A112F1F11C0054426F /* PlaceholderBook.png in Resources */,
+				C923B15B12F6B0280054426F /* SCHMultipleBookshelvesController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1091,6 +1111,7 @@
 				5222FC1F12F4E37B000A4624 /* SCHUserSettingsItem+Extensions.m in Sources */,
 				5222FC2C12F4E41F000A4624 /* SCHOrderItem+Extensions.m in Sources */,
 				5222FC3512F4E4AB000A4624 /* SCHUserContentItem+Extensions.m in Sources */,
+				C923B14312F6AFC60054426F /* SCHMultipleBookshelvesController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1167,6 +1188,7 @@
 				5222FC2012F4E37B000A4624 /* SCHUserSettingsItem+Extensions.m in Sources */,
 				5222FC2D12F4E41F000A4624 /* SCHOrderItem+Extensions.m in Sources */,
 				5222FC3612F4E4AB000A4624 /* SCHUserContentItem+Extensions.m in Sources */,
+				C923B14112F6AFC60054426F /* SCHMultipleBookshelvesController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

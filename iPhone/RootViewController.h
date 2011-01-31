@@ -11,7 +11,6 @@
 
 
 @class SCHSettingsViewController;
-@class SCHBookShelfViewController;
 @class SCHWebServiceSync;
 @class SCHLoginViewController;
 
@@ -24,7 +23,6 @@
 
 @property (nonatomic, retain) IBOutlet UIView *headerView;
 @property (nonatomic, retain) IBOutlet SCHSettingsViewController *settingsController;
-@property (nonatomic, retain) IBOutlet SCHBookShelfViewController *bookShelfController;
 @property (nonatomic, retain) IBOutlet SCHLoginViewController *loginController;
 
 @property (nonatomic, retain) SCHWebServiceSync *webServiceSync;

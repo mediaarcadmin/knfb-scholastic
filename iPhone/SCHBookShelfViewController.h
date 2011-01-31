@@ -11,6 +11,7 @@
 #import "MRGridView.h"
 #import "MRGridViewDelegate.h"
 #import "MRGridViewDataSource.h"
+#import "SCHMultipleBookshelvesController.h"
 
 @interface SCHBookShelfViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, MRGridViewDelegate, MRGridViewDataSource> {
 
@@ -19,10 +20,14 @@
 @property (nonatomic, retain) IBOutlet UITableView *tableView;
 @property (nonatomic, retain) IBOutlet MRGridView *gridView;
 
+@property (nonatomic, assign) SCHMultipleBookshelvesController *bookshelvesController;
+
 #ifdef LOCALDEBUG
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 #endif
 @property (nonatomic, retain) NSArray *books;
+
+- (void)bookshelfToggled:(NSUInteger)selectedSegment;
 
 
 @end
