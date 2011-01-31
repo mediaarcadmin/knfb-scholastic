@@ -2,7 +2,7 @@
 //  SCHContentMetadataItem.h
 //  Scholastic
 //
-//  Created by John S. Eddie on 27/01/2011.
+//  Created by John S. Eddie on 31/01/2011.
 //  Copyright 2011 BitWink Limited. All rights reserved.
 //
 
@@ -24,8 +24,16 @@
 @property (nonatomic, retain) NSString * Title;
 @property (nonatomic, retain) NSString * FileName;
 @property (nonatomic, retain) NSString * Description;
+@property (nonatomic, retain) NSSet* eReaderCategories;
 
 @end
 
 
+@interface SCHContentMetadataItem (CoreDataGeneratedAccessors)
+- (void)addEReaderCategoriesObject:(NSManagedObject *)value;
+- (void)removeEReaderCategoriesObject:(NSManagedObject *)value;
+- (void)addEReaderCategories:(NSSet *)value;
+- (void)removeEReaderCategories:(NSSet *)value;
+
+@end
 

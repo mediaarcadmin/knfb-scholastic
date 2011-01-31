@@ -42,6 +42,7 @@ static NSString * const kSCHLibreAccessWebServiceStatusHolderStatusMessage = @"s
 - (NSDictionary *)objectFromFavorite:(LibreAccessServiceSvc_Favorite *)anObject;
 - (NSDictionary *)objectFromBookmark:(LibreAccessServiceSvc_Bookmark *)anObject;
 - (NSDictionary *)objectFromLastPage:(LibreAccessServiceSvc_LastPage *)anObject;
+- (NSDictionary *)objectFromItemsCount:(LibreAccessServiceSvc_ItemsCount *)anObject;
 
 - (id)objectFromTranslate:(id)anObject;
 
@@ -283,6 +284,7 @@ static NSString * const kSCHLibreAccessWebServiceStatusHolderStatusMessage = @"s
 	return(ret);							
 }
 
+// TODO: implement response and add to Core Data
 - (BOOL)saveProfileContentAnnotations:(NSArray *)annotations
 {
 	BOOL ret = NO;
@@ -469,6 +471,10 @@ static NSString * const kSCHLibreAccessWebServiceStatusHolderStatusMessage = @"s
 				  [anObject isKindOfClass:[LibreAccessServiceSvc_SaveContentProfileAssignmentResponse class]] == YES ||
 				  [anObject isKindOfClass:[LibreAccessServiceSoap11Binding_SaveContentProfileAssignment class]] == YES) {
 			ret = kSCHLibreAccessWebServiceSaveContentProfileAssignment;
+		} else if([anObject isKindOfClass:[LibreAccessServiceSvc_SaveReadingStatisticsDetailedRequest class]] == YES ||
+				  [anObject isKindOfClass:[LibreAccessServiceSvc_SaveReadingStatisticsDetailedResponse class]] == YES ||
+				  [anObject isKindOfClass:[LibreAccessServiceSoap11Binding_SaveReadingStatisticsDetailed class]] == YES) {
+			ret = kSCHLibreAccessWebServiceSaveReadingStatisticsDetailed;
 		}
 	}
 	
@@ -495,9 +501,14 @@ static NSString * const kSCHLibreAccessWebServiceStatusHolderStatusMessage = @"s
 			ret = [NSDictionary dictionaryWithObject:[self objectFromTranslate:[[anObject ProfileStatusList] ProfileStatusItem]] forKey:kSCHLibreAccessWebServiceProfileStatusList];
 		} else if ([anObject isKindOfClass:[LibreAccessServiceSvc_ListUserSettingsResponse class]] == YES) {
 			ret = [NSDictionary dictionaryWithObject:[self objectFromTranslate:[[anObject UserSettingsList] UserSettingsItem]] forKey:kSCHLibreAccessWebServiceUserSettingsList];
-			// TODO: Check if the ItemsCount is the same as [NSArray count]?
 		} else if ([anObject isKindOfClass:[LibreAccessServiceSvc_ListProfileContentAnnotationsResponse class]] == YES) {
-			ret = [NSDictionary dictionaryWithObject:[self objectFromTranslate:[[anObject AnnotationsList] AnnotationsItem]] forKey:kSCHLibreAccessWebServiceAnnotationsList];
+			NSDictionary *annotationsList = [NSDictionary dictionaryWithObject:[self objectFromTranslate:[[anObject AnnotationsList] AnnotationsItem]] forKey:kSCHLibreAccessWebServiceAnnotationsList];
+			NSDictionary *itemsCount = [NSDictionary dictionaryWithObject:[self objectFromItemsCount:[anObject ItemsCount]] forKey:kSCHLibreAccessWebServiceItemsCount];
+			ret = [NSDictionary dictionaryWithObject:[NSArray arrayWithObjects:annotationsList, itemsCount, nil] forKey:kSCHLibreAccessWebServiceListProfileContentAnnotations];
+		} else if ([anObject isKindOfClass:[LibreAccessServiceSvc_SaveContentProfileAssignmentResponse class]] == YES) {
+			ret = nil;	// only returns the status so nothing to return
+		} else if ([anObject isKindOfClass:[LibreAccessServiceSvc_SaveReadingStatisticsDetailedResponse class]] == YES) {
+			ret = nil;	// only returns the status so nothing to return
 		}
 	}
 	
@@ -649,8 +660,7 @@ static NSString * const kSCHLibreAccessWebServiceStatusHolderStatusMessage = @"s
 		[objects setObject:[self objectFromTranslate:[NSNumber numberWithDRMQualifier:anObject.DRMQualifier]] forKey:kSCHLibreAccessWebServiceDRMQualifier];
 		[objects setObject:[self objectFromTranslate:anObject.CoverURL] forKey:kSCHLibreAccessWebServiceCoverURL];
 		[objects setObject:[self objectFromTranslate:anObject.ContentURL] forKey:kSCHLibreAccessWebServiceContentURL];
-		// TODO: is this used? it doesnt seem to be?
-//		[objects setObject:[self objectFromTranslate:anObject.EreaderCategories] forKey:kLibreAccessWebServiceEreaderCategories];
+		[objects setObject:[self objectFromTranslate:anObject.EreaderCategories] forKey:kSCHLibreAccessWebServiceeReaderCategories];
 		[objects setObject:[self objectFromTranslate:anObject.ProductType] forKey:kSCHLibreAccessWebServiceProductType];
 				
 		ret = objects;					
@@ -904,6 +914,22 @@ static NSString * const kSCHLibreAccessWebServiceStatusHolderStatusMessage = @"s
 		[objects setObject:[self objectFromTranslate:anObject.percentage] forKey:kSCHLibreAccessWebServicePercentage];
 		[objects setObject:[self objectFromTranslate:anObject.component] forKey:kSCHLibreAccessWebServiceComponent];
 		[objects setObject:[self objectFromTranslate:anObject.lastmodified] forKey:kSCHLibreAccessWebServiceLastModified];
+		
+		ret = objects;					
+	}
+	
+	return(ret);
+}
+
+- (NSDictionary *)objectFromItemsCount:(LibreAccessServiceSvc_ItemsCount *)anObject
+{
+	NSDictionary *ret = nil;
+	
+	if (anObject != nil) {
+		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
+		
+		[objects setObject:[self objectFromTranslate:anObject.Returned] forKey:kSCHLibreAccessWebServiceReturned];
+		[objects setObject:[self objectFromTranslate:anObject.Found] forKey:kSCHLibreAccessWebServiceFound];
 		
 		ret = objects;					
 	}

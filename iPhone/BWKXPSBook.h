@@ -3,7 +3,7 @@
 //  XPSRenderer
 //
 //  Created by Gordon Christie on 21/12/2010.
-//  Copyright 2010 Chillypea. All rights reserved.
+//  Copyright 2010 BitWink Limited. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
