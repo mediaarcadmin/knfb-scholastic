@@ -24,6 +24,7 @@ static NSString * const kSCHLibreAccessWebServiceSaveUserSettings = @"SaveUserSe
 static NSString * const kSCHLibreAccessWebServiceListProfileContentAnnotations = @"ListProfileContentAnnotations";
 static NSString * const kSCHLibreAccessWebServiceSaveProfileContentAnnotations = @"SaveProfileContentAnnotations";
 static NSString * const kSCHLibreAccessWebServiceSaveContentProfileAssignment = @"SaveContentProfileAssignment";
+static NSString * const kSCHLibreAccessWebServiceSaveReadingStatisticsDetailed = @"SaveReadingStatisticsDetailed";
 
 // Parameters
 static NSString * const kSCHLibreAccessWebServiceAction = @"Action";

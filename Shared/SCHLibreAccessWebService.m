@@ -284,7 +284,7 @@ static NSString * const kSCHLibreAccessWebServiceStatusHolderStatusMessage = @"s
 	return(ret);							
 }
 
-// TODO: implement in Core Data
+// TODO: implement response and add to Core Data
 - (BOOL)saveProfileContentAnnotations:(NSArray *)annotations
 {
 	BOOL ret = NO;
@@ -471,6 +471,10 @@ static NSString * const kSCHLibreAccessWebServiceStatusHolderStatusMessage = @"s
 				  [anObject isKindOfClass:[LibreAccessServiceSvc_SaveContentProfileAssignmentResponse class]] == YES ||
 				  [anObject isKindOfClass:[LibreAccessServiceSoap11Binding_SaveContentProfileAssignment class]] == YES) {
 			ret = kSCHLibreAccessWebServiceSaveContentProfileAssignment;
+		} else if([anObject isKindOfClass:[LibreAccessServiceSvc_SaveReadingStatisticsDetailedRequest class]] == YES ||
+				  [anObject isKindOfClass:[LibreAccessServiceSvc_SaveReadingStatisticsDetailedResponse class]] == YES ||
+				  [anObject isKindOfClass:[LibreAccessServiceSoap11Binding_SaveReadingStatisticsDetailed class]] == YES) {
+			ret = kSCHLibreAccessWebServiceSaveReadingStatisticsDetailed;
 		}
 	}
 	
@@ -501,6 +505,10 @@ static NSString * const kSCHLibreAccessWebServiceStatusHolderStatusMessage = @"s
 			NSDictionary *annotationsList = [NSDictionary dictionaryWithObject:[self objectFromTranslate:[[anObject AnnotationsList] AnnotationsItem]] forKey:kSCHLibreAccessWebServiceAnnotationsList];
 			NSDictionary *itemsCount = [NSDictionary dictionaryWithObject:[self objectFromItemsCount:[anObject ItemsCount]] forKey:kSCHLibreAccessWebServiceItemsCount];
 			ret = [NSDictionary dictionaryWithObject:[NSArray arrayWithObjects:annotationsList, itemsCount, nil] forKey:kSCHLibreAccessWebServiceListProfileContentAnnotations];
+		} else if ([anObject isKindOfClass:[LibreAccessServiceSvc_SaveContentProfileAssignmentResponse class]] == YES) {
+			ret = nil;	// only returns the status so nothing to return
+		} else if ([anObject isKindOfClass:[LibreAccessServiceSvc_SaveReadingStatisticsDetailedResponse class]] == YES) {
+			ret = nil;	// only returns the status so nothing to return
 		}
 	}
 	
