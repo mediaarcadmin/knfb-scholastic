@@ -3,7 +3,7 @@
 //  XPSRenderer
 //
 //  Created by Gordon Christie on 24/01/2011.
-//  Copyright 2011 Chillypea. All rights reserved.
+//  Copyright 2011 BitWink Limited. All rights reserved.
 //
 
 #import "BWKScrubberView.h"
