@@ -1,20 +1,19 @@
 // 
-//  SCHAnnotationsItem.m
+//  SCHItemsCount.m
 //  Scholastic
 //
 //  Created by John S. Eddie on 31/01/2011.
 //  Copyright 2011 BitWink Limited. All rights reserved.
 //
 
-#import "SCHAnnotationsItem.h"
+#import "SCHItemsCount.h"
 
-#import "SCHAnnotationsContentItem.h"
 #import "SCHListProfileContentAnnotations.h"
 
-@implementation SCHAnnotationsItem 
+@implementation SCHItemsCount 
 
-@dynamic ProfileID;
+@dynamic Found;
+@dynamic Returned;
 @dynamic ListProfileContentAnnotations;
-@dynamic AnnotationsContentItem;
 
 @end
