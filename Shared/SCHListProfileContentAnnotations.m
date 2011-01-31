@@ -1,20 +1,18 @@
 // 
-//  SCHAnnotationsContentItem.m
+//  SCHListProfileContentAnnotations.m
 //  Scholastic
 //
 //  Created by John S. Eddie on 31/01/2011.
 //  Copyright 2011 Zicron Software Limited. All rights reserved.
 //
 
-#import "SCHAnnotationsContentItem.h"
+#import "SCHListProfileContentAnnotations.h"
 
 #import "SCHAnnotationsItem.h"
-#import "SCHPrivateAnnotations.h"
 
-@implementation SCHAnnotationsContentItem 
+@implementation SCHListProfileContentAnnotations 
 
-@dynamic Format;
 @dynamic AnnotationsItem;
-@dynamic PrivateAnnotation;
+@dynamic ItemsCount;
 
 @end
