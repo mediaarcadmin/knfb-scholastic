@@ -18,7 +18,7 @@
 
 @property (nonatomic, retain) NSString * Format;
 @property (nonatomic, retain) SCHAnnotationsList * AnnotationsList;
-@property (nonatomic, retain) SCHPrivateAnnotations * PrivateAnnotation;
+@property (nonatomic, retain) SCHPrivateAnnotations * PrivateAnnotations;
 
 @end
 

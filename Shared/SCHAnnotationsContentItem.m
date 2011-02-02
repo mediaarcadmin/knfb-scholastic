@@ -15,6 +15,6 @@
 
 @dynamic Format;
 @dynamic AnnotationsList;
-@dynamic PrivateAnnotation;
+@dynamic PrivateAnnotations;
 
 @end
