@@ -70,6 +70,7 @@ void XPSPageCompleteCallback(void *userdata, RasterImageInfo *data) {
 - (void) dealloc
 {
 	[self deleteTemporaryDirectoryAtPath:self.tempDirectory];
+	XPS_Close(xpsHandle);
 	[super dealloc];
 }
 
