@@ -53,7 +53,6 @@
 		52298A9712F0EF5600BBBCE6 /* SCHProfileItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A7E12F0EF5600BBBCE6 /* SCHProfileItem.m */; };
 		52298A9812F0EF5600BBBCE6 /* SCHCoords.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A8012F0EF5600BBBCE6 /* SCHCoords.m */; };
 		52298A9912F0EF5600BBBCE6 /* SCHLocationGraphics.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A8212F0EF5600BBBCE6 /* SCHLocationGraphics.m */; };
-		52298A9A12F0EF5600BBBCE6 /* SCHAnnotationsItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A8412F0EF5600BBBCE6 /* SCHAnnotationsItem.m */; };
 		52298A9B12F0EF5600BBBCE6 /* SCHHighlight.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A8612F0EF5600BBBCE6 /* SCHHighlight.m */; };
 		528A2CD312CCDD9E0053A343 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 528A2CD212CCDD9E0053A343 /* Settings.bundle */; };
 		528A2CDB12CCDE070053A343 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 528A2CDA12CCDE070053A343 /* Localizable.strings */; };
@@ -90,6 +89,32 @@
 		5293883312E03CD000045B44 /* SCHBookShelfViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293883112E03CD000045B44 /* SCHBookShelfViewController.m */; };
 		5293883412E03CD000045B44 /* SCHBookShelfViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5293883212E03CD000045B44 /* SCHBookShelfViewController.xib */; };
 		52938B3912E08FC400045B44 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 52938B3812E08FC400045B44 /* Icon.png */; };
+		52AD954012F95E180099FB88 /* SCHListProfileContentAnnotations+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD953F12F95E180099FB88 /* SCHListProfileContentAnnotations+Extensions.m */; };
+		52AD954112F95E180099FB88 /* SCHListProfileContentAnnotations+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD953F12F95E180099FB88 /* SCHListProfileContentAnnotations+Extensions.m */; };
+		52AD961612F9A77C0099FB88 /* SCHItemsCount+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD961512F9A77C0099FB88 /* SCHItemsCount+Extensions.m */; };
+		52AD961712F9A77C0099FB88 /* SCHItemsCount+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD961512F9A77C0099FB88 /* SCHItemsCount+Extensions.m */; };
+		52AD966B12F9B1B40099FB88 /* SCHAnnotationsList.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD966612F9B1B40099FB88 /* SCHAnnotationsList.m */; };
+		52AD966E12F9B1B40099FB88 /* SCHAnnotationsList.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD966612F9B1B40099FB88 /* SCHAnnotationsList.m */; };
+		52AD969012F9B4DC0099FB88 /* SCHAnnotationsList+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD968F12F9B4DC0099FB88 /* SCHAnnotationsList+Extensions.m */; };
+		52AD969112F9B4DC0099FB88 /* SCHAnnotationsList+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD968F12F9B4DC0099FB88 /* SCHAnnotationsList+Extensions.m */; };
+		52AD96CF12F9C1020099FB88 /* SCHAnnotationsContentItem+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD96CE12F9C1020099FB88 /* SCHAnnotationsContentItem+Extensions.m */; };
+		52AD96D012F9C1020099FB88 /* SCHAnnotationsContentItem+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD96CE12F9C1020099FB88 /* SCHAnnotationsContentItem+Extensions.m */; };
+		52AD971D12FA0BF80099FB88 /* SCHPrivateAnnotations+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD971C12FA0BF80099FB88 /* SCHPrivateAnnotations+Extensions.m */; };
+		52AD971E12FA0BF80099FB88 /* SCHPrivateAnnotations+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD971C12FA0BF80099FB88 /* SCHPrivateAnnotations+Extensions.m */; };
+		52AD973512FA0EE40099FB88 /* SCHLocationGraphics+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD973412FA0EE40099FB88 /* SCHLocationGraphics+Extensions.m */; };
+		52AD973612FA0EE40099FB88 /* SCHLocationGraphics+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD973412FA0EE40099FB88 /* SCHLocationGraphics+Extensions.m */; };
+		52AD974312FA0FA80099FB88 /* SCHHighlight+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD974212FA0FA80099FB88 /* SCHHighlight+Extensions.m */; };
+		52AD974412FA0FA80099FB88 /* SCHHighlight+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD974212FA0FA80099FB88 /* SCHHighlight+Extensions.m */; };
+		52AD974E12FA10580099FB88 /* SCHNote+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD974D12FA10580099FB88 /* SCHNote+Extensions.m */; };
+		52AD974F12FA10580099FB88 /* SCHNote+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD974D12FA10580099FB88 /* SCHNote+Extensions.m */; };
+		52AD975F12FA10F40099FB88 /* SCHCoords+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD975E12FA10F40099FB88 /* SCHCoords+Extensions.m */; };
+		52AD976012FA10F40099FB88 /* SCHCoords+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD975E12FA10F40099FB88 /* SCHCoords+Extensions.m */; };
+		52AD976A12FA11710099FB88 /* SCHBookmark+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD976912FA11710099FB88 /* SCHBookmark+Extensions.m */; };
+		52AD976B12FA11710099FB88 /* SCHBookmark+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD976912FA11710099FB88 /* SCHBookmark+Extensions.m */; };
+		52AD977812FA11E20099FB88 /* SCHLastPage+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD977712FA11E20099FB88 /* SCHLastPage+Extensions.m */; };
+		52AD977912FA11E20099FB88 /* SCHLastPage+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD977712FA11E20099FB88 /* SCHLastPage+Extensions.m */; };
+		52AD978312FA12A00099FB88 /* SCHFavorite+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD978212FA12A00099FB88 /* SCHFavorite+Extensions.m */; };
+		52AD978412FA12A00099FB88 /* SCHFavorite+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD978212FA12A00099FB88 /* SCHFavorite+Extensions.m */; };
 		52D6122212E44B0F0033DA92 /* SCHProfileItem+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D6122112E44B0F0033DA92 /* SCHProfileItem+Extensions.m */; };
 		52D6124312E44CEC0033DA92 /* SCHContentMetadataItem+Extensions.m in Resources */ = {isa = PBXBuildFile; fileRef = 52D6124212E44CEC0033DA92 /* SCHContentMetadataItem+Extensions.m */; };
 		52D6124F12E44D760033DA92 /* SCHSyncEntity+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D6124E12E44D760033DA92 /* SCHSyncEntity+Extensions.m */; };
@@ -119,7 +144,6 @@
 		C923B15C12F6B0280054426F /* SCHMultipleBookshelvesController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C923B15A12F6B0280054426F /* SCHMultipleBookshelvesController.xib */; };
 		F837C6A112F1798800833448 /* SCHAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A7A12F0EF5600BBBCE6 /* SCHAnnotation.m */; };
 		F837C6A212F1798900833448 /* SCHAnnotationsContentItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A7812F0EF5600BBBCE6 /* SCHAnnotationsContentItem.m */; };
-		F837C6A312F1798900833448 /* SCHAnnotationsItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A8412F0EF5600BBBCE6 /* SCHAnnotationsItem.m */; };
 		F837C6A412F1798B00833448 /* SCHBookmark.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A7212F0EF5600BBBCE6 /* SCHBookmark.m */; };
 		F837C6A512F1798E00833448 /* SCHContentItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A7412F0EF5600BBBCE6 /* SCHContentItem.m */; };
 		F837C6A612F1798E00833448 /* SCHContentMetadataItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6212F0EF5600BBBCE6 /* SCHContentMetadataItem.m */; };
@@ -305,8 +329,6 @@
 		52298A8012F0EF5600BBBCE6 /* SCHCoords.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHCoords.m; path = Shared/SCHCoords.m; sourceTree = "<group>"; };
 		52298A8112F0EF5600BBBCE6 /* SCHLocationGraphics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHLocationGraphics.h; path = Shared/SCHLocationGraphics.h; sourceTree = "<group>"; };
 		52298A8212F0EF5600BBBCE6 /* SCHLocationGraphics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHLocationGraphics.m; path = Shared/SCHLocationGraphics.m; sourceTree = "<group>"; };
-		52298A8312F0EF5600BBBCE6 /* SCHAnnotationsItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAnnotationsItem.h; path = Shared/SCHAnnotationsItem.h; sourceTree = "<group>"; };
-		52298A8412F0EF5600BBBCE6 /* SCHAnnotationsItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHAnnotationsItem.m; path = Shared/SCHAnnotationsItem.m; sourceTree = "<group>"; };
 		52298A8512F0EF5600BBBCE6 /* SCHHighlight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHHighlight.h; path = Shared/SCHHighlight.h; sourceTree = "<group>"; };
 		52298A8612F0EF5600BBBCE6 /* SCHHighlight.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHHighlight.m; path = Shared/SCHHighlight.m; sourceTree = "<group>"; };
 		528A2CD212CCDD9E0053A343 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = Settings.bundle; path = Shared/Settings.bundle; sourceTree = "<group>"; };
@@ -372,6 +394,32 @@
 		5293883112E03CD000045B44 /* SCHBookShelfViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookShelfViewController.m; path = iPhone/SCHBookShelfViewController.m; sourceTree = "<group>"; };
 		5293883212E03CD000045B44 /* SCHBookShelfViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = SCHBookShelfViewController.xib; path = iPhone/SCHBookShelfViewController.xib; sourceTree = "<group>"; };
 		52938B3812E08FC400045B44 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon.png; path = Shared/Images/Icon.png; sourceTree = "<group>"; };
+		52AD953E12F95E180099FB88 /* SCHListProfileContentAnnotations+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SCHListProfileContentAnnotations+Extensions.h"; path = "Shared/SCHListProfileContentAnnotations+Extensions.h"; sourceTree = "<group>"; };
+		52AD953F12F95E180099FB88 /* SCHListProfileContentAnnotations+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SCHListProfileContentAnnotations+Extensions.m"; path = "Shared/SCHListProfileContentAnnotations+Extensions.m"; sourceTree = "<group>"; };
+		52AD961412F9A77C0099FB88 /* SCHItemsCount+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SCHItemsCount+Extensions.h"; path = "Shared/SCHItemsCount+Extensions.h"; sourceTree = "<group>"; };
+		52AD961512F9A77C0099FB88 /* SCHItemsCount+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SCHItemsCount+Extensions.m"; path = "Shared/SCHItemsCount+Extensions.m"; sourceTree = "<group>"; };
+		52AD966512F9B1B40099FB88 /* SCHAnnotationsList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAnnotationsList.h; path = Shared/SCHAnnotationsList.h; sourceTree = "<group>"; };
+		52AD966612F9B1B40099FB88 /* SCHAnnotationsList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHAnnotationsList.m; path = Shared/SCHAnnotationsList.m; sourceTree = "<group>"; };
+		52AD968E12F9B4DC0099FB88 /* SCHAnnotationsList+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SCHAnnotationsList+Extensions.h"; path = "Shared/SCHAnnotationsList+Extensions.h"; sourceTree = "<group>"; };
+		52AD968F12F9B4DC0099FB88 /* SCHAnnotationsList+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SCHAnnotationsList+Extensions.m"; path = "Shared/SCHAnnotationsList+Extensions.m"; sourceTree = "<group>"; };
+		52AD96CD12F9C1020099FB88 /* SCHAnnotationsContentItem+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SCHAnnotationsContentItem+Extensions.h"; path = "Shared/SCHAnnotationsContentItem+Extensions.h"; sourceTree = "<group>"; };
+		52AD96CE12F9C1020099FB88 /* SCHAnnotationsContentItem+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SCHAnnotationsContentItem+Extensions.m"; path = "Shared/SCHAnnotationsContentItem+Extensions.m"; sourceTree = "<group>"; };
+		52AD971B12FA0BF80099FB88 /* SCHPrivateAnnotations+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SCHPrivateAnnotations+Extensions.h"; path = "Shared/SCHPrivateAnnotations+Extensions.h"; sourceTree = "<group>"; };
+		52AD971C12FA0BF80099FB88 /* SCHPrivateAnnotations+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SCHPrivateAnnotations+Extensions.m"; path = "Shared/SCHPrivateAnnotations+Extensions.m"; sourceTree = "<group>"; };
+		52AD973312FA0EE40099FB88 /* SCHLocationGraphics+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SCHLocationGraphics+Extensions.h"; path = "Shared/SCHLocationGraphics+Extensions.h"; sourceTree = "<group>"; };
+		52AD973412FA0EE40099FB88 /* SCHLocationGraphics+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SCHLocationGraphics+Extensions.m"; path = "Shared/SCHLocationGraphics+Extensions.m"; sourceTree = "<group>"; };
+		52AD974112FA0FA80099FB88 /* SCHHighlight+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SCHHighlight+Extensions.h"; path = "Shared/SCHHighlight+Extensions.h"; sourceTree = "<group>"; };
+		52AD974212FA0FA80099FB88 /* SCHHighlight+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SCHHighlight+Extensions.m"; path = "Shared/SCHHighlight+Extensions.m"; sourceTree = "<group>"; };
+		52AD974C12FA10580099FB88 /* SCHNote+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SCHNote+Extensions.h"; path = "Shared/SCHNote+Extensions.h"; sourceTree = "<group>"; };
+		52AD974D12FA10580099FB88 /* SCHNote+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SCHNote+Extensions.m"; path = "Shared/SCHNote+Extensions.m"; sourceTree = "<group>"; };
+		52AD975D12FA10F40099FB88 /* SCHCoords+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SCHCoords+Extensions.h"; path = "Shared/SCHCoords+Extensions.h"; sourceTree = "<group>"; };
+		52AD975E12FA10F40099FB88 /* SCHCoords+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SCHCoords+Extensions.m"; path = "Shared/SCHCoords+Extensions.m"; sourceTree = "<group>"; };
+		52AD976812FA11710099FB88 /* SCHBookmark+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SCHBookmark+Extensions.h"; path = "Shared/SCHBookmark+Extensions.h"; sourceTree = "<group>"; };
+		52AD976912FA11710099FB88 /* SCHBookmark+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SCHBookmark+Extensions.m"; path = "Shared/SCHBookmark+Extensions.m"; sourceTree = "<group>"; };
+		52AD977612FA11E20099FB88 /* SCHLastPage+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SCHLastPage+Extensions.h"; path = "Shared/SCHLastPage+Extensions.h"; sourceTree = "<group>"; };
+		52AD977712FA11E20099FB88 /* SCHLastPage+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SCHLastPage+Extensions.m"; path = "Shared/SCHLastPage+Extensions.m"; sourceTree = "<group>"; };
+		52AD978112FA12A00099FB88 /* SCHFavorite+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SCHFavorite+Extensions.h"; path = "Shared/SCHFavorite+Extensions.h"; sourceTree = "<group>"; };
+		52AD978212FA12A00099FB88 /* SCHFavorite+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SCHFavorite+Extensions.m"; path = "Shared/SCHFavorite+Extensions.m"; sourceTree = "<group>"; };
 		52D6122012E44B0F0033DA92 /* SCHProfileItem+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SCHProfileItem+Extensions.h"; path = "Shared/SCHProfileItem+Extensions.h"; sourceTree = "<group>"; };
 		52D6122112E44B0F0033DA92 /* SCHProfileItem+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SCHProfileItem+Extensions.m"; path = "Shared/SCHProfileItem+Extensions.m"; sourceTree = "<group>"; };
 		52D6124112E44CEC0033DA92 /* SCHContentMetadataItem+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SCHContentMetadataItem+Extensions.h"; path = "Shared/SCHContentMetadataItem+Extensions.h"; sourceTree = "<group>"; };
@@ -587,8 +635,8 @@
 				52298A7A12F0EF5600BBBCE6 /* SCHAnnotation.m */,
 				52298A7712F0EF5600BBBCE6 /* SCHAnnotationsContentItem.h */,
 				52298A7812F0EF5600BBBCE6 /* SCHAnnotationsContentItem.m */,
-				52298A8312F0EF5600BBBCE6 /* SCHAnnotationsItem.h */,
-				52298A8412F0EF5600BBBCE6 /* SCHAnnotationsItem.m */,
+				52AD966512F9B1B40099FB88 /* SCHAnnotationsList.h */,
+				52AD966612F9B1B40099FB88 /* SCHAnnotationsList.m */,
 				52298A7112F0EF5600BBBCE6 /* SCHBookmark.h */,
 				52298A7212F0EF5600BBBCE6 /* SCHBookmark.m */,
 				52298A7312F0EF5600BBBCE6 /* SCHContentItem.h */,
@@ -633,20 +681,7 @@
 				52298A6012F0EF5600BBBCE6 /* SCHUserSettingsItem.m */,
 				52298A6B12F0EF5600BBBCE6 /* SCHWordIndex.h */,
 				52298A6C12F0EF5600BBBCE6 /* SCHWordIndex.m */,
-				52D6124112E44CEC0033DA92 /* SCHContentMetadataItem+Extensions.h */,
-				52D6124212E44CEC0033DA92 /* SCHContentMetadataItem+Extensions.m */,
-				5222FBF612F4E023000A4624 /* SCHContentProfileItem+Extensions.h */,
-				5222FBF712F4E023000A4624 /* SCHContentProfileItem+Extensions.m */,
-				5222FC2A12F4E41F000A4624 /* SCHOrderItem+Extensions.h */,
-				5222FC2B12F4E41F000A4624 /* SCHOrderItem+Extensions.m */,
-				52D6122012E44B0F0033DA92 /* SCHProfileItem+Extensions.h */,
-				52D6122112E44B0F0033DA92 /* SCHProfileItem+Extensions.m */,
-				52D6124D12E44D760033DA92 /* SCHSyncEntity+Extensions.h */,
-				52D6124E12E44D760033DA92 /* SCHSyncEntity+Extensions.m */,
-				5222FC3312F4E4AB000A4624 /* SCHUserContentItem+Extensions.h */,
-				5222FC3412F4E4AB000A4624 /* SCHUserContentItem+Extensions.m */,
-				5222FC1D12F4E37B000A4624 /* SCHUserSettingsItem+Extensions.h */,
-				5222FC1E12F4E37B000A4624 /* SCHUserSettingsItem+Extensions.m */,
+				52AD953812F95DDE0099FB88 /* Extensions */,
 				52D612B612E4650B0033DA92 /* NSNumber+ObjectTypes.h */,
 				52D612B712E4650B0033DA92 /* NSNumber+ObjectTypes.m */,
 			);
@@ -801,6 +836,51 @@
 				52EF543F12E9A5D400E374F7 /* SCHAuthenticationManager.m */,
 			);
 			name = "Web Services";
+			sourceTree = "<group>";
+		};
+		52AD953812F95DDE0099FB88 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				52AD96CD12F9C1020099FB88 /* SCHAnnotationsContentItem+Extensions.h */,
+				52AD96CE12F9C1020099FB88 /* SCHAnnotationsContentItem+Extensions.m */,
+				52AD968E12F9B4DC0099FB88 /* SCHAnnotationsList+Extensions.h */,
+				52AD968F12F9B4DC0099FB88 /* SCHAnnotationsList+Extensions.m */,
+				52AD976812FA11710099FB88 /* SCHBookmark+Extensions.h */,
+				52AD976912FA11710099FB88 /* SCHBookmark+Extensions.m */,
+				52D6124112E44CEC0033DA92 /* SCHContentMetadataItem+Extensions.h */,
+				52AD975D12FA10F40099FB88 /* SCHCoords+Extensions.h */,
+				52AD975E12FA10F40099FB88 /* SCHCoords+Extensions.m */,
+				52D6124212E44CEC0033DA92 /* SCHContentMetadataItem+Extensions.m */,
+				5222FBF612F4E023000A4624 /* SCHContentProfileItem+Extensions.h */,
+				5222FBF712F4E023000A4624 /* SCHContentProfileItem+Extensions.m */,
+				52AD978112FA12A00099FB88 /* SCHFavorite+Extensions.h */,
+				52AD978212FA12A00099FB88 /* SCHFavorite+Extensions.m */,
+				52AD974112FA0FA80099FB88 /* SCHHighlight+Extensions.h */,
+				52AD974212FA0FA80099FB88 /* SCHHighlight+Extensions.m */,
+				52AD961412F9A77C0099FB88 /* SCHItemsCount+Extensions.h */,
+				52AD961512F9A77C0099FB88 /* SCHItemsCount+Extensions.m */,
+				52AD953E12F95E180099FB88 /* SCHListProfileContentAnnotations+Extensions.h */,
+				52AD953F12F95E180099FB88 /* SCHListProfileContentAnnotations+Extensions.m */,
+				52AD977612FA11E20099FB88 /* SCHLastPage+Extensions.h */,
+				52AD977712FA11E20099FB88 /* SCHLastPage+Extensions.m */,
+				52AD973312FA0EE40099FB88 /* SCHLocationGraphics+Extensions.h */,
+				52AD973412FA0EE40099FB88 /* SCHLocationGraphics+Extensions.m */,
+				52AD974C12FA10580099FB88 /* SCHNote+Extensions.h */,
+				52AD974D12FA10580099FB88 /* SCHNote+Extensions.m */,
+				5222FC2A12F4E41F000A4624 /* SCHOrderItem+Extensions.h */,
+				5222FC2B12F4E41F000A4624 /* SCHOrderItem+Extensions.m */,
+				52AD971B12FA0BF80099FB88 /* SCHPrivateAnnotations+Extensions.h */,
+				52AD971C12FA0BF80099FB88 /* SCHPrivateAnnotations+Extensions.m */,
+				52D6122012E44B0F0033DA92 /* SCHProfileItem+Extensions.h */,
+				52D6122112E44B0F0033DA92 /* SCHProfileItem+Extensions.m */,
+				52D6124D12E44D760033DA92 /* SCHSyncEntity+Extensions.h */,
+				52D6124E12E44D760033DA92 /* SCHSyncEntity+Extensions.m */,
+				5222FC3312F4E4AB000A4624 /* SCHUserContentItem+Extensions.h */,
+				5222FC3412F4E4AB000A4624 /* SCHUserContentItem+Extensions.m */,
+				5222FC1D12F4E37B000A4624 /* SCHUserSettingsItem+Extensions.h */,
+				5222FC1E12F4E37B000A4624 /* SCHUserSettingsItem+Extensions.m */,
+			);
+			name = Extensions;
 			sourceTree = "<group>";
 		};
 		52EF579412EDBE6E00E374F7 /* security */ = {
@@ -1128,7 +1208,6 @@
 				52298A9712F0EF5600BBBCE6 /* SCHProfileItem.m in Sources */,
 				52298A9812F0EF5600BBBCE6 /* SCHCoords.m in Sources */,
 				52298A9912F0EF5600BBBCE6 /* SCHLocationGraphics.m in Sources */,
-				52298A9A12F0EF5600BBBCE6 /* SCHAnnotationsItem.m in Sources */,
 				52298A9B12F0EF5600BBBCE6 /* SCHHighlight.m in Sources */,
 				52E4692012F1D94E00ECC97A /* SCHLocalDebug.m in Sources */,
 				5222FBF812F4E023000A4624 /* SCHContentProfileItem+Extensions.m in Sources */,
@@ -1140,6 +1219,19 @@
 				5200EFF012F6CFE400BAC355 /* SCHListProfileContentAnnotations.m in Sources */,
 				5200EFF112F6CFE400BAC355 /* SCHPrivateAnnotations.m in Sources */,
 				5200EFF512F6D00B00BAC355 /* SCHeReaderCategories.m in Sources */,
+				52AD954112F95E180099FB88 /* SCHListProfileContentAnnotations+Extensions.m in Sources */,
+				52AD961712F9A77C0099FB88 /* SCHItemsCount+Extensions.m in Sources */,
+				52AD966E12F9B1B40099FB88 /* SCHAnnotationsList.m in Sources */,
+				52AD969112F9B4DC0099FB88 /* SCHAnnotationsList+Extensions.m in Sources */,
+				52AD96D012F9C1020099FB88 /* SCHAnnotationsContentItem+Extensions.m in Sources */,
+				52AD971E12FA0BF80099FB88 /* SCHPrivateAnnotations+Extensions.m in Sources */,
+				52AD973612FA0EE40099FB88 /* SCHLocationGraphics+Extensions.m in Sources */,
+				52AD974412FA0FA80099FB88 /* SCHHighlight+Extensions.m in Sources */,
+				52AD974F12FA10580099FB88 /* SCHNote+Extensions.m in Sources */,
+				52AD976012FA10F40099FB88 /* SCHCoords+Extensions.m in Sources */,
+				52AD976B12FA11710099FB88 /* SCHBookmark+Extensions.m in Sources */,
+				52AD977912FA11E20099FB88 /* SCHLastPage+Extensions.m in Sources */,
+				52AD978412FA12A00099FB88 /* SCHFavorite+Extensions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1193,7 +1285,6 @@
 				C923A27C12F06FE60054426F /* MRGridViewController.m in Sources */,
 				F837C6A112F1798800833448 /* SCHAnnotation.m in Sources */,
 				F837C6A212F1798900833448 /* SCHAnnotationsContentItem.m in Sources */,
-				F837C6A312F1798900833448 /* SCHAnnotationsItem.m in Sources */,
 				F837C6A412F1798B00833448 /* SCHBookmark.m in Sources */,
 				F837C6A512F1798E00833448 /* SCHContentItem.m in Sources */,
 				F837C6A612F1798E00833448 /* SCHContentMetadataItem.m in Sources */,
@@ -1221,6 +1312,19 @@
 				5200EFED12F6CFE400BAC355 /* SCHListProfileContentAnnotations.m in Sources */,
 				5200EFEE12F6CFE400BAC355 /* SCHPrivateAnnotations.m in Sources */,
 				5200EFF412F6D00B00BAC355 /* SCHeReaderCategories.m in Sources */,
+				52AD954012F95E180099FB88 /* SCHListProfileContentAnnotations+Extensions.m in Sources */,
+				52AD961612F9A77C0099FB88 /* SCHItemsCount+Extensions.m in Sources */,
+				52AD966B12F9B1B40099FB88 /* SCHAnnotationsList.m in Sources */,
+				52AD969012F9B4DC0099FB88 /* SCHAnnotationsList+Extensions.m in Sources */,
+				52AD96CF12F9C1020099FB88 /* SCHAnnotationsContentItem+Extensions.m in Sources */,
+				52AD971D12FA0BF80099FB88 /* SCHPrivateAnnotations+Extensions.m in Sources */,
+				52AD973512FA0EE40099FB88 /* SCHLocationGraphics+Extensions.m in Sources */,
+				52AD974312FA0FA80099FB88 /* SCHHighlight+Extensions.m in Sources */,
+				52AD974E12FA10580099FB88 /* SCHNote+Extensions.m in Sources */,
+				52AD975F12FA10F40099FB88 /* SCHCoords+Extensions.m in Sources */,
+				52AD976A12FA11710099FB88 /* SCHBookmark+Extensions.m in Sources */,
+				52AD977812FA11E20099FB88 /* SCHLastPage+Extensions.m in Sources */,
+				52AD978312FA12A00099FB88 /* SCHFavorite+Extensions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

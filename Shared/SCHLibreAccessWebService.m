@@ -502,9 +502,12 @@ static NSString * const kSCHLibreAccessWebServiceStatusHolderStatusMessage = @"s
 		} else if ([anObject isKindOfClass:[LibreAccessServiceSvc_ListUserSettingsResponse class]] == YES) {
 			ret = [NSDictionary dictionaryWithObject:[self objectFromTranslate:[[anObject UserSettingsList] UserSettingsItem]] forKey:kSCHLibreAccessWebServiceUserSettingsList];
 		} else if ([anObject isKindOfClass:[LibreAccessServiceSvc_ListProfileContentAnnotationsResponse class]] == YES) {
-			NSDictionary *annotationsList = [NSDictionary dictionaryWithObject:[self objectFromTranslate:[[anObject AnnotationsList] AnnotationsItem]] forKey:kSCHLibreAccessWebServiceAnnotationsList];
-			NSDictionary *itemsCount = [NSDictionary dictionaryWithObject:[self objectFromItemsCount:[anObject ItemsCount]] forKey:kSCHLibreAccessWebServiceItemsCount];
-			ret = [NSDictionary dictionaryWithObject:[NSArray arrayWithObjects:annotationsList, itemsCount, nil] forKey:kSCHLibreAccessWebServiceListProfileContentAnnotations];
+			NSMutableDictionary *listProfileContentAnnotations = [NSMutableDictionary dictionary];
+			
+			[listProfileContentAnnotations setObject:[self objectFromTranslate:[[anObject AnnotationsList] AnnotationsItem]] forKey:kSCHLibreAccessWebServiceAnnotationsList];
+			[listProfileContentAnnotations setObject:[self objectFromItemsCount:[anObject ItemsCount]] forKey:kSCHLibreAccessWebServiceItemsCount];			
+
+			ret = [NSDictionary dictionaryWithObject:listProfileContentAnnotations forKey:kSCHLibreAccessWebServiceListProfileContentAnnotations];
 		} else if ([anObject isKindOfClass:[LibreAccessServiceSvc_SaveContentProfileAssignmentResponse class]] == YES) {
 			ret = nil;	// only returns the status so nothing to return
 		} else if ([anObject isKindOfClass:[LibreAccessServiceSvc_SaveReadingStatisticsDetailedResponse class]] == YES) {
@@ -712,7 +715,7 @@ static NSString * const kSCHLibreAccessWebServiceStatusHolderStatusMessage = @"s
 	if (anObject != nil) {
 		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
 		
-		[objects setObject:[NSDictionary dictionaryWithObject:[self objectFromTranslate:[[anObject AnnotationsContentList] AnnotationsContentItem]] forKey:kSCHLibreAccessWebServiceAnnotationsContentList] forKey:kSCHLibreAccessWebServiceAnnotationsContentList];
+		[objects setObject:[self objectFromTranslate:[[anObject AnnotationsContentList] AnnotationsContentItem]] forKey:kSCHLibreAccessWebServiceAnnotationsContentList];
 		[objects setObject:[self objectFromTranslate:anObject.profileID] forKey:kSCHLibreAccessWebServiceProfileID];
 		
 		ret = objects;					
@@ -732,7 +735,7 @@ static NSString * const kSCHLibreAccessWebServiceStatusHolderStatusMessage = @"s
 		[objects setObject:[NSNumber numberWithContentIdentifierType:anObject.ContentIdentifierType] forKey:kSCHLibreAccessWebServiceContentIdentifierType];
 		[objects setObject:[NSNumber numberWithDRMQualifier:anObject.drmqualifier] forKey:kSCHLibreAccessWebServiceDRMQualifier];
 		[objects setObject:[self objectFromTranslate:anObject.format] forKey:kSCHLibreAccessWebServiceFormat];
-		[objects setObject:[self objectFromTranslate:anObject.PrivateAnnotations] forKey:kSCHLibreAccessWebServicePrivateAnnotations];
+		[objects setObject:[self objectFromPrivateAnnotations:anObject.PrivateAnnotations] forKey:kSCHLibreAccessWebServicePrivateAnnotations];
 		
 		ret = objects;					
 	}
