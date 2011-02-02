@@ -4,7 +4,7 @@
 //
 //  Created by John S. Eddie on 30/12/2010.
 //  Copyright 2010 BitWink Limited. All rights reserved.
-//
+//  
 
 #import "AppDelegate_iPad.h"
 
