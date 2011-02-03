@@ -1,20 +1,20 @@
 // 
-//  SCHAnnotationsItem.m
+//  SCHAnnotationsList.m
 //  Scholastic
 //
-//  Created by John S. Eddie on 31/01/2011.
+//  Created by John S. Eddie on 02/02/2011.
 //  Copyright 2011 BitWink Limited. All rights reserved.
 //
 
-#import "SCHAnnotationsItem.h"
+#import "SCHAnnotationsList.h"
 
 #import "SCHAnnotationsContentItem.h"
 #import "SCHListProfileContentAnnotations.h"
 
-@implementation SCHAnnotationsItem 
+@implementation SCHAnnotationsList 
 
 @dynamic ProfileID;
+@dynamic AnnotationContentItem;
 @dynamic ListProfileContentAnnotations;
-@dynamic AnnotationsContentItem;
 
 @end
