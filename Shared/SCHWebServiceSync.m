@@ -33,6 +33,7 @@
 
 @interface SCHWebServiceSync ()
 
+- (NSMutableDictionary *)profilesWithBooksFromContent:(NSArray *)content;
 - (void)clearProfiles;
 - (void)updateProfiles:(NSArray *)profileList;
 - (void)clearUserContentItems;
@@ -111,33 +112,7 @@
 			
 			[self clearProfileContentAnnotations];			
 			
-			NSMutableDictionary *profiles = [NSMutableDictionary dictionary];
-			for(NSMutableDictionary *contentItem in content) {
-				NSArray *contentProfileItems = [self makeNullNil:[contentItem objectForKey:kSCHLibreAccessWebServiceProfileList]];
-				if (contentProfileItems != nil) {
-					for (NSDictionary *contentProfileItem in contentProfileItems) {
-						NSNumber *profileID = [self makeNullNil:[contentProfileItem objectForKey:kSCHLibreAccessWebServiceProfileID]];
-						NSMutableArray *books = [self makeNullNil:[profiles objectForKey:profileID]];
-						
-						NSMutableDictionary *privateAnnotation = [NSMutableDictionary dictionary];
-						NSDate *date = [NSDate distantPast];
-						
-						[privateAnnotation setObject:[contentItem objectForKey:kSCHLibreAccessWebServiceVersion] forKey:kSCHLibreAccessWebServiceVersion];
-						[privateAnnotation setObject:date forKey:kSCHLibreAccessWebServiceHighlightsAfter];
-						[privateAnnotation setObject:date forKey:kSCHLibreAccessWebServiceNotesAfter];
-						[privateAnnotation setObject:date forKey:kSCHLibreAccessWebServiceBookmarksAfter];
-						
-						[contentItem setValue:privateAnnotation forKey:kSCHLibreAccessWebServicePrivateAnnotations];
-						
-						if (books == nil) {
-							[profiles setObject:[NSMutableArray arrayWithObject:contentItem] forKey:profileID];
-						} else {
-							[books addObject:contentItem];
-						}
-					}
-				}
-			}
-			
+			NSDictionary *profiles = [self profilesWithBooksFromContent:content];
 			for(NSNumber *profileID in [profiles allKeys]) {
 				[self.libreAccessWebService listProfileContentAnnotations:[profiles objectForKey:profileID] forProfile:profileID];
 			}
@@ -151,6 +126,40 @@
 	} else if([method compare:kSCHLibreAccessWebServiceListProfileContentAnnotations] == NSOrderedSame) {
 		[self updateProfileContentAnnotations:[result objectForKey:kSCHLibreAccessWebServiceListProfileContentAnnotations]];
 	}
+}
+
+- (NSMutableDictionary *)profilesWithBooksFromContent:(NSArray *)content  
+{
+	NSMutableDictionary *ret = [NSMutableDictionary dictionary];
+	
+	for (NSMutableDictionary *contentItem in content) {
+		NSArray *contentProfileItems = [self makeNullNil:[contentItem objectForKey:kSCHLibreAccessWebServiceProfileList]];
+
+		if (contentProfileItems != nil) {
+			for (NSDictionary *contentProfileItem in contentProfileItems) {
+				NSNumber *profileID = [self makeNullNil:[contentProfileItem objectForKey:kSCHLibreAccessWebServiceProfileID]];
+				NSMutableArray *books = [self makeNullNil:[ret objectForKey:profileID]];
+				
+				NSMutableDictionary *privateAnnotation = [NSMutableDictionary dictionary];
+				NSDate *date = [NSDate distantPast];
+				
+				[privateAnnotation setObject:[contentItem objectForKey:kSCHLibreAccessWebServiceVersion] forKey:kSCHLibreAccessWebServiceVersion];
+				[privateAnnotation setObject:date forKey:kSCHLibreAccessWebServiceHighlightsAfter];
+				[privateAnnotation setObject:date forKey:kSCHLibreAccessWebServiceNotesAfter];
+				[privateAnnotation setObject:date forKey:kSCHLibreAccessWebServiceBookmarksAfter];
+				
+				[contentItem setValue:privateAnnotation forKey:kSCHLibreAccessWebServicePrivateAnnotations];
+				
+				if (books == nil) {
+					[ret setObject:[NSMutableArray arrayWithObject:contentItem] forKey:profileID];
+				} else {
+					[books addObject:contentItem];
+				}
+			}
+		}
+	}
+	
+	return(ret);
 }
 
 - (void)method:(NSString *)method didFailWithError:(NSError *)error
