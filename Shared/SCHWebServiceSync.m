@@ -393,17 +393,20 @@
 	NSError *error = nil;
 	
 	SCHListProfileContentAnnotations *newListProfileContentAnnotations = [NSEntityDescription insertNewObjectForEntityForName:kSCHListProfileContentAnnotations inManagedObjectContext:self.managedObjectContext];
-	SCHAnnotationsList *newAnnotationsList = [NSEntityDescription insertNewObjectForEntityForName:kSCHAnnotationsList inManagedObjectContext:self.managedObjectContext];
+	SCHAnnotationsList *newAnnotationsList = nil;
 	SCHItemsCount *newItemsCount = [NSEntityDescription insertNewObjectForEntityForName:kSCHItemsCount inManagedObjectContext:self.managedObjectContext];
 	
 	NSDictionary *annotationsList = [self makeNullNil:[profileContentAnnotationList objectForKey:kSCHLibreAccessWebServiceAnnotationsList]];
 	NSDictionary *itemsCount = [self makeNullNil:[profileContentAnnotationList objectForKey:kSCHLibreAccessWebServiceItemsCount]];	
 	
-	for (NSDictionary *annotationContentItem in annotationsList) {
-		
-		[newAnnotationsList addAnnotationContentItemObject:[self annotationsContentItem:annotationContentItem]];
+	for (NSDictionary *annotations in annotationsList) {
+		newAnnotationsList = [NSEntityDescription insertNewObjectForEntityForName:kSCHAnnotationsList inManagedObjectContext:self.managedObjectContext];
+		for (NSDictionary *annotation in [annotations objectForKey:kSCHLibreAccessWebServiceAnnotationsContentList]) {
+			[newAnnotationsList addAnnotationContentItemObject:[self annotationsContentItem:annotation]];
+		}
+		newAnnotationsList.ProfileID = [annotations objectForKey:kSCHLibreAccessWebServiceProfileID];
+		[newListProfileContentAnnotations addAnnotationsListObject:newAnnotationsList];
 	}
-	[newListProfileContentAnnotations addAnnotationsListObject:newAnnotationsList];
 	
 	newItemsCount.Found = [self makeNullNil:[itemsCount objectForKey:kSCHLibreAccessWebServiceFound]];
 	newItemsCount.Returned = [self makeNullNil:[itemsCount objectForKey:kSCHLibreAccessWebServiceReturned]];	
@@ -430,6 +433,7 @@
 		ret.Format = [self makeNullNil:[annotationsContentItem objectForKey:kSCHLibreAccessWebServiceFormat]];
 		ret.PrivateAnnotations = [self privateAnnotation:[annotationsContentItem objectForKey:kSCHLibreAccessWebServicePrivateAnnotations]];
 	}
+
 	return(ret);
 }
 
@@ -452,6 +456,7 @@
 		ret.LastPage = [self lastPage:[privateAnnotation objectForKey:kSCHLibreAccessWebServiceLastPage]];
 		ret.Favorite = [self favorite:[privateAnnotation objectForKey:kSCHLibreAccessWebServiceFavorite]];		 
 	}
+
 	return(ret);
 }
 
