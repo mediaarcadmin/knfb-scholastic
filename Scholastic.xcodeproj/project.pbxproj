@@ -115,8 +115,9 @@
 		52AD977912FA11E20099FB88 /* SCHLastPage+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD977712FA11E20099FB88 /* SCHLastPage+Extensions.m */; };
 		52AD978312FA12A00099FB88 /* SCHFavorite+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD978212FA12A00099FB88 /* SCHFavorite+Extensions.m */; };
 		52AD978412FA12A00099FB88 /* SCHFavorite+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD978212FA12A00099FB88 /* SCHFavorite+Extensions.m */; };
+		52AD99E612FB0E9A0099FB88 /* SCHContentMetadataItem+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D6124212E44CEC0033DA92 /* SCHContentMetadataItem+Extensions.m */; };
+		52AD99E712FB0E9B0099FB88 /* SCHContentMetadataItem+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D6124212E44CEC0033DA92 /* SCHContentMetadataItem+Extensions.m */; };
 		52D6122212E44B0F0033DA92 /* SCHProfileItem+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D6122112E44B0F0033DA92 /* SCHProfileItem+Extensions.m */; };
-		52D6124312E44CEC0033DA92 /* SCHContentMetadataItem+Extensions.m in Resources */ = {isa = PBXBuildFile; fileRef = 52D6124212E44CEC0033DA92 /* SCHContentMetadataItem+Extensions.m */; };
 		52D6124F12E44D760033DA92 /* SCHSyncEntity+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D6124E12E44D760033DA92 /* SCHSyncEntity+Extensions.m */; };
 		52D612B812E4650B0033DA92 /* NSNumber+ObjectTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D612B712E4650B0033DA92 /* NSNumber+ObjectTypes.m */; };
 		52E4692012F1D94E00ECC97A /* SCHLocalDebug.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E4691F12F1D94E00ECC97A /* SCHLocalDebug.m */; };
@@ -190,7 +191,6 @@
 		F8509F0012F063C900197EB5 /* SCHSettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 529385B412DF231800045B44 /* SCHSettingsViewController.xib */; };
 		F8509F0112F063C900197EB5 /* SCHBookShelfViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5293883212E03CD000045B44 /* SCHBookShelfViewController.xib */; };
 		F8509F0212F063C900197EB5 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 52938B3812E08FC400045B44 /* Icon.png */; };
-		F8509F0312F063C900197EB5 /* SCHContentMetadataItem+Extensions.m in Resources */ = {isa = PBXBuildFile; fileRef = 52D6124212E44CEC0033DA92 /* SCHContentMetadataItem+Extensions.m */; };
 		F8509F0412F063C900197EB5 /* SCHLoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52EF4E5E12E6E01C00E374F7 /* SCHLoginViewController.xib */; };
 		F8509F0512F063C900197EB5 /* Clifford.xps in Resources */ = {isa = PBXBuildFile; fileRef = F8509E7612F0620D00197EB5 /* Clifford.xps */; };
 		F8509F0612F063C900197EB5 /* Goosebumps.xps in Resources */ = {isa = PBXBuildFile; fileRef = F8509E7712F0620D00197EB5 /* Goosebumps.xps */; };
@@ -853,9 +853,9 @@
 				52AD976812FA11710099FB88 /* SCHBookmark+Extensions.h */,
 				52AD976912FA11710099FB88 /* SCHBookmark+Extensions.m */,
 				52D6124112E44CEC0033DA92 /* SCHContentMetadataItem+Extensions.h */,
+				52D6124212E44CEC0033DA92 /* SCHContentMetadataItem+Extensions.m */,
 				52AD975D12FA10F40099FB88 /* SCHCoords+Extensions.h */,
 				52AD975E12FA10F40099FB88 /* SCHCoords+Extensions.m */,
-				52D6124212E44CEC0033DA92 /* SCHContentMetadataItem+Extensions.m */,
 				5222FBF612F4E023000A4624 /* SCHContentProfileItem+Extensions.h */,
 				5222FBF712F4E023000A4624 /* SCHContentProfileItem+Extensions.m */,
 				52AD978112FA12A00099FB88 /* SCHFavorite+Extensions.h */,
@@ -1090,7 +1090,6 @@
 				529385B612DF231800045B44 /* SCHSettingsViewController.xib in Resources */,
 				5293883412E03CD000045B44 /* SCHBookShelfViewController.xib in Resources */,
 				52938B3912E08FC400045B44 /* Icon.png in Resources */,
-				52D6124312E44CEC0033DA92 /* SCHContentMetadataItem+Extensions.m in Resources */,
 				52EF4E6012E6E01C00E374F7 /* SCHLoginViewController.xib in Resources */,
 				F8509EA012F0621E00197EB5 /* BWKTestPageViewController.xib in Resources */,
 				F8509EA212F0621E00197EB5 /* BWKReadingOptionsView.xib in Resources */,
@@ -1121,7 +1120,6 @@
 				F8509F0012F063C900197EB5 /* SCHSettingsViewController.xib in Resources */,
 				F8509F0112F063C900197EB5 /* SCHBookShelfViewController.xib in Resources */,
 				F8509F0212F063C900197EB5 /* Icon.png in Resources */,
-				F8509F0312F063C900197EB5 /* SCHContentMetadataItem+Extensions.m in Resources */,
 				F8509F0412F063C900197EB5 /* SCHLoginViewController.xib in Resources */,
 				F8509F0512F063C900197EB5 /* Clifford.xps in Resources */,
 				F8509F0612F063C900197EB5 /* Goosebumps.xps in Resources */,
@@ -1240,6 +1238,7 @@
 				52AD977912FA11E20099FB88 /* SCHLastPage+Extensions.m in Sources */,
 				52AD978412FA12A00099FB88 /* SCHFavorite+Extensions.m in Sources */,
 				F81B3A8612FAADB000A20D52 /* BWKBookManager.m in Sources */,
+				52AD99E712FB0E9B0099FB88 /* SCHContentMetadataItem+Extensions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1335,6 +1334,7 @@
 				52AD977812FA11E20099FB88 /* SCHLastPage+Extensions.m in Sources */,
 				52AD978312FA12A00099FB88 /* SCHFavorite+Extensions.m in Sources */,
 				F81B3A7F12FAAD8E00A20D52 /* SCHNote.m in Sources */,
+				52AD99E612FB0E9A0099FB88 /* SCHContentMetadataItem+Extensions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
