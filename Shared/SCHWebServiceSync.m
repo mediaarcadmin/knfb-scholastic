@@ -36,6 +36,7 @@
 - (NSMutableDictionary *)profilesWithBooksFromContent:(NSArray *)content;
 - (void)clearProfiles;
 - (void)updateProfiles:(NSArray *)profileList;
+- (void)createDefaultProfile;
 - (void)clearUserContentItems;
 - (void)updateUserContentItems:(NSArray *)userContentList;
 - (SCHOrderItem *)orderItem:(NSDictionary *)orderItem;
@@ -183,22 +184,12 @@
 	
 	[self clearProfiles];
 	
-	// TEST THE SAVE
-//	id profsave = [profileList objectAtIndex:1];
-//	if(profsave != nil) {
-//		[profsave setValue:@"MyName2" forKey:kSCHLibreAccessWebServiceFirstname];
-//		[profsave setValue:@"MyName2" forKey:kSCHLibreAccessWebServiceScreenname];		
-//		[profsave setValue:[NSNumber numberWithInt:3] forKey:kSCHLibreAccessWebServiceAction];		
-//		[self.libreAccessWebService saveUserProfiles:self.aToken forUserProfiles:[NSArray arrayWithObject:profsave]];
-//	}
-	
-	
 	for (id profile in profileList) {
 		SCHProfileItem *newProfileItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHProfileItem inManagedObjectContext:self.managedObjectContext];
 		
 		newProfileItem.LastModified = [self makeNullNil:[profile objectForKey:kSCHLibreAccessWebServiceLastModified]];
 		newProfileItem.State = [NSNumber numberWithStatus:kSCHStatusCreated];
-
+		
 		newProfileItem.StoryInteractionEnabled = [self makeNullNil:[profile objectForKey:kSCHLibreAccessWebServiceStoryInteractionEnabled]];
 		newProfileItem.ID = [self makeNullNil:[profile objectForKey:kSCHLibreAccessWebServiceID]];
 		newProfileItem.LastPasswordModified = [self makeNullNil:[profile objectForKey:kSCHLibreAccessWebServiceLastPasswordModified]];
@@ -221,7 +212,29 @@
 	if (![self.managedObjectContext save:&error]) {
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
 		abort();
-	}	
+	} 
+}
+
+- (void)createDefaultProfile
+{		
+	NSMutableDictionary *profile = [NSMutableDictionary dictionary];
+	
+	[profile setObject:[NSNumber numberWithBool:YES] forKey:kSCHLibreAccessWebServiceAutoAssignContentToProfiles];
+	[profile setObject:[NSNumber numberWithBool:NO] forKey:kSCHLibreAccessWebServiceProfilePasswordRequired];		
+	[profile setObject:@"John" forKey:kSCHLibreAccessWebServiceFirstName];		
+	[profile setObject:@"Doe" forKey:kSCHLibreAccessWebServiceLastName];		
+	[profile setObject:[NSNull null] forKey:kSCHLibreAccessWebServiceBirthday];		
+	[profile setObject:[NSDate date] forKey:kSCHLibreAccessWebServiceLastModified];		
+	[profile setObject:@"Default" forKey:kSCHLibreAccessWebServiceScreenName];		
+	[profile setObject:[NSNull null] forKey:kSCHLibreAccessWebServicePassword];		
+	[profile setObject:[NSNull null] forKey:kSCHLibreAccessWebServiceUserKey];		
+	[profile setObject:[NSNumber numberWithProfileType:kSCHProfileTypesCHILD] forKey:kSCHLibreAccessWebServiceType];		
+	[profile setObject:[NSNumber numberWithInt:0] forKey:kSCHLibreAccessWebServiceID];		
+	[profile setObject:[NSNumber numberWithSaveAction:kSCHSaveActionsCreate] forKey:kSCHLibreAccessWebServiceAction];			
+	[profile setObject:[NSNumber numberWithBookshelfStyle:kSCHBookshelfStyleAdult] forKey:kSCHLibreAccessWebServiceBookshelfStyle];		
+	[profile setObject:[NSNumber numberWithBool:YES] forKey:kSCHLibreAccessWebServiceStoryInteractionEnabled];		
+	
+	[self.libreAccessWebService saveUserProfiles:[NSArray arrayWithObject:profile]];
 }
 
 - (void)clearUserContentItems
