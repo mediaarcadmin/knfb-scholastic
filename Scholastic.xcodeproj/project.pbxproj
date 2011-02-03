@@ -61,7 +61,6 @@
 		528A2D6212CDE3B10053A343 /* RootViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 528A2D6112CDE3B10053A343 /* RootViewController.xib */; };
 		529384F912DEF6F800045B44 /* Profile.png in Resources */ = {isa = PBXBuildFile; fileRef = 529384F812DEF6F800045B44 /* Profile.png */; };
 		529384FB12DEF73A00045B44 /* ProfileLocked.png in Resources */ = {isa = PBXBuildFile; fileRef = 529384FA12DEF73A00045B44 /* ProfileLocked.png */; };
-		529384FD12DEF8EF00045B44 /* Library.png in Resources */ = {isa = PBXBuildFile; fileRef = 529384FC12DEF8EF00045B44 /* Library.png */; };
 		529384FF12DEF93900045B44 /* Settings.png in Resources */ = {isa = PBXBuildFile; fileRef = 529384FE12DEF93900045B44 /* Settings.png */; };
 		529385B512DF231800045B44 /* SCHSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 529385B312DF231800045B44 /* SCHSettingsViewController.m */; };
 		529385B612DF231800045B44 /* SCHSettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 529385B412DF231800045B44 /* SCHSettingsViewController.xib */; };
@@ -186,7 +185,6 @@
 		F8509EFB12F063C900197EB5 /* RootViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 528A2D6112CDE3B10053A343 /* RootViewController.xib */; };
 		F8509EFC12F063C900197EB5 /* Profile.png in Resources */ = {isa = PBXBuildFile; fileRef = 529384F812DEF6F800045B44 /* Profile.png */; };
 		F8509EFD12F063C900197EB5 /* ProfileLocked.png in Resources */ = {isa = PBXBuildFile; fileRef = 529384FA12DEF73A00045B44 /* ProfileLocked.png */; };
-		F8509EFE12F063C900197EB5 /* Library.png in Resources */ = {isa = PBXBuildFile; fileRef = 529384FC12DEF8EF00045B44 /* Library.png */; };
 		F8509EFF12F063C900197EB5 /* Settings.png in Resources */ = {isa = PBXBuildFile; fileRef = 529384FE12DEF93900045B44 /* Settings.png */; };
 		F8509F0012F063C900197EB5 /* SCHSettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 529385B412DF231800045B44 /* SCHSettingsViewController.xib */; };
 		F8509F0112F063C900197EB5 /* SCHBookShelfViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5293883212E03CD000045B44 /* SCHBookShelfViewController.xib */; };
@@ -343,7 +341,6 @@
 		528A2D6112CDE3B10053A343 /* RootViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RootViewController.xib; sourceTree = "<group>"; };
 		529384F812DEF6F800045B44 /* Profile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Profile.png; path = Shared/Images/Profile.png; sourceTree = "<group>"; };
 		529384FA12DEF73A00045B44 /* ProfileLocked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ProfileLocked.png; path = Shared/Images/ProfileLocked.png; sourceTree = "<group>"; };
-		529384FC12DEF8EF00045B44 /* Library.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Library.png; path = Shared/Images/Library.png; sourceTree = "<group>"; };
 		529384FE12DEF93900045B44 /* Settings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Settings.png; path = Shared/Images/Settings.png; sourceTree = "<group>"; };
 		529385B212DF231800045B44 /* SCHSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHSettingsViewController.h; sourceTree = "<group>"; };
 		529385B312DF231800045B44 /* SCHSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHSettingsViewController.m; sourceTree = "<group>"; };
@@ -720,7 +717,6 @@
 				52938B3812E08FC400045B44 /* Icon.png */,
 				529384F812DEF6F800045B44 /* Profile.png */,
 				529384FA12DEF73A00045B44 /* ProfileLocked.png */,
-				529384FC12DEF8EF00045B44 /* Library.png */,
 				529384FE12DEF93900045B44 /* Settings.png */,
 			);
 			name = Icons;
@@ -1085,7 +1081,6 @@
 				528A2D6212CDE3B10053A343 /* RootViewController.xib in Resources */,
 				529384F912DEF6F800045B44 /* Profile.png in Resources */,
 				529384FB12DEF73A00045B44 /* ProfileLocked.png in Resources */,
-				529384FD12DEF8EF00045B44 /* Library.png in Resources */,
 				529384FF12DEF93900045B44 /* Settings.png in Resources */,
 				529385B612DF231800045B44 /* SCHSettingsViewController.xib in Resources */,
 				5293883412E03CD000045B44 /* SCHBookShelfViewController.xib in Resources */,
@@ -1115,7 +1110,6 @@
 				F8509EFB12F063C900197EB5 /* RootViewController.xib in Resources */,
 				F8509EFC12F063C900197EB5 /* Profile.png in Resources */,
 				F8509EFD12F063C900197EB5 /* ProfileLocked.png in Resources */,
-				F8509EFE12F063C900197EB5 /* Library.png in Resources */,
 				F8509EFF12F063C900197EB5 /* Settings.png in Resources */,
 				F8509F0012F063C900197EB5 /* SCHSettingsViewController.xib in Resources */,
 				F8509F0112F063C900197EB5 /* SCHBookShelfViewController.xib in Resources */,

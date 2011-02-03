@@ -22,11 +22,9 @@
 // Cell Icons 
 static NSString * const kRootViewControllerProfileIcon = @"Profile.png";
 static NSString * const kRootViewControllerProfileLockedIcon = @"ProfileLocked.png";
-static NSString * const kRootViewControllerLibraryIcon = @"Library.png";
 static NSString * const kRootViewControllerSettingsIcon = @"Settings.png";
 
 // Static cells
-static NSInteger const kRootViewControllerLibraryRow = 1;
 static NSInteger const kRootViewControllerSettingsRow = 1;
 
 @interface RootViewController ()
@@ -119,10 +117,7 @@ static NSInteger const kRootViewControllerSettingsRow = 1;
     id <NSFetchedResultsSectionInfo> sectionInfo = [[self.fetchedResultsController sections] objectAtIndex:indexPath.section];
 	NSInteger managedObjectEnd = [sectionInfo numberOfObjects] - 1;
 	
-	if (indexPath.row == (managedObjectEnd + kRootViewControllerLibraryRow)) {
-		cell.textLabel.text = NSLocalizedString(@"View Library", @"");
-		cell.imageView.image = [UIImage imageNamed:kRootViewControllerLibraryIcon];
-	} else if (indexPath.row == (managedObjectEnd + kRootViewControllerLibraryRow + kRootViewControllerSettingsRow)) {
+	if (indexPath.row == (managedObjectEnd + kRootViewControllerSettingsRow)) {
 		cell.textLabel.text = NSLocalizedString(@"Settings & Parental Controls", @"");
 		cell.imageView.image = [UIImage imageNamed:kRootViewControllerSettingsIcon];		
 	} else {
@@ -194,7 +189,7 @@ static NSInteger const kRootViewControllerSettingsRow = 1;
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     id <NSFetchedResultsSectionInfo> sectionInfo = [[self.fetchedResultsController sections] objectAtIndex:section];
-    return [sectionInfo numberOfObjects] + kRootViewControllerLibraryRow + kRootViewControllerSettingsRow;
+    return [sectionInfo numberOfObjects] + kRootViewControllerSettingsRow;
 }
 
 
@@ -282,23 +277,7 @@ static NSInteger const kRootViewControllerSettingsRow = 1;
     id <NSFetchedResultsSectionInfo> sectionInfo = [[self.fetchedResultsController sections] objectAtIndex:indexPath.section];
 	NSInteger managedObjectEnd = [sectionInfo numberOfObjects] - 1;
 	
-	if (indexPath.row == (managedObjectEnd + kRootViewControllerLibraryRow)) {
-		// controller to view book shelf with all books
-		NSEntityDescription *entityDescription = [NSEntityDescription entityForName:kSCHContentMetadataItem inManagedObjectContext:self.managedObjectContext];
-		NSFetchRequest *request = [[NSFetchRequest alloc] init];
-		[request setEntity:entityDescription];
-
-		NSError *error = nil;				
-		NSArray *books = [self.managedObjectContext executeFetchRequest:request error:&error];
-		if (!books) {
-			NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-			abort();
-		}		
-		[request release], request = nil;
-
-		[self pushBookshelvesControllerWithBooks:books];
-		
-	} else if (indexPath.row == (managedObjectEnd + kRootViewControllerLibraryRow + kRootViewControllerSettingsRow)) {
+	if (indexPath.row == (managedObjectEnd + kRootViewControllerSettingsRow)) {
 		[self.navigationController pushViewController:self.settingsController animated:YES];
 	} else {
 		// controller to view book shelf with books filtered to profile		
