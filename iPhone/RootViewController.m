@@ -302,16 +302,9 @@ static NSInteger const kRootViewControllerSettingsRow = 1;
 		[self.navigationController pushViewController:self.settingsController animated:YES];
 	} else {
 		// controller to view book shelf with books filtered to profile		
-		NSManagedObject *selectedObject = [[self fetchedResultsController] objectAtIndexPath:indexPath];
-		
-		NSMutableArray *books = [NSMutableArray array];
-		for (SCHContentProfileItem *contentProfileItem in [selectedObject valueForKey:@"ContentProfileItem"]) {
-			for (SCHContentMetadataItem *contentMetadataItem in [contentProfileItem valueForKeyPath:@"UserContentItem.ContentMetadataItem"]) {
-				[books addObject:contentMetadataItem];
-			}
-		}
-		
-		[self pushBookshelvesControllerWithBooks:books];
+		SCHProfileItem *selectedObject = [[self fetchedResultsController] objectAtIndexPath:indexPath];
+				
+		[self pushBookshelvesControllerWithBooks:[selectedObject allContentMetadataItems]];
 	}	
 }
 

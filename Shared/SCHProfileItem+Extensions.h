@@ -14,5 +14,6 @@ static NSString * const kSCHProfileItem = @"SCHProfileItem";
 
 @interface SCHProfileItem (SCHProfileItemExtensions)
 
+- (NSArray *)allContentMetadataItems;
 
 @end
