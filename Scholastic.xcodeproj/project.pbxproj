@@ -232,6 +232,8 @@
 		F8509F8312F0653700197EB5 /* booktexture-nocover.png in Resources */ = {isa = PBXBuildFile; fileRef = F8509F8112F0653700197EB5 /* booktexture-nocover.png */; };
 		F8509F8F12F0654A00197EB5 /* booktexture-nocover.png in Resources */ = {isa = PBXBuildFile; fileRef = F8509F8112F0653700197EB5 /* booktexture-nocover.png */; };
 		F8509F9012F0654B00197EB5 /* thumbImage.png in Resources */ = {isa = PBXBuildFile; fileRef = F8509F8012F0653700197EB5 /* thumbImage.png */; };
+		F8CD24CB12F9714D001C748B /* BWKBookManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F8CD24CA12F9714D001C748B /* BWKBookManager.m */; };
+		F8CD24F612F97E62001C748B /* BWKBookManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F8CD24CA12F9714D001C748B /* BWKBookManager.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -440,6 +442,8 @@
 		F8509F4D12F063C900197EB5 /* Scholastic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Scholastic.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F8509F8012F0653700197EB5 /* thumbImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = thumbImage.png; path = Shared/Images/thumbImage.png; sourceTree = "<group>"; };
 		F8509F8112F0653700197EB5 /* booktexture-nocover.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "booktexture-nocover.png"; path = "Shared/Images/booktexture-nocover.png"; sourceTree = "<group>"; };
+		F8CD24C912F9714D001C748B /* BWKBookManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BWKBookManager.h; sourceTree = "<group>"; };
+		F8CD24CA12F9714D001C748B /* BWKBookManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BWKBookManager.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -887,6 +891,8 @@
 				F8509E8E12F0621E00197EB5 /* BWKXPSProvider.m */,
 				F8509E8F12F0621E00197EB5 /* BWKXPSBook.h */,
 				F8509E9012F0621E00197EB5 /* BWKXPSBook.m */,
+				F8CD24C912F9714D001C748B /* BWKBookManager.h */,
+				F8CD24CA12F9714D001C748B /* BWKBookManager.m */,
 			);
 			name = Renderer;
 			sourceTree = "<group>";
@@ -1140,6 +1146,7 @@
 				5200EFF012F6CFE400BAC355 /* SCHListProfileContentAnnotations.m in Sources */,
 				5200EFF112F6CFE400BAC355 /* SCHPrivateAnnotations.m in Sources */,
 				5200EFF512F6D00B00BAC355 /* SCHeReaderCategories.m in Sources */,
+				F8CD24CB12F9714D001C748B /* BWKBookManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1221,6 +1228,7 @@
 				5200EFED12F6CFE400BAC355 /* SCHListProfileContentAnnotations.m in Sources */,
 				5200EFEE12F6CFE400BAC355 /* SCHPrivateAnnotations.m in Sources */,
 				5200EFF412F6D00B00BAC355 /* SCHeReaderCategories.m in Sources */,
+				F8CD24F612F97E62001C748B /* BWKBookManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

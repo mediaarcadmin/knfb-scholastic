@@ -16,6 +16,7 @@
 #import "SCHContentMetadataItem+Extensions.h"
 #import "BWKXPSProvider.h"
 #import "NSNumber+ObjectTypes.h"
+#import "BWKBookManager.h"
 
 @interface SCHLocalDebug ()
 
@@ -51,7 +52,12 @@
 		newContentMetadataItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHContentMetadataItem inManagedObjectContext:self.managedObjectContext];
 		
 		NSString *xpsPath = [[NSBundle mainBundle] pathForResource:xpsFile ofType:@"xps"];
-		BWKXPSProvider *provider = [[BWKXPSProvider alloc] initWithPath:xpsPath];
+
+		//BWKXPSProvider *provider = [[BWKXPSProvider alloc] initWithPath:xpsPath];
+		BWKXPSProvider *provider = [[BWKBookManager sharedBookManager] checkOutXPSProviderForBookWithPath:xpsPath];
+		
+//		NSLog(@"Provider: %p", provider);
+//		NSLog(@"Provider count: %d", [provider retainCount]);
 		
 		//	newContentMetadataItem.DRMQualifier = provider.author;
 		if (provider.ISBN != nil && [[provider.ISBN stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {
@@ -72,7 +78,8 @@
 		newContentMetadataItem.FileName = xpsFile;		
 		//	newContentMetadataItem.Description = [self makeNullNil:[book objectForKey:kSCHLibreAccessWebServiceDescription]];
 		
-		[provider release], provider = nil;
+		//[provider release], provider = nil;
+		[[BWKBookManager sharedBookManager] checkInXPSProviderForBookWithPath:xpsPath];
 	}
 
 	// Save the context.

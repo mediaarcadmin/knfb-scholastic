@@ -13,6 +13,7 @@
 #import "SCHContentMetadataItem.h"
 #import "SCHLocalDebug.h"
 #import "SCHMultipleBookshelvesController.h"
+#import "BWKBookManager.h"
 
 @interface SCHBookShelfViewController ()
 
@@ -102,10 +103,12 @@ NSInteger bookSort(SCHContentMetadataItem *book1, SCHContentMetadataItem *book2,
 	
 	if (contentMetadataItem.FileName != nil) {
 		NSString *xpsPath = [[NSBundle mainBundle] pathForResource:contentMetadataItem.FileName ofType:@"xps"];
-		BWKXPSProvider *provider = [[BWKXPSProvider alloc] initWithPath:xpsPath];
+//		BWKXPSProvider *provider = [[BWKXPSProvider alloc] initWithPath:xpsPath];
+		BWKXPSProvider *provider = [[BWKBookManager sharedBookManager] checkOutXPSProviderForBookWithPath:xpsPath];
 		provider.title = contentMetadataItem.FileName;
 		cell.imageView.image = [provider coverThumbForList];
-		[provider release], provider = nil;	
+		[[BWKBookManager sharedBookManager] checkInXPSProviderForBookWithPath:xpsPath];
+		//[provider release], provider = nil;	
 	} else {
 		cell.imageView.image = nil;
 	}
@@ -164,10 +167,12 @@ NSInteger bookSort(SCHContentMetadataItem *book1, SCHContentMetadataItem *book2,
 	optionsView.metadataItem = contentMetadataItem;
 	
 	NSString *xpsPath = [[NSBundle mainBundle] pathForResource:contentMetadataItem.FileName ofType:@"xps"];
-	BWKXPSProvider *provider = [[BWKXPSProvider alloc] initWithPath:xpsPath];
+//	BWKXPSProvider *provider = [[BWKXPSProvider alloc] initWithPath:xpsPath];
+	BWKXPSProvider *provider = [[BWKBookManager sharedBookManager] checkOutXPSProviderForBookWithPath:xpsPath];
 	provider.title = contentMetadataItem.FileName;
 	optionsView.thumbnailImage = [provider coverThumbForList];
-	[provider release];
+//	[provider release];
+	[[BWKBookManager sharedBookManager] checkInXPSProviderForBookWithPath:xpsPath];
 	
 	[self.bookshelvesController.navigationController pushViewController:optionsView animated:YES];
 	[optionsView release];
@@ -206,10 +211,12 @@ NSInteger bookSort(SCHContentMetadataItem *book1, SCHContentMetadataItem *book2,
 		thumb = [UIImage imageNamed:@"PlaceholderBook"];
 	} else {
 		NSString *xpsPath = [[NSBundle mainBundle] pathForResource:contentMetadataItem.FileName ofType:@"xps"];
-		BWKXPSProvider *provider = [[BWKXPSProvider alloc] initWithPath:xpsPath];
+//		BWKXPSProvider *provider = [[BWKXPSProvider alloc] initWithPath:xpsPath];
+		BWKXPSProvider *provider = [[BWKBookManager sharedBookManager] checkOutXPSProviderForBookWithPath:xpsPath];
 		provider.title = contentMetadataItem.FileName;
 		thumb = [provider coverThumbForList];
-		[provider release];
+		[[BWKBookManager sharedBookManager] checkInXPSProviderForBookWithPath:xpsPath];
+//		[provider release];
 	}
 		
 	CGRect maxRect = UIEdgeInsetsInsetRect(gridCell.bounds, UIEdgeInsetsMake(0, 0, 23, 0));
@@ -256,10 +263,12 @@ NSInteger bookSort(SCHContentMetadataItem *book1, SCHContentMetadataItem *book2,
 	optionsView.metadataItem = contentMetadataItem;
 
 	NSString *xpsPath = [[NSBundle mainBundle] pathForResource:contentMetadataItem.FileName ofType:@"xps"];
-	BWKXPSProvider *provider = [[BWKXPSProvider alloc] initWithPath:xpsPath];
+//	BWKXPSProvider *provider = [[BWKXPSProvider alloc] initWithPath:xpsPath];
+	BWKXPSProvider *provider = [[BWKBookManager sharedBookManager] checkOutXPSProviderForBookWithPath:xpsPath];
 	provider.title = contentMetadataItem.FileName;
 	optionsView.thumbnailImage = [provider coverThumbForList];
-	[provider release];
+	[[BWKBookManager sharedBookManager] checkInXPSProviderForBookWithPath:xpsPath];
+//	[provider release];
 	
 	[self.navigationController pushViewController:optionsView animated:YES];
 	[optionsView release];
