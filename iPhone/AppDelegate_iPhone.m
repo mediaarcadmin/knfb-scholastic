@@ -9,6 +9,8 @@
 #import "AppDelegate_iPhone.h"
 #import "RootViewController.h"
 
+#import "SCHSyncManager.h"
+
 @implementation AppDelegate_iPhone
 
 @synthesize navigationController;
@@ -20,6 +22,10 @@
 
     RootViewController *rootViewController = (RootViewController *)[navigationController topViewController];
     rootViewController.managedObjectContext = self.managedObjectContext;
+	
+	SCHSyncManager *syncManager = [SCHSyncManager sharedSyncManager];
+	syncManager.managedObjectContext = self.managedObjectContext;
+	[syncManager startBackgroundSync];
 }
 
 

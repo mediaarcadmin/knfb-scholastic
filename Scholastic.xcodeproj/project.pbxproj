@@ -116,6 +116,9 @@
 		52AD978412FA12A00099FB88 /* SCHFavorite+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD978212FA12A00099FB88 /* SCHFavorite+Extensions.m */; };
 		52AD99E612FB0E9A0099FB88 /* SCHContentMetadataItem+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D6124212E44CEC0033DA92 /* SCHContentMetadataItem+Extensions.m */; };
 		52AD99E712FB0E9B0099FB88 /* SCHContentMetadataItem+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D6124212E44CEC0033DA92 /* SCHContentMetadataItem+Extensions.m */; };
+		52AD9ACF12FC0EEF0099FB88 /* SCHSyncManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9ACE12FC0EEF0099FB88 /* SCHSyncManager.m */; };
+		52AD9AD212FC0F8F0099FB88 /* SCHBackgroundSync.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9AD112FC0F8F0099FB88 /* SCHBackgroundSync.m */; };
+		52AD9B1C12FC1B6B0099FB88 /* SCHSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9B1B12FC1B6B0099FB88 /* SCHSyncComponent.m */; };
 		52D6122212E44B0F0033DA92 /* SCHProfileItem+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D6122112E44B0F0033DA92 /* SCHProfileItem+Extensions.m */; };
 		52D6124F12E44D760033DA92 /* SCHSyncEntity+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D6124E12E44D760033DA92 /* SCHSyncEntity+Extensions.m */; };
 		52D612B812E4650B0033DA92 /* NSNumber+ObjectTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D612B712E4650B0033DA92 /* NSNumber+ObjectTypes.m */; };
@@ -422,6 +425,12 @@
 		52AD977712FA11E20099FB88 /* SCHLastPage+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SCHLastPage+Extensions.m"; path = "Shared/SCHLastPage+Extensions.m"; sourceTree = "<group>"; };
 		52AD978112FA12A00099FB88 /* SCHFavorite+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SCHFavorite+Extensions.h"; path = "Shared/SCHFavorite+Extensions.h"; sourceTree = "<group>"; };
 		52AD978212FA12A00099FB88 /* SCHFavorite+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SCHFavorite+Extensions.m"; path = "Shared/SCHFavorite+Extensions.m"; sourceTree = "<group>"; };
+		52AD9ACD12FC0EEF0099FB88 /* SCHSyncManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHSyncManager.h; path = Shared/SCHSyncManager.h; sourceTree = "<group>"; };
+		52AD9ACE12FC0EEF0099FB88 /* SCHSyncManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHSyncManager.m; path = Shared/SCHSyncManager.m; sourceTree = "<group>"; };
+		52AD9AD012FC0F8F0099FB88 /* SCHBackgroundSync.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBackgroundSync.h; path = Shared/SCHBackgroundSync.h; sourceTree = "<group>"; };
+		52AD9AD112FC0F8F0099FB88 /* SCHBackgroundSync.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBackgroundSync.m; path = Shared/SCHBackgroundSync.m; sourceTree = "<group>"; };
+		52AD9B1A12FC1B6B0099FB88 /* SCHSyncComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHSyncComponent.h; path = Shared/SCHSyncComponent.h; sourceTree = "<group>"; };
+		52AD9B1B12FC1B6B0099FB88 /* SCHSyncComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHSyncComponent.m; path = Shared/SCHSyncComponent.m; sourceTree = "<group>"; };
 		52D6122012E44B0F0033DA92 /* SCHProfileItem+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SCHProfileItem+Extensions.h"; path = "Shared/SCHProfileItem+Extensions.h"; sourceTree = "<group>"; };
 		52D6122112E44B0F0033DA92 /* SCHProfileItem+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SCHProfileItem+Extensions.m"; path = "Shared/SCHProfileItem+Extensions.m"; sourceTree = "<group>"; };
 		52D6124112E44CEC0033DA92 /* SCHContentMetadataItem+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SCHContentMetadataItem+Extensions.h"; path = "Shared/SCHContentMetadataItem+Extensions.h"; sourceTree = "<group>"; };
@@ -835,10 +844,9 @@
 				5293872F12DF43D200045B44 /* SCHScholasticWebService.m */,
 				5293872B12DF43CB00045B44 /* SCHLibreAccessWebService.h */,
 				5293872C12DF43CB00045B44 /* SCHLibreAccessWebService.m */,
-				5293877D12DF515400045B44 /* SCHWebServiceSync.h */,
-				5293877E12DF515400045B44 /* SCHWebServiceSync.m */,
 				52EF543E12E9A5D400E374F7 /* SCHAuthenticationManager.h */,
 				52EF543F12E9A5D400E374F7 /* SCHAuthenticationManager.m */,
+				52AD9B2612FC207A0099FB88 /* Sync */,
 			);
 			name = "Web Services";
 			sourceTree = "<group>";
@@ -886,6 +894,21 @@
 				5222FC1E12F4E37B000A4624 /* SCHUserSettingsItem+Extensions.m */,
 			);
 			name = Extensions;
+			sourceTree = "<group>";
+		};
+		52AD9B2612FC207A0099FB88 /* Sync */ = {
+			isa = PBXGroup;
+			children = (
+				5293877D12DF515400045B44 /* SCHWebServiceSync.h */,
+				5293877E12DF515400045B44 /* SCHWebServiceSync.m */,
+				52AD9ACD12FC0EEF0099FB88 /* SCHSyncManager.h */,
+				52AD9ACE12FC0EEF0099FB88 /* SCHSyncManager.m */,
+				52AD9AD012FC0F8F0099FB88 /* SCHBackgroundSync.h */,
+				52AD9AD112FC0F8F0099FB88 /* SCHBackgroundSync.m */,
+				52AD9B1A12FC1B6B0099FB88 /* SCHSyncComponent.h */,
+				52AD9B1B12FC1B6B0099FB88 /* SCHSyncComponent.m */,
+			);
+			name = Sync;
 			sourceTree = "<group>";
 		};
 		52EF579412EDBE6E00E374F7 /* security */ = {
@@ -1240,6 +1263,9 @@
 				F81B3A8612FAADB000A20D52 /* BWKBookManager.m in Sources */,
 				52AD99E712FB0E9B0099FB88 /* SCHContentMetadataItem+Extensions.m in Sources */,
 				F83D86B512FC070F00227031 /* SCHLocalDebugXPSReader.m in Sources */,
+				52AD9ACF12FC0EEF0099FB88 /* SCHSyncManager.m in Sources */,
+				52AD9AD212FC0F8F0099FB88 /* SCHBackgroundSync.m in Sources */,
+				52AD9B1C12FC1B6B0099FB88 /* SCHSyncComponent.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
