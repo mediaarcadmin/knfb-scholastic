@@ -172,6 +172,9 @@
 		F837CA0F12F1B4E900833448 /* gear@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F837CA0112F1B4BC00833448 /* gear@2x.png */; };
 		F83D86B512FC070F00227031 /* SCHLocalDebugXPSReader.m in Sources */ = {isa = PBXBuildFile; fileRef = F83D86B412FC070F00227031 /* SCHLocalDebugXPSReader.m */; };
 		F83D86BE12FC60C600227031 /* SCHLocalDebugXPSReader.m in Sources */ = {isa = PBXBuildFile; fileRef = F83D86B412FC070F00227031 /* SCHLocalDebugXPSReader.m */; };
+		F83D874612FC67A400227031 /* SCHSyncManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9ACE12FC0EEF0099FB88 /* SCHSyncManager.m */; };
+		F83D874712FC67A600227031 /* SCHSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9B1B12FC1B6B0099FB88 /* SCHSyncComponent.m */; };
+		F83D874812FC67B700227031 /* SCHBackgroundSync.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9AD112FC0F8F0099FB88 /* SCHBackgroundSync.m */; };
 		F8509E7412F061FE00197EB5 /* libXpsSDKipad.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F8509E7212F061FE00197EB5 /* libXpsSDKipad.a */; };
 		F8509E9C12F0621E00197EB5 /* BlioTimeOrderedCache.m in Sources */ = {isa = PBXBuildFile; fileRef = F8509E8C12F0621E00197EB5 /* BlioTimeOrderedCache.m */; };
 		F8509E9D12F0621E00197EB5 /* BWKXPSProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = F8509E8E12F0621E00197EB5 /* BWKXPSProvider.m */; };
@@ -1363,6 +1366,9 @@
 				F81B3A7F12FAAD8E00A20D52 /* SCHNote.m in Sources */,
 				52AD99E612FB0E9A0099FB88 /* SCHContentMetadataItem+Extensions.m in Sources */,
 				F83D86BE12FC60C600227031 /* SCHLocalDebugXPSReader.m in Sources */,
+				F83D874612FC67A400227031 /* SCHSyncManager.m in Sources */,
+				F83D874712FC67A600227031 /* SCHSyncComponent.m in Sources */,
+				F83D874812FC67B700227031 /* SCHBackgroundSync.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
