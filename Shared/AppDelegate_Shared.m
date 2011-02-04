@@ -7,7 +7,7 @@
 //
 
 #import "AppDelegate_Shared.h"
-
+#import "BWKBookManager.h"
 
 @implementation AppDelegate_Shared
 
@@ -16,6 +16,15 @@
 
 #pragma mark -
 #pragma mark Application lifecycle
+
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions    
+{
+    BWKBookManager *bookManager = [BWKBookManager sharedBookManager];
+    bookManager.persistentStoreCoordinator = self.persistentStoreCoordinator;
+    bookManager.managedObjectContextForCurrentThread = self.managedObjectContext; // Use our managed object contest for calls that are made on the main thread.
+	
+	return YES;
+}	
 
 /**
  Save changes in the application's managed object context before the application terminates.

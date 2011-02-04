@@ -167,6 +167,8 @@
 		F837CA0312F1B4BC00833448 /* gear@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F837CA0112F1B4BC00833448 /* gear@2x.png */; };
 		F837CA0E12F1B4E900833448 /* gear.png in Resources */ = {isa = PBXBuildFile; fileRef = F837CA0012F1B4BC00833448 /* gear.png */; };
 		F837CA0F12F1B4E900833448 /* gear@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F837CA0112F1B4BC00833448 /* gear@2x.png */; };
+		F83D86B512FC070F00227031 /* SCHLocalDebugXPSReader.m in Sources */ = {isa = PBXBuildFile; fileRef = F83D86B412FC070F00227031 /* SCHLocalDebugXPSReader.m */; };
+		F83D86BE12FC60C600227031 /* SCHLocalDebugXPSReader.m in Sources */ = {isa = PBXBuildFile; fileRef = F83D86B412FC070F00227031 /* SCHLocalDebugXPSReader.m */; };
 		F8509E7412F061FE00197EB5 /* libXpsSDKipad.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F8509E7212F061FE00197EB5 /* libXpsSDKipad.a */; };
 		F8509E9C12F0621E00197EB5 /* BlioTimeOrderedCache.m in Sources */ = {isa = PBXBuildFile; fileRef = F8509E8C12F0621E00197EB5 /* BlioTimeOrderedCache.m */; };
 		F8509E9D12F0621E00197EB5 /* BWKXPSProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = F8509E8E12F0621E00197EB5 /* BWKXPSProvider.m */; };
@@ -458,6 +460,8 @@
 		C923B15A12F6B0280054426F /* SCHMultipleBookshelvesController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = SCHMultipleBookshelvesController.xib; path = iPhone/SCHMultipleBookshelvesController.xib; sourceTree = "<group>"; };
 		F837CA0012F1B4BC00833448 /* gear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = gear.png; path = Shared/Images/gear.png; sourceTree = "<group>"; };
 		F837CA0112F1B4BC00833448 /* gear@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "gear@2x.png"; path = "Shared/Images/gear@2x.png"; sourceTree = "<group>"; };
+		F83D86B312FC070F00227031 /* SCHLocalDebugXPSReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHLocalDebugXPSReader.h; sourceTree = "<group>"; };
+		F83D86B412FC070F00227031 /* SCHLocalDebugXPSReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHLocalDebugXPSReader.m; sourceTree = "<group>"; };
 		F8509E7212F061FE00197EB5 /* libXpsSDKipad.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libXpsSDKipad.a; path = Shared/Libraries/XPS/libXpsSDKipad.a; sourceTree = "<group>"; };
 		F8509E7312F061FE00197EB5 /* XpsSdk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XpsSdk.h; path = Shared/Libraries/XPS/XpsSdk.h; sourceTree = "<group>"; };
 		F8509E7612F0620D00197EB5 /* Clifford.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = Clifford.xps; path = "Shared/Debug Books/Clifford.xps"; sourceTree = "<group>"; };
@@ -945,6 +949,8 @@
 			children = (
 				52E4691E12F1D94E00ECC97A /* SCHLocalDebug.h */,
 				52E4691F12F1D94E00ECC97A /* SCHLocalDebug.m */,
+				F83D86B312FC070F00227031 /* SCHLocalDebugXPSReader.h */,
+				F83D86B412FC070F00227031 /* SCHLocalDebugXPSReader.m */,
 				F8509E7612F0620D00197EB5 /* Clifford.xps */,
 				F8509E7712F0620D00197EB5 /* Goosebumps.xps */,
 				F8509E7812F0620E00197EB5 /* LonelyHeartsClub.xps */,
@@ -1233,6 +1239,7 @@
 				52AD978412FA12A00099FB88 /* SCHFavorite+Extensions.m in Sources */,
 				F81B3A8612FAADB000A20D52 /* BWKBookManager.m in Sources */,
 				52AD99E712FB0E9B0099FB88 /* SCHContentMetadataItem+Extensions.m in Sources */,
+				F83D86B512FC070F00227031 /* SCHLocalDebugXPSReader.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1329,6 +1336,7 @@
 				52AD978312FA12A00099FB88 /* SCHFavorite+Extensions.m in Sources */,
 				F81B3A7F12FAAD8E00A20D52 /* SCHNote.m in Sources */,
 				52AD99E612FB0E9A0099FB88 /* SCHContentMetadataItem+Extensions.m in Sources */,
+				F83D86BE12FC60C600227031 /* SCHLocalDebugXPSReader.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

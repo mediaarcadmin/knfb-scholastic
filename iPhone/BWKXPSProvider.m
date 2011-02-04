@@ -10,6 +10,8 @@
 #import "BlioTimeOrderedCache.h"
 #import "zlib.h"
 #import "TouchXML.h"
+#import "SCHContentMetadataItem+Extensions.h"
+#import "BWKBookManager.h"
 
 
 @interface BlioXPSBitmapReleaseCallback : NSObject {
@@ -22,6 +24,7 @@
 
 @interface BWKXPSProvider()
 
+@property (nonatomic, assign, readonly) SCHContentMetadataItem *book;
 @property (nonatomic, retain) NSString *tempDirectory;
 @property (nonatomic, assign) RasterImageInfo *imageInfo;
 @property (nonatomic, retain) NSMutableDictionary *xpsData;
@@ -50,7 +53,7 @@
 
 @implementation BWKXPSProvider
 
-@synthesize imageInfo, tempDirectory, xpsData, componentCache, xpsPath, pageCount, fileSize, ISBN, author, type, pageCropsCache, viewTransformsCache, xpsPagesDirectory, uriMap, title;
+@synthesize bookID, imageInfo, tempDirectory, xpsData, componentCache, pageCount, fileSize, ISBN, author, type, pageCropsCache, viewTransformsCache, xpsPagesDirectory, uriMap, title;
 
 void XPSPageCompleteCallback(void *userdata, RasterImageInfo *data) {
 	BWKXPSProvider *provider = (BWKXPSProvider *)userdata;	
@@ -74,10 +77,12 @@ void XPSPageCompleteCallback(void *userdata, RasterImageInfo *data) {
 	[super dealloc];
 }
 
-- (id) initWithPath: (NSString *) path
+- (id) initWithBookID: (NSManagedObjectID *) aBookID
 {
 	if ((self = [super init])) {
 		
+        self.bookID = aBookID;
+
         renderingLock = [[NSLock alloc] init];
         contentsLock = [[NSLock alloc] init];
         inflateLock = [[NSLock alloc] init];
@@ -99,14 +104,15 @@ void XPSPageCompleteCallback(void *userdata, RasterImageInfo *data) {
         }
         
         XPS_Start();
-        self.xpsPath = path;
-        if (![[NSFileManager defaultManager] fileExistsAtPath:self.xpsPath]) {
-            NSLog(@"Error creating xpsProvider. File does not exist at path: %@", self.xpsPath);
+		NSLog(@"self.book class: %@", NSStringFromClass([self.book class]));
+        NSString *xpsPath = [self.book xpsPath];
+        if (![[NSFileManager defaultManager] fileExistsAtPath:xpsPath]) {
+            NSLog(@"Error creating xpsProvider. File does not exist at path: %@", xpsPath);
             CFRelease(UUIDString);
             return nil;
         }
         
-        xpsHandle = XPS_Open([self.xpsPath UTF8String], [self.tempDirectory UTF8String]);
+        xpsHandle = XPS_Open([xpsPath UTF8String], [self.tempDirectory UTF8String]);
         
 /*        decryptionAvailable = NO;
         
@@ -135,7 +141,7 @@ void XPSPageCompleteCallback(void *userdata, RasterImageInfo *data) {
         XPS_SetAntiAliasMode(xpsHandle, XPS_ANTIALIAS_ON);
         pageCount = XPS_GetNumberPages(xpsHandle, 0);
         
-		NSDictionary *fileAttributes = [[NSFileManager defaultManager] attributesOfItemAtPath:self.xpsPath error:nil];
+		NSDictionary *fileAttributes = [[NSFileManager defaultManager] attributesOfItemAtPath:xpsPath error:nil];
 		self.fileSize = fileAttributes.fileSize;
 		
 		[self parseMetadata:[self dataForComponentAtPath:BlioXPSEncryptedMetadata]];
@@ -156,6 +162,12 @@ void XPSPageCompleteCallback(void *userdata, RasterImageInfo *data) {
 	
 	
 }
+
+- (SCHContentMetadataItem *)book {
+    return [[BWKBookManager sharedBookManager] bookWithID:self.bookID];
+}
+
+
 
 - (void)parseMetadata:(NSData *)metadataFile
 {
@@ -830,6 +842,7 @@ void XPSPageCompleteCallback(void *userdata, RasterImageInfo *data) {
 @synthesize data;
 
 - (void)dealloc {
+	NSLog(@"Deallocing XPS Provider.");
     if (self.data) {
         //NSLog(@"Release: %p", self.data);
         XPS_ReleaseImageMemory(self.data);

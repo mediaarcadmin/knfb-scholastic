@@ -10,7 +10,7 @@
 #import "BWKTestPageViewController.h"
 #import "BWKReadingOptionsView.h"
 #import "SCHLibreAccessWebService.h"
-#import "SCHContentMetadataItem.h"
+#import "SCHContentMetadataItem+Extensions.h"
 #import "SCHLocalDebug.h"
 #import "SCHMultipleBookshelvesController.h"
 #import "BWKBookManager.h"
@@ -102,13 +102,10 @@ NSInteger bookSort(SCHContentMetadataItem *book1, SCHContentMetadataItem *book2,
 	cell.detailTextLabel.text = contentMetadataItem.Author;
 	
 	if (contentMetadataItem.FileName != nil) {
-		NSString *xpsPath = [[NSBundle mainBundle] pathForResource:contentMetadataItem.FileName ofType:@"xps"];
-//		BWKXPSProvider *provider = [[BWKXPSProvider alloc] initWithPath:xpsPath];
-		BWKXPSProvider *provider = [[BWKBookManager sharedBookManager] checkOutXPSProviderForBookWithPath:xpsPath];
+		BWKXPSProvider *provider = [[BWKBookManager sharedBookManager] checkOutXPSProviderForBookWithID:[contentMetadataItem objectID]];
 		provider.title = contentMetadataItem.FileName;
 		cell.imageView.image = [provider coverThumbForList];
-		[[BWKBookManager sharedBookManager] checkInXPSProviderForBookWithPath:xpsPath];
-		//[provider release], provider = nil;	
+		[[BWKBookManager sharedBookManager] checkInXPSProviderForBookWithID:[contentMetadataItem objectID]];
 	} else {
 		cell.imageView.image = nil;
 	}
@@ -166,13 +163,10 @@ NSInteger bookSort(SCHContentMetadataItem *book1, SCHContentMetadataItem *book2,
 	optionsView.pageViewController = pageView;
 	optionsView.metadataItem = contentMetadataItem;
 	
-	NSString *xpsPath = [[NSBundle mainBundle] pathForResource:contentMetadataItem.FileName ofType:@"xps"];
-//	BWKXPSProvider *provider = [[BWKXPSProvider alloc] initWithPath:xpsPath];
-	BWKXPSProvider *provider = [[BWKBookManager sharedBookManager] checkOutXPSProviderForBookWithPath:xpsPath];
+	BWKXPSProvider *provider = [[BWKBookManager sharedBookManager] checkOutXPSProviderForBookWithID:[contentMetadataItem objectID]];
 	provider.title = contentMetadataItem.FileName;
 	optionsView.thumbnailImage = [provider coverThumbForList];
-//	[provider release];
-	[[BWKBookManager sharedBookManager] checkInXPSProviderForBookWithPath:xpsPath];
+	[[BWKBookManager sharedBookManager] checkInXPSProviderForBookWithID:[contentMetadataItem objectID]];
 	
 	[self.bookshelvesController.navigationController pushViewController:optionsView animated:YES];
 	[optionsView release];
@@ -210,12 +204,10 @@ NSInteger bookSort(SCHContentMetadataItem *book1, SCHContentMetadataItem *book2,
 	if (contentMetadataItem.FileName == nil) {
 		thumb = [UIImage imageNamed:@"PlaceholderBook"];
 	} else {
-		NSString *xpsPath = [[NSBundle mainBundle] pathForResource:contentMetadataItem.FileName ofType:@"xps"];
-//		BWKXPSProvider *provider = [[BWKXPSProvider alloc] initWithPath:xpsPath];
-		BWKXPSProvider *provider = [[BWKBookManager sharedBookManager] checkOutXPSProviderForBookWithPath:xpsPath];
+		BWKXPSProvider *provider = [[BWKBookManager sharedBookManager] checkOutXPSProviderForBookWithID:[contentMetadataItem objectID]];
 		provider.title = contentMetadataItem.FileName;
 		thumb = [provider coverThumbForList];
-		[[BWKBookManager sharedBookManager] checkInXPSProviderForBookWithPath:xpsPath];
+		[[BWKBookManager sharedBookManager] checkInXPSProviderForBookWithID:[contentMetadataItem objectID]];
 //		[provider release];
 	}
 		
@@ -262,12 +254,10 @@ NSInteger bookSort(SCHContentMetadataItem *book1, SCHContentMetadataItem *book2,
 	optionsView.pageViewController = pageView;
 	optionsView.metadataItem = contentMetadataItem;
 
-	NSString *xpsPath = [[NSBundle mainBundle] pathForResource:contentMetadataItem.FileName ofType:@"xps"];
-//	BWKXPSProvider *provider = [[BWKXPSProvider alloc] initWithPath:xpsPath];
-	BWKXPSProvider *provider = [[BWKBookManager sharedBookManager] checkOutXPSProviderForBookWithPath:xpsPath];
+	BWKXPSProvider *provider = [[BWKBookManager sharedBookManager] checkOutXPSProviderForBookWithID:[contentMetadataItem objectID]];
 	provider.title = contentMetadataItem.FileName;
 	optionsView.thumbnailImage = [provider coverThumbForList];
-	[[BWKBookManager sharedBookManager] checkInXPSProviderForBookWithPath:xpsPath];
+	[[BWKBookManager sharedBookManager] checkInXPSProviderForBookWithID:[contentMetadataItem objectID]];
 //	[provider release];
 	
 	[self.navigationController pushViewController:optionsView animated:YES];

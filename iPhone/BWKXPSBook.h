@@ -21,12 +21,6 @@ static NSString * const BlioXPSEncryptedTextFlowDir = @"/Documents/1/Other/KNFB/
 static NSString * const BlioXPSComponentExtensionFPage = @"fpage";
 static NSString * const BlioXPSSequenceFile = @"/FixedDocumentSequence.fdseq";
 
-//static NSString * const BlioManifestEntryLocationBundle = @"BlioManifestEntryLocationBundle";
-//static NSString * const BlioManifestEntryLocationFileSystem = @"BlioManifestEntryLocationFileSystem";
-//static NSString * const BlioManifestEntryLocationXPS = @"BlioManifestEntryLocationXPS";
-//static NSString * const BlioManifestEntryLocationTextflow = @"BlioManifestEntryLocationTextflow";
-
-
 @interface BWKXPSBook : NSObject {
 	NSMutableDictionary *properties;
 }

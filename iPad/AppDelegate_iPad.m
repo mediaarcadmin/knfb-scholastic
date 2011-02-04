@@ -15,7 +15,9 @@
 #pragma mark Application lifecycle
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {    
-    
+
+	[super application:application didFinishLaunchingWithOptions:launchOptions];
+	
     // Override point for customization after application launch.
     
     [self.window makeKeyAndVisible];

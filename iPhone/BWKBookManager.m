@@ -8,12 +8,12 @@
 
 #import "BWKBookManager.h"
 #import "BWKXPSProvider.h"
+#import <pthread.h>
 
 @interface BWKBookManager ()
 
 @property (nonatomic, retain) NSMutableDictionary *cachedXPSProviders;
 @property (nonatomic, retain) NSCountedSet *cachedXPSProviderCheckoutCounts;
-@property (nonatomic, retain) NSLock *checkInOutLock;
 
 @end
 
@@ -21,8 +21,9 @@
 @implementation BWKBookManager
 
 static BWKBookManager *sSharedBookManager = nil;
+static pthread_key_t sManagedObjectContextKey;
 
-@synthesize cachedXPSProviders, cachedXPSProviderCheckoutCounts, checkInOutLock;
+@synthesize cachedXPSProviders, cachedXPSProviderCheckoutCounts, persistentStoreCoordinator;
 
 + (BWKBookManager *)sharedBookManager
 {
@@ -32,11 +33,11 @@ static BWKBookManager *sSharedBookManager = nil;
     // are made anyway.
     if(!sSharedBookManager) {
         sSharedBookManager = [[self alloc] init];
-		// FIXME: deferred until decisions are made on locking strategy
+
         // By setting this, if we associate an object with sManagedObjectContextKey
         // using pthread_setspecific, CFRelease will be called on it before
         // the thread terminates.
-        //pthread_key_create(&sManagedObjectContextKey, (void (*)(void *))CFRelease);
+        pthread_key_create(&sManagedObjectContextKey, (void (*)(void *))CFRelease);
     }
     return sSharedBookManager;
 }
@@ -46,31 +47,80 @@ static BWKBookManager *sSharedBookManager = nil;
 {
     if (self = [super init]) {
         // Initialization code.
-		self.checkInOutLock = [[NSLock alloc] init];
 		self.cachedXPSProviders = [[NSMutableDictionary alloc] init];
     }
     return self;
 }
 
 
+- (NSManagedObjectContext *)managedObjectContextForCurrentThread
+{
+    NSManagedObjectContext *managedObjectContextForCurrentThread = (NSManagedObjectContext *)pthread_getspecific(sManagedObjectContextKey);
+    if(!managedObjectContextForCurrentThread) {
+        managedObjectContextForCurrentThread = [[NSManagedObjectContext alloc] init]; 
+        managedObjectContextForCurrentThread.persistentStoreCoordinator = self.persistentStoreCoordinator; 
+        self.managedObjectContextForCurrentThread = managedObjectContextForCurrentThread;
+        [managedObjectContextForCurrentThread release];
+    }
+    return managedObjectContextForCurrentThread;
+}
 
-- (BWKXPSProvider *)checkOutXPSProviderForBookWithPath:(NSString *)path
+- (void)setManagedObjectContextForCurrentThread:(NSManagedObjectContext *)managedObjectContextForCurrentThread
+{
+    NSManagedObjectContext *oldManagedObjectContextForCurrentThread = (NSManagedObjectContext *)pthread_getspecific(sManagedObjectContextKey);
+    if(oldManagedObjectContextForCurrentThread) {
+        NSLog(@"Unexpectedly setting thread's managed object context on thread %@, which already has one set", [NSThread currentThread]);
+        [oldManagedObjectContextForCurrentThread release];
+    }
+    
+    // CFRelease will be called on the object before the thread terminates
+    // (see comments in +sharedBookManager).
+    pthread_setspecific(sManagedObjectContextKey, [managedObjectContextForCurrentThread retain]);
+}
+
+- (SCHContentMetadataItem *)bookWithID:(NSManagedObjectID *)aBookID
+{
+    // If we don't do a refresh here, we run the risk that another thread has
+    // modified the object while it's been cached by this thread's managed
+    // object context.  
+    // If I were redesigning this, I'd make only one thread allowed to modify
+    // the books, and call 
+    // - (void)mergeChangesFromContextDidSaveNotification:(NSNotification *)notification
+    // on the other threads when it saved.
+    NSManagedObjectContext *context = self.managedObjectContextForCurrentThread;
+    SCHContentMetadataItem *book = nil;
+    
+    if (aBookID) {
+        book = (SCHContentMetadataItem *)[context objectWithID:aBookID];
+    }
+    else NSLog(@"WARNING: BWKBookManager bookWithID: aBookID is nil!");
+    if (book) {
+        [context refreshObject:book mergeChanges:YES];
+    }
+    
+    return book;
+}
+
+
+
+
+- (BWKXPSProvider *)checkOutXPSProviderForBookWithID: (NSManagedObjectID *) bookID
 {
 	BWKXPSProvider *ret = nil;
 	
-	NSLog(@"Checking out path: %@", path);
+	NSLog(@"Checking out book ID: %@", bookID);
 	
-	//[self.checkInOutLock lock];
+	[self.persistentStoreCoordinator lock];
 	
     NSMutableDictionary *myCachedXPSProviders = self.cachedXPSProviders;
     @synchronized(myCachedXPSProviders) {
-        BWKXPSProvider *previouslyCachedXPSProvider = [myCachedXPSProviders objectForKey:path];
+        BWKXPSProvider *previouslyCachedXPSProvider = [myCachedXPSProviders objectForKey:bookID];
         if(previouslyCachedXPSProvider) {
-            NSLog(@"Returning cached XPSProvider for book with path %@", path);
-            [self.cachedXPSProviderCheckoutCounts addObject:path];
+            NSLog(@"Returning cached XPSProvider for book with bookID %@", bookID);
+            [self.cachedXPSProviderCheckoutCounts addObject:bookID];
             ret = previouslyCachedXPSProvider;
         } else {
-			BWKXPSProvider *xpsProvider = [[BWKXPSProvider alloc] initWithPath:path];
+			BWKXPSProvider *xpsProvider = [[BWKXPSProvider alloc] initWithBookID:bookID];
 			if(xpsProvider) {
 				NSCountedSet *myCachedXPSProviderCheckoutCounts = self.cachedXPSProviderCheckoutCounts;
 				if(!myCachedXPSProviderCheckoutCounts) {
@@ -78,44 +128,44 @@ static BWKBookManager *sSharedBookManager = nil;
 					self.cachedXPSProviderCheckoutCounts = myCachedXPSProviderCheckoutCounts;
 				}
 				
-				[myCachedXPSProviders setObject:xpsProvider forKey:path];
-				[myCachedXPSProviderCheckoutCounts addObject:path];
+				[myCachedXPSProviders setObject:xpsProvider forKey:bookID];
+				[myCachedXPSProviderCheckoutCounts addObject:bookID];
 //				[xpsProvider release];
 				ret = xpsProvider;
 			}
         }
     }
     
-	//[self.checkInOutLock unlock];
+	[self.persistentStoreCoordinator unlock];
 	
-    //NSLog(@"[%d] checkOutXPSProviderForBookWithID %@", [self.cachedXPSProviderCheckoutCounts countForObject:aBookID], aBookID);
+    NSLog(@"[%d] checkOutXPSProviderForBookWithID %@", [self.cachedXPSProviderCheckoutCounts countForObject:bookID], bookID);
     return ret;
 	
 }
 
-- (void)checkInXPSProviderForBookWithPath:(NSString *)path
+- (void)checkInXPSProviderForBookWithID: (NSManagedObjectID *) aBookID
 {
 
-	NSLog(@"Checking in path: %@", path);
+	NSLog(@"Checking in bookID: %@", aBookID);
 	
 	NSMutableDictionary *myCachedXPSProviders = self.cachedXPSProviders;
     @synchronized(myCachedXPSProviders) {
         NSCountedSet *myCachedXPSProviderCheckoutCounts = self.cachedXPSProviderCheckoutCounts;
-        NSUInteger count = [myCachedXPSProviderCheckoutCounts countForObject:path];
+        NSUInteger count = [myCachedXPSProviderCheckoutCounts countForObject:aBookID];
         if(count == 0) {
             NSLog(@"Warning! Unexpected checkin of non-checked-out XPSProvider");
         } else {
-            [myCachedXPSProviderCheckoutCounts removeObject:path];
+            [myCachedXPSProviderCheckoutCounts removeObject:aBookID];
             if (count == 1) {
-                //NSLog(@"Releasing cached XPSProvider for book with ID %@", aBookID);
-                [myCachedXPSProviders removeObjectForKey:path];
+                NSLog(@"Releasing cached XPSProvider for book with ID %@", aBookID);
+                [myCachedXPSProviders removeObjectForKey:aBookID];
                 if(myCachedXPSProviderCheckoutCounts.count == 0) {
                     // May as well release the set.
                     self.cachedXPSProviderCheckoutCounts = nil;
                 }
             }
         }
-        //NSLog(@"[%d] checkInXPSProviderForBookWithID %@", [self.cachedXPSProviderCheckoutCounts countForObject:aBookID], aBookID);
+        NSLog(@"[%d] checkInXPSProviderForBookWithPath %@", [self.cachedXPSProviderCheckoutCounts countForObject:aBookID], aBookID);
 		
     }
 	
@@ -123,7 +173,6 @@ static BWKBookManager *sSharedBookManager = nil;
 
 - (void)dealloc {
 	[cachedXPSProviders release], cachedXPSProviders = nil;
-	[checkInOutLock release], checkInOutLock = nil;
     [super dealloc];
 }
 

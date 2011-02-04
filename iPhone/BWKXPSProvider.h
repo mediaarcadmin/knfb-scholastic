@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <CoreData/CoreData.h>
 #import "XpsSdk.h"
 #import "BWKXPSBook.h"
 
@@ -59,8 +60,8 @@
 
 }
 
-// GMC: XPS file path for testing
-@property (nonatomic, retain) NSString *xpsPath;
+@property (nonatomic, retain) NSManagedObjectID *bookID;
+
 @property (nonatomic, retain) NSString *title;
 @property (nonatomic) NSInteger pageCount;
 @property (nonatomic) unsigned long long fileSize;
@@ -68,7 +69,7 @@
 @property (nonatomic, retain) NSString *author;
 @property (nonatomic, retain) NSString *type;
 
-- (id) initWithPath: (NSString *) path;
+- (id) initWithBookID: (NSManagedObjectID *) bookID;
 - (CGContextRef)RGBABitmapContextForPage:(NSUInteger)page
                                 fromRect:(CGRect)rect
                                  minSize:(CGSize)size 

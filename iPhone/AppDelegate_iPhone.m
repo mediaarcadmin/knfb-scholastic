@@ -25,6 +25,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {    
     
+	[super application:application didFinishLaunchingWithOptions:launchOptions];
     // Override point for customization after application launch.
 	
     // Add the navigation controller's view to the window and display.
