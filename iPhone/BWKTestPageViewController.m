@@ -11,7 +11,7 @@
 
 @implementation BWKTestPageViewController
 
-@synthesize xpsPath;
+@synthesize book;
 
 // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
 /*
@@ -31,7 +31,7 @@
 	
 	currentPage = 1;
 	toolbarsVisible = YES;
-	testRenderer = [[BWKXPSProvider alloc] initWithPath:self.xpsPath];
+	testRenderer = [[BWKXPSProvider alloc] initWithBookID:[self.book objectID]];
 	
 	pageScrubber.delegate = self;
 	pageScrubber.minimumValue = 1;

@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "BWKXPSProvider.h"
 #import "BWKScrubberView.h"
+#import "SCHContentMetadataItem.h"
 
 #define TESTPAGEVIEW_PAGETAPWIDTH 75
 
@@ -27,7 +28,7 @@
 	IBOutlet UIView *scrubberInfoView;
 	
 	BWKXPSProvider *testRenderer;
-	NSString *xpsPath;
+	SCHContentMetadataItem *book;
 	
 	int currentPage;
 	
@@ -35,7 +36,7 @@
 	NSTimer *initialFadeTimer;
 }
 
-@property (nonatomic, retain) NSString *xpsPath;
+@property (nonatomic, retain) SCHContentMetadataItem *book;
 
 - (IBAction) previousPage: (id) sender;
 - (IBAction) nextPage: (id) sender;	

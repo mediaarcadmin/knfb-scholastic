@@ -157,7 +157,7 @@ NSInteger bookSort(SCHContentMetadataItem *book1, SCHContentMetadataItem *book2,
 	SCHContentMetadataItem *contentMetadataItem = [self.books objectAtIndex:indexPath.row];
 	
 	BWKTestPageViewController *pageView = [[BWKTestPageViewController alloc] initWithNibName:nil bundle:nil];
-	pageView.xpsPath = [[NSBundle mainBundle] pathForResource:contentMetadataItem.FileName ofType:@"xps"];
+	pageView.book = contentMetadataItem;
 	
 	BWKReadingOptionsView *optionsView = [[BWKReadingOptionsView alloc] initWithNibName:nil bundle:nil];
 	optionsView.pageViewController = pageView;
@@ -248,7 +248,7 @@ NSInteger bookSort(SCHContentMetadataItem *book1, SCHContentMetadataItem *book2,
 {
 	SCHContentMetadataItem *contentMetadataItem = [self.books objectAtIndex:index];
 	BWKTestPageViewController *pageView = [[BWKTestPageViewController alloc] initWithNibName:nil bundle:nil];
-	pageView.xpsPath = [[NSBundle mainBundle] pathForResource:contentMetadataItem.FileName ofType:@"xps"];
+	pageView.book = contentMetadataItem;
 	
 	BWKReadingOptionsView *optionsView = [[BWKReadingOptionsView alloc] initWithNibName:nil bundle:nil];
 	optionsView.pageViewController = pageView;
