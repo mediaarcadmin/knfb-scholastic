@@ -1,0 +1,28 @@
+//
+//  SCHSyncManager.h
+//  Scholastic
+//
+//  Created by John S. Eddie on 04/02/2011.
+//  Copyright 2011 BitWink. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+#import <CoreData/CoreData.h>
+
+@class SCHBackgroundSync;
+
+@interface SCHSyncManager : NSObject 
+{
+@private
+    NSManagedObjectContext *managedObjectContext_;	
+	SCHBackgroundSync *backgroundSync;
+}
+
+@property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
+
++ (SCHSyncManager *)sharedSyncManager;
+
+- (void)startBackgroundSync;
+- (void)stopBackgroundSync;
+
+@end
