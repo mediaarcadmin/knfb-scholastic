@@ -91,4 +91,50 @@ static SCHSyncManager *sharedSyncManager = nil;
 	[backgroundSync stop];		
 }
 
+#pragma mark -
+#pragma mark Sync methods
+
+// after login or opening the app
+- (void)firstSync
+{
+	NSLog(@"Scheduling First Sync");
+	
+	// profiles GetUserProfile
+	// content ListUserContent
+	// bookshelf ListContentMetadata
+	
+	// annotations ListProfileContentAnnotations
+	
+	// reading stats
+	
+	// settings ListUserSettings
+}
+
+- (void)openDocument
+{
+	NSLog(@"Scheduling Open Document");
+	
+	// annotations SaveProfileContentAnnotations/ListProfileContentAnnotations
+}
+
+- (void)closeDocument
+{
+	NSLog(@"Scheduling Close Document");
+	
+	// annotations SaveProfileContentAnnotations/ListProfileContentAnnotations
+	
+	// reading stats SaveReadingStatisticsDetailed
+}
+
+- (void)exitParentalTools:(BOOL)syncNow
+{
+	NSLog(@"Scheduling Exit Parental Tools");
+
+	// profiles SaveUserProfile/GetUserProfile
+	// content SaveContentProfileAssignment/ListUserContent
+	// bookshelf ListContentMetadata
+	
+	// settings SaveUserSettings/ListUserSettings
+}
+
 @end

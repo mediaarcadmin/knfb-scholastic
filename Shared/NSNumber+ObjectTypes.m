@@ -131,5 +131,19 @@
 	return([self intValue]);		
 }
 
++ (NSNumber *)numberWithTopFavoritesType:(SCHTopFavoritesTypes)value
+{
+	return([NSNumber numberWithInt:value]);			
+}
+
+- (id)initWithTopFavoritesType:(SCHTopFavoritesTypes)value
+{
+	return([self initWithInt:value]);		
+}
+
+- (SCHTopFavoritesTypes)topFavoritesTypeValue
+{
+	return([self intValue]);		
+}
 
 @end

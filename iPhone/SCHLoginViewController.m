@@ -10,6 +10,7 @@
 
 #import "SCHAuthenticationManager.h"
 #import "SFHFKeychainUtils.h"
+#import "SCHSyncManager.h"
 
 @implementation SCHLoginViewController
 
@@ -47,6 +48,7 @@
 	self.cancelButton.enabled = YES;
 
 	if ([notification.name compare:kSCHAuthenticationManagerSuccess] == NSOrderedSame) {
+		[[SCHSyncManager sharedSyncManager] firstSync];
 		[self dismissModalViewControllerAnimated:YES];	
 	} else {
 		// oh bummer!

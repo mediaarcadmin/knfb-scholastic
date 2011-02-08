@@ -7,14 +7,18 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <CoreData/CoreData.h>
 
+#import "SCHComponent.h"
 
-@interface SCHSyncComponent : NSObject {
-	BOOL isSynchronizing;
+@interface SCHSyncComponent : SCHComponent
+{
+
 }
 
-@property BOOL isSynchronizing;
+@property (assign, nonatomic) BOOL isSynchronizing;
+@property (retain, nonatomic) NSManagedObjectContext *managedObjectContext;
 
-- (void)synchronize;
+- (BOOL)synchronize;
 
 @end

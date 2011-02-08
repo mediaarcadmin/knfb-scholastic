@@ -54,6 +54,8 @@
 		52298A9812F0EF5600BBBCE6 /* SCHCoords.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A8012F0EF5600BBBCE6 /* SCHCoords.m */; };
 		52298A9912F0EF5600BBBCE6 /* SCHLocationGraphics.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A8212F0EF5600BBBCE6 /* SCHLocationGraphics.m */; };
 		52298A9B12F0EF5600BBBCE6 /* SCHHighlight.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A8612F0EF5600BBBCE6 /* SCHHighlight.m */; };
+		5266D34C13007A1C004E3AC6 /* SCHTopFavoritesComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 5266D34B13007A1C004E3AC6 /* SCHTopFavoritesComponent.m */; };
+		5266D38413007D15004E3AC6 /* SCHComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 5266D38313007D15004E3AC6 /* SCHComponent.m */; };
 		528A2CD312CCDD9E0053A343 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 528A2CD212CCDD9E0053A343 /* Settings.bundle */; };
 		528A2CDB12CCDE070053A343 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 528A2CDA12CCDE070053A343 /* Localizable.strings */; };
 		528A2CF812CCEAA50053A343 /* ReleaseNotes.tmReleaseNotes in Resources */ = {isa = PBXBuildFile; fileRef = 528A2CF712CCEAA50053A343 /* ReleaseNotes.tmReleaseNotes */; };
@@ -119,9 +121,23 @@
 		52AD9ACF12FC0EEF0099FB88 /* SCHSyncManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9ACE12FC0EEF0099FB88 /* SCHSyncManager.m */; };
 		52AD9AD212FC0F8F0099FB88 /* SCHBackgroundSync.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9AD112FC0F8F0099FB88 /* SCHBackgroundSync.m */; };
 		52AD9B1C12FC1B6B0099FB88 /* SCHSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9B1B12FC1B6B0099FB88 /* SCHSyncComponent.m */; };
+		52AD9D6F130000570099FB88 /* SCHAnnotationSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9D64130000570099FB88 /* SCHAnnotationSyncComponent.m */; };
+		52AD9D70130000570099FB88 /* SCHBookshelfSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9D66130000570099FB88 /* SCHBookshelfSyncComponent.m */; };
+		52AD9D71130000570099FB88 /* SCHContentSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9D68130000570099FB88 /* SCHContentSyncComponent.m */; };
+		52AD9D72130000570099FB88 /* SCHProfileSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9D6A130000570099FB88 /* SCHProfileSyncComponent.m */; };
+		52AD9D73130000570099FB88 /* SCHReadingStatsSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9D6C130000570099FB88 /* SCHReadingStatsSyncComponent.m */; };
+		52AD9D74130000570099FB88 /* SCHSettingsSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9D6E130000570099FB88 /* SCHSettingsSyncComponent.m */; };
 		52D6122212E44B0F0033DA92 /* SCHProfileItem+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D6122112E44B0F0033DA92 /* SCHProfileItem+Extensions.m */; };
 		52D6124F12E44D760033DA92 /* SCHSyncEntity+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D6124E12E44D760033DA92 /* SCHSyncEntity+Extensions.m */; };
 		52D612B812E4650B0033DA92 /* NSNumber+ObjectTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D612B712E4650B0033DA92 /* NSNumber+ObjectTypes.m */; };
+		52E332E413018EDF002F3011 /* SCHComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 5266D38313007D15004E3AC6 /* SCHComponent.m */; };
+		52E332E513018EDF002F3011 /* SCHTopFavoritesComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 5266D34B13007A1C004E3AC6 /* SCHTopFavoritesComponent.m */; };
+		52E332E613018EDF002F3011 /* SCHAnnotationSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9D64130000570099FB88 /* SCHAnnotationSyncComponent.m */; };
+		52E332E713018EDF002F3011 /* SCHBookshelfSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9D66130000570099FB88 /* SCHBookshelfSyncComponent.m */; };
+		52E332E813018EDF002F3011 /* SCHContentSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9D68130000570099FB88 /* SCHContentSyncComponent.m */; };
+		52E332E913018EDF002F3011 /* SCHProfileSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9D6A130000570099FB88 /* SCHProfileSyncComponent.m */; };
+		52E332EA13018EDF002F3011 /* SCHReadingStatsSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9D6C130000570099FB88 /* SCHReadingStatsSyncComponent.m */; };
+		52E332EB13018EDF002F3011 /* SCHSettingsSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9D6E130000570099FB88 /* SCHSettingsSyncComponent.m */; };
 		52E4692012F1D94E00ECC97A /* SCHLocalDebug.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E4691F12F1D94E00ECC97A /* SCHLocalDebug.m */; };
 		52E4697512F1F33200ECC97A /* SCHLocalDebug.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E4691F12F1D94E00ECC97A /* SCHLocalDebug.m */; };
 		52EF4E5F12E6E01C00E374F7 /* SCHLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF4E5D12E6E01C00E374F7 /* SCHLoginViewController.m */; };
@@ -340,6 +356,11 @@
 		52298A8212F0EF5600BBBCE6 /* SCHLocationGraphics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHLocationGraphics.m; path = Shared/SCHLocationGraphics.m; sourceTree = "<group>"; };
 		52298A8512F0EF5600BBBCE6 /* SCHHighlight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHHighlight.h; path = Shared/SCHHighlight.h; sourceTree = "<group>"; };
 		52298A8612F0EF5600BBBCE6 /* SCHHighlight.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHHighlight.m; path = Shared/SCHHighlight.m; sourceTree = "<group>"; };
+		5266D34A13007A1C004E3AC6 /* SCHTopFavoritesComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHTopFavoritesComponent.h; path = Shared/SCHTopFavoritesComponent.h; sourceTree = "<group>"; };
+		5266D34B13007A1C004E3AC6 /* SCHTopFavoritesComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHTopFavoritesComponent.m; path = Shared/SCHTopFavoritesComponent.m; sourceTree = "<group>"; };
+		5266D38213007D15004E3AC6 /* SCHComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHComponent.h; path = Shared/SCHComponent.h; sourceTree = "<group>"; };
+		5266D38313007D15004E3AC6 /* SCHComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHComponent.m; path = Shared/SCHComponent.m; sourceTree = "<group>"; };
+		5266D38E13007E27004E3AC6 /* SCHComponentProtected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHComponentProtected.h; path = Shared/SCHComponentProtected.h; sourceTree = "<group>"; };
 		528A2CD212CCDD9E0053A343 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = Settings.bundle; path = Shared/Settings.bundle; sourceTree = "<group>"; };
 		528A2CD912CCDDB00053A343 /* Entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Entitlements.plist; sourceTree = "<group>"; };
 		528A2CDA12CCDE070053A343 /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = Localizable.strings; path = Shared/Localizable.strings; sourceTree = "<group>"; };
@@ -434,6 +455,19 @@
 		52AD9AD112FC0F8F0099FB88 /* SCHBackgroundSync.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBackgroundSync.m; path = Shared/SCHBackgroundSync.m; sourceTree = "<group>"; };
 		52AD9B1A12FC1B6B0099FB88 /* SCHSyncComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHSyncComponent.h; path = Shared/SCHSyncComponent.h; sourceTree = "<group>"; };
 		52AD9B1B12FC1B6B0099FB88 /* SCHSyncComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHSyncComponent.m; path = Shared/SCHSyncComponent.m; sourceTree = "<group>"; };
+		52AD9D63130000570099FB88 /* SCHAnnotationSyncComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAnnotationSyncComponent.h; path = Shared/SCHAnnotationSyncComponent.h; sourceTree = "<group>"; };
+		52AD9D64130000570099FB88 /* SCHAnnotationSyncComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHAnnotationSyncComponent.m; path = Shared/SCHAnnotationSyncComponent.m; sourceTree = "<group>"; };
+		52AD9D65130000570099FB88 /* SCHBookshelfSyncComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookshelfSyncComponent.h; path = Shared/SCHBookshelfSyncComponent.h; sourceTree = "<group>"; };
+		52AD9D66130000570099FB88 /* SCHBookshelfSyncComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookshelfSyncComponent.m; path = Shared/SCHBookshelfSyncComponent.m; sourceTree = "<group>"; };
+		52AD9D67130000570099FB88 /* SCHContentSyncComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHContentSyncComponent.h; path = Shared/SCHContentSyncComponent.h; sourceTree = "<group>"; };
+		52AD9D68130000570099FB88 /* SCHContentSyncComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHContentSyncComponent.m; path = Shared/SCHContentSyncComponent.m; sourceTree = "<group>"; };
+		52AD9D69130000570099FB88 /* SCHProfileSyncComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHProfileSyncComponent.h; path = Shared/SCHProfileSyncComponent.h; sourceTree = "<group>"; };
+		52AD9D6A130000570099FB88 /* SCHProfileSyncComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHProfileSyncComponent.m; path = Shared/SCHProfileSyncComponent.m; sourceTree = "<group>"; };
+		52AD9D6B130000570099FB88 /* SCHReadingStatsSyncComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHReadingStatsSyncComponent.h; path = Shared/SCHReadingStatsSyncComponent.h; sourceTree = "<group>"; };
+		52AD9D6C130000570099FB88 /* SCHReadingStatsSyncComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHReadingStatsSyncComponent.m; path = Shared/SCHReadingStatsSyncComponent.m; sourceTree = "<group>"; };
+		52AD9D6D130000570099FB88 /* SCHSettingsSyncComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHSettingsSyncComponent.h; path = Shared/SCHSettingsSyncComponent.h; sourceTree = "<group>"; };
+		52AD9D6E130000570099FB88 /* SCHSettingsSyncComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHSettingsSyncComponent.m; path = Shared/SCHSettingsSyncComponent.m; sourceTree = "<group>"; };
+		52AD9D9813000CAA0099FB88 /* SCHSyncComponentProtected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHSyncComponentProtected.h; path = Shared/SCHSyncComponentProtected.h; sourceTree = "<group>"; };
 		52D6122012E44B0F0033DA92 /* SCHProfileItem+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SCHProfileItem+Extensions.h"; path = "Shared/SCHProfileItem+Extensions.h"; sourceTree = "<group>"; };
 		52D6122112E44B0F0033DA92 /* SCHProfileItem+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SCHProfileItem+Extensions.m"; path = "Shared/SCHProfileItem+Extensions.m"; sourceTree = "<group>"; };
 		52D6124112E44CEC0033DA92 /* SCHContentMetadataItem+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SCHContentMetadataItem+Extensions.h"; path = "Shared/SCHContentMetadataItem+Extensions.h"; sourceTree = "<group>"; };
@@ -908,8 +942,26 @@
 				52AD9ACE12FC0EEF0099FB88 /* SCHSyncManager.m */,
 				52AD9AD012FC0F8F0099FB88 /* SCHBackgroundSync.h */,
 				52AD9AD112FC0F8F0099FB88 /* SCHBackgroundSync.m */,
+				5266D38213007D15004E3AC6 /* SCHComponent.h */,
+				5266D38313007D15004E3AC6 /* SCHComponent.m */,
+				5266D38E13007E27004E3AC6 /* SCHComponentProtected.h */,
+				5266D34A13007A1C004E3AC6 /* SCHTopFavoritesComponent.h */,
+				5266D34B13007A1C004E3AC6 /* SCHTopFavoritesComponent.m */,
 				52AD9B1A12FC1B6B0099FB88 /* SCHSyncComponent.h */,
 				52AD9B1B12FC1B6B0099FB88 /* SCHSyncComponent.m */,
+				52AD9D9813000CAA0099FB88 /* SCHSyncComponentProtected.h */,
+				52AD9D63130000570099FB88 /* SCHAnnotationSyncComponent.h */,
+				52AD9D64130000570099FB88 /* SCHAnnotationSyncComponent.m */,
+				52AD9D65130000570099FB88 /* SCHBookshelfSyncComponent.h */,
+				52AD9D66130000570099FB88 /* SCHBookshelfSyncComponent.m */,
+				52AD9D67130000570099FB88 /* SCHContentSyncComponent.h */,
+				52AD9D68130000570099FB88 /* SCHContentSyncComponent.m */,
+				52AD9D69130000570099FB88 /* SCHProfileSyncComponent.h */,
+				52AD9D6A130000570099FB88 /* SCHProfileSyncComponent.m */,
+				52AD9D6B130000570099FB88 /* SCHReadingStatsSyncComponent.h */,
+				52AD9D6C130000570099FB88 /* SCHReadingStatsSyncComponent.m */,
+				52AD9D6D130000570099FB88 /* SCHSettingsSyncComponent.h */,
+				52AD9D6E130000570099FB88 /* SCHSettingsSyncComponent.m */,
 			);
 			name = Sync;
 			sourceTree = "<group>";
@@ -1269,6 +1321,14 @@
 				52AD9ACF12FC0EEF0099FB88 /* SCHSyncManager.m in Sources */,
 				52AD9AD212FC0F8F0099FB88 /* SCHBackgroundSync.m in Sources */,
 				52AD9B1C12FC1B6B0099FB88 /* SCHSyncComponent.m in Sources */,
+				52AD9D6F130000570099FB88 /* SCHAnnotationSyncComponent.m in Sources */,
+				52AD9D70130000570099FB88 /* SCHBookshelfSyncComponent.m in Sources */,
+				52AD9D71130000570099FB88 /* SCHContentSyncComponent.m in Sources */,
+				52AD9D72130000570099FB88 /* SCHProfileSyncComponent.m in Sources */,
+				52AD9D73130000570099FB88 /* SCHReadingStatsSyncComponent.m in Sources */,
+				52AD9D74130000570099FB88 /* SCHSettingsSyncComponent.m in Sources */,
+				5266D34C13007A1C004E3AC6 /* SCHTopFavoritesComponent.m in Sources */,
+				5266D38413007D15004E3AC6 /* SCHComponent.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1369,6 +1429,14 @@
 				F83D874612FC67A400227031 /* SCHSyncManager.m in Sources */,
 				F83D874712FC67A600227031 /* SCHSyncComponent.m in Sources */,
 				F83D874812FC67B700227031 /* SCHBackgroundSync.m in Sources */,
+				52E332E413018EDF002F3011 /* SCHComponent.m in Sources */,
+				52E332E513018EDF002F3011 /* SCHTopFavoritesComponent.m in Sources */,
+				52E332E613018EDF002F3011 /* SCHAnnotationSyncComponent.m in Sources */,
+				52E332E713018EDF002F3011 /* SCHBookshelfSyncComponent.m in Sources */,
+				52E332E813018EDF002F3011 /* SCHContentSyncComponent.m in Sources */,
+				52E332E913018EDF002F3011 /* SCHProfileSyncComponent.m in Sources */,
+				52E332EA13018EDF002F3011 /* SCHReadingStatsSyncComponent.m in Sources */,
+				52E332EB13018EDF002F3011 /* SCHSettingsSyncComponent.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

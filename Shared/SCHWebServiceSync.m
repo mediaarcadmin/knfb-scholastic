@@ -99,6 +99,18 @@
 	return(ret);
 }
 
+- (BOOL)topFavorites
+{
+	BOOL ret = YES;
+	
+	if ([self.libreAccessWebService listTopFavorites:10] == NO) {
+		[[SCHAuthenticationManager sharedAuthenticationManager] authenticate];				
+		ret = NO;
+	}
+	
+	return(ret);
+}
+
 - (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result
 {	
 	NSLog(@"%@\n%@", method, result);

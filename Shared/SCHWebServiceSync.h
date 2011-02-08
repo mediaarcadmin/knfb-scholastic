@@ -22,5 +22,6 @@
 @property (retain, nonatomic) NSManagedObjectContext *managedObjectContext;	
 
 - (BOOL)update;
+- (BOOL)topFavorites;
 
 @end

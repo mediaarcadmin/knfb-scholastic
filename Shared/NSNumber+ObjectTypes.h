@@ -66,6 +66,12 @@ typedef enum {
 	kSCHUserSettingsTypesDisableAutoAssign,
 } SCHUserSettingsTypes;
 
+typedef enum {
+	TopFavoritesTypesNone = 0,
+	TopFavoritesTypeseReaderCategory,
+	TopFavoritesTypeseReaderCategoryClass,
+} SCHTopFavoritesTypes;
+
 @interface NSNumber (ObjectTypes)
 
 + (NSNumber *)numberWithStatus:(SCHStatus)value;
@@ -99,5 +105,9 @@ typedef enum {
 + (NSNumber *)numberWithUserSettingsType:(SCHUserSettingsTypes)value;
 - (id)initWithUserSettingsType:(SCHUserSettingsTypes)value;
 - (SCHUserSettingsTypes)userSettingsTypeValue;
+
++ (NSNumber *)numberWithTopFavoritesType:(SCHTopFavoritesTypes)value;
+- (id)initWithTopFavoritesType:(SCHTopFavoritesTypes)value;
+- (SCHTopFavoritesTypes)topFavoritesTypeValue;
 
 @end

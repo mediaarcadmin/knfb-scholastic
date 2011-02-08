@@ -7,11 +7,13 @@
 //
 
 #import "SCHSyncComponent.h"
+#import "SCHSyncComponentProtected.h"
 
 
 @implementation SCHSyncComponent
 
 @synthesize isSynchronizing;
+@synthesize managedObjectContext;
 
 - (id) init
 {
@@ -22,9 +24,19 @@
 	return(self);
 }
 
-- (void)synchronize
+- (BOOL)synchronize
 {
+	return(NO);
+}
+
+- (void)save
+{
+	NSError *error = nil;
 	
+	if (![self.managedObjectContext save:&error]) {
+		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+		abort();
+	} 
 }
 
 @end

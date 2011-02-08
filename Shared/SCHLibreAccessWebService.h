@@ -18,6 +18,7 @@ static NSString * const kSCHLibreAccessWebServiceTokenExchange = @"TokenExchange
 static NSString * const kSCHLibreAccessWebServiceGetUserProfiles = @"GetUserProfiles";
 static NSString * const kSCHLibreAccessWebServiceSaveUserProfiles = @"SaveUserProfiles";
 static NSString * const kSCHLibreAccessWebServiceListUserContent = @"ListUserContent";
+static NSString * const kSCHLibreAccessWebServiceListTopFavorites = @"ListTopFavorites";
 static NSString * const kSCHLibreAccessWebServiceListContentMetadata = @"ListContentMetadata";
 static NSString * const kSCHLibreAccessWebServiceListUserSettings = @"ListUserSettings";
 static NSString * const kSCHLibreAccessWebServiceSaveUserSettings = @"SaveUserSettings";
@@ -112,6 +113,10 @@ static NSString * const kSCHLibreAccessWebServiceStoryInteractions = @"StoryInte
 static NSString * const kSCHLibreAccessWebServiceText = @"Text";
 static NSString * const kSCHLibreAccessWebServiceTimestamp = @"Timestamp";
 static NSString * const kSCHLibreAccessWebServiceTitle = @"Title";
+static NSString * const kSCHLibreAccessWebServiceTopFavoritesContentItems = @"TopFavoritesContentItems";
+static NSString * const kSCHLibreAccessWebServiceTopFavoritesResponseList = @"TopFavoritesResponseList";
+static NSString * const kSCHLibreAccessWebServiceTopFavoritesType = @"TopFavoritesType";
+static NSString * const kSCHLibreAccessWebServiceTopFavoritesTypeValue = @"TopFavoritesTypeValue";
 static NSString * const kSCHLibreAccessWebServiceType = @"Type";
 static NSString * const kSCHLibreAccessWebServiceUserContentList = @"UserContentList";
 static NSString * const kSCHLibreAccessWebServiceUserKey = @"UserKey";
@@ -131,6 +136,8 @@ static NSString * const kSCHLibreAccessWebServiceY = @"Y";
 - (BOOL)getUserProfiles;
 - (BOOL)saveUserProfiles:(NSArray *)userProfiles;
 - (BOOL)listUserContent;
+- (BOOL)listFavoriteTypes;
+- (BOOL)listTopFavorites:(NSInteger)count;
 - (BOOL)listContentMetadata:(NSArray *)bookISBNs includeURLs:(BOOL)includeURLs;
 - (BOOL)listUserSettings;
 - (BOOL)saveUserSettings:(NSArray *)settings;

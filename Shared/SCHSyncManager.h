@@ -25,4 +25,10 @@
 - (void)startBackgroundSync;
 - (void)stopBackgroundSync;
 
+- (void)firstSync;
+- (void)openDocument;
+- (void)closeDocument;
+- (void)exitParentalTools:(BOOL)syncNow;
+- (void)downloadBook;
+
 @end
