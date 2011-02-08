@@ -29,6 +29,5 @@
 - (void)openDocument;
 - (void)closeDocument;
 - (void)exitParentalTools:(BOOL)syncNow;
-- (void)downloadBook;
 
 @end
