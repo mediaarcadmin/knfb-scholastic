@@ -16,6 +16,7 @@
 
 @property (retain, nonatomic) NSManagedObjectContext *managedObjectContext;	
 
+- (void)setup;
 - (void)setupLocalDataWithXPSFiles:(NSArray *)XPSFiles;
 
 @end

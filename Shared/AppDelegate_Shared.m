@@ -9,6 +9,10 @@
 #import "AppDelegate_Shared.h"
 #import "BWKBookManager.h"
 
+#ifdef LOCALDEBUG
+#import "SCHLocalDebug.h"
+#endif
+
 @implementation AppDelegate_Shared
 
 @synthesize window;
@@ -22,6 +26,13 @@
     BWKBookManager *bookManager = [BWKBookManager sharedBookManager];
     bookManager.persistentStoreCoordinator = self.persistentStoreCoordinator;
     bookManager.managedObjectContextForCurrentThread = self.managedObjectContext; // Use our managed object contest for calls that are made on the main thread.
+	
+#ifdef LOCALDEBUG	
+	SCHLocalDebug *localDebug = [[SCHLocalDebug alloc] init];
+	localDebug.managedObjectContext = self.managedObjectContext;
+	[localDebug setup];
+	[localDebug release], localDebug = nil;
+#endif
 	
 	return YES;
 }	

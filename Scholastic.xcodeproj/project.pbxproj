@@ -57,8 +57,8 @@
 		528A2CD312CCDD9E0053A343 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 528A2CD212CCDD9E0053A343 /* Settings.bundle */; };
 		528A2CDB12CCDE070053A343 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 528A2CDA12CCDE070053A343 /* Localizable.strings */; };
 		528A2CF812CCEAA50053A343 /* ReleaseNotes.tmReleaseNotes in Resources */ = {isa = PBXBuildFile; fileRef = 528A2CF712CCEAA50053A343 /* ReleaseNotes.tmReleaseNotes */; };
-		528A2D6012CDE39C0053A343 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 528A2D5F12CDE39C0053A343 /* RootViewController.m */; };
-		528A2D6212CDE3B10053A343 /* RootViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 528A2D6112CDE3B10053A343 /* RootViewController.xib */; };
+		528A2D6012CDE39C0053A343 /* ProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 528A2D5F12CDE39C0053A343 /* ProfileViewController.m */; };
+		528A2D6212CDE3B10053A343 /* ProfileViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 528A2D6112CDE3B10053A343 /* ProfileViewController.xib */; };
 		529384F912DEF6F800045B44 /* Profile.png in Resources */ = {isa = PBXBuildFile; fileRef = 529384F812DEF6F800045B44 /* Profile.png */; };
 		529384FB12DEF73A00045B44 /* ProfileLocked.png in Resources */ = {isa = PBXBuildFile; fileRef = 529384FA12DEF73A00045B44 /* ProfileLocked.png */; };
 		529384FF12DEF93900045B44 /* Settings.png in Resources */ = {isa = PBXBuildFile; fileRef = 529384FE12DEF93900045B44 /* Settings.png */; };
@@ -190,7 +190,7 @@
 		F8509EF812F063C900197EB5 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 528A2CD212CCDD9E0053A343 /* Settings.bundle */; };
 		F8509EF912F063C900197EB5 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 528A2CDA12CCDE070053A343 /* Localizable.strings */; };
 		F8509EFA12F063C900197EB5 /* ReleaseNotes.tmReleaseNotes in Resources */ = {isa = PBXBuildFile; fileRef = 528A2CF712CCEAA50053A343 /* ReleaseNotes.tmReleaseNotes */; };
-		F8509EFB12F063C900197EB5 /* RootViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 528A2D6112CDE3B10053A343 /* RootViewController.xib */; };
+		F8509EFB12F063C900197EB5 /* ProfileViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 528A2D6112CDE3B10053A343 /* ProfileViewController.xib */; };
 		F8509EFC12F063C900197EB5 /* Profile.png in Resources */ = {isa = PBXBuildFile; fileRef = 529384F812DEF6F800045B44 /* Profile.png */; };
 		F8509EFD12F063C900197EB5 /* ProfileLocked.png in Resources */ = {isa = PBXBuildFile; fileRef = 529384FA12DEF73A00045B44 /* ProfileLocked.png */; };
 		F8509EFF12F063C900197EB5 /* Settings.png in Resources */ = {isa = PBXBuildFile; fileRef = 529384FE12DEF93900045B44 /* Settings.png */; };
@@ -215,7 +215,7 @@
 		F8509F1412F063C900197EB5 /* AppDelegate_Shared.m in Sources */ = {isa = PBXBuildFile; fileRef = 28EEC04A1118E28000187D67 /* AppDelegate_Shared.m */; };
 		F8509F1512F063C900197EB5 /* Scholastic.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2819307C112F81BE00ECF9B4 /* Scholastic.xcdatamodeld */; };
 		F8509F1612F063C900197EB5 /* AppDelegate_iPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 2860E388111B897F00E27156 /* AppDelegate_iPhone.m */; };
-		F8509F1712F063C900197EB5 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 528A2D5F12CDE39C0053A343 /* RootViewController.m */; };
+		F8509F1712F063C900197EB5 /* ProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 528A2D5F12CDE39C0053A343 /* ProfileViewController.m */; };
 		F8509F1B12F063C900197EB5 /* SCHSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 529385B312DF231800045B44 /* SCHSettingsViewController.m */; };
 		F8509F1C12F063C900197EB5 /* AuthenticateSvc.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293868F12DF3A3300045B44 /* AuthenticateSvc.m */; };
 		F8509F1D12F063C900197EB5 /* NSDate+ISO8601Parsing.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293869312DF3A3300045B44 /* NSDate+ISO8601Parsing.m */; };
@@ -344,9 +344,9 @@
 		528A2CD912CCDDB00053A343 /* Entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Entitlements.plist; sourceTree = "<group>"; };
 		528A2CDA12CCDE070053A343 /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = Localizable.strings; path = Shared/Localizable.strings; sourceTree = "<group>"; };
 		528A2CF712CCEAA50053A343 /* ReleaseNotes.tmReleaseNotes */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ReleaseNotes.tmReleaseNotes; sourceTree = "<group>"; };
-		528A2D5E12CDE39C0053A343 /* RootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
-		528A2D5F12CDE39C0053A343 /* RootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
-		528A2D6112CDE3B10053A343 /* RootViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RootViewController.xib; sourceTree = "<group>"; };
+		528A2D5E12CDE39C0053A343 /* ProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileViewController.h; sourceTree = "<group>"; };
+		528A2D5F12CDE39C0053A343 /* ProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileViewController.m; sourceTree = "<group>"; };
+		528A2D6112CDE3B10053A343 /* ProfileViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProfileViewController.xib; sourceTree = "<group>"; };
 		529384F812DEF6F800045B44 /* Profile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Profile.png; path = Shared/Images/Profile.png; sourceTree = "<group>"; };
 		529384FA12DEF73A00045B44 /* ProfileLocked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ProfileLocked.png; path = Shared/Images/ProfileLocked.png; sourceTree = "<group>"; };
 		529384FE12DEF93900045B44 /* Settings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Settings.png; path = Shared/Images/Settings.png; sourceTree = "<group>"; };
@@ -563,9 +563,9 @@
 				2860E387111B897F00E27156 /* AppDelegate_iPhone.h */,
 				2860E388111B897F00E27156 /* AppDelegate_iPhone.m */,
 				2860E389111B897F00E27156 /* MainWindow_iPhone.xib */,
-				528A2D5E12CDE39C0053A343 /* RootViewController.h */,
-				528A2D5F12CDE39C0053A343 /* RootViewController.m */,
-				528A2D6112CDE3B10053A343 /* RootViewController.xib */,
+				528A2D5E12CDE39C0053A343 /* ProfileViewController.h */,
+				528A2D5F12CDE39C0053A343 /* ProfileViewController.m */,
+				528A2D6112CDE3B10053A343 /* ProfileViewController.xib */,
 				529385B212DF231800045B44 /* SCHSettingsViewController.h */,
 				529385B312DF231800045B44 /* SCHSettingsViewController.m */,
 				529385B412DF231800045B44 /* SCHSettingsViewController.xib */,
@@ -1110,7 +1110,7 @@
 				528A2CD312CCDD9E0053A343 /* Settings.bundle in Resources */,
 				528A2CDB12CCDE070053A343 /* Localizable.strings in Resources */,
 				528A2CF812CCEAA50053A343 /* ReleaseNotes.tmReleaseNotes in Resources */,
-				528A2D6212CDE3B10053A343 /* RootViewController.xib in Resources */,
+				528A2D6212CDE3B10053A343 /* ProfileViewController.xib in Resources */,
 				529384F912DEF6F800045B44 /* Profile.png in Resources */,
 				529384FB12DEF73A00045B44 /* ProfileLocked.png in Resources */,
 				529384FF12DEF93900045B44 /* Settings.png in Resources */,
@@ -1139,7 +1139,7 @@
 				F8509EF812F063C900197EB5 /* Settings.bundle in Resources */,
 				F8509EF912F063C900197EB5 /* Localizable.strings in Resources */,
 				F8509EFA12F063C900197EB5 /* ReleaseNotes.tmReleaseNotes in Resources */,
-				F8509EFB12F063C900197EB5 /* RootViewController.xib in Resources */,
+				F8509EFB12F063C900197EB5 /* ProfileViewController.xib in Resources */,
 				F8509EFC12F063C900197EB5 /* Profile.png in Resources */,
 				F8509EFD12F063C900197EB5 /* ProfileLocked.png in Resources */,
 				F8509EFF12F063C900197EB5 /* Settings.png in Resources */,
@@ -1181,7 +1181,7 @@
 				28EEC04B1118E28000187D67 /* AppDelegate_Shared.m in Sources */,
 				2819307D112F81BE00ECF9B4 /* Scholastic.xcdatamodeld in Sources */,
 				2860E38A111B897F00E27156 /* AppDelegate_iPhone.m in Sources */,
-				528A2D6012CDE39C0053A343 /* RootViewController.m in Sources */,
+				528A2D6012CDE39C0053A343 /* ProfileViewController.m in Sources */,
 				529385B512DF231800045B44 /* SCHSettingsViewController.m in Sources */,
 				5293869C12DF3A3300045B44 /* AuthenticateSvc.m in Sources */,
 				5293869E12DF3A3300045B44 /* NSDate+ISO8601Parsing.m in Sources */,
@@ -1281,7 +1281,7 @@
 				F8509F1412F063C900197EB5 /* AppDelegate_Shared.m in Sources */,
 				F8509F1512F063C900197EB5 /* Scholastic.xcdatamodeld in Sources */,
 				F8509F1612F063C900197EB5 /* AppDelegate_iPhone.m in Sources */,
-				F8509F1712F063C900197EB5 /* RootViewController.m in Sources */,
+				F8509F1712F063C900197EB5 /* ProfileViewController.m in Sources */,
 				F8509F1B12F063C900197EB5 /* SCHSettingsViewController.m in Sources */,
 				F8509F1C12F063C900197EB5 /* AuthenticateSvc.m in Sources */,
 				F8509F1D12F063C900197EB5 /* NSDate+ISO8601Parsing.m in Sources */,

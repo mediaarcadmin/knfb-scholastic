@@ -7,7 +7,7 @@
 //
 
 #import "AppDelegate_iPhone.h"
-#import "RootViewController.h"
+#import "ProfileViewController.h"
 
 #import "SCHSyncManager.h"
 
@@ -20,7 +20,7 @@
 
 - (void)awakeFromNib {    
 
-    RootViewController *rootViewController = (RootViewController *)[navigationController topViewController];
+    ProfileViewController *rootViewController = (ProfileViewController *)[navigationController topViewController];
     rootViewController.managedObjectContext = self.managedObjectContext;
 	
 	SCHSyncManager *syncManager = [SCHSyncManager sharedSyncManager];

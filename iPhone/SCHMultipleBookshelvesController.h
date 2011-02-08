@@ -9,7 +9,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "RootViewController.h"
+#import "ProfileViewController.h"
 
 @interface SCHMultipleBookshelvesController : UIViewController <UIScrollViewDelegate> {
 
