@@ -6,3 +6,8 @@
     #import <Foundation/Foundation.h>
     #import <UIKit/UIKit.h>
 #endif
+
+// Stops all NSLog() functions executing under release builds
+#ifdef __OPTIMIZE__
+#define NSLog(...);
+#endif
