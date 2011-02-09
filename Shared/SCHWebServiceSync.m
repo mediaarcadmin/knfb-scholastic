@@ -103,7 +103,17 @@
 {
 	BOOL ret = YES;
 	
-	if ([self.libreAccessWebService listTopFavorites:10] == NO) {
+	NSMutableDictionary *youngFavoriteItem = [NSMutableDictionary dictionary];
+	[youngFavoriteItem setObject:[NSNumber numberWithBool:NO] forKey:kSCHLibreAccessWebServiceAssignedBooksOnly];
+	[youngFavoriteItem setObject:[NSNumber numberWithTopFavoritesType:TopFavoritesTypeseReaderCategory] forKey:kSCHLibreAccessWebServiceTopFavoritesType];
+	[youngFavoriteItem setObject:@"Young Reader" forKey:kSCHLibreAccessWebServiceTopFavoritesTypeValue];
+	
+	NSMutableDictionary *advancedFavoriteItem = [NSMutableDictionary dictionary];
+	[advancedFavoriteItem setObject:[NSNumber numberWithBool:NO] forKey:kSCHLibreAccessWebServiceAssignedBooksOnly];
+	[advancedFavoriteItem setObject:[NSNumber numberWithTopFavoritesType:TopFavoritesTypeseReaderCategory] forKey:kSCHLibreAccessWebServiceTopFavoritesType];
+	[advancedFavoriteItem setObject:@"Advanced Reader" forKey:kSCHLibreAccessWebServiceTopFavoritesTypeValue];
+	
+	if ([self.libreAccessWebService listTopFavorites:[NSArray arrayWithObjects:youngFavoriteItem, advancedFavoriteItem, nil] withCount:10] == NO) {
 		[[SCHAuthenticationManager sharedAuthenticationManager] authenticate];				
 		ret = NO;
 	}

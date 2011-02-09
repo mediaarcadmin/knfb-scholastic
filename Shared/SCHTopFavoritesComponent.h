@@ -14,6 +14,7 @@
 	
 }
 
+- (BOOL)listFavoriteTypes;
 - (BOOL)topFavorites;
 
 @end

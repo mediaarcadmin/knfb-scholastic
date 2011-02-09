@@ -43,6 +43,8 @@ static NSString * const kSCHLibreAccessWebServiceStatusHolderStatusMessage = @"s
 - (NSDictionary *)objectFromBookmark:(LibreAccessServiceSvc_Bookmark *)anObject;
 - (NSDictionary *)objectFromLastPage:(LibreAccessServiceSvc_LastPage *)anObject;
 - (NSDictionary *)objectFromItemsCount:(LibreAccessServiceSvc_ItemsCount *)anObject;
+- (NSDictionary *)objectFromFavoriteTypesItem:(LibreAccessServiceSvc_FavoriteTypesItem *)anObject;
+- (NSDictionary *)objectFromFavoriteTypesValuesItem:(LibreAccessServiceSvc_FavoriteTypesValuesItem *)anObject;
 - (NSDictionary *)objectFromTopFavoritesItem:(LibreAccessServiceSvc_TopFavoritesResponseItem *)anObject;
 - (NSDictionary *)objectFromTopFavoritesContentItem:(LibreAccessServiceSvc_TopFavoritesContentItem *)anObject;
 
@@ -70,6 +72,7 @@ static NSString * const kSCHLibreAccessWebServiceStatusHolderStatusMessage = @"s
 - (void)fromObject:(NSDictionary *)object intoReadingStatsDetailItem:(LibreAccessServiceSvc_ReadingStatsDetailItem *)intoObject;
 - (void)fromObject:(NSDictionary *)object intoReadingStatsContentItem:(LibreAccessServiceSvc_ReadingStatsContentItem *)intoObject;
 - (void)fromObject:(NSDictionary *)object intoReadingStatsEntryItem:(LibreAccessServiceSvc_ReadingStatsEntryItem *)intoObject;
+- (void)fromObject:(NSDictionary *)object intoTopFavoritesItem:(LibreAccessServiceSvc_TopFavoritesRequestItem *)intoObject;
 
 - (id)fromObjectTranslate:(id)anObject;
 
@@ -180,7 +183,6 @@ static NSString * const kSCHLibreAccessWebServiceStatusHolderStatusMessage = @"s
 	return(ret);			
 }
 
-// TODO: this method only partially complete until we know what is going on with the top picks
 - (BOOL)listFavoriteTypes
 {
 	BOOL ret = NO;
@@ -199,8 +201,7 @@ static NSString * const kSCHLibreAccessWebServiceStatusHolderStatusMessage = @"s
 	return(ret);			
 }
 
-// TODO: this method only partially complete until we know what is going on with the top picks
-- (BOOL)listTopFavorites:(NSInteger)count
+- (BOOL)listTopFavorites:(NSArray *)favorites withCount:(NSInteger)count
 {
 	BOOL ret = NO;
 	
@@ -208,36 +209,16 @@ static NSString * const kSCHLibreAccessWebServiceStatusHolderStatusMessage = @"s
 		LibreAccessServiceSvc_ListTopFavoritesRequest *request = [LibreAccessServiceSvc_ListTopFavoritesRequest new];
 		
 		request.authtoken = [SCHAuthenticationManager sharedAuthenticationManager].aToken;
-		request.count = [NSNumber numberWithInteger:count];
-		
+		request.count = [NSNumber numberWithInteger:(count < 1 ? 1 : count)];
 		request.TopFavoritesRequestList = [[LibreAccessServiceSvc_TopFavoritesRequestList alloc] init];
 		LibreAccessServiceSvc_TopFavoritesRequestItem *item = nil;
-	//	for (id favorite in favorites) {
-				item = [[LibreAccessServiceSvc_TopFavoritesRequestItem alloc] init];
-		//	[self fromObject:book intoObject:item];
-	
-			USBoolean *assignedBooksOnly = [[USBoolean alloc] initWithBool:YES];
-			item.AssignedBooksOnly = assignedBooksOnly;
-			[assignedBooksOnly release], assignedBooksOnly = nil;	
-			item.TopFavoritesType = LibreAccessServiceSvc_TopFavoritesTypes_EREADER_CATEGORY;
-			item.TopFavoritesTypeValue = @"Novel-YA";
-			
-			[request.TopFavoritesRequestList addTopFavoritesRequestItem:item];	
+		for (id favorite in favorites) {
+			item = [[LibreAccessServiceSvc_TopFavoritesRequestItem alloc] init];
+			[self fromObject:favorite intoObject:item];
+			[request.TopFavoritesRequestList addTopFavoritesRequestItem:item];
 			[item release], item = nil;
-		
-		item = [[LibreAccessServiceSvc_TopFavoritesRequestItem alloc] init];
-		//	[self fromObject:book intoObject:item];
-		
-		assignedBooksOnly = [[USBoolean alloc] initWithBool:YES];
-		item.AssignedBooksOnly = assignedBooksOnly;
-		[assignedBooksOnly release], assignedBooksOnly = nil;	
-		item.TopFavoritesType = LibreAccessServiceSvc_TopFavoritesTypes_EREADER_CATEGORY;
-		item.TopFavoritesTypeValue = @"Reference";
-		
-		[request.TopFavoritesRequestList addTopFavoritesRequestItem:item];	
-		[item release], item = nil;
-		
-	//	}
+		}
+		[request.TopFavoritesRequestList release];
 		
 		[binding ListTopFavoritesAsyncUsingParameters:request delegate:self]; 
 		
@@ -545,6 +526,10 @@ static NSString * const kSCHLibreAccessWebServiceStatusHolderStatusMessage = @"s
 				  [anObject isKindOfClass:[LibreAccessServiceSvc_SaveReadingStatisticsDetailedResponse class]] == YES ||
 				  [anObject isKindOfClass:[LibreAccessServiceSoap11Binding_SaveReadingStatisticsDetailed class]] == YES) {
 			ret = kSCHLibreAccessWebServiceSaveReadingStatisticsDetailed;
+		} else if([anObject isKindOfClass:[LibreAccessServiceSvc_ListFavoriteTypesRequest class]] == YES ||
+				  [anObject isKindOfClass:[LibreAccessServiceSvc_ListFavoriteTypesResponse class]] == YES ||
+				  [anObject isKindOfClass:[LibreAccessServiceSoap11Binding_ListFavoriteTypes class]] == YES) {
+			ret = kSCHLibreAccessWebServiceListFavoriteTypes;
 		} else if([anObject isKindOfClass:[LibreAccessServiceSvc_ListTopFavoritesRequest class]] == YES ||
 				  [anObject isKindOfClass:[LibreAccessServiceSvc_ListTopFavoritesResponse class]] == YES ||
 				  [anObject isKindOfClass:[LibreAccessServiceSoap11Binding_ListTopFavorites class]] == YES) {
@@ -586,8 +571,10 @@ static NSString * const kSCHLibreAccessWebServiceStatusHolderStatusMessage = @"s
 			ret = nil;	// only returns the status so nothing to return
 		} else if ([anObject isKindOfClass:[LibreAccessServiceSvc_SaveReadingStatisticsDetailedResponse class]] == YES) {
 			ret = nil;	// only returns the status so nothing to return
+		} else if ([anObject isKindOfClass:[LibreAccessServiceSvc_ListFavoriteTypesResponse class]] == YES) {
+			ret = [NSDictionary dictionaryWithObject:[self objectFromTranslate:[[anObject FavoriteTypesList] FavoriteTypesItem]] forKey:kSCHLibreAccessWebServiceFavoriteTypesList];
 		} else if ([anObject isKindOfClass:[LibreAccessServiceSvc_ListTopFavoritesResponse class]] == YES) {
-			ret = [NSDictionary dictionaryWithObject:[self objectFromTranslate:[[anObject TopFavoritesResponseList] TopFavoritesResponseItem]] forKey:kSCHLibreAccessWebServiceTopFavoritesResponseList];
+			ret = [NSDictionary dictionaryWithObject:[self objectFromTranslate:[[anObject TopFavoritesResponseList] TopFavoritesResponseItem]] forKey:kSCHLibreAccessWebServiceTopFavoritesList];
 		}
 	}
 	
@@ -611,6 +598,8 @@ static NSString * const kSCHLibreAccessWebServiceStatusHolderStatusMessage = @"s
 			[self fromObject:object intoContentProfileAssignmentItem:intoObject];
 		} else if ([intoObject isKindOfClass:[LibreAccessServiceSvc_ReadingStatsDetailItem class]] == YES) {
 			[self fromObject:object intoReadingStatsDetailItem:intoObject];
+		} else if ([intoObject isKindOfClass:[LibreAccessServiceSvc_TopFavoritesRequestItem class]] == YES) {
+			[self fromObject:object intoTopFavoritesItem:intoObject];
 		}
 	}
 }
@@ -650,9 +639,9 @@ static NSString * const kSCHLibreAccessWebServiceStatusHolderStatusMessage = @"s
 		[objects setObject:[self objectFromTranslate:anObject.screenname] forKey:kSCHLibreAccessWebServiceScreenName];		
 		[objects setObject:[self objectFromTranslate:anObject.password] forKey:kSCHLibreAccessWebServicePassword];		
 		[objects setObject:[self objectFromTranslate:anObject.userkey] forKey:kSCHLibreAccessWebServiceUserKey];		
-		[objects setObject:[self objectFromTranslate:[NSNumber numberWithProfileType:anObject.type]] forKey:kSCHLibreAccessWebServiceType];		
+		[objects setObject:[NSNumber numberWithProfileType:anObject.type] forKey:kSCHLibreAccessWebServiceType];		
 		[objects setObject:[self objectFromTranslate:anObject.id_] forKey:kSCHLibreAccessWebServiceID];		
-		[objects setObject:[self objectFromTranslate:[NSNumber numberWithBookshelfStyle:anObject.BookshelfStyle]] forKey:kSCHLibreAccessWebServiceBookshelfStyle];		
+		[objects setObject:[NSNumber numberWithBookshelfStyle:anObject.BookshelfStyle] forKey:kSCHLibreAccessWebServiceBookshelfStyle];		
 		[objects setObject:[self objectFromTranslate:anObject.LastModified] forKey:kSCHLibreAccessWebServiceLastModified];		
 		[objects setObject:[self objectFromTranslate:anObject.LastScreenNameModified] forKey:kSCHLibreAccessWebServiceLastScreenNameModified];		
 		[objects setObject:[self objectFromTranslate:anObject.LastPasswordModified] forKey:kSCHLibreAccessWebServiceLastPasswordModified];		
@@ -672,8 +661,8 @@ static NSString * const kSCHLibreAccessWebServiceStatusHolderStatusMessage = @"s
 		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
 		
 		[objects setObject:[self objectFromTranslate:anObject.ContentIdentifier] forKey:kSCHLibreAccessWebServiceContentIdentifier];
-		[objects setObject:[self objectFromTranslate:[NSNumber numberWithContentIdentifierType:anObject.ContentIdentifierType]] forKey:kSCHLibreAccessWebServiceContentIdentifierType];		
-		[objects setObject:[self objectFromTranslate:[NSNumber numberWithDRMQualifier:anObject.DRMQualifier]] forKey:kSCHLibreAccessWebServiceDRMQualifier];		
+		[objects setObject:[NSNumber numberWithContentIdentifierType:anObject.ContentIdentifierType] forKey:kSCHLibreAccessWebServiceContentIdentifierType];		
+		[objects setObject:[NSNumber numberWithDRMQualifier:anObject.DRMQualifier] forKey:kSCHLibreAccessWebServiceDRMQualifier];		
 		[objects setObject:[self objectFromTranslate:anObject.Format] forKey:kSCHLibreAccessWebServiceFormat];		
 		[objects setObject:[self objectFromTranslate:anObject.Version] forKey:kSCHLibreAccessWebServiceVersion];		
 		[objects setObject:[self objectFromTranslate:[[anObject ContentProfileList] ContentProfileItem]] forKey:kSCHLibreAccessWebServiceProfileList];
@@ -729,14 +718,14 @@ static NSString * const kSCHLibreAccessWebServiceStatusHolderStatusMessage = @"s
 		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
 		
 		[objects setObject:[self objectFromTranslate:anObject.ContentIdentifier] forKey:kSCHLibreAccessWebServiceContentIdentifier];
-		[objects setObject:[self objectFromTranslate:[NSNumber numberWithContentIdentifierType:anObject.ContentIdentifierType]] forKey:kSCHLibreAccessWebServiceContentIdentifierType];
+		[objects setObject:[NSNumber numberWithContentIdentifierType:anObject.ContentIdentifierType] forKey:kSCHLibreAccessWebServiceContentIdentifierType];
 		[objects setObject:[self objectFromTranslate:anObject.Title] forKey:kSCHLibreAccessWebServiceTitle];
 		[objects setObject:[self objectFromTranslate:anObject.Author] forKey:kSCHLibreAccessWebServiceAuthor];
 		[objects setObject:[self objectFromTranslate:anObject.Description] forKey:kSCHLibreAccessWebServiceDescription];
 		[objects setObject:[self objectFromTranslate:anObject.Version] forKey:kSCHLibreAccessWebServiceVersion];
 		[objects setObject:[self objectFromTranslate:anObject.PageNumber] forKey:kSCHLibreAccessWebServicePageNumber];
 		[objects setObject:[self objectFromTranslate:anObject.FileSize] forKey:kSCHLibreAccessWebServiceFileSize];
-		[objects setObject:[self objectFromTranslate:[NSNumber numberWithDRMQualifier:anObject.DRMQualifier]] forKey:kSCHLibreAccessWebServiceDRMQualifier];
+		[objects setObject:[NSNumber numberWithDRMQualifier:anObject.DRMQualifier] forKey:kSCHLibreAccessWebServiceDRMQualifier];
 		[objects setObject:[self objectFromTranslate:anObject.CoverURL] forKey:kSCHLibreAccessWebServiceCoverURL];
 		[objects setObject:[self objectFromTranslate:anObject.ContentURL] forKey:kSCHLibreAccessWebServiceContentURL];
 		[objects setObject:[self objectFromTranslate:anObject.EreaderCategories] forKey:kSCHLibreAccessWebServiceeReaderCategories];
@@ -756,8 +745,8 @@ static NSString * const kSCHLibreAccessWebServiceStatusHolderStatusMessage = @"s
 		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
 		
 		[objects setObject:[self objectFromTranslate:anObject.id_] forKey:kSCHLibreAccessWebServiceID];
-		[objects setObject:[self objectFromTranslate:[NSNumber numberWithSaveAction:anObject.action]] forKey:kSCHLibreAccessWebServiceAction];
-		[objects setObject:[self objectFromTranslate:[NSNumber numberWithStatusCode:anObject.status]] forKey:kSCHLibreAccessWebServiceStatus];
+		[objects setObject:[NSNumber numberWithSaveAction:anObject.action] forKey:kSCHLibreAccessWebServiceAction];
+		[objects setObject:[NSNumber numberWithStatusCode:anObject.status] forKey:kSCHLibreAccessWebServiceStatus];
 		[objects setObject:[self objectFromTranslate:anObject.screenname] forKey:kSCHLibreAccessWebServiceScreenName];
 		[objects setObject:[self objectFromTranslate:anObject.statuscode] forKey:kSCHLibreAccessWebServiceStatusCode];
 		[objects setObject:[self objectFromTranslate:anObject.statusmessage] forKey:kSCHLibreAccessWebServiceStatusMessage];
@@ -775,7 +764,7 @@ static NSString * const kSCHLibreAccessWebServiceStatusHolderStatusMessage = @"s
 	if (anObject != nil) {
 		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
 		
-		[objects setObject:[self objectFromTranslate:[NSNumber numberWithUserSettingsType:anObject.SettingType]] forKey:kSCHLibreAccessWebServiceSettingType];
+		[objects setObject:[NSNumber numberWithUserSettingsType:anObject.SettingType] forKey:kSCHLibreAccessWebServiceSettingType];
 		[objects setObject:[self objectFromTranslate:anObject.SettingValue] forKey:kSCHLibreAccessWebServiceSettingValue];
 		
 		ret = objects;					
@@ -1016,6 +1005,37 @@ static NSString * const kSCHLibreAccessWebServiceStatusHolderStatusMessage = @"s
 	return(ret);
 }
 
+- (NSDictionary *)objectFromFavoriteTypesValuesItem:(LibreAccessServiceSvc_FavoriteTypesValuesItem *)anObject
+{
+	NSDictionary *ret = nil;
+	
+	if (anObject != nil) {
+		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
+		
+		[objects setObject:[self objectFromTranslate:anObject.Value] forKey:kSCHLibreAccessWebServiceValue];
+		
+		ret = objects;					
+	}
+	
+	return(ret);
+}
+
+- (NSDictionary *)objectFromFavoriteTypesItem:(LibreAccessServiceSvc_FavoriteTypesItem *)anObject
+{
+	NSDictionary *ret = nil;
+	
+	if (anObject != nil) {
+		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
+		
+		[objects setObject:[NSNumber numberWithTopFavoritesType:anObject.FavoriteType] forKey:kSCHLibreAccessWebServiceFavoriteType];
+		[objects setObject:[self objectFromTranslate:[anObject.FavoriteTypeValuesList FavoriteTypesValuesItem]] forKey:kSCHLibreAccessWebServiceFavoriteTypeValuesList];
+		
+		ret = objects;					
+	}
+	
+	return(ret);
+}
+
 - (NSDictionary *)objectFromTopFavoritesItem:(LibreAccessServiceSvc_TopFavoritesResponseItem *)anObject
 {
 	NSDictionary *ret = nil;
@@ -1083,6 +1103,10 @@ static NSString * const kSCHLibreAccessWebServiceStatusHolderStatusMessage = @"s
 				[ret addObject:[self objectFromHighlight:item]];	
 			} else if ([item isKindOfClass:[LibreAccessServiceSvc_Notes class]] == YES) {
 				[ret addObject:[self objectFromNote:item]];	
+			} else if ([item isKindOfClass:[LibreAccessServiceSvc_FavoriteTypesValuesItem class]] == YES) {
+				[ret addObject:[self objectFromFavoriteTypesValuesItem:item]];	
+			} else if ([item isKindOfClass:[LibreAccessServiceSvc_FavoriteTypesItem class]] == YES) {
+				[ret addObject:[self objectFromFavoriteTypesItem:item]];
 			} else if ([item isKindOfClass:[LibreAccessServiceSvc_TopFavoritesResponseItem class]] == YES) {
 				[ret addObject:[self objectFromTopFavoritesItem:item]];	
 			} else if ([item isKindOfClass:[LibreAccessServiceSvc_TopFavoritesContentItem class]] == YES) {
@@ -1404,6 +1428,15 @@ static NSString * const kSCHLibreAccessWebServiceStatusHolderStatusMessage = @"s
 			[intoObject.DictionaryLookupsList addDictionaryLookupsItem:item];
 		}
 		[intoObject.DictionaryLookupsList release];
+	}	
+}
+
+- (void)fromObject:(NSDictionary *)object intoTopFavoritesItem:(LibreAccessServiceSvc_TopFavoritesRequestItem *)intoObject
+{
+	if (object != nil && intoObject != nil) {
+		intoObject.AssignedBooksOnly = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceAssignedBooksOnly]];
+		intoObject.TopFavoritesType = [[self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceTopFavoritesType]] topFavoritesTypeValue];
+		intoObject.TopFavoritesTypeValue = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceTopFavoritesTypeValue]];
 	}	
 }
 

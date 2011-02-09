@@ -7,21 +7,21 @@
 //
 
 #import "SCHTopFavoritesComponent.h"
+#import "SCHComponentProtected.h"
+
+#import "NSNumber+ObjectTypes.h"
 
 static NSInteger const kSCHTopFavoritesComponentTopCount = 10;
+static NSString * const kSCHTopFavoritesComponentYoungReader = @"Young Reader";
+static NSString * const kSCHTopFavoritesComponentAdvanced = @"Advanced Reader";
 
 @implementation SCHTopFavoritesComponent
 
-- (BOOL)topFavorites
+- (BOOL)listFavoriteTypes
 {
 	BOOL ret = YES;
-	self.libreAccessWebService.delegate = self;
-	
-//	if ([self.libreAccessWebService listFavoriteTypes] == NO) {
-//		[[SCHAuthenticationManager sharedAuthenticationManager] authenticate];				
-//		ret = NO;
-//	}
-	if ([self.libreAccessWebService listTopFavorites:kSCHTopFavoritesComponentTopCount] == NO) {
+		
+	if ([self.libreAccessWebService listFavoriteTypes] == NO) {
 		[[SCHAuthenticationManager sharedAuthenticationManager] authenticate];				
 		ret = NO;
 	}
@@ -29,19 +29,39 @@ static NSInteger const kSCHTopFavoritesComponentTopCount = 10;
 	return(ret);
 }
 
+- (BOOL)topFavorites
+{
+	BOOL ret = YES;
+	
+	NSMutableDictionary *favoriteItem = [NSMutableDictionary dictionary];
+	[favoriteItem setObject:[NSNumber numberWithBool:NO] forKey:kSCHLibreAccessWebServiceAssignedBooksOnly];
+	[favoriteItem setObject:[NSNumber numberWithTopFavoritesType:TopFavoritesTypeseReaderCategory] forKey:kSCHLibreAccessWebServiceTopFavoritesType];
+	[favoriteItem setObject:kSCHTopFavoritesComponentYoungReader forKey:kSCHLibreAccessWebServiceTopFavoritesTypeValue];
+	
+	if ([self.libreAccessWebService listTopFavorites:[NSArray arrayWithObject:favoriteItem] withCount:kSCHTopFavoritesComponentTopCount] == NO) {
+		[[SCHAuthenticationManager sharedAuthenticationManager] authenticate];				
+		ret = NO;
+	}
+	
+	return(ret);
+}
+
+// TODO: we need clarification about how this should work to complete
 - (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result
 {	
 	NSLog(@"%@\n%@", method, result);
 	
-	if([method compare:kSCHLibreAccessWebServiceListTopFavorites] == NSOrderedSame) {
-		NSArray *books = [result objectForKey:kSCHLibreAccessWebServiceTopFavoritesResponseList];
+	if([method compare:kSCHLibreAccessWebServiceListFavoriteTypes] == NSOrderedSame) {
+		// TODO: something with this
+	} else if([method compare:kSCHLibreAccessWebServiceListTopFavorites] == NSOrderedSame) {
+		NSArray *favorites = [self makeNullNil:[result objectForKey:kSCHLibreAccessWebServiceTopFavoritesList]];
+		NSArray *books = [self makeNullNil:[[favorites objectAtIndex:0] objectForKey:kSCHLibreAccessWebServiceTopFavoritesContentItems]];
+		
 		if ([books count] > 0) {
-			// collect them all
 			[self.libreAccessWebService listContentMetadata:books includeURLs:YES];			
 		}
 	} else if([method compare:kSCHLibreAccessWebServiceListContentMetadata] == NSOrderedSame) {
-		// TODO: send the books to the delegate
-		//[self updateBooks:[result objectForKey:kSCHLibreAccessWebServiceContentMetadataList]];
+		// TODO: something with this
 	}
 }
 
