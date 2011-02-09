@@ -119,12 +119,17 @@
 	UIButton * deleteButton = (UIButton*)sender;
 	MRGridViewCell * gridCell = (MRGridViewCell*)[deleteButton superview];
 	NSArray *keys = [cellIndices allKeysForObject:gridCell];
-	if ([keys count] > 1) NSLog(@"WARNING: multiple keys found in cellIndices for cell to be deleted!");
-	else if ([keys count] == 0) NSLog(@"WARNING: No key found in cellIndices for cell to be deleted!");
-	else {
+	if ([keys count] > 1) {
+		NSLog(@"WARNING: multiple keys found in cellIndices for cell to be deleted!");
+	} else if ([keys count] == 0) {
+		NSLog(@"WARNING: No key found in cellIndices for cell to be deleted!");
+	} else {
 		_keyValueOfCellToBeDeleted = [[keys objectAtIndex:0] intValue];
-		if ([gridDelegate respondsToSelector:@selector(gridView:confirmationForDeletionAtIndex:)]) [gridDelegate gridView:self confirmationForDeletionAtIndex:_keyValueOfCellToBeDeleted];
-		else [self.gridDataSource gridView:self commitEditingStyle:MRGridViewCellEditingStyleDelete forIndex:_keyValueOfCellToBeDeleted];
+		if ([gridDelegate respondsToSelector:@selector(gridView:confirmationForDeletionAtIndex:)]) {
+			[gridDelegate gridView:self confirmationForDeletionAtIndex:_keyValueOfCellToBeDeleted];
+		} else {
+			[self.gridDataSource gridView:self commitEditingStyle:MRGridViewCellEditingStyleDelete forIndex:_keyValueOfCellToBeDeleted];
+		}
 	}
 }
 
