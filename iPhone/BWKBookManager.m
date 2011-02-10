@@ -108,7 +108,7 @@ static pthread_key_t sManagedObjectContextKey;
 {
 	BWKXPSProvider *ret = nil;
 	
-	NSLog(@"Checking out book ID: %@", bookID);
+	//NSLog(@"Checking out book ID: %@", bookID);
 	
 	[self.persistentStoreCoordinator lock];
 	
@@ -138,7 +138,7 @@ static pthread_key_t sManagedObjectContextKey;
     
 	[self.persistentStoreCoordinator unlock];
 	
-    NSLog(@"[%d] checkOutXPSProviderForBookWithID %@", [self.cachedXPSProviderCheckoutCounts countForObject:bookID], bookID);
+  //  NSLog(@"[%d] checkOutXPSProviderForBookWithID %@", [self.cachedXPSProviderCheckoutCounts countForObject:bookID], bookID);
     return ret;
 	
 }
@@ -146,7 +146,7 @@ static pthread_key_t sManagedObjectContextKey;
 - (void)checkInXPSProviderForBookWithID: (NSManagedObjectID *) aBookID
 {
 
-	NSLog(@"Checking in bookID: %@", aBookID);
+	//NSLog(@"Checking in bookID: %@", aBookID);
 	
 	NSMutableDictionary *myCachedXPSProviders = self.cachedXPSProviders;
     @synchronized(myCachedXPSProviders) {
@@ -157,7 +157,7 @@ static pthread_key_t sManagedObjectContextKey;
         } else {
             [myCachedXPSProviderCheckoutCounts removeObject:aBookID];
             if (count == 1) {
-                NSLog(@"Releasing cached XPSProvider for book with ID %@", aBookID);
+              //  NSLog(@"Releasing cached XPSProvider for book with ID %@", aBookID);
                 [myCachedXPSProviders removeObjectForKey:aBookID];
                 if(myCachedXPSProviderCheckoutCounts.count == 0) {
                     // May as well release the set.
@@ -165,7 +165,7 @@ static pthread_key_t sManagedObjectContextKey;
                 }
             }
         }
-        NSLog(@"[%d] checkInXPSProviderForBookWithPath %@", [self.cachedXPSProviderCheckoutCounts countForObject:aBookID], aBookID);
+       // NSLog(@"[%d] checkInXPSProviderForBookWithPath %@", [self.cachedXPSProviderCheckoutCounts countForObject:aBookID], aBookID);
 		
     }
 	

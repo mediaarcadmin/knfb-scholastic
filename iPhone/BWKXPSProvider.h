@@ -77,5 +77,6 @@
 - (CGRect)cropForPage:(NSInteger)page allowEstimate:(BOOL)estimate;
 
 - (UIImage *)coverThumbForList;
+- (NSData *)coverThumbData;
 
 @end

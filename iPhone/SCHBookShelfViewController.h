@@ -12,6 +12,7 @@
 #import "MRGridViewDelegate.h"
 #import "MRGridViewDataSource.h"
 #import "SCHMultipleBookshelvesController.h"
+#import "BlioTimeOrderedCache.h"
 
 @interface SCHBookShelfViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, MRGridViewDelegate, MRGridViewDataSource> {
 
@@ -21,6 +22,8 @@
 @property (nonatomic, retain) IBOutlet MRGridView *gridView;
 
 @property (nonatomic, assign) SCHMultipleBookshelvesController *bookshelvesController;
+
+@property (nonatomic, retain) BlioTimeOrderedCache *componentCache;
 
 #ifdef LOCALDEBUG
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;

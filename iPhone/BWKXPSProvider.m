@@ -423,6 +423,33 @@ void XPSPageCompleteCallback(void *userdata, RasterImageInfo *data) {
     }
 }
 
+- (NSData *)coverThumbData {
+	
+	CGFloat scaleFactor = 1;
+    if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)]) {
+        scaleFactor = [[UIScreen mainScreen] scale];
+    }
+	
+	CGFloat targetThumbWidth = 0;
+	CGFloat targetThumbHeight = 0;
+	NSInteger scaledTargetThumbWidth = 0;
+	NSInteger scaledTargetThumbHeight = 0;
+	
+	targetThumbWidth = kBlioCoverListThumbWidth;
+	targetThumbHeight = kBlioCoverListThumbHeight;
+	
+	scaledTargetThumbWidth = round(targetThumbWidth * scaleFactor);
+	scaledTargetThumbHeight = round(targetThumbHeight * scaleFactor);
+	
+	//	NSString * pixelSpecificKey = [NSString stringWithFormat:@"%@%ix%i",BlioBookThumbnailPrefix,scaledTargetThumbWidth,scaledTargetThumbHeight];
+	//NSLog(@"Pixelspecifickey: %@", pixelSpecificKey);
+	
+    NSData *imageData = [self dataFromXPSAtPath:@"Metadata/Thumbnail.jpg"];
+
+	return imageData;
+}
+
+
 - (UIImage *)missingCoverImageOfSize:(CGSize)size {
     if(UIGraphicsBeginImageContextWithOptions != nil) {
         UIGraphicsBeginImageContextWithOptions(size, NO, 0);
@@ -497,6 +524,8 @@ void XPSPageCompleteCallback(void *userdata, RasterImageInfo *data) {
     BOOL mapped = NO;
     BOOL cached = NO;
     
+	NSLog(@"Componentpath: %@", componentPath);
+	
     // TODO: Make sure these checks are ordered from most common to least common for efficiency
     if ([filename isEqualToString:@"Rights.xml"]) {
         if (self.bookIsEncrypted) {
@@ -514,8 +543,10 @@ void XPSPageCompleteCallback(void *userdata, RasterImageInfo *data) {
 		
         mapped = YES;
         cached = YES;
-    } else if ([directory isEqualToString:BlioXPSEncryptedImagesDir] && ([extension isEqualToString:@"JPG"] || [extension isEqualToString:@"PNG"])) { 
-        if (self.bookIsEncrypted) {
+	} else if ([directory isEqualToString:BlioXPSEncryptedImagesDir] && ([extension isEqualToString:@"jpg"] || [extension isEqualToString:@"jpg"])) { 
+    
+		NSLog(@"Returning an image...");
+		if (self.bookIsEncrypted) {
             encrypted = YES;
             componentPath = [path stringByAppendingPathExtension:BlioXPSComponentExtensionEncrypted];
         }
@@ -539,11 +570,14 @@ void XPSPageCompleteCallback(void *userdata, RasterImageInfo *data) {
             encrypted = YES;
             gzipped = YES;
         }
-    }
+    } 
+	
 	
     if (cached) {
+		NSLog(@"Checking %@ for cache...", componentPath);
         NSData *cacheData = [self.componentCache objectForKey:componentPath];
         if ([cacheData length]) {
+			NSLog(@"Cache hit!", componentPath);
             return cacheData;
         }
     }

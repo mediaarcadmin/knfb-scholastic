@@ -25,6 +25,7 @@
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, retain) NSArray *books;
 @property (nonatomic, assign) BOOL pageControlUsed;
+@property (nonatomic, assign) BOOL startedScrolling;
 @property (nonatomic, assign) NSUInteger selectedSegment;
 
 @end
@@ -32,7 +33,7 @@
 
 @implementation SCHMultipleBookshelvesController
 
-@synthesize books, managedObjectContext, viewControllers, scrollView, pageControl, pageControlUsed, selectedSegment;
+@synthesize books, managedObjectContext, viewControllers, scrollView, pageControl, pageControlUsed, startedScrolling, selectedSegment;
 @synthesize topFavoritesComponent;
 
 - (void)dealloc
@@ -86,6 +87,8 @@
 	[bookshelfToggle addTarget:self action:@selector(bookshelfToggled:) forControlEvents:UIControlEventValueChanged];
 	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:bookshelfToggle] autorelease];
 	[bookshelfToggle release];
+	
+	self.startedScrolling = NO;
 	
 	
 	// pages are created on demand
@@ -206,6 +209,7 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)sender
 {
+	NSLog(@"scrollViewDidScroll being called.");
     // We don't want a "feedback loop" between the UIPageControl and the scroll delegate in
     // which a scroll event generated from the user hitting the page control triggers updates from
     // the delegate method. We use a boolean to disable the delegate logic when the page control is used.
@@ -215,16 +219,21 @@
         return;
     }
 	
+	
     // Switch the indicator when more than 50% of the previous/next page is visible
     CGFloat pageWidth = self.scrollView.frame.size.width;
     int page = floor((self.scrollView.contentOffset.x - pageWidth / 2) / pageWidth) + 1;
     self.pageControl.currentPage = page;
     
     // load the visible page and the page on either side of it (to avoid flashes when the user starts scrolling)
-    [self loadScrollViewWithPage:page - 1];
-    [self loadScrollViewWithPage:page];
-    [self loadScrollViewWithPage:page + 1];
-    
+	// if we've already started scrolling, there's no need to do the reload
+	if (!self.startedScrolling)
+	{
+		[self loadScrollViewWithPage:page - 1];
+		[self loadScrollViewWithPage:page];
+		[self loadScrollViewWithPage:page + 1];
+		self.startedScrolling = YES;
+	}  
     // A possible optimization would be to unload the views+controllers which are no longer visible
 }
 
@@ -238,6 +247,7 @@
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
     self.pageControlUsed = NO;
+	self.startedScrolling = NO;
 }
 
 #pragma mark -

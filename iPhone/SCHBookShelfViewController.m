@@ -33,12 +33,13 @@ NSInteger bookSort(SCHContentMetadataItem *book1, SCHContentMetadataItem *book2,
 @synthesize managedObjectContext;
 #endif
 @synthesize books;
-@synthesize tableView, gridView;
+@synthesize tableView, gridView, componentCache;
 
 - (void)releaseViewObjects 
 {
 	self.gridView = nil;
 	self.tableView = nil;
+	self.componentCache = nil;
 }
 
 #pragma mark -
@@ -49,6 +50,13 @@ NSInteger bookSort(SCHContentMetadataItem *book1, SCHContentMetadataItem *book2,
 		
 	[self.gridView setCellSize:CGSizeMake(80,118) withBorderSize:20];
 	[self.gridView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"Shelf"]]];
+	
+	BlioTimeOrderedCache *aCache = [[BlioTimeOrderedCache alloc] init];
+	aCache.countLimit = 30; // Arbitrary 30 object limit
+	aCache.totalCostLimit = 1024*1024; // Arbitrary 1MB limit. This may need wteaked or set on a per-device basis
+	self.componentCache = aCache;
+	[aCache release];
+	
 	
 #ifdef LOCALDEBUG
 	self.bookshelvesController.navigationItem.title = @"Bookshelf (Local)";
@@ -102,10 +110,21 @@ NSInteger bookSort(SCHContentMetadataItem *book1, SCHContentMetadataItem *book2,
 	cell.detailTextLabel.text = contentMetadataItem.Author;
 	
 	if (contentMetadataItem.FileName != nil) {
-		BWKXPSProvider *provider = [[BWKBookManager sharedBookManager] checkOutXPSProviderForBookWithID:[contentMetadataItem objectID]];
-		provider.title = contentMetadataItem.FileName;
-		cell.imageView.image = [provider coverThumbForList];
-		[[BWKBookManager sharedBookManager] checkInXPSProviderForBookWithID:[contentMetadataItem objectID]];
+		
+		NSString *thumbKey = [NSString stringWithFormat:@"thumb-%@", contentMetadataItem.FileName];
+		NSData *imageData = [self.componentCache objectForKey:thumbKey];
+		
+		if ([imageData length]) {
+			cell.imageView.image = [UIImage imageWithData:imageData];
+		} else {
+			BWKXPSProvider *provider = [[BWKBookManager sharedBookManager] checkOutXPSProviderForBookWithID:[contentMetadataItem objectID]];
+			provider.title = contentMetadataItem.FileName;
+			imageData = [provider coverThumbData];
+			[[BWKBookManager sharedBookManager] checkInXPSProviderForBookWithID:[contentMetadataItem objectID]];
+			[self.componentCache setObject:imageData forKey:thumbKey cost:[imageData length]];
+			cell.imageView.image = [UIImage imageWithData:imageData];
+		}
+		
 	} else {
 		cell.imageView.image = nil;
 	}
@@ -163,10 +182,25 @@ NSInteger bookSort(SCHContentMetadataItem *book1, SCHContentMetadataItem *book2,
 	optionsView.pageViewController = pageView;
 	optionsView.metadataItem = contentMetadataItem;
 	
-	BWKXPSProvider *provider = [[BWKBookManager sharedBookManager] checkOutXPSProviderForBookWithID:[contentMetadataItem objectID]];
-	provider.title = contentMetadataItem.FileName;
-	optionsView.thumbnailImage = [provider coverThumbForList];
-	[[BWKBookManager sharedBookManager] checkInXPSProviderForBookWithID:[contentMetadataItem objectID]];
+//	BWKXPSProvider *provider = [[BWKBookManager sharedBookManager] checkOutXPSProviderForBookWithID:[contentMetadataItem objectID]];
+//	provider.title = contentMetadataItem.FileName;
+//	optionsView.thumbnailImage = [provider coverThumbForList];
+//	[[BWKBookManager sharedBookManager] checkInXPSProviderForBookWithID:[contentMetadataItem objectID]];
+
+	NSString *thumbKey = [NSString stringWithFormat:@"thumb-%@", contentMetadataItem.FileName];
+	NSData *imageData = [self.componentCache objectForKey:thumbKey];
+	
+	if ([imageData length]) {
+		optionsView.thumbnailImage = [UIImage imageWithData:imageData];
+	} else {
+		BWKXPSProvider *provider = [[BWKBookManager sharedBookManager] checkOutXPSProviderForBookWithID:[contentMetadataItem objectID]];
+		provider.title = contentMetadataItem.FileName;
+		imageData = [provider coverThumbData];
+		[[BWKBookManager sharedBookManager] checkInXPSProviderForBookWithID:[contentMetadataItem objectID]];
+		[self.componentCache setObject:imageData forKey:thumbKey cost:[imageData length]];
+		optionsView.thumbnailImage = [UIImage imageWithData:imageData];
+	}
+	
 	
 	[self.bookshelvesController.navigationController pushViewController:optionsView animated:YES];
 	[optionsView release];
@@ -204,11 +238,27 @@ NSInteger bookSort(SCHContentMetadataItem *book1, SCHContentMetadataItem *book2,
 	if (contentMetadataItem.FileName == nil) {
 		thumb = [UIImage imageNamed:@"PlaceholderBook"];
 	} else {
+		/*
 		BWKXPSProvider *provider = [[BWKBookManager sharedBookManager] checkOutXPSProviderForBookWithID:[contentMetadataItem objectID]];
 		provider.title = contentMetadataItem.FileName;
 		thumb = [provider coverThumbForList];
-		[[BWKBookManager sharedBookManager] checkInXPSProviderForBookWithID:[contentMetadataItem objectID]];
-//		[provider release];
+		[[BWKBookManager sharedBookManager] checkInXPSProviderForBookWithID:[contentMetadataItem objectID]];*/
+
+		NSString *thumbKey = [NSString stringWithFormat:@"thumb-%@", contentMetadataItem.FileName];
+		NSData *imageData = [self.componentCache objectForKey:thumbKey];
+		
+		if ([imageData length]) {
+			thumb = [UIImage imageWithData:imageData];
+		} else {
+			BWKXPSProvider *provider = [[BWKBookManager sharedBookManager] checkOutXPSProviderForBookWithID:[contentMetadataItem objectID]];
+			provider.title = contentMetadataItem.FileName;
+			imageData = [provider coverThumbData];
+			[[BWKBookManager sharedBookManager] checkInXPSProviderForBookWithID:[contentMetadataItem objectID]];
+			[self.componentCache setObject:imageData forKey:thumbKey cost:[imageData length]];
+			thumb = [UIImage imageWithData:imageData];
+		}
+		
+		
 	}
 		
 	CGRect maxRect = UIEdgeInsetsInsetRect(gridCell.bounds, UIEdgeInsetsMake(0, 0, 23, 0));

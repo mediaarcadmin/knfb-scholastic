@@ -20,6 +20,7 @@ static NSString * const BlioXPSEncryptedImagesDir = @"/Resources";
 static NSString * const BlioXPSEncryptedTextFlowDir = @"/Documents/1/Other/KNFB/Flow";
 static NSString * const BlioXPSComponentExtensionFPage = @"fpage";
 static NSString * const BlioXPSSequenceFile = @"/FixedDocumentSequence.fdseq";
+static NSString * const BlioXPSFileThumbnail = @"Metadata/Thumbnail.jpg";
 
 @interface BWKXPSBook : NSObject {
 	NSMutableDictionary *properties;
