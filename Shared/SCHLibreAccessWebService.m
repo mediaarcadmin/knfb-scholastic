@@ -201,7 +201,7 @@ static NSString * const kSCHLibreAccessWebServiceStatusHolderStatusMessage = @"s
 	return(ret);			
 }
 
-- (BOOL)listTopFavorites:(NSArray *)favorites withCount:(NSInteger)count
+- (BOOL)listTopFavorites:(NSArray *)favorites withCount:(NSUInteger)count
 {
 	BOOL ret = NO;
 	
