@@ -142,7 +142,7 @@ static NSString * const kSCHLibreAccessWebServiceY = @"Y";
 - (BOOL)saveUserProfiles:(NSArray *)userProfiles;
 - (BOOL)listUserContent;
 - (BOOL)listFavoriteTypes;
-- (BOOL)listTopFavorites:(NSArray *)favorites withCount:(NSInteger)count;
+- (BOOL)listTopFavorites:(NSArray *)favorites withCount:(NSUInteger)count;
 - (BOOL)listContentMetadata:(NSArray *)bookISBNs includeURLs:(BOOL)includeURLs;
 - (BOOL)listUserSettings;
 - (BOOL)saveUserSettings:(NSArray *)settings;
