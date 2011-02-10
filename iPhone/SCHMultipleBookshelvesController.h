@@ -9,14 +9,20 @@
 //
 
 #import <UIKit/UIKit.h>
+
 #import "ProfileViewController.h"
+#import "SCHComponentDelegate.h"
 
-@interface SCHMultipleBookshelvesController : UIViewController <UIScrollViewDelegate> {
+@class SCHTopFavoritesComponent;
 
+@interface SCHMultipleBookshelvesController : UIViewController <UIScrollViewDelegate, SCHComponentDelegate> 
+{
+	SCHTopFavoritesComponent *topFavoritesComponent;
 }
 
 @property (nonatomic, retain) IBOutlet UIScrollView *scrollView;
 @property (nonatomic, retain) IBOutlet UIPageControl *pageControl;
+@property (nonatomic, assign) SCHTopFavoritesComponent *topFavoritesComponent;
 
 - (IBAction)changePage:(id)sender;
 

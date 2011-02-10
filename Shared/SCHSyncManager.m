@@ -8,13 +8,18 @@
 
 #import "SCHSyncManager.h"
 
-#import "SCHBackgroundSync.h"
+#import "SCHProfileSyncComponent.h"
+#import "SCHContentSyncComponent.h"
+#import "SCHBookshelfSyncComponent.h"
+#import "SCHAnnotationSyncComponent.h"
+#import "SCHReadingStatsSyncComponent.h"
+#import "SCHSettingsSyncComponent.h"
 
 static SCHSyncManager *sharedSyncManager = nil;
 
 @implementation SCHSyncManager
 
-@synthesize managedObjectContext=managedObjectContext_;
+@synthesize managedObjectContext;
 
 #pragma mark -
 #pragma mark Singleton methods
@@ -95,9 +100,22 @@ static SCHSyncManager *sharedSyncManager = nil;
 #pragma mark Sync methods
 
 // after login or opening the app
+// also coming out of background
 - (void)firstSync
 {
 	NSLog(@"Scheduling First Sync");
+	
+//	[profileSyncComponent synchronize];
+//	[contentSyncComponent synchronize];
+//	[bookshelfSyncComponent synchronize];
+//
+//	SCHProfileSyncComponent *profileSyncComponent;
+//	SCHContentSyncComponent *contentSyncComponent;
+//	SCHBookshelfSyncComponent *bookshelfSyncComponent;
+//	SCHAnnotationSyncComponent *annotationSyncComponent;
+//	SCHReadingStatsSyncComponent *readingStatsSyncComponent;
+//	SCHSettingsSyncComponent *settingsSyncComponent;
+	
 	
 	// profiles GetUserProfile
 	// content ListUserContent
@@ -110,6 +128,7 @@ static SCHSyncManager *sharedSyncManager = nil;
 	// settings ListUserSettings
 }
 
+// also coming out of background
 - (void)openDocument
 {
 	NSLog(@"Scheduling Open Document");

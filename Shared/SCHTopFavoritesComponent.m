@@ -52,22 +52,23 @@ static NSString * const kSCHTopFavoritesComponentAdvanced = @"Advanced Reader";
 	NSLog(@"%@\n%@", method, result);
 	
 	if([method compare:kSCHLibreAccessWebServiceListFavoriteTypes] == NSOrderedSame) {
-		// TODO: something with this
+		if([(id)self.delegate respondsToSelector:@selector(component:didCompleteWithResult:)]) {
+			[(id)self.delegate component:self didCompleteWithResult:result];									
+		}
 	} else if([method compare:kSCHLibreAccessWebServiceListTopFavorites] == NSOrderedSame) {
 		NSArray *favorites = [self makeNullNil:[result objectForKey:kSCHLibreAccessWebServiceTopFavoritesList]];
 		NSArray *books = [self makeNullNil:[[favorites objectAtIndex:0] objectForKey:kSCHLibreAccessWebServiceTopFavoritesContentItems]];
 		
 		if ([books count] > 0) {
 			[self.libreAccessWebService listContentMetadata:books includeURLs:YES];			
+		} else if([(id)self.delegate respondsToSelector:@selector(component:didCompleteWithResult:)]) {
+				[(id)self.delegate component:self didCompleteWithResult:[NSDictionary dictionaryWithObject:[NSNull null] forKey:kSCHLibreAccessWebServiceContentMetadataList]];									
 		}
 	} else if([method compare:kSCHLibreAccessWebServiceListContentMetadata] == NSOrderedSame) {
-		// TODO: something with this
+		if([(id)self.delegate respondsToSelector:@selector(component:didCompleteWithResult:)]) {
+			[(id)self.delegate component:self didCompleteWithResult:result];									
+		}		
 	}
-}
-
-- (void)method:(NSString *)method didFailWithError:(NSError *)error
-{
-	NSLog(@"%@\n%@", method, error);	
 }
 
 @end

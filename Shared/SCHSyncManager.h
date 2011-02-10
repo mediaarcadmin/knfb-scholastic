@@ -9,12 +9,15 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class SCHBackgroundSync;
+@class SCHProfileSyncComponent;
+@class SCHContentSyncComponent;
+@class SCHBookshelfSyncComponent;
+@class SCHAnnotationSyncComponent;
+@class SCHReadingStatsSyncComponent;
+@class SCHSettingsSyncComponent;
 
 @interface SCHSyncManager : NSObject 
-{
-@private
-    NSManagedObjectContext *managedObjectContext_;	
+{	
 	SCHBackgroundSync *backgroundSync;
 }
 

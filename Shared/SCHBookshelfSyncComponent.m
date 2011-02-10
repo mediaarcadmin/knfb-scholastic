@@ -23,9 +23,4 @@
 	NSLog(@"%@\n%@", method, result);
 }
 
-- (void)method:(NSString *)method didFailWithError:(NSError *)error
-{
-	[super method:method didFailWithError:error];
-}
-
 @end

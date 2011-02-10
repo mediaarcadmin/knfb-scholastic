@@ -7,15 +7,17 @@
 //
 
 #import "SCHMultipleBookshelvesController.h"
-#import "SCHBookShelfViewController.h"
+#import "SCHTopPicksBookShelfViewController.h"
 #import "SCHLocalDebug.h"
 #import "SCHContentProfileItem.h"
 #import "SCHContentMetadataItem.h"
+#import "SCHTopFavoritesComponent.h"
 
 @interface SCHMultipleBookshelvesController()
 
 - (void)releaseViewObjects;
 - (NSUInteger)numberOfBookshelves;
+- (NSUInteger)topPicksBookshelfPosition;
 - (void)loadScrollViewWithPage:(int)page;
 - (void)scrollViewDidScroll:(UIScrollView *)sender;
 
@@ -31,6 +33,7 @@
 @implementation SCHMultipleBookshelvesController
 
 @synthesize books, managedObjectContext, viewControllers, scrollView, pageControl, pageControlUsed, selectedSegment;
+@synthesize topFavoritesComponent;
 
 - (void)dealloc
 {
@@ -47,6 +50,16 @@
 {
 	[scrollView release], scrollView = nil;
     [pageControl release], pageControl = nil;
+}
+
+- (SCHTopFavoritesComponent *)topFavoritesComponent
+{
+	if (topFavoritesComponent == nil) {
+		topFavoritesComponent = [[SCHTopFavoritesComponent alloc] init];
+		topFavoritesComponent.delegate = self;
+	}
+	
+	return(topFavoritesComponent);
 }
 
 - (void)viewDidUnload 
@@ -108,6 +121,11 @@
 	return 3;
 }
 
+- (NSUInteger)topPicksBookshelfPosition
+{
+	return([self numberOfBookshelves] - 1);
+}
+
 - (void)loadScrollViewWithPage:(int)page
 {
     if (page < 0)
@@ -119,7 +137,12 @@
     SCHBookShelfViewController *controller = [viewControllers objectAtIndex:page];
     if ((NSNull *)controller == [NSNull null])
     {
-        controller = [[SCHBookShelfViewController alloc] initWithNibName:NSStringFromClass([SCHBookShelfViewController class]) bundle:nil];
+		if (page == [self topPicksBookshelfPosition]) {
+			controller = [[SCHTopPicksBookShelfViewController alloc] initWithNibName:NSStringFromClass([SCHBookShelfViewController class]) bundle:nil];			
+			[self.topFavoritesComponent topFavorites];			
+		} else {
+			controller = [[SCHBookShelfViewController alloc] initWithNibName:NSStringFromClass([SCHBookShelfViewController class]) bundle:nil];
+		}
 		controller.bookshelvesController = self;
 		[controller bookshelfToggled:self.selectedSegment];
 		
@@ -137,13 +160,15 @@
 	//controller.books = [self books];
     // NEW
 	
-	NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"SCHContentMetadataItem" inManagedObjectContext:self.managedObjectContext];
-	NSFetchRequest *request = [[[NSFetchRequest alloc] init] autorelease];
-	[request setEntity:entityDescription];
-	
-	NSError *error = nil;				
-	NSArray *theBooks = [self.managedObjectContext executeFetchRequest:request error:&error];
-	controller.books = theBooks;
+	if (page != [self topPicksBookshelfPosition]) {
+		NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"SCHContentMetadataItem" inManagedObjectContext:self.managedObjectContext];
+		NSFetchRequest *request = [[[NSFetchRequest alloc] init] autorelease];
+		[request setEntity:entityDescription];
+		
+		NSError *error = nil;				
+		NSArray *theBooks = [self.managedObjectContext executeFetchRequest:request error:&error];
+		controller.books = theBooks;		
+	}
 	
 	// END
     // add the controller's view to the scroll view
@@ -155,6 +180,28 @@
         controller.view.frame = frame;
         [self.scrollView addSubview:controller.view];
     }
+}
+
+#pragma mark -
+#pragma mark TopFavoritesComponent Delegate methods
+
+- (void)component:(SCHComponent *)component didCompleteWithResult:(NSDictionary *)result
+{
+    SCHBookShelfViewController *controller = [viewControllers objectAtIndex:[self topPicksBookshelfPosition]];
+	NSArray *topBooks = [result objectForKey:kSCHLibreAccessWebServiceContentMetadataList];
+	
+	if (controller != (id)[NSNull null]) {
+		if (topBooks == (id)[NSNull null]) {
+			controller.books = nil;
+		} else {
+			controller.books = topBooks;	
+		}
+	}
+}
+
+- (void)component:(SCHComponent *)component didFailWithError:(NSError *)error
+{
+	
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)sender

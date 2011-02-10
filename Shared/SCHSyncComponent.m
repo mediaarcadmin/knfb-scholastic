@@ -15,18 +15,25 @@
 @synthesize isSynchronizing;
 @synthesize managedObjectContext;
 
-- (id) init
+- (id)init
 {
 	self = [super init];
 	if (self != nil) {
 		isSynchronizing = NO;
 	}
+	
 	return(self);
 }
 
 - (BOOL)synchronize
 {
 	return(NO);
+}
+
+- (void)method:(NSString *)method didFailWithError:(NSError *)error
+{
+	isSynchronizing = NO;
+	[super method:method didFailWithError:error];
 }
 
 - (void)save

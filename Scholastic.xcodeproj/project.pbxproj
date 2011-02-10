@@ -138,6 +138,8 @@
 		52E332E913018EDF002F3011 /* SCHProfileSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9D6A130000570099FB88 /* SCHProfileSyncComponent.m */; };
 		52E332EA13018EDF002F3011 /* SCHReadingStatsSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9D6C130000570099FB88 /* SCHReadingStatsSyncComponent.m */; };
 		52E332EB13018EDF002F3011 /* SCHSettingsSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9D6E130000570099FB88 /* SCHSettingsSyncComponent.m */; };
+		52E334F61303049C002F3011 /* SCHTopPicksBookShelfViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E334F51303049B002F3011 /* SCHTopPicksBookShelfViewController.m */; };
+		52E334F71303049C002F3011 /* SCHTopPicksBookShelfViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E334F51303049B002F3011 /* SCHTopPicksBookShelfViewController.m */; };
 		52E4692012F1D94E00ECC97A /* SCHLocalDebug.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E4691F12F1D94E00ECC97A /* SCHLocalDebug.m */; };
 		52E4697512F1F33200ECC97A /* SCHLocalDebug.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E4691F12F1D94E00ECC97A /* SCHLocalDebug.m */; };
 		52EF4E5F12E6E01C00E374F7 /* SCHLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF4E5D12E6E01C00E374F7 /* SCHLoginViewController.m */; };
@@ -476,6 +478,9 @@
 		52D6124E12E44D760033DA92 /* SCHSyncEntity+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SCHSyncEntity+Extensions.m"; path = "Shared/SCHSyncEntity+Extensions.m"; sourceTree = "<group>"; };
 		52D612B612E4650B0033DA92 /* NSNumber+ObjectTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSNumber+ObjectTypes.h"; path = "Shared/NSNumber+ObjectTypes.h"; sourceTree = "<group>"; };
 		52D612B712E4650B0033DA92 /* NSNumber+ObjectTypes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSNumber+ObjectTypes.m"; path = "Shared/NSNumber+ObjectTypes.m"; sourceTree = "<group>"; };
+		52E334F41303049B002F3011 /* SCHTopPicksBookShelfViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHTopPicksBookShelfViewController.h; path = iPhone/SCHTopPicksBookShelfViewController.h; sourceTree = "<group>"; };
+		52E334F51303049B002F3011 /* SCHTopPicksBookShelfViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHTopPicksBookShelfViewController.m; path = iPhone/SCHTopPicksBookShelfViewController.m; sourceTree = "<group>"; };
+		52E3355A1303F71F002F3011 /* SCHComponentDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHComponentDelegate.h; path = Shared/SCHComponentDelegate.h; sourceTree = "<group>"; };
 		52E4691E12F1D94E00ECC97A /* SCHLocalDebug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHLocalDebug.h; path = Shared/SCHLocalDebug.h; sourceTree = "<group>"; };
 		52E4691F12F1D94E00ECC97A /* SCHLocalDebug.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHLocalDebug.m; path = Shared/SCHLocalDebug.m; sourceTree = "<group>"; };
 		52EF4E5C12E6E01C00E374F7 /* SCHLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHLoginViewController.h; sourceTree = "<group>"; };
@@ -883,6 +888,12 @@
 				5293872C12DF43CB00045B44 /* SCHLibreAccessWebService.m */,
 				52EF543E12E9A5D400E374F7 /* SCHAuthenticationManager.h */,
 				52EF543F12E9A5D400E374F7 /* SCHAuthenticationManager.m */,
+				5266D38213007D15004E3AC6 /* SCHComponent.h */,
+				5266D38313007D15004E3AC6 /* SCHComponent.m */,
+				52E3355A1303F71F002F3011 /* SCHComponentDelegate.h */,
+				5266D38E13007E27004E3AC6 /* SCHComponentProtected.h */,
+				5266D34A13007A1C004E3AC6 /* SCHTopFavoritesComponent.h */,
+				5266D34B13007A1C004E3AC6 /* SCHTopFavoritesComponent.m */,
 				52AD9B2612FC207A0099FB88 /* Sync */,
 			);
 			name = "Web Services";
@@ -942,11 +953,6 @@
 				52AD9ACE12FC0EEF0099FB88 /* SCHSyncManager.m */,
 				52AD9AD012FC0F8F0099FB88 /* SCHBackgroundSync.h */,
 				52AD9AD112FC0F8F0099FB88 /* SCHBackgroundSync.m */,
-				5266D38213007D15004E3AC6 /* SCHComponent.h */,
-				5266D38313007D15004E3AC6 /* SCHComponent.m */,
-				5266D38E13007E27004E3AC6 /* SCHComponentProtected.h */,
-				5266D34A13007A1C004E3AC6 /* SCHTopFavoritesComponent.h */,
-				5266D34B13007A1C004E3AC6 /* SCHTopFavoritesComponent.m */,
 				52AD9B1A12FC1B6B0099FB88 /* SCHSyncComponent.h */,
 				52AD9B1B12FC1B6B0099FB88 /* SCHSyncComponent.m */,
 				52AD9D9813000CAA0099FB88 /* SCHSyncComponentProtected.h */,
@@ -1008,6 +1014,8 @@
 				C923B15A12F6B0280054426F /* SCHMultipleBookshelvesController.xib */,
 				5293883012E03CD000045B44 /* SCHBookShelfViewController.h */,
 				5293883112E03CD000045B44 /* SCHBookShelfViewController.m */,
+				52E334F41303049B002F3011 /* SCHTopPicksBookShelfViewController.h */,
+				52E334F51303049B002F3011 /* SCHTopPicksBookShelfViewController.m */,
 				5293883212E03CD000045B44 /* SCHBookShelfViewController.xib */,
 			);
 			name = Bookshelves;
@@ -1329,6 +1337,7 @@
 				52AD9D74130000570099FB88 /* SCHSettingsSyncComponent.m in Sources */,
 				5266D34C13007A1C004E3AC6 /* SCHTopFavoritesComponent.m in Sources */,
 				5266D38413007D15004E3AC6 /* SCHComponent.m in Sources */,
+				52E334F61303049C002F3011 /* SCHTopPicksBookShelfViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1437,6 +1446,7 @@
 				52E332E913018EDF002F3011 /* SCHProfileSyncComponent.m in Sources */,
 				52E332EA13018EDF002F3011 /* SCHReadingStatsSyncComponent.m in Sources */,
 				52E332EB13018EDF002F3011 /* SCHSettingsSyncComponent.m in Sources */,
+				52E334F71303049C002F3011 /* SCHTopPicksBookShelfViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

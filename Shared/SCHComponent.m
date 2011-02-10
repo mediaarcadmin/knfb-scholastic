@@ -11,15 +11,17 @@
 
 @implementation SCHComponent
 
+@synthesize delegate;
 @synthesize libreAccessWebService;
 
-- (id) init
+- (id)init
 {
 	self = [super init];
 	if (self != nil) {
 		libreAccessWebService = [[SCHLibreAccessWebService alloc] init];	
 		libreAccessWebService.delegate = self;
 	}
+	
 	return(self);
 }
 
@@ -37,7 +39,11 @@
 
 - (void)method:(NSString *)method didFailWithError:(NSError *)error
 {
-	NSLog(@"%@\n%@", method, error);	
+	NSLog(@"%@\n%@", method, error);
+	
+	if([(id)self.delegate respondsToSelector:@selector(component:didFailWithError:)]) {
+		[(id)self.delegate component:self didFailWithError:error];		
+	}
 }
 
 - (id)makeNullNil:(id)object

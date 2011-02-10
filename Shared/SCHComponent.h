@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
+#import "SCHComponentDelegate.h"
 #import "BITAPIProxyDelegate.h"
 #import "SCHAuthenticationManager.h"
 #import "SCHLibreAccessWebService.h"
@@ -17,6 +18,6 @@
 
 }
 
-@property (retain, nonatomic) SCHLibreAccessWebService *libreAccessWebService;	
+@property (assign, nonatomic) id<SCHComponentDelegate> delegate;	
 
 @end
