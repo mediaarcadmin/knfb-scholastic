@@ -268,7 +268,7 @@
 				</object>
 				<object class="NSMutableArray" key="dict.values">
 					<bool key="EncodedWithXMLCoder">YES</bool>
-					<string>ProfileViewController</string>
+					<string>SCHProfileViewController</string>
 					<string>UIResponder</string>
 					<string>SCHSettingsViewController</string>
 					<string>{{381, 541}, {320, 480}}</string>
@@ -308,60 +308,6 @@
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
 				<bool key="EncodedWithXMLCoder">YES</bool>
-				<object class="IBPartialClassDescription">
-					<string key="className">ProfileViewController</string>
-					<string key="superclassName">UITableViewController</string>
-					<object class="NSMutableDictionary" key="outlets">
-						<bool key="EncodedWithXMLCoder">YES</bool>
-						<object class="NSArray" key="dict.sortedKeys">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>bookshelvesController</string>
-							<string>headerView</string>
-							<string>loginController</string>
-							<string>settingsController</string>
-						</object>
-						<object class="NSMutableArray" key="dict.values">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>SCHMultipleBookshelvesController</string>
-							<string>UIView</string>
-							<string>SCHLoginViewController</string>
-							<string>SCHSettingsViewController</string>
-						</object>
-					</object>
-					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<bool key="EncodedWithXMLCoder">YES</bool>
-						<object class="NSArray" key="dict.sortedKeys">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>bookshelvesController</string>
-							<string>headerView</string>
-							<string>loginController</string>
-							<string>settingsController</string>
-						</object>
-						<object class="NSMutableArray" key="dict.values">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<object class="IBToOneOutletInfo">
-								<string key="name">bookshelvesController</string>
-								<string key="candidateClassName">SCHMultipleBookshelvesController</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">headerView</string>
-								<string key="candidateClassName">UIView</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">loginController</string>
-								<string key="candidateClassName">SCHLoginViewController</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">settingsController</string>
-								<string key="candidateClassName">SCHSettingsViewController</string>
-							</object>
-						</object>
-					</object>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBUserSource</string>
-						<string key="minorKey"/>
-					</object>
-				</object>
 				<object class="IBPartialClassDescription">
 					<string key="className">SCHLoginViewController</string>
 					<string key="superclassName">UIViewController</string>
@@ -461,6 +407,60 @@
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">iPhone/SCHMultipleBookshelvesController.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">SCHProfileViewController</string>
+					<string key="superclassName">UITableViewController</string>
+					<object class="NSMutableDictionary" key="outlets">
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSArray" key="dict.sortedKeys">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>bookshelvesController</string>
+							<string>headerView</string>
+							<string>loginController</string>
+							<string>settingsController</string>
+						</object>
+						<object class="NSMutableArray" key="dict.values">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>SCHMultipleBookshelvesController</string>
+							<string>UIView</string>
+							<string>SCHLoginViewController</string>
+							<string>SCHSettingsViewController</string>
+						</object>
+					</object>
+					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSArray" key="dict.sortedKeys">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>bookshelvesController</string>
+							<string>headerView</string>
+							<string>loginController</string>
+							<string>settingsController</string>
+						</object>
+						<object class="NSMutableArray" key="dict.values">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<object class="IBToOneOutletInfo">
+								<string key="name">bookshelvesController</string>
+								<string key="candidateClassName">SCHMultipleBookshelvesController</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">headerView</string>
+								<string key="candidateClassName">UIView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">loginController</string>
+								<string key="candidateClassName">SCHLoginViewController</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">settingsController</string>
+								<string key="candidateClassName">SCHSettingsViewController</string>
+							</object>
+						</object>
+					</object>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBUserSource</string>
+						<string key="minorKey"/>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">

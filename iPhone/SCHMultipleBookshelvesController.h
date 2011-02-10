@@ -10,7 +10,7 @@
 
 #import <UIKit/UIKit.h>
 
-#import "ProfileViewController.h"
+#import "SCHProfileViewController.h"
 #import "SCHComponentDelegate.h"
 
 @class SCHTopFavoritesComponent;

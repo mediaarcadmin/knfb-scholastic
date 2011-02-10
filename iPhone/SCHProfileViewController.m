@@ -1,12 +1,12 @@
 //
-//  RootViewController.m
+//  SCHProfileViewController.m
 //  Tester
 //
 //  Created by John S. Eddie on 30/12/2010.
 //  Copyright 2010 BitWink Limited. All rights reserved.
 //
 
-#import "ProfileViewController.h"
+#import "SCHProfileViewController.h"
 
 #import "SCHSettingsViewController.h"
 #import "SCHBookShelfViewController.h"
@@ -27,12 +27,12 @@ static NSString * const kRootViewControllerSettingsIcon = @"Settings.png";
 // Static cells
 static NSInteger const kRootViewControllerSettingsRow = 1;
 
-@interface ProfileViewController ()
+@interface SCHProfileViewController ()
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath;
 @end
 
 
-@implementation ProfileViewController
+@implementation SCHProfileViewController
 
 @synthesize headerView;
 @synthesize settingsController;

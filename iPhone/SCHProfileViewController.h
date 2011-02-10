@@ -1,5 +1,5 @@
 //
-//  RootViewController.h
+//  SCHProfileViewController.h
 //  Tester
 //
 //  Created by John S. Eddie on 30/12/2010.
@@ -14,7 +14,7 @@
 @class SCHWebServiceSync;
 @class SCHLoginViewController;
 
-@interface ProfileViewController : UITableViewController <NSFetchedResultsControllerDelegate> {
+@interface SCHProfileViewController : UITableViewController <NSFetchedResultsControllerDelegate> {
 
 @private
     NSFetchedResultsController *fetchedResultsController_;
