@@ -209,7 +209,6 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)sender
 {
-	NSLog(@"scrollViewDidScroll being called.");
     // We don't want a "feedback loop" between the UIPageControl and the scroll delegate in
     // which a scroll event generated from the user hitting the page control triggers updates from
     // the delegate method. We use a boolean to disable the delegate logic when the page control is used.
@@ -226,7 +225,7 @@
     self.pageControl.currentPage = page;
     
     // load the visible page and the page on either side of it (to avoid flashes when the user starts scrolling)
-	// if we've already started scrolling, there's no need to do the reload
+	// if we've already started scrolling, there's no need to do the reload so skip it
 	if (!self.startedScrolling)
 	{
 		[self loadScrollViewWithPage:page - 1];

@@ -104,7 +104,6 @@ void XPSPageCompleteCallback(void *userdata, RasterImageInfo *data) {
         }
         
         XPS_Start();
-		NSLog(@"self.book class: %@", NSStringFromClass([self.book class]));
         NSString *xpsPath = [self.book xpsPath];
         if (![[NSFileManager defaultManager] fileExistsAtPath:xpsPath]) {
             NSLog(@"Error creating xpsProvider. File does not exist at path: %@", xpsPath);
@@ -446,6 +445,12 @@ void XPSPageCompleteCallback(void *userdata, RasterImageInfo *data) {
 	
     NSData *imageData = [self dataFromXPSAtPath:@"Metadata/Thumbnail.jpg"];
 
+    if (imageData) {
+        return imageData;
+    } else {
+		return nil;
+    }
+	
 	return imageData;
 }
 
@@ -524,8 +529,6 @@ void XPSPageCompleteCallback(void *userdata, RasterImageInfo *data) {
     BOOL mapped = NO;
     BOOL cached = NO;
     
-	NSLog(@"Componentpath: %@", componentPath);
-	
     // TODO: Make sure these checks are ordered from most common to least common for efficiency
     if ([filename isEqualToString:@"Rights.xml"]) {
         if (self.bookIsEncrypted) {
@@ -574,10 +577,10 @@ void XPSPageCompleteCallback(void *userdata, RasterImageInfo *data) {
 	
 	
     if (cached) {
-		NSLog(@"Checking %@ for cache...", componentPath);
+//		NSLog(@"Checking %@ for cache...", componentPath);
         NSData *cacheData = [self.componentCache objectForKey:componentPath];
         if ([cacheData length]) {
-			NSLog(@"Cache hit!", componentPath);
+//			NSLog(@"Cache hit!", componentPath);
             return cacheData;
         }
     }

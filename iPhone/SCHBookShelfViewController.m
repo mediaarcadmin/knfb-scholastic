@@ -121,8 +121,13 @@ NSInteger bookSort(SCHContentMetadataItem *book1, SCHContentMetadataItem *book2,
 			provider.title = contentMetadataItem.FileName;
 			imageData = [provider coverThumbData];
 			[[BWKBookManager sharedBookManager] checkInXPSProviderForBookWithID:[contentMetadataItem objectID]];
-			[self.componentCache setObject:imageData forKey:thumbKey cost:[imageData length]];
-			cell.imageView.image = [UIImage imageWithData:imageData];
+			if (!imageData) {
+				cell.imageView.image = [UIImage imageNamed:@"PlaceholderBook"];
+			} else {
+				[self.componentCache setObject:imageData forKey:thumbKey cost:[imageData length]];
+				cell.imageView.image = [UIImage imageWithData:imageData];
+			}
+			
 		}
 		
 	} else {
@@ -197,7 +202,14 @@ NSInteger bookSort(SCHContentMetadataItem *book1, SCHContentMetadataItem *book2,
 		provider.title = contentMetadataItem.FileName;
 		imageData = [provider coverThumbData];
 		[[BWKBookManager sharedBookManager] checkInXPSProviderForBookWithID:[contentMetadataItem objectID]];
-		[self.componentCache setObject:imageData forKey:thumbKey cost:[imageData length]];
+
+		if (!imageData) {
+			optionsView.thumbnailImage = [UIImage imageNamed:@"PlaceholderBook"];
+		} else {
+			[self.componentCache setObject:imageData forKey:thumbKey cost:[imageData length]];
+			optionsView.thumbnailImage = [UIImage imageWithData:imageData];
+		}
+		
 		optionsView.thumbnailImage = [UIImage imageWithData:imageData];
 	}
 	
@@ -254,7 +266,13 @@ NSInteger bookSort(SCHContentMetadataItem *book1, SCHContentMetadataItem *book2,
 			provider.title = contentMetadataItem.FileName;
 			imageData = [provider coverThumbData];
 			[[BWKBookManager sharedBookManager] checkInXPSProviderForBookWithID:[contentMetadataItem objectID]];
-			[self.componentCache setObject:imageData forKey:thumbKey cost:[imageData length]];
+			
+			if (!imageData) {
+				thumb = [UIImage imageNamed:@"PlaceholderBook"];
+			} else {
+				[self.componentCache setObject:imageData forKey:thumbKey cost:[imageData length]];
+			}
+			
 			thumb = [UIImage imageWithData:imageData];
 		}
 		

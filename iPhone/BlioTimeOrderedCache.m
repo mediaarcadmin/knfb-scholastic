@@ -62,6 +62,11 @@
 }
 
 - (void)setObject:(id)obj forKey:(id)key cost:(NSUInteger)g {
+	
+	if (!obj) {
+		return;
+	}
+	
     @synchronized (self) {
         [self.objectStore setObject:obj forKey:key];
         [self.accessStore setValue:[NSDate date] forKey:key];
