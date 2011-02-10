@@ -8,6 +8,7 @@
 
 #import "SCHSyncManager.h"
 
+#import "SCHBackgroundSync.h"
 #import "SCHProfileSyncComponent.h"
 #import "SCHContentSyncComponent.h"
 #import "SCHBookshelfSyncComponent.h"

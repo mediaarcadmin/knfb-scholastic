@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
+@class SCHBackgroundSync;
 @class SCHProfileSyncComponent;
 @class SCHContentSyncComponent;
 @class SCHBookshelfSyncComponent;
