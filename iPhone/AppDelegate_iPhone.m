@@ -25,7 +25,7 @@
 	
 	SCHSyncManager *syncManager = [SCHSyncManager sharedSyncManager];
 	syncManager.managedObjectContext = self.managedObjectContext;
-	[syncManager startBackgroundSync];
+	[syncManager start];
 }
 
 
