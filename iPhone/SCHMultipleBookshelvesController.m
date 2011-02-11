@@ -12,12 +12,14 @@
 #import "SCHContentProfileItem.h"
 #import "SCHContentMetadataItem.h"
 #import "SCHTopFavoritesComponent.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface SCHMultipleBookshelvesController()
 
 - (void)releaseViewObjects;
 - (NSUInteger)numberOfBookshelves;
 - (NSUInteger)topPicksBookshelfPosition;
+- (void)showlabelForPage:(NSUInteger)page;
 - (void)loadScrollViewWithPage:(int)page;
 - (void)scrollViewDidScroll:(UIScrollView *)sender;
 
@@ -34,6 +36,7 @@
 @implementation SCHMultipleBookshelvesController
 
 @synthesize books, managedObjectContext, viewControllers, scrollView, pageControl, pageControlUsed, startedScrolling, selectedSegment;
+@synthesize pageLabelContainer, pageLabel;
 @synthesize topFavoritesComponent;
 
 - (void)dealloc
@@ -49,8 +52,13 @@
 
 - (void)releaseViewObjects 
 {
+	[pageControl removeObserver:self forKeyPath:@"currentPage"];
+
 	[scrollView release], scrollView = nil;
     [pageControl release], pageControl = nil;
+	[pageLabelContainer release], pageLabelContainer = nil;
+	[pageLabel release], pageLabel = nil;
+	
 }
 
 - (SCHTopFavoritesComponent *)topFavoritesComponent
@@ -78,8 +86,14 @@
 	self.scrollView.scrollsToTop = NO;
 	self.scrollView.delegate = self;
 	
+	[self.pageControl addObserver:self forKeyPath:@"currentPage" options:0 context:nil];
 	self.pageControl.numberOfPages = [self numberOfBookshelves];
 	self.pageControl.currentPage = 0;
+	
+	self.pageLabelContainer.layer.cornerRadius = 3;
+	self.pageLabelContainer.layer.shadowOpacity = 0.5f;
+	self.pageLabelContainer.layer.shadowOffset = CGSizeZero;
+	self.pageLabelContainer.layer.shadowRadius = 4;
 	
 	UISegmentedControl *bookshelfToggle = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObjects:@"List", @"Grid", nil]];
 	bookshelfToggle.selectedSegmentIndex = 0;
@@ -121,12 +135,27 @@
 
 - (NSUInteger)numberOfBookshelves 
 {
-	return 3;
+	return 2;
 }
 
 - (NSUInteger)topPicksBookshelfPosition
 {
 	return([self numberOfBookshelves] - 1);
+}
+
+- (void)showlabelForPage:(NSUInteger)page {
+	NSString *label = [[NSArray arrayWithObjects:@"Favorites", @"Top 10 picks", nil] objectAtIndex:page];
+	
+	self.pageLabel.text = label;
+	self.pageLabelContainer.alpha = 1;
+	
+	[UIView beginAnimations:nil context:nil];
+	[UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+	[UIView setAnimationDuration:0.35f];
+	[UIView setAnimationDelay:2];
+	self.pageLabelContainer.alpha = 0;
+	[UIView commitAnimations];
+	
 }
 
 - (void)loadScrollViewWithPage:(int)page
@@ -266,6 +295,7 @@
 - (IBAction)changePage:(id)sender
 {
     int page = self.pageControl.currentPage;
+	[self showlabelForPage:self.pageControl.currentPage];
 	
     // load the visible page and the page on either side of it (to avoid flashes when the user starts scrolling)
     [self loadScrollViewWithPage:page - 1];
@@ -280,6 +310,17 @@
     
 	// Set the boolean used when scrolls originate from the UIPageControl. See scrollViewDidScroll: above.
     self.pageControlUsed = YES;
+}
+
+#pragma mark -
+#pragma mark KVO
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+	if (object == self.pageControl) {
+		if ([keyPath isEqualToString:@"currentPage"]) {
+			[self showlabelForPage:self.pageControl.currentPage];
+		}
+	}
 }
 
 

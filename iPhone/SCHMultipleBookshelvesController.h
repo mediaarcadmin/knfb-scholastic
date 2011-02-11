@@ -22,6 +22,8 @@
 
 @property (nonatomic, retain) IBOutlet UIScrollView *scrollView;
 @property (nonatomic, retain) IBOutlet UIPageControl *pageControl;
+@property (nonatomic, retain) IBOutlet UIView *pageLabelContainer;
+@property (nonatomic, retain) IBOutlet UILabel *pageLabel;
 @property (nonatomic, assign) SCHTopFavoritesComponent *topFavoritesComponent;
 
 - (IBAction)changePage:(id)sender;
