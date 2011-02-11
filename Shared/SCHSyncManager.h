@@ -9,25 +9,19 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class SCHBackgroundSync;
-@class SCHProfileSyncComponent;
-@class SCHContentSyncComponent;
-@class SCHBookshelfSyncComponent;
-@class SCHAnnotationSyncComponent;
-@class SCHReadingStatsSyncComponent;
-@class SCHSettingsSyncComponent;
+#import "SCHComponentDelegate.h"
 
-@interface SCHSyncManager : NSObject 
+@interface SCHSyncManager : NSObject <SCHComponentDelegate>
 {	
-	SCHBackgroundSync *backgroundSync;
+
 }
 
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 
 + (SCHSyncManager *)sharedSyncManager;
 
-- (void)startBackgroundSync;
-- (void)stopBackgroundSync;
+- (void)start;
+- (void)stop;
 
 - (void)firstSync;
 - (void)openDocument;

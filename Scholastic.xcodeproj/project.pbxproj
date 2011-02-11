@@ -119,7 +119,6 @@
 		52AD99E612FB0E9A0099FB88 /* SCHContentMetadataItem+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D6124212E44CEC0033DA92 /* SCHContentMetadataItem+Extensions.m */; };
 		52AD99E712FB0E9B0099FB88 /* SCHContentMetadataItem+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D6124212E44CEC0033DA92 /* SCHContentMetadataItem+Extensions.m */; };
 		52AD9ACF12FC0EEF0099FB88 /* SCHSyncManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9ACE12FC0EEF0099FB88 /* SCHSyncManager.m */; };
-		52AD9AD212FC0F8F0099FB88 /* SCHBackgroundSync.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9AD112FC0F8F0099FB88 /* SCHBackgroundSync.m */; };
 		52AD9B1C12FC1B6B0099FB88 /* SCHSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9B1B12FC1B6B0099FB88 /* SCHSyncComponent.m */; };
 		52AD9D6F130000570099FB88 /* SCHAnnotationSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9D64130000570099FB88 /* SCHAnnotationSyncComponent.m */; };
 		52AD9D70130000570099FB88 /* SCHBookshelfSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9D66130000570099FB88 /* SCHBookshelfSyncComponent.m */; };
@@ -192,7 +191,6 @@
 		F83D86BE12FC60C600227031 /* SCHLocalDebugXPSReader.m in Sources */ = {isa = PBXBuildFile; fileRef = F83D86B412FC070F00227031 /* SCHLocalDebugXPSReader.m */; };
 		F83D874612FC67A400227031 /* SCHSyncManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9ACE12FC0EEF0099FB88 /* SCHSyncManager.m */; };
 		F83D874712FC67A600227031 /* SCHSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9B1B12FC1B6B0099FB88 /* SCHSyncComponent.m */; };
-		F83D874812FC67B700227031 /* SCHBackgroundSync.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9AD112FC0F8F0099FB88 /* SCHBackgroundSync.m */; };
 		F8509E7412F061FE00197EB5 /* libXpsSDKipad.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F8509E7212F061FE00197EB5 /* libXpsSDKipad.a */; };
 		F8509E9C12F0621E00197EB5 /* BlioTimeOrderedCache.m in Sources */ = {isa = PBXBuildFile; fileRef = F8509E8C12F0621E00197EB5 /* BlioTimeOrderedCache.m */; };
 		F8509E9D12F0621E00197EB5 /* BWKXPSProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = F8509E8E12F0621E00197EB5 /* BWKXPSProvider.m */; };
@@ -453,8 +451,6 @@
 		52AD978212FA12A00099FB88 /* SCHFavorite+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SCHFavorite+Extensions.m"; path = "Shared/SCHFavorite+Extensions.m"; sourceTree = "<group>"; };
 		52AD9ACD12FC0EEF0099FB88 /* SCHSyncManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHSyncManager.h; path = Shared/SCHSyncManager.h; sourceTree = "<group>"; };
 		52AD9ACE12FC0EEF0099FB88 /* SCHSyncManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHSyncManager.m; path = Shared/SCHSyncManager.m; sourceTree = "<group>"; };
-		52AD9AD012FC0F8F0099FB88 /* SCHBackgroundSync.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBackgroundSync.h; path = Shared/SCHBackgroundSync.h; sourceTree = "<group>"; };
-		52AD9AD112FC0F8F0099FB88 /* SCHBackgroundSync.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBackgroundSync.m; path = Shared/SCHBackgroundSync.m; sourceTree = "<group>"; };
 		52AD9B1A12FC1B6B0099FB88 /* SCHSyncComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHSyncComponent.h; path = Shared/SCHSyncComponent.h; sourceTree = "<group>"; };
 		52AD9B1B12FC1B6B0099FB88 /* SCHSyncComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHSyncComponent.m; path = Shared/SCHSyncComponent.m; sourceTree = "<group>"; };
 		52AD9D63130000570099FB88 /* SCHAnnotationSyncComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAnnotationSyncComponent.h; path = Shared/SCHAnnotationSyncComponent.h; sourceTree = "<group>"; };
@@ -951,8 +947,6 @@
 				5293877E12DF515400045B44 /* SCHWebServiceSync.m */,
 				52AD9ACD12FC0EEF0099FB88 /* SCHSyncManager.h */,
 				52AD9ACE12FC0EEF0099FB88 /* SCHSyncManager.m */,
-				52AD9AD012FC0F8F0099FB88 /* SCHBackgroundSync.h */,
-				52AD9AD112FC0F8F0099FB88 /* SCHBackgroundSync.m */,
 				52AD9B1A12FC1B6B0099FB88 /* SCHSyncComponent.h */,
 				52AD9B1B12FC1B6B0099FB88 /* SCHSyncComponent.m */,
 				52AD9D9813000CAA0099FB88 /* SCHSyncComponentProtected.h */,
@@ -1327,7 +1321,6 @@
 				52AD99E712FB0E9B0099FB88 /* SCHContentMetadataItem+Extensions.m in Sources */,
 				F83D86B512FC070F00227031 /* SCHLocalDebugXPSReader.m in Sources */,
 				52AD9ACF12FC0EEF0099FB88 /* SCHSyncManager.m in Sources */,
-				52AD9AD212FC0F8F0099FB88 /* SCHBackgroundSync.m in Sources */,
 				52AD9B1C12FC1B6B0099FB88 /* SCHSyncComponent.m in Sources */,
 				52AD9D6F130000570099FB88 /* SCHAnnotationSyncComponent.m in Sources */,
 				52AD9D70130000570099FB88 /* SCHBookshelfSyncComponent.m in Sources */,
@@ -1437,7 +1430,6 @@
 				F83D86BE12FC60C600227031 /* SCHLocalDebugXPSReader.m in Sources */,
 				F83D874612FC67A400227031 /* SCHSyncManager.m in Sources */,
 				F83D874712FC67A600227031 /* SCHSyncComponent.m in Sources */,
-				F83D874812FC67B700227031 /* SCHBackgroundSync.m in Sources */,
 				52E332E413018EDF002F3011 /* SCHComponent.m in Sources */,
 				52E332E513018EDF002F3011 /* SCHTopFavoritesComponent.m in Sources */,
 				52E332E613018EDF002F3011 /* SCHAnnotationSyncComponent.m in Sources */,
@@ -1614,6 +1606,11 @@
 					"$(inherited)",
 					"\\\"$(SRCROOT)\\\"",
 				);
+				OTHER_CFLAGS = (
+					"-DLOCALDEBUG",
+					"-I/usr/include/libxml2",
+					"-DNS_BLOCK_ASSERTIONS=1",
+				);
 				PRODUCT_NAME = Scholastic;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -1632,6 +1629,11 @@
 					"Shared/Libraries//**",
 					"$(inherited)",
 					"\\\"$(SRCROOT)\\\"",
+				);
+				OTHER_CFLAGS = (
+					"-DLOCALDEBUG",
+					"-I/usr/include/libxml2",
+					"-DNS_BLOCK_ASSERTIONS=1",
 				);
 				PRODUCT_NAME = Scholastic;
 				VALIDATE_PRODUCT = YES;
