@@ -111,7 +111,9 @@ static NSTimeInterval const kSCHSyncManagerHeartbeatInterval = 30.0;
 		readingStatsSyncComponent = [[SCHReadingStatsSyncComponent alloc] init];
 		readingStatsSyncComponent.delegate = self;		
 		settingsSyncComponent = [[SCHSettingsSyncComponent alloc] init];		
-		settingsSyncComponent.delegate = self;		
+		settingsSyncComponent.delegate = self;	
+		
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(authenticationManager:) name:kSCHAuthenticationManagerSuccess object:nil];					
 	}
 	
 	return(self);
@@ -119,6 +121,8 @@ static NSTimeInterval const kSCHSyncManagerHeartbeatInterval = 30.0;
 
 - (void)dealloc
 {
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	
 	[timer release], timer = nil;
 	[queue release], queue = nil;
 	[profileSyncComponent release], profileSyncComponent = nil;
@@ -160,11 +164,22 @@ static NSTimeInterval const kSCHSyncManagerHeartbeatInterval = 30.0;
 	[timer release], timer = nil;
 }
 
-- (void)backgroundSyncHeartbeat:(NSTimer*)theTimer
+- (void)backgroundSyncHeartbeat:(NSTimer *)theTimer
 {
 	NSLog(@"Background Sync Heartbeat!");
 
 	[self kickQueue];
+}
+
+- (void)authenticationManager:(NSNotification *)notification
+{
+	NSDictionary *userInfo = [notification userInfo];
+	
+	if ([[userInfo valueForKey:kSCHAuthenticationManagerOfflineMode] boolValue] == NO) {
+		NSLog(@"Authenticated!");
+		
+		[self kickQueue];	
+	}
 }
 
 #pragma mark -
@@ -314,6 +329,8 @@ static NSTimeInterval const kSCHSyncManagerHeartbeatInterval = 30.0;
 		if (syncComponent != nil && [syncComponent isSynchronizing] == NO) {
 			NSLog(@"Kicking %@", [syncComponent class]);			
 			[syncComponent synchronize];
+		} else {
+			NSLog(@"Kicked but already syncing %@", [syncComponent class]);
 		}
 	} else {
 		NSLog(@"Queue is empty");
