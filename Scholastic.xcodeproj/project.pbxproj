@@ -281,6 +281,12 @@
 		F8509F8F12F0654A00197EB5 /* booktexture-nocover.png in Resources */ = {isa = PBXBuildFile; fileRef = F8509F8112F0653700197EB5 /* booktexture-nocover.png */; };
 		F8509F9012F0654B00197EB5 /* thumbImage.png in Resources */ = {isa = PBXBuildFile; fileRef = F8509F8012F0653700197EB5 /* thumbImage.png */; };
 		F8CD24F612F97E62001C748B /* BWKBookManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F8CD24CA12F9714D001C748B /* BWKBookManager.m */; };
+		F8E29667130583C1009BD30D /* SCHAsyncImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8E29666130583C1009BD30D /* SCHAsyncImageView.m */; };
+		F8E29668130583C9009BD30D /* SCHAsyncImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8E29666130583C1009BD30D /* SCHAsyncImageView.m */; };
+		F8E2969D130585D8009BD30D /* SCHThumbnailFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = F8E2969C130585D8009BD30D /* SCHThumbnailFactory.m */; };
+		F8E2969E130585D8009BD30D /* SCHThumbnailFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = F8E2969C130585D8009BD30D /* SCHThumbnailFactory.m */; };
+		F8E296B213058D38009BD30D /* SCHThumbnailOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F8E296B113058D38009BD30D /* SCHThumbnailOperation.m */; };
+		F8E296B313058D38009BD30D /* SCHThumbnailOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F8E296B113058D38009BD30D /* SCHThumbnailOperation.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -541,6 +547,12 @@
 		F8509F8112F0653700197EB5 /* booktexture-nocover.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "booktexture-nocover.png"; path = "Shared/Images/booktexture-nocover.png"; sourceTree = "<group>"; };
 		F8CD24C912F9714D001C748B /* BWKBookManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BWKBookManager.h; sourceTree = "<group>"; };
 		F8CD24CA12F9714D001C748B /* BWKBookManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BWKBookManager.m; sourceTree = "<group>"; };
+		F8E29665130583C1009BD30D /* SCHAsyncImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHAsyncImageView.h; sourceTree = "<group>"; };
+		F8E29666130583C1009BD30D /* SCHAsyncImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHAsyncImageView.m; sourceTree = "<group>"; };
+		F8E2969B130585D8009BD30D /* SCHThumbnailFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHThumbnailFactory.h; sourceTree = "<group>"; };
+		F8E2969C130585D8009BD30D /* SCHThumbnailFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHThumbnailFactory.m; sourceTree = "<group>"; };
+		F8E296B013058D38009BD30D /* SCHThumbnailOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHThumbnailOperation.h; sourceTree = "<group>"; };
+		F8E296B113058D38009BD30D /* SCHThumbnailOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHThumbnailOperation.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -614,6 +626,7 @@
 		28EEBF621118D79A00187D67 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				F8E29664130583A0009BD30D /* Image Cache */,
 				C923B14612F6AFE10054426F /* Bookshelves */,
 				F8509E7512F0620D00197EB5 /* Debug Books */,
 				5293872912DF436100045B44 /* Web Services */,
@@ -1089,6 +1102,19 @@
 			name = "Scrubber View";
 			sourceTree = "<group>";
 		};
+		F8E29664130583A0009BD30D /* Image Cache */ = {
+			isa = PBXGroup;
+			children = (
+				F8E2969B130585D8009BD30D /* SCHThumbnailFactory.h */,
+				F8E2969C130585D8009BD30D /* SCHThumbnailFactory.m */,
+				F8E29665130583C1009BD30D /* SCHAsyncImageView.h */,
+				F8E29666130583C1009BD30D /* SCHAsyncImageView.m */,
+				F8E296B013058D38009BD30D /* SCHThumbnailOperation.h */,
+				F8E296B113058D38009BD30D /* SCHThumbnailOperation.m */,
+			);
+			name = "Image Cache";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1331,6 +1357,9 @@
 				5266D34C13007A1C004E3AC6 /* SCHTopFavoritesComponent.m in Sources */,
 				5266D38413007D15004E3AC6 /* SCHComponent.m in Sources */,
 				52E334F61303049C002F3011 /* SCHTopPicksBookShelfViewController.m in Sources */,
+				F8E29667130583C1009BD30D /* SCHAsyncImageView.m in Sources */,
+				F8E2969D130585D8009BD30D /* SCHThumbnailFactory.m in Sources */,
+				F8E296B213058D38009BD30D /* SCHThumbnailOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1439,6 +1468,9 @@
 				52E332EA13018EDF002F3011 /* SCHReadingStatsSyncComponent.m in Sources */,
 				52E332EB13018EDF002F3011 /* SCHSettingsSyncComponent.m in Sources */,
 				52E334F71303049C002F3011 /* SCHTopPicksBookShelfViewController.m in Sources */,
+				F8E29668130583C9009BD30D /* SCHAsyncImageView.m in Sources */,
+				F8E2969E130585D8009BD30D /* SCHThumbnailFactory.m in Sources */,
+				F8E296B313058D38009BD30D /* SCHThumbnailOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
