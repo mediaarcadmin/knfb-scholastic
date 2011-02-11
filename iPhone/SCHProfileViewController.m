@@ -55,11 +55,6 @@ static NSInteger const kRootViewControllerSettingsRow = 1;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
-    // Set up the edit and add buttons.
-    UIBarButtonItem *refreshButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refreshTable)];
-    self.navigationItem.rightBarButtonItem = refreshButton;
-    [refreshButton release], refreshButton = nil;
 	
 	// Setup the table view header
 	self.tableView.tableHeaderView = self.headerView;
@@ -132,44 +127,6 @@ static NSInteger const kRootViewControllerSettingsRow = 1;
 		}
 	}
 }
-
-
-#pragma mark -
-#pragma mark Refresh the table
-
-- (void)refreshTable {
-    
-//    // Create a new instance of the entity managed by the fetched results controller.
-//    NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
-//    NSEntityDescription *entity = [[self.fetchedResultsController fetchRequest] entity];
-//    NSManagedObject *newManagedObject = [NSEntityDescription insertNewObjectForEntityForName:[entity name] inManagedObjectContext:context];
-//    
-//    // If appropriate, configure the new managed object.
-//    [newManagedObject setValue:[NSDate date] forKey:@"timeStamp"];
-//    
-//    // Save the context.
-//    NSError *error = nil;
-//    if (![context save:&error]) {
-//        /*
-//         Replace this implementation with code to handle the error appropriately.
-//         
-//         abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. If it is not possible to recover from the error, display an alert panel that instructs the user to quit the application by pressing the Home button.
-//         */
-//        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-//        abort();
-//    }
-	
-	if ([self.webServiceSync update] == NO ) {
-		UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:@"Give me a moment"
-															 message:@"I am just requesting access. Normal service will resume shortly."
-															delegate:nil 
-												   cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-												   otherButtonTitles:nil]; 
-		[errorAlert show]; 
-		[errorAlert release];		
-	}
-}
-
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated {
 

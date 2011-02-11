@@ -10,6 +10,9 @@
 #import "SCHProfileViewController.h"
 
 #import "SCHSyncManager.h"
+#import "SCHAuthenticationManager.h"
+
+static NSTimeInterval const kAppDelegate_iPhoneSyncManagerWakeDelay = 5.0;
 
 @implementation AppDelegate_iPhone
 
@@ -25,7 +28,7 @@
 	
 	SCHSyncManager *syncManager = [SCHSyncManager sharedSyncManager];
 	syncManager.managedObjectContext = self.managedObjectContext;
-	[syncManager startBackgroundSync];
+	[syncManager start];
 }
 
 
@@ -72,6 +75,13 @@
     /*
      Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
      */
+	
+	SCHSyncManager *syncManager = [SCHSyncManager sharedSyncManager];
+	SCHAuthenticationManager *authenticationManager = [SCHAuthenticationManager sharedAuthenticationManager];
+	
+	if ([authenticationManager hasUsernameAndPassword] == YES) {
+		[syncManager performSelector:@selector(firstSync) withObject:nil afterDelay:kAppDelegate_iPhoneSyncManagerWakeDelay];
+	}
 }
 
 

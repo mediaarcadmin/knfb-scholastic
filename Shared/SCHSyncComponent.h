@@ -10,6 +10,7 @@
 #import <CoreData/CoreData.h>
 
 #import "SCHComponent.h"
+#import "NSNumber+ObjectTypes.h"
 
 @interface SCHSyncComponent : SCHComponent
 {

@@ -8,19 +8,71 @@
 
 #import "SCHSettingsSyncComponent.h"
 #import "SCHSyncComponentProtected.h"
+#import "NSManagedObjectContext+Extensions.h"
 
 #import "SCHLibreAccessWebService.h"
+#import "SCHUserSettingsItem+Extensions.h"
+
+@interface SCHSettingsSyncComponent ()
+
+- (void)clearUserSettings;
+- (void)updateUserSettings:(NSArray *)settingsList;
+
+@end
 
 @implementation SCHSettingsSyncComponent
 
 - (BOOL)synchronize
 {
-	return(NO);	
+	BOOL ret = YES;
+	
+	if (self.isSynchronizing == NO) {
+		self.isSynchronizing = [self.libreAccessWebService listUserSettings];
+		if (self.isSynchronizing == NO) {
+			[[SCHAuthenticationManager sharedAuthenticationManager] authenticate];				
+			ret = NO;
+		}
+	}
+	
+	return(ret);	
 }
 
 - (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result
 {	
-	NSLog(@"%@\n%@", method, result);
+	[self updateUserSettings:[result objectForKey:kSCHLibreAccessWebServiceUserSettingsList]];
+	self.isSynchronizing = NO;
+	
+	[super method:method didCompleteWithResult:nil];	
+}
+
+- (void)clearUserSettings
+{
+	NSError *error = nil;
+	
+	if (![self.managedObjectContext emptyEntity:kSCHUserSettingsItem error:&error]) {
+		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+		abort();
+	}	
+}
+
+- (void)updateUserSettings:(NSArray *)settingsList
+{
+	NSError *error = nil;
+	
+	[self clearUserSettings];
+	
+	for (id setting in settingsList) {
+		SCHUserSettingsItem *newUserSettingsItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHUserSettingsItem inManagedObjectContext:self.managedObjectContext];
+		
+		newUserSettingsItem.SettingType = [self makeNullNil:[setting objectForKey:kSCHLibreAccessWebServiceSettingType]];
+		newUserSettingsItem.SettingValue = [self makeNullNil:[setting objectForKey:kSCHLibreAccessWebServiceSettingValue]];
+	}
+	
+	// Save the context.
+	if (![self.managedObjectContext save:&error]) {
+		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+		abort();
+	}	
 }
 
 @end

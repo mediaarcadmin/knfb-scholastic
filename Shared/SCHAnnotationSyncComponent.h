@@ -16,5 +16,7 @@
 
 }
 
+@property (retain, nonatomic) NSNumber *profileID;
+@property (retain, nonatomic) NSArray *books;
 
 @end

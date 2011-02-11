@@ -20,12 +20,6 @@
 @synthesize cancelButton;
 @synthesize spinner;
 
-- (void)awakeFromNib
-{
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(authenticationManager:) name:kSCHAuthenticationManagerSuccess object:nil];			
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(authenticationManager:) name:kSCHAuthenticationManagerFailure object:nil];					
-}
-
 - (void)dealloc 
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -43,6 +37,8 @@
 
 - (void)authenticationManager:(NSNotification *)notification
 {
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	
 	[spinner stopAnimating];
 	self.loginButton.enabled = YES;
 	self.cancelButton.enabled = YES;
@@ -70,6 +66,9 @@
 	[self.userName resignFirstResponder];
 	[self.password resignFirstResponder];
 				
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(authenticationManager:) name:kSCHAuthenticationManagerSuccess object:nil];			
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(authenticationManager:) name:kSCHAuthenticationManagerFailure object:nil];					
+	
 	if ([[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithUserName:[self.userName text] withPassword:[self.password text]] == YES) {
 		[spinner startAnimating];
 		self.loginButton.enabled = NO;

@@ -26,10 +26,12 @@
 {
 	BOOL ret = YES;
 	
-	self.isSynchronizing = [self.libreAccessWebService getUserProfiles];
 	if (self.isSynchronizing == NO) {
-		[[SCHAuthenticationManager sharedAuthenticationManager] authenticate];				
-		ret = NO;
+		self.isSynchronizing = [self.libreAccessWebService getUserProfiles];
+		if (self.isSynchronizing == NO) {
+			[[SCHAuthenticationManager sharedAuthenticationManager] authenticate];				
+			ret = NO;
+		}
 	}
 	
 	return(ret);	
@@ -37,10 +39,10 @@
 
 - (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result
 {	
-	NSLog(@"%@\n%@", method, result);
-	
 	[self syncProfiles:[result objectForKey:kSCHLibreAccessWebServiceProfileList]];
 	self.isSynchronizing = NO;
+	
+	[super method:method didCompleteWithResult:nil];
 }
 
 - (void)clearProfiles

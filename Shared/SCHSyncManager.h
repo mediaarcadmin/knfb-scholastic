@@ -24,8 +24,8 @@
 - (void)stop;
 
 - (void)firstSync;
-- (void)openDocument;
-- (void)closeDocument;
+- (void)openDocument:(NSString *)ISBN forProfile:(NSNumber *)profileID;
+- (void)openDocumentForProfile:(NSString *)ISBN forProfile:(NSNumber *)profileID;
 - (void)exitParentalTools:(BOOL)syncNow;
 
 @end

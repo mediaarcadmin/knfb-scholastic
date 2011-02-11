@@ -34,7 +34,9 @@
 
 - (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result
 {	
-	NSLog(@"%@\n%@", method, result);
+	if([(id)self.delegate respondsToSelector:@selector(component:didCompleteWithResult:)]) {
+		[(id)self.delegate component:self didCompleteWithResult:nil];		
+	}	
 }
 
 - (void)method:(NSString *)method didFailWithError:(NSError *)error
