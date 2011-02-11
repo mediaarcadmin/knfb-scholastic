@@ -116,6 +116,11 @@ static NSString * const kSCHAuthenticationManagerServiceName = @"Scholastic";
 					
 					[self postFailureWithError:error];
 				}
+			} else {
+				NSError *error = [NSError errorWithDomain:kSCHAuthenticationManagerErrorDomain code:kSCHAuthenticationManagerLoginError 
+												 userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"Incorrect username/password", @"") forKey:NSLocalizedDescriptionKey]];
+				
+				[self postFailureWithError:error];	
 			}
 		} else {
 			[[NSUserDefaults standardUserDefaults] setObject:username forKey:kSCHAuthenticationManagerUsername];
