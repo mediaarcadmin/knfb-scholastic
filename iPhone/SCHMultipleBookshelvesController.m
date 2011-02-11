@@ -193,13 +193,7 @@
     // NEW
 	
 	if (page != [self topPicksBookshelfPosition]) {
-		NSEntityDescription *entityDescription = [NSEntityDescription entityForName:@"SCHContentMetadataItem" inManagedObjectContext:self.managedObjectContext];
-		NSFetchRequest *request = [[[NSFetchRequest alloc] init] autorelease];
-		[request setEntity:entityDescription];
-		
-		NSError *error = nil;				
-		NSArray *theBooks = [self.managedObjectContext executeFetchRequest:request error:&error];
-		controller.books = theBooks;		
+		controller.books = self.books;		
 	}
 	
 	// END
