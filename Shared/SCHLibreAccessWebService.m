@@ -1078,39 +1078,73 @@ static NSString * const kSCHLibreAccessWebServiceStatusHolderStatusMessage = @"s
 	} else if([anObject isKindOfClass:[NSMutableArray class]] == YES) {
 		ret = [NSMutableArray array];
 		
-		for (id item in anObject) {
-			if ([item isKindOfClass:[LibreAccessServiceSvc_ProfileItem class]] == YES) {
-				[ret addObject:[self objectFromProfileItem:item]];					
-			} else if ([item isKindOfClass:[LibreAccessServiceSvc_UserContentItem class]] == YES) {
-				[ret addObject:[self objectFromUserContentItem:item]];					
-			} else if ([item isKindOfClass:[LibreAccessServiceSvc_ContentProfileItem class]] == YES) {
-				[ret addObject:[self objectFromContentProfileItem:item]];					
-			} else if ([item isKindOfClass:[LibreAccessServiceSvc_OrderItem class]] == YES) {
-				[ret addObject:[self objectFromOrderItem:item]];									
-			} else if ([item isKindOfClass:[LibreAccessServiceSvc_ContentMetadataItem class]] == YES) {
-				[ret addObject:[self objectFromContentMetadataItem:item]];													
-			} else if ([item isKindOfClass:[LibreAccessServiceSvc_ProfileStatusItem class]] == YES) {
-				[ret addObject:[self objectFromProfileStatusItem:item]];													
-			} else if ([item isKindOfClass:[LibreAccessServiceSvc_UserSettingsItem class]] == YES) {
-				[ret addObject:[self objectFromUserSettingsItem:item]];	
-			} else if ([item isKindOfClass:[LibreAccessServiceSvc_AnnotationsItem class]] == YES) {
-				[ret addObject:[self objectFromAnnotationsItem:item]];	
-			} else if ([item isKindOfClass:[LibreAccessServiceSvc_AnnotationsContentItem class]] == YES) {
-				[ret addObject:[self objectFromAnnotationsContentItem:item]];	
-			} else if ([item isKindOfClass:[LibreAccessServiceSvc_PrivateAnnotations class]] == YES) {
-				[ret addObject:[self objectFromPrivateAnnotations:item]];	
-			} else if ([item isKindOfClass:[LibreAccessServiceSvc_Highlight class]] == YES) {
-				[ret addObject:[self objectFromHighlight:item]];	
-			} else if ([item isKindOfClass:[LibreAccessServiceSvc_Notes class]] == YES) {
-				[ret addObject:[self objectFromNote:item]];	
-			} else if ([item isKindOfClass:[LibreAccessServiceSvc_FavoriteTypesValuesItem class]] == YES) {
-				[ret addObject:[self objectFromFavoriteTypesValuesItem:item]];	
-			} else if ([item isKindOfClass:[LibreAccessServiceSvc_FavoriteTypesItem class]] == YES) {
-				[ret addObject:[self objectFromFavoriteTypesItem:item]];
-			} else if ([item isKindOfClass:[LibreAccessServiceSvc_TopFavoritesResponseItem class]] == YES) {
-				[ret addObject:[self objectFromTopFavoritesItem:item]];	
-			} else if ([item isKindOfClass:[LibreAccessServiceSvc_TopFavoritesContentItem class]] == YES) {
-				[ret addObject:[self objectFromTopFavoritesContentItem:item]];	
+		if ([anObject count] > 0) {
+			id firstItem = [anObject objectAtIndex:0];
+			
+			if ([firstItem isKindOfClass:[LibreAccessServiceSvc_ProfileItem class]] == YES) {
+				for (id item in anObject) {
+					[ret addObject:[self objectFromProfileItem:item]];					
+				}
+			} else if ([firstItem isKindOfClass:[LibreAccessServiceSvc_UserContentItem class]] == YES) {
+				for (id item in anObject) {				
+					[ret addObject:[self objectFromUserContentItem:item]];					
+				}
+			} else if ([firstItem isKindOfClass:[LibreAccessServiceSvc_ContentProfileItem class]] == YES) {
+				for (id item in anObject) {
+					[ret addObject:[self objectFromContentProfileItem:item]];					
+				}
+			} else if ([firstItem isKindOfClass:[LibreAccessServiceSvc_OrderItem class]] == YES) {
+				for (id item in anObject) {
+					[ret addObject:[self objectFromOrderItem:item]];									
+				}
+			} else if ([firstItem isKindOfClass:[LibreAccessServiceSvc_ContentMetadataItem class]] == YES) {
+				for (id item in anObject) {
+					[ret addObject:[self objectFromContentMetadataItem:item]];													
+				}
+			} else if ([firstItem isKindOfClass:[LibreAccessServiceSvc_ProfileStatusItem class]] == YES) {
+				for (id item in anObject) {
+					[ret addObject:[self objectFromProfileStatusItem:item]];													
+				}
+			} else if ([firstItem isKindOfClass:[LibreAccessServiceSvc_UserSettingsItem class]] == YES) {
+				for (id item in anObject) {
+					[ret addObject:[self objectFromUserSettingsItem:item]];	
+				}
+			} else if ([firstItem isKindOfClass:[LibreAccessServiceSvc_AnnotationsItem class]] == YES) {
+				for (id item in anObject) {
+					[ret addObject:[self objectFromAnnotationsItem:item]];	
+				}
+			} else if ([firstItem isKindOfClass:[LibreAccessServiceSvc_AnnotationsContentItem class]] == YES) {
+				for (id item in anObject) {
+					[ret addObject:[self objectFromAnnotationsContentItem:item]];	
+				}
+			} else if ([firstItem isKindOfClass:[LibreAccessServiceSvc_PrivateAnnotations class]] == YES) {
+				for (id item in anObject) {
+					[ret addObject:[self objectFromPrivateAnnotations:item]];	
+				}
+			} else if ([firstItem isKindOfClass:[LibreAccessServiceSvc_Highlight class]] == YES) {
+				for (id item in anObject) {
+					[ret addObject:[self objectFromHighlight:item]];	
+				}
+			} else if ([firstItem isKindOfClass:[LibreAccessServiceSvc_Notes class]] == YES) {
+				for (id item in anObject) {
+					[ret addObject:[self objectFromNote:item]];
+				}
+			} else if ([firstItem isKindOfClass:[LibreAccessServiceSvc_FavoriteTypesValuesItem class]] == YES) {
+				for (id item in anObject) {
+					[ret addObject:[self objectFromFavoriteTypesValuesItem:item]];	
+				}
+			} else if ([firstItem isKindOfClass:[LibreAccessServiceSvc_FavoriteTypesItem class]] == YES) {
+				for (id item in anObject) {
+					[ret addObject:[self objectFromFavoriteTypesItem:item]];
+				}
+			} else if ([firstItem isKindOfClass:[LibreAccessServiceSvc_TopFavoritesResponseItem class]] == YES) {
+				for (id item in anObject) {
+					[ret addObject:[self objectFromTopFavoritesItem:item]];	
+				}
+			} else if ([firstItem isKindOfClass:[LibreAccessServiceSvc_TopFavoritesContentItem class]] == YES) {
+				for (id item in anObject) {
+					[ret addObject:[self objectFromTopFavoritesContentItem:item]];	
+				}
 			}
 		}		
 	} else if([anObject isKindOfClass:[USBoolean class]] == YES) {
