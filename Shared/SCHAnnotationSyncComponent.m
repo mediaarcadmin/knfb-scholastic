@@ -38,37 +38,61 @@
 - (SCHLastPage *)lastPage:(NSDictionary *)lastPage;
 - (SCHFavorite *)favorite:(NSDictionary *)favorite;
 
+@property (retain, nonatomic) NSMutableDictionary *annotations;
+
 @end
 
 @implementation SCHAnnotationSyncComponent
 
-@synthesize profileID;
-@synthesize books;
+@synthesize annotations;
+
+- (id)init
+{
+	self = [super init];
+	if (self != nil) {
+		self.annotations = [NSMutableDictionary dictionary];		
+	}
+	
+	return(self);
+}
 
 - (void)dealloc
 {
-	self.profileID = nil;
-	self.books = nil;
+	self.annotations = nil;
 	
 	[super dealloc];
+}
+
+- (void)addProfile:(NSNumber *)profileID withBooks:(NSArray *)books
+{
+	if (profileID != nil && books != nil && [books count] > 0) {
+		[self.annotations setObject:books forKey:profileID];		
+	}
+}
+
+- (BOOL)haveProfiles
+{
+	return([self.annotations count ] > 0);
 }
 
 - (BOOL)synchronize
 {
 	BOOL ret = YES;
 	
-	if (self.isSynchronizing == NO) {
-		if (profileID != nil && [books count] > 0) {
-			self.isSynchronizing = [self.libreAccessWebService listProfileContentAnnotations:books forProfile:profileID];
-			if (self.isSynchronizing == NO) {
-				[[SCHAuthenticationManager sharedAuthenticationManager] authenticate];				
-				ret = NO;
-			}
+	if (self.isSynchronizing == NO && [self haveProfiles] == YES) {
+		NSNumber *profileID = [[self.annotations allKeys] objectAtIndex:0];
+		NSArray *books = [self.annotations objectForKey:profileID];
+		
+		self.isSynchronizing = [self.libreAccessWebService listProfileContentAnnotations:books forProfile:profileID];
+		if (self.isSynchronizing == NO) {
+			[[SCHAuthenticationManager sharedAuthenticationManager] authenticate];				
+			ret = NO;
 		} else {
 			if([(id)self.delegate respondsToSelector:@selector(component:didCompleteWithResult:)]) {
 				[(id)self.delegate component:self didCompleteWithResult:nil];		
 			}			
 		}
+		[self.annotations removeObjectForKey:profileID];
 	}
 	
 	return(ret);
@@ -103,12 +127,12 @@
 	NSDictionary *annotationsList = [self makeNullNil:[profileContentAnnotationList objectForKey:kSCHLibreAccessWebServiceAnnotationsList]];
 	NSDictionary *itemsCount = [self makeNullNil:[profileContentAnnotationList objectForKey:kSCHLibreAccessWebServiceItemsCount]];	
 	
-	for (NSDictionary *annotations in annotationsList) {
+	for (NSDictionary *annotationsItem in annotationsList) {
 		newAnnotationsList = [NSEntityDescription insertNewObjectForEntityForName:kSCHAnnotationsList inManagedObjectContext:self.managedObjectContext];
-		for (NSDictionary *annotation in [annotations objectForKey:kSCHLibreAccessWebServiceAnnotationsContentList]) {
+		for (NSDictionary *annotation in [annotationsItem objectForKey:kSCHLibreAccessWebServiceAnnotationsContentList]) {
 			[newAnnotationsList addAnnotationContentItemObject:[self annotationsContentItem:annotation]];
 		}
-		newAnnotationsList.ProfileID = [annotations objectForKey:kSCHLibreAccessWebServiceProfileID];
+		newAnnotationsList.ProfileID = [annotationsItem objectForKey:kSCHLibreAccessWebServiceProfileID];
 		[newListProfileContentAnnotations addAnnotationsListObject:newAnnotationsList];
 	}
 	

@@ -22,6 +22,7 @@ static NSTimeInterval const kSCHSyncManagerHeartbeatInterval = 30.0;
 @interface SCHSyncManager ()
 
 - (NSMutableArray *)bookAnnotationsFromProfile:(SCHProfileItem *)profileItem;
+- (NSMutableDictionary *)annotationContentItemFromUserContentItem:(SCHUserContentItem *)userContentItem;
 - (void)addToQueue:(SCHSyncComponent *)component;
 - (void)kickQueue;
 
@@ -186,7 +187,6 @@ static NSTimeInterval const kSCHSyncManagerHeartbeatInterval = 30.0;
 	
 	[self addToQueue:profileSyncComponent];
 	[self addToQueue:contentSyncComponent];
-//	[self addToQueue:bookshelfSyncComponent];
 		
 	NSEntityDescription *entityDescription = [NSEntityDescription entityForName:kSCHProfileItem inManagedObjectContext:self.managedObjectContext];
 	NSFetchRequest *request = [[NSFetchRequest alloc] init];
@@ -194,13 +194,12 @@ static NSTimeInterval const kSCHSyncManagerHeartbeatInterval = 30.0;
 	
 	NSError *error = nil;				
 	NSArray *profiles = [self.managedObjectContext executeFetchRequest:request error:&error];
-	for (SCHProfileItem *profileItem in profiles) {
-		annotationSyncComponent.profileID = [profileItem valueForKey:kSCHLibreAccessWebServiceID];
-		annotationSyncComponent.books = [self bookAnnotationsFromProfile:profileItem];
-		
-		[self addToQueue:annotationSyncComponent];		
+	for (SCHProfileItem *profileItem in profiles) {	
+		[annotationSyncComponent addProfile:[profileItem valueForKey:kSCHLibreAccessWebServiceID] withBooks:[self bookAnnotationsFromProfile:profileItem]];	
 	}
 	[request release], request = nil;
+
+	[self addToQueue:annotationSyncComponent];		
 	
 //	[self addToQueue:readingStatsSyncComponent];
 	[self addToQueue:settingsSyncComponent];
@@ -220,35 +219,39 @@ static NSTimeInterval const kSCHSyncManagerHeartbeatInterval = 30.0;
 	NSMutableArray *ret = [NSMutableArray array];
 	
 	for (SCHContentProfileItem *contentProfileItem in [profileItem valueForKey:@"ContentProfileItem"]) {
-		SCHUserContentItem *userContentItem = contentProfileItem.UserContentItem;
-		
-		NSMutableDictionary *annotationContentItem = [NSMutableDictionary dictionary];
-		
-		[annotationContentItem setObject:[userContentItem valueForKey:kSCHLibreAccessWebServiceContentIdentifier] forKey:kSCHLibreAccessWebServiceContentIdentifier];
-		[annotationContentItem setObject:[userContentItem valueForKey:kSCHLibreAccessWebServiceContentIdentifierType] forKey:kSCHLibreAccessWebServiceContentIdentifierType];
-		[annotationContentItem setObject:[userContentItem valueForKey:kSCHLibreAccessWebServiceDRMQualifier] forKey:kSCHLibreAccessWebServiceDRMQualifier];
-		[annotationContentItem setObject:[userContentItem valueForKey:kSCHLibreAccessWebServiceFormat] forKey:kSCHLibreAccessWebServiceFormat];
-		
-		NSMutableDictionary *privateAnnotation = [NSMutableDictionary dictionary];
-		NSDate *date = [NSDate distantPast];
-		
-		[privateAnnotation setObject:[userContentItem valueForKey:kSCHLibreAccessWebServiceVersion] forKey:kSCHLibreAccessWebServiceVersion];
-		[privateAnnotation setObject:date forKey:kSCHLibreAccessWebServiceHighlightsAfter];
-		[privateAnnotation setObject:date forKey:kSCHLibreAccessWebServiceNotesAfter];
-		[privateAnnotation setObject:date forKey:kSCHLibreAccessWebServiceBookmarksAfter];
-		
-		[annotationContentItem setObject:privateAnnotation forKey:kSCHLibreAccessWebServicePrivateAnnotations];
-		
-		[ret addObject:annotationContentItem];
+		[ret addObject:[self annotationContentItemFromUserContentItem:contentProfileItem.UserContentItem]];
 	}
 	
 	return(ret);
 }
 
-- (void)openDocument:(NSString *)ISBN forProfile:(NSNumber *)profileID
+- (NSMutableDictionary *)annotationContentItemFromUserContentItem:(SCHUserContentItem *)userContentItem
+{	
+	NSMutableDictionary *ret = [NSMutableDictionary dictionary];
+	
+	[ret setObject:[userContentItem valueForKey:kSCHLibreAccessWebServiceContentIdentifier] forKey:kSCHLibreAccessWebServiceContentIdentifier];
+	[ret setObject:[userContentItem valueForKey:kSCHLibreAccessWebServiceContentIdentifierType] forKey:kSCHLibreAccessWebServiceContentIdentifierType];
+	[ret setObject:[userContentItem valueForKey:kSCHLibreAccessWebServiceDRMQualifier] forKey:kSCHLibreAccessWebServiceDRMQualifier];
+	[ret setObject:[userContentItem valueForKey:kSCHLibreAccessWebServiceFormat] forKey:kSCHLibreAccessWebServiceFormat];
+	
+	NSMutableDictionary *privateAnnotation = [NSMutableDictionary dictionary];
+	NSDate *date = [NSDate distantPast];
+	
+	[privateAnnotation setObject:[userContentItem valueForKey:kSCHLibreAccessWebServiceVersion] forKey:kSCHLibreAccessWebServiceVersion];
+	[privateAnnotation setObject:date forKey:kSCHLibreAccessWebServiceHighlightsAfter];
+	[privateAnnotation setObject:date forKey:kSCHLibreAccessWebServiceNotesAfter];
+	[privateAnnotation setObject:date forKey:kSCHLibreAccessWebServiceBookmarksAfter];
+	
+	[ret setObject:privateAnnotation forKey:kSCHLibreAccessWebServicePrivateAnnotations];
+
+	return(ret);
+}
+
+- (void)openDocument:(SCHUserContentItem *)userContentItem forProfile:(NSNumber *)profileID
 {
 	NSLog(@"Scheduling Open Document");
 	
+	[annotationSyncComponent addProfile:profileID withBooks:[NSArray arrayWithObject:[self annotationContentItemFromUserContentItem:userContentItem]]];	
 	[self addToQueue:annotationSyncComponent];
 
 	[self kickQueue];
@@ -256,10 +259,11 @@ static NSTimeInterval const kSCHSyncManagerHeartbeatInterval = 30.0;
 	// annotations SaveProfileContentAnnotations/ListProfileContentAnnotations
 }
 
-- (void)openDocumentForProfile:(NSString *)ISBN forProfile:(NSNumber *)profileID
+- (void)closeDocument:(SCHUserContentItem *)userContentItem forProfile:(NSNumber *)profileID
 {
 	NSLog(@"Scheduling Close Document");
 	
+	[annotationSyncComponent addProfile:profileID withBooks:[NSArray arrayWithObject:[self annotationContentItemFromUserContentItem:userContentItem]]];	
 	[self addToQueue:annotationSyncComponent];
 //	[self addToQueue:readingStatsSyncComponent];
 	
@@ -275,7 +279,6 @@ static NSTimeInterval const kSCHSyncManagerHeartbeatInterval = 30.0;
 
 	[self addToQueue:profileSyncComponent];
 	[self addToQueue:contentSyncComponent];
-//	[self addToQueue:bookshelfSyncComponent];
 	[self addToQueue:settingsSyncComponent];
 	
 	[self kickQueue];
@@ -291,8 +294,12 @@ static NSTimeInterval const kSCHSyncManagerHeartbeatInterval = 30.0;
 
 - (void)component:(SCHComponent *)component didCompleteWithResult:(NSDictionary *)result
 {
-	NSLog(@"Removing %@ from the sync manager queue", [component class]);
-	[queue removeObject:component];
+	if ([component isKindOfClass:[SCHAnnotationSyncComponent class]] == YES && [(SCHAnnotationSyncComponent *)component haveProfiles] == YES) {
+		NSLog(@"Next annotation profile");
+	} else {
+		NSLog(@"Removing %@ from the sync manager queue", [component class]);
+		[queue removeObject:component];
+	}
 	[self kickQueue];
 }
 
@@ -306,7 +313,6 @@ static NSTimeInterval const kSCHSyncManagerHeartbeatInterval = 30.0;
 
 - (void)addToQueue:(SCHSyncComponent *)component
 {
-	// TODO: handle multiple annotations
 	if ([queue containsObject:component] == NO) {
 		NSLog(@"Adding %@ to the sync manager queue", [component class]);
 		[queue addObject:component];
@@ -315,12 +321,12 @@ static NSTimeInterval const kSCHSyncManagerHeartbeatInterval = 30.0;
 
 - (void)kickQueue
 {
-	// if the queue has stopped then start it up again
 	if ([queue count] > 0) {
 		SCHSyncComponent *syncComponent = [queue objectAtIndex:0];
 		
 		if (syncComponent != nil && [syncComponent isSynchronizing] == NO) {
 			NSLog(@"Kicking %@", [syncComponent class]);			
+			// if the queue has stopped then start it up again
 			[syncComponent synchronize];
 		} else {
 			NSLog(@"Kicked but already syncing %@", [syncComponent class]);

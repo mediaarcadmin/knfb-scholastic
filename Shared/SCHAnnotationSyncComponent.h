@@ -16,7 +16,7 @@
 
 }
 
-@property (retain, nonatomic) NSNumber *profileID;
-@property (retain, nonatomic) NSArray *books;
+- (void)addProfile:(NSNumber *)profileID withBooks:(NSArray *)books;
+- (BOOL)haveProfiles;
 
 @end

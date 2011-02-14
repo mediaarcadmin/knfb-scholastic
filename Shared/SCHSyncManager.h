@@ -11,6 +11,8 @@
 
 #import "SCHComponentDelegate.h"
 
+@class SCHUserContentItem;
+
 @interface SCHSyncManager : NSObject <SCHComponentDelegate>
 {	
 
@@ -24,8 +26,8 @@
 - (void)stop;
 
 - (void)firstSync;
-- (void)openDocument:(NSString *)ISBN forProfile:(NSNumber *)profileID;
-- (void)openDocumentForProfile:(NSString *)ISBN forProfile:(NSNumber *)profileID;
+- (void)openDocument:(SCHUserContentItem *)userContentItem forProfile:(NSNumber *)profileID;
+- (void)closeDocument:(SCHUserContentItem *)userContentItem forProfile:(NSNumber *)profileID;
 - (void)exitParentalTools:(BOOL)syncNow;
 
 @end
