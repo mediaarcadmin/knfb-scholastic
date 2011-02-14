@@ -10,7 +10,6 @@
 
 #import "SCHProfileSyncComponent.h"
 #import "SCHContentSyncComponent.h"
-#import "SCHBookshelfSyncComponent.h"
 #import "SCHAnnotationSyncComponent.h"
 #import "SCHReadingStatsSyncComponent.h"
 #import "SCHSettingsSyncComponent.h"
@@ -30,7 +29,6 @@ static NSTimeInterval const kSCHSyncManagerHeartbeatInterval = 30.0;
 @property (retain, nonatomic) NSMutableArray *queue;
 @property (retain, nonatomic) SCHProfileSyncComponent *profileSyncComponent; 
 @property (retain, nonatomic) SCHContentSyncComponent *contentSyncComponent;
-@property (retain, nonatomic) SCHBookshelfSyncComponent *bookshelfSyncComponent;
 @property (retain, nonatomic) SCHAnnotationSyncComponent *annotationSyncComponent;
 @property (retain, nonatomic) SCHReadingStatsSyncComponent *readingStatsSyncComponent;
 @property (retain, nonatomic) SCHSettingsSyncComponent *settingsSyncComponent;
@@ -44,7 +42,6 @@ static NSTimeInterval const kSCHSyncManagerHeartbeatInterval = 30.0;
 @synthesize managedObjectContext;
 @synthesize profileSyncComponent;
 @synthesize contentSyncComponent;
-@synthesize bookshelfSyncComponent;
 @synthesize annotationSyncComponent;
 @synthesize readingStatsSyncComponent;
 @synthesize settingsSyncComponent;
@@ -104,8 +101,6 @@ static NSTimeInterval const kSCHSyncManagerHeartbeatInterval = 30.0;
 		profileSyncComponent.delegate = self;
 		contentSyncComponent = [[SCHContentSyncComponent alloc] init];
 		contentSyncComponent.delegate = self;		
-		bookshelfSyncComponent = [[SCHBookshelfSyncComponent alloc] init];
-		bookshelfSyncComponent.delegate = self;		
 		annotationSyncComponent = [[SCHAnnotationSyncComponent alloc] init];
 		annotationSyncComponent.delegate = self;		
 		readingStatsSyncComponent = [[SCHReadingStatsSyncComponent alloc] init];
@@ -127,7 +122,6 @@ static NSTimeInterval const kSCHSyncManagerHeartbeatInterval = 30.0;
 	[queue release], queue = nil;
 	[profileSyncComponent release], profileSyncComponent = nil;
 	[contentSyncComponent release], contentSyncComponent = nil;
-	[bookshelfSyncComponent release], bookshelfSyncComponent = nil;
 	[annotationSyncComponent release], annotationSyncComponent = nil;
 	[readingStatsSyncComponent release], readingStatsSyncComponent = nil;
 	[settingsSyncComponent release], settingsSyncComponent = nil;
@@ -143,7 +137,6 @@ static NSTimeInterval const kSCHSyncManagerHeartbeatInterval = 30.0;
 	
 	profileSyncComponent.managedObjectContext = newManagedObjectContext;
 	contentSyncComponent.managedObjectContext = newManagedObjectContext;		
-	bookshelfSyncComponent.managedObjectContext = newManagedObjectContext;		
 	annotationSyncComponent.managedObjectContext = newManagedObjectContext;		
 	readingStatsSyncComponent.managedObjectContext = newManagedObjectContext;		
 	settingsSyncComponent.managedObjectContext = newManagedObjectContext;			

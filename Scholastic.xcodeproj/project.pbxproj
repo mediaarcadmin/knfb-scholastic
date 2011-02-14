@@ -121,7 +121,6 @@
 		52AD9ACF12FC0EEF0099FB88 /* SCHSyncManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9ACE12FC0EEF0099FB88 /* SCHSyncManager.m */; };
 		52AD9B1C12FC1B6B0099FB88 /* SCHSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9B1B12FC1B6B0099FB88 /* SCHSyncComponent.m */; };
 		52AD9D6F130000570099FB88 /* SCHAnnotationSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9D64130000570099FB88 /* SCHAnnotationSyncComponent.m */; };
-		52AD9D70130000570099FB88 /* SCHBookshelfSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9D66130000570099FB88 /* SCHBookshelfSyncComponent.m */; };
 		52AD9D71130000570099FB88 /* SCHContentSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9D68130000570099FB88 /* SCHContentSyncComponent.m */; };
 		52AD9D72130000570099FB88 /* SCHProfileSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9D6A130000570099FB88 /* SCHProfileSyncComponent.m */; };
 		52AD9D73130000570099FB88 /* SCHReadingStatsSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9D6C130000570099FB88 /* SCHReadingStatsSyncComponent.m */; };
@@ -132,7 +131,6 @@
 		52E332E413018EDF002F3011 /* SCHComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 5266D38313007D15004E3AC6 /* SCHComponent.m */; };
 		52E332E513018EDF002F3011 /* SCHTopFavoritesComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 5266D34B13007A1C004E3AC6 /* SCHTopFavoritesComponent.m */; };
 		52E332E613018EDF002F3011 /* SCHAnnotationSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9D64130000570099FB88 /* SCHAnnotationSyncComponent.m */; };
-		52E332E713018EDF002F3011 /* SCHBookshelfSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9D66130000570099FB88 /* SCHBookshelfSyncComponent.m */; };
 		52E332E813018EDF002F3011 /* SCHContentSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9D68130000570099FB88 /* SCHContentSyncComponent.m */; };
 		52E332E913018EDF002F3011 /* SCHProfileSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9D6A130000570099FB88 /* SCHProfileSyncComponent.m */; };
 		52E332EA13018EDF002F3011 /* SCHReadingStatsSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9D6C130000570099FB88 /* SCHReadingStatsSyncComponent.m */; };
@@ -461,8 +459,6 @@
 		52AD9B1B12FC1B6B0099FB88 /* SCHSyncComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHSyncComponent.m; path = Shared/SCHSyncComponent.m; sourceTree = "<group>"; };
 		52AD9D63130000570099FB88 /* SCHAnnotationSyncComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAnnotationSyncComponent.h; path = Shared/SCHAnnotationSyncComponent.h; sourceTree = "<group>"; };
 		52AD9D64130000570099FB88 /* SCHAnnotationSyncComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHAnnotationSyncComponent.m; path = Shared/SCHAnnotationSyncComponent.m; sourceTree = "<group>"; };
-		52AD9D65130000570099FB88 /* SCHBookshelfSyncComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookshelfSyncComponent.h; path = Shared/SCHBookshelfSyncComponent.h; sourceTree = "<group>"; };
-		52AD9D66130000570099FB88 /* SCHBookshelfSyncComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookshelfSyncComponent.m; path = Shared/SCHBookshelfSyncComponent.m; sourceTree = "<group>"; };
 		52AD9D67130000570099FB88 /* SCHContentSyncComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHContentSyncComponent.h; path = Shared/SCHContentSyncComponent.h; sourceTree = "<group>"; };
 		52AD9D68130000570099FB88 /* SCHContentSyncComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHContentSyncComponent.m; path = Shared/SCHContentSyncComponent.m; sourceTree = "<group>"; };
 		52AD9D69130000570099FB88 /* SCHProfileSyncComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHProfileSyncComponent.h; path = Shared/SCHProfileSyncComponent.h; sourceTree = "<group>"; };
@@ -965,8 +961,6 @@
 				52AD9D9813000CAA0099FB88 /* SCHSyncComponentProtected.h */,
 				52AD9D63130000570099FB88 /* SCHAnnotationSyncComponent.h */,
 				52AD9D64130000570099FB88 /* SCHAnnotationSyncComponent.m */,
-				52AD9D65130000570099FB88 /* SCHBookshelfSyncComponent.h */,
-				52AD9D66130000570099FB88 /* SCHBookshelfSyncComponent.m */,
 				52AD9D67130000570099FB88 /* SCHContentSyncComponent.h */,
 				52AD9D68130000570099FB88 /* SCHContentSyncComponent.m */,
 				52AD9D69130000570099FB88 /* SCHProfileSyncComponent.h */,
@@ -1349,7 +1343,6 @@
 				52AD9ACF12FC0EEF0099FB88 /* SCHSyncManager.m in Sources */,
 				52AD9B1C12FC1B6B0099FB88 /* SCHSyncComponent.m in Sources */,
 				52AD9D6F130000570099FB88 /* SCHAnnotationSyncComponent.m in Sources */,
-				52AD9D70130000570099FB88 /* SCHBookshelfSyncComponent.m in Sources */,
 				52AD9D71130000570099FB88 /* SCHContentSyncComponent.m in Sources */,
 				52AD9D72130000570099FB88 /* SCHProfileSyncComponent.m in Sources */,
 				52AD9D73130000570099FB88 /* SCHReadingStatsSyncComponent.m in Sources */,
@@ -1462,7 +1455,6 @@
 				52E332E413018EDF002F3011 /* SCHComponent.m in Sources */,
 				52E332E513018EDF002F3011 /* SCHTopFavoritesComponent.m in Sources */,
 				52E332E613018EDF002F3011 /* SCHAnnotationSyncComponent.m in Sources */,
-				52E332E713018EDF002F3011 /* SCHBookshelfSyncComponent.m in Sources */,
 				52E332E813018EDF002F3011 /* SCHContentSyncComponent.m in Sources */,
 				52E332E913018EDF002F3011 /* SCHProfileSyncComponent.m in Sources */,
 				52E332EA13018EDF002F3011 /* SCHReadingStatsSyncComponent.m in Sources */,
