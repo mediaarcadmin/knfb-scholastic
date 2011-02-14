@@ -14,6 +14,7 @@
 
 @synthesize isSynchronizing;
 @synthesize managedObjectContext;
+@synthesize backgroundTaskIdentifier;
 
 - (id)init
 {
@@ -30,9 +31,25 @@
 	return(NO);
 }
 
+- (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result
+{	
+	if (self.backgroundTaskIdentifier != UIBackgroundTaskInvalid) {
+		[[UIApplication sharedApplication] endBackgroundTask:self.backgroundTaskIdentifier];
+		self.backgroundTaskIdentifier = UIBackgroundTaskInvalid;			
+	}
+	self.isSynchronizing = NO;
+	
+	[super method:method didCompleteWithResult:nil];	
+}
+
 - (void)method:(NSString *)method didFailWithError:(NSError *)error
 {
+	if (self.backgroundTaskIdentifier != UIBackgroundTaskInvalid) {
+		[[UIApplication sharedApplication] endBackgroundTask:self.backgroundTaskIdentifier];
+		self.backgroundTaskIdentifier = UIBackgroundTaskInvalid;			
+	}
 	isSynchronizing = NO;
+	
 	[super method:method didFailWithError:error];
 }
 

@@ -27,6 +27,11 @@
 	BOOL ret = YES;
 	
 	if (self.isSynchronizing == NO) {
+		self.backgroundTaskIdentifier = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{ 
+			self.isSynchronizing = NO;
+			self.backgroundTaskIdentifier = UIBackgroundTaskInvalid;
+		}];
+		
 		self.isSynchronizing = [self.libreAccessWebService listUserSettings];
 		if (self.isSynchronizing == NO) {
 			[[SCHAuthenticationManager sharedAuthenticationManager] authenticate];				
@@ -40,7 +45,6 @@
 - (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result
 {	
 	[self updateUserSettings:[result objectForKey:kSCHLibreAccessWebServiceUserSettingsList]];
-	self.isSynchronizing = NO;
 	
 	[super method:method didCompleteWithResult:nil];	
 }

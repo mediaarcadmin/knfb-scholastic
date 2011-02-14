@@ -34,6 +34,11 @@
 	BOOL ret = YES;
 	
 	if (self.isSynchronizing == NO) {
+		self.backgroundTaskIdentifier = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{ 
+			self.isSynchronizing = NO;
+			self.backgroundTaskIdentifier = UIBackgroundTaskInvalid;
+		}];
+		
 		self.isSynchronizing = [self.libreAccessWebService listUserContent];
 		if (self.isSynchronizing == NO) {
 			[[SCHAuthenticationManager sharedAuthenticationManager] authenticate];				
@@ -56,7 +61,7 @@
 		}
 	} else if([method compare:kSCHLibreAccessWebServiceListContentMetadata] == NSOrderedSame) {
 		[self updateBooks:[result objectForKey:kSCHLibreAccessWebServiceContentMetadataList]];
-		self.isSynchronizing = NO;
+		
 		[super method:method didCompleteWithResult:nil];	
 	}	
 }

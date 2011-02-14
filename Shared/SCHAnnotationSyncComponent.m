@@ -83,6 +83,11 @@
 		NSNumber *profileID = [[self.annotations allKeys] objectAtIndex:0];
 		NSArray *books = [self.annotations objectForKey:profileID];
 		
+		self.backgroundTaskIdentifier = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{ 
+			self.isSynchronizing = NO;
+			self.backgroundTaskIdentifier = UIBackgroundTaskInvalid;
+		}];
+		
 		self.isSynchronizing = [self.libreAccessWebService listProfileContentAnnotations:books forProfile:profileID];
 		if (self.isSynchronizing == NO) {
 			[[SCHAuthenticationManager sharedAuthenticationManager] authenticate];				
@@ -97,7 +102,6 @@
 - (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result
 {	
 	[self updateProfileContentAnnotations:[result objectForKey:kSCHLibreAccessWebServiceListProfileContentAnnotations]];	
-	self.isSynchronizing = NO;
 	
 	[super method:method didCompleteWithResult:nil];	
 }

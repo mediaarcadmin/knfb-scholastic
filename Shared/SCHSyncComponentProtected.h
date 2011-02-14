@@ -13,4 +13,6 @@
 
 - (void)save;
 
+@property (assign, nonatomic) UIBackgroundTaskIdentifier backgroundTaskIdentifier;
+
 @end
