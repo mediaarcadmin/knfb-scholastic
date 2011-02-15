@@ -9,7 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "BWKXPSProvider.h"
 #import "BWKScrubberView.h"
-#import "SCHContentMetadataItem.h"
+//#import "SCHContentMetadataItem.h"
+#import "SCHBookInfo.h"
 
 #define TESTPAGEVIEW_PAGETAPWIDTH 75
 
@@ -36,7 +37,7 @@
 	NSTimer *initialFadeTimer;
 }
 
-@property (nonatomic, retain) SCHContentMetadataItem *book;
+@property (nonatomic, retain) SCHBookInfo *bookInfo;
 
 - (IBAction) previousPage: (id) sender;
 - (IBAction) nextPage: (id) sender;	

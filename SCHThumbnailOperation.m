@@ -48,6 +48,7 @@
 											   maintainAspect:self.aspect];
 		if (thumbImage) {
 			NSData *pngData = UIImagePNGRepresentation(thumbImage);
+			NSLog(@"Writing to cachepath: %@", cachePath);
 			[pngData writeToFile:cachePath atomically:YES];
 		}
 	}

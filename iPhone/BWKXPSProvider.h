@@ -9,7 +9,22 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 #import "XpsSdk.h"
-#import "BWKXPSBook.h"
+#import "SCHBookInfo.h"
+
+static NSString * const XPSMetaDataDir = @"/Documents/1/Metadata";
+static const CGFloat kBlioCoverListThumbHeight = 76;
+static const CGFloat kBlioCoverListThumbWidth = 53;
+static NSString * const BlioBookThumbnailPrefix = @"Thumbnail";
+static NSString * const BlioXPSComponentExtensionEncrypted = @"bin";
+static NSString * const BlioXPSEncryptedUriMap = @"/Documents/1/Other/KNFB/UriMap.xml";
+static NSString * const BlioXPSEncryptedMetadata = @"/Documents/1/Other/KNFB/Metadata.xml";
+static NSString * const BlioXPSEncryptedPagesDir = @"/Documents/1/Other/KNFB/Epages";
+static NSString * const BlioXPSEncryptedImagesDir = @"/Resources";
+static NSString * const BlioXPSEncryptedTextFlowDir = @"/Documents/1/Other/KNFB/Flow";
+static NSString * const BlioXPSComponentExtensionFPage = @"fpage";
+static NSString * const BlioXPSSequenceFile = @"/FixedDocumentSequence.fdseq";
+static NSString * const BlioXPSFileThumbnail = @"Metadata/Thumbnail.jpg";
+
 
 @interface BWKXPSProvider : NSObject {
 
@@ -60,7 +75,8 @@
 
 }
 
-@property (nonatomic, retain) NSManagedObjectID *bookID;
+//@property (nonatomic, retain) NSManagedObjectID *bookID;
+@property (nonatomic, retain) SCHBookInfo *bookInfo;
 
 @property (nonatomic, retain) NSString *title;
 @property (nonatomic) NSInteger pageCount;
@@ -69,7 +85,7 @@
 @property (nonatomic, retain) NSString *author;
 @property (nonatomic, retain) NSString *type;
 
-- (id) initWithBookID: (NSManagedObjectID *) bookID;
+- (id) initWithBookInfo: (SCHBookInfo *) bookInfo;
 - (CGContextRef)RGBABitmapContextForPage:(NSUInteger)page
                                 fromRect:(CGRect)rect
                                  minSize:(CGSize)size 

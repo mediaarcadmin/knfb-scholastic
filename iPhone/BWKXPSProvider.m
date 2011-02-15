@@ -11,7 +11,7 @@
 #import "zlib.h"
 #import "TouchXML.h"
 #import "SCHContentMetadataItem+Extensions.h"
-#import "BWKBookManager.h"
+#import "SCHBookManager.h"
 
 
 @interface BlioXPSBitmapReleaseCallback : NSObject {
@@ -24,7 +24,7 @@
 
 @interface BWKXPSProvider()
 
-@property (nonatomic, assign, readonly) SCHContentMetadataItem *book;
+//@property (nonatomic, assign, readonly) SCHContentMetadataItem *book;
 @property (nonatomic, retain) NSString *tempDirectory;
 @property (nonatomic, assign) RasterImageInfo *imageInfo;
 @property (nonatomic, retain) NSMutableDictionary *xpsData;
@@ -53,7 +53,7 @@
 
 @implementation BWKXPSProvider
 
-@synthesize bookID, imageInfo, tempDirectory, xpsData, componentCache, pageCount, fileSize, ISBN, author, type, pageCropsCache, viewTransformsCache, xpsPagesDirectory, uriMap, title;
+@synthesize bookInfo, imageInfo, tempDirectory, xpsData, componentCache, pageCount, fileSize, ISBN, author, type, pageCropsCache, viewTransformsCache, xpsPagesDirectory, uriMap, title;
 
 void XPSPageCompleteCallback(void *userdata, RasterImageInfo *data) {
 	BWKXPSProvider *provider = (BWKXPSProvider *)userdata;	
@@ -77,11 +77,13 @@ void XPSPageCompleteCallback(void *userdata, RasterImageInfo *data) {
 	[super dealloc];
 }
 
-- (id) initWithBookID: (NSManagedObjectID *) aBookID
+//- (id) initWithBookID: (NSManagedObjectID *) aBookID
+- (id) initWithBookInfo: (SCHBookInfo *) aBookInfo
 {
 	if ((self = [super init])) {
 		
-        self.bookID = aBookID;
+        //self.bookID = aBookID;
+		self.bookInfo = aBookInfo;
 
         renderingLock = [[NSLock alloc] init];
         contentsLock = [[NSLock alloc] init];
@@ -104,7 +106,7 @@ void XPSPageCompleteCallback(void *userdata, RasterImageInfo *data) {
         }
         
         XPS_Start();
-        NSString *xpsPath = [self.book xpsPath];
+        NSString *xpsPath = [self.bookInfo xpsPath];
         if (![[NSFileManager defaultManager] fileExistsAtPath:xpsPath]) {
             NSLog(@"Error creating xpsProvider. File does not exist at path: %@", xpsPath);
             CFRelease(UUIDString);
@@ -161,10 +163,10 @@ void XPSPageCompleteCallback(void *userdata, RasterImageInfo *data) {
 	
 	
 }
-
+/*
 - (SCHContentMetadataItem *)book {
-    return [[BWKBookManager sharedBookManager] bookWithID:self.bookID];
-}
+    return [[SCHBookManager sharedBookManager] bookWithID:self.bookID];
+}*/
 
 
 

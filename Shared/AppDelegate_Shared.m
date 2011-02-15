@@ -7,7 +7,7 @@
 //
 
 #import "AppDelegate_Shared.h"
-#import "BWKBookManager.h"
+#import "SCHBookManager.h"
 
 #ifdef LOCALDEBUG
 #import "SCHLocalDebug.h"
@@ -23,7 +23,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions    
 {
-    BWKBookManager *bookManager = [BWKBookManager sharedBookManager];
+    SCHBookManager *bookManager = [SCHBookManager sharedBookManager];
     bookManager.persistentStoreCoordinator = self.persistentStoreCoordinator;
     bookManager.managedObjectContextForCurrentThread = self.managedObjectContext; // Use our managed object contest for calls that are made on the main thread.
 	

@@ -13,7 +13,9 @@
 #import "SCHContentMetadataItem+Extensions.h"
 #import "SCHLocalDebug.h"
 #import "SCHMultipleBookshelvesController.h"
-#import "BWKBookManager.h"
+#import "SCHBookManager.h"
+#import "SCHBookInfo.h"
+#import "SCHProcessingManager.h"
 
 @interface SCHBookShelfViewController ()
 
@@ -21,9 +23,9 @@
 
 @end
 
-NSInteger bookSort(SCHContentMetadataItem *book1, SCHContentMetadataItem *book2, void *context)
+NSInteger bookSort(SCHBookInfo *book1, SCHBookInfo *book2, void *context)
 {
-	return([book1.Title localizedCaseInsensitiveCompare:book2.Title]);
+	return([book1.contentMetadata.Title localizedCaseInsensitiveCompare:book2.contentMetadata.Title]);
 }
 
 @implementation SCHBookShelfViewController
@@ -98,13 +100,20 @@ NSInteger bookSort(SCHContentMetadataItem *book1, SCHContentMetadataItem *book2,
 	
 	[self.tableView reloadData];
 	[self.gridView reloadData];
+	
+	SCHProcessingManager *processingManager = [[SCHProcessingManager alloc] init];
+	[processingManager enqueueBookInfoItems:self.books];
+	
+	
 }
 
 #pragma mark -
 #pragma mark Core Data Table View Methods
 
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {	
-	SCHContentMetadataItem *contentMetadataItem = [self.books objectAtIndex:indexPath.row];
+	SCHBookInfo *bookInfo = [self.books objectAtIndex:indexPath.row];
+
+	SCHContentMetadataItem *contentMetadataItem = bookInfo.contentMetadata;
 	
 	cell.textLabel.text = contentMetadataItem.Title; 
 	cell.detailTextLabel.text = contentMetadataItem.Author;
@@ -117,10 +126,10 @@ NSInteger bookSort(SCHContentMetadataItem *book1, SCHContentMetadataItem *book2,
 		if ([imageData length]) {
 			cell.imageView.image = [UIImage imageWithData:imageData];
 		} else {
-			BWKXPSProvider *provider = [[BWKBookManager sharedBookManager] checkOutXPSProviderForBookWithID:[contentMetadataItem objectID]];
+			BWKXPSProvider *provider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBook:bookInfo];
 			provider.title = contentMetadataItem.FileName;
 			imageData = [provider coverThumbData];
-			[[BWKBookManager sharedBookManager] checkInXPSProviderForBookWithID:[contentMetadataItem objectID]];
+			[[SCHBookManager sharedBookManager] checkInXPSProviderForBook:bookInfo];
 			if (!imageData) {
 				cell.imageView.image = [UIImage imageNamed:@"PlaceholderBook"];
 			} else {
@@ -169,28 +178,21 @@ NSInteger bookSort(SCHContentMetadataItem *book1, SCHContentMetadataItem *book2,
 - (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[aTableView deselectRowAtIndexPath:indexPath animated:YES];
 	
-    // Navigation logic may go here. Create and push another view controller.
-    /*
-    <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-    // ...
-    // Pass the selected object to the new view controller.
-    [self.navigationController pushViewController:detailViewController animated:YES];
-    [detailViewController release];
-    */
-	
-	SCHContentMetadataItem *contentMetadataItem = [self.books objectAtIndex:indexPath.row];
+	SCHBookInfo *bookInfo = [self.books objectAtIndex:indexPath.row];
+
+	SCHContentMetadataItem *contentMetadataItem = bookInfo.contentMetadata;
 	
 	BWKTestPageViewController *pageView = [[BWKTestPageViewController alloc] initWithNibName:nil bundle:nil];
-	pageView.book = contentMetadataItem;
+	pageView.bookInfo = bookInfo;
 	
 	BWKReadingOptionsView *optionsView = [[BWKReadingOptionsView alloc] initWithNibName:nil bundle:nil];
 	optionsView.pageViewController = pageView;
-	optionsView.metadataItem = contentMetadataItem;
+	optionsView.bookInfo = bookInfo;
 	
-//	BWKXPSProvider *provider = [[BWKBookManager sharedBookManager] checkOutXPSProviderForBookWithID:[contentMetadataItem objectID]];
+//	BWKXPSProvider *provider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookWithID:[contentMetadataItem objectID]];
 //	provider.title = contentMetadataItem.FileName;
 //	optionsView.thumbnailImage = [provider coverThumbForList];
-//	[[BWKBookManager sharedBookManager] checkInXPSProviderForBookWithID:[contentMetadataItem objectID]];
+//	[[SCHBookManager sharedBookManager] checkInXPSProviderForBookWithID:[contentMetadataItem objectID]];
 
 	NSString *thumbKey = [NSString stringWithFormat:@"thumb-%@", contentMetadataItem.FileName];
 	NSData *imageData = [self.componentCache objectForKey:thumbKey];
@@ -198,10 +200,10 @@ NSInteger bookSort(SCHContentMetadataItem *book1, SCHContentMetadataItem *book2,
 	if ([imageData length]) {
 		optionsView.thumbnailImage = [UIImage imageWithData:imageData];
 	} else {
-		BWKXPSProvider *provider = [[BWKBookManager sharedBookManager] checkOutXPSProviderForBookWithID:[contentMetadataItem objectID]];
+		BWKXPSProvider *provider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBook:bookInfo];
 		provider.title = contentMetadataItem.FileName;
 		imageData = [provider coverThumbData];
-		[[BWKBookManager sharedBookManager] checkInXPSProviderForBookWithID:[contentMetadataItem objectID]];
+		[[SCHBookManager sharedBookManager] checkInXPSProviderForBook:bookInfo];
 
 		if (!imageData) {
 			optionsView.thumbnailImage = [UIImage imageNamed:@"PlaceholderBook"];
@@ -244,17 +246,20 @@ NSInteger bookSort(SCHContentMetadataItem *book1, SCHContentMetadataItem *book2,
 		gridCell.frame = [aGridView frameForCellAtGridIndex: index];
 	}
 	
-	SCHContentMetadataItem *contentMetadataItem = [self.books objectAtIndex:index];
+	SCHBookInfo *bookInfo = [self.books objectAtIndex:index];
+
+	SCHContentMetadataItem *contentMetadataItem = bookInfo.contentMetadata;
+	
 	UIImage *thumb = nil;
 	
 	if (contentMetadataItem.FileName == nil) {
 		thumb = [UIImage imageNamed:@"PlaceholderBook"];
 	} else {
 		/*
-		BWKXPSProvider *provider = [[BWKBookManager sharedBookManager] checkOutXPSProviderForBookWithID:[contentMetadataItem objectID]];
+		BWKXPSProvider *provider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookWithID:[contentMetadataItem objectID]];
 		provider.title = contentMetadataItem.FileName;
 		thumb = [provider coverThumbForList];
-		[[BWKBookManager sharedBookManager] checkInXPSProviderForBookWithID:[contentMetadataItem objectID]];*/
+		[[SCHBookManager sharedBookManager] checkInXPSProviderForBookWithID:[contentMetadataItem objectID]];*/
 
 		NSString *thumbKey = [NSString stringWithFormat:@"thumb-%@", contentMetadataItem.FileName];
 		NSData *imageData = [self.componentCache objectForKey:thumbKey];
@@ -262,10 +267,10 @@ NSInteger bookSort(SCHContentMetadataItem *book1, SCHContentMetadataItem *book2,
 		if ([imageData length]) {
 			thumb = [UIImage imageWithData:imageData];
 		} else {
-			BWKXPSProvider *provider = [[BWKBookManager sharedBookManager] checkOutXPSProviderForBookWithID:[contentMetadataItem objectID]];
+			BWKXPSProvider *provider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBook:bookInfo];
 			provider.title = contentMetadataItem.FileName;
 			imageData = [provider coverThumbData];
-			[[BWKBookManager sharedBookManager] checkInXPSProviderForBookWithID:[contentMetadataItem objectID]];
+			[[SCHBookManager sharedBookManager] checkInXPSProviderForBook:bookInfo];
 			
 			if (!imageData) {
 				thumb = [UIImage imageNamed:@"PlaceholderBook"];
@@ -314,18 +319,22 @@ NSInteger bookSort(SCHContentMetadataItem *book1, SCHContentMetadataItem *book2,
 
 -(void)gridView:(MRGridView *)gridView didSelectCellAtIndex:(NSInteger)index 
 {
-	SCHContentMetadataItem *contentMetadataItem = [self.books objectAtIndex:index];
+	SCHBookInfo *bookInfo = [self.books objectAtIndex:index];
+
+	SCHContentMetadataItem *contentMetadataItem = bookInfo.contentMetadata;
+
 	BWKTestPageViewController *pageView = [[BWKTestPageViewController alloc] initWithNibName:nil bundle:nil];
-	pageView.book = contentMetadataItem;
+	//pageView.book = contentMetadataItem;
+	pageView.bookInfo = bookInfo;
 	
 	BWKReadingOptionsView *optionsView = [[BWKReadingOptionsView alloc] initWithNibName:nil bundle:nil];
 	optionsView.pageViewController = pageView;
-	optionsView.metadataItem = contentMetadataItem;
+	optionsView.bookInfo = bookInfo;
 
-	BWKXPSProvider *provider = [[BWKBookManager sharedBookManager] checkOutXPSProviderForBookWithID:[contentMetadataItem objectID]];
+	BWKXPSProvider *provider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBook:bookInfo];
 	provider.title = contentMetadataItem.FileName;
 	optionsView.thumbnailImage = [provider coverThumbForList];
-	[[BWKBookManager sharedBookManager] checkInXPSProviderForBookWithID:[contentMetadataItem objectID]];
+	[[SCHBookManager sharedBookManager] checkInXPSProviderForBook:bookInfo];
 //	[provider release];
 	
 	[self.navigationController pushViewController:optionsView animated:YES];

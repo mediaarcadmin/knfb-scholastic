@@ -1,16 +1,17 @@
 //
-//  BWKBookManager.m
+//  SCHBookManager.m
 //  Scholastic
 //
 //  Created by Gordon Christie on 02/02/2011.
 //  Copyright 2011 BitWink. All rights reserved.
 //
 
-#import "BWKBookManager.h"
-#import "BWKXPSProvider.h"
+#import "SCHBookManager.h"
 #import <pthread.h>
+#import "SCHBookInfo.h"
+#import "SCHBookContents.h"
 
-@interface BWKBookManager ()
+@interface SCHBookManager ()
 
 @property (nonatomic, retain) NSMutableDictionary *cachedXPSProviders;
 @property (nonatomic, retain) NSCountedSet *cachedXPSProviderCheckoutCounts;
@@ -18,14 +19,14 @@
 @end
 
 
-@implementation BWKBookManager
+@implementation SCHBookManager
 
-static BWKBookManager *sSharedBookManager = nil;
+static SCHBookManager *sSharedBookManager = nil;
 static pthread_key_t sManagedObjectContextKey;
 
 @synthesize cachedXPSProviders, cachedXPSProviderCheckoutCounts, persistentStoreCoordinator;
 
-+ (BWKBookManager *)sharedBookManager
++ (SCHBookManager *)sharedBookManager
 {
     // We don't need to bother being thread-safe in the initialisation here,
     // because the object can't be used until the NSPersistentStoreCoordinator 
@@ -78,7 +79,8 @@ static pthread_key_t sManagedObjectContextKey;
     pthread_setspecific(sManagedObjectContextKey, [managedObjectContextForCurrentThread retain]);
 }
 
-- (SCHContentMetadataItem *)bookWithID:(NSManagedObjectID *)aBookID
+/*
+- (SCHBookInfo *)bookInfoWithISBN:(NSString *) isbn
 {
     // If we don't do a refresh here, we run the risk that another thread has
     // modified the object while it's been cached by this thread's managed
@@ -88,23 +90,38 @@ static pthread_key_t sManagedObjectContextKey;
     // - (void)mergeChangesFromContextDidSaveNotification:(NSNotification *)notification
     // on the other threads when it saved.
     NSManagedObjectContext *context = self.managedObjectContextForCurrentThread;
+	
+	SCHBookInfo *bookInfo = [[SCHBookInfo alloc] initWithContentMetadataItem:<#(SCHContentMetadataItem *)metadataItem#>];
+	
     SCHContentMetadataItem *book = nil;
     
     if (aBookID) {
         book = (SCHContentMetadataItem *)[context objectWithID:aBookID];
     }
-    else NSLog(@"WARNING: BWKBookManager bookWithID: aBookID is nil!");
+    else NSLog(@"WARNING: SCHBookManager bookWithID: aBookID is nil!");
     if (book) {
         [context refreshObject:book mergeChanges:YES];
     }
     
-    return book;
+    return bookInfo;
+}
+*/
+
+/*
+- (SCHBookContents *) checkOutBookContentsForBook: (SCHBookInfo *) bookInfo
+{
+	
 }
 
+- (void) checkInBookContentsForBook: (SCHBookInfo *) bookInfo
+{
+	
+}
+*/
 
 
 
-- (BWKXPSProvider *)checkOutXPSProviderForBookWithID: (NSManagedObjectID *) bookID
+- (BWKXPSProvider *)checkOutXPSProviderForBook: (SCHBookInfo *) bookInfo
 {
 	BWKXPSProvider *ret = nil;
 	
@@ -114,13 +131,13 @@ static pthread_key_t sManagedObjectContextKey;
 	
     NSMutableDictionary *myCachedXPSProviders = self.cachedXPSProviders;
     @synchronized(myCachedXPSProviders) {
-        BWKXPSProvider *previouslyCachedXPSProvider = [myCachedXPSProviders objectForKey:bookID];
+        BWKXPSProvider *previouslyCachedXPSProvider = [myCachedXPSProviders objectForKey:bookInfo];
         if(previouslyCachedXPSProvider) {
-            NSLog(@"Returning cached XPSProvider for book with bookID %@", bookID);
-            [self.cachedXPSProviderCheckoutCounts addObject:bookID];
+            NSLog(@"Returning cached XPSProvider for book with bookInfo %@", bookInfo);
+            [self.cachedXPSProviderCheckoutCounts addObject:bookInfo];
             ret = previouslyCachedXPSProvider;
         } else {
-			BWKXPSProvider *xpsProvider = [[BWKXPSProvider alloc] initWithBookID:bookID];
+			BWKXPSProvider *xpsProvider = [[BWKXPSProvider alloc] initWithBookInfo:bookInfo];
 			if(xpsProvider) {
 				NSCountedSet *myCachedXPSProviderCheckoutCounts = self.cachedXPSProviderCheckoutCounts;
 				if(!myCachedXPSProviderCheckoutCounts) {
@@ -128,8 +145,8 @@ static pthread_key_t sManagedObjectContextKey;
 					self.cachedXPSProviderCheckoutCounts = myCachedXPSProviderCheckoutCounts;
 				}
 				
-				[myCachedXPSProviders setObject:xpsProvider forKey:bookID];
-				[myCachedXPSProviderCheckoutCounts addObject:bookID];
+				[myCachedXPSProviders setObject:xpsProvider forKey:bookInfo];
+				[myCachedXPSProviderCheckoutCounts addObject:bookInfo];
 //				[xpsProvider release];
 				ret = xpsProvider;
 			}
@@ -143,29 +160,29 @@ static pthread_key_t sManagedObjectContextKey;
 	
 }
 
-- (void)checkInXPSProviderForBookWithID: (NSManagedObjectID *) aBookID
+- (void)checkInXPSProviderForBook: (SCHBookInfo *) bookInfo
 {
 
-	//NSLog(@"Checking in bookID: %@", aBookID);
+	//NSLog(@"Checking in bookID: %@", bookInfo);
 	
 	NSMutableDictionary *myCachedXPSProviders = self.cachedXPSProviders;
     @synchronized(myCachedXPSProviders) {
         NSCountedSet *myCachedXPSProviderCheckoutCounts = self.cachedXPSProviderCheckoutCounts;
-        NSUInteger count = [myCachedXPSProviderCheckoutCounts countForObject:aBookID];
+        NSUInteger count = [myCachedXPSProviderCheckoutCounts countForObject:bookInfo];
         if(count == 0) {
             NSLog(@"Warning! Unexpected checkin of non-checked-out XPSProvider");
         } else {
-            [myCachedXPSProviderCheckoutCounts removeObject:aBookID];
+            [myCachedXPSProviderCheckoutCounts removeObject:bookInfo];
             if (count == 1) {
-              //  NSLog(@"Releasing cached XPSProvider for book with ID %@", aBookID);
-                [myCachedXPSProviders removeObjectForKey:aBookID];
+              //  NSLog(@"Releasing cached XPSProvider for book with ID %@", bookInfo);
+                [myCachedXPSProviders removeObjectForKey:bookInfo];
                 if(myCachedXPSProviderCheckoutCounts.count == 0) {
                     // May as well release the set.
                     self.cachedXPSProviderCheckoutCounts = nil;
                 }
             }
         }
-       // NSLog(@"[%d] checkInXPSProviderForBookWithPath %@", [self.cachedXPSProviderCheckoutCounts countForObject:aBookID], aBookID);
+       // NSLog(@"[%d] checkInXPSProviderForBookWithPath %@", [self.cachedXPSProviderCheckoutCounts countForObject:bookInfo], bookInfo);
 		
     }
 	

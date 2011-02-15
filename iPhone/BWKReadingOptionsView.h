@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "BWKTestPageViewController.h"
-#import "SCHContentMetadataItem.h"
+#import "SCHBookInfo.h"
 
 @interface BWKReadingOptionsView : UIViewController {
 
@@ -23,7 +23,8 @@
 }
 
 @property (readwrite, retain) BWKTestPageViewController *pageViewController;
-@property (readwrite, retain) SCHContentMetadataItem *metadataItem;
+//@property (readwrite, retain) SCHContentMetadataItem *metadataItem;
+@property (readwrite, retain) SCHBookInfo *bookInfo;
 @property (readwrite, retain) UIImage *thumbnailImage;
 
 - (IBAction) showBookView: (id) sender;

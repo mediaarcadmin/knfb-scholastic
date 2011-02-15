@@ -16,7 +16,7 @@
 #import "SCHContentMetadataItem+Extensions.h"
 #import "SCHLocalDebugXPSReader.h"
 #import "NSNumber+ObjectTypes.h"
-#import "BWKBookManager.h"
+#import "SCHBookManager.h"
 #import "SCHProfileItem+Extensions.h"
 #import "SCHUserContentItem+Extensions.h"
 #import "SCHContentProfileItem+Extensions.h"

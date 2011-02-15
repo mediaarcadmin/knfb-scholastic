@@ -28,9 +28,4 @@ static NSString * const kSCHContentMetadataItemAnnotationsListProfileID = @"Anno
 	return(annotations);	
 }
 
-- (NSString *) xpsPath
-{
-	return [[NSBundle mainBundle] pathForResource:self.FileName ofType:@"xps"];
-}
-
 @end
