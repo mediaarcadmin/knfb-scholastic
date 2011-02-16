@@ -146,6 +146,15 @@
 		52EF553E12E9EB8500E374F7 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52EF553D12E9EB8500E374F7 /* Security.framework */; };
 		52EF570A12ED977C00E374F7 /* NSManagedObjectContext+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF570912ED977C00E374F7 /* NSManagedObjectContext+Extensions.m */; };
 		52EF579712EDBE6E00E374F7 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF579612EDBE6E00E374F7 /* SFHFKeychainUtils.m */; };
+		52F559C6130BEA57002C8BDF /* SCHProfilePasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52F559C4130BEA57002C8BDF /* SCHProfilePasswordViewController.m */; };
+		52F559C7130BEA57002C8BDF /* SCHProfilePasswordViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52F559C5130BEA57002C8BDF /* SCHProfilePasswordViewController.xib */; };
+		52F559C8130BEA57002C8BDF /* SCHProfilePasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52F559C4130BEA57002C8BDF /* SCHProfilePasswordViewController.m */; };
+		52F559C9130BEA57002C8BDF /* SCHProfilePasswordViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52F559C5130BEA57002C8BDF /* SCHProfilePasswordViewController.xib */; };
+		52F55A48130C2B60002C8BDF /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F55A43130C2B60002C8BDF /* Icon-72.png */; };
+		52F55A49130C2B60002C8BDF /* Icon-Small-50.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F55A44130C2B60002C8BDF /* Icon-Small-50.png */; };
+		52F55A4A130C2B60002C8BDF /* Icon-Small.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F55A45130C2B60002C8BDF /* Icon-Small.png */; };
+		52F55A4B130C2B60002C8BDF /* Icon-Small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F55A46130C2B60002C8BDF /* Icon-Small@2x.png */; };
+		52F55A4C130C2B60002C8BDF /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F55A47130C2B60002C8BDF /* Icon@2x.png */; };
 		C923A27A12F06FE60054426F /* MRGridView.m in Sources */ = {isa = PBXBuildFile; fileRef = C923A27312F06FE60054426F /* MRGridView.m */; };
 		C923A27B12F06FE60054426F /* MRGridViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C923A27512F06FE60054426F /* MRGridViewCell.m */; };
 		C923A27C12F06FE60054426F /* MRGridViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C923A27712F06FE60054426F /* MRGridViewController.m */; };
@@ -499,6 +508,15 @@
 		52EF570912ED977C00E374F7 /* NSManagedObjectContext+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSManagedObjectContext+Extensions.m"; path = "Shared/NSManagedObjectContext+Extensions.m"; sourceTree = "<group>"; };
 		52EF579512EDBE6E00E374F7 /* SFHFKeychainUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFHFKeychainUtils.h; sourceTree = "<group>"; };
 		52EF579612EDBE6E00E374F7 /* SFHFKeychainUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFHFKeychainUtils.m; sourceTree = "<group>"; };
+		52F559C3130BEA57002C8BDF /* SCHProfilePasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHProfilePasswordViewController.h; sourceTree = "<group>"; };
+		52F559C4130BEA57002C8BDF /* SCHProfilePasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHProfilePasswordViewController.m; sourceTree = "<group>"; };
+		52F559C5130BEA57002C8BDF /* SCHProfilePasswordViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SCHProfilePasswordViewController.xib; sourceTree = "<group>"; };
+		52F559F1130BF001002C8BDF /* SCHProfilePasswordViewControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHProfilePasswordViewControllerDelegate.h; sourceTree = "<group>"; };
+		52F55A43130C2B60002C8BDF /* Icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-72.png"; path = "Shared/Images/Icon-72.png"; sourceTree = "<group>"; };
+		52F55A44130C2B60002C8BDF /* Icon-Small-50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-Small-50.png"; path = "Shared/Images/Icon-Small-50.png"; sourceTree = "<group>"; };
+		52F55A45130C2B60002C8BDF /* Icon-Small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-Small.png"; path = "Shared/Images/Icon-Small.png"; sourceTree = "<group>"; };
+		52F55A46130C2B60002C8BDF /* Icon-Small@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-Small@2x.png"; path = "Shared/Images/Icon-Small@2x.png"; sourceTree = "<group>"; };
+		52F55A47130C2B60002C8BDF /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon@2x.png"; path = "Shared/Images/Icon@2x.png"; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Scholastic-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Scholastic-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 		C923A27212F06FE60054426F /* MRGridView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MRGridView.h; path = Shared/Libraries/MRGridView/MRGridView.h; sourceTree = "<group>"; };
 		C923A27312F06FE60054426F /* MRGridView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MRGridView.m; path = Shared/Libraries/MRGridView/MRGridView.m; sourceTree = "<group>"; };
@@ -621,6 +639,10 @@
 				528A2D5E12CDE39C0053A343 /* SCHProfileViewController.h */,
 				528A2D5F12CDE39C0053A343 /* SCHProfileViewController.m */,
 				528A2D6112CDE3B10053A343 /* SCHProfileViewController.xib */,
+				52F559C3130BEA57002C8BDF /* SCHProfilePasswordViewController.h */,
+				52F559C4130BEA57002C8BDF /* SCHProfilePasswordViewController.m */,
+				52F559C5130BEA57002C8BDF /* SCHProfilePasswordViewController.xib */,
+				52F559F1130BF001002C8BDF /* SCHProfilePasswordViewControllerDelegate.h */,
 				529385B212DF231800045B44 /* SCHSettingsViewController.h */,
 				529385B312DF231800045B44 /* SCHSettingsViewController.m */,
 				529385B412DF231800045B44 /* SCHSettingsViewController.xib */,
@@ -785,9 +807,14 @@
 		528A2CD112CCDC9E0053A343 /* Icons */ = {
 			isa = PBXGroup;
 			children = (
+				52938B3812E08FC400045B44 /* Icon.png */,
+				52F55A47130C2B60002C8BDF /* Icon@2x.png */,
+				52F55A43130C2B60002C8BDF /* Icon-72.png */,
+				52F55A45130C2B60002C8BDF /* Icon-Small.png */,
+				52F55A44130C2B60002C8BDF /* Icon-Small-50.png */,
+				52F55A46130C2B60002C8BDF /* Icon-Small@2x.png */,
 				F837CA0012F1B4BC00833448 /* gear.png */,
 				F837CA0112F1B4BC00833448 /* gear@2x.png */,
-				52938B3812E08FC400045B44 /* Icon.png */,
 				529384F812DEF6F800045B44 /* Profile.png */,
 				529384FA12DEF73A00045B44 /* ProfileLocked.png */,
 				529384FE12DEF93900045B44 /* Settings.png */,
@@ -1227,6 +1254,12 @@
 				C923A6C712F1E7D50054426F /* Shelf.png in Resources */,
 				C923A7A212F1F11C0054426F /* PlaceholderBook.png in Resources */,
 				C923B15C12F6B0280054426F /* SCHMultipleBookshelvesController.xib in Resources */,
+				52F559C7130BEA57002C8BDF /* SCHProfilePasswordViewController.xib in Resources */,
+				52F55A48130C2B60002C8BDF /* Icon-72.png in Resources */,
+				52F55A49130C2B60002C8BDF /* Icon-Small-50.png in Resources */,
+				52F55A4A130C2B60002C8BDF /* Icon-Small.png in Resources */,
+				52F55A4B130C2B60002C8BDF /* Icon-Small@2x.png in Resources */,
+				52F55A4C130C2B60002C8BDF /* Icon@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1266,6 +1299,7 @@
 				C923A6C612F1E7D50054426F /* Shelf.png in Resources */,
 				C923A7A112F1F11C0054426F /* PlaceholderBook.png in Resources */,
 				C923B15B12F6B0280054426F /* SCHMultipleBookshelvesController.xib in Resources */,
+				52F559C9130BEA57002C8BDF /* SCHProfilePasswordViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1382,6 +1416,7 @@
 				F8DE5420130A93F800691CBA /* SCHBookContents.m in Sources */,
 				F8DE557A130AB63500691CBA /* SCHProcessingManager.m in Sources */,
 				F8DE5584130AB93500691CBA /* SCHDownloadImageOperation.m in Sources */,
+				52F559C6130BEA57002C8BDF /* SCHProfilePasswordViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1495,6 +1530,7 @@
 				F8DE5421130A93F800691CBA /* SCHBookContents.m in Sources */,
 				F8DE557B130AB63500691CBA /* SCHProcessingManager.m in Sources */,
 				F8DE5585130AB93500691CBA /* SCHDownloadImageOperation.m in Sources */,
+				52F559C8130BEA57002C8BDF /* SCHProfilePasswordViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
