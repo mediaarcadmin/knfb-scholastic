@@ -15,5 +15,7 @@ static NSString * const kSCHProfileItem = @"SCHProfileItem";
 @interface SCHProfileItem (SCHProfileItemExtensions)
 
 - (NSArray *)allContentMetadataItems;
+- (BOOL)hasPassword;
+- (BOOL)validatePasswordWith:(NSString *)withPassword;
 
 @end
