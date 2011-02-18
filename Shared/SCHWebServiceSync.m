@@ -210,7 +210,6 @@
 		SCHProfileItem *newProfileItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHProfileItem inManagedObjectContext:self.managedObjectContext];
 		
 		newProfileItem.LastModified = [self makeNullNil:[profile objectForKey:kSCHLibreAccessWebServiceLastModified]];
-		newProfileItem.State = [NSNumber numberWithStatus:kSCHStatusCreated];
 		
 		newProfileItem.StoryInteractionEnabled = [self makeNullNil:[profile objectForKey:kSCHLibreAccessWebServiceStoryInteractionEnabled]];
 		newProfileItem.ID = [self makeNullNil:[profile objectForKey:kSCHLibreAccessWebServiceID]];
@@ -280,7 +279,6 @@
 		SCHUserContentItem *newUserContentItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHUserContentItem inManagedObjectContext:self.managedObjectContext];
 		
 		newUserContentItem.LastModified = [self makeNullNil:[userContentItem objectForKey:kSCHLibreAccessWebServiceLastModified]];
-		newUserContentItem.State = [NSNumber numberWithStatus:kSCHStatusCreated];
 
 		newUserContentItem.DRMQualifier = [self makeNullNil:[userContentItem objectForKey:kSCHLibreAccessWebServiceDRMQualifier]];
 		newUserContentItem.Version = [self makeNullNil:[userContentItem objectForKey:kSCHLibreAccessWebServiceVersion]];
@@ -330,7 +328,6 @@
 		ret = [NSEntityDescription insertNewObjectForEntityForName:kSCHContentProfileItem inManagedObjectContext:self.managedObjectContext];			
 		
 		ret.LastModified = [self makeNullNil:[contentProfileItem objectForKey:kSCHLibreAccessWebServiceLastModified]];
-		ret.State = [NSNumber numberWithStatus:kSCHStatusCreated];
 		
 		ret.IsFavorite = [self makeNullNil:[contentProfileItem objectForKey:kSCHLibreAccessWebServiceIsFavorite]];
 		
@@ -502,7 +499,6 @@
 		ret = [NSEntityDescription insertNewObjectForEntityForName:kSCHHighlight inManagedObjectContext:self.managedObjectContext];
 		
 		ret.LastModified = [self makeNullNil:[highlight objectForKey:kSCHLibreAccessWebServiceLastModified]];
-		ret.State = [NSNumber numberWithStatus:kSCHStatusCreated];
 		
 		ret.ID = [self makeNullNil:[highlight objectForKey:kSCHLibreAccessWebServiceID]];
 		ret.Version = [self makeNullNil:[highlight objectForKey:kSCHLibreAccessWebServiceVersion]];
@@ -524,7 +520,6 @@
 		ret = [NSEntityDescription insertNewObjectForEntityForName:kSCHNote inManagedObjectContext:self.managedObjectContext];
 		
 		ret.LastModified = [self makeNullNil:[note objectForKey:kSCHLibreAccessWebServiceLastModified]];
-		ret.State = [NSNumber numberWithStatus:kSCHStatusCreated];
 		
 		ret.ID = [self makeNullNil:[note objectForKey:kSCHLibreAccessWebServiceID]];
 		ret.Version = [self makeNullNil:[note objectForKey:kSCHLibreAccessWebServiceVersion]];
@@ -575,7 +570,6 @@
 		ret = [NSEntityDescription insertNewObjectForEntityForName:kSCHBookmark inManagedObjectContext:self.managedObjectContext];
 		
 		ret.LastModified = [self makeNullNil:[bookmark objectForKey:kSCHLibreAccessWebServiceLastModified]];
-		ret.State = [NSNumber numberWithStatus:kSCHStatusCreated];
 		
 		ret.ID = [self makeNullNil:[bookmark objectForKey:kSCHLibreAccessWebServiceID]];
 		ret.Version = [self makeNullNil:[bookmark objectForKey:kSCHLibreAccessWebServiceVersion]];
@@ -597,7 +591,6 @@
 		ret = [NSEntityDescription insertNewObjectForEntityForName:kSCHLastPage inManagedObjectContext:self.managedObjectContext];
 		
 		ret.LastModified = [self makeNullNil:[lastPage objectForKey:kSCHLibreAccessWebServiceLastModified]];
-		ret.State = [NSNumber numberWithStatus:kSCHStatusCreated];
 		
 		ret.LastPageLocation = [self makeNullNil:[lastPage objectForKey:kSCHLibreAccessWebServiceLastPageLocation]];
 		ret.Percentage = [self makeNullNil:[lastPage objectForKey:kSCHLibreAccessWebServicePercentage]];
@@ -615,7 +608,6 @@
 		ret = [NSEntityDescription insertNewObjectForEntityForName:kSCHFavorite inManagedObjectContext:self.managedObjectContext];
 		
 		ret.LastModified = [self makeNullNil:[favorite objectForKey:kSCHLibreAccessWebServiceLastModified]];
-		ret.State = [NSNumber numberWithStatus:kSCHStatusCreated];
 		
 		ret.IsFavorite = [self makeNullNil:[favorite objectForKey:kSCHLibreAccessWebServiceIsFavorite]];
 	}
