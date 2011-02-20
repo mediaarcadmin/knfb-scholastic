@@ -25,6 +25,7 @@
 }
 
 - (void)main {
+	
     if ([self isCancelled]) {
 		return;
 	}

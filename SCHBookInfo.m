@@ -42,7 +42,7 @@
 
 - (SCHContentMetadataItem *) contentMetadata
 {
-	[self threadCheck];
+	//[self threadCheck];
 	
 	SCHContentMetadataItem *item = nil;
 	
@@ -60,36 +60,8 @@
 
 - (NSString *) xpsPath
 {
-	[self threadCheck];
+	//[self threadCheck];
 	return [[NSBundle mainBundle] pathForResource:self.contentMetadata.FileName ofType:@"xps"];
-}
-
-- (UIImageView *) thumbImageForBook
-{
-	[self threadCheck];
-	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-	NSString *cachePath = ([paths count] > 0) ? [paths objectAtIndex:0] : nil;
-	
-	NSLog(@"Cache path: %@", cachePath);
-
-//	NSString *thumbImagePath = [NSString stringWithFormat:@"%@-%@", [self contentMetadata].
-	
-	return nil;
-	
-//	NSString *imageFileName = [[
-	
-	// has the thumb been processed?
-	// check for the thumb thumbnail
-	
-	
-	
-	// has the image downloaded?
-	// check for the original image thumbnail
-	
-	
-	
-	// download the image
-	
 }
 
 

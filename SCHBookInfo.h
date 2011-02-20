@@ -11,8 +11,11 @@
 #import <pthread.h>
 #import <CoreData/CoreData.h>
 
-static const NSInteger bookInfoProcessingStateNotProcessed = 0;
-static const NSInteger bookInfoProcessingStateProcessed = 1;
+typedef enum {
+	bookInfoProcessingStateNotProcessed = 0,
+	bookInfoProcessingStateProcessed
+} bookInfoProcessingState;
+
 
 
 @interface SCHBookInfo : NSObject {
@@ -27,7 +30,7 @@ static const NSInteger bookInfoProcessingStateProcessed = 1;
 
 - (id) initWithContentMetadataItem: (SCHContentMetadataItem *) metadataItem;
 - (NSString *) xpsPath;
-- (UIImageView *) thumbImageForBook;
+
 
 
 @end

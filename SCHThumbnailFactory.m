@@ -7,19 +7,20 @@
 //
 
 #import "SCHThumbnailFactory.h"
+#import "SCHProcessingManager.h"
 
 #pragma mark SCHImageCache Class Extension
 
 @interface SCHThumbnailFactory ()
 
-@property (nonatomic, retain) NSOperationQueue *queue;
+//@property (nonatomic, retain) NSOperationQueue *queue;
 
 @end
 
 #pragma mark -
 @implementation SCHThumbnailFactory
 
-@synthesize queue;
+//@synthesize queue;
 
 static SCHThumbnailFactory *sharedImageCache = nil;
 
@@ -68,15 +69,66 @@ static SCHThumbnailFactory *sharedImageCache = nil;
 																			   flip:flip 
 																	 maintainAspect:aspect];
 		
-		SCHThumbnailFactory *defaultCache = [SCHThumbnailFactory defaultCache];
-		[[defaultCache queue] addOperation:aOperation];
+//		SCHThumbnailFactory *defaultCache = [SCHThumbnailFactory defaultCache];
+		[[[SCHProcessingManager defaultManager] processingQueue] addOperation:aOperation];
 		
-		aAsyncImageView.operation = aOperation;
+		aAsyncImageView.operations = [NSArray arrayWithObject:aOperation];
 		
 		return [aAsyncImageView autorelease];
 	}
 	
 	return nil;
+}
+
++ (SCHAsyncImageView *)newAsyncImageWithSize:(CGSize)size {
+	CGRect viewBounds = CGRectMake(0, 0, size.width, size.height);
+	
+	SCHAsyncImageView *imageView = [[SCHAsyncImageView alloc] initWithFrame:viewBounds];
+	imageView.contentMode = UIViewContentModeScaleToFill;
+	imageView.clipsToBounds = YES;
+	//imageView.image = [UIImage imageNamed:@"missingImage.png"];
+	imageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+	imageView.backgroundColor = [UIColor clearColor];
+	imageView.tag = 999;
+	
+	return imageView;
+}
+
+/*
++ (bool) asyncThumbView: (SCHAsyncImageView *) asyncImageView withSize:(CGSize)size srcPath:(NSString *)srcPath dstPath:(NSString *)dstPath rect:(CGRect)rect maintainAspect:(BOOL)aspect usePlaceHolder:(BOOL)placeholder {
+	
+	if (placeholder) {
+		UIImage *placeholderImage = [AWThumbnailFactory placeholderImageOfSize:size forSrc:srcPath maintainAspect:aspect];
+		asyncImageView.image = placeholderImage;
+		asyncImageView.backgroundColor = [UIColor clearColor];
+	} else {
+		asyncImageView.backgroundColor = [UIColor whiteColor];
+	}
+	
+	asyncImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+	asyncImageView.imageOfInterest = dstPath;
+	asyncImageView.contentMode = UIViewContentModeScaleToFill;
+	asyncImageView.clipsToBounds = YES;
+	
+	AWThumbnailOperation *aOperation = [AWThumbnailFactory thumbOperationAtPath:dstPath fromPath:srcPath rect:rect size:size style:kAWThumbnailStyleStandard flip:YES maintainAspect:aspect];
+	AWThumbnailFactory *defaultFactory = [AWThumbnailFactory defaultFactory];
+	[[defaultFactory queue] addOperation:aOperation];
+	asyncImageView.operation = aOperation;
+	
+	return NO;	
+}
+*/
+
++ (bool) updateThumbView: (SCHAsyncImageView *) imageView withSize:(CGSize)size path:(NSString *)path {
+	
+	UIImage *thumbImage = [SCHThumbnailFactory imageWithPath:path];
+	imageView.contentMode = UIViewContentModeScaleToFill;
+	imageView.image = thumbImage;
+	imageView.clipsToBounds = YES;
+	imageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+	imageView.backgroundColor = [UIColor clearColor];
+	
+	return YES;
 }
 
 

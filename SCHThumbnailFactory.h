@@ -36,4 +36,7 @@
 							 flip:(BOOL)flip 
 				   maintainAspect:(BOOL)aspect;
 
++ (SCHAsyncImageView *)newAsyncImageWithSize:(CGSize)size;
++ (bool) updateThumbView: (SCHAsyncImageView *) imageView withSize:(CGSize)size path:(NSString *)path;
+
 @end

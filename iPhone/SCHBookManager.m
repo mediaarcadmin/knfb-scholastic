@@ -46,7 +46,7 @@ static pthread_key_t sManagedObjectContextKey;
 
 - (id)init
 {
-    if (self = [super init]) {
+    if ((self = [super init])) {
         // Initialization code.
 		self.cachedXPSProviders = [[NSMutableDictionary alloc] init];
     }
@@ -78,48 +78,6 @@ static pthread_key_t sManagedObjectContextKey;
     // (see comments in +sharedBookManager).
     pthread_setspecific(sManagedObjectContextKey, [managedObjectContextForCurrentThread retain]);
 }
-
-/*
-- (SCHBookInfo *)bookInfoWithISBN:(NSString *) isbn
-{
-    // If we don't do a refresh here, we run the risk that another thread has
-    // modified the object while it's been cached by this thread's managed
-    // object context.  
-    // If I were redesigning this, I'd make only one thread allowed to modify
-    // the books, and call 
-    // - (void)mergeChangesFromContextDidSaveNotification:(NSNotification *)notification
-    // on the other threads when it saved.
-    NSManagedObjectContext *context = self.managedObjectContextForCurrentThread;
-	
-	SCHBookInfo *bookInfo = [[SCHBookInfo alloc] initWithContentMetadataItem:<#(SCHContentMetadataItem *)metadataItem#>];
-	
-    SCHContentMetadataItem *book = nil;
-    
-    if (aBookID) {
-        book = (SCHContentMetadataItem *)[context objectWithID:aBookID];
-    }
-    else NSLog(@"WARNING: SCHBookManager bookWithID: aBookID is nil!");
-    if (book) {
-        [context refreshObject:book mergeChanges:YES];
-    }
-    
-    return bookInfo;
-}
-*/
-
-/*
-- (SCHBookContents *) checkOutBookContentsForBook: (SCHBookInfo *) bookInfo
-{
-	
-}
-
-- (void) checkInBookContentsForBook: (SCHBookInfo *) bookInfo
-{
-	
-}
-*/
-
-
 
 - (BWKXPSProvider *)checkOutXPSProviderForBook: (SCHBookInfo *) bookInfo
 {

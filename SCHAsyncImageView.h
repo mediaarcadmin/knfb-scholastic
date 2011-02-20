@@ -13,7 +13,7 @@
 
 }
 
-@property (nonatomic, retain) NSOperation *operation;
+@property (nonatomic, retain) NSArray *operations;
 @property (nonatomic, retain) NSString *imageOfInterest;
 
 - (void) prepareForReuse;

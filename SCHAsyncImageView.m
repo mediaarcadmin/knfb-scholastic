@@ -17,22 +17,31 @@
 
 @implementation SCHAsyncImageView
 
-@synthesize operation, imageOfInterest;
+@synthesize operations, imageOfInterest;
 
 - (void) dealloc {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	
-	[self.operation cancel];
-
-	self.operation = nil;
+	if (operations) {
+		for (NSOperation *op in self.operations) {
+			[op cancel];
+		}
+	}
+	
+	self.operations = nil;
 	self.imageOfInterest = nil;
 	[super dealloc];
 }
 
 - (void) prepareForReuse
 {
-	[self.operation cancel];
-	self.operation = nil;
+	if (operations) {
+		for (NSOperation *op in self.operations) {
+			[op cancel];
+		}
+	}
+	
+	self.operations = nil;
 	self.imageOfInterest = nil;
 	self.image = nil;
 }
@@ -72,7 +81,10 @@
 	id imagePath = [userInfo valueForKey:@"imagePath"];
 	id image = [userInfo valueForKey:@"image"];
 	
+	NSLog(@"new image available! %@ (looking for %@)", imagePath, self.imageOfInterest);
+	
 	if (image && imagePath && [imagePath isEqualToString:self.imageOfInterest]) {
+		NSLog(@"Setting image.");
 		[self setImage:image];
 		[self setNeedsDisplay];
 	}
