@@ -15,4 +15,6 @@
 - (void)syncDelete;
 - (void)syncReset;
 
+@property (nonatomic, readonly) NSNumber *Action;
+
 @end

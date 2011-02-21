@@ -9,6 +9,7 @@
 #import "SCHSyncEntity+Extensions.h"
 
 #import "NSNumber+ObjectTypes.h"
+#import "SCHLibreAccessWebService.h"
 
 @interface SCHSyncEntity (CoreDataGeneratedPrimitiveAccessors)
 
@@ -49,6 +50,28 @@
 {
 	[self setPrimitiveLastModified:[NSDate date]];
 	[self setPrimitiveState:[NSNumber numberWithStatus:kSCHStatusUnmodified]];					
+}
+
+- (NSNumber *)Action
+{
+	NSNumber *ret = nil;
+	
+	switch ([self.State statusValue]) {
+		case kSCHStatusCreated:
+			ret = [NSNumber numberWithSaveAction:kSCHSaveActionsCreate];
+			break;
+		case kSCHStatusModified:
+			ret = [NSNumber numberWithSaveAction:kSCHSaveActionsUpdate];
+			break;
+		case kSCHStatusDeleted:
+			ret = [NSNumber numberWithSaveAction:kSCHSaveActionsRemove];
+			break;
+		default:
+			ret = [NSNumber numberWithSaveAction:kSCHSaveActionsNone];
+			break;
+	}
+	
+	return(ret);
 }
 
 @end
