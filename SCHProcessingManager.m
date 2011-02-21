@@ -116,7 +116,7 @@ static SCHProcessingManager *sharedManager = nil;
 	if (!coverURL) {
 		// get the cover URL 
 		// FIXME: actually get the cover URL
-		coverURL = @"http://bitwink.com/images/macbook.png";
+		coverURL = @"http://gordonchristie.com/storage/bookcover-test.png";
 	}
 	
 	NSString *cacheDir  = [SCHThumbnailFactory cacheDirectory];
