@@ -17,6 +17,8 @@
 #import "SCHBookInfo.h"
 #import "SCHProcessingManager.h"
 #import "SCHBookShelfTableViewCell.h"
+#import "SCHThumbnailFactory.h"
+#import "SCHAsyncImageView.h"
 
 @interface SCHBookShelfViewController ()
 
@@ -169,6 +171,10 @@ NSInteger bookSort(SCHBookInfo *book1, SCHBookInfo *book2, void *context)
 	MRGridViewCell* gridCell = [aGridView dequeueReusableCellWithIdentifier:cellIdentifier];
 	if (gridCell == nil) {
 		gridCell = [[[MRGridViewCell alloc]initWithFrame:[aGridView frameForCellAtGridIndex: index] reuseIdentifier:cellIdentifier] autorelease];
+		SCHAsyncImageView *asyncImageView = [SCHThumbnailFactory newAsyncImageWithSize:CGSizeMake(gridCell.frame.size.width - 6, gridCell.frame.size.height - 20)];
+		asyncImageView.tag = 666;
+		[gridCell.contentView addSubview:asyncImageView];
+
 	}
 	else {
 		gridCell.frame = [aGridView frameForCellAtGridIndex: index];
@@ -179,14 +185,28 @@ NSInteger bookSort(SCHBookInfo *book1, SCHBookInfo *book2, void *context)
 	SCHContentMetadataItem *contentMetadataItem = bookInfo.contentMetadata;
 
 	
-	UIImageView *imageView = nil;
+	SCHAsyncImageView *asyncImageView = (SCHAsyncImageView *) [gridCell.contentView viewWithTag:666];
 	
-	if (contentMetadataItem.FileName == nil) {
-		imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"PlaceholderBook"]];
-	} else {
-		imageView = [[SCHProcessingManager defaultManager] thumbImageForBook:bookInfo frame:CGRectMake(0, 0, 43, 43)
-																		rect:CGRectNull flip:YES maintainAspect:YES usePlaceholder:YES];
-	}
+	if (asyncImageView && [asyncImageView class] == [SCHAsyncImageView class]) {
+		if (contentMetadataItem.FileName == nil) {
+			asyncImageView.image = [UIImage imageNamed:@"PlaceholderBook"];
+		} else {
+			[[SCHProcessingManager defaultManager] updateThumbView:asyncImageView
+														  withBook:bookInfo
+															  size:CGSizeMake(gridCell.frame.size.width - 6, gridCell.frame.size.height - 20)
+															  rect:CGRectNull
+															  flip:NO
+													maintainAspect:YES
+													usePlaceHolder:YES];
+			
+		}
+	}		
+		
+		
+		
+		
+		//		imageView = [[SCHProcessingManager defaultManager] thumbImageForBook:bookInfo frame:CGRectMake(0, 0, 43, 43)
+//																		rect:CGRectNull flip:YES maintainAspect:YES usePlaceholder:YES];
 	/*
 	CGRect maxRect = UIEdgeInsetsInsetRect(gridCell.bounds, UIEdgeInsetsMake(0, 0, 23, 0));
 	CGFloat fitScale = MAX(thumb.size.width / maxRect.size.width, thumb.size.height / maxRect.size.height);
@@ -201,7 +221,6 @@ NSInteger bookSort(SCHBookInfo *book1, SCHBookInfo *book2, void *context)
 	coverView.frame = fitRect;
 	coverView.image = thumb;		
 	*/
-	[gridCell.contentView addSubview:imageView];
 	
 	return gridCell;
 }

@@ -19,19 +19,89 @@
 
 @implementation SCHProcessingManager
 
-@synthesize processingQueue;
+@synthesize processingQueue, imageCache;
 
 static SCHProcessingManager *sharedManager = nil;
 
+#pragma mark -
+#pragma mark Memory Management
 
 - (id) init
 {
 	if (self = [super init]) {
 		self.processingQueue = [[NSOperationQueue alloc] init];
+		self.imageCache = [[BlioTimeOrderedCache alloc] init];
+		self.imageCache.countLimit = 50; // Arbitrary 30 object limit
+        self.imageCache.totalCostLimit = (1024*1024) * 5; // Arbitrary 5MB limit. This may need wteaked or set on a per-device basis
 	}
 	
 	return self;
 }
+
+- (void) dealloc
+{
+	self.processingQueue = nil;
+	self.imageCache = nil;
+	[super dealloc];
+}
+
+
+- (bool) updateThumbView: (SCHAsyncImageView *) imageView withBook: (SCHBookInfo *) bookInfo size:(CGSize)size rect:(CGRect)thumbRect flip:(BOOL)flip maintainAspect:(BOOL)aspect usePlaceHolder:(BOOL)placeholder {
+	
+	NSString *cacheDir  = [SCHThumbnailFactory cacheDirectory];
+	NSString *imageName = [NSString stringWithFormat:@"%@.png", bookInfo.contentMetadata.ContentIdentifier];
+	NSString *imagePath = [cacheDir stringByAppendingPathComponent:imageName];
+	
+	if (CGRectIsNull(thumbRect)) {
+		UIImage *image = [SCHThumbnailFactory imageWithPath:imagePath];
+		CGSize imageSize = image.size;
+		
+		thumbRect = CGRectMake(0, 0, imageSize.width, imageSize.height);
+	}
+	
+//	NSString *thumbName = [NSString stringWithFormat:@"%@_%d_%d_%d_%d", imageName, (int)size.width, (int)size.height, (int)floor(thumbRect.size.width), (int)floor(thumbRect.size.height)];
+	NSString *thumbName = [NSString stringWithFormat:@"%@_%d_%d", imageName, (int)size.width, (int)size.height];
+	NSString *thumbPath = [cacheDir stringByAppendingPathComponent:thumbName];
+	
+	
+	if ([[NSFileManager defaultManager] fileExistsAtPath:thumbPath]) {
+		return [SCHThumbnailFactory updateThumbView:imageView withSize:size path:thumbPath];
+	} else {
+		return [[SCHProcessingManager defaultManager] updateAsyncThumbView:imageView withBook: bookInfo imageOfInterest:thumbName size:size rect:thumbRect maintainAspect:aspect usePlaceHolder:placeholder];
+	}
+	
+	return nil;
+}
+
+#pragma mark -
+#pragma mark Update asyncThumbView
+
+- (BOOL) updateAsyncThumbView: (SCHAsyncImageView *) imageView withBook: (SCHBookInfo *) bookInfo imageOfInterest: (NSString *) imageOfInterest
+				   size: (CGSize) size rect:(CGRect) thumbRect maintainAspect:(BOOL)aspect usePlaceHolder:(BOOL) placeholder
+{
+	[imageView prepareForReuse];
+
+	if (placeholder) {
+		UIImage *missingImage = [UIImage imageNamed:@"PlaceholderBook"];
+		CGSize missingImageSize = missingImage.size;
+		
+		// check for scale, for retina display
+		if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)]) {
+			CGFloat scale = [[UIScreen mainScreen] scale];
+			missingImageSize = CGSizeMake(missingImageSize.width * scale, missingImageSize.height * scale);
+		}
+		
+		imageView.image = missingImage;
+	}
+	
+	imageView.imageOfInterest = imageOfInterest;
+	
+	imageView.operations = [self processBookCoverImage:bookInfo size:size rect:thumbRect flip:NO maintainAspect:aspect];
+	
+	return NO;
+}
+
+
 
 // This method does the following:
 // - if necessary, fetches the book cover image URL
@@ -50,7 +120,7 @@ static SCHProcessingManager *sharedManager = nil;
 	}
 	
 	NSString *cacheDir  = [SCHThumbnailFactory cacheDirectory];
-	NSString *cacheImageItem = [cacheDir stringByAppendingPathComponent:[NSString stringWithFormat:@"image-%@.png", bookInfo.contentMetadata.ContentIdentifier]];
+	NSString *cacheImageItem = [cacheDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png", bookInfo.contentMetadata.ContentIdentifier]];
 	
 	NSOperation *imageOp = nil;
 	
@@ -78,8 +148,8 @@ static SCHProcessingManager *sharedManager = nil;
 	
 	SCHThumbnailOperation *thumbOp = nil;
 	
-	NSString *thumbPath = [NSString stringWithFormat:@"%@_%d_%d_%d_%d", [cacheImageItem lastPathComponent], (int)floor(CGRectGetMinX(thumbRect)), (int)floor(CGRectGetMinY(thumbRect)), (int)floor(thumbRect.size.width), (int)floor(thumbRect.size.height)];
-	NSLog(@"Thumbpath: SCHProcessingManager, 88: %@", thumbPath);
+//	NSString *thumbPath = [NSString stringWithFormat:@"%@_%d_%d_%d_%d", [cacheImageItem lastPathComponent], (int)size.width, (int)size.height, (int)floor(thumbRect.size.width), (int)floor(thumbRect.size.height)];
+	NSString *thumbPath = [NSString stringWithFormat:@"%@_%d_%d", [cacheImageItem lastPathComponent], (int)size.width, (int)size.height];
 	NSString *thumbFullPath = [NSString stringWithFormat:@"%@/%@", cacheDir, thumbPath];
 	
 	// check for the thumb image
@@ -111,138 +181,6 @@ static SCHProcessingManager *sharedManager = nil;
 	
 	return [NSArray arrayWithArray:operations];
 }
-
-- (UIImageView *) thumbImageForBook: (SCHBookInfo *) bookInfo frame: (CGRect) frame rect: (CGRect) thumbRect flip: (BOOL) flip maintainAspect: (BOOL) aspect usePlaceholder: (BOOL) placeholder
-{
-	
-//	NSLog(@"Frame: %@", NSStringFromCGRect(frame));
-//	NSLog(@"Thumb rect: %@", NSStringFromCGRect(thumbRect));
-	NSString *cacheDir  = [SCHThumbnailFactory cacheDirectory];
-	NSString *thumbPath = [NSString stringWithFormat:@"image-%@.png_%d_%d_%d_%d", bookInfo.contentMetadata.ContentIdentifier, (int)floor(CGRectGetMinX(thumbRect)), (int)floor(CGRectGetMinY(thumbRect)), (int)floor(thumbRect.size.width), (int)floor(thumbRect.size.height)];
-	NSLog(@"Thumbpath: SCHProcessingManager, 132: %@", thumbPath);
-	NSString *cachePath = [cacheDir stringByAppendingPathComponent:thumbPath];
-	
-	
-	if ([[NSFileManager defaultManager] fileExistsAtPath:cachePath]) {
-		UIImage *thumbImage = [SCHThumbnailFactory imageWithPath:cachePath];
-		if (thumbImage) {
-			UIImageView *aImageView = [[UIImageView alloc] initWithImage:thumbImage];
-			aImageView.frame = CGRectMake(0, 0, frame.size.width, frame.size.height);
-			return [aImageView autorelease];
-		}
-	} else {
-		UIImage *missingImage = [UIImage imageNamed:@"PlaceholderBook"];
-		CGSize missingImageSize = missingImage.size;
-		
-		// check for scale, for retina display
-		if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)]) {
-			CGFloat scale = [[UIScreen mainScreen] scale];
-			missingImageSize = CGSizeMake(missingImageSize.width * scale, missingImageSize.height * scale);
-		}
-		
-		UIImage *placeholderImage = nil;
-		if (placeholder) {
-			placeholderImage = [SCHThumbnailFactory thumbnailImageOfSize:frame.size 
-																   image:missingImage 
-															   thumbRect:CGRectMake(0, 0, missingImageSize.width, missingImageSize.height) 
-																	flip:NO 
-														  maintainAspect:aspect];
-		}
-		
-		SCHAsyncImageView *aAsyncImageView = [[SCHAsyncImageView alloc] initWithImage:placeholderImage];
-		aAsyncImageView.frame = frame;
-		NSLog(@"Thumb path: %@", thumbPath);
-		aAsyncImageView.imageOfInterest = thumbPath;
-		aAsyncImageView.contentMode = UIViewContentModeScaleToFill;
-
-		aAsyncImageView.operations = [self processBookCoverImage:bookInfo size:frame.size rect:thumbRect flip:flip maintainAspect:aspect];
-		
-		return [aAsyncImageView autorelease];
-	}
-	
-	return nil;
-}
-
-#pragma mark -
-#pragma mark Update asyncThumbView
-
-- (BOOL) asyncThumbView: (SCHAsyncImageView *) imageView withBook: (SCHBookInfo *) bookInfo size: (CGSize) size srcPath:(NSString *) path dstPath:(NSString *)thumbPath rect:(CGRect) thumbRect maintainAspect:(BOOL)aspect usePlaceHolder:(BOOL) placeholder
-{
-	UIImage *missingImage = [UIImage imageNamed:@"PlaceholderBook"];
-	CGSize missingImageSize = missingImage.size;
-	
-	// check for scale, for retina display
-	if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)]) {
-		CGFloat scale = [[UIScreen mainScreen] scale];
-		missingImageSize = CGSizeMake(missingImageSize.width * scale, missingImageSize.height * scale);
-	}
-	
-	// FIXME: use placeholder image correctly!
-	UIImage *placeholderImage = nil;
-	if (placeholder) {
-		placeholderImage = [SCHThumbnailFactory thumbnailImageOfSize:size
-															   image:missingImage 
-														   thumbRect:thumbRect 
-																flip:NO 
-													  maintainAspect:aspect];
-	}
-	
-	[imageView prepareForReuse];
-	imageView.frame = thumbRect;
-	NSLog(@"Setting imageOfInterest to %@", thumbPath);
-	imageView.imageOfInterest = thumbPath;
-	imageView.contentMode = UIViewContentModeScaleToFill;
-
-	imageView.operations = [self processBookCoverImage:bookInfo size:size rect:thumbRect flip:NO maintainAspect:aspect];
-	
-	return NO;
-}
-
-
-- (bool) updateThumbView: (SCHAsyncImageView *) imageView withBook: (SCHBookInfo *) bookInfo size:(CGSize)size rect:(CGRect)thumbRect flip:(BOOL)flip maintainAspect:(BOOL)aspect usePlaceHolder:(BOOL)placeholder {
-
-	
-	NSString *cacheDir  = [SCHThumbnailFactory cacheDirectory];
-	NSString *imageName = [NSString stringWithFormat:@"image-%@.png", bookInfo.contentMetadata.ContentIdentifier];
-	NSString *imagePath = [cacheDir stringByAppendingPathComponent:imageName];
-	
-	if (CGRectIsNull(thumbRect)) {
-		NSData *imageData = [[NSData alloc] initWithContentsOfMappedFile:imagePath];
-		UIImage *image = nil;
-		
-		if (imageData) {
-			image = [[UIImage alloc] initWithData:imageData];
-		}
-		
-		CGSize imageSize = image.size;
-		[imageData release];
-		[image release];
-		
-		thumbRect = CGRectMake(0, 0, imageSize.width, imageSize.height);
-	}
-	
-	NSString *thumbName = [NSString stringWithFormat:@"image-%@.png_%d_%d_%d_%d", bookInfo.contentMetadata.ContentIdentifier, (int)floor(CGRectGetMinX(thumbRect)), (int)floor(CGRectGetMinY(thumbRect)), (int)floor(thumbRect.size.width), (int)floor(thumbRect.size.height)];
-	NSLog(@"Thumbname: SCHProcessingManager, 233: %@", thumbName);
-	NSString *thumbPath = [cacheDir stringByAppendingPathComponent:thumbName];
-
-	
-	
-	if ([[NSFileManager defaultManager] fileExistsAtPath:thumbPath]) {
-		return [SCHThumbnailFactory updateThumbView:imageView withSize:size path:thumbPath];
-	} else {
-		return [[SCHProcessingManager defaultManager] asyncThumbView:imageView withBook: bookInfo size:size srcPath:imagePath dstPath:thumbName rect:thumbRect maintainAspect:aspect usePlaceHolder:placeholder];
-	}
-	
-	return nil;
-}
-
-
-- (void) dealloc
-{
-	self.processingQueue = nil;
-	[super dealloc];
-}
-
 
 #pragma mark -
 #pragma mark Singleton methods

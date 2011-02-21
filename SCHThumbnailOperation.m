@@ -34,6 +34,10 @@
 		return;
 	}
 	
+	// for testing: insert a random processing delay
+	//	int randomValue = (arc4random() % 5) + 3;
+	//	[NSThread sleepForTimeInterval:randomValue];
+	
 	NSString *cacheDir  = [SCHThumbnailFactory cacheDirectory];
 	NSString *cachePath = [cacheDir stringByAppendingPathComponent:self.thumbPath];
 	
@@ -43,13 +47,12 @@
 		thumbImage = [SCHThumbnailFactory imageWithPath:self.thumbPath];
 	} else {
 		thumbImage = [SCHThumbnailFactory thumbnailImageOfSize:self.size 
-														 path:self.path 
-													thumbRect:self.thumbRect 
-														 flip:self.flip 
-											   maintainAspect:self.aspect];
+														  path:self.path
+												maintainAspect:self.aspect];
+		
 		if (thumbImage) {
 			NSData *pngData = UIImagePNGRepresentation(thumbImage);
-			NSLog(@"Writing to cachepath: %@", cachePath);
+//			NSLog(@"Writing to cachepath: %@", cachePath);
 			[pngData writeToFile:cachePath atomically:YES];
 		}
 	}

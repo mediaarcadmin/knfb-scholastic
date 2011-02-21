@@ -10,15 +10,14 @@
 #import "SCHThumbnailFactory.h"
 #import "SCHProcessingManager.h"
 
-#define IMAGE_SIZE          44.0
+#define IMAGE_FRAME_WIDTH   48.0
+#define IMAGE_FRAME_HEIGHT   64.0
 #define LEFT_MARGIN			8.0
-#define RIGHT_MARGIN		8.0
-#define TOP_MARGIN			8.0
-#define BOTTOM_MARGIN		8.0
+#define RIGHT_MARGIN		0.0
 
 #define TEXT_TOP_MARGIN		12.0
 #define TEXT_LEFT_MARGIN	8.0
-#define THUMBRATIO 1.8
+//#define THUMBRATIO 1.8
 
 
 @interface SCHBookShelfTableViewCell ()
@@ -29,18 +28,23 @@
 
 @implementation SCHBookShelfTableViewCell
 
-@synthesize titleLabel, subtitleLabel, thumbImageView, bookInfo;
+@synthesize titleLabel, subtitleLabel, thumbImageView, bookInfo, thumbContainerView;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
 	
 	if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
 		
-		self.frame = CGRectMake(0, 0, self.frame.size.width - 32, IMAGE_SIZE);
+		self.frame = CGRectMake(0, 0, self.frame.size.width - IMAGE_FRAME_WIDTH, IMAGE_FRAME_HEIGHT);
 		[self layoutSubviews];
 		
-		self.thumbImageView = [SCHThumbnailFactory newAsyncImageWithSize:CGSizeMake(IMAGE_SIZE, IMAGE_SIZE)];
+		self.thumbContainerView = [[UIView alloc] initWithFrame:CGRectMake(LEFT_MARGIN, TEXT_TOP_MARGIN, IMAGE_FRAME_WIDTH, IMAGE_FRAME_HEIGHT)];
 		
-		[self.contentView addSubview:self.thumbImageView];
+		self.thumbImageView = [SCHThumbnailFactory newAsyncImageWithSize:CGSizeMake(IMAGE_FRAME_WIDTH, IMAGE_FRAME_HEIGHT)];
+		[self.thumbContainerView setClipsToBounds:YES];
+		
+		[self.thumbContainerView addSubview:self.thumbImageView];
+		
+		[self.contentView addSubview:self.thumbContainerView];
 		
         titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         [titleLabel setFont:[UIFont boldSystemFontOfSize:22.0f]];
@@ -71,11 +75,11 @@
 	
 	CGRect bounds = self.contentView.bounds;
 	
-	CGRect thumbFrame = self.thumbImageView.frame;
-	thumbFrame.origin = CGPointMake(LEFT_MARGIN, floorf((CGRectGetHeight(bounds) - CGRectGetHeight(thumbFrame))/2.0f));
-    [self.thumbImageView setFrame:thumbFrame];
+//	CGRect thumbFrame = self.thumbContainerView.frame;
+//	thumbFrame.origin = CGPointMake(10, floorf((CGRectGetHeight(bounds) - CGRectGetHeight(thumbFrame))/2.0f));
+    //[self.thumbContainerView setFrame:thumbFrame];
 	
-	CGFloat labelX = ceilf(CGRectGetMaxX(self.thumbImageView.frame) + TEXT_LEFT_MARGIN);
+	CGFloat labelX = ceilf(CGRectGetMaxX(self.thumbContainerView.frame) + TEXT_LEFT_MARGIN);
 	CGFloat labelWidth = CGRectGetWidth(bounds) - RIGHT_MARGIN - labelX;
 	
 	CGRect titleFrame = CGRectMake(labelX, TEXT_TOP_MARGIN, labelWidth, 44);
@@ -96,12 +100,10 @@
 		[oldBookInfo release];
 	}
 
-	NSLog(@"Thumbview frame: %@", NSStringFromCGRect(self.thumbImageView.frame));
-	
 	// image processing
 	BOOL immediateUpdate = [[SCHProcessingManager defaultManager] updateThumbView:self.thumbImageView
 																		 withBook:newBookInfo
-																			 size:self.thumbImageView.frame.size
+																			 size:CGSizeMake(IMAGE_FRAME_WIDTH, IMAGE_FRAME_HEIGHT)
 																			 rect:CGRectNull
 																			 flip:NO
 																   maintainAspect:YES
@@ -122,6 +124,12 @@
 	
 }
 
+- (void) prepareForReuse
+{
+	if (self.thumbImageView) {
+		[self.thumbImageView prepareForReuse];
+	}
+}
 
 - (void)dealloc {
     [super dealloc];

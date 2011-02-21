@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "SCHBookInfo.h"
 #import "SCHAsyncImageView.h"
+#import "BlioTimeOrderedCache.h"
 
 @interface SCHProcessingManager : NSObject {
 
@@ -17,13 +18,24 @@
 + (SCHProcessingManager *) defaultManager;
 
 @property (nonatomic, retain) NSOperationQueue *processingQueue;
+@property (nonatomic, retain) BlioTimeOrderedCache *imageCache;
 
 //- (void) enqueueBookInfoItems: (NSArray *) bookInfoItems;
 
-- (UIImageView *) thumbImageForBook: (SCHBookInfo *) bookInfo frame: (CGRect) frame rect: (CGRect) thumbRect flip: (BOOL) flip maintainAspect: (BOOL) aspect usePlaceholder: (BOOL) placeholder;
-- (BOOL) asyncThumbView: (SCHAsyncImageView *) imageView withBook: (SCHBookInfo *) bookInfo size: (CGSize) size srcPath:(NSString *) path dstPath:(NSString *)thumbPath rect:(CGRect) thumbRect maintainAspect:(BOOL)aspect usePlaceHolder:(BOOL) placeholder;
-- (bool) updateThumbView: (SCHAsyncImageView *) imageView withBook: (SCHBookInfo *) bookInfo size:(CGSize)size rect:(CGRect)thumbRect flip:(BOOL)flip maintainAspect:(BOOL)aspect usePlaceHolder:(BOOL)placeholder;
-//+ (bool) updateThumbView: (SCHAsyncImageView *) imageView withSize:(CGSize)size path:(NSString *)path rect:(CGRect)thumbRect flip:(BOOL)flip maintainAspect:(BOOL)aspect usePlaceHolder:(BOOL)placeholder;
-//+ (bool) updateThumbView: (SCHAsyncImageView *) imageView withBook: (SCHBookInfo *) bookInfo size:(CGSize)size path:(NSString *)path rect:(CGRect)thumbRect flip:(BOOL)flip maintainAspect:(BOOL)aspect usePlaceHolder:(BOOL)placeholder;
+- (BOOL) updateAsyncThumbView: (SCHAsyncImageView *) imageView 
+			   withBook: (SCHBookInfo *) bookInfo 
+		imageOfInterest: (NSString *) imageOfInterest 
+				   size: (CGSize) size 
+				   rect:(CGRect) thumbRect 
+		 maintainAspect:(BOOL)aspect 
+		 usePlaceHolder:(BOOL) placeholder;
+
+- (bool) updateThumbView: (SCHAsyncImageView *) imageView 
+				withBook: (SCHBookInfo *) bookInfo 
+					size:(CGSize)size 
+					rect:(CGRect)thumbRect 
+					flip:(BOOL)flip 
+		  maintainAspect:(BOOL)aspect 
+		  usePlaceHolder:(BOOL)placeholder;
 
 @end

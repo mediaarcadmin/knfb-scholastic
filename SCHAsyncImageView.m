@@ -81,14 +81,10 @@
 	id imagePath = [userInfo valueForKey:@"imagePath"];
 	id image = [userInfo valueForKey:@"image"];
 	
-//	NSLog(@"new image available! %@ (looking for %@)", imagePath, self.imageOfInterest);
 	if (image && imagePath && [imagePath isEqualToString:self.imageOfInterest]) {
-		NSLog(@"Setting image. (matched %@)", imagePath);
-		
 		[self setImage:image];
 		[self setNeedsDisplay];
 	}
 }
-
 
 @end

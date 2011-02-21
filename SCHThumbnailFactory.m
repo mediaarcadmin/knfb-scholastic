@@ -1,5 +1,5 @@
 //
-//  SCHImageCache.m
+//  SCHThumbnailFactory.m
 //  Scholastic
 //
 //  Created by Gordon Christie on 10/02/2011.
@@ -8,79 +8,24 @@
 
 #import "SCHThumbnailFactory.h"
 #import "SCHProcessingManager.h"
-
-#pragma mark SCHImageCache Class Extension
+#import "BlioTimeOrderedCache.h"
 
 @interface SCHThumbnailFactory ()
 
-//@property (nonatomic, retain) NSOperationQueue *queue;
-
+/*+ (UIImage *)thumbnailImageOfSize:(CGSize)size 
+							image:(UIImage *)fullImage
+						thumbRect:(CGRect)thumbRect 
+							 flip:(BOOL)flip 
+				   maintainAspect:(BOOL)aspect;
+*/
 @end
 
 #pragma mark -
 @implementation SCHThumbnailFactory
 
-//@synthesize queue;
-
-static SCHThumbnailFactory *sharedImageCache = nil;
-
 + (NSString *)cacheDirectory {
 	return [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject];
 }
-
-+ (UIImageView *)thumbViewWithFrame:(CGRect)frame path:(NSString *)path rect:(CGRect)thumbRect flip:(BOOL)flip maintainAspect:(BOOL)aspect {
-	NSString *cacheDir  = [SCHThumbnailFactory cacheDirectory];
-	NSString *thumbPath = [NSString stringWithFormat:@"%@_%d_%d_%d_%d", [path lastPathComponent], (int)floor(CGRectGetMinX(thumbRect)), (int)floor(CGRectGetMinY(thumbRect)), (int)floor(thumbRect.size.width), (int)floor(thumbRect.size.height)];
-	NSLog(@"Thumbpath: SCHThumbnailFactory, 34: %@", thumbPath);
-	
-	NSString *cachePath = [cacheDir stringByAppendingPathComponent:thumbPath];
-	
-	if ([[NSFileManager defaultManager] fileExistsAtPath:cachePath]) {
-		UIImage *thumbImage = [SCHThumbnailFactory imageWithPath:cachePath];
-		if (thumbImage) {
-			UIImageView *aImageView = [[UIImageView alloc] initWithImage:thumbImage];
-			aImageView.frame = frame;
-			return [aImageView autorelease];
-		}
-	} else {
-		UIImage *missingImage = [UIImage imageNamed:@"PlaceholderBook"];
-		CGSize missingImageSize = missingImage.size;
-
-		// check for scale, for retina display
-		if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)]) {
-			CGFloat scale = [[UIScreen mainScreen] scale];
-			missingImageSize = CGSizeMake(missingImageSize.width * scale, missingImageSize.height * scale);
-		}
-		
-		UIImage *placeholderImage = [SCHThumbnailFactory thumbnailImageOfSize:frame.size 
-																  image:missingImage 
-															  thumbRect:CGRectMake(0, 0, missingImageSize.width, missingImageSize.height) 
-																   flip:NO 
-														 maintainAspect:aspect];
-		
-		SCHAsyncImageView *aAsyncImageView = [[SCHAsyncImageView alloc] initWithImage:placeholderImage];
-		aAsyncImageView.frame = frame;
-		aAsyncImageView.imageOfInterest = thumbPath;
-		aAsyncImageView.contentMode = UIViewContentModeScaleToFill;
-		
-		SCHThumbnailOperation *aOperation = [SCHThumbnailFactory thumbOperationAtPath:thumbPath 
-																		   fromPath:path 
-																			   rect:thumbRect 
-																			   size:frame.size 
-																			   flip:flip 
-																	 maintainAspect:aspect];
-		
-//		SCHThumbnailFactory *defaultCache = [SCHThumbnailFactory defaultCache];
-		[[[SCHProcessingManager defaultManager] processingQueue] addOperation:aOperation];
-		
-		aAsyncImageView.operations = [NSArray arrayWithObject:aOperation];
-		
-		return [aAsyncImageView autorelease];
-	}
-	
-	return nil;
-}
-
 + (SCHAsyncImageView *)newAsyncImageWithSize:(CGSize)size {
 	CGRect viewBounds = CGRectMake(0, 0, size.width, size.height);
 	
@@ -90,35 +35,10 @@ static SCHThumbnailFactory *sharedImageCache = nil;
 	//imageView.image = [UIImage imageNamed:@"missingImage.png"];
 	imageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	imageView.backgroundColor = [UIColor clearColor];
-	imageView.tag = 999;
+	imageView.tag = 666;
 	
 	return imageView;
 }
-
-/*
-+ (bool) asyncThumbView: (SCHAsyncImageView *) asyncImageView withSize:(CGSize)size srcPath:(NSString *)srcPath dstPath:(NSString *)dstPath rect:(CGRect)rect maintainAspect:(BOOL)aspect usePlaceHolder:(BOOL)placeholder {
-	
-	if (placeholder) {
-		UIImage *placeholderImage = [AWThumbnailFactory placeholderImageOfSize:size forSrc:srcPath maintainAspect:aspect];
-		asyncImageView.image = placeholderImage;
-		asyncImageView.backgroundColor = [UIColor clearColor];
-	} else {
-		asyncImageView.backgroundColor = [UIColor whiteColor];
-	}
-	
-	asyncImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-	asyncImageView.imageOfInterest = dstPath;
-	asyncImageView.contentMode = UIViewContentModeScaleToFill;
-	asyncImageView.clipsToBounds = YES;
-	
-	AWThumbnailOperation *aOperation = [AWThumbnailFactory thumbOperationAtPath:dstPath fromPath:srcPath rect:rect size:size style:kAWThumbnailStyleStandard flip:YES maintainAspect:aspect];
-	AWThumbnailFactory *defaultFactory = [AWThumbnailFactory defaultFactory];
-	[[defaultFactory queue] addOperation:aOperation];
-	asyncImageView.operation = aOperation;
-	
-	return NO;	
-}
-*/
 
 + (bool) updateThumbView: (SCHAsyncImageView *) imageView withSize:(CGSize)size path:(NSString *)path {
 	
@@ -132,7 +52,7 @@ static SCHThumbnailFactory *sharedImageCache = nil;
 	return YES;
 }
 
-
+/*
 + (UIImage *)thumbnailImageOfSize:(CGSize)size path:(NSString *)path thumbRect:(CGRect)thumbRect flip:(BOOL)flip maintainAspect:(BOOL)aspect {
 	UIImage *fullImage = [SCHThumbnailFactory imageWithPath:path];
 	
@@ -153,8 +73,6 @@ static SCHThumbnailFactory *sharedImageCache = nil;
 	if (flip) {
 		thumbRect.origin.y = fullImage.size.height - thumbRect.origin.y - thumbRect.size.height;
 	}
-	
-	//CGFloat aspectScale = MIN(size.width / thumbRect.size.width, size.height / thumbRect.size.height);
 	
 	CGFloat xRatio = size.width / thumbRect.size.width;
 	CGFloat yRatio = size.height / thumbRect.size.height;
@@ -218,9 +136,9 @@ static SCHThumbnailFactory *sharedImageCache = nil;
 		imageRect = CGRectApplyAffineTransform(imageRect, CGAffineTransformMakeScale(scale, scale));
 	}
 	
-	CGRect integralRect = CGRectIntegral(imageRect);
-	CGRect thumbNailRect = integralRect;
-	CGSize imageSize = integralRect.size;
+	// convert to closest int values for imagerect
+	CGRect thumbNailRect = CGRectIntegral(imageRect);
+	CGSize imageSize = thumbNailRect.size;
 	
 	CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
 	CGContextRef ctx = CGBitmapContextCreate(NULL, imageSize.width, imageSize.height, 8, 4 * imageSize.width, colorSpace, kCGImageAlphaPremultipliedFirst);
@@ -239,11 +157,56 @@ static SCHThumbnailFactory *sharedImageCache = nil;
 	
 	return [scaledImage autorelease];
 }
+ */
+
++ (UIImage *)thumbnailImageOfSize:(CGSize)size 
+							 path:(NSString *)path
+				   maintainAspect:(BOOL)aspect		
+{
+	// debug: make sure we're not running the image resizing on the main thread
+	NSAssert([NSThread currentThread] != [NSThread mainThread], @"Don't do image interpolation on the main thread!");
+	
+	UIImage *fullImage = [SCHThumbnailFactory imageWithPath:path];
+	
+	if (!fullImage) {
+		return nil;
+	} else {
+		
+		if (aspect) {
+			
+			CGFloat xRatio = size.width / fullImage.size.width;
+			CGFloat yRatio = size.height / fullImage.size.height;
+	
+			NSLog(@"xratio: %f yratio: %f", xRatio, yRatio);
+		}
+		
+		UIGraphicsBeginImageContextWithOptions(size, NO, 0.0f);
+		[fullImage drawInRect:CGRectMake(0, 0, size.width, size.height)];
+		UIImage* newImage = UIGraphicsGetImageFromCurrentImageContext();
+		UIGraphicsEndImageContext();
+		
+		return newImage;
+	}
+}
+
+
 
 + (UIImage *)imageWithPath:(NSString *)path {
 	UIImage *image = nil;
 	
-	NSData *imageData = [NSData dataWithContentsOfMappedFile:path];
+	NSData *imageData = [[[SCHProcessingManager defaultManager] imageCache] objectForKey:path];
+	
+	if (!imageData) {
+		imageData = [NSData dataWithContentsOfMappedFile:path];
+		
+		if (imageData) {
+			// only cache small images
+			if ([imageData length] < (1024 * 512)) {
+				[[[SCHProcessingManager defaultManager] imageCache] setObject:imageData forKey:path cost:[imageData length]];
+			}
+		}
+	}
+		
 	if (imageData) {
 		image = [UIImage imageWithData:imageData];
 	}
@@ -262,51 +225,4 @@ static SCHThumbnailFactory *sharedImageCache = nil;
 	
 	return [aOperation autorelease];
 }
-
-
-
-#pragma mark -
-#pragma mark Singleton methods
-
-// Singleton methods are copied directly from http://developer.apple.com/library/ios/#documentation/Cocoa/Conceptual/CocoaFundamentals/CocoaObjects/CocoaObjects.html%23//apple_ref/doc/uid/TP40002974-CH4-SW32
-// These denote a singleton that cannot be separately allocated alongside the sharedFactory
-
-+(SCHThumbnailFactory*) defaultCache
-{
-    if (sharedImageCache == nil) {
-        sharedImageCache = [[super allocWithZone:NULL] init];
-    }
-    return sharedImageCache;
-}
-
-+(id) allocWithZone:(NSZone *)zone
-{
-    return [[self defaultCache] retain];
-}
-
--(id) copyWithZone:(NSZone *)zone 
-{
-    return self;
-}
-
-- (id)retain
-{
-    return self;
-}
-
-- (NSUInteger)retainCount 
-{
-    return NSUIntegerMax;  //denotes an object that cannot be released
-}
-
-- (void)release
-{
-    //do nothing
-}
-
-- (id)autorelease
-{
-    return self;
-}
-
 @end
