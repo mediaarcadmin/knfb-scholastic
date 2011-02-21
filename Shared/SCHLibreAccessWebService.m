@@ -1162,50 +1162,50 @@ static NSString * const kSCHLibreAccessWebServiceStatusHolderStatusMessage = @"s
 - (void)fromObject:(NSDictionary *)object intoSaveProfileItem:(LibreAccessServiceSvc_SaveProfileItem *)intoObject
 {
 	if (object != nil && intoObject != nil) {
-		intoObject.AutoAssignContentToProfiles = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceAutoAssignContentToProfiles]];
-		intoObject.ProfilePasswordRequired = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceProfilePasswordRequired]];
-		intoObject.Firstname = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceFirstName]];
-		intoObject.Lastname = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceLastName]];
-		intoObject.BirthDay = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceBirthday]];
-		intoObject.LastModified = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceLastModified]];
-		intoObject.screenname = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceScreenName]];
-		intoObject.password = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServicePassword]];
-		intoObject.userkey = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceUserKey]];
-		intoObject.type = [[object objectForKey:kSCHLibreAccessWebServiceType] profileTypeValue];
-		intoObject.id_ = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceID]];
-		intoObject.action = [[object objectForKey:kSCHLibreAccessWebServiceAction] saveActionValue];
-		intoObject.BookshelfStyle = [[object objectForKey:kSCHLibreAccessWebServiceBookshelfStyle] bookshelfStyleValue];
-		intoObject.storyInteractionEnabled = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceStoryInteractionEnabled]];
+		intoObject.AutoAssignContentToProfiles = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceAutoAssignContentToProfiles]];
+		intoObject.ProfilePasswordRequired = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceProfilePasswordRequired]];
+		intoObject.Firstname = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceFirstName]];
+		intoObject.Lastname = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceLastName]];
+		intoObject.BirthDay = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceBirthday]];
+		intoObject.LastModified = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceLastModified]];
+		intoObject.screenname = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceScreenName]];
+		intoObject.password = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServicePassword]];
+		intoObject.userkey = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceUserKey]];
+		intoObject.type = [[object valueForKey:kSCHLibreAccessWebServiceType] profileTypeValue];
+		intoObject.id_ = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceID]];
+		intoObject.action = [[object valueForKey:kSCHLibreAccessWebServiceAction] saveActionValue];
+		intoObject.BookshelfStyle = [[object valueForKey:kSCHLibreAccessWebServiceBookshelfStyle] bookshelfStyleValue];
+		intoObject.storyInteractionEnabled = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceStoryInteractionEnabled]];
 	}
 }
 
 - (void)fromObject:(NSDictionary *)object intoISBNItem:(LibreAccessServiceSvc_isbnItem *)intoObject
 {
 	if (object != nil && intoObject != nil) {
-		intoObject.ISBN = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceContentIdentifier]];
-		intoObject.Format = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceFormat]];
-		intoObject.IdentifierType = [[object objectForKey:kSCHLibreAccessWebServiceContentIdentifierType] contentIdentifierTypeValue];
-		intoObject.Qualifier = [[object objectForKey:kSCHLibreAccessWebServiceDRMQualifier] DRMQualifierValue];
+		intoObject.ISBN = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceContentIdentifier]];
+		intoObject.Format = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceFormat]];
+		intoObject.IdentifierType = [[object valueForKey:kSCHLibreAccessWebServiceContentIdentifierType] contentIdentifierTypeValue];
+		intoObject.Qualifier = [[object valueForKey:kSCHLibreAccessWebServiceDRMQualifier] DRMQualifierValue];
 	}
 }
 
 - (void)fromObject:(NSDictionary *)object intoUserSettingsItem:(LibreAccessServiceSvc_UserSettingsItem *)intoObject
 {
 	if (object != nil && intoObject != nil) {
-		intoObject.SettingType = [[object objectForKey:kSCHLibreAccessWebServiceSettingType] userSettingsTypeValue];
-		intoObject.SettingValue = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceSettingValue]];
+		intoObject.SettingType = [[object valueForKey:kSCHLibreAccessWebServiceSettingType] userSettingsTypeValue];
+		intoObject.SettingValue = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceSettingValue]];
 	}
 }
 
 - (void)fromObject:(NSDictionary *)object intoAnnotationsRequestContentItem:(LibreAccessServiceSvc_AnnotationsRequestContentItem *)intoObject
 {
 	if (object != nil && intoObject != nil) {
-		intoObject.contentIdentifier = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceContentIdentifier]];
-		intoObject.ContentIdentifierType = [[object objectForKey:kSCHLibreAccessWebServiceContentIdentifierType] contentIdentifierTypeValue];
-		intoObject.drmqualifier = [[object objectForKey:kSCHLibreAccessWebServiceDRMQualifier] DRMQualifierValue];
-		intoObject.format = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceFormat]];
+		intoObject.contentIdentifier = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceContentIdentifier]];
+		intoObject.ContentIdentifierType = [[object valueForKey:kSCHLibreAccessWebServiceContentIdentifierType] contentIdentifierTypeValue];
+		intoObject.drmqualifier = [[object valueForKey:kSCHLibreAccessWebServiceDRMQualifier] DRMQualifierValue];
+		intoObject.format = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceFormat]];
 		intoObject.PrivateAnnotationsRequest = [[LibreAccessServiceSvc_PrivateAnnotationsRequest alloc] init];
-		[self fromObject:[object objectForKey:kSCHLibreAccessWebServicePrivateAnnotations] intoPrivateAnnotationsRequest:intoObject.PrivateAnnotationsRequest];
+		[self fromObject:[object valueForKey:kSCHLibreAccessWebServicePrivateAnnotations] intoPrivateAnnotationsRequest:intoObject.PrivateAnnotationsRequest];
 		[intoObject.PrivateAnnotationsRequest release];
 	}
 }
@@ -1213,10 +1213,10 @@ static NSString * const kSCHLibreAccessWebServiceStatusHolderStatusMessage = @"s
 - (void)fromObject:(NSDictionary *)object intoPrivateAnnotationsRequest:(LibreAccessServiceSvc_PrivateAnnotationsRequest *)intoObject
 {
 	if (object != nil && intoObject != nil) {
-		intoObject.version = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceVersion]];		
-		intoObject.HighlightsAfter = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceHighlightsAfter]];
-		intoObject.NotesAfter = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceNotesAfter]];
-		intoObject.BookmarksAfter = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceBookmarksAfter]];
+		intoObject.version = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceVersion]];		
+		intoObject.HighlightsAfter = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceHighlightsAfter]];
+		intoObject.NotesAfter = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceNotesAfter]];
+		intoObject.BookmarksAfter = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceBookmarksAfter]];
 	}
 }	
 
@@ -1224,26 +1224,26 @@ static NSString * const kSCHLibreAccessWebServiceStatusHolderStatusMessage = @"s
 {
 	if (object != nil && intoObject != nil) {
 		intoObject.AnnotationsContentList = [[LibreAccessServiceSvc_AnnotationsContentList alloc] init];
-		for (NSDictionary *item in [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceAnnotationsContentList]]) {
+		for (NSDictionary *item in [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceAnnotationsContentList]]) {
 			LibreAccessServiceSvc_AnnotationsContentItem *annotationsContentItem = [[LibreAccessServiceSvc_AnnotationsContentItem alloc] init];
 			[self fromObject:item intoAnnotationsContentItem:annotationsContentItem];
 			[intoObject.AnnotationsContentList addAnnotationsContentItem:annotationsContentItem];
 			[annotationsContentItem release];
 		}
 		[intoObject.AnnotationsContentList release];
-		intoObject.profileID = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceProfileID]];
+		intoObject.profileID = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceProfileID]];
 	}
 }												
 
 - (void)fromObject:(NSDictionary *)object intoAnnotationsContentItem:(LibreAccessServiceSvc_AnnotationsContentItem *)intoObject
 {
 	if (object != nil && intoObject != nil) {
-		intoObject.contentIdentifier = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceContentIdentifier]];
-		intoObject.ContentIdentifierType = [[self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceContentIdentifierType]] contentIdentifierType];
-		intoObject.drmqualifier = [[self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceDRMQualifier]] DRMQualifier];		
-		intoObject.format = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceFormat]];
+		intoObject.contentIdentifier = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceContentIdentifier]];
+		intoObject.ContentIdentifierType = [[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceContentIdentifierType]] contentIdentifierType];
+		intoObject.drmqualifier = [[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceDRMQualifier]] DRMQualifier];		
+		intoObject.format = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceFormat]];
 		intoObject.PrivateAnnotations = [[LibreAccessServiceSvc_PrivateAnnotations alloc] init];
-		[self fromObject:[object objectForKey:kSCHLibreAccessWebServicePrivateAnnotations] intoPrivateAnnotations:intoObject.PrivateAnnotations];
+		[self fromObject:[object valueForKey:kSCHLibreAccessWebServicePrivateAnnotations] intoPrivateAnnotations:intoObject.PrivateAnnotations];
 		[intoObject.PrivateAnnotations release];
 	}
 }												
@@ -1252,7 +1252,7 @@ static NSString * const kSCHLibreAccessWebServiceStatusHolderStatusMessage = @"s
 {
 	if (object != nil && intoObject != nil) {
 		intoObject.Highlights = [[LibreAccessServiceSvc_Highlights alloc] init];
-		for (NSDictionary *item in [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceHighlights]]) {
+		for (NSDictionary *item in [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceHighlights]]) {
 			LibreAccessServiceSvc_Highlight *highlight = [[LibreAccessServiceSvc_Highlight alloc] init];
 			[self fromObject:item intoHighlight:highlight];
 			[intoObject.Highlights addHighlight:highlight];
@@ -1261,7 +1261,7 @@ static NSString * const kSCHLibreAccessWebServiceStatusHolderStatusMessage = @"s
 		[intoObject.Highlights release];
 		
 		intoObject.Notes = [[LibreAccessServiceSvc_Notes alloc] init];
-		for (NSDictionary *item in [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceNotes]]) {
+		for (NSDictionary *item in [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceNotes]]) {
 			LibreAccessServiceSvc_Note *note = [[LibreAccessServiceSvc_Note alloc] init];
 			[self fromObject:item intoNote:note];
 			[intoObject.Notes addNote:note];
@@ -1270,7 +1270,7 @@ static NSString * const kSCHLibreAccessWebServiceStatusHolderStatusMessage = @"s
 		[intoObject.Notes release];
 		
 		intoObject.Bookmarks = [[LibreAccessServiceSvc_Bookmarks alloc] init];
-		for (NSDictionary *item in [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceBookmarks]]) {
+		for (NSDictionary *item in [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceBookmarks]]) {
 			LibreAccessServiceSvc_Bookmark *bookmark = [[LibreAccessServiceSvc_Bookmark alloc] init];
 			[self fromObject:item intoBookmark:bookmark];
 			[intoObject.Bookmarks addBookmark:bookmark];
@@ -1279,11 +1279,11 @@ static NSString * const kSCHLibreAccessWebServiceStatusHolderStatusMessage = @"s
 		[intoObject.Bookmarks release];
 		
 		intoObject.Favorite = [[LibreAccessServiceSvc_Favorite alloc] init];
-		[self fromObject:[self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceFavorite]] intoFavorite:intoObject.Favorite];
+		[self fromObject:[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceFavorite]] intoFavorite:intoObject.Favorite];
 		[intoObject.Favorite release];
 		
 		intoObject.LastPage = [[LibreAccessServiceSvc_LastPage alloc] init];
-		[self fromObject:[self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceLastPage]] intoLastPage:intoObject.LastPage];
+		[self fromObject:[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceLastPage]] intoLastPage:intoObject.LastPage];
 		[intoObject.LastPage release];		
 	}
 }												
@@ -1291,24 +1291,24 @@ static NSString * const kSCHLibreAccessWebServiceStatusHolderStatusMessage = @"s
 - (void)fromObject:(NSDictionary *)object intoHighlight:(LibreAccessServiceSvc_Highlight *)intoObject
 {
 	if (object != nil && intoObject != nil) {
-		intoObject.id_ = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceID]];
-		intoObject.action = [[self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceAction]] saveActionValue];
-		intoObject.color = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceColor]];		
+		intoObject.id_ = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceID]];
+		intoObject.action = [[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceAction]] saveActionValue];
+		intoObject.color = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceColor]];		
 		intoObject.location = [[LibreAccessServiceSvc_LocationText alloc] init];
-		[self fromObject:[self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceLocationText]] intoLocationText:intoObject.location];
+		[self fromObject:[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceLocationText]] intoLocationText:intoObject.location];
 		[intoObject.location release];
-		intoObject.endPage = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceEndPage]];		
-		intoObject.version = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceVersion]];				
-		intoObject.lastmodified = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceLastModified]];				
+		intoObject.endPage = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceEndPage]];		
+		intoObject.version = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceVersion]];				
+		intoObject.lastmodified = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceLastModified]];				
 	}	
 }
 
 - (void)fromObject:(NSDictionary *)object intoLocationText:(LibreAccessServiceSvc_LocationText *)intoObject
 {
 	if (object != nil && intoObject != nil) {
-		intoObject.page = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServicePage]];
+		intoObject.page = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServicePage]];
 		intoObject.wordindex = [[LibreAccessServiceSvc_WordIndex alloc] init];		
-		[self fromObject:[self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceWordIndex]] intoWordIndex:intoObject.wordindex];
+		[self fromObject:[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceWordIndex]] intoWordIndex:intoObject.wordindex];
 		[intoObject.wordindex release];
 	}	
 }
@@ -1316,87 +1316,87 @@ static NSString * const kSCHLibreAccessWebServiceStatusHolderStatusMessage = @"s
 - (void)fromObject:(NSDictionary *)object intoWordIndex:(LibreAccessServiceSvc_WordIndex *)intoObject
 {
 	if (object != nil && intoObject != nil) {
-		intoObject.start = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceStart]];
-		intoObject.end = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceEnd]];		
+		intoObject.start = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceStart]];
+		intoObject.end = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceEnd]];		
 	}	
 }
 
 - (void)fromObject:(NSDictionary *)object intoNote:(LibreAccessServiceSvc_Note *)intoObject
 {
 	if (object != nil && intoObject != nil) {
-		intoObject.id_ = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceID]];
-		intoObject.action = [[self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceAction]] saveActionValue];
+		intoObject.id_ = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceID]];
+		intoObject.action = [[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceAction]] saveActionValue];
 		intoObject.location = [[LibreAccessServiceSvc_LocationGraphics alloc] init];
-		[self fromObject:[self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceLocationGraphics]] intoLocationGraphics:intoObject.location];
+		[self fromObject:[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceLocationGraphics]] intoLocationGraphics:intoObject.location];
 		[intoObject.location release];
-		intoObject.color = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceColor]];
-		intoObject.value = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceValue]];		
-		intoObject.version = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceVersion]];				
-		intoObject.lastmodified = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceLastModified]];				
+		intoObject.color = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceColor]];
+		intoObject.value = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceValue]];		
+		intoObject.version = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceVersion]];				
+		intoObject.lastmodified = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceLastModified]];				
 	}	
 }
 
 - (void)fromObject:(NSDictionary *)object intoLocationGraphics:(LibreAccessServiceSvc_LocationGraphics *)intoObject
 {
 	if (object != nil && intoObject != nil) {
-		intoObject.page = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServicePage]];
+		intoObject.page = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServicePage]];
 		intoObject.coords = [[LibreAccessServiceSvc_Coords alloc] init];
-		[self fromObject:[self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceCoords]] intoCoords:intoObject.coords];
+		[self fromObject:[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceCoords]] intoCoords:intoObject.coords];
 		[intoObject.coords release];
-		intoObject.wordindex = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceWordIndex]];
+		intoObject.wordindex = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceWordIndex]];
 	}	
 }
 
 - (void)fromObject:(NSDictionary *)object intoCoords:(LibreAccessServiceSvc_Coords *)intoObject
 {
 	if (object != nil && intoObject != nil) {
-		intoObject.x = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceX]];
-		intoObject.y = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceY]];
+		intoObject.x = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceX]];
+		intoObject.y = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceY]];
 	}	
 }
 
 - (void)fromObject:(NSDictionary *)object intoFavorite:(LibreAccessServiceSvc_Favorite *)intoObject
 {
 	if (object != nil && intoObject != nil) {
-		intoObject.isFavorite = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceIsFavorite]];
-		intoObject.lastmodified = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceLastModified]];				
+		intoObject.isFavorite = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceIsFavorite]];
+		intoObject.lastmodified = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceLastModified]];				
 	}	
 }
 
 - (void)fromObject:(NSDictionary *)object intoBookmark:(LibreAccessServiceSvc_Bookmark *)intoObject
 {
 	if (object != nil && intoObject != nil) {
-		intoObject.id_ = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceID]];
-		intoObject.action = [[self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceAction]] saveActionValue];
-		intoObject.text = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceText]];
-		intoObject.disabled = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceDisabled]];		
+		intoObject.id_ = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceID]];
+		intoObject.action = [[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceAction]] saveActionValue];
+		intoObject.text = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceText]];
+		intoObject.disabled = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceDisabled]];		
 		intoObject.location = [[LibreAccessServiceSvc_LocationBookmark alloc] init];
-		intoObject.location.page = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceLocationBookmark]];
+		intoObject.location.page = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceLocationBookmark]];
 		[intoObject.location release];
-		intoObject.version = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceVersion]];						
-		intoObject.lastmodified = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceLastModified]];				
+		intoObject.version = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceVersion]];						
+		intoObject.lastmodified = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceLastModified]];				
 	}	
 }
 
 - (void)fromObject:(NSDictionary *)object intoLastPage:(LibreAccessServiceSvc_LastPage *)intoObject
 {
 	if (object != nil && intoObject != nil) {
-		intoObject.lastPageLocation = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceLastPageLocation]];
-		intoObject.percentage = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServicePercentage]];
-		intoObject.component = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceComponent]];
-		intoObject.lastmodified = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceLastModified]];						
+		intoObject.lastPageLocation = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceLastPageLocation]];
+		intoObject.percentage = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServicePercentage]];
+		intoObject.component = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceComponent]];
+		intoObject.lastmodified = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceLastModified]];						
 	}	
 }
 
 - (void)fromObject:(NSDictionary *)object intoContentProfileAssignmentItem:(LibreAccessServiceSvc_ContentProfileAssignmentItem *)intoObject
 {
 	if (object != nil && intoObject != nil) {
-		intoObject.contentIdentifier = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceContentIdentifier]];
-		intoObject.ContentIdentifierType = [[self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceContentIdentifierType]] contentIdentifierType];
-		intoObject.drmqualifier = [[self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceDRMQualifier]] DRMQualifier];		
-		intoObject.format = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceFormat]];
+		intoObject.contentIdentifier = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceContentIdentifier]];
+		intoObject.ContentIdentifierType = [[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceContentIdentifierType]] contentIdentifierType];
+		intoObject.drmqualifier = [[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceDRMQualifier]] DRMQualifier];		
+		intoObject.format = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceFormat]];
 		intoObject.AssignedProfileList = [[LibreAccessServiceSvc_AssignedProfileList alloc] init];
-		for (NSDictionary *item in [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceAssignedProfileList]]) {
+		for (NSDictionary *item in [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceAssignedProfileList]]) {
 			LibreAccessServiceSvc_AssignedProfileItem *contentProfileAssignmentItem = [[LibreAccessServiceSvc_AssignedProfileItem alloc] init];
 			[self fromObject:item intoAssignedProfileItem:contentProfileAssignmentItem];
 			[intoObject.AssignedProfileList addAssignedProfileItem:contentProfileAssignmentItem];
@@ -1409,9 +1409,9 @@ static NSString * const kSCHLibreAccessWebServiceStatusHolderStatusMessage = @"s
 - (void)fromObject:(NSDictionary *)object intoAssignedProfileItem:(LibreAccessServiceSvc_AssignedProfileItem *)intoObject
 {
 	if (object != nil && intoObject != nil) {
-		intoObject.profileID = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceProfileID]];
-		intoObject.action = [[self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceAction]] saveActionValue];
-		intoObject.lastmodified = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceLastModified]];				
+		intoObject.profileID = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceProfileID]];
+		intoObject.action = [[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceAction]] saveActionValue];
+		intoObject.lastmodified = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceLastModified]];				
 	}	
 }
 
@@ -1419,26 +1419,26 @@ static NSString * const kSCHLibreAccessWebServiceStatusHolderStatusMessage = @"s
 {
 	if (object != nil && intoObject != nil) {
 		intoObject.ReadingStatsContentList = [[LibreAccessServiceSvc_ReadingStatsContentList alloc] init];
-		for (NSDictionary *item in [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceReadingStatsContentList]]) {
+		for (NSDictionary *item in [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceReadingStatsContentList]]) {
 			LibreAccessServiceSvc_ReadingStatsContentItem *readingStatsContentItem = [[LibreAccessServiceSvc_ReadingStatsContentItem alloc] init];
 			[self fromObject:item intoReadingStatsContentItem:readingStatsContentItem];
 			[intoObject.ReadingStatsContentList addReadingStatsContentItem:readingStatsContentItem];
 			[readingStatsContentItem release], readingStatsContentItem = nil;
 		}
 		[intoObject.ReadingStatsContentList release];
-		intoObject.profileID = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceProfileID]];
+		intoObject.profileID = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceProfileID]];
 	}	
 }
 
 - (void)fromObject:(NSDictionary *)object intoReadingStatsContentItem:(LibreAccessServiceSvc_ReadingStatsContentItem *)intoObject
 {
 	if (object != nil && intoObject != nil) {
-		intoObject.ContentIdentifierType = [[self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceContentIdentifierType]] contentIdentifierType];
-		intoObject.contentIdentifier = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceContentIdentifier]];
-		intoObject.drmqualifier = [[self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceDRMQualifier]] DRMQualifier];		
-		intoObject.format = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceFormat]];
+		intoObject.ContentIdentifierType = [[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceContentIdentifierType]] contentIdentifierType];
+		intoObject.contentIdentifier = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceContentIdentifier]];
+		intoObject.drmqualifier = [[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceDRMQualifier]] DRMQualifier];		
+		intoObject.format = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceFormat]];
 		intoObject.ReadingStatsEntryList = [[LibreAccessServiceSvc_ReadingStatsEntryList alloc] init];
-		for (NSDictionary *item in [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceReadingStatsContentList]]) {
+		for (NSDictionary *item in [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceReadingStatsContentList]]) {
 			LibreAccessServiceSvc_ReadingStatsEntryItem *readingStatsEntryItem = [[LibreAccessServiceSvc_ReadingStatsEntryItem alloc] init];
 			[self fromObject:item intoReadingStatsEntryItem:readingStatsEntryItem];
 			[intoObject.ReadingStatsEntryList addReadingStatsEntryItem:readingStatsEntryItem];
@@ -1451,14 +1451,14 @@ static NSString * const kSCHLibreAccessWebServiceStatusHolderStatusMessage = @"s
 - (void)fromObject:(NSDictionary *)object intoReadingStatsEntryItem:(LibreAccessServiceSvc_ReadingStatsEntryItem *)intoObject
 {
 	if (object != nil && intoObject != nil) {
-		intoObject.readingDuration = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceReadingDuration]];
-		intoObject.pagesRead = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServicePagesRead]];
-		intoObject.storyInteractions = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceStoryInteractions]];
-		intoObject.dictionaryLookups = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceDictionaryLookups]];
-		intoObject.deviceKey = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceDeviceKey]];
-		intoObject.timestamp = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceTimestamp]];				
+		intoObject.readingDuration = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceReadingDuration]];
+		intoObject.pagesRead = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServicePagesRead]];
+		intoObject.storyInteractions = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceStoryInteractions]];
+		intoObject.dictionaryLookups = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceDictionaryLookups]];
+		intoObject.deviceKey = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceDeviceKey]];
+		intoObject.timestamp = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceTimestamp]];				
 		intoObject.DictionaryLookupsList = [[LibreAccessServiceSvc_DictionaryLookupsList alloc] init];
-		for (NSString *item in [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceDictionaryLookupsList]]) {
+		for (NSString *item in [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceDictionaryLookupsList]]) {
 			[intoObject.DictionaryLookupsList addDictionaryLookupsItem:item];
 		}
 		[intoObject.DictionaryLookupsList release];
@@ -1468,9 +1468,9 @@ static NSString * const kSCHLibreAccessWebServiceStatusHolderStatusMessage = @"s
 - (void)fromObject:(NSDictionary *)object intoTopFavoritesItem:(LibreAccessServiceSvc_TopFavoritesRequestItem *)intoObject
 {
 	if (object != nil && intoObject != nil) {
-		intoObject.AssignedBooksOnly = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceAssignedBooksOnly]];
-		intoObject.TopFavoritesType = [[self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceTopFavoritesType]] topFavoritesTypeValue];
-		intoObject.TopFavoritesTypeValue = [self fromObjectTranslate:[object objectForKey:kSCHLibreAccessWebServiceTopFavoritesTypeValue]];
+		intoObject.AssignedBooksOnly = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceAssignedBooksOnly]];
+		intoObject.TopFavoritesType = [[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceTopFavoritesType]] topFavoritesTypeValue];
+		intoObject.TopFavoritesTypeValue = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceTopFavoritesTypeValue]];
 	}	
 }
 
