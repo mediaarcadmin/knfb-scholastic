@@ -32,22 +32,13 @@ static SCHProcessingManager *sharedManager = nil;
 	
 	return self;
 }
-/*
-- (void) enqueueBookInfoItems: (NSArray *) bookInfoItems
-{
-	NSLog(@"Enqueueing items: %@", bookInfoItems);
-	for (SCHBookInfo *infoItem in bookInfoItems) {
-		[self enqueueBookInfoItem:infoItem];
-	}
-}
-*/
 
 // This method does the following:
 // - if necessary, fetches the book cover image URL
 // - if necessary, downloads the book cover image data
 // - if necessary, processes the book cover and creates thumbs
-
 // - returns an array of operations enqueued, if any
+
 - (NSArray *) processBookCoverImage: (SCHBookInfo *) bookInfo size: (CGSize) size rect: (CGRect) thumbRect flip: (BOOL) flip maintainAspect: (BOOL) aspect
 {
 	NSString *coverURL = bookInfo.contentMetadata.CoverURL;
@@ -55,32 +46,26 @@ static SCHProcessingManager *sharedManager = nil;
 	if (!coverURL) {
 		// get the cover URL 
 		// FIXME: actually get the cover URL
-		// FIXME: add local file mode!
 		coverURL = @"http://bitwink.com/images/macbook.png";
 	}
 	
-//	NSLog(@"Cover item is: %@", coverURL);
-		
 	NSString *cacheDir  = [SCHThumbnailFactory cacheDirectory];
 	NSString *cacheImageItem = [cacheDir stringByAppendingPathComponent:[NSString stringWithFormat:@"image-%@.png", bookInfo.contentMetadata.ContentIdentifier]];
 	
-//	NSLog(@"Cache image item is: %@", cacheImageItem);
-
 	NSOperation *imageOp = nil;
 	
-	// check for the main image
+	// check for the full-sized cover image
 	if (![[NSFileManager defaultManager] fileExistsAtPath:cacheImageItem]) {
-		// if it doesn't exist, queue up a download operation
+		// if it doesn't exist, queue up the appropriate operation
 
 #ifdef LOCALDEBUG
-		NSLog(@"Grabbing file from XPS.");
-		
+		// grab the file from the XPS
 		SCHXPSCoverImageOperation *xpsImageOp = [[SCHXPSCoverImageOperation alloc] init];
 		xpsImageOp.bookInfo = bookInfo;
 		xpsImageOp.localPath = cacheImageItem;
 		imageOp = xpsImageOp;
 #else
-		NSLog(@"File does not exist. Enqueueing download operation...");
+		// download image from the server
 		SCHDownloadImageOperation *downloadImageOp = [[SCHDownloadImageOperation alloc] init];
 		downloadImageOp.imagePath = [NSURL URLWithString:coverURL];
 		downloadImageOp.localPath = cacheImageItem;
@@ -88,21 +73,19 @@ static SCHProcessingManager *sharedManager = nil;
 #endif
 		
 	} else {
-		NSLog(@"File already exists.");
+		NSLog(@"Full sized image already exists.");
 	}
 	
 	SCHThumbnailOperation *thumbOp = nil;
 	
 	NSString *thumbPath = [NSString stringWithFormat:@"%@_%d_%d_%d_%d", [cacheImageItem lastPathComponent], (int)floor(CGRectGetMinX(thumbRect)), (int)floor(CGRectGetMinY(thumbRect)), (int)floor(thumbRect.size.width), (int)floor(thumbRect.size.height)];
+	NSLog(@"Thumbpath: SCHProcessingManager, 88: %@", thumbPath);
 	NSString *thumbFullPath = [NSString stringWithFormat:@"%@/%@", cacheDir, thumbPath];
 	
 	// check for the thumb image
 	if (![[NSFileManager defaultManager] fileExistsAtPath:thumbFullPath]) {
 		// if it doesn't exist, queue up an image processing operation
 			
-		//NSLog(@"thumbPath: %@", thumbPath);
-		NSLog(@"CacheImageItem: %@\n", cacheImageItem);
-		
 		thumbOp = [SCHThumbnailFactory thumbOperationAtPath:thumbPath
 												   fromPath:cacheImageItem
 													   rect:thumbRect
@@ -136,6 +119,7 @@ static SCHProcessingManager *sharedManager = nil;
 //	NSLog(@"Thumb rect: %@", NSStringFromCGRect(thumbRect));
 	NSString *cacheDir  = [SCHThumbnailFactory cacheDirectory];
 	NSString *thumbPath = [NSString stringWithFormat:@"image-%@.png_%d_%d_%d_%d", bookInfo.contentMetadata.ContentIdentifier, (int)floor(CGRectGetMinX(thumbRect)), (int)floor(CGRectGetMinY(thumbRect)), (int)floor(thumbRect.size.width), (int)floor(thumbRect.size.height)];
+	NSLog(@"Thumbpath: SCHProcessingManager, 132: %@", thumbPath);
 	NSString *cachePath = [cacheDir stringByAppendingPathComponent:thumbPath];
 	
 	
@@ -143,7 +127,7 @@ static SCHProcessingManager *sharedManager = nil;
 		UIImage *thumbImage = [SCHThumbnailFactory imageWithPath:cachePath];
 		if (thumbImage) {
 			UIImageView *aImageView = [[UIImageView alloc] initWithImage:thumbImage];
-			aImageView.frame = frame;
+			aImageView.frame = CGRectMake(0, 0, frame.size.width, frame.size.height);
 			return [aImageView autorelease];
 		}
 	} else {
@@ -193,6 +177,7 @@ static SCHProcessingManager *sharedManager = nil;
 		missingImageSize = CGSizeMake(missingImageSize.width * scale, missingImageSize.height * scale);
 	}
 	
+	// FIXME: use placeholder image correctly!
 	UIImage *placeholderImage = nil;
 	if (placeholder) {
 		placeholderImage = [SCHThumbnailFactory thumbnailImageOfSize:size
@@ -221,17 +206,6 @@ static SCHProcessingManager *sharedManager = nil;
 	NSString *imageName = [NSString stringWithFormat:@"image-%@.png", bookInfo.contentMetadata.ContentIdentifier];
 	NSString *imagePath = [cacheDir stringByAppendingPathComponent:imageName];
 	
-/*	return [self updateThumbView:imageView 
-						withSize:size 
-							path:cachePath 
-							rect:thumbRect 
-							flip:flip 
-				  maintainAspect:aspect 
-				  usePlaceHolder:placeholder];
-}
-
-+ (bool) updateThumbView: (SCHAsyncImageView *) imageView withSize:(CGSize)size path:(NSString *)path rect:(CGRect)thumbRect flip:(BOOL)flip maintainAspect:(BOOL)aspect usePlaceHolder:(BOOL)placeholder {
-*/	
 	if (CGRectIsNull(thumbRect)) {
 		NSData *imageData = [[NSData alloc] initWithContentsOfMappedFile:imagePath];
 		UIImage *image = nil;
@@ -248,6 +222,7 @@ static SCHProcessingManager *sharedManager = nil;
 	}
 	
 	NSString *thumbName = [NSString stringWithFormat:@"image-%@.png_%d_%d_%d_%d", bookInfo.contentMetadata.ContentIdentifier, (int)floor(CGRectGetMinX(thumbRect)), (int)floor(CGRectGetMinY(thumbRect)), (int)floor(thumbRect.size.width), (int)floor(thumbRect.size.height)];
+	NSLog(@"Thumbname: SCHProcessingManager, 233: %@", thumbName);
 	NSString *thumbPath = [cacheDir stringByAppendingPathComponent:thumbName];
 
 	

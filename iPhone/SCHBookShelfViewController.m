@@ -68,31 +68,6 @@ NSInteger bookSort(SCHBookInfo *book1, SCHBookInfo *book2, void *context)
 
 }
 
-
-
-/*
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-}
-*/
-/*
-- (void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
-}
-*/
-/*
-- (void)viewDidDisappear:(BOOL)animated {
-    [super viewDidDisappear:animated];
-}
-*/
-/*
-// Override to allow orientations other than the default portrait orientation.
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    // Return YES for supported orientations.
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
-*/
-
 - (void)setBooks:(NSArray *)newBooks
 {
 	[books release];
@@ -102,59 +77,10 @@ NSInteger bookSort(SCHBookInfo *book1, SCHBookInfo *book2, void *context)
 	[self.tableView reloadData];
 	[self.gridView reloadData];
 	
-	//SCHProcessingManager *processingManager = [SCHProcessingManager defaultManager];
-	//[processingManager enqueueBookInfoItems:self.books];
-	
-	
 }
 
 #pragma mark -
 #pragma mark Core Data Table View Methods
-/*
-- (void)configureCell:(SCHBookShelfTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {	
-//	SCHBookInfo *bookInfo = [self.books objectAtIndex:indexPath.row];
-
-	//SCHContentMetadataItem *contentMetadataItem = bookInfo.contentMetadata;
-	
-	//cell.titleLabel.text = contentMetadataItem.Title; 
-	//cell.subtitleLabel.text = contentMetadataItem.Author;
-//	[cell setBookInfo:bookInfo];
-	
-	
-	
-/*	
-	if (contentMetadataItem.FileName != nil) {
-		
-		NSString *thumbKey = [NSString stringWithFormat:@"thumb-%@", contentMetadataItem.FileName];
-		NSData *imageData = [self.componentCache objectForKey:thumbKey];
-		
-		if ([imageData length]) {
-			cell.imageView.image = [UIImage imageWithData:imageData];
-		} else {
-			BWKXPSProvider *provider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBook:bookInfo];
-			provider.title = contentMetadataItem.FileName;
-			imageData = [provider coverThumbData];
-			[[SCHBookManager sharedBookManager] checkInXPSProviderForBook:bookInfo];
-			if (!imageData) {
-				cell.imageView.image = [UIImage imageNamed:@"PlaceholderBook"];
-			} else {
-				[self.componentCache setObject:imageData forKey:thumbKey cost:[imageData length]];
-				cell.imageView.image = [UIImage imageWithData:imageData];
-			}
-			
-		}
-//		*/
-		
-/*	//	- (UIImageView *) thumbImageForBook: (SCHBookInfo *) bookInfo frame: (CGRect) frame rect: (CGRect) thumbRect flip: (BOOL) flip maintainAspect: (BOOL) aspect
-	
-		UIImageView *imageView = [[SCHProcessingManager defaultManager] thumbImageForBook:bookInfo frame:CGRectMake(0, 0, 43, 43) 
-																					 rect:CGRectMake(0, 0, 43, 43)  flip:YES maintainAspect:YES];
-		
-		cell.imageView.image = imageView.image;*/
-/*	} else {
-		cell.imageView.image = nil;
-	}*/
-//}
 
 #pragma mark -
 #pragma mark Table view data source
@@ -202,11 +128,6 @@ NSInteger bookSort(SCHBookInfo *book1, SCHBookInfo *book2, void *context)
 	optionsView.pageViewController = pageView;
 	optionsView.bookInfo = bookInfo;
 	
-//	BWKXPSProvider *provider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookWithID:[contentMetadataItem objectID]];
-//	provider.title = contentMetadataItem.FileName;
-//	optionsView.thumbnailImage = [provider coverThumbForList];
-//	[[SCHBookManager sharedBookManager] checkInXPSProviderForBookWithID:[contentMetadataItem objectID]];
-
 	NSString *thumbKey = [NSString stringWithFormat:@"thumb-%@", contentMetadataItem.FileName];
 	NSData *imageData = [self.componentCache objectForKey:thumbKey];
 	
@@ -228,7 +149,6 @@ NSInteger bookSort(SCHBookInfo *book1, SCHBookInfo *book2, void *context)
 		optionsView.thumbnailImage = [UIImage imageWithData:imageData];
 	}
 	
-	
 	[self.bookshelvesController.navigationController pushViewController:optionsView animated:YES];
 	[optionsView release];
 	[pageView release];	
@@ -249,11 +169,6 @@ NSInteger bookSort(SCHBookInfo *book1, SCHBookInfo *book2, void *context)
 	MRGridViewCell* gridCell = [aGridView dequeueReusableCellWithIdentifier:cellIdentifier];
 	if (gridCell == nil) {
 		gridCell = [[[MRGridViewCell alloc]initWithFrame:[aGridView frameForCellAtGridIndex: index] reuseIdentifier:cellIdentifier] autorelease];
-//		UIImageView *coverView = [[UIImageView alloc] init];
-//		coverView.contentMode = UIViewContentModeScaleToFill;
-//		coverView.tag = 666;
-//		[gridCell.contentView addSubview:coverView];
-//		[coverView release];
 	}
 	else {
 		gridCell.frame = [aGridView frameForCellAtGridIndex: index];
@@ -264,63 +179,28 @@ NSInteger bookSort(SCHBookInfo *book1, SCHBookInfo *book2, void *context)
 	SCHContentMetadataItem *contentMetadataItem = bookInfo.contentMetadata;
 
 	
-//	UIImage *thumb = nil;
 	UIImageView *imageView = nil;
 	
 	if (contentMetadataItem.FileName == nil) {
-		//thumb = [UIImage imageNamed:@"PlaceholderBook"];
 		imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"PlaceholderBook"]];
 	} else {
-		/*
-		 //		BWKXPSProvider *provider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookWithID:[contentMetadataItem objectID]];
-		 //		provider.title = contentMetadataItem.FileName;
-		 //		thumb = [provider coverThumbForList];
-		 //		[[SCHBookManager sharedBookManager] checkInXPSProviderForBookWithID:[contentMetadataItem objectID]];*/
-		
-		/*		NSString *thumbKey = [NSString stringWithFormat:@"thumb-%@", contentMetadataItem.FileName];
-		 NSData *imageData = [self.componentCache objectForKey:thumbKey];
-		 
-		 if ([imageData length]) {
-		 thumb = [UIImage imageWithData:imageData];
-		 } else {
-		 BWKXPSProvider *provider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBook:bookInfo];
-		 provider.title = contentMetadataItem.FileName;
-		 imageData = [provider coverThumbData];
-		 [[SCHBookManager sharedBookManager] checkInXPSProviderForBook:bookInfo];
-		 
-		 if (!imageData) {
-		 thumb = [UIImage imageNamed:@"PlaceholderBook"];
-		 } else {
-		 [self.componentCache setObject:imageData forKey:thumbKey cost:[imageData length]];
-		 }
-		 
-		 thumb = [UIImage imageWithData:imageData]; */
-		
-		//	- (UIImageView *) thumbImageForBook: (SCHBookInfo *) bookInfo frame: (CGRect) frame rect: (CGRect) thumbRect flip: (BOOL) flip maintainAspect: (BOOL) aspect
-		
-		imageView = [[SCHProcessingManager defaultManager] thumbImageForBook:bookInfo frame:CGRectZero
-																		rect:CGRectMake(0, 0, 43, 43) flip:YES maintainAspect:YES usePlaceholder:YES];
-		
-		
-		//	}
-		
-		
+		imageView = [[SCHProcessingManager defaultManager] thumbImageForBook:bookInfo frame:CGRectMake(0, 0, 43, 43)
+																		rect:CGRectNull flip:YES maintainAspect:YES usePlaceholder:YES];
 	}
+	/*
+	CGRect maxRect = UIEdgeInsetsInsetRect(gridCell.bounds, UIEdgeInsetsMake(0, 0, 23, 0));
+	CGFloat fitScale = MAX(thumb.size.width / maxRect.size.width, thumb.size.height / maxRect.size.height);
 	
-	/*	CGRect maxRect = UIEdgeInsetsInsetRect(gridCell.bounds, UIEdgeInsetsMake(0, 0, 23, 0));
-	 CGFloat fitScale = MAX(thumb.size.width / maxRect.size.width, thumb.size.height / maxRect.size.height);
-	 
-	 CGRect fitRect = CGRectZero;
-	 fitRect.size.width = thumb.size.width / fitScale;
-	 fitRect.size.height = thumb.size.height / fitScale;
-	 fitRect.origin.x = maxRect.origin.x + (maxRect.size.width - fitRect.size.width)/2.0f;
-	 fitRect.origin.y = maxRect.origin.y + (maxRect.size.height - fitRect.size.height);
-	 
-	 UIImageView *coverView = (UIImageView *)[gridCell viewWithTag:666];
-	 coverView.frame = fitRect;
-	 coverView.image = thumb;		
-	 */
+	CGRect fitRect = CGRectZero;
+	fitRect.size.width = thumb.size.width / fitScale;
+	fitRect.size.height = thumb.size.height / fitScale;
+	fitRect.origin.x = maxRect.origin.x + (maxRect.size.width - fitRect.size.width)/2.0f;
+	fitRect.origin.y = maxRect.origin.y + (maxRect.size.height - fitRect.size.height);
 	
+	UIImageView *coverView = (UIImageView *)[gridCell viewWithTag:666];
+	coverView.frame = fitRect;
+	coverView.image = thumb;		
+	*/
 	[gridCell.contentView addSubview:imageView];
 	
 	return gridCell;

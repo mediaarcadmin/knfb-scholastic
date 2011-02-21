@@ -31,6 +31,7 @@ static SCHThumbnailFactory *sharedImageCache = nil;
 + (UIImageView *)thumbViewWithFrame:(CGRect)frame path:(NSString *)path rect:(CGRect)thumbRect flip:(BOOL)flip maintainAspect:(BOOL)aspect {
 	NSString *cacheDir  = [SCHThumbnailFactory cacheDirectory];
 	NSString *thumbPath = [NSString stringWithFormat:@"%@_%d_%d_%d_%d", [path lastPathComponent], (int)floor(CGRectGetMinX(thumbRect)), (int)floor(CGRectGetMinY(thumbRect)), (int)floor(thumbRect.size.width), (int)floor(thumbRect.size.height)];
+	NSLog(@"Thumbpath: SCHThumbnailFactory, 34: %@", thumbPath);
 	
 	NSString *cachePath = [cacheDir stringByAppendingPathComponent:thumbPath];
 	
@@ -42,7 +43,7 @@ static SCHThumbnailFactory *sharedImageCache = nil;
 			return [aImageView autorelease];
 		}
 	} else {
-		UIImage *missingImage = [UIImage imageNamed:@"missingImage.png"];
+		UIImage *missingImage = [UIImage imageNamed:@"PlaceholderBook"];
 		CGSize missingImageSize = missingImage.size;
 
 		// check for scale, for retina display
