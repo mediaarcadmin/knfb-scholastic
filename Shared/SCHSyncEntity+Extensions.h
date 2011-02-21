@@ -12,5 +12,7 @@
 
 @interface SCHSyncEntity (SCHSyncEntityExtensions)
 
+- (void)syncDelete;
+- (void)syncReset;
 
 @end

@@ -166,7 +166,6 @@
 	SCHProfileItem *newProfileItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHProfileItem inManagedObjectContext:self.managedObjectContext];
 	
 	newProfileItem.LastModified = now;
-	newProfileItem.State = [NSNumber numberWithStatus:kSCHStatusCreated];
 	
 	newProfileItem.StoryInteractionEnabled = [NSNumber numberWithBool:YES];
 	newProfileItem.ID = [NSNumber numberWithInt:1];
@@ -216,7 +215,6 @@
 		newUserContentItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHUserContentItem inManagedObjectContext:self.managedObjectContext];
 		
 		newUserContentItem.LastModified = now;
-		newUserContentItem.State = [NSNumber numberWithStatus:kSCHStatusCreated];
 		
 		newUserContentItem.ContentIdentifier = newContentMetadataItem.ContentIdentifier;
 		newUserContentItem.ContentIdentifierType = newContentMetadataItem.ContentIdentifierType;
@@ -224,7 +222,6 @@
 		newContentProfileItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHContentProfileItem inManagedObjectContext:self.managedObjectContext];			
 		
 		newContentProfileItem.LastModified = now;
-		newContentProfileItem.State = [NSNumber numberWithStatus:kSCHStatusCreated];
 		
 		newContentProfileItem.IsFavorite = [NSNumber numberWithBool:YES];
 		newContentProfileItem.ProfileID = [NSNumber numberWithInt:1];

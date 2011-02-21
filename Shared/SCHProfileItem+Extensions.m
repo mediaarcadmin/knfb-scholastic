@@ -27,10 +27,29 @@ static NSString * const kSCHProfileItemUserContentItemContentMetadataItem = @"Us
 			SCHBookInfo *bookInfo = [[SCHBookInfo alloc] initWithContentMetadataItem:contentMetadataItem];
 			
 			[books addObject:bookInfo];
+			[bookInfo release];
 		}
 	}
 	
 	return(books);
+}
+
+- (BOOL)hasPassword
+{
+	if (self.Password == nil || [[self.Password stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] < 1) {
+		return(NO);
+	} else {
+		return(YES);
+	}
+}
+	
+- (BOOL)validatePasswordWith:(NSString *)withPassword
+{
+	if ([self hasPassword] == NO || [self.Password compare:withPassword] != NSOrderedSame) {
+		return(NO);
+	} else {
+		return(YES);
+	}
 }
 
 @end
