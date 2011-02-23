@@ -14,7 +14,6 @@
 
 }
 
-+ (NSString *) cacheDirectory;
 + (UIImage *)imageWithPath:(NSString *)path;
 
 + (SCHThumbnailOperation *)thumbOperationAtPath:(NSString *)thumbPath 

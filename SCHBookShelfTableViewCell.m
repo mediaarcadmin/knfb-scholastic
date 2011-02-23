@@ -15,7 +15,7 @@
 #define LEFT_MARGIN			8.0
 #define RIGHT_MARGIN		0.0
 
-#define TEXT_TOP_MARGIN		12.0
+#define TEXT_TOP_MARGIN		11.0
 #define TEXT_LEFT_MARGIN	8.0
 //#define THUMBRATIO 1.8
 
@@ -24,11 +24,13 @@
 
 @property (readwrite, retain) SCHAsyncImageView *thumbImageView;
 
+- (void) updateWithContentMetadata: (SCHContentMetadataItem *) metadata status: (NSString *) status;
+
 @end
 
 @implementation SCHBookShelfTableViewCell
 
-@synthesize titleLabel, subtitleLabel, thumbImageView, bookInfo, thumbContainerView;
+@synthesize titleLabel, subtitleLabel, statusLabel, thumbImageView, thumbTintView, bookInfo, thumbContainerView;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
 	
@@ -40,29 +42,42 @@
 		self.thumbContainerView = [[UIView alloc] initWithFrame:CGRectMake(LEFT_MARGIN, TEXT_TOP_MARGIN, IMAGE_FRAME_WIDTH, IMAGE_FRAME_HEIGHT)];
 		
 		self.thumbImageView = [SCHThumbnailFactory newAsyncImageWithSize:CGSizeMake(IMAGE_FRAME_WIDTH, IMAGE_FRAME_HEIGHT)];
-		[self.thumbContainerView setClipsToBounds:YES];
-		
 		[self.thumbContainerView addSubview:self.thumbImageView];
+		
+		self.thumbTintView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, IMAGE_FRAME_WIDTH, IMAGE_FRAME_HEIGHT)];
+		[self.thumbTintView setBackgroundColor:[UIColor colorWithRed:0.2f green:0.2f blue:0.2f alpha:0.6f]];
+		[self.thumbContainerView addSubview:self.thumbTintView];
+
+		[self.thumbContainerView setClipsToBounds:YES];
 		
 		[self.contentView addSubview:self.thumbContainerView];
 		
-        titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-        [titleLabel setFont:[UIFont boldSystemFontOfSize:22.0f]];
-        [titleLabel setTextColor:[UIColor blackColor]];
-        [titleLabel setHighlightedTextColor:[UIColor whiteColor]];
-		[titleLabel setMinimumFontSize:16.0f];
-		[titleLabel setNumberOfLines:2];
-		[titleLabel setAdjustsFontSizeToFitWidth:YES];
-        [self.contentView addSubview:titleLabel];
+        self.titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+        [self.titleLabel setFont:[UIFont boldSystemFontOfSize:22.0f]];
+        [self.titleLabel setTextColor:[UIColor blackColor]];
+        [self.titleLabel setHighlightedTextColor:[UIColor whiteColor]];
+		[self.titleLabel setMinimumFontSize:16.0f];
+		[self.titleLabel setNumberOfLines:2];
+		[self.titleLabel setAdjustsFontSizeToFitWidth:YES];
+        [self.contentView addSubview:self.titleLabel];
 		
-        subtitleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-        [subtitleLabel setFont:[UIFont systemFontOfSize:13.0f]];
-        [subtitleLabel setTextColor:[UIColor colorWithRed:0.263f green:0.353f blue:0.487f alpha:1.0f]];
-        [subtitleLabel setHighlightedTextColor:[UIColor whiteColor]];
-		[subtitleLabel setNumberOfLines:1];
+        self.subtitleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+        [self.subtitleLabel setFont:[UIFont systemFontOfSize:13.0f]];
+        [self.subtitleLabel setTextColor:[UIColor colorWithRed:0.263f green:0.353f blue:0.487f alpha:1.0f]];
+        [self.subtitleLabel setHighlightedTextColor:[UIColor whiteColor]];
+		[self.subtitleLabel setNumberOfLines:1];
 		
-        [self.contentView addSubview:subtitleLabel];
-    }
+        [self.contentView addSubview:self.subtitleLabel];
+
+		self.statusLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+        [self.statusLabel setFont:[UIFont systemFontOfSize:8.0f]];
+        [self.statusLabel setTextColor:[UIColor lightGrayColor]];
+        [self.statusLabel setHighlightedTextColor:[UIColor whiteColor]];
+		[self.statusLabel setNumberOfLines:1];
+		[self.statusLabel setTextAlignment:UITextAlignmentCenter];
+		
+        [self.contentView addSubview:self.statusLabel];
+	}
 	
     return self;
 }
@@ -87,6 +102,9 @@
 	
 	CGRect subtitleFrame = CGRectMake(labelX, CGRectGetMaxY(titleFrame) + 1, labelWidth, 22);
     [self.subtitleLabel setFrame:subtitleFrame];
+
+	CGRect statusFrame = CGRectMake(LEFT_MARGIN - 4, CGRectGetMaxY(self.contentView.bounds) - 11, CGRectGetWidth(self.thumbContainerView.frame) + 8, 10);
+    [self.statusLabel setFrame:statusFrame];
 }
 
 #pragma mark -
@@ -94,6 +112,7 @@
 
 - (void) setBookInfo:(SCHBookInfo *) newBookInfo
 {
+	NSLog(@"Setting book info in cell.");
 	if (newBookInfo != bookInfo) {
 		SCHBookInfo *oldBookInfo = bookInfo;
 		bookInfo = [newBookInfo retain];
@@ -108,20 +127,65 @@
 																			 flip:NO
 																   maintainAspect:YES
 																   usePlaceHolder:YES];
-	
 	if (immediateUpdate) {
 		[self setNeedsDisplay];
 	}
 	
-	SCHContentMetadataItem *contentMetadata = self.bookInfo.contentMetadata;
-	self.titleLabel.text = [contentMetadata Title];
-	self.subtitleLabel.text = [contentMetadata Author];
+	NSString *status = @"";
+	
+	// book status
+	switch ([bookInfo processingState]) {
+		case bookFileProcessingStateError:
+			status = @"Error";
+			self.thumbTintView.hidden = NO;
+			break;
+		case bookFileProcessingWaitingForDownload:
+			status = @"Waiting...";
+			self.thumbTintView.hidden = NO;
+			break;
+		case bookFileProcessingStateCurrentlyDownloading:
+			status = @"Downloading...";
+			self.thumbTintView.hidden = NO;
+			break;
+		case bookFileProcessingStateFullyDownloaded:
+			status = @"";
+			self.thumbTintView.hidden = YES;
+			break;
+		case bookFileProcessingStateNoFileDownloaded:
+		case bookFileProcessingStatePartiallyDownloaded:
+			status = @"Download";
+			self.thumbTintView.hidden = NO;
+			break;
+		default:
+			status = @"";
+			self.thumbTintView.hidden = YES;
+			break;
+	}
+	
+	if (self.thumbTintView.hidden) {
+		self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+	} else {
+		self.accessoryType = UITableViewCellAccessoryNone;
+	}
+	
+	NSLog(@"Setting status for %@ to %@ (%d).", self.bookInfo.contentMetadata.Title, status, [bookInfo processingState]);
+	
+	[self updateWithContentMetadata:self.bookInfo.contentMetadata status:status];	
+}
+
+
+
+- (void) updateWithContentMetadata: (SCHContentMetadataItem *) metadata status: (NSString *) status
+{
+	self.titleLabel.text = [metadata Title];
+	self.subtitleLabel.text = [metadata Author];
+	self.statusLabel.text = status;
 	
 	[self layoutSubviews];
 	
 	[self.titleLabel setNeedsDisplay];
 	[self.subtitleLabel setNeedsDisplay];
-	
+	[self.statusLabel setNeedsDisplay];
 }
 
 - (void) prepareForReuse
@@ -132,6 +196,9 @@
 }
 
 - (void)dealloc {
+	self.titleLabel = nil;
+	self.subtitleLabel = nil;
+	self.statusLabel = nil;
     [super dealloc];
 }
 

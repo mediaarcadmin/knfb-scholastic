@@ -23,9 +23,6 @@
 #pragma mark -
 @implementation SCHThumbnailFactory
 
-+ (NSString *)cacheDirectory {
-	return [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject];
-}
 + (SCHAsyncImageView *)newAsyncImageWithSize:(CGSize)size {
 	CGRect viewBounds = CGRectMake(0, 0, size.width, size.height);
 	

@@ -45,6 +45,7 @@ NSInteger bookSort(SCHBookInfo *book1, SCHBookInfo *book2, void *context)
 	self.gridView = nil;
 	self.tableView = nil;
 	self.componentCache = nil;
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark -
@@ -67,7 +68,12 @@ NSInteger bookSort(SCHBookInfo *book1, SCHBookInfo *book2, void *context)
 	self.bookshelvesController.navigationItem.title = @"Bookshelf (Local)";
 #endif
 	
-
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(updateTable:)
+												 name:@"SCHBookDownloadStatusUpdate"
+											   object:nil];
+	
+	
 }
 
 - (void)setBooks:(NSArray *)newBooks
@@ -83,6 +89,12 @@ NSInteger bookSort(SCHBookInfo *book1, SCHBookInfo *book2, void *context)
 
 #pragma mark -
 #pragma mark Core Data Table View Methods
+
+- (void) updateTable:(NSNotification *)notification
+{
+	// FIXME: more specific updates of table cells
+	[self.tableView reloadData];
+}
 
 #pragma mark -
 #pragma mark Table view data source
@@ -102,7 +114,6 @@ NSInteger bookSort(SCHBookInfo *book1, SCHBookInfo *book2, void *context)
         cell = [[[SCHBookShelfTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier] autorelease];
 		cell.titleLabel.font = [UIFont systemFontOfSize:14.0];
 		cell.subtitleLabel.font = [UIFont systemFontOfSize:12.0];
-		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     
     // Configure the cell...
@@ -121,6 +132,27 @@ NSInteger bookSort(SCHBookInfo *book1, SCHBookInfo *book2, void *context)
 	
 	SCHBookInfo *bookInfo = [self.books objectAtIndex:indexPath.row];
 
+	BookFileProcessingState state = [bookInfo processingState];
+	
+	[aTableView reloadData];
+
+	switch (state) {
+		case bookFileProcessingStateCurrentlyDownloading:
+		case bookFileProcessingStateError:
+			return;
+			break;
+		case bookFileProcessingStateNoFileDownloaded:
+		case bookFileProcessingStatePartiallyDownloaded:
+			[[SCHProcessingManager defaultManager] downloadBookFile:bookInfo];
+			return;
+			break;
+		default:
+			break;
+	}	
+	
+	NSLog(@"Showing book %@.", [bookInfo.contentMetadata Title]);
+	NSLog(@"Filename %@.", [bookInfo.contentMetadata FileName]);
+	
 	SCHContentMetadataItem *contentMetadataItem = bookInfo.contentMetadata;
 	
 	BWKTestPageViewController *pageView = [[BWKTestPageViewController alloc] initWithNibName:nil bundle:nil];
@@ -130,7 +162,7 @@ NSInteger bookSort(SCHBookInfo *book1, SCHBookInfo *book2, void *context)
 	optionsView.pageViewController = pageView;
 	optionsView.bookInfo = bookInfo;
 	
-	NSString *thumbKey = [NSString stringWithFormat:@"thumb-%@", contentMetadataItem.FileName];
+	NSString *thumbKey = [NSString stringWithFormat:@"thumb-%@", contentMetadataItem.ContentIdentifier];
 	NSData *imageData = [self.componentCache objectForKey:thumbKey];
 	
 	if ([imageData length]) {
@@ -188,7 +220,7 @@ NSInteger bookSort(SCHBookInfo *book1, SCHBookInfo *book2, void *context)
 	SCHAsyncImageView *asyncImageView = (SCHAsyncImageView *) [gridCell.contentView viewWithTag:666];
 	
 	if (asyncImageView && [asyncImageView class] == [SCHAsyncImageView class]) {
-		if (contentMetadataItem.FileName == nil) {
+		if (contentMetadataItem.FileName == nil && contentMetadataItem.CoverURL == nil) {
 			asyncImageView.image = [UIImage imageNamed:@"PlaceholderBook"];
 		} else {
 			[[SCHProcessingManager defaultManager] updateThumbView:asyncImageView

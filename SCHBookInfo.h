@@ -12,9 +12,13 @@
 #import <CoreData/CoreData.h>
 
 typedef enum {
-	bookInfoProcessingStateNotProcessed = 0,
-	bookInfoProcessingStateProcessed
-} bookInfoProcessingState;
+	bookFileProcessingStateError = 0,
+	bookFileProcessingStateCurrentlyDownloading,
+	bookFileProcessingStateNoFileDownloaded,
+	bookFileProcessingStatePartiallyDownloaded,
+	bookFileProcessingStateFullyDownloaded,
+	bookFileProcessingWaitingForDownload
+} BookFileProcessingState;
 
 
 
@@ -27,10 +31,12 @@ typedef enum {
 
 @property (nonatomic, retain) NSManagedObjectID *metadataItemID;
 @property (readonly) SCHContentMetadataItem *contentMetadata;
+@property (readwrite) BOOL downloading;
+@property (readwrite) BOOL waitingForDownload;
 
 - (id) initWithContentMetadataItem: (SCHContentMetadataItem *) metadataItem;
 - (NSString *) xpsPath;
-
-
+- (BookFileProcessingState) processingState;
+- (BOOL) processedCovers;
 
 @end

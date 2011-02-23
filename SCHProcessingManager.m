@@ -10,6 +10,7 @@
 #import "SCHThumbnailFactory.h"
 #import "SCHDownloadImageOperation.h"
 #import "SCHXPSCoverImageOperation.h"
+#import "SCHDownloadBookFile.h"
 
 @interface SCHProcessingManager()
 
@@ -30,6 +31,7 @@ static SCHProcessingManager *sharedManager = nil;
 {
 	if (self = [super init]) {
 		self.processingQueue = [[NSOperationQueue alloc] init];
+		[self.processingQueue setMaxConcurrentOperationCount:3];
 		self.imageCache = [[BlioTimeOrderedCache alloc] init];
 		self.imageCache.countLimit = 50; // Arbitrary 30 object limit
         self.imageCache.totalCostLimit = (1024*1024) * 5; // Arbitrary 5MB limit. This may need wteaked or set on a per-device basis
@@ -48,7 +50,7 @@ static SCHProcessingManager *sharedManager = nil;
 
 - (bool) updateThumbView: (SCHAsyncImageView *) imageView withBook: (SCHBookInfo *) bookInfo size:(CGSize)size rect:(CGRect)thumbRect flip:(BOOL)flip maintainAspect:(BOOL)aspect usePlaceHolder:(BOOL)placeholder {
 	
-	NSString *cacheDir  = [SCHThumbnailFactory cacheDirectory];
+	NSString *cacheDir  = [SCHProcessingManager cacheDirectory];
 	NSString *imageName = [NSString stringWithFormat:@"%@.png", bookInfo.contentMetadata.ContentIdentifier];
 	NSString *imagePath = [cacheDir stringByAppendingPathComponent:imageName];
 	
@@ -111,6 +113,7 @@ static SCHProcessingManager *sharedManager = nil;
 
 - (NSArray *) processBookCoverImage: (SCHBookInfo *) bookInfo size: (CGSize) size rect: (CGRect) thumbRect flip: (BOOL) flip maintainAspect: (BOOL) aspect
 {
+	NSLog(@"processing book: %@", bookInfo.contentMetadata);
 	NSString *coverURL = bookInfo.contentMetadata.CoverURL;
 	
 	if (!coverURL) {
@@ -119,7 +122,7 @@ static SCHProcessingManager *sharedManager = nil;
 		coverURL = @"http://gordonchristie.com/storage/bookcover-test.png";
 	}
 	
-	NSString *cacheDir  = [SCHThumbnailFactory cacheDirectory];
+	NSString *cacheDir  = [SCHProcessingManager cacheDirectory];
 	NSString *cacheImageItem = [cacheDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png", bookInfo.contentMetadata.ContentIdentifier]];
 	
 	NSOperation *imageOp = nil;
@@ -165,6 +168,8 @@ static SCHProcessingManager *sharedManager = nil;
 		if (imageOp) {
 			[thumbOp addDependency:imageOp];
 		}
+	} else {
+		NSLog(@"Thumb already exists.");
 	}
 	
 	NSMutableArray *operations = [[[NSMutableArray alloc] init] autorelease];
@@ -180,6 +185,50 @@ static SCHProcessingManager *sharedManager = nil;
 	}
 	
 	return [NSArray arrayWithArray:operations];
+}
+
+- (void) downloadBookFile: (SCHBookInfo *) bookInfo
+{
+	SCHDownloadBookFile *bookDownloadOp = nil;
+	
+#ifndef LOCALDEBUG
+	
+	NSLog(@"Checking book status.");
+	
+	BookFileProcessingState state = [bookInfo processingState];
+	
+	if (state == bookFileProcessingStateCurrentlyDownloading) {
+		NSLog(@"Book is already downloading...");
+		return;
+	} else if (state == bookFileProcessingStateNoFileDownloaded || state == bookFileProcessingStatePartiallyDownloaded) {
+		NSLog(@"XPS file %@ needs downloading (%@)...", [bookInfo xpsPath], (state == bookFileProcessingStateNoFileDownloaded)?@"No file":@"Partial File");
+		
+		// if it needs downloaded, queue up a book download operation
+		bookDownloadOp = [[SCHDownloadBookFile alloc] init];
+		bookDownloadOp.bookInfo = bookInfo;
+		bookDownloadOp.resume = YES;
+	} else if (state == bookFileProcessingStateFullyDownloaded) {
+		NSLog(@"XPS file %@ has been downloaded already.");
+	} else if (state == bookFileProcessingStateError) {
+		NSLog(@"Error while attempting to process XPS file.");
+	} else {
+		NSLog(@"Unknown book processing state (%d).", state);
+	}
+	
+	
+#endif
+	
+	NSMutableArray *operations = [[[NSMutableArray alloc] init] autorelease];
+	
+	if (bookDownloadOp) {
+		[operations addObject:bookDownloadOp];
+		[[SCHProcessingManager defaultManager].processingQueue addOperation:bookDownloadOp];
+	}
+	
+}
+
++ (NSString *)cacheDirectory {
+	return [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject];
 }
 
 #pragma mark -

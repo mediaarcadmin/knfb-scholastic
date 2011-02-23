@@ -131,7 +131,7 @@
 		[self updateUserContentItems:[result objectForKey:kSCHLibreAccessWebServiceUserContentList]];
 		NSArray *content = [result objectForKey:kSCHLibreAccessWebServiceUserContentList];
 		if ([content count] > 0) {
-			[self.libreAccessWebService listContentMetadata:content includeURLs:NO];
+			[self.libreAccessWebService listContentMetadata:content includeURLs:YES];
 			
 			[self clearProfileContentAnnotations];			
 			

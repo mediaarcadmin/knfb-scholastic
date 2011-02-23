@@ -30,6 +30,8 @@
 		return;
 	}
 	
+	NSLog(@"Image path is %@", self.imagePath);
+	
 	NSURLResponse *response = nil;
 	NSError *error = nil;
 		

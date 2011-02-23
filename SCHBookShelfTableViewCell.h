@@ -18,8 +18,10 @@
 
 @property (readonly, retain) SCHAsyncImageView *thumbImageView;
 @property (nonatomic, retain) UIView *thumbContainerView;
+@property (nonatomic, retain) UIView *thumbTintView;
 @property (nonatomic, retain) UILabel *titleLabel;
 @property (nonatomic, retain) UILabel *subtitleLabel;
+@property (nonatomic, retain) UILabel *statusLabel;
 @property (nonatomic, retain) SCHBookInfo *bookInfo;
 
 @end

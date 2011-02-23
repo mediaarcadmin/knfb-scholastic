@@ -16,6 +16,7 @@
 }
 
 + (SCHProcessingManager *) defaultManager;
++ (NSString *) cacheDirectory;
 
 @property (nonatomic, retain) NSOperationQueue *processingQueue;
 @property (nonatomic, retain) BlioTimeOrderedCache *imageCache;
@@ -37,5 +38,7 @@
 					flip:(BOOL)flip 
 		  maintainAspect:(BOOL)aspect 
 		  usePlaceHolder:(BOOL)placeholder;
+
+- (void) downloadBookFile: (SCHBookInfo *) bookInfo;
 
 @end
