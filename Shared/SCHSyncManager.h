@@ -19,6 +19,8 @@
 }
 
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
+@property (readonly, nonatomic) BOOL isSynchronizing;
+@property (readonly, nonatomic) BOOL isQueueEmpty;
 
 + (SCHSyncManager *)sharedSyncManager;
 

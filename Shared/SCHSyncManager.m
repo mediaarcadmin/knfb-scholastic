@@ -143,6 +143,25 @@ static NSTimeInterval const kSCHSyncManagerHeartbeatInterval = 30.0;
 	settingsSyncComponent.managedObjectContext = newManagedObjectContext;			
 }
 
+- (BOOL)isSynchronizing
+{
+	BOOL ret = NO;
+	
+	if ([queue count] > 0) {
+		SCHSyncComponent *syncComponent = [queue objectAtIndex:0];
+		
+		if (syncComponent != nil) {
+			ret = [syncComponent isSynchronizing];
+		}
+	}		
+	return(ret);
+}
+
+- (BOOL)isQueueEmpty
+{
+	return([queue count] < 1);
+}
+
 #pragma mark -
 #pragma mark Background Sync methods
 
@@ -199,7 +218,9 @@ static NSTimeInterval const kSCHSyncManagerHeartbeatInterval = 30.0;
 	}
 	[request release], request = nil;
 
-	[self addToQueue:annotationSyncComponent];		
+	if ([annotationSyncComponent haveProfiles] == YES) {
+		[self addToQueue:annotationSyncComponent];		
+	}
 	
 //	[self addToQueue:readingStatsSyncComponent];
 	[self addToQueue:settingsSyncComponent];

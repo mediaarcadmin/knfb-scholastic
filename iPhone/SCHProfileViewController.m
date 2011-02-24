@@ -18,6 +18,7 @@
 #import "SCHProfileItem+Extensions.h"
 #import "SCHContentMetadataItem+Extensions.h"
 #import "SCHMultipleBookshelvesController.h"
+#import "SCHSyncManager.h"
 
 // Cell Icons 
 static NSString * const kRootViewControllerProfileIcon = @"Profile.png";
@@ -240,7 +241,18 @@ static NSInteger const kRootViewControllerSettingsRow = 1;
 		// controller to view book shelf with books filtered to profile		
 		SCHProfileItem *selectedObject = [[self fetchedResultsController] objectAtIndexPath:indexPath];
 				
-		[self pushBookshelvesControllerWithBooks:[selectedObject allContentMetadataItems]];
+		NSArray *books = [selectedObject allContentMetadataItems];
+		if([books count] < 1 && [SCHSyncManager sharedSyncManager].isSynchronizing == YES) {
+			UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:@"Please Wait" 
+																 message:@"We are retrieving book information"
+																delegate:nil 
+													   cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+													   otherButtonTitles:nil]; 
+			[errorAlert show]; 
+			[errorAlert release];			
+		} else {
+			[self pushBookshelvesControllerWithBooks:books];
+		}
 	}	
 }
 
