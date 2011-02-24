@@ -58,6 +58,8 @@
 		5233E03413154EEA0088F18C /* SCHDeviceInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 5233E03213154EEA0088F18C /* SCHDeviceInfo.m */; };
 		5233E03713154F810088F18C /* SCHDeviceInfo+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5233E03613154F810088F18C /* SCHDeviceInfo+Extensions.m */; };
 		5233E03813154F810088F18C /* SCHDeviceInfo+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5233E03613154F810088F18C /* SCHDeviceInfo+Extensions.m */; };
+		5233E0D813159CA80088F18C /* BITNetworkActivityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5233E0D713159CA80088F18C /* BITNetworkActivityManager.m */; };
+		5233E0D913159CA80088F18C /* BITNetworkActivityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5233E0D713159CA80088F18C /* BITNetworkActivityManager.m */; };
 		5266D34C13007A1C004E3AC6 /* SCHTopFavoritesComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 5266D34B13007A1C004E3AC6 /* SCHTopFavoritesComponent.m */; };
 		5266D38413007D15004E3AC6 /* SCHComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 5266D38313007D15004E3AC6 /* SCHComponent.m */; };
 		528A2CD312CCDD9E0053A343 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 528A2CD212CCDD9E0053A343 /* Settings.bundle */; };
@@ -389,6 +391,8 @@
 		5233E03213154EEA0088F18C /* SCHDeviceInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHDeviceInfo.m; path = Shared/SCHDeviceInfo.m; sourceTree = "<group>"; };
 		5233E03513154F810088F18C /* SCHDeviceInfo+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SCHDeviceInfo+Extensions.h"; path = "Shared/SCHDeviceInfo+Extensions.h"; sourceTree = "<group>"; };
 		5233E03613154F810088F18C /* SCHDeviceInfo+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SCHDeviceInfo+Extensions.m"; path = "Shared/SCHDeviceInfo+Extensions.m"; sourceTree = "<group>"; };
+		5233E0D613159CA80088F18C /* BITNetworkActivityManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BITNetworkActivityManager.h; path = Shared/BITNetworkActivityManager.h; sourceTree = "<group>"; };
+		5233E0D713159CA80088F18C /* BITNetworkActivityManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BITNetworkActivityManager.m; path = Shared/BITNetworkActivityManager.m; sourceTree = "<group>"; };
 		5266D34A13007A1C004E3AC6 /* SCHTopFavoritesComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHTopFavoritesComponent.h; path = Shared/SCHTopFavoritesComponent.h; sourceTree = "<group>"; };
 		5266D34B13007A1C004E3AC6 /* SCHTopFavoritesComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHTopFavoritesComponent.m; path = Shared/SCHTopFavoritesComponent.m; sourceTree = "<group>"; };
 		5266D38213007D15004E3AC6 /* SCHComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHComponent.h; path = Shared/SCHComponent.h; sourceTree = "<group>"; };
@@ -693,6 +697,8 @@
 				528A2CD212CCDD9E0053A343 /* Settings.bundle */,
 				528A2CD912CCDDB00053A343 /* Entitlements.plist */,
 				528A2CDA12CCDE070053A343 /* Localizable.strings */,
+				5233E0D613159CA80088F18C /* BITNetworkActivityManager.h */,
+				5233E0D713159CA80088F18C /* BITNetworkActivityManager.m */,
 			);
 			name = Shared;
 			sourceTree = "<group>";
@@ -1452,6 +1458,7 @@
 				F88B69A213142C4F001A4E2F /* SCHDownloadBookFile.m in Sources */,
 				5233E03313154EEA0088F18C /* SCHDeviceInfo.m in Sources */,
 				5233E03713154F810088F18C /* SCHDeviceInfo+Extensions.m in Sources */,
+				5233E0D813159CA80088F18C /* BITNetworkActivityManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1571,6 +1578,7 @@
 				F88B69A113142C4F001A4E2F /* SCHDownloadBookFile.m in Sources */,
 				5233E03413154EEA0088F18C /* SCHDeviceInfo.m in Sources */,
 				5233E03813154F810088F18C /* SCHDeviceInfo+Extensions.m in Sources */,
+				5233E0D913159CA80088F18C /* BITNetworkActivityManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

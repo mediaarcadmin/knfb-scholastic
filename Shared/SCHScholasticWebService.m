@@ -9,6 +9,7 @@
 #import "SCHScholasticWebService.h"
 
 #import "BITAPIError.h"
+#import "BITNetworkActivityManager.h"
 #import "TouchXML.h"
 
 
@@ -60,6 +61,7 @@ static NSString * const kSCHScholasticWebServiceAttributeErrorDesc = @"errorDesc
 	request.SPSWSXML = [NSString stringWithFormat:@"<SchWS><attribute name=\"clientID\" value=\"KNFB\"/><attribute name=\"isSingleToken\" value=\"true\"/><attribute name=\"userName\" value=\"%@\"/><attribute name=\"password\" value=\"%@\"/></SchWS>", (userName == nil ? @"" : userName), (password == nil ? @"" : password)];
 	
 	[binding processRemoteAsyncUsingParameters:request delegate:self]; 
+	[[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
 	
 	[request release], request = nil;
 }
@@ -69,6 +71,8 @@ static NSString * const kSCHScholasticWebServiceAttributeErrorDesc = @"errorDesc
 
 - (void)operation:(AuthenticateSoap11BindingOperation *)operation completedWithResponse:(AuthenticateSoap11BindingResponse *)response
 {	
+	[[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];
+	
 	if (operation.response.error != nil && [(id)self.delegate respondsToSelector:@selector(method:didFailWithError:)]) {
 		[(id)self.delegate method:kSCHScholasticWebServiceProcessRemote didFailWithError:operation.response.error];
 	} else {		

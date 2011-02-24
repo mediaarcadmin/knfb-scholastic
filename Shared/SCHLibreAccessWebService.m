@@ -12,6 +12,7 @@
 #import "BITAPIError.h"
 #import "NSNumber+ObjectTypes.h"
 #import "SCHAuthenticationManager.h"
+#import "BITNetworkActivityManager.h"
 
 
 static NSString * const kSCHLibreAccessWebServiceUndefinedMethod = @"undefined method";
@@ -116,6 +117,7 @@ static NSString * const kSCHLibreAccessWebServiceStatusHolderStatusMessage = @"s
 	request.UserName = userName;
 	
 	[binding TokenExchangeAsyncUsingBody:request delegate:self]; 
+	[[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
 	
 	[request release], request = nil;
 }
@@ -130,6 +132,7 @@ static NSString * const kSCHLibreAccessWebServiceStatusHolderStatusMessage = @"s
 		request.authtoken = [SCHAuthenticationManager sharedAuthenticationManager].aToken;
 		
 		[binding GetUserProfilesAsyncUsingParameters:request delegate:self]; 
+		[[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
 		
 		[request release], request = nil;
 		ret = YES;
@@ -157,6 +160,7 @@ static NSString * const kSCHLibreAccessWebServiceStatusHolderStatusMessage = @"s
 		[request.SaveProfileList release];
 		
 		[binding SaveUserProfilesAsyncUsingParameters:request delegate:self]; 
+		[[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
 		
 		[request release], request = nil;
 		ret = YES;
@@ -175,6 +179,7 @@ static NSString * const kSCHLibreAccessWebServiceStatusHolderStatusMessage = @"s
 		request.authtoken = [SCHAuthenticationManager sharedAuthenticationManager].aToken;
 		
 		[binding ListUserContentAsyncUsingBody:request delegate:self]; 
+		[[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
 		
 		[request release], request = nil;	
 		ret = YES;
@@ -193,6 +198,7 @@ static NSString * const kSCHLibreAccessWebServiceStatusHolderStatusMessage = @"s
 		request.authtoken = [SCHAuthenticationManager sharedAuthenticationManager].aToken;
 
 		[binding ListFavoriteTypesAsyncUsingParameters:request delegate:self]; 
+		[[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
 		
 		[request release], request = nil;	
 		ret = YES;
@@ -221,6 +227,7 @@ static NSString * const kSCHLibreAccessWebServiceStatusHolderStatusMessage = @"s
 		[request.TopFavoritesRequestList release];
 		
 		[binding ListTopFavoritesAsyncUsingParameters:request delegate:self]; 
+		[[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
 		
 		[request release], request = nil;	
 		ret = YES;
@@ -249,6 +256,7 @@ static NSString * const kSCHLibreAccessWebServiceStatusHolderStatusMessage = @"s
 		}
 		
 		[binding ListContentMetadataAsyncUsingBody:request delegate:self]; 
+		[[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
 		
 		[request release], request = nil;
 		ret = YES;
@@ -267,6 +275,7 @@ static NSString * const kSCHLibreAccessWebServiceStatusHolderStatusMessage = @"s
 		request.authtoken = [SCHAuthenticationManager sharedAuthenticationManager].aToken;
 		
 		[binding ListUserSettingsAsyncUsingParameters:request delegate:self]; 
+		[[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
 		
 		[request release], request = nil;	
 		ret = YES;
@@ -294,6 +303,7 @@ static NSString * const kSCHLibreAccessWebServiceStatusHolderStatusMessage = @"s
 		[request.UserSettingsList release];
 		
 		[binding SaveUserSettingsAsyncUsingParameters:request delegate:self]; 
+		[[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
 		
 		[request release], request = nil;
 		ret = YES;
@@ -327,6 +337,7 @@ static NSString * const kSCHLibreAccessWebServiceStatusHolderStatusMessage = @"s
 		[request.AnnotationsRequestList release];
 		
 		[binding ListProfileContentAnnotationsAsyncUsingParameters:request delegate:self]; 
+		[[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
 		
 		[request release], request = nil;
 		ret = YES;
@@ -355,6 +366,7 @@ static NSString * const kSCHLibreAccessWebServiceStatusHolderStatusMessage = @"s
 		[request.AnnotationsList release];
 		
 		[binding SaveProfileContentAnnotationsAsyncUsingParameters:request delegate:self]; 
+		[[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
 		
 		[request release], request = nil;		
 		ret = YES;
@@ -382,6 +394,7 @@ static NSString * const kSCHLibreAccessWebServiceStatusHolderStatusMessage = @"s
 		[request.ContentProfileAssignmentList release];
 		
 		[binding SaveContentProfileAssignmentAsyncUsingParameters:request delegate:self]; 
+		[[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
 		
 		[request release], request = nil;	
 		ret = YES;
@@ -409,6 +422,7 @@ static NSString * const kSCHLibreAccessWebServiceStatusHolderStatusMessage = @"s
 		[request.ReadingStatsDetailList release];
 		
 		[binding SaveReadingStatisticsDetailedAsyncUsingParameters:request delegate:self]; 
+		[[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
 		
 		[request release], request = nil;	
 		ret = YES;
@@ -422,6 +436,8 @@ static NSString * const kSCHLibreAccessWebServiceStatusHolderStatusMessage = @"s
 
 - (void)operation:(LibreAccessServiceSoap11BindingOperation *)operation completedWithResponse:(LibreAccessServiceSoap11BindingResponse *)response
 {	
+	[[BITNetworkActivityManager sharedNetworkActivityManager] hideNetworkActivityIndicator];
+	
 	NSString *methodName = [self methodNameFromObject:operation];
 	
 	if (operation.response.error != nil && [(id)self.delegate respondsToSelector:@selector(method:didFailWithError:)]) {
