@@ -45,6 +45,8 @@
 	self.bookInfo.downloading = NO;
 	self.bookInfo.waitingForDownload = YES;
 	
+	NSLog(@"Firing selector: waiting %@, downloading %@", (self.bookInfo.waitingForDownload?@"Yes":@"No"), (self.bookInfo.downloading?@"Yes": @"No"));
+	
 	NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
 							  self.bookInfo, @"bookInfo", 
 							  nil];
@@ -98,16 +100,6 @@
 		return;
 	}
 	
-	NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
-							  self.bookInfo, @"bookInfo", 
-							  nil];
-	
-	
-	[self performSelectorOnMainThread:@selector(bookUpdate:) 
-						   withObject:userInfo
-						waitUntilDone:YES];
-	
-	
 	self.localPath = [self.bookInfo xpsPath];
 	
 	unsigned long long fileSize = 0;
@@ -155,6 +147,19 @@
 	self.bookInfo.waitingForDownload = NO;
 	
 	[connection start];
+	
+	NSLog(@"Firing selector: waiting %@, downloading %@", (self.bookInfo.waitingForDownload?@"Yes":@"No"), (self.bookInfo.downloading?@"Yes": @"No"));
+	
+	NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
+							  self.bookInfo, @"bookInfo", 
+							  nil];
+	
+	
+	[self performSelectorOnMainThread:@selector(bookUpdate:) 
+						   withObject:userInfo
+						waitUntilDone:YES];
+	
+	
 	NSLog(@"Connection started for file %@...", [self.localPath lastPathComponent]);
 	
 	if (connection != nil) {

@@ -92,8 +92,9 @@ NSInteger bookSort(SCHBookInfo *book1, SCHBookInfo *book2, void *context)
 
 - (void) updateTable:(NSNotification *)notification
 {
-	// FIXME: more specific updates of table cells
+	// FIXME: more specific updates of cells
 	[self.tableView reloadData];
+	[self.gridView reloadData];
 }
 
 #pragma mark -
@@ -203,10 +204,28 @@ NSInteger bookSort(SCHBookInfo *book1, SCHBookInfo *book2, void *context)
 	MRGridViewCell* gridCell = [aGridView dequeueReusableCellWithIdentifier:cellIdentifier];
 	if (gridCell == nil) {
 		gridCell = [[[MRGridViewCell alloc]initWithFrame:[aGridView frameForCellAtGridIndex: index] reuseIdentifier:cellIdentifier] autorelease];
-		SCHAsyncImageView *asyncImageView = [SCHThumbnailFactory newAsyncImageWithSize:CGSizeMake(gridCell.frame.size.width - 6, gridCell.frame.size.height - 20)];
+		SCHAsyncImageView *asyncImageView = [SCHThumbnailFactory newAsyncImageWithSize:CGSizeMake(gridCell.frame.size.width - 4, gridCell.frame.size.height - 20)];
+		[asyncImageView setFrame:CGRectMake(2, 0, gridCell.frame.size.width - 4, gridCell.frame.size.height - 20)];
 		asyncImageView.tag = 666;
 		[gridCell.contentView addSubview:asyncImageView];
+		
+		UIView *thumbTintView = [[UIView alloc] initWithFrame:asyncImageView.frame];
+		[thumbTintView setBackgroundColor:[UIColor colorWithRed:0.2f green:0.2f blue:0.2f alpha:0.6f]];
+		thumbTintView.tag = 667;
+		[gridCell.contentView addSubview:thumbTintView];
 
+		
+		UILabel *statusLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, gridCell.frame.size.height - 22, gridCell.frame.size.width, 12)];
+        [statusLabel setFont:[UIFont systemFontOfSize:8.0f]];
+        [statusLabel setTextColor:[UIColor whiteColor]];
+		[statusLabel setBackgroundColor:[UIColor clearColor]];
+        [statusLabel setHighlightedTextColor:[UIColor whiteColor]];
+		[statusLabel setNumberOfLines:1];
+		[statusLabel setTextAlignment:UITextAlignmentCenter];
+		[statusLabel setTag:668];
+		
+        [gridCell.contentView addSubview:statusLabel];
+		
 	}
 	else {
 		gridCell.frame = [aGridView frameForCellAtGridIndex: index];
@@ -215,9 +234,10 @@ NSInteger bookSort(SCHBookInfo *book1, SCHBookInfo *book2, void *context)
 	SCHBookInfo *bookInfo = [self.books objectAtIndex:index];
 
 	SCHContentMetadataItem *contentMetadataItem = bookInfo.contentMetadata;
-
 	
 	SCHAsyncImageView *asyncImageView = (SCHAsyncImageView *) [gridCell.contentView viewWithTag:666];
+	UIView *thumbTintView = (UIView *) [gridCell.contentView viewWithTag:667];
+	UILabel *statusLabel = (UILabel *) [gridCell.contentView viewWithTag:668];
 	
 	if (asyncImageView && [asyncImageView class] == [SCHAsyncImageView class]) {
 		if (contentMetadataItem.FileName == nil && contentMetadataItem.CoverURL == nil) {
@@ -232,28 +252,42 @@ NSInteger bookSort(SCHBookInfo *book1, SCHBookInfo *book2, void *context)
 													usePlaceHolder:YES];
 			
 		}
-	}		
-		
-		
-		
-		
-		//		imageView = [[SCHProcessingManager defaultManager] thumbImageForBook:bookInfo frame:CGRectMake(0, 0, 43, 43)
-//																		rect:CGRectNull flip:YES maintainAspect:YES usePlaceholder:YES];
-	/*
-	CGRect maxRect = UIEdgeInsetsInsetRect(gridCell.bounds, UIEdgeInsetsMake(0, 0, 23, 0));
-	CGFloat fitScale = MAX(thumb.size.width / maxRect.size.width, thumb.size.height / maxRect.size.height);
+	}	
 	
-	CGRect fitRect = CGRectZero;
-	fitRect.size.width = thumb.size.width / fitScale;
-	fitRect.size.height = thumb.size.height / fitScale;
-	fitRect.origin.x = maxRect.origin.x + (maxRect.size.width - fitRect.size.width)/2.0f;
-	fitRect.origin.y = maxRect.origin.y + (maxRect.size.height - fitRect.size.height);
+	NSString *status = @"";
 	
-	UIImageView *coverView = (UIImageView *)[gridCell viewWithTag:666];
-	coverView.frame = fitRect;
-	coverView.image = thumb;		
-	*/
+	// book status
+	switch ([bookInfo processingState]) {
+		case bookFileProcessingStateError:
+			status = @"Error";
+			thumbTintView.hidden = NO;
+			break;
+		case bookFileProcessingWaitingForDownload:
+			status = @"Waiting...";
+			thumbTintView.hidden = NO;
+			break;
+		case bookFileProcessingStateCurrentlyDownloading:
+			status = @"Downloading...";
+			thumbTintView.hidden = NO;
+			break;
+		case bookFileProcessingStateFullyDownloaded:
+			status = @"";
+			thumbTintView.hidden = YES;
+			break;
+		case bookFileProcessingStateNoFileDownloaded:
+		case bookFileProcessingStatePartiallyDownloaded:
+			status = @"Download";
+			thumbTintView.hidden = NO;
+			break;
+		default:
+			status = @"";
+			thumbTintView.hidden = YES;
+			break;
+	}
 	
+	[statusLabel setText:status];
+	
+		
 	return gridCell;
 }
 
@@ -274,13 +308,70 @@ NSInteger bookSort(SCHBookInfo *book1, SCHBookInfo *book2, void *context)
 
 #pragma mark MRGridViewDelegate methods
 
--(void)gridView:(MRGridView *)gridView didSelectCellAtIndex:(NSInteger)index 
+-(void)gridView:(MRGridView *)aGridView didSelectCellAtIndex:(NSInteger)index 
 {
+	NSLog(@"Calling grid view selection.");
 	SCHBookInfo *bookInfo = [self.books objectAtIndex:index];
 
 	SCHContentMetadataItem *contentMetadataItem = bookInfo.contentMetadata;
+	
+	BookFileProcessingState state = [bookInfo processingState];
+	
 
+	switch (state) {
+		case bookFileProcessingStateCurrentlyDownloading:
+		case bookFileProcessingStateError:
+			return;
+			break;
+		case bookFileProcessingStateNoFileDownloaded:
+		case bookFileProcessingStatePartiallyDownloaded:
+			[[SCHProcessingManager defaultManager] downloadBookFile:bookInfo];
+			[aGridView reloadData];
+			return;
+			break;
+		default:
+			break;
+	}	
+
+	[aGridView reloadData];
+	
+	NSLog(@"Showing book %@.", [bookInfo.contentMetadata Title]);
+	NSLog(@"Filename %@.", [bookInfo.contentMetadata FileName]);
+	
 	BWKTestPageViewController *pageView = [[BWKTestPageViewController alloc] initWithNibName:nil bundle:nil];
+	pageView.bookInfo = bookInfo;
+	
+	BWKReadingOptionsView *optionsView = [[BWKReadingOptionsView alloc] initWithNibName:nil bundle:nil];
+	optionsView.pageViewController = pageView;
+	optionsView.bookInfo = bookInfo;
+	
+	NSString *thumbKey = [NSString stringWithFormat:@"thumb-%@", contentMetadataItem.ContentIdentifier];
+	NSData *imageData = [self.componentCache objectForKey:thumbKey];
+	
+	if ([imageData length]) {
+		optionsView.thumbnailImage = [UIImage imageWithData:imageData];
+	} else {
+		BWKXPSProvider *provider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBook:bookInfo];
+		provider.title = contentMetadataItem.FileName;
+		imageData = [provider coverThumbData];
+		[[SCHBookManager sharedBookManager] checkInXPSProviderForBook:bookInfo];
+		
+		if (!imageData) {
+			optionsView.thumbnailImage = [UIImage imageNamed:@"PlaceholderBook"];
+		} else {
+			[self.componentCache setObject:imageData forKey:thumbKey cost:[imageData length]];
+			optionsView.thumbnailImage = [UIImage imageWithData:imageData];
+		}
+		
+		optionsView.thumbnailImage = [UIImage imageWithData:imageData];
+	}
+	
+	[self.bookshelvesController.navigationController pushViewController:optionsView animated:YES];
+	[optionsView release];
+	[pageView release];	
+	
+
+/*	BWKTestPageViewController *pageView = [[BWKTestPageViewController alloc] initWithNibName:nil bundle:nil];
 	//pageView.book = contentMetadataItem;
 	pageView.bookInfo = bookInfo;
 	
@@ -296,7 +387,7 @@ NSInteger bookSort(SCHBookInfo *book1, SCHBookInfo *book2, void *context)
 	
 	[self.navigationController pushViewController:optionsView animated:YES];
 	[optionsView release];
-	[pageView release];	
+	[pageView release];	*/
 }
 
 -(void)gridView:(MRGridView *)gridView confirmationForDeletionAtIndex:(NSInteger)index 
