@@ -46,9 +46,9 @@ static NSString * const kSCHProfileItemUserContentItemContentMetadataItem = @"Us
 - (NSString *)MD5:(NSString *)string
 {
 	const char *data = [string UTF8String];
-	unsigned char md[CC_MD5_DIGEST_LENGTH];
+	unsigned char md[CC_MD5_DIGEST_LENGTH+1];
 
-	bzero(md, CC_MD5_DIGEST_LENGTH);
+	bzero(md, CC_MD5_DIGEST_LENGTH+1);
 	
 	CC_MD5(data, strlen(data), md);
 	
