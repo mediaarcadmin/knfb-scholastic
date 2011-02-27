@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <CoreData/CoreData.h>
 
 @class SCHLoginViewController;
 
@@ -15,5 +16,6 @@
 }
 
 @property (nonatomic, retain) IBOutlet SCHLoginViewController *loginController;
+@property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 
 @end

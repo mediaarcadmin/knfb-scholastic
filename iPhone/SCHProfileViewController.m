@@ -236,6 +236,7 @@ static NSInteger const kRootViewControllerSettingsRow = 1;
 	NSInteger managedObjectEnd = [sectionInfo numberOfObjects] - 1;
 	
 	if (indexPath.row == (managedObjectEnd + kRootViewControllerSettingsRow)) {
+		settingsController.managedObjectContext = self.managedObjectContext;
 		[self.navigationController pushViewController:self.settingsController animated:YES];
 	} else {
 		// controller to view book shelf with books filtered to profile		
