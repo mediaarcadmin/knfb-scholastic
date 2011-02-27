@@ -8,12 +8,21 @@
 
 #import "SCHProfileItem+Extensions.h"
 
+#import <CommonCrypto/CommonDigest.h>
+
 #import "SCHContentProfileItem+Extensions.h"
 #import "SCHContentMetadataItem+Extensions.h"
 #import "SCHBookInfo.h"
+#import "USAdditions.h"
 
 static NSString * const kSCHProfileItemContentProfileItem = @"ContentProfileItem";
 static NSString * const kSCHProfileItemUserContentItemContentMetadataItem = @"UserContentItem.ContentMetadataItem";
+
+@interface SCHProfileItem ()
+
+- (NSString *)MD5:(NSString *)string;
+
+@end
 
 @implementation SCHProfileItem (SCHProfileItemExtensions)
 
@@ -34,6 +43,23 @@ static NSString * const kSCHProfileItemUserContentItemContentMetadataItem = @"Us
 	return(books);
 }
 
+- (NSString *)MD5:(NSString *)string
+{
+	const char *data = [string UTF8String];
+	unsigned char md[CC_MD5_DIGEST_LENGTH];
+
+	bzero(md, CC_MD5_DIGEST_LENGTH);
+	
+	CC_MD5(data, strlen(data), md);
+	
+	return([[NSData dataWithBytes:md length:strlen((char *)md)] base64Encoding]);
+}
+
+- (void)setRawPassword:(NSString *)value 
+{
+    self.Password = [self MD5:value];
+}
+
 - (BOOL)hasPassword
 {
 	if (self.Password == nil || [[self.Password stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] < 1) {
@@ -45,7 +71,7 @@ static NSString * const kSCHProfileItemUserContentItemContentMetadataItem = @"Us
 	
 - (BOOL)validatePasswordWith:(NSString *)withPassword
 {
-	if ([self hasPassword] == NO || [self.Password compare:withPassword] != NSOrderedSame) {
+	if ([self hasPassword] == NO || [self.Password compare:[self MD5:withPassword]] != NSOrderedSame) {
 		return(NO);
 	} else {
 		return(YES);
