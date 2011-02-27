@@ -28,6 +28,7 @@
 - (void)stop;
 
 - (void)firstSync;
+- (void)changeProfile;
 - (void)openDocument:(SCHUserContentItem *)userContentItem forProfile:(NSNumber *)profileID;
 - (void)closeDocument:(SCHUserContentItem *)userContentItem forProfile:(NSNumber *)profileID;
 - (void)exitParentalTools:(BOOL)syncNow;

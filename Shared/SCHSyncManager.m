@@ -235,6 +235,15 @@ static NSTimeInterval const kSCHSyncManagerHeartbeatInterval = 30.0;
 	// settings ListUserSettings
 }
 
+- (void)changeProfile
+{
+	NSLog(@"Scheduling Change Profile");
+	
+	[self addToQueue:profileSyncComponent];
+	
+	[self kickQueue];
+}
+
 - (NSMutableArray *)bookAnnotationsFromProfile:(SCHProfileItem *)profileItem  
 {
 	NSMutableArray *ret = [NSMutableArray array];
