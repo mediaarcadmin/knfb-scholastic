@@ -34,9 +34,13 @@
 {
 	[super willSave];
 	
+	// if we are modifying then record the change
 	if (self.isInserted == NO && [self.State isEqualToNumber:[NSNumber numberWithStatus:kSCHStatusDeleted]] == NO) {
 		[self setPrimitiveLastModified:[NSDate date]];
-		[self setPrimitiveState:[NSNumber numberWithStatus:kSCHStatusModified]];	
+		// only change the state if we arnt already doing so
+		if ([[self changedValues] objectForKey:@"State"] == nil) {
+			[self setPrimitiveState:[NSNumber numberWithStatus:kSCHStatusModified]];	
+		}
 	}
 }
 
