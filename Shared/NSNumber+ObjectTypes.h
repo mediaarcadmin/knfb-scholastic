@@ -47,13 +47,6 @@ typedef enum {
 } SCHDRMQualifiers;
 
 typedef enum {
-	kSCHProductTypeNone = 0,
-	kSCHProductTypeDIG,
-	kSCHProductTypePRI,
-	kSCHProductTypeENH,
-} SCHProductTypes;
-
-typedef enum {
 	kSCHSaveActionsNone = 0,
 	kSCHSaveActionsCreate,
 	kSCHSaveActionsUpdate,

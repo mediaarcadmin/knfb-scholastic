@@ -16,7 +16,7 @@
 
 @property (nonatomic, retain) NSString * Author;
 @property (nonatomic, retain) NSString * Version;
-@property (nonatomic, retain) NSNumber * ProductType;
+@property (nonatomic, retain) NSNumber * Enhanced;
 @property (nonatomic, retain) NSNumber * FileSize;
 @property (nonatomic, retain) NSString * CoverURL;
 @property (nonatomic, retain) NSString * ContentURL;

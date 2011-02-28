@@ -469,7 +469,7 @@ NSString * LibreAccessServiceSvc_TopFavoritesTypes_stringFromEnum(LibreAccessSer
 	NSString * CoverURL;
 	NSString * ContentURL;
 	NSMutableArray *EreaderCategories;
-	NSString * ProductType;
+	USBoolean * Enhanced;
 /* attributes */
 }
 - (NSString *)nsPrefix;
@@ -493,7 +493,7 @@ NSString * LibreAccessServiceSvc_TopFavoritesTypes_stringFromEnum(LibreAccessSer
 @property (nonatomic, retain) NSString * ContentURL;
 - (void)addEreaderCategories:(NSString *)toAdd;
 @property (nonatomic, readonly) NSMutableArray * EreaderCategories;
-@property (nonatomic, retain) NSString * ProductType;
+@property (nonatomic, retain) USBoolean * Enhanced;
 /* attributes */
 - (NSDictionary *)attributes;
 @end
@@ -2185,6 +2185,8 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 	NSNumber * version;
 	NSDate * lastReadEvent;
 	NSNumber * lastReadDuration;
+	NSNumber * lastReadPages;
+	NSNumber * lastPageLocation;
 /* attributes */
 }
 - (NSString *)nsPrefix;
@@ -2202,6 +2204,8 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 @property (nonatomic, retain) NSNumber * version;
 @property (nonatomic, retain) NSDate * lastReadEvent;
 @property (nonatomic, retain) NSNumber * lastReadDuration;
+@property (nonatomic, retain) NSNumber * lastReadPages;
+@property (nonatomic, retain) NSNumber * lastPageLocation;
 /* attributes */
 - (NSDictionary *)attributes;
 @end
@@ -2554,6 +2558,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 /* elements */
 	NSString * authtoken;
 	NSNumber * expiresIn;
+	NSNumber * userType;
 	USBoolean * deviceIsDeregistered;
 	LibreAccessServiceSvc_StatusHolder * statusmessage;
 /* attributes */
@@ -2568,6 +2573,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 /* elements */
 @property (nonatomic, retain) NSString * authtoken;
 @property (nonatomic, retain) NSNumber * expiresIn;
+@property (nonatomic, retain) NSNumber * userType;
 @property (nonatomic, retain) USBoolean * deviceIsDeregistered;
 @property (nonatomic, retain) LibreAccessServiceSvc_StatusHolder * statusmessage;
 /* attributes */
@@ -2605,6 +2611,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 	NSNumber * expiresIn;
 	NSString * ip;
 	NSString * userhash;
+	NSNumber * userType;
 	USBoolean * deviceIsDeregistered;
 	LibreAccessServiceSvc_StatusHolder * statusmessage;
 /* attributes */
@@ -2622,6 +2629,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 @property (nonatomic, retain) NSNumber * expiresIn;
 @property (nonatomic, retain) NSString * ip;
 @property (nonatomic, retain) NSString * userhash;
+@property (nonatomic, retain) NSNumber * userType;
 @property (nonatomic, retain) USBoolean * deviceIsDeregistered;
 @property (nonatomic, retain) LibreAccessServiceSvc_StatusHolder * statusmessage;
 /* attributes */

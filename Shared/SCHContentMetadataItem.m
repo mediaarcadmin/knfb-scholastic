@@ -13,7 +13,7 @@
 
 @dynamic Author;
 @dynamic Version;
-@dynamic ProductType;
+@dynamic Enhanced;
 @dynamic FileSize;
 @dynamic CoverURL;
 @dynamic ContentURL;

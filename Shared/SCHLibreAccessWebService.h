@@ -67,6 +67,7 @@ static NSString * const kSCHLibreAccessWebServiceDictionaryLookupsList = @"Dicti
 static NSString * const kSCHLibreAccessWebServiceDisabled = @"Disabled";
 static NSString * const kSCHLibreAccessWebServiceEnd = @"End";
 static NSString * const kSCHLibreAccessWebServiceEndPage = @"EndPage";
+static NSString * const kSCHLibreAccessWebServiceEnhanced = @"Enhanced";
 static NSString * const kSCHLibreAccessWebServiceExpiresIn = @"ExpiresIn";
 static NSString * const kSCHLibreAccessWebServiceFavorite = @"Favorite";
 static NSString * const kSCHLibreAccessWebServiceFavoriteType = @"FavoriteType";
@@ -104,7 +105,6 @@ static NSString * const kSCHLibreAccessWebServicePagesRead = @"PagesRead";
 static NSString * const kSCHLibreAccessWebServicePassword = @"Password";
 static NSString * const kSCHLibreAccessWebServicePercentage = @"Percentage";
 static NSString * const kSCHLibreAccessWebServicePrivateAnnotations = @"PrivateAnnotations";
-static NSString * const kSCHLibreAccessWebServiceProductType = @"ProductType";
 static NSString * const kSCHLibreAccessWebServiceProfileContentAnnotations = @"ListProfileContentAnnotations";
 static NSString * const kSCHLibreAccessWebServiceProfileID = @"ProfileID";
 static NSString * const kSCHLibreAccessWebServiceProfileList = @"ProfileList";
@@ -139,6 +139,7 @@ static NSString * const kSCHLibreAccessWebServiceVersion = @"Version";
 static NSString * const kSCHLibreAccessWebServiceWordIndex = @"WordIndex";
 static NSString * const kSCHLibreAccessWebServiceX = @"X";
 static NSString * const kSCHLibreAccessWebServiceY = @"Y";
+
 static NSString * const kSCHLibreAccessWebServiceeReaderCategories = @"eReaderCategories";
 
 

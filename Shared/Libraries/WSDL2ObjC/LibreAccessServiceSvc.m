@@ -2190,7 +2190,7 @@ NSString * LibreAccessServiceSvc_TopFavoritesTypes_stringFromEnum(LibreAccessSer
 		CoverURL = 0;
 		ContentURL = 0;
 		EreaderCategories = [[NSMutableArray alloc] init];
-		ProductType = 0;
+		Enhanced = 0;
 	}
 	
 	return self;
@@ -2207,7 +2207,7 @@ NSString * LibreAccessServiceSvc_TopFavoritesTypes_stringFromEnum(LibreAccessSer
 	if(CoverURL != nil) [CoverURL release];
 	if(ContentURL != nil) [ContentURL release];
 	if(EreaderCategories != nil) [EreaderCategories release];
-	if(ProductType != nil) [ProductType release];
+	if(Enhanced != nil) [Enhanced release];
 	
 	[super dealloc];
 }
@@ -2279,8 +2279,8 @@ NSString * LibreAccessServiceSvc_TopFavoritesTypes_stringFromEnum(LibreAccessSer
 			xmlAddChild(node, [child xmlNodeForDoc:node->doc elementName:@"EreaderCategories" elementNSPrefix:nil]);
 		}
 	}
-	if(self.ProductType != 0) {
-		xmlAddChild(node, [self.ProductType xmlNodeForDoc:node->doc elementName:@"ProductType" elementNSPrefix:nil]);
+	if(self.Enhanced != 0) {
+		xmlAddChild(node, [self.Enhanced xmlNodeForDoc:node->doc elementName:@"Enhanced" elementNSPrefix:nil]);
 	}
 }
 /* elements */
@@ -2300,7 +2300,7 @@ NSString * LibreAccessServiceSvc_TopFavoritesTypes_stringFromEnum(LibreAccessSer
 {
 	if(toAdd != nil) [EreaderCategories addObject:toAdd];
 }
-@synthesize ProductType;
+@synthesize Enhanced;
 /* attributes */
 - (NSDictionary *)attributes
 {
@@ -2674,12 +2674,12 @@ NSString * LibreAccessServiceSvc_TopFavoritesTypes_stringFromEnum(LibreAccessSer
 				
 				if(newChild != nil) [self.EreaderCategories addObject:newChild];
 			}
-			if(xmlStrEqual(cur->name, (const xmlChar *) "ProductType")) {
+			if(xmlStrEqual(cur->name, (const xmlChar *) "Enhanced")) {
 				
 				Class elementClass = nil;
 				xmlChar *instanceType = xmlGetNsProp(cur, (const xmlChar *) "type", (const xmlChar *) "http://www.w3.org/2001/XMLSchema-instance");
 				if(instanceType == NULL) {
-					elementClass = [NSString class];
+					elementClass = [USBoolean class];
 				} else {
 					NSString *elementTypeString = [NSString stringWithCString:(char*)instanceType encoding:NSUTF8StringEncoding];
 					
@@ -2705,7 +2705,7 @@ NSString * LibreAccessServiceSvc_TopFavoritesTypes_stringFromEnum(LibreAccessSer
 				
 				id newChild = [elementClass deserializeNode:cur];
 				
-				self.ProductType = newChild;
+				self.Enhanced = newChild;
 			}
 		}
 	}
@@ -20474,6 +20474,8 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 		version = 0;
 		lastReadEvent = 0;
 		lastReadDuration = 0;
+		lastReadPages = 0;
+		lastPageLocation = 0;
 	}
 	
 	return self;
@@ -20485,6 +20487,8 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 	if(version != nil) [version release];
 	if(lastReadEvent != nil) [lastReadEvent release];
 	if(lastReadDuration != nil) [lastReadDuration release];
+	if(lastReadPages != nil) [lastReadPages release];
+	if(lastPageLocation != nil) [lastPageLocation release];
 	
 	[super dealloc];
 }
@@ -20539,6 +20543,12 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 	if(self.lastReadDuration != 0) {
 		xmlAddChild(node, [self.lastReadDuration xmlNodeForDoc:node->doc elementName:@"lastReadDuration" elementNSPrefix:nil]);
 	}
+	if(self.lastReadPages != 0) {
+		xmlAddChild(node, [self.lastReadPages xmlNodeForDoc:node->doc elementName:@"lastReadPages" elementNSPrefix:nil]);
+	}
+	if(self.lastPageLocation != 0) {
+		xmlAddChild(node, [self.lastPageLocation xmlNodeForDoc:node->doc elementName:@"lastPageLocation" elementNSPrefix:nil]);
+	}
 }
 /* elements */
 @synthesize ContentIdentifierType;
@@ -20548,6 +20558,8 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 @synthesize version;
 @synthesize lastReadEvent;
 @synthesize lastReadDuration;
+@synthesize lastReadPages;
+@synthesize lastPageLocation;
 /* attributes */
 - (NSDictionary *)attributes
 {
@@ -20755,6 +20767,72 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 				id newChild = [elementClass deserializeNode:cur];
 				
 				self.lastReadDuration = newChild;
+			}
+			if(xmlStrEqual(cur->name, (const xmlChar *) "lastReadPages")) {
+				
+				Class elementClass = nil;
+				xmlChar *instanceType = xmlGetNsProp(cur, (const xmlChar *) "type", (const xmlChar *) "http://www.w3.org/2001/XMLSchema-instance");
+				if(instanceType == NULL) {
+					elementClass = [NSNumber class];
+				} else {
+					NSString *elementTypeString = [NSString stringWithCString:(char*)instanceType encoding:NSUTF8StringEncoding];
+					
+					NSArray *elementTypeArray = [elementTypeString componentsSeparatedByString:@":"];
+					
+					NSString *elementClassString = nil;
+					if([elementTypeArray count] > 1) {
+						NSString *prefix = [elementTypeArray objectAtIndex:0];
+						NSString *localName = [elementTypeArray objectAtIndex:1];
+						
+						xmlNsPtr elementNamespace = xmlSearchNs(cur->doc, cur, [prefix xmlString]);
+						
+						NSString *standardPrefix = [[USGlobals sharedInstance].wsdlStandardNamespaces objectForKey:[NSString stringWithCString:(char*)elementNamespace->href encoding:NSUTF8StringEncoding]];
+						
+						elementClassString = [NSString stringWithFormat:@"%@_%@", standardPrefix, localName];
+					} else {
+						elementClassString = [elementTypeString stringByReplacingOccurrencesOfString:@":" withString:@"_" options:0 range:NSMakeRange(0, [elementTypeString length])];
+					}
+					
+					elementClass = NSClassFromString(elementClassString);
+					xmlFree(instanceType);
+				}
+				
+				id newChild = [elementClass deserializeNode:cur];
+				
+				self.lastReadPages = newChild;
+			}
+			if(xmlStrEqual(cur->name, (const xmlChar *) "lastPageLocation")) {
+				
+				Class elementClass = nil;
+				xmlChar *instanceType = xmlGetNsProp(cur, (const xmlChar *) "type", (const xmlChar *) "http://www.w3.org/2001/XMLSchema-instance");
+				if(instanceType == NULL) {
+					elementClass = [NSNumber class];
+				} else {
+					NSString *elementTypeString = [NSString stringWithCString:(char*)instanceType encoding:NSUTF8StringEncoding];
+					
+					NSArray *elementTypeArray = [elementTypeString componentsSeparatedByString:@":"];
+					
+					NSString *elementClassString = nil;
+					if([elementTypeArray count] > 1) {
+						NSString *prefix = [elementTypeArray objectAtIndex:0];
+						NSString *localName = [elementTypeArray objectAtIndex:1];
+						
+						xmlNsPtr elementNamespace = xmlSearchNs(cur->doc, cur, [prefix xmlString]);
+						
+						NSString *standardPrefix = [[USGlobals sharedInstance].wsdlStandardNamespaces objectForKey:[NSString stringWithCString:(char*)elementNamespace->href encoding:NSUTF8StringEncoding]];
+						
+						elementClassString = [NSString stringWithFormat:@"%@_%@", standardPrefix, localName];
+					} else {
+						elementClassString = [elementTypeString stringByReplacingOccurrencesOfString:@":" withString:@"_" options:0 range:NSMakeRange(0, [elementTypeString length])];
+					}
+					
+					elementClass = NSClassFromString(elementClassString);
+					xmlFree(instanceType);
+				}
+				
+				id newChild = [elementClass deserializeNode:cur];
+				
+				self.lastPageLocation = newChild;
 			}
 		}
 	}
@@ -24246,6 +24324,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 	if((self = [super init])) {
 		authtoken = 0;
 		expiresIn = 0;
+		userType = 0;
 		deviceIsDeregistered = 0;
 		statusmessage = 0;
 	}
@@ -24256,6 +24335,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 {
 	if(authtoken != nil) [authtoken release];
 	if(expiresIn != nil) [expiresIn release];
+	if(userType != nil) [userType release];
 	if(deviceIsDeregistered != nil) [deviceIsDeregistered release];
 	if(statusmessage != nil) [statusmessage release];
 	
@@ -24297,6 +24377,9 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 	if(self.expiresIn != 0) {
 		xmlAddChild(node, [self.expiresIn xmlNodeForDoc:node->doc elementName:@"expiresIn" elementNSPrefix:nil]);
 	}
+	if(self.userType != 0) {
+		xmlAddChild(node, [self.userType xmlNodeForDoc:node->doc elementName:@"userType" elementNSPrefix:nil]);
+	}
 	if(self.deviceIsDeregistered != 0) {
 		xmlAddChild(node, [self.deviceIsDeregistered xmlNodeForDoc:node->doc elementName:@"deviceIsDeregistered" elementNSPrefix:nil]);
 	}
@@ -24307,6 +24390,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 /* elements */
 @synthesize authtoken;
 @synthesize expiresIn;
+@synthesize userType;
 @synthesize deviceIsDeregistered;
 @synthesize statusmessage;
 /* attributes */
@@ -24407,6 +24491,39 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 				id newChild = [elementClass deserializeNode:cur];
 				
 				self.expiresIn = newChild;
+			}
+			if(xmlStrEqual(cur->name, (const xmlChar *) "userType")) {
+				
+				Class elementClass = nil;
+				xmlChar *instanceType = xmlGetNsProp(cur, (const xmlChar *) "type", (const xmlChar *) "http://www.w3.org/2001/XMLSchema-instance");
+				if(instanceType == NULL) {
+					elementClass = [NSNumber class];
+				} else {
+					NSString *elementTypeString = [NSString stringWithCString:(char*)instanceType encoding:NSUTF8StringEncoding];
+					
+					NSArray *elementTypeArray = [elementTypeString componentsSeparatedByString:@":"];
+					
+					NSString *elementClassString = nil;
+					if([elementTypeArray count] > 1) {
+						NSString *prefix = [elementTypeArray objectAtIndex:0];
+						NSString *localName = [elementTypeArray objectAtIndex:1];
+						
+						xmlNsPtr elementNamespace = xmlSearchNs(cur->doc, cur, [prefix xmlString]);
+						
+						NSString *standardPrefix = [[USGlobals sharedInstance].wsdlStandardNamespaces objectForKey:[NSString stringWithCString:(char*)elementNamespace->href encoding:NSUTF8StringEncoding]];
+						
+						elementClassString = [NSString stringWithFormat:@"%@_%@", standardPrefix, localName];
+					} else {
+						elementClassString = [elementTypeString stringByReplacingOccurrencesOfString:@":" withString:@"_" options:0 range:NSMakeRange(0, [elementTypeString length])];
+					}
+					
+					elementClass = NSClassFromString(elementClassString);
+					xmlFree(instanceType);
+				}
+				
+				id newChild = [elementClass deserializeNode:cur];
+				
+				self.userType = newChild;
 			}
 			if(xmlStrEqual(cur->name, (const xmlChar *) "deviceIsDeregistered")) {
 				
@@ -24846,6 +24963,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 		expiresIn = 0;
 		ip = 0;
 		userhash = 0;
+		userType = 0;
 		deviceIsDeregistered = 0;
 		statusmessage = 0;
 	}
@@ -24859,6 +24977,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 	if(expiresIn != nil) [expiresIn release];
 	if(ip != nil) [ip release];
 	if(userhash != nil) [userhash release];
+	if(userType != nil) [userType release];
 	if(deviceIsDeregistered != nil) [deviceIsDeregistered release];
 	if(statusmessage != nil) [statusmessage release];
 	
@@ -24909,6 +25028,9 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 	if(self.userhash != 0) {
 		xmlAddChild(node, [self.userhash xmlNodeForDoc:node->doc elementName:@"userhash" elementNSPrefix:nil]);
 	}
+	if(self.userType != 0) {
+		xmlAddChild(node, [self.userType xmlNodeForDoc:node->doc elementName:@"userType" elementNSPrefix:nil]);
+	}
 	if(self.deviceIsDeregistered != 0) {
 		xmlAddChild(node, [self.deviceIsDeregistered xmlNodeForDoc:node->doc elementName:@"deviceIsDeregistered" elementNSPrefix:nil]);
 	}
@@ -24922,6 +25044,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 @synthesize expiresIn;
 @synthesize ip;
 @synthesize userhash;
+@synthesize userType;
 @synthesize deviceIsDeregistered;
 @synthesize statusmessage;
 /* attributes */
@@ -25121,6 +25244,39 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 				id newChild = [elementClass deserializeNode:cur];
 				
 				self.userhash = newChild;
+			}
+			if(xmlStrEqual(cur->name, (const xmlChar *) "userType")) {
+				
+				Class elementClass = nil;
+				xmlChar *instanceType = xmlGetNsProp(cur, (const xmlChar *) "type", (const xmlChar *) "http://www.w3.org/2001/XMLSchema-instance");
+				if(instanceType == NULL) {
+					elementClass = [NSNumber class];
+				} else {
+					NSString *elementTypeString = [NSString stringWithCString:(char*)instanceType encoding:NSUTF8StringEncoding];
+					
+					NSArray *elementTypeArray = [elementTypeString componentsSeparatedByString:@":"];
+					
+					NSString *elementClassString = nil;
+					if([elementTypeArray count] > 1) {
+						NSString *prefix = [elementTypeArray objectAtIndex:0];
+						NSString *localName = [elementTypeArray objectAtIndex:1];
+						
+						xmlNsPtr elementNamespace = xmlSearchNs(cur->doc, cur, [prefix xmlString]);
+						
+						NSString *standardPrefix = [[USGlobals sharedInstance].wsdlStandardNamespaces objectForKey:[NSString stringWithCString:(char*)elementNamespace->href encoding:NSUTF8StringEncoding]];
+						
+						elementClassString = [NSString stringWithFormat:@"%@_%@", standardPrefix, localName];
+					} else {
+						elementClassString = [elementTypeString stringByReplacingOccurrencesOfString:@":" withString:@"_" options:0 range:NSMakeRange(0, [elementTypeString length])];
+					}
+					
+					elementClass = NSClassFromString(elementClassString);
+					xmlFree(instanceType);
+				}
+				
+				id newChild = [elementClass deserializeNode:cur];
+				
+				self.userType = newChild;
 			}
 			if(xmlStrEqual(cur->name, (const xmlChar *) "deviceIsDeregistered")) {
 				
