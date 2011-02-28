@@ -33,6 +33,14 @@
 	[localDebug setup];
 	[localDebug release], localDebug = nil;
 #endif
+
+	
+	NSNumber *currentValue = [[NSUserDefaults standardUserDefaults] objectForKey:@"kSCHSpaceSaverMode"];
+	
+	if (!currentValue) {
+		[[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"kSCHSpaceSaverMode"];
+		[[NSUserDefaults standardUserDefaults] synchronize];
+	}
 	
 	return YES;
 }	

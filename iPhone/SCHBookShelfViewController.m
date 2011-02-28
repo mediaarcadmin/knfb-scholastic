@@ -82,6 +82,33 @@ NSInteger bookSort(SCHBookInfo *book1, SCHBookInfo *book2, void *context)
 	books = [newBooks sortedArrayUsingFunction:bookSort context:NULL];
 	[books retain];
 	
+	
+	BOOL spaceSaverMode = [[NSUserDefaults standardUserDefaults] boolForKey:@"kSCHSpaceSaverMode"];
+	
+	if (!spaceSaverMode) {
+		NSLog(@"Space saver mode is off - setting all books to download.");
+		
+		for (SCHBookInfo *bookInfo in self.books) {
+			
+			BookFileProcessingState state = [bookInfo processingState];
+			
+			if (!([bookInfo isCurrentlyDownloading] || [bookInfo isWaitingForDownload])) {
+				switch (state) {
+					case bookFileProcessingStateError:
+						break;
+					case bookFileProcessingStateNoFileDownloaded:
+					case bookFileProcessingStatePartiallyDownloaded:
+						[[SCHProcessingManager defaultManager] downloadBookFile:bookInfo];
+						break;
+					default:
+						break;
+				}	
+			}
+		}
+	} else {
+		NSLog(@"Space saver mode is on!");
+	}
+	
 	[self.tableView reloadData];
 	[self.gridView reloadData];
 	
@@ -133,12 +160,16 @@ NSInteger bookSort(SCHBookInfo *book1, SCHBookInfo *book2, void *context)
 	
 	SCHBookInfo *bookInfo = [self.books objectAtIndex:indexPath.row];
 
+	if ([bookInfo isCurrentlyDownloading] || [bookInfo isWaitingForDownload]) {
+		[[SCHProcessingManager defaultManager] removeBookFromDownload:bookInfo];
+		return;
+	}
+	
 	BookFileProcessingState state = [bookInfo processingState];
 	
 	[aTableView reloadData];
 
 	switch (state) {
-		case bookFileProcessingStateCurrentlyDownloading:
 		case bookFileProcessingStateError:
 			return;
 			break;
@@ -256,35 +287,38 @@ NSInteger bookSort(SCHBookInfo *book1, SCHBookInfo *book2, void *context)
 	
 	NSString *status = @"";
 	
-	// book status
-	switch ([bookInfo processingState]) {
-		case bookFileProcessingStateError:
-			status = @"Error";
-			thumbTintView.hidden = NO;
-			break;
-		case bookFileProcessingWaitingForDownload:
-			status = @"Waiting...";
-			thumbTintView.hidden = NO;
-			break;
-		case bookFileProcessingStateCurrentlyDownloading:
-			status = @"Downloading...";
-			thumbTintView.hidden = NO;
-			break;
-		case bookFileProcessingStateFullyDownloaded:
-			status = @"";
-			thumbTintView.hidden = YES;
-			break;
-		case bookFileProcessingStateNoFileDownloaded:
-		case bookFileProcessingStatePartiallyDownloaded:
-			status = @"Download";
-			thumbTintView.hidden = NO;
-			break;
-		default:
-			status = @"";
-			thumbTintView.hidden = YES;
-			break;
-	}
+	if ([bookInfo isCurrentlyDownloading]) {
+		status = @"Downloading...";
+		thumbTintView.hidden = NO;
+	} else if ([bookInfo isWaitingForDownload]) {
+		status = @"Waiting...";
+		thumbTintView.hidden = NO;
+	} else {
 	
+		// book status
+		switch ([bookInfo processingState]) {
+			case bookFileProcessingStateError:
+				status = @"Error";
+				thumbTintView.hidden = NO;
+				break;
+			case bookFileProcessingStateFullyDownloaded:
+				status = @"";
+				thumbTintView.hidden = YES;
+				break;
+			case bookFileProcessingStateNoFileDownloaded:
+				status = @"Download";
+				thumbTintView.hidden = NO;
+				break;
+			case bookFileProcessingStatePartiallyDownloaded:
+				status = @"Paused";
+				thumbTintView.hidden = NO;
+				break;
+			default:
+				status = @"";
+				thumbTintView.hidden = YES;
+				break;
+		}
+	}	
 	[statusLabel setText:status];
 	
 		
@@ -313,13 +347,15 @@ NSInteger bookSort(SCHBookInfo *book1, SCHBookInfo *book2, void *context)
 	NSLog(@"Calling grid view selection.");
 	SCHBookInfo *bookInfo = [self.books objectAtIndex:index];
 
-	SCHContentMetadataItem *contentMetadataItem = bookInfo.contentMetadata;
+	if ([bookInfo isCurrentlyDownloading] || [bookInfo isWaitingForDownload]) {
+		[[SCHProcessingManager defaultManager] removeBookFromDownload:bookInfo];
+		return;
+	}
 	
+	SCHContentMetadataItem *contentMetadataItem = bookInfo.contentMetadata;
 	BookFileProcessingState state = [bookInfo processingState];
 	
-
 	switch (state) {
-		case bookFileProcessingStateCurrentlyDownloading:
 		case bookFileProcessingStateError:
 			return;
 			break;

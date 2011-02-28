@@ -77,6 +77,8 @@
 		[self.statusLabel setTextAlignment:UITextAlignmentCenter];
 		
         [self.contentView addSubview:self.statusLabel];
+		
+		self.selectionStyle = UITableViewCellSelectionStyleNone;
 	}
 	
     return self;
@@ -112,7 +114,6 @@
 
 - (void) setBookInfo:(SCHBookInfo *) newBookInfo
 {
-	NSLog(@"Setting book info in cell.");
 	if (newBookInfo != bookInfo) {
 		SCHBookInfo *oldBookInfo = bookInfo;
 		bookInfo = [newBookInfo retain];
@@ -133,42 +134,44 @@
 	
 	NSString *status = @"";
 	
-	// book status
-	switch ([bookInfo processingState]) {
-		case bookFileProcessingStateError:
-			status = @"Error";
-			self.thumbTintView.hidden = NO;
-			break;
-		case bookFileProcessingWaitingForDownload:
-			status = @"Waiting...";
-			self.thumbTintView.hidden = NO;
-			break;
-		case bookFileProcessingStateCurrentlyDownloading:
-			status = @"Downloading...";
-			self.thumbTintView.hidden = NO;
-			break;
-		case bookFileProcessingStateFullyDownloaded:
-			status = @"";
-			self.thumbTintView.hidden = YES;
-			break;
-		case bookFileProcessingStateNoFileDownloaded:
-		case bookFileProcessingStatePartiallyDownloaded:
-			status = @"Download";
-			self.thumbTintView.hidden = NO;
-			break;
-		default:
-			status = @"";
-			self.thumbTintView.hidden = YES;
-			break;
-	}
-	
+	if ([bookInfo isCurrentlyDownloading]) {
+		status = @"Downloading...";
+		thumbTintView.hidden = NO;
+	} else if ([bookInfo isWaitingForDownload]) {
+		status = @"Waiting...";
+		thumbTintView.hidden = NO;
+	} else {
+		// book status
+		switch ([bookInfo processingState]) {
+			case bookFileProcessingStateError:
+				status = @"Error";
+				self.thumbTintView.hidden = NO;
+				break;
+			case bookFileProcessingStateFullyDownloaded:
+				status = @"";
+				self.thumbTintView.hidden = YES;
+				break;
+			case bookFileProcessingStateNoFileDownloaded:
+				status = @"Download";
+				self.thumbTintView.hidden = NO;
+				break;
+			case bookFileProcessingStatePartiallyDownloaded:
+				status = @"Paused";
+				self.thumbTintView.hidden = NO;
+				break;
+			default:
+				status = @"Unknown!";
+				self.thumbTintView.hidden = YES;
+				break;
+		}
+	}	
 	if (self.thumbTintView.hidden) {
 		self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	} else {
 		self.accessoryType = UITableViewCellAccessoryNone;
 	}
 	
-	NSLog(@"Setting status for %@ to %@ (%d).", self.bookInfo.contentMetadata.Title, status, [bookInfo processingState]);
+	NSLog(@"Setting status for %@ to \"%@\" (%d).", self.bookInfo.contentMetadata.Title, status, [bookInfo processingState]);
 	
 	[self updateWithContentMetadata:self.bookInfo.contentMetadata status:status];	
 }

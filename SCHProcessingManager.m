@@ -20,7 +20,7 @@
 
 @implementation SCHProcessingManager
 
-@synthesize processingQueue, imageCache;
+@synthesize processingQueue, imageCache, currentDownloadingItems, currentWaitingItems;
 
 static SCHProcessingManager *sharedManager = nil;
 
@@ -35,6 +35,8 @@ static SCHProcessingManager *sharedManager = nil;
 		self.imageCache = [[BlioTimeOrderedCache alloc] init];
 		self.imageCache.countLimit = 50; // Arbitrary 30 object limit
         self.imageCache.totalCostLimit = (1024*1024) * 5; // Arbitrary 5MB limit. This may need wteaked or set on a per-device basis
+		self.currentDownloadingItems = [[NSMutableDictionary alloc] init];
+		self.currentWaitingItems = [[NSMutableDictionary alloc] init];
 	}
 	
 	return self;
@@ -44,6 +46,8 @@ static SCHProcessingManager *sharedManager = nil;
 {
 	self.processingQueue = nil;
 	self.imageCache = nil;
+	self.currentDownloadingItems = nil;
+	self.currentWaitingItems = nil;
 	[super dealloc];
 }
 
@@ -142,6 +146,7 @@ static SCHProcessingManager *sharedManager = nil;
 		SCHDownloadImageOperation *downloadImageOp = [[SCHDownloadImageOperation alloc] init];
 		downloadImageOp.imagePath = [NSURL URLWithString:coverURL];
 		downloadImageOp.localPath = cacheImageItem;
+		[downloadImageOp setQueuePriority:NSOperationQueuePriorityHigh];
 		imageOp = downloadImageOp;
 #endif
 		
@@ -165,6 +170,8 @@ static SCHProcessingManager *sharedManager = nil;
 													   size:size
 													   flip:YES
 											 maintainAspect:YES];
+		[thumbOp setQueuePriority:NSOperationQueuePriorityHigh];
+
 		if (imageOp) {
 			[thumbOp addDependency:imageOp];
 		}
@@ -182,6 +189,7 @@ static SCHProcessingManager *sharedManager = nil;
 	if (imageOp) {
 		[operations addObject:imageOp];
 		[[SCHProcessingManager defaultManager].processingQueue addOperation:imageOp];
+		[imageOp release];
 	}
 	
 	return [NSArray arrayWithArray:operations];
@@ -193,14 +201,16 @@ static SCHProcessingManager *sharedManager = nil;
 	
 #ifndef LOCALDEBUG
 	
-	NSLog(@"Checking book status.");
+	NSLog(@"DOWNLOADBOOKFILE: Checking book status.");
 	
 	BookFileProcessingState state = [bookInfo processingState];
 	
-	if (state == bookFileProcessingStateCurrentlyDownloading) {
-		NSLog(@"Book is already downloading...");
+	if ([bookInfo isCurrentlyDownloading] || [bookInfo isWaitingForDownload]) {
+		NSLog(@"Book already queued for download.");
 		return;
-	} else if (state == bookFileProcessingStateNoFileDownloaded || state == bookFileProcessingStatePartiallyDownloaded) {
+	}
+	
+	if (state == bookFileProcessingStateNoFileDownloaded || state == bookFileProcessingStatePartiallyDownloaded) {
 		NSLog(@"XPS file %@ needs downloading (%@)...", [bookInfo xpsPath], (state == bookFileProcessingStateNoFileDownloaded)?@"No file":@"Partial File");
 		
 		// if it needs downloaded, queue up a book download operation
@@ -223,12 +233,80 @@ static SCHProcessingManager *sharedManager = nil;
 	if (bookDownloadOp) {
 		[operations addObject:bookDownloadOp];
 		[[SCHProcessingManager defaultManager].processingQueue addOperation:bookDownloadOp];
+		[bookDownloadOp release];
 	}
 	
 }
 
 + (NSString *)cacheDirectory {
 	return [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject];
+}
+
+#pragma mark -
+#pragma mark Queue Management methods
+
+- (void) setBookWaiting: (SCHBookInfo *) bookInfo operation: (NSOperation *) operation
+{
+	if ([[self.currentWaitingItems allKeys] containsObject:bookInfo]) {
+		return;
+	}
+	
+	@synchronized(self) {
+		if ([[self.currentDownloadingItems allKeys] containsObject:bookInfo]) {
+			[self.currentDownloadingItems removeObjectForKey:bookInfo];
+		}
+
+		[self.currentWaitingItems setObject:operation forKey:bookInfo];
+	}
+}
+
+- (void) setBookDownloading: (SCHBookInfo *) bookInfo operation: (NSOperation *) operation
+{
+	if ([[self.currentDownloadingItems allKeys] containsObject:bookInfo]) {
+		return;
+	}
+	
+	@synchronized(self) {
+		if ([[self.currentWaitingItems allKeys] containsObject:bookInfo]) {
+			[self.currentWaitingItems removeObjectForKey:bookInfo];
+		}
+
+		[self.currentDownloadingItems setObject:operation forKey:bookInfo];
+	}
+}
+
+- (void) removeBookFromDownload: (SCHBookInfo *) bookInfo
+{
+	@synchronized(self) {
+		if ([[self.currentDownloadingItems allKeys] containsObject:bookInfo]) {
+			
+			SCHDownloadBookFile *op = [self.currentDownloadingItems objectForKey:bookInfo];
+			[op cancel];
+			
+			[self.currentDownloadingItems removeObjectForKey:bookInfo];
+		}
+		
+		if ([[self.currentWaitingItems allKeys] containsObject:bookInfo]) {
+			NSOperation *op = [self.currentWaitingItems objectForKey:bookInfo];
+			[op cancel];
+			
+			[self.currentWaitingItems removeObjectForKey:bookInfo];
+		}
+	}
+}
+
+- (BOOL) isCurrentlyWaiting: (SCHBookInfo *) bookInfo
+{
+	@synchronized(self) {
+		return [[self.currentWaitingItems allKeys] containsObject:bookInfo];
+	}
+}
+
+- (BOOL) isCurrentlyDownloading: (SCHBookInfo *) bookInfo
+{
+	@synchronized(self) {
+		return [[self.currentDownloadingItems allKeys] containsObject:bookInfo];
+	}
 }
 
 #pragma mark -

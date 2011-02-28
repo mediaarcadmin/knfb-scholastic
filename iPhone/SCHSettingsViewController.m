@@ -7,12 +7,13 @@
 //
 
 #import "SCHSettingsViewController.h"
-
 #import "SCHLoginViewController.h"
+#import "AppDelegate_Shared.h"
+#import "SCHUserSettingsItem+Extensions.h"
 
 @implementation SCHSettingsViewController
 
-@synthesize loginController;
+@synthesize loginController, managedObjectContext;
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -64,21 +65,49 @@
 	[self presentModalViewController:self.loginController animated:YES];		
 }
 	
+#pragma mark -
+#pragma mark Switch Changes
+
+- (void) switchChanged: (UISwitch *) sender
+{
+	NSNumber *currentValue = [[NSUserDefaults standardUserDefaults] objectForKey:@"kSCHSpaceSaverMode"];
+	
+	if (!currentValue) {
+		BOOL newValue = [sender isOn];
+		[[NSUserDefaults standardUserDefaults] setBool:newValue forKey:@"kSCHSpaceSaverMode"];
+		[[NSUserDefaults standardUserDefaults] synchronize];
+		return;
+	}
+	
+	BOOL newValue = !([currentValue boolValue]);
+	[[NSUserDefaults standardUserDefaults] setBool:newValue forKey:@"kSCHSpaceSaverMode"];
+	[[NSUserDefaults standardUserDefaults] synchronize];
+}
 
 #pragma mark -
 #pragma mark Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     // Return the number of sections.
-    return 0;
+    return 1;
 }
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
-    return 0;
+    return 1;
 }
 
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+	return @"Device Options";
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
+{
+	return @"Space Saver Mode allows you to download individual books - turn it off to automatically download all books.";
+}
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -88,10 +117,20 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+		UISwitch *switchview = [[UISwitch alloc] initWithFrame:CGRectZero];
+		
+		BOOL currentValue = [[NSUserDefaults standardUserDefaults] boolForKey:@"kSCHSpaceSaverMode"];
+		[switchview setOn:currentValue];
+		
+		[switchview addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
+		cell.accessoryView = switchview;
+		[switchview release];
     }
     
     // Configure the cell...
-    
+	cell.textLabel.text = @"Space Saver Mode";
+	
+	
     return cell;
 }
 
@@ -164,10 +203,13 @@
 - (void)viewDidUnload {
     // Relinquish ownership of anything that can be recreated in viewDidLoad or on demand.
     // For example: self.myOutlet = nil;
+	self.managedObjectContext = nil;
+	
 }
 
 
 - (void)dealloc {
+	self.managedObjectContext = nil;
     [super dealloc];
 }
 

@@ -273,6 +273,7 @@ static NSString * const kRootViewControllerSettingsIcon = @"Settings.png";
 			[self presentModalViewController:profilePasswordViewController animated:YES];
 			break;
 		case 1:
+			settingsController.managedObjectContext = self.managedObjectContext;
 			[self.navigationController pushViewController:self.settingsController animated:YES];
 			break;
 	}

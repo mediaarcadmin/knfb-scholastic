@@ -42,10 +42,13 @@
 	bookInfo = [newBookInfo retain];
 	[oldInfo release];
 	
-	self.bookInfo.downloading = NO;
-	self.bookInfo.waitingForDownload = YES;
 	
-	NSLog(@"Firing selector: waiting %@, downloading %@", (self.bookInfo.waitingForDownload?@"Yes":@"No"), (self.bookInfo.downloading?@"Yes": @"No"));
+	[[SCHProcessingManager defaultManager] setBookWaiting:self.bookInfo operation:self];
+	
+//	self.bookInfo.downloading = NO;
+//	self.bookInfo.waitingForDownload = YES;
+	
+//	NSLog(@"Firing selector: waiting %@, downloading %@", (self.bookInfo.waitingForDownload?@"Yes":@"No"), (self.bookInfo.downloading?@"Yes": @"No"));
 	
 	NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
 							  self.bookInfo, @"bookInfo", 
@@ -88,12 +91,13 @@
 	
 	// check first to see if the file has been created
 	
-	BookFileProcessingState state = [self.bookInfo processingState];
 	
-	if (state == bookFileProcessingStateCurrentlyDownloading) {
+	if ([self.bookInfo isCurrentlyDownloading]) {
 		NSLog(@"Operation: already downloading the file.");
 		return;
 	}
+	
+	BookFileProcessingState state = [self.bookInfo processingState];
 	
 	if (state == bookFileProcessingStateFullyDownloaded) {
 		NSLog(@"Already fully downloaded the file. Stopping.");
@@ -142,13 +146,13 @@
 
 	
 	NSURLConnection *connection = [NSURLConnection connectionWithRequest:request delegate:self];
+
+	[[SCHProcessingManager defaultManager] setBookDownloading:self.bookInfo operation:self];
 	
-	self.bookInfo.downloading = YES;
-	self.bookInfo.waitingForDownload = NO;
+//	self.bookInfo.downloading = YES;
+//	self.bookInfo.waitingForDownload = NO;
 	
 	[connection start];
-	
-	NSLog(@"Firing selector: waiting %@, downloading %@", (self.bookInfo.waitingForDownload?@"Yes":@"No"), (self.bookInfo.downloading?@"Yes": @"No"));
 	
 	NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
 							  self.bookInfo, @"bookInfo", 
@@ -161,6 +165,9 @@
 	
 	
 	NSLog(@"Connection started for file %@...", [self.localPath lastPathComponent]);
+	if (fileSize > 0) {
+		NSLog(@"Continuing from file position %llu...", fileSize);
+	}
 	
 	if (connection != nil) {
 		do {
@@ -184,18 +191,18 @@
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
 
-	if ([self isCancelled]) {
-		[connection cancel];
-		self.executing = NO;
-		self.finished = YES;
-		return;
-	}
-	
 	@synchronized(self) {
 		NSFileHandle *handle = [NSFileHandle fileHandleForWritingAtPath:self.localPath];
 		[handle seekToEndOfFile];
 		[handle writeData:data];
 		[handle closeFile];
+	}
+	
+	if ([self isCancelled]) {
+		[connection cancel];
+		self.executing = NO;
+		self.finished = YES;
+		return;
 	}
 }
 
@@ -204,8 +211,8 @@
 	NSLog(@"Finished file %@.", [self.localPath lastPathComponent]);
 	self.executing = NO;
 	self.finished = YES;
-	self.bookInfo.downloading = NO;
-	
+//	self.bookInfo.downloading = NO;
+	[[SCHProcessingManager defaultManager] removeBookFromDownload:self.bookInfo];
 }
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
@@ -213,7 +220,8 @@
 	NSLog(@"Error downloading file %@!", [self.localPath lastPathComponent]);
 	self.executing = NO;
 	self.finished = YES;
-	self.bookInfo.downloading = NO;
+//	self.bookInfo.downloading = NO;
+	[[SCHProcessingManager defaultManager] removeBookFromDownload:self.bookInfo];
 }
 
 @end

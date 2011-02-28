@@ -13,11 +13,9 @@
 
 typedef enum {
 	bookFileProcessingStateError = 0,
-	bookFileProcessingStateCurrentlyDownloading,
 	bookFileProcessingStateNoFileDownloaded,
 	bookFileProcessingStatePartiallyDownloaded,
-	bookFileProcessingStateFullyDownloaded,
-	bookFileProcessingWaitingForDownload
+	bookFileProcessingStateFullyDownloaded
 } BookFileProcessingState;
 
 
@@ -29,14 +27,17 @@ typedef enum {
 // FIXME: used in testing - disable for release builds
 @property (nonatomic) pthread_t currentThread;
 
-@property (nonatomic, retain) NSManagedObjectID *metadataItemID;
+//@property (nonatomic, retain) NSManagedObjectID *metadataItemID;
+@property (readwrite, retain) NSString *bookIdentifier;
 @property (readonly) SCHContentMetadataItem *contentMetadata;
-@property (readwrite) BOOL downloading;
-@property (readwrite) BOOL waitingForDownload;
 
 - (id) initWithContentMetadataItem: (SCHContentMetadataItem *) metadataItem;
 - (NSString *) xpsPath;
 - (BookFileProcessingState) processingState;
 - (BOOL) processedCovers;
+- (BOOL) isCurrentlyDownloading;
+- (BOOL) isWaitingForDownload;
+
+
 
 @end

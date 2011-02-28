@@ -20,15 +20,15 @@
 @implementation SCHBookInfo
 
 @synthesize currentThread;
-@synthesize metadataItemID;
-@synthesize downloading, waitingForDownload;
+//@synthesize metadataItemID;
+@synthesize bookIdentifier;
 
 
 - (id) init
 {
 	if (self = [super init]) {
 		self.currentThread = pthread_self();
-		self.downloading = NO;
+		self.bookIdentifier = nil;
 	}
 	
 	return self;
@@ -37,7 +37,8 @@
 - (id) initWithContentMetadataItem: (SCHContentMetadataItem *) metadataItem
 {
 	if (self = [self init]) {
-		self.metadataItemID = [metadataItem objectID];
+		//self.metadataItemID = [metadataItem objectID];
+		self.bookIdentifier = [metadataItem ContentIdentifier];
 	}
 	
 	return self;
@@ -47,37 +48,29 @@
 {
 	//[self threadCheck];
 	
-	
-    // If we don't do a refresh here, we run the risk that another thread has
-    // modified the object while it's been cached by this thread's managed
-    // object context.  
-    // If I were redesigning this, I'd make only one thread allowed to modify
-    // the books, and call 
-    // - (void)mergeChangesFromContextDidSaveNotification:(NSNotification *)notification
-    // on the other threads when it saved.
-/*    NSManagedObjectContext *context = self.managedObjectContextForCurrentThread;
-    BlioBook *book = nil;
-    
-    if (aBookID) {
-        book = (BlioBook *)[context objectWithID:aBookID];
-    }
-    else NSLog(@"WARNING: BlioBookManager bookWithID: aBookID is nil!");
-    if (book) {
-        [context refreshObject:book mergeChanges:YES];
-    }
-    
-    return book;
-*/	
 	SCHContentMetadataItem *item = nil;
 	
-	if (self.metadataItemID) {
+	if (self.bookIdentifier) {
 		
 		NSManagedObjectContext *context = [[SCHBookManager sharedBookManager] managedObjectContextForCurrentThread];
 		
 		if (context) {
-			item = (SCHContentMetadataItem *) [context objectWithID:self.metadataItemID];
-			if (item) {
-				[context refreshObject:item mergeChanges:YES];
+			NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+			[fetchRequest setEntity:[NSEntityDescription entityForName:@"SCHContentMetadataItem" inManagedObjectContext:context]];	
+			
+			NSPredicate *predicate = [NSPredicate predicateWithFormat:@"ContentIdentifier == %@", self.bookIdentifier];
+			[fetchRequest setPredicate:predicate];
+			
+			NSError *error = nil;
+			NSArray *results = [context executeFetchRequest:fetchRequest error:&error];
+			[fetchRequest release], fetchRequest = nil;
+			
+			if (error) {
+				NSLog(@"Error while fetching book item: %@", [error localizedDescription]);
+			} else if (!results || [results count] != 1) {
+				NSLog(@"Did not return expected single book.");
+			} else {
+				item = (SCHContentMetadataItem *) [results objectAtIndex:0];
 			}
 		}
 		
@@ -105,14 +98,6 @@
 
 - (BookFileProcessingState) processingState
 {
-	if (self.downloading) {
-		return bookFileProcessingStateCurrentlyDownloading;
-	}
-	
-	if (self.waitingForDownload) {
-		return bookFileProcessingWaitingForDownload;
-	}
-	
 	NSString *xpsPath = [self xpsPath];
 	NSError *error = nil;
 	
@@ -135,6 +120,39 @@
 
 	return bookFileProcessingStateNoFileDownloaded;
 }
+
+- (BOOL) isCurrentlyDownloading
+{
+	return [[SCHProcessingManager defaultManager] isCurrentlyDownloading:self];
+}
+
+- (BOOL) isWaitingForDownload
+{
+	return [[SCHProcessingManager defaultManager] isCurrentlyWaiting:self];
+}
+
+- (BOOL)isEqual:(id)anObject
+{
+	BOOL result = NO;
+	
+	if (anObject) {
+		if ([anObject isKindOfClass:[SCHBookInfo class]]) {
+			SCHBookInfo *item = (SCHBookInfo *) anObject;
+			
+			if ([self.bookIdentifier isEqualToString:item.bookIdentifier]) {
+				result = YES;
+			}
+		}
+	}
+	
+	return result;
+}
+
+- (NSUInteger)hash
+{
+	return [self.bookIdentifier hash];
+}
+
 
 - (id) copyWithZone: (NSZone *) zone
 {
