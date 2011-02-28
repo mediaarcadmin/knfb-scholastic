@@ -18,6 +18,10 @@
 	return(NO);	
 }
 
+- (void)clear
+{
+}
+
 - (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result
 {	
 	NSLog(@"%@\n%@", method, result);

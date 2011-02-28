@@ -27,6 +27,8 @@
 - (void)start;
 - (void)stop;
 
+- (void)clear;
+
 - (void)firstSync;
 - (void)changeProfile;
 - (void)openDocument:(SCHUserContentItem *)userContentItem forProfile:(NSNumber *)profileID;

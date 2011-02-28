@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <CoreData/CoreData.h>
 
 #import "SCHProfilePasswordViewControllerDelegate.h"
 
@@ -17,8 +18,12 @@
 
 }
 
+@property (retain, nonatomic) IBOutlet UILabel *newPasswordMessage;
 @property (retain, nonatomic) IBOutlet UITextField *password;
+@property (retain, nonatomic) IBOutlet UITextField *confirmPassword;
 @property (retain, nonatomic) SCHProfileItem *profileItem;
+@property (assign, nonatomic) BOOL setPasswordMode;
+@property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 @property (assign, nonatomic) id<SCHProfilePasswordViewControllerDelegate> delegate;
 
 - (IBAction)OK:(id)sender;

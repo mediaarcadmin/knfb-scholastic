@@ -44,10 +44,10 @@
 	self.cancelButton.enabled = YES;
 
 	if ([notification.name compare:kSCHAuthenticationManagerSuccess] == NSOrderedSame) {
+		[[SCHSyncManager sharedSyncManager] clear];
 		[[SCHSyncManager sharedSyncManager] firstSync];
 		[self dismissModalViewControllerAnimated:YES];	
 	} else {
-		// oh bummer!
 		NSError *error = [notification.userInfo objectForKey:kSCHAuthenticationManagerNSError];
 		if (error!= nil) {
 			UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") 

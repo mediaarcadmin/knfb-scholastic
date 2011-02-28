@@ -13,6 +13,5 @@
 @protocol SCHProfilePasswordViewControllerDelegate
 
 - (void)profilePasswordViewControllerDidComplete:(SCHProfilePasswordViewController *)profilePassword;
-- (void)profilePasswordViewControllerDidCancel:(SCHProfilePasswordViewController *)profilePassword;
 
 @end

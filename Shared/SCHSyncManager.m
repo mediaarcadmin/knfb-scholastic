@@ -198,6 +198,15 @@ static NSTimeInterval const kSCHSyncManagerHeartbeatInterval = 30.0;
 #pragma mark -
 #pragma mark Sync methods
 
+- (void)clear
+{
+	[profileSyncComponent clear];	
+	[contentSyncComponent clear];	
+	[annotationSyncComponent clear];	
+	[readingStatsSyncComponent clear];	
+	[settingsSyncComponent clear];	
+}
+
 // after login or opening the app
 // also coming out of background
 - (void)firstSync

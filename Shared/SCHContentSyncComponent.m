@@ -18,7 +18,6 @@
 
 @interface SCHContentSyncComponent ()
 
-- (void)clearUserContentItems;
 - (void)updateUserContentItems:(NSArray *)userContentList;
 - (SCHOrderItem *)orderItem:(NSDictionary *)orderItem;
 - (SCHContentProfileItem *)contentProfileItem:(NSDictionary *)contentProfileItem;
@@ -49,6 +48,18 @@
 	return(ret);		
 }
 
+- (void)clear
+{
+	NSError *error = nil;
+	
+	if (![self.managedObjectContext emptyEntity:kSCHUserContentItem error:&error] ||
+		![self.managedObjectContext emptyEntity:kSCHOrderItem error:&error] ||
+		![self.managedObjectContext emptyEntity:kSCHContentProfileItem error:&error]) {
+		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+		abort();
+	}		
+}
+
 - (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result
 {	
 	if([method compare:kSCHLibreAccessWebServiceListUserContent] == NSOrderedSame) {
@@ -66,23 +77,11 @@
 	}	
 }
 
-- (void)clearUserContentItems
-{
-	NSError *error = nil;
-	
-	if (![self.managedObjectContext emptyEntity:kSCHUserContentItem error:&error] ||
-		![self.managedObjectContext emptyEntity:kSCHOrderItem error:&error] ||
-		![self.managedObjectContext emptyEntity:kSCHContentProfileItem error:&error]) {
-		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-		abort();
-	}		
-}
-
 - (void)updateUserContentItems:(NSArray *)userContentList
 {
 	NSError *error = nil;
 	
-	[self clearUserContentItems];
+	[self clear];
 	
 	for (id userContentItem in userContentList) {
 		SCHUserContentItem *newUserContentItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHUserContentItem inManagedObjectContext:self.managedObjectContext];

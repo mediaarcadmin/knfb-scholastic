@@ -15,8 +15,11 @@
 
 @interface SCHProfileSyncComponent ()
 
-- (void)clearProfiles;
+- (BOOL)updateProfiles;
+- (NSArray *)localProfiles;
 - (void)syncProfiles:(NSArray *)profileList;
+- (void)addProfile:(NSDictionary *)webProfile;
+- (void)syncProfile:(NSDictionary *)webProfile withProfile:(SCHProfileItem *)localProfile;
 
 @end
 
@@ -32,24 +35,13 @@
 			self.backgroundTaskIdentifier = UIBackgroundTaskInvalid;
 		}];
 		
-		self.isSynchronizing = [self.libreAccessWebService getUserProfiles];
-		if (self.isSynchronizing == NO) {
-			[[SCHAuthenticationManager sharedAuthenticationManager] authenticate];				
-			ret = NO;
-		}
+		ret = [self updateProfiles];		
 	}
-	
+
 	return(ret);	
 }
 
-- (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result
-{	
-	[self syncProfiles:[result objectForKey:kSCHLibreAccessWebServiceProfileList]];
-	
-	[super method:method didCompleteWithResult:nil];
-}
-
-- (void)clearProfiles
+- (void)clear
 {
 	NSError *error = nil;
 	
@@ -59,34 +51,177 @@
 	}		
 }
 
-- (void)syncProfiles:(NSArray *)profileList
+- (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result
 {	
-	[self clearProfiles];
+	if([method compare:kSCHLibreAccessWebServiceSaveUserProfiles] == NSOrderedSame) {	
+		self.isSynchronizing = [self.libreAccessWebService getUserProfiles];
+		if (self.isSynchronizing == NO) {
+			[[SCHAuthenticationManager sharedAuthenticationManager] authenticate];				
+		}		
+	} else if([method compare:kSCHLibreAccessWebServiceGetUserProfiles] == NSOrderedSame) {
+		[self syncProfiles:[result objectForKey:kSCHLibreAccessWebServiceProfileList]];
+		
+		[super method:method didCompleteWithResult:nil];	
+	}	
+}
+
+- (BOOL)updateProfiles
+{
+	BOOL ret = YES;
+	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
 	
-	for (id profile in profileList) {
-		SCHProfileItem *newProfileItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHProfileItem inManagedObjectContext:self.managedObjectContext];
+	[fetchRequest setEntity:[NSEntityDescription entityForName:kSCHProfileItem inManagedObjectContext:self.managedObjectContext]];	
+	[fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"State IN %@", 
+								[NSArray arrayWithObjects:[NSNumber numberWithStatus:kSCHStatusCreated], 
+								 [NSNumber numberWithStatus:kSCHStatusModified],
+								 [NSNumber numberWithStatus:kSCHStatusDeleted], nil]]];
 		
-		newProfileItem.LastModified = [self makeNullNil:[profile objectForKey:kSCHLibreAccessWebServiceLastModified]];
+	NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest error:nil];
+
+	if( [results count] > 0) {
+		self.isSynchronizing = [self.libreAccessWebService saveUserProfiles:results];
+		if (self.isSynchronizing == NO) {
+			[[SCHAuthenticationManager sharedAuthenticationManager] authenticate];				
+			ret = NO;			
+		}		
+	} else {
 		
-		newProfileItem.StoryInteractionEnabled = [self makeNullNil:[profile objectForKey:kSCHLibreAccessWebServiceStoryInteractionEnabled]];
-		newProfileItem.ID = [self makeNullNil:[profile objectForKey:kSCHLibreAccessWebServiceID]];
-		newProfileItem.LastPasswordModified = [self makeNullNil:[profile objectForKey:kSCHLibreAccessWebServiceLastPasswordModified]];
-		newProfileItem.Password = [self makeNullNil:[profile objectForKey:kSCHLibreAccessWebServicePassword]];
-		newProfileItem.Birthday = [self makeNullNil:[profile objectForKey:kSCHLibreAccessWebServiceBirthday]];
-		newProfileItem.FirstName = [self makeNullNil:[profile objectForKey:kSCHLibreAccessWebServiceFirstName]];
-		newProfileItem.ProfilePasswordRequired = [self makeNullNil:[profile objectForKey:kSCHLibreAccessWebServiceProfilePasswordRequired]];
-		newProfileItem.Type = [self makeNullNil:[profile objectForKey:kSCHLibreAccessWebServiceType]];
-		newProfileItem.ScreenName = [self makeNullNil:[profile objectForKey:kSCHLibreAccessWebServiceScreenName]];
-		newProfileItem.AutoAssignContentToProfiles = [self makeNullNil:[profile objectForKey:kSCHLibreAccessWebServiceAutoAssignContentToProfiles]];
-		newProfileItem.LastScreenNameModified = [self makeNullNil:[profile objectForKey:kSCHLibreAccessWebServiceLastScreenNameModified]];
-		newProfileItem.UserKey = [self makeNullNil:[profile objectForKey:kSCHLibreAccessWebServiceUserKey]];
-		newProfileItem.BookshelfStyle = [self makeNullNil:[profile objectForKey:kSCHLibreAccessWebServiceBookshelfStyle]];
-		newProfileItem.LastName = [self makeNullNil:[profile objectForKey:kSCHLibreAccessWebServiceLastName]];
-		newProfileItem.LastModified = [self makeNullNil:[profile objectForKey:kSCHLibreAccessWebServiceLastModified]];
-		newProfileItem.State = [NSNumber numberWithInteger:0];				
+		self.isSynchronizing = [self.libreAccessWebService getUserProfiles];
+		if (self.isSynchronizing == NO) {
+			[[SCHAuthenticationManager sharedAuthenticationManager] authenticate];				
+			ret = NO;
+		}
 	}
+	[fetchRequest release], fetchRequest = nil;
+	
+	[self.managedObjectContext save:nil];	
+	
+	return(ret);
+}
+
+- (NSArray *)localProfiles
+{
+	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+	
+	[fetchRequest setEntity:[NSEntityDescription entityForName:kSCHProfileItem inManagedObjectContext:self.managedObjectContext]];	
+	[fetchRequest setSortDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceID ascending:YES]]];
+	
+	NSArray *ret = [self.managedObjectContext executeFetchRequest:fetchRequest error:nil];	
+	
+	[fetchRequest release], fetchRequest = nil;
+	
+	return(ret);
+}
+
+- (void)syncProfiles:(NSArray *)profileList
+{		
+	NSMutableSet *deletePool = [NSMutableSet set];
+	NSMutableSet *creationPool = [NSMutableSet set];
+	
+	NSArray *webProfiles = [profileList sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceID ascending:YES]]];		
+	NSArray *localProfiles = [self localProfiles];
+						   
+	NSEnumerator *webEnumerator = [webProfiles objectEnumerator];			  
+	NSEnumerator *localEnumerator = [localProfiles objectEnumerator];			  			  
+
+	NSDictionary *webItem = [webEnumerator nextObject];
+	SCHProfileItem *localItem = [localEnumerator nextObject];
+	
+	while (webItem != nil || localItem != nil) {		
+		if (webItem == nil) {
+			while (localItem != nil) {
+				[deletePool addObject:localItem];
+				localItem = [localEnumerator nextObject];
+			} 
+			break;
+		}
 		
+		if (localItem == nil) {
+			while (webItem != nil) {
+				[creationPool addObject:webItem];
+				webItem = [webEnumerator nextObject];
+			} 
+			break;			
+		}
+
+		NSNumber *webItemID = [webItem valueForKey:kSCHLibreAccessWebServiceID];
+		NSNumber *localItemID = [localItem valueForKey:kSCHLibreAccessWebServiceID];
+
+		switch ([webItemID compare:localItemID]) {
+			case NSOrderedSame:
+				[self syncProfile:webItem withProfile:localItem];
+				webItem = nil;
+				localItem = nil;
+				break;
+			case NSOrderedAscending:
+				[creationPool addObject:webItem];
+				webItem = nil;
+				break;
+			case NSOrderedDescending:
+				[deletePool addObject:localItem];
+				localItem = nil;
+				break;			
+		}		
+		
+		if (webItem == nil) {
+			webItem = [webEnumerator nextObject];
+		}
+		if (localItem == nil) {
+			localItem = [localEnumerator nextObject];
+		}		
+	}
+	
+	for (SCHProfileItem *localItem in deletePool) {
+		[self.managedObjectContext deleteObject:localItem];
+	}
+	
+	for (NSDictionary *webItem in creationPool) {
+		[self addProfile:webItem];
+	}
+	
 	[self save];
+}
+
+- (void)addProfile:(NSDictionary *)webProfile
+{
+	SCHProfileItem *newProfileItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHProfileItem inManagedObjectContext:self.managedObjectContext];
+	
+	newProfileItem.StoryInteractionEnabled = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceStoryInteractionEnabled]];
+	newProfileItem.ID = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceID]];
+	newProfileItem.LastPasswordModified = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceLastPasswordModified]];
+	newProfileItem.Password = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServicePassword]];
+	newProfileItem.Birthday = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceBirthday]];
+	newProfileItem.FirstName = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceFirstName]];
+	newProfileItem.ProfilePasswordRequired = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceProfilePasswordRequired]];
+	newProfileItem.Type = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceType]];
+	newProfileItem.ScreenName = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceScreenName]];
+	newProfileItem.AutoAssignContentToProfiles = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceAutoAssignContentToProfiles]];
+	newProfileItem.LastScreenNameModified = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceLastScreenNameModified]];
+	newProfileItem.UserKey = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceUserKey]];
+	newProfileItem.BookshelfStyle = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceBookshelfStyle]];
+	newProfileItem.LastName = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceLastName]];
+	newProfileItem.LastModified = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceLastModified]];
+	newProfileItem.State = [NSNumber numberWithStatus:kSCHStatusUnmodified];				
+}
+
+- (void)syncProfile:(NSDictionary *)webProfile withProfile:(SCHProfileItem *)localProfile
+{	
+	localProfile.StoryInteractionEnabled = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceStoryInteractionEnabled]];
+	localProfile.ID = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceID]];
+	localProfile.LastPasswordModified = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceLastPasswordModified]];
+	localProfile.Password = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServicePassword]];
+	localProfile.Birthday = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceBirthday]];
+	localProfile.FirstName = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceFirstName]];
+	localProfile.ProfilePasswordRequired = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceProfilePasswordRequired]];
+	localProfile.Type = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceType]];
+	localProfile.ScreenName = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceScreenName]];
+	localProfile.AutoAssignContentToProfiles = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceAutoAssignContentToProfiles]];
+	localProfile.LastScreenNameModified = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceLastScreenNameModified]];
+	localProfile.UserKey = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceUserKey]];
+	localProfile.BookshelfStyle = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceBookshelfStyle]];
+	localProfile.LastName = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceLastName]];
+	localProfile.LastModified = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceLastModified]];
+	localProfile.State = [NSNumber numberWithStatus:kSCHStatusUnmodified];				
 }
 
 @end

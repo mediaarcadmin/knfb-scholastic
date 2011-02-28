@@ -8,6 +8,7 @@
 
 #import "SCHProfileViewController.h"
 
+#import "SCHProfilePasswordViewController.h"
 #import "SCHSettingsViewController.h"
 #import "SCHBookShelfViewController.h"
 #import "SCHWebServiceSync.h"
@@ -25,9 +26,6 @@ static NSString * const kRootViewControllerProfileIcon = @"Profile.png";
 static NSString * const kRootViewControllerProfileLockedIcon = @"ProfileLocked.png";
 static NSString * const kRootViewControllerSettingsIcon = @"Settings.png";
 
-// Static cells
-static NSInteger const kRootViewControllerSettingsRow = 1;
-
 @interface SCHProfileViewController ()
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath;
 @end
@@ -35,6 +33,7 @@ static NSInteger const kRootViewControllerSettingsRow = 1;
 
 @implementation SCHProfileViewController
 
+@synthesize profilePasswordViewController;
 @synthesize headerView;
 @synthesize settingsController;
 @synthesize loginController;
@@ -59,6 +58,7 @@ static NSInteger const kRootViewControllerSettingsRow = 1;
 	
 	// Setup the table view header
 	self.tableView.tableHeaderView = self.headerView;
+	self.profilePasswordViewController.delegate = self;
 }
 
 - (void)viewDidUnload {
@@ -110,23 +110,25 @@ static NSInteger const kRootViewControllerSettingsRow = 1;
 
 
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
-    id <NSFetchedResultsSectionInfo> sectionInfo = [[self.fetchedResultsController sections] objectAtIndex:indexPath.section];
-	NSInteger managedObjectEnd = [sectionInfo numberOfObjects] - 1;
+	NSManagedObject *managedObject = nil;
 	
-	if (indexPath.row == (managedObjectEnd + kRootViewControllerSettingsRow)) {
-		cell.textLabel.text = NSLocalizedString(@"Settings & Parental Controls", @"");
-		cell.imageView.image = [UIImage imageNamed:kRootViewControllerSettingsIcon];		
-	} else {
-		NSManagedObject *managedObject = [self.fetchedResultsController objectAtIndexPath:indexPath];
-		cell.textLabel.text = [NSString stringWithFormat:@"%@%@", 
-							   [[managedObject valueForKey:kSCHLibreAccessWebServiceScreenName] description], 
-							   NSLocalizedString(@"'s Books", @"")];
-		if ([[managedObject valueForKey:kSCHLibreAccessWebServiceProfilePasswordRequired] boolValue] == NO) {
-			cell.imageView.image = [UIImage imageNamed:kRootViewControllerProfileIcon];
-		} else {
-			cell.imageView.image = [UIImage imageNamed:kRootViewControllerProfileLockedIcon];
-		}
-	}
+	switch (indexPath.section) {
+		case 0:
+			managedObject = [self.fetchedResultsController objectAtIndexPath:indexPath];
+			cell.textLabel.text = [NSString stringWithFormat:@"%@%@", 
+								   [managedObject valueForKey:kSCHLibreAccessWebServiceScreenName], 
+								   NSLocalizedString(@"'s Bookshelf", @"")];
+			if ([[managedObject valueForKey:kSCHLibreAccessWebServiceProfilePasswordRequired] boolValue] == NO) {
+				cell.imageView.image = [UIImage imageNamed:kRootViewControllerProfileIcon];
+			} else {
+				cell.imageView.image = [UIImage imageNamed:kRootViewControllerProfileLockedIcon];
+			}			
+			break;
+		case 1:
+			cell.textLabel.text = NSLocalizedString(@"Settings & Parental Controls", @"");
+			cell.imageView.image = [UIImage imageNamed:kRootViewControllerSettingsIcon];		
+			break;
+	}	
 }
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated {
@@ -141,13 +143,25 @@ static NSInteger const kRootViewControllerSettingsRow = 1;
 #pragma mark Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return [[self.fetchedResultsController sections] count];
+    return(2);
 }
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    id <NSFetchedResultsSectionInfo> sectionInfo = [[self.fetchedResultsController sections] objectAtIndex:section];
-    return [sectionInfo numberOfObjects] + kRootViewControllerSettingsRow;
+	NSInteger ret = 0;
+	id <NSFetchedResultsSectionInfo> sectionInfo = nil;
+	
+	switch (section) {
+		case 0:
+			sectionInfo = [[self.fetchedResultsController sections] objectAtIndex:section];
+			ret = [sectionInfo numberOfObjects];
+			break;
+		case 1:
+			ret = 1;
+			break;
+	}
+	
+	return(ret);
 }
 
 
@@ -219,6 +233,26 @@ static NSInteger const kRootViewControllerSettingsRow = 1;
 }
 
 #pragma mark -
+#pragma mark Profile Password View Controller delegate
+
+- (void)profilePasswordViewControllerDidComplete:(SCHProfilePasswordViewController *)profilePassword
+{
+	NSArray *books = [profilePassword.profileItem allContentMetadataItems];
+	if([books count] < 1 && [SCHSyncManager sharedSyncManager].isSynchronizing == YES) {
+		UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:@"Please Wait" 
+															 message:@"We are retrieving book information"
+															delegate:nil 
+												   cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+												   otherButtonTitles:nil]; 
+		[errorAlert show]; 
+		[errorAlert release];
+	} else {
+		// controller to view book shelf with books filtered to profile
+		[self pushBookshelvesControllerWithBooks:books];	
+	}
+}
+
+#pragma mark -
 #pragma mark Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -232,28 +266,17 @@ static NSInteger const kRootViewControllerSettingsRow = 1;
      [detailViewController release];
      */
 	
-    id <NSFetchedResultsSectionInfo> sectionInfo = [[self.fetchedResultsController sections] objectAtIndex:indexPath.section];
-	NSInteger managedObjectEnd = [sectionInfo numberOfObjects] - 1;
-	
-	if (indexPath.row == (managedObjectEnd + kRootViewControllerSettingsRow)) {
-		[self.navigationController pushViewController:self.settingsController animated:YES];
-	} else {
-		// controller to view book shelf with books filtered to profile		
-		SCHProfileItem *selectedObject = [[self fetchedResultsController] objectAtIndexPath:indexPath];
-				
-		NSArray *books = [selectedObject allContentMetadataItems];
-		if([books count] < 1 && [SCHSyncManager sharedSyncManager].isSynchronizing == YES) {
-			UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:@"Please Wait" 
-																 message:@"We are retrieving book information"
-																delegate:nil 
-													   cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-													   otherButtonTitles:nil]; 
-			[errorAlert show]; 
-			[errorAlert release];			
-		} else {
-			[self pushBookshelvesControllerWithBooks:books];
-		}
-	}	
+	switch (indexPath.section) {
+		case 0:
+			profilePasswordViewController.managedObjectContext = self.managedObjectContext;
+			profilePasswordViewController.profileItem = [[self fetchedResultsController] objectAtIndexPath:indexPath];
+			[self presentModalViewController:profilePasswordViewController animated:YES];
+			break;
+		case 1:
+			[self.navigationController pushViewController:self.settingsController animated:YES];
+			break;
+	}
+	[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 
@@ -314,67 +337,65 @@ static NSInteger const kRootViewControllerSettingsRow = 1;
 #pragma mark Fetched results controller delegate
 
 
-- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
-    [self.tableView beginUpdates];
-}
+//- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
+//    [self.tableView beginUpdates];
+//}
+//
+//
+//- (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id <NSFetchedResultsSectionInfo>)sectionInfo
+//           atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type {
+//    
+//    switch(type) {
+//        case NSFetchedResultsChangeInsert:
+//            [self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
+//            break;
+//            
+//        case NSFetchedResultsChangeDelete:
+//            [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
+//            break;
+//    }
+//}
+//
+//
+//- (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject
+//       atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type
+//      newIndexPath:(NSIndexPath *)newIndexPath {
+//    
+//    UITableView *tableView = self.tableView;
+//    
+//    switch(type) {
+//            
+//        case NSFetchedResultsChangeInsert:
+//            [tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+//            break;
+//            
+//        case NSFetchedResultsChangeDelete:
+//            [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+//            break;
+//            
+//        case NSFetchedResultsChangeUpdate:
+//            [self configureCell:[tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
+//            break;
+//            
+//        case NSFetchedResultsChangeMove:
+//            [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+//            [tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath]withRowAnimation:UITableViewRowAnimationFade];
+//            break;
+//    }
+//}
+//
+//
+//- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
+//    [self.tableView endUpdates];
+//}
 
 
-- (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id <NSFetchedResultsSectionInfo>)sectionInfo
-           atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type {
-    
-    switch(type) {
-        case NSFetchedResultsChangeInsert:
-            [self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
-            break;
-            
-        case NSFetchedResultsChangeDelete:
-            [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
-            break;
-    }
-}
-
-
-- (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject
-       atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type
-      newIndexPath:(NSIndexPath *)newIndexPath {
-    
-    UITableView *tableView = self.tableView;
-    
-    switch(type) {
-            
-        case NSFetchedResultsChangeInsert:
-            [tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
-            break;
-            
-        case NSFetchedResultsChangeDelete:
-            [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-            break;
-            
-        case NSFetchedResultsChangeUpdate:
-            [self configureCell:[tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
-            break;
-            
-        case NSFetchedResultsChangeMove:
-            [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-            [tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath]withRowAnimation:UITableViewRowAnimationFade];
-            break;
-    }
-}
-
-
-- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
-    [self.tableView endUpdates];
-}
-
-
-/*
 // Implementing the above methods to update the table view in response to individual changes may have performance implications if a large number of changes are made simultaneously. If this proves to be an issue, you can instead just implement controllerDidChangeContent: which notifies the delegate that all section and object changes have been processed. 
  
  - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
     // In the simplest, most efficient, case, reload the table view.
     [self.tableView reloadData];
 }
- */
 
 
 #pragma mark -
@@ -388,6 +409,7 @@ static NSInteger const kRootViewControllerSettingsRow = 1;
 }
 
 - (void)dealloc {
+	self.profilePasswordViewController = nil;
 	self.headerView = nil;
 	self.settingsController = nil;
 	self.webServiceSync = nil;

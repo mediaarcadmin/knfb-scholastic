@@ -31,6 +31,10 @@
 	return(NO);
 }
 
+- (void)clear
+{
+}
+
 - (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result
 {	
 	if (self.backgroundTaskIdentifier != UIBackgroundTaskInvalid) {

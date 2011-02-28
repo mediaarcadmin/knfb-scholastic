@@ -15,7 +15,6 @@
 
 @interface SCHSettingsSyncComponent ()
 
-- (void)clearUserSettings;
 - (void)updateUserSettings:(NSArray *)settingsList;
 
 @end
@@ -42,14 +41,7 @@
 	return(ret);	
 }
 
-- (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result
-{	
-	[self updateUserSettings:[result objectForKey:kSCHLibreAccessWebServiceUserSettingsList]];
-	
-	[super method:method didCompleteWithResult:nil];	
-}
-
-- (void)clearUserSettings
+- (void)clear
 {
 	NSError *error = nil;
 	
@@ -59,11 +51,18 @@
 	}	
 }
 
+- (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result
+{	
+	[self updateUserSettings:[result objectForKey:kSCHLibreAccessWebServiceUserSettingsList]];
+	
+	[super method:method didCompleteWithResult:nil];	
+}
+
 - (void)updateUserSettings:(NSArray *)settingsList
 {
 	NSError *error = nil;
 	
-	[self clearUserSettings];
+	[self clear];
 	
 	for (id setting in settingsList) {
 		SCHUserSettingsItem *newUserSettingsItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHUserSettingsItem inManagedObjectContext:self.managedObjectContext];

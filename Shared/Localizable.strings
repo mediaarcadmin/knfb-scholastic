@@ -6,8 +6,9 @@
    Copyright 2010 BitWink. All rights reserved.
  */
 
-"'s Books" = "'s Books";
+"'s Bookshelf" = "'s Bookshelf";
 "View Library" = "View Library";
 "Settings & Parental Controls" = "Settings & Parental Controls";
-
+"Please enter a password for this profile" = "Please enter a password for this profile";
+"Incorrect password" = "Incorrect password";
 "Incorrect username/password" = "Incorrect username/password";

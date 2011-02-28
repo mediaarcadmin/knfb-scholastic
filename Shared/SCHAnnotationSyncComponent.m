@@ -26,7 +26,6 @@
 
 @interface SCHAnnotationSyncComponent ()
 
-- (void)clearProfileContentAnnotations;
 - (void)updateProfileContentAnnotations:(NSDictionary *)profileContentAnnotationList;
 - (SCHAnnotationsContentItem *)annotationsContentItem:(NSDictionary *)annotationsContentItem;
 - (SCHPrivateAnnotations *)privateAnnotation:(NSDictionary *)privateAnnotation;
@@ -99,14 +98,7 @@
 	return(ret);
 }
 
-- (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result
-{	
-	[self updateProfileContentAnnotations:[result objectForKey:kSCHLibreAccessWebServiceListProfileContentAnnotations]];	
-	
-	[super method:method didCompleteWithResult:nil];	
-}
-
-- (void)clearProfileContentAnnotations
+- (void)clear
 {
 	NSError *error = nil;
 	
@@ -114,6 +106,13 @@
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
 		abort();
 	}	
+}
+
+- (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result
+{	
+	[self updateProfileContentAnnotations:[result objectForKey:kSCHLibreAccessWebServiceListProfileContentAnnotations]];	
+	
+	[super method:method didCompleteWithResult:nil];	
 }
 
 - (void)updateProfileContentAnnotations:(NSDictionary *)profileContentAnnotationList
