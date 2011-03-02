@@ -266,6 +266,11 @@ static NSString * const kRootViewControllerSettingsIcon = @"Settings.png";
      [detailViewController release];
      */
 	
+#ifdef LOCALDEBUG
+	// controller to view book shelf with books filtered to profile
+	NSArray *books = [[[self fetchedResultsController] objectAtIndexPath:indexPath] allContentMetadataItems];	
+	[self pushBookshelvesControllerWithBooks:books];	
+#else	
 	switch (indexPath.section) {
 		case 0:
 			profilePasswordViewController.managedObjectContext = self.managedObjectContext;
@@ -277,6 +282,8 @@ static NSString * const kRootViewControllerSettingsIcon = @"Settings.png";
 			[self.navigationController pushViewController:self.settingsController animated:YES];
 			break;
 	}
+#endif	
+	
 	[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
