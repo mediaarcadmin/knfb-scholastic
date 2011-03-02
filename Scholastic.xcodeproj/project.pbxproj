@@ -1077,9 +1077,9 @@
 				C923B15A12F6B0280054426F /* SCHMultipleBookshelvesController.xib */,
 				5293883012E03CD000045B44 /* SCHBookShelfViewController.h */,
 				5293883112E03CD000045B44 /* SCHBookShelfViewController.m */,
+				5293883212E03CD000045B44 /* SCHBookShelfViewController.xib */,
 				52E334F41303049B002F3011 /* SCHTopPicksBookShelfViewController.h */,
 				52E334F51303049B002F3011 /* SCHTopPicksBookShelfViewController.m */,
-				5293883212E03CD000045B44 /* SCHBookShelfViewController.xib */,
 				F82A0281130D1F9700F9A06C /* SCHBookShelfTableViewCell.h */,
 				F82A0282130D1F9700F9A06C /* SCHBookShelfTableViewCell.m */,
 			);

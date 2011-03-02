@@ -12,6 +12,7 @@
 
 #import "SCHProfileViewController.h"
 #import "SCHComponentDelegate.h"
+#import "SCHProfileItem.h"
 
 @class SCHTopFavoritesComponent;
 
@@ -25,6 +26,7 @@
 @property (nonatomic, retain) IBOutlet UIView *pageLabelContainer;
 @property (nonatomic, retain) IBOutlet UILabel *pageLabel;
 @property (nonatomic, assign) SCHTopFavoritesComponent *topFavoritesComponent;
+@property (nonatomic, retain) SCHProfileItem *profileItem;
 
 - (IBAction)changePage:(id)sender;
 

@@ -19,6 +19,8 @@
 #import "SCHBookShelfTableViewCell.h"
 #import "SCHThumbnailFactory.h"
 #import "SCHAsyncImageView.h"
+#import "SCHSyncManager.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface SCHBookShelfViewController ()
 
@@ -38,7 +40,8 @@ NSInteger bookSort(SCHBookInfo *book1, SCHBookInfo *book2, void *context)
 @synthesize managedObjectContext;
 #endif
 @synthesize books;
-@synthesize tableView, gridView, componentCache;
+@synthesize tableView, gridView, loadingView, componentCache;
+@synthesize profileItem;
 
 - (void)releaseViewObjects 
 {
@@ -65,7 +68,7 @@ NSInteger bookSort(SCHBookInfo *book1, SCHBookInfo *book2, void *context)
 	
 	
 #ifdef LOCALDEBUG
-	self.bookshelvesController.navigationItem.title = @"Bookshelf (Local)";
+	self.bookshelvesController.navigationItem.title = @"Local Bookshelf";
 #endif
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self
@@ -78,6 +81,17 @@ NSInteger bookSort(SCHBookInfo *book1, SCHBookInfo *book2, void *context)
 												 name:@"SCHBookshelfSyncComponentComplete"
 											   object:nil];
 	
+	
+	self.loadingView.layer.cornerRadius = 5.0f;
+	[self.view bringSubviewToFront:self.loadingView];
+	
+	if ([self.books count] == 0 && [[SCHSyncManager sharedSyncManager] isSynchronizing]) {
+		NSLog(@"Showing loading view...");
+		self.loadingView.hidden = NO;
+	} else {
+		NSLog(@"Hiding loading view...");
+		self.loadingView.hidden = YES;
+	}
 	
 }
 
@@ -124,6 +138,9 @@ NSInteger bookSort(SCHBookInfo *book1, SCHBookInfo *book2, void *context)
 
 - (void) updateTable:(NSNotification *)notification
 {
+	self.books = [self.profileItem allContentMetadataItems];
+	self.loadingView.hidden = YES;
+	
 	// FIXME: more specific updates of cells
 	[self.tableView reloadData];
 	[self.gridView reloadData];
@@ -453,6 +470,8 @@ NSInteger bookSort(SCHBookInfo *book1, SCHBookInfo *book2, void *context)
 		default:
 			break;
 	}
+	
+	[self.view bringSubviewToFront:self.loadingView];
 }
 
 #pragma mark -

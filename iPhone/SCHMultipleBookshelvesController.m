@@ -38,6 +38,7 @@
 @synthesize books, managedObjectContext, viewControllers, scrollView, pageControl, pageControlUsed, startedScrolling, selectedSegment;
 @synthesize pageLabelContainer, pageLabel;
 @synthesize topFavoritesComponent;
+@synthesize profileItem;
 
 - (void)dealloc
 {
@@ -174,6 +175,7 @@
 			[self.topFavoritesComponent topFavorites];			
 		} else {
 			controller = [[SCHBookShelfViewController alloc] initWithNibName:NSStringFromClass([SCHBookShelfViewController class]) bundle:nil];
+			controller.profileItem = self.profileItem;
 		}
 		controller.bookshelvesController = self;
 		[controller bookshelfToggled:self.selectedSegment];

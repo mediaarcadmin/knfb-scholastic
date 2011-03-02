@@ -13,6 +13,7 @@
 #import "MRGridViewDataSource.h"
 #import "SCHMultipleBookshelvesController.h"
 #import "BlioTimeOrderedCache.h"
+#import "SCHProfileItem+Extensions.h"
 
 @interface SCHBookShelfViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, MRGridViewDelegate, MRGridViewDataSource> {
 
@@ -20,6 +21,7 @@
 
 @property (nonatomic, retain) IBOutlet UITableView *tableView;
 @property (nonatomic, retain) IBOutlet MRGridView *gridView;
+@property (nonatomic, retain) IBOutlet UIView *loadingView;
 
 @property (nonatomic, assign) SCHMultipleBookshelvesController *bookshelvesController;
 
@@ -29,6 +31,7 @@
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 #endif
 @property (nonatomic, retain) NSArray *books;
+@property (nonatomic, retain) SCHProfileItem *profileItem;
 
 - (void)bookshelfToggled:(NSUInteger)selectedSegment;
 

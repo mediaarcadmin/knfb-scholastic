@@ -221,11 +221,12 @@ static NSString * const kRootViewControllerSettingsIcon = @"Settings.png";
     return NO;
 }
 
-- (void)pushBookshelvesControllerWithBooks:(NSArray *)books
+- (void)pushBookshelvesControllerWithBooks:(NSArray *)books profileItem: (SCHProfileItem *) profileItem
  {
 	SCHMultipleBookshelvesController *bookshelvesController = nil;
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
 		bookshelvesController = [[SCHMultipleBookshelvesController alloc] initWithNibName:NSStringFromClass([SCHMultipleBookshelvesController class]) bundle:nil managedObjectContext:self.managedObjectContext books:books];
+		[bookshelvesController setProfileItem:profileItem];
 	}
 		
 	[self.navigationController pushViewController:bookshelvesController animated:YES];
@@ -238,7 +239,7 @@ static NSString * const kRootViewControllerSettingsIcon = @"Settings.png";
 - (void)profilePasswordViewControllerDidComplete:(SCHProfilePasswordViewController *)profilePassword
 {
 	NSArray *books = [profilePassword.profileItem allContentMetadataItems];
-	if([books count] < 1 && [SCHSyncManager sharedSyncManager].isSynchronizing == YES) {
+/*	if([books count] < 1 && [SCHSyncManager sharedSyncManager].isSynchronizing == YES) {
 		UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:@"Please Wait" 
 															 message:@"We are retrieving book information"
 															delegate:nil 
@@ -246,10 +247,10 @@ static NSString * const kRootViewControllerSettingsIcon = @"Settings.png";
 												   otherButtonTitles:nil]; 
 		[errorAlert show]; 
 		[errorAlert release];
-	} else {
+	} else {*/
 		// controller to view book shelf with books filtered to profile
-		[self pushBookshelvesControllerWithBooks:books];	
-	}
+		[self pushBookshelvesControllerWithBooks:books profileItem:profilePassword.profileItem];	
+//	}
 }
 
 #pragma mark -
