@@ -211,6 +211,10 @@ static NSTimeInterval const kSCHSyncManagerHeartbeatInterval = 30.0;
 // also coming out of background
 - (void)firstSync
 {
+#ifdef LOCALDEBUG
+	return;
+#endif
+	
 	NSLog(@"Scheduling First Sync");
 	
 	[self addToQueue:profileSyncComponent];
