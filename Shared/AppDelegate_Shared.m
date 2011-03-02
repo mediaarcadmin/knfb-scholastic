@@ -8,10 +8,13 @@
 
 #import "AppDelegate_Shared.h"
 #import "SCHBookManager.h"
+#import "SCHSyncManager.h"
 
 #ifdef LOCALDEBUG
 #import "SCHLocalDebug.h"
 #endif
+
+static NSString * const kSCHClearLocalDebugMode = @"kSCHClearLocalDebugMode";
 
 @implementation AppDelegate_Shared
 
@@ -23,7 +26,39 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions    
 {
-    SCHBookManager *bookManager = [SCHBookManager sharedBookManager];
+
+	// check for change between local debug mode and normal network mode
+	
+	BOOL localDebugMode = NO;
+	
+#ifdef LOCALDEBUG
+	localDebugMode = YES;
+#endif
+	
+	NSNumber *storedValue = (NSNumber *) [[NSUserDefaults standardUserDefaults] valueForKey:kSCHClearLocalDebugMode];
+	
+	if (storedValue) {
+	
+		if ([storedValue boolValue] != localDebugMode) {
+			
+			NSLog(@"Changed between local debug mode and network mode - resetting database.");
+			
+			SCHSyncManager *syncManager = [SCHSyncManager sharedSyncManager];
+			syncManager.managedObjectContext = self.managedObjectContext;
+			[syncManager clear];
+		}		
+		
+	} else {
+		NSLog(@"First run - storing %@", localDebugMode?@"\"Local Debug Mode\"":@"\"Network Mode\"");
+	}
+		
+	NSNumber *newValue = [NSNumber numberWithBool:localDebugMode];
+	[[NSUserDefaults standardUserDefaults] setObject:newValue forKey:kSCHClearLocalDebugMode];
+	[[NSUserDefaults standardUserDefaults] synchronize];
+
+    
+	
+	SCHBookManager *bookManager = [SCHBookManager sharedBookManager];
     bookManager.persistentStoreCoordinator = self.persistentStoreCoordinator;
     bookManager.managedObjectContextForCurrentThread = self.managedObjectContext; // Use our managed object contest for calls that are made on the main thread.
 	
