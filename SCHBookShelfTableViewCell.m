@@ -171,7 +171,7 @@
 		self.accessoryType = UITableViewCellAccessoryNone;
 	}
 	
-	NSLog(@"Setting status for %@ to \"%@\" (%d).", self.bookInfo.contentMetadata.Title, status, [bookInfo processingState]);
+	//NSLog(@"Setting status for %@ to \"%@\" (%d).", self.bookInfo.contentMetadata.Title, status, [bookInfo processingState]);
 	
 	[self updateWithContentMetadata:self.bookInfo.contentMetadata status:status];	
 }

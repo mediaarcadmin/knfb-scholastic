@@ -9,6 +9,7 @@
 #import "AppDelegate_Shared.h"
 #import "SCHBookManager.h"
 #import "SCHSyncManager.h"
+#import "SCHAuthenticationManager.h"
 
 #ifdef LOCALDEBUG
 #import "SCHLocalDebug.h"
@@ -39,6 +40,9 @@ static NSString * const kSCHClearLocalDebugMode = @"kSCHClearLocalDebugMode";
 	
 	if (storedValue) {
 	
+		NSLog(@"We have a stored value.");
+		NSLog(@"stored: %@ localDebugMode: %@", [storedValue boolValue]?@"LocalDebug":@"Network", localDebugMode?@"LocalDebug":@"Network");
+		
 		if ([storedValue boolValue] != localDebugMode) {
 			
 			NSLog(@"Changed between local debug mode and network mode - resetting database.");
@@ -46,6 +50,9 @@ static NSString * const kSCHClearLocalDebugMode = @"kSCHClearLocalDebugMode";
 			SCHSyncManager *syncManager = [SCHSyncManager sharedSyncManager];
 			syncManager.managedObjectContext = self.managedObjectContext;
 			[syncManager clear];
+			
+			[[SCHAuthenticationManager sharedAuthenticationManager] clear];				
+			
 		}		
 		
 	} else {
