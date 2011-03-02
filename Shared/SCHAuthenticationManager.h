@@ -46,5 +46,6 @@ static NSInteger const kSCHAuthenticationManagerLoginError = 2001;
 - (BOOL)authenticate;
 - (BOOL)hasUsernameAndPassword;
 - (BOOL)isAuthenticated;
+- (void)clear;
 
 @end
