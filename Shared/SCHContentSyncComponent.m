@@ -54,7 +54,8 @@
 	
 	if (![self.managedObjectContext emptyEntity:kSCHUserContentItem error:&error] ||
 		![self.managedObjectContext emptyEntity:kSCHOrderItem error:&error] ||
-		![self.managedObjectContext emptyEntity:kSCHContentProfileItem error:&error]) {
+		![self.managedObjectContext emptyEntity:kSCHContentProfileItem error:&error] ||
+		![self.managedObjectContext emptyEntity:kSCHContentMetadataItem error:&error]) {
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
 		abort();
 	}		
