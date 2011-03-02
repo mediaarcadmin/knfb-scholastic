@@ -12,10 +12,13 @@
 
 #import "SCHContentProfileItem+Extensions.h"
 #import "SCHContentMetadataItem+Extensions.h"
+#import "SCHUserContentItem+Extensions.h"
 #import "SCHBookInfo.h"
 #import "USAdditions.h"
 
 static NSString * const kSCHProfileItemContentProfileItem = @"ContentProfileItem";
+static NSString * const kSCHProfileItemUserContentItem = @"UserContentItem";
+static NSString * const kSCHProfileItemContentMetadataItem = @"ContentMetadataItem";
 static NSString * const kSCHProfileItemUserContentItemContentMetadataItem = @"UserContentItem.ContentMetadataItem";
 
 @interface SCHProfileItem ()
@@ -25,6 +28,25 @@ static NSString * const kSCHProfileItemUserContentItemContentMetadataItem = @"Us
 @end
 
 @implementation SCHProfileItem (SCHProfileItemExtensions)
+
+- (void)awakeFromInsert
+{
+	[super awakeFromInsert];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshAllContentMetadataItems) name:@"SCHBookshelfSyncComponentComplete" object:nil];			
+}
+
+- (void)awakeFromFetch
+{
+	[super awakeFromFetch];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshAllContentMetadataItems) name:@"SCHBookshelfSyncComponentComplete" object:nil];		
+}
+
+- (void)dealloc
+{
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	
+	[super dealloc];
+}
 
 - (NSArray *)allContentMetadataItems
 {
@@ -41,6 +63,18 @@ static NSString * const kSCHProfileItemUserContentItemContentMetadataItem = @"Us
 	}
 	
 	return(books);
+}
+
+- (void)refreshAllContentMetadataItems
+{	
+	for (SCHContentProfileItem *contentProfileItem in [self valueForKey:kSCHProfileItemContentProfileItem]) {
+			[[self managedObjectContext] refreshObject:contentProfileItem mergeChanges:YES];		
+		SCHUserContentItem *userContentItem = [contentProfileItem valueForKey:kSCHProfileItemUserContentItem];
+			[[self managedObjectContext] refreshObject:userContentItem mergeChanges:YES];		
+		for (SCHContentMetadataItem *contentMetadataItem in [userContentItem valueForKey:kSCHProfileItemContentMetadataItem]) {
+				[[self managedObjectContext] refreshObject:contentMetadataItem mergeChanges:YES];					
+		}
+	}	
 }
 
 - (NSString *)MD5:(NSString *)string
