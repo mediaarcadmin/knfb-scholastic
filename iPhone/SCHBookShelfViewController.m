@@ -73,6 +73,11 @@ NSInteger bookSort(SCHBookInfo *book1, SCHBookInfo *book2, void *context)
 												 name:@"SCHBookDownloadStatusUpdate"
 											   object:nil];
 	
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(updateTable:)
+												 name:@"SCHBookshelfSyncComponentComplete"
+											   object:nil];
+	
 	
 }
 
