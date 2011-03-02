@@ -47,12 +47,15 @@
 	[viewControllers release], viewControllers = nil;
 	[managedObjectContext release], managedObjectContext = nil;
 	[books release], books = nil;
+
 	
     [super dealloc];
 }
 
 - (void)releaseViewObjects 
 {
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	
 	[pageControl removeObserver:self forKeyPath:@"currentPage"];
 
 	[scrollView release], scrollView = nil;
@@ -105,6 +108,10 @@
 	
 	self.startedScrolling = NO;
 	
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(updateBooks:)
+												 name:@"SCHBookshelfSyncComponentComplete"
+											   object:nil];
 	
 	// pages are created on demand
 	// load the visible page
@@ -133,6 +140,11 @@
 	}
 	return self;
 }
+
+- (void) updateBooks:(NSNotification *)notification
+{
+	self.books = [self.profileItem allContentMetadataItems];
+}	
 
 - (NSUInteger)numberOfBookshelves 
 {
