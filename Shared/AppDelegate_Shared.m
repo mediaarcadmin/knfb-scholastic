@@ -49,9 +49,11 @@ static NSString * const kSCHClearLocalDebugMode = @"kSCHClearLocalDebugMode";
 		}		
 		
 	} else {
-		NSLog(@"First run - storing %@", localDebugMode?@"\"Local Debug Mode\"":@"\"Network Mode\"");
+		NSLog(@"First run!");
 	}
 		
+	
+	NSLog(@"Currently in %@.", localDebugMode?@"\"Local Debug Mode\"":@"\"Network Mode\"");
 	NSNumber *newValue = [NSNumber numberWithBool:localDebugMode];
 	[[NSUserDefaults standardUserDefaults] setObject:newValue forKey:kSCHClearLocalDebugMode];
 	[[NSUserDefaults standardUserDefaults] synchronize];
