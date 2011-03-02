@@ -1721,6 +1721,7 @@
 					"-I/usr/include/libxml2",
 				);
 				PRODUCT_NAME = Scholastic;
+				SYMROOT = buildlocal;
 			};
 			name = Debug;
 		};
@@ -1744,6 +1745,7 @@
 					"-DNS_BLOCK_ASSERTIONS=1",
 				);
 				PRODUCT_NAME = Scholastic;
+				SYMROOT = buildlocal;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = "Ad Hoc";
@@ -1768,6 +1770,7 @@
 					"-DNS_BLOCK_ASSERTIONS=1",
 				);
 				PRODUCT_NAME = Scholastic;
+				SYMROOT = buildlocal;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
