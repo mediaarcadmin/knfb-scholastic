@@ -195,6 +195,17 @@ static NSString * const kSCHAuthenticationManagerServiceName = @"Scholastic";
 	return(self.aToken != nil && [[self.aToken stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0);
 }
 
+- (void)clear
+{
+	NSString *username = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUsername];	
+	
+	if (username != nil && [[username stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {
+		[SFHFKeychainUtils deleteItemForUsername:username andServiceName:kSCHAuthenticationManagerServiceName error:nil];
+	}
+
+	[[NSUserDefaults standardUserDefaults] removeObjectForKey:kSCHAuthenticationManagerUsername];
+}
+
 #pragma mark -
 #pragma mark Private methods
 
