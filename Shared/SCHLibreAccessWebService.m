@@ -1255,8 +1255,8 @@ static NSString * const kSCHLibreAccessWebServiceStatusHolderStatusMessage = @"s
 {
 	if (object != nil && intoObject != nil) {
 		intoObject.contentIdentifier = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceContentIdentifier]];
-		intoObject.ContentIdentifierType = [[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceContentIdentifierType]] contentIdentifierType];
-		intoObject.drmqualifier = [[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceDRMQualifier]] DRMQualifier];		
+		intoObject.ContentIdentifierType = [[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceContentIdentifierType]] contentIdentifierTypeValue];
+		intoObject.drmqualifier = [[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceDRMQualifier]] DRMQualifierValue];		
 		intoObject.format = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceFormat]];
 		intoObject.PrivateAnnotations = [[LibreAccessServiceSvc_PrivateAnnotations alloc] init];
 		[self fromObject:[object valueForKey:kSCHLibreAccessWebServicePrivateAnnotations] intoPrivateAnnotations:intoObject.PrivateAnnotations];
@@ -1408,8 +1408,8 @@ static NSString * const kSCHLibreAccessWebServiceStatusHolderStatusMessage = @"s
 {
 	if (object != nil && intoObject != nil) {
 		intoObject.contentIdentifier = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceContentIdentifier]];
-		intoObject.ContentIdentifierType = [[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceContentIdentifierType]] contentIdentifierType];
-		intoObject.drmqualifier = [[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceDRMQualifier]] DRMQualifier];		
+		intoObject.ContentIdentifierType = [[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceContentIdentifierType]] contentIdentifierTypeValue];
+		intoObject.drmqualifier = [[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceDRMQualifier]] DRMQualifierValue];		
 		intoObject.format = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceFormat]];
 		intoObject.AssignedProfileList = [[LibreAccessServiceSvc_AssignedProfileList alloc] init];
 		for (NSDictionary *item in [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceAssignedProfileList]]) {
@@ -1449,9 +1449,9 @@ static NSString * const kSCHLibreAccessWebServiceStatusHolderStatusMessage = @"s
 - (void)fromObject:(NSDictionary *)object intoReadingStatsContentItem:(LibreAccessServiceSvc_ReadingStatsContentItem *)intoObject
 {
 	if (object != nil && intoObject != nil) {
-		intoObject.ContentIdentifierType = [[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceContentIdentifierType]] contentIdentifierType];
+		intoObject.ContentIdentifierType = [[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceContentIdentifierType]] contentIdentifierTypeValue];
 		intoObject.contentIdentifier = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceContentIdentifier]];
-		intoObject.drmqualifier = [[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceDRMQualifier]] DRMQualifier];		
+		intoObject.drmqualifier = [[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceDRMQualifier]] DRMQualifierValue];		
 		intoObject.format = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceFormat]];
 		intoObject.ReadingStatsEntryList = [[LibreAccessServiceSvc_ReadingStatsEntryList alloc] init];
 		for (NSDictionary *item in [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceReadingStatsContentList]]) {
