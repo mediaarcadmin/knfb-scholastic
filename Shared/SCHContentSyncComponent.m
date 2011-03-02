@@ -67,11 +67,15 @@
 		NSArray *content = [result objectForKey:kSCHLibreAccessWebServiceUserContentList];
 		if ([content count] > 0) {
 			[self.libreAccessWebService listContentMetadata:content includeURLs:YES];
+			NSLog(@"Requesting Book information");
 		} else {
 			[self clearBooks];
 		}
 	} else if([method compare:kSCHLibreAccessWebServiceListContentMetadata] == NSOrderedSame) {
 		[self updateBooks:[result objectForKey:kSCHLibreAccessWebServiceContentMetadataList]];
+		
+		NSLog(@"Book information received");
+		[[NSNotificationCenter defaultCenter] postNotificationName:@"SCHBookshelfSyncComponentComplete" object:nil];
 		
 		[super method:method didCompleteWithResult:nil];	
 	}	
