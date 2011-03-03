@@ -7,7 +7,7 @@
 //
 
 #import <CoreData/CoreData.h>
-#import "SCHSyncEntity.h"
+#import "SCHSyncEntity+Extensions.h"
 
 
 @interface SCHAnnotation :  SCHSyncEntity  
