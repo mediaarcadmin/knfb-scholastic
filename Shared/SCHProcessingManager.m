@@ -16,11 +16,13 @@
 
 - (NSArray *) processBookCoverImage: (SCHBookInfo *) bookInfo size: (CGSize) size rect: (CGRect) thumbRect flip: (BOOL) flip maintainAspect: (BOOL) aspect;
 
+@property (nonatomic) UIBackgroundTaskIdentifier backgroundTask;
+
 @end
 
 @implementation SCHProcessingManager
 
-@synthesize processingQueue, imageCache, currentDownloadingItems, currentWaitingItems;
+@synthesize processingQueue, imageCache, currentDownloadingItems, currentWaitingItems, backgroundTask;
 
 static SCHProcessingManager *sharedManager = nil;
 
@@ -307,6 +309,50 @@ static SCHProcessingManager *sharedManager = nil;
 	@synchronized(self) {
 		return [[self.currentDownloadingItems allKeys] containsObject:bookInfo];
 	}
+}
+
+- (void) enterBackground
+{
+    UIDevice* device = [UIDevice currentDevice];
+    BOOL backgroundSupported = [device respondsToSelector:@selector(isMultitaskingSupported)] && device.multitaskingSupported;
+    if(backgroundSupported) {        
+		
+		if (self.processingQueue && [self.processingQueue operationCount]) {
+			NSLog(@"Background processing needs more time - going into the background.");
+			
+            self.backgroundTask = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if(self.backgroundTask != UIBackgroundTaskInvalid) {
+						NSLog(@"Ran out of time. Pausing queue.");
+                        [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTask];
+                        self.backgroundTask = UIBackgroundTaskInvalid;
+                    }
+                });
+            }];
+			
+            dispatch_queue_t taskcompletion = dispatch_get_global_queue(
+															   DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+
+			dispatch_async(taskcompletion, ^{
+				NSLog(@"Emptying operation queue...");
+                if(self.backgroundTask != UIBackgroundTaskInvalid) {
+                    [self.processingQueue waitUntilAllOperationsAreFinished];                    
+					NSLog(@"operation queue is finished!");
+                    [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTask];
+                    self.backgroundTask = UIBackgroundTaskInvalid;
+                }
+            });
+        }
+	}
+}
+
+- (void) enterForeground
+{
+	NSLog(@"Entering foreground - quitting background task.");
+	if(self.backgroundTask != UIBackgroundTaskInvalid) {
+		[[UIApplication sharedApplication] endBackgroundTask:self.backgroundTask];
+		self.backgroundTask = UIBackgroundTaskInvalid;
+	}		
 }
 
 #pragma mark -

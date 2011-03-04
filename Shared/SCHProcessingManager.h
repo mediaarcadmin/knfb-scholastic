@@ -49,4 +49,8 @@
 - (BOOL) isCurrentlyWaiting: (SCHBookInfo *) bookInfo;
 - (BOOL) isCurrentlyDownloading: (SCHBookInfo *) bookInfo;
 
+- (void) enterBackground;
+- (void) enterForeground;
+
+
 @end
