@@ -60,7 +60,7 @@
 		}		
 	} else if([method compare:kSCHLibreAccessWebServiceGetUserProfiles] == NSOrderedSame) {
 		[self syncProfiles:[result objectForKey:kSCHLibreAccessWebServiceProfileList]];
-		
+		[[NSNotificationCenter defaultCenter] postNotificationName:kSCHProfileSyncComponentComplete object:nil];		
 		[super method:method didCompleteWithResult:nil];	
 	}	
 }
@@ -93,8 +93,6 @@
 		}
 	}
 	[fetchRequest release], fetchRequest = nil;
-	
-	[self.managedObjectContext save:nil];	
 	
 	return(ret);
 }
@@ -144,8 +142,8 @@
 			break;			
 		}
 
-		NSNumber *webItemID = [webItem valueForKey:kSCHLibreAccessWebServiceID];
-		NSNumber *localItemID = [localItem valueForKey:kSCHLibreAccessWebServiceID];
+		id webItemID = [webItem valueForKey:kSCHLibreAccessWebServiceID];
+		id localItemID = [localItem valueForKey:kSCHLibreAccessWebServiceID];
 
 		switch ([webItemID compare:localItemID]) {
 			case NSOrderedSame:

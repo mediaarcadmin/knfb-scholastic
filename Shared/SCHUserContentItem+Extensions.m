@@ -11,4 +11,9 @@
 
 @implementation SCHUserContentItem (SCHUserContentItemExtensions)
 
+- (NSSet *)AssignedProfileList
+{
+	return(self.ProfileList);
+}
+
 @end

@@ -10,6 +10,7 @@
 
 #import "SCHProfileSyncComponent.h"
 #import "SCHContentSyncComponent.h"
+#import "SCHBookshelfSyncComponent.h"
 #import "SCHAnnotationSyncComponent.h"
 #import "SCHReadingStatsSyncComponent.h"
 #import "SCHSettingsSyncComponent.h"
@@ -30,6 +31,7 @@ static NSTimeInterval const kSCHSyncManagerHeartbeatInterval = 30.0;
 @property (retain, nonatomic) NSMutableArray *queue;
 @property (retain, nonatomic) SCHProfileSyncComponent *profileSyncComponent; 
 @property (retain, nonatomic) SCHContentSyncComponent *contentSyncComponent;
+@property (retain, nonatomic) SCHBookshelfSyncComponent *bookshelfSyncComponent;
 @property (retain, nonatomic) SCHAnnotationSyncComponent *annotationSyncComponent;
 @property (retain, nonatomic) SCHReadingStatsSyncComponent *readingStatsSyncComponent;
 @property (retain, nonatomic) SCHSettingsSyncComponent *settingsSyncComponent;
@@ -43,12 +45,13 @@ static NSTimeInterval const kSCHSyncManagerHeartbeatInterval = 30.0;
 @synthesize managedObjectContext;
 @synthesize profileSyncComponent;
 @synthesize contentSyncComponent;
+@synthesize bookshelfSyncComponent;
 @synthesize annotationSyncComponent;
 @synthesize readingStatsSyncComponent;
 @synthesize settingsSyncComponent;
 
 #pragma mark -
-#pragma mark Singleton methods
+#pragma mark Singleton Instance methods
 
 + (SCHSyncManager *)sharedSyncManager
 {
@@ -57,36 +60,6 @@ static NSTimeInterval const kSCHSyncManagerHeartbeatInterval = 30.0;
     }
 	
     return(sharedSyncManager);
-}
-
-+ (id)allocWithZone:(NSZone *)zone
-{
-    return([[self sharedSyncManager] retain]);
-}
-
-- (id)copyWithZone:(NSZone *)zone
-{
-    return(self);
-}
-
-- (id)retain
-{
-    return(self);
-}
-
-- (NSUInteger)retainCount
-{
-    return(NSUIntegerMax);  //denotes an object that cannot be released
-}
-
-- (void)release
-{
-    // do nothing
-}
-
-- (id)autorelease
-{
-    return(self);
 }
 
 #pragma mark -
@@ -102,6 +75,8 @@ static NSTimeInterval const kSCHSyncManagerHeartbeatInterval = 30.0;
 		profileSyncComponent.delegate = self;
 		contentSyncComponent = [[SCHContentSyncComponent alloc] init];
 		contentSyncComponent.delegate = self;		
+		bookshelfSyncComponent = [[SCHBookshelfSyncComponent alloc] init];
+		bookshelfSyncComponent.delegate = self;		
 		annotationSyncComponent = [[SCHAnnotationSyncComponent alloc] init];
 		annotationSyncComponent.delegate = self;		
 		readingStatsSyncComponent = [[SCHReadingStatsSyncComponent alloc] init];
@@ -123,6 +98,7 @@ static NSTimeInterval const kSCHSyncManagerHeartbeatInterval = 30.0;
 	[queue release], queue = nil;
 	[profileSyncComponent release], profileSyncComponent = nil;
 	[contentSyncComponent release], contentSyncComponent = nil;
+	[bookshelfSyncComponent release], bookshelfSyncComponent = nil;
 	[annotationSyncComponent release], annotationSyncComponent = nil;
 	[readingStatsSyncComponent release], readingStatsSyncComponent = nil;
 	[settingsSyncComponent release], settingsSyncComponent = nil;
@@ -138,6 +114,7 @@ static NSTimeInterval const kSCHSyncManagerHeartbeatInterval = 30.0;
 	
 	profileSyncComponent.managedObjectContext = newManagedObjectContext;
 	contentSyncComponent.managedObjectContext = newManagedObjectContext;		
+	bookshelfSyncComponent.managedObjectContext = newManagedObjectContext;
 	annotationSyncComponent.managedObjectContext = newManagedObjectContext;		
 	readingStatsSyncComponent.managedObjectContext = newManagedObjectContext;		
 	settingsSyncComponent.managedObjectContext = newManagedObjectContext;			
@@ -202,6 +179,7 @@ static NSTimeInterval const kSCHSyncManagerHeartbeatInterval = 30.0;
 {
 	[profileSyncComponent clear];	
 	[contentSyncComponent clear];	
+	[bookshelfSyncComponent clear];
 	[annotationSyncComponent clear];	
 	[readingStatsSyncComponent clear];	
 	[settingsSyncComponent clear];	
@@ -219,6 +197,7 @@ static NSTimeInterval const kSCHSyncManagerHeartbeatInterval = 30.0;
 	
 	[self addToQueue:profileSyncComponent];
 	[self addToQueue:contentSyncComponent];
+	[self addToQueue:bookshelfSyncComponent];
 		
 	NSEntityDescription *entityDescription = [NSEntityDescription entityForName:kSCHProfileItem inManagedObjectContext:self.managedObjectContext];
 	NSFetchRequest *request = [[NSFetchRequest alloc] init];
@@ -322,6 +301,7 @@ static NSTimeInterval const kSCHSyncManagerHeartbeatInterval = 30.0;
 
 	[self addToQueue:profileSyncComponent];
 	[self addToQueue:contentSyncComponent];
+	[self addToQueue:bookshelfSyncComponent];
 	[self addToQueue:settingsSyncComponent];
 	
 	[self kickQueue];

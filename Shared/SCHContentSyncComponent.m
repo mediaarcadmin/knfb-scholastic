@@ -18,11 +18,18 @@
 
 @interface SCHContentSyncComponent ()
 
-- (void)updateUserContentItems:(NSArray *)userContentList;
-- (SCHOrderItem *)orderItem:(NSDictionary *)orderItem;
-- (SCHContentProfileItem *)contentProfileItem:(NSDictionary *)contentProfileItem;
-- (void)clearBooks;
-- (void)updateBooks:(NSArray *)bookList;
+- (BOOL)updateUserContentItems;
+
+- (NSArray *)localUserContentItems;
+- (void)syncUserContentItems:(NSArray *)userContentList;
+- (void)addUserContentItem:(NSDictionary *)webUserContentItem;
+- (SCHOrderItem *)addOrderItem:(NSDictionary *)orderItem;
+- (SCHContentProfileItem *)addContentProfileItem:(NSDictionary *)contentProfileItem;
+- (void)syncUserContentItem:(NSDictionary *)webUserContentItem withUserContentItem:(SCHUserContentItem *)localUserContentItem;
+- (void)syncOrderItems:(NSArray *)webOrderList localOrderList:(NSSet *)localOrderList;
+- (void)syncOrderItem:(NSDictionary *)webOrderItem withOrderItem:(SCHOrderItem *)localOrderItem;
+- (void)syncContentProfileItems:(NSArray *)webContentProfileList localContentProfileList:(NSSet *)localContentProfileList;
+- (void)syncContentProfileItem:(NSDictionary *)webContentProfileItem withContentProfileItem:(SCHContentProfileItem *)localContentProfileItem;
 
 @end
 
@@ -38,11 +45,7 @@
 			self.backgroundTaskIdentifier = UIBackgroundTaskInvalid;
 		}];
 		
-		self.isSynchronizing = [self.libreAccessWebService listUserContent];
-		if (self.isSynchronizing == NO) {
-			[[SCHAuthenticationManager sharedAuthenticationManager] authenticate];				
-			ret = NO;
-		}
+		ret = [self updateUserContentItems];
 	}
 	
 	return(ret);		
@@ -54,8 +57,7 @@
 	
 	if (![self.managedObjectContext emptyEntity:kSCHUserContentItem error:&error] ||
 		![self.managedObjectContext emptyEntity:kSCHOrderItem error:&error] ||
-		![self.managedObjectContext emptyEntity:kSCHContentProfileItem error:&error] ||
-		![self.managedObjectContext emptyEntity:kSCHContentMetadataItem error:&error]) {
+		![self.managedObjectContext emptyEntity:kSCHContentProfileItem error:&error]) {
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
 		abort();
 	}		
@@ -63,63 +65,160 @@
 
 - (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result
 {	
-	if([method compare:kSCHLibreAccessWebServiceListUserContent] == NSOrderedSame) {
-		[self updateUserContentItems:[result objectForKey:kSCHLibreAccessWebServiceUserContentList]];
-		NSArray *content = [result objectForKey:kSCHLibreAccessWebServiceUserContentList];
-		if ([content count] > 0) {
-			[self.libreAccessWebService listContentMetadata:content includeURLs:YES];
-			NSLog(@"Requesting Book information");
-		} else {
-			[self clearBooks];
+	if([method compare:kSCHLibreAccessWebServiceSaveContentProfileAssignment] == NSOrderedSame) {	
+		self.isSynchronizing = [self.libreAccessWebService listUserContent];
+		if (self.isSynchronizing == NO) {
+			[[SCHAuthenticationManager sharedAuthenticationManager] authenticate];				
 		}
-	} else if([method compare:kSCHLibreAccessWebServiceListContentMetadata] == NSOrderedSame) {
-		[self updateBooks:[result objectForKey:kSCHLibreAccessWebServiceContentMetadataList]];
+	} else if([method compare:kSCHLibreAccessWebServiceListUserContent] == NSOrderedSame) {
+		NSArray *content = [result objectForKey:kSCHLibreAccessWebServiceUserContentList];
 		
-		NSLog(@"Book information received");
-		[[NSNotificationCenter defaultCenter] postNotificationName:@"SCHBookshelfSyncComponentComplete" object:nil];
-		
-		[super method:method didCompleteWithResult:nil];	
-	}	
+		[self syncUserContentItems:content];
+		[[NSNotificationCenter defaultCenter] postNotificationName:kSCHContentSyncComponentComplete object:nil];
+		[super method:method didCompleteWithResult:nil];				
+	}
 }
 
-- (void)updateUserContentItems:(NSArray *)userContentList
+- (BOOL)updateUserContentItems
+{		
+	BOOL ret = YES;
+	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+	
+	[fetchRequest setEntity:[NSEntityDescription entityForName:kSCHUserContentItem inManagedObjectContext:self.managedObjectContext]];	
+	NSArray *changedStates = [NSArray arrayWithObjects:[NSNumber numberWithStatus:kSCHStatusCreated], 
+					   [NSNumber numberWithStatus:kSCHStatusModified],
+					   [NSNumber numberWithStatus:kSCHStatusDeleted], nil];
+	[fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"ANY ProfileList.State IN %@", changedStates, changedStates]];
+	
+	NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest error:nil];
+		
+	if( [results count] > 0) {
+		self.isSynchronizing = [self.libreAccessWebService saveContentProfileAssignment:results];
+		if (self.isSynchronizing == NO) {
+			[[SCHAuthenticationManager sharedAuthenticationManager] authenticate];				
+			ret = NO;			
+		}		
+	} else {
+		self.isSynchronizing = [self.libreAccessWebService listUserContent];
+		if (self.isSynchronizing == NO) {
+			[[SCHAuthenticationManager sharedAuthenticationManager] authenticate];				
+			ret = NO;
+		}
+	}
+	[fetchRequest release], fetchRequest = nil;
+	
+	return(ret);	
+}
+
+- (NSArray *)localUserContentItems
 {
-	NSError *error = nil;
+	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
 	
-	[self clear];
+	[fetchRequest setEntity:[NSEntityDescription entityForName:kSCHUserContentItem inManagedObjectContext:self.managedObjectContext]];	
+	[fetchRequest setSortDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceContentIdentifier ascending:YES]]];
 	
-	for (id userContentItem in userContentList) {
-		SCHUserContentItem *newUserContentItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHUserContentItem inManagedObjectContext:self.managedObjectContext];
-		
-		newUserContentItem.LastModified = [self makeNullNil:[userContentItem objectForKey:kSCHLibreAccessWebServiceLastModified]];
-		
-		newUserContentItem.DRMQualifier = [self makeNullNil:[userContentItem objectForKey:kSCHLibreAccessWebServiceDRMQualifier]];
-		newUserContentItem.Version = [self makeNullNil:[userContentItem objectForKey:kSCHLibreAccessWebServiceVersion]];
-		newUserContentItem.ContentIdentifier = [self makeNullNil:[userContentItem objectForKey:kSCHLibreAccessWebServiceContentIdentifier]];
-		newUserContentItem.Format = [self makeNullNil:[userContentItem objectForKey:kSCHLibreAccessWebServiceFormat]];		
-		newUserContentItem.DefaultAssignment = [self makeNullNil:[userContentItem objectForKey:kSCHLibreAccessWebServiceDefaultAssignment]];		
-		newUserContentItem.ContentIdentifierType = [self makeNullNil:[userContentItem objectForKey:kSCHLibreAccessWebServiceContentIdentifierType]];				
-		
-		NSArray *orderList = [self makeNullNil:[userContentItem objectForKey:kSCHLibreAccessWebServiceOrderList]];
-		for (NSDictionary *orderItem in orderList) {
-			[newUserContentItem addOrderListObject:[self orderItem:orderItem]];
+	NSArray *ret = [self.managedObjectContext executeFetchRequest:fetchRequest error:nil];	
+	
+	[fetchRequest release], fetchRequest = nil;
+	
+	return(ret);
+}
+
+- (void)syncUserContentItems:(NSArray *)userContentList
+{		
+	NSMutableSet *deletePool = [NSMutableSet set];
+	NSMutableSet *creationPool = [NSMutableSet set];
+	
+	NSArray *webProfiles = [userContentList sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceContentIdentifier ascending:YES]]];		
+	NSArray *localProfiles = [self localUserContentItems];
+	
+	NSEnumerator *webEnumerator = [webProfiles objectEnumerator];			  
+	NSEnumerator *localEnumerator = [localProfiles objectEnumerator];			  			  
+	
+	NSDictionary *webItem = [webEnumerator nextObject];
+	SCHUserContentItem *localItem = [localEnumerator nextObject];
+	
+	while (webItem != nil || localItem != nil) {		
+		if (webItem == nil) {
+			while (localItem != nil) {
+				[deletePool addObject:localItem];
+				localItem = [localEnumerator nextObject];
+			} 
+			break;
 		}
 		
-		NSArray *profileList = [self makeNullNil:[userContentItem objectForKey:kSCHLibreAccessWebServiceProfileList]];
-		for (NSDictionary *profileItem in profileList) {
-			[newUserContentItem addProfileListObject:[self contentProfileItem:profileItem]];
+		if (localItem == nil) {
+			while (webItem != nil) {
+				[creationPool addObject:webItem];
+				webItem = [webEnumerator nextObject];
+			} 
+			break;			
 		}
 		
+		id webItemID = [webItem valueForKey:kSCHLibreAccessWebServiceContentIdentifier];
+		id localItemID = [localItem valueForKey:kSCHLibreAccessWebServiceContentIdentifier];
+		
+		switch ([webItemID compare:localItemID]) {
+			case NSOrderedSame:
+				[self syncUserContentItem:webItem withUserContentItem:localItem];
+				webItem = nil;
+				localItem = nil;
+				break;
+			case NSOrderedAscending:
+				[creationPool addObject:webItem];
+				webItem = nil;
+				break;
+			case NSOrderedDescending:
+				[deletePool addObject:localItem];
+				localItem = nil;
+				break;			
+		}		
+		
+		if (webItem == nil) {
+			webItem = [webEnumerator nextObject];
+		}
+		if (localItem == nil) {
+			localItem = [localEnumerator nextObject];
+		}		
 	}
 	
-	// Save the context.
-	if (![self.managedObjectContext save:&error]) {
-		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-		abort();
-	}	
+	for (SCHUserContentItem *localItem in deletePool) {
+		[self.managedObjectContext deleteObject:localItem];
+	}
+	
+	for (NSDictionary *webItem in creationPool) {
+		[self addUserContentItem:webItem];
+	}
+	
+	[self save];
 }
 
-- (SCHOrderItem *)orderItem:(NSDictionary *)orderItem
+- (void)addUserContentItem:(NSDictionary *)webUserContentItem
+{
+	SCHUserContentItem *newUserContentItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHUserContentItem inManagedObjectContext:self.managedObjectContext];
+	
+	newUserContentItem.DRMQualifier = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceDRMQualifier]];
+	newUserContentItem.Version = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceVersion]];
+	newUserContentItem.ContentIdentifier = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceContentIdentifier]];
+	newUserContentItem.Format = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceFormat]];		
+	newUserContentItem.DefaultAssignment = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceDefaultAssignment]];		
+	newUserContentItem.ContentIdentifierType = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceContentIdentifierType]];				
+	
+	NSArray *orderList = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceOrderList]];
+	for (NSDictionary *orderItem in orderList) {
+		[newUserContentItem addOrderListObject:[self addOrderItem:orderItem]];
+	}
+	
+	NSArray *profileList = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceProfileList]];
+	for (NSDictionary *profileItem in profileList) {
+		[newUserContentItem addProfileListObject:[self addContentProfileItem:profileItem]];
+	}
+	
+	newUserContentItem.LastModified = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceLastModified]];
+	newUserContentItem.State = [NSNumber numberWithStatus:kSCHStatusUnmodified];				
+}
+
+- (SCHOrderItem *)addOrderItem:(NSDictionary *)orderItem
 {
 	SCHOrderItem *ret = nil;
 	
@@ -133,7 +232,7 @@
 	return(ret);
 }
 
-- (SCHContentProfileItem *)contentProfileItem:(NSDictionary *)contentProfileItem
+- (SCHContentProfileItem *)addContentProfileItem:(NSDictionary *)contentProfileItem
 {
 	SCHContentProfileItem *ret = nil;
 	
@@ -141,6 +240,7 @@
 		ret = [NSEntityDescription insertNewObjectForEntityForName:kSCHContentProfileItem inManagedObjectContext:self.managedObjectContext];			
 		
 		ret.LastModified = [self makeNullNil:[contentProfileItem objectForKey:kSCHLibreAccessWebServiceLastModified]];
+		ret.State = [NSNumber numberWithStatus:kSCHStatusUnmodified];
 		
 		ret.IsFavorite = [self makeNullNil:[contentProfileItem objectForKey:kSCHLibreAccessWebServiceIsFavorite]];
 		
@@ -151,45 +251,174 @@
 	return(ret);
 }
 
-- (void)clearBooks
+- (void)syncUserContentItem:(NSDictionary *)webUserContentItem withUserContentItem:(SCHUserContentItem *)localUserContentItem
 {
-	NSError *error = nil;
+	localUserContentItem.DRMQualifier = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceDRMQualifier]];
+	localUserContentItem.Version = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceVersion]];
+	localUserContentItem.ContentIdentifier = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceContentIdentifier]];
+	localUserContentItem.Format = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceFormat]];		
+	localUserContentItem.DefaultAssignment = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceDefaultAssignment]];		
+	localUserContentItem.ContentIdentifierType = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceContentIdentifierType]];				
 	
-	if (![self.managedObjectContext emptyEntity:kSCHContentMetadataItem error:&error]) {
-		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-		abort();
-	}	
+	[self syncOrderItems:[self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceOrderList]] localOrderList:localUserContentItem.OrderList];
+
+	[self syncContentProfileItems:[self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceProfileList]] localContentProfileList:localUserContentItem.ProfileList];
+	
+	localUserContentItem.LastModified = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceLastModified]];
+	localUserContentItem.State = [NSNumber numberWithStatus:kSCHStatusUnmodified];				
 }
 
-- (void)updateBooks:(NSArray *)bookList
-{
-	NSError *error = nil;
+- (void)syncOrderItems:(NSArray *)webOrderList localOrderList:(NSSet *)localOrderList
+{		
+	NSArray *sortDescriptor = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceOrderID ascending:YES]];
+	NSMutableSet *deletePool = [NSMutableSet set];
+	NSMutableSet *creationPool = [NSMutableSet set];
 	
-	[self clearBooks];
+	NSArray *webProfiles = [webOrderList sortedArrayUsingDescriptors:sortDescriptor];		
+	NSArray *localProfiles = [localOrderList sortedArrayUsingDescriptors:sortDescriptor];
 	
-	for (id book in bookList) {
-		SCHContentMetadataItem *newContentMetadataItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHContentMetadataItem inManagedObjectContext:self.managedObjectContext];
+	NSEnumerator *webEnumerator = [webProfiles objectEnumerator];			  
+	NSEnumerator *localEnumerator = [localProfiles objectEnumerator];			  			  
+	
+	NSDictionary *webItem = [webEnumerator nextObject];
+	SCHOrderItem *localItem = [localEnumerator nextObject];
+	
+	while (webItem != nil || localItem != nil) {		
+		if (webItem == nil) {
+			while (localItem != nil) {
+				[deletePool addObject:localItem];
+				localItem = [localEnumerator nextObject];
+			} 
+			break;
+		}
 		
-		newContentMetadataItem.DRMQualifier = [self makeNullNil:[book objectForKey:kSCHLibreAccessWebServiceDRMQualifier]];
-		newContentMetadataItem.ContentIdentifierType = [self makeNullNil:[book objectForKey:kSCHLibreAccessWebServiceContentIdentifierType]];
-		newContentMetadataItem.ContentIdentifier = [self makeNullNil:[book objectForKey:kSCHLibreAccessWebServiceContentIdentifier]];
+		if (localItem == nil) {
+			while (webItem != nil) {
+				[creationPool addObject:webItem];
+				webItem = [webEnumerator nextObject];
+			} 
+			break;			
+		}
 		
-		newContentMetadataItem.Author = [self makeNullNil:[book objectForKey:kSCHLibreAccessWebServiceAuthor]];
-		newContentMetadataItem.Version = [self makeNullNil:[book objectForKey:kSCHLibreAccessWebServiceVersion]];
-		newContentMetadataItem.Enhanced = [self makeNullNil:[book objectForKey:kSCHLibreAccessWebServiceEnhanced]];
-		newContentMetadataItem.FileSize = [self makeNullNil:[book objectForKey:kSCHLibreAccessWebServiceFileSize]];
-		newContentMetadataItem.CoverURL = [self makeNullNil:[book objectForKey:kSCHLibreAccessWebServiceCoverURL]];
-		newContentMetadataItem.ContentURL = [self makeNullNil:[book objectForKey:kSCHLibreAccessWebServiceContentURL]];
-		newContentMetadataItem.PageNumber = [self makeNullNil:[book objectForKey:kSCHLibreAccessWebServicePageNumber]];
-		newContentMetadataItem.Title = [self makeNullNil:[book objectForKey:kSCHLibreAccessWebServiceTitle]];
-		newContentMetadataItem.Description = [self makeNullNil:[book objectForKey:kSCHLibreAccessWebServiceDescription]];
+		NSNumber *webItemID = [webItem valueForKey:kSCHLibreAccessWebServiceOrderID];
+		NSNumber *localItemID = [localItem valueForKey:kSCHLibreAccessWebServiceOrderID];
+		
+		switch ([webItemID compare:localItemID]) {
+			case NSOrderedSame:
+				[self syncOrderItem:webItem withOrderItem:localItem];
+				webItem = nil;
+				localItem = nil;
+				break;
+			case NSOrderedAscending:
+				[creationPool addObject:webItem];
+				webItem = nil;
+				break;
+			case NSOrderedDescending:
+				[deletePool addObject:localItem];
+				localItem = nil;
+				break;			
+		}		
+		
+		if (webItem == nil) {
+			webItem = [webEnumerator nextObject];
+		}
+		if (localItem == nil) {
+			localItem = [localEnumerator nextObject];
+		}		
 	}
 	
-	// Save the context.
-	if (![self.managedObjectContext save:&error]) {
-		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-		abort();
-	}	
+	for (SCHOrderItem *localItem in deletePool) {
+		[self.managedObjectContext deleteObject:localItem];
+	}
+	
+	for (NSDictionary *webItem in creationPool) {
+		[self addOrderItem:webItem];
+	}
+}
+
+- (void)syncOrderItem:(NSDictionary *)webOrderItem withOrderItem:(SCHOrderItem *)localOrderItem
+{
+	localOrderItem.OrderID = [self makeNullNil:[webOrderItem objectForKey:kSCHLibreAccessWebServiceOrderID]];
+	localOrderItem.OrderDate = [self makeNullNil:[webOrderItem objectForKey:kSCHLibreAccessWebServiceOrderDate]];
+}
+
+- (void)syncContentProfileItems:(NSArray *)webContentProfileList localContentProfileList:(NSSet *)localContentProfileList
+{		
+	NSArray *sortDescriptor = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceProfileID ascending:YES]];
+	NSMutableSet *deletePool = [NSMutableSet set];
+	NSMutableSet *creationPool = [NSMutableSet set];
+	
+	NSArray *webProfiles = [webContentProfileList sortedArrayUsingDescriptors:sortDescriptor];		
+	NSArray *localProfiles = [localContentProfileList sortedArrayUsingDescriptors:sortDescriptor];
+	
+	NSEnumerator *webEnumerator = [webProfiles objectEnumerator];			  
+	NSEnumerator *localEnumerator = [localProfiles objectEnumerator];			  			  
+	
+	NSDictionary *webItem = [webEnumerator nextObject];
+	SCHContentProfileItem *localItem = [localEnumerator nextObject];
+	
+	while (webItem != nil || localItem != nil) {		
+		if (webItem == nil) {
+			while (localItem != nil) {
+				[deletePool addObject:localItem];
+				localItem = [localEnumerator nextObject];
+			} 
+			break;
+		}
+		
+		if (localItem == nil) {
+			while (webItem != nil) {
+				[creationPool addObject:webItem];
+				webItem = [webEnumerator nextObject];
+			} 
+			break;			
+		}
+		
+		NSNumber *webItemID = [webItem valueForKey:kSCHLibreAccessWebServiceProfileID];
+		NSNumber *localItemID = [localItem valueForKey:kSCHLibreAccessWebServiceProfileID];
+		
+		switch ([webItemID compare:localItemID]) {
+			case NSOrderedSame:
+				[self syncContentProfileItem:webItem withContentProfileItem:localItem];
+				webItem = nil;
+				localItem = nil;
+				break;
+			case NSOrderedAscending:
+				[creationPool addObject:webItem];
+				webItem = nil;
+				break;
+			case NSOrderedDescending:
+				[deletePool addObject:localItem];
+				localItem = nil;
+				break;			
+		}		
+		
+		if (webItem == nil) {
+			webItem = [webEnumerator nextObject];
+		}
+		if (localItem == nil) {
+			localItem = [localEnumerator nextObject];
+		}		
+	}
+	
+	for (SCHContentProfileItem *localItem in deletePool) {
+		[self.managedObjectContext deleteObject:localItem];
+	}
+	
+	for (NSDictionary *webItem in creationPool) {
+		[self addContentProfileItem:webItem];
+	}
+}
+
+- (void)syncContentProfileItem:(NSDictionary *)webContentProfileItem withContentProfileItem:(SCHContentProfileItem *)localContentProfileItem
+{
+	localContentProfileItem.LastModified = [self makeNullNil:[webContentProfileItem objectForKey:kSCHLibreAccessWebServiceLastModified]];
+	localContentProfileItem.State = [NSNumber numberWithStatus:kSCHStatusUnmodified];
+	
+	localContentProfileItem.IsFavorite = [self makeNullNil:[webContentProfileItem objectForKey:kSCHLibreAccessWebServiceIsFavorite]];
+	
+	localContentProfileItem.ProfileID = [self makeNullNil:[webContentProfileItem objectForKey:kSCHLibreAccessWebServiceProfileID]];
+	localContentProfileItem.LastPageLocation = [self makeNullNil:[webContentProfileItem objectForKey:kSCHLibreAccessWebServiceLastPageLocation]];
 }
 
 @end

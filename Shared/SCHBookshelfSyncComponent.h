@@ -1,5 +1,5 @@
 //
-//  SCHContentSyncComponent.h
+//  SCHBookshelfSyncComponent.h
 //  Scholastic
 //
 //  Created by John S. Eddie on 04/02/2011.
@@ -10,9 +10,9 @@
 
 #import "SCHSyncComponent.h"
 
-static NSString * const kSCHContentSyncComponentComplete = @"SCHContentSyncComponentComplete";
+static NSString * const kSCHBookshelfSyncComponentComplete = @"SCHBookshelfSyncComponentComplete";
 
-@interface SCHContentSyncComponent : SCHSyncComponent
+@interface SCHBookshelfSyncComponent : SCHSyncComponent
 {
 
 }

@@ -14,5 +14,6 @@ static NSString * const kSCHUserContentItem = @"SCHUserContentItem";
 
 @interface SCHUserContentItem (SCHUserContentItemExtensions)
 
+@property (nonatomic, readonly) NSSet *AssignedProfileList;
 
 @end

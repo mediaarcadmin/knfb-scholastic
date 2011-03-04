@@ -11,6 +11,8 @@
 #import "SCHSyncComponent.h"
 #import "NSNumber+ObjectTypes.h"
 
+static NSString * const kSCHProfileSyncComponentComplete = @"SCHProfileSyncComponentComplete";
+
 @interface SCHProfileSyncComponent : SCHSyncComponent
 {
 
