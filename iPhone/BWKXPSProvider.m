@@ -394,21 +394,21 @@ void XPSPageCompleteCallback(void *userdata, RasterImageInfo *data) {
 
 - (UIImage *)coverThumbForList {
 	
-	CGFloat scaleFactor = 1;
-    if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)]) {
-        scaleFactor = [[UIScreen mainScreen] scale];
-    }
+//	CGFloat scaleFactor = 1;
+//    if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)]) {
+//        scaleFactor = [[UIScreen mainScreen] scale];
+//    }
 	
 	CGFloat targetThumbWidth = 0;
 	CGFloat targetThumbHeight = 0;
-	NSInteger scaledTargetThumbWidth = 0;
-	NSInteger scaledTargetThumbHeight = 0;
+//	NSInteger scaledTargetThumbWidth = 0;
+//	NSInteger scaledTargetThumbHeight = 0;
 	
-	targetThumbWidth = kBlioCoverListThumbWidth;
-	targetThumbHeight = kBlioCoverListThumbHeight;
+//	targetThumbWidth = kBlioCoverListThumbWidth;
+//	targetThumbHeight = kBlioCoverListThumbHeight;
 	
-	scaledTargetThumbWidth = round(targetThumbWidth * scaleFactor);
-	scaledTargetThumbHeight = round(targetThumbHeight * scaleFactor);
+	//scaledTargetThumbWidth = round(targetThumbWidth * scaleFactor);
+	//scaledTargetThumbHeight = round(targetThumbHeight * scaleFactor);
 	
 //	NSString * pixelSpecificKey = [NSString stringWithFormat:@"%@%ix%i",BlioBookThumbnailPrefix,scaledTargetThumbWidth,scaledTargetThumbHeight];
 	//NSLog(@"Pixelspecifickey: %@", pixelSpecificKey);
@@ -426,21 +426,21 @@ void XPSPageCompleteCallback(void *userdata, RasterImageInfo *data) {
 
 - (NSData *)coverThumbData {
 	
-	CGFloat scaleFactor = 1;
-    if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)]) {
-        scaleFactor = [[UIScreen mainScreen] scale];
-    }
+//	CGFloat scaleFactor = 1;
+//    if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)]) {
+//        scaleFactor = [[UIScreen mainScreen] scale];
+//    }
 	
-	CGFloat targetThumbWidth = 0;
-	CGFloat targetThumbHeight = 0;
-	NSInteger scaledTargetThumbWidth = 0;
-	NSInteger scaledTargetThumbHeight = 0;
+//	CGFloat targetThumbWidth = 0;
+//	CGFloat targetThumbHeight = 0;
+//	NSInteger scaledTargetThumbWidth = 0;
+//	NSInteger scaledTargetThumbHeight = 0;
 	
-	targetThumbWidth = kBlioCoverListThumbWidth;
-	targetThumbHeight = kBlioCoverListThumbHeight;
+//	targetThumbWidth = kBlioCoverListThumbWidth;
+//	targetThumbHeight = kBlioCoverListThumbHeight;
 	
-	scaledTargetThumbWidth = round(targetThumbWidth * scaleFactor);
-	scaledTargetThumbHeight = round(targetThumbHeight * scaleFactor);
+	//scaledTargetThumbWidth = round(targetThumbWidth * scaleFactor);
+	//scaledTargetThumbHeight = round(targetThumbHeight * scaleFactor);
 	
 	//	NSString * pixelSpecificKey = [NSString stringWithFormat:@"%@%ix%i",BlioBookThumbnailPrefix,scaledTargetThumbWidth,scaledTargetThumbHeight];
 	//NSLog(@"Pixelspecifickey: %@", pixelSpecificKey);
@@ -526,7 +526,7 @@ void XPSPageCompleteCallback(void *userdata, RasterImageInfo *data) {
     NSString *filename  = [path lastPathComponent];
     NSString *extension = [[path pathExtension] uppercaseString];
 	
-    BOOL encrypted = NO;
+    //BOOL encrypted = NO;
     BOOL gzipped = NO;
     BOOL mapped = NO;
     BOOL cached = NO;
@@ -534,12 +534,12 @@ void XPSPageCompleteCallback(void *userdata, RasterImageInfo *data) {
     // TODO: Make sure these checks are ordered from most common to least common for efficiency
     if ([filename isEqualToString:@"Rights.xml"]) {
         if (self.bookIsEncrypted) {
-            encrypted = YES;
+//            encrypted = YES;
             gzipped = YES;
         }
     } else if ([extension isEqualToString:[BlioXPSComponentExtensionFPage uppercaseString]]) {
         if (self.bookIsEncrypted) {
-            encrypted = YES;
+//            encrypted = YES;
             gzipped = YES;
             componentPath = [[BlioXPSEncryptedPagesDir stringByAppendingPathComponent:[path lastPathComponent]] stringByAppendingPathExtension:BlioXPSComponentExtensionEncrypted];
         } else {
@@ -552,27 +552,27 @@ void XPSPageCompleteCallback(void *userdata, RasterImageInfo *data) {
     
 		NSLog(@"Returning an image...");
 		if (self.bookIsEncrypted) {
-            encrypted = YES;
+//            encrypted = YES;
             componentPath = [path stringByAppendingPathExtension:BlioXPSComponentExtensionEncrypted];
         }
         cached = YES;
     } else if ([directory isEqualToString:BlioXPSEncryptedTextFlowDir]) {  
         if (![path isEqualToString:@"/Documents/1/Other/KNFB/Flow/Sections.xml"]) {
             if (self.bookIsEncrypted) {
-                encrypted = YES;
+//                encrypted = YES;
                 gzipped = YES;
             }
             cached = YES;
         }
     } else if ([directory isEqualToString:BlioXPSEncryptedPagesDir]) {
         if (self.bookIsEncrypted) {
-            encrypted = YES;
+//            encrypted = YES;
             gzipped = YES;
         }
         cached = YES;
     } else if ([path isEqualToString:BlioXPSEncryptedUriMap]) {
         if (self.bookIsEncrypted) {
-            encrypted = YES;
+//            encrypted = YES;
             gzipped = YES;
         }
     } 

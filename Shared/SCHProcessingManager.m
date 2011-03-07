@@ -91,13 +91,13 @@ static SCHProcessingManager *sharedManager = nil;
 
 	if (placeholder) {
 		UIImage *missingImage = [UIImage imageNamed:@"PlaceholderBook"];
-		CGSize missingImageSize = missingImage.size;
+//		CGSize missingImageSize = missingImage.size;
 		
 		// check for scale, for retina display
-		if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)]) {
-			CGFloat scale = [[UIScreen mainScreen] scale];
-			missingImageSize = CGSizeMake(missingImageSize.width * scale, missingImageSize.height * scale);
-		}
+//		if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)]) {
+//			CGFloat scale = [[UIScreen mainScreen] scale];
+//			missingImageSize = CGSizeMake(missingImageSize.width * scale, missingImageSize.height * scale);
+//		}
 		
 		imageView.image = missingImage;
 	}

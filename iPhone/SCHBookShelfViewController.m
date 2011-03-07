@@ -105,7 +105,7 @@ NSInteger bookSort(SCHBookInfo *book1, SCHBookInfo *book2, void *context)
 	BOOL spaceSaverMode = [[NSUserDefaults standardUserDefaults] boolForKey:@"kSCHSpaceSaverMode"];
 	
 	if (!spaceSaverMode) {
-		NSLog(@"Space saver mode is off - setting all books to download.");
+		//NSLog(@"Space saver mode is off - setting all books to download.");
 		
 		for (SCHBookInfo *bookInfo in self.books) {
 			
@@ -125,7 +125,7 @@ NSInteger bookSort(SCHBookInfo *book1, SCHBookInfo *book2, void *context)
 			}
 		}
 	} else {
-		NSLog(@"Space saver mode is on!");
+		//NSLog(@"Space saver mode is on!");
 	}
 	
 	[self.tableView reloadData];
@@ -142,8 +142,8 @@ NSInteger bookSort(SCHBookInfo *book1, SCHBookInfo *book2, void *context)
 	self.loadingView.hidden = YES;
 	
 	// FIXME: more specific updates of cells
-	[self.tableView reloadData];
-	[self.gridView reloadData];
+	//[self.tableView reloadData];
+	//[self.gridView reloadData];
 }
 
 #pragma mark -
