@@ -121,6 +121,28 @@
 	return bookFileProcessingStateNoFileDownloaded;
 }
 
+- (float) currentDownloadedPercentage
+{
+	float percentage = 0.0f;
+	
+	NSString *xpsPath = [self xpsPath];
+	NSError *error = nil;
+	
+	if ([[NSFileManager defaultManager] fileExistsAtPath:xpsPath]) {
+		// check to see how much of the file has been downloaded
+		
+		unsigned long long fileSize = [[[NSFileManager defaultManager] attributesOfItemAtPath:xpsPath error:&error] fileSize];
+		percentage = (float) ((float) fileSize/[self.contentMetadata.FileSize floatValue]);
+
+		if (error) {
+			NSLog(@"Error when reading file attributes. Stopping. (%@)", [error localizedDescription]);
+		}
+	} 
+	
+	return percentage;
+}
+	
+
 - (BOOL) isCurrentlyDownloading
 {
 	return [[SCHProcessingManager defaultManager] isCurrentlyDownloading:self];

@@ -37,7 +37,6 @@ typedef enum {
 - (BOOL) processedCovers;
 - (BOOL) isCurrentlyDownloading;
 - (BOOL) isWaitingForDownload;
-
-
+- (float) currentDownloadedPercentage;
 
 @end

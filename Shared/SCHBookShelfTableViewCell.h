@@ -22,6 +22,7 @@
 @property (nonatomic, retain) UILabel *titleLabel;
 @property (nonatomic, retain) UILabel *subtitleLabel;
 @property (nonatomic, retain) UILabel *statusLabel;
+@property (nonatomic, retain) UIProgressView *progressView;
 @property (nonatomic, retain) SCHBookInfo *bookInfo;
 
 @end
