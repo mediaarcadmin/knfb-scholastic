@@ -10,6 +10,7 @@
 
 #import "SCHSyncComponent.h"
 
+static NSString * const kSCHBookshelfSyncComponentBookReceived = @"SCHBookshelfSyncComponentBookReceived";
 static NSString * const kSCHBookshelfSyncComponentComplete = @"SCHBookshelfSyncComponentComplete";
 
 @interface SCHBookshelfSyncComponent : SCHSyncComponent
