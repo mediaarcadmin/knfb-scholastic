@@ -10,6 +10,7 @@
 
 #import "SCHSyncComponent.h"
 
+static NSString * const kSCHBookshelfSyncComponentBookReceived = @"SCHBookshelfSyncComponentBookReceived";
 static NSString * const kSCHBookshelfSyncComponentComplete = @"SCHBookshelfSyncComponentComplete";
 
 @interface SCHBookshelfSyncComponent : SCHSyncComponent
@@ -17,5 +18,6 @@ static NSString * const kSCHBookshelfSyncComponentComplete = @"SCHBookshelfSyncC
 
 }
 
+@property (nonatomic, assign) BOOL useIndividualRequests;
 
 @end
