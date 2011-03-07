@@ -261,12 +261,13 @@ NSInteger bookSort(SCHBookInfo *book1, SCHBookInfo *book2, void *context)
 		[asyncImageView setFrame:CGRectMake(2, 0, gridCell.frame.size.width - 4, gridCell.frame.size.height - 20)];
 		asyncImageView.tag = 666;
 		[gridCell.contentView addSubview:asyncImageView];
+		[asyncImageView release];
 		
 		UIView *thumbTintView = [[UIView alloc] initWithFrame:asyncImageView.frame];
 		[thumbTintView setBackgroundColor:[UIColor colorWithRed:0.2f green:0.2f blue:0.2f alpha:0.6f]];
 		thumbTintView.tag = 667;
 		[gridCell.contentView addSubview:thumbTintView];
-
+		[thumbTintView release];
 		
 		UILabel *statusLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, gridCell.frame.size.height - 22, gridCell.frame.size.width, 12)];
         [statusLabel setFont:[UIFont systemFontOfSize:8.0f]];
@@ -278,7 +279,7 @@ NSInteger bookSort(SCHBookInfo *book1, SCHBookInfo *book2, void *context)
 		[statusLabel setTag:668];
 		
         [gridCell.contentView addSubview:statusLabel];
-		
+		[statusLabel release];
 	}
 	else {
 		gridCell.frame = [aGridView frameForCellAtGridIndex: index];

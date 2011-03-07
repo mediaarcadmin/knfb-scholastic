@@ -107,6 +107,7 @@ static pthread_key_t sManagedObjectContextKey;
 				[myCachedXPSProviderCheckoutCounts addObject:bookInfo];
 //				[xpsProvider release];
 				ret = xpsProvider;
+				[xpsProvider release];
 			}
         }
     }

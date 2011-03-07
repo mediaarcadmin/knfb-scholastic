@@ -230,7 +230,7 @@ static NSString * const kRootViewControllerSettingsIcon = @"Settings.png";
 	}
 		
 	[self.navigationController pushViewController:bookshelvesController animated:YES];
-
+	[bookshelvesController release];
 }
 
 #pragma mark -
