@@ -17,5 +17,6 @@ static NSString * const kSCHBookshelfSyncComponentComplete = @"SCHBookshelfSyncC
 
 }
 
+@property (nonatomic, assign) BOOL useIndividualRequests;
 
 @end

@@ -23,9 +23,27 @@
 - (void)addContentMetadataItem:(NSDictionary *)webContentMetadataItem;
 - (void)syncContentMetadataItem:(NSDictionary *)webContentMetadataItem withContentMetadataItem:(SCHContentMetadataItem *)localContentMetadataItem;
 
+@property (nonatomic, assign) BOOL includeURLs;
+@property (nonatomic, assign) NSInteger requestCount;
+
 @end
 
 @implementation SCHBookshelfSyncComponent
+
+@synthesize useIndividualRequests;
+@synthesize includeURLs;
+@synthesize requestCount;
+
+- (id)init
+{
+	self = [super init];
+	if (self != nil) {
+		self.useIndividualRequests = YES;	
+		self.includeURLs = NO;
+		self.requestCount = 0;
+	}
+	return(self);
+}
 
 - (BOOL)synchronize
 {
@@ -56,10 +74,26 @@
 - (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result
 {	
 	if([method compare:kSCHLibreAccessWebServiceListContentMetadata] == NSOrderedSame) {
-		[self syncContentMetadataItems:[result objectForKey:kSCHLibreAccessWebServiceContentMetadataList]];
-		NSLog(@"Book information received");
-		[[NSNotificationCenter defaultCenter] postNotificationName:kSCHBookshelfSyncComponentComplete object:nil];
-		[super method:method didCompleteWithResult:nil];	
+		NSArray *list = [result objectForKey:kSCHLibreAccessWebServiceContentMetadataList];
+		[self syncContentMetadataItems:list];
+		
+		if (self.useIndividualRequests == YES) {
+			requestCount--;
+			if ([list count] > 0) {
+				NSLog(@"%@ Book information received", [[list objectAtIndex:0] valueForKey:kSCHLibreAccessWebServiceContentIdentifier]);
+			} else {
+				NSLog(@"Book information received");				
+			}
+			
+			if (requestCount < 1) {
+				[[NSNotificationCenter defaultCenter] postNotificationName:kSCHBookshelfSyncComponentComplete object:nil];
+				[super method:method didCompleteWithResult:nil];				
+			}
+		} else {
+			NSLog(@"Book information received");		
+			[[NSNotificationCenter defaultCenter] postNotificationName:kSCHBookshelfSyncComponentComplete object:nil];
+			[super method:method didCompleteWithResult:nil];				
+		}
 	}	
 }
 
@@ -72,14 +106,31 @@
 	
 	NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest error:nil];
 	
+	requestCount = 0;
 	if([results count] > 0) {
-		self.isSynchronizing = [self.libreAccessWebService listContentMetadata:results includeURLs:YES];
-		NSLog(@"Requesting Book information");
-		if (self.isSynchronizing == NO) {
-			[[SCHAuthenticationManager sharedAuthenticationManager] authenticate];				
-			ret = NO;			
-		}		
-	}	
+		if (self.useIndividualRequests == YES) {
+			for (NSDictionary *ISBN in results) {
+				self.isSynchronizing = [self.libreAccessWebService listContentMetadata:[NSArray arrayWithObject:ISBN] includeURLs:self.includeURLs];
+				if (self.isSynchronizing == NO) {
+					[[SCHAuthenticationManager sharedAuthenticationManager] authenticate];				
+					ret = NO;			
+				} else {
+					requestCount++;
+					NSLog(@"Requesting %@ Book information", [ISBN valueForKey:kSCHLibreAccessWebServiceContentIdentifier]);					
+				}
+			}
+		} else {
+			self.isSynchronizing = [self.libreAccessWebService listContentMetadata:results includeURLs:self.includeURLs];
+			if (self.isSynchronizing == NO) {
+				[[SCHAuthenticationManager sharedAuthenticationManager] authenticate];				
+				ret = NO;			
+			} else {
+				NSLog(@"Requesting ALL Book information");
+			}
+		}
+	} else {
+		ret = NO;
+	}
 	[fetchRequest release], fetchRequest = nil;
 	
 	return(ret);	
@@ -197,8 +248,10 @@
 	localContentMetadataItem.Version = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceVersion]];
 	localContentMetadataItem.Enhanced = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceEnhanced]];
 	localContentMetadataItem.FileSize = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceFileSize]];
-	localContentMetadataItem.CoverURL = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceCoverURL]];
-	localContentMetadataItem.ContentURL = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceContentURL]];
+	if (includeURLs == YES) {
+		localContentMetadataItem.CoverURL = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceCoverURL]];
+		localContentMetadataItem.ContentURL = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceContentURL]];
+	}
 	localContentMetadataItem.PageNumber = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServicePageNumber]];
 	localContentMetadataItem.Title = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceTitle]];
 	localContentMetadataItem.Description = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceDescription]];
