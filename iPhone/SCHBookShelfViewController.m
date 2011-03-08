@@ -20,6 +20,7 @@
 #import "SCHThumbnailFactory.h"
 #import "SCHAsyncImageView.h"
 #import "SCHSyncManager.h"
+#import "SCHBookShelfGridViewCell.h"
 #import <QuartzCore/QuartzCore.h>
 
 @interface SCHBookShelfViewController ()
@@ -244,7 +245,7 @@ NSInteger bookSort(SCHBookInfo *book1, SCHBookInfo *book2, void *context)
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	return 88.0f;
+	return 132.0f;
 }
 
 #pragma mark -
@@ -254,96 +255,17 @@ NSInteger bookSort(SCHBookInfo *book1, SCHBookInfo *book2, void *context)
 -(MRGridViewCell*)gridView:(MRGridView*)aGridView cellForGridIndex:(NSInteger)index 
 {
 	static NSString* cellIdentifier = @"ScholasticGridViewCell";
-	MRGridViewCell* gridCell = [aGridView dequeueReusableCellWithIdentifier:cellIdentifier];
+	SCHBookShelfGridViewCell* gridCell = (SCHBookShelfGridViewCell *) [aGridView dequeueReusableCellWithIdentifier:cellIdentifier];
 	if (gridCell == nil) {
-		gridCell = [[[MRGridViewCell alloc]initWithFrame:[aGridView frameForCellAtGridIndex: index] reuseIdentifier:cellIdentifier] autorelease];
-		SCHAsyncImageView *asyncImageView = [SCHThumbnailFactory newAsyncImageWithSize:CGSizeMake(gridCell.frame.size.width - 4, gridCell.frame.size.height - 20)];
-		[asyncImageView setFrame:CGRectMake(2, 0, gridCell.frame.size.width - 4, gridCell.frame.size.height - 20)];
-		asyncImageView.tag = 666;
-		[gridCell.contentView addSubview:asyncImageView];
-		[asyncImageView release];
-		
-		UIView *thumbTintView = [[UIView alloc] initWithFrame:asyncImageView.frame];
-		[thumbTintView setBackgroundColor:[UIColor colorWithRed:0.2f green:0.2f blue:0.2f alpha:0.6f]];
-		thumbTintView.tag = 667;
-		[gridCell.contentView addSubview:thumbTintView];
-		[thumbTintView release];
-		
-		UILabel *statusLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, gridCell.frame.size.height - 22, gridCell.frame.size.width, 12)];
-        [statusLabel setFont:[UIFont systemFontOfSize:8.0f]];
-        [statusLabel setTextColor:[UIColor whiteColor]];
-		[statusLabel setBackgroundColor:[UIColor clearColor]];
-        [statusLabel setHighlightedTextColor:[UIColor whiteColor]];
-		[statusLabel setNumberOfLines:1];
-		[statusLabel setTextAlignment:UITextAlignmentCenter];
-		[statusLabel setTag:668];
-		
-        [gridCell.contentView addSubview:statusLabel];
-		[statusLabel release];
+		gridCell = [[SCHBookShelfGridViewCell alloc] initWithFrame:[aGridView frameForCellAtGridIndex:index] reuseIdentifier:cellIdentifier];
 	}
 	else {
-		gridCell.frame = [aGridView frameForCellAtGridIndex: index];
+		gridCell.frame = [aGridView frameForCellAtGridIndex:index];
 	}
 	
 	SCHBookInfo *bookInfo = [self.books objectAtIndex:index];
 
-	SCHContentMetadataItem *contentMetadataItem = bookInfo.contentMetadata;
-	
-	SCHAsyncImageView *asyncImageView = (SCHAsyncImageView *) [gridCell.contentView viewWithTag:666];
-	UIView *thumbTintView = (UIView *) [gridCell.contentView viewWithTag:667];
-	UILabel *statusLabel = (UILabel *) [gridCell.contentView viewWithTag:668];
-	
-	if (asyncImageView && [asyncImageView class] == [SCHAsyncImageView class]) {
-		if (contentMetadataItem.FileName == nil && contentMetadataItem.CoverURL == nil) {
-			asyncImageView.image = [UIImage imageNamed:@"PlaceholderBook"];
-		} else {
-			[[SCHProcessingManager defaultManager] updateThumbView:asyncImageView
-														  withBook:bookInfo
-															  size:CGSizeMake(gridCell.frame.size.width - 6, gridCell.frame.size.height - 20)
-															  rect:CGRectNull
-															  flip:NO
-													maintainAspect:YES
-													usePlaceHolder:YES];
-			
-		}
-	}	
-	
-	NSString *status = @"";
-	
-	if ([bookInfo isCurrentlyDownloading]) {
-		status = @"Downloading...";
-		thumbTintView.hidden = NO;
-	} else if ([bookInfo isWaitingForDownload]) {
-		status = @"Waiting...";
-		thumbTintView.hidden = NO;
-	} else {
-	
-		// book status
-		switch ([bookInfo processingState]) {
-			case bookFileProcessingStateError:
-				status = @"Error";
-				thumbTintView.hidden = NO;
-				break;
-			case bookFileProcessingStateFullyDownloaded:
-				status = @"";
-				thumbTintView.hidden = YES;
-				break;
-			case bookFileProcessingStateNoFileDownloaded:
-				status = @"Download";
-				thumbTintView.hidden = NO;
-				break;
-			case bookFileProcessingStatePartiallyDownloaded:
-				status = @"Paused";
-				thumbTintView.hidden = NO;
-				break;
-			default:
-				status = @"";
-				thumbTintView.hidden = YES;
-				break;
-		}
-	}	
-	[statusLabel setText:status];
-	
+	[gridCell setBookInfo:bookInfo];
 		
 	return gridCell;
 }

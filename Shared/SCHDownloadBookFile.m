@@ -186,7 +186,12 @@
 - (void) bookUpdate: (NSDictionary *) userInfo
 {
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"SCHBookDownloadStatusUpdate" object:nil userInfo:userInfo];
+	
+}
 
+- (void) percentageUpdate: (NSDictionary *) userInfo
+{
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"SCHBookDownloadPercentageUpdate" object:self.bookInfo.bookIdentifier userInfo:userInfo];
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
@@ -197,6 +202,28 @@
 		[handle writeData:data];
 		[handle closeFile];
 	}
+	
+	NSError *error = nil;
+	
+	unsigned long long fileSize = [[[NSFileManager defaultManager] attributesOfItemAtPath:self.localPath error:&error] fileSize];
+
+	if (error) {
+		NSLog(@"Warning: could not get filesize.");
+	}
+	
+	
+	float percentage = (float) ((float) fileSize/[self.bookInfo.contentMetadata.FileSize floatValue]);
+	
+	NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
+							  [NSNumber numberWithFloat:percentage], @"currentPercentage",
+							  nil];
+	
+	//NSLog(@"percentage for %@: %2.2f%%", self.bookInfo.contentMetadata.Title, percentage * 100);
+	
+	[self performSelectorOnMainThread:@selector(percentageUpdate:) 
+						   withObject:userInfo
+						waitUntilDone:YES];
+	
 	
 	if ([self isCancelled]) {
 		[connection cancel];
