@@ -163,6 +163,7 @@
 		52F55A4A130C2B60002C8BDF /* Icon-Small.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F55A45130C2B60002C8BDF /* Icon-Small.png */; };
 		52F55A4B130C2B60002C8BDF /* Icon-Small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F55A46130C2B60002C8BDF /* Icon-Small@2x.png */; };
 		52F55A4C130C2B60002C8BDF /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52F55A47130C2B60002C8BDF /* Icon@2x.png */; };
+		A3D933861326D92000037111 /* libPlayReadyPK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A3D933851326D92000037111 /* libPlayReadyPK.a */; };
 		C923A27A12F06FE60054426F /* MRGridView.m in Sources */ = {isa = PBXBuildFile; fileRef = C923A27312F06FE60054426F /* MRGridView.m */; };
 		C923A27B12F06FE60054426F /* MRGridViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C923A27512F06FE60054426F /* MRGridViewCell.m */; };
 		C923A27C12F06FE60054426F /* MRGridViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C923A27712F06FE60054426F /* MRGridViewController.m */; };
@@ -543,6 +544,157 @@
 		52F55A46130C2B60002C8BDF /* Icon-Small@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-Small@2x.png"; path = "Shared/Images/Icon-Small@2x.png"; sourceTree = "<group>"; };
 		52F55A47130C2B60002C8BDF /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon@2x.png"; path = "Shared/Images/Icon@2x.png"; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Scholastic-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Scholastic-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
+		A3D933851326D92000037111 /* libPlayReadyPK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPlayReadyPK.a; path = Shared/Libraries/DRM/libPlayReadyPK.a; sourceTree = "<group>"; };
+		A3D9338B1326DA3F00037111 /* bigdefs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = bigdefs.h; path = Shared/Libraries/DRM/bigdefs.h; sourceTree = "<group>"; };
+		A3D9338C1326DA3F00037111 /* bignum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = bignum.h; path = Shared/Libraries/DRM/bignum.h; sourceTree = "<group>"; };
+		A3D9338D1326DA3F00037111 /* bigpriv.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = bigpriv.h; path = Shared/Libraries/DRM/bigpriv.h; sourceTree = "<group>"; };
+		A3D9338E1326DA3F00037111 /* byteorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = byteorder.h; path = Shared/Libraries/DRM/byteorder.h; sourceTree = "<group>"; };
+		A3D9338F1326DA3F00037111 /* dblint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = dblint.h; path = Shared/Libraries/DRM/dblint.h; sourceTree = "<group>"; };
+		A3D933901326DA3F00037111 /* drm_msdbpk_manager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drm_msdbpk_manager.h; path = Shared/Libraries/DRM/drm_msdbpk_manager.h; sourceTree = "<group>"; };
+		A3D933911326DA3F00037111 /* drmaes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmaes.h; path = Shared/Libraries/DRM/drmaes.h; sourceTree = "<group>"; };
+		A3D933921326DA3F00037111 /* drmaescommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmaescommon.h; path = Shared/Libraries/DRM/drmaescommon.h; sourceTree = "<group>"; };
+		A3D933931326DA3F00037111 /* drmbase64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmbase64.h; path = Shared/Libraries/DRM/drmbase64.h; sourceTree = "<group>"; };
+		A3D933941326DA3F00037111 /* drmbcert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmbcert.h; path = Shared/Libraries/DRM/drmbcert.h; sourceTree = "<group>"; };
+		A3D933951326DA3F00037111 /* drmbcrl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmbcrl.h; path = Shared/Libraries/DRM/drmbcrl.h; sourceTree = "<group>"; };
+		A3D933961326DA3F00037111 /* drmblackbox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmblackbox.h; path = Shared/Libraries/DRM/drmblackbox.h; sourceTree = "<group>"; };
+		A3D933971326DA3F00037111 /* drmbuild_oem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmbuild_oem.h; path = Shared/Libraries/DRM/drmbuild_oem.h; sourceTree = "<group>"; };
+		A3D933981326DA3F00037111 /* drmbuild_pk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmbuild_pk.h; path = Shared/Libraries/DRM/drmbuild_pk.h; sourceTree = "<group>"; };
+		A3D933991326DA3F00037111 /* drmbytemanip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmbytemanip.h; path = Shared/Libraries/DRM/drmbytemanip.h; sourceTree = "<group>"; };
+		A3D9339A1326DA3F00037111 /* drmcallbacks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmcallbacks.h; path = Shared/Libraries/DRM/drmcallbacks.h; sourceTree = "<group>"; };
+		A3D9339B1326DA3F00037111 /* drmcbc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmcbc.h; path = Shared/Libraries/DRM/drmcbc.h; sourceTree = "<group>"; };
+		A3D9339C1326DA3F00037111 /* drmcert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmcert.h; path = Shared/Libraries/DRM/drmcert.h; sourceTree = "<group>"; };
+		A3D9339D1326DA3F00037111 /* drmcertparser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmcertparser.h; path = Shared/Libraries/DRM/drmcertparser.h; sourceTree = "<group>"; };
+		A3D9339E1326DA3F00037111 /* drmcfdalloc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmcfdalloc.h; path = Shared/Libraries/DRM/drmcfdalloc.h; sourceTree = "<group>"; };
+		A3D9339F1326DA3F00037111 /* drmcfdlicenseutils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmcfdlicenseutils.h; path = Shared/Libraries/DRM/drmcfdlicenseutils.h; sourceTree = "<group>"; };
+		A3D933A01326DA3F00037111 /* drmcfdtypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmcfdtypes.h; path = Shared/Libraries/DRM/drmcfdtypes.h; sourceTree = "<group>"; };
+		A3D933A11326DA3F00037111 /* drmchain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmchain.h; path = Shared/Libraries/DRM/drmchain.h; sourceTree = "<group>"; };
+		A3D933A21326DA3F00037111 /* drmcipher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmcipher.h; path = Shared/Libraries/DRM/drmcipher.h; sourceTree = "<group>"; };
+		A3D933A31326DA3F00037111 /* drmcmdlnpars.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmcmdlnpars.h; path = Shared/Libraries/DRM/drmcmdlnpars.h; sourceTree = "<group>"; };
+		A3D933A41326DA3F00037111 /* drmcommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmcommon.h; path = Shared/Libraries/DRM/drmcommon.h; sourceTree = "<group>"; };
+		A3D933A51326DA3F00037111 /* drmcompiler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmcompiler.h; path = Shared/Libraries/DRM/drmcompiler.h; sourceTree = "<group>"; };
+		A3D933A61326DA3F00037111 /* drmcontextsizes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmcontextsizes.h; path = Shared/Libraries/DRM/drmcontextsizes.h; sourceTree = "<group>"; };
+		A3D933A71326DA3F00037111 /* drmcontract.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmcontract.h; path = Shared/Libraries/DRM/drmcontract.h; sourceTree = "<group>"; };
+		A3D933A81326DA3F00037111 /* drmcrt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmcrt.h; path = Shared/Libraries/DRM/drmcrt.h; sourceTree = "<group>"; };
+		A3D933A91326DA3F00037111 /* drmdatastore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmdatastore.h; path = Shared/Libraries/DRM/drmdatastore.h; sourceTree = "<group>"; };
+		A3D933AA1326DA3F00037111 /* drmdatastorecommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmdatastorecommon.h; path = Shared/Libraries/DRM/drmdatastorecommon.h; sourceTree = "<group>"; };
+		A3D933AB1326DA3F00037111 /* drmdebug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmdebug.h; path = Shared/Libraries/DRM/drmdebug.h; sourceTree = "<group>"; };
+		A3D933AC1326DA3F00037111 /* drmdes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmdes.h; path = Shared/Libraries/DRM/drmdes.h; sourceTree = "<group>"; };
+		A3D933AD1326DA3F00037111 /* drmdevcert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmdevcert.h; path = Shared/Libraries/DRM/drmdevcert.h; sourceTree = "<group>"; };
+		A3D933AE1326DA3F00037111 /* drmdevcertacq.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmdevcertacq.h; path = Shared/Libraries/DRM/drmdevcertacq.h; sourceTree = "<group>"; };
+		A3D933AF1326DA3F00037111 /* drmdevicestore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmdevicestore.h; path = Shared/Libraries/DRM/drmdevicestore.h; sourceTree = "<group>"; };
+		A3D933B01326DA3F00037111 /* drmdevstore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmdevstore.h; path = Shared/Libraries/DRM/drmdevstore.h; sourceTree = "<group>"; };
+		A3D933B11326DA3F00037111 /* drmdomainapi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmdomainapi.h; path = Shared/Libraries/DRM/drmdomainapi.h; sourceTree = "<group>"; };
+		A3D933B21326DA3F00037111 /* drmdomainconstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmdomainconstants.h; path = Shared/Libraries/DRM/drmdomainconstants.h; sourceTree = "<group>"; };
+		A3D933B31326DA3F00037111 /* drmdomainimp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmdomainimp.h; path = Shared/Libraries/DRM/drmdomainimp.h; sourceTree = "<group>"; };
+		A3D933B41326DA3F00037111 /* drmdomainkeyxmrparser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmdomainkeyxmrparser.h; path = Shared/Libraries/DRM/drmdomainkeyxmrparser.h; sourceTree = "<group>"; };
+		A3D933B51326DA3F00037111 /* drmdomainstore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmdomainstore.h; path = Shared/Libraries/DRM/drmdomainstore.h; sourceTree = "<group>"; };
+		A3D933B61326DA3F00037111 /* drmeccp160.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmeccp160.h; path = Shared/Libraries/DRM/drmeccp160.h; sourceTree = "<group>"; };
+		A3D933B71326DA3F00037111 /* drmeccp256.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmeccp256.h; path = Shared/Libraries/DRM/drmeccp256.h; sourceTree = "<group>"; };
+		A3D933B81326DA3F00037111 /* drmembeddedstore_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmembeddedstore_impl.h; path = Shared/Libraries/DRM/drmembeddedstore_impl.h; sourceTree = "<group>"; };
+		A3D933B91326DA3F00037111 /* drmembeddedstore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmembeddedstore.h; path = Shared/Libraries/DRM/drmembeddedstore.h; sourceTree = "<group>"; };
+		A3D933BA1326DA3F00037111 /* drmembedding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmembedding.h; path = Shared/Libraries/DRM/drmembedding.h; sourceTree = "<group>"; };
+		A3D933BB1326DA3F00037111 /* drmenvelope.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmenvelope.h; path = Shared/Libraries/DRM/drmenvelope.h; sourceTree = "<group>"; };
+		A3D933BC1326DA3F00037111 /* drmerr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmerr.h; path = Shared/Libraries/DRM/drmerr.h; sourceTree = "<group>"; };
+		A3D933BD1326DA3F00037111 /* drmexpreval.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmexpreval.h; path = Shared/Libraries/DRM/drmexpreval.h; sourceTree = "<group>"; };
+		A3D933BE1326DA3F00037111 /* drmfeatures.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmfeatures.h; path = Shared/Libraries/DRM/drmfeatures.h; sourceTree = "<group>"; };
+		A3D933BF1326DA3F00037111 /* drmhash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmhash.h; path = Shared/Libraries/DRM/drmhash.h; sourceTree = "<group>"; };
+		A3D933C01326DA3F00037111 /* drmhdrbuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmhdrbuilder.h; path = Shared/Libraries/DRM/drmhdrbuilder.h; sourceTree = "<group>"; };
+		A3D933C11326DA3F00037111 /* drmhds_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmhds_impl.h; path = Shared/Libraries/DRM/drmhds_impl.h; sourceTree = "<group>"; };
+		A3D933C21326DA3F00037111 /* drmhds.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmhds.h; path = Shared/Libraries/DRM/drmhds.h; sourceTree = "<group>"; };
+		A3D933C31326DA3F00037111 /* drmheaderparser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmheaderparser.h; path = Shared/Libraries/DRM/drmheaderparser.h; sourceTree = "<group>"; };
+		A3D933C41326DA3F00037111 /* drmhmac.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmhmac.h; path = Shared/Libraries/DRM/drmhmac.h; sourceTree = "<group>"; };
+		A3D933C51326DA3F00037111 /* drmint64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmint64.h; path = Shared/Libraries/DRM/drmint64.h; sourceTree = "<group>"; };
+		A3D933C61326DA3F00037111 /* drmkeygenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmkeygenerator.h; path = Shared/Libraries/DRM/drmkeygenerator.h; sourceTree = "<group>"; };
+		A3D933C71326DA3F00037111 /* drmlicacq.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmlicacq.h; path = Shared/Libraries/DRM/drmlicacq.h; sourceTree = "<group>"; };
+		A3D933C81326DA3F00037111 /* drmlicacqv3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmlicacqv3.h; path = Shared/Libraries/DRM/drmlicacqv3.h; sourceTree = "<group>"; };
+		A3D933C91326DA3F00037111 /* drmlicacqv3constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmlicacqv3constants.h; path = Shared/Libraries/DRM/drmlicacqv3constants.h; sourceTree = "<group>"; };
+		A3D933CA1326DA3F00037111 /* drmlicense.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmlicense.h; path = Shared/Libraries/DRM/drmlicense.h; sourceTree = "<group>"; };
+		A3D933CB1326DA3F00037111 /* drmlicenseparser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmlicenseparser.h; path = Shared/Libraries/DRM/drmlicenseparser.h; sourceTree = "<group>"; };
+		A3D933CC1326DA3F00037111 /* drmliceval.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmliceval.h; path = Shared/Libraries/DRM/drmliceval.h; sourceTree = "<group>"; };
+		A3D933CD1326DA3F00037111 /* drmlicreason.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmlicreason.h; path = Shared/Libraries/DRM/drmlicreason.h; sourceTree = "<group>"; };
+		A3D933CE1326DA3F00037111 /* drmlicstore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmlicstore.h; path = Shared/Libraries/DRM/drmlicstore.h; sourceTree = "<group>"; };
+		A3D933CF1326DA3F00037111 /* drmmanager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmmanager.h; path = Shared/Libraries/DRM/drmmanager.h; sourceTree = "<group>"; };
+		A3D933D01326DA3F00037111 /* drmmd5.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmmd5.h; path = Shared/Libraries/DRM/drmmd5.h; sourceTree = "<group>"; };
+		A3D933D11326DA3F00037111 /* drmmeterapi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmmeterapi.h; path = Shared/Libraries/DRM/drmmeterapi.h; sourceTree = "<group>"; };
+		A3D933D21326DA3F00037111 /* drmmetercertprivkey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmmetercertprivkey.h; path = Shared/Libraries/DRM/drmmetercertprivkey.h; sourceTree = "<group>"; };
+		A3D933D31326DA3F00037111 /* drmmetercertpubkey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmmetercertpubkey.h; path = Shared/Libraries/DRM/drmmetercertpubkey.h; sourceTree = "<group>"; };
+		A3D933D41326DA3F00037111 /* drmmetercertstore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmmetercertstore.h; path = Shared/Libraries/DRM/drmmetercertstore.h; sourceTree = "<group>"; };
+		A3D933D51326DA3F00037111 /* drmmeterconstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmmeterconstants.h; path = Shared/Libraries/DRM/drmmeterconstants.h; sourceTree = "<group>"; };
+		A3D933D61326DA3F00037111 /* drmmeterimp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmmeterimp.h; path = Shared/Libraries/DRM/drmmeterimp.h; sourceTree = "<group>"; };
+		A3D933D71326DA3F00037111 /* drmnamespace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmnamespace.h; path = Shared/Libraries/DRM/drmnamespace.h; sourceTree = "<group>"; };
+		A3D933D81326DA3F00037111 /* drmndr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmndr.h; path = Shared/Libraries/DRM/drmndr.h; sourceTree = "<group>"; };
+		A3D933D91326DA3F00037111 /* drmndtasf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmndtasf.h; path = Shared/Libraries/DRM/drmndtasf.h; sourceTree = "<group>"; };
+		A3D933DA1326DA3F00037111 /* drmndtmanager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmndtmanager.h; path = Shared/Libraries/DRM/drmndtmanager.h; sourceTree = "<group>"; };
+		A3D933DB1326DA3F00037111 /* drmnoncestore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmnoncestore.h; path = Shared/Libraries/DRM/drmnoncestore.h; sourceTree = "<group>"; };
+		A3D933DC1326DA3F00037111 /* drmopcodes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmopcodes.h; path = Shared/Libraries/DRM/drmopcodes.h; sourceTree = "<group>"; };
+		A3D933DD1326DA3F00037111 /* drmorderedlist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmorderedlist.h; path = Shared/Libraries/DRM/drmorderedlist.h; sourceTree = "<group>"; };
+		A3D933DE1326DA3F00037111 /* drmoutputlevels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmoutputlevels.h; path = Shared/Libraries/DRM/drmoutputlevels.h; sourceTree = "<group>"; };
+		A3D933DF1326DA3F00037111 /* drmoutputleveltypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmoutputleveltypes.h; path = Shared/Libraries/DRM/drmoutputleveltypes.h; sourceTree = "<group>"; };
+		A3D933E01326DA3F00037111 /* drmpfd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmpfd.h; path = Shared/Libraries/DRM/drmpfd.h; sourceTree = "<group>"; };
+		A3D933E11326DA3F00037111 /* drmpfdmanager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmpfdmanager.h; path = Shared/Libraries/DRM/drmpfdmanager.h; sourceTree = "<group>"; };
+		A3D933E21326DA3F00037111 /* drmpkcrypto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmpkcrypto.h; path = Shared/Libraries/DRM/drmpkcrypto.h; sourceTree = "<group>"; };
+		A3D933E31326DA3F00037111 /* drmplayreadyobj.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmplayreadyobj.h; path = Shared/Libraries/DRM/drmplayreadyobj.h; sourceTree = "<group>"; };
+		A3D933E41326DA3F00037111 /* drmpragmas.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmpragmas.h; path = Shared/Libraries/DRM/drmpragmas.h; sourceTree = "<group>"; };
+		A3D933E51326DA3F00037111 /* drmprivkeydeviceexclusion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmprivkeydeviceexclusion.h; path = Shared/Libraries/DRM/drmprivkeydeviceexclusion.h; sourceTree = "<group>"; };
+		A3D933E61326DA3F00037111 /* drmprofile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmprofile.h; path = Shared/Libraries/DRM/drmprofile.h; sourceTree = "<group>"; };
+		A3D933E71326DA3F00037111 /* drmprofileconstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmprofileconstants.h; path = Shared/Libraries/DRM/drmprofileconstants.h; sourceTree = "<group>"; };
+		A3D933E81326DA3F00037111 /* drmprofileconstantscfd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmprofileconstantscfd.h; path = Shared/Libraries/DRM/drmprofileconstantscfd.h; sourceTree = "<group>"; };
+		A3D933E91326DA3F00037111 /* drmptrlist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmptrlist.h; path = Shared/Libraries/DRM/drmptrlist.h; sourceTree = "<group>"; };
+		A3D933EA1326DA3F00037111 /* drmpubkeydeviceexclusion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmpubkeydeviceexclusion.h; path = Shared/Libraries/DRM/drmpubkeydeviceexclusion.h; sourceTree = "<group>"; };
+		A3D933EB1326DA3F00037111 /* drmpubkeyrevocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmpubkeyrevocation.h; path = Shared/Libraries/DRM/drmpubkeyrevocation.h; sourceTree = "<group>"; };
+		A3D933EC1326DA3F00037111 /* drmrc4.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmrc4.h; path = Shared/Libraries/DRM/drmrc4.h; sourceTree = "<group>"; };
+		A3D933ED1326DA3F00037111 /* drmresults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmresults.h; path = Shared/Libraries/DRM/drmresults.h; sourceTree = "<group>"; };
+		A3D933EE1326DA3F00037111 /* drmrevocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmrevocation.h; path = Shared/Libraries/DRM/drmrevocation.h; sourceTree = "<group>"; };
+		A3D933EF1326DA3F00037111 /* drmrevocationstore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmrevocationstore.h; path = Shared/Libraries/DRM/drmrevocationstore.h; sourceTree = "<group>"; };
+		A3D933F01326DA3F00037111 /* drmrevocationtypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmrevocationtypes.h; path = Shared/Libraries/DRM/drmrevocationtypes.h; sourceTree = "<group>"; };
+		A3D933F11326DA3F00037111 /* drmrsa.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmrsa.h; path = Shared/Libraries/DRM/drmrsa.h; sourceTree = "<group>"; };
+		A3D933F21326DA3F00037111 /* drmrsacommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmrsacommon.h; path = Shared/Libraries/DRM/drmrsacommon.h; sourceTree = "<group>"; };
+		A3D933F31326DA3F00037111 /* drmsal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmsal.h; path = Shared/Libraries/DRM/drmsal.h; sourceTree = "<group>"; };
+		A3D933F41326DA3F00037111 /* drmsecureclock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmsecureclock.h; path = Shared/Libraries/DRM/drmsecureclock.h; sourceTree = "<group>"; };
+		A3D933F51326DA3F00037111 /* drmsecureclockstatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmsecureclockstatus.h; path = Shared/Libraries/DRM/drmsecureclockstatus.h; sourceTree = "<group>"; };
+		A3D933F61326DA3F00037111 /* drmsecurestore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmsecurestore.h; path = Shared/Libraries/DRM/drmsecurestore.h; sourceTree = "<group>"; };
+		A3D933F71326DA3F00037111 /* drmsha1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmsha1.h; path = Shared/Libraries/DRM/drmsha1.h; sourceTree = "<group>"; };
+		A3D933F81326DA3F00037111 /* drmsha256.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmsha256.h; path = Shared/Libraries/DRM/drmsha256.h; sourceTree = "<group>"; };
+		A3D933F91326DA3F00037111 /* drmsoapxmlconstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmsoapxmlconstants.h; path = Shared/Libraries/DRM/drmsoapxmlconstants.h; sourceTree = "<group>"; };
+		A3D933FA1326DA3F00037111 /* drmsoapxmlutility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmsoapxmlutility.h; path = Shared/Libraries/DRM/drmsoapxmlutility.h; sourceTree = "<group>"; };
+		A3D933FB1326DA3F00037111 /* drmstkalloc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmstkalloc.h; path = Shared/Libraries/DRM/drmstkalloc.h; sourceTree = "<group>"; };
+		A3D933FC1326DA3F00037111 /* drmstrings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmstrings.h; path = Shared/Libraries/DRM/drmstrings.h; sourceTree = "<group>"; };
+		A3D933FD1326DA3F00037111 /* drmstringscfd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmstringscfd.h; path = Shared/Libraries/DRM/drmstringscfd.h; sourceTree = "<group>"; };
+		A3D933FE1326DA3F00037111 /* drmstrsafe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmstrsafe.h; path = Shared/Libraries/DRM/drmstrsafe.h; sourceTree = "<group>"; };
+		A3D933FF1326DA3F00037111 /* drmsyncstore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmsyncstore.h; path = Shared/Libraries/DRM/drmsyncstore.h; sourceTree = "<group>"; };
+		A3D934001326DA3F00037111 /* drmsyncstorecontext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmsyncstorecontext.h; path = Shared/Libraries/DRM/drmsyncstorecontext.h; sourceTree = "<group>"; };
+		A3D934011326DA3F00037111 /* drmtoken.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmtoken.h; path = Shared/Libraries/DRM/drmtoken.h; sourceTree = "<group>"; };
+		A3D934021326DA3F00037111 /* drmtrace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmtrace.h; path = Shared/Libraries/DRM/drmtrace.h; sourceTree = "<group>"; };
+		A3D934031326DA3F00037111 /* drmtypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmtypes.h; path = Shared/Libraries/DRM/drmtypes.h; sourceTree = "<group>"; };
+		A3D934041326DA3F00037111 /* drmutf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmutf.h; path = Shared/Libraries/DRM/drmutf.h; sourceTree = "<group>"; };
+		A3D934051326DA3F00037111 /* drmutilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmutilities.h; path = Shared/Libraries/DRM/drmutilities.h; sourceTree = "<group>"; };
+		A3D934061326DA3F00037111 /* drmviewprops.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmviewprops.h; path = Shared/Libraries/DRM/drmviewprops.h; sourceTree = "<group>"; };
+		A3D934071326DA3F00037111 /* drmwindowsenv.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmwindowsenv.h; path = Shared/Libraries/DRM/drmwindowsenv.h; sourceTree = "<group>"; };
+		A3D934081326DA3F00037111 /* drmxmlbuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmxmlbuilder.h; path = Shared/Libraries/DRM/drmxmlbuilder.h; sourceTree = "<group>"; };
+		A3D934091326DA3F00037111 /* drmxmlbuildera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmxmlbuildera.h; path = Shared/Libraries/DRM/drmxmlbuildera.h; sourceTree = "<group>"; };
+		A3D9340A1326DA3F00037111 /* drmxmlparser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmxmlparser.h; path = Shared/Libraries/DRM/drmxmlparser.h; sourceTree = "<group>"; };
+		A3D9340B1326DA3F00037111 /* drmxmlsig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmxmlsig.h; path = Shared/Libraries/DRM/drmxmlsig.h; sourceTree = "<group>"; };
+		A3D9340C1326DA3F00037111 /* drmxmlsigconstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmxmlsigconstants.h; path = Shared/Libraries/DRM/drmxmlsigconstants.h; sourceTree = "<group>"; };
+		A3D9340D1326DA3F00037111 /* drmxmlutilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmxmlutilities.h; path = Shared/Libraries/DRM/drmxmlutilities.h; sourceTree = "<group>"; };
+		A3D9340E1326DA3F00037111 /* drmxmr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmxmr.h; path = Shared/Libraries/DRM/drmxmr.h; sourceTree = "<group>"; };
+		A3D9340F1326DA3F00037111 /* drmxmrbuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmxmrbuilder.h; path = Shared/Libraries/DRM/drmxmrbuilder.h; sourceTree = "<group>"; };
+		A3D934101326DA3F00037111 /* drmxmrparser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = drmxmrparser.h; path = Shared/Libraries/DRM/drmxmrparser.h; sourceTree = "<group>"; };
+		A3D934111326DA3F00037111 /* ecurve.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ecurve.h; path = Shared/Libraries/DRM/ecurve.h; sourceTree = "<group>"; };
+		A3D934121326DA3F00037111 /* field.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = field.h; path = Shared/Libraries/DRM/field.h; sourceTree = "<group>"; };
+		A3D934131326DA3F00037111 /* fieldpriv.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = fieldpriv.h; path = Shared/Libraries/DRM/fieldpriv.h; sourceTree = "<group>"; };
+		A3D934141326DA3F00037111 /* mprand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = mprand.h; path = Shared/Libraries/DRM/mprand.h; sourceTree = "<group>"; };
+		A3D934151326DA3F00037111 /* oem_msdbpk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = oem_msdbpk.h; path = Shared/Libraries/DRM/oem_msdbpk.h; sourceTree = "<group>"; };
+		A3D934161326DA3F00037111 /* oem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = oem.h; path = Shared/Libraries/DRM/oem.h; sourceTree = "<group>"; };
+		A3D934171326DA3F00037111 /* oemaes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = oemaes.h; path = Shared/Libraries/DRM/oemaes.h; sourceTree = "<group>"; };
+		A3D934181326DA3F00037111 /* oemaesimpl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = oemaesimpl.h; path = Shared/Libraries/DRM/oemaesimpl.h; sourceTree = "<group>"; };
+		A3D934191326DA3F00037111 /* oemcommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = oemcommon.h; path = Shared/Libraries/DRM/oemcommon.h; sourceTree = "<group>"; };
+		A3D9341A1326DA3F00037111 /* oemdebug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = oemdebug.h; path = Shared/Libraries/DRM/oemdebug.h; sourceTree = "<group>"; };
+		A3D9341B1326DA3F00037111 /* oemdevstore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = oemdevstore.h; path = Shared/Libraries/DRM/oemdevstore.h; sourceTree = "<group>"; };
+		A3D9341C1326DA3F00037111 /* oemndt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = oemndt.h; path = Shared/Libraries/DRM/oemndt.h; sourceTree = "<group>"; };
+		A3D9341D1326DA3F00037111 /* oemplatform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = oemplatform.h; path = Shared/Libraries/DRM/oemplatform.h; sourceTree = "<group>"; };
+		A3D9341E1326DA3F00037111 /* oemprofile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = oemprofile.h; path = Shared/Libraries/DRM/oemprofile.h; sourceTree = "<group>"; };
+		A3D9341F1326DA3F00037111 /* oemrsa.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = oemrsa.h; path = Shared/Libraries/DRM/oemrsa.h; sourceTree = "<group>"; };
+		A3D934201326DA3F00037111 /* oemrsaimpl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = oemrsaimpl.h; path = Shared/Libraries/DRM/oemrsaimpl.h; sourceTree = "<group>"; };
 		C923A27212F06FE60054426F /* MRGridView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MRGridView.h; path = Shared/Libraries/MRGridView/MRGridView.h; sourceTree = "<group>"; };
 		C923A27312F06FE60054426F /* MRGridView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MRGridView.m; path = Shared/Libraries/MRGridView/MRGridView.m; sourceTree = "<group>"; };
 		C923A27412F06FE60054426F /* MRGridViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MRGridViewCell.h; path = Shared/Libraries/MRGridView/MRGridViewCell.h; sourceTree = "<group>"; };
@@ -628,6 +780,7 @@
 				52EF553E12E9EB8500E374F7 /* Security.framework in Frameworks */,
 				F8509E7412F061FE00197EB5 /* libXpsSDKipad.a in Frameworks */,
 				F8509EB812F0625100197EB5 /* libstdc++.6.dylib in Frameworks */,
+				A3D933861326D92000037111 /* libPlayReadyPK.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -902,6 +1055,7 @@
 		528A2CFE12CCFD050053A343 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				A3D933751326D84900037111 /* DRM */,
 				C923A25F12F06DBE0054426F /* MRGridView */,
 				5293868D12DF3A3300045B44 /* WSDL2ObjC */,
 				529386A312DF3A3F00045B44 /* TouchXML */,
@@ -1064,6 +1218,164 @@
 				52EF570912ED977C00E374F7 /* NSManagedObjectContext+Extensions.m */,
 			);
 			name = Extensions;
+			sourceTree = "<group>";
+		};
+		A3D933751326D84900037111 /* DRM */ = {
+			isa = PBXGroup;
+			children = (
+				A3D9338B1326DA3F00037111 /* bigdefs.h */,
+				A3D9338C1326DA3F00037111 /* bignum.h */,
+				A3D9338D1326DA3F00037111 /* bigpriv.h */,
+				A3D9338E1326DA3F00037111 /* byteorder.h */,
+				A3D9338F1326DA3F00037111 /* dblint.h */,
+				A3D933901326DA3F00037111 /* drm_msdbpk_manager.h */,
+				A3D933911326DA3F00037111 /* drmaes.h */,
+				A3D933921326DA3F00037111 /* drmaescommon.h */,
+				A3D933931326DA3F00037111 /* drmbase64.h */,
+				A3D933941326DA3F00037111 /* drmbcert.h */,
+				A3D933951326DA3F00037111 /* drmbcrl.h */,
+				A3D933961326DA3F00037111 /* drmblackbox.h */,
+				A3D933971326DA3F00037111 /* drmbuild_oem.h */,
+				A3D933981326DA3F00037111 /* drmbuild_pk.h */,
+				A3D933991326DA3F00037111 /* drmbytemanip.h */,
+				A3D9339A1326DA3F00037111 /* drmcallbacks.h */,
+				A3D9339B1326DA3F00037111 /* drmcbc.h */,
+				A3D9339C1326DA3F00037111 /* drmcert.h */,
+				A3D9339D1326DA3F00037111 /* drmcertparser.h */,
+				A3D9339E1326DA3F00037111 /* drmcfdalloc.h */,
+				A3D9339F1326DA3F00037111 /* drmcfdlicenseutils.h */,
+				A3D933A01326DA3F00037111 /* drmcfdtypes.h */,
+				A3D933A11326DA3F00037111 /* drmchain.h */,
+				A3D933A21326DA3F00037111 /* drmcipher.h */,
+				A3D933A31326DA3F00037111 /* drmcmdlnpars.h */,
+				A3D933A41326DA3F00037111 /* drmcommon.h */,
+				A3D933A51326DA3F00037111 /* drmcompiler.h */,
+				A3D933A61326DA3F00037111 /* drmcontextsizes.h */,
+				A3D933A71326DA3F00037111 /* drmcontract.h */,
+				A3D933A81326DA3F00037111 /* drmcrt.h */,
+				A3D933A91326DA3F00037111 /* drmdatastore.h */,
+				A3D933AA1326DA3F00037111 /* drmdatastorecommon.h */,
+				A3D933AB1326DA3F00037111 /* drmdebug.h */,
+				A3D933AC1326DA3F00037111 /* drmdes.h */,
+				A3D933AD1326DA3F00037111 /* drmdevcert.h */,
+				A3D933AE1326DA3F00037111 /* drmdevcertacq.h */,
+				A3D933AF1326DA3F00037111 /* drmdevicestore.h */,
+				A3D933B01326DA3F00037111 /* drmdevstore.h */,
+				A3D933B11326DA3F00037111 /* drmdomainapi.h */,
+				A3D933B21326DA3F00037111 /* drmdomainconstants.h */,
+				A3D933B31326DA3F00037111 /* drmdomainimp.h */,
+				A3D933B41326DA3F00037111 /* drmdomainkeyxmrparser.h */,
+				A3D933B51326DA3F00037111 /* drmdomainstore.h */,
+				A3D933B61326DA3F00037111 /* drmeccp160.h */,
+				A3D933B71326DA3F00037111 /* drmeccp256.h */,
+				A3D933B81326DA3F00037111 /* drmembeddedstore_impl.h */,
+				A3D933B91326DA3F00037111 /* drmembeddedstore.h */,
+				A3D933BA1326DA3F00037111 /* drmembedding.h */,
+				A3D933BB1326DA3F00037111 /* drmenvelope.h */,
+				A3D933BC1326DA3F00037111 /* drmerr.h */,
+				A3D933BD1326DA3F00037111 /* drmexpreval.h */,
+				A3D933BE1326DA3F00037111 /* drmfeatures.h */,
+				A3D933BF1326DA3F00037111 /* drmhash.h */,
+				A3D933C01326DA3F00037111 /* drmhdrbuilder.h */,
+				A3D933C11326DA3F00037111 /* drmhds_impl.h */,
+				A3D933C21326DA3F00037111 /* drmhds.h */,
+				A3D933C31326DA3F00037111 /* drmheaderparser.h */,
+				A3D933C41326DA3F00037111 /* drmhmac.h */,
+				A3D933C51326DA3F00037111 /* drmint64.h */,
+				A3D933C61326DA3F00037111 /* drmkeygenerator.h */,
+				A3D933C71326DA3F00037111 /* drmlicacq.h */,
+				A3D933C81326DA3F00037111 /* drmlicacqv3.h */,
+				A3D933C91326DA3F00037111 /* drmlicacqv3constants.h */,
+				A3D933CA1326DA3F00037111 /* drmlicense.h */,
+				A3D933CB1326DA3F00037111 /* drmlicenseparser.h */,
+				A3D933CC1326DA3F00037111 /* drmliceval.h */,
+				A3D933CD1326DA3F00037111 /* drmlicreason.h */,
+				A3D933CE1326DA3F00037111 /* drmlicstore.h */,
+				A3D933CF1326DA3F00037111 /* drmmanager.h */,
+				A3D933D01326DA3F00037111 /* drmmd5.h */,
+				A3D933D11326DA3F00037111 /* drmmeterapi.h */,
+				A3D933D21326DA3F00037111 /* drmmetercertprivkey.h */,
+				A3D933D31326DA3F00037111 /* drmmetercertpubkey.h */,
+				A3D933D41326DA3F00037111 /* drmmetercertstore.h */,
+				A3D933D51326DA3F00037111 /* drmmeterconstants.h */,
+				A3D933D61326DA3F00037111 /* drmmeterimp.h */,
+				A3D933D71326DA3F00037111 /* drmnamespace.h */,
+				A3D933D81326DA3F00037111 /* drmndr.h */,
+				A3D933D91326DA3F00037111 /* drmndtasf.h */,
+				A3D933DA1326DA3F00037111 /* drmndtmanager.h */,
+				A3D933DB1326DA3F00037111 /* drmnoncestore.h */,
+				A3D933DC1326DA3F00037111 /* drmopcodes.h */,
+				A3D933DD1326DA3F00037111 /* drmorderedlist.h */,
+				A3D933DE1326DA3F00037111 /* drmoutputlevels.h */,
+				A3D933DF1326DA3F00037111 /* drmoutputleveltypes.h */,
+				A3D933E01326DA3F00037111 /* drmpfd.h */,
+				A3D933E11326DA3F00037111 /* drmpfdmanager.h */,
+				A3D933E21326DA3F00037111 /* drmpkcrypto.h */,
+				A3D933E31326DA3F00037111 /* drmplayreadyobj.h */,
+				A3D933E41326DA3F00037111 /* drmpragmas.h */,
+				A3D933E51326DA3F00037111 /* drmprivkeydeviceexclusion.h */,
+				A3D933E61326DA3F00037111 /* drmprofile.h */,
+				A3D933E71326DA3F00037111 /* drmprofileconstants.h */,
+				A3D933E81326DA3F00037111 /* drmprofileconstantscfd.h */,
+				A3D933E91326DA3F00037111 /* drmptrlist.h */,
+				A3D933EA1326DA3F00037111 /* drmpubkeydeviceexclusion.h */,
+				A3D933EB1326DA3F00037111 /* drmpubkeyrevocation.h */,
+				A3D933EC1326DA3F00037111 /* drmrc4.h */,
+				A3D933ED1326DA3F00037111 /* drmresults.h */,
+				A3D933EE1326DA3F00037111 /* drmrevocation.h */,
+				A3D933EF1326DA3F00037111 /* drmrevocationstore.h */,
+				A3D933F01326DA3F00037111 /* drmrevocationtypes.h */,
+				A3D933F11326DA3F00037111 /* drmrsa.h */,
+				A3D933F21326DA3F00037111 /* drmrsacommon.h */,
+				A3D933F31326DA3F00037111 /* drmsal.h */,
+				A3D933F41326DA3F00037111 /* drmsecureclock.h */,
+				A3D933F51326DA3F00037111 /* drmsecureclockstatus.h */,
+				A3D933F61326DA3F00037111 /* drmsecurestore.h */,
+				A3D933F71326DA3F00037111 /* drmsha1.h */,
+				A3D933F81326DA3F00037111 /* drmsha256.h */,
+				A3D933F91326DA3F00037111 /* drmsoapxmlconstants.h */,
+				A3D933FA1326DA3F00037111 /* drmsoapxmlutility.h */,
+				A3D933FB1326DA3F00037111 /* drmstkalloc.h */,
+				A3D933FC1326DA3F00037111 /* drmstrings.h */,
+				A3D933FD1326DA3F00037111 /* drmstringscfd.h */,
+				A3D933FE1326DA3F00037111 /* drmstrsafe.h */,
+				A3D933FF1326DA3F00037111 /* drmsyncstore.h */,
+				A3D934001326DA3F00037111 /* drmsyncstorecontext.h */,
+				A3D934011326DA3F00037111 /* drmtoken.h */,
+				A3D934021326DA3F00037111 /* drmtrace.h */,
+				A3D934031326DA3F00037111 /* drmtypes.h */,
+				A3D934041326DA3F00037111 /* drmutf.h */,
+				A3D934051326DA3F00037111 /* drmutilities.h */,
+				A3D934061326DA3F00037111 /* drmviewprops.h */,
+				A3D934071326DA3F00037111 /* drmwindowsenv.h */,
+				A3D934081326DA3F00037111 /* drmxmlbuilder.h */,
+				A3D934091326DA3F00037111 /* drmxmlbuildera.h */,
+				A3D9340A1326DA3F00037111 /* drmxmlparser.h */,
+				A3D9340B1326DA3F00037111 /* drmxmlsig.h */,
+				A3D9340C1326DA3F00037111 /* drmxmlsigconstants.h */,
+				A3D9340D1326DA3F00037111 /* drmxmlutilities.h */,
+				A3D9340E1326DA3F00037111 /* drmxmr.h */,
+				A3D9340F1326DA3F00037111 /* drmxmrbuilder.h */,
+				A3D934101326DA3F00037111 /* drmxmrparser.h */,
+				A3D934111326DA3F00037111 /* ecurve.h */,
+				A3D934121326DA3F00037111 /* field.h */,
+				A3D934131326DA3F00037111 /* fieldpriv.h */,
+				A3D934141326DA3F00037111 /* mprand.h */,
+				A3D934151326DA3F00037111 /* oem_msdbpk.h */,
+				A3D934161326DA3F00037111 /* oem.h */,
+				A3D934171326DA3F00037111 /* oemaes.h */,
+				A3D934181326DA3F00037111 /* oemaesimpl.h */,
+				A3D934191326DA3F00037111 /* oemcommon.h */,
+				A3D9341A1326DA3F00037111 /* oemdebug.h */,
+				A3D9341B1326DA3F00037111 /* oemdevstore.h */,
+				A3D9341C1326DA3F00037111 /* oemndt.h */,
+				A3D9341D1326DA3F00037111 /* oemplatform.h */,
+				A3D9341E1326DA3F00037111 /* oemprofile.h */,
+				A3D9341F1326DA3F00037111 /* oemrsa.h */,
+				A3D934201326DA3F00037111 /* oemrsaimpl.h */,
+				A3D933851326D92000037111 /* libPlayReadyPK.a */,
+			);
+			name = DRM;
 			sourceTree = "<group>";
 		};
 		C923A25F12F06DBE0054426F /* MRGridView */ = {
@@ -1610,6 +1922,7 @@
 					"Shared/Libraries//**",
 					"$(inherited)",
 					"$(SRCROOT)",
+					"\"$(SRCROOT)/Shared/Libraries/DRM\"",
 				);
 				PRODUCT_NAME = Scholastic;
 			};
@@ -1628,6 +1941,7 @@
 					"Shared/Libraries//**",
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
+					"\"$(SRCROOT)/Shared/Libraries/DRM\"",
 				);
 				PRODUCT_NAME = Scholastic;
 				VALIDATE_PRODUCT = YES;
@@ -1670,6 +1984,7 @@
 					"Shared/Libraries//**",
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
+					"\"$(SRCROOT)/Shared/Libraries/DRM\"",
 				);
 				PRODUCT_NAME = Scholastic;
 				VALIDATE_PRODUCT = YES;
