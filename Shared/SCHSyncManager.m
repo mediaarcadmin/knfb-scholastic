@@ -236,6 +236,15 @@ static NSTimeInterval const kSCHSyncManagerHeartbeatInterval = 30.0;
 	[self kickQueue];
 }
 
+- (void)updateBookshelf
+{
+	NSLog(@"Scheduling Update Bookshelf");
+	
+	[self addToQueue:bookshelfSyncComponent];
+	
+	[self kickQueue];
+}
+
 - (NSMutableArray *)bookAnnotationsFromProfile:(SCHProfileItem *)profileItem  
 {
 	NSMutableArray *ret = [NSMutableArray array];

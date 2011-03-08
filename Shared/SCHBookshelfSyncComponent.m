@@ -19,11 +19,12 @@
 - (BOOL)updateContentMetadataItems;
 
 - (NSArray *)localContentMetadataItems;
+- (NSArray *)localUserContentItems;
 - (void)syncContentMetadataItems:(NSArray *)contentMetadataList;
 - (void)addContentMetadataItem:(NSDictionary *)webContentMetadataItem;
 - (void)syncContentMetadataItem:(NSDictionary *)webContentMetadataItem withContentMetadataItem:(SCHContentMetadataItem *)localContentMetadataItem;
+- (void)deleteUnusedBooks;
 
-@property (nonatomic, assign) BOOL includeURLs;
 @property (nonatomic, assign) NSInteger requestCount;
 
 @end
@@ -31,7 +32,6 @@
 @implementation SCHBookshelfSyncComponent
 
 @synthesize useIndividualRequests;
-@synthesize includeURLs;
 @synthesize requestCount;
 
 - (id)init
@@ -39,7 +39,6 @@
 	self = [super init];
 	if (self != nil) {
 		self.useIndividualRequests = YES;	
-		self.includeURLs = NO;
 		self.requestCount = 0;
 	}
 	return(self);
@@ -107,17 +106,25 @@
 - (BOOL)updateContentMetadataItems
 {		
 	BOOL ret = YES;
-	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+	BOOL includeURLs = NO;
 	
-	[fetchRequest setEntity:[NSEntityDescription entityForName:kSCHUserContentItem inManagedObjectContext:self.managedObjectContext]];	
+	[self deleteUnusedBooks];
 	
-	NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest error:nil];
+	NSArray *results = [self localUserContentItems];
+	NSArray *localContentMetadataItems = [self localContentMetadataItems];
 	
 	requestCount = 0;
 	if([results count] > 0) {
 		if (self.useIndividualRequests == YES) {
 			for (NSDictionary *ISBN in results) {
-				self.isSynchronizing = [self.libreAccessWebService listContentMetadata:[NSArray arrayWithObject:ISBN] includeURLs:self.includeURLs];
+				NSString *contentIdentifier = [ISBN valueForKey:kSCHLibreAccessWebServiceContentIdentifier];
+				NSUInteger index = [localContentMetadataItems indexOfObjectPassingTest:
+									^(id obj, NSUInteger idx, BOOL *stop) {
+										return ([[obj valueForKey:kSCHLibreAccessWebServiceContentIdentifier] isEqualToString:contentIdentifier]);
+									}];
+				
+				includeURLs = (index != NSNotFound && [[localContentMetadataItems objectAtIndex:index] haveURLs] == NO);
+				self.isSynchronizing = [self.libreAccessWebService listContentMetadata:[NSArray arrayWithObject:ISBN] includeURLs:includeURLs];
 				if (self.isSynchronizing == NO) {
 					[[SCHAuthenticationManager sharedAuthenticationManager] authenticate];				
 					ret = NO;			
@@ -127,7 +134,14 @@
 				}
 			}
 		} else {
-			self.isSynchronizing = [self.libreAccessWebService listContentMetadata:results includeURLs:self.includeURLs];
+			for (SCHContentMetadataItem *item in localContentMetadataItems) {
+				if ([item haveURLs] == NO) {
+					includeURLs = YES;
+					break;
+				}
+			}
+			
+			self.isSynchronizing = [self.libreAccessWebService listContentMetadata:results includeURLs:includeURLs];
 			if (self.isSynchronizing == NO) {
 				[[SCHAuthenticationManager sharedAuthenticationManager] authenticate];				
 				ret = NO;			
@@ -138,7 +152,6 @@
 	} else {
 		ret = NO;
 	}
-	[fetchRequest release], fetchRequest = nil;
 	
 	return(ret);	
 }
@@ -157,9 +170,22 @@
 	return(ret);
 }
 
+- (NSArray *)localUserContentItems
+{
+	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+	
+	[fetchRequest setEntity:[NSEntityDescription entityForName:kSCHUserContentItem inManagedObjectContext:self.managedObjectContext]];	
+	[fetchRequest setSortDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceContentIdentifier ascending:YES]]];
+	
+	NSArray *ret = [self.managedObjectContext executeFetchRequest:fetchRequest error:nil];	
+	
+	[fetchRequest release], fetchRequest = nil;
+	
+	return(ret);
+}
+
 - (void)syncContentMetadataItems:(NSArray *)contentMetadataList
 {		
-	NSMutableSet *deletePool = [NSMutableSet set];
 	NSMutableSet *creationPool = [NSMutableSet set];
 	
 	NSArray *webProfiles = [contentMetadataList sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceContentIdentifier ascending:YES]]];		
@@ -173,10 +199,6 @@
 	
 	while (webItem != nil || localItem != nil) {		
 		if (webItem == nil) {
-			while (localItem != nil) {
-				[deletePool addObject:localItem];
-				localItem = [localEnumerator nextObject];
-			} 
 			break;
 		}
 		
@@ -202,7 +224,6 @@
 				webItem = nil;
 				break;
 			case NSOrderedDescending:
-				[deletePool addObject:localItem];
 				localItem = nil;
 				break;			
 		}		
@@ -214,11 +235,7 @@
 			localItem = [localEnumerator nextObject];
 		}		
 	}
-	
-	for (SCHContentMetadataItem *localItem in deletePool) {
-		[self.managedObjectContext deleteObject:localItem];
-	}
-	
+		
 	for (NSDictionary *webItem in creationPool) {
 		[self addContentMetadataItem:webItem];
 	}
@@ -255,13 +272,72 @@
 	localContentMetadataItem.Version = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceVersion]];
 	localContentMetadataItem.Enhanced = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceEnhanced]];
 	localContentMetadataItem.FileSize = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceFileSize]];
-	if (includeURLs == YES) {
-		localContentMetadataItem.CoverURL = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceCoverURL]];
-		localContentMetadataItem.ContentURL = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceContentURL]];
+	NSString *coverURL = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceCoverURL]];
+	if (coverURL != nil){
+		localContentMetadataItem.CoverURL = coverURL;
+	}
+	NSString *contentURL = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceContentURL]];
+	if (contentURL != nil) {
+		localContentMetadataItem.ContentURL = contentURL;
 	}
 	localContentMetadataItem.PageNumber = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServicePageNumber]];
 	localContentMetadataItem.Title = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceTitle]];
 	localContentMetadataItem.Description = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceDescription]];
+}
+
+- (void)deleteUnusedBooks
+{
+	NSMutableSet *deletePool = [NSMutableSet set];
+	
+	NSEnumerator *contentMetadataEnumerator = [[self localContentMetadataItems] objectEnumerator];			  
+	NSEnumerator *userContentEnumerator = [[self localUserContentItems] objectEnumerator];			  			  
+	
+	NSDictionary *contentMetadataItem = [contentMetadataEnumerator nextObject];
+	NSDictionary *userContentItem = [userContentEnumerator nextObject];
+	
+	while (contentMetadataItem != nil || userContentItem != nil) {		
+		if (contentMetadataItem == nil) {
+			break;
+		}
+		
+		if (userContentItem == nil) {
+			while (contentMetadataItem != nil) {
+				[deletePool addObject:contentMetadataItem];
+				contentMetadataItem = [contentMetadataEnumerator nextObject];
+			} 
+			break;			
+		}
+		
+		id contentMetadataItemID = [contentMetadataItem valueForKey:kSCHLibreAccessWebServiceContentIdentifier];
+		id userContentItemID = [userContentItem valueForKey:kSCHLibreAccessWebServiceContentIdentifier];
+		
+		switch ([contentMetadataItemID compare:userContentItemID]) {
+			case NSOrderedSame:
+				contentMetadataItem = nil;
+				userContentItem = nil;
+				break;
+			case NSOrderedAscending:
+				[deletePool addObject:contentMetadataItem];
+				contentMetadataItem = nil;
+				break;
+			case NSOrderedDescending:
+				userContentItem = nil;
+				break;			
+		}		
+		
+		if (contentMetadataItem == nil) {
+			contentMetadataItem = [contentMetadataEnumerator nextObject];
+		}
+		if (userContentItem == nil) {
+			userContentItem = [userContentEnumerator nextObject];
+		}		
+	}
+	
+	for (id userContentItem in deletePool) {
+		[self.managedObjectContext deleteObject:userContentItem];
+	}
+		
+	[self save];
 }
 
 @end

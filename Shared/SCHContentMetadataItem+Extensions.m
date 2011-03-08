@@ -28,4 +28,9 @@ static NSString * const kSCHContentMetadataItemAnnotationsListProfileID = @"Anno
 	return(annotations);	
 }
 
+- (BOOL)haveURLs
+{
+	return(!(self.CoverURL == nil || self.ContentURL == nil));
+}
+
 @end

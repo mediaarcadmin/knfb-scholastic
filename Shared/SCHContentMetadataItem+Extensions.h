@@ -15,5 +15,6 @@ static NSString * const kSCHContentMetadataItem = @"SCHContentMetadataItem";
 @interface SCHContentMetadataItem (SCHContentMetadataItemExtensions)
 
 - (NSArray *)annotationsContentForProfile:(NSNumber *)profileID;
-
+- (BOOL)haveURLs;
+   
 @end

@@ -31,6 +31,7 @@
 
 - (void)firstSync;
 - (void)changeProfile;
+- (void)updateBookshelf;
 - (void)openDocument:(SCHUserContentItem *)userContentItem forProfile:(NSNumber *)profileID;
 - (void)closeDocument:(SCHUserContentItem *)userContentItem forProfile:(NSNumber *)profileID;
 - (void)exitParentalTools:(BOOL)syncNow;
