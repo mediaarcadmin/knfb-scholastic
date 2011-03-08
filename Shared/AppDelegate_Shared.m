@@ -11,6 +11,7 @@
 #import "SCHSyncManager.h"
 #import "SCHAuthenticationManager.h"
 #import "SCHProcessingManager.h"
+#import "SCHUserDefaults.h"
 
 #ifdef LOCALDEBUG
 #import "SCHLocalDebug.h"
@@ -30,6 +31,11 @@ static NSString * const kSCHClearLocalDebugMode = @"kSCHClearLocalDebugMode";
 {
 
 	// check for change between local debug mode and normal network mode
+	
+	NSDictionary *appDefaults = [NSDictionary dictionaryWithObjectsAndKeys:
+								 [NSNumber numberWithBool:NO], kSCHUserDefaultsPerformedFirstSyncUpToBooks, nil];
+	
+	[[NSUserDefaults standardUserDefaults] registerDefaults:appDefaults];		
 	
 	BOOL localDebugMode = NO;
 	

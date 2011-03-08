@@ -16,6 +16,7 @@
 #import "SCHSettingsSyncComponent.h"
 #import "SCHProfileItem+Extensions.h"
 #import "SCHContentProfileItem+Extensions.h"
+#import "SCHUserDefaults.h"
 
 static SCHSyncManager *sharedSyncManager = nil;
 static NSTimeInterval const kSCHSyncManagerHeartbeatInterval = 30.0;
@@ -183,6 +184,13 @@ static NSTimeInterval const kSCHSyncManagerHeartbeatInterval = 30.0;
 	[annotationSyncComponent clear];	
 	[readingStatsSyncComponent clear];	
 	[settingsSyncComponent clear];	
+	
+	[[NSUserDefaults standardUserDefaults] setBool:NO forKey:kSCHUserDefaultsPerformedFirstSyncUpToBooks];
+}
+
+- (BOOL)havePerformedFirstSyncUpToBooks
+{
+	return([[NSUserDefaults standardUserDefaults] boolForKey:kSCHUserDefaultsPerformedFirstSyncUpToBooks]);
 }
 
 // after login or opening the app
@@ -326,7 +334,9 @@ static NSTimeInterval const kSCHSyncManagerHeartbeatInterval = 30.0;
 
 - (void)component:(SCHComponent *)component didCompleteWithResult:(NSDictionary *)result
 {
-	if ([component isKindOfClass:[SCHAnnotationSyncComponent class]] == YES && [(SCHAnnotationSyncComponent *)component haveProfiles] == YES) {
+	if ([component isKindOfClass:[SCHBookshelfSyncComponent class]] == YES) {
+		[[NSUserDefaults standardUserDefaults] setBool:YES forKey:kSCHUserDefaultsPerformedFirstSyncUpToBooks];
+	} else if ([component isKindOfClass:[SCHAnnotationSyncComponent class]] == YES && [(SCHAnnotationSyncComponent *)component haveProfiles] == YES) {
 		NSLog(@"Next annotation profile");
 	} else {
 		NSLog(@"Removing %@ from the sync manager queue", [component class]);

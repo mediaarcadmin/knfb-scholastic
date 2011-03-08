@@ -28,6 +28,7 @@
 - (void)stop;
 
 - (void)clear;
+- (BOOL)havePerformedFirstSyncUpToBooks;
 
 - (void)firstSync;
 - (void)changeProfile;
