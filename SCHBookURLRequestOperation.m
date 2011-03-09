@@ -9,6 +9,8 @@
 #import "SCHBookURLRequestOperation.h"
 #import "BWKXPSProvider.h"
 #import "SCHBookManager.h"
+#import "SCHURLManager.h"
+#import "SCHLibreAccessWebService.h"
 
 @interface SCHBookURLRequestOperation ()
 
@@ -79,12 +81,11 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(urlSuccess:) name:@"kSCHURLManagerSuccess" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(urlFailure:) name:@"kSCHURLManagerFailure" object:nil];
 	
-	
+	[[SCHURLManager sharedURLManager] requestURLForISBN:self.bookInfo.bookIdentifier];
 	
 	do {
 		[[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
 	} while (!self.finished);
-	
 	
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	
@@ -97,8 +98,10 @@
 	self.executing = NO;
 	self.finished = YES;
 
-	self.bookInfo.coverURL = @"";
-	self.bookInfo.bookFileURL = @"";
+	NSDictionary *userInfo = [notification userInfo];
+	
+	self.bookInfo.coverURL = [userInfo objectForKey:kSCHLibreAccessWebServiceCoverURL];
+	self.bookInfo.bookFileURL = [userInfo objectForKey:kSCHLibreAccessWebServiceContentURL];
 }
 
 - (void) urlFailure: (NSNotification *) notification
