@@ -13,7 +13,8 @@
 	
 }
 
-@property (nonatomic, retain) NSURL *imagePath;
+//@property (nonatomic, retain) NSURL *imagePath;
+@property (nonatomic, retain) SCHBookInfo *bookInfo;
 @property (nonatomic, retain) NSString *localPath;
 
 @end

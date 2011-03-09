@@ -20,8 +20,8 @@
 @implementation SCHBookInfo
 
 @synthesize currentThread;
-//@synthesize metadataItemID;
 @synthesize bookIdentifier;
+@synthesize coverURL, bookFileURL;
 
 
 - (id) init

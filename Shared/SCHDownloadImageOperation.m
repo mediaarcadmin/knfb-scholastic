@@ -11,10 +11,10 @@
 
 @implementation SCHDownloadImageOperation
 
-@synthesize imagePath, localPath;
+@synthesize bookInfo, localPath;
 
 - (void)dealloc {
-	self.imagePath = nil;
+	self.bookInfo = nil;
 	self.localPath = nil;
 	
 	[super dealloc];
@@ -26,16 +26,18 @@
 		return;
 	}
 	
-	if (!(self.imagePath && self.localPath)) {
+	if (!(self.bookInfo && self.localPath)) {
 		return;
 	}
 	
-	NSLog(@"Image path is %@", self.imagePath);
+	NSURL *imagePath = [NSURL URLWithString:bookInfo.coverURL];
+	
+	NSLog(@"Image path is %@", imagePath);
 	
 	NSURLResponse *response = nil;
 	NSError *error = nil;
 		
-	NSData *imageData = [NSURLConnection sendSynchronousRequest:[NSURLRequest requestWithURL:self.imagePath]
+	NSData *imageData = [NSURLConnection sendSynchronousRequest:[NSURLRequest requestWithURL:imagePath]
 																			returningResponse:&response 
 																						error:&error];
 	
