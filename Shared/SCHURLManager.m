@@ -133,9 +133,8 @@ static SCHURLManager *sharedURLManager = nil;
 		NSArray *list = [result objectForKey:kSCHLibreAccessWebServiceContentMetadataList];
 		
 		if ([list count] > 0) {
-			NSString *ISBN = [[list objectAtIndex:0] valueForKey:kSCHLibreAccessWebServiceContentIdentifier];
-			NSLog(@"%@ URL information received", ISBN);
-			[[NSNotificationCenter defaultCenter] postNotificationName:kSCHURLManagerSuccess object:[NSArray arrayWithObject:ISBN]];				
+			NSLog(@"%@ URL information received", [[list objectAtIndex:0] valueForKey:kSCHLibreAccessWebServiceContentIdentifier]);
+			[[NSNotificationCenter defaultCenter] postNotificationName:kSCHURLManagerSuccess object:[NSArray arrayWithObject:[list objectAtIndex:0]]];				
 		} else {
 			[[NSNotificationCenter defaultCenter] postNotificationName:kSCHURLManagerFailure object:nil];
 		}		
