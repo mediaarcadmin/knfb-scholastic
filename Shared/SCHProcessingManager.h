@@ -19,6 +19,7 @@
 + (NSString *) cacheDirectory;
 
 @property (nonatomic, retain) NSOperationQueue *processingQueue;
+@property (nonatomic, retain) NSOperationQueue *bookURLQueue;
 @property (nonatomic, retain) BlioTimeOrderedCache *imageCache;
 @property (nonatomic, retain) NSMutableDictionary *currentWaitingItems;
 @property (nonatomic, retain) NSMutableDictionary *currentDownloadingItems;

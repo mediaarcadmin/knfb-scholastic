@@ -316,6 +316,8 @@
 		F8509F9012F0654B00197EB5 /* thumbImage.png in Resources */ = {isa = PBXBuildFile; fileRef = F8509F8012F0653700197EB5 /* thumbImage.png */; };
 		F86502D5132532310044FEB0 /* SCHBookShelfGridViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F86502D4132532310044FEB0 /* SCHBookShelfGridViewCell.m */; };
 		F86502D6132532310044FEB0 /* SCHBookShelfGridViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F86502D4132532310044FEB0 /* SCHBookShelfGridViewCell.m */; };
+		F897DD6E13279144007F2E14 /* SCHBookURLRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F897DD6D13279144007F2E14 /* SCHBookURLRequestOperation.m */; };
+		F897DD6F13279144007F2E14 /* SCHBookURLRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F897DD6D13279144007F2E14 /* SCHBookURLRequestOperation.m */; };
 		F8CD24F612F97E62001C748B /* SCHBookManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F8CD24CA12F9714D001C748B /* SCHBookManager.m */; };
 /* End PBXBuildFile section */
 
@@ -612,6 +614,8 @@
 		F8509F8112F0653700197EB5 /* booktexture-nocover.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "booktexture-nocover.png"; path = "Shared/Images/booktexture-nocover.png"; sourceTree = "<group>"; };
 		F86502D3132532310044FEB0 /* SCHBookShelfGridViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHBookShelfGridViewCell.h; sourceTree = "<group>"; };
 		F86502D4132532310044FEB0 /* SCHBookShelfGridViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHBookShelfGridViewCell.m; sourceTree = "<group>"; };
+		F897DD6C13279144007F2E14 /* SCHBookURLRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHBookURLRequestOperation.h; sourceTree = "<group>"; };
+		F897DD6D13279144007F2E14 /* SCHBookURLRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHBookURLRequestOperation.m; sourceTree = "<group>"; };
 		F8CD24C912F9714D001C748B /* SCHBookManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookManager.h; path = iPhone/SCHBookManager.h; sourceTree = "<group>"; };
 		F8CD24CA12F9714D001C748B /* SCHBookManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookManager.m; path = iPhone/SCHBookManager.m; sourceTree = "<group>"; };
 		F8DE53E3130A8C2600691CBA /* SCHBookInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookInfo.h; path = Shared/SCHBookInfo.h; sourceTree = "<group>"; };
@@ -1192,6 +1196,8 @@
 				F82D39BE131EA79100289FF3 /* SCHXPSCoverImageOperation.m */,
 				F82D39B7131EA79100289FF3 /* SCHDownloadBookFile.h */,
 				F82D39B8131EA79100289FF3 /* SCHDownloadBookFile.m */,
+				F897DD6C13279144007F2E14 /* SCHBookURLRequestOperation.h */,
+				F897DD6D13279144007F2E14 /* SCHBookURLRequestOperation.m */,
 			);
 			name = "Book Data";
 			sourceTree = "<group>";
@@ -1472,6 +1478,7 @@
 				F82D39D6131EA7C200289FF3 /* SCHThumbnailOperation.m in Sources */,
 				F82D39DA131EA7D400289FF3 /* SCHBookShelfTableViewCell.m in Sources */,
 				F86502D6132532310044FEB0 /* SCHBookShelfGridViewCell.m in Sources */,
+				F897DD6F13279144007F2E14 /* SCHBookURLRequestOperation.m in Sources */,
 				52322C34132693F500BB071D /* SCHURLManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1595,6 +1602,7 @@
 				F82D39D3131EA7C200289FF3 /* SCHThumbnailOperation.m in Sources */,
 				F82D39D9131EA7D400289FF3 /* SCHBookShelfTableViewCell.m in Sources */,
 				F86502D5132532310044FEB0 /* SCHBookShelfGridViewCell.m in Sources */,
+				F897DD6E13279144007F2E14 /* SCHBookURLRequestOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

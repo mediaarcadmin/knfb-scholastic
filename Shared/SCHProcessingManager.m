@@ -8,6 +8,7 @@
 
 #import "SCHProcessingManager.h"
 #import "SCHThumbnailFactory.h"
+#import "SCHBookURLRequestOperation.h"
 #import "SCHDownloadImageOperation.h"
 #import "SCHXPSCoverImageOperation.h"
 #import "SCHDownloadBookFile.h"
@@ -22,7 +23,7 @@
 
 @implementation SCHProcessingManager
 
-@synthesize processingQueue, imageCache, currentDownloadingItems, currentWaitingItems, backgroundTask;
+@synthesize processingQueue, bookURLQueue, imageCache, currentDownloadingItems, currentWaitingItems, backgroundTask;
 
 static SCHProcessingManager *sharedManager = nil;
 
@@ -34,6 +35,8 @@ static SCHProcessingManager *sharedManager = nil;
 	if (self = [super init]) {
 		self.processingQueue = [[NSOperationQueue alloc] init];
 		[self.processingQueue setMaxConcurrentOperationCount:3];
+		self.bookURLQueue = [[NSOperationQueue alloc] init];
+		[self.bookURLQueue setMaxConcurrentOperationCount:10];
 		self.imageCache = [[BlioTimeOrderedCache alloc] init];
 		self.imageCache.countLimit = 50; // Arbitrary 30 object limit
         self.imageCache.totalCostLimit = (1024*1024) * 5; // Arbitrary 5MB limit. This may need wteaked or set on a per-device basis
@@ -47,6 +50,7 @@ static SCHProcessingManager *sharedManager = nil;
 - (void) dealloc
 {
 	self.processingQueue = nil;
+	self.bookURLQueue = nil;
 	self.imageCache = nil;
 	self.currentDownloadingItems = nil;
 	self.currentWaitingItems = nil;
@@ -120,13 +124,25 @@ static SCHProcessingManager *sharedManager = nil;
 - (NSArray *) processBookCoverImage: (SCHBookInfo *) bookInfo size: (CGSize) size rect: (CGRect) thumbRect flip: (BOOL) flip maintainAspect: (BOOL) aspect
 {
 	NSLog(@"processing book: %@", bookInfo.contentMetadata);
-	NSString *coverURL = bookInfo.contentMetadata.CoverURL;
+/*	NSString *coverURL = bookInfo.contentMetadata.CoverURL;
 	
 	if (!coverURL) {
 		// get the cover URL 
 		// FIXME: actually get the cover URL
 		coverURL = @"http://gordonchristie.com/storage/bookcover-test.png";
 	}
+*/
+	
+	NSOperation *urlOp = nil;
+	
+	if (!bookInfo.coverURL | !bookInfo.bookFileURL) {
+		SCHBookURLRequestOperation *bookURLOp = [[SCHBookURLRequestOperation alloc] init];
+		bookURLOp.bookInfo = bookInfo;
+		urlOp = bookURLOp;
+	} else {
+		NSLog(@"Already have URLs.");
+	}
+	
 	
 	NSString *cacheDir  = [SCHProcessingManager cacheDirectory];
 	NSString *cacheImageItem = [cacheDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png", bookInfo.contentMetadata.ContentIdentifier]];
@@ -146,10 +162,14 @@ static SCHProcessingManager *sharedManager = nil;
 #else
 		// download image from the server
 		SCHDownloadImageOperation *downloadImageOp = [[SCHDownloadImageOperation alloc] init];
-		downloadImageOp.imagePath = [NSURL URLWithString:coverURL];
+		downloadImageOp.bookInfo = bookInfo;
 		downloadImageOp.localPath = cacheImageItem;
 		[downloadImageOp setQueuePriority:NSOperationQueuePriorityHigh];
 		imageOp = downloadImageOp;
+		
+		if (urlOp) {
+			[imageOp addDependency:urlOp];
+		}
 #endif
 		
 	} else {
@@ -192,6 +212,12 @@ static SCHProcessingManager *sharedManager = nil;
 		[operations addObject:imageOp];
 		[[SCHProcessingManager defaultManager].processingQueue addOperation:imageOp];
 		[imageOp release];
+	}
+	
+	if (urlOp) {
+		[operations addObject:urlOp];
+		[[SCHProcessingManager defaultManager].bookURLQueue addOperation:urlOp];
+		[urlOp release];
 	}
 	
 	return [NSArray arrayWithArray:operations];
@@ -317,7 +343,7 @@ static SCHProcessingManager *sharedManager = nil;
     BOOL backgroundSupported = [device respondsToSelector:@selector(isMultitaskingSupported)] && device.multitaskingSupported;
     if(backgroundSupported) {        
 		
-		if (self.processingQueue && [self.processingQueue operationCount]) {
+		if ((self.processingQueue && [self.processingQueue operationCount]) || (self.bookURLQueue && [self.bookURLQueue operationCount])) {
 			NSLog(@"Background processing needs more time - going into the background.");
 			
             self.backgroundTask = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
@@ -334,10 +360,11 @@ static SCHProcessingManager *sharedManager = nil;
 															   DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
 
 			dispatch_async(taskcompletion, ^{
-				NSLog(@"Emptying operation queue...");
+				NSLog(@"Emptying operation queues...");
                 if(self.backgroundTask != UIBackgroundTaskInvalid) {
-                    [self.processingQueue waitUntilAllOperationsAreFinished];                    
-					NSLog(@"operation queue is finished!");
+					[self.bookURLQueue waitUntilAllOperationsAreFinished];
+                    [self.processingQueue waitUntilAllOperationsAreFinished];    
+					NSLog(@"operation queues are finished!");
                     [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTask];
                     self.backgroundTask = UIBackgroundTaskInvalid;
                 }

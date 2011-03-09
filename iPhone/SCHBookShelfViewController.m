@@ -86,7 +86,7 @@ NSInteger bookSort(SCHBookInfo *book1, SCHBookInfo *book2, void *context)
 	self.loadingView.layer.cornerRadius = 5.0f;
 	[self.view bringSubviewToFront:self.loadingView];
 	
-	if ([self.books count] == 0 && [[SCHSyncManager sharedSyncManager] isSynchronizing]) {
+	if (![[SCHSyncManager sharedSyncManager] havePerformedFirstSyncUpToBooks] && [[SCHSyncManager sharedSyncManager] isSynchronizing]) {
 		NSLog(@"Showing loading view...");
 		self.loadingView.hidden = NO;
 	} else {
@@ -257,7 +257,7 @@ NSInteger bookSort(SCHBookInfo *book1, SCHBookInfo *book2, void *context)
 	static NSString* cellIdentifier = @"ScholasticGridViewCell";
 	SCHBookShelfGridViewCell* gridCell = (SCHBookShelfGridViewCell *) [aGridView dequeueReusableCellWithIdentifier:cellIdentifier];
 	if (gridCell == nil) {
-		gridCell = [[SCHBookShelfGridViewCell alloc] initWithFrame:[aGridView frameForCellAtGridIndex:index] reuseIdentifier:cellIdentifier];
+		gridCell = [[[SCHBookShelfGridViewCell alloc] initWithFrame:[aGridView frameForCellAtGridIndex:index] reuseIdentifier:cellIdentifier] autorelease];
 	}
 	else {
 		gridCell.frame = [aGridView frameForCellAtGridIndex:index];
