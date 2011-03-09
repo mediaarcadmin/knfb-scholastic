@@ -12,6 +12,7 @@
 #import "SCHAuthenticationManager.h"
 #import "SCHProcessingManager.h"
 #import "SCHUserDefaults.h"
+#import "SCHURLManager.h"
 
 #ifdef LOCALDEBUG
 #import "SCHLocalDebug.h"
@@ -36,6 +37,8 @@ static NSString * const kSCHClearLocalDebugMode = @"kSCHClearLocalDebugMode";
 								 [NSNumber numberWithBool:NO], kSCHUserDefaultsPerformedFirstSyncUpToBooks, nil];
 	
 	[[NSUserDefaults standardUserDefaults] registerDefaults:appDefaults];		
+	
+	[SCHURLManager sharedURLManager].managedObjectContext = self.managedObjectContext;
 	
 	BOOL localDebugMode = NO;
 	

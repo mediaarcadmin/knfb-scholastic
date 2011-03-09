@@ -8,9 +8,12 @@
 
 #import "SCHURLManager.h"
 
+#import <CoreData/CoreData.h>
+
 #import "SCHAuthenticationManager.h"
 #import "SCHLibreAccessWebService.h"
 #import "SCHContentMetadataItem+Extensions.h"
+#import "SCHUserContentItem+Extensions.h"
 
 static SCHURLManager *sharedURLManager = nil;
 
@@ -27,6 +30,7 @@ static SCHURLManager *sharedURLManager = nil;
 
 @implementation SCHURLManager
 
+@synthesize managedObjectContext;
 @synthesize table;
 @synthesize backgroundTaskIdentifier;
 @synthesize libreAccessWebService;
@@ -77,43 +81,52 @@ static SCHURLManager *sharedURLManager = nil;
 	[super dealloc];
 }
 
-- (void)requestURLFor:(SCHContentMetadataItem *)contentMetaDataItem
+- (void)requestURLForISBN:(NSString *)ISBN
 {
-	if (contentMetaDataItem != nil) {
-		[table addObject:contentMetaDataItem];
-		NSLog(@"Requesting URL for %@", [contentMetaDataItem valueForKey:kSCHLibreAccessWebServiceContentIdentifier]);
-		[self shakeTable];
+	// TODO: Test for duplication
+	if (ISBN != nil) {
+		NSEntityDescription *entityDescription = [NSEntityDescription entityForName:kSCHUserContentItem inManagedObjectContext:self.managedObjectContext];
+		NSFetchRequest *fetchRequest = [entityDescription.managedObjectModel fetchRequestFromTemplateWithName:@"fetchWithContentIdentifier" substitutionVariables:[NSDictionary dictionaryWithObject:ISBN forKey:@"CONTENT_IDENTIFIER"]];
+		
+		NSArray *ret = [self.managedObjectContext executeFetchRequest:fetchRequest error:nil];	
+		
+		if ([ret count] > 0) {
+			[table addObject:[ret objectAtIndex:0]];
+			[self shakeTable];
+		}
 	}
 }
-
+									 
 - (void)clear
 {
 	[table removeAllObjects];
 }
 
 - (void)shakeTable
-{
-	NSMutableSet *removeFromTable = [NSMutableSet set];
-	
-	self.backgroundTaskIdentifier = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{ 
-		self.backgroundTaskIdentifier = UIBackgroundTaskInvalid;
-	}];
+{	
+	if ([table count] > 0) {
+		NSMutableSet *removeFromTable = [NSMutableSet set];
 		
-	for (SCHContentMetadataItem *contentMetaDataItem in table) {
-		if ([self.libreAccessWebService listContentMetadata:[NSArray arrayWithObject:contentMetaDataItem] includeURLs:YES] == YES) {
-			[removeFromTable addObject:contentMetaDataItem];
-		} else {
-			if (self.backgroundTaskIdentifier != UIBackgroundTaskInvalid) {
-				[[UIApplication sharedApplication] endBackgroundTask:self.backgroundTaskIdentifier];
-				self.backgroundTaskIdentifier = UIBackgroundTaskInvalid;			
+		self.backgroundTaskIdentifier = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{ 
+			self.backgroundTaskIdentifier = UIBackgroundTaskInvalid;
+		}];
+		
+		for (SCHContentMetadataItem *contentMetaDataItem in table) {
+			if ([self.libreAccessWebService listContentMetadata:[NSArray arrayWithObject:contentMetaDataItem] includeURLs:YES] == YES) {
+				[removeFromTable addObject:contentMetaDataItem];
+			} else {
+				if (self.backgroundTaskIdentifier != UIBackgroundTaskInvalid) {
+					[[UIApplication sharedApplication] endBackgroundTask:self.backgroundTaskIdentifier];
+					self.backgroundTaskIdentifier = UIBackgroundTaskInvalid;			
+				}
+				
+				[[SCHAuthenticationManager sharedAuthenticationManager] authenticate];							
+				break;
 			}
-			
-			[[SCHAuthenticationManager sharedAuthenticationManager] authenticate];							
-			break;
 		}
+		
+		[table minusSet:removeFromTable];	
 	}
-	
-	[table minusSet:removeFromTable];	
 }
 
 #pragma mark -
