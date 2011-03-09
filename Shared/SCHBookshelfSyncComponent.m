@@ -91,10 +91,8 @@
 				[super method:method didCompleteWithResult:nil];				
 			}
 		} else {
-			NSMutableArray *ISBNs = [NSMutableArray array];
-			for (NSDictionary *book in list) {
-				[ISBNs addObject:[book valueForKey:kSCHLibreAccessWebServiceContentIdentifier]];
-			}
+			NSArray *ISBNs = [list valueForKey:kSCHLibreAccessWebServiceContentIdentifier];
+		
 			[[NSNotificationCenter defaultCenter] postNotificationName:kSCHBookshelfSyncComponentBookReceived object:ISBNs];							
 			NSLog(@"Book information received");		
 			[[NSNotificationCenter defaultCenter] postNotificationName:kSCHBookshelfSyncComponentComplete object:nil];
@@ -103,28 +101,28 @@
 	}	
 }
 
+- (void)method:(NSString *)method didFailWithError:(NSError *)error
+{
+	if (self.useIndividualRequests == YES) {
+		requestCount--;
+	}
+
+	[super method:method didFailWithError:error];
+}
+
 - (BOOL)updateContentMetadataItems
 {		
 	BOOL ret = YES;
-	BOOL includeURLs = NO;
 	
 	[self deleteUnusedBooks];
 	
 	NSArray *results = [self localUserContentItems];
-	NSArray *localContentMetadataItems = [self localContentMetadataItems];
 	
 	requestCount = 0;
 	if([results count] > 0) {
 		if (self.useIndividualRequests == YES) {
-			for (NSDictionary *ISBN in results) {
-				NSString *contentIdentifier = [ISBN valueForKey:kSCHLibreAccessWebServiceContentIdentifier];
-				NSUInteger index = [localContentMetadataItems indexOfObjectPassingTest:
-									^(id obj, NSUInteger idx, BOOL *stop) {
-										return ([[obj valueForKey:kSCHLibreAccessWebServiceContentIdentifier] isEqualToString:contentIdentifier]);
-									}];
-				
-				includeURLs = (index != NSNotFound && [[localContentMetadataItems objectAtIndex:index] haveURLs] == NO);
-				self.isSynchronizing = [self.libreAccessWebService listContentMetadata:[NSArray arrayWithObject:ISBN] includeURLs:includeURLs];
+			for (NSDictionary *ISBN in results) {				
+				self.isSynchronizing = [self.libreAccessWebService listContentMetadata:[NSArray arrayWithObject:ISBN] includeURLs:NO];
 				if (self.isSynchronizing == NO) {
 					[[SCHAuthenticationManager sharedAuthenticationManager] authenticate];				
 					ret = NO;			
@@ -133,15 +131,8 @@
 					NSLog(@"Requesting %@ Book information", [ISBN valueForKey:kSCHLibreAccessWebServiceContentIdentifier]);					
 				}
 			}
-		} else {
-			for (SCHContentMetadataItem *item in localContentMetadataItems) {
-				if ([item haveURLs] == NO) {
-					includeURLs = YES;
-					break;
-				}
-			}
-			
-			self.isSynchronizing = [self.libreAccessWebService listContentMetadata:results includeURLs:includeURLs];
+		} else {			
+			self.isSynchronizing = [self.libreAccessWebService listContentMetadata:results includeURLs:NO];
 			if (self.isSynchronizing == NO) {
 				[[SCHAuthenticationManager sharedAuthenticationManager] authenticate];				
 				ret = NO;			
