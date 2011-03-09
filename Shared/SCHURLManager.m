@@ -153,7 +153,7 @@ static SCHURLManager *sharedURLManager = nil;
 		
 		if ([list count] > 0) {
 			NSLog(@"%@ URL information received", [[list objectAtIndex:0] valueForKey:kSCHLibreAccessWebServiceContentIdentifier]);
-			[[NSNotificationCenter defaultCenter] postNotificationName:kSCHURLManagerSuccess object:[NSArray arrayWithObject:[list objectAtIndex:0]]];				
+			[[NSNotificationCenter defaultCenter] postNotificationName:kSCHURLManagerSuccess object:[list objectAtIndex:0]];				
 		} else {
 			[[NSNotificationCenter defaultCenter] postNotificationName:kSCHURLManagerFailure object:nil];
 		}		
