@@ -95,19 +95,29 @@
 
 - (void) urlSuccess: (NSNotification *) notification
 {
-	self.executing = NO;
-	self.finished = YES;
-
-	NSDictionary *userInfo = [notification userInfo];
 	
-	self.bookInfo.coverURL = [userInfo objectForKey:kSCHLibreAccessWebServiceCoverURL];
-	self.bookInfo.bookFileURL = [userInfo objectForKey:kSCHLibreAccessWebServiceContentURL];
+	NSDictionary *userInfo = [notification userInfo];
+	NSString *completedISBN = [userInfo objectForKey:kSCHLibreAccessWebServiceContentIdentifier];
+
+	if ([completedISBN compare:self.bookInfo.bookIdentifier] == NSOrderedSame) {
+	
+		self.bookInfo.coverURL = [userInfo objectForKey:kSCHLibreAccessWebServiceCoverURL];
+		self.bookInfo.bookFileURL = [userInfo objectForKey:kSCHLibreAccessWebServiceContentURL];
+
+		self.executing = NO;
+		self.finished = YES;
+	}
 }
 
 - (void) urlFailure: (NSNotification *) notification
 {
-	self.executing = NO;
-	self.finished = YES;
+	NSDictionary *userInfo = [notification userInfo];
+	NSString *completedISBN = [userInfo objectForKey:kSCHLibreAccessWebServiceContentIdentifier];
+	
+	if ([completedISBN compare:self.bookInfo.bookIdentifier] == NSOrderedSame) {
+		self.executing = NO;
+		self.finished = YES;
+	}
 }
 
 @end
