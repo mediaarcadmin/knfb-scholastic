@@ -81,21 +81,18 @@
 			if ([list count] > 0) {
 				NSString *ISBN = [[list objectAtIndex:0] valueForKey:kSCHLibreAccessWebServiceContentIdentifier];
 				NSLog(@"%@ Book information received", ISBN);
-				[[NSNotificationCenter defaultCenter] postNotificationName:kSCHBookshelfSyncComponentBookReceived object:[NSArray arrayWithObject:ISBN]];				
+				[[NSNotificationCenter defaultCenter] postNotificationName:kSCHBookshelfSyncComponentBookReceived object:self userInfo:[NSDictionary dictionaryWithObject:ISBN forKey:kSCHLibreAccessWebServiceContentIdentifier]];				
 			} else {
 				NSLog(@"Book information received");				
 			}
 			
 			if (requestCount < 1) {
-				[[NSNotificationCenter defaultCenter] postNotificationName:kSCHBookshelfSyncComponentComplete object:nil];
+				[[NSNotificationCenter defaultCenter] postNotificationName:kSCHBookshelfSyncComponentComplete object:self];
 				[super method:method didCompleteWithResult:nil];				
 			}
 		} else {
-			NSArray *ISBNs = [list valueForKey:kSCHLibreAccessWebServiceContentIdentifier];
-		
-			[[NSNotificationCenter defaultCenter] postNotificationName:kSCHBookshelfSyncComponentBookReceived object:ISBNs];							
 			NSLog(@"Book information received");		
-			[[NSNotificationCenter defaultCenter] postNotificationName:kSCHBookshelfSyncComponentComplete object:nil];
+			[[NSNotificationCenter defaultCenter] postNotificationName:kSCHBookshelfSyncComponentComplete object:self];
 			[super method:method didCompleteWithResult:nil];				
 		}
 	}	
