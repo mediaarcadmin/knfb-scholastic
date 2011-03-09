@@ -32,7 +32,7 @@
 	
 	NSURL *imagePath = [NSURL URLWithString:bookInfo.coverURL];
 	
-	NSLog(@"Image path is %@", imagePath);
+	NSLog(@"Downloading Image: %@", imagePath);
 	
 	NSURLResponse *response = nil;
 	NSError *error = nil;

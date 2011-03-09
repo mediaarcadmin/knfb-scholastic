@@ -123,7 +123,7 @@ static SCHProcessingManager *sharedManager = nil;
 
 - (NSArray *) processBookCoverImage: (SCHBookInfo *) bookInfo size: (CGSize) size rect: (CGRect) thumbRect flip: (BOOL) flip maintainAspect: (BOOL) aspect
 {
-	NSLog(@"processing book: %@", bookInfo.contentMetadata);
+	//NSLog(@"processing book: %@", bookInfo.contentMetadata);
 /*	NSString *coverURL = bookInfo.contentMetadata.CoverURL;
 	
 	if (!coverURL) {
