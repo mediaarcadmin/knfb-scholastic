@@ -10,6 +10,7 @@
 
 #import "BITAPIProxyDelegate.h"
 
+@class NSManagedObjectContext;
 @class SCHContentMetadataItem;
 
 static NSString * const kSCHURLManagerSuccess = @"AuthenticationManagerSuccess";
@@ -20,9 +21,11 @@ static NSString * const kSCHURLManagerFailure = @"AuthenticationManagerFailure";
 
 }
 
+@property (retain, nonatomic) NSManagedObjectContext *managedObjectContext;
+
 + (SCHURLManager *)sharedURLManager;
 
-- (void)requestURLFor:(SCHContentMetadataItem *)contentMetaDataItem;
+- (void)requestURLForISBN:(NSString *)ISBN;
 - (void)clear;
 
 @end
