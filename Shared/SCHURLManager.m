@@ -64,8 +64,10 @@ static SCHURLManager *sharedURLManager = nil;
 		
 		self.requestCount = 0;
 		
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(authenticationManager:) name:kSCHAuthenticationManagerSuccess object:nil];					
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(authenticationManager:) name:kSCHAuthenticationManagerFailure object:nil];							
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(authenticationManager:) 
+													 name:kSCHAuthenticationManagerSuccess object:nil];					
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(authenticationManager:) 
+													 name:kSCHAuthenticationManagerFailure object:nil];							
 	}
 	
 	return(self);
@@ -85,10 +87,15 @@ static SCHURLManager *sharedURLManager = nil;
 {
 	BOOL ret = NO;
 	
-	// TODO: Test for duplication
 	if (ISBN != nil) {
-		NSEntityDescription *entityDescription = [NSEntityDescription entityForName:kSCHUserContentItem inManagedObjectContext:self.managedObjectContext];
-		NSFetchRequest *fetchRequest = [entityDescription.managedObjectModel fetchRequestFromTemplateWithName:@"fetchWithContentIdentifier" substitutionVariables:[NSDictionary dictionaryWithObject:ISBN forKey:@"CONTENT_IDENTIFIER"]];
+		NSEntityDescription *entityDescription = [NSEntityDescription 
+												  entityForName:kSCHUserContentItem 
+												  inManagedObjectContext:self.managedObjectContext];
+		NSFetchRequest *fetchRequest = [entityDescription.managedObjectModel 
+										fetchRequestFromTemplateWithName:kSCHUserContentItemFetchWithContentIdentifier 
+										substitutionVariables:[NSDictionary 
+															   dictionaryWithObject:ISBN 
+															   forKey:kSCHUserContentItemCONTENT_IDENTIFIER]];
 		
 		NSArray *book = [self.managedObjectContext executeFetchRequest:fetchRequest error:nil];	
 		
@@ -117,7 +124,11 @@ static SCHURLManager *sharedURLManager = nil;
 		}];
 		
 		for (SCHContentMetadataItem *contentMetaDataItem in table) {
-			if ([self.libreAccessWebService listContentMetadata:[NSArray arrayWithObject:contentMetaDataItem] includeURLs:YES] == YES) {
+			if ([self.libreAccessWebService listContentMetadata:[NSArray arrayWithObject:contentMetaDataItem] 
+													includeURLs:YES] == YES) {
+				NSLog(@"Requesting URLs for %@", [contentMetaDataItem 
+												valueForKey:kSCHLibreAccessWebServiceContentIdentifier]);
+				
 				requestCount++;
 				[removeFromTable addObject:contentMetaDataItem];
 			} else {
@@ -141,36 +152,41 @@ static SCHURLManager *sharedURLManager = nil;
 - (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result
 {	
 	requestCount--;
-	if (requestCount < 1) {
-		if (self.backgroundTaskIdentifier != UIBackgroundTaskInvalid) {
-			[[UIApplication sharedApplication] endBackgroundTask:self.backgroundTaskIdentifier];
-			self.backgroundTaskIdentifier = UIBackgroundTaskInvalid;			
-		}
-	}
 	
 	if([method compare:kSCHLibreAccessWebServiceListContentMetadata] == NSOrderedSame) {
 		NSArray *list = [result objectForKey:kSCHLibreAccessWebServiceContentMetadataList];
 		
 		if ([list count] > 0) {
-			NSLog(@"%@ URL information received", [[list objectAtIndex:0] valueForKey:kSCHLibreAccessWebServiceContentIdentifier]);
-			[[NSNotificationCenter defaultCenter] postNotificationName:kSCHURLManagerSuccess object:self userInfo:[list objectAtIndex:0]];				
+			NSLog(@"Received URLs for %@", [[list objectAtIndex:0] 
+												   valueForKey:kSCHLibreAccessWebServiceContentIdentifier]);
+			[[NSNotificationCenter defaultCenter] postNotificationName:kSCHURLManagerSuccess 
+																object:self userInfo:[list objectAtIndex:0]];				
 		} else {
-			[[NSNotificationCenter defaultCenter] postNotificationName:kSCHURLManagerFailure object:self];
+			[[NSNotificationCenter defaultCenter] postNotificationName:kSCHURLManagerFailure 
+																object:self];
 		}		
+	}
+	
+	if (requestCount < 1) {
+		if (self.backgroundTaskIdentifier != UIBackgroundTaskInvalid) {
+			[[UIApplication sharedApplication] endBackgroundTask:self.backgroundTaskIdentifier];
+			self.backgroundTaskIdentifier = UIBackgroundTaskInvalid;			
+		}
 	}	
 }
 
 - (void)method:(NSString *)method didFailWithError:(NSError *)error
 {
 	requestCount--;
+	
+	[[NSNotificationCenter defaultCenter] postNotificationName:kSCHURLManagerFailure object:self];	
+	
 	if (requestCount < 1) {
 		if (self.backgroundTaskIdentifier != UIBackgroundTaskInvalid) {
 			[[UIApplication sharedApplication] endBackgroundTask:self.backgroundTaskIdentifier];
 			self.backgroundTaskIdentifier = UIBackgroundTaskInvalid;			
 		}
-	}	
-	
-	[[NSNotificationCenter defaultCenter] postNotificationName:kSCHURLManagerFailure object:self];	
+	}		
 }
 
 #pragma mark -
@@ -184,6 +200,9 @@ static SCHURLManager *sharedURLManager = nil;
 		NSLog(@"Authenticated!");
 		
 		[self shakeTable];	
+	} else if ([table count] > 0) {
+		[self clear];
+		[[NSNotificationCenter defaultCenter] postNotificationName:kSCHURLManagerFailure object:self];			
 	}
 }
 

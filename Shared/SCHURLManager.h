@@ -11,7 +11,6 @@
 #import "BITAPIProxyDelegate.h"
 
 @class NSManagedObjectContext;
-@class SCHContentMetadataItem;
 
 static NSString * const kSCHURLManagerSuccess = @"URLManagerSuccess";
 static NSString * const kSCHURLManagerFailure = @"URLManagerFailure";
