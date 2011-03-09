@@ -54,6 +54,7 @@
 		52298A9812F0EF5600BBBCE6 /* SCHCoords.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A8012F0EF5600BBBCE6 /* SCHCoords.m */; };
 		52298A9912F0EF5600BBBCE6 /* SCHLocationGraphics.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A8212F0EF5600BBBCE6 /* SCHLocationGraphics.m */; };
 		52298A9B12F0EF5600BBBCE6 /* SCHHighlight.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A8612F0EF5600BBBCE6 /* SCHHighlight.m */; };
+		52322C34132693F500BB071D /* SCHURLManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 52322C33132693F500BB071D /* SCHURLManager.m */; };
 		5233E03313154EEA0088F18C /* SCHDeviceInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 5233E03213154EEA0088F18C /* SCHDeviceInfo.m */; };
 		5233E03413154EEA0088F18C /* SCHDeviceInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 5233E03213154EEA0088F18C /* SCHDeviceInfo.m */; };
 		5233E03713154F810088F18C /* SCHDeviceInfo+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5233E03613154F810088F18C /* SCHDeviceInfo+Extensions.m */; };
@@ -394,6 +395,8 @@
 		52298A8512F0EF5600BBBCE6 /* SCHHighlight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHHighlight.h; path = Shared/SCHHighlight.h; sourceTree = "<group>"; };
 		52298A8612F0EF5600BBBCE6 /* SCHHighlight.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHHighlight.m; path = Shared/SCHHighlight.m; sourceTree = "<group>"; };
 		52322BF613268C3300BB071D /* SCHUserDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHUserDefaults.h; path = Shared/SCHUserDefaults.h; sourceTree = "<group>"; };
+		52322C32132693F500BB071D /* SCHURLManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHURLManager.h; path = Shared/SCHURLManager.h; sourceTree = "<group>"; };
+		52322C33132693F500BB071D /* SCHURLManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHURLManager.m; path = Shared/SCHURLManager.m; sourceTree = "<group>"; };
 		5233E03113154EEA0088F18C /* SCHDeviceInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHDeviceInfo.h; path = Shared/SCHDeviceInfo.h; sourceTree = "<group>"; };
 		5233E03213154EEA0088F18C /* SCHDeviceInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHDeviceInfo.m; path = Shared/SCHDeviceInfo.m; sourceTree = "<group>"; };
 		5233E03513154F810088F18C /* SCHDeviceInfo+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SCHDeviceInfo+Extensions.h"; path = "Shared/SCHDeviceInfo+Extensions.h"; sourceTree = "<group>"; };
@@ -1014,6 +1017,8 @@
 				5293872C12DF43CB00045B44 /* SCHLibreAccessWebService.m */,
 				52EF543E12E9A5D400E374F7 /* SCHAuthenticationManager.h */,
 				52EF543F12E9A5D400E374F7 /* SCHAuthenticationManager.m */,
+				52322C32132693F500BB071D /* SCHURLManager.h */,
+				52322C33132693F500BB071D /* SCHURLManager.m */,
 				5266D38213007D15004E3AC6 /* SCHComponent.h */,
 				5266D38313007D15004E3AC6 /* SCHComponent.m */,
 				52E3355A1303F71F002F3011 /* SCHComponentDelegate.h */,
@@ -1474,6 +1479,7 @@
 				F82D39DA131EA7D400289FF3 /* SCHBookShelfTableViewCell.m in Sources */,
 				F86502D6132532310044FEB0 /* SCHBookShelfGridViewCell.m in Sources */,
 				F897DD6F13279144007F2E14 /* SCHBookURLRequestOperation.m in Sources */,
+				52322C34132693F500BB071D /* SCHURLManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
