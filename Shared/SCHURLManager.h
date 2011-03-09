@@ -25,7 +25,7 @@ static NSString * const kSCHURLManagerFailure = @"AuthenticationManagerFailure";
 
 + (SCHURLManager *)sharedURLManager;
 
-- (void)requestURLForISBN:(NSString *)ISBN;
+- (BOOL)requestURLForISBN:(NSString *)ISBN;
 - (void)clear;
 
 @end

@@ -81,20 +81,25 @@ static SCHURLManager *sharedURLManager = nil;
 	[super dealloc];
 }
 
-- (void)requestURLForISBN:(NSString *)ISBN
+- (BOOL)requestURLForISBN:(NSString *)ISBN
 {
+	BOOL ret = NO;
+	
 	// TODO: Test for duplication
 	if (ISBN != nil) {
 		NSEntityDescription *entityDescription = [NSEntityDescription entityForName:kSCHUserContentItem inManagedObjectContext:self.managedObjectContext];
 		NSFetchRequest *fetchRequest = [entityDescription.managedObjectModel fetchRequestFromTemplateWithName:@"fetchWithContentIdentifier" substitutionVariables:[NSDictionary dictionaryWithObject:ISBN forKey:@"CONTENT_IDENTIFIER"]];
 		
-		NSArray *ret = [self.managedObjectContext executeFetchRequest:fetchRequest error:nil];	
+		NSArray *book = [self.managedObjectContext executeFetchRequest:fetchRequest error:nil];	
 		
-		if ([ret count] > 0) {
-			[table addObject:[ret objectAtIndex:0]];
+		ret = [book count] > 0;
+		if (ret == YES) {
+			[table addObject:[book objectAtIndex:0]];
 			[self shakeTable];
 		}
 	}
+	
+	return(ret);
 }
 									 
 - (void)clear
@@ -113,6 +118,7 @@ static SCHURLManager *sharedURLManager = nil;
 		
 		for (SCHContentMetadataItem *contentMetaDataItem in table) {
 			if ([self.libreAccessWebService listContentMetadata:[NSArray arrayWithObject:contentMetaDataItem] includeURLs:YES] == YES) {
+				requestCount++;
 				[removeFromTable addObject:contentMetaDataItem];
 			} else {
 				if (self.backgroundTaskIdentifier != UIBackgroundTaskInvalid) {
