@@ -78,10 +78,22 @@
 		return;
 	}
 */	
+	NSLog(@"Queueing operation..");
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(urlSuccess:) name:@"kSCHURLManagerSuccess" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(urlFailure:) name:@"kSCHURLManagerFailure" object:nil];
 	
-	[[SCHURLManager sharedURLManager] requestURLForISBN:self.bookInfo.bookIdentifier];
+	BOOL queued = NO;
+	
+	@synchronized([SCHURLManager sharedURLManager]) {
+		queued = [[SCHURLManager sharedURLManager] requestURLForISBN:self.bookInfo.bookIdentifier];
+	}
+
+	if (!queued) {
+		NSLog(@"The man from requestURLForISBN, he say NO.");
+		return;
+	} else {
+		NSLog(@"****** SUCCESSFUL URL REQUEST ******");
+	}
 	
 	do {
 		[[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
@@ -95,12 +107,13 @@
 
 - (void) urlSuccess: (NSNotification *) notification
 {
-	
+	NSLog(@"Successful retrieval!");
 	NSDictionary *userInfo = [notification userInfo];
 	NSString *completedISBN = [userInfo objectForKey:kSCHLibreAccessWebServiceContentIdentifier];
 
 	if ([completedISBN compare:self.bookInfo.bookIdentifier] == NSOrderedSame) {
 	
+		NSLog(@"Successful retrieval for %@!", completedISBN);
 		self.bookInfo.coverURL = [userInfo objectForKey:kSCHLibreAccessWebServiceCoverURL];
 		self.bookInfo.bookFileURL = [userInfo objectForKey:kSCHLibreAccessWebServiceContentURL];
 
@@ -115,6 +128,7 @@
 	NSString *completedISBN = [userInfo objectForKey:kSCHLibreAccessWebServiceContentIdentifier];
 	
 	if ([completedISBN compare:self.bookInfo.bookIdentifier] == NSOrderedSame) {
+		NSLog(@"Failure for ISBN %@", completedISBN);
 		self.executing = NO;
 		self.finished = YES;
 	}
