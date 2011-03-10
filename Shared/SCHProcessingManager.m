@@ -9,9 +9,8 @@
 #import "SCHProcessingManager.h"
 #import "SCHThumbnailFactory.h"
 #import "SCHBookURLRequestOperation.h"
-#import "SCHDownloadImageOperation.h"
 #import "SCHXPSCoverImageOperation.h"
-#import "SCHDownloadBookFile.h"
+#import "SCHDownloadFileOperation.h"
 
 @interface SCHProcessingManager()
 
@@ -23,7 +22,9 @@
 
 @implementation SCHProcessingManager
 
-@synthesize processingQueue, bookURLQueue, imageCache, currentDownloadingItems, currentWaitingItems, currentWaitingForURLItems, backgroundTask;
+@synthesize processingQueue, bookURLQueue, imageCache, 
+currentDownloadingItems, currentWaitingItems, currentWaitingForURLItems, currentDownloadingCoverImages, 
+currentProcessingAsyncImageViews, backgroundTask;
 
 static SCHProcessingManager *sharedManager = nil;
 
@@ -43,6 +44,8 @@ static SCHProcessingManager *sharedManager = nil;
 		self.currentDownloadingItems = [[NSMutableDictionary alloc] init];
 		self.currentWaitingItems = [[NSMutableDictionary alloc] init];
 		self.currentWaitingForURLItems = [[NSMutableDictionary alloc] init];
+		self.currentDownloadingCoverImages = [[NSMutableDictionary alloc] init];
+		self.currentProcessingAsyncImageViews = [[NSMutableDictionary alloc] init];
 	}
 	
 	return self;
@@ -56,6 +59,8 @@ static SCHProcessingManager *sharedManager = nil;
 	self.currentDownloadingItems = nil;
 	self.currentWaitingItems = nil;
 	self.currentWaitingForURLItems = nil;
+	self.currentDownloadingCoverImages = nil;
+	self.currentProcessingAsyncImageViews = nil;
 	[super dealloc];
 }
 
@@ -80,6 +85,8 @@ static SCHProcessingManager *sharedManager = nil;
 	
 	if ([[NSFileManager defaultManager] fileExistsAtPath:thumbPath]) {
 		return [SCHThumbnailFactory updateThumbView:imageView withSize:size path:thumbPath];
+	} else if ([[SCHProcessingManager defaultManager] hasExistingAsyncImageViewForThumbName:thumbName]) {
+		return NO;
 	} else {
 		return [[SCHProcessingManager defaultManager] updateAsyncThumbView:imageView withBook: bookInfo imageOfInterest:thumbName size:size rect:thumbRect maintainAspect:aspect usePlaceHolder:placeholder];
 	}
@@ -88,7 +95,7 @@ static SCHProcessingManager *sharedManager = nil;
 }
 
 #pragma mark -
-#pragma mark Update asyncThumbView
+#pragma mark asyncThumbView
 
 - (BOOL) updateAsyncThumbView: (SCHAsyncImageView *) imageView withBook: (SCHBookInfo *) bookInfo imageOfInterest: (NSString *) imageOfInterest
 				   size: (CGSize) size rect:(CGRect) thumbRect maintainAspect:(BOOL)aspect usePlaceHolder:(BOOL) placeholder
@@ -109,12 +116,35 @@ static SCHProcessingManager *sharedManager = nil;
 	}
 	
 	imageView.imageOfInterest = imageOfInterest;
-	
 	imageView.operations = [self processBookCoverImage:bookInfo size:size rect:thumbRect flip:NO maintainAspect:aspect];
+	
+	if (imageView.operations && [imageView.operations count] > 0) {
+		NSString *imageName = [NSString stringWithFormat:@"%@.png", bookInfo.contentMetadata.ContentIdentifier];
+		NSString *thumbName = [NSString stringWithFormat:@"%@_%d_%d", imageName, (int)size.width, (int)size.height];
+		[self.currentProcessingAsyncImageViews setObject:imageView forKey:thumbName];
+	}
 	
 	return NO;
 }
 
+- (BOOL) hasExistingAsyncImageViewForThumbName: (NSString *) thumbName
+{
+	BOOL result = NO;
+	
+	if ([self.currentProcessingAsyncImageViews objectForKey:thumbName]) {
+		result = YES;
+	}
+	return result;
+}
+
+- (void) removeProcessingAsyncImageView: (SCHAsyncImageView *) imageView
+{
+	NSArray *keys = [self.currentProcessingAsyncImageViews allKeysForObject:imageView];
+	
+	for (NSString *key in keys) {
+		[self.currentProcessingAsyncImageViews removeObjectForKey:key];
+	}
+}
 
 
 // This method does the following:
@@ -125,27 +155,9 @@ static SCHProcessingManager *sharedManager = nil;
 
 - (NSArray *) processBookCoverImage: (SCHBookInfo *) bookInfo size: (CGSize) size rect: (CGRect) thumbRect flip: (BOOL) flip maintainAspect: (BOOL) aspect
 {
-	//NSLog(@"processing book: %@", bookInfo.contentMetadata);
-/*	NSString *coverURL = bookInfo.contentMetadata.CoverURL;
 	
-	if (!coverURL) {
-		// get the cover URL 
-		// FIXME: actually get the cover URL
-		coverURL = @"http://gordonchristie.com/storage/bookcover-test.png";
-	}
-*/
-	
-	NSOperation *urlOp = nil;
-	
-	if (!bookInfo || !bookInfo.coverURL || !bookInfo.bookFileURL) {
-		SCHBookURLRequestOperation *bookURLOp = [[SCHBookURLRequestOperation alloc] init];
-		bookURLOp.bookInfo = bookInfo;
-		urlOp = bookURLOp;
-	} else {
-//		NSLog(@"Already have URLs.");
-	}
-	
-	
+	NSAssert(bookInfo != nil, @"processBookCoverImage must have a valid bookInfo object.");
+
 	NSString *cacheDir  = [SCHProcessingManager cacheDirectory];
 	NSString *cacheImageItem = [cacheDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png", bookInfo.bookIdentifier]];
 	
@@ -163,19 +175,32 @@ static SCHProcessingManager *sharedManager = nil;
 		imageOp = xpsImageOp;
 #else
 		// download image from the server
-		SCHDownloadImageOperation *downloadImageOp = [[SCHDownloadImageOperation alloc] init];
+		SCHDownloadFileOperation *downloadImageOp = [[SCHDownloadFileOperation alloc] init];
+		downloadImageOp.fileType = kSCHDownloadFileTypeCoverImage;
 		downloadImageOp.bookInfo = bookInfo;
-		downloadImageOp.localPath = cacheImageItem;
+		downloadImageOp.resume = NO;
 		[downloadImageOp setQueuePriority:NSOperationQueuePriorityHigh];
 		imageOp = downloadImageOp;
-		
-		if (urlOp) {
-			[imageOp addDependency:urlOp];
-		}
+/*	
+		SCHDownloadImageOperation *downloadImageOp = [[SCHDownloadImageOperation alloc] init];
+		 downloadImageOp.bookInfo = bookInfo;
+		 downloadImageOp.localPath = cacheImageItem;
+		 [downloadImageOp setQueuePriority:NSOperationQueuePriorityHigh];
+		 imageOp = downloadImageOp;
+*/		
 #endif
 		
 	} else {
 		NSLog(@"Full sized image already exists.");
+	}
+	
+	NSOperation *urlOp = nil;
+	
+	if (imageOp && !bookInfo.coverURL || !bookInfo.bookFileURL) {
+		SCHBookURLRequestOperation *bookURLOp = [[SCHBookURLRequestOperation alloc] init];
+		bookURLOp.bookInfo = bookInfo;
+		urlOp = bookURLOp;
+		[imageOp addDependency:urlOp];
 	}
 	
 	SCHThumbnailOperation *thumbOp = nil;
@@ -204,6 +229,8 @@ static SCHProcessingManager *sharedManager = nil;
 	}
 	
 	NSMutableArray *operations = [[[NSMutableArray alloc] init] autorelease];
+
+	NSLog(@"=============================================== Scheduling operations: %@ %@ %@", urlOp, imageOp, thumbOp);
 	
 	if (thumbOp) {
 		[operations addObject:thumbOp];
@@ -227,7 +254,7 @@ static SCHProcessingManager *sharedManager = nil;
 
 - (void) downloadBookFile: (SCHBookInfo *) bookInfo
 {
-	SCHDownloadBookFile *bookDownloadOp = nil;
+	SCHDownloadFileOperation *bookDownloadOp = nil;
 	NSOperation *urlOp = nil;
 	
 #ifndef LOCALDEBUG
@@ -253,7 +280,8 @@ static SCHProcessingManager *sharedManager = nil;
 		}
 		
 		// if it needs downloaded, queue up a book download operation
-		bookDownloadOp = [[SCHDownloadBookFile alloc] init];
+		bookDownloadOp = [[SCHDownloadFileOperation alloc] init];
+		bookDownloadOp.fileType = kSCHDownloadFileTypeXPSBook;
 		bookDownloadOp.bookInfo = bookInfo;
 		bookDownloadOp.resume = YES;
 		if (urlOp) {
@@ -307,11 +335,22 @@ static SCHProcessingManager *sharedManager = nil;
 		}
 
 		[self.currentWaitingItems setObject:operation forKey:bookInfo.bookIdentifier];
+		
 	}
+
+	[self performSelectorOnMainThread:@selector(bookUpdate:) 
+						   withObject:bookInfo
+						waitUntilDone:YES];
 }
 
 - (void) setBookDownloading: (SCHBookInfo *) bookInfo operation: (NSOperation *) operation
 {
+	NSLog(@"Book downloading. Operation count: %d", [self.processingQueue operationCount]);
+	
+	for (id obj in [self.processingQueue operations]) {
+		NSLog(@"Op: %@", obj);
+	}
+	
 	if ([[self.currentDownloadingItems allKeys] containsObject:bookInfo.bookIdentifier]) {
 		return;
 	}
@@ -322,20 +361,86 @@ static SCHProcessingManager *sharedManager = nil;
 		}
 
 		[self.currentDownloadingItems setObject:operation forKey:bookInfo.bookIdentifier];
+		
 	}
+	[self performSelectorOnMainThread:@selector(bookUpdate:) 
+						   withObject:bookInfo
+						waitUntilDone:YES];
 }
 
 - (void) setBookWaitingForURLs: (SCHBookInfo *) bookInfo operation: (NSOperation *) operation
 {
 	if ([[self.currentWaitingForURLItems allKeys] containsObject:bookInfo.bookIdentifier]) {
-		NSLog(@"setbookwaiting Returning.");
 		return;
 	}
 	
 	@synchronized(self) {
-		NSLog(@"***** Adding book for URLs: %@ operation %@", bookInfo.bookIdentifier, operation);
 		[self.currentWaitingForURLItems setObject:operation forKey:bookInfo.bookIdentifier];
 	}
+	
+	[self performSelectorOnMainThread:@selector(bookUpdate:) 
+						   withObject:bookInfo
+						waitUntilDone:YES];
+}
+
+- (void) setCoverImageDownloading: (SCHBookInfo *) bookInfo operation: (NSOperation *) operation
+{
+	if ([[self.currentDownloadingCoverImages allKeys] containsObject:bookInfo.bookIdentifier]) {
+		return;
+	}
+	
+	@synchronized(self) {
+		[self.currentDownloadingCoverImages setObject:operation forKey:bookInfo.bookIdentifier];
+	}
+	
+	[self performSelectorOnMainThread:@selector(bookUpdate:) 
+						   withObject:bookInfo
+						waitUntilDone:YES];
+	
+}
+
+- (void) removeBookFromDownload: (SCHBookInfo *) bookInfo
+{
+	@synchronized(self) {
+		if ([[self.currentDownloadingItems allKeys] containsObject:bookInfo.bookIdentifier]) {
+			
+			//SCHDownloadFileOperation *op = [self.currentDownloadingItems objectForKey:bookInfo.bookIdentifier];
+			//[op cancel];
+			
+			[self.currentDownloadingItems removeObjectForKey:bookInfo.bookIdentifier];
+		}
+		
+		if ([[self.currentWaitingItems allKeys] containsObject:bookInfo.bookIdentifier]) {
+			//NSOperation *op = [self.currentWaitingItems objectForKey:bookInfo.bookIdentifier];
+			//[op cancel];
+			
+			[self.currentWaitingItems removeObjectForKey:bookInfo.bookIdentifier];
+		}
+	}
+	
+	[self performSelectorOnMainThread:@selector(bookUpdate:) 
+						   withObject:bookInfo
+						waitUntilDone:YES];
+	
+}
+
+- (void) removeCoverImageFromDownload: (SCHBookInfo *) bookInfo
+{
+	@synchronized(self) {
+		if ([[self.currentDownloadingCoverImages allKeys] containsObject:bookInfo.bookIdentifier]) {
+			
+			NSLog(@"***** removing book for URLs: %@", bookInfo.bookIdentifier);
+			//SCHDownloadFileOperation *op = [self.currentDownloadingCoverImages objectForKey:bookInfo.bookIdentifier];
+//			[op cancel];
+			
+			[self.currentDownloadingCoverImages removeObjectForKey:bookInfo.bookIdentifier];
+		}
+	}	
+	
+	[self performSelectorOnMainThread:@selector(bookUpdate:) 
+						   withObject:bookInfo
+						waitUntilDone:YES];
+	
 }
 
 - (void) removeBookWaitingForURLs: (SCHBookInfo *) bookInfo
@@ -344,33 +449,21 @@ static SCHProcessingManager *sharedManager = nil;
 		if ([[self.currentWaitingForURLItems allKeys] containsObject:bookInfo.bookIdentifier]) {
 			
 			NSLog(@"***** removing book for URLs: %@", bookInfo.bookIdentifier);
-			SCHBookURLRequestOperation *op = [self.currentWaitingForURLItems objectForKey:bookInfo.bookIdentifier];
-			[op cancel];
+			//SCHBookURLRequestOperation *op = [self.currentWaitingForURLItems objectForKey:bookInfo.bookIdentifier];
+			//[op cancel];
 			
 			[self.currentWaitingForURLItems removeObjectForKey:bookInfo.bookIdentifier];
 		}
-	}		
+		
+	}	
+
+	[self performSelectorOnMainThread:@selector(bookUpdate:) 
+						   withObject:bookInfo
+						waitUntilDone:YES];
+	
+	
 }
 
-- (void) removeBookFromDownload: (SCHBookInfo *) bookInfo
-{
-	@synchronized(self) {
-		if ([[self.currentDownloadingItems allKeys] containsObject:bookInfo.bookIdentifier]) {
-			
-			SCHDownloadBookFile *op = [self.currentDownloadingItems objectForKey:bookInfo.bookIdentifier];
-			[op cancel];
-			
-			[self.currentDownloadingItems removeObjectForKey:bookInfo.bookIdentifier];
-		}
-		
-		if ([[self.currentWaitingItems allKeys] containsObject:bookInfo.bookIdentifier]) {
-			NSOperation *op = [self.currentWaitingItems objectForKey:bookInfo.bookIdentifier];
-			[op cancel];
-			
-			[self.currentWaitingItems removeObjectForKey:bookInfo.bookIdentifier];
-		}
-	}
-}
 
 - (BOOL) isCurrentlyWaiting: (SCHBookInfo *) bookInfo
 {
@@ -386,11 +479,23 @@ static SCHProcessingManager *sharedManager = nil;
 	}
 }
 
+- (BOOL) isCurrentlyDownloadingCoverImage: (SCHBookInfo *) bookInfo
+{
+	@synchronized(self) {
+		return [[self.currentDownloadingCoverImages allKeys] containsObject:bookInfo.bookIdentifier];
+	}
+}
+
 - (BOOL) isCurrentlyWaitingForURLs: (SCHBookInfo *) bookInfo
 {
 	@synchronized(self) {
 		return [[self.currentWaitingForURLItems allKeys] containsObject:bookInfo.bookIdentifier];
 	}
+}
+
+- (void) bookUpdate: (SCHBookInfo *) sentBookInfo
+{
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"SCHBookDownloadStatusUpdate" object:sentBookInfo userInfo:nil];
 }
 
 - (void) enterBackground

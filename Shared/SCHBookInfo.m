@@ -172,6 +172,11 @@ static NSMutableDictionary *bookTrackingDictionary = nil;
 }
 	
 
+- (BOOL) isCurrentlyDownloadingCoverImage
+{
+	return [[SCHProcessingManager defaultManager] isCurrentlyDownloadingCoverImage:self];
+}
+
 - (BOOL) isCurrentlyDownloading
 {
 	return [[SCHProcessingManager defaultManager] isCurrentlyDownloading:self];

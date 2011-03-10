@@ -163,9 +163,12 @@
 	// debug: make sure we're not running the image resizing on the main thread
 	NSAssert([NSThread currentThread] != [NSThread mainThread], @"Don't do image interpolation on the main thread!");
 	
+	NSLog(@"++++++++++++++++++++++++++ file exists at path? %@", ([[NSFileManager defaultManager] fileExistsAtPath:path])?@"Yes":@"No!");
+	
 	UIImage *fullImage = [SCHThumbnailFactory imageWithPath:path];
 	
 	if (!fullImage) {
+		NSLog(@"No image returned!");
 		return nil;
 	} else {
 		
@@ -191,18 +194,19 @@
 + (UIImage *)imageWithPath:(NSString *)path {
 	UIImage *image = nil;
 	
-	NSData *imageData = [[[SCHProcessingManager defaultManager] imageCache] objectForKey:path];
+//	NSData *imageData = [[[SCHProcessingManager defaultManager] imageCache] objectForKey:path];
 	
-	if (!imageData) {
-		imageData = [NSData dataWithContentsOfMappedFile:path];
+//	if (!imageData) {
 		
-		if (imageData) {
+		NSData *imageData = [NSData dataWithContentsOfMappedFile:path];
+		
+//		if (imageData) {
 			// only cache small images
-			if ([imageData length] < (1024 * 512)) {
-				[[[SCHProcessingManager defaultManager] imageCache] setObject:imageData forKey:path cost:[imageData length]];
-			}
-		}
-	}
+//			if ([imageData length] < (1024 * 512)) {
+//				[[[SCHProcessingManager defaultManager] imageCache] setObject:imageData forKey:path cost:[imageData length]];
+//			}
+//		}
+//	}
 		
 	if (imageData) {
 		image = [UIImage imageWithData:imageData];

@@ -25,5 +25,7 @@
 @property (nonatomic, retain) UILabel *statusLabel;
 @property (nonatomic, retain) UIProgressView *progressView;
 
+- (void) refreshCell;
+
 
 @end

@@ -37,9 +37,12 @@ typedef enum {
 - (NSString *) xpsPath;
 - (BookFileProcessingState) processingState;
 - (BOOL) processedCovers;
+
 - (BOOL) isCurrentlyDownloading;
+- (BOOL) isCurrentlyDownloadingCoverImage;
 - (BOOL) isWaitingForDownload;
 - (BOOL) isCurrentlyWaitingForURLs;
+
 - (float) currentDownloadedPercentage;
 
 @end

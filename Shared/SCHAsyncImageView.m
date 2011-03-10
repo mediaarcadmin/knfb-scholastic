@@ -7,6 +7,7 @@
 //
 
 #import "SCHAsyncImageView.h"
+#import "SCHProcessingManager.h"
 
 @interface SCHAsyncImageView () 
 
@@ -85,6 +86,8 @@
 		[self setImage:image];
 		[self setNeedsDisplay];
 	}
+	
+	[[SCHProcessingManager defaultManager] removeProcessingAsyncImageView:self];
 }
 
 @end

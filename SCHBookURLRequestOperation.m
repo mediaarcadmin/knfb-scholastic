@@ -46,14 +46,6 @@
 	bookInfo = [newBookInfo retain];
 	[oldInfo release];
 	
-/*	NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
-							  self.bookInfo, @"bookInfo", 
-							  nil];
-
-	[self performSelectorOnMainThread:@selector(bookUpdate:) 
-						   withObject:userInfo
-						waitUntilDone:YES];
-*/	
 }
 
 - (void) start
@@ -82,12 +74,6 @@
 	return self.finished;
 }
 
-- (void) bookUpdate: (NSDictionary *) userInfo
-{
-	[[NSNotificationCenter defaultCenter] postNotificationName:@"SCHBookDownloadStatusUpdate" object:nil userInfo:userInfo];
-	
-}
-
 - (void) beginConnection
 {
 	if ([self.bookInfo isCurrentlyWaitingForURLs]) {
@@ -111,23 +97,11 @@
 		
 	}
 
-	NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
-							  self.bookInfo, @"bookInfo", 
-							  nil];
-	
-	[self performSelectorOnMainThread:@selector(bookUpdate:) 
-						   withObject:userInfo
-						waitUntilDone:YES];
-	
 	do {
 		[[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
 	} while (!self.finished);
 	
 
-	[self performSelectorOnMainThread:@selector(bookUpdate:) 
-						   withObject:userInfo
-						waitUntilDone:YES];
-	
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	
 	return;

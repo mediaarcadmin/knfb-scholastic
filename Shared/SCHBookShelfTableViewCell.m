@@ -25,8 +25,6 @@
 
 @property (readwrite, retain) SCHAsyncImageView *thumbImageView;
 
-- (void) updateWithContentMetadata: (SCHContentMetadataItem *) metadata status: (NSString *) status;
-
 @end
 
 @implementation SCHBookShelfTableViewCell
@@ -96,9 +94,8 @@
 	
 	CGRect bounds = self.contentView.bounds;
 	
-//	CGRect thumbFrame = self.thumbContainerView.frame;
-//	thumbFrame.origin = CGPointMake(10, floorf((CGRectGetHeight(bounds) - CGRectGetHeight(thumbFrame))/2.0f));
-    //[self.thumbContainerView setFrame:thumbFrame];
+//	CGRect thumbFrame = CGRectMake(LEFT_MARGIN, IMAGE_TOP_MARGIN, IMAGE_FRAME_WIDTH, IMAGE_FRAME_HEIGHT);
+//    [self.thumbContainerView setFrame:thumbFrame];
 	
 	CGFloat labelX = ceilf(CGRectGetMaxX(self.thumbContainerView.frame) + TEXT_LEFT_MARGIN);
 	CGFloat labelWidth = CGRectGetWidth(bounds) - RIGHT_MARGIN - labelX;
@@ -121,12 +118,17 @@
 
 - (void) setBookInfo:(SCHBookInfo *) newBookInfo
 {
+	BOOL updateImage = YES;
+	
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"SCHBookDownloadPercentageUpdate" object:bookInfo];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"SCHBookDownloadStatusUpdate" object:bookInfo];
 
 	if (newBookInfo != bookInfo) {
 		SCHBookInfo *oldBookInfo = bookInfo;
 		bookInfo = [newBookInfo retain];
 		[oldBookInfo release];
+	} else {
+		updateImage = NO;
 	}
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self
@@ -134,32 +136,51 @@
 												 name:@"SCHBookDownloadPercentageUpdate" 
 											   object:self.bookInfo.bookIdentifier];
 
-	// image processing
-	BOOL immediateUpdate = [[SCHProcessingManager defaultManager] updateThumbView:self.thumbImageView
-																		 withBook:newBookInfo
-																			 size:CGSizeMake(IMAGE_FRAME_WIDTH, IMAGE_FRAME_HEIGHT)
-																			 rect:CGRectNull
-																			 flip:NO
-																   maintainAspect:YES
-																   usePlaceHolder:YES];
-	if (immediateUpdate) {
-		[self setNeedsDisplay];
-	}
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(refreshCell)
+												 name:@"SCHBookDownloadStatusUpdate"
+											   object:self.bookInfo];
+	
+	[self refreshCell];
+	
+}
+
+
+- (void) refreshCell
+{
+
+//	if (updateImage) {
+		// image processing
+		BOOL immediateUpdate = [[SCHProcessingManager defaultManager] updateThumbView:self.thumbImageView
+																			 withBook:self.bookInfo
+																				 size:CGSizeMake(IMAGE_FRAME_WIDTH, IMAGE_FRAME_HEIGHT)
+																				 rect:CGRectNull
+																				 flip:NO
+																	   maintainAspect:YES
+																	   usePlaceHolder:YES];
+		if (immediateUpdate) {
+			[self setNeedsDisplay];
+		}
+//	}
 	
 	NSString *status = @"";
 	
-	if ([bookInfo isCurrentlyDownloading]) {
-		status = @"Downloading...";
+	if ([bookInfo isCurrentlyWaitingForURLs]) {
+		status = @"URLs...";
 		thumbTintView.hidden = NO;
-		self.progressView.hidden = NO;
+		self.progressView.hidden = YES;
+	} else if ([bookInfo isCurrentlyDownloadingCoverImage]) {
+		status = @"Cover Img...";
+		thumbTintView.hidden = NO;
+		self.progressView.hidden = YES;
 	} else if ([bookInfo isWaitingForDownload]) {
 		status = @"Waiting...";
 		thumbTintView.hidden = NO;
 		self.progressView.hidden = YES;
-	} else if ([bookInfo isCurrentlyWaitingForURLs]) {
-		status = @"Updating...";
+	} else if ([bookInfo isCurrentlyDownloading]) {
+		status = @"Downloading...";
 		thumbTintView.hidden = NO;
-		self.progressView.hidden = YES;
+		self.progressView.hidden = NO;
 	} else {
 		// book status
 		switch ([bookInfo processingState]) {
@@ -190,6 +211,7 @@
 				break;
 		}
 	}	
+	
 	if (self.thumbTintView.hidden) {
 		self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	} else {
@@ -198,16 +220,8 @@
 	
 	[self.progressView setProgress:[bookInfo currentDownloadedPercentage]];
 	
-	//NSLog(@"Setting status for %@ to \"%@\" (%d).", self.bookInfo.contentMetadata.Title, status, [bookInfo processingState]);
-	
-	[self updateWithContentMetadata:self.bookInfo.contentMetadata status:status];	
-}
-
-
-- (void) updateWithContentMetadata: (SCHContentMetadataItem *) metadata status: (NSString *) status
-{
-	self.titleLabel.text = [metadata Title];
-	self.subtitleLabel.text = [metadata Author];
+	self.titleLabel.text = [self.bookInfo.contentMetadata Title];
+	self.subtitleLabel.text = [self.bookInfo.contentMetadata Author];
 	self.statusLabel.text = status;
 	
 	[self layoutSubviews];
@@ -231,6 +245,8 @@
 }
 
 - (void)dealloc {
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+
 	self.titleLabel = nil;
 	self.subtitleLabel = nil;
 	self.statusLabel = nil;
