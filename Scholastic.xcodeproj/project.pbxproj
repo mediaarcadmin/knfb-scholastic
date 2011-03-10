@@ -93,7 +93,6 @@
 		5293870712DF3EDF00045B44 /* BITSOAPProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293870512DF3EDF00045B44 /* BITSOAPProxy.m */; };
 		5293872D12DF43CB00045B44 /* SCHLibreAccessWebService.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293872C12DF43CB00045B44 /* SCHLibreAccessWebService.m */; };
 		5293873012DF43D200045B44 /* SCHScholasticWebService.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293872F12DF43D200045B44 /* SCHScholasticWebService.m */; };
-		5293877F12DF515400045B44 /* SCHWebServiceSync.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293877E12DF515400045B44 /* SCHWebServiceSync.m */; };
 		5293883312E03CD000045B44 /* SCHBookShelfViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293883112E03CD000045B44 /* SCHBookShelfViewController.m */; };
 		5293883412E03CD000045B44 /* SCHBookShelfViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5293883212E03CD000045B44 /* SCHBookShelfViewController.xib */; };
 		52938B3912E08FC400045B44 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 52938B3812E08FC400045B44 /* Icon.png */; };
@@ -286,7 +285,6 @@
 		F8509F2B12F063C900197EB5 /* BITSOAPProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293870512DF3EDF00045B44 /* BITSOAPProxy.m */; };
 		F8509F2C12F063C900197EB5 /* SCHLibreAccessWebService.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293872C12DF43CB00045B44 /* SCHLibreAccessWebService.m */; };
 		F8509F2D12F063C900197EB5 /* SCHScholasticWebService.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293872F12DF43D200045B44 /* SCHScholasticWebService.m */; };
-		F8509F2E12F063C900197EB5 /* SCHWebServiceSync.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293877E12DF515400045B44 /* SCHWebServiceSync.m */; };
 		F8509F2F12F063C900197EB5 /* SCHBookShelfViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293883112E03CD000045B44 /* SCHBookShelfViewController.m */; };
 		F8509F3012F063C900197EB5 /* SCHProfileItem+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D6122112E44B0F0033DA92 /* SCHProfileItem+Extensions.m */; };
 		F8509F3112F063C900197EB5 /* SCHSyncEntity+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D6124E12E44D760033DA92 /* SCHSyncEntity+Extensions.m */; };
@@ -464,8 +462,6 @@
 		5293872C12DF43CB00045B44 /* SCHLibreAccessWebService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHLibreAccessWebService.m; path = Shared/SCHLibreAccessWebService.m; sourceTree = "<group>"; };
 		5293872E12DF43D200045B44 /* SCHScholasticWebService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHScholasticWebService.h; path = Shared/SCHScholasticWebService.h; sourceTree = "<group>"; };
 		5293872F12DF43D200045B44 /* SCHScholasticWebService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHScholasticWebService.m; path = Shared/SCHScholasticWebService.m; sourceTree = "<group>"; };
-		5293877D12DF515400045B44 /* SCHWebServiceSync.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHWebServiceSync.h; path = Shared/SCHWebServiceSync.h; sourceTree = "<group>"; };
-		5293877E12DF515400045B44 /* SCHWebServiceSync.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHWebServiceSync.m; path = Shared/SCHWebServiceSync.m; sourceTree = "<group>"; };
 		5293883012E03CD000045B44 /* SCHBookShelfViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookShelfViewController.h; path = iPhone/SCHBookShelfViewController.h; sourceTree = "<group>"; };
 		5293883112E03CD000045B44 /* SCHBookShelfViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookShelfViewController.m; path = iPhone/SCHBookShelfViewController.m; sourceTree = "<group>"; };
 		5293883212E03CD000045B44 /* SCHBookShelfViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = SCHBookShelfViewController.xib; path = iPhone/SCHBookShelfViewController.xib; sourceTree = "<group>"; };
@@ -1033,8 +1029,6 @@
 		52AD9B2612FC207A0099FB88 /* Sync */ = {
 			isa = PBXGroup;
 			children = (
-				5293877D12DF515400045B44 /* SCHWebServiceSync.h */,
-				5293877E12DF515400045B44 /* SCHWebServiceSync.m */,
 				52AD9ACD12FC0EEF0099FB88 /* SCHSyncManager.h */,
 				52AD9ACE12FC0EEF0099FB88 /* SCHSyncManager.m */,
 				52AD9B1A12FC1B6B0099FB88 /* SCHSyncComponent.h */,
@@ -1388,7 +1382,6 @@
 				5293870712DF3EDF00045B44 /* BITSOAPProxy.m in Sources */,
 				5293872D12DF43CB00045B44 /* SCHLibreAccessWebService.m in Sources */,
 				5293873012DF43D200045B44 /* SCHScholasticWebService.m in Sources */,
-				5293877F12DF515400045B44 /* SCHWebServiceSync.m in Sources */,
 				5293883312E03CD000045B44 /* SCHBookShelfViewController.m in Sources */,
 				52D6122212E44B0F0033DA92 /* SCHProfileItem+Extensions.m in Sources */,
 				52D6124F12E44D760033DA92 /* SCHSyncEntity+Extensions.m in Sources */,
@@ -1512,7 +1505,6 @@
 				F8509F2B12F063C900197EB5 /* BITSOAPProxy.m in Sources */,
 				F8509F2C12F063C900197EB5 /* SCHLibreAccessWebService.m in Sources */,
 				F8509F2D12F063C900197EB5 /* SCHScholasticWebService.m in Sources */,
-				F8509F2E12F063C900197EB5 /* SCHWebServiceSync.m in Sources */,
 				F8509F2F12F063C900197EB5 /* SCHBookShelfViewController.m in Sources */,
 				F8509F3012F063C900197EB5 /* SCHProfileItem+Extensions.m in Sources */,
 				F8509F3112F063C900197EB5 /* SCHSyncEntity+Extensions.m in Sources */,
