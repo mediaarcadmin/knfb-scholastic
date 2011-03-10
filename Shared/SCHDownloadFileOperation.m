@@ -130,7 +130,7 @@
 		NSLog(@"--**--**--**--**--**-- UNKNOWN FILE DOWNLOAD TYPE");
 	}
 	
-	NSLog(@"--**--**--**--**--**-- File path: %@", self.localPath);
+//	NSLog(@"--**--**--**--**--**-- File path: %@", self.localPath);
 	
 	unsigned long long fileSize = 0;
 	
@@ -155,7 +155,7 @@
 		}
 	}
 		
-	NSLog(@"--**--**--**--**--**--Download request: %@", request);
+//	NSLog(@"--**--**--**--**--**--Download request: %@", request);
 	
 	if (fileSize > 0) {
 		[request setValue:[NSString stringWithFormat:@"bytes=%llu-", fileSize] forHTTPHeaderField:@"Range"];
@@ -181,10 +181,10 @@
 	
 	[connection start];
 	
-	NSLog(@"--**--**--**--**--**--Connection started for file %@...", [self.localPath lastPathComponent]);
-	if (fileSize > 0) {
-		NSLog(@"--**--**--**--**--**--Continuing from file position %llu...", fileSize);
-	}
+//	NSLog(@"--**--**--**--**--**--Connection started for file %@...", [self.localPath lastPathComponent]);
+//	if (fileSize > 0) {
+//		NSLog(@"--**--**--**--**--**--Continuing from file position %llu...", fileSize);
+//	}
 	
 	if (connection != nil) {
 		[self waitForCompletion];
@@ -219,7 +219,8 @@
 
 - (void) startWaitingForBookDownload
 {
-	NSLog(@"--**--**--**--**--**-- Starting to wait for download of file %@", self.bookInfo.contentMetadata.Title);
+	// FIXME: verify that this actually works
+//	NSLog(@"--**--**--**--**--**-- Starting to wait for download of file %@", self.bookInfo.contentMetadata.Title);
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(bookFileWaitFinished:) name:@"SCHBookFileDownloadWaiting" object:self.bookInfo];
 	[self waitForCompletion];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"SCHBookFileDownloadWaiting" object:self.bookInfo];
@@ -227,7 +228,7 @@
 
 - (void) bookFileWaitFinished: (NSNotification *) notification
 {
-	NSLog(@"--**--**--**--**--**-- bookFileWaitFinished");
+//	NSLog(@"--**--**--**--**--**-- bookFileWaitFinished");
 	NSDictionary *userInfo = [notification userInfo];
 	SCHBookInfo *otherInfo = [userInfo objectForKey:@"bookInfo"];
 	kSCHDownloadFileType type = [(NSNumber *) [userInfo objectForKey:@"type"] intValue];

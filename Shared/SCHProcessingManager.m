@@ -230,7 +230,7 @@ static SCHProcessingManager *sharedManager = nil;
 	
 	NSMutableArray *operations = [[[NSMutableArray alloc] init] autorelease];
 
-	NSLog(@"=============================================== Scheduling operations: %@ %@ %@", urlOp, imageOp, thumbOp);
+//	NSLog(@"=============================================== Scheduling operations: %@ %@ %@", urlOp, imageOp, thumbOp);
 	
 	if (thumbOp) {
 		[operations addObject:thumbOp];
@@ -259,7 +259,7 @@ static SCHProcessingManager *sharedManager = nil;
 	
 #ifndef LOCALDEBUG
 	
-	NSLog(@"DOWNLOADBOOKFILE: Checking book status.");
+//	NSLog(@"DOWNLOADBOOKFILE: Checking book status.");
 	
 	BookFileProcessingState state = [bookInfo processingState];
 	
@@ -345,6 +345,7 @@ static SCHProcessingManager *sharedManager = nil;
 
 - (void) setBookDownloading: (SCHBookInfo *) bookInfo operation: (NSOperation *) operation
 {
+	// FIXME: this is also a bit weird.
 	NSLog(@"Book downloading. Operation count: %d", [self.processingQueue operationCount]);
 	
 	for (id obj in [self.processingQueue operations]) {
@@ -429,7 +430,7 @@ static SCHProcessingManager *sharedManager = nil;
 	@synchronized(self) {
 		if ([[self.currentDownloadingCoverImages allKeys] containsObject:bookInfo.bookIdentifier]) {
 			
-			NSLog(@"***** removing book for URLs: %@", bookInfo.bookIdentifier);
+//			NSLog(@"***** removing book for URLs: %@", bookInfo.bookIdentifier);
 			//SCHDownloadFileOperation *op = [self.currentDownloadingCoverImages objectForKey:bookInfo.bookIdentifier];
 //			[op cancel];
 			
@@ -448,7 +449,7 @@ static SCHProcessingManager *sharedManager = nil;
 	@synchronized(self) {
 		if ([[self.currentWaitingForURLItems allKeys] containsObject:bookInfo.bookIdentifier]) {
 			
-			NSLog(@"***** removing book for URLs: %@", bookInfo.bookIdentifier);
+//			NSLog(@"***** removing book for URLs: %@", bookInfo.bookIdentifier);
 			//SCHBookURLRequestOperation *op = [self.currentWaitingForURLItems objectForKey:bookInfo.bookIdentifier];
 			//[op cancel];
 			
