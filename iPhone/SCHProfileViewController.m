@@ -11,7 +11,6 @@
 #import "SCHProfilePasswordViewController.h"
 #import "SCHSettingsViewController.h"
 #import "SCHBookShelfViewController.h"
-#import "SCHWebServiceSync.h"
 #import "SCHLoginViewController.h"
 #import "SCHAuthenticationManager.h"
 #import "SCHLibreAccessWebService.h"
@@ -43,15 +42,6 @@ static NSString * const kRootViewControllerSettingsIcon = @"Settings.png";
 
 #pragma mark -
 #pragma mark View lifecycle
-
-- (void)awakeFromNib
-{
-	[super awakeFromNib];
-	
-	self.webServiceSync = [[SCHWebServiceSync alloc] init];
-	self.webServiceSync.managedObjectContext = [self.fetchedResultsController managedObjectContext];	
-	[self.webServiceSync release];	
-}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
