@@ -18,13 +18,16 @@
 static NSString * const kSCHLibreAccessWebServiceUndefinedMethod = @"undefined method";
 static NSString * const kSCHLibreAccessWebServiceStatusHolderStatusMessage = @"statusmessage";
 
+static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 
 @interface SCHLibreAccessWebService ()
 
 - (NSError *)errorFromStatusMessage:(LibreAccessServiceSvc_StatusHolder *)statusMessage;
 - (NSString *)methodNameFromObject:(id)anObject;
 
-- (NSDictionary *)objectFromTokenExchangeResponse:(LibreAccessServiceSvc_TokenExchangeResponse *)anObject;
+- (NSDictionary *)objectFromTokenExchange:(LibreAccessServiceSvc_TokenExchangeResponse *)anObject;
+- (NSDictionary *)objectFromAuthenticateDevice:(LibreAccessServiceSvc_AuthenticateDeviceResponse *)anObject;
+- (NSDictionary *)objectFromRenewToken:(LibreAccessServiceSvc_RenewTokenResponse *)anObject;
 - (NSDictionary *)objectFromProfileItem:(LibreAccessServiceSvc_ProfileItem *)anObject;
 - (NSDictionary *)objectFromUserContentItem:(LibreAccessServiceSvc_UserContentItem *)anObject;
 - (NSDictionary *)objectFromContentProfileItem:(LibreAccessServiceSvc_ContentProfileItem *)anObject;
@@ -111,7 +114,7 @@ static NSString * const kSCHLibreAccessWebServiceStatusHolderStatusMessage = @"s
 	LibreAccessServiceSvc_TokenExchange *request = [LibreAccessServiceSvc_TokenExchange new];
 
 	request.ptoken = pToken;
-	request.vaid = [NSNumber numberWithInt:33];
+	request.vaid = [NSNumber numberWithInt:kSCHLibreAccessWebServiceVaid];
 	request.deviceKey = @"";
 	request.impersonationkey = @"";
 	request.UserName = userName;
@@ -120,6 +123,39 @@ static NSString * const kSCHLibreAccessWebServiceStatusHolderStatusMessage = @"s
 	[[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
 	
 	[request release], request = nil;
+}
+
+- (void)authenticateDevice:(NSString *)deviceKey forUserKey:(NSString *)userKey
+{
+	LibreAccessServiceSvc_AuthenticateDeviceRequest *request = [LibreAccessServiceSvc_AuthenticateDeviceRequest new];
+    
+	request.vaid = [NSNumber numberWithInt:kSCHLibreAccessWebServiceVaid];
+	request.deviceKey = deviceKey;
+	request.userKey = userKey;
+	
+	[binding AuthenticateDeviceAsyncUsingBody:request delegate:self]; 
+	[[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
+	
+	[request release], request = nil;
+}
+
+- (BOOL)renewToken
+{
+    BOOL ret = NO;
+    
+	if ([SCHAuthenticationManager sharedAuthenticationManager].isAuthenticated == YES) {		
+        LibreAccessServiceSvc_RenewTokenRequest *request = [LibreAccessServiceSvc_RenewTokenRequest new];
+		
+		request.authtoken = [SCHAuthenticationManager sharedAuthenticationManager].aToken;
+        
+        [binding RenewTokenAsyncUsingBody:request delegate:self]; 
+        [[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
+        
+        [request release], request = nil;
+        ret = YES;
+    }
+    
+    return(ret);
 }
 
 - (BOOL)getUserProfiles
@@ -502,6 +538,14 @@ static NSString * const kSCHLibreAccessWebServiceStatusHolderStatusMessage = @"s
 		   [anObject isKindOfClass:[LibreAccessServiceSvc_TokenExchangeResponse class]] == YES ||		   
 		   [anObject isKindOfClass:[LibreAccessServiceSoap11Binding_TokenExchange class]] == YES) {
 			ret = kSCHLibreAccessWebServiceTokenExchange;	
+		} else if([anObject isKindOfClass:[LibreAccessServiceSvc_AuthenticateDeviceRequest class]] == YES ||
+				  [anObject isKindOfClass:[LibreAccessServiceSvc_AuthenticateDeviceResponse class]] == YES ||
+				  [anObject isKindOfClass:[LibreAccessServiceSoap11Binding_AuthenticateDevice class]] == YES) {
+			ret = kSCHLibreAccessWebServiceAuthenticateDevice;	
+		} else if([anObject isKindOfClass:[LibreAccessServiceSvc_RenewTokenRequest class]] == YES ||
+				  [anObject isKindOfClass:[LibreAccessServiceSvc_RenewTokenResponse class]] == YES ||
+				  [anObject isKindOfClass:[LibreAccessServiceSoap11Binding_RenewToken class]] == YES) {
+			ret = kSCHLibreAccessWebServiceRenewToken;	
 		} else if([anObject isKindOfClass:[LibreAccessServiceSvc_GetUserProfilesRequest class]] == YES ||
 				  [anObject isKindOfClass:[LibreAccessServiceSvc_GetUserProfilesResponse class]] == YES ||
 				  [anObject isKindOfClass:[LibreAccessServiceSoap11Binding_GetUserProfiles class]] == YES) {
@@ -565,7 +609,11 @@ static NSString * const kSCHLibreAccessWebServiceStatusHolderStatusMessage = @"s
 	
 	if (anObject != nil) {
 		if ([anObject isKindOfClass:[LibreAccessServiceSvc_TokenExchangeResponse class]] == YES) {
-			ret = [self objectFromTokenExchangeResponse:anObject];
+			ret = [self objectFromTokenExchange:anObject];
+		} else if ([anObject isKindOfClass:[LibreAccessServiceSvc_AuthenticateDeviceResponse class]] == YES) {
+			ret = [self objectFromAuthenticateDevice:anObject];
+		} else if ([anObject isKindOfClass:[LibreAccessServiceSvc_RenewTokenResponse class]] == YES) {
+			ret = [self objectFromRenewToken:anObject];
 		} else if ([anObject isKindOfClass:[LibreAccessServiceSvc_GetUserProfilesResponse class]] == YES) {
 			ret = [NSDictionary dictionaryWithObject:[self objectFromTranslate:[[anObject ProfileList] ProfileItem]] forKey:kSCHLibreAccessWebServiceProfileList];
 		} else if ([anObject isKindOfClass:[LibreAccessServiceSvc_ListUserContentResponse class]] == YES) {
@@ -623,7 +671,7 @@ static NSString * const kSCHLibreAccessWebServiceStatusHolderStatusMessage = @"s
 #pragma mark -
 #pragma mark ObjectMapper objectFrom: converter methods 
 
-- (NSDictionary *)objectFromTokenExchangeResponse:(LibreAccessServiceSvc_TokenExchangeResponse *)anObject
+- (NSDictionary *)objectFromTokenExchange:(LibreAccessServiceSvc_TokenExchangeResponse *)anObject
 {
 	NSDictionary *ret = nil;
 	
@@ -634,6 +682,39 @@ static NSString * const kSCHLibreAccessWebServiceStatusHolderStatusMessage = @"s
 		[objects setObject:[self objectFromTranslate:anObject.expiresIn] forKey:kSCHLibreAccessWebServiceExpiresIn];
 		[objects setObject:[self objectFromTranslate:anObject.deviceIsDeregistered] forKey:kSCHLibreAccessWebServiceDeviceIsDeregistered];
 				
+		ret = objects;				
+	}
+	
+	return(ret);
+}
+
+- (NSDictionary *)objectFromAuthenticateDevice:(LibreAccessServiceSvc_AuthenticateDeviceResponse *)anObject
+{
+	NSDictionary *ret = nil;
+	
+	if (anObject != nil) {
+		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
+		
+		[objects setObject:[self objectFromTranslate:anObject.authtoken] forKey:kSCHLibreAccessWebServiceAuthToken];
+		[objects setObject:[self objectFromTranslate:anObject.expiresIn] forKey:kSCHLibreAccessWebServiceExpiresIn];
+		[objects setObject:[self objectFromTranslate:anObject.deviceIsDeregistered] forKey:kSCHLibreAccessWebServiceDeviceIsDeregistered];
+        
+		ret = objects;				
+	}
+	
+	return(ret);
+}
+
+- (NSDictionary *)objectFromRenewToken:(LibreAccessServiceSvc_RenewTokenResponse *)anObject
+{
+	NSDictionary *ret = nil;
+	
+	if (anObject != nil) {
+		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
+		
+		[objects setObject:[self objectFromTranslate:anObject.authtoken] forKey:kSCHLibreAccessWebServiceAuthToken];
+		[objects setObject:[self objectFromTranslate:anObject.expiresIn] forKey:kSCHLibreAccessWebServiceExpiresIn];
+        
 		ret = objects;				
 	}
 	
