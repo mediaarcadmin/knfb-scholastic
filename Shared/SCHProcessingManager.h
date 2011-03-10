@@ -23,6 +23,7 @@
 @property (nonatomic, retain) BlioTimeOrderedCache *imageCache;
 @property (nonatomic, retain) NSMutableDictionary *currentWaitingItems;
 @property (nonatomic, retain) NSMutableDictionary *currentDownloadingItems;
+@property (nonatomic, retain) NSMutableDictionary *currentWaitingForURLItems;
 
 //- (void) enqueueBookInfoItems: (NSArray *) bookInfoItems;
 
@@ -46,9 +47,13 @@
 
 - (void) setBookWaiting: (SCHBookInfo *) bookInfo operation: (NSOperation *) operation;
 - (void) setBookDownloading: (SCHBookInfo *) bookInfo operation: (NSOperation *) operation;
+- (void) setBookWaitingForURLs: (SCHBookInfo *) bookInfo operation: (NSOperation *) operation;
+
+- (void) removeBookWaitingForURLs: (SCHBookInfo *) bookInfo;
 - (void) removeBookFromDownload: (SCHBookInfo *) bookInfo;
 - (BOOL) isCurrentlyWaiting: (SCHBookInfo *) bookInfo;
 - (BOOL) isCurrentlyDownloading: (SCHBookInfo *) bookInfo;
+- (BOOL) isCurrentlyWaitingForURLs: (SCHBookInfo *) bookInfo;
 
 - (void) enterBackground;
 - (void) enterForeground;
