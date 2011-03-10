@@ -30,6 +30,8 @@ typedef enum {
 //@property (nonatomic, retain) NSManagedObjectID *metadataItemID;
 @property (readwrite, retain) NSString *bookIdentifier;
 @property (readonly) SCHContentMetadataItem *contentMetadata;
+@property (readwrite, retain) NSString *coverURL;
+@property (readwrite, retain) NSString *bookFileURL;
 
 - (id) initWithContentMetadataItem: (SCHContentMetadataItem *) metadataItem;
 - (NSString *) xpsPath;
@@ -37,6 +39,7 @@ typedef enum {
 - (BOOL) processedCovers;
 - (BOOL) isCurrentlyDownloading;
 - (BOOL) isWaitingForDownload;
+- (BOOL) isCurrentlyWaitingForURLs;
 - (float) currentDownloadedPercentage;
 
 @end

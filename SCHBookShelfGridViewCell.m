@@ -98,6 +98,11 @@
 		self.thumbTintView.hidden = NO;
 		self.progressView.hidden = NO;
 		self.statusLabel.hidden = NO;
+	} else if ([bookInfo isCurrentlyWaitingForURLs]) {
+		status = @"Updating...";
+		self.thumbTintView.hidden = NO;
+		self.progressView.hidden = YES;
+		self.statusLabel.hidden = NO;
 	} else if ([bookInfo isWaitingForDownload]) {
 		status = @"Waiting...";
 		self.thumbTintView.hidden = NO;

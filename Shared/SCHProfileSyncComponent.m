@@ -60,7 +60,7 @@
 		}		
 	} else if([method compare:kSCHLibreAccessWebServiceGetUserProfiles] == NSOrderedSame) {
 		[self syncProfiles:[result objectForKey:kSCHLibreAccessWebServiceProfileList]];
-		[[NSNotificationCenter defaultCenter] postNotificationName:kSCHProfileSyncComponentComplete object:nil];		
+		[[NSNotificationCenter defaultCenter] postNotificationName:kSCHProfileSyncComponentComplete object:self];		
 		[super method:method didCompleteWithResult:nil];	
 	}	
 }

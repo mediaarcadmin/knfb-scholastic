@@ -15,6 +15,8 @@
 
 // Methods
 static NSString * const kSCHLibreAccessWebServiceTokenExchange = @"TokenExchange";
+static NSString * const kSCHLibreAccessWebServiceAuthenticateDevice = @"AuthenticateDevice";
+static NSString * const kSCHLibreAccessWebServiceRenewToken = @"RenewToken";
 static NSString * const kSCHLibreAccessWebServiceGetUserProfiles = @"GetUserProfiles";
 static NSString * const kSCHLibreAccessWebServiceSaveUserProfiles = @"SaveUserProfiles";
 static NSString * const kSCHLibreAccessWebServiceListUserContent = @"ListUserContent";
@@ -148,6 +150,8 @@ static NSString * const kSCHLibreAccessWebServiceeReaderCategories = @"eReaderCa
 }
 
 - (void)tokenExchange:(NSString *)pToken forUser:(NSString *)userName;
+- (void)authenticateDevice:(NSString *)deviceKey forUserKey:(NSString *)userKey;
+- (BOOL)renewToken;
 - (BOOL)getUserProfiles;
 - (BOOL)saveUserProfiles:(NSArray *)userProfiles;
 - (BOOL)listUserContent;

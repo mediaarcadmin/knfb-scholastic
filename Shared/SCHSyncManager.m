@@ -336,7 +336,9 @@ static NSTimeInterval const kSCHSyncManagerHeartbeatInterval = 30.0;
 {
 	if ([component isKindOfClass:[SCHBookshelfSyncComponent class]] == YES) {
 		[[NSUserDefaults standardUserDefaults] setBool:YES forKey:kSCHUserDefaultsPerformedFirstSyncUpToBooks];
-	} else if ([component isKindOfClass:[SCHAnnotationSyncComponent class]] == YES && [(SCHAnnotationSyncComponent *)component haveProfiles] == YES) {
+	}
+	
+	if ([component isKindOfClass:[SCHAnnotationSyncComponent class]] == YES && [(SCHAnnotationSyncComponent *)component haveProfiles] == YES) {
 		NSLog(@"Next annotation profile");
 	} else {
 		NSLog(@"Removing %@ from the sync manager queue", [component class]);

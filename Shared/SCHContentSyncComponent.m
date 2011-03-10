@@ -74,7 +74,7 @@
 		NSArray *content = [result objectForKey:kSCHLibreAccessWebServiceUserContentList];
 		
 		[self syncUserContentItems:content];
-		[[NSNotificationCenter defaultCenter] postNotificationName:kSCHContentSyncComponentComplete object:nil];
+		[[NSNotificationCenter defaultCenter] postNotificationName:kSCHContentSyncComponentComplete object:self];
 		[super method:method didCompleteWithResult:nil];				
 	}
 }

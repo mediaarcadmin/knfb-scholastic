@@ -12,6 +12,7 @@
 #import "SCHAuthenticationManager.h"
 #import "SCHProcessingManager.h"
 #import "SCHUserDefaults.h"
+#import "SCHURLManager.h"
 
 #ifdef LOCALDEBUG
 #import "SCHLocalDebug.h"
@@ -37,6 +38,8 @@ static NSString * const kSCHClearLocalDebugMode = @"kSCHClearLocalDebugMode";
 	
 	[[NSUserDefaults standardUserDefaults] registerDefaults:appDefaults];		
 	
+	[SCHURLManager sharedURLManager].managedObjectContext = self.managedObjectContext;
+	
 	BOOL localDebugMode = NO;
 	
 #ifdef LOCALDEBUG
@@ -47,12 +50,12 @@ static NSString * const kSCHClearLocalDebugMode = @"kSCHClearLocalDebugMode";
 	
 	if (storedValue) {
 	
-		NSLog(@"We have a stored value.");
-		NSLog(@"stored: %@ localDebugMode: %@", [storedValue boolValue]?@"LocalDebug":@"Network", localDebugMode?@"LocalDebug":@"Network");
+//		NSLog(@"We have a stored value.");
+//		NSLog(@"stored: %@ localDebugMode: %@", [storedValue boolValue]?@"LocalDebug":@"Network", localDebugMode?@"LocalDebug":@"Network");
 		
 		if ([storedValue boolValue] != localDebugMode) {
 			
-			NSLog(@"Changed between local debug mode and network mode - resetting database.");
+//			NSLog(@"Changed between local debug mode and network mode - resetting database.");
 			
 			SCHSyncManager *syncManager = [SCHSyncManager sharedSyncManager];
 			syncManager.managedObjectContext = self.managedObjectContext;
@@ -63,7 +66,7 @@ static NSString * const kSCHClearLocalDebugMode = @"kSCHClearLocalDebugMode";
 		}		
 		
 	} else {
-		NSLog(@"First run!");
+//		NSLog(@"First run!");
 	}
 		
 	

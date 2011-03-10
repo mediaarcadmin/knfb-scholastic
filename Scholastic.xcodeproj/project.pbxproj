@@ -54,6 +54,7 @@
 		52298A9812F0EF5600BBBCE6 /* SCHCoords.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A8012F0EF5600BBBCE6 /* SCHCoords.m */; };
 		52298A9912F0EF5600BBBCE6 /* SCHLocationGraphics.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A8212F0EF5600BBBCE6 /* SCHLocationGraphics.m */; };
 		52298A9B12F0EF5600BBBCE6 /* SCHHighlight.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A8612F0EF5600BBBCE6 /* SCHHighlight.m */; };
+		52322C34132693F500BB071D /* SCHURLManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 52322C33132693F500BB071D /* SCHURLManager.m */; };
 		5233E03313154EEA0088F18C /* SCHDeviceInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 5233E03213154EEA0088F18C /* SCHDeviceInfo.m */; };
 		5233E03413154EEA0088F18C /* SCHDeviceInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 5233E03213154EEA0088F18C /* SCHDeviceInfo.m */; };
 		5233E03713154F810088F18C /* SCHDeviceInfo+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5233E03613154F810088F18C /* SCHDeviceInfo+Extensions.m */; };
@@ -62,6 +63,7 @@
 		5233E0D913159CA80088F18C /* BITNetworkActivityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5233E0D713159CA80088F18C /* BITNetworkActivityManager.m */; };
 		5266D34C13007A1C004E3AC6 /* SCHTopFavoritesComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 5266D34B13007A1C004E3AC6 /* SCHTopFavoritesComponent.m */; };
 		5266D38413007D15004E3AC6 /* SCHComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 5266D38313007D15004E3AC6 /* SCHComponent.m */; };
+		526750D213290EE800063AC8 /* SCHURLManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 52322C33132693F500BB071D /* SCHURLManager.m */; };
 		528A2CD312CCDD9E0053A343 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 528A2CD212CCDD9E0053A343 /* Settings.bundle */; };
 		528A2CDB12CCDE070053A343 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 528A2CDA12CCDE070053A343 /* Localizable.strings */; };
 		528A2CF812CCEAA50053A343 /* ReleaseNotes.tmReleaseNotes in Resources */ = {isa = PBXBuildFile; fileRef = 528A2CF712CCEAA50053A343 /* ReleaseNotes.tmReleaseNotes */; };
@@ -92,7 +94,6 @@
 		5293870712DF3EDF00045B44 /* BITSOAPProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293870512DF3EDF00045B44 /* BITSOAPProxy.m */; };
 		5293872D12DF43CB00045B44 /* SCHLibreAccessWebService.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293872C12DF43CB00045B44 /* SCHLibreAccessWebService.m */; };
 		5293873012DF43D200045B44 /* SCHScholasticWebService.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293872F12DF43D200045B44 /* SCHScholasticWebService.m */; };
-		5293877F12DF515400045B44 /* SCHWebServiceSync.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293877E12DF515400045B44 /* SCHWebServiceSync.m */; };
 		5293883312E03CD000045B44 /* SCHBookShelfViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293883112E03CD000045B44 /* SCHBookShelfViewController.m */; };
 		5293883412E03CD000045B44 /* SCHBookShelfViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5293883212E03CD000045B44 /* SCHBookShelfViewController.xib */; };
 		52938B3912E08FC400045B44 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 52938B3812E08FC400045B44 /* Icon.png */; };
@@ -286,7 +287,6 @@
 		F8509F2B12F063C900197EB5 /* BITSOAPProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293870512DF3EDF00045B44 /* BITSOAPProxy.m */; };
 		F8509F2C12F063C900197EB5 /* SCHLibreAccessWebService.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293872C12DF43CB00045B44 /* SCHLibreAccessWebService.m */; };
 		F8509F2D12F063C900197EB5 /* SCHScholasticWebService.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293872F12DF43D200045B44 /* SCHScholasticWebService.m */; };
-		F8509F2E12F063C900197EB5 /* SCHWebServiceSync.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293877E12DF515400045B44 /* SCHWebServiceSync.m */; };
 		F8509F2F12F063C900197EB5 /* SCHBookShelfViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293883112E03CD000045B44 /* SCHBookShelfViewController.m */; };
 		F8509F3012F063C900197EB5 /* SCHProfileItem+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D6122112E44B0F0033DA92 /* SCHProfileItem+Extensions.m */; };
 		F8509F3112F063C900197EB5 /* SCHSyncEntity+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D6124E12E44D760033DA92 /* SCHSyncEntity+Extensions.m */; };
@@ -316,6 +316,8 @@
 		F8509F9012F0654B00197EB5 /* thumbImage.png in Resources */ = {isa = PBXBuildFile; fileRef = F8509F8012F0653700197EB5 /* thumbImage.png */; };
 		F86502D5132532310044FEB0 /* SCHBookShelfGridViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F86502D4132532310044FEB0 /* SCHBookShelfGridViewCell.m */; };
 		F86502D6132532310044FEB0 /* SCHBookShelfGridViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F86502D4132532310044FEB0 /* SCHBookShelfGridViewCell.m */; };
+		F897DD6E13279144007F2E14 /* SCHBookURLRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F897DD6D13279144007F2E14 /* SCHBookURLRequestOperation.m */; };
+		F897DD6F13279144007F2E14 /* SCHBookURLRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F897DD6D13279144007F2E14 /* SCHBookURLRequestOperation.m */; };
 		F8CD24F612F97E62001C748B /* SCHBookManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F8CD24CA12F9714D001C748B /* SCHBookManager.m */; };
 /* End PBXBuildFile section */
 
@@ -393,6 +395,8 @@
 		52298A8512F0EF5600BBBCE6 /* SCHHighlight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHHighlight.h; path = Shared/SCHHighlight.h; sourceTree = "<group>"; };
 		52298A8612F0EF5600BBBCE6 /* SCHHighlight.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHHighlight.m; path = Shared/SCHHighlight.m; sourceTree = "<group>"; };
 		52322BF613268C3300BB071D /* SCHUserDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHUserDefaults.h; path = Shared/SCHUserDefaults.h; sourceTree = "<group>"; };
+		52322C32132693F500BB071D /* SCHURLManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHURLManager.h; path = Shared/SCHURLManager.h; sourceTree = "<group>"; };
+		52322C33132693F500BB071D /* SCHURLManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHURLManager.m; path = Shared/SCHURLManager.m; sourceTree = "<group>"; };
 		5233E03113154EEA0088F18C /* SCHDeviceInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHDeviceInfo.h; path = Shared/SCHDeviceInfo.h; sourceTree = "<group>"; };
 		5233E03213154EEA0088F18C /* SCHDeviceInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHDeviceInfo.m; path = Shared/SCHDeviceInfo.m; sourceTree = "<group>"; };
 		5233E03513154F810088F18C /* SCHDeviceInfo+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SCHDeviceInfo+Extensions.h"; path = "Shared/SCHDeviceInfo+Extensions.h"; sourceTree = "<group>"; };
@@ -460,8 +464,6 @@
 		5293872C12DF43CB00045B44 /* SCHLibreAccessWebService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHLibreAccessWebService.m; path = Shared/SCHLibreAccessWebService.m; sourceTree = "<group>"; };
 		5293872E12DF43D200045B44 /* SCHScholasticWebService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHScholasticWebService.h; path = Shared/SCHScholasticWebService.h; sourceTree = "<group>"; };
 		5293872F12DF43D200045B44 /* SCHScholasticWebService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHScholasticWebService.m; path = Shared/SCHScholasticWebService.m; sourceTree = "<group>"; };
-		5293877D12DF515400045B44 /* SCHWebServiceSync.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHWebServiceSync.h; path = Shared/SCHWebServiceSync.h; sourceTree = "<group>"; };
-		5293877E12DF515400045B44 /* SCHWebServiceSync.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHWebServiceSync.m; path = Shared/SCHWebServiceSync.m; sourceTree = "<group>"; };
 		5293883012E03CD000045B44 /* SCHBookShelfViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookShelfViewController.h; path = iPhone/SCHBookShelfViewController.h; sourceTree = "<group>"; };
 		5293883112E03CD000045B44 /* SCHBookShelfViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookShelfViewController.m; path = iPhone/SCHBookShelfViewController.m; sourceTree = "<group>"; };
 		5293883212E03CD000045B44 /* SCHBookShelfViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = SCHBookShelfViewController.xib; path = iPhone/SCHBookShelfViewController.xib; sourceTree = "<group>"; };
@@ -761,6 +763,8 @@
 		F8509F8112F0653700197EB5 /* booktexture-nocover.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "booktexture-nocover.png"; path = "Shared/Images/booktexture-nocover.png"; sourceTree = "<group>"; };
 		F86502D3132532310044FEB0 /* SCHBookShelfGridViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHBookShelfGridViewCell.h; sourceTree = "<group>"; };
 		F86502D4132532310044FEB0 /* SCHBookShelfGridViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHBookShelfGridViewCell.m; sourceTree = "<group>"; };
+		F897DD6C13279144007F2E14 /* SCHBookURLRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHBookURLRequestOperation.h; sourceTree = "<group>"; };
+		F897DD6D13279144007F2E14 /* SCHBookURLRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHBookURLRequestOperation.m; sourceTree = "<group>"; };
 		F8CD24C912F9714D001C748B /* SCHBookManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookManager.h; path = iPhone/SCHBookManager.h; sourceTree = "<group>"; };
 		F8CD24CA12F9714D001C748B /* SCHBookManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookManager.m; path = iPhone/SCHBookManager.m; sourceTree = "<group>"; };
 		F8DE53E3130A8C2600691CBA /* SCHBookInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookInfo.h; path = Shared/SCHBookInfo.h; sourceTree = "<group>"; };
@@ -1164,6 +1168,8 @@
 				5293872C12DF43CB00045B44 /* SCHLibreAccessWebService.m */,
 				52EF543E12E9A5D400E374F7 /* SCHAuthenticationManager.h */,
 				52EF543F12E9A5D400E374F7 /* SCHAuthenticationManager.m */,
+				52322C32132693F500BB071D /* SCHURLManager.h */,
+				52322C33132693F500BB071D /* SCHURLManager.m */,
 				5266D38213007D15004E3AC6 /* SCHComponent.h */,
 				5266D38313007D15004E3AC6 /* SCHComponent.m */,
 				52E3355A1303F71F002F3011 /* SCHComponentDelegate.h */,
@@ -1178,8 +1184,6 @@
 		52AD9B2612FC207A0099FB88 /* Sync */ = {
 			isa = PBXGroup;
 			children = (
-				5293877D12DF515400045B44 /* SCHWebServiceSync.h */,
-				5293877E12DF515400045B44 /* SCHWebServiceSync.m */,
 				52AD9ACD12FC0EEF0099FB88 /* SCHSyncManager.h */,
 				52AD9ACE12FC0EEF0099FB88 /* SCHSyncManager.m */,
 				52AD9B1A12FC1B6B0099FB88 /* SCHSyncComponent.h */,
@@ -1499,6 +1503,8 @@
 				F82D39BE131EA79100289FF3 /* SCHXPSCoverImageOperation.m */,
 				F82D39B7131EA79100289FF3 /* SCHDownloadBookFile.h */,
 				F82D39B8131EA79100289FF3 /* SCHDownloadBookFile.m */,
+				F897DD6C13279144007F2E14 /* SCHBookURLRequestOperation.h */,
+				F897DD6D13279144007F2E14 /* SCHBookURLRequestOperation.m */,
 			);
 			name = "Book Data";
 			sourceTree = "<group>";
@@ -1689,7 +1695,6 @@
 				5293870712DF3EDF00045B44 /* BITSOAPProxy.m in Sources */,
 				5293872D12DF43CB00045B44 /* SCHLibreAccessWebService.m in Sources */,
 				5293873012DF43D200045B44 /* SCHScholasticWebService.m in Sources */,
-				5293877F12DF515400045B44 /* SCHWebServiceSync.m in Sources */,
 				5293883312E03CD000045B44 /* SCHBookShelfViewController.m in Sources */,
 				52D6122212E44B0F0033DA92 /* SCHProfileItem+Extensions.m in Sources */,
 				52D6124F12E44D760033DA92 /* SCHSyncEntity+Extensions.m in Sources */,
@@ -1779,6 +1784,8 @@
 				F82D39D6131EA7C200289FF3 /* SCHThumbnailOperation.m in Sources */,
 				F82D39DA131EA7D400289FF3 /* SCHBookShelfTableViewCell.m in Sources */,
 				F86502D6132532310044FEB0 /* SCHBookShelfGridViewCell.m in Sources */,
+				F897DD6F13279144007F2E14 /* SCHBookURLRequestOperation.m in Sources */,
+				52322C34132693F500BB071D /* SCHURLManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1811,7 +1818,6 @@
 				F8509F2B12F063C900197EB5 /* BITSOAPProxy.m in Sources */,
 				F8509F2C12F063C900197EB5 /* SCHLibreAccessWebService.m in Sources */,
 				F8509F2D12F063C900197EB5 /* SCHScholasticWebService.m in Sources */,
-				F8509F2E12F063C900197EB5 /* SCHWebServiceSync.m in Sources */,
 				F8509F2F12F063C900197EB5 /* SCHBookShelfViewController.m in Sources */,
 				F8509F3012F063C900197EB5 /* SCHProfileItem+Extensions.m in Sources */,
 				F8509F3112F063C900197EB5 /* SCHSyncEntity+Extensions.m in Sources */,
@@ -1901,6 +1907,8 @@
 				F82D39D3131EA7C200289FF3 /* SCHThumbnailOperation.m in Sources */,
 				F82D39D9131EA7D400289FF3 /* SCHBookShelfTableViewCell.m in Sources */,
 				F86502D5132532310044FEB0 /* SCHBookShelfGridViewCell.m in Sources */,
+				F897DD6E13279144007F2E14 /* SCHBookURLRequestOperation.m in Sources */,
+				526750D213290EE800063AC8 /* SCHURLManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

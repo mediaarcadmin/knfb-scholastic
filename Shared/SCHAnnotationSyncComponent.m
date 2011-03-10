@@ -111,7 +111,7 @@
 - (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result
 {	
 	[self updateProfileContentAnnotations:[result objectForKey:kSCHLibreAccessWebServiceListProfileContentAnnotations]];	
-	[[NSNotificationCenter defaultCenter] postNotificationName:kSCHAnnotationSyncComponentComplete object:nil];
+	[[NSNotificationCenter defaultCenter] postNotificationName:kSCHAnnotationSyncComponentComplete object:self];
 	[super method:method didCompleteWithResult:nil];	
 }
 

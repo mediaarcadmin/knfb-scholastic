@@ -136,7 +136,9 @@
 	}
 */
 	
-	NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:self.bookInfo.contentMetadata.ContentURL]];
+	NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:self.bookInfo.bookFileURL]];
+	
+	NSLog(@"Download request: %@", request);
 	
 	if (fileSize > 0) {
 		[request setValue:[NSString stringWithFormat:@"bytes=%llu-", fileSize] forHTTPHeaderField:@"Range"];

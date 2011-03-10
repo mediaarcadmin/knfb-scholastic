@@ -12,6 +12,9 @@
 
 static NSString * const kSCHUserContentItem = @"SCHUserContentItem";
 
+static NSString * const kSCHUserContentItemFetchWithContentIdentifier = @"fetchWithContentIdentifier";
+static NSString * const kSCHUserContentItemCONTENT_IDENTIFIER = @"CONTENT_IDENTIFIER";
+
 @interface SCHUserContentItem (SCHUserContentItemExtensions)
 
 @property (nonatomic, readonly) NSSet *AssignedProfileList;
