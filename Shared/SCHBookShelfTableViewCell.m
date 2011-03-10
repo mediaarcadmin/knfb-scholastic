@@ -156,6 +156,10 @@
 		status = @"Waiting...";
 		thumbTintView.hidden = NO;
 		self.progressView.hidden = YES;
+	} else if ([bookInfo isCurrentlyWaitingForURLs]) {
+		status = @"Updating...";
+		thumbTintView.hidden = NO;
+		self.progressView.hidden = YES;
 	} else {
 		// book status
 		switch ([bookInfo processingState]) {

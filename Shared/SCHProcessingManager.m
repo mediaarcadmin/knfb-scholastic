@@ -23,7 +23,7 @@
 
 @implementation SCHProcessingManager
 
-@synthesize processingQueue, bookURLQueue, imageCache, currentDownloadingItems, currentWaitingItems, backgroundTask;
+@synthesize processingQueue, bookURLQueue, imageCache, currentDownloadingItems, currentWaitingItems, currentWaitingForURLItems, backgroundTask;
 
 static SCHProcessingManager *sharedManager = nil;
 
@@ -42,6 +42,7 @@ static SCHProcessingManager *sharedManager = nil;
         self.imageCache.totalCostLimit = (1024*1024) * 5; // Arbitrary 5MB limit. This may need wteaked or set on a per-device basis
 		self.currentDownloadingItems = [[NSMutableDictionary alloc] init];
 		self.currentWaitingItems = [[NSMutableDictionary alloc] init];
+		self.currentWaitingForURLItems = [[NSMutableDictionary alloc] init];
 	}
 	
 	return self;
@@ -54,6 +55,7 @@ static SCHProcessingManager *sharedManager = nil;
 	self.imageCache = nil;
 	self.currentDownloadingItems = nil;
 	self.currentWaitingItems = nil;
+	self.currentWaitingForURLItems = nil;
 	[super dealloc];
 }
 
@@ -135,17 +137,17 @@ static SCHProcessingManager *sharedManager = nil;
 	
 	NSOperation *urlOp = nil;
 	
-	if (!bookInfo.coverURL | !bookInfo.bookFileURL) {
+	if (!bookInfo || !bookInfo.coverURL | !bookInfo.bookFileURL) {
 		SCHBookURLRequestOperation *bookURLOp = [[SCHBookURLRequestOperation alloc] init];
 		bookURLOp.bookInfo = bookInfo;
 		urlOp = bookURLOp;
 	} else {
-		NSLog(@"Already have URLs.");
+//		NSLog(@"Already have URLs.");
 	}
 	
 	
 	NSString *cacheDir  = [SCHProcessingManager cacheDirectory];
-	NSString *cacheImageItem = [cacheDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png", bookInfo.contentMetadata.ContentIdentifier]];
+	NSString *cacheImageItem = [cacheDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png", bookInfo.bookIdentifier]];
 	
 	NSOperation *imageOp = nil;
 	
@@ -275,50 +277,77 @@ static SCHProcessingManager *sharedManager = nil;
 
 - (void) setBookWaiting: (SCHBookInfo *) bookInfo operation: (NSOperation *) operation
 {
-	if ([[self.currentWaitingItems allKeys] containsObject:bookInfo]) {
+	if ([[self.currentWaitingItems allKeys] containsObject:bookInfo.bookIdentifier]) {
 		return;
 	}
 	
 	@synchronized(self) {
-		if ([[self.currentDownloadingItems allKeys] containsObject:bookInfo]) {
-			[self.currentDownloadingItems removeObjectForKey:bookInfo];
+		if ([[self.currentDownloadingItems allKeys] containsObject:bookInfo.bookIdentifier]) {
+			[self.currentDownloadingItems removeObjectForKey:bookInfo.bookIdentifier];
 		}
 
-		[self.currentWaitingItems setObject:operation forKey:bookInfo];
+		[self.currentWaitingItems setObject:operation forKey:bookInfo.bookIdentifier];
 	}
 }
 
 - (void) setBookDownloading: (SCHBookInfo *) bookInfo operation: (NSOperation *) operation
 {
-	if ([[self.currentDownloadingItems allKeys] containsObject:bookInfo]) {
+	if ([[self.currentDownloadingItems allKeys] containsObject:bookInfo.bookIdentifier]) {
 		return;
 	}
 	
 	@synchronized(self) {
-		if ([[self.currentWaitingItems allKeys] containsObject:bookInfo]) {
-			[self.currentWaitingItems removeObjectForKey:bookInfo];
+		if ([[self.currentWaitingItems allKeys] containsObject:bookInfo.bookIdentifier]) {
+			[self.currentWaitingItems removeObjectForKey:bookInfo.bookIdentifier];
 		}
 
-		[self.currentDownloadingItems setObject:operation forKey:bookInfo];
+		[self.currentDownloadingItems setObject:operation forKey:bookInfo.bookIdentifier];
 	}
+}
+
+- (void) setBookWaitingForURLs: (SCHBookInfo *) bookInfo operation: (NSOperation *) operation
+{
+	if ([[self.currentWaitingForURLItems allKeys] containsObject:bookInfo.bookIdentifier]) {
+		NSLog(@"setbookwaiting Returning.");
+		return;
+	}
+	
+	@synchronized(self) {
+		NSLog(@"***** Adding book for URLs: %@ operation %@", bookInfo.bookIdentifier, operation);
+		[self.currentWaitingForURLItems setObject:operation forKey:bookInfo.bookIdentifier];
+	}
+}
+
+- (void) removeBookWaitingForURLs: (SCHBookInfo *) bookInfo
+{
+	@synchronized(self) {
+		if ([[self.currentWaitingForURLItems allKeys] containsObject:bookInfo.bookIdentifier]) {
+			
+			NSLog(@"***** removing book for URLs: %@", bookInfo.bookIdentifier);
+			SCHBookURLRequestOperation *op = [self.currentWaitingForURLItems objectForKey:bookInfo.bookIdentifier];
+			[op cancel];
+			
+			[self.currentWaitingForURLItems removeObjectForKey:bookInfo.bookIdentifier];
+		}
+	}		
 }
 
 - (void) removeBookFromDownload: (SCHBookInfo *) bookInfo
 {
 	@synchronized(self) {
-		if ([[self.currentDownloadingItems allKeys] containsObject:bookInfo]) {
+		if ([[self.currentDownloadingItems allKeys] containsObject:bookInfo.bookIdentifier]) {
 			
-			SCHDownloadBookFile *op = [self.currentDownloadingItems objectForKey:bookInfo];
+			SCHDownloadBookFile *op = [self.currentDownloadingItems objectForKey:bookInfo.bookIdentifier];
 			[op cancel];
 			
-			[self.currentDownloadingItems removeObjectForKey:bookInfo];
+			[self.currentDownloadingItems removeObjectForKey:bookInfo.bookIdentifier];
 		}
 		
-		if ([[self.currentWaitingItems allKeys] containsObject:bookInfo]) {
-			NSOperation *op = [self.currentWaitingItems objectForKey:bookInfo];
+		if ([[self.currentWaitingItems allKeys] containsObject:bookInfo.bookIdentifier]) {
+			NSOperation *op = [self.currentWaitingItems objectForKey:bookInfo.bookIdentifier];
 			[op cancel];
 			
-			[self.currentWaitingItems removeObjectForKey:bookInfo];
+			[self.currentWaitingItems removeObjectForKey:bookInfo.bookIdentifier];
 		}
 	}
 }
@@ -326,14 +355,21 @@ static SCHProcessingManager *sharedManager = nil;
 - (BOOL) isCurrentlyWaiting: (SCHBookInfo *) bookInfo
 {
 	@synchronized(self) {
-		return [[self.currentWaitingItems allKeys] containsObject:bookInfo];
+		return [[self.currentWaitingItems allKeys] containsObject:bookInfo.bookIdentifier];
 	}
 }
 
 - (BOOL) isCurrentlyDownloading: (SCHBookInfo *) bookInfo
 {
 	@synchronized(self) {
-		return [[self.currentDownloadingItems allKeys] containsObject:bookInfo];
+		return [[self.currentDownloadingItems allKeys] containsObject:bookInfo.bookIdentifier];
+	}
+}
+
+- (BOOL) isCurrentlyWaitingForURLs: (SCHBookInfo *) bookInfo
+{
+	@synchronized(self) {
+		return [[self.currentWaitingForURLItems allKeys] containsObject:bookInfo.bookIdentifier];
 	}
 }
 

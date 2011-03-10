@@ -23,9 +23,26 @@
 @synthesize bookIdentifier;
 @synthesize coverURL, bookFileURL;
 
+static NSMutableDictionary *bookTrackingDictionary = nil;
+
+
+- (void) dealloc
+{
+	self.bookIdentifier = nil;
+	
+	[bookTrackingDictionary removeObjectForKey:self.bookIdentifier];
+	
+	if ([bookTrackingDictionary count] == 0) {
+		[bookTrackingDictionary dealloc];
+		bookTrackingDictionary = nil;
+	}
+	
+	[super dealloc];
+}
 
 - (id) init
 {
+	
 	if (self = [super init]) {
 		self.currentThread = pthread_self();
 		self.bookIdentifier = nil;
@@ -36,10 +53,22 @@
 
 - (id) initWithContentMetadataItem: (SCHContentMetadataItem *) metadataItem
 {
+	if (!bookTrackingDictionary) {
+		bookTrackingDictionary = [[NSMutableDictionary alloc] init];
+	}
+	
+	SCHBookInfo *existingBookInfo = [bookTrackingDictionary objectForKey:metadataItem.ContentIdentifier];
+	
+	if (existingBookInfo) {
+		[bookTrackingDictionary setValue:existingBookInfo forKey:metadataItem.ContentIdentifier];
+		return [existingBookInfo retain];
+	}
+	
 	if (self = [self init]) {
-		//self.metadataItemID = [metadataItem objectID];
 		self.bookIdentifier = [metadataItem ContentIdentifier];
 	}
+	
+	[bookTrackingDictionary setValue:self forKey:self.bookIdentifier];
 	
 	return self;
 }
@@ -148,6 +177,11 @@
 	return [[SCHProcessingManager defaultManager] isCurrentlyDownloading:self];
 }
 
+- (BOOL) isCurrentlyWaitingForURLs
+{
+	return [[SCHProcessingManager defaultManager] isCurrentlyWaitingForURLs:self];
+}
+
 - (BOOL) isWaitingForDownload
 {
 	return [[SCHProcessingManager defaultManager] isCurrentlyWaiting:self];
@@ -190,7 +224,20 @@
 					format:@"Passed SCHBookInfo between threads %p and %p", self.currentThread, pthread_self()];
 	}
 }
+/*
+- (void) setCoverURL:(NSString *) newCoverURL
+{
+	NSLog(@"setting cover url in %p (%@) to %@", self, self.bookIdentifier, newCoverURL);
+	
+	NSString *oldCoverURL = coverURL;
+	coverURL = [newCoverURL retain];
+	[oldCoverURL release];
+}
 
-
-
+- (NSString *) coverURL
+{
+	NSLog(@"Getting cover URL in %p (%@): %@", self, self.bookIdentifier, coverURL);
+	return coverURL;
+}
+*/
 @end
