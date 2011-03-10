@@ -137,7 +137,7 @@ static SCHProcessingManager *sharedManager = nil;
 	
 	NSOperation *urlOp = nil;
 	
-	if (!bookInfo || !bookInfo.coverURL | !bookInfo.bookFileURL) {
+	if (!bookInfo || !bookInfo.coverURL || !bookInfo.bookFileURL) {
 		SCHBookURLRequestOperation *bookURLOp = [[SCHBookURLRequestOperation alloc] init];
 		bookURLOp.bookInfo = bookInfo;
 		urlOp = bookURLOp;
@@ -228,6 +228,7 @@ static SCHProcessingManager *sharedManager = nil;
 - (void) downloadBookFile: (SCHBookInfo *) bookInfo
 {
 	SCHDownloadBookFile *bookDownloadOp = nil;
+	NSOperation *urlOp = nil;
 	
 #ifndef LOCALDEBUG
 	
@@ -243,10 +244,22 @@ static SCHProcessingManager *sharedManager = nil;
 	if (state == bookFileProcessingStateNoFileDownloaded || state == bookFileProcessingStatePartiallyDownloaded) {
 		NSLog(@"XPS file %@ needs downloading (%@)...", [bookInfo xpsPath], (state == bookFileProcessingStateNoFileDownloaded)?@"No file":@"Partial File");
 		
+		if (!bookInfo || !bookInfo.coverURL || !bookInfo.bookFileURL) {
+			SCHBookURLRequestOperation *bookURLOp = [[SCHBookURLRequestOperation alloc] init];
+			bookURLOp.bookInfo = bookInfo;
+			urlOp = bookURLOp;
+		} else {
+			//		NSLog(@"Already have URLs.");
+		}
+		
 		// if it needs downloaded, queue up a book download operation
 		bookDownloadOp = [[SCHDownloadBookFile alloc] init];
 		bookDownloadOp.bookInfo = bookInfo;
 		bookDownloadOp.resume = YES;
+		if (urlOp) {
+			[bookDownloadOp addDependency:urlOp];
+		}
+		
 	} else if (state == bookFileProcessingStateFullyDownloaded) {
 		NSLog(@"XPS file %@ has been downloaded already.");
 	} else if (state == bookFileProcessingStateError) {
@@ -265,6 +278,13 @@ static SCHProcessingManager *sharedManager = nil;
 		[[SCHProcessingManager defaultManager].processingQueue addOperation:bookDownloadOp];
 		[bookDownloadOp release];
 	}
+	
+	if (urlOp) {
+		[operations addObject:urlOp];
+		[[SCHProcessingManager defaultManager].bookURLQueue addOperation:urlOp];
+		[urlOp release];
+	}
+	
 	
 }
 
