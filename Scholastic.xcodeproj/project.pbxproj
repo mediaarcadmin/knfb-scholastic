@@ -64,6 +64,8 @@
 		5266D34C13007A1C004E3AC6 /* SCHTopFavoritesComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 5266D34B13007A1C004E3AC6 /* SCHTopFavoritesComponent.m */; };
 		5266D38413007D15004E3AC6 /* SCHComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 5266D38313007D15004E3AC6 /* SCHComponent.m */; };
 		526750D213290EE800063AC8 /* SCHURLManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 52322C33132693F500BB071D /* SCHURLManager.m */; };
+		526750DB13291EB500063AC8 /* SCHRightsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 526750DA13291EB500063AC8 /* SCHRightsManager.m */; };
+		526750DC13291EB500063AC8 /* SCHRightsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 526750DA13291EB500063AC8 /* SCHRightsManager.m */; };
 		528A2CD312CCDD9E0053A343 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 528A2CD212CCDD9E0053A343 /* Settings.bundle */; };
 		528A2CDB12CCDE070053A343 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 528A2CDA12CCDE070053A343 /* Localizable.strings */; };
 		528A2CF812CCEAA50053A343 /* ReleaseNotes.tmReleaseNotes in Resources */ = {isa = PBXBuildFile; fileRef = 528A2CF712CCEAA50053A343 /* ReleaseNotes.tmReleaseNotes */; };
@@ -407,6 +409,9 @@
 		5266D38213007D15004E3AC6 /* SCHComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHComponent.h; path = Shared/SCHComponent.h; sourceTree = "<group>"; };
 		5266D38313007D15004E3AC6 /* SCHComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHComponent.m; path = Shared/SCHComponent.m; sourceTree = "<group>"; };
 		5266D38E13007E27004E3AC6 /* SCHComponentProtected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHComponentProtected.h; path = Shared/SCHComponentProtected.h; sourceTree = "<group>"; };
+		526750D913291EB500063AC8 /* SCHRightsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHRightsManager.h; sourceTree = "<group>"; };
+		526750DA13291EB500063AC8 /* SCHRightsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHRightsManager.m; sourceTree = "<group>"; };
+		526750DD13291EEA00063AC8 /* SCHRightsManagerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; path = SCHRightsManagerDelegate.h; sourceTree = "<group>"; };
 		528A2CD212CCDD9E0053A343 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = Settings.bundle; path = Shared/Settings.bundle; sourceTree = "<group>"; };
 		528A2CD912CCDDB00053A343 /* Entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Entitlements.plist; sourceTree = "<group>"; };
 		528A2CDA12CCDE070053A343 /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = Localizable.strings; path = Shared/Localizable.strings; sourceTree = "<group>"; };
@@ -1014,6 +1019,9 @@
 				5293872C12DF43CB00045B44 /* SCHLibreAccessWebService.m */,
 				52EF543E12E9A5D400E374F7 /* SCHAuthenticationManager.h */,
 				52EF543F12E9A5D400E374F7 /* SCHAuthenticationManager.m */,
+				526750D913291EB500063AC8 /* SCHRightsManager.h */,
+				526750DA13291EB500063AC8 /* SCHRightsManager.m */,
+				526750DD13291EEA00063AC8 /* SCHRightsManagerDelegate.h */,
 				52322C32132693F500BB071D /* SCHURLManager.h */,
 				52322C33132693F500BB071D /* SCHURLManager.m */,
 				5266D38213007D15004E3AC6 /* SCHComponent.h */,
@@ -1474,6 +1482,7 @@
 				F86502D6132532310044FEB0 /* SCHBookShelfGridViewCell.m in Sources */,
 				F897DD6F13279144007F2E14 /* SCHBookURLRequestOperation.m in Sources */,
 				52322C34132693F500BB071D /* SCHURLManager.m in Sources */,
+				526750DB13291EB500063AC8 /* SCHRightsManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1597,6 +1606,7 @@
 				F86502D5132532310044FEB0 /* SCHBookShelfGridViewCell.m in Sources */,
 				F897DD6E13279144007F2E14 /* SCHBookURLRequestOperation.m in Sources */,
 				526750D213290EE800063AC8 /* SCHURLManager.m in Sources */,
+				526750DC13291EB500063AC8 /* SCHRightsManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
