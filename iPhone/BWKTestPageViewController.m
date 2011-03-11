@@ -226,7 +226,12 @@
 	[imageView release];
 	
 	[scrollView setContentSize: CGSizeMake(imageView.bounds.size.width, imageView.bounds.size.height)];
-	
+    
+    CGFloat scale = MAX(CGRectGetWidth(scrollView.bounds)/CGRectGetWidth(imageView.bounds), 
+                        CGRectGetHeight(scrollView.bounds)/CGRectGetHeight(imageView.bounds));
+    
+	[scrollView setZoomScale:scale];
+    [scrollView setMinimumZoomScale:scale];
 	//[scrollView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
 	
 	//[pageSlider setValue:currentPage];
