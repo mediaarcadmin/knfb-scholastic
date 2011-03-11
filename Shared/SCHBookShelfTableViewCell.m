@@ -118,8 +118,6 @@
 
 - (void) setBookInfo:(SCHBookInfo *) newBookInfo
 {
-	BOOL updateImage = YES;
-	
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"SCHBookDownloadPercentageUpdate" object:bookInfo];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"SCHBookDownloadStatusUpdate" object:bookInfo];
 
@@ -127,8 +125,6 @@
 		SCHBookInfo *oldBookInfo = bookInfo;
 		bookInfo = [newBookInfo retain];
 		[oldBookInfo release];
-	} else {
-		updateImage = NO;
 	}
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self
@@ -173,11 +169,11 @@
 		status = @"Cover Img...";
 		thumbTintView.hidden = NO;
 		self.progressView.hidden = YES;
-	} else if ([bookInfo isWaitingForDownload]) {
+	} else if ([bookInfo isWaitingForBookFileDownload]) {
 		status = @"Waiting...";
 		thumbTintView.hidden = NO;
 		self.progressView.hidden = YES;
-	} else if ([bookInfo isCurrentlyDownloading]) {
+	} else if ([bookInfo isCurrentlyDownloadingBookFile]) {
 		status = @"Downloading...";
 		thumbTintView.hidden = NO;
 		self.progressView.hidden = NO;
@@ -236,14 +232,14 @@
 	float newPercentage = [(NSNumber *) [[notification userInfo] objectForKey:@"currentPercentage"] floatValue];
 	[self.progressView setProgress:newPercentage];
 }
-
+/*
 - (void) prepareForReuse
 {
 	if (self.thumbImageView) {
 		[self.thumbImageView prepareForReuse];
 	}
 }
-
+*/
 - (void)dealloc {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 

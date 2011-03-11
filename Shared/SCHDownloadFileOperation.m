@@ -17,7 +17,7 @@
 
 - (void) beginConnection;
 - (void) waitForCompletion;
-- (void) startWaitingForBookDownload;
+- (void) startWaitingForFileDownload;
 
 @end
 
@@ -29,6 +29,7 @@
 
 - (void)dealloc {
 	self.bookInfo = nil;
+	self.localPath = nil;
 	
 	[super dealloc];
 }
@@ -46,9 +47,10 @@
 	
 	switch (self.fileType) {
 		case kSCHDownloadFileTypeXPSBook:
-			[[SCHProcessingManager defaultManager] setBookWaiting:self.bookInfo operation:self];
+			[[SCHProcessingManager defaultManager] setBookFileWaiting:self.bookInfo operation:self];
 			break;
 		case kSCHDownloadFileTypeCoverImage:
+			[[SCHProcessingManager defaultManager] setCoverImageWaiting:self.bookInfo operation:self];
 			break;
 		default:
 			NSLog(@"Warning: unknown file type for download!");
@@ -58,40 +60,39 @@
 
 - (void) start
 {
-	NSLog(@"Starting file download.");
-	if (!(self.bookInfo)) {
-		NSLog(@"No book info.");
-	} else if ([self isCancelled]) {
-		NSLog(@"Cancelled.");
-	} else {
-//		if ([self.bookInfo isCurrentlyDownloading]) {
-//			[self startWaitingForBookDownload];
-//		} else {
-			[self beginConnection];
-//		}
-	}
-	
+//	@synchronized([SCHProcessingManager defaultManager]) {
+		NSLog(@"Starting file download.");
+		if (!(self.bookInfo)) {
+			NSLog(@"No book info.");
+		} else if ([self isCancelled]) {
+			NSLog(@"Cancelled.");
+		} else {
+			switch (self.fileType) {
+				case kSCHDownloadFileTypeXPSBook:
+					
+					if ([self.bookInfo isCurrentlyDownloadingBookFile]) {
+						[self startWaitingForFileDownload];
+					} else {
+						[self beginConnection];
+					}
+					
+					break;
+				case kSCHDownloadFileTypeCoverImage:
+					
+					if ([self.bookInfo isCurrentlyDownloadingCoverImage]) {
+						[self startWaitingForFileDownload];
+					} else {
+						[self beginConnection];
+					}
+					
+					break;
+				default:
+					break;
+			}
+			
+		}
+//	}
 }
-
-
-- (BOOL)isConcurrent {
-	return YES;
-}
-
-- (BOOL)isExecuting {
-	return self.executing;
-}
-
-- (BOOL)isFinished {
-	return self.finished;
-}
-
-- (void) cancel
-{
-	NSLog(@"Cancelled operation!");
-	[super cancel];
-}
-
 
 - (void) beginConnection
 {
@@ -102,11 +103,11 @@
 
 	if (self.fileType == kSCHDownloadFileTypeXPSBook) {
 	
-		if ([self.bookInfo isCurrentlyDownloading]) {
+//		if ([self.bookInfo isCurrentlyDownloading]) {
 //			NSLog(@"--**--**--**--**--**--Operation: already downloading the file.");
-			[self startWaitingForBookDownload];
-			return;
-		}
+//			[self startWaitingForFileDownload];
+//			return;
+//		}
 		
 		BookFileProcessingState state = [self.bookInfo processingState];
 		
@@ -121,16 +122,20 @@
 		
 	} else if (self.fileType == kSCHDownloadFileTypeCoverImage) {
 		
+//		if ([self.bookInfo isCurrentlyDownloadingCoverImage]) {
+//			NSLog(@"--**--**--**--**--**--Operation: already downloading the file.");
+//			[self startWaitingForFileDownload];
+//			return;
+//		}
+		
 		NSString *cacheDir  = [SCHProcessingManager cacheDirectory];
 		self.localPath = [cacheDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png", bookInfo.bookIdentifier]];
 		
 		request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:self.bookInfo.coverURL]];
 
 	} else {
-		NSLog(@"--**--**--**--**--**-- UNKNOWN FILE DOWNLOAD TYPE");
+		[NSException raise:@"SCHDownloadFileOperationUnknownFileType" format:@"Unknown file type for SCHDownloadFileOperation."];
 	}
-	
-//	NSLog(@"--**--**--**--**--**-- File path: %@", self.localPath);
 	
 	unsigned long long fileSize = 0;
 	
@@ -155,8 +160,6 @@
 		}
 	}
 		
-//	NSLog(@"--**--**--**--**--**--Download request: %@", request);
-	
 	if (fileSize > 0) {
 		[request setValue:[NSString stringWithFormat:@"bytes=%llu-", fileSize] forHTTPHeaderField:@"Range"];
 	} else {
@@ -168,10 +171,9 @@
 
 	switch (self.fileType) {
 		case kSCHDownloadFileTypeXPSBook:
-			[[SCHProcessingManager defaultManager] setBookDownloading:self.bookInfo operation:self];
+			[[SCHProcessingManager defaultManager] setBookFileDownloading:self.bookInfo operation:self];
 			break;
 		case kSCHDownloadFileTypeCoverImage:
-			// FIXME
 			[[SCHProcessingManager defaultManager] setCoverImageDownloading:self.bookInfo operation:self];
 			break;
 		default:
@@ -204,10 +206,23 @@
 	
 }
 
+#pragma mark -
+#pragma mark Notification methods
+
+- (void) percentageUpdate: (NSDictionary *) userInfo
+{
+	if (self.fileType == kSCHDownloadFileTypeXPSBook) {
+		[[NSNotificationCenter defaultCenter] postNotificationName:@"SCHBookDownloadPercentageUpdate" object:self.bookInfo.bookIdentifier userInfo:userInfo];
+	}
+}
+
 - (void) fileDownloadComplete: (NSDictionary *) userInfo
 {
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"SCHBookFileDownloadWaiting" object:nil userInfo:userInfo];
 }
+
+#pragma mark -
+#pragma mark Waiting for completion
 
 - (void) waitForCompletion
 {
@@ -217,18 +232,21 @@
 	
 }
 
-- (void) startWaitingForBookDownload
+#pragma mark -
+#pragma mark Waiting for another operation to complete
+
+- (void) startWaitingForFileDownload
 {
 	// FIXME: verify that this actually works
-//	NSLog(@"--**--**--**--**--**-- Starting to wait for download of file %@", self.bookInfo.contentMetadata.Title);
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(bookFileWaitFinished:) name:@"SCHBookFileDownloadWaiting" object:self.bookInfo];
+	NSLog(@"--**--**--**--**--**-- Starting to wait for download of file %@", self.bookInfo.contentMetadata.Title);
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fileWaitFinished:) name:@"SCHBookFileDownloadWaiting" object:self.bookInfo];
 	[self waitForCompletion];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"SCHBookFileDownloadWaiting" object:self.bookInfo];
 }
 
-- (void) bookFileWaitFinished: (NSNotification *) notification
+- (void) fileWaitFinished: (NSNotification *) notification
 {
-//	NSLog(@"--**--**--**--**--**-- bookFileWaitFinished");
+	NSLog(@"--**--**--**--**--**-- bookFileWaitFinished");
 	NSDictionary *userInfo = [notification userInfo];
 	SCHBookInfo *otherInfo = [userInfo objectForKey:@"bookInfo"];
 	kSCHDownloadFileType type = [(NSNumber *) [userInfo objectForKey:@"type"] intValue];
@@ -239,12 +257,8 @@
 	}	
 }
 
-- (void) percentageUpdate: (NSDictionary *) userInfo
-{
-	if (self.fileType == kSCHDownloadFileTypeXPSBook) {
-		[[NSNotificationCenter defaultCenter] postNotificationName:@"SCHBookDownloadPercentageUpdate" object:self.bookInfo.bookIdentifier userInfo:userInfo];
-	}
-}
+#pragma mark -
+#pragma mark NSURLConnection delegate methods
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
 
@@ -320,6 +334,26 @@
 	
 	self.executing = NO;
 	self.finished = YES;
+}
+
+- (BOOL)isConcurrent {
+	return YES;
+}
+
+- (BOOL)isExecuting {
+	return self.executing;
+}
+
+- (BOOL)isFinished {
+	return self.finished;
+}
+
+- (void) cancel
+{
+	NSLog(@"%%%% cancelling download file operation");
+	self.finished = YES;
+	self.executing = NO;
+	[super cancel];
 }
 
 @end

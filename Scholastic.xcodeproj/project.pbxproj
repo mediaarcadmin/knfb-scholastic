@@ -410,7 +410,7 @@
 		5266D38E13007E27004E3AC6 /* SCHComponentProtected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHComponentProtected.h; path = Shared/SCHComponentProtected.h; sourceTree = "<group>"; };
 		526750D913291EB500063AC8 /* SCHRightsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHRightsManager.h; sourceTree = "<group>"; };
 		526750DA13291EB500063AC8 /* SCHRightsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHRightsManager.m; sourceTree = "<group>"; };
-		526750DD13291EEA00063AC8 /* SCHRightsManagerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; path = SCHRightsManagerDelegate.h; sourceTree = "<group>"; };
+		526750DD13291EEA00063AC8 /* SCHRightsManagerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHRightsManagerDelegate.h; sourceTree = "<group>"; };
 		528A2CD212CCDD9E0053A343 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = Settings.bundle; path = Shared/Settings.bundle; sourceTree = "<group>"; };
 		528A2CD912CCDDB00053A343 /* Entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Entitlements.plist; sourceTree = "<group>"; };
 		528A2CDA12CCDE070053A343 /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = Localizable.strings; path = Shared/Localizable.strings; sourceTree = "<group>"; };

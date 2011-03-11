@@ -177,7 +177,7 @@ static NSMutableDictionary *bookTrackingDictionary = nil;
 	return [[SCHProcessingManager defaultManager] isCurrentlyDownloadingCoverImage:self];
 }
 
-- (BOOL) isCurrentlyDownloading
+- (BOOL) isCurrentlyDownloadingBookFile
 {
 	return [[SCHProcessingManager defaultManager] isCurrentlyDownloading:self];
 }
@@ -187,9 +187,14 @@ static NSMutableDictionary *bookTrackingDictionary = nil;
 	return [[SCHProcessingManager defaultManager] isCurrentlyWaitingForURLs:self];
 }
 
-- (BOOL) isWaitingForDownload
+- (BOOL) isWaitingForBookFileDownload
 {
-	return [[SCHProcessingManager defaultManager] isCurrentlyWaiting:self];
+	return [[SCHProcessingManager defaultManager] isCurrentlyWaitingForBookFile:self];
+}
+
+- (BOOL) isWaitingForCoverImage
+{
+	return [[SCHProcessingManager defaultManager] isCurrentlyWaitingForCoverImage:self];
 }
 
 - (BOOL)isEqual:(id)anObject

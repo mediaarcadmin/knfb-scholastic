@@ -38,9 +38,9 @@ typedef enum {
 - (BookFileProcessingState) processingState;
 - (BOOL) processedCovers;
 
-- (BOOL) isCurrentlyDownloading;
+- (BOOL) isCurrentlyDownloadingBookFile;
 - (BOOL) isCurrentlyDownloadingCoverImage;
-- (BOOL) isWaitingForDownload;
+- (BOOL) isWaitingForBookFileDownload;
 - (BOOL) isCurrentlyWaitingForURLs;
 
 - (float) currentDownloadedPercentage;

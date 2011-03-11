@@ -114,12 +114,12 @@
 		self.thumbTintView.hidden = NO;
 		self.progressView.hidden = YES;
 		self.statusLabel.hidden = NO;
-	} else if ([bookInfo isWaitingForDownload]) {
+	} else if ([bookInfo isWaitingForBookFileDownload]) {
 		status = @"Waiting...";
 		self.thumbTintView.hidden = NO;
 		self.progressView.hidden = YES;
 		self.statusLabel.hidden = NO;
-	} else if ([bookInfo isCurrentlyDownloading]) {
+	} else if ([bookInfo isCurrentlyDownloadingBookFile]) {
 		status = @"Downloading...";
 		self.thumbTintView.hidden = NO;
 		self.progressView.hidden = NO;
@@ -175,14 +175,14 @@
 	float newPercentage = [(NSNumber *) [[notification userInfo] objectForKey:@"currentPercentage"] floatValue];
 	[self.progressView setProgress:newPercentage];
 }
-
+/*
 - (void) prepareForReuse
 {
 	if (self.asyncImageView) {
 		[self.asyncImageView prepareForReuse];
 	}
 }
-
+*/
 
 
 - (void)dealloc {

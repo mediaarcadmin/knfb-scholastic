@@ -21,12 +21,16 @@
 @property (nonatomic, retain) NSOperationQueue *processingQueue;
 @property (nonatomic, retain) NSOperationQueue *bookURLQueue;
 @property (nonatomic, retain) BlioTimeOrderedCache *imageCache;
-@property (readwrite, retain) NSMutableDictionary *currentWaitingItems;
-@property (readwrite, retain) NSMutableDictionary *currentDownloadingItems;
+@property (readwrite, retain) NSMutableDictionary *currentWaitingBookFileItems;
+@property (readwrite, retain) NSMutableDictionary *currentDownloadingBookFileItems;
+
 @property (readwrite, retain) NSMutableDictionary *currentWaitingForURLItems;
+
+
+@property (readwrite, retain) NSMutableDictionary *currentWaitingCoverImages;
 @property (readwrite, retain) NSMutableDictionary *currentDownloadingCoverImages;
 
-@property (readwrite, retain) NSMutableDictionary *currentProcessingAsyncImageViews;
+//@property (readwrite, retain) NSMutableDictionary *currentProcessingAsyncImageViews;
 
 //- (void) enqueueBookInfoItems: (NSArray *) bookInfoItems;
 
@@ -48,16 +52,21 @@
 
 - (void) downloadBookFile: (SCHBookInfo *) bookInfo;
 
-- (void) setBookWaiting: (SCHBookInfo *) bookInfo operation: (NSOperation *) operation;
-- (void) setBookDownloading: (SCHBookInfo *) bookInfo operation: (NSOperation *) operation;
-- (void) setBookWaitingForURLs: (SCHBookInfo *) bookInfo operation: (NSOperation *) operation;
+- (void) setBookFileWaiting: (SCHBookInfo *) bookInfo operation: (NSOperation *) operation;
+- (void) setBookFileDownloading: (SCHBookInfo *) bookInfo operation: (NSOperation *) operation;
+
+- (void) setCoverImageWaiting: (SCHBookInfo *) bookInfo operation: (NSOperation *) operation;
 - (void) setCoverImageDownloading: (SCHBookInfo *) bookInfo operation: (NSOperation *) operation;
 
-- (void) removeBookWaitingForURLs: (SCHBookInfo *) bookInfo;
+- (BOOL) setBookWaitingForURLs: (SCHBookInfo *) bookInfo operation: (NSOperation *) operation;
+
+
 - (void) removeBookFromDownload: (SCHBookInfo *) bookInfo;
 - (void) removeCoverImageFromDownload: (SCHBookInfo *) bookInfo;
+- (void) removeBookWaitingForURLs: (SCHBookInfo *) bookInfo;
 
-- (BOOL) isCurrentlyWaiting: (SCHBookInfo *) bookInfo;
+- (BOOL) isCurrentlyWaitingForBookFile: (SCHBookInfo *) bookInfo;
+- (BOOL) isCurrentlyWaitingForCoverImage: (SCHBookInfo *) bookInfo;
 - (BOOL) isCurrentlyDownloading: (SCHBookInfo *) bookInfo;
 - (BOOL) isCurrentlyWaitingForURLs: (SCHBookInfo *) bookInfo;
 - (BOOL) isCurrentlyDownloadingCoverImage: (SCHBookInfo *) bookInfo;
@@ -65,8 +74,8 @@
 - (void) enterBackground;
 - (void) enterForeground;
 
-- (BOOL) hasExistingAsyncImageViewForThumbName: (NSString *) thumbName;
-- (void) removeProcessingAsyncImageView: (SCHAsyncImageView *) imageView;
+//- (BOOL) hasExistingAsyncImageViewForThumbName: (NSString *) thumbName;
+//- (void) removeProcessingAsyncImageView: (SCHAsyncImageView *) imageView;
 
 
 @end

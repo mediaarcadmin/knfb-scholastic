@@ -33,7 +33,7 @@
 	self.imageOfInterest = nil;
 	[super dealloc];
 }
-
+/*
 - (void) prepareForReuse
 {
 	if (operations) {
@@ -46,7 +46,7 @@
 	self.imageOfInterest = nil;
 	self.image = nil;
 }
-
+*/
 - (void) initialiseView {
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(newImageAvailable:)
@@ -72,6 +72,15 @@
 
 - (void) updateImageOfInterest: (NSString *) newInterest
 {
+	
+	if (operations) {
+		for (NSOperation *op in self.operations) {
+			[op cancel];
+		}
+	}
+	
+	self.operations = nil;
+	
 	self.image = [UIImage imageNamed:@"PlaceholderBook"];
 	self.imageOfInterest = newInterest;
 }
@@ -87,7 +96,7 @@
 		[self setNeedsDisplay];
 	}
 	
-	[[SCHProcessingManager defaultManager] removeProcessingAsyncImageView:self];
+//	[[SCHProcessingManager defaultManager] removeProcessingAsyncImageView:self];
 }
 
 @end

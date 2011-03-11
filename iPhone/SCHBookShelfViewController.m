@@ -107,7 +107,7 @@ NSInteger bookSort(SCHBookInfo *book1, SCHBookInfo *book2, void *context)
 			
 			BookFileProcessingState state = [bookInfo processingState];
 			
-			if (!([bookInfo isCurrentlyDownloading] || [bookInfo isWaitingForDownload])) {
+			if (!([bookInfo isCurrentlyDownloadingBookFile] || [bookInfo isWaitingForBookFileDownload])) {
 				switch (state) {
 					case bookFileProcessingStateError:
 						break;
@@ -178,7 +178,7 @@ NSInteger bookSort(SCHBookInfo *book1, SCHBookInfo *book2, void *context)
 	
 	SCHBookInfo *bookInfo = [self.books objectAtIndex:indexPath.row];
 
-	if ([bookInfo isCurrentlyDownloading] || [bookInfo isWaitingForDownload]) {
+	if ([bookInfo isCurrentlyDownloadingBookFile] || [bookInfo isWaitingForBookFileDownload]) {
 		[[SCHProcessingManager defaultManager] removeBookFromDownload:bookInfo];
 		return;
 	}
@@ -287,7 +287,7 @@ NSInteger bookSort(SCHBookInfo *book1, SCHBookInfo *book2, void *context)
 	NSLog(@"Calling grid view selection.");
 	SCHBookInfo *bookInfo = [self.books objectAtIndex:index];
 
-	if ([bookInfo isCurrentlyDownloading] || [bookInfo isWaitingForDownload]) {
+	if ([bookInfo isCurrentlyDownloadingBookFile] || [bookInfo isWaitingForBookFileDownload]) {
 		[[SCHProcessingManager defaultManager] removeBookFromDownload:bookInfo];
 		return;
 	}
