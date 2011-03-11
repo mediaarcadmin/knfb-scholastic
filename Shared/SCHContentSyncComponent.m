@@ -88,7 +88,7 @@
 	NSArray *changedStates = [NSArray arrayWithObjects:[NSNumber numberWithStatus:kSCHStatusCreated], 
 					   [NSNumber numberWithStatus:kSCHStatusModified],
 					   [NSNumber numberWithStatus:kSCHStatusDeleted], nil];
-	[fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"ANY ProfileList.State IN %@", changedStates, changedStates]];
+	[fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"ANY ProfileList.State IN %@", changedStates]];
 	
 	NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest error:nil];
 		
