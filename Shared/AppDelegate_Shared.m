@@ -211,9 +211,24 @@ static NSString * const kSCHClearLocalDebugMode = @"kSCHClearLocalDebugMode";
          Lightweight migration will only work for a limited set of schema changes; consult "Core Data Model Versioning and Data Migration Programming Guide" for details.
          
          */
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        abort();
-    }    
+
+        BOOL bailOut = NO;
+        
+        if ([error code] == NSPersistentStoreIncompatibleVersionHashError) {
+            NSLog(@"Your Core Data store is incompatible, we're gonna replace the store for you. You may need to re-populate it.");
+            [[NSFileManager defaultManager] removeItemAtURL:storeURL error:nil];
+            if (![persistentStoreCoordinator_ addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error]) {        
+                bailOut = YES;
+            }
+        } else {
+            bailOut = YES;
+        }
+
+        if (bailOut == YES) {
+            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+            abort();
+        }
+    }
     
     return persistentStoreCoordinator_;
 }
