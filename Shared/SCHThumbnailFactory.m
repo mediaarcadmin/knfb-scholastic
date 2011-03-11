@@ -163,7 +163,7 @@
 	// debug: make sure we're not running the image resizing on the main thread
 	NSAssert([NSThread currentThread] != [NSThread mainThread], @"Don't do image interpolation on the main thread!");
 	
-	NSLog(@"++++++++++++++++++++++++++ file exists at path? %@", ([[NSFileManager defaultManager] fileExistsAtPath:path])?@"Yes":@"No!");
+//	NSLog(@"++++++++++++++++++++++++++ file exists at path? %@", ([[NSFileManager defaultManager] fileExistsAtPath:path])?@"Yes":@"No!");
 	
 	UIImage *fullImage = [SCHThumbnailFactory imageWithPath:path];
 	

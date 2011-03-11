@@ -22,7 +22,7 @@
 
 @implementation SCHProcessingManager
 
-@synthesize processingQueue, bookURLQueue, imageCache, 
+@synthesize processingQueue, downloadQueue, bookURLQueue, imageCache, 
 currentDownloadingBookFileItems, currentWaitingBookFileItems, currentWaitingForURLItems, currentWaitingCoverImages, currentDownloadingCoverImages, 
 backgroundTask;
 
@@ -36,6 +36,8 @@ static SCHProcessingManager *sharedManager = nil;
 	if (self = [super init]) {
 		self.processingQueue = [[NSOperationQueue alloc] init];
 		[self.processingQueue setMaxConcurrentOperationCount:3];
+		self.downloadQueue = [[NSOperationQueue alloc] init];
+		[self.downloadQueue setMaxConcurrentOperationCount:3];
 		self.bookURLQueue = [[NSOperationQueue alloc] init];
 		[self.bookURLQueue setMaxConcurrentOperationCount:10];
 		self.imageCache = [[BlioTimeOrderedCache alloc] init];
@@ -54,6 +56,7 @@ static SCHProcessingManager *sharedManager = nil;
 - (void) dealloc
 {
 	self.processingQueue = nil;
+	self.downloadQueue = nil;
 	self.bookURLQueue = nil;
 	self.imageCache = nil;
 	self.currentDownloadingBookFileItems = nil;
@@ -126,27 +129,6 @@ static SCHProcessingManager *sharedManager = nil;
 	return NO;
 }
 
-/*
-- (BOOL) hasExistingAsyncImageViewForThumbName: (NSString *) thumbName
-{
-	BOOL result = NO;
-	
-	if ([self.currentProcessingAsyncImageViews objectForKey:thumbName]) {
-		result = YES;
-	}
-	return result;
-}
-
-- (void) removeProcessingAsyncImageView: (SCHAsyncImageView *) imageView
-{
-	NSArray *keys = [self.currentProcessingAsyncImageViews allKeysForObject:imageView];
-	
-	for (NSString *key in keys) {
-		[self.currentProcessingAsyncImageViews removeObjectForKey:key];
-	}
-}
-*/
-
 // This method does the following:
 // - if necessary, fetches the book cover image URL
 // - if necessary, downloads the book cover image data
@@ -155,7 +137,6 @@ static SCHProcessingManager *sharedManager = nil;
 
 - (NSArray *) processBookCoverImage: (SCHBookInfo *) bookInfo size: (CGSize) size rect: (CGRect) thumbRect flip: (BOOL) flip maintainAspect: (BOOL) aspect
 {
-	
 	NSAssert(bookInfo != nil, @"processBookCoverImage must have a valid bookInfo object.");
 
 	NSString *cacheDir  = [SCHProcessingManager cacheDirectory];
@@ -167,22 +148,23 @@ static SCHProcessingManager *sharedManager = nil;
 	if (![[NSFileManager defaultManager] fileExistsAtPath:cacheImageItem]) {
 
 		// check for an operation already downloading the image from currentWaitingCoverImages
+		NSOperation *existingOp = nil; 
 		
-		NSOperation *existingOp = nil;
-		
-		if ([self isCurrentlyDownloadingCoverImage:bookInfo]) {
-			NSLog(@"%%%% Reusing existing operation from isDownloadingCoverImages...");
-			existingOp = [self.currentDownloadingCoverImages objectForKey:bookInfo.bookIdentifier];
-		} else if ([self isCurrentlyWaitingForCoverImage:bookInfo]) {
-			NSLog(@"%%%% Reusing existing operation from currentWaitingCoverImages...");
-			existingOp = [self.currentWaitingCoverImages objectForKey:bookInfo.bookIdentifier];
+		for (SCHDownloadFileOperation *op in [self.downloadQueue operations]) {
+			
+			if ([op.bookInfo.bookIdentifier compare:bookInfo.bookIdentifier] == NSOrderedSame 
+				&& op.fileType == kSCHDownloadFileTypeCoverImage) {
+				NSLog(@"***** ===== Image Download, existing op! Book ID: %@", op.bookInfo.bookIdentifier);
+				
+				existingOp = op;
+				break;
+			}
 		}
-		
 		
 		if (existingOp) {
 			imageOp = existingOp;
 		} else {
-			NSLog(@"%%%% Creating a new image download operation.");
+			NSLog(@"***** ===== Image Download, new op! Book ID: %@", bookInfo.bookIdentifier);
 			// if it doesn't exist, queue up the appropriate operation
 			
 #ifdef LOCALDEBUG
@@ -230,18 +212,29 @@ static SCHProcessingManager *sharedManager = nil;
 	
 	// check for the thumb image
 	if (![[NSFileManager defaultManager] fileExistsAtPath:thumbFullPath]) {
+		
+		BOOL addNewOperation = YES;
+		
+		for (SCHThumbnailOperation *existingOp in [self.processingQueue operations]) {
+			if ([thumbPath compare:existingOp.thumbPath] == NSOrderedSame) {
+				addNewOperation = NO;
+				break;
+			}
+		}
+		
 		// if it doesn't exist, queue up an image processing operation
+		if (addNewOperation) {
+			thumbOp = [SCHThumbnailFactory thumbOperationAtPath:thumbPath
+													   fromPath:cacheImageItem
+														   rect:thumbRect
+														   size:size
+														   flip:YES
+												 maintainAspect:YES];
+			[thumbOp setQueuePriority:NSOperationQueuePriorityHigh];
 			
-		thumbOp = [SCHThumbnailFactory thumbOperationAtPath:thumbPath
-												   fromPath:cacheImageItem
-													   rect:thumbRect
-													   size:size
-													   flip:YES
-											 maintainAspect:YES];
-		[thumbOp setQueuePriority:NSOperationQueuePriorityHigh];
-
-		if (imageOp) {
-			[thumbOp addDependency:imageOp];
+			if (imageOp) {
+				[thumbOp addDependency:imageOp];
+			}
 		}
 	} else {
 		NSLog(@"Thumb already exists.");
@@ -257,9 +250,9 @@ static SCHProcessingManager *sharedManager = nil;
 	}
 	
 	if (imageOp) {
-		if (![[[SCHProcessingManager defaultManager].processingQueue operations] containsObject:imageOp]) {
+		if (![[[SCHProcessingManager defaultManager].downloadQueue operations] containsObject:imageOp]) {
 			[operations addObject:imageOp];
-			[[SCHProcessingManager defaultManager].processingQueue addOperation:imageOp];
+			[[SCHProcessingManager defaultManager].downloadQueue addOperation:imageOp];
 			[imageOp release];
 		}
 		
@@ -273,21 +266,10 @@ static SCHProcessingManager *sharedManager = nil;
 		}
 	}
 	
-	
-	NSLog(@"Image cover beginning. Operation count: %d", [self.processingQueue operationCount]);
-	
-	for (id obj in [self.processingQueue operations]) {
-		NSOperation *op = (NSOperation *) obj;
-		NSLog(@"Op: %@, Cancelled %@, Executing %@, Finished %@", op, [op isCancelled]?@"Yes":@"No", [op isExecuting]?@"Yes":@"No",  [op isFinished]?@"Yes":@"No");
-//		if ([obj class] == [SCHDownloadFileOperation class]) {
-//			SCHDownloadFileOperation *dfop = (SCHDownloadFileOperation *) op;
-			//NSLog(@"DFOP for %@, type %d", dfop.bookInfo, dfop.fileType);
-			
-//		}
-		
-	}
-	
-	
+
+
+	NSLog(@"Op counts: URLs:%d Download:%d Processing:%d", 
+		  [[self.bookURLQueue operations] count], [[self.downloadQueue operations] count], [[self.processingQueue operations] count]);
 	
 	return [NSArray arrayWithArray:operations];
 }
@@ -343,7 +325,7 @@ static SCHProcessingManager *sharedManager = nil;
 	
 	if (bookDownloadOp) {
 		[operations addObject:bookDownloadOp];
-		[[SCHProcessingManager defaultManager].processingQueue addOperation:bookDownloadOp];
+		[[SCHProcessingManager defaultManager].downloadQueue addOperation:bookDownloadOp];
 		[bookDownloadOp release];
 	}
 	
@@ -353,9 +335,9 @@ static SCHProcessingManager *sharedManager = nil;
 		[urlOp release];
 	}
 	
-	NSLog(@"Book downloading. Operation count: %d", [self.processingQueue operationCount]);
+/*	NSLog(@"Book downloading. Operation count: %d", [self.downloadQueue operationCount]);
 	
-	for (id obj in [self.processingQueue operations]) {
+	for (id obj in [self.downloadQueue operations]) {
 		NSOperation *op = (NSOperation *) obj;
 		NSLog(@"Op: %@, Cancelled %@, Executing %@, Finished %@", op, [op isCancelled]?@"Yes":@"No", [op isExecuting]?@"Yes":@"No",  [op isFinished]?@"Yes":@"No");
 		if ([obj class] == [SCHDownloadFileOperation class]) {
@@ -365,7 +347,11 @@ static SCHProcessingManager *sharedManager = nil;
 		}
 		
 	}
+*/
 	
+	NSLog(@"Op counts: URLs:%d Download:%d Processing:%d", 
+		  [[self.bookURLQueue operations] count], [[self.downloadQueue operations] count], [[self.processingQueue operations] count]);
+
 	
 }
 
@@ -626,7 +612,10 @@ static SCHProcessingManager *sharedManager = nil;
     BOOL backgroundSupported = [device respondsToSelector:@selector(isMultitaskingSupported)] && device.multitaskingSupported;
     if(backgroundSupported) {        
 		
-		if ((self.processingQueue && [self.processingQueue operationCount]) || (self.bookURLQueue && [self.bookURLQueue operationCount])) {
+		if ((self.processingQueue && [self.processingQueue operationCount]) 
+			|| (self.processingQueue && [self.processingQueue operationCount])
+			|| (self.bookURLQueue && [self.bookURLQueue operationCount])
+			) {
 			NSLog(@"Background processing needs more time - going into the background.");
 			
             self.backgroundTask = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
@@ -646,6 +635,7 @@ static SCHProcessingManager *sharedManager = nil;
 				NSLog(@"Emptying operation queues...");
                 if(self.backgroundTask != UIBackgroundTaskInvalid) {
 					[self.bookURLQueue waitUntilAllOperationsAreFinished];
+                    [self.downloadQueue waitUntilAllOperationsAreFinished];    
                     [self.processingQueue waitUntilAllOperationsAreFinished];    
 					NSLog(@"operation queues are finished!");
                     [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTask];
