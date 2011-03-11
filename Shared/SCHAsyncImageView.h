@@ -16,6 +16,6 @@
 @property (nonatomic, retain) NSArray *operations;
 @property (nonatomic, retain) NSString *imageOfInterest;
 
-- (void) prepareForReuse;
+//- (void) prepareForReuse;
 
 @end

@@ -74,11 +74,6 @@ NSInteger bookSort(SCHBookInfo *book1, SCHBookInfo *book2, void *context)
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(updateTable:)
-												 name:@"SCHBookDownloadStatusUpdate"
-											   object:nil];
-	
-	[[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(updateTable:)
 												 name:@"SCHBookshelfSyncComponentComplete"
 											   object:nil];
 	
@@ -87,10 +82,10 @@ NSInteger bookSort(SCHBookInfo *book1, SCHBookInfo *book2, void *context)
 	[self.view bringSubviewToFront:self.loadingView];
 	
 	if (![[SCHSyncManager sharedSyncManager] havePerformedFirstSyncUpToBooks] && [[SCHSyncManager sharedSyncManager] isSynchronizing]) {
-		NSLog(@"Showing loading view...");
+//		NSLog(@"Showing loading view...");
 		self.loadingView.hidden = NO;
 	} else {
-		NSLog(@"Hiding loading view...");
+//		NSLog(@"Hiding loading view...");
 		self.loadingView.hidden = YES;
 	}
 	
@@ -112,7 +107,7 @@ NSInteger bookSort(SCHBookInfo *book1, SCHBookInfo *book2, void *context)
 			
 			BookFileProcessingState state = [bookInfo processingState];
 			
-			if (!([bookInfo isCurrentlyDownloading] || [bookInfo isWaitingForDownload])) {
+			if (!([bookInfo isCurrentlyDownloadingBookFile] || [bookInfo isWaitingForBookFileDownload])) {
 				switch (state) {
 					case bookFileProcessingStateError:
 						break;
@@ -183,7 +178,7 @@ NSInteger bookSort(SCHBookInfo *book1, SCHBookInfo *book2, void *context)
 	
 	SCHBookInfo *bookInfo = [self.books objectAtIndex:indexPath.row];
 
-	if ([bookInfo isCurrentlyDownloading] || [bookInfo isWaitingForDownload]) {
+	if ([bookInfo isCurrentlyDownloadingBookFile] || [bookInfo isWaitingForBookFileDownload]) {
 		[[SCHProcessingManager defaultManager] removeBookFromDownload:bookInfo];
 		return;
 	}
@@ -292,7 +287,7 @@ NSInteger bookSort(SCHBookInfo *book1, SCHBookInfo *book2, void *context)
 	NSLog(@"Calling grid view selection.");
 	SCHBookInfo *bookInfo = [self.books objectAtIndex:index];
 
-	if ([bookInfo isCurrentlyDownloading] || [bookInfo isWaitingForDownload]) {
+	if ([bookInfo isCurrentlyDownloadingBookFile] || [bookInfo isWaitingForBookFileDownload]) {
 		[[SCHProcessingManager defaultManager] removeBookFromDownload:bookInfo];
 		return;
 	}

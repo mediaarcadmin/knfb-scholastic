@@ -25,4 +25,7 @@
 @property (nonatomic, retain) UIProgressView *progressView;
 @property (nonatomic, retain) SCHBookInfo *bookInfo;
 
+
+- (void) refreshCell;
+
 @end

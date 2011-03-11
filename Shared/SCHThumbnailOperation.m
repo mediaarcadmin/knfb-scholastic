@@ -70,6 +70,12 @@
 	}
 }
 
+- (void) cancel
+{
+	NSLog(@"Cancelling Thumbnail op.");
+	[super cancel];
+}
+
 
 
 

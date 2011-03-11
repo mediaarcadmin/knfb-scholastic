@@ -66,6 +66,7 @@
 {
 
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"SCHBookDownloadPercentageUpdate" object:bookInfo];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"SCHBookDownloadStatusUpdate" object:bookInfo];
 	
 	if (newBookInfo != bookInfo) {
 		SCHBookInfo *oldBookInfo = bookInfo;
@@ -78,6 +79,16 @@
 												 name:@"SCHBookDownloadPercentageUpdate" 
 											   object:self.bookInfo.bookIdentifier];
 	
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(refreshCell)
+												 name:@"SCHBookDownloadStatusUpdate"
+											   object:self.bookInfo];
+	[self refreshCell];
+	
+}
+
+- (void) refreshCell
+{
 	// image processing
 	BOOL immediateUpdate = 	[[SCHProcessingManager defaultManager] updateThumbView:self.asyncImageView
 																		  withBook:bookInfo
@@ -93,20 +104,25 @@
 	
 	NSString *status = @"";
 	
-	if ([bookInfo isCurrentlyDownloading]) {
-		status = @"Downloading...";
-		self.thumbTintView.hidden = NO;
-		self.progressView.hidden = NO;
-		self.statusLabel.hidden = NO;
-	} else if ([bookInfo isCurrentlyWaitingForURLs]) {
-		status = @"Updating...";
+	if ([bookInfo isCurrentlyWaitingForURLs]) {
+		status = @"URLs...";
 		self.thumbTintView.hidden = NO;
 		self.progressView.hidden = YES;
 		self.statusLabel.hidden = NO;
-	} else if ([bookInfo isWaitingForDownload]) {
+	} else if ([bookInfo isCurrentlyDownloadingCoverImage]) {
+		status = @"Cover Img...";
+		self.thumbTintView.hidden = NO;
+		self.progressView.hidden = YES;
+		self.statusLabel.hidden = NO;
+	} else if ([bookInfo isWaitingForBookFileDownload]) {
 		status = @"Waiting...";
 		self.thumbTintView.hidden = NO;
 		self.progressView.hidden = YES;
+		self.statusLabel.hidden = NO;
+	} else if ([bookInfo isCurrentlyDownloadingBookFile]) {
+		status = @"Downloading...";
+		self.thumbTintView.hidden = NO;
+		self.progressView.hidden = NO;
 		self.statusLabel.hidden = NO;
 	} else {
 		
@@ -144,31 +160,33 @@
 				break;
 		}
 	}	
+	
 	[self.progressView setProgress:[bookInfo currentDownloadedPercentage]];
 	self.statusLabel.text = status;
 	
 	[self layoutSubviews];
 	
 	[self.statusLabel setNeedsDisplay];
+}	
 	
-}
 
 - (void) updatePercentage: (NSNotification *) notification
 {
 	float newPercentage = [(NSNumber *) [[notification userInfo] objectForKey:@"currentPercentage"] floatValue];
 	[self.progressView setProgress:newPercentage];
 }
-
+/*
 - (void) prepareForReuse
 {
 	if (self.asyncImageView) {
 		[self.asyncImageView prepareForReuse];
 	}
 }
-
+*/
 
 
 - (void)dealloc {
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	self.statusLabel = nil;
 	self.asyncImageView = nil;
 	self.thumbTintView = nil;
