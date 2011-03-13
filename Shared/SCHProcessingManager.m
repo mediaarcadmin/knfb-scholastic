@@ -431,10 +431,10 @@ static SCHProcessingManager *sharedManager = nil;
 		[self.currentWaitingCoverImages setObject:operation forKey:bookInfo.bookIdentifier];
 		
 	}
-	
+/*	
 	[self performSelectorOnMainThread:@selector(bookUpdate:) 
 						   withObject:bookInfo
-						waitUntilDone:YES];
+						waitUntilDone:YES];*/
 }
 
 - (void) setCoverImageDownloading: (SCHBookInfo *) bookInfo operation: (NSOperation *) operation

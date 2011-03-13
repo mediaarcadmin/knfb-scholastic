@@ -237,7 +237,6 @@
 
 - (void) startWaitingForFileDownload
 {
-	// FIXME: verify that this actually works
 	NSLog(@"--**--**--**--**--**-- Starting to wait for download of file %@", self.bookInfo.contentMetadata.Title);
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fileWaitFinished:) name:@"SCHBookFileDownloadWaiting" object:self.bookInfo];
 	[self waitForCompletion];
