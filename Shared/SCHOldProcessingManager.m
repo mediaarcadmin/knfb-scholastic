@@ -1,18 +1,18 @@
 //
-//  SCHProcessingManager.m
+//  SCHOldProcessingManager.m
 //  Scholastic
 //
 //  Created by Gordon Christie on 15/02/2011.
 //  Copyright 2011 BitWink. All rights reserved.
 //
 
-#import "SCHProcessingManager.h"
+#import "SCHOldProcessingManager.h"
 #import "SCHThumbnailFactory.h"
 #import "SCHBookURLRequestOperation.h"
 #import "SCHXPSCoverImageOperation.h"
 #import "SCHDownloadFileOperation.h"
 
-@interface SCHProcessingManager()
+@interface SCHOldProcessingManager()
 
 - (NSArray *) processBookCoverImage: (SCHBookInfo *) bookInfo size: (CGSize) size rect: (CGRect) thumbRect flip: (BOOL) flip maintainAspect: (BOOL) aspect;
 
@@ -20,13 +20,13 @@
 
 @end
 
-@implementation SCHProcessingManager
+@implementation SCHOldProcessingManager
 
 @synthesize processingQueue, downloadQueue, bookURLQueue, imageCache, 
 currentDownloadingBookFileItems, currentWaitingBookFileItems, currentWaitingForURLItems, currentWaitingCoverImages, currentDownloadingCoverImages, 
 backgroundTask;
 
-static SCHProcessingManager *sharedManager = nil;
+static SCHOldProcessingManager *sharedManager = nil;
 
 #pragma mark -
 #pragma mark Memory Management
@@ -70,7 +70,7 @@ static SCHProcessingManager *sharedManager = nil;
 
 - (bool) updateThumbView: (SCHAsyncImageView *) imageView withBook: (SCHBookInfo *) bookInfo size:(CGSize)size rect:(CGRect)thumbRect flip:(BOOL)flip maintainAspect:(BOOL)aspect usePlaceHolder:(BOOL)placeholder {
 	
-	NSString *cacheDir  = [SCHProcessingManager cacheDirectory];
+	NSString *cacheDir  = [SCHOldProcessingManager cacheDirectory];
 	NSString *imageName = [NSString stringWithFormat:@"%@.png", bookInfo.contentMetadata.ContentIdentifier];
 	NSString *imagePath = [cacheDir stringByAppendingPathComponent:imageName];
 	
@@ -90,7 +90,7 @@ static SCHProcessingManager *sharedManager = nil;
 //	} else if ([[SCHProcessingManager defaultManager] hasExistingAsyncImageViewForThumbName:thumbName]) {
 //		return NO;
 	} else {
-		return [[SCHProcessingManager defaultManager] updateAsyncThumbView:imageView withBook: bookInfo imageOfInterest:thumbName size:size rect:thumbRect maintainAspect:aspect usePlaceHolder:placeholder];
+		return [[SCHOldProcessingManager defaultManager] updateAsyncThumbView:imageView withBook: bookInfo imageOfInterest:thumbName size:size rect:thumbRect maintainAspect:aspect usePlaceHolder:placeholder];
 	}
 	
 	return nil;
@@ -139,7 +139,7 @@ static SCHProcessingManager *sharedManager = nil;
 {
 	NSAssert(bookInfo != nil, @"processBookCoverImage must have a valid bookInfo object.");
 
-	NSString *cacheDir  = [SCHProcessingManager cacheDirectory];
+	NSString *cacheDir  = [SCHOldProcessingManager cacheDirectory];
 	NSString *cacheImageItem = [cacheDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png", bookInfo.bookIdentifier]];
 	
 	NSOperation *imageOp = nil;
@@ -243,25 +243,25 @@ static SCHProcessingManager *sharedManager = nil;
 	NSMutableArray *operations = [[[NSMutableArray alloc] init] autorelease];
 
 	if (thumbOp) {
-		if (![[[SCHProcessingManager defaultManager].processingQueue operations] containsObject:thumbOp]) {
+		if (![[[SCHOldProcessingManager defaultManager].processingQueue operations] containsObject:thumbOp]) {
 			[operations addObject:thumbOp];
-			[[SCHProcessingManager defaultManager].processingQueue addOperation:thumbOp];
+			[[SCHOldProcessingManager defaultManager].processingQueue addOperation:thumbOp];
 		}
 	}
 	
 	if (imageOp) {
-		if (![[[SCHProcessingManager defaultManager].downloadQueue operations] containsObject:imageOp]) {
+		if (![[[SCHOldProcessingManager defaultManager].downloadQueue operations] containsObject:imageOp]) {
 			[operations addObject:imageOp];
-			[[SCHProcessingManager defaultManager].downloadQueue addOperation:imageOp];
+			[[SCHOldProcessingManager defaultManager].downloadQueue addOperation:imageOp];
 			[imageOp release];
 		}
 		
 	}
 	
 	if (urlOp) {
-		if (![[[SCHProcessingManager defaultManager].bookURLQueue operations] containsObject:urlOp]) {
+		if (![[[SCHOldProcessingManager defaultManager].bookURLQueue operations] containsObject:urlOp]) {
 			[operations addObject:urlOp];
-			[[SCHProcessingManager defaultManager].bookURLQueue addOperation:urlOp];
+			[[SCHOldProcessingManager defaultManager].bookURLQueue addOperation:urlOp];
 			[urlOp release];
 		}
 	}
@@ -325,13 +325,13 @@ static SCHProcessingManager *sharedManager = nil;
 	
 	if (bookDownloadOp) {
 		[operations addObject:bookDownloadOp];
-		[[SCHProcessingManager defaultManager].downloadQueue addOperation:bookDownloadOp];
+		[[SCHOldProcessingManager defaultManager].downloadQueue addOperation:bookDownloadOp];
 		[bookDownloadOp release];
 	}
 	
 	if (urlOp) {
 		[operations addObject:urlOp];
-		[[SCHProcessingManager defaultManager].bookURLQueue addOperation:urlOp];
+		[[SCHOldProcessingManager defaultManager].bookURLQueue addOperation:urlOp];
 		[urlOp release];
 	}
 	
@@ -661,7 +661,7 @@ static SCHProcessingManager *sharedManager = nil;
 // Singleton methods are copied directly from http://developer.apple.com/library/ios/#documentation/Cocoa/Conceptual/CocoaFundamentals/CocoaObjects/CocoaObjects.html%23//apple_ref/doc/uid/TP40002974-CH4-SW32
 // These denote a singleton that cannot be separately allocated alongside the sharedFactory
 
-+(SCHProcessingManager*) defaultManager
++(SCHOldProcessingManager*) defaultManager
 {
     if (sharedManager == nil) {
         sharedManager = [[super allocWithZone:NULL] init];

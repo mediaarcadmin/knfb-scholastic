@@ -10,7 +10,7 @@
 #import "SCHBookManager.h"
 #import "SCHSyncManager.h"
 #import "SCHAuthenticationManager.h"
-#import "SCHProcessingManager.h"
+#import "SCHOldProcessingManager.h"
 #import "SCHUserDefaults.h"
 #import "SCHURLManager.h"
 
@@ -109,11 +109,11 @@ static NSString * const kSCHClearLocalDebugMode = @"kSCHClearLocalDebugMode";
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
     [self saveContext];
-	[[SCHProcessingManager defaultManager] enterBackground];
+	[[SCHOldProcessingManager defaultManager] enterBackground];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
-	[[SCHProcessingManager defaultManager] enterForeground];
+	[[SCHOldProcessingManager defaultManager] enterForeground];
 }
 
 

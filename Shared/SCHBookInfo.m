@@ -8,7 +8,7 @@
 
 #import "SCHBookInfo.h"
 #import "SCHBookManager.h"
-#import "SCHProcessingManager.h"
+#import "SCHOldProcessingManager.h"
 
 @interface SCHBookInfo ()
 
@@ -115,7 +115,7 @@ static NSMutableDictionary *bookTrackingDictionary = nil;
 	return [[NSBundle mainBundle] pathForResource:self.contentMetadata.FileName ofType:@"xps"];
 #else
 	return [NSString stringWithFormat:@"%@/%@-%@.xps", 
-			[SCHProcessingManager cacheDirectory], 
+			[SCHOldProcessingManager cacheDirectory], 
 			self.contentMetadata.ContentIdentifier, self.contentMetadata.Version];
 #endif
 }
@@ -174,27 +174,27 @@ static NSMutableDictionary *bookTrackingDictionary = nil;
 
 - (BOOL) isCurrentlyDownloadingCoverImage
 {
-	return [[SCHProcessingManager defaultManager] isCurrentlyDownloadingCoverImage:self];
+	return [[SCHOldProcessingManager defaultManager] isCurrentlyDownloadingCoverImage:self];
 }
 
 - (BOOL) isCurrentlyDownloadingBookFile
 {
-	return [[SCHProcessingManager defaultManager] isCurrentlyDownloading:self];
+	return [[SCHOldProcessingManager defaultManager] isCurrentlyDownloading:self];
 }
 
 - (BOOL) isCurrentlyWaitingForURLs
 {
-	return [[SCHProcessingManager defaultManager] isCurrentlyWaitingForURLs:self];
+	return [[SCHOldProcessingManager defaultManager] isCurrentlyWaitingForURLs:self];
 }
 
 - (BOOL) isWaitingForBookFileDownload
 {
-	return [[SCHProcessingManager defaultManager] isCurrentlyWaitingForBookFile:self];
+	return [[SCHOldProcessingManager defaultManager] isCurrentlyWaitingForBookFile:self];
 }
 
 - (BOOL) isWaitingForCoverImage
 {
-	return [[SCHProcessingManager defaultManager] isCurrentlyWaitingForCoverImage:self];
+	return [[SCHOldProcessingManager defaultManager] isCurrentlyWaitingForCoverImage:self];
 }
 
 - (BOOL)isEqual:(id)anObject

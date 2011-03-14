@@ -7,7 +7,7 @@
 //
 
 #import "SCHThumbnailFactory.h"
-#import "SCHProcessingManager.h"
+#import "SCHOldProcessingManager.h"
 #import "BlioTimeOrderedCache.h"
 
 @interface SCHThumbnailFactory ()

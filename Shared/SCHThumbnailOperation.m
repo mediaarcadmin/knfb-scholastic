@@ -8,7 +8,7 @@
 
 #import "SCHThumbnailOperation.h"
 #import "SCHThumbnailFactory.h"
-#import "SCHProcessingManager.h"
+#import "SCHOldProcessingManager.h"
 
 @implementation SCHThumbnailOperation
 
@@ -39,7 +39,7 @@
 	//	int randomValue = (arc4random() % 5) + 3;
 	//	[NSThread sleepForTimeInterval:randomValue];
 	
-	NSString *cacheDir  = [SCHProcessingManager cacheDirectory];
+	NSString *cacheDir  = [SCHOldProcessingManager cacheDirectory];
 	NSString *cachePath = [cacheDir stringByAppendingPathComponent:self.thumbPath];
 	
 	UIImage *thumbImage = nil;

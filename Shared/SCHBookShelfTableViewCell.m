@@ -8,7 +8,7 @@
 
 #import "SCHBookShelfTableViewCell.h"
 #import "SCHThumbnailFactory.h"
-#import "SCHProcessingManager.h"
+#import "SCHOldProcessingManager.h"
 
 #define IMAGE_FRAME_WIDTH   72.0
 #define IMAGE_FRAME_HEIGHT  96.0
@@ -147,7 +147,7 @@
 
 //	if (updateImage) {
 		// image processing
-		BOOL immediateUpdate = [[SCHProcessingManager defaultManager] updateThumbView:self.thumbImageView
+		BOOL immediateUpdate = [[SCHOldProcessingManager defaultManager] updateThumbView:self.thumbImageView
 																			 withBook:self.bookInfo
 																				 size:CGSizeMake(IMAGE_FRAME_WIDTH, IMAGE_FRAME_HEIGHT)
 																				 rect:CGRectNull

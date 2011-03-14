@@ -7,7 +7,7 @@
 //
 
 #import "SCHAsyncImageView.h"
-#import "SCHProcessingManager.h"
+#import "SCHOldProcessingManager.h"
 
 @interface SCHAsyncImageView () 
 

@@ -1,5 +1,5 @@
 //
-//  SCHProcessingManager.h
+//  SCHOldProcessingManager.h
 //  Scholastic
 //
 //  Created by Gordon Christie on 15/02/2011.
@@ -11,11 +11,11 @@
 #import "SCHAsyncImageView.h"
 #import "BlioTimeOrderedCache.h"
 
-@interface SCHProcessingManager : NSObject {
+@interface SCHOldProcessingManager : NSObject {
 
 }
 
-+ (SCHProcessingManager *) defaultManager;
++ (SCHOldProcessingManager *) defaultManager;
 + (NSString *) cacheDirectory;
 
 @property (nonatomic, retain) NSOperationQueue *processingQueue;

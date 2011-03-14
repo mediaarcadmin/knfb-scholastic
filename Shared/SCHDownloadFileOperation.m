@@ -7,7 +7,7 @@
 //
 
 #import "SCHDownloadFileOperation.h"
-#import "SCHProcessingManager.h"
+#import "SCHOldProcessingManager.h"
 
 @interface SCHDownloadFileOperation ()
 
@@ -47,10 +47,10 @@
 	
 	switch (self.fileType) {
 		case kSCHDownloadFileTypeXPSBook:
-			[[SCHProcessingManager defaultManager] setBookFileWaiting:self.bookInfo operation:self];
+			[[SCHOldProcessingManager defaultManager] setBookFileWaiting:self.bookInfo operation:self];
 			break;
 		case kSCHDownloadFileTypeCoverImage:
-			[[SCHProcessingManager defaultManager] setCoverImageWaiting:self.bookInfo operation:self];
+			[[SCHOldProcessingManager defaultManager] setCoverImageWaiting:self.bookInfo operation:self];
 			break;
 		default:
 			NSLog(@"Warning: unknown file type for download!");
@@ -128,7 +128,7 @@
 //			return;
 //		}
 		
-		NSString *cacheDir  = [SCHProcessingManager cacheDirectory];
+		NSString *cacheDir  = [SCHOldProcessingManager cacheDirectory];
 		self.localPath = [cacheDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png", bookInfo.bookIdentifier]];
 		
 		request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:self.bookInfo.coverURL]];
@@ -171,10 +171,10 @@
 
 	switch (self.fileType) {
 		case kSCHDownloadFileTypeXPSBook:
-			[[SCHProcessingManager defaultManager] setBookFileDownloading:self.bookInfo operation:self];
+			[[SCHOldProcessingManager defaultManager] setBookFileDownloading:self.bookInfo operation:self];
 			break;
 		case kSCHDownloadFileTypeCoverImage:
-			[[SCHProcessingManager defaultManager] setCoverImageDownloading:self.bookInfo operation:self];
+			[[SCHOldProcessingManager defaultManager] setCoverImageDownloading:self.bookInfo operation:self];
 			break;
 		default:
 			break;
@@ -303,10 +303,10 @@
 	NSLog(@"Finished file %@.", [self.localPath lastPathComponent]);
 	switch (self.fileType) {
 		case kSCHDownloadFileTypeXPSBook:
-			[[SCHProcessingManager defaultManager] removeBookFromDownload:self.bookInfo];
+			[[SCHOldProcessingManager defaultManager] removeBookFromDownload:self.bookInfo];
 			break;
 		case kSCHDownloadFileTypeCoverImage:
-			[[SCHProcessingManager defaultManager] removeCoverImageFromDownload:self.bookInfo];
+			[[SCHOldProcessingManager defaultManager] removeCoverImageFromDownload:self.bookInfo];
 			break;
 		default:
 			break;
@@ -322,10 +322,10 @@
 	NSLog(@"Error downloading file %@!", [self.localPath lastPathComponent]);
 	switch (self.fileType) {
 		case kSCHDownloadFileTypeXPSBook:
-			[[SCHProcessingManager defaultManager] removeBookFromDownload:self.bookInfo];
+			[[SCHOldProcessingManager defaultManager] removeBookFromDownload:self.bookInfo];
 			break;
 		case kSCHDownloadFileTypeCoverImage:
-			[[SCHProcessingManager defaultManager] removeCoverImageFromDownload:self.bookInfo];
+			[[SCHOldProcessingManager defaultManager] removeCoverImageFromDownload:self.bookInfo];
 			break;
 		default:
 			break;

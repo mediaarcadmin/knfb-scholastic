@@ -15,7 +15,7 @@
 #import "SCHMultipleBookshelvesController.h"
 #import "SCHBookManager.h"
 #import "SCHBookInfo.h"
-#import "SCHProcessingManager.h"
+#import "SCHOldProcessingManager.h"
 #import "SCHBookShelfTableViewCell.h"
 #import "SCHThumbnailFactory.h"
 #import "SCHAsyncImageView.h"
@@ -113,7 +113,7 @@ NSInteger bookSort(SCHBookInfo *book1, SCHBookInfo *book2, void *context)
 						break;
 					case bookFileProcessingStateNoFileDownloaded:
 					case bookFileProcessingStatePartiallyDownloaded:
-						[[SCHProcessingManager defaultManager] downloadBookFile:bookInfo];
+						[[SCHOldProcessingManager defaultManager] downloadBookFile:bookInfo];
 						break;
 					default:
 						break;
@@ -179,7 +179,7 @@ NSInteger bookSort(SCHBookInfo *book1, SCHBookInfo *book2, void *context)
 	SCHBookInfo *bookInfo = [self.books objectAtIndex:indexPath.row];
 
 	if ([bookInfo isCurrentlyDownloadingBookFile] || [bookInfo isWaitingForBookFileDownload]) {
-		[[SCHProcessingManager defaultManager] removeBookFromDownload:bookInfo];
+		[[SCHOldProcessingManager defaultManager] removeBookFromDownload:bookInfo];
 		return;
 	}
 	
@@ -193,7 +193,7 @@ NSInteger bookSort(SCHBookInfo *book1, SCHBookInfo *book2, void *context)
 			break;
 		case bookFileProcessingStateNoFileDownloaded:
 		case bookFileProcessingStatePartiallyDownloaded:
-			[[SCHProcessingManager defaultManager] downloadBookFile:bookInfo];
+			[[SCHOldProcessingManager defaultManager] downloadBookFile:bookInfo];
 			return;
 			break;
 		default:
@@ -288,7 +288,7 @@ NSInteger bookSort(SCHBookInfo *book1, SCHBookInfo *book2, void *context)
 	SCHBookInfo *bookInfo = [self.books objectAtIndex:index];
 
 	if ([bookInfo isCurrentlyDownloadingBookFile] || [bookInfo isWaitingForBookFileDownload]) {
-		[[SCHProcessingManager defaultManager] removeBookFromDownload:bookInfo];
+		[[SCHOldProcessingManager defaultManager] removeBookFromDownload:bookInfo];
 		return;
 	}
 	
@@ -301,7 +301,7 @@ NSInteger bookSort(SCHBookInfo *book1, SCHBookInfo *book2, void *context)
 			break;
 		case bookFileProcessingStateNoFileDownloaded:
 		case bookFileProcessingStatePartiallyDownloaded:
-			[[SCHProcessingManager defaultManager] downloadBookFile:bookInfo];
+			[[SCHOldProcessingManager defaultManager] downloadBookFile:bookInfo];
 			[aGridView reloadData];
 			return;
 			break;

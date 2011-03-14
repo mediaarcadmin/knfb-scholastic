@@ -8,7 +8,7 @@
 
 #import "SCHBookShelfGridViewCell.h"
 #import "SCHThumbnailFactory.h"
-#import "SCHProcessingManager.h"
+#import "SCHOldProcessingManager.h"
 
 
 @implementation SCHBookShelfGridViewCell
@@ -90,7 +90,7 @@
 - (void) refreshCell
 {
 	// image processing
-	BOOL immediateUpdate = 	[[SCHProcessingManager defaultManager] updateThumbView:self.asyncImageView
+	BOOL immediateUpdate = 	[[SCHOldProcessingManager defaultManager] updateThumbView:self.asyncImageView
 																		  withBook:bookInfo
 																			  size:CGSizeMake(self.frame.size.width - 6, self.frame.size.height - 20)
 																			  rect:CGRectNull

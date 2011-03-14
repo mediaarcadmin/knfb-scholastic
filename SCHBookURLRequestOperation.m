@@ -11,7 +11,7 @@
 #import "SCHBookManager.h"
 #import "SCHURLManager.h"
 #import "SCHLibreAccessWebService.h"
-#import "SCHProcessingManager.h"
+#import "SCHOldProcessingManager.h"
 
 @interface SCHBookURLRequestOperation ()
 
@@ -93,7 +93,7 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(urlFailure:) name:kSCHURLManagerFailure object:nil];
 	
 	if (![self.bookInfo isCurrentlyWaitingForURLs]) {
-		[[SCHProcessingManager defaultManager] setBookWaitingForURLs:self.bookInfo operation:self];
+		[[SCHOldProcessingManager defaultManager] setBookWaitingForURLs:self.bookInfo operation:self];
 		[[SCHURLManager sharedURLManager] requestURLForISBN:self.bookInfo.bookIdentifier];
 	}
 
@@ -123,7 +123,7 @@
 				self.bookInfo.coverURL = [userInfo valueForKey:kSCHLibreAccessWebServiceCoverURL];
 				self.bookInfo.bookFileURL = [userInfo valueForKey:kSCHLibreAccessWebServiceContentURL];
 				NSLog(@"Successful URL retrieval for %@!", completedISBN);
-				[[SCHProcessingManager defaultManager] removeBookWaitingForURLs:self.bookInfo];
+				[[SCHOldProcessingManager defaultManager] removeBookWaitingForURLs:self.bookInfo];
 			} else {
 				NSLog(@"URLs populated from another thread. awesome.");
 			}
@@ -143,7 +143,7 @@
 	if ([completedISBN compare:self.bookInfo.bookIdentifier] == NSOrderedSame) {
 		if (!self.waitingForAnotherOperation) {
 			NSLog(@"Failure for ISBN %@", completedISBN);
-			[[SCHProcessingManager defaultManager] removeBookWaitingForURLs:self.bookInfo];
+			[[SCHOldProcessingManager defaultManager] removeBookWaitingForURLs:self.bookInfo];
 		}
 		
 		self.executing = NO;
