@@ -44,7 +44,7 @@
 	SCHBookInfo *oldInfo = bookInfo;
 	bookInfo = [newBookInfo retain];
 	[oldInfo release];
-	
+	[self.bookInfo setProcessing:YES];
 }
 
 - (void) start
@@ -93,6 +93,7 @@
 	
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	
+	[self.bookInfo setProcessing:NO];
 	return;
 	
 }

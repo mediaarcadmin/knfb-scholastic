@@ -44,11 +44,13 @@
 	bookInfo = [newBookInfo retain];
 	[oldInfo release];
 	
+	[self.bookInfo setProcessing:YES];
+
 }
 
 - (void) start
 {
-	
+
 	NSString *type = @"XPS Book File";
 	
 	if (self.fileType == kSCHDownloadFileTypeCoverImage) {
@@ -126,6 +128,7 @@
 		[self waitForCompletion];
 	}
 	
+	[self.bookInfo setProcessing:NO];
 	return;
 	
 }
