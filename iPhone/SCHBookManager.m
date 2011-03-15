@@ -53,6 +53,7 @@ static pthread_key_t sManagedObjectContextKey;
     return self;
 }
 
+// FIXME: move to SCHSyncManager?
 
 - (NSManagedObjectContext *)managedObjectContextForCurrentThread
 {
@@ -89,7 +90,7 @@ static pthread_key_t sManagedObjectContextKey;
 	
     NSMutableDictionary *myCachedXPSProviders = self.cachedXPSProviders;
     @synchronized(myCachedXPSProviders) {
-        BWKXPSProvider *previouslyCachedXPSProvider = [myCachedXPSProviders objectForKey:bookInfo];
+        BWKXPSProvider *previouslyCachedXPSProvider = [myCachedXPSProviders objectForKey:bookInfo.bookIdentifier];
         if(previouslyCachedXPSProvider) {
             NSLog(@"Returning cached XPSProvider for book with bookInfo %@", bookInfo);
             [self.cachedXPSProviderCheckoutCounts addObject:bookInfo];
@@ -103,9 +104,8 @@ static pthread_key_t sManagedObjectContextKey;
 					self.cachedXPSProviderCheckoutCounts = myCachedXPSProviderCheckoutCounts;
 				}
 				
-				[myCachedXPSProviders setObject:xpsProvider forKey:bookInfo];
+				[myCachedXPSProviders setObject:xpsProvider forKey:bookInfo.bookIdentifier];
 				[myCachedXPSProviderCheckoutCounts addObject:bookInfo];
-//				[xpsProvider release];
 				ret = xpsProvider;
 				[xpsProvider release];
 			}
@@ -134,7 +134,7 @@ static pthread_key_t sManagedObjectContextKey;
             [myCachedXPSProviderCheckoutCounts removeObject:bookInfo];
             if (count == 1) {
               //  NSLog(@"Releasing cached XPSProvider for book with ID %@", bookInfo);
-                [myCachedXPSProviders removeObjectForKey:bookInfo];
+                [myCachedXPSProviders removeObjectForKey:bookInfo.bookIdentifier];
                 if(myCachedXPSProviderCheckoutCounts.count == 0) {
                     // May as well release the set.
                     self.cachedXPSProviderCheckoutCounts = nil;

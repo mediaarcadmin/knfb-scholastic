@@ -15,10 +15,8 @@
 #import "SCHMultipleBookshelvesController.h"
 #import "SCHBookManager.h"
 #import "SCHBookInfo.h"
-#import "SCHOldProcessingManager.h"
 #import "SCHBookShelfTableViewCell.h"
 #import "SCHThumbnailFactory.h"
-#import "SCHAsyncImageView.h"
 #import "SCHSyncManager.h"
 #import "SCHBookShelfGridViewCell.h"
 #import <QuartzCore/QuartzCore.h>
@@ -97,33 +95,6 @@ NSInteger bookSort(SCHBookInfo *book1, SCHBookInfo *book2, void *context)
 	books = [newBooks sortedArrayUsingFunction:bookSort context:NULL];
 	[books retain];
 	
-	
-	BOOL spaceSaverMode = [[NSUserDefaults standardUserDefaults] boolForKey:@"kSCHSpaceSaverMode"];
-	
-	if (!spaceSaverMode) {
-		//NSLog(@"Space saver mode is off - setting all books to download.");
-		
-		for (SCHBookInfo *bookInfo in self.books) {
-			
-			BookFileProcessingState state = [bookInfo processingState];
-			
-			if (!([bookInfo isCurrentlyDownloadingBookFile] || [bookInfo isWaitingForBookFileDownload])) {
-				switch (state) {
-					case bookFileProcessingStateError:
-						break;
-					case bookFileProcessingStateNoFileDownloaded:
-					case bookFileProcessingStatePartiallyDownloaded:
-						[[SCHOldProcessingManager defaultManager] downloadBookFile:bookInfo];
-						break;
-					default:
-						break;
-				}	
-			}
-		}
-	} else {
-		//NSLog(@"Space saver mode is on!");
-	}
-	
 	[self.tableView reloadData];
 	[self.gridView reloadData];
 	
@@ -178,27 +149,15 @@ NSInteger bookSort(SCHBookInfo *book1, SCHBookInfo *book2, void *context)
 	
 	SCHBookInfo *bookInfo = [self.books objectAtIndex:indexPath.row];
 
-	if ([bookInfo isCurrentlyDownloadingBookFile] || [bookInfo isWaitingForBookFileDownload]) {
-		[[SCHOldProcessingManager defaultManager] removeBookFromDownload:bookInfo];
+	// notify the processing manager that the user touched a book info object.
+	// this allows it to pause and resume items, etc.
+	// will do nothing if the book has already been fully downloaded.
+	[[SCHProcessingManager sharedProcessingManager] userSelectedBookInfo:bookInfo];
+	
+	// if the processing manager is working, do not open the book
+	if (![[SCHProcessingManager sharedProcessingManager] shouldOpenBook:bookInfo]) {
 		return;
 	}
-	
-	BookFileProcessingState state = [bookInfo processingState];
-	
-	[aTableView reloadData];
-
-	switch (state) {
-		case bookFileProcessingStateError:
-			return;
-			break;
-		case bookFileProcessingStateNoFileDownloaded:
-		case bookFileProcessingStatePartiallyDownloaded:
-			[[SCHOldProcessingManager defaultManager] downloadBookFile:bookInfo];
-			return;
-			break;
-		default:
-			break;
-	}	
 	
 	NSLog(@"Showing book %@.", [bookInfo.contentMetadata Title]);
 	NSLog(@"Filename %@.", [bookInfo.contentMetadata FileName]);
@@ -287,29 +246,16 @@ NSInteger bookSort(SCHBookInfo *book1, SCHBookInfo *book2, void *context)
 	NSLog(@"Calling grid view selection.");
 	SCHBookInfo *bookInfo = [self.books objectAtIndex:index];
 
-	if ([bookInfo isCurrentlyDownloadingBookFile] || [bookInfo isWaitingForBookFileDownload]) {
-		[[SCHOldProcessingManager defaultManager] removeBookFromDownload:bookInfo];
+	// notify the processing manager that the user touched a book info object.
+	// this allows it to pause and resume items, etc.
+	// will do nothing if the book has already been fully downloaded.
+	[[SCHProcessingManager sharedProcessingManager] userSelectedBookInfo:bookInfo];
+	
+	// if the processing manager is working, do not open the book
+	if (![[SCHProcessingManager sharedProcessingManager] shouldOpenBook:bookInfo]) {
 		return;
 	}
 	
-	SCHContentMetadataItem *contentMetadataItem = bookInfo.contentMetadata;
-	BookFileProcessingState state = [bookInfo processingState];
-	
-	switch (state) {
-		case bookFileProcessingStateError:
-			return;
-			break;
-		case bookFileProcessingStateNoFileDownloaded:
-		case bookFileProcessingStatePartiallyDownloaded:
-			[[SCHOldProcessingManager defaultManager] downloadBookFile:bookInfo];
-			[aGridView reloadData];
-			return;
-			break;
-		default:
-			break;
-	}	
-
-	[aGridView reloadData];
 	
 	NSLog(@"Showing book %@.", [bookInfo.contentMetadata Title]);
 	NSLog(@"Filename %@.", [bookInfo.contentMetadata FileName]);
@@ -321,14 +267,14 @@ NSInteger bookSort(SCHBookInfo *book1, SCHBookInfo *book2, void *context)
 	optionsView.pageViewController = pageView;
 	optionsView.bookInfo = bookInfo;
 	
-	NSString *thumbKey = [NSString stringWithFormat:@"thumb-%@", contentMetadataItem.ContentIdentifier];
+	NSString *thumbKey = [NSString stringWithFormat:@"thumb-%@", bookInfo.contentMetadata.ContentIdentifier];
 	NSData *imageData = [self.componentCache objectForKey:thumbKey];
 	
 	if ([imageData length]) {
 		optionsView.thumbnailImage = [UIImage imageWithData:imageData];
 	} else {
 		BWKXPSProvider *provider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBook:bookInfo];
-		provider.title = contentMetadataItem.FileName;
+		provider.title = bookInfo.contentMetadata.FileName;
 		imageData = [provider coverThumbData];
 		[[SCHBookManager sharedBookManager] checkInXPSProviderForBook:bookInfo];
 		
@@ -346,24 +292,6 @@ NSInteger bookSort(SCHBookInfo *book1, SCHBookInfo *book2, void *context)
 	[optionsView release];
 	[pageView release];	
 	
-
-/*	BWKTestPageViewController *pageView = [[BWKTestPageViewController alloc] initWithNibName:nil bundle:nil];
-	//pageView.book = contentMetadataItem;
-	pageView.bookInfo = bookInfo;
-	
-	BWKReadingOptionsView *optionsView = [[BWKReadingOptionsView alloc] initWithNibName:nil bundle:nil];
-	optionsView.pageViewController = pageView;
-	optionsView.bookInfo = bookInfo;
-
-	BWKXPSProvider *provider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBook:bookInfo];
-	provider.title = contentMetadataItem.FileName;
-	optionsView.thumbnailImage = [provider coverThumbForList];
-	[[SCHBookManager sharedBookManager] checkInXPSProviderForBook:bookInfo];
-//	[provider release];
-	
-	[self.navigationController pushViewController:optionsView animated:YES];
-	[optionsView release];
-	[pageView release];	*/
 }
 
 -(void)gridView:(MRGridView *)gridView confirmationForDeletionAtIndex:(NSInteger)index 

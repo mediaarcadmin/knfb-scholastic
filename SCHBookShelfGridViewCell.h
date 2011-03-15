@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "MRGridViewCell.h"
-#import "SCHAsyncImageView.h"
+#import "SCHAsyncBookCoverImageView.h"
 #import "SCHBookInfo.h"
 
 @interface SCHBookShelfGridViewCell : MRGridViewCell {
@@ -20,7 +20,7 @@
 
 @property (nonatomic, retain) SCHBookInfo *bookInfo;
 
-@property (nonatomic, retain) SCHAsyncImageView *asyncImageView;
+@property (nonatomic, retain) SCHAsyncBookCoverImageView *asyncImageView;
 @property (nonatomic, retain) UIView *thumbTintView;
 @property (nonatomic, retain) UILabel *statusLabel;
 @property (nonatomic, retain) UIProgressView *progressView;

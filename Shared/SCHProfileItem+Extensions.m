@@ -55,7 +55,7 @@ static NSString * const kSCHProfileItemUserContentItemContentMetadataItem = @"Us
 	for (SCHContentProfileItem *contentProfileItem in [self valueForKey:kSCHProfileItemContentProfileItem]) {
 		for (SCHContentMetadataItem *contentMetadataItem in [contentProfileItem valueForKeyPath:kSCHProfileItemUserContentItemContentMetadataItem]) {
 			
-			SCHBookInfo *bookInfo = [[SCHBookInfo alloc] initWithContentMetadataItem:contentMetadataItem];
+			SCHBookInfo *bookInfo = [SCHBookInfo bookInfoWithContentMetadataItem:contentMetadataItem];
 			
 			[books addObject:bookInfo];
 			[bookInfo release];

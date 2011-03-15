@@ -22,13 +22,9 @@ static NSTimeInterval const kAppDelegate_iPhoneSyncManagerWakeDelay = 5.0;
 #pragma mark Application lifecycle
 
 - (void)awakeFromNib {    
-
+	[super awakeFromNib];
     SCHProfileViewController *rootViewController = (SCHProfileViewController *)[navigationController topViewController];
     rootViewController.managedObjectContext = self.managedObjectContext;
-	
-	SCHSyncManager *syncManager = [SCHSyncManager sharedSyncManager];
-	syncManager.managedObjectContext = self.managedObjectContext;
-	[syncManager start];
 }
 
 
