@@ -83,6 +83,7 @@
 											 selector:@selector(refreshCell)
 												 name:@"SCHBookStatusUpdate"
 											   object:self.bookInfo];
+	[self.asyncImageView setBookInfo:newBookInfo];
 	[self refreshCell];
 	
 }
@@ -103,6 +104,15 @@
 		[self setNeedsDisplay];
 	}
 	*/
+
+	// image processing
+	BOOL immediateUpdate = [[SCHProcessingManager sharedProcessingManager] requestThumbImageForBookCover:self.asyncImageView
+																									size:self.asyncImageView.coverSize];
+	
+	if (immediateUpdate) {
+		[self setNeedsDisplay];
+	}
+	
 	NSString *status = @"";
 	
 	// book status
