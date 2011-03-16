@@ -27,6 +27,7 @@
 
 - (void) processBook: (SCHBookInfo *) bookInfo;
 - (void) redispatchBook: (SCHBookInfo *) bookInfo;
+- (void) checkAndDispatchThumbsForBook: (SCHBookInfo *) bookInfo;
 
 - (NSArray *) fetchContentMetadataForAllBooks;
 
@@ -58,7 +59,7 @@
 
 - (void) dealloc
 {
-	[self stop];
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	
 	self.localProcessingQueue = nil;
 	self.webServiceOperationQueue = nil;
@@ -93,6 +94,7 @@ static SCHProcessingManager *sharedManager = nil;
 {
 	if (sharedManager == nil) {
 		sharedManager = [[SCHProcessingManager alloc] init];
+		[[NSNotificationCenter defaultCenter] addObserver:sharedManager selector:@selector(checkStateForAllBooks) name:kSCHBookshelfSyncComponentComplete object:nil];			
 	} 
 	
 	return sharedManager;
@@ -159,20 +161,6 @@ static SCHProcessingManager *sharedManager = nil;
 }
 
 #pragma mark -
-#pragma mark Start/Stop - called from app delegate
-
-- (void) start
-{
-	// register for changes from the sync manager
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkStateForAllBooks) name:kSCHBookshelfSyncComponentComplete object:nil];			
-}
-
-- (void) stop
-{
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
-#pragma mark -
 #pragma mark Books State Check
 
 - (void) checkStateForAllBooks
@@ -220,13 +208,6 @@ static SCHProcessingManager *sharedManager = nil;
 - (void) processBook: (SCHBookInfo *) bookInfo
 {
 	switch (bookInfo.processingState) {
-			
-			// *** Book has a full sized cover image ***
-		case SCHBookInfoProcessingStateReadyForBookFileDownload:
-		{	
-			
-//		break;
-		}	
 			
 			// *** Book has no URLs ***
 		case SCHBookInfoProcessingStateNoURLs:
@@ -293,6 +274,9 @@ static SCHProcessingManager *sharedManager = nil;
 
 - (void) redispatchBook: (SCHBookInfo *) bookInfo
 {
+	
+	// fIXME: main thread please!
+	
 	// check for space saver mode
 	BOOL spaceSaverMode = [[NSUserDefaults standardUserDefaults] boolForKey:@"kSCHSpaceSaverMode"];
 	
@@ -344,18 +328,10 @@ static SCHProcessingManager *sharedManager = nil;
 	// otherwise ignore the touch
 }
 
-- (BOOL) shouldOpenBook: (SCHBookInfo *) bookInfo 
-{
-	if (bookInfo.processingState == SCHBookInfoProcessingStateReadyToRead) {
-		return YES;
-	} else {
-		return NO;
-	}
-}
-
 #pragma mark -
 #pragma mark Image Thumbnail Requests
 
+// FIXME: could be moved to SCHBookInfo? 
 - (BOOL) requestThumbImageForBookCover:(SCHAsyncBookCoverImageView *)bookCover size:(CGSize)size
 {	
 	SCHBookInfo *book = bookCover.bookInfo;
@@ -366,6 +342,7 @@ static SCHProcessingManager *sharedManager = nil;
 		// check for an existing file
 		NSString *thumbPath = [book thumbPathForSize:size];
 		
+		// FIXME: non thread safe!
 		if ([[NSFileManager defaultManager] fileExistsAtPath:thumbPath]) {
 			bookCover.image = [SCHThumbnailFactory imageWithPath:thumbPath];
 			return YES;
@@ -395,6 +372,13 @@ static SCHProcessingManager *sharedManager = nil;
 			[sizes addObject:sizeValue];
 			[self.thumbImageRequests setObject:sizes forKey:book.bookIdentifier];
 			[sizes release];
+		}
+		
+		if (book.processingState == SCHBookInfoProcessingStateReadyForBookFileDownload ||
+			book.processingState == SCHBookInfoProcessingStateDownloadStarted ||
+			book.processingState == SCHBookInfoProcessingStateDownloadPaused ||
+			book.processingState == SCHBookInfoProcessingStateReadyToRead) {
+			[self checkAndDispatchThumbsForBook:book];
 		}
 		
 		return NO;

@@ -200,7 +200,7 @@
 			break;
 	}
 	
-	if ([[SCHProcessingManager sharedProcessingManager] shouldOpenBook:self.bookInfo]) {
+	if ([self.bookInfo canOpenBook]) {
 		self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	} else {
 		self.accessoryType = UITableViewCellAccessoryNone;

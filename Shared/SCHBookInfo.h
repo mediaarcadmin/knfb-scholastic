@@ -45,4 +45,6 @@
 // book file current percentage downloaded
 - (float) currentDownloadedPercentage;
 
+- (BOOL) canOpenBook;
+
 @end

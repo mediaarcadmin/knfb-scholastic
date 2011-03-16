@@ -155,7 +155,7 @@ NSInteger bookSort(SCHBookInfo *book1, SCHBookInfo *book2, void *context)
 	[[SCHProcessingManager sharedProcessingManager] userSelectedBookInfo:bookInfo];
 	
 	// if the processing manager is working, do not open the book
-	if (![[SCHProcessingManager sharedProcessingManager] shouldOpenBook:bookInfo]) {
+	if (![bookInfo canOpenBook]) {
 		return;
 	}
 	
@@ -252,7 +252,7 @@ NSInteger bookSort(SCHBookInfo *book1, SCHBookInfo *book2, void *context)
 	[[SCHProcessingManager sharedProcessingManager] userSelectedBookInfo:bookInfo];
 	
 	// if the processing manager is working, do not open the book
-	if (![[SCHProcessingManager sharedProcessingManager] shouldOpenBook:bookInfo]) {
+	if (![bookInfo canOpenBook]) {
 		return;
 	}
 	

@@ -207,7 +207,16 @@ static NSMutableDictionary *bookTrackingDictionary = nil;
 	
 	return percentage;
 }
-	
+
+- (BOOL) canOpenBook 
+{
+	if (self.processingState == SCHBookInfoProcessingStateReadyToRead) {
+		return YES;
+	} else {
+		return NO;
+	}
+}
+
 #pragma mark -
 #pragma mark Equality overrides
 

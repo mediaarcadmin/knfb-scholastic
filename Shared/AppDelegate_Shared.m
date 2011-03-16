@@ -37,9 +37,8 @@ static NSString * const kSCHClearLocalDebugMode = @"kSCHClearLocalDebugMode";
 	SCHURLManager *urlManager = [SCHURLManager sharedURLManager];
 	urlManager.managedObjectContext = self.managedObjectContext;
 
-	SCHProcessingManager *processingManager = [SCHProcessingManager sharedProcessingManager];
-	[processingManager start];
-	
+	// instantiate the shared processing manager
+	[SCHProcessingManager sharedProcessingManager];
 
 	SCHBookManager *bookManager = [SCHBookManager sharedBookManager];
     bookManager.persistentStoreCoordinator = self.persistentStoreCoordinator;

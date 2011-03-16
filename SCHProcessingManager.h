@@ -31,12 +31,8 @@ typedef enum {
 + (NSString *)cacheDirectory;
 
 // shared manager instance
+// FIXME: notes on duties - registers for events etc.
 + (SCHProcessingManager *) sharedProcessingManager;
-
-// Start and stop methods - called by the AppDelegate.
-// Tells the processing manager to start/stop listening for web service events
-- (void) start;
-- (void) stop;
 
 // background processing - called by the app delegate when the app
 // is put into or opened from the background
@@ -45,10 +41,8 @@ typedef enum {
 
 // user selection methods
 - (void) userSelectedBookInfo: (SCHBookInfo *) bookInfo;
-- (BOOL) shouldOpenBook: (SCHBookInfo *) bookInfo;
 
 // thumbnail requests
 - (BOOL) requestThumbImageForBookCover:(SCHAsyncBookCoverImageView *)bookCover size:(CGSize)size;
-- (void) checkAndDispatchThumbsForBook: (SCHBookInfo *) bookInfo;
 
 @end
