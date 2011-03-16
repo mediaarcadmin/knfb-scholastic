@@ -24,10 +24,7 @@
 
 #pragma mark -
 #pragma mark Class Methods
-
-// used to hold unique book info objects
-static NSMutableDictionary *bookTrackingDictionary = nil;
-
+/*
 // this method lazily creates book info objects 
 // if one already exists, it will return that instance
 + (id) bookInfoWithContentMetadataItem: (SCHContentMetadataItem *) metadataItem
@@ -48,21 +45,14 @@ static NSMutableDictionary *bookTrackingDictionary = nil;
 		return bookInfo;
 	}
 }
-
+*/
 #pragma mark -
 #pragma mark Memory Management
 
 - (void) dealloc
 {
 	self.bookIdentifier = nil;
-	
-	[bookTrackingDictionary removeObjectForKey:self.bookIdentifier];
-	
-	if ([bookTrackingDictionary count] == 0) {
-		[bookTrackingDictionary dealloc];
-		bookTrackingDictionary = nil;
-	}
-	
+
 	[super dealloc];
 }
 

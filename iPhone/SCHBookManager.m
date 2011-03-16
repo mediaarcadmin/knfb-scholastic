@@ -21,8 +21,15 @@
 
 @implementation SCHBookManager
 
+// the shared book manager object
 static SCHBookManager *sSharedBookManager = nil;
+
+// used to keep track of manage contexts
 static pthread_key_t sManagedObjectContextKey;
+
+// used to hold unique book info objects
+static NSMutableDictionary *bookTrackingDictionary = nil;
+
 
 @synthesize cachedXPSProviders, cachedXPSProviderCheckoutCounts, persistentStoreCoordinator;
 
@@ -51,6 +58,27 @@ static pthread_key_t sManagedObjectContextKey;
 		self.cachedXPSProviders = [[NSMutableDictionary alloc] init];
     }
     return self;
+}
+
+#pragma mark -
+#pragma mark Book Info vending
++ (SCHBookInfo *) bookInfoWithBookIdentifier: (NSString *) isbn
+{
+	if (!bookTrackingDictionary) {
+		bookTrackingDictionary = [[NSMutableDictionary alloc] init];
+	}
+	
+	SCHBookInfo *existingBookInfo = [bookTrackingDictionary objectForKey:isbn];
+	
+	if (existingBookInfo) {
+		//[bookTrackingDictionary setValue:existingBookInfo forKey:isbn];
+		return existingBookInfo;
+	} else {
+		SCHBookInfo *bookInfo = [[SCHBookInfo alloc] init];
+		bookInfo.bookIdentifier = isbn;
+		[bookTrackingDictionary setValue:bookInfo forKey:isbn];
+		return [bookInfo autorelease];
+	}
 }
 
 // FIXME: move to SCHSyncManager?

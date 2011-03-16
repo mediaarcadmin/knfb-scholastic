@@ -170,7 +170,7 @@ static SCHProcessingManager *sharedManager = nil;
 	
 	// get all the books independent of profile
 	for (SCHContentMetadataItem *metadataItem in allBooks) {
-		SCHBookInfo *bookInfo = [SCHBookInfo bookInfoWithContentMetadataItem:metadataItem];
+		SCHBookInfo *bookInfo = [SCHBookManager bookInfoWithBookIdentifier:metadataItem.ContentIdentifier];
 		
 		// if the book is currently processing, it will already be taken care of 
 		// when it finishes processing, so no need to add it for consideration
@@ -185,6 +185,8 @@ static SCHProcessingManager *sharedManager = nil;
 	for (SCHBookInfo *bookInfo in booksNeedingProcessing) {
 		[self processBook:bookInfo];
 	}
+	
+	[booksNeedingProcessing release];
 }
 
 - (BOOL) bookNeedsProcessing: (SCHBookInfo *) bookInfo
@@ -243,6 +245,7 @@ static SCHProcessingManager *sharedManager = nil;
 			
 			// add the operation to the network download queue
 			[self.networkOperationQueue addOperation:downloadImageOp];
+			[downloadImageOp release];
 			return;
 			break;
 		}	
@@ -427,6 +430,8 @@ static SCHProcessingManager *sharedManager = nil;
 	
 	NSError *error = nil;				
 	NSArray *allBooks = [[[SCHBookManager sharedBookManager] managedObjectContextForCurrentThread] executeFetchRequest:fetchRequest error:&error];
+	
+	[fetchRequest release];
 	
 	if (!error) {
 		return allBooks;

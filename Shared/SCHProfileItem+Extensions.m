@@ -14,6 +14,7 @@
 #import "SCHContentMetadataItem+Extensions.h"
 #import "SCHUserContentItem+Extensions.h"
 #import "SCHBookInfo.h"
+#import "SCHBookManager.h"
 #import "USAdditions.h"
 
 static NSString * const kSCHProfileItemContentProfileItem = @"ContentProfileItem";
@@ -55,7 +56,7 @@ static NSString * const kSCHProfileItemUserContentItemContentMetadataItem = @"Us
 	for (SCHContentProfileItem *contentProfileItem in [self valueForKey:kSCHProfileItemContentProfileItem]) {
 		for (SCHContentMetadataItem *contentMetadataItem in [contentProfileItem valueForKeyPath:kSCHProfileItemUserContentItemContentMetadataItem]) {
 			
-			SCHBookInfo *bookInfo = [SCHBookInfo bookInfoWithContentMetadataItem:contentMetadataItem];
+			SCHBookInfo *bookInfo = [SCHBookManager bookInfoWithBookIdentifier:contentMetadataItem.ContentIdentifier];
 			
 			[books addObject:bookInfo];
 			[bookInfo release];

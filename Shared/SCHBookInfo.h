@@ -17,9 +17,6 @@
 
 }
 
-// the initialiser for SCHBookInfo - only one object per book is created
-+ (id) bookInfoWithContentMetadataItem: (SCHContentMetadataItem *) metadataItem;
-
 // SCHBookInfo objects use the book identifier (ISBN number) as a unique ID
 @property (readwrite, retain) NSString *bookIdentifier;
 

@@ -20,11 +20,10 @@
 
 + (SCHBookManager *)sharedBookManager;
 
-//- (SCHContentMetadataItem *)bookWithID:(NSManagedObjectID *)aBookID;
++ (SCHBookInfo *) bookInfoWithBookIdentifier: (NSString *) isbn;
+
 - (BWKXPSProvider *)checkOutXPSProviderForBook: (SCHBookInfo *) bookInfo;
 - (void) checkInXPSProviderForBook: (SCHBookInfo *) bookInfo;
 
-//- (BWKXPSProvider *)checkOutXPSProviderForBookWithID: (NSManagedObjectID *) id;
-//- (void)checkInXPSProviderForBookWithID: (NSManagedObjectID *) id;
 
 @end
