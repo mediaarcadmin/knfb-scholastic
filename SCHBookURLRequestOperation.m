@@ -100,6 +100,8 @@
 
 - (void) urlSuccess: (NSNotification *) notification
 {
+	NSAssert([NSThread currentThread] == [NSThread mainThread], @"Notification is not fired on the main thread!");
+	NSLog(@"Thread: %@ Main Thread: %@", [NSThread currentThread], [NSThread mainThread]);
 	NSDictionary *userInfo = [notification userInfo];
 	
 	NSString *completedISBN = [userInfo valueForKey:kSCHLibreAccessWebServiceContentIdentifier];
@@ -119,6 +121,7 @@
 
 - (void) urlFailure: (NSNotification *) notification
 {
+	NSAssert([NSThread currentThread] == [NSThread mainThread], @"Notification is not fired on the main thread!");
 	NSDictionary *userInfo = [notification userInfo];
 	NSString *completedISBN = [userInfo objectForKey:kSCHLibreAccessWebServiceContentIdentifier];
 	
