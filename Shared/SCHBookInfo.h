@@ -34,6 +34,9 @@
 // the current processing state of the book
 @property (readwrite) SCHBookInfoCurrentProcessingState processingState;
 
+// the library cache directory. Used for book files and cached images.
++ (NSString *)cacheDirectory;
+
 // the path to the XPS file within the system - by default, in the cache directory
 - (NSString *) xpsPath;
 - (NSString *) coverImagePath;

@@ -37,7 +37,4 @@ typedef enum {
 // thumbnail requests
 - (BOOL) requestThumbImageForBookCover:(SCHAsyncBookCoverImageView *)bookCover size:(CGSize)size;
 
-// the library cache directory. Used for book files and cached images.
-+ (NSString *)cacheDirectory;
-
 @end

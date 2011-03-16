@@ -121,14 +121,6 @@ static SCHProcessingManager *sharedManager = nil;
 }
 
 #pragma mark -
-#pragma mark Cache Directory
-
-+ (NSString *)cacheDirectory 
-{
-	return [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject];
-}
-
-#pragma mark -
 #pragma mark Background Processing Methods
 
 - (void) enterBackground
