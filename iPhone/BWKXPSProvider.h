@@ -24,6 +24,7 @@ static NSString * const BlioXPSEncryptedTextFlowDir = @"/Documents/1/Other/KNFB/
 static NSString * const BlioXPSComponentExtensionFPage = @"fpage";
 static NSString * const BlioXPSSequenceFile = @"/FixedDocumentSequence.fdseq";
 static NSString * const BlioXPSFileThumbnail = @"Metadata/Thumbnail.jpg";
+static NSString * const BlioXPSKNFBRightsFile = @"/Documents/1/Other/KNFB/Rights.xml";
 
 
 @interface BWKXPSProvider : NSObject {
@@ -94,5 +95,7 @@ static NSString * const BlioXPSFileThumbnail = @"Metadata/Thumbnail.jpg";
 
 - (UIImage *)coverThumbForList;
 - (NSData *)coverThumbData;
+
+- (NSData *)dataForComponentAtPath:(NSString *)path;
 
 @end

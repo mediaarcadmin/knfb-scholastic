@@ -314,6 +314,8 @@
 		F8509F9012F0654B00197EB5 /* thumbImage.png in Resources */ = {isa = PBXBuildFile; fileRef = F8509F8012F0653700197EB5 /* thumbImage.png */; };
 		F86502D5132532310044FEB0 /* SCHBookShelfGridViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F86502D4132532310044FEB0 /* SCHBookShelfGridViewCell.m */; };
 		F86502D6132532310044FEB0 /* SCHBookShelfGridViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F86502D4132532310044FEB0 /* SCHBookShelfGridViewCell.m */; };
+		F8678C55133110C0001FDB2F /* SCHRightsParsingOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F8678C54133110C0001FDB2F /* SCHRightsParsingOperation.m */; };
+		F8678C56133110C0001FDB2F /* SCHRightsParsingOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F8678C54133110C0001FDB2F /* SCHRightsParsingOperation.m */; };
 		F8899238132E165E007EB541 /* SCHProcessingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F8899237132E165E007EB541 /* SCHProcessingManager.m */; };
 		F8899239132E165E007EB541 /* SCHProcessingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F8899237132E165E007EB541 /* SCHProcessingManager.m */; };
 		F897DD6E13279144007F2E14 /* SCHBookURLRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F897DD6D13279144007F2E14 /* SCHBookURLRequestOperation.m */; };
@@ -762,6 +764,8 @@
 		F8509F8112F0653700197EB5 /* booktexture-nocover.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "booktexture-nocover.png"; path = "Shared/Images/booktexture-nocover.png"; sourceTree = "<group>"; };
 		F86502D3132532310044FEB0 /* SCHBookShelfGridViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHBookShelfGridViewCell.h; sourceTree = "<group>"; };
 		F86502D4132532310044FEB0 /* SCHBookShelfGridViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHBookShelfGridViewCell.m; sourceTree = "<group>"; };
+		F8678C53133110C0001FDB2F /* SCHRightsParsingOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHRightsParsingOperation.h; sourceTree = "<group>"; };
+		F8678C54133110C0001FDB2F /* SCHRightsParsingOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHRightsParsingOperation.m; sourceTree = "<group>"; };
 		F8899236132E165E007EB541 /* SCHProcessingManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHProcessingManager.h; sourceTree = "<group>"; };
 		F8899237132E165E007EB541 /* SCHProcessingManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHProcessingManager.m; sourceTree = "<group>"; };
 		F897DD6C13279144007F2E14 /* SCHBookURLRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHBookURLRequestOperation.h; sourceTree = "<group>"; };
@@ -1512,6 +1516,8 @@
 				F82D39D0131EA7C200289FF3 /* SCHThumbnailOperation.m */,
 				F82D39BD131EA79100289FF3 /* SCHXPSCoverImageOperation.h */,
 				F82D39BE131EA79100289FF3 /* SCHXPSCoverImageOperation.m */,
+				F8678C53133110C0001FDB2F /* SCHRightsParsingOperation.h */,
+				F8678C54133110C0001FDB2F /* SCHRightsParsingOperation.m */,
 			);
 			name = "Processing Operations";
 			sourceTree = "<group>";
@@ -1804,6 +1810,7 @@
 				52322C34132693F500BB071D /* SCHURLManager.m in Sources */,
 				526750DB13291EB500063AC8 /* SCHRightsManager.m in Sources */,
 				F8899239132E165E007EB541 /* SCHProcessingManager.m in Sources */,
+				F8678C55133110C0001FDB2F /* SCHRightsParsingOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1927,6 +1934,7 @@
 				526750D213290EE800063AC8 /* SCHURLManager.m in Sources */,
 				526750DC13291EB500063AC8 /* SCHRightsManager.m in Sources */,
 				F8899238132E165E007EB541 /* SCHProcessingManager.m in Sources */,
+				F8678C56133110C0001FDB2F /* SCHRightsParsingOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -19,6 +19,7 @@ typedef enum {
 	SCHBookInfoProcessingStateReadyForBookFileDownload,
 	SCHBookInfoProcessingStateDownloadStarted,
 	SCHBookInfoProcessingStateDownloadPaused,
+	SCHBookInfoProcessingStateReadyForRightsParsing,
 	SCHBookInfoProcessingStateReadyToRead
 } SCHBookInfoCurrentProcessingState;
 
@@ -31,7 +32,7 @@ typedef enum {
 // FIXME: notes on duties - registers for events etc.
 + (SCHProcessingManager *) sharedProcessingManager;
 
-// user selection methods
+// user selection method
 - (void) userSelectedBookInfo: (SCHBookInfo *) bookInfo;
 
 // thumbnail requests

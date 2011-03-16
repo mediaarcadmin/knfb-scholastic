@@ -115,6 +115,9 @@
 		case SCHBookInfoProcessingStateError:
 			state = @"Processing Error";
 			break;
+		case SCHBookInfoProcessingStateReadyForRightsParsing:
+			state = @"Ready to Parse Rights";
+			break;
 		default:
 			break;
 	}	
