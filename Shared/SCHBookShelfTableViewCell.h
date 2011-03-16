@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "SCHBookInfo.h"
-#import "SCHAsyncImageView.h"
+#import "SCHAsyncBookCoverImageView.h"
 
 @interface SCHBookShelfTableViewCell : UITableViewCell {
 	
@@ -16,7 +16,7 @@
 	
 }
 
-@property (readonly, retain) SCHAsyncImageView *thumbImageView;
+@property (readonly, retain) SCHAsyncBookCoverImageView *thumbImageView;
 @property (nonatomic, retain) UIView *thumbContainerView;
 @property (nonatomic, retain) UIView *thumbTintView;
 @property (nonatomic, retain) UILabel *titleLabel;

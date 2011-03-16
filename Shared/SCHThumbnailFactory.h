@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "SCHThumbnailOperation.h"
-#import "SCHAsyncImageView.h"
+#import "SCHAsyncBookCoverImageView.h"
 
 @interface SCHThumbnailFactory : NSObject {
 
@@ -16,25 +16,13 @@
 
 + (UIImage *)imageWithPath:(NSString *)path;
 
-+ (SCHThumbnailOperation *)thumbOperationAtPath:(NSString *)thumbPath 
-									   fromPath:(NSString *)path 
-										   rect:(CGRect)thumbRect 
-										   size:(CGSize)size 
-										   flip:(BOOL)flip 
-								 maintainAspect:(BOOL)aspect;
-
-/*+ (UIImage *)thumbnailImageOfSize:(CGSize)size 
-							 path:(NSString *)path 
-						thumbRect:(CGRect)thumbRect 
-							 flip:(BOOL)flip 
-				   maintainAspect:(BOOL)aspect;
-*/
+//+ (SCHThumbnailOperation *)thumbOperationAtPath:(NSString *)thumbPath fromPath:(NSString *)path size:(CGSize)size flip:(BOOL)flip maintainAspect:(BOOL)aspect;
 
 + (UIImage *)thumbnailImageOfSize:(CGSize)size 
 							 path:(NSString *)path
 				   maintainAspect:(BOOL)aspect;	
 
-+ (SCHAsyncImageView *)newAsyncImageWithSize:(CGSize)size;
-+ (bool) updateThumbView: (SCHAsyncImageView *) imageView withSize:(CGSize)size path:(NSString *)path;
++ (SCHAsyncBookCoverImageView *)newAsyncImageWithSize:(CGSize)size;
++ (bool) updateThumbView: (SCHAsyncBookCoverImageView *) imageView withSize:(CGSize)size path:(NSString *)path;
 
 @end

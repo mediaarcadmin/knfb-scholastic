@@ -23,7 +23,7 @@
 
 @interface SCHBookShelfTableViewCell ()
 
-@property (readwrite, retain) SCHAsyncImageView *thumbImageView;
+@property (readwrite, retain) SCHAsyncBookCoverImageView *thumbImageView;
 
 @end
 
@@ -119,7 +119,7 @@
 - (void) setBookInfo:(SCHBookInfo *) newBookInfo
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"SCHBookDownloadPercentageUpdate" object:bookInfo];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"SCHBookDownloadStatusUpdate" object:bookInfo];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"SCHBookStatusUpdate" object:bookInfo];
 
 	if (newBookInfo != bookInfo) {
 		SCHBookInfo *oldBookInfo = bookInfo;
@@ -134,8 +134,10 @@
 
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(refreshCell)
-												 name:@"SCHBookDownloadStatusUpdate"
+												 name:@"SCHBookStatusUpdate"
 											   object:self.bookInfo];
+	
+	[self.thumbImageView setBookInfo:newBookInfo];
 	
 	[self refreshCell];
 	
@@ -144,71 +146,61 @@
 
 - (void) refreshCell
 {
+	// image processing
+	BOOL immediateUpdate = [[SCHProcessingManager sharedProcessingManager] requestThumbImageForBookCover:self.thumbImageView 
+																							   size:CGSizeMake(IMAGE_FRAME_WIDTH, IMAGE_FRAME_HEIGHT)];
 
-//	if (updateImage) {
-		// image processing
-		BOOL immediateUpdate = [[SCHProcessingManager defaultManager] updateThumbView:self.thumbImageView
-																			 withBook:self.bookInfo
-																				 size:CGSizeMake(IMAGE_FRAME_WIDTH, IMAGE_FRAME_HEIGHT)
-																				 rect:CGRectNull
-																				 flip:NO
-																	   maintainAspect:YES
-																	   usePlaceHolder:YES];
-		if (immediateUpdate) {
-			[self setNeedsDisplay];
-		}
-//	}
+	if (immediateUpdate) {
+		[self setNeedsDisplay];
+	}
 	
 	NSString *status = @"";
 	
-	if ([bookInfo isCurrentlyWaitingForURLs]) {
-		status = @"URLs...";
-		thumbTintView.hidden = NO;
-		self.progressView.hidden = YES;
-	} else if ([bookInfo isCurrentlyDownloadingCoverImage]) {
-		status = @"Cover Img...";
-		thumbTintView.hidden = NO;
-		self.progressView.hidden = YES;
-	} else if ([bookInfo isWaitingForBookFileDownload]) {
-		status = @"Waiting...";
-		thumbTintView.hidden = NO;
-		self.progressView.hidden = YES;
-	} else if ([bookInfo isCurrentlyDownloadingBookFile]) {
-		status = @"Downloading...";
-		thumbTintView.hidden = NO;
-		self.progressView.hidden = NO;
-	} else {
-		// book status
-		switch ([bookInfo processingState]) {
-			case bookFileProcessingStateError:
-				status = @"Error";
-				self.thumbTintView.hidden = NO;
-				self.progressView.hidden = YES;
-				break;
-			case bookFileProcessingStateFullyDownloaded:
-				status = @"";
-				self.thumbTintView.hidden = YES;
-				self.progressView.hidden = YES;
-				break;
-			case bookFileProcessingStateNoFileDownloaded:
-				status = @"Download";
-				self.thumbTintView.hidden = NO;
-				self.progressView.hidden = YES;
-				break;
-			case bookFileProcessingStatePartiallyDownloaded:
-				status = @"Paused";
-				self.thumbTintView.hidden = NO;
-				self.progressView.hidden = NO;
-				break;
-			default:
-				status = @"Unknown!";
-				self.thumbTintView.hidden = YES;
-				self.progressView.hidden = YES;
-				break;
-		}
-	}	
+	// book status
+	switch ([bookInfo processingState]) {
+		case SCHBookInfoProcessingStateError:
+			status = @"Error";
+			self.thumbTintView.hidden = NO;
+			self.progressView.hidden = YES;
+			break;
+		case SCHBookInfoProcessingStateNoURLs:
+			status = @"URLs..";
+			self.thumbTintView.hidden = NO;
+			self.progressView.hidden = YES;
+			break;
+		case SCHBookInfoProcessingStateNoCoverImage:
+			status = @"Cover Img...";
+			thumbTintView.hidden = NO;
+			self.progressView.hidden = YES;
+			break;
+		case SCHBookInfoProcessingStateReadyForBookFileDownload:
+			status = @"Download";
+			self.thumbTintView.hidden = NO;
+			self.progressView.hidden = YES;
+			break;
+		case SCHBookInfoProcessingStateDownloadStarted:
+			status = @"Downloading...";
+			self.thumbTintView.hidden = NO;
+			self.progressView.hidden = NO;
+			break;
+		case SCHBookInfoProcessingStateDownloadPaused:
+			status = @"Paused";
+			self.thumbTintView.hidden = NO;
+			self.progressView.hidden = NO;
+			break;
+		case SCHBookInfoProcessingStateReadyToRead:
+			status = @"";
+			self.thumbTintView.hidden = YES;
+			self.progressView.hidden = YES;
+			break;
+		default:
+			status = @"Unknown!";
+			self.thumbTintView.hidden = YES;
+			self.progressView.hidden = YES;
+			break;
+	}
 	
-	if (self.thumbTintView.hidden) {
+	if ([self.bookInfo canOpenBook]) {
 		self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	} else {
 		self.accessoryType = UITableViewCellAccessoryNone;
@@ -232,14 +224,7 @@
 	float newPercentage = [(NSNumber *) [[notification userInfo] objectForKey:@"currentPercentage"] floatValue];
 	[self.progressView setProgress:newPercentage];
 }
-/*
-- (void) prepareForReuse
-{
-	if (self.thumbImageView) {
-		[self.thumbImageView prepareForReuse];
-	}
-}
-*/
+
 - (void)dealloc {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 

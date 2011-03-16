@@ -44,7 +44,7 @@
 	SCHBookInfo *oldInfo = bookInfo;
 	bookInfo = [newBookInfo retain];
 	[oldInfo release];
-	
+	[self.bookInfo setProcessing:YES];
 }
 
 - (void) start
@@ -82,54 +82,38 @@
 
 - (void) beginConnection
 {
-	if ([self.bookInfo isCurrentlyWaitingForURLs]) {
-		NSLog(@"Operation: already getting URLs for %@.", self.bookInfo.bookIdentifier);
-		self.waitingForAnotherOperation = YES;
-	} else {
-		self.waitingForAnotherOperation = NO;
-	}
-
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(urlSuccess:) name:kSCHURLManagerSuccess object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(urlFailure:) name:kSCHURLManagerFailure object:nil];
 	
-	if (![self.bookInfo isCurrentlyWaitingForURLs]) {
-		[[SCHProcessingManager defaultManager] setBookWaitingForURLs:self.bookInfo operation:self];
-		[[SCHURLManager sharedURLManager] requestURLForISBN:self.bookInfo.bookIdentifier];
-	}
+	[[SCHURLManager sharedURLManager] requestURLForISBN:self.bookInfo.bookIdentifier];
 
 	do {
 		[[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
 	} while (!self.finished);
 	
-
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	
+	[self.bookInfo setProcessing:NO];
 	return;
 	
 }
 
 - (void) urlSuccess: (NSNotification *) notification
 {
-	NSLog(@"Getting a notification of success (from another operation? %@)", self.waitingForAnotherOperation?@"Yes":@"No");
+	NSAssert([NSThread currentThread] == [NSThread mainThread], @"Notification is not fired on the main thread!");
+	NSLog(@"Thread: %@ Main Thread: %@", [NSThread currentThread], [NSThread mainThread]);
 	NSDictionary *userInfo = [notification userInfo];
 	
 	NSString *completedISBN = [userInfo valueForKey:kSCHLibreAccessWebServiceContentIdentifier];
 
 	if ([completedISBN compare:self.bookInfo.bookIdentifier] == NSOrderedSame) {
 	
-			NSLog(@"Getting a notification of success for %@ (from another operation? %@)", completedISBN, self.waitingForAnotherOperation?@"Yes":@"No");
-			
-			if (self.waitingForAnotherOperation == NO) {
-				self.bookInfo.coverURL = [userInfo valueForKey:kSCHLibreAccessWebServiceCoverURL];
-				self.bookInfo.bookFileURL = [userInfo valueForKey:kSCHLibreAccessWebServiceContentURL];
-				NSLog(@"Successful URL retrieval for %@!", completedISBN);
-				[[SCHProcessingManager defaultManager] removeBookWaitingForURLs:self.bookInfo];
-			} else {
-				NSLog(@"URLs populated from another thread. awesome.");
-			}
-			
-			
-		NSLog(@"Setting finished!");
+		self.bookInfo.coverURL = [userInfo valueForKey:kSCHLibreAccessWebServiceCoverURL];
+		self.bookInfo.bookFileURL = [userInfo valueForKey:kSCHLibreAccessWebServiceContentURL];
+		NSLog(@"Successful URL retrieval for %@!", completedISBN);
+		
+		[self.bookInfo setProcessingState:SCHBookInfoProcessingStateNoCoverImage];
+		
 		self.executing = NO;
 		self.finished = YES;
 	}
@@ -137,15 +121,14 @@
 
 - (void) urlFailure: (NSNotification *) notification
 {
+	NSAssert([NSThread currentThread] == [NSThread mainThread], @"Notification is not fired on the main thread!");
 	NSDictionary *userInfo = [notification userInfo];
 	NSString *completedISBN = [userInfo objectForKey:kSCHLibreAccessWebServiceContentIdentifier];
 	
 	if ([completedISBN compare:self.bookInfo.bookIdentifier] == NSOrderedSame) {
-		if (!self.waitingForAnotherOperation) {
-			NSLog(@"Failure for ISBN %@", completedISBN);
-			[[SCHProcessingManager defaultManager] removeBookWaitingForURLs:self.bookInfo];
-		}
-		
+		NSLog(@"Failure for ISBN %@", completedISBN);
+		[self.bookInfo setProcessingState:SCHBookInfoProcessingStateError];
+
 		self.executing = NO;
 		self.finished = YES;
 	}

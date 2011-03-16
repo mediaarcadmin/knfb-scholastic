@@ -21,8 +21,15 @@
 
 @implementation SCHBookManager
 
+// the shared book manager object
 static SCHBookManager *sSharedBookManager = nil;
+
+// used to keep track of manage contexts
 static pthread_key_t sManagedObjectContextKey;
+
+// used to hold unique book info objects
+static NSMutableDictionary *bookTrackingDictionary = nil;
+
 
 @synthesize cachedXPSProviders, cachedXPSProviderCheckoutCounts, persistentStoreCoordinator;
 
@@ -53,6 +60,28 @@ static pthread_key_t sManagedObjectContextKey;
     return self;
 }
 
+#pragma mark -
+#pragma mark Book Info vending
++ (SCHBookInfo *) bookInfoWithBookIdentifier: (NSString *) isbn
+{
+	if (!bookTrackingDictionary) {
+		bookTrackingDictionary = [[NSMutableDictionary alloc] init];
+	}
+	
+	SCHBookInfo *existingBookInfo = [bookTrackingDictionary objectForKey:isbn];
+	
+	if (existingBookInfo) {
+		//[bookTrackingDictionary setValue:existingBookInfo forKey:isbn];
+		return existingBookInfo;
+	} else {
+		SCHBookInfo *bookInfo = [[SCHBookInfo alloc] init];
+		bookInfo.bookIdentifier = isbn;
+		[bookTrackingDictionary setValue:bookInfo forKey:isbn];
+		return [bookInfo autorelease];
+	}
+}
+
+// FIXME: move to SCHSyncManager?
 
 - (NSManagedObjectContext *)managedObjectContextForCurrentThread
 {
@@ -89,7 +118,7 @@ static pthread_key_t sManagedObjectContextKey;
 	
     NSMutableDictionary *myCachedXPSProviders = self.cachedXPSProviders;
     @synchronized(myCachedXPSProviders) {
-        BWKXPSProvider *previouslyCachedXPSProvider = [myCachedXPSProviders objectForKey:bookInfo];
+        BWKXPSProvider *previouslyCachedXPSProvider = [myCachedXPSProviders objectForKey:bookInfo.bookIdentifier];
         if(previouslyCachedXPSProvider) {
             NSLog(@"Returning cached XPSProvider for book with bookInfo %@", bookInfo);
             [self.cachedXPSProviderCheckoutCounts addObject:bookInfo];
@@ -103,9 +132,8 @@ static pthread_key_t sManagedObjectContextKey;
 					self.cachedXPSProviderCheckoutCounts = myCachedXPSProviderCheckoutCounts;
 				}
 				
-				[myCachedXPSProviders setObject:xpsProvider forKey:bookInfo];
+				[myCachedXPSProviders setObject:xpsProvider forKey:bookInfo.bookIdentifier];
 				[myCachedXPSProviderCheckoutCounts addObject:bookInfo];
-//				[xpsProvider release];
 				ret = xpsProvider;
 				[xpsProvider release];
 			}
@@ -134,7 +162,7 @@ static pthread_key_t sManagedObjectContextKey;
             [myCachedXPSProviderCheckoutCounts removeObject:bookInfo];
             if (count == 1) {
               //  NSLog(@"Releasing cached XPSProvider for book with ID %@", bookInfo);
-                [myCachedXPSProviders removeObjectForKey:bookInfo];
+                [myCachedXPSProviders removeObjectForKey:bookInfo.bookIdentifier];
                 if(myCachedXPSProviderCheckoutCounts.count == 0) {
                     // May as well release the set.
                     self.cachedXPSProviderCheckoutCounts = nil;

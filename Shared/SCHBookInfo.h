@@ -7,42 +7,41 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "SCHContentMetadataItem+Extensions.h"
 #import <pthread.h>
 #import <CoreData/CoreData.h>
-
-typedef enum {
-	bookFileProcessingStateError = 0,
-	bookFileProcessingStateNoFileDownloaded,
-	bookFileProcessingStatePartiallyDownloaded,
-	bookFileProcessingStateFullyDownloaded
-} BookFileProcessingState;
-
+#import "SCHContentMetadataItem+Extensions.h"
+#import "SCHProcessingManager.h"
 
 
 @interface SCHBookInfo : NSObject {
 
 }
 
-// FIXME: used in testing - disable for release builds
-@property (nonatomic) pthread_t currentThread;
-
-//@property (nonatomic, retain) NSManagedObjectID *metadataItemID;
+// SCHBookInfo objects use the book identifier (ISBN number) as a unique ID
 @property (readwrite, retain) NSString *bookIdentifier;
+
+// core data objects - content metadata comes from the web service,
+// local metadata is state held locally for books
 @property (readonly) SCHContentMetadataItem *contentMetadata;
+//@property (readonly) SCHLocalMetadataItem *localMetadata;
+
+// the cover and book file URLs
 @property (readwrite, retain) NSString *coverURL;
 @property (readwrite, retain) NSString *bookFileURL;
 
-- (id) initWithContentMetadataItem: (SCHContentMetadataItem *) metadataItem;
+// is this book currently being processed?
+@property (getter=isProcessing) BOOL processing;
+// the current processing state of the book
+@property (readwrite) SCHBookInfoCurrentProcessingState processingState;
+
+// the path to the XPS file within the system - by default, in the cache directory
 - (NSString *) xpsPath;
-- (BookFileProcessingState) processingState;
-- (BOOL) processedCovers;
+- (NSString *) coverImagePath;
+- (NSString *) thumbPathForSize: (CGSize) size;
 
-- (BOOL) isCurrentlyDownloadingBookFile;
-- (BOOL) isCurrentlyDownloadingCoverImage;
-- (BOOL) isWaitingForBookFileDownload;
-- (BOOL) isCurrentlyWaitingForURLs;
-
+// book file current percentage downloaded
 - (float) currentDownloadedPercentage;
+
+- (BOOL) canOpenBook;
 
 @end

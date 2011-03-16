@@ -10,9 +10,9 @@
 #import "SCHBookManager.h"
 #import "SCHSyncManager.h"
 #import "SCHAuthenticationManager.h"
-#import "SCHProcessingManager.h"
 #import "SCHUserDefaults.h"
 #import "SCHURLManager.h"
+#import "SCHProcessingManager.h"
 
 #ifdef LOCALDEBUG
 #import "SCHLocalDebug.h"
@@ -28,66 +28,27 @@ static NSString * const kSCHClearLocalDebugMode = @"kSCHClearLocalDebugMode";
 #pragma mark -
 #pragma mark Application lifecycle
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions    
+- (void) awakeFromNib
 {
+	SCHSyncManager *syncManager = [SCHSyncManager sharedSyncManager];
+	syncManager.managedObjectContext = self.managedObjectContext;
+	[syncManager start];
+	
+	SCHURLManager *urlManager = [SCHURLManager sharedURLManager];
+	urlManager.managedObjectContext = self.managedObjectContext;
 
-	// check for change between local debug mode and normal network mode
-	
-	NSDictionary *appDefaults = [NSDictionary dictionaryWithObjectsAndKeys:
-								 [NSNumber numberWithBool:NO], kSCHUserDefaultsPerformedFirstSyncUpToBooks, nil];
-	
-	[[NSUserDefaults standardUserDefaults] registerDefaults:appDefaults];		
-	
-	[SCHURLManager sharedURLManager].managedObjectContext = self.managedObjectContext;
-	
-	BOOL localDebugMode = NO;
-	
-#ifdef LOCALDEBUG
-	localDebugMode = YES;
-#endif
-	
-	NSNumber *storedValue = (NSNumber *) [[NSUserDefaults standardUserDefaults] valueForKey:kSCHClearLocalDebugMode];
-	
-	if (storedValue) {
-	
-//		NSLog(@"We have a stored value.");
-//		NSLog(@"stored: %@ localDebugMode: %@", [storedValue boolValue]?@"LocalDebug":@"Network", localDebugMode?@"LocalDebug":@"Network");
-		
-		if ([storedValue boolValue] != localDebugMode) {
-			
-//			NSLog(@"Changed between local debug mode and network mode - resetting database.");
-			
-			SCHSyncManager *syncManager = [SCHSyncManager sharedSyncManager];
-			syncManager.managedObjectContext = self.managedObjectContext;
-			[syncManager clear];
-			
-			[[SCHAuthenticationManager sharedAuthenticationManager] clear];				
-			
-		}		
-		
-	} else {
-//		NSLog(@"First run!");
-	}
-		
-	
-	NSLog(@"Currently in %@.", localDebugMode?@"\"Local Debug Mode\"":@"\"Network Mode\"");
-	NSNumber *newValue = [NSNumber numberWithBool:localDebugMode];
-	[[NSUserDefaults standardUserDefaults] setObject:newValue forKey:kSCHClearLocalDebugMode];
-	[[NSUserDefaults standardUserDefaults] synchronize];
+	// instantiate the shared processing manager
+	[SCHProcessingManager sharedProcessingManager];
 
-    
-	
 	SCHBookManager *bookManager = [SCHBookManager sharedBookManager];
     bookManager.persistentStoreCoordinator = self.persistentStoreCoordinator;
-    bookManager.managedObjectContextForCurrentThread = self.managedObjectContext; // Use our managed object contest for calls that are made on the main thread.
+    bookManager.managedObjectContextForCurrentThread = self.managedObjectContext; // Use our managed object context for calls that are made on the main thread.
 	
-#ifdef LOCALDEBUG	
-	SCHLocalDebug *localDebug = [[SCHLocalDebug alloc] init];
-	localDebug.managedObjectContext = self.managedObjectContext;
-	[localDebug setup];
-	[localDebug release], localDebug = nil;
-#endif
+}	
 
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions    
+{
+	[self checkForLocalDebugMode];
 	
 	NSNumber *currentValue = [[NSUserDefaults standardUserDefaults] objectForKey:@"kSCHSpaceSaverMode"];
 	
@@ -109,11 +70,11 @@ static NSString * const kSCHClearLocalDebugMode = @"kSCHClearLocalDebugMode";
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
     [self saveContext];
-	[[SCHProcessingManager defaultManager] enterBackground];
+	[[SCHProcessingManager sharedProcessingManager] enterBackground];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
-	[[SCHProcessingManager defaultManager] enterForeground];
+	[[SCHProcessingManager sharedProcessingManager] enterForeground];
 }
 
 
@@ -244,6 +205,57 @@ static NSString * const kSCHClearLocalDebugMode = @"kSCHClearLocalDebugMode";
     return [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
 }
 
+
+#pragma mark -
+#pragma mark Local Debug Mode
+
+- (void) checkForLocalDebugMode
+{
+	// check for change between local debug mode and normal network mode
+	NSDictionary *appDefaults = [NSDictionary dictionaryWithObjectsAndKeys:
+								 [NSNumber numberWithBool:NO], kSCHUserDefaultsPerformedFirstSyncUpToBooks, nil];
+	
+	[[NSUserDefaults standardUserDefaults] registerDefaults:appDefaults];		
+	
+	BOOL localDebugMode = NO;
+	
+#ifdef LOCALDEBUG
+	localDebugMode = YES;
+#endif
+	
+	NSNumber *storedValue = (NSNumber *) [[NSUserDefaults standardUserDefaults] valueForKey:kSCHClearLocalDebugMode];
+	
+	if (storedValue) {
+		
+		if ([storedValue boolValue] != localDebugMode) {
+			
+			//			NSLog(@"Changed between local debug mode and network mode - resetting database.");
+			
+			SCHSyncManager *syncManager = [SCHSyncManager sharedSyncManager];
+			syncManager.managedObjectContext = self.managedObjectContext;
+			[syncManager clear];
+			
+			[[SCHAuthenticationManager sharedAuthenticationManager] clear];				
+			
+		}		
+		
+	} else {
+		NSLog(@"First run.");
+	}
+	
+	
+	NSLog(@"Currently in %@.", localDebugMode?@"\"Local Debug Mode\"":@"\"Network Mode\"");
+	NSNumber *newValue = [NSNumber numberWithBool:localDebugMode];
+	[[NSUserDefaults standardUserDefaults] setObject:newValue forKey:kSCHClearLocalDebugMode];
+	[[NSUserDefaults standardUserDefaults] synchronize];
+	
+#ifdef LOCALDEBUG	
+	SCHLocalDebug *localDebug = [[SCHLocalDebug alloc] init];
+	localDebug.managedObjectContext = self.managedObjectContext;
+	[localDebug setup];
+	[localDebug release], localDebug = nil;
+#endif
+}	
 
 #pragma mark -
 #pragma mark Memory management

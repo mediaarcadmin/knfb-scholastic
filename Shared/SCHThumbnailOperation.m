@@ -12,17 +12,15 @@
 
 @implementation SCHThumbnailOperation
 
-@synthesize aspect, thumbPath, path, thumbRect, size, flip;
+@synthesize bookInfo, aspect, size, flip;
 
 - (void)dealloc {
-	self.thumbPath = nil;
-	self.path = nil;
 	
 	[super dealloc];
 }
 
 - (void)imageReady:(NSDictionary *)userInfo {
-	[[NSNotificationCenter defaultCenter] postNotificationName:@"SCHNewImageAvailable" object:nil userInfo:userInfo];
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"SCHNewImageAvailable" object:bookInfo userInfo:userInfo];
 }
 
 - (void)main {
@@ -31,36 +29,39 @@
 		return;
 	}
 	
-	if (!(self.thumbPath && self.path && !CGRectIsNull(self.thumbRect))) {
+	if (!self.bookInfo) {
 		return;
 	}
 	
 	// for testing: insert a random processing delay
 	//	int randomValue = (arc4random() % 5) + 3;
 	//	[NSThread sleepForTimeInterval:randomValue];
-	
-	NSString *cacheDir  = [SCHProcessingManager cacheDirectory];
-	NSString *cachePath = [cacheDir stringByAppendingPathComponent:self.thumbPath];
+//	NSString *cacheDir  = [SCHProcessingManager cacheDirectory];
+//	NSString *fullImagePath = [cacheDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png", bookInfo.bookIdentifier]];
+//	NSString *thumbPath = [cacheDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@_%d_%d", [fullImagePath lastPathComponent], (int)size.width, (int)size.height]];
+
+	NSString *fullImagePath = [bookInfo coverImagePath];
+	NSString *thumbPath = [bookInfo thumbPathForSize:size];
 	
 	UIImage *thumbImage = nil;
 	
-	if ([[NSFileManager defaultManager] fileExistsAtPath:cachePath]) {
-		thumbImage = [SCHThumbnailFactory imageWithPath:self.thumbPath];
+	if ([[NSFileManager defaultManager] fileExistsAtPath:thumbPath]) {
+		thumbImage = [SCHThumbnailFactory imageWithPath:thumbPath];
 	} else {
 		thumbImage = [SCHThumbnailFactory thumbnailImageOfSize:self.size 
-														  path:self.path
+														  path:fullImagePath
 												maintainAspect:self.aspect];
 		
 		if (thumbImage) {
 			NSData *pngData = UIImagePNGRepresentation(thumbImage);
 //			NSLog(@"Writing to cachepath: %@", cachePath);
-			[pngData writeToFile:cachePath atomically:YES];
+			[pngData writeToFile:thumbPath atomically:YES];
 		}
 	}
 	
 	if (thumbImage) {
 		NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
-								  self.thumbPath, @"imagePath", 
+								  [NSValue valueWithCGSize:size], @"thumbSize", 
 								  thumbImage, @"image", 
 								  nil];
 		

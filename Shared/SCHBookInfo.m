@@ -8,50 +8,26 @@
 
 #import "SCHBookInfo.h"
 #import "SCHBookManager.h"
-#import "SCHProcessingManager.h"
 
 @interface SCHBookInfo ()
-
-- (void) threadCheck;
 
 @end
 
 
 @implementation SCHBookInfo
 
-@synthesize currentThread;
 @synthesize bookIdentifier;
+@synthesize processing;
+@synthesize processingState;
 @synthesize coverURL, bookFileURL;
 
-static NSMutableDictionary *bookTrackingDictionary = nil;
 
-
-- (void) dealloc
-{
-	self.bookIdentifier = nil;
-	
-	[bookTrackingDictionary removeObjectForKey:self.bookIdentifier];
-	
-	if ([bookTrackingDictionary count] == 0) {
-		[bookTrackingDictionary dealloc];
-		bookTrackingDictionary = nil;
-	}
-	
-	[super dealloc];
-}
-
-- (id) init
-{
-	
-	if (self = [super init]) {
-		self.currentThread = pthread_self();
-		self.bookIdentifier = nil;
-	}
-	
-	return self;
-}
-
-- (id) initWithContentMetadataItem: (SCHContentMetadataItem *) metadataItem
+#pragma mark -
+#pragma mark Class Methods
+/*
+// this method lazily creates book info objects 
+// if one already exists, it will return that instance
++ (id) bookInfoWithContentMetadataItem: (SCHContentMetadataItem *) metadataItem
 {
 	if (!bookTrackingDictionary) {
 		bookTrackingDictionary = [[NSMutableDictionary alloc] init];
@@ -62,21 +38,39 @@ static NSMutableDictionary *bookTrackingDictionary = nil;
 	if (existingBookInfo) {
 		[bookTrackingDictionary setValue:existingBookInfo forKey:metadataItem.ContentIdentifier];
 		return [existingBookInfo retain];
+	} else {
+		SCHBookInfo *bookInfo = [[SCHBookInfo alloc] init];
+		bookInfo.bookIdentifier = [metadataItem ContentIdentifier];
+		[bookTrackingDictionary setValue:bookInfo forKey:bookInfo.bookIdentifier];
+		return bookInfo;
 	}
-	
-	if (self = [self init]) {
-		self.bookIdentifier = [metadataItem ContentIdentifier];
+}
+*/
+#pragma mark -
+#pragma mark Memory Management
+
+- (void) dealloc
+{
+	self.bookIdentifier = nil;
+
+	[super dealloc];
+}
+
+- (id) init
+{
+	if (self = [super init]) {
+		self.bookIdentifier = nil;
+		self.processingState = SCHBookInfoProcessingStateNoURLs;
 	}
-	
-	[bookTrackingDictionary setValue:self forKey:self.bookIdentifier];
 	
 	return self;
 }
 
+#pragma mark -
+#pragma mark Core Data Retrieval
+
 - (SCHContentMetadataItem *) contentMetadata
 {
-	//[self threadCheck];
-	
 	SCHContentMetadataItem *item = nil;
 	
 	if (self.bookIdentifier) {
@@ -85,7 +79,7 @@ static NSMutableDictionary *bookTrackingDictionary = nil;
 		
 		if (context) {
 			NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-			[fetchRequest setEntity:[NSEntityDescription entityForName:@"SCHContentMetadataItem" inManagedObjectContext:context]];	
+			[fetchRequest setEntity:[NSEntityDescription entityForName:kSCHContentMetadataItem inManagedObjectContext:context]];	
 			
 			NSPredicate *predicate = [NSPredicate predicateWithFormat:@"ContentIdentifier == %@", self.bookIdentifier];
 			[fetchRequest setPredicate:predicate];
@@ -108,9 +102,57 @@ static NSMutableDictionary *bookTrackingDictionary = nil;
 	return item;
 }
 
+#pragma mark -
+#pragma mark Book Status
+
+- (SCHBookInfoCurrentProcessingState) processingState
+{
+	return processingState;
+}
+
+- (void) setProcessingState:(SCHBookInfoCurrentProcessingState)newState
+{
+	processingState = newState;
+	
+	NSString *state = @"Unknown";
+	
+	switch (self.processingState) {
+		case SCHBookInfoProcessingStateNoURLs:
+			state = @"No URLs";
+			break;
+		case SCHBookInfoProcessingStateNoCoverImage:
+			state = @"No Cover Image";
+			break;
+		case SCHBookInfoProcessingStateReadyForBookFileDownload:
+			state = @"Ready for Download";
+			break;
+		case SCHBookInfoProcessingStateDownloadStarted:
+			state = @"Downloading";
+			break;
+		case SCHBookInfoProcessingStateDownloadPaused:
+			state = @"Download Paused";
+			break;
+		case SCHBookInfoProcessingStateReadyToRead:
+			state = @"Ready to Read";
+			break;
+		case SCHBookInfoProcessingStateError:
+			state = @"Processing Error";
+			break;
+		default:
+			break;
+	}	
+	
+	NSLog(@"setting %@ to processing state \"%@\".", self.bookIdentifier, state);
+	
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"SCHBookStatusUpdate" object:self];
+	
+}
+
+#pragma mark -
+#pragma mark Current Book Information
+
 - (NSString *) xpsPath
 {
-	//[self threadCheck];
 #ifdef LOCALDEBUG
 	return [[NSBundle mainBundle] pathForResource:self.contentMetadata.FileName ofType:@"xps"];
 #else
@@ -120,34 +162,19 @@ static NSMutableDictionary *bookTrackingDictionary = nil;
 #endif
 }
 
-- (BOOL) processedCovers
+- (NSString *) coverImagePath
 {
-	return NO;
-}
+	NSString *cacheDir  = [SCHProcessingManager cacheDirectory];
+	NSString *fullImagePath = [cacheDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png", self.bookIdentifier]];
+	return fullImagePath;
+}	
 
-- (BookFileProcessingState) processingState
+- (NSString *) thumbPathForSize: (CGSize) size
 {
-	NSString *xpsPath = [self xpsPath];
-	NSError *error = nil;
+	NSString *cacheDir  = [SCHProcessingManager cacheDirectory];
+	NSString *thumbPath = [cacheDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png_%d_%d", self.bookIdentifier, (int)size.width, (int)size.height]];
 	
-	if ([[NSFileManager defaultManager] fileExistsAtPath:xpsPath]) {
-		// check to see how much of the file has been downloaded
-
-		unsigned long long fileSize = [[[NSFileManager defaultManager] attributesOfItemAtPath:xpsPath error:&error] fileSize];
-		
-		if (error) {
-			NSLog(@"Error when reading file attributes. Stopping. (%@)", [error localizedDescription]);
-			return bookFileProcessingStateError;
-		}
-		
-		if (fileSize == [self.contentMetadata.FileSize unsignedLongLongValue]) {
-			return bookFileProcessingStateFullyDownloaded;
-		} else {
-			return bookFileProcessingStatePartiallyDownloaded;
-		}
-	} 
-
-	return bookFileProcessingStateNoFileDownloaded;
+	return thumbPath;
 }
 
 - (float) currentDownloadedPercentage
@@ -170,32 +197,18 @@ static NSMutableDictionary *bookTrackingDictionary = nil;
 	
 	return percentage;
 }
-	
 
-- (BOOL) isCurrentlyDownloadingCoverImage
+- (BOOL) canOpenBook 
 {
-	return [[SCHProcessingManager defaultManager] isCurrentlyDownloadingCoverImage:self];
+	if (self.processingState == SCHBookInfoProcessingStateReadyToRead) {
+		return YES;
+	} else {
+		return NO;
+	}
 }
 
-- (BOOL) isCurrentlyDownloadingBookFile
-{
-	return [[SCHProcessingManager defaultManager] isCurrentlyDownloading:self];
-}
-
-- (BOOL) isCurrentlyWaitingForURLs
-{
-	return [[SCHProcessingManager defaultManager] isCurrentlyWaitingForURLs:self];
-}
-
-- (BOOL) isWaitingForBookFileDownload
-{
-	return [[SCHProcessingManager defaultManager] isCurrentlyWaitingForBookFile:self];
-}
-
-- (BOOL) isWaitingForCoverImage
-{
-	return [[SCHProcessingManager defaultManager] isCurrentlyWaitingForCoverImage:self];
-}
+#pragma mark -
+#pragma mark Equality overrides
 
 - (BOOL)isEqual:(id)anObject
 {
@@ -219,35 +232,4 @@ static NSMutableDictionary *bookTrackingDictionary = nil;
 	return [self.bookIdentifier hash];
 }
 
-
-- (id) copyWithZone: (NSZone *) zone
-{
-	SCHBookInfo *bookInfo = [[SCHBookInfo allocWithZone:zone] initWithContentMetadataItem:[self contentMetadata]];
-	return bookInfo;
-}
-
-- (void) threadCheck
-{
-	// FIXME: make this conditional
-	if (self.currentThread != pthread_self()) {
-		[NSException raise:@"SCHBookInfo thread exception" 
-					format:@"Passed SCHBookInfo between threads %p and %p", self.currentThread, pthread_self()];
-	}
-}
-/*
-- (void) setCoverURL:(NSString *) newCoverURL
-{
-	NSLog(@"setting cover url in %p (%@) to %@", self, self.bookIdentifier, newCoverURL);
-	
-	NSString *oldCoverURL = coverURL;
-	coverURL = [newCoverURL retain];
-	[oldCoverURL release];
-}
-
-- (NSString *) coverURL
-{
-	NSLog(@"Getting cover URL in %p (%@): %@", self, self.bookIdentifier, coverURL);
-	return coverURL;
-}
-*/
 @end

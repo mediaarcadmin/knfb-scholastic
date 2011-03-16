@@ -32,12 +32,15 @@
 		return;
 	}
 	
+	[self.bookInfo setProcessing:YES];
+	
 	BWKXPSProvider *xpsProvider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBook:self.bookInfo];
 	NSData *imageData = [xpsProvider coverThumbData];
 	[[SCHBookManager sharedBookManager] checkInXPSProviderForBook:self.bookInfo];
 	
 	[imageData writeToFile:self.localPath atomically:YES];
 	
+	[self.bookInfo setProcessing:NO];
 }
 
 
