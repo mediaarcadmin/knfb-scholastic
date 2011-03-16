@@ -90,21 +90,6 @@
 
 - (void) refreshCell
 {
-	/*
-	// image processing
-	BOOL immediateUpdate = 	[[SCHProcessingManager defaultManager] updateThumbView:self.asyncImageView
-																		  withBook:bookInfo
-																			  size:CGSizeMake(self.frame.size.width - 6, self.frame.size.height - 20)
-																			  rect:CGRectNull
-																			  flip:NO
-																	maintainAspect:YES
-																	usePlaceHolder:YES];
-	
-	if (immediateUpdate) {
-		[self setNeedsDisplay];
-	}
-	*/
-
 	// image processing
 	BOOL immediateUpdate = [[SCHProcessingManager sharedProcessingManager] requestThumbImageForBookCover:self.asyncImageView
 																									size:self.asyncImageView.coverSize];
