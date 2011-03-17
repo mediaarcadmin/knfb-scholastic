@@ -6,10 +6,10 @@
 //  Copyright 2011 BitWink. All rights reserved.
 //
 
-#import "SCHDownloadFileOperation.h"
+#import "SCHDownloadBookFileOperation.h"
 #import "SCHProcessingManager.h"
 
-@interface SCHDownloadFileOperation ()
+@interface SCHDownloadBookFileOperation ()
 
 @property (readwrite, retain) NSString *localPath;
 @property BOOL executing;
@@ -20,7 +20,7 @@
 @end
 
 
-@implementation SCHDownloadFileOperation
+@implementation SCHDownloadBookFileOperation
 
 
 @synthesize bookInfo, resume, localPath, executing, finished, fileType;

@@ -12,7 +12,7 @@
 #import "SCHContentMetadataItem+Extensions.h"
 #import "SCHBookInfo.h"
 #import "SCHBookURLRequestOperation.h"
-#import "SCHDownloadFileOperation.h"
+#import "SCHDownloadBookFileOperation.h"
 #import "SCHXPSCoverImageOperation.h"
 #import "SCHThumbnailOperation.h"
 #import "SCHRightsParsingOperation.h"
@@ -51,6 +51,8 @@
 // to the size of the requested thumbnail
 @property (readwrite, retain) NSMutableDictionary *thumbImageRequests;
 
+@property BOOL connectionIsIdle;
+
 @end
 
 #pragma mark -
@@ -60,6 +62,7 @@
 @synthesize localProcessingQueue, webServiceOperationQueue, networkOperationQueue;
 @synthesize backgroundTask;
 @synthesize thumbImageRequests;
+@synthesize connectionIsIdle;
 
 #pragma mark -
 #pragma mark Object Lifecycle
@@ -87,6 +90,8 @@
 		[self.webServiceOperationQueue setMaxConcurrentOperationCount:10];
 		
 		self.thumbImageRequests = [[NSMutableDictionary alloc] init];
+		
+		self.connectionIsIdle = YES;
 	}
 	
 	return self;
@@ -201,6 +206,25 @@ static SCHProcessingManager *sharedManager = nil;
 	}
 	
 	[booksNeedingProcessing release];
+	
+	// check to see if we're processing
+	
+	int totalOperations = [[self.networkOperationQueue operations] count] + 
+	[[self.webServiceOperationQueue operations] count];
+	
+	if (totalOperations == 0) {
+		if (!self.connectionIsIdle) {
+			self.connectionIsIdle = YES;
+			
+			[[NSNotificationCenter defaultCenter] postNotificationName:kSCHProcessingManagerConnectionIdle object:nil];
+		}
+	} else {
+		if (self.connectionIsIdle) {
+			self.connectionIsIdle = NO;
+			
+			[[NSNotificationCenter defaultCenter] postNotificationName:kSCHProcessingManagerConnectionBusy object:nil];
+		}
+	}
 }
 
 - (BOOL) bookNeedsProcessing: (SCHBookInfo *) bookInfo
@@ -273,7 +297,7 @@ static SCHProcessingManager *sharedManager = nil;
 		case SCHBookInfoProcessingStateDownloadStarted:
 		{
 			// create book file download operation
-			SCHDownloadFileOperation *bookDownloadOp = [[SCHDownloadFileOperation alloc] init];
+			SCHDownloadBookFileOperation *bookDownloadOp = [[SCHDownloadBookFileOperation alloc] init];
 			bookDownloadOp.fileType = kSCHDownloadFileTypeXPSBook;
 			bookDownloadOp.bookInfo = bookInfo;
 			bookDownloadOp.resume = YES;

@@ -13,6 +13,7 @@
 #import "SCHUserDefaults.h"
 #import "SCHURLManager.h"
 #import "SCHProcessingManager.h"
+#import "SCHDictionaryManager.h"
 
 #ifdef LOCALDEBUG
 #import "SCHLocalDebug.h"
@@ -44,6 +45,7 @@ static NSString * const kSCHClearLocalDebugMode = @"kSCHClearLocalDebugMode";
     bookManager.persistentStoreCoordinator = self.persistentStoreCoordinator;
     bookManager.managedObjectContextForCurrentThread = self.managedObjectContext; // Use our managed object context for calls that are made on the main thread.
 	
+	[SCHDictionaryManager sharedDictionaryManager];
 }	
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions    

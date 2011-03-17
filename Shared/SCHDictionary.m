@@ -8,7 +8,18 @@
 
 #import "SCHDictionary.h"
 
-
 @implementation SCHDictionary
+
+@synthesize dictionaryURL, dictionaryVersion, dictionaryState, isProcessing;
+
+- (id) init
+{
+	if ((self = [super init])) {
+		self.dictionaryState = SCHDictionaryProcessingStateNeedsManifest;
+		self.isProcessing = NO;
+	} 
+	
+	return self;
+}
 
 @end

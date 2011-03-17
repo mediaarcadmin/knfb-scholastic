@@ -7,10 +7,14 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "SCHDictionary.h"
 
 
 @interface SCHDictionaryManager : NSObject {
 
 }
+
++ (SCHDictionaryManager *) sharedDictionaryManager;
+- (SCHDictionary *) dictionaryObject;
 
 @end

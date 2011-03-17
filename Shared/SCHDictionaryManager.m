@@ -8,6 +8,10 @@
 
 #import "SCHDictionaryManager.h"
 #import "Reachability.h"
+#import "SCHProcessingManager.h"
+#import "SCHDictionary.h"
+#import "SCHDictionaryManifestOperation.h"
+#import "SCHDictionaryFileDownloadOperation.h"
 
 #pragma mark Class Extension
 
@@ -18,10 +22,10 @@
 - (void) enterBackground;
 - (void) enterForeground;
 
-// refreshTimer is called when the app is on Wifi, and the processing manager has no items for download
+// checks to see if we're on wifi and the processing manager is idle
+// if so, spawn a timer to begin processing
 // the timer prevents rapid starting and stopping of the dictionary download/processing
-- (void) refreshTimer;
-- (void) invalidateTimer;
+- (void) checkOperatingState;
 
 // the background task ID for background processing
 @property (nonatomic) UIBackgroundTaskIdentifier backgroundTask;
@@ -39,6 +43,8 @@
 @property BOOL wifiAvailable;
 @property BOOL connectionIdle;
 
+@property (readwrite, retain) SCHDictionary *dictionaryObject;
+
 @end
 
 #pragma mark -
@@ -47,6 +53,7 @@
 
 @synthesize backgroundTask, dictionaryDownloadQueue;
 @synthesize wifiReach, startTimer, wifiAvailable, connectionIdle;
+@synthesize dictionaryObject;
 
 #pragma mark -
 #pragma mark Object Lifecycle
@@ -91,9 +98,19 @@ static SCHDictionaryManager *sharedManager = nil;
 												   object:nil];
 
 		
-		// FIXME: notification for processing manager being idle
+		// notification for processing manager being idle
+		[[NSNotificationCenter defaultCenter] addObserver:sharedManager 
+												 selector:@selector(connectionBecameIdle:) 
+													 name:kSCHProcessingManagerConnectionIdle
+												   object:nil];			
 		
-		// FIXME: notification for processing manager starting work
+		
+		// notification for processing manager starting work
+		[[NSNotificationCenter defaultCenter] addObserver:sharedManager 
+												 selector:@selector(connectionBecameBusy:) 
+													 name:kSCHProcessingManagerConnectionBusy
+												   object:nil];			
+		
 		
 		// background notifications
 		[[NSNotificationCenter defaultCenter] addObserver:sharedManager 
@@ -104,9 +121,9 @@ static SCHDictionaryManager *sharedManager = nil;
 		[[NSNotificationCenter defaultCenter] addObserver:sharedManager 
 												 selector:@selector(enterForeground) 
 													 name:UIApplicationWillEnterForegroundNotification 
-												   object:nil];			
+												   object:nil];		
 		
-		//		
+		sharedManager.dictionaryObject = [[SCHDictionary alloc] init];
 	} 
 	
 	return sharedManager;
@@ -187,36 +204,105 @@ static SCHDictionaryManager *sharedManager = nil;
 		}
     }
 	
+	[self checkOperatingState];
+}
+
+#pragma mark -
+#pragma mark Processing Manager reactions
+
+- (void) connectionBecameIdle: (NSNotification *) notification
+{
+	NSLog(@"Processing manager became idle!");
+	self.connectionIdle = YES;
+	[self checkOperatingState];
+}
+
+- (void) connectionBecameBusy: (NSNotification *) notification
+{
+	NSLog(@"Processing manager became busy!");
+	self.connectionIdle = NO;
+	[self checkOperatingState];
+}
+
+#pragma mark -
+#pragma mark Check Operating State
+
+- (void) checkOperatingState
+{
+	/*
 	// if both conditions are met, start the countdown to begin work
 	if (self.wifiAvailable && self.connectionIdle) {
-		[self refreshTimer];
-	}
+		NSLog(@"Restarting timer...");
+		// start the countdown from 10 seconds again
+		if (self.startTimer && [self.startTimer isValid]) {
+			[self.startTimer invalidate];
+			self.startTimer = nil; 
+		}
+	*/	
+		NSLog(@"Restarting timer...");
+		self.startTimer = [NSTimer scheduledTimerWithTimeInterval:15
+														   target:self
+														 selector:@selector(processDictionary)
+														 userInfo:nil
+														  repeats:NO];
+	/*} else {
+		// otherwise, cancel work in progress
+		NSLog(@"Cancelling operations etc.");
+		if (self.startTimer && [self.startTimer isValid]) {
+			[self.startTimer invalidate];
+			self.startTimer = nil; 
+		}
+		[self.dictionaryDownloadQueue cancelAllOperations];
+	}*/
 }
-	
-#pragma mark -
-#pragma mark Timer Methods
-
-- (void) refreshTimer
-{
-	[self invalidateTimer];
-	self.startTimer = [NSTimer scheduledTimerWithTimeInterval:10
-													   target:self
-													 selector:@selector(beginProcessing:)
-													 userInfo:nil
-													  repeats:NO];
-}	
-
-- (void) invalidateTimer
-{
-	if (self.startTimer && [self.startTimer isValid]) {
-		[self.startTimer invalidate];
-		self.startTimer = nil; 
-	}
-}	
 
 #pragma mark -
 #pragma mark Processing Methods
 
+- (void) processDictionary
+{
+	NSLog(@"Calling processDictionary...");
+	switch (self.dictionaryObject.dictionaryState) {
+		case SCHDictionaryProcessingStateNeedsManifest:
+		{
+			NSLog(@"needs manifest...");
+			// create manifest processing operation
+			SCHDictionaryManifestOperation *manifestOp = [[SCHDictionaryManifestOperation alloc] init];
+			
+			// dictionary processing is redispatched on completion
+			[manifestOp setCompletionBlock:^{
+				[self processDictionary];
+			}];
+			
+			// add the operation to the queue
+			[self.dictionaryDownloadQueue addOperation:manifestOp];
+			[manifestOp release];
+			return;
+			break;
+		}	
+		case SCHDictionaryProcessingStateNeedsDownload:
+		{
+			NSLog(@"needs download...");
+			// create manifest processing operation
+			SCHDictionaryFileDownloadOperation *downloadOp = [[SCHDictionaryFileDownloadOperation alloc] init];
+			
+			// dictionary processing is redispatched on completion
+			[downloadOp setCompletionBlock:^{
+				[self processDictionary];
+			}];
+			
+			// add the operation to the queue
+			[self.dictionaryDownloadQueue addOperation:downloadOp];
+			[downloadOp release];
+			return;
+			break;
+		}	
+		default:
+			break;
+	}
+	
+	
+}
 
 
 @end
