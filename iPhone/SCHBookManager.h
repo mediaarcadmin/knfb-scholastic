@@ -25,5 +25,8 @@
 - (BWKXPSProvider *)checkOutXPSProviderForBook: (SCHBookInfo *) bookInfo;
 - (void) checkInXPSProviderForBook: (SCHBookInfo *) bookInfo;
 
++ (BOOL) checkAppCompatibilityForFeature: (NSString *) key version: (float) version;
++ (BOOL) appHasFeature: (NSString *) key;
+
 
 @end

@@ -139,7 +139,13 @@ static NSString * const kSCHClearLocalDebugMode = @"kSCHClearLocalDebugMode";
     }
     
     NSURL *storeURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"Scholastic.sqlite"];
-    
+
+#ifdef LOCALDEBUG
+	// FIXME: blowing away the database every launch for local debug is not optimal
+	NSLog(@"Local file mode: deleting database.");
+	[[NSFileManager defaultManager] removeItemAtURL:storeURL error:nil];
+#endif
+	
     NSError *error = nil;
     persistentStoreCoordinator_ = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
     if (![persistentStoreCoordinator_ addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error]) {

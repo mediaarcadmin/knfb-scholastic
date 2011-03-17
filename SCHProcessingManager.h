@@ -14,6 +14,7 @@
 
 typedef enum {
 	SCHBookInfoProcessingStateError = 0,
+	SCHBookInfoProcessingStateBookVersionNotSupported,
 	SCHBookInfoProcessingStateNoURLs,
 	SCHBookInfoProcessingStateNoCoverImage,
 	SCHBookInfoProcessingStateReadyForBookFileDownload,

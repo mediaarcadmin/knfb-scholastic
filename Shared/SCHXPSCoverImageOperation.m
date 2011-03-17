@@ -12,11 +12,10 @@
 
 @implementation SCHXPSCoverImageOperation
 
-@synthesize bookInfo, localPath;
+@synthesize bookInfo;
 
 - (void)dealloc {
 	self.bookInfo = nil;
-	self.localPath = nil;
 	
 	[super dealloc];
 }
@@ -28,7 +27,7 @@
 		return;
 	}
 	
-	if (!(self.bookInfo && self.localPath)) {
+	if (!(self.bookInfo)) {
 		return;
 	}
 	
@@ -38,9 +37,10 @@
 	NSData *imageData = [xpsProvider coverThumbData];
 	[[SCHBookManager sharedBookManager] checkInXPSProviderForBook:self.bookInfo];
 	
-	[imageData writeToFile:self.localPath atomically:YES];
+	[imageData writeToFile:[self.bookInfo coverImagePath] atomically:YES];
 	
 	[self.bookInfo setProcessing:NO];
+	[self.bookInfo setProcessingState:SCHBookInfoProcessingStateReadyForRightsParsing];
 }
 
 
