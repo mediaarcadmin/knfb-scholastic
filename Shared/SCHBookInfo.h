@@ -45,6 +45,9 @@
 // book file current percentage downloaded
 - (float) currentDownloadedPercentage;
 
+// Short string representation of the current processing state
+- (NSString *) currentProcessingStateAsString;
+
 - (BOOL) canOpenBook;
 
 @end

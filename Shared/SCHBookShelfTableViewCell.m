@@ -154,47 +154,24 @@
 		[self setNeedsDisplay];
 	}
 	
-	NSString *status = @"";
+	NSString *status = [self.bookInfo currentProcessingStateAsString];
 	
 	// book status
-	switch ([bookInfo processingState]) {
+	switch ([self.bookInfo processingState]) {
 		case SCHBookInfoProcessingStateError:
-			status = @"Error";
-			self.thumbTintView.hidden = NO;
-			self.progressView.hidden = YES;
-			break;
 		case SCHBookInfoProcessingStateNoURLs:
-			status = @"URLs..";
-			self.thumbTintView.hidden = NO;
-			self.progressView.hidden = YES;
-			break;
 		case SCHBookInfoProcessingStateNoCoverImage:
-			status = @"Cover Img...";
-			thumbTintView.hidden = NO;
-			self.progressView.hidden = YES;
-			break;
 		case SCHBookInfoProcessingStateReadyForBookFileDownload:
-			status = @"Download";
 			self.thumbTintView.hidden = NO;
 			self.progressView.hidden = YES;
 			break;
 		case SCHBookInfoProcessingStateDownloadStarted:
-			status = @"Downloading...";
-			self.thumbTintView.hidden = NO;
-			self.progressView.hidden = NO;
-			break;
 		case SCHBookInfoProcessingStateDownloadPaused:
-			status = @"Paused";
 			self.thumbTintView.hidden = NO;
 			self.progressView.hidden = NO;
 			break;
 		case SCHBookInfoProcessingStateReadyToRead:
-			status = @"";
-			self.thumbTintView.hidden = YES;
-			self.progressView.hidden = YES;
-			break;
 		default:
-			status = @"Unknown!";
 			self.thumbTintView.hidden = YES;
 			self.progressView.hidden = YES;
 			break;
@@ -206,7 +183,7 @@
 		self.accessoryType = UITableViewCellAccessoryNone;
 	}
 	
-	[self.progressView setProgress:[bookInfo currentDownloadedPercentage]];
+	[self.progressView setProgress:[self.bookInfo currentDownloadedPercentage]];
 	
 	self.titleLabel.text = [self.bookInfo.contentMetadata Title];
 	self.subtitleLabel.text = [self.bookInfo.contentMetadata Author];

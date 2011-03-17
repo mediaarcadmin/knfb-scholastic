@@ -13,6 +13,7 @@
 #import "SCHBookInfo.h"
 #import "SCHBookURLRequestOperation.h"
 #import "SCHDownloadFileOperation.h"
+#import "SCHXPSCoverImageOperation.h"
 #import "SCHThumbnailOperation.h"
 #import "SCHRightsParsingOperation.h"
 #import "SCHBookManager.h"
@@ -245,12 +246,18 @@ static SCHProcessingManager *sharedManager = nil;
 			// *** Book has no full sized cover image ***
 		case SCHBookInfoProcessingStateNoCoverImage:
 		{	
+#ifdef LOCALDEBUG
+			// create cover image download operation
+			SCHXPSCoverImageOperation *downloadImageOp = [[SCHXPSCoverImageOperation alloc] init];
+			downloadImageOp.bookInfo = bookInfo;
+			
+#else
 			// create cover image download operation
 			SCHDownloadFileOperation *downloadImageOp = [[SCHDownloadFileOperation alloc] init];
 			downloadImageOp.fileType = kSCHDownloadFileTypeCoverImage;
 			downloadImageOp.bookInfo = bookInfo;
 			downloadImageOp.resume = NO;
-			
+#endif		
 			// the book will be redispatched on completion
 			[downloadImageOp setCompletionBlock:^{
 				[self redispatchBook:bookInfo];
@@ -309,7 +316,7 @@ static SCHProcessingManager *sharedManager = nil;
 - (void) redispatchBook: (SCHBookInfo *) bookInfo
 {
 	
-	// fIXME: main thread please!
+	// FIXME: main thread please!
 	
 	// check for space saver mode
 	BOOL spaceSaverMode = [[NSUserDefaults standardUserDefaults] boolForKey:@"kSCHSpaceSaverMode"];

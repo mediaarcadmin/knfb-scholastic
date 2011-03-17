@@ -98,61 +98,33 @@
 		[self setNeedsDisplay];
 	}
 	
-	NSString *status = @"";
+	NSString *status = [self.bookInfo currentProcessingStateAsString];
 	
 	// book status
-	switch ([bookInfo processingState]) {
+	switch ([self.bookInfo processingState]) {
 		case SCHBookInfoProcessingStateError:
-			status = @"Error";
-			self.thumbTintView.hidden = NO;
-			self.progressView.hidden = YES;
-			self.statusLabel.hidden = NO;
-			break;
 		case SCHBookInfoProcessingStateNoURLs:
-			status = @"URLs..";
-			self.thumbTintView.hidden = NO;
-			self.progressView.hidden = YES;
-			self.statusLabel.hidden = NO;
-			break;
 		case SCHBookInfoProcessingStateNoCoverImage:
-			status = @"Cover Img...";
-			thumbTintView.hidden = NO;
-			self.progressView.hidden = YES;
-			self.statusLabel.hidden = NO;
-			break;
 		case SCHBookInfoProcessingStateReadyForBookFileDownload:
-			status = @"Download";
 			self.thumbTintView.hidden = NO;
 			self.progressView.hidden = YES;
 			self.statusLabel.hidden = NO;
 			break;
 		case SCHBookInfoProcessingStateDownloadStarted:
-			status = @"Downloading...";
-			self.thumbTintView.hidden = NO;
-			self.progressView.hidden = NO;
-			self.statusLabel.hidden = NO;
-			break;
 		case SCHBookInfoProcessingStateDownloadPaused:
-			status = @"Paused";
 			self.thumbTintView.hidden = NO;
 			self.progressView.hidden = NO;
 			self.statusLabel.hidden = NO;
 			break;
 		case SCHBookInfoProcessingStateReadyToRead:
-			status = @"";
+		default:
 			self.thumbTintView.hidden = YES;
 			self.progressView.hidden = YES;
 			self.statusLabel.hidden = YES;
 			break;
-		default:
-			status = @"Unknown!";
-			self.thumbTintView.hidden = YES;
-			self.progressView.hidden = YES;
-			self.statusLabel.hidden = NO;
-			break;
 	}
 	
-	[self.progressView setProgress:[bookInfo currentDownloadedPercentage]];
+	[self.progressView setProgress:[self.bookInfo currentDownloadedPercentage]];
 	self.statusLabel.text = status;
 	
 	[self layoutSubviews];
