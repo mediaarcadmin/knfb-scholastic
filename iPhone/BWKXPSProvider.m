@@ -222,6 +222,18 @@ void XPSPageCompleteCallback(void *userdata, RasterImageInfo *data) {
     [pool drain];
 }
 
+- (BOOL)componentExistsAtPath:(NSString *)path {
+    XPS_FILE_PACKAGE_INFO packageInfo;
+    [contentsLock lock];
+    int ret = XPS_GetComponentInfo(xpsHandle, (char *)[path UTF8String], &packageInfo);
+    [contentsLock unlock];
+    if (ret && (packageInfo.length > 0)) {
+        return YES;
+    }
+    return NO;
+}
+
+
 - (NSData *)rawDataForComponentAtPath:(NSString *)path {
     NSData *rawData = nil;
     

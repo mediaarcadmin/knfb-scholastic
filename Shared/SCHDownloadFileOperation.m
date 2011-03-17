@@ -16,7 +16,6 @@
 @property BOOL finished;
 
 - (void) beginConnection;
-- (void) waitForCompletion;
 
 @end
 
@@ -125,7 +124,9 @@
 	[connection start];
 	
 	if (connection != nil) {
-		[self waitForCompletion];
+		do {
+			[[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
+		} while (!self.finished);
 	}
 	
 	[self.bookInfo setProcessing:NO];
@@ -141,17 +142,6 @@
 	if (self.fileType == kSCHDownloadFileTypeXPSBook) {
 		[[NSNotificationCenter defaultCenter] postNotificationName:@"SCHBookDownloadPercentageUpdate" object:self.bookInfo.bookIdentifier userInfo:userInfo];
 	}
-}
-
-#pragma mark -
-#pragma mark Waiting for completion
-
-- (void) waitForCompletion
-{
-	do {
-		[[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
-	} while (!self.finished);
-	
 }
 
 #pragma mark -
@@ -201,7 +191,7 @@
 	
 	switch (self.fileType) {
 		case kSCHDownloadFileTypeXPSBook:
-			[self.bookInfo setProcessingState:SCHBookInfoProcessingStateReadyToRead];
+			[self.bookInfo setProcessingState:SCHBookInfoProcessingStateReadyForRightsParsing];
 			break;
 		case kSCHDownloadFileTypeCoverImage:
 			[self.bookInfo setProcessingState:SCHBookInfoProcessingStateReadyForBookFileDownload];

@@ -7,8 +7,6 @@
 //
 
 #import "SCHBookURLRequestOperation.h"
-#import "BWKXPSProvider.h"
-#import "SCHBookManager.h"
 #import "SCHURLManager.h"
 #import "SCHLibreAccessWebService.h"
 #import "SCHProcessingManager.h"
@@ -17,7 +15,6 @@
 
 @property BOOL executing;
 @property BOOL finished;
-@property BOOL waitingForAnotherOperation;
 
 - (void) beginConnection;
 
@@ -25,7 +22,7 @@
 
 @implementation SCHBookURLRequestOperation
 
-@synthesize bookInfo, executing, finished, waitingForAnotherOperation;
+@synthesize bookInfo, executing, finished;
 
 - (void)dealloc {
 	self.bookInfo = nil;
@@ -41,19 +38,12 @@
 		return;
 	}
 	
-	SCHBookInfo *oldInfo = bookInfo;
-	bookInfo = [newBookInfo retain];
-	[oldInfo release];
+	bookInfo = newBookInfo;
 	[self.bookInfo setProcessing:YES];
 }
 
 - (void) start
 {
-//	if (!(self.bookInfo)) {
-//		NSLog(@"No book info!");
-//	} else if ([self isCancelled]) {
-//		NSLog(@"********** Operation already cancelled.");
-//	} else {
 	if (self.bookInfo && ![self isCancelled]) {
 		[self beginConnection];
 	}

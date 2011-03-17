@@ -14,6 +14,5 @@
 }
 
 @property (nonatomic, retain) SCHBookInfo *bookInfo;
-@property (nonatomic, retain) NSString *localPath;
 
 @end

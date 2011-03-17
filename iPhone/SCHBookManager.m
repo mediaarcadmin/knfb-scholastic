@@ -29,6 +29,7 @@ static pthread_key_t sManagedObjectContextKey;
 
 // used to hold unique book info objects
 static NSMutableDictionary *bookTrackingDictionary = nil;
+static NSDictionary *featureCompatibilityDictionary = nil;
 
 
 @synthesize cachedXPSProviders, cachedXPSProviderCheckoutCounts, persistentStoreCoordinator;
@@ -46,6 +47,11 @@ static NSMutableDictionary *bookTrackingDictionary = nil;
         // using pthread_setspecific, CFRelease will be called on it before
         // the thread terminates.
         pthread_key_create(&sManagedObjectContextKey, (void (*)(void *))CFRelease);
+		
+		featureCompatibilityDictionary = 
+		[NSDictionary dictionaryWithContentsOfFile:[[[NSBundle mainBundle] bundlePath] 
+													stringByAppendingPathComponent:@"ScholasticFeatureCompatibility.plist"]];
+
     }
     return sSharedBookManager;
 }
@@ -61,7 +67,32 @@ static NSMutableDictionary *bookTrackingDictionary = nil;
 }
 
 #pragma mark -
+#pragma mark Compatibility Checking
+
++ (BOOL) checkAppCompatibilityForFeature: (NSString *) key version: (float) version
+{
+	NSNumber *dictVersion = [featureCompatibilityDictionary objectForKey:key];
+	if (!dictVersion || [dictVersion floatValue] < version) {
+		return NO;
+	} else {
+		return YES;
+	}
+}
+
++ (BOOL) appHasFeature: (NSString *) key
+{
+	BOOL hasFeature = NO;
+	
+	if ([featureCompatibilityDictionary objectForKey:key]) {
+		hasFeature = YES;
+	}
+	
+	return hasFeature;
+}
+
+#pragma mark -
 #pragma mark Book Info vending
+
 + (SCHBookInfo *) bookInfoWithBookIdentifier: (NSString *) isbn
 {
 	if (!bookTrackingDictionary) {

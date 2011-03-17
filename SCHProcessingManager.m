@@ -13,7 +13,9 @@
 #import "SCHBookInfo.h"
 #import "SCHBookURLRequestOperation.h"
 #import "SCHDownloadFileOperation.h"
+#import "SCHXPSCoverImageOperation.h"
 #import "SCHThumbnailOperation.h"
+#import "SCHRightsParsingOperation.h"
 #import "SCHBookManager.h"
 #import "SCHAsyncBookCoverImageView.h"
 #import "SCHThumbnailFactory.h"
@@ -244,12 +246,18 @@ static SCHProcessingManager *sharedManager = nil;
 			// *** Book has no full sized cover image ***
 		case SCHBookInfoProcessingStateNoCoverImage:
 		{	
+#ifdef LOCALDEBUG
+			// create cover image download operation
+			SCHXPSCoverImageOperation *downloadImageOp = [[SCHXPSCoverImageOperation alloc] init];
+			downloadImageOp.bookInfo = bookInfo;
+			
+#else
 			// create cover image download operation
 			SCHDownloadFileOperation *downloadImageOp = [[SCHDownloadFileOperation alloc] init];
 			downloadImageOp.fileType = kSCHDownloadFileTypeCoverImage;
 			downloadImageOp.bookInfo = bookInfo;
 			downloadImageOp.resume = NO;
-			
+#endif		
 			// the book will be redispatched on completion
 			[downloadImageOp setCompletionBlock:^{
 				[self redispatchBook:bookInfo];
@@ -281,6 +289,24 @@ static SCHProcessingManager *sharedManager = nil;
 			return;
 			break;
 		}	
+			// *** Book file needs rights parsed ***
+		case SCHBookInfoProcessingStateReadyForRightsParsing:
+		{
+			// create book file download operation
+			SCHRightsParsingOperation *rightsOp = [[SCHRightsParsingOperation alloc] init];
+			rightsOp.bookInfo = bookInfo;
+			
+			// the book will be redispatched on completion
+			[rightsOp setCompletionBlock:^{
+				[self redispatchBook:bookInfo];
+			}];
+			
+			// add the operation to the network download queue
+			[self.localProcessingQueue addOperation:rightsOp];
+			[rightsOp release];
+			return;
+			break;
+		}	
 		default:
 			[NSException raise:@"SCHProcessingManagerUnknownState" format:@"Unrecognised SCHBookInfo processing state (%d) in SCHProcessingManager.", bookInfo.processingState];
 			break;
@@ -290,7 +316,7 @@ static SCHProcessingManager *sharedManager = nil;
 - (void) redispatchBook: (SCHBookInfo *) bookInfo
 {
 	
-	// fIXME: main thread please!
+	// FIXME: main thread please!
 	
 	// check for space saver mode
 	BOOL spaceSaverMode = [[NSUserDefaults standardUserDefaults] boolForKey:@"kSCHSpaceSaverMode"];
@@ -300,6 +326,7 @@ static SCHProcessingManager *sharedManager = nil;
 		case SCHBookInfoProcessingStateNoURLs:
 		case SCHBookInfoProcessingStateNoCoverImage:
 		case SCHBookInfoProcessingStateDownloadStarted:
+		case SCHBookInfoProcessingStateReadyForRightsParsing:
 			[self processBook:bookInfo];
 			break;
 			

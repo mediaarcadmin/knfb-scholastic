@@ -91,35 +91,7 @@
 {
 	processingState = newState;
 	
-	NSString *state = @"Unknown";
-	
-	switch (self.processingState) {
-		case SCHBookInfoProcessingStateNoURLs:
-			state = @"No URLs";
-			break;
-		case SCHBookInfoProcessingStateNoCoverImage:
-			state = @"No Cover Image";
-			break;
-		case SCHBookInfoProcessingStateReadyForBookFileDownload:
-			state = @"Ready for Download";
-			break;
-		case SCHBookInfoProcessingStateDownloadStarted:
-			state = @"Downloading";
-			break;
-		case SCHBookInfoProcessingStateDownloadPaused:
-			state = @"Download Paused";
-			break;
-		case SCHBookInfoProcessingStateReadyToRead:
-			state = @"Ready to Read";
-			break;
-		case SCHBookInfoProcessingStateError:
-			state = @"Processing Error";
-			break;
-		default:
-			break;
-	}	
-	
-	NSLog(@"setting %@ to processing state \"%@\".", self.bookIdentifier, state);
+	NSLog(@"setting %@ to processing state \"%@\".", self.bookIdentifier, [self currentProcessingStateAsString]);
 	
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"SCHBookStatusUpdate" object:self];
 	
@@ -181,6 +153,41 @@
 	} 
 	
 	return percentage;
+}
+
+- (NSString *) currentProcessingStateAsString
+{
+	NSString *status = @"Unknown!";
+	switch ([self processingState]) {
+		case SCHBookInfoProcessingStateError:
+			status = @"Error";
+			break;
+		case SCHBookInfoProcessingStateNoURLs:
+			status = @"URLs..";
+			break;
+		case SCHBookInfoProcessingStateNoCoverImage:
+			status = @"Cover Img...";
+			break;
+		case SCHBookInfoProcessingStateReadyForBookFileDownload:
+			status = @"Download";
+			break;
+		case SCHBookInfoProcessingStateDownloadStarted:
+			status = @"Downloading...";
+			break;
+		case SCHBookInfoProcessingStateDownloadPaused:
+			status = @"Paused";
+			break;
+		case SCHBookInfoProcessingStateReadyForRightsParsing:
+			status = @"Rights...";
+			break;
+		case SCHBookInfoProcessingStateReadyToRead:
+			status = @"";
+			break;
+		default:
+			break;
+	}
+
+	return status;
 }
 
 - (BOOL) canOpenBook 

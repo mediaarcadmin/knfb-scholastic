@@ -24,6 +24,11 @@ static NSString * const BlioXPSEncryptedTextFlowDir = @"/Documents/1/Other/KNFB/
 static NSString * const BlioXPSComponentExtensionFPage = @"fpage";
 static NSString * const BlioXPSSequenceFile = @"/FixedDocumentSequence.fdseq";
 static NSString * const BlioXPSFileThumbnail = @"Metadata/Thumbnail.jpg";
+static NSString * const BlioXPSKNFBRightsFile = @"/Documents/1/Other/KNFB/Rights.xml";
+static NSString * const BlioXPSAudiobookMetadataFile = @"/Documents/1/Other/KNFB/Audio/Audio.xml";
+static NSString * const BlioXPSStoryInteractionsMetadataFile = @"/Documents/1/Other/KNFB/Interactions/Interactions.xml";
+static NSString * const BlioXPSExtrasMetadataFile = @"/Documents/1/Other/KNFB/Extras/Extras.xml";
+
 
 
 @interface BWKXPSProvider : NSObject {
@@ -94,5 +99,8 @@ static NSString * const BlioXPSFileThumbnail = @"Metadata/Thumbnail.jpg";
 
 - (UIImage *)coverThumbForList;
 - (NSData *)coverThumbData;
+
+- (NSData *)dataForComponentAtPath:(NSString *)path;
+- (BOOL)componentExistsAtPath:(NSString *)path;
 
 @end

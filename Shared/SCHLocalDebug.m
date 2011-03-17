@@ -22,6 +22,7 @@
 #import "SCHContentProfileItem+Extensions.h"
 #import "SCHOrderItem+Extensions.h"
 #import "SCHListProfileContentAnnotations+Extensions.h"
+#import "SCHBookshelfSyncComponent.h"
 
 @interface SCHLocalDebug ()
 
@@ -226,7 +227,11 @@
 		newContentProfileItem.IsFavorite = [NSNumber numberWithBool:YES];
 		newContentProfileItem.ProfileID = [NSNumber numberWithInt:1];
 		
-		[newUserContentItem addProfileListObject:newContentProfileItem];		
+		[newUserContentItem addProfileListObject:newContentProfileItem];	
+		
+		SCHBookInfo *bookInfo = [SCHBookManager bookInfoWithBookIdentifier:newUserContentItem.ContentIdentifier];
+		[bookInfo setProcessingState:SCHBookInfoProcessingStateNoCoverImage];
+								 
 	}
 
 	// Save the context.
@@ -234,6 +239,10 @@
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
 		abort();
 	}	
+	
+	// fire off processing
+	[[NSNotificationCenter defaultCenter] postNotificationName:kSCHBookshelfSyncComponentComplete object:self];
+	
 }
 
 
