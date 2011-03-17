@@ -81,7 +81,7 @@
 		
 	} else if (self.fileType == kSCHDownloadFileTypeCoverImage) {
 		
-		NSString *cacheDir  = [SCHProcessingManager cacheDirectory];
+		NSString *cacheDir  = [SCHBookInfo cacheDirectory];
 		self.localPath = [cacheDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png", bookInfo.bookIdentifier]];
 		
 		request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:self.bookInfo.coverURL]];

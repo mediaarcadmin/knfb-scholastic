@@ -23,30 +23,6 @@
 
 
 #pragma mark -
-#pragma mark Class Methods
-/*
-// this method lazily creates book info objects 
-// if one already exists, it will return that instance
-+ (id) bookInfoWithContentMetadataItem: (SCHContentMetadataItem *) metadataItem
-{
-	if (!bookTrackingDictionary) {
-		bookTrackingDictionary = [[NSMutableDictionary alloc] init];
-	}
-	
-	SCHBookInfo *existingBookInfo = [bookTrackingDictionary objectForKey:metadataItem.ContentIdentifier];
-	
-	if (existingBookInfo) {
-		[bookTrackingDictionary setValue:existingBookInfo forKey:metadataItem.ContentIdentifier];
-		return [existingBookInfo retain];
-	} else {
-		SCHBookInfo *bookInfo = [[SCHBookInfo alloc] init];
-		bookInfo.bookIdentifier = [metadataItem ContentIdentifier];
-		[bookTrackingDictionary setValue:bookInfo forKey:bookInfo.bookIdentifier];
-		return bookInfo;
-	}
-}
-*/
-#pragma mark -
 #pragma mark Memory Management
 
 - (void) dealloc
@@ -105,6 +81,7 @@
 #pragma mark -
 #pragma mark Book Status
 
+// FIXME: persist state
 - (SCHBookInfoCurrentProcessingState) processingState
 {
 	return processingState;
@@ -149,6 +126,14 @@
 }
 
 #pragma mark -
+#pragma mark Cache Directory
+
++ (NSString *)cacheDirectory 
+{
+	return [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject];
+}
+
+#pragma mark -
 #pragma mark Current Book Information
 
 - (NSString *) xpsPath
@@ -157,21 +142,21 @@
 	return [[NSBundle mainBundle] pathForResource:self.contentMetadata.FileName ofType:@"xps"];
 #else
 	return [NSString stringWithFormat:@"%@/%@-%@.xps", 
-			[SCHProcessingManager cacheDirectory], 
+			[SCHBookInfo cacheDirectory], 
 			self.contentMetadata.ContentIdentifier, self.contentMetadata.Version];
 #endif
 }
 
 - (NSString *) coverImagePath
 {
-	NSString *cacheDir  = [SCHProcessingManager cacheDirectory];
+	NSString *cacheDir  = [SCHBookInfo cacheDirectory];
 	NSString *fullImagePath = [cacheDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png", self.bookIdentifier]];
 	return fullImagePath;
 }	
 
 - (NSString *) thumbPathForSize: (CGSize) size
 {
-	NSString *cacheDir  = [SCHProcessingManager cacheDirectory];
+	NSString *cacheDir  = [SCHBookInfo cacheDirectory];
 	NSString *thumbPath = [cacheDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png_%d_%d", self.bookIdentifier, (int)size.width, (int)size.height]];
 	
 	return thumbPath;

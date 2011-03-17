@@ -31,6 +31,11 @@
 
 - (NSArray *) fetchContentMetadataForAllBooks;
 
+// background processing - called by the app delegate when the app
+// is put into or opened from the background
+- (void) enterBackground;
+- (void) enterForeground;
+
 // operation queues - local, web service and network (download) operations
 @property (readwrite, retain) NSOperationQueue *localProcessingQueue;
 @property (readwrite, retain) NSOperationQueue *webServiceOperationQueue;
@@ -94,18 +99,25 @@ static SCHProcessingManager *sharedManager = nil;
 {
 	if (sharedManager == nil) {
 		sharedManager = [[SCHProcessingManager alloc] init];
-		[[NSNotificationCenter defaultCenter] addObserver:sharedManager selector:@selector(checkStateForAllBooks) name:kSCHBookshelfSyncComponentComplete object:nil];			
+		[[NSNotificationCenter defaultCenter] addObserver:sharedManager 
+												 selector:@selector(checkStateForAllBooks) 
+													 name:kSCHBookshelfSyncComponentComplete 
+												   object:nil];			
+		
+		[[NSNotificationCenter defaultCenter] addObserver:sharedManager 
+												 selector:@selector(enterBackground) 
+													 name:UIApplicationDidEnterBackgroundNotification 
+												   object:nil];			
+		
+		[[NSNotificationCenter defaultCenter] addObserver:sharedManager 
+												 selector:@selector(enterForeground) 
+													 name:UIApplicationWillEnterForegroundNotification 
+												   object:nil];			
+		
+		//		
 	} 
 	
 	return sharedManager;
-}
-
-#pragma mark -
-#pragma mark Cache Directory
-
-+ (NSString *)cacheDirectory 
-{
-	return [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject];
 }
 
 #pragma mark -

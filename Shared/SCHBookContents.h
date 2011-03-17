@@ -9,6 +9,9 @@
 #import <Foundation/Foundation.h>
 
 
+// this class will be used to hold references to expensive objects associated
+// with a book. e.g. XPS provider, text flow, etc.
+
 @interface SCHBookContents : NSObject {
 
 }

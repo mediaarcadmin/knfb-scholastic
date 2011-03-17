@@ -27,17 +27,9 @@ typedef enum {
 
 }
 
-// the library cache directory. Used for book files and cached images.
-+ (NSString *)cacheDirectory;
-
 // shared manager instance
 // FIXME: notes on duties - registers for events etc.
 + (SCHProcessingManager *) sharedProcessingManager;
-
-// background processing - called by the app delegate when the app
-// is put into or opened from the background
-- (void) enterBackground;
-- (void) enterForeground;
 
 // user selection methods
 - (void) userSelectedBookInfo: (SCHBookInfo *) bookInfo;

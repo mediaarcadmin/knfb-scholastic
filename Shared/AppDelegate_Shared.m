@@ -70,13 +70,7 @@ static NSString * const kSCHClearLocalDebugMode = @"kSCHClearLocalDebugMode";
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
     [self saveContext];
-	[[SCHProcessingManager sharedProcessingManager] enterBackground];
 }
-
-- (void)applicationWillEnterForeground:(UIApplication *)application {
-	[[SCHProcessingManager sharedProcessingManager] enterForeground];
-}
-
 
 - (void)saveContext {
     
