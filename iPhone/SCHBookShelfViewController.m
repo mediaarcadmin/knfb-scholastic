@@ -92,8 +92,9 @@
 - (void)setBooks:(NSMutableArray *)newBooks
 {
 	[books release];
-	[books retain];
-	
+    books = newBooks;
+    [books retain];	
+    
 	[self.tableView reloadData];
 	[self.gridView reloadData];
 	
