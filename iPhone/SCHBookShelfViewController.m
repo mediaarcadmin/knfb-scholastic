@@ -29,14 +29,6 @@
 
 @end
 
-NSInteger bookSort(SCHBookInfo *book1, SCHBookInfo *book2, void *context)
-{
-	NSString *book1Title = [book1 stringForMetadataKey:kSCHBookInfoTitle];
-	NSString *book2Title = [book2 stringForMetadataKey:kSCHBookInfoTitle];
-	
-	return([book1Title localizedCaseInsensitiveCompare:book2Title]);
-}
-
 @implementation SCHBookShelfViewController
 
 @synthesize bookshelvesController;
@@ -97,10 +89,9 @@ NSInteger bookSort(SCHBookInfo *book1, SCHBookInfo *book2, void *context)
 	
 }
 
-- (void)setBooks:(NSArray *)newBooks
+- (void)setBooks:(NSMutableArray *)newBooks
 {
 	[books release];
-	books = [newBooks sortedArrayUsingFunction:bookSort context:NULL];
 	[books retain];
 	
 	[self.tableView reloadData];

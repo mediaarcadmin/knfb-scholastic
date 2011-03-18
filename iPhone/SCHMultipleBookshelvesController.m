@@ -276,7 +276,7 @@
 - (void)component:(SCHComponent *)component didCompleteWithResult:(NSDictionary *)result
 {
     SCHBookShelfViewController *controller = [viewControllers objectAtIndex:[self topPicksBookshelfPosition]];
-	NSArray *topBooks = [result objectForKey:kSCHLibreAccessWebServiceContentMetadataList];
+	NSMutableArray *topBooks = [result objectForKey:kSCHLibreAccessWebServiceContentMetadataList];
 	
 	if (controller != (id)[NSNull null]) {
 		if (topBooks == (id)[NSNull null]) {
