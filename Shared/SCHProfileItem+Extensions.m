@@ -72,7 +72,7 @@ static NSString * const kSCHProfileItemUserContentItemContentMetadataItem = @"Us
             SCHAppBookOrder *bookOrderItem = [bookOrder objectAtIndex:i];
             
             NSUInteger bookIndex = [books indexOfObjectPassingTest:^(id obj, NSUInteger idx, BOOL *stop) {
-                if ([bookOrderItem.ISBN compare:[obj objectForMetadataKey:kSCHLibreAccessWebServiceContentIdentifier]] == NSOrderedSame) {
+                if ([bookOrderItem.ISBN compare:[obj objectForMetadataKey:kSCHBookInfoContentIdentifier]] == NSOrderedSame) {
                     *stop = YES;
                     return(YES);
                 } else {
@@ -109,7 +109,7 @@ static NSString * const kSCHProfileItemUserContentItemContentMetadataItem = @"Us
         SCHBookInfo *bookInfo = [books objectAtIndex:idx];
         SCHAppBookOrder *newBookOrder = [NSEntityDescription insertNewObjectForEntityForName:kSCHAppBookOrder inManagedObjectContext:self.managedObjectContext];
 
-        newBookOrder.ISBN = [bookInfo objectForMetadataKey:kSCHLibreAccessWebServiceContentIdentifier];
+        newBookOrder.ISBN = [bookInfo objectForMetadataKey:kSCHBookInfoContentIdentifier];
         newBookOrder.Order = [NSNumber numberWithInt:idx];
         
         [self addAppBookOrderObject:newBookOrder];

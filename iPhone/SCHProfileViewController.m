@@ -260,7 +260,7 @@ static NSString * const kRootViewControllerSettingsIcon = @"Settings.png";
 #ifdef LOCALDEBUG
 	// controller to view book shelf with books filtered to profile
 	NSMutableArray *books = [[[self fetchedResultsController] objectAtIndexPath:indexPath] allContentMetadataItems];	
-	[self pushBookshelvesControllerWithBooks:books profileItem:nil];	
+	[self pushBookshelvesControllerWithBooks:books profileItem:[[self fetchedResultsController] objectAtIndexPath:indexPath]];	
 #else	
 	switch (indexPath.section) {
 		case 0:
