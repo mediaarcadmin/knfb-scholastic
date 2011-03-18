@@ -25,7 +25,7 @@
 
 @property (nonatomic, retain) NSMutableArray *viewControllers;
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
-@property (nonatomic, retain) NSArray *books;
+@property (nonatomic, retain) NSMutableArray *books;
 @property (nonatomic, assign) BOOL pageControlUsed;
 @property (nonatomic, assign) BOOL startedScrolling;
 @property (nonatomic, assign) NSUInteger selectedSegment;

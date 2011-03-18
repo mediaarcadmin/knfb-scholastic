@@ -30,7 +30,7 @@
 #ifdef LOCALDEBUG
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 #endif
-@property (nonatomic, retain) NSArray *books;
+@property (nonatomic, retain) NSMutableArray *books;
 @property (nonatomic, retain) SCHProfileItem *profileItem;
 
 - (void)bookshelfToggled:(NSUInteger)selectedSegment;
