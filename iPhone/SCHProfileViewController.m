@@ -228,7 +228,7 @@ static NSString * const kRootViewControllerSettingsIcon = @"Settings.png";
 
 - (void)profilePasswordViewControllerDidComplete:(SCHProfilePasswordViewController *)profilePassword
 {
-	NSArray *books = [profilePassword.profileItem allContentMetadataItems];
+	NSMutableArray *books = [profilePassword.profileItem allContentMetadataItems];
 /*	if([books count] < 1 && [SCHSyncManager sharedSyncManager].isSynchronizing == YES) {
 		UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:@"Please Wait" 
 															 message:@"We are retrieving book information"
@@ -259,7 +259,7 @@ static NSString * const kRootViewControllerSettingsIcon = @"Settings.png";
 	
 #ifdef LOCALDEBUG
 	// controller to view book shelf with books filtered to profile
-	NSArray *books = [[[self fetchedResultsController] objectAtIndexPath:indexPath] allContentMetadataItems];	
+	NSMutableArray *books = [[[self fetchedResultsController] objectAtIndexPath:indexPath] allContentMetadataItems];	
 	[self pushBookshelvesControllerWithBooks:books profileItem:nil];	
 #else	
 	switch (indexPath.section) {

@@ -14,7 +14,7 @@ static NSString * const kSCHProfileItem = @"SCHProfileItem";
 
 @interface SCHProfileItem (SCHProfileItemExtensions)
 
-- (NSArray *)allContentMetadataItems;
+- (NSMutableArray *)allContentMetadataItems;
 - (void)saveBookOrder:(NSArray *)books;
 - (void)clearBookOrder;
 - (void)setRawPassword:(NSString *)value;

@@ -51,7 +51,7 @@ static NSString * const kSCHProfileItemUserContentItemContentMetadataItem = @"Us
 	[super dealloc];
 }
 
-- (NSArray *)allContentMetadataItems
+- (NSMutableArray *)allContentMetadataItems
 {
 	NSMutableArray *books = [NSMutableArray array];
 	
