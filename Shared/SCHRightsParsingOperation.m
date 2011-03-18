@@ -20,17 +20,6 @@
 @property (nonatomic, retain) NSXMLParser *rightsParser;
 @property (nonatomic, retain) NSXMLParser *metadataParser;
 
-@property BOOL ttsPermitted;
-@property BOOL reflowPermitted;
-@property BOOL hasAudio;
-@property BOOL hasStoryInteractions;
-@property BOOL hasExtras;
-@property BOOL layoutStartsOnLeftSide;
-@property float drmVersion;
-@property (nonatomic, retain) NSString *author;
-@property (nonatomic, retain) NSString *title;
-@property (nonatomic, retain) NSString *category;
-
 - (void) begin;
 
 
@@ -39,15 +28,9 @@
 @implementation SCHRightsParsingOperation
 
 @synthesize bookInfo, executing, finished, success, parsingComplete, rightsParser, metadataParser;
-@synthesize ttsPermitted, reflowPermitted;
-@synthesize hasAudio, hasStoryInteractions, hasExtras, layoutStartsOnLeftSide;
-@synthesize drmVersion, author, title, category;
 
 - (void)dealloc {
 	self.bookInfo = nil;
-	self.author = nil;
-	self.title = nil;
-	self.category = nil;
 	
 	[super dealloc];
 }
@@ -66,9 +49,6 @@
 - (void) start
 {
 	if (self.bookInfo && ![self isCancelled]) {
-		
-		self.ttsPermitted = YES;
-		self.reflowPermitted = YES;
 		
 		self.success = YES;
 		
@@ -100,13 +80,21 @@
 {
 	
 	BWKXPSProvider *xpsProvider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBook:self.bookInfo];
+	NSData *rightsFileData = nil;
 	
 	
-	self.hasAudio = [xpsProvider componentExistsAtPath:BlioXPSAudiobookMetadataFile];
-	self.hasStoryInteractions = [xpsProvider componentExistsAtPath:BlioXPSStoryInteractionsMetadataFile];
-	self.hasExtras = [xpsProvider componentExistsAtPath:BlioXPSExtrasMetadataFile];
+	BOOL hasAudio = [xpsProvider componentExistsAtPath:BlioXPSAudiobookMetadataFile];
+	BOOL hasStoryInteractions = [xpsProvider componentExistsAtPath:BlioXPSStoryInteractionsMetadataFile];
+	BOOL hasExtras = [xpsProvider componentExistsAtPath:BlioXPSExtrasMetadataFile];
 	BOOL hasRights = [xpsProvider componentExistsAtPath:BlioXPSKNFBRightsFile];
-	NSData *rightsFileData = [xpsProvider dataForComponentAtPath:BlioXPSKNFBRightsFile];
+
+	[self.bookInfo setObject:[NSNumber numberWithBool:hasAudio] forLocalMetadataKey:kSCHBookInfoRightsHasAudio];
+	[self.bookInfo setObject:[NSNumber numberWithBool:hasStoryInteractions] forLocalMetadataKey:kSCHBookInfoRightsHasStoryInteractions];
+	[self.bookInfo setObject:[NSNumber numberWithBool:hasExtras] forLocalMetadataKey:kSCHBookInfoRightsHasExtras];
+	
+	if (hasRights) {
+		rightsFileData = [xpsProvider dataForComponentAtPath:BlioXPSKNFBRightsFile];
+	}
 	
 	[[SCHBookManager sharedBookManager] checkInXPSProviderForBook:self.bookInfo];
 	
@@ -150,16 +138,6 @@
 		[self.bookInfo setProcessingState:SCHBookInfoProcessingStateBookVersionNotSupported];
 	}
 	
-	NSLog(@"Rights for %@: tts: %@ reflow: %@ audio: %@ interactions: %@ extras: %@ layoutStartsOnLeft: %@", self.bookInfo.bookIdentifier, 
-		  (self.ttsPermitted?@"Yes":@"No"), 
-		  (self.reflowPermitted?@"Yes":@"No"),
-		  (self.hasAudio?@"Yes":@"No"),
-		  (self.hasStoryInteractions?@"Yes":@"No"),
-		  (self.layoutStartsOnLeftSide?@"Yes":@"No"),
-		  (self.hasStoryInteractions?@"Yes":@"No")
-		  );
-	NSLog(@"Title: \"%@\" Author: \"%@\" Category: \"%@\" DRM Version: %f", self.title, self.author, self.category, self.drmVersion);
-	
 	[self.bookInfo setProcessing:NO];
 
 	self.finished = YES;
@@ -177,19 +155,19 @@
 	if ( [elementName isEqualToString:@"Audio"] ) {
 			NSString * attributeStringValue = [attributeDict objectForKey:@"TTSRead"];
 			if (attributeStringValue && [attributeStringValue isEqualToString:@"True"]) {
-				self.ttsPermitted = YES;
+				[self.bookInfo setObject:[NSNumber numberWithBool:YES] forLocalMetadataKey:kSCHBookInfoRightsTTSPermitted];
 			}
 			else {
-				self.ttsPermitted = NO;
+				[self.bookInfo setObject:[NSNumber numberWithBool:NO] forLocalMetadataKey:kSCHBookInfoRightsTTSPermitted];
 			}
 		}
 		else if ( [elementName isEqualToString:@"Reflow"] ) {
 			NSString * attributeStringValue = [attributeDict objectForKey:@"Enabled"];
 			if (attributeStringValue && [attributeStringValue isEqualToString:@"True"]) {
-				self.reflowPermitted = YES;
+				[self.bookInfo setObject:[NSNumber numberWithBool:YES] forLocalMetadataKey:kSCHBookInfoRightsReflowPermitted];
 			}
 			else {
-				self.reflowPermitted = NO;
+				[self.bookInfo setObject:[NSNumber numberWithBool:NO] forLocalMetadataKey:kSCHBookInfoRightsReflowPermitted];
 			}
 		}
 	} else if (parser == self.metadataParser) {
@@ -201,9 +179,10 @@
 			if (featureName && featureVersion && isRequired) {
 				if ([isRequired isEqualToString:@"true"]) {
 					
-					self.drmVersion = [featureName floatValue];
-					
-					if (![SCHBookManager checkAppCompatibilityForFeature:featureName version:self.drmVersion]) {
+					float floatVersion = [featureName floatValue];
+					[self.bookInfo setString:featureName forLocalMetadataKey:kSCHBookInfoRightsDRMVersion];
+
+					if (![SCHBookManager checkAppCompatibilityForFeature:featureName version:floatVersion]) {
 						// app is not compatible
 						self.success = NO;
 					}
@@ -218,28 +197,28 @@
         } else if ( [elementName isEqualToString:@"PageLayout"] ) {
             NSString *firstPageSide = [attributeDict objectForKey:@"FirstPageSide"];
             if(firstPageSide && [firstPageSide isEqualToString:@"Left"]) {
-				self.layoutStartsOnLeftSide = YES;
+				[self.bookInfo setObject:[NSNumber numberWithBool:YES] forLocalMetadataKey:kSCHBookInfoRightsLayoutStartsOnLeftSide];
             } else {
-				self.layoutStartsOnLeftSide = NO;
+				[self.bookInfo setObject:[NSNumber numberWithBool:NO] forLocalMetadataKey:kSCHBookInfoRightsLayoutStartsOnLeftSide];
 			}
         } else if ( [elementName isEqualToString:@"Contributor"] ) {
             NSString *authorVal = [attributeDict objectForKey:@"Author"];
             if(authorVal) {
-				self.author = authorVal;
+				[self.bookInfo setObject:authorVal forLocalMetadataKey:kSCHBookInfoXPSAuthor];
 			}
         } else if ( [elementName isEqualToString:@"Title"] ) {
             NSString *titleVal = [attributeDict objectForKey:@"Main"];
             if(titleVal) {
-				self.title = titleVal;
+				[self.bookInfo setObject:titleVal forLocalMetadataKey:kSCHBookInfoXPSTitle];
 			}
         } else if ( [elementName isEqualToString:@"Scholastic"] ) {
             NSString *categoryVal = [attributeDict objectForKey:@"Category"];
             if(categoryVal) {
-				self.category = categoryVal;
+				[self.bookInfo setObject:categoryVal forLocalMetadataKey:kSCHBookInfoXPSCategory];
 			} else {
 				categoryVal = [attributeDict objectForKey:@"BookCategory"];
 				if (categoryVal) {
-					self.category = categoryVal;
+					[self.bookInfo setObject:categoryVal forLocalMetadataKey:kSCHBookInfoXPSCategory];
 				}
 			}
         }

@@ -182,11 +182,16 @@
 	newProfileItem.LastModified = now;
 	
 	SCHContentMetadataItem *newContentMetadataItem = nil;
+	SCHAppBook *newAppBookItem = nil;
 	SCHUserContentItem *newUserContentItem = nil;
 	SCHContentProfileItem *newContentProfileItem = nil;
 	
 	for (NSString *xpsFile in XPSFiles) {
 		newContentMetadataItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHContentMetadataItem inManagedObjectContext:self.managedObjectContext];
+		newAppBookItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHAppBook inManagedObjectContext:self.managedObjectContext];
+		
+		newContentMetadataItem.AppBook = newAppBookItem;
+		newAppBookItem.ContentMetadataItem = newContentMetadataItem;
 		
 		NSString *currentPath = [[NSBundle mainBundle] pathForResource:xpsFile ofType:@"xps"];
 		
