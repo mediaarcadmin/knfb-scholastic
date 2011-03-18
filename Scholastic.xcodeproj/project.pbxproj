@@ -72,6 +72,12 @@
 		526750DC13291EB500063AC8 /* SCHRightsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 526750DA13291EB500063AC8 /* SCHRightsManager.m */; };
 		528433EB133382EA0010BAAB /* SCHAppDictionaryState.m in Sources */ = {isa = PBXBuildFile; fileRef = 528433EA133382EA0010BAAB /* SCHAppDictionaryState.m */; };
 		528433EC133382EA0010BAAB /* SCHAppDictionaryState.m in Sources */ = {isa = PBXBuildFile; fileRef = 528433EA133382EA0010BAAB /* SCHAppDictionaryState.m */; };
+		528433F3133383940010BAAB /* SCHAppBook+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 528433EE133383940010BAAB /* SCHAppBook+Extensions.m */; };
+		528433F4133383940010BAAB /* SCHAppBook+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 528433EE133383940010BAAB /* SCHAppBook+Extensions.m */; };
+		528433F5133383940010BAAB /* SCHAppBookOrder+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 528433F0133383940010BAAB /* SCHAppBookOrder+Extensions.m */; };
+		528433F6133383940010BAAB /* SCHAppBookOrder+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 528433F0133383940010BAAB /* SCHAppBookOrder+Extensions.m */; };
+		528433F7133383940010BAAB /* SCHAppDictionaryState+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 528433F2133383940010BAAB /* SCHAppDictionaryState+Extensions.m */; };
+		528433F8133383940010BAAB /* SCHAppDictionaryState+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 528433F2133383940010BAAB /* SCHAppDictionaryState+Extensions.m */; };
 		528A2CD312CCDD9E0053A343 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 528A2CD212CCDD9E0053A343 /* Settings.bundle */; };
 		528A2CDB12CCDE070053A343 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 528A2CDA12CCDE070053A343 /* Localizable.strings */; };
 		528A2CF812CCEAA50053A343 /* ReleaseNotes.tmReleaseNotes in Resources */ = {isa = PBXBuildFile; fileRef = 528A2CF712CCEAA50053A343 /* ReleaseNotes.tmReleaseNotes */; };
@@ -435,6 +441,12 @@
 		526750DD13291EEA00063AC8 /* SCHRightsManagerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHRightsManagerDelegate.h; path = Shared/SCHRightsManagerDelegate.h; sourceTree = "<group>"; };
 		528433E9133382EA0010BAAB /* SCHAppDictionaryState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAppDictionaryState.h; path = Shared/SCHAppDictionaryState.h; sourceTree = "<group>"; };
 		528433EA133382EA0010BAAB /* SCHAppDictionaryState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHAppDictionaryState.m; path = Shared/SCHAppDictionaryState.m; sourceTree = "<group>"; };
+		528433ED133383940010BAAB /* SCHAppBook+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SCHAppBook+Extensions.h"; path = "Shared/SCHAppBook+Extensions.h"; sourceTree = "<group>"; };
+		528433EE133383940010BAAB /* SCHAppBook+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SCHAppBook+Extensions.m"; path = "Shared/SCHAppBook+Extensions.m"; sourceTree = "<group>"; };
+		528433EF133383940010BAAB /* SCHAppBookOrder+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SCHAppBookOrder+Extensions.h"; path = "Shared/SCHAppBookOrder+Extensions.h"; sourceTree = "<group>"; };
+		528433F0133383940010BAAB /* SCHAppBookOrder+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SCHAppBookOrder+Extensions.m"; path = "Shared/SCHAppBookOrder+Extensions.m"; sourceTree = "<group>"; };
+		528433F1133383940010BAAB /* SCHAppDictionaryState+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SCHAppDictionaryState+Extensions.h"; path = "Shared/SCHAppDictionaryState+Extensions.h"; sourceTree = "<group>"; };
+		528433F2133383940010BAAB /* SCHAppDictionaryState+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SCHAppDictionaryState+Extensions.m"; path = "Shared/SCHAppDictionaryState+Extensions.m"; sourceTree = "<group>"; };
 		528A2CD212CCDD9E0053A343 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = Settings.bundle; path = Shared/Settings.bundle; sourceTree = "<group>"; };
 		528A2CD912CCDDB00053A343 /* Entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Entitlements.plist; sourceTree = "<group>"; };
 		528A2CDA12CCDE070053A343 /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = Localizable.strings; path = Shared/Localizable.strings; sourceTree = "<group>"; };
@@ -962,10 +974,16 @@
 			children = (
 				5243545413337BAC00282B53 /* SCHAppBook.h */,
 				5243545513337BAC00282B53 /* SCHAppBook.m */,
+				528433ED133383940010BAAB /* SCHAppBook+Extensions.h */,
+				528433EE133383940010BAAB /* SCHAppBook+Extensions.m */,
 				5243545613337BAC00282B53 /* SCHAppBookOrder.h */,
 				5243545713337BAC00282B53 /* SCHAppBookOrder.m */,
+				528433EF133383940010BAAB /* SCHAppBookOrder+Extensions.h */,
+				528433F0133383940010BAAB /* SCHAppBookOrder+Extensions.m */,
 				528433E9133382EA0010BAAB /* SCHAppDictionaryState.h */,
 				528433EA133382EA0010BAAB /* SCHAppDictionaryState.m */,
+				528433F1133383940010BAAB /* SCHAppDictionaryState+Extensions.h */,
+				528433F2133383940010BAAB /* SCHAppDictionaryState+Extensions.m */,
 				52298A7912F0EF5600BBBCE6 /* SCHAnnotation.h */,
 				52298A7A12F0EF5600BBBCE6 /* SCHAnnotation.m */,
 				52298A7712F0EF5600BBBCE6 /* SCHAnnotationsContentItem.h */,
@@ -1890,6 +1908,9 @@
 				5243545813337BAC00282B53 /* SCHAppBook.m in Sources */,
 				5243545A13337BAC00282B53 /* SCHAppBookOrder.m in Sources */,
 				528433EB133382EA0010BAAB /* SCHAppDictionaryState.m in Sources */,
+				528433F3133383940010BAAB /* SCHAppBook+Extensions.m in Sources */,
+				528433F5133383940010BAAB /* SCHAppBookOrder+Extensions.m in Sources */,
+				528433F7133383940010BAAB /* SCHAppDictionaryState+Extensions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2021,6 +2042,9 @@
 				5243545913337BAC00282B53 /* SCHAppBook.m in Sources */,
 				5243545B13337BAC00282B53 /* SCHAppBookOrder.m in Sources */,
 				528433EC133382EA0010BAAB /* SCHAppDictionaryState.m in Sources */,
+				528433F4133383940010BAAB /* SCHAppBook+Extensions.m in Sources */,
+				528433F6133383940010BAAB /* SCHAppBookOrder+Extensions.m in Sources */,
+				528433F8133383940010BAAB /* SCHAppDictionaryState+Extensions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

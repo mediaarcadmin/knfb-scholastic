@@ -1,0 +1,18 @@
+//
+//  SCHAppBook+Extensions.h
+//  Scholastic
+//
+//  Created by John S. Eddie on 17/01/2011.
+//  Copyright 2011 BitWink. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+
+#import "SCHAppBook.h"
+
+static NSString * const kSCHAppBook = @"SCHAppBook";
+
+@interface SCHAppBook (SCHAppBookExtensions)
+
+
+@end
