@@ -114,7 +114,21 @@
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
 {
-	self.expectedFileSize = [response expectedContentLength];
+	
+	unsigned long long fileSize = 0;
+	NSError *error = nil;
+	
+	if ([[NSFileManager defaultManager] fileExistsAtPath:self.localPath]) {
+		// check to see how much of the file has been downloaded
+		
+		fileSize = [[[NSFileManager defaultManager] attributesOfItemAtPath:self.localPath error:&error] fileSize];
+		
+		if (error) {
+			NSLog(@"Error when reading file attributes. %@", [error localizedDescription]);
+		}
+	}
+	
+	self.expectedFileSize = [response expectedContentLength] + fileSize;
 	self.previousPercentage = -1;
 	
 	[self createPercentageUpdate];
