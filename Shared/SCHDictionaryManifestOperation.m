@@ -49,7 +49,7 @@
 	if (![self isCancelled]) {
 		
 		NSLog(@"Starting operation..");
-		[[SCHDictionaryManager sharedDictionaryManager] dictionaryObject].isProcessing = YES;
+		[SCHDictionaryManager sharedDictionaryManager].isProcessing = YES;
 		
 		self.connectionData = [[NSMutableData alloc] init];
 		
@@ -82,7 +82,7 @@
 		
 		self.finished = YES;
 		self.executing = NO;
-		[[SCHDictionaryManager sharedDictionaryManager] dictionaryObject].isProcessing = NO;
+		[SCHDictionaryManager sharedDictionaryManager].isProcessing = NO;
 	}
 }
 
@@ -116,7 +116,7 @@
 #pragma mark NSXMLParserDelegate methods
 
 - (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName attributes:(NSDictionary *)attributeDict {
-	NSLog(@"parsing element %@", elementName);
+//	NSLog(@"parsing element %@", elementName);
 	if ( [elementName isEqualToString:@"UpdateComponent"] ) {
 		NSString * attributeStringValue = [attributeDict objectForKey:@"Name"];
 		if (attributeStringValue && [attributeStringValue isEqualToString:@"Dictionary"]) {
@@ -128,11 +128,11 @@
 		if ( [elementName isEqualToString:@"UpdateEntry"] ) {
 			NSString * attributeStringValue = [attributeDict objectForKey:@"EndVersion"];
 			if (attributeStringValue) {
-				[[SCHDictionaryManager sharedDictionaryManager] dictionaryObject].dictionaryVersion = [attributeStringValue floatValue];
+				[SCHDictionaryManager sharedDictionaryManager].dictionaryVersion = attributeStringValue;
 			}
 			attributeStringValue = [attributeDict objectForKey:@"href"];
 			if (attributeStringValue) {
-				[[SCHDictionaryManager sharedDictionaryManager] dictionaryObject].dictionaryURL = attributeStringValue;
+				[SCHDictionaryManager sharedDictionaryManager].dictionaryURL = attributeStringValue;
 			}
 		}
 	}
@@ -147,11 +147,11 @@
 
 - (void)parserDidEndDocument:(NSXMLParser *)parser
 {
-	NSLog(@"Dictionary version: %f URL: %@", [[SCHDictionaryManager sharedDictionaryManager] dictionaryObject].dictionaryVersion, 
-		  [[SCHDictionaryManager sharedDictionaryManager] dictionaryObject].dictionaryURL);
+	NSLog(@"Dictionary version: %@ URL: %@", [SCHDictionaryManager sharedDictionaryManager].dictionaryVersion, 
+		  [SCHDictionaryManager sharedDictionaryManager].dictionaryURL);
 	
-	[[SCHDictionaryManager sharedDictionaryManager] dictionaryObject].dictionaryState = SCHDictionaryProcessingStateNeedsDownload;
-	[[SCHDictionaryManager sharedDictionaryManager] dictionaryObject].isProcessing = NO;
+	[SCHDictionaryManager sharedDictionaryManager].dictionaryState = SCHDictionaryProcessingStateNeedsDownload;
+	[SCHDictionaryManager sharedDictionaryManager].isProcessing = NO;
 
 	self.parsingComplete = YES;
 
@@ -168,7 +168,7 @@
 {
 	self.finished = YES;
 	self.executing = NO;
-	[[SCHDictionaryManager sharedDictionaryManager] dictionaryObject].isProcessing = NO;
+	[SCHDictionaryManager sharedDictionaryManager].isProcessing = NO;
 
 	[super cancel];
 }

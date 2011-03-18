@@ -10,6 +10,7 @@
 #import <pthread.h>
 #import <CoreData/CoreData.h>
 #import "SCHContentMetadataItem+Extensions.h"
+#import "SCHAppBook+Extensions.h"
 #import "SCHProcessingManager.h"
 
 static NSString * const kSCHBookInfoAuthor = @"SCHBookInfoAuthor";
@@ -24,7 +25,18 @@ static NSString * const kSCHBookInfoFileName = @"SCHBookInfoFileName";
 static NSString * const kSCHBookInfoDescription = @"SCHBookInfoDescription";
 static NSString * const kSCHBookInfoContentIdentifier = @"SCHBookInfoContentIdentifier";
 
+static NSString * const kSCHBookInfoProcessingState = @"SCHBookInfoProcessingState";
 
+static NSString * const kSCHBookInfoRightsTTSPermitted = @"SCHBookInfoRightsTTSPermitted";
+static NSString * const kSCHBookInfoRightsReflowPermitted = @"SCHBookInfoRightsReflowPermitted";
+static NSString * const kSCHBookInfoRightsHasAudio = @"SCHBookInfoRightsHasAudio";
+static NSString * const kSCHBookInfoRightsHasStoryInteractions = @"SCHBookInfoRightsHasStoryInteractions";
+static NSString * const kSCHBookInfoRightsHasExtras = @"SCHBookInfoRightsHasExtras";
+static NSString * const kSCHBookInfoRightsLayoutStartsOnLeftSide = @"SCHBookInfoRightsLayoutStartsOnLeftSide";
+static NSString * const kSCHBookInfoRightsDRMVersion = @"SCHBookInfoRightsDRMVersion";
+static NSString * const kSCHBookInfoXPSAuthor = @"SCHBookInfoXPSAuthor";
+static NSString * const kSCHBookInfoXPSTitle = @"SCHBookInfoXPSTitle";
+static NSString * const kSCHBookInfoXPSCategory = @"SCHBookInfoXPSCategory";
 
 @interface SCHBookInfo : NSObject {
 
@@ -35,18 +47,21 @@ static NSString * const kSCHBookInfoContentIdentifier = @"SCHBookInfoContentIden
 
 // is this book currently being processed?
 @property (getter=isProcessing) BOOL processing;
+
 // the current processing state of the book
 @property (readwrite) SCHBookInfoCurrentProcessingState processingState;
 
-// methods for getting and setting content metadata
+// methods for getting and setting content metadata (SCHContentMetadataItem)
 - (id) objectForMetadataKey: (NSString *) metadataKey;
 - (void) setObject: (id) obj forMetadataKey: (NSString *) metadataKey;
-
 - (NSString *) stringForMetadataKey: (NSString *) metadataKey;
 - (void) setString: (NSString *) obj forMetadataKey: (NSString *) metadataKey;
 
-// methods for getting and setting local metadata
-// FIXME: add this stuff in here
+// methods for getting and setting local metadata (SCHAppBook)
+- (id) objectForLocalMetadataKey: (NSString *) metadataKey;
+- (NSString *) stringForLocalMetadataKey: (NSString *) metadataKey;
+- (void) setObject: (id) obj forLocalMetadataKey: (NSString *) metadataKey;
+- (void) setString: (NSString *) obj forLocalMetadataKey: (NSString *) metadataKey;
 
 // the path to the XPS file within the system - by default, in the cache directory
 - (NSString *) xpsPath;

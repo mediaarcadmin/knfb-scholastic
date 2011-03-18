@@ -363,14 +363,12 @@ static SCHProcessingManager *sharedManager = nil;
 		if (!self.connectionIsIdle) {
 			self.connectionIsIdle = YES;
 			
-//			[[NSNotificationCenter defaultCenter] postNotificationName:kSCHProcessingManagerConnectionIdle object:nil];
 			[self performSelectorOnMainThread:@selector(sendNotification:) withObject:kSCHProcessingManagerConnectionIdle waitUntilDone:YES];
 		}
 	} else {
 		if (self.connectionIsIdle) {
 			self.connectionIsIdle = NO;
 			
-//			[[NSNotificationCenter defaultCenter] postNotificationName:kSCHProcessingManagerConnectionBusy object:nil];
 			[self performSelectorOnMainThread:@selector(sendNotification:) withObject:kSCHProcessingManagerConnectionBusy waitUntilDone:YES];
 		}
 	}
@@ -400,6 +398,7 @@ static SCHProcessingManager *sharedManager = nil;
 		[self processBook:bookInfo];
 	}
 	// otherwise ignore the touch
+
 }
 
 #pragma mark -
@@ -410,7 +409,7 @@ static SCHProcessingManager *sharedManager = nil;
 {	
 	SCHBookInfo *book = bookCover.bookInfo;
 	
-	NSLog(@"Requesting thumb for %@, size %@", book.bookIdentifier, NSStringFromCGSize(size));
+//	NSLog(@"Requesting thumb for %@, size %@", book.bookIdentifier, NSStringFromCGSize(size));
 	@synchronized(self.thumbImageRequests) {
 		
 		// check for an existing file

@@ -18,8 +18,6 @@
 
 @synthesize bookIdentifier;
 @synthesize processing;
-@synthesize processingState;
-
 
 #pragma mark -
 #pragma mark Memory Management
@@ -35,7 +33,6 @@
 {
 	if (self = [super init]) {
 		self.bookIdentifier = nil;
-		self.processingState = SCHBookInfoProcessingStateNoURLs;
 	}
 	
 	return self;
@@ -77,20 +74,68 @@
 	return item;
 }
 
+
+- (SCHAppBook *) appBookData
+{
+	SCHAppBook *item = nil;
+	
+	if (self.bookIdentifier) {
+		
+		NSManagedObjectContext *context = [[SCHBookManager sharedBookManager] managedObjectContextForCurrentThread];
+		
+		if (context) {
+			NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+			[fetchRequest setEntity:[NSEntityDescription entityForName:kSCHAppBook inManagedObjectContext:context]];	
+			
+			NSPredicate *predicate = [NSPredicate predicateWithFormat:@"ContentMetadataItem.ContentIdentifier == %@", self.bookIdentifier];
+			[fetchRequest setPredicate:predicate];
+			
+			NSError *error = nil;
+			NSArray *results = [context executeFetchRequest:fetchRequest error:&error];
+			[fetchRequest release], fetchRequest = nil;
+			
+			if (error) {
+				NSLog(@"Error while fetching book item: %@", [error localizedDescription]);
+			} else if (!results || [results count] != 1) {
+				NSLog(@"Did not return expected single item. %@", results);
+			} else {
+				item = (SCHAppBook *) [results objectAtIndex:0];
+			}
+		}
+		
+	}
+	
+	return item;
+}
+
 #pragma mark -
 #pragma mark Book Status
 
-// FIXME: persist state
 - (SCHBookInfoCurrentProcessingState) processingState
 {
-	return processingState;
+	if (!self.bookIdentifier) {
+		[NSException raise:@"SCHBookInfoNeedsBookIdentifier" format:@"Do not use SCHBookInfo without setting bookIdentifier."];
+	}
+	
+	SCHBookInfoCurrentProcessingState state = [[[self appBookData] State] intValue];
+	
+	return state;
 }
 
 - (void) setProcessingState:(SCHBookInfoCurrentProcessingState)newState
 {
-	processingState = newState;
+	[self appBookData].State = [NSNumber numberWithInt:newState];
 	
-	NSLog(@"setting %@ to processing state \"%@\".", self.bookIdentifier, [self currentProcessingStateAsString]);
+	NSManagedObjectContext *context = [[SCHBookManager sharedBookManager] managedObjectContextForCurrentThread];
+	
+	NSError *error = nil;
+	[context save:&error];
+	
+	if (error) {
+		NSLog(@"Error while saving processing state: %@", [error localizedDescription]);
+	}
+	
+//	NSLog(@"setting %@ to processing state \"%@\".", self.bookIdentifier, [self currentProcessingStateAsString]);
 	
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"SCHBookStatusUpdate" object:self];
 	
@@ -216,16 +261,10 @@
 		value = obj;
 	} else if ([metadataKey compare:kSCHBookInfoVersion] == NSOrderedSame) {
 		value = obj;
-	} else if ([metadataKey compare:kSCHBookInfoEnhanced] == NSOrderedSame) {
-		value = [(NSNumber *) obj stringValue];
-	} else if ([metadataKey compare:kSCHBookInfoFileSize] == NSOrderedSame) {
-		value = [(NSNumber *) obj stringValue];
 	} else if ([metadataKey compare:kSCHBookInfoCoverURL] == NSOrderedSame) {
 		value = obj;
 	} else if ([metadataKey compare:kSCHBookInfoContentURL] == NSOrderedSame) {
 		value = obj;
-	} else if ([metadataKey compare:kSCHBookInfoPageNumber] == NSOrderedSame) {
-		value = [(NSNumber *) obj stringValue];
 	} else if ([metadataKey compare:kSCHBookInfoTitle] == NSOrderedSame) {
 		value = obj;
 	} else if ([metadataKey compare:kSCHBookInfoFileName] == NSOrderedSame) {
@@ -234,10 +273,131 @@
 		value = obj;
 	} else if ([metadataKey compare:kSCHBookInfoContentIdentifier] == NSOrderedSame) {
 		value = obj;
+	} else {
+		[NSException raise:@"SCHBookInfoInvalidString" format:@"Tried to set a non-string value using setString:."];
 	}
 	
 	[self setObject:value forMetadataKey:metadataKey];
 }
+
+#pragma mark -
+#pragma mark Local Metadata Access
+
+// methods for getting and setting local metadata (SCHAppBook)
+- (id) objectForLocalMetadataKey: (NSString *) metadataKey
+{
+	id returnedResult = nil;
+	
+	if (!metadataKey) {
+		return nil;
+	}
+	
+	if ([metadataKey compare:kSCHBookInfoRightsTTSPermitted] == NSOrderedSame) {
+		returnedResult = [[self appBookData] TTSPermitted];
+	} else if ([metadataKey compare:kSCHBookInfoRightsReflowPermitted] == NSOrderedSame) {
+		returnedResult = [[self appBookData] ReflowPermitted];
+	} else if ([metadataKey compare:kSCHBookInfoRightsHasAudio] == NSOrderedSame) {
+		returnedResult = [[self appBookData] HasAudio];
+	} else if ([metadataKey compare:kSCHBookInfoRightsHasStoryInteractions] == NSOrderedSame) {
+		returnedResult = [[self appBookData] HasStoryInteractions];
+	} else if ([metadataKey compare:kSCHBookInfoRightsHasExtras] == NSOrderedSame) {
+		returnedResult = [[self appBookData] HasExtras];
+	} else if ([metadataKey compare:kSCHBookInfoRightsLayoutStartsOnLeftSide] == NSOrderedSame) {
+		returnedResult = [[self appBookData] LayoutStartsOnLeftSide];
+	} else if ([metadataKey compare:kSCHBookInfoRightsDRMVersion] == NSOrderedSame) {
+		returnedResult = [[self appBookData] DRMVersion];
+	} else if ([metadataKey compare:kSCHBookInfoXPSAuthor] == NSOrderedSame) {
+		returnedResult = [[self appBookData] XPSAuthor];
+	} else if ([metadataKey compare:kSCHBookInfoXPSTitle] == NSOrderedSame) {
+		returnedResult = [[self appBookData] XPSTitle];
+	} else if ([metadataKey compare:kSCHBookInfoXPSCategory] == NSOrderedSame) {
+		returnedResult = [[self appBookData] XPSCategory];
+	}
+	
+	return returnedResult;
+}
+
+- (NSString *) stringForLocalMetadataKey: (NSString *) metadataKey
+{
+	id returnedResult = [self objectForLocalMetadataKey:metadataKey];
+	
+	if (!returnedResult) {
+		return nil;
+	}
+	
+	if ([returnedResult isKindOfClass:[NSString class]]) {
+		return returnedResult;
+	}
+	
+	if ([returnedResult isKindOfClass:[NSNumber class]]) {
+		NSNumber *number = (NSNumber *) returnedResult;
+		return [number stringValue];
+	}
+	NSLog(@"Unknown local metadata class type. %@", NSStringFromClass([returnedResult class]));
+	return nil;
+}
+
+
+- (void) setObject: (id) obj forLocalMetadataKey: (NSString *) metadataKey
+{
+	
+	SCHAppBook *appBookData = [self appBookData];
+	
+	if (!metadataKey) {
+		return;
+	}
+	
+	if ([metadataKey compare:kSCHBookInfoRightsTTSPermitted] == NSOrderedSame) {
+		appBookData.TTSPermitted = obj;
+	} else if ([metadataKey compare:kSCHBookInfoRightsReflowPermitted] == NSOrderedSame) {
+		appBookData.ReflowPermitted = obj;
+	} else if ([metadataKey compare:kSCHBookInfoRightsHasAudio] == NSOrderedSame) {
+		appBookData.HasAudio = obj;
+	} else if ([metadataKey compare:kSCHBookInfoRightsHasStoryInteractions] == NSOrderedSame) {
+		appBookData.HasStoryInteractions = obj;
+	} else if ([metadataKey compare:kSCHBookInfoRightsHasExtras] == NSOrderedSame) {
+		appBookData.HasExtras = obj;
+	} else if ([metadataKey compare:kSCHBookInfoRightsLayoutStartsOnLeftSide] == NSOrderedSame) {
+		appBookData.LayoutStartsOnLeftSide = obj;
+	} else if ([metadataKey compare:kSCHBookInfoRightsDRMVersion] == NSOrderedSame) {
+		appBookData.DRMVersion = obj;
+	} else if ([metadataKey compare:kSCHBookInfoXPSAuthor] == NSOrderedSame) {
+		appBookData.XPSAuthor = obj;
+	} else if ([metadataKey compare:kSCHBookInfoXPSTitle] == NSOrderedSame) {
+		appBookData.XPSTitle = obj;
+	} else if ([metadataKey compare:kSCHBookInfoXPSCategory] == NSOrderedSame) {
+		appBookData.XPSCategory = obj;
+	}
+	
+	NSManagedObjectContext *context = [[SCHBookManager sharedBookManager] managedObjectContextForCurrentThread];
+	
+	NSError *error = nil;
+	[context save:&error];
+	
+	if (error) {
+		NSLog(@"Error while saving appBook: %@", [error localizedDescription]);
+	}
+}
+
+- (void) setString: (NSString *) obj forLocalMetadataKey: (NSString *) metadataKey
+{
+	NSString *value = nil;
+
+	
+	if ([metadataKey compare:kSCHBookInfoXPSAuthor] == NSOrderedSame) {
+		value = obj;
+	} else if ([metadataKey compare:kSCHBookInfoXPSTitle] == NSOrderedSame) {
+		value = obj;
+	} else if ([metadataKey compare:kSCHBookInfoXPSCategory] == NSOrderedSame) {
+		value = obj;
+	} else {
+		[NSException raise:@"SCHBookInfoInvalidString" format:@"Tried to set a non-string value using setString:."];
+	}
+	
+	[self setObject:value forMetadataKey:metadataKey];
+}
+
+
 
 
 #pragma mark -
