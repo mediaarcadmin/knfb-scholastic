@@ -12,6 +12,9 @@
 
 static NSString * const kSCHAppBookOrder = @"SCHAppBookOrder";
 
+static NSString * const kSCHAppBookOrderOrder = @"Order";
+static NSString * const kSCHAppBookOrderISBN = @"ISBN";
+
 @interface SCHAppBookOrder (SCHAppBookOrderExtensions)
 
 

@@ -31,4 +31,9 @@
 @property (nonatomic, retain) NSString * LastName;
 @property (nonatomic, retain) NSSet* AppBookOrder;
 
+- (void)addAppBookOrderObject:(SCHAppBookOrder *)value;
+- (void)removeAppBookOrderObject:(SCHAppBookOrder *)value;
+- (void)addAppBookOrder:(NSSet *)value;
+- (void)removeAppBookOrder:(NSSet *)value;
+
 @end
