@@ -219,8 +219,14 @@
 {
 	if (fromIndexPath.row != toIndexPath.row) {
 		NSLog(@"Moving row %d to row %d.", fromIndexPath.row, toIndexPath.row);
-	// FIXME: add move here	
-		
+        [self.books exchangeObjectAtIndex:fromIndexPath.row withObjectAtIndex:toIndexPath.row];
+        [self.profileItem saveBookOrder:self.books];
+        NSError *error = nil;
+        
+        if (![self.profileItem.managedObjectContext save:&error]) {
+            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+            abort();
+        }         
 	}
 }
 
@@ -286,8 +292,14 @@
 	
 	if (self.moveToValue != -1 && (toIndex != self.moveToValue)) {
 		NSLog(@"Moving cell from index %d to index %d", toIndex, self.moveToValue);
-		// FIXME: add move here
-		
+        [self.books exchangeObjectAtIndex:toIndex withObjectAtIndex:self.moveToValue];
+        [self.profileItem saveBookOrder:self.books];
+        NSError *error = nil;
+        
+        if (![self.profileItem.managedObjectContext save:&error]) {
+            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+            abort();
+        }                 
 	}
 }
 -(void) gridView:(MRGridView*)gridView commitEditingStyle:(MRGridViewCellEditingStyle)editingStyle forIndex:(NSInteger)index
