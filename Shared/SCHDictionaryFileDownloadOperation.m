@@ -94,6 +94,7 @@
 		[[NSFileManager defaultManager] createFileAtPath:self.localPath contents:nil attributes:nil];
 	}
 	
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	
 	NSURLConnection *connection = [NSURLConnection connectionWithRequest:request delegate:self];
 	
@@ -147,6 +148,8 @@
 	
 	self.executing = NO;
 	self.finished = YES;
+
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 	
 }
 
@@ -159,6 +162,9 @@
 	
 	self.executing = NO;
 	self.finished = YES;
+
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+
 }
 
 
@@ -221,6 +227,8 @@
 	NSLog(@"%%%% cancelling download file operation");
 	self.finished = YES;
 	self.executing = NO;
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+
 	[super cancel];
 }
 	

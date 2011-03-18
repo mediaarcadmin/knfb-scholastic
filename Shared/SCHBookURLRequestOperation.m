@@ -98,8 +98,14 @@
 
 	if ([completedISBN compare:self.bookInfo.bookIdentifier] == NSOrderedSame) {
 	
-		self.bookInfo.coverURL = [userInfo valueForKey:kSCHLibreAccessWebServiceCoverURL];
-		self.bookInfo.bookFileURL = [userInfo valueForKey:kSCHLibreAccessWebServiceContentURL];
+		//self.bookInfo.coverURL = [userInfo valueForKey:kSCHLibreAccessWebServiceCoverURL];
+		//self.bookInfo.bookFileURL = [userInfo valueForKey:kSCHLibreAccessWebServiceContentURL];
+		
+		[self.bookInfo setString:[userInfo valueForKey:kSCHLibreAccessWebServiceCoverURL] 
+				  forMetadataKey:kSCHBookInfoCoverURL];
+		[self.bookInfo setString:[userInfo valueForKey:kSCHLibreAccessWebServiceContentURL] 
+				  forMetadataKey:kSCHBookInfoContentURL];
+		
 		NSLog(@"Successful URL retrieval for %@!", completedISBN);
 		
 		[self.bookInfo setProcessingState:SCHBookInfoProcessingStateNoCoverImage];

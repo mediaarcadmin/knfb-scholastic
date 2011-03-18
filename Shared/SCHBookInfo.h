@@ -12,6 +12,19 @@
 #import "SCHContentMetadataItem+Extensions.h"
 #import "SCHProcessingManager.h"
 
+static NSString * const kSCHBookInfoAuthor = @"SCHBookInfoAuthor";
+static NSString * const kSCHBookInfoVersion = @"SCHBookInfoVersion";
+static NSString * const kSCHBookInfoEnhanced = @"SCHBookInfoEnhanced";
+static NSString * const kSCHBookInfoFileSize = @"SCHBookInfoFileSize";
+static NSString * const kSCHBookInfoCoverURL = @"SCHBookInfoCoverURL";
+static NSString * const kSCHBookInfoContentURL = @"SCHBookInfoContentURL";
+static NSString * const kSCHBookInfoPageNumber = @"SCHBookInfoPageNumber";
+static NSString * const kSCHBookInfoTitle = @"SCHBookInfoTitle";
+static NSString * const kSCHBookInfoFileName = @"SCHBookInfoFileName";
+static NSString * const kSCHBookInfoDescription = @"SCHBookInfoDescription";
+static NSString * const kSCHBookInfoContentIdentifier = @"SCHBookInfoContentIdentifier";
+
+
 
 @interface SCHBookInfo : NSObject {
 
@@ -20,22 +33,20 @@
 // SCHBookInfo objects use the book identifier (ISBN number) as a unique ID
 @property (readwrite, retain) NSString *bookIdentifier;
 
-// core data objects - content metadata comes from the web service,
-// local metadata is state held locally for books
-@property (readonly) SCHContentMetadataItem *contentMetadata;
-//@property (readonly) SCHLocalMetadataItem *localMetadata;
-
-// the cover and book file URLs
-@property (readwrite, retain) NSString *coverURL;
-@property (readwrite, retain) NSString *bookFileURL;
-
 // is this book currently being processed?
 @property (getter=isProcessing) BOOL processing;
 // the current processing state of the book
 @property (readwrite) SCHBookInfoCurrentProcessingState processingState;
 
-// the library cache directory. Used for book files and cached images.
-+ (NSString *)cacheDirectory;
+// methods for getting and setting content metadata
+- (id) objectForMetadataKey: (NSString *) metadataKey;
+- (void) setObject: (id) obj forMetadataKey: (NSString *) metadataKey;
+
+- (NSString *) stringForMetadataKey: (NSString *) metadataKey;
+- (void) setString: (NSString *) obj forMetadataKey: (NSString *) metadataKey;
+
+// methods for getting and setting local metadata
+// FIXME: add this stuff in here
 
 // the path to the XPS file within the system - by default, in the cache directory
 - (NSString *) xpsPath;
@@ -48,6 +59,10 @@
 // Short string representation of the current processing state
 - (NSString *) currentProcessingStateAsString;
 
+// the library cache directory. Used for book files and cached images.
++ (NSString *)cacheDirectory;
+
+// state check to determine if book is in a state for reading
 - (BOOL) canOpenBook;
 
 @end
