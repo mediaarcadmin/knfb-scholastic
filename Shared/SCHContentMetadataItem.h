@@ -2,7 +2,7 @@
 //  SCHContentMetadataItem.h
 //  Scholastic
 //
-//  Created by John S. Eddie on 15/03/2011.
+//  Created by John S. Eddie on 18/03/2011.
 //  Copyright (c) 2011 BitWink. All rights reserved.
 //
 
@@ -10,7 +10,7 @@
 #import <CoreData/CoreData.h>
 #import "SCHContentItem.h"
 
-@class SCHAppBook, SCHAppBookOrder, SCHeReaderCategories;
+@class SCHAppBook, SCHeReaderCategories;
 
 @interface SCHContentMetadataItem : SCHContentItem {
 @private
@@ -27,6 +27,5 @@
 @property (nonatomic, retain) NSString * FileName;
 @property (nonatomic, retain) SCHAppBook * AppBook;
 @property (nonatomic, retain) NSSet* eReaderCategories;
-@property (nonatomic, retain) NSSet* AppBookOrder;
 
 @end
