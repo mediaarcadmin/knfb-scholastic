@@ -1,5 +1,5 @@
 //
-//  SCHAppBookOrder.h
+//  SCHAppBook.h
 //  Scholastic
 //
 //  Created by John S. Eddie on 15/03/2011.
@@ -11,11 +11,9 @@
 
 @class SCHContentMetadataItem;
 
-@interface SCHAppBookOrder : NSManagedObject {
+@interface SCHAppBook : NSManagedObject {
 @private
 }
-@property (nonatomic, retain) NSNumber * Order;
-@property (nonatomic, retain) NSNumber * ProfileID;
 @property (nonatomic, retain) SCHContentMetadataItem * ContentMetadataItem;
 
 @end
