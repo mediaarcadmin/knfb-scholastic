@@ -183,6 +183,8 @@
 		self.accessoryType = UITableViewCellAccessoryNone;
 	}
 	
+	self.editingAccessoryType = UITableViewCellAccessoryNone;
+	
 	[self.progressView setProgress:[self.bookInfo currentDownloadedPercentage]];
 	
 	self.titleLabel.text = [self.bookInfo stringForMetadataKey:kSCHBookInfoTitle];

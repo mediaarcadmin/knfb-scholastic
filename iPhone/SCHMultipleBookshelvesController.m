@@ -30,6 +30,8 @@
 @property (nonatomic, assign) BOOL startedScrolling;
 @property (nonatomic, assign) NSUInteger selectedSegment;
 
+@property (nonatomic, assign) UITableView *currentlyEditingTable;
+
 @end
 
 
@@ -39,6 +41,7 @@
 @synthesize pageLabelContainer, pageLabel;
 @synthesize topFavoritesComponent;
 @synthesize profileItem;
+@synthesize currentlyEditingTable;
 
 - (void)dealloc
 {
@@ -220,6 +223,51 @@
         controller.view.frame = frame;
         [self.scrollView addSubview:controller.view];
     }
+}
+
+#pragma mark -
+#pragma mark Stop/Start Sideways scrolling
+
+- (void) stopSidewaysScrolling
+{
+	[self.scrollView setScrollEnabled:NO];
+}
+
+- (void) resumeSidewaysScrolling
+{
+	[self.scrollView setScrollEnabled:YES];
+}
+
+- (void) showEditingButton: (BOOL) showButton forTable: (UITableView *) tableView
+{
+	if (showButton) {
+		UIBarButtonItem *editButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(stopEditingTable)];
+		self.navigationItem.rightBarButtonItem = editButton;
+		[editButton release];
+		
+		self.currentlyEditingTable = tableView;
+		
+		[self stopSidewaysScrolling];
+	} else {
+	
+		UISegmentedControl *bookshelfToggle = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObjects:@"List", @"Grid", nil]];
+		bookshelfToggle.selectedSegmentIndex = 0;
+		bookshelfToggle.segmentedControlStyle = UISegmentedControlStyleBar;
+		[bookshelfToggle addTarget:self action:@selector(bookshelfToggled:) forControlEvents:UIControlEventValueChanged];
+		self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:bookshelfToggle] autorelease];
+		[bookshelfToggle release];
+		[self resumeSidewaysScrolling];
+	}
+}
+
+- (void) stopEditingTable
+{
+	if (self.currentlyEditingTable) {
+		[self.currentlyEditingTable setEditing:NO animated:YES];
+		self.currentlyEditingTable = nil;
+	}
+	
+	[self showEditingButton:NO forTable:nil];
 }
 
 #pragma mark -

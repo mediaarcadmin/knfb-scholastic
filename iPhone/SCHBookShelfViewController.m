@@ -25,6 +25,8 @@
 
 //- (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath;
 
+@property int moveToValue;
+
 @end
 
 NSInteger bookSort(SCHBookInfo *book1, SCHBookInfo *book2, void *context)
@@ -44,6 +46,7 @@ NSInteger bookSort(SCHBookInfo *book1, SCHBookInfo *book2, void *context)
 @synthesize books;
 @synthesize tableView, gridView, loadingView, componentCache;
 @synthesize profileItem;
+@synthesize moveToValue;
 
 - (void)releaseViewObjects 
 {
@@ -61,6 +64,8 @@ NSInteger bookSort(SCHBookInfo *book1, SCHBookInfo *book2, void *context)
 		
 	[self.gridView setCellSize:CGSizeMake(80,118) withBorderSize:20];
 	[self.gridView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"Shelf"]]];
+	[self.gridView setEditing:YES animated:NO];
+	self.moveToValue = -1;
 	
 	BlioTimeOrderedCache *aCache = [[BlioTimeOrderedCache alloc] init];
 	aCache.countLimit = 30; // Arbitrary 30 object limit
@@ -139,6 +144,10 @@ NSInteger bookSort(SCHBookInfo *book1, SCHBookInfo *book2, void *context)
     // Configure the cell...
 	SCHBookInfo *bookInfo = [self.books objectAtIndex:indexPath.row];
 	[cell setBookInfo:bookInfo];
+	
+	UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(startEditingTable:)];
+	[cell addGestureRecognizer:longPress];
+	[longPress release];
     
     return cell;
 }
@@ -205,6 +214,32 @@ NSInteger bookSort(SCHBookInfo *book1, SCHBookInfo *book2, void *context)
 	return 132.0f;
 }
 
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	return UITableViewCellEditingStyleNone;
+}
+
+- (BOOL)tableView:(UITableView *)tableview canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
+	return YES;	
+}
+
+- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath 
+{
+	if (fromIndexPath.row != toIndexPath.row) {
+		NSLog(@"Moving row %d to row %d.", fromIndexPath.row, toIndexPath.row);
+	// FIXME: add move here	
+		
+	}
+}
+
+#pragma mark Table Cell Editing Toggle
+
+- (void) startEditingTable: (UILongPressGestureRecognizer *) gesture
+{
+	[self.tableView setEditing:YES animated:YES];
+	[self.bookshelvesController showEditingButton:YES forTable:self.tableView];
+}
+
 #pragma mark -
 #pragma mark Core Data Grid View Methods
 #pragma mark MRGridViewDataSource methods
@@ -223,7 +258,7 @@ NSInteger bookSort(SCHBookInfo *book1, SCHBookInfo *book2, void *context)
 	SCHBookInfo *bookInfo = [self.books objectAtIndex:index];
 
 	[gridCell setBookInfo:bookInfo];
-		
+	
 	return gridCell;
 }
 
@@ -237,10 +272,35 @@ NSInteger bookSort(SCHBookInfo *book1, SCHBookInfo *book2, void *context)
 	return nil;
 }
 
--(BOOL) gridView:(MRGridView*)gridView canMoveCellAtIndex: (NSInteger)index { return NO;}
--(void) gridView:(MRGridView*)gridView moveCellAtIndex: (NSInteger)fromIndex toIndex: (NSInteger)toIndex{}
--(void) gridView:(MRGridView*)gridView finishedMovingCellToIndex:(NSInteger)toIndex{}
--(void) gridView:(MRGridView*)gridView commitEditingStyle:(MRGridViewCellEditingStyle)editingStyle forIndex:(NSInteger)index{}
+-(BOOL) gridView:(MRGridView*)gridView canMoveCellAtIndex: (NSInteger)index 
+{ 
+//	NSLog(@"Starting move for cell %d", index);
+	self.moveToValue = -1;
+	[self.bookshelvesController stopSidewaysScrolling];
+	return YES;
+}
+
+-(void) gridView:(MRGridView*)gridView moveCellAtIndex: (NSInteger)fromIndex toIndex: (NSInteger)toIndex
+{
+//	NSLog(@"Moving cell from index %d to index %d", fromIndex, toIndex);
+	
+	self.moveToValue = toIndex;
+}
+
+-(void) gridView:(MRGridView*)gridView finishedMovingCellToIndex:(NSInteger)toIndex
+{
+//	NSLog(@"Finished moving cell to index %d", toIndex);
+	[self.bookshelvesController resumeSidewaysScrolling];
+	
+	if (self.moveToValue != -1 && (toIndex != self.moveToValue)) {
+		NSLog(@"Moving cell from index %d to index %d", toIndex, self.moveToValue);
+		// FIXME: add move here
+		
+	}
+}
+-(void) gridView:(MRGridView*)gridView commitEditingStyle:(MRGridViewCellEditingStyle)editingStyle forIndex:(NSInteger)index
+{
+}
 
 #pragma mark MRGridViewDelegate methods
 

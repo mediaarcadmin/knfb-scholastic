@@ -32,4 +32,8 @@
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)bundleOrNil managedObjectContext:(NSManagedObjectContext *)moc books:(NSArray *)books;
 
+- (void) stopSidewaysScrolling;
+- (void) resumeSidewaysScrolling;
+- (void) showEditingButton: (BOOL) showButton forTable: (UITableView *) tableView;
+
 @end
