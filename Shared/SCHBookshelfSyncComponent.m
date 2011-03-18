@@ -13,6 +13,7 @@
 #import "SCHLibreAccessWebService.h"
 #import "SCHContentMetadataItem+Extensions.h"
 #import "SCHUserContentItem+Extensions.h"
+#import "SCHAppBook+Extensions.h"
 
 @interface SCHBookshelfSyncComponent ()
 
@@ -248,6 +249,8 @@
 	newContentMetadataItem.PageNumber = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServicePageNumber]];
 	newContentMetadataItem.Title = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceTitle]];
 	newContentMetadataItem.Description = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceDescription]];
+    
+    newContentMetadataItem.AppBook = [NSEntityDescription insertNewObjectForEntityForName:kSCHAppBook inManagedObjectContext:self.managedObjectContext];    
 }
 
 - (void)syncContentMetadataItem:(NSDictionary *)webContentMetadataItem withContentMetadataItem:(SCHContentMetadataItem *)localContentMetadataItem
