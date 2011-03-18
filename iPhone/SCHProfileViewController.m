@@ -69,6 +69,7 @@ static NSString * const kRootViewControllerSettingsIcon = @"Settings.png";
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+    
 #ifndef LOCALDEBUG	
 	SCHAuthenticationManager *authenticationManager = [SCHAuthenticationManager sharedAuthenticationManager];
 	
@@ -262,6 +263,14 @@ static NSString * const kRootViewControllerSettingsIcon = @"Settings.png";
 	NSMutableArray *books = [[[self fetchedResultsController] objectAtIndexPath:indexPath] allContentMetadataItems];	
 	[self pushBookshelvesControllerWithBooks:books profileItem:nil];	
 #else	
+    
+#if SERVEROVERRIDE
+    NSMutableArray *books = [[[self fetchedResultsController] objectAtIndexPath:indexPath] allContentMetadataItems];	
+	[self pushBookshelvesControllerWithBooks:books profileItem:[[self fetchedResultsController] objectAtIndexPath:indexPath]];
+    
+    return;
+#endif
+    
 	switch (indexPath.section) {
 		case 0:
 			profilePasswordViewController.managedObjectContext = self.managedObjectContext;
