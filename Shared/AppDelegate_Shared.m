@@ -74,6 +74,9 @@ static NSString * const kSCHClearLocalDebugMode = @"kSCHClearLocalDebugMode";
     [self saveContext];
 }
 
+- (void)applicationWillEnterForeground:(UIApplication *)application {
+}
+
 - (void)saveContext {
     
     NSError *error = nil;
