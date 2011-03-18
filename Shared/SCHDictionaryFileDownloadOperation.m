@@ -152,10 +152,10 @@
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
-	NSLog(@"Error downloading file %@!", [self.localPath lastPathComponent]);
+	NSLog(@"Stopped downloading file - %@", [error localizedDescription]);
 	
 	SCHDictionary *dictionary = [[SCHDictionaryManager sharedDictionaryManager] dictionaryObject];
-	dictionary.dictionaryState = SCHDictionaryProcessingStateError;
+	dictionary.dictionaryState = SCHDictionaryProcessingStateNeedsDownload;
 	
 	self.executing = NO;
 	self.finished = YES;

@@ -17,16 +17,6 @@
 
 @interface SCHDictionaryManager()
 
-// background processing - called by the app delegate when the app
-// is put into or opened from the background
-- (void) enterBackground;
-- (void) enterForeground;
-
-// checks to see if we're on wifi and the processing manager is idle
-// if so, spawn a timer to begin processing
-// the timer prevents rapid starting and stopping of the dictionary download/processing
-- (void) checkOperatingState;
-
 // the background task ID for background processing
 @property (nonatomic) UIBackgroundTaskIdentifier backgroundTask;
 
@@ -44,6 +34,20 @@
 @property BOOL connectionIdle;
 
 @property (readwrite, retain) SCHDictionary *dictionaryObject;
+
+// check current reachability state
+- (void) reachabilityCheck: (Reachability *) curReach;
+
+// background processing - called by the app delegate when the app
+// is put into or opened from the background
+- (void) enterBackground;
+- (void) enterForeground;
+
+// checks to see if we're on wifi and the processing manager is idle
+// if so, spawn a timer to begin processing
+// the timer prevents rapid starting and stopping of the dictionary download/processing
+- (void) checkOperatingState;
+- (void) processDictionary;
 
 @end
 
@@ -63,6 +67,9 @@
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	
 	self.dictionaryDownloadQueue = nil;
+	[self.wifiReach stopNotifier];
+	self.wifiReach = nil;
+	self.dictionaryObject = nil;
 	[super dealloc];
 }
 
@@ -74,6 +81,9 @@
 		
 		self.wifiAvailable = NO;
 		self.connectionIdle = NO;
+		
+		self.wifiReach = [Reachability reachabilityForInternetConnection];
+	
 	}
 	
 	return self;
@@ -89,11 +99,11 @@ static SCHDictionaryManager *sharedManager = nil;
 	if (sharedManager == nil) {
 		sharedManager = [[SCHDictionaryManager alloc] init];
 		
-		sharedManager.wifiReach = [Reachability reachabilityForLocalWiFi];
+		[sharedManager reachabilityCheck:sharedManager.wifiReach];
 		
 		// notifications for changes in reachability
-		[[NSNotificationCenter defaultCenter] addObserver:self 
-												 selector:@selector(reachabilityChanged:) 
+		[[NSNotificationCenter defaultCenter] addObserver:sharedManager 
+												 selector:@selector(reachabilityNotification:) 
 													 name:kReachabilityChangedNotification 
 												   object:nil];
 
@@ -122,7 +132,7 @@ static SCHDictionaryManager *sharedManager = nil;
 												 selector:@selector(enterForeground) 
 													 name:UIApplicationWillEnterForegroundNotification 
 												   object:nil];		
-		
+		[sharedManager.wifiReach startNotifier];
 		sharedManager.dictionaryObject = [[SCHDictionary alloc] init];
 	} 
 	
@@ -174,17 +184,23 @@ static SCHDictionaryManager *sharedManager = nil;
 		[[UIApplication sharedApplication] endBackgroundTask:self.backgroundTask];
 		self.backgroundTask = UIBackgroundTaskInvalid;
 	}		
+	
+	[sharedManager reachabilityCheck:sharedManager.wifiReach];
 }
 
 
 #pragma mark -
 #pragma mark Reachability reactions
 
-- (void) reachabilityChange: (NSNotification *) note
+- (void) reachabilityNotification: (NSNotification *) note
 {
 	Reachability* curReach = [note object];
-    NSParameterAssert([curReach isKindOfClass: [Reachability class]]);
-	
+	NSParameterAssert([curReach isKindOfClass: [Reachability class]]);
+	[self reachabilityCheck:curReach];
+}
+
+- (void) reachabilityCheck: (Reachability *) curReach
+{
 	NetworkStatus netStatus = [curReach currentReachabilityStatus];
 
 	switch (netStatus)
@@ -212,14 +228,16 @@ static SCHDictionaryManager *sharedManager = nil;
 
 - (void) connectionBecameIdle: (NSNotification *) notification
 {
-	NSLog(@"Processing manager became idle!");
+	NSAssert([NSThread currentThread] == [NSThread mainThread], @"Not on main thread!");
+	NSLog(@"****************** Processing manager became idle! ******************");
 	self.connectionIdle = YES;
 	[self checkOperatingState];
 }
 
 - (void) connectionBecameBusy: (NSNotification *) notification
 {
-	NSLog(@"Processing manager became busy!");
+	NSAssert([NSThread currentThread] == [NSThread mainThread], @"Not on main thread!");
+	NSLog(@"****************** Processing manager became busy! ******************");
 	self.connectionIdle = NO;
 	[self checkOperatingState];
 }
@@ -229,23 +247,29 @@ static SCHDictionaryManager *sharedManager = nil;
 
 - (void) checkOperatingState
 {
-	/*
+	NSLog(@"*** wifi: %@ connectionIdle: %@ ***", self.wifiAvailable?@"Yes":@"No", self.connectionIdle?@"Yes":@"No");
+	
 	// if both conditions are met, start the countdown to begin work
 	if (self.wifiAvailable && self.connectionIdle) {
-		NSLog(@"Restarting timer...");
+
 		// start the countdown from 10 seconds again
 		if (self.startTimer && [self.startTimer isValid]) {
 			[self.startTimer invalidate];
 			self.startTimer = nil; 
-		}
-	*/	
-		NSLog(@"Restarting timer...");
-		self.startTimer = [NSTimer scheduledTimerWithTimeInterval:15
-														   target:self
+		} 
+
+//		if (!self.startTimer) {
+		NSLog(@"********* Starting timer...");
+		self.startTimer = [NSTimer scheduledTimerWithTimeInterval:10
+														   target:[SCHDictionaryManager sharedDictionaryManager]
 														 selector:@selector(processDictionary)
 														 userInfo:nil
 														  repeats:NO];
-	/*} else {
+//		} else {
+//			NSLog(@"********* Timer already exists!");
+//		}
+
+	} else {
 		// otherwise, cancel work in progress
 		NSLog(@"Cancelling operations etc.");
 		if (self.startTimer && [self.startTimer isValid]) {
@@ -253,7 +277,7 @@ static SCHDictionaryManager *sharedManager = nil;
 			self.startTimer = nil; 
 		}
 		[self.dictionaryDownloadQueue cancelAllOperations];
-	}*/
+	}
 }
 
 #pragma mark -
@@ -261,7 +285,16 @@ static SCHDictionaryManager *sharedManager = nil;
 
 - (void) processDictionary
 {
-	NSLog(@"Calling processDictionary...");
+	if ([NSThread currentThread] != [NSThread mainThread]) {
+		[self performSelectorOnMainThread:@selector(processDictionary) withObject:nil waitUntilDone:NO];
+		return;
+	}
+	
+	if (!self.wifiAvailable || !self.connectionIdle) {
+		return;
+	}
+	
+	NSLog(@"**** Calling processDictionary...");
 	switch (self.dictionaryObject.dictionaryState) {
 		case SCHDictionaryProcessingStateNeedsManifest:
 		{

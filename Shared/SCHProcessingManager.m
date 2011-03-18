@@ -207,24 +207,6 @@ static SCHProcessingManager *sharedManager = nil;
 	
 	[booksNeedingProcessing release];
 	
-	// check to see if we're processing
-	
-	int totalOperations = [[self.networkOperationQueue operations] count] + 
-	[[self.webServiceOperationQueue operations] count];
-	
-	if (totalOperations == 0) {
-		if (!self.connectionIsIdle) {
-			self.connectionIsIdle = YES;
-			
-			[[NSNotificationCenter defaultCenter] postNotificationName:kSCHProcessingManagerConnectionIdle object:nil];
-		}
-	} else {
-		if (self.connectionIsIdle) {
-			self.connectionIsIdle = NO;
-			
-			[[NSNotificationCenter defaultCenter] postNotificationName:kSCHProcessingManagerConnectionBusy object:nil];
-		}
-	}
 }
 
 - (BOOL) bookNeedsProcessing: (SCHBookInfo *) bookInfo
@@ -277,7 +259,7 @@ static SCHProcessingManager *sharedManager = nil;
 			
 #else
 			// create cover image download operation
-			SCHDownloadFileOperation *downloadImageOp = [[SCHDownloadFileOperation alloc] init];
+			SCHDownloadBookFileOperation *downloadImageOp = [[SCHDownloadBookFileOperation alloc] init];
 			downloadImageOp.fileType = kSCHDownloadFileTypeCoverImage;
 			downloadImageOp.bookInfo = bookInfo;
 			downloadImageOp.resume = NO;
@@ -335,6 +317,7 @@ static SCHProcessingManager *sharedManager = nil;
 			[NSException raise:@"SCHProcessingManagerUnknownState" format:@"Unrecognised SCHBookInfo processing state (%d) in SCHProcessingManager.", bookInfo.processingState];
 			break;
 	}
+	
 }
 
 - (void) redispatchBook: (SCHBookInfo *) bookInfo
@@ -371,6 +354,31 @@ static SCHProcessingManager *sharedManager = nil;
 		bookInfo.processingState == SCHBookInfoProcessingStateReadyToRead) {
 		[self checkAndDispatchThumbsForBook:bookInfo];
 	}
+	
+	// check to see if we're processing
+	int totalOperations = [[self.networkOperationQueue operations] count] + 
+	[[self.webServiceOperationQueue operations] count];
+	
+	if (totalOperations == 0) {
+		if (!self.connectionIsIdle) {
+			self.connectionIsIdle = YES;
+			
+//			[[NSNotificationCenter defaultCenter] postNotificationName:kSCHProcessingManagerConnectionIdle object:nil];
+			[self performSelectorOnMainThread:@selector(sendNotification:) withObject:kSCHProcessingManagerConnectionIdle waitUntilDone:YES];
+		}
+	} else {
+		if (self.connectionIsIdle) {
+			self.connectionIsIdle = NO;
+			
+//			[[NSNotificationCenter defaultCenter] postNotificationName:kSCHProcessingManagerConnectionBusy object:nil];
+			[self performSelectorOnMainThread:@selector(sendNotification:) withObject:kSCHProcessingManagerConnectionBusy waitUntilDone:YES];
+		}
+	}
+}	
+
+- (void) sendNotification: (NSString *) name
+{
+	[[NSNotificationCenter defaultCenter] postNotificationName:name object:nil];
 }	
 
 #pragma mark -
