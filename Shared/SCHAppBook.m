@@ -2,7 +2,7 @@
 //  SCHAppBook.m
 //  Scholastic
 //
-//  Created by John S. Eddie on 15/03/2011.
+//  Created by John S. Eddie on 18/03/2011.
 //  Copyright (c) 2011 BitWink. All rights reserved.
 //
 
@@ -11,6 +11,7 @@
 
 
 @implementation SCHAppBook
+@dynamic State;
 @dynamic ContentMetadataItem;
 
 
