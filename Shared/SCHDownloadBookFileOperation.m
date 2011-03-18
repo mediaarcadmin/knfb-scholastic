@@ -76,14 +76,14 @@
 	if (self.fileType == kSCHDownloadFileTypeXPSBook) {
 	
 		self.localPath = [self.bookInfo xpsPath];
-		request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:self.bookInfo.bookFileURL]];
+		request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[bookInfo stringForMetadataKey:kSCHBookInfoContentURL]]];
 		
 	} else if (self.fileType == kSCHDownloadFileTypeCoverImage) {
 		
 		NSString *cacheDir  = [SCHBookInfo cacheDirectory];
 		self.localPath = [cacheDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png", bookInfo.bookIdentifier]];
 		
-		request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:self.bookInfo.coverURL]];
+		request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[bookInfo stringForMetadataKey:kSCHBookInfoCoverURL]]];
 
 	} else {
 		[NSException raise:@"SCHDownloadFileOperationUnknownFileType" format:@"Unknown file type for SCHDownloadFileOperation."];
@@ -172,7 +172,7 @@
 	}
 	
 	
-	float percentage = (float) ((float) fileSize/[self.bookInfo.contentMetadata.FileSize floatValue]);
+	float percentage = (float) ((float) fileSize/[[bookInfo objectForMetadataKey:kSCHBookInfoFileSize] floatValue]);
 	
 	NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
 							  [NSNumber numberWithFloat:percentage], @"currentPercentage",

@@ -29,7 +29,10 @@
 
 NSInteger bookSort(SCHBookInfo *book1, SCHBookInfo *book2, void *context)
 {
-	return([book1.contentMetadata.Title localizedCaseInsensitiveCompare:book2.contentMetadata.Title]);
+	NSString *book1Title = [book1 stringForMetadataKey:kSCHBookInfoTitle];
+	NSString *book2Title = [book2 stringForMetadataKey:kSCHBookInfoTitle];
+	
+	return([book1Title localizedCaseInsensitiveCompare:book2Title]);
 }
 
 @implementation SCHBookShelfViewController
@@ -159,10 +162,10 @@ NSInteger bookSort(SCHBookInfo *book1, SCHBookInfo *book2, void *context)
 		return;
 	}
 	
-	NSLog(@"Showing book %@.", [bookInfo.contentMetadata Title]);
-	NSLog(@"Filename %@.", [bookInfo.contentMetadata FileName]);
+	NSLog(@"Showing book %@.", [bookInfo stringForMetadataKey:kSCHBookInfoTitle]);
+	NSLog(@"Showing book %@.", [bookInfo stringForMetadataKey:kSCHBookInfoFileName]);
 	
-	SCHContentMetadataItem *contentMetadataItem = bookInfo.contentMetadata;
+	//SCHContentMetadataItem *contentMetadataItem = bookInfo.contentMetadata;
 	
 	BWKTestPageViewController *pageView = [[BWKTestPageViewController alloc] initWithNibName:nil bundle:nil];
 	pageView.bookInfo = bookInfo;
@@ -171,14 +174,14 @@ NSInteger bookSort(SCHBookInfo *book1, SCHBookInfo *book2, void *context)
 	optionsView.pageViewController = pageView;
 	optionsView.bookInfo = bookInfo;
 	
-	NSString *thumbKey = [NSString stringWithFormat:@"thumb-%@", contentMetadataItem.ContentIdentifier];
+	NSString *thumbKey = [NSString stringWithFormat:@"thumb-%@", [bookInfo stringForMetadataKey:kSCHBookInfoContentIdentifier]];
 	NSData *imageData = [self.componentCache objectForKey:thumbKey];
 	
 	if ([imageData length]) {
 		optionsView.thumbnailImage = [UIImage imageWithData:imageData];
 	} else {
 		BWKXPSProvider *provider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBook:bookInfo];
-		provider.title = contentMetadataItem.FileName;
+		provider.title = [bookInfo stringForMetadataKey:kSCHBookInfoFileName];
 		imageData = [provider coverThumbData];
 		[[SCHBookManager sharedBookManager] checkInXPSProviderForBook:bookInfo];
 
@@ -257,8 +260,8 @@ NSInteger bookSort(SCHBookInfo *book1, SCHBookInfo *book2, void *context)
 	}
 	
 	
-	NSLog(@"Showing book %@.", [bookInfo.contentMetadata Title]);
-	NSLog(@"Filename %@.", [bookInfo.contentMetadata FileName]);
+	NSLog(@"Showing book %@.", [bookInfo stringForMetadataKey:kSCHBookInfoTitle]);
+	NSLog(@"Filename %@.", [bookInfo stringForMetadataKey:kSCHBookInfoFileName]);
 	
 	BWKTestPageViewController *pageView = [[BWKTestPageViewController alloc] initWithNibName:nil bundle:nil];
 	pageView.bookInfo = bookInfo;
@@ -267,14 +270,14 @@ NSInteger bookSort(SCHBookInfo *book1, SCHBookInfo *book2, void *context)
 	optionsView.pageViewController = pageView;
 	optionsView.bookInfo = bookInfo;
 	
-	NSString *thumbKey = [NSString stringWithFormat:@"thumb-%@", bookInfo.contentMetadata.ContentIdentifier];
+	NSString *thumbKey = [NSString stringWithFormat:@"thumb-%@", [bookInfo stringForMetadataKey:kSCHBookInfoContentIdentifier]];
 	NSData *imageData = [self.componentCache objectForKey:thumbKey];
 	
 	if ([imageData length]) {
 		optionsView.thumbnailImage = [UIImage imageWithData:imageData];
 	} else {
 		BWKXPSProvider *provider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBook:bookInfo];
-		provider.title = bookInfo.contentMetadata.FileName;
+		provider.title = [bookInfo stringForMetadataKey:kSCHBookInfoFileName];
 		imageData = [provider coverThumbData];
 		[[SCHBookManager sharedBookManager] checkInXPSProviderForBook:bookInfo];
 		
