@@ -9,9 +9,10 @@
 #import "SCHDictionaryManager.h"
 #import "Reachability.h"
 #import "SCHProcessingManager.h"
-#import "SCHDictionary.h"
 #import "SCHDictionaryManifestOperation.h"
 #import "SCHDictionaryFileDownloadOperation.h"
+#import "SCHBookManager.h"
+#import "SCHAppDictionaryState+Extensions.h"
 
 #pragma mark Class Extension
 
@@ -33,8 +34,6 @@
 @property BOOL wifiAvailable;
 @property BOOL connectionIdle;
 
-@property (readwrite, retain) SCHDictionary *dictionaryObject;
-
 // check current reachability state
 - (void) reachabilityCheck: (Reachability *) curReach;
 
@@ -49,6 +48,9 @@
 - (void) checkOperatingState;
 - (void) processDictionary;
 
+// the core data object for dictionary state - creates a new one if needed
+- (SCHAppDictionaryState *) appDictionaryState;
+
 @end
 
 #pragma mark -
@@ -57,7 +59,8 @@
 
 @synthesize backgroundTask, dictionaryDownloadQueue;
 @synthesize wifiReach, startTimer, wifiAvailable, connectionIdle;
-@synthesize dictionaryObject;
+@synthesize isProcessing;
+@synthesize dictionaryURL;
 
 #pragma mark -
 #pragma mark Object Lifecycle
@@ -69,7 +72,6 @@
 	self.dictionaryDownloadQueue = nil;
 	[self.wifiReach stopNotifier];
 	self.wifiReach = nil;
-	self.dictionaryObject = nil;
 	[super dealloc];
 }
 
@@ -83,6 +85,9 @@
 		self.connectionIdle = NO;
 		
 		self.wifiReach = [Reachability reachabilityForInternetConnection];
+		
+		// check for the core data dictionary object
+		
 	
 	}
 	
@@ -132,8 +137,8 @@ static SCHDictionaryManager *sharedManager = nil;
 												 selector:@selector(enterForeground) 
 													 name:UIApplicationWillEnterForegroundNotification 
 												   object:nil];		
+		
 		[sharedManager.wifiReach startNotifier];
-		sharedManager.dictionaryObject = [[SCHDictionary alloc] init];
 	} 
 	
 	return sharedManager;
@@ -295,7 +300,7 @@ static SCHDictionaryManager *sharedManager = nil;
 	}
 	
 	NSLog(@"**** Calling processDictionary...");
-	switch (self.dictionaryObject.dictionaryState) {
+	switch ([SCHDictionaryManager sharedDictionaryManager].dictionaryState) {
 		case SCHDictionaryProcessingStateNeedsManifest:
 		{
 			NSLog(@"needs manifest...");
@@ -335,6 +340,87 @@ static SCHDictionaryManager *sharedManager = nil;
 	}
 	
 	
+}
+
+#pragma mark -
+#pragma mark Dictionary State
+
+- (NSString *) dictionaryVersion
+{
+	SCHAppDictionaryState *state = [[SCHDictionaryManager sharedDictionaryManager] appDictionaryState];
+	return [state Version];
+}
+
+- (void) setDictionaryVersion:(NSString *) newVersion
+{
+	SCHAppDictionaryState *state = [[SCHDictionaryManager sharedDictionaryManager] appDictionaryState];
+	state.Version = newVersion;
+	
+	NSError *error = nil;
+	[[[SCHBookManager sharedBookManager] managedObjectContextForCurrentThread] save:&error];
+	
+	if (error) {
+		NSLog(@"Error while saving dictionary version: %@", [error localizedDescription]);
+	}
+	
+}
+
+- (SCHDictionaryProcessingState) dictionaryState
+{
+	SCHAppDictionaryState *state = [[SCHDictionaryManager sharedDictionaryManager] appDictionaryState];
+	return [[state State] intValue];
+}
+
+- (void) setDictionaryState:(SCHDictionaryProcessingState) newState
+{
+	SCHAppDictionaryState *state = [[SCHDictionaryManager sharedDictionaryManager] appDictionaryState];
+	state.State = [NSNumber numberWithInt:newState];
+	
+	NSError *error = nil;
+	[[[SCHBookManager sharedBookManager] managedObjectContextForCurrentThread] save:&error];
+	
+	if (error) {
+		NSLog(@"Error while saving dictionary state: %@", [error localizedDescription]);
+	}
+}
+
+#pragma mark -
+#pragma mark Core Data - App Dictionary State
+- (SCHAppDictionaryState *) appDictionaryState
+{
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    // Edit the entity name as appropriate.
+    NSEntityDescription *entity = [NSEntityDescription entityForName:kSCHAppDictionaryState 
+											  inManagedObjectContext:[[SCHBookManager sharedBookManager] managedObjectContextForCurrentThread]];
+    [fetchRequest setEntity:entity];
+    
+	NSError *error = nil;				
+	NSArray *results = [[[SCHBookManager sharedBookManager] managedObjectContextForCurrentThread] executeFetchRequest:fetchRequest error:&error];
+	
+	[fetchRequest release];
+	
+	if (error) {
+		NSLog(@"error when retrieving app dictionary state: %@", [error localizedDescription]);
+		return nil;
+	}
+	
+	if (results && [results count] == 1) {
+		return [results objectAtIndex:0];
+	} else {
+		// otherwise, create a dictionary state object
+		SCHAppDictionaryState *newState = [NSEntityDescription insertNewObjectForEntityForName:kSCHAppDictionaryState 
+																		inManagedObjectContext:[[SCHBookManager sharedBookManager] managedObjectContextForCurrentThread]];
+		newState.State = [NSNumber numberWithInt:SCHDictionaryProcessingStateNeedsManifest];
+		
+		NSError *error = nil;
+		[[[SCHBookManager sharedBookManager] managedObjectContextForCurrentThread] save:&error];
+		
+		if (error) {
+			NSLog(@"Error while saving app dictionary state: %@", [error localizedDescription]);
+		}
+		
+		return newState;
+	}
 }
 
 

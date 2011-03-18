@@ -135,7 +135,7 @@
 		NSLog(@"Error while saving processing state: %@", [error localizedDescription]);
 	}
 	
-	NSLog(@"setting %@ to processing state \"%@\".", self.bookIdentifier, [self currentProcessingStateAsString]);
+//	NSLog(@"setting %@ to processing state \"%@\".", self.bookIdentifier, [self currentProcessingStateAsString]);
 	
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"SCHBookStatusUpdate" object:self];
 	

@@ -409,7 +409,7 @@ static SCHProcessingManager *sharedManager = nil;
 {	
 	SCHBookInfo *book = bookCover.bookInfo;
 	
-	NSLog(@"Requesting thumb for %@, size %@", book.bookIdentifier, NSStringFromCGSize(size));
+//	NSLog(@"Requesting thumb for %@, size %@", book.bookIdentifier, NSStringFromCGSize(size));
 	@synchronized(self.thumbImageRequests) {
 		
 		// check for an existing file

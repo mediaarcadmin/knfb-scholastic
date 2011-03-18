@@ -326,9 +326,7 @@
 		F8509F9012F0654B00197EB5 /* thumbImage.png in Resources */ = {isa = PBXBuildFile; fileRef = F8509F8012F0653700197EB5 /* thumbImage.png */; };
 		F8678D8A133218D8001FDB2F /* ScholasticFeatureCompatibility.plist in Resources */ = {isa = PBXBuildFile; fileRef = F8678D89133218D8001FDB2F /* ScholasticFeatureCompatibility.plist */; };
 		F8678D8B133218D8001FDB2F /* ScholasticFeatureCompatibility.plist in Resources */ = {isa = PBXBuildFile; fileRef = F8678D89133218D8001FDB2F /* ScholasticFeatureCompatibility.plist */; };
-		F8C4C3FB1332594A0057420E /* SCHDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = F8C4C3F81332594A0057420E /* SCHDictionary.m */; };
 		F8C4C3FC1332594A0057420E /* SCHDictionaryManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F8C4C3FA1332594A0057420E /* SCHDictionaryManager.m */; };
-		F8C4C3FD1332594A0057420E /* SCHDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = F8C4C3F81332594A0057420E /* SCHDictionary.m */; };
 		F8C4C3FE1332594A0057420E /* SCHDictionaryManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F8C4C3FA1332594A0057420E /* SCHDictionaryManager.m */; };
 		F8C4C4011332595E0057420E /* SCHBookURLRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F8C4C4001332595E0057420E /* SCHBookURLRequestOperation.m */; };
 		F8C4C4021332595E0057420E /* SCHBookURLRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F8C4C4001332595E0057420E /* SCHBookURLRequestOperation.m */; };
@@ -797,8 +795,6 @@
 		F8509F8012F0653700197EB5 /* thumbImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = thumbImage.png; path = Shared/Images/thumbImage.png; sourceTree = "<group>"; };
 		F8509F8112F0653700197EB5 /* booktexture-nocover.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "booktexture-nocover.png"; path = "Shared/Images/booktexture-nocover.png"; sourceTree = "<group>"; };
 		F8678D89133218D8001FDB2F /* ScholasticFeatureCompatibility.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = ScholasticFeatureCompatibility.plist; sourceTree = "<group>"; };
-		F8C4C3F71332594A0057420E /* SCHDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHDictionary.h; path = Shared/SCHDictionary.h; sourceTree = "<group>"; };
-		F8C4C3F81332594A0057420E /* SCHDictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHDictionary.m; path = Shared/SCHDictionary.m; sourceTree = "<group>"; };
 		F8C4C3F91332594A0057420E /* SCHDictionaryManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHDictionaryManager.h; path = Shared/SCHDictionaryManager.h; sourceTree = "<group>"; };
 		F8C4C3FA1332594A0057420E /* SCHDictionaryManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHDictionaryManager.m; path = Shared/SCHDictionaryManager.m; sourceTree = "<group>"; };
 		F8C4C3FF1332595E0057420E /* SCHBookURLRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookURLRequestOperation.h; path = Shared/SCHBookURLRequestOperation.h; sourceTree = "<group>"; };
@@ -1564,8 +1560,6 @@
 			isa = PBXGroup;
 			children = (
 				F8C4C41913325A150057420E /* Dictionary Operations */,
-				F8C4C3F71332594A0057420E /* SCHDictionary.h */,
-				F8C4C3F81332594A0057420E /* SCHDictionary.m */,
 				F8C4C3F91332594A0057420E /* SCHDictionaryManager.h */,
 				F8C4C3FA1332594A0057420E /* SCHDictionaryManager.m */,
 			);
@@ -1897,7 +1891,6 @@
 				F82D39DA131EA7D400289FF3 /* SCHBookShelfTableViewCell.m in Sources */,
 				52322C34132693F500BB071D /* SCHURLManager.m in Sources */,
 				526750DB13291EB500063AC8 /* SCHRightsManager.m in Sources */,
-				F8C4C3FD1332594A0057420E /* SCHDictionary.m in Sources */,
 				F8C4C3FE1332594A0057420E /* SCHDictionaryManager.m in Sources */,
 				F8C4C4021332595E0057420E /* SCHBookURLRequestOperation.m in Sources */,
 				F8C4C406133259680057420E /* SCHRightsParsingOperation.m in Sources */,
@@ -2031,7 +2024,6 @@
 				F82D39D9131EA7D400289FF3 /* SCHBookShelfTableViewCell.m in Sources */,
 				526750D213290EE800063AC8 /* SCHURLManager.m in Sources */,
 				526750DC13291EB500063AC8 /* SCHRightsManager.m in Sources */,
-				F8C4C3FB1332594A0057420E /* SCHDictionary.m in Sources */,
 				F8C4C3FC1332594A0057420E /* SCHDictionaryManager.m in Sources */,
 				F8C4C4011332595E0057420E /* SCHBookURLRequestOperation.m in Sources */,
 				F8C4C405133259680057420E /* SCHRightsParsingOperation.m in Sources */,

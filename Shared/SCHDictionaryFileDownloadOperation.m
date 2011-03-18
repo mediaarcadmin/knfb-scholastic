@@ -9,7 +9,6 @@
 #import "SCHDictionaryFileDownloadOperation.h"
 #import "SCHBookInfo.h"
 #import "SCHDictionaryManager.h"
-#import "SCHDictionary.h"
 
 #pragma mark Class Extension
 
@@ -57,8 +56,9 @@
 		
 		// FIXME: put the cache directory method somewhere better
 		
-		SCHDictionary *dictionary = [[SCHDictionaryManager sharedDictionaryManager] dictionaryObject];
-		self.localPath = [[SCHBookInfo cacheDirectory] stringByAppendingFormat:@"/dictionary-%.2f.zip", [dictionary dictionaryVersion]];
+		self.localPath = [[SCHBookInfo cacheDirectory] 
+						  stringByAppendingFormat:@"/dictionary-%.2f.zip", 
+						  [[SCHDictionaryManager sharedDictionaryManager] dictionaryVersion]];
 		
 		[self beginConnection];
 	}
@@ -71,9 +71,7 @@
 	// check first to see if the file has been created
 	NSMutableURLRequest *request = nil;
 	
-	SCHDictionary *dictionary = [[SCHDictionaryManager sharedDictionaryManager] dictionaryObject];
-	
-	request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:dictionary.dictionaryURL]];
+	request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[SCHDictionaryManager sharedDictionaryManager].dictionaryURL]];
 	
 	unsigned long long fileSize = 0;
 	
@@ -157,8 +155,17 @@
 {
 	NSLog(@"Finished file %@.", [self.localPath lastPathComponent]);
 	
-	SCHDictionary *dictionary = [[SCHDictionaryManager sharedDictionaryManager] dictionaryObject];
-	dictionary.dictionaryState = SCHDictionaryProcessingStateDone;
+	// fire a 100% notification
+	NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
+							  [NSNumber numberWithFloat:1.0f], @"currentPercentage",
+							  nil];
+	
+	[self performSelectorOnMainThread:@selector(firePercentageUpdate:) 
+						   withObject:userInfo
+						waitUntilDone:YES];
+	
+	
+	[SCHDictionaryManager sharedDictionaryManager].dictionaryState = SCHDictionaryProcessingStateDone;
 	
 	self.executing = NO;
 	self.finished = YES;
@@ -171,8 +178,7 @@
 {
 	NSLog(@"Stopped downloading file - %@", [error localizedDescription]);
 	
-	SCHDictionary *dictionary = [[SCHDictionaryManager sharedDictionaryManager] dictionaryObject];
-	dictionary.dictionaryState = SCHDictionaryProcessingStateNeedsDownload;
+	[SCHDictionaryManager sharedDictionaryManager].dictionaryState = SCHDictionaryProcessingStateNeedsDownload;
 	
 	self.executing = NO;
 	self.finished = YES;

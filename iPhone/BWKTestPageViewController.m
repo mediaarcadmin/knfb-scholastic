@@ -48,6 +48,31 @@
 {
 	[super viewWillAppear:animated];
 	
+	// display book information on the console, for debugging
+	NSLog(@"------");
+	NSLog(@"Book Info for ISBN %@", self.bookInfo.bookIdentifier);
+	NSLog(@"Title: %@ (XPS Title: %@)", [self.bookInfo stringForMetadataKey:kSCHBookInfoTitle], [self.bookInfo stringForLocalMetadataKey:kSCHBookInfoXPSTitle]);
+	NSLog(@"Author: %@ (XPS Author: %@)", [self.bookInfo stringForMetadataKey:kSCHBookInfoAuthor], [self.bookInfo stringForLocalMetadataKey:kSCHBookInfoXPSAuthor]);
+	NSLog(@"XPS Category: %@", [self.bookInfo stringForLocalMetadataKey:kSCHBookInfoXPSCategory]);
+	NSLog(@"Description: %@", [self.bookInfo stringForMetadataKey:kSCHBookInfoDescription]);
+
+	NSLog(@"---");
+	
+	NSLog(@"Text to Speech? %@ Can Reflow? %@", 
+		  ([[self.bookInfo objectForMetadataKey:kSCHBookInfoRightsTTSPermitted] boolValue]?@"Yes":@"No"),
+		  ([[self.bookInfo objectForMetadataKey:kSCHBookInfoRightsReflowPermitted] boolValue]?@"Yes":@"No"));
+	NSLog(@"Has Audio? %@ Has Story Interactions? %@ Has Extras? %@",
+		  ([[self.bookInfo objectForMetadataKey:kSCHBookInfoRightsHasAudio] boolValue]?@"Yes":@"No"),
+		  ([[self.bookInfo objectForMetadataKey:kSCHBookInfoRightsHasStoryInteractions] boolValue]?@"Yes":@"No"),
+		  ([[self.bookInfo objectForMetadataKey:kSCHBookInfoRightsHasExtras] boolValue]?@"Yes":@"No"));
+
+	NSString *drmVersion = [[self.bookInfo objectForMetadataKey:kSCHBookInfoRightsDRMVersion] stringValue];
+	NSLog(@"Layout starts on left? %@ DRM Version: %@", 
+		  ([[self.bookInfo objectForMetadataKey:kSCHBookInfoRightsLayoutStartsOnLeftSide] boolValue]?@"Yes":@"No"),
+		  drmVersion?drmVersion:@"None");
+		  
+		  
+	
 	[self loadImageForCurrentPage];
 	
 	scrubberInfoView.layer.cornerRadius = 5.0f;
