@@ -185,8 +185,8 @@
 	
 	[self.progressView setProgress:[self.bookInfo currentDownloadedPercentage]];
 	
-	self.titleLabel.text = [self.bookInfo.contentMetadata Title];
-	self.subtitleLabel.text = [self.bookInfo.contentMetadata Author];
+	self.titleLabel.text = [self.bookInfo stringForMetadataKey:kSCHBookInfoTitle];
+	self.subtitleLabel.text = [self.bookInfo stringForMetadataKey:kSCHBookInfoAuthor];
 	self.statusLabel.text = status;
 	
 	[self layoutSubviews];

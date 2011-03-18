@@ -14,7 +14,7 @@ typedef enum {
 	kSCHDownloadFileTypeCoverImage
 } kSCHDownloadFileType;
 
-@interface SCHDownloadFileOperation : NSOperation {
+@interface SCHDownloadBookFileOperation : NSOperation {
 
 }
 

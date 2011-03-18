@@ -19,7 +19,6 @@
 @synthesize bookIdentifier;
 @synthesize processing;
 @synthesize processingState;
-@synthesize coverURL, bookFileURL;
 
 
 #pragma mark -
@@ -104,6 +103,142 @@
 {
 	return [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject];
 }
+
+#pragma mark -
+#pragma mark Content Metadata Access
+
+// methods for getting and setting content metadata
+- (id) objectForMetadataKey: (NSString *) metadataKey
+{
+	id returnedResult = nil;
+	
+	if (!metadataKey) {
+		return nil;
+	}
+	
+	if ([metadataKey compare:kSCHBookInfoAuthor] == NSOrderedSame) {
+		returnedResult = [[self contentMetadata] Author];
+	} else if ([metadataKey compare:kSCHBookInfoVersion] == NSOrderedSame) {
+		returnedResult = [[self contentMetadata] Version];
+	} else if ([metadataKey compare:kSCHBookInfoEnhanced] == NSOrderedSame) {
+		returnedResult = [[self contentMetadata] Enhanced];
+	} else if ([metadataKey compare:kSCHBookInfoFileSize] == NSOrderedSame) {
+		returnedResult = [[self contentMetadata] FileSize];
+	} else if ([metadataKey compare:kSCHBookInfoCoverURL] == NSOrderedSame) {
+		returnedResult = [[self contentMetadata] CoverURL];
+	} else if ([metadataKey compare:kSCHBookInfoContentURL] == NSOrderedSame) {
+		returnedResult = [[self contentMetadata] ContentURL];
+	} else if ([metadataKey compare:kSCHBookInfoPageNumber] == NSOrderedSame) {
+		returnedResult = [[self contentMetadata] PageNumber];
+	} else if ([metadataKey compare:kSCHBookInfoTitle] == NSOrderedSame) {
+		returnedResult = [[self contentMetadata] Title];
+	} else if ([metadataKey compare:kSCHBookInfoFileName] == NSOrderedSame) {
+		returnedResult = [[self contentMetadata] FileName];
+	} else if ([metadataKey compare:kSCHBookInfoDescription] == NSOrderedSame) {
+		returnedResult = [[self contentMetadata] Description];
+	} else if ([metadataKey compare:kSCHBookInfoContentIdentifier] == NSOrderedSame) {
+		returnedResult = [[self contentMetadata] ContentIdentifier];
+	}
+	
+	return returnedResult;
+}
+
+- (NSString *) stringForMetadataKey: (NSString *) metadataKey
+{
+	id returnedResult = [self objectForMetadataKey:metadataKey];
+	
+	if (!returnedResult) {
+		return nil;
+	}
+	
+	if ([returnedResult isKindOfClass:[NSString class]]) {
+		return returnedResult;
+	}
+	
+	if ([returnedResult isKindOfClass:[NSNumber class]]) {
+		NSNumber *number = (NSNumber *) returnedResult;
+		return [number stringValue];
+	}
+	NSLog(@"Unknown metadata class type. %@", NSStringFromClass([returnedResult class]));
+	return nil;
+}
+
+
+- (void) setObject: (id) obj forMetadataKey: (NSString *) metadataKey;
+{
+	
+	SCHContentMetadataItem *contentMetadata = [self contentMetadata];
+	
+	if (!metadataKey) {
+		return;
+	}
+	
+	if ([metadataKey compare:kSCHBookInfoAuthor] == NSOrderedSame) {
+		contentMetadata.Author = obj;
+	} else if ([metadataKey compare:kSCHBookInfoVersion] == NSOrderedSame) {
+		contentMetadata.Version = obj;
+	} else if ([metadataKey compare:kSCHBookInfoEnhanced] == NSOrderedSame) {
+		contentMetadata.Enhanced = obj;
+	} else if ([metadataKey compare:kSCHBookInfoFileSize] == NSOrderedSame) {
+		contentMetadata.FileSize = obj;
+	} else if ([metadataKey compare:kSCHBookInfoCoverURL] == NSOrderedSame) {
+		contentMetadata.CoverURL = obj;
+	} else if ([metadataKey compare:kSCHBookInfoContentURL] == NSOrderedSame) {
+		contentMetadata.ContentURL = obj;
+	} else if ([metadataKey compare:kSCHBookInfoPageNumber] == NSOrderedSame) {
+		contentMetadata.PageNumber = obj;
+	} else if ([metadataKey compare:kSCHBookInfoTitle] == NSOrderedSame) {
+		contentMetadata.Title = obj;
+	} else if ([metadataKey compare:kSCHBookInfoFileName] == NSOrderedSame) {
+		contentMetadata.FileName = obj;
+	} else if ([metadataKey compare:kSCHBookInfoDescription] == NSOrderedSame) {
+		contentMetadata.Description = obj;
+	} else if ([metadataKey compare:kSCHBookInfoContentIdentifier] == NSOrderedSame) {
+		contentMetadata.ContentIdentifier = obj;
+	}
+	
+	
+	NSManagedObjectContext *context = [[SCHBookManager sharedBookManager] managedObjectContextForCurrentThread];
+
+	NSError *error = nil;
+	[context save:&error];
+	
+	if (error) {
+		NSLog(@"Error while saving contentMetadata: %@", [error localizedDescription]);
+	}
+}
+
+- (void) setString: (NSString *) obj forMetadataKey: (NSString *) metadataKey;
+{
+	NSString *value = nil;
+	
+	if ([metadataKey compare:kSCHBookInfoAuthor] == NSOrderedSame) {
+		value = obj;
+	} else if ([metadataKey compare:kSCHBookInfoVersion] == NSOrderedSame) {
+		value = obj;
+	} else if ([metadataKey compare:kSCHBookInfoEnhanced] == NSOrderedSame) {
+		value = [(NSNumber *) obj stringValue];
+	} else if ([metadataKey compare:kSCHBookInfoFileSize] == NSOrderedSame) {
+		value = [(NSNumber *) obj stringValue];
+	} else if ([metadataKey compare:kSCHBookInfoCoverURL] == NSOrderedSame) {
+		value = obj;
+	} else if ([metadataKey compare:kSCHBookInfoContentURL] == NSOrderedSame) {
+		value = obj;
+	} else if ([metadataKey compare:kSCHBookInfoPageNumber] == NSOrderedSame) {
+		value = [(NSNumber *) obj stringValue];
+	} else if ([metadataKey compare:kSCHBookInfoTitle] == NSOrderedSame) {
+		value = obj;
+	} else if ([metadataKey compare:kSCHBookInfoFileName] == NSOrderedSame) {
+		value = obj;
+	} else if ([metadataKey compare:kSCHBookInfoDescription] == NSOrderedSame) {
+		value = obj;
+	} else if ([metadataKey compare:kSCHBookInfoContentIdentifier] == NSOrderedSame) {
+		value = obj;
+	}
+	
+	[self setObject:value forMetadataKey:metadataKey];
+}
+
 
 #pragma mark -
 #pragma mark Current Book Information

@@ -24,6 +24,8 @@ typedef enum {
 	SCHBookInfoProcessingStateReadyToRead
 } SCHBookInfoCurrentProcessingState;
 
+static NSString * const kSCHProcessingManagerConnectionIdle = @"SCHProcessingManagerConnectionIdle";
+static NSString * const kSCHProcessingManagerConnectionBusy = @"SCHProcessingManagerConnectionBusy";
 
 @interface SCHProcessingManager : NSObject {
 
