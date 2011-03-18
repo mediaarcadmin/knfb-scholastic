@@ -13,9 +13,11 @@
 #import "SCHContentProfileItem+Extensions.h"
 #import "SCHContentMetadataItem+Extensions.h"
 #import "SCHUserContentItem+Extensions.h"
+#import "SCHAppBookOrder+Extensions.h"
 #import "SCHBookInfo.h"
 #import "SCHBookManager.h"
 #import "USAdditions.h"
+#import "SCHLibreAccessWebService.h"
 
 static NSString * const kSCHProfileItemContentProfileItem = @"ContentProfileItem";
 static NSString * const kSCHProfileItemUserContentItem = @"UserContentItem";
@@ -62,7 +64,28 @@ static NSString * const kSCHProfileItemUserContentItemContentMetadataItem = @"Us
 			[bookInfo release];
 		}
 	}
-	
+    
+    // order the books
+    if ([self.AppBookOrder count] > 0) {
+        NSArray *bookOrder = [self.AppBookOrder sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:kSCHAppBookOrderOrder ascending:YES]]];
+        for (int i = 0; i < [bookOrder count]; i++) {
+            SCHAppBookOrder *bookOrderItem = [bookOrder objectAtIndex:i];
+            
+            NSUInteger bookIndex = [books indexOfObjectPassingTest:^(id obj, NSUInteger idx, BOOL *stop) {
+                if ([bookOrderItem.ISBN compare:[obj objectForMetadataKey:kSCHLibreAccessWebServiceContentIdentifier]] == NSOrderedSame) {
+                    *stop = YES;
+                    return(YES);
+                } else {
+                    return NO;
+                }
+            }];
+            
+            if(bookIndex != NSNotFound) {
+                [books exchangeObjectAtIndex:i withObjectAtIndex:bookIndex];
+            }
+        }
+    }
+    
 	return(books);
 }
 
@@ -76,6 +99,28 @@ static NSString * const kSCHProfileItemUserContentItemContentMetadataItem = @"Us
 				[[self managedObjectContext] refreshObject:contentMetadataItem mergeChanges:YES];					
 		}
 	}	
+}
+
+- (void)saveBookOrder:(NSArray *)books
+{
+    [self clearBookOrder];
+    
+    for (int idx = 0; idx < [books count]; idx++) {
+        SCHBookInfo *bookInfo = [books objectAtIndex:idx];
+        SCHAppBookOrder *newBookOrder = [NSEntityDescription insertNewObjectForEntityForName:kSCHAppBookOrder inManagedObjectContext:self.managedObjectContext];
+
+        newBookOrder.ISBN = [bookInfo objectForMetadataKey:kSCHLibreAccessWebServiceContentIdentifier];
+        newBookOrder.Order = [NSNumber numberWithInt:idx];
+        
+        [self addAppBookOrderObject:newBookOrder];
+    }
+}
+
+- (void)clearBookOrder 
+{
+    for (NSManagedObject *bookOrder in self.AppBookOrder) {
+        [[self managedObjectContext] deleteObject:bookOrder];
+    }
 }
 
 - (NSString *)MD5:(NSString *)string
