@@ -57,7 +57,7 @@
 		// FIXME: put the cache directory method somewhere better
 		
 		self.localPath = [[SCHBookInfo cacheDirectory] 
-						  stringByAppendingFormat:@"/dictionary-%.2f.zip", 
+						  stringByAppendingFormat:@"/dictionary-%@.zip", 
 						  [[SCHDictionaryManager sharedDictionaryManager] dictionaryVersion]];
 		
 		[self beginConnection];
