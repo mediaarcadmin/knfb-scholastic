@@ -230,14 +230,6 @@ static SCHProcessingManager *sharedManager = nil;
 - (void) processBook: (SCHBookInfo *) bookInfo
 {
 	switch (bookInfo.processingState) {
-            
-        case SCHBookInfoProcessingStateError:
-		{
-            [bookInfo setProcessingState:SCHBookInfoProcessingStateNoURLs];
-			[self performSelector:@selector(redispatchBook:) withObject:bookInfo afterDelay:0.1f];
-			return;
-			break;
-		}	
 			
 			// *** Book has no URLs ***
 		case SCHBookInfoProcessingStateNoURLs:

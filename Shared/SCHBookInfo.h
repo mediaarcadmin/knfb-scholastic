@@ -43,7 +43,7 @@ static NSString * const kSCHBookInfoXPSCategory = @"SCHBookInfoXPSCategory";
 }
 
 // SCHBookInfo objects use the book identifier (ISBN number) as a unique ID
-@property (readwrite, retain) NSString *bookIdentifier;
+@property (nonatomic, readwrite, retain) NSString *bookIdentifier;
 
 // is this book currently being processed?
 @property (getter=isProcessing) BOOL processing;

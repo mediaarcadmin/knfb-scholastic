@@ -38,6 +38,15 @@
 	return self;
 }
 
+- (void)setBookIdentifier:(NSString *)newBookIdentifier
+{
+    [newBookIdentifier retain];
+    [bookIdentifier release];
+    bookIdentifier = newBookIdentifier;
+    
+    [self setProcessingState:SCHBookInfoProcessingStateNoURLs];
+}
+
 #pragma mark -
 #pragma mark Core Data Retrieval
 
