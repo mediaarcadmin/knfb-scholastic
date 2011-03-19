@@ -44,7 +44,7 @@
     [bookIdentifier release];
     bookIdentifier = newBookIdentifier;
     
-    [self setProcessingState:SCHBookInfoProcessingStateNoURLs];
+    //[self setProcessingState:SCHBookInfoProcessingStateNoURLs];
 }
 
 #pragma mark -
@@ -96,7 +96,7 @@
 			NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
 			[fetchRequest setEntity:[NSEntityDescription entityForName:@"SCHAppBook" inManagedObjectContext:context]];	
 			
-			NSPredicate *predicate = [NSPredicate predicateWithFormat:@"ContentMetadataItem.ContentIdentifier == %@", self.bookIdentifier];
+			NSPredicate *predicate = [NSPredicate predicateWithFormat:@"ContentIdentifier == %@", self.bookIdentifier];
 			[fetchRequest setPredicate:predicate];
 			
 			NSError *error = nil;
@@ -104,7 +104,7 @@
 			[fetchRequest release], fetchRequest = nil;
 			
 			if (error) {
-				NSLog(@"Error while fetching book item: %@", [error localizedDescription]);
+				NSLog(@"Error while fetching app book data: %@", [error localizedDescription]);
 			} else if (!results || [results count] != 1) {
 				NSLog(@"Did not return expected single item. %@", results);
 			} else {
@@ -133,7 +133,15 @@
 
 - (void) setProcessingState:(SCHBookInfoCurrentProcessingState)newState
 {
+	if ([NSThread currentThread] != [NSThread mainThread]) {
+		[self performSelectorOnMainThread:@selector(setProcessingStateWithObject:) 
+							   withObject:[NSNumber numberWithInt:newState]
+							waitUntilDone:YES];
+		return;
+	}
+	
 	[self appBookData].State = [NSNumber numberWithInt:newState];
+	NSLog(@"Current state is %d", newState);
 	
 	NSManagedObjectContext *context = [[SCHBookManager sharedBookManager] managedObjectContextForCurrentThread];
 	
@@ -143,11 +151,16 @@
 	if (error) {
 		NSLog(@"Error while saving processing state: %@", [error localizedDescription]);
 	}
-	
-//	NSLog(@"setting %@ to processing state \"%@\".", self.bookIdentifier, [self currentProcessingStateAsString]);
+
+	//NSLog(@"setting %@ to processing state \"%@\".", self.bookIdentifier, [self currentProcessingStateAsString]);
 	
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"SCHBookStatusUpdate" object:self];
 	
+}
+
+- (void) setProcessingStateWithObject: (NSNumber *) newState
+{
+	[self setProcessingState:[newState intValue]];
 }
 
 #pragma mark -
@@ -347,8 +360,23 @@
 }
 
 
+-(void) setObjectforLocalMetadataKeyWithArray: (NSArray *) objects
+{
+	[self setObject:[objects objectAtIndex:0] forMetadataKey:[objects objectAtIndex:1]];
+}
+
 - (void) setObject: (id) obj forLocalMetadataKey: (NSString *) metadataKey
 {
+	
+	if ([NSThread currentThread] != [NSThread mainThread]) {
+		
+		NSArray *objects = [NSArray arrayWithObjects:obj, metadataKey, nil];
+		
+		[self performSelectorOnMainThread:@selector(setObjectforLocalMetadataKeyWithArray:) 
+							   withObject:objects
+							waitUntilDone:YES];
+		return;
+	}
 	
 	SCHAppBook *appBookData = [self appBookData];
 	

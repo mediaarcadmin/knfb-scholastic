@@ -194,7 +194,9 @@
 			[self.bookInfo setProcessingState:SCHBookInfoProcessingStateReadyForRightsParsing];
 			break;
 		case kSCHDownloadFileTypeCoverImage:
+			NSLog(@"Setting state to done.");
 			[self.bookInfo setProcessingState:SCHBookInfoProcessingStateReadyForBookFileDownload];
+			NSLog(@"Book Info state: %@", [self.bookInfo currentProcessingStateAsString]);
 			break;
 		default:
 			break;

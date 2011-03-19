@@ -229,6 +229,7 @@ static SCHProcessingManager *sharedManager = nil;
 
 - (void) processBook: (SCHBookInfo *) bookInfo
 {
+	NSLog(@"Processing state of %@ is %@", bookInfo.bookIdentifier, [bookInfo currentProcessingStateAsString]);
 	switch (bookInfo.processingState) {
 			
 			// *** Book has no URLs ***

@@ -13,7 +13,7 @@
 @class SCHAsyncBookCoverImageView;
 
 typedef enum {
-	SCHBookInfoProcessingStateError = 0,
+	SCHBookInfoProcessingStateError = -2,
 	SCHBookInfoProcessingStateBookVersionNotSupported,
 	SCHBookInfoProcessingStateNoURLs,
 	SCHBookInfoProcessingStateNoCoverImage,
