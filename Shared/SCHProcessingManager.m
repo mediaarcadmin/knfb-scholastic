@@ -314,6 +314,13 @@ static SCHProcessingManager *sharedManager = nil;
 			return;
 			break;
 		}	
+        case SCHBookInfoProcessingStateReadyForBookFileDownload:
+		{
+        // FIXME: Gordon - if you process books then switch off space saver and restart teh app this state is received
+            NSLog(@"SCHBookInfoProcessingStateReadyForBookFileDownload state");
+            return;
+            break;
+        }
 		default:
 			[NSException raise:@"SCHProcessingManagerUnknownState" format:@"Unrecognised SCHBookInfo processing state (%d) in SCHProcessingManager.", bookInfo.processingState];
 			break;
