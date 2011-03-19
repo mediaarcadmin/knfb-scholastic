@@ -15,7 +15,7 @@
 #import "BlioTimeOrderedCache.h"
 #import "SCHProfileItem+Extensions.h"
 
-@interface SCHBookShelfViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, MRGridViewDelegate, MRGridViewDataSource> {
+@interface SCHBookShelfViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate, MRGridViewDelegate, MRGridViewDataSource> {
 
 }
 

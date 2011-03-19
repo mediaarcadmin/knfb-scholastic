@@ -138,6 +138,7 @@
 	[cell setBookInfo:bookInfo];
 	
 	UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(startEditingTable:)];
+    longPress.delegate = self;
 	[cell addGestureRecognizer:longPress];
 	[longPress release];
     
@@ -234,8 +235,19 @@
 
 - (void) startEditingTable: (UILongPressGestureRecognizer *) gesture
 {
-	[self.tableView setEditing:YES animated:YES];
-	[self.bookshelvesController showEditingButton:YES forTable:self.tableView];
+    [self.tableView setEditing:YES animated:YES];
+    [self.bookshelvesController showEditingButton:YES forTable:self.tableView];
+}
+
+- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
+{
+    if ([gestureRecognizer isKindOfClass:[UILongPressGestureRecognizer class]]) {
+        if ([self.tableView isEditing]) {
+            return NO;
+        }
+    }
+    
+    return YES;
 }
 
 #pragma mark -
