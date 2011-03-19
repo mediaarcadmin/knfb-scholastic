@@ -233,6 +233,11 @@
 		newContentProfileItem.ProfileID = [NSNumber numberWithInt:1];
 		
 		[newUserContentItem addProfileListObject:newContentProfileItem];	
+        
+        NSError *error;
+        if (![self.managedObjectContext save:&error]) {
+            NSLog(@"Error saving managed object context: %@ : %@", error, [error userInfo]); 
+        }
 		
 		SCHBookInfo *bookInfo = [SCHBookManager bookInfoWithBookIdentifier:newUserContentItem.ContentIdentifier];
 		[bookInfo setProcessingState:SCHBookInfoProcessingStateNoCoverImage];

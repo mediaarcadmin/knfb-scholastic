@@ -31,7 +31,7 @@
 
 - (id) init
 {
-	if (self = [super init]) {
+	if ((self = [super init])) {
 		self.bookIdentifier = nil;
 	}
 	
@@ -85,7 +85,7 @@
 		
 		if (context) {
 			NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-			[fetchRequest setEntity:[NSEntityDescription entityForName:kSCHAppBook inManagedObjectContext:context]];	
+			[fetchRequest setEntity:[NSEntityDescription entityForName:@"SCHAppBook" inManagedObjectContext:context]];	
 			
 			NSPredicate *predicate = [NSPredicate predicateWithFormat:@"ContentMetadataItem.ContentIdentifier == %@", self.bookIdentifier];
 			[fetchRequest setPredicate:predicate];

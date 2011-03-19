@@ -27,7 +27,7 @@
 
 - (NSURL *)applicationDocumentsDirectory;
 - (void)saveContext;
-- (void) checkForLocalDebugMode;
+- (void)checkForModeSwitch;
 
 @end
 

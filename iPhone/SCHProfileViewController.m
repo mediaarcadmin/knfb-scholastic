@@ -258,6 +258,9 @@ static NSString * const kRootViewControllerSettingsIcon = @"Settings.png";
      [detailViewController release];
      */
 	
+    switch (indexPath.section) {
+		case 0: {
+            
 #ifdef LOCALDEBUG
 	// controller to view book shelf with books filtered to profile
 	NSMutableArray *books = [[[self fetchedResultsController] objectAtIndexPath:indexPath] allContentMetadataItems];	
@@ -265,24 +268,20 @@ static NSString * const kRootViewControllerSettingsIcon = @"Settings.png";
 #else	
     
 #if SERVEROVERRIDE
-    NSMutableArray *books = [[[self fetchedResultsController] objectAtIndexPath:indexPath] allContentMetadataItems];	
-	[self pushBookshelvesControllerWithBooks:books profileItem:[[self fetchedResultsController] objectAtIndexPath:indexPath]];
-    
-    return;
-#endif
-    
-	switch (indexPath.section) {
-		case 0:
+            NSMutableArray *books = [[[self fetchedResultsController] objectAtIndexPath:indexPath] allContentMetadataItems];	
+            [self pushBookshelvesControllerWithBooks:books profileItem:[[self fetchedResultsController] objectAtIndexPath:indexPath]];            
+#else
 			profilePasswordViewController.managedObjectContext = self.managedObjectContext;
 			profilePasswordViewController.profileItem = [[self fetchedResultsController] objectAtIndexPath:indexPath];
 			[self presentModalViewController:profilePasswordViewController animated:YES];
-			break;
+#endif
+#endif	
+		}	break;
 		case 1:
 			settingsController.managedObjectContext = self.managedObjectContext;
 			[self.navigationController pushViewController:self.settingsController animated:YES];
 			break;
 	}
-#endif	
 	
 	[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }

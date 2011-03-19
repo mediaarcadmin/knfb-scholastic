@@ -418,9 +418,9 @@
 
 
 - (void)dealloc {
-    self.books = nil;
 	[self releaseViewObjects];
 	
+    [books release], books = nil;
 	bookshelvesController = nil;
     [super dealloc];
 }

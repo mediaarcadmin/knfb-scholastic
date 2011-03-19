@@ -21,18 +21,15 @@ static NSTimeInterval const kAppDelegate_iPhoneSyncManagerWakeDelay = 5.0;
 #pragma mark -
 #pragma mark Application lifecycle
 
-- (void)awakeFromNib {    
-	[super awakeFromNib];
-    SCHProfileViewController *rootViewController = (SCHProfileViewController *)[navigationController topViewController];
-    rootViewController.managedObjectContext = self.managedObjectContext;
-}
-
-
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {    
     
 	[super application:application didFinishLaunchingWithOptions:launchOptions];
     // Override point for customization after application launch.
 	
+    
+    SCHProfileViewController *rootViewController = (SCHProfileViewController *)[navigationController topViewController];
+    rootViewController.managedObjectContext = self.managedObjectContext;
+    
     // Add the navigation controller's view to the window and display.
     [self.window addSubview:navigationController.view];
     [self.window makeKeyAndVisible];

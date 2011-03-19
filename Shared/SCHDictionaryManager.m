@@ -252,6 +252,7 @@ static SCHDictionaryManager *sharedManager = nil;
 
 - (void) checkOperatingState
 {
+    return;
 	NSLog(@"*** wifi: %@ connectionIdle: %@ ***", self.wifiAvailable?@"Yes":@"No", self.connectionIdle?@"Yes":@"No");
 	
 	// if both conditions are met, start the countdown to begin work
