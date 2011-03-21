@@ -212,12 +212,11 @@ static NSString * const kRootViewControllerSettingsIcon = @"Settings.png";
     return NO;
 }
 
-- (void)pushBookshelvesControllerWithBooks:(NSArray *)books profileItem: (SCHProfileItem *) profileItem
+- (void)pushBookshelvesControllerWithProfileItem: (SCHProfileItem *) profileItem
  {
 	SCHMultipleBookshelvesController *bookshelvesController = nil;
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-		bookshelvesController = [[SCHMultipleBookshelvesController alloc] initWithNibName:NSStringFromClass([SCHMultipleBookshelvesController class]) bundle:nil managedObjectContext:self.managedObjectContext books:books];
-		[bookshelvesController setProfileItem:profileItem];
+		bookshelvesController = [[SCHMultipleBookshelvesController alloc] initWithNibName:NSStringFromClass([SCHMultipleBookshelvesController class]) bundle:nil managedObjectContext:self.managedObjectContext profileItem:profileItem];
 	}
 		
 	[self.navigationController pushViewController:bookshelvesController animated:YES];
@@ -229,7 +228,6 @@ static NSString * const kRootViewControllerSettingsIcon = @"Settings.png";
 
 - (void)profilePasswordViewControllerDidComplete:(SCHProfilePasswordViewController *)profilePassword
 {
-	NSMutableArray *books = [profilePassword.profileItem allContentMetadataItems];
 /*	if([books count] < 1 && [SCHSyncManager sharedSyncManager].isSynchronizing == YES) {
 		UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:@"Please Wait" 
 															 message:@"We are retrieving book information"
@@ -240,7 +238,7 @@ static NSString * const kRootViewControllerSettingsIcon = @"Settings.png";
 		[errorAlert release];
 	} else {*/
 		// controller to view book shelf with books filtered to profile
-		[self pushBookshelvesControllerWithBooks:books profileItem:profilePassword.profileItem];	
+		[self pushBookshelvesControllerWithProfileItem:profilePassword.profileItem];	
 //	}
 }
 
@@ -263,13 +261,11 @@ static NSString * const kRootViewControllerSettingsIcon = @"Settings.png";
             
 #ifdef LOCALDEBUG
 	// controller to view book shelf with books filtered to profile
-	NSMutableArray *books = [[[self fetchedResultsController] objectAtIndexPath:indexPath] allContentMetadataItems];	
-	[self pushBookshelvesControllerWithBooks:books profileItem:[[self fetchedResultsController] objectAtIndexPath:indexPath]];	
+	[self pushBookshelvesControllerWithProfileItem:[[self fetchedResultsController] objectAtIndexPath:indexPath]];	
 #else	
     
 #if SERVEROVERRIDE
-            NSMutableArray *books = [[[self fetchedResultsController] objectAtIndexPath:indexPath] allContentMetadataItems];	
-            [self pushBookshelvesControllerWithBooks:books profileItem:[[self fetchedResultsController] objectAtIndexPath:indexPath]];            
+            [self pushBookshelvesControllerWithProfileItem:[[self fetchedResultsController] objectAtIndexPath:indexPath]];            
 #else
 			profilePasswordViewController.managedObjectContext = self.managedObjectContext;
 			profilePasswordViewController.profileItem = [[self fetchedResultsController] objectAtIndexPath:indexPath];

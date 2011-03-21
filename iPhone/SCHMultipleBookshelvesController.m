@@ -9,8 +9,7 @@
 #import "SCHMultipleBookshelvesController.h"
 #import "SCHTopPicksBookShelfViewController.h"
 #import "SCHLocalDebug.h"
-#import "SCHContentProfileItem.h"
-#import "SCHContentMetadataItem.h"
+#import "SCHContentProfileItem+Extensions.h"
 #import "SCHTopFavoritesComponent.h"
 #import <QuartzCore/QuartzCore.h>
 
@@ -25,6 +24,7 @@
 
 @property (nonatomic, retain) NSMutableArray *viewControllers;
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
+@property (nonatomic, retain) SCHProfileItem *profileItem;
 @property (nonatomic, retain) NSMutableArray *books;
 @property (nonatomic, assign) BOOL pageControlUsed;
 @property (nonatomic, assign) BOOL startedScrolling;
@@ -124,12 +124,13 @@
 	
 }
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)bundleOrNil managedObjectContext:(NSManagedObjectContext *)moc books:(NSArray *)aBooksArray
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)bundleOrNil managedObjectContext:(NSManagedObjectContext *)moc profileItem:(SCHProfileItem *)aProfileItem
 {
 	if ((self = [super initWithNibName:nibNameOrNil bundle:bundleOrNil])) {
 		
 		managedObjectContext = [moc retain];
-		books = [aBooksArray retain];
+        self.profileItem = aProfileItem;
+		self.books = [self.profileItem allContentMetadataItems];
 
 		// view controllers are created lazily
 		// in the meantime, load the array with placeholders which will be replaced on demand
