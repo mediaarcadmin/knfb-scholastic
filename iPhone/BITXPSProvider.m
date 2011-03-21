@@ -1,12 +1,12 @@
 //
-//  BWKXPSProvider.m
+//  BITXPSProvider.m
 //  XPSRenderer
 //
 //  Created by Gordon Christie on 20/12/2010.
 //  Copyright 2010 BitWink Limited. All rights reserved.
 //
 
-#import "BWKXPSProvider.h"
+#import "BITXPSProvider.h"
 #import "BlioTimeOrderedCache.h"
 #import "zlib.h"
 #import "TouchXML.h"
@@ -22,7 +22,7 @@
 
 @end
 
-@interface BWKXPSProvider()
+@interface BITXPSProvider()
 
 //@property (nonatomic, assign, readonly) SCHContentMetadataItem *book;
 @property (nonatomic, retain) NSString *tempDirectory;
@@ -51,12 +51,12 @@
 @end
 
 
-@implementation BWKXPSProvider
+@implementation BITXPSProvider
 
 @synthesize bookInfo, imageInfo, tempDirectory, xpsData, componentCache, pageCount, fileSize, ISBN, author, type, pageCropsCache, viewTransformsCache, xpsPagesDirectory, uriMap, title;
 
 void XPSPageCompleteCallback(void *userdata, RasterImageInfo *data) {
-	BWKXPSProvider *provider = (BWKXPSProvider *)userdata;	
+	BITXPSProvider *provider = (BITXPSProvider *)userdata;	
 	provider.imageInfo = data;
 }
 

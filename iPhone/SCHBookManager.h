@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
-#import "BWKXPSProvider.h"
+#import "BITXPSProvider.h"
 #import "SCHContentMetadataItem+Extensions.h"
 
 @interface SCHBookManager : NSObject {
@@ -22,7 +22,7 @@
 
 + (SCHBookInfo *) bookInfoWithBookIdentifier: (NSString *) isbn;
 
-- (BWKXPSProvider *)checkOutXPSProviderForBook: (SCHBookInfo *) bookInfo;
+- (BITXPSProvider *)checkOutXPSProviderForBook: (SCHBookInfo *) bookInfo;
 - (void) checkInXPSProviderForBook: (SCHBookInfo *) bookInfo;
 
 + (BOOL) checkAppCompatibilityForFeature: (NSString *) key version: (float) version;

@@ -1,5 +1,5 @@
 //
-//  BWKReadingOptionsView.h
+//  BITReadingOptionsView.h
 //  XPSRenderer
 //
 //  Created by Gordon Christie on 13/01/2011.
@@ -7,10 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "BWKTestPageViewController.h"
+#import "BITTestPageViewController.h"
 #import "SCHBookInfo.h"
 
-@interface BWKReadingOptionsView : UIViewController {
+@interface BITReadingOptionsView : UIViewController {
 
 	IBOutlet UIImageView *coverImageView;
 	IBOutlet UIView *bookCoverView;
@@ -22,7 +22,7 @@
 	
 }
 
-@property (readwrite, retain) BWKTestPageViewController *pageViewController;
+@property (readwrite, retain) BITTestPageViewController *pageViewController;
 //@property (readwrite, retain) SCHContentMetadataItem *metadataItem;
 @property (readwrite, retain) SCHBookInfo *bookInfo;
 @property (readwrite, retain) UIImage *thumbnailImage;

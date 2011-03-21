@@ -1,15 +1,15 @@
 //
-//  BWKTestPageViewController.m
+//  BITTestPageViewController.m
 //  XPSRenderer
 //
 //  Created by Gordon Christie on 20/12/2010.
 //  Copyright 2010 BitWink Limited. All rights reserved.
 //
 
-#import "BWKTestPageViewController.h"
+#import "BITTestPageViewController.h"
 #import <QuartzCore/QuartzCore.h>
 
-@implementation BWKTestPageViewController
+@implementation BITTestPageViewController
 
 @synthesize bookInfo;
 
@@ -31,7 +31,7 @@
 	
 	currentPage = 1;
 	toolbarsVisible = YES;
-	testRenderer = [[BWKXPSProvider alloc] initWithBookInfo:self.bookInfo];
+	testRenderer = [[BITXPSProvider alloc] initWithBookInfo:self.bookInfo];
 	
 	pageScrubber.delegate = self;
 	pageScrubber.minimumValue = 1;
@@ -183,19 +183,19 @@
 #pragma mark -
 #pragma mark Scrubber Actions
 
-- (void) scrubberView:(BWKScrubberView *)scrubberView scrubberValueUpdated:(float)currentValue
+- (void) scrubberView:(BITScrubberView *)scrubberView scrubberValueUpdated:(float)currentValue
 {
 	if (scrubberView == pageScrubber) {
 		currentPage = (int) currentValue;
 		
 		switch (scrubberView.scrubSpeed) {
-			case kBWKScrubberScrubSpeedNormal:
+			case kBITScrubberScrubSpeedNormal:
 				panSpeedLabel.text = @"Hi-speed Scrubbing";
 				break;
-			case kBWKScrubberScrubSpeedHalf:
+			case kBITScrubberScrubSpeedHalf:
 				panSpeedLabel.text = @"Half Speed Scrubbing";
 				break;
-			case kBWKScrubberScrubSpeedQuarter:
+			case kBITScrubberScrubSpeedQuarter:
 				panSpeedLabel.text = @"Slow Scrubbing";
 				break;
 			default:
@@ -206,7 +206,7 @@
 	}
 }
 
-- (void) scrubberView:(BWKScrubberView *)scrubberView beginScrubbingWithValue:(float)currentValue
+- (void) scrubberView:(BITScrubberView *)scrubberView beginScrubbingWithValue:(float)currentValue
 {
 	NSLog(@"Starting changes...");
 	[scrubberInfoView setAlpha:1.0f];
@@ -214,7 +214,7 @@
 	
 }
 
-- (void) scrubberView:(BWKScrubberView *)scrubberView endScrubbingWithValue:(float)currentValue
+- (void) scrubberView:(BITScrubberView *)scrubberView endScrubbingWithValue:(float)currentValue
 {
 	NSLog(@"Ending changes...");
 	[UIView beginAnimations:@"scrubHide" context:nil];

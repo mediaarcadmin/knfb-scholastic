@@ -238,12 +238,12 @@
 		F83D874712FC67A600227031 /* SCHSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9B1B12FC1B6B0099FB88 /* SCHSyncComponent.m */; };
 		F8509E7412F061FE00197EB5 /* libXpsSDKipad.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F8509E7212F061FE00197EB5 /* libXpsSDKipad.a */; };
 		F8509E9C12F0621E00197EB5 /* BlioTimeOrderedCache.m in Sources */ = {isa = PBXBuildFile; fileRef = F8509E8C12F0621E00197EB5 /* BlioTimeOrderedCache.m */; };
-		F8509E9D12F0621E00197EB5 /* BWKXPSProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = F8509E8E12F0621E00197EB5 /* BWKXPSProvider.m */; };
-		F8509E9F12F0621E00197EB5 /* BWKTestPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F8509E9312F0621E00197EB5 /* BWKTestPageViewController.m */; };
-		F8509EA012F0621E00197EB5 /* BWKTestPageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8509E9412F0621E00197EB5 /* BWKTestPageViewController.xib */; };
-		F8509EA112F0621E00197EB5 /* BWKReadingOptionsView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8509E9712F0621E00197EB5 /* BWKReadingOptionsView.m */; };
-		F8509EA212F0621E00197EB5 /* BWKReadingOptionsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8509E9812F0621E00197EB5 /* BWKReadingOptionsView.xib */; };
-		F8509EA312F0621E00197EB5 /* BWKScrubberView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8509E9B12F0621E00197EB5 /* BWKScrubberView.m */; };
+		F8509E9D12F0621E00197EB5 /* BITXPSProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = F8509E8E12F0621E00197EB5 /* BITXPSProvider.m */; };
+		F8509E9F12F0621E00197EB5 /* BITTestPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F8509E9312F0621E00197EB5 /* BITTestPageViewController.m */; };
+		F8509EA012F0621E00197EB5 /* BITTestPageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8509E9412F0621E00197EB5 /* BITTestPageViewController.xib */; };
+		F8509EA112F0621E00197EB5 /* BITReadingOptionsView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8509E9712F0621E00197EB5 /* BITReadingOptionsView.m */; };
+		F8509EA212F0621E00197EB5 /* BITReadingOptionsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8509E9812F0621E00197EB5 /* BITReadingOptionsView.xib */; };
+		F8509EA312F0621E00197EB5 /* BITScrubberView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8509E9B12F0621E00197EB5 /* BITScrubberView.m */; };
 		F8509EB812F0625100197EB5 /* libstdc++.6.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F8509EB712F0625100197EB5 /* libstdc++.6.dylib */; };
 		F8509EF612F063C900197EB5 /* MainWindow_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow_iPad.xib */; };
 		F8509EF712F063C900197EB5 /* MainWindow_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2860E389111B897F00E27156 /* MainWindow_iPhone.xib */; };
@@ -268,8 +268,8 @@
 		F8509F0C12F063C900197EB5 /* TooManyToys.xps in Resources */ = {isa = PBXBuildFile; fileRef = F8509E7D12F0620F00197EB5 /* TooManyToys.xps */; };
 		F8509F0D12F063C900197EB5 /* Cars.xps in Resources */ = {isa = PBXBuildFile; fileRef = F8509E7E12F0620F00197EB5 /* Cars.xps */; };
 		F8509F0E12F063C900197EB5 /* Cook Yourself Thin.xps in Resources */ = {isa = PBXBuildFile; fileRef = F8509E7F12F0621000197EB5 /* Cook Yourself Thin.xps */; };
-		F8509F0F12F063C900197EB5 /* BWKTestPageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8509E9412F0621E00197EB5 /* BWKTestPageViewController.xib */; };
-		F8509F1012F063C900197EB5 /* BWKReadingOptionsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8509E9812F0621E00197EB5 /* BWKReadingOptionsView.xib */; };
+		F8509F0F12F063C900197EB5 /* BITTestPageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8509E9412F0621E00197EB5 /* BITTestPageViewController.xib */; };
+		F8509F1012F063C900197EB5 /* BITReadingOptionsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8509E9812F0621E00197EB5 /* BITReadingOptionsView.xib */; };
 		F8509F1212F063C900197EB5 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
 		F8509F1312F063C900197EB5 /* AppDelegate_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* AppDelegate_iPad.m */; };
 		F8509F1412F063C900197EB5 /* AppDelegate_Shared.m in Sources */ = {isa = PBXBuildFile; fileRef = 28EEC04A1118E28000187D67 /* AppDelegate_Shared.m */; };
@@ -305,10 +305,10 @@
 		F8509F3712F063C900197EB5 /* NSManagedObjectContext+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF570912ED977C00E374F7 /* NSManagedObjectContext+Extensions.m */; };
 		F8509F3812F063C900197EB5 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF579612EDBE6E00E374F7 /* SFHFKeychainUtils.m */; };
 		F8509F3912F063C900197EB5 /* BlioTimeOrderedCache.m in Sources */ = {isa = PBXBuildFile; fileRef = F8509E8C12F0621E00197EB5 /* BlioTimeOrderedCache.m */; };
-		F8509F3A12F063C900197EB5 /* BWKXPSProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = F8509E8E12F0621E00197EB5 /* BWKXPSProvider.m */; };
-		F8509F3C12F063C900197EB5 /* BWKTestPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F8509E9312F0621E00197EB5 /* BWKTestPageViewController.m */; };
-		F8509F3D12F063C900197EB5 /* BWKReadingOptionsView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8509E9712F0621E00197EB5 /* BWKReadingOptionsView.m */; };
-		F8509F3E12F063C900197EB5 /* BWKScrubberView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8509E9B12F0621E00197EB5 /* BWKScrubberView.m */; };
+		F8509F3A12F063C900197EB5 /* BITXPSProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = F8509E8E12F0621E00197EB5 /* BITXPSProvider.m */; };
+		F8509F3C12F063C900197EB5 /* BITTestPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F8509E9312F0621E00197EB5 /* BITTestPageViewController.m */; };
+		F8509F3D12F063C900197EB5 /* BITReadingOptionsView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8509E9712F0621E00197EB5 /* BITReadingOptionsView.m */; };
+		F8509F3E12F063C900197EB5 /* BITScrubberView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8509E9B12F0621E00197EB5 /* BITScrubberView.m */; };
 		F8509F4012F063C900197EB5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		F8509F4112F063C900197EB5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		F8509F4212F063C900197EB5 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
@@ -778,16 +778,16 @@
 		F8509E7F12F0621000197EB5 /* Cook Yourself Thin.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Cook Yourself Thin.xps"; path = "Shared/Debug Books/Cook Yourself Thin.xps"; sourceTree = "<group>"; };
 		F8509E8B12F0621E00197EB5 /* BlioTimeOrderedCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlioTimeOrderedCache.h; sourceTree = "<group>"; };
 		F8509E8C12F0621E00197EB5 /* BlioTimeOrderedCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlioTimeOrderedCache.m; sourceTree = "<group>"; };
-		F8509E8D12F0621E00197EB5 /* BWKXPSProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BWKXPSProvider.h; sourceTree = "<group>"; };
-		F8509E8E12F0621E00197EB5 /* BWKXPSProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BWKXPSProvider.m; sourceTree = "<group>"; };
-		F8509E9212F0621E00197EB5 /* BWKTestPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BWKTestPageViewController.h; sourceTree = "<group>"; };
-		F8509E9312F0621E00197EB5 /* BWKTestPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BWKTestPageViewController.m; sourceTree = "<group>"; };
-		F8509E9412F0621E00197EB5 /* BWKTestPageViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BWKTestPageViewController.xib; sourceTree = "<group>"; };
-		F8509E9612F0621E00197EB5 /* BWKReadingOptionsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BWKReadingOptionsView.h; sourceTree = "<group>"; };
-		F8509E9712F0621E00197EB5 /* BWKReadingOptionsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BWKReadingOptionsView.m; sourceTree = "<group>"; };
-		F8509E9812F0621E00197EB5 /* BWKReadingOptionsView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BWKReadingOptionsView.xib; sourceTree = "<group>"; };
-		F8509E9A12F0621E00197EB5 /* BWKScrubberView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BWKScrubberView.h; sourceTree = "<group>"; };
-		F8509E9B12F0621E00197EB5 /* BWKScrubberView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BWKScrubberView.m; sourceTree = "<group>"; };
+		F8509E8D12F0621E00197EB5 /* BITXPSProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BITXPSProvider.h; sourceTree = "<group>"; };
+		F8509E8E12F0621E00197EB5 /* BITXPSProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BITXPSProvider.m; sourceTree = "<group>"; };
+		F8509E9212F0621E00197EB5 /* BITTestPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BITTestPageViewController.h; sourceTree = "<group>"; };
+		F8509E9312F0621E00197EB5 /* BITTestPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BITTestPageViewController.m; sourceTree = "<group>"; };
+		F8509E9412F0621E00197EB5 /* BITTestPageViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BITTestPageViewController.xib; sourceTree = "<group>"; };
+		F8509E9612F0621E00197EB5 /* BITReadingOptionsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BITReadingOptionsView.h; sourceTree = "<group>"; };
+		F8509E9712F0621E00197EB5 /* BITReadingOptionsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BITReadingOptionsView.m; sourceTree = "<group>"; };
+		F8509E9812F0621E00197EB5 /* BITReadingOptionsView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BITReadingOptionsView.xib; sourceTree = "<group>"; };
+		F8509E9A12F0621E00197EB5 /* BITScrubberView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BITScrubberView.h; sourceTree = "<group>"; };
+		F8509E9B12F0621E00197EB5 /* BITScrubberView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BITScrubberView.m; sourceTree = "<group>"; };
 		F8509EB712F0625100197EB5 /* libstdc++.6.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libstdc++.6.dylib"; path = "usr/lib/libstdc++.6.dylib"; sourceTree = SDKROOT; };
 		F8509F4D12F063C900197EB5 /* Scholastic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Scholastic.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F8509F8012F0653700197EB5 /* thumbImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = thumbImage.png; path = Shared/Images/thumbImage.png; sourceTree = "<group>"; };
@@ -1513,8 +1513,8 @@
 			children = (
 				F8509E8B12F0621E00197EB5 /* BlioTimeOrderedCache.h */,
 				F8509E8C12F0621E00197EB5 /* BlioTimeOrderedCache.m */,
-				F8509E8D12F0621E00197EB5 /* BWKXPSProvider.h */,
-				F8509E8E12F0621E00197EB5 /* BWKXPSProvider.m */,
+				F8509E8D12F0621E00197EB5 /* BITXPSProvider.h */,
+				F8509E8E12F0621E00197EB5 /* BITXPSProvider.m */,
 			);
 			name = Renderer;
 			sourceTree = "<group>";
@@ -1522,9 +1522,9 @@
 		F8509E9112F0621E00197EB5 /* Page View */ = {
 			isa = PBXGroup;
 			children = (
-				F8509E9212F0621E00197EB5 /* BWKTestPageViewController.h */,
-				F8509E9312F0621E00197EB5 /* BWKTestPageViewController.m */,
-				F8509E9412F0621E00197EB5 /* BWKTestPageViewController.xib */,
+				F8509E9212F0621E00197EB5 /* BITTestPageViewController.h */,
+				F8509E9312F0621E00197EB5 /* BITTestPageViewController.m */,
+				F8509E9412F0621E00197EB5 /* BITTestPageViewController.xib */,
 			);
 			name = "Page View";
 			sourceTree = "<group>";
@@ -1532,9 +1532,9 @@
 		F8509E9512F0621E00197EB5 /* Reading Options View */ = {
 			isa = PBXGroup;
 			children = (
-				F8509E9612F0621E00197EB5 /* BWKReadingOptionsView.h */,
-				F8509E9712F0621E00197EB5 /* BWKReadingOptionsView.m */,
-				F8509E9812F0621E00197EB5 /* BWKReadingOptionsView.xib */,
+				F8509E9612F0621E00197EB5 /* BITReadingOptionsView.h */,
+				F8509E9712F0621E00197EB5 /* BITReadingOptionsView.m */,
+				F8509E9812F0621E00197EB5 /* BITReadingOptionsView.xib */,
 			);
 			name = "Reading Options View";
 			sourceTree = "<group>";
@@ -1542,8 +1542,8 @@
 		F8509E9912F0621E00197EB5 /* Scrubber View */ = {
 			isa = PBXGroup;
 			children = (
-				F8509E9A12F0621E00197EB5 /* BWKScrubberView.h */,
-				F8509E9B12F0621E00197EB5 /* BWKScrubberView.m */,
+				F8509E9A12F0621E00197EB5 /* BITScrubberView.h */,
+				F8509E9B12F0621E00197EB5 /* BITScrubberView.m */,
 			);
 			name = "Scrubber View";
 			sourceTree = "<group>";
@@ -1711,8 +1711,8 @@
 				5293883412E03CD000045B44 /* SCHBookShelfViewController.xib in Resources */,
 				52938B3912E08FC400045B44 /* Icon.png in Resources */,
 				52EF4E6012E6E01C00E374F7 /* SCHLoginViewController.xib in Resources */,
-				F8509EA012F0621E00197EB5 /* BWKTestPageViewController.xib in Resources */,
-				F8509EA212F0621E00197EB5 /* BWKReadingOptionsView.xib in Resources */,
+				F8509EA012F0621E00197EB5 /* BITTestPageViewController.xib in Resources */,
+				F8509EA212F0621E00197EB5 /* BITReadingOptionsView.xib in Resources */,
 				F8509F8212F0653700197EB5 /* thumbImage.png in Resources */,
 				F8509F8312F0653700197EB5 /* booktexture-nocover.png in Resources */,
 				F837CA0212F1B4BC00833448 /* gear.png in Resources */,
@@ -1757,8 +1757,8 @@
 				F8509F0C12F063C900197EB5 /* TooManyToys.xps in Resources */,
 				F8509F0D12F063C900197EB5 /* Cars.xps in Resources */,
 				F8509F0E12F063C900197EB5 /* Cook Yourself Thin.xps in Resources */,
-				F8509F0F12F063C900197EB5 /* BWKTestPageViewController.xib in Resources */,
-				F8509F1012F063C900197EB5 /* BWKReadingOptionsView.xib in Resources */,
+				F8509F0F12F063C900197EB5 /* BITTestPageViewController.xib in Resources */,
+				F8509F1012F063C900197EB5 /* BITReadingOptionsView.xib in Resources */,
 				F8509F8F12F0654A00197EB5 /* booktexture-nocover.png in Resources */,
 				F8509F9012F0654B00197EB5 /* thumbImage.png in Resources */,
 				F837CA0E12F1B4E900833448 /* gear.png in Resources */,
@@ -1813,10 +1813,10 @@
 				52EF570A12ED977C00E374F7 /* NSManagedObjectContext+Extensions.m in Sources */,
 				52EF579712EDBE6E00E374F7 /* SFHFKeychainUtils.m in Sources */,
 				F8509E9C12F0621E00197EB5 /* BlioTimeOrderedCache.m in Sources */,
-				F8509E9D12F0621E00197EB5 /* BWKXPSProvider.m in Sources */,
-				F8509E9F12F0621E00197EB5 /* BWKTestPageViewController.m in Sources */,
-				F8509EA112F0621E00197EB5 /* BWKReadingOptionsView.m in Sources */,
-				F8509EA312F0621E00197EB5 /* BWKScrubberView.m in Sources */,
+				F8509E9D12F0621E00197EB5 /* BITXPSProvider.m in Sources */,
+				F8509E9F12F0621E00197EB5 /* BITTestPageViewController.m in Sources */,
+				F8509EA112F0621E00197EB5 /* BITReadingOptionsView.m in Sources */,
+				F8509EA312F0621E00197EB5 /* BITScrubberView.m in Sources */,
 				C923A27D12F06FE60054426F /* MRGridView.m in Sources */,
 				C923A27E12F06FE60054426F /* MRGridViewCell.m in Sources */,
 				C923A27F12F06FE60054426F /* MRGridViewController.m in Sources */,
@@ -1946,10 +1946,10 @@
 				F8509F3712F063C900197EB5 /* NSManagedObjectContext+Extensions.m in Sources */,
 				F8509F3812F063C900197EB5 /* SFHFKeychainUtils.m in Sources */,
 				F8509F3912F063C900197EB5 /* BlioTimeOrderedCache.m in Sources */,
-				F8509F3A12F063C900197EB5 /* BWKXPSProvider.m in Sources */,
-				F8509F3C12F063C900197EB5 /* BWKTestPageViewController.m in Sources */,
-				F8509F3D12F063C900197EB5 /* BWKReadingOptionsView.m in Sources */,
-				F8509F3E12F063C900197EB5 /* BWKScrubberView.m in Sources */,
+				F8509F3A12F063C900197EB5 /* BITXPSProvider.m in Sources */,
+				F8509F3C12F063C900197EB5 /* BITTestPageViewController.m in Sources */,
+				F8509F3D12F063C900197EB5 /* BITReadingOptionsView.m in Sources */,
+				F8509F3E12F063C900197EB5 /* BITScrubberView.m in Sources */,
 				C923A27A12F06FE60054426F /* MRGridView.m in Sources */,
 				C923A27B12F06FE60054426F /* MRGridViewCell.m in Sources */,
 				C923A27C12F06FE60054426F /* MRGridViewController.m in Sources */,

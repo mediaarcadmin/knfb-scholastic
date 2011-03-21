@@ -8,7 +8,7 @@
 
 #import "SCHLocalDebugXPSReader.h"
 #import "zlib.h"
-#import "BWKXPSProvider.h"
+#import "BITXPSProvider.h"
 #import "TouchXML.h"
 
 @interface SCHLocalDebugXPSReader()

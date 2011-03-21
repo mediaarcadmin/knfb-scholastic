@@ -7,7 +7,7 @@
 //
 
 #import "SCHRightsParsingOperation.h"
-#import "BWKXPSProvider.h"
+#import "BITXPSProvider.h"
 #import "SCHBookManager.h"
 
 @interface SCHRightsParsingOperation ()
@@ -79,7 +79,7 @@
 - (void) begin
 {
 	
-	BWKXPSProvider *xpsProvider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBook:self.bookInfo];
+	BITXPSProvider *xpsProvider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBook:self.bookInfo];
 	NSData *rightsFileData = nil;
 	
 	

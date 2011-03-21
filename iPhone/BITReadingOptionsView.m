@@ -1,15 +1,15 @@
 //
-//  BWKReadingOptionsView.m
+//  BITReadingOptionsView.m
 //  XPSRenderer
 //
 //  Created by Gordon Christie on 13/01/2011.
 //  Copyright 2011 BitWink Limited. All rights reserved.
 //
 
-#import "BWKReadingOptionsView.h"
+#import "BITReadingOptionsView.h"
 #import <QuartzCore/QuartzCore.h>
 
-@implementation BWKReadingOptionsView
+@implementation BITReadingOptionsView
 @synthesize pageViewController;
 @synthesize bookInfo;
 @synthesize thumbnailImage;

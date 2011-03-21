@@ -7,8 +7,8 @@
 //
 
 #import "SCHBookShelfViewController.h"
-#import "BWKTestPageViewController.h"
-#import "BWKReadingOptionsView.h"
+#import "BITTestPageViewController.h"
+#import "BITReadingOptionsView.h"
 #import "SCHLibreAccessWebService.h"
 #import "SCHContentMetadataItem+Extensions.h"
 #import "SCHLocalDebug.h"
@@ -169,10 +169,10 @@
 	
 	//SCHContentMetadataItem *contentMetadataItem = bookInfo.contentMetadata;
 	
-	BWKTestPageViewController *pageView = [[BWKTestPageViewController alloc] initWithNibName:nil bundle:nil];
+	BITTestPageViewController *pageView = [[BITTestPageViewController alloc] initWithNibName:nil bundle:nil];
 	pageView.bookInfo = bookInfo;
 	
-	BWKReadingOptionsView *optionsView = [[BWKReadingOptionsView alloc] initWithNibName:nil bundle:nil];
+	BITReadingOptionsView *optionsView = [[BITReadingOptionsView alloc] initWithNibName:nil bundle:nil];
 	optionsView.pageViewController = pageView;
 	optionsView.bookInfo = bookInfo;
 	
@@ -182,7 +182,7 @@
 	if ([imageData length]) {
 		optionsView.thumbnailImage = [UIImage imageWithData:imageData];
 	} else {
-		BWKXPSProvider *provider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBook:bookInfo];
+		BITXPSProvider *provider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBook:bookInfo];
 		provider.title = [bookInfo stringForMetadataKey:kSCHBookInfoFileName];
 		imageData = [provider coverThumbData];
 		[[SCHBookManager sharedBookManager] checkInXPSProviderForBook:bookInfo];
@@ -339,10 +339,10 @@
 	NSLog(@"Showing book %@.", [bookInfo stringForMetadataKey:kSCHBookInfoTitle]);
 	NSLog(@"Filename %@.", [bookInfo stringForMetadataKey:kSCHBookInfoFileName]);
 	
-	BWKTestPageViewController *pageView = [[BWKTestPageViewController alloc] initWithNibName:nil bundle:nil];
+	BITTestPageViewController *pageView = [[BITTestPageViewController alloc] initWithNibName:nil bundle:nil];
 	pageView.bookInfo = bookInfo;
 	
-	BWKReadingOptionsView *optionsView = [[BWKReadingOptionsView alloc] initWithNibName:nil bundle:nil];
+	BITReadingOptionsView *optionsView = [[BITReadingOptionsView alloc] initWithNibName:nil bundle:nil];
 	optionsView.pageViewController = pageView;
 	optionsView.bookInfo = bookInfo;
 	
@@ -352,7 +352,7 @@
 	if ([imageData length]) {
 		optionsView.thumbnailImage = [UIImage imageWithData:imageData];
 	} else {
-		BWKXPSProvider *provider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBook:bookInfo];
+		BITXPSProvider *provider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBook:bookInfo];
 		provider.title = [bookInfo stringForMetadataKey:kSCHBookInfoFileName];
 		imageData = [provider coverThumbData];
 		[[SCHBookManager sharedBookManager] checkInXPSProviderForBook:bookInfo];

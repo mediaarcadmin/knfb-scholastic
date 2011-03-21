@@ -1,5 +1,5 @@
 //
-//  BWKXPSProvider.h
+//  BITXPSProvider.h
 //  XPSRenderer
 //
 //  Created by Gordon Christie on 20/12/2010.
@@ -31,7 +31,7 @@ static NSString * const BlioXPSExtrasMetadataFile = @"/Documents/1/Other/KNFB/Ex
 
 
 
-@interface BWKXPSProvider : NSObject {
+@interface BITXPSProvider : NSObject {
 
 	// makes sure we don't have 2 instances of the XPS_Convert and its setup/callback 
 	// happening at the same time

@@ -139,9 +139,9 @@ static NSDictionary *featureCompatibilityDictionary = nil;
     pthread_setspecific(sManagedObjectContextKey, [managedObjectContextForCurrentThread retain]);
 }
 
-- (BWKXPSProvider *)checkOutXPSProviderForBook: (SCHBookInfo *) bookInfo
+- (BITXPSProvider *)checkOutXPSProviderForBook: (SCHBookInfo *) bookInfo
 {
-	BWKXPSProvider *ret = nil;
+	BITXPSProvider *ret = nil;
 	
 	//NSLog(@"Checking out book ID: %@", bookID);
 	
@@ -149,13 +149,13 @@ static NSDictionary *featureCompatibilityDictionary = nil;
 	
     NSMutableDictionary *myCachedXPSProviders = self.cachedXPSProviders;
     @synchronized(myCachedXPSProviders) {
-        BWKXPSProvider *previouslyCachedXPSProvider = [myCachedXPSProviders objectForKey:bookInfo.bookIdentifier];
+        BITXPSProvider *previouslyCachedXPSProvider = [myCachedXPSProviders objectForKey:bookInfo.bookIdentifier];
         if(previouslyCachedXPSProvider) {
             NSLog(@"Returning cached XPSProvider for book with bookInfo %@", bookInfo);
             [self.cachedXPSProviderCheckoutCounts addObject:bookInfo];
             ret = previouslyCachedXPSProvider;
         } else {
-			BWKXPSProvider *xpsProvider = [[BWKXPSProvider alloc] initWithBookInfo:bookInfo];
+			BITXPSProvider *xpsProvider = [[BITXPSProvider alloc] initWithBookInfo:bookInfo];
 			if(xpsProvider) {
 				NSCountedSet *myCachedXPSProviderCheckoutCounts = self.cachedXPSProviderCheckoutCounts;
 				if(!myCachedXPSProviderCheckoutCounts) {

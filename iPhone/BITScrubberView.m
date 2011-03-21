@@ -1,33 +1,33 @@
 //
-//  BWKScrubberView.m
+//  BITScrubberView.m
 //  XPSRenderer
 //
 //  Created by Gordon Christie on 24/01/2011.
 //  Copyright 2011 BitWink Limited. All rights reserved.
 //
 
-#import "BWKScrubberView.h"
+#import "BITScrubberView.h"
 
 #pragma mark -
 #pragma mark Class Extension
 
-@interface BWKScrubberView()
+@interface BITScrubberView()
 
 - (void) initValues;
 
 @property (nonatomic) float currentMultiplier;
 @property (nonatomic) float currentPercentage;
 @property (nonatomic, retain) UIImage *defaultThumbImage;
-@property (readwrite) BWKScrubberScrubSpeed scrubSpeed;
+@property (readwrite) BITScrubberScrubSpeed scrubSpeed;
 
 @end
 
 #pragma mark -
-#pragma mark BWKScrubberView implementation
+#pragma mark BITScrubberView implementation
 
 #define TRACK_DOT_WIDTH 2
 
-@implementation BWKScrubberView
+@implementation BITScrubberView
 
 @synthesize delegate;
 @synthesize minimumValue;
@@ -105,16 +105,16 @@
 		
 		if (yDistance < 40) {
 			self.currentMultiplier = 1.0f;
-			self.scrubSpeed = kBWKScrubberScrubSpeedNormal;
+			self.scrubSpeed = kBITScrubberScrubSpeedNormal;
 		} else if (yDistance < 80) {
 			self.currentMultiplier = 0.5f;
-			self.scrubSpeed = kBWKScrubberScrubSpeedHalf;
+			self.scrubSpeed = kBITScrubberScrubSpeedHalf;
 		} else if (yDistance < 120) {
 			self.currentMultiplier = 0.25f;
-			self.scrubSpeed = kBWKScrubberScrubSpeedQuarter;
+			self.scrubSpeed = kBITScrubberScrubSpeedQuarter;
 		} else {
 			self.currentMultiplier = 0.1f;
-			self.scrubSpeed = kBWKScrubberScrubSpeedFine;
+			self.scrubSpeed = kBITScrubberScrubSpeedFine;
 		}
 		
 		if (self.currentMultiplier == 1.0f) {

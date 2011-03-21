@@ -7,14 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "BWKXPSProvider.h"
-#import "BWKScrubberView.h"
+#import "BITXPSProvider.h"
+#import "BITScrubberView.h"
 //#import "SCHContentMetadataItem.h"
 #import "SCHBookInfo.h"
 
 #define TESTPAGEVIEW_PAGETAPWIDTH 75
 
-@interface BWKTestPageViewController : UIViewController <UIScrollViewDelegate, BWKScrubberViewDelegate> {
+@interface BITTestPageViewController : UIViewController <UIScrollViewDelegate, BITScrubberViewDelegate> {
 	IBOutlet UIView *pageView;
 	IBOutlet UIScrollView *scrollView;
 	IBOutlet UILabel *pageLabel;
@@ -25,10 +25,10 @@
 	IBOutlet UIToolbar *topToolbar;
 	IBOutlet UIToolbar *bottomToolbar;
 	
-	IBOutlet BWKScrubberView *pageScrubber;
+	IBOutlet BITScrubberView *pageScrubber;
 	IBOutlet UIView *scrubberInfoView;
 	
-	BWKXPSProvider *testRenderer;
+	BITXPSProvider *testRenderer;
 	SCHContentMetadataItem *book;
 	
 	int currentPage;
