@@ -18,8 +18,6 @@
 
 @interface SCHContentSyncComponent ()
 
-@property (nonatomic, retain) NSArray *lastProfileList;
-
 - (BOOL)updateUserContentItems;
 
 - (NSArray *)localUserContentItems;
@@ -36,14 +34,6 @@
 @end
 
 @implementation SCHContentSyncComponent
-
-@synthesize lastProfileList;
-
-- (void)dealloc 
-{
-    [lastProfileList release], lastProfileList = nil;
-    [super dealloc];
-}
 
 - (BOOL)synchronize
 {
@@ -220,16 +210,10 @@
 	}
 	
 	NSArray *profileList = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceProfileList]];
-    if (profileList == nil && self.lastProfileList) {
-        profileList = self.lastProfileList;
-    }
-    
 	for (NSDictionary *profileItem in profileList) {
 		[newUserContentItem addProfileListObject:[self addContentProfileItem:profileItem]];
 	}
-    
-    self.lastProfileList = profileList;
-	
+    	
 	newUserContentItem.LastModified = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceLastModified]];
 	newUserContentItem.State = [NSNumber numberWithStatus:kSCHStatusUnmodified];				
 }
