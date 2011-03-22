@@ -11,6 +11,8 @@
 
 @class SCHPrivateAnnotations;
 
+static NSString * const kSCHFavorite = @"SCHFavorite";
+
 @interface SCHFavorite :  SCHSyncEntity  
 {
 }

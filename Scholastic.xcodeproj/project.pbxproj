@@ -26,14 +26,6 @@
 		5200EFF112F6CFE400BAC355 /* SCHPrivateAnnotations.m in Sources */ = {isa = PBXBuildFile; fileRef = 5200EFEB12F6CFE400BAC355 /* SCHPrivateAnnotations.m */; };
 		5200EFF412F6D00B00BAC355 /* SCHeReaderCategories.m in Sources */ = {isa = PBXBuildFile; fileRef = 5200EFF312F6D00B00BAC355 /* SCHeReaderCategories.m */; };
 		5200EFF512F6D00B00BAC355 /* SCHeReaderCategories.m in Sources */ = {isa = PBXBuildFile; fileRef = 5200EFF312F6D00B00BAC355 /* SCHeReaderCategories.m */; };
-		5222FBF812F4E023000A4624 /* SCHContentProfileItem+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5222FBF712F4E023000A4624 /* SCHContentProfileItem+Extensions.m */; };
-		5222FBF912F4E023000A4624 /* SCHContentProfileItem+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5222FBF712F4E023000A4624 /* SCHContentProfileItem+Extensions.m */; };
-		5222FC1F12F4E37B000A4624 /* SCHUserSettingsItem+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5222FC1E12F4E37B000A4624 /* SCHUserSettingsItem+Extensions.m */; };
-		5222FC2012F4E37B000A4624 /* SCHUserSettingsItem+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5222FC1E12F4E37B000A4624 /* SCHUserSettingsItem+Extensions.m */; };
-		5222FC2C12F4E41F000A4624 /* SCHOrderItem+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5222FC2B12F4E41F000A4624 /* SCHOrderItem+Extensions.m */; };
-		5222FC2D12F4E41F000A4624 /* SCHOrderItem+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5222FC2B12F4E41F000A4624 /* SCHOrderItem+Extensions.m */; };
-		5222FC3512F4E4AB000A4624 /* SCHUserContentItem+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5222FC3412F4E4AB000A4624 /* SCHUserContentItem+Extensions.m */; };
-		5222FC3612F4E4AB000A4624 /* SCHUserContentItem+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5222FC3412F4E4AB000A4624 /* SCHUserContentItem+Extensions.m */; };
 		52298A8712F0EF5600BBBCE6 /* SCHNote.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A5E12F0EF5600BBBCE6 /* SCHNote.m */; };
 		52298A8812F0EF5600BBBCE6 /* SCHUserSettingsItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6012F0EF5600BBBCE6 /* SCHUserSettingsItem.m */; };
 		52298A8912F0EF5600BBBCE6 /* SCHContentMetadataItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6212F0EF5600BBBCE6 /* SCHContentMetadataItem.m */; };
@@ -70,12 +62,6 @@
 		526750DC13291EB500063AC8 /* SCHRightsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 526750DA13291EB500063AC8 /* SCHRightsManager.m */; };
 		528433EB133382EA0010BAAB /* SCHAppDictionaryState.m in Sources */ = {isa = PBXBuildFile; fileRef = 528433EA133382EA0010BAAB /* SCHAppDictionaryState.m */; };
 		528433EC133382EA0010BAAB /* SCHAppDictionaryState.m in Sources */ = {isa = PBXBuildFile; fileRef = 528433EA133382EA0010BAAB /* SCHAppDictionaryState.m */; };
-		528433F3133383940010BAAB /* SCHAppBook+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 528433EE133383940010BAAB /* SCHAppBook+Extensions.m */; };
-		528433F4133383940010BAAB /* SCHAppBook+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 528433EE133383940010BAAB /* SCHAppBook+Extensions.m */; };
-		528433F5133383940010BAAB /* SCHAppBookOrder+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 528433F0133383940010BAAB /* SCHAppBookOrder+Extensions.m */; };
-		528433F6133383940010BAAB /* SCHAppBookOrder+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 528433F0133383940010BAAB /* SCHAppBookOrder+Extensions.m */; };
-		528433F7133383940010BAAB /* SCHAppDictionaryState+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 528433F2133383940010BAAB /* SCHAppDictionaryState+Extensions.m */; };
-		528433F8133383940010BAAB /* SCHAppDictionaryState+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 528433F2133383940010BAAB /* SCHAppDictionaryState+Extensions.m */; };
 		528A2CD312CCDD9E0053A343 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 528A2CD212CCDD9E0053A343 /* Settings.bundle */; };
 		528A2CDB12CCDE070053A343 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 528A2CDA12CCDE070053A343 /* Localizable.strings */; };
 		528A2CF812CCEAA50053A343 /* ReleaseNotes.tmReleaseNotes in Resources */ = {isa = PBXBuildFile; fileRef = 528A2CF712CCEAA50053A343 /* ReleaseNotes.tmReleaseNotes */; };
@@ -109,34 +95,10 @@
 		5293883312E03CD000045B44 /* SCHBookShelfViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293883112E03CD000045B44 /* SCHBookShelfViewController.m */; };
 		5293883412E03CD000045B44 /* SCHBookShelfViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5293883212E03CD000045B44 /* SCHBookShelfViewController.xib */; };
 		52938B3912E08FC400045B44 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 52938B3812E08FC400045B44 /* Icon.png */; };
-		52AD954012F95E180099FB88 /* SCHListProfileContentAnnotations+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD953F12F95E180099FB88 /* SCHListProfileContentAnnotations+Extensions.m */; };
-		52AD954112F95E180099FB88 /* SCHListProfileContentAnnotations+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD953F12F95E180099FB88 /* SCHListProfileContentAnnotations+Extensions.m */; };
-		52AD961612F9A77C0099FB88 /* SCHItemsCount+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD961512F9A77C0099FB88 /* SCHItemsCount+Extensions.m */; };
-		52AD961712F9A77C0099FB88 /* SCHItemsCount+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD961512F9A77C0099FB88 /* SCHItemsCount+Extensions.m */; };
+		529A78D61338D8DF00981939 /* SCHSyncEntity+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 529A78D51338D8DD00981939 /* SCHSyncEntity+Extensions.m */; };
+		529A78D71338D8DF00981939 /* SCHSyncEntity+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 529A78D51338D8DD00981939 /* SCHSyncEntity+Extensions.m */; };
 		52AD966B12F9B1B40099FB88 /* SCHAnnotationsList.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD966612F9B1B40099FB88 /* SCHAnnotationsList.m */; };
 		52AD966E12F9B1B40099FB88 /* SCHAnnotationsList.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD966612F9B1B40099FB88 /* SCHAnnotationsList.m */; };
-		52AD969012F9B4DC0099FB88 /* SCHAnnotationsList+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD968F12F9B4DC0099FB88 /* SCHAnnotationsList+Extensions.m */; };
-		52AD969112F9B4DC0099FB88 /* SCHAnnotationsList+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD968F12F9B4DC0099FB88 /* SCHAnnotationsList+Extensions.m */; };
-		52AD96CF12F9C1020099FB88 /* SCHAnnotationsContentItem+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD96CE12F9C1020099FB88 /* SCHAnnotationsContentItem+Extensions.m */; };
-		52AD96D012F9C1020099FB88 /* SCHAnnotationsContentItem+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD96CE12F9C1020099FB88 /* SCHAnnotationsContentItem+Extensions.m */; };
-		52AD971D12FA0BF80099FB88 /* SCHPrivateAnnotations+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD971C12FA0BF80099FB88 /* SCHPrivateAnnotations+Extensions.m */; };
-		52AD971E12FA0BF80099FB88 /* SCHPrivateAnnotations+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD971C12FA0BF80099FB88 /* SCHPrivateAnnotations+Extensions.m */; };
-		52AD973512FA0EE40099FB88 /* SCHLocationGraphics+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD973412FA0EE40099FB88 /* SCHLocationGraphics+Extensions.m */; };
-		52AD973612FA0EE40099FB88 /* SCHLocationGraphics+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD973412FA0EE40099FB88 /* SCHLocationGraphics+Extensions.m */; };
-		52AD974312FA0FA80099FB88 /* SCHHighlight+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD974212FA0FA80099FB88 /* SCHHighlight+Extensions.m */; };
-		52AD974412FA0FA80099FB88 /* SCHHighlight+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD974212FA0FA80099FB88 /* SCHHighlight+Extensions.m */; };
-		52AD974E12FA10580099FB88 /* SCHNote+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD974D12FA10580099FB88 /* SCHNote+Extensions.m */; };
-		52AD974F12FA10580099FB88 /* SCHNote+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD974D12FA10580099FB88 /* SCHNote+Extensions.m */; };
-		52AD975F12FA10F40099FB88 /* SCHCoords+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD975E12FA10F40099FB88 /* SCHCoords+Extensions.m */; };
-		52AD976012FA10F40099FB88 /* SCHCoords+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD975E12FA10F40099FB88 /* SCHCoords+Extensions.m */; };
-		52AD976A12FA11710099FB88 /* SCHBookmark+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD976912FA11710099FB88 /* SCHBookmark+Extensions.m */; };
-		52AD976B12FA11710099FB88 /* SCHBookmark+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD976912FA11710099FB88 /* SCHBookmark+Extensions.m */; };
-		52AD977812FA11E20099FB88 /* SCHLastPage+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD977712FA11E20099FB88 /* SCHLastPage+Extensions.m */; };
-		52AD977912FA11E20099FB88 /* SCHLastPage+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD977712FA11E20099FB88 /* SCHLastPage+Extensions.m */; };
-		52AD978312FA12A00099FB88 /* SCHFavorite+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD978212FA12A00099FB88 /* SCHFavorite+Extensions.m */; };
-		52AD978412FA12A00099FB88 /* SCHFavorite+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD978212FA12A00099FB88 /* SCHFavorite+Extensions.m */; };
-		52AD99E612FB0E9A0099FB88 /* SCHContentMetadataItem+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D6124212E44CEC0033DA92 /* SCHContentMetadataItem+Extensions.m */; };
-		52AD99E712FB0E9B0099FB88 /* SCHContentMetadataItem+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D6124212E44CEC0033DA92 /* SCHContentMetadataItem+Extensions.m */; };
 		52AD9ACF12FC0EEF0099FB88 /* SCHSyncManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9ACE12FC0EEF0099FB88 /* SCHSyncManager.m */; };
 		52AD9B1C12FC1B6B0099FB88 /* SCHSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9B1B12FC1B6B0099FB88 /* SCHSyncComponent.m */; };
 		52AD9D6F130000570099FB88 /* SCHAnnotationSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9D64130000570099FB88 /* SCHAnnotationSyncComponent.m */; };
@@ -144,8 +106,6 @@
 		52AD9D72130000570099FB88 /* SCHProfileSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9D6A130000570099FB88 /* SCHProfileSyncComponent.m */; };
 		52AD9D73130000570099FB88 /* SCHReadingStatsSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9D6C130000570099FB88 /* SCHReadingStatsSyncComponent.m */; };
 		52AD9D74130000570099FB88 /* SCHSettingsSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9D6E130000570099FB88 /* SCHSettingsSyncComponent.m */; };
-		52D6122212E44B0F0033DA92 /* SCHProfileItem+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D6122112E44B0F0033DA92 /* SCHProfileItem+Extensions.m */; };
-		52D6124F12E44D760033DA92 /* SCHSyncEntity+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D6124E12E44D760033DA92 /* SCHSyncEntity+Extensions.m */; };
 		52D612B812E4650B0033DA92 /* NSNumber+ObjectTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D612B712E4650B0033DA92 /* NSNumber+ObjectTypes.m */; };
 		52E332E413018EDF002F3011 /* SCHComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 5266D38313007D15004E3AC6 /* SCHComponent.m */; };
 		52E332E513018EDF002F3011 /* SCHTopFavoritesComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 5266D34B13007A1C004E3AC6 /* SCHTopFavoritesComponent.m */; };
@@ -296,8 +256,6 @@
 		F8509F2C12F063C900197EB5 /* SCHLibreAccessWebService.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293872C12DF43CB00045B44 /* SCHLibreAccessWebService.m */; };
 		F8509F2D12F063C900197EB5 /* SCHScholasticWebService.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293872F12DF43D200045B44 /* SCHScholasticWebService.m */; };
 		F8509F2F12F063C900197EB5 /* SCHBookShelfViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293883112E03CD000045B44 /* SCHBookShelfViewController.m */; };
-		F8509F3012F063C900197EB5 /* SCHProfileItem+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D6122112E44B0F0033DA92 /* SCHProfileItem+Extensions.m */; };
-		F8509F3112F063C900197EB5 /* SCHSyncEntity+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D6124E12E44D760033DA92 /* SCHSyncEntity+Extensions.m */; };
 		F8509F3212F063C900197EB5 /* NSNumber+ObjectTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D612B712E4650B0033DA92 /* NSNumber+ObjectTypes.m */; };
 		F8509F3412F063C900197EB5 /* SCHLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF4E5D12E6E01C00E374F7 /* SCHLoginViewController.m */; };
 		F8509F3512F063C900197EB5 /* LibreAccessServiceSvc.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF508612E739E900E374F7 /* LibreAccessServiceSvc.m */; };
@@ -368,14 +326,6 @@
 		5200EFEB12F6CFE400BAC355 /* SCHPrivateAnnotations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHPrivateAnnotations.m; path = Shared/SCHPrivateAnnotations.m; sourceTree = "<group>"; };
 		5200EFF212F6D00B00BAC355 /* SCHeReaderCategories.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHeReaderCategories.h; path = Shared/SCHeReaderCategories.h; sourceTree = "<group>"; };
 		5200EFF312F6D00B00BAC355 /* SCHeReaderCategories.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHeReaderCategories.m; path = Shared/SCHeReaderCategories.m; sourceTree = "<group>"; };
-		5222FBF612F4E023000A4624 /* SCHContentProfileItem+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SCHContentProfileItem+Extensions.h"; path = "Shared/SCHContentProfileItem+Extensions.h"; sourceTree = "<group>"; };
-		5222FBF712F4E023000A4624 /* SCHContentProfileItem+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SCHContentProfileItem+Extensions.m"; path = "Shared/SCHContentProfileItem+Extensions.m"; sourceTree = "<group>"; };
-		5222FC1D12F4E37B000A4624 /* SCHUserSettingsItem+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SCHUserSettingsItem+Extensions.h"; path = "Shared/SCHUserSettingsItem+Extensions.h"; sourceTree = "<group>"; };
-		5222FC1E12F4E37B000A4624 /* SCHUserSettingsItem+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SCHUserSettingsItem+Extensions.m"; path = "Shared/SCHUserSettingsItem+Extensions.m"; sourceTree = "<group>"; };
-		5222FC2A12F4E41F000A4624 /* SCHOrderItem+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SCHOrderItem+Extensions.h"; path = "Shared/SCHOrderItem+Extensions.h"; sourceTree = "<group>"; };
-		5222FC2B12F4E41F000A4624 /* SCHOrderItem+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SCHOrderItem+Extensions.m"; path = "Shared/SCHOrderItem+Extensions.m"; sourceTree = "<group>"; };
-		5222FC3312F4E4AB000A4624 /* SCHUserContentItem+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SCHUserContentItem+Extensions.h"; path = "Shared/SCHUserContentItem+Extensions.h"; sourceTree = "<group>"; };
-		5222FC3412F4E4AB000A4624 /* SCHUserContentItem+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SCHUserContentItem+Extensions.m"; path = "Shared/SCHUserContentItem+Extensions.m"; sourceTree = "<group>"; };
 		52298A5D12F0EF5600BBBCE6 /* SCHNote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHNote.h; path = Shared/SCHNote.h; sourceTree = "<group>"; };
 		52298A5E12F0EF5600BBBCE6 /* SCHNote.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHNote.m; path = Shared/SCHNote.m; sourceTree = "<group>"; };
 		52298A5F12F0EF5600BBBCE6 /* SCHUserSettingsItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHUserSettingsItem.h; path = Shared/SCHUserSettingsItem.h; sourceTree = "<group>"; };
@@ -437,12 +387,6 @@
 		526750DD13291EEA00063AC8 /* SCHRightsManagerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHRightsManagerDelegate.h; path = Shared/SCHRightsManagerDelegate.h; sourceTree = "<group>"; };
 		528433E9133382EA0010BAAB /* SCHAppDictionaryState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAppDictionaryState.h; path = Shared/SCHAppDictionaryState.h; sourceTree = "<group>"; };
 		528433EA133382EA0010BAAB /* SCHAppDictionaryState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHAppDictionaryState.m; path = Shared/SCHAppDictionaryState.m; sourceTree = "<group>"; };
-		528433ED133383940010BAAB /* SCHAppBook+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SCHAppBook+Extensions.h"; path = "Shared/SCHAppBook+Extensions.h"; sourceTree = "<group>"; };
-		528433EE133383940010BAAB /* SCHAppBook+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SCHAppBook+Extensions.m"; path = "Shared/SCHAppBook+Extensions.m"; sourceTree = "<group>"; };
-		528433EF133383940010BAAB /* SCHAppBookOrder+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SCHAppBookOrder+Extensions.h"; path = "Shared/SCHAppBookOrder+Extensions.h"; sourceTree = "<group>"; };
-		528433F0133383940010BAAB /* SCHAppBookOrder+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SCHAppBookOrder+Extensions.m"; path = "Shared/SCHAppBookOrder+Extensions.m"; sourceTree = "<group>"; };
-		528433F1133383940010BAAB /* SCHAppDictionaryState+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SCHAppDictionaryState+Extensions.h"; path = "Shared/SCHAppDictionaryState+Extensions.h"; sourceTree = "<group>"; };
-		528433F2133383940010BAAB /* SCHAppDictionaryState+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SCHAppDictionaryState+Extensions.m"; path = "Shared/SCHAppDictionaryState+Extensions.m"; sourceTree = "<group>"; };
 		528A2CD212CCDD9E0053A343 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = Settings.bundle; path = Shared/Settings.bundle; sourceTree = "<group>"; };
 		528A2CD912CCDDB00053A343 /* Entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Entitlements.plist; sourceTree = "<group>"; };
 		528A2CDA12CCDE070053A343 /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = Localizable.strings; path = Shared/Localizable.strings; sourceTree = "<group>"; };
@@ -503,32 +447,10 @@
 		5293883112E03CD000045B44 /* SCHBookShelfViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookShelfViewController.m; path = iPhone/SCHBookShelfViewController.m; sourceTree = "<group>"; };
 		5293883212E03CD000045B44 /* SCHBookShelfViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = SCHBookShelfViewController.xib; path = iPhone/SCHBookShelfViewController.xib; sourceTree = "<group>"; };
 		52938B3812E08FC400045B44 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon.png; path = Shared/Images/Icon.png; sourceTree = "<group>"; };
-		52AD953E12F95E180099FB88 /* SCHListProfileContentAnnotations+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SCHListProfileContentAnnotations+Extensions.h"; path = "Shared/SCHListProfileContentAnnotations+Extensions.h"; sourceTree = "<group>"; };
-		52AD953F12F95E180099FB88 /* SCHListProfileContentAnnotations+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SCHListProfileContentAnnotations+Extensions.m"; path = "Shared/SCHListProfileContentAnnotations+Extensions.m"; sourceTree = "<group>"; };
-		52AD961412F9A77C0099FB88 /* SCHItemsCount+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SCHItemsCount+Extensions.h"; path = "Shared/SCHItemsCount+Extensions.h"; sourceTree = "<group>"; };
-		52AD961512F9A77C0099FB88 /* SCHItemsCount+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SCHItemsCount+Extensions.m"; path = "Shared/SCHItemsCount+Extensions.m"; sourceTree = "<group>"; };
+		529A78D41338D8DC00981939 /* SCHSyncEntity+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SCHSyncEntity+Extensions.h"; path = "Shared/SCHSyncEntity+Extensions.h"; sourceTree = "<group>"; };
+		529A78D51338D8DD00981939 /* SCHSyncEntity+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SCHSyncEntity+Extensions.m"; path = "Shared/SCHSyncEntity+Extensions.m"; sourceTree = "<group>"; };
 		52AD966512F9B1B40099FB88 /* SCHAnnotationsList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAnnotationsList.h; path = Shared/SCHAnnotationsList.h; sourceTree = "<group>"; };
 		52AD966612F9B1B40099FB88 /* SCHAnnotationsList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHAnnotationsList.m; path = Shared/SCHAnnotationsList.m; sourceTree = "<group>"; };
-		52AD968E12F9B4DC0099FB88 /* SCHAnnotationsList+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SCHAnnotationsList+Extensions.h"; path = "Shared/SCHAnnotationsList+Extensions.h"; sourceTree = "<group>"; };
-		52AD968F12F9B4DC0099FB88 /* SCHAnnotationsList+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SCHAnnotationsList+Extensions.m"; path = "Shared/SCHAnnotationsList+Extensions.m"; sourceTree = "<group>"; };
-		52AD96CD12F9C1020099FB88 /* SCHAnnotationsContentItem+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SCHAnnotationsContentItem+Extensions.h"; path = "Shared/SCHAnnotationsContentItem+Extensions.h"; sourceTree = "<group>"; };
-		52AD96CE12F9C1020099FB88 /* SCHAnnotationsContentItem+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SCHAnnotationsContentItem+Extensions.m"; path = "Shared/SCHAnnotationsContentItem+Extensions.m"; sourceTree = "<group>"; };
-		52AD971B12FA0BF80099FB88 /* SCHPrivateAnnotations+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SCHPrivateAnnotations+Extensions.h"; path = "Shared/SCHPrivateAnnotations+Extensions.h"; sourceTree = "<group>"; };
-		52AD971C12FA0BF80099FB88 /* SCHPrivateAnnotations+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SCHPrivateAnnotations+Extensions.m"; path = "Shared/SCHPrivateAnnotations+Extensions.m"; sourceTree = "<group>"; };
-		52AD973312FA0EE40099FB88 /* SCHLocationGraphics+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SCHLocationGraphics+Extensions.h"; path = "Shared/SCHLocationGraphics+Extensions.h"; sourceTree = "<group>"; };
-		52AD973412FA0EE40099FB88 /* SCHLocationGraphics+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SCHLocationGraphics+Extensions.m"; path = "Shared/SCHLocationGraphics+Extensions.m"; sourceTree = "<group>"; };
-		52AD974112FA0FA80099FB88 /* SCHHighlight+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SCHHighlight+Extensions.h"; path = "Shared/SCHHighlight+Extensions.h"; sourceTree = "<group>"; };
-		52AD974212FA0FA80099FB88 /* SCHHighlight+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SCHHighlight+Extensions.m"; path = "Shared/SCHHighlight+Extensions.m"; sourceTree = "<group>"; };
-		52AD974C12FA10580099FB88 /* SCHNote+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SCHNote+Extensions.h"; path = "Shared/SCHNote+Extensions.h"; sourceTree = "<group>"; };
-		52AD974D12FA10580099FB88 /* SCHNote+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SCHNote+Extensions.m"; path = "Shared/SCHNote+Extensions.m"; sourceTree = "<group>"; };
-		52AD975D12FA10F40099FB88 /* SCHCoords+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SCHCoords+Extensions.h"; path = "Shared/SCHCoords+Extensions.h"; sourceTree = "<group>"; };
-		52AD975E12FA10F40099FB88 /* SCHCoords+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SCHCoords+Extensions.m"; path = "Shared/SCHCoords+Extensions.m"; sourceTree = "<group>"; };
-		52AD976812FA11710099FB88 /* SCHBookmark+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SCHBookmark+Extensions.h"; path = "Shared/SCHBookmark+Extensions.h"; sourceTree = "<group>"; };
-		52AD976912FA11710099FB88 /* SCHBookmark+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SCHBookmark+Extensions.m"; path = "Shared/SCHBookmark+Extensions.m"; sourceTree = "<group>"; };
-		52AD977612FA11E20099FB88 /* SCHLastPage+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SCHLastPage+Extensions.h"; path = "Shared/SCHLastPage+Extensions.h"; sourceTree = "<group>"; };
-		52AD977712FA11E20099FB88 /* SCHLastPage+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SCHLastPage+Extensions.m"; path = "Shared/SCHLastPage+Extensions.m"; sourceTree = "<group>"; };
-		52AD978112FA12A00099FB88 /* SCHFavorite+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SCHFavorite+Extensions.h"; path = "Shared/SCHFavorite+Extensions.h"; sourceTree = "<group>"; };
-		52AD978212FA12A00099FB88 /* SCHFavorite+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SCHFavorite+Extensions.m"; path = "Shared/SCHFavorite+Extensions.m"; sourceTree = "<group>"; };
 		52AD9ACD12FC0EEF0099FB88 /* SCHSyncManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHSyncManager.h; path = Shared/SCHSyncManager.h; sourceTree = "<group>"; };
 		52AD9ACE12FC0EEF0099FB88 /* SCHSyncManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHSyncManager.m; path = Shared/SCHSyncManager.m; sourceTree = "<group>"; };
 		52AD9B1A12FC1B6B0099FB88 /* SCHSyncComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHSyncComponent.h; path = Shared/SCHSyncComponent.h; sourceTree = "<group>"; };
@@ -544,12 +466,6 @@
 		52AD9D6D130000570099FB88 /* SCHSettingsSyncComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHSettingsSyncComponent.h; path = Shared/SCHSettingsSyncComponent.h; sourceTree = "<group>"; };
 		52AD9D6E130000570099FB88 /* SCHSettingsSyncComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHSettingsSyncComponent.m; path = Shared/SCHSettingsSyncComponent.m; sourceTree = "<group>"; };
 		52AD9D9813000CAA0099FB88 /* SCHSyncComponentProtected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHSyncComponentProtected.h; path = Shared/SCHSyncComponentProtected.h; sourceTree = "<group>"; };
-		52D6122012E44B0F0033DA92 /* SCHProfileItem+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SCHProfileItem+Extensions.h"; path = "Shared/SCHProfileItem+Extensions.h"; sourceTree = "<group>"; };
-		52D6122112E44B0F0033DA92 /* SCHProfileItem+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SCHProfileItem+Extensions.m"; path = "Shared/SCHProfileItem+Extensions.m"; sourceTree = "<group>"; };
-		52D6124112E44CEC0033DA92 /* SCHContentMetadataItem+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SCHContentMetadataItem+Extensions.h"; path = "Shared/SCHContentMetadataItem+Extensions.h"; sourceTree = "<group>"; };
-		52D6124212E44CEC0033DA92 /* SCHContentMetadataItem+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SCHContentMetadataItem+Extensions.m"; path = "Shared/SCHContentMetadataItem+Extensions.m"; sourceTree = "<group>"; };
-		52D6124D12E44D760033DA92 /* SCHSyncEntity+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SCHSyncEntity+Extensions.h"; path = "Shared/SCHSyncEntity+Extensions.h"; sourceTree = "<group>"; };
-		52D6124E12E44D760033DA92 /* SCHSyncEntity+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SCHSyncEntity+Extensions.m"; path = "Shared/SCHSyncEntity+Extensions.m"; sourceTree = "<group>"; };
 		52D612B612E4650B0033DA92 /* NSNumber+ObjectTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSNumber+ObjectTypes.h"; path = "Shared/NSNumber+ObjectTypes.h"; sourceTree = "<group>"; };
 		52D612B712E4650B0033DA92 /* NSNumber+ObjectTypes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSNumber+ObjectTypes.m"; path = "Shared/NSNumber+ObjectTypes.m"; sourceTree = "<group>"; };
 		52E334F41303049B002F3011 /* SCHTopPicksBookShelfViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHTopPicksBookShelfViewController.h; path = iPhone/SCHTopPicksBookShelfViewController.h; sourceTree = "<group>"; };
@@ -969,44 +885,26 @@
 			children = (
 				F8BEE8AD1334FD44008B40DA /* SCHAppBook.h */,
 				F8BEE8AE1334FD44008B40DA /* SCHAppBook.m */,
-				528433ED133383940010BAAB /* SCHAppBook+Extensions.h */,
-				528433EE133383940010BAAB /* SCHAppBook+Extensions.m */,
 				5243545613337BAC00282B53 /* SCHAppBookOrder.h */,
 				5243545713337BAC00282B53 /* SCHAppBookOrder.m */,
-				528433EF133383940010BAAB /* SCHAppBookOrder+Extensions.h */,
-				528433F0133383940010BAAB /* SCHAppBookOrder+Extensions.m */,
 				528433E9133382EA0010BAAB /* SCHAppDictionaryState.h */,
 				528433EA133382EA0010BAAB /* SCHAppDictionaryState.m */,
-				528433F1133383940010BAAB /* SCHAppDictionaryState+Extensions.h */,
-				528433F2133383940010BAAB /* SCHAppDictionaryState+Extensions.m */,
 				52298A7912F0EF5600BBBCE6 /* SCHAnnotation.h */,
 				52298A7A12F0EF5600BBBCE6 /* SCHAnnotation.m */,
 				52298A7712F0EF5600BBBCE6 /* SCHAnnotationsContentItem.h */,
 				52298A7812F0EF5600BBBCE6 /* SCHAnnotationsContentItem.m */,
-				52AD96CD12F9C1020099FB88 /* SCHAnnotationsContentItem+Extensions.h */,
-				52AD96CE12F9C1020099FB88 /* SCHAnnotationsContentItem+Extensions.m */,
 				52AD966512F9B1B40099FB88 /* SCHAnnotationsList.h */,
 				52AD966612F9B1B40099FB88 /* SCHAnnotationsList.m */,
-				52AD968E12F9B4DC0099FB88 /* SCHAnnotationsList+Extensions.h */,
-				52AD968F12F9B4DC0099FB88 /* SCHAnnotationsList+Extensions.m */,
 				52298A7112F0EF5600BBBCE6 /* SCHBookmark.h */,
 				52298A7212F0EF5600BBBCE6 /* SCHBookmark.m */,
-				52AD976812FA11710099FB88 /* SCHBookmark+Extensions.h */,
-				52AD976912FA11710099FB88 /* SCHBookmark+Extensions.m */,
 				52298A7312F0EF5600BBBCE6 /* SCHContentItem.h */,
 				52298A7412F0EF5600BBBCE6 /* SCHContentItem.m */,
 				52298A6112F0EF5600BBBCE6 /* SCHContentMetadataItem.h */,
 				52298A6212F0EF5600BBBCE6 /* SCHContentMetadataItem.m */,
-				52D6124112E44CEC0033DA92 /* SCHContentMetadataItem+Extensions.h */,
-				52D6124212E44CEC0033DA92 /* SCHContentMetadataItem+Extensions.m */,
 				52298A6D12F0EF5600BBBCE6 /* SCHContentProfileItem.h */,
 				52298A6E12F0EF5600BBBCE6 /* SCHContentProfileItem.m */,
-				5222FBF612F4E023000A4624 /* SCHContentProfileItem+Extensions.h */,
-				5222FBF712F4E023000A4624 /* SCHContentProfileItem+Extensions.m */,
 				52298A7F12F0EF5600BBBCE6 /* SCHCoords.h */,
 				52298A8012F0EF5600BBBCE6 /* SCHCoords.m */,
-				52AD975D12FA10F40099FB88 /* SCHCoords+Extensions.h */,
-				52AD975E12FA10F40099FB88 /* SCHCoords+Extensions.m */,
 				5233E03113154EEA0088F18C /* SCHDeviceInfo.h */,
 				5233E03213154EEA0088F18C /* SCHDeviceInfo.m */,
 				5233E03513154F810088F18C /* SCHDeviceInfo+Extensions.h */,
@@ -1015,60 +913,36 @@
 				5200EFF312F6D00B00BAC355 /* SCHeReaderCategories.m */,
 				52298A7B12F0EF5600BBBCE6 /* SCHFavorite.h */,
 				52298A7C12F0EF5600BBBCE6 /* SCHFavorite.m */,
-				52AD978112FA12A00099FB88 /* SCHFavorite+Extensions.h */,
-				52AD978212FA12A00099FB88 /* SCHFavorite+Extensions.m */,
 				52298A8512F0EF5600BBBCE6 /* SCHHighlight.h */,
 				52298A8612F0EF5600BBBCE6 /* SCHHighlight.m */,
-				52AD974112FA0FA80099FB88 /* SCHHighlight+Extensions.h */,
-				52AD974212FA0FA80099FB88 /* SCHHighlight+Extensions.m */,
 				5200EFE612F6CFE400BAC355 /* SCHItemsCount.h */,
 				5200EFE712F6CFE400BAC355 /* SCHItemsCount.m */,
-				52AD961412F9A77C0099FB88 /* SCHItemsCount+Extensions.h */,
-				52AD961512F9A77C0099FB88 /* SCHItemsCount+Extensions.m */,
 				52298A6312F0EF5600BBBCE6 /* SCHLastPage.h */,
 				52298A6412F0EF5600BBBCE6 /* SCHLastPage.m */,
-				52AD977612FA11E20099FB88 /* SCHLastPage+Extensions.h */,
-				52AD977712FA11E20099FB88 /* SCHLastPage+Extensions.m */,
 				5200EFE812F6CFE400BAC355 /* SCHListProfileContentAnnotations.h */,
 				5200EFE912F6CFE400BAC355 /* SCHListProfileContentAnnotations.m */,
-				52AD953E12F95E180099FB88 /* SCHListProfileContentAnnotations+Extensions.h */,
-				52AD953F12F95E180099FB88 /* SCHListProfileContentAnnotations+Extensions.m */,
 				52298A8112F0EF5600BBBCE6 /* SCHLocationGraphics.h */,
 				52298A8212F0EF5600BBBCE6 /* SCHLocationGraphics.m */,
 				52298A6512F0EF5600BBBCE6 /* SCHLocationText.h */,
 				52298A6612F0EF5600BBBCE6 /* SCHLocationText.m */,
-				52AD973312FA0EE40099FB88 /* SCHLocationGraphics+Extensions.h */,
-				52AD973412FA0EE40099FB88 /* SCHLocationGraphics+Extensions.m */,
 				52298A5D12F0EF5600BBBCE6 /* SCHNote.h */,
 				52298A5E12F0EF5600BBBCE6 /* SCHNote.m */,
-				52AD974C12FA10580099FB88 /* SCHNote+Extensions.h */,
-				52AD974D12FA10580099FB88 /* SCHNote+Extensions.m */,
 				52298A6912F0EF5600BBBCE6 /* SCHOrderItem.h */,
 				52298A6A12F0EF5600BBBCE6 /* SCHOrderItem.m */,
-				5222FC2A12F4E41F000A4624 /* SCHOrderItem+Extensions.h */,
-				5222FC2B12F4E41F000A4624 /* SCHOrderItem+Extensions.m */,
 				5200EFEA12F6CFE400BAC355 /* SCHPrivateAnnotations.h */,
 				5200EFEB12F6CFE400BAC355 /* SCHPrivateAnnotations.m */,
-				52AD971B12FA0BF80099FB88 /* SCHPrivateAnnotations+Extensions.h */,
-				52AD971C12FA0BF80099FB88 /* SCHPrivateAnnotations+Extensions.m */,
 				52298A7D12F0EF5600BBBCE6 /* SCHProfileItem.h */,
 				52298A7E12F0EF5600BBBCE6 /* SCHProfileItem.m */,
-				52D6122012E44B0F0033DA92 /* SCHProfileItem+Extensions.h */,
-				52D6122112E44B0F0033DA92 /* SCHProfileItem+Extensions.m */,
 				52298A7512F0EF5600BBBCE6 /* SCHProfileStatusItem.h */,
 				52298A7612F0EF5600BBBCE6 /* SCHProfileStatusItem.m */,
 				52298A6F12F0EF5600BBBCE6 /* SCHSyncEntity.h */,
 				52298A7012F0EF5600BBBCE6 /* SCHSyncEntity.m */,
-				52D6124D12E44D760033DA92 /* SCHSyncEntity+Extensions.h */,
-				52D6124E12E44D760033DA92 /* SCHSyncEntity+Extensions.m */,
+				529A78D41338D8DC00981939 /* SCHSyncEntity+Extensions.h */,
+				529A78D51338D8DD00981939 /* SCHSyncEntity+Extensions.m */,
 				52298A6712F0EF5600BBBCE6 /* SCHUserContentItem.h */,
 				52298A6812F0EF5600BBBCE6 /* SCHUserContentItem.m */,
-				5222FC3312F4E4AB000A4624 /* SCHUserContentItem+Extensions.h */,
-				5222FC3412F4E4AB000A4624 /* SCHUserContentItem+Extensions.m */,
 				52298A5F12F0EF5600BBBCE6 /* SCHUserSettingsItem.h */,
 				52298A6012F0EF5600BBBCE6 /* SCHUserSettingsItem.m */,
-				5222FC1D12F4E37B000A4624 /* SCHUserSettingsItem+Extensions.h */,
-				5222FC1E12F4E37B000A4624 /* SCHUserSettingsItem+Extensions.m */,
 				52298A6B12F0EF5600BBBCE6 /* SCHWordIndex.h */,
 				52298A6C12F0EF5600BBBCE6 /* SCHWordIndex.m */,
 				52D612B612E4650B0033DA92 /* NSNumber+ObjectTypes.h */,
@@ -1812,8 +1686,6 @@
 				5293872D12DF43CB00045B44 /* SCHLibreAccessWebService.m in Sources */,
 				5293873012DF43D200045B44 /* SCHScholasticWebService.m in Sources */,
 				5293883312E03CD000045B44 /* SCHBookShelfViewController.m in Sources */,
-				52D6122212E44B0F0033DA92 /* SCHProfileItem+Extensions.m in Sources */,
-				52D6124F12E44D760033DA92 /* SCHSyncEntity+Extensions.m in Sources */,
 				52D612B812E4650B0033DA92 /* NSNumber+ObjectTypes.m in Sources */,
 				52EF4E5F12E6E01C00E374F7 /* SCHLoginViewController.m in Sources */,
 				52EF508712E739E900E374F7 /* LibreAccessServiceSvc.m in Sources */,
@@ -1849,30 +1721,13 @@
 				52298A9912F0EF5600BBBCE6 /* SCHLocationGraphics.m in Sources */,
 				52298A9B12F0EF5600BBBCE6 /* SCHHighlight.m in Sources */,
 				52E4692012F1D94E00ECC97A /* SCHLocalDebug.m in Sources */,
-				5222FBF812F4E023000A4624 /* SCHContentProfileItem+Extensions.m in Sources */,
-				5222FC1F12F4E37B000A4624 /* SCHUserSettingsItem+Extensions.m in Sources */,
-				5222FC2C12F4E41F000A4624 /* SCHOrderItem+Extensions.m in Sources */,
-				5222FC3512F4E4AB000A4624 /* SCHUserContentItem+Extensions.m in Sources */,
 				C923B14312F6AFC60054426F /* SCHMultipleBookshelvesController.m in Sources */,
 				5200EFEF12F6CFE400BAC355 /* SCHItemsCount.m in Sources */,
 				5200EFF012F6CFE400BAC355 /* SCHListProfileContentAnnotations.m in Sources */,
 				5200EFF112F6CFE400BAC355 /* SCHPrivateAnnotations.m in Sources */,
 				5200EFF512F6D00B00BAC355 /* SCHeReaderCategories.m in Sources */,
-				52AD954112F95E180099FB88 /* SCHListProfileContentAnnotations+Extensions.m in Sources */,
-				52AD961712F9A77C0099FB88 /* SCHItemsCount+Extensions.m in Sources */,
 				52AD966E12F9B1B40099FB88 /* SCHAnnotationsList.m in Sources */,
-				52AD969112F9B4DC0099FB88 /* SCHAnnotationsList+Extensions.m in Sources */,
-				52AD96D012F9C1020099FB88 /* SCHAnnotationsContentItem+Extensions.m in Sources */,
-				52AD971E12FA0BF80099FB88 /* SCHPrivateAnnotations+Extensions.m in Sources */,
-				52AD973612FA0EE40099FB88 /* SCHLocationGraphics+Extensions.m in Sources */,
-				52AD974412FA0FA80099FB88 /* SCHHighlight+Extensions.m in Sources */,
-				52AD974F12FA10580099FB88 /* SCHNote+Extensions.m in Sources */,
-				52AD976012FA10F40099FB88 /* SCHCoords+Extensions.m in Sources */,
-				52AD976B12FA11710099FB88 /* SCHBookmark+Extensions.m in Sources */,
-				52AD977912FA11E20099FB88 /* SCHLastPage+Extensions.m in Sources */,
-				52AD978412FA12A00099FB88 /* SCHFavorite+Extensions.m in Sources */,
 				F81B3A8612FAADB000A20D52 /* SCHBookManager.m in Sources */,
-				52AD99E712FB0E9B0099FB88 /* SCHContentMetadataItem+Extensions.m in Sources */,
 				F83D86B512FC070F00227031 /* SCHLocalDebugXPSReader.m in Sources */,
 				52AD9ACF12FC0EEF0099FB88 /* SCHSyncManager.m in Sources */,
 				52AD9B1C12FC1B6B0099FB88 /* SCHSyncComponent.m in Sources */,
@@ -1908,10 +1763,8 @@
 				F8C4C58313326E6C0057420E /* SCHDictionaryManifestOperation.m in Sources */,
 				5243545A13337BAC00282B53 /* SCHAppBookOrder.m in Sources */,
 				528433EB133382EA0010BAAB /* SCHAppDictionaryState.m in Sources */,
-				528433F3133383940010BAAB /* SCHAppBook+Extensions.m in Sources */,
-				528433F5133383940010BAAB /* SCHAppBookOrder+Extensions.m in Sources */,
-				528433F7133383940010BAAB /* SCHAppDictionaryState+Extensions.m in Sources */,
 				F8BEE8B01334FD44008B40DA /* SCHAppBook.m in Sources */,
+				529A78D61338D8DF00981939 /* SCHSyncEntity+Extensions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1945,8 +1798,6 @@
 				F8509F2C12F063C900197EB5 /* SCHLibreAccessWebService.m in Sources */,
 				F8509F2D12F063C900197EB5 /* SCHScholasticWebService.m in Sources */,
 				F8509F2F12F063C900197EB5 /* SCHBookShelfViewController.m in Sources */,
-				F8509F3012F063C900197EB5 /* SCHProfileItem+Extensions.m in Sources */,
-				F8509F3112F063C900197EB5 /* SCHSyncEntity+Extensions.m in Sources */,
 				F8509F3212F063C900197EB5 /* NSNumber+ObjectTypes.m in Sources */,
 				F8509F3412F063C900197EB5 /* SCHLoginViewController.m in Sources */,
 				F8509F3512F063C900197EB5 /* LibreAccessServiceSvc.m in Sources */,
@@ -1981,31 +1832,14 @@
 				F837C6B312F179AF00833448 /* SCHUserSettingsItem.m in Sources */,
 				F837C6B412F179B100833448 /* SCHWordIndex.m in Sources */,
 				52E4697512F1F33200ECC97A /* SCHLocalDebug.m in Sources */,
-				5222FBF912F4E023000A4624 /* SCHContentProfileItem+Extensions.m in Sources */,
-				5222FC2012F4E37B000A4624 /* SCHUserSettingsItem+Extensions.m in Sources */,
-				5222FC2D12F4E41F000A4624 /* SCHOrderItem+Extensions.m in Sources */,
-				5222FC3612F4E4AB000A4624 /* SCHUserContentItem+Extensions.m in Sources */,
 				C923B14112F6AFC60054426F /* SCHMultipleBookshelvesController.m in Sources */,
 				5200EFEC12F6CFE400BAC355 /* SCHItemsCount.m in Sources */,
 				5200EFED12F6CFE400BAC355 /* SCHListProfileContentAnnotations.m in Sources */,
 				5200EFEE12F6CFE400BAC355 /* SCHPrivateAnnotations.m in Sources */,
 				5200EFF412F6D00B00BAC355 /* SCHeReaderCategories.m in Sources */,
 				F8CD24F612F97E62001C748B /* SCHBookManager.m in Sources */,
-				52AD954012F95E180099FB88 /* SCHListProfileContentAnnotations+Extensions.m in Sources */,
-				52AD961612F9A77C0099FB88 /* SCHItemsCount+Extensions.m in Sources */,
 				52AD966B12F9B1B40099FB88 /* SCHAnnotationsList.m in Sources */,
-				52AD969012F9B4DC0099FB88 /* SCHAnnotationsList+Extensions.m in Sources */,
-				52AD96CF12F9C1020099FB88 /* SCHAnnotationsContentItem+Extensions.m in Sources */,
-				52AD971D12FA0BF80099FB88 /* SCHPrivateAnnotations+Extensions.m in Sources */,
-				52AD973512FA0EE40099FB88 /* SCHLocationGraphics+Extensions.m in Sources */,
-				52AD974312FA0FA80099FB88 /* SCHHighlight+Extensions.m in Sources */,
-				52AD974E12FA10580099FB88 /* SCHNote+Extensions.m in Sources */,
-				52AD975F12FA10F40099FB88 /* SCHCoords+Extensions.m in Sources */,
-				52AD976A12FA11710099FB88 /* SCHBookmark+Extensions.m in Sources */,
-				52AD977812FA11E20099FB88 /* SCHLastPage+Extensions.m in Sources */,
-				52AD978312FA12A00099FB88 /* SCHFavorite+Extensions.m in Sources */,
 				F81B3A7F12FAAD8E00A20D52 /* SCHNote.m in Sources */,
-				52AD99E612FB0E9A0099FB88 /* SCHContentMetadataItem+Extensions.m in Sources */,
 				F83D86BE12FC60C600227031 /* SCHLocalDebugXPSReader.m in Sources */,
 				F83D874612FC67A400227031 /* SCHSyncManager.m in Sources */,
 				F83D874712FC67A600227031 /* SCHSyncComponent.m in Sources */,
@@ -2041,10 +1875,8 @@
 				F8C4C58113326E6C0057420E /* SCHDictionaryManifestOperation.m in Sources */,
 				5243545B13337BAC00282B53 /* SCHAppBookOrder.m in Sources */,
 				528433EC133382EA0010BAAB /* SCHAppDictionaryState.m in Sources */,
-				528433F4133383940010BAAB /* SCHAppBook+Extensions.m in Sources */,
-				528433F6133383940010BAAB /* SCHAppBookOrder+Extensions.m in Sources */,
-				528433F8133383940010BAAB /* SCHAppDictionaryState+Extensions.m in Sources */,
 				F8BEE8AF1334FD44008B40DA /* SCHAppBook.m in Sources */,
+				529A78D71338D8DF00981939 /* SCHSyncEntity+Extensions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

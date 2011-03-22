@@ -11,7 +11,7 @@
 #import "NSManagedObjectContext+Extensions.h"
 
 #import "SCHLibreAccessWebService.h"
-#import "SCHProfileItem+Extensions.h"
+#import "SCHProfileItem.h"
 
 @interface SCHProfileSyncComponent ()
 

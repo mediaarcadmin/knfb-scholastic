@@ -14,8 +14,8 @@
 #import "SCHLoginViewController.h"
 #import "SCHAuthenticationManager.h"
 #import "SCHLibreAccessWebService.h"
-#import "SCHContentProfileItem+Extensions.h"
-#import "SCHProfileItem+Extensions.h"
+#import "SCHContentProfileItem.h"
+#import "SCHProfileItem.h"
 #import "SCHMultipleBookshelvesController.h"
 #import "SCHSyncManager.h"
 

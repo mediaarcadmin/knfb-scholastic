@@ -8,6 +8,7 @@
 
 #import <CoreData/CoreData.h>
 
+static NSString * const kSCHDeviceInfo = @"SCHDeviceInfo";
 
 @interface SCHDeviceInfo :  NSManagedObject  
 {

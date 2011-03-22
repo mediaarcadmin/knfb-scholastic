@@ -11,6 +11,8 @@
 @class SCHCoords;
 @class SCHNote;
 
+static NSString * const kSCHLocationGraphics = @"SCHLocationGraphics";
+
 @interface SCHLocationGraphics :  NSManagedObject  
 {
 }

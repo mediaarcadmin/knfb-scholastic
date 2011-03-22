@@ -11,9 +11,9 @@
 #import "NSManagedObjectContext+Extensions.h"
 
 #import "SCHLibreAccessWebService.h"
-#import "SCHUserContentItem+Extensions.h"
-#import "SCHOrderItem+Extensions.h"
-#import "SCHContentProfileItem+Extensions.h"
+#import "SCHUserContentItem.h"
+#import "SCHOrderItem.h"
+#import "SCHContentProfileItem.h"
 
 @interface SCHContentSyncComponent ()
 

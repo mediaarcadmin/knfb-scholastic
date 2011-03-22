@@ -9,7 +9,7 @@
 #import "SCHMultipleBookshelvesController.h"
 #import "SCHTopPicksBookShelfViewController.h"
 #import "SCHLocalDebug.h"
-#import "SCHContentProfileItem+Extensions.h"
+#import "SCHContentProfileItem.h"
 #import "SCHTopFavoritesComponent.h"
 #import <QuartzCore/QuartzCore.h>
 

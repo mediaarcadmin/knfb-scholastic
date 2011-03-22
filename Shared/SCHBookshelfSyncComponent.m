@@ -11,9 +11,9 @@
 #import "NSManagedObjectContext+Extensions.h"
 
 #import "SCHLibreAccessWebService.h"
-#import "SCHContentMetadataItem+Extensions.h"
-#import "SCHUserContentItem+Extensions.h"
-#import "SCHAppBook+Extensions.h"
+#import "SCHContentMetadataItem.h"
+#import "SCHUserContentItem.h"
+#import "SCHAppBook.h"
 
 @interface SCHBookshelfSyncComponent ()
 

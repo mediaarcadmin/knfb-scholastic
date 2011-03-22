@@ -9,10 +9,12 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
+static NSString * const kSCHAppDictionaryState = @"SCHAppDictionaryState";
 
 @interface SCHAppDictionaryState : NSManagedObject {
-@private
+
 }
+
 @property (nonatomic, retain) NSDate * LastModified;
 @property (nonatomic, retain) NSNumber * State;
 @property (nonatomic, retain) NSString * Version;

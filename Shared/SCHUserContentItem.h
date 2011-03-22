@@ -12,6 +12,11 @@
 @class SCHContentProfileItem;
 @class SCHOrderItem;
 
+static NSString * const kSCHUserContentItem = @"SCHUserContentItem";
+
+static NSString * const kSCHUserContentItemFetchWithContentIdentifier = @"fetchWithContentIdentifier";
+static NSString * const kSCHUserContentItemCONTENT_IDENTIFIER = @"CONTENT_IDENTIFIER";
+
 @interface SCHUserContentItem :  SCHSyncEntity  
 {
 }
@@ -24,6 +29,8 @@
 @property (nonatomic, retain) NSNumber * DRMQualifier;
 @property (nonatomic, retain) NSSet* OrderList;
 @property (nonatomic, retain) NSSet* ProfileList;
+
+@property (nonatomic, readonly) NSSet *AssignedProfileList;
 
 @end
 

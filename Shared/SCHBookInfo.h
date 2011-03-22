@@ -9,8 +9,8 @@
 #import <Foundation/Foundation.h>
 #import <pthread.h>
 #import <CoreData/CoreData.h>
-#import "SCHContentMetadataItem+Extensions.h"
-#import "SCHAppBook+Extensions.h"
+#import "SCHContentMetadataItem.h"
+#import "SCHAppBook.h"
 #import "SCHProcessingManager.h"
 
 static NSString * const kSCHBookInfoAuthor = @"SCHBookInfoAuthor";

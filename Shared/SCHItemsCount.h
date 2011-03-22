@@ -10,6 +10,8 @@
 
 @class SCHListProfileContentAnnotations;
 
+static NSString * const kSCHItemsCount = @"SCHItemsCount";
+
 @interface SCHItemsCount :  NSManagedObject  
 {
 }

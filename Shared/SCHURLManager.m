@@ -12,8 +12,8 @@
 
 #import "SCHAuthenticationManager.h"
 #import "SCHLibreAccessWebService.h"
-#import "SCHContentMetadataItem+Extensions.h"
-#import "SCHUserContentItem+Extensions.h"
+#import "SCHContentMetadataItem.h"
+#import "SCHUserContentItem.h"
 
 static SCHURLManager *sharedURLManager = nil;
 

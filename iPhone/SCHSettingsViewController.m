@@ -9,7 +9,7 @@
 #import "SCHSettingsViewController.h"
 #import "SCHLoginViewController.h"
 #import "AppDelegate_Shared.h"
-#import "SCHUserSettingsItem+Extensions.h"
+#import "SCHUserSettingsItem.h"
 
 @implementation SCHSettingsViewController
 

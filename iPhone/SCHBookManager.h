@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 #import "BITXPSProvider.h"
-#import "SCHContentMetadataItem+Extensions.h"
+#import "SCHContentMetadataItem.h"
 
 @interface SCHBookManager : NSObject {
 

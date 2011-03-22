@@ -12,9 +12,12 @@
 
 @class SCHAppBook, SCHeReaderCategories;
 
+static NSString * const kSCHContentMetadataItem = @"SCHContentMetadataItem";
+
 @interface SCHContentMetadataItem : SCHContentItem {
-@private
+
 }
+
 @property (nonatomic, retain) NSString * Author;
 @property (nonatomic, retain) NSString * Description;
 @property (nonatomic, retain) NSString * Version;
@@ -27,5 +30,8 @@
 @property (nonatomic, retain) NSString * FileName;
 @property (nonatomic, retain) SCHAppBook * AppBook;
 @property (nonatomic, retain) NSSet* eReaderCategories;
+
+- (NSArray *)annotationsContentForProfile:(NSNumber *)profileID;
+- (BOOL)haveURLs;
 
 @end

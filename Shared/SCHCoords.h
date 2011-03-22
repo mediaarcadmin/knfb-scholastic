@@ -10,6 +10,8 @@
 
 @class SCHLocationGraphics;
 
+static NSString * const kSCHCoords = @"SCHCoords";
+
 @interface SCHCoords :  NSManagedObject  
 {
 }

@@ -22,4 +22,9 @@
 @dynamic OrderList;
 @dynamic ProfileList;
 
+- (NSSet *)AssignedProfileList
+{
+	return(self.ProfileList);
+}
+
 @end

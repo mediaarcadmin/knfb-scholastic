@@ -12,6 +12,8 @@
 @class SCHAnnotationsList;
 @class SCHPrivateAnnotations;
 
+static NSString * const kSCHAnnotationsContentItem = @"SCHAnnotationsContentItem";
+
 @interface SCHAnnotationsContentItem :  SCHContentItem  
 {
 }

@@ -8,6 +8,7 @@
 
 #import <CoreData/CoreData.h>
 
+static NSString * const kSCHAppBook = @"SCHAppBook";
 
 @interface SCHAppBook :  NSManagedObject  
 {

@@ -11,6 +11,8 @@
 
 @class SCHUserContentItem;
 
+static NSString * const kSCHContentProfileItem = @"SCHContentProfileItem";
+
 @interface SCHContentProfileItem :  SCHFavorite  
 {
 }

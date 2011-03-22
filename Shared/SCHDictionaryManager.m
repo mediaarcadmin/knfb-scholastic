@@ -12,7 +12,7 @@
 #import "SCHDictionaryManifestOperation.h"
 #import "SCHDictionaryFileDownloadOperation.h"
 #import "SCHBookManager.h"
-#import "SCHAppDictionaryState+Extensions.h"
+#import "SCHAppDictionaryState.h"
 
 #pragma mark Class Extension
 

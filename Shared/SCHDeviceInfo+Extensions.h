@@ -10,7 +10,7 @@
 
 #import "SCHDeviceInfo.h"
 
-static NSString * const kSCHDeviceInfo = @"SCHDeviceInfo";
+
 
 @interface SCHDeviceInfo (SCHDeviceInfoExtensions)
 
