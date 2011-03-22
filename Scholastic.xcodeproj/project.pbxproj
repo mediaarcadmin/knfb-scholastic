@@ -890,17 +890,16 @@
 		28EEBF621118D79A00187D67 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				52EF594712EECA7200E374F7 /* Extensions */,
+				52D19C681338A57B00A68D75 /* Views */,
 				F867904B1332346C001FDB2F /* Dictionary Processing */,
 				F8899217132E15A5007EB541 /* Processing Manager */,
 				F8DE53E2130A8C0300691CBA /* Book Data */,
-				F8E29664130583A0009BD30D /* Image Processing */,
-				C923B14612F6AFE10054426F /* Bookshelves */,
-				F8509E7512F0620D00197EB5 /* Debug Books */,
 				5293872912DF436100045B44 /* Web Services */,
-				5250C4AB12DE075C00542055 /* Models */,
-				52EF594712EECA7200E374F7 /* Extensions */,
-				528A2CCE12CCDC380053A343 /* Audio */,
+				5250C4AB12DE075C00542055 /* Core Data Models */,
 				F8678D88133216E7001FDB2F /* Configuration */,
+				F8509E7512F0620D00197EB5 /* Debug Books */,
+				528A2CCE12CCDC380053A343 /* Audio */,
 				528A2CCF12CCDC400053A343 /* Images */,
 				528A2CFE12CCFD050053A343 /* Libraries */,
 				2819307C112F81BE00ECF9B4 /* Scholastic.xcdatamodeld */,
@@ -965,7 +964,7 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		5250C4AB12DE075C00542055 /* Models */ = {
+		5250C4AB12DE075C00542055 /* Core Data Models */ = {
 			isa = PBXGroup;
 			children = (
 				F8BEE8AD1334FD44008B40DA /* SCHAppBook.h */,
@@ -1075,7 +1074,7 @@
 				52D612B612E4650B0033DA92 /* NSNumber+ObjectTypes.h */,
 				52D612B712E4650B0033DA92 /* NSNumber+ObjectTypes.m */,
 			);
-			name = Models;
+			name = "Core Data Models";
 			sourceTree = "<group>";
 		};
 		528A2CCE12CCDC380053A343 /* Audio */ = {
@@ -1265,6 +1264,15 @@
 				52AD9D6E130000570099FB88 /* SCHSettingsSyncComponent.m */,
 			);
 			name = Sync;
+			sourceTree = "<group>";
+		};
+		52D19C681338A57B00A68D75 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				F8E29664130583A0009BD30D /* Image Processing */,
+				C923B14612F6AFE10054426F /* Bookshelves */,
+			);
+			name = Views;
 			sourceTree = "<group>";
 		};
 		52EF579412EDBE6E00E374F7 /* security */ = {
