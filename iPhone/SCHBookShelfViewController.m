@@ -10,7 +10,6 @@
 #import "BITTestPageViewController.h"
 #import "BITReadingOptionsView.h"
 #import "SCHLibreAccessWebService.h"
-#import "SCHContentMetadataItem+Extensions.h"
 #import "SCHLocalDebug.h"
 #import "SCHMultipleBookshelvesController.h"
 #import "SCHBookManager.h"
@@ -166,8 +165,6 @@
 	
 	NSLog(@"Showing book %@.", [bookInfo stringForMetadataKey:kSCHBookInfoTitle]);
 	NSLog(@"Showing book %@.", [bookInfo stringForMetadataKey:kSCHBookInfoFileName]);
-	
-	//SCHContentMetadataItem *contentMetadataItem = bookInfo.contentMetadata;
 	
 	BITTestPageViewController *pageView = [[BITTestPageViewController alloc] initWithNibName:nil bundle:nil];
 	pageView.bookInfo = bookInfo;

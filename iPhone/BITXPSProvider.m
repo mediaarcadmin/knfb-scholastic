@@ -10,7 +10,6 @@
 #import "BlioTimeOrderedCache.h"
 #import "zlib.h"
 #import "TouchXML.h"
-#import "SCHContentMetadataItem+Extensions.h"
 #import "SCHBookManager.h"
 
 
@@ -24,7 +23,6 @@
 
 @interface BITXPSProvider()
 
-//@property (nonatomic, assign, readonly) SCHContentMetadataItem *book;
 @property (nonatomic, retain) NSString *tempDirectory;
 @property (nonatomic, assign) RasterImageInfo *imageInfo;
 @property (nonatomic, retain) NSMutableDictionary *xpsData;
@@ -163,12 +161,6 @@ void XPSPageCompleteCallback(void *userdata, RasterImageInfo *data) {
 	
 	
 }
-/*
-- (SCHContentMetadataItem *)book {
-    return [[SCHBookManager sharedBookManager] bookWithID:self.bookID];
-}*/
-
-
 
 - (void)parseMetadata:(NSData *)metadataFile
 {

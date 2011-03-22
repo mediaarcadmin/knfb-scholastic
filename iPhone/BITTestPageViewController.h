@@ -9,7 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "BITXPSProvider.h"
 #import "BITScrubberView.h"
-//#import "SCHContentMetadataItem.h"
 #import "SCHBookInfo.h"
 
 #define TESTPAGEVIEW_PAGETAPWIDTH 75

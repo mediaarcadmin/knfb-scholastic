@@ -12,7 +12,6 @@
 
 #import "SCHLibreAccessWebService.h"
 #import "SCHUserContentItem+Extensions.h"
-#import "SCHContentMetadataItem+Extensions.h"
 #import "SCHOrderItem+Extensions.h"
 #import "SCHContentProfileItem+Extensions.h"
 

@@ -21,6 +21,7 @@
 + (SCHBookManager *)sharedBookManager;
 
 + (SCHBookInfo *) bookInfoWithBookIdentifier: (NSString *) isbn;
+- (NSArray *)allBooks;
 
 - (BITXPSProvider *)checkOutXPSProviderForBook: (SCHBookInfo *) bookInfo;
 - (void) checkInXPSProviderForBook: (SCHBookInfo *) bookInfo;

@@ -9,7 +9,6 @@
 #import <pthread.h>
 #import "SCHBookshelfSyncComponent.h"
 #import "SCHProcessingManager.h"
-#import "SCHContentMetadataItem+Extensions.h"
 #import "SCHBookInfo.h"
 #import "SCHBookURLRequestOperation.h"
 #import "SCHDownloadBookFileOperation.h"
@@ -30,8 +29,6 @@
 - (void) processBook: (SCHBookInfo *) bookInfo;
 - (void) redispatchBook: (SCHBookInfo *) bookInfo;
 - (void) checkAndDispatchThumbsForBook: (SCHBookInfo *) bookInfo;
-
-- (NSArray *) fetchContentMetadataForAllBooks;
 
 // background processing - called by the app delegate when the app
 // is put into or opened from the background
@@ -184,29 +181,19 @@ static SCHProcessingManager *sharedManager = nil;
 
 - (void) checkStateForAllBooks
 {
-	NSMutableArray *booksNeedingProcessing = [[NSMutableArray alloc] init];
-	NSArray *allBooks = [self fetchContentMetadataForAllBooks];
+	NSArray *allBooks = [[SCHBookManager sharedBookManager] allBooks];
 	
+	// FIXME: add prioritisation
+
 	// get all the books independent of profile
-	for (SCHContentMetadataItem *metadataItem in allBooks) {
-		SCHBookInfo *bookInfo = [SCHBookManager bookInfoWithBookIdentifier:metadataItem.ContentIdentifier];
-		
+	for (SCHBookInfo *bookInfo in allBooks) {
 		// if the book is currently processing, it will already be taken care of 
 		// when it finishes processing, so no need to add it for consideration
 		if (![bookInfo isProcessing] && [self bookNeedsProcessing:bookInfo]) {
 			
-			[booksNeedingProcessing addObject:bookInfo];
+			[self processBook:bookInfo];
 		}
-	}
-	
-	// FIXME: add prioritisation
-	
-	for (SCHBookInfo *bookInfo in booksNeedingProcessing) {
-		[self processBook:bookInfo];
-	}
-	
-	[booksNeedingProcessing release];
-	
+	}	
 }
 
 - (BOOL) bookNeedsProcessing: (SCHBookInfo *) bookInfo
@@ -491,32 +478,5 @@ static SCHProcessingManager *sharedManager = nil;
 		}
 	}
 }	
-
-
-#pragma mark -
-#pragma mark Core Data Fetch
-// FIXME: probably will remove this after talking with John
-- (NSArray *) fetchContentMetadataForAllBooks
-{
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    // Edit the entity name as appropriate.
-    NSEntityDescription *entity = [NSEntityDescription entityForName:kSCHContentMetadataItem inManagedObjectContext:[[SCHBookManager sharedBookManager] managedObjectContextForCurrentThread]];
-    [fetchRequest setEntity:entity];
-    
-    // Set the batch size to a suitable number.
-    [fetchRequest setFetchBatchSize:20];
-	
-	NSError *error = nil;				
-	NSArray *allBooks = [[[SCHBookManager sharedBookManager] managedObjectContextForCurrentThread] executeFetchRequest:fetchRequest error:&error];
-	
-	[fetchRequest release];
-	
-	if (!error) {
-		return allBooks;
-	} else {
-		return nil;
-	}
-	
-}
 
 @end

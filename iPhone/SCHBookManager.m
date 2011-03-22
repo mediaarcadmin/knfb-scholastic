@@ -112,6 +112,31 @@ static NSDictionary *featureCompatibilityDictionary = nil;
 	}
 }
 
+- (NSArray *)allBooks
+{
+    NSMutableArray *ret = nil;
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    
+    NSEntityDescription *entity = [NSEntityDescription entityForName:kSCHContentMetadataItem inManagedObjectContext:[self managedObjectContextForCurrentThread]];
+    [fetchRequest setEntity:entity];
+    
+    [fetchRequest setFetchBatchSize:20];
+	
+	NSError *error = nil;				
+	NSArray *allBooks = [[self managedObjectContextForCurrentThread] executeFetchRequest:fetchRequest error:&error];
+	
+	[fetchRequest release];
+	
+    if ([allBooks count] > 0) {
+        ret = [NSMutableArray arrayWithCapacity:[allBooks count]];
+        for (SCHContentMetadataItem *contentMetadataItem in allBooks) {
+            [ret addObject:[SCHBookManager bookInfoWithBookIdentifier:contentMetadataItem.ContentIdentifier]];
+        }
+    }
+    
+    return(ret);
+}
+
 // FIXME: move to SCHSyncManager?
 
 - (NSManagedObjectContext *)managedObjectContextForCurrentThread

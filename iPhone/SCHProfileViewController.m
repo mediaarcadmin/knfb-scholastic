@@ -16,7 +16,6 @@
 #import "SCHLibreAccessWebService.h"
 #import "SCHContentProfileItem+Extensions.h"
 #import "SCHProfileItem+Extensions.h"
-#import "SCHContentMetadataItem+Extensions.h"
 #import "SCHMultipleBookshelvesController.h"
 #import "SCHSyncManager.h"
 

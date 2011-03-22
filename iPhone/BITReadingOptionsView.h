@@ -23,7 +23,6 @@
 }
 
 @property (readwrite, retain) BITTestPageViewController *pageViewController;
-//@property (readwrite, retain) SCHContentMetadataItem *metadataItem;
 @property (readwrite, retain) SCHBookInfo *bookInfo;
 @property (readwrite, retain) UIImage *thumbnailImage;
 
