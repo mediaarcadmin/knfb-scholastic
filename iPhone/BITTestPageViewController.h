@@ -28,7 +28,6 @@
 	IBOutlet UIView *scrubberInfoView;
 	
 	BITXPSProvider *testRenderer;
-	SCHContentMetadataItem *book;
 	
 	int currentPage;
 	
