@@ -13,6 +13,5 @@
 
 @dynamic ID;
 @dynamic Version;
-@dynamic Action;
 
 @end

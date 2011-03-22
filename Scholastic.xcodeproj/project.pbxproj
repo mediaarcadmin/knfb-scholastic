@@ -95,8 +95,6 @@
 		5293883312E03CD000045B44 /* SCHBookShelfViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293883112E03CD000045B44 /* SCHBookShelfViewController.m */; };
 		5293883412E03CD000045B44 /* SCHBookShelfViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5293883212E03CD000045B44 /* SCHBookShelfViewController.xib */; };
 		52938B3912E08FC400045B44 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 52938B3812E08FC400045B44 /* Icon.png */; };
-		529A78D61338D8DF00981939 /* SCHSyncEntity+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 529A78D51338D8DD00981939 /* SCHSyncEntity+Extensions.m */; };
-		529A78D71338D8DF00981939 /* SCHSyncEntity+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 529A78D51338D8DD00981939 /* SCHSyncEntity+Extensions.m */; };
 		52AD966B12F9B1B40099FB88 /* SCHAnnotationsList.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD966612F9B1B40099FB88 /* SCHAnnotationsList.m */; };
 		52AD966E12F9B1B40099FB88 /* SCHAnnotationsList.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD966612F9B1B40099FB88 /* SCHAnnotationsList.m */; };
 		52AD9ACF12FC0EEF0099FB88 /* SCHSyncManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9ACE12FC0EEF0099FB88 /* SCHSyncManager.m */; };
@@ -447,8 +445,6 @@
 		5293883112E03CD000045B44 /* SCHBookShelfViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookShelfViewController.m; path = iPhone/SCHBookShelfViewController.m; sourceTree = "<group>"; };
 		5293883212E03CD000045B44 /* SCHBookShelfViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = SCHBookShelfViewController.xib; path = iPhone/SCHBookShelfViewController.xib; sourceTree = "<group>"; };
 		52938B3812E08FC400045B44 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon.png; path = Shared/Images/Icon.png; sourceTree = "<group>"; };
-		529A78D41338D8DC00981939 /* SCHSyncEntity+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SCHSyncEntity+Extensions.h"; path = "Shared/SCHSyncEntity+Extensions.h"; sourceTree = "<group>"; };
-		529A78D51338D8DD00981939 /* SCHSyncEntity+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SCHSyncEntity+Extensions.m"; path = "Shared/SCHSyncEntity+Extensions.m"; sourceTree = "<group>"; };
 		52AD966512F9B1B40099FB88 /* SCHAnnotationsList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAnnotationsList.h; path = Shared/SCHAnnotationsList.h; sourceTree = "<group>"; };
 		52AD966612F9B1B40099FB88 /* SCHAnnotationsList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHAnnotationsList.m; path = Shared/SCHAnnotationsList.m; sourceTree = "<group>"; };
 		52AD9ACD12FC0EEF0099FB88 /* SCHSyncManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHSyncManager.h; path = Shared/SCHSyncManager.h; sourceTree = "<group>"; };
@@ -937,8 +933,6 @@
 				52298A7612F0EF5600BBBCE6 /* SCHProfileStatusItem.m */,
 				52298A6F12F0EF5600BBBCE6 /* SCHSyncEntity.h */,
 				52298A7012F0EF5600BBBCE6 /* SCHSyncEntity.m */,
-				529A78D41338D8DC00981939 /* SCHSyncEntity+Extensions.h */,
-				529A78D51338D8DD00981939 /* SCHSyncEntity+Extensions.m */,
 				52298A6712F0EF5600BBBCE6 /* SCHUserContentItem.h */,
 				52298A6812F0EF5600BBBCE6 /* SCHUserContentItem.m */,
 				52298A5F12F0EF5600BBBCE6 /* SCHUserSettingsItem.h */,
@@ -1764,7 +1758,6 @@
 				5243545A13337BAC00282B53 /* SCHAppBookOrder.m in Sources */,
 				528433EB133382EA0010BAAB /* SCHAppDictionaryState.m in Sources */,
 				F8BEE8B01334FD44008B40DA /* SCHAppBook.m in Sources */,
-				529A78D61338D8DF00981939 /* SCHSyncEntity+Extensions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1876,7 +1869,6 @@
 				5243545B13337BAC00282B53 /* SCHAppBookOrder.m in Sources */,
 				528433EC133382EA0010BAAB /* SCHAppDictionaryState.m in Sources */,
 				F8BEE8AF1334FD44008B40DA /* SCHAppBook.m in Sources */,
-				529A78D71338D8DF00981939 /* SCHSyncEntity+Extensions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

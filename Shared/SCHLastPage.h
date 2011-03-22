@@ -7,7 +7,7 @@
 //
 
 #import <CoreData/CoreData.h>
-#import "SCHSyncEntity+Extensions.h"
+#import "SCHSyncEntity.h"
 
 static NSString * const kSCHLastPage = @"SCHLastPage";
 

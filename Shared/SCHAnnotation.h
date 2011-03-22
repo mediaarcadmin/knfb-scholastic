@@ -16,7 +16,6 @@
 
 @property (nonatomic, retain) NSNumber * ID;
 @property (nonatomic, retain) NSNumber * Version;
-@property (nonatomic, retain) NSNumber * Action;
 
 @end
 

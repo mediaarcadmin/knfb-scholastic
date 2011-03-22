@@ -198,7 +198,6 @@
 		
 		ret.ID = [self makeNullNil:[highlight objectForKey:kSCHLibreAccessWebServiceID]];
 		ret.Version = [self makeNullNil:[highlight objectForKey:kSCHLibreAccessWebServiceVersion]];
-		ret.Action = [self makeNullNil:[highlight objectForKey:kSCHLibreAccessWebServiceAction]];
 		
 		ret.Color = [self makeNullNil:[highlight objectForKey:kSCHLibreAccessWebServiceColor]];
 		ret.EndPage = [self makeNullNil:[highlight objectForKey:kSCHLibreAccessWebServiceEndPage]];
@@ -219,7 +218,6 @@
 		
 		ret.ID = [self makeNullNil:[note objectForKey:kSCHLibreAccessWebServiceID]];
 		ret.Version = [self makeNullNil:[note objectForKey:kSCHLibreAccessWebServiceVersion]];
-		ret.Action = [self makeNullNil:[note objectForKey:kSCHLibreAccessWebServiceAction]];
 		
 		ret.Color = [self makeNullNil:[note objectForKey:kSCHLibreAccessWebServiceColor]];
 		ret.Value = [self makeNullNil:[note objectForKey:kSCHLibreAccessWebServiceValue]];
@@ -269,7 +267,6 @@
 		
 		ret.ID = [self makeNullNil:[bookmark objectForKey:kSCHLibreAccessWebServiceID]];
 		ret.Version = [self makeNullNil:[bookmark objectForKey:kSCHLibreAccessWebServiceVersion]];
-		ret.Action = [self makeNullNil:[bookmark objectForKey:kSCHLibreAccessWebServiceAction]];
 		
 		ret.Disabled = [self makeNullNil:[bookmark objectForKey:kSCHLibreAccessWebServiceDisabled]];
 		ret.Text = [self makeNullNil:[bookmark objectForKey:kSCHLibreAccessWebServiceText]];
