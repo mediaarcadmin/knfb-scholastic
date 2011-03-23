@@ -23,6 +23,8 @@ static NSString * const kSCHAppBookXPSAuthor = @"XPSAuthor";
 static NSString * const kSCHAppBookXPSTitle = @"XPSTitle";
 static NSString * const kSCHAppBookXPSCategory = @"XPSCategory";
 static NSString * const kSCHAppBookState = @"State";
+static NSString * const kSCHAppBookCoverURL = @"BookCoverURL";
+static NSString * const kSCHAppBookFileURL = @"BookFileURL";
 
 
 static NSString * const kSCHAppBook = @"SCHAppBook";
@@ -32,8 +34,6 @@ static NSString * const kSCHAppBook = @"SCHAppBook";
 }
 
 @property (nonatomic, retain) NSString * ContentIdentifier;
-@property (nonatomic, retain) NSString * ContentURL;
-@property (nonatomic, retain) NSString * CoverURL;
 @property (nonatomic, retain) NSString * DRMVersion;
 @property (nonatomic, retain) NSNumber * HasAudio;
 @property (nonatomic, retain) NSNumber * HasExtras;
@@ -47,6 +47,9 @@ static NSString * const kSCHAppBook = @"SCHAppBook";
 @property (nonatomic, retain) NSString * XPSTitle;
 @property (nonatomic, retain) SCHContentMetadataItem * ContentMetadataItem;
 @property (nonatomic, retain) NSNumber * ProcessingUnderlyingValue;
+@property (nonatomic, retain) NSString * BookCoverURL;
+@property (nonatomic, retain) NSString * BookFileURL;
+
 
 
 @property (readonly) NSString * Author;

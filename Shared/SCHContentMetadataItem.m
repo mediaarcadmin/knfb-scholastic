@@ -18,6 +18,8 @@ static NSString * const kSCHContentMetadataItemAnnotationsListProfileID = @"Anno
 @dynamic Author;
 @dynamic Description;
 @dynamic Version;
+@dynamic ContentURL;
+@dynamic CoverURL;
 @dynamic Enhanced;
 @dynamic Title;
 @dynamic FileSize;

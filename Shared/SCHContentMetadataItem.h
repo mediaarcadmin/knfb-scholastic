@@ -19,6 +19,8 @@ static NSString * const kSCHContentMetadataItem = @"SCHContentMetadataItem";
 }
 
 @property (nonatomic, retain) NSString * Author;
+@property (nonatomic, retain) NSString * ContentURL;
+@property (nonatomic, retain) NSString * CoverURL;
 @property (nonatomic, retain) NSString * Description;
 @property (nonatomic, retain) NSString * Version;
 @property (nonatomic, retain) NSNumber * Enhanced;

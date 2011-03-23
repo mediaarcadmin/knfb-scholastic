@@ -11,8 +11,7 @@
 @implementation SCHAppBook 
 
 @dynamic ContentIdentifier;
-@dynamic ContentURL;
-@dynamic CoverURL;
+
 @dynamic DRMVersion;
 @dynamic HasAudio;
 @dynamic HasExtras;
@@ -26,6 +25,8 @@
 @dynamic XPSTitle;
 @dynamic ContentMetadataItem;
 @dynamic ProcessingUnderlyingValue;
+@dynamic BookCoverURL;
+@dynamic BookFileURL;
 
 #pragma mark -
 #pragma mark Convenience Methods
@@ -74,7 +75,7 @@
 
 - (BOOL)haveURLs
 {
-	return(!(self.CoverURL == nil || self.ContentURL == nil));
+	return(!(self.BookCoverURL == nil || self.BookFileURL == nil));
 }
 
 - (SCHBookCurrentProcessingState) processingState

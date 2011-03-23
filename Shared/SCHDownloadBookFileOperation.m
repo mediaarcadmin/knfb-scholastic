@@ -79,14 +79,14 @@
 	if (self.fileType == kSCHDownloadFileTypeXPSBook) {
 	
 		self.localPath = [book xpsPath];
-		request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[book ContentURL]]];
+		request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[book BookFileURL]]];
 		
 	} else if (self.fileType == kSCHDownloadFileTypeCoverImage) {
 		
 		NSString *cacheDir  = [SCHAppBook cacheDirectory];
 		self.localPath = [cacheDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png", book.ContentIdentifier]];
 		
-		request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:book.CoverURL]];
+		request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:book.BookCoverURL]];
 
 	} else {
 		[NSException raise:@"SCHDownloadFileOperationUnknownFileType" format:@"Unknown file type for SCHDownloadFileOperation."];

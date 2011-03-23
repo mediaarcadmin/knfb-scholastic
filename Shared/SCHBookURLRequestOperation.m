@@ -116,10 +116,10 @@
 		
 		[[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn
 																setValue:[userInfo valueForKey:kSCHLibreAccessWebServiceCoverURL]
-																  forKey:kSCHLibreAccessWebServiceCoverURL];
+																  forKey:kSCHAppBookCoverURL];
 		[[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn
 																setValue:[userInfo valueForKey:kSCHLibreAccessWebServiceContentURL]
-																  forKey:kSCHLibreAccessWebServiceContentURL];
+																  forKey:kSCHAppBookFileURL];
 		
 		NSLog(@"Successful URL retrieval for %@!", completedISBN);
 		
