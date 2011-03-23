@@ -20,14 +20,85 @@
 #endif
 
 static NSString * const kSCHClearLocalDebugMode = @"kSCHClearLocalDebugMode";
+static NSString* const wmModelCertFilename = @"devcerttemplate.dat";
+static NSString* const prModelCertFilename = @"iphonecert.dat";
 
 @implementation AppDelegate_Shared
 
 @synthesize window;
 
+#pragma mark -
+#pragma mark Application directory functions
+
+/**
+ Returns the URL to the application's Documents directory.
+ */
+- (NSURL *)applicationDocumentsDirectory {
+    return [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
+}
+
+/**
+ Creates the application's Application Support directory if it doesn't already exist.
+ */
+- (BOOL)createApplicationSupportDirectory
+{
+	NSArray  *applicationSupportPaths = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);
+    NSString *applicationSupportPath = ([applicationSupportPaths count] > 0) ? [applicationSupportPaths objectAtIndex:0] : nil;
+	
+	BOOL isDir;
+	if (![[NSFileManager defaultManager] fileExistsAtPath:applicationSupportPath isDirectory:&isDir] || !isDir) {
+		NSError * createApplicationSupportDirError = nil;
+		
+		if (![[NSFileManager defaultManager] createDirectoryAtPath:applicationSupportPath 
+									   withIntermediateDirectories:YES 
+														attributes:nil 
+															 error:&createApplicationSupportDirError]) 
+		{
+			NSLog(@"Error: could not create Application Support directory in the Library directory! %@, %@", 
+				  createApplicationSupportDirError, [createApplicationSupportDirError userInfo]);
+			return NO;
+		} 
+		else {
+			NSLog(@"Created Application Support directory within Library.");
+			return YES;
+		}
+	}
+	else {
+		return YES;
+	}
+}
+
 
 #pragma mark -
 #pragma mark Application lifecycle
+
+
+- (void)ensureCorrectCertsAvailable {
+    // Copy DRM resources to writeable directory.
+	if (![self createApplicationSupportDirectory]) {
+		NSLog(@"Application Support directory could not be created for DRM certificates.");
+		return;
+	}
+	NSURL* supportDir = [[[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask] lastObject];
+	// TODO ipad certs have same name, must be gotten from a different location
+    NSURL* srcWmModelCert = [[[NSBundle mainBundle] resourceURL] URLByAppendingPathComponent:wmModelCertFilename]; 
+	NSURL* destWmModelCert = [supportDir URLByAppendingPathComponent:wmModelCertFilename];
+	NSError* err = nil;
+	[[NSFileManager defaultManager] copyItemAtURL:srcWmModelCert toURL:destWmModelCert error:&err];
+	if ( err != nil) {
+		//NSLog(@"Copying DRM-WM certificate: %@, aborting copy.", [err localizedDescription]);
+		return;
+	}
+	NSURL* srcPRModelCert = [[[NSBundle mainBundle] resourceURL] URLByAppendingPathComponent:prModelCertFilename]; 
+	NSURL* destPRModelCert = [supportDir URLByAppendingPathComponent:prModelCertFilename];
+	[[NSFileManager defaultManager] copyItemAtURL:srcPRModelCert toURL:destPRModelCert error:&err];  
+	if ( err != nil) {
+		// Very unlikely to get here.
+		NSLog(@"Copying DRM-PR certificate: %@", [err localizedDescription]);
+		return;
+	}
+	NSLog(@"Copied DRM certificates to Application Support directory.");
+}
 
 - (void)copyLocalFilesIfMissing
 {
@@ -84,6 +155,8 @@ static NSString * const kSCHClearLocalDebugMode = @"kSCHClearLocalDebugMode";
 #endif
 	
 	[SCHDictionaryManager sharedDictionaryManager];
+	
+	[self ensureCorrectCertsAvailable];
 	
 	return YES;
 }	
@@ -221,17 +294,6 @@ static NSString * const kSCHClearLocalDebugMode = @"kSCHClearLocalDebugMode";
     }
     
     return persistentStoreCoordinator_;
-}
-
-
-#pragma mark -
-#pragma mark Application's Documents directory
-
-/**
- Returns the URL to the application's Documents directory.
- */
-- (NSURL *)applicationDocumentsDirectory {
-    return [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
 }
 
 
