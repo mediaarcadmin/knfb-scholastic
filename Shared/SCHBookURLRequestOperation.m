@@ -10,6 +10,8 @@
 #import "SCHURLManager.h"
 #import "SCHLibreAccessWebService.h"
 #import "SCHProcessingManager.h"
+#import "SCHAppBook.h"
+#import "SCHBookManager.h"
 
 @interface SCHBookURLRequestOperation ()
 
@@ -22,29 +24,33 @@
 
 @implementation SCHBookURLRequestOperation
 
-@synthesize bookInfo, executing, finished;
+@synthesize isbn, executing, finished;
 
 - (void)dealloc {
-	self.bookInfo = nil;
+	self.isbn = nil;
 	
 	[super dealloc];
 }
 
 
-- (void) setBookInfo:(SCHBookInfo *) newBookInfo
+- (void) setBookInfo:(NSString *) newIsbn
 {
 	
 	if ([self isExecuting] || [self isFinished]) {
 		return;
 	}
 	
-	bookInfo = newBookInfo;
-	[self.bookInfo setProcessing:YES];
+	NSString *oldIsbn = newIsbn;
+	isbn = [newIsbn retain];
+	[oldIsbn release];
+	
+	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];
+	[book setProcessing:YES];
 }
 
 - (void) start
 {
-	if (self.bookInfo && ![self isCancelled]) {
+	if (self.isbn && ![self isCancelled]) {
 		[self beginConnection];
 	}
 	
@@ -75,7 +81,7 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(urlSuccess:) name:kSCHURLManagerSuccess object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(urlFailure:) name:kSCHURLManagerFailure object:nil];
 	
-	[[SCHURLManager sharedURLManager] requestURLForISBN:self.bookInfo.bookIdentifier];
+	[[SCHURLManager sharedURLManager] requestURLForISBN:self.isbn];
 
 	do {
 		[[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
@@ -83,7 +89,9 @@
 	
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	
-	[self.bookInfo setProcessing:NO];
+	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];
+	[book setProcessing:NO];
+	
 	return;
 	
 }
@@ -96,19 +104,27 @@
 	
 	NSString *completedISBN = [userInfo valueForKey:kSCHLibreAccessWebServiceContentIdentifier];
 
-	if ([completedISBN compare:self.bookInfo.bookIdentifier] == NSOrderedSame) {
+	if ([completedISBN compare:self.isbn] == NSOrderedSame) {
 	
 		//self.bookInfo.coverURL = [userInfo valueForKey:kSCHLibreAccessWebServiceCoverURL];
 		//self.bookInfo.bookFileURL = [userInfo valueForKey:kSCHLibreAccessWebServiceContentURL];
 		
-		[self.bookInfo setString:[userInfo valueForKey:kSCHLibreAccessWebServiceCoverURL] 
-				  forMetadataKey:kSCHBookInfoCoverURL];
-		[self.bookInfo setString:[userInfo valueForKey:kSCHLibreAccessWebServiceContentURL] 
-				  forMetadataKey:kSCHBookInfoContentURL];
+//		[self.bookInfo setString:[userInfo valueForKey:kSCHLibreAccessWebServiceCoverURL] 
+//				  forMetadataKey:kSCHBookInfoCoverURL];
+//		[self.bookInfo setString:[userInfo valueForKey:kSCHLibreAccessWebServiceContentURL] 
+//				  forMetadataKey:kSCHBookInfoContentURL];
+		
+		[[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn
+																setValue:[userInfo valueForKey:kSCHLibreAccessWebServiceCoverURL]
+																  forKey:kSCHLibreAccessWebServiceCoverURL];
+		[[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn
+																setValue:[userInfo valueForKey:kSCHLibreAccessWebServiceContentURL]
+																  forKey:kSCHLibreAccessWebServiceContentURL];
 		
 		NSLog(@"Successful URL retrieval for %@!", completedISBN);
 		
-		[self.bookInfo setProcessingState:SCHBookInfoProcessingStateNoCoverImage];
+//		[self.bookInfo setProcessingState:SCHBookProcessingStateNoCoverImage];
+		[[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateNoCoverImage];
 		
 		self.executing = NO;
 		self.finished = YES;
@@ -121,9 +137,10 @@
 	NSDictionary *userInfo = [notification userInfo];
 	NSString *completedISBN = [userInfo objectForKey:kSCHLibreAccessWebServiceContentIdentifier];
 	
-	if ([completedISBN compare:self.bookInfo.bookIdentifier] == NSOrderedSame) {
+	if ([completedISBN compare:self.isbn] == NSOrderedSame) {
 		NSLog(@"Failure for ISBN %@", completedISBN);
-		[self.bookInfo setProcessingState:SCHBookInfoProcessingStateError];
+//		[self.bookInfo setProcessingState:SCHBookProcessingStateError];
+		[[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateError];
 
 		self.executing = NO;
 		self.finished = YES;

@@ -240,9 +240,10 @@
         if (![self.managedObjectContext save:&error]) {
             NSLog(@"Error saving managed object context: %@ : %@", error, [error userInfo]); 
         }
+//		SCHBookInfo *bookInfo = [SCHBookManager bookInfoWithBookIdentifier:newUserContentItem.ContentIdentifier];
+//		[bookInfo setProcessingState:SCHBookProcessingStateNoCoverImage];
 		
-		SCHBookInfo *bookInfo = [SCHBookManager bookInfoWithBookIdentifier:newUserContentItem.ContentIdentifier];
-		[bookInfo setProcessingState:SCHBookInfoProcessingStateNoCoverImage];
+		[newUserContentItem setState:[NSNumber numberWithInt:SCHBookProcessingStateNoCoverImage]];
 								 
 	}
 

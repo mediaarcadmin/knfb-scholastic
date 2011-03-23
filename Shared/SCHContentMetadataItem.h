@@ -22,8 +22,6 @@ static NSString * const kSCHContentMetadataItem = @"SCHContentMetadataItem";
 @property (nonatomic, retain) NSString * Description;
 @property (nonatomic, retain) NSString * Version;
 @property (nonatomic, retain) NSNumber * Enhanced;
-@property (nonatomic, retain) NSString * ContentURL;
-@property (nonatomic, retain) NSString * CoverURL;
 @property (nonatomic, retain) NSString * Title;
 @property (nonatomic, retain) NSNumber * FileSize;
 @property (nonatomic, retain) NSNumber * PageNumber;
@@ -32,6 +30,5 @@ static NSString * const kSCHContentMetadataItem = @"SCHContentMetadataItem";
 @property (nonatomic, retain) NSSet* eReaderCategories;
 
 - (NSArray *)annotationsContentForProfile:(NSNumber *)profileID;
-- (BOOL)haveURLs;
 
 @end

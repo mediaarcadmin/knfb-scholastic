@@ -19,8 +19,6 @@ static NSString * const kSCHContentMetadataItemAnnotationsListProfileID = @"Anno
 @dynamic Description;
 @dynamic Version;
 @dynamic Enhanced;
-@dynamic ContentURL;
-@dynamic CoverURL;
 @dynamic Title;
 @dynamic FileSize;
 @dynamic PageNumber;
@@ -39,11 +37,6 @@ static NSString * const kSCHContentMetadataItemAnnotationsListProfileID = @"Anno
 	}
 	
 	return(annotations);	
-}
-
-- (BOOL)haveURLs
-{
-	return(!(self.CoverURL == nil || self.ContentURL == nil));
 }
 
 #pragma -

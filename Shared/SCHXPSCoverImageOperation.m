@@ -12,10 +12,10 @@
 
 @implementation SCHXPSCoverImageOperation
 
-@synthesize bookInfo;
+@synthesize isbn;
 
 - (void)dealloc {
-	self.bookInfo = nil;
+	self.isbn = nil;
 	
 	[super dealloc];
 }
@@ -27,20 +27,23 @@
 		return;
 	}
 	
-	if (!(self.bookInfo)) {
+	if (!(self.isbn)) {
 		return;
 	}
 	
-	[self.bookInfo setProcessing:YES];
+	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];
+	[book setProcessing:YES];
 	
-	BITXPSProvider *xpsProvider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBook:self.bookInfo];
+	BITXPSProvider *xpsProvider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.isbn];
 	NSData *imageData = [xpsProvider coverThumbData];
-	[[SCHBookManager sharedBookManager] checkInXPSProviderForBook:self.bookInfo];
+	[[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifer:self.isbn];
 	
-	[imageData writeToFile:[self.bookInfo coverImagePath] atomically:YES];
+	[imageData writeToFile:[book coverImagePath] atomically:YES];
 	
-	[self.bookInfo setProcessing:NO];
-	[self.bookInfo setProcessingState:SCHBookInfoProcessingStateReadyForRightsParsing];
+	[book setProcessing:NO];
+//	[self.bookInfo setProcessingState:SCHBookProcessingStateReadyForRightsParsing];
+	[[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateReadyForRightsParsing];
+
 }
 
 

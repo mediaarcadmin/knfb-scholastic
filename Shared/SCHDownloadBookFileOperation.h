@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "SCHBookInfo.h"
 
 typedef enum {
 	kSCHDownloadFileTypeXPSBook = 0,
@@ -18,7 +17,7 @@ typedef enum {
 
 }
 
-@property (nonatomic, retain) SCHBookInfo *bookInfo;
+@property (nonatomic, retain) NSString *isbn;
 @property BOOL resume;
 @property kSCHDownloadFileType fileType;
 

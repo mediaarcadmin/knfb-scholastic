@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 #import "XpsSdk.h"
-#import "SCHBookInfo.h"
+#import "SCHAppBook.h"
 
 static NSString * const XPSMetaDataDir = @"/Documents/1/Metadata";
 static const CGFloat kBlioCoverListThumbHeight = 76;
@@ -81,7 +81,7 @@ static NSString * const BlioXPSExtrasMetadataFile = @"/Documents/1/Other/KNFB/Ex
 }
 
 //@property (nonatomic, retain) NSManagedObjectID *bookID;
-@property (nonatomic, retain) SCHBookInfo *bookInfo;
+@property (nonatomic, retain) NSString *isbn;
 
 @property (nonatomic, retain) NSString *title;
 @property (nonatomic) NSInteger pageCount;
@@ -90,7 +90,7 @@ static NSString * const BlioXPSExtrasMetadataFile = @"/Documents/1/Other/KNFB/Ex
 @property (nonatomic, retain) NSString *author;
 @property (nonatomic, retain) NSString *type;
 
-- (id) initWithBookInfo: (SCHBookInfo *) bookInfo;
+- (id) initWithISBN: (NSString *) isbn;
 - (CGContextRef)RGBABitmapContextForPage:(NSUInteger)page
                                 fromRect:(CGRect)rect
                                  minSize:(CGSize)size 

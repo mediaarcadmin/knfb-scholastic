@@ -51,7 +51,7 @@
 
 @implementation BITXPSProvider
 
-@synthesize bookInfo, imageInfo, tempDirectory, xpsData, componentCache, pageCount, fileSize, ISBN, author, type, pageCropsCache, viewTransformsCache, xpsPagesDirectory, uriMap, title;
+@synthesize isbn, imageInfo, tempDirectory, xpsData, componentCache, pageCount, fileSize, ISBN, author, type, pageCropsCache, viewTransformsCache, xpsPagesDirectory, uriMap, title;
 
 void XPSPageCompleteCallback(void *userdata, RasterImageInfo *data) {
 	BITXPSProvider *provider = (BITXPSProvider *)userdata;	
@@ -75,13 +75,12 @@ void XPSPageCompleteCallback(void *userdata, RasterImageInfo *data) {
 	[super dealloc];
 }
 
-//- (id) initWithBookID: (NSManagedObjectID *) aBookID
-- (id) initWithBookInfo: (SCHBookInfo *) aBookInfo
+- (id) initWithISBN: (NSString *) newISBN
 {
 	if ((self = [super init])) {
 		
         //self.bookID = aBookID;
-		self.bookInfo = aBookInfo;
+		self.isbn = newISBN;
 
         renderingLock = [[NSLock alloc] init];
         contentsLock = [[NSLock alloc] init];
@@ -104,7 +103,8 @@ void XPSPageCompleteCallback(void *userdata, RasterImageInfo *data) {
         }
         
         XPS_Start();
-        NSString *xpsPath = [self.bookInfo xpsPath];
+		
+        NSString *xpsPath = [[[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn] xpsPath];
         if (![[NSFileManager defaultManager] fileExistsAtPath:xpsPath]) {
             NSLog(@"Error creating xpsProvider. File does not exist at path: %@", xpsPath);
             CFRelease(UUIDString);
