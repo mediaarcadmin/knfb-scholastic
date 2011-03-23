@@ -235,7 +235,7 @@ static int mutationCount = 0;
         }
         NSError *anError;
         if (![bookManager save:&anError]) {
-            NSLog(@"[SCHBookManager threadSafeUpdateBookWithISBN:@ state:%@] Save failed with error: %@, %@", isbn, [book.State stringValue], anError, [anError userInfo]);
+            NSLog(@"[SCHBookManager threadSafeUpdateBookWithISBN:%@ state:%@] Save failed with error: %@, %@", isbn, [book.State stringValue], anError, [anError userInfo]);
         }
         --mutationCount;
     }
