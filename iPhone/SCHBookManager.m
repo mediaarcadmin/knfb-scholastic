@@ -115,7 +115,7 @@ static int mutationCount = 0;
 		NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
 		[fetchRequest setEntity:[NSEntityDescription entityForName:kSCHAppBook inManagedObjectContext:context]];	
 		
-		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"ContentIdentifier == %@", isbn];
+		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"ContentMetadataItem.ContentIdentifier == %@", isbn];
 		[fetchRequest setPredicate:predicate];
 		
 		NSError *error = nil;
@@ -125,7 +125,8 @@ static int mutationCount = 0;
 		if (error) {
 			NSLog(@"Error while fetching book item: %@", [error localizedDescription]);
 		} else if (!results || [results count] != 1) {
-			NSLog(@"Did not return expected single book.");
+			NSLog(@"Did not return expected single book for isbn %@.", isbn);
+			NSLog(@"Results: %@", results);
 		} else {
 			book = (SCHAppBook *) [results objectAtIndex:0];
 		}
@@ -160,7 +161,8 @@ static int mutationCount = 0;
     if ([allBooks count] > 0) {
         ret = [NSMutableArray arrayWithCapacity:[allBooks count]];
         for (SCHContentMetadataItem *contentMetadataItem in allBooks) {
-            [ret addObject:[[SCHBookManager sharedBookManager] bookWithIdentifier:contentMetadataItem.ContentIdentifier]];
+            //[ret addObject:[[SCHBookManager sharedBookManager] bookWithIdentifier:contentMetadataItem.ContentIdentifier]];
+            [ret addObject:contentMetadataItem.ContentIdentifier];
         }
     }
     
