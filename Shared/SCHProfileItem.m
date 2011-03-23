@@ -14,10 +14,10 @@
 #import "SCHContentProfileItem.h"
 #import "SCHContentMetadataItem.h"
 #import "SCHUserContentItem.h"
-#import "SCHBookInfo.h"
 #import "SCHBookManager.h"
 #import "USAdditions.h"
 #import "SCHLibreAccessWebService.h"
+#import "SCHAppBook.h"
 
 static NSString * const kSCHProfileItemContentProfileItem = @"ContentProfileItem";
 static NSString * const kSCHProfileItemUserContentItem = @"UserContentItem";
@@ -66,17 +66,13 @@ static NSString * const kSCHProfileItemUserContentItemContentMetadataItem = @"Us
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (NSMutableArray *)allContentMetadataItems
+- (NSMutableArray *)allISBNs
 {
 	NSMutableArray *books = [NSMutableArray array];
 	
 	for (SCHContentProfileItem *contentProfileItem in [self valueForKey:kSCHProfileItemContentProfileItem]) {
 		for (SCHContentMetadataItem *contentMetadataItem in [contentProfileItem valueForKeyPath:kSCHProfileItemUserContentItemContentMetadataItem]) {
-			
-			SCHBookInfo *bookInfo = [SCHBookManager bookInfoWithBookIdentifier:contentMetadataItem.ContentIdentifier];
-			
-			[books addObject:bookInfo];
-			[bookInfo release];
+			[books addObject:contentMetadataItem.ContentIdentifier];
 		}
 	}
     

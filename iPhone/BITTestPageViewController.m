@@ -8,10 +8,12 @@
 
 #import "BITTestPageViewController.h"
 #import <QuartzCore/QuartzCore.h>
+#import "SCHAppBook.h"
+#import "SCHBookManager.h"
 
 @implementation BITTestPageViewController
 
-@synthesize bookInfo;
+@synthesize isbn;
 
 // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
 /*
@@ -31,7 +33,7 @@
 	
 	currentPage = 1;
 	toolbarsVisible = YES;
-	testRenderer = [[BITXPSProvider alloc] initWithBookInfo:self.bookInfo];
+	testRenderer = [[BITXPSProvider alloc] initWithISBN:self.isbn];
 	
 	pageScrubber.delegate = self;
 	pageScrubber.minimumValue = 1;
@@ -48,27 +50,29 @@
 {
 	[super viewWillAppear:animated];
 	
+	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];
+	
 	// display book information on the console, for debugging
 	NSLog(@"------");
-	NSLog(@"Book Info for ISBN %@", self.bookInfo.bookIdentifier);
-	NSLog(@"Title: %@ (XPS Title: %@)", [self.bookInfo stringForMetadataKey:kSCHBookInfoTitle], [self.bookInfo stringForLocalMetadataKey:kSCHBookInfoXPSTitle]);
-	NSLog(@"Author: %@ (XPS Author: %@)", [self.bookInfo stringForMetadataKey:kSCHBookInfoAuthor], [self.bookInfo stringForLocalMetadataKey:kSCHBookInfoXPSAuthor]);
-	NSLog(@"XPS Category: %@", [self.bookInfo stringForLocalMetadataKey:kSCHBookInfoXPSCategory]);
-	NSLog(@"Description: %@", [self.bookInfo stringForMetadataKey:kSCHBookInfoDescription]);
+	NSLog(@"Book Info for ISBN %@", book.ContentIdentifier);
+	NSLog(@"Title: %@ (XPS Title: %@)", book.Title, book.XPSTitle);
+	NSLog(@"Author: %@ (XPS Author: %@)", book.Author, book.XPSAuthor);
+	NSLog(@"XPS Category: %@", book.XPSCategory);
+	NSLog(@"Description: %@", book.Description);
 
 	NSLog(@"---");
 	
 	NSLog(@"Text to Speech? %@ Can Reflow? %@", 
-		  ([[self.bookInfo objectForMetadataKey:kSCHBookInfoRightsTTSPermitted] boolValue]?@"Yes":@"No"),
-		  ([[self.bookInfo objectForMetadataKey:kSCHBookInfoRightsReflowPermitted] boolValue]?@"Yes":@"No"));
+		  ([book.TTSPermitted boolValue]?@"Yes":@"No"),
+		  ([book.ReflowPermitted boolValue]?@"Yes":@"No"));
 	NSLog(@"Has Audio? %@ Has Story Interactions? %@ Has Extras? %@",
-		  ([[self.bookInfo objectForMetadataKey:kSCHBookInfoRightsHasAudio] boolValue]?@"Yes":@"No"),
-		  ([[self.bookInfo objectForMetadataKey:kSCHBookInfoRightsHasStoryInteractions] boolValue]?@"Yes":@"No"),
-		  ([[self.bookInfo objectForMetadataKey:kSCHBookInfoRightsHasExtras] boolValue]?@"Yes":@"No"));
+		  ([book.HasAudio boolValue]?@"Yes":@"No"),
+		  ([book.HasStoryInteractions boolValue]?@"Yes":@"No"),
+		  ([book.HasExtras boolValue]?@"Yes":@"No"));
 
-	NSString *drmVersion = [[self.bookInfo objectForMetadataKey:kSCHBookInfoRightsDRMVersion] stringValue];
+	NSString *drmVersion = book.DRMVersion;
 	NSLog(@"Layout starts on left? %@ DRM Version: %@", 
-		  ([[self.bookInfo objectForMetadataKey:kSCHBookInfoRightsLayoutStartsOnLeftSide] boolValue]?@"Yes":@"No"),
+		  ([book.LayoutStartsOnLeftSide boolValue]?@"Yes":@"No"),
 		  drmVersion?drmVersion:@"None");
 		  
 		  

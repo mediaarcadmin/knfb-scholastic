@@ -13,7 +13,6 @@
 #import "SCHLocalDebug.h"
 #import "SCHMultipleBookshelvesController.h"
 #import "SCHBookManager.h"
-#import "SCHBookInfo.h"
 #import "SCHBookShelfTableViewCell.h"
 #import "SCHThumbnailFactory.h"
 #import "SCHSyncManager.h"
@@ -104,7 +103,7 @@
 
 - (void) updateTable:(NSNotification *)notification
 {
-	self.books = [self.profileItem allContentMetadataItems];
+	self.books = [self.profileItem allISBNs];
 	self.loadingView.hidden = YES;
 	
 	// FIXME: more specific updates of cells
@@ -133,8 +132,8 @@
     }
     
     // Configure the cell...
-	SCHBookInfo *bookInfo = [self.books objectAtIndex:indexPath.row];
-	[cell setBookInfo:bookInfo];
+	SCHAppBook *book = [self.books objectAtIndex:indexPath.row];
+	[cell setIsbn:book.ContentIdentifier];
 	
 	UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(startEditingTable:)];
     longPress.delegate = self;
@@ -151,38 +150,37 @@
 - (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[aTableView deselectRowAtIndexPath:indexPath animated:YES];
 	
-	SCHBookInfo *bookInfo = [self.books objectAtIndex:indexPath.row];
+	SCHAppBook *book = [self.books objectAtIndex:indexPath.row];
 
 	// notify the processing manager that the user touched a book info object.
 	// this allows it to pause and resume items, etc.
 	// will do nothing if the book has already been fully downloaded.
-	[[SCHProcessingManager sharedProcessingManager] userSelectedBookInfo:bookInfo];
+	[[SCHProcessingManager sharedProcessingManager] userSelectedBookWithISBN:book.ContentIdentifier];
 	
 	// if the processing manager is working, do not open the book
-	if (![bookInfo canOpenBook]) {
+	if (![book canOpenBook]) {
 		return;
 	}
 	
-	NSLog(@"Showing book %@.", [bookInfo stringForMetadataKey:kSCHBookInfoTitle]);
-	NSLog(@"Showing book %@.", [bookInfo stringForMetadataKey:kSCHBookInfoFileName]);
+	NSLog(@"Showing book %@.", [book Title]);
 	
 	BITTestPageViewController *pageView = [[BITTestPageViewController alloc] initWithNibName:nil bundle:nil];
-	pageView.bookInfo = bookInfo;
+	pageView.isbn = book.ContentIdentifier;
 	
 	BITReadingOptionsView *optionsView = [[BITReadingOptionsView alloc] initWithNibName:nil bundle:nil];
 	optionsView.pageViewController = pageView;
-	optionsView.bookInfo = bookInfo;
+	optionsView.isbn = book.ContentIdentifier;
 	
-	NSString *thumbKey = [NSString stringWithFormat:@"thumb-%@", [bookInfo stringForMetadataKey:kSCHBookInfoContentIdentifier]];
+	NSString *thumbKey = [NSString stringWithFormat:@"thumb-%@", book.ContentIdentifier];
 	NSData *imageData = [self.componentCache objectForKey:thumbKey];
 	
 	if ([imageData length]) {
 		optionsView.thumbnailImage = [UIImage imageWithData:imageData];
 	} else {
-		BITXPSProvider *provider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBook:bookInfo];
-		provider.title = [bookInfo stringForMetadataKey:kSCHBookInfoFileName];
+		BITXPSProvider *provider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:book.ContentIdentifier];
+		provider.title = book.FileName;
 		imageData = [provider coverThumbData];
-		[[SCHBookManager sharedBookManager] checkInXPSProviderForBook:bookInfo];
+		[[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifer:book.ContentIdentifier];
 
 		if (!imageData) {
 			optionsView.thumbnailImage = [UIImage imageNamed:@"PlaceholderBook"];
@@ -262,9 +260,9 @@
 		gridCell.frame = [aGridView frameForCellAtGridIndex:index];
 	}
 	
-	SCHBookInfo *bookInfo = [self.books objectAtIndex:index];
+	SCHAppBook *book = [self.books objectAtIndex:index];
 
-	[gridCell setBookInfo:bookInfo];
+	[gridCell setIsbn:book.ContentIdentifier];
 	
 	return gridCell;
 }
@@ -320,39 +318,38 @@
 -(void)gridView:(MRGridView *)aGridView didSelectCellAtIndex:(NSInteger)index 
 {
 	NSLog(@"Calling grid view selection.");
-	SCHBookInfo *bookInfo = [self.books objectAtIndex:index];
+	SCHAppBook *book = [self.books objectAtIndex:index];
 
 	// notify the processing manager that the user touched a book info object.
 	// this allows it to pause and resume items, etc.
 	// will do nothing if the book has already been fully downloaded.
-	[[SCHProcessingManager sharedProcessingManager] userSelectedBookInfo:bookInfo];
+	[[SCHProcessingManager sharedProcessingManager] userSelectedBookWithISBN:book.ContentIdentifier];
 	
 	// if the processing manager is working, do not open the book
-	if (![bookInfo canOpenBook]) {
+	if (![book canOpenBook]) {
 		return;
 	}
 	
 	
-	NSLog(@"Showing book %@.", [bookInfo stringForMetadataKey:kSCHBookInfoTitle]);
-	NSLog(@"Filename %@.", [bookInfo stringForMetadataKey:kSCHBookInfoFileName]);
+	NSLog(@"Showing book %@.", book.Title);
 	
 	BITTestPageViewController *pageView = [[BITTestPageViewController alloc] initWithNibName:nil bundle:nil];
-	pageView.bookInfo = bookInfo;
+	pageView.isbn = book.ContentIdentifier;
 	
 	BITReadingOptionsView *optionsView = [[BITReadingOptionsView alloc] initWithNibName:nil bundle:nil];
 	optionsView.pageViewController = pageView;
-	optionsView.bookInfo = bookInfo;
+	optionsView.isbn = book.ContentIdentifier;
 	
-	NSString *thumbKey = [NSString stringWithFormat:@"thumb-%@", [bookInfo stringForMetadataKey:kSCHBookInfoContentIdentifier]];
+	NSString *thumbKey = [NSString stringWithFormat:@"thumb-%@", book.ContentIdentifier];
 	NSData *imageData = [self.componentCache objectForKey:thumbKey];
 	
 	if ([imageData length]) {
 		optionsView.thumbnailImage = [UIImage imageWithData:imageData];
 	} else {
-		BITXPSProvider *provider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBook:bookInfo];
-		provider.title = [bookInfo stringForMetadataKey:kSCHBookInfoFileName];
+		BITXPSProvider *provider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:book.ContentIdentifier];
+		provider.title = book.FileName;
 		imageData = [provider coverThumbData];
-		[[SCHBookManager sharedBookManager] checkInXPSProviderForBook:bookInfo];
+		[[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifer:book.ContentIdentifier];
 		
 		if (!imageData) {
 			optionsView.thumbnailImage = [UIImage imageNamed:@"PlaceholderBook"];

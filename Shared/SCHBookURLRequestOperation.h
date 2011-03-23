@@ -7,12 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "SCHBookInfo.h"
 
 @interface SCHBookURLRequestOperation : NSOperation {
 	
 }
 
-@property (nonatomic, retain) SCHBookInfo *bookInfo;
+@property (nonatomic, retain) NSString *isbn;
 
 @end

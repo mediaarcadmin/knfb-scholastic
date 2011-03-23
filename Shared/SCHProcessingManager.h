@@ -9,20 +9,19 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class SCHBookInfo;
 @class SCHAsyncBookCoverImageView;
 
 typedef enum {
-	SCHBookInfoProcessingStateError = -2,
-	SCHBookInfoProcessingStateBookVersionNotSupported,
-	SCHBookInfoProcessingStateNoURLs,
-	SCHBookInfoProcessingStateNoCoverImage,
-	SCHBookInfoProcessingStateReadyForBookFileDownload,
-	SCHBookInfoProcessingStateDownloadStarted,
-	SCHBookInfoProcessingStateDownloadPaused,
-	SCHBookInfoProcessingStateReadyForRightsParsing,
-	SCHBookInfoProcessingStateReadyToRead
-} SCHBookInfoCurrentProcessingState;
+	SCHBookProcessingStateError = -2,
+	SCHBookProcessingStateBookVersionNotSupported,
+	SCHBookProcessingStateNoURLs,
+	SCHBookProcessingStateNoCoverImage,
+	SCHBookProcessingStateReadyForBookFileDownload,
+	SCHBookProcessingStateDownloadStarted,
+	SCHBookProcessingStateDownloadPaused,
+	SCHBookProcessingStateReadyForRightsParsing,
+	SCHBookProcessingStateReadyToRead
+} SCHBookCurrentProcessingState;
 
 static NSString * const kSCHProcessingManagerConnectionIdle = @"SCHProcessingManagerConnectionIdle";
 static NSString * const kSCHProcessingManagerConnectionBusy = @"SCHProcessingManagerConnectionBusy";
@@ -36,7 +35,7 @@ static NSString * const kSCHProcessingManagerConnectionBusy = @"SCHProcessingMan
 + (SCHProcessingManager *) sharedProcessingManager;
 
 // user selection method
-- (void) userSelectedBookInfo: (SCHBookInfo *) bookInfo;
+- (void) userSelectedBookWithISBN: (NSString *) isbn;
 
 // thumbnail requests
 - (BOOL) requestThumbImageForBookCover:(SCHAsyncBookCoverImageView *)bookCover size:(CGSize)size;

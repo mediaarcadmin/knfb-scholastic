@@ -33,7 +33,7 @@ static NSString * const kSCHProfileItem = @"SCHProfileItem";
 @property (nonatomic, retain) NSString * LastName;
 @property (nonatomic, retain) NSSet* AppBookOrder;
 
-- (NSMutableArray *)allContentMetadataItems;
+- (NSMutableArray *)allISBNs;
 - (void)saveBookOrder:(NSArray *)books;
 - (void)clearBookOrder;
 - (void)setRawPassword:(NSString *)value;

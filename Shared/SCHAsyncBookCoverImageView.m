@@ -7,7 +7,6 @@
 //
 
 #import "SCHAsyncBookCoverImageView.h"
-//#import "SCHOldProcessingManager.h"
 
 @interface SCHAsyncBookCoverImageView () 
 
@@ -18,7 +17,7 @@
 
 @implementation SCHAsyncBookCoverImageView
 
-@synthesize bookInfo, coverSize;
+@synthesize isbn, coverSize;
 
 - (void) dealloc {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -45,20 +44,20 @@
 	return self;
 }
 
-- (void) setBookInfo:(SCHBookInfo *) newBookInfo
+- (void) setIsbn:(NSString *) newIsbn
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	
-	SCHBookInfo *oldBookInfo = bookInfo;
-	bookInfo = [newBookInfo retain];
-	[oldBookInfo release];
+	NSString *oldIsbn = isbn;
+	isbn = [newIsbn retain];
+	[oldIsbn release];
 	
 	self.image = [UIImage imageNamed:@"PlaceholderBook"];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(newImageAvailable:)
 												 name:@"SCHNewImageAvailable"
-											   object:self.bookInfo];
+											   object:self.isbn];
 	
 }
 

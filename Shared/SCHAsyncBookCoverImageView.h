@@ -7,14 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "SCHBookInfo.h"
 
 @interface SCHAsyncBookCoverImageView : UIImageView {
 
 }
 
-@property (nonatomic, retain) SCHBookInfo *bookInfo;
+@property (nonatomic, retain) NSString *isbn;
 @property (nonatomic) CGSize coverSize;
-//@property (nonatomic, retain) NSString *imageOfInterest;
 
 @end

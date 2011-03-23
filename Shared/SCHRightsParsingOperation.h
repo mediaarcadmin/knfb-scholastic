@@ -7,12 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "SCHBookInfo.h"
 
 @interface SCHRightsParsingOperation : NSOperation  <NSXMLParserDelegate> {
 
 }
 
-@property (nonatomic, assign) SCHBookInfo *bookInfo;
+@property (nonatomic, assign) NSString *isbn;
 
 @end

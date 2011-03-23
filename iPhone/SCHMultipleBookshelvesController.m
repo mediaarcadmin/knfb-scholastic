@@ -130,7 +130,7 @@
 		
 		managedObjectContext = [moc retain];
         self.profileItem = aProfileItem;
-		self.books = [self.profileItem allContentMetadataItems];
+		self.books = [self.profileItem allISBNs];
 
 		// view controllers are created lazily
 		// in the meantime, load the array with placeholders which will be replaced on demand
@@ -147,7 +147,7 @@
 
 - (void) updateBooks:(NSNotification *)notification
 {
-	self.books = [self.profileItem allContentMetadataItems];
+	self.books = [self.profileItem allISBNs];
 }	
 
 - (NSUInteger)numberOfBookshelves 
