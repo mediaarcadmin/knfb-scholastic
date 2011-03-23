@@ -15,6 +15,7 @@ static NSString * const kSCHContentMetadataItemAnnotationsContentItem = @"Annota
 static NSString * const kSCHContentMetadataItemAnnotationsListProfileID = @"AnnotationsList.ProfileID";
 
 @implementation SCHContentMetadataItem
+
 @dynamic Author;
 @dynamic Description;
 @dynamic Version;
@@ -42,7 +43,7 @@ static NSString * const kSCHContentMetadataItemAnnotationsListProfileID = @"Anno
 }
 
 #pragma -
-#pragma Core Data Generated Methods
+#pragma Core Data Generated Accessors
 
 - (void)addEReaderCategoriesObject:(SCHeReaderCategories *)value {    
     NSSet *changedObjects = [[NSSet alloc] initWithObjects:&value count:1];

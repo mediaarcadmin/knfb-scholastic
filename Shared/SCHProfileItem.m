@@ -170,7 +170,7 @@ static NSString * const kSCHProfileItemUserContentItemContentMetadataItem = @"Us
 }
 
 #pragma -
-#pragma Core Data Generated Methods
+#pragma Core Data Generated Accessors
 
 - (void)addAppBookOrderObject:(SCHAppBookOrder *)value {    
     NSSet *changedObjects = [[NSSet alloc] initWithObjects:&value count:1];

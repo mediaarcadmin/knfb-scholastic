@@ -19,6 +19,9 @@ static SCHURLManager *sharedURLManager = nil;
 
 @interface SCHURLManager ()
 
++ (SCHURLManager *)sharedURLManagerOnMainThread;
+- (void)requestURLForISBNOnMainThread:(NSString *)ISBN;
+- (void)clearOnMainThread;
 - (void)shakeTable;
 
 @property (retain, nonatomic) NSMutableSet *table;
@@ -27,6 +30,13 @@ static SCHURLManager *sharedURLManager = nil;
 @property (nonatomic, assign) NSInteger requestCount;
 
 @end
+
+/*
+ * This class is thread safe in respect to all the exposed methods being
+ * wrappers for private methods that are always executed on the MainThread.
+ * Notifications are also sent on the Main Thread and should be handled and 
+ * propogated to worker threads appropriately.
+ */
 
 @implementation SCHURLManager
 
@@ -42,7 +52,8 @@ static SCHURLManager *sharedURLManager = nil;
 + (SCHURLManager *)sharedURLManager
 {
     if (sharedURLManager == nil) {
-        sharedURLManager = [[super allocWithZone:NULL] init];		
+        // we block until the selector completes to make sure we always have the object before use
+        [SCHURLManager performSelectorOnMainThread:@selector(sharedURLManagerOnMainThread) withObject:nil waitUntilDone:YES];
     }
 	
     return(sharedURLManager);
@@ -83,10 +94,30 @@ static SCHURLManager *sharedURLManager = nil;
 	[super dealloc];
 }
 
-- (BOOL)requestURLForISBN:(NSString *)ISBN
+- (void)requestURLForISBN:(NSString *)ISBN
 {
-	BOOL ret = NO;
+    [self performSelectorOnMainThread:@selector(requestURLForISBNOnMainThread:) withObject:ISBN waitUntilDone:NO];
+}
 	
+- (void)clear
+{
+    [self performSelectorOnMainThread:@selector(clearOnMainThread) withObject:nil waitUntilDone:NO];    
+}
+
+#pragma -
+#pragma Private methods
+
++ (SCHURLManager *)sharedURLManagerOnMainThread
+{
+    if (sharedURLManager == nil) {
+        sharedURLManager = [[super allocWithZone:NULL] init];		
+    }
+	
+    return(sharedURLManager);
+}
+
+- (void)requestURLForISBNOnMainThread:(NSString *)ISBN
+{	
 	if (ISBN != nil) {
 		NSEntityDescription *entityDescription = [NSEntityDescription 
 												  entityForName:kSCHUserContentItem 
@@ -99,28 +130,23 @@ static SCHURLManager *sharedURLManager = nil;
 		
 		NSArray *book = [self.managedObjectContext executeFetchRequest:fetchRequest error:nil];	
 		
-		ret = [book count] > 0;
-		if (ret == YES) {
-			@synchronized(table) {
+		if ([book count] > 0) {
 			[table addObject:[book objectAtIndex:0]];
 			[self shakeTable];
-			}
-		}
+		} else {
+			[[NSNotificationCenter defaultCenter] postNotificationName:kSCHURLManagerFailure 
+																object:self];
+        }
 	}
-	
-	return(ret);
 }
-									 
-- (void)clear
+
+- (void)clearOnMainThread
 {
-	@synchronized(table) {
 	[table removeAllObjects];
-	}
 }
 
 - (void)shakeTable
 {	
-	@synchronized(table) {
 	if ([table count] > 0) {
 		NSMutableSet *removeFromTable = [NSMutableSet set];
 		
@@ -149,23 +175,8 @@ static SCHURLManager *sharedURLManager = nil;
 		
 		[table minusSet:removeFromTable];	
 	}
-	}
 }
 
-// FIXME: added a method to make the notifications fire on the main thread
-
-- (void) postSuccess: (NSArray *) objectArray
-{
-	[[NSNotificationCenter defaultCenter] postNotificationName:kSCHURLManagerSuccess 
-														object:[objectArray objectAtIndex:0] userInfo:[objectArray objectAtIndex:1]];				
-}
-
-- (void) postFailure: (id) object
-{
-	[[NSNotificationCenter defaultCenter] postNotificationName:kSCHURLManagerFailure 
-														object:object];				
-}
-		  
 #pragma mark -
 #pragma mark BIT API Proxy Delegate methods
 
@@ -179,16 +190,11 @@ static SCHURLManager *sharedURLManager = nil;
 		if ([list count] > 0) {
 			NSLog(@"Received URLs for %@", [[list objectAtIndex:0] 
 												   valueForKey:kSCHLibreAccessWebServiceContentIdentifier]);
-//			[[NSNotificationCenter defaultCenter] postNotificationName:kSCHURLManagerSuccess 
-//																object:self userInfo:[list objectAtIndex:0]];	
-			NSArray *argsArray = [NSArray arrayWithObjects:self, [list objectAtIndex:0], nil];
-			
-			[self performSelectorOnMainThread:@selector(postSuccess:) withObject:argsArray waitUntilDone:YES];
-			
+			[[NSNotificationCenter defaultCenter] postNotificationName:kSCHURLManagerSuccess 
+																object:self userInfo:[list objectAtIndex:0]];				
 		} else {
-//			[[NSNotificationCenter defaultCenter] postNotificationName:kSCHURLManagerFailure 
-//																object:self];
-			[self performSelectorOnMainThread:@selector(postFailure:) withObject:self waitUntilDone:YES];
+			[[NSNotificationCenter defaultCenter] postNotificationName:kSCHURLManagerFailure 
+																object:self];
 		}		
 	}
 	
@@ -204,8 +210,7 @@ static SCHURLManager *sharedURLManager = nil;
 {
 	requestCount--;
 	
-//	[[NSNotificationCenter defaultCenter] postNotificationName:kSCHURLManagerFailure object:self];	
-	[self performSelectorOnMainThread:@selector(postFailure:) withObject:self waitUntilDone:YES];
+	[[NSNotificationCenter defaultCenter] postNotificationName:kSCHURLManagerFailure object:self];	
 	
 	if (requestCount < 1) {
 		if (self.backgroundTaskIdentifier != UIBackgroundTaskInvalid) {
@@ -223,13 +228,12 @@ static SCHURLManager *sharedURLManager = nil;
 	NSDictionary *userInfo = [notification userInfo];
 	
 	if ([[userInfo valueForKey:kSCHAuthenticationManagerOfflineMode] boolValue] == NO) {
-//		NSLog(@"Authenticated!");
+		NSLog(@"Authenticated!");
 		
 		[self shakeTable];	
 	} else if ([table count] > 0) {
 		[self clear];
-//		[[NSNotificationCenter defaultCenter] postNotificationName:kSCHURLManagerFailure object:self];			
-		[self performSelectorOnMainThread:@selector(postFailure:) withObject:self waitUntilDone:YES];
+		[[NSNotificationCenter defaultCenter] postNotificationName:kSCHURLManagerFailure object:self];			
 	}
 }
 

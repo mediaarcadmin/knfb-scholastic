@@ -49,8 +49,6 @@
 		52322C34132693F500BB071D /* SCHURLManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 52322C33132693F500BB071D /* SCHURLManager.m */; };
 		5233E03313154EEA0088F18C /* SCHDeviceInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 5233E03213154EEA0088F18C /* SCHDeviceInfo.m */; };
 		5233E03413154EEA0088F18C /* SCHDeviceInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 5233E03213154EEA0088F18C /* SCHDeviceInfo.m */; };
-		5233E03713154F810088F18C /* SCHDeviceInfo+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5233E03613154F810088F18C /* SCHDeviceInfo+Extensions.m */; };
-		5233E03813154F810088F18C /* SCHDeviceInfo+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5233E03613154F810088F18C /* SCHDeviceInfo+Extensions.m */; };
 		5233E0D813159CA80088F18C /* BITNetworkActivityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5233E0D713159CA80088F18C /* BITNetworkActivityManager.m */; };
 		5233E0D913159CA80088F18C /* BITNetworkActivityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5233E0D713159CA80088F18C /* BITNetworkActivityManager.m */; };
 		5243545A13337BAC00282B53 /* SCHAppBookOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = 5243545713337BAC00282B53 /* SCHAppBookOrder.m */; };
@@ -367,8 +365,6 @@
 		52322C33132693F500BB071D /* SCHURLManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHURLManager.m; path = Shared/SCHURLManager.m; sourceTree = "<group>"; };
 		5233E03113154EEA0088F18C /* SCHDeviceInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHDeviceInfo.h; path = Shared/SCHDeviceInfo.h; sourceTree = "<group>"; };
 		5233E03213154EEA0088F18C /* SCHDeviceInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHDeviceInfo.m; path = Shared/SCHDeviceInfo.m; sourceTree = "<group>"; };
-		5233E03513154F810088F18C /* SCHDeviceInfo+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SCHDeviceInfo+Extensions.h"; path = "Shared/SCHDeviceInfo+Extensions.h"; sourceTree = "<group>"; };
-		5233E03613154F810088F18C /* SCHDeviceInfo+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SCHDeviceInfo+Extensions.m"; path = "Shared/SCHDeviceInfo+Extensions.m"; sourceTree = "<group>"; };
 		5233E0D613159CA80088F18C /* BITNetworkActivityManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BITNetworkActivityManager.h; path = Shared/BITNetworkActivityManager.h; sourceTree = "<group>"; };
 		5233E0D713159CA80088F18C /* BITNetworkActivityManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BITNetworkActivityManager.m; path = Shared/BITNetworkActivityManager.m; sourceTree = "<group>"; };
 		5243545613337BAC00282B53 /* SCHAppBookOrder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAppBookOrder.h; path = Shared/SCHAppBookOrder.h; sourceTree = "<group>"; };
@@ -899,8 +895,6 @@
 				52298A8012F0EF5600BBBCE6 /* SCHCoords.m */,
 				5233E03113154EEA0088F18C /* SCHDeviceInfo.h */,
 				5233E03213154EEA0088F18C /* SCHDeviceInfo.m */,
-				5233E03513154F810088F18C /* SCHDeviceInfo+Extensions.h */,
-				5233E03613154F810088F18C /* SCHDeviceInfo+Extensions.m */,
 				5200EFF212F6D00B00BAC355 /* SCHeReaderCategories.h */,
 				5200EFF312F6D00B00BAC355 /* SCHeReaderCategories.m */,
 				52298A7B12F0EF5600BBBCE6 /* SCHFavorite.h */,
@@ -1729,7 +1723,6 @@
 				52E334F61303049C002F3011 /* SCHTopPicksBookShelfViewController.m in Sources */,
 				52F559C6130BEA57002C8BDF /* SCHProfilePasswordViewController.m in Sources */,
 				5233E03313154EEA0088F18C /* SCHDeviceInfo.m in Sources */,
-				5233E03713154F810088F18C /* SCHDeviceInfo+Extensions.m in Sources */,
 				5233E0D813159CA80088F18C /* BITNetworkActivityManager.m in Sources */,
 				52E36769131D3ED200ACCBEE /* SCHBookshelfSyncComponent.m in Sources */,
 				F82D39C5131EA79100289FF3 /* SCHBookContents.m in Sources */,
@@ -1839,7 +1832,6 @@
 				52E334F71303049C002F3011 /* SCHTopPicksBookShelfViewController.m in Sources */,
 				52F559C8130BEA57002C8BDF /* SCHProfilePasswordViewController.m in Sources */,
 				5233E03413154EEA0088F18C /* SCHDeviceInfo.m in Sources */,
-				5233E03813154F810088F18C /* SCHDeviceInfo+Extensions.m in Sources */,
 				5233E0D913159CA80088F18C /* BITNetworkActivityManager.m in Sources */,
 				52E3676A131D3ED200ACCBEE /* SCHBookshelfSyncComponent.m in Sources */,
 				F82D39BF131EA79100289FF3 /* SCHBookContents.m in Sources */,
