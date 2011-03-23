@@ -132,8 +132,7 @@
     }
     
     // Configure the cell...
-	SCHAppBook *book = [self.books objectAtIndex:indexPath.row];
-	[cell setIsbn:book.ContentIdentifier];
+	[cell setIsbn:[self.books objectAtIndex:indexPath.row]];
 	
 	UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(startEditingTable:)];
     longPress.delegate = self;
@@ -150,7 +149,7 @@
 - (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[aTableView deselectRowAtIndexPath:indexPath animated:YES];
 	
-	SCHAppBook *book = [self.books objectAtIndex:indexPath.row];
+	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:[self.books objectAtIndex:indexPath.row]];
 
 	// notify the processing manager that the user touched a book info object.
 	// this allows it to pause and resume items, etc.
@@ -259,10 +258,8 @@
 	else {
 		gridCell.frame = [aGridView frameForCellAtGridIndex:index];
 	}
-	
-	SCHAppBook *book = [self.books objectAtIndex:index];
 
-	[gridCell setIsbn:book.ContentIdentifier];
+	[gridCell setIsbn:[self.books objectAtIndex:index]];
 	
 	return gridCell;
 }
@@ -318,7 +315,7 @@
 -(void)gridView:(MRGridView *)aGridView didSelectCellAtIndex:(NSInteger)index 
 {
 	NSLog(@"Calling grid view selection.");
-	SCHAppBook *book = [self.books objectAtIndex:index];
+	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:[self.books objectAtIndex:index]];
 
 	// notify the processing manager that the user touched a book info object.
 	// this allows it to pause and resume items, etc.

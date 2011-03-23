@@ -7,7 +7,6 @@
 //
 
 #import "SCHDictionaryFileDownloadOperation.h"
-#import "SCHBookInfo.h"
 #import "SCHDictionaryManager.h"
 
 #pragma mark Class Extension
