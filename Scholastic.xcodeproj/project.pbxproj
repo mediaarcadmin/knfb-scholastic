@@ -138,7 +138,6 @@
 		A3A38E62133A811400C325A3 /* iphonecert.dat in Resources */ = {isa = PBXBuildFile; fileRef = A3A38E60133A811400C325A3 /* iphonecert.dat */; };
 		A3A38E63133A811400C325A3 /* devcerttemplate.dat in Resources */ = {isa = PBXBuildFile; fileRef = A3A38E5F133A811400C325A3 /* devcerttemplate.dat */; };
 		A3A38E64133A811400C325A3 /* iphonecert.dat in Resources */ = {isa = PBXBuildFile; fileRef = A3A38E60133A811400C325A3 /* iphonecert.dat */; };
-		A3A38E65133A814300C325A3 /* libPlayReadyPK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A3D933851326D92000037111 /* libPlayReadyPK.a */; };
 		A3D933861326D92000037111 /* libPlayReadyPK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A3D933851326D92000037111 /* libPlayReadyPK.a */; };
 		C923A27A12F06FE60054426F /* MRGridView.m in Sources */ = {isa = PBXBuildFile; fileRef = C923A27312F06FE60054426F /* MRGridView.m */; };
 		C923A27B12F06FE60054426F /* MRGridViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C923A27512F06FE60054426F /* MRGridViewCell.m */; };
@@ -166,7 +165,6 @@
 		C9CEF42D133A1CD400FB5BE0 /* SCHReadingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9CEF42B133A1CD400FB5BE0 /* SCHReadingViewController.m */; };
 		C9CEF42E133A1CD400FB5BE0 /* SCHReadingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9CEF42B133A1CD400FB5BE0 /* SCHReadingViewController.m */; };
 		C9CEF42F133A1CD400FB5BE0 /* SCHReadingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9CEF42C133A1CD400FB5BE0 /* SCHReadingViewController.xib */; };
-		C9CEF430133A1CD400FB5BE0 /* SCHReadingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9CEF42C133A1CD400FB5BE0 /* SCHReadingViewController.xib */; };
 		C9CEF433133A1F2400FB5BE0 /* SCHLayoutView.m in Sources */ = {isa = PBXBuildFile; fileRef = C9CEF432133A1F2300FB5BE0 /* SCHLayoutView.m */; };
 		C9CEF434133A1F2400FB5BE0 /* SCHLayoutView.m in Sources */ = {isa = PBXBuildFile; fileRef = C9CEF432133A1F2300FB5BE0 /* SCHLayoutView.m */; };
 		C9F1A4D6133B507100FD984C /* libPlayReadyPK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A3D933851326D92000037111 /* libPlayReadyPK.a */; };
@@ -318,6 +316,93 @@
 		F8C4C58313326E6C0057420E /* SCHDictionaryManifestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F8C4C57F13326E6C0057420E /* SCHDictionaryManifestOperation.m */; };
 		F8CD24F612F97E62001C748B /* SCHBookManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F8CD24CA12F9714D001C748B /* SCHBookManager.m */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		C947D572133B9C0100FB4404 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C947D55D133B9C0000FB4404 /* libEucalyptus.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D2AAC07E0554694100DB518D;
+			remoteInfo = libEucalyptus;
+		};
+		C947D574133B9C0100FB4404 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C947D55D133B9C0000FB4404 /* libEucalyptus.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 7D3F4C2E11EF29600065A5F7;
+			remoteInfo = libEucalyptusBase;
+		};
+		C947D576133B9C0100FB4404 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C947D55D133B9C0000FB4404 /* libEucalyptus.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 7D9AA9C9114A8F6A0055C381;
+			remoteInfo = libEucalyptusBUpe;
+		};
+		C947D578133B9C0100FB4404 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C947D55D133B9C0000FB4404 /* libEucalyptus.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 7D2341981149614F00C318E7;
+			remoteInfo = libEucalyptusCSS;
+		};
+		C947D57A133B9C0100FB4404 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C947D55D133B9C0000FB4404 /* libEucalyptus.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 7D5171CA1028B6AE005F3C46;
+			remoteInfo = expat;
+		};
+		C947D57C133B9C0100FB4404 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C947D55D133B9C0000FB4404 /* libEucalyptus.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 7D5170CE1028AD1B005F3C46;
+			remoteInfo = libhyphenate;
+		};
+		C947D57E133B9C0100FB4404 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C947D55D133B9C0000FB4404 /* libEucalyptus.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 7D1900981149490E00375803;
+			remoteInfo = libwapcaplet;
+		};
+		C947D580133B9C0100FB4404 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C947D55D133B9C0000FB4404 /* libEucalyptus.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 7D1900CD11494A0C00375803;
+			remoteInfo = libparserutils;
+		};
+		C947D582133B9C0100FB4404 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C947D55D133B9C0000FB4404 /* libEucalyptus.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 7D19025211494BE800375803;
+			remoteInfo = libcss;
+		};
+		C947D584133B9C0100FB4404 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C947D55D133B9C0000FB4404 /* libEucalyptus.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 7D229E1412F98AAF0037D93D;
+			remoteInfo = libminiunzip;
+		};
+		C947D586133B9C0100FB4404 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C947D55D133B9C0000FB4404 /* libEucalyptus.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 7D034F8910C2CCBE0085778B;
+			remoteInfo = TransitionTest;
+		};
+		C947D588133B9C0100FB4404 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C947D55D133B9C0000FB4404 /* libEucalyptus.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 7D9A96D210D7E41100C2E00A;
+			remoteInfo = Paginate;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -681,6 +766,7 @@
 		C923B13E12F6AFC60054426F /* SCHMultipleBookshelvesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHMultipleBookshelvesController.h; path = iPhone/SCHMultipleBookshelvesController.h; sourceTree = "<group>"; };
 		C923B13F12F6AFC60054426F /* SCHMultipleBookshelvesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHMultipleBookshelvesController.m; path = iPhone/SCHMultipleBookshelvesController.m; sourceTree = "<group>"; };
 		C923B15A12F6B0280054426F /* SCHMultipleBookshelvesController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = SCHMultipleBookshelvesController.xib; path = iPhone/SCHMultipleBookshelvesController.xib; sourceTree = "<group>"; };
+		C947D55D133B9C0000FB4404 /* libEucalyptus.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libEucalyptus.xcodeproj; path = Shared/Libraries/Submodules/libEucalyptus/libEucalyptus.xcodeproj; sourceTree = "<group>"; };
 		C95ECB44133A76C400D88768 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		C95ECB46133A76DE00D88768 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		C95ECB48133A770B00D88768 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -1426,9 +1512,29 @@
 			name = Bookshelves;
 			sourceTree = "<group>";
 		};
+		C947D55E133B9C0000FB4404 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C947D573133B9C0100FB4404 /* libEucalyptus.a */,
+				C947D575133B9C0100FB4404 /* libEucalyptusBase.a */,
+				C947D577133B9C0100FB4404 /* libEucalyptusBUpe.a */,
+				C947D579133B9C0100FB4404 /* libEucalyptusCSS.a */,
+				C947D57B133B9C0100FB4404 /* libexpat.a */,
+				C947D57D133B9C0100FB4404 /* libhyphenate.a */,
+				C947D57F133B9C0100FB4404 /* libwapcaplet.a */,
+				C947D581133B9C0100FB4404 /* libparserutils.a */,
+				C947D583133B9C0100FB4404 /* libcss.a */,
+				C947D585133B9C0100FB4404 /* libminiunzip.a */,
+				C947D587133B9C0100FB4404 /* TransitionTest.app */,
+				C947D589133B9C0100FB4404 /* Paginate.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		C9CEF2F11339F77200FB5BE0 /* Submodules */ = {
 			isa = PBXGroup;
 			children = (
+				C947D55D133B9C0000FB4404 /* libEucalyptus.xcodeproj */,
 			);
 			name = Submodules;
 			sourceTree = "<group>";
@@ -1650,6 +1756,12 @@
 			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = C947D55E133B9C0000FB4404 /* Products */;
+					ProjectRef = C947D55D133B9C0000FB4404 /* libEucalyptus.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				1D6058900D05DD3D006BFB54 /* Scholastic */,
@@ -1657,6 +1769,93 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		C947D573133B9C0100FB4404 /* libEucalyptus.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libEucalyptus.a;
+			remoteRef = C947D572133B9C0100FB4404 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		C947D575133B9C0100FB4404 /* libEucalyptusBase.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libEucalyptusBase.a;
+			remoteRef = C947D574133B9C0100FB4404 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		C947D577133B9C0100FB4404 /* libEucalyptusBUpe.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libEucalyptusBUpe.a;
+			remoteRef = C947D576133B9C0100FB4404 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		C947D579133B9C0100FB4404 /* libEucalyptusCSS.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libEucalyptusCSS.a;
+			remoteRef = C947D578133B9C0100FB4404 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		C947D57B133B9C0100FB4404 /* libexpat.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libexpat.a;
+			remoteRef = C947D57A133B9C0100FB4404 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		C947D57D133B9C0100FB4404 /* libhyphenate.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libhyphenate.a;
+			remoteRef = C947D57C133B9C0100FB4404 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		C947D57F133B9C0100FB4404 /* libwapcaplet.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libwapcaplet.a;
+			remoteRef = C947D57E133B9C0100FB4404 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		C947D581133B9C0100FB4404 /* libparserutils.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libparserutils.a;
+			remoteRef = C947D580133B9C0100FB4404 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		C947D583133B9C0100FB4404 /* libcss.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libcss.a;
+			remoteRef = C947D582133B9C0100FB4404 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		C947D585133B9C0100FB4404 /* libminiunzip.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libminiunzip.a;
+			remoteRef = C947D584133B9C0100FB4404 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		C947D587133B9C0100FB4404 /* TransitionTest.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = TransitionTest.app;
+			remoteRef = C947D586133B9C0100FB4404 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		C947D589133B9C0100FB4404 /* Paginate.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = Paginate.app;
+			remoteRef = C947D588133B9C0100FB4404 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		1D60588D0D05DD3D006BFB54 /* Resources */ = {
