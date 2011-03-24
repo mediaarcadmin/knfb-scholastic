@@ -229,6 +229,7 @@
 		newContentProfileItem.ProfileID = [NSNumber numberWithInt:1];
 		
 		[newUserContentItem addProfileListObject:newContentProfileItem];	
+
         
         NSError *error;
         if (![self.managedObjectContext save:&error]) {
@@ -236,9 +237,9 @@
         }
 //		SCHBookInfo *bookInfo = [SCHBookManager bookInfoWithBookIdentifier:newUserContentItem.ContentIdentifier];
 //		[bookInfo setProcessingState:SCHBookProcessingStateNoCoverImage];
+        
+        [[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:newUserContentItem.ContentIdentifier state:SCHBookProcessingStateNoCoverImage];
 		
-		[newUserContentItem setState:[NSNumber numberWithInt:SCHBookProcessingStateNoCoverImage]];
-								 
 	}
 
 	// Save the context.
