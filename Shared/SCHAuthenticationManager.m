@@ -32,7 +32,7 @@ static NSString * const kSCHAuthenticationManagerServiceName = @"Scholastic";
 
 
 #pragma mark -
-#pragma mark Singleton methods
+#pragma mark Singleton instance methods
 
 + (SCHAuthenticationManager *)sharedAuthenticationManager
 {
@@ -41,36 +41,6 @@ static NSString * const kSCHAuthenticationManagerServiceName = @"Scholastic";
     }
 	
     return(sharedAuthenticationManager);
-}
-
-+ (id)allocWithZone:(NSZone *)zone
-{
-    return([[self sharedAuthenticationManager] retain]);
-}
-
-- (id)copyWithZone:(NSZone *)zone
-{
-    return(self);
-}
-
-- (id)retain
-{
-    return(self);
-}
-
-- (NSUInteger)retainCount
-{
-    return(NSUIntegerMax);  //denotes an object that cannot be released
-}
-
-- (void)release
-{
-    // do nothing
-}
-
-- (id)autorelease
-{
-    return(self);
 }
 
 #pragma mark -
