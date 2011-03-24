@@ -31,14 +31,14 @@
 }
 
 - (id) initWithFrame: (CGRect) frame {
-	if (self = [super initWithFrame:frame]) {
+	if ((self = [super initWithFrame:frame])) {
 		[self initialiseView];
 	}
 	return self;
 }
 
 - (id) initWithImage: (UIImage *) image {
-	if (self = [super initWithImage:image]) {
+	if ((self = [super initWithImage:image])) {
 		[self initialiseView];
 	}
 	return self;
