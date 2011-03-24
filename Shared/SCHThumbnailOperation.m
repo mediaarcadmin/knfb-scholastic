@@ -22,7 +22,7 @@
 }
 
 - (void)imageReady:(NSDictionary *)userInfo {
-	[[NSNotificationCenter defaultCenter] postNotificationName:@"SCHNewImageAvailable" object:isbn userInfo:userInfo];
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"SCHNewImageAvailable" object:nil userInfo:userInfo];
 }
 
 - (void)main {
@@ -62,6 +62,7 @@
 	
 	if (thumbImage) {
 		NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
+                                  self.isbn, @"isbn",
 								  [NSValue valueWithCGSize:size], @"thumbSize", 
 								  thumbImage, @"image", 
 								  nil];

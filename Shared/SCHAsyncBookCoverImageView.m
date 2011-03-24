@@ -57,20 +57,23 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(newImageAvailable:)
 												 name:@"SCHNewImageAvailable"
-											   object:self.isbn];
+											   object:nil];
 	
 }
 
 
 - (void)newImageAvailable:(NSNotification *)notification {
 	NSDictionary *userInfo = [notification userInfo];
-	id image = [userInfo valueForKey:@"image"];
-	CGSize thumbSize = [[userInfo valueForKey:@"thumbSize"] CGSizeValue];
-	
-	if (image && self.coverSize.width == thumbSize.width && self.coverSize.height == thumbSize.height) {
-		[self setImage:image];
-		[self setNeedsDisplay];
-	}
+    
+    if ([self.isbn compare:[userInfo objectForKey:@"isbn"]] == NSOrderedSame) {
+        id image = [userInfo valueForKey:@"image"];
+        CGSize thumbSize = [[userInfo valueForKey:@"thumbSize"] CGSizeValue];
+        
+        if (image && self.coverSize.width == thumbSize.width && self.coverSize.height == thumbSize.height) {
+            [self setImage:image];
+            [self setNeedsDisplay];
+        }
+    }
 	
 }
 
