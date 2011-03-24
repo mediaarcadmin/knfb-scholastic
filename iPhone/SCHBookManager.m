@@ -243,6 +243,19 @@ static int mutationCount = 0;
 	[self.threadSafeMutationLock unlock];
     
     [pool drain];
+    
+//	[[NSNotificationCenter defaultCenter] postNotificationName:@"SCHBookStatusUpdate" object:self];
+
+    NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
+							  isbn, @"isbn",
+							  nil];
+	
+	//NSLog(@"percentage for %@: %2.2f%%", self.bookInfo.contentMetadata.Title, percentage * 100);
+	
+	[self performSelectorOnMainThread:@selector(statusNotification:) 
+						   withObject:userInfo
+						waitUntilDone:YES];
+
 }
 
 - (SCHBookCurrentProcessingState) processingStateForBookWithISBN: (NSString *) isbn
@@ -261,6 +274,15 @@ static int mutationCount = 0;
 {
     return [self.managedObjectContextForCurrentThread save:error];
 }
+
+#pragma mark -
+#pragma mark Main Thread Notifications
+
+- (void) statusNotification: (NSDictionary *) userInfo
+{
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"SCHBookStateUpdate" object:nil userInfo:userInfo];
+}
+
 
 #pragma mark -
 #pragma mark Thread-specific MOC

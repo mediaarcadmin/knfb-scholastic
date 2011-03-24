@@ -35,7 +35,7 @@
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
 	
-	if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
+	if ((self = [super initWithStyle:style reuseIdentifier:reuseIdentifier])) {
 		
 		self.frame = CGRectMake(0, 0, self.frame.size.width - IMAGE_FRAME_WIDTH, IMAGE_FRAME_HEIGHT);
 		[self layoutSubviews];
@@ -120,8 +120,8 @@
 
 - (void) setIsbn:(NSString *) newIsbn
 {
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"SCHBookDownloadPercentageUpdate" object:self.isbn];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"SCHBookStatusUpdate" object:self.isbn];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"SCHBookDownloadPercentageUpdate" object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"SCHBookStatusUpdate" object:nil];
 
 	if (newIsbn != isbn && [newIsbn compare:isbn] != NSOrderedSame) {
 		NSString *oldIsbn = isbn;
@@ -132,17 +132,24 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(updatePercentage:) 
 												 name:@"SCHBookDownloadPercentageUpdate" 
-											   object:self.isbn];
+											   object:nil];
 
 	[[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(refreshCell)
-												 name:@"SCHBookStatusUpdate"
-											   object:self.isbn];
+											 selector:@selector(checkForCellUpdateFromNotification:)
+												 name:@"SCHBookStateUpdate"
+											   object:nil];
 	
 	[self.thumbImageView setIsbn:self.isbn];
 	
 	[self refreshCell];
 	
+}
+
+- (void) checkForCellUpdateFromNotification: (NSNotification *) notification
+{
+    if ([self.isbn compare:[[notification userInfo] objectForKey:@"isbn"]] == NSOrderedSame) {
+        [self refreshCell];
+    }
 }
 
 
@@ -204,8 +211,12 @@
 
 - (void) updatePercentage: (NSNotification *) notification
 {
-	float newPercentage = [(NSNumber *) [[notification userInfo] objectForKey:@"currentPercentage"] floatValue];
-	[self.progressView setProgress:newPercentage];
+    NSString *updateForISBN = [[notification userInfo] objectForKey:@"isbn"];
+
+    if ([updateForISBN compare:self.isbn] == NSOrderedSame) {
+        float newPercentage = [(NSNumber *) [[notification userInfo] objectForKey:@"currentPercentage"] floatValue];
+        [self.progressView setProgress:newPercentage];
+    }
 }
 
 - (void)dealloc {

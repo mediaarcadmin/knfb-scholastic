@@ -143,7 +143,7 @@
 - (void) percentageUpdate: (NSDictionary *) userInfo
 {
 	if (self.fileType == kSCHDownloadFileTypeXPSBook) {
-		[[NSNotificationCenter defaultCenter] postNotificationName:@"SCHBookDownloadPercentageUpdate" object:self.isbn userInfo:userInfo];
+		[[NSNotificationCenter defaultCenter] postNotificationName:@"SCHBookDownloadPercentageUpdate" object:nil userInfo:userInfo];
 	}
 }
 
@@ -181,6 +181,7 @@
 	
 	NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
 							  [NSNumber numberWithFloat:percentage], @"currentPercentage",
+							  self.isbn, @"isbn",
 							  nil];
 	
 	//NSLog(@"percentage for %@: %2.2f%%", self.bookInfo.contentMetadata.Title, percentage * 100);
