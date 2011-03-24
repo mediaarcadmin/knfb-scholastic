@@ -762,7 +762,6 @@
 		C923B13E12F6AFC60054426F /* SCHMultipleBookshelvesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHMultipleBookshelvesController.h; path = iPhone/SCHMultipleBookshelvesController.h; sourceTree = "<group>"; };
 		C923B13F12F6AFC60054426F /* SCHMultipleBookshelvesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHMultipleBookshelvesController.m; path = iPhone/SCHMultipleBookshelvesController.m; sourceTree = "<group>"; };
 		C923B15A12F6B0280054426F /* SCHMultipleBookshelvesController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = SCHMultipleBookshelvesController.xib; path = iPhone/SCHMultipleBookshelvesController.xib; sourceTree = "<group>"; };
-		C95ECB2D133A75F500D88768 /* Scholastic.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Scholastic.xcodeproj; sourceTree = "<group>"; };
 		C95ECB44133A76C400D88768 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		C95ECB46133A76DE00D88768 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		C95ECB48133A770B00D88768 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -959,7 +958,6 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
-				C95ECB2D133A75F500D88768 /* Scholastic.xcodeproj */,
 				528A2CF712CCEAA50053A343 /* ReleaseNotes.tmReleaseNotes */,
 				2860E386111B897F00E27156 /* iPhone */,
 				29B97317FDCFA39411CA2CEA /* iPad */,
@@ -1535,11 +1533,6 @@
 			name = Bookshelves;
 			sourceTree = "<group>";
 		};
-		C95ECB2E133A75F500D88768 /* Products */ = {
-			isa = PBXGroup;
-			name = Products;
-			sourceTree = "<group>";
-		};
 		C9CEF2F11339F77200FB5BE0 /* Submodules */ = {
 			isa = PBXGroup;
 			children = (
@@ -1766,12 +1759,6 @@
 			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = C95ECB2E133A75F500D88768 /* Products */;
-					ProjectRef = C95ECB2D133A75F500D88768 /* Scholastic.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				1D6058900D05DD3D006BFB54 /* Scholastic */,

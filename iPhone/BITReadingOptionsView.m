@@ -8,6 +8,7 @@
 
 #import "BITReadingOptionsView.h"
 #import <QuartzCore/QuartzCore.h>
+#import "SCHReadingViewController.h"
 
 @implementation BITReadingOptionsView
 @synthesize pageViewController;
@@ -69,6 +70,11 @@
 
 - (IBAction) showBookView: (id) sender
 {
+//    SCHReadingViewController *readingController = [[SCHReadingViewController alloc] initWithNibName:nil bundle:nil book:self.bookInfo];
+//    [self.navigationController pushViewController:readingController animated:YES];
+//    [readingController release];
+//    
+//    return;
 	[self.navigationController pushViewController:pageViewController animated:YES];
 }
 
