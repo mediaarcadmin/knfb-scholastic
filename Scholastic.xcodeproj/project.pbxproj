@@ -139,6 +139,10 @@
 		A3A38E63133A811400C325A3 /* devcerttemplate.dat in Resources */ = {isa = PBXBuildFile; fileRef = A3A38E5F133A811400C325A3 /* devcerttemplate.dat */; };
 		A3A38E64133A811400C325A3 /* iphonecert.dat in Resources */ = {isa = PBXBuildFile; fileRef = A3A38E60133A811400C325A3 /* iphonecert.dat */; };
 		A3D933861326D92000037111 /* libPlayReadyPK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A3D933851326D92000037111 /* libPlayReadyPK.a */; };
+		C9162338133BB74200B25414 /* libEucalyptusBase.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9162337133BB74200B25414 /* libEucalyptusBase.a */; };
+		C9162339133BB74A00B25414 /* libEucalyptusBase.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9162337133BB74200B25414 /* libEucalyptusBase.a */; };
+		C916233B133BB75B00B25414 /* libhyphenate.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C916233A133BB75B00B25414 /* libhyphenate.a */; };
+		C916233C133BB75E00B25414 /* libhyphenate.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C916233A133BB75B00B25414 /* libhyphenate.a */; };
 		C923A27A12F06FE60054426F /* MRGridView.m in Sources */ = {isa = PBXBuildFile; fileRef = C923A27312F06FE60054426F /* MRGridView.m */; };
 		C923A27B12F06FE60054426F /* MRGridViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C923A27512F06FE60054426F /* MRGridViewCell.m */; };
 		C923A27C12F06FE60054426F /* MRGridViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C923A27712F06FE60054426F /* MRGridViewController.m */; };
@@ -153,6 +157,8 @@
 		C923B14312F6AFC60054426F /* SCHMultipleBookshelvesController.m in Sources */ = {isa = PBXBuildFile; fileRef = C923B13F12F6AFC60054426F /* SCHMultipleBookshelvesController.m */; };
 		C923B15B12F6B0280054426F /* SCHMultipleBookshelvesController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C923B15A12F6B0280054426F /* SCHMultipleBookshelvesController.xib */; };
 		C923B15C12F6B0280054426F /* SCHMultipleBookshelvesController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C923B15A12F6B0280054426F /* SCHMultipleBookshelvesController.xib */; };
+		C9564112133BB6E800D7FB9D /* libEucalyptus.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9564111133BB6E800D7FB9D /* libEucalyptus.a */; };
+		C9564113133BB6F100D7FB9D /* libEucalyptus.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9564111133BB6E800D7FB9D /* libEucalyptus.a */; };
 		C95ECB45133A76C400D88768 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C95ECB44133A76C400D88768 /* Accelerate.framework */; };
 		C95ECB47133A76DE00D88768 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C95ECB46133A76DE00D88768 /* QuartzCore.framework */; };
 		C95ECB49133A770B00D88768 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C95ECB48133A770B00D88768 /* OpenGLES.framework */; };
@@ -767,6 +773,8 @@
 		A3D9341E1326DA3F00037111 /* oemprofile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = oemprofile.h; path = Shared/Libraries/DRM/oemprofile.h; sourceTree = "<group>"; };
 		A3D9341F1326DA3F00037111 /* oemrsa.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = oemrsa.h; path = Shared/Libraries/DRM/oemrsa.h; sourceTree = "<group>"; };
 		A3D934201326DA3F00037111 /* oemrsaimpl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = oemrsaimpl.h; path = Shared/Libraries/DRM/oemrsaimpl.h; sourceTree = "<group>"; };
+		C9162337133BB74200B25414 /* libEucalyptusBase.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = libEucalyptusBase.a; path = ../../../../../../../../Projects/Consulting/scholastic/libEucalyptusBase.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		C916233A133BB75B00B25414 /* libhyphenate.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = libhyphenate.a; path = ../../../../../../../../Projects/Consulting/scholastic/libhyphenate.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		C923A27212F06FE60054426F /* MRGridView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MRGridView.h; path = Shared/Libraries/MRGridView/MRGridView.h; sourceTree = "<group>"; };
 		C923A27312F06FE60054426F /* MRGridView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MRGridView.m; path = Shared/Libraries/MRGridView/MRGridView.m; sourceTree = "<group>"; };
 		C923A27412F06FE60054426F /* MRGridViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MRGridViewCell.h; path = Shared/Libraries/MRGridView/MRGridViewCell.h; sourceTree = "<group>"; };
@@ -781,6 +789,7 @@
 		C923B13F12F6AFC60054426F /* SCHMultipleBookshelvesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHMultipleBookshelvesController.m; path = iPhone/SCHMultipleBookshelvesController.m; sourceTree = "<group>"; };
 		C923B15A12F6B0280054426F /* SCHMultipleBookshelvesController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = SCHMultipleBookshelvesController.xib; path = iPhone/SCHMultipleBookshelvesController.xib; sourceTree = "<group>"; };
 		C947D55D133B9C0000FB4404 /* libEucalyptus.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libEucalyptus.xcodeproj; path = Shared/Libraries/Submodules/libEucalyptus/libEucalyptus.xcodeproj; sourceTree = "<group>"; };
+		C9564111133BB6E800D7FB9D /* libEucalyptus.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = libEucalyptus.a; path = ../../../../../../../../Projects/Consulting/scholastic/libEucalyptus.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		C95ECB44133A76C400D88768 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		C95ECB46133A76DE00D88768 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		C95ECB48133A770B00D88768 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -879,6 +888,9 @@
 				52EF553E12E9EB8500E374F7 /* Security.framework in Frameworks */,
 				529386C512DF3A9000045B44 /* SystemConfiguration.framework in Frameworks */,
 				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
+				C9564113133BB6F100D7FB9D /* libEucalyptus.a in Frameworks */,
+				C9162339133BB74A00B25414 /* libEucalyptusBase.a in Frameworks */,
+				C916233C133BB75E00B25414 /* libhyphenate.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -886,6 +898,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C9564112133BB6E800D7FB9D /* libEucalyptus.a in Frameworks */,
+				C9162338133BB74200B25414 /* libEucalyptusBase.a in Frameworks */,
+				C916233B133BB75B00B25414 /* libhyphenate.a in Frameworks */,
 				C9F1A4D6133B507100FD984C /* libPlayReadyPK.a in Frameworks */,
 				F8509F4812F063C900197EB5 /* libstdc++.6.dylib in Frameworks */,
 				F8509F4712F063C900197EB5 /* libXpsSDKipad.a in Frameworks */,
@@ -976,6 +991,9 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				C9564111133BB6E800D7FB9D /* libEucalyptus.a */,
+				C9162337133BB74200B25414 /* libEucalyptusBase.a */,
+				C916233A133BB75B00B25414 /* libhyphenate.a */,
 				528A2CF712CCEAA50053A343 /* ReleaseNotes.tmReleaseNotes */,
 				2860E386111B897F00E27156 /* iPhone */,
 				29B97317FDCFA39411CA2CEA /* iPad */,
@@ -2265,6 +2283,7 @@
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/Shared/Libraries/Submodules/libEucalyptus/build/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/include/";
 				LIBRARY_SEARCH_PATHS = "";
 				OTHER_CFLAGS = (
 					"-I/usr/include/libxml2",
@@ -2318,6 +2337,7 @@
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/Shared/Libraries/Submodules/libEucalyptus/build/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/include/";
 				LIBRARY_SEARCH_PATHS = "";
 				OTHER_CFLAGS = "-I/usr/include/libxml2";
 				OTHER_LDFLAGS = (
@@ -2342,6 +2362,7 @@
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/Shared/Libraries/Submodules/libEucalyptus/build/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/include/";
 				LIBRARY_SEARCH_PATHS = "";
 				OTHER_CFLAGS = (
 					"-I/usr/include/libxml2",

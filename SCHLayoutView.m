@@ -28,7 +28,6 @@
 
 - (void)initialiseView
 {
-#if 0
     EucPageTurningView *aPageTurningView = [[EucPageTurningView alloc] initWithFrame:self.bounds];
     aPageTurningView.delegate = self;
     aPageTurningView.bitmapDataSource = self;
@@ -55,7 +54,6 @@
     //[self registerGesturesForPageTurningView:aPageTurningView];
     [self addSubview:aPageTurningView];
     //self.pageTurningView = aPageTurningView;
-#endif
 }
 
 - (id)initWithFrame:(CGRect)frame book:(id)aBook
@@ -88,7 +86,7 @@
 
 #pragma mark -
 #pragma mark EucPageTurningViewBitmapDataSource
-#if 0
+
 - (CGRect)pageTurningView:(EucPageTurningView *)aPageTurningView contentRectForPageAtIndex:(NSUInteger)index 
 {
     return CGRectMake(0, 0, 320, 480);
@@ -107,6 +105,5 @@
 //                                                            getBacking:&backing];
 //    return [[[THPositionedCGContext alloc] initWithCGContext:CGContext backing:backing] autorelease];
 }
-#endif
 
 @end

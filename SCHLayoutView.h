@@ -7,9 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-//#import <libEucalyptus/EucPageTurningView.h>
+#import <libEucalyptus/EucPageTurningView.h>
 
-@interface SCHLayoutView : UIView {//<EucPageTurningViewDelegate, EucPageTurningViewBitmapDataSource> {
+@interface SCHLayoutView : UIView <EucPageTurningViewDelegate, EucPageTurningViewBitmapDataSource> {
     
 }
 
