@@ -40,4 +40,8 @@ static NSString * const kSCHProcessingManagerConnectionBusy = @"SCHProcessingMan
 // thumbnail requests
 - (BOOL) requestThumbImageForBookCover:(SCHAsyncBookCoverImageView *)bookCover size:(CGSize)size;
 
+// methods for processing
+- (BOOL) ISBNisProcessing: (NSString *) isbn;
+- (void) setProcessing: (BOOL) processing forISBN: (NSString *) isbn;
+
 @end

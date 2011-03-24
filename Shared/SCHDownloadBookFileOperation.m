@@ -116,6 +116,7 @@
 	}
 		
 	if (fileSize > 0) {
+        NSLog(@"Already have %llu bytes, need %llu bytes more.", fileSize, ([book.FileSize unsignedLongValue] - fileSize));
 		[request setValue:[NSString stringWithFormat:@"bytes=%llu-", fileSize] forHTTPHeaderField:@"Range"];
 	} else {
 		[[NSFileManager defaultManager] createFileAtPath:self.localPath contents:nil attributes:nil];

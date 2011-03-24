@@ -24,7 +24,6 @@
 @dynamic XPSCategory;
 @dynamic XPSTitle;
 @dynamic ContentMetadataItem;
-@dynamic ProcessingUnderlyingValue;
 @dynamic BookCoverURL;
 @dynamic BookFileURL;
 
@@ -85,12 +84,12 @@
 
 - (BOOL) isProcessing
 {
-	return [self.ProcessingUnderlyingValue boolValue];
+	return [[SCHProcessingManager sharedProcessingManager] ISBNisProcessing:self.ContentIdentifier];
 }
 
 - (void) setProcessing: (BOOL) value
 {
-	self.ProcessingUnderlyingValue = [NSNumber numberWithBool:value];
+	[[SCHProcessingManager sharedProcessingManager] setProcessing:value forISBN:self.ContentIdentifier];
 }
 
 #pragma mark -

@@ -46,7 +46,6 @@ static NSString * const kSCHAppBook = @"SCHAppBook";
 @property (nonatomic, retain) NSString * XPSCategory;
 @property (nonatomic, retain) NSString * XPSTitle;
 @property (nonatomic, retain) SCHContentMetadataItem * ContentMetadataItem;
-@property (nonatomic, retain) NSNumber * ProcessingUnderlyingValue;
 @property (nonatomic, retain) NSString * BookCoverURL;
 @property (nonatomic, retain) NSString * BookFileURL;
 

@@ -48,6 +48,8 @@
 // to the size of the requested thumbnail
 @property (readwrite, retain) NSMutableDictionary *thumbImageRequests;
 
+@property (readwrite, retain) NSMutableArray *currentlyProcessingISBNs;
+
 @property BOOL connectionIsIdle;
 
 @end
@@ -58,7 +60,7 @@
 
 @synthesize localProcessingQueue, webServiceOperationQueue, networkOperationQueue;
 @synthesize backgroundTask;
-@synthesize thumbImageRequests;
+@synthesize thumbImageRequests, currentlyProcessingISBNs;
 @synthesize connectionIsIdle;
 
 #pragma mark -
@@ -72,6 +74,7 @@
 	self.webServiceOperationQueue = nil;
 	self.networkOperationQueue = nil;
 	self.thumbImageRequests = nil;
+    self.currentlyProcessingISBNs = nil;
 	[super dealloc];
 }
 
@@ -87,6 +90,7 @@
 		[self.webServiceOperationQueue setMaxConcurrentOperationCount:10];
 		
 		self.thumbImageRequests = [[NSMutableDictionary alloc] init];
+        self.currentlyProcessingISBNs = [[NSMutableArray alloc] init];
 		
 		self.connectionIsIdle = YES;
 	}
@@ -214,6 +218,31 @@ static SCHProcessingManager *sharedManager = nil;
 	
 	return needsProcessing;
 }
+
+#pragma mark -
+#pragma mark Processing Book Tracking
+
+- (BOOL) ISBNisProcessing: (NSString *) isbn
+{
+    @synchronized(self.currentlyProcessingISBNs) {
+        return [self.currentlyProcessingISBNs containsObject:isbn];
+    }
+}
+
+- (void) setProcessing: (BOOL) processing forISBN: (NSString *) isbn {
+
+    @synchronized(self.currentlyProcessingISBNs) {
+        if (processing) {
+            if (![self.currentlyProcessingISBNs containsObject:isbn]) {
+                [self.currentlyProcessingISBNs addObject:isbn];
+            }
+            
+        } else {
+            [self.currentlyProcessingISBNs removeObject:isbn];
+        }
+    }
+}
+
 
 #pragma mark -
 #pragma mark Processing Methods
