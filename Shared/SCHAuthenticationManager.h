@@ -10,10 +10,8 @@
 
 #import "BITAPIProxyDelegate.h"
 
-
 @class SCHScholasticWebService;
 @class SCHLibreAccessWebService;
-
 
 static NSString * const kSCHAuthenticationManagerSuccess = @"AuthenticationManagerSuccess";
 static NSString * const kSCHAuthenticationManagerFailure = @"AuthenticationManagerFailure";
@@ -25,27 +23,23 @@ static NSString * const kSCHAuthenticationManagerErrorDomain = @"AuthenticationM
 static NSInteger const kSCHAuthenticationManagerGeneralError = 2000;
 static NSInteger const kSCHAuthenticationManagerLoginError = 2001;
 
-
 @interface SCHAuthenticationManager : NSObject <BITAPIProxyDelegate>  {
-
-@private
+    NSString *aToken;
+    NSDate *tokenExpires;
 	BOOL waitingOnResponse;
+    
 	SCHScholasticWebService *scholasticWebService;
 	SCHLibreAccessWebService *libreAccessWebService;
 }
 
-
-@property (nonatomic, retain) NSString *aToken;
-@property (nonatomic, retain) NSDate *tokenExpires;
-@property (nonatomic, readonly) BOOL isAuthenticated;
-
+@property (readonly) NSString *aToken;
+@property (readonly) BOOL isAuthenticated;
 
 + (SCHAuthenticationManager *)sharedAuthenticationManager;
 
 - (BOOL)authenticateWithUserName:(NSString *)userName withPassword:(NSString *)password;
 - (BOOL)authenticate;
 - (BOOL)hasUsernameAndPassword;
-- (BOOL)isAuthenticated;
 - (void)clear;
 
 @end
