@@ -1093,11 +1093,7 @@
 		5293872912DF436100045B44 /* Web Services */ = {
 			isa = PBXGroup;
 			children = (
-				A3A38E03133A803500C325A3 /* SCHDrmRegistrationSession.h */,
-				A3A38E04133A803500C325A3 /* SCHDrmRegistrationSession.m */,
-				A3A38E05133A803500C325A3 /* SCHDrmRegistrationSessionDelegate.h */,
-				A3A38E06133A803500C325A3 /* SCHDrmSession.h */,
-				A3A38E07133A803500C325A3 /* SCHDrmSession.m */,
+				52ACF463133B547700B2E28C /* DRM */,
 				5293872E12DF43D200045B44 /* SCHScholasticWebService.h */,
 				5293872F12DF43D200045B44 /* SCHScholasticWebService.m */,
 				5293872B12DF43CB00045B44 /* SCHLibreAccessWebService.h */,
@@ -1115,6 +1111,18 @@
 				52AD9B2612FC207A0099FB88 /* Sync */,
 			);
 			name = "Web Services";
+			sourceTree = "<group>";
+		};
+		52ACF463133B547700B2E28C /* DRM */ = {
+			isa = PBXGroup;
+			children = (
+				A3A38E03133A803500C325A3 /* SCHDrmRegistrationSession.h */,
+				A3A38E04133A803500C325A3 /* SCHDrmRegistrationSession.m */,
+				A3A38E05133A803500C325A3 /* SCHDrmRegistrationSessionDelegate.h */,
+				A3A38E06133A803500C325A3 /* SCHDrmSession.h */,
+				A3A38E07133A803500C325A3 /* SCHDrmSession.m */,
+			);
+			name = DRM;
 			sourceTree = "<group>";
 		};
 		52AD9B2612FC207A0099FB88 /* Sync */ = {
