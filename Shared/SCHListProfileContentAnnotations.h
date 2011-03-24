@@ -24,6 +24,7 @@ static NSString * const kSCHListProfileContentAnnotations = @"SCHListProfileCont
 
 
 @interface SCHListProfileContentAnnotations (CoreDataGeneratedAccessors)
+
 - (void)addAnnotationsListObject:(SCHAnnotationsList *)value;
 - (void)removeAnnotationsListObject:(SCHAnnotationsList *)value;
 - (void)addAnnotationsList:(NSSet *)value;

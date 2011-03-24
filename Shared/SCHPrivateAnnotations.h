@@ -28,6 +28,10 @@ static NSString * const kSCHPrivateAnnotations = @"SCHPrivateAnnotations";
 @property (nonatomic, retain) NSSet* Notes;
 @property (nonatomic, retain) SCHFavorite * Favorite;
 
+@end
+
+@interface SCHPrivateAnnotations (CoreDataGeneratedAccessors)
+
 - (void)addBookmarksObject:(SCHBookmark *)value;
 - (void)removeBookmarksObject:(SCHBookmark *)value;
 - (void)addBookmarks:(NSSet *)value;

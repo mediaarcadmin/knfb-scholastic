@@ -168,35 +168,4 @@ static NSString * const kSCHProfileItemUserContentItemContentMetadataItem = @"Us
 	}
 }
 
-#pragma -
-#pragma Core Data Generated Accessors
-
-- (void)addAppBookOrderObject:(SCHAppBookOrder *)value {    
-    NSSet *changedObjects = [[NSSet alloc] initWithObjects:&value count:1];
-    [self willChangeValueForKey:@"AppBookOrder" withSetMutation:NSKeyValueUnionSetMutation usingObjects:changedObjects];
-    [[self primitiveValueForKey:@"AppBookOrder"] addObject:value];
-    [self didChangeValueForKey:@"AppBookOrder" withSetMutation:NSKeyValueUnionSetMutation usingObjects:changedObjects];
-    [changedObjects release];
-}
-
-- (void)removeAppBookOrderObject:(SCHAppBookOrder *)value {
-    NSSet *changedObjects = [[NSSet alloc] initWithObjects:&value count:1];
-    [self willChangeValueForKey:@"AppBookOrder" withSetMutation:NSKeyValueMinusSetMutation usingObjects:changedObjects];
-    [[self primitiveValueForKey:@"AppBookOrder"] removeObject:value];
-    [self didChangeValueForKey:@"AppBookOrder" withSetMutation:NSKeyValueMinusSetMutation usingObjects:changedObjects];
-    [changedObjects release];
-}
-
-- (void)addAppBookOrder:(NSSet *)value {    
-    [self willChangeValueForKey:@"AppBookOrder" withSetMutation:NSKeyValueUnionSetMutation usingObjects:value];
-    [[self primitiveValueForKey:@"AppBookOrder"] unionSet:value];
-    [self didChangeValueForKey:@"AppBookOrder" withSetMutation:NSKeyValueUnionSetMutation usingObjects:value];
-}
-
-- (void)removeAppBookOrder:(NSSet *)value {
-    [self willChangeValueForKey:@"AppBookOrder" withSetMutation:NSKeyValueMinusSetMutation usingObjects:value];
-    [[self primitiveValueForKey:@"AppBookOrder"] minusSet:value];
-    [self didChangeValueForKey:@"AppBookOrder" withSetMutation:NSKeyValueMinusSetMutation usingObjects:value];
-}
-
 @end

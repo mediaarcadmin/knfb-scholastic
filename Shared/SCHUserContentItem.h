@@ -32,6 +32,10 @@ static NSString * const kSCHUserContentItemCONTENT_IDENTIFIER = @"CONTENT_IDENTI
 
 @property (nonatomic, readonly) NSSet *AssignedProfileList;
 
+@end
+
+@interface SCHUserContentItem (CoreDataGeneratedAccessors)
+
 - (void)addOrderListObject:(SCHOrderItem *)value;
 - (void)removeOrderListObject:(SCHOrderItem *)value;
 - (void)addOrderList:(NSSet *)value;

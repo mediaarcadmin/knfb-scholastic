@@ -40,6 +40,10 @@ static NSString * const kSCHProfileItem = @"SCHProfileItem";
 - (BOOL)hasPassword;
 - (BOOL)validatePasswordWith:(NSString *)withPassword;
 
+@end
+
+@interface SCHProfileItem (CoreDataGeneratedAccessors)
+
 - (void)addAppBookOrderObject:(SCHAppBookOrder *)value;
 - (void)removeAppBookOrderObject:(SCHAppBookOrder *)value;
 - (void)addAppBookOrder:(NSSet *)value;
