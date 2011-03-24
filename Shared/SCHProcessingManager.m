@@ -121,9 +121,7 @@ static SCHProcessingManager *sharedManager = nil;
 												 selector:@selector(enterForeground) 
 													 name:UIApplicationWillEnterForegroundNotification 
 												   object:nil];			
-		
-		//		
-	} 
+    } 
 	
 	return sharedManager;
 }
@@ -256,7 +254,16 @@ static SCHProcessingManager *sharedManager = nil;
 			
 			// *** Book has no URLs ***
 		case SCHBookProcessingStateNoURLs:
-		{
+		{/*
+#ifdef LOCALDEBUG
+      
+            // for local debug, set the book to No Cover Image
+            [[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:isbn state:SCHBookProcessingStateNoCoverImage];
+            [self redispatchISBN:isbn];
+            return;
+            break;
+#endif
+           */ 
 			// create URL processing operation
 			SCHBookURLRequestOperation *bookURLOp = [[SCHBookURLRequestOperation alloc] init];
 			bookURLOp.isbn = isbn;
@@ -278,7 +285,7 @@ static SCHProcessingManager *sharedManager = nil;
 #ifdef LOCALDEBUG
 			// create cover image download operation
 			SCHXPSCoverImageOperation *downloadImageOp = [[SCHXPSCoverImageOperation alloc] init];
-			downloadImageOp.bookInfo = bookInfo;
+			downloadImageOp.isbn = isbn;
 			
 #else
 			// create cover image download operation
