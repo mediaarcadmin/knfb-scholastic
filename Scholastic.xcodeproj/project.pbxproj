@@ -402,6 +402,20 @@
 			remoteGlobalIDString = 7D9A96D210D7E41100C2E00A;
 			remoteInfo = Paginate;
 		};
+		C9537FE4133BA16B008D8A4B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C947D55D133B9C0000FB4404 /* libEucalyptus.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = D2AAC07D0554694100DB518D;
+			remoteInfo = libEucalyptus;
+		};
+		C9537FE6133BA176008D8A4B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C947D55D133B9C0000FB4404 /* libEucalyptus.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = D2AAC07D0554694100DB518D;
+			remoteInfo = libEucalyptus;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -1713,6 +1727,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				C9537FE7133BA176008D8A4B /* PBXTargetDependency */,
 			);
 			name = Scholastic;
 			productName = Scholastic;
@@ -1730,6 +1745,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				C9537FE5133BA16B008D8A4B /* PBXTargetDependency */,
 			);
 			name = "Local Files Scholastic";
 			productName = Scholastic;
@@ -2168,6 +2184,19 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		C9537FE5133BA16B008D8A4B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = libEucalyptus;
+			targetProxy = C9537FE4133BA16B008D8A4B /* PBXContainerItemProxy */;
+		};
+		C9537FE7133BA176008D8A4B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = libEucalyptus;
+			targetProxy = C9537FE6133BA176008D8A4B /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		1D6058940D05DD3E006BFB54 /* Debug */ = {
