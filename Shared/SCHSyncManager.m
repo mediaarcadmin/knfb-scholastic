@@ -14,8 +14,8 @@
 #import "SCHAnnotationSyncComponent.h"
 #import "SCHReadingStatsSyncComponent.h"
 #import "SCHSettingsSyncComponent.h"
-#import "SCHProfileItem+Extensions.h"
-#import "SCHContentProfileItem+Extensions.h"
+#import "SCHProfileItem.h"
+#import "SCHContentProfileItem.h"
 #import "SCHUserDefaults.h"
 
 static SCHSyncManager *sharedSyncManager = nil;

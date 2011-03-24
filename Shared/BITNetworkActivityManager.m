@@ -12,54 +12,34 @@ static BITNetworkActivityManager *sharedNetworkActivityManager = nil;
 
 @interface BITNetworkActivityManager ()
 
++ (BITNetworkActivityManager *)sharedNetworkActivityManagerOnMainThread;
+- (void)showNetworkActivityIndicatorOnMainThread;
+- (void)hideNetworkActivityIndicatorOnMainThread;
+
 @property (assign, nonatomic) NSInteger count;
 
 @end
+
+/*
+ * This class is thread safe in respect to all the exposed methods being
+ * wrappers for private methods that are always executed on the MainThread.
+ */
 
 @implementation BITNetworkActivityManager
 
 @synthesize count;
 
 #pragma mark -
-#pragma mark Singleton methods
+#pragma mark Singleton Instance methods
 
 + (BITNetworkActivityManager *)sharedNetworkActivityManager
 {
     if (sharedNetworkActivityManager == nil) {
-        sharedNetworkActivityManager = [[super allocWithZone:NULL] init];		
+        // we block until the selector completes to make sure we always have the object before use
+        [BITNetworkActivityManager performSelectorOnMainThread:@selector(sharedNetworkActivityManagerOnMainThread) withObject:nil waitUntilDone:YES];
     }
 	
     return(sharedNetworkActivityManager);
-}
-
-+ (id)allocWithZone:(NSZone *)zone
-{
-    return([[self sharedNetworkActivityManager] retain]);
-}
-
-- (id)copyWithZone:(NSZone *)zone
-{
-    return(self);
-}
-
-- (id)retain
-{
-    return(self);
-}
-
-- (NSUInteger)retainCount
-{
-    return(NSUIntegerMax);  //denotes an object that cannot be released
-}
-
-- (void)release
-{
-    // do nothing
-}
-
-- (id)autorelease
-{
-    return(self);
 }
 
 #pragma mark -
@@ -76,11 +56,33 @@ static BITNetworkActivityManager *sharedNetworkActivityManager = nil;
 
 - (void)showNetworkActivityIndicator
 {
+    [self performSelectorOnMainThread:@selector(showNetworkActivityIndicatorOnMainThread) withObject:nil waitUntilDone:NO];    
+}
+
+- (void)hideNetworkActivityIndicator
+{
+    [self performSelectorOnMainThread:@selector(hideNetworkActivityIndicatorOnMainThread) withObject:nil waitUntilDone:NO];    
+}
+
+#pragma -
+#pragma Private methods
+
++ (BITNetworkActivityManager *)sharedNetworkActivityManagerOnMainThread
+{
+    if (sharedNetworkActivityManager == nil) {
+        sharedNetworkActivityManager = [[super allocWithZone:NULL] init];		
+    }
+	
+    return(sharedNetworkActivityManager);
+}
+
+- (void)showNetworkActivityIndicatorOnMainThread
+{
 	self.count++;
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = (self.count > 0);
 }
 
-- (void)hideNetworkActivityIndicator
+- (void)hideNetworkActivityIndicatorOnMainThread
 {
 	self.count--;
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = (self.count > 0);

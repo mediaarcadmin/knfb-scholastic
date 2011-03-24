@@ -15,6 +15,8 @@
 @class SCHLastPage;
 @class SCHNote;
 
+static NSString * const kSCHPrivateAnnotations = @"SCHPrivateAnnotations";
+
 @interface SCHPrivateAnnotations :  NSManagedObject  
 {
 }
@@ -28,8 +30,8 @@
 
 @end
 
-
 @interface SCHPrivateAnnotations (CoreDataGeneratedAccessors)
+
 - (void)addBookmarksObject:(SCHBookmark *)value;
 - (void)removeBookmarksObject:(SCHBookmark *)value;
 - (void)addBookmarks:(NSSet *)value;

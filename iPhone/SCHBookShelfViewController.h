@@ -13,7 +13,7 @@
 #import "MRGridViewDataSource.h"
 #import "SCHMultipleBookshelvesController.h"
 #import "BlioTimeOrderedCache.h"
-#import "SCHProfileItem+Extensions.h"
+#import "SCHProfileItem.h"
 
 @interface SCHBookShelfViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate, MRGridViewDelegate, MRGridViewDataSource> {
 

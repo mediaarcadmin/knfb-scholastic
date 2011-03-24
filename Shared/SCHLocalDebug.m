@@ -13,15 +13,15 @@
 #import "SCHAuthenticationManager.h"
 #import "SCHUserSettingsItem.h"
 #import "SCHProfileItem.h"
-#import "SCHContentMetadataItem+Extensions.h"
+#import "SCHContentMetadataItem.h"
 #import "SCHLocalDebugXPSReader.h"
 #import "NSNumber+ObjectTypes.h"
 #import "SCHBookManager.h"
-#import "SCHProfileItem+Extensions.h"
-#import "SCHUserContentItem+Extensions.h"
-#import "SCHContentProfileItem+Extensions.h"
-#import "SCHOrderItem+Extensions.h"
-#import "SCHListProfileContentAnnotations+Extensions.h"
+#import "SCHProfileItem.h"
+#import "SCHUserContentItem.h"
+#import "SCHContentProfileItem.h"
+#import "SCHOrderItem.h"
+#import "SCHListProfileContentAnnotations.h"
 #import "SCHBookshelfSyncComponent.h"
 
 @interface SCHLocalDebug ()
@@ -182,18 +182,13 @@
 	newProfileItem.LastModified = now;
 	
 	SCHContentMetadataItem *newContentMetadataItem = nil;
-	SCHAppBook *newAppBookItem = nil;
 	SCHUserContentItem *newUserContentItem = nil;
 	SCHContentProfileItem *newContentProfileItem = nil;
 	
 	for (NSString *xpsFile in XPSFiles) {
 		newContentMetadataItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHContentMetadataItem inManagedObjectContext:self.managedObjectContext];
-		newAppBookItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHAppBook inManagedObjectContext:self.managedObjectContext];
-		
-		
-//		newContentMetadataItem.AppBook = newAppBookItem;
-//		newAppBookItem.ContentMetadataItem = newContentMetadataItem;
-		
+		newContentMetadataItem.AppBook = [NSEntityDescription insertNewObjectForEntityForName:kSCHAppBook inManagedObjectContext:self.managedObjectContext];
+				
 		NSString *currentPath = [[NSBundle mainBundle] pathForResource:xpsFile ofType:@"xps"];
 		
 		SCHLocalDebugXPSReader *provider = [[SCHLocalDebugXPSReader alloc] initWithPath:currentPath];
@@ -205,7 +200,6 @@
 			newContentMetadataItem.ContentIdentifierType = [NSNumber numberWithContentIdentifierType:kSCHContentIdentifierTypesNone];			
 		}
 		newContentMetadataItem.ContentIdentifier = provider.ISBN;
-		newAppBookItem.ContentIdentifier = provider.ISBN;
 
 		newContentMetadataItem.Author = provider.author;
 		//	newContentMetadataItem.Version = [self makeNullNil:[book objectForKey:kSCHLibreAccessWebServiceVersion]];
@@ -240,9 +234,10 @@
         if (![self.managedObjectContext save:&error]) {
             NSLog(@"Error saving managed object context: %@ : %@", error, [error userInfo]); 
         }
+//		SCHBookInfo *bookInfo = [SCHBookManager bookInfoWithBookIdentifier:newUserContentItem.ContentIdentifier];
+//		[bookInfo setProcessingState:SCHBookProcessingStateNoCoverImage];
 		
-		SCHBookInfo *bookInfo = [SCHBookManager bookInfoWithBookIdentifier:newUserContentItem.ContentIdentifier];
-		[bookInfo setProcessingState:SCHBookInfoProcessingStateNoCoverImage];
+		[newUserContentItem setState:[NSNumber numberWithInt:SCHBookProcessingStateNoCoverImage]];
 								 
 	}
 

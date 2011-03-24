@@ -9,11 +9,12 @@
 #import "SCHBookShelfGridViewCell.h"
 #import "SCHThumbnailFactory.h"
 #import "SCHProcessingManager.h"
-
+#import "SCHAppBook.h"
+#import "SCHBookManager.h"
 
 @implementation SCHBookShelfGridViewCell
 
-@synthesize asyncImageView, thumbTintView, statusLabel, progressView, bookInfo;
+@synthesize asyncImageView, thumbTintView, statusLabel, progressView, isbn;
 
 - (id)initWithFrame:(CGRect)frame reuseIdentifier: (NSString*) identifier {
 
@@ -62,30 +63,37 @@
 #pragma mark Setter for SCHBookInfo
 
 
-- (void) setBookInfo: (SCHBookInfo *) newBookInfo
+- (void) setIsbn: (NSString *) newIsbn
 {
 
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"SCHBookDownloadPercentageUpdate" object:bookInfo];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"SCHBookStatusUpdate" object:bookInfo];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"SCHBookDownloadPercentageUpdate" object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"SCHBookStatusUpdate" object:nil];
 	
-	if (newBookInfo != bookInfo) {
-		SCHBookInfo *oldBookInfo = bookInfo;
-		bookInfo = [newBookInfo retain];
-		[oldBookInfo release];
+	if (newIsbn != isbn) {
+		NSString *oldIsbn = isbn;
+		isbn = [newIsbn retain];
+		[oldIsbn release];
 	}
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(updatePercentage:) 
 												 name:@"SCHBookDownloadPercentageUpdate" 
-											   object:self.bookInfo.bookIdentifier];
+											   object:nil];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(refreshCell)
-												 name:@"SCHBookStatusUpdate"
-											   object:self.bookInfo];
-	[self.asyncImageView setBookInfo:newBookInfo];
+											 selector:@selector(checkForCellUpdateFromNotification:)
+												 name:@"SCHBookStateUpdate"
+											   object:nil];
+	[self.asyncImageView setIsbn:self.isbn];
 	[self refreshCell];
 	
+}
+
+- (void) checkForCellUpdateFromNotification: (NSNotification *) notification
+{
+    if ([self.isbn compare:[[notification userInfo] objectForKey:@"isbn"]] == NSOrderedSame) {
+        [self refreshCell];
+    }
 }
 
 - (void) refreshCell
@@ -98,25 +106,27 @@
 		[self setNeedsDisplay];
 	}
 	
-	NSString *status = [self.bookInfo currentProcessingStateAsString];
+	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];
+	
+	NSString *status = [book processingStateAsString];
 	
 	// book status
-	switch ([self.bookInfo processingState]) {
-		case SCHBookInfoProcessingStateError:
-		case SCHBookInfoProcessingStateNoURLs:
-		case SCHBookInfoProcessingStateNoCoverImage:
-		case SCHBookInfoProcessingStateReadyForBookFileDownload:
+	switch ([book processingState]) {
+		case SCHBookProcessingStateError:
+		case SCHBookProcessingStateNoURLs:
+		case SCHBookProcessingStateNoCoverImage:
+		case SCHBookProcessingStateReadyForBookFileDownload:
 			self.thumbTintView.hidden = NO;
 			self.progressView.hidden = YES;
 			self.statusLabel.hidden = NO;
 			break;
-		case SCHBookInfoProcessingStateDownloadStarted:
-		case SCHBookInfoProcessingStateDownloadPaused:
+		case SCHBookProcessingStateDownloadStarted:
+		case SCHBookProcessingStateDownloadPaused:
 			self.thumbTintView.hidden = NO;
 			self.progressView.hidden = NO;
 			self.statusLabel.hidden = NO;
 			break;
-		case SCHBookInfoProcessingStateReadyToRead:
+		case SCHBookProcessingStateReadyToRead:
 		default:
 			self.thumbTintView.hidden = YES;
 			self.progressView.hidden = YES;
@@ -124,7 +134,7 @@
 			break;
 	}
 	
-	[self.progressView setProgress:[self.bookInfo currentDownloadedPercentage]];
+	[self.progressView setProgress:[book currentDownloadedPercentage]];
 	self.statusLabel.text = status;
 	
 	[self layoutSubviews];
@@ -135,8 +145,12 @@
 
 - (void) updatePercentage: (NSNotification *) notification
 {
-	float newPercentage = [(NSNumber *) [[notification userInfo] objectForKey:@"currentPercentage"] floatValue];
-	[self.progressView setProgress:newPercentage];
+    NSString *updateForISBN = [[notification userInfo] objectForKey:@"isbn"];
+    
+    if ([updateForISBN compare:self.isbn] == NSOrderedSame) {
+        float newPercentage = [(NSNumber *) [[notification userInfo] objectForKey:@"currentPercentage"] floatValue];
+        [self.progressView setProgress:newPercentage];
+    }
 }
 /*
 - (void) prepareForReuse

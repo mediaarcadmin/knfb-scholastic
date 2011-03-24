@@ -7,7 +7,7 @@
 //
 
 #import <CoreData/CoreData.h>
-#import "SCHSyncEntity+Extensions.h"
+#import "SCHSyncEntity.h"
 
 
 @interface SCHAnnotation :  SCHSyncEntity  
@@ -16,7 +16,6 @@
 
 @property (nonatomic, retain) NSNumber * ID;
 @property (nonatomic, retain) NSNumber * Version;
-@property (nonatomic, retain) NSNumber * Action;
 
 @end
 

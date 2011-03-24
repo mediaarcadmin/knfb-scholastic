@@ -11,6 +11,8 @@
 
 @class SCHLocationGraphics;
 
+static NSString * const kSCHNote = @"SCHNote";
+
 @interface SCHNote :  SCHAnnotation  
 {
 }

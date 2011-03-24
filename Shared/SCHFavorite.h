@@ -7,9 +7,11 @@
 //
 
 #import <CoreData/CoreData.h>
-#import "SCHSyncEntity+Extensions.h"
+#import "SCHSyncEntity.h"
 
 @class SCHPrivateAnnotations;
+
+static NSString * const kSCHFavorite = @"SCHFavorite";
 
 @interface SCHFavorite :  SCHSyncEntity  
 {

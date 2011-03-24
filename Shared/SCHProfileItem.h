@@ -12,8 +12,10 @@
 
 @class SCHAppBookOrder;
 
+static NSString * const kSCHProfileItem = @"SCHProfileItem";
+
 @interface SCHProfileItem : SCHSyncEntity {
-@private
+
 }
 @property (nonatomic, retain) NSNumber * StoryInteractionEnabled;
 @property (nonatomic, retain) NSNumber * ID;
@@ -30,6 +32,17 @@
 @property (nonatomic, retain) NSNumber * BookshelfStyle;
 @property (nonatomic, retain) NSString * LastName;
 @property (nonatomic, retain) NSSet* AppBookOrder;
+
+- (NSMutableArray *)allISBNs;
+- (void)saveBookOrder:(NSArray *)books;
+- (void)clearBookOrder;
+- (void)setRawPassword:(NSString *)value;
+- (BOOL)hasPassword;
+- (BOOL)validatePasswordWith:(NSString *)withPassword;
+
+@end
+
+@interface SCHProfileItem (CoreDataGeneratedAccessors)
 
 - (void)addAppBookOrderObject:(SCHAppBookOrder *)value;
 - (void)removeAppBookOrderObject:(SCHAppBookOrder *)value;

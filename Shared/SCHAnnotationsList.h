@@ -11,6 +11,8 @@
 @class SCHAnnotationsContentItem;
 @class SCHListProfileContentAnnotations;
 
+static NSString * const kSCHAnnotationsList = @"SCHAnnotationsList";
+
 @interface SCHAnnotationsList :  NSManagedObject  
 {
 }
@@ -21,12 +23,11 @@
 
 @end
 
-
 @interface SCHAnnotationsList (CoreDataGeneratedAccessors)
+
 - (void)addAnnotationContentItemObject:(SCHAnnotationsContentItem *)value;
 - (void)removeAnnotationContentItemObject:(SCHAnnotationsContentItem *)value;
 - (void)addAnnotationContentItem:(NSSet *)value;
 - (void)removeAnnotationContentItem:(NSSet *)value;
 
 @end
-

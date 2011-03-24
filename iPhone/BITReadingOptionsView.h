@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import "BITTestPageViewController.h"
-#import "SCHBookInfo.h"
 
 @interface BITReadingOptionsView : UIViewController {
 
@@ -23,7 +22,7 @@
 }
 
 @property (readwrite, retain) BITTestPageViewController *pageViewController;
-@property (readwrite, retain) SCHBookInfo *bookInfo;
+@property (readwrite, retain) NSString *isbn;
 @property (readwrite, retain) UIImage *thumbnailImage;
 
 - (IBAction) showBookView: (id) sender;

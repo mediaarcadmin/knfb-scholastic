@@ -7,10 +7,15 @@
 //
 
 #import <CoreData/CoreData.h>
-#import "SCHSyncEntity+Extensions.h"
+#import "SCHSyncEntity.h"
 
 @class SCHContentProfileItem;
 @class SCHOrderItem;
+
+static NSString * const kSCHUserContentItem = @"SCHUserContentItem";
+
+static NSString * const kSCHUserContentItemFetchWithContentIdentifier = @"fetchUserContentItemWithContentIdentifier";
+static NSString * const kSCHUserContentItemCONTENT_IDENTIFIER = @"CONTENT_IDENTIFIER";
 
 @interface SCHUserContentItem :  SCHSyncEntity  
 {
@@ -25,10 +30,12 @@
 @property (nonatomic, retain) NSSet* OrderList;
 @property (nonatomic, retain) NSSet* ProfileList;
 
+@property (nonatomic, readonly) NSSet *AssignedProfileList;
+
 @end
 
-
 @interface SCHUserContentItem (CoreDataGeneratedAccessors)
+
 - (void)addOrderListObject:(SCHOrderItem *)value;
 - (void)removeOrderListObject:(SCHOrderItem *)value;
 - (void)addOrderList:(NSSet *)value;

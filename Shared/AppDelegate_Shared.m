@@ -193,6 +193,9 @@ static NSString* const prModelCertFilename = @"iphonecert.dat";
     }
 }    
     
+- (void)mergeChangesFromContextDidSaveNotification:(NSNotification *)notification {
+	[[self managedObjectContext] mergeChangesFromContextDidSaveNotification:notification];
+}
 
 
 #pragma mark -
@@ -212,6 +215,8 @@ static NSString* const prModelCertFilename = @"iphonecert.dat";
     if (coordinator != nil) {
         managedObjectContext_ = [[NSManagedObjectContext alloc] init];
         [managedObjectContext_ setPersistentStoreCoordinator:coordinator];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mergeChangesFromContextDidSaveNotification:) name:NSManagedObjectContextDidSaveNotification object:nil];
+		
     }
     return managedObjectContext_;
 }
@@ -343,6 +348,7 @@ static NSString* const prModelCertFilename = @"iphonecert.dat";
 
 - (void)dealloc {
     
+	[[NSNotificationCenter defaultCenter] removeObserver:managedObjectContext_];
     [managedObjectContext_ release];
     [managedObjectModel_ release];
     [persistentStoreCoordinator_ release];

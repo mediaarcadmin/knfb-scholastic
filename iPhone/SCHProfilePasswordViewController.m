@@ -8,7 +8,7 @@
 
 #import "SCHProfilePasswordViewController.h"
 
-#import "SCHProfileItem+Extensions.h"
+#import "SCHProfileItem.h"
 #import "SCHSyncManager.h"
 #import "USAdditions.h"
 

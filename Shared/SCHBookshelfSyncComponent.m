@@ -11,9 +11,9 @@
 #import "NSManagedObjectContext+Extensions.h"
 
 #import "SCHLibreAccessWebService.h"
-#import "SCHContentMetadataItem+Extensions.h"
-#import "SCHUserContentItem+Extensions.h"
-#import "SCHAppBook+Extensions.h"
+#import "SCHContentMetadataItem.h"
+#import "SCHUserContentItem.h"
+#import "SCHAppBook.h"
 
 @interface SCHBookshelfSyncComponent ()
 
@@ -250,8 +250,7 @@
 	newContentMetadataItem.Title = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceTitle]];
 	newContentMetadataItem.Description = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceDescription]];
     
-    SCHAppBook *newAppBook = [NSEntityDescription insertNewObjectForEntityForName:kSCHAppBook inManagedObjectContext:self.managedObjectContext];    
-	newAppBook.ContentIdentifier = newContentMetadataItem.ContentIdentifier;
+    newContentMetadataItem.AppBook = [NSEntityDescription insertNewObjectForEntityForName:kSCHAppBook inManagedObjectContext:self.managedObjectContext];
 }
 
 - (void)syncContentMetadataItem:(NSDictionary *)webContentMetadataItem withContentMetadataItem:(SCHContentMetadataItem *)localContentMetadataItem

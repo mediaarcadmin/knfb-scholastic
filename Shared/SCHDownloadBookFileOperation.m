@@ -8,6 +8,8 @@
 
 #import "SCHDownloadBookFileOperation.h"
 #import "SCHProcessingManager.h"
+#import "SCHAppBook.h"
+#import "SCHBookManager.h"
 
 @interface SCHDownloadBookFileOperation ()
 
@@ -23,28 +25,28 @@
 @implementation SCHDownloadBookFileOperation
 
 
-@synthesize bookInfo, resume, localPath, executing, finished, fileType;
+@synthesize isbn, resume, localPath, executing, finished, fileType;
 
 - (void)dealloc {
-	self.bookInfo = nil;
+	self.isbn = nil;
 	self.localPath = nil;
 	
 	[super dealloc];
 }
 
-- (void) setBookInfo:(SCHBookInfo *) newBookInfo
+- (void) setIsbn: (NSString *) newIsbn
 {
 	
 	if ([self isExecuting] || [self isFinished]) {
 		return;
 	}
 	
-	SCHBookInfo *oldInfo = bookInfo;
-	bookInfo = [newBookInfo retain];
-	[oldInfo release];
+	NSString *oldIsbn = isbn;
+	isbn = [newIsbn retain];
+	[oldIsbn release];
 	
-	[self.bookInfo setProcessing:YES];
-
+	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];
+	[book setProcessing:YES];
 }
 
 - (void) start
@@ -57,8 +59,8 @@
 	}
 	
 	NSLog(@"Starting %@ download.", type);
-	if (!(self.bookInfo)) {
-		NSLog(@"No book info.");
+	if (!(self.isbn)) {
+		NSLog(@"No ISBN.");
 	} else if ([self isCancelled]) {
 		NSLog(@"Cancelled.");
 	} else {
@@ -69,21 +71,22 @@
 - (void) beginConnection
 {
 	NSError *error = nil;
+	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];
 	
 	// check first to see if the file has been created
 	NSMutableURLRequest *request = nil;
 
 	if (self.fileType == kSCHDownloadFileTypeXPSBook) {
 	
-		self.localPath = [self.bookInfo xpsPath];
-		request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[bookInfo stringForMetadataKey:kSCHBookInfoContentURL]]];
+		self.localPath = [book xpsPath];
+		request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[book BookFileURL]]];
 		
 	} else if (self.fileType == kSCHDownloadFileTypeCoverImage) {
 		
-		NSString *cacheDir  = [SCHBookInfo cacheDirectory];
-		self.localPath = [cacheDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png", bookInfo.bookIdentifier]];
+		NSString *cacheDir  = [SCHAppBook cacheDirectory];
+		self.localPath = [cacheDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png", book.ContentIdentifier]];
 		
-		request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[bookInfo stringForMetadataKey:kSCHBookInfoCoverURL]]];
+		request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:book.BookCoverURL]];
 
 	} else {
 		[NSException raise:@"SCHDownloadFileOperationUnknownFileType" format:@"Unknown file type for SCHDownloadFileOperation."];
@@ -113,6 +116,7 @@
 	}
 		
 	if (fileSize > 0) {
+        NSLog(@"Already have %llu bytes, need %llu bytes more.", fileSize, ([book.FileSize unsignedLongValue] - fileSize));
 		[request setValue:[NSString stringWithFormat:@"bytes=%llu-", fileSize] forHTTPHeaderField:@"Range"];
 	} else {
 		[[NSFileManager defaultManager] createFileAtPath:self.localPath contents:nil attributes:nil];
@@ -129,7 +133,7 @@
 		} while (!self.finished);
 	}
 	
-	[self.bookInfo setProcessing:NO];
+	[book setProcessing:NO];
 	return;
 	
 }
@@ -140,7 +144,7 @@
 - (void) percentageUpdate: (NSDictionary *) userInfo
 {
 	if (self.fileType == kSCHDownloadFileTypeXPSBook) {
-		[[NSNotificationCenter defaultCenter] postNotificationName:@"SCHBookDownloadPercentageUpdate" object:self.bookInfo.bookIdentifier userInfo:userInfo];
+		[[NSNotificationCenter defaultCenter] postNotificationName:@"SCHBookDownloadPercentageUpdate" object:nil userInfo:userInfo];
 	}
 }
 
@@ -156,7 +160,9 @@
 		[handle closeFile];
 	}
 	
-	if ([self isCancelled] || self.bookInfo.processingState == SCHBookInfoProcessingStateDownloadPaused) {
+	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];
+	
+	if ([self isCancelled] || [book processingState] == SCHBookProcessingStateDownloadPaused) {
 		[connection cancel];
 		self.executing = NO;
 		self.finished = YES;
@@ -172,10 +178,11 @@
 	}
 	
 	
-	float percentage = (float) ((float) fileSize/[[bookInfo objectForMetadataKey:kSCHBookInfoFileSize] floatValue]);
+	float percentage = (float) ((float) fileSize/[[book FileSize] floatValue]);
 	
 	NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
 							  [NSNumber numberWithFloat:percentage], @"currentPercentage",
+							  self.isbn, @"isbn",
 							  nil];
 	
 	//NSLog(@"percentage for %@: %2.2f%%", self.bookInfo.contentMetadata.Title, percentage * 100);
@@ -191,12 +198,14 @@
 	
 	switch (self.fileType) {
 		case kSCHDownloadFileTypeXPSBook:
-			[self.bookInfo setProcessingState:SCHBookInfoProcessingStateReadyForRightsParsing];
+//			[self.bookInfo setProcessingState:SCHBookProcessingStateReadyForRightsParsing];
+			
+			[[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateReadyForRightsParsing];
 			break;
 		case kSCHDownloadFileTypeCoverImage:
 			NSLog(@"Setting state to done.");
-			[self.bookInfo setProcessingState:SCHBookInfoProcessingStateReadyForBookFileDownload];
-			NSLog(@"Book Info state: %@", [self.bookInfo currentProcessingStateAsString]);
+//			[self.bookInfo setProcessingState:SCHBookProcessingStateReadyForBookFileDownload];
+			[[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateReadyForBookFileDownload];
 			break;
 		default:
 			break;
@@ -212,7 +221,8 @@
 {
 	NSLog(@"Error downloading file %@!", [self.localPath lastPathComponent]);
 
-	[self.bookInfo setProcessingState:SCHBookInfoProcessingStateError];
+//	[self.bookInfo setProcessingState:SCHBookProcessingStateError];
+	[[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateReadyForBookFileDownload];
 
 	self.executing = NO;
 	self.finished = YES;

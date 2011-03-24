@@ -7,8 +7,8 @@
 //
 
 #import "SCHDictionaryFileDownloadOperation.h"
-#import "SCHBookInfo.h"
 #import "SCHDictionaryManager.h"
+#import "SCHAppBook.h"
 
 #pragma mark Class Extension
 
@@ -56,7 +56,7 @@
 		
 		// FIXME: put the cache directory method somewhere better
 		
-		self.localPath = [[SCHBookInfo cacheDirectory] 
+		self.localPath = [[SCHAppBook cacheDirectory] 
 						  stringByAppendingFormat:@"/dictionary-%@.zip", 
 						  [[SCHDictionaryManager sharedDictionaryManager] dictionaryVersion]];
 		

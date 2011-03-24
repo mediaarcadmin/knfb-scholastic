@@ -9,10 +9,12 @@
 #import "SCHThumbnailOperation.h"
 #import "SCHThumbnailFactory.h"
 #import "SCHProcessingManager.h"
+#import "SCHAppBook.h"
+#import "SCHBookManager.h"
 
 @implementation SCHThumbnailOperation
 
-@synthesize bookInfo, aspect, size, flip;
+@synthesize isbn, aspect, size, flip;
 
 - (void)dealloc {
 	
@@ -20,7 +22,7 @@
 }
 
 - (void)imageReady:(NSDictionary *)userInfo {
-	[[NSNotificationCenter defaultCenter] postNotificationName:@"SCHNewImageAvailable" object:bookInfo userInfo:userInfo];
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"SCHNewImageAvailable" object:nil userInfo:userInfo];
 }
 
 - (void)main {
@@ -29,19 +31,18 @@
 		return;
 	}
 	
-	if (!self.bookInfo) {
+	if (!self.isbn) {
 		return;
 	}
 	
 	// for testing: insert a random processing delay
 	//	int randomValue = (arc4random() % 5) + 3;
 	//	[NSThread sleepForTimeInterval:randomValue];
-//	NSString *cacheDir  = [SCHProcessingManager cacheDirectory];
-//	NSString *fullImagePath = [cacheDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png", bookInfo.bookIdentifier]];
-//	NSString *thumbPath = [cacheDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@_%d_%d", [fullImagePath lastPathComponent], (int)size.width, (int)size.height]];
 
-	NSString *fullImagePath = [bookInfo coverImagePath];
-	NSString *thumbPath = [bookInfo thumbPathForSize:size];
+	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];
+	
+	NSString *fullImagePath = [book coverImagePath];
+	NSString *thumbPath = [book thumbPathForSize:size];
 	
 	UIImage *thumbImage = nil;
 	
@@ -61,6 +62,7 @@
 	
 	if (thumbImage) {
 		NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
+                                  self.isbn, @"isbn",
 								  [NSValue valueWithCGSize:size], @"thumbSize", 
 								  thumbImage, @"image", 
 								  nil];

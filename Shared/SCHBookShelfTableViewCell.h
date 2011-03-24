@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "SCHBookInfo.h"
 #import "SCHAsyncBookCoverImageView.h"
 
 @interface SCHBookShelfTableViewCell : UITableViewCell {
@@ -23,7 +22,7 @@
 @property (nonatomic, retain) UILabel *subtitleLabel;
 @property (nonatomic, retain) UILabel *statusLabel;
 @property (nonatomic, retain) UIProgressView *progressView;
-@property (nonatomic, retain) SCHBookInfo *bookInfo;
+@property (nonatomic, retain) NSString *isbn;
 
 
 - (void) refreshCell;

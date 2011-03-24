@@ -11,9 +11,15 @@
 
 @class SCHProfileItem;
 
+static NSString * const kSCHAppBookOrder = @"SCHAppBookOrder";
+
+static NSString * const kSCHAppBookOrderOrder = @"Order";
+static NSString * const kSCHAppBookOrderISBN = @"ISBN";
+
 @interface SCHAppBookOrder : NSManagedObject {
-@private
+
 }
+
 @property (nonatomic, retain) NSNumber * Order;
 @property (nonatomic, retain) NSString * ISBN;
 @property (nonatomic, retain) SCHProfileItem * ProfileItem;

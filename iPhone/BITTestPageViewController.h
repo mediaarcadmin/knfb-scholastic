@@ -9,7 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "BITXPSProvider.h"
 #import "BITScrubberView.h"
-#import "SCHBookInfo.h"
 
 #define TESTPAGEVIEW_PAGETAPWIDTH 75
 
@@ -35,7 +34,7 @@
 	NSTimer *initialFadeTimer;
 }
 
-@property (nonatomic, retain) SCHBookInfo *bookInfo;
+@property (nonatomic, retain) NSString *isbn;
 
 - (IBAction) previousPage: (id) sender;
 - (IBAction) nextPage: (id) sender;	

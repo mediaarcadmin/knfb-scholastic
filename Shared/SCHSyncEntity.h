@@ -16,6 +16,11 @@
 @property (nonatomic, retain) NSDate * LastModified;
 @property (nonatomic, retain) NSNumber * State;
 
+@property (nonatomic, readonly) NSNumber *Action;
+
+- (void)syncDelete;
+- (void)syncReset;
+
 @end
 
 

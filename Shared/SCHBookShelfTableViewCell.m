@@ -9,6 +9,8 @@
 #import "SCHBookShelfTableViewCell.h"
 #import "SCHThumbnailFactory.h"
 #import "SCHProcessingManager.h"
+#import "SCHAppBook.h"
+#import "SCHBookManager.h"
 
 #define IMAGE_FRAME_WIDTH   72.0
 #define IMAGE_FRAME_HEIGHT  96.0
@@ -29,11 +31,11 @@
 
 @implementation SCHBookShelfTableViewCell
 
-@synthesize titleLabel, subtitleLabel, statusLabel, thumbImageView, thumbTintView, bookInfo, thumbContainerView, progressView;
+@synthesize titleLabel, subtitleLabel, statusLabel, thumbImageView, thumbTintView, isbn, thumbContainerView, progressView;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
 	
-	if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
+	if ((self = [super initWithStyle:style reuseIdentifier:reuseIdentifier])) {
 		
 		self.frame = CGRectMake(0, 0, self.frame.size.width - IMAGE_FRAME_WIDTH, IMAGE_FRAME_HEIGHT);
 		[self layoutSubviews];
@@ -114,33 +116,40 @@
 }
 
 #pragma mark -
-#pragma mark Setter for SCHBookInfo
+#pragma mark Setter for ISBN
 
-- (void) setBookInfo:(SCHBookInfo *) newBookInfo
+- (void) setIsbn:(NSString *) newIsbn
 {
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"SCHBookDownloadPercentageUpdate" object:bookInfo];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"SCHBookStatusUpdate" object:bookInfo];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"SCHBookDownloadPercentageUpdate" object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"SCHBookStatusUpdate" object:nil];
 
-	if (newBookInfo != bookInfo) {
-		SCHBookInfo *oldBookInfo = bookInfo;
-		bookInfo = [newBookInfo retain];
-		[oldBookInfo release];
+	if (newIsbn != isbn && [newIsbn compare:isbn] != NSOrderedSame) {
+		NSString *oldIsbn = isbn;
+		isbn = [newIsbn retain];
+		[oldIsbn release];
 	}
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(updatePercentage:) 
 												 name:@"SCHBookDownloadPercentageUpdate" 
-											   object:self.bookInfo.bookIdentifier];
+											   object:nil];
 
 	[[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(refreshCell)
-												 name:@"SCHBookStatusUpdate"
-											   object:self.bookInfo];
+											 selector:@selector(checkForCellUpdateFromNotification:)
+												 name:@"SCHBookStateUpdate"
+											   object:nil];
 	
-	[self.thumbImageView setBookInfo:newBookInfo];
+	[self.thumbImageView setIsbn:self.isbn];
 	
 	[self refreshCell];
 	
+}
+
+- (void) checkForCellUpdateFromNotification: (NSNotification *) notification
+{
+    if ([self.isbn compare:[[notification userInfo] objectForKey:@"isbn"]] == NSOrderedSame) {
+        [self refreshCell];
+    }
 }
 
 
@@ -154,30 +163,32 @@
 		[self setNeedsDisplay];
 	}
 	
-	NSString *status = [self.bookInfo currentProcessingStateAsString];
+	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];
+	
+	NSString *status = [book processingStateAsString];
 	
 	// book status
-	switch ([self.bookInfo processingState]) {
-		case SCHBookInfoProcessingStateError:
-		case SCHBookInfoProcessingStateNoURLs:
-		case SCHBookInfoProcessingStateNoCoverImage:
-		case SCHBookInfoProcessingStateReadyForBookFileDownload:
+	switch ([book processingState]) {
+		case SCHBookProcessingStateError:
+		case SCHBookProcessingStateNoURLs:
+		case SCHBookProcessingStateNoCoverImage:
+		case SCHBookProcessingStateReadyForBookFileDownload:
 			self.thumbTintView.hidden = NO;
 			self.progressView.hidden = YES;
 			break;
-		case SCHBookInfoProcessingStateDownloadStarted:
-		case SCHBookInfoProcessingStateDownloadPaused:
+		case SCHBookProcessingStateDownloadStarted:
+		case SCHBookProcessingStateDownloadPaused:
 			self.thumbTintView.hidden = NO;
 			self.progressView.hidden = NO;
 			break;
-		case SCHBookInfoProcessingStateReadyToRead:
+		case SCHBookProcessingStateReadyToRead:
 		default:
 			self.thumbTintView.hidden = YES;
 			self.progressView.hidden = YES;
 			break;
 	}
 	
-	if ([self.bookInfo canOpenBook]) {
+	if ([book canOpenBook]) {
 		self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	} else {
 		self.accessoryType = UITableViewCellAccessoryNone;
@@ -185,10 +196,10 @@
 	
 	self.editingAccessoryType = UITableViewCellAccessoryNone;
 	
-	[self.progressView setProgress:[self.bookInfo currentDownloadedPercentage]];
+	[self.progressView setProgress:[book currentDownloadedPercentage]];
 	
-	self.titleLabel.text = [self.bookInfo stringForMetadataKey:kSCHBookInfoTitle];
-	self.subtitleLabel.text = [self.bookInfo stringForMetadataKey:kSCHBookInfoAuthor];
+	self.titleLabel.text = book.Title;
+	self.subtitleLabel.text = book.Author;
 	self.statusLabel.text = status;
 	
 	[self layoutSubviews];
@@ -200,8 +211,12 @@
 
 - (void) updatePercentage: (NSNotification *) notification
 {
-	float newPercentage = [(NSNumber *) [[notification userInfo] objectForKey:@"currentPercentage"] floatValue];
-	[self.progressView setProgress:newPercentage];
+    NSString *updateForISBN = [[notification userInfo] objectForKey:@"isbn"];
+
+    if ([updateForISBN compare:self.isbn] == NSOrderedSame) {
+        float newPercentage = [(NSNumber *) [[notification userInfo] objectForKey:@"currentPercentage"] floatValue];
+        [self.progressView setProgress:newPercentage];
+    }
 }
 
 - (void)dealloc {

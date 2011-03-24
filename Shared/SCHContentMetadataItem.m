@@ -9,15 +9,19 @@
 #import "SCHContentMetadataItem.h"
 #import "SCHAppBook.h"
 #import "SCHeReaderCategories.h"
+#import "SCHAnnotationsContentItem.h"
 
+static NSString * const kSCHContentMetadataItemAnnotationsContentItem = @"AnnotationsContentItem";
+static NSString * const kSCHContentMetadataItemAnnotationsListProfileID = @"AnnotationsList.ProfileID";
 
 @implementation SCHContentMetadataItem
+
 @dynamic Author;
 @dynamic Description;
 @dynamic Version;
-@dynamic Enhanced;
 @dynamic ContentURL;
 @dynamic CoverURL;
+@dynamic Enhanced;
 @dynamic Title;
 @dynamic FileSize;
 @dynamic PageNumber;
@@ -25,6 +29,21 @@
 @dynamic AppBook;
 @dynamic eReaderCategories;
 
+- (NSArray *)annotationsContentForProfile:(NSNumber *)profileID
+{
+	NSMutableArray *annotations = [NSMutableArray array];
+	
+	for (SCHAnnotationsContentItem *annotationsContentItem in [self valueForKey:kSCHContentMetadataItemAnnotationsContentItem]) {
+		if ([profileID isEqualToNumber:[annotationsContentItem valueForKeyPath:kSCHContentMetadataItemAnnotationsListProfileID]] == YES) {
+			[annotations addObject:annotationsContentItem];
+		}
+	}
+	
+	return(annotations);	
+}
+
+#pragma -
+#pragma Core Data Generated Accessors
 
 - (void)addEReaderCategoriesObject:(SCHeReaderCategories *)value {    
     NSSet *changedObjects = [[NSSet alloc] initWithObjects:&value count:1];
@@ -53,6 +72,5 @@
     [[self primitiveValueForKey:@"eReaderCategories"] minusSet:value];
     [self didChangeValueForKey:@"eReaderCategories" withSetMutation:NSKeyValueMinusSetMutation usingObjects:value];
 }
-
 
 @end

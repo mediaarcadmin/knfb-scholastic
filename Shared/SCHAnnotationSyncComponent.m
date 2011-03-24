@@ -11,18 +11,18 @@
 #import "NSManagedObjectContext+Extensions.h"
 
 #import "SCHLibreAccessWebService.h"
-#import "SCHListProfileContentAnnotations+Extensions.h"
-#import "SCHItemsCount+Extensions.h"
-#import "SCHAnnotationsList+Extensions.h"
-#import "SCHAnnotationsContentItem+Extensions.h"
-#import "SCHPrivateAnnotations+Extensions.h"
-#import "SCHLocationGraphics+Extensions.h"
-#import "SCHHighlight+Extensions.h"
-#import "SCHNote+Extensions.h"
-#import "SCHCoords+Extensions.h"
-#import "SCHBookmark+Extensions.h"
-#import "SCHLastPage+Extensions.h"
-#import "SCHFavorite+Extensions.h"
+#import "SCHListProfileContentAnnotations.h"
+#import "SCHItemsCount.h"
+#import "SCHAnnotationsList.h"
+#import "SCHAnnotationsContentItem.h"
+#import "SCHPrivateAnnotations.h"
+#import "SCHLocationGraphics.h"
+#import "SCHHighlight.h"
+#import "SCHNote.h"
+#import "SCHCoords.h"
+#import "SCHBookmark.h"
+#import "SCHLastPage.h"
+#import "SCHFavorite.h"
 
 @interface SCHAnnotationSyncComponent ()
 
@@ -198,7 +198,6 @@
 		
 		ret.ID = [self makeNullNil:[highlight objectForKey:kSCHLibreAccessWebServiceID]];
 		ret.Version = [self makeNullNil:[highlight objectForKey:kSCHLibreAccessWebServiceVersion]];
-		ret.Action = [self makeNullNil:[highlight objectForKey:kSCHLibreAccessWebServiceAction]];
 		
 		ret.Color = [self makeNullNil:[highlight objectForKey:kSCHLibreAccessWebServiceColor]];
 		ret.EndPage = [self makeNullNil:[highlight objectForKey:kSCHLibreAccessWebServiceEndPage]];
@@ -219,7 +218,6 @@
 		
 		ret.ID = [self makeNullNil:[note objectForKey:kSCHLibreAccessWebServiceID]];
 		ret.Version = [self makeNullNil:[note objectForKey:kSCHLibreAccessWebServiceVersion]];
-		ret.Action = [self makeNullNil:[note objectForKey:kSCHLibreAccessWebServiceAction]];
 		
 		ret.Color = [self makeNullNil:[note objectForKey:kSCHLibreAccessWebServiceColor]];
 		ret.Value = [self makeNullNil:[note objectForKey:kSCHLibreAccessWebServiceValue]];
@@ -269,7 +267,6 @@
 		
 		ret.ID = [self makeNullNil:[bookmark objectForKey:kSCHLibreAccessWebServiceID]];
 		ret.Version = [self makeNullNil:[bookmark objectForKey:kSCHLibreAccessWebServiceVersion]];
-		ret.Action = [self makeNullNil:[bookmark objectForKey:kSCHLibreAccessWebServiceAction]];
 		
 		ret.Disabled = [self makeNullNil:[bookmark objectForKey:kSCHLibreAccessWebServiceDisabled]];
 		ret.Text = [self makeNullNil:[bookmark objectForKey:kSCHLibreAccessWebServiceText]];

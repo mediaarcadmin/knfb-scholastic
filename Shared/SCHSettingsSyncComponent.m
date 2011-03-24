@@ -11,7 +11,7 @@
 #import "NSManagedObjectContext+Extensions.h"
 
 #import "SCHLibreAccessWebService.h"
-#import "SCHUserSettingsItem+Extensions.h"
+#import "SCHUserSettingsItem.h"
 
 @interface SCHSettingsSyncComponent ()
 

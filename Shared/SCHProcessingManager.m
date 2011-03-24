@@ -9,7 +9,6 @@
 #import <pthread.h>
 #import "SCHBookshelfSyncComponent.h"
 #import "SCHProcessingManager.h"
-#import "SCHBookInfo.h"
 #import "SCHBookURLRequestOperation.h"
 #import "SCHDownloadBookFileOperation.h"
 #import "SCHXPSCoverImageOperation.h"
@@ -18,17 +17,18 @@
 #import "SCHBookManager.h"
 #import "SCHAsyncBookCoverImageView.h"
 #import "SCHThumbnailFactory.h"
+#import "SCHAppBook.h"
 
 #pragma mark Class Extension
 
 @interface SCHProcessingManager()
 
 - (void) checkStateForAllBooks;
-- (BOOL) bookNeedsProcessing: (SCHBookInfo *) bookInfo;
+- (BOOL) ISBNNeedsProcessing: (NSString *) isbn;
 
-- (void) processBook: (SCHBookInfo *) bookInfo;
-- (void) redispatchBook: (SCHBookInfo *) bookInfo;
-- (void) checkAndDispatchThumbsForBook: (SCHBookInfo *) bookInfo;
+- (void) processISBN: (NSString *) isbn;
+- (void) redispatchISBN: (NSString *) isbn;
+- (void) checkAndDispatchThumbsForISBN: (NSString *) isbn;
 
 // background processing - called by the app delegate when the app
 // is put into or opened from the background
@@ -48,6 +48,8 @@
 // to the size of the requested thumbnail
 @property (readwrite, retain) NSMutableDictionary *thumbImageRequests;
 
+@property (readwrite, retain) NSMutableArray *currentlyProcessingISBNs;
+
 @property BOOL connectionIsIdle;
 
 @end
@@ -58,7 +60,7 @@
 
 @synthesize localProcessingQueue, webServiceOperationQueue, networkOperationQueue;
 @synthesize backgroundTask;
-@synthesize thumbImageRequests;
+@synthesize thumbImageRequests, currentlyProcessingISBNs;
 @synthesize connectionIsIdle;
 
 #pragma mark -
@@ -72,6 +74,7 @@
 	self.webServiceOperationQueue = nil;
 	self.networkOperationQueue = nil;
 	self.thumbImageRequests = nil;
+    self.currentlyProcessingISBNs = nil;
 	[super dealloc];
 }
 
@@ -87,6 +90,7 @@
 		[self.webServiceOperationQueue setMaxConcurrentOperationCount:10];
 		
 		self.thumbImageRequests = [[NSMutableDictionary alloc] init];
+        self.currentlyProcessingISBNs = [[NSMutableArray alloc] init];
 		
 		self.connectionIsIdle = YES;
 	}
@@ -181,29 +185,33 @@ static SCHProcessingManager *sharedManager = nil;
 
 - (void) checkStateForAllBooks
 {
-	NSArray *allBooks = [[SCHBookManager sharedBookManager] allBooks];
+	NSArray *allBooks = [[SCHBookManager sharedBookManager] allBooksAsISBNs];
 	
 	// FIXME: add prioritisation
 
 	// get all the books independent of profile
-	for (SCHBookInfo *bookInfo in allBooks) {
+	for (NSString *isbn in allBooks) {
+		SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:isbn];
+
 		// if the book is currently processing, it will already be taken care of 
 		// when it finishes processing, so no need to add it for consideration
-		if (![bookInfo isProcessing] && [self bookNeedsProcessing:bookInfo]) {
+		if (![book isProcessing] && [self ISBNNeedsProcessing:isbn]) {
 			
-			[self processBook:bookInfo];
+			[self processISBN:isbn];
 		}
 	}	
 }
 
-- (BOOL) bookNeedsProcessing: (SCHBookInfo *) bookInfo
+- (BOOL) ISBNNeedsProcessing: (NSString *) isbn
 {
+	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:isbn];
+
 	BOOL needsProcessing = YES;
 	BOOL spaceSaverMode = [[NSUserDefaults standardUserDefaults] boolForKey:@"kSCHSpaceSaverMode"];
 
-	if (bookInfo.processingState == SCHBookInfoProcessingStateReadyToRead) {
+	if (book.processingState == SCHBookProcessingStateReadyToRead) {
 		needsProcessing = NO;
-	} else if (bookInfo.processingState == SCHBookInfoProcessingStateReadyForBookFileDownload
+	} else if (book.processingState == SCHBookProcessingStateReadyForBookFileDownload
 			   && spaceSaverMode == YES) {
 		needsProcessing = NO;
 	}
@@ -212,23 +220,50 @@ static SCHProcessingManager *sharedManager = nil;
 }
 
 #pragma mark -
+#pragma mark Processing Book Tracking
+
+- (BOOL) ISBNisProcessing: (NSString *) isbn
+{
+    @synchronized(self.currentlyProcessingISBNs) {
+        return [self.currentlyProcessingISBNs containsObject:isbn];
+    }
+}
+
+- (void) setProcessing: (BOOL) processing forISBN: (NSString *) isbn {
+
+    @synchronized(self.currentlyProcessingISBNs) {
+        if (processing) {
+            if (![self.currentlyProcessingISBNs containsObject:isbn]) {
+                [self.currentlyProcessingISBNs addObject:isbn];
+            }
+            
+        } else {
+            [self.currentlyProcessingISBNs removeObject:isbn];
+        }
+    }
+}
+
+
+#pragma mark -
 #pragma mark Processing Methods
 
-- (void) processBook: (SCHBookInfo *) bookInfo
+- (void) processISBN: (NSString *) isbn
 {
-	NSLog(@"Processing state of %@ is %@", bookInfo.bookIdentifier, [bookInfo currentProcessingStateAsString]);
-	switch (bookInfo.processingState) {
+	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:isbn];
+	
+	NSLog(@"Processing state of %@ is %@", book.ContentIdentifier, [book processingStateAsString]);
+	switch (book.processingState) {
 			
 			// *** Book has no URLs ***
-		case SCHBookInfoProcessingStateNoURLs:
+		case SCHBookProcessingStateNoURLs:
 		{
 			// create URL processing operation
 			SCHBookURLRequestOperation *bookURLOp = [[SCHBookURLRequestOperation alloc] init];
-			bookURLOp.bookInfo = bookInfo;
+			bookURLOp.isbn = isbn;
 
 			// the book will be redispatched on completion
 			[bookURLOp setCompletionBlock:^{
-				[self redispatchBook:bookInfo];
+				[self redispatchISBN:isbn];
 			}];
 
 			// add the operation to the web service queue
@@ -238,7 +273,7 @@ static SCHProcessingManager *sharedManager = nil;
 			break;
 		}	
 			// *** Book has no full sized cover image ***
-		case SCHBookInfoProcessingStateNoCoverImage:
+		case SCHBookProcessingStateNoCoverImage:
 		{	
 #ifdef LOCALDEBUG
 			// create cover image download operation
@@ -249,12 +284,12 @@ static SCHProcessingManager *sharedManager = nil;
 			// create cover image download operation
 			SCHDownloadBookFileOperation *downloadImageOp = [[SCHDownloadBookFileOperation alloc] init];
 			downloadImageOp.fileType = kSCHDownloadFileTypeCoverImage;
-			downloadImageOp.bookInfo = bookInfo;
+			downloadImageOp.isbn = isbn;
 			downloadImageOp.resume = NO;
 #endif		
 			// the book will be redispatched on completion
 			[downloadImageOp setCompletionBlock:^{
-				[self redispatchBook:bookInfo];
+				[self redispatchISBN:isbn];
 			}];
 			
 			// add the operation to the network download queue
@@ -264,17 +299,17 @@ static SCHProcessingManager *sharedManager = nil;
 			break;
 		}	
 			// *** Book file needs downloading ***
-		case SCHBookInfoProcessingStateDownloadStarted:
+		case SCHBookProcessingStateDownloadStarted:
 		{
 			// create book file download operation
 			SCHDownloadBookFileOperation *bookDownloadOp = [[SCHDownloadBookFileOperation alloc] init];
 			bookDownloadOp.fileType = kSCHDownloadFileTypeXPSBook;
-			bookDownloadOp.bookInfo = bookInfo;
+			bookDownloadOp.isbn = isbn;
 			bookDownloadOp.resume = YES;
 			
 			// the book will be redispatched on completion
 			[bookDownloadOp setCompletionBlock:^{
-				[self redispatchBook:bookInfo];
+				[self redispatchISBN:isbn];
 			}];
 			
 			// add the operation to the network download queue
@@ -284,15 +319,15 @@ static SCHProcessingManager *sharedManager = nil;
 			break;
 		}	
 			// *** Book file needs rights parsed ***
-		case SCHBookInfoProcessingStateReadyForRightsParsing:
+		case SCHBookProcessingStateReadyForRightsParsing:
 		{
 			// create book file download operation
 			SCHRightsParsingOperation *rightsOp = [[SCHRightsParsingOperation alloc] init];
-			rightsOp.bookInfo = bookInfo;
+			rightsOp.isbn = isbn;
 			
 			// the book will be redispatched on completion
 			[rightsOp setCompletionBlock:^{
-				[self redispatchBook:bookInfo];
+				[self redispatchISBN:isbn];
 			}];
 			
 			// add the operation to the network download queue
@@ -301,53 +336,56 @@ static SCHProcessingManager *sharedManager = nil;
 			return;
 			break;
 		}	
-        case SCHBookInfoProcessingStateReadyForBookFileDownload:
+        case SCHBookProcessingStateReadyForBookFileDownload:
 		{
         // FIXME: Gordon - if you process books then switch off space saver and restart teh app this state is received
-            NSLog(@"SCHBookInfoProcessingStateReadyForBookFileDownload state");
+            NSLog(@"SCHBookProcessingStateReadyForBookFileDownload state");
             return;
             break;
         }
 		default:
-			[NSException raise:@"SCHProcessingManagerUnknownState" format:@"Unrecognised SCHBookInfo processing state (%d) in SCHProcessingManager.", bookInfo.processingState];
+			[NSException raise:@"SCHProcessingManagerUnknownState" format:@"Unrecognised SCHBookInfo processing state (%d) in SCHProcessingManager.", book.processingState];
 			break;
 	}
 	
 }
 
-- (void) redispatchBook: (SCHBookInfo *) bookInfo
+- (void) redispatchISBN: (NSString *) isbn
 {
 	
 	// FIXME: main thread please!
 	
+	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:isbn];
+
 	// check for space saver mode
 	BOOL spaceSaverMode = [[NSUserDefaults standardUserDefaults] boolForKey:@"kSCHSpaceSaverMode"];
 	
-	switch (bookInfo.processingState) {
+	switch (book.processingState) {
 		// these book states always require additional processing actions
-		case SCHBookInfoProcessingStateNoURLs:
-		case SCHBookInfoProcessingStateNoCoverImage:
-		case SCHBookInfoProcessingStateDownloadStarted:
-		case SCHBookInfoProcessingStateReadyForRightsParsing:
-			[self processBook:bookInfo];
+		case SCHBookProcessingStateNoURLs:
+		case SCHBookProcessingStateNoCoverImage:
+		case SCHBookProcessingStateDownloadStarted:
+		case SCHBookProcessingStateReadyForRightsParsing:
+			[self processISBN:isbn];
 			break;
 			
 		// if space saver mode is off, bump the book to the download state and start download
-		case SCHBookInfoProcessingStateDownloadPaused:
-		case SCHBookInfoProcessingStateReadyForBookFileDownload:
+		case SCHBookProcessingStateDownloadPaused:
+		case SCHBookProcessingStateReadyForBookFileDownload:
 			if (!spaceSaverMode) {
-				[bookInfo setProcessingState:SCHBookInfoProcessingStateDownloadStarted];
-				[self processBook:bookInfo];
+//				[bookInfo setProcessingState:SCHBookProcessingStateDownloadStarted];
+				[[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:isbn state:SCHBookProcessingStateDownloadStarted];
+				[self processISBN:isbn];
 			}
 		default:
 			break;
 	}
 	
-	if (bookInfo.processingState == SCHBookInfoProcessingStateReadyForBookFileDownload ||
-		bookInfo.processingState == SCHBookInfoProcessingStateDownloadStarted ||
-		bookInfo.processingState == SCHBookInfoProcessingStateDownloadPaused ||
-		bookInfo.processingState == SCHBookInfoProcessingStateReadyToRead) {
-		[self checkAndDispatchThumbsForBook:bookInfo];
+	if (book.processingState == SCHBookProcessingStateReadyForBookFileDownload ||
+		book.processingState == SCHBookProcessingStateDownloadStarted ||
+		book.processingState == SCHBookProcessingStateDownloadPaused ||
+		book.processingState == SCHBookProcessingStateReadyToRead) {
+		[self checkAndDispatchThumbsForISBN:isbn];
 	}
 	
 	// check to see if we're processing
@@ -377,20 +415,23 @@ static SCHProcessingManager *sharedManager = nil;
 #pragma mark -
 #pragma mark User Selection Methods
 
-- (void) userSelectedBookInfo: (SCHBookInfo *) bookInfo
+- (void) userSelectedBookWithISBN: (NSString *) isbn
 {
+	
+	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:isbn];
+	
 	// if the book is currently downloading, pause it
 	// (changing the state will cause the operation to cancel)
-	if (bookInfo.processingState == SCHBookInfoProcessingStateDownloadStarted) {
-		[bookInfo setProcessingState:SCHBookInfoProcessingStateDownloadPaused];
+	if (book.processingState == SCHBookProcessingStateDownloadStarted) {
+		[[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:isbn state:SCHBookProcessingStateDownloadPaused];
 		return;
 	} 
 		
 	// if the book is currently paused or ready for download, start downloading
-	if (bookInfo.processingState == SCHBookInfoProcessingStateDownloadPaused ||
-		bookInfo.processingState == SCHBookInfoProcessingStateReadyForBookFileDownload) {
-		[bookInfo setProcessingState:SCHBookInfoProcessingStateDownloadStarted];
-		[self processBook:bookInfo];
+	if (book.processingState == SCHBookProcessingStateDownloadPaused ||
+		book.processingState == SCHBookProcessingStateReadyForBookFileDownload) {
+		[[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:isbn state:SCHBookProcessingStateDownloadStarted];
+		[self processISBN:isbn];
 	}
 	// otherwise ignore the touch
 
@@ -402,7 +443,7 @@ static SCHProcessingManager *sharedManager = nil;
 // FIXME: could be moved to SCHBookInfo? 
 - (BOOL) requestThumbImageForBookCover:(SCHAsyncBookCoverImageView *)bookCover size:(CGSize)size
 {	
-	SCHBookInfo *book = bookCover.bookInfo;
+	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:bookCover.isbn];
 	
 //	NSLog(@"Requesting thumb for %@, size %@", book.bookIdentifier, NSStringFromCGSize(size));
 	@synchronized(self.thumbImageRequests) {
@@ -417,7 +458,7 @@ static SCHProcessingManager *sharedManager = nil;
 		}
 			
 		// check for an existing request
-		NSMutableArray *sizes = [self.thumbImageRequests objectForKey:book.bookIdentifier];
+		NSMutableArray *sizes = [self.thumbImageRequests objectForKey:book.ContentIdentifier];
 		
 		if (sizes) {
 			for (NSValue *value in sizes) {
@@ -438,31 +479,31 @@ static SCHProcessingManager *sharedManager = nil;
 		} else {
 			sizes = [[NSMutableArray alloc] init];
 			[sizes addObject:sizeValue];
-			[self.thumbImageRequests setObject:sizes forKey:book.bookIdentifier];
+			[self.thumbImageRequests setObject:sizes forKey:bookCover.isbn];
 			[sizes release];
 		}
 		
-		if (book.processingState == SCHBookInfoProcessingStateReadyForBookFileDownload ||
-			book.processingState == SCHBookInfoProcessingStateDownloadStarted ||
-			book.processingState == SCHBookInfoProcessingStateDownloadPaused ||
-			book.processingState == SCHBookInfoProcessingStateReadyToRead) {
-			[self checkAndDispatchThumbsForBook:book];
+		if (book.processingState == SCHBookProcessingStateReadyForBookFileDownload ||
+			book.processingState == SCHBookProcessingStateDownloadStarted ||
+			book.processingState == SCHBookProcessingStateDownloadPaused ||
+			book.processingState == SCHBookProcessingStateReadyToRead) {
+			[self checkAndDispatchThumbsForISBN:book.ContentIdentifier];
 		}
 		
 		return NO;
 	}
 }
 
-- (void) checkAndDispatchThumbsForBook: (SCHBookInfo *) bookInfo
+- (void) checkAndDispatchThumbsForISBN: (NSString *) isbn
 {
 	// check if we have any outstanding requests for cover image thumbs
-	NSMutableArray *sizes = [self.thumbImageRequests objectForKey:bookInfo.bookIdentifier];
+	NSMutableArray *sizes = [self.thumbImageRequests objectForKey:isbn];
 	if (sizes) {
 		@synchronized(self.thumbImageRequests) {
 			for (NSValue *val in sizes) {
 				CGSize size = [val CGSizeValue];
 				SCHThumbnailOperation *thumbOp = [[SCHThumbnailOperation alloc] init];
-				thumbOp.bookInfo = bookInfo;
+				thumbOp.isbn = isbn;
 				thumbOp.size = size;
 				thumbOp.flip = NO;
 				thumbOp.aspect = YES;

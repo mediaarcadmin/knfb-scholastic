@@ -12,6 +12,8 @@
 @class SCHLocationText;
 @class SCHPrivateAnnotations;
 
+static NSString * const kSCHHighlight = @"SCHHighlight";
+
 @interface SCHHighlight :  SCHAnnotation  
 {
 }

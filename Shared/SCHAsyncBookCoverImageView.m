@@ -7,7 +7,6 @@
 //
 
 #import "SCHAsyncBookCoverImageView.h"
-//#import "SCHOldProcessingManager.h"
 
 @interface SCHAsyncBookCoverImageView () 
 
@@ -18,7 +17,7 @@
 
 @implementation SCHAsyncBookCoverImageView
 
-@synthesize bookInfo, coverSize;
+@synthesize isbn, coverSize;
 
 - (void) dealloc {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -32,46 +31,49 @@
 }
 
 - (id) initWithFrame: (CGRect) frame {
-	if (self = [super initWithFrame:frame]) {
+	if ((self = [super initWithFrame:frame])) {
 		[self initialiseView];
 	}
 	return self;
 }
 
 - (id) initWithImage: (UIImage *) image {
-	if (self = [super initWithImage:image]) {
+	if ((self = [super initWithImage:image])) {
 		[self initialiseView];
 	}
 	return self;
 }
 
-- (void) setBookInfo:(SCHBookInfo *) newBookInfo
+- (void) setIsbn:(NSString *) newIsbn
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	
-	SCHBookInfo *oldBookInfo = bookInfo;
-	bookInfo = [newBookInfo retain];
-	[oldBookInfo release];
+	NSString *oldIsbn = isbn;
+	isbn = [newIsbn retain];
+	[oldIsbn release];
 	
 	self.image = [UIImage imageNamed:@"PlaceholderBook"];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(newImageAvailable:)
 												 name:@"SCHNewImageAvailable"
-											   object:self.bookInfo];
+											   object:nil];
 	
 }
 
 
 - (void)newImageAvailable:(NSNotification *)notification {
 	NSDictionary *userInfo = [notification userInfo];
-	id image = [userInfo valueForKey:@"image"];
-	CGSize thumbSize = [[userInfo valueForKey:@"thumbSize"] CGSizeValue];
-	
-	if (image && self.coverSize.width == thumbSize.width && self.coverSize.height == thumbSize.height) {
-		[self setImage:image];
-		[self setNeedsDisplay];
-	}
+    
+    if ([self.isbn compare:[userInfo objectForKey:@"isbn"]] == NSOrderedSame) {
+        id image = [userInfo valueForKey:@"image"];
+        CGSize thumbSize = [[userInfo valueForKey:@"thumbSize"] CGSizeValue];
+        
+        if (image && self.coverSize.width == thumbSize.width && self.coverSize.height == thumbSize.height) {
+            [self setImage:image];
+            [self setNeedsDisplay];
+        }
+    }
 	
 }
 

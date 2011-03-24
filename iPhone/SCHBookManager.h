@@ -9,7 +9,8 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 #import "BITXPSProvider.h"
-#import "SCHContentMetadataItem+Extensions.h"
+#import "SCHContentMetadataItem.h"
+#import "SCHProcessingManager.h"
 
 @interface SCHBookManager : NSObject {
 
@@ -20,14 +21,17 @@
 
 + (SCHBookManager *)sharedBookManager;
 
-+ (SCHBookInfo *) bookInfoWithBookIdentifier: (NSString *) isbn;
-- (NSArray *)allBooks;
+- (SCHAppBook *) bookWithIdentifier: (NSString *) isbn;
+- (NSArray *)allBooksAsISBNs;
 
-- (BITXPSProvider *)checkOutXPSProviderForBook: (SCHBookInfo *) bookInfo;
-- (void) checkInXPSProviderForBook: (SCHBookInfo *) bookInfo;
+- (BITXPSProvider *)checkOutXPSProviderForBookIdentifier: (NSString *) isbn;
+- (void)checkInXPSProviderForBookIdentifer: (NSString *) isbn;
 
 + (BOOL) checkAppCompatibilityForFeature: (NSString *) key version: (float) version;
 + (BOOL) appHasFeature: (NSString *) key;
+
+- (void)threadSafeUpdateBookWithISBN: (NSString *) isbn setValue:(id)value forKey:(NSString *)key;
+- (void)threadSafeUpdateBookWithISBN: (NSString *) isbn state: (SCHBookCurrentProcessingState) state;
 
 
 @end
