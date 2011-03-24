@@ -3,7 +3,7 @@
 //  Scholastic
 //
 //  Created by Gordon Christie on 19/03/2011.
-//  Copyright 2011 Chillypea. All rights reserved.
+//  Copyright 2011 BitWink. All rights reserved.
 //
 
 #import <CoreData/CoreData.h>
@@ -29,11 +29,13 @@ static NSString * const kSCHAppBookFileURL = @"BookFileURL";
 
 static NSString * const kSCHAppBook = @"SCHAppBook";
 
+static NSString * const kSCHAppBookFetchWithContentIdentifier = @"fetchAppBookWithContentIdentifier";
+static NSString * const kSCHAppBookCONTENT_IDENTIFIER = @"CONTENT_IDENTIFIER";
+
 @interface SCHAppBook :  NSManagedObject  
 {
 }
 
-@property (nonatomic, retain) NSString * ContentIdentifier;
 @property (nonatomic, retain) NSString * DRMVersion;
 @property (nonatomic, retain) NSNumber * HasAudio;
 @property (nonatomic, retain) NSNumber * HasExtras;
@@ -50,7 +52,7 @@ static NSString * const kSCHAppBook = @"SCHAppBook";
 @property (nonatomic, retain) NSString * BookFileURL;
 
 
-
+@property (readonly) NSString * ContentIdentifier;
 @property (readonly) NSString * Author;
 @property (readonly) NSString * Description;
 @property (readonly) NSString * Version;

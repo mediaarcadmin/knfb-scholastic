@@ -112,15 +112,17 @@ static int mutationCount = 0;
     
     if (isbn) {
 		
-		NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-		[fetchRequest setEntity:[NSEntityDescription entityForName:kSCHAppBook inManagedObjectContext:context]];	
-		
-		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"ContentMetadataItem.ContentIdentifier == %@", isbn];
-		[fetchRequest setPredicate:predicate];
-		
+        NSEntityDescription *entityDescription = [NSEntityDescription 
+                                                  entityForName:kSCHAppBook
+                                                  inManagedObjectContext:context];
+        NSFetchRequest *fetchRequest = [entityDescription.managedObjectModel 
+                                        fetchRequestFromTemplateWithName:kSCHAppBookFetchWithContentIdentifier 
+                                        substitutionVariables:[NSDictionary 
+                                                               dictionaryWithObject:isbn 
+                                                               forKey:kSCHAppBookCONTENT_IDENTIFIER]];
+				
 		NSError *error = nil;
 		NSArray *results = [context executeFetchRequest:fetchRequest error:&error];
-		[fetchRequest release], fetchRequest = nil;
 		
 		if (error) {
 			NSLog(@"Error while fetching book item: %@", [error localizedDescription]);

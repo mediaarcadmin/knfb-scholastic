@@ -3,14 +3,12 @@
 //  Scholastic
 //
 //  Created by Gordon Christie on 19/03/2011.
-//  Copyright 2011 Chillypea. All rights reserved.
+//  Copyright 2011 BitWink. All rights reserved.
 //
 
 #import "SCHAppBook.h"
 
 @implementation SCHAppBook 
-
-@dynamic ContentIdentifier;
 
 @dynamic DRMVersion;
 @dynamic HasAudio;
@@ -31,6 +29,11 @@
 #pragma mark Convenience Methods
 
 #pragma mark Content Metadata
+
+- (NSString *) ContentIdentifier
+{
+	return self.ContentMetadataItem.ContentIdentifier;
+}
 
 - (NSString *) Author
 {

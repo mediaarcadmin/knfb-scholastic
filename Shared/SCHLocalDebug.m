@@ -182,18 +182,13 @@
 	newProfileItem.LastModified = now;
 	
 	SCHContentMetadataItem *newContentMetadataItem = nil;
-	SCHAppBook *newAppBookItem = nil;
 	SCHUserContentItem *newUserContentItem = nil;
 	SCHContentProfileItem *newContentProfileItem = nil;
 	
 	for (NSString *xpsFile in XPSFiles) {
 		newContentMetadataItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHContentMetadataItem inManagedObjectContext:self.managedObjectContext];
-		newAppBookItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHAppBook inManagedObjectContext:self.managedObjectContext];
-		
-		
-//		newContentMetadataItem.AppBook = newAppBookItem;
-//		newAppBookItem.ContentMetadataItem = newContentMetadataItem;
-		
+		newContentMetadataItem.AppBook = [NSEntityDescription insertNewObjectForEntityForName:kSCHAppBook inManagedObjectContext:self.managedObjectContext];
+				
 		NSString *currentPath = [[NSBundle mainBundle] pathForResource:xpsFile ofType:@"xps"];
 		
 		SCHLocalDebugXPSReader *provider = [[SCHLocalDebugXPSReader alloc] initWithPath:currentPath];
@@ -205,7 +200,6 @@
 			newContentMetadataItem.ContentIdentifierType = [NSNumber numberWithContentIdentifierType:kSCHContentIdentifierTypesNone];			
 		}
 		newContentMetadataItem.ContentIdentifier = provider.ISBN;
-		newAppBookItem.ContentIdentifier = provider.ISBN;
 
 		newContentMetadataItem.Author = provider.author;
 		//	newContentMetadataItem.Version = [self makeNullNil:[book objectForKey:kSCHLibreAccessWebServiceVersion]];
