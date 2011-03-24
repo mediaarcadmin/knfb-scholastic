@@ -191,6 +191,23 @@
 		C923B14312F6AFC60054426F /* SCHMultipleBookshelvesController.m in Sources */ = {isa = PBXBuildFile; fileRef = C923B13F12F6AFC60054426F /* SCHMultipleBookshelvesController.m */; };
 		C923B15B12F6B0280054426F /* SCHMultipleBookshelvesController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C923B15A12F6B0280054426F /* SCHMultipleBookshelvesController.xib */; };
 		C923B15C12F6B0280054426F /* SCHMultipleBookshelvesController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C923B15A12F6B0280054426F /* SCHMultipleBookshelvesController.xib */; };
+		C95ECB45133A76C400D88768 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C95ECB44133A76C400D88768 /* Accelerate.framework */; };
+		C95ECB47133A76DE00D88768 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C95ECB46133A76DE00D88768 /* QuartzCore.framework */; };
+		C95ECB49133A770B00D88768 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C95ECB48133A770B00D88768 /* OpenGLES.framework */; };
+		C95ECB4D133A77A500D88768 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C95ECB4C133A77A500D88768 /* AudioToolbox.framework */; };
+		C95ECB4E133A77F000D88768 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C95ECB4C133A77A500D88768 /* AudioToolbox.framework */; };
+		C95ECB50133A77F800D88768 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C95ECB48133A770B00D88768 /* OpenGLES.framework */; };
+		C95ECB51133A77FA00D88768 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C95ECB46133A76DE00D88768 /* QuartzCore.framework */; };
+		C95ECB52133A77FC00D88768 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C95ECB44133A76C400D88768 /* Accelerate.framework */; };
+		C97F2001133B8E2100EA6BC8 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C9F1A579133B83D100FD984C /* libxml2.dylib */; };
+		C9CEF42D133A1CD400FB5BE0 /* SCHReadingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9CEF42B133A1CD400FB5BE0 /* SCHReadingViewController.m */; };
+		C9CEF42E133A1CD400FB5BE0 /* SCHReadingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9CEF42B133A1CD400FB5BE0 /* SCHReadingViewController.m */; };
+		C9CEF42F133A1CD400FB5BE0 /* SCHReadingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9CEF42C133A1CD400FB5BE0 /* SCHReadingViewController.xib */; };
+		C9CEF430133A1CD400FB5BE0 /* SCHReadingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9CEF42C133A1CD400FB5BE0 /* SCHReadingViewController.xib */; };
+		C9CEF433133A1F2400FB5BE0 /* SCHLayoutView.m in Sources */ = {isa = PBXBuildFile; fileRef = C9CEF432133A1F2300FB5BE0 /* SCHLayoutView.m */; };
+		C9CEF434133A1F2400FB5BE0 /* SCHLayoutView.m in Sources */ = {isa = PBXBuildFile; fileRef = C9CEF432133A1F2300FB5BE0 /* SCHLayoutView.m */; };
+		C9F1A4D6133B507100FD984C /* libPlayReadyPK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A3D933851326D92000037111 /* libPlayReadyPK.a */; };
+		C9F1A57A133B83D100FD984C /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C9F1A579133B83D100FD984C /* libxml2.dylib */; };
 		F81B3A7F12FAAD8E00A20D52 /* SCHNote.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A5E12F0EF5600BBBCE6 /* SCHNote.m */; };
 		F81B3A8612FAADB000A20D52 /* SCHBookManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F8CD24CA12F9714D001C748B /* SCHBookManager.m */; };
 		F82D39BF131EA79100289FF3 /* SCHBookContents.m in Sources */ = {isa = PBXBuildFile; fileRef = F82D39B4131EA79100289FF3 /* SCHBookContents.m */; };
@@ -745,6 +762,18 @@
 		C923B13E12F6AFC60054426F /* SCHMultipleBookshelvesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHMultipleBookshelvesController.h; path = iPhone/SCHMultipleBookshelvesController.h; sourceTree = "<group>"; };
 		C923B13F12F6AFC60054426F /* SCHMultipleBookshelvesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHMultipleBookshelvesController.m; path = iPhone/SCHMultipleBookshelvesController.m; sourceTree = "<group>"; };
 		C923B15A12F6B0280054426F /* SCHMultipleBookshelvesController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = SCHMultipleBookshelvesController.xib; path = iPhone/SCHMultipleBookshelvesController.xib; sourceTree = "<group>"; };
+		C95ECB2D133A75F500D88768 /* Scholastic.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Scholastic.xcodeproj; sourceTree = "<group>"; };
+		C95ECB44133A76C400D88768 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
+		C95ECB46133A76DE00D88768 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		C95ECB48133A770B00D88768 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
+		C95ECB4A133A777F00D88768 /* libiconv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
+		C95ECB4C133A77A500D88768 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		C9CEF42A133A1CD400FB5BE0 /* SCHReadingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHReadingViewController.h; sourceTree = "<group>"; };
+		C9CEF42B133A1CD400FB5BE0 /* SCHReadingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHReadingViewController.m; sourceTree = "<group>"; };
+		C9CEF42C133A1CD400FB5BE0 /* SCHReadingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHReadingViewController.xib; sourceTree = "<group>"; };
+		C9CEF431133A1F2300FB5BE0 /* SCHLayoutView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHLayoutView.h; sourceTree = "<group>"; };
+		C9CEF432133A1F2300FB5BE0 /* SCHLayoutView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHLayoutView.m; sourceTree = "<group>"; };
+		C9F1A579133B83D100FD984C /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
 		F82D39B3131EA79100289FF3 /* SCHBookContents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookContents.h; path = Shared/SCHBookContents.h; sourceTree = "<group>"; };
 		F82D39B4131EA79100289FF3 /* SCHBookContents.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookContents.m; path = Shared/SCHBookContents.m; sourceTree = "<group>"; };
 		F82D39B6131EA79100289FF3 /* SCHBookInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookInfo.m; path = Shared/SCHBookInfo.m; sourceTree = "<group>"; };
@@ -819,16 +848,21 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */,
-				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
-				288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */,
-				28EEBFDD1118E19E00187D67 /* CoreData.framework in Frameworks */,
-				529386C312DF3A8900045B44 /* CFNetwork.framework in Frameworks */,
-				529386C512DF3A9000045B44 /* SystemConfiguration.framework in Frameworks */,
-				52EF553E12E9EB8500E374F7 /* Security.framework in Frameworks */,
-				F8509E7412F061FE00197EB5 /* libXpsSDKipad.a in Frameworks */,
-				F8509EB812F0625100197EB5 /* libstdc++.6.dylib in Frameworks */,
+				C9F1A57A133B83D100FD984C /* libxml2.dylib in Frameworks */,
 				A3D933861326D92000037111 /* libPlayReadyPK.a in Frameworks */,
+				F8509EB812F0625100197EB5 /* libstdc++.6.dylib in Frameworks */,
+				F8509E7412F061FE00197EB5 /* libXpsSDKipad.a in Frameworks */,
+				C95ECB52133A77FC00D88768 /* Accelerate.framework in Frameworks */,
+				C95ECB4E133A77F000D88768 /* AudioToolbox.framework in Frameworks */,
+				529386C312DF3A8900045B44 /* CFNetwork.framework in Frameworks */,
+				28EEBFDD1118E19E00187D67 /* CoreData.framework in Frameworks */,
+				288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */,
+				1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */,
+				C95ECB50133A77F800D88768 /* OpenGLES.framework in Frameworks */,
+				C95ECB51133A77FA00D88768 /* QuartzCore.framework in Frameworks */,
+				52EF553E12E9EB8500E374F7 /* Security.framework in Frameworks */,
+				529386C512DF3A9000045B44 /* SystemConfiguration.framework in Frameworks */,
+				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -836,15 +870,21 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F8509F4012F063C900197EB5 /* Foundation.framework in Frameworks */,
-				F8509F4112F063C900197EB5 /* UIKit.framework in Frameworks */,
-				F8509F4212F063C900197EB5 /* CoreGraphics.framework in Frameworks */,
-				F8509F4312F063C900197EB5 /* CoreData.framework in Frameworks */,
-				F8509F4412F063C900197EB5 /* CFNetwork.framework in Frameworks */,
-				F8509F4512F063C900197EB5 /* SystemConfiguration.framework in Frameworks */,
-				F8509F4612F063C900197EB5 /* Security.framework in Frameworks */,
-				F8509F4712F063C900197EB5 /* libXpsSDKipad.a in Frameworks */,
+				C9F1A4D6133B507100FD984C /* libPlayReadyPK.a in Frameworks */,
 				F8509F4812F063C900197EB5 /* libstdc++.6.dylib in Frameworks */,
+				F8509F4712F063C900197EB5 /* libXpsSDKipad.a in Frameworks */,
+				C95ECB45133A76C400D88768 /* Accelerate.framework in Frameworks */,
+				C95ECB4D133A77A500D88768 /* AudioToolbox.framework in Frameworks */,
+				F8509F4412F063C900197EB5 /* CFNetwork.framework in Frameworks */,
+				F8509F4312F063C900197EB5 /* CoreData.framework in Frameworks */,
+				F8509F4212F063C900197EB5 /* CoreGraphics.framework in Frameworks */,
+				F8509F4012F063C900197EB5 /* Foundation.framework in Frameworks */,
+				C95ECB49133A770B00D88768 /* OpenGLES.framework in Frameworks */,
+				C95ECB47133A76DE00D88768 /* QuartzCore.framework in Frameworks */,
+				F8509F4612F063C900197EB5 /* Security.framework in Frameworks */,
+				F8509F4512F063C900197EB5 /* SystemConfiguration.framework in Frameworks */,
+				F8509F4112F063C900197EB5 /* UIKit.framework in Frameworks */,
+				C97F2001133B8E2100EA6BC8 /* libxml2.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -919,6 +959,7 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				C95ECB2D133A75F500D88768 /* Scholastic.xcodeproj */,
 				528A2CF712CCEAA50053A343 /* ReleaseNotes.tmReleaseNotes */,
 				2860E386111B897F00E27156 /* iPhone */,
 				29B97317FDCFA39411CA2CEA /* iPad */,
@@ -952,7 +993,13 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C9F1A579133B83D100FD984C /* libxml2.dylib */,
 				F8509EB712F0625100197EB5 /* libstdc++.6.dylib */,
+				C95ECB4A133A777F00D88768 /* libiconv.dylib */,
+				C95ECB4C133A77A500D88768 /* AudioToolbox.framework */,
+				C95ECB48133A770B00D88768 /* OpenGLES.framework */,
+				C95ECB46133A76DE00D88768 /* QuartzCore.framework */,
+				C95ECB44133A76C400D88768 /* Accelerate.framework */,
 				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
 				1D30AB110D05D00D00671497 /* Foundation.framework */,
 				288765FC0DF74451002DB57D /* CoreGraphics.framework */,
@@ -1117,6 +1164,7 @@
 		528A2CFE12CCFD050053A343 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				C9CEF2F11339F77200FB5BE0 /* Submodules */,
 				A3D933751326D84900037111 /* DRM */,
 				C923A25F12F06DBE0054426F /* MRGridView */,
 				5293868D12DF3A3300045B44 /* WSDL2ObjC */,
@@ -1269,6 +1317,7 @@
 		52D19C681338A57B00A68D75 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				C9CEF429133A1BF300FB5BE0 /* Book Reading */,
 				F8E29664130583A0009BD30D /* Image Processing */,
 				C923B14612F6AFE10054426F /* Bookshelves */,
 			);
@@ -1486,6 +1535,30 @@
 			name = Bookshelves;
 			sourceTree = "<group>";
 		};
+		C95ECB2E133A75F500D88768 /* Products */ = {
+			isa = PBXGroup;
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C9CEF2F11339F77200FB5BE0 /* Submodules */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Submodules;
+			sourceTree = "<group>";
+		};
+		C9CEF429133A1BF300FB5BE0 /* Book Reading */ = {
+			isa = PBXGroup;
+			children = (
+				C9CEF42A133A1CD400FB5BE0 /* SCHReadingViewController.h */,
+				C9CEF42B133A1CD400FB5BE0 /* SCHReadingViewController.m */,
+				C9CEF42C133A1CD400FB5BE0 /* SCHReadingViewController.xib */,
+				C9CEF431133A1F2300FB5BE0 /* SCHLayoutView.h */,
+				C9CEF432133A1F2300FB5BE0 /* SCHLayoutView.m */,
+			);
+			name = "Book Reading";
+			sourceTree = "<group>";
+		};
 		F8509E7112F061FE00197EB5 /* XPS */ = {
 			isa = PBXGroup;
 			children = (
@@ -1693,6 +1766,12 @@
 			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = C95ECB2E133A75F500D88768 /* Products */;
+					ProjectRef = C95ECB2D133A75F500D88768 /* Scholastic.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				1D6058900D05DD3D006BFB54 /* Scholastic */,
@@ -1735,6 +1814,7 @@
 				52F55A4B130C2B60002C8BDF /* Icon-Small@2x.png in Resources */,
 				52F55A4C130C2B60002C8BDF /* Icon@2x.png in Resources */,
 				F8678D8B133218D8001FDB2F /* ScholasticFeatureCompatibility.plist in Resources */,
+				C9CEF42F133A1CD400FB5BE0 /* SCHReadingViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1776,6 +1856,7 @@
 				C923B15B12F6B0280054426F /* SCHMultipleBookshelvesController.xib in Resources */,
 				52F559C9130BEA57002C8BDF /* SCHProfilePasswordViewController.xib in Resources */,
 				F8678D8A133218D8001FDB2F /* ScholasticFeatureCompatibility.plist in Resources */,
+				C9CEF430133A1CD400FB5BE0 /* SCHReadingViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1912,6 +1993,8 @@
 				528433F5133383940010BAAB /* SCHAppBookOrder+Extensions.m in Sources */,
 				528433F7133383940010BAAB /* SCHAppDictionaryState+Extensions.m in Sources */,
 				F8BEE8B01334FD44008B40DA /* SCHAppBook.m in Sources */,
+				C9CEF42D133A1CD400FB5BE0 /* SCHReadingViewController.m in Sources */,
+				C9CEF433133A1F2400FB5BE0 /* SCHLayoutView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2045,6 +2128,8 @@
 				528433F6133383940010BAAB /* SCHAppBookOrder+Extensions.m in Sources */,
 				528433F8133383940010BAAB /* SCHAppDictionaryState+Extensions.m in Sources */,
 				F8BEE8AF1334FD44008B40DA /* SCHAppBook.m in Sources */,
+				C9CEF42E133A1CD400FB5BE0 /* SCHReadingViewController.m in Sources */,
+				C9CEF434133A1F2400FB5BE0 /* SCHLayoutView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2062,12 +2147,18 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Scholastic_Prefix.pch;
+				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "Scholastic-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
-					"Shared/Libraries//**",
+					"Shared/Libraries/**",
 					"$(inherited)",
 					"$(SRCROOT)",
 					"\"$(SRCROOT)/Shared/Libraries/DRM\"",
+					"\"$(SRCROOT)/Shared/Libraries/XPS\"",
+				);
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-all_load",
 				);
 				PRODUCT_NAME = Scholastic;
 			};
@@ -2082,12 +2173,18 @@
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Scholastic_Prefix.pch;
+				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "Scholastic-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
-					"Shared/Libraries//**",
+					"Shared/Libraries/**",
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
 					"\"$(SRCROOT)/Shared/Libraries/DRM\"",
+					"\"$(SRCROOT)/Shared/Libraries/XPS\"",
+				);
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-all_load",
 				);
 				PRODUCT_NAME = Scholastic;
 				VALIDATE_PRODUCT = YES;
@@ -2097,7 +2194,7 @@
 		528A2CF912CCED700053A343 /* Ad Hoc */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				ARCHS = "$(ARCHS_UNIVERSAL_IPHONE_OS)";
 				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
@@ -2105,11 +2202,15 @@
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				LIBRARY_SEARCH_PATHS = "";
 				OTHER_CFLAGS = (
 					"-I/usr/include/libxml2",
 					"-DNS_BLOCK_ASSERTIONS=1",
 				);
-				OTHER_LDFLAGS = "-lxml2";
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-all_load",
+				);
 				PREBINDING = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -2126,12 +2227,18 @@
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Scholastic_Prefix.pch;
+				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "Scholastic-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
-					"Shared/Libraries//**",
+					"Shared/Libraries/**",
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
 					"\"$(SRCROOT)/Shared/Libraries/DRM\"",
+					"\"$(SRCROOT)/Shared/Libraries/XPS\"",
+				);
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-all_load",
 				);
 				PRODUCT_NAME = Scholastic;
 				VALIDATE_PRODUCT = YES;
@@ -2141,15 +2248,19 @@
 		C01FCF4F08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				ARCHS = "$(ARCHS_UNIVERSAL_IPHONE_OS)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				LIBRARY_SEARCH_PATHS = "";
 				OTHER_CFLAGS = "-I/usr/include/libxml2";
-				OTHER_LDFLAGS = "-lxml2";
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-all_load",
+				);
 				PREBINDING = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -2160,7 +2271,7 @@
 		C01FCF5008A954540054247B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				ARCHS = "$(ARCHS_UNIVERSAL_IPHONE_OS)";
 				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
@@ -2168,11 +2279,15 @@
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				LIBRARY_SEARCH_PATHS = "";
 				OTHER_CFLAGS = (
 					"-I/usr/include/libxml2",
 					"-DNS_BLOCK_ASSERTIONS=1",
 				);
-				OTHER_LDFLAGS = "-lxml2";
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-all_load",
+				);
 				PREBINDING = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -2191,18 +2306,20 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Scholastic_Prefix.pch;
+				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "Scholastic-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
-					"Shared/Libraries//**",
+					"Shared/Libraries/**",
 					"$(inherited)",
 					"$(SRCROOT)",
+					"\"$(SRCROOT)/Shared/Libraries/DRM\"",
+					"\"$(SRCROOT)/Shared/Libraries/XPS\"",
 				);
 				OTHER_CFLAGS = (
 					"-DLOCALDEBUG",
 					"-I/usr/include/libxml2",
 				);
 				PRODUCT_NAME = Scholastic;
-				SYMROOT = buildlocal;
 			};
 			name = Debug;
 		};
@@ -2215,11 +2332,15 @@
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Scholastic_Prefix.pch;
+				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "Scholastic-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
-					"Shared/Libraries//**",
+					"Shared/Libraries/**",
 					"$(inherited)",
 					"\\\"$(SRCROOT)\\\"",
+					"\"$(SRCROOT)\"",
+					"\"$(SRCROOT)/Shared/Libraries/DRM\"",
+					"\"$(SRCROOT)/Shared/Libraries/XPS\"",
 				);
 				OTHER_CFLAGS = (
 					"-DLOCALDEBUG",
@@ -2227,7 +2348,6 @@
 					"-DNS_BLOCK_ASSERTIONS=1",
 				);
 				PRODUCT_NAME = Scholastic;
-				SYMROOT = buildlocal;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = "Ad Hoc";
@@ -2241,11 +2361,15 @@
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Scholastic_Prefix.pch;
+				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "Scholastic-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
-					"Shared/Libraries//**",
+					"Shared/Libraries/**",
 					"$(inherited)",
 					"\\\"$(SRCROOT)\\\"",
+					"\"$(SRCROOT)\"",
+					"\"$(SRCROOT)/Shared/Libraries/DRM\"",
+					"\"$(SRCROOT)/Shared/Libraries/XPS\"",
 				);
 				OTHER_CFLAGS = (
 					"-DLOCALDEBUG",
@@ -2253,7 +2377,6 @@
 					"-DNS_BLOCK_ASSERTIONS=1",
 				);
 				PRODUCT_NAME = Scholastic;
-				SYMROOT = buildlocal;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;

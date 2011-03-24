@@ -1,3 +1,6 @@
 [submodule "Shared/Libraries/BlioLib"]
 	path = Shared/Libraries/BlioLib
 	url = git@codebasehq.com:bitwink/scholastic/bliolib.git
+[submodule "Submodules/libEucalyptus"]
+	path = Submodules/libEucalyptus
+	url = git@codebasehq.com:otherthings/libeucalyptus/libeucalyptus.git
