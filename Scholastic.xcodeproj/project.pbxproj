@@ -2238,13 +2238,6 @@
 				GCC_PREFIX_HEADER = Scholastic_Prefix.pch;
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "Scholastic-Info.plist";
-				LIBRARY_SEARCH_PATHS = (
-					"Shared/Libraries/**",
-					"$(inherited)",
-					"$(SRCROOT)",
-					"\"$(SRCROOT)/Shared/Libraries/DRM\"",
-					"\"$(SRCROOT)/Shared/Libraries/XPS\"",
-				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-all_load",
@@ -2264,13 +2257,6 @@
 				GCC_PREFIX_HEADER = Scholastic_Prefix.pch;
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "Scholastic-Info.plist";
-				LIBRARY_SEARCH_PATHS = (
-					"Shared/Libraries/**",
-					"$(inherited)",
-					"\"$(SRCROOT)\"",
-					"\"$(SRCROOT)/Shared/Libraries/DRM\"",
-					"\"$(SRCROOT)/Shared/Libraries/XPS\"",
-				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-all_load",
@@ -2292,7 +2278,10 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "";
-				LIBRARY_SEARCH_PATHS = "";
+				LIBRARY_SEARCH_PATHS = (
+					"\"$(SRCROOT)/Shared/Libraries/DRM\"",
+					"\"$(SRCROOT)/Shared/Libraries/XPS\"",
+				);
 				OTHER_CFLAGS = (
 					"-I/usr/include/libxml2",
 					"-DNS_BLOCK_ASSERTIONS=1",
@@ -2319,13 +2308,6 @@
 				GCC_PREFIX_HEADER = Scholastic_Prefix.pch;
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "Scholastic-Info.plist";
-				LIBRARY_SEARCH_PATHS = (
-					"Shared/Libraries/**",
-					"$(inherited)",
-					"\"$(SRCROOT)\"",
-					"\"$(SRCROOT)/Shared/Libraries/DRM\"",
-					"\"$(SRCROOT)/Shared/Libraries/XPS\"",
-				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-all_load",
@@ -2346,7 +2328,10 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "";
-				LIBRARY_SEARCH_PATHS = "";
+				LIBRARY_SEARCH_PATHS = (
+					"\"$(SRCROOT)/Shared/Libraries/DRM\"",
+					"\"$(SRCROOT)/Shared/Libraries/XPS\"",
+				);
 				OTHER_CFLAGS = "-I/usr/include/libxml2";
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -2371,7 +2356,10 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "";
-				LIBRARY_SEARCH_PATHS = "";
+				LIBRARY_SEARCH_PATHS = (
+					"\"$(SRCROOT)/Shared/Libraries/DRM\"",
+					"\"$(SRCROOT)/Shared/Libraries/XPS\"",
+				);
 				OTHER_CFLAGS = (
 					"-I/usr/include/libxml2",
 					"-DNS_BLOCK_ASSERTIONS=1",
@@ -2400,13 +2388,6 @@
 				GCC_PREFIX_HEADER = Scholastic_Prefix.pch;
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "Scholastic-Info.plist";
-				LIBRARY_SEARCH_PATHS = (
-					"Shared/Libraries/**",
-					"$(inherited)",
-					"$(SRCROOT)",
-					"\"$(SRCROOT)/Shared/Libraries/DRM\"",
-					"\"$(SRCROOT)/Shared/Libraries/XPS\"",
-				);
 				OTHER_CFLAGS = (
 					"-DLOCALDEBUG",
 					"-I/usr/include/libxml2",
@@ -2426,14 +2407,6 @@
 				GCC_PREFIX_HEADER = Scholastic_Prefix.pch;
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "Scholastic-Info.plist";
-				LIBRARY_SEARCH_PATHS = (
-					"Shared/Libraries/**",
-					"$(inherited)",
-					"\\\"$(SRCROOT)\\\"",
-					"\"$(SRCROOT)\"",
-					"\"$(SRCROOT)/Shared/Libraries/DRM\"",
-					"\"$(SRCROOT)/Shared/Libraries/XPS\"",
-				);
 				OTHER_CFLAGS = (
 					"-DLOCALDEBUG",
 					"-I/usr/include/libxml2",
@@ -2455,14 +2428,6 @@
 				GCC_PREFIX_HEADER = Scholastic_Prefix.pch;
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "Scholastic-Info.plist";
-				LIBRARY_SEARCH_PATHS = (
-					"Shared/Libraries/**",
-					"$(inherited)",
-					"\\\"$(SRCROOT)\\\"",
-					"\"$(SRCROOT)\"",
-					"\"$(SRCROOT)/Shared/Libraries/DRM\"",
-					"\"$(SRCROOT)/Shared/Libraries/XPS\"",
-				);
 				OTHER_CFLAGS = (
 					"-DLOCALDEBUG",
 					"-I/usr/include/libxml2",
