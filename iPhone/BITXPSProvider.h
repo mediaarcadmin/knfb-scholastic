@@ -91,10 +91,12 @@ static NSString * const BlioXPSExtrasMetadataFile = @"/Documents/1/Other/KNFB/Ex
 @property (nonatomic, retain) NSString *type;
 
 - (id) initWithISBN: (NSString *) isbn;
+
 - (CGContextRef)RGBABitmapContextForPage:(NSUInteger)page
                                 fromRect:(CGRect)rect
-                                 minSize:(CGSize)size 
-                              getContext:(id *)context;
+                                  atSize:(CGSize)size
+                              getBacking:(id *)context;
+
 - (CGRect)cropForPage:(NSInteger)page allowEstimate:(BOOL)estimate;
 
 - (UIImage *)coverThumbForList;

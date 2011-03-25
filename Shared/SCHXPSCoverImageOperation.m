@@ -36,7 +36,7 @@
 	
 	BITXPSProvider *xpsProvider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.isbn];
 	NSData *imageData = [xpsProvider coverThumbData];
-	[[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifer:self.isbn];
+	[[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.isbn];
 	
 	[imageData writeToFile:[book coverImagePath] atomically:YES];
 	

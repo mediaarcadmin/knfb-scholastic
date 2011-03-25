@@ -111,7 +111,7 @@
 		rightsFileData = [xpsProvider dataForComponentAtPath:BlioXPSKNFBRightsFile];
 	}
 	
-	[[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifer:self.isbn];
+	[[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.isbn];
 	
 	// check for rights file
 	if (hasRights) {
@@ -133,7 +133,7 @@
 	// check for metadata file
 	NSData *metadataData = [xpsProvider dataForComponentAtPath:BlioXPSEncryptedMetadata];
 	
-	[[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifer:self.isbn];
+	[[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.isbn];
 	
 	if (metadataData) {
 		self.parsingComplete = NO;

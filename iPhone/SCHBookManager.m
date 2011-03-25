@@ -361,7 +361,7 @@ static int mutationCount = 0;
 	
 }
 
-- (void)checkInXPSProviderForBookIdentifer: (NSString *) isbn
+- (void)checkInXPSProviderForBookIdentifier: (NSString *) isbn
 {
 
 	//NSLog(@"Checking in bookID: %@", bookInfo);

@@ -258,7 +258,73 @@ void XPSPageCompleteCallback(void *userdata, RasterImageInfo *data) {
     return rawData;
 }
 
+- (CGContextRef)RGBABitmapContextForPage:(NSUInteger)page
+                                fromRect:(CGRect)rect
+                                  atSize:(CGSize)size 
+                              getBacking:(id *)context {
+	
+    
+	CGRect pageCropRect = [self cropRectForPage:page];
+    
+    OutputFormat format;
+    memset(&format,0,sizeof(format));
+    
+    CGFloat pageSizeScaleWidth  = size.width / pageCropRect.size.width;
+    CGFloat pageSizeScaleHeight = size.height / pageCropRect.size.height;
+    
+    CGFloat pageZoomScaleWidth  = size.width / CGRectGetWidth(rect);
+    CGFloat pageZoomScaleHeight = size.height / CGRectGetHeight(rect);
+    
+    XPS_ctm render_ctm = { pageZoomScaleWidth, 0, 0, pageZoomScaleHeight, -rect.origin.x * pageZoomScaleWidth, -rect.origin.y * pageZoomScaleHeight};
+    format.xResolution = 96;			
+    format.yResolution = 96;	
+    format.colorDepth = 8;
+    format.colorSpace = XPS_COLORSPACE_RGBA;
+    format.pagesizescale = 1;	
+    format.pagesizescalewidth = pageSizeScaleWidth;		
+    format.pagesizescaleheight = pageSizeScaleHeight;
+    format.ctm = &render_ctm;				
+    format.formatType = OutputFormat_RAW;
+    imageInfo = NULL;
+    
+    [renderingLock lock];
+//	if (![self bookIsEncrypted]) {
+//		[contentsLock lock];
+//	}
+	
+    XPS_RegisterPageCompleteCallback(xpsHandle, XPSPageCompleteCallback);
+    XPS_SetUserData(xpsHandle, self);
+	
+    XPS_Convert(xpsHandle, NULL, 0, page - 1, 1, &format);
+	
+//	if (![self bookIsEncrypted]) {
+//		[contentsLock unlock];
+//	}
+	
+    CGContextRef bitmapContext = nil;
+    
+    if (imageInfo) {
+        size_t width  = imageInfo->widthInPixels;
+        size_t height = imageInfo->height;
+        
+        CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+        
+        bitmapContext = CGBitmapContextCreate(imageInfo->pBits, width, height, 8, imageInfo->rowStride, colorSpace, kCGBitmapByteOrderDefault | kCGImageAlphaPremultipliedLast);
+        BlioXPSBitmapReleaseCallback *releaseCallback = [[BlioXPSBitmapReleaseCallback alloc] init];
+        releaseCallback.data = imageInfo->pBits;
+        
+        *context = [releaseCallback autorelease];
+        
+        CGColorSpaceRelease(colorSpace);
+    }
+    
+    [renderingLock unlock];
+    
+    return (CGContextRef)[(id)bitmapContext autorelease];
+}
 
+
+#if 0
 - (CGContextRef)RGBABitmapContextForPage:(NSUInteger)page
                                 fromRect:(CGRect)rect
                                  minSize:(CGSize)size 
@@ -332,7 +398,7 @@ void XPSPageCompleteCallback(void *userdata, RasterImageInfo *data) {
 	// So that means you need to use or retain the result before the end of the run loop
 	return (CGContextRef)[(id)bitmapContext autorelease];
 }
-
+#endif
 // GMC
 
 - (void)createLayoutCacheForPage:(NSInteger)page {
@@ -885,7 +951,7 @@ void XPSPageCompleteCallback(void *userdata, RasterImageInfo *data) {
 @synthesize data;
 
 - (void)dealloc {
-	NSLog(@"Deallocing XPS Provider.");
+	//NSLog(@"Deallocing XPS Provider.");
     if (self.data) {
         //NSLog(@"Release: %p", self.data);
         XPS_ReleaseImageMemory(self.data);

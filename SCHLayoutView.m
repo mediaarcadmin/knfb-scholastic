@@ -7,10 +7,14 @@
 //
 
 #import "SCHLayoutView.h"
+#import "BITXPSProvider.h"
+#import "SCHBookManager.h"
+#import <libEucalyptus/THPositionedCGContext.h>
 
 @interface SCHLayoutView()
 
 @property (nonatomic, retain) id book;
+@property (nonatomic, retain) id xpsProvider;
 
 - (void)initialiseView;
 
@@ -19,9 +23,16 @@
 @implementation SCHLayoutView
 
 @synthesize book;
+@synthesize xpsProvider;
 
 - (void)dealloc
 {
+    
+    if (xpsProvider) {
+        [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:book];
+        [xpsProvider release], xpsProvider = nil;
+    }
+    
     [book release], book = nil;
     [super dealloc];
 }
@@ -54,6 +65,9 @@
     //[self registerGesturesForPageTurningView:aPageTurningView];
     [self addSubview:aPageTurningView];
     //self.pageTurningView = aPageTurningView;
+    
+    [aPageTurningView turnToPageAtIndex:0 animated:NO];
+    [aPageTurningView waitForAllPageImagesToBeAvailable];
 }
 
 - (id)initWithFrame:(CGRect)frame book:(id)aBook
@@ -64,6 +78,9 @@
         book = [aBook retain];
         self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         self.backgroundColor = [UIColor yellowColor];
+        
+        xpsProvider = [[[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.book] retain];
+        
         [self initialiseView];
         
     }
@@ -97,13 +114,21 @@
                                   fromRect:(CGRect)rect 
                                     atSize:(CGSize)size {
     
-    return nil;
-    //id backing = nil;
-//    CGContextRef CGContext = [self.dataSource RGBABitmapContextForPage:index + 1
-//                                                              fromRect:rect 
-//                                                                atSize:size
-//                                                            getBacking:&backing];
-//    return [[[THPositionedCGContext alloc] initWithCGContext:CGContext backing:backing] autorelease];
+    NSLog(@"index: %d", index);
+    
+    if (index == NSUIntegerMax)
+    {
+        return nil;
+    }
+    
+    id backing = nil;
+
+    CGContextRef CGContext = [self.xpsProvider RGBABitmapContextForPage:index + 1
+                                                              fromRect:rect 
+                                                                atSize:size
+                                                            getBacking:&backing];
+    
+    return [[[THPositionedCGContext alloc] initWithCGContext:CGContext backing:backing] autorelease];
 }
 
 @end

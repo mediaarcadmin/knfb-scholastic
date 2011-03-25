@@ -243,7 +243,7 @@
 	}
 	
 	CGRect pageCrop = [testRenderer cropForPage:currentPage allowEstimate:YES];
-	CGContextRef bitmap = [testRenderer RGBABitmapContextForPage:currentPage fromRect:pageCrop minSize:CGSizeMake(pageCrop.size.width, pageCrop.size.height) getContext:&context];
+	CGContextRef bitmap = [testRenderer RGBABitmapContextForPage:currentPage fromRect:pageCrop atSize:CGSizeMake(pageCrop.size.width, pageCrop.size.height) getBacking:&context];
 	CGImageRef ref = CGBitmapContextCreateImage(bitmap);
     UIImage* result = [UIImage imageWithCGImage:ref];
 	CGImageRelease(ref);

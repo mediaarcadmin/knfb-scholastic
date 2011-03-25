@@ -179,7 +179,7 @@
 		BITXPSProvider *provider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:book.ContentIdentifier];
 		provider.title = book.FileName;
 		imageData = [provider coverThumbData];
-		[[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifer:book.ContentIdentifier];
+		[[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:book.ContentIdentifier];
 
 		if (!imageData) {
 			optionsView.thumbnailImage = [UIImage imageNamed:@"PlaceholderBook"];
@@ -346,7 +346,7 @@
 		BITXPSProvider *provider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:book.ContentIdentifier];
 		provider.title = book.FileName;
 		imageData = [provider coverThumbData];
-		[[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifer:book.ContentIdentifier];
+		[[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:book.ContentIdentifier];
 		
 		if (!imageData) {
 			optionsView.thumbnailImage = [UIImage imageNamed:@"PlaceholderBook"];

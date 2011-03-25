@@ -25,7 +25,7 @@
 - (NSArray *)allBooksAsISBNs;
 
 - (BITXPSProvider *)checkOutXPSProviderForBookIdentifier: (NSString *) isbn;
-- (void)checkInXPSProviderForBookIdentifer: (NSString *) isbn;
+- (void)checkInXPSProviderForBookIdentifier: (NSString *) isbn;
 
 + (BOOL) checkAppCompatibilityForFeature: (NSString *) key version: (float) version;
 + (BOOL) appHasFeature: (NSString *) key;

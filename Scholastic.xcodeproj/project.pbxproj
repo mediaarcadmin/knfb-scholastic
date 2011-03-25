@@ -991,9 +991,6 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
-				C9564111133BB6E800D7FB9D /* libEucalyptus.a */,
-				C9162337133BB74200B25414 /* libEucalyptusBase.a */,
-				C916233A133BB75B00B25414 /* libhyphenate.a */,
 				528A2CF712CCEAA50053A343 /* ReleaseNotes.tmReleaseNotes */,
 				2860E386111B897F00E27156 /* iPhone */,
 				29B97317FDCFA39411CA2CEA /* iPad */,
@@ -1510,6 +1507,16 @@
 			name = DRM;
 			sourceTree = "<group>";
 		};
+		C9162497133BBC8F00B25414 /* libEucalyptus Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				C9564111133BB6E800D7FB9D /* libEucalyptus.a */,
+				C9162337133BB74200B25414 /* libEucalyptusBase.a */,
+				C916233A133BB75B00B25414 /* libhyphenate.a */,
+			);
+			name = "libEucalyptus Libraries";
+			sourceTree = "<group>";
+		};
 		C923A25F12F06DBE0054426F /* MRGridView */ = {
 			isa = PBXGroup;
 			children = (
@@ -1567,6 +1574,7 @@
 			isa = PBXGroup;
 			children = (
 				C947D55D133B9C0000FB4404 /* libEucalyptus.xcodeproj */,
+				C9162497133BBC8F00B25414 /* libEucalyptus Libraries */,
 			);
 			name = Submodules;
 			sourceTree = "<group>";
