@@ -139,6 +139,8 @@
 		A3A38E63133A811400C325A3 /* devcerttemplate.dat in Resources */ = {isa = PBXBuildFile; fileRef = A3A38E5F133A811400C325A3 /* devcerttemplate.dat */; };
 		A3A38E64133A811400C325A3 /* iphonecert.dat in Resources */ = {isa = PBXBuildFile; fileRef = A3A38E60133A811400C325A3 /* iphonecert.dat */; };
 		A3D933861326D92000037111 /* libPlayReadyPK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A3D933851326D92000037111 /* libPlayReadyPK.a */; };
+		C908D82C133D040600661718 /* paper-white.png in Resources */ = {isa = PBXBuildFile; fileRef = C908D82B133D040600661718 /* paper-white.png */; };
+		C908D82D133D040600661718 /* paper-white.png in Resources */ = {isa = PBXBuildFile; fileRef = C908D82B133D040600661718 /* paper-white.png */; };
 		C9162338133BB74200B25414 /* libEucalyptusBase.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9162337133BB74200B25414 /* libEucalyptusBase.a */; };
 		C9162339133BB74A00B25414 /* libEucalyptusBase.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9162337133BB74200B25414 /* libEucalyptusBase.a */; };
 		C916233B133BB75B00B25414 /* libhyphenate.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C916233A133BB75B00B25414 /* libhyphenate.a */; };
@@ -773,6 +775,7 @@
 		A3D9341E1326DA3F00037111 /* oemprofile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = oemprofile.h; path = Shared/Libraries/DRM/oemprofile.h; sourceTree = "<group>"; };
 		A3D9341F1326DA3F00037111 /* oemrsa.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = oemrsa.h; path = Shared/Libraries/DRM/oemrsa.h; sourceTree = "<group>"; };
 		A3D934201326DA3F00037111 /* oemrsaimpl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = oemrsaimpl.h; path = Shared/Libraries/DRM/oemrsaimpl.h; sourceTree = "<group>"; };
+		C908D82B133D040600661718 /* paper-white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "paper-white.png"; sourceTree = "<group>"; };
 		C9162337133BB74200B25414 /* libEucalyptusBase.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = libEucalyptusBase.a; path = ../../../../../../../../Projects/Consulting/scholastic/libEucalyptusBase.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		C916233A133BB75B00B25414 /* libhyphenate.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = libhyphenate.a; path = ../../../../../../../../Projects/Consulting/scholastic/libhyphenate.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		C923A27212F06FE60054426F /* MRGridView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MRGridView.h; path = Shared/Libraries/MRGridView/MRGridView.h; sourceTree = "<group>"; };
@@ -1119,6 +1122,7 @@
 		528A2CCF12CCDC400053A343 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				C908D82B133D040600661718 /* paper-white.png */,
 				C923A7A012F1F11C0054426F /* PlaceholderBook.png */,
 				C923A6C512F1E7D50054426F /* Shelf.png */,
 				F8509F8012F0653700197EB5 /* thumbImage.png */,
@@ -1936,6 +1940,7 @@
 				C9CEF42F133A1CD400FB5BE0 /* SCHReadingViewController.xib in Resources */,
 				A3A38E61133A811400C325A3 /* devcerttemplate.dat in Resources */,
 				A3A38E62133A811400C325A3 /* iphonecert.dat in Resources */,
+				C908D82C133D040600661718 /* paper-white.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1979,6 +1984,7 @@
 				F8678D8A133218D8001FDB2F /* ScholasticFeatureCompatibility.plist in Resources */,
 				A3A38E63133A811400C325A3 /* devcerttemplate.dat in Resources */,
 				A3A38E64133A811400C325A3 /* iphonecert.dat in Resources */,
+				C908D82D133D040600661718 /* paper-white.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
