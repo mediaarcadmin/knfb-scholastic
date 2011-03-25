@@ -27,6 +27,7 @@ static NSString * const kSCHProfileItemUserContentItemContentMetadataItem = @"Us
 @interface SCHProfileItem ()
 
 - (NSString *)MD5:(NSString *)string;
+- (NSString *)SHA1:(NSString *)string;
 
 @end
 
@@ -145,6 +146,18 @@ static NSString * const kSCHProfileItemUserContentItemContentMetadataItem = @"Us
 	return([[NSData dataWithBytes:md length:strlen((char *)md)] base64Encoding]);
 }
 
+- (NSString *)SHA1:(NSString *)string
+{
+	const char *data = [string UTF8String];
+	unsigned char md[CC_SHA1_DIGEST_LENGTH+1];
+    
+	bzero(md, CC_SHA1_DIGEST_LENGTH+1);
+
+	CC_SHA1(data, strlen(data), md);
+	
+	return([[NSData dataWithBytes:md length:strlen((char *)md)] base64Encoding]);
+}
+
 - (void)setRawPassword:(NSString *)value 
 {
     self.Password = [self MD5:value];
@@ -161,7 +174,7 @@ static NSString * const kSCHProfileItemUserContentItemContentMetadataItem = @"Us
 
 - (BOOL)validatePasswordWith:(NSString *)withPassword
 {
-	if ([self hasPassword] == NO || [self.Password compare:[self MD5:withPassword]] != NSOrderedSame) {
+	if ([self hasPassword] == NO || [self.Password compare:[self SHA1:withPassword]] != NSOrderedSame) {
 		return(NO);
 	} else {
 		return(YES);
