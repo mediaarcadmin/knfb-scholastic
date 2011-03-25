@@ -327,7 +327,8 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
 
 - (id)initWithCoder:(NSCoder*)coder
 {
-	if (self=[super init]) {
+	self = [super init];
+	if (self != nil) {
 		[coder decodeValueOfObjCType:@encode(BOOL) at:&value];
 	}
 	return self;
