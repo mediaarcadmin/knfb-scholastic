@@ -6,3 +6,4 @@ buildlocal
 *.pbxuser
 *.mode*
 *.perspective*
+xcuserdata
