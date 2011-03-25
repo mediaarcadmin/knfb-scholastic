@@ -20,7 +20,7 @@ static NSString * const kSCHURLManagerFailure = @"URLManagerFailure";
 
 }
 
-@property (retain, nonatomic) NSManagedObjectContext *managedObjectContext;
+@property (retain) NSManagedObjectContext *managedObjectContext;
 
 + (SCHURLManager *)sharedURLManager;
 
