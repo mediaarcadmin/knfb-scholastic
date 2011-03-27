@@ -13,7 +13,6 @@
 
 @interface SCHLayoutView()
 
-@property (nonatomic, retain) id book;
 @property (nonatomic, retain) id xpsProvider;
 @property (nonatomic, retain) EucPageTurningView *pageTurningView;
 @property (nonatomic, assign) NSUInteger pageCount;
@@ -28,7 +27,6 @@
 
 @implementation SCHLayoutView
 
-@synthesize book;
 @synthesize xpsProvider;
 @synthesize pageTurningView;
 @synthesize pageCount;
@@ -41,11 +39,10 @@
 {
     
     if (xpsProvider) {
-        [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:book];
+        [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.book];
         [xpsProvider release], xpsProvider = nil;
     }
     
-    [book release], book = nil;
     [pageTurningView release], pageTurningView = nil;
     [pageCropsCache release], pageCropsCache = nil;
     [layoutCacheLock release], layoutCacheLock = nil;
@@ -54,51 +51,48 @@
 
 - (void)initialiseView
 {
-    pageTurningView = [[[EucPageTurningView alloc] initWithFrame:self.bounds] retain];
-    pageTurningView.delegate = self;
-    pageTurningView.bitmapDataSource = self;
-    pageTurningView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-    pageTurningView.zoomHandlingKind = EucPageTurningViewZoomHandlingKindZoom;
-    pageTurningView.vibratesOnInvalidTurn = NO;
+    xpsProvider = [[[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.book] retain];
     
-    // Must do this here so that the page aspect ratio takes account of the twoUp property
-    CGRect myBounds = self.bounds;
-    if(myBounds.size.width > myBounds.size.height) {
-        pageTurningView.twoUp = YES;
-    } else {
-        pageTurningView.twoUp = NO;
-    } 
-        
-    if (CGRectEqualToRect(firstPageCrop, CGRectZero)) {
-        [pageTurningView setPageAspectRatio:0];
-    } else {
-        [pageTurningView setPageAspectRatio:firstPageCrop.size.width/firstPageCrop.size.height];
-    }
-    
-    [self addSubview:pageTurningView];
-    
-    [pageTurningView setPageTexture:[UIImage imageNamed: @"paper-white.png"] isDark:NO];
-    [pageTurningView turnToPageAtIndex:10 animated:NO];
-    [pageTurningView waitForAllPageImagesToBeAvailable];
-}
-
-- (id)initWithFrame:(CGRect)frame book:(id)aBook
-{
-    self = [super initWithFrame:frame];
-    if (self) {
-        // Initialization code
-        book = [aBook retain];
-        self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        self.backgroundColor = [UIColor yellowColor];
-        
-        xpsProvider = [[[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.book] retain];
+    if (xpsProvider) {
         layoutCacheLock = [[NSLock alloc] init];
         
         pageCount = [xpsProvider pageCount];
         firstPageCrop = [xpsProvider cropForPage:1 allowEstimate:NO];
-
-        [self initialiseView];
         
+        pageTurningView = [[[EucPageTurningView alloc] initWithFrame:self.bounds] retain];
+        pageTurningView.delegate = self;
+        pageTurningView.bitmapDataSource = self;
+        pageTurningView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+        pageTurningView.zoomHandlingKind = EucPageTurningViewZoomHandlingKindZoom;
+        pageTurningView.vibratesOnInvalidTurn = NO;
+        
+        // Must do this here so that the page aspect ratio takes account of the twoUp property
+        CGRect myBounds = self.bounds;
+        if(myBounds.size.width > myBounds.size.height) {
+            pageTurningView.twoUp = YES;
+        } else {
+            pageTurningView.twoUp = NO;
+        } 
+        
+        if (CGRectEqualToRect(firstPageCrop, CGRectZero)) {
+            [pageTurningView setPageAspectRatio:0];
+        } else {
+            [pageTurningView setPageAspectRatio:firstPageCrop.size.width/firstPageCrop.size.height];
+        }
+        
+        [self addSubview:pageTurningView];
+        
+        [pageTurningView setPageTexture:[UIImage imageNamed: @"paper-white.png"] isDark:NO];
+        [pageTurningView turnToPageAtIndex:10 animated:NO];
+        [pageTurningView waitForAllPageImagesToBeAvailable];
+    }
+}
+
+- (id)initWithFrame:(CGRect)frame book:(id)aBook
+{
+    self = [super initWithFrame:frame book:aBook];
+    if (self) {        
+        [self initialiseView];
     }
     return self;
 }

@@ -8,6 +8,7 @@
 
 #import "SCHReadingViewController.h"
 #import "SCHLayoutView.h"
+#import "SCHFlowView.h"
 
 @interface SCHReadingViewController()
 
@@ -51,6 +52,7 @@
     // Do any additional setup after loading the view from its nib.
     
     SCHLayoutView *aBookView = [[SCHLayoutView alloc] initWithFrame:self.view.bounds book:self.book];
+    //SCHFlowView *aBookView = [[SCHFlowView alloc] initWithFrame:self.view.bounds book:self.book];
     [self.view addSubview:aBookView];
     [aBookView release];
 }
