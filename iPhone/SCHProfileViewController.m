@@ -259,17 +259,18 @@ static NSString * const kRootViewControllerSettingsIcon = @"Settings.png";
 		case 0: {
             
 #ifdef LOCALDEBUG
-	// controller to view book shelf with books filtered to profile
-	[self pushBookshelvesControllerWithProfileItem:[[self fetchedResultsController] objectAtIndexPath:indexPath]];	
-#else	
-    
-#if SERVEROVERRIDE
-            [self pushBookshelvesControllerWithProfileItem:[[self fetchedResultsController] objectAtIndexPath:indexPath]];            
-#else
-			profilePasswordViewController.managedObjectContext = self.managedObjectContext;
-			profilePasswordViewController.profileItem = [[self fetchedResultsController] objectAtIndexPath:indexPath];
-			[self presentModalViewController:profilePasswordViewController animated:YES];
-#endif
+            // controller to view book shelf with books filtered to profile
+            [self pushBookshelvesControllerWithProfileItem:[[self fetchedResultsController] objectAtIndexPath:indexPath]];	
+#else	    
+            SCHProfileItem *profileItem = [[self fetchedResultsController] objectAtIndexPath:indexPath];
+            
+            if ([profileItem.ProfilePasswordRequired boolValue] == NO) {                
+                [self pushBookshelvesControllerWithProfileItem:profileItem];            
+            } else {
+                profilePasswordViewController.managedObjectContext = self.managedObjectContext;
+                profilePasswordViewController.profileItem = profileItem;
+                [self presentModalViewController:profilePasswordViewController animated:YES];
+            }
 #endif	
 		}	break;
 		case 1:

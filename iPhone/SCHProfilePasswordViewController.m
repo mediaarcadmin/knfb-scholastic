@@ -51,7 +51,7 @@
 {
 	[super viewWillAppear:animated];
 
-	self.setPasswordMode = [self.profileItem.ProfilePasswordRequired boolValue] == NO;
+	self.setPasswordMode = [self.profileItem hasPassword] == NO;
 	
 	self.newPasswordMessage.hidden = !self.setPasswordMode;
 	self.password.text = @"";
@@ -128,7 +128,6 @@
 	} else {	
 		
 		[self.profileItem setRawPassword:self.password.text];
-		self.profileItem.ProfilePasswordRequired = [NSNumber numberWithBool:YES];
 		
 		[self.managedObjectContext save:nil];
 		
