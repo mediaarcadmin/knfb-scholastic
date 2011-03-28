@@ -20,6 +20,9 @@ static NSString * const kSCHScholasticWebServiceAttributeToken = @"token";
 static NSString * const kSCHScholasticWebServiceAttributeErrorCode = @"errorCode";
 static NSString * const kSCHScholasticWebServiceAttributeErrorDesc = @"errorDesc";
 
+/*
+ * This class is thread safe when using the Thread Confinement design pattern.
+ */
 
 @interface SCHScholasticWebService ()
 

@@ -20,6 +20,10 @@ static NSString * const kSCHLibreAccessWebServiceStatusHolderStatusMessage = @"s
 
 static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 
+/*
+ * This class is thread safe when using the Thread Confinement design pattern.
+ */
+
 @interface SCHLibreAccessWebService ()
 
 - (NSError *)errorFromStatusMessage:(LibreAccessServiceSvc_StatusHolder *)statusMessage;
