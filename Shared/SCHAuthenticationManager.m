@@ -14,6 +14,11 @@
 #import "Reachability.h"
 #import "SCHDrmRegistrationSession.h"
 
+// DeviceKeys
+// od1
+// od2 {ed9532e2-de12-9a44-ae81-11eafd5a9f3f} - does seem to work
+// mf
+
 static SCHAuthenticationManager *sharedAuthenticationManager = nil;
 
 static NSString * const kSCHAuthenticationManagerUsername = @"AuthenticationManager.Username";
@@ -179,6 +184,7 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
             [[authenticateWithUserNameParameters->username stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0 &&
             authenticateWithUserNameParameters->password != nil &&
             [[authenticateWithUserNameParameters->password stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {
+            [self clearOnMainThread];
             [[NSUserDefaults standardUserDefaults] setObject:authenticateWithUserNameParameters->username 
                                                       forKey:kSCHAuthenticationManagerUsername];
             [SFHFKeychainUtils storeUsername:authenticateWithUserNameParameters->username 
@@ -239,7 +245,7 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
         } else {
             NSError *error = [NSError errorWithDomain:kSCHAuthenticationManagerErrorDomain 
                                                  code:kSCHAuthenticationManagerLoginError 
-                                             userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"You must have internet access to login", @"") 
+                                             userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"You must enter a username and password", @"") 
                                                                                   forKey:NSLocalizedDescriptionKey]];
             
             [self postFailureWithError:error];
@@ -267,17 +273,21 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
     NSString *username = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUsername];	
     NSString *deviceKey = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerDeviceKey];	
     
+    [aToken release], aToken = nil;
+    [tokenExpires release], tokenExpires = nil;
+
+    if (deviceKey != nil && 
+        [[deviceKey stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {
+        // TODO: deregisterDevice
+        // [drmRegistrationSession deregisterDevice:deviceKey];
+    }
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:kSCHAuthenticationManagerDeviceKey];    
+
     if (username != nil && 
         [[username stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {
         [SFHFKeychainUtils deleteItemForUsername:username andServiceName:kSCHAuthenticationManagerServiceName error:nil];
     }
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:kSCHAuthenticationManagerUsername];
-
-    if (deviceKey != nil && 
-        [[deviceKey stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {
-        [drmRegistrationSession deregisterDevice:deviceKey];
-    }
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:kSCHAuthenticationManagerDeviceKey];    
 }
 
 #pragma mark -
@@ -315,15 +325,19 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
                                      forUser:[[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUsername]];
 	} else if([method compare:kSCHLibreAccessWebServiceTokenExchange] == NSOrderedSame) {	
         [drmRegistrationSession registerDevice:[result objectForKey:kSCHLibreAccessWebServiceAuthToken]];        
-        NSLog(@"%@", [result objectForKey:kSCHLibreAccessWebServiceAuthToken]);
 	} else if([method compare:kSCHLibreAccessWebServiceAuthenticateDevice] == NSOrderedSame ||
               [method compare:kSCHLibreAccessWebServiceRenewToken] == NSOrderedSame) {	
-        [aToken release], aToken = nil;
-        aToken = [[result objectForKey:kSCHLibreAccessWebServiceAuthToken] retain];
-		NSInteger expiresIn = MAX(0, [[result objectForKey:kSCHLibreAccessWebServiceExpiresIn] integerValue] - 1);
-        [tokenExpires release], tokenExpires = nil;        
-		tokenExpires = [[NSDate dateWithTimeIntervalSinceNow:expiresIn * kSCHAuthenticationManagerSecondsInAMinute] retain];
-    
+        [aToken release], aToken = nil;            
+        [tokenExpires release], tokenExpires = nil;                    
+
+        if ( [[result objectForKey:kSCHLibreAccessWebServiceDeviceIsDeregistered] boolValue] == YES) {
+            [[NSUserDefaults standardUserDefaults] removeObjectForKey:kSCHAuthenticationManagerDeviceKey];
+        } else {
+            aToken = [[result objectForKey:kSCHLibreAccessWebServiceAuthToken] retain];
+            NSInteger expiresIn = MAX(0, [[result objectForKey:kSCHLibreAccessWebServiceExpiresIn] integerValue] - 1);
+            tokenExpires = [[NSDate dateWithTimeIntervalSinceNow:expiresIn * kSCHAuthenticationManagerSecondsInAMinute] retain];
+        }
+        
 		waitingOnResponse = NO;
 		[self postSuccessWithOfflineMode:NO];        
     }
@@ -331,8 +345,11 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
 
 - (void)method:(NSString *)method didFailWithError:(NSError *)error
 {
-    if([method compare:kSCHLibreAccessWebServiceAuthenticateDevice] == NSOrderedSame ||
-       [method compare:kSCHLibreAccessWebServiceRenewToken] == NSOrderedSame) {	
+    if([method compare:kSCHLibreAccessWebServiceAuthenticateDevice] == NSOrderedSame) {
+        // TODO: we need to decide when to retry and when to re-register the device
+        [aToken release], aToken = nil;
+        [tokenExpires release], tokenExpires = nil;                
+    } else if([method compare:kSCHLibreAccessWebServiceRenewToken] == NSOrderedSame) {	
         [aToken release], aToken = nil;
         [tokenExpires release], tokenExpires = nil;        
     }
@@ -349,8 +366,7 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
     [[NSUserDefaults standardUserDefaults] setObject:deviceKey 
                                               forKey:kSCHAuthenticationManagerDeviceKey];
     
-    [libreAccessWebService authenticateDevice:deviceKey forUserKey:[[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUsername]];     
-    NSLog(@"%@", deviceKey);
+    [libreAccessWebService authenticateDevice:deviceKey forUserKey:[[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUsername]];
 }
 
 - (void)registrationSession:(SCHDrmRegistrationSession *)registrationSession didFailWithError:(NSError *)error
