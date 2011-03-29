@@ -9,9 +9,11 @@
 #import <Foundation/Foundation.h>
 
 #import "BITAPIProxyDelegate.h"
+#import "SCHDrmRegistrationSessionDelegate.h"
 
 @class SCHScholasticWebService;
 @class SCHLibreAccessWebService;
+@class SCHDrmRegistrationSession;
 
 static NSString * const kSCHAuthenticationManagerSuccess = @"AuthenticationManagerSuccess";
 static NSString * const kSCHAuthenticationManagerFailure = @"AuthenticationManagerFailure";
@@ -23,13 +25,14 @@ static NSString * const kSCHAuthenticationManagerErrorDomain = @"AuthenticationM
 static NSInteger const kSCHAuthenticationManagerGeneralError = 2000;
 static NSInteger const kSCHAuthenticationManagerLoginError = 2001;
 
-@interface SCHAuthenticationManager : NSObject <BITAPIProxyDelegate>  {
+@interface SCHAuthenticationManager : NSObject <BITAPIProxyDelegate, SCHDrmRegistrationSessionDelegate>  {
     NSString *aToken;
     NSDate *tokenExpires;
 	BOOL waitingOnResponse;
     
 	SCHScholasticWebService *scholasticWebService;
 	SCHLibreAccessWebService *libreAccessWebService;
+    SCHDrmRegistrationSession *drmRegistrationSession;
 }
 
 @property (readonly) NSString *aToken;
@@ -37,8 +40,8 @@ static NSInteger const kSCHAuthenticationManagerLoginError = 2001;
 
 + (SCHAuthenticationManager *)sharedAuthenticationManager;
 
-- (BOOL)authenticateWithUserName:(NSString *)userName withPassword:(NSString *)password;
-- (BOOL)authenticate;
+- (void)authenticateWithUserName:(NSString *)userName withPassword:(NSString *)password;
+- (void)authenticate;
 - (BOOL)hasUsernameAndPassword;
 - (void)clear;
 
