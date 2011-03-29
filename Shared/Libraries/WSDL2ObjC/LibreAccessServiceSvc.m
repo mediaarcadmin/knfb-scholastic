@@ -44474,9 +44474,10 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 + (LibreAccessServiceSoap11Binding *)LibreAccessServiceSoap11Binding
 {
 #if SERVEROVERRIDE
+    NSLog(@"SOAP using: %@", @"http://laesb.uat.cld.libredigital.com/services/LibreAccessService.LibreAccessServiceHttpSoap11Endpoint");
     return [[[LibreAccessServiceSoap11Binding alloc] initWithAddress:@"http://laesb.uat.cld.libredigital.com/services/LibreAccessService.LibreAccessServiceHttpSoap11Endpoint"] autorelease];
 #endif
-    
+    NSLog(@"SOAP using: %@", @"http://laesb.devint.cld.libredigital.com/services/LibreAccessService.LibreAccessServiceHttpSoap11Endpoint");    
 	return [[[LibreAccessServiceSoap11Binding alloc] initWithAddress:@"http://laesb.devint.cld.libredigital.com/services/LibreAccessService.LibreAccessServiceHttpSoap11Endpoint"] autorelease];
 }
 @end
