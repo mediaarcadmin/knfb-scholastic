@@ -204,7 +204,7 @@
         [controller release];
     }
 	
-#ifdef LOCALDEBUG
+#if LOCALDEBUG
 	controller.managedObjectContext = self.managedObjectContext;
 #endif
 	//controller.books = [self books];

@@ -197,7 +197,7 @@ static NSTimeInterval const kSCHSyncManagerHeartbeatInterval = 30.0;
 // also coming out of background
 - (void)firstSync
 {
-#ifdef LOCALDEBUG
+#if LOCALDEBUG
 	return;
 #endif
 	
