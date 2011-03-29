@@ -2329,6 +2329,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Scholastic_Prefix.pch;
+				GCC_PREPROCESSOR_DEFINITIONS = "LOCALDEBUG=0";
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "Scholastic-Info.plist";
 				OTHER_LDFLAGS = (
@@ -2348,6 +2349,7 @@
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Scholastic_Prefix.pch;
+				GCC_PREPROCESSOR_DEFINITIONS = "LOCALDEBUG=0";
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "Scholastic-Info.plist";
 				OTHER_LDFLAGS = (
@@ -2400,6 +2402,7 @@
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Scholastic_Prefix.pch;
+				GCC_PREPROCESSOR_DEFINITIONS = "LOCALDEBUG=0";
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "Scholastic-Info.plist";
 				OTHER_LDFLAGS = (
@@ -2482,12 +2485,10 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Scholastic_Prefix.pch;
+				GCC_PREPROCESSOR_DEFINITIONS = "LOCALDEBUG=1";
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "Scholastic-Info.plist";
-				OTHER_CFLAGS = (
-					"-DLOCALDEBUG",
-					"-I/usr/include/libxml2",
-				);
+				OTHER_CFLAGS = "-I/usr/include/libxml2";
 				PRODUCT_NAME = Scholastic;
 			};
 			name = Debug;
@@ -2501,10 +2502,10 @@
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Scholastic_Prefix.pch;
+				GCC_PREPROCESSOR_DEFINITIONS = "LOCALDEBUG=1";
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "Scholastic-Info.plist";
 				OTHER_CFLAGS = (
-					"-DLOCALDEBUG",
 					"-I/usr/include/libxml2",
 					"-DNS_BLOCK_ASSERTIONS=1",
 				);
@@ -2522,10 +2523,10 @@
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Scholastic_Prefix.pch;
+				GCC_PREPROCESSOR_DEFINITIONS = "LOCALDEBUG=1";
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "Scholastic-Info.plist";
 				OTHER_CFLAGS = (
-					"-DLOCALDEBUG",
 					"-I/usr/include/libxml2",
 					"-DNS_BLOCK_ASSERTIONS=1",
 				);

@@ -30,7 +30,7 @@
 @implementation SCHBookShelfViewController
 
 @synthesize bookshelvesController;
-#ifdef LOCALDEBUG
+#if LOCALDEBUG
 @synthesize managedObjectContext;
 #endif
 @synthesize books;
@@ -64,7 +64,7 @@
 	[aCache release];
 	
 	
-#ifdef LOCALDEBUG
+#if LOCALDEBUG
 	self.bookshelvesController.navigationItem.title = @"Local Bookshelf";
 #endif
 	

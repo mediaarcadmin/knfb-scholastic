@@ -255,7 +255,7 @@ static SCHProcessingManager *sharedManager = nil;
 			// *** Book has no URLs ***
 		case SCHBookProcessingStateNoURLs:
 		{/*
-#ifdef LOCALDEBUG
+#if LOCALDEBUG
       
             // for local debug, set the book to No Cover Image
             [[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:isbn state:SCHBookProcessingStateNoCoverImage];
@@ -282,7 +282,7 @@ static SCHProcessingManager *sharedManager = nil;
 			// *** Book has no full sized cover image ***
 		case SCHBookProcessingStateNoCoverImage:
 		{	
-#ifdef LOCALDEBUG
+#if LOCALDEBUG
 			// create cover image download operation
 			SCHXPSCoverImageOperation *downloadImageOp = [[SCHXPSCoverImageOperation alloc] init];
 			downloadImageOp.isbn = isbn;

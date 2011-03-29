@@ -15,7 +15,7 @@
 #import "SCHProcessingManager.h"
 #import "SCHDictionaryManager.h"
 
-#ifdef LOCALDEBUG
+#if LOCALDEBUG
 #import "SCHLocalDebug.h"
 #endif
 
@@ -102,7 +102,7 @@ static NSString* const prModelCertFilename = @"iphonecert.dat";
 
 - (void)copyLocalFilesIfMissing
 {
-#ifdef LOCALDEBUG    
+#if LOCALDEBUG    
     NSManagedObjectContext *moc = [self managedObjectContext];
     NSEntityDescription *entityDescription = [NSEntityDescription
                                               entityForName:@"SCHUserContentItem" inManagedObjectContext:moc];
@@ -150,7 +150,7 @@ static NSString* const prModelCertFilename = @"iphonecert.dat";
 	// instantiate the shared processing manager
 	[SCHProcessingManager sharedProcessingManager];
     
-#ifdef LOCALDEBUG
+#if LOCALDEBUG
     [self copyLocalFilesIfMissing];
 #endif
 	
@@ -315,7 +315,7 @@ static NSString* const prModelCertFilename = @"iphonecert.dat";
 	
 	BOOL localDebugMode = NO;
 	
-#ifdef LOCALDEBUG
+#if LOCALDEBUG
 	localDebugMode = YES;
 #endif
 	

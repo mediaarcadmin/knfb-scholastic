@@ -69,7 +69,7 @@ static NSString * const kRootViewControllerSettingsIcon = @"Settings.png";
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-#ifndef LOCALDEBUG	
+#if !LOCALDEBUG	
 	SCHAuthenticationManager *authenticationManager = [SCHAuthenticationManager sharedAuthenticationManager];
 	
 	if ([authenticationManager hasUsernameAndPassword] == NO) {
@@ -258,7 +258,7 @@ static NSString * const kRootViewControllerSettingsIcon = @"Settings.png";
     switch (indexPath.section) {
 		case 0: {
             
-#ifdef LOCALDEBUG
+#if LOCALDEBUG
             // controller to view book shelf with books filtered to profile
             [self pushBookshelvesControllerWithProfileItem:[[self fetchedResultsController] objectAtIndexPath:indexPath]];	
 #else	    

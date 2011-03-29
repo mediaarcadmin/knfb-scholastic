@@ -108,7 +108,7 @@
 
 - (NSString *) xpsPath
 {
-#ifdef LOCALDEBUG
+#if LOCALDEBUG
 	return [[NSBundle mainBundle] pathForResource:self.ContentMetadataItem.FileName ofType:@"xps"];
 #else
 	return [NSString stringWithFormat:@"%@/%@-%@.xps", 

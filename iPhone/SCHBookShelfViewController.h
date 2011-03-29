@@ -27,7 +27,7 @@
 
 @property (nonatomic, retain) BlioTimeOrderedCache *componentCache;
 
-#ifdef LOCALDEBUG
+#if LOCALDEBUG
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 #endif
 @property (nonatomic, retain) NSMutableArray *books;
