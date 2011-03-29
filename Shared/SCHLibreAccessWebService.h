@@ -151,7 +151,7 @@ static NSString * const kSCHLibreAccessWebServiceeReaderCategories = @"eReaderCa
 
 - (void)tokenExchange:(NSString *)pToken forUser:(NSString *)userName;
 - (void)authenticateDevice:(NSString *)deviceKey forUserKey:(NSString *)userKey;
-- (BOOL)renewToken;
+- (void)renewToken:(NSString *)aToken;
 - (BOOL)getUserProfiles;
 - (BOOL)saveUserProfiles:(NSArray *)userProfiles;
 - (BOOL)listUserContent;
