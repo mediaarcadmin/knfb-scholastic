@@ -330,7 +330,8 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
         [aToken release], aToken = nil;            
         [tokenExpires release], tokenExpires = nil;                    
 
-        if ( [[result objectForKey:kSCHLibreAccessWebServiceDeviceIsDeregistered] boolValue] == YES) {
+        NSNumber *deviceIsDeregistered = [result objectForKey:kSCHLibreAccessWebServiceDeviceIsDeregistered];
+        if ([deviceIsDeregistered isKindOfClass:[NSNumber class]] == YES && [deviceIsDeregistered boolValue] == YES) {
             [[NSUserDefaults standardUserDefaults] removeObjectForKey:kSCHAuthenticationManagerDeviceKey];
         } else {
             aToken = [[result objectForKey:kSCHLibreAccessWebServiceAuthToken] retain];
