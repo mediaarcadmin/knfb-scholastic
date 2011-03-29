@@ -143,23 +143,16 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 	[request release], request = nil;
 }
 
-- (BOOL)renewToken
+- (void)renewToken:(NSString *)aToken
 {
-    BOOL ret = NO;
+    LibreAccessServiceSvc_RenewTokenRequest *request = [LibreAccessServiceSvc_RenewTokenRequest new];
     
-	if ([SCHAuthenticationManager sharedAuthenticationManager].isAuthenticated == YES) {		
-        LibreAccessServiceSvc_RenewTokenRequest *request = [LibreAccessServiceSvc_RenewTokenRequest new];
-		
-		request.authtoken = [SCHAuthenticationManager sharedAuthenticationManager].aToken;
-        
-        [binding RenewTokenAsyncUsingBody:request delegate:self]; 
-        [[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
-        
-        [request release], request = nil;
-        ret = YES;
-    }
+    request.authtoken = aToken;
     
-    return(ret);
+    [binding RenewTokenAsyncUsingBody:request delegate:self]; 
+    [[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
+    
+    [request release], request = nil;
 }
 
 - (BOOL)getUserProfiles
