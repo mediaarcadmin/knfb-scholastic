@@ -92,7 +92,7 @@
 		self.thumbImageRequests = [[NSMutableDictionary alloc] init];
         self.currentlyProcessingISBNs = [[NSMutableArray alloc] init];
 		
-		self.connectionIsIdle = YES;
+		self.connectionIsIdle = NO;
 	}
 	
 	return self;
@@ -120,7 +120,7 @@ static SCHProcessingManager *sharedManager = nil;
 		[[NSNotificationCenter defaultCenter] addObserver:sharedManager 
 												 selector:@selector(enterForeground) 
 													 name:UIApplicationWillEnterForegroundNotification 
-												   object:nil];			
+												   object:nil];	
     } 
 	
 	return sharedManager;
@@ -198,6 +198,25 @@ static SCHProcessingManager *sharedManager = nil;
 			[self processISBN:isbn];
 		}
 	}	
+    
+	// check to see if we're processing
+	int totalOperations = [[self.networkOperationQueue operations] count] + 
+	[[self.webServiceOperationQueue operations] count];
+	
+	if (totalOperations == 0) {
+		if (!self.connectionIsIdle) {
+			self.connectionIsIdle = YES;
+			
+			[self performSelectorOnMainThread:@selector(sendNotification:) withObject:kSCHProcessingManagerConnectionIdle waitUntilDone:YES];
+		}
+	} else {
+		if (self.connectionIsIdle) {
+			self.connectionIsIdle = NO;
+			
+			[self performSelectorOnMainThread:@selector(sendNotification:) withObject:kSCHProcessingManagerConnectionBusy waitUntilDone:YES];
+		}
+	}
+    
 }
 
 - (BOOL) ISBNNeedsProcessing: (NSString *) isbn
@@ -395,23 +414,6 @@ static SCHProcessingManager *sharedManager = nil;
 		[self checkAndDispatchThumbsForISBN:isbn];
 	}
 	
-	// check to see if we're processing
-	int totalOperations = [[self.networkOperationQueue operations] count] + 
-	[[self.webServiceOperationQueue operations] count];
-	
-	if (totalOperations == 0) {
-		if (!self.connectionIsIdle) {
-			self.connectionIsIdle = YES;
-			
-			[self performSelectorOnMainThread:@selector(sendNotification:) withObject:kSCHProcessingManagerConnectionIdle waitUntilDone:YES];
-		}
-	} else {
-		if (self.connectionIsIdle) {
-			self.connectionIsIdle = NO;
-			
-			[self performSelectorOnMainThread:@selector(sendNotification:) withObject:kSCHProcessingManagerConnectionBusy waitUntilDone:YES];
-		}
-	}
 }	
 
 - (void) sendNotification: (NSString *) name
