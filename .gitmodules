@@ -4,3 +4,6 @@
 [submodule "Shared/Libraries/Submodules/libEucalyptus"]
 	path = Shared/Libraries/Submodules/libEucalyptus
 	url = git@codebasehq.com:otherthings/libeucalyptus/libeucalyptus.git
+[submodule "Shared/Libraries/Submodules/libKNFBReader"]
+	path = Shared/Libraries/Submodules/libKNFBReader
+	url = git@codebasehq.com:otherthings/koala/libknfbreader.git
