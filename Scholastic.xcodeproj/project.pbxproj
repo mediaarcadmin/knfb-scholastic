@@ -187,10 +187,6 @@
 		C908D8AE133F942C00661718 /* xhtml-entities.ent in Resources */ = {isa = PBXBuildFile; fileRef = C908D89E133F942C00661718 /* xhtml-entities.ent */; };
 		C908D8B1133F945300661718 /* SCHFlowView.m in Sources */ = {isa = PBXBuildFile; fileRef = C908D8B0133F945300661718 /* SCHFlowView.m */; };
 		C908D8B2133F945300661718 /* SCHFlowView.m in Sources */ = {isa = PBXBuildFile; fileRef = C908D8B0133F945300661718 /* SCHFlowView.m */; };
-		C9162338133BB74200B25414 /* libEucalyptusBase.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9162337133BB74200B25414 /* libEucalyptusBase.a */; };
-		C9162339133BB74A00B25414 /* libEucalyptusBase.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9162337133BB74200B25414 /* libEucalyptusBase.a */; };
-		C916233B133BB75B00B25414 /* libhyphenate.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C916233A133BB75B00B25414 /* libhyphenate.a */; };
-		C916233C133BB75E00B25414 /* libhyphenate.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C916233A133BB75B00B25414 /* libhyphenate.a */; };
 		C923A27A12F06FE60054426F /* MRGridView.m in Sources */ = {isa = PBXBuildFile; fileRef = C923A27312F06FE60054426F /* MRGridView.m */; };
 		C923A27B12F06FE60054426F /* MRGridViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C923A27512F06FE60054426F /* MRGridViewCell.m */; };
 		C923A27C12F06FE60054426F /* MRGridViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C923A27712F06FE60054426F /* MRGridViewController.m */; };
@@ -201,8 +197,6 @@
 		C923B14312F6AFC60054426F /* SCHMultipleBookshelvesController.m in Sources */ = {isa = PBXBuildFile; fileRef = C923B13F12F6AFC60054426F /* SCHMultipleBookshelvesController.m */; };
 		C923B15B12F6B0280054426F /* SCHMultipleBookshelvesController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C923B15A12F6B0280054426F /* SCHMultipleBookshelvesController.xib */; };
 		C923B15C12F6B0280054426F /* SCHMultipleBookshelvesController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C923B15A12F6B0280054426F /* SCHMultipleBookshelvesController.xib */; };
-		C9564112133BB6E800D7FB9D /* libEucalyptus.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9564111133BB6E800D7FB9D /* libEucalyptus.a */; };
-		C9564113133BB6F100D7FB9D /* libEucalyptus.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9564111133BB6E800D7FB9D /* libEucalyptus.a */; };
 		C95ECB45133A76C400D88768 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C95ECB44133A76C400D88768 /* Accelerate.framework */; };
 		C95ECB47133A76DE00D88768 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C95ECB46133A76DE00D88768 /* QuartzCore.framework */; };
 		C95ECB49133A770B00D88768 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C95ECB48133A770B00D88768 /* OpenGLES.framework */; };
@@ -212,6 +206,28 @@
 		C95ECB51133A77FA00D88768 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C95ECB46133A76DE00D88768 /* QuartzCore.framework */; };
 		C95ECB52133A77FC00D88768 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C95ECB44133A76C400D88768 /* Accelerate.framework */; };
 		C97F2001133B8E2100EA6BC8 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C9F1A579133B83D100FD984C /* libxml2.dylib */; };
+		C9ED566D1343322300A25486 /* libcss.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9ED56631343322300A25486 /* libcss.a */; };
+		C9ED566E1343322300A25486 /* libEucalyptus.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9ED56641343322300A25486 /* libEucalyptus.a */; };
+		C9ED566F1343322300A25486 /* libEucalyptusBase.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9ED56651343322300A25486 /* libEucalyptusBase.a */; };
+		C9ED56701343322300A25486 /* libEucalyptusBUpe.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9ED56661343322300A25486 /* libEucalyptusBUpe.a */; };
+		C9ED56711343322300A25486 /* libEucalyptusCSS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9ED56671343322300A25486 /* libEucalyptusCSS.a */; };
+		C9ED56721343322300A25486 /* libexpat.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9ED56681343322300A25486 /* libexpat.a */; };
+		C9ED56731343322300A25486 /* libhyphenate.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9ED56691343322300A25486 /* libhyphenate.a */; };
+		C9ED56741343322300A25486 /* libminiunzip.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9ED566A1343322300A25486 /* libminiunzip.a */; };
+		C9ED56751343322300A25486 /* libparserutils.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9ED566B1343322300A25486 /* libparserutils.a */; };
+		C9ED56761343322300A25486 /* libwapcaplet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9ED566C1343322300A25486 /* libwapcaplet.a */; };
+		C9ED56771343323200A25486 /* libcss.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9ED56631343322300A25486 /* libcss.a */; };
+		C9ED56781343323200A25486 /* libEucalyptus.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9ED56641343322300A25486 /* libEucalyptus.a */; };
+		C9ED56791343323200A25486 /* libEucalyptusBase.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9ED56651343322300A25486 /* libEucalyptusBase.a */; };
+		C9ED567A1343323200A25486 /* libEucalyptusBUpe.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9ED56661343322300A25486 /* libEucalyptusBUpe.a */; };
+		C9ED567B1343323200A25486 /* libEucalyptusCSS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9ED56671343322300A25486 /* libEucalyptusCSS.a */; };
+		C9ED567C1343323200A25486 /* libexpat.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9ED56681343322300A25486 /* libexpat.a */; };
+		C9ED567D1343323200A25486 /* libhyphenate.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9ED56691343322300A25486 /* libhyphenate.a */; };
+		C9ED567E1343323200A25486 /* libminiunzip.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9ED566A1343322300A25486 /* libminiunzip.a */; };
+		C9ED567F1343323200A25486 /* libparserutils.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9ED566B1343322300A25486 /* libparserutils.a */; };
+		C9ED56801343323200A25486 /* libwapcaplet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9ED566C1343322300A25486 /* libwapcaplet.a */; };
+		C9ED56821343328F00A25486 /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C9ED56811343328F00A25486 /* libiconv.dylib */; };
+		C9ED56831343329400A25486 /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C9ED56811343328F00A25486 /* libiconv.dylib */; };
 		C9F1A4D6133B507100FD984C /* libPlayReadyPK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A3D933851326D92000037111 /* libPlayReadyPK.a */; };
 		C9F1A57A133B83D100FD984C /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C9F1A579133B83D100FD984C /* libxml2.dylib */; };
 		F81B3A7F12FAAD8E00A20D52 /* SCHNote.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A5E12F0EF5600BBBCE6 /* SCHNote.m */; };
@@ -822,8 +838,6 @@
 		C908D89E133F942C00661718 /* xhtml-entities.ent */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "xhtml-entities.ent"; sourceTree = "<group>"; };
 		C908D8AF133F945300661718 /* SCHFlowView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHFlowView.h; path = Shared/SCHFlowView.h; sourceTree = "<group>"; };
 		C908D8B0133F945300661718 /* SCHFlowView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHFlowView.m; path = Shared/SCHFlowView.m; sourceTree = "<group>"; };
-		C9162337133BB74200B25414 /* libEucalyptusBase.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = libEucalyptusBase.a; path = ../../../../../../../../Projects/Consulting/scholastic/libEucalyptusBase.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		C916233A133BB75B00B25414 /* libhyphenate.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = libhyphenate.a; path = ../../../../../../../../Projects/Consulting/scholastic/libhyphenate.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		C923A27212F06FE60054426F /* MRGridView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MRGridView.h; path = Shared/Libraries/MRGridView/MRGridView.h; sourceTree = "<group>"; };
 		C923A27312F06FE60054426F /* MRGridView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MRGridView.m; path = Shared/Libraries/MRGridView/MRGridView.m; sourceTree = "<group>"; };
 		C923A27412F06FE60054426F /* MRGridViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MRGridViewCell.h; path = Shared/Libraries/MRGridView/MRGridViewCell.h; sourceTree = "<group>"; };
@@ -836,12 +850,21 @@
 		C923B13F12F6AFC60054426F /* SCHMultipleBookshelvesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHMultipleBookshelvesController.m; path = iPhone/SCHMultipleBookshelvesController.m; sourceTree = "<group>"; };
 		C923B15A12F6B0280054426F /* SCHMultipleBookshelvesController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = SCHMultipleBookshelvesController.xib; path = iPhone/SCHMultipleBookshelvesController.xib; sourceTree = "<group>"; };
 		C947D55D133B9C0000FB4404 /* libEucalyptus.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libEucalyptus.xcodeproj; path = Shared/Libraries/Submodules/libEucalyptus/libEucalyptus.xcodeproj; sourceTree = "<group>"; };
-		C9564111133BB6E800D7FB9D /* libEucalyptus.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = libEucalyptus.a; path = ../../../../../../../../Projects/Consulting/scholastic/libEucalyptus.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		C95ECB44133A76C400D88768 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		C95ECB46133A76DE00D88768 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		C95ECB48133A770B00D88768 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
-		C95ECB4A133A777F00D88768 /* libiconv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
 		C95ECB4C133A77A500D88768 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		C9ED56631343322300A25486 /* libcss.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libcss.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		C9ED56641343322300A25486 /* libEucalyptus.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libEucalyptus.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		C9ED56651343322300A25486 /* libEucalyptusBase.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libEucalyptusBase.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		C9ED56661343322300A25486 /* libEucalyptusBUpe.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libEucalyptusBUpe.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		C9ED56671343322300A25486 /* libEucalyptusCSS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libEucalyptusCSS.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		C9ED56681343322300A25486 /* libexpat.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libexpat.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		C9ED56691343322300A25486 /* libhyphenate.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libhyphenate.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		C9ED566A1343322300A25486 /* libminiunzip.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libminiunzip.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		C9ED566B1343322300A25486 /* libparserutils.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libparserutils.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		C9ED566C1343322300A25486 /* libwapcaplet.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libwapcaplet.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		C9ED56811343328F00A25486 /* libiconv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
 		C9F1A579133B83D100FD984C /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
 		F82D39B3131EA79100289FF3 /* SCHBookContents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookContents.h; path = Shared/SCHBookContents.h; sourceTree = "<group>"; };
 		F82D39B4131EA79100289FF3 /* SCHBookContents.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookContents.m; path = Shared/SCHBookContents.m; sourceTree = "<group>"; };
@@ -911,6 +934,17 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C9ED56821343328F00A25486 /* libiconv.dylib in Frameworks */,
+				C9ED566D1343322300A25486 /* libcss.a in Frameworks */,
+				C9ED566E1343322300A25486 /* libEucalyptus.a in Frameworks */,
+				C9ED566F1343322300A25486 /* libEucalyptusBase.a in Frameworks */,
+				C9ED56701343322300A25486 /* libEucalyptusBUpe.a in Frameworks */,
+				C9ED56711343322300A25486 /* libEucalyptusCSS.a in Frameworks */,
+				C9ED56721343322300A25486 /* libexpat.a in Frameworks */,
+				C9ED56731343322300A25486 /* libhyphenate.a in Frameworks */,
+				C9ED56741343322300A25486 /* libminiunzip.a in Frameworks */,
+				C9ED56751343322300A25486 /* libparserutils.a in Frameworks */,
+				C9ED56761343322300A25486 /* libwapcaplet.a in Frameworks */,
 				C9F1A57A133B83D100FD984C /* libxml2.dylib in Frameworks */,
 				A3D933861326D92000037111 /* libPlayReadyPK.a in Frameworks */,
 				F8509EB812F0625100197EB5 /* libstdc++.6.dylib in Frameworks */,
@@ -926,9 +960,6 @@
 				52EF553E12E9EB8500E374F7 /* Security.framework in Frameworks */,
 				529386C512DF3A9000045B44 /* SystemConfiguration.framework in Frameworks */,
 				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
-				C9564113133BB6F100D7FB9D /* libEucalyptus.a in Frameworks */,
-				C9162339133BB74A00B25414 /* libEucalyptusBase.a in Frameworks */,
-				C916233C133BB75E00B25414 /* libhyphenate.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -936,9 +967,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C9564112133BB6E800D7FB9D /* libEucalyptus.a in Frameworks */,
-				C9162338133BB74200B25414 /* libEucalyptusBase.a in Frameworks */,
-				C916233B133BB75B00B25414 /* libhyphenate.a in Frameworks */,
 				C9F1A4D6133B507100FD984C /* libPlayReadyPK.a in Frameworks */,
 				F8509F4812F063C900197EB5 /* libstdc++.6.dylib in Frameworks */,
 				F8509F4712F063C900197EB5 /* libXpsSDKipad.a in Frameworks */,
@@ -954,6 +982,17 @@
 				F8509F4512F063C900197EB5 /* SystemConfiguration.framework in Frameworks */,
 				F8509F4112F063C900197EB5 /* UIKit.framework in Frameworks */,
 				C97F2001133B8E2100EA6BC8 /* libxml2.dylib in Frameworks */,
+				C9ED56771343323200A25486 /* libcss.a in Frameworks */,
+				C9ED56781343323200A25486 /* libEucalyptus.a in Frameworks */,
+				C9ED56791343323200A25486 /* libEucalyptusBase.a in Frameworks */,
+				C9ED567A1343323200A25486 /* libEucalyptusBUpe.a in Frameworks */,
+				C9ED567B1343323200A25486 /* libEucalyptusCSS.a in Frameworks */,
+				C9ED567C1343323200A25486 /* libexpat.a in Frameworks */,
+				C9ED567D1343323200A25486 /* libhyphenate.a in Frameworks */,
+				C9ED567E1343323200A25486 /* libminiunzip.a in Frameworks */,
+				C9ED567F1343323200A25486 /* libparserutils.a in Frameworks */,
+				C9ED56801343323200A25486 /* libwapcaplet.a in Frameworks */,
+				C9ED56831343329400A25486 /* libiconv.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1061,9 +1100,9 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C9ED56811343328F00A25486 /* libiconv.dylib */,
 				C9F1A579133B83D100FD984C /* libxml2.dylib */,
 				F8509EB712F0625100197EB5 /* libstdc++.6.dylib */,
-				C95ECB4A133A777F00D88768 /* libiconv.dylib */,
 				C95ECB4C133A77A500D88768 /* AudioToolbox.framework */,
 				C95ECB48133A770B00D88768 /* OpenGLES.framework */,
 				C95ECB46133A76DE00D88768 /* QuartzCore.framework */,
@@ -1573,9 +1612,16 @@
 		C9162497133BBC8F00B25414 /* libEucalyptus Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				C9564111133BB6E800D7FB9D /* libEucalyptus.a */,
-				C9162337133BB74200B25414 /* libEucalyptusBase.a */,
-				C916233A133BB75B00B25414 /* libhyphenate.a */,
+				C9ED56631343322300A25486 /* libcss.a */,
+				C9ED56641343322300A25486 /* libEucalyptus.a */,
+				C9ED56651343322300A25486 /* libEucalyptusBase.a */,
+				C9ED56661343322300A25486 /* libEucalyptusBUpe.a */,
+				C9ED56671343322300A25486 /* libEucalyptusCSS.a */,
+				C9ED56681343322300A25486 /* libexpat.a */,
+				C9ED56691343322300A25486 /* libhyphenate.a */,
+				C9ED566A1343322300A25486 /* libminiunzip.a */,
+				C9ED566B1343322300A25486 /* libparserutils.a */,
+				C9ED566C1343322300A25486 /* libwapcaplet.a */,
 			);
 			name = "libEucalyptus Libraries";
 			sourceTree = "<group>";
@@ -2332,6 +2378,10 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "LOCALDEBUG=0";
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "Scholastic-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-all_load",
@@ -2352,6 +2402,10 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "LOCALDEBUG=0";
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "Scholastic-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-all_load",
@@ -2405,6 +2459,10 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "LOCALDEBUG=0";
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "Scholastic-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-all_load",
