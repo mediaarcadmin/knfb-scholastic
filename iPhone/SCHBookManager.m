@@ -10,11 +10,14 @@
 #import <pthread.h>
 #import "SCHAppBook.h"
 #import "SCHBookContents.h"
+#import "KNFBFlowEucBook.h"
 
 @interface SCHBookManager ()
 
 @property (nonatomic, retain) NSMutableDictionary *cachedXPSProviders;
+@property (nonatomic, retain) NSMutableDictionary *cachedEucBooks;
 @property (nonatomic, retain) NSCountedSet *cachedXPSProviderCheckoutCounts;
+@property (nonatomic, retain) NSCountedSet *cachedEucBookCheckoutCounts;
 @property (nonatomic, retain) NSLock *threadSafeMutationLock;
 
 - (BOOL)save:(NSError **)error;
@@ -37,7 +40,7 @@ static NSDictionary *featureCompatibilityDictionary = nil;
 static int mutationCount = 0;
 
 
-@synthesize cachedXPSProviders, cachedXPSProviderCheckoutCounts, persistentStoreCoordinator, threadSafeMutationLock;
+@synthesize cachedXPSProviders, cachedXPSProviderCheckoutCounts, cachedEucBooks, cachedEucBookCheckoutCounts, persistentStoreCoordinator, threadSafeMutationLock;
 
 + (SCHBookManager *)sharedBookManager
 {
@@ -390,5 +393,76 @@ static int mutationCount = 0;
     }
 	
 }
+
+#pragma mark -
+#pragma mark EucBook Check out/Check in
+
+- (KNFBFlowEucBook *)checkOutEucBookForBookIdentifier: (NSString *) isbn
+{
+	KNFBFlowEucBook *ret = nil;
+	
+	//NSLog(@"Checking out book ID: %@", bookID);
+	
+	[self.persistentStoreCoordinator lock];
+	
+    NSMutableDictionary *myCachedEucBooks = self.cachedEucBooks;
+    @synchronized(myCachedEucBooks) {
+        KNFBFlowEucBook *previouslyCachedEucBook = [myCachedEucBooks objectForKey:isbn];
+        if(previouslyCachedEucBook) {
+            NSLog(@"Returning cached EucBook for book with ISBN %@", isbn);
+            [self.cachedEucBooks addObject:isbn];
+            ret = previouslyCachedXPSProvider;
+        } else {
+			KNFBFlowEucBook *eucBook = [[KNFBFlowEucBook alloc] initWithISBN:isbn];
+			if(eucBook) {
+				NSCountedSet *myCachedEucBookCheckoutCounts = self.cachedEucBookCheckoutCounts;
+				if(!myCachedEucBookCheckoutCounts) {
+					myCachedEucBookCheckoutCounts = [NSCountedSet set];
+					self.cachedEucBookCheckoutCounts = myCachedEucBookCheckoutCounts;
+				}
+				
+				[myCachedEucBooks setObject:eucBook forKey:isbn];
+				[myCachedEucBookCheckoutCounts addObject:isbn];
+				ret = eucBook;
+				[eucBook release];
+			}
+        }
+    }
+    
+	[self.persistentStoreCoordinator unlock];
+	
+    //  NSLog(@"[%d] checkOutXPSProviderForBookWithID %@", [self.cachedXPSProviderCheckoutCounts countForObject:bookID], bookID);
+    return ret;
+	
+}
+
+- (void)checkInEucBookForBookIdentifier: (NSString *) isbn
+{
+    
+	//NSLog(@"Checking in bookID: %@", bookInfo);
+	
+	NSMutableDictionary *myCachedEucBooks = self.cachedXPSProviders;
+    @synchronized(myCachedEucBooks) {
+        NSCountedSet *myCachedEucBookCheckoutCounts = self.cachedEucBookCheckoutCounts;
+        NSUInteger count = [myCachedEucBookCheckoutCounts countForObject:isbn];
+        if(count == 0) {
+            NSLog(@"Warning! Unexpected checkin of non-checked-out EucBook");
+        } else {
+            [myCachedEucBookCheckoutCounts removeObject:isbn];
+            if (count == 1) {
+                //  NSLog(@"Releasing cached XPSProvider for book with ID %@", bookInfo);
+                [myCachedEucBooks removeObjectForKey:isbn];
+                if(myCachedEucBookCheckoutCounts.count == 0) {
+                    // May as well release the set.
+                    self.cachedEucBookCheckoutCounts = nil;
+                }
+            }
+        }
+        // NSLog(@"[%d] checkInXPSProviderForBookWithPath %@", [self.cachedXPSProviderCheckoutCounts countForObject:bookInfo], bookInfo);
+		
+    }
+	
+}
+
 
 @end
