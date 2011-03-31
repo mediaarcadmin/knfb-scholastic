@@ -25,6 +25,7 @@ static NSString * const kSCHAppBookXPSCategory = @"XPSCategory";
 static NSString * const kSCHAppBookState = @"State";
 static NSString * const kSCHAppBookCoverURL = @"BookCoverURL";
 static NSString * const kSCHAppBookFileURL = @"BookFileURL";
+static NSString * const kSCHAppBookTextFlowPageRanges = @"TextFlowPageRanges";
 
 
 static NSString * const kSCHAppBook = @"SCHAppBook";
@@ -50,7 +51,7 @@ static NSString * const kSCHAppBookCONTENT_IDENTIFIER = @"CONTENT_IDENTIFIER";
 @property (nonatomic, retain) SCHContentMetadataItem * ContentMetadataItem;
 @property (nonatomic, retain) NSString * BookCoverURL;
 @property (nonatomic, retain) NSString * BookFileURL;
-
+@property (nonatomic, retain) NSSet *TextFlowPageRanges;
 
 @property (readonly) NSString * ContentIdentifier;
 @property (readonly) NSString * Author;

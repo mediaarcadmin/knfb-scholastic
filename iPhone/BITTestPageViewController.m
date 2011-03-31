@@ -10,6 +10,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "SCHAppBook.h"
 #import "SCHBookManager.h"
+#import "KNFBTextFlowPageRange.h"
 
 @implementation BITTestPageViewController
 
@@ -75,6 +76,17 @@
 		  ([book.LayoutStartsOnLeftSide boolValue]?@"Yes":@"No"),
 		  drmVersion?drmVersion:@"None");
 		  
+    NSLog(@"---");
+    NSLog(@"page ranges:");
+    NSSet *pageRangesSet = [book TextFlowPageRanges];
+    NSSortDescriptor *sortPageDescriptor = [[[NSSortDescriptor alloc] initWithKey:@"startPageIndex" ascending:YES] autorelease];
+    NSArray *sortedRanges = [[pageRangesSet allObjects] sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortPageDescriptor]];
+    
+    for (KNFBTextFlowPageRange *range in sortedRanges) {
+        NSLog(@"Range: %d to %d", range.startPageIndex, range.endPageIndex);
+    }
+	NSLog(@"------");
+
 		  
 	
 	[self loadImageForCurrentPage];

@@ -174,12 +174,14 @@ static void pageFileXMLParsingStartElementHandler(void *ctx, const XML_Char *nam
   //              forKey:@"layoutPageEquivalentCount"];
     
 
-    for (KNFBTextFlowPageRange *range in sortedRanges) {
-        NSLog(@"Range: %d to %d", range.startPageIndex, range.endPageIndex);
-    }
+//    for (KNFBTextFlowPageRange *range in sortedRanges) {
+//        NSLog(@"Range: %d to %d", range.startPageIndex, range.endPageIndex);
+//    }
     
     NSLog(@"layout page equivalent count: %@", [NSNumber numberWithInteger:[[sortedRanges lastObject] endPageIndex]]);
 
+    [[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn setValue:[NSSet setWithSet:pageRangesSet] forKey:kSCHAppBookTextFlowPageRanges];
+    
     [self updateBookWithSuccess];
     
     [pool drain];

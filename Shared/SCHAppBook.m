@@ -24,6 +24,7 @@
 @dynamic ContentMetadataItem;
 @dynamic BookCoverURL;
 @dynamic BookFileURL;
+@dynamic TextFlowPageRanges;
 
 #pragma mark -
 #pragma mark Convenience Methods
