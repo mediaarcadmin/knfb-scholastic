@@ -374,6 +374,8 @@
 		F878D6B5134498FB00DDB98B /* SCHThumbnailOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F878D6AB134498FB00DDB98B /* SCHThumbnailOperation.m */; };
 		F878D6B81344996400DDB98B /* SCHBookOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F878D6B71344996400DDB98B /* SCHBookOperation.m */; };
 		F878D6B91344996400DDB98B /* SCHBookOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F878D6B71344996400DDB98B /* SCHBookOperation.m */; };
+		F878D77C1344A1E400DDB98B /* SCHXPSCoverImageOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F878D77B1344A1E400DDB98B /* SCHXPSCoverImageOperation.m */; };
+		F878D77D1344A1E400DDB98B /* SCHXPSCoverImageOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F878D77B1344A1E400DDB98B /* SCHXPSCoverImageOperation.m */; };
 		F8BEE8AF1334FD44008B40DA /* SCHAppBook.m in Sources */ = {isa = PBXBuildFile; fileRef = F8BEE8AE1334FD44008B40DA /* SCHAppBook.m */; };
 		F8BEE8B01334FD44008B40DA /* SCHAppBook.m in Sources */ = {isa = PBXBuildFile; fileRef = F8BEE8AE1334FD44008B40DA /* SCHAppBook.m */; };
 		F8C4C3FC1332594A0057420E /* SCHDictionaryManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F8C4C3FA1332594A0057420E /* SCHDictionaryManager.m */; };
@@ -963,6 +965,8 @@
 		F878D6AB134498FB00DDB98B /* SCHThumbnailOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHThumbnailOperation.m; path = Shared/SCHThumbnailOperation.m; sourceTree = "<group>"; };
 		F878D6B61344996400DDB98B /* SCHBookOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookOperation.h; path = Shared/SCHBookOperation.h; sourceTree = "<group>"; };
 		F878D6B71344996400DDB98B /* SCHBookOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookOperation.m; path = Shared/SCHBookOperation.m; sourceTree = "<group>"; };
+		F878D77A1344A1E300DDB98B /* SCHXPSCoverImageOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHXPSCoverImageOperation.h; path = Shared/SCHXPSCoverImageOperation.h; sourceTree = "<group>"; };
+		F878D77B1344A1E400DDB98B /* SCHXPSCoverImageOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHXPSCoverImageOperation.m; path = Shared/SCHXPSCoverImageOperation.m; sourceTree = "<group>"; };
 		F8BEE8AD1334FD44008B40DA /* SCHAppBook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAppBook.h; path = Shared/SCHAppBook.h; sourceTree = "<group>"; };
 		F8BEE8AE1334FD44008B40DA /* SCHAppBook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHAppBook.m; path = Shared/SCHAppBook.m; sourceTree = "<group>"; };
 		F8C4C3F91332594A0057420E /* SCHDictionaryManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHDictionaryManager.h; path = Shared/SCHDictionaryManager.h; sourceTree = "<group>"; };
@@ -1908,6 +1912,8 @@
 				F878D6A9134498FB00DDB98B /* SCHTextFlowPreParseOperation.m */,
 				F878D6AA134498FB00DDB98B /* SCHThumbnailOperation.h */,
 				F878D6AB134498FB00DDB98B /* SCHThumbnailOperation.m */,
+				F878D77A1344A1E300DDB98B /* SCHXPSCoverImageOperation.h */,
+				F878D77B1344A1E400DDB98B /* SCHXPSCoverImageOperation.m */,
 			);
 			name = "Processing Operations";
 			sourceTree = "<group>";
@@ -2336,6 +2342,7 @@
 				F878D6B2134498FB00DDB98B /* SCHTextFlowPreParseOperation.m in Sources */,
 				F878D6B4134498FB00DDB98B /* SCHThumbnailOperation.m in Sources */,
 				F878D6B81344996400DDB98B /* SCHBookOperation.m in Sources */,
+				F878D77C1344A1E400DDB98B /* SCHXPSCoverImageOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2462,6 +2469,7 @@
 				F878D6B3134498FB00DDB98B /* SCHTextFlowPreParseOperation.m in Sources */,
 				F878D6B5134498FB00DDB98B /* SCHThumbnailOperation.m in Sources */,
 				F878D6B91344996400DDB98B /* SCHBookOperation.m in Sources */,
+				F878D77D1344A1E400DDB98B /* SCHXPSCoverImageOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
