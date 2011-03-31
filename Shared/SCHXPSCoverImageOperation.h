@@ -7,11 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "SCHBookOperation.h"
 
-@interface SCHXPSCoverImageOperation : NSOperation {
+@interface SCHXPSCoverImageOperation : SCHBookOperation {
 
 }
-
-@property (nonatomic, retain) NSString *isbn;
 
 @end

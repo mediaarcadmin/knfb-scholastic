@@ -14,10 +14,6 @@
 @interface SCHDownloadBookFileOperation ()
 
 @property (readwrite, retain) NSString *localPath;
-@property BOOL executing;
-@property BOOL finished;
-
-- (void) beginConnection;
 
 @end
 
@@ -25,28 +21,12 @@
 @implementation SCHDownloadBookFileOperation
 
 
-@synthesize isbn, resume, localPath, executing, finished, fileType;
+@synthesize resume, localPath, fileType;
 
 - (void)dealloc {
-	self.isbn = nil;
 	self.localPath = nil;
 	
 	[super dealloc];
-}
-
-- (void) setIsbn: (NSString *) newIsbn
-{
-	
-	if ([self isExecuting] || [self isFinished]) {
-		return;
-	}
-	
-	NSString *oldIsbn = isbn;
-	isbn = [newIsbn retain];
-	[oldIsbn release];
-	
-	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];
-	[book setProcessing:YES];
 }
 
 - (void) start
@@ -59,16 +39,11 @@
 	}
 	
 	NSLog(@"Starting %@ download.", type);
-	if (!(self.isbn)) {
-		NSLog(@"No ISBN.");
-	} else if ([self isCancelled]) {
-		NSLog(@"Cancelled.");
-	} else {
-		[self beginConnection];
-	}
+    
+    [super start];
 }
 
-- (void) beginConnection
+- (void) beginOperation
 {
 	NSError *error = nil;
 	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];
@@ -198,13 +173,9 @@
 	
 	switch (self.fileType) {
 		case kSCHDownloadFileTypeXPSBook:
-//			[self.bookInfo setProcessingState:SCHBookProcessingStateReadyForRightsParsing];
-			
 			[[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateReadyForRightsParsing];
 			break;
 		case kSCHDownloadFileTypeCoverImage:
-			NSLog(@"Setting state to done.");
-//			[self.bookInfo setProcessingState:SCHBookProcessingStateReadyForBookFileDownload];
 			[[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateReadyForBookFileDownload];
 			break;
 		default:
@@ -226,26 +197,6 @@
 
 	self.executing = NO;
 	self.finished = YES;
-}
-
-- (BOOL)isConcurrent {
-	return YES;
-}
-
-- (BOOL)isExecuting {
-	return self.executing;
-}
-
-- (BOOL)isFinished {
-	return self.finished;
-}
-
-- (void) cancel
-{
-	NSLog(@"%%%% cancelling download file operation");
-	self.finished = YES;
-	self.executing = NO;
-	[super cancel];
 }
 
 @end

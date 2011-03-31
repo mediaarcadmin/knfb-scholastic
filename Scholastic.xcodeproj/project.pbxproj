@@ -255,17 +255,11 @@
 		F81B3A7F12FAAD8E00A20D52 /* SCHNote.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A5E12F0EF5600BBBCE6 /* SCHNote.m */; };
 		F81B3A8612FAADB000A20D52 /* SCHBookManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F8CD24CA12F9714D001C748B /* SCHBookManager.m */; };
 		F82D39BF131EA79100289FF3 /* SCHBookContents.m in Sources */ = {isa = PBXBuildFile; fileRef = F82D39B4131EA79100289FF3 /* SCHBookContents.m */; };
-		F82D39C1131EA79100289FF3 /* SCHDownloadBookFileOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F82D39B8131EA79100289FF3 /* SCHDownloadBookFileOperation.m */; };
-		F82D39C4131EA79100289FF3 /* SCHXPSCoverImageOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F82D39BE131EA79100289FF3 /* SCHXPSCoverImageOperation.m */; };
 		F82D39C5131EA79100289FF3 /* SCHBookContents.m in Sources */ = {isa = PBXBuildFile; fileRef = F82D39B4131EA79100289FF3 /* SCHBookContents.m */; };
-		F82D39C7131EA79100289FF3 /* SCHDownloadBookFileOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F82D39B8131EA79100289FF3 /* SCHDownloadBookFileOperation.m */; };
-		F82D39CA131EA79100289FF3 /* SCHXPSCoverImageOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F82D39BE131EA79100289FF3 /* SCHXPSCoverImageOperation.m */; };
 		F82D39D1131EA7C200289FF3 /* SCHAsyncBookCoverImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = F82D39CC131EA7C100289FF3 /* SCHAsyncBookCoverImageView.m */; };
 		F82D39D2131EA7C200289FF3 /* SCHThumbnailFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = F82D39CE131EA7C200289FF3 /* SCHThumbnailFactory.m */; };
-		F82D39D3131EA7C200289FF3 /* SCHThumbnailOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F82D39D0131EA7C200289FF3 /* SCHThumbnailOperation.m */; };
 		F82D39D4131EA7C200289FF3 /* SCHAsyncBookCoverImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = F82D39CC131EA7C100289FF3 /* SCHAsyncBookCoverImageView.m */; };
 		F82D39D5131EA7C200289FF3 /* SCHThumbnailFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = F82D39CE131EA7C200289FF3 /* SCHThumbnailFactory.m */; };
-		F82D39D6131EA7C200289FF3 /* SCHThumbnailOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F82D39D0131EA7C200289FF3 /* SCHThumbnailOperation.m */; };
 		F82D39D9131EA7D400289FF3 /* SCHBookShelfTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F82D39D8131EA7D400289FF3 /* SCHBookShelfTableViewCell.m */; };
 		F82D39DA131EA7D400289FF3 /* SCHBookShelfTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F82D39D8131EA7D400289FF3 /* SCHBookShelfTableViewCell.m */; };
 		F837C6A112F1798800833448 /* SCHAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A7A12F0EF5600BBBCE6 /* SCHAnnotation.m */; };
@@ -368,14 +362,22 @@
 		F8509F4812F063C900197EB5 /* libstdc++.6.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F8509EB712F0625100197EB5 /* libstdc++.6.dylib */; };
 		F8678D8A133218D8001FDB2F /* ScholasticFeatureCompatibility.plist in Resources */ = {isa = PBXBuildFile; fileRef = F8678D89133218D8001FDB2F /* ScholasticFeatureCompatibility.plist */; };
 		F8678D8B133218D8001FDB2F /* ScholasticFeatureCompatibility.plist in Resources */ = {isa = PBXBuildFile; fileRef = F8678D89133218D8001FDB2F /* ScholasticFeatureCompatibility.plist */; };
+		F878D6AC134498FB00DDB98B /* SCHBookURLRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F878D6A3134498FB00DDB98B /* SCHBookURLRequestOperation.m */; };
+		F878D6AD134498FB00DDB98B /* SCHBookURLRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F878D6A3134498FB00DDB98B /* SCHBookURLRequestOperation.m */; };
+		F878D6AE134498FB00DDB98B /* SCHDownloadBookFileOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F878D6A5134498FB00DDB98B /* SCHDownloadBookFileOperation.m */; };
+		F878D6AF134498FB00DDB98B /* SCHDownloadBookFileOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F878D6A5134498FB00DDB98B /* SCHDownloadBookFileOperation.m */; };
+		F878D6B0134498FB00DDB98B /* SCHRightsParsingOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F878D6A7134498FB00DDB98B /* SCHRightsParsingOperation.m */; };
+		F878D6B1134498FB00DDB98B /* SCHRightsParsingOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F878D6A7134498FB00DDB98B /* SCHRightsParsingOperation.m */; };
+		F878D6B2134498FB00DDB98B /* SCHTextFlowPreParseOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F878D6A9134498FB00DDB98B /* SCHTextFlowPreParseOperation.m */; };
+		F878D6B3134498FB00DDB98B /* SCHTextFlowPreParseOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F878D6A9134498FB00DDB98B /* SCHTextFlowPreParseOperation.m */; };
+		F878D6B4134498FB00DDB98B /* SCHThumbnailOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F878D6AB134498FB00DDB98B /* SCHThumbnailOperation.m */; };
+		F878D6B5134498FB00DDB98B /* SCHThumbnailOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F878D6AB134498FB00DDB98B /* SCHThumbnailOperation.m */; };
+		F878D6B81344996400DDB98B /* SCHBookOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F878D6B71344996400DDB98B /* SCHBookOperation.m */; };
+		F878D6B91344996400DDB98B /* SCHBookOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F878D6B71344996400DDB98B /* SCHBookOperation.m */; };
 		F8BEE8AF1334FD44008B40DA /* SCHAppBook.m in Sources */ = {isa = PBXBuildFile; fileRef = F8BEE8AE1334FD44008B40DA /* SCHAppBook.m */; };
 		F8BEE8B01334FD44008B40DA /* SCHAppBook.m in Sources */ = {isa = PBXBuildFile; fileRef = F8BEE8AE1334FD44008B40DA /* SCHAppBook.m */; };
 		F8C4C3FC1332594A0057420E /* SCHDictionaryManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F8C4C3FA1332594A0057420E /* SCHDictionaryManager.m */; };
 		F8C4C3FE1332594A0057420E /* SCHDictionaryManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F8C4C3FA1332594A0057420E /* SCHDictionaryManager.m */; };
-		F8C4C4011332595E0057420E /* SCHBookURLRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F8C4C4001332595E0057420E /* SCHBookURLRequestOperation.m */; };
-		F8C4C4021332595E0057420E /* SCHBookURLRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F8C4C4001332595E0057420E /* SCHBookURLRequestOperation.m */; };
-		F8C4C405133259680057420E /* SCHRightsParsingOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F8C4C404133259680057420E /* SCHRightsParsingOperation.m */; };
-		F8C4C406133259680057420E /* SCHRightsParsingOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F8C4C404133259680057420E /* SCHRightsParsingOperation.m */; };
 		F8C4C409133259750057420E /* SCHProcessingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F8C4C408133259750057420E /* SCHProcessingManager.m */; };
 		F8C4C40A133259750057420E /* SCHProcessingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F8C4C408133259750057420E /* SCHProcessingManager.m */; };
 		F8C4C40D133259810057420E /* SCHBookShelfGridViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F8C4C40C133259810057420E /* SCHBookShelfGridViewCell.m */; };
@@ -914,16 +916,10 @@
 		C9F1A579133B83D100FD984C /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
 		F82D39B3131EA79100289FF3 /* SCHBookContents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookContents.h; path = Shared/SCHBookContents.h; sourceTree = "<group>"; };
 		F82D39B4131EA79100289FF3 /* SCHBookContents.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookContents.m; path = Shared/SCHBookContents.m; sourceTree = "<group>"; };
-		F82D39B7131EA79100289FF3 /* SCHDownloadBookFileOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHDownloadBookFileOperation.h; path = Shared/SCHDownloadBookFileOperation.h; sourceTree = "<group>"; };
-		F82D39B8131EA79100289FF3 /* SCHDownloadBookFileOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHDownloadBookFileOperation.m; path = Shared/SCHDownloadBookFileOperation.m; sourceTree = "<group>"; };
-		F82D39BD131EA79100289FF3 /* SCHXPSCoverImageOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHXPSCoverImageOperation.h; path = Shared/SCHXPSCoverImageOperation.h; sourceTree = "<group>"; };
-		F82D39BE131EA79100289FF3 /* SCHXPSCoverImageOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHXPSCoverImageOperation.m; path = Shared/SCHXPSCoverImageOperation.m; sourceTree = "<group>"; };
 		F82D39CB131EA7C100289FF3 /* SCHAsyncBookCoverImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAsyncBookCoverImageView.h; path = Shared/SCHAsyncBookCoverImageView.h; sourceTree = "<group>"; };
 		F82D39CC131EA7C100289FF3 /* SCHAsyncBookCoverImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHAsyncBookCoverImageView.m; path = Shared/SCHAsyncBookCoverImageView.m; sourceTree = "<group>"; };
 		F82D39CD131EA7C100289FF3 /* SCHThumbnailFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHThumbnailFactory.h; path = Shared/SCHThumbnailFactory.h; sourceTree = "<group>"; };
 		F82D39CE131EA7C200289FF3 /* SCHThumbnailFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHThumbnailFactory.m; path = Shared/SCHThumbnailFactory.m; sourceTree = "<group>"; };
-		F82D39CF131EA7C200289FF3 /* SCHThumbnailOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHThumbnailOperation.h; path = Shared/SCHThumbnailOperation.h; sourceTree = "<group>"; };
-		F82D39D0131EA7C200289FF3 /* SCHThumbnailOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHThumbnailOperation.m; path = Shared/SCHThumbnailOperation.m; sourceTree = "<group>"; };
 		F82D39D7131EA7D400289FF3 /* SCHBookShelfTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookShelfTableViewCell.h; path = Shared/SCHBookShelfTableViewCell.h; sourceTree = "<group>"; };
 		F82D39D8131EA7D400289FF3 /* SCHBookShelfTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookShelfTableViewCell.m; path = Shared/SCHBookShelfTableViewCell.m; sourceTree = "<group>"; };
 		F83D86B312FC070F00227031 /* SCHLocalDebugXPSReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHLocalDebugXPSReader.h; path = Shared/SCHLocalDebugXPSReader.h; sourceTree = "<group>"; };
@@ -955,14 +951,22 @@
 		F8509EB712F0625100197EB5 /* libstdc++.6.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libstdc++.6.dylib"; path = "usr/lib/libstdc++.6.dylib"; sourceTree = SDKROOT; };
 		F8509F4D12F063C900197EB5 /* Scholastic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Scholastic.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F8678D89133218D8001FDB2F /* ScholasticFeatureCompatibility.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = ScholasticFeatureCompatibility.plist; sourceTree = "<group>"; };
+		F878D6A2134498FB00DDB98B /* SCHBookURLRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookURLRequestOperation.h; path = Shared/SCHBookURLRequestOperation.h; sourceTree = "<group>"; };
+		F878D6A3134498FB00DDB98B /* SCHBookURLRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookURLRequestOperation.m; path = Shared/SCHBookURLRequestOperation.m; sourceTree = "<group>"; };
+		F878D6A4134498FB00DDB98B /* SCHDownloadBookFileOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHDownloadBookFileOperation.h; path = Shared/SCHDownloadBookFileOperation.h; sourceTree = "<group>"; };
+		F878D6A5134498FB00DDB98B /* SCHDownloadBookFileOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHDownloadBookFileOperation.m; path = Shared/SCHDownloadBookFileOperation.m; sourceTree = "<group>"; };
+		F878D6A6134498FB00DDB98B /* SCHRightsParsingOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHRightsParsingOperation.h; path = Shared/SCHRightsParsingOperation.h; sourceTree = "<group>"; };
+		F878D6A7134498FB00DDB98B /* SCHRightsParsingOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHRightsParsingOperation.m; path = Shared/SCHRightsParsingOperation.m; sourceTree = "<group>"; };
+		F878D6A8134498FB00DDB98B /* SCHTextFlowPreParseOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHTextFlowPreParseOperation.h; path = Shared/SCHTextFlowPreParseOperation.h; sourceTree = "<group>"; };
+		F878D6A9134498FB00DDB98B /* SCHTextFlowPreParseOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHTextFlowPreParseOperation.m; path = Shared/SCHTextFlowPreParseOperation.m; sourceTree = "<group>"; };
+		F878D6AA134498FB00DDB98B /* SCHThumbnailOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHThumbnailOperation.h; path = Shared/SCHThumbnailOperation.h; sourceTree = "<group>"; };
+		F878D6AB134498FB00DDB98B /* SCHThumbnailOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHThumbnailOperation.m; path = Shared/SCHThumbnailOperation.m; sourceTree = "<group>"; };
+		F878D6B61344996400DDB98B /* SCHBookOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookOperation.h; path = Shared/SCHBookOperation.h; sourceTree = "<group>"; };
+		F878D6B71344996400DDB98B /* SCHBookOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookOperation.m; path = Shared/SCHBookOperation.m; sourceTree = "<group>"; };
 		F8BEE8AD1334FD44008B40DA /* SCHAppBook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAppBook.h; path = Shared/SCHAppBook.h; sourceTree = "<group>"; };
 		F8BEE8AE1334FD44008B40DA /* SCHAppBook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHAppBook.m; path = Shared/SCHAppBook.m; sourceTree = "<group>"; };
 		F8C4C3F91332594A0057420E /* SCHDictionaryManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHDictionaryManager.h; path = Shared/SCHDictionaryManager.h; sourceTree = "<group>"; };
 		F8C4C3FA1332594A0057420E /* SCHDictionaryManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHDictionaryManager.m; path = Shared/SCHDictionaryManager.m; sourceTree = "<group>"; };
-		F8C4C3FF1332595E0057420E /* SCHBookURLRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookURLRequestOperation.h; path = Shared/SCHBookURLRequestOperation.h; sourceTree = "<group>"; };
-		F8C4C4001332595E0057420E /* SCHBookURLRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookURLRequestOperation.m; path = Shared/SCHBookURLRequestOperation.m; sourceTree = "<group>"; };
-		F8C4C403133259680057420E /* SCHRightsParsingOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHRightsParsingOperation.h; path = Shared/SCHRightsParsingOperation.h; sourceTree = "<group>"; };
-		F8C4C404133259680057420E /* SCHRightsParsingOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHRightsParsingOperation.m; path = Shared/SCHRightsParsingOperation.m; sourceTree = "<group>"; };
 		F8C4C407133259750057420E /* SCHProcessingManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHProcessingManager.h; path = Shared/SCHProcessingManager.h; sourceTree = "<group>"; };
 		F8C4C408133259750057420E /* SCHProcessingManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHProcessingManager.m; path = Shared/SCHProcessingManager.m; sourceTree = "<group>"; };
 		F8C4C40B133259810057420E /* SCHBookShelfGridViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookShelfGridViewCell.h; path = Shared/SCHBookShelfGridViewCell.h; sourceTree = "<group>"; };
@@ -1885,6 +1889,8 @@
 				F8899222132E15E8007EB541 /* Processing Operations */,
 				F8C4C407133259750057420E /* SCHProcessingManager.h */,
 				F8C4C408133259750057420E /* SCHProcessingManager.m */,
+				F878D6B61344996400DDB98B /* SCHBookOperation.h */,
+				F878D6B71344996400DDB98B /* SCHBookOperation.m */,
 			);
 			name = "Processing Manager";
 			sourceTree = "<group>";
@@ -1892,16 +1898,16 @@
 		F8899222132E15E8007EB541 /* Processing Operations */ = {
 			isa = PBXGroup;
 			children = (
-				F8C4C3FF1332595E0057420E /* SCHBookURLRequestOperation.h */,
-				F8C4C4001332595E0057420E /* SCHBookURLRequestOperation.m */,
-				F82D39B7131EA79100289FF3 /* SCHDownloadBookFileOperation.h */,
-				F82D39B8131EA79100289FF3 /* SCHDownloadBookFileOperation.m */,
-				F82D39CF131EA7C200289FF3 /* SCHThumbnailOperation.h */,
-				F82D39D0131EA7C200289FF3 /* SCHThumbnailOperation.m */,
-				F82D39BD131EA79100289FF3 /* SCHXPSCoverImageOperation.h */,
-				F82D39BE131EA79100289FF3 /* SCHXPSCoverImageOperation.m */,
-				F8C4C403133259680057420E /* SCHRightsParsingOperation.h */,
-				F8C4C404133259680057420E /* SCHRightsParsingOperation.m */,
+				F878D6A2134498FB00DDB98B /* SCHBookURLRequestOperation.h */,
+				F878D6A3134498FB00DDB98B /* SCHBookURLRequestOperation.m */,
+				F878D6A4134498FB00DDB98B /* SCHDownloadBookFileOperation.h */,
+				F878D6A5134498FB00DDB98B /* SCHDownloadBookFileOperation.m */,
+				F878D6A6134498FB00DDB98B /* SCHRightsParsingOperation.h */,
+				F878D6A7134498FB00DDB98B /* SCHRightsParsingOperation.m */,
+				F878D6A8134498FB00DDB98B /* SCHTextFlowPreParseOperation.h */,
+				F878D6A9134498FB00DDB98B /* SCHTextFlowPreParseOperation.m */,
+				F878D6AA134498FB00DDB98B /* SCHThumbnailOperation.h */,
+				F878D6AB134498FB00DDB98B /* SCHThumbnailOperation.m */,
 			);
 			name = "Processing Operations";
 			sourceTree = "<group>";
@@ -2295,16 +2301,11 @@
 				5233E0D813159CA80088F18C /* BITNetworkActivityManager.m in Sources */,
 				52E36769131D3ED200ACCBEE /* SCHBookshelfSyncComponent.m in Sources */,
 				F82D39C5131EA79100289FF3 /* SCHBookContents.m in Sources */,
-				F82D39C7131EA79100289FF3 /* SCHDownloadBookFileOperation.m in Sources */,
-				F82D39CA131EA79100289FF3 /* SCHXPSCoverImageOperation.m in Sources */,
 				F82D39D4131EA7C200289FF3 /* SCHAsyncBookCoverImageView.m in Sources */,
 				F82D39D5131EA7C200289FF3 /* SCHThumbnailFactory.m in Sources */,
-				F82D39D6131EA7C200289FF3 /* SCHThumbnailOperation.m in Sources */,
 				F82D39DA131EA7D400289FF3 /* SCHBookShelfTableViewCell.m in Sources */,
 				52322C34132693F500BB071D /* SCHURLManager.m in Sources */,
 				F8C4C3FE1332594A0057420E /* SCHDictionaryManager.m in Sources */,
-				F8C4C4021332595E0057420E /* SCHBookURLRequestOperation.m in Sources */,
-				F8C4C406133259680057420E /* SCHRightsParsingOperation.m in Sources */,
 				F8C4C40A133259750057420E /* SCHProcessingManager.m in Sources */,
 				F8C4C40E133259810057420E /* SCHBookShelfGridViewCell.m in Sources */,
 				F8C4C58213326E6C0057420E /* SCHDictionaryFileDownloadOperation.m in Sources */,
@@ -2329,6 +2330,12 @@
 				C90D283413434D22000A5374 /* KNFBTextFlowXAMLTree.m in Sources */,
 				C90D283613434D22000A5374 /* KNFBTextFlowXAMLTreeNode.m in Sources */,
 				C90D283813434D22000A5374 /* KNFBTOCEntry.m in Sources */,
+				F878D6AC134498FB00DDB98B /* SCHBookURLRequestOperation.m in Sources */,
+				F878D6AE134498FB00DDB98B /* SCHDownloadBookFileOperation.m in Sources */,
+				F878D6B0134498FB00DDB98B /* SCHRightsParsingOperation.m in Sources */,
+				F878D6B2134498FB00DDB98B /* SCHTextFlowPreParseOperation.m in Sources */,
+				F878D6B4134498FB00DDB98B /* SCHThumbnailOperation.m in Sources */,
+				F878D6B81344996400DDB98B /* SCHBookOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2420,16 +2427,11 @@
 				5233E0D913159CA80088F18C /* BITNetworkActivityManager.m in Sources */,
 				52E3676A131D3ED200ACCBEE /* SCHBookshelfSyncComponent.m in Sources */,
 				F82D39BF131EA79100289FF3 /* SCHBookContents.m in Sources */,
-				F82D39C1131EA79100289FF3 /* SCHDownloadBookFileOperation.m in Sources */,
-				F82D39C4131EA79100289FF3 /* SCHXPSCoverImageOperation.m in Sources */,
 				F82D39D1131EA7C200289FF3 /* SCHAsyncBookCoverImageView.m in Sources */,
 				F82D39D2131EA7C200289FF3 /* SCHThumbnailFactory.m in Sources */,
-				F82D39D3131EA7C200289FF3 /* SCHThumbnailOperation.m in Sources */,
 				F82D39D9131EA7D400289FF3 /* SCHBookShelfTableViewCell.m in Sources */,
 				526750D213290EE800063AC8 /* SCHURLManager.m in Sources */,
 				F8C4C3FC1332594A0057420E /* SCHDictionaryManager.m in Sources */,
-				F8C4C4011332595E0057420E /* SCHBookURLRequestOperation.m in Sources */,
-				F8C4C405133259680057420E /* SCHRightsParsingOperation.m in Sources */,
 				F8C4C409133259750057420E /* SCHProcessingManager.m in Sources */,
 				F8C4C40D133259810057420E /* SCHBookShelfGridViewCell.m in Sources */,
 				F8C4C58013326E6C0057420E /* SCHDictionaryFileDownloadOperation.m in Sources */,
@@ -2454,6 +2456,12 @@
 				C90D283513434D22000A5374 /* KNFBTextFlowXAMLTree.m in Sources */,
 				C90D283713434D22000A5374 /* KNFBTextFlowXAMLTreeNode.m in Sources */,
 				C90D283913434D22000A5374 /* KNFBTOCEntry.m in Sources */,
+				F878D6AD134498FB00DDB98B /* SCHBookURLRequestOperation.m in Sources */,
+				F878D6AF134498FB00DDB98B /* SCHDownloadBookFileOperation.m in Sources */,
+				F878D6B1134498FB00DDB98B /* SCHRightsParsingOperation.m in Sources */,
+				F878D6B3134498FB00DDB98B /* SCHTextFlowPreParseOperation.m in Sources */,
+				F878D6B5134498FB00DDB98B /* SCHThumbnailOperation.m in Sources */,
+				F878D6B91344996400DDB98B /* SCHBookOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

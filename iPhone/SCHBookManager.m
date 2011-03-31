@@ -53,10 +53,6 @@ static int mutationCount = 0;
         // the thread terminates.
         pthread_key_create(&sManagedObjectContextKey, (void (*)(void *))CFRelease);
 		
-		featureCompatibilityDictionary = 
-		[NSDictionary dictionaryWithContentsOfFile:[[[NSBundle mainBundle] bundlePath] 
-													stringByAppendingPathComponent:@"ScholasticFeatureCompatibility.plist"]];
-		
 		sSharedBookManager.threadSafeMutationLock = [[NSLock alloc] init];
 
     }
@@ -83,6 +79,12 @@ static int mutationCount = 0;
 
 + (BOOL) checkAppCompatibilityForFeature: (NSString *) key version: (float) version
 {
+    if (!featureCompatibilityDictionary) {
+        featureCompatibilityDictionary = 
+		[[NSDictionary dictionaryWithContentsOfFile:[[[NSBundle mainBundle] bundlePath] 
+                                                     stringByAppendingPathComponent:@"ScholasticFeatureCompatibility.plist"]] retain];
+    }
+    
 	NSNumber *dictVersion = [featureCompatibilityDictionary objectForKey:key];
 	if (!dictVersion || [dictVersion floatValue] < version) {
 		return NO;

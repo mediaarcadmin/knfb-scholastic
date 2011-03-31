@@ -7,17 +7,17 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "SCHBookOperation.h"
 
 typedef enum {
 	kSCHDownloadFileTypeXPSBook = 0,
 	kSCHDownloadFileTypeCoverImage
 } kSCHDownloadFileType;
 
-@interface SCHDownloadBookFileOperation : NSOperation {
+@interface SCHDownloadBookFileOperation : SCHBookOperation {
 
 }
 
-@property (nonatomic, retain) NSString *isbn;
 @property BOOL resume;
 @property kSCHDownloadFileType fileType;
 

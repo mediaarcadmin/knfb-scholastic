@@ -12,27 +12,14 @@
 
 @implementation SCHXPSCoverImageOperation
 
-@synthesize isbn;
-
 - (void)dealloc {
-	self.isbn = nil;
-	
 	[super dealloc];
 }
 
 
-- (void) main
+- (void) beginOperation
 {
-    if ([self isCancelled]) {
-		return;
-	}
-	
-	if (!(self.isbn)) {
-		return;
-	}
-	
 	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];
-	[book setProcessing:YES];
 	
 	BITXPSProvider *xpsProvider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.isbn];
 	NSData *imageData = [xpsProvider coverThumbData];
@@ -40,13 +27,11 @@
 	
 	[imageData writeToFile:[book coverImagePath] atomically:YES];
 	
-	[book setProcessing:NO];
-//	[self.bookInfo setProcessingState:SCHBookProcessingStateReadyForRightsParsing];
 	[[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateReadyForRightsParsing];
-
+	[book setProcessing:NO];
+    
+    self.finished = YES;
+    self.executing = NO;
 }
-
-
-
 
 @end

@@ -7,14 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "SCHBookOperation.h"
 
-@interface SCHThumbnailOperation : NSOperation {
+@interface SCHThumbnailOperation : SCHBookOperation {
 
 }
 
-//@property (nonatomic, retain) NSString *thumbPath;
-//@property (nonatomic, retain) NSString *path;
-@property (nonatomic, retain) NSString *isbn;
 @property (nonatomic, assign) CGSize size;
 @property (nonatomic, assign) BOOL flip;
 @property (nonatomic, assign) BOOL aspect;

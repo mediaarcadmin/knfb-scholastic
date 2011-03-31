@@ -13,43 +13,20 @@
 
 @interface SCHRightsParsingOperation ()
 
-@property BOOL executing;
-@property BOOL finished;
 @property BOOL success;
 @property BOOL parsingComplete;
 
 @property (nonatomic, retain) NSXMLParser *rightsParser;
 @property (nonatomic, retain) NSXMLParser *metadataParser;
 
-- (void) begin;
-
-
 @end
 
 @implementation SCHRightsParsingOperation
 
-@synthesize isbn, executing, finished, success, parsingComplete, rightsParser, metadataParser;
+@synthesize success, parsingComplete, rightsParser, metadataParser;
 
 - (void)dealloc {
-	self.isbn = nil;
-	
 	[super dealloc];
-}
-
-
-- (void) setIsbn: (NSString *) newIsbn
-{
-	
-	if ([self isExecuting] || [self isFinished]) {
-		return;
-	}
-	
-	NSString *oldIsbn = isbn;
-	isbn = [newIsbn retain];
-	[oldIsbn release];
-	
-	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];
-	[book setProcessing:YES];
 }
 
 - (void) start
@@ -58,31 +35,12 @@
 		
 		self.success = YES;
 		
-		[self begin];
+		[super start];
 	}
 }
 
-- (void) cancel
-{
-	self.finished = YES;
-	self.executing = NO;
-	[super cancel];
-}
 
-
-- (BOOL)isConcurrent {
-	return YES;
-}
-
-- (BOOL)isExecuting {
-	return self.executing;
-}
-
-- (BOOL)isFinished {
-	return self.finished;
-}
-
-- (void) begin
+- (void) beginOperation
 {
 	
 	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];
@@ -94,10 +52,6 @@
 	BOOL hasExtras = [xpsProvider componentExistsAtPath:BlioXPSExtrasMetadataFile];
 	BOOL hasRights = [xpsProvider componentExistsAtPath:BlioXPSKNFBRightsFile];
 
-//	[self.bookInfo setObject:[NSNumber numberWithBool:hasAudio] forLocalMetadataKey:kSCHBookInfoRightsHasAudio];
-//	[self.bookInfo setObject:[NSNumber numberWithBool:hasStoryInteractions] forLocalMetadataKey:kSCHBookInfoRightsHasStoryInteractions];
-//	[self.bookInfo setObject:[NSNumber numberWithBool:hasExtras] forLocalMetadataKey:kSCHBookInfoRightsHasExtras];
-	
 	[[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn
 															setValue:[NSNumber numberWithBool:hasAudio]
 															  forKey:kSCHAppBookHasAudio];
@@ -148,7 +102,7 @@
 	}
 	
 	if (self.success) {
-		[[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateReadyToRead];
+		[[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateReadyForTextFlowPreParse];
 	} else {
 		[[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateBookVersionNotSupported];
 	}
@@ -170,7 +124,6 @@
 	if ( [elementName isEqualToString:@"Audio"] ) {
 			NSString * attributeStringValue = [attributeDict objectForKey:@"TTSRead"];
 			if (attributeStringValue && [attributeStringValue isEqualToString:@"True"]) {
-//				[self.bookInfo setObject:[NSNumber numberWithBool:YES] forLocalMetadataKey:kSCHBookInfoRightsTTSPermitted];
 				[[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn
 																		setValue:[NSNumber numberWithBool:YES]
 																		  forKey:kSCHAppBookTTSPermitted];
@@ -204,11 +157,12 @@
 				if ([isRequired isEqualToString:@"true"]) {
 					
 					float floatVersion = [featureName floatValue];
-//					[self.bookInfo setString:featureName forLocalMetadataKey:kSCHBookInfoRightsDRMVersion];
 					[[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn
 																			setValue:featureName
 																			  forKey:kSCHAppBookDRMVersion];
 					
+                    NSLog(@"book drm version: %f", floatVersion);
+                    
 					if (![SCHBookManager checkAppCompatibilityForFeature:featureName version:floatVersion]) {
 						// app is not compatible
 						self.success = NO;
@@ -224,7 +178,6 @@
         } else if ( [elementName isEqualToString:@"PageLayout"] ) {
             NSString *firstPageSide = [attributeDict objectForKey:@"FirstPageSide"];
             if(firstPageSide && [firstPageSide isEqualToString:@"Left"]) {
-//				[self.bookInfo setObject:[NSNumber numberWithBool:YES] forLocalMetadataKey:kSCHBookInfoRightsLayoutStartsOnLeftSide];
 				[[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn
 																		setValue:[NSNumber numberWithBool:YES]
 																		  forKey:kSCHAppBookLayoutStartsOnLeftSide];
@@ -237,7 +190,6 @@
         } else if ( [elementName isEqualToString:@"Contributor"] ) {
             NSString *authorVal = [attributeDict objectForKey:@"Author"];
             if(authorVal) {
-//				[self.bookInfo setObject:authorVal forLocalMetadataKey:kSCHBookInfoXPSAuthor];
 				[[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn
 																		setValue:authorVal
 																		  forKey:kSCHAppBookXPSAuthor];
@@ -270,8 +222,6 @@
 
 - (void)parserDidEndDocument:(NSXMLParser *)parser
 {
-//	self.finished = YES;
-//	self.executing = NO;
 	self.parsingComplete = YES;
 }
 
@@ -279,9 +229,6 @@
 {
 	self.success = NO;
 	self.parsingComplete = YES;
-//	self.finished = YES;
-//	self.executing = NO;
-	
 }
 
 
