@@ -268,6 +268,8 @@
 		C9F1A57A133B83D100FD984C /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C9F1A579133B83D100FD984C /* libxml2.dylib */; };
 		F81B3A7F12FAAD8E00A20D52 /* SCHNote.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A5E12F0EF5600BBBCE6 /* SCHNote.m */; };
 		F81B3A8612FAADB000A20D52 /* SCHBookManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F8CD24CA12F9714D001C748B /* SCHBookManager.m */; };
+		F81C74761344DA0700B1D9DB /* SCHFlowEucBook.m in Sources */ = {isa = PBXBuildFile; fileRef = F81C74751344DA0700B1D9DB /* SCHFlowEucBook.m */; };
+		F81C74771344DA0700B1D9DB /* SCHFlowEucBook.m in Sources */ = {isa = PBXBuildFile; fileRef = F81C74751344DA0700B1D9DB /* SCHFlowEucBook.m */; };
 		F82D39BF131EA79100289FF3 /* SCHBookContents.m in Sources */ = {isa = PBXBuildFile; fileRef = F82D39B4131EA79100289FF3 /* SCHBookContents.m */; };
 		F82D39C5131EA79100289FF3 /* SCHBookContents.m in Sources */ = {isa = PBXBuildFile; fileRef = F82D39B4131EA79100289FF3 /* SCHBookContents.m */; };
 		F82D39D1131EA7C200289FF3 /* SCHAsyncBookCoverImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = F82D39CC131EA7C100289FF3 /* SCHAsyncBookCoverImageView.m */; };
@@ -943,6 +945,8 @@
 		C9ED566C1343322300A25486 /* libwapcaplet.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libwapcaplet.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9ED56811343328F00A25486 /* libiconv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
 		C9F1A579133B83D100FD984C /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
+		F81C74741344DA0700B1D9DB /* SCHFlowEucBook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHFlowEucBook.h; path = Shared/SCHFlowEucBook.h; sourceTree = "<group>"; };
+		F81C74751344DA0700B1D9DB /* SCHFlowEucBook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHFlowEucBook.m; path = Shared/SCHFlowEucBook.m; sourceTree = "<group>"; };
 		F82D39B3131EA79100289FF3 /* SCHBookContents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookContents.h; path = Shared/SCHBookContents.h; sourceTree = "<group>"; };
 		F82D39B4131EA79100289FF3 /* SCHBookContents.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookContents.m; path = Shared/SCHBookContents.m; sourceTree = "<group>"; };
 		F82D39CB131EA7C100289FF3 /* SCHAsyncBookCoverImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAsyncBookCoverImageView.h; path = Shared/SCHAsyncBookCoverImageView.h; sourceTree = "<group>"; };
@@ -1984,6 +1988,8 @@
 				F8CD24CA12F9714D001C748B /* SCHBookManager.m */,
 				F82D39B3131EA79100289FF3 /* SCHBookContents.h */,
 				F82D39B4131EA79100289FF3 /* SCHBookContents.m */,
+				F81C74741344DA0700B1D9DB /* SCHFlowEucBook.h */,
+				F81C74751344DA0700B1D9DB /* SCHFlowEucBook.m */,
 			);
 			name = "Book Data";
 			sourceTree = "<group>";
@@ -2398,6 +2404,7 @@
 				C9B08BE61344D34F001963D0 /* KNFBTextFlowXAMLTree.m in Sources */,
 				C9B08BE81344D34F001963D0 /* KNFBTextFlowXAMLTreeNode.m in Sources */,
 				C9B08BEA1344D34F001963D0 /* KNFBTOCEntry.m in Sources */,
+				F81C74761344DA0700B1D9DB /* SCHFlowEucBook.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2532,6 +2539,7 @@
 				C9B08BE71344D34F001963D0 /* KNFBTextFlowXAMLTree.m in Sources */,
 				C9B08BE91344D34F001963D0 /* KNFBTextFlowXAMLTreeNode.m in Sources */,
 				C9B08BEB1344D34F001963D0 /* KNFBTOCEntry.m in Sources */,
+				F81C74771344DA0700B1D9DB /* SCHFlowEucBook.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

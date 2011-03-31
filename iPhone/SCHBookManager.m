@@ -10,7 +10,7 @@
 #import <pthread.h>
 #import "SCHAppBook.h"
 #import "SCHBookContents.h"
-#import "KNFBFlowEucBook.h"
+#import "SCHFlowEucBook.h"
 
 @interface SCHBookManager ()
 
@@ -397,9 +397,9 @@ static int mutationCount = 0;
 #pragma mark -
 #pragma mark EucBook Check out/Check in
 
-- (KNFBFlowEucBook *)checkOutEucBookForBookIdentifier: (NSString *) isbn
+- (SCHFlowEucBook *)checkOutEucBookForBookIdentifier: (NSString *) isbn
 {
-	KNFBFlowEucBook *ret = nil;
+	SCHFlowEucBook *ret = nil;
 	
 	//NSLog(@"Checking out book ID: %@", bookID);
 	
@@ -407,13 +407,13 @@ static int mutationCount = 0;
 	
     NSMutableDictionary *myCachedEucBooks = self.cachedEucBooks;
     @synchronized(myCachedEucBooks) {
-        KNFBFlowEucBook *previouslyCachedEucBook = [myCachedEucBooks objectForKey:isbn];
+        SCHFlowEucBook *previouslyCachedEucBook = [myCachedEucBooks objectForKey:isbn];
         if(previouslyCachedEucBook) {
             NSLog(@"Returning cached EucBook for book with ISBN %@", isbn);
-            [self.cachedEucBooks addObject:isbn];
-            ret = previouslyCachedXPSProvider;
+            [self.cachedEucBookCheckoutCounts addObject:isbn];
+            ret = previouslyCachedEucBook;
         } else {
-			KNFBFlowEucBook *eucBook = [[KNFBFlowEucBook alloc] initWithISBN:isbn];
+			SCHFlowEucBook *eucBook = [[SCHFlowEucBook alloc] initWithISBN:isbn];
 			if(eucBook) {
 				NSCountedSet *myCachedEucBookCheckoutCounts = self.cachedEucBookCheckoutCounts;
 				if(!myCachedEucBookCheckoutCounts) {
