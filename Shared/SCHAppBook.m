@@ -170,13 +170,16 @@
 			status = @"Download";
 			break;
 		case SCHBookProcessingStateDownloadStarted:
-			status = @"Downloading...";
+			status = @"Loading...";
 			break;
 		case SCHBookProcessingStateDownloadPaused:
 			status = @"Paused";
 			break;
 		case SCHBookProcessingStateReadyForRightsParsing:
 			status = @"Rights...";
+			break;
+        case SCHBookProcessingStateReadyForTextFlowPreParse:
+			status = @"Textflow...";
 			break;
 		case SCHBookProcessingStateReadyToRead:
 			status = @"";

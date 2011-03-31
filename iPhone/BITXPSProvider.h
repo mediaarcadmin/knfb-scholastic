@@ -21,6 +21,7 @@ static NSString * const BlioXPSEncryptedMetadata = @"/Documents/1/Other/KNFB/Met
 static NSString * const BlioXPSEncryptedPagesDir = @"/Documents/1/Other/KNFB/Epages";
 static NSString * const BlioXPSEncryptedImagesDir = @"/Resources";
 static NSString * const BlioXPSEncryptedTextFlowDir = @"/Documents/1/Other/KNFB/Flow";
+static NSString * const BlioXPSTextFlowSectionsFile = @"/Documents/1/Other/KNFB/Flow/Sections.xml";
 static NSString * const BlioXPSComponentExtensionFPage = @"fpage";
 static NSString * const BlioXPSSequenceFile = @"/FixedDocumentSequence.fdseq";
 static NSString * const BlioXPSFileThumbnail = @"Metadata/Thumbnail.jpg";

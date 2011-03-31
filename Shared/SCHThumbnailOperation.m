@@ -14,26 +14,19 @@
 
 @implementation SCHThumbnailOperation
 
-@synthesize isbn, aspect, size, flip;
+@synthesize aspect, size, flip;
 
 - (void)dealloc {
-	
 	[super dealloc];
 }
 
-- (void)imageReady:(NSDictionary *)userInfo {
-	[[NSNotificationCenter defaultCenter] postNotificationName:@"SCHNewImageAvailable" object:nil userInfo:userInfo];
+// overriding setBookInfo - image operation doesn't set the book as processing
+- (void) setIsbn:(NSString *) newIsbn
+{
+    [self setIsbnWithoutUpdatingProcessingStatus:newIsbn];
 }
 
-- (void)main {
-	
-    if ([self isCancelled]) {
-		return;
-	}
-	
-	if (!self.isbn) {
-		return;
-	}
+- (void) beginOperation {
 	
 	// for testing: insert a random processing delay
 	//	int randomValue = (arc4random() % 5) + 3;
@@ -46,7 +39,9 @@
 	
 	UIImage *thumbImage = nil;
 	
-	if ([[NSFileManager defaultManager] fileExistsAtPath:thumbPath]) {
+    NSFileManager *threadLocalFileManager = [[[NSFileManager alloc] init] autorelease];
+    
+	if ([threadLocalFileManager fileExistsAtPath:thumbPath]) {
 		thumbImage = [SCHThumbnailFactory imageWithPath:thumbPath];
 	} else {
 		thumbImage = [SCHThumbnailFactory thumbnailImageOfSize:self.size 
@@ -55,11 +50,10 @@
 		
 		if (thumbImage) {
 			NSData *pngData = UIImagePNGRepresentation(thumbImage);
-//			NSLog(@"Writing to cachepath: %@", cachePath);
 			[pngData writeToFile:thumbPath atomically:YES];
 		}
 	}
-	
+    
 	if (thumbImage) {
 		NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
                                   self.isbn, @"isbn",
@@ -71,12 +65,14 @@
 							   withObject:userInfo 
 							waitUntilDone:YES];
 	}
+    
+    self.executing = NO;
+    self.finished = YES;
+    
 }
 
-- (void) cancel
-{
-	NSLog(@"Cancelling Thumbnail op.");
-	[super cancel];
+- (void)imageReady:(NSDictionary *)userInfo {
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"SCHNewImageAvailable" object:nil userInfo:userInfo];
 }
 
 

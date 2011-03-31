@@ -14,6 +14,7 @@
 #import "SCHXPSCoverImageOperation.h"
 #import "SCHThumbnailOperation.h"
 #import "SCHRightsParsingOperation.h"
+#import "SCHTextFlowPreParseOperation.h"
 #import "SCHBookManager.h"
 #import "SCHAsyncBookCoverImageView.h"
 #import "SCHThumbnailFactory.h"
@@ -347,7 +348,7 @@ static SCHProcessingManager *sharedManager = nil;
 			// *** Book file needs rights parsed ***
 		case SCHBookProcessingStateReadyForRightsParsing:
 		{
-			// create book file download operation
+			// create rights processing operation
 			SCHRightsParsingOperation *rightsOp = [[SCHRightsParsingOperation alloc] init];
 			rightsOp.isbn = isbn;
 			
@@ -362,6 +363,26 @@ static SCHProcessingManager *sharedManager = nil;
 			return;
 			break;
 		}	
+            
+			// *** Book file needs textflow pre-parsing ***
+		case SCHBookProcessingStateReadyForTextFlowPreParse:
+		{
+			// create pre-parse operation
+			SCHTextFlowPreParseOperation *textflowOp = [[SCHTextFlowPreParseOperation alloc] init];
+			textflowOp.isbn = isbn;
+			
+			// the book will be redispatched on completion
+			[textflowOp setCompletionBlock:^{
+				[self redispatchISBN:isbn];
+			}];
+			
+			// add the operation to the network download queue
+			[self.localProcessingQueue addOperation:textflowOp];
+			[textflowOp release];
+			return;
+			break;
+		}	
+            
         case SCHBookProcessingStateReadyForBookFileDownload:
 		{
         // FIXME: Gordon - if you process books then switch off space saver and restart teh app this state is received
@@ -380,7 +401,6 @@ static SCHProcessingManager *sharedManager = nil;
 {
 	
 	// FIXME: main thread please!
-	
 	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:isbn];
 
 	// check for space saver mode
@@ -392,6 +412,7 @@ static SCHProcessingManager *sharedManager = nil;
 		case SCHBookProcessingStateNoCoverImage:
 		case SCHBookProcessingStateDownloadStarted:
 		case SCHBookProcessingStateReadyForRightsParsing:
+        case SCHBookProcessingStateReadyForTextFlowPreParse:
 			[self processISBN:isbn];
 			break;
 			
