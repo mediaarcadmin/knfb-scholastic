@@ -56,7 +56,7 @@
                 endBlock:(NSUInteger)endBlock
                  endWord:(NSUInteger)endWord
 {
-    return nil;
+    return [[[NSObject alloc] init] autorelease];
 }
 
 - (NSSet *)persistedTextFlowPageRanges

@@ -76,8 +76,8 @@
 
 -(EucBookPageIndexPoint *)indexPointForPage:(NSUInteger)page 
 {
-    //[NSException raise:@"SCHFlowEucBookUnimplemented" format:@"indexPointForPage has not yet been implemented in SCHFlowEucBook."];
-    return nil;
+    return 0;
+    //return nil;
 }
 
 @end

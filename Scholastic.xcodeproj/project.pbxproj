@@ -197,6 +197,10 @@
 		C923B14312F6AFC60054426F /* SCHMultipleBookshelvesController.m in Sources */ = {isa = PBXBuildFile; fileRef = C923B13F12F6AFC60054426F /* SCHMultipleBookshelvesController.m */; };
 		C923B15B12F6B0280054426F /* SCHMultipleBookshelvesController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C923B15A12F6B0280054426F /* SCHMultipleBookshelvesController.xib */; };
 		C923B15C12F6B0280054426F /* SCHMultipleBookshelvesController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C923B15A12F6B0280054426F /* SCHMultipleBookshelvesController.xib */; };
+		C93EBDF61346227C003B99FD /* TextFlowFlow.css in Resources */ = {isa = PBXBuildFile; fileRef = C93EBDF51346227C003B99FD /* TextFlowFlow.css */; };
+		C93EBDF71346227C003B99FD /* TextFlowFlow.css in Resources */ = {isa = PBXBuildFile; fileRef = C93EBDF51346227C003B99FD /* TextFlowFlow.css */; };
+		C93EBDF9134622C4003B99FD /* ePubBaseOverrides.css in Resources */ = {isa = PBXBuildFile; fileRef = C93EBDF8134622C4003B99FD /* ePubBaseOverrides.css */; };
+		C93EBDFA134622C4003B99FD /* ePubBaseOverrides.css in Resources */ = {isa = PBXBuildFile; fileRef = C93EBDF8134622C4003B99FD /* ePubBaseOverrides.css */; };
 		C95ECB45133A76C400D88768 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C95ECB44133A76C400D88768 /* Accelerate.framework */; };
 		C95ECB47133A76DE00D88768 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C95ECB46133A76DE00D88768 /* QuartzCore.framework */; };
 		C95ECB49133A770B00D88768 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C95ECB48133A770B00D88768 /* OpenGLES.framework */; };
@@ -244,6 +248,10 @@
 		C9B08BEB1344D34F001963D0 /* KNFBTOCEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B08B291344D34F001963D0 /* KNFBTOCEntry.m */; };
 		C9D4F6281345FFE8007F86E3 /* SCHTextFlow.m in Sources */ = {isa = PBXBuildFile; fileRef = C9D4F6271345FFE7007F86E3 /* SCHTextFlow.m */; };
 		C9D4F6291345FFE8007F86E3 /* SCHTextFlow.m in Sources */ = {isa = PBXBuildFile; fileRef = C9D4F6271345FFE7007F86E3 /* SCHTextFlow.m */; };
+		C9D4F84813462135007F86E3 /* EPubDefault.css in Resources */ = {isa = PBXBuildFile; fileRef = C9D4F84613462135007F86E3 /* EPubDefault.css */; };
+		C9D4F84913462135007F86E3 /* EPubDefault.css in Resources */ = {isa = PBXBuildFile; fileRef = C9D4F84613462135007F86E3 /* EPubDefault.css */; };
+		C9D4F84A13462135007F86E3 /* EPubOverrides.css in Resources */ = {isa = PBXBuildFile; fileRef = C9D4F84713462135007F86E3 /* EPubOverrides.css */; };
+		C9D4F84B13462135007F86E3 /* EPubOverrides.css in Resources */ = {isa = PBXBuildFile; fileRef = C9D4F84713462135007F86E3 /* EPubOverrides.css */; };
 		C9ED566D1343322300A25486 /* libcss.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9ED56631343322300A25486 /* libcss.a */; };
 		C9ED566E1343322300A25486 /* libEucalyptus.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9ED56641343322300A25486 /* libEucalyptus.a */; };
 		C9ED566F1343322300A25486 /* libEucalyptusBase.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9ED56651343322300A25486 /* libEucalyptusBase.a */; };
@@ -895,6 +903,8 @@
 		C923B13E12F6AFC60054426F /* SCHMultipleBookshelvesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHMultipleBookshelvesController.h; path = iPhone/SCHMultipleBookshelvesController.h; sourceTree = "<group>"; };
 		C923B13F12F6AFC60054426F /* SCHMultipleBookshelvesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHMultipleBookshelvesController.m; path = iPhone/SCHMultipleBookshelvesController.m; sourceTree = "<group>"; };
 		C923B15A12F6B0280054426F /* SCHMultipleBookshelvesController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = SCHMultipleBookshelvesController.xib; path = iPhone/SCHMultipleBookshelvesController.xib; sourceTree = "<group>"; };
+		C93EBDF51346227C003B99FD /* TextFlowFlow.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = TextFlowFlow.css; sourceTree = "<group>"; };
+		C93EBDF8134622C4003B99FD /* ePubBaseOverrides.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = ePubBaseOverrides.css; sourceTree = "<group>"; };
 		C947D55D133B9C0000FB4404 /* libEucalyptus.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libEucalyptus.xcodeproj; path = Shared/Libraries/Submodules/libEucalyptus/libEucalyptus.xcodeproj; sourceTree = "<group>"; };
 		C95ECB44133A76C400D88768 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		C95ECB46133A76DE00D88768 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -939,6 +949,8 @@
 		C9B08B291344D34F001963D0 /* KNFBTOCEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KNFBTOCEntry.m; sourceTree = "<group>"; };
 		C9D4F6261345FFE7007F86E3 /* SCHTextFlow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHTextFlow.h; sourceTree = "<group>"; };
 		C9D4F6271345FFE7007F86E3 /* SCHTextFlow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHTextFlow.m; sourceTree = "<group>"; };
+		C9D4F84613462135007F86E3 /* EPubDefault.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = EPubDefault.css; sourceTree = "<group>"; };
+		C9D4F84713462135007F86E3 /* EPubOverrides.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = EPubOverrides.css; sourceTree = "<group>"; };
 		C9ED56631343322300A25486 /* libcss.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libcss.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9ED56641343322300A25486 /* libEucalyptus.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libEucalyptus.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9ED56651343322300A25486 /* libEucalyptusBase.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libEucalyptusBase.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1288,6 +1300,8 @@
 		528A2CCF12CCDC400053A343 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				C93EBDF51346227C003B99FD /* TextFlowFlow.css */,
+				C93EBDF8134622C4003B99FD /* ePubBaseOverrides.css */,
 				C908D895133F942C00661718 /* libEucalyptus Resources */,
 				C908D87D133F941100661718 /* thumbImage.png */,
 				C908D87E133F941100661718 /* Shelf.png */,
@@ -1689,6 +1703,8 @@
 				C908D89C133F942C00661718 /* LinuxLibertine-Italic.otf */,
 				C908D89D133F942C00661718 /* LinuxLibertine.otf */,
 				C908D89E133F942C00661718 /* xhtml-entities.ent */,
+				C9D4F84613462135007F86E3 /* EPubDefault.css */,
+				C9D4F84713462135007F86E3 /* EPubOverrides.css */,
 			);
 			name = "libEucalyptus Resources";
 			path = "Resources/libEucalyptus Resources";
@@ -2222,6 +2238,10 @@
 				C908D8A9133F942C00661718 /* LinuxLibertine-Italic.otf in Resources */,
 				C908D8AB133F942C00661718 /* LinuxLibertine.otf in Resources */,
 				C908D8AD133F942C00661718 /* xhtml-entities.ent in Resources */,
+				C9D4F84813462135007F86E3 /* EPubDefault.css in Resources */,
+				C9D4F84A13462135007F86E3 /* EPubOverrides.css in Resources */,
+				C93EBDF61346227C003B99FD /* TextFlowFlow.css in Resources */,
+				C93EBDF9134622C4003B99FD /* ePubBaseOverrides.css in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2279,6 +2299,10 @@
 				C908D8AA133F942C00661718 /* LinuxLibertine-Italic.otf in Resources */,
 				C908D8AC133F942C00661718 /* LinuxLibertine.otf in Resources */,
 				C908D8AE133F942C00661718 /* xhtml-entities.ent in Resources */,
+				C9D4F84913462135007F86E3 /* EPubDefault.css in Resources */,
+				C9D4F84B13462135007F86E3 /* EPubOverrides.css in Resources */,
+				C93EBDF71346227C003B99FD /* TextFlowFlow.css in Resources */,
+				C93EBDFA134622C4003B99FD /* ePubBaseOverrides.css in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
