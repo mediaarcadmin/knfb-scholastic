@@ -108,7 +108,7 @@
 - (NSString *)cacheDirectory 
 {
     NSString *libraryCacheDirectory = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject];
-    NSString *bookCacheDirectory = [libraryCacheDirectory stringByAppendingFormat:@"/%@", self.ContentIdentifier];
+    NSString *bookCacheDirectory = [libraryCacheDirectory stringByAppendingPathComponent:self.ContentIdentifier];
     
     NSFileManager *localFileManager = [[NSFileManager alloc] init];
     NSError *error = nil;
@@ -125,6 +125,28 @@
     [localFileManager release];
     
     return bookCacheDirectory;
+}
+
+- (NSString *) libEucalyptusCache
+{
+    NSString *cacheDir = [self cacheDirectory];
+    NSString *libEucalyptusCacheDirectory = [cacheDir stringByAppendingPathComponent:@"libEucalyptusCache"];
+    
+    NSFileManager *localFileManager = [[NSFileManager alloc] init];
+    NSError *error = nil;
+    BOOL isDirectory = NO;
+    
+    if (![localFileManager fileExistsAtPath:libEucalyptusCacheDirectory isDirectory:&isDirectory]) {
+        [localFileManager createDirectoryAtPath:libEucalyptusCacheDirectory withIntermediateDirectories:YES attributes:nil error:&error];
+        
+        if (error) {
+            NSLog(@"Warning: problem creating book cache directory. %@", [error localizedDescription]);
+        }
+    }
+    
+    [localFileManager release];
+    
+    return libEucalyptusCacheDirectory;
 }
 
 #pragma mark -

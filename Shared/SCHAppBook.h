@@ -78,6 +78,7 @@ static NSString * const kSCHAppBookEucalyptusCacheDir = @"libEucalyptusCache";
 - (NSString *) coverImagePath;
 - (NSString *) thumbPathForSize: (CGSize) size;
 - (NSString *) cacheDirectory;
+- (NSString *) libEucalyptusCache;
 
 + (NSString *)rootCacheDirectory;
 

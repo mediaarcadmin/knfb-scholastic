@@ -524,7 +524,7 @@ static int mutationCount = 0;
     return ret;
 }
 
-- (void)checkInTextFlowForBookWithID: (NSString *) isbn
+- (void)checkInTextFlowForBookIdentifier: (NSString *) isbn
 {
     // Always check in an XPS Provider alongside a TextFlow to match the fact 
     // that we always check it out
