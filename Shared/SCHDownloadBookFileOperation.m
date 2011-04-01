@@ -58,7 +58,7 @@
 		
 	} else if (self.fileType == kSCHDownloadFileTypeCoverImage) {
 		
-		NSString *cacheDir  = [SCHAppBook cacheDirectory];
+		NSString *cacheDir  = [book cacheDirectory];
 		self.localPath = [cacheDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png", book.ContentIdentifier]];
 		
 		request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:book.BookCoverURL]];
@@ -149,7 +149,7 @@
 	unsigned long long fileSize = [[[NSFileManager defaultManager] attributesOfItemAtPath:self.localPath error:&error] fileSize];
 
 	if (error) {
-		NSLog(@"Warning: could not get filesize.");
+		NSLog(@"Warning: could not get filesize for %@. %@", self.localPath, [error localizedDescription]);
 	}
 	
 	

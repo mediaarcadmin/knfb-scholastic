@@ -98,11 +98,33 @@
 }
 
 #pragma mark -
-#pragma mark Cache Directory
+#pragma mark Cache Directory for Current Book
 
-+ (NSString *)cacheDirectory 
++ (NSString *)rootCacheDirectory 
 {
-	return [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject];
+    return [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject];
+}
+
+- (NSString *)cacheDirectory 
+{
+    NSString *libraryCacheDirectory = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject];
+    NSString *bookCacheDirectory = [libraryCacheDirectory stringByAppendingFormat:@"/%@", self.ContentIdentifier];
+    
+    NSFileManager *localFileManager = [[NSFileManager alloc] init];
+    NSError *error = nil;
+    BOOL isDirectory = NO;
+    
+    if (![localFileManager fileExistsAtPath:bookCacheDirectory isDirectory:&isDirectory]) {
+        [localFileManager createDirectoryAtPath:bookCacheDirectory withIntermediateDirectories:YES attributes:nil error:&error];
+
+        if (error) {
+            NSLog(@"Warning: problem creating book cache directory. %@", [error localizedDescription]);
+        }
+    }
+    
+    [localFileManager release];
+    
+    return bookCacheDirectory;
 }
 
 #pragma mark -
@@ -113,22 +135,25 @@
 #if LOCALDEBUG
 	return [[NSBundle mainBundle] pathForResource:self.ContentMetadataItem.FileName ofType:@"xps"];
 #else
+    NSLog(@"returning %@", [NSString stringWithFormat:@"%@/%@-%@.xps", 
+                            [self cacheDirectory], 
+                            self.ContentMetadataItem.ContentIdentifier, self.ContentMetadataItem.Version]);
 	return [NSString stringWithFormat:@"%@/%@-%@.xps", 
-			[SCHAppBook cacheDirectory], 
+			[self cacheDirectory], 
 			self.ContentMetadataItem.ContentIdentifier, self.ContentMetadataItem.Version];
 #endif
 }
 
 - (NSString *) coverImagePath
 {
-	NSString *cacheDir  = [SCHAppBook cacheDirectory];
+	NSString *cacheDir  = [self cacheDirectory];
 	NSString *fullImagePath = [cacheDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png", self.ContentIdentifier]];
 	return fullImagePath;
 }	
 
 - (NSString *) thumbPathForSize: (CGSize) size
 {
-	NSString *cacheDir  = [SCHAppBook cacheDirectory];
+	NSString *cacheDir  = [self cacheDirectory];
 	NSString *thumbPath = [cacheDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png_%d_%d", self.ContentIdentifier, (int)size.width, (int)size.height]];
 	
 	return thumbPath;

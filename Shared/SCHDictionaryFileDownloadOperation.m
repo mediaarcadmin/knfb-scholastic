@@ -56,7 +56,7 @@
 		
 		// FIXME: put the cache directory method somewhere better
 		
-		self.localPath = [[SCHAppBook cacheDirectory] 
+		self.localPath = [[SCHAppBook rootCacheDirectory] 
 						  stringByAppendingFormat:@"/dictionary-%@.zip", 
 						  [[SCHDictionaryManager sharedDictionaryManager] dictionaryVersion]];
 		

@@ -68,7 +68,7 @@
 
   //  NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
     
-    NSString *paginationPath = [[SCHAppBook cacheDirectory] stringByAppendingPathComponent:kSCHAppBookEucalyptusCacheDir];
+    NSString *paginationPath = [[book cacheDirectory] stringByAppendingPathComponent:kSCHAppBookEucalyptusCacheDir];
     
 //    if(self.forceReprocess) {
         // Best effort - ignore errors.
@@ -121,8 +121,8 @@
         [self updateBookWithSuccess];
     } else {
         eucBook.title = book.Title;
-        eucBook.cacheDirectoryPath = [SCHAppBook cacheDirectory];
-        
+        eucBook.cacheDirectoryPath = [[book cacheDirectory] stringByAppendingPathComponent:kSCHAppBookEucalyptusCacheDir];
+
         BOOL isDirectory = YES;
         NSString *cannedPaginationPath = [[[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"PageIndexes"] stringByAppendingPathComponent:[book.Title stringByAppendingPathExtension:@"libEucalyptusPageIndexes"]];    
         if([[NSFileManager defaultManager] fileExistsAtPath:cannedPaginationPath isDirectory:&isDirectory] && isDirectory) {       
