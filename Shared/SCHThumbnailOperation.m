@@ -66,9 +66,7 @@
 							waitUntilDone:YES];
 	}
     
-    self.executing = NO;
-    self.finished = YES;
-    
+    [self endOperation];    
 }
 
 - (void)imageReady:(NSDictionary *)userInfo {

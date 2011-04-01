@@ -59,8 +59,7 @@
 		
 		[[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateNoCoverImage];
 		
-		self.executing = NO;
-		self.finished = YES;
+        [self endOperation];
 	}
 }
 
@@ -74,8 +73,7 @@
 		NSLog(@"Failure for ISBN %@", completedISBN);
 		[[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateError];
 
-		self.executing = NO;
-		self.finished = YES;
+        [self endOperation];
 	}
 }
 

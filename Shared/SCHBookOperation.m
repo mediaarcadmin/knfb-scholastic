@@ -60,8 +60,7 @@
 
 - (void) cancel
 {
-	self.finished = YES;
-	self.executing = NO;
+    [self endOperation];
 	[super cancel];
 }
 
@@ -93,6 +92,18 @@
 	
 	return;
 	
+}
+
+- (void) endOperation
+{
+    [self willChangeValueForKey:@"isExecuting"];
+    [self willChangeValueForKey:@"isFinished"];
+    
+    self.executing = NO;
+    self.finished = YES;
+    
+    [self didChangeValueForKey:@"isExecuting"];
+    [self didChangeValueForKey:@"isFinished"];  
 }
 
 @end

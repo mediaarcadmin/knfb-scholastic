@@ -30,8 +30,7 @@
 	[[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateReadyForRightsParsing];
 	[book setProcessing:NO];
     
-    self.finished = YES;
-    self.executing = NO;
+    [self endOperation];
 }
 
 @end

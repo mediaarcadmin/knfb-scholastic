@@ -109,8 +109,7 @@
 	
 	[book setProcessing:NO];
 
-	self.finished = YES;
-	self.executing = NO;
+    [self endOperation];
 	
 	return;
 }
