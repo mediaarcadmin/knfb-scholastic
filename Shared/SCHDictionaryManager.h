@@ -9,11 +9,14 @@
 #import <Foundation/Foundation.h>
 
 static NSString* const kSCHDictionaryDownloadPercentageUpdate = @"SCHDictionaryDownloadPercentageUpdate";
+static NSString* const kSCHDictionaryUnarchivePercentageUpdate = @"SCHDictionaryUnarchivePercentageUpdate";
 
 typedef enum {
 	SCHDictionaryProcessingStateError = 0,
 	SCHDictionaryProcessingStateNeedsManifest,
 	SCHDictionaryProcessingStateNeedsDownload,
+    SCHDictionaryProcessingStateNeedsUnarchiving,
+    SCHDictionaryProcessingStateNeedsParsing,
 	SCHDictionaryProcessingStateDone
 } SCHDictionaryProcessingState;
 
@@ -23,6 +26,8 @@ typedef enum {
 }
 
 + (SCHDictionaryManager *) sharedDictionaryManager;
+
++ (NSString *)dictionaryDirectory;
 
 // the dictionary URL
 @property (readwrite, retain) NSString *dictionaryURL;
