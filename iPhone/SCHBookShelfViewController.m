@@ -105,10 +105,6 @@
 {
 	self.books = [self.profileItem allISBNs];
 	self.loadingView.hidden = YES;
-	
-	// FIXME: more specific updates of cells
-	//[self.tableView reloadData];
-	//[self.gridView reloadData];
 }
 
 #pragma mark -
