@@ -10,6 +10,7 @@
 #import "SCHBookManager.h"
 #import "SCHAppBook.h"
 #import "BITXPSProvider.h"
+#import "KNFBTextFlowPositionedWord.h"
 
 @interface SCHTextFlow()
 
@@ -41,12 +42,15 @@
 
 - (NSArray *)wordsForRange:(id)range 
 {
-    return nil;
+    KNFBTextFlowPositionedWord *word = [[[KNFBTextFlowPositionedWord alloc] init] autorelease];
+    word.string = @"matt";
+    
+    return [NSArray arrayWithObject:word];
 }
 
 - (NSArray *)wordStringsForRange:(id)range
 {
-    return nil;
+    return [NSArray arrayWithObjects:@"Foo", @"Bar", nil];
 }
 
 - (id)rangeWithStartPage:(NSUInteger)startPage 
