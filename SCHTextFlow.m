@@ -7,6 +7,9 @@
 //
 
 #import "SCHTextFlow.h"
+#import "SCHBookManager.h"
+#import "SCHAppBook.h"
+#import "BITXPSProvider.h"
 
 @interface SCHTextFlow()
 
@@ -58,17 +61,30 @@
 
 - (NSSet *)persistedTextFlowPageRanges
 {
-    return nil;
+    SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];
+    return [book TextFlowPageRanges];
 }
 
 - (NSData *)textFlowDataWithPath:(NSString *)path
 {
-    return nil;
+    
+    NSData *data = nil;
+    BITXPSProvider *xpsProvider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.isbn];
+    
+    data = [xpsProvider dataForComponentAtPath:[BlioXPSEncryptedTextFlowDir stringByAppendingPathComponent:path]];
+    
+    [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.isbn];
+
+    return data;
 }
 
 - (NSData *)textFlowRootFileData
 {
-    return nil;
+    BITXPSProvider *xpsProvider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.isbn];
+    NSData *data = [xpsProvider dataForComponentAtPath:BlioXPSTextFlowSectionsFile];
+    [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.isbn];
+
+    return data;
 }
 
 @end

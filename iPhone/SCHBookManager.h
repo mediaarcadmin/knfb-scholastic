@@ -34,7 +34,7 @@
 - (void)checkInEucBookForBookIdentifier: (NSString *) isbn;
 
 - (SCHTextFlow *)checkOutTextFlowForBookIdentifier:(NSString *) isbn;
-- (void)checkInTextFlowForBookWithID: (NSString *) isbn;
+- (void)checkInTextFlowForBookIdentifier: (NSString *) isbn;
 
 + (BOOL) checkAppCompatibilityForFeature: (NSString *) key version: (float) version;
 + (BOOL) appHasFeature: (NSString *) key;
