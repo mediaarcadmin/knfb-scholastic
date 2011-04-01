@@ -14,7 +14,11 @@ static NSInteger const kSCHDrmNetworkError = 2001;
 static NSInteger const kSCHDrmRegistrationError = 2002;
 static NSInteger const kSCHDrmDeregistrationError = 2003;
 
+#if SERVEROVERRIDE
+static NSString* const drmServerUrl = @"http://laesb.uat.cld.libredigital.com/rightsmanager.asmx";
+#else
 static NSString* const drmServerUrl = @"http://plr.devint.cld.libredigital.com/rightsmanager.asmx";
+#endif
 
 typedef enum  {
 	SCHDrmSoapActionAcquireLicense = 0,
