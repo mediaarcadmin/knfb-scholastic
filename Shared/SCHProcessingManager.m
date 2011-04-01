@@ -275,16 +275,7 @@ static SCHProcessingManager *sharedManager = nil;
 			
 			// *** Book has no URLs ***
 		case SCHBookProcessingStateNoURLs:
-		{/*
-#if LOCALDEBUG
-      
-            // for local debug, set the book to No Cover Image
-            [[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:isbn state:SCHBookProcessingStateNoCoverImage];
-            [self redispatchISBN:isbn];
-            return;
-            break;
-#endif
-           */ 
+		{ 
 			// create URL processing operation
 			SCHBookURLRequestOperation *bookURLOp = [[SCHBookURLRequestOperation alloc] init];
 			bookURLOp.isbn = isbn;
@@ -502,11 +493,14 @@ static SCHProcessingManager *sharedManager = nil;
 		// check for an existing file
 		NSString *thumbPath = [book thumbPathForSize:size];
 		
-		// FIXME: non thread safe!
-		if ([[NSFileManager defaultManager] fileExistsAtPath:thumbPath]) {
+        NSFileManager *localFileManager = [[NSFileManager alloc] init];
+        
+		if ([localFileManager fileExistsAtPath:thumbPath]) {
 			bookCover.image = [SCHThumbnailFactory imageWithPath:thumbPath];
 			return YES;
 		}
+        
+        [localFileManager release];
 			
 		// check for an existing request
 		NSMutableArray *sizes = [self.thumbImageRequests objectForKey:book.ContentIdentifier];

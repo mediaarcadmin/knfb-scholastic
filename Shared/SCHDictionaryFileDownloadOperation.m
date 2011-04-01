@@ -54,8 +54,6 @@
 		NSLog(@"Cancelled.");
 	} else {
 		
-		// FIXME: put the cache directory method somewhere better
-		
 		self.localPath = [[SCHAppBook rootCacheDirectory] 
 						  stringByAppendingFormat:@"/dictionary-%@.zip", 
 						  [[SCHDictionaryManager sharedDictionaryManager] dictionaryVersion]];

@@ -310,8 +310,6 @@ static int mutationCount = 0;
 #pragma mark -
 #pragma mark Thread-specific MOC
 
-// FIXME: move to SCHSyncManager?
-
 - (NSManagedObjectContext *)managedObjectContextForCurrentThread
 {
     NSManagedObjectContext *managedObjectContextForCurrentThread = (NSManagedObjectContext *)pthread_getspecific(sManagedObjectContextKey);
