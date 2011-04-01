@@ -47,14 +47,7 @@
     [[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateReadyToRead];
     [[[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn] setProcessing:NO];
     
-    [self willChangeValueForKey:@"isExecuting"];
-    [self willChangeValueForKey:@"isFinished"];
-    
-    self.executing = NO;
-    self.finished = YES;
-    
-    [self didChangeValueForKey:@"isExecuting"];
-    [self didChangeValueForKey:@"isFinished"];  
+    [self endOperation];
 }
 
 - (void) updateBookWithFailure
@@ -63,14 +56,7 @@
         [[SCHBookManager sharedBookManager] checkInEucBookForBookIdentifier:self.isbn];
     }
     
-    [self willChangeValueForKey:@"isExecuting"];
-    [self willChangeValueForKey:@"isFinished"];
-    
-    self.executing = NO;
-    self.finished = YES;
-    
-    [self didChangeValueForKey:@"isExecuting"];
-    [self didChangeValueForKey:@"isFinished"];  
+    [self endOperation];
 }
 
 - (void) beginOperation

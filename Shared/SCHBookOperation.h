@@ -18,6 +18,7 @@
 @property BOOL finished;
 
 - (void) beginOperation;
+- (void) endOperation;
 - (void) setIsbnWithoutUpdatingProcessingStatus: (NSString *) newIsbn;
 
 @end

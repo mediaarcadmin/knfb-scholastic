@@ -139,8 +139,9 @@
 	
 	if ([self isCancelled] || [book processingState] == SCHBookProcessingStateDownloadPaused) {
 		[connection cancel];
-		self.executing = NO;
-		self.finished = YES;
+        
+        [self endOperation];
+        
 		return;
 	}
 	
@@ -183,9 +184,7 @@
 	}
 	
 	
-	self.executing = NO;
-	self.finished = YES;
-	
+    [self endOperation];	
 }
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
@@ -195,8 +194,7 @@
 //	[self.bookInfo setProcessingState:SCHBookProcessingStateError];
 	[[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateReadyForBookFileDownload];
 
-	self.executing = NO;
-	self.finished = YES;
+    [self endOperation];
 }
 
 @end
