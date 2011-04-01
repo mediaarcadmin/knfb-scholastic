@@ -11,6 +11,8 @@
 #import "SCHAppBook.h"
 #import "BITXPSProvider.h"
 #import "KNFBTextFlowPositionedWord.h"
+#import "SCHBookRange.h"
+#import "KNFBTextFlowBlock.h"
 
 @interface SCHTextFlow()
 
@@ -40,17 +42,64 @@
 #pragma mark -
 #pragma mark Overriden methods
 
-- (NSArray *)wordsForRange:(id)range 
+- (NSArray *)wordsForRange:(id)aRange 
 {
-    KNFBTextFlowPositionedWord *word = [[[KNFBTextFlowPositionedWord alloc] init] autorelease];
-    word.string = @"matt";
+    SCHBookRange *range = (SCHBookRange *)aRange;
     
-    return [NSArray arrayWithObject:word];
+    NSMutableArray *allWords = [NSMutableArray array];
+    
+    for (NSInteger pageNumber = range.startPage; pageNumber <= range.endPage; pageNumber++) {
+        NSInteger pageIndex = pageNumber - 1;
+        
+        for (KNFBTextFlowBlock *block in [self blocksForPageAtIndex:pageIndex includingFolioBlocks:YES]) {
+            if (![block isFolio]) {
+                for (KNFBTextFlowPositionedWord *word in [block words]) {
+                    if ((range.startPage < pageNumber) &&
+                        (block.blockIndex <= range.endBlock) &&
+                        (word.wordIndex <= range.endWord)) {
+                        
+                        [allWords addObject:word];
+                        
+                    } else if ((range.endPage > pageNumber) &&
+                               (block.blockIndex >= range.startBlock) &&
+                               (word.wordIndex >= range.startWord)) {
+                        
+                        [allWords addObject:word];
+                        
+                    } else if ((range.startPage == pageNumber) &&
+                               (block.blockIndex == range.startBlock) &&
+                               (word.wordIndex >= range.startWord)) {
+                        
+                        if ((block.blockIndex == range.endBlock) &&
+                            (word.wordIndex <= range.endWord)) {
+                            [allWords addObject:word];
+                        } else if (block.blockIndex < range.endBlock) {
+                            [allWords addObject:word];
+                        }
+                        
+                    } else if ((range.startPage == pageNumber) &&
+                               (block.blockIndex > range.startBlock)) {
+                        
+                        if ((block.blockIndex == range.endBlock) &&
+                            (word.wordIndex <= range.endWord)) {
+                            [allWords addObject:word];
+                        } else if (block.blockIndex < range.endBlock) {
+                            [allWords addObject:word];
+                        }
+                        
+                    }
+                }
+            }
+        }
+    }
+    
+    return allWords;
+
 }
 
 - (NSArray *)wordStringsForRange:(id)range
 {
-    return [NSArray arrayWithObjects:@"Foo", @"Bar", nil];
+    return [[self wordsForRange:range] valueForKey:@"string"];
 }
 
 - (id)rangeWithStartPage:(NSUInteger)startPage 
@@ -60,7 +109,8 @@
                 endBlock:(NSUInteger)endBlock
                  endWord:(NSUInteger)endWord
 {
-    return [[[NSObject alloc] init] autorelease];
+    SCHBookRange *bookRange = [[SCHBookRange alloc] initWithStartPage:startPage startBlock:startBlock startWord:startWord endPage:endPage endBlock:endBlock endWord:endBlock];
+    return [bookRange autorelease];
 }
 
 - (NSSet *)persistedTextFlowPageRanges

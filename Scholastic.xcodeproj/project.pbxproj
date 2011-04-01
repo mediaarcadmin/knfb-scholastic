@@ -201,6 +201,8 @@
 		C93EBDF71346227C003B99FD /* TextFlowFlow.css in Resources */ = {isa = PBXBuildFile; fileRef = C93EBDF51346227C003B99FD /* TextFlowFlow.css */; };
 		C93EBDF9134622C4003B99FD /* ePubBaseOverrides.css in Resources */ = {isa = PBXBuildFile; fileRef = C93EBDF8134622C4003B99FD /* ePubBaseOverrides.css */; };
 		C93EBDFA134622C4003B99FD /* ePubBaseOverrides.css in Resources */ = {isa = PBXBuildFile; fileRef = C93EBDF8134622C4003B99FD /* ePubBaseOverrides.css */; };
+		C93EBDFD13462883003B99FD /* SCHBookRange.m in Sources */ = {isa = PBXBuildFile; fileRef = C93EBDFC13462883003B99FD /* SCHBookRange.m */; };
+		C93EBDFE13462883003B99FD /* SCHBookRange.m in Sources */ = {isa = PBXBuildFile; fileRef = C93EBDFC13462883003B99FD /* SCHBookRange.m */; };
 		C95ECB45133A76C400D88768 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C95ECB44133A76C400D88768 /* Accelerate.framework */; };
 		C95ECB47133A76DE00D88768 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C95ECB46133A76DE00D88768 /* QuartzCore.framework */; };
 		C95ECB49133A770B00D88768 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C95ECB48133A770B00D88768 /* OpenGLES.framework */; };
@@ -905,6 +907,8 @@
 		C923B15A12F6B0280054426F /* SCHMultipleBookshelvesController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = SCHMultipleBookshelvesController.xib; path = iPhone/SCHMultipleBookshelvesController.xib; sourceTree = "<group>"; };
 		C93EBDF51346227C003B99FD /* TextFlowFlow.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = TextFlowFlow.css; sourceTree = "<group>"; };
 		C93EBDF8134622C4003B99FD /* ePubBaseOverrides.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = ePubBaseOverrides.css; sourceTree = "<group>"; };
+		C93EBDFB13462882003B99FD /* SCHBookRange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHBookRange.h; sourceTree = "<group>"; };
+		C93EBDFC13462883003B99FD /* SCHBookRange.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHBookRange.m; sourceTree = "<group>"; };
 		C947D55D133B9C0000FB4404 /* libEucalyptus.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libEucalyptus.xcodeproj; path = Shared/Libraries/Submodules/libEucalyptus/libEucalyptus.xcodeproj; sourceTree = "<group>"; };
 		C95ECB44133A76C400D88768 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		C95ECB46133A76DE00D88768 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -2018,6 +2022,8 @@
 				F81C74751344DA0700B1D9DB /* SCHFlowEucBook.m */,
 				C9D4F6261345FFE7007F86E3 /* SCHTextFlow.h */,
 				C9D4F6271345FFE7007F86E3 /* SCHTextFlow.m */,
+				C93EBDFB13462882003B99FD /* SCHBookRange.h */,
+				C93EBDFC13462883003B99FD /* SCHBookRange.m */,
 			);
 			name = "Book Data";
 			sourceTree = "<group>";
@@ -2443,6 +2449,7 @@
 				F81C74761344DA0700B1D9DB /* SCHFlowEucBook.m in Sources */,
 				F81C747A1344DC1200B1D9DB /* SCHFlowPaginateOperation.m in Sources */,
 				C9D4F6281345FFE8007F86E3 /* SCHTextFlow.m in Sources */,
+				C93EBDFD13462883003B99FD /* SCHBookRange.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2580,6 +2587,7 @@
 				F81C74771344DA0700B1D9DB /* SCHFlowEucBook.m in Sources */,
 				F81C747B1344DC1200B1D9DB /* SCHFlowPaginateOperation.m in Sources */,
 				C9D4F6291345FFE8007F86E3 /* SCHTextFlow.m in Sources */,
+				C93EBDFE13462883003B99FD /* SCHBookRange.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
