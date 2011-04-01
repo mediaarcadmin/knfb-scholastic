@@ -10,13 +10,16 @@
 #import <pthread.h>
 #import "SCHAppBook.h"
 #import "SCHBookContents.h"
+#import "KNFBTextFlow.h"
 
 @interface SCHBookManager ()
 
 @property (nonatomic, retain) NSMutableDictionary *cachedXPSProviders;
 @property (nonatomic, retain) NSMutableDictionary *cachedEucBooks;
+@property (nonatomic, retain) NSMutableDictionary *cachedTextFlows;
 @property (nonatomic, retain) NSCountedSet *cachedXPSProviderCheckoutCounts;
 @property (nonatomic, retain) NSCountedSet *cachedEucBookCheckoutCounts;
+@property (nonatomic, retain) NSCountedSet *cachedTextFlowCheckoutCounts;
 @property (nonatomic, retain) NSLock *threadSafeMutationLock;
 
 - (BOOL)save:(NSError **)error;
@@ -39,7 +42,7 @@ static NSDictionary *featureCompatibilityDictionary = nil;
 static int mutationCount = 0;
 
 
-@synthesize cachedXPSProviders, cachedXPSProviderCheckoutCounts, cachedEucBooks, cachedEucBookCheckoutCounts, persistentStoreCoordinator, threadSafeMutationLock;
+@synthesize cachedXPSProviders, cachedXPSProviderCheckoutCounts, cachedEucBooks, cachedEucBookCheckoutCounts, cachedTextFlows, cachedTextFlowCheckoutCounts, persistentStoreCoordinator, threadSafeMutationLock;
 
 + (SCHBookManager *)sharedBookManager
 {
@@ -72,6 +75,8 @@ static int mutationCount = 0;
     if ((self = [super init])) {
         // Initialization code.
 		self.cachedXPSProviders = [[NSMutableDictionary alloc] init];
+		self.cachedEucBooks = [[NSMutableDictionary alloc] init];
+		self.cachedTextFlows = [[NSMutableDictionary alloc] init];
     }
     return self;
 }
@@ -472,6 +477,83 @@ static int mutationCount = 0;
     }
 	
 }
+
+#pragma mark -
+#pragma mark TextFlow Check out/Check in
+
+- (KNFBTextFlow *)checkOutTextFlowForBookIdentifier:(NSString *) isbn
+{
+    KNFBTextFlow *ret = nil;
+    
+    // Always check out an XPS Provider alongside a TextFlow to guarantee that we have the 
+    // same one underneath it for the duration of any decrypt operation
+    [self checkOutXPSProviderForBookIdentifier:isbn];
+    
+    [self.persistentStoreCoordinator lock];
+    
+    NSMutableDictionary *myCachedTextFlows = self.cachedTextFlows;
+    @synchronized(myCachedTextFlows) {
+        KNFBTextFlow *previouslyCachedTextFlow = [myCachedTextFlows objectForKey:isbn];
+        if(previouslyCachedTextFlow) {
+            //NSLog(@"Returning cached TextFlow for book with ISBN %@", isbn);
+            [self.cachedTextFlowCheckoutCounts addObject:isbn];
+            ret = previouslyCachedTextFlow;
+        } else {
+            // FIXME: implement book hasTextFlow method
+            // FIXME: create SCHTextFlow object? 
+            
+            //SCHAppBook *book = [self bookWithIdentifier:isbn];
+            /* if([book hasTextFlow]) {
+                
+               // KNFBTextFlow *textFlow = [[KNFBTextFlow alloc] in
+                
+                if(textFlow) {
+                    //NSLog(@"Creating and caching TextFlow for book with ISBN %@", isbn);
+                    NSCountedSet *myCachedTextFlowCheckoutCounts = self.cachedTextFlowCheckoutCounts;
+                    if(!myCachedTextFlowCheckoutCounts) {
+                        myCachedTextFlowCheckoutCounts = [NSCountedSet set];
+                        self.cachedTextFlowCheckoutCounts = myCachedTextFlowCheckoutCounts;
+                    }
+                    [myCachedTextFlows setObject:textFlow forKey:isbn];
+                    [myCachedTextFlowCheckoutCounts addObject:isbn];
+                    [textFlow release];
+                    ret = textFlow;
+                }
+            } */
+        }
+    }
+    
+    [self.persistentStoreCoordinator unlock];
+    
+    return ret;
+}
+
+- (void)checkInTextFlowForBookWithID: (NSString *) isbn
+{
+    // Always check in an XPS Provider alongside a TextFlow to match the fact 
+    // that we always check it out
+    [self checkInXPSProviderForBookIdentifier:isbn];
+    
+    NSMutableDictionary *myCachedTextFlows = self.cachedTextFlows;
+    @synchronized(myCachedTextFlows) {
+        NSCountedSet *myCachedTextFlowCheckoutCounts = self.cachedTextFlowCheckoutCounts;
+        NSUInteger count = [myCachedTextFlowCheckoutCounts countForObject:isbn];
+        if(count == 0) {
+            NSLog(@"Warning! Unexpected checkin of non-checked-out TextFlow");
+        } else {
+            [myCachedTextFlowCheckoutCounts removeObject:isbn];
+            if (count == 1) {
+                //NSLog(@"Releasing cached TextFlow for book with ISBN %@", isbn);
+                [myCachedTextFlows removeObjectForKey:isbn];
+                if(myCachedTextFlowCheckoutCounts.count == 0) {
+                    // May as well release the set.
+                    self.cachedTextFlowCheckoutCounts = nil;
+                }
+            }
+        }
+    }
+}
+
 
 
 @end
