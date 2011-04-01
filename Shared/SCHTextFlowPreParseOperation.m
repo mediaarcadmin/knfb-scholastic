@@ -89,7 +89,7 @@ static void pageFileXMLParsingStartElementHandler(void *ctx, const XML_Char *nam
 
 - (void) updateBookWithSuccess
 {
-    [[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateReadyToRead];
+    [[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateReadyForPagination];
     [[[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn] setProcessing:NO];
     self.finished = YES;
     self.executing = NO;
@@ -181,6 +181,8 @@ static void pageFileXMLParsingStartElementHandler(void *ctx, const XML_Char *nam
     NSLog(@"layout page equivalent count: %@", [NSNumber numberWithInteger:[[sortedRanges lastObject] endPageIndex]]);
 
     [[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn setValue:[NSSet setWithSet:pageRangesSet] forKey:kSCHAppBookTextFlowPageRanges];
+    
+    [[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn setValue:[NSNumber numberWithInteger:[[sortedRanges lastObject] endPageIndex]] forKey:kSCHAppBookLayoutPageEquivalentCount];
     
     [self updateBookWithSuccess];
     

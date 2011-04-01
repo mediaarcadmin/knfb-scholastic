@@ -11,6 +11,7 @@
 #import "BITXPSProvider.h"
 #import "SCHContentMetadataItem.h"
 #import "SCHProcessingManager.h"
+#import "SCHFlowEucBook.h"
 
 @interface SCHBookManager : NSObject {
 
@@ -26,6 +27,9 @@
 
 - (BITXPSProvider *)checkOutXPSProviderForBookIdentifier: (NSString *) isbn;
 - (void)checkInXPSProviderForBookIdentifier: (NSString *) isbn;
+
+- (SCHFlowEucBook *)checkOutEucBookForBookIdentifier: (NSString *) isbn;
+- (void)checkInEucBookForBookIdentifier: (NSString *) isbn;
 
 + (BOOL) checkAppCompatibilityForFeature: (NSString *) key version: (float) version;
 + (BOOL) appHasFeature: (NSString *) key;

@@ -10,7 +10,6 @@
 #import <pthread.h>
 #import "SCHAppBook.h"
 #import "SCHBookContents.h"
-#import "SCHFlowEucBook.h"
 
 @interface SCHBookManager ()
 
@@ -181,6 +180,16 @@ static int mutationCount = 0;
 
 - (void)threadSafeUpdateBookWithISBN: (NSString *) isbn setValue:(id)value forKey:(NSString *)key 
 {
+    
+    if (!isbn || [isbn isEqual:[NSNull null]] ||
+        !value || [value isEqual:[NSNull null]] ||
+        !key || [key isEqual:[NSNull null]])
+    {
+        NSLog(@"Attempted to use null value in threadSafeUpdateBookWithISBN. ISBN: %@ value: %@ key: %@", isbn, value, key);
+        return;
+    }
+                  
+    
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
     
 	[self.threadSafeMutationLock lock];
@@ -424,7 +433,7 @@ static int mutationCount = 0;
 				[myCachedEucBooks setObject:eucBook forKey:isbn];
 				[myCachedEucBookCheckoutCounts addObject:isbn];
 				ret = eucBook;
-				[eucBook release];
+				//[eucBook release];
 			}
         }
     }

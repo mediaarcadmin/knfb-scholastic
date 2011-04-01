@@ -15,6 +15,7 @@
 #import "SCHThumbnailOperation.h"
 #import "SCHRightsParsingOperation.h"
 #import "SCHTextFlowPreParseOperation.h"
+#import "SCHFlowPaginateOperation.h"
 #import "SCHBookManager.h"
 #import "SCHAsyncBookCoverImageView.h"
 #import "SCHThumbnailFactory.h"
@@ -357,7 +358,7 @@ static SCHProcessingManager *sharedManager = nil;
 				[self redispatchISBN:isbn];
 			}];
 			
-			// add the operation to the network download queue
+			// add the operation to the local processing queue
 			[self.localProcessingQueue addOperation:rightsOp];
 			[rightsOp release];
 			return;
@@ -376,9 +377,28 @@ static SCHProcessingManager *sharedManager = nil;
 				[self redispatchISBN:isbn];
 			}];
 			
-			// add the operation to the network download queue
+			// add the operation to the local processing queue
 			[self.localProcessingQueue addOperation:textflowOp];
 			[textflowOp release];
+			return;
+			break;
+		}	
+            
+			// *** Book file needs pagination ***
+		case SCHBookProcessingStateReadyForPagination:
+		{
+			// create paginate operation
+			SCHFlowPaginateOperation *paginateOp = [[SCHFlowPaginateOperation alloc] init];
+			paginateOp.isbn = isbn;
+			
+			// the book will be redispatched on completion
+			[paginateOp setCompletionBlock:^{
+				[self redispatchISBN:isbn];
+			}];
+			
+			// add the operation to the local processing queue
+			[self.localProcessingQueue addOperation:paginateOp];
+			[paginateOp release];
 			return;
 			break;
 		}	
@@ -413,6 +433,7 @@ static SCHProcessingManager *sharedManager = nil;
 		case SCHBookProcessingStateDownloadStarted:
 		case SCHBookProcessingStateReadyForRightsParsing:
         case SCHBookProcessingStateReadyForTextFlowPreParse:
+        case SCHBookProcessingStateReadyForPagination:
 			[self processISBN:isbn];
 			break;
 			

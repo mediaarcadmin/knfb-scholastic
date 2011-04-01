@@ -25,6 +25,7 @@
 @dynamic BookCoverURL;
 @dynamic BookFileURL;
 @dynamic TextFlowPageRanges;
+@dynamic LayoutPageEquivalentCount;
 
 #pragma mark -
 #pragma mark Convenience Methods
@@ -181,6 +182,9 @@
 			break;
         case SCHBookProcessingStateReadyForTextFlowPreParse:
 			status = @"Textflow...";
+			break;
+        case SCHBookProcessingStateReadyForPagination:
+			status = @"Paginate...";
 			break;
 		case SCHBookProcessingStateReadyToRead:
 			status = @"";
