@@ -353,7 +353,7 @@ static int mutationCount = 0;
     @synchronized(myCachedXPSProviders) {
         BITXPSProvider *previouslyCachedXPSProvider = [myCachedXPSProviders objectForKey:isbn];
         if(previouslyCachedXPSProvider) {
-            NSLog(@"Returning cached XPSProvider for book with ISBN %@", isbn);
+            //NSLog(@"Returning cached XPSProvider for book with ISBN %@", isbn);
             [self.cachedXPSProviderCheckoutCounts addObject:isbn];
             ret = previouslyCachedXPSProvider;
         } else {

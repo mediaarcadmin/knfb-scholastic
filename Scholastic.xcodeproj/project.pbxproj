@@ -203,6 +203,10 @@
 		C93EBDFA134622C4003B99FD /* ePubBaseOverrides.css in Resources */ = {isa = PBXBuildFile; fileRef = C93EBDF8134622C4003B99FD /* ePubBaseOverrides.css */; };
 		C93EBDFD13462883003B99FD /* SCHBookRange.m in Sources */ = {isa = PBXBuildFile; fileRef = C93EBDFC13462883003B99FD /* SCHBookRange.m */; };
 		C93EBDFE13462883003B99FD /* SCHBookRange.m in Sources */ = {isa = PBXBuildFile; fileRef = C93EBDFC13462883003B99FD /* SCHBookRange.m */; };
+		C93EBE49134630B1003B99FD /* TextFlowXAML.css in Resources */ = {isa = PBXBuildFile; fileRef = C93EBE47134630B1003B99FD /* TextFlowXAML.css */; };
+		C93EBE4A134630B1003B99FD /* TextFlowXAML.css in Resources */ = {isa = PBXBuildFile; fileRef = C93EBE47134630B1003B99FD /* TextFlowXAML.css */; };
+		C93EBE4B134630B1003B99FD /* TextFlowXAMLOverrides.css in Resources */ = {isa = PBXBuildFile; fileRef = C93EBE48134630B1003B99FD /* TextFlowXAMLOverrides.css */; };
+		C93EBE4C134630B1003B99FD /* TextFlowXAMLOverrides.css in Resources */ = {isa = PBXBuildFile; fileRef = C93EBE48134630B1003B99FD /* TextFlowXAMLOverrides.css */; };
 		C95ECB45133A76C400D88768 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C95ECB44133A76C400D88768 /* Accelerate.framework */; };
 		C95ECB47133A76DE00D88768 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C95ECB46133A76DE00D88768 /* QuartzCore.framework */; };
 		C95ECB49133A770B00D88768 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C95ECB48133A770B00D88768 /* OpenGLES.framework */; };
@@ -909,6 +913,8 @@
 		C93EBDF8134622C4003B99FD /* ePubBaseOverrides.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = ePubBaseOverrides.css; sourceTree = "<group>"; };
 		C93EBDFB13462882003B99FD /* SCHBookRange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHBookRange.h; sourceTree = "<group>"; };
 		C93EBDFC13462883003B99FD /* SCHBookRange.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHBookRange.m; sourceTree = "<group>"; };
+		C93EBE47134630B1003B99FD /* TextFlowXAML.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = TextFlowXAML.css; sourceTree = "<group>"; };
+		C93EBE48134630B1003B99FD /* TextFlowXAMLOverrides.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = TextFlowXAMLOverrides.css; sourceTree = "<group>"; };
 		C947D55D133B9C0000FB4404 /* libEucalyptus.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libEucalyptus.xcodeproj; path = Shared/Libraries/Submodules/libEucalyptus/libEucalyptus.xcodeproj; sourceTree = "<group>"; };
 		C95ECB44133A76C400D88768 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		C95ECB46133A76DE00D88768 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -1306,6 +1312,8 @@
 			children = (
 				C93EBDF51346227C003B99FD /* TextFlowFlow.css */,
 				C93EBDF8134622C4003B99FD /* ePubBaseOverrides.css */,
+				C93EBE47134630B1003B99FD /* TextFlowXAML.css */,
+				C93EBE48134630B1003B99FD /* TextFlowXAMLOverrides.css */,
 				C908D895133F942C00661718 /* libEucalyptus Resources */,
 				C908D87D133F941100661718 /* thumbImage.png */,
 				C908D87E133F941100661718 /* Shelf.png */,
@@ -2248,6 +2256,8 @@
 				C9D4F84A13462135007F86E3 /* EPubOverrides.css in Resources */,
 				C93EBDF61346227C003B99FD /* TextFlowFlow.css in Resources */,
 				C93EBDF9134622C4003B99FD /* ePubBaseOverrides.css in Resources */,
+				C93EBE49134630B1003B99FD /* TextFlowXAML.css in Resources */,
+				C93EBE4B134630B1003B99FD /* TextFlowXAMLOverrides.css in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2309,6 +2319,8 @@
 				C9D4F84B13462135007F86E3 /* EPubOverrides.css in Resources */,
 				C93EBDF71346227C003B99FD /* TextFlowFlow.css in Resources */,
 				C93EBDFA134622C4003B99FD /* ePubBaseOverrides.css in Resources */,
+				C93EBE4A134630B1003B99FD /* TextFlowXAML.css in Resources */,
+				C93EBE4C134630B1003B99FD /* TextFlowXAMLOverrides.css in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
