@@ -10,6 +10,7 @@
 #import "SCHBookManager.h"
 #import "SCHTextFlow.h"
 #import "SCHAppBook.h"
+#import "BITXPSProvider.h"
 
 @interface SCHFlowEucBook ()
 
@@ -24,7 +25,10 @@
 
 - (id)initWithISBN:(NSString *)newIsbn
 {
-    if((self = [super init])) {
+    SCHBookManager *bookManager = [SCHBookManager sharedBookManager];
+    SCHAppBook *book = [bookManager bookWithIdentifier:newIsbn];
+
+    if (book && (self = [super init])) {
         self.isbn = newIsbn;
         self.textFlow = [[SCHBookManager sharedBookManager] checkOutTextFlowForBookIdentifier:newIsbn];
         self.fakeCover = self.textFlow.flowTreeKind == KNFBTextFlowFlowTreeKindFlow;
@@ -47,5 +51,33 @@
     [super dealloc];
 }
 
+
+- (NSData *)dataForURL:(NSURL *)url
+{
+    if([[url absoluteString] isEqualToString:@"textflow:coverimage"]) {
+        BITXPSProvider *xpsProvider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.isbn];
+        NSData *coverData = [xpsProvider coverThumbData];
+        [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.isbn];
+        return coverData;
+    } else if([[url scheme] isEqualToString:@"textflow"]) {
+		NSString *componentPath = [[url absoluteURL] path];
+		NSString *relativePath = [url relativeString];		
+		if ([relativePath length] && ([relativePath characterAtIndex:0] != '/')) {
+			componentPath = [BlioXPSEncryptedTextFlowDir stringByAppendingPathComponent:relativePath];
+		}
+		
+        BITXPSProvider *xpsProvider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.isbn];
+        NSData *ret = [xpsProvider dataForComponentAtPath:componentPath];
+        [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.isbn];
+        return ret;
+    }
+    return [super dataForURL:url];
+}
+
+-(EucBookPageIndexPoint *)indexPointForPage:(NSUInteger)page 
+{
+    //[NSException raise:@"SCHFlowEucBookUnimplemented" format:@"indexPointForPage has not yet been implemented in SCHFlowEucBook."];
+    return nil;
+}
 
 @end

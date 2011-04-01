@@ -115,54 +115,52 @@
         [pool drain];
     }
   */  
-    if([eucBook paginationIsComplete] || eucBook == nil) {
-        // This book is already fully paginated!
-		NSLog(@"This book is already fully paginated!");
-        [self updateBookWithSuccess];
-    } else {
-        eucBook.title = book.Title;
-        eucBook.cacheDirectoryPath = [[book cacheDirectory] stringByAppendingPathComponent:kSCHAppBookEucalyptusCacheDir];
-
-        BOOL isDirectory = YES;
-        NSString *cannedPaginationPath = [[[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"PageIndexes"] stringByAppendingPathComponent:[book.Title stringByAppendingPathExtension:@"libEucalyptusPageIndexes"]];    
-        if([[NSFileManager defaultManager] fileExistsAtPath:cannedPaginationPath isDirectory:&isDirectory] && isDirectory) {       
-            NSLog(@"Using pre-canned indexes for %@", book.Title);
-            
-            [[NSFileManager defaultManager] copyItemAtPath:cannedPaginationPath
-                                                    toPath:paginationPath 
-                                                     error:NULL];
+        if([eucBook paginationIsComplete] || eucBook == nil) {
+            // This book is already fully paginated!
+            NSLog(@"This book is already fully paginated!");
             [self updateBookWithSuccess];
         } else {
-            // Create the directory to store the pagination data if necessary.
-            if(![[NSFileManager defaultManager] fileExistsAtPath:paginationPath isDirectory:&isDirectory] || !isDirectory) {
-                NSError *error = nil;
-                if(![[NSFileManager defaultManager] createDirectoryAtPath:paginationPath withIntermediateDirectories:YES attributes:nil error:&error]) {
-                    NSLog(@"Failed to create book cache directory in processing manager with error: %@, %@", error, [error userInfo]);
-                }
-            }            
+            eucBook.title = book.Title;
+            eucBook.cacheDirectoryPath = [[book cacheDirectory] stringByAppendingPathComponent:kSCHAppBookEucalyptusCacheDir];
             
-            // Actually set up the pagination!
-            paginator = [[EucBookPaginator alloc] init];
-            
-            [[NSNotificationCenter defaultCenter] addObserver:self 
-                                                     selector:@selector(paginationComplete:)
-                                                         name:EucBookPaginatorCompleteNotification
-                                                       object:paginator];
-            [[NSNotificationCenter defaultCenter] addObserver:self 
-                                                     selector:@selector(paginationProgress:)
-                                                         name:EucBookBookPaginatorProgressNotification
-                                                       object:paginator];
-            
-            
-            [paginator paginateBookInBackground:eucBook saveImagesTo:nil];
+            BOOL isDirectory = YES;
+            NSString *cannedPaginationPath = [[[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"PageIndexes"] stringByAppendingPathComponent:[book.Title stringByAppendingPathExtension:@"libEucalyptusPageIndexes"]];    
+            if([[NSFileManager defaultManager] fileExistsAtPath:cannedPaginationPath isDirectory:&isDirectory] && isDirectory) {       
+                NSLog(@"Using pre-canned indexes for %@", book.Title);
+                
+                [[NSFileManager defaultManager] copyItemAtPath:cannedPaginationPath
+                                                        toPath:paginationPath 
+                                                         error:NULL];
+                [self updateBookWithSuccess];
+            } else {
+                // Create the directory to store the pagination data if necessary.
+                if(![[NSFileManager defaultManager] fileExistsAtPath:paginationPath isDirectory:&isDirectory] || !isDirectory) {
+                    NSError *error = nil;
+                    if(![[NSFileManager defaultManager] createDirectoryAtPath:paginationPath withIntermediateDirectories:YES attributes:nil error:&error]) {
+                        NSLog(@"Failed to create book cache directory in processing manager with error: %@, %@", error, [error userInfo]);
+                    }
+                }            
+                
+                // Actually set up the pagination!
+                paginator = [[EucBookPaginator alloc] init];
+                
+                [[NSNotificationCenter defaultCenter] addObserver:self 
+                                                         selector:@selector(paginationComplete:)
+                                                             name:EucBookPaginatorCompleteNotification
+                                                           object:paginator];
+                [[NSNotificationCenter defaultCenter] addObserver:self 
+                                                         selector:@selector(paginationProgress:)
+                                                             name:EucBookBookPaginatorProgressNotification
+                                                           object:paginator];
+                
+                
+                [paginator paginateBookInBackground:eucBook saveImagesTo:nil];
+            }
         }
-    }
-    
-    [eucBook release];
-    
-    
-    [pool drain];
-
+        
+        [eucBook release];
+        [pool drain];
+        
     }
     
 }

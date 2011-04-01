@@ -146,7 +146,7 @@ static int mutationCount = 0;
     }
     else
 	{
-		NSLog(@"WARNING: book identifier is nil!");
+		NSLog(@"WARNING: book identifier is nil! request for %@", isbn);
 	}
 	
     if (book) {
