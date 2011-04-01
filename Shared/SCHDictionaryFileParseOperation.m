@@ -17,46 +17,54 @@
 @property BOOL executing;
 @property BOOL finished;
 
-@property (readwrite, retain) NSString *localPath;
-
 @end
 
 @implementation SCHDictionaryFileParseOperation
 
 @synthesize executing;
 @synthesize finished;
-@synthesize localPath;
-
-#pragma mark -
-#pragma mark Memory Management
-
-- (void) dealloc
-{
-	self.localPath = nil;
-	[super dealloc];
-}
 
 #pragma mark -
 #pragma mark Startup methods
 
 - (void)start
 {
-    if ([self isCancelled]) {
+    if (self.isCancelled == YES) {
 		NSLog(@"Cancelled.");
 	} else {
-		self.localPath = [[SCHDictionaryManager dictionaryDirectory] 
-						  stringByAppendingFormat:@"/dictionary-%@.zip", 
-						  [[SCHDictionaryManager sharedDictionaryManager] dictionaryVersion]];
-		
 		[self performParsing];
 	}
-    
-    [SCHDictionaryManager sharedDictionaryManager].dictionaryState = SCHDictionaryProcessingStateDone;    
 }
 
 - (void)performParsing
 {
+    [SCHDictionaryManager sharedDictionaryManager].dictionaryState = SCHDictionaryProcessingStateDone;      
+    self.executing = NO;
+	self.finished = YES;
+}
+
+#pragma mark -
+#pragma mark NSOperation methods
+
+- (BOOL)isConcurrent {
+	return(YES);
+}
+
+- (BOOL)isExecuting {
+	return(self.executing);
+}
+
+- (BOOL)isFinished {
+	return(self.finished);
+}
+
+- (void)cancel
+{
+	NSLog(@"%%%% cancelling parsing operation");
+	self.finished = YES;
+	self.executing = NO;
     
+	[super cancel];
 }
 
 @end

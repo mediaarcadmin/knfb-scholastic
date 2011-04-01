@@ -11,6 +11,8 @@
 #import "SCHProcessingManager.h"
 #import "SCHDictionaryManifestOperation.h"
 #import "SCHDictionaryFileDownloadOperation.h"
+#import "SCHDictionaryFileUnarchiveOperation.h"
+#import "SCHDictionaryFileParseOperation.h"
 #import "SCHBookManager.h"
 #import "SCHAppDictionaryState.h"
 
@@ -142,6 +144,14 @@ static SCHDictionaryManager *sharedManager = nil;
 	} 
 	
 	return sharedManager;
+}
+
+#pragma mark -
+#pragma mark Dictionary Directory
+
++ (NSString *)dictionaryDirectory 
+{
+	return([[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingFormat:@"/Dictionary"]);
 }
 
 #pragma mark -
@@ -334,7 +344,41 @@ static SCHDictionaryManager *sharedManager = nil;
 			[downloadOp release];
 			return;
 			break;
-		}	
+		}	            
+        case SCHDictionaryProcessingStateNeedsUnarchiving:
+		{
+			NSLog(@"needs unarchiving...");
+			// create unarchiving processing operation
+			SCHDictionaryFileUnarchiveOperation *unarchiveOp = [[SCHDictionaryFileUnarchiveOperation alloc] init];
+			
+			// dictionary processing is redispatched on completion
+			[unarchiveOp setCompletionBlock:^{
+				[self processDictionary];
+			}];
+			
+			// add the operation to the queue
+			[self.dictionaryDownloadQueue addOperation:unarchiveOp];
+			[unarchiveOp release];
+			return;
+			break;
+        }
+        case SCHDictionaryProcessingStateNeedsParsing:
+		{
+			NSLog(@"needs parsing...");
+			// create parsing processing operation
+			SCHDictionaryFileParseOperation *parseOp = [[SCHDictionaryFileParseOperation alloc] init];
+			
+			// dictionary processing is redispatched on completion
+			[parseOp setCompletionBlock:^{
+				[self processDictionary];
+			}];
+			
+			// add the operation to the queue
+			[self.dictionaryDownloadQueue addOperation:parseOp];
+			[parseOp release];
+			return;
+			break;
+        }
 		default:
 			break;
 	}

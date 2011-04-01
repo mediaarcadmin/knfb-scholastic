@@ -53,9 +53,6 @@
 	if ([self isCancelled]) {
 		NSLog(@"Cancelled.");
 	} else {
-		
-		// FIXME: put the cache directory method somewhere better
-		
 		self.localPath = [[SCHAppBook cacheDirectory] 
 						  stringByAppendingFormat:@"/dictionary-%@.zip", 
 						  [[SCHDictionaryManager sharedDictionaryManager] dictionaryVersion]];
@@ -165,7 +162,7 @@
 						waitUntilDone:YES];
 	
 	
-	[SCHDictionaryManager sharedDictionaryManager].dictionaryState = SCHDictionaryProcessingStateDone;
+	[SCHDictionaryManager sharedDictionaryManager].dictionaryState = SCHDictionaryProcessingStateNeedsUnarchiving;
 	
 	self.executing = NO;
 	self.finished = YES;
