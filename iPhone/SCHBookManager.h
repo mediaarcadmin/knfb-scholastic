@@ -8,10 +8,12 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
-#import "BITXPSProvider.h"
-#import "SCHContentMetadataItem.h"
 #import "SCHProcessingManager.h"
-#import "SCHFlowEucBook.h"
+
+@class BITXPSProvider;
+@class SCHTextFlow;
+@class SCHFlowEucBook;
+@class SCHAppBook;
 
 @interface SCHBookManager : NSObject {
 
@@ -30,6 +32,9 @@
 
 - (SCHFlowEucBook *)checkOutEucBookForBookIdentifier: (NSString *) isbn;
 - (void)checkInEucBookForBookIdentifier: (NSString *) isbn;
+
+- (SCHTextFlow *)checkOutTextFlowForBookIdentifier:(NSString *) isbn;
+- (void)checkInTextFlowForBookWithID: (NSString *) isbn;
 
 + (BOOL) checkAppCompatibilityForFeature: (NSString *) key version: (float) version;
 + (BOOL) appHasFeature: (NSString *) key;

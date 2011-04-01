@@ -242,6 +242,8 @@
 		C9B08BE91344D34F001963D0 /* KNFBTextFlowXAMLTreeNode.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B08B271344D34F001963D0 /* KNFBTextFlowXAMLTreeNode.m */; };
 		C9B08BEA1344D34F001963D0 /* KNFBTOCEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B08B291344D34F001963D0 /* KNFBTOCEntry.m */; };
 		C9B08BEB1344D34F001963D0 /* KNFBTOCEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B08B291344D34F001963D0 /* KNFBTOCEntry.m */; };
+		C9D4F6281345FFE8007F86E3 /* SCHTextFlow.m in Sources */ = {isa = PBXBuildFile; fileRef = C9D4F6271345FFE7007F86E3 /* SCHTextFlow.m */; };
+		C9D4F6291345FFE8007F86E3 /* SCHTextFlow.m in Sources */ = {isa = PBXBuildFile; fileRef = C9D4F6271345FFE7007F86E3 /* SCHTextFlow.m */; };
 		C9ED566D1343322300A25486 /* libcss.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9ED56631343322300A25486 /* libcss.a */; };
 		C9ED566E1343322300A25486 /* libEucalyptus.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9ED56641343322300A25486 /* libEucalyptus.a */; };
 		C9ED566F1343322300A25486 /* libEucalyptusBase.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9ED56651343322300A25486 /* libEucalyptusBase.a */; };
@@ -935,6 +937,8 @@
 		C9B08B271344D34F001963D0 /* KNFBTextFlowXAMLTreeNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KNFBTextFlowXAMLTreeNode.m; sourceTree = "<group>"; };
 		C9B08B281344D34F001963D0 /* KNFBTOCEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KNFBTOCEntry.h; sourceTree = "<group>"; };
 		C9B08B291344D34F001963D0 /* KNFBTOCEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KNFBTOCEntry.m; sourceTree = "<group>"; };
+		C9D4F6261345FFE7007F86E3 /* SCHTextFlow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHTextFlow.h; sourceTree = "<group>"; };
+		C9D4F6271345FFE7007F86E3 /* SCHTextFlow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHTextFlow.m; sourceTree = "<group>"; };
 		C9ED56631343322300A25486 /* libcss.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libcss.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9ED56641343322300A25486 /* libEucalyptus.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libEucalyptus.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9ED56651343322300A25486 /* libEucalyptusBase.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libEucalyptusBase.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1996,6 +2000,8 @@
 				F82D39B4131EA79100289FF3 /* SCHBookContents.m */,
 				F81C74741344DA0700B1D9DB /* SCHFlowEucBook.h */,
 				F81C74751344DA0700B1D9DB /* SCHFlowEucBook.m */,
+				C9D4F6261345FFE7007F86E3 /* SCHTextFlow.h */,
+				C9D4F6271345FFE7007F86E3 /* SCHTextFlow.m */,
 			);
 			name = "Book Data";
 			sourceTree = "<group>";
@@ -2412,6 +2418,7 @@
 				C9B08BEA1344D34F001963D0 /* KNFBTOCEntry.m in Sources */,
 				F81C74761344DA0700B1D9DB /* SCHFlowEucBook.m in Sources */,
 				F81C747A1344DC1200B1D9DB /* SCHFlowPaginateOperation.m in Sources */,
+				C9D4F6281345FFE8007F86E3 /* SCHTextFlow.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2548,6 +2555,7 @@
 				C9B08BEB1344D34F001963D0 /* KNFBTOCEntry.m in Sources */,
 				F81C74771344DA0700B1D9DB /* SCHFlowEucBook.m in Sources */,
 				F81C747B1344DC1200B1D9DB /* SCHFlowPaginateOperation.m in Sources */,
+				C9D4F6291345FFE8007F86E3 /* SCHTextFlow.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -9,10 +9,10 @@
 #import <Foundation/Foundation.h>
 #import "KNFBFlowEucBook.h"
 
-@interface SCHFlowEucBook : KNFBFlowEucBook {
-    NSString *isbn;
-}
+@interface SCHFlowEucBook : KNFBFlowEucBook {}
 
 @property (nonatomic, readonly) NSString *isbn;
+
+- (id)initWithISBN:(NSString *)newIsbn;
 
 @end

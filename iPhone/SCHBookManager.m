@@ -10,7 +10,9 @@
 #import <pthread.h>
 #import "SCHAppBook.h"
 #import "SCHBookContents.h"
-#import "KNFBTextFlow.h"
+#import "SCHTextFlow.h"
+#import "BITXPSProvider.h"
+#import "SCHFlowEucBook.h"
 
 @interface SCHBookManager ()
 
@@ -481,9 +483,9 @@ static int mutationCount = 0;
 #pragma mark -
 #pragma mark TextFlow Check out/Check in
 
-- (KNFBTextFlow *)checkOutTextFlowForBookIdentifier:(NSString *) isbn
+- (SCHTextFlow *)checkOutTextFlowForBookIdentifier:(NSString *) isbn
 {
-    KNFBTextFlow *ret = nil;
+    SCHTextFlow *ret = nil;
     
     // Always check out an XPS Provider alongside a TextFlow to guarantee that we have the 
     // same one underneath it for the duration of any decrypt operation
@@ -493,33 +495,27 @@ static int mutationCount = 0;
     
     NSMutableDictionary *myCachedTextFlows = self.cachedTextFlows;
     @synchronized(myCachedTextFlows) {
-        KNFBTextFlow *previouslyCachedTextFlow = [myCachedTextFlows objectForKey:isbn];
+        SCHTextFlow *previouslyCachedTextFlow = [myCachedTextFlows objectForKey:isbn];
         if(previouslyCachedTextFlow) {
             //NSLog(@"Returning cached TextFlow for book with ISBN %@", isbn);
             [self.cachedTextFlowCheckoutCounts addObject:isbn];
             ret = previouslyCachedTextFlow;
         } else {
-            // FIXME: implement book hasTextFlow method
-            // FIXME: create SCHTextFlow object? 
             
-            //SCHAppBook *book = [self bookWithIdentifier:isbn];
-            /* if([book hasTextFlow]) {
-                
-               // KNFBTextFlow *textFlow = [[KNFBTextFlow alloc] in
-                
-                if(textFlow) {
-                    //NSLog(@"Creating and caching TextFlow for book with ISBN %@", isbn);
-                    NSCountedSet *myCachedTextFlowCheckoutCounts = self.cachedTextFlowCheckoutCounts;
-                    if(!myCachedTextFlowCheckoutCounts) {
-                        myCachedTextFlowCheckoutCounts = [NSCountedSet set];
-                        self.cachedTextFlowCheckoutCounts = myCachedTextFlowCheckoutCounts;
-                    }
-                    [myCachedTextFlows setObject:textFlow forKey:isbn];
-                    [myCachedTextFlowCheckoutCounts addObject:isbn];
-                    [textFlow release];
-                    ret = textFlow;
+            SCHTextFlow *textFlow = [[SCHTextFlow alloc] initWithISBN:isbn];
+            
+            if(textFlow) {
+                //NSLog(@"Creating and caching TextFlow for book with ISBN %@", isbn);
+                NSCountedSet *myCachedTextFlowCheckoutCounts = self.cachedTextFlowCheckoutCounts;
+                if(!myCachedTextFlowCheckoutCounts) {
+                    myCachedTextFlowCheckoutCounts = [NSCountedSet set];
+                    self.cachedTextFlowCheckoutCounts = myCachedTextFlowCheckoutCounts;
                 }
-            } */
+                [myCachedTextFlows setObject:textFlow forKey:isbn];
+                [myCachedTextFlowCheckoutCounts addObject:isbn];
+                [textFlow release];
+                ret = textFlow;
+            }
         }
     }
     

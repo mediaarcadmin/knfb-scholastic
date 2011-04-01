@@ -23,6 +23,7 @@
 #import "SCHOrderItem.h"
 #import "SCHListProfileContentAnnotations.h"
 #import "SCHBookshelfSyncComponent.h"
+#import "SCHAppBook.h"
 
 @interface SCHLocalDebug ()
 
