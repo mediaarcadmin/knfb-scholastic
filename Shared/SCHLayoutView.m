@@ -83,7 +83,7 @@
         [self addSubview:pageTurningView];
         
         [pageTurningView setPageTexture:[UIImage imageNamed: @"paper-white.png"] isDark:NO];
-        [pageTurningView turnToPageAtIndex:10 animated:NO];
+        [pageTurningView turnToPageAtIndex:0 animated:NO];
         [pageTurningView waitForAllPageImagesToBeAvailable];
     }
 }

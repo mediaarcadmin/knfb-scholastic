@@ -207,6 +207,8 @@
 		C93EBE4A134630B1003B99FD /* TextFlowXAML.css in Resources */ = {isa = PBXBuildFile; fileRef = C93EBE47134630B1003B99FD /* TextFlowXAML.css */; };
 		C93EBE4B134630B1003B99FD /* TextFlowXAMLOverrides.css in Resources */ = {isa = PBXBuildFile; fileRef = C93EBE48134630B1003B99FD /* TextFlowXAMLOverrides.css */; };
 		C93EBE4C134630B1003B99FD /* TextFlowXAMLOverrides.css in Resources */ = {isa = PBXBuildFile; fileRef = C93EBE48134630B1003B99FD /* TextFlowXAMLOverrides.css */; };
+		C93EBEAF13472FED003B99FD /* SCHTextFlowParagraphSource.m in Sources */ = {isa = PBXBuildFile; fileRef = C93EBEAE13472FEC003B99FD /* SCHTextFlowParagraphSource.m */; };
+		C93EBEB013472FED003B99FD /* SCHTextFlowParagraphSource.m in Sources */ = {isa = PBXBuildFile; fileRef = C93EBEAE13472FEC003B99FD /* SCHTextFlowParagraphSource.m */; };
 		C95ECB45133A76C400D88768 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C95ECB44133A76C400D88768 /* Accelerate.framework */; };
 		C95ECB47133A76DE00D88768 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C95ECB46133A76DE00D88768 /* QuartzCore.framework */; };
 		C95ECB49133A770B00D88768 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C95ECB48133A770B00D88768 /* OpenGLES.framework */; };
@@ -915,6 +917,8 @@
 		C93EBDFC13462883003B99FD /* SCHBookRange.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHBookRange.m; sourceTree = "<group>"; };
 		C93EBE47134630B1003B99FD /* TextFlowXAML.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = TextFlowXAML.css; sourceTree = "<group>"; };
 		C93EBE48134630B1003B99FD /* TextFlowXAMLOverrides.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = TextFlowXAMLOverrides.css; sourceTree = "<group>"; };
+		C93EBEAD13472FEC003B99FD /* SCHTextFlowParagraphSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHTextFlowParagraphSource.h; path = Shared/SCHTextFlowParagraphSource.h; sourceTree = "<group>"; };
+		C93EBEAE13472FEC003B99FD /* SCHTextFlowParagraphSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHTextFlowParagraphSource.m; path = Shared/SCHTextFlowParagraphSource.m; sourceTree = "<group>"; };
 		C947D55D133B9C0000FB4404 /* libEucalyptus.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libEucalyptus.xcodeproj; path = Shared/Libraries/Submodules/libEucalyptus/libEucalyptus.xcodeproj; sourceTree = "<group>"; };
 		C95ECB44133A76C400D88768 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		C95ECB46133A76DE00D88768 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -2022,6 +2026,8 @@
 		F8DE53E2130A8C0300691CBA /* Book Data */ = {
 			isa = PBXGroup;
 			children = (
+				C93EBDFB13462882003B99FD /* SCHBookRange.h */,
+				C93EBDFC13462883003B99FD /* SCHBookRange.m */,
 				F8CD24C912F9714D001C748B /* SCHBookManager.h */,
 				F8CD24CA12F9714D001C748B /* SCHBookManager.m */,
 				F82D39B3131EA79100289FF3 /* SCHBookContents.h */,
@@ -2030,8 +2036,8 @@
 				F81C74751344DA0700B1D9DB /* SCHFlowEucBook.m */,
 				C9D4F6261345FFE7007F86E3 /* SCHTextFlow.h */,
 				C9D4F6271345FFE7007F86E3 /* SCHTextFlow.m */,
-				C93EBDFB13462882003B99FD /* SCHBookRange.h */,
-				C93EBDFC13462883003B99FD /* SCHBookRange.m */,
+				C93EBEAD13472FEC003B99FD /* SCHTextFlowParagraphSource.h */,
+				C93EBEAE13472FEC003B99FD /* SCHTextFlowParagraphSource.m */,
 			);
 			name = "Book Data";
 			sourceTree = "<group>";
@@ -2462,6 +2468,7 @@
 				F81C747A1344DC1200B1D9DB /* SCHFlowPaginateOperation.m in Sources */,
 				C9D4F6281345FFE8007F86E3 /* SCHTextFlow.m in Sources */,
 				C93EBDFD13462883003B99FD /* SCHBookRange.m in Sources */,
+				C93EBEAF13472FED003B99FD /* SCHTextFlowParagraphSource.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2600,6 +2607,7 @@
 				F81C747B1344DC1200B1D9DB /* SCHFlowPaginateOperation.m in Sources */,
 				C9D4F6291345FFE8007F86E3 /* SCHTextFlow.m in Sources */,
 				C93EBDFE13462883003B99FD /* SCHBookRange.m in Sources */,
+				C93EBEB013472FED003B99FD /* SCHTextFlowParagraphSource.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

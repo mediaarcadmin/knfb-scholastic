@@ -32,8 +32,15 @@
     if (self) {
         // Custom initialization
         book = [aBook retain];
+        self.wantsFullScreenLayout = YES;
     }
     return self;
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [self.navigationController.navigationBar setBarStyle:UIBarStyleBlackTranslucent];
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackTranslucent];	
 }
 
 - (void)didReceiveMemoryWarning
@@ -51,8 +58,8 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    SCHLayoutView *aBookView = [[SCHLayoutView alloc] initWithFrame:self.view.bounds book:self.book];
-    //SCHFlowView *aBookView = [[SCHFlowView alloc] initWithFrame:self.view.bounds book:self.book];
+    //SCHLayoutView *aBookView = [[SCHLayoutView alloc] initWithFrame:self.view.bounds book:self.book];
+    SCHFlowView *aBookView = [[SCHFlowView alloc] initWithFrame:self.view.bounds book:self.book];
     [self.view addSubview:aBookView];
     [aBookView release];
 }

@@ -57,6 +57,7 @@
 	
 	self.navigationController.navigationBarHidden = NO;
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];	
+    [self.navigationController.navigationBar setBarStyle:UIBarStyleDefault];
 	NSLog(@"Item: %@", self.isbn);
 	
 	if (self.thumbnailImage) {

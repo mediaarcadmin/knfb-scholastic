@@ -13,6 +13,7 @@
 @class BITXPSProvider;
 @class SCHTextFlow;
 @class SCHFlowEucBook;
+@class SCHTextFlowParagraphSource;
 @class SCHAppBook;
 
 @interface SCHBookManager : NSObject {
@@ -35,6 +36,9 @@
 
 - (SCHTextFlow *)checkOutTextFlowForBookIdentifier:(NSString *) isbn;
 - (void)checkInTextFlowForBookIdentifier: (NSString *) isbn;
+
+- (SCHTextFlowParagraphSource *)checkOutParagraphSourceForBookIdentifier:(NSString *) isbn;
+- (void)checkInParagraphSourceForBookIdentifier:(NSString *) isbn;
 
 + (BOOL) checkAppCompatibilityForFeature: (NSString *) key version: (float) version;
 + (BOOL) appHasFeature: (NSString *) key;

@@ -26,12 +26,11 @@
 {
     if ((self = [super init])) {
         startPage = aStartPage;
-        startPage = aStartBlock;
-        startPage = aStartWord;
-        startPage = aEndPage;
-        startPage = aStartPage;
-        startPage = aEndBlock;
-        startPage = aEndWord;
+        startBlock = aStartBlock;
+        startWord = aStartWord;
+        endPage = aEndPage;
+        endBlock = aEndBlock;
+        endWord = aEndWord;
     }
     
     return self;

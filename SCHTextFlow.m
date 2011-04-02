@@ -99,7 +99,8 @@
 
 - (NSArray *)wordStringsForRange:(id)range
 {
-    return [[self wordsForRange:range] valueForKey:@"string"];
+    NSArray *words = [self wordsForRange:range];
+    return [words valueForKey:@"string"];
 }
 
 - (id)rangeWithStartPage:(NSUInteger)startPage 

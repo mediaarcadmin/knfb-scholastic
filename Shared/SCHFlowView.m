@@ -7,6 +7,10 @@
 //
 
 #import "SCHFlowView.h"
+#import "SCHBookManager.h"
+#import "SCHFlowEucBook.h"
+#import "KNFBTextFlowParagraphSource.h"
+#import <libEucalyptus/EucBookView.h>
 //#import "BlioFlowPaginateOperation.h"
 //#import "BlioFlowEucBook.h"
 //#import "BlioBookManager.h"
@@ -14,7 +18,7 @@
 //#import "BlioParagraphSource.h"
 //#import "BlioBUpeBook.h"
 //#import "levenshtein_distance.h"
-#import <libEucalyptus/EucBookView.h>
+
 #import <libEucalyptus/EucBUpeBook.h>
 #import <libEucalyptus/EucBookPageIndexPoint.h>
 #import <libEucalyptus/EucHighlightRange.h>
@@ -25,42 +29,60 @@
 //#import "NSArray+BlioAdditions.h"
 
 @interface SCHFlowView ()
+
+@property (nonatomic, retain) SCHFlowEucBook *eucBook;
+@property (nonatomic, retain) KNFBTextFlowParagraphSource *paragraphSource;
+@property (nonatomic, retain) EucBookView *eucBookView;
+
 @end
 
 @implementation SCHFlowView
 
+@synthesize eucBook;
+@synthesize paragraphSource;
+@synthesize eucBookView;
+
 - (void)initialiseView
 {
-    //BlioBookManager *bookManager = [BlioBookManager sharedBookManager];
-    //_eucBook = [[bookManager checkOutEucBookForBookWithID:bookID] retain];
-   // 
-    //if(_eucBook) {            
-      //  self.paragraphSource = [bookManager checkOutParagraphSourceForBookWithID:bookID];
+    SCHBookManager *bookManager = [SCHBookManager sharedBookManager];
+    
+    eucBook = [[bookManager checkOutEucBookForBookIdentifier:self.book] retain];
+    paragraphSource = [[bookManager checkOutParagraphSourceForBookIdentifier:self.book] retain];
+    
+    if((eucBookView = [[EucBookView alloc] initWithFrame:self.bounds book:eucBook])) {
+        eucBookView.delegate = self;
+        //eucBookView.allowsSelection = YES;
+        //eucBookView.selectorDelegate = self;
+        eucBookView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        eucBookView.vibratesOnInvalidTurn = NO;
+        [eucBookView setPageTexture:[UIImage imageNamed: @"paper-white.png"] isDark:NO];
         
-        //if([_eucBook isKindOfClass:[BlioFlowEucBook class]]) {
-          //  BlioTextFlow *textFlow = [bookManager checkOutTextFlowForBookWithID:bookID];
-            //_textFlowFlowTreeKind = textFlow.flowTreeKind;
-            //[bookManager checkInTextFlowForBookWithID:bookID];
-        //}            
-    EucBookView *_eucBookView;
-        if((_eucBookView = [[EucBookView alloc] initWithFrame:self.bounds book:nil])) {
-            //_eucBookView.delegate = self;
-            //_eucBookView.allowsSelection = YES;
-            //_eucBookView.selectorDelegate = self;
-            _eucBookView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-            _eucBookView.vibratesOnInvalidTurn = NO;
+        [eucBookView addObserver:self forKeyPath:@"pageCount" options:NSKeyValueObservingOptionInitial context:NULL];
+        [eucBookView addObserver:self forKeyPath:@"pageNumber" options:NSKeyValueObservingOptionInitial context:NULL];
             
-            //if (!animated) {
-                //[self goToBookmarkPoint:[bookManager bookWithID:bookID].implicitBookmarkPoint animated:NO saveToHistory:NO];
-            //}
-            
-            //[_eucBookView addObserver:self forKeyPath:@"pageCount" options:NSKeyValueObservingOptionInitial context:NULL];
-            //[_eucBookView addObserver:self forKeyPath:@"pageNumber" options:NSKeyValueObservingOptionInitial context:NULL];
-            
-            [self addSubview:_eucBookView];
-        }
-        
-   // }
+        [self addSubview:eucBookView];
+    }
+}
+
+- (void)dealloc
+{
+    [eucBookView removeObserver:self forKeyPath:@"pageCount"];
+    [eucBookView removeObserver:self forKeyPath:@"pageNumber"];
+    [eucBookView release], eucBookView = nil;
+    
+    SCHBookManager *bookManager = [SCHBookManager sharedBookManager];
+    
+    if(paragraphSource) {
+        [paragraphSource release], paragraphSource = nil;
+        [bookManager checkInParagraphSourceForBookIdentifier:self.book];   
+    }
+    
+    if(eucBook) {
+        [eucBook release], eucBook = nil;
+        [bookManager checkInEucBookForBookIdentifier:self.book];  
+    }
+
+    [super dealloc];
 }
 
 - (id)initWithFrame:(CGRect)frame book:(id)aBook
@@ -68,13 +90,18 @@
     self = [super initWithFrame:frame book:aBook];
     if (self) {        
         [self initialiseView];
-        
-//        if(!_eucBookView) {
-//            [self release];
-//            self = nil;
-//        }
     }
     return self;
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object
+                        change:(NSDictionary *)change context:(void *)context
+{
+//    if([keyPath isEqualToString:@"pageNumber"]) {
+//        self.pageNumber = _eucBookView.pageNumber;
+//    } else { //if([keyPath isEqualToString:@"pageCount"] ) {
+//        self.pageCount = _eucBookView.pageCount;
+//    }
 }
 
 

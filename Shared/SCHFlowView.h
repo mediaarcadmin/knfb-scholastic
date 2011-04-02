@@ -12,7 +12,7 @@
 @protocol BlioBUpeBook;
 @class EucBUpeBook;
 
-@interface SCHFlowView : SCHReadingView {
+@interface SCHFlowView : SCHReadingView <EucBookViewDelegate> {
 
 }
 
