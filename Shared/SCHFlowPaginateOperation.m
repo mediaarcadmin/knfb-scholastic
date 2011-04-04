@@ -84,34 +84,6 @@
         NSLog(@"Paginating book %@", self.bookTitle);
         
         eucBook = [[[SCHBookManager sharedBookManager] checkOutEucBookForBookIdentifier:self.isbn] retain];
-/*        BITXPSProvider *provider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:book.ContentIdentifier];
-
-        if(eucBook) {
-            [self setBookCheckedOut:YES];
-            NSURL *coverURL = [NSURL URLWithString:book.BookCoverURL];
-            if(coverURL) {
-                NSLog(@"eucBook.coverURL: %@",coverURL);
-                NSData *coverData = [provider coverThumbData];
-                if(coverData) {
-                    [coverData writeToFile:[self.cacheDirectory stringByAppendingPathComponent:BlioManifestCoverKey] atomically:NO];
-                    
-                    NSDictionary *manifestEntry = [NSMutableDictionary dictionary];
-                    [manifestEntry setValue:BlioManifestEntryLocationFileSystem forKey:BlioManifestEntryLocationKey];
-                    [manifestEntry setValue:BlioManifestCoverKey forKey:BlioManifestEntryPathKey];
-                    [self setBookManifestValue:manifestEntry forKey:BlioManifestCoverKey];
-                    NSMutableDictionary * noteInfo = [NSMutableDictionary dictionaryWithCapacity:1];
-                    [noteInfo setObject:self.bookID forKey:@"bookID"];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:BlioProcessingReprocessCoverThumbnailNotification object:self userInfo:noteInfo];
-                } else {
-                    NSLog(@"Couldn't get data for cover in book.");
-                }
-            }
-		}
-        
-        [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:book.ContentIdentifier];
-        [pool drain];
-    }
-  */  
         if([eucBook paginationIsComplete] || eucBook == nil) {
             // This book is already fully paginated!
             NSLog(@"This book is already fully paginated!");
