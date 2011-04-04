@@ -16,7 +16,7 @@
 
 // DeviceKeys
 // od1
-// od2 {ed9532e2-de12-9a44-ae81-11eafd5a9f3f} - does seem to work
+// od2 {ed9532e2-de12-9a44-ae81-11eafd5a9f3f} - doesnt seem to work
 // mf
 
 static SCHAuthenticationManager *sharedAuthenticationManager = nil;
@@ -30,7 +30,6 @@ static NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
 struct AuthenticateWithUserNameParameters {
     NSString *username;
     NSString *password;
-    BOOL ret;
 };
 typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParameters;
 
