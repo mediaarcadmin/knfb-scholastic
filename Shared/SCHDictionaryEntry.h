@@ -20,4 +20,6 @@ static NSString * const kSCHDictionaryEntry = @"SCHDictionaryEntry";
 @property (nonatomic, retain) NSString * category;
 @property (nonatomic, retain) NSNumber * fileOffset;
 
+- (NSString *) HTMLforEntry;
+
 @end

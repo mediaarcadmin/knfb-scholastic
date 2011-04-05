@@ -16,6 +16,9 @@
 #import "SCHDictionaryFileUnzipOperation.h"
 #import "SCHDictionaryEntryParseOperation.h"
 
+#import "SCHDictionaryWordForm.h"
+#import "SCHDictionaryEntry.h"
+
 #pragma mark Class Extension
 
 @interface SCHDictionaryManager()
@@ -165,6 +168,87 @@ static SCHDictionaryManager *sharedManager = nil;
 	
 	return sharedManager;
 }
+
+#pragma mark -
+#pragma mark Background Processing Methods
+
+- (NSString *) HTMLForWord: (NSString *) dictionaryWord
+{
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    // Edit the entity name as appropriate.
+    NSEntityDescription *entity = [NSEntityDescription entityForName:kSCHDictionaryWordForm 
+											  inManagedObjectContext:[[SCHBookManager sharedBookManager] managedObjectContextForCurrentThread]];
+    [fetchRequest setEntity:entity];
+    entity = nil;
+    
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"word == %@", dictionaryWord];
+    
+    [fetchRequest setPredicate:pred];
+    pred = nil;
+    
+	NSError *error = nil;				
+	NSArray *results = [[[SCHBookManager sharedBookManager] managedObjectContextForCurrentThread] executeFetchRequest:fetchRequest error:&error];
+	
+    [fetchRequest release], fetchRequest = nil;
+	
+	if (error) {
+		NSLog(@"error when retrieving word %@: %@", dictionaryWord, [error localizedDescription]);
+		return nil;
+	}
+	
+	if (!results || [results count] != 1) {
+        int resultCount = -1;
+        if (results) {
+            resultCount = [results count];
+        }
+        
+		NSLog(@"error when retrieving word %@: %d results retrieved.", dictionaryWord, resultCount);
+		return nil;
+	}
+    
+
+    SCHDictionaryWordForm *wordForm = [results objectAtIndex:0];
+    results = nil;
+    [[[SCHBookManager sharedBookManager] managedObjectContextForCurrentThread] refreshObject:wordForm mergeChanges:YES];
+        
+    fetchRequest = [[NSFetchRequest alloc] init];
+    
+    entity = [NSEntityDescription entityForName:kSCHDictionaryEntry
+                         inManagedObjectContext:[[SCHBookManager sharedBookManager] managedObjectContextForCurrentThread]];
+    
+    [fetchRequest setEntity:entity];
+    
+    pred = [NSPredicate predicateWithFormat:@"baseWordID == %@", wordForm.baseWordID];
+    
+    [fetchRequest setPredicate:pred];
+    pred = nil;
+    
+	results = [[[SCHBookManager sharedBookManager] managedObjectContextForCurrentThread] executeFetchRequest:fetchRequest error:&error];
+	
+	[fetchRequest release];
+	
+	if (error) {
+		NSLog(@"error when retrieving definition for word %@: %@", dictionaryWord, [error localizedDescription]);
+		return nil;
+	}
+	
+	if (!results || [results count] != 1) {
+        int resultCount = -1;
+        if (results) {
+            resultCount = [results count];
+        }
+        
+		NSLog(@"error when retrieving definition for word %@: %d results retrieved.", dictionaryWord, resultCount);
+		return nil;
+	}
+    
+    SCHDictionaryEntry *entry = [results objectAtIndex:0];
+    results = nil;
+    
+    return [entry HTMLforEntry];
+    
+}
+
 
 #pragma mark -
 #pragma mark Background Processing Methods
@@ -396,7 +480,6 @@ static SCHDictionaryManager *sharedManager = nil;
 			break;
 		}	
 		default:
-            NSLog(@"Dictionary processing unknown state: %d", state);
 			break;
 	}
 	

@@ -44,5 +44,6 @@ typedef enum {
 // dictionary is currently processing
 @property BOOL isProcessing;
 
+- (NSString *) HTMLForWord: (NSString *) dictionaryWord;
 
 @end
