@@ -181,16 +181,8 @@
 		C923B14312F6AFC60054426F /* SCHMultipleBookshelvesController.m in Sources */ = {isa = PBXBuildFile; fileRef = C923B13F12F6AFC60054426F /* SCHMultipleBookshelvesController.m */; };
 		C923B15B12F6B0280054426F /* SCHMultipleBookshelvesController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C923B15A12F6B0280054426F /* SCHMultipleBookshelvesController.xib */; };
 		C923B15C12F6B0280054426F /* SCHMultipleBookshelvesController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C923B15A12F6B0280054426F /* SCHMultipleBookshelvesController.xib */; };
-		C93EBDF61346227C003B99FD /* TextFlowFlow.css in Resources */ = {isa = PBXBuildFile; fileRef = C93EBDF51346227C003B99FD /* TextFlowFlow.css */; };
-		C93EBDF71346227C003B99FD /* TextFlowFlow.css in Resources */ = {isa = PBXBuildFile; fileRef = C93EBDF51346227C003B99FD /* TextFlowFlow.css */; };
-		C93EBDF9134622C4003B99FD /* ePubBaseOverrides.css in Resources */ = {isa = PBXBuildFile; fileRef = C93EBDF8134622C4003B99FD /* ePubBaseOverrides.css */; };
-		C93EBDFA134622C4003B99FD /* ePubBaseOverrides.css in Resources */ = {isa = PBXBuildFile; fileRef = C93EBDF8134622C4003B99FD /* ePubBaseOverrides.css */; };
 		C93EBDFD13462883003B99FD /* SCHBookRange.m in Sources */ = {isa = PBXBuildFile; fileRef = C93EBDFC13462883003B99FD /* SCHBookRange.m */; };
 		C93EBDFE13462883003B99FD /* SCHBookRange.m in Sources */ = {isa = PBXBuildFile; fileRef = C93EBDFC13462883003B99FD /* SCHBookRange.m */; };
-		C93EBE49134630B1003B99FD /* TextFlowXAML.css in Resources */ = {isa = PBXBuildFile; fileRef = C93EBE47134630B1003B99FD /* TextFlowXAML.css */; };
-		C93EBE4A134630B1003B99FD /* TextFlowXAML.css in Resources */ = {isa = PBXBuildFile; fileRef = C93EBE47134630B1003B99FD /* TextFlowXAML.css */; };
-		C93EBE4B134630B1003B99FD /* TextFlowXAMLOverrides.css in Resources */ = {isa = PBXBuildFile; fileRef = C93EBE48134630B1003B99FD /* TextFlowXAMLOverrides.css */; };
-		C93EBE4C134630B1003B99FD /* TextFlowXAMLOverrides.css in Resources */ = {isa = PBXBuildFile; fileRef = C93EBE48134630B1003B99FD /* TextFlowXAMLOverrides.css */; };
 		C93EBEAF13472FED003B99FD /* SCHTextFlowParagraphSource.m in Sources */ = {isa = PBXBuildFile; fileRef = C93EBEAE13472FEC003B99FD /* SCHTextFlowParagraphSource.m */; };
 		C93EBEB013472FED003B99FD /* SCHTextFlowParagraphSource.m in Sources */ = {isa = PBXBuildFile; fileRef = C93EBEAE13472FEC003B99FD /* SCHTextFlowParagraphSource.m */; };
 		C93ECA77134B5EFA003B99FD /* iPodLikeSliderBlueLeftCap.png in Resources */ = {isa = PBXBuildFile; fileRef = C93ECA2E134B5EF9003B99FD /* iPodLikeSliderBlueLeftCap.png */; };
@@ -337,6 +329,16 @@
 		C93ECB04134B5EFA003B99FD /* UIBarButtonSystemItemRewind.png in Resources */ = {isa = PBXBuildFile; fileRef = C93ECA75134B5EF9003B99FD /* UIBarButtonSystemItemRewind.png */; };
 		C93ECB05134B5EFA003B99FD /* xhtml-entities.ent in Resources */ = {isa = PBXBuildFile; fileRef = C93ECA76134B5EF9003B99FD /* xhtml-entities.ent */; };
 		C93ECB06134B5EFA003B99FD /* xhtml-entities.ent in Resources */ = {isa = PBXBuildFile; fileRef = C93ECA76134B5EF9003B99FD /* xhtml-entities.ent */; };
+		C93ECB2F134B64B1003B99FD /* ePubBaseOverrides.css in Resources */ = {isa = PBXBuildFile; fileRef = C93ECB2A134B64B1003B99FD /* ePubBaseOverrides.css */; };
+		C93ECB30134B64B1003B99FD /* ePubBaseOverrides.css in Resources */ = {isa = PBXBuildFile; fileRef = C93ECB2A134B64B1003B99FD /* ePubBaseOverrides.css */; };
+		C93ECB31134B64B1003B99FD /* TextFlowCover.xhtml in Resources */ = {isa = PBXBuildFile; fileRef = C93ECB2B134B64B1003B99FD /* TextFlowCover.xhtml */; };
+		C93ECB32134B64B1003B99FD /* TextFlowCover.xhtml in Resources */ = {isa = PBXBuildFile; fileRef = C93ECB2B134B64B1003B99FD /* TextFlowCover.xhtml */; };
+		C93ECB33134B64B1003B99FD /* TextFlowFlow.css in Resources */ = {isa = PBXBuildFile; fileRef = C93ECB2C134B64B1003B99FD /* TextFlowFlow.css */; };
+		C93ECB34134B64B1003B99FD /* TextFlowFlow.css in Resources */ = {isa = PBXBuildFile; fileRef = C93ECB2C134B64B1003B99FD /* TextFlowFlow.css */; };
+		C93ECB35134B64B1003B99FD /* TextFlowXAML.css in Resources */ = {isa = PBXBuildFile; fileRef = C93ECB2D134B64B1003B99FD /* TextFlowXAML.css */; };
+		C93ECB36134B64B1003B99FD /* TextFlowXAML.css in Resources */ = {isa = PBXBuildFile; fileRef = C93ECB2D134B64B1003B99FD /* TextFlowXAML.css */; };
+		C93ECB37134B64B1003B99FD /* TextFlowXAMLOverrides.css in Resources */ = {isa = PBXBuildFile; fileRef = C93ECB2E134B64B1003B99FD /* TextFlowXAMLOverrides.css */; };
+		C93ECB38134B64B1003B99FD /* TextFlowXAMLOverrides.css in Resources */ = {isa = PBXBuildFile; fileRef = C93ECB2E134B64B1003B99FD /* TextFlowXAMLOverrides.css */; };
 		C95ECB45133A76C400D88768 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C95ECB44133A76C400D88768 /* Accelerate.framework */; };
 		C95ECB47133A76DE00D88768 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C95ECB46133A76DE00D88768 /* QuartzCore.framework */; };
 		C95ECB49133A770B00D88768 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C95ECB48133A770B00D88768 /* OpenGLES.framework */; };
@@ -1027,12 +1029,8 @@
 		C923B13E12F6AFC60054426F /* SCHMultipleBookshelvesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHMultipleBookshelvesController.h; path = iPhone/SCHMultipleBookshelvesController.h; sourceTree = "<group>"; };
 		C923B13F12F6AFC60054426F /* SCHMultipleBookshelvesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHMultipleBookshelvesController.m; path = iPhone/SCHMultipleBookshelvesController.m; sourceTree = "<group>"; };
 		C923B15A12F6B0280054426F /* SCHMultipleBookshelvesController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = SCHMultipleBookshelvesController.xib; path = iPhone/SCHMultipleBookshelvesController.xib; sourceTree = "<group>"; };
-		C93EBDF51346227C003B99FD /* TextFlowFlow.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = TextFlowFlow.css; sourceTree = "<group>"; };
-		C93EBDF8134622C4003B99FD /* ePubBaseOverrides.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = ePubBaseOverrides.css; sourceTree = "<group>"; };
 		C93EBDFB13462882003B99FD /* SCHBookRange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHBookRange.h; sourceTree = "<group>"; };
 		C93EBDFC13462883003B99FD /* SCHBookRange.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHBookRange.m; sourceTree = "<group>"; };
-		C93EBE47134630B1003B99FD /* TextFlowXAML.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = TextFlowXAML.css; sourceTree = "<group>"; };
-		C93EBE48134630B1003B99FD /* TextFlowXAMLOverrides.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = TextFlowXAMLOverrides.css; sourceTree = "<group>"; };
 		C93EBEAD13472FEC003B99FD /* SCHTextFlowParagraphSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHTextFlowParagraphSource.h; path = Shared/SCHTextFlowParagraphSource.h; sourceTree = "<group>"; };
 		C93EBEAE13472FEC003B99FD /* SCHTextFlowParagraphSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHTextFlowParagraphSource.m; path = Shared/SCHTextFlowParagraphSource.m; sourceTree = "<group>"; };
 		C93ECA2E134B5EF9003B99FD /* iPodLikeSliderBlueLeftCap.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iPodLikeSliderBlueLeftCap.png; sourceTree = "<group>"; };
@@ -1107,6 +1105,11 @@
 		C93ECA74134B5EF9003B99FD /* UIBarButtonSystemItemFastForward.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = UIBarButtonSystemItemFastForward.png; sourceTree = "<group>"; };
 		C93ECA75134B5EF9003B99FD /* UIBarButtonSystemItemRewind.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = UIBarButtonSystemItemRewind.png; sourceTree = "<group>"; };
 		C93ECA76134B5EF9003B99FD /* xhtml-entities.ent */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "xhtml-entities.ent"; sourceTree = "<group>"; };
+		C93ECB2A134B64B1003B99FD /* ePubBaseOverrides.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = ePubBaseOverrides.css; sourceTree = "<group>"; };
+		C93ECB2B134B64B1003B99FD /* TextFlowCover.xhtml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = TextFlowCover.xhtml; sourceTree = "<group>"; };
+		C93ECB2C134B64B1003B99FD /* TextFlowFlow.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = TextFlowFlow.css; sourceTree = "<group>"; };
+		C93ECB2D134B64B1003B99FD /* TextFlowXAML.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = TextFlowXAML.css; sourceTree = "<group>"; };
+		C93ECB2E134B64B1003B99FD /* TextFlowXAMLOverrides.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = TextFlowXAMLOverrides.css; sourceTree = "<group>"; };
 		C947D55D133B9C0000FB4404 /* libEucalyptus.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libEucalyptus.xcodeproj; path = Shared/Libraries/Submodules/libEucalyptus/libEucalyptus.xcodeproj; sourceTree = "<group>"; };
 		C95ECB44133A76C400D88768 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		C95ECB46133A76DE00D88768 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -1500,11 +1503,8 @@
 		528A2CCF12CCDC400053A343 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				C93ECB29134B64B1003B99FD /* libKNFBReader Resources */,
 				C93ECA2C134B5EF9003B99FD /* libEucalyptus Resources */,
-				C93EBDF51346227C003B99FD /* TextFlowFlow.css */,
-				C93EBDF8134622C4003B99FD /* ePubBaseOverrides.css */,
-				C93EBE47134630B1003B99FD /* TextFlowXAML.css */,
-				C93EBE48134630B1003B99FD /* TextFlowXAMLOverrides.css */,
 				C908D87D133F941100661718 /* thumbImage.png */,
 				C908D87E133F941100661718 /* Shelf.png */,
 				C908D87F133F941100661718 /* PlaceholderBook.png */,
@@ -2041,6 +2041,19 @@
 			path = HyphenationPatterns;
 			sourceTree = "<group>";
 		};
+		C93ECB29134B64B1003B99FD /* libKNFBReader Resources */ = {
+			isa = PBXGroup;
+			children = (
+				C93ECB2A134B64B1003B99FD /* ePubBaseOverrides.css */,
+				C93ECB2B134B64B1003B99FD /* TextFlowCover.xhtml */,
+				C93ECB2C134B64B1003B99FD /* TextFlowFlow.css */,
+				C93ECB2D134B64B1003B99FD /* TextFlowXAML.css */,
+				C93ECB2E134B64B1003B99FD /* TextFlowXAMLOverrides.css */,
+			);
+			name = "libKNFBReader Resources";
+			path = "Shared/Libraries/Submodules/libKNFBReader/libKNFBReader Resources";
+			sourceTree = "<group>";
+		};
 		C947D55E133B9C0000FB4404 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -2506,10 +2519,6 @@
 				C908D88F133F941A00661718 /* Settings.png in Resources */,
 				C908D891133F941A00661718 /* ProfileLocked.png in Resources */,
 				C908D893133F941A00661718 /* Profile.png in Resources */,
-				C93EBDF61346227C003B99FD /* TextFlowFlow.css in Resources */,
-				C93EBDF9134622C4003B99FD /* ePubBaseOverrides.css in Resources */,
-				C93EBE49134630B1003B99FD /* TextFlowXAML.css in Resources */,
-				C93EBE4B134630B1003B99FD /* TextFlowXAMLOverrides.css in Resources */,
 				C93ECA77134B5EFA003B99FD /* iPodLikeSliderBlueLeftCap.png in Resources */,
 				C93ECA79134B5EFA003B99FD /* iPodLikeSliderBlueLeftCap@2x.png in Resources */,
 				C93ECA7B134B5EFA003B99FD /* iPodLikeSliderKnob-Small.png in Resources */,
@@ -2582,6 +2591,11 @@
 				C93ECB01134B5EFA003B99FD /* UIBarButtonSystemItemFastForward.png in Resources */,
 				C93ECB03134B5EFA003B99FD /* UIBarButtonSystemItemRewind.png in Resources */,
 				C93ECB05134B5EFA003B99FD /* xhtml-entities.ent in Resources */,
+				C93ECB2F134B64B1003B99FD /* ePubBaseOverrides.css in Resources */,
+				C93ECB31134B64B1003B99FD /* TextFlowCover.xhtml in Resources */,
+				C93ECB33134B64B1003B99FD /* TextFlowFlow.css in Resources */,
+				C93ECB35134B64B1003B99FD /* TextFlowXAML.css in Resources */,
+				C93ECB37134B64B1003B99FD /* TextFlowXAMLOverrides.css in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2631,10 +2645,6 @@
 				C908D890133F941A00661718 /* Settings.png in Resources */,
 				C908D892133F941A00661718 /* ProfileLocked.png in Resources */,
 				C908D894133F941A00661718 /* Profile.png in Resources */,
-				C93EBDF71346227C003B99FD /* TextFlowFlow.css in Resources */,
-				C93EBDFA134622C4003B99FD /* ePubBaseOverrides.css in Resources */,
-				C93EBE4A134630B1003B99FD /* TextFlowXAML.css in Resources */,
-				C93EBE4C134630B1003B99FD /* TextFlowXAMLOverrides.css in Resources */,
 				C93ECA78134B5EFA003B99FD /* iPodLikeSliderBlueLeftCap.png in Resources */,
 				C93ECA7A134B5EFA003B99FD /* iPodLikeSliderBlueLeftCap@2x.png in Resources */,
 				C93ECA7C134B5EFA003B99FD /* iPodLikeSliderKnob-Small.png in Resources */,
@@ -2707,6 +2717,11 @@
 				C93ECB02134B5EFA003B99FD /* UIBarButtonSystemItemFastForward.png in Resources */,
 				C93ECB04134B5EFA003B99FD /* UIBarButtonSystemItemRewind.png in Resources */,
 				C93ECB06134B5EFA003B99FD /* xhtml-entities.ent in Resources */,
+				C93ECB30134B64B1003B99FD /* ePubBaseOverrides.css in Resources */,
+				C93ECB32134B64B1003B99FD /* TextFlowCover.xhtml in Resources */,
+				C93ECB34134B64B1003B99FD /* TextFlowFlow.css in Resources */,
+				C93ECB36134B64B1003B99FD /* TextFlowXAML.css in Resources */,
+				C93ECB38134B64B1003B99FD /* TextFlowXAMLOverrides.css in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
