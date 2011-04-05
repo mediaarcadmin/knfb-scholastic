@@ -110,7 +110,7 @@
                 endBlock:(NSUInteger)endBlock
                  endWord:(NSUInteger)endWord
 {
-    SCHBookRange *bookRange = [[SCHBookRange alloc] initWithStartPage:startPage startBlock:startBlock startWord:startWord endPage:endPage endBlock:endBlock endWord:endBlock];
+    SCHBookRange *bookRange = [[SCHBookRange alloc] initWithStartPage:startPage startBlock:startBlock startWord:startWord endPage:endPage endBlock:endBlock endWord:endWord];
     return [bookRange autorelease];
 }
 
