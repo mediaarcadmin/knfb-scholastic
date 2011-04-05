@@ -25,8 +25,8 @@
 @property (readwrite, retain) NSString *isbn;
 @property (readwrite, retain) UIImage *thumbnailImage;
 
-- (IBAction) showBookView: (id) sender;
-- (IBAction) showBookViewAtStart: (id) sender;
+- (IBAction) showFlowView: (id) sender;
+- (IBAction) showFixedView: (id) sender;
 - (IBAction) tapBookCover: (id) sender;
 - (void) cancelInitialTimer;
 
