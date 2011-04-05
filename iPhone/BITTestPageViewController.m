@@ -11,6 +11,7 @@
 #import "SCHAppBook.h"
 #import "SCHBookManager.h"
 #import "KNFBTextFlowPageRange.h"
+#import "SCHDictionaryManager.h"
 
 @implementation BITTestPageViewController
 
@@ -86,6 +87,8 @@
         NSLog(@"Range: %d to %d", range.startPageIndex, range.endPageIndex);
     }
 	NSLog(@"------");
+    
+    NSLog(@"A badger is defined thusly: %@", [[SCHDictionaryManager sharedDictionaryManager] HTMLForWord:@"badger"]);
 
 		  
 	
