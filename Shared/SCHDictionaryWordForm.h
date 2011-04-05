@@ -11,12 +11,13 @@
 
 static NSString * const kSCHDictionaryWordForm = @"SCHDictionaryWordForm";
 
+
 @interface SCHDictionaryWordForm : NSManagedObject {
 @private
 }
-@property (nonatomic, retain) NSString * baseWordID;
 @property (nonatomic, retain) NSString * word;
-@property (nonatomic, retain) NSString * rootWord;
+@property (nonatomic, retain) NSString * baseWordID;
 @property (nonatomic, retain) NSString * category;
+@property (nonatomic, retain) NSString * rootWord;
 
 @end

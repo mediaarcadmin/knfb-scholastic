@@ -10,9 +10,9 @@
 
 
 @implementation SCHDictionaryWordForm
-@dynamic baseWordID;
 @dynamic word;
-@dynamic rootWord;
+@dynamic baseWordID;
 @dynamic category;
+@dynamic rootWord;
 
 @end
