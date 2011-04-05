@@ -9,10 +9,12 @@
 #import "SCHDictionaryManager.h"
 #import "Reachability.h"
 #import "SCHProcessingManager.h"
-#import "SCHDictionaryManifestOperation.h"
-#import "SCHDictionaryFileDownloadOperation.h"
 #import "SCHBookManager.h"
 #import "SCHAppDictionaryState.h"
+#import "SCHDictionaryManifestOperation.h"
+#import "SCHDictionaryFileDownloadOperation.h"
+#import "SCHDictionaryFileUnzipOperation.h"
+#import "SCHDictionaryEntryParseOperation.h"
 
 #pragma mark Class Extension
 
@@ -34,6 +36,9 @@
 @property BOOL wifiAvailable;
 @property BOOL connectionIdle;
 
+// lock preventing multiple accesses of save simulaneously
+@property (nonatomic, retain) NSLock *threadSafeMutationLock;
+
 // check current reachability state
 - (void) reachabilityCheck: (Reachability *) curReach;
 
@@ -51,7 +56,14 @@
 // the core data object for dictionary state - creates a new one if needed
 - (SCHAppDictionaryState *) appDictionaryState;
 
+- (BOOL)save:(NSError **)error;
+
 @end
+
+
+// mutation count - additional check for thread safety
+static int mutationCount = 0;
+
 
 #pragma mark -
 
@@ -61,6 +73,7 @@
 @synthesize wifiReach, startTimer, wifiAvailable, connectionIdle;
 @synthesize isProcessing;
 @synthesize dictionaryURL;
+@synthesize threadSafeMutationLock;
 
 #pragma mark -
 #pragma mark Object Lifecycle
@@ -72,6 +85,7 @@
 	self.dictionaryDownloadQueue = nil;
 	[self.wifiReach stopNotifier];
 	self.wifiReach = nil;
+    self.threadSafeMutationLock = nil;
 	[super dealloc];
 }
 
@@ -81,10 +95,11 @@
 		self.dictionaryDownloadQueue = [[NSOperationQueue alloc] init];
 		[self.dictionaryDownloadQueue setMaxConcurrentOperationCount:1];
 		
-		self.wifiAvailable = NO;
-		self.connectionIdle = NO;
+		self.wifiAvailable = YES;
+		self.connectionIdle = YES;
 		
 		self.wifiReach = [Reachability reachabilityForInternetConnection];
+        self.threadSafeMutationLock = [[NSLock alloc] init];
 		
 		// check for the core data dictionary object
 		
@@ -105,7 +120,7 @@ static SCHDictionaryManager *sharedManager = nil;
 		sharedManager = [[SCHDictionaryManager alloc] init];
 		
 		[sharedManager reachabilityCheck:sharedManager.wifiReach];
-		
+        
 		// notifications for changes in reachability
 		[[NSNotificationCenter defaultCenter] addObserver:sharedManager 
 												 selector:@selector(reachabilityNotification:) 
@@ -138,6 +153,13 @@ static SCHDictionaryManager *sharedManager = nil;
 													 name:UIApplicationWillEnterForegroundNotification 
 												   object:nil];		
 		
+		[[NSNotificationCenter defaultCenter] addObserver:sharedManager 
+												 selector:@selector(mergeChanges:) 
+													 name:NSManagedObjectContextDidSaveNotification
+												   object:nil];		
+		
+        
+        
 		[sharedManager.wifiReach startNotifier];
 	} 
 	
@@ -252,6 +274,7 @@ static SCHDictionaryManager *sharedManager = nil;
 
 - (void) checkOperatingState
 {
+    
 	NSLog(@"*** wifi: %@ connectionIdle: %@ ***", self.wifiAvailable?@"Yes":@"No", self.connectionIdle?@"Yes":@"No");
 	
 	// if both conditions are met, start the countdown to begin work
@@ -296,11 +319,14 @@ static SCHDictionaryManager *sharedManager = nil;
 	}
 	
 	if (!self.wifiAvailable || !self.connectionIdle) {
+        NSLog(@"Process dictionary called, but connection is busy.");
 		return;
 	}
 	
-	NSLog(@"**** Calling processDictionary...");
-	switch ([SCHDictionaryManager sharedDictionaryManager].dictionaryState) {
+    SCHDictionaryProcessingState state = [[SCHDictionaryManager sharedDictionaryManager] dictionaryProcessingState];
+	NSLog(@"**** Calling processDictionary with state %d...", state);
+    
+	switch (state) {
 		case SCHDictionaryProcessingStateNeedsManifest:
 		{
 			NSLog(@"needs manifest...");
@@ -321,7 +347,7 @@ static SCHDictionaryManager *sharedManager = nil;
 		case SCHDictionaryProcessingStateNeedsDownload:
 		{
 			NSLog(@"needs download...");
-			// create manifest processing operation
+			// create dictionary download operation
 			SCHDictionaryFileDownloadOperation *downloadOp = [[SCHDictionaryFileDownloadOperation alloc] init];
 			
 			// dictionary processing is redispatched on completion
@@ -335,11 +361,78 @@ static SCHDictionaryManager *sharedManager = nil;
 			return;
 			break;
 		}	
+		case SCHDictionaryProcessingStateNeedsUnzip:
+		{
+			NSLog(@"needs unzip...");
+			// create unzip operation
+			SCHDictionaryFileUnzipOperation *unzipOp = [[SCHDictionaryFileUnzipOperation alloc] init];
+			
+			// dictionary processing is redispatched on completion
+			[unzipOp setCompletionBlock:^{
+				[self processDictionary];
+			}];
+			
+			// add the operation to the queue
+			[self.dictionaryDownloadQueue addOperation:unzipOp];
+			[unzipOp release];
+			return;
+			break;
+		}	
+		case SCHDictionaryProcessingStateNeedsParsing:
+		{
+			NSLog(@"needs parse...");
+			// create dictionary parse operation
+			SCHDictionaryEntryParseOperation *parseOp = [[SCHDictionaryEntryParseOperation alloc] init];
+			
+			// dictionary processing is redispatched on completion
+			[parseOp setCompletionBlock:^{
+				[self processDictionary];
+			}];
+			
+			// add the operation to the queue
+			[self.dictionaryDownloadQueue addOperation:parseOp];
+			[parseOp release];
+			return;
+			break;
+		}	
 		default:
+            NSLog(@"Dictionary processing unknown state: %d", state);
 			break;
 	}
 	
 	
+}
+
+#pragma mark -
+#pragma mark Dictionary Location
+
+- (NSString *)dictionaryDirectory 
+{
+    NSString *libraryCacheDirectory = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject];
+    NSString *dictionaryDirectory = [libraryCacheDirectory stringByAppendingPathComponent:@"Dictionary"];
+    
+    NSFileManager *localFileManager = [[NSFileManager alloc] init];
+    NSError *error = nil;
+    BOOL isDirectory = NO;
+    
+    if (![localFileManager fileExistsAtPath:dictionaryDirectory isDirectory:&isDirectory]) {
+        [localFileManager createDirectoryAtPath:dictionaryDirectory withIntermediateDirectories:YES attributes:nil error:&error];
+        
+        if (error) {
+            NSLog(@"Warning: problem creating dictionary directory. %@", [error localizedDescription]);
+        }
+    }
+    
+    [localFileManager release];
+    
+    return dictionaryDirectory;
+}
+
+- (NSString *) dictionaryZipPath
+{
+    return [[self dictionaryDirectory] 
+     stringByAppendingPathComponent:[NSString stringWithFormat:@"dictionary-%@.zip", 
+                                     [[SCHDictionaryManager sharedDictionaryManager] dictionaryVersion]]];
 }
 
 #pragma mark -
@@ -365,23 +458,54 @@ static SCHDictionaryManager *sharedManager = nil;
 	
 }
 
-- (SCHDictionaryProcessingState) dictionaryState
+- (void)threadSafeUpdateDictionaryState: (SCHDictionaryProcessingState) newState 
 {
-	SCHAppDictionaryState *state = [[SCHDictionaryManager sharedDictionaryManager] appDictionaryState];
-	return [[state State] intValue];
+    NSLog(@"Updating state to %d", newState);
+    
+    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+    
+	[self.threadSafeMutationLock lock];
+	
+    {
+        ++mutationCount;
+        if(mutationCount != 1) {
+			[NSException raise:@"SCHBookManagerMutationException" 
+						format:@"Mutation count is greater than 1; multiple threads are accessing data in an unsafe manner."];
+        }        
+        SCHDictionaryManager *dictionaryManager = [SCHDictionaryManager sharedDictionaryManager];
+        SCHAppDictionaryState *state = [dictionaryManager appDictionaryState];
+        if (nil == state) {
+            NSLog(@"Failed to retrieve state in SCHDictionaryManager threadSafeUpdateDictionaryState");
+        } else {
+            state.State = [NSNumber numberWithInt: (int) newState];
+        }
+        NSError *anError;
+        if (![dictionaryManager save:&anError]) {
+            NSLog(@"[SCHDictionaryManager threadSafeUpdateDictionaryState:%@] Save failed with error: %@, %@", [state.State stringValue], anError, [anError userInfo]);
+        }
+        --mutationCount;
+    }
+	
+	[self.threadSafeMutationLock unlock];
+    
+    [pool drain];
 }
 
-- (void) setDictionaryState:(SCHDictionaryProcessingState) newState
+- (SCHDictionaryProcessingState) dictionaryProcessingState
 {
 	SCHAppDictionaryState *state = [[SCHDictionaryManager sharedDictionaryManager] appDictionaryState];
-	state.State = [NSNumber numberWithInt:newState];
-	
-	NSError *error = nil;
-	[[[SCHBookManager sharedBookManager] managedObjectContextForCurrentThread] save:&error];
-	
-	if (error) {
-		NSLog(@"Error while saving dictionary state: %@", [error localizedDescription]);
-	}
+    if (nil == state) {
+        NSLog(@"Failed to retrieve dictionary state object in dictionaryProcessingState");
+        return SCHDictionaryProcessingStateError;
+    } else {
+        return [[state State] intValue];
+    }
+}
+
+
+- (BOOL)save:(NSError **)error
+{
+    return [[[SCHBookManager sharedBookManager] managedObjectContextForCurrentThread] save:error];
 }
 
 #pragma mark -
@@ -405,7 +529,9 @@ static SCHDictionaryManager *sharedManager = nil;
 	}
 	
 	if (results && [results count] == 1) {
-		return [results objectAtIndex:0];
+        SCHAppDictionaryState *state = [results objectAtIndex:0];
+        [[[SCHBookManager sharedBookManager] managedObjectContextForCurrentThread] refreshObject:state mergeChanges:YES];
+		return state;
 	} else {
 		// otherwise, create a dictionary state object
 		SCHAppDictionaryState *newState = [NSEntityDescription insertNewObjectForEntityForName:kSCHAppDictionaryState 
@@ -423,5 +549,17 @@ static SCHDictionaryManager *sharedManager = nil;
 	}
 }
 
+- (void) mergeChanges:(NSNotification*)saveNotification
+{
+	// Fault in all updated objects
+	NSArray* updates = [[saveNotification.userInfo objectForKey:@"updated"] allObjects];
+	for (NSInteger i = [updates count]-1; i >= 0; i--)
+	{
+		[[[[SCHBookManager sharedBookManager] managedObjectContextForCurrentThread] objectWithID:[[updates objectAtIndex:i] objectID]] willAccessValueForKey:nil];
+	}
+    
+	// Merge
+	[[[SCHBookManager sharedBookManager] managedObjectContextForCurrentThread] mergeChangesFromContextDidSaveNotification:saveNotification];
+}
 
 @end

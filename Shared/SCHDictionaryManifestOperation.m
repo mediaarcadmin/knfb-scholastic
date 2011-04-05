@@ -55,11 +55,16 @@
 		
 		self.connection = [NSURLConnection 
 						   connectionWithRequest:[NSURLRequest requestWithURL:
-												  [NSURL URLWithString:@"http://bits.blioreader.com/partners/Scholastic/SLInstall/UpdateManifest.xml"]]
+												  [NSURL URLWithString:@"http://localhost/~gordon/dictionary/UpdateManifest.xml"]]
+//                                                [NSURL URLWithString:@"http://bits.blioreader.com/partners/Scholastic/SLInstall/UpdateManifest.xml"]]
 						   delegate:self];
 		
+        [self willChangeValueForKey:@"isExecuting"];
+        [self willChangeValueForKey:@"isFinished"];
 		self.executing = YES;
 		self.finished = NO;
+        [self didChangeValueForKey:@"isExecuting"];
+        [self didChangeValueForKey:@"isFinished"];
 		self.downloadComplete = NO;
 		if (self.connection) {
 			do {
@@ -80,8 +85,12 @@
 		
 		}
 		
+        [self willChangeValueForKey:@"isExecuting"];
+        [self willChangeValueForKey:@"isFinished"];
 		self.finished = YES;
 		self.executing = NO;
+        [self didChangeValueForKey:@"isExecuting"];
+        [self didChangeValueForKey:@"isFinished"];
 		[SCHDictionaryManager sharedDictionaryManager].isProcessing = NO;
 	}
 }
@@ -150,8 +159,9 @@
 	NSLog(@"Dictionary version: %@ URL: %@", [SCHDictionaryManager sharedDictionaryManager].dictionaryVersion, 
 		  [SCHDictionaryManager sharedDictionaryManager].dictionaryURL);
 	
-	[SCHDictionaryManager sharedDictionaryManager].dictionaryState = SCHDictionaryProcessingStateNeedsDownload;
-	[SCHDictionaryManager sharedDictionaryManager].isProcessing = NO;
+    [[SCHDictionaryManager sharedDictionaryManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNeedsDownload];
+
+    [SCHDictionaryManager sharedDictionaryManager].isProcessing = NO;
 
 	self.parsingComplete = YES;
 
@@ -166,8 +176,12 @@
 
 - (void) cancel
 {
+    [self willChangeValueForKey:@"isExecuting"];
+    [self willChangeValueForKey:@"isFinished"];
 	self.finished = YES;
 	self.executing = NO;
+    [self didChangeValueForKey:@"isExecuting"];
+    [self didChangeValueForKey:@"isFinished"];
 	[SCHDictionaryManager sharedDictionaryManager].isProcessing = NO;
 
 	[super cancel];

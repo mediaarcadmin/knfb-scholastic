@@ -54,9 +54,7 @@
 		NSLog(@"Cancelled.");
 	} else {
 		
-		self.localPath = [[SCHAppBook rootCacheDirectory] 
-						  stringByAppendingFormat:@"/dictionary-%@.zip", 
-						  [[SCHDictionaryManager sharedDictionaryManager] dictionaryVersion]];
+		self.localPath = [[SCHDictionaryManager sharedDictionaryManager] dictionaryZipPath];
 		
 		[self beginConnection];
 	}
@@ -141,8 +139,12 @@
 	
 	if ([self isCancelled]) {
 		[connection cancel];
+        [self willChangeValueForKey:@"isExecuting"];
+        [self willChangeValueForKey:@"isFinished"];
 		self.executing = NO;
 		self.finished = YES;
+        [self didChangeValueForKey:@"isExecuting"];
+        [self didChangeValueForKey:@"isFinished"];
 		return;
 	}
 
@@ -162,11 +164,15 @@
 						   withObject:userInfo
 						waitUntilDone:YES];
 	
+	[[SCHDictionaryManager sharedDictionaryManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNeedsUnzip];
+//	[SCHDictionaryManager sharedDictionaryManager].dictionaryState = SCHDictionaryProcessingStateNeedsUnzip;
 	
-	[SCHDictionaryManager sharedDictionaryManager].dictionaryState = SCHDictionaryProcessingStateDone;
-	
+    [self willChangeValueForKey:@"isExecuting"];
+    [self willChangeValueForKey:@"isFinished"];
 	self.executing = NO;
 	self.finished = YES;
+    [self didChangeValueForKey:@"isExecuting"];
+    [self didChangeValueForKey:@"isFinished"];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 	
@@ -176,10 +182,15 @@
 {
 	NSLog(@"Stopped downloading file - %@", [error localizedDescription]);
 	
-	[SCHDictionaryManager sharedDictionaryManager].dictionaryState = SCHDictionaryProcessingStateNeedsDownload;
+	[[SCHDictionaryManager sharedDictionaryManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNeedsDownload];
+//	[SCHDictionaryManager sharedDictionaryManager].dictionaryState = SCHDictionaryProcessingStateNeedsDownload;
 	
+    [self willChangeValueForKey:@"isExecuting"];
+    [self willChangeValueForKey:@"isFinished"];
 	self.executing = NO;
 	self.finished = YES;
+    [self didChangeValueForKey:@"isExecuting"];
+    [self didChangeValueForKey:@"isFinished"];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
@@ -243,8 +254,12 @@
 - (void) cancel
 {
 	NSLog(@"%%%% cancelling download file operation");
+    [self willChangeValueForKey:@"isExecuting"];
+    [self willChangeValueForKey:@"isFinished"];
 	self.finished = YES;
 	self.executing = NO;
+    [self didChangeValueForKey:@"isExecuting"];
+    [self didChangeValueForKey:@"isFinished"];
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
 	[super cancel];

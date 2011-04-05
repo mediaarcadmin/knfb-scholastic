@@ -32,6 +32,9 @@
 - (void) redispatchISBN: (NSString *) isbn;
 - (void) checkAndDispatchThumbsForISBN: (NSString *) isbn;
 
+// fire notifications if there's a change in state between processing and not processing
+- (void) checkIfProcessing;
+
 // background processing - called by the app delegate when the app
 // is put into or opened from the background
 - (void) enterBackground;
@@ -53,6 +56,7 @@
 @property (readwrite, retain) NSMutableArray *currentlyProcessingISBNs;
 
 @property BOOL connectionIsIdle;
+@property BOOL firedFirstBusyIdleNotification;
 
 @end
 
@@ -63,7 +67,7 @@
 @synthesize localProcessingQueue, webServiceOperationQueue, networkOperationQueue;
 @synthesize backgroundTask;
 @synthesize thumbImageRequests, currentlyProcessingISBNs;
-@synthesize connectionIsIdle;
+@synthesize connectionIsIdle, firedFirstBusyIdleNotification;
 
 #pragma mark -
 #pragma mark Object Lifecycle
@@ -94,7 +98,8 @@
 		self.thumbImageRequests = [[NSMutableDictionary alloc] init];
         self.currentlyProcessingISBNs = [[NSMutableArray alloc] init];
 		
-		self.connectionIsIdle = NO;
+		self.connectionIsIdle = YES;
+        self.firedFirstBusyIdleNotification = NO;
 	}
 	
 	return self;
@@ -201,24 +206,7 @@ static SCHProcessingManager *sharedManager = nil;
 		}
 	}	
     
-	// check to see if we're processing
-	int totalOperations = [[self.networkOperationQueue operations] count] + 
-	[[self.webServiceOperationQueue operations] count];
-	
-	if (totalOperations == 0) {
-		if (!self.connectionIsIdle) {
-			self.connectionIsIdle = YES;
-			
-			[self performSelectorOnMainThread:@selector(sendNotification:) withObject:kSCHProcessingManagerConnectionIdle waitUntilDone:YES];
-		}
-	} else {
-		if (self.connectionIsIdle) {
-			self.connectionIsIdle = NO;
-			
-			[self performSelectorOnMainThread:@selector(sendNotification:) withObject:kSCHProcessingManagerConnectionBusy waitUntilDone:YES];
-		}
-	}
-    
+    [self checkIfProcessing];
 }
 
 - (BOOL) ISBNNeedsProcessing: (NSString *) isbn
@@ -443,11 +431,54 @@ static SCHProcessingManager *sharedManager = nil;
 	if (book.processingState == SCHBookProcessingStateReadyForBookFileDownload ||
 		book.processingState == SCHBookProcessingStateDownloadStarted ||
 		book.processingState == SCHBookProcessingStateDownloadPaused ||
+		book.processingState == SCHBookProcessingStateReadyForPagination ||
+		book.processingState == SCHBookProcessingStateReadyForRightsParsing ||
+		book.processingState == SCHBookProcessingStateReadyForTextFlowPreParse ||
 		book.processingState == SCHBookProcessingStateReadyToRead) {
 		[self checkAndDispatchThumbsForISBN:isbn];
 	}
-	
+    
+    [self checkIfProcessing];
+    
 }	
+
+- (void) checkIfProcessing
+{
+    // check to see if we're processing
+//	int totalOperations = [[self.networkOperationQueue operations] count] + 
+//	[[self.webServiceOperationQueue operations] count];
+    
+    int totalBooksProcessing = 0;
+    
+	NSArray *allBooks = [[SCHBookManager sharedBookManager] allBooksAsISBNs];
+	
+	// FIXME: add prioritisation
+    
+	// get all the books independent of profile
+	for (NSString *isbn in allBooks) {
+		SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:isbn];
+        
+        if ([book isProcessing]) {
+            totalBooksProcessing++;
+        }
+	}	
+	
+	if (totalBooksProcessing == 0) {
+		self.connectionIsIdle = YES;
+        
+		if (!self.connectionIsIdle || !self.firedFirstBusyIdleNotification) {
+			[self performSelectorOnMainThread:@selector(sendNotification:) withObject:kSCHProcessingManagerConnectionIdle waitUntilDone:YES];
+            self.firedFirstBusyIdleNotification = YES;
+		}
+	} else {
+		self.connectionIsIdle = NO;
+        
+		if (self.connectionIsIdle || !self.firedFirstBusyIdleNotification) {
+			[self performSelectorOnMainThread:@selector(sendNotification:) withObject:kSCHProcessingManagerConnectionBusy waitUntilDone:YES];
+            self.firedFirstBusyIdleNotification = YES;
+		}
+	}
+}
 
 - (void) sendNotification: (NSString *) name
 {
@@ -497,6 +528,7 @@ static SCHProcessingManager *sharedManager = nil;
         
 		if ([localFileManager fileExistsAtPath:thumbPath]) {
 			bookCover.image = [SCHThumbnailFactory imageWithPath:thumbPath];
+            [localFileManager release];
 			return YES;
 		}
         

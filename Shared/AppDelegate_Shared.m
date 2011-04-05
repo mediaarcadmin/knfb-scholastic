@@ -14,6 +14,7 @@
 #import "SCHURLManager.h"
 #import "SCHProcessingManager.h"
 #import "SCHDictionaryManager.h"
+#import "SCHBookshelfSyncComponent.h"
 
 #if LOCALDEBUG
 #import "SCHLocalDebug.h"
@@ -151,6 +152,7 @@ static NSString* const prModelCertFilename = @"iphonecert.dat";
 	[SCHProcessingManager sharedProcessingManager];
     
 #if LOCALDEBUG
+	[[NSNotificationCenter defaultCenter] postNotificationName:kSCHBookshelfSyncComponentComplete object:nil];
     [self copyLocalFilesIfMissing];
 #endif
 	

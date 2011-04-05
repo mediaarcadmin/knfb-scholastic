@@ -14,6 +14,8 @@ typedef enum {
 	SCHDictionaryProcessingStateError = 0,
 	SCHDictionaryProcessingStateNeedsManifest,
 	SCHDictionaryProcessingStateNeedsDownload,
+	SCHDictionaryProcessingStateNeedsUnzip,
+	SCHDictionaryProcessingStateNeedsParsing,
 	SCHDictionaryProcessingStateDone
 } SCHDictionaryProcessingState;
 
@@ -24,6 +26,10 @@ typedef enum {
 
 + (SCHDictionaryManager *) sharedDictionaryManager;
 
+// the local dictionary directory
+- (NSString *) dictionaryDirectory;
+- (NSString *) dictionaryZipPath;
+
 // the dictionary URL
 @property (readwrite, retain) NSString *dictionaryURL;
 
@@ -31,7 +37,9 @@ typedef enum {
 @property (readwrite, retain) NSString *dictionaryVersion;
 
 // the current dictionary state
-@property (readwrite) SCHDictionaryProcessingState dictionaryState;
+//@property (readwrite) SCHDictionaryProcessingState dictionaryState;
+- (void)threadSafeUpdateDictionaryState: (SCHDictionaryProcessingState) state;
+- (SCHDictionaryProcessingState) dictionaryProcessingState;
 
 // dictionary is currently processing
 @property BOOL isProcessing;
