@@ -69,9 +69,10 @@
 }
 
 
-- (IBAction) showBookView: (id) sender
+- (IBAction) showFlowView: (id) sender
 {
     SCHReadingViewController *readingController = [[SCHReadingViewController alloc] initWithNibName:nil bundle:nil book:self.isbn];
+    readingController.flowView = YES;
     [self.navigationController pushViewController:readingController animated:YES];
     [readingController release];
     
@@ -79,10 +80,12 @@
 	[self.navigationController pushViewController:pageViewController animated:YES];
 }
 
-- (IBAction) showBookViewAtStart: (id) sender
+- (IBAction) showFixedView: (id) sender
 {
-	[pageViewController goToFirstPage];
-	[self.navigationController pushViewController:pageViewController animated:YES];
+    SCHReadingViewController *readingController = [[SCHReadingViewController alloc] initWithNibName:nil bundle:nil book:self.isbn];
+    readingController.flowView = NO;
+    [self.navigationController pushViewController:readingController animated:YES];
+    [readingController release];
 }
 
 - (IBAction) tapBookCover: (id) sender

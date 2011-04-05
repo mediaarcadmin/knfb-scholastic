@@ -13,6 +13,8 @@
     
 }
 
+@property (nonatomic, assign) BOOL flowView;
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil book:(id)aBook;
 
 @end

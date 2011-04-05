@@ -19,6 +19,7 @@
 @implementation SCHReadingViewController
 
 @synthesize book;
+@synthesize flowView;
 
 - (void)dealloc
 {
@@ -58,8 +59,14 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    //SCHLayoutView *aBookView = [[SCHLayoutView alloc] initWithFrame:self.view.bounds book:self.book];
-    SCHFlowView *aBookView = [[SCHFlowView alloc] initWithFrame:self.view.bounds book:self.book];
+    UIView *aBookView = nil;
+    
+    if (self.flowView) {
+        aBookView = [[SCHFlowView alloc] initWithFrame:self.view.bounds book:self.book];
+    } else {
+        aBookView = [[SCHLayoutView alloc] initWithFrame:self.view.bounds book:self.book]; 
+    }
+    
     [self.view addSubview:aBookView];
     [aBookView release];
 }
