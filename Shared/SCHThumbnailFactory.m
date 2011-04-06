@@ -59,10 +59,10 @@
 		
 		if (aspect) {
 			
-			CGFloat xRatio = size.width / fullImage.size.width;
-			CGFloat yRatio = size.height / fullImage.size.height;
+//			CGFloat xRatio = size.width / fullImage.size.width;
+//			CGFloat yRatio = size.height / fullImage.size.height;
 	
-			NSLog(@"xratio: %f yratio: %f", xRatio, yRatio);
+//			NSLog(@"xratio: %f yratio: %f", xRatio, yRatio);
 		}
 		
 		UIGraphicsBeginImageContextWithOptions(size, NO, 0.0f);

@@ -73,9 +73,14 @@
 		  ([book.HasExtras boolValue]?@"Yes":@"No"));
 
 	NSString *drmVersion = book.DRMVersion;
+    
+    if (!drmVersion) {
+        drmVersion = @"None";
+    }
+    
 	NSLog(@"Layout starts on left? %@ DRM Version: %@", 
 		  ([book.LayoutStartsOnLeftSide boolValue]?@"Yes":@"No"),
-		  drmVersion?drmVersion:@"None");
+		  drmVersion);
 		  
     NSLog(@"---");
     NSLog(@"page ranges:");
