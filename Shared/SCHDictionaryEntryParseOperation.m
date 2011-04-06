@@ -69,14 +69,18 @@
     NSManagedObjectContext *context = [[SCHBookManager sharedBookManager] managedObjectContextForCurrentThread];
     
     NSString *filePath = [[dictManager dictionaryDirectory] stringByAppendingPathComponent:@"EntryTable.txt"];
+    NSError *error = nil;
     
     FILE *file = fopen([filePath cStringUsingEncoding:NSUTF8StringEncoding], "r");
     char line[6560];
     
     long currentOffset = 0;
     
+    int batchItems = 0;
     int savedItems = 0;
-    
+
+    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init]; 
+
     while (fgets(line, 6560, file) != NULL) {
         
         char *start, *entryID, *headword, *level;
@@ -101,13 +105,28 @@
         entry.category = [NSString stringWithCString:level encoding:NSUTF8StringEncoding];
         
         savedItems++;
+        batchItems++;
+        
+        if (batchItems > 500) {
+            batchItems = 0;
+            
+            [context save:&error];
+            
+            if (error)
+            {
+                NSLog(@"Error: could not save word entries. %@", [error localizedDescription]);
+            }
+            [context reset];
+            [pool drain];
+            pool = [[NSAutoreleasePool alloc] init];
+        }
         
         currentOffset = ftell(file);
     };
     
+    [pool drain];
     fclose(file);
     
-    NSError *error = nil;
     
     [context save:&error];
     
@@ -126,12 +145,17 @@
     NSManagedObjectContext *context = [[SCHBookManager sharedBookManager] managedObjectContextForCurrentThread];
 
     NSString *filePath = [[dictManager dictionaryDirectory] stringByAppendingPathComponent:@"WordFormTable.txt"];
+    NSError *error = nil;
 
     FILE *file = fopen([filePath cStringUsingEncoding:NSUTF8StringEncoding], "r");
     setlinebuf(file);
     char line[90];
 
     int savedItems = 0;
+    int batchItems = 0;
+    
+    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init]; 
+
 
     while (fgets(line, 90, file) != NULL) {
         char *start, *wordform, *headword, *entryID, *category;
@@ -158,12 +182,27 @@
         form.category = [NSString stringWithCString:category encoding:NSUTF8StringEncoding];
         
         savedItems++;
+        batchItems++;
+        
+        if (batchItems > 1000) {
+            batchItems = 0;
+            [context save:&error];
+            if (error)
+            {
+                NSLog(@"Error: could not save word entries. %@", [error localizedDescription]);
+            }
+            
+            [context reset];
+            [pool drain];
+            pool = [[NSAutoreleasePool alloc] init];
+        }
+        
         
     };    
+    
+    [pool drain];
 
     fclose(file);
-    
-    NSError *error = nil;
     
     [context save:&error];
     

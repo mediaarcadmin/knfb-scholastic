@@ -129,8 +129,7 @@ static void pageFileXMLParsingStartElementHandler(void *ctx, const XML_Char *nam
     
     XML_SetUserData(pageRangeFileParser, (void *)pageRangesSet);    
     if (!XML_Parse(pageRangeFileParser, [data bytes], [data length], XML_TRUE)) {
-        char *anError = (char *)XML_ErrorString(XML_GetErrorCode(pageRangeFileParser));
-        NSLog(@"TextFlow parsing error: '%s' in file: '%@'", anError, BlioXPSEncryptedTextFlowDir);
+        NSLog(@"TextFlow parsing error: '%s' in file: '%@'", (char *)XML_ErrorString(XML_GetErrorCode(pageRangeFileParser)), BlioXPSEncryptedTextFlowDir);
     }
     XML_ParserFree(pageRangeFileParser);
     
@@ -155,8 +154,7 @@ static void pageFileXMLParsingStartElementHandler(void *ctx, const XML_Char *nam
         pageRange.currentParser = &flowParser;
         XML_SetUserData(flowParser, (void *)pageRange);    
         if (!XML_Parse(flowParser, [data bytes], [data length], XML_TRUE)) {
-            char *anError = (char *)XML_ErrorString(XML_GetErrorCode(flowParser));
-            NSLog(@"TextFlow parsing error: '%s' in file: '%@'", anError, [pageRange fileName]);
+            NSLog(@"TextFlow parsing error: '%s' in file: '%@'", (char *)XML_ErrorString(XML_GetErrorCode(flowParser)), [pageRange fileName]);
         }
         XML_ParserFree(flowParser);   
         

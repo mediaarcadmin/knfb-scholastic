@@ -152,19 +152,15 @@
         //        NSLog(@"Using layout equivalent page length of %ld for %@", layoutEquivalentPageCount, [self getBookValueForKey:@"title"]); 
     }
     
-    CFAbsoluteTime elapsedTime = CFAbsoluteTimeGetCurrent() - self.startTime;
-    NSLog(@"Pagination of book %@ took %ld seconds", self.bookTitle, (long)round(elapsedTime));
+    NSLog(@"Pagination of book %@ took %ld seconds", self.bookTitle, (long)round(CFAbsoluteTimeGetCurrent() - self.startTime));
     
     [self updateBookWithSuccess];
 }
 
 - (void)paginationProgress:(NSNotification *)notification
 {
-	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];
-    NSDictionary *userInfo = [notification userInfo];
-    CGFloat percentagePaginated = [[userInfo objectForKey:EucBookPaginatorNotificationPercentagePaginatedKey] floatValue];
 	//self.percentageComplete = percentagePaginated;
-    NSLog(@"Book %@ pagination progress: %f", book.Title, percentagePaginated);
+    NSLog(@"Book %@ pagination progress: %f", [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn].Title, [[[notification userInfo] objectForKey:EucBookPaginatorNotificationPercentagePaginatedKey] floatValue]);
 }
 
 
