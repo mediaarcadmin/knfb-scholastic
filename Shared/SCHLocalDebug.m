@@ -10,7 +10,7 @@
 
 #import "SCHLibreAccessWebService.h"
 #import "NSManagedObjectContext+Extensions.h"
-#import "SCHOldAuthenticationManager.h"
+#import "SCHAuthenticationManager.h"
 #import "SCHUserSettingsItem.h"
 #import "SCHProfileItem.h"
 #import "SCHContentMetadataItem.h"

@@ -233,6 +233,8 @@
 		C9ED56801343323200A25486 /* libwapcaplet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9ED566C1343322300A25486 /* libwapcaplet.a */; };
 		C9ED56821343328F00A25486 /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C9ED56811343328F00A25486 /* libiconv.dylib */; };
 		C9ED56831343329400A25486 /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C9ED56811343328F00A25486 /* libiconv.dylib */; };
+		C9EFA8E6134CA99700ADF905 /* SCHAuthenticationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF543F12E9A5D400E374F7 /* SCHAuthenticationManager.m */; };
+		C9EFA8E7134CA99700ADF905 /* SCHAuthenticationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF543F12E9A5D400E374F7 /* SCHAuthenticationManager.m */; };
 		C9F1A4D6133B507100FD984C /* libPlayReadyPK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A3D933851326D92000037111 /* libPlayReadyPK.a */; };
 		C9F1A57A133B83D100FD984C /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C9F1A579133B83D100FD984C /* libxml2.dylib */; };
 		F81B3A7F12FAAD8E00A20D52 /* SCHNote.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A5E12F0EF5600BBBCE6 /* SCHNote.m */; };
@@ -274,8 +276,8 @@
 		F83D86BE12FC60C600227031 /* SCHLocalDebugXPSReader.m in Sources */ = {isa = PBXBuildFile; fileRef = F83D86B412FC070F00227031 /* SCHLocalDebugXPSReader.m */; };
 		F83D874612FC67A400227031 /* SCHSyncManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9ACE12FC0EEF0099FB88 /* SCHSyncManager.m */; };
 		F83D874712FC67A600227031 /* SCHSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9B1B12FC1B6B0099FB88 /* SCHSyncComponent.m */; };
-		F84CE156134C691D0044729E /* SCHOldAuthenticationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F84CE155134C691D0044729E /* SCHOldAuthenticationManager.m */; };
-		F84CE157134C691D0044729E /* SCHOldAuthenticationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F84CE155134C691D0044729E /* SCHOldAuthenticationManager.m */; };
+		F84CE156134C691D0044729E /* SCHNonDRMAuthenticationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F84CE155134C691D0044729E /* SCHNonDRMAuthenticationManager.m */; };
+		F84CE157134C691D0044729E /* SCHNonDRMAuthenticationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F84CE155134C691D0044729E /* SCHNonDRMAuthenticationManager.m */; };
 		F8509E7412F061FE00197EB5 /* libXpsSDKipad.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F8509E7212F061FE00197EB5 /* libXpsSDKipad.a */; };
 		F8509E9C12F0621E00197EB5 /* BlioTimeOrderedCache.m in Sources */ = {isa = PBXBuildFile; fileRef = F8509E8C12F0621E00197EB5 /* BlioTimeOrderedCache.m */; };
 		F8509E9D12F0621E00197EB5 /* BITXPSProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = F8509E8E12F0621E00197EB5 /* BITXPSProvider.m */; };
@@ -894,8 +896,8 @@
 		F82D39D8131EA7D400289FF3 /* SCHBookShelfTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookShelfTableViewCell.m; path = Shared/SCHBookShelfTableViewCell.m; sourceTree = "<group>"; };
 		F83D86B312FC070F00227031 /* SCHLocalDebugXPSReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHLocalDebugXPSReader.h; path = Shared/SCHLocalDebugXPSReader.h; sourceTree = "<group>"; };
 		F83D86B412FC070F00227031 /* SCHLocalDebugXPSReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHLocalDebugXPSReader.m; path = Shared/SCHLocalDebugXPSReader.m; sourceTree = "<group>"; };
-		F84CE154134C691D0044729E /* SCHOldAuthenticationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHOldAuthenticationManager.h; path = Shared/SCHOldAuthenticationManager.h; sourceTree = "<group>"; };
-		F84CE155134C691D0044729E /* SCHOldAuthenticationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHOldAuthenticationManager.m; path = Shared/SCHOldAuthenticationManager.m; sourceTree = "<group>"; };
+		F84CE154134C691D0044729E /* SCHNonDRMAuthenticationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHNonDRMAuthenticationManager.h; path = Shared/SCHNonDRMAuthenticationManager.h; sourceTree = "<group>"; };
+		F84CE155134C691D0044729E /* SCHNonDRMAuthenticationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHNonDRMAuthenticationManager.m; path = Shared/SCHNonDRMAuthenticationManager.m; sourceTree = "<group>"; };
 		F8509E7212F061FE00197EB5 /* libXpsSDKipad.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libXpsSDKipad.a; path = Shared/Libraries/XPS/libXpsSDKipad.a; sourceTree = "<group>"; };
 		F8509E7312F061FE00197EB5 /* XpsSdk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XpsSdk.h; path = Shared/Libraries/XPS/XpsSdk.h; sourceTree = "<group>"; };
 		F8509E7612F0620D00197EB5 /* Clifford.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = Clifford.xps; path = "Shared/Debug Books/Clifford.xps"; sourceTree = "<group>"; };
@@ -1345,7 +1347,7 @@
 		5293872912DF436100045B44 /* Web Services */ = {
 			isa = PBXGroup;
 			children = (
-				F84CE153134C68E50044729E /* Old and New Authentication Manager */,
+				F84CE153134C68E50044729E /* Authentication Manager */,
 				52ACF463133B547700B2E28C /* DRM */,
 				5293872E12DF43D200045B44 /* SCHScholasticWebService.h */,
 				5293872F12DF43D200045B44 /* SCHScholasticWebService.m */,
@@ -1717,15 +1719,15 @@
 			name = "Book Reading";
 			sourceTree = "<group>";
 		};
-		F84CE153134C68E50044729E /* Old and New Authentication Manager */ = {
+		F84CE153134C68E50044729E /* Authentication Manager */ = {
 			isa = PBXGroup;
 			children = (
-				F84CE154134C691D0044729E /* SCHOldAuthenticationManager.h */,
-				F84CE155134C691D0044729E /* SCHOldAuthenticationManager.m */,
+				F84CE154134C691D0044729E /* SCHNonDRMAuthenticationManager.h */,
+				F84CE155134C691D0044729E /* SCHNonDRMAuthenticationManager.m */,
 				52EF543E12E9A5D400E374F7 /* SCHAuthenticationManager.h */,
 				52EF543F12E9A5D400E374F7 /* SCHAuthenticationManager.m */,
 			);
-			name = "Old and New Authentication Manager";
+			name = "Authentication Manager";
 			sourceTree = "<group>";
 		};
 		F8509E7112F061FE00197EB5 /* XPS */ = {
@@ -2263,7 +2265,8 @@
 				524042ED13422952001A4A4F /* SCHDictionaryFileUnarchiveOperation.m in Sources */,
 				524042F11342296E001A4A4F /* SCHDictionaryFileParseOperation.m in Sources */,
 				5283F30813432C6B0001CD2E /* ZipArchive.m in Sources */,
-				F84CE156134C691D0044729E /* SCHOldAuthenticationManager.m in Sources */,
+				F84CE156134C691D0044729E /* SCHNonDRMAuthenticationManager.m in Sources */,
+				C9EFA8E7134CA99700ADF905 /* SCHAuthenticationManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2380,7 +2383,8 @@
 				524042EE13422952001A4A4F /* SCHDictionaryFileUnarchiveOperation.m in Sources */,
 				524042F21342296E001A4A4F /* SCHDictionaryFileParseOperation.m in Sources */,
 				5283F30913432C6B0001CD2E /* ZipArchive.m in Sources */,
-				F84CE157134C691D0044729E /* SCHOldAuthenticationManager.m in Sources */,
+				F84CE157134C691D0044729E /* SCHNonDRMAuthenticationManager.m in Sources */,
+				C9EFA8E6134CA99700ADF905 /* SCHAuthenticationManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -11,7 +11,7 @@
 #import "SCHScholasticWebService.h"
 #import "BITAPIError.h"
 #import "NSNumber+ObjectTypes.h"
-#import "SCHOldAuthenticationManager.h"
+#import "SCHAuthenticationManager.h"
 #import "BITNetworkActivityManager.h"
 
 

@@ -45,4 +45,11 @@ static NSInteger const kSCHAuthenticationManagerLoginError = 2001;
 - (BOOL)hasUsernameAndPassword;
 - (void)clear;
 
+// Private methods exposed for subclasses to access
+- (void)postSuccessWithOfflineMode:(BOOL)offlineMode;
+- (void)postFailureWithError:(NSError *)error;
+
+// Subclassed methods
+- (void)authenticateOnMainThread:(NSValue *)returnValue;
+
 @end

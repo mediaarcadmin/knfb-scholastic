@@ -10,7 +10,7 @@
 
 #import <CoreData/CoreData.h>
 
-#import "SCHOldAuthenticationManager.h"
+#import "SCHAuthenticationManager.h"
 #import "SCHLibreAccessWebService.h"
 #import "SCHContentMetadataItem.h"
 #import "SCHUserContentItem.h"

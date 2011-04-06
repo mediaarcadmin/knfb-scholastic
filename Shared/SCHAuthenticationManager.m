@@ -14,6 +14,8 @@
 #import "Reachability.h"
 #import "SCHDrmRegistrationSession.h"
 
+#import "SCHNonDRMAuthenticationManager.h"
+
 // DeviceKeys
 // od1
 // od2 {ed9532e2-de12-9a44-ae81-11eafd5a9f3f} - doesnt seem to work
@@ -41,9 +43,6 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
 - (void)authenticateOnMainThread:(NSValue *)returnValue;
 - (void)hasUsernameAndPasswordOnMainThread:(NSValue *)returnValue;
 - (void)clearOnMainThread;
-
-- (void)postSuccessWithOfflineMode:(BOOL)offlineMode;
-- (void)postFailureWithError:(NSError *)error;
 
 @end
 
@@ -160,7 +159,11 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
 + (SCHAuthenticationManager *)sharedAuthenticationManagerOnMainThread
 {
     if (sharedAuthenticationManager == nil) {
-        sharedAuthenticationManager = [[super allocWithZone:NULL] init];		
+#if NONDRMAUTHENTICATION
+        sharedAuthenticationManager = [[SCHNonDRMAuthenticationManager allocWithZone:NULL] init];
+#else
+        sharedAuthenticationManager = [[super allocWithZone:NULL] init];
+#endif
     }
     
     return(sharedAuthenticationManager);
