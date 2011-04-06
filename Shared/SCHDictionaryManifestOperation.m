@@ -55,8 +55,8 @@
 		
 		self.connection = [NSURLConnection 
 						   connectionWithRequest:[NSURLRequest requestWithURL:
-												  [NSURL URLWithString:@"http://localhost/~gordon/dictionary/UpdateManifest.xml"]]
-//                                                [NSURL URLWithString:@"http://bits.blioreader.com/partners/Scholastic/SLInstall/UpdateManifest.xml"]]
+//												  [NSURL URLWithString:@"http://10.0.10.6/~gordon/dictionary/UpdateManifest.xml"]]
+                                                [NSURL URLWithString:@"http://bits.blioreader.com/partners/Scholastic/SLInstall/UpdateManifest.xml"]]
 						   delegate:self];
 		
         [self willChangeValueForKey:@"isExecuting"];
