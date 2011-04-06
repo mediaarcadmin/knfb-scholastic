@@ -9,7 +9,7 @@
 #import "AppDelegate_Shared.h"
 #import "SCHBookManager.h"
 #import "SCHSyncManager.h"
-#import "SCHAuthenticationManager.h"
+#import "SCHOldAuthenticationManager.h"
 #import "SCHUserDefaults.h"
 #import "SCHURLManager.h"
 #import "SCHProcessingManager.h"

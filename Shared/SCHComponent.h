@@ -10,7 +10,7 @@
 
 #import "SCHComponentDelegate.h"
 #import "BITAPIProxyDelegate.h"
-#import "SCHAuthenticationManager.h"
+#import "SCHOldAuthenticationManager.h"
 #import "SCHLibreAccessWebService.h"
 
 @interface SCHComponent : NSObject <BITAPIProxyDelegate> 

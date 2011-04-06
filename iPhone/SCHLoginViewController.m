@@ -8,7 +8,7 @@
 
 #import "SCHLoginViewController.h"
 
-#import "SCHAuthenticationManager.h"
+#import "SCHOldAuthenticationManager.h"
 #import "SFHFKeychainUtils.h"
 #import "SCHSyncManager.h"
 #import "SCHURLManager.h"

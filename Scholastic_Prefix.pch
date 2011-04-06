@@ -9,6 +9,8 @@
 
 #define SERVEROVERRIDE 1
 
+#define OLDAUTHENTICATION 1
+
 // Stops all NSLog() functions executing under release builds
 #ifdef __OPTIMIZE__
 	#define NSLog(...);

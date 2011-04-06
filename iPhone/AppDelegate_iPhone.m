@@ -10,7 +10,7 @@
 #import "SCHProfileViewController.h"
 
 #import "SCHSyncManager.h"
-#import "SCHAuthenticationManager.h"
+#import "SCHOldAuthenticationManager.h"
 
 static NSTimeInterval const kAppDelegate_iPhoneSyncManagerWakeDelay = 5.0;
 

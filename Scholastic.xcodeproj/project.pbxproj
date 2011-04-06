@@ -118,7 +118,6 @@
 		52EF4E5F12E6E01C00E374F7 /* SCHLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF4E5D12E6E01C00E374F7 /* SCHLoginViewController.m */; };
 		52EF4E6012E6E01C00E374F7 /* SCHLoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52EF4E5E12E6E01C00E374F7 /* SCHLoginViewController.xib */; };
 		52EF508712E739E900E374F7 /* LibreAccessServiceSvc.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF508612E739E900E374F7 /* LibreAccessServiceSvc.m */; };
-		52EF544012E9A5D400E374F7 /* SCHAuthenticationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF543F12E9A5D400E374F7 /* SCHAuthenticationManager.m */; };
 		52EF553E12E9EB8500E374F7 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52EF553D12E9EB8500E374F7 /* Security.framework */; };
 		52EF570A12ED977C00E374F7 /* NSManagedObjectContext+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF570912ED977C00E374F7 /* NSManagedObjectContext+Extensions.m */; };
 		52EF579712EDBE6E00E374F7 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF579612EDBE6E00E374F7 /* SFHFKeychainUtils.m */; };
@@ -275,6 +274,8 @@
 		F83D86BE12FC60C600227031 /* SCHLocalDebugXPSReader.m in Sources */ = {isa = PBXBuildFile; fileRef = F83D86B412FC070F00227031 /* SCHLocalDebugXPSReader.m */; };
 		F83D874612FC67A400227031 /* SCHSyncManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9ACE12FC0EEF0099FB88 /* SCHSyncManager.m */; };
 		F83D874712FC67A600227031 /* SCHSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9B1B12FC1B6B0099FB88 /* SCHSyncComponent.m */; };
+		F84CE156134C691D0044729E /* SCHOldAuthenticationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F84CE155134C691D0044729E /* SCHOldAuthenticationManager.m */; };
+		F84CE157134C691D0044729E /* SCHOldAuthenticationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F84CE155134C691D0044729E /* SCHOldAuthenticationManager.m */; };
 		F8509E7412F061FE00197EB5 /* libXpsSDKipad.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F8509E7212F061FE00197EB5 /* libXpsSDKipad.a */; };
 		F8509E9C12F0621E00197EB5 /* BlioTimeOrderedCache.m in Sources */ = {isa = PBXBuildFile; fileRef = F8509E8C12F0621E00197EB5 /* BlioTimeOrderedCache.m */; };
 		F8509E9D12F0621E00197EB5 /* BITXPSProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = F8509E8E12F0621E00197EB5 /* BITXPSProvider.m */; };
@@ -333,7 +334,6 @@
 		F8509F3212F063C900197EB5 /* NSNumber+ObjectTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D612B712E4650B0033DA92 /* NSNumber+ObjectTypes.m */; };
 		F8509F3412F063C900197EB5 /* SCHLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF4E5D12E6E01C00E374F7 /* SCHLoginViewController.m */; };
 		F8509F3512F063C900197EB5 /* LibreAccessServiceSvc.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF508612E739E900E374F7 /* LibreAccessServiceSvc.m */; };
-		F8509F3612F063C900197EB5 /* SCHAuthenticationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF543F12E9A5D400E374F7 /* SCHAuthenticationManager.m */; };
 		F8509F3712F063C900197EB5 /* NSManagedObjectContext+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF570912ED977C00E374F7 /* NSManagedObjectContext+Extensions.m */; };
 		F8509F3812F063C900197EB5 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF579612EDBE6E00E374F7 /* SFHFKeychainUtils.m */; };
 		F8509F3912F063C900197EB5 /* BlioTimeOrderedCache.m in Sources */ = {isa = PBXBuildFile; fileRef = F8509E8C12F0621E00197EB5 /* BlioTimeOrderedCache.m */; };
@@ -894,6 +894,8 @@
 		F82D39D8131EA7D400289FF3 /* SCHBookShelfTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookShelfTableViewCell.m; path = Shared/SCHBookShelfTableViewCell.m; sourceTree = "<group>"; };
 		F83D86B312FC070F00227031 /* SCHLocalDebugXPSReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHLocalDebugXPSReader.h; path = Shared/SCHLocalDebugXPSReader.h; sourceTree = "<group>"; };
 		F83D86B412FC070F00227031 /* SCHLocalDebugXPSReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHLocalDebugXPSReader.m; path = Shared/SCHLocalDebugXPSReader.m; sourceTree = "<group>"; };
+		F84CE154134C691D0044729E /* SCHOldAuthenticationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHOldAuthenticationManager.h; path = Shared/SCHOldAuthenticationManager.h; sourceTree = "<group>"; };
+		F84CE155134C691D0044729E /* SCHOldAuthenticationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHOldAuthenticationManager.m; path = Shared/SCHOldAuthenticationManager.m; sourceTree = "<group>"; };
 		F8509E7212F061FE00197EB5 /* libXpsSDKipad.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libXpsSDKipad.a; path = Shared/Libraries/XPS/libXpsSDKipad.a; sourceTree = "<group>"; };
 		F8509E7312F061FE00197EB5 /* XpsSdk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XpsSdk.h; path = Shared/Libraries/XPS/XpsSdk.h; sourceTree = "<group>"; };
 		F8509E7612F0620D00197EB5 /* Clifford.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = Clifford.xps; path = "Shared/Debug Books/Clifford.xps"; sourceTree = "<group>"; };
@@ -1343,13 +1345,12 @@
 		5293872912DF436100045B44 /* Web Services */ = {
 			isa = PBXGroup;
 			children = (
+				F84CE153134C68E50044729E /* Old and New Authentication Manager */,
 				52ACF463133B547700B2E28C /* DRM */,
 				5293872E12DF43D200045B44 /* SCHScholasticWebService.h */,
 				5293872F12DF43D200045B44 /* SCHScholasticWebService.m */,
 				5293872B12DF43CB00045B44 /* SCHLibreAccessWebService.h */,
 				5293872C12DF43CB00045B44 /* SCHLibreAccessWebService.m */,
-				52EF543E12E9A5D400E374F7 /* SCHAuthenticationManager.h */,
-				52EF543F12E9A5D400E374F7 /* SCHAuthenticationManager.m */,
 				52322C32132693F500BB071D /* SCHURLManager.h */,
 				52322C33132693F500BB071D /* SCHURLManager.m */,
 				5266D38213007D15004E3AC6 /* SCHComponent.h */,
@@ -1714,6 +1715,17 @@
 				C908D857133F91FA00661718 /* SCHLayoutView.m */,
 			);
 			name = "Book Reading";
+			sourceTree = "<group>";
+		};
+		F84CE153134C68E50044729E /* Old and New Authentication Manager */ = {
+			isa = PBXGroup;
+			children = (
+				F84CE154134C691D0044729E /* SCHOldAuthenticationManager.h */,
+				F84CE155134C691D0044729E /* SCHOldAuthenticationManager.m */,
+				52EF543E12E9A5D400E374F7 /* SCHAuthenticationManager.h */,
+				52EF543F12E9A5D400E374F7 /* SCHAuthenticationManager.m */,
+			);
+			name = "Old and New Authentication Manager";
 			sourceTree = "<group>";
 		};
 		F8509E7112F061FE00197EB5 /* XPS */ = {
@@ -2171,7 +2183,6 @@
 				52D612B812E4650B0033DA92 /* NSNumber+ObjectTypes.m in Sources */,
 				52EF4E5F12E6E01C00E374F7 /* SCHLoginViewController.m in Sources */,
 				52EF508712E739E900E374F7 /* LibreAccessServiceSvc.m in Sources */,
-				52EF544012E9A5D400E374F7 /* SCHAuthenticationManager.m in Sources */,
 				52EF570A12ED977C00E374F7 /* NSManagedObjectContext+Extensions.m in Sources */,
 				52EF579712EDBE6E00E374F7 /* SFHFKeychainUtils.m in Sources */,
 				F8509E9C12F0621E00197EB5 /* BlioTimeOrderedCache.m in Sources */,
@@ -2252,6 +2263,7 @@
 				524042ED13422952001A4A4F /* SCHDictionaryFileUnarchiveOperation.m in Sources */,
 				524042F11342296E001A4A4F /* SCHDictionaryFileParseOperation.m in Sources */,
 				5283F30813432C6B0001CD2E /* ZipArchive.m in Sources */,
+				F84CE156134C691D0044729E /* SCHOldAuthenticationManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2288,7 +2300,6 @@
 				F8509F3212F063C900197EB5 /* NSNumber+ObjectTypes.m in Sources */,
 				F8509F3412F063C900197EB5 /* SCHLoginViewController.m in Sources */,
 				F8509F3512F063C900197EB5 /* LibreAccessServiceSvc.m in Sources */,
-				F8509F3612F063C900197EB5 /* SCHAuthenticationManager.m in Sources */,
 				F8509F3712F063C900197EB5 /* NSManagedObjectContext+Extensions.m in Sources */,
 				F8509F3812F063C900197EB5 /* SFHFKeychainUtils.m in Sources */,
 				F8509F3912F063C900197EB5 /* BlioTimeOrderedCache.m in Sources */,
@@ -2369,6 +2380,7 @@
 				524042EE13422952001A4A4F /* SCHDictionaryFileUnarchiveOperation.m in Sources */,
 				524042F21342296E001A4A4F /* SCHDictionaryFileParseOperation.m in Sources */,
 				5283F30913432C6B0001CD2E /* ZipArchive.m in Sources */,
+				F84CE157134C691D0044729E /* SCHOldAuthenticationManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

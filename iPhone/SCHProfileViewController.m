@@ -12,7 +12,7 @@
 #import "SCHSettingsViewController.h"
 #import "SCHBookShelfViewController.h"
 #import "SCHLoginViewController.h"
-#import "SCHAuthenticationManager.h"
+#import "SCHOldAuthenticationManager.h"
 #import "SCHLibreAccessWebService.h"
 #import "SCHContentProfileItem.h"
 #import "SCHProfileItem.h"
