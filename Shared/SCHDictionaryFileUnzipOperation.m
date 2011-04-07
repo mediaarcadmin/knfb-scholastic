@@ -7,7 +7,6 @@
 //
 
 #import "SCHDictionaryFileUnzipOperation.h"
-#import "SCHDictionaryManager.h"
 #import "ZipArchive.h"
 
 @interface SCHDictionaryFileUnzipOperation ()
@@ -21,7 +20,7 @@
 
 @implementation SCHDictionaryFileUnzipOperation
 
-@synthesize executing, finished;
+@synthesize executing, finished, manifestEntry;
 
 - (void) dealloc
 {
@@ -31,6 +30,8 @@
 
 - (void) start
 {
+    NSAssert(self.manifestEntry != nil, @"File URL cannot be nil for SCHDictionaryFileUnzipOperation.");
+
 	if (![self isCancelled]) {
 		
 		NSLog(@"Starting unzip operation..");
@@ -88,26 +89,8 @@
         NSLog(@"Unsuccessful unzip. boo.");
     }
     
-    // if this is the first file, move the two text files into the current directory
     NSFileManager *localFileManager = [[NSFileManager alloc] init];
-    BOOL firstRun = ![dictManager initialDictionaryProcessed];
-    
-    if (firstRun) {
-        NSString *currentLocation = [dictManager dictionaryDirectory];
-        NSString *newLocation = [dictManager dictionaryTextFilesDirectory];
-        
-        [localFileManager moveItemAtPath:[currentLocation stringByAppendingPathComponent:@"EntryTable.txt"]
-                                  toPath:[newLocation stringByAppendingPathComponent:@"EntryTable.txt"] error:nil];
-        
-        [localFileManager moveItemAtPath:[currentLocation stringByAppendingPathComponent:@"WordFormTable.txt"]
-                                  toPath:[newLocation stringByAppendingPathComponent:@"WordFormTable.txt"] error:nil];
-        
-        [[SCHDictionaryManager sharedDictionaryManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNeedsInitialParse];
-    } else {
-        // otherwise, leave the new files in their current location and parse updates
-        [[SCHDictionaryManager sharedDictionaryManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNeedsUpdateParse];
-    }
-    
+
     if (deleteAfterUnzip) {
         [localFileManager removeItemAtPath:[dictManager dictionaryZipPath] error:nil];
     }

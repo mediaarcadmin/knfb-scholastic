@@ -20,19 +20,22 @@
 @property (nonatomic, retain) NSURLConnection *connection;
 @property (nonatomic, retain) NSXMLParser *manifestParser;
 @property (nonatomic, retain) NSMutableData *connectionData;
-
+@property (nonatomic, retain) NSMutableArray *manifestEntries;
+@property (nonatomic, retain) SCHDictionaryManifestEntry *currentEntry;
 
 @end
 
 @implementation SCHDictionaryManifestOperation
 
 @synthesize executing, finished, downloadComplete, parsingComplete, parsingDictionaryInfo;
-@synthesize manifestParser, connection, connectionData;
+@synthesize manifestParser, connection, connectionData, manifestEntries, currentEntry;
 
 - (void)dealloc {
 	self.connection = nil;
 	self.connectionData = nil;
 	self.manifestParser = nil;
+    self.manifestEntries = nil;
+    self.currentEntry = nil;
 	
 	[super dealloc];
 }
@@ -52,11 +55,12 @@
 		[SCHDictionaryManager sharedDictionaryManager].isProcessing = YES;
 		
 		self.connectionData = [[NSMutableData alloc] init];
+        self.manifestEntries = [[NSMutableArray alloc] init];
 		
 		self.connection = [NSURLConnection 
 						   connectionWithRequest:[NSURLRequest requestWithURL:
-												  [NSURL URLWithString:@"http://10.0.10.6/~gordon/dictionary/UpdateManifest.xml"]]
-//                                                [NSURL URLWithString:@"http://bits.blioreader.com/partners/Scholastic/SLInstall/UpdateManifest.xml"]]
+							//					  [NSURL URLWithString:@"http://10.0.10.6/~gordon/dictionary/UpdateManifest.xml"]]
+                                                [NSURL URLWithString:@"http://bits.blioreader.com/partners/Scholastic/SLInstall/UpdateManifest.xml"]]
 						   delegate:self];
 		
         [self willChangeValueForKey:@"isExecuting"];
@@ -73,16 +77,18 @@
 		}
 		
 		if (!finished) {
-		
-		self.parsingDictionaryInfo = NO;
-		self.manifestParser = [[NSXMLParser alloc] initWithData:self.connectionData];
-		[self.manifestParser setDelegate:self];
-		[self.manifestParser parse];
-		
-		do {
-			[[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
-		} while (self.parsingDictionaryInfo);
-		
+            
+            self.parsingDictionaryInfo = NO;
+            self.manifestParser = [[NSXMLParser alloc] initWithData:self.connectionData];
+            [self.manifestParser setDelegate:self];
+            [self.manifestParser parse];
+            
+            do {
+                [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
+            } while (self.parsingDictionaryInfo);
+            
+            [SCHDictionaryManager sharedDictionaryManager].manifestUpdates = self.manifestEntries;
+            
 		}
 		
         [self willChangeValueForKey:@"isExecuting"];
@@ -135,13 +141,19 @@
 	else if (self.parsingDictionaryInfo) {
 		
 		if ( [elementName isEqualToString:@"UpdateEntry"] ) {
-			NSString * attributeStringValue = [attributeDict objectForKey:@"EndVersion"];
+            self.currentEntry = [[SCHDictionaryManifestEntry alloc] init];
+            
+			NSString * attributeStringValue = [attributeDict objectForKey:@"StartVersion"];
 			if (attributeStringValue) {
-				[SCHDictionaryManager sharedDictionaryManager].dictionaryVersion = attributeStringValue;
+				self.currentEntry.fromVersion = attributeStringValue;
+			}
+			attributeStringValue = [attributeDict objectForKey:@"EndVersion"];
+			if (attributeStringValue) {
+                self.currentEntry.toVersion = attributeStringValue;
 			}
 			attributeStringValue = [attributeDict objectForKey:@"href"];
 			if (attributeStringValue) {
-				[SCHDictionaryManager sharedDictionaryManager].dictionaryURL = attributeStringValue;
+                self.currentEntry.url = attributeStringValue;
 			}
 		}
 	}
@@ -152,15 +164,18 @@
 	if ( [elementName isEqualToString:@"UpdateComponent"] ) {
 		self.parsingDictionaryInfo = NO;
 	}
+    
+	if (self.parsingDictionaryInfo && [elementName isEqualToString:@"UpdateEntry"] ) {
+        if (self.currentEntry) {
+            [self.manifestEntries addObject:self.currentEntry];
+            self.currentEntry = nil;
+        }
+    }
 }
 
 - (void)parserDidEndDocument:(NSXMLParser *)parser
 {
-	NSLog(@"Dictionary version: %@ URL: %@", [SCHDictionaryManager sharedDictionaryManager].dictionaryVersion, 
-		  [SCHDictionaryManager sharedDictionaryManager].dictionaryURL);
-	
-    [[SCHDictionaryManager sharedDictionaryManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNeedsDownload];
-
+    [[SCHDictionaryManager sharedDictionaryManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateManifestVersionCheck];
     [SCHDictionaryManager sharedDictionaryManager].isProcessing = NO;
 
 	self.parsingComplete = YES;

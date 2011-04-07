@@ -7,7 +7,6 @@
 //
 
 #import "SCHDictionaryFileDownloadOperation.h"
-#import "SCHDictionaryManager.h"
 #import "SCHAppBook.h"
 
 #pragma mark Class Extension
@@ -34,7 +33,7 @@
 
 @implementation SCHDictionaryFileDownloadOperation
 
-@synthesize executing, finished, expectedFileSize, previousPercentage, localPath;
+@synthesize executing, finished, expectedFileSize, previousPercentage, localPath, manifestEntry;
 
 #pragma mark -
 #pragma mark Memory Management
@@ -49,7 +48,8 @@
 #pragma mark Startup
 - (void) start
 {
-	
+    NSAssert(self.manifestEntry != nil, @"File URL cannot be nil for SCHDictionaryFileDownloadOperation.");
+
 	if ([self isCancelled]) {
 		NSLog(@"Cancelled.");
 	} else {
@@ -69,7 +69,9 @@
 	// check first to see if the file has been created
 	NSMutableURLRequest *request = nil;
 	
-	request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[SCHDictionaryManager sharedDictionaryManager].dictionaryURL]];
+    NSLog(@"trying to download file with URL %@", self.manifestEntry.url);
+    
+	request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:self.manifestEntry.url]];
 	
 	unsigned long long fileSize = 0;
 	

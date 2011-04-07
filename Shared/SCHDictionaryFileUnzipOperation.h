@@ -7,10 +7,13 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "SCHDictionaryManager.h"
 
 
 @interface SCHDictionaryFileUnzipOperation : NSOperation {
     
 }
+
+@property (nonatomic, retain) SCHDictionaryManifestEntry *manifestEntry;
 
 @end

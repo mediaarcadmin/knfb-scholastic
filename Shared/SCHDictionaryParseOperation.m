@@ -1,28 +1,27 @@
 //
-//  SCHDictionaryUpdateParseOperation.m
+//  SCHDictionaryParseOperation.m
 //  Scholastic
 //
-//  Created by Gordon Christie on 07/04/2011.
+//  Created by Gordon Christie on 05/04/2011.
 //  Copyright 2011 BitWink. All rights reserved.
 //
 
-#import "SCHDictionaryUpdateParseOperation.h"
-#import "SCHDictionaryManager.h"
+#import "SCHDictionaryParseOperation.h"
 #import "SCHBookManager.h"
 #import "SCHDictionaryEntry.h"
 #import "SCHDictionaryWordForm.h"
 
 
-@interface SCHDictionaryUpdateParseOperation ()
+@interface SCHDictionaryParseOperation ()
 
 @property BOOL executing;
 @property BOOL finished;
 
 @end
 
-@implementation SCHDictionaryUpdateParseOperation
+@implementation SCHDictionaryParseOperation
 
-@synthesize executing, finished;
+@synthesize executing, finished, manifestEntry;
 
 - (void) start
 {
@@ -41,12 +40,17 @@
         [self didChangeValueForKey:@"isExecuting"];
         [self didChangeValueForKey:@"isFinished"];        
         
-        [dictManager updateParseEntryTable];
-        [dictManager updateParseWordFormTable];
+        if (self.manifestEntry.fromVersion == nil) {
+            [dictManager initialParseEntryTable];
+            [dictManager initialParseWordFormTable];
+        } else {
+            [dictManager updateParseEntryTable];
+            [dictManager updateParseWordFormTable];
+        }
         
-        [[SCHDictionaryManager sharedDictionaryManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateReady];
+        [[SCHDictionaryManager sharedDictionaryManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateManifestVersionCheck];
         dictManager.isProcessing = NO;
-        
+
         [self willChangeValueForKey:@"isExecuting"];
         [self willChangeValueForKey:@"isFinished"];
         

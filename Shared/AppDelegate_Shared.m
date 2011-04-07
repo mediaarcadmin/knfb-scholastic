@@ -196,7 +196,9 @@ static NSString* const prModelCertFilename = @"iphonecert.dat";
 }    
     
 - (void)mergeChangesFromContextDidSaveNotification:(NSNotification *)notification {
+    [[self managedObjectContext] lock];
 	[[self managedObjectContext] mergeChangesFromContextDidSaveNotification:notification];
+    [[self managedObjectContext] unlock];
 }
 
 

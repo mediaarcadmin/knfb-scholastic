@@ -15,20 +15,28 @@ typedef enum {
 	SCHDictionaryProcessingStateNeedsManifest,
 	SCHDictionaryProcessingStateNeedsDownload,
 	SCHDictionaryProcessingStateNeedsUnzip,
-	SCHDictionaryProcessingStateNeedsInitialParse,
-	SCHDictionaryProcessingStateNeedsUpdateParse,
+	SCHDictionaryProcessingStateNeedsParse,
+	SCHDictionaryProcessingStateManifestVersionCheck,
 	SCHDictionaryProcessingStateReady
 } SCHDictionaryProcessingState;
+
+
+@interface SCHDictionaryManifestEntry : NSObject 
+    
+@property (nonatomic, retain) NSString *fromVersion;
+@property (nonatomic, retain) NSString *toVersion;
+@property (nonatomic, retain) NSString *url;
+    
+@end
 
 
 @interface SCHDictionaryManager : NSObject {
 
 }
 
-// the dictionary URL
-@property (readwrite, retain) NSString *dictionaryURL;
+@property (nonatomic, retain) NSMutableArray *manifestUpdates;
 
-// the dictionary version
+// the current dictionary version
 @property (readwrite, retain) NSString *dictionaryVersion;
 
 // dictionary is currently processing
@@ -50,13 +58,11 @@ typedef enum {
 - (void)threadSafeUpdateDictionaryState: (SCHDictionaryProcessingState) state;
 - (SCHDictionaryProcessingState) dictionaryProcessingState;
 
-// flag that indicates if we're on the initial update, or subsequent updates
-- (void)threadSafeUpdateInitialDictionaryProcessed: (BOOL) newState;
-- (BOOL) initialDictionaryProcessed;
-
 // parsing methods called by the parsing operation
 - (void)initialParseEntryTable;
 - (void)initialParseWordFormTable;
+- (void) updateParseEntryTable;
+- (void) updateParseWordFormTable;
 
 // HTML definition for a word
 - (NSString *) HTMLForWord: (NSString *) dictionaryWord;
