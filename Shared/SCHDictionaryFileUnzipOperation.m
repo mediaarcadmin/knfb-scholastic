@@ -15,7 +15,7 @@
 @property BOOL executing;
 @property BOOL finished;
 
-- (void) unzipDictionaryFile;
+- (void) unzipDictionaryFileWithZipDelete: (BOOL) deleteAfterUnzip;
 
 @end
 
@@ -48,9 +48,7 @@
         [self didChangeValueForKey:@"isExecuting"];
         [self didChangeValueForKey:@"isFinished"];
         
-        [self unzipDictionaryFile];
-        
-        [[SCHDictionaryManager sharedDictionaryManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNeedsParsing];
+        [self unzipDictionaryFileWithZipDelete:YES];
         
 		dictManager.isProcessing = NO;
         
@@ -66,7 +64,7 @@
 	}
 }
 
-- (void) unzipDictionaryFile
+- (void) unzipDictionaryFileWithZipDelete: (BOOL) deleteAfterUnzip
 {
     SCHDictionaryManager *dictManager = [SCHDictionaryManager sharedDictionaryManager];
     ZipArchive *zipArchive = [[ZipArchive alloc] init];
@@ -76,8 +74,13 @@
     zipSuccess = [zipArchive UnzipOpenFile:[dictManager dictionaryZipPath]];
     
     if (zipSuccess) {
+        // unzip will always overwrite whatever is already there
+        // this takes care of MP3, image updates etc.
         zipSuccess = [zipArchive UnzipFileTo:[dictManager dictionaryDirectory] overWrite:YES];
     }
+    
+    [zipArchive UnzipCloseFile];
+    [zipArchive release];
     
     if (zipSuccess) {
         NSLog(@"Successful unzip!");
@@ -85,8 +88,31 @@
         NSLog(@"Unsuccessful unzip. boo.");
     }
     
-    [zipArchive UnzipCloseFile];
-    [zipArchive release];
+    // if this is the first file, move the two text files into the current directory
+    NSFileManager *localFileManager = [[NSFileManager alloc] init];
+    BOOL firstRun = ![dictManager initialDictionaryProcessed];
+    
+    if (firstRun) {
+        NSString *currentLocation = [dictManager dictionaryDirectory];
+        NSString *newLocation = [dictManager dictionaryTextFilesDirectory];
+        
+        [localFileManager moveItemAtPath:[currentLocation stringByAppendingPathComponent:@"EntryTable.txt"]
+                                  toPath:[newLocation stringByAppendingPathComponent:@"EntryTable.txt"] error:nil];
+        
+        [localFileManager moveItemAtPath:[currentLocation stringByAppendingPathComponent:@"WordFormTable.txt"]
+                                  toPath:[newLocation stringByAppendingPathComponent:@"WordFormTable.txt"] error:nil];
+        
+        [[SCHDictionaryManager sharedDictionaryManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNeedsInitialParse];
+    } else {
+        // otherwise, leave the new files in their current location and parse updates
+        [[SCHDictionaryManager sharedDictionaryManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNeedsUpdateParse];
+    }
+    
+    if (deleteAfterUnzip) {
+        [localFileManager removeItemAtPath:[dictManager dictionaryZipPath] error:nil];
+    }
+    
+    [localFileManager release];
 }
 
 - (BOOL)isConcurrent {

@@ -64,6 +64,8 @@
 {
 	NSError *error = nil;
 	
+    // FIXME: add a check in here for available device space
+    
 	// check first to see if the file has been created
 	NSMutableURLRequest *request = nil;
 	

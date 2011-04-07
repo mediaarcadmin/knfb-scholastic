@@ -13,5 +13,6 @@
 @dynamic LastModified;
 @dynamic State;
 @dynamic Version;
+@dynamic InitialDictionaryProcessed;
 
 @end

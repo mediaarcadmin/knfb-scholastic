@@ -1,5 +1,5 @@
 //
-//  SCHDictionaryEntryParseOperation.h
+//  SCHDictionaryInitialParseOperation.h
 //  Scholastic
 //
 //  Created by Gordon Christie on 05/04/2011.
@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface SCHDictionaryEntryParseOperation : NSOperation {
+@interface SCHDictionaryInitialParseOperation : NSOperation {
     
 }
 

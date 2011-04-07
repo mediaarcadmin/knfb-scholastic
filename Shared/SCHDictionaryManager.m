@@ -14,7 +14,7 @@
 #import "SCHDictionaryManifestOperation.h"
 #import "SCHDictionaryFileDownloadOperation.h"
 #import "SCHDictionaryFileUnzipOperation.h"
-#import "SCHDictionaryEntryParseOperation.h"
+#import "SCHDictionaryInitialParseOperation.h"
 
 #import "SCHDictionaryWordForm.h"
 #import "SCHDictionaryEntry.h"
@@ -42,6 +42,12 @@
 // lock preventing multiple accesses of save simulaneously
 @property (nonatomic, retain) NSLock *threadSafeMutationLock;
 
+// locks for word form and entry table files
+@property (nonatomic, retain) NSLock *wordFormMutationLock;
+@property (nonatomic, retain) NSLock *entryTableMutationLock;
+
+
+
 // check current reachability state
 - (void) reachabilityCheck: (Reachability *) curReach;
 
@@ -59,6 +65,7 @@
 // the core data object for dictionary state - creates a new one if needed
 - (SCHAppDictionaryState *) appDictionaryState;
 
+// Core Data Save method
 - (BOOL)save:(NSError **)error;
 
 @end
@@ -76,7 +83,7 @@ static int mutationCount = 0;
 @synthesize wifiReach, startTimer, wifiAvailable, connectionIdle;
 @synthesize isProcessing;
 @synthesize dictionaryURL;
-@synthesize threadSafeMutationLock;
+@synthesize threadSafeMutationLock, wordFormMutationLock, entryTableMutationLock;
 
 #pragma mark -
 #pragma mark Object Lifecycle
@@ -89,6 +96,8 @@ static int mutationCount = 0;
 	[self.wifiReach stopNotifier];
 	self.wifiReach = nil;
     self.threadSafeMutationLock = nil;
+    self.wordFormMutationLock = nil;
+    self.entryTableMutationLock = nil;
 	[super dealloc];
 }
 
@@ -103,10 +112,9 @@ static int mutationCount = 0;
 		
 		self.wifiReach = [Reachability reachabilityForInternetConnection];
         self.threadSafeMutationLock = [[NSLock alloc] init];
+        self.wordFormMutationLock = [[NSLock alloc] init];
+        self.entryTableMutationLock = [[NSLock alloc] init];
 		
-		// check for the core data dictionary object
-		
-	
 	}
 	
 	return self;
@@ -170,7 +178,7 @@ static SCHDictionaryManager *sharedManager = nil;
 }
 
 #pragma mark -
-#pragma mark Background Processing Methods
+#pragma mark Dictionary Definition Methods
 
 - (NSString *) HTMLForWord: (NSString *) dictionaryWord
 {
@@ -245,7 +253,50 @@ static SCHDictionaryManager *sharedManager = nil;
     SCHDictionaryEntry *entry = [results objectAtIndex:0];
     results = nil;
     
-    return [entry HTMLforEntry];
+    long offset = [entry.fileOffset longValue];
+    
+    NSString *result = nil;
+    
+    SCHDictionaryManager *dictManager = [SCHDictionaryManager sharedDictionaryManager];
+    
+    NSString *filePath = [[dictManager dictionaryTextFilesDirectory] stringByAppendingPathComponent:@"EntryTable.txt"];
+    
+    [self.entryTableMutationLock lock];
+    FILE *file = fopen([filePath cStringUsingEncoding:NSUTF8StringEncoding], "r");
+    setlinebuf(file);
+    char line[6560];
+    
+    NSLog(@"Seeking to offset %ld", offset);
+    
+    fseek(file, offset, 0);
+    
+    if (fgets(line, 6560, file) != NULL) {
+        char *start, *entryID, *headword, *level, *entryXML;
+        char *sep = "\t";
+        
+        start = strtok(line, sep);
+        if (start != NULL) {
+            entryID = strtok(NULL, sep);                    // MATCH
+            if (entryID != NULL) {
+                headword = strtok(NULL, sep);
+                if (headword != NULL) {
+                    level = strtok(NULL, sep);              // MATCH YD/OD
+                    if (level != NULL) {
+                        entryXML = strtok(NULL, sep);
+                        if (entryXML != NULL) {
+                            result = [NSString stringWithCString:entryXML encoding:NSUTF8StringEncoding];
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    
+    fclose(file);
+    [self.entryTableMutationLock unlock];
+    
+    return result;
     
 }
 
@@ -462,11 +513,11 @@ static SCHDictionaryManager *sharedManager = nil;
 			return;
 			break;
 		}	
-		case SCHDictionaryProcessingStateNeedsParsing:
+		case SCHDictionaryProcessingStateNeedsInitialParse:
 		{
 			NSLog(@"needs parse...");
 			// create dictionary parse operation
-			SCHDictionaryEntryParseOperation *parseOp = [[SCHDictionaryEntryParseOperation alloc] init];
+			SCHDictionaryInitialParseOperation *parseOp = [[SCHDictionaryInitialParseOperation alloc] init];
 			
 			// dictionary processing is redispatched on completion
 			[parseOp setCompletionBlock:^{
@@ -479,6 +530,15 @@ static SCHDictionaryManager *sharedManager = nil;
 			return;
 			break;
 		}	
+        case SCHDictionaryProcessingStateReady:
+        {
+            NSLog(@"Dictionary is ready.");
+            
+            NSLog(@"a: %@", [self HTMLForWord:@"a"]);
+            NSLog(@"badger: %@", [self HTMLForWord:@"badger"]);
+            NSLog(@"rosy: %@", [self HTMLForWord:@"rosy"]);
+            NSLog(@"teuchter: %@", [self HTMLForWord:@"teuchter"]);
+        }
 		default:
 			break;
 	}
@@ -503,6 +563,28 @@ static SCHDictionaryManager *sharedManager = nil;
         
         if (error) {
             NSLog(@"Warning: problem creating dictionary directory. %@", [error localizedDescription]);
+        }
+    }
+    
+    [localFileManager release];
+    
+    return dictionaryDirectory;
+}
+
+- (NSString *)dictionaryTextFilesDirectory 
+{
+    NSString *libraryCacheDirectory = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject];
+    NSString *dictionaryDirectory = [libraryCacheDirectory stringByAppendingPathComponent:@"Dictionary/Current"];
+    
+    NSFileManager *localFileManager = [[NSFileManager alloc] init];
+    NSError *error = nil;
+    BOOL isDirectory = NO;
+    
+    if (![localFileManager fileExistsAtPath:dictionaryDirectory isDirectory:&isDirectory]) {
+        [localFileManager createDirectoryAtPath:dictionaryDirectory withIntermediateDirectories:YES attributes:nil error:&error];
+        
+        if (error) {
+            NSLog(@"Warning: problem creating current dictionary directory. %@", [error localizedDescription]);
         }
     }
     
@@ -552,13 +634,13 @@ static SCHDictionaryManager *sharedManager = nil;
     {
         ++mutationCount;
         if(mutationCount != 1) {
-			[NSException raise:@"SCHBookManagerMutationException" 
+			[NSException raise:@"SCHDictionaryManagerMutationException" 
 						format:@"Mutation count is greater than 1; multiple threads are accessing data in an unsafe manner."];
-        }        
+        }
         SCHDictionaryManager *dictionaryManager = [SCHDictionaryManager sharedDictionaryManager];
         SCHAppDictionaryState *state = [dictionaryManager appDictionaryState];
         if (nil == state) {
-            NSLog(@"Failed to retrieve state in SCHDictionaryManager threadSafeUpdateDictionaryState");
+            NSLog(@"Failed to retrieve dictionary state object in SCHDictionaryManager threadSafeUpdateDictionaryState");
         } else {
             state.State = [NSNumber numberWithInt: (int) newState];
         }
@@ -585,10 +667,220 @@ static SCHDictionaryManager *sharedManager = nil;
     }
 }
 
-
-- (BOOL)save:(NSError **)error
+- (void)threadSafeUpdateInitialDictionaryProcessed: (BOOL) newState 
 {
-    return [[[SCHBookManager sharedBookManager] managedObjectContextForCurrentThread] save:error];
+    NSLog(@"Updating 'initialDictionaryProcessed' to %@", newState?@"YES":@"NO");
+    
+    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+    
+	[self.threadSafeMutationLock lock];
+	
+    {
+        ++mutationCount;
+        if(mutationCount != 1) {
+			[NSException raise:@"SCHDictionaryManagerMutationException" 
+						format:@"Mutation count is greater than 1; multiple threads are accessing data in an unsafe manner."];
+        }
+        SCHDictionaryManager *dictionaryManager = [SCHDictionaryManager sharedDictionaryManager];
+        SCHAppDictionaryState *state = [dictionaryManager appDictionaryState];
+        if (nil == state) {
+            NSLog(@"Failed to retrieve dictionary state object in SCHDictionaryManager threadSafeUpdateInitialDictionaryProcessed");
+        } else {
+            state.InitialDictionaryProcessed = [NSNumber numberWithBool: newState];
+        }
+        NSError *anError;
+        if (![dictionaryManager save:&anError]) {
+            NSLog(@"[SCHDictionaryManager threadSafeUpdateInitialDictionaryProcessed:%@] Save failed with error: %@, %@", [state.State stringValue], anError, [anError userInfo]);
+        }
+        --mutationCount;
+    }
+	
+	[self.threadSafeMutationLock unlock];
+    
+    [pool drain];
+}
+
+- (BOOL) initialDictionaryProcessed
+{
+	SCHAppDictionaryState *state = [[SCHDictionaryManager sharedDictionaryManager] appDictionaryState];
+    if (nil == state) {
+        NSLog(@"Failed to retrieve dictionary state object in dictionaryProcessingState");
+        return NO;
+    } else {
+        return [[state InitialDictionaryProcessed] boolValue];
+    }
+}
+
+
+#pragma mark -
+#pragma mark Dictionary Parsing Methods
+
+- (void)initialParseEntryTable
+{
+    NSLog(@"Parsing entry table...");
+    
+ 
+    SCHDictionaryManager *dictManager = [SCHDictionaryManager sharedDictionaryManager];
+    NSManagedObjectContext *context = [[SCHBookManager sharedBookManager] managedObjectContextForCurrentThread];
+    
+    NSString *filePath = [[dictManager dictionaryTextFilesDirectory] stringByAppendingPathComponent:@"EntryTable.txt"];
+    NSError *error = nil;
+    
+   	[self.entryTableMutationLock lock];
+    FILE *file = fopen([filePath cStringUsingEncoding:NSUTF8StringEncoding], "r");
+    char line[6560];
+    
+    long currentOffset = 0;
+    
+    int batchItems = 0;
+    int savedItems = 0;
+    
+    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init]; 
+    
+    while (fgets(line, 6560, file) != NULL) {
+        
+        char *start, *entryID, *headword, *level;
+        char *sep = "\t";
+        
+        start = strtok(line, sep);
+        if (start != NULL) {
+            entryID = strtok(NULL, sep);                    // MATCH
+            if (entryID != NULL) {
+                headword = strtok(NULL, sep);
+                if (headword != NULL) {
+                    level = strtok(NULL, sep);              // MATCH YD/OD
+                }
+            }
+        }
+        
+        //        NSLog(@"Word: %@ Line offset: %ld", [NSString stringWithCString:headword encoding:NSUTF8StringEncoding], currentOffset);
+		SCHDictionaryEntry *entry = [NSEntityDescription insertNewObjectForEntityForName:kSCHDictionaryEntry inManagedObjectContext:context];
+        entry.word = [NSString stringWithCString:headword encoding:NSUTF8StringEncoding];
+        entry.baseWordID = [NSString stringWithCString:entryID encoding:NSUTF8StringEncoding];
+        entry.fileOffset = [NSNumber numberWithLong:currentOffset];
+        entry.category = [NSString stringWithCString:level encoding:NSUTF8StringEncoding];
+        
+        savedItems++;
+        batchItems++;
+        
+        if (batchItems > 500) {
+            batchItems = 0;
+            
+            [context save:&error];
+            
+            if (error)
+            {
+                NSLog(@"Error: could not save word entries. %@", [error localizedDescription]);
+            }
+            [context reset];
+            [pool drain];
+            pool = [[NSAutoreleasePool alloc] init];
+        }
+        
+        currentOffset = ftell(file);
+    };
+    
+    [pool drain];
+    fclose(file);
+   	[self.entryTableMutationLock unlock];
+    
+    
+    [context save:&error];
+    
+    if (error)
+    {
+        NSLog(@"Error: could not save word entries. %@", [error localizedDescription]);
+    } else {
+        NSLog(@"Added %d entries to base words.", savedItems);
+    }
+}
+
+- (void)initialParseWordFormTable
+{
+    NSLog(@"Parsing word form table...");
+    SCHDictionaryManager *dictManager = [SCHDictionaryManager sharedDictionaryManager];
+    NSManagedObjectContext *context = [[SCHBookManager sharedBookManager] managedObjectContextForCurrentThread];
+    
+    NSString *filePath = [[dictManager dictionaryTextFilesDirectory] stringByAppendingPathComponent:@"WordFormTable.txt"];
+    NSError *error = nil;
+    
+   	[self.wordFormMutationLock lock];
+    FILE *file = fopen([filePath cStringUsingEncoding:NSUTF8StringEncoding], "r");
+    setlinebuf(file);
+    char line[90];
+    
+    int savedItems = 0;
+    int batchItems = 0;
+    
+    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init]; 
+    
+    while (fgets(line, 90, file) != NULL) {
+        char *start, *wordform, *headword, *entryID, *category;
+        char *sep = "\t";
+        
+        start = strtok(line, sep);
+        if (start != NULL) {
+            wordform = strtok(NULL, sep);                   // search
+            if (wordform != NULL) {
+                headword = strtok(NULL, sep);
+                if (headword != NULL) {
+                    entryID = strtok(NULL, sep);            // MATCH
+                    if (entryID != NULL) {
+                        category = strtok(NULL, sep);      // MATCH YD/OD/ALL
+                    }
+                }
+            }
+        }
+        
+		SCHDictionaryWordForm *form = [NSEntityDescription insertNewObjectForEntityForName:kSCHDictionaryWordForm inManagedObjectContext:context];
+        form.word = [NSString stringWithCString:wordform encoding:NSUTF8StringEncoding];
+        form.rootWord = [NSString stringWithCString:headword encoding:NSUTF8StringEncoding];
+        form.baseWordID = [NSString stringWithCString:entryID encoding:NSUTF8StringEncoding];
+        form.category = [NSString stringWithCString:category encoding:NSUTF8StringEncoding];
+        
+        savedItems++;
+        batchItems++;
+        
+        if (batchItems > 1000) {
+            batchItems = 0;
+            [context save:&error];
+            if (error)
+            {
+                NSLog(@"Error: could not save word entries. %@", [error localizedDescription]);
+            }
+            
+            [context reset];
+            [pool drain];
+            pool = [[NSAutoreleasePool alloc] init];
+        }
+        
+        
+    };    
+    
+    [pool drain];
+    
+    fclose(file);
+   	[self.wordFormMutationLock unlock];
+    
+    [context save:&error];
+    
+    if (error)
+    {
+        NSLog(@"Error: could not save word entries. %@", [error localizedDescription]);
+    } else {
+        NSLog(@"Added %d entries to word entries.", savedItems);
+    }
+    
+}
+
+- (void) updateParseEntryTable
+{
+    
+}
+
+- (void) updateParseWordFormTable
+{
+    
 }
 
 #pragma mark -
@@ -644,5 +936,12 @@ static SCHDictionaryManager *sharedManager = nil;
 	// Merge
 	[[[SCHBookManager sharedBookManager] managedObjectContextForCurrentThread] mergeChangesFromContextDidSaveNotification:saveNotification];
 }
+
+- (BOOL)save:(NSError **)error
+{
+    return [[[SCHBookManager sharedBookManager] managedObjectContextForCurrentThread] save:error];
+}
+
+
 
 @end

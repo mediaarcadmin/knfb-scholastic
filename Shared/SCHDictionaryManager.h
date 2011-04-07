@@ -15,8 +15,9 @@ typedef enum {
 	SCHDictionaryProcessingStateNeedsManifest,
 	SCHDictionaryProcessingStateNeedsDownload,
 	SCHDictionaryProcessingStateNeedsUnzip,
-	SCHDictionaryProcessingStateNeedsParsing,
-	SCHDictionaryProcessingStateDone
+	SCHDictionaryProcessingStateNeedsInitialParse,
+	SCHDictionaryProcessingStateNeedsUpdateParse,
+	SCHDictionaryProcessingStateReady
 } SCHDictionaryProcessingState;
 
 
@@ -24,26 +25,40 @@ typedef enum {
 
 }
 
-+ (SCHDictionaryManager *) sharedDictionaryManager;
-
-// the local dictionary directory
-- (NSString *) dictionaryDirectory;
-- (NSString *) dictionaryZipPath;
-
 // the dictionary URL
 @property (readwrite, retain) NSString *dictionaryURL;
 
 // the dictionary version
 @property (readwrite, retain) NSString *dictionaryVersion;
 
-// the current dictionary state
-//@property (readwrite) SCHDictionaryProcessingState dictionaryState;
-- (void)threadSafeUpdateDictionaryState: (SCHDictionaryProcessingState) state;
-- (SCHDictionaryProcessingState) dictionaryProcessingState;
-
 // dictionary is currently processing
 @property BOOL isProcessing;
 
++ (SCHDictionaryManager *) sharedDictionaryManager;
+
+// the local dictionary directory
+- (NSString *) dictionaryDirectory;
+
+// the location of the downloaded zip file
+- (NSString *) dictionaryZipPath;
+
+// the location that the current version of the 
+// entry table/word form text files are stored
+- (NSString *)dictionaryTextFilesDirectory;
+
+// the current dictionary state
+- (void)threadSafeUpdateDictionaryState: (SCHDictionaryProcessingState) state;
+- (SCHDictionaryProcessingState) dictionaryProcessingState;
+
+// flag that indicates if we're on the initial update, or subsequent updates
+- (void)threadSafeUpdateInitialDictionaryProcessed: (BOOL) newState;
+- (BOOL) initialDictionaryProcessed;
+
+// parsing methods called by the parsing operation
+- (void)initialParseEntryTable;
+- (void)initialParseWordFormTable;
+
+// HTML definition for a word
 - (NSString *) HTMLForWord: (NSString *) dictionaryWord;
 
 @end

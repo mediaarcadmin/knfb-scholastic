@@ -18,5 +18,6 @@ static NSString * const kSCHAppDictionaryState = @"SCHAppDictionaryState";
 @property (nonatomic, retain) NSDate * LastModified;
 @property (nonatomic, retain) NSNumber * State;
 @property (nonatomic, retain) NSString * Version;
+@property (nonatomic, retain) NSNumber * InitialDictionaryProcessed;
 
 @end
