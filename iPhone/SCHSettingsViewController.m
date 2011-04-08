@@ -139,7 +139,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 		BOOL currentValue = [[NSUserDefaults standardUserDefaults] boolForKey:@"kSCHSpaceSaverMode"];
 		[switchview setOn:currentValue];
 		
-		[switchview addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
+		[switchview addTarget:self action:@selector(spaceSwitchChanged:) forControlEvents:UIControlEventValueChanged];
 		cell.accessoryView = switchview;
 		[switchview release];
     }
