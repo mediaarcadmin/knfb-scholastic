@@ -14,6 +14,4 @@
     
 }
 
-@property (nonatomic, retain) SCHDictionaryManifestEntry *manifestEntry;
-
 @end
