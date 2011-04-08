@@ -29,6 +29,8 @@
 	
 	NSMutableURLRequest *aRequest = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:url]];
 	
+    NSLog(@"DRM using: %@", drmServerUrl);
+    
 	[aRequest setHTTPMethod:@"POST"];
 	[aRequest setValue:@"text/xml; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
 	[aRequest setValue:@"*/*" forHTTPHeaderField:@"Accept"];

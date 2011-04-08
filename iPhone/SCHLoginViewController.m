@@ -71,11 +71,10 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(authenticationManager:) name:kSCHAuthenticationManagerSuccess object:nil];			
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(authenticationManager:) name:kSCHAuthenticationManagerFailure object:nil];					
 	
-	if ([[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithUserName:[self.userName text] withPassword:[self.password text]] == YES) {
-		[spinner startAnimating];
-		self.loginButton.enabled = NO;
-		self.cancelButton.enabled = NO;
-	}
+	[[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithUserName:[self.userName text] withPassword:[self.password text]];
+    [spinner startAnimating];
+    self.loginButton.enabled = NO;
+    self.cancelButton.enabled = NO;
 }
 
 - (IBAction)cancel:(id)sender

@@ -12,3 +12,5 @@
 "Please enter a password for this profile" = "Please enter a password for this profile";
 "Incorrect password" = "Incorrect password";
 "Incorrect username/password" = "Incorrect username/password";
+"You must enter a username and password" = "You must enter a username and password.";
+"You must have internet access to login" = "You must have internet access to login";

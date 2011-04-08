@@ -160,7 +160,7 @@ static NSString * const kSCHProfileItemUserContentItemContentMetadataItem = @"Us
 
 - (void)setRawPassword:(NSString *)value 
 {
-    self.Password = [self MD5:value];
+    self.Password = [self SHA1:value];
 }
 
 - (BOOL)hasPassword
