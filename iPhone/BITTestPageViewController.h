@@ -9,19 +9,21 @@
 #import <UIKit/UIKit.h>
 #import "BITXPSProvider.h"
 #import "BITScrubberView.h"
+#import "SCHReadingView.h"
 
 #define TESTPAGEVIEW_PAGETAPWIDTH 75
 
 @interface BITTestPageViewController : UIViewController <UIScrollViewDelegate, BITScrubberViewDelegate> {
-	IBOutlet UIView *pageView;
-	IBOutlet UIScrollView *scrollView;
+    IBOutlet UIView *pageView;
+	SCHReadingView *eucPageView;
 	IBOutlet UILabel *pageLabel;
 	IBOutlet UILabel *panSpeedLabel;
 	IBOutlet UIBarButtonItem *previousButton;
 	IBOutlet UIBarButtonItem *nextButton;
 	
 	IBOutlet UIToolbar *topToolbar;
-	IBOutlet UIToolbar *bottomToolbar;
+    IBOutlet UIToolbar *bottomToolbar;
+	IBOutlet UIToolbar *scrubberToolbar;
 	
 	IBOutlet BITScrubberView *pageScrubber;
 	IBOutlet UIView *scrubberInfoView;
@@ -35,18 +37,16 @@
 }
 
 @property (nonatomic, retain) NSString *isbn;
+@property (nonatomic) BOOL flowView;
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil isbn:(NSString *)aIsbn;
 
 - (IBAction) previousPage: (id) sender;
 - (IBAction) nextPage: (id) sender;	
 - (IBAction) backAction: (id) sender;
 - (void) goToFirstPage;
-//- (IBAction) sliderValueChanged: (id) sender;
-//- (IBAction) sliderChangesStarted: (id) sender;
-//- (IBAction) sliderChangesEnded: (id) sender;
 
-
-
-- (void) loadImageForCurrentPage;
+- (void) updatePageViewWithCurrentPage;
 - (void) checkButtonStatus;
 - (void) toggleToolbarVisibility;
 - (void) cancelInitialTimer;
