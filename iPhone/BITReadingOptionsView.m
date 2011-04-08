@@ -8,7 +8,7 @@
 
 #import "BITReadingOptionsView.h"
 #import <QuartzCore/QuartzCore.h>
-#import "SCHReadingViewController.h"
+//#import "SCHReadingViewController.h"
 
 @implementation BITReadingOptionsView
 @synthesize pageViewController;
@@ -71,7 +71,7 @@
 
 - (IBAction) showFlowView: (id) sender
 {
-    SCHReadingViewController *readingController = [[SCHReadingViewController alloc] initWithNibName:nil bundle:nil book:self.isbn];
+    BITTestPageViewController *readingController = [[BITTestPageViewController alloc] initWithNibName:nil bundle:nil isbn:self.isbn];
     readingController.flowView = YES;
     [self.navigationController pushViewController:readingController animated:YES];
     [readingController release];
@@ -82,7 +82,7 @@
 
 - (IBAction) showFixedView: (id) sender
 {
-    SCHReadingViewController *readingController = [[SCHReadingViewController alloc] initWithNibName:nil bundle:nil book:self.isbn];
+    BITTestPageViewController *readingController = [[BITTestPageViewController alloc] initWithNibName:nil bundle:nil isbn:self.isbn];
     readingController.flowView = NO;
     [self.navigationController pushViewController:readingController animated:YES];
     [readingController release];
