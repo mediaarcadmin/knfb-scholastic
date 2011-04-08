@@ -412,6 +412,10 @@
 		C9EFA8E7134CA99700ADF905 /* SCHAuthenticationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF543F12E9A5D400E374F7 /* SCHAuthenticationManager.m */; };
 		C9F1A4D6133B507100FD984C /* libPlayReadyPK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A3D933851326D92000037111 /* libPlayReadyPK.a */; };
 		C9F1A57A133B83D100FD984C /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C9F1A579133B83D100FD984C /* libxml2.dylib */; };
+		F8105D41134F629A00C60C8B /* ReadingCustomToolbarBG.png in Resources */ = {isa = PBXBuildFile; fileRef = F8105D40134F629A00C60C8B /* ReadingCustomToolbarBG.png */; };
+		F8105D42134F629A00C60C8B /* ReadingCustomToolbarBG.png in Resources */ = {isa = PBXBuildFile; fileRef = F8105D40134F629A00C60C8B /* ReadingCustomToolbarBG.png */; };
+		F8105D44134F63F200C60C8B /* HomeBackButton.png in Resources */ = {isa = PBXBuildFile; fileRef = F8105D43134F63F200C60C8B /* HomeBackButton.png */; };
+		F8105D45134F63F200C60C8B /* HomeBackButton.png in Resources */ = {isa = PBXBuildFile; fileRef = F8105D43134F63F200C60C8B /* HomeBackButton.png */; };
 		F81B3A7F12FAAD8E00A20D52 /* SCHNote.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A5E12F0EF5600BBBCE6 /* SCHNote.m */; };
 		F81B3A8612FAADB000A20D52 /* SCHBookManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F8CD24CA12F9714D001C748B /* SCHBookManager.m */; };
 		F81C74761344DA0700B1D9DB /* SCHFlowEucBook.m in Sources */ = {isa = PBXBuildFile; fileRef = F81C74751344DA0700B1D9DB /* SCHFlowEucBook.m */; };
@@ -525,6 +529,8 @@
 		F8509F4612F063C900197EB5 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52EF553D12E9EB8500E374F7 /* Security.framework */; };
 		F8509F4712F063C900197EB5 /* libXpsSDKipad.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F8509E7212F061FE00197EB5 /* libXpsSDKipad.a */; };
 		F8509F4812F063C900197EB5 /* libstdc++.6.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F8509EB712F0625100197EB5 /* libstdc++.6.dylib */; };
+		F85E0309134F59E800E81D58 /* SCHCustomToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = F85E0308134F59E700E81D58 /* SCHCustomToolbar.m */; };
+		F85E030A134F59E800E81D58 /* SCHCustomToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = F85E0308134F59E700E81D58 /* SCHCustomToolbar.m */; };
 		F8678D8A133218D8001FDB2F /* ScholasticFeatureCompatibility.plist in Resources */ = {isa = PBXBuildFile; fileRef = F8678D89133218D8001FDB2F /* ScholasticFeatureCompatibility.plist */; };
 		F8678D8B133218D8001FDB2F /* ScholasticFeatureCompatibility.plist in Resources */ = {isa = PBXBuildFile; fileRef = F8678D89133218D8001FDB2F /* ScholasticFeatureCompatibility.plist */; };
 		F878D6AC134498FB00DDB98B /* SCHBookURLRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F878D6A3134498FB00DDB98B /* SCHBookURLRequestOperation.m */; };
@@ -1180,6 +1186,8 @@
 		C9ED566C1343322300A25486 /* libwapcaplet.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libwapcaplet.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9ED56811343328F00A25486 /* libiconv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
 		C9F1A579133B83D100FD984C /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
+		F8105D40134F629A00C60C8B /* ReadingCustomToolbarBG.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ReadingCustomToolbarBG.png; sourceTree = "<group>"; };
+		F8105D43134F63F200C60C8B /* HomeBackButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = HomeBackButton.png; sourceTree = "<group>"; };
 		F81C74741344DA0700B1D9DB /* SCHFlowEucBook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHFlowEucBook.h; path = Shared/SCHFlowEucBook.h; sourceTree = "<group>"; };
 		F81C74751344DA0700B1D9DB /* SCHFlowEucBook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHFlowEucBook.m; path = Shared/SCHFlowEucBook.m; sourceTree = "<group>"; };
 		F81C74781344DC1200B1D9DB /* SCHFlowPaginateOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHFlowPaginateOperation.h; path = Shared/SCHFlowPaginateOperation.h; sourceTree = "<group>"; };
@@ -1222,6 +1230,8 @@
 		F8509E9B12F0621E00197EB5 /* BITScrubberView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BITScrubberView.m; sourceTree = "<group>"; };
 		F8509EB712F0625100197EB5 /* libstdc++.6.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libstdc++.6.dylib"; path = "usr/lib/libstdc++.6.dylib"; sourceTree = SDKROOT; };
 		F8509F4D12F063C900197EB5 /* Scholastic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Scholastic.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F85E0307134F59E700E81D58 /* SCHCustomToolbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHCustomToolbar.h; path = Shared/SCHCustomToolbar.h; sourceTree = "<group>"; };
+		F85E0308134F59E700E81D58 /* SCHCustomToolbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHCustomToolbar.m; path = Shared/SCHCustomToolbar.m; sourceTree = "<group>"; };
 		F8678D89133218D8001FDB2F /* ScholasticFeatureCompatibility.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = ScholasticFeatureCompatibility.plist; sourceTree = "<group>"; };
 		F878D6A2134498FB00DDB98B /* SCHBookURLRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookURLRequestOperation.h; path = Shared/SCHBookURLRequestOperation.h; sourceTree = "<group>"; };
 		F878D6A3134498FB00DDB98B /* SCHBookURLRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookURLRequestOperation.m; path = Shared/SCHBookURLRequestOperation.m; sourceTree = "<group>"; };
@@ -1540,6 +1550,8 @@
 				C908D87F133F941100661718 /* PlaceholderBook.png */,
 				C908D880133F941100661718 /* paper-white.png */,
 				C908D881133F941100661718 /* booktexture-nocover.png */,
+				F8105D40134F629A00C60C8B /* ReadingCustomToolbarBG.png */,
+				F8105D43134F63F200C60C8B /* HomeBackButton.png */,
 				528A2CD112CCDC9E0053A343 /* Icons */,
 			);
 			name = Resources;
@@ -2186,6 +2198,8 @@
 				C908D8B0133F945300661718 /* SCHFlowView.m */,
 				C908D856133F91FA00661718 /* SCHLayoutView.h */,
 				C908D857133F91FA00661718 /* SCHLayoutView.m */,
+				F85E0307134F59E700E81D58 /* SCHCustomToolbar.h */,
+				F85E0308134F59E700E81D58 /* SCHCustomToolbar.m */,
 			);
 			name = "Book Reading";
 			sourceTree = "<group>";
@@ -2651,6 +2665,8 @@
 				C93ECB33134B64B1003B99FD /* TextFlowFlow.css in Resources */,
 				C93ECB35134B64B1003B99FD /* TextFlowXAML.css in Resources */,
 				C93ECB37134B64B1003B99FD /* TextFlowXAMLOverrides.css in Resources */,
+				F8105D41134F629A00C60C8B /* ReadingCustomToolbarBG.png in Resources */,
+				F8105D44134F63F200C60C8B /* HomeBackButton.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2778,6 +2794,8 @@
 				C93ECB36134B64B1003B99FD /* TextFlowXAML.css in Resources */,
 				C93ECB38134B64B1003B99FD /* TextFlowXAMLOverrides.css in Resources */,
 				C93ECB83134B7FA4003B99FD /* After Ever After.xps in Resources */,
+				F8105D42134F629A00C60C8B /* ReadingCustomToolbarBG.png in Resources */,
+				F8105D45134F63F200C60C8B /* HomeBackButton.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2926,6 +2944,7 @@
 				F8C5DC6F134B5DF30020D610 /* SCHDictionaryWordForm.m in Sources */,
 				F84CE156134C691D0044729E /* SCHNonDRMAuthenticationManager.m in Sources */,
 				C9EFA8E7134CA99700ADF905 /* SCHAuthenticationManager.m in Sources */,
+				F85E0309134F59E800E81D58 /* SCHCustomToolbar.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3071,6 +3090,7 @@
 				F8C5DC70134B5DF30020D610 /* SCHDictionaryWordForm.m in Sources */,
 				F84CE157134C691D0044729E /* SCHNonDRMAuthenticationManager.m in Sources */,
 				C9EFA8E6134CA99700ADF905 /* SCHAuthenticationManager.m in Sources */,
+				F85E030A134F59E800E81D58 /* SCHCustomToolbar.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

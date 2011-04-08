@@ -39,7 +39,7 @@
 {
     
     if (xpsProvider) {
-        [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.book];
+        [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.isbn];
         [xpsProvider release], xpsProvider = nil;
     }
     
@@ -51,7 +51,7 @@
 
 - (void)initialiseView
 {
-    xpsProvider = [[[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.book] retain];
+    xpsProvider = [[[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.isbn] retain];
     
     if (xpsProvider) {
         layoutCacheLock = [[NSLock alloc] init];
@@ -88,9 +88,9 @@
     }
 }
 
-- (id)initWithFrame:(CGRect)frame book:(id)aBook
+- (id)initWithFrame:(CGRect)frame isbn:(id)aIsbn
 {
-    self = [super initWithFrame:frame book:aBook];
+    self = [super initWithFrame:frame isbn:aIsbn];
     if (self) {        
         [self initialiseView];
     }
@@ -205,6 +205,12 @@
 { 
     return nil;
 }
+
+- (void) jumpToPage: (NSInteger) page animated: (BOOL) animated
+{
+    [pageTurningView turnToPageAtIndex:page animated:animated];
+}
+
 
 #pragma mark -
 #pragma mark EucPageTurningViewBitmapDataSource

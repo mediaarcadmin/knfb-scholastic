@@ -46,8 +46,8 @@
 {
     SCHBookManager *bookManager = [SCHBookManager sharedBookManager];
     
-    eucBook = [[bookManager checkOutEucBookForBookIdentifier:self.book] retain];
-    paragraphSource = [[bookManager checkOutParagraphSourceForBookIdentifier:self.book] retain];
+    eucBook = [[bookManager checkOutEucBookForBookIdentifier:self.isbn] retain];
+    paragraphSource = [[bookManager checkOutParagraphSourceForBookIdentifier:self.isbn] retain];
     
     if((eucBookView = [[EucBookView alloc] initWithFrame:self.bounds book:eucBook])) {
         eucBookView.delegate = self;
@@ -57,8 +57,8 @@
         eucBookView.vibratesOnInvalidTurn = NO;
         [eucBookView setPageTexture:[UIImage imageNamed: @"paper-white.png"] isDark:NO];
         
-        [eucBookView addObserver:self forKeyPath:@"pageCount" options:NSKeyValueObservingOptionInitial context:NULL];
-        [eucBookView addObserver:self forKeyPath:@"pageNumber" options:NSKeyValueObservingOptionInitial context:NULL];
+        [eucBookView addObserver:[self superview] forKeyPath:@"pageCount" options:NSKeyValueObservingOptionInitial context:NULL];
+        [eucBookView addObserver:[self superview] forKeyPath:@"pageNumber" options:NSKeyValueObservingOptionInitial context:NULL];
             
         [self addSubview:eucBookView];
     }
@@ -66,42 +66,38 @@
 
 - (void)dealloc
 {
-    [eucBookView removeObserver:self forKeyPath:@"pageCount"];
-    [eucBookView removeObserver:self forKeyPath:@"pageNumber"];
+    [eucBookView removeObserver:[self superview] forKeyPath:@"pageCount"];
+    [eucBookView removeObserver:[self superview] forKeyPath:@"pageNumber"];
     [eucBookView release], eucBookView = nil;
     
     SCHBookManager *bookManager = [SCHBookManager sharedBookManager];
     
     if(paragraphSource) {
         [paragraphSource release], paragraphSource = nil;
-        [bookManager checkInParagraphSourceForBookIdentifier:self.book];   
+        [bookManager checkInParagraphSourceForBookIdentifier:self.isbn];   
     }
     
     if(eucBook) {
         [eucBook release], eucBook = nil;
-        [bookManager checkInEucBookForBookIdentifier:self.book];  
+        [bookManager checkInEucBookForBookIdentifier:self.isbn];  
     }
 
     [super dealloc];
 }
 
-- (id)initWithFrame:(CGRect)frame book:(id)aBook
+- (id)initWithFrame:(CGRect)frame isbn:(NSString *)isbn
 {
-    self = [super initWithFrame:frame book:aBook];
+    self = [super initWithFrame:frame isbn:isbn];
     if (self) {        
         [self initialiseView];
     }
     return self;
 }
 
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object
-                        change:(NSDictionary *)change context:(void *)context
+- (void) jumpToPage: (NSInteger) page animated: (BOOL) animated
 {
-//    if([keyPath isEqualToString:@"pageNumber"]) {
-//        self.pageNumber = _eucBookView.pageNumber;
-//    } else { //if([keyPath isEqualToString:@"pageCount"] ) {
-//        self.pageCount = _eucBookView.pageCount;
-//    }
+    NSLog(@"Flow view: jumping to page %d", page);
+    [eucBookView goToPageNumber:page animated:animated];
 }
 
 

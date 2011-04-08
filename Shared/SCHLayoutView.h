@@ -14,6 +14,6 @@
     
 }
 
-- (id)initWithFrame:(CGRect)frame book:(id)book;
+- (id)initWithFrame:(CGRect)frame isbn:(id)aIsbn;
 
 @end
