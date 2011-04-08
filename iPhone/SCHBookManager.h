@@ -10,7 +10,7 @@
 #import <CoreData/CoreData.h>
 #import "SCHProcessingManager.h"
 
-@class BITXPSProvider;
+@class SCHXPSProvider;
 @class SCHTextFlow;
 @class SCHFlowEucBook;
 @class SCHTextFlowParagraphSource;
@@ -28,7 +28,7 @@
 - (SCHAppBook *) bookWithIdentifier: (NSString *) isbn;
 - (NSArray *)allBooksAsISBNs;
 
-- (BITXPSProvider *)checkOutXPSProviderForBookIdentifier: (NSString *) isbn;
+- (SCHXPSProvider *)checkOutXPSProviderForBookIdentifier: (NSString *) isbn;
 - (void)checkInXPSProviderForBookIdentifier: (NSString *) isbn;
 
 - (SCHFlowEucBook *)checkOutEucBookForBookIdentifier: (NSString *) isbn;

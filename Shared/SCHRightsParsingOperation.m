@@ -7,9 +7,10 @@
 //
 
 #import "SCHRightsParsingOperation.h"
-#import "BITXPSProvider.h"
+#import "SCHXPSProvider.h"
 #import "SCHBookManager.h"
 #import "SCHAppBook.h"
+#import "KNFBXPSConstants.h"
 
 @interface SCHRightsParsingOperation ()
 
@@ -44,13 +45,13 @@
 {
 	
 	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];
-	BITXPSProvider *xpsProvider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.isbn];
+	SCHXPSProvider *xpsProvider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.isbn];
 	NSData *rightsFileData = nil;
 	
-	BOOL hasAudio = [xpsProvider componentExistsAtPath:BlioXPSAudiobookMetadataFile];
-	BOOL hasStoryInteractions = [xpsProvider componentExistsAtPath:BlioXPSStoryInteractionsMetadataFile];
-	BOOL hasExtras = [xpsProvider componentExistsAtPath:BlioXPSExtrasMetadataFile];
-	BOOL hasRights = [xpsProvider componentExistsAtPath:BlioXPSKNFBRightsFile];
+	BOOL hasAudio = [xpsProvider componentExistsAtPath:KNFBXPSAudiobookMetadataFile];
+	BOOL hasStoryInteractions = [xpsProvider componentExistsAtPath:KNFBXPSStoryInteractionsMetadataFile];
+	BOOL hasExtras = [xpsProvider componentExistsAtPath:KNFBXPSExtrasMetadataFile];
+	BOOL hasRights = [xpsProvider componentExistsAtPath:KNFBXPSKNFBRightsFile];
 
 	[[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn
 															setValue:[NSNumber numberWithBool:hasAudio]
@@ -62,7 +63,7 @@
 															setValue:[NSNumber numberWithBool:hasExtras]
 															  forKey:kSCHAppBookHasExtras];
 	if (hasRights) {
-		rightsFileData = [xpsProvider dataForComponentAtPath:BlioXPSKNFBRightsFile];
+		rightsFileData = [xpsProvider dataForComponentAtPath:KNFBXPSKNFBRightsFile];
 	}
 	
 	[[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.isbn];
@@ -85,7 +86,7 @@
 	xpsProvider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.isbn];
 
 	// check for metadata file
-	NSData *metadataData = [xpsProvider dataForComponentAtPath:BlioXPSEncryptedMetadata];
+	NSData *metadataData = [xpsProvider dataForComponentAtPath:KNFBXPSKNFBMetadataFile];
 	
 	[[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.isbn];
 	

@@ -7,11 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "BITXPSProvider.h"
 #import "BITScrubberView.h"
 #import "SCHReadingView.h"
 
 #define TESTPAGEVIEW_PAGETAPWIDTH 75
+
+@class SCHXPSProvider;
 
 @interface BITTestPageViewController : UIViewController <UIScrollViewDelegate, BITScrubberViewDelegate> {
     IBOutlet UIView *pageView;
@@ -28,7 +29,7 @@
 	IBOutlet BITScrubberView *pageScrubber;
 	IBOutlet UIView *scrubberInfoView;
 	
-	BITXPSProvider *testRenderer;
+	SCHXPSProvider *testRenderer;
 	
 	int currentPage;
 	

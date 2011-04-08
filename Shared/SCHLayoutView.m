@@ -7,13 +7,13 @@
 //
 
 #import "SCHLayoutView.h"
-#import "BITXPSProvider.h"
+#import "SCHXPSProvider.h"
 #import "SCHBookManager.h"
 #import <libEucalyptus/THPositionedCGContext.h>
 
 @interface SCHLayoutView()
 
-@property (nonatomic, retain) id xpsProvider;
+@property (nonatomic, retain) SCHXPSProvider *xpsProvider;
 @property (nonatomic, retain) EucPageTurningView *pageTurningView;
 @property (nonatomic, assign) NSUInteger pageCount;
 @property (nonatomic, assign) CGRect firstPageCrop;
@@ -22,6 +22,7 @@
 @property (nonatomic, retain) NSLock *layoutCacheLock;
 
 - (void)initialiseView;
+- (CGRect)cropForPage:(NSInteger)page allowEstimate:(BOOL)estimate;
 
 @end
 
@@ -57,7 +58,7 @@
         layoutCacheLock = [[NSLock alloc] init];
         
         pageCount = [xpsProvider pageCount];
-        firstPageCrop = [xpsProvider cropForPage:1 allowEstimate:NO];
+        firstPageCrop = [self cropForPage:1 allowEstimate:NO];
         
         pageTurningView = [[[EucPageTurningView alloc] initWithFrame:self.bounds] retain];
         pageTurningView.delegate = self;
@@ -157,7 +158,7 @@
         self.pageCropsCache = [NSMutableDictionary dictionaryWithCapacity:pageCount];
     }
       
-    CGRect cropRect = [self.xpsProvider cropForPage:page allowEstimate:NO];
+    CGRect cropRect = [self.xpsProvider cropRectForPage:page];
     if (!CGRectEqualToRect(cropRect, CGRectZero)) {
         [self.pageCropsCache setObject:[NSValue valueWithCGRect:cropRect] forKey:[NSNumber numberWithInt:page]];
     }

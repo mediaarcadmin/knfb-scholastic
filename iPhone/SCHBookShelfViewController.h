@@ -12,7 +12,7 @@
 #import "MRGridViewDelegate.h"
 #import "MRGridViewDataSource.h"
 #import "SCHMultipleBookshelvesController.h"
-#import "BlioTimeOrderedCache.h"
+#import "KNFBTimeOrderedCache.h"
 #import "SCHProfileItem.h"
 
 @interface SCHBookShelfViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate, MRGridViewDelegate, MRGridViewDataSource> {
@@ -24,8 +24,7 @@
 @property (nonatomic, retain) IBOutlet UIView *loadingView;
 
 @property (nonatomic, assign) SCHMultipleBookshelvesController *bookshelvesController;
-
-@property (nonatomic, retain) BlioTimeOrderedCache *componentCache;
+@property (nonatomic, retain) KNFBTimeOrderedCache *componentCache;
 
 #if LOCALDEBUG
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;

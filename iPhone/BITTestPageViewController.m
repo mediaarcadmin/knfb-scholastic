@@ -14,6 +14,7 @@
 #import "SCHDictionaryManager.h"
 #import "SCHFlowView.h"
 #import "SCHLayoutView.h"
+#import "SCHXPSProvider.h"
 
 
 @implementation BITTestPageViewController
@@ -40,7 +41,7 @@
 	
 	currentPage = 1;
 	toolbarsVisible = YES;
-	testRenderer = [[BITXPSProvider alloc] initWithISBN:self.isbn];
+	testRenderer = [[SCHXPSProvider alloc] initWithISBN:self.isbn];
 	
 	pageScrubber.delegate = self;
 	pageScrubber.minimumValue = 1;

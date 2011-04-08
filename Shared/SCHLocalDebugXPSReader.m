@@ -8,8 +8,9 @@
 
 #import "SCHLocalDebugXPSReader.h"
 #import "zlib.h"
-#import "BITXPSProvider.h"
 #import "TouchXML.h"
+#import "KNFBXPSConstants.h"
+
 
 @interface SCHLocalDebugXPSReader()
 
@@ -86,11 +87,11 @@
 			NSDictionary *fileAttributes = [[NSFileManager defaultManager] attributesOfItemAtPath:path error:nil];
 			self.fileSize = fileAttributes.fileSize;
 			
-			[self parseMetadata:[self dataForComponentAtPath:BlioXPSEncryptedMetadata]];
+			[self parseMetadata:[self dataForComponentAtPath:KNFBXPSKNFBMetadataFile]];
 			
 			self.xpsData = [NSMutableDictionary dictionary];
 			
-			[self parseMetadata:[self dataForComponentAtPath:BlioXPSEncryptedMetadata]];
+			[self parseMetadata:[self dataForComponentAtPath:KNFBXPSKNFBMetadataFile]];
 		}
 		
 	} 
@@ -136,7 +137,7 @@
     BOOL mapped = NO;
     
     // TODO: Make sure these checks are ordered from most common to least common for efficiency
-	if ([extension isEqualToString:[BlioXPSComponentExtensionFPage uppercaseString]]) {
+	if ([extension isEqualToString:[KNFBXPSComponentExtensionFPage uppercaseString]]) {
 		componentPath = [[self xpsPagesDirectory] stringByAppendingPathComponent:path];
         mapped = YES;
     }
@@ -157,7 +158,7 @@
 
 - (NSString *)xpsPagesDirectory {
 	if (!xpsPagesDirectory) {
-		NSData *sequenceData = [self dataForComponentAtPath:BlioXPSSequenceFile];
+		NSData *sequenceData = [self dataForComponentAtPath:KNFBXPSTextFlowSectionsFile];
 		NSString *fixedDocumentPath = [self extractFixedDocumentPath:sequenceData];
 		
 		if (fixedDocumentPath) {

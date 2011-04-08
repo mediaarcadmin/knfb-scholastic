@@ -17,7 +17,9 @@
 #import "SCHThumbnailFactory.h"
 #import "SCHSyncManager.h"
 #import "SCHBookShelfGridViewCell.h"
+#import "SCHXPSProvider.h"
 #import <QuartzCore/QuartzCore.h>
+#import "SCHAppBook.h"
 
 @interface SCHBookShelfViewController ()
 
@@ -57,7 +59,7 @@
 	[self.gridView setEditing:YES animated:NO];
 	self.moveToValue = -1;
 	
-	BlioTimeOrderedCache *aCache = [[BlioTimeOrderedCache alloc] init];
+	KNFBTimeOrderedCache *aCache = [[KNFBTimeOrderedCache alloc] init];
 	aCache.countLimit = 30; // Arbitrary 30 object limit
 	aCache.totalCostLimit = 1024*1024; // Arbitrary 1MB limit. This may need wteaked or set on a per-device basis
 	self.componentCache = aCache;
@@ -172,8 +174,7 @@
 	if ([imageData length]) {
 		optionsView.thumbnailImage = [UIImage imageWithData:imageData];
 	} else {
-		BITXPSProvider *provider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:book.ContentIdentifier];
-		provider.title = book.FileName;
+		SCHXPSProvider *provider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:book.ContentIdentifier];
 		imageData = [provider coverThumbData];
 		[[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:book.ContentIdentifier];
 
@@ -339,8 +340,7 @@
 	if ([imageData length]) {
 		optionsView.thumbnailImage = [UIImage imageWithData:imageData];
 	} else {
-		BITXPSProvider *provider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:book.ContentIdentifier];
-		provider.title = book.FileName;
+		SCHXPSProvider *provider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:book.ContentIdentifier];
 		imageData = [provider coverThumbData];
 		[[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:book.ContentIdentifier];
 		

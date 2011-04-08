@@ -422,6 +422,10 @@
 		C9EFB18D134F4C9F00ADF905 /* KNFBTimeOrderedCache.m in Sources */ = {isa = PBXBuildFile; fileRef = C9EFB180134F4C9F00ADF905 /* KNFBTimeOrderedCache.m */; };
 		C9EFB18E134F4C9F00ADF905 /* KNFBLayoutHyperlink.m in Sources */ = {isa = PBXBuildFile; fileRef = C9EFB182134F4C9F00ADF905 /* KNFBLayoutHyperlink.m */; };
 		C9EFB18F134F4C9F00ADF905 /* KNFBLayoutHyperlink.m in Sources */ = {isa = PBXBuildFile; fileRef = C9EFB182134F4C9F00ADF905 /* KNFBLayoutHyperlink.m */; };
+		C9EFB28E134F782D00ADF905 /* SCHXPSProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = C9EFB28D134F782A00ADF905 /* SCHXPSProvider.m */; };
+		C9EFB28F134F782D00ADF905 /* SCHXPSProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = C9EFB28D134F782A00ADF905 /* SCHXPSProvider.m */; };
+		C9EFB293134F795900ADF905 /* SCHXPSURLProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = C9EFB292134F795800ADF905 /* SCHXPSURLProtocol.m */; };
+		C9EFB294134F795900ADF905 /* SCHXPSURLProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = C9EFB292134F795800ADF905 /* SCHXPSURLProtocol.m */; };
 		C9F1A4D6133B507100FD984C /* libPlayReadyPK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A3D933851326D92000037111 /* libPlayReadyPK.a */; };
 		C9F1A57A133B83D100FD984C /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C9F1A579133B83D100FD984C /* libxml2.dylib */; };
 		F8105D41134F629A00C60C8B /* ReadingCustomToolbarBG.png in Resources */ = {isa = PBXBuildFile; fileRef = F8105D40134F629A00C60C8B /* ReadingCustomToolbarBG.png */; };
@@ -467,8 +471,6 @@
 		F83D874712FC67A600227031 /* SCHSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9B1B12FC1B6B0099FB88 /* SCHSyncComponent.m */; };
 		F84CE156134C691D0044729E /* SCHNonDRMAuthenticationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F84CE155134C691D0044729E /* SCHNonDRMAuthenticationManager.m */; };
 		F84CE157134C691D0044729E /* SCHNonDRMAuthenticationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F84CE155134C691D0044729E /* SCHNonDRMAuthenticationManager.m */; };
-		F8509E9C12F0621E00197EB5 /* BlioTimeOrderedCache.m in Sources */ = {isa = PBXBuildFile; fileRef = F8509E8C12F0621E00197EB5 /* BlioTimeOrderedCache.m */; };
-		F8509E9D12F0621E00197EB5 /* BITXPSProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = F8509E8E12F0621E00197EB5 /* BITXPSProvider.m */; };
 		F8509E9F12F0621E00197EB5 /* BITTestPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F8509E9312F0621E00197EB5 /* BITTestPageViewController.m */; };
 		F8509EA012F0621E00197EB5 /* BITTestPageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8509E9412F0621E00197EB5 /* BITTestPageViewController.xib */; };
 		F8509EA112F0621E00197EB5 /* BITReadingOptionsView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8509E9712F0621E00197EB5 /* BITReadingOptionsView.m */; };
@@ -526,8 +528,6 @@
 		F8509F3512F063C900197EB5 /* LibreAccessServiceSvc.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF508612E739E900E374F7 /* LibreAccessServiceSvc.m */; };
 		F8509F3712F063C900197EB5 /* NSManagedObjectContext+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF570912ED977C00E374F7 /* NSManagedObjectContext+Extensions.m */; };
 		F8509F3812F063C900197EB5 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF579612EDBE6E00E374F7 /* SFHFKeychainUtils.m */; };
-		F8509F3912F063C900197EB5 /* BlioTimeOrderedCache.m in Sources */ = {isa = PBXBuildFile; fileRef = F8509E8C12F0621E00197EB5 /* BlioTimeOrderedCache.m */; };
-		F8509F3A12F063C900197EB5 /* BITXPSProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = F8509E8E12F0621E00197EB5 /* BITXPSProvider.m */; };
 		F8509F3C12F063C900197EB5 /* BITTestPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F8509E9312F0621E00197EB5 /* BITTestPageViewController.m */; };
 		F8509F3D12F063C900197EB5 /* BITReadingOptionsView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8509E9712F0621E00197EB5 /* BITReadingOptionsView.m */; };
 		F8509F3E12F063C900197EB5 /* BITScrubberView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8509E9B12F0621E00197EB5 /* BITScrubberView.m */; };
@@ -1210,6 +1210,10 @@
 		C9EFB183134F4C9F00ADF905 /* KNFBLayoutHyperlink.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KNFBLayoutHyperlink.h; path = XPS/KNFBLayoutHyperlink.h; sourceTree = "<group>"; };
 		C9EFB184134F4C9F00ADF905 /* KNFBLayoutDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KNFBLayoutDataSource.h; path = XPS/KNFBLayoutDataSource.h; sourceTree = "<group>"; };
 		C9EFB185134F4C9F00ADF905 /* KNFBDrmBookDecrypter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KNFBDrmBookDecrypter.h; path = XPS/KNFBDrmBookDecrypter.h; sourceTree = "<group>"; };
+		C9EFB28C134F782800ADF905 /* SCHXPSProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHXPSProvider.h; path = Shared/SCHXPSProvider.h; sourceTree = SOURCE_ROOT; };
+		C9EFB28D134F782A00ADF905 /* SCHXPSProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHXPSProvider.m; path = Shared/SCHXPSProvider.m; sourceTree = SOURCE_ROOT; };
+		C9EFB291134F795800ADF905 /* SCHXPSURLProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHXPSURLProtocol.h; path = Shared/SCHXPSURLProtocol.h; sourceTree = SOURCE_ROOT; };
+		C9EFB292134F795800ADF905 /* SCHXPSURLProtocol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHXPSURLProtocol.m; path = Shared/SCHXPSURLProtocol.m; sourceTree = SOURCE_ROOT; };
 		C9F1A579133B83D100FD984C /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
 		F8105D40134F629A00C60C8B /* ReadingCustomToolbarBG.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ReadingCustomToolbarBG.png; sourceTree = "<group>"; };
 		F8105D43134F63F200C60C8B /* HomeBackButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = HomeBackButton.png; sourceTree = "<group>"; };
@@ -1239,10 +1243,6 @@
 		F8509E7D12F0620F00197EB5 /* TooManyToys.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = TooManyToys.xps; path = "Shared/Debug Books/TooManyToys.xps"; sourceTree = "<group>"; };
 		F8509E7E12F0620F00197EB5 /* Cars.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = Cars.xps; path = "Shared/Debug Books/Cars.xps"; sourceTree = "<group>"; };
 		F8509E7F12F0621000197EB5 /* Cook Yourself Thin.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Cook Yourself Thin.xps"; path = "Shared/Debug Books/Cook Yourself Thin.xps"; sourceTree = "<group>"; };
-		F8509E8B12F0621E00197EB5 /* BlioTimeOrderedCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlioTimeOrderedCache.h; sourceTree = "<group>"; };
-		F8509E8C12F0621E00197EB5 /* BlioTimeOrderedCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlioTimeOrderedCache.m; sourceTree = "<group>"; };
-		F8509E8D12F0621E00197EB5 /* BITXPSProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BITXPSProvider.h; sourceTree = "<group>"; };
-		F8509E8E12F0621E00197EB5 /* BITXPSProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BITXPSProvider.m; sourceTree = "<group>"; };
 		F8509E9212F0621E00197EB5 /* BITTestPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BITTestPageViewController.h; sourceTree = "<group>"; };
 		F8509E9312F0621E00197EB5 /* BITTestPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BITTestPageViewController.m; sourceTree = "<group>"; };
 		F8509E9412F0621E00197EB5 /* BITTestPageViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BITTestPageViewController.xib; sourceTree = "<group>"; };
@@ -2293,10 +2293,10 @@
 		F8509E8A12F0621E00197EB5 /* Renderer */ = {
 			isa = PBXGroup;
 			children = (
-				F8509E8B12F0621E00197EB5 /* BlioTimeOrderedCache.h */,
-				F8509E8C12F0621E00197EB5 /* BlioTimeOrderedCache.m */,
-				F8509E8D12F0621E00197EB5 /* BITXPSProvider.h */,
-				F8509E8E12F0621E00197EB5 /* BITXPSProvider.m */,
+				C9EFB28C134F782800ADF905 /* SCHXPSProvider.h */,
+				C9EFB28D134F782A00ADF905 /* SCHXPSProvider.m */,
+				C9EFB291134F795800ADF905 /* SCHXPSURLProtocol.h */,
+				C9EFB292134F795800ADF905 /* SCHXPSURLProtocol.m */,
 			);
 			name = Renderer;
 			sourceTree = "<group>";
@@ -2881,8 +2881,6 @@
 				52EF508712E739E900E374F7 /* LibreAccessServiceSvc.m in Sources */,
 				52EF570A12ED977C00E374F7 /* NSManagedObjectContext+Extensions.m in Sources */,
 				52EF579712EDBE6E00E374F7 /* SFHFKeychainUtils.m in Sources */,
-				F8509E9C12F0621E00197EB5 /* BlioTimeOrderedCache.m in Sources */,
-				F8509E9D12F0621E00197EB5 /* BITXPSProvider.m in Sources */,
 				F8509E9F12F0621E00197EB5 /* BITTestPageViewController.m in Sources */,
 				F8509EA112F0621E00197EB5 /* BITReadingOptionsView.m in Sources */,
 				F8509EA312F0621E00197EB5 /* BITScrubberView.m in Sources */,
@@ -2994,6 +2992,8 @@
 				C9EFB18C134F4C9F00ADF905 /* KNFBTimeOrderedCache.m in Sources */,
 				C9EFB18E134F4C9F00ADF905 /* KNFBLayoutHyperlink.m in Sources */,
 				F85E0309134F59E800E81D58 /* SCHCustomToolbar.m in Sources */,
+				C9EFB28E134F782D00ADF905 /* SCHXPSProvider.m in Sources */,
+				C9EFB293134F795900ADF905 /* SCHXPSURLProtocol.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3032,8 +3032,6 @@
 				F8509F3512F063C900197EB5 /* LibreAccessServiceSvc.m in Sources */,
 				F8509F3712F063C900197EB5 /* NSManagedObjectContext+Extensions.m in Sources */,
 				F8509F3812F063C900197EB5 /* SFHFKeychainUtils.m in Sources */,
-				F8509F3912F063C900197EB5 /* BlioTimeOrderedCache.m in Sources */,
-				F8509F3A12F063C900197EB5 /* BITXPSProvider.m in Sources */,
 				F8509F3C12F063C900197EB5 /* BITTestPageViewController.m in Sources */,
 				F8509F3D12F063C900197EB5 /* BITReadingOptionsView.m in Sources */,
 				F8509F3E12F063C900197EB5 /* BITScrubberView.m in Sources */,
@@ -3145,6 +3143,8 @@
 				C9EFB18D134F4C9F00ADF905 /* KNFBTimeOrderedCache.m in Sources */,
 				C9EFB18F134F4C9F00ADF905 /* KNFBLayoutHyperlink.m in Sources */,
 				F85E030A134F59E800E81D58 /* SCHCustomToolbar.m in Sources */,
+				C9EFB28F134F782D00ADF905 /* SCHXPSProvider.m in Sources */,
+				C9EFB294134F795900ADF905 /* SCHXPSURLProtocol.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
