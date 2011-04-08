@@ -15,7 +15,7 @@ static NSInteger const kSCHDrmRegistrationError = 2002;
 static NSInteger const kSCHDrmDeregistrationError = 2003;
 
 #if SERVEROVERRIDE
-static NSString* const drmServerUrl = @"http://laesb.uat.cld.libredigital.com/rightsmanager.asmx";
+static NSString* const drmServerUrl = @"http://plr.uat.cld.libredigital.com/rightsmanager.asmx";
 #else
 static NSString* const drmServerUrl = @"http://plr.devint.cld.libredigital.com/rightsmanager.asmx";
 #endif
@@ -27,7 +27,7 @@ typedef enum  {
 	SCHDrmSoapActionAcknowledgeLicense,
 } SCHDrmSoapActionType;
 
-
+// Do not instantiate this class.
 @interface SCHDrmSession : NSObject {
 	
 }

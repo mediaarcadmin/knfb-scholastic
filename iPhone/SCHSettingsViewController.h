@@ -8,14 +8,16 @@
 
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
+#import "SCHDrmRegistrationSessionDelegate.h"
 
 @class SCHLoginViewController;
 
-@interface SCHSettingsViewController : UITableViewController {
+@interface SCHSettingsViewController : UITableViewController<SCHDrmRegistrationSessionDelegate>  {
 
 }
 
 @property (nonatomic, retain) IBOutlet SCHLoginViewController *loginController;
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
+@property (nonatomic, retain) SCHDrmRegistrationSession* drmRegistrationSession;
 
 @end

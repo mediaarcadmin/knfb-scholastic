@@ -92,6 +92,15 @@ ErrorExit:
 	return nil;
 }
 
+- (void)emptyGUID:(DRM_GUID*)guid {
+    guid->Data1 = 0;
+    guid->Data2 = 0;
+    guid->Data3 = 0;
+    for (int i=0; i<8; ++i)
+        guid->Data4[i] = 0;
+}
+
+
 - (void)registerDevice:(NSString*)token {
 	DRM_RESULT dr = DRM_SUCCESS;
     DRM_DOMAIN_ID domainID;
@@ -139,6 +148,10 @@ ErrorExit:
 	
     if( dr == DRM_E_BUFFERTOOSMALL )
     {
+        [self emptyGUID:&domainID.m_oServiceID];
+        [self emptyGUID:&domainID.m_oAccountID];
+        domainID.m_dwRevision = 0;
+        
 		ChkMem( pbChallenge = Oem_MemAlloc( cbChallenge ) );
         ChkDR( Drm_JoinDomain_GenerateChallenge( drmIVars->drmAppContext,
 												DRM_REGISTER_NULL_DATA,
@@ -343,11 +356,13 @@ ErrorExit:
 	}
 	if (self.isJoining) {
 		NSLog(@"DRM join domain response: %s",(unsigned char*)pbResponse);
-		ChkDR( Drm_JoinDomain_ProcessResponse( drmIVars->drmAppContext,
-											  pbResponse,
-											  cbResponse,
-											  &dr2,
-											  &domainIdReturned ) );
+        @synchronized (self) {
+            ChkDR( Drm_JoinDomain_ProcessResponse( drmIVars->drmAppContext,
+                                                  pbResponse,
+                                                  cbResponse,
+                                                  &dr2,
+                                                  &domainIdReturned ) );
+        }
 	}
 	else {
 		NSLog(@"DRM leave domain response: %s",(unsigned char*)pbResponse);

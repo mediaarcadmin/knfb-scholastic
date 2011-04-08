@@ -10,10 +10,14 @@
 #import "SCHLoginViewController.h"
 #import "AppDelegate_Shared.h"
 #import "SCHUserSettingsItem.h"
+#import "SCHAuthenticationManager.h"
+#import "SCHDrmRegistrationSession.h"
+
+extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
 @implementation SCHSettingsViewController
 
-@synthesize loginController, managedObjectContext;
+@synthesize loginController, managedObjectContext, drmRegistrationSession;
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -25,10 +29,9 @@
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
  
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    UIBarButtonItem *loginButton = [[UIBarButtonItem alloc] initWithTitle:@"Login" style:UIBarButtonItemStyleBordered target:self action:@selector(login)];
-    self.navigationItem.rightBarButtonItem = loginButton;
-    [loginButton release], loginButton = nil;	
+   UIBarButtonItem *deregisterButton = [[UIBarButtonItem alloc] initWithTitle:@"Deregister" style:UIBarButtonItemStyleBordered target:self action:@selector(deregistrationButtonPushed:)];
+    self.navigationItem.rightBarButtonItem = deregisterButton;
+    [deregisterButton release], deregisterButton = nil;
 }
 
 /*
@@ -58,17 +61,18 @@
     return YES;
 }
 
+
 #pragma mark -
 #pragma mark Login
 
 - (void)login {
 	[self presentModalViewController:self.loginController animated:YES];		
 }
-	
+
 #pragma mark -
 #pragma mark Switch Changes
 
-- (void) switchChanged: (UISwitch *) sender
+- (void) spaceSwitchChanged: (UISwitch *) sender
 {
 	NSNumber *currentValue = [[NSUserDefaults standardUserDefaults] objectForKey:@"kSCHSpaceSaverMode"];
 	
@@ -83,6 +87,19 @@
 	[[NSUserDefaults standardUserDefaults] setBool:newValue forKey:@"kSCHSpaceSaverMode"];
 	[[NSUserDefaults standardUserDefaults] synchronize];
 }
+
+#pragma mark -
+#pragma mark Deregistration Button
+
+- (void) deregistrationButtonPushed: (UISwitch *) sender {
+    // TODO alert warning user what will happen
+    SCHDrmRegistrationSession* registrationSession = [[SCHDrmRegistrationSession alloc] init];
+    registrationSession.delegate = self;	
+    self.drmRegistrationSession = registrationSession;
+    [self.drmRegistrationSession deregisterDevice:[[SCHAuthenticationManager sharedAuthenticationManager] aToken]];
+    [registrationSession release];
+}
+
 
 #pragma mark -
 #pragma mark Table view data source
@@ -101,12 +118,12 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-	return @"Device Options";
+    return @"Device Options";      
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
 {
-	return @"Space Saver Mode allows you to download individual books - turn it off to automatically download all books.";
+    return @"Space Saver Mode allows you to download individual books - turn it off to automatically download all books.";
 }
 
 // Customize the appearance of table view cells.
@@ -126,10 +143,9 @@
 		cell.accessoryView = switchview;
 		[switchview release];
     }
-    
+
     // Configure the cell...
 	cell.textLabel.text = @"Space Saver Mode";
-	
 	
     return cell;
 }
@@ -211,6 +227,34 @@
 - (void)dealloc {
 	self.managedObjectContext = nil;
     [super dealloc];
+}
+
+
+#pragma mark -
+#pragma mark DRM Registration Session Delegate methods
+
+- (void)registrationSession:(SCHDrmRegistrationSession *)registrationSession didComplete:(NSString *)deviceKey
+{
+    if ( deviceKey == nil ) {
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:kSCHAuthenticationManagerDeviceKey];
+        [self login];
+        [self.navigationController popViewControllerAnimated:NO];
+    }
+    else
+        NSLog(@"Unknown DRM error:  device key value returned from successful deregistration.");
+    [self.drmRegistrationSession release];
+}
+
+- (void)registrationSession:(SCHDrmRegistrationSession *)registrationSession didFailWithError:(NSError *)error
+{
+	UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") 
+                                                         message:[error localizedDescription]
+                                                        delegate:nil 
+                                               cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+                                               otherButtonTitles:nil]; 
+    [errorAlert show]; 
+    [errorAlert release]; 
+    [self.drmRegistrationSession release];
 }
 
 
