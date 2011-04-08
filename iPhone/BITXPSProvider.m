@@ -53,7 +53,7 @@
 
 @synthesize isbn, imageInfo, tempDirectory, xpsData, componentCache, pageCount, fileSize, ISBN, author, type, pageCropsCache, viewTransformsCache, xpsPagesDirectory, uriMap, title;
 
-void XPSPageCompleteCallback(void *userdata, RasterImageInfo *data) {
+void BITXPSPageCompleteCallback(void *userdata, RasterImageInfo *data) {
 	BITXPSProvider *provider = (BITXPSProvider *)userdata;	
 	provider.imageInfo = data;
 }
@@ -292,7 +292,7 @@ void XPSPageCompleteCallback(void *userdata, RasterImageInfo *data) {
 //		[contentsLock lock];
 //	}
 	
-    XPS_RegisterPageCompleteCallback(xpsHandle, XPSPageCompleteCallback);
+    XPS_RegisterPageCompleteCallback(xpsHandle, BITXPSPageCompleteCallback);
     XPS_SetUserData(xpsHandle, self);
 	
     XPS_Convert(xpsHandle, NULL, 0, page - 1, 1, &format);

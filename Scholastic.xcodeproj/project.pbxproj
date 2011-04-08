@@ -410,6 +410,18 @@
 		C9ED56831343329400A25486 /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C9ED56811343328F00A25486 /* libiconv.dylib */; };
 		C9EFA8E6134CA99700ADF905 /* SCHAuthenticationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF543F12E9A5D400E374F7 /* SCHAuthenticationManager.m */; };
 		C9EFA8E7134CA99700ADF905 /* SCHAuthenticationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF543F12E9A5D400E374F7 /* SCHAuthenticationManager.m */; };
+		C9EFB177134F4C8E00ADF905 /* libXpsSDKipad.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9EFB176134F4C8E00ADF905 /* libXpsSDKipad.a */; };
+		C9EFB178134F4C8E00ADF905 /* libXpsSDKipad.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9EFB176134F4C8E00ADF905 /* libXpsSDKipad.a */; };
+		C9EFB186134F4C9F00ADF905 /* KNFBZipArchive.m in Sources */ = {isa = PBXBuildFile; fileRef = C9EFB179134F4C9F00ADF905 /* KNFBZipArchive.m */; };
+		C9EFB187134F4C9F00ADF905 /* KNFBZipArchive.m in Sources */ = {isa = PBXBuildFile; fileRef = C9EFB179134F4C9F00ADF905 /* KNFBZipArchive.m */; };
+		C9EFB188134F4C9F00ADF905 /* KNFBXPSProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = C9EFB17B134F4C9F00ADF905 /* KNFBXPSProvider.m */; };
+		C9EFB189134F4C9F00ADF905 /* KNFBXPSProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = C9EFB17B134F4C9F00ADF905 /* KNFBXPSProvider.m */; };
+		C9EFB18A134F4C9F00ADF905 /* KNFBXPSBitmapReleaseCallback.m in Sources */ = {isa = PBXBuildFile; fileRef = C9EFB17E134F4C9F00ADF905 /* KNFBXPSBitmapReleaseCallback.m */; };
+		C9EFB18B134F4C9F00ADF905 /* KNFBXPSBitmapReleaseCallback.m in Sources */ = {isa = PBXBuildFile; fileRef = C9EFB17E134F4C9F00ADF905 /* KNFBXPSBitmapReleaseCallback.m */; };
+		C9EFB18C134F4C9F00ADF905 /* KNFBTimeOrderedCache.m in Sources */ = {isa = PBXBuildFile; fileRef = C9EFB180134F4C9F00ADF905 /* KNFBTimeOrderedCache.m */; };
+		C9EFB18D134F4C9F00ADF905 /* KNFBTimeOrderedCache.m in Sources */ = {isa = PBXBuildFile; fileRef = C9EFB180134F4C9F00ADF905 /* KNFBTimeOrderedCache.m */; };
+		C9EFB18E134F4C9F00ADF905 /* KNFBLayoutHyperlink.m in Sources */ = {isa = PBXBuildFile; fileRef = C9EFB182134F4C9F00ADF905 /* KNFBLayoutHyperlink.m */; };
+		C9EFB18F134F4C9F00ADF905 /* KNFBLayoutHyperlink.m in Sources */ = {isa = PBXBuildFile; fileRef = C9EFB182134F4C9F00ADF905 /* KNFBLayoutHyperlink.m */; };
 		C9F1A4D6133B507100FD984C /* libPlayReadyPK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A3D933851326D92000037111 /* libPlayReadyPK.a */; };
 		C9F1A57A133B83D100FD984C /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C9F1A579133B83D100FD984C /* libxml2.dylib */; };
 		F81B3A7F12FAAD8E00A20D52 /* SCHNote.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A5E12F0EF5600BBBCE6 /* SCHNote.m */; };
@@ -451,7 +463,6 @@
 		F83D874712FC67A600227031 /* SCHSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9B1B12FC1B6B0099FB88 /* SCHSyncComponent.m */; };
 		F84CE156134C691D0044729E /* SCHNonDRMAuthenticationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F84CE155134C691D0044729E /* SCHNonDRMAuthenticationManager.m */; };
 		F84CE157134C691D0044729E /* SCHNonDRMAuthenticationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F84CE155134C691D0044729E /* SCHNonDRMAuthenticationManager.m */; };
-		F8509E7412F061FE00197EB5 /* libXpsSDKipad.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F8509E7212F061FE00197EB5 /* libXpsSDKipad.a */; };
 		F8509E9C12F0621E00197EB5 /* BlioTimeOrderedCache.m in Sources */ = {isa = PBXBuildFile; fileRef = F8509E8C12F0621E00197EB5 /* BlioTimeOrderedCache.m */; };
 		F8509E9D12F0621E00197EB5 /* BITXPSProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = F8509E8E12F0621E00197EB5 /* BITXPSProvider.m */; };
 		F8509E9F12F0621E00197EB5 /* BITTestPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F8509E9312F0621E00197EB5 /* BITTestPageViewController.m */; };
@@ -523,7 +534,6 @@
 		F8509F4412F063C900197EB5 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 529386C212DF3A8900045B44 /* CFNetwork.framework */; };
 		F8509F4512F063C900197EB5 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 529386C412DF3A9000045B44 /* SystemConfiguration.framework */; };
 		F8509F4612F063C900197EB5 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52EF553D12E9EB8500E374F7 /* Security.framework */; };
-		F8509F4712F063C900197EB5 /* libXpsSDKipad.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F8509E7212F061FE00197EB5 /* libXpsSDKipad.a */; };
 		F8509F4812F063C900197EB5 /* libstdc++.6.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F8509EB712F0625100197EB5 /* libstdc++.6.dylib */; };
 		F8678D8A133218D8001FDB2F /* ScholasticFeatureCompatibility.plist in Resources */ = {isa = PBXBuildFile; fileRef = F8678D89133218D8001FDB2F /* ScholasticFeatureCompatibility.plist */; };
 		F8678D8B133218D8001FDB2F /* ScholasticFeatureCompatibility.plist in Resources */ = {isa = PBXBuildFile; fileRef = F8678D89133218D8001FDB2F /* ScholasticFeatureCompatibility.plist */; };
@@ -1179,6 +1189,21 @@
 		C9ED566B1343322300A25486 /* libparserutils.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libparserutils.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9ED566C1343322300A25486 /* libwapcaplet.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libwapcaplet.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9ED56811343328F00A25486 /* libiconv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
+		C9EFB175134F4C8E00ADF905 /* XpsSdk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XpsSdk.h; path = Pagemark/XpsSdk.h; sourceTree = "<group>"; };
+		C9EFB176134F4C8E00ADF905 /* libXpsSDKipad.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libXpsSDKipad.a; path = Pagemark/libXpsSDKipad.a; sourceTree = "<group>"; };
+		C9EFB179134F4C9F00ADF905 /* KNFBZipArchive.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KNFBZipArchive.m; path = XPS/KNFBZipArchive.m; sourceTree = "<group>"; };
+		C9EFB17A134F4C9F00ADF905 /* KNFBZipArchive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KNFBZipArchive.h; path = XPS/KNFBZipArchive.h; sourceTree = "<group>"; };
+		C9EFB17B134F4C9F00ADF905 /* KNFBXPSProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KNFBXPSProvider.m; path = XPS/KNFBXPSProvider.m; sourceTree = "<group>"; };
+		C9EFB17C134F4C9F00ADF905 /* KNFBXPSProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KNFBXPSProvider.h; path = XPS/KNFBXPSProvider.h; sourceTree = "<group>"; };
+		C9EFB17D134F4C9F00ADF905 /* KNFBXPSConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KNFBXPSConstants.h; path = XPS/KNFBXPSConstants.h; sourceTree = "<group>"; };
+		C9EFB17E134F4C9F00ADF905 /* KNFBXPSBitmapReleaseCallback.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KNFBXPSBitmapReleaseCallback.m; path = XPS/KNFBXPSBitmapReleaseCallback.m; sourceTree = "<group>"; };
+		C9EFB17F134F4C9F00ADF905 /* KNFBXPSBitmapReleaseCallback.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KNFBXPSBitmapReleaseCallback.h; path = XPS/KNFBXPSBitmapReleaseCallback.h; sourceTree = "<group>"; };
+		C9EFB180134F4C9F00ADF905 /* KNFBTimeOrderedCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KNFBTimeOrderedCache.m; path = XPS/KNFBTimeOrderedCache.m; sourceTree = "<group>"; };
+		C9EFB181134F4C9F00ADF905 /* KNFBTimeOrderedCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KNFBTimeOrderedCache.h; path = XPS/KNFBTimeOrderedCache.h; sourceTree = "<group>"; };
+		C9EFB182134F4C9F00ADF905 /* KNFBLayoutHyperlink.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KNFBLayoutHyperlink.m; path = XPS/KNFBLayoutHyperlink.m; sourceTree = "<group>"; };
+		C9EFB183134F4C9F00ADF905 /* KNFBLayoutHyperlink.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KNFBLayoutHyperlink.h; path = XPS/KNFBLayoutHyperlink.h; sourceTree = "<group>"; };
+		C9EFB184134F4C9F00ADF905 /* KNFBLayoutDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KNFBLayoutDataSource.h; path = XPS/KNFBLayoutDataSource.h; sourceTree = "<group>"; };
+		C9EFB185134F4C9F00ADF905 /* KNFBDrmBookDecrypter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KNFBDrmBookDecrypter.h; path = XPS/KNFBDrmBookDecrypter.h; sourceTree = "<group>"; };
 		C9F1A579133B83D100FD984C /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
 		F81C74741344DA0700B1D9DB /* SCHFlowEucBook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHFlowEucBook.h; path = Shared/SCHFlowEucBook.h; sourceTree = "<group>"; };
 		F81C74751344DA0700B1D9DB /* SCHFlowEucBook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHFlowEucBook.m; path = Shared/SCHFlowEucBook.m; sourceTree = "<group>"; };
@@ -1196,8 +1221,6 @@
 		F83D86B412FC070F00227031 /* SCHLocalDebugXPSReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHLocalDebugXPSReader.m; path = Shared/SCHLocalDebugXPSReader.m; sourceTree = "<group>"; };
 		F84CE154134C691D0044729E /* SCHNonDRMAuthenticationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHNonDRMAuthenticationManager.h; path = Shared/SCHNonDRMAuthenticationManager.h; sourceTree = "<group>"; };
 		F84CE155134C691D0044729E /* SCHNonDRMAuthenticationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHNonDRMAuthenticationManager.m; path = Shared/SCHNonDRMAuthenticationManager.m; sourceTree = "<group>"; };
-		F8509E7212F061FE00197EB5 /* libXpsSDKipad.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libXpsSDKipad.a; path = Shared/Libraries/XPS/libXpsSDKipad.a; sourceTree = "<group>"; };
-		F8509E7312F061FE00197EB5 /* XpsSdk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XpsSdk.h; path = Shared/Libraries/XPS/XpsSdk.h; sourceTree = "<group>"; };
 		F8509E7612F0620D00197EB5 /* Clifford.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = Clifford.xps; path = "Shared/Debug Books/Clifford.xps"; sourceTree = "<group>"; };
 		F8509E7712F0620D00197EB5 /* Goosebumps.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = Goosebumps.xps; path = "Shared/Debug Books/Goosebumps.xps"; sourceTree = "<group>"; };
 		F8509E7812F0620E00197EB5 /* LonelyHeartsClub.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = LonelyHeartsClub.xps; path = "Shared/Debug Books/LonelyHeartsClub.xps"; sourceTree = "<group>"; };
@@ -1282,7 +1305,6 @@
 				C9F1A57A133B83D100FD984C /* libxml2.dylib in Frameworks */,
 				A3D933861326D92000037111 /* libPlayReadyPK.a in Frameworks */,
 				F8509EB812F0625100197EB5 /* libstdc++.6.dylib in Frameworks */,
-				F8509E7412F061FE00197EB5 /* libXpsSDKipad.a in Frameworks */,
 				C95ECB52133A77FC00D88768 /* Accelerate.framework in Frameworks */,
 				C95ECB4E133A77F000D88768 /* AudioToolbox.framework in Frameworks */,
 				529386C312DF3A8900045B44 /* CFNetwork.framework in Frameworks */,
@@ -1294,6 +1316,7 @@
 				52EF553E12E9EB8500E374F7 /* Security.framework in Frameworks */,
 				529386C512DF3A9000045B44 /* SystemConfiguration.framework in Frameworks */,
 				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
+				C9EFB177134F4C8E00ADF905 /* libXpsSDKipad.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1303,7 +1326,6 @@
 			files = (
 				C9F1A4D6133B507100FD984C /* libPlayReadyPK.a in Frameworks */,
 				F8509F4812F063C900197EB5 /* libstdc++.6.dylib in Frameworks */,
-				F8509F4712F063C900197EB5 /* libXpsSDKipad.a in Frameworks */,
 				C95ECB45133A76C400D88768 /* Accelerate.framework in Frameworks */,
 				C95ECB4D133A77A500D88768 /* AudioToolbox.framework in Frameworks */,
 				F8509F4412F063C900197EB5 /* CFNetwork.framework in Frameworks */,
@@ -1327,6 +1349,7 @@
 				C9ED567F1343323200A25486 /* libparserutils.a in Frameworks */,
 				C9ED56801343323200A25486 /* libwapcaplet.a in Frameworks */,
 				C9ED56831343329400A25486 /* libiconv.dylib in Frameworks */,
+				C9EFB178134F4C8E00ADF905 /* libXpsSDKipad.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1576,7 +1599,6 @@
 				529386FE12DF3EDF00045B44 /* WebAPI */,
 				52EF579412EDBE6E00E374F7 /* security */,
 				528A2CFF12CD026F0053A343 /* BlioLib */,
-				F8509E7112F061FE00197EB5 /* XPS */,
 				F8B55E42134B577A0028534A /* ZipArchive */,
 			);
 			name = Libraries;
@@ -2106,6 +2128,8 @@
 		C9B08A751344D34F001963D0 /* libKNFBReader */ = {
 			isa = PBXGroup;
 			children = (
+				C9EFB173134F4C5500ADF905 /* Pagemark */,
+				C9EFB174134F4C6400ADF905 /* XPS */,
 				C9B08B031344D34F001963D0 /* FlowView */,
 				C9B08B061344D34F001963D0 /* TextFlow */,
 			);
@@ -2190,6 +2214,35 @@
 			name = "Book Reading";
 			sourceTree = "<group>";
 		};
+		C9EFB173134F4C5500ADF905 /* Pagemark */ = {
+			isa = PBXGroup;
+			children = (
+				C9EFB175134F4C8E00ADF905 /* XpsSdk.h */,
+				C9EFB176134F4C8E00ADF905 /* libXpsSDKipad.a */,
+			);
+			name = Pagemark;
+			sourceTree = "<group>";
+		};
+		C9EFB174134F4C6400ADF905 /* XPS */ = {
+			isa = PBXGroup;
+			children = (
+				C9EFB179134F4C9F00ADF905 /* KNFBZipArchive.m */,
+				C9EFB17A134F4C9F00ADF905 /* KNFBZipArchive.h */,
+				C9EFB17B134F4C9F00ADF905 /* KNFBXPSProvider.m */,
+				C9EFB17C134F4C9F00ADF905 /* KNFBXPSProvider.h */,
+				C9EFB17D134F4C9F00ADF905 /* KNFBXPSConstants.h */,
+				C9EFB17E134F4C9F00ADF905 /* KNFBXPSBitmapReleaseCallback.m */,
+				C9EFB17F134F4C9F00ADF905 /* KNFBXPSBitmapReleaseCallback.h */,
+				C9EFB180134F4C9F00ADF905 /* KNFBTimeOrderedCache.m */,
+				C9EFB181134F4C9F00ADF905 /* KNFBTimeOrderedCache.h */,
+				C9EFB182134F4C9F00ADF905 /* KNFBLayoutHyperlink.m */,
+				C9EFB183134F4C9F00ADF905 /* KNFBLayoutHyperlink.h */,
+				C9EFB184134F4C9F00ADF905 /* KNFBLayoutDataSource.h */,
+				C9EFB185134F4C9F00ADF905 /* KNFBDrmBookDecrypter.h */,
+			);
+			name = XPS;
+			sourceTree = "<group>";
+		};
 		F84CE153134C68E50044729E /* Authentication Manager */ = {
 			isa = PBXGroup;
 			children = (
@@ -2199,15 +2252,6 @@
 				52EF543F12E9A5D400E374F7 /* SCHAuthenticationManager.m */,
 			);
 			name = "Authentication Manager";
-			sourceTree = "<group>";
-		};
-		F8509E7112F061FE00197EB5 /* XPS */ = {
-			isa = PBXGroup;
-			children = (
-				F8509E7212F061FE00197EB5 /* libXpsSDKipad.a */,
-				F8509E7312F061FE00197EB5 /* XpsSdk.h */,
-			);
-			name = XPS;
 			sourceTree = "<group>";
 		};
 		F8509E7512F0620D00197EB5 /* Debug Books */ = {
@@ -2926,6 +2970,11 @@
 				F8C5DC6F134B5DF30020D610 /* SCHDictionaryWordForm.m in Sources */,
 				F84CE156134C691D0044729E /* SCHNonDRMAuthenticationManager.m in Sources */,
 				C9EFA8E7134CA99700ADF905 /* SCHAuthenticationManager.m in Sources */,
+				C9EFB186134F4C9F00ADF905 /* KNFBZipArchive.m in Sources */,
+				C9EFB188134F4C9F00ADF905 /* KNFBXPSProvider.m in Sources */,
+				C9EFB18A134F4C9F00ADF905 /* KNFBXPSBitmapReleaseCallback.m in Sources */,
+				C9EFB18C134F4C9F00ADF905 /* KNFBTimeOrderedCache.m in Sources */,
+				C9EFB18E134F4C9F00ADF905 /* KNFBLayoutHyperlink.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3071,6 +3120,11 @@
 				F8C5DC70134B5DF30020D610 /* SCHDictionaryWordForm.m in Sources */,
 				F84CE157134C691D0044729E /* SCHNonDRMAuthenticationManager.m in Sources */,
 				C9EFA8E6134CA99700ADF905 /* SCHAuthenticationManager.m in Sources */,
+				C9EFB187134F4C9F00ADF905 /* KNFBZipArchive.m in Sources */,
+				C9EFB189134F4C9F00ADF905 /* KNFBXPSProvider.m in Sources */,
+				C9EFB18B134F4C9F00ADF905 /* KNFBXPSBitmapReleaseCallback.m in Sources */,
+				C9EFB18D134F4C9F00ADF905 /* KNFBTimeOrderedCache.m in Sources */,
+				C9EFB18F134F4C9F00ADF905 /* KNFBLayoutHyperlink.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3107,6 +3161,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
+					"\"$(SRCROOT)/Shared/Libraries/Submodules/libKNFBReader/Pagemark\"",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -3131,6 +3186,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
+					"\"$(SRCROOT)/Shared/Libraries/Submodules/libKNFBReader/Pagemark\"",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -3154,10 +3210,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "";
-				LIBRARY_SEARCH_PATHS = (
-					"\"$(SRCROOT)/Shared/Libraries/DRM\"",
-					"\"$(SRCROOT)/Shared/Libraries/XPS\"",
-				);
+				LIBRARY_SEARCH_PATHS = "\"$(SRCROOT)/Shared/Libraries/DRM\"";
 				OTHER_CFLAGS = (
 					"-I/usr/include/libxml2",
 					"-DNS_BLOCK_ASSERTIONS=1",
@@ -3188,6 +3241,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
+					"\"$(SRCROOT)/Shared/Libraries/Submodules/libKNFBReader/Pagemark\"",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -3210,10 +3264,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "";
-				LIBRARY_SEARCH_PATHS = (
-					"\"$(SRCROOT)/Shared/Libraries/DRM\"",
-					"\"$(SRCROOT)/Shared/Libraries/XPS\"",
-				);
+				LIBRARY_SEARCH_PATHS = "\"$(SRCROOT)/Shared/Libraries/DRM\"";
 				OTHER_CFLAGS = "-I/usr/include/libxml2";
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -3239,10 +3290,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "";
-				LIBRARY_SEARCH_PATHS = (
-					"\"$(SRCROOT)/Shared/Libraries/DRM\"",
-					"\"$(SRCROOT)/Shared/Libraries/XPS\"",
-				);
+				LIBRARY_SEARCH_PATHS = "\"$(SRCROOT)/Shared/Libraries/DRM\"";
 				OTHER_CFLAGS = (
 					"-I/usr/include/libxml2",
 					"-DNS_BLOCK_ASSERTIONS=1",
@@ -3272,6 +3320,10 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "LOCALDEBUG=1";
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "Scholastic-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/Shared/Libraries/Submodules/libKNFBReader/Pagemark\"",
+				);
 				OTHER_CFLAGS = "-I/usr/include/libxml2";
 				PRODUCT_NAME = Scholastic;
 			};
@@ -3289,6 +3341,10 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "LOCALDEBUG=1";
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "Scholastic-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/Shared/Libraries/Submodules/libKNFBReader/Pagemark\"",
+				);
 				OTHER_CFLAGS = (
 					"-I/usr/include/libxml2",
 					"-DNS_BLOCK_ASSERTIONS=1",
@@ -3310,6 +3366,10 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "LOCALDEBUG=1";
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "Scholastic-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/Shared/Libraries/Submodules/libKNFBReader/Pagemark\"",
+				);
 				OTHER_CFLAGS = (
 					"-I/usr/include/libxml2",
 					"-DNS_BLOCK_ASSERTIONS=1",
