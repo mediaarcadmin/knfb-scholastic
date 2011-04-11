@@ -13,8 +13,9 @@
     
 }
 
-@property (nonatomic, retain) id book;
+@property (nonatomic, retain) NSString *isbn;
 
-- (id)initWithFrame:(CGRect)frame book:(id)book;
+- (id)initWithFrame:(CGRect)frame isbn:(id)isbn;
+- (void) jumpToPage: (NSInteger) page animated: (BOOL) animated;
 
 @end

@@ -9,10 +9,11 @@
 #import "SCHTextFlow.h"
 #import "SCHBookManager.h"
 #import "SCHAppBook.h"
-#import "BITXPSProvider.h"
+#import "SCHXPSProvider.h"
 #import "KNFBTextFlowPositionedWord.h"
 #import "SCHBookRange.h"
 #import "KNFBTextFlowBlock.h"
+#import "KNFBXPSConstants.h"
 
 @interface SCHTextFlow()
 
@@ -124,9 +125,9 @@
 {
     
     NSData *data = nil;
-    BITXPSProvider *xpsProvider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.isbn];
+    SCHXPSProvider *xpsProvider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.isbn];
     
-    data = [xpsProvider dataForComponentAtPath:[BlioXPSEncryptedTextFlowDir stringByAppendingPathComponent:path]];
+    data = [xpsProvider dataForComponentAtPath:[KNFBXPSEncryptedTextFlowDir stringByAppendingPathComponent:path]];
     
     [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.isbn];
 
@@ -135,8 +136,8 @@
 
 - (NSData *)textFlowRootFileData
 {
-    BITXPSProvider *xpsProvider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.isbn];
-    NSData *data = [xpsProvider dataForComponentAtPath:BlioXPSTextFlowSectionsFile];
+    SCHXPSProvider *xpsProvider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.isbn];
+    NSData *data = [xpsProvider dataForComponentAtPath:KNFBXPSTextFlowSectionsFile];
     [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.isbn];
 
     return data;

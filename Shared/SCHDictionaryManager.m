@@ -554,6 +554,14 @@ static SCHDictionaryManager *sharedManager = nil;
 		{
 			NSLog(@"needs download...");
             
+            // FIXME: Gordon, check this workaround is correct
+            
+            if (self.manifestUpdates == nil) {
+                [[SCHDictionaryManager sharedDictionaryManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNeedsManifest];
+                [self processDictionary];
+                return;
+            }
+            
             // figure out which dictionary file we're downloading
             SCHDictionaryManifestEntry *entry = [self.manifestUpdates objectAtIndex:0];
             
@@ -577,10 +585,7 @@ static SCHDictionaryManager *sharedManager = nil;
 			NSLog(@"needs unzip...");
 			// create unzip operation
             
-            SCHDictionaryManifestEntry *entry = [self.manifestUpdates objectAtIndex:0];
-            
 			SCHDictionaryFileUnzipOperation *unzipOp = [[SCHDictionaryFileUnzipOperation alloc] init];
-            unzipOp.manifestEntry = entry;
             
 			// on completion, we need to check if we are on the first download, or subsequent downloads
 			[unzipOp setCompletionBlock:^{

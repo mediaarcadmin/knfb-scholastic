@@ -20,7 +20,7 @@
 
 @implementation SCHDictionaryFileUnzipOperation
 
-@synthesize executing, finished, manifestEntry;
+@synthesize executing, finished;
 
 - (void) dealloc
 {
@@ -30,8 +30,6 @@
 
 - (void) start
 {
-    NSAssert(self.manifestEntry != nil, @"File URL cannot be nil for SCHDictionaryFileUnzipOperation.");
-
 	if (![self isCancelled]) {
 		
 		NSLog(@"Starting unzip operation..");

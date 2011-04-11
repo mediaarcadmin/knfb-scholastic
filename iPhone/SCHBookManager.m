@@ -11,7 +11,7 @@
 #import "SCHAppBook.h"
 #import "SCHBookContents.h"
 #import "SCHTextFlow.h"
-#import "BITXPSProvider.h"
+#import "SCHXPSProvider.h"
 #import "SCHFlowEucBook.h"
 #import "SCHTextFlowParagraphSource.h"
 
@@ -348,9 +348,9 @@ static int mutationCount = 0;
 #pragma mark -
 #pragma mark XPS Provider Check out/Check in
 
-- (BITXPSProvider *)checkOutXPSProviderForBookIdentifier: (NSString *) isbn
+- (SCHXPSProvider *)checkOutXPSProviderForBookIdentifier: (NSString *) isbn
 {
-	BITXPSProvider *ret = nil;
+	SCHXPSProvider *ret = nil;
 	
 	//NSLog(@"Checking out book ID: %@", bookID);
 	
@@ -358,13 +358,13 @@ static int mutationCount = 0;
 	
     NSMutableDictionary *myCachedXPSProviders = self.cachedXPSProviders;
     @synchronized(myCachedXPSProviders) {
-        BITXPSProvider *previouslyCachedXPSProvider = [myCachedXPSProviders objectForKey:isbn];
+        SCHXPSProvider *previouslyCachedXPSProvider = [myCachedXPSProviders objectForKey:isbn];
         if(previouslyCachedXPSProvider) {
             //NSLog(@"Returning cached XPSProvider for book with ISBN %@", isbn);
             [self.cachedXPSProviderCheckoutCounts addObject:isbn];
             ret = previouslyCachedXPSProvider;
         } else {
-			BITXPSProvider *xpsProvider = [[BITXPSProvider alloc] initWithISBN:isbn];
+			SCHXPSProvider *xpsProvider = [[SCHXPSProvider alloc] initWithISBN:isbn];
 			if(xpsProvider) {
 				NSCountedSet *myCachedXPSProviderCheckoutCounts = self.cachedXPSProviderCheckoutCounts;
 				if(!myCachedXPSProviderCheckoutCounts) {

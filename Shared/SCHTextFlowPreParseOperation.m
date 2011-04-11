@@ -11,7 +11,9 @@
 #import "KNFBTextFlowPageMarker.h"
 #import "KNFBTextFlowPageRange.h"
 #import "SCHBookManager.h"
-#import "BITXPSProvider.h"
+#import "SCHXPSProvider.h"
+#import "KNFBXPSConstants.h"
+#import "SCHAppBook.h"
 
 #pragma mark XML element handlers
 
@@ -107,11 +109,11 @@ static void pageFileXMLParsingStartElementHandler(void *ctx, const XML_Char *nam
 {
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
     
-    BITXPSProvider *xpsProvider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.isbn];
-    NSData *data = [xpsProvider dataForComponentAtPath:BlioXPSTextFlowSectionsFile];
+    SCHXPSProvider *xpsProvider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.isbn];
+    NSData *data = [xpsProvider dataForComponentAtPath:KNFBXPSTextFlowSectionsFile];
     
     if (nil == data) {
-        NSLog(@"Could not pre-parse TextFlow because TextFlow file did not exist at path: %@.", BlioXPSTextFlowSectionsFile);
+        NSLog(@"Could not pre-parse TextFlow because TextFlow file did not exist at path: %@.", KNFBXPSTextFlowSectionsFile);
 
         [self updateBookWithFailure];
         [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.isbn];
@@ -129,14 +131,14 @@ static void pageFileXMLParsingStartElementHandler(void *ctx, const XML_Char *nam
     
     XML_SetUserData(pageRangeFileParser, (void *)pageRangesSet);    
     if (!XML_Parse(pageRangeFileParser, [data bytes], [data length], XML_TRUE)) {
-        NSLog(@"TextFlow parsing error: '%s' in file: '%@'", (char *)XML_ErrorString(XML_GetErrorCode(pageRangeFileParser)), BlioXPSEncryptedTextFlowDir);
+        NSLog(@"TextFlow parsing error: '%s' in file: '%@'", (char *)XML_ErrorString(XML_GetErrorCode(pageRangeFileParser)), KNFBXPSEncryptedTextFlowDir);
     }
     XML_ParserFree(pageRangeFileParser);
     
     for (KNFBTextFlowPageRange *pageRange in pageRangesSet) {
         NSAutoreleasePool *innerPool = [[NSAutoreleasePool alloc] init];
         
-        NSData *data = [xpsProvider dataForComponentAtPath:[BlioXPSEncryptedTextFlowDir stringByAppendingPathComponent:[pageRange fileName]]];
+        NSData *data = [xpsProvider dataForComponentAtPath:[KNFBXPSEncryptedTextFlowDir stringByAppendingPathComponent:[pageRange fileName]]];
 
         
         if (!data) {

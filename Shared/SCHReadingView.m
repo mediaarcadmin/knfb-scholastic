@@ -11,20 +11,20 @@
 
 @implementation SCHReadingView
 
-@synthesize book;
+@synthesize isbn;
 
 - (void)dealloc
 {
-    [book release], book = nil;
+    [isbn release], isbn = nil;
     [super dealloc];
 }
 
-- (id)initWithFrame:(CGRect)frame book:(id)aBook
+- (id)initWithFrame:(CGRect)frame isbn:(id)aIsbn
 {
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
-        book = [aBook retain];
+        isbn = [aIsbn retain];
         self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         self.opaque = YES;
     }
@@ -39,5 +39,10 @@
     // Drawing code
 }
 */
+
+- (void) jumpToPage:(NSInteger)page animated:(BOOL)animated
+{
+    NSLog(@"WARNING: jumpToPage:animated: not being overridden correctly.");
+}
 
 @end

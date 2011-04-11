@@ -12,21 +12,27 @@
 #import "SCHBookManager.h"
 #import "KNFBTextFlowPageRange.h"
 #import "SCHDictionaryManager.h"
+#import "SCHFlowView.h"
+#import "SCHLayoutView.h"
+#import "SCHXPSProvider.h"
+
 
 @implementation BITTestPageViewController
 
-@synthesize isbn;
+@synthesize isbn, flowView;
 
 // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
-/*
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil isbn:(NSString *)aIsbn
+{
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        // Custom initialization.
+        // Custom initialization
+        self.isbn = aIsbn;
+        self.wantsFullScreenLayout = YES;
     }
     return self;
 }
-*/
 
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
@@ -35,7 +41,7 @@
 	
 	currentPage = 1;
 	toolbarsVisible = YES;
-	testRenderer = [[BITXPSProvider alloc] initWithISBN:self.isbn];
+	testRenderer = [[SCHXPSProvider alloc] initWithISBN:self.isbn];
 	
 	pageScrubber.delegate = self;
 	pageScrubber.minimumValue = 1;
@@ -95,10 +101,6 @@
     
     NSLog(@"A badger is defined thusly: %@", [[SCHDictionaryManager sharedDictionaryManager] HTMLForWord:@"badger"]);
 
-		  
-	
-	[self loadImageForCurrentPage];
-	
 	scrubberInfoView.layer.cornerRadius = 5.0f;
 	scrubberInfoView.layer.masksToBounds = YES;
 
@@ -111,31 +113,41 @@
 													   repeats:NO];
 	
 	self.navigationController.navigationBarHidden = YES;
-	
-	UITapGestureRecognizer *doubleTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self
-																					   action:@selector(scrollViewDoubleTap:)];
-	doubleTapGesture.numberOfTapsRequired = 2;
-	doubleTapGesture.cancelsTouchesInView = YES;
-	[scrollView addGestureRecognizer:doubleTapGesture];
-	
-	UITapGestureRecognizer *singleTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self
-																				 action:@selector(scrollViewSingleTap:)];
-	singleTapGesture.numberOfTapsRequired = 1;
-	singleTapGesture.cancelsTouchesInView = YES;
-	[singleTapGesture requireGestureRecognizerToFail:doubleTapGesture];
-	
-	[scrollView addGestureRecognizer:singleTapGesture];
+    /*	
 
-	[doubleTapGesture release];
-	[singleTapGesture release];
+     UITapGestureRecognizer *singleTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self
+     action:@selector(scrollViewSingleTap:)];
+     singleTapGesture.numberOfTapsRequired = 1;
+     singleTapGesture.cancelsTouchesInView = YES;
+     
+     [eucPageView addGestureRecognizer:singleTapGesture];
+     
+     UITapGestureRecognizer *doubleTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self
+																					   action:@selector(scrollViewDoubleTap:)];
+     doubleTapGesture.numberOfTapsRequired = 2;
+     doubleTapGesture.cancelsTouchesInView = YES;
+     [scrollView addGestureRecognizer:doubleTapGesture];
+     [doubleTapGesture release];
+     [singleTapGesture release];
+     
+*/	
+
+    if (self.flowView) {
+        eucPageView = [[SCHFlowView alloc] initWithFrame:self.view.bounds isbn:self.isbn];
+    } else {
+        eucPageView = [[SCHLayoutView alloc] initWithFrame:self.view.bounds isbn:self.isbn]; 
+    }
+    
+    [pageView addSubview:eucPageView];
 	
+	
+    
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackTranslucent];	
 	[self setWantsFullScreenLayout:YES];
 	CGRect frame = topToolbar.frame;
 	frame.origin.y = 20;
 	topToolbar.frame = frame;
-	
-	
+    
 }
 
 // Override to allow orientations other than the default portrait orientation.
@@ -164,7 +176,7 @@
 			[self cancelInitialTimer];
 		}
 		
-		[self loadImageForCurrentPage];
+		[self updatePageViewWithCurrentPage];
 	}
 }
 
@@ -178,7 +190,7 @@
 			[self cancelInitialTimer];
 		}
 		
-		[self loadImageForCurrentPage];
+		[self updatePageViewWithCurrentPage];
 	}
 }
 
@@ -186,7 +198,7 @@
 {
 	currentPage = 1;
 	[pageScrubber setValue:currentPage];
-	[self loadImageForCurrentPage];
+	[self updatePageViewWithCurrentPage];
 }
 
 - (void) checkButtonStatus
@@ -248,53 +260,19 @@
 	[scrubberInfoView setAlpha:0.0f];
 	[UIView commitAnimations];
 	
-	[self loadImageForCurrentPage];
+	[self updatePageViewWithCurrentPage];
 	
 }
 
 
-- (void) loadImageForCurrentPage
+- (void) updatePageViewWithCurrentPage
 {
-	id context;
-	UIView *oldImageView = [pageView viewWithTag:9999];
-	
-	if (oldImageView) {
-		[oldImageView removeFromSuperview];
-	}
-	
-	CGRect pageCrop = [testRenderer cropForPage:currentPage allowEstimate:YES];
-	CGContextRef bitmap = [testRenderer RGBABitmapContextForPage:currentPage fromRect:pageCrop atSize:CGSizeMake(pageCrop.size.width, pageCrop.size.height) getBacking:&context];
-	CGImageRef ref = CGBitmapContextCreateImage(bitmap);
-    UIImage* result = [UIImage imageWithCGImage:ref];
-	CGImageRelease(ref);
-	UIImageView *imageView = [[UIImageView alloc] initWithImage:result];
-	imageView.tag = 9999;
-	
-	[pageView setFrame:CGRectMake(0, 0, imageView.frame.size.width, imageView.frame.size.height)];
-	[pageView addSubview:imageView];
-	[imageView release];
-	    
-    CGFloat scale = MAX(CGRectGetWidth(scrollView.bounds)/CGRectGetWidth(imageView.bounds), 
-                        CGRectGetHeight(scrollView.bounds)/CGRectGetHeight(imageView.bounds));
-        
-	[scrollView setZoomScale:scale];
-    [scrollView setMinimumZoomScale:scale];
     
-    [scrollView setContentSize: CGSizeMake(imageView.bounds.size.width * scale, imageView.bounds.size.height * scale)];
-
-	//[scrollView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
-	
-	//[pageSlider setValue:currentPage];
-	//[pageScrubber setValue:currentPage];
-	
+    [eucPageView jumpToPage:currentPage animated:YES];
 	[self checkButtonStatus];
 }	
 
-
-- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView{
-	return pageView;
-}
-
+/*
 - (void) scrollViewSingleTap: (UIGestureRecognizer *)gestureRecognizer
 {
 	if ([gestureRecognizer numberOfTouches] == 1) {
@@ -309,24 +287,7 @@
 		}
 	}
 }
-
-- (void) scrollViewDoubleTap: (UIGestureRecognizer *)gestureRecognizer
-{
-//	[self cancelInitialTimer];
-	
-	if ([gestureRecognizer numberOfTouches] == 1) {
-		
-		NSLog(@"Scrollview zoom: %f", scrollView.zoomScale);
-		
-		if (scrollView.zoomScale > scrollView.minimumZoomScale) {
-			[scrollView setZoomScale:scrollView.minimumZoomScale animated:YES];
-		} else {
-			[scrollView setZoomScale:scrollView.maximumZoomScale animated:YES];
-		}
-		
-	}
-}
-
+*/
 - (void) hideToolbarsFromTimer
 {
 	[self setToolbarVisibility:NO animated:YES];
@@ -336,6 +297,8 @@
 
 - (void) setToolbarVisibility: (BOOL) visibility animated: (BOOL) animated
 {
+    // FIXME: this needs to be reenabled, after we evaluate the Eucalyptus touch stuff
+    /*
 	NSLog(@"Setting visibility to %@.", visibility?@"True":@"False");
 	toolbarsVisible = visibility;
 	
@@ -348,10 +311,12 @@
 	
 	if (toolbarsVisible) {
 		[topToolbar setAlpha:1.0f];
+		[scrubberToolbar setAlpha:1.0f];
 		[bottomToolbar setAlpha:1.0f];
 		[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
 	} else {
 		[topToolbar setAlpha:0.0f];
+		[scrubberToolbar setAlpha:0.0f];
 		[bottomToolbar setAlpha:0.0f];
 		[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
 //		CGRect frame = topToolbar.frame;
@@ -361,7 +326,7 @@
 	
 	if (animated) {
 		[UIView commitAnimations];
-	}
+	}*/
 }
 
 - (void) toggleToolbarVisibility
@@ -391,6 +356,18 @@
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
 }
+     
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object
+                        change:(NSDictionary *)change context:(void *)context
+{
+    //    if([keyPath isEqualToString:@"pageNumber"]) {
+    //        self.pageNumber = _eucBookView.pageNumber;
+    //    } else { //if([keyPath isEqualToString:@"pageCount"] ) {
+    //        self.pageCount = _eucBookView.pageCount;
+    //    }
+}
+
+
 
 
 - (void)dealloc {

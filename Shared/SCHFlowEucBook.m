@@ -10,7 +10,8 @@
 #import "SCHBookManager.h"
 #import "SCHTextFlow.h"
 #import "SCHAppBook.h"
-#import "BITXPSProvider.h"
+#import "SCHXPSProvider.h"
+#import "KNFBXPSConstants.h"
 
 @interface SCHFlowEucBook ()
 
@@ -55,7 +56,7 @@
 - (NSData *)dataForURL:(NSURL *)url
 {
     if([[url absoluteString] isEqualToString:@"textflow:coverimage"]) {
-        BITXPSProvider *xpsProvider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.isbn];
+        SCHXPSProvider *xpsProvider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.isbn];
         NSData *coverData = [xpsProvider coverThumbData];
         [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.isbn];
         return coverData;
@@ -63,10 +64,10 @@
 		NSString *componentPath = [[url absoluteURL] path];
 		NSString *relativePath = [url relativeString];		
 		if ([relativePath length] && ([relativePath characterAtIndex:0] != '/')) {
-			componentPath = [BlioXPSEncryptedTextFlowDir stringByAppendingPathComponent:relativePath];
+			componentPath = [KNFBXPSEncryptedTextFlowDir stringByAppendingPathComponent:relativePath];
 		}
 		
-        BITXPSProvider *xpsProvider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.isbn];
+        SCHXPSProvider *xpsProvider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.isbn];
         NSData *ret = [xpsProvider dataForComponentAtPath:componentPath];
         [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.isbn];
         return ret;

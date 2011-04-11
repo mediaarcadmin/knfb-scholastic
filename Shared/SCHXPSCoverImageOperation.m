@@ -7,8 +7,9 @@
 //
 
 #import "SCHXPSCoverImageOperation.h"
-#import "BITXPSProvider.h"
+#import "SCHXPSProvider.h"
 #import "SCHBookManager.h"
+#import "SCHAppBook.h"
 
 @implementation SCHXPSCoverImageOperation
 
@@ -21,7 +22,7 @@
 {
 	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];
 	
-	BITXPSProvider *xpsProvider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.isbn];
+	SCHXPSProvider *xpsProvider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.isbn];
 	NSData *imageData = [xpsProvider coverThumbData];
 	[[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.isbn];
 	

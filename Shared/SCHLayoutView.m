@@ -7,13 +7,13 @@
 //
 
 #import "SCHLayoutView.h"
-#import "BITXPSProvider.h"
+#import "SCHXPSProvider.h"
 #import "SCHBookManager.h"
 #import <libEucalyptus/THPositionedCGContext.h>
 
 @interface SCHLayoutView()
 
-@property (nonatomic, retain) id xpsProvider;
+@property (nonatomic, retain) SCHXPSProvider *xpsProvider;
 @property (nonatomic, retain) EucPageTurningView *pageTurningView;
 @property (nonatomic, assign) NSUInteger pageCount;
 @property (nonatomic, assign) CGRect firstPageCrop;
@@ -22,6 +22,7 @@
 @property (nonatomic, retain) NSLock *layoutCacheLock;
 
 - (void)initialiseView;
+- (CGRect)cropForPage:(NSInteger)page allowEstimate:(BOOL)estimate;
 
 @end
 
@@ -39,7 +40,7 @@
 {
     
     if (xpsProvider) {
-        [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.book];
+        [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.isbn];
         [xpsProvider release], xpsProvider = nil;
     }
     
@@ -51,13 +52,13 @@
 
 - (void)initialiseView
 {
-    xpsProvider = [[[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.book] retain];
+    xpsProvider = [[[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.isbn] retain];
     
     if (xpsProvider) {
         layoutCacheLock = [[NSLock alloc] init];
         
         pageCount = [xpsProvider pageCount];
-        firstPageCrop = [xpsProvider cropForPage:1 allowEstimate:NO];
+        firstPageCrop = [self cropForPage:1 allowEstimate:NO];
         
         pageTurningView = [[[EucPageTurningView alloc] initWithFrame:self.bounds] retain];
         pageTurningView.delegate = self;
@@ -88,9 +89,9 @@
     }
 }
 
-- (id)initWithFrame:(CGRect)frame book:(id)aBook
+- (id)initWithFrame:(CGRect)frame isbn:(id)aIsbn
 {
-    self = [super initWithFrame:frame book:aBook];
+    self = [super initWithFrame:frame isbn:aIsbn];
     if (self) {        
         [self initialiseView];
     }
@@ -157,7 +158,7 @@
         self.pageCropsCache = [NSMutableDictionary dictionaryWithCapacity:pageCount];
     }
       
-    CGRect cropRect = [self.xpsProvider cropForPage:page allowEstimate:NO];
+    CGRect cropRect = [self.xpsProvider cropRectForPage:page];
     if (!CGRectEqualToRect(cropRect, CGRectZero)) {
         [self.pageCropsCache setObject:[NSValue valueWithCGRect:cropRect] forKey:[NSNumber numberWithInt:page]];
     }
@@ -205,6 +206,12 @@
 { 
     return nil;
 }
+
+- (void) jumpToPage: (NSInteger) page animated: (BOOL) animated
+{
+    [pageTurningView turnToPageAtIndex:page animated:animated];
+}
+
 
 #pragma mark -
 #pragma mark EucPageTurningViewBitmapDataSource
