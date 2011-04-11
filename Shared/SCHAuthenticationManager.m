@@ -7,6 +7,7 @@
 //
 
 #import "SCHAuthenticationManager.h"
+#import "SCHAuthenticationManagerProtected.h"
 
 #import "SCHScholasticWebService.h"
 #import "SCHLibreAccessWebService.h"
@@ -16,18 +17,9 @@
 
 #import "SCHNonDRMAuthenticationManager.h"
 
-// DeviceKeys
-// od1
-// od2 {ed9532e2-de12-9a44-ae81-11eafd5a9f3f} - doesnt seem to work
-// mf
-
 static SCHAuthenticationManager *sharedAuthenticationManager = nil;
 
-static NSString * const kSCHAuthenticationManagerUsername = @"AuthenticationManager.Username";
-static NSString * const kSCHAuthenticationManagerServiceName = @"Scholastic";
 NSString * const kSCHAuthenticationManagerDeviceKey = @"AuthenticationManager.DeviceKey";
-
-static NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
 
 struct AuthenticateWithUserNameParameters {
     NSString *username;
@@ -40,7 +32,6 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
 + (SCHAuthenticationManager *)sharedAuthenticationManagerOnMainThread;
 - (void)aTokenOnMainThread;
 - (void)authenticateWithUserNameOnMainThread:(NSValue *)parameters;
-- (void)authenticateOnMainThread:(NSValue *)returnValue;
 - (void)hasUsernameAndPasswordOnMainThread:(NSValue *)returnValue;
 - (void)clearOnMainThread;
 
@@ -105,7 +96,7 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
 
 - (void)authenticate
 {
-    [self performSelectorOnMainThread:@selector(authenticateOnMainThread:) 
+    [self performSelectorOnMainThread:@selector(authenticateOnMainThread) 
                            withObject:nil 
                         waitUntilDone:NO];
 }
@@ -210,7 +201,7 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
     }
 }
 
-- (void)authenticateOnMainThread:(NSValue *)returnValue
+- (void)authenticateOnMainThread
 {    
     NSString *storedUsername = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUsername];
     NSString *storedPassword = [SFHFKeychainUtils getPasswordForUsername:storedUsername andServiceName:kSCHAuthenticationManagerServiceName error:nil];

@@ -830,6 +830,7 @@
 		52AD9D6D130000570099FB88 /* SCHSettingsSyncComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHSettingsSyncComponent.h; path = Shared/SCHSettingsSyncComponent.h; sourceTree = "<group>"; };
 		52AD9D6E130000570099FB88 /* SCHSettingsSyncComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHSettingsSyncComponent.m; path = Shared/SCHSettingsSyncComponent.m; sourceTree = "<group>"; };
 		52AD9D9813000CAA0099FB88 /* SCHSyncComponentProtected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHSyncComponentProtected.h; path = Shared/SCHSyncComponentProtected.h; sourceTree = "<group>"; };
+		52BF57B21352F3FC00B5066E /* SCHAuthenticationManagerProtected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAuthenticationManagerProtected.h; path = Shared/SCHAuthenticationManagerProtected.h; sourceTree = "<group>"; };
 		52D612B612E4650B0033DA92 /* NSNumber+ObjectTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSNumber+ObjectTypes.h"; path = "Shared/NSNumber+ObjectTypes.h"; sourceTree = "<group>"; };
 		52D612B712E4650B0033DA92 /* NSNumber+ObjectTypes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSNumber+ObjectTypes.m"; path = "Shared/NSNumber+ObjectTypes.m"; sourceTree = "<group>"; };
 		52E334F41303049B002F3011 /* SCHTopPicksBookShelfViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHTopPicksBookShelfViewController.h; path = iPhone/SCHTopPicksBookShelfViewController.h; sourceTree = "<group>"; };
@@ -2250,6 +2251,7 @@
 				F84CE155134C691D0044729E /* SCHNonDRMAuthenticationManager.m */,
 				52EF543E12E9A5D400E374F7 /* SCHAuthenticationManager.h */,
 				52EF543F12E9A5D400E374F7 /* SCHAuthenticationManager.m */,
+				52BF57B21352F3FC00B5066E /* SCHAuthenticationManagerProtected.h */,
 			);
 			name = "Authentication Manager";
 			sourceTree = "<group>";

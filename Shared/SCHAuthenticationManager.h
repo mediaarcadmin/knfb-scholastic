@@ -49,7 +49,4 @@ static NSInteger const kSCHAuthenticationManagerLoginError = 2001;
 - (void)postSuccessWithOfflineMode:(BOOL)offlineMode;
 - (void)postFailureWithError:(NSError *)error;
 
-// Subclassed methods
-- (void)authenticateOnMainThread:(NSValue *)returnValue;
-
 @end

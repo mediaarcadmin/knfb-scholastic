@@ -7,47 +7,50 @@
 //
 
 #import "SCHNonDRMAuthenticationManager.h"
+#import "SCHAuthenticationManagerProtected.h"
 
 #import "SCHScholasticWebService.h"
 #import "SCHLibreAccessWebService.h"
 #import "SFHFKeychainUtils.h"
 #import "Reachability.h"
 
-static NSString * const kSCHAuthenticationManagerUsername = @"AuthenticationManager.Username";
-static NSString * const kSCHAuthenticationManagerServiceName = @"Scholastic";
-static NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
-
 @implementation SCHNonDRMAuthenticationManager
 
-- (void)authenticateOnMainThread:(NSValue *)returnValue
+- (void)authenticateOnMainThread
 {    
-    NSString *username = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUsername];
-    NSString *password = nil;
+    NSString *storedUsername = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUsername];
+    NSString *storedPassword = [SFHFKeychainUtils getPasswordForUsername:storedUsername andServiceName:kSCHAuthenticationManagerServiceName error:nil];
     
     if (waitingOnResponse == NO) {
-        if ([[Reachability reachabilityForInternetConnection] isReachable] == YES &&
-            username != nil &&
-            [[username stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {
-            password = [SFHFKeychainUtils getPasswordForUsername:username andServiceName:kSCHAuthenticationManagerServiceName error:nil];
-            if (password != nil &&
-                [[password stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {
+        if ([[Reachability reachabilityForInternetConnection] isReachable] == YES) {
+            if (storedUsername != nil &&
+                [[storedUsername stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0 &&
+                storedPassword != nil &&
+                [[storedPassword stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {
                 [aToken release], aToken = nil;
                 [tokenExpires release], tokenExpires = nil;
+
+                [scholasticWebService authenticateUserName:storedUsername withPassword:storedPassword];
+                waitingOnResponse = YES;         
+            } else {
+                NSError *error = [NSError errorWithDomain:kSCHAuthenticationManagerErrorDomain 
+                                                     code:kSCHAuthenticationManagerLoginError 
+                                                 userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"You must enter a username and password", @"") 
+                                                                                      forKey:NSLocalizedDescriptionKey]];
                 
-                waitingOnResponse = YES;
-                [scholasticWebService authenticateUserName:username withPassword:password];	
+                [self postFailureWithError:error];            
             }
+        } else if (storedUsername != nil &&
+                   [[storedUsername stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {            
+            [self postSuccessWithOfflineMode:YES];
+        } else {
+            NSError *error = [NSError errorWithDomain:kSCHAuthenticationManagerErrorDomain 
+                                                 code:kSCHAuthenticationManagerLoginError 
+                                             userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"You must enter a username and password", @"") 
+                                                                                  forKey:NSLocalizedDescriptionKey]];
+            
+            [self postFailureWithError:error];
         }
-    } else {
-        NSError *error = [NSError errorWithDomain:kSCHAuthenticationManagerErrorDomain 
-                                             code:kSCHAuthenticationManagerLoginError 
-                                         userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"You must enter a username and password", @"") 
-                                                                              forKey:NSLocalizedDescriptionKey]];
-        
-        [[NSNotificationCenter defaultCenter] postNotificationName:kSCHAuthenticationManagerFailure
-                                                            object:self 
-                                                          userInfo:[NSDictionary dictionaryWithObject:error
-                                                                                               forKey:kSCHAuthenticationManagerNSError]];	 
     }
 }
 
@@ -56,12 +59,14 @@ static NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
 
 - (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result
 {
-	NSString *username = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUsername];
-	
 	if([method compare:kSCHScholasticWebServiceProcessRemote] == NSOrderedSame) {	
-		[libreAccessWebService tokenExchange:[result objectForKey:kSCHScholasticWebServicePToken] forUser:username];
+		[libreAccessWebService tokenExchange:[result objectForKey:kSCHScholasticWebServicePToken] 
+                                     forUser:[[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUsername]];
 	} else if([method compare:kSCHLibreAccessWebServiceTokenExchange] == NSOrderedSame) {	
-		aToken = [[result objectForKey:kSCHLibreAccessWebServiceAuthToken] retain];
+		[aToken release], aToken = nil;            
+        [tokenExpires release], tokenExpires = nil;
+        
+        aToken = [[result objectForKey:kSCHLibreAccessWebServiceAuthToken] retain];
 		NSInteger expiresIn = MAX(0, [[result objectForKey:kSCHLibreAccessWebServiceExpiresIn] integerValue] - 1);
 		tokenExpires = [[NSDate dateWithTimeIntervalSinceNow:expiresIn * kSCHAuthenticationManagerSecondsInAMinute] retain];
 		waitingOnResponse = NO;
