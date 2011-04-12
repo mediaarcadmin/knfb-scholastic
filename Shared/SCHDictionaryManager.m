@@ -559,8 +559,7 @@ static SCHDictionaryManager *sharedManager = nil;
 		{
 			NSLog(@"needs download...");
             
-            // FIXME: Gordon, check this workaround is correct
-            
+            // if there's no manifest set, restart the process
             if (self.manifestUpdates == nil) {
                 [[SCHDictionaryManager sharedDictionaryManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNeedsManifest];
                 [self processDictionary];
