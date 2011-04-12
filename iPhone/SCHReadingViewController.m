@@ -267,4 +267,16 @@
 	}
 }	
 
+#pragma mark - Smart Zoom
+
+- (IBAction)nextSmartZoom:(id)sender
+{
+    NSLog(@"Next");
+}
+
+- (IBAction)prevSmartZoom:(id)sender
+{
+    NSLog(@"Previous");
+}
+
 @end

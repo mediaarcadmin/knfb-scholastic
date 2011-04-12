@@ -33,4 +33,7 @@
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil isbn:(NSString *)aIsbn;
 
+- (IBAction)nextSmartZoom:(id)sender;
+- (IBAction)prevSmartZoom:(id)sender;
+
 @end
