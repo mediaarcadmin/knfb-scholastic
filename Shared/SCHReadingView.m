@@ -11,15 +11,16 @@
 
 @implementation SCHReadingView
 
-@synthesize isbn;
+@synthesize isbn, delegate;
 
-- (void)dealloc
+- (void) dealloc
 {
     [isbn release], isbn = nil;
+    self.delegate = nil;
     [super dealloc];
 }
 
-- (id)initWithFrame:(CGRect)frame isbn:(id)aIsbn
+- (id) initWithFrame:(CGRect)frame isbn:(id)aIsbn
 {
     self = [super initWithFrame:frame];
     if (self) {
@@ -30,15 +31,6 @@
     }
     return self;
 }
-
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
-{
-    // Drawing code
-}
-*/
 
 - (void) jumpToPage:(NSInteger)page animated:(BOOL)animated
 {

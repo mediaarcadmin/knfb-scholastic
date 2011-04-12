@@ -7,7 +7,7 @@
 //
 
 #import "SCHBookShelfViewController.h"
-#import "BITTestPageViewController.h"
+#import "SCHReadingViewController.h"
 #import "BITReadingOptionsView.h"
 #import "SCHLibreAccessWebService.h"
 #import "SCHLocalDebug.h"
@@ -161,7 +161,7 @@
 	
 	NSLog(@"Showing book %@.", [book Title]);
 	
-	BITTestPageViewController *pageView = [[BITTestPageViewController alloc] initWithNibName:nil bundle:nil];
+	SCHReadingViewController *pageView = [[SCHReadingViewController alloc] initWithNibName:nil bundle:nil];
 	pageView.isbn = book.ContentIdentifier;
 	
 	BITReadingOptionsView *optionsView = [[BITReadingOptionsView alloc] initWithNibName:nil bundle:nil];
@@ -327,7 +327,7 @@
 	
 	NSLog(@"Showing book %@.", book.Title);
 	
-	BITTestPageViewController *pageView = [[BITTestPageViewController alloc] initWithNibName:nil bundle:nil];
+	SCHReadingViewController *pageView = [[SCHReadingViewController alloc] initWithNibName:nil bundle:nil];
 	pageView.isbn = book.ContentIdentifier;
 	
 	BITReadingOptionsView *optionsView = [[BITReadingOptionsView alloc] initWithNibName:nil bundle:nil];

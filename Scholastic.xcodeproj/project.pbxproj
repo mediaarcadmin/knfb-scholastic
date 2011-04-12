@@ -132,10 +132,6 @@
 		C908D85E133F91FA00661718 /* SCHLayoutView.m in Sources */ = {isa = PBXBuildFile; fileRef = C908D857133F91FA00661718 /* SCHLayoutView.m */; };
 		C908D85F133F91FA00661718 /* SCHReadingView.m in Sources */ = {isa = PBXBuildFile; fileRef = C908D859133F91FA00661718 /* SCHReadingView.m */; };
 		C908D860133F91FA00661718 /* SCHReadingView.m in Sources */ = {isa = PBXBuildFile; fileRef = C908D859133F91FA00661718 /* SCHReadingView.m */; };
-		C908D861133F91FA00661718 /* SCHReadingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C908D85B133F91FA00661718 /* SCHReadingViewController.m */; };
-		C908D862133F91FA00661718 /* SCHReadingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C908D85B133F91FA00661718 /* SCHReadingViewController.m */; };
-		C908D863133F91FA00661718 /* SCHReadingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C908D85C133F91FA00661718 /* SCHReadingViewController.xib */; };
-		C908D864133F91FA00661718 /* SCHReadingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C908D85C133F91FA00661718 /* SCHReadingViewController.xib */; };
 		C908D86D133F93FA00661718 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C908D865133F93FA00661718 /* Icon@2x.png */; };
 		C908D86E133F93FA00661718 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C908D865133F93FA00661718 /* Icon@2x.png */; };
 		C908D86F133F93FA00661718 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = C908D866133F93FA00661718 /* Icon.png */; };
@@ -473,8 +469,8 @@
 		F83D874712FC67A600227031 /* SCHSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9B1B12FC1B6B0099FB88 /* SCHSyncComponent.m */; };
 		F84CE156134C691D0044729E /* SCHNonDRMAuthenticationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F84CE155134C691D0044729E /* SCHNonDRMAuthenticationManager.m */; };
 		F84CE157134C691D0044729E /* SCHNonDRMAuthenticationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F84CE155134C691D0044729E /* SCHNonDRMAuthenticationManager.m */; };
-		F8509E9F12F0621E00197EB5 /* BITTestPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F8509E9312F0621E00197EB5 /* BITTestPageViewController.m */; };
-		F8509EA012F0621E00197EB5 /* BITTestPageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8509E9412F0621E00197EB5 /* BITTestPageViewController.xib */; };
+		F8509E9F12F0621E00197EB5 /* SCHReadingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F8509E9312F0621E00197EB5 /* SCHReadingViewController.m */; };
+		F8509EA012F0621E00197EB5 /* SCHReadingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8509E9412F0621E00197EB5 /* SCHReadingViewController.xib */; };
 		F8509EA112F0621E00197EB5 /* BITReadingOptionsView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8509E9712F0621E00197EB5 /* BITReadingOptionsView.m */; };
 		F8509EA212F0621E00197EB5 /* BITReadingOptionsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8509E9812F0621E00197EB5 /* BITReadingOptionsView.xib */; };
 		F8509EA312F0621E00197EB5 /* BITScrubberView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8509E9B12F0621E00197EB5 /* BITScrubberView.m */; };
@@ -497,7 +493,7 @@
 		F8509F0C12F063C900197EB5 /* TooManyToys.xps in Resources */ = {isa = PBXBuildFile; fileRef = F8509E7D12F0620F00197EB5 /* TooManyToys.xps */; };
 		F8509F0D12F063C900197EB5 /* Cars.xps in Resources */ = {isa = PBXBuildFile; fileRef = F8509E7E12F0620F00197EB5 /* Cars.xps */; };
 		F8509F0E12F063C900197EB5 /* Cook Yourself Thin.xps in Resources */ = {isa = PBXBuildFile; fileRef = F8509E7F12F0621000197EB5 /* Cook Yourself Thin.xps */; };
-		F8509F0F12F063C900197EB5 /* BITTestPageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8509E9412F0621E00197EB5 /* BITTestPageViewController.xib */; };
+		F8509F0F12F063C900197EB5 /* SCHReadingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8509E9412F0621E00197EB5 /* SCHReadingViewController.xib */; };
 		F8509F1012F063C900197EB5 /* BITReadingOptionsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8509E9812F0621E00197EB5 /* BITReadingOptionsView.xib */; };
 		F8509F1212F063C900197EB5 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
 		F8509F1312F063C900197EB5 /* AppDelegate_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* AppDelegate_iPad.m */; };
@@ -530,7 +526,7 @@
 		F8509F3512F063C900197EB5 /* LibreAccessServiceSvc.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF508612E739E900E374F7 /* LibreAccessServiceSvc.m */; };
 		F8509F3712F063C900197EB5 /* NSManagedObjectContext+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF570912ED977C00E374F7 /* NSManagedObjectContext+Extensions.m */; };
 		F8509F3812F063C900197EB5 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF579612EDBE6E00E374F7 /* SFHFKeychainUtils.m */; };
-		F8509F3C12F063C900197EB5 /* BITTestPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F8509E9312F0621E00197EB5 /* BITTestPageViewController.m */; };
+		F8509F3C12F063C900197EB5 /* SCHReadingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F8509E9312F0621E00197EB5 /* SCHReadingViewController.m */; };
 		F8509F3D12F063C900197EB5 /* BITReadingOptionsView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8509E9712F0621E00197EB5 /* BITReadingOptionsView.m */; };
 		F8509F3E12F063C900197EB5 /* BITScrubberView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8509E9B12F0621E00197EB5 /* BITScrubberView.m */; };
 		F8509F4012F063C900197EB5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
@@ -1029,9 +1025,6 @@
 		C908D857133F91FA00661718 /* SCHLayoutView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHLayoutView.m; path = Shared/SCHLayoutView.m; sourceTree = "<group>"; };
 		C908D858133F91FA00661718 /* SCHReadingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHReadingView.h; path = Shared/SCHReadingView.h; sourceTree = "<group>"; };
 		C908D859133F91FA00661718 /* SCHReadingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHReadingView.m; path = Shared/SCHReadingView.m; sourceTree = "<group>"; };
-		C908D85A133F91FA00661718 /* SCHReadingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHReadingViewController.h; path = Shared/SCHReadingViewController.h; sourceTree = "<group>"; };
-		C908D85B133F91FA00661718 /* SCHReadingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHReadingViewController.m; path = Shared/SCHReadingViewController.m; sourceTree = "<group>"; };
-		C908D85C133F91FA00661718 /* SCHReadingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SCHReadingViewController.xib; path = Shared/SCHReadingViewController.xib; sourceTree = "<group>"; };
 		C908D865133F93FA00661718 /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon@2x.png"; path = "Resources/Icon@2x.png"; sourceTree = "<group>"; };
 		C908D866133F93FA00661718 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon.png; path = Resources/Icon.png; sourceTree = "<group>"; };
 		C908D867133F93FA00661718 /* Icon-Small@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-Small@2x.png"; path = "Resources/Icon-Small@2x.png"; sourceTree = "<group>"; };
@@ -1248,9 +1241,9 @@
 		F8509E7D12F0620F00197EB5 /* TooManyToys.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = TooManyToys.xps; path = "Shared/Debug Books/TooManyToys.xps"; sourceTree = "<group>"; };
 		F8509E7E12F0620F00197EB5 /* Cars.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = Cars.xps; path = "Shared/Debug Books/Cars.xps"; sourceTree = "<group>"; };
 		F8509E7F12F0621000197EB5 /* Cook Yourself Thin.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Cook Yourself Thin.xps"; path = "Shared/Debug Books/Cook Yourself Thin.xps"; sourceTree = "<group>"; };
-		F8509E9212F0621E00197EB5 /* BITTestPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BITTestPageViewController.h; sourceTree = "<group>"; };
-		F8509E9312F0621E00197EB5 /* BITTestPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BITTestPageViewController.m; sourceTree = "<group>"; };
-		F8509E9412F0621E00197EB5 /* BITTestPageViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BITTestPageViewController.xib; sourceTree = "<group>"; };
+		F8509E9212F0621E00197EB5 /* SCHReadingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; path = SCHReadingViewController.h; sourceTree = "<group>"; };
+		F8509E9312F0621E00197EB5 /* SCHReadingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHReadingViewController.m; sourceTree = "<group>"; };
+		F8509E9412F0621E00197EB5 /* SCHReadingViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SCHReadingViewController.xib; sourceTree = "<group>"; };
 		F8509E9612F0621E00197EB5 /* BITReadingOptionsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BITReadingOptionsView.h; sourceTree = "<group>"; };
 		F8509E9712F0621E00197EB5 /* BITReadingOptionsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BITReadingOptionsView.m; sourceTree = "<group>"; };
 		F8509E9812F0621E00197EB5 /* BITReadingOptionsView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BITReadingOptionsView.xib; sourceTree = "<group>"; };
@@ -1386,7 +1379,7 @@
 				A3A38E5D133A80F700C325A3 /* Certificates */,
 				F8509E9912F0621E00197EB5 /* Scrubber View */,
 				F8509E9512F0621E00197EB5 /* Reading Options View */,
-				F8509E9112F0621E00197EB5 /* Page View */,
+				F8509E9112F0621E00197EB5 /* Book Reading */,
 				F8509E8A12F0621E00197EB5 /* Renderer */,
 				2860E387111B897F00E27156 /* AppDelegate_iPhone.h */,
 				2860E388111B897F00E27156 /* AppDelegate_iPhone.m */,
@@ -2218,9 +2211,6 @@
 		C9CEF429133A1BF300FB5BE0 /* Book Reading */ = {
 			isa = PBXGroup;
 			children = (
-				C908D85A133F91FA00661718 /* SCHReadingViewController.h */,
-				C908D85B133F91FA00661718 /* SCHReadingViewController.m */,
-				C908D85C133F91FA00661718 /* SCHReadingViewController.xib */,
 				C908D858133F91FA00661718 /* SCHReadingView.h */,
 				C908D859133F91FA00661718 /* SCHReadingView.m */,
 				C908D8AF133F945300661718 /* SCHFlowView.h */,
@@ -2307,14 +2297,14 @@
 			name = Renderer;
 			sourceTree = "<group>";
 		};
-		F8509E9112F0621E00197EB5 /* Page View */ = {
+		F8509E9112F0621E00197EB5 /* Book Reading */ = {
 			isa = PBXGroup;
 			children = (
-				F8509E9212F0621E00197EB5 /* BITTestPageViewController.h */,
-				F8509E9312F0621E00197EB5 /* BITTestPageViewController.m */,
-				F8509E9412F0621E00197EB5 /* BITTestPageViewController.xib */,
+				F8509E9212F0621E00197EB5 /* SCHReadingViewController.h */,
+				F8509E9312F0621E00197EB5 /* SCHReadingViewController.m */,
+				F8509E9412F0621E00197EB5 /* SCHReadingViewController.xib */,
 			);
-			name = "Page View";
+			name = "Book Reading";
 			sourceTree = "<group>";
 		};
 		F8509E9512F0621E00197EB5 /* Reading Options View */ = {
@@ -2616,14 +2606,13 @@
 				529385B612DF231800045B44 /* SCHSettingsViewController.xib in Resources */,
 				5293883412E03CD000045B44 /* SCHBookShelfViewController.xib in Resources */,
 				52EF4E6012E6E01C00E374F7 /* SCHLoginViewController.xib in Resources */,
-				F8509EA012F0621E00197EB5 /* BITTestPageViewController.xib in Resources */,
+				F8509EA012F0621E00197EB5 /* SCHReadingViewController.xib in Resources */,
 				F8509EA212F0621E00197EB5 /* BITReadingOptionsView.xib in Resources */,
 				C923B15C12F6B0280054426F /* SCHMultipleBookshelvesController.xib in Resources */,
 				52F559C7130BEA57002C8BDF /* SCHProfilePasswordViewController.xib in Resources */,
 				F8678D8B133218D8001FDB2F /* ScholasticFeatureCompatibility.plist in Resources */,
 				A3A38E61133A811400C325A3 /* devcerttemplate.dat in Resources */,
 				A3A38E62133A811400C325A3 /* iphonecert.dat in Resources */,
-				C908D863133F91FA00661718 /* SCHReadingViewController.xib in Resources */,
 				C908D86D133F93FA00661718 /* Icon@2x.png in Resources */,
 				C908D86F133F93FA00661718 /* Icon.png in Resources */,
 				C908D871133F93FA00661718 /* Icon-Small@2x.png in Resources */,
@@ -2744,14 +2733,13 @@
 				F8509F0C12F063C900197EB5 /* TooManyToys.xps in Resources */,
 				F8509F0D12F063C900197EB5 /* Cars.xps in Resources */,
 				F8509F0E12F063C900197EB5 /* Cook Yourself Thin.xps in Resources */,
-				F8509F0F12F063C900197EB5 /* BITTestPageViewController.xib in Resources */,
+				F8509F0F12F063C900197EB5 /* SCHReadingViewController.xib in Resources */,
 				F8509F1012F063C900197EB5 /* BITReadingOptionsView.xib in Resources */,
 				C923B15B12F6B0280054426F /* SCHMultipleBookshelvesController.xib in Resources */,
 				52F559C9130BEA57002C8BDF /* SCHProfilePasswordViewController.xib in Resources */,
 				F8678D8A133218D8001FDB2F /* ScholasticFeatureCompatibility.plist in Resources */,
 				A3A38E63133A811400C325A3 /* devcerttemplate.dat in Resources */,
 				A3A38E64133A811400C325A3 /* iphonecert.dat in Resources */,
-				C908D864133F91FA00661718 /* SCHReadingViewController.xib in Resources */,
 				C908D86E133F93FA00661718 /* Icon@2x.png in Resources */,
 				C908D870133F93FA00661718 /* Icon.png in Resources */,
 				C908D872133F93FA00661718 /* Icon-Small@2x.png in Resources */,
@@ -2889,7 +2877,7 @@
 				52EF508712E739E900E374F7 /* LibreAccessServiceSvc.m in Sources */,
 				52EF570A12ED977C00E374F7 /* NSManagedObjectContext+Extensions.m in Sources */,
 				52EF579712EDBE6E00E374F7 /* SFHFKeychainUtils.m in Sources */,
-				F8509E9F12F0621E00197EB5 /* BITTestPageViewController.m in Sources */,
+				F8509E9F12F0621E00197EB5 /* SCHReadingViewController.m in Sources */,
 				F8509EA112F0621E00197EB5 /* BITReadingOptionsView.m in Sources */,
 				F8509EA312F0621E00197EB5 /* BITScrubberView.m in Sources */,
 				C923A27D12F06FE60054426F /* MRGridView.m in Sources */,
@@ -2955,7 +2943,6 @@
 				A3A38E09133A803500C325A3 /* SCHDrmSession.m in Sources */,
 				C908D85D133F91FA00661718 /* SCHLayoutView.m in Sources */,
 				C908D85F133F91FA00661718 /* SCHReadingView.m in Sources */,
-				C908D861133F91FA00661718 /* SCHReadingViewController.m in Sources */,
 				C908D8B1133F945300661718 /* SCHFlowView.m in Sources */,
 				F878D6AC134498FB00DDB98B /* SCHBookURLRequestOperation.m in Sources */,
 				F878D6AE134498FB00DDB98B /* SCHDownloadBookFileOperation.m in Sources */,
@@ -3041,7 +3028,7 @@
 				F8509F3512F063C900197EB5 /* LibreAccessServiceSvc.m in Sources */,
 				F8509F3712F063C900197EB5 /* NSManagedObjectContext+Extensions.m in Sources */,
 				F8509F3812F063C900197EB5 /* SFHFKeychainUtils.m in Sources */,
-				F8509F3C12F063C900197EB5 /* BITTestPageViewController.m in Sources */,
+				F8509F3C12F063C900197EB5 /* SCHReadingViewController.m in Sources */,
 				F8509F3D12F063C900197EB5 /* BITReadingOptionsView.m in Sources */,
 				F8509F3E12F063C900197EB5 /* BITScrubberView.m in Sources */,
 				C923A27A12F06FE60054426F /* MRGridView.m in Sources */,
@@ -3107,7 +3094,6 @@
 				A3A38E0B133A803500C325A3 /* SCHDrmSession.m in Sources */,
 				C908D85E133F91FA00661718 /* SCHLayoutView.m in Sources */,
 				C908D860133F91FA00661718 /* SCHReadingView.m in Sources */,
-				C908D862133F91FA00661718 /* SCHReadingViewController.m in Sources */,
 				C908D8B2133F945300661718 /* SCHFlowView.m in Sources */,
 				F878D6AD134498FB00DDB98B /* SCHBookURLRequestOperation.m in Sources */,
 				F878D6AF134498FB00DDB98B /* SCHDownloadBookFileOperation.m in Sources */,
