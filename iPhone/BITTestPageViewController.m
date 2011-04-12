@@ -99,7 +99,7 @@
     }
 	NSLog(@"------");
     
-    NSLog(@"A badger is defined thusly: %@", [[SCHDictionaryManager sharedDictionaryManager] HTMLForWord:@"badger"]);
+    // NSLog(@"A badger is defined thusly: %@", [[SCHDictionaryManager sharedDictionaryManager] HTMLForWord:@"badger"]);
 
 	scrubberInfoView.layer.cornerRadius = 5.0f;
 	scrubberInfoView.layer.masksToBounds = YES;

@@ -190,6 +190,11 @@ static SCHDictionaryManager *sharedManager = nil;
 
 - (NSString *) HTMLForWord: (NSString *) dictionaryWord
 {
+    if ([self dictionaryProcessingState] != SCHDictionaryProcessingStateReady) {
+        NSLog(@"Dictionary is not ready yet!");
+        return nil;
+    }
+    
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     // Edit the entity name as appropriate.
     NSEntityDescription *entity = [NSEntityDescription entityForName:kSCHDictionaryWordForm 
