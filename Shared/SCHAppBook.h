@@ -26,6 +26,7 @@ static NSString * const kSCHAppBookState = @"State";
 static NSString * const kSCHAppBookCoverURL = @"BookCoverURL";
 static NSString * const kSCHAppBookFileURL = @"BookFileURL";
 static NSString * const kSCHAppBookTextFlowPageRanges = @"TextFlowPageRanges";
+static NSString * const kSCHAppBookSmartZoomPageMarkers = @"SmartZoomPageMarkers";
 static NSString * const kSCHAppBookLayoutPageEquivalentCount = @"LayoutPageEquivalentCount";
 
 

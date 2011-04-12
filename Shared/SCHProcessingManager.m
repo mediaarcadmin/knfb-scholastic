@@ -15,6 +15,7 @@
 #import "SCHThumbnailOperation.h"
 #import "SCHRightsParsingOperation.h"
 #import "SCHTextFlowPreParseOperation.h"
+#import "SCHSmartZoomPreParseOperation.h"
 #import "SCHFlowPaginateOperation.h"
 #import "SCHBookManager.h"
 #import "SCHAsyncBookCoverImageView.h"
@@ -363,6 +364,25 @@ static SCHProcessingManager *sharedManager = nil;
 			break;
 		}	
             
+            // *** Book file needs smart zoom pre-parsing ***
+		case SCHBookProcessingStateReadyForSmartZoomPreParse:
+		{
+			// create pre-parse operation
+			SCHSmartZoomPreParseOperation *smartzoomOp = [[SCHSmartZoomPreParseOperation alloc] init];
+			smartzoomOp.isbn = isbn;
+			
+			// the book will be redispatched on completion
+			[smartzoomOp setCompletionBlock:^{
+				[self redispatchISBN:isbn];
+			}];
+			
+			// add the operation to the local processing queue
+			[self.localProcessingQueue addOperation:smartzoomOp];
+			[smartzoomOp release];
+			return;
+			break;
+		}	
+            
 			// *** Book file needs pagination ***
 		case SCHBookProcessingStateReadyForPagination:
 		{
@@ -412,6 +432,7 @@ static SCHProcessingManager *sharedManager = nil;
 		case SCHBookProcessingStateDownloadStarted:
 		case SCHBookProcessingStateReadyForRightsParsing:
         case SCHBookProcessingStateReadyForTextFlowPreParse:
+        case SCHBookProcessingStateReadyForSmartZoomPreParse:
         case SCHBookProcessingStateReadyForPagination:
 			[self processISBN:isbn];
 			break;
@@ -434,6 +455,7 @@ static SCHProcessingManager *sharedManager = nil;
 		book.processingState == SCHBookProcessingStateReadyForPagination ||
 		book.processingState == SCHBookProcessingStateReadyForRightsParsing ||
 		book.processingState == SCHBookProcessingStateReadyForTextFlowPreParse ||
+        book.processingState == SCHBookProcessingStateReadyForSmartZoomPreParse ||
 		book.processingState == SCHBookProcessingStateReadyToRead) {
 		[self checkAndDispatchThumbsForISBN:isbn];
 	}

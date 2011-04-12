@@ -170,6 +170,8 @@
 		C908D894133F941A00661718 /* Profile.png in Resources */ = {isa = PBXBuildFile; fileRef = C908D88E133F941A00661718 /* Profile.png */; };
 		C908D8B1133F945300661718 /* SCHFlowView.m in Sources */ = {isa = PBXBuildFile; fileRef = C908D8B0133F945300661718 /* SCHFlowView.m */; };
 		C908D8B2133F945300661718 /* SCHFlowView.m in Sources */ = {isa = PBXBuildFile; fileRef = C908D8B0133F945300661718 /* SCHFlowView.m */; };
+		C90AB9A6135495C5009DC49D /* SCHSmartZoomPreParseOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = C90AB9A5135495C5009DC49D /* SCHSmartZoomPreParseOperation.m */; };
+		C90AB9A7135495C5009DC49D /* SCHSmartZoomPreParseOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = C90AB9A5135495C5009DC49D /* SCHSmartZoomPreParseOperation.m */; };
 		C923A27A12F06FE60054426F /* MRGridView.m in Sources */ = {isa = PBXBuildFile; fileRef = C923A27312F06FE60054426F /* MRGridView.m */; };
 		C923A27B12F06FE60054426F /* MRGridViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C923A27512F06FE60054426F /* MRGridViewCell.m */; };
 		C923A27C12F06FE60054426F /* MRGridViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C923A27712F06FE60054426F /* MRGridViewController.m */; };
@@ -1048,6 +1050,8 @@
 		C908D88E133F941A00661718 /* Profile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Profile.png; path = Resources/Profile.png; sourceTree = "<group>"; };
 		C908D8AF133F945300661718 /* SCHFlowView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHFlowView.h; path = Shared/SCHFlowView.h; sourceTree = "<group>"; };
 		C908D8B0133F945300661718 /* SCHFlowView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHFlowView.m; path = Shared/SCHFlowView.m; sourceTree = "<group>"; };
+		C90AB9A4135495C5009DC49D /* SCHSmartZoomPreParseOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHSmartZoomPreParseOperation.h; path = Shared/SCHSmartZoomPreParseOperation.h; sourceTree = "<group>"; };
+		C90AB9A5135495C5009DC49D /* SCHSmartZoomPreParseOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHSmartZoomPreParseOperation.m; path = Shared/SCHSmartZoomPreParseOperation.m; sourceTree = "<group>"; };
 		C923A27212F06FE60054426F /* MRGridView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MRGridView.h; path = Shared/Libraries/MRGridView/MRGridView.h; sourceTree = "<group>"; };
 		C923A27312F06FE60054426F /* MRGridView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MRGridView.m; path = Shared/Libraries/MRGridView/MRGridView.m; sourceTree = "<group>"; };
 		C923A27412F06FE60054426F /* MRGridViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MRGridViewCell.h; path = Shared/Libraries/MRGridView/MRGridViewCell.h; sourceTree = "<group>"; };
@@ -2373,6 +2377,8 @@
 				F878D6A7134498FB00DDB98B /* SCHRightsParsingOperation.m */,
 				F878D6A8134498FB00DDB98B /* SCHTextFlowPreParseOperation.h */,
 				F878D6A9134498FB00DDB98B /* SCHTextFlowPreParseOperation.m */,
+				C90AB9A4135495C5009DC49D /* SCHSmartZoomPreParseOperation.h */,
+				C90AB9A5135495C5009DC49D /* SCHSmartZoomPreParseOperation.m */,
 				F878D6AA134498FB00DDB98B /* SCHThumbnailOperation.h */,
 				F878D6AB134498FB00DDB98B /* SCHThumbnailOperation.m */,
 				F878D77A1344A1E300DDB98B /* SCHXPSCoverImageOperation.h */,
@@ -2996,6 +3002,7 @@
 				F85E0309134F59E800E81D58 /* SCHCustomToolbar.m in Sources */,
 				C9EFB28E134F782D00ADF905 /* SCHXPSProvider.m in Sources */,
 				C9EFB293134F795900ADF905 /* SCHXPSURLProtocol.m in Sources */,
+				C90AB9A6135495C5009DC49D /* SCHSmartZoomPreParseOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3147,6 +3154,7 @@
 				F85E030A134F59E800E81D58 /* SCHCustomToolbar.m in Sources */,
 				C9EFB28F134F782D00ADF905 /* SCHXPSProvider.m in Sources */,
 				C9EFB294134F795900ADF905 /* SCHXPSURLProtocol.m in Sources */,
+				C90AB9A7135495C5009DC49D /* SCHSmartZoomPreParseOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

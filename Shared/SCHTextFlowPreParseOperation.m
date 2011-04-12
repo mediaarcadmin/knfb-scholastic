@@ -91,7 +91,7 @@ static void pageFileXMLParsingStartElementHandler(void *ctx, const XML_Char *nam
 
 - (void) updateBookWithSuccess
 {
-    [[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateReadyForPagination];
+    [[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateReadyForSmartZoomPreParse];
     [[[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn] setProcessing:NO];
     self.finished = YES;
     self.executing = NO;
