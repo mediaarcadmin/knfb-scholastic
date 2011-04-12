@@ -85,33 +85,39 @@ static void smartZoomFileXMLParsingStartElementHandler(void *ctx, const XML_Char
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
     
     SCHXPSProvider *xpsProvider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.isbn];
-    NSData *data = [xpsProvider dataForComponentAtPath:KNFBXPSKNFBSmartZoomFile];
+    BOOL hasSmartZoom = [xpsProvider componentExistsAtPath:KNFBXPSKNFBSmartZoomFile];
     
-    if (nil == data) {    
-        // Not all books have this data
-        [self updateBookWithSuccess];
-        [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.isbn];
+    if (hasSmartZoom) {
+
+        NSData *data = [xpsProvider dataForComponentAtPath:KNFBXPSKNFBSmartZoomFile];
+
+        if (nil == data) {    
+            // Not all books have this data
+            [self updateBookWithFailure];
+            [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.isbn];
+            
+            [pool drain];
+            return;
+        }
         
-        [pool drain];
-        return;
+        // Parse SmartZoom file
+        XML_Parser pageMarkerFileParser = XML_ParserCreate(NULL);
+        XML_SetStartElementHandler(pageMarkerFileParser, smartZoomFileXMLParsingStartElementHandler);
+        
+        SCHSmartZoomXMLParsingContext context = { [NSMutableSet set], &pageMarkerFileParser };
+        
+        XML_SetUserData(pageMarkerFileParser, &context);    
+        if (!XML_Parse(pageMarkerFileParser, [data bytes], [data length], XML_TRUE)) {
+            NSLog(@"SmartZoom parsing error: '%s' in file: '%@'", (char *)XML_ErrorString(XML_GetErrorCode(pageMarkerFileParser)), KNFBXPSKNFBSmartZoomFile);
+        }
+        XML_ParserFree(pageMarkerFileParser);
+        
+        [[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn setValue:context.buildPageMarkers forKey:kSCHAppBookSmartZoomPageMarkers];
+
     }
-    
-    // Parse SmartZoom file
-    XML_Parser pageMarkerFileParser = XML_ParserCreate(NULL);
-    XML_SetStartElementHandler(pageMarkerFileParser, smartZoomFileXMLParsingStartElementHandler);
-    
-    SCHSmartZoomXMLParsingContext context = { [NSMutableSet set], &pageMarkerFileParser };
-    
-    XML_SetUserData(pageMarkerFileParser, &context);    
-    if (!XML_Parse(pageMarkerFileParser, [data bytes], [data length], XML_TRUE)) {
-        NSLog(@"SmartZoom parsing error: '%s' in file: '%@'", (char *)XML_ErrorString(XML_GetErrorCode(pageMarkerFileParser)), KNFBXPSKNFBSmartZoomFile);
-    }
-    XML_ParserFree(pageMarkerFileParser);
     
     [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.isbn];
-    
-    [[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn setValue:context.buildPageMarkers forKey:kSCHAppBookSmartZoomPageMarkers];
-    
+        
     [self updateBookWithSuccess];
     
     [pool drain];
