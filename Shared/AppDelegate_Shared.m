@@ -156,7 +156,7 @@ static NSString* const prModelCertFilename = @"iphonecert.dat";
     [self copyLocalFilesIfMissing];
 #endif
 	
-	[SCHDictionaryManager sharedDictionaryManager];
+	[[SCHDictionaryManager sharedDictionaryManager] checkIfUpdateNeeded];
 	
 	[self ensureCorrectCertsAvailable];
 	
