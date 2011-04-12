@@ -384,8 +384,8 @@ static SCHProcessingManager *sharedManager = nil;
             
         case SCHBookProcessingStateReadyForBookFileDownload:
 		{
-        // FIXME: Gordon - if you process books then switch off space saver and restart teh app this state is received
-            NSLog(@"SCHBookProcessingStateReadyForBookFileDownload state");
+            // recheck the book state - needs downloading if space saver mode is off
+            [self redispatchISBN:isbn];
             return;
             break;
         }
