@@ -118,13 +118,20 @@
 	
 	self.navigationController.navigationBarHidden = YES;
 
-    [pageView addSubview:self.eucPageView];
 	
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackTranslucent];	
 	CGRect frame = topToolbar.frame;
 	frame.origin.y = 20;
 	topToolbar.frame = frame;
     
+    [self.view addSubview:self.eucPageView];
+    [self.view sendSubviewToBack:self.eucPageView];
+}
+
+- (void) viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    self.eucPageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 }
 
 - (void) viewWillDisappear:(BOOL)animated
@@ -133,15 +140,13 @@
     [super viewWillDisappear:animated];
 }
 
-#pragma mark - Autorotation
-
+#pragma mark - Rotation
 
 // Override to allow orientations other than the default portrait orientation.
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     // Return YES for supported orientations.
     return YES;
 }
-
 
 #pragma mark -
 #pragma mark Button Actions

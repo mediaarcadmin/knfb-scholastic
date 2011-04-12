@@ -26,7 +26,6 @@
     if (self) {
         // Initialization code
         isbn = [aIsbn retain];
-        self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         self.opaque = YES;
     }
     return self;
