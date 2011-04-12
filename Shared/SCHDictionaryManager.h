@@ -13,10 +13,10 @@ static NSString* const kSCHDictionaryDownloadPercentageUpdate = @"SCHDictionaryD
 typedef enum {
 	SCHDictionaryProcessingStateError = 0,
 	SCHDictionaryProcessingStateNeedsManifest,
+	SCHDictionaryProcessingStateManifestVersionCheck,
 	SCHDictionaryProcessingStateNeedsDownload,
 	SCHDictionaryProcessingStateNeedsUnzip,
 	SCHDictionaryProcessingStateNeedsParse,
-	SCHDictionaryProcessingStateManifestVersionCheck,
 	SCHDictionaryProcessingStateReady
 } SCHDictionaryProcessingState;
 
@@ -59,12 +59,14 @@ typedef enum {
 - (SCHDictionaryProcessingState) dictionaryProcessingState;
 
 // parsing methods called by the parsing operation
-- (void)initialParseEntryTable;
-- (void)initialParseWordFormTable;
+- (void) initialParseEntryTable;
+- (void) initialParseWordFormTable;
 - (void) updateParseEntryTable;
 - (void) updateParseWordFormTable;
 
 // HTML definition for a word
 - (NSString *) HTMLForWord: (NSString *) dictionaryWord;
+
+- (void) checkIfUpdateNeeded;
 
 @end

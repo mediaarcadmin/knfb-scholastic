@@ -422,6 +422,11 @@ static SCHDictionaryManager *sharedManager = nil;
 
 - (void) checkOperatingState
 {
+    // Dictionary can be disabled using preprocessor flag
+#if DICTIONARY_DOWNLOAD_DISABLED
+    NSLog(@"****************** Dictionary download is disabled. ******************");
+    return;
+#endif
     
 	NSLog(@"*** wifi: %@ connectionIdle: %@ ***", self.wifiAvailable?@"Yes":@"No", self.connectionIdle?@"Yes":@"No");
 	
@@ -795,6 +800,47 @@ static SCHDictionaryManager *sharedManager = nil;
     }
 }
 
+#pragma mark - Update Check
+
+- (void) checkIfUpdateNeeded
+{
+    SCHDictionaryProcessingState state = [self dictionaryProcessingState];
+    
+    if (state == SCHDictionaryProcessingStateError || state == SCHDictionaryProcessingStateReady) {
+        
+		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        
+        // check to see if we need to do an update
+        bool doUpdate = NO;
+        
+        NSDate *lastPrefUpdate = [defaults objectForKey:@"lastDictionaryUpdateDate"];
+        NSDate *currentDate = [[NSDate alloc] init];
+        
+        // if there's no default, set the current date
+        if (lastPrefUpdate == nil) {
+            [defaults setValue:currentDate forKey:@"lastDictionaryUpdateDate"];
+            [defaults synchronize];
+            doUpdate = YES;
+        } else {
+            double timeInterval = [currentDate timeIntervalSinceDate:lastPrefUpdate];
+            
+            // have we updated in the last 24 hours?
+            if (timeInterval >= 86400) {
+                [defaults setValue:currentDate forKey:@"lastDictionaryUpdateDate"];
+                [defaults synchronize];					
+            }
+        }		
+        
+        [currentDate release];
+        
+        if (doUpdate) {
+            NSLog(@"Dictionary needs an update check.");
+            [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNeedsManifest];
+        }
+    }
+}
+
+
 #pragma mark -
 #pragma mark Dictionary Parsing Methods
 
@@ -837,6 +883,7 @@ static SCHDictionaryManager *sharedManager = nil;
         }
         
         //        NSLog(@"Word: %@ Line offset: %ld", [NSString stringWithCString:headword encoding:NSUTF8StringEncoding], currentOffset);
+        
 		SCHDictionaryEntry *entry = [NSEntityDescription insertNewObjectForEntityForName:kSCHDictionaryEntry inManagedObjectContext:context];
         entry.word = [NSString stringWithCString:headword encoding:NSUTF8StringEncoding];
         entry.baseWordID = [NSString stringWithCString:entryID encoding:NSUTF8StringEncoding];
