@@ -12,7 +12,7 @@
 
 @class SCHXPSProvider;
 
-@interface SCHReadingViewController : UIViewController <UIScrollViewDelegate, BITScrubberViewDelegate, SCHReadingViewDelegate> {
+@interface SCHReadingViewController : UIViewController <BITScrubberViewDelegate, SCHReadingViewDelegate> {
     IBOutlet UIView    *pageView;
 	
 	IBOutlet UIToolbar *topToolbar;

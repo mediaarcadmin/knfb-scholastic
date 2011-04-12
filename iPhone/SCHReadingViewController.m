@@ -133,6 +133,9 @@
     [super viewWillDisappear:animated];
 }
 
+#pragma mark - Autorotation
+
+
 // Override to allow orientations other than the default portrait orientation.
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     // Return YES for supported orientations.
@@ -209,6 +212,7 @@
     [self.eucPageView jumpToPage:self.currentPage animated:YES];
 }
 
+#pragma mark - Toolbar Methods - including timer
 
 - (void) hideToolbarsFromTimer
 {
