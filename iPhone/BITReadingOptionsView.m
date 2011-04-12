@@ -71,7 +71,7 @@
 
 - (IBAction) showFlowView: (id) sender
 {
-    BITTestPageViewController *readingController = [[BITTestPageViewController alloc] initWithNibName:nil bundle:nil isbn:self.isbn];
+    SCHReadingViewController *readingController = [[SCHReadingViewController alloc] initWithNibName:nil bundle:nil isbn:self.isbn];
     readingController.flowView = YES;
     [self.navigationController pushViewController:readingController animated:YES];
     [readingController release];
@@ -82,7 +82,7 @@
 
 - (IBAction) showFixedView: (id) sender
 {
-    BITTestPageViewController *readingController = [[BITTestPageViewController alloc] initWithNibName:nil bundle:nil isbn:self.isbn];
+    SCHReadingViewController *readingController = [[SCHReadingViewController alloc] initWithNibName:nil bundle:nil isbn:self.isbn];
     readingController.flowView = NO;
     [self.navigationController pushViewController:readingController animated:YES];
     [readingController release];

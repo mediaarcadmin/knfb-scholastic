@@ -57,8 +57,8 @@
         eucBookView.vibratesOnInvalidTurn = NO;
         [eucBookView setPageTexture:[UIImage imageNamed: @"paper-white.png"] isDark:NO];
         
-        [eucBookView addObserver:[self superview] forKeyPath:@"pageCount" options:NSKeyValueObservingOptionInitial context:NULL];
-        [eucBookView addObserver:[self superview] forKeyPath:@"pageNumber" options:NSKeyValueObservingOptionInitial context:NULL];
+        [eucBookView addObserver:self forKeyPath:@"pageCount" options:NSKeyValueObservingOptionInitial context:NULL];
+        [eucBookView addObserver:self forKeyPath:@"pageNumber" options:NSKeyValueObservingOptionInitial context:NULL];
             
         [self addSubview:eucBookView];
     }
@@ -66,8 +66,8 @@
 
 - (void)dealloc
 {
-    [eucBookView removeObserver:[self superview] forKeyPath:@"pageCount"];
-    [eucBookView removeObserver:[self superview] forKeyPath:@"pageNumber"];
+    [eucBookView removeObserver:self forKeyPath:@"pageCount"];
+    [eucBookView removeObserver:self forKeyPath:@"pageNumber"];
     [eucBookView release], eucBookView = nil;
     
     SCHBookManager *bookManager = [SCHBookManager sharedBookManager];
@@ -98,6 +98,26 @@
 {
     NSLog(@"Flow view: jumping to page %d", page);
     [eucBookView goToPageNumber:page animated:animated];
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object
+                        change:(NSDictionary *)change context:(void *)context
+{
+    if([keyPath isEqualToString:@"pageNumber"]) {
+        if (self.delegate && [self.delegate respondsToSelector:@selector(readingView:hasMovedToPage:)]) {
+            [self.delegate readingView:self hasMovedToPage:eucBookView.pageNumber];
+        }
+    }
+
+//    } else { //if([keyPath isEqualToString:@"pageCount"] ) {
+//        self.pageCount = eucBookView.pageCount;
+}
+
+- (void)bookView:(EucBookView *)bookView unhandledTapAtPoint:(CGPoint)point
+{
+    if (self.delegate && [self.delegate respondsToSelector:@selector(unhandledTouchOnPageForReadingView:)]) {
+        [self.delegate unhandledTouchOnPageForReadingView:self];
+    }
 }
 
 

@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "BITTestPageViewController.h"
+#import "SCHReadingViewController.h"
 
 @interface BITReadingOptionsView : UIViewController {
 
@@ -21,7 +21,7 @@
 	
 }
 
-@property (readwrite, retain) BITTestPageViewController *pageViewController;
+@property (readwrite, retain) SCHReadingViewController *pageViewController;
 @property (readwrite, retain) NSString *isbn;
 @property (readwrite, retain) UIImage *thumbnailImage;
 

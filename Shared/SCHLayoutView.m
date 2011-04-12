@@ -11,6 +11,7 @@
 #import "SCHBookManager.h"
 #import <libEucalyptus/THPositionedCGContext.h>
 
+
 @interface SCHLayoutView()
 
 @property (nonatomic, retain) SCHXPSProvider *xpsProvider;
@@ -86,6 +87,7 @@
         [pageTurningView setPageTexture:[UIImage imageNamed: @"paper-white.png"] isDark:NO];
         [pageTurningView turnToPageAtIndex:0 animated:NO];
         [pageTurningView waitForAllPageImagesToBeAvailable];
+        
     }
 }
 
@@ -221,6 +223,13 @@
     return [self cropForPage:index + 1];
 }
 
+- (void)pageTurningView:(EucPageTurningView *)pageTurningView unhandledTapAtPoint:(CGPoint)point
+{
+    if (self.delegate && [self.delegate respondsToSelector:@selector(unhandledTouchOnPageForReadingView:)]) {
+        [self.delegate unhandledTouchOnPageForReadingView:self];
+    }
+}
+
 - (THPositionedCGContext *)pageTurningView:(EucPageTurningView *)aPageTurningView 
            RGBABitmapContextForPageAtIndex:(NSUInteger)index
                                   fromRect:(CGRect)rect 
@@ -242,5 +251,13 @@
     
     return [[[THPositionedCGContext alloc] initWithCGContext:CGContext backing:backing] autorelease];
 }
+
+- (void)pageTurningViewDidEndPageTurn:(EucPageTurningView *)aPageTurningView
+{
+    if (self.delegate && [self.delegate respondsToSelector:@selector(readingView:hasMovedToPage:)]) {
+        [self.delegate readingView:self hasMovedToPage:[aPageTurningView rightPageIndex]];
+    }
+}
+
 
 @end
