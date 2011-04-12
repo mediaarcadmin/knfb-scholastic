@@ -1105,6 +1105,8 @@ static SCHDictionaryManager *sharedManager = nil;
     if (error) {
         NSLog(@"Error while deleting entry table update file: %@", [error localizedDescription]);
     }
+    
+    [localFileManager release];
 
 }
 
@@ -1247,6 +1249,8 @@ static SCHDictionaryManager *sharedManager = nil;
     if (error) {
         NSLog(@"Error while deleting word form update file: %@", [error localizedDescription]);
     }
+    
+    [localFileManager release];
 
 }
 
