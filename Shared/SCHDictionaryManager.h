@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 
 static NSString* const kSCHDictionaryDownloadPercentageUpdate = @"SCHDictionaryDownloadPercentageUpdate";
+static NSString* const kSCHDictionaryYoungReader = @"YD";
+static NSString* const kSCHDictionaryOlderReader = @"OD";
 
 typedef enum {
 	SCHDictionaryProcessingStateError = 0,
@@ -64,8 +66,8 @@ typedef enum {
 - (void) updateParseEntryTable;
 - (void) updateParseWordFormTable;
 
-// HTML definition for a word
-- (NSString *) HTMLForWord: (NSString *) dictionaryWord;
+// HTML definition for a word (uses YD/OD as category)
+- (NSString *) HTMLForWord: (NSString *) dictionaryWord category: (NSString *) category;
 
 - (void) checkIfUpdateNeeded;
 

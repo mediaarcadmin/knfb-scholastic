@@ -193,10 +193,19 @@ static SCHDictionaryManager *sharedManager = nil;
 #pragma mark -
 #pragma mark Dictionary Definition Methods
 
-- (NSString *) HTMLForWord: (NSString *) dictionaryWord
+- (NSString *) HTMLForWord: (NSString *) dictionaryWord category: (NSString *) category
 {
     if ([self dictionaryProcessingState] != SCHDictionaryProcessingStateReady) {
         NSLog(@"Dictionary is not ready yet!");
+        return nil;
+    }
+    
+    // if the category isn't YD or OD, return
+    if (!category ||
+        ([category compare:kSCHDictionaryYoungReader] != NSOrderedSame && 
+         [category compare:kSCHDictionaryYoungReader] != NSOrderedSame)) 
+    {
+        NSLog(@"Warning: unrecognised category %@ in HTMLForWord.", category);
         return nil;
     }
     
@@ -244,7 +253,7 @@ static SCHDictionaryManager *sharedManager = nil;
     
     [fetchRequest setEntity:entity];
     
-    pred = [NSPredicate predicateWithFormat:@"baseWordID == %@", wordForm.baseWordID];
+    pred = [NSPredicate predicateWithFormat:@"baseWordID == %@ AND category == %@", wordForm.baseWordID, category];
     
     [fetchRequest setPredicate:pred];
     pred = nil;
@@ -687,10 +696,10 @@ static SCHDictionaryManager *sharedManager = nil;
         {
             NSLog(@"Dictionary is ready.");
             
-            NSLog(@"a: %@", [self HTMLForWord:@"a"]);
-            NSLog(@"badger: %@", [self HTMLForWord:@"badger"]);
-            NSLog(@"rosy: %@", [self HTMLForWord:@"rosy"]);
-            NSLog(@"teuchter: %@", [self HTMLForWord:@"teuchter"]);
+            NSLog(@"a: %@", [self HTMLForWord:@"a" category:kSCHDictionaryYoungReader]);
+            NSLog(@"badger: %@", [self HTMLForWord:@"badger" category:kSCHDictionaryYoungReader]);
+            NSLog(@"rosy: %@", [self HTMLForWord:@"rosy" category:kSCHDictionaryYoungReader]);
+            NSLog(@"teuchter: %@", [self HTMLForWord:@"teuchter" category:kSCHDictionaryYoungReader]);
         }
 		default:
 			break;
@@ -1149,7 +1158,8 @@ static SCHDictionaryManager *sharedManager = nil;
                         [fetchRequest setEntity:entity];
                         entity = nil;
                         
-                        NSPredicate *pred = [NSPredicate predicateWithFormat:@"baseWordID == %@", [NSString stringWithUTF8String:entryID]];
+                        NSPredicate *pred = [NSPredicate predicateWithFormat:@"baseWordID == %@ AND category == %@", 
+                                             [NSString stringWithUTF8String:entryID], [NSString stringWithUTF8String:level]];
                         
                         [fetchRequest setPredicate:pred];
                         pred = nil;
