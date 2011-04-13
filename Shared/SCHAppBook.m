@@ -230,6 +230,9 @@
         case SCHBookProcessingStateReadyForTextFlowPreParse:
 			status = @"Textflow...";
 			break;
+        case SCHBookProcessingStateReadyForSmartZoomPreParse:
+			status = @"Zoom...";
+			break;
         case SCHBookProcessingStateReadyForPagination:
 			status = @"Paginate...";
 			break;
