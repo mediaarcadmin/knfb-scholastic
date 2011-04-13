@@ -27,6 +27,7 @@
 
 
 @property (readwrite) BOOL toolbarsVisible;
+@property (readwrite, retain) NSArray *currentToolbars;
 @property (nonatomic, retain) NSTimer *initialFadeTimer;
 @property (readwrite) NSInteger currentPage;
 @property (nonatomic, assign) SCHXPSProvider *xpsProvider;
@@ -35,17 +36,32 @@
 
 @implementation SCHReadingViewController
 
-@synthesize isbn, flowView, eucPageView;
-@synthesize toolbarsVisible, initialFadeTimer, currentPage, xpsProvider;
+@synthesize isbn, flowView, eucPageView, youngerMode;
+@synthesize toolbarsVisible, initialFadeTimer, currentPage, xpsProvider, currentToolbars;
 
 #pragma mark - Memory Management
 
 - (void)dealloc {
     
+    [youngerBookTitle release];
+    [olderBookTitle release];
+    [youngerTopToolbar release];
+    [olderTopToolbar release];
+    [olderBottomToolbar release];
     [super dealloc];
 }
 
 - (void)viewDidUnload {
+    [youngerBookTitle release];
+    youngerBookTitle = nil;
+    [olderBookTitle release];
+    olderBookTitle = nil;
+    [youngerTopToolbar release];
+    youngerTopToolbar = nil;
+    [olderTopToolbar release];
+    olderTopToolbar = nil;
+    [olderBottomToolbar release];
+    olderBottomToolbar = nil;
     [super viewDidUnload];
     [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.isbn];
     self.xpsProvider = nil;
@@ -82,6 +98,11 @@
 	toolbarsVisible = YES;
     self.xpsProvider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.isbn];
 	
+    SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];
+    
+    youngerBookTitle.title = book.Title;
+    olderBookTitle.title = book.Title;
+    
 	pageScrubber.delegate = self;
 	pageScrubber.minimumValue = 1;
 	pageScrubber.maximumValue = [self.xpsProvider pageCount];
@@ -118,12 +139,31 @@
 	
 	self.navigationController.navigationBarHidden = YES;
 
-	
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackTranslucent];	
-	CGRect frame = topToolbar.frame;
-	frame.origin.y = 20;
-	topToolbar.frame = frame;
+	
+    self.youngerMode = YES;
     
+    if (youngerMode) {
+        CGRect frame = youngerTopToolbar.frame;
+        frame.origin.y = 20;
+        youngerTopToolbar.frame = frame;
+        [self.view addSubview:youngerTopToolbar];
+        
+        self.currentToolbars = [NSArray arrayWithObjects:youngerTopToolbar, scrubberToolbar, nil];
+    } else {
+        CGRect frame = olderTopToolbar.frame;
+        frame.origin.y = 20;
+        olderTopToolbar.frame = frame;
+        [self.view addSubview:olderTopToolbar];
+        
+        frame = olderBottomToolbar.frame;
+        frame.origin.y = CGRectGetMinY(scrubberToolbar.frame) - CGRectGetHeight(olderBottomToolbar.frame);
+        olderBottomToolbar.frame = frame;
+        [self.view addSubview:olderBottomToolbar];
+
+        self.currentToolbars = [NSArray arrayWithObjects:olderTopToolbar, olderBottomToolbar, scrubberToolbar, nil];
+    }
+        
     [self.view addSubview:self.eucPageView];
     [self.view sendSubviewToBack:self.eucPageView];
 }
@@ -239,18 +279,17 @@
 	}
 	
 	if (self.toolbarsVisible) {
-		[topToolbar setAlpha:1.0f];
-		[scrubberToolbar setAlpha:1.0f];
-		[bottomToolbar setAlpha:1.0f];
+        for (UIToolbar *toolbar in self.currentToolbars) {
+            [toolbar setAlpha:1.0f];
+        }
+        
 		[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
 	} else {
-		[topToolbar setAlpha:0.0f];
-		[scrubberToolbar setAlpha:0.0f];
-		[bottomToolbar setAlpha:0.0f];
+        for (UIToolbar *toolbar in self.currentToolbars) {
+            [toolbar setAlpha:0.0f];
+        }
+        
 		[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
-//		CGRect frame = topToolbar.frame;
-//		frame.origin.y = 0;
-//		topToolbar.frame = frame;
 	}
 	
 	if (animated) {
