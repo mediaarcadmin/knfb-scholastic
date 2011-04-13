@@ -9,15 +9,16 @@
 #import <UIKit/UIKit.h>
 #import "BITScrubberView.h"
 #import "SCHReadingView.h"
+#import "SCHCustomToolbar.h"
 
 @class SCHXPSProvider;
 
 @interface SCHReadingViewController : UIViewController <BITScrubberViewDelegate, SCHReadingViewDelegate> {
 	
-	IBOutlet UIToolbar          *scrubberToolbar;
-    IBOutlet UIToolbar          *youngerTopToolbar;
-    IBOutlet UIToolbar          *olderTopToolbar;
-    IBOutlet UIToolbar          *olderBottomToolbar;
+	IBOutlet SCHCustomToolbar   *scrubberToolbar;
+    IBOutlet SCHCustomToolbar   *youngerTopToolbar;
+    IBOutlet SCHCustomToolbar   *olderTopToolbar;
+    IBOutlet SCHCustomToolbar   *olderBottomToolbar;
 
 	IBOutlet BITScrubberView    *pageScrubber;
 

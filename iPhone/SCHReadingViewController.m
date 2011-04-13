@@ -120,6 +120,7 @@
     
     self.eucPageView.delegate = self;
     
+    
 }
 
 - (void) viewWillAppear:(BOOL)animated
@@ -141,6 +142,7 @@
 
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackTranslucent];	
 	
+    // FIXME: mode should not be set in here!
     self.youngerMode = YES;
     
     if (youngerMode) {
@@ -166,6 +168,12 @@
         
     [self.view addSubview:self.eucPageView];
     [self.view sendSubviewToBack:self.eucPageView];
+    
+    [scrubberToolbar setBackgroundWith:[UIImage imageNamed:@"ReadingCustomToolbarBGAlpha"]];
+    [youngerTopToolbar setBackgroundWith:[UIImage imageNamed:@"ReadingCustomToolbarBGAlpha"]];
+    [olderTopToolbar setBackgroundWith:[UIImage imageNamed:@"ReadingCustomToolbarBGAlpha"]];
+    [olderBottomToolbar setBackgroundWith:[UIImage imageNamed:@"ReadingCustomToolbarBGAlpha"]];
+
 }
 
 - (void) viewDidAppear:(BOOL)animated

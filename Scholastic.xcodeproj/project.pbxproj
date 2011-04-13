@@ -606,6 +606,8 @@
 		F8C5DC6F134B5DF30020D610 /* SCHDictionaryWordForm.m in Sources */ = {isa = PBXBuildFile; fileRef = F8C5DC6E134B5DF30020D610 /* SCHDictionaryWordForm.m */; };
 		F8C5DC70134B5DF30020D610 /* SCHDictionaryWordForm.m in Sources */ = {isa = PBXBuildFile; fileRef = F8C5DC6E134B5DF30020D610 /* SCHDictionaryWordForm.m */; };
 		F8CD24F612F97E62001C748B /* SCHBookManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F8CD24CA12F9714D001C748B /* SCHBookManager.m */; };
+		F8E4088E1356138600089233 /* ReadingCustomToolbarBGAlpha.png in Resources */ = {isa = PBXBuildFile; fileRef = F8E4088D1356138600089233 /* ReadingCustomToolbarBGAlpha.png */; };
+		F8E4088F1356138600089233 /* ReadingCustomToolbarBGAlpha.png in Resources */ = {isa = PBXBuildFile; fileRef = F8E4088D1356138600089233 /* ReadingCustomToolbarBGAlpha.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1334,6 +1336,7 @@
 		F8C5DC6E134B5DF30020D610 /* SCHDictionaryWordForm.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHDictionaryWordForm.m; path = Shared/SCHDictionaryWordForm.m; sourceTree = "<group>"; };
 		F8CD24C912F9714D001C748B /* SCHBookManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookManager.h; path = iPhone/SCHBookManager.h; sourceTree = "<group>"; };
 		F8CD24CA12F9714D001C748B /* SCHBookManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookManager.m; path = iPhone/SCHBookManager.m; sourceTree = "<group>"; };
+		F8E4088D1356138600089233 /* ReadingCustomToolbarBGAlpha.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ReadingCustomToolbarBGAlpha.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1629,6 +1632,7 @@
 				C908D881133F941100661718 /* booktexture-nocover.png */,
 				F8105D40134F629A00C60C8B /* ReadingCustomToolbarBG.png */,
 				F8105D43134F63F200C60C8B /* HomeBackButton.png */,
+				F8E4088D1356138600089233 /* ReadingCustomToolbarBGAlpha.png */,
 				528A2CD112CCDC9E0053A343 /* Icons */,
 			);
 			name = Resources;
@@ -2778,6 +2782,7 @@
 				F80FED821355DD6D00DEB3C1 /* icon-settings@2x.png in Resources */,
 				F80FED841355DD6D00DEB3C1 /* icon-story-interactions.png in Resources */,
 				F80FED861355DD6D00DEB3C1 /* icon-story-interactions@2x.png in Resources */,
+				F8E4088E1356138600089233 /* ReadingCustomToolbarBGAlpha.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2920,6 +2925,7 @@
 				F80FED831355DD6D00DEB3C1 /* icon-settings@2x.png in Resources */,
 				F80FED851355DD6D00DEB3C1 /* icon-story-interactions.png in Resources */,
 				F80FED871355DD6D00DEB3C1 /* icon-story-interactions@2x.png in Resources */,
+				F8E4088F1356138600089233 /* ReadingCustomToolbarBGAlpha.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

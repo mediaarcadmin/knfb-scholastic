@@ -71,7 +71,6 @@
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-						<int key="IBUIBarStyle">2</int>
 						<object class="NSMutableArray" key="IBUIItems">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<object class="IBUIBarButtonItem" id="640744604">
@@ -285,7 +284,6 @@
 				<bool key="IBUIOpaque">NO</bool>
 				<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-				<int key="IBUIBarStyle">2</int>
 				<object class="NSMutableArray" key="IBUIItems">
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<object class="IBUIBarButtonItem" id="847548534">
@@ -353,7 +351,6 @@
 				<bool key="IBUIOpaque">NO</bool>
 				<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-				<int key="IBUIBarStyle">2</int>
 				<object class="NSMutableArray" key="IBUIItems">
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<object class="IBUIBarButtonItem" id="510644197">
@@ -466,7 +463,6 @@
 				<bool key="IBUIOpaque">NO</bool>
 				<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-				<int key="IBUIBarStyle">2</int>
 				<object class="NSMutableArray" key="IBUIItems">
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<object class="IBUIBarButtonItem" id="12910019">
@@ -906,10 +902,12 @@
 					<string>15.IBPluginDependency</string>
 					<string>18.IBPluginDependency</string>
 					<string>18.IBViewBoundsToFrameTransform</string>
+					<string>24.CustomClassName</string>
 					<string>24.IBPluginDependency</string>
 					<string>24.IBViewBoundsToFrameTransform</string>
 					<string>35.IBPluginDependency</string>
 					<string>37.IBPluginDependency</string>
+					<string>4.CustomClassName</string>
 					<string>4.IBPluginDependency</string>
 					<string>4.IBViewBoundsToFrameTransform</string>
 					<string>53.CustomClassName</string>
@@ -920,6 +918,7 @@
 					<string>59.IBPluginDependency</string>
 					<string>59.IBViewBoundsToFrameTransform</string>
 					<string>6.IBPluginDependency</string>
+					<string>63.CustomClassName</string>
 					<string>63.IBPluginDependency</string>
 					<string>65.IBPluginDependency</string>
 					<string>73.IBPluginDependency</string>
@@ -930,6 +929,7 @@
 					<string>82.IBPluginDependency</string>
 					<string>84.IBPluginDependency</string>
 					<string>86.IBPluginDependency</string>
+					<string>87.CustomClassName</string>
 					<string>87.IBPluginDependency</string>
 					<string>87.IBViewBoundsToFrameTransform</string>
 					<string>90.IBPluginDependency</string>
@@ -949,10 +949,12 @@
 					<object class="NSAffineTransform">
 						<bytes key="NSTransformStruct">AQAAAABCHAAAA</bytes>
 					</object>
+					<string>SCHCustomToolbar</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<object class="NSAffineTransform"/>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<string>SCHCustomToolbar</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<object class="NSAffineTransform">
 						<bytes key="NSTransformStruct">P4AAAL+AAAAAAAAAw+UAAA</bytes>
@@ -969,6 +971,7 @@
 						<bytes key="NSTransformStruct">P4AAAL+AAABAoAAAwq4AAA</bytes>
 					</object>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<string>SCHCustomToolbar</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -979,6 +982,7 @@
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<string>SCHCustomToolbar</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<object class="NSAffineTransform"/>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -1011,6 +1015,14 @@
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">./Classes/BITScrubberView.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">SCHCustomToolbar</string>
+					<string key="superclassName">UIToolbar</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/SCHCustomToolbar.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
@@ -1066,15 +1078,15 @@
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>UIBarButtonItem</string>
-							<string>UIToolbar</string>
-							<string>UIToolbar</string>
+							<string>SCHCustomToolbar</string>
+							<string>SCHCustomToolbar</string>
 							<string>UILabel</string>
 							<string>BITScrubberView</string>
 							<string>UILabel</string>
 							<string>UIView</string>
 							<string>UIToolbar</string>
 							<string>UIBarButtonItem</string>
-							<string>UIToolbar</string>
+							<string>SCHCustomToolbar</string>
 						</object>
 					</object>
 					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
@@ -1100,11 +1112,11 @@
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">olderBottomToolbar</string>
-								<string key="candidateClassName">UIToolbar</string>
+								<string key="candidateClassName">SCHCustomToolbar</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">olderTopToolbar</string>
-								<string key="candidateClassName">UIToolbar</string>
+								<string key="candidateClassName">SCHCustomToolbar</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">pageLabel</string>
@@ -1132,7 +1144,7 @@
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">youngerTopToolbar</string>
-								<string key="candidateClassName">UIToolbar</string>
+								<string key="candidateClassName">SCHCustomToolbar</string>
 							</object>
 						</object>
 					</object>

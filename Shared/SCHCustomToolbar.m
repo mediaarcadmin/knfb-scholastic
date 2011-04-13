@@ -28,6 +28,7 @@
 {
     self.barBackgroundImage = [[[UIImageView alloc] initWithFrame:self.frame] autorelease];
     self.barBackgroundImage.image = backgroundImage;
+    self.backgroundColor = [UIColor clearColor];
     [self setNeedsDisplay];
 }
 
