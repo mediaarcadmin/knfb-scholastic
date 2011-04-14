@@ -40,14 +40,15 @@
 // Save the background image and call setNeedsDisplay to force a redraw
 - (void)setBackgroundImage:(UIImage*)newBackgroundImage
 {
-    [newBackgroundImage retain];
-    [backgroundImage release];
-    backgroundImage = newBackgroundImage;
-    if (self.originalBackgroundColor == nil) {
-        self.originalBackgroundColor = self.backgroundColor;
+    if (backgroundImage != newBackgroundImage) {
+        [backgroundImage release];
+        backgroundImage = [newBackgroundImage retain];
+        if (self.originalBackgroundColor == nil) {
+            self.originalBackgroundColor = self.backgroundColor;
+        }
+        self.backgroundColor = [UIColor clearColor];
+        [self setNeedsDisplay];
     }
-    self.backgroundColor = [UIColor clearColor];
-    [self setNeedsDisplay];
 }
 
 // clear the background image and call setNeedsDisplay to force a redraw
