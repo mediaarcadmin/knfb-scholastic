@@ -28,7 +28,7 @@
 	
 	[imageData writeToFile:[book coverImagePath] atomically:YES];
 	
-	[[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateReadyForRightsParsing];
+	[[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateReadyForLicenseAcquisition];
 	[book setProcessing:NO];
     
     [self endOperation];

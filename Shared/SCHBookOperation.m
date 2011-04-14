@@ -83,9 +83,8 @@
     // this simply sets the book to "not processing" and ends the operation
 	
     NSLog(@"SCHBookOperation: using default operation. Please override correctly!");
-    
-    self.executing = NO;
-    self.finished = YES;
+
+    [self endOperation];
     
     SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];
 	[book setProcessing:NO];

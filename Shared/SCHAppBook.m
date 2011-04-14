@@ -224,6 +224,9 @@
 		case SCHBookProcessingStateDownloadPaused:
 			status = @"Paused";
 			break;
+        case SCHBookProcessingStateReadyForLicenseAcquisition:
+            status = @"License..";
+            break;
 		case SCHBookProcessingStateReadyForRightsParsing:
 			status = @"Rights...";
 			break;
