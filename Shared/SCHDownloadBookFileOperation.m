@@ -174,7 +174,7 @@
 	
 	switch (self.fileType) {
 		case kSCHDownloadFileTypeXPSBook:
-			[[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateReadyForRightsParsing];
+			[[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateReadyForLicenseAcquisition];
 			break;
 		case kSCHDownloadFileTypeCoverImage:
 			[[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateReadyForBookFileDownload];

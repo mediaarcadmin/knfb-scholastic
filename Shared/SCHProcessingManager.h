@@ -19,6 +19,7 @@ typedef enum {
 	SCHBookProcessingStateReadyForBookFileDownload,
 	SCHBookProcessingStateDownloadStarted,
 	SCHBookProcessingStateDownloadPaused,
+	SCHBookProcessingStateReadyForLicenseAcquisition,
 	SCHBookProcessingStateReadyForRightsParsing,
 	SCHBookProcessingStateReadyForTextFlowPreParse,
     SCHBookProcessingStateReadyForSmartZoomPreParse,

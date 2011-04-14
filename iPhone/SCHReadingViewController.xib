@@ -297,8 +297,9 @@
 						<int key="IBUISystemItemIdentifier">5</int>
 					</object>
 					<object class="IBUIBarButtonItem" id="54440399">
-						<string key="IBUITitle">Book Title</string>
+						<string key="IBUITitle">Really Really long book title</string>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+						<float key="IBUIWidth">110</float>
 						<reference key="IBUIToolbar" ref="697704350"/>
 					</object>
 					<object class="IBUIBarButtonItem" id="587502980">
@@ -366,6 +367,7 @@
 					<object class="IBUIBarButtonItem" id="250350521">
 						<string key="IBUITitle">Book Title</string>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+						<float key="IBUIWidth">150</float>
 						<reference key="IBUIToolbar" ref="70776190"/>
 					</object>
 					<object class="IBUIBarButtonItem" id="989040120">
@@ -1084,7 +1086,7 @@
 							<string>BITScrubberView</string>
 							<string>UILabel</string>
 							<string>UIView</string>
-							<string>UIToolbar</string>
+							<string>SCHCustomToolbar</string>
 							<string>UIBarButtonItem</string>
 							<string>SCHCustomToolbar</string>
 						</object>
@@ -1136,7 +1138,7 @@
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">scrubberToolbar</string>
-								<string key="candidateClassName">UIToolbar</string>
+								<string key="candidateClassName">SCHCustomToolbar</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">youngerBookTitle</string>
