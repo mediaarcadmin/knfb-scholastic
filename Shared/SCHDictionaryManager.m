@@ -203,7 +203,7 @@ static SCHDictionaryManager *sharedManager = nil;
     // if the category isn't YD or OD, return
     if (!category ||
         ([category compare:kSCHDictionaryYoungReader] != NSOrderedSame && 
-         [category compare:kSCHDictionaryYoungReader] != NSOrderedSame)) 
+         [category compare:kSCHDictionaryOlderReader] != NSOrderedSame)) 
     {
         NSLog(@"Warning: unrecognised category %@ in HTMLForWord.", category);
         return nil;
@@ -255,6 +255,8 @@ static SCHDictionaryManager *sharedManager = nil;
     
     pred = [NSPredicate predicateWithFormat:@"baseWordID == %@ AND category == %@", wordForm.baseWordID, category];
     
+    NSLog(@"attempting to get dictionary entry for %@, category %@", wordForm.baseWordID, category);
+    
     [fetchRequest setPredicate:pred];
     pred = nil;
     
@@ -278,6 +280,9 @@ static SCHDictionaryManager *sharedManager = nil;
 	}
     
     SCHDictionaryEntry *entry = [results objectAtIndex:0];
+    
+    NSLog(@"Dictionary entry: %@ %@ %@ %@", entry.baseWordID, entry.word, entry.category, [entry.fileOffset stringValue]);
+    
     results = nil;
     
     long offset = [entry.fileOffset longValue];
@@ -287,6 +292,7 @@ static SCHDictionaryManager *sharedManager = nil;
     SCHDictionaryManager *dictManager = [SCHDictionaryManager sharedDictionaryManager];
     
     NSString *filePath = [[dictManager dictionaryTextFilesDirectory] stringByAppendingPathComponent:@"EntryTable.txt"];
+    
     
     [self.entryTableMutationLock lock];
     FILE *file = fopen([filePath UTF8String], "r");
@@ -696,10 +702,10 @@ static SCHDictionaryManager *sharedManager = nil;
         {
             NSLog(@"Dictionary is ready.");
             
-            NSLog(@"a: %@", [self HTMLForWord:@"a" category:kSCHDictionaryYoungReader]);
-            NSLog(@"badger: %@", [self HTMLForWord:@"badger" category:kSCHDictionaryYoungReader]);
-            NSLog(@"rosy: %@", [self HTMLForWord:@"rosy" category:kSCHDictionaryYoungReader]);
-            NSLog(@"teuchter: %@", [self HTMLForWord:@"teuchter" category:kSCHDictionaryYoungReader]);
+            NSLog(@"a: %@", [self HTMLForWord:@"a" category:kSCHDictionaryOlderReader]);
+            NSLog(@"badger: %@", [self HTMLForWord:@"badger" category:kSCHDictionaryOlderReader]);
+            NSLog(@"rosy: %@", [self HTMLForWord:@"rosy" category:kSCHDictionaryOlderReader]);
+            NSLog(@"teuchter: %@", [self HTMLForWord:@"teuchter" category:kSCHDictionaryOlderReader]);
         }
 		default:
 			break;
