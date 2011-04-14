@@ -27,6 +27,7 @@
 @property (nonatomic, retain) NSLock *layoutCacheLock;
 @property (nonatomic, retain) SCHSmartZoomBlockSource *blockSource;
 @property (nonatomic, retain) id currentBlock;
+@property (nonatomic, assign) BOOL smartZoomActive;
 
 - (void)initialiseView;
 - (CGRect)cropForPage:(NSInteger)page allowEstimate:(BOOL)estimate;
@@ -48,6 +49,7 @@
 @synthesize layoutCacheLock;
 @synthesize blockSource;
 @synthesize currentBlock;
+@synthesize smartZoomActive;
 
 - (void)dealloc
 {
@@ -159,6 +161,19 @@
 {
     
 }
+
+- (void)didEnterSmartZoomMode
+{
+    self.smartZoomActive = YES;
+    [self jumpToNextZoomBlock];
+}
+
+- (void)didExitSmartZoomMode
+{
+    self.smartZoomActive = NO;
+    self.currentBlock = nil;
+}
+
 
 - (void)zoomForNewPageAnimated:(BOOL)animated
 {
@@ -344,10 +359,18 @@
         CGFloat rightHandHotZone = screenWidth * LAYOUT_RHSHOTZONE;
                 
         if (point.x <= leftHandHotZone) {
-            [self jumpToPageAtIndex:self.currentPageIndex - 1 animated:YES];
+            if (self.smartZoomActive) {
+                [self jumpToPreviousZoomBlock];
+            } else {
+                [self jumpToPageAtIndex:self.currentPageIndex - 1 animated:YES];
+            }
             //[self.delegate hideToolbars];
         } else if (point.x >= rightHandHotZone) {
-            [self jumpToPageAtIndex:self.currentPageIndex + 1 animated:YES];
+            if (self.smartZoomActive) {
+                [self jumpToNextZoomBlock];
+            } else {
+                [self jumpToPageAtIndex:self.currentPageIndex + 1 animated:YES];
+            }
             //[self.delegate hideToolbars];
         } else {
             if (self.delegate && [self.delegate respondsToSelector:@selector(unhandledTouchOnPageForReadingView:)]) {

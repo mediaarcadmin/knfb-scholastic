@@ -34,4 +34,7 @@
 - (void)jumpToNextZoomBlock;
 - (void)jumpToPreviousZoomBlock;
 
+- (void)didEnterSmartZoomMode;
+- (void)didExitSmartZoomMode;
+
 @end

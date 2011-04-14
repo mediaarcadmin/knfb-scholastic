@@ -165,28 +165,47 @@
 	[self clearUserSettings];
 	[self clearProfileContentAnnotations];
 	
-	SCHProfileItem *newProfileItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHProfileItem inManagedObjectContext:self.managedObjectContext];
+	SCHProfileItem *youngProfileItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHProfileItem inManagedObjectContext:self.managedObjectContext];
 	
-	newProfileItem.LastModified = now;
+	youngProfileItem.LastModified = now;
 	
-	newProfileItem.StoryInteractionEnabled = [NSNumber numberWithBool:YES];
-	newProfileItem.ID = [NSNumber numberWithInt:1];
-	newProfileItem.Birthday = now;
-	newProfileItem.FirstName = @"John";
-	newProfileItem.ProfilePasswordRequired = [NSNumber numberWithBool:NO];
-	newProfileItem.Type = [NSNumber numberWithProfileType:kSCHProfileTypesCHILD];
-	newProfileItem.ScreenName = @"Default";
-	newProfileItem.AutoAssignContentToProfiles = [NSNumber numberWithBool:YES];
-	newProfileItem.LastScreenNameModified = now;
-	newProfileItem.BookshelfStyle = [NSNumber numberWithBookshelfStyle:kSCHBookshelfStyleAdult];
-	newProfileItem.LastName = @"Doe";
-	newProfileItem.LastModified = now;
+	youngProfileItem.StoryInteractionEnabled = [NSNumber numberWithBool:YES];
+	youngProfileItem.ID = [NSNumber numberWithInt:1];
+	youngProfileItem.Birthday = now;
+	youngProfileItem.FirstName = @"Joe";
+	youngProfileItem.ProfilePasswordRequired = [NSNumber numberWithBool:NO];
+	youngProfileItem.Type = [NSNumber numberWithProfileType:kSCHProfileTypesCHILD];
+	youngProfileItem.ScreenName = @"Young Child";
+	youngProfileItem.AutoAssignContentToProfiles = [NSNumber numberWithBool:YES];
+	youngProfileItem.LastScreenNameModified = now;
+	youngProfileItem.BookshelfStyle = [NSNumber numberWithBookshelfStyle:kSCHBookshelfStyleYoungChild];
+	youngProfileItem.LastName = @"Doe";
+	youngProfileItem.LastModified = now;
+
+	SCHProfileItem *olderProfileItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHProfileItem inManagedObjectContext:self.managedObjectContext];
 	
+	olderProfileItem.LastModified = now;
+	
+	olderProfileItem.StoryInteractionEnabled = [NSNumber numberWithBool:YES];
+	olderProfileItem.ID = [NSNumber numberWithInt:2];
+	olderProfileItem.Birthday = now;
+	olderProfileItem.FirstName = @"John";
+	olderProfileItem.ProfilePasswordRequired = [NSNumber numberWithBool:NO];
+	olderProfileItem.Type = [NSNumber numberWithProfileType:kSCHProfileTypesCHILD];
+	olderProfileItem.ScreenName = @"Older Child";
+	olderProfileItem.AutoAssignContentToProfiles = [NSNumber numberWithBool:YES];
+	olderProfileItem.LastScreenNameModified = now;
+	olderProfileItem.BookshelfStyle = [NSNumber numberWithBookshelfStyle:kSCHBookshelfStyleOlderChild];
+	olderProfileItem.LastName = @"Doe";
+	olderProfileItem.LastModified = now;
+    
 	SCHContentMetadataItem *newContentMetadataItem = nil;
 	SCHUserContentItem *newUserContentItem = nil;
 	SCHContentProfileItem *newContentProfileItem = nil;
 	
-	for (NSString *xpsFile in XPSFiles) {
+	for (NSInteger count = 0; count < [XPSFiles count]; count++) {
+        NSString *xpsFile = [XPSFiles objectAtIndex:count];
+        
 		newContentMetadataItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHContentMetadataItem inManagedObjectContext:self.managedObjectContext];
 		newContentMetadataItem.AppBook = [NSEntityDescription insertNewObjectForEntityForName:kSCHAppBook inManagedObjectContext:self.managedObjectContext];
 				
@@ -227,7 +246,7 @@
 		newContentProfileItem.LastModified = now;
 		
 		newContentProfileItem.IsFavorite = [NSNumber numberWithBool:YES];
-		newContentProfileItem.ProfileID = [NSNumber numberWithInt:1];
+		newContentProfileItem.ProfileID = [NSNumber numberWithInt:(count % 2 == 0 ? 1: 2)];
 		
 		[newUserContentItem addProfileListObject:newContentProfileItem];	
 

@@ -48,4 +48,15 @@
     // Do nothing
 }
 
+- (void)didEnterSmartZoomMode
+{
+    // Do nothing
+}
+
+- (void)didExitSmartZoomMode
+{
+    // Do nothing
+}
+
+
 @end
