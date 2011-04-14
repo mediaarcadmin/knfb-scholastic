@@ -313,6 +313,7 @@ static SCHDictionaryManager *sharedManager = nil;
                 if (collectLine == nil) {
                     completeLine = line;
                 } else {
+                    [collectLine appendBytes:line length:strlen(line)];                                        
                     [collectLine appendBytes:(char []){'\0'} length:1];
                     [tmpCompleteLine release];
                     tmpCompleteLine = [[NSString alloc] initWithData:collectLine encoding:NSUTF8StringEncoding];
@@ -918,6 +919,7 @@ static SCHDictionaryManager *sharedManager = nil;
                 if (collectLine == nil) {
                     completeLine = line;
                 } else {                    
+                    [collectLine appendBytes:line length:strlen(line)];                                        
                     [collectLine appendBytes:(char []){'\0'} length:1];
                     [tmpCompleteLine release];
                     tmpCompleteLine = [[NSString alloc] initWithData:collectLine encoding:NSUTF8StringEncoding];
@@ -1017,6 +1019,7 @@ static SCHDictionaryManager *sharedManager = nil;
                 if (collectLine == nil) {
                     completeLine = line;
                 } else {
+                    [collectLine appendBytes:line length:strlen(line)];                    
                     [collectLine appendBytes:(char []){'\0'} length:1];
                     [tmpCompleteLine release];
                     tmpCompleteLine = [[NSString alloc] initWithData:collectLine encoding:NSUTF8StringEncoding];
@@ -1132,6 +1135,7 @@ static SCHDictionaryManager *sharedManager = nil;
             if (collectLine == nil) {
                 completeLine = line;
             } else {
+                [collectLine appendBytes:line length:strlen(line)];                                    
                 [collectLine appendBytes:(char []){'\0'} length:1];
                 [tmpCompleteLine release];
                 tmpCompleteLine = [[NSString alloc] initWithData:collectLine encoding:NSUTF8StringEncoding];
@@ -1296,6 +1300,7 @@ static SCHDictionaryManager *sharedManager = nil;
                 if (collectLine == nil) {
                     completeLine = line;
                 } else {
+                    [collectLine appendBytes:line length:strlen(line)];                                        
                     [collectLine appendBytes:(char []){'\0'} length:1];
                     [tmpCompleteLine release];
                     tmpCompleteLine = [[NSString alloc] initWithData:collectLine encoding:NSUTF8StringEncoding];
