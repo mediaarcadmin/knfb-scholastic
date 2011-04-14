@@ -14,6 +14,7 @@
 #import "SCHXPSProvider.h"
 #import "SCHFlowEucBook.h"
 #import "SCHTextFlowParagraphSource.h"
+#import "SCHSmartZoomBlockSource.h"
 
 @interface SCHBookManager ()
 
@@ -21,10 +22,12 @@
 @property (nonatomic, retain) NSMutableDictionary *cachedEucBooks;
 @property (nonatomic, retain) NSMutableDictionary *cachedTextFlows;
 @property (nonatomic, retain) NSMutableDictionary *cachedParagraphSources;
+@property (nonatomic, retain) NSMutableDictionary *cachedBlockSources;
 @property (nonatomic, retain) NSCountedSet *cachedXPSProviderCheckoutCounts;
 @property (nonatomic, retain) NSCountedSet *cachedEucBookCheckoutCounts;
 @property (nonatomic, retain) NSCountedSet *cachedTextFlowCheckoutCounts;
 @property (nonatomic, retain) NSCountedSet *cachedParagraphSourceCheckoutCounts;
+@property (nonatomic, retain) NSCountedSet *cachedBlockSourceCheckoutCounts;
 @property (nonatomic, retain) NSLock *threadSafeMutationLock;
 
 - (BOOL)save:(NSError **)error;
@@ -47,7 +50,7 @@ static NSDictionary *featureCompatibilityDictionary = nil;
 static int mutationCount = 0;
 
 
-@synthesize cachedXPSProviders, cachedXPSProviderCheckoutCounts, cachedEucBooks, cachedEucBookCheckoutCounts, cachedTextFlows, cachedParagraphSources, cachedTextFlowCheckoutCounts, cachedParagraphSourceCheckoutCounts, persistentStoreCoordinator, threadSafeMutationLock;
+@synthesize cachedXPSProviders, cachedXPSProviderCheckoutCounts, cachedEucBooks, cachedEucBookCheckoutCounts, cachedTextFlows, cachedParagraphSources, cachedBlockSources, cachedTextFlowCheckoutCounts, cachedParagraphSourceCheckoutCounts, cachedBlockSourceCheckoutCounts, persistentStoreCoordinator, threadSafeMutationLock;
 
 + (SCHBookManager *)sharedBookManager
 {
@@ -75,6 +78,7 @@ static int mutationCount = 0;
     [cachedEucBooks release], cachedEucBooks = nil;
     [cachedTextFlows release], cachedTextFlows = nil;
     [cachedParagraphSources release], cachedParagraphSources = nil;
+    [cachedBlockSources release], cachedBlockSources = nil;
     [super dealloc];
 }
 
@@ -86,6 +90,7 @@ static int mutationCount = 0;
 		cachedEucBooks = [[NSMutableDictionary alloc] init];
 		cachedTextFlows = [[NSMutableDictionary alloc] init];
         cachedParagraphSources = [[NSMutableDictionary alloc] init];
+        cachedBlockSources = [[NSMutableDictionary alloc] init];
     }
     return self;
 }
@@ -616,5 +621,61 @@ static int mutationCount = 0;
     }
 }
 
+#pragma mark - ParagraphSource Check out/Check in
+
+- (SCHSmartZoomBlockSource *)checkOutBlockSourceForBookIdentifier:(NSString *) isbn
+{   
+    SCHSmartZoomBlockSource *ret = nil;
+    
+    [self.persistentStoreCoordinator lock];
+    
+    NSMutableDictionary *myCachedBlockSources = self.cachedBlockSources;
+    @synchronized(myCachedBlockSources) {
+        SCHSmartZoomBlockSource *previouslyCachedBlockSource = [myCachedBlockSources objectForKey:isbn];
+        if(previouslyCachedBlockSource) {
+            [self.cachedBlockSourceCheckoutCounts addObject:isbn];
+            ret= previouslyCachedBlockSource;
+        } else {
+            SCHSmartZoomBlockSource *blockSource = [[SCHSmartZoomBlockSource alloc] initWithISBN:isbn];
+            
+            if(blockSource) {
+                NSCountedSet *myCachedBlockSourceCheckoutCounts = self.cachedParagraphSourceCheckoutCounts;
+                if(!myCachedBlockSourceCheckoutCounts) {
+                    myCachedBlockSourceCheckoutCounts = [NSCountedSet set];
+                    self.cachedBlockSourceCheckoutCounts = myCachedBlockSourceCheckoutCounts;
+                }
+                [myCachedBlockSources setObject:blockSource forKey:isbn];
+                [myCachedBlockSourceCheckoutCounts addObject:isbn];
+                [blockSource release];
+                ret = blockSource;
+            }
+        }
+    }
+    
+    [self.persistentStoreCoordinator unlock];
+    
+    return ret;
+}
+
+- (void)checkInBlockSourceForBookIdentifier:(NSString *) isbn
+{
+    NSMutableDictionary *myCachedBlockSources = self.cachedParagraphSources;
+    @synchronized(myCachedBlockSources) {
+        NSCountedSet *myCachedBlockSourceCheckoutCounts = self.cachedParagraphSourceCheckoutCounts;
+        NSUInteger count = [myCachedBlockSourceCheckoutCounts countForObject:isbn];
+        if(count == 0) {
+            NSLog(@"Warning! Unexpected checkin of non-checked-out paragraph source");
+        } else {
+            [myCachedBlockSourceCheckoutCounts removeObject:isbn];
+            if (count == 1) {
+                [myCachedBlockSources removeObjectForKey:isbn];
+                if(myCachedBlockSourceCheckoutCounts.count == 0) {
+                    // May as well release the set.
+                    self.cachedBlockSourceCheckoutCounts = nil;
+                }
+            }
+        }
+    }
+}
 
 @end

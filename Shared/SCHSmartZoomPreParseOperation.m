@@ -9,7 +9,7 @@
 #import "SCHSmartZoomPreParseOperation.h"
 #import <expat/expat.h>
 #import "KNFBTextFlowPageRange.h"
-#import "KNFBTextFlowPageMarker.h"
+#import "KNFBPageMarker.h"
 #import "SCHBookManager.h"
 #import "SCHXPSProvider.h"
 #import "KNFBXPSConstants.h"
@@ -43,7 +43,7 @@ static void smartZoomFileXMLParsingStartElementHandler(void *ctx, const XML_Char
         }
         
         if (newPageIndex >= 0) {
-            KNFBTextFlowPageMarker *newPageMarker = [[KNFBTextFlowPageMarker alloc] init];
+            KNFBPageMarker *newPageMarker = [[KNFBPageMarker alloc] init];
             [newPageMarker setPageIndex:newPageIndex];
             [newPageMarker setByteIndex:currentByteIndex];
             [context->buildPageMarkers addObject:newPageMarker];

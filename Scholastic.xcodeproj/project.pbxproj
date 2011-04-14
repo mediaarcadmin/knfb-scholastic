@@ -192,6 +192,12 @@
 		C923B14312F6AFC60054426F /* SCHMultipleBookshelvesController.m in Sources */ = {isa = PBXBuildFile; fileRef = C923B13F12F6AFC60054426F /* SCHMultipleBookshelvesController.m */; };
 		C923B15B12F6B0280054426F /* SCHMultipleBookshelvesController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C923B15A12F6B0280054426F /* SCHMultipleBookshelvesController.xib */; };
 		C923B15C12F6B0280054426F /* SCHMultipleBookshelvesController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C923B15A12F6B0280054426F /* SCHMultipleBookshelvesController.xib */; };
+		C92FA7CD1355B8B7001BAA6B /* KNFBSmartZoomBlockSource.m in Sources */ = {isa = PBXBuildFile; fileRef = C92FA7CC1355B8B7001BAA6B /* KNFBSmartZoomBlockSource.m */; };
+		C92FA7CE1355B8B7001BAA6B /* KNFBSmartZoomBlockSource.m in Sources */ = {isa = PBXBuildFile; fileRef = C92FA7CC1355B8B7001BAA6B /* KNFBSmartZoomBlockSource.m */; };
+		C92FA7D21355BE20001BAA6B /* SCHSmartZoomBlockSource.m in Sources */ = {isa = PBXBuildFile; fileRef = C92FA7D11355BE20001BAA6B /* SCHSmartZoomBlockSource.m */; };
+		C92FA7D31355BE20001BAA6B /* SCHSmartZoomBlockSource.m in Sources */ = {isa = PBXBuildFile; fileRef = C92FA7D11355BE20001BAA6B /* SCHSmartZoomBlockSource.m */; };
+		C92FA7E81355E8F4001BAA6B /* KNFBSmartZoomBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = C92FA7E71355E8F2001BAA6B /* KNFBSmartZoomBlock.m */; };
+		C92FA7E91355E8F4001BAA6B /* KNFBSmartZoomBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = C92FA7E71355E8F2001BAA6B /* KNFBSmartZoomBlock.m */; };
 		C93EBDFD13462883003B99FD /* SCHBookRange.m in Sources */ = {isa = PBXBuildFile; fileRef = C93EBDFC13462883003B99FD /* SCHBookRange.m */; };
 		C93EBDFE13462883003B99FD /* SCHBookRange.m in Sources */ = {isa = PBXBuildFile; fileRef = C93EBDFC13462883003B99FD /* SCHBookRange.m */; };
 		C93EBEAF13472FED003B99FD /* SCHTextFlowParagraphSource.m in Sources */ = {isa = PBXBuildFile; fileRef = C93EBEAE13472FEC003B99FD /* SCHTextFlowParagraphSource.m */; };
@@ -376,8 +382,8 @@
 		C9B08BD51344D34F001963D0 /* KNFBTextFlowFlowReference.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B08B131344D34F001963D0 /* KNFBTextFlowFlowReference.m */; };
 		C9B08BD61344D34F001963D0 /* KNFBTextFlowFlowTree.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B08B151344D34F001963D0 /* KNFBTextFlowFlowTree.m */; };
 		C9B08BD71344D34F001963D0 /* KNFBTextFlowFlowTree.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B08B151344D34F001963D0 /* KNFBTextFlowFlowTree.m */; };
-		C9B08BD81344D34F001963D0 /* KNFBTextFlowPageMarker.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B08B171344D34F001963D0 /* KNFBTextFlowPageMarker.m */; };
-		C9B08BD91344D34F001963D0 /* KNFBTextFlowPageMarker.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B08B171344D34F001963D0 /* KNFBTextFlowPageMarker.m */; };
+		C9B08BD81344D34F001963D0 /* KNFBPageMarker.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B08B171344D34F001963D0 /* KNFBPageMarker.m */; };
+		C9B08BD91344D34F001963D0 /* KNFBPageMarker.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B08B171344D34F001963D0 /* KNFBPageMarker.m */; };
 		C9B08BDA1344D34F001963D0 /* KNFBTextFlowPageRange.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B08B191344D34F001963D0 /* KNFBTextFlowPageRange.m */; };
 		C9B08BDB1344D34F001963D0 /* KNFBTextFlowPageRange.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B08B191344D34F001963D0 /* KNFBTextFlowPageRange.m */; };
 		C9B08BDC1344D34F001963D0 /* KNFBTextFlowParagraph.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B08B1B1344D34F001963D0 /* KNFBTextFlowParagraph.m */; };
@@ -1084,6 +1090,13 @@
 		C923B13E12F6AFC60054426F /* SCHMultipleBookshelvesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHMultipleBookshelvesController.h; path = iPhone/SCHMultipleBookshelvesController.h; sourceTree = "<group>"; };
 		C923B13F12F6AFC60054426F /* SCHMultipleBookshelvesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHMultipleBookshelvesController.m; path = iPhone/SCHMultipleBookshelvesController.m; sourceTree = "<group>"; };
 		C923B15A12F6B0280054426F /* SCHMultipleBookshelvesController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = SCHMultipleBookshelvesController.xib; path = iPhone/SCHMultipleBookshelvesController.xib; sourceTree = "<group>"; };
+		C92FA7CB1355B8B7001BAA6B /* KNFBSmartZoomBlockSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KNFBSmartZoomBlockSource.h; path = SmartZoom/KNFBSmartZoomBlockSource.h; sourceTree = "<group>"; };
+		C92FA7CC1355B8B7001BAA6B /* KNFBSmartZoomBlockSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KNFBSmartZoomBlockSource.m; path = SmartZoom/KNFBSmartZoomBlockSource.m; sourceTree = "<group>"; };
+		C92FA7CF1355B8E0001BAA6B /* KNFBPageZoomBlockSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KNFBPageZoomBlockSource.h; path = SmartZoom/KNFBPageZoomBlockSource.h; sourceTree = "<group>"; };
+		C92FA7D01355BE1F001BAA6B /* SCHSmartZoomBlockSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHSmartZoomBlockSource.h; path = Shared/SCHSmartZoomBlockSource.h; sourceTree = "<group>"; };
+		C92FA7D11355BE20001BAA6B /* SCHSmartZoomBlockSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHSmartZoomBlockSource.m; path = Shared/SCHSmartZoomBlockSource.m; sourceTree = "<group>"; };
+		C92FA7E61355E8F1001BAA6B /* KNFBSmartZoomBlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KNFBSmartZoomBlock.h; path = SmartZoom/KNFBSmartZoomBlock.h; sourceTree = "<group>"; };
+		C92FA7E71355E8F2001BAA6B /* KNFBSmartZoomBlock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KNFBSmartZoomBlock.m; path = SmartZoom/KNFBSmartZoomBlock.m; sourceTree = "<group>"; };
 		C93EBDFB13462882003B99FD /* SCHBookRange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHBookRange.h; sourceTree = "<group>"; };
 		C93EBDFC13462883003B99FD /* SCHBookRange.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHBookRange.m; sourceTree = "<group>"; };
 		C93EBEAD13472FEC003B99FD /* SCHTextFlowParagraphSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHTextFlowParagraphSource.h; path = Shared/SCHTextFlowParagraphSource.h; sourceTree = "<group>"; };
@@ -1188,8 +1201,8 @@
 		C9B08B131344D34F001963D0 /* KNFBTextFlowFlowReference.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KNFBTextFlowFlowReference.m; sourceTree = "<group>"; };
 		C9B08B141344D34F001963D0 /* KNFBTextFlowFlowTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KNFBTextFlowFlowTree.h; sourceTree = "<group>"; };
 		C9B08B151344D34F001963D0 /* KNFBTextFlowFlowTree.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KNFBTextFlowFlowTree.m; sourceTree = "<group>"; };
-		C9B08B161344D34F001963D0 /* KNFBTextFlowPageMarker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KNFBTextFlowPageMarker.h; sourceTree = "<group>"; };
-		C9B08B171344D34F001963D0 /* KNFBTextFlowPageMarker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KNFBTextFlowPageMarker.m; sourceTree = "<group>"; };
+		C9B08B161344D34F001963D0 /* KNFBPageMarker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KNFBPageMarker.h; sourceTree = "<group>"; };
+		C9B08B171344D34F001963D0 /* KNFBPageMarker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KNFBPageMarker.m; sourceTree = "<group>"; };
 		C9B08B181344D34F001963D0 /* KNFBTextFlowPageRange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KNFBTextFlowPageRange.h; sourceTree = "<group>"; };
 		C9B08B191344D34F001963D0 /* KNFBTextFlowPageRange.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KNFBTextFlowPageRange.m; sourceTree = "<group>"; };
 		C9B08B1A1344D34F001963D0 /* KNFBTextFlowParagraph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KNFBTextFlowParagraph.h; sourceTree = "<group>"; };
@@ -2049,6 +2062,18 @@
 			name = Bookshelves;
 			sourceTree = "<group>";
 		};
+		C92FA7CA1355B688001BAA6B /* SmartZoom */ = {
+			isa = PBXGroup;
+			children = (
+				C92FA7E61355E8F1001BAA6B /* KNFBSmartZoomBlock.h */,
+				C92FA7E71355E8F2001BAA6B /* KNFBSmartZoomBlock.m */,
+				C92FA7CF1355B8E0001BAA6B /* KNFBPageZoomBlockSource.h */,
+				C92FA7CB1355B8B7001BAA6B /* KNFBSmartZoomBlockSource.h */,
+				C92FA7CC1355B8B7001BAA6B /* KNFBSmartZoomBlockSource.m */,
+			);
+			name = SmartZoom;
+			sourceTree = "<group>";
+		};
 		C93ECA2C134B5EF9003B99FD /* libEucalyptus Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -2184,6 +2209,7 @@
 				C9EFB174134F4C6400ADF905 /* XPS */,
 				C9B08B031344D34F001963D0 /* FlowView */,
 				C9B08B061344D34F001963D0 /* TextFlow */,
+				C92FA7CA1355B688001BAA6B /* SmartZoom */,
 			);
 			name = libKNFBReader;
 			path = Shared/Libraries/Submodules/libKNFBReader;
@@ -2216,8 +2242,8 @@
 				C9B08B131344D34F001963D0 /* KNFBTextFlowFlowReference.m */,
 				C9B08B141344D34F001963D0 /* KNFBTextFlowFlowTree.h */,
 				C9B08B151344D34F001963D0 /* KNFBTextFlowFlowTree.m */,
-				C9B08B161344D34F001963D0 /* KNFBTextFlowPageMarker.h */,
-				C9B08B171344D34F001963D0 /* KNFBTextFlowPageMarker.m */,
+				C9B08B161344D34F001963D0 /* KNFBPageMarker.h */,
+				C9B08B171344D34F001963D0 /* KNFBPageMarker.m */,
 				C9B08B181344D34F001963D0 /* KNFBTextFlowPageRange.h */,
 				C9B08B191344D34F001963D0 /* KNFBTextFlowPageRange.m */,
 				C9B08B1A1344D34F001963D0 /* KNFBTextFlowParagraph.h */,
@@ -2460,6 +2486,8 @@
 				C9D4F6271345FFE7007F86E3 /* SCHTextFlow.m */,
 				C93EBEAD13472FEC003B99FD /* SCHTextFlowParagraphSource.h */,
 				C93EBEAE13472FEC003B99FD /* SCHTextFlowParagraphSource.m */,
+				C92FA7D01355BE1F001BAA6B /* SCHSmartZoomBlockSource.h */,
+				C92FA7D11355BE20001BAA6B /* SCHSmartZoomBlockSource.m */,
 			);
 			name = "Book Data";
 			sourceTree = "<group>";
@@ -3015,7 +3043,7 @@
 				C9B08BD21344D34F001963D0 /* KNFBTextFlowFlow.m in Sources */,
 				C9B08BD41344D34F001963D0 /* KNFBTextFlowFlowReference.m in Sources */,
 				C9B08BD61344D34F001963D0 /* KNFBTextFlowFlowTree.m in Sources */,
-				C9B08BD81344D34F001963D0 /* KNFBTextFlowPageMarker.m in Sources */,
+				C9B08BD81344D34F001963D0 /* KNFBPageMarker.m in Sources */,
 				C9B08BDA1344D34F001963D0 /* KNFBTextFlowPageRange.m in Sources */,
 				C9B08BDC1344D34F001963D0 /* KNFBTextFlowParagraph.m in Sources */,
 				C9B08BDE1344D34F001963D0 /* KNFBTextFlowParagraphSource.m in Sources */,
@@ -3046,6 +3074,9 @@
 				C9EFB28E134F782D00ADF905 /* SCHXPSProvider.m in Sources */,
 				C9EFB293134F795900ADF905 /* SCHXPSURLProtocol.m in Sources */,
 				C90AB9A6135495C5009DC49D /* SCHSmartZoomPreParseOperation.m in Sources */,
+				C92FA7CD1355B8B7001BAA6B /* KNFBSmartZoomBlockSource.m in Sources */,
+				C92FA7D21355BE20001BAA6B /* SCHSmartZoomBlockSource.m in Sources */,
+				C92FA7E81355E8F4001BAA6B /* KNFBSmartZoomBlock.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3166,7 +3197,7 @@
 				C9B08BD31344D34F001963D0 /* KNFBTextFlowFlow.m in Sources */,
 				C9B08BD51344D34F001963D0 /* KNFBTextFlowFlowReference.m in Sources */,
 				C9B08BD71344D34F001963D0 /* KNFBTextFlowFlowTree.m in Sources */,
-				C9B08BD91344D34F001963D0 /* KNFBTextFlowPageMarker.m in Sources */,
+				C9B08BD91344D34F001963D0 /* KNFBPageMarker.m in Sources */,
 				C9B08BDB1344D34F001963D0 /* KNFBTextFlowPageRange.m in Sources */,
 				C9B08BDD1344D34F001963D0 /* KNFBTextFlowParagraph.m in Sources */,
 				C9B08BDF1344D34F001963D0 /* KNFBTextFlowParagraphSource.m in Sources */,
@@ -3197,6 +3228,9 @@
 				C9EFB28F134F782D00ADF905 /* SCHXPSProvider.m in Sources */,
 				C9EFB294134F795900ADF905 /* SCHXPSURLProtocol.m in Sources */,
 				C90AB9A7135495C5009DC49D /* SCHSmartZoomPreParseOperation.m in Sources */,
+				C92FA7CE1355B8B7001BAA6B /* KNFBSmartZoomBlockSource.m in Sources */,
+				C92FA7D31355BE20001BAA6B /* SCHSmartZoomBlockSource.m in Sources */,
+				C92FA7E91355E8F4001BAA6B /* KNFBSmartZoomBlock.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

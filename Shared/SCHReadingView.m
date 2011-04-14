@@ -31,9 +31,21 @@
     return self;
 }
 
-- (void) jumpToPage:(NSInteger)page animated:(BOOL)animated
+// Overridden methods
+
+- (void)jumpToPage:(NSInteger)page animated:(BOOL)animated
 {
     NSLog(@"WARNING: jumpToPage:animated: not being overridden correctly.");
+}
+
+- (void)jumpToNextZoomBlock
+{
+    // Do nothing
+}
+
+- (void)jumpToPreviousZoomBlock
+{
+    // Do nothing
 }
 
 @end

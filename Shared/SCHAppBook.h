@@ -56,6 +56,7 @@ static NSString * const kSCHAppBookEucalyptusCacheDir = @"libEucalyptusCache";
 @property (nonatomic, retain) NSString * BookCoverURL;
 @property (nonatomic, retain) NSString * BookFileURL;
 @property (nonatomic, retain) NSSet *TextFlowPageRanges;
+@property (nonatomic, retain) NSSet *SmartZoomPageMarkers;
 @property (nonatomic, retain) NSNumber *LayoutPageEquivalentCount;
 
 @property (readonly) NSString * ContentIdentifier;

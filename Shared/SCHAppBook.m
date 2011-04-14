@@ -25,6 +25,7 @@
 @dynamic BookCoverURL;
 @dynamic BookFileURL;
 @dynamic TextFlowPageRanges;
+@dynamic SmartZoomPageMarkers;
 @dynamic LayoutPageEquivalentCount;
 
 #pragma mark -

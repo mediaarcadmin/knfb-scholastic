@@ -8,7 +8,7 @@
 
 #import "SCHTextFlowPreParseOperation.h"
 #import <expat/expat.h>
-#import "KNFBTextFlowPageMarker.h"
+#import "KNFBPageMarker.h"
 #import "KNFBTextFlowPageRange.h"
 #import "SCHBookManager.h"
 #import "SCHXPSProvider.h"
@@ -67,7 +67,7 @@ static void pageFileXMLParsingStartElementHandler(void *ctx, const XML_Char *nam
         }
         
         if ((newPageIndex >= 0) && (newPageIndex != [pageRange currentPageIndex])) {
-            KNFBTextFlowPageMarker *newPageMarker = [[KNFBTextFlowPageMarker alloc] init];
+            KNFBPageMarker *newPageMarker = [[KNFBPageMarker alloc] init];
             [newPageMarker setPageIndex:newPageIndex];
             [newPageMarker setByteIndex:currentByteIndex];
             [pageRange.pageMarkers addObject:newPageMarker];

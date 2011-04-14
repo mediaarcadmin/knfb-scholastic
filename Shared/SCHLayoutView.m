@@ -8,6 +8,7 @@
 
 #import "SCHLayoutView.h"
 #import "SCHXPSProvider.h"
+#import "SCHSmartZoomBlockSource.h"
 #import "SCHBookManager.h"
 #import <libEucalyptus/THPositionedCGContext.h>
 
@@ -21,9 +22,13 @@
 @property (nonatomic, assign) CGSize pageSize;
 @property (nonatomic, retain) NSMutableDictionary *pageCropsCache;
 @property (nonatomic, retain) NSLock *layoutCacheLock;
+@property (nonatomic, retain) SCHSmartZoomBlockSource *blockSource;
+@property (nonatomic, retain) id currentBlock;
 
 - (void)initialiseView;
 - (CGRect)cropForPage:(NSInteger)page allowEstimate:(BOOL)estimate;
+- (void)clearPageInformation;
+- (void)jumpToZoomBlock:(id)zoomBlock;
 
 @end
 
@@ -36,6 +41,8 @@
 @synthesize pageSize;
 @synthesize pageCropsCache;
 @synthesize layoutCacheLock;
+@synthesize blockSource;
+@synthesize currentBlock;
 
 - (void)dealloc
 {
@@ -45,9 +52,15 @@
         [xpsProvider release], xpsProvider = nil;
     }
     
+    if (blockSource) {
+        [[SCHBookManager sharedBookManager] checkInBlockSourceForBookIdentifier:self.isbn];
+        [blockSource release], blockSource = nil;
+    }
+    
     [pageTurningView release], pageTurningView = nil;
     [pageCropsCache release], pageCropsCache = nil;
     [layoutCacheLock release], layoutCacheLock = nil;
+    [currentBlock release], currentBlock = nil;
     [super dealloc];
 }
 
@@ -89,6 +102,8 @@
         [pageTurningView waitForAllPageImagesToBeAvailable];
         
     }
+    
+    blockSource = [[[SCHBookManager sharedBookManager] checkOutBlockSourceForBookIdentifier:self.isbn] retain];
 }
 
 - (id)initWithFrame:(CGRect)frame isbn:(id)aIsbn
@@ -126,6 +141,16 @@
         // (Ick!).
         [self performSelector:@selector(zoomForNewPageAnimatedWithNumberThunk:) withObject:[NSNumber numberWithBool:NO] afterDelay:0.0f];
     }
+}
+
+- (void)clearPageInformation
+{
+    self.currentBlock = nil;
+}
+
+- (void)jumpToZoomBlock:(id)zoomBlock
+{
+    
 }
 
 - (void)zoomForNewPageAnimated:(BOOL)animated
@@ -195,23 +220,51 @@
     return [self cropForPage:page allowEstimate:NO];
 }
 
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
-{
-    // Drawing code
-}
-*/
-
 - (NSString *)pageTurningViewAccessibilityPageDescriptionForPagesAtIndexes:(NSArray *)pageIndexes
 { 
     return nil;
 }
 
+#pragma mark - SCHReadingView methods
+
 - (void) jumpToPage: (NSInteger) page animated: (BOOL) animated
 {
+    [self clearPageInformation];
     [pageTurningView turnToPageAtIndex:page animated:animated];
+}
+
+- (void)jumpToNextZoomBlock
+{
+    id zoomBlock = nil;
+    
+    if (self.currentBlock) {
+        zoomBlock = [self.blockSource nextZoomBlockForZoomBlock:self.currentBlock onSamePage:NO];
+    } else {
+        NSArray *blocks = [self.blockSource zoomBlocksForPageAtIndex:self.pageTurningView.focusedPageIndex];
+        if ([blocks count]) {
+            zoomBlock = [blocks objectAtIndex:0];
+        }
+    }
+    
+    self.currentBlock = zoomBlock;
+    
+    NSLog(@"next zoomBlock: %@", zoomBlock);
+}
+
+- (void)jumpToPreviousZoomBlock
+{
+    id zoomBlock = nil;
+    
+    if (self.currentBlock) {
+        zoomBlock = [self.blockSource previousZoomBlockForZoomBlock:self.currentBlock onSamePage:NO];
+    } else {
+        NSArray *blocks = [self.blockSource zoomBlocksForPageAtIndex:self.pageTurningView.focusedPageIndex];
+        zoomBlock = [blocks lastObject];
+    }
+    
+    self.currentBlock = zoomBlock;
+    
+    NSLog(@"prev zoomBlock: %@", zoomBlock);
 }
 
 

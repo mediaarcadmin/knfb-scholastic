@@ -27,6 +27,11 @@
 @property (nonatomic, retain) id <SCHReadingViewDelegate> delegate;
 
 - (id) initWithFrame:(CGRect)frame isbn:(id)isbn;
-- (void) jumpToPage: (NSInteger) page animated: (BOOL) animated;
+
+// Overridden methods
+
+- (void)jumpToPage:(NSInteger)page animated:(BOOL)animated;
+- (void)jumpToNextZoomBlock;
+- (void)jumpToPreviousZoomBlock;
 
 @end

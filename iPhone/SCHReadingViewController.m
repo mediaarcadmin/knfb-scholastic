@@ -277,11 +277,13 @@
 - (IBAction)nextSmartZoom:(id)sender
 {
     NSLog(@"Next");
+    [self.eucPageView jumpToNextZoomBlock];
 }
 
 - (IBAction)prevSmartZoom:(id)sender
 {
     NSLog(@"Previous");
+    [self.eucPageView jumpToPreviousZoomBlock];
 }
 
 @end
