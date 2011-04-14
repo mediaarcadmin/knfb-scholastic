@@ -296,7 +296,6 @@ static SCHDictionaryManager *sharedManager = nil;
     
     [self.entryTableMutationLock lock];
     FILE *file = fopen([filePath UTF8String], "r");
-    setlinebuf(file);
     char line[kSCHDictionaryManifestEntryEntryTableBufferSize];
     char *completeLine, *start, *entryID, *headword, *level, *entryXML;
     NSMutableData *collectLine = nil;   
@@ -305,10 +304,9 @@ static SCHDictionaryManager *sharedManager = nil;
     
     //NSLog(@"Seeking to offset %ld", offset);
     
-    fseek(file, offset, 0);
-    
     if (file != NULL) {
         setlinebuf(file);
+        fseek(file, offset, 0);
         while (fgets(line, kSCHDictionaryManifestEntryEntryTableBufferSize, file) != NULL) {
             if (strLength = strlen(line), strLength > 0 && line[strLength-1] == '\n') {        
                 
@@ -1004,7 +1002,6 @@ static SCHDictionaryManager *sharedManager = nil;
     
    	[self.wordFormMutationLock lock];
     FILE *file = fopen([filePath UTF8String], "r");
-    setlinebuf(file);
     char line[kSCHDictionaryManifestEntryWordFormTableBufferSize];
     
     int savedItems = 0;
