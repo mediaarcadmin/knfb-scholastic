@@ -24,7 +24,11 @@
 - (void) cancelInitialTimer;
 
 - (IBAction) popViewController: (id) sender;
-
+- (IBAction) magnifyAction: (id) sender;
+- (IBAction) audioPlayAction: (id) sender;
+- (IBAction) storyInteractionAction: (id) sender;
+- (IBAction) notesAction: (id) sender;
+- (IBAction) settingsAction: (id) sender;
 
 @property (readwrite) BOOL toolbarsVisible;
 @property (readwrite, retain) NSArray *currentToolbars;
@@ -100,6 +104,19 @@
 	
     SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];
     
+    NSLog(@"XPSCategory: %@", book.XPSCategory);
+
+    // FIXME: mode settings should be done based on bookshelf
+    if (!book.XPSCategory ||
+        ([book.XPSCategory compare:@"YoungerReader"] == NSOrderedSame) ||
+        ([book.XPSCategory compare:@"YoungReader"] == NSOrderedSame) ) {
+        self.youngerMode = YES;
+    } else {
+        self.youngerMode = NO;
+    }
+    
+
+    
     youngerBookTitle.title = book.Title;
     olderBookTitle.title = book.Title;
     
@@ -142,9 +159,6 @@
 
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackTranslucent];	
 	
-    // FIXME: mode should not be set in here!
-    self.youngerMode = YES;
-    
     if (youngerMode) {
         CGRect frame = youngerTopToolbar.frame;
         frame.origin.y = 20;
@@ -216,6 +230,31 @@
 - (IBAction) popViewController: (id) sender
 {
 	[self.navigationController popViewControllerAnimated:YES];
+}
+
+- (IBAction) magnifyAction: (id) sender
+{
+    NSLog(@"Magnify action");
+}
+
+- (IBAction) audioPlayAction: (id) sender
+{
+    NSLog(@"Audio Play action");
+}
+
+- (IBAction) storyInteractionAction: (id) sender
+{
+    NSLog(@"Story Interactions action");
+}
+
+- (IBAction) notesAction: (id) sender
+{
+    NSLog(@"Notes action");
+}
+
+- (IBAction) settingsAction: (id) sender
+{
+    NSLog(@"Settings action");
 }
 
 #pragma mark - SCHReadingViewDelegate methods
