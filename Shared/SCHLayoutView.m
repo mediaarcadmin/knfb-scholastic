@@ -153,6 +153,19 @@
     
 }
 
+- (void)didEnterSmartZoomMode
+{
+    // Do nothing
+    NSLog(@"Entering smart zoom mode!");
+}
+
+- (void)didExitSmartZoomMode
+{
+    // Do nothing
+    NSLog(@"Exiting smart zoom mode!");
+}
+
+
 - (void)zoomForNewPageAnimated:(BOOL)animated
 {
 	EucPageTurningView *myPageTurningView = self.pageTurningView;

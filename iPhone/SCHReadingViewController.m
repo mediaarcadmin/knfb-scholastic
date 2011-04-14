@@ -31,6 +31,7 @@
 - (IBAction) settingsAction: (id) sender;
 
 @property (readwrite) BOOL toolbarsVisible;
+@property (readwrite) BOOL zoomActive;
 @property (readwrite, retain) NSArray *currentToolbars;
 @property (nonatomic, retain) NSTimer *initialFadeTimer;
 @property (readwrite) NSInteger currentPage;
@@ -41,7 +42,7 @@
 @implementation SCHReadingViewController
 
 @synthesize isbn, flowView, eucPageView, youngerMode;
-@synthesize toolbarsVisible, initialFadeTimer, currentPage, xpsProvider, currentToolbars;
+@synthesize toolbarsVisible, zoomActive, initialFadeTimer, currentPage, xpsProvider, currentToolbars;
 
 #pragma mark - Memory Management
 
@@ -89,6 +90,7 @@
         // Custom initialization
         self.isbn = aIsbn;
         self.wantsFullScreenLayout = YES;
+        self.zoomActive = NO;
     }
     return self;
 }
@@ -235,6 +237,19 @@
 - (IBAction) magnifyAction: (id) sender
 {
     NSLog(@"Magnify action");
+    
+    UIButton *button = (UIButton *) sender;
+    
+    if (self.zoomActive) {
+        self.zoomActive = NO;
+        [button setImage:[UIImage imageNamed:@"icon-magnify"] forState:UIControlStateNormal];
+        [self.eucPageView didExitSmartZoomMode];
+    } else {
+        self.zoomActive = YES;
+        [button setImage:[UIImage imageNamed:@"icon-magnify-active"] forState:UIControlStateNormal];
+        [self.eucPageView didEnterSmartZoomMode];
+    }
+    
 }
 
 - (IBAction) audioPlayAction: (id) sender
