@@ -57,7 +57,6 @@
         eucBookView.vibratesOnInvalidTurn = NO;
         [eucBookView setPageTexture:[UIImage imageNamed: @"paper-white.png"] isDark:NO];
         
-        [eucBookView addObserver:self forKeyPath:@"pageCount" options:NSKeyValueObservingOptionInitial context:NULL];
         [eucBookView addObserver:self forKeyPath:@"pageNumber" options:NSKeyValueObservingOptionInitial context:NULL];
             
         [self addSubview:eucBookView];
@@ -66,7 +65,6 @@
 
 - (void)dealloc
 {
-    [eucBookView removeObserver:self forKeyPath:@"pageCount"];
     [eucBookView removeObserver:self forKeyPath:@"pageNumber"];
     [eucBookView release], eucBookView = nil;
     
@@ -94,23 +92,19 @@
     return self;
 }
 
-- (void) jumpToPage: (NSInteger) page animated: (BOOL) animated
+- (void)jumpToPageAtIndex:(NSUInteger)pageIndex animated: (BOOL) animated
 {
-    NSLog(@"Flow view: jumping to page %d", page);
-    [eucBookView goToPageNumber:page animated:animated];
+    [eucBookView goToPageNumber:pageIndex + 1 animated:animated];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object
                         change:(NSDictionary *)change context:(void *)context
 {
-    if([keyPath isEqualToString:@"pageNumber"]) {
-        if (self.delegate && [self.delegate respondsToSelector:@selector(readingView:hasMovedToPage:)]) {
-            [self.delegate readingView:self hasMovedToPage:eucBookView.pageNumber];
+    if ([keyPath isEqualToString:@"pageNumber"]) {
+        if (self.delegate && [self.delegate respondsToSelector:@selector(readingView:hasMovedToPageAtIndex:)]) {
+            [self.delegate readingView:self hasMovedToPageAtIndex:eucBookView.pageNumber - 1];
         }
     }
-
-//    } else { //if([keyPath isEqualToString:@"pageCount"] ) {
-//        self.pageCount = eucBookView.pageCount;
 }
 
 - (void)bookView:(EucBookView *)bookView unhandledTapAtPoint:(CGPoint)point

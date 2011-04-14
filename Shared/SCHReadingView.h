@@ -14,8 +14,8 @@
 
 @optional
 
-- (void) readingView: (SCHReadingView *) readingView hasMovedToPage: (NSInteger) page;
-- (void) unhandledTouchOnPageForReadingView: (SCHReadingView *) readingView;
+- (void)readingView:(SCHReadingView *)readingView hasMovedToPageAtIndex:(NSUInteger)pageIndex;
+- (void)unhandledTouchOnPageForReadingView:(SCHReadingView *)readingView;
 
 @end
 
@@ -26,11 +26,11 @@
 @property (nonatomic, retain) NSString *isbn;
 @property (nonatomic, retain) id <SCHReadingViewDelegate> delegate;
 
-- (id) initWithFrame:(CGRect)frame isbn:(id)isbn;
+- (id)initWithFrame:(CGRect)frame isbn:(id)isbn;
 
 // Overridden methods
 
-- (void)jumpToPage:(NSInteger)page animated:(BOOL)animated;
+- (void)jumpToPageAtIndex:(NSUInteger)pageIndex animated:(BOOL)animated;
 - (void)jumpToNextZoomBlock;
 - (void)jumpToPreviousZoomBlock;
 

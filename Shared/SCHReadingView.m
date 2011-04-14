@@ -33,7 +33,7 @@
 
 // Overridden methods
 
-- (void)jumpToPage:(NSInteger)page animated:(BOOL)animated
+- (void)jumpToPageAtIndex:(NSUInteger)page animated:(BOOL)animated
 {
     NSLog(@"WARNING: jumpToPage:animated: not being overridden correctly.");
 }

@@ -33,7 +33,7 @@
 @property (readwrite) BOOL toolbarsVisible;
 @property (readwrite, retain) NSArray *currentToolbars;
 @property (nonatomic, retain) NSTimer *initialFadeTimer;
-@property (readwrite) NSInteger currentPage;
+@property (readwrite) NSInteger currentPageIndex;
 @property (nonatomic, assign) SCHXPSProvider *xpsProvider;
 
 @end
@@ -41,7 +41,7 @@
 @implementation SCHReadingViewController
 
 @synthesize isbn, flowView, eucPageView, youngerMode;
-@synthesize toolbarsVisible, initialFadeTimer, currentPage, xpsProvider, currentToolbars;
+@synthesize toolbarsVisible, initialFadeTimer, currentPageIndex, xpsProvider, currentToolbars;
 
 #pragma mark - Memory Management
 
@@ -98,7 +98,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 	
-	self.currentPage = 1;
+	self.currentPageIndex = 0;
 	toolbarsVisible = YES;
     self.xpsProvider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.isbn];
 	
@@ -124,10 +124,10 @@
 	pageScrubber.minimumValue = 1;
 	pageScrubber.maximumValue = [self.xpsProvider pageCount];
 	pageScrubber.continuous = YES;
-	pageScrubber.value = self.currentPage;
+	pageScrubber.value = self.currentPageIndex + 1;
 	
     panSpeedLabel.text = @"Hi-speed Scrubbing";
-    pageLabel.text = [NSString stringWithFormat:@"Page %d of %d", self.currentPage, [self.xpsProvider pageCount]];
+    pageLabel.text = [NSString stringWithFormat:@"Page %d of %d", self.currentPageIndex, [self.xpsProvider pageCount] - 1];
     
     if (self.flowView) {
         self.eucPageView = [[SCHFlowView alloc] initWithFrame:self.view.bounds isbn:self.isbn];
@@ -259,11 +259,11 @@
 
 #pragma mark - SCHReadingViewDelegate methods
 
-- (void) readingView: (SCHReadingView *) readingView hasMovedToPage: (NSInteger) page
+- (void)readingView:(SCHReadingView *)readingView hasMovedToPageAtIndex:(NSUInteger)pageIndex
 {
-    self.currentPage = page;
-    [pageScrubber setValue:self.currentPage];
-    pageLabel.text = [NSString stringWithFormat:@"Page %d of %d", self.currentPage, [self.xpsProvider pageCount]];
+    self.currentPageIndex = pageIndex;
+    [pageScrubber setValue:self.currentPageIndex + 1];
+    pageLabel.text = [NSString stringWithFormat:@"Page %d of %d", self.currentPageIndex + 1, [self.xpsProvider pageCount]];
 }
 
 - (void) unhandledTouchOnPageForReadingView: (SCHReadingView *) readingView
@@ -277,7 +277,7 @@
 - (void) scrubberView:(BITScrubberView *)scrubberView scrubberValueUpdated:(float)currentValue
 {
 	if (scrubberView == pageScrubber) {
-		self.currentPage = (int) currentValue;
+		self.currentPageIndex = (int) currentValue - 1;
 		
 		switch (scrubberView.scrubSpeed) {
 			case kBITScrubberScrubSpeedNormal:
@@ -293,7 +293,7 @@
 				break;
 		}
 
-		[pageLabel setText:[NSString stringWithFormat:@"Page %d of %d", self.currentPage, [self.xpsProvider pageCount]]];
+		[pageLabel setText:[NSString stringWithFormat:@"Page %d of %d", self.currentPageIndex + 1, [self.xpsProvider pageCount]]];
 	}
 }
 
@@ -315,7 +315,7 @@
 	[scrubberInfoView setAlpha:0.0f];
 	[UIView commitAnimations];
 	
-    [self.eucPageView jumpToPage:self.currentPage animated:YES];
+    [self.eucPageView jumpToPageAtIndex:self.currentPageIndex animated:YES];
 }
 
 #pragma mark - Toolbar Methods - including timer

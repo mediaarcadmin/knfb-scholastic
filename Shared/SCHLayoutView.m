@@ -12,12 +12,15 @@
 #import "SCHBookManager.h"
 #import <libEucalyptus/THPositionedCGContext.h>
 
+#define LAYOUT_LHSHOTZONE 0.25f
+#define LAYOUT_RHSHOTZONE 0.75f
 
 @interface SCHLayoutView()
 
 @property (nonatomic, retain) SCHXPSProvider *xpsProvider;
 @property (nonatomic, retain) EucPageTurningView *pageTurningView;
 @property (nonatomic, assign) NSUInteger pageCount;
+@property (nonatomic, assign) NSUInteger currentPageIndex;
 @property (nonatomic, assign) CGRect firstPageCrop;
 @property (nonatomic, assign) CGSize pageSize;
 @property (nonatomic, retain) NSMutableDictionary *pageCropsCache;
@@ -29,6 +32,7 @@
 - (CGRect)cropForPage:(NSInteger)page allowEstimate:(BOOL)estimate;
 - (void)clearPageInformation;
 - (void)jumpToZoomBlock:(id)zoomBlock;
+- (void)registerGesturesForPageTurningView:(EucPageTurningView *)aPageTurningView;
 
 @end
 
@@ -37,6 +41,7 @@
 @synthesize xpsProvider;
 @synthesize pageTurningView;
 @synthesize pageCount;
+@synthesize currentPageIndex;
 @synthesize firstPageCrop;
 @synthesize pageSize;
 @synthesize pageCropsCache;
@@ -100,6 +105,8 @@
         [pageTurningView setPageTexture:[UIImage imageNamed: @"paper-white.png"] isDark:NO];
         [pageTurningView turnToPageAtIndex:0 animated:NO];
         [pageTurningView waitForAllPageImagesToBeAvailable];
+        
+        [self registerGesturesForPageTurningView:pageTurningView];
         
     }
     
@@ -227,10 +234,12 @@
 
 #pragma mark - SCHReadingView methods
 
-- (void) jumpToPage: (NSInteger) page animated: (BOOL) animated
+- (void)jumpToPageAtIndex:(NSUInteger)pageIndex animated: (BOOL) animated
 {
-    [self clearPageInformation];
-    [pageTurningView turnToPageAtIndex:page animated:animated];
+    if ((pageIndex >= 0) && (pageIndex < pageCount)) {
+        [self clearPageInformation];
+        [self.pageTurningView turnToPageAtIndex:pageIndex animated:animated];
+    }
 }
 
 - (void)jumpToNextZoomBlock
@@ -240,7 +249,7 @@
     if (self.currentBlock) {
         zoomBlock = [self.blockSource nextZoomBlockForZoomBlock:self.currentBlock onSamePage:NO];
     } else {
-        NSArray *blocks = [self.blockSource zoomBlocksForPageAtIndex:self.pageTurningView.focusedPageIndex];
+        NSArray *blocks = [self.blockSource zoomBlocksForPageAtIndex:self.currentPageIndex];
         if ([blocks count]) {
             zoomBlock = [blocks objectAtIndex:0];
         }
@@ -258,7 +267,7 @@
     if (self.currentBlock) {
         zoomBlock = [self.blockSource previousZoomBlockForZoomBlock:self.currentBlock onSamePage:NO];
     } else {
-        NSArray *blocks = [self.blockSource zoomBlocksForPageAtIndex:self.pageTurningView.focusedPageIndex];
+        NSArray *blocks = [self.blockSource zoomBlocksForPageAtIndex:self.currentPageIndex];
         zoomBlock = [blocks lastObject];
     }
     
@@ -276,19 +285,12 @@
     return [self cropForPage:index + 1];
 }
 
-- (void)pageTurningView:(EucPageTurningView *)pageTurningView unhandledTapAtPoint:(CGPoint)point
-{
-    if (self.delegate && [self.delegate respondsToSelector:@selector(unhandledTouchOnPageForReadingView:)]) {
-        [self.delegate unhandledTouchOnPageForReadingView:self];
-    }
-}
-
 - (THPositionedCGContext *)pageTurningView:(EucPageTurningView *)aPageTurningView 
            RGBABitmapContextForPageAtIndex:(NSUInteger)index
                                   fromRect:(CGRect)rect 
                                     atSize:(CGSize)size {
     
-    NSLog(@"index: %d", index);
+//    NSLog(@"index: %d", index);
     
     if (index == NSUIntegerMax)
     {
@@ -307,10 +309,57 @@
 
 - (void)pageTurningViewDidEndPageTurn:(EucPageTurningView *)aPageTurningView
 {
-    if (self.delegate && [self.delegate respondsToSelector:@selector(readingView:hasMovedToPage:)]) {
-        [self.delegate readingView:self hasMovedToPage:[aPageTurningView rightPageIndex]];
+    self.currentPageIndex = aPageTurningView.focusedPageIndex;
+        
+    if (self.delegate && [self.delegate respondsToSelector:@selector(readingView:hasMovedToPageAtIndex:)]) {
+        [self.delegate readingView:self hasMovedToPageAtIndex:self.currentPageIndex];
     }
 }
 
+#pragma mark - Touch handling
+
+- (void)registerGesturesForPageTurningView:(EucPageTurningView *)aPageTurningView;
+{
+    UITapGestureRecognizer *doubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDoubleTap:)];
+    doubleTap.numberOfTapsRequired = 2;
+    [aPageTurningView addGestureRecognizer:doubleTap];
+    
+    [aPageTurningView.tapGestureRecognizer removeTarget:nil action:nil]; 
+    [aPageTurningView.tapGestureRecognizer addTarget:self action:@selector(handleSingleTap:)];
+    
+    [aPageTurningView.tapGestureRecognizer requireGestureRecognizerToFail:doubleTap];
+    
+    aPageTurningView.tapGestureRecognizer.cancelsTouchesInView = NO;
+    
+    [doubleTap release];
+}
+
+- (void)handleSingleTap:(UITapGestureRecognizer *)sender {     
+
+    if (sender.state == UIGestureRecognizerStateEnded) {
+        CGPoint point = [sender locationInView:self];
+        
+        CGFloat screenWidth = CGRectGetWidth(self.bounds);
+        CGFloat leftHandHotZone = screenWidth * LAYOUT_LHSHOTZONE;
+        CGFloat rightHandHotZone = screenWidth * LAYOUT_RHSHOTZONE;
+                
+        if (point.x <= leftHandHotZone) {
+            [self jumpToPageAtIndex:self.currentPageIndex - 1 animated:YES];
+            //[self.delegate hideToolbars];
+        } else if (point.x >= rightHandHotZone) {
+            [self jumpToPageAtIndex:self.currentPageIndex + 1 animated:YES];
+            //[self.delegate hideToolbars];
+        } else {
+            if (self.delegate && [self.delegate respondsToSelector:@selector(unhandledTouchOnPageForReadingView:)]) {
+                [self.delegate unhandledTouchOnPageForReadingView:self];
+            }
+        }
+    }
+    
+}
+
+- (void)handleDoubleTap:(UITapGestureRecognizer *)sender {     
+
+}
 
 @end
