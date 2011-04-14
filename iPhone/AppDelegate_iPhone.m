@@ -11,12 +11,14 @@
 
 #import "SCHSyncManager.h"
 #import "SCHAuthenticationManager.h"
+#import "SCHCustomNavigationBar.h"
 
 static NSTimeInterval const kAppDelegate_iPhoneSyncManagerWakeDelay = 5.0;
 
 @implementation AppDelegate_iPhone
 
 @synthesize navigationController;
+@synthesize customNavigationBar;
 
 #pragma mark -
 #pragma mark Application lifecycle
@@ -33,6 +35,8 @@ static NSTimeInterval const kAppDelegate_iPhoneSyncManagerWakeDelay = 5.0;
     // Add the navigation controller's view to the window and display.
     [self.window addSubview:navigationController.view];
     [self.window makeKeyAndVisible];
+    
+    customNavigationBar.backgroundImage = [UIImage imageNamed:@"icon-books"];
     
     return YES;
 }
