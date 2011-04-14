@@ -6,24 +6,31 @@
 //  Copyright 2011 BitWink. All rights reserved.
 //
 
-#import "SCHCustomToolbar.h"
+#import "SCHCustomNavigationBar.h"
 
-@interface SCHCustomToolbar ()
+@interface SCHCustomNavigationBar ()
 
 @property (nonatomic, retain) UIColor *originalBackgroundColor;
 
 @end 
 
-
-@implementation SCHCustomToolbar
+@implementation SCHCustomNavigationBar
 
 @synthesize backgroundImage;
 @synthesize originalBackgroundColor;
 
+- (id)init {
+    self = [super init];
+    if (self) {
+        self.originalBackgroundColor = nil;
+    }
+    return self;
+}
+
 // If we have a custom background image, then draw it, othwerwise call super and draw the standard nav bar
 - (void)drawRect:(CGRect)rect
 {
-    if (self.backgroundImage) {
+    if (self.backgroundImage != nil) {
         [self.backgroundImage drawInRect:rect];
     } else {
         [super drawRect:rect];
@@ -31,7 +38,7 @@
 }
 
 // Save the background image and call setNeedsDisplay to force a redraw
--(void) setBackgroundWith:(UIImage*)newBackgroundImage
+- (void)setBackgroundImage:(UIImage*)newBackgroundImage
 {
     if (backgroundImage != newBackgroundImage) {
         [backgroundImage release];
@@ -45,12 +52,11 @@
 }
 
 // clear the background image and call setNeedsDisplay to force a redraw
--(void) clearBackground
+- (void)clearBackground
 {
     if (self.originalBackgroundColor != nil) {
         self.backgroundColor = self.originalBackgroundColor;        
     }
-
     self.backgroundImage = nil;
     [self setNeedsDisplay];
 }

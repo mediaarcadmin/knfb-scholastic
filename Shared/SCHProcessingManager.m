@@ -17,6 +17,7 @@
 #import "SCHTextFlowPreParseOperation.h"
 #import "SCHSmartZoomPreParseOperation.h"
 #import "SCHFlowPaginateOperation.h"
+#import "SCHLicenseAcquisitionOperation.h"
 #import "SCHBookManager.h"
 #import "SCHAsyncBookCoverImageView.h"
 #import "SCHThumbnailFactory.h"
@@ -326,6 +327,25 @@ static SCHProcessingManager *sharedManager = nil;
 			return;
 			break;
 		}	
+			// *** Book file needs license acquisition ***
+		case SCHBookProcessingStateReadyForLicenseAcquisition:
+		{
+			// create rights processing operation
+			SCHLicenseAcquisitionOperation *licenseOp = [[SCHLicenseAcquisitionOperation alloc] init];
+			licenseOp.isbn = isbn;
+			
+			// the book will be redispatched on completion
+			[licenseOp setCompletionBlock:^{
+				[self redispatchISBN:isbn];
+			}];
+			
+			// add the operation to the local processing queue
+			[self.localProcessingQueue addOperation:licenseOp];
+			[licenseOp release];
+			return;
+			break;
+		}	
+            
 			// *** Book file needs rights parsed ***
 		case SCHBookProcessingStateReadyForRightsParsing:
 		{
@@ -430,6 +450,7 @@ static SCHProcessingManager *sharedManager = nil;
 		case SCHBookProcessingStateNoURLs:
 		case SCHBookProcessingStateNoCoverImage:
 		case SCHBookProcessingStateDownloadStarted:
+        case SCHBookProcessingStateReadyForLicenseAcquisition:
 		case SCHBookProcessingStateReadyForRightsParsing:
         case SCHBookProcessingStateReadyForTextFlowPreParse:
         case SCHBookProcessingStateReadyForSmartZoomPreParse:
@@ -452,6 +473,7 @@ static SCHProcessingManager *sharedManager = nil;
 	if (book.processingState == SCHBookProcessingStateReadyForBookFileDownload ||
 		book.processingState == SCHBookProcessingStateDownloadStarted ||
 		book.processingState == SCHBookProcessingStateDownloadPaused ||
+        book.processingState == SCHBookProcessingStateReadyForLicenseAcquisition ||
 		book.processingState == SCHBookProcessingStateReadyForPagination ||
 		book.processingState == SCHBookProcessingStateReadyForRightsParsing ||
 		book.processingState == SCHBookProcessingStateReadyForTextFlowPreParse ||

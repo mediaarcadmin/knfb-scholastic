@@ -225,11 +225,17 @@
 		case SCHBookProcessingStateDownloadPaused:
 			status = @"Paused";
 			break;
+        case SCHBookProcessingStateReadyForLicenseAcquisition:
+            status = @"License..";
+            break;
 		case SCHBookProcessingStateReadyForRightsParsing:
 			status = @"Rights...";
 			break;
         case SCHBookProcessingStateReadyForTextFlowPreParse:
 			status = @"Textflow...";
+			break;
+        case SCHBookProcessingStateReadyForSmartZoomPreParse:
+			status = @"Zoom...";
 			break;
         case SCHBookProcessingStateReadyForPagination:
 			status = @"Paginate...";

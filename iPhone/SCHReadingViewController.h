@@ -9,27 +9,31 @@
 #import <UIKit/UIKit.h>
 #import "BITScrubberView.h"
 #import "SCHReadingView.h"
+#import "SCHCustomToolbar.h"
 
 @class SCHXPSProvider;
 
 @interface SCHReadingViewController : UIViewController <BITScrubberViewDelegate, SCHReadingViewDelegate> {
-    //    IBOutlet UIView    *pageView;
 	
-	IBOutlet UIToolbar *topToolbar;
-    IBOutlet UIToolbar *bottomToolbar;
-	IBOutlet UIToolbar *scrubberToolbar;
-	
-	IBOutlet BITScrubberView *pageScrubber;
+	IBOutlet SCHCustomToolbar   *scrubberToolbar;
+    IBOutlet SCHCustomToolbar   *youngerTopToolbar;
+    IBOutlet SCHCustomToolbar   *olderTopToolbar;
+    IBOutlet SCHCustomToolbar   *olderBottomToolbar;
 
-	IBOutlet UIView    *scrubberInfoView;
-	IBOutlet UILabel   *pageLabel;
-	IBOutlet UILabel   *panSpeedLabel;
+	IBOutlet BITScrubberView    *pageScrubber;
+
+	IBOutlet UIView             *scrubberInfoView;
+	IBOutlet UILabel            *pageLabel;
+	IBOutlet UILabel            *panSpeedLabel;
+    IBOutlet UIBarButtonItem    *youngerBookTitle;
+    IBOutlet UIBarButtonItem    *olderBookTitle;
 	
 }
 
 @property (nonatomic, retain) NSString *isbn;
-@property (nonatomic) BOOL flowView;
 @property (nonatomic, retain) SCHReadingView *eucPageView;
+@property (nonatomic) BOOL flowView;
+@property (readwrite) BOOL youngerMode;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil isbn:(NSString *)aIsbn;
 
