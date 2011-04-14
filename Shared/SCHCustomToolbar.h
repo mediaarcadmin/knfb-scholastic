@@ -14,7 +14,7 @@
     
 }
 
-@property (nonatomic, retain) UIImageView *barBackgroundImage;
+@property (nonatomic, retain) UIImage *backgroundImage;
 
 -(void) setBackgroundWith:(UIImage*)backgroundImage;
 -(void) clearBackground;

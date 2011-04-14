@@ -8,34 +8,50 @@
 
 #import "SCHCustomToolbar.h"
 
+@interface SCHCustomToolbar ()
+
+@property (nonatomic, retain) UIColor *originalBackgroundColor;
+
+@end 
+
 
 @implementation SCHCustomToolbar
 
-@synthesize barBackgroundImage;
+@synthesize backgroundImage;
+@synthesize originalBackgroundColor;
 
 // If we have a custom background image, then draw it, othwerwise call super and draw the standard nav bar
 - (void)drawRect:(CGRect)rect
 {
-    if (self.barBackgroundImage) {
-        [self.barBackgroundImage.image drawInRect:rect];
+    if (self.backgroundImage) {
+        [self.backgroundImage drawInRect:rect];
     } else {
         [super drawRect:rect];
     }
 }
 
 // Save the background image and call setNeedsDisplay to force a redraw
--(void) setBackgroundWith:(UIImage*)backgroundImage
+-(void) setBackgroundWith:(UIImage*)newBackgroundImage
 {
-    self.barBackgroundImage = [[[UIImageView alloc] initWithFrame:self.frame] autorelease];
-    self.barBackgroundImage.image = backgroundImage;
-    self.backgroundColor = [UIColor clearColor];
-    [self setNeedsDisplay];
+    if (backgroundImage != newBackgroundImage) {
+        [backgroundImage release];
+        backgroundImage = [newBackgroundImage retain];
+        if (self.originalBackgroundColor == nil) {
+            self.originalBackgroundColor = self.backgroundColor;
+        }
+        self.backgroundColor = [UIColor clearColor];
+        [self setNeedsDisplay];
+    }
 }
 
 // clear the background image and call setNeedsDisplay to force a redraw
 -(void) clearBackground
 {
-    self.barBackgroundImage = nil;
+    if (self.originalBackgroundColor != nil) {
+        self.backgroundColor = self.originalBackgroundColor;        
+    }
+
+    self.backgroundImage = nil;
     [self setNeedsDisplay];
 }
 
