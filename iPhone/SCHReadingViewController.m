@@ -196,6 +196,20 @@
     return YES;
 }
 
+- (void) willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    [UIView beginAnimations:@"titleWidthAnimation" context:nil];
+    [UIView setAnimationDuration:duration];
+    if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {
+        youngerBookTitle.width = 110.0f;
+        olderBookTitle.width = 150.0f;
+    } else {
+        youngerBookTitle.width = 320.0f;
+        olderBookTitle.width = 370.0f;
+    }
+    [UIView commitAnimations];
+}
+
 #pragma mark -
 #pragma mark Button Actions
 
