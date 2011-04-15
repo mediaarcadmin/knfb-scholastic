@@ -56,21 +56,60 @@
 		NSLog(@"No image returned!");
 		return nil;
 	} else {
-		
-		if (aspect) {
-			
-//			CGFloat xRatio = size.width / fullImage.size.width;
-//			CGFloat yRatio = size.height / fullImage.size.height;
-	
-//			NSLog(@"xratio: %f yratio: %f", xRatio, yRatio);
-		}
-		
-		UIGraphicsBeginImageContextWithOptions(size, NO, 0.0f);
-		[fullImage drawInRect:CGRectMake(0, 0, size.width, size.height)];
-		UIImage* newImage = UIGraphicsGetImageFromCurrentImageContext();
-		UIGraphicsEndImageContext();
-		
-		return newImage;
+
+        float hfactor = fullImage.size.width / size.width;
+        float vfactor = fullImage.size.height / size.height;
+        
+        float factor = MAX(hfactor, vfactor);
+        
+        // Divide the size by the greater of the vertical or horizontal shrinking factor
+        float newThumbWidth = fullImage.size.width / factor;
+        float newThumbHeight = fullImage.size.height / factor;
+        
+        // offset it to center vertically or horizontally if necessary
+       // float leftOffset = (size.width - newThumbWidth) / 2;
+       // float topOffset = (size.height - newThumbHeight) + 2;
+        
+        //CGRect newRect = CGRectMake(leftOffset, topOffset, newThumbWidth, newThumbHeight);
+        
+/*        UIGraphicsBeginImageContextWithOptions(size, NO, 0.0f);
+        [fullImage drawInRect:newRect];
+        UIImage* newImage = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+        
+        return newImage;
+  */
+        
+        CGRect imageRect = CGRectMake(0, 0, newThumbWidth, newThumbHeight);
+        CGRect integralRect = CGRectIntegral(imageRect);
+        CGRect thumbNailRect = integralRect;
+
+       if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)]) {
+            CGFloat scale = [[UIScreen mainScreen] scale];
+            thumbNailRect = CGRectApplyAffineTransform(thumbNailRect, CGAffineTransformMakeScale(scale, scale));
+        }
+
+        
+        CGSize imageSize = thumbNailRect.size;
+
+        CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+        CGContextRef ctx = CGBitmapContextCreate(NULL, imageSize.width,  imageSize.height, 8, 4 *  imageSize.width, colorSpace, kCGImageAlphaPremultipliedFirst);
+        CGColorSpaceRelease(colorSpace);
+        
+        //CGImageRef thumbRectImageRef = CGImageCreateWithImageInRect(fullImage.CGImage, newRect);
+        
+        CGContextDrawImage(ctx, thumbNailRect, fullImage.CGImage);
+        //CGImageRelease(thumbRectImageRef);
+        
+        CGImageRef scaledImageRef = CGBitmapContextCreateImage(ctx);
+        UIImage *scaledImage = [[UIImage alloc] initWithCGImage:scaledImageRef];
+        CGImageRelease(scaledImageRef);
+        
+        CGContextRelease(ctx);
+        
+        return [scaledImage autorelease];
+
+        
 	}
 }
 

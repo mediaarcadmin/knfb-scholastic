@@ -26,7 +26,7 @@
 }
 
 - (void) initialiseView {
-	self.contentMode = UIViewContentModeScaleToFill;
+	self.contentMode = UIViewContentModeBottom;
 	self.clipsToBounds = YES;
 }
 
