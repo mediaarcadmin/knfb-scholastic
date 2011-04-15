@@ -26,10 +26,6 @@
 		5200EFF112F6CFE400BAC355 /* SCHPrivateAnnotations.m in Sources */ = {isa = PBXBuildFile; fileRef = 5200EFEB12F6CFE400BAC355 /* SCHPrivateAnnotations.m */; };
 		5200EFF412F6D00B00BAC355 /* SCHeReaderCategories.m in Sources */ = {isa = PBXBuildFile; fileRef = 5200EFF312F6D00B00BAC355 /* SCHeReaderCategories.m */; };
 		5200EFF512F6D00B00BAC355 /* SCHeReaderCategories.m in Sources */ = {isa = PBXBuildFile; fileRef = 5200EFF312F6D00B00BAC355 /* SCHeReaderCategories.m */; };
-		52271FA31358962D00FC5DB9 /* icon-cancel.png in Resources */ = {isa = PBXBuildFile; fileRef = 52271FA11358962700FC5DB9 /* icon-cancel.png */; };
-		52271FA41358962D00FC5DB9 /* icon-cancel.png in Resources */ = {isa = PBXBuildFile; fileRef = 52271FA11358962700FC5DB9 /* icon-cancel.png */; };
-		52271FA51358962D00FC5DB9 /* icon-cancel@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52271FA21358962A00FC5DB9 /* icon-cancel@2x.png */; };
-		52271FA61358962D00FC5DB9 /* icon-cancel@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52271FA21358962A00FC5DB9 /* icon-cancel@2x.png */; };
 		52298A8712F0EF5600BBBCE6 /* SCHNote.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A5E12F0EF5600BBBCE6 /* SCHNote.m */; };
 		52298A8812F0EF5600BBBCE6 /* SCHUserSettingsItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6012F0EF5600BBBCE6 /* SCHUserSettingsItem.m */; };
 		52298A8912F0EF5600BBBCE6 /* SCHContentMetadataItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6212F0EF5600BBBCE6 /* SCHContentMetadataItem.m */; };
@@ -788,8 +784,6 @@
 		5200EFEB12F6CFE400BAC355 /* SCHPrivateAnnotations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHPrivateAnnotations.m; path = Shared/SCHPrivateAnnotations.m; sourceTree = "<group>"; };
 		5200EFF212F6D00B00BAC355 /* SCHeReaderCategories.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHeReaderCategories.h; path = Shared/SCHeReaderCategories.h; sourceTree = "<group>"; };
 		5200EFF312F6D00B00BAC355 /* SCHeReaderCategories.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHeReaderCategories.m; path = Shared/SCHeReaderCategories.m; sourceTree = "<group>"; };
-		52271FA11358962700FC5DB9 /* icon-cancel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-cancel.png"; path = "Resources/icon-cancel.png"; sourceTree = "<group>"; };
-		52271FA21358962A00FC5DB9 /* icon-cancel@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-cancel@2x.png"; path = "Resources/icon-cancel@2x.png"; sourceTree = "<group>"; };
 		52298A5D12F0EF5600BBBCE6 /* SCHNote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHNote.h; path = Shared/SCHNote.h; sourceTree = "<group>"; };
 		52298A5E12F0EF5600BBBCE6 /* SCHNote.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHNote.m; path = Shared/SCHNote.m; sourceTree = "<group>"; };
 		52298A5F12F0EF5600BBBCE6 /* SCHUserSettingsItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHUserSettingsItem.h; path = Shared/SCHUserSettingsItem.h; sourceTree = "<group>"; };
@@ -1714,8 +1708,6 @@
 				C9C889781358536E00ADF394 /* icon-theme@2x.png */,
 				C9C889791358536E00ADF394 /* icon-home.png */,
 				C9C8897A1358536E00ADF394 /* icon-home@2x.png */,
-				52271FA11358962700FC5DB9 /* icon-cancel.png */,
-				52271FA21358962A00FC5DB9 /* icon-cancel@2x.png */,
 				F80FED5E1355DD6D00DEB3C1 /* icon-books.png */,
 				F80FED5F1355DD6D00DEB3C1 /* icon-books@2x.png */,
 				F80FED601355DD6D00DEB3C1 /* icon-magnify.png */,
@@ -2925,8 +2917,6 @@
 				52E623021358544200245CA7 /* SCHThemePickerViewController.xib in Resources */,
 				F89F25C4135868F900777D32 /* profile-cell-background.png in Resources */,
 				F89F25C6135868F900777D32 /* profile-cell-background@2x.png in Resources */,
-				52271FA31358962D00FC5DB9 /* icon-cancel.png in Resources */,
-				52271FA51358962D00FC5DB9 /* icon-cancel@2x.png in Resources */,
 				C9C88A34135898E100ADF394 /* button-done.png in Resources */,
 				C9C88A36135898E100ADF394 /* button-cancel.png in Resources */,
 				C9C88A38135898E100ADF394 /* button-cancel@2x.png in Resources */,
@@ -3086,8 +3076,6 @@
 				52E623031358544200245CA7 /* SCHThemePickerViewController.xib in Resources */,
 				F89F25C5135868F900777D32 /* profile-cell-background.png in Resources */,
 				F89F25C7135868F900777D32 /* profile-cell-background@2x.png in Resources */,
-				52271FA41358962D00FC5DB9 /* icon-cancel.png in Resources */,
-				52271FA61358962D00FC5DB9 /* icon-cancel@2x.png in Resources */,
 				C9C88A35135898E100ADF394 /* button-done.png in Resources */,
 				C9C88A37135898E100ADF394 /* button-cancel.png in Resources */,
 				C9C88A39135898E100ADF394 /* button-cancel@2x.png in Resources */,

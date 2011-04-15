@@ -30,7 +30,9 @@
     self.tableView.backgroundColor = [UIColor clearColor];
 
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    [button setImage:[UIImage imageNamed:@"icon-cancel"] forState:UIControlStateNormal];
+    [button setTitle:@"Cancel" forState:UIControlStateNormal];
+    [button setBackgroundImage:[[UIImage imageNamed:@"button-cancel"] stretchableImageWithLeftCapWidth:4 topCapHeight:0] forState:UIControlStateNormal];
+    button.contentEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 5);
     [button sizeToFit];    
     [button addTarget:self action:@selector(cancel) forControlEvents:UIControlEventTouchUpInside];    
     self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:button] autorelease];
