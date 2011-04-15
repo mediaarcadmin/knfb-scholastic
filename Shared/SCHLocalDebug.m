@@ -246,7 +246,16 @@
 		newContentProfileItem.LastModified = now;
 		
 		newContentProfileItem.IsFavorite = [NSNumber numberWithBool:YES];
-		newContentProfileItem.ProfileID = [NSNumber numberWithInt:(count % 2 == 0 ? 1: 2)];
+        
+        if ([newContentMetadataItem.FileName isEqualToString:@"Cars"] ||
+            [newContentMetadataItem.FileName isEqualToString:@"Clifford"] ||
+            [newContentMetadataItem.FileName isEqualToString:@"OldLady"] ||
+            [newContentMetadataItem.FileName isEqualToString:@"Penguins"] ||
+            [newContentMetadataItem.FileName isEqualToString:@"TooManyToys"]) {
+            newContentProfileItem.ProfileID = [NSNumber numberWithInt:1];
+        } else {
+            newContentProfileItem.ProfileID = [NSNumber numberWithInt:2];
+        }
 		
 		[newUserContentItem addProfileListObject:newContentProfileItem];	
 
