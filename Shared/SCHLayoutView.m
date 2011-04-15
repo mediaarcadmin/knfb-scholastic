@@ -264,10 +264,7 @@
     if (self.currentBlock) {
         zoomBlock = [self.blockSource nextZoomBlockForZoomBlock:self.currentBlock onSamePage:NO];
     } else {
-        NSArray *blocks = [self.blockSource zoomBlocksForPageAtIndex:self.currentPageIndex];
-        if ([blocks count]) {
-            zoomBlock = [blocks objectAtIndex:0];
-        }
+        zoomBlock = [self.blockSource firstZoomBlockFromPageAtIndex:self.currentPageIndex];
     }
     
     self.currentBlock = zoomBlock;
@@ -282,8 +279,7 @@
     if (self.currentBlock) {
         zoomBlock = [self.blockSource previousZoomBlockForZoomBlock:self.currentBlock onSamePage:NO];
     } else {
-        NSArray *blocks = [self.blockSource zoomBlocksForPageAtIndex:self.currentPageIndex];
-        zoomBlock = [blocks lastObject];
+        zoomBlock = [self.blockSource firstZoomBlockFromPageAtIndex:self.currentPageIndex];
     }
     
     self.currentBlock = zoomBlock;

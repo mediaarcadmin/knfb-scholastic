@@ -58,7 +58,7 @@
 	[super viewWillAppear:animated];
 	
 	self.navigationController.navigationBarHidden = NO;
-	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];	
+	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque];	
     [self.navigationController.navigationBar setBarStyle:UIBarStyleDefault];
 	NSLog(@"Item: %@", self.isbn);
 	

@@ -50,7 +50,11 @@
     [super viewDidLoad];
 		
 	[self.gridView setCellSize:CGSizeMake(80,118) withBorderSize:20];
-	[self.gridView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"Shelf"]]];
+	//[self.gridView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"Shelf"]]];
+    [self.gridView setBackgroundColor:[UIColor clearColor]];
+    
+    //[self.view.layer setContents:(id)[UIImage imageNamed:@"bookshelf-back.png"].CGImage];
+    [self.view.layer setContents:(id)[UIImage imageNamed:@"bookshelf-back-static.png"].CGImage];
     
     UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:nil action:nil];
     longPress.delaysTouchesBegan = YES;
