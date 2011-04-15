@@ -90,6 +90,7 @@
     if (cell == nil) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
         cell.textLabel.textAlignment = UITextAlignmentCenter;
+        cell.backgroundColor = [UIColor colorWithRed:48.0/255.0 green:156.0/255.0 blue:214.0/255.0 alpha:1.0];
     }
     
     // Configure the cell...
