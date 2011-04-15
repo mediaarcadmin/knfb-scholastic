@@ -1533,8 +1533,6 @@
 				5233E0D613159CA80088F18C /* BITNetworkActivityManager.h */,
 				5233E0D713159CA80088F18C /* BITNetworkActivityManager.m */,
 				52322BF613268C3300BB071D /* SCHUserDefaults.h */,
-				52E622F913584EBE00245CA7 /* SCHThemeManager.h */,
-				52E622FA13584EBE00245CA7 /* SCHThemeManager.m */,
 			);
 			name = Shared;
 			sourceTree = "<group>";
@@ -1899,6 +1897,8 @@
 				C9CEF429133A1BF300FB5BE0 /* Book Reading */,
 				F8E29664130583A0009BD30D /* Image Processing */,
 				C923B14612F6AFE10054426F /* Bookshelves */,
+				52E622F913584EBE00245CA7 /* SCHThemeManager.h */,
+				52E622FA13584EBE00245CA7 /* SCHThemeManager.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
