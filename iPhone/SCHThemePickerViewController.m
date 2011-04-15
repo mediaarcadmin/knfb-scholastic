@@ -58,18 +58,27 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    UILabel *label = [[[UILabel alloc] init] autorelease];
+    UILabel *headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 12, self.view.frame.size.width - 40, 40)];
+    headerLabel.text = @"Themes";
+    headerLabel.font = [UIFont boldSystemFontOfSize:18.0f];
+    headerLabel.minimumFontSize = 11;
+    headerLabel.numberOfLines = 1;
+    headerLabel.adjustsFontSizeToFitWidth = YES;
+    headerLabel.backgroundColor = [UIColor clearColor];
+    headerLabel.textColor = [UIColor whiteColor];
+    headerLabel.shadowColor = [UIColor blackColor];
+    headerLabel.shadowOffset = CGSizeMake(0, -1);
     
-    label.text = @"  Themes";
-    label.textColor = [UIColor whiteColor];
-    label.backgroundColor = [UIColor clearColor];
+    UIView *containerView = [[UIView alloc] initWithFrame:CGRectZero];
+    [containerView addSubview:headerLabel];
+    [headerLabel release];
     
-    return(label);
+    return [containerView autorelease];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return(50.0);
+    return 54;
 }
 
 #pragma mark - Table view data source
