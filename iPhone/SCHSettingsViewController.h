@@ -12,12 +12,14 @@
 
 @class SCHLoginViewController;
 
-@interface SCHSettingsViewController : UITableViewController<SCHDrmRegistrationSessionDelegate>  {
+@interface SCHSettingsViewController : UIViewController <SCHDrmRegistrationSessionDelegate>  {
 
+    UITableView *tableView;
 }
 
 @property (nonatomic, retain) IBOutlet SCHLoginViewController *loginController;
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, retain) SCHDrmRegistrationSession* drmRegistrationSession;
+@property (nonatomic, retain) IBOutlet UITableView *tableView;
 
 @end

@@ -12,10 +12,12 @@
 #import "SCHUserSettingsItem.h"
 #import "SCHAuthenticationManager.h"
 #import "SCHDrmRegistrationSession.h"
+#import "SCHProfileViewCell.h"
 
 extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
 @implementation SCHSettingsViewController
+@synthesize tableView;
 
 @synthesize loginController, managedObjectContext, drmRegistrationSession;
 
@@ -116,24 +118,64 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 }
 
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    return @"Device Options";      
+    UILabel *headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 12, self.view.frame.size.width - 40, 40)];
+    headerLabel.text = @"Device Options";
+    headerLabel.font = [UIFont boldSystemFontOfSize:18.0f];
+    headerLabel.minimumFontSize = 11;
+    headerLabel.numberOfLines = 1;
+    headerLabel.adjustsFontSizeToFitWidth = YES;
+    headerLabel.backgroundColor = [UIColor clearColor];
+    headerLabel.textColor = [UIColor whiteColor];
+    headerLabel.shadowColor = [UIColor blackColor];
+    headerLabel.shadowOffset = CGSizeMake(0, -1);
+    
+    UIView *containerView = [[UIView alloc] initWithFrame:CGRectZero];
+    [containerView addSubview:headerLabel];
+    [headerLabel release];
+    
+    return [containerView autorelease];
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return @"Space Saver Mode allows you to download individual books - turn it off to automatically download all books.";
+    return 54;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+    UILabel *footerLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 8, self.view.frame.size.width - 20, 60)];
+    footerLabel.text =  @"Space Saver Mode allows you to download individual books - turn it off to automatically download all books.";
+    footerLabel.minimumFontSize = 11;
+    footerLabel.numberOfLines = 3;
+    footerLabel.adjustsFontSizeToFitWidth = YES;
+    footerLabel.backgroundColor = [UIColor clearColor];
+    footerLabel.textColor = [UIColor whiteColor];
+    footerLabel.shadowColor = [UIColor blackColor];
+    footerLabel.shadowOffset = CGSizeMake(0, -1);
+    footerLabel.textAlignment = UITextAlignmentCenter;
+    
+    UIView *containerView = [[UIView alloc] initWithFrame:CGRectZero];
+    [containerView addSubview:footerLabel];
+    [footerLabel release];
+    
+    return [containerView autorelease];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    return 76;
 }
 
 // Customize the appearance of table view cells.
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     static NSString *CellIdentifier = @"Cell";
     
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    SCHProfileViewCell *cell =  (SCHProfileViewCell*) [aTableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+        cell = [[[SCHProfileViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
 		UISwitch *switchview = [[UISwitch alloc] initWithFrame:CGRectZero];
 		
 		BOOL currentValue = [[NSUserDefaults standardUserDefaults] boolForKey:@"kSCHSpaceSaverMode"];
@@ -142,13 +184,21 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 		[switchview addTarget:self action:@selector(spaceSwitchChanged:) forControlEvents:UIControlEventValueChanged];
 		cell.accessoryView = switchview;
 		[switchview release];
+        
+        cell.textLabel.textAlignment = UITextAlignmentLeft;
     }
 
     // Configure the cell...
 	cell.textLabel.text = @"Space Saver Mode";
-	
+
     return cell;
 }
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 66;
+}
+
 
 
 /*
@@ -217,6 +267,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 }
 
 - (void)viewDidUnload {
+    [self setTableView:nil];
     // Relinquish ownership of anything that can be recreated in viewDidLoad or on demand.
     // For example: self.myOutlet = nil;
 	self.managedObjectContext = nil;
@@ -226,6 +277,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
 - (void)dealloc {
 	self.managedObjectContext = nil;
+    [tableView release];
     [super dealloc];
 }
 

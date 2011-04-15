@@ -18,6 +18,7 @@
 #import "SCHProfileItem.h"
 #import "SCHBookShelfViewController.h"
 #import "SCHSyncManager.h"
+#import "SCHProfileViewCell.h"
 
 // Cell Icons 
 static NSString * const kRootViewControllerProfileIcon = @"Profile.png";
@@ -25,7 +26,7 @@ static NSString * const kRootViewControllerProfileLockedIcon = @"ProfileLocked.p
 static NSString * const kRootViewControllerSettingsIcon = @"Settings.png";
 
 @interface SCHProfileViewController ()
-- (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath;
+- (void)configureCell:(SCHProfileViewCell *)cell atIndexPath:(NSIndexPath *)indexPath;
 @end
 
 
@@ -110,7 +111,7 @@ static NSString * const kRootViewControllerSettingsIcon = @"Settings.png";
  */
 
 
-- (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
+- (void)configureCell:(SCHProfileViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
 	NSManagedObject *managedObject = nil;
 	
 	switch (indexPath.section) {
@@ -171,23 +172,9 @@ static NSString * const kRootViewControllerSettingsIcon = @"Settings.png";
     
     static NSString *CellIdentifier = @"Cell";
     
-    UITableViewCell *cell = [aTableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    SCHProfileViewCell *cell = (SCHProfileViewCell*) [aTableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
-		cell.textLabel.font = [UIFont boldSystemFontOfSize:18];
-        cell.textLabel.minimumFontSize = 14;
-        cell.textLabel.numberOfLines = 1;
-        cell.textLabel.adjustsFontSizeToFitWidth = YES;
-        cell.textLabel.backgroundColor = [UIColor clearColor];
-        cell.textLabel.textColor = [UIColor whiteColor];
-        cell.textLabel.shadowColor = [UIColor blackColor];
-        cell.textLabel.shadowOffset = CGSizeMake(0, -1);
-        cell.textLabel.textAlignment = UITextAlignmentCenter;
-        
-        UIImageView *cellBGImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"profile-cell-background"]];
-        
-        cell.backgroundView = cellBGImage;
-        [cellBGImage release];
+        cell = [[[SCHProfileViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
     }
     
     // Configure the cell.

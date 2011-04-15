@@ -617,6 +617,8 @@
 		F878D6B91344996400DDB98B /* SCHBookOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F878D6B71344996400DDB98B /* SCHBookOperation.m */; };
 		F878D77C1344A1E400DDB98B /* SCHXPSCoverImageOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F878D77B1344A1E400DDB98B /* SCHXPSCoverImageOperation.m */; };
 		F878D77D1344A1E400DDB98B /* SCHXPSCoverImageOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F878D77B1344A1E400DDB98B /* SCHXPSCoverImageOperation.m */; };
+		F8898903135877B100D236ED /* SCHProfileViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F8898902135877B100D236ED /* SCHProfileViewCell.m */; };
+		F8898904135877B100D236ED /* SCHProfileViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F8898902135877B100D236ED /* SCHProfileViewCell.m */; };
 		F89F25C4135868F900777D32 /* profile-cell-background.png in Resources */ = {isa = PBXBuildFile; fileRef = F89F25C2135868F900777D32 /* profile-cell-background.png */; };
 		F89F25C5135868F900777D32 /* profile-cell-background.png in Resources */ = {isa = PBXBuildFile; fileRef = F89F25C2135868F900777D32 /* profile-cell-background.png */; };
 		F89F25C6135868F900777D32 /* profile-cell-background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F89F25C3135868F900777D32 /* profile-cell-background@2x.png */; };
@@ -1375,6 +1377,8 @@
 		F878D6B71344996400DDB98B /* SCHBookOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookOperation.m; path = Shared/SCHBookOperation.m; sourceTree = "<group>"; };
 		F878D77A1344A1E300DDB98B /* SCHXPSCoverImageOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHXPSCoverImageOperation.h; path = Shared/SCHXPSCoverImageOperation.h; sourceTree = "<group>"; };
 		F878D77B1344A1E400DDB98B /* SCHXPSCoverImageOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHXPSCoverImageOperation.m; path = Shared/SCHXPSCoverImageOperation.m; sourceTree = "<group>"; };
+		F8898901135877B100D236ED /* SCHProfileViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHProfileViewCell.h; sourceTree = "<group>"; };
+		F8898902135877B100D236ED /* SCHProfileViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHProfileViewCell.m; sourceTree = "<group>"; };
 		F89F25C2135868F900777D32 /* profile-cell-background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "profile-cell-background.png"; path = "Resources/profile-cell-background.png"; sourceTree = "<group>"; };
 		F89F25C3135868F900777D32 /* profile-cell-background@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "profile-cell-background@2x.png"; path = "Resources/profile-cell-background@2x.png"; sourceTree = "<group>"; };
 		F8B55E05134B190B0028534A /* SCHDictionaryFileUnzipOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHDictionaryFileUnzipOperation.h; path = Shared/SCHDictionaryFileUnzipOperation.h; sourceTree = "<group>"; };
@@ -1507,6 +1511,8 @@
 				52EF4E5C12E6E01C00E374F7 /* SCHLoginViewController.h */,
 				52EF4E5D12E6E01C00E374F7 /* SCHLoginViewController.m */,
 				52EF4E5E12E6E01C00E374F7 /* SCHLoginViewController.xib */,
+				F8898901135877B100D236ED /* SCHProfileViewCell.h */,
+				F8898902135877B100D236ED /* SCHProfileViewCell.m */,
 				52E622FD1358544200245CA7 /* SCHThemePickerViewController.h */,
 				52E622FE1358544200245CA7 /* SCHThemePickerViewController.m */,
 				52E622FF1358544200245CA7 /* SCHThemePickerViewController.xib */,
@@ -3209,6 +3215,7 @@
 				C92FA7CD1355B8B7001BAA6B /* KNFBSmartZoomBlockSource.m in Sources */,
 				C92FA7D21355BE20001BAA6B /* SCHSmartZoomBlockSource.m in Sources */,
 				C92FA7E81355E8F4001BAA6B /* KNFBSmartZoomBlock.m in Sources */,
+				F8898903135877B100D236ED /* SCHProfileViewCell.m in Sources */,
 				52E622FB13584EBF00245CA7 /* SCHThemeManager.m in Sources */,
 				52E623001358544200245CA7 /* SCHThemePickerViewController.m in Sources */,
 			);
@@ -3367,6 +3374,7 @@
 				C92FA7CE1355B8B7001BAA6B /* KNFBSmartZoomBlockSource.m in Sources */,
 				C92FA7D31355BE20001BAA6B /* SCHSmartZoomBlockSource.m in Sources */,
 				C92FA7E91355E8F4001BAA6B /* KNFBSmartZoomBlock.m in Sources */,
+				F8898904135877B100D236ED /* SCHProfileViewCell.m in Sources */,
 				52E622FC13584EBF00245CA7 /* SCHThemeManager.m in Sources */,
 				52E623011358544200245CA7 /* SCHThemePickerViewController.m in Sources */,
 			);
