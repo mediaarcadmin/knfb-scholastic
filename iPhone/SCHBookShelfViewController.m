@@ -163,6 +163,20 @@
 	
 	SCHReadingViewController *pageView = [[SCHReadingViewController alloc] initWithNibName:nil bundle:nil];
 	pageView.isbn = book.ContentIdentifier;
+    
+    switch ([self.profileItem.BookshelfStyle intValue]) {
+        case LibreAccessServiceSvc_BookshelfStyle_YOUNG_CHILD:
+            pageView.youngerMode = YES;
+            break;
+            
+        case LibreAccessServiceSvc_BookshelfStyle_OLDER_CHILD:
+            pageView.youngerMode = NO;
+            break;
+            
+        case LibreAccessServiceSvc_BookshelfStyle_ADULT:
+            pageView.youngerMode = NO;
+            break;
+    }
 	
 	BITReadingOptionsView *optionsView = [[BITReadingOptionsView alloc] initWithNibName:nil bundle:nil];
 	optionsView.pageViewController = pageView;
@@ -329,6 +343,21 @@
 	
 	SCHReadingViewController *pageView = [[SCHReadingViewController alloc] initWithNibName:nil bundle:nil];
 	pageView.isbn = book.ContentIdentifier;
+
+    switch ([self.profileItem.BookshelfStyle intValue]) {
+        case LibreAccessServiceSvc_BookshelfStyle_YOUNG_CHILD:
+            pageView.youngerMode = YES;
+            break;
+            
+        case LibreAccessServiceSvc_BookshelfStyle_OLDER_CHILD:
+            pageView.youngerMode = NO;
+            break;
+            
+        case LibreAccessServiceSvc_BookshelfStyle_ADULT:
+            pageView.youngerMode = NO;
+            break;
+    }
+
 	
 	BITReadingOptionsView *optionsView = [[BITReadingOptionsView alloc] initWithNibName:nil bundle:nil];
 	optionsView.pageViewController = pageView;
