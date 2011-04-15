@@ -47,7 +47,7 @@
 	
 	CGRect bounds = self.contentView.bounds;
 	
-	CGRect titleFrame = CGRectMake(5, 5, bounds.size.width - 10, bounds.size.height - 10);
+	CGRect titleFrame = CGRectMake(0, 0, bounds.size.width, bounds.size.height);
     
     if (self.accessoryView) {
         CGRect accessoryFrame = self.accessoryView.frame;
