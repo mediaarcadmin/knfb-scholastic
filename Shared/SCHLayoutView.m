@@ -170,6 +170,7 @@
 {
     self.smartZoomActive = NO;
     self.currentBlock = nil;
+    [self zoomOutToCurrentPage];
 }
 
 
