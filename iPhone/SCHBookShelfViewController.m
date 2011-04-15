@@ -20,11 +20,14 @@
 #import <QuartzCore/QuartzCore.h>
 #import "SCHAppBook.h"
 
-@interface SCHBookShelfViewController ()
+@interface SCHBookShelfViewController () <UIGestureRecognizerDelegate>
 
 //- (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath;
 
 @property int moveToValue;
+
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)finishEditing:(id)sender;
 
 @end
 
@@ -50,7 +53,13 @@
 		
 	[self.gridView setCellSize:CGSizeMake(80,118) withBorderSize:20];
 	[self.gridView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"Shelf"]]];
-//	[self.gridView setEditing:YES animated:NO];
+//	[self.gridView setEditing:NO animated:NO];
+    
+    UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:nil action:nil];
+    longPress.delaysTouchesBegan = YES;
+    longPress.delegate = self;
+    [self.gridView addGestureRecognizer:longPress];
+    [longPress release];
     
 	self.moveToValue = -1;
 	
@@ -82,6 +91,29 @@
 		self.loadingView.hidden = YES;
 	}
 	
+}
+
+- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
+    [self setEditing:YES animated:YES];
+    return NO;
+}
+
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
+{
+    if (editing) {
+        if (![self.gridView isEditing]) {
+            [self.navigationItem setRightBarButtonItem:[[[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:self action:@selector(finishEditing:)] autorelease] animated:animated];
+        }
+    } else {
+        [self.navigationItem setRightBarButtonItem:nil animated:animated];
+    }
+    
+    [self.gridView setEditing:editing animated:animated];
+}
+
+- (void)finishEditing:(id)sender
+{
+    [self setEditing:NO animated:YES];
 }
 
 - (void)setProfileItem:(SCHProfileItem *)newProfileItem
