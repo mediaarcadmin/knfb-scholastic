@@ -48,25 +48,31 @@
 
 - (void)dealloc {
     
-    [youngerBookTitle release];
-    [olderBookTitle release];
     [youngerTopToolbar release];
     [olderTopToolbar release];
     [olderBottomToolbar release];
+    [youngerBookTitleLabel release];
+    [youngerBookTitleView release];
+    [olderBookTitleLabel release];
+    [olderBookTitleView release];
     [super dealloc];
 }
 
 - (void)viewDidUnload {
-    [youngerBookTitle release];
-    youngerBookTitle = nil;
-    [olderBookTitle release];
-    olderBookTitle = nil;
     [youngerTopToolbar release];
     youngerTopToolbar = nil;
     [olderTopToolbar release];
     olderTopToolbar = nil;
     [olderBottomToolbar release];
     olderBottomToolbar = nil;
+    [youngerBookTitleLabel release];
+    youngerBookTitleLabel = nil;
+    [youngerBookTitleView release];
+    youngerBookTitleView = nil;
+    [olderBookTitleLabel release];
+    olderBookTitleLabel = nil;
+    [olderBookTitleView release];
+    olderBookTitleView = nil;
     [super viewDidUnload];
     [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.isbn];
     self.xpsProvider = nil;
@@ -108,8 +114,9 @@
     
     NSLog(@"XPSCategory: %@", book.XPSCategory);
 
-    youngerBookTitle.title = book.Title;
-    olderBookTitle.title = book.Title;
+    youngerBookTitleLabel.text = book.Title;
+    olderBookTitleLabel.text = book.Title;
+    
     
 	pageScrubber.delegate = self;
 	pageScrubber.minimumValue = 1;
@@ -174,10 +181,10 @@
     [self.view addSubview:self.eucPageView];
     [self.view sendSubviewToBack:self.eucPageView];
     
-    [scrubberToolbar setBackgroundWith:[UIImage imageNamed:@"ReadingCustomToolbarBGAlpha"]];
-    [youngerTopToolbar setBackgroundWith:[UIImage imageNamed:@"ReadingCustomToolbarBGAlpha"]];
-    [olderTopToolbar setBackgroundWith:[UIImage imageNamed:@"ReadingCustomToolbarBGAlpha"]];
-    [olderBottomToolbar setBackgroundWith:[UIImage imageNamed:@"ReadingCustomToolbarBGAlpha"]];
+    [scrubberToolbar setBackgroundWith:[UIImage imageNamed:@"ReadingCustomToolbarBG"]];
+    [youngerTopToolbar setBackgroundWith:[UIImage imageNamed:@"ReadingCustomToolbarBG"]];
+    [olderTopToolbar setBackgroundWith:[UIImage imageNamed:@"ReadingCustomToolbarBG"]];
+    [olderBottomToolbar setBackgroundWith:[UIImage imageNamed:@"ReadingCustomToolbarBG"]];
 
 }
 
@@ -206,11 +213,23 @@
     [UIView beginAnimations:@"titleWidthAnimation" context:nil];
     [UIView setAnimationDuration:duration];
     if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {
-        youngerBookTitle.width = 110.0f;
-        olderBookTitle.width = 150.0f;
+
+        CGRect youngerFrame = youngerBookTitleView.frame;
+        youngerFrame.size.width = 140.0f;
+        youngerBookTitleView.frame = youngerFrame;
+        
+        CGRect olderFrame = olderBookTitleView.frame;
+        olderFrame.size.width = 210.0f;
+        olderBookTitleView.frame = olderFrame;
     } else {
-        youngerBookTitle.width = 320.0f;
-        olderBookTitle.width = 370.0f;
+        CGRect youngerFrame = youngerBookTitleView.frame;
+        youngerFrame.size.width = 300.0f;
+        youngerBookTitleView.frame = youngerFrame;
+        
+        CGRect olderFrame = olderBookTitleView.frame;
+        olderFrame.size.width = 370.0f;
+        olderBookTitleView.frame = olderFrame;
+        
     }
     [UIView commitAnimations];
 }

@@ -25,9 +25,11 @@
 	IBOutlet UIView             *scrubberInfoView;
 	IBOutlet UILabel            *pageLabel;
 	IBOutlet UILabel            *panSpeedLabel;
-    IBOutlet UIBarButtonItem    *youngerBookTitle;
-    IBOutlet UIBarButtonItem    *olderBookTitle;
+    IBOutlet UILabel            *youngerBookTitleLabel;
+    IBOutlet UIView             *youngerBookTitleView;
 	
+    IBOutlet UILabel            *olderBookTitleLabel;
+    IBOutlet UIView             *olderBookTitleView;
 }
 
 @property (nonatomic, retain) NSString *isbn;
