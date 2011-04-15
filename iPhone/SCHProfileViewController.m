@@ -33,6 +33,7 @@ static NSString * const kRootViewControllerSettingsIcon = @"Settings.png";
 
 @synthesize profilePasswordViewController;
 @synthesize headerView;
+@synthesize tableView;
 @synthesize settingsController;
 @synthesize loginController;
 @synthesize webServiceSync;
@@ -51,6 +52,7 @@ static NSString * const kRootViewControllerSettingsIcon = @"Settings.png";
 }
 
 - (void)viewDidUnload {
+    [self setTableView:nil];
     // Relinquish ownership of anything that can be recreated in viewDidLoad or on demand.
     // For example: self.myOutlet = nil;
 	
@@ -62,6 +64,15 @@ static NSString * const kRootViewControllerSettingsIcon = @"Settings.png";
 // Implement viewWillAppear: to do additional setup before the view is presented.
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+
+/*    UIImageView *backgroundImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bookshelf-back"]];
+	backgroundImageView.autoresizingMask = (UIViewAutoresizingFlexibleHeight|
+								  UIViewAutoresizingFlexibleWidth);
+    backgroundImageView.frame = self.view.frame;
+    [self.view addSubview:backgroundImageView];
+//    [self.view sendSubviewToBack:backgroundImageView];
+    [backgroundImageView release];
+  */  
 }
 
 
@@ -109,14 +120,14 @@ static NSString * const kRootViewControllerSettingsIcon = @"Settings.png";
 								   [managedObject valueForKey:kSCHLibreAccessWebServiceScreenName], 
 								   NSLocalizedString(@"'s Bookshelf", @"")];
 			if ([[managedObject valueForKey:kSCHLibreAccessWebServiceProfilePasswordRequired] boolValue] == NO) {
-				cell.imageView.image = [UIImage imageNamed:kRootViewControllerProfileIcon];
+//				cell.imageView.image = [UIImage imageNamed:kRootViewControllerProfileIcon];
 			} else {
-				cell.imageView.image = [UIImage imageNamed:kRootViewControllerProfileLockedIcon];
+//				cell.imageView.image = [UIImage imageNamed:kRootViewControllerProfileLockedIcon];
 			}			
 			break;
 		case 1:
 			cell.textLabel.text = NSLocalizedString(@"Settings & Parental Controls", @"");
-			cell.imageView.image = [UIImage imageNamed:kRootViewControllerSettingsIcon];		
+//			cell.imageView.image = [UIImage imageNamed:kRootViewControllerSettingsIcon];		
 			break;
 	}	
 }
@@ -156,14 +167,27 @@ static NSString * const kRootViewControllerSettingsIcon = @"Settings.png";
 
 
 // Customize the appearance of table view cells.
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     static NSString *CellIdentifier = @"Cell";
     
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    UITableViewCell *cell = [aTableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
-		cell.textLabel.font = [UIFont systemFontOfSize:14];
+		cell.textLabel.font = [UIFont boldSystemFontOfSize:18];
+        cell.textLabel.minimumFontSize = 14;
+        cell.textLabel.numberOfLines = 1;
+        cell.textLabel.adjustsFontSizeToFitWidth = YES;
+        cell.textLabel.backgroundColor = [UIColor clearColor];
+        cell.textLabel.textColor = [UIColor whiteColor];
+        cell.textLabel.shadowColor = [UIColor blackColor];
+        cell.textLabel.shadowOffset = CGSizeMake(0, -1);
+        cell.textLabel.textAlignment = UITextAlignmentCenter;
+        
+        UIImageView *cellBGImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"profile-cell-background"]];
+        
+        cell.backgroundView = cellBGImage;
+        [cellBGImage release];
     }
     
     // Configure the cell.
@@ -171,8 +195,6 @@ static NSString * const kRootViewControllerSettingsIcon = @"Settings.png";
     
     return cell;
 }
-
-
 
 /*
 // Override to support conditional editing of the table view.
@@ -184,7 +206,7 @@ static NSString * const kRootViewControllerSettingsIcon = @"Settings.png";
 
 
 // Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)tableView:(UITableView *)aTableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the managed object for the given index path
@@ -206,9 +228,36 @@ static NSString * const kRootViewControllerSettingsIcon = @"Settings.png";
 }
 
 
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
+- (BOOL)tableView:(UITableView *)aTableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
     // The table view should not be re-orderable.
     return NO;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    if (section == 1) {
+        return 44;
+    } else {
+        return 11;
+    }
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    if (section == 1) {
+        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
+        return [view autorelease];
+    } else {
+        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 11)];
+        return [view autorelease];
+    }
+}
+
+
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 66;
 }
 
 - (void)pushBookshelvesControllerWithProfileItem: (SCHProfileItem *) profileItem
@@ -245,7 +294,7 @@ static NSString * const kRootViewControllerSettingsIcon = @"Settings.png";
 #pragma mark -
 #pragma mark Table view delegate
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     // Navigation logic may go here -- for example, create and push another view controller.
     /*
      <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
@@ -420,6 +469,7 @@ static NSString * const kRootViewControllerSettingsIcon = @"Settings.png";
 	
     [fetchedResultsController_ release];
     [managedObjectContext_ release];
+    [tableView release];
     [super dealloc];
 }
 
