@@ -129,8 +129,6 @@
 		52F559C9130BEA57002C8BDF /* SCHProfilePasswordViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52F559C5130BEA57002C8BDF /* SCHProfilePasswordViewController.xib */; };
 		52F765991356EA81007C27C6 /* SCHCustomNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 52F765981356EA81007C27C6 /* SCHCustomNavigationBar.m */; };
 		52F7659A1356EA81007C27C6 /* SCHCustomNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 52F765981356EA81007C27C6 /* SCHCustomNavigationBar.m */; };
-		A37E7B261358CD890002A733 /* icon-themes.png in Resources */ = {isa = PBXBuildFile; fileRef = A37E7B241358CD890002A733 /* icon-themes.png */; };
-		A37E7B271358CD890002A733 /* icon-themes@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A37E7B251358CD890002A733 /* icon-themes@2x.png */; };
 		A3A38E08133A803500C325A3 /* SCHDrmRegistrationSession.m in Sources */ = {isa = PBXBuildFile; fileRef = A3A38E04133A803500C325A3 /* SCHDrmRegistrationSession.m */; };
 		A3A38E09133A803500C325A3 /* SCHDrmSession.m in Sources */ = {isa = PBXBuildFile; fileRef = A3A38E07133A803500C325A3 /* SCHDrmSession.m */; };
 		A3A38E0A133A803500C325A3 /* SCHDrmRegistrationSession.m in Sources */ = {isa = PBXBuildFile; fileRef = A3A38E04133A803500C325A3 /* SCHDrmRegistrationSession.m */; };
@@ -949,8 +947,6 @@
 		52F765971356EA81007C27C6 /* SCHCustomNavigationBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHCustomNavigationBar.h; path = Shared/SCHCustomNavigationBar.h; sourceTree = "<group>"; };
 		52F765981356EA81007C27C6 /* SCHCustomNavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHCustomNavigationBar.m; path = Shared/SCHCustomNavigationBar.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Scholastic-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Scholastic-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
-		A37E7B241358CD890002A733 /* icon-themes.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-themes.png"; path = "Resources/icon-themes.png"; sourceTree = "<group>"; };
-		A37E7B251358CD890002A733 /* icon-themes@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-themes@2x.png"; path = "Resources/icon-themes@2x.png"; sourceTree = "<group>"; };
 		A3A38E01133A7FA300C325A3 /* DrmGlobals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DrmGlobals.h; path = Shared/Libraries/DRM/DrmGlobals.h; sourceTree = "<group>"; };
 		A3A38E02133A7FFF00C325A3 /* KeychainItemWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KeychainItemWrapper.h; path = Shared/Libraries/DRM/KeychainItemWrapper.h; sourceTree = "<group>"; };
 		A3A38E03133A803500C325A3 /* SCHDrmRegistrationSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHDrmRegistrationSession.h; path = Shared/SCHDrmRegistrationSession.h; sourceTree = "<group>"; };
@@ -1699,8 +1695,6 @@
 		528A2CCF12CCDC400053A343 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				A37E7B241358CD890002A733 /* icon-themes.png */,
-				A37E7B251358CD890002A733 /* icon-themes@2x.png */,
 				52E622F31358385D00245CA7 /* Themes */,
 				C9C88A30135898E000ADF394 /* button-done.png */,
 				C9C88A31135898E000ADF394 /* button-cancel.png */,
@@ -2927,8 +2921,6 @@
 				C9C88A36135898E100ADF394 /* button-cancel.png in Resources */,
 				C9C88A38135898E100ADF394 /* button-cancel@2x.png in Resources */,
 				C9C88A3A135898E100ADF394 /* button-done@2x.png in Resources */,
-				A37E7B261358CD890002A733 /* icon-themes.png in Resources */,
-				A37E7B271358CD890002A733 /* icon-themes@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
