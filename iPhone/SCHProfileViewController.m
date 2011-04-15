@@ -127,7 +127,7 @@ static NSString * const kRootViewControllerSettingsIcon = @"Settings.png";
 			}			
 			break;
 		case 1:
-			cell.textLabel.text = NSLocalizedString(@"Settings & Parental Controls", @"");
+			cell.textLabel.text = NSLocalizedString(@"Settings", @"");
 //			cell.imageView.image = [UIImage imageNamed:kRootViewControllerSettingsIcon];		
 			break;
 	}	
