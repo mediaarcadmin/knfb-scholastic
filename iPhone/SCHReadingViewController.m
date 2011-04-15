@@ -159,7 +159,7 @@
 	
 	self.navigationController.navigationBarHidden = YES;
 
-	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackTranslucent];	
+	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque];	
 	
     if (youngerMode) {
         CGRect frame = youngerTopToolbar.frame;
