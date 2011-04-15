@@ -69,7 +69,7 @@
     }
     
     // Configure the cell...
-    cell.textLabel.text = [[[[SCHThemeManager sharedThemeManager] themeNames] objectAtIndex:indexPath.row] objectForKey:@"Name"];
+    cell.textLabel.text = [[[SCHThemeManager sharedThemeManager] themeNames] objectAtIndex:indexPath.row];
 
     return cell;
 }

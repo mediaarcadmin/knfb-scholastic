@@ -40,7 +40,6 @@ static SCHThemeManager *sharedThemeManager = nil;
 	self = [super init];
 	if (self != nil) {
         self.themes =  [NSArray arrayWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Themes/Themes" ofType:@"plist"]];
-        NSLog(@"%@", self.themes);
 	}
 	return(self);
 }
@@ -56,9 +55,13 @@ static SCHThemeManager *sharedThemeManager = nil;
 
 - (NSArray *)themeNames
 {
-    //NSMutableArray *ret = [NSMutableArray array];
+    NSMutableArray *ret = [NSMutableArray array];
     
-    return(self.themes);
+    for (NSDictionary *dict in self.themes) {
+        [ret addObject:[dict objectForKey:@"Name"]];
+    }
+    
+    return(ret);
 }
 
 @end
