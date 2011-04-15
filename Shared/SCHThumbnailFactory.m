@@ -61,10 +61,10 @@
         CGRect integralRect = CGRectIntegral(imageRect);
         CGRect thumbNailRect = integralRect;
 
-       if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)]) {
-            CGFloat scale = [[UIScreen mainScreen] scale];
-            thumbNailRect = CGRectApplyAffineTransform(thumbNailRect, CGAffineTransformMakeScale(scale, scale));
-        }
+//       if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)]) {
+//            CGFloat scale = [[UIScreen mainScreen] scale];
+//            thumbNailRect = CGRectApplyAffineTransform(thumbNailRect, CGAffineTransformMakeScale(scale, scale));
+//        }
 
         
         CGSize imageSize = thumbNailRect.size;

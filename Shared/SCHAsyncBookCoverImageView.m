@@ -71,7 +71,7 @@
         CGSize thumbSize = [[userInfo valueForKey:@"thumbSize"] CGSizeValue];
         
         if (image && self.coverSize.width == thumbSize.width && self.coverSize.height == thumbSize.height) {
-            //[self setImage:image];
+            [self setImage:image];
             [self setNeedsDisplay];
         }
     }
