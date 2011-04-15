@@ -53,12 +53,19 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-		
-    themeButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon-theme"]
-                                                   style:UIBarButtonItemStylePlain 
-                                                  target:self 
-                                                  action:@selector(changeTheme)];
+
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    [button setImage:[UIImage imageNamed:@"icon-theme"] forState:UIControlStateNormal];
+    [button sizeToFit];    
+    [button addTarget:self action:@selector(changeTheme) forControlEvents:UIControlEventTouchUpInside];    
+    themeButton = [[UIBarButtonItem alloc] initWithCustomView:button];
     self.navigationItem.rightBarButtonItem = self.themeButton;
+
+    button = [UIButton buttonWithType:UIButtonTypeCustom];
+    [button setImage:[UIImage imageNamed:@"icon-home"] forState:UIControlStateNormal];
+    [button sizeToFit];    
+    [button addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];    
+    self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:button] autorelease];
     
 	[self.gridView setCellSize:CGSizeMake(80,118) withBorderSize:20];
 	//[self.gridView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"Shelf"]]];
@@ -109,6 +116,11 @@
 - (void)changeTheme
 {
 	[self presentModalViewController:self.themePickerContainer animated:YES];		
+}
+
+- (void)back
+{
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
