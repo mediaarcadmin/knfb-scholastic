@@ -32,7 +32,6 @@
 
 - (void)initialiseView;
 - (CGRect)cropForPage:(NSInteger)page allowEstimate:(BOOL)estimate;
-- (void)clearPageInformation;
 - (void)jumpToZoomBlock:(id)zoomBlock;
 - (void)registerGesturesForPageTurningView:(EucPageTurningView *)aPageTurningView;
 - (void)zoomToCurrentBlock;
@@ -156,11 +155,6 @@
     }
 }
 
-- (void)clearPageInformation
-{
-    self.currentBlock = nil;
-}
-
 - (void)jumpToZoomBlock:(id)zoomBlock
 {
     
@@ -256,9 +250,10 @@
 - (void)jumpToPageAtIndex:(NSUInteger)pageIndex animated: (BOOL) animated
 {
     if ((pageIndex >= 0) && (pageIndex < pageCount)) {
-        [self clearPageInformation];
         [self.pageTurningView turnToPageAtIndex:pageIndex animated:animated];
     }
+    
+    self.currentBlock = nil;
 }
 
 - (void)jumpToNextZoomBlock
@@ -327,7 +322,7 @@
 - (void)zoomToCurrentBlock {
 	
     NSUInteger pageIndex = [self.currentBlock pageIndex];
-    CGRect targetRect = [(KNFBSmartZoomBlock *)self.currentBlock rect];
+    CGRect targetRect = [self.currentBlock rect];
     	
 	CGFloat zoomScale;
 	CGPoint translation = [self translationToFitRect:targetRect onPageAtIndex:pageIndex zoomScale:&zoomScale];
@@ -335,11 +330,11 @@
     if (pageIndex != self.currentPageIndex) {
         if (self.pageTurningView.isTwoUp) {
             if ((self.pageTurningView.leftPageIndex != pageIndex) && (self.pageTurningView.rightPageIndex != pageIndex)) {
-                [self jumpToPageAtIndex:++pageIndex animated:YES];
+                [self.pageTurningView turnToPageAtIndex:pageIndex animated:YES];
             }
         } else {
             if (self.pageTurningView.rightPageIndex != pageIndex) {
-                [self jumpToPageAtIndex:++pageIndex animated:YES];
+                [self.pageTurningView turnToPageAtIndex:pageIndex animated:YES];
             }
         }
     }
