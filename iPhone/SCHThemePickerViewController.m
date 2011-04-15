@@ -26,7 +26,14 @@
 {
     [super viewDidLoad];
 
-     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel)];
+    self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bookshelf-back"]];
+    self.tableView.backgroundColor = [UIColor clearColor];
+
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    [button setImage:[UIImage imageNamed:@"icon-cancel"] forState:UIControlStateNormal];
+    [button sizeToFit];    
+    [button addTarget:self action:@selector(cancel) forControlEvents:UIControlEventTouchUpInside];    
+    self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:button] autorelease];
 }
 
 - (void)cancel
@@ -45,6 +52,22 @@
 {
     // Return YES for supported orientations
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    UILabel *label = [[[UILabel alloc] init] autorelease];
+    
+    label.text = @"  Themes";
+    label.textColor = [UIColor whiteColor];
+    label.backgroundColor = [UIColor clearColor];
+    
+    return(label);
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return(50.0);
 }
 
 #pragma mark - Table view data source
@@ -66,6 +89,7 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+        cell.textLabel.textAlignment = UITextAlignmentCenter;
     }
     
     // Configure the cell...
