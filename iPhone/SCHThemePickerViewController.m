@@ -9,6 +9,7 @@
 #import "SCHThemePickerViewController.h"
 
 #import "SCHThemeManager.h"
+#import <QuartzCore/QuartzCore.h>
 
 @implementation SCHThemePickerViewController
 
@@ -29,13 +30,36 @@
     self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bookshelf-back"]];
     self.tableView.backgroundColor = [UIColor clearColor];
 
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    [button setTitle:@"Cancel" forState:UIControlStateNormal];
-    [button setBackgroundImage:[[UIImage imageNamed:@"button-cancel"] stretchableImageWithLeftCapWidth:4 topCapHeight:0] forState:UIControlStateNormal];
-    button.contentEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 5);
-    [button sizeToFit];    
-    [button addTarget:self action:@selector(cancel) forControlEvents:UIControlEventTouchUpInside];    
-    self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:button] autorelease];
+    UIButton *cancelButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [cancelButton setFrame:CGRectMake(0, 0, 60, 30)];
+    [cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
+    [cancelButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [cancelButton setTitleColor:[UIColor colorWithWhite:1 alpha:0.5f] forState:UIControlStateHighlighted];
+    [cancelButton setReversesTitleShadowWhenHighlighted:YES];
+
+    cancelButton.titleLabel.font = [UIFont boldSystemFontOfSize:14];
+    cancelButton.titleLabel.shadowOffset = CGSizeMake(0, -1);
+    
+    [cancelButton setBackgroundImage:[[UIImage imageNamed:@"button-cancel"] stretchableImageWithLeftCapWidth:5 topCapHeight:0] forState:UIControlStateNormal];
+    [cancelButton addTarget:self action:@selector(cancel) forControlEvents:UIControlEventTouchUpInside];    
+    self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:cancelButton] autorelease];
+    
+    UIButton *doneButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [doneButton setFrame:CGRectMake(0, 0, 60, 30)];
+    [doneButton setTitle:@"Done" forState:UIControlStateNormal];
+    [doneButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [doneButton setTitleColor:[UIColor colorWithWhite:1 alpha:0.5f] forState:UIControlStateHighlighted];
+    [doneButton setReversesTitleShadowWhenHighlighted:YES];
+    
+    doneButton.titleLabel.font = [UIFont boldSystemFontOfSize:14];
+    doneButton.titleLabel.shadowOffset = CGSizeMake(0, -1);
+    
+    [doneButton setBackgroundImage:[[UIImage imageNamed:@"button-done"] stretchableImageWithLeftCapWidth:5 topCapHeight:0] forState:UIControlStateNormal];
+    [doneButton addTarget:self action:@selector(cancel) forControlEvents:UIControlEventTouchUpInside];    
+    self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:doneButton] autorelease];
+    
+    self.tableView.rowHeight = 58;
+    self.tableView.separatorColor = [UIColor colorWithRed:0.000 green:0.365 blue:0.616 alpha:1.000];
 }
 
 - (void)cancel
@@ -58,15 +82,12 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    UILabel *headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 12, self.view.frame.size.width - 40, 40)];
+    UILabel *headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(16, 0, self.view.frame.size.width - 32, 50)];
     headerLabel.text = @"Themes";
-    headerLabel.font = [UIFont boldSystemFontOfSize:18.0f];
-    headerLabel.minimumFontSize = 11;
+    headerLabel.font = [UIFont boldSystemFontOfSize:17.0f];
     headerLabel.numberOfLines = 1;
-    headerLabel.adjustsFontSizeToFitWidth = YES;
     headerLabel.backgroundColor = [UIColor clearColor];
     headerLabel.textColor = [UIColor whiteColor];
-    headerLabel.shadowColor = [UIColor blackColor];
     headerLabel.shadowOffset = CGSizeMake(0, -1);
     
     UIView *containerView = [[UIView alloc] initWithFrame:CGRectZero];
@@ -78,7 +99,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return 54;
+    return 50;
 }
 
 #pragma mark - Table view data source
@@ -101,11 +122,17 @@
     if (cell == nil) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
         cell.textLabel.textAlignment = UITextAlignmentCenter;
-        cell.backgroundColor = [UIColor colorWithRed:48.0/255.0 green:156.0/255.0 blue:214.0/255.0 alpha:1.0];
+        cell.textLabel.textColor = [UIColor whiteColor];
+        cell.textLabel.font = [UIFont boldSystemFontOfSize:22.0f];
+        cell.textLabel.shadowOffset = CGSizeMake(0, 1);
+        cell.textLabel.shadowColor = [UIColor colorWithWhite:0 alpha:0.5f];
     }
     
     // Configure the cell...
     cell.textLabel.text = [[[SCHThemeManager sharedThemeManager] themeNames] objectAtIndex:indexPath.row];
+    NSString *backgroundPath = [[NSBundle mainBundle] pathForResource:cell.textLabel.text ofType:@"png" inDirectory:@"Themes"];
+    UIImage *backgroundImage = [UIImage imageWithContentsOfFile:backgroundPath];
+    cell.backgroundColor = [UIColor colorWithPatternImage:backgroundImage];
 
     return cell;
 }

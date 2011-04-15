@@ -40,18 +40,18 @@
 		self.frame = CGRectMake(0, 0, self.frame.size.width - IMAGE_FRAME_WIDTH, IMAGE_FRAME_HEIGHT);
 		[self layoutSubviews];
 		
-		self.thumbContainerView = [[UIView alloc] initWithFrame:CGRectMake(LEFT_MARGIN, IMAGE_TOP_MARGIN, IMAGE_FRAME_WIDTH, IMAGE_FRAME_HEIGHT)];
+		//self.thumbContainerView = [[UIView alloc] initWithFrame:CGRectMake(LEFT_MARGIN, IMAGE_TOP_MARGIN, IMAGE_FRAME_WIDTH, IMAGE_FRAME_HEIGHT)];
 		
 		self.thumbImageView = [SCHThumbnailFactory newAsyncImageWithSize:CGSizeMake(IMAGE_FRAME_WIDTH, IMAGE_FRAME_HEIGHT)];
-		[self.thumbContainerView addSubview:self.thumbImageView];
+		[self.contentView addSubview:self.thumbImageView];
 		
-		self.thumbTintView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, IMAGE_FRAME_WIDTH, IMAGE_FRAME_HEIGHT)];
-		[self.thumbTintView setBackgroundColor:[UIColor colorWithRed:0.2f green:0.2f blue:0.2f alpha:0.6f]];
-		[self.thumbContainerView addSubview:self.thumbTintView];
+		//self.thumbTintView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, IMAGE_FRAME_WIDTH, IMAGE_FRAME_HEIGHT)];
+		//[self.thumbTintView setBackgroundColor:[UIColor colorWithRed:0.2f green:0.2f blue:0.2f alpha:0.6f]];
+		//[self.thumbContainerView addSubview:self.thumbTintView];
 
-		[self.thumbContainerView setClipsToBounds:YES];
+		//[self.thumbContainerView setClipsToBounds:YES];
 		
-		[self.contentView addSubview:self.thumbContainerView];
+		//[self.contentView addSubview:self.thumbContainerView];
 		
 		self.progressView = [[UIProgressView alloc] initWithFrame:CGRectZero];
 		[self.contentView addSubview:self.progressView];
@@ -99,7 +99,7 @@
 //	CGRect thumbFrame = CGRectMake(LEFT_MARGIN, IMAGE_TOP_MARGIN, IMAGE_FRAME_WIDTH, IMAGE_FRAME_HEIGHT);
 //    [self.thumbContainerView setFrame:thumbFrame];
 	
-	CGFloat labelX = ceilf(CGRectGetMaxX(self.thumbContainerView.frame) + TEXT_LEFT_MARGIN);
+	CGFloat labelX = ceilf(CGRectGetMaxX(self.thumbImageView.frame) + TEXT_LEFT_MARGIN);
 	CGFloat labelWidth = CGRectGetWidth(bounds) - RIGHT_MARGIN - labelX;
 	
 	CGRect titleFrame = CGRectMake(labelX, TEXT_TOP_MARGIN, labelWidth, 44);
@@ -108,10 +108,10 @@
 	CGRect subtitleFrame = CGRectMake(labelX, CGRectGetMaxY(titleFrame) + 1, labelWidth, 22);
     [self.subtitleLabel setFrame:subtitleFrame];
 
-	CGRect statusFrame = CGRectMake(LEFT_MARGIN - 4, CGRectGetMaxY(self.contentView.bounds) - 21, CGRectGetWidth(self.thumbContainerView.frame) + 8, 15);
+	CGRect statusFrame = CGRectMake(LEFT_MARGIN - 4, CGRectGetMaxY(self.contentView.bounds) - 21, CGRectGetWidth(self.thumbImageView.frame) + 8, 15);
     [self.statusLabel setFrame:statusFrame];
 	
-	CGRect progressFrame = CGRectMake(LEFT_MARGIN + 2, self.thumbContainerView.frame.size.height - 6, IMAGE_FRAME_WIDTH - 4, 10);
+	CGRect progressFrame = CGRectMake(LEFT_MARGIN + 2, self.thumbImageView.frame.size.height - 6, IMAGE_FRAME_WIDTH - 4, 10);
 	[self.progressView setFrame:progressFrame];
 }
 

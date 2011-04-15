@@ -20,11 +20,6 @@
 	CGRect viewBounds = CGRectMake(0, 0, size.width, size.height);
 	
 	SCHAsyncBookCoverImageView *imageView = [[SCHAsyncBookCoverImageView alloc] initWithFrame:viewBounds];
-	imageView.contentMode = UIViewContentModeScaleToFill;
-	imageView.clipsToBounds = YES;
-	imageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-	imageView.backgroundColor = [UIColor clearColor];
-	imageView.tag = 666;
 	imageView.coverSize = size;
 	
 	return imageView;
@@ -33,11 +28,7 @@
 + (bool) updateThumbView: (SCHAsyncBookCoverImageView *) imageView withSize:(CGSize)size path:(NSString *)path {
 	
 	UIImage *thumbImage = [SCHThumbnailFactory imageWithPath:path];
-	imageView.contentMode = UIViewContentModeScaleToFill;
 	imageView.image = thumbImage;
-	imageView.clipsToBounds = YES;
-	imageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-	imageView.backgroundColor = [UIColor clearColor];
 	imageView.coverSize = size;
 	
 	return YES;
@@ -66,20 +57,6 @@
         float newThumbWidth = fullImage.size.width / factor;
         float newThumbHeight = fullImage.size.height / factor;
         
-        // offset it to center vertically or horizontally if necessary
-       // float leftOffset = (size.width - newThumbWidth) / 2;
-       // float topOffset = (size.height - newThumbHeight) + 2;
-        
-        //CGRect newRect = CGRectMake(leftOffset, topOffset, newThumbWidth, newThumbHeight);
-        
-/*        UIGraphicsBeginImageContextWithOptions(size, NO, 0.0f);
-        [fullImage drawInRect:newRect];
-        UIImage* newImage = UIGraphicsGetImageFromCurrentImageContext();
-        UIGraphicsEndImageContext();
-        
-        return newImage;
-  */
-        
         CGRect imageRect = CGRectMake(0, 0, newThumbWidth, newThumbHeight);
         CGRect integralRect = CGRectIntegral(imageRect);
         CGRect thumbNailRect = integralRect;
@@ -95,11 +72,8 @@
         CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
         CGContextRef ctx = CGBitmapContextCreate(NULL, imageSize.width,  imageSize.height, 8, 4 *  imageSize.width, colorSpace, kCGImageAlphaPremultipliedFirst);
         CGColorSpaceRelease(colorSpace);
-        
-        //CGImageRef thumbRectImageRef = CGImageCreateWithImageInRect(fullImage.CGImage, newRect);
-        
+                
         CGContextDrawImage(ctx, thumbNailRect, fullImage.CGImage);
-        //CGImageRelease(thumbRectImageRef);
         
         CGImageRef scaledImageRef = CGBitmapContextCreateImage(ctx);
         UIImage *scaledImage = [[UIImage alloc] initWithCGImage:scaledImageRef];

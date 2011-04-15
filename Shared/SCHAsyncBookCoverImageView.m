@@ -28,6 +28,7 @@
 - (void) initialiseView {
 	self.contentMode = UIViewContentModeBottom;
 	self.clipsToBounds = YES;
+    self.backgroundColor = [UIColor clearColor];
 }
 
 - (id) initWithFrame: (CGRect) frame {
@@ -70,7 +71,7 @@
         CGSize thumbSize = [[userInfo valueForKey:@"thumbSize"] CGSizeValue];
         
         if (image && self.coverSize.width == thumbSize.width && self.coverSize.height == thumbSize.height) {
-            [self setImage:image];
+            //[self setImage:image];
             [self setNeedsDisplay];
         }
     }
