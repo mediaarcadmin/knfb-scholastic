@@ -499,14 +499,18 @@ CGAffineTransform transformRectToFitRect(CGRect sourceRect, CGRect targetRect, B
             if (self.smartZoomActive) {
                 [self jumpToPreviousZoomBlock];
             } else {
-                [self jumpToPageAtIndex:self.currentPageIndex - 1 animated:YES];
+                if (self.pageTurningView.isTwoUp) {
+                    [self jumpToPageAtIndex:self.pageTurningView.leftPageIndex - 1 animated:YES];
+                } else {
+                    [self jumpToPageAtIndex:self.pageTurningView.rightPageIndex - 1 animated:YES];
+                }
             }
             //[self.delegate hideToolbars];
         } else if (point.x >= rightHandHotZone) {
             if (self.smartZoomActive) {
                 [self jumpToNextZoomBlock];
             } else {
-                [self jumpToPageAtIndex:self.currentPageIndex + 1 animated:YES];
+                [self jumpToPageAtIndex:self.pageTurningView.rightPageIndex + 1 animated:YES];
             }
             //[self.delegate hideToolbars];
         } else {
