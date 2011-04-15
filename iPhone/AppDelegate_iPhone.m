@@ -36,7 +36,7 @@ static NSTimeInterval const kAppDelegate_iPhoneSyncManagerWakeDelay = 5.0;
     [self.window addSubview:navigationController.view];
     [self.window makeKeyAndVisible];
     
-    customNavigationBar.backgroundImage = [UIImage imageNamed:@"ReadingCustomToolbarBGAlpha"];
+    customNavigationBar.backgroundImage = [UIImage imageNamed:@"ReadingCustomToolbarBG"];
     
     return YES;
 }

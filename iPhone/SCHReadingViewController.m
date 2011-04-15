@@ -108,17 +108,6 @@
     
     NSLog(@"XPSCategory: %@", book.XPSCategory);
 
-    // FIXME: mode settings should be done based on bookshelf
-    if (!book.XPSCategory ||
-        ([book.XPSCategory compare:@"YoungerReader"] == NSOrderedSame) ||
-        ([book.XPSCategory compare:@"YoungReader"] == NSOrderedSame) ) {
-        self.youngerMode = YES;
-    } else {
-        self.youngerMode = NO;
-    }
-    
-
-    
     youngerBookTitle.title = book.Title;
     olderBookTitle.title = book.Title;
     
@@ -161,7 +150,7 @@
 
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque];	
 	
-    if (youngerMode) {
+    if (self.youngerMode) {
         CGRect frame = youngerTopToolbar.frame;
         frame.origin.y = 20;
         youngerTopToolbar.frame = frame;

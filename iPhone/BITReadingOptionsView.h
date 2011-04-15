@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "SCHReadingViewController.h"
+#import "SCHProfileItem.h"
 
 @interface BITReadingOptionsView : UIViewController {
 
@@ -24,6 +25,7 @@
 @property (readwrite, retain) SCHReadingViewController *pageViewController;
 @property (readwrite, retain) NSString *isbn;
 @property (readwrite, retain) UIImage *thumbnailImage;
+@property (readwrite, retain) SCHProfileItem *profileItem;
 
 - (IBAction) showFlowView: (id) sender;
 - (IBAction) showFixedView: (id) sender;

@@ -224,12 +224,13 @@
 	
 	NSLog(@"Showing book %@.", book.Title);
 	
-	SCHReadingViewController *pageView = [[SCHReadingViewController alloc] initWithNibName:nil bundle:nil];
-	pageView.isbn = book.ContentIdentifier;
-	
+//	SCHReadingViewController *pageView = [[SCHReadingViewController alloc] initWithNibName:nil bundle:nil];
+//	pageView.isbn = book.ContentIdentifier;
+
 	BITReadingOptionsView *optionsView = [[BITReadingOptionsView alloc] initWithNibName:nil bundle:nil];
-	optionsView.pageViewController = pageView;
+//	optionsView.pageViewController = pageView;
 	optionsView.isbn = book.ContentIdentifier;
+    optionsView.profileItem = self.profileItem;
 	
 	NSString *thumbKey = [NSString stringWithFormat:@"thumb-%@", book.ContentIdentifier];
 	NSData *imageData = [self.componentCache objectForKey:thumbKey];
@@ -253,7 +254,7 @@
 	
 	[self.navigationController pushViewController:optionsView animated:YES];
 	[optionsView release];
-	[pageView release];	
+//	[pageView release];	
 	
 }
 
