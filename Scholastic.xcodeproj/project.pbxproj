@@ -410,6 +410,14 @@
 		C9C889841358536E00ADF394 /* icon-home@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C9C8897A1358536E00ADF394 /* icon-home@2x.png */; };
 		C9C889861358578200ADF394 /* bookshelf-back-static.png in Resources */ = {isa = PBXBuildFile; fileRef = C9C889851358578200ADF394 /* bookshelf-back-static.png */; };
 		C9C889871358578200ADF394 /* bookshelf-back-static.png in Resources */ = {isa = PBXBuildFile; fileRef = C9C889851358578200ADF394 /* bookshelf-back-static.png */; };
+		C9C88A34135898E100ADF394 /* button-done.png in Resources */ = {isa = PBXBuildFile; fileRef = C9C88A30135898E000ADF394 /* button-done.png */; };
+		C9C88A35135898E100ADF394 /* button-done.png in Resources */ = {isa = PBXBuildFile; fileRef = C9C88A30135898E000ADF394 /* button-done.png */; };
+		C9C88A36135898E100ADF394 /* button-cancel.png in Resources */ = {isa = PBXBuildFile; fileRef = C9C88A31135898E000ADF394 /* button-cancel.png */; };
+		C9C88A37135898E100ADF394 /* button-cancel.png in Resources */ = {isa = PBXBuildFile; fileRef = C9C88A31135898E000ADF394 /* button-cancel.png */; };
+		C9C88A38135898E100ADF394 /* button-cancel@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C9C88A32135898E000ADF394 /* button-cancel@2x.png */; };
+		C9C88A39135898E100ADF394 /* button-cancel@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C9C88A32135898E000ADF394 /* button-cancel@2x.png */; };
+		C9C88A3A135898E100ADF394 /* button-done@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C9C88A33135898E000ADF394 /* button-done@2x.png */; };
+		C9C88A3B135898E100ADF394 /* button-done@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C9C88A33135898E000ADF394 /* button-done@2x.png */; };
 		C9D4F6281345FFE8007F86E3 /* SCHTextFlow.m in Sources */ = {isa = PBXBuildFile; fileRef = C9D4F6271345FFE7007F86E3 /* SCHTextFlow.m */; };
 		C9D4F6291345FFE8007F86E3 /* SCHTextFlow.m in Sources */ = {isa = PBXBuildFile; fileRef = C9D4F6271345FFE7007F86E3 /* SCHTextFlow.m */; };
 		C9ED566D1343322300A25486 /* libcss.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9ED56631343322300A25486 /* libcss.a */; };
@@ -1271,6 +1279,10 @@
 		C9C889791358536E00ADF394 /* icon-home.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-home.png"; path = "Resources/icon-home.png"; sourceTree = "<group>"; };
 		C9C8897A1358536E00ADF394 /* icon-home@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-home@2x.png"; path = "Resources/icon-home@2x.png"; sourceTree = "<group>"; };
 		C9C889851358578200ADF394 /* bookshelf-back-static.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "bookshelf-back-static.png"; path = "Resources/bookshelf-back-static.png"; sourceTree = "<group>"; };
+		C9C88A30135898E000ADF394 /* button-done.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "button-done.png"; path = "Resources/button-done.png"; sourceTree = "<group>"; };
+		C9C88A31135898E000ADF394 /* button-cancel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "button-cancel.png"; path = "Resources/button-cancel.png"; sourceTree = "<group>"; };
+		C9C88A32135898E000ADF394 /* button-cancel@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "button-cancel@2x.png"; path = "Resources/button-cancel@2x.png"; sourceTree = "<group>"; };
+		C9C88A33135898E000ADF394 /* button-done@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "button-done@2x.png"; path = "Resources/button-done@2x.png"; sourceTree = "<group>"; };
 		C9D4F6261345FFE7007F86E3 /* SCHTextFlow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHTextFlow.h; path = Shared/SCHTextFlow.h; sourceTree = "<group>"; };
 		C9D4F6271345FFE7007F86E3 /* SCHTextFlow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHTextFlow.m; path = Shared/SCHTextFlow.m; sourceTree = "<group>"; };
 		C9ED56631343322300A25486 /* libcss.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libcss.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1684,6 +1696,10 @@
 			isa = PBXGroup;
 			children = (
 				52E622F31358385D00245CA7 /* Themes */,
+				C9C88A30135898E000ADF394 /* button-done.png */,
+				C9C88A31135898E000ADF394 /* button-cancel.png */,
+				C9C88A32135898E000ADF394 /* button-cancel@2x.png */,
+				C9C88A33135898E000ADF394 /* button-done@2x.png */,
 				C9C889851358578200ADF394 /* bookshelf-back-static.png */,
 				C9C889761358536E00ADF394 /* bookshelf-back.png */,
 				F89F25C2135868F900777D32 /* profile-cell-background.png */,
@@ -2901,6 +2917,10 @@
 				52E623021358544200245CA7 /* SCHThemePickerViewController.xib in Resources */,
 				F89F25C4135868F900777D32 /* profile-cell-background.png in Resources */,
 				F89F25C6135868F900777D32 /* profile-cell-background@2x.png in Resources */,
+				C9C88A34135898E100ADF394 /* button-done.png in Resources */,
+				C9C88A36135898E100ADF394 /* button-cancel.png in Resources */,
+				C9C88A38135898E100ADF394 /* button-cancel@2x.png in Resources */,
+				C9C88A3A135898E100ADF394 /* button-done@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3056,6 +3076,10 @@
 				52E623031358544200245CA7 /* SCHThemePickerViewController.xib in Resources */,
 				F89F25C5135868F900777D32 /* profile-cell-background.png in Resources */,
 				F89F25C7135868F900777D32 /* profile-cell-background@2x.png in Resources */,
+				C9C88A35135898E100ADF394 /* button-done.png in Resources */,
+				C9C88A37135898E100ADF394 /* button-cancel.png in Resources */,
+				C9C88A39135898E100ADF394 /* button-cancel@2x.png in Resources */,
+				C9C88A3B135898E100ADF394 /* button-done@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

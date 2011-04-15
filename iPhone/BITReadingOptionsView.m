@@ -34,6 +34,12 @@
     [super viewDidLoad];
 	optionsView.layer.cornerRadius = 5.0f;
 	optionsView.layer.masksToBounds = YES;
+    
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    [button setImage:[UIImage imageNamed:@"icon-books"] forState:UIControlStateNormal];
+    [button sizeToFit];    
+    [button addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];    
+    self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:button] autorelease];
 }
 
 
@@ -70,6 +76,10 @@
 //	authorLabel.text = [NSString stringWithFormat:@"Author: %@", metadataItem.Author];
 }
 
+- (void)back
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
 
 - (IBAction) showFlowView: (id) sender
 {

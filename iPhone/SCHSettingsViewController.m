@@ -34,6 +34,17 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
    UIBarButtonItem *deregisterButton = [[UIBarButtonItem alloc] initWithTitle:@"Deregister" style:UIBarButtonItemStyleBordered target:self action:@selector(deregistrationButtonPushed:)];
     self.navigationItem.rightBarButtonItem = deregisterButton;
     [deregisterButton release], deregisterButton = nil;
+    
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    [button setImage:[UIImage imageNamed:@"icon-home"] forState:UIControlStateNormal];
+    [button sizeToFit];    
+    [button addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];    
+    self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:button] autorelease];
+}
+
+- (void)back
+{
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 /*
