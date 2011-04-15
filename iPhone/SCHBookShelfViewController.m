@@ -22,8 +22,6 @@
 
 @interface SCHBookShelfViewController () <UIGestureRecognizerDelegate>
 
-//- (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath;
-
 @property int moveToValue;
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated;
@@ -53,7 +51,6 @@
 		
 	[self.gridView setCellSize:CGSizeMake(80,118) withBorderSize:20];
 	[self.gridView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"Shelf"]]];
-//	[self.gridView setEditing:NO animated:NO];
     
     UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:nil action:nil];
     longPress.delaysTouchesBegan = YES;
@@ -281,15 +278,6 @@
 	[self releaseViewObjects];
 
 }
-
-
-- (void)dealloc {
-	[self releaseViewObjects];
-	
-    [books release], books = nil;
-    [super dealloc];
-}
-
 
 @end
 
