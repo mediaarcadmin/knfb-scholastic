@@ -193,8 +193,8 @@
 			controller = [[SCHBookShelfViewController alloc] initWithNibName:NSStringFromClass([SCHBookShelfViewController class]) bundle:nil];
 			controller.profileItem = self.profileItem;
 		}
-		controller.bookshelvesController = self;
-		[controller bookshelfToggled:self.selectedSegment];
+//		controller.bookshelvesController = self;
+//		[controller bookshelfToggled:self.selectedSegment];
 		
 		if ([controller respondsToSelector:@selector(viewDidLoad)]) {
 			[controller viewDidLoad];
@@ -204,9 +204,6 @@
         [controller release];
     }
 	
-#if LOCALDEBUG
-	controller.managedObjectContext = self.managedObjectContext;
-#endif
 	//controller.books = [self books];
     // NEW
 	
@@ -344,7 +341,7 @@
 	
 	for (SCHBookShelfViewController *controller in self.viewControllers) {
 		if ((NSNull *)controller != [NSNull null]) {
-			[controller bookshelfToggled:self.selectedSegment];
+//			[controller bookshelfToggled:self.selectedSegment];
 		}
 	}
 }

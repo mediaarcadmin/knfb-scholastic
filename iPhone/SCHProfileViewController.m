@@ -16,7 +16,7 @@
 #import "SCHLibreAccessWebService.h"
 #import "SCHContentProfileItem.h"
 #import "SCHProfileItem.h"
-#import "SCHMultipleBookshelvesController.h"
+#import "SCHBookShelfViewController.h"
 #import "SCHSyncManager.h"
 
 // Cell Icons 
@@ -213,13 +213,14 @@ static NSString * const kRootViewControllerSettingsIcon = @"Settings.png";
 
 - (void)pushBookshelvesControllerWithProfileItem: (SCHProfileItem *) profileItem
  {
-	SCHMultipleBookshelvesController *bookshelvesController = nil;
+	SCHBookShelfViewController *bookShelfViewController = nil;
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-		bookshelvesController = [[SCHMultipleBookshelvesController alloc] initWithNibName:NSStringFromClass([SCHMultipleBookshelvesController class]) bundle:nil managedObjectContext:self.managedObjectContext profileItem:profileItem];
+		bookShelfViewController = [[SCHBookShelfViewController alloc] initWithNibName:NSStringFromClass([SCHBookShelfViewController class]) bundle:nil];
+        bookShelfViewController.profileItem = profileItem;
 	}
 		
-	[self.navigationController pushViewController:bookshelvesController animated:YES];
-	[bookshelvesController release];
+	[self.navigationController pushViewController:bookShelfViewController animated:YES];
+	[bookShelfViewController release];
 }
 
 #pragma mark -

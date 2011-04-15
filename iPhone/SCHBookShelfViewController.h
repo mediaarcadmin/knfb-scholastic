@@ -11,28 +11,19 @@
 #import "MRGridView.h"
 #import "MRGridViewDelegate.h"
 #import "MRGridViewDataSource.h"
-#import "SCHMultipleBookshelvesController.h"
 #import "KNFBTimeOrderedCache.h"
 #import "SCHProfileItem.h"
 
-@interface SCHBookShelfViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate, MRGridViewDelegate, MRGridViewDataSource> {
+@interface SCHBookShelfViewController : UIViewController <MRGridViewDelegate, MRGridViewDataSource> {
 
 }
 
-@property (nonatomic, retain) IBOutlet UITableView *tableView;
 @property (nonatomic, retain) IBOutlet MRGridView *gridView;
 @property (nonatomic, retain) IBOutlet UIView *loadingView;
 
-@property (nonatomic, assign) SCHMultipleBookshelvesController *bookshelvesController;
 @property (nonatomic, retain) KNFBTimeOrderedCache *componentCache;
 
-#if LOCALDEBUG
-@property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
-#endif
 @property (nonatomic, retain) NSMutableArray *books;
 @property (nonatomic, retain) SCHProfileItem *profileItem;
-
-- (void)bookshelfToggled:(NSUInteger)selectedSegment;
-
 
 @end

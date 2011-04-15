@@ -11,7 +11,6 @@
 #import "BITReadingOptionsView.h"
 #import "SCHLibreAccessWebService.h"
 #import "SCHLocalDebug.h"
-#import "SCHMultipleBookshelvesController.h"
 #import "SCHBookManager.h"
 #import "SCHBookShelfTableViewCell.h"
 #import "SCHThumbnailFactory.h"
@@ -31,19 +30,14 @@
 
 @implementation SCHBookShelfViewController
 
-@synthesize bookshelvesController;
-#if LOCALDEBUG
-@synthesize managedObjectContext;
-#endif
 @synthesize books;
-@synthesize tableView, gridView, loadingView, componentCache;
+@synthesize gridView, loadingView, componentCache;
 @synthesize profileItem;
 @synthesize moveToValue;
 
 - (void)releaseViewObjects 
 {
 	self.gridView = nil;
-	self.tableView = nil;
 	self.componentCache = nil;
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
@@ -56,7 +50,8 @@
 		
 	[self.gridView setCellSize:CGSizeMake(80,118) withBorderSize:20];
 	[self.gridView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"Shelf"]]];
-	[self.gridView setEditing:YES animated:NO];
+//	[self.gridView setEditing:YES animated:NO];
+    
 	self.moveToValue = -1;
 	
 	KNFBTimeOrderedCache *aCache = [[KNFBTimeOrderedCache alloc] init];
@@ -67,7 +62,7 @@
 	
 	
 #if LOCALDEBUG
-	self.bookshelvesController.navigationItem.title = @"Local Bookshelf";
+	self.navigationItem.title = @"Local Bookshelf";
 #endif
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self
@@ -89,15 +84,22 @@
 	
 }
 
+- (void)setProfileItem:(SCHProfileItem *)newProfileItem
+{
+	[profileItem release];
+    profileItem = newProfileItem;
+    [profileItem retain];	
+    
+	self.books = [self.profileItem allISBNs];
+}
+
 - (void)setBooks:(NSMutableArray *)newBooks
 {
 	[books release];
     books = newBooks;
     [books retain];	
     
-	[self.tableView reloadData];
 	[self.gridView reloadData];
-	
 }
 
 #pragma mark -
@@ -107,138 +109,6 @@
 {
 	self.books = [self.profileItem allISBNs];
 	self.loadingView.hidden = YES;
-}
-
-#pragma mark -
-#pragma mark Table view data source
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [books count];
-}
-
-
-// Customize the appearance of table view cells.
-- (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    static NSString *CellIdentifier = @"BookCell";
-    
-    SCHBookShelfTableViewCell *cell = (SCHBookShelfTableViewCell *) [aTableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
-        cell = [[[SCHBookShelfTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier] autorelease];
-		cell.titleLabel.font = [UIFont systemFontOfSize:14.0];
-		cell.subtitleLabel.font = [UIFont systemFontOfSize:12.0];
-    }
-    
-    // Configure the cell...
-	[cell setIsbn:[self.books objectAtIndex:indexPath.row]];
-	
-	UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(startEditingTable:)];
-    longPress.delegate = self;
-	[cell addGestureRecognizer:longPress];
-	[longPress release];
-    
-    return cell;
-}
-
-
-#pragma mark -
-#pragma mark Table view delegate
-
-- (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	[aTableView deselectRowAtIndexPath:indexPath animated:YES];
-	
-	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:[self.books objectAtIndex:indexPath.row]];
-
-	// notify the processing manager that the user touched a book info object.
-	// this allows it to pause and resume items, etc.
-	// will do nothing if the book has already been fully downloaded.
-	[[SCHProcessingManager sharedProcessingManager] userSelectedBookWithISBN:book.ContentIdentifier];
-	
-	// if the processing manager is working, do not open the book
-	if (![book canOpenBook]) {
-		return;
-	}
-	
-	NSLog(@"Showing book %@.", [book Title]);
-	
-	SCHReadingViewController *pageView = [[SCHReadingViewController alloc] initWithNibName:nil bundle:nil];
-	pageView.isbn = book.ContentIdentifier;
-	
-	BITReadingOptionsView *optionsView = [[BITReadingOptionsView alloc] initWithNibName:nil bundle:nil];
-	optionsView.pageViewController = pageView;
-	optionsView.isbn = book.ContentIdentifier;
-	
-	NSString *thumbKey = [NSString stringWithFormat:@"thumb-%@", book.ContentIdentifier];
-	NSData *imageData = [self.componentCache objectForKey:thumbKey];
-	
-	if ([imageData length]) {
-		optionsView.thumbnailImage = [UIImage imageWithData:imageData];
-	} else {
-		SCHXPSProvider *provider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:book.ContentIdentifier];
-		imageData = [provider coverThumbData];
-		[[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:book.ContentIdentifier];
-
-		if (!imageData) {
-			optionsView.thumbnailImage = [UIImage imageNamed:@"PlaceholderBook"];
-		} else {
-			[self.componentCache setObject:imageData forKey:thumbKey cost:[imageData length]];
-			optionsView.thumbnailImage = [UIImage imageWithData:imageData];
-		}
-		
-		optionsView.thumbnailImage = [UIImage imageWithData:imageData];
-	}
-	
-	[self.bookshelvesController.navigationController pushViewController:optionsView animated:YES];
-	[optionsView release];
-	[pageView release];	
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-	return 132.0f;
-}
-
-- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-	return UITableViewCellEditingStyleNone;
-}
-
-- (BOOL)tableView:(UITableView *)tableview canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-	return YES;	
-}
-
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath 
-{
-	if (fromIndexPath.row != toIndexPath.row) {
-		NSLog(@"Moving row %d to row %d.", fromIndexPath.row, toIndexPath.row);
-        [self.books exchangeObjectAtIndex:fromIndexPath.row withObjectAtIndex:toIndexPath.row];
-        [self.profileItem saveBookOrder:self.books];
-        NSError *error = nil;
-        
-        if (![self.profileItem.managedObjectContext save:&error]) {
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-            abort();
-        }         
-	}
-}
-
-#pragma mark Table Cell Editing Toggle
-
-- (void) startEditingTable: (UILongPressGestureRecognizer *) gesture
-{
-    [self.tableView setEditing:YES animated:YES];
-    [self.bookshelvesController showEditingButton:YES forTable:self.tableView];
-}
-
-- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
-{
-    if ([gestureRecognizer isKindOfClass:[UILongPressGestureRecognizer class]]) {
-        if ([self.tableView isEditing]) {
-            return NO;
-        }
-    }
-    
-    return YES;
 }
 
 #pragma mark -
@@ -275,7 +145,6 @@
 { 
 //	NSLog(@"Starting move for cell %d", index);
 	self.moveToValue = -1;
-	[self.bookshelvesController stopSidewaysScrolling];
 	return YES;
 }
 
@@ -289,7 +158,6 @@
 -(void) gridView:(MRGridView*)gridView finishedMovingCellToIndex:(NSInteger)toIndex
 {
 //	NSLog(@"Finished moving cell to index %d", toIndex);
-	[self.bookshelvesController resumeSidewaysScrolling];
 	
 	if (self.moveToValue != -1 && (toIndex != self.moveToValue)) {
 		NSLog(@"Moving cell from index %d to index %d", toIndex, self.moveToValue);
@@ -354,7 +222,7 @@
 		optionsView.thumbnailImage = [UIImage imageWithData:imageData];
 	}
 	
-	[self.bookshelvesController.navigationController pushViewController:optionsView animated:YES];
+	[self.navigationController pushViewController:optionsView animated:YES];
 	[optionsView release];
 	[pageView release];	
 	
@@ -363,27 +231,6 @@
 -(void)gridView:(MRGridView *)gridView confirmationForDeletionAtIndex:(NSInteger)index 
 {
 	
-}
-
-#pragma mark -
-#pragma mark Actions
-
-- (void)bookshelfToggled:(NSUInteger)selectedSegment 
-{	
-	switch (selectedSegment) {
-		case 0:
-			[self.view bringSubviewToFront:self.tableView];
-			[self.tableView reloadData];
-			break;
-		case 1:
-			[self.view bringSubviewToFront:self.gridView];
-			[self.gridView reloadData];
-			break;
-		default:
-			break;
-	}
-	
-	[self.view bringSubviewToFront:self.loadingView];
 }
 
 #pragma mark -
@@ -408,7 +255,6 @@
 	[self releaseViewObjects];
 	
     [books release], books = nil;
-	bookshelvesController = nil;
     [super dealloc];
 }
 
