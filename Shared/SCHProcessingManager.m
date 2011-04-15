@@ -46,6 +46,7 @@
 @property (readwrite, retain) NSOperationQueue *localProcessingQueue;
 @property (readwrite, retain) NSOperationQueue *webServiceOperationQueue;
 @property (readwrite, retain) NSOperationQueue *networkOperationQueue;
+@property (readwrite, retain) NSOperationQueue *imageProcessingQueue;
 
 // the background task ID for background processing
 @property (nonatomic) UIBackgroundTaskIdentifier backgroundTask;
@@ -55,6 +56,7 @@
 // to the size of the requested thumbnail
 @property (readwrite, retain) NSMutableDictionary *thumbImageRequests;
 
+// a list of ISBNs that are currently processing
 @property (readwrite, retain) NSMutableArray *currentlyProcessingISBNs;
 
 @property BOOL connectionIsIdle;
@@ -66,7 +68,7 @@
 
 @implementation SCHProcessingManager
 
-@synthesize localProcessingQueue, webServiceOperationQueue, networkOperationQueue;
+@synthesize localProcessingQueue, webServiceOperationQueue, networkOperationQueue, imageProcessingQueue;
 @synthesize backgroundTask;
 @synthesize thumbImageRequests, currentlyProcessingISBNs;
 @synthesize connectionIsIdle, firedFirstBusyIdleNotification;
@@ -81,6 +83,7 @@
 	self.localProcessingQueue = nil;
 	self.webServiceOperationQueue = nil;
 	self.networkOperationQueue = nil;
+    self.imageProcessingQueue = nil;
 	self.thumbImageRequests = nil;
     self.currentlyProcessingISBNs = nil;
 	[super dealloc];
@@ -90,10 +93,12 @@
 {
 	if ((self = [super init])) {
 		self.localProcessingQueue = [[NSOperationQueue alloc] init];
+		self.imageProcessingQueue = [[NSOperationQueue alloc] init];
 		self.webServiceOperationQueue = [[NSOperationQueue alloc] init];
 		self.networkOperationQueue = [[NSOperationQueue alloc] init];
 		
 		[self.localProcessingQueue setMaxConcurrentOperationCount:2];
+		[self.imageProcessingQueue setMaxConcurrentOperationCount:2];
 		[self.networkOperationQueue setMaxConcurrentOperationCount:3];
 		[self.webServiceOperationQueue setMaxConcurrentOperationCount:10];
 		
@@ -145,6 +150,7 @@ static SCHProcessingManager *sharedManager = nil;
     if(backgroundSupported) {        
 		
 		if ((self.localProcessingQueue && [self.localProcessingQueue operationCount]) 
+			|| (self.imageProcessingQueue && [self.imageProcessingQueue operationCount])
 			|| (self.networkOperationQueue && [self.networkOperationQueue operationCount])
 			|| (self.webServiceOperationQueue && [self.webServiceOperationQueue operationCount])
 			) {
@@ -169,6 +175,7 @@ static SCHProcessingManager *sharedManager = nil;
 					[self.webServiceOperationQueue waitUntilAllOperationsAreFinished];
                     [self.networkOperationQueue waitUntilAllOperationsAreFinished];    
                     [self.localProcessingQueue waitUntilAllOperationsAreFinished];    
+                    [self.imageProcessingQueue waitUntilAllOperationsAreFinished];    
 					NSLog(@"operation queues are finished!");
                     [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTask];
                     self.backgroundTask = UIBackgroundTaskInvalid;
@@ -258,6 +265,7 @@ static SCHProcessingManager *sharedManager = nil;
 
 - (void) processISBN: (NSString *) isbn
 {
+    
 	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:isbn];
 	
 	NSLog(@"Processing state of %@ is %@", book.ContentIdentifier, [book processingStateAsString]);
@@ -438,7 +446,7 @@ static SCHProcessingManager *sharedManager = nil;
 
 - (void) redispatchISBN: (NSString *) isbn
 {
-	
+    
 	// FIXME: main thread please!
 	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:isbn];
 
@@ -470,15 +478,7 @@ static SCHProcessingManager *sharedManager = nil;
 			break;
 	}
 	
-	if (book.processingState == SCHBookProcessingStateReadyForBookFileDownload ||
-		book.processingState == SCHBookProcessingStateDownloadStarted ||
-		book.processingState == SCHBookProcessingStateDownloadPaused ||
-        book.processingState == SCHBookProcessingStateReadyForLicenseAcquisition ||
-		book.processingState == SCHBookProcessingStateReadyForPagination ||
-		book.processingState == SCHBookProcessingStateReadyForRightsParsing ||
-		book.processingState == SCHBookProcessingStateReadyForTextFlowPreParse ||
-        book.processingState == SCHBookProcessingStateReadyForSmartZoomPreParse ||
-		book.processingState == SCHBookProcessingStateReadyToRead) {
+	if (book.processingState > SCHBookProcessingStateNoCoverImage) {
 		[self checkAndDispatchThumbsForISBN:isbn];
 	}
     
@@ -514,6 +514,7 @@ static SCHProcessingManager *sharedManager = nil;
 			[self performSelectorOnMainThread:@selector(sendNotification:) withObject:kSCHProcessingManagerConnectionIdle waitUntilDone:YES];
             self.firedFirstBusyIdleNotification = YES;
 		}
+        
 	} else {
 		self.connectionIsIdle = NO;
         
@@ -604,10 +605,7 @@ static SCHProcessingManager *sharedManager = nil;
 			[sizes release];
 		}
 		
-		if (book.processingState == SCHBookProcessingStateReadyForBookFileDownload ||
-			book.processingState == SCHBookProcessingStateDownloadStarted ||
-			book.processingState == SCHBookProcessingStateDownloadPaused ||
-			book.processingState == SCHBookProcessingStateReadyToRead) {
+        if (book.processingState > SCHBookProcessingStateNoCoverImage) {
 			[self checkAndDispatchThumbsForISBN:book.ContentIdentifier];
 		}
 		
@@ -628,17 +626,18 @@ static SCHProcessingManager *sharedManager = nil;
 				thumbOp.size = size;
 				thumbOp.flip = NO;
 				thumbOp.aspect = YES;
+                [thumbOp setQueuePriority:NSOperationQueuePriorityHigh];
 				
 				// add the operation to the local processing queue
-				[self.localProcessingQueue addOperation:thumbOp];
+				[self.imageProcessingQueue addOperation:thumbOp];
 				[thumbOp release];
 				
 			}
 			
 			// remove all items from the tracking dictionary
-			[self.thumbImageRequests removeAllObjects];
+			[self.thumbImageRequests removeObjectForKey:isbn];
 		}
-	}
+    }
 }	
 
 @end
