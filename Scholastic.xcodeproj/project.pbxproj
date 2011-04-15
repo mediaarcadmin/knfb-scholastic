@@ -111,6 +111,12 @@
 		52E4697512F1F33200ECC97A /* SCHLocalDebug.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E4691F12F1D94E00ECC97A /* SCHLocalDebug.m */; };
 		52E622F41358385D00245CA7 /* Themes in Resources */ = {isa = PBXBuildFile; fileRef = 52E622F31358385D00245CA7 /* Themes */; };
 		52E622F51358385D00245CA7 /* Themes in Resources */ = {isa = PBXBuildFile; fileRef = 52E622F31358385D00245CA7 /* Themes */; };
+		52E622FB13584EBF00245CA7 /* SCHThemeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E622FA13584EBE00245CA7 /* SCHThemeManager.m */; };
+		52E622FC13584EBF00245CA7 /* SCHThemeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E622FA13584EBE00245CA7 /* SCHThemeManager.m */; };
+		52E623001358544200245CA7 /* SCHThemePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E622FE1358544200245CA7 /* SCHThemePickerViewController.m */; };
+		52E623011358544200245CA7 /* SCHThemePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E622FE1358544200245CA7 /* SCHThemePickerViewController.m */; };
+		52E623021358544200245CA7 /* SCHThemePickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52E622FF1358544200245CA7 /* SCHThemePickerViewController.xib */; };
+		52E623031358544200245CA7 /* SCHThemePickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52E622FF1358544200245CA7 /* SCHThemePickerViewController.xib */; };
 		52EF4E5F12E6E01C00E374F7 /* SCHLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF4E5D12E6E01C00E374F7 /* SCHLoginViewController.m */; };
 		52EF4E6012E6E01C00E374F7 /* SCHLoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52EF4E5E12E6E01C00E374F7 /* SCHLoginViewController.xib */; };
 		52EF508712E739E900E374F7 /* LibreAccessServiceSvc.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF508612E739E900E374F7 /* LibreAccessServiceSvc.m */; };
@@ -909,6 +915,11 @@
 		52E4691E12F1D94E00ECC97A /* SCHLocalDebug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHLocalDebug.h; path = Shared/SCHLocalDebug.h; sourceTree = "<group>"; };
 		52E4691F12F1D94E00ECC97A /* SCHLocalDebug.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHLocalDebug.m; path = Shared/SCHLocalDebug.m; sourceTree = "<group>"; };
 		52E622F31358385D00245CA7 /* Themes */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Themes; path = Resources/Themes; sourceTree = "<group>"; };
+		52E622F913584EBE00245CA7 /* SCHThemeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHThemeManager.h; path = Shared/SCHThemeManager.h; sourceTree = "<group>"; };
+		52E622FA13584EBE00245CA7 /* SCHThemeManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHThemeManager.m; path = Shared/SCHThemeManager.m; sourceTree = "<group>"; };
+		52E622FD1358544200245CA7 /* SCHThemePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHThemePickerViewController.h; sourceTree = "<group>"; };
+		52E622FE1358544200245CA7 /* SCHThemePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHThemePickerViewController.m; sourceTree = "<group>"; };
+		52E622FF1358544200245CA7 /* SCHThemePickerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHThemePickerViewController.xib; sourceTree = "<group>"; };
 		52EF4E5C12E6E01C00E374F7 /* SCHLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHLoginViewController.h; sourceTree = "<group>"; };
 		52EF4E5D12E6E01C00E374F7 /* SCHLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHLoginViewController.m; sourceTree = "<group>"; };
 		52EF4E5E12E6E01C00E374F7 /* SCHLoginViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SCHLoginViewController.xib; sourceTree = "<group>"; };
@@ -1502,6 +1513,9 @@
 				52EF4E5E12E6E01C00E374F7 /* SCHLoginViewController.xib */,
 				F8898901135877B100D236ED /* SCHProfileViewCell.h */,
 				F8898902135877B100D236ED /* SCHProfileViewCell.m */,
+				52E622FD1358544200245CA7 /* SCHThemePickerViewController.h */,
+				52E622FE1358544200245CA7 /* SCHThemePickerViewController.m */,
+				52E622FF1358544200245CA7 /* SCHThemePickerViewController.xib */,
 			);
 			path = iPhone;
 			sourceTree = "<group>";
@@ -1669,6 +1683,7 @@
 		528A2CCF12CCDC400053A343 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				52E622F31358385D00245CA7 /* Themes */,
 				C9C889851358578200ADF394 /* bookshelf-back-static.png */,
 				C9C889761358536E00ADF394 /* bookshelf-back.png */,
 				F89F25C2135868F900777D32 /* profile-cell-background.png */,
@@ -1677,7 +1692,6 @@
 				C9C889781358536E00ADF394 /* icon-theme@2x.png */,
 				C9C889791358536E00ADF394 /* icon-home.png */,
 				C9C8897A1358536E00ADF394 /* icon-home@2x.png */,
-				52E622F31358385D00245CA7 /* Themes */,
 				F80FED5E1355DD6D00DEB3C1 /* icon-books.png */,
 				F80FED5F1355DD6D00DEB3C1 /* icon-books@2x.png */,
 				F80FED601355DD6D00DEB3C1 /* icon-magnify.png */,
@@ -1897,6 +1911,8 @@
 				C9CEF429133A1BF300FB5BE0 /* Book Reading */,
 				F8E29664130583A0009BD30D /* Image Processing */,
 				C923B14612F6AFE10054426F /* Bookshelves */,
+				52E622F913584EBE00245CA7 /* SCHThemeManager.h */,
+				52E622FA13584EBE00245CA7 /* SCHThemeManager.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -2882,6 +2898,7 @@
 				C9C889811358536E00ADF394 /* icon-home.png in Resources */,
 				C9C889831358536E00ADF394 /* icon-home@2x.png in Resources */,
 				C9C889861358578200ADF394 /* bookshelf-back-static.png in Resources */,
+				52E623021358544200245CA7 /* SCHThemePickerViewController.xib in Resources */,
 				F89F25C4135868F900777D32 /* profile-cell-background.png in Resources */,
 				F89F25C6135868F900777D32 /* profile-cell-background@2x.png in Resources */,
 			);
@@ -3036,6 +3053,7 @@
 				C9C889821358536E00ADF394 /* icon-home.png in Resources */,
 				C9C889841358536E00ADF394 /* icon-home@2x.png in Resources */,
 				C9C889871358578200ADF394 /* bookshelf-back-static.png in Resources */,
+				52E623031358544200245CA7 /* SCHThemePickerViewController.xib in Resources */,
 				F89F25C5135868F900777D32 /* profile-cell-background.png in Resources */,
 				F89F25C7135868F900777D32 /* profile-cell-background@2x.png in Resources */,
 			);
@@ -3198,6 +3216,8 @@
 				C92FA7D21355BE20001BAA6B /* SCHSmartZoomBlockSource.m in Sources */,
 				C92FA7E81355E8F4001BAA6B /* KNFBSmartZoomBlock.m in Sources */,
 				F8898903135877B100D236ED /* SCHProfileViewCell.m in Sources */,
+				52E622FB13584EBF00245CA7 /* SCHThemeManager.m in Sources */,
+				52E623001358544200245CA7 /* SCHThemePickerViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3355,6 +3375,8 @@
 				C92FA7D31355BE20001BAA6B /* SCHSmartZoomBlockSource.m in Sources */,
 				C92FA7E91355E8F4001BAA6B /* KNFBSmartZoomBlock.m in Sources */,
 				F8898904135877B100D236ED /* SCHProfileViewCell.m in Sources */,
+				52E622FC13584EBF00245CA7 /* SCHThemeManager.m in Sources */,
+				52E623011358544200245CA7 /* SCHThemePickerViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

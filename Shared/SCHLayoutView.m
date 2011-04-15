@@ -9,6 +9,7 @@
 #import "SCHLayoutView.h"
 #import "SCHXPSProvider.h"
 #import "SCHSmartZoomBlockSource.h"
+#import "KNFBSmartZoomBlock.h"
 #import "SCHBookManager.h"
 #import <libEucalyptus/THPositionedCGContext.h>
 
@@ -31,9 +32,11 @@
 
 - (void)initialiseView;
 - (CGRect)cropForPage:(NSInteger)page allowEstimate:(BOOL)estimate;
-- (void)clearPageInformation;
 - (void)jumpToZoomBlock:(id)zoomBlock;
 - (void)registerGesturesForPageTurningView:(EucPageTurningView *)aPageTurningView;
+- (void)zoomToCurrentBlock;
+- (void)zoomOutToCurrentPage;
+- (CGPoint)translationToFitRect:(CGRect)aRect onPageAtIndex:(NSUInteger)pageIndex zoomScale:(CGFloat *)scale;
 
 @end
 
@@ -152,11 +155,6 @@
     }
 }
 
-- (void)clearPageInformation
-{
-    self.currentBlock = nil;
-}
-
 - (void)jumpToZoomBlock:(id)zoomBlock
 {
     
@@ -172,6 +170,7 @@
 {
     self.smartZoomActive = NO;
     self.currentBlock = nil;
+    [self zoomOutToCurrentPage];
 }
 
 
@@ -252,9 +251,10 @@
 - (void)jumpToPageAtIndex:(NSUInteger)pageIndex animated: (BOOL) animated
 {
     if ((pageIndex >= 0) && (pageIndex < pageCount)) {
-        [self clearPageInformation];
         [self.pageTurningView turnToPageAtIndex:pageIndex animated:animated];
     }
+    
+    self.currentBlock = nil;
 }
 
 - (void)jumpToNextZoomBlock
@@ -267,9 +267,15 @@
         zoomBlock = [self.blockSource firstZoomBlockFromPageAtIndex:self.currentPageIndex];
     }
     
+    NSLog(@"next zoomBlock: %@", zoomBlock);
+
     self.currentBlock = zoomBlock;
     
-    NSLog(@"next zoomBlock: %@", zoomBlock);
+    if (zoomBlock) {
+        [self zoomToCurrentBlock];
+    } else {
+        [self zoomOutToCurrentPage];
+    }
 }
 
 - (void)jumpToPreviousZoomBlock
@@ -282,9 +288,144 @@
         zoomBlock = [self.blockSource firstZoomBlockFromPageAtIndex:self.currentPageIndex];
     }
     
+    NSLog(@"prev zoomBlock: %@", zoomBlock);
+
     self.currentBlock = zoomBlock;
     
-    NSLog(@"prev zoomBlock: %@", zoomBlock);
+    if (zoomBlock) {
+        [self zoomToCurrentBlock];
+    } else {
+        [self zoomOutToCurrentPage];
+    }
+}
+
+- (void)zoomOutToCurrentPage
+{
+    EucPageTurningView *myPageTurningView = self.pageTurningView;
+    CGRect bounds = myPageTurningView.bounds;
+    
+    BOOL viewIsLandscape = bounds.size.width > bounds.size.height;
+    
+    CGFloat zoomFactor;
+	
+	if(!viewIsLandscape || myPageTurningView.isTwoUp) {
+        zoomFactor = 1.0f;
+    } else {
+        zoomFactor = myPageTurningView.fitToBoundsZoomFactor;
+    }
+	
+	myPageTurningView.minZoomFactor = zoomFactor;
+	
+    CGPoint offset = CGPointMake(0, CGRectGetMidY(bounds) * zoomFactor); 
+	[myPageTurningView setTranslation:offset zoomFactor:zoomFactor animated:YES];
+}
+
+- (void)zoomToCurrentBlock {
+	
+    NSUInteger pageIndex = [self.currentBlock pageIndex];
+    CGRect targetRect = [self.currentBlock rect];
+    	
+	CGFloat zoomScale;
+	CGPoint translation = [self translationToFitRect:targetRect onPageAtIndex:pageIndex zoomScale:&zoomScale];
+	
+    if (pageIndex != self.currentPageIndex) {
+        if (self.pageTurningView.isTwoUp) {
+            if ((self.pageTurningView.leftPageIndex != pageIndex) && (self.pageTurningView.rightPageIndex != pageIndex)) {
+                [self.pageTurningView turnToPageAtIndex:pageIndex animated:YES];
+            }
+        } else {
+            if (self.pageTurningView.rightPageIndex != pageIndex) {
+                [self.pageTurningView turnToPageAtIndex:pageIndex animated:YES];
+            }
+        }
+    }
+		
+    [self.pageTurningView setTranslation:translation zoomFactor:zoomScale animated:YES];
+
+}
+
+CGAffineTransform transformRectToFitRect(CGRect sourceRect, CGRect targetRect, BOOL preserveAspect) {
+    
+    CGFloat xScale = targetRect.size.width / sourceRect.size.width;
+    CGFloat yScale = targetRect.size.height / sourceRect.size.height;
+    
+    CGAffineTransform scaleTransform;
+    if (preserveAspect) {
+        CGFloat scale = xScale < yScale ? xScale : yScale;
+        scaleTransform = CGAffineTransformMakeScale(scale, scale);
+    } else {
+        scaleTransform = CGAffineTransformMakeScale(xScale, yScale);
+    } 
+    CGRect scaledRect = CGRectApplyAffineTransform(sourceRect, scaleTransform);
+    CGFloat xOffset = (targetRect.size.width - scaledRect.size.width);
+    CGFloat yOffset = (targetRect.size.height - scaledRect.size.height);
+    CGAffineTransform offsetTransform = CGAffineTransformMakeTranslation((targetRect.origin.x - scaledRect.origin.x) + xOffset/2.0f, (targetRect.origin.y - scaledRect.origin.y) + yOffset/2.0f);
+    CGAffineTransform transform = CGAffineTransformConcat(scaleTransform, offsetTransform);
+    return transform;
+}
+
+- (CGAffineTransform)pageTurningViewTransformForPageAtIndex:(NSUInteger)pageIndex offsetOrigin:(BOOL)offset applyZoom:(BOOL)applyZoom {
+    // TODO: Make sure this is cached in LayoutView or pageTurningView
+    CGRect pageCrop = [self pageTurningView:self.pageTurningView contentRectForPageAtIndex:pageIndex];
+    CGRect pageFrame;
+    
+	BOOL isOnRight = YES;
+	if (self.pageTurningView.isTwoUp) {
+		BOOL rightIsEven = !self.pageTurningView.oddPagesOnRight;
+		BOOL indexIsEven = (pageIndex % 2 == 0);
+		if (rightIsEven != indexIsEven) {
+			isOnRight = NO;
+		}
+	}
+	
+	if (isOnRight) {
+		if (applyZoom) {
+			pageFrame = [self.pageTurningView rightPageFrame];
+		} else {
+			pageFrame = [self.pageTurningView unzoomedRightPageFrame];
+		}
+	} else {
+		if (applyZoom) {
+			pageFrame = [self.pageTurningView leftPageFrame];
+		} else {
+			pageFrame = [self.pageTurningView unzoomedLeftPageFrame];
+		}
+    }
+    
+    if (!offset) {
+        pageFrame.origin = CGPointZero;
+    }
+    
+    CGAffineTransform pageTransform = transformRectToFitRect(pageCrop, pageFrame, false);
+    
+    return pageTransform;
+}
+
+- (CGPoint)translationToFitRect:(CGRect)aRect onPageAtIndex:(NSUInteger)pageIndex zoomScale:(CGFloat *)scale {
+	CGAffineTransform viewTransform = [self pageTurningViewTransformForPageAtIndex:pageIndex offsetOrigin:YES applyZoom:NO];
+	
+    CGRect targetRect = CGRectApplyAffineTransform(aRect, viewTransform);
+    CGRect viewBounds = self.pageTurningView.bounds;
+    CGFloat zoomScale = CGRectGetWidth(viewBounds) / CGRectGetWidth(targetRect);
+	
+    zoomScale = CGRectGetWidth(viewBounds) / CGRectGetWidth(targetRect);
+    *scale = zoomScale;
+    
+    CGRect cropRect = [self cropForPage:pageIndex + 1 allowEstimate:YES];
+    CGRect pageRect = CGRectApplyAffineTransform(cropRect, viewTransform);
+    CGFloat contentOffsetX = roundf( CGRectGetMidX(self.pageTurningView.bounds) - CGRectGetMidX(targetRect));
+	CGFloat scaledOffsetX = contentOffsetX * zoomScale;
+	
+	CGFloat topOfPageOffset = CGRectGetHeight(pageRect)/2.0f;
+	CGFloat bottomOfPageOffset = -topOfPageOffset;
+	CGFloat rectEdgeOffset;
+	CGFloat scaledOffsetY;
+	
+
+    rectEdgeOffset = bottomOfPageOffset + (CGRectGetHeight(pageRect) - (CGRectGetMaxY(targetRect) - pageRect.origin.y));
+    scaledOffsetY = roundf(rectEdgeOffset * zoomScale + CGRectGetMidY(self.pageTurningView.bounds));
+	
+	return CGPointMake(scaledOffsetX, scaledOffsetY);
 }
 
 
