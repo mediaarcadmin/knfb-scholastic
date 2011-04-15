@@ -19,9 +19,11 @@
 #import "SCHXPSProvider.h"
 #import <QuartzCore/QuartzCore.h>
 #import "SCHAppBook.h"
+#import "SCHCustomNavigationBar.h"
 
 @interface SCHBookShelfViewController () <UIGestureRecognizerDelegate>
 
+@property (nonatomic, retain) UIBarButtonItem *themeButton;
 @property int moveToValue;
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated;
@@ -33,7 +35,10 @@
 
 @synthesize books;
 @synthesize gridView, loadingView, componentCache;
+@synthesize themePickerContainer;
+@synthesize customNavigationBar;
 @synthesize profileItem;
+@synthesize themeButton;
 @synthesize moveToValue;
 
 - (void)releaseViewObjects 
@@ -49,6 +54,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 		
+    themeButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon-theme"]
+                                                   style:UIBarButtonItemStylePlain 
+                                                  target:self 
+                                                  action:@selector(changeTheme)];
+    self.navigationItem.rightBarButtonItem = self.themeButton;
+    
 	[self.gridView setCellSize:CGSizeMake(80,118) withBorderSize:20];
 	//[self.gridView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"Shelf"]]];
     [self.gridView setBackgroundColor:[UIColor clearColor]];
@@ -70,6 +81,7 @@
 	self.componentCache = aCache;
 	[aCache release];
 	
+    customNavigationBar.backgroundImage = [UIImage imageNamed:@"ReadingCustomToolbarBG"];
 	
 #if LOCALDEBUG
 	self.navigationItem.title = @"Local Bookshelf";
@@ -94,6 +106,11 @@
 	
 }
 
+- (void)changeTheme
+{
+	[self presentModalViewController:self.themePickerContainer animated:YES];		
+}
+
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
     [self setEditing:YES animated:YES];
     return NO;
@@ -106,7 +123,7 @@
             [self.navigationItem setRightBarButtonItem:[[[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:self action:@selector(finishEditing:)] autorelease] animated:animated];
         }
     } else {
-        [self.navigationItem setRightBarButtonItem:nil animated:animated];
+        [self.navigationItem setRightBarButtonItem:self.themeButton animated:animated];
     }
     
     [self.gridView setEditing:editing animated:animated];
