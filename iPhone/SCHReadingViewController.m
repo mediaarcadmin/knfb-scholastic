@@ -150,7 +150,7 @@
 
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque];	
 	
-    if (youngerMode) {
+    if (self.youngerMode) {
         CGRect frame = youngerTopToolbar.frame;
         frame.origin.y = 20;
         youngerTopToolbar.frame = frame;

@@ -195,27 +195,13 @@
 	
 	NSLog(@"Showing book %@.", book.Title);
 	
-	SCHReadingViewController *pageView = [[SCHReadingViewController alloc] initWithNibName:nil bundle:nil];
-	pageView.isbn = book.ContentIdentifier;
+//	SCHReadingViewController *pageView = [[SCHReadingViewController alloc] initWithNibName:nil bundle:nil];
+//	pageView.isbn = book.ContentIdentifier;
 
-    switch ([self.profileItem.BookshelfStyle intValue]) {
-        case LibreAccessServiceSvc_BookshelfStyle_YOUNG_CHILD:
-            pageView.youngerMode = YES;
-            break;
-            
-        case LibreAccessServiceSvc_BookshelfStyle_OLDER_CHILD:
-            pageView.youngerMode = NO;
-            break;
-            
-        case LibreAccessServiceSvc_BookshelfStyle_ADULT:
-            pageView.youngerMode = NO;
-            break;
-    }
-
-	
 	BITReadingOptionsView *optionsView = [[BITReadingOptionsView alloc] initWithNibName:nil bundle:nil];
-	optionsView.pageViewController = pageView;
+//	optionsView.pageViewController = pageView;
 	optionsView.isbn = book.ContentIdentifier;
+    optionsView.profileItem = self.profileItem;
 	
 	NSString *thumbKey = [NSString stringWithFormat:@"thumb-%@", book.ContentIdentifier];
 	NSData *imageData = [self.componentCache objectForKey:thumbKey];
@@ -239,7 +225,7 @@
 	
 	[self.navigationController pushViewController:optionsView animated:YES];
 	[optionsView release];
-	[pageView release];	
+//	[pageView release];	
 	
 }
 

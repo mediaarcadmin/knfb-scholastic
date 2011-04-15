@@ -8,12 +8,14 @@
 
 #import "BITReadingOptionsView.h"
 #import <QuartzCore/QuartzCore.h>
+#import "LibreAccessServiceSvc.h"
 //#import "SCHReadingViewController.h"
 
 @implementation BITReadingOptionsView
 @synthesize pageViewController;
 @synthesize isbn;
 @synthesize thumbnailImage;
+@synthesize profileItem;
 
 // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
 /*
@@ -71,19 +73,47 @@
 
 - (IBAction) showFlowView: (id) sender
 {
+    
     SCHReadingViewController *readingController = [[SCHReadingViewController alloc] initWithNibName:nil bundle:nil isbn:self.isbn];
     readingController.flowView = YES;
+    
+    switch ([self.profileItem.BookshelfStyle intValue]) {
+        case LibreAccessServiceSvc_BookshelfStyle_YOUNG_CHILD:
+            readingController.youngerMode = YES;
+            break;
+            
+        case LibreAccessServiceSvc_BookshelfStyle_OLDER_CHILD:
+            readingController.youngerMode = NO;
+            break;
+            
+        case LibreAccessServiceSvc_BookshelfStyle_ADULT:
+            readingController.youngerMode = NO;
+            break;
+    }
+
     [self.navigationController pushViewController:readingController animated:YES];
     [readingController release];
-    
-    return;
-	[self.navigationController pushViewController:pageViewController animated:YES];
 }
 
 - (IBAction) showFixedView: (id) sender
 {
     SCHReadingViewController *readingController = [[SCHReadingViewController alloc] initWithNibName:nil bundle:nil isbn:self.isbn];
     readingController.flowView = NO;
+    
+    switch ([self.profileItem.BookshelfStyle intValue]) {
+        case LibreAccessServiceSvc_BookshelfStyle_YOUNG_CHILD:
+            readingController.youngerMode = YES;
+            break;
+            
+        case LibreAccessServiceSvc_BookshelfStyle_OLDER_CHILD:
+            readingController.youngerMode = NO;
+            break;
+            
+        case LibreAccessServiceSvc_BookshelfStyle_ADULT:
+            readingController.youngerMode = NO;
+            break;
+    }
+
     [self.navigationController pushViewController:readingController animated:YES];
     [readingController release];
 }
