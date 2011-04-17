@@ -32,7 +32,7 @@
 
     UIButton *cancelButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [cancelButton setFrame:CGRectMake(0, 0, 60, 30)];
-    [cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
+    [cancelButton setTitle:NSLocalizedString(@"Cancel", @"") forState:UIControlStateNormal];
     [cancelButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [cancelButton setTitleColor:[UIColor colorWithWhite:1 alpha:0.5f] forState:UIControlStateHighlighted];
     [cancelButton setReversesTitleShadowWhenHighlighted:YES];
@@ -46,7 +46,7 @@
     
     UIButton *doneButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [doneButton setFrame:CGRectMake(0, 0, 60, 30)];
-    [doneButton setTitle:@"Done" forState:UIControlStateNormal];
+    [doneButton setTitle:NSLocalizedString(@"Done", @"") forState:UIControlStateNormal];
     [doneButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [doneButton setTitleColor:[UIColor colorWithWhite:1 alpha:0.5f] forState:UIControlStateHighlighted];
     [doneButton setReversesTitleShadowWhenHighlighted:YES];
@@ -83,7 +83,7 @@
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     UILabel *headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(16, 0, self.view.frame.size.width - 32, 50)];
-    headerLabel.text = @"Themes";
+    headerLabel.text = NSLocalizedString(@"Themes", @"");
     headerLabel.font = [UIFont boldSystemFontOfSize:17.0f];
     headerLabel.numberOfLines = 1;
     headerLabel.backgroundColor = [UIColor clearColor];

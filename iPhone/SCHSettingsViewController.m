@@ -31,9 +31,19 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
  
-   UIBarButtonItem *deregisterButton = [[UIBarButtonItem alloc] initWithTitle:@"Deregister" style:UIBarButtonItemStyleBordered target:self action:@selector(deregistrationButtonPushed:)];
-    self.navigationItem.rightBarButtonItem = deregisterButton;
-    [deregisterButton release], deregisterButton = nil;
+    UIButton *deregisterButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [deregisterButton setFrame:CGRectMake(0, 0, 82, 30)];
+    [deregisterButton setTitle:NSLocalizedString(@"Deregister", @"") forState:UIControlStateNormal];
+    [deregisterButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [deregisterButton setTitleColor:[UIColor colorWithWhite:1 alpha:0.5f] forState:UIControlStateHighlighted];
+    [deregisterButton setReversesTitleShadowWhenHighlighted:YES];
+    
+    deregisterButton.titleLabel.font = [UIFont boldSystemFontOfSize:14];
+    deregisterButton.titleLabel.shadowOffset = CGSizeMake(0, -1);
+    
+    [deregisterButton setBackgroundImage:[[UIImage imageNamed:@"button-cancel"] stretchableImageWithLeftCapWidth:5 topCapHeight:0] forState:UIControlStateNormal];
+    [deregisterButton addTarget:self action:@selector(deregistrationButtonPushed:) forControlEvents:UIControlEventTouchUpInside];    
+    self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:deregisterButton] autorelease];
     
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     [button setImage:[UIImage imageNamed:@"icon-home"] forState:UIControlStateNormal];
@@ -132,7 +142,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     UILabel *headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 12, self.view.frame.size.width - 40, 40)];
-    headerLabel.text = @"Device Options";
+    headerLabel.text = NSLocalizedString(@"Device Options", @"");
     headerLabel.font = [UIFont boldSystemFontOfSize:18.0f];
     headerLabel.minimumFontSize = 11;
     headerLabel.numberOfLines = 1;
@@ -157,7 +167,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
     UILabel *footerLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 8, self.view.frame.size.width - 20, 60)];
-    footerLabel.text =  @"Space Saver Mode allows you to download individual books - turn it off to automatically download all books.";
+    footerLabel.text =  NSLocalizedString(@"Space Saver Mode allows you to download individual books - turn it off to automatically download all books.", @"");
     footerLabel.minimumFontSize = 11;
     footerLabel.numberOfLines = 3;
     footerLabel.adjustsFontSizeToFitWidth = YES;
@@ -200,7 +210,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     }
 
     // Configure the cell...
-	cell.textLabel.text = @"Space Saver Mode";
+	cell.textLabel.text = NSLocalizedString(@"Space Saver Mode", @"");
 
     return cell;
 }

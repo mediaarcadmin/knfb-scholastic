@@ -14,3 +14,10 @@
 "Incorrect username/password" = "Incorrect username/password";
 "You must enter a username and password" = "You must enter a username and password.";
 "You must have internet access to login" = "You must have internet access to login";
+"Deregister" = "Deregister";
+"Cancel" = "Cancel";
+"Done" = "Done";
+"Device Options" = "Device Options";
+"Space Saver Mode allows you to download individual books - turn it off to automatically download all books." = "Space Saver Mode allows you to download individual books - turn it off to automatically download all books.";
+"Space Saver Mode" = "Space Saver Mode";
+"Themes" = "Themes";
