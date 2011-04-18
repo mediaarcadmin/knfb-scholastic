@@ -203,7 +203,7 @@
 					<object class="IBUIButton" id="744317692">
 						<reference key="NSNextResponder" ref="697704350"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{12, 6}, {44, 33}}</string>
+						<string key="NSFrame">{{12, 4}, {47, 36}}</string>
 						<reference key="NSSuperview" ref="697704350"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="396232577"/>
@@ -225,7 +225,7 @@
 							<int key="NSColorSpace">3</int>
 							<bytes key="NSWhite">MC41AA</bytes>
 						</object>
-						<object class="NSCustomResource" key="IBUINormalImage" id="973099214">
+						<object class="NSCustomResource" key="IBUINormalImage" id="100056815">
 							<string key="NSClassName">NSImage</string>
 							<string key="NSResourceName">Themes/Blue/icon-books.png</string>
 						</object>
@@ -264,7 +264,7 @@
 								<int key="IBUITextAlignment">1</int>
 							</object>
 						</object>
-						<string key="NSFrame">{{63, 6}, {140, 33}}</string>
+						<string key="NSFrame">{{65, 6}, {140, 33}}</string>
 						<reference key="NSSuperview" ref="697704350"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="833721938"/>
@@ -328,6 +328,10 @@
 				<object class="NSMutableArray" key="IBUIItems">
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<object class="IBUIBarButtonItem" id="847548534">
+						<double key="IBUIImageInsets.top">0.0</double>
+						<double key="IBUIImageInsets.bottom">0.0</double>
+						<double key="IBUIImageInsets.left">-5</double>
+						<double key="IBUIImageInsets.right">0.0</double>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<reference key="IBUICustomView" ref="744317692"/>
 						<reference key="IBUIToolbar" ref="697704350"/>
@@ -367,7 +371,7 @@
 					<object class="IBUIButton" id="139964468">
 						<reference key="NSNextResponder" ref="70776190"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{12, 6}, {44, 33}}</string>
+						<string key="NSFrame">{{12, 4}, {47, 36}}</string>
 						<reference key="NSSuperview" ref="70776190"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="881599584"/>
@@ -382,7 +386,7 @@
 							<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
 						</object>
 						<reference key="IBUINormalTitleShadowColor" ref="155484018"/>
-						<reference key="IBUINormalImage" ref="973099214"/>
+						<reference key="IBUINormalImage" ref="100056815"/>
 					</object>
 					<object class="IBUIView" id="881599584">
 						<reference key="NSNextResponder" ref="70776190"/>
@@ -411,7 +415,7 @@
 								<int key="IBUITextAlignment">1</int>
 							</object>
 						</object>
-						<string key="NSFrame">{{60, 6}, {210, 33}}</string>
+						<string key="NSFrame">{{62, 6}, {210, 33}}</string>
 						<reference key="NSSuperview" ref="70776190"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="273807933"/>
@@ -430,6 +434,7 @@
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<object class="IBUIBarButtonItem" id="510644197">
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+						<float key="IBUIWidth">47</float>
 						<reference key="IBUICustomView" ref="139964468"/>
 						<reference key="IBUIToolbar" ref="70776190"/>
 					</object>
@@ -993,6 +998,7 @@
 							<reference ref="139964468"/>
 						</object>
 						<reference key="parent" ref="70776190"/>
+						<string key="objectName">Bar Button Item</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">92</int>
@@ -1180,7 +1186,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">126</int>
+			<int key="maxID">128</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">

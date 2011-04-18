@@ -197,6 +197,10 @@
 - (void) viewWillDisappear:(BOOL)animated
 {
     [self cancelInitialTimer];
+    
+    [youngerTopToolbar setItems:nil];
+    [olderTopToolbar setItems:nil];
+    
     [super viewWillDisappear:animated];
 }
 
