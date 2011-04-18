@@ -58,14 +58,17 @@
         float newThumbHeight = fullImage.size.height / factor;
         
         CGRect imageRect = CGRectMake(0, 0, newThumbWidth, newThumbHeight);
-        CGRect integralRect = CGRectIntegral(imageRect);
-        CGRect thumbNailRect = integralRect;
+        CGRect thumbNailRect = CGRectIntegral(imageRect);
+        
+        CGFloat scale = 1.0f;
+        
+        if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)]) {
+            scale = [[UIScreen mainScreen] scale];
+            thumbNailRect = CGRectApplyAffineTransform(thumbNailRect, CGAffineTransformMakeScale(scale, scale));
+        }
 
-//       if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)]) {
-//            CGFloat scale = [[UIScreen mainScreen] scale];
-//            thumbNailRect = CGRectApplyAffineTransform(thumbNailRect, CGAffineTransformMakeScale(scale, scale));
-//        }
-
+        NSLog(@"Thumbnail rect: %@ Image Rect: %@ Scale: %f", NSStringFromCGRect(thumbNailRect), NSStringFromCGRect(imageRect), scale);
+        
         
         CGSize imageSize = thumbNailRect.size;
 
@@ -76,7 +79,8 @@
         CGContextDrawImage(ctx, thumbNailRect, fullImage.CGImage);
         
         CGImageRef scaledImageRef = CGBitmapContextCreateImage(ctx);
-        UIImage *scaledImage = [[UIImage alloc] initWithCGImage:scaledImageRef];
+//        UIImage *scaledImage = [[UIImage alloc] initWithCGImage:scaledImageRef];
+        UIImage *scaledImage = [[UIImage alloc] initWithCGImage:scaledImageRef scale:scale orientation:UIImageOrientationUp];
         CGImageRelease(scaledImageRef);
         
         CGContextRelease(ctx);

@@ -171,14 +171,24 @@
 {
 	NSString *cacheDir  = [self cacheDirectory];
 	NSString *fullImagePath = [cacheDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png", self.ContentIdentifier]];
+    
 	return fullImagePath;
 }	
 
 - (NSString *) thumbPathForSize: (CGSize) size
 {
 	NSString *cacheDir  = [self cacheDirectory];
-	NSString *thumbPath = [cacheDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png_%d_%d", self.ContentIdentifier, (int)size.width, (int)size.height]];
+
+    float scale = 1.0f;
+    if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)]) {
+        scale = [[UIScreen mainScreen] scale];
+    }
+    
+
+    NSString *thumbPath = [cacheDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png_%d_%d_%d", self.ContentIdentifier, (int)size.width, (int)size.height, (int) scale]];
 	
+    NSLog(@"Thumb path is %@", thumbPath);
+    
 	return thumbPath;
 }
 
