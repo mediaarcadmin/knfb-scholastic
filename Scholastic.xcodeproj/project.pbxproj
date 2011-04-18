@@ -947,6 +947,7 @@
 		52F765971356EA81007C27C6 /* SCHCustomNavigationBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHCustomNavigationBar.h; path = Shared/SCHCustomNavigationBar.h; sourceTree = "<group>"; };
 		52F765981356EA81007C27C6 /* SCHCustomNavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHCustomNavigationBar.m; path = Shared/SCHCustomNavigationBar.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Scholastic-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Scholastic-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
+		A37E7BD01358DFE90002A733 /* SCHDrmLicenseAcquisitionSessionDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHDrmLicenseAcquisitionSessionDelegate.h; path = Shared/SCHDrmLicenseAcquisitionSessionDelegate.h; sourceTree = "<group>"; };
 		A3A38E01133A7FA300C325A3 /* DrmGlobals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DrmGlobals.h; path = Shared/Libraries/DRM/DrmGlobals.h; sourceTree = "<group>"; };
 		A3A38E02133A7FFF00C325A3 /* KeychainItemWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KeychainItemWrapper.h; path = Shared/Libraries/DRM/KeychainItemWrapper.h; sourceTree = "<group>"; };
 		A3A38E03133A803500C325A3 /* SCHDrmRegistrationSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHDrmRegistrationSession.h; path = Shared/SCHDrmRegistrationSession.h; sourceTree = "<group>"; };
@@ -1886,6 +1887,7 @@
 		52ACF463133B547700B2E28C /* DRM */ = {
 			isa = PBXGroup;
 			children = (
+				A37E7BD01358DFE90002A733 /* SCHDrmLicenseAcquisitionSessionDelegate.h */,
 				A3A38E03133A803500C325A3 /* SCHDrmRegistrationSession.h */,
 				A3A38E04133A803500C325A3 /* SCHDrmRegistrationSession.m */,
 				A3A38E05133A803500C325A3 /* SCHDrmRegistrationSessionDelegate.h */,
@@ -3599,6 +3601,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "LOCALDEBUG=1";
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "Scholastic-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Shared/Libraries/Submodules/libKNFBReader/Pagemark\"",
@@ -3620,6 +3623,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "LOCALDEBUG=1";
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "Scholastic-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Shared/Libraries/Submodules/libKNFBReader/Pagemark\"",
@@ -3645,6 +3649,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "LOCALDEBUG=1";
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "Scholastic-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Shared/Libraries/Submodules/libKNFBReader/Pagemark\"",

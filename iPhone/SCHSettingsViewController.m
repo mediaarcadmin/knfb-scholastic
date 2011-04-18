@@ -309,7 +309,8 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 - (void)registrationSession:(SCHDrmRegistrationSession *)registrationSession didComplete:(NSString *)deviceKey
 {
     if ( deviceKey == nil ) {
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:kSCHAuthenticationManagerDeviceKey];
+        // removeObjectForKey does not change the value...
+        [[NSUserDefaults standardUserDefaults] setObject:nil forKey:kSCHAuthenticationManagerDeviceKey];
         [self login];
         [self.navigationController popViewControllerAnimated:NO];
     }

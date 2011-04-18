@@ -8,6 +8,10 @@
 
 #import "SCHDrmRegistrationSession.h"
 #import "SCHDrmRegistrationSessionDelegate.h"
+//#import "SCHDrmLicenseAcquisitionSessionDelegate.h"
+#import "SCHBookManager.h"
+#import "SCHXPSProvider.h"
+#import "KNFBXPSConstants.h"
 #import "DrmGlobals.h"
 
 @interface SCHDrmRegistrationSession ()
@@ -419,21 +423,28 @@ ErrorExit:
 
 @end
 
-/*
-#pragma mark -
-#pragma mark SCHDrmLicAcquisitionSession
 
-@interface SCHDrmLicAcquisitionSession ()
+#pragma mark -
+#pragma mark SCHDrmLicenseAcquisitionSession
+
+@interface SCHDrmLicenseAcquisitionSession ()
+
+/*
+struct SCHDrmIVars {
+    DRM_APP_CONTEXT* drmAppContext;
+    DRM_BYTE drmRevocationBuffer[REVOCATION_BUFFER_SIZE];
+};
+*/ 
 
 - (void)callSuccessDelegate;
 - (void)callFailureDelegate:(NSError *)error;
 
 @end
 
-@implementation SCHDrmLicAcquisitionSession 
+@implementation SCHDrmLicenseAcquisitionSession 
 
 
-@synthesize bookID, delegate;
+@synthesize bookID, boundBookID, delegate;
 
 -(void) dealloc {
 	Drm_Uninitialize(drmIVars->drmAppContext); 
@@ -442,6 +453,25 @@ ErrorExit:
 	self.bookID = nil;
 	self.delegate = nil;
 	[super dealloc];
+}
+
+- (DRM_RESULT)setHeaderForBookWithID:(NSString *)aBookID {
+	DRM_RESULT dr = DRM_SUCCESS;
+	
+	SCHXPSProvider *xpsProvider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:aBookID];
+    NSData *headerData = [xpsProvider dataForComponentAtPath:KNFBXPSKNFBDRMHeaderFile];
+    [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:aBookID];
+    
+	unsigned char* headerBuff = (unsigned char*)[headerData bytes]; 
+	ChkDR( Drm_Content_SetProperty( drmIVars->drmAppContext,
+								   DRM_CSP_AUTODETECT_HEADER,
+								   headerBuff,   
+								   [headerData length] ) );
+    
+    self.bookID = aBookID;
+    
+ErrorExit:
+	return dr;
 }
 
 - (void)initialize {
@@ -488,24 +518,168 @@ ErrorExit:
 }
 
 - (void)acquireLicense:(NSString *)token {
+    DRM_RESULT dr = DRM_SUCCESS;
+    DRM_CHAR rgchURL[MAX_URL_SIZE];
+    DRM_DWORD cchUrl = MAX_URL_SIZE;
+    DRM_BYTE *pbChallenge = NULL;
+    DRM_DWORD cbChallenge = 0;
+    DRM_DOMAIN_ID domainID;
+	
+	if ( token == nil ) {
+		NSLog(@"DRM error attempting to acquire license outside login session.");
+		return;
+	}
+	
+	DRM_CHAR* customData = (DRM_CHAR*)[[[[[[NSString stringWithString:@"<CustomData><AuthToken>"] 
+										   stringByAppendingString:token] 
+										  stringByAppendingString:@"</AuthToken><Version>"]
+										 stringByAppendingString:@"2.0"]
+										stringByAppendingString:@"</Version></CustomData>"]
+									   //stringByAppendingString:@"</AuthToken></CustomData>"]
+									   UTF8String];
+	DRM_DWORD customDataSz = (DRM_DWORD)(70 + [token length]);
+    
+	dr = Drm_LicenseAcq_GenerateChallenge( drmIVars->drmAppContext,
+										  NULL,
+										  0,
+										  &domainID,
+										  customData,
+										  customDataSz,
+										  rgchURL,
+										  &cchUrl,
+										  NULL,
+										  0,
+										  pbChallenge,
+										  &cbChallenge );
+	
+    
+	
+    if( dr == DRM_E_BUFFERTOOSMALL )
+    {
+        /* TODO should this be empty?
+        [self emptyGUID:&domainID.m_oServiceID];
+        [self emptyGUID:&domainID.m_oAccountID];
+        domainID.m_dwRevision = 0;
+        */
+		pbChallenge = Oem_MemAlloc( cbChallenge );
+        ChkDR( Drm_LicenseAcq_GenerateChallenge( drmIVars->drmAppContext,
+												NULL,
+												0,
+												&domainID,
+												customData,
+												customDataSz,
+												rgchURL,
+												&cchUrl,
+												NULL,
+												0,
+												pbChallenge,
+												&cbChallenge ) );
+    }
+    else
+    {
+        ChkDR( dr );
+    }
+    
+	NSLog(@"DRM license challenge: %s",(unsigned char*)pbChallenge);
+    
+    NSMutableURLRequest* request = [self createDrmRequest:(const void*)pbChallenge 
+                                              messageSize:(NSUInteger)cbChallenge
+                                                      url:drmServerUrl
+                                               soapAction:SCHDrmSoapActionAcquireLicense];
+    self.urlConnection = [[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
+	if (!self.urlConnection)
+	{
+		//NSLog(@"Failed to created url connection for join domain request.");
+		[self callFailureDelegate:[self drmError:kSCHDrmNetworkError 
+										 message:@"Cannot acquire license because connection can't be created."]];
+		return;
+	}
+
+    
+
+	
+ErrorExit:
+	if ( pbChallenge )
+		Oem_MemFree(pbChallenge);
+    
+	if ( !DRM_SUCCEEDED(dr)  ) {
+		NSLog(@"DRM error acquiring license: %08X", dr);
+		[self callFailureDelegate:[self drmError:kSCHDrmLicenseAcquisitionError
+                                         message:@"Cannot acquire license because of DRM error."]];
+	}
 }
 
+// ? connection didFailWithError, didReceiveResponse
+
+- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
+{
+	[self.connectionData appendData:data];
+}
+
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection
+{
+	DRM_RESULT dr = DRM_SUCCESS;
+    DRM_BYTE *pbResponse = NULL;
+    DRM_DWORD cbResponse = 0;
+    DRM_LICENSE_RESPONSE oLicenseResponse = {0};
+	
+	NSData *drmResponse = self.connectionData;
+	if (drmResponse == nil) {
+		// This would be weird.
+		[self callFailureDelegate:[self drmError:kSCHDrmLicenseAcquisitionError 
+										 message:@"DRM license acquisition failed because of null server response."]];
+		return;
+	} 
+	else {
+		pbResponse = (DRM_BYTE*)[drmResponse bytes];
+		cbResponse = [drmResponse length];
+		pbResponse[cbResponse] = '\0';
+	}
+
+    NSLog(@"DRM license acquisition response: %s",(unsigned char*)pbResponse);
+    @synchronized (self) {
+        ChkDR( Drm_LicenseAcq_ProcessResponse( drmIVars->drmAppContext,
+                                              NULL,
+                                              NULL,
+                                              pbResponse,
+                                              cbResponse,
+                                              &oLicenseResponse ) );
+    }
+    
+    ChkDR( oLicenseResponse.m_dwResult );
+    for( int idx = 0; idx < oLicenseResponse.m_cAcks; idx++ )
+        ChkDR( oLicenseResponse.m_rgoAcks[idx].m_dwResult );
+    
+    //ChkDR( [self acknowledgeLicense:&oLicenseResponse] );
+	
+	
+ErrorExit:
+	if ( DRM_SUCCEEDED(dr)  ) {		
+        [self callSuccessDelegate];
+        return;
+    }
+	
+    NSLog(@"DRM error acquiring license: %08X", dr);
+    [self callFailureDelegate:[self drmError:kSCHDrmLicenseAcquisitionError 
+                                         message:@"Cannot acquire license because of DRM error."]];
+	
+	
+}
 
 - (void)callSuccessDelegate
 {
-    //if([(id)self.delegate respondsToSelector:@selector(registrationSession:didComplete:)] == YES) {
-	//	[(id)self.delegate registrationSession:self didComplete:deviceKey];
+    if([(id)self.delegate respondsToSelector:@selector(licenseAcquisitionSession:didComplete:)] == YES) {
+		//[(id)self.delegate licenseAcquisitionSession:self didComplete:nil];
 	
-    //}        
+    }        
 }
 
 - (void)callFailureDelegate:(NSError *)error
 {
-	// if([(id)self.delegate respondsToSelector:@selector(registrationSession:didFailWithError:)] == YES) {
-    //    [(id)self.delegate registrationSession:self didFailWithError:error];		
-    //}	    
+	if([(id)self.delegate respondsToSelector:@selector(licenseAcquisitionSession:didFailWithError:)] == YES) {
+        //[(id)self.delegate licenseAcquisitionSession:self didFailWithError:error];		
+    }	    
 }
 
 @end
 
-*/

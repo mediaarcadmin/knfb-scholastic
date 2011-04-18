@@ -25,19 +25,21 @@
 
 @end
 
-/*
-@protocol SSCHDrmLicAcquisitionSessionDelegate;
 
-@interface SCHDrmLicAcquisitionSession : SCHDrmSession   
+@protocol SCHDrmLicenseAcquisitionSessionDelegate;
+
+@interface SCHDrmLicenseAcquisitionSession : SCHDrmSession   
 {
 	struct SCHDrmIVars *drmIVars; 
 }
 
-@property (nonatomic, retain) id<SSCHDrmLicAcquisitionSessionDelegate> delegate;
+@property (nonatomic, retain) id<SCHDrmLicenseAcquisitionSessionDelegate> delegate;
 @property (nonatomic, retain) NSString* bookID;
+@property (nonatomic, retain) NSString* boundBookID;
 
 - (void)acquireLicense:(NSString *)token;
+//- (void)acknowledgeLicense;
 
 @end
  
- */
+ 

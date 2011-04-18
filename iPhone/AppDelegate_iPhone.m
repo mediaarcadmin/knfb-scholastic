@@ -13,6 +13,8 @@
 #import "SCHAuthenticationManager.h"
 #import "SCHCustomNavigationBar.h"
 
+extern NSString * const kSCHAuthenticationManagerDeviceKey;
+
 static NSTimeInterval const kAppDelegate_iPhoneSyncManagerWakeDelay = 5.0;
 
 @implementation AppDelegate_iPhone
@@ -68,18 +70,21 @@ static NSTimeInterval const kAppDelegate_iPhoneSyncManagerWakeDelay = 5.0;
 	[super applicationWillEnterForeground:application];
 }
 
-
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     /*
      Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
      */
-	
-	SCHSyncManager *syncManager = [SCHSyncManager sharedSyncManager];
+    SCHSyncManager *syncManager = [SCHSyncManager sharedSyncManager];
+#if NONDRMAUTHENTICATION
 	SCHAuthenticationManager *authenticationManager = [SCHAuthenticationManager sharedAuthenticationManager];
-	
 	if ([authenticationManager hasUsernameAndPassword] == YES) {
-		[syncManager performSelector:@selector(firstSync) withObject:nil afterDelay:kAppDelegate_iPhoneSyncManagerWakeDelay];
-	}
+#else
+    NSString *deviceKey = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerDeviceKey];
+    if (deviceKey != nil &&
+        [[deviceKey stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {   
+#endif
+       [syncManager performSelector:@selector(firstSync) withObject:nil afterDelay:kAppDelegate_iPhoneSyncManagerWakeDelay];
+    }
 }
 
 
