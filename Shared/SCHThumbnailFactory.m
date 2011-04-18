@@ -48,17 +48,23 @@
 		return nil;
 	} else {
 
-        float hfactor = fullImage.size.width / size.width;
-        float vfactor = fullImage.size.height / size.height;
+        CGRect thumbNailRect = CGRectIntegral(CGRectMake(0, 0, size.width, size.height));
         
-        float factor = MAX(hfactor, vfactor);
-        
-        // Divide the size by the greater of the vertical or horizontal shrinking factor
-        float newThumbWidth = fullImage.size.width / factor;
-        float newThumbHeight = fullImage.size.height / factor;
-        
-        CGRect imageRect = CGRectMake(0, 0, newThumbWidth, newThumbHeight);
-        CGRect thumbNailRect = CGRectIntegral(imageRect);
+        if (aspect) {
+            
+            float hfactor = fullImage.size.width / size.width;
+            float vfactor = fullImage.size.height / size.height;
+            
+            float factor = MAX(hfactor, vfactor);
+            
+            // Divide the size by the greater of the vertical or horizontal shrinking factor
+            float newThumbWidth = fullImage.size.width / factor;
+            float newThumbHeight = fullImage.size.height / factor;
+            
+            CGRect imageRect = CGRectMake(0, 0, newThumbWidth, newThumbHeight);
+            thumbNailRect = CGRectIntegral(imageRect);
+            
+        }
         
         CGFloat scale = 1.0f;
         
