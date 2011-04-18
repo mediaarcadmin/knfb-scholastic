@@ -48,25 +48,31 @@
 		return nil;
 	} else {
 
-        float hfactor = fullImage.size.width / size.width;
-        float vfactor = fullImage.size.height / size.height;
+        CGRect thumbNailRect = CGRectIntegral(CGRectMake(0, 0, size.width, size.height));
         
-        float factor = MAX(hfactor, vfactor);
+        if (aspect) {
+            
+            float hfactor = fullImage.size.width / size.width;
+            float vfactor = fullImage.size.height / size.height;
+            
+            float factor = MAX(hfactor, vfactor);
+            
+            // Divide the size by the greater of the vertical or horizontal shrinking factor
+            float newThumbWidth = fullImage.size.width / factor;
+            float newThumbHeight = fullImage.size.height / factor;
+            
+            CGRect imageRect = CGRectMake(0, 0, newThumbWidth, newThumbHeight);
+            thumbNailRect = CGRectIntegral(imageRect);
+            
+        }
         
-        // Divide the size by the greater of the vertical or horizontal shrinking factor
-        float newThumbWidth = fullImage.size.width / factor;
-        float newThumbHeight = fullImage.size.height / factor;
+        CGFloat scale = 1.0f;
         
-        CGRect imageRect = CGRectMake(0, 0, newThumbWidth, newThumbHeight);
-        CGRect integralRect = CGRectIntegral(imageRect);
-        CGRect thumbNailRect = integralRect;
+        if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)]) {
+            scale = [[UIScreen mainScreen] scale];
+            thumbNailRect = CGRectApplyAffineTransform(thumbNailRect, CGAffineTransformMakeScale(scale, scale));
+        }
 
-//       if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)]) {
-//            CGFloat scale = [[UIScreen mainScreen] scale];
-//            thumbNailRect = CGRectApplyAffineTransform(thumbNailRect, CGAffineTransformMakeScale(scale, scale));
-//        }
-
-        
         CGSize imageSize = thumbNailRect.size;
 
         CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
@@ -76,7 +82,7 @@
         CGContextDrawImage(ctx, thumbNailRect, fullImage.CGImage);
         
         CGImageRef scaledImageRef = CGBitmapContextCreateImage(ctx);
-        UIImage *scaledImage = [[UIImage alloc] initWithCGImage:scaledImageRef];
+        UIImage *scaledImage = [[UIImage alloc] initWithCGImage:scaledImageRef scale:scale orientation:UIImageOrientationUp];
         CGImageRelease(scaledImageRef);
         
         CGContextRelease(ctx);
@@ -90,36 +96,8 @@
 
 
 + (UIImage *)imageWithPath:(NSString *)path {
-	UIImage *image = nil;
-	
-//	NSData *imageData = [[[SCHProcessingManager defaultManager] imageCache] objectForKey:path];
-	
-//	if (!imageData) {
-		
-		NSData *imageData = [NSData dataWithContentsOfMappedFile:path];
-		
-//		if (imageData) {
-			// only cache small images
-//			if ([imageData length] < (1024 * 512)) {
-//				[[[SCHProcessingManager defaultManager] imageCache] setObject:imageData forKey:path cost:[imageData length]];
-//			}
-//		}
-//	}
-		
-	if (imageData) {
-		image = [UIImage imageWithData:imageData];
-	}
-	
+	UIImage *image = [UIImage imageWithContentsOfFile:path];
 	return image;
 }
 
-/*+ (SCHThumbnailOperation *)thumbOperationForBook: (SCHBookInfo *) bookInfo size:(CGSize)size flip:(BOOL)flip maintainAspect:(BOOL)aspect {
-	SCHThumbnailOperation *aOperation = [[SCHThumbnailOperation alloc] init];
-	aOperation.bookInfo = bookInfo;
-	aOperation.size = size;
-	aOperation.flip = flip;
-	aOperation.aspect = aspect;
-	
-	return [aOperation autorelease];
-}*/
 @end

@@ -72,7 +72,8 @@
     [self.gridView setBackgroundColor:[UIColor clearColor]];
     [self.gridView setShelfHeight:138];
     [self.gridView setShelfImage:[[SCHThemeManager sharedThemeManager] imageForShelf]];
-    
+    [self.gridView setMinimumNumberOfShelves:10];
+
     [self.view.layer setContents:(id)[[SCHThemeManager sharedThemeManager] imageForBackground].CGImage];
     
     UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:nil action:nil];
