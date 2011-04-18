@@ -18,6 +18,7 @@
 @implementation SCHBookShelfGridView
 
 @synthesize bookShelvesView;
+@synthesize minimumNumberOfShelves;
 
 - (void)dealloc
 {
@@ -73,12 +74,34 @@
 
 - (void)setShelfHeight:(CGFloat)height
 {
+    CGFloat currentHeight = [self.bookShelvesView shelfHeight];
+    CGRect shelvesFrame = self.bookShelvesView.frame;
+    shelvesFrame.size.height -= currentHeight;
+    shelvesFrame.size.height += height;
+    
+    [self.bookShelvesView setFrame:shelvesFrame];
     [self.bookShelvesView setShelfHeight:height];
 }
 
 - (CGFloat)shelfHeight
 {
     return [self.bookShelvesView shelfHeight];
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    [super scrollViewDidScroll:scrollView];
+    
+    CGFloat height = self.shelfHeight;
+    CGFloat offset = height * (NSInteger) (scrollView.contentOffset.y / height);
+        
+    [self.bookShelvesView setTransform:CGAffineTransformMakeTranslation(0, MAX(0, offset))];    
+}
+
+- (void)updateSize
+{
+    [super updateSize];
+    self.contentSize = CGSizeMake(self.contentSize.width, MAX(self.contentSize.height, self.shelfHeight * self.minimumNumberOfShelves));
 }
 
 @end

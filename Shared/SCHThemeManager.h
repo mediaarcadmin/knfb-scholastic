@@ -17,4 +17,15 @@
 
 - (NSArray *)themeNames;
 
+- (UIImage *)imageForButton;
+- (UIImage *)imageForDoneButton;
+- (UIImage *)imageForNavigationBar;
+- (UIImage *)imageForTableViewCell;
+- (UIImage *)imageForBackground;
+- (UIImage *)imageForShelf;
+- (UIImage *)imageForHomeIcon;
+- (UIImage *)imageForBooksIcon;
+- (UIImage *)imageForThemeIcon;
+
+
 @end

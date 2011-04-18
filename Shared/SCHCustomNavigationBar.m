@@ -31,6 +31,7 @@
 - (void)drawRect:(CGRect)rect
 {
     if (self.backgroundImage != nil) {
+        rect.size.height = self.backgroundImage.size.height;
         [self.backgroundImage drawInRect:rect];
     } else {
         [super drawRect:rect];

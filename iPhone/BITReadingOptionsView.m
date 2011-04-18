@@ -10,6 +10,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "LibreAccessServiceSvc.h"
 //#import "SCHReadingViewController.h"
+#import "SCHThemeManager.h"
 
 @implementation BITReadingOptionsView
 @synthesize pageViewController;
@@ -36,7 +37,7 @@
 	optionsView.layer.masksToBounds = YES;
     
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    [button setImage:[UIImage imageNamed:@"icon-books"] forState:UIControlStateNormal];
+    [button setImage:[[SCHThemeManager sharedThemeManager] imageForBooksIcon] forState:UIControlStateNormal];
     [button sizeToFit];    
     [button addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];    
     self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:button] autorelease];

@@ -20,6 +20,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "SCHAppBook.h"
 #import "SCHCustomNavigationBar.h"
+#import "SCHThemeManager.h"
 
 @interface SCHBookShelfViewController () <UIGestureRecognizerDelegate>
 
@@ -55,24 +56,26 @@
     [super viewDidLoad];
 
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    [button setImage:[UIImage imageNamed:@"icon-theme"] forState:UIControlStateNormal];
+    [button setImage:[[SCHThemeManager sharedThemeManager] imageForThemeIcon] forState:UIControlStateNormal];
     [button sizeToFit];    
     [button addTarget:self action:@selector(changeTheme) forControlEvents:UIControlEventTouchUpInside];    
     themeButton = [[UIBarButtonItem alloc] initWithCustomView:button];
     self.navigationItem.rightBarButtonItem = self.themeButton;
 
     button = [UIButton buttonWithType:UIButtonTypeCustom];
-    [button setImage:[UIImage imageNamed:@"icon-home"] forState:UIControlStateNormal];
+    [button setImage:[[SCHThemeManager sharedThemeManager] imageForHomeIcon] forState:UIControlStateNormal];
     [button sizeToFit];    
     [button addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];    
     self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:button] autorelease];
     
 	[self.gridView setCellSize:CGSizeMake(80,118) withBorderSize:20];
     [self.gridView setBackgroundColor:[UIColor clearColor]];
+    [self.gridView setShelfImage:[[SCHThemeManager sharedThemeManager] imageForShelf]];
     [self.gridView setShelfHeight:138];
-    [self.gridView setShelfImage:[UIImage imageNamed:@"Shelf.png"]];
-    
-    [self.view.layer setContents:(id)[UIImage imageNamed:@"bookshelf-back.png"].CGImage];
+    [self.gridView setShelfInset:CGSizeMake(0, -2)];
+    [self.gridView setMinimumNumberOfShelves:10];
+
+    [self.view.layer setContents:(id)[[SCHThemeManager sharedThemeManager] imageForBackground].CGImage];
     
     UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:nil action:nil];
     longPress.delaysTouchesBegan = YES;
@@ -88,7 +91,7 @@
 	self.componentCache = aCache;
 	[aCache release];
 	
-    customNavigationBar.backgroundImage = [UIImage imageNamed:@"ReadingCustomToolbarBG"];
+    customNavigationBar.backgroundImage = [[SCHThemeManager sharedThemeManager] imageForNavigationBar];
 	
 #if LOCALDEBUG
 	self.navigationItem.title = @"Local Bookshelf";

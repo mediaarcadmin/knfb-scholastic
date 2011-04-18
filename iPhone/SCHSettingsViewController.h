@@ -21,5 +21,6 @@
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, retain) SCHDrmRegistrationSession* drmRegistrationSession;
 @property (nonatomic, retain) IBOutlet UITableView *tableView;
+@property (nonatomic, retain) IBOutlet UIImageView *backgroundImage;
 
 @end

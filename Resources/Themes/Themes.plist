@@ -5,8 +5,46 @@
 	<dict>
 		<key>Name</key>
 		<string>Red</string>
+		<key>ButtonImage</key>
+		<string>Themes/Red/red-button</string>
+		<key>DoneButtonImage</key>
+		<string>Themes/Red/red-button-done</string>
 		<key>NavigationBarImage</key>
-		<string></string>
+		<string>Themes/Red/red-navigation-bar</string>
+		<key>TableViewCellImage</key>
+		<string>Themes/Red/red-table-view-cell</string>
+		<key>BackgroundImage</key>
+		<string>Themes/Red/red-background</string>
+		<key>ShelfImage</key>
+		<string>Themes/Red/red-shelf</string>
+		<key>HomeIcon</key>
+		<string>Themes/Red/red-icon-home</string>
+		<key>BooksIcon</key>
+		<string>Themes/Red/red-icon-books</string>
+		<key>ThemeIcon</key>
+		<string>Themes/Red/red-icon-theme</string>
+	</dict>
+	<dict>
+		<key>Name</key>
+		<string>Blue</string>
+		<key>ButtonImage</key>
+		<string>Themes/Blue/button-cancel</string>
+		<key>DoneButtonImage</key>
+		<string>Themes/Blue/button-done</string>
+		<key>NavigationBarImage</key>
+		<string>Themes/Blue/bookshelf-portrait-top-bar</string>
+		<key>TableViewCellImage</key>
+		<string>Themes/Blue/profile-cell-background</string>
+		<key>BackgroundImage</key>
+		<string>Themes/Blue/bookshelf-portrait-bg</string>
+		<key>ShelfImage</key>
+		<string>Themes/Blue/bookshelf-portrait-shelf</string>
+		<key>HomeIcon</key>
+		<string>Themes/Blue/icon-home</string>
+		<key>BooksIcon</key>
+		<string>Themes/Blue/icon-books</string>
+		<key>ThemeIcon</key>
+		<string>Themes/Blue/icon-theme</string>
 	</dict>
 	<dict>
 		<key>Name</key>
