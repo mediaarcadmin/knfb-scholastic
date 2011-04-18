@@ -16,7 +16,4 @@
 
 @property (nonatomic, retain) UIImage *backgroundImage;
 
-- (void)setBackgroundImage:(UIImage*)backgroundImage;
-- (void)clearBackground;
-
 @end
