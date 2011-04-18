@@ -10,56 +10,43 @@
 
 @interface SCHCustomNavigationBar ()
 
-@property (nonatomic, retain) UIColor *originalBackgroundColor;
+@property (nonatomic, retain) UIImageView *backgroundView;
 
 @end 
 
 @implementation SCHCustomNavigationBar
 
-@synthesize backgroundImage;
-@synthesize originalBackgroundColor;
+@dynamic backgroundImage;
+@synthesize backgroundView;
 
-- (id)init {
-    self = [super init];
-    if (self) {
-        self.originalBackgroundColor = nil;
-    }
-    return self;
-}
-
-// If we have a custom background image, then draw it, othwerwise call super and draw the standard nav bar
 - (void)drawRect:(CGRect)rect
 {
-    if (self.backgroundImage != nil) {
-        rect.size.height = self.backgroundImage.size.height;
-        [self.backgroundImage drawInRect:rect];
+    if (self.backgroundView.image != nil) {
+        CGRect rect = self.frame;
+        rect.size.height = self.backgroundView.image.size.height;
+        self.backgroundView.frame = rect;
     } else {
         [super drawRect:rect];
     }
 }
 
-// Save the background image and call setNeedsDisplay to force a redraw
-- (void)setBackgroundImage:(UIImage*)newBackgroundImage
+- (void)setBackgroundImage:(UIImage*)image
 {
-    if (backgroundImage != newBackgroundImage) {
-        [backgroundImage release];
-        backgroundImage = [newBackgroundImage retain];
-        if (self.originalBackgroundColor == nil) {
-            self.originalBackgroundColor = self.backgroundColor;
-        }
-        self.backgroundColor = [UIColor clearColor];
-        [self setNeedsDisplay];
+    if (image == nil) {
+        [backgroundView removeFromSuperview];
+        [backgroundView release], backgroundView = nil;
+        [self setNeedsDisplay];            
+    } else if (image != self.backgroundView.image) {
+        backgroundView = [[UIImageView alloc] initWithFrame:self.frame];
+        self.backgroundView.image = image;
+        [self.superview insertSubview:self.backgroundView belowSubview:self];
+        [self setNeedsDisplay];            
     }
 }
 
-// clear the background image and call setNeedsDisplay to force a redraw
-- (void)clearBackground
+- (UIImage *)backgroundImage
 {
-    if (self.originalBackgroundColor != nil) {
-        self.backgroundColor = self.originalBackgroundColor;        
-    }
-    self.backgroundImage = nil;
-    [self setNeedsDisplay];
+    return(backgroundView.image);
 }
 
 
