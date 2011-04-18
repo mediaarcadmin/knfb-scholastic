@@ -24,7 +24,11 @@
     if (self.backgroundView.image != nil) {
         CGRect rect = self.frame;
         rect.size.height = self.backgroundView.image.size.height;
+        rect.origin.y = 19;
         self.backgroundView.frame = rect;
+        
+        NSLog(@"rect: %@", NSStringFromCGRect(rect));
+        
     } else {
         [super drawRect:rect];
     }
@@ -40,8 +44,17 @@
         backgroundView = [[UIImageView alloc] initWithFrame:self.frame];
         self.backgroundView.image = image;
         [self.superview insertSubview:self.backgroundView belowSubview:self];
+        self.clipsToBounds = NO;
         [self setNeedsDisplay];            
     }
+}
+
+- (void) willMoveToSuperview:(UIView *)newSuperview
+{
+    NSLog(@"Will move to superView!");
+    [super willMoveToSuperview:newSuperview];
+//    self.backgroundView.hidden = YES;
+    [self.superview sendSubviewToBack:self.backgroundView];
 }
 
 - (UIImage *)backgroundImage
