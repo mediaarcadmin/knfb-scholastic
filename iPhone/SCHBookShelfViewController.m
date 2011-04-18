@@ -68,11 +68,11 @@
     self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:button] autorelease];
     
 	[self.gridView setCellSize:CGSizeMake(80,118) withBorderSize:20];
-	//[self.gridView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"Shelf"]]];
     [self.gridView setBackgroundColor:[UIColor clearColor]];
+    [self.gridView setShelfHeight:138];
+    [self.gridView setShelfImage:[UIImage imageNamed:@"Shelf.png"]];
     
-    //[self.view.layer setContents:(id)[UIImage imageNamed:@"bookshelf-back.png"].CGImage];
-    [self.view.layer setContents:(id)[UIImage imageNamed:@"bookshelf-back-static.png"].CGImage];
+    [self.view.layer setContents:(id)[UIImage imageNamed:@"bookshelf-back.png"].CGImage];
     
     UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:nil action:nil];
     longPress.delaysTouchesBegan = YES;
@@ -241,6 +241,11 @@
 
 -(void)gridView:(MRGridView *)aGridView didSelectCellAtIndex:(NSInteger)index 
 {
+    
+    if (index >= [self.books count]) {
+        return;
+    }
+    
 	NSLog(@"Calling grid view selection.");
 	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:[self.books objectAtIndex:index]];
 

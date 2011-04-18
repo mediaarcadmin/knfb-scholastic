@@ -353,6 +353,10 @@
 		C93ECB37134B64B1003B99FD /* TextFlowXAMLOverrides.css in Resources */ = {isa = PBXBuildFile; fileRef = C93ECB2E134B64B1003B99FD /* TextFlowXAMLOverrides.css */; };
 		C93ECB38134B64B1003B99FD /* TextFlowXAMLOverrides.css in Resources */ = {isa = PBXBuildFile; fileRef = C93ECB2E134B64B1003B99FD /* TextFlowXAMLOverrides.css */; };
 		C93ECB83134B7FA4003B99FD /* After Ever After.xps in Resources */ = {isa = PBXBuildFile; fileRef = C93ECB81134B7FA4003B99FD /* After Ever After.xps */; };
+		C95C7CC1135C3C8A00472AF6 /* SCHBookShelfGridView.m in Sources */ = {isa = PBXBuildFile; fileRef = C95C7CC0135C3C8A00472AF6 /* SCHBookShelfGridView.m */; };
+		C95C7CC2135C3C8A00472AF6 /* SCHBookShelfGridView.m in Sources */ = {isa = PBXBuildFile; fileRef = C95C7CC0135C3C8A00472AF6 /* SCHBookShelfGridView.m */; };
+		C95C7CC5135C3F1400472AF6 /* SCHBookShelfGridShelvesView.m in Sources */ = {isa = PBXBuildFile; fileRef = C95C7CC4135C3F1300472AF6 /* SCHBookShelfGridShelvesView.m */; };
+		C95C7CC6135C3F1400472AF6 /* SCHBookShelfGridShelvesView.m in Sources */ = {isa = PBXBuildFile; fileRef = C95C7CC4135C3F1300472AF6 /* SCHBookShelfGridShelvesView.m */; };
 		C95ECB45133A76C400D88768 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C95ECB44133A76C400D88768 /* Accelerate.framework */; };
 		C95ECB47133A76DE00D88768 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C95ECB46133A76DE00D88768 /* QuartzCore.framework */; };
 		C95ECB49133A770B00D88768 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C95ECB48133A770B00D88768 /* OpenGLES.framework */; };
@@ -1233,6 +1237,10 @@
 		C93ECB2E134B64B1003B99FD /* TextFlowXAMLOverrides.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = TextFlowXAMLOverrides.css; sourceTree = "<group>"; };
 		C93ECB81134B7FA4003B99FD /* After Ever After.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = "After Ever After.xps"; path = "Shared/Debug Books/After Ever After.xps"; sourceTree = "<group>"; };
 		C947D55D133B9C0000FB4404 /* libEucalyptus.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libEucalyptus.xcodeproj; path = Shared/Libraries/Submodules/libEucalyptus/libEucalyptus.xcodeproj; sourceTree = "<group>"; };
+		C95C7CBF135C3C8A00472AF6 /* SCHBookShelfGridView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookShelfGridView.h; path = iPhone/SCHBookShelfGridView.h; sourceTree = "<group>"; };
+		C95C7CC0135C3C8A00472AF6 /* SCHBookShelfGridView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookShelfGridView.m; path = iPhone/SCHBookShelfGridView.m; sourceTree = "<group>"; };
+		C95C7CC3135C3F1200472AF6 /* SCHBookShelfGridShelvesView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookShelfGridShelvesView.h; path = iPhone/SCHBookShelfGridShelvesView.h; sourceTree = "<group>"; };
+		C95C7CC4135C3F1300472AF6 /* SCHBookShelfGridShelvesView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookShelfGridShelvesView.m; path = iPhone/SCHBookShelfGridShelvesView.m; sourceTree = "<group>"; };
 		C95ECB44133A76C400D88768 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		C95ECB46133A76DE00D88768 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		C95ECB48133A770B00D88768 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -2170,6 +2178,10 @@
 				F82D39D8131EA7D400289FF3 /* SCHBookShelfTableViewCell.m */,
 				F8C4C40B133259810057420E /* SCHBookShelfGridViewCell.h */,
 				F8C4C40C133259810057420E /* SCHBookShelfGridViewCell.m */,
+				C95C7CBF135C3C8A00472AF6 /* SCHBookShelfGridView.h */,
+				C95C7CC0135C3C8A00472AF6 /* SCHBookShelfGridView.m */,
+				C95C7CC3135C3F1200472AF6 /* SCHBookShelfGridShelvesView.h */,
+				C95C7CC4135C3F1300472AF6 /* SCHBookShelfGridShelvesView.m */,
 			);
 			name = Bookshelves;
 			sourceTree = "<group>";
@@ -3244,6 +3256,8 @@
 				F8898903135877B100D236ED /* SCHProfileViewCell.m in Sources */,
 				52E622FB13584EBF00245CA7 /* SCHThemeManager.m in Sources */,
 				52E623001358544200245CA7 /* SCHThemePickerViewController.m in Sources */,
+				C95C7CC1135C3C8A00472AF6 /* SCHBookShelfGridView.m in Sources */,
+				C95C7CC5135C3F1400472AF6 /* SCHBookShelfGridShelvesView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3403,6 +3417,8 @@
 				F8898904135877B100D236ED /* SCHProfileViewCell.m in Sources */,
 				52E622FC13584EBF00245CA7 /* SCHThemeManager.m in Sources */,
 				52E623011358544200245CA7 /* SCHThemePickerViewController.m in Sources */,
+				C95C7CC2135C3C8A00472AF6 /* SCHBookShelfGridView.m in Sources */,
+				C95C7CC6135C3F1400472AF6 /* SCHBookShelfGridShelvesView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

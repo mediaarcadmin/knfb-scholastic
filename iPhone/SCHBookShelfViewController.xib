@@ -88,6 +88,7 @@
 								<string key="NSFrame">{{11, 61}, {155, 21}}</string>
 								<reference key="NSSuperview" ref="222914230"/>
 								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<int key="IBUIContentMode">7</int>
@@ -158,7 +159,6 @@
 					<object class="IBUITableViewController" id="891391258">
 						<string key="IBUITitle"/>
 						<object class="IBUINavigationItem" key="IBUINavigationItem" id="205957914">
-							<reference key="IBUINavigationBar"/>
 							<string key="IBUITitle">Bookshelf Views</string>
 							<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						</object>
@@ -347,7 +347,7 @@
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<string>SCHBookShelfViewController</string>
 					<string>UIResponder</string>
-					<string>MRGridView</string>
+					<string>SCHBookShelfGridView</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<object class="NSAffineTransform"/>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -388,6 +388,14 @@
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">./Classes/MRGridView.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">SCHBookShelfGridView</string>
+					<string key="superclassName">MRGridView</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/SCHBookShelfGridView.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
