@@ -22,8 +22,7 @@
 
 @property (nonatomic, retain) IBOutlet SCHBookShelfGridView *gridView;
 @property (nonatomic, retain) IBOutlet UIView *loadingView;
-@property (nonatomic, retain) IBOutlet UINavigationController *themePickerContainer;
-@property (nonatomic, retain) IBOutlet SCHCustomNavigationBar *customNavigationBar;
+@property (nonatomic, retain) IBOutlet UIViewController *themePickerContainer;
 
 @property (nonatomic, retain) KNFBTimeOrderedCache *componentCache;
 

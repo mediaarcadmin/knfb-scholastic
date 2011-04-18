@@ -11,8 +11,12 @@
 #import "SCHThemeManager.h"
 #import <QuartzCore/QuartzCore.h>
 #import "SCHThemeManager.h"
+#import "SCHCustomNavigationBar.h"
 
 @implementation SCHThemePickerViewController
+
+@synthesize aTableView;
+@synthesize customNavigationBar;
 
 - (void)didReceiveMemoryWarning
 {
@@ -28,8 +32,8 @@
 {
     [super viewDidLoad];
 
-    self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[[SCHThemeManager sharedThemeManager] imageForBackground]];
-    self.tableView.backgroundColor = [UIColor clearColor];
+    self.aTableView.backgroundView = [[UIImageView alloc] initWithImage:[[SCHThemeManager sharedThemeManager] imageForBackground]];
+    self.aTableView.backgroundColor = [UIColor clearColor];
 
     UIButton *cancelButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [cancelButton setFrame:CGRectMake(0, 0, 60, 30)];
@@ -43,7 +47,7 @@
     
     [cancelButton setBackgroundImage:[[[SCHThemeManager sharedThemeManager] imageForButton] stretchableImageWithLeftCapWidth:5 topCapHeight:0] forState:UIControlStateNormal];
     [cancelButton addTarget:self action:@selector(cancel) forControlEvents:UIControlEventTouchUpInside];    
-    self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:cancelButton] autorelease];
+    customNavigationBar.topItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:cancelButton] autorelease];
     
     UIButton *doneButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [doneButton setFrame:CGRectMake(0, 0, 60, 30)];
@@ -57,10 +61,12 @@
     
     [doneButton setBackgroundImage:[[[SCHThemeManager sharedThemeManager] imageForDoneButton] stretchableImageWithLeftCapWidth:5 topCapHeight:0] forState:UIControlStateNormal];
     [doneButton addTarget:self action:@selector(cancel) forControlEvents:UIControlEventTouchUpInside];    
-    self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:doneButton] autorelease];
+    customNavigationBar.topItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:doneButton] autorelease];
     
-    self.tableView.rowHeight = 58;
-    self.tableView.separatorColor = [UIColor colorWithRed:0.000 green:0.365 blue:0.616 alpha:1.000];
+    self.aTableView.rowHeight = 58;
+    self.aTableView.separatorColor = [UIColor colorWithRed:0.000 green:0.365 blue:0.616 alpha:1.000];
+    
+    customNavigationBar.backgroundImage = [[SCHThemeManager sharedThemeManager] imageForNavigationBar];
 }
 
 - (void)cancel

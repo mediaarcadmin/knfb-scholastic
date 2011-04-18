@@ -8,10 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
+@class SCHCustomNavigationBar;
 
-@interface SCHThemePickerViewController : UITableViewController 
+@interface SCHThemePickerViewController : UIViewController 
 {
-    
+
 }
+
+@property (nonatomic, retain) IBOutlet UITableView *aTableView;
+@property (nonatomic, retain) IBOutlet SCHCustomNavigationBar *customNavigationBar;
 
 @end

@@ -11,6 +11,7 @@
 @interface SCHCustomNavigationBar ()
 
 @property (nonatomic, retain) UIImageView *backgroundView;
+@property (nonatomic, retain) UIColor *originalBackgroundColor;
 
 @end 
 
@@ -18,13 +19,14 @@
 
 @dynamic backgroundImage;
 @synthesize backgroundView;
+@synthesize originalBackgroundColor;
 
 - (void)drawRect:(CGRect)rect
 {
     if (self.backgroundView.image != nil) {
         CGRect rect = self.frame;
         rect.size.height = self.backgroundView.image.size.height;
-        rect.origin.y = 19;
+        rect.origin.y -= 1;
         self.backgroundView.frame = rect;
         
         NSLog(@"rect: %@", NSStringFromCGRect(rect));
@@ -36,15 +38,21 @@
 
 - (void)setBackgroundImage:(UIImage*)image
 {
+    if (self.originalBackgroundColor == nil) {
+        self.originalBackgroundColor = self.backgroundColor;
+    }
+
     if (image == nil) {
         [backgroundView removeFromSuperview];
         [backgroundView release], backgroundView = nil;
+        self.backgroundColor = self.backgroundColor;                
         [self setNeedsDisplay];            
     } else if (image != self.backgroundView.image) {
         backgroundView = [[UIImageView alloc] initWithFrame:self.frame];
         self.backgroundView.image = image;
         [self.superview insertSubview:self.backgroundView belowSubview:self];
         self.clipsToBounds = NO;
+        self.backgroundColor = [UIColor clearColor];        
         [self setNeedsDisplay];            
     }
 }
