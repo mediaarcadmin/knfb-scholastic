@@ -35,15 +35,18 @@
 
 
 - (void)dealloc {
+    [paginator release], paginator = nil;
+    [bookTitle release], bookTitle = nil;
+    
+    if (self.bookCheckedOut) {
+        [[SCHBookManager sharedBookManager] checkInEucBookForBookIdentifier:self.isbn];
+    }
+    
 	[super dealloc];
 }
 
 - (void) updateBookWithSuccess
 {
-    if (self.bookCheckedOut) {
-        [[SCHBookManager sharedBookManager] checkInEucBookForBookIdentifier:self.isbn];
-    }
-    
     [[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateReadyToRead];
     [[[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn] setProcessing:NO];
     
@@ -52,10 +55,6 @@
 
 - (void) updateBookWithFailure
 {
-    if (self.bookCheckedOut) {
-        [[SCHBookManager sharedBookManager] checkInEucBookForBookIdentifier:self.isbn];
-    }
-    
     [self endOperation];
 }
 
@@ -84,6 +83,8 @@
         NSLog(@"Paginating book %@", self.bookTitle);
         
         eucBook = [[[SCHBookManager sharedBookManager] checkOutEucBookForBookIdentifier:self.isbn] retain];
+        self.bookCheckedOut = YES;
+        
         if([eucBook paginationIsComplete] || eucBook == nil) {
             // This book is already fully paginated!
             NSLog(@"This book is already fully paginated!");

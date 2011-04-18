@@ -357,7 +357,7 @@ static int mutationCount = 0;
 {
 	SCHXPSProvider *ret = nil;
 	
-	//NSLog(@"Checking out book ID: %@", bookID);
+	//NSLog(@"Checking out XPS for book: %@", isbn);
 	
 	[self.persistentStoreCoordinator lock];
 	
@@ -387,7 +387,8 @@ static int mutationCount = 0;
     
 	[self.persistentStoreCoordinator unlock];
 	
-  //  NSLog(@"[%d] checkOutXPSProviderForBookWithID %@", [self.cachedXPSProviderCheckoutCounts countForObject:bookID], bookID);
+    //NSLog(@"[%d] checkOutXPSProviderForBookWithID %@", [self.cachedXPSProviderCheckoutCounts countForObject:isbn], isbn);
+
     return ret;
 	
 }
@@ -395,7 +396,7 @@ static int mutationCount = 0;
 - (void)checkInXPSProviderForBookIdentifier: (NSString *) isbn
 {
 
-	//NSLog(@"Checking in bookID: %@", bookInfo);
+   // NSLog(@"Checking in XPS for book: %@", isbn);
 	
 	NSMutableDictionary *myCachedXPSProviders = self.cachedXPSProviders;
     @synchronized(myCachedXPSProviders) {
@@ -414,7 +415,7 @@ static int mutationCount = 0;
                 }
             }
         }
-       // NSLog(@"[%d] checkInXPSProviderForBookWithPath %@", [self.cachedXPSProviderCheckoutCounts countForObject:bookInfo], bookInfo);
+       // NSLog(@"[%d] checkInXPSProviderForBookWithPath %@", [self.cachedXPSProviderCheckoutCounts countForObject:isbn], isbn);
 		
     }
 	
@@ -427,7 +428,7 @@ static int mutationCount = 0;
 {
 	SCHFlowEucBook *ret = nil;
 	
-	//NSLog(@"Checking out book ID: %@", bookID);
+	//NSLog(@"Checking out EucBook for book: %@", isbn);
 	
 	[self.persistentStoreCoordinator lock];
 	
@@ -449,15 +450,14 @@ static int mutationCount = 0;
 				
 				[myCachedEucBooks setObject:eucBook forKey:isbn];
 				[myCachedEucBookCheckoutCounts addObject:isbn];
+                [eucBook release];
 				ret = eucBook;
-				//[eucBook release];
 			}
         }
     }
     
 	[self.persistentStoreCoordinator unlock];
 	
-    //  NSLog(@"[%d] checkOutXPSProviderForBookWithID %@", [self.cachedXPSProviderCheckoutCounts countForObject:bookID], bookID);
     return ret;
 	
 }
@@ -465,9 +465,9 @@ static int mutationCount = 0;
 - (void)checkInEucBookForBookIdentifier: (NSString *) isbn
 {
     
-	//NSLog(@"Checking in bookID: %@", bookInfo);
+	//NSLog(@"Checking in EucBook for book: %@", isbn);
 	
-	NSMutableDictionary *myCachedEucBooks = self.cachedXPSProviders;
+	NSMutableDictionary *myCachedEucBooks = self.cachedEucBooks;
     @synchronized(myCachedEucBooks) {
         NSCountedSet *myCachedEucBookCheckoutCounts = self.cachedEucBookCheckoutCounts;
         NSUInteger count = [myCachedEucBookCheckoutCounts countForObject:isbn];
@@ -476,7 +476,6 @@ static int mutationCount = 0;
         } else {
             [myCachedEucBookCheckoutCounts removeObject:isbn];
             if (count == 1) {
-                //  NSLog(@"Releasing cached XPSProvider for book with ID %@", bookInfo);
                 [myCachedEucBooks removeObjectForKey:isbn];
                 if(myCachedEucBookCheckoutCounts.count == 0) {
                     // May as well release the set.
@@ -484,7 +483,6 @@ static int mutationCount = 0;
                 }
             }
         }
-        // NSLog(@"[%d] checkInXPSProviderForBookWithPath %@", [self.cachedXPSProviderCheckoutCounts countForObject:bookInfo], bookInfo);
 		
     }
 	
@@ -676,6 +674,18 @@ static int mutationCount = 0;
             }
         }
     }
+}
+
+- (NSString *)description
+{
+    return [NSString stringWithFormat:@"<%@ %p> - Checkouts: textFlows:<%d> xpsProviders<%d> eucBooks<%d> paragraphSources<%d> blockSources<%d>",
+            [self class],
+            self,
+            [cachedTextFlowCheckoutCounts count],
+            [cachedXPSProviderCheckoutCounts count],
+            [cachedEucBookCheckoutCounts count],
+            [cachedParagraphSourceCheckoutCounts count],
+            [cachedBlockSourceCheckoutCounts count]];
 }
 
 @end

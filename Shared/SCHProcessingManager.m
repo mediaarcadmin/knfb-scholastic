@@ -529,6 +529,11 @@ static SCHProcessingManager *sharedManager = nil;
             self.firedFirstBusyIdleNotification = YES;
 		}
         
+#ifndef __OPTIMIZE__
+    // FIXME: remove this logging when we are satisfied we aren't failing to clean up the vended objects from the shared book manager
+    NSLog(@"Processing stopped. SharedBookManager: %@", [SCHBookManager sharedBookManager]);
+#endif
+        
 	} else {
 		self.connectionIsIdle = NO;
         
