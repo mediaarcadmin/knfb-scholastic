@@ -184,8 +184,11 @@
         scale = [[UIScreen mainScreen] scale];
     }
     
+    NSString *thumbPath = [cacheDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@_%d_%d.png", self.ContentIdentifier, (int)size.width, (int)size.height]];
+    if (scale != 1) {
+        thumbPath = [cacheDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@_%d_%d@%dx.png", self.ContentIdentifier, (int)size.width, (int)size.height, (int) scale]];
+    }    
 
-    NSString *thumbPath = [cacheDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png_%d_%d_%d", self.ContentIdentifier, (int)size.width, (int)size.height, (int) scale]];
 	
     NSLog(@"Thumb path is %@", thumbPath);
     

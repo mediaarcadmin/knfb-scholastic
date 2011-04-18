@@ -67,9 +67,6 @@
             thumbNailRect = CGRectApplyAffineTransform(thumbNailRect, CGAffineTransformMakeScale(scale, scale));
         }
 
-        NSLog(@"Thumbnail rect: %@ Image Rect: %@ Scale: %f", NSStringFromCGRect(thumbNailRect), NSStringFromCGRect(imageRect), scale);
-        
-        
         CGSize imageSize = thumbNailRect.size;
 
         CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
@@ -79,7 +76,6 @@
         CGContextDrawImage(ctx, thumbNailRect, fullImage.CGImage);
         
         CGImageRef scaledImageRef = CGBitmapContextCreateImage(ctx);
-//        UIImage *scaledImage = [[UIImage alloc] initWithCGImage:scaledImageRef];
         UIImage *scaledImage = [[UIImage alloc] initWithCGImage:scaledImageRef scale:scale orientation:UIImageOrientationUp];
         CGImageRelease(scaledImageRef);
         
@@ -94,36 +90,8 @@
 
 
 + (UIImage *)imageWithPath:(NSString *)path {
-	UIImage *image = nil;
-	
-//	NSData *imageData = [[[SCHProcessingManager defaultManager] imageCache] objectForKey:path];
-	
-//	if (!imageData) {
-		
-		NSData *imageData = [NSData dataWithContentsOfMappedFile:path];
-		
-//		if (imageData) {
-			// only cache small images
-//			if ([imageData length] < (1024 * 512)) {
-//				[[[SCHProcessingManager defaultManager] imageCache] setObject:imageData forKey:path cost:[imageData length]];
-//			}
-//		}
-//	}
-		
-	if (imageData) {
-		image = [UIImage imageWithData:imageData];
-	}
-	
+	UIImage *image = [UIImage imageWithContentsOfFile:path];
 	return image;
 }
 
-/*+ (SCHThumbnailOperation *)thumbOperationForBook: (SCHBookInfo *) bookInfo size:(CGSize)size flip:(BOOL)flip maintainAspect:(BOOL)aspect {
-	SCHThumbnailOperation *aOperation = [[SCHThumbnailOperation alloc] init];
-	aOperation.bookInfo = bookInfo;
-	aOperation.size = size;
-	aOperation.flip = flip;
-	aOperation.aspect = aspect;
-	
-	return [aOperation autorelease];
-}*/
 @end
