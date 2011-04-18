@@ -19,6 +19,7 @@
 #import "SCHBookShelfViewController.h"
 #import "SCHSyncManager.h"
 #import "SCHProfileViewCell.h"
+#import "SCHThemeManager.h"
 
 // Cell Icons 
 static NSString * const kRootViewControllerProfileIcon = @"Profile.png";
@@ -35,6 +36,7 @@ static NSString * const kRootViewControllerSettingsIcon = @"Settings.png";
 @synthesize profilePasswordViewController;
 @synthesize headerView;
 @synthesize tableView;
+@synthesize backgroundView;
 @synthesize settingsController;
 @synthesize loginController;
 @synthesize webServiceSync;
@@ -50,6 +52,8 @@ static NSString * const kRootViewControllerSettingsIcon = @"Settings.png";
 	// Setup the table view header
 	self.tableView.tableHeaderView = self.headerView;
 	self.profilePasswordViewController.delegate = self;
+    
+    self.backgroundView.image = [[SCHThemeManager sharedThemeManager] imageForBackground];
 }
 
 - (void)viewDidUnload {
@@ -118,7 +122,7 @@ static NSString * const kRootViewControllerSettingsIcon = @"Settings.png";
 		case 0:
 			managedObject = [self.fetchedResultsController objectAtIndexPath:indexPath];
 			cell.textLabel.text = [NSString stringWithFormat:@"%@%@", 
-								   [managedObject valueForKey:kSCHLibreAccessWebServiceScreenName], 
+								   [managedObject valueForKey:kSCHLibreAccessWebServiceFirstName], 
 								   NSLocalizedString(@"'s Bookshelf", @"")];
 			if ([[managedObject valueForKey:kSCHLibreAccessWebServiceProfilePasswordRequired] boolValue] == NO) {
 //				cell.imageView.image = [UIImage imageNamed:kRootViewControllerProfileIcon];

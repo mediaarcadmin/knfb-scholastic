@@ -10,6 +10,7 @@
 
 #import "SCHThemeManager.h"
 #import <QuartzCore/QuartzCore.h>
+#import "SCHThemeManager.h"
 
 @implementation SCHThemePickerViewController
 
@@ -27,7 +28,7 @@
 {
     [super viewDidLoad];
 
-    self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bookshelf-back"]];
+    self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[[SCHThemeManager sharedThemeManager] imageForBackground]];
     self.tableView.backgroundColor = [UIColor clearColor];
 
     UIButton *cancelButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -40,7 +41,7 @@
     cancelButton.titleLabel.font = [UIFont boldSystemFontOfSize:14];
     cancelButton.titleLabel.shadowOffset = CGSizeMake(0, -1);
     
-    [cancelButton setBackgroundImage:[[UIImage imageNamed:@"button-cancel"] stretchableImageWithLeftCapWidth:5 topCapHeight:0] forState:UIControlStateNormal];
+    [cancelButton setBackgroundImage:[[[SCHThemeManager sharedThemeManager] imageForButton] stretchableImageWithLeftCapWidth:5 topCapHeight:0] forState:UIControlStateNormal];
     [cancelButton addTarget:self action:@selector(cancel) forControlEvents:UIControlEventTouchUpInside];    
     self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:cancelButton] autorelease];
     
@@ -54,7 +55,7 @@
     doneButton.titleLabel.font = [UIFont boldSystemFontOfSize:14];
     doneButton.titleLabel.shadowOffset = CGSizeMake(0, -1);
     
-    [doneButton setBackgroundImage:[[UIImage imageNamed:@"button-done"] stretchableImageWithLeftCapWidth:5 topCapHeight:0] forState:UIControlStateNormal];
+    [doneButton setBackgroundImage:[[[SCHThemeManager sharedThemeManager] imageForDoneButton] stretchableImageWithLeftCapWidth:5 topCapHeight:0] forState:UIControlStateNormal];
     [doneButton addTarget:self action:@selector(cancel) forControlEvents:UIControlEventTouchUpInside];    
     self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:doneButton] autorelease];
     

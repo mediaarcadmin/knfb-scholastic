@@ -13,11 +13,13 @@
 #import "SCHAuthenticationManager.h"
 #import "SCHDrmRegistrationSession.h"
 #import "SCHProfileViewCell.h"
+#import "SCHThemeManager.h"
 
 extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
 @implementation SCHSettingsViewController
 @synthesize tableView;
+@synthesize backgroundImage;
 
 @synthesize loginController, managedObjectContext, drmRegistrationSession;
 
@@ -41,15 +43,17 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     deregisterButton.titleLabel.font = [UIFont boldSystemFontOfSize:14];
     deregisterButton.titleLabel.shadowOffset = CGSizeMake(0, -1);
     
-    [deregisterButton setBackgroundImage:[[UIImage imageNamed:@"button-cancel"] stretchableImageWithLeftCapWidth:5 topCapHeight:0] forState:UIControlStateNormal];
+    [deregisterButton setBackgroundImage:[[[SCHThemeManager sharedThemeManager] imageForButton] stretchableImageWithLeftCapWidth:5 topCapHeight:0] forState:UIControlStateNormal];
     [deregisterButton addTarget:self action:@selector(deregistrationButtonPushed:) forControlEvents:UIControlEventTouchUpInside];    
     self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:deregisterButton] autorelease];
     
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    [button setImage:[UIImage imageNamed:@"icon-home"] forState:UIControlStateNormal];
+    [button setImage:[[SCHThemeManager sharedThemeManager] imageForHomeIcon] forState:UIControlStateNormal];
     [button sizeToFit];    
     [button addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];    
     self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:button] autorelease];
+    
+    backgroundImage.image = [[SCHThemeManager sharedThemeManager] imageForBackground];
 }
 
 - (void)back
