@@ -225,9 +225,9 @@
 							<int key="NSColorSpace">3</int>
 							<bytes key="NSWhite">MC41AA</bytes>
 						</object>
-						<object class="NSCustomResource" key="IBUINormalImage" id="122296006">
+						<object class="NSCustomResource" key="IBUINormalImage" id="973099214">
 							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">icon-books.png</string>
+							<string key="NSResourceName">Themes/Blue/icon-books.png</string>
 						</object>
 					</object>
 					<object class="IBUIView" id="396232577">
@@ -382,7 +382,7 @@
 							<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
 						</object>
 						<reference key="IBUINormalTitleShadowColor" ref="155484018"/>
-						<reference key="IBUINormalImage" ref="122296006"/>
+						<reference key="IBUINormalImage" ref="973099214"/>
 					</object>
 					<object class="IBUIView" id="881599584">
 						<reference key="NSNextResponder" ref="70776190"/>
@@ -1240,7 +1240,6 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>olderBookTitle</string>
 							<string>olderBookTitleLabel</string>
 							<string>olderBookTitleView</string>
 							<string>olderBottomToolbar</string>
@@ -1256,7 +1255,6 @@
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>UIBarButtonItem</string>
 							<string>UILabel</string>
 							<string>UIView</string>
 							<string>SCHCustomToolbar</string>
@@ -1275,7 +1273,6 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>olderBookTitle</string>
 							<string>olderBookTitleLabel</string>
 							<string>olderBookTitleView</string>
 							<string>olderBottomToolbar</string>
@@ -1291,10 +1288,6 @@
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<object class="IBToOneOutletInfo">
-								<string key="name">olderBookTitle</string>
-								<string key="candidateClassName">UIBarButtonItem</string>
-							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">olderBookTitleLabel</string>
 								<string key="candidateClassName">UILabel</string>
@@ -1368,7 +1361,7 @@
 			<bool key="EncodedWithXMLCoder">YES</bool>
 			<object class="NSArray" key="dict.sortedKeys">
 				<bool key="EncodedWithXMLCoder">YES</bool>
-				<string>icon-books.png</string>
+				<string>Themes/Blue/icon-books.png</string>
 				<string>icon-magnify.png</string>
 				<string>icon-notes.png</string>
 				<string>icon-play.png</string>
@@ -1377,7 +1370,7 @@
 			</object>
 			<object class="NSMutableArray" key="dict.values">
 				<bool key="EncodedWithXMLCoder">YES</bool>
-				<string>{47, 36}</string>
+				<string>{16, 16}</string>
 				<string>{36, 34}</string>
 				<string>{34, 38}</string>
 				<string>{35, 34}</string>
