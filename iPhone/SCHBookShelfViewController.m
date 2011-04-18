@@ -71,6 +71,7 @@
     [self.gridView setBackgroundColor:[UIColor clearColor]];
     [self.gridView setShelfHeight:138];
     [self.gridView setShelfImage:[UIImage imageNamed:@"Shelf.png"]];
+    [self.gridView setMinimumNumberOfShelves:10];
     
     [self.view.layer setContents:(id)[UIImage imageNamed:@"bookshelf-back.png"].CGImage];
     
