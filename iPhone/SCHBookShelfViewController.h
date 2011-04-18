@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
-#import "MRGridView.h"
+#import "SCHBookShelfGridView.h"
 #import "MRGridViewDelegate.h"
 #import "MRGridViewDataSource.h"
 #import "KNFBTimeOrderedCache.h"
@@ -20,7 +20,7 @@
 
 }
 
-@property (nonatomic, retain) IBOutlet MRGridView *gridView;
+@property (nonatomic, retain) IBOutlet SCHBookShelfGridView *gridView;
 @property (nonatomic, retain) IBOutlet UIView *loadingView;
 @property (nonatomic, retain) IBOutlet UINavigationController *themePickerContainer;
 @property (nonatomic, retain) IBOutlet SCHCustomNavigationBar *customNavigationBar;
