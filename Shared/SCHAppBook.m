@@ -158,9 +158,9 @@
 #if LOCALDEBUG
 	return [[NSBundle mainBundle] pathForResource:self.ContentMetadataItem.FileName ofType:@"xps"];
 #else
-    NSLog(@"returning %@", [NSString stringWithFormat:@"%@/%@-%@.xps", 
+/*    NSLog(@"returning %@", [NSString stringWithFormat:@"%@/%@-%@.xps", 
                             [self cacheDirectory], 
-                            self.ContentMetadataItem.ContentIdentifier, self.ContentMetadataItem.Version]);
+                            self.ContentMetadataItem.ContentIdentifier, self.ContentMetadataItem.Version]);*/
 	return [NSString stringWithFormat:@"%@/%@-%@.xps", 
 			[self cacheDirectory], 
 			self.ContentMetadataItem.ContentIdentifier, self.ContentMetadataItem.Version];
@@ -189,9 +189,6 @@
         thumbPath = [cacheDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@_%d_%d@%dx.png", self.ContentIdentifier, (int)size.width, (int)size.height, (int) scale]];
     }    
 
-	
-    NSLog(@"Thumb path is %@", thumbPath);
-    
 	return thumbPath;
 }
 

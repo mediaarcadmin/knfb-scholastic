@@ -437,6 +437,15 @@ static SCHProcessingManager *sharedManager = nil;
             return;
             break;
         }
+        case SCHBookProcessingStateError:
+		{
+            // start again from scratch
+            //[self redispatchISBN:isbn];
+            
+            NSLog(@"Book is an error state.");
+            return;
+            break;
+        }
 		default:
 			[NSException raise:@"SCHProcessingManagerUnknownState" format:@"Unrecognised SCHBookInfo processing state (%d) in SCHProcessingManager.", book.processingState];
 			break;
@@ -481,6 +490,11 @@ static SCHProcessingManager *sharedManager = nil;
 	if (book.processingState > SCHBookProcessingStateNoCoverImage) {
 		[self checkAndDispatchThumbsForISBN:isbn];
 	}
+    
+    if (book.processingState == SCHBookProcessingStateError) {
+        [[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:isbn state:SCHBookProcessingStateNoURLs];
+        [self processISBN:isbn];
+    }
     
     [self checkIfProcessing];
     

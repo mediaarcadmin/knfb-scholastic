@@ -21,7 +21,7 @@
 
 @property (nonatomic, retain) SCHAsyncBookCoverImageView *asyncImageView;
 @property (nonatomic, retain) UIView *thumbTintView;
-@property (nonatomic, retain) UILabel *statusLabel;
+//@property (nonatomic, retain) UILabel *statusLabel;
 @property (nonatomic, retain) UIProgressView *progressView;
 
 - (void) refreshCell;
