@@ -54,8 +54,8 @@
         CGFloat yOffset = self.shelfInset.height;
         
         while (yOffset <= rect.size.height) {
-            [self.shelfImage drawAtPoint:CGPointMake(self.shelfInset.width, yOffset)];
-            yOffset += self.shelfInset.height + self.shelfHeight;
+            yOffset += self.shelfHeight;
+            [self.shelfImage drawAtPoint:CGPointMake(self.shelfInset.width, yOffset - self.shelfImage.size.height)];
         }
     }
 }

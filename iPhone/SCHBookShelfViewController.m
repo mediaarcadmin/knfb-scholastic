@@ -70,8 +70,9 @@
     
 	[self.gridView setCellSize:CGSizeMake(80,118) withBorderSize:20];
     [self.gridView setBackgroundColor:[UIColor clearColor]];
-    [self.gridView setShelfHeight:138];
     [self.gridView setShelfImage:[[SCHThemeManager sharedThemeManager] imageForShelf]];
+    [self.gridView setShelfHeight:138];
+    [self.gridView setShelfInset:CGSizeMake(0, -2)];
     [self.gridView setMinimumNumberOfShelves:10];
 
     [self.view.layer setContents:(id)[[SCHThemeManager sharedThemeManager] imageForBackground].CGImage];
