@@ -38,6 +38,7 @@
     
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     [button setImage:[[SCHThemeManager sharedThemeManager] imageForBooksIcon] forState:UIControlStateNormal];
+    [button setContentEdgeInsets:UIEdgeInsetsMake(0, 7, 0, 0)];
     [button sizeToFit];    
     [button addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];    
     self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:button] autorelease];
