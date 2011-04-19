@@ -28,7 +28,7 @@
 - (void) layoutSubviews
 {
     [super layoutSubviews];
-    [self sendSubviewToBack:self.backgroundView];
+    [self sendSubviewToBack:backgroundView];
 }
 
 - (void)setBackgroundImage:(UIImage*)image
