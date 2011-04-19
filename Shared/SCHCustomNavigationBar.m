@@ -23,19 +23,8 @@
 
 - (void) layoutSubviews
 {
-    if (self.backgroundView.image != nil) {
-        CGRect rect = self.frame;
-        rect.size.height = self.backgroundView.image.size.height;
-        rect.origin.y = -1;
-        self.backgroundView.frame = rect;
-        
-        NSLog(@"rect: %@", NSStringFromCGRect(rect));
-        [super layoutSubviews];
-        [self sendSubviewToBack:self.backgroundView];
-        
-    } else {
-        [super layoutSubviews];
-    }
+    [super layoutSubviews];
+    [self sendSubviewToBack:self.backgroundView];
 }
 
 - (void)setBackgroundImage:(UIImage*)image
@@ -52,21 +41,25 @@
     } else if (image != self.backgroundView.image) {
         backgroundView = [[UIImageView alloc] initWithFrame:self.frame];
         self.backgroundView.image = image;
-        [self insertSubview:self.backgroundView atIndex:0];
         
         self.clipsToBounds = NO;
-        self.backgroundColor = [UIColor clearColor];        
+        self.backgroundColor = [UIColor clearColor];   
+        
+        [self insertSubview:self.backgroundView atIndex:0];
+        
+        CGRect rect = self.frame;
+        NSLog(@"Rect: %@", NSStringFromCGRect(rect));
+        rect.size.height = self.backgroundView.image.size.height;
+        rect.origin.y = -1;
+        self.backgroundView.frame = rect;
+        NSLog(@"Rect: %@", NSStringFromCGRect(rect));
+        NSLog(@"Super rect: %@", NSStringFromCGRect(self.superview.frame));
+        
+        [self.backgroundView setAutoresizingMask:UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth];
+        
         [self setNeedsDisplay];            
     }
 }
-
-/*
-- (void) willMoveToWindow:(UIWindow *)newWindow
-{
-    [self sendSubviewToBack:self.backgroundView];
-    [super willMoveToWindow:newWindow];
-}
-*/
 
 - (UIImage *)backgroundImage
 {
