@@ -354,7 +354,6 @@
 		C93ECB36134B64B1003B99FD /* TextFlowXAML.css in Resources */ = {isa = PBXBuildFile; fileRef = C93ECB2D134B64B1003B99FD /* TextFlowXAML.css */; };
 		C93ECB37134B64B1003B99FD /* TextFlowXAMLOverrides.css in Resources */ = {isa = PBXBuildFile; fileRef = C93ECB2E134B64B1003B99FD /* TextFlowXAMLOverrides.css */; };
 		C93ECB38134B64B1003B99FD /* TextFlowXAMLOverrides.css in Resources */ = {isa = PBXBuildFile; fileRef = C93ECB2E134B64B1003B99FD /* TextFlowXAMLOverrides.css */; };
-		C93ECB83134B7FA4003B99FD /* After Ever After.xps in Resources */ = {isa = PBXBuildFile; fileRef = C93ECB81134B7FA4003B99FD /* After Ever After.xps */; };
 		C95C7CC1135C3C8A00472AF6 /* SCHBookShelfGridView.m in Sources */ = {isa = PBXBuildFile; fileRef = C95C7CC0135C3C8A00472AF6 /* SCHBookShelfGridView.m */; };
 		C95C7CC2135C3C8A00472AF6 /* SCHBookShelfGridView.m in Sources */ = {isa = PBXBuildFile; fileRef = C95C7CC0135C3C8A00472AF6 /* SCHBookShelfGridView.m */; };
 		C95C7CC5135C3F1400472AF6 /* SCHBookShelfGridShelvesView.m in Sources */ = {isa = PBXBuildFile; fileRef = C95C7CC4135C3F1300472AF6 /* SCHBookShelfGridShelvesView.m */; };
@@ -404,6 +403,8 @@
 		C9B08BE91344D34F001963D0 /* KNFBTextFlowXAMLTreeNode.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B08B271344D34F001963D0 /* KNFBTextFlowXAMLTreeNode.m */; };
 		C9B08BEA1344D34F001963D0 /* KNFBTOCEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B08B291344D34F001963D0 /* KNFBTOCEntry.m */; };
 		C9B08BEB1344D34F001963D0 /* KNFBTOCEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B08B291344D34F001963D0 /* KNFBTOCEntry.m */; };
+		C9BCD78B135DBF9E00AA42B3 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
+		C9BCD78C135DBFB800AA42B3 /* After Ever After.xps in Resources */ = {isa = PBXBuildFile; fileRef = C93ECB81134B7FA4003B99FD /* After Ever After.xps */; };
 		C9C8897B1358536E00ADF394 /* bookshelf-back.png in Resources */ = {isa = PBXBuildFile; fileRef = C9C889761358536E00ADF394 /* bookshelf-back.png */; };
 		C9C8897C1358536E00ADF394 /* bookshelf-back.png in Resources */ = {isa = PBXBuildFile; fileRef = C9C889761358536E00ADF394 /* bookshelf-back.png */; };
 		C9C889861358578200ADF394 /* bookshelf-back-static.png in Resources */ = {isa = PBXBuildFile; fileRef = C9C889851358578200ADF394 /* bookshelf-back-static.png */; };
@@ -541,17 +542,12 @@
 		F8509F0412F063C900197EB5 /* SCHLoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52EF4E5E12E6E01C00E374F7 /* SCHLoginViewController.xib */; };
 		F8509F0512F063C900197EB5 /* Clifford.xps in Resources */ = {isa = PBXBuildFile; fileRef = F8509E7612F0620D00197EB5 /* Clifford.xps */; };
 		F8509F0612F063C900197EB5 /* Goosebumps.xps in Resources */ = {isa = PBXBuildFile; fileRef = F8509E7712F0620D00197EB5 /* Goosebumps.xps */; };
-		F8509F0712F063C900197EB5 /* LonelyHeartsClub.xps in Resources */ = {isa = PBXBuildFile; fileRef = F8509E7812F0620E00197EB5 /* LonelyHeartsClub.xps */; };
-		F8509F0812F063C900197EB5 /* MazeOfBones.xps in Resources */ = {isa = PBXBuildFile; fileRef = F8509E7912F0620E00197EB5 /* MazeOfBones.xps */; };
 		F8509F0912F063C900197EB5 /* OldLady.xps in Resources */ = {isa = PBXBuildFile; fileRef = F8509E7A12F0620E00197EB5 /* OldLady.xps */; };
 		F8509F0A12F063C900197EB5 /* Penguins.xps in Resources */ = {isa = PBXBuildFile; fileRef = F8509E7B12F0620F00197EB5 /* Penguins.xps */; };
-		F8509F0B12F063C900197EB5 /* Shiver.xps in Resources */ = {isa = PBXBuildFile; fileRef = F8509E7C12F0620F00197EB5 /* Shiver.xps */; };
 		F8509F0C12F063C900197EB5 /* TooManyToys.xps in Resources */ = {isa = PBXBuildFile; fileRef = F8509E7D12F0620F00197EB5 /* TooManyToys.xps */; };
 		F8509F0D12F063C900197EB5 /* Cars.xps in Resources */ = {isa = PBXBuildFile; fileRef = F8509E7E12F0620F00197EB5 /* Cars.xps */; };
-		F8509F0E12F063C900197EB5 /* Cook Yourself Thin.xps in Resources */ = {isa = PBXBuildFile; fileRef = F8509E7F12F0621000197EB5 /* Cook Yourself Thin.xps */; };
 		F8509F0F12F063C900197EB5 /* SCHReadingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8509E9412F0621E00197EB5 /* SCHReadingViewController.xib */; };
 		F8509F1012F063C900197EB5 /* BITReadingOptionsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8509E9812F0621E00197EB5 /* BITReadingOptionsView.xib */; };
-		F8509F1212F063C900197EB5 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
 		F8509F1312F063C900197EB5 /* AppDelegate_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* AppDelegate_iPad.m */; };
 		F8509F1412F063C900197EB5 /* AppDelegate_Shared.m in Sources */ = {isa = PBXBuildFile; fileRef = 28EEC04A1118E28000187D67 /* AppDelegate_Shared.m */; };
 		F8509F1512F063C900197EB5 /* Scholastic.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2819307C112F81BE00ECF9B4 /* Scholastic.xcdatamodeld */; };
@@ -2906,14 +2902,10 @@
 				F8509F0412F063C900197EB5 /* SCHLoginViewController.xib in Resources */,
 				F8509F0512F063C900197EB5 /* Clifford.xps in Resources */,
 				F8509F0612F063C900197EB5 /* Goosebumps.xps in Resources */,
-				F8509F0712F063C900197EB5 /* LonelyHeartsClub.xps in Resources */,
-				F8509F0812F063C900197EB5 /* MazeOfBones.xps in Resources */,
 				F8509F0912F063C900197EB5 /* OldLady.xps in Resources */,
 				F8509F0A12F063C900197EB5 /* Penguins.xps in Resources */,
-				F8509F0B12F063C900197EB5 /* Shiver.xps in Resources */,
 				F8509F0C12F063C900197EB5 /* TooManyToys.xps in Resources */,
 				F8509F0D12F063C900197EB5 /* Cars.xps in Resources */,
-				F8509F0E12F063C900197EB5 /* Cook Yourself Thin.xps in Resources */,
 				F8509F0F12F063C900197EB5 /* SCHReadingViewController.xib in Resources */,
 				F8509F1012F063C900197EB5 /* BITReadingOptionsView.xib in Resources */,
 				C923B15B12F6B0280054426F /* SCHMultipleBookshelvesController.xib in Resources */,
@@ -3014,7 +3006,6 @@
 				C93ECB34134B64B1003B99FD /* TextFlowFlow.css in Resources */,
 				C93ECB36134B64B1003B99FD /* TextFlowXAML.css in Resources */,
 				C93ECB38134B64B1003B99FD /* TextFlowXAMLOverrides.css in Resources */,
-				C93ECB83134B7FA4003B99FD /* After Ever After.xps in Resources */,
 				F8105D42134F629A00C60C8B /* ReadingCustomToolbarBG.png in Resources */,
 				F8105D45134F63F200C60C8B /* HomeBackButton.png in Resources */,
 				F80FED711355DD6D00DEB3C1 /* icon-magnify.png in Resources */,
@@ -3036,6 +3027,7 @@
 				C9C8897C1358536E00ADF394 /* bookshelf-back.png in Resources */,
 				C9C889871358578200ADF394 /* bookshelf-back-static.png in Resources */,
 				52E623031358544200245CA7 /* SCHThemePickerViewController.xib in Resources */,
+				C9BCD78C135DBFB800AA42B3 /* After Ever After.xps in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3208,7 +3200,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F8509F1212F063C900197EB5 /* main.m in Sources */,
 				F8509F1312F063C900197EB5 /* AppDelegate_iPad.m in Sources */,
 				F8509F1412F063C900197EB5 /* AppDelegate_Shared.m in Sources */,
 				F8509F1512F063C900197EB5 /* Scholastic.xcdatamodeld in Sources */,
@@ -3363,6 +3354,7 @@
 				C95C7CC2135C3C8A00472AF6 /* SCHBookShelfGridView.m in Sources */,
 				C95C7CC6135C3F1400472AF6 /* SCHBookShelfGridShelvesView.m in Sources */,
 				5204B861135C1FC500FCBD90 /* SCHThemeButton.m in Sources */,
+				C9BCD78B135DBF9E00AA42B3 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
