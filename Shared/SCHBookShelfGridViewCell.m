@@ -26,6 +26,7 @@
 		
 		self.thumbTintView = [[UIView alloc] initWithFrame:CGRectZero];
 		[self.thumbTintView setBackgroundColor:[UIColor colorWithRed:0.2f green:0.2f blue:0.2f alpha:0.6f]];
+        [self.thumbTintView setContentMode:UIViewContentModeBottom];
 		[self.contentView addSubview:self.thumbTintView];
 		
 /*		self.statusLabel = [[UILabel alloc] initWithFrame:CGRectZero];
@@ -56,8 +57,19 @@
 
 //	self.statusLabel.frame = CGRectMake(-10, self.frame.size.height - 20, self.frame.size.width + 20, 14);
 	self.asyncImageView.frame = CGRectMake(2, 0, self.frame.size.width - 4, self.frame.size.height - 22);
-	self.thumbTintView.frame = CGRectMake(2, 0, self.frame.size.width - 4, self.frame.size.height - 22);
+//	self.thumbTintView.frame = CGRectMake(2, 0, self.frame.size.width - 4, self.frame.size.height - 22);
 	self.progressView.frame = CGRectMake(10, self.frame.size.height - 42, self.frame.size.width - 20, 10);
+
+    
+    CGRect thumbTintFrame = self.thumbTintView.frame;
+    
+    thumbTintFrame.size.width = self.asyncImageView.coverSize.width;
+    thumbTintFrame.size.height = self.asyncImageView.coverSize.height;
+    
+    thumbTintFrame.origin.x = (self.contentView.frame.size.width - thumbTintFrame.size.width) / 2;
+    thumbTintFrame.origin.y = self.asyncImageView.frame.size.height - thumbTintFrame.size.height;
+    
+    self.thumbTintView.frame = thumbTintFrame;
     
     [UIView setAnimationsEnabled:YES];
 }
@@ -103,7 +115,7 @@
 {
 	// image processing
 	BOOL immediateUpdate = [[SCHProcessingManager sharedProcessingManager] requestThumbImageForBookCover:self.asyncImageView
-																									size:self.asyncImageView.coverSize];
+																									size:self.asyncImageView.thumbSize];
 	
 	if (immediateUpdate) {
 		[self setNeedsDisplay];
@@ -113,23 +125,6 @@
 	
 	//NSString *status = [book processingStateAsString];
 	
-    /*
-     
-     SCHBookProcessingStateError = -2,
-     SCHBookProcessingStateBookVersionNotSupported,
-     SCHBookProcessingStateNoURLs,
-     SCHBookProcessingStateNoCoverImage,
-     SCHBookProcessingStateReadyForBookFileDownload,
-     SCHBookProcessingStateDownloadStarted,
-     SCHBookProcessingStateDownloadPaused,
-     SCHBookProcessingStateReadyForLicenseAcquisition,
-     SCHBookProcessingStateReadyForRightsParsing,
-     SCHBookProcessingStateReadyForTextFlowPreParse,
-     SCHBookProcessingStateReadyForSmartZoomPreParse,
-     SCHBookProcessingStateReadyForPagination,
-     SCHBookProcessingStateReadyToRead
-
-    */
 	// book status
 	switch ([book processingState]) {
 		case SCHBookProcessingStateError:

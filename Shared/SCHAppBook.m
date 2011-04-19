@@ -27,6 +27,8 @@
 @dynamic TextFlowPageRanges;
 @dynamic SmartZoomPageMarkers;
 @dynamic LayoutPageEquivalentCount;
+@dynamic BookCoverWidth;
+@dynamic BookCoverHeight;
 
 #pragma mark -
 #pragma mark Convenience Methods
@@ -267,6 +269,11 @@
 	} else {
 		return NO;
 	}
+}
+
+- (CGSize) bookCoverImageSize
+{
+    return CGSizeMake([self.BookCoverWidth intValue], [self.BookCoverHeight intValue]);
 }
 
 @end

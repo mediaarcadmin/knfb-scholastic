@@ -20,7 +20,7 @@
 	CGRect viewBounds = CGRectMake(0, 0, size.width, size.height);
 	
 	SCHAsyncBookCoverImageView *imageView = [[SCHAsyncBookCoverImageView alloc] initWithFrame:viewBounds];
-	imageView.coverSize = size;
+	imageView.thumbSize = size;
 	
 	return imageView;
 }
@@ -29,43 +29,51 @@
 	
 	UIImage *thumbImage = [SCHThumbnailFactory imageWithPath:path];
 	imageView.image = thumbImage;
-	imageView.coverSize = size;
+	imageView.thumbSize = size;
 	
 	return YES;
 }
 
++ (CGSize) coverSizeForImageOfSize: (CGSize) fullImageSize thumbNailOfSize: (CGSize) thumbImageSize aspect: (BOOL) aspect
+{
+    CGRect thumbNailRect = CGRectIntegral(CGRectMake(0, 0, thumbImageSize.width, thumbImageSize.height));
+    
+    if (aspect) {
+        
+        float hfactor = fullImageSize.width / thumbImageSize.width;
+        float vfactor = fullImageSize.height / thumbImageSize.height;
+        
+        float factor = MAX(hfactor, vfactor);
+        
+        // Divide the size by the greater of the vertical or horizontal shrinking factor
+        float newThumbWidth = fullImageSize.width / factor;
+        float newThumbHeight = fullImageSize.height / factor;
+        
+        CGRect imageRect = CGRectMake(0, 0, newThumbWidth, newThumbHeight);
+        thumbNailRect = CGRectIntegral(imageRect);
+        
+    }
+    
+    return thumbNailRect.size;
+}
+
 + (UIImage *)thumbnailImageOfSize:(CGSize)size 
-							 path:(NSString *)path
+                         forImage:(UIImage *) fullImage
 				   maintainAspect:(BOOL)aspect		
 {
 	// debug: make sure we're not running the image resizing on the main thread
 	NSAssert([NSThread currentThread] != [NSThread mainThread], @"Don't do image interpolation on the main thread!");
-	
-	UIImage *fullImage = [SCHThumbnailFactory imageWithPath:path];
 	
 	if (!fullImage) {
 		NSLog(@"No image returned!");
 		return nil;
 	} else {
 
-        CGRect thumbNailRect = CGRectIntegral(CGRectMake(0, 0, size.width, size.height));
+        // get the actual scaled thumbnail size
+        CGSize thumbNailSize = [self coverSizeForImageOfSize:fullImage.size thumbNailOfSize:size aspect:aspect];
+        CGRect thumbNailRect = CGRectMake(0, 0, thumbNailSize.width, thumbNailSize.height);
         
-        if (aspect) {
-            
-            float hfactor = fullImage.size.width / size.width;
-            float vfactor = fullImage.size.height / size.height;
-            
-            float factor = MAX(hfactor, vfactor);
-            
-            // Divide the size by the greater of the vertical or horizontal shrinking factor
-            float newThumbWidth = fullImage.size.width / factor;
-            float newThumbHeight = fullImage.size.height / factor;
-            
-            CGRect imageRect = CGRectMake(0, 0, newThumbWidth, newThumbHeight);
-            thumbNailRect = CGRectIntegral(imageRect);
-            
-        }
-        
+        // get the correct device scale and transform for pixels
         CGFloat scale = 1.0f;
         
         if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)]) {
@@ -75,6 +83,7 @@
 
         CGSize imageSize = thumbNailRect.size;
 
+        // image interpolation
         CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
         CGContextRef ctx = CGBitmapContextCreate(NULL, imageSize.width,  imageSize.height, 8, 4 *  imageSize.width, colorSpace, kCGImageAlphaPremultipliedFirst);
         CGColorSpaceRelease(colorSpace);
