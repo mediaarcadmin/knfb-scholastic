@@ -19,6 +19,7 @@
 #import "SCHXPSProvider.h"
 #import <QuartzCore/QuartzCore.h>
 #import "SCHAppBook.h"
+#import "SCHCustomNavigationBar.h"
 #import "SCHThemeManager.h"
 
 @interface SCHBookShelfViewController () <UIGestureRecognizerDelegate>
@@ -36,6 +37,7 @@
 @synthesize books;
 @synthesize gridView, loadingView, componentCache;
 @synthesize themePickerContainer;
+@synthesize customNavigationBar;
 @synthesize profileItem;
 @synthesize themeButton;
 @synthesize moveToValue;
@@ -88,6 +90,8 @@
 	aCache.totalCostLimit = 1024*1024; // Arbitrary 1MB limit. This may need wteaked or set on a per-device basis
 	self.componentCache = aCache;
 	[aCache release];
+	
+    customNavigationBar.backgroundImage = [[SCHThemeManager sharedThemeManager] imageForNavigationBar];
 	
 #if LOCALDEBUG
 	self.navigationItem.title = @"Local Bookshelf";
