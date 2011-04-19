@@ -19,7 +19,6 @@
 @property (nonatomic, retain) NSString *xpsPagesDirectory;
 @property (nonatomic, retain) NSMutableArray *uriMap;
 
-
 - (void)parseMetadata:(NSData *)metadataFile;
 - (void)deleteTemporaryDirectoryAtPath:(NSString *)path;
 - (NSData *)decompressWithRawDeflate:(NSData *)data;
@@ -428,7 +427,10 @@
 - (void) dealloc
 {
 	[self deleteTemporaryDirectoryAtPath:self.tempDirectory];
-	XPS_Close(xpsHandle);
+    XPS_Cancel(xpsHandle);
+    XPS_Close(xpsHandle);
+    XPS_End();
+    xpsHandle = nil;
 	
 	[inflateLock release];
 	
