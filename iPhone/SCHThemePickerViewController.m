@@ -118,7 +118,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [[[SCHThemeManager sharedThemeManager] themeNames] count];
+    return [[[SCHThemeManager sharedThemeManager] themeNames:YES] count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -136,7 +136,7 @@
     }
     
     // Configure the cell...
-    cell.textLabel.text = [[[SCHThemeManager sharedThemeManager] themeNames] objectAtIndex:indexPath.row];
+    cell.textLabel.text = [[[SCHThemeManager sharedThemeManager] themeNames:YES] objectAtIndex:indexPath.row];
     NSString *backgroundPath = [[NSBundle mainBundle] pathForResource:cell.textLabel.text ofType:@"png" inDirectory:@"Themes"];
     UIImage *backgroundImage = [UIImage imageWithContentsOfFile:backgroundPath];
     cell.backgroundColor = [UIColor colorWithPatternImage:backgroundImage];

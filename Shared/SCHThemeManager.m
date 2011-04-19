@@ -10,6 +10,11 @@
 
 static SCHThemeManager *sharedThemeManager = nil;
 
+static NSString * const kSCHThemeManagerDirectory = @"Themes";
+
+static NSString * const kSCHThemeManagerName = @"Name";
+static NSString * const kSCHThemeManagerDefault = @"Default";
+
 static NSString * const kSCHThemeManagerButtonImage = @"ButtonImage";
 static NSString * const kSCHThemeManagerDoneButtonImage = @"DoneButtonImage";
 static NSString * const kSCHThemeManagerNavigationBarImage = @"NavigationBarImage";
@@ -22,15 +27,16 @@ static NSString * const SCHThemeManagerkThemeIcon = @"ThemeIcon";
 
 @interface SCHThemeManager ()
 
-@property (nonatomic, retain) NSArray *themes;
-@property (nonatomic, retain) NSDictionary *currentTheme;
+@property (nonatomic, retain) NSArray *allThemes;
+@property (nonatomic, retain) NSDictionary *selectedTheme;
 
 @end
 
 @implementation SCHThemeManager
 
-@synthesize themes;
-@synthesize currentTheme;
+@dynamic theme;
+@synthesize allThemes;
+@synthesize selectedTheme;
 
 #pragma mark -
 #pragma mark Singleton Instance methods
@@ -51,77 +57,111 @@ static NSString * const SCHThemeManagerkThemeIcon = @"ThemeIcon";
 {
 	self = [super init];
 	if (self != nil) {
-        self.themes = [NSArray arrayWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Themes/Themes" ofType:@"plist"]];
-        self.currentTheme = [self.themes objectAtIndex:1];
+        self.allThemes = [NSArray arrayWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Themes" ofType:@"plist" inDirectory:kSCHThemeManagerDirectory]];
+        for (NSDictionary *dict in self.allThemes) {
+            if ([[dict objectForKey:kSCHThemeManagerDefault] boolValue] == YES) {
+                self.selectedTheme = dict;
+                break;
+            }
+        }
+        
+        if (self.selectedTheme == nil) {
+            if ([self.allThemes count] > 0) {
+                self.selectedTheme = [self.allThemes objectAtIndex:0];
+            } else {
+                [NSException raise:@"NoThemesException" format:@"Themes.plist has no configured Themes!"];
+            }
+        }
 	}
 	return(self);
 }
 
 - (void)dealloc 
 {
-    self.themes = nil;
-    self.currentTheme = nil;
+    self.allThemes = nil;
+    self.selectedTheme = nil;
     
     [super dealloc];
 }
 
-#pragma mark -
-#pragma mark methods
+- (void)setTheme:(NSString *)themeName
+{    
+    for (NSDictionary *dict in self.allThemes) {
+        if ([[dict objectForKey:kSCHThemeManagerName] isEqualToString:themeName] == YES) {
+            self.selectedTheme = dict;
+            [[NSNotificationCenter defaultCenter] postNotificationName:kSCHThemeManagerThemeChange 
+                                                                object:self 
+                                                              userInfo:nil];				            
+            break;
+        }
+    }
+}
 
-- (NSArray *)themeNames
+- (NSString *)theme
+{
+    return([self.selectedTheme objectForKey:kSCHThemeManagerName]);
+}
+
+- (NSArray *)themeNames:(BOOL)excludeSelectedTheme
 {
     NSMutableArray *ret = [NSMutableArray array];
     
-    for (NSDictionary *dict in self.themes) {
-        [ret addObject:[dict objectForKey:@"Name"]];
+    for (NSDictionary *dict in self.allThemes) {
+        if (excludeSelectedTheme == NO || dict != self.selectedTheme) {
+            [ret addObject:[dict objectForKey:kSCHThemeManagerName]];
+        }
     }
     
     return(ret);
 }
 
+#pragma mark -
+#pragma mark Image Accessors
+
 - (UIImage *)imageForButton
 {
-    return([UIImage imageNamed:[self.currentTheme objectForKey:kSCHThemeManagerButtonImage]]);
+    return([UIImage imageNamed:[kSCHThemeManagerDirectory stringByAppendingPathComponent:[self.selectedTheme objectForKey:kSCHThemeManagerButtonImage]]]);
 }
 
 - (UIImage *)imageForDoneButton
 {
-    return([UIImage imageNamed:[self.currentTheme objectForKey:kSCHThemeManagerDoneButtonImage]]);
+    return([UIImage imageNamed:[kSCHThemeManagerDirectory stringByAppendingPathComponent:[self.selectedTheme objectForKey:kSCHThemeManagerDoneButtonImage]]]);
 }
 
 - (UIImage *)imageForNavigationBar
 {
-    return([UIImage imageNamed:[self.currentTheme objectForKey:kSCHThemeManagerNavigationBarImage]]);
+    return([UIImage imageNamed:[kSCHThemeManagerDirectory stringByAppendingPathComponent:[self.selectedTheme objectForKey:kSCHThemeManagerNavigationBarImage]]]);
+    
 }
 
 - (UIImage *)imageForTableViewCell
 {
-    return([UIImage imageNamed:[self.currentTheme objectForKey:kSCHThemeManagerTableViewCellImage]]);
+    return([UIImage imageNamed:[kSCHThemeManagerDirectory stringByAppendingPathComponent:[self.selectedTheme objectForKey:kSCHThemeManagerTableViewCellImage]]]);
 }
 
 - (UIImage *)imageForBackground
 {
-    return([UIImage imageNamed:[self.currentTheme objectForKey:kSCHThemeManagerBackgroundImage]]);
+    return([UIImage imageNamed:[kSCHThemeManagerDirectory stringByAppendingPathComponent:[self.selectedTheme objectForKey:kSCHThemeManagerBackgroundImage]]]);
 }
 
 - (UIImage *)imageForShelf
 {
-    return([UIImage imageNamed:[self.currentTheme objectForKey:kSCHThemeManagerShelfImage]]);
+    return([UIImage imageNamed:[kSCHThemeManagerDirectory stringByAppendingPathComponent:[self.selectedTheme objectForKey:kSCHThemeManagerShelfImage]]]);
 }
 
 - (UIImage *)imageForHomeIcon
 {
-    return([UIImage imageNamed:[self.currentTheme objectForKey:kSCHThemeManagerHomeIcon]]);
+    return([UIImage imageNamed:[kSCHThemeManagerDirectory stringByAppendingPathComponent:[self.selectedTheme objectForKey:kSCHThemeManagerHomeIcon]]]);
 }
 
 - (UIImage *)imageForBooksIcon
 {
-    return([UIImage imageNamed:[self.currentTheme objectForKey:kSCHThemeManagerBooksIcon]]);
+    return([UIImage imageNamed:[kSCHThemeManagerDirectory stringByAppendingPathComponent:[self.selectedTheme objectForKey:kSCHThemeManagerBooksIcon]]]);
 }
 
 - (UIImage *)imageForThemeIcon
 {
-    return([UIImage imageNamed:[self.currentTheme objectForKey:SCHThemeManagerkThemeIcon]]);
+    return([UIImage imageNamed:[kSCHThemeManagerDirectory stringByAppendingPathComponent:[self.selectedTheme objectForKey:SCHThemeManagerkThemeIcon]]]);
 }
 
 @end

@@ -8,14 +8,17 @@
 
 #import <Foundation/Foundation.h>
 
+static NSString * const kSCHThemeManagerThemeChange = @"SCHThemeManagerThemeChange";
 
 @interface SCHThemeManager : NSObject {
     
 }
 
+@property (nonatomic, retain) NSString *theme;
+
 + (SCHThemeManager *)sharedThemeManager;
 
-- (NSArray *)themeNames;
+- (NSArray *)themeNames:(BOOL)excludeSelectedTheme;
 
 - (UIImage *)imageForButton;
 - (UIImage *)imageForDoneButton;
