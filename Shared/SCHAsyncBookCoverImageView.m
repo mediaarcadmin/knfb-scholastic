@@ -17,7 +17,7 @@
 
 @implementation SCHAsyncBookCoverImageView
 
-@synthesize isbn, coverSize;
+@synthesize isbn, thumbSize, coverSize;
 
 - (void) dealloc {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -68,9 +68,11 @@
     
     if ([self.isbn compare:[userInfo objectForKey:@"isbn"]] == NSOrderedSame) {
         id image = [userInfo valueForKey:@"image"];
-        CGSize thumbSize = [[userInfo valueForKey:@"thumbSize"] CGSizeValue];
+        CGSize itemSize = [[userInfo valueForKey:@"thumbSize"] CGSizeValue];
+        CGSize newCoverSize = [[userInfo valueForKey:@"coverSize"] CGSizeValue];
         
-        if (image && self.coverSize.width == thumbSize.width && self.coverSize.height == thumbSize.height) {
+        if (image && self.thumbSize.width == itemSize.width && self.thumbSize.height == itemSize.height) {
+            self.coverSize = newCoverSize;
             [self setImage:image];
             [self setNeedsDisplay];
         }

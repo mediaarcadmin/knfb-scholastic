@@ -41,23 +41,45 @@
 	
     NSFileManager *threadLocalFileManager = [[[NSFileManager alloc] init] autorelease];
     
+    CGSize coverSize = CGSizeZero;
+    
 	if ([threadLocalFileManager fileExistsAtPath:thumbPath]) {
 		thumbImage = [SCHThumbnailFactory imageWithPath:thumbPath];
+        
+        CGSize fullSize = [book bookCoverImageSize];
+        
+        coverSize = [SCHThumbnailFactory coverSizeForImageOfSize:fullSize
+                                                 thumbNailOfSize:thumbImage.size aspect:self.aspect];
+        
 	} else {
+        UIImage *fullImage = [SCHThumbnailFactory imageWithPath:fullImagePath];
+        
+        
+		[[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn
+																setValue:[NSNumber numberWithFloat:fullImage.size.width]
+																  forKey:kSCHAppBookCoverImageWidth];
+        
+		[[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn
+																setValue:[NSNumber numberWithFloat:fullImage.size.height]
+																  forKey:kSCHAppBookCoverImageHeight];
+        
 		thumbImage = [SCHThumbnailFactory thumbnailImageOfSize:self.size 
-														  path:fullImagePath
+														  forImage:fullImage
 												maintainAspect:self.aspect];
 		
 		if (thumbImage) {
 			NSData *pngData = UIImagePNGRepresentation(thumbImage);
 			[pngData writeToFile:thumbPath atomically:YES];
 		}
-	}
+        
+        coverSize = [SCHThumbnailFactory coverSizeForImageOfSize:fullImage.size thumbNailOfSize:thumbImage.size aspect:self.aspect];
+ 	}
     
 	if (thumbImage) {
 		NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
                                   self.isbn, @"isbn",
 								  [NSValue valueWithCGSize:size], @"thumbSize", 
+                                  [NSValue valueWithCGSize:coverSize], @"coverSize", 
 								  thumbImage, @"image", 
 								  nil];
 		
