@@ -405,6 +405,10 @@
 		C9B08BEB1344D34F001963D0 /* KNFBTOCEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B08B291344D34F001963D0 /* KNFBTOCEntry.m */; };
 		C9BCD78B135DBF9E00AA42B3 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
 		C9BCD78C135DBFB800AA42B3 /* After Ever After.xps in Resources */ = {isa = PBXBuildFile; fileRef = C93ECB81134B7FA4003B99FD /* After Ever After.xps */; };
+		C9BCD78D135DD26B00AA42B3 /* LonelyHeartsClub.xps in Resources */ = {isa = PBXBuildFile; fileRef = F8509E7812F0620E00197EB5 /* LonelyHeartsClub.xps */; };
+		C9BCD78E135DD26B00AA42B3 /* MazeOfBones.xps in Resources */ = {isa = PBXBuildFile; fileRef = F8509E7912F0620E00197EB5 /* MazeOfBones.xps */; };
+		C9BCD78F135DD26B00AA42B3 /* Shiver.xps in Resources */ = {isa = PBXBuildFile; fileRef = F8509E7C12F0620F00197EB5 /* Shiver.xps */; };
+		C9BCD790135DD26B00AA42B3 /* Cook Yourself Thin.xps in Resources */ = {isa = PBXBuildFile; fileRef = F8509E7F12F0621000197EB5 /* Cook Yourself Thin.xps */; };
 		C9C8897B1358536E00ADF394 /* bookshelf-back.png in Resources */ = {isa = PBXBuildFile; fileRef = C9C889761358536E00ADF394 /* bookshelf-back.png */; };
 		C9C8897C1358536E00ADF394 /* bookshelf-back.png in Resources */ = {isa = PBXBuildFile; fileRef = C9C889761358536E00ADF394 /* bookshelf-back.png */; };
 		C9C889861358578200ADF394 /* bookshelf-back-static.png in Resources */ = {isa = PBXBuildFile; fileRef = C9C889851358578200ADF394 /* bookshelf-back-static.png */; };
@@ -3028,6 +3032,10 @@
 				C9C889871358578200ADF394 /* bookshelf-back-static.png in Resources */,
 				52E623031358544200245CA7 /* SCHThemePickerViewController.xib in Resources */,
 				C9BCD78C135DBFB800AA42B3 /* After Ever After.xps in Resources */,
+				C9BCD78D135DD26B00AA42B3 /* LonelyHeartsClub.xps in Resources */,
+				C9BCD78E135DD26B00AA42B3 /* MazeOfBones.xps in Resources */,
+				C9BCD78F135DD26B00AA42B3 /* Shiver.xps in Resources */,
+				C9BCD790135DD26B00AA42B3 /* Cook Yourself Thin.xps in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
