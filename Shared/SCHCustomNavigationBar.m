@@ -21,18 +21,20 @@
 @synthesize backgroundView;
 @synthesize originalBackgroundColor;
 
-- (void)drawRect:(CGRect)rect
+- (void) layoutSubviews
 {
     if (self.backgroundView.image != nil) {
         CGRect rect = self.frame;
         rect.size.height = self.backgroundView.image.size.height;
-        rect.origin.y -= 1;
+        rect.origin.y = -1;
         self.backgroundView.frame = rect;
         
         NSLog(@"rect: %@", NSStringFromCGRect(rect));
+        [super layoutSubviews];
+        [self sendSubviewToBack:self.backgroundView];
         
     } else {
-        [super drawRect:rect];
+        [super layoutSubviews];
     }
 }
 
@@ -50,20 +52,21 @@
     } else if (image != self.backgroundView.image) {
         backgroundView = [[UIImageView alloc] initWithFrame:self.frame];
         self.backgroundView.image = image;
-        [self.superview insertSubview:self.backgroundView belowSubview:self];
+        [self insertSubview:self.backgroundView atIndex:0];
+        
         self.clipsToBounds = NO;
         self.backgroundColor = [UIColor clearColor];        
         [self setNeedsDisplay];            
     }
 }
 
-- (void) willMoveToSuperview:(UIView *)newSuperview
+/*
+- (void) willMoveToWindow:(UIWindow *)newWindow
 {
-    NSLog(@"Will move to superView!");
-    [super willMoveToSuperview:newSuperview];
-//    self.backgroundView.hidden = YES;
-    [self.superview sendSubviewToBack:self.backgroundView];
+    [self sendSubviewToBack:self.backgroundView];
+    [super willMoveToWindow:newWindow];
 }
+*/
 
 - (UIImage *)backgroundImage
 {
