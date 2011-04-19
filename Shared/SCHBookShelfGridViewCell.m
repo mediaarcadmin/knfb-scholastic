@@ -113,12 +113,35 @@
 	
 	//NSString *status = [book processingStateAsString];
 	
+    /*
+     
+     SCHBookProcessingStateError = -2,
+     SCHBookProcessingStateBookVersionNotSupported,
+     SCHBookProcessingStateNoURLs,
+     SCHBookProcessingStateNoCoverImage,
+     SCHBookProcessingStateReadyForBookFileDownload,
+     SCHBookProcessingStateDownloadStarted,
+     SCHBookProcessingStateDownloadPaused,
+     SCHBookProcessingStateReadyForLicenseAcquisition,
+     SCHBookProcessingStateReadyForRightsParsing,
+     SCHBookProcessingStateReadyForTextFlowPreParse,
+     SCHBookProcessingStateReadyForSmartZoomPreParse,
+     SCHBookProcessingStateReadyForPagination,
+     SCHBookProcessingStateReadyToRead
+
+    */
 	// book status
 	switch ([book processingState]) {
 		case SCHBookProcessingStateError:
+        case SCHBookProcessingStateBookVersionNotSupported:
 		case SCHBookProcessingStateNoURLs:
 		case SCHBookProcessingStateNoCoverImage:
 		case SCHBookProcessingStateReadyForBookFileDownload:
+        case SCHBookProcessingStateReadyForLicenseAcquisition:
+        case SCHBookProcessingStateReadyForRightsParsing:
+        case SCHBookProcessingStateReadyForTextFlowPreParse:
+        case SCHBookProcessingStateReadyForSmartZoomPreParse:
+        case SCHBookProcessingStateReadyForPagination:
 			self.thumbTintView.hidden = NO;
 			self.progressView.hidden = YES;
 //			self.statusLabel.hidden = NO;
