@@ -13,6 +13,10 @@
 		<string>Red/red-button-done</string>
 		<key>HomeIcon</key>
 		<string>Red/red-icon-home</string>
+		<key>id</key>
+		<integer>1</integer>
+		<key>Image</key>
+		<string>Red/Red.png</string>
 		<key>Name</key>
 		<string>Red</string>
 		<key>NavigationBarImage</key>
@@ -25,58 +29,90 @@
 		<string>Red/red-icon-theme</string>
 	</dict>
 	<dict>
-		<key>Default</key>
-		<true/>
 		<key>BackgroundImage</key>
 		<string>Blue/bookshelf-portrait-bg</string>
 		<key>BooksIcon</key>
 		<string>Blue/icon-books</string>
 		<key>ButtonImage</key>
 		<string>Blue/button-cancel</string>
+		<key>Default</key>
+		<true/>
 		<key>DoneButtonImage</key>
 		<string>Blue/button-done</string>
 		<key>HomeIcon</key>
 		<string>Blue/icon-home</string>
+		<key>id</key>
+		<integer>2</integer>
+		<key>Image</key>
+		<string>Blue/Blue.png</string>
 		<key>Name</key>
 		<string>Blue</string>
 		<key>NavigationBarImage</key>
 		<string>Blue/bookshelf-portrait-top-bar</string>
 		<key>ShelfImage</key>
-		<string>Blue/bookshelf-portrait-shelf</string>
+		<string>Blue/bookshelf-landscape-shelf</string>
 		<key>TableViewCellImage</key>
 		<string>Blue/profile-cell-background</string>
 		<key>ThemeIcon</key>
 		<string>Blue/icon-theme</string>
 	</dict>
 	<dict>
+		<key>id</key>
+		<integer>3</integer>
+		<key>Image</key>
+		<string>Wizardry.png</string>
 		<key>Name</key>
 		<string>Wizardry</string>
-		<key>NavigationBarImage</key>
-		<string></string>
 	</dict>
 	<dict>
+		<key>BackgroundImage</key>
+		<string>Goosebumps/background</string>
+		<key>BooksIcon</key>
+		<string>Goosebumps/icon-books</string>
+		<key>ButtonImage</key>
+		<string>Goosebumps/button</string>
+		<key>DoneButtonImage</key>
+		<string>Goosebumps/button-done</string>
+		<key>HomeIcon</key>
+		<string>Goosebumps/icon-home</string>
+		<key>id</key>
+		<integer>4</integer>
+		<key>Image</key>
+		<string>Goosebumps/Goosebumps.png</string>
 		<key>Name</key>
 		<string>Goosebumps</string>
 		<key>NavigationBarImage</key>
-		<string></string>
+		<string>Goosebumps/navigation-bar</string>
+		<key>ShelfImage</key>
+		<string>Goosebumps/shelf</string>
+		<key>TableViewCellImage</key>
+		<string>Goosebumps/table-view-cell</string>
+		<key>ThemeIcon</key>
+		<string>Goosebumps/icon-theme</string>
 	</dict>
 	<dict>
+		<key>id</key>
+		<integer>5</integer>
+		<key>Image</key>
+		<string>Clouds.png</string>
 		<key>Name</key>
 		<string>Clouds</string>
-		<key>NavigationBarImage</key>
-		<string></string>
 	</dict>
 	<dict>
+		<key>id</key>
+		<integer>6</integer>
+		<key>Image</key>
+		<string>Calmness.png</string>
 		<key>Name</key>
 		<string>Calmness</string>
-		<key>NavigationBarImage</key>
-		<string></string>
 	</dict>
 	<dict>
+		<key>id</key>
+		<string>7</string>
+		<key>Image</key>
+		<string>Dungeon Master.png</string>
 		<key>Name</key>
 		<string>Dungeon Master</string>
-		<key>NavigationBarImage</key>
-		<string>NavigationBar.png</string>
 	</dict>
 </array>
 </plist>

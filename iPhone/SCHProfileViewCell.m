@@ -9,10 +9,11 @@
 #import "SCHProfileViewCell.h"
 
 #import "SCHThemeManager.h"
+#import "SCHThemeImageView.h"
 
 @interface SCHProfileViewCell()
 
-@property (nonatomic, retain) UIImageView *cellBGImage;
+@property (nonatomic, retain) SCHThemeImageView *cellBGImage;
 
 @end
 
@@ -34,7 +35,8 @@
         self.textLabel.shadowOffset = CGSizeMake(0, -1);
         self.textLabel.textAlignment = UITextAlignmentCenter;
         
-        self.cellBGImage = [[UIImageView alloc] initWithImage:[[SCHThemeManager sharedThemeManager] imageForTableViewCell]];
+        cellBGImage = [[SCHThemeImageView alloc] initWithImage:nil];
+        [self.cellBGImage setTheme:kSCHThemeManagerTableViewCellImage];
         
         self.backgroundView = self.cellBGImage;
         

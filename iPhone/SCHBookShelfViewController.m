@@ -19,14 +19,16 @@
 #import "SCHXPSProvider.h"
 #import <QuartzCore/QuartzCore.h>
 #import "SCHAppBook.h"
-#import "SCHCustomNavigationBar.h"
+#import "SCHThemeNavigationBar.h"
 #import "SCHThemeManager.h"
+#import "SCHThemeButton.h"
 
 @interface SCHBookShelfViewController () <UIGestureRecognizerDelegate>
 
 @property (nonatomic, retain) UIBarButtonItem *themeButton;
 @property int moveToValue;
 
+- (void)updateTheme;
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated;
 - (void)finishEditing:(id)sender;
 
@@ -55,27 +57,26 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    [button setImage:[[SCHThemeManager sharedThemeManager] imageForThemeIcon] forState:UIControlStateNormal];
+    SCHThemeButton *button = [SCHThemeButton buttonWithType:UIButtonTypeCustom];
+    [button setThemeIcon:kSCHThemeManagerThemeIcon];
     [button sizeToFit];    
     [button addTarget:self action:@selector(changeTheme) forControlEvents:UIControlEventTouchUpInside];    
     themeButton = [[UIBarButtonItem alloc] initWithCustomView:button];
     self.navigationItem.rightBarButtonItem = self.themeButton;
 
-    button = [UIButton buttonWithType:UIButtonTypeCustom];
-    [button setImage:[[SCHThemeManager sharedThemeManager] imageForHomeIcon] forState:UIControlStateNormal];
+    button = [SCHThemeButton buttonWithType:UIButtonTypeCustom];
+    [button setThemeIcon:kSCHThemeManagerHomeIcon];
     [button sizeToFit];    
     [button addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];    
     self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:button] autorelease];
     
+    [self updateTheme];
+    
 	[self.gridView setCellSize:CGSizeMake(80,118) withBorderSize:20];
     [self.gridView setBackgroundColor:[UIColor clearColor]];
-    [self.gridView setShelfImage:[[SCHThemeManager sharedThemeManager] imageForShelf]];
     [self.gridView setShelfHeight:138];
     [self.gridView setShelfInset:CGSizeMake(0, -2)];
     [self.gridView setMinimumNumberOfShelves:10];
-
-    [self.view.layer setContents:(id)[[SCHThemeManager sharedThemeManager] imageForBackground].CGImage];
     
     UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:nil action:nil];
     longPress.delaysTouchesBegan = YES;
@@ -90,7 +91,7 @@
 	self.componentCache = aCache;
 	[aCache release];
 	
-    customNavigationBar.backgroundImage = [[SCHThemeManager sharedThemeManager] imageForNavigationBar];
+    [customNavigationBar setTheme:kSCHThemeManagerNavigationBarImage];
 	
 #if LOCALDEBUG
 	self.navigationItem.title = @"Local Bookshelf";
@@ -112,7 +113,14 @@
 //		NSLog(@"Hiding loading view...");
 		self.loadingView.hidden = YES;
 	}
-	
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateTheme) name:kSCHThemeManagerThemeChangeNotification object:nil];                
+}
+
+- (void)updateTheme
+{
+    [self.gridView setShelfImage:[[SCHThemeManager sharedThemeManager] imageForShelf]];    
+    [self.view.layer setContents:(id)[[SCHThemeManager sharedThemeManager] imageForBackground].CGImage];
 }
 
 - (void)changeTheme
@@ -134,7 +142,19 @@
 {
     if (editing) {
         if (![self.gridView isEditing]) {
-            [self.navigationItem setRightBarButtonItem:[[[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:self action:@selector(finishEditing:)] autorelease] animated:animated];
+            SCHThemeButton *button = [SCHThemeButton buttonWithType:UIButtonTypeCustom];
+            [button setFrame:CGRectMake(0, 0, 60, 30)];
+            [button setTitle:NSLocalizedString(@"Done", @"") forState:UIControlStateNormal];
+            [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            [button setTitleColor:[UIColor colorWithWhite:1 alpha:0.5f] forState:UIControlStateHighlighted];
+            [button setReversesTitleShadowWhenHighlighted:YES];
+            
+            button.titleLabel.font = [UIFont boldSystemFontOfSize:14];
+            button.titleLabel.shadowOffset = CGSizeMake(0, -1);
+            
+            [button setThemeButton:kSCHThemeManagerDoneButtonImage leftCapWidth:5 topCapHeight:0];
+            [button addTarget:self action:@selector(finishEditing:) forControlEvents:UIControlEventTouchUpInside];    
+            self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:button] autorelease];
         }
     } else {
         [self.navigationItem setRightBarButtonItem:self.themeButton animated:animated];
