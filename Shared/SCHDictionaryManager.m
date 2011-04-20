@@ -1189,7 +1189,7 @@ static SCHDictionaryManager *sharedManager = nil;
                                 if (results) {
                                     resultCount = [results count];
                                 }
-                                
+                                NSLog(@"error when retrieving word with ID %@: %d results retrieved.", [NSString stringWithUTF8String:entryID], resultCount);
                                 entry = nil;
                             } else {
                                 entry = [results objectAtIndex:0];
@@ -1430,6 +1430,7 @@ static SCHDictionaryManager *sharedManager = nil;
         error = nil;
         NSFileManager *localFileManager = [[NSFileManager alloc] init];
         [localFileManager removeItemAtPath:filePath error:&error];
+        [localFileManager release], localFileManager = nil;
         
         if (error) {
             NSLog(@"Error while deleting word form update file: %@", [error localizedDescription]);

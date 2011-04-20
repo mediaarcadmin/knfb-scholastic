@@ -250,7 +250,7 @@
 
 - (void)jumpToPageAtIndex:(NSUInteger)pageIndex animated: (BOOL) animated
 {
-    if ((pageIndex >= 0) && (pageIndex < pageCount)) {
+    if (pageIndex < pageCount) {
         [self.pageTurningView turnToPageAtIndex:pageIndex animated:animated];
     }
     
