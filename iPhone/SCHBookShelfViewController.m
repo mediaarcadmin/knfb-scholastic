@@ -82,7 +82,6 @@
     longPress.delegate = self;
     [self.gridView addGestureRecognizer:longPress];
     [longPress release];
-    
 	self.moveToValue = -1;
 	
 	KNFBTimeOrderedCache *aCache = [[KNFBTimeOrderedCache alloc] init];
@@ -319,6 +318,17 @@
     // For example: self.myOutlet = nil;
 	[self releaseViewObjects];
 
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+{
+    return NO;
+}
+
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    [self.view.layer setContents:(id)[[SCHThemeManager sharedThemeManager] imageForBackground].CGImage];
+    [self.gridView setShelfHeight:150];
 }
 
 @end
