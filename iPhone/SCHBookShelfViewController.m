@@ -75,7 +75,7 @@
 	[self.gridView setCellSize:CGSizeMake(80,118) withBorderSize:20];
     [self.gridView setBackgroundColor:[UIColor clearColor]];
     [self.gridView setShelfHeight:138];
-    [self.gridView setShelfInset:CGSizeMake(0, -2)];
+    [self.gridView setShelfInset:CGSizeMake(0, -1)];
     [self.gridView setMinimumNumberOfShelves:10];
     
     UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:nil action:nil];
@@ -348,7 +348,12 @@
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
     [self.view.layer setContents:(id)[[SCHThemeManager sharedThemeManager] imageForBackground].CGImage];
-    [self.gridView setShelfHeight:150];
+    
+    if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
+        [self.gridView setShelfHeight:150];
+    } else {
+        [self.gridView setShelfHeight:138];
+    }
 }
 
 @end
