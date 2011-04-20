@@ -3,10 +3,6 @@
 <plist version="1.0">
 <array>
 	<dict>
-		<key>id</key>
-		<integer>1</integer>
-		<key>Image</key>
-		<string>Red/Red.png</string>
 		<key>BackgroundImage</key>
 		<string>Red/red-background</string>
 		<key>BooksIcon</key>
@@ -17,6 +13,10 @@
 		<string>Red/red-button-done</string>
 		<key>HomeIcon</key>
 		<string>Red/red-icon-home</string>
+		<key>id</key>
+		<integer>1</integer>
+		<key>Image</key>
+		<string>Red/Red.png</string>
 		<key>Name</key>
 		<string>Red</string>
 		<key>NavigationBarImage</key>
@@ -29,10 +29,6 @@
 		<string>Red/red-icon-theme</string>
 	</dict>
 	<dict>
-		<key>id</key>
-		<integer>2</integer>
-		<key>Image</key>
-		<string>Blue/Blue.png</string>
 		<key>BackgroundImage</key>
 		<string>Blue/bookshelf-portrait-bg</string>
 		<key>BooksIcon</key>
@@ -45,12 +41,16 @@
 		<string>Blue/button-done</string>
 		<key>HomeIcon</key>
 		<string>Blue/icon-home</string>
+		<key>id</key>
+		<integer>2</integer>
+		<key>Image</key>
+		<string>Blue/Blue.png</string>
 		<key>Name</key>
 		<string>Blue</string>
 		<key>NavigationBarImage</key>
 		<string>Blue/bookshelf-portrait-top-bar</string>
 		<key>ShelfImage</key>
-		<string>Blue/bookshelf-portrait-shelf</string>
+		<string>Blue/bookshelf-landscape-shelf</string>
 		<key>TableViewCellImage</key>
 		<string>Blue/profile-cell-background</string>
 		<key>ThemeIcon</key>
@@ -65,10 +65,6 @@
 		<string>Wizardry</string>
 	</dict>
 	<dict>
-		<key>id</key>
-		<integer>4</integer>
-		<key>Image</key>
-		<string>Goosebumps/Goosebumps.png</string>
 		<key>BackgroundImage</key>
 		<string>Goosebumps/background</string>
 		<key>BooksIcon</key>
@@ -79,6 +75,10 @@
 		<string>Goosebumps/button-done</string>
 		<key>HomeIcon</key>
 		<string>Goosebumps/icon-home</string>
+		<key>id</key>
+		<integer>4</integer>
+		<key>Image</key>
+		<string>Goosebumps/Goosebumps.png</string>
 		<key>Name</key>
 		<string>Goosebumps</string>
 		<key>NavigationBarImage</key>
