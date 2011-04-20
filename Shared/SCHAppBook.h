@@ -23,6 +23,8 @@ static NSString * const kSCHAppBookXPSAuthor = @"XPSAuthor";
 static NSString * const kSCHAppBookXPSTitle = @"XPSTitle";
 static NSString * const kSCHAppBookXPSCategory = @"XPSCategory";
 static NSString * const kSCHAppBookState = @"State";
+static NSString * const kSCHAppBookCoverImageHeight = @"BookCoverHeight";
+static NSString * const kSCHAppBookCoverImageWidth = @"BookCoverWidth";
 static NSString * const kSCHAppBookCoverURL = @"BookCoverURL";
 static NSString * const kSCHAppBookFileURL = @"BookFileURL";
 static NSString * const kSCHAppBookTextFlowPageRanges = @"TextFlowPageRanges";
@@ -53,6 +55,8 @@ static NSString * const kSCHAppBookEucalyptusCacheDir = @"libEucalyptusCache";
 @property (nonatomic, retain) NSString * XPSCategory;
 @property (nonatomic, retain) NSString * XPSTitle;
 @property (nonatomic, retain) SCHContentMetadataItem * ContentMetadataItem;
+@property (nonatomic, retain) NSNumber * BookCoverWidth;
+@property (nonatomic, retain) NSNumber * BookCoverHeight;
 @property (nonatomic, retain) NSString * BookCoverURL;
 @property (nonatomic, retain) NSString * BookFileURL;
 @property (nonatomic, retain) NSSet *TextFlowPageRanges;
@@ -87,6 +91,7 @@ static NSString * const kSCHAppBookEucalyptusCacheDir = @"libEucalyptusCache";
 - (float) currentDownloadedPercentage;
 - (BOOL) haveURLs;
 - (BOOL) canOpenBook;
+- (CGSize) bookCoverImageSize;
 
 @end
 

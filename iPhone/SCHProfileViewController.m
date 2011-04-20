@@ -27,6 +27,8 @@ static NSString * const kRootViewControllerProfileLockedIcon = @"ProfileLocked.p
 static NSString * const kRootViewControllerSettingsIcon = @"Settings.png";
 
 @interface SCHProfileViewController ()
+
+- (void)themeUpdate;
 - (void)configureCell:(SCHProfileViewCell *)cell atIndexPath:(NSIndexPath *)indexPath;
 @end
 
@@ -53,14 +55,24 @@ static NSString * const kRootViewControllerSettingsIcon = @"Settings.png";
 	self.tableView.tableHeaderView = self.headerView;
 	self.profilePasswordViewController.delegate = self;
     
-    self.backgroundView.image = [[SCHThemeManager sharedThemeManager] imageForBackground];
+    [self themeUpdate];
+    [[NSNotificationCenter defaultCenter] addObserver:self 
+                                             selector:@selector(themeUpdate) 
+                                                 name:kSCHThemeManagerThemeChangeNotification 
+                                               object:nil];
 }
+
+- (void)themeUpdate
+{
+    self.backgroundView.image = [[SCHThemeManager sharedThemeManager] imageForBackground];
+}    
 
 - (void)viewDidUnload {
     [self setTableView:nil];
     // Relinquish ownership of anything that can be recreated in viewDidLoad or on demand.
     // For example: self.myOutlet = nil;
-	
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+    
 	self.headerView = nil;
 	self.settingsController = nil;
 }
@@ -453,6 +465,8 @@ static NSString * const kRootViewControllerSettingsIcon = @"Settings.png";
 }
 
 - (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
 	self.profilePasswordViewController = nil;
 	self.headerView = nil;
 	self.settingsController = nil;

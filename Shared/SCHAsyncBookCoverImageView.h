@@ -13,6 +13,7 @@
 }
 
 @property (nonatomic, retain) NSString *isbn;
+@property (nonatomic) CGSize thumbSize;
 @property (nonatomic) CGSize coverSize;
 
 @end

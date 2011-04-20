@@ -12,18 +12,10 @@ static SCHThemeManager *sharedThemeManager = nil;
 
 static NSString * const kSCHThemeManagerDirectory = @"Themes";
 
+static NSString * const kSCHThemeManagerID = @"id";
 static NSString * const kSCHThemeManagerName = @"Name";
-static NSString * const kSCHThemeManagerDefault = @"Default";
 
-static NSString * const kSCHThemeManagerButtonImage = @"ButtonImage";
-static NSString * const kSCHThemeManagerDoneButtonImage = @"DoneButtonImage";
-static NSString * const kSCHThemeManagerNavigationBarImage = @"NavigationBarImage";
-static NSString * const kSCHThemeManagerTableViewCellImage = @"TableViewCellImage";
-static NSString * const kSCHThemeManagerBackgroundImage = @"BackgroundImage";
-static NSString * const kSCHThemeManagerShelfImage = @"ShelfImage";
-static NSString * const kSCHThemeManagerHomeIcon = @"HomeIcon";
-static NSString * const kSCHThemeManagerBooksIcon = @"BooksIcon";
-static NSString * const SCHThemeManagerkThemeIcon = @"ThemeIcon";
+static NSString * const kSCHThemeManagerSelectedTheme = @"ThemeManagerSelectedTheme";
 
 @interface SCHThemeManager ()
 
@@ -57,21 +49,36 @@ static NSString * const SCHThemeManagerkThemeIcon = @"ThemeIcon";
 {
 	self = [super init];
 	if (self != nil) {
-        self.allThemes = [NSArray arrayWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Themes" ofType:@"plist" inDirectory:kSCHThemeManagerDirectory]];
-        for (NSDictionary *dict in self.allThemes) {
-            if ([[dict objectForKey:kSCHThemeManagerDefault] boolValue] == YES) {
-                self.selectedTheme = dict;
-                break;
+        self.allThemes = [NSArray arrayWithContentsOfFile:
+                          [[NSBundle mainBundle] pathForResource:@"Themes" 
+                                                          ofType:@"plist" 
+                                                     inDirectory:kSCHThemeManagerDirectory]];
+
+        if ([self.allThemes count] > 0) {
+            NSInteger userSelectedTheme = [[NSUserDefaults standardUserDefaults] integerForKey:kSCHThemeManagerSelectedTheme];
+            if (userSelectedTheme > 0) {
+                for (NSDictionary *dict in self.allThemes) {
+                    if ([[dict objectForKey:kSCHThemeManagerID] integerValue] == userSelectedTheme) {
+                        self.selectedTheme = dict;
+                        break;
+                    }
+                }            
             }
+
+            // if we couldnt find a theme use the default
+            if (self.selectedTheme == nil) {
+                for (NSDictionary *dict in self.allThemes) {
+                    if ([[dict objectForKey:kSCHThemeManagerDefault] boolValue] == YES) {
+                        self.selectedTheme = dict;
+                        break;
+                    }
+                }            
+            }
+        } else {
+            [NSException raise:@"NoThemesException" 
+                        format:@"Themes.plist has no configured Themes!"];
         }
         
-        if (self.selectedTheme == nil) {
-            if ([self.allThemes count] > 0) {
-                self.selectedTheme = [self.allThemes objectAtIndex:0];
-            } else {
-                [NSException raise:@"NoThemesException" format:@"Themes.plist has no configured Themes!"];
-            }
-        }
 	}
 	return(self);
 }
@@ -89,7 +96,9 @@ static NSString * const SCHThemeManagerkThemeIcon = @"ThemeIcon";
     for (NSDictionary *dict in self.allThemes) {
         if ([[dict objectForKey:kSCHThemeManagerName] isEqualToString:themeName] == YES) {
             self.selectedTheme = dict;
-            [[NSNotificationCenter defaultCenter] postNotificationName:kSCHThemeManagerThemeChange 
+            [[NSUserDefaults standardUserDefaults] setInteger:
+             [[self.selectedTheme objectForKey:kSCHThemeManagerID] integerValue] forKey:kSCHThemeManagerSelectedTheme];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kSCHThemeManagerThemeChangeNotification 
                                                                 object:self 
                                                               userInfo:nil];				            
             break;
@@ -115,8 +124,27 @@ static NSString * const SCHThemeManagerkThemeIcon = @"ThemeIcon";
     return(ret);
 }
 
+- (UIImage *)imageForTheme:(NSString *)themeName key:(NSString *)key
+{
+    UIImage *ret = nil;
+    
+    for (NSDictionary *dict in self.allThemes) {
+        if ([[dict objectForKey:kSCHThemeManagerName] isEqualToString:themeName] == YES) {
+            ret = [UIImage imageNamed:[kSCHThemeManagerDirectory stringByAppendingPathComponent:[dict objectForKey:key]]];
+            break;
+        }
+    }
+    
+    return(ret);
+}
+
 #pragma mark -
 #pragma mark Image Accessors
+
+- (UIImage *)imageFor:(NSString *)imageTitle
+{
+    return([UIImage imageNamed:[kSCHThemeManagerDirectory stringByAppendingPathComponent:[self.selectedTheme objectForKey:imageTitle]]]);
+}
 
 - (UIImage *)imageForButton
 {
@@ -161,7 +189,7 @@ static NSString * const SCHThemeManagerkThemeIcon = @"ThemeIcon";
 
 - (UIImage *)imageForThemeIcon
 {
-    return([UIImage imageNamed:[kSCHThemeManagerDirectory stringByAppendingPathComponent:[self.selectedTheme objectForKey:SCHThemeManagerkThemeIcon]]]);
+    return([UIImage imageNamed:[kSCHThemeManagerDirectory stringByAppendingPathComponent:[self.selectedTheme objectForKey:kSCHThemeManagerThemeIcon]]]);
 }
 
 @end

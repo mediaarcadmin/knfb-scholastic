@@ -11,6 +11,7 @@
 #import "LibreAccessServiceSvc.h"
 //#import "SCHReadingViewController.h"
 #import "SCHThemeManager.h"
+#import "SCHThemeButton.h"
 
 @implementation BITReadingOptionsView
 @synthesize pageViewController;
@@ -36,8 +37,8 @@
 	optionsView.layer.cornerRadius = 5.0f;
 	optionsView.layer.masksToBounds = YES;
     
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    [button setImage:[[SCHThemeManager sharedThemeManager] imageForBooksIcon] forState:UIControlStateNormal];
+    SCHThemeButton *button = [SCHThemeButton buttonWithType:UIButtonTypeCustom];
+    [button setThemeIcon:kSCHThemeManagerBooksIcon];
     [button setContentEdgeInsets:UIEdgeInsetsMake(0, 7, 0, 0)];
     [button sizeToFit];    
     [button addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];    
