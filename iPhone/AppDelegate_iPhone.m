@@ -11,7 +11,7 @@
 
 #import "SCHSyncManager.h"
 #import "SCHAuthenticationManager.h"
-#import "SCHCustomNavigationBar.h"
+#import "SCHThemeNavigationBar.h"
 #import "SCHThemeManager.h"
 
 extern NSString * const kSCHAuthenticationManagerDeviceKey;
@@ -39,7 +39,7 @@ static NSTimeInterval const kAppDelegate_iPhoneSyncManagerWakeDelay = 5.0;
     [self.window addSubview:navigationController.view];
     [self.window makeKeyAndVisible];
     
-    customNavigationBar.backgroundImage = [[SCHThemeManager sharedThemeManager] imageForNavigationBar];
+    [customNavigationBar setTheme:kSCHThemeManagerNavigationBarImage];
     
     return YES;
 }

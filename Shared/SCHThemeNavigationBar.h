@@ -10,10 +10,12 @@
 #import <Foundation/Foundation.h>
 
 
-@interface SCHCustomNavigationBar : UINavigationBar {
+@interface SCHThemeNavigationBar : UINavigationBar {
     
 }
 
 @property (nonatomic, retain) UIImage *backgroundImage;
+
+- (void)setTheme:(NSString *)newImageKey;
 
 @end

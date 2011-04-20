@@ -8,11 +8,36 @@
 
 #import "SCHThemePickerViewController.h"
 
-#import "SCHThemeManager.h"
 #import <QuartzCore/QuartzCore.h>
 #import "SCHThemeManager.h"
+#import "SCHThemeButton.h"
+#import "SCHThemeImageView.h"
+#import "SCHThemeNavigationBar.h"
+
+@interface SCHThemePickerViewController ()
+
+@property (nonatomic, retain) SCHThemeButton *cancelButton;
+@property (nonatomic, retain) SCHThemeButton *doneButton;
+@property (nonatomic, retain) NSString *lastTappedTheme;
+
+- (void)previewTheme:(NSString *)themeName;
+
+@end
 
 @implementation SCHThemePickerViewController
+
+@synthesize cancelButton;
+@synthesize doneButton;
+@synthesize lastTappedTheme;
+
+- (void)dealloc 
+{    
+    self.cancelButton = nil;
+    self.doneButton = nil;
+    self.lastTappedTheme = nil;
+    
+    [super dealloc];
+}
 
 - (void)didReceiveMemoryWarning
 {
@@ -28,44 +53,83 @@
 {
     [super viewDidLoad];
 
-    self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[[SCHThemeManager sharedThemeManager] imageForBackground]];
-    self.tableView.backgroundColor = [UIColor clearColor];
+    SCHThemeImageView *themeBackgroundView = [[[SCHThemeImageView alloc] initWithImage:nil] autorelease];
+    [themeBackgroundView setTheme:kSCHThemeManagerBackgroundImage];    
+    self.tableView.backgroundView = themeBackgroundView;
+//    self.tableView.backgroundColor = [UIColor clearColor];
 
-    UIButton *cancelButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [cancelButton setFrame:CGRectMake(0, 0, 60, 30)];
-    [cancelButton setTitle:NSLocalizedString(@"Cancel", @"") forState:UIControlStateNormal];
-    [cancelButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [cancelButton setTitleColor:[UIColor colorWithWhite:1 alpha:0.5f] forState:UIControlStateHighlighted];
-    [cancelButton setReversesTitleShadowWhenHighlighted:YES];
+    self.cancelButton = [SCHThemeButton buttonWithType:UIButtonTypeCustom];
+    [self.cancelButton setFrame:CGRectMake(0, 0, 60, 30)];
+    [self.cancelButton setTitle:NSLocalizedString(@"Cancel", @"") forState:UIControlStateNormal];
+    [self.cancelButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [self.cancelButton setTitleColor:[UIColor colorWithWhite:1 alpha:0.5f] forState:UIControlStateHighlighted];
+    [self.cancelButton setReversesTitleShadowWhenHighlighted:YES];
 
-    cancelButton.titleLabel.font = [UIFont boldSystemFontOfSize:14];
-    cancelButton.titleLabel.shadowOffset = CGSizeMake(0, -1);
+    self.cancelButton.titleLabel.font = [UIFont boldSystemFontOfSize:14];
+    self.cancelButton.titleLabel.shadowOffset = CGSizeMake(0, -1);
     
-    [cancelButton setBackgroundImage:[[[SCHThemeManager sharedThemeManager] imageForButton] stretchableImageWithLeftCapWidth:5 topCapHeight:0] forState:UIControlStateNormal];
-    [cancelButton addTarget:self action:@selector(cancel) forControlEvents:UIControlEventTouchUpInside];    
+    [self.cancelButton setThemeButton:kSCHThemeManagerDoneButtonImage leftCapWidth:5 topCapHeight:0];
+    [self.cancelButton addTarget:self action:@selector(cancel) forControlEvents:UIControlEventTouchUpInside];    
     self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:cancelButton] autorelease];
     
-    UIButton *doneButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [doneButton setFrame:CGRectMake(0, 0, 60, 30)];
-    [doneButton setTitle:NSLocalizedString(@"Done", @"") forState:UIControlStateNormal];
-    [doneButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [doneButton setTitleColor:[UIColor colorWithWhite:1 alpha:0.5f] forState:UIControlStateHighlighted];
-    [doneButton setReversesTitleShadowWhenHighlighted:YES];
+    self.doneButton = [SCHThemeButton buttonWithType:UIButtonTypeCustom];
+    [self.doneButton setFrame:CGRectMake(0, 0, 60, 30)];
+    [self.doneButton setTitle:NSLocalizedString(@"Done", @"") forState:UIControlStateNormal];
+    [self.doneButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [self.doneButton setTitleColor:[UIColor colorWithWhite:1 alpha:0.5f] forState:UIControlStateHighlighted];
+    [self.doneButton setReversesTitleShadowWhenHighlighted:YES];
     
-    doneButton.titleLabel.font = [UIFont boldSystemFontOfSize:14];
-    doneButton.titleLabel.shadowOffset = CGSizeMake(0, -1);
-    
-    [doneButton setBackgroundImage:[[[SCHThemeManager sharedThemeManager] imageForDoneButton] stretchableImageWithLeftCapWidth:5 topCapHeight:0] forState:UIControlStateNormal];
-    [doneButton addTarget:self action:@selector(cancel) forControlEvents:UIControlEventTouchUpInside];    
+    self.doneButton.titleLabel.font = [UIFont boldSystemFontOfSize:14];
+    self.doneButton.titleLabel.shadowOffset = CGSizeMake(0, -1);
+
+    [self.doneButton setThemeButton:kSCHThemeManagerButtonImage leftCapWidth:5 topCapHeight:0];
+    [self.doneButton addTarget:self action:@selector(done) forControlEvents:UIControlEventTouchUpInside];    
     self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:doneButton] autorelease];
     
     self.tableView.rowHeight = 58;
     self.tableView.separatorColor = [UIColor colorWithRed:0.000 green:0.365 blue:0.616 alpha:1.000];
 }
 
+- (void)previewTheme:(NSString *)themeName
+{
+    SCHThemeManager *themeManager = [SCHThemeManager sharedThemeManager];
+
+    [UIView animateWithDuration:0.3 delay:0.0 options:UIViewAnimationOptionCurveEaseIn
+                     animations:^{
+                         self.tableView.backgroundView.alpha = 0.7;
+                         self.navigationController.navigationBar.alpha = 0.7;
+                     }
+                     completion:^(BOOL finished) {
+                         [self.cancelButton setBackgroundImage:[[themeManager imageForTheme:themeName key:kSCHThemeManagerDoneButtonImage] stretchableImageWithLeftCapWidth:5 topCapHeight:0] forState:UIControlStateNormal];
+                         [self.doneButton setBackgroundImage:[[themeManager imageForTheme:themeName key:kSCHThemeManagerButtonImage] stretchableImageWithLeftCapWidth:5 topCapHeight:0] forState:UIControlStateNormal];
+                         [(SCHThemeImageView *)self.tableView.backgroundView setImage:[themeManager imageForTheme:themeName key:kSCHThemeManagerBackgroundImage]];
+                         [(SCHThemeNavigationBar *)self.navigationController.navigationBar setBackgroundImage:[themeManager imageForTheme:themeName key:kSCHThemeManagerNavigationBarImage]];
+                         
+                         [UIView animateWithDuration:0.3 delay:0.0 options:UIViewAnimationOptionCurveEaseIn
+                                          animations:^{
+                                              self.tableView.backgroundView.alpha = 1.0;
+                                              self.navigationController.navigationBar.alpha = 1.0;
+                                          }
+                                          completion:^(BOOL finished) {
+                                          }];                         
+                     }];    
+}
+
+- (void)done
+{
+    if (self.lastTappedTheme != nil) {
+        [SCHThemeManager sharedThemeManager].theme = self.lastTappedTheme;    
+        self.lastTappedTheme = nil;
+    }
+    [self dismissModalViewControllerAnimated:YES];    
+    [self.tableView reloadData];    
+}
+
 - (void)cancel
 {
+    self.lastTappedTheme = nil;
     [self dismissModalViewControllerAnimated:YES];
+    [self previewTheme:[SCHThemeManager sharedThemeManager].theme];    
 }
 
 - (void)viewDidUnload
@@ -73,6 +137,9 @@
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
+    self.cancelButton = nil;
+    self.doneButton = nil;
+    self.lastTappedTheme = nil;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -128,12 +195,11 @@
         cell.textLabel.shadowOffset = CGSizeMake(0, 1);
         cell.textLabel.shadowColor = [UIColor colorWithWhite:0 alpha:0.5f];
     }
-    
+
     // Configure the cell...
     cell.textLabel.text = [[[SCHThemeManager sharedThemeManager] themeNames:YES] objectAtIndex:indexPath.row];
-    NSString *backgroundPath = [[NSBundle mainBundle] pathForResource:cell.textLabel.text ofType:@"png" inDirectory:@"Themes"];
-    UIImage *backgroundImage = [UIImage imageWithContentsOfFile:backgroundPath];
-    cell.backgroundColor = [UIColor colorWithPatternImage:backgroundImage];
+    cell.backgroundColor = [UIColor colorWithPatternImage:
+                            [[SCHThemeManager sharedThemeManager] imageForTheme:cell.textLabel.text key:kSCHThemeManagerImage]];
 
     return cell;
 }
@@ -142,15 +208,13 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // Navigation logic may go here. Create and push another view controller.
-    /*
-     <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-     // ...
-     // Pass the selected object to the new view controller.
-     [self.navigationController pushViewController:detailViewController animated:YES];
-     [detailViewController release];
-     */
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    [tableView deselectRowAtIndexPath:indexPath animated:NO];
+    
+    NSString *themeName = [[[SCHThemeManager sharedThemeManager] themeNames:YES] objectAtIndex:indexPath.row];
+    if ([themeName isEqualToString:self.lastTappedTheme] == NO) {
+        self.lastTappedTheme = themeName;
+        [self previewTheme:themeName];
+    }
 }
 
 @end

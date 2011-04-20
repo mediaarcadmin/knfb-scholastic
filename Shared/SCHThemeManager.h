@@ -8,7 +8,21 @@
 
 #import <Foundation/Foundation.h>
 
-static NSString * const kSCHThemeManagerThemeChange = @"SCHThemeManagerThemeChange";
+static NSString * const kSCHThemeManagerThemeChangeNotification = @"SCHThemeManagerThemeChangeNotification";
+
+static NSString * const kSCHThemeManagerDefault = @"Default";
+
+static NSString * const kSCHThemeManagerImage = @"Image";
+
+static NSString * const kSCHThemeManagerButtonImage = @"ButtonImage";
+static NSString * const kSCHThemeManagerDoneButtonImage = @"DoneButtonImage";
+static NSString * const kSCHThemeManagerNavigationBarImage = @"NavigationBarImage";
+static NSString * const kSCHThemeManagerTableViewCellImage = @"TableViewCellImage";
+static NSString * const kSCHThemeManagerBackgroundImage = @"BackgroundImage";
+static NSString * const kSCHThemeManagerShelfImage = @"ShelfImage";
+static NSString * const kSCHThemeManagerHomeIcon = @"HomeIcon";
+static NSString * const kSCHThemeManagerBooksIcon = @"BooksIcon";
+static NSString * const kSCHThemeManagerThemeIcon = @"ThemeIcon";
 
 @interface SCHThemeManager : NSObject {
     
@@ -19,7 +33,9 @@ static NSString * const kSCHThemeManagerThemeChange = @"SCHThemeManagerThemeChan
 + (SCHThemeManager *)sharedThemeManager;
 
 - (NSArray *)themeNames:(BOOL)excludeSelectedTheme;
+- (UIImage *)imageForTheme:(NSString *)themeName key:(NSString *)key;
 
+- (UIImage *)imageFor:(NSString *)imageTitle;
 - (UIImage *)imageForButton;
 - (UIImage *)imageForDoneButton;
 - (UIImage *)imageForNavigationBar;

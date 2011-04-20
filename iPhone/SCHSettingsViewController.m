@@ -14,12 +14,13 @@
 #import "SCHDrmRegistrationSession.h"
 #import "SCHProfileViewCell.h"
 #import "SCHThemeManager.h"
+#import "SCHThemeButton.h"
+#import "SCHThemeImageView.h"
 
 extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
 @implementation SCHSettingsViewController
 @synthesize tableView;
-@synthesize backgroundImage;
 
 @synthesize loginController, managedObjectContext, drmRegistrationSession;
 
@@ -29,11 +30,12 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
  
-    UIButton *deregisterButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    SCHThemeImageView *themeBackgroundView = [[[SCHThemeImageView alloc] initWithImage:nil] autorelease];
+    [themeBackgroundView setTheme:kSCHThemeManagerBackgroundImage];    
+    self.tableView.backgroundView = themeBackgroundView;
+    
+    SCHThemeButton *deregisterButton = [SCHThemeButton buttonWithType:UIButtonTypeCustom];
     [deregisterButton setFrame:CGRectMake(0, 0, 82, 30)];
     [deregisterButton setTitle:NSLocalizedString(@"Deregister", @"") forState:UIControlStateNormal];
     [deregisterButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -43,17 +45,15 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     deregisterButton.titleLabel.font = [UIFont boldSystemFontOfSize:14];
     deregisterButton.titleLabel.shadowOffset = CGSizeMake(0, -1);
     
-    [deregisterButton setBackgroundImage:[[[SCHThemeManager sharedThemeManager] imageForButton] stretchableImageWithLeftCapWidth:5 topCapHeight:0] forState:UIControlStateNormal];
+    [deregisterButton setThemeButton:kSCHThemeManagerButtonImage leftCapWidth:5 topCapHeight:0];
     [deregisterButton addTarget:self action:@selector(deregistrationButtonPushed:) forControlEvents:UIControlEventTouchUpInside];    
     self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:deregisterButton] autorelease];
     
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    [button setImage:[[SCHThemeManager sharedThemeManager] imageForHomeIcon] forState:UIControlStateNormal];
+    SCHThemeButton *button = [SCHThemeButton buttonWithType:UIButtonTypeCustom];
+    [button setThemeIcon:kSCHThemeManagerHomeIcon];
     [button sizeToFit];    
     [button addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];    
     self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:button] autorelease];
-    
-    backgroundImage.image = [[SCHThemeManager sharedThemeManager] imageForBackground];
 }
 
 - (void)back
@@ -296,7 +296,6 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     // Relinquish ownership of anything that can be recreated in viewDidLoad or on demand.
     // For example: self.myOutlet = nil;
 	self.managedObjectContext = nil;
-	
 }
 
 

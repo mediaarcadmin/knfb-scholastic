@@ -13,4 +13,8 @@
     
 }
 
+- (void)setThemeButton:(NSString *)newButtonKey leftCapWidth:(NSInteger)newLeftCapWidth 
+          topCapHeight:(NSInteger)newTopCapHeight;
+- (void)setThemeIcon:(NSString *)newIconKey;
+
 @end
