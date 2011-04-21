@@ -18,11 +18,15 @@
 #import "SCHThemeManager.h"
 #import "SCHCustomNavigationBar.h"
 
+static int STANDARD_SCRUB_INFO_HEIGHT = 47;
+
+
 @interface SCHReadingViewController ()
 
 - (void) toggleToolbarVisibility;
 - (void) setToolbarVisibility: (BOOL) visibility animated: (BOOL) animated;
 - (void) cancelInitialTimer;
+- (void) adjustScrubberInfoViewHeightForImageSize: (CGSize) imageSize;
 
 - (IBAction) popViewController: (id) sender;
 - (IBAction) magnifyAction: (id) sender;
@@ -65,6 +69,7 @@
     [fontSegmentedControl release];
     [flowFixedSegmentedControl release];
     [paperTypeSegmentedControl release];
+    [scrubberThumbImage release];
     [super dealloc];
 }
 
@@ -90,6 +95,8 @@
     backButton = nil;
     zoomButton = nil;
     audioButton = nil;
+    [scrubberThumbImage release];
+    scrubberThumbImage = nil;
     [super viewDidUnload];
     [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.isbn];
     self.xpsProvider = nil;
@@ -141,7 +148,7 @@
 	pageScrubber.continuous = YES;
 	pageScrubber.value = self.currentPageIndex + 1;
 	
-    panSpeedLabel.text = @"Hi-speed Scrubbing";
+//    panSpeedLabel.text = @"Hi-speed Scrubbing";
     pageLabel.text = [NSString stringWithFormat:@"Page %d of %d", self.currentPageIndex, [self.xpsProvider pageCount] - 1];
     
     if (self.flowView) {
@@ -315,6 +322,52 @@
 - (void) willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
     self.currentlyRotating = YES;
+    if ([scrubberInfoView superview]) {
+        
+        CGRect scrubFrame = scrubberInfoView.frame;
+        
+        CGRect statusFrame = [[UIApplication sharedApplication] statusBarFrame];
+        float statusBarHeight = MIN(statusFrame.size.height, statusFrame.size.width);
+        
+        float newNavBarHeight = 44.0f;
+        
+        NSLog(@"Status bar height is currently %f", statusBarHeight);
+        NSLog(@"Nav bar height is currently %f", self.navigationController.navigationBar.frame.size.height);
+        
+        if (newNavBarHeight == self.navigationController.navigationBar.frame.size.height) {
+            newNavBarHeight = 32.0f;
+        }
+        
+        scrubFrame.origin.x = self.view.bounds.size.width / 2 - (scrubFrame.size.width / 2);
+        scrubFrame.origin.y = statusBarHeight + newNavBarHeight + 10;
+        
+        
+        if (!self.flowView && scrubberThumbImage) {
+            
+            int maxHeight = (self.view.frame.size.width - scrubberToolbar.frame.size.height - newNavBarHeight - STANDARD_SCRUB_INFO_HEIGHT - 40);
+            
+            NSLog(@"Max height: %d", maxHeight);
+            
+            if (scrubberThumbImage.image.size.height > maxHeight) {
+                scrubberThumbImage.contentMode = UIViewContentModeScaleAspectFit;
+                scrubFrame.size.height = STANDARD_SCRUB_INFO_HEIGHT + maxHeight;
+            } else {
+                scrubberThumbImage.contentMode = UIViewContentModeTop;
+                scrubFrame.size.height = STANDARD_SCRUB_INFO_HEIGHT + scrubberThumbImage.image.size.height + 20;
+            }
+            
+            
+            NSLog(@"Scrub frame height: %f", scrubFrame.size.height);
+            
+        } else {
+            scrubFrame.size.height = STANDARD_SCRUB_INFO_HEIGHT;
+        }
+
+        
+        scrubberInfoView.frame = scrubFrame;
+        
+    }
+    
 }
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
@@ -341,68 +394,8 @@
             [zoomButton setImage:[UIImage imageNamed:@"icon-magnify-landscape"] forState:UIControlStateNormal];
         }
     }
-    
-//    self.navigationController.navigationBar.clipsToBounds = YES;
-//    
-//    unsigned long long longDuration = (duration * NSEC_PER_SEC) / 2;
-//    
-//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, longDuration), dispatch_get_current_queue(), ^{
-//        self.navigationController.navigationBar.clipsToBounds = NO;
-//    }); 
-
-    
-/*    SCHCustomNavigationBar *navBar = (SCHCustomNavigationBar *) self.navigationController.navigationBar;
-    
-    NSLog(@"navBar is %@", NSStringFromClass([navBar class]));
-    
-    if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {
-        [navBar setBackgroundImage:[UIImage imageNamed:@"Themes/Blue/bookshelf-portrait-top-bar"]];
-        //navBar.backgroundImage = nil;
-    } else {
-       [navBar setBackgroundImage:[UIImage imageNamed:@"Themes/Blue/bookshelf-landscape-top-bar"]];
-    }
-  */  
-    
-/*    [UIView beginAnimations:@"titleWidthAnimation" context:nil];
-    [UIView setAnimationDuration:duration];
-    if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {
-
-        CGRect youngerFrame = youngerBookTitleView.frame;
-        youngerFrame.size.width = 140.0f;
-        youngerBookTitleView.frame = youngerFrame;
-        
-        CGRect olderFrame = olderBookTitleView.frame;
-        olderFrame.size.width = 210.0f;
-        olderBookTitleView.frame = olderFrame;
-    } else {
-        CGRect youngerFrame = youngerBookTitleView.frame;
-        youngerFrame.size.width = 300.0f;
-        youngerBookTitleView.frame = youngerFrame;
-        
-        CGRect olderFrame = olderBookTitleView.frame;
-        olderFrame.size.width = 370.0f;
-        olderBookTitleView.frame = olderFrame;
-        
-    }
-    [UIView commitAnimations];*/
-    
-}
-/*
-- (void) willAnimateFirstHalfOfRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
-{
-    NSLog(@"First half!");
-    self.navigationController.navigationBar.clipsToBounds = YES;
-    
 }
 
-
-- (void) willAnimateSecondHalfOfRotationFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation duration:(NSTimeInterval)duration
-{
-    NSLog(@"Second half!");
-    self.navigationController.navigationBar.clipsToBounds = NO;
-
-}
-*/
 #pragma mark -
 #pragma mark Button Actions
 
@@ -487,51 +480,119 @@
     [self toggleToolbarVisibility];
 }
 
+
+- (void) adjustScrubberInfoViewHeightForImageSize: (CGSize) imageSize
+{
+    CGRect scrubFrame = scrubberInfoView.frame;
+    scrubFrame.origin.x = self.view.bounds.size.width / 2 - (scrubFrame.size.width / 2);
+    
+    CGRect statusFrame = [[UIApplication sharedApplication] statusBarFrame];
+    float statusBarHeight = MIN(statusFrame.size.height, statusFrame.size.width);
+    
+    scrubFrame.origin.y = statusBarHeight + self.navigationController.navigationBar.frame.size.height + 10;
+    
+    if (!self.flowView && imageSize.width > 0 && imageSize.height > 0) {
+        
+        int maxHeight = (self.view.frame.size.height - scrubberToolbar.frame.size.height - self.navigationController.navigationBar.frame.size.height - STANDARD_SCRUB_INFO_HEIGHT - 40);
+        
+        NSLog(@"Max height: %d", maxHeight);
+        
+        if (imageSize.height > maxHeight) {
+            scrubberThumbImage.contentMode = UIViewContentModeScaleAspectFit;
+            scrubFrame.size.height = STANDARD_SCRUB_INFO_HEIGHT + maxHeight;
+        } else {
+            scrubberThumbImage.contentMode = UIViewContentModeTop;
+            scrubFrame.size.height = STANDARD_SCRUB_INFO_HEIGHT + imageSize.height + 20;
+        }
+        
+        
+        NSLog(@"Scrub frame height: %f", scrubFrame.size.height);
+        
+    } else {
+        scrubFrame.size.height = STANDARD_SCRUB_INFO_HEIGHT;
+    }
+    
+    scrubberInfoView.frame = scrubFrame;
+}
+
+
 #pragma mark -
 #pragma mark Scrubber Actions
 
 - (void) scrubberView:(BITScrubberView *)scrubberView scrubberValueUpdated:(float)currentValue
 {
 	if (scrubberView == pageScrubber) {
-		self.currentPageIndex = (int) currentValue - 1;
+        NSLog(@"Current value is %d", (int) currentValue);
+		self.currentPageIndex = (int) currentValue;
 		
-		switch (scrubberView.scrubSpeed) {
-			case kBITScrubberScrubSpeedNormal:
-				panSpeedLabel.text = @"Hi-speed Scrubbing";
-				break;
-			case kBITScrubberScrubSpeedHalf:
-				panSpeedLabel.text = @"Half Speed Scrubbing";
-				break;
-			case kBITScrubberScrubSpeedQuarter:
-				panSpeedLabel.text = @"Slow Scrubbing";
-				break;
-			default:
-				break;
-		}
+		[pageLabel setText:[NSString stringWithFormat:@"Page %d of %d", self.currentPageIndex, [self.xpsProvider pageCount]]];
+        
+        CGRect scrubFrame = scrubberInfoView.frame;
+        scrubFrame.origin.x = self.view.bounds.size.width / 2 - (scrubFrame.size.width / 2);
+        
+        CGRect statusFrame = [[UIApplication sharedApplication] statusBarFrame];
+        float statusBarHeight = MIN(statusFrame.size.height, statusFrame.size.width);
+        
+        scrubFrame.origin.y = statusBarHeight + self.navigationController.navigationBar.frame.size.height + 10;
+        
+        if (!self.flowView) {
+            
+            UIImage *scrubImage = [self.xpsProvider thumbnailForPage:self.currentPageIndex];
+            
+            [self adjustScrubberInfoViewHeightForImageSize:scrubImage.size];
+            
+            scrubberThumbImage.image = scrubImage;
+        } 
+        scrubberInfoView.frame = scrubFrame;
 
-		[pageLabel setText:[NSString stringWithFormat:@"Page %d of %d", self.currentPageIndex + 1, [self.xpsProvider pageCount]]];
 	}
 }
 
 - (void) scrubberView:(BITScrubberView *)scrubberView beginScrubbingWithValue:(float)currentValue
 {
-	NSLog(@"Starting changes...");
-	[scrubberInfoView setAlpha:1.0f];
+    self.currentPageIndex = (int) currentValue;
+
+    // add the scrub view here
+    if (!self.flowView) {
+        UIImage *scrubImage = [self.xpsProvider thumbnailForPage:self.currentPageIndex];
+        [self adjustScrubberInfoViewHeightForImageSize:scrubImage.size];
+        scrubberThumbImage.image = scrubImage;
+    } else {
+        [self adjustScrubberInfoViewHeightForImageSize:CGSizeZero];
+    }
+    
+    self.currentPageIndex = (int) currentValue;
+    NSLog(@"Current value is %d", (int) currentValue);
+
+    [pageLabel setText:[NSString stringWithFormat:@"Page %d of %d", self.currentPageIndex, [self.xpsProvider pageCount]]];
+    
+
+    [scrubberInfoView setAlpha:1.0f];
+
+    [self.view addSubview:scrubberInfoView];
+    
 	[self cancelInitialTimer];
 	
 }
 
 - (void) scrubberView:(BITScrubberView *)scrubberView endScrubbingWithValue:(float)currentValue
 {
-	NSLog(@"Ending changes...");
-	[UIView beginAnimations:@"scrubHide" context:nil];
-	[UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
-	[UIView setAnimationDelay:0.2f];
-	[UIView setAnimationBeginsFromCurrentState:YES];
-	[scrubberInfoView setAlpha:0.0f];
-	[UIView commitAnimations];
-	
-    [self.eucPageView jumpToPageAtIndex:self.currentPageIndex animated:YES];
+    self.currentPageIndex = (int) currentValue;
+
+	[UIView animateWithDuration:0.3f 
+                          delay:0.2f 
+                        options:UIViewAnimationOptionCurveEaseOut | UIViewAnimationOptionBeginFromCurrentState
+                     animations:^{ 
+                         [scrubberInfoView setAlpha:0.0f];
+                     }
+                     completion:^(BOOL finished){
+                         [scrubberInfoView removeFromSuperview];
+                     }
+     ];
+    
+    NSLog(@"Turning to page %d", (int) currentValue);
+    
+    [self.eucPageView jumpToPageAtIndex:self.currentPageIndex - 1 animated:YES];
 }
 
 #pragma mark - Toolbar Methods - including timer
@@ -651,7 +712,7 @@
     self.eucPageView.delegate = self;
     self.eucPageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
-    [self.eucPageView jumpToPageAtIndex:self.currentPageIndex animated:NO];
+    [self.eucPageView jumpToPageAtIndex:self.currentPageIndex - 1 animated:NO];
     
     [self.view addSubview:self.eucPageView];
     [self.view sendSubviewToBack:self.eucPageView];

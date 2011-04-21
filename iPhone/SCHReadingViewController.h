@@ -19,10 +19,11 @@
     IBOutlet SCHCustomToolbar   *olderBottomToolbar;
 
 	IBOutlet BITScrubberView    *pageScrubber;
+    IBOutlet UIImageView        *scrubberThumbImage;
 
 	IBOutlet UIView             *scrubberInfoView;
 	IBOutlet UILabel            *pageLabel;
-	IBOutlet UILabel            *panSpeedLabel;
+//	IBOutlet UILabel            *panSpeedLabel;
     IBOutlet UILabel            *youngerBookTitleLabel;
     IBOutlet UIView             *youngerBookTitleView;
 	
