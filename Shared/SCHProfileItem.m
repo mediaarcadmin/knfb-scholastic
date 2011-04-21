@@ -26,6 +26,7 @@ static NSString * const kSCHProfileItemUserContentItemContentMetadataItem = @"Us
 
 @interface SCHProfileItem ()
 
+- (SCHContentProfileItem *)contentProfileItemForBook:(NSString *)contentIdentifier;
 - (NSString *)MD5:(NSString *)string;
 - (NSString *)SHA1:(NSString *)string;
 
@@ -134,29 +135,8 @@ static NSString * const kSCHProfileItemUserContentItemContentMetadataItem = @"Us
     }
 }
 
-- (NSString *)MD5:(NSString *)string
-{
-	const char *data = [string UTF8String];
-	unsigned char md[CC_MD5_DIGEST_LENGTH+1];
-    
-	bzero(md, CC_MD5_DIGEST_LENGTH+1);
-	
-	CC_MD5(data, strlen(data), md);
-	
-	return([[NSData dataWithBytes:md length:strlen((char *)md)] base64Encoding]);
-}
-
-- (NSString *)SHA1:(NSString *)string
-{
-	const char *data = [string UTF8String];
-	unsigned char md[CC_SHA1_DIGEST_LENGTH+1];
-    
-	bzero(md, CC_SHA1_DIGEST_LENGTH+1);
-
-	CC_SHA1(data, strlen(data), md);
-	
-	return([[NSData dataWithBytes:md length:strlen((char *)md)] base64Encoding]);
-}
+#pragma -
+#pragma Accessor methods
 
 - (void)setRawPassword:(NSString *)value 
 {
@@ -179,6 +159,81 @@ static NSString * const kSCHProfileItemUserContentItemContentMetadataItem = @"Us
 	} else {
 		return(YES);
 	}
+}
+
+#pragma -
+#pragma Accessor delegated methods
+
+- (BOOL)contentIdentifierFavorite:(NSString *)contentIdentifier
+{
+    SCHContentProfileItem *ret = [self contentProfileItemForBook:contentIdentifier];
+    
+    return([ret.IsFavorite boolValue]);
+}
+
+- (void)setContentIdentifier:(NSString *)contentIdentifier favorite:(BOOL)flag
+{
+    SCHContentProfileItem *ret = [self contentProfileItemForBook:contentIdentifier];    
+    
+    ret.IsFavorite = [NSNumber numberWithBool:flag];
+}
+
+- (NSInteger)contentIdentifierLastPageLocation:(NSString *)contentIdentifier
+{
+    SCHContentProfileItem *ret = [self contentProfileItemForBook:contentIdentifier];
+    
+    return([ret.LastPageLocation integerValue]);
+}
+
+- (void)setContentIdentifier:(NSString *)contentIdentifier lastPageLocation:(NSInteger)lastPageLocation
+{
+    SCHContentProfileItem *ret = [self contentProfileItemForBook:contentIdentifier];        
+    
+    ret.LastPageLocation = [NSNumber numberWithInteger:lastPageLocation];    
+}
+
+- (SCHContentProfileItem *)contentProfileItemForBook:(NSString *)contentIdentifier
+{
+    SCHContentProfileItem *ret = nil;
+    
+    if (contentIdentifier != nil) {
+        for (SCHContentProfileItem *contentProfileItem in [self valueForKey:kSCHProfileItemContentProfileItem]) {
+            SCHUserContentItem *userContentItem = [contentProfileItem valueForKeyPath:kSCHProfileItemUserContentItem];
+            if ([userContentItem.ContentIdentifier isEqualToString:contentIdentifier] == YES) {
+                ret = contentProfileItem;
+                break;
+            }
+        }
+    }
+    
+    return(ret);
+}
+
+#pragma -
+#pragma Encryption methods
+
+- (NSString *)MD5:(NSString *)string
+{
+	const char *data = [string UTF8String];
+	unsigned char md[CC_MD5_DIGEST_LENGTH+1];
+    
+	bzero(md, CC_MD5_DIGEST_LENGTH+1);
+	
+	CC_MD5(data, strlen(data), md);
+	
+	return([[NSData dataWithBytes:md length:strlen((char *)md)] base64Encoding]);
+}
+
+- (NSString *)SHA1:(NSString *)string
+{
+	const char *data = [string UTF8String];
+	unsigned char md[CC_SHA1_DIGEST_LENGTH+1];
+    
+	bzero(md, CC_SHA1_DIGEST_LENGTH+1);
+
+	CC_SHA1(data, strlen(data), md);
+	
+	return([[NSData dataWithBytes:md length:strlen((char *)md)] base64Encoding]);
 }
 
 @end
