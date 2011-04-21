@@ -72,14 +72,12 @@
 			[pngData writeToFile:thumbPath atomically:YES];
 		}
         
-        coverSize = [SCHThumbnailFactory coverSizeForImageOfSize:fullImage.size thumbNailOfSize:thumbImage.size aspect:self.aspect];
  	}
     
 	if (thumbImage) {
 		NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
                                   self.isbn, @"isbn",
 								  [NSValue valueWithCGSize:size], @"thumbSize", 
-                                  [NSValue valueWithCGSize:coverSize], @"coverSize", 
 								  thumbImage, @"image", 
 								  nil];
 		

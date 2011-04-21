@@ -3404,6 +3404,7 @@
 				HEADER_SEARCH_PATHS = (
 					"\"$(TARGET_BUILD_DIR)/usr/local/lib/include\"",
 					"\"$(DSTROOT)/usr/local/lib/include\"",
+					"\"$(OBJROOT)/UninstalledProducts/include\"",
 				);
 				LIBRARY_SEARCH_PATHS = "\"$(SRCROOT)/Shared/Libraries/DRM\"";
 				OTHER_CFLAGS = (
@@ -3461,6 +3462,7 @@
 				HEADER_SEARCH_PATHS = (
 					"\"$(TARGET_BUILD_DIR)/usr/local/lib/include\"",
 					"\"$(DSTROOT)/usr/local/lib/include\"",
+					"\"$(OBJROOT)/UninstalledProducts/include\"",
 				);
 				LIBRARY_SEARCH_PATHS = "\"$(SRCROOT)/Shared/Libraries/DRM\"";
 				OTHER_CFLAGS = "-I/usr/include/libxml2";
@@ -3490,6 +3492,7 @@
 				HEADER_SEARCH_PATHS = (
 					"\"$(TARGET_BUILD_DIR)/usr/local/lib/include\"",
 					"\"$(DSTROOT)/usr/local/lib/include\"",
+					"\"$(OBJROOT)/UninstalledProducts/include\"",
 				);
 				LIBRARY_SEARCH_PATHS = "\"$(SRCROOT)/Shared/Libraries/DRM\"";
 				OTHER_CFLAGS = (

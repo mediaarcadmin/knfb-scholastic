@@ -43,7 +43,7 @@
 		[self.contentView addSubview:self.progressView];
 		self.progressView.hidden = NO;
 		
-	}
+    }
 	
 	return self;
 }
@@ -57,20 +57,23 @@
 
 //	self.statusLabel.frame = CGRectMake(-10, self.frame.size.height - 20, self.frame.size.width + 20, 14);
 	self.asyncImageView.frame = CGRectMake(2, 0, self.frame.size.width - 4, self.frame.size.height - 22);
-//	self.thumbTintView.frame = CGRectMake(2, 0, self.frame.size.width - 4, self.frame.size.height - 22);
 	self.progressView.frame = CGRectMake(10, self.frame.size.height - 42, self.frame.size.width - 20, 10);
 
     
-    CGRect thumbTintFrame = self.thumbTintView.frame;
+    if (asyncImageView && !CGSizeEqualToSize(self.asyncImageView.coverSize, CGSizeZero)) {
     
-    thumbTintFrame.size.width = self.asyncImageView.coverSize.width;
-    thumbTintFrame.size.height = self.asyncImageView.coverSize.height;
+        CGRect thumbTintFrame = self.thumbTintView.frame;
+        
+        thumbTintFrame.size.width = self.asyncImageView.coverSize.width;
+        thumbTintFrame.size.height = self.asyncImageView.coverSize.height;
+        
+        thumbTintFrame.origin.x = (self.contentView.frame.size.width - thumbTintFrame.size.width) / 2;
+        thumbTintFrame.origin.y = self.asyncImageView.frame.size.height - thumbTintFrame.size.height;
+        
+        self.thumbTintView.frame = thumbTintFrame;
+    }
     
-    thumbTintFrame.origin.x = (self.contentView.frame.size.width - thumbTintFrame.size.width) / 2;
-    thumbTintFrame.origin.y = self.asyncImageView.frame.size.height - thumbTintFrame.size.height;
-    
-    self.thumbTintView.frame = thumbTintFrame;
-    
+
     [UIView setAnimationsEnabled:YES];
 }
 
@@ -83,6 +86,7 @@
 
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"SCHBookDownloadPercentageUpdate" object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"SCHBookStatusUpdate" object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"SCHNewImageAvailable" object:nil];
 	
 	if (newIsbn != isbn) {
 		NSString *oldIsbn = isbn;
@@ -99,6 +103,12 @@
 											 selector:@selector(checkForCellUpdateFromNotification:)
 												 name:@"SCHBookStateUpdate"
 											   object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(checkForCellUpdateFromNotification:)
+												 name:@"SCHNewImageAvailable"
+											   object:nil];
+
 	[self.asyncImageView setIsbn:self.isbn];
 	[self refreshCell];
 	
@@ -124,23 +134,9 @@
 	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];
 	
 	//NSString *status = [book processingStateAsString];
-	
+    
 	// book status
 	switch ([book processingState]) {
-		case SCHBookProcessingStateError:
-        case SCHBookProcessingStateBookVersionNotSupported:
-		case SCHBookProcessingStateNoURLs:
-		case SCHBookProcessingStateNoCoverImage:
-		case SCHBookProcessingStateReadyForBookFileDownload:
-        case SCHBookProcessingStateReadyForLicenseAcquisition:
-        case SCHBookProcessingStateReadyForRightsParsing:
-        case SCHBookProcessingStateReadyForTextFlowPreParse:
-        case SCHBookProcessingStateReadyForSmartZoomPreParse:
-        case SCHBookProcessingStateReadyForPagination:
-			self.thumbTintView.hidden = NO;
-			self.progressView.hidden = YES;
-//			self.statusLabel.hidden = NO;
-			break;
 		case SCHBookProcessingStateDownloadStarted:
 		case SCHBookProcessingStateDownloadPaused:
 			self.thumbTintView.hidden = NO;
@@ -148,10 +144,14 @@
 //			self.statusLabel.hidden = NO;
 			break;
 		case SCHBookProcessingStateReadyToRead:
-		default:
 			self.thumbTintView.hidden = YES;
 			self.progressView.hidden = YES;
 //			self.statusLabel.hidden = YES;
+			break;
+        default:
+			self.thumbTintView.hidden = NO;
+			self.progressView.hidden = YES;
+//			self.statusLabel.hidden = NO;
 			break;
 	}
 	
