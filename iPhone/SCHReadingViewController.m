@@ -649,6 +649,7 @@
     }
     
     self.eucPageView.delegate = self;
+    self.eucPageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
     [self.eucPageView jumpToPageAtIndex:self.currentPageIndex animated:NO];
     
