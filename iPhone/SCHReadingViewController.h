@@ -22,7 +22,7 @@
 
 	IBOutlet UIView             *scrubberInfoView;
 	IBOutlet UILabel            *pageLabel;
-	IBOutlet UILabel            *panSpeedLabel;
+//	IBOutlet UILabel            *panSpeedLabel;
     IBOutlet UILabel            *youngerBookTitleLabel;
     IBOutlet UIView             *youngerBookTitleView;
 	
