@@ -22,14 +22,16 @@
 	
 }
 
-@property (readwrite, retain) SCHReadingViewController *pageViewController;
-@property (readwrite, retain) NSString *isbn;
-@property (readwrite, retain) UIImage *thumbnailImage;
-@property (readwrite, retain) SCHProfileItem *profileItem;
+@property (nonatomic, retain) SCHReadingViewController *pageViewController;
+@property (nonatomic, retain) NSString *isbn;
+@property (nonatomic, retain) UIImage *thumbnailImage;
+@property (nonatomic, retain) SCHProfileItem *profileItem;
+@property (nonatomic, retain) IBOutlet UIButton *favouriteButton;
 
 - (IBAction) showFlowView: (id) sender;
 - (IBAction) showFixedView: (id) sender;
 - (IBAction) tapBookCover: (id) sender;
+- (IBAction)toggleFavorite:(id)sender;
 - (void) cancelInitialTimer;
 
 @end

@@ -11,12 +11,21 @@
 #import "LibreAccessServiceSvc.h"
 //#import "SCHReadingViewController.h"
 #import "SCHThemeManager.h"
+#import "SCHThemeButton.h"
+#import "SCHContentProfileItem.h"
+
+@interface BITReadingOptionsView ()
+
+- (void)updateFavoriteDisplay;
+
+@end
 
 @implementation BITReadingOptionsView
 @synthesize pageViewController;
 @synthesize isbn;
 @synthesize thumbnailImage;
 @synthesize profileItem;
+@synthesize favouriteButton;
 
 // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
 /*
@@ -36,8 +45,11 @@
 	optionsView.layer.cornerRadius = 5.0f;
 	optionsView.layer.masksToBounds = YES;
     
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    [button setImage:[[SCHThemeManager sharedThemeManager] imageForBooksIcon:[[UIApplication sharedApplication] statusBarOrientation]] forState:UIControlStateNormal];
+    self.favouriteButton.titleLabel.textAlignment = UITextAlignmentCenter;
+    [self updateFavoriteDisplay];
+    
+    SCHThemeButton *button = [SCHThemeButton buttonWithType:UIButtonTypeCustom];
+    [button setThemeIcon:kSCHThemeManagerBooksIcon];
     [button setContentEdgeInsets:UIEdgeInsetsMake(0, 7, 0, 0)];
     [button sizeToFit];    
     [button addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];    
@@ -81,6 +93,32 @@
 {
     [self.navigationController popViewControllerAnimated:YES];
 }
+
+#pragma -
+#pragma Accessor methods
+
+- (void)setProfileItem:(SCHProfileItem *)newProfileItem
+{
+    [profileItem release];
+    profileItem = [newProfileItem retain];
+    
+    if (self.isbn != nil) {
+        [self updateFavoriteDisplay];
+    }
+}
+
+- (void)setIsbn:(NSString *)newIsbn
+{
+    [isbn release];
+    isbn = [newIsbn retain];
+    
+    if (self.profileItem != nil) {
+        [self updateFavoriteDisplay];
+    }
+}
+
+#pragma -
+#pragma Action methods
 
 - (IBAction) showFlowView: (id) sender
 {
@@ -140,6 +178,14 @@
 	[self cancelInitialTimer];
 }
 
+- (IBAction)toggleFavorite:(id)sender
+{
+    BOOL favorite = favouriteButton.tag;
+    [self.profileItem setContentIdentifier:self.isbn favorite:(favorite != YES)];
+    [self.profileItem.managedObjectContext save:nil];
+    [self updateFavoriteDisplay];    
+}
+
 - (void) cancelInitialTimer
 {
 	if (initialFadeTimer && [initialFadeTimer isValid]) {
@@ -148,7 +194,27 @@
 	}
 }	
 
+#pragma -
+#pragma Private methods
 
+- (void)updateFavoriteDisplay
+{
+    if (self.profileItem == nil) {
+        [favouriteButton setTitle:@"" forState:UIControlStateNormal]; 
+        favouriteButton.hidden = YES;
+    } else {
+        BOOL favorite = [self.profileItem contentIdentifierFavorite:self.isbn];
+        favouriteButton.tag = favorite;        
+        favouriteButton.hidden = NO;
+        if (favorite == NO) {
+            [favouriteButton setTitle:NSLocalizedString(@"Add to Favorites", @"") 
+                             forState:UIControlStateNormal];
+        } else {
+            [favouriteButton setTitle:NSLocalizedString(@"Remove from Favorites", @"") 
+                             forState:UIControlStateNormal];            
+        }
+    }
+}
 
 - (void)didReceiveMemoryWarning {
     // Releases the view if it doesn't have a superview.
@@ -161,10 +227,17 @@
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
+    self.favouriteButton = nil;
 }
 
 
 - (void)dealloc {
+    self.pageViewController = nil;
+    self.isbn = nil;
+    self.thumbnailImage = nil;
+    self.profileItem = nil;
+    self.favouriteButton = nil;
+    
     [super dealloc];
 }
 

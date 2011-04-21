@@ -11,6 +11,7 @@
 #import "SCHSyncEntity.h"
 
 @class SCHAppBookOrder;
+@class SCHContentProfileItem;
 
 static NSString * const kSCHProfileItem = @"SCHProfileItem";
 
@@ -39,6 +40,11 @@ static NSString * const kSCHProfileItem = @"SCHProfileItem";
 - (void)setRawPassword:(NSString *)value;
 - (BOOL)hasPassword;
 - (BOOL)validatePasswordWith:(NSString *)withPassword;
+
+- (BOOL)contentIdentifierFavorite:(NSString *)contentIdentifier;
+- (void)setContentIdentifier:(NSString *)contentIdentifier favorite:(BOOL)flag;
+- (NSInteger)contentIdentifierLastPageLocation:(NSString *)contentIdentifier;
+- (void)setContentIdentifier:(NSString *)contentIdentifier lastPageLocation:(NSInteger)lastPageLocation;
 
 @end
 

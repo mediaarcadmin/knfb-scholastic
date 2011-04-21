@@ -2,10 +2,10 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="7.10">
 	<data>
 		<int key="IBDocument.SystemTarget">1056</int>
-		<string key="IBDocument.SystemVersion">10J567</string>
+		<string key="IBDocument.SystemVersion">10J869</string>
 		<string key="IBDocument.InterfaceBuilderVersion">1306</string>
 		<string key="IBDocument.AppKitVersion">1038.35</string>
-		<string key="IBDocument.HIToolboxVersion">462.00</string>
+		<string key="IBDocument.HIToolboxVersion">461.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 			<string key="NS.object.0">301</string>
@@ -114,16 +114,21 @@
 							</object>
 							<object class="IBUIButton" id="94263054">
 								<reference key="NSNextResponder" ref="583248309"/>
-								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{0, 295}, {264, 47}}</string>
+								<int key="NSvFlags">290</int>
+								<string key="NSFrame">{{0, 295}, {260, 47}}</string>
 								<reference key="NSSuperview" ref="583248309"/>
 								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView"/>
+								<object class="NSColor" key="IBUIBackgroundColor">
+									<int key="NSColorSpace">3</int>
+									<bytes key="NSWhite">MCAwAA</bytes>
+								</object>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<int key="IBUIContentHorizontalAlignment">0</int>
 								<int key="IBUIContentVerticalAlignment">0</int>
 								<reference key="IBUIFont" ref="609275758"/>
-								<string key="IBUINormalTitle">Add to Favorites</string>
+								<string key="IBUINormalTitle">Remove from Favorites</string>
 								<reference key="IBUIHighlightedTitleColor" ref="277447278"/>
 								<reference key="IBUINormalTitleColor" ref="981529245"/>
 								<reference key="IBUINormalTitleShadowColor" ref="677504467"/>
@@ -267,6 +272,23 @@
 					</object>
 					<int key="connectionID">24</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">favouriteButton</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="94263054"/>
+					</object>
+					<int key="connectionID">25</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">toggleFavorite:</string>
+						<reference key="source" ref="94263054"/>
+						<reference key="destination" ref="372490531"/>
+						<int key="IBEventType">7</int>
+					</object>
+					<int key="connectionID">26</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -318,6 +340,7 @@
 						<int key="objectID">14</int>
 						<reference key="object" ref="1060258378"/>
 						<reference key="parent" ref="587623915"/>
+						<string key="objectName">Button</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">21</int>
@@ -376,6 +399,7 @@
 					<string>6.IBPluginDependency</string>
 					<string>6.IBViewBoundsToFrameTransform</string>
 					<string>7.IBPluginDependency</string>
+					<string>7.IBUIButtonInspectorSelectedEdgeInsetMetadataKey</string>
 					<string>7.IBViewBoundsToFrameTransform</string>
 				</object>
 				<object class="NSMutableArray" key="dict.values">
@@ -406,6 +430,7 @@
 						<bytes key="NSTransformStruct">AUHgAABDDAAAA</bytes>
 					</object>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<real value="0.0"/>
 					<object class="NSAffineTransform">
 						<bytes key="NSTransformStruct">AUHgAABDp4AAA</bytes>
 					</object>
@@ -423,7 +448,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">24</int>
+			<int key="maxID">27</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -438,9 +463,11 @@
 							<string>showFixedView:</string>
 							<string>showFlowView:</string>
 							<string>tapBookCover:</string>
+							<string>toggleFavorite:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>
@@ -453,6 +480,7 @@
 							<string>showFixedView:</string>
 							<string>showFlowView:</string>
 							<string>tapBookCover:</string>
+							<string>toggleFavorite:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
@@ -468,6 +496,10 @@
 								<string key="name">tapBookCover:</string>
 								<string key="candidateClassName">id</string>
 							</object>
+							<object class="IBActionInfo">
+								<string key="name">toggleFavorite:</string>
+								<string key="candidateClassName">id</string>
+							</object>
 						</object>
 					</object>
 					<object class="NSMutableDictionary" key="outlets">
@@ -476,12 +508,14 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>bookCoverView</string>
 							<string>coverImageView</string>
+							<string>favouriteButton</string>
 							<string>optionsView</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>UIView</string>
 							<string>UIImageView</string>
+							<string>UIButton</string>
 							<string>UIView</string>
 						</object>
 					</object>
@@ -491,6 +525,7 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>bookCoverView</string>
 							<string>coverImageView</string>
+							<string>favouriteButton</string>
 							<string>optionsView</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
@@ -502,6 +537,10 @@
 							<object class="IBToOneOutletInfo">
 								<string key="name">coverImageView</string>
 								<string key="candidateClassName">UIImageView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">favouriteButton</string>
+								<string key="candidateClassName">UIButton</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">optionsView</string>
