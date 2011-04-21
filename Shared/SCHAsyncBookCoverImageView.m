@@ -7,10 +7,14 @@
 //
 
 #import "SCHAsyncBookCoverImageView.h"
+#import "SCHBookManager.h"
+#import "SCHAppBook.h"
+#import "SCHThumbnailFactory.h"
 
 @interface SCHAsyncBookCoverImageView () 
 
-- (void)newImageAvailable:(NSNotification *)notification;
+- (void) newImageAvailable:(NSNotification *)notification;
+- (void) calculateCoverSize;
 
 @end
 
@@ -29,6 +33,8 @@
 	self.contentMode = UIViewContentModeBottom;
 	self.clipsToBounds = YES;
     self.backgroundColor = [UIColor clearColor];
+    
+    self.coverSize = CGSizeZero;
 }
 
 - (id) initWithFrame: (CGRect) frame {
@@ -59,25 +65,47 @@
 											 selector:@selector(newImageAvailable:)
 												 name:@"SCHNewImageAvailable"
 											   object:nil];
+    
+    [self calculateCoverSize];
 	
 }
 
+- (void) setImage:(UIImage *)image
+{
+    [super setImage:image];
+    [self calculateCoverSize];
+}
 
-- (void)newImageAvailable:(NSNotification *)notification {
+- (void) newImageAvailable:(NSNotification *)notification {
 	NSDictionary *userInfo = [notification userInfo];
     
     if ([self.isbn compare:[userInfo objectForKey:@"isbn"]] == NSOrderedSame) {
         id image = [userInfo valueForKey:@"image"];
         CGSize itemSize = [[userInfo valueForKey:@"thumbSize"] CGSizeValue];
-        CGSize newCoverSize = [[userInfo valueForKey:@"coverSize"] CGSizeValue];
         
         if (image && self.thumbSize.width == itemSize.width && self.thumbSize.height == itemSize.height) {
-            self.coverSize = newCoverSize;
             [self setImage:image];
+            [self calculateCoverSize];
             [self setNeedsDisplay];
         }
     }
 	
+}
+
+- (void) calculateCoverSize
+{
+    SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];
+    CGSize fullImageSize = [book bookCoverImageSize];
+    
+    if (book && self.image && !CGSizeEqualToSize(fullImageSize, CGSizeZero)) {
+        
+        CGSize aCoverSize = [SCHThumbnailFactory coverSizeForImageOfSize:fullImageSize thumbNailOfSize:self.image.size aspect:YES];
+        
+        self.coverSize = aCoverSize;
+        
+    } else {
+        self.coverSize = CGSizeMake(self.frame.size.width, self.frame.size.height);
+    }
 }
 
 @end
