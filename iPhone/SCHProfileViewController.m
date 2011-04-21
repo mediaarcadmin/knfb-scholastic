@@ -64,7 +64,7 @@ static NSString * const kRootViewControllerSettingsIcon = @"Settings.png";
 
 - (void)themeUpdate
 {
-    self.backgroundView.image = [[SCHThemeManager sharedThemeManager] imageForBackground];
+    self.backgroundView.image = [[SCHThemeManager sharedThemeManager] imageForBackground:self.interfaceOrientation];
 }    
 
 - (void)viewDidUnload {
@@ -77,6 +77,11 @@ static NSString * const kRootViewControllerSettingsIcon = @"Settings.png";
 	self.settingsController = nil;
 }
 
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    // Return YES for supported orientations
+    return (YES);
+}
 
 // Implement viewWillAppear: to do additional setup before the view is presented.
 - (void)viewWillAppear:(BOOL)animated {

@@ -16,7 +16,7 @@
 		<key>id</key>
 		<integer>1</integer>
 		<key>Image</key>
-		<string>Red/Red.png</string>
+		<string>Red/Red</string>
 		<key>Name</key>
 		<string>Red</string>
 		<key>NavigationBarImage</key>
@@ -30,7 +30,7 @@
 	</dict>
 	<dict>
 		<key>BackgroundImage</key>
-		<string>Blue/bookshelf-portrait-bg</string>
+		<string>Blue/bookshelf-bg</string>
 		<key>BooksIcon</key>
 		<string>Blue/icon-books</string>
 		<key>ButtonImage</key>
@@ -44,23 +44,49 @@
 		<key>id</key>
 		<integer>2</integer>
 		<key>Image</key>
-		<string>Blue/Blue.png</string>
+		<string>Blue/Blue</string>
 		<key>Name</key>
 		<string>Blue</string>
 		<key>NavigationBarImage</key>
-		<string>Blue/bookshelf-portrait-top-bar</string>
+		<string>Blue/bookshelf-top-bar</string>
 		<key>ShelfImage</key>
-		<string>Blue/bookshelf-landscape-shelf</string>
+		<string>Blue/bookshelf-shelf</string>
 		<key>TableViewCellImage</key>
 		<string>Blue/profile-cell-background</string>
 		<key>ThemeIcon</key>
 		<string>Blue/icon-theme</string>
 	</dict>
 	<dict>
+		<key>BackgroundImage</key>
+		<string>Test/background</string>
+		<key>BooksIcon</key>
+		<string>Test/icon-books</string>
+		<key>ButtonImage</key>
+		<string>Test/button</string>
+		<key>DoneButtonImage</key>
+		<string>Test/button-done</string>
+		<key>HomeIcon</key>
+		<string>Test/icon-home</string>
+		<key>id</key>
+		<integer>16</integer>
+		<key>Image</key>
+		<string>Test/Test</string>
+		<key>Name</key>
+		<string>Test</string>
+		<key>NavigationBarImage</key>
+		<string>Test/navigation-bar</string>
+		<key>ShelfImage</key>
+		<string>Test/shelf</string>
+		<key>TableViewCellImage</key>
+		<string>Test/table-view-cell</string>
+		<key>ThemeIcon</key>
+		<string>Test/icon-theme</string>
+	</dict>
+	<dict>
 		<key>id</key>
 		<integer>3</integer>
 		<key>Image</key>
-		<string>Wizardry.png</string>
+		<string>Wizardry</string>
 		<key>Name</key>
 		<string>Wizardry</string>
 	</dict>
@@ -78,7 +104,7 @@
 		<key>id</key>
 		<integer>4</integer>
 		<key>Image</key>
-		<string>Goosebumps/Goosebumps.png</string>
+		<string>Goosebumps/Goosebumps</string>
 		<key>Name</key>
 		<string>Goosebumps</string>
 		<key>NavigationBarImage</key>
@@ -94,7 +120,7 @@
 		<key>id</key>
 		<integer>5</integer>
 		<key>Image</key>
-		<string>Clouds.png</string>
+		<string>Clouds</string>
 		<key>Name</key>
 		<string>Clouds</string>
 	</dict>
@@ -102,7 +128,7 @@
 		<key>id</key>
 		<integer>6</integer>
 		<key>Image</key>
-		<string>Calmness.png</string>
+		<string>Calmness</string>
 		<key>Name</key>
 		<string>Calmness</string>
 	</dict>
@@ -110,7 +136,7 @@
 		<key>id</key>
 		<string>7</string>
 		<key>Image</key>
-		<string>Dungeon Master.png</string>
+		<string>Dungeon Master</string>
 		<key>Name</key>
 		<string>Dungeon Master</string>
 	</dict>

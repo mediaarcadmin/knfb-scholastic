@@ -49,7 +49,10 @@
         [self setBackgroundImage:nil forState:UIControlStateNormal];    
     } else {
         [self updateTheme];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateTheme) name:kSCHThemeManagerThemeChangeNotification object:nil];                
+        [[NSNotificationCenter defaultCenter] addObserver:self 
+                                                 selector:@selector(updateTheme) 
+                                                     name:kSCHThemeManagerThemeChangeNotification 
+                                                   object:nil];                
     }
 }
 
@@ -64,18 +67,23 @@
         [self setImage:nil forState:UIControlStateNormal];
     } else {
         [self updateTheme];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateTheme) name:kSCHThemeManagerThemeChangeNotification object:nil];                
+        [[NSNotificationCenter defaultCenter] addObserver:self 
+                                                 selector:@selector(updateTheme) 
+                                                     name:kSCHThemeManagerThemeChangeNotification 
+                                                   object:nil];                
     }
 }
 
 - (void)updateTheme
 {
     if (self.buttonKey != nil) {
-        [self setBackgroundImage:[[[SCHThemeManager sharedThemeManager] imageFor:self.buttonKey] 
+        [self setBackgroundImage:[[[SCHThemeManager sharedThemeManager] imageFor:self.buttonKey 
+                                                                     orientation:[[UIApplication sharedApplication] statusBarOrientation]] 
                                   stretchableImageWithLeftCapWidth:self.leftCapWidth topCapHeight:self.topCapHeight] forState:UIControlStateNormal];    
     }
     if (self.iconKey != nil) {
-        [self setImage:[[SCHThemeManager sharedThemeManager] imageFor:self.iconKey] forState:UIControlStateNormal];
+        [self setImage:[[SCHThemeManager sharedThemeManager] imageFor:self.iconKey 
+                                                          orientation:[[UIApplication sharedApplication] statusBarOrientation]] forState:UIControlStateNormal];
     }    
 }
 

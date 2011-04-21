@@ -24,7 +24,8 @@ static NSString * const kSCHThemeManagerHomeIcon = @"HomeIcon";
 static NSString * const kSCHThemeManagerBooksIcon = @"BooksIcon";
 static NSString * const kSCHThemeManagerThemeIcon = @"ThemeIcon";
 
-@interface SCHThemeManager : NSObject {
+@interface SCHThemeManager : NSObject 
+{
     
 }
 
@@ -33,18 +34,18 @@ static NSString * const kSCHThemeManagerThemeIcon = @"ThemeIcon";
 + (SCHThemeManager *)sharedThemeManager;
 
 - (NSArray *)themeNames:(BOOL)excludeSelectedTheme;
-- (UIImage *)imageForTheme:(NSString *)themeName key:(NSString *)key;
+- (UIImage *)imageForTheme:(NSString *)themeName key:(NSString *)key orientation:(UIInterfaceOrientation)orientation;
 
-- (UIImage *)imageFor:(NSString *)imageTitle;
-- (UIImage *)imageForButton;
-- (UIImage *)imageForDoneButton;
-- (UIImage *)imageForNavigationBar;
-- (UIImage *)imageForTableViewCell;
-- (UIImage *)imageForBackground;
-- (UIImage *)imageForShelf;
-- (UIImage *)imageForHomeIcon;
-- (UIImage *)imageForBooksIcon;
-- (UIImage *)imageForThemeIcon;
+- (UIImage *)imageFor:(NSString *)imageTitle orientation:(UIInterfaceOrientation)orientation;
+- (UIImage *)imageForButton:(UIInterfaceOrientation)orientation;
+- (UIImage *)imageForDoneButton:(UIInterfaceOrientation)orientation;
+- (UIImage *)imageForNavigationBar:(UIInterfaceOrientation)orientation;
+- (UIImage *)imageForTableViewCell:(UIInterfaceOrientation)orientation;
+- (UIImage *)imageForBackground:(UIInterfaceOrientation)orientation;
+- (UIImage *)imageForShelf:(UIInterfaceOrientation)orientation;
+- (UIImage *)imageForHomeIcon:(UIInterfaceOrientation)orientation;
+- (UIImage *)imageForBooksIcon:(UIInterfaceOrientation)orientation;
+- (UIImage *)imageForThemeIcon:(UIInterfaceOrientation)orientation;
 
 
 @end

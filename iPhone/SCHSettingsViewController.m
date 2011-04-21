@@ -181,11 +181,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     footerLabel.shadowOffset = CGSizeMake(0, -1);
     footerLabel.textAlignment = UITextAlignmentCenter;
     
-    UIView *containerView = [[UIView alloc] initWithFrame:CGRectZero];
-    [containerView addSubview:footerLabel];
-    [footerLabel release];
-    
-    return [containerView autorelease];
+    return([footerLabel autorelease]);
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section

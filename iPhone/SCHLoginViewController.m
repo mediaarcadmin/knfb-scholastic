@@ -36,6 +36,12 @@
 	self.password.text = @"";
 }
 
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    // Return YES for supported orientations
+    return (YES);
+}
+
 - (void)authenticationManager:(NSNotification *)notification
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];

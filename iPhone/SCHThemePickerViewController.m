@@ -100,10 +100,10 @@
                          self.navigationController.navigationBar.alpha = 0.7;
                      }
                      completion:^(BOOL finished) {
-                         [self.cancelButton setBackgroundImage:[[themeManager imageForTheme:themeName key:kSCHThemeManagerDoneButtonImage] stretchableImageWithLeftCapWidth:5 topCapHeight:0] forState:UIControlStateNormal];
-                         [self.doneButton setBackgroundImage:[[themeManager imageForTheme:themeName key:kSCHThemeManagerButtonImage] stretchableImageWithLeftCapWidth:5 topCapHeight:0] forState:UIControlStateNormal];
-                         [(SCHThemeImageView *)self.tableView.backgroundView setImage:[themeManager imageForTheme:themeName key:kSCHThemeManagerBackgroundImage]];
-                         [(SCHThemeNavigationBar *)self.navigationController.navigationBar setBackgroundImage:[themeManager imageForTheme:themeName key:kSCHThemeManagerNavigationBarImage]];
+                         [self.cancelButton setBackgroundImage:[[themeManager imageForTheme:themeName key:kSCHThemeManagerDoneButtonImage orientation:self.interfaceOrientation] stretchableImageWithLeftCapWidth:5 topCapHeight:0] forState:UIControlStateNormal];
+                         [self.doneButton setBackgroundImage:[[themeManager imageForTheme:themeName key:kSCHThemeManagerButtonImage orientation:self.interfaceOrientation] stretchableImageWithLeftCapWidth:5 topCapHeight:0] forState:UIControlStateNormal];
+                         [(SCHThemeImageView *)self.tableView.backgroundView setImage:[themeManager imageForTheme:themeName key:kSCHThemeManagerBackgroundImage orientation:self.interfaceOrientation]];
+                         [(SCHThemeNavigationBar *)self.navigationController.navigationBar setBackgroundImage:[themeManager imageForTheme:themeName key:kSCHThemeManagerNavigationBarImage orientation:self.interfaceOrientation]];
                          
                          [UIView animateWithDuration:0.3 delay:0.0 options:UIViewAnimationOptionCurveEaseIn
                                           animations:^{
@@ -145,7 +145,7 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     // Return YES for supported orientations
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+    return (YES);
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
@@ -199,7 +199,7 @@
     // Configure the cell...
     cell.textLabel.text = [[[SCHThemeManager sharedThemeManager] themeNames:YES] objectAtIndex:indexPath.row];
     cell.backgroundColor = [UIColor colorWithPatternImage:
-                            [[SCHThemeManager sharedThemeManager] imageForTheme:cell.textLabel.text key:kSCHThemeManagerImage]];
+                            [[SCHThemeManager sharedThemeManager] imageForTheme:cell.textLabel.text key:kSCHThemeManagerImage orientation:self.interfaceOrientation]];
 
     return cell;
 }

@@ -11,6 +11,7 @@
 static SCHThemeManager *sharedThemeManager = nil;
 
 static NSString * const kSCHThemeManagerDirectory = @"Themes";
+static NSString * const kSCHThemeManagerLandscapePostFix = @"-Landscape";
 
 static NSString * const kSCHThemeManagerID = @"id";
 static NSString * const kSCHThemeManagerName = @"Name";
@@ -21,6 +22,8 @@ static NSString * const kSCHThemeManagerSelectedTheme = @"ThemeManagerSelectedTh
 
 @property (nonatomic, retain) NSArray *allThemes;
 @property (nonatomic, retain) NSDictionary *selectedTheme;
+
+- (NSString *)filePath:(NSString *)filePath orientation:(UIInterfaceOrientation)orientation;
 
 @end
 
@@ -124,13 +127,18 @@ static NSString * const kSCHThemeManagerSelectedTheme = @"ThemeManagerSelectedTh
     return(ret);
 }
 
-- (UIImage *)imageForTheme:(NSString *)themeName key:(NSString *)key
+#pragma mark -
+#pragma mark Image Accessors
+
+- (UIImage *)imageForTheme:(NSString *)themeName key:(NSString *)key orientation:(UIInterfaceOrientation)orientation
 {
     UIImage *ret = nil;
     
     for (NSDictionary *dict in self.allThemes) {
         if ([[dict objectForKey:kSCHThemeManagerName] isEqualToString:themeName] == YES) {
-            ret = [UIImage imageNamed:[kSCHThemeManagerDirectory stringByAppendingPathComponent:[dict objectForKey:key]]];
+            ret = [UIImage imageNamed:[kSCHThemeManagerDirectory 
+                                       stringByAppendingPathComponent:[self filePath:[dict objectForKey:key] 
+                                                                         orientation:orientation]]];
             break;
         }
     }
@@ -138,58 +146,86 @@ static NSString * const kSCHThemeManagerSelectedTheme = @"ThemeManagerSelectedTh
     return(ret);
 }
 
-#pragma mark -
-#pragma mark Image Accessors
-
-- (UIImage *)imageFor:(NSString *)imageTitle
+- (UIImage *)imageFor:(NSString *)imageTitle orientation:(UIInterfaceOrientation)orientation
 {
-    return([UIImage imageNamed:[kSCHThemeManagerDirectory stringByAppendingPathComponent:[self.selectedTheme objectForKey:imageTitle]]]);
+    return([UIImage imageNamed:[kSCHThemeManagerDirectory 
+                                stringByAppendingPathComponent:[self filePath:[self.selectedTheme objectForKey:imageTitle] orientation:orientation]]]);
 }
 
-- (UIImage *)imageForButton
+- (UIImage *)imageForButton:(UIInterfaceOrientation)orientation
 {
-    return([UIImage imageNamed:[kSCHThemeManagerDirectory stringByAppendingPathComponent:[self.selectedTheme objectForKey:kSCHThemeManagerButtonImage]]]);
+    return([UIImage imageNamed:[kSCHThemeManagerDirectory 
+                                stringByAppendingPathComponent:[self filePath:[self.selectedTheme objectForKey:kSCHThemeManagerButtonImage] 
+                                                                  orientation:orientation]]]);
 }
 
-- (UIImage *)imageForDoneButton
+- (UIImage *)imageForDoneButton:(UIInterfaceOrientation)orientation
 {
-    return([UIImage imageNamed:[kSCHThemeManagerDirectory stringByAppendingPathComponent:[self.selectedTheme objectForKey:kSCHThemeManagerDoneButtonImage]]]);
+    return([UIImage imageNamed:[kSCHThemeManagerDirectory 
+                                stringByAppendingPathComponent:[self filePath:[self.selectedTheme objectForKey:kSCHThemeManagerDoneButtonImage] 
+                                                                  orientation:orientation]]]);
 }
 
-- (UIImage *)imageForNavigationBar
+- (UIImage *)imageForNavigationBar:(UIInterfaceOrientation)orientation
 {
-    return([UIImage imageNamed:[kSCHThemeManagerDirectory stringByAppendingPathComponent:[self.selectedTheme objectForKey:kSCHThemeManagerNavigationBarImage]]]);
+    return([UIImage imageNamed:[kSCHThemeManagerDirectory 
+                                stringByAppendingPathComponent:[self filePath:[self.selectedTheme objectForKey:kSCHThemeManagerNavigationBarImage] 
+                                                                  orientation:orientation]]]);
     
 }
 
-- (UIImage *)imageForTableViewCell
+- (UIImage *)imageForTableViewCell:(UIInterfaceOrientation)orientation
 {
-    return([UIImage imageNamed:[kSCHThemeManagerDirectory stringByAppendingPathComponent:[self.selectedTheme objectForKey:kSCHThemeManagerTableViewCellImage]]]);
+    return([UIImage imageNamed:[kSCHThemeManagerDirectory 
+                                stringByAppendingPathComponent:[self filePath:[self.selectedTheme objectForKey:kSCHThemeManagerTableViewCellImage] 
+                                                                  orientation:orientation]]]);
 }
 
-- (UIImage *)imageForBackground
+- (UIImage *)imageForBackground:(UIInterfaceOrientation)orientation
 {
-    return([UIImage imageNamed:[kSCHThemeManagerDirectory stringByAppendingPathComponent:[self.selectedTheme objectForKey:kSCHThemeManagerBackgroundImage]]]);
+    return([UIImage imageNamed:[kSCHThemeManagerDirectory 
+                                stringByAppendingPathComponent:[self filePath:[self.selectedTheme objectForKey:kSCHThemeManagerBackgroundImage] 
+                                                                  orientation:orientation]]]);
 }
 
-- (UIImage *)imageForShelf
+- (UIImage *)imageForShelf:(UIInterfaceOrientation)orientation
 {
-    return([UIImage imageNamed:[kSCHThemeManagerDirectory stringByAppendingPathComponent:[self.selectedTheme objectForKey:kSCHThemeManagerShelfImage]]]);
+    return([UIImage imageNamed:[kSCHThemeManagerDirectory 
+                                stringByAppendingPathComponent:[self filePath:[self.selectedTheme objectForKey:kSCHThemeManagerShelfImage]
+                                                                  orientation:orientation]]]);
 }
 
-- (UIImage *)imageForHomeIcon
+- (UIImage *)imageForHomeIcon:(UIInterfaceOrientation)orientation
 {
-    return([UIImage imageNamed:[kSCHThemeManagerDirectory stringByAppendingPathComponent:[self.selectedTheme objectForKey:kSCHThemeManagerHomeIcon]]]);
+    return([UIImage imageNamed:[kSCHThemeManagerDirectory 
+                                stringByAppendingPathComponent:[self filePath:[self.selectedTheme objectForKey:kSCHThemeManagerHomeIcon]
+                                                                  orientation:orientation]]]);
 }
 
-- (UIImage *)imageForBooksIcon
+- (UIImage *)imageForBooksIcon:(UIInterfaceOrientation)orientation
 {
-    return([UIImage imageNamed:[kSCHThemeManagerDirectory stringByAppendingPathComponent:[self.selectedTheme objectForKey:kSCHThemeManagerBooksIcon]]]);
+    return([UIImage imageNamed:[kSCHThemeManagerDirectory 
+                                stringByAppendingPathComponent:[self filePath:[self.selectedTheme objectForKey:kSCHThemeManagerBooksIcon]
+                                                                  orientation:orientation]]]);
 }
 
-- (UIImage *)imageForThemeIcon
+- (UIImage *)imageForThemeIcon:(UIInterfaceOrientation)orientation
 {
-    return([UIImage imageNamed:[kSCHThemeManagerDirectory stringByAppendingPathComponent:[self.selectedTheme objectForKey:kSCHThemeManagerThemeIcon]]]);
+    return([UIImage imageNamed:[kSCHThemeManagerDirectory 
+                                stringByAppendingPathComponent:[self filePath:[self.selectedTheme objectForKey:kSCHThemeManagerThemeIcon]
+                                                                  orientation:orientation]]]);
+}
+
+#pragma mark -
+#pragma mark Private methods
+
+- (NSString *)filePath:(NSString *)filePath orientation:(UIInterfaceOrientation)orientation
+{
+    if (UIInterfaceOrientationIsLandscape(orientation) == YES) {
+        return([NSString stringWithFormat:@"%@%@", filePath, kSCHThemeManagerLandscapePostFix]);
+    } else {
+        return(filePath);
+    }
 }
 
 @end

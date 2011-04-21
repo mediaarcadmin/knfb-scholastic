@@ -74,13 +74,17 @@
         [self setBackgroundImage:nil];    
     } else {
         [self updateTheme];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateTheme) name:kSCHThemeManagerThemeChangeNotification object:nil];                
+        [[NSNotificationCenter defaultCenter] addObserver:self 
+                                                 selector:@selector(updateTheme) 
+                                                     name:kSCHThemeManagerThemeChangeNotification 
+                                                   object:nil];                
     }
 }
 
 - (void)updateTheme
 {
-    [self setBackgroundImage:[[SCHThemeManager sharedThemeManager] imageFor:self.imageKey]];    
+    [self setBackgroundImage:[[SCHThemeManager sharedThemeManager] imageFor:self.imageKey 
+                                                                orientation:[[UIApplication sharedApplication] statusBarOrientation]]];    
 }
 
 @end
