@@ -19,6 +19,7 @@
     IBOutlet SCHCustomToolbar   *olderBottomToolbar;
 
 	IBOutlet BITScrubberView    *pageScrubber;
+    IBOutlet UIImageView        *scrubberThumbImage;
 
 	IBOutlet UIView             *scrubberInfoView;
 	IBOutlet UILabel            *pageLabel;

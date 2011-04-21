@@ -171,14 +171,14 @@
 
 - (void) setValue:(float) newValue
 {
-	NSLog(@"Current percentage (before setValue): %f", self.currentPercentage);
+//	NSLog(@"Current percentage (before setValue): %f", self.currentPercentage);
 	value = newValue;
 	
 	float diff = value - self.minimumValue;
 	float range = self.maximumValue - self.minimumValue;
 	self.currentPercentage = diff/range;
 	
-	NSLog(@"Current percentage (after setValue): %f", self.currentPercentage);
+//	NSLog(@"Current percentage (after setValue): %f", self.currentPercentage);
 	[self setNeedsDisplay];
 }
 

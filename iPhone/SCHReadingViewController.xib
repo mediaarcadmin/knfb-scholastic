@@ -17,6 +17,7 @@
 			<string>IBProxyObject</string>
 			<string>IBUIToolbar</string>
 			<string>IBUILabel</string>
+			<string>IBUIImageView</string>
 			<string>IBUISegmentedControl</string>
 			<string>IBUIButton</string>
 		</object>
@@ -381,11 +382,11 @@
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<object class="IBUILabel" id="211584875">
 						<reference key="NSNextResponder" ref="813696724"/>
-						<int key="NSvFlags">292</int>
+						<int key="NSvFlags">293</int>
 						<string key="NSFrame">{{0, 13}, {225, 21}}</string>
 						<reference key="NSSuperview" ref="813696724"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
+						<reference key="NSNextKeyView" ref="927935669"/>
 						<reference key="IBUIBackgroundColor" ref="368037730"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -404,8 +405,19 @@
 						<float key="IBUIMinimumFontSize">10</float>
 						<int key="IBUITextAlignment">1</int>
 					</object>
+					<object class="IBUIImageView" id="927935669">
+						<reference key="NSNextResponder" ref="813696724"/>
+						<int key="NSvFlags">290</int>
+						<string key="NSFrame">{{5, 42}, {215, 150}}</string>
+						<reference key="NSSuperview" ref="813696724"/>
+						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
+						<int key="IBUIContentMode">5</int>
+						<bool key="IBUIUserInteractionEnabled">NO</bool>
+						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+					</object>
 				</object>
-				<string key="NSFrameSize">{225, 47}</string>
+				<string key="NSFrameSize">{225, 203}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="211584875"/>
@@ -552,6 +564,14 @@
 						<reference key="destination" ref="689393356"/>
 					</object>
 					<int key="connectionID">140</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">scrubberThumbImage</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="927935669"/>
+					</object>
+					<int key="connectionID">142</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -730,6 +750,7 @@
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="211584875"/>
+							<reference ref="927935669"/>
 						</object>
 						<reference key="parent" ref="0"/>
 						<string key="objectName">Scrubber Info View</string>
@@ -737,6 +758,11 @@
 					<object class="IBObjectRecord">
 						<int key="objectID">18</int>
 						<reference key="object" ref="211584875"/>
+						<reference key="parent" ref="813696724"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">141</int>
+						<reference key="object" ref="927935669"/>
 						<reference key="parent" ref="813696724"/>
 					</object>
 				</object>
@@ -754,6 +780,7 @@
 					<string>131.IBPluginDependency</string>
 					<string>132.IBPluginDependency</string>
 					<string>133.IBPluginDependency</string>
+					<string>141.IBPluginDependency</string>
 					<string>18.IBPluginDependency</string>
 					<string>18.IBViewBoundsToFrameTransform</string>
 					<string>35.IBPluginDependency</string>
@@ -777,6 +804,7 @@
 					<string>SCHReadingViewController</string>
 					<string>UIResponder</string>
 					<string>{{684, 434}, {320, 480}}</string>
+					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -818,7 +846,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">140</int>
+			<int key="maxID">142</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -888,6 +916,7 @@
 							<string>pageScrubber</string>
 							<string>paperTypeSegmentedControl</string>
 							<string>scrubberInfoView</string>
+							<string>scrubberThumbImage</string>
 							<string>scrubberToolbar</string>
 							<string>youngerBookTitleLabel</string>
 							<string>youngerBookTitleView</string>
@@ -904,6 +933,7 @@
 							<string>BITScrubberView</string>
 							<string>UISegmentedControl</string>
 							<string>UIView</string>
+							<string>UIImageView</string>
 							<string>SCHCustomToolbar</string>
 							<string>UILabel</string>
 							<string>UIView</string>
@@ -923,6 +953,7 @@
 							<string>pageScrubber</string>
 							<string>paperTypeSegmentedControl</string>
 							<string>scrubberInfoView</string>
+							<string>scrubberThumbImage</string>
 							<string>scrubberToolbar</string>
 							<string>youngerBookTitleLabel</string>
 							<string>youngerBookTitleView</string>
@@ -968,6 +999,10 @@
 							<object class="IBToOneOutletInfo">
 								<string key="name">scrubberInfoView</string>
 								<string key="candidateClassName">UIView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">scrubberThumbImage</string>
+								<string key="candidateClassName">UIImageView</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">scrubberToolbar</string>
