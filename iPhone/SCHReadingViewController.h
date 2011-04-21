@@ -16,8 +16,6 @@
 @interface SCHReadingViewController : UIViewController <BITScrubberViewDelegate, SCHReadingViewDelegate> {
 	
 	IBOutlet SCHCustomToolbar   *scrubberToolbar;
-    IBOutlet SCHCustomToolbar   *youngerTopToolbar;
-    IBOutlet SCHCustomToolbar   *olderTopToolbar;
     IBOutlet SCHCustomToolbar   *olderBottomToolbar;
 
 	IBOutlet BITScrubberView    *pageScrubber;
@@ -30,12 +28,18 @@
 	
     IBOutlet UILabel            *olderBookTitleLabel;
     IBOutlet UIView             *olderBookTitleView;
+    IBOutlet UIView             *optionsView;
+    
+    IBOutlet UISegmentedControl *flowFixedSegmentedControl;
+    IBOutlet UISegmentedControl *fontSegmentedControl;
+    IBOutlet UISegmentedControl *paperTypeSegmentedControl;
 }
 
 @property (nonatomic, retain) NSString *isbn;
 @property (nonatomic, retain) SCHReadingView *eucPageView;
 @property (nonatomic) BOOL flowView;
 @property (readwrite) BOOL youngerMode;
+
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil isbn:(NSString *)aIsbn;
 

@@ -14,7 +14,7 @@
 #import "KNFBTimeOrderedCache.h"
 #import "SCHProfileItem.h"
 
-@class SCHThemeNavigationBar;
+@class SCHCustomNavigationBar;
 
 @interface SCHBookShelfViewController : UIViewController <MRGridViewDelegate, MRGridViewDataSource> {
 
@@ -23,7 +23,7 @@
 @property (nonatomic, retain) IBOutlet SCHBookShelfGridView *gridView;
 @property (nonatomic, retain) IBOutlet UIView *loadingView;
 @property (nonatomic, retain) IBOutlet UINavigationController *themePickerContainer;
-@property (nonatomic, retain) IBOutlet SCHThemeNavigationBar *customNavigationBar;
+@property (nonatomic, retain) IBOutlet SCHCustomNavigationBar *customNavigationBar;
 
 @property (nonatomic, retain) KNFBTimeOrderedCache *componentCache;
 

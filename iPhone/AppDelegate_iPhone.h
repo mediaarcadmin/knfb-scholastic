@@ -9,14 +9,14 @@
 #import <UIKit/UIKit.h>
 #import "AppDelegate_Shared.h"
 
-@class SCHThemeNavigationBar;
+@class SCHCustomNavigationBar;
 
 @interface AppDelegate_iPhone : AppDelegate_Shared {
 	UINavigationController *navigationController;
 }
 
 @property (nonatomic, retain) IBOutlet UINavigationController *navigationController;
-@property (nonatomic, retain) IBOutlet SCHThemeNavigationBar *customNavigationBar;
+@property (nonatomic, retain) IBOutlet SCHCustomNavigationBar *customNavigationBar;
 
 @end
 
