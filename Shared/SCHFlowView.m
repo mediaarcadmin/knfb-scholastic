@@ -27,6 +27,7 @@
 #import <libEucalyptus/EucSelectorRange.h>
 #import <libEucalyptus/THPair.h>
 //#import "NSArray+BlioAdditions.h"
+#import <libEucalyptus/EucConfiguration.h>
 
 @interface SCHFlowView ()
 
@@ -96,6 +97,41 @@
 {
     [eucBookView goToPageNumber:pageIndex + 1 animated:animated];
 }
+
+- (void) setPaperType: (SCHReadingViewPaperType) type
+{
+    switch (type) {
+        case SCHReadingViewPaperTypeBlack:
+            [eucBookView setPageTexture:[UIImage imageNamed: @"paper-black.png"] isDark:YES];
+            break;
+        case SCHReadingViewPaperTypeWhite:
+            [eucBookView setPageTexture:[UIImage imageNamed: @"paper-white.png"] isDark:NO];
+            break;
+        case SCHReadingViewPaperTypeSepia:
+            [eucBookView setPageTexture:[UIImage imageNamed: @"paper-neutral.png"] isDark:NO];
+            break;
+    }
+    [eucBookView setNeedsDisplay];
+}
+
+- (NSInteger) maximumFontIndex
+{
+    return ([[EucConfiguration objectForKey:EucConfigurationFontSizesKey] count] - 1);
+}
+
+
+- (void) setFontPointIndex: (NSInteger) index
+{
+    NSArray *eucFontSizeNumbers = [EucConfiguration objectForKey:EucConfigurationFontSizesKey];
+    
+    if (index < 0 || index > ([eucFontSizeNumbers count] - 1)) {
+        return;
+    }
+    
+    [eucBookView setFontPointSize:[(NSNumber *) [eucFontSizeNumbers objectAtIndex:index] intValue]];
+    [eucBookView setNeedsDisplay];
+}
+
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object
                         change:(NSDictionary *)change context:(void *)context

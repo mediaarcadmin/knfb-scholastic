@@ -58,5 +58,22 @@
     // Do nothing
 }
 
+- (void) setPaperType: (SCHReadingViewPaperType) type
+{
+    // Do nothing
+}
+
+- (void) setFontPointIndex: (NSInteger) index
+{
+    // Do nothing
+}
+
+- (NSInteger) maximumFontIndex
+{
+    // Do nothing
+    return 0;
+}
+
+
 
 @end

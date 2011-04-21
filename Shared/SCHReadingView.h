@@ -10,6 +10,12 @@
 
 @class SCHReadingView;
 
+typedef enum {
+	SCHReadingViewPaperTypeBlack = 0,
+	SCHReadingViewPaperTypeWhite,
+	SCHReadingViewPaperTypeSepia
+} SCHReadingViewPaperType;
+
 @protocol SCHReadingViewDelegate <NSObject>
 
 @optional
@@ -36,5 +42,9 @@
 
 - (void)didEnterSmartZoomMode;
 - (void)didExitSmartZoomMode;
+
+- (void) setPaperType: (SCHReadingViewPaperType) type;
+- (void) setFontPointIndex: (NSInteger) index;
+- (NSInteger) maximumFontIndex;
 
 @end

@@ -42,13 +42,15 @@
 @property (nonatomic, assign) UIButton *zoomButton;
 @property (nonatomic, assign) UIButton *audioButton;
 
+@property (readwrite) int currentFontSizeIndex;
+@property (readwrite) SCHReadingViewPaperType paperType;
 
 @end
 
 @implementation SCHReadingViewController
 
 @synthesize isbn, flowView, eucPageView, youngerMode;
-@synthesize toolbarsVisible, zoomActive, initialFadeTimer, currentPageIndex, xpsProvider, backButton, zoomButton, audioButton, currentlyRotating;
+@synthesize toolbarsVisible, zoomActive, initialFadeTimer, currentPageIndex, xpsProvider, backButton, zoomButton, audioButton, currentlyRotating, currentFontSizeIndex, paperType;
 
 #pragma mark - Memory Management
 
@@ -59,6 +61,10 @@
     [youngerBookTitleView release];
     [olderBookTitleLabel release];
     [olderBookTitleView release];
+    [optionsView release];
+    [fontSegmentedControl release];
+    [flowFixedSegmentedControl release];
+    [paperTypeSegmentedControl release];
     [super dealloc];
 }
 
@@ -73,6 +79,14 @@
     olderBookTitleLabel = nil;
     [olderBookTitleView release];
     olderBookTitleView = nil;
+    [optionsView release];
+    optionsView = nil;
+    [fontSegmentedControl release];
+    fontSegmentedControl = nil;
+    [flowFixedSegmentedControl release];
+    flowFixedSegmentedControl = nil;
+    [paperTypeSegmentedControl release];
+    paperTypeSegmentedControl = nil;
     backButton = nil;
     zoomButton = nil;
     audioButton = nil;
@@ -137,6 +151,36 @@
     }
     
     self.eucPageView.delegate = self;
+    
+    self.currentFontSizeIndex = 2;
+    [self.eucPageView setFontPointIndex:self.currentFontSizeIndex];
+    
+    if (self.flowView) {
+        [fontSegmentedControl setEnabled:YES forSegmentAtIndex:0];
+        [fontSegmentedControl setEnabled:YES forSegmentAtIndex:1];
+        [flowFixedSegmentedControl setSelectedSegmentIndex:0];
+    } else {
+        [fontSegmentedControl setEnabled:NO forSegmentAtIndex:0];
+        [fontSegmentedControl setEnabled:NO forSegmentAtIndex:1];
+        [flowFixedSegmentedControl setSelectedSegmentIndex:1];
+    }
+    
+    
+    self.paperType = SCHReadingViewPaperTypeWhite;
+    
+    switch (self.paperType) {
+        case SCHReadingViewPaperTypeWhite:
+            [paperTypeSegmentedControl setSelectedSegmentIndex:0];
+            break;
+        case SCHReadingViewPaperTypeBlack:
+            [paperTypeSegmentedControl setSelectedSegmentIndex:1];
+            break;
+        case SCHReadingViewPaperTypeSepia:
+            [paperTypeSegmentedControl setSelectedSegmentIndex:2];
+            break;
+    }
+    [self.eucPageView setPaperType:self.paperType];
+    
     self.wantsFullScreenLayout = YES;
     self.navigationController.navigationBar.translucent = YES;
     
@@ -220,6 +264,11 @@
         CGRect rightFrame = rightHandView.frame;
         rightFrame.size.width = buttonFrame.size.width + buttonPadding + button2Frame.size.width + buttonPadding;
         rightHandView.frame = rightFrame;
+    } else {
+        CGRect frame = olderBottomToolbar.frame;
+        frame.origin.y = CGRectGetMinY(scrubberToolbar.frame) - CGRectGetHeight(olderBottomToolbar.frame);
+        olderBottomToolbar.frame = frame;
+        [self.view addSubview:olderBottomToolbar];
     }
     
     
@@ -407,6 +456,21 @@
 - (IBAction) settingsAction: (id) sender
 {
     NSLog(@"Settings action");
+    [self cancelInitialTimer];
+    
+    if (optionsView.superview) {
+        [optionsView removeFromSuperview];
+    } else {
+        
+        CGRect optionsFrame = optionsView.frame;
+        optionsFrame.origin.x = 0;
+        optionsFrame.origin.y = olderBottomToolbar.frame.origin.y - optionsFrame.size.height;
+        
+        optionsFrame.size.width = self.view.frame.size.width;
+        optionsView.frame = optionsFrame;
+        
+        [self.view addSubview:optionsView];
+    }
 }
 
 #pragma mark - SCHReadingViewDelegate methods
@@ -511,7 +575,7 @@
         if (!youngerMode) {
             [olderBottomToolbar setAlpha:1.0f];
         }
-        
+        [optionsView setAlpha:1.0f];
 	} else {
         [self.navigationController.navigationBar setAlpha:0.0f];
         [scrubberToolbar setAlpha:0.0f];
@@ -519,6 +583,7 @@
             [olderBottomToolbar setAlpha:0.0f];
         }
         
+        [optionsView setAlpha:0.0f];
 	}
 	
 	if (animated) {
@@ -553,5 +618,95 @@
     NSLog(@"Previous");
     [self.eucPageView jumpToPreviousZoomBlock];
 }
+
+#pragma mark - Flowed/Fixed Toggle
+
+- (IBAction) flowedFixedSegmentChanged: (UISegmentedControl *) segControl
+{
+    int selected = segControl.selectedSegmentIndex;
+    
+    if (selected == 0) {
+        // flowed
+        NSLog(@"Picking flowed view!");
+        self.flowView = YES;
+        [fontSegmentedControl setEnabled:YES forSegmentAtIndex:0];
+        [fontSegmentedControl setEnabled:YES forSegmentAtIndex:1];
+    } else {
+        // fixed
+        NSLog(@"Picking fixed view!");
+        self.flowView = NO;
+        [fontSegmentedControl setEnabled:NO forSegmentAtIndex:0];
+        [fontSegmentedControl setEnabled:NO forSegmentAtIndex:1];
+    }
+    
+    [self.eucPageView removeFromSuperview];
+    self.eucPageView = nil;
+    
+    if (self.flowView) {
+        self.eucPageView = [[SCHFlowView alloc] initWithFrame:self.view.bounds isbn:self.isbn];
+    } else {
+        self.eucPageView = [[SCHLayoutView alloc] initWithFrame:self.view.bounds isbn:self.isbn]; 
+    }
+    
+    self.eucPageView.delegate = self;
+    
+    [self.eucPageView jumpToPageAtIndex:self.currentPageIndex animated:NO];
+    
+    [self.view addSubview:self.eucPageView];
+    [self.view sendSubviewToBack:self.eucPageView];
+    [self.eucPageView setPaperType:self.paperType];
+}
+
+#pragma mark - Paper Type Toggle
+
+- (IBAction) paperTypeSegmentChanged: (UISegmentedControl *) segControl
+{
+    int selected = segControl.selectedSegmentIndex;
+    
+    if (selected == 0) {
+        // white
+        [self.eucPageView setPaperType:SCHReadingViewPaperTypeWhite];
+        self.paperType = SCHReadingViewPaperTypeWhite;
+    } else if (selected == 1) {
+        // black
+        [self.eucPageView setPaperType:SCHReadingViewPaperTypeBlack];
+        self.paperType = SCHReadingViewPaperTypeBlack;
+    } else {
+        // sepia
+        [self.eucPageView setPaperType:SCHReadingViewPaperTypeSepia];
+        self.paperType = SCHReadingViewPaperTypeSepia;
+    }
+    
+}
+
+#pragma mark - Font Size Toggle
+
+- (IBAction) fontSizeSegmentPressed: (UISegmentedControl *) segControl
+{
+    int selected = segControl.selectedSegmentIndex;
+    
+    int index = self.currentFontSizeIndex;
+    
+    if (selected == 0) {
+        // decrease font size
+        index--;
+    } else {
+        // increase font size
+        index++;
+    }
+    
+    if (index > [self.eucPageView maximumFontIndex]) {
+        index = [self.eucPageView maximumFontIndex];
+    }
+    
+    if (index < 0) {
+        index = 0;
+    }
+    
+    [self.eucPageView setFontPointIndex:index];
+    self.currentFontSizeIndex = index;
+    
+}
+
 
 @end

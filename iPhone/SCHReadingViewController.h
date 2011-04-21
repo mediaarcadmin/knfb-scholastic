@@ -28,7 +28,11 @@
 	
     IBOutlet UILabel            *olderBookTitleLabel;
     IBOutlet UIView             *olderBookTitleView;
+    IBOutlet UIView             *optionsView;
     
+    IBOutlet UISegmentedControl *flowFixedSegmentedControl;
+    IBOutlet UISegmentedControl *fontSegmentedControl;
+    IBOutlet UISegmentedControl *paperTypeSegmentedControl;
 }
 
 @property (nonatomic, retain) NSString *isbn;

@@ -257,6 +257,23 @@
     self.currentBlock = nil;
 }
 
+- (void) setPaperType: (SCHReadingViewPaperType) type
+{
+    switch (type) {
+        case SCHReadingViewPaperTypeBlack:
+            [pageTurningView setPageTexture:[UIImage imageNamed: @"paper-black.png"] isDark:YES];
+            break;
+        case SCHReadingViewPaperTypeWhite:
+            [pageTurningView setPageTexture:[UIImage imageNamed: @"paper-white.png"] isDark:NO];
+            break;
+        case SCHReadingViewPaperTypeSepia:
+            [pageTurningView setPageTexture:[UIImage imageNamed: @"paper-neutral.png"] isDark:NO];
+            break;
+    }
+    
+    [pageTurningView setNeedsDraw];
+}
+
 - (void)jumpToNextZoomBlock
 {
     id zoomBlock = nil;
