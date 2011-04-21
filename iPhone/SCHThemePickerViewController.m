@@ -12,7 +12,7 @@
 #import "SCHThemeManager.h"
 #import "SCHThemeButton.h"
 #import "SCHThemeImageView.h"
-#import "SCHThemeNavigationBar.h"
+#import "SCHCustomNavigationBar.h"
 
 @interface SCHThemePickerViewController ()
 
@@ -103,7 +103,7 @@
                          [self.cancelButton setBackgroundImage:[[themeManager imageForTheme:themeName key:kSCHThemeManagerDoneButtonImage orientation:self.interfaceOrientation] stretchableImageWithLeftCapWidth:5 topCapHeight:0] forState:UIControlStateNormal];
                          [self.doneButton setBackgroundImage:[[themeManager imageForTheme:themeName key:kSCHThemeManagerButtonImage orientation:self.interfaceOrientation] stretchableImageWithLeftCapWidth:5 topCapHeight:0] forState:UIControlStateNormal];
                          [(SCHThemeImageView *)self.tableView.backgroundView setImage:[themeManager imageForTheme:themeName key:kSCHThemeManagerBackgroundImage orientation:self.interfaceOrientation]];
-                         [(SCHThemeNavigationBar *)self.navigationController.navigationBar setBackgroundImage:[themeManager imageForTheme:themeName key:kSCHThemeManagerNavigationBarImage orientation:self.interfaceOrientation]];
+                         [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:[themeManager imageForTheme:themeName key:kSCHThemeManagerNavigationBarImage orientation:self.interfaceOrientation]];
                          
                          [UIView animateWithDuration:0.3 delay:0.0 options:UIViewAnimationOptionCurveEaseIn
                                           animations:^{

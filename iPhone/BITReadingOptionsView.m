@@ -11,7 +11,6 @@
 #import "LibreAccessServiceSvc.h"
 //#import "SCHReadingViewController.h"
 #import "SCHThemeManager.h"
-#import "SCHThemeButton.h"
 
 @implementation BITReadingOptionsView
 @synthesize pageViewController;
@@ -37,8 +36,8 @@
 	optionsView.layer.cornerRadius = 5.0f;
 	optionsView.layer.masksToBounds = YES;
     
-    SCHThemeButton *button = [SCHThemeButton buttonWithType:UIButtonTypeCustom];
-    [button setThemeIcon:kSCHThemeManagerBooksIcon];
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    [button setImage:[[SCHThemeManager sharedThemeManager] imageForBooksIcon:[[UIApplication sharedApplication] statusBarOrientation]] forState:UIControlStateNormal];
     [button setContentEdgeInsets:UIEdgeInsetsMake(0, 7, 0, 0)];
     [button sizeToFit];    
     [button addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];    
@@ -66,9 +65,8 @@
 {
 	[super viewWillAppear:animated];
 	
-	self.navigationController.navigationBarHidden = NO;
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque];	
-    [self.navigationController.navigationBar setBarStyle:UIBarStyleDefault];
+//    [self.navigationController.navigationBar setBarStyle:UIBarStyleDefault];
 	NSLog(@"Item: %@", self.isbn);
 	
 	if (self.thumbnailImage) {

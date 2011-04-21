@@ -19,7 +19,7 @@
 #import "SCHXPSProvider.h"
 #import <QuartzCore/QuartzCore.h>
 #import "SCHAppBook.h"
-#import "SCHThemeNavigationBar.h"
+#import "SCHCustomNavigationBar.h"
 #import "SCHThemeManager.h"
 #import "SCHThemeButton.h"
 

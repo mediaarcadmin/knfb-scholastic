@@ -131,8 +131,6 @@
 		52F559C7130BEA57002C8BDF /* SCHProfilePasswordViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52F559C5130BEA57002C8BDF /* SCHProfilePasswordViewController.xib */; };
 		52F559C8130BEA57002C8BDF /* SCHProfilePasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52F559C4130BEA57002C8BDF /* SCHProfilePasswordViewController.m */; };
 		52F559C9130BEA57002C8BDF /* SCHProfilePasswordViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52F559C5130BEA57002C8BDF /* SCHProfilePasswordViewController.xib */; };
-		52F765991356EA81007C27C6 /* SCHThemeNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 52F765981356EA81007C27C6 /* SCHThemeNavigationBar.m */; };
-		52F7659A1356EA81007C27C6 /* SCHThemeNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 52F765981356EA81007C27C6 /* SCHThemeNavigationBar.m */; };
 		A3A38E08133A803500C325A3 /* SCHDrmRegistrationSession.m in Sources */ = {isa = PBXBuildFile; fileRef = A3A38E04133A803500C325A3 /* SCHDrmRegistrationSession.m */; };
 		A3A38E09133A803500C325A3 /* SCHDrmSession.m in Sources */ = {isa = PBXBuildFile; fileRef = A3A38E07133A803500C325A3 /* SCHDrmSession.m */; };
 		A3A38E0A133A803500C325A3 /* SCHDrmRegistrationSession.m in Sources */ = {isa = PBXBuildFile; fileRef = A3A38E04133A803500C325A3 /* SCHDrmRegistrationSession.m */; };
@@ -514,10 +512,6 @@
 		F848824113573F4500A2C8D3 /* icon-magnify-active@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F848823D13573F4500A2C8D3 /* icon-magnify-active@2x.png */; };
 		F84CE156134C691D0044729E /* SCHNonDRMAuthenticationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F84CE155134C691D0044729E /* SCHNonDRMAuthenticationManager.m */; };
 		F84CE157134C691D0044729E /* SCHNonDRMAuthenticationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F84CE155134C691D0044729E /* SCHNonDRMAuthenticationManager.m */; };
-		F8509E9F12F0621E00197EB5 /* SCHReadingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F8509E9312F0621E00197EB5 /* SCHReadingViewController.m */; };
-		F8509EA012F0621E00197EB5 /* SCHReadingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8509E9412F0621E00197EB5 /* SCHReadingViewController.xib */; };
-		F8509EA112F0621E00197EB5 /* BITReadingOptionsView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8509E9712F0621E00197EB5 /* BITReadingOptionsView.m */; };
-		F8509EA212F0621E00197EB5 /* BITReadingOptionsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8509E9812F0621E00197EB5 /* BITReadingOptionsView.xib */; };
 		F8509EA312F0621E00197EB5 /* BITScrubberView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8509E9B12F0621E00197EB5 /* BITScrubberView.m */; };
 		F8509EB812F0625100197EB5 /* libstdc++.6.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F8509EB712F0625100197EB5 /* libstdc++.6.dylib */; };
 		F8509EF612F063C900197EB5 /* MainWindow_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow_iPad.xib */; };
@@ -534,8 +528,6 @@
 		F8509F0A12F063C900197EB5 /* Penguins.xps in Resources */ = {isa = PBXBuildFile; fileRef = F8509E7B12F0620F00197EB5 /* Penguins.xps */; };
 		F8509F0C12F063C900197EB5 /* TooManyToys.xps in Resources */ = {isa = PBXBuildFile; fileRef = F8509E7D12F0620F00197EB5 /* TooManyToys.xps */; };
 		F8509F0D12F063C900197EB5 /* Cars.xps in Resources */ = {isa = PBXBuildFile; fileRef = F8509E7E12F0620F00197EB5 /* Cars.xps */; };
-		F8509F0F12F063C900197EB5 /* SCHReadingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8509E9412F0621E00197EB5 /* SCHReadingViewController.xib */; };
-		F8509F1012F063C900197EB5 /* BITReadingOptionsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8509E9812F0621E00197EB5 /* BITReadingOptionsView.xib */; };
 		F8509F1312F063C900197EB5 /* AppDelegate_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* AppDelegate_iPad.m */; };
 		F8509F1412F063C900197EB5 /* AppDelegate_Shared.m in Sources */ = {isa = PBXBuildFile; fileRef = 28EEC04A1118E28000187D67 /* AppDelegate_Shared.m */; };
 		F8509F1512F063C900197EB5 /* Scholastic.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2819307C112F81BE00ECF9B4 /* Scholastic.xcdatamodeld */; };
@@ -566,8 +558,6 @@
 		F8509F3512F063C900197EB5 /* LibreAccessServiceSvc.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF508612E739E900E374F7 /* LibreAccessServiceSvc.m */; };
 		F8509F3712F063C900197EB5 /* NSManagedObjectContext+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF570912ED977C00E374F7 /* NSManagedObjectContext+Extensions.m */; };
 		F8509F3812F063C900197EB5 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF579612EDBE6E00E374F7 /* SFHFKeychainUtils.m */; };
-		F8509F3C12F063C900197EB5 /* SCHReadingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F8509E9312F0621E00197EB5 /* SCHReadingViewController.m */; };
-		F8509F3D12F063C900197EB5 /* BITReadingOptionsView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8509E9712F0621E00197EB5 /* BITReadingOptionsView.m */; };
 		F8509F3E12F063C900197EB5 /* BITScrubberView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8509E9B12F0621E00197EB5 /* BITScrubberView.m */; };
 		F8509F4012F063C900197EB5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		F8509F4112F063C900197EB5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
@@ -619,6 +609,36 @@
 		F8C4C58313326E6C0057420E /* SCHDictionaryManifestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F8C4C57F13326E6C0057420E /* SCHDictionaryManifestOperation.m */; };
 		F8C5DC6F134B5DF30020D610 /* SCHDictionaryWordForm.m in Sources */ = {isa = PBXBuildFile; fileRef = F8C5DC6E134B5DF30020D610 /* SCHDictionaryWordForm.m */; };
 		F8C5DC70134B5DF30020D610 /* SCHDictionaryWordForm.m in Sources */ = {isa = PBXBuildFile; fileRef = F8C5DC6E134B5DF30020D610 /* SCHDictionaryWordForm.m */; };
+		F8C8FC191360657C0097F9DD /* reading-view-landscape-top-bar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F8C8FC151360657C0097F9DD /* reading-view-landscape-top-bar@2x.png */; };
+		F8C8FC1A1360657C0097F9DD /* reading-view-landscape-top-bar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F8C8FC151360657C0097F9DD /* reading-view-landscape-top-bar@2x.png */; };
+		F8C8FC1B1360657C0097F9DD /* reading-view-landscape-top-bar.png in Resources */ = {isa = PBXBuildFile; fileRef = F8C8FC161360657C0097F9DD /* reading-view-landscape-top-bar.png */; };
+		F8C8FC1C1360657C0097F9DD /* reading-view-landscape-top-bar.png in Resources */ = {isa = PBXBuildFile; fileRef = F8C8FC161360657C0097F9DD /* reading-view-landscape-top-bar.png */; };
+		F8C8FC1D1360657C0097F9DD /* reading-view-portrait-top-bar.png in Resources */ = {isa = PBXBuildFile; fileRef = F8C8FC171360657C0097F9DD /* reading-view-portrait-top-bar.png */; };
+		F8C8FC1E1360657C0097F9DD /* reading-view-portrait-top-bar.png in Resources */ = {isa = PBXBuildFile; fileRef = F8C8FC171360657C0097F9DD /* reading-view-portrait-top-bar.png */; };
+		F8C8FC1F1360657C0097F9DD /* reading-view-portrait-top-bar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F8C8FC181360657C0097F9DD /* reading-view-portrait-top-bar@2x.png */; };
+		F8C8FC201360657C0097F9DD /* reading-view-portrait-top-bar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F8C8FC181360657C0097F9DD /* reading-view-portrait-top-bar@2x.png */; };
+		F8C8FC241360659B0097F9DD /* SCHReadingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F8C8FC221360659B0097F9DD /* SCHReadingViewController.m */; };
+		F8C8FC251360659B0097F9DD /* SCHReadingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F8C8FC221360659B0097F9DD /* SCHReadingViewController.m */; };
+		F8C8FC261360659B0097F9DD /* SCHReadingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8C8FC231360659B0097F9DD /* SCHReadingViewController.xib */; };
+		F8C8FC271360659B0097F9DD /* SCHReadingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8C8FC231360659B0097F9DD /* SCHReadingViewController.xib */; };
+		F8C8FC2A136065AD0097F9DD /* SCHCustomNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = F8C8FC29136065AD0097F9DD /* SCHCustomNavigationBar.m */; };
+		F8C8FC2B136065AD0097F9DD /* SCHCustomNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = F8C8FC29136065AD0097F9DD /* SCHCustomNavigationBar.m */; };
+		F8C8FC2F136065C10097F9DD /* BITReadingOptionsView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8C8FC2D136065C10097F9DD /* BITReadingOptionsView.m */; };
+		F8C8FC30136065C10097F9DD /* BITReadingOptionsView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8C8FC2D136065C10097F9DD /* BITReadingOptionsView.m */; };
+		F8C8FC31136065C10097F9DD /* BITReadingOptionsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8C8FC2E136065C10097F9DD /* BITReadingOptionsView.xib */; };
+		F8C8FC32136065C10097F9DD /* BITReadingOptionsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8C8FC2E136065C10097F9DD /* BITReadingOptionsView.xib */; };
+		F8C8FC39136066590097F9DD /* icon-magnify-active-landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = F8C8FC33136066590097F9DD /* icon-magnify-active-landscape.png */; };
+		F8C8FC3A136066590097F9DD /* icon-magnify-active-landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = F8C8FC33136066590097F9DD /* icon-magnify-active-landscape.png */; };
+		F8C8FC3B136066590097F9DD /* icon-magnify-active-landscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F8C8FC34136066590097F9DD /* icon-magnify-active-landscape@2x.png */; };
+		F8C8FC3C136066590097F9DD /* icon-magnify-active-landscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F8C8FC34136066590097F9DD /* icon-magnify-active-landscape@2x.png */; };
+		F8C8FC3D136066590097F9DD /* icon-magnify-landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = F8C8FC35136066590097F9DD /* icon-magnify-landscape.png */; };
+		F8C8FC3E136066590097F9DD /* icon-magnify-landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = F8C8FC35136066590097F9DD /* icon-magnify-landscape.png */; };
+		F8C8FC3F136066590097F9DD /* icon-magnify-landscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F8C8FC36136066590097F9DD /* icon-magnify-landscape@2x.png */; };
+		F8C8FC40136066590097F9DD /* icon-magnify-landscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F8C8FC36136066590097F9DD /* icon-magnify-landscape@2x.png */; };
+		F8C8FC41136066590097F9DD /* icon-play-landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = F8C8FC37136066590097F9DD /* icon-play-landscape.png */; };
+		F8C8FC42136066590097F9DD /* icon-play-landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = F8C8FC37136066590097F9DD /* icon-play-landscape.png */; };
+		F8C8FC43136066590097F9DD /* icon-play-landscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F8C8FC38136066590097F9DD /* icon-play-landscape@2x.png */; };
+		F8C8FC44136066590097F9DD /* icon-play-landscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F8C8FC38136066590097F9DD /* icon-play-landscape@2x.png */; };
 		F8CD24F612F97E62001C748B /* SCHBookManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F8CD24CA12F9714D001C748B /* SCHBookManager.m */; };
 		F8E4088E1356138600089233 /* ReadingCustomToolbarBGAlpha.png in Resources */ = {isa = PBXBuildFile; fileRef = F8E4088D1356138600089233 /* ReadingCustomToolbarBGAlpha.png */; };
 		F8E4088F1356138600089233 /* ReadingCustomToolbarBGAlpha.png in Resources */ = {isa = PBXBuildFile; fileRef = F8E4088D1356138600089233 /* ReadingCustomToolbarBGAlpha.png */; };
@@ -914,8 +934,6 @@
 		52F559C4130BEA57002C8BDF /* SCHProfilePasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHProfilePasswordViewController.m; sourceTree = "<group>"; };
 		52F559C5130BEA57002C8BDF /* SCHProfilePasswordViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SCHProfilePasswordViewController.xib; sourceTree = "<group>"; };
 		52F559F1130BF001002C8BDF /* SCHProfilePasswordViewControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHProfilePasswordViewControllerDelegate.h; sourceTree = "<group>"; };
-		52F765971356EA81007C27C6 /* SCHThemeNavigationBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHThemeNavigationBar.h; path = Shared/SCHThemeNavigationBar.h; sourceTree = "<group>"; };
-		52F765981356EA81007C27C6 /* SCHThemeNavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHThemeNavigationBar.m; path = Shared/SCHThemeNavigationBar.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Scholastic-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Scholastic-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 		A37E7BD01358DFE90002A733 /* SCHDrmLicenseAcquisitionSessionDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHDrmLicenseAcquisitionSessionDelegate.h; path = Shared/SCHDrmLicenseAcquisitionSessionDelegate.h; sourceTree = "<group>"; };
 		A3A38E01133A7FA300C325A3 /* DrmGlobals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DrmGlobals.h; path = Shared/Libraries/DRM/DrmGlobals.h; sourceTree = "<group>"; };
@@ -1318,12 +1336,6 @@
 		F8509E7D12F0620F00197EB5 /* TooManyToys.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = TooManyToys.xps; path = "Shared/Debug Books/TooManyToys.xps"; sourceTree = "<group>"; };
 		F8509E7E12F0620F00197EB5 /* Cars.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = Cars.xps; path = "Shared/Debug Books/Cars.xps"; sourceTree = "<group>"; };
 		F8509E7F12F0621000197EB5 /* Cook Yourself Thin.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Cook Yourself Thin.xps"; path = "Shared/Debug Books/Cook Yourself Thin.xps"; sourceTree = "<group>"; };
-		F8509E9212F0621E00197EB5 /* SCHReadingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHReadingViewController.h; sourceTree = "<group>"; };
-		F8509E9312F0621E00197EB5 /* SCHReadingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHReadingViewController.m; sourceTree = "<group>"; };
-		F8509E9412F0621E00197EB5 /* SCHReadingViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SCHReadingViewController.xib; sourceTree = "<group>"; };
-		F8509E9612F0621E00197EB5 /* BITReadingOptionsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BITReadingOptionsView.h; sourceTree = "<group>"; };
-		F8509E9712F0621E00197EB5 /* BITReadingOptionsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BITReadingOptionsView.m; sourceTree = "<group>"; };
-		F8509E9812F0621E00197EB5 /* BITReadingOptionsView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BITReadingOptionsView.xib; sourceTree = "<group>"; };
 		F8509E9A12F0621E00197EB5 /* BITScrubberView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BITScrubberView.h; sourceTree = "<group>"; };
 		F8509E9B12F0621E00197EB5 /* BITScrubberView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BITScrubberView.m; sourceTree = "<group>"; };
 		F8509EB712F0625100197EB5 /* libstdc++.6.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libstdc++.6.dylib"; path = "usr/lib/libstdc++.6.dylib"; sourceTree = SDKROOT; };
@@ -1369,6 +1381,24 @@
 		F8C4C57F13326E6C0057420E /* SCHDictionaryManifestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHDictionaryManifestOperation.m; path = Shared/SCHDictionaryManifestOperation.m; sourceTree = "<group>"; };
 		F8C5DC6D134B5DF30020D610 /* SCHDictionaryWordForm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHDictionaryWordForm.h; path = Shared/SCHDictionaryWordForm.h; sourceTree = "<group>"; };
 		F8C5DC6E134B5DF30020D610 /* SCHDictionaryWordForm.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHDictionaryWordForm.m; path = Shared/SCHDictionaryWordForm.m; sourceTree = "<group>"; };
+		F8C8FC151360657C0097F9DD /* reading-view-landscape-top-bar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "reading-view-landscape-top-bar@2x.png"; sourceTree = "<group>"; };
+		F8C8FC161360657C0097F9DD /* reading-view-landscape-top-bar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "reading-view-landscape-top-bar.png"; sourceTree = "<group>"; };
+		F8C8FC171360657C0097F9DD /* reading-view-portrait-top-bar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "reading-view-portrait-top-bar.png"; sourceTree = "<group>"; };
+		F8C8FC181360657C0097F9DD /* reading-view-portrait-top-bar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "reading-view-portrait-top-bar@2x.png"; sourceTree = "<group>"; };
+		F8C8FC211360659B0097F9DD /* SCHReadingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHReadingViewController.h; sourceTree = "<group>"; };
+		F8C8FC221360659B0097F9DD /* SCHReadingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHReadingViewController.m; sourceTree = "<group>"; };
+		F8C8FC231360659B0097F9DD /* SCHReadingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHReadingViewController.xib; sourceTree = "<group>"; };
+		F8C8FC28136065AD0097F9DD /* SCHCustomNavigationBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHCustomNavigationBar.h; sourceTree = "<group>"; };
+		F8C8FC29136065AD0097F9DD /* SCHCustomNavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHCustomNavigationBar.m; sourceTree = "<group>"; };
+		F8C8FC2C136065C10097F9DD /* BITReadingOptionsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BITReadingOptionsView.h; sourceTree = "<group>"; };
+		F8C8FC2D136065C10097F9DD /* BITReadingOptionsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BITReadingOptionsView.m; sourceTree = "<group>"; };
+		F8C8FC2E136065C10097F9DD /* BITReadingOptionsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BITReadingOptionsView.xib; sourceTree = "<group>"; };
+		F8C8FC33136066590097F9DD /* icon-magnify-active-landscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-magnify-active-landscape.png"; sourceTree = "<group>"; };
+		F8C8FC34136066590097F9DD /* icon-magnify-active-landscape@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-magnify-active-landscape@2x.png"; sourceTree = "<group>"; };
+		F8C8FC35136066590097F9DD /* icon-magnify-landscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-magnify-landscape.png"; sourceTree = "<group>"; };
+		F8C8FC36136066590097F9DD /* icon-magnify-landscape@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-magnify-landscape@2x.png"; sourceTree = "<group>"; };
+		F8C8FC37136066590097F9DD /* icon-play-landscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-play-landscape.png"; sourceTree = "<group>"; };
+		F8C8FC38136066590097F9DD /* icon-play-landscape@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-play-landscape@2x.png"; sourceTree = "<group>"; };
 		F8CD24C912F9714D001C748B /* SCHBookManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookManager.h; path = iPhone/SCHBookManager.h; sourceTree = "<group>"; };
 		F8CD24CA12F9714D001C748B /* SCHBookManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookManager.m; path = iPhone/SCHBookManager.m; sourceTree = "<group>"; };
 		F8E4088D1356138600089233 /* ReadingCustomToolbarBGAlpha.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ReadingCustomToolbarBGAlpha.png; path = Resources/ReadingCustomToolbarBGAlpha.png; sourceTree = "<group>"; };
@@ -1573,8 +1603,6 @@
 			children = (
 				52E622F913584EBE00245CA7 /* SCHThemeManager.h */,
 				52E622FA13584EBE00245CA7 /* SCHThemeManager.m */,
-				52F765971356EA81007C27C6 /* SCHThemeNavigationBar.h */,
-				52F765981356EA81007C27C6 /* SCHThemeNavigationBar.m */,
 				5204B85E135C1FC500FCBD90 /* SCHThemeButton.h */,
 				5204B85F135C1FC500FCBD90 /* SCHThemeButton.m */,
 				52BAFB67135DAB8600C2AFF3 /* SCHThemeImageView.h */,
@@ -1664,6 +1692,10 @@
 		528A2CCF12CCDC400053A343 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				F8C8FC151360657C0097F9DD /* reading-view-landscape-top-bar@2x.png */,
+				F8C8FC161360657C0097F9DD /* reading-view-landscape-top-bar.png */,
+				F8C8FC171360657C0097F9DD /* reading-view-portrait-top-bar.png */,
+				F8C8FC181360657C0097F9DD /* reading-view-portrait-top-bar@2x.png */,
 				52E622F31358385D00245CA7 /* Themes */,
 				F80FED601355DD6D00DEB3C1 /* icon-magnify.png */,
 				F80FED611355DD6D00DEB3C1 /* icon-magnify@2x.png */,
@@ -1679,6 +1711,12 @@
 				F80FED691355DD6D00DEB3C1 /* icon-settings@2x.png */,
 				F80FED6A1355DD6D00DEB3C1 /* icon-story-interactions.png */,
 				F80FED6B1355DD6D00DEB3C1 /* icon-story-interactions@2x.png */,
+				F8C8FC33136066590097F9DD /* icon-magnify-active-landscape.png */,
+				F8C8FC34136066590097F9DD /* icon-magnify-active-landscape@2x.png */,
+				F8C8FC35136066590097F9DD /* icon-magnify-landscape.png */,
+				F8C8FC36136066590097F9DD /* icon-magnify-landscape@2x.png */,
+				F8C8FC37136066590097F9DD /* icon-play-landscape.png */,
+				F8C8FC38136066590097F9DD /* icon-play-landscape@2x.png */,
 				C93ECB29134B64B1003B99FD /* libKNFBReader Resources */,
 				C93ECA2C134B5EF9003B99FD /* libEucalyptus Resources */,
 				C908D87D133F941100661718 /* thumbImage.png */,
@@ -2428,9 +2466,11 @@
 		F8509E9112F0621E00197EB5 /* Book Reading */ = {
 			isa = PBXGroup;
 			children = (
-				F8509E9212F0621E00197EB5 /* SCHReadingViewController.h */,
-				F8509E9312F0621E00197EB5 /* SCHReadingViewController.m */,
-				F8509E9412F0621E00197EB5 /* SCHReadingViewController.xib */,
+				F8C8FC211360659B0097F9DD /* SCHReadingViewController.h */,
+				F8C8FC221360659B0097F9DD /* SCHReadingViewController.m */,
+				F8C8FC231360659B0097F9DD /* SCHReadingViewController.xib */,
+				F8C8FC28136065AD0097F9DD /* SCHCustomNavigationBar.h */,
+				F8C8FC29136065AD0097F9DD /* SCHCustomNavigationBar.m */,
 			);
 			name = "Book Reading";
 			sourceTree = "<group>";
@@ -2438,9 +2478,9 @@
 		F8509E9512F0621E00197EB5 /* Reading Options View */ = {
 			isa = PBXGroup;
 			children = (
-				F8509E9612F0621E00197EB5 /* BITReadingOptionsView.h */,
-				F8509E9712F0621E00197EB5 /* BITReadingOptionsView.m */,
-				F8509E9812F0621E00197EB5 /* BITReadingOptionsView.xib */,
+				F8C8FC2C136065C10097F9DD /* BITReadingOptionsView.h */,
+				F8C8FC2D136065C10097F9DD /* BITReadingOptionsView.m */,
+				F8C8FC2E136065C10097F9DD /* BITReadingOptionsView.xib */,
 			);
 			name = "Reading Options View";
 			sourceTree = "<group>";
@@ -2738,8 +2778,6 @@
 				529385B612DF231800045B44 /* SCHSettingsViewController.xib in Resources */,
 				5293883412E03CD000045B44 /* SCHBookShelfViewController.xib in Resources */,
 				52EF4E6012E6E01C00E374F7 /* SCHLoginViewController.xib in Resources */,
-				F8509EA012F0621E00197EB5 /* SCHReadingViewController.xib in Resources */,
-				F8509EA212F0621E00197EB5 /* BITReadingOptionsView.xib in Resources */,
 				C923B15C12F6B0280054426F /* SCHMultipleBookshelvesController.xib in Resources */,
 				52F559C7130BEA57002C8BDF /* SCHProfilePasswordViewController.xib in Resources */,
 				F8678D8B133218D8001FDB2F /* ScholasticFeatureCompatibility.plist in Resources */,
@@ -2850,6 +2888,18 @@
 				F848824013573F4500A2C8D3 /* icon-magnify-active@2x.png in Resources */,
 				52E622F41358385D00245CA7 /* Themes in Resources */,
 				52E623021358544200245CA7 /* SCHThemePickerViewController.xib in Resources */,
+				F8C8FC191360657C0097F9DD /* reading-view-landscape-top-bar@2x.png in Resources */,
+				F8C8FC1B1360657C0097F9DD /* reading-view-landscape-top-bar.png in Resources */,
+				F8C8FC1D1360657C0097F9DD /* reading-view-portrait-top-bar.png in Resources */,
+				F8C8FC1F1360657C0097F9DD /* reading-view-portrait-top-bar@2x.png in Resources */,
+				F8C8FC261360659B0097F9DD /* SCHReadingViewController.xib in Resources */,
+				F8C8FC31136065C10097F9DD /* BITReadingOptionsView.xib in Resources */,
+				F8C8FC39136066590097F9DD /* icon-magnify-active-landscape.png in Resources */,
+				F8C8FC3B136066590097F9DD /* icon-magnify-active-landscape@2x.png in Resources */,
+				F8C8FC3D136066590097F9DD /* icon-magnify-landscape.png in Resources */,
+				F8C8FC3F136066590097F9DD /* icon-magnify-landscape@2x.png in Resources */,
+				F8C8FC41136066590097F9DD /* icon-play-landscape.png in Resources */,
+				F8C8FC43136066590097F9DD /* icon-play-landscape@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2871,8 +2921,6 @@
 				F8509F0A12F063C900197EB5 /* Penguins.xps in Resources */,
 				F8509F0C12F063C900197EB5 /* TooManyToys.xps in Resources */,
 				F8509F0D12F063C900197EB5 /* Cars.xps in Resources */,
-				F8509F0F12F063C900197EB5 /* SCHReadingViewController.xib in Resources */,
-				F8509F1012F063C900197EB5 /* BITReadingOptionsView.xib in Resources */,
 				C923B15B12F6B0280054426F /* SCHMultipleBookshelvesController.xib in Resources */,
 				52F559C9130BEA57002C8BDF /* SCHProfilePasswordViewController.xib in Resources */,
 				F8678D8A133218D8001FDB2F /* ScholasticFeatureCompatibility.plist in Resources */,
@@ -2988,6 +3036,18 @@
 				C9BCD78E135DD26B00AA42B3 /* MazeOfBones.xps in Resources */,
 				C9BCD78F135DD26B00AA42B3 /* Shiver.xps in Resources */,
 				C9BCD790135DD26B00AA42B3 /* Cook Yourself Thin.xps in Resources */,
+				F8C8FC1A1360657C0097F9DD /* reading-view-landscape-top-bar@2x.png in Resources */,
+				F8C8FC1C1360657C0097F9DD /* reading-view-landscape-top-bar.png in Resources */,
+				F8C8FC1E1360657C0097F9DD /* reading-view-portrait-top-bar.png in Resources */,
+				F8C8FC201360657C0097F9DD /* reading-view-portrait-top-bar@2x.png in Resources */,
+				F8C8FC271360659B0097F9DD /* SCHReadingViewController.xib in Resources */,
+				F8C8FC32136065C10097F9DD /* BITReadingOptionsView.xib in Resources */,
+				F8C8FC3A136066590097F9DD /* icon-magnify-active-landscape.png in Resources */,
+				F8C8FC3C136066590097F9DD /* icon-magnify-active-landscape@2x.png in Resources */,
+				F8C8FC3E136066590097F9DD /* icon-magnify-landscape.png in Resources */,
+				F8C8FC40136066590097F9DD /* icon-magnify-landscape@2x.png in Resources */,
+				F8C8FC42136066590097F9DD /* icon-play-landscape.png in Resources */,
+				F8C8FC44136066590097F9DD /* icon-play-landscape@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3029,8 +3089,6 @@
 				52EF508712E739E900E374F7 /* LibreAccessServiceSvc.m in Sources */,
 				52EF570A12ED977C00E374F7 /* NSManagedObjectContext+Extensions.m in Sources */,
 				52EF579712EDBE6E00E374F7 /* SFHFKeychainUtils.m in Sources */,
-				F8509E9F12F0621E00197EB5 /* SCHReadingViewController.m in Sources */,
-				F8509EA112F0621E00197EB5 /* BITReadingOptionsView.m in Sources */,
 				F8509EA312F0621E00197EB5 /* BITScrubberView.m in Sources */,
 				C923A27D12F06FE60054426F /* MRGridView.m in Sources */,
 				C923A27E12F06FE60054426F /* MRGridViewCell.m in Sources */,
@@ -3142,7 +3200,6 @@
 				C9EFB28E134F782D00ADF905 /* SCHXPSProvider.m in Sources */,
 				C9EFB293134F795900ADF905 /* SCHXPSURLProtocol.m in Sources */,
 				C90AB9A6135495C5009DC49D /* SCHSmartZoomPreParseOperation.m in Sources */,
-				52F765991356EA81007C27C6 /* SCHThemeNavigationBar.m in Sources */,
 				F81B4BFA1356E9FE00C0DAF4 /* SCHLicenseAcquisitionOperation.m in Sources */,
 				C92FA7CD1355B8B7001BAA6B /* KNFBSmartZoomBlockSource.m in Sources */,
 				C92FA7D21355BE20001BAA6B /* SCHSmartZoomBlockSource.m in Sources */,
@@ -3154,6 +3211,9 @@
 				C95C7CC5135C3F1400472AF6 /* SCHBookShelfGridShelvesView.m in Sources */,
 				5204B860135C1FC500FCBD90 /* SCHThemeButton.m in Sources */,
 				52BAFB69135DAB8600C2AFF3 /* SCHThemeImageView.m in Sources */,
+				F8C8FC241360659B0097F9DD /* SCHReadingViewController.m in Sources */,
+				F8C8FC2A136065AD0097F9DD /* SCHCustomNavigationBar.m in Sources */,
+				F8C8FC2F136065C10097F9DD /* BITReadingOptionsView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3191,8 +3251,6 @@
 				F8509F3512F063C900197EB5 /* LibreAccessServiceSvc.m in Sources */,
 				F8509F3712F063C900197EB5 /* NSManagedObjectContext+Extensions.m in Sources */,
 				F8509F3812F063C900197EB5 /* SFHFKeychainUtils.m in Sources */,
-				F8509F3C12F063C900197EB5 /* SCHReadingViewController.m in Sources */,
-				F8509F3D12F063C900197EB5 /* BITReadingOptionsView.m in Sources */,
 				F8509F3E12F063C900197EB5 /* BITScrubberView.m in Sources */,
 				C923A27A12F06FE60054426F /* MRGridView.m in Sources */,
 				C923A27B12F06FE60054426F /* MRGridViewCell.m in Sources */,
@@ -3304,7 +3362,6 @@
 				C9EFB28F134F782D00ADF905 /* SCHXPSProvider.m in Sources */,
 				C9EFB294134F795900ADF905 /* SCHXPSURLProtocol.m in Sources */,
 				C90AB9A7135495C5009DC49D /* SCHSmartZoomPreParseOperation.m in Sources */,
-				52F7659A1356EA81007C27C6 /* SCHThemeNavigationBar.m in Sources */,
 				F81B4BFB1356E9FE00C0DAF4 /* SCHLicenseAcquisitionOperation.m in Sources */,
 				C92FA7CE1355B8B7001BAA6B /* KNFBSmartZoomBlockSource.m in Sources */,
 				C92FA7D31355BE20001BAA6B /* SCHSmartZoomBlockSource.m in Sources */,
@@ -3317,6 +3374,9 @@
 				5204B861135C1FC500FCBD90 /* SCHThemeButton.m in Sources */,
 				52BAFB6A135DAB8600C2AFF3 /* SCHThemeImageView.m in Sources */,
 				C9BCD78B135DBF9E00AA42B3 /* main.m in Sources */,
+				F8C8FC251360659B0097F9DD /* SCHReadingViewController.m in Sources */,
+				F8C8FC2B136065AD0097F9DD /* SCHCustomNavigationBar.m in Sources */,
+				F8C8FC30136065C10097F9DD /* BITReadingOptionsView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

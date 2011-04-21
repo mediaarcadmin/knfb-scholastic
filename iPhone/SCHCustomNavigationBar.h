@@ -10,7 +10,7 @@
 #import <Foundation/Foundation.h>
 
 
-@interface SCHThemeNavigationBar : UINavigationBar {
+@interface SCHCustomNavigationBar : UINavigationBar {
     
 }
 

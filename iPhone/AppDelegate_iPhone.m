@@ -11,7 +11,7 @@
 
 #import "SCHSyncManager.h"
 #import "SCHAuthenticationManager.h"
-#import "SCHThemeNavigationBar.h"
+#import "SCHCustomNavigationBar.h"
 #import "SCHThemeManager.h"
 
 extern NSString * const kSCHAuthenticationManagerDeviceKey;

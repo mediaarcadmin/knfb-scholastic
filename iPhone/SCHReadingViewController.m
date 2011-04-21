@@ -15,7 +15,8 @@
 #import "SCHFlowView.h"
 #import "SCHLayoutView.h"
 #import "SCHXPSProvider.h"
-
+#import "SCHThemeManager.h"
+#import "SCHCustomNavigationBar.h"
 
 @interface SCHReadingViewController ()
 
@@ -32,24 +33,27 @@
 
 @property (readwrite) BOOL toolbarsVisible;
 @property (readwrite) BOOL zoomActive;
-@property (readwrite, retain) NSArray *currentToolbars;
 @property (nonatomic, retain) NSTimer *initialFadeTimer;
 @property (readwrite) NSInteger currentPageIndex;
 @property (nonatomic, assign) SCHXPSProvider *xpsProvider;
+@property (readwrite) BOOL currentlyRotating;
+
+@property (nonatomic, assign) UIButton *backButton;
+@property (nonatomic, assign) UIButton *zoomButton;
+@property (nonatomic, assign) UIButton *audioButton;
+
 
 @end
 
 @implementation SCHReadingViewController
 
 @synthesize isbn, flowView, eucPageView, youngerMode;
-@synthesize toolbarsVisible, zoomActive, initialFadeTimer, currentPageIndex, xpsProvider, currentToolbars;
+@synthesize toolbarsVisible, zoomActive, initialFadeTimer, currentPageIndex, xpsProvider, backButton, zoomButton, audioButton, currentlyRotating;
 
 #pragma mark - Memory Management
 
 - (void)dealloc {
     
-    [youngerTopToolbar release];
-    [olderTopToolbar release];
     [olderBottomToolbar release];
     [youngerBookTitleLabel release];
     [youngerBookTitleView release];
@@ -59,10 +63,6 @@
 }
 
 - (void)viewDidUnload {
-    [youngerTopToolbar release];
-    youngerTopToolbar = nil;
-    [olderTopToolbar release];
-    olderTopToolbar = nil;
     [olderBottomToolbar release];
     olderBottomToolbar = nil;
     [youngerBookTitleLabel release];
@@ -73,6 +73,9 @@
     olderBookTitleLabel = nil;
     [olderBookTitleView release];
     olderBookTitleView = nil;
+    backButton = nil;
+    zoomButton = nil;
+    audioButton = nil;
     [super viewDidUnload];
     [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.isbn];
     self.xpsProvider = nil;
@@ -97,6 +100,7 @@
         self.isbn = aIsbn;
         self.wantsFullScreenLayout = YES;
         self.zoomActive = NO;
+        self.currentlyRotating = NO;
     }
     return self;
 }
@@ -114,8 +118,7 @@
     
     NSLog(@"XPSCategory: %@", book.XPSCategory);
 
-    youngerBookTitleLabel.text = book.Title;
-    olderBookTitleLabel.text = book.Title;
+    self.title = book.Title;
     
     
 	pageScrubber.delegate = self;
@@ -134,6 +137,96 @@
     }
     
     self.eucPageView.delegate = self;
+    self.wantsFullScreenLayout = YES;
+    self.navigationController.navigationBar.translucent = YES;
+    
+    [self.view addSubview:self.eucPageView];
+    [self.view sendSubviewToBack:self.eucPageView];
+    
+
+	scrubberInfoView.layer.cornerRadius = 5.0f;
+	scrubberInfoView.layer.masksToBounds = YES;
+    
+	[self setToolbarVisibility:YES animated:NO];
+	
+	self.initialFadeTimer = [NSTimer scheduledTimerWithTimeInterval:2.0f
+                                                             target:self
+                                                           selector:@selector(hideToolbarsFromTimer)
+                                                           userInfo:nil
+                                                            repeats:NO];
+	
+    [scrubberToolbar setBackgroundWith:[UIImage imageNamed:@"ReadingCustomToolbarBG"]];
+    [olderBottomToolbar setBackgroundWith:[UIImage imageNamed:@"ReadingCustomToolbarBG"]];
+    
+    
+    CGFloat buttonPadding = 7;
+    CGFloat containerHeight = CGRectGetHeight(self.navigationController.navigationBar.frame);
+    
+    backButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [backButton setImage:[[SCHThemeManager sharedThemeManager] imageForBooksIcon:[[UIApplication sharedApplication] statusBarOrientation]] forState:UIControlStateNormal];
+    [backButton addTarget:self action:@selector(popViewController:) forControlEvents:UIControlEventTouchUpInside]; 
+//    backButton.backgroundColor = [UIColor redColor];
+    [backButton sizeToFit];
+    
+    CGRect buttonFrame = backButton.frame;
+    buttonFrame.origin.x = buttonPadding;
+    buttonFrame.origin.y = floorf((containerHeight - CGRectGetHeight(buttonFrame)) / 2.0f);
+    buttonFrame.size.width = ceilf(buttonFrame.size.width);
+    backButton.frame = buttonFrame;
+    backButton.autoresizingMask = UIViewAutoresizingFlexibleHeight;
+    
+    UIView *leftHandView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetMaxX(backButton.frame), containerHeight)] autorelease];
+    UIView *rightHandView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, buttonPadding, containerHeight)] autorelease];
+    
+//    leftHandView.backgroundColor = [UIColor yellowColor];
+//    rightHandView.backgroundColor = [UIColor greenColor];
+    
+    leftHandView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
+    rightHandView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
+    
+    [leftHandView addSubview:backButton];
+    
+    if (self.youngerMode) {
+        zoomButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [zoomButton setImage:[UIImage imageNamed:@"icon-magnify"] forState:UIControlStateNormal];
+        [zoomButton addTarget:self action:@selector(magnifyAction:) forControlEvents:UIControlEventTouchUpInside];    
+//        zoomButton.backgroundColor = [UIColor redColor];
+        [zoomButton sizeToFit];
+        
+        CGRect buttonFrame = zoomButton.frame;
+        buttonFrame.origin.x = 0;
+        buttonFrame.origin.y = floorf((containerHeight - CGRectGetHeight(buttonFrame)) / 2.0f);
+        buttonFrame.size.width = ceilf(buttonFrame.size.width);
+        zoomButton.frame = buttonFrame;
+        zoomButton.autoresizingMask = UIViewAutoresizingFlexibleHeight;
+
+        
+        audioButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [audioButton setImage:[UIImage imageNamed:@"icon-play"] forState:UIControlStateNormal];
+        [audioButton addTarget:self action:@selector(audioPlayAction:) forControlEvents:UIControlEventTouchUpInside];   
+//        audioButton.backgroundColor = [UIColor redColor];
+        [audioButton sizeToFit];
+
+        CGRect button2Frame = audioButton.frame;
+        button2Frame.origin.x = button2Frame.size.width + buttonPadding;
+        button2Frame.origin.y = floorf((containerHeight - CGRectGetHeight(button2Frame)) / 2.0f);
+        button2Frame.size.width = ceilf(button2Frame.size.width);
+        audioButton.frame = button2Frame;
+        audioButton.autoresizingMask = UIViewAutoresizingFlexibleHeight;
+
+        [rightHandView addSubview:zoomButton];
+        [rightHandView addSubview:audioButton];
+        
+        CGRect rightFrame = rightHandView.frame;
+        rightFrame.size.width = buttonFrame.size.width + buttonPadding + button2Frame.size.width + buttonPadding;
+        rightHandView.frame = rightFrame;
+    }
+    
+    
+    NSLog(@"Left frame: %@", NSStringFromCGRect(leftHandView.frame));
+    NSLog(@"Right frame: %@", NSStringFromCGRect(rightHandView.frame));
+    self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:leftHandView] autorelease];
+    self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:rightHandView] autorelease];
     
     
 }
@@ -141,51 +234,7 @@
 - (void) viewWillAppear:(BOOL)animated
 {
 	[super viewWillAppear:animated];
-	
-	scrubberInfoView.layer.cornerRadius = 5.0f;
-	scrubberInfoView.layer.masksToBounds = YES;
-
-	[self setToolbarVisibility:YES animated:NO];
-	
-	self.initialFadeTimer = [NSTimer scheduledTimerWithTimeInterval:2.0f
-														target:self
-													  selector:@selector(hideToolbarsFromTimer)
-													  userInfo:nil
-													   repeats:NO];
-	
-	self.navigationController.navigationBarHidden = YES;
-
-	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque];	
-	
-    if (self.youngerMode) {
-        CGRect frame = youngerTopToolbar.frame;
-        frame.origin.y = 20;
-        youngerTopToolbar.frame = frame;
-        [self.view addSubview:youngerTopToolbar];
-        
-        self.currentToolbars = [NSArray arrayWithObjects:youngerTopToolbar, scrubberToolbar, nil];
-    } else {
-        CGRect frame = olderTopToolbar.frame;
-        frame.origin.y = 20;
-        olderTopToolbar.frame = frame;
-        [self.view addSubview:olderTopToolbar];
-        
-        frame = olderBottomToolbar.frame;
-        frame.origin.y = CGRectGetMinY(scrubberToolbar.frame) - CGRectGetHeight(olderBottomToolbar.frame);
-        olderBottomToolbar.frame = frame;
-        [self.view addSubview:olderBottomToolbar];
-
-        self.currentToolbars = [NSArray arrayWithObjects:olderTopToolbar, olderBottomToolbar, scrubberToolbar, nil];
-    }
-        
-    [self.view addSubview:self.eucPageView];
-    [self.view sendSubviewToBack:self.eucPageView];
-    
-    [scrubberToolbar setBackgroundWith:[UIImage imageNamed:@"ReadingCustomToolbarBG"]];
-    [youngerTopToolbar setBackgroundWith:[UIImage imageNamed:@"ReadingCustomToolbarBG"]];
-    [olderTopToolbar setBackgroundWith:[UIImage imageNamed:@"ReadingCustomToolbarBG"]];
-    [olderBottomToolbar setBackgroundWith:[UIImage imageNamed:@"ReadingCustomToolbarBG"]];
-
+//    return;
 }
 
 - (void) viewDidAppear:(BOOL)animated
@@ -196,11 +245,8 @@
 
 - (void) viewWillDisappear:(BOOL)animated
 {
+    self.navigationController.navigationBar.translucent = NO;
     [self cancelInitialTimer];
-    
-    [youngerTopToolbar setItems:nil];
-    [olderTopToolbar setItems:nil];
-    
     [super viewWillDisappear:animated];
 }
 
@@ -212,9 +258,63 @@
     return YES;
 }
 
+- (void) didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+    self.currentlyRotating = NO;
+}
+
 - (void) willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
-    [UIView beginAnimations:@"titleWidthAnimation" context:nil];
+    self.currentlyRotating = YES;
+}
+
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    
+    if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {
+        [backButton setImage:[[SCHThemeManager sharedThemeManager] imageForBooksIcon:toInterfaceOrientation] forState:UIControlStateNormal];
+        [audioButton setImage:[UIImage imageNamed:@"icon-play"] forState:UIControlStateNormal];
+        [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"reading-view-portrait-top-bar.png"]];
+
+        if (self.zoomActive) {
+            [zoomButton setImage:[UIImage imageNamed:@"icon-magnify-active"] forState:UIControlStateNormal];
+        } else {
+            [zoomButton setImage:[UIImage imageNamed:@"icon-magnify"] forState:UIControlStateNormal];
+        }
+    } else {
+        [backButton setImage:[UIImage imageNamed:@"Themes/Blue/icon-books-landscape"] forState:UIControlStateNormal];
+        [audioButton setImage:[UIImage imageNamed:@"icon-play-landscape"] forState:UIControlStateNormal];
+        [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"reading-view-landscape-top-bar.png"]];
+        
+        if (self.zoomActive) {
+            [zoomButton setImage:[UIImage imageNamed:@"icon-magnify-active-landscape"] forState:UIControlStateNormal];
+        } else {
+            [zoomButton setImage:[UIImage imageNamed:@"icon-magnify-landscape"] forState:UIControlStateNormal];
+        }
+    }
+    
+//    self.navigationController.navigationBar.clipsToBounds = YES;
+//    
+//    unsigned long long longDuration = (duration * NSEC_PER_SEC) / 2;
+//    
+//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, longDuration), dispatch_get_current_queue(), ^{
+//        self.navigationController.navigationBar.clipsToBounds = NO;
+//    }); 
+
+    
+/*    SCHCustomNavigationBar *navBar = (SCHCustomNavigationBar *) self.navigationController.navigationBar;
+    
+    NSLog(@"navBar is %@", NSStringFromClass([navBar class]));
+    
+    if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {
+        [navBar setBackgroundImage:[UIImage imageNamed:@"Themes/Blue/bookshelf-portrait-top-bar"]];
+        //navBar.backgroundImage = nil;
+    } else {
+       [navBar setBackgroundImage:[UIImage imageNamed:@"Themes/Blue/bookshelf-landscape-top-bar"]];
+    }
+  */  
+    
+/*    [UIView beginAnimations:@"titleWidthAnimation" context:nil];
     [UIView setAnimationDuration:duration];
     if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {
 
@@ -235,9 +335,25 @@
         olderBookTitleView.frame = olderFrame;
         
     }
-    [UIView commitAnimations];
+    [UIView commitAnimations];*/
+    
+}
+/*
+- (void) willAnimateFirstHalfOfRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    NSLog(@"First half!");
+    self.navigationController.navigationBar.clipsToBounds = YES;
+    
 }
 
+
+- (void) willAnimateSecondHalfOfRotationFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    NSLog(@"Second half!");
+    self.navigationController.navigationBar.clipsToBounds = NO;
+
+}
+*/
 #pragma mark -
 #pragma mark Button Actions
 
@@ -254,11 +370,20 @@
     
     if (self.zoomActive) {
         self.zoomActive = NO;
-        [button setImage:[UIImage imageNamed:@"icon-magnify"] forState:UIControlStateNormal];
+        if (UIInterfaceOrientationIsPortrait([[UIApplication sharedApplication] statusBarOrientation]  )) {
+            [button setImage:[UIImage imageNamed:@"icon-magnify"] forState:UIControlStateNormal];
+        } else {
+            [button setImage:[UIImage imageNamed:@"icon-magnify-landscape"] forState:UIControlStateNormal];
+        }
+
         [self.eucPageView didExitSmartZoomMode];
     } else {
         self.zoomActive = YES;
-        [button setImage:[UIImage imageNamed:@"icon-magnify-active"] forState:UIControlStateNormal];
+        if (UIInterfaceOrientationIsPortrait([[UIApplication sharedApplication] statusBarOrientation]  )) {
+            [button setImage:[UIImage imageNamed:@"icon-magnify-active"] forState:UIControlStateNormal];
+        } else {
+            [button setImage:[UIImage imageNamed:@"icon-magnify-active-landscape"] forState:UIControlStateNormal];
+        }
         [self.eucPageView didEnterSmartZoomMode];
     }
     
@@ -358,7 +483,21 @@
 {
 	NSLog(@"Setting visibility to %@.", visibility?@"True":@"False");
 	self.toolbarsVisible = visibility;
-	
+
+    if (!self.currentlyRotating) {
+        CGRect navRect = self.navigationController.navigationBar.frame;
+        if (navRect.origin.y == 0) {
+            navRect.origin.y = 20;
+            self.navigationController.navigationBar.frame = navRect;
+        }
+    }
+    
+    if (self.toolbarsVisible) {
+		[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
+	} else {
+		[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+	}
+
 	if (animated) {
 		[UIView beginAnimations:@"toolbarFade" context:nil];
 		[UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
@@ -367,17 +506,19 @@
 	}
 	
 	if (self.toolbarsVisible) {
-        for (UIToolbar *toolbar in self.currentToolbars) {
-            [toolbar setAlpha:1.0f];
+        [self.navigationController.navigationBar setAlpha:1.0f];
+        [scrubberToolbar setAlpha:1.0f];
+        if (!youngerMode) {
+            [olderBottomToolbar setAlpha:1.0f];
         }
         
-		[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
 	} else {
-        for (UIToolbar *toolbar in self.currentToolbars) {
-            [toolbar setAlpha:0.0f];
+        [self.navigationController.navigationBar setAlpha:0.0f];
+        [scrubberToolbar setAlpha:0.0f];
+        if (!youngerMode) {
+            [olderBottomToolbar setAlpha:0.0f];
         }
         
-		[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
 	}
 	
 	if (animated) {
