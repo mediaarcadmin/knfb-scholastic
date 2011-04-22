@@ -95,8 +95,14 @@
         [self setBackgroundImage:image forState:UIControlStateNormal];    
     }
     if (self.iconKey != nil) {
-        [self setImage:[[SCHThemeManager sharedThemeManager] imageFor:self.iconKey 
-                                                          orientation:[[UIApplication sharedApplication] statusBarOrientation]] forState:UIControlStateNormal];
+        UIImage *image = [[SCHThemeManager sharedThemeManager] imageFor:self.iconKey 
+                                                             orientation:[[UIApplication sharedApplication] statusBarOrientation]];
+        // heights change when going between portrait and landscape so we change them
+        CGRect rect = self.frame;
+        rect.size.height = image.size.height;
+        rect.size.width = image.size.width;        
+        self.frame = rect;        
+        [self setBackgroundImage:image forState:UIControlStateNormal];    
     }    
 }
 
