@@ -125,7 +125,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 
 - (void) viewWillAppear:(BOOL)animated
 {
-    [(SCHCustomNavigationBar *)self.navigationController.navigationBar setTheme:kSCHThemeManagerNavigationBarImage];
+    [(SCHCustomNavigationBar *)self.navigationController.navigationBar updateTheme];
     [super viewWillAppear:animated];
 }
 
@@ -145,7 +145,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 
 - (void)setInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    [(SCHCustomNavigationBar *)self.navigationController.navigationBar setTheme:kSCHThemeManagerNavigationBarImage];
+    [(SCHCustomNavigationBar *)self.navigationController.navigationBar updateTheme:interfaceOrientation];
     if (UIInterfaceOrientationIsLandscape(interfaceOrientation)) {
         [self.gridView setShelfHeight:kSCHBookShelfViewControllerGridCellHeightLandscape];
     } else {
