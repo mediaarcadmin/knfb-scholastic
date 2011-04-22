@@ -491,23 +491,52 @@ static int STANDARD_SCRUB_INFO_HEIGHT = 47;
     
     scrubFrame.origin.y = statusBarHeight + self.navigationController.navigationBar.frame.size.height + 10;
     
+    // if we're in fixed view, and there's an image size set, then check if we're showing an image
     if (!self.flowView && imageSize.width > 0 && imageSize.height > 0) {
         
-        int maxHeight = (self.view.frame.size.height - scrubberToolbar.frame.size.height - self.navigationController.navigationBar.frame.size.height - STANDARD_SCRUB_INFO_HEIGHT - 40);
+        // the maximum space available for an image
+        int maxImageHeight = (self.view.frame.size.height - scrubberToolbar.frame.size.height - self.navigationController.navigationBar.frame.size.height - STANDARD_SCRUB_INFO_HEIGHT - 60);
         
-        NSLog(@"Max height: %d", maxHeight);
-        
-        if (imageSize.height > maxHeight) {
-            scrubberThumbImage.contentMode = UIViewContentModeScaleAspectFit;
-            scrubFrame.size.height = STANDARD_SCRUB_INFO_HEIGHT + maxHeight;
-        } else {
-            scrubberThumbImage.contentMode = UIViewContentModeTop;
-            scrubFrame.size.height = STANDARD_SCRUB_INFO_HEIGHT + imageSize.height + 20;
+        // if the double toolbar is visible, reduce available space
+        if ([olderBottomToolbar superview]) {
+            maxImageHeight -= olderBottomToolbar.frame.size.height;
         }
         
+        // if the options view is also visible, reduce available space
+        if ([optionsView superview]) {
+            maxImageHeight -= optionsView.frame.size.height;
+        }
         
-        NSLog(@"Scrub frame height: %f", scrubFrame.size.height);
+        // shrink the thumb image to 75% - thumb quality is not great
+        int desiredHeight = (int) (imageSize.height * 0.75);
         
+        // if we need more height than is available, scale to fit.
+        if (desiredHeight > maxImageHeight) {
+            desiredHeight = maxImageHeight;
+        }
+        
+        NSLog(@"Max height: %d", maxImageHeight);
+        NSLog(@"Desired height: %d", desiredHeight);
+
+        // if there's not enough space to sensibly render the image, don't try - just go with the text
+        if (maxImageHeight < 40) {
+            scrubFrame.size.height = STANDARD_SCRUB_INFO_HEIGHT;
+        } else {
+            // otherwise, set up the imageview and info frame to the correct height
+            scrubFrame.size.height = STANDARD_SCRUB_INFO_HEIGHT + desiredHeight;
+            
+            CGRect imageRect = scrubberThumbImage.frame;
+            imageRect.size.height = desiredHeight - 10;
+            scrubberThumbImage.frame = imageRect;
+            
+            scrubFrame.size.height = STANDARD_SCRUB_INFO_HEIGHT + desiredHeight;
+            
+            if (scrubFrame.size.height < STANDARD_SCRUB_INFO_HEIGHT) {
+                scrubFrame.size.height = STANDARD_SCRUB_INFO_HEIGHT;
+            }
+            
+            NSLog(@"Scrub frame height: %f", scrubFrame.size.height);
+        }
     } else {
         scrubFrame.size.height = STANDARD_SCRUB_INFO_HEIGHT;
     }
@@ -527,43 +556,36 @@ static int STANDARD_SCRUB_INFO_HEIGHT = 47;
 		
 		[pageLabel setText:[NSString stringWithFormat:@"Page %d of %d", self.currentPageIndex, [self.xpsProvider pageCount]]];
         
-        CGRect scrubFrame = scrubberInfoView.frame;
-        scrubFrame.origin.x = self.view.bounds.size.width / 2 - (scrubFrame.size.width / 2);
-        
-        CGRect statusFrame = [[UIApplication sharedApplication] statusBarFrame];
-        float statusBarHeight = MIN(statusFrame.size.height, statusFrame.size.width);
-        
-        scrubFrame.origin.y = statusBarHeight + self.navigationController.navigationBar.frame.size.height + 10;
-        
         if (!self.flowView) {
             
             UIImage *scrubImage = [self.xpsProvider thumbnailForPage:self.currentPageIndex];
             
-            [self adjustScrubberInfoViewHeightForImageSize:scrubImage.size];
-            
-            scrubberThumbImage.image = scrubImage;
+            if (scrubberInfoView.frame.size.height == STANDARD_SCRUB_INFO_HEIGHT) {
+                scrubberThumbImage.image = nil;
+            } else {
+                scrubberThumbImage.image = scrubImage;
+            }
         } 
-        scrubberInfoView.frame = scrubFrame;
-
+        
+        [self adjustScrubberInfoViewHeightForImageSize:scrubberThumbImage.image.size];
+        
 	}
 }
 
 - (void) scrubberView:(BITScrubberView *)scrubberView beginScrubbingWithValue:(float)currentValue
 {
     self.currentPageIndex = (int) currentValue;
-
+    NSLog(@"Current value is %d", (int) currentValue);
+    
     // add the scrub view here
     if (!self.flowView) {
         UIImage *scrubImage = [self.xpsProvider thumbnailForPage:self.currentPageIndex];
-        [self adjustScrubberInfoViewHeightForImageSize:scrubImage.size];
         scrubberThumbImage.image = scrubImage;
+        [self adjustScrubberInfoViewHeightForImageSize:scrubImage.size];
     } else {
         [self adjustScrubberInfoViewHeightForImageSize:CGSizeZero];
     }
     
-    self.currentPageIndex = (int) currentValue;
-    NSLog(@"Current value is %d", (int) currentValue);
-
     [pageLabel setText:[NSString stringWithFormat:@"Page %d of %d", self.currentPageIndex, [self.xpsProvider pageCount]]];
     
 
