@@ -7,10 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "SCHCustomToolbar.h"
 
 @interface SCHLoginViewController : UIViewController {
 
+    SCHCustomToolbar *topBar;
 }
 
 @property (nonatomic, retain) IBOutlet UITextField *userName;
@@ -18,6 +19,7 @@
 @property (nonatomic, retain) IBOutlet UIButton *loginButton;
 @property (nonatomic, retain) IBOutlet UIButton *cancelButton;
 @property (nonatomic, retain) IBOutlet UIActivityIndicatorView *spinner;
+@property (nonatomic, retain) IBOutlet SCHCustomToolbar *topBar;
 
 - (IBAction)login:(id)sender;
 - (IBAction)cancel:(id)sender;
