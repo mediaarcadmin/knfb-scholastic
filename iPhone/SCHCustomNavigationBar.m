@@ -11,8 +11,6 @@
 
 @interface SCHCustomNavigationBar ()
 
-- (void)updateTheme;
-
 @property (nonatomic, retain) UIImageView *backgroundView;
 @property (nonatomic, retain) NSString *imageKey;
 
@@ -88,6 +86,12 @@
 {
     [self setBackgroundImage:[[SCHThemeManager sharedThemeManager] imageFor:self.imageKey
                                                                 orientation:[[UIApplication sharedApplication] statusBarOrientation]]];
+}
+
+- (void)updateTheme:(UIInterfaceOrientation)interfaceOrientation
+{
+    [self setBackgroundImage:[[SCHThemeManager sharedThemeManager] imageFor:self.imageKey
+                                                                orientation:interfaceOrientation]];
 }
 
 @end
