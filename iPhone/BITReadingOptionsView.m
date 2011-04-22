@@ -13,6 +13,7 @@
 #import "SCHThemeManager.h"
 #import "SCHThemeButton.h"
 #import "SCHContentProfileItem.h"
+#import "SCHCustomNavigationBar.h"
 
 @interface BITReadingOptionsView ()
 
@@ -87,6 +88,13 @@
 	
 //	titleLabel.text = [NSString stringWithFormat:@"%@", metadataItem.Title];
 //	authorLabel.text = [NSString stringWithFormat:@"Author: %@", metadataItem.Author];
+        
+    if (UIInterfaceOrientationIsPortrait([[UIApplication sharedApplication] statusBarOrientation]  )) {
+        [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"reading-view-portrait-top-bar.png"]];
+    } else {
+        [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"reading-view-landscape-top-bar.png"]];
+    }
+
 }
 
 - (void)back
