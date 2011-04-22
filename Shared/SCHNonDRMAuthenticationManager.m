@@ -76,6 +76,7 @@
 
 - (void)method:(NSString *)method didFailWithError:(NSError *)error
 {
+    NSLog(@"AuthenticationManager:%@ %@", method, [error description]);
 	waitingOnResponse = NO;
 	[self postFailureWithError:error];
 }
