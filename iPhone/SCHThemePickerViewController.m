@@ -101,12 +101,12 @@
 - (void) willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
     if (self.lastTappedTheme == nil) {
+        [(SCHCustomNavigationBar *)self.navigationController.navigationBar updateTheme:toInterfaceOrientation];
+    } else {
         [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:
          [[SCHThemeManager sharedThemeManager] imageForTheme:self.lastTappedTheme 
                                                          key:kSCHThemeManagerNavigationBarImage 
                                                  orientation:self.interfaceOrientation]];
-    } else {
-        [(SCHCustomNavigationBar *)self.navigationController.navigationBar updateTheme:toInterfaceOrientation];
     }
 }
 
