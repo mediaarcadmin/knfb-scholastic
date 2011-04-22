@@ -137,6 +137,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
+    [self.gridView setShelfImage:[[SCHThemeManager sharedThemeManager] imageForShelf:self.interfaceOrientation]];        
     [self.view.layer setContents:(id)[[SCHThemeManager sharedThemeManager] imageForBackground:self.interfaceOrientation].CGImage];
     
     [self setInterfaceOrientation:toInterfaceOrientation];
