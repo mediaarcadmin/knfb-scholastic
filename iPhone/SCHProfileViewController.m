@@ -56,6 +56,7 @@ static NSString * const kRootViewControllerSettingsIcon = @"Settings.png";
 	self.tableView.tableHeaderView = self.headerView;
 	self.profilePasswordViewController.delegate = self;
     
+    [(SCHCustomNavigationBar *)self.navigationController.navigationBar setTheme:kSCHThemeManagerNavigationBarImage];
     [self themeUpdate];
     [[NSNotificationCenter defaultCenter] addObserver:self 
                                              selector:@selector(themeUpdate) 
@@ -70,7 +71,7 @@ static NSString * const kRootViewControllerSettingsIcon = @"Settings.png";
 
 - (void) viewWillAppear:(BOOL)animated
 {
-    [(SCHCustomNavigationBar *)self.navigationController.navigationBar setTheme:kSCHThemeManagerNavigationBarImage];
+    [(SCHCustomNavigationBar *)self.navigationController.navigationBar updateTheme];
     [super viewWillAppear:animated];
 }
 
@@ -105,7 +106,7 @@ static NSString * const kRootViewControllerSettingsIcon = @"Settings.png";
 
 - (void) willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
-    [(SCHCustomNavigationBar *)self.navigationController.navigationBar setTheme:kSCHThemeManagerNavigationBarImage];
+    [(SCHCustomNavigationBar *)self.navigationController.navigationBar updateTheme:toInterfaceOrientation];
 }
 
 

@@ -88,17 +88,26 @@
     
     self.tableView.rowHeight = 58;
     self.tableView.separatorColor = [UIColor colorWithRed:0.000 green:0.365 blue:0.616 alpha:1.000];
+    
+    [(SCHCustomNavigationBar *)self.navigationController.navigationBar setTheme:kSCHThemeManagerNavigationBarImage];    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [(SCHCustomNavigationBar *)self.navigationController.navigationBar setTheme:kSCHThemeManagerNavigationBarImage];
+    [(SCHCustomNavigationBar *)self.navigationController.navigationBar updateTheme];
 }
 
 
 - (void) willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
-    [(SCHCustomNavigationBar *)self.navigationController.navigationBar setTheme:kSCHThemeManagerNavigationBarImage];
+    if (self.lastTappedTheme == nil) {
+        [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:
+         [[SCHThemeManager sharedThemeManager] imageForTheme:self.lastTappedTheme 
+                                                         key:kSCHThemeManagerNavigationBarImage 
+                                                 orientation:self.interfaceOrientation]];
+    } else {
+        [(SCHCustomNavigationBar *)self.navigationController.navigationBar updateTheme:toInterfaceOrientation];
+    }
 }
 
 

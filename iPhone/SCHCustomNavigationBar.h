@@ -17,5 +17,7 @@
 @property (nonatomic, retain) UIImage *backgroundImage;
 
 - (void)setTheme:(NSString *)newImageKey;
+- (void)updateTheme;
+- (void)updateTheme:(UIInterfaceOrientation)interfaceOrientation;
 
 @end
