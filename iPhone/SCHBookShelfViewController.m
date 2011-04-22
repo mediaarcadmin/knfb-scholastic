@@ -96,11 +96,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 	[aCache release];
 	
     [customNavigationBar setTheme:kSCHThemeManagerNavigationBarImage];
-	
-#if LOCALDEBUG
-	self.navigationItem.title = @"Local Bookshelf";
-#endif
-	
+		
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(updateTable:)
 												 name:@"SCHBookshelfSyncComponentComplete"
@@ -118,6 +114,12 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 		self.loadingView.hidden = YES;
 	}
     
+    if ([[self.profileItem.FirstName stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {
+        self.navigationItem.title = [NSString stringWithFormat:@"%@%@", self.profileItem.FirstName, NSLocalizedString(@"'s Books", @"")];
+    } else {
+        self.navigationItem.title = NSLocalizedString(@"'s Books", @"");
+    }
+
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateTheme) name:kSCHThemeManagerThemeChangeNotification object:nil];                
 }
 
@@ -206,6 +208,12 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 	[profileItem release];
     profileItem = newProfileItem;
     [profileItem retain];	
+    
+    if ([[profileItem.FirstName stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {
+        self.navigationItem.title = [NSString stringWithFormat:@"%@%@", profileItem.FirstName, NSLocalizedString(@"'s Books", @"")];
+    } else {
+        self.navigationItem.title = NSLocalizedString(@"Books", @"");
+    }
     
 	self.books = [self.profileItem allISBNs];
 }
