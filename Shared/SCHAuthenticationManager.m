@@ -340,6 +340,7 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
 
 - (void)method:(NSString *)method didFailWithError:(NSError *)error
 {
+    NSLog(@"AuthenticationManager:%@ %@", method, [error description]);
     if([method compare:kSCHLibreAccessWebServiceAuthenticateDevice] == NSOrderedSame) {
         // TODO: we need to decide when to retry and when to re-register the device
         [aToken release], aToken = nil;
@@ -370,6 +371,7 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
 
 - (void)registrationSession:(SCHDrmRegistrationSession *)registrationSession didFailWithError:(NSError *)error
 {
+    NSLog(@"AuthenticationManager:DRM %@", [error description]);
 	waitingOnResponse = NO;
 	[self postFailureWithError:error];       
     [drmRegistrationSession release];
