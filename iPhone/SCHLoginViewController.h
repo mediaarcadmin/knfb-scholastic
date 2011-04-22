@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "SCHCustomToolbar.h"
 
-@interface SCHLoginViewController : UIViewController {
+@interface SCHLoginViewController : UIViewController <UITextFieldDelegate> {
 
     SCHCustomToolbar *topBar;
 }

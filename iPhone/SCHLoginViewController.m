@@ -33,8 +33,8 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     // Return YES for supported orientations
-//    return (YES);
-    return UIInterfaceOrientationIsPortrait(interfaceOrientation);
+    return (YES);
+//    return UIInterfaceOrientationIsPortrait(interfaceOrientation);
 }
 
 - (void) viewDidLoad
@@ -129,6 +129,21 @@
 	self.loginButton.center = center;
 	
 	self.cancelButton.hidden = YES;
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    if (textField == userName) {
+        [password becomeFirstResponder];
+        return YES;
+    }
+    
+    if (textField == password && [userName.text length] > 0 && [password.text length] > 0) {
+        [password resignFirstResponder];
+        [self login:nil];
+    }
+    
+    return YES;
 }
 
 // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
