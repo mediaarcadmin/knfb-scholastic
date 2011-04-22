@@ -22,9 +22,9 @@
     NSFetchedResultsController *fetchedResultsController_;
     NSManagedObjectContext *managedObjectContext_;
     UITableView *tableView;
+    UIButton *settingsButton;
 }
 
-@property (nonatomic, retain) IBOutlet UIView *headerView;
 @property (nonatomic, retain) IBOutlet UITableView *tableView;
 @property (nonatomic, retain) IBOutlet UIImageView *backgroundView;
 @property (nonatomic, retain) IBOutlet SCHProfilePasswordViewController *profilePasswordViewController;

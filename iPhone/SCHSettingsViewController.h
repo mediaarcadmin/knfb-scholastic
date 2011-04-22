@@ -15,11 +15,13 @@
 @interface SCHSettingsViewController : UIViewController <SCHDrmRegistrationSessionDelegate>  {
 
     UITableView *tableView;
+    UIImageView *backgroundImage;
 }
 
 @property (nonatomic, retain) IBOutlet SCHLoginViewController *loginController;
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, retain) SCHDrmRegistrationSession* drmRegistrationSession;
 @property (nonatomic, retain) IBOutlet UITableView *tableView;
+@property (nonatomic, retain) IBOutlet UIImageView *backgroundImage;
 
 @end

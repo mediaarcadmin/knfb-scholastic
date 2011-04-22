@@ -46,6 +46,7 @@
                     [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil], 
                     [[UIBarButtonItem alloc] initWithCustomView:headerImage],
                     [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil], nil];
+    [headerImage release];
     
 }
 

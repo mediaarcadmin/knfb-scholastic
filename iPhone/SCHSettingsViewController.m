@@ -22,6 +22,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
 @implementation SCHSettingsViewController
 @synthesize tableView;
+@synthesize backgroundImage;
 
 @synthesize loginController, managedObjectContext, drmRegistrationSession;
 
@@ -32,31 +33,31 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 - (void)viewDidLoad {
     [super viewDidLoad];
  
-    SCHThemeImageView *themeBackgroundView = [[[SCHThemeImageView alloc] initWithImage:nil] autorelease];
-    [themeBackgroundView setTheme:kSCHThemeManagerBackgroundImage];    
-    self.tableView.backgroundView = themeBackgroundView;
+//    SCHThemeImageView *themeBackgroundView = [[[SCHThemeImageView alloc] initWithImage:nil] autorelease];
+//    [themeBackgroundView setTheme:kSCHThemeManagerBackgroundImage];    
+//    self.tableView.backgroundView = themeBackgroundView;
     
-    SCHThemeButton *deregisterButton = [SCHThemeButton buttonWithType:UIButtonTypeCustom];
-    [deregisterButton setFrame:CGRectMake(0, 0, 82, 30)];
-    [deregisterButton setTitle:NSLocalizedString(@"Deregister", @"") forState:UIControlStateNormal];
-    [deregisterButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [deregisterButton setTitleColor:[UIColor colorWithWhite:1 alpha:0.5f] forState:UIControlStateHighlighted];
-    [deregisterButton setReversesTitleShadowWhenHighlighted:YES];
+    backgroundImage.image = [UIImage imageNamed:@"plain-background-portrait"];
     
-    deregisterButton.titleLabel.font = [UIFont boldSystemFontOfSize:14];
-    deregisterButton.titleLabel.shadowOffset = CGSizeMake(0, -1);
+//    SCHThemeButton *deregisterButton = [SCHThemeButton buttonWithType:UIButtonTypeCustom];
+//    [deregisterButton setFrame:CGRectMake(0, 0, 82, 30)];
+//    [deregisterButton setTitle:NSLocalizedString(@"Deregister", @"") forState:UIControlStateNormal];
+//    [deregisterButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+//    [deregisterButton setTitleColor:[UIColor colorWithWhite:1 alpha:0.5f] forState:UIControlStateHighlighted];
+//    [deregisterButton setReversesTitleShadowWhenHighlighted:YES];
     
-    [deregisterButton setThemeButton:kSCHThemeManagerButtonImage leftCapWidth:5 topCapHeight:0];
-    [deregisterButton addTarget:self action:@selector(deregistrationButtonPushed:) forControlEvents:UIControlEventTouchUpInside];    
-    self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:deregisterButton] autorelease];
+//    deregisterButton.titleLabel.font = [UIFont boldSystemFontOfSize:14];
+//    deregisterButton.titleLabel.shadowOffset = CGSizeMake(0, -1);
+    
+//    [deregisterButton setThemeButton:kSCHThemeManagerButtonImage leftCapWidth:5 topCapHeight:0];
+//    [deregisterButton addTarget:self action:@selector(deregistrationButtonPushed:) forControlEvents:UIControlEventTouchUpInside];    
+//    self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:deregisterButton] autorelease];
     
     SCHThemeButton *button = [SCHThemeButton buttonWithType:UIButtonTypeCustom];
     [button setThemeIcon:kSCHThemeManagerHomeIcon];
     [button sizeToFit];    
     [button addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];    
     self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:button] autorelease];
-    
-    [(SCHCustomNavigationBar *)self.navigationController.navigationBar setTheme:kSCHThemeManagerNavigationBarImage];    
 }
 
 - (void)back
@@ -67,13 +68,22 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [(SCHCustomNavigationBar *)self.navigationController.navigationBar updateTheme];
+
+    if (UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation])) {
+        [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"admin-iphone-landscape-top-toolbar.png"]];
+    } else {
+        [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"admin-iphone-portrait-top-toolbar.png"]];
+    }
 }
 
 
 - (void) willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
-    [(SCHCustomNavigationBar *)self.navigationController.navigationBar updateTheme:toInterfaceOrientation];
+    if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
+        [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"admin-iphone-landscape-top-toolbar.png"]];
+    } else {
+        [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"admin-iphone-portrait-top-toolbar.png"]];
+    }
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
@@ -144,8 +154,8 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     headerLabel.numberOfLines = 1;
     headerLabel.adjustsFontSizeToFitWidth = YES;
     headerLabel.backgroundColor = [UIColor clearColor];
-    headerLabel.textColor = [UIColor whiteColor];
-    headerLabel.shadowColor = [UIColor blackColor];
+    headerLabel.textColor = [UIColor colorWithRed:0.063 green:0.337 blue:0.510 alpha:1.0];
+    headerLabel.shadowColor = [UIColor whiteColor];
     headerLabel.shadowOffset = CGSizeMake(0, -1);
     
     UIView *containerView = [[UIView alloc] initWithFrame:CGRectZero];
@@ -168,8 +178,8 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     footerLabel.numberOfLines = 3;
     footerLabel.adjustsFontSizeToFitWidth = YES;
     footerLabel.backgroundColor = [UIColor clearColor];
-    footerLabel.textColor = [UIColor whiteColor];
-    footerLabel.shadowColor = [UIColor blackColor];
+    footerLabel.textColor = [UIColor colorWithRed:0.063 green:0.337 blue:0.510 alpha:1.0];
+    footerLabel.shadowColor = [UIColor whiteColor];
     footerLabel.shadowOffset = CGSizeMake(0, -1);
     footerLabel.textAlignment = UITextAlignmentCenter;
     
@@ -186,9 +196,9 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     
     static NSString *CellIdentifier = @"Cell";
     
-    SCHProfileViewCell *cell =  (SCHProfileViewCell*) [aTableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    UITableViewCell *cell =  (UITableViewCell*) [aTableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[[SCHProfileViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
 		UISwitch *switchview = [[UISwitch alloc] initWithFrame:CGRectZero];
 		
 		BOOL currentValue = [[NSUserDefaults standardUserDefaults] boolForKey:@"kSCHSpaceSaverMode"];
@@ -209,7 +219,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 66;
+    return 44;
 }
 
 
@@ -280,6 +290,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 }
 
 - (void)viewDidUnload {
+    [self setBackgroundImage:nil];
     [self setTableView:nil];
     // Relinquish ownership of anything that can be recreated in viewDidLoad or on demand.
     // For example: self.myOutlet = nil;
@@ -290,6 +301,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 - (void)dealloc {
 	self.managedObjectContext = nil;
     [tableView release];
+    [backgroundImage release];
     [super dealloc];
 }
 
