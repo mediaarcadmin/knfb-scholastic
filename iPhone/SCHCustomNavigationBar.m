@@ -24,7 +24,10 @@
 
 - (void)dealloc
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
     [backgroundView release], backgroundView = nil;
+    [imageKey release], imageKey = nil;
     [super dealloc];
 }
 
@@ -48,10 +51,7 @@
 - (UIImageView *)backgroundView
 {
     if (!backgroundView) {
-        CGRect backgroundFrame = self.bounds;
-        backgroundFrame.origin.y = -1;
-
-        backgroundView = [[UIImageView alloc] initWithFrame:backgroundFrame];        
+        backgroundView = [[UIImageView alloc] initWithFrame:self.bounds];        
         backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         backgroundView.contentMode = UIViewContentModeTopLeft;
         

@@ -13,4 +13,8 @@
     
 }
 
+@property (nonatomic, retain) UIButton *cellButton;
+@property (nonatomic, retain) NSIndexPath *indexPath;
+@property (nonatomic, assign) id<UITableViewDelegate> delegate;
+
 @end

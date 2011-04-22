@@ -8,94 +8,56 @@
 
 #import "SCHProfileViewCell.h"
 
-#import "SCHThemeManager.h"
-#import "SCHThemeImageView.h"
-
-@interface SCHProfileViewCell()
-
-@property (nonatomic, retain) UIImageView *cellBGImage;
-
-@end
+static const CGFloat kProfileViewCellButtonWidth = 283.0f;
 
 @implementation SCHProfileViewCell
 
-@synthesize cellBGImage;
+@synthesize cellButton;
+@synthesize indexPath;
+@synthesize delegate;
+
+- (void)dealloc
+{
+    [cellButton release], cellButton = nil;
+    [indexPath release], indexPath = nil;
+    delegate = nil;
+    [super dealloc];
+}
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        self.textLabel.font = [UIFont boldSystemFontOfSize:18];
-        self.textLabel.minimumFontSize = 14;
-        self.textLabel.numberOfLines = 1;
-        self.textLabel.adjustsFontSizeToFitWidth = YES;
-        self.textLabel.backgroundColor = [UIColor clearColor];
-        self.textLabel.textColor = [UIColor whiteColor];
-        self.textLabel.shadowColor = [UIColor blackColor];
-        self.textLabel.shadowOffset = CGSizeMake(0, -1);
-        self.textLabel.textAlignment = UITextAlignmentCenter;
-        
-//        cellBGImage = [[SCHThemeImageView alloc] initWithImage:nil];
-//        [self.cellBGImage setTheme:kSCHThemeManagerTableViewCellImage];
         
         UIImage *bgImage = [UIImage imageNamed:@"button-blue"];
+        UIImage *cellBGImage = [bgImage stretchableImageWithLeftCapWidth:16 topCapHeight:0];
+        CGRect buttonFrame = CGRectMake(ceilf((CGRectGetWidth(self.contentView.bounds) - kProfileViewCellButtonWidth) / 2.0f), ceilf((CGRectGetHeight(self.contentView.bounds) - bgImage.size.height) / 2.0f), kProfileViewCellButtonWidth, bgImage.size.height);
         
-        cellBGImage = [[[UIImageView alloc] initWithImage:[bgImage stretchableImageWithLeftCapWidth:16 topCapHeight:0]] autorelease];
-        cellBGImage.tag = 666;
+        cellButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
+        [cellButton setBackgroundImage:cellBGImage forState:UIControlStateNormal];
+        [cellButton setFrame:buttonFrame];
+        [cellButton setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin];
+        [cellButton addTarget:self action:@selector(pressed:) forControlEvents:UIControlEventTouchUpInside];
         
-        CGRect bgFrame = self.contentView.frame;
-        
-        bgFrame.origin.x = 15;
-        bgFrame.size.width = bgFrame.size.width - 30;
-        [cellBGImage setFrame:bgFrame];
-        
-        [self.contentView insertSubview:cellBGImage atIndex:0];
-        
-        
+        cellButton.titleLabel.font = [UIFont boldSystemFontOfSize:20];
+        cellButton.titleLabel.minimumFontSize = 14;
+        cellButton.titleLabel.adjustsFontSizeToFitWidth = YES;
+        cellButton.titleLabel.textColor = [UIColor whiteColor];
+        cellButton.titleLabel.shadowColor = [UIColor colorWithWhite:0 alpha:0.5F];
+        cellButton.titleLabel.shadowOffset = CGSizeMake(0, -1);
+        cellButton.titleLabel.textAlignment = UITextAlignmentCenter;
+         
+        [self.contentView addSubview:cellButton];
+
         self.selectionStyle = UITableViewCellSelectionStyleNone;
 
     }
     return self;
 }
 
-- (void)layoutSubviews {
-    [super layoutSubviews];
-	
-	CGRect bounds = self.contentView.bounds;
-	
-	CGRect titleFrame = CGRectMake(0, 0, bounds.size.width, bounds.size.height);
-    
-    if (self.accessoryView) {
-        CGRect accessoryFrame = self.accessoryView.frame;
-        accessoryFrame.origin.x -= 15;
-        self.accessoryView.frame = accessoryFrame;
-
-        titleFrame = CGRectMake(20, 10, bounds.size.width - 40, bounds.size.height - 20);
-    }
-
-
-    cellBGImage = (UIImageView *) [self.contentView viewWithTag:666];
-    
-    CGRect bgFrame = self.contentView.frame;
-    
-    bgFrame.origin.x = 15;
-    bgFrame.size.width = bgFrame.size.width - 30;
-    [cellBGImage setFrame:bgFrame];
-    
-    [self.textLabel setFrame:titleFrame];
-	
-}
-
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated
+- (void)pressed:(id)sender
 {
-    [super setSelected:selected animated:animated];
-
-    // Configure the view for the selected state
-}
-
-- (void)dealloc
-{
-    [super dealloc];
+    [self.delegate tableView:nil didSelectRowAtIndexPath:self.indexPath];
 }
 
 @end

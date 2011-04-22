@@ -17,21 +17,14 @@
 @class SCHLoginViewController;
 
 @interface SCHProfileViewController : UIViewController <NSFetchedResultsControllerDelegate, SCHProfilePasswordViewControllerDelegate> {
-
-@private
-    NSFetchedResultsController *fetchedResultsController_;
-    NSManagedObjectContext *managedObjectContext_;
-    UITableView *tableView;
-    UIButton *settingsButton;
 }
 
 @property (nonatomic, retain) IBOutlet UITableView *tableView;
 @property (nonatomic, retain) IBOutlet UIImageView *backgroundView;
+@property (nonatomic, retain) IBOutlet UIView *headerView;
 @property (nonatomic, retain) IBOutlet SCHProfilePasswordViewController *profilePasswordViewController;
 @property (nonatomic, retain) IBOutlet SCHSettingsViewController *settingsController;
 @property (nonatomic, retain) IBOutlet SCHLoginViewController *loginController;
-
-@property (nonatomic, retain) SCHWebServiceSync *webServiceSync;
 
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
