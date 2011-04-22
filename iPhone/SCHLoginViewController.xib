@@ -82,7 +82,6 @@
 						<string key="NSFrame">{{169, 148}, {74, 37}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<int key="IBUIContentHorizontalAlignment">0</int>
@@ -156,8 +155,8 @@
 					</object>
 					<object class="IBUIActivityIndicatorView" id="1050292353">
 						<reference key="NSNextResponder" ref="191373211"/>
-						<int key="NSvFlags">-2147483356</int>
-						<string key="NSFrame">{{263, 20}, {37, 37}}</string>
+						<int key="NSvFlags">-2147483359</int>
+						<string key="NSFrame">{{263, 14}, {37, 37}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="258232857"/>
