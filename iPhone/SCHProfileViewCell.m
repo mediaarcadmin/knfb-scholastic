@@ -13,7 +13,7 @@
 
 @interface SCHProfileViewCell()
 
-@property (nonatomic, retain) SCHThemeImageView *cellBGImage;
+@property (nonatomic, retain) UIImageView *cellBGImage;
 
 @end
 
@@ -35,10 +35,22 @@
         self.textLabel.shadowOffset = CGSizeMake(0, -1);
         self.textLabel.textAlignment = UITextAlignmentCenter;
         
-        cellBGImage = [[SCHThemeImageView alloc] initWithImage:nil];
-        [self.cellBGImage setTheme:kSCHThemeManagerTableViewCellImage];
+//        cellBGImage = [[SCHThemeImageView alloc] initWithImage:nil];
+//        [self.cellBGImage setTheme:kSCHThemeManagerTableViewCellImage];
         
-        self.backgroundView = self.cellBGImage;
+        UIImage *bgImage = [UIImage imageNamed:@"button-blue"];
+        
+        cellBGImage = [[[UIImageView alloc] initWithImage:[bgImage stretchableImageWithLeftCapWidth:16 topCapHeight:0]] autorelease];
+        cellBGImage.tag = 666;
+        
+        CGRect bgFrame = self.contentView.frame;
+        
+        bgFrame.origin.x = 15;
+        bgFrame.size.width = bgFrame.size.width - 30;
+        [cellBGImage setFrame:bgFrame];
+        
+        [self.contentView insertSubview:cellBGImage atIndex:0];
+        
         
         self.selectionStyle = UITableViewCellSelectionStyleNone;
 
@@ -61,6 +73,15 @@
         titleFrame = CGRectMake(20, 10, bounds.size.width - 40, bounds.size.height - 20);
     }
 
+
+    cellBGImage = (UIImageView *) [self.contentView viewWithTag:666];
+    
+    CGRect bgFrame = self.contentView.frame;
+    
+    bgFrame.origin.x = 15;
+    bgFrame.size.width = bgFrame.size.width - 30;
+    [cellBGImage setFrame:bgFrame];
+    
     [self.textLabel setFrame:titleFrame];
 	
 }

@@ -31,13 +31,13 @@ static NSString * const kRootViewControllerSettingsIcon = @"Settings.png";
 
 - (void)themeUpdate;
 - (void)configureCell:(SCHProfileViewCell *)cell atIndexPath:(NSIndexPath *)indexPath;
+- (void) pushSettingsController;
 @end
 
 
 @implementation SCHProfileViewController
 
 @synthesize profilePasswordViewController;
-@synthesize headerView;
 @synthesize tableView;
 @synthesize backgroundView;
 @synthesize settingsController;
@@ -52,8 +52,6 @@ static NSString * const kRootViewControllerSettingsIcon = @"Settings.png";
 - (void)viewDidLoad {
     [super viewDidLoad];
 	
-	// Setup the table view header
-	self.tableView.tableHeaderView = self.headerView;
 	self.profilePasswordViewController.delegate = self;
     
     [self themeUpdate];
@@ -61,16 +59,56 @@ static NSString * const kRootViewControllerSettingsIcon = @"Settings.png";
                                              selector:@selector(themeUpdate) 
                                                  name:kSCHThemeManagerThemeChangeNotification 
                                                object:nil];
+    
+    CGFloat buttonPadding = 7;
+    CGFloat containerHeight = CGRectGetHeight(self.navigationController.navigationBar.frame);
+    
+    settingsButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [settingsButton setImage:[UIImage imageNamed:@"settings"] forState:UIControlStateNormal];
+    [settingsButton addTarget:self action:@selector(pushSettingsController) forControlEvents:UIControlEventTouchUpInside]; 
+//    settingsButton.backgroundColor = [UIColor greenColor];
+    [settingsButton sizeToFit];
+    
+    CGRect buttonFrame = settingsButton.frame;
+    buttonFrame.origin.x = buttonPadding;
+    buttonFrame.origin.y = floorf((containerHeight - CGRectGetHeight(buttonFrame)) / 2.0f);
+    buttonFrame.size.width = ceilf(buttonFrame.size.width);
+    settingsButton.frame = buttonFrame;
+    settingsButton.autoresizingMask = UIViewAutoresizingFlexibleHeight;
+    
+    UIView *rightHandView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetMaxX(settingsButton.frame), containerHeight)] autorelease];
+    
+//        rightHandView.backgroundColor = [UIColor orangeColor];
+    
+    rightHandView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
+    
+    [rightHandView addSubview:settingsButton];
+    self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:rightHandView] autorelease];
+    
+    backgroundView.image = [UIImage imageNamed:@"admin-iphone-users-portrait"];
+
 }
 
 - (void)themeUpdate
 {
-    self.backgroundView.image = [[SCHThemeManager sharedThemeManager] imageForBackground:self.interfaceOrientation];
+//    self.backgroundView.image = [[SCHThemeManager sharedThemeManager] imageForBackground:self.interfaceOrientation];
 }    
 
 - (void) viewWillAppear:(BOOL)animated
 {
-    [(SCHCustomNavigationBar *)self.navigationController.navigationBar setTheme:kSCHThemeManagerNavigationBarImage];
+    UIImageView *headerImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo"]];
+    self.navigationItem.titleView = headerImage;
+    [headerImage release];
+    
+//    [(SCHCustomNavigationBar *)self.navigationController.navigationBar setTheme:kSCHThemeManagerNavigationBarImage];
+    if (UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation])) {
+        [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"admin-iphone-landscape-top-toolbar"]];
+        backgroundView.image = [UIImage imageNamed:@"admin-iphone-users-landscape"];
+    } else {
+        [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"admin-iphone-portrait-top-toolbar"]];
+        backgroundView.image = [UIImage imageNamed:@"admin-iphone-users-portrait"];
+    }
+
     [super viewWillAppear:animated];
 }
 
@@ -80,7 +118,6 @@ static NSString * const kRootViewControllerSettingsIcon = @"Settings.png";
     // For example: self.myOutlet = nil;
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
     
-	self.headerView = nil;
 	self.settingsController = nil;
 }
 
@@ -105,7 +142,17 @@ static NSString * const kRootViewControllerSettingsIcon = @"Settings.png";
 
 - (void) willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
-    [(SCHCustomNavigationBar *)self.navigationController.navigationBar setTheme:kSCHThemeManagerNavigationBarImage];
+//    [(SCHCustomNavigationBar *)self.navigationController.navigationBar setTheme:kSCHThemeManagerNavigationBarImage];
+    
+    if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {
+        [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"admin-iphone-portrait-top-toolbar"]];
+        backgroundView.image = [UIImage imageNamed:@"admin-iphone-users-portrait"];
+    } else {
+        [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"admin-iphone-landscape-top-toolbar"]];
+        backgroundView.image = [UIImage imageNamed:@"admin-iphone-users-landscape"];
+    }
+    
+    
 }
 
 
@@ -124,10 +171,10 @@ static NSString * const kRootViewControllerSettingsIcon = @"Settings.png";
 //				cell.imageView.image = [UIImage imageNamed:kRootViewControllerProfileLockedIcon];
 			}			
 			break;
-		case 1:
+/*		case 1:
 			cell.textLabel.text = NSLocalizedString(@"Settings", @"");
 //			cell.imageView.image = [UIImage imageNamed:kRootViewControllerSettingsIcon];		
-			break;
+			break;*/
 	}	
 }
 
@@ -143,7 +190,7 @@ static NSString * const kRootViewControllerSettingsIcon = @"Settings.png";
 #pragma mark Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return(2);
+    return(1);
 }
 
 
@@ -156,9 +203,9 @@ static NSString * const kRootViewControllerSettingsIcon = @"Settings.png";
 			sectionInfo = [[self.fetchedResultsController sections] objectAtIndex:section];
 			ret = [sectionInfo numberOfObjects];
 			break;
-		case 1:
+/*		case 1:
 			ret = 1;
-			break;
+			break;*/
 	}
 	
 	return(ret);
@@ -242,7 +289,7 @@ static NSString * const kRootViewControllerSettingsIcon = @"Settings.png";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 66;
+    return 44;
 }
 
 - (void)pushBookshelvesControllerWithProfileItem: (SCHProfileItem *) profileItem
@@ -255,6 +302,12 @@ static NSString * const kRootViewControllerSettingsIcon = @"Settings.png";
 		
 	[self.navigationController pushViewController:bookShelfViewController animated:YES];
 	[bookShelfViewController release];
+}
+
+- (void) pushSettingsController
+{
+    settingsController.managedObjectContext = self.managedObjectContext;
+    [self.navigationController pushViewController:self.settingsController animated:YES];
 }
 
 #pragma mark -
@@ -308,10 +361,6 @@ static NSString * const kRootViewControllerSettingsIcon = @"Settings.png";
             }
 #endif	
 		}	break;
-		case 1:
-			settingsController.managedObjectContext = self.managedObjectContext;
-			[self.navigationController pushViewController:self.settingsController animated:YES];
-			break;
 	}
 	
 	[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -450,7 +499,6 @@ static NSString * const kRootViewControllerSettingsIcon = @"Settings.png";
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
 	self.profilePasswordViewController = nil;
-	self.headerView = nil;
 	self.settingsController = nil;
 	self.webServiceSync = nil;
 	
