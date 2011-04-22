@@ -20,6 +20,7 @@
 #import "SCHSyncManager.h"
 #import "SCHProfileViewCell.h"
 #import "SCHThemeManager.h"
+#import "SCHCustomNavigationBar.h"
 
 // Cell Icons 
 static NSString * const kRootViewControllerProfileIcon = @"Profile.png";
@@ -67,6 +68,16 @@ static NSString * const kRootViewControllerSettingsIcon = @"Settings.png";
     self.backgroundView.image = [[SCHThemeManager sharedThemeManager] imageForBackground:self.interfaceOrientation];
 }    
 
+- (void) viewWillAppear:(BOOL)animated
+{
+    if (UIInterfaceOrientationIsPortrait([[UIApplication sharedApplication] statusBarOrientation]  )) {
+        [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"reading-view-portrait-top-bar.png"]];
+    } else {
+        [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"reading-view-landscape-top-bar.png"]];
+    }
+    [super viewWillAppear:animated];
+}
+
 - (void)viewDidUnload {
     [self setTableView:nil];
     // Relinquish ownership of anything that can be recreated in viewDidLoad or on demand.
@@ -83,22 +94,6 @@ static NSString * const kRootViewControllerSettingsIcon = @"Settings.png";
     return (YES);
 }
 
-// Implement viewWillAppear: to do additional setup before the view is presented.
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-
-/*    UIImageView *backgroundImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bookshelf-back"]];
-	backgroundImageView.autoresizingMask = (UIViewAutoresizingFlexibleHeight|
-								  UIViewAutoresizingFlexibleWidth);
-    backgroundImageView.frame = self.view.frame;
-    [self.view addSubview:backgroundImageView];
-//    [self.view sendSubviewToBack:backgroundImageView];
-    [backgroundImageView release];
-  */  
-}
-
-
-
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
@@ -112,24 +107,14 @@ static NSString * const kRootViewControllerSettingsIcon = @"Settings.png";
 #endif
 }
 
-/*
-- (void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
+- (void) willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
+        [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"reading-view-landscape-top-bar.png"]];
+    } else {
+        [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"reading-view-portrait-top-bar.png"]];
+    }
 }
-*/
-/*
-- (void)viewDidDisappear:(BOOL)animated {
-    [super viewDidDisappear:animated];
-}
-*/
-
-/*
- // Override to allow orientations other than the default portrait orientation.
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    // Return YES for supported orientations.
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
- */
 
 
 - (void)configureCell:(SCHProfileViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
