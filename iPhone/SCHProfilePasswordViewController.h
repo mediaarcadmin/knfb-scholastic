@@ -10,12 +10,14 @@
 #import <CoreData/CoreData.h>
 
 #import "SCHProfilePasswordViewControllerDelegate.h"
+#import "SCHCustomToolbar.h"
 
 @class SCHProfileItem;
 
 @interface SCHProfilePasswordViewController : UIViewController 
 {
 
+    SCHCustomToolbar *topBar;
 }
 
 @property (retain, nonatomic) IBOutlet UILabel *newPasswordMessage;
@@ -25,6 +27,7 @@
 @property (assign, nonatomic) BOOL setPasswordMode;
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 @property (assign, nonatomic) id<SCHProfilePasswordViewControllerDelegate> delegate;
+@property (nonatomic, retain) IBOutlet SCHCustomToolbar *topBar;
 
 - (IBAction)OK:(id)sender;
 - (IBAction)cancel:(id)sender;

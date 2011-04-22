@@ -29,6 +29,7 @@
 @synthesize setPasswordMode;
 @synthesize managedObjectContext;
 @synthesize delegate;
+@synthesize topBar;
 
 - (void)releaseViewObjects 
 {
@@ -44,6 +45,7 @@
 	self.profileItem = nil;
 	self.managedObjectContext = nil;
 	
+    [topBar release];
     [super dealloc];
 }
 
@@ -59,6 +61,13 @@
 	self.confirmPassword.text = @"";
 	
 	self.confirmPassword.hidden = !self.setPasswordMode;
+    
+    if (UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation])) {
+        [topBar setBackgroundImage:[UIImage imageNamed:@"admin-iphone-landscape-top-toolbar.png"]];
+    } else {
+        [topBar setBackgroundImage:[UIImage imageNamed:@"admin-iphone-portrait-top-toolbar.png"]];
+    }
+
 }
 
 - (void)viewDidAppear:(BOOL)animated 
@@ -73,10 +82,18 @@
     [super viewDidLoad];
 	
 	newPasswordMessage.text = NSLocalizedString(@"Please enter a password for this profile", nil);
+    UIImageView *headerImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo"]];
+    topBar.items = [NSArray arrayWithObjects:
+                    [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil], 
+                    [[UIBarButtonItem alloc] initWithCustomView:headerImage],
+                    [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil], nil];
+    [headerImage release];
+
 }
 
 - (void)viewDidUnload 
 {
+    [self setTopBar:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
@@ -87,6 +104,15 @@
 {
     // Return YES for supported orientations
     return (YES);
+}
+
+- (void) willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
+        [topBar setBackgroundImage:[UIImage imageNamed:@"admin-iphone-landscape-top-toolbar.png"]];
+    } else {
+        [topBar setBackgroundImage:[UIImage imageNamed:@"admin-iphone-portrait-top-toolbar.png"]];
+    }
 }
 
 #pragma mark -
