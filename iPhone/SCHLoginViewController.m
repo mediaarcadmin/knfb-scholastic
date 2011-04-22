@@ -20,27 +20,57 @@
 @synthesize loginButton;
 @synthesize cancelButton;
 @synthesize spinner;
+@synthesize topBar;
 
 - (void)dealloc 
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	
+    [topBar release];
     [super dealloc];
-}
-
-// Implement viewWillAppear: to do additional setup before the view is presented.
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-	
-	self.userName.text = @"";
-	self.password.text = @"";
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     // Return YES for supported orientations
-    return (YES);
+//    return (YES);
+    return UIInterfaceOrientationIsPortrait(interfaceOrientation);
 }
+
+- (void) viewDidLoad
+{
+    [super viewDidLoad];
+    
+    UIImageView *headerImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo"]];
+    topBar.items = [NSArray arrayWithObjects:
+                    [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil], 
+                    [[UIBarButtonItem alloc] initWithCustomView:headerImage],
+                    [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil], nil];
+    
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    if (UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation])) {
+        [topBar setBackgroundImage:[UIImage imageNamed:@"admin-iphone-landscape-top-toolbar.png"]];
+    } else {
+        [topBar setBackgroundImage:[UIImage imageNamed:@"admin-iphone-portrait-top-toolbar.png"]];
+    }
+	self.userName.text = @"";
+	self.password.text = @"";
+}
+
+
+- (void) willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
+        [topBar setBackgroundImage:[UIImage imageNamed:@"admin-iphone-landscape-top-toolbar.png"]];
+    } else {
+        [topBar setBackgroundImage:[UIImage imageNamed:@"admin-iphone-portrait-top-toolbar.png"]];
+    }
+}
+
+
 
 - (void)authenticationManager:(NSNotification *)notification
 {
@@ -134,6 +164,8 @@
 }
 
 - (void)viewDidUnload {
+    [self setTopBar:nil];
+    [self setTopBar:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
