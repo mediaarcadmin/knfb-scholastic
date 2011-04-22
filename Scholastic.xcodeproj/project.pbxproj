@@ -140,6 +140,14 @@
 		A3A38E63133A811400C325A3 /* devcerttemplate.dat in Resources */ = {isa = PBXBuildFile; fileRef = A3A38E5F133A811400C325A3 /* devcerttemplate.dat */; };
 		A3A38E64133A811400C325A3 /* iphonecert.dat in Resources */ = {isa = PBXBuildFile; fileRef = A3A38E60133A811400C325A3 /* iphonecert.dat */; };
 		A3D933861326D92000037111 /* libPlayReadyPK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A3D933851326D92000037111 /* libPlayReadyPK.a */; };
+		C90110D313616BE1006694B3 /* plain-background-portrait.png in Resources */ = {isa = PBXBuildFile; fileRef = C90110CF13616BE1006694B3 /* plain-background-portrait.png */; };
+		C90110D413616BE1006694B3 /* plain-background-portrait.png in Resources */ = {isa = PBXBuildFile; fileRef = C90110CF13616BE1006694B3 /* plain-background-portrait.png */; };
+		C90110D513616BE1006694B3 /* plain-background-portrait@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C90110D013616BE1006694B3 /* plain-background-portrait@2x.png */; };
+		C90110D613616BE1006694B3 /* plain-background-portrait@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C90110D013616BE1006694B3 /* plain-background-portrait@2x.png */; };
+		C90110D713616BE1006694B3 /* settings.png in Resources */ = {isa = PBXBuildFile; fileRef = C90110D113616BE1006694B3 /* settings.png */; };
+		C90110D813616BE1006694B3 /* settings.png in Resources */ = {isa = PBXBuildFile; fileRef = C90110D113616BE1006694B3 /* settings.png */; };
+		C90110D913616BE1006694B3 /* settings@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C90110D213616BE1006694B3 /* settings@2x.png */; };
+		C90110DA13616BE1006694B3 /* settings@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C90110D213616BE1006694B3 /* settings@2x.png */; };
 		C908D85D133F91FA00661718 /* SCHLayoutView.m in Sources */ = {isa = PBXBuildFile; fileRef = C908D857133F91FA00661718 /* SCHLayoutView.m */; };
 		C908D85E133F91FA00661718 /* SCHLayoutView.m in Sources */ = {isa = PBXBuildFile; fileRef = C908D857133F91FA00661718 /* SCHLayoutView.m */; };
 		C908D85F133F91FA00661718 /* SCHReadingView.m in Sources */ = {isa = PBXBuildFile; fileRef = C908D859133F91FA00661718 /* SCHReadingView.m */; };
@@ -1118,6 +1126,10 @@
 		A3D9341E1326DA3F00037111 /* oemprofile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = oemprofile.h; path = Shared/Libraries/DRM/oemprofile.h; sourceTree = "<group>"; };
 		A3D9341F1326DA3F00037111 /* oemrsa.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = oemrsa.h; path = Shared/Libraries/DRM/oemrsa.h; sourceTree = "<group>"; };
 		A3D934201326DA3F00037111 /* oemrsaimpl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = oemrsaimpl.h; path = Shared/Libraries/DRM/oemrsaimpl.h; sourceTree = "<group>"; };
+		C90110CF13616BE1006694B3 /* plain-background-portrait.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "plain-background-portrait.png"; path = "Resources/UIAssets/plain-background-portrait.png"; sourceTree = "<group>"; };
+		C90110D013616BE1006694B3 /* plain-background-portrait@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "plain-background-portrait@2x.png"; path = "Resources/UIAssets/plain-background-portrait@2x.png"; sourceTree = "<group>"; };
+		C90110D113616BE1006694B3 /* settings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = settings.png; path = Resources/UIAssets/settings.png; sourceTree = "<group>"; };
+		C90110D213616BE1006694B3 /* settings@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "settings@2x.png"; path = "Resources/UIAssets/settings@2x.png"; sourceTree = "<group>"; };
 		C908D856133F91FA00661718 /* SCHLayoutView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHLayoutView.h; path = Shared/SCHLayoutView.h; sourceTree = "<group>"; };
 		C908D857133F91FA00661718 /* SCHLayoutView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHLayoutView.m; path = Shared/SCHLayoutView.m; sourceTree = "<group>"; };
 		C908D858133F91FA00661718 /* SCHReadingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHReadingView.h; path = Shared/SCHReadingView.h; sourceTree = "<group>"; };
@@ -2342,6 +2354,10 @@
 		C9A11290136082A6007FD763 /* UIAssets */ = {
 			isa = PBXGroup;
 			children = (
+				C90110CF13616BE1006694B3 /* plain-background-portrait.png */,
+				C90110D013616BE1006694B3 /* plain-background-portrait@2x.png */,
+				C90110D113616BE1006694B3 /* settings.png */,
+				C90110D213616BE1006694B3 /* settings@2x.png */,
 				C9A1129113608319007FD763 /* admin-iphone-splash-portrait.png */,
 				C9A1129213608319007FD763 /* admin-iphone-splash-portrait@2x.png */,
 				C9A1129313608319007FD763 /* admin-iphone-users-portrait.png */,
@@ -2963,6 +2979,10 @@
 				C9A1129D13608319007FD763 /* admin-iphone-users-portrait@2x.png in Resources */,
 				C9A1129F13608319007FD763 /* button-blue.png in Resources */,
 				C9A112A113608319007FD763 /* button-blue@2x.png in Resources */,
+				C90110D313616BE1006694B3 /* plain-background-portrait.png in Resources */,
+				C90110D513616BE1006694B3 /* plain-background-portrait@2x.png in Resources */,
+				C90110D713616BE1006694B3 /* settings.png in Resources */,
+				C90110D913616BE1006694B3 /* settings@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3122,6 +3142,10 @@
 				C9A1129E13608319007FD763 /* admin-iphone-users-portrait@2x.png in Resources */,
 				C9A112A013608319007FD763 /* button-blue.png in Resources */,
 				C9A112A213608319007FD763 /* button-blue@2x.png in Resources */,
+				C90110D413616BE1006694B3 /* plain-background-portrait.png in Resources */,
+				C90110D613616BE1006694B3 /* plain-background-portrait@2x.png in Resources */,
+				C90110D813616BE1006694B3 /* settings.png in Resources */,
+				C90110DA13616BE1006694B3 /* settings@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
