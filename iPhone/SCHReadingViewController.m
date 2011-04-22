@@ -584,6 +584,7 @@ static int STANDARD_SCRUB_INFO_HEIGHT = 47;
         [self adjustScrubberInfoViewHeightForImageSize:scrubImage.size];
     } else {
         [self adjustScrubberInfoViewHeightForImageSize:CGSizeZero];
+        scrubberThumbImage.image = nil;
     }
     
     [pageLabel setText:[NSString stringWithFormat:@"Page %d of %d", self.currentPageIndex, [self.xpsProvider pageCount]]];
