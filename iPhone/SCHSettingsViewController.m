@@ -67,26 +67,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-//    SCHThemeButton *deregisterButton = [SCHThemeButton buttonWithType:UIButtonTypeCustom];
-//    [deregisterButton setFrame:CGRectMake(0, 0, 82, 30)];
-//    [deregisterButton setTitle:NSLocalizedString(@"Deregister", @"") forState:UIControlStateNormal];
-//    [deregisterButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-//    [deregisterButton setTitleColor:[UIColor colorWithWhite:1 alpha:0.5f] forState:UIControlStateHighlighted];
-//    [deregisterButton setReversesTitleShadowWhenHighlighted:YES];
-    
-//    deregisterButton.titleLabel.font = [UIFont boldSystemFontOfSize:14];
-//    deregisterButton.titleLabel.shadowOffset = CGSizeMake(0, -1);
-    
-//    [deregisterButton setThemeButton:kSCHThemeManagerButtonImage leftCapWidth:5 topCapHeight:0];
-//    [deregisterButton addTarget:self action:@selector(deregistrationButtonPushed:) forControlEvents:UIControlEventTouchUpInside];    
-//    self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:deregisterButton] autorelease];
-    
-    SCHThemeButton *button = [SCHThemeButton buttonWithType:UIButtonTypeCustom];
-    [button setThemeIcon:kSCHThemeManagerHomeIcon];
-    [button sizeToFit];    
-    [button addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];    
-    self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:button] autorelease];
+    [self.navigationController.navigationBar setTintColor:[UIColor colorWithRed:0.832 green:0.000 blue:0.007 alpha:1.000]];
 }
 
 - (void)back

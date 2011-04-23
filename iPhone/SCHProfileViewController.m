@@ -105,6 +105,7 @@ static NSString * const kRootViewControllerSettingsIcon = @"Settings.png";
     
     self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:settingsButton] autorelease];
     
+    self.navigationItem.title = NSLocalizedString(@"Back", @"");
     UIImageView *logoImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo"]];
     self.navigationItem.titleView = logoImageView;
     [logoImageView release];
