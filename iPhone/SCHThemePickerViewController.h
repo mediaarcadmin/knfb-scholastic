@@ -9,9 +9,12 @@
 #import <UIKit/UIKit.h>
 
 
-@interface SCHThemePickerViewController : UITableViewController 
+@interface SCHThemePickerViewController : UIViewController <UITableViewDelegate, UITableViewDataSource> 
 {
     
 }
+
+@property (nonatomic, retain) IBOutlet UITableView *tableView;
+@property (nonatomic, retain) IBOutlet UIImageView *shadowView;
 
 @end

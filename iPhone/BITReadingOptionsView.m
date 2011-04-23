@@ -18,6 +18,7 @@
 @interface BITReadingOptionsView ()
 
 - (void)updateFavoriteDisplay;
+- (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation;
 
 @end
 
@@ -27,24 +28,20 @@
 @synthesize thumbnailImage;
 @synthesize profileItem;
 @synthesize favouriteButton;
+@synthesize shadowView;
 
-// The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
-/*
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization.
-    }
-    return self;
+- (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation
+{
+    [(SCHCustomNavigationBar *)self.navigationController.navigationBar updateTheme:orientation];
+    [self.view.layer setContents:(id)[[SCHThemeManager sharedThemeManager] imageForBackground:orientation].CGImage];
 }
-*/
-
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
 	optionsView.layer.cornerRadius = 5.0f;
 	optionsView.layer.masksToBounds = YES;
+    [optionsView setAlpha:0];
     
     self.favouriteButton.titleLabel.textAlignment = UITextAlignmentCenter;
     [self updateFavoriteDisplay];
@@ -55,6 +52,8 @@
     [button sizeToFit];    
     [button addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];    
     self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:button] autorelease];
+    
+    [self.shadowView setImage:[[UIImage imageNamed:@"bookshelf-iphone-top-shadow.png"] stretchableImageWithLeftCapWidth:15.0f topCapHeight:0]];
 }
 
 
@@ -79,31 +78,17 @@
 	[super viewWillAppear:animated];
 	
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque];	
-//    [self.navigationController.navigationBar setBarStyle:UIBarStyleDefault];
-	NSLog(@"Item: %@", self.isbn);
-	
+
 	if (self.thumbnailImage) {
 		[coverImageView setImage:self.thumbnailImage];
 	}
-	
-//	titleLabel.text = [NSString stringWithFormat:@"%@", metadataItem.Title];
-//	authorLabel.text = [NSString stringWithFormat:@"Author: %@", metadataItem.Author];
-        
-    if (UIInterfaceOrientationIsPortrait([[UIApplication sharedApplication] statusBarOrientation]  )) {
-        [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"reading-view-portrait-top-bar.png"]];
-    } else {
-        [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"reading-view-landscape-top-bar.png"]];
-    }
-
+    
+    [self setupAssetsForOrientation:self.interfaceOrientation];
 }
 
 - (void) willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
-    if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {
-        [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"reading-view-portrait-top-bar.png"]];
-    } else {
-        [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"reading-view-landscape-top-bar.png"]];
-    }
+    [self setupAssetsForOrientation:self.interfaceOrientation];
 }
 
 - (void)back
@@ -190,6 +175,7 @@
 	[UIView setAnimationDuration:0.15f];
 	
 	[bookCoverView setAlpha:0.0f];
+    [optionsView setAlpha:1];
 	
 	[UIView commitAnimations];
 	[self cancelInitialTimer];

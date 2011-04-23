@@ -15,6 +15,7 @@
 			<string>IBProxyObject</string>
 			<string>IBUINavigationController</string>
 			<string>IBUILabel</string>
+			<string>IBUIImageView</string>
 			<string>IBUIActivityIndicatorView</string>
 			<string>IBUINavigationBar</string>
 			<string>IBUITableViewController</string>
@@ -51,10 +52,10 @@
 					<object class="IBUIScrollView" id="1042208657">
 						<reference key="NSNextResponder" ref="509794933"/>
 						<int key="NSvFlags">274</int>
-						<string key="NSFrameSize">{320, 398}</string>
+						<string key="NSFrameSize">{320, 416}</string>
 						<reference key="NSSuperview" ref="509794933"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="222914230"/>
+						<reference key="NSNextKeyView" ref="400290101"/>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">4</int>
 							<bytes key="NSWhite">MCAwAA</bytes>
@@ -62,6 +63,24 @@
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<bool key="IBUIMultipleTouchEnabled">YES</bool>
+						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+					</object>
+					<object class="IBUIImageView" id="400290101">
+						<reference key="NSNextResponder" ref="509794933"/>
+						<int key="NSvFlags">258</int>
+						<string key="NSFrameSize">{320, 20}</string>
+						<reference key="NSSuperview" ref="509794933"/>
+						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView" ref="222914230"/>
+						<object class="NSColor" key="IBUIBackgroundColor">
+							<int key="NSColorSpace">3</int>
+							<bytes key="NSWhite">MSAwAA</bytes>
+							<object class="NSColorSpace" key="NSCustomColorSpace">
+								<int key="NSID">2</int>
+							</object>
+						</object>
+						<bool key="IBUIOpaque">NO</bool>
+						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 					</object>
 					<object class="IBUIView" id="222914230">
@@ -88,7 +107,6 @@
 								<string key="NSFrame">{{11, 61}, {155, 21}}</string>
 								<reference key="NSSuperview" ref="222914230"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<int key="IBUIContentMode">7</int>
@@ -116,7 +134,7 @@
 								<int key="IBUITextAlignment">1</int>
 							</object>
 						</object>
-						<string key="NSFrame">{{71, 130}, {177, 98}}</string>
+						<string key="NSFrame">{{71, 137}, {177, 98}}</string>
 						<reference key="NSSuperview" ref="509794933"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="1040081492"/>
@@ -127,13 +145,19 @@
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 					</object>
 				</object>
-				<string key="NSFrameSize">{320, 398}</string>
+				<string key="NSFrame">{{0, 64}, {320, 416}}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="1042208657"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">1</int>
 					<bytes key="NSRGB">MSAwLjk4NjgzODM1MSAwLjI5NjQ2MzMzMjIAA</bytes>
+				</object>
+				<object class="IBUISimulatedStatusBarMetrics" key="IBUISimulatedStatusBarMetrics">
+					<int key="IBUIStatusBarStyle">2</int>
+				</object>
+				<object class="IBUISimulatedNavigationBarMetrics" key="IBUISimulatedTopBarMetrics">
+					<bool key="IBUIPrompted">NO</bool>
 				</object>
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 			</object>
@@ -159,7 +183,6 @@
 					<object class="IBUITableViewController" id="891391258">
 						<string key="IBUITitle"/>
 						<object class="IBUINavigationItem" key="IBUINavigationItem" id="205957914">
-							<reference key="IBUINavigationBar"/>
 							<string key="IBUITitle">Bookshelf Views</string>
 							<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						</object>
@@ -235,6 +258,14 @@
 					</object>
 					<int key="connectionID">45</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">shadowView</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="400290101"/>
+					</object>
+					<int key="connectionID">47</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -263,8 +294,10 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="1042208657"/>
 							<reference ref="222914230"/>
+							<reference ref="400290101"/>
 						</object>
 						<reference key="parent" ref="0"/>
+						<string key="objectName">View</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">11</int>
@@ -321,6 +354,11 @@
 						<reference key="object" ref="205957914"/>
 						<reference key="parent" ref="891391258"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">46</int>
+						<reference key="object" ref="400290101"/>
+						<reference key="parent" ref="509794933"/>
+					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -341,6 +379,7 @@
 					<string>35.IBPluginDependency</string>
 					<string>40.CustomClassName</string>
 					<string>40.IBPluginDependency</string>
+					<string>46.IBPluginDependency</string>
 					<string>8.IBEditorWindowLastContentRect</string>
 					<string>8.IBPluginDependency</string>
 				</object>
@@ -362,6 +401,7 @@
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>SCHThemePickerViewController</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>{{439, 976}, {320, 398}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				</object>
@@ -378,7 +418,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">45</int>
+			<int key="maxID">47</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -409,6 +449,7 @@
 							<string>customNavigationBar</string>
 							<string>gridView</string>
 							<string>loadingView</string>
+							<string>shadowView</string>
 							<string>themePickerContainer</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
@@ -416,6 +457,7 @@
 							<string>SCHCustomNavigationBar</string>
 							<string>SCHBookShelfGridView</string>
 							<string>UIView</string>
+							<string>UIImageView</string>
 							<string>UINavigationController</string>
 						</object>
 					</object>
@@ -426,6 +468,7 @@
 							<string>customNavigationBar</string>
 							<string>gridView</string>
 							<string>loadingView</string>
+							<string>shadowView</string>
 							<string>themePickerContainer</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
@@ -441,6 +484,10 @@
 							<object class="IBToOneOutletInfo">
 								<string key="name">loadingView</string>
 								<string key="candidateClassName">UIView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">shadowView</string>
+								<string key="candidateClassName">UIImageView</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">themePickerContainer</string>

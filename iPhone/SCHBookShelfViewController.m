@@ -31,7 +31,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 @property (nonatomic, retain) UIBarButtonItem *themeButton;
 @property int moveToValue;
 
-- (void)setInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation;
+- (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation;
 - (void)updateTheme;
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated;
 - (void)finishEditing:(id)sender;
@@ -42,6 +42,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 
 @synthesize books;
 @synthesize gridView, loadingView, componentCache;
+@synthesize shadowView;
 @synthesize themePickerContainer;
 @synthesize customNavigationBar;
 @synthesize profileItem;
@@ -50,8 +51,10 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 
 - (void)releaseViewObjects 
 {
-	self.gridView = nil;
-	self.componentCache = nil;
+    [componentCache release], componentCache = nil;
+    [shadowView release], shadowView = nil;
+    [loadingView release], loadingView = nil;
+    [gridView release], gridView = nil;
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -78,8 +81,6 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
     
 	[self.gridView setCellSize:CGSizeMake(80,118) withBorderSize:20];
     [self.gridView setBackgroundColor:[UIColor clearColor]];
-    [self setInterfaceOrientation:self.interfaceOrientation];
-    [self.gridView setShelfInset:CGSizeMake(0, -1)];
     [self.gridView setMinimumNumberOfShelves:10];
     
     UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:nil action:nil];
@@ -120,13 +121,19 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
         self.navigationItem.title = NSLocalizedString(@"'s Books", @"");
     }
 
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateTheme) name:kSCHThemeManagerThemeChangeNotification object:nil];                
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateTheme) name:kSCHThemeManagerThemeChangeNotification object:nil];              
+    
+    [self setupAssetsForOrientation:self.interfaceOrientation];
+    
+    [self.shadowView setImage:[[UIImage imageNamed:@"bookshelf-iphone-top-shadow.png"] stretchableImageWithLeftCapWidth:15.0f topCapHeight:0]];
+    
+    [self.gridView reloadData];
 }
 
 - (void) viewWillAppear:(BOOL)animated
 {
-    [(SCHCustomNavigationBar *)self.navigationController.navigationBar updateTheme];
     [super viewWillAppear:animated];
+    [self setupAssetsForOrientation:self.interfaceOrientation];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -135,28 +142,30 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
     return (YES);
 }
 
-- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
-    [self.gridView setShelfImage:[[SCHThemeManager sharedThemeManager] imageForShelf:self.interfaceOrientation]];        
-    [self.view.layer setContents:(id)[[SCHThemeManager sharedThemeManager] imageForBackground:self.interfaceOrientation].CGImage];
-    
-    [self setInterfaceOrientation:toInterfaceOrientation];
+    [self setupAssetsForOrientation:toInterfaceOrientation];
 }
 
-- (void)setInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+- (void)setupAssetsForOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
+    [self.gridView setShelfImage:[[SCHThemeManager sharedThemeManager] imageForShelf:interfaceOrientation]];        
+    [self.view.layer setContents:(id)[[SCHThemeManager sharedThemeManager] imageForBackground:interfaceOrientation].CGImage];
     [(SCHCustomNavigationBar *)self.navigationController.navigationBar updateTheme:interfaceOrientation];
+    
     if (UIInterfaceOrientationIsLandscape(interfaceOrientation)) {
         [self.gridView setShelfHeight:kSCHBookShelfViewControllerGridCellHeightLandscape];
+        [self.gridView setShelfInset:CGSizeMake(0, -1)];
     } else {
         [self.gridView setShelfHeight:kSCHBookShelfViewControllerGridCellHeightPortrait];
+        [self.gridView setShelfInset:CGSizeMake(0, -2)];
+
     }
 }
 
 - (void)updateTheme
 {
-    [self.gridView setShelfImage:[[SCHThemeManager sharedThemeManager] imageForShelf:self.interfaceOrientation]];    
-    [self.view.layer setContents:(id)[[SCHThemeManager sharedThemeManager] imageForBackground:self.interfaceOrientation].CGImage];
+    [self setupAssetsForOrientation:self.interfaceOrientation];
 }
 
 - (void)changeTheme

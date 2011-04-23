@@ -27,6 +27,7 @@
 @property (nonatomic, retain) UIImage *thumbnailImage;
 @property (nonatomic, retain) SCHProfileItem *profileItem;
 @property (nonatomic, retain) IBOutlet UIButton *favouriteButton;
+@property (nonatomic, retain) IBOutlet UIImageView *shadowView;
 
 - (IBAction) showFlowView: (id) sender;
 - (IBAction) showFixedView: (id) sender;

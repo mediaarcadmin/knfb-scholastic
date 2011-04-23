@@ -26,25 +26,26 @@
 
 @implementation SCHThemePickerViewController
 
+@synthesize tableView;
+@synthesize shadowView;
 @synthesize cancelButton;
 @synthesize doneButton;
 @synthesize lastTappedTheme;
 
-- (void)dealloc 
-{    
-    self.cancelButton = nil;
-    self.doneButton = nil;
-    self.lastTappedTheme = nil;
-    
-    [super dealloc];
+- (void)releaseViewObjects
+{
+    [tableView release], tableView = nil;
+    [shadowView release], shadowView = nil;
+    [cancelButton release], shadowView = nil;
+    [doneButton release], shadowView = nil;
 }
 
-- (void)didReceiveMemoryWarning
-{
-    // Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
+- (void)dealloc 
+{    
+    [lastTappedTheme release], lastTappedTheme = nil;
+    [self releaseViewObjects];
     
-    // Release any cached data, images, etc that aren't in use.
+    [super dealloc];
 }
 
 #pragma mark - View lifecycle
@@ -89,7 +90,9 @@
     self.tableView.rowHeight = 58;
     self.tableView.separatorColor = [UIColor colorWithRed:0.000 green:0.365 blue:0.616 alpha:1.000];
     
-    [(SCHCustomNavigationBar *)self.navigationController.navigationBar setTheme:kSCHThemeManagerNavigationBarImage];    
+    [(SCHCustomNavigationBar *)self.navigationController.navigationBar setTheme:kSCHThemeManagerNavigationBarImage];
+    
+    [self.shadowView setImage:[[UIImage imageNamed:@"bookshelf-iphone-top-shadow.png"] stretchableImageWithLeftCapWidth:15.0f topCapHeight:0]];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -203,11 +206,11 @@
     return [[[SCHThemeManager sharedThemeManager] themeNames:YES] count];
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+- (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"Cell";
     
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    UITableViewCell *cell = [aTableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
         cell.textLabel.textAlignment = UITextAlignmentCenter;
@@ -227,9 +230,9 @@
 
 #pragma mark - Table view delegate
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [tableView deselectRowAtIndexPath:indexPath animated:NO];
+    [aTableView deselectRowAtIndexPath:indexPath animated:NO];
     
     NSString *themeName = [[[SCHThemeManager sharedThemeManager] themeNames:YES] objectAtIndex:indexPath.row];
     if ([themeName isEqualToString:self.lastTappedTheme] == NO) {
