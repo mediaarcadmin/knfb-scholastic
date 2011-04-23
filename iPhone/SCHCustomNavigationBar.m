@@ -8,6 +8,7 @@
 
 #import "SCHCustomNavigationBar.h"
 #import "SCHThemeManager.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface SCHCustomNavigationBar ()
 
@@ -39,7 +40,7 @@
 
 - (void)setBackgroundImage:(UIImage*)image
 {  
-    [self.backgroundView setImage:image];    
+    [self.backgroundView setImage:image];
     [self setNeedsLayout];
 }
 
@@ -52,19 +53,11 @@
 {
     if (!backgroundView) {
         backgroundView = [[UIImageView alloc] initWithFrame:self.bounds];        
-        backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        backgroundView.contentMode = UIViewContentModeTopLeft;
-        
-        self.clipsToBounds = NO;
+        backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;        
         [self addSubview:backgroundView];
     }
     
     return backgroundView;
-}
-
-- (void) setBounds:(CGRect)bounds
-{
-    [super setBounds:bounds];
 }
 
 - (void)setTheme:(NSString *)newImageKey
@@ -92,6 +85,11 @@
 {
     [self setBackgroundImage:[[SCHThemeManager sharedThemeManager] imageFor:self.imageKey
                                                                 orientation:interfaceOrientation]];
+}
+
+- (void)drawRect:(CGRect)rect
+{
+    // Do nothing so that the default bar isn't shown during rotation
 }
 
 @end

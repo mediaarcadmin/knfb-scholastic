@@ -31,6 +31,7 @@ static NSString * const kRootViewControllerSettingsIcon = @"Settings.png";
 
 - (void)pushSettingsController;
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation;
+- (void)releaseViewObjects;
 
 @property (nonatomic, retain) UIButton *settingsButton;
 @property (nonatomic, retain) SCHWebServiceSync *webServiceSync;
@@ -66,9 +67,7 @@ static NSString * const kRootViewControllerSettingsIcon = @"Settings.png";
     [loginController release], loginController = nil;    
 }
 
-- (void)dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-    
+- (void)dealloc {    
     [webServiceSync release], webServiceSync = nil;	
     [fetchedResultsController_ release], fetchedResultsController_ = nil;
     [managedObjectContext_ release], managedObjectContext_ = nil;
@@ -147,7 +146,6 @@ static NSString * const kRootViewControllerSettingsIcon = @"Settings.png";
 {
     [self setupAssetsForOrientation:toInterfaceOrientation];
 }
-
 
 #pragma mark -
 #pragma mark Table view data source

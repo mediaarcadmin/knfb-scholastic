@@ -20,24 +20,53 @@
 
 extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
+@interface SCHSettingsViewController()
+
+- (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation;
+- (void)releaseViewObjects;
+
+@end
+
 @implementation SCHSettingsViewController
 @synthesize tableView;
-@synthesize backgroundImage;
+@synthesize backgroundView;
 
 @synthesize loginController, managedObjectContext, drmRegistrationSession;
 
 #pragma mark -
 #pragma mark View lifecycle
 
+- (void)releaseViewObjects
+{
+    [loginController release], loginController = nil;
+    [tableView release], tableView = nil;
+    [backgroundView release], backgroundView = nil;
+}
+
+- (void)dealloc {
+	[managedObjectContext release], managedObjectContext = nil;
+    [drmRegistrationSession release], drmRegistrationSession = nil;
+    
+    [self releaseViewObjects];
+    [super dealloc];
+}
+
+- (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation
+{
+    if (UIInterfaceOrientationIsLandscape(orientation)) {
+        [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:
+         [UIImage imageNamed:@"admin-iphone-landscape-top-toolbar.png"]];
+        [self.backgroundView setImage:[UIImage imageNamed:@"plain-background-landscape.png"]];
+        
+    } else {
+        [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:
+         [UIImage imageNamed:@"admin-iphone-portrait-top-toolbar.png"]];
+        [self.backgroundView setImage:[UIImage imageNamed:@"plain-background-portrait.png"]];        
+    }
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
- 
-//    SCHThemeImageView *themeBackgroundView = [[[SCHThemeImageView alloc] initWithImage:nil] autorelease];
-//    [themeBackgroundView setTheme:kSCHThemeManagerBackgroundImage];    
-//    self.tableView.backgroundView = themeBackgroundView;
-    
-    backgroundImage.image = [UIImage imageNamed:@"plain-background-portrait"];
     
 //    SCHThemeButton *deregisterButton = [SCHThemeButton buttonWithType:UIButtonTypeCustom];
 //    [deregisterButton setFrame:CGRectMake(0, 0, 82, 30)];
@@ -68,22 +97,12 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-
-    if (UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation])) {
-        [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"admin-iphone-landscape-top-toolbar.png"]];
-    } else {
-        [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"admin-iphone-portrait-top-toolbar.png"]];
-    }
+    [self setupAssetsForOrientation:self.interfaceOrientation];
 }
-
 
 - (void) willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
-    if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
-        [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"admin-iphone-landscape-top-toolbar.png"]];
-    } else {
-        [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"admin-iphone-portrait-top-toolbar.png"]];
-    }
+    [self setupAssetsForOrientation:toInterfaceOrientation];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
@@ -129,7 +148,6 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     [registrationSession release];
 }
 
-
 #pragma mark -
 #pragma mark Table view data source
 
@@ -170,9 +188,13 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     return 54;
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+- (UIView *)tableView:(UITableView *)aTableView viewForFooterInSection:(NSInteger)section
 {
-    UILabel *footerLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 8, self.view.frame.size.width - 20, 60)];
+    CGRect footerFrame = CGRectMake(0, 0, CGRectGetWidth(aTableView.bounds), 60);
+    UIView *containerView = [[UIView alloc] initWithFrame:footerFrame];
+    UILabel *footerLabel = [[UILabel alloc] initWithFrame:CGRectInset(footerFrame, 10, 8)];
+    
+    footerLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleHeight;
     footerLabel.text =  NSLocalizedString(@"Space Saver Mode allows you to download individual books - turn it off to automatically download all books.", @"");
     footerLabel.minimumFontSize = 11;
     footerLabel.numberOfLines = 3;
@@ -182,8 +204,10 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     footerLabel.shadowColor = [UIColor whiteColor];
     footerLabel.shadowOffset = CGSizeMake(0, -1);
     footerLabel.textAlignment = UITextAlignmentCenter;
+    [containerView addSubview:footerLabel];
+    [footerLabel release];
     
-    return([footerLabel autorelease]);
+    return([containerView autorelease]);
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
@@ -222,89 +246,9 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     return 44;
 }
 
-
-
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source.
-        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
-    }   
-}
-*/
-
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
-
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-
-#pragma mark -
-#pragma mark Table view delegate
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Navigation logic may go here. Create and push another view controller.
-    /*
-    <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-    // ...
-    // Pass the selected object to the new view controller.
-    [self.navigationController pushViewController:detailViewController animated:YES];
-    [detailViewController release];
-    */
-}
-
-
-#pragma mark -
-#pragma mark Memory management
-
-- (void)didReceiveMemoryWarning {
-    // Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
-    
-    // Relinquish ownership any cached data, images, etc. that aren't in use.
-}
-
 - (void)viewDidUnload {
-    [self setBackgroundImage:nil];
-    [self setTableView:nil];
-    // Relinquish ownership of anything that can be recreated in viewDidLoad or on demand.
-    // For example: self.myOutlet = nil;
-	self.managedObjectContext = nil;
+    [self releaseViewObjects];
 }
-
-
-- (void)dealloc {
-	self.managedObjectContext = nil;
-    [tableView release];
-    [backgroundImage release];
-    [super dealloc];
-}
-
 
 #pragma mark -
 #pragma mark DRM Registration Session Delegate methods
