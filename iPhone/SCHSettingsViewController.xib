@@ -62,22 +62,26 @@
 						<string key="NSFrameSize">{768, 1004}</string>
 						<reference key="NSSuperview" ref="715934819"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="783655972"/>
+						<reference key="NSNextKeyView" ref="342351330"/>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">1</int>
 							<bytes key="NSRGB">MCAwIDAgMAA</bytes>
 						</object>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+						<double key="IBUIContentInset.top">18</double>
+						<double key="IBUIContentInset.bottom">0.0</double>
+						<double key="IBUIContentInset.left">0.0</double>
+						<double key="IBUIContentInset.right">0.0</double>
 						<bool key="IBUIAlwaysBounceVertical">YES</bool>
 						<int key="IBUIStyle">1</int>
 						<int key="IBUISeparatorStyle">2</int>
 						<int key="IBUISectionIndexMinimumDisplayRowCount">0</int>
 						<float key="IBUIRowHeight">44</float>
-						<float key="IBUISectionHeaderHeight">10</float>
-						<float key="IBUISectionFooterHeight">10</float>
+						<float key="IBUISectionHeaderHeight">5</float>
+						<float key="IBUISectionFooterHeight">5</float>
 					</object>
-					<object class="IBUIImageView" id="783655972">
+					<object class="IBUIImageView" id="342351330">
 						<reference key="NSNextResponder" ref="715934819"/>
 						<int key="NSvFlags">258</int>
 						<string key="NSFrameSize">{768, 7}</string>
@@ -87,7 +91,7 @@
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">3</int>
 							<bytes key="NSWhite">MSAwAA</bytes>
-							<object class="NSColorSpace" key="NSCustomColorSpace" id="460559630">
+							<object class="NSColorSpace" key="NSCustomColorSpace" id="583789333">
 								<int key="NSID">2</int>
 							</object>
 						</object>
@@ -107,7 +111,7 @@
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
 					<bytes key="NSWhite">MQA</bytes>
-					<reference key="NSCustomColorSpace" ref="460559630"/>
+					<reference key="NSCustomColorSpace" ref="583789333"/>
 				</object>
 				<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 			</object>
@@ -192,7 +196,7 @@
 						<reference key="object" ref="715934819"/>
 						<array class="NSMutableArray" key="children">
 							<reference ref="217804066"/>
-							<reference ref="783655972"/>
+							<reference ref="342351330"/>
 							<reference ref="779477869"/>
 						</array>
 						<reference key="parent" ref="0"/>
@@ -210,7 +214,7 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">25</int>
-						<reference key="object" ref="783655972"/>
+						<reference key="object" ref="342351330"/>
 						<reference key="parent" ref="715934819"/>
 					</object>
 				</array>

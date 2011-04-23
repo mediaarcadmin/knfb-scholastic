@@ -24,6 +24,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation;
 - (void)releaseViewObjects;
+- (void)deregistration;
 
 @end
 
@@ -70,12 +71,6 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     [self.navigationController.navigationBar setTintColor:[UIColor colorWithRed:0.832 green:0.000 blue:0.007 alpha:1.000]];
 }
 
-- (void)back
-{
-    [self.navigationController popViewControllerAnimated:YES];
-}
-
-
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self setupAssetsForOrientation:self.interfaceOrientation];
@@ -118,9 +113,9 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 }
 
 #pragma mark -
-#pragma mark Deregistration Button
+#pragma mark Deregistration
 
-- (void) deregistrationButtonPushed: (UISwitch *) sender {
+- (void)deregistration {
     // TODO alert warning user what will happen
     SCHDrmRegistrationSession* registrationSession = [[SCHDrmRegistrationSession alloc] init];
     registrationSession.delegate = self;	
@@ -134,7 +129,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     // Return the number of sections.
-    return 1;
+    return 2;
 }
 
 
@@ -143,35 +138,13 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     return 1;
 }
 
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    UILabel *headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 12, self.view.frame.size.width - 40, 40)];
-    headerLabel.text = NSLocalizedString(@"Device Options", @"");
-    headerLabel.font = [UIFont boldSystemFontOfSize:18.0f];
-    headerLabel.minimumFontSize = 11;
-    headerLabel.numberOfLines = 1;
-    headerLabel.adjustsFontSizeToFitWidth = YES;
-    headerLabel.backgroundColor = [UIColor clearColor];
-    headerLabel.textColor = [UIColor colorWithRed:0.063 green:0.337 blue:0.510 alpha:1.0];
-    headerLabel.shadowColor = [UIColor whiteColor];
-    headerLabel.shadowOffset = CGSizeMake(0, -1);
-    
-    UIView *containerView = [[UIView alloc] initWithFrame:CGRectZero];
-    [containerView addSubview:headerLabel];
-    [headerLabel release];
-    
-    return [containerView autorelease];
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    return 54;
-}
-
 - (UIView *)tableView:(UITableView *)aTableView viewForFooterInSection:(NSInteger)section
 {
-    CGRect footerFrame = CGRectMake(0, 0, CGRectGetWidth(aTableView.bounds), 60);
+    if (section != 1) {
+        return nil;
+    }
+    
+    CGRect footerFrame = CGRectMake(0, 0, CGRectGetWidth(aTableView.bounds), 82);
     UIView *containerView = [[UIView alloc] initWithFrame:footerFrame];
     UILabel *footerLabel = [[UILabel alloc] initWithFrame:CGRectInset(footerFrame, 10, 8)];
     
@@ -191,9 +164,13 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     return([containerView autorelease]);
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+- (CGFloat)tableView:(UITableView *)aTableView heightForFooterInSection:(NSInteger)section
 {
-    return 76;
+    if (section != 1) {
+        return aTableView.sectionFooterHeight;
+    }
+    
+    return 82;
 }
 
 // Customize the appearance of table view cells.
@@ -202,29 +179,49 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     static NSString *CellIdentifier = @"Cell";
     
     UITableViewCell *cell =  (UITableViewCell*) [aTableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    
     if (cell == nil) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
-		UISwitch *switchview = [[UISwitch alloc] initWithFrame:CGRectZero];
-		
-		BOOL currentValue = [[NSUserDefaults standardUserDefaults] boolForKey:@"kSCHSpaceSaverMode"];
-		[switchview setOn:currentValue];
-		
-		[switchview addTarget:self action:@selector(spaceSwitchChanged:) forControlEvents:UIControlEventValueChanged];
-		cell.accessoryView = switchview;
-		[switchview release];
-        
-        cell.textLabel.textAlignment = UITextAlignmentLeft;
     }
-
-    // Configure the cell...
-	cell.textLabel.text = NSLocalizedString(@"Space Saver Mode", @"");
+    
+    switch ([indexPath section]) {
+        case 0: {
+            cell.accessoryView = nil;
+            cell.textLabel.textAlignment = UITextAlignmentCenter;
+            cell.textLabel.text = NSLocalizedString(@"De-register This Device", @"");
+            cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+        } break;
+        case 1: {
+            UISwitch *switchview = [[UISwitch alloc] initWithFrame:CGRectZero];
+            BOOL currentValue = [[NSUserDefaults standardUserDefaults] boolForKey:@"kSCHSpaceSaverMode"];
+            [switchview setOn:currentValue];
+            [switchview addTarget:self action:@selector(spaceSwitchChanged:) forControlEvents:UIControlEventValueChanged];
+            cell.accessoryView = switchview;
+            [switchview release];
+            
+            cell.textLabel.textAlignment = UITextAlignmentLeft;
+            cell.textLabel.text = NSLocalizedString(@"Space Saver Mode", @"");
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        } break;  
+        default:
+            break;
+    }
 
     return cell;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 44;
+    switch ([indexPath section]) {
+        case 0: {
+            [self deregistration];
+        } break;
+        default:
+            break;
+    }
+    
+    [aTableView deselectRowAtIndexPath:indexPath animated:YES];
+
 }
 
 - (void)viewDidUnload {
