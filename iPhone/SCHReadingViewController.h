@@ -15,21 +15,13 @@
 
 // FIXME: can we standardise on synthesized ivars for IBOutlets?
 @interface SCHReadingViewController : UIViewController <BITScrubberViewDelegate, SCHReadingViewDelegate> {
-	
-	IBOutlet SCHCustomToolbar   *scrubberToolbar;
-    IBOutlet SCHCustomToolbar   *olderBottomToolbar;
 
 	IBOutlet BITScrubberView    *pageScrubber;
     IBOutlet UIImageView        *scrubberThumbImage;
 
 	IBOutlet UIView             *scrubberInfoView;
 	IBOutlet UILabel            *pageLabel;
-//	IBOutlet UILabel            *panSpeedLabel;
-    IBOutlet UILabel            *youngerBookTitleLabel;
-    IBOutlet UIView             *youngerBookTitleView;
-	
-    IBOutlet UILabel            *olderBookTitleLabel;
-    IBOutlet UIView             *olderBookTitleView;
+//	IBOutlet UILabel            *panSpeedLabel;	
     IBOutlet UIView             *optionsView;
     
     IBOutlet UISegmentedControl *flowFixedSegmentedControl;
@@ -48,6 +40,11 @@
 @property (nonatomic, retain) IBOutlet UIButton *backButton;
 @property (nonatomic, retain) IBOutlet UIButton *audioButton;
 @property (nonatomic, retain) IBOutlet UIButton *zoomButton;
+
+@property (nonatomic, retain) IBOutlet SCHCustomToolbar   *scrubberToolbar;
+@property (nonatomic, retain) IBOutlet SCHCustomToolbar   *olderBottomToolbar;
+@property (nonatomic, retain) IBOutlet UIImageView *topShadow;
+@property (nonatomic, retain) IBOutlet UIImageView *bottomShadow;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil isbn:(NSString *)aIsbn;
 
