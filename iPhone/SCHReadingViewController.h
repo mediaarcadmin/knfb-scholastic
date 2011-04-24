@@ -13,6 +13,7 @@
 
 @class SCHXPSProvider;
 
+// FIXME: can we standardise on synthesized ivars for IBOutlets?
 @interface SCHReadingViewController : UIViewController <BITScrubberViewDelegate, SCHReadingViewDelegate> {
 	
 	IBOutlet SCHCustomToolbar   *scrubberToolbar;
@@ -41,10 +42,19 @@
 @property (nonatomic) BOOL flowView;
 @property (readwrite) BOOL youngerMode;
 
+@property (nonatomic, retain) IBOutlet UILabel *titleLabel;
+@property (nonatomic, retain) IBOutlet UIView *leftBarButtonItemContainer;
+@property (nonatomic, retain) IBOutlet UIView *youngerRightBarButtonItemContainer;
+@property (nonatomic, retain) IBOutlet UIButton *backButton;
+@property (nonatomic, retain) IBOutlet UIButton *audioButton;
+@property (nonatomic, retain) IBOutlet UIButton *zoomButton;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil isbn:(NSString *)aIsbn;
 
 - (IBAction)nextSmartZoom:(id)sender;
 - (IBAction)prevSmartZoom:(id)sender;
+- (IBAction)popViewController:(id)sender;
+- (IBAction)magnifyAction:(id)sender;
+- (IBAction)audioPlayAction:(id)sender;
 
 @end

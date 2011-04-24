@@ -20,6 +20,7 @@
 
 static int STANDARD_SCRUB_INFO_HEIGHT = 47;
 
+static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 @interface SCHReadingViewController ()
 
@@ -28,12 +29,12 @@ static int STANDARD_SCRUB_INFO_HEIGHT = 47;
 - (void) cancelInitialTimer;
 - (void) adjustScrubberInfoViewHeightForImageSize: (CGSize) imageSize;
 
-- (IBAction) popViewController: (id) sender;
-- (IBAction) magnifyAction: (id) sender;
-- (IBAction) audioPlayAction: (id) sender;
 - (IBAction) storyInteractionAction: (id) sender;
 - (IBAction) notesAction: (id) sender;
 - (IBAction) settingsAction: (id) sender;
+
+- (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation;
+- (void)releaseViewObjects;
 
 @property (readwrite) BOOL toolbarsVisible;
 @property (readwrite) BOOL zoomActive;
@@ -42,10 +43,6 @@ static int STANDARD_SCRUB_INFO_HEIGHT = 47;
 @property (nonatomic, assign) SCHXPSProvider *xpsProvider;
 @property (readwrite) BOOL currentlyRotating;
 
-@property (nonatomic, assign) UIButton *backButton;
-@property (nonatomic, assign) UIButton *zoomButton;
-@property (nonatomic, assign) UIButton *audioButton;
-
 @property (readwrite) int currentFontSizeIndex;
 @property (readwrite) SCHReadingViewPaperType paperType;
 
@@ -53,8 +50,16 @@ static int STANDARD_SCRUB_INFO_HEIGHT = 47;
 
 @implementation SCHReadingViewController
 
+// FIXME: can we have one synthesize per line so that automatic merges are easy
 @synthesize isbn, flowView, eucPageView, youngerMode;
-@synthesize toolbarsVisible, zoomActive, initialFadeTimer, currentPageIndex, xpsProvider, backButton, zoomButton, audioButton, currentlyRotating, currentFontSizeIndex, paperType;
+@synthesize toolbarsVisible, zoomActive, initialFadeTimer, currentPageIndex, xpsProvider, currentlyRotating, currentFontSizeIndex, paperType;
+
+@synthesize titleLabel;
+@synthesize leftBarButtonItemContainer;
+@synthesize youngerRightBarButtonItemContainer;
+@synthesize backButton;
+@synthesize audioButton;
+@synthesize zoomButton;
 
 #pragma mark - Memory Management
 
@@ -70,10 +75,25 @@ static int STANDARD_SCRUB_INFO_HEIGHT = 47;
     [flowFixedSegmentedControl release];
     [paperTypeSegmentedControl release];
     [scrubberThumbImage release];
+    
+    [self releaseViewObjects];
     [super dealloc];
 }
 
+// FIXME: release all nib or viewDidUnload retained objects here
+// Have only added the ones I have added or amended myself
+- (void)releaseViewObjects
+{
+    [titleLabel release], titleLabel = nil;
+    [leftBarButtonItemContainer release], leftBarButtonItemContainer = nil;
+    [youngerRightBarButtonItemContainer release], youngerRightBarButtonItemContainer = nil;
+    [backButton release], backButton = nil;
+    [audioButton release], audioButton = nil;
+    [zoomButton release], zoomButton = nil;
+}
+
 - (void)viewDidUnload {
+    // FIXME: this method does not get called on dealloc
     [olderBottomToolbar release];
     olderBottomToolbar = nil;
     [youngerBookTitleLabel release];
@@ -92,16 +112,47 @@ static int STANDARD_SCRUB_INFO_HEIGHT = 47;
     flowFixedSegmentedControl = nil;
     [paperTypeSegmentedControl release];
     paperTypeSegmentedControl = nil;
-    backButton = nil;
-    zoomButton = nil;
-    audioButton = nil;
     [scrubberThumbImage release];
     scrubberThumbImage = nil;
     [super viewDidUnload];
     [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.isbn];
     self.xpsProvider = nil;
     self.eucPageView = nil;
+    
+    [self releaseViewObjects];
 }
+
+- (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation
+{    
+    if (UIInterfaceOrientationIsPortrait(orientation)) {
+        [self.backButton setImage:[UIImage imageNamed:@"icon-books.png"] forState:UIControlStateNormal];
+        
+        [self.audioButton setImage:[UIImage imageNamed:@"icon-play.png"] forState:UIControlStateNormal];
+        [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"reading-view-portrait-top-bar.png"]];
+        [scrubberToolbar setBackgroundWith:[UIImage imageNamed:@"reading-view-portrait-scrubber-bar.png"]];
+        [olderBottomToolbar setBackgroundWith:[UIImage imageNamed:@"reading-view-portrait-bottom-bar.png"]];
+        
+        if (self.zoomActive) {
+            [self.zoomButton setImage:[UIImage imageNamed:@"icon-magnify-active.png"] forState:UIControlStateNormal];
+        } else {
+            [self.zoomButton setImage:[UIImage imageNamed:@"icon-magnify.png"] forState:UIControlStateNormal];
+        }
+    } else {
+        [self.backButton setImage:[UIImage imageNamed:@"icon-books-landscape.png"] forState:UIControlStateNormal];
+        
+        [self.audioButton setImage:[UIImage imageNamed:@"icon-play-landscape.png"] forState:UIControlStateNormal];
+        [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"reading-view-landscape-top-bar.png"]];
+        [scrubberToolbar setBackgroundWith:[UIImage imageNamed:@"reading-view-landscape-scrubber-bar.png"]];
+        [olderBottomToolbar setBackgroundWith:[UIImage imageNamed:@"reading-view-landscape-bottom-bar.png"]];
+        
+        if (self.zoomActive) {
+            [self.zoomButton setImage:[UIImage imageNamed:@"icon-magnify-active-landscape.png"] forState:UIControlStateNormal];
+        } else {
+            [self.zoomButton setImage:[UIImage imageNamed:@"icon-magnify-landscape.png"] forState:UIControlStateNormal];
+        }
+    }
+}
+
 
 - (void)didReceiveMemoryWarning {
     // Releases the view if it doesn't have a superview.
@@ -138,9 +189,6 @@ static int STANDARD_SCRUB_INFO_HEIGHT = 47;
     SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];
     
     NSLog(@"XPSCategory: %@", book.XPSCategory);
-
-    self.title = book.Title;
-    
     
 	pageScrubber.delegate = self;
 	pageScrubber.minimumValue = 1;
@@ -148,9 +196,10 @@ static int STANDARD_SCRUB_INFO_HEIGHT = 47;
 	pageScrubber.continuous = YES;
 	pageScrubber.value = self.currentPageIndex + 1;
 	
-//    panSpeedLabel.text = @"Hi-speed Scrubbing";
+    // FIXME: localise this text and make sure we get it from the bookview so its pagination aware
     pageLabel.text = [NSString stringWithFormat:@"Page %d of %d", self.currentPageIndex, [self.xpsProvider pageCount] - 1];
     
+    // FIXME: the variable eucPageView is confusingly named
     if (self.flowView) {
         self.eucPageView = [[SCHFlowView alloc] initWithFrame:self.view.bounds isbn:self.isbn];
     } else {
@@ -159,9 +208,11 @@ static int STANDARD_SCRUB_INFO_HEIGHT = 47;
     
     self.eucPageView.delegate = self;
     
+    // FIXME: this should be a stored preference
     self.currentFontSizeIndex = 2;
     [self.eucPageView setFontPointIndex:self.currentFontSizeIndex];
     
+    // FIXME: can we standardise access to sythesized ivars via properties except in init and dealloc
     if (self.flowView) {
         [fontSegmentedControl setEnabled:YES forSegmentAtIndex:0];
         [fontSegmentedControl setEnabled:YES forSegmentAtIndex:1];
@@ -173,6 +224,7 @@ static int STANDARD_SCRUB_INFO_HEIGHT = 47;
     }
     
     
+    // FIXME: this should be a stored preference
     self.paperType = SCHReadingViewPaperTypeWhite;
     
     switch (self.paperType) {
@@ -206,102 +258,46 @@ static int STANDARD_SCRUB_INFO_HEIGHT = 47;
                                                            userInfo:nil
                                                             repeats:NO];
 	
-    [scrubberToolbar setBackgroundWith:[UIImage imageNamed:@"ReadingCustomToolbarBG"]];
-    [olderBottomToolbar setBackgroundWith:[UIImage imageNamed:@"ReadingCustomToolbarBG"]];
+
     
     
-    CGFloat buttonPadding = 7;
     CGFloat containerHeight = CGRectGetHeight(self.navigationController.navigationBar.frame);
     
-    backButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [backButton setImage:[[SCHThemeManager sharedThemeManager] imageForBooksIcon:[[UIApplication sharedApplication] statusBarOrientation]] forState:UIControlStateNormal];
-    [backButton addTarget:self action:@selector(popViewController:) forControlEvents:UIControlEventTouchUpInside]; 
-//    backButton.backgroundColor = [UIColor redColor];
-    [backButton sizeToFit];
+    CGRect leftBarButtonItemFrame = self.leftBarButtonItemContainer.frame;
+    leftBarButtonItemFrame.size.height = containerHeight;
+    self.leftBarButtonItemContainer.frame = leftBarButtonItemFrame;
     
-    CGRect buttonFrame = backButton.frame;
-    buttonFrame.origin.x = buttonPadding;
-    buttonFrame.origin.y = floorf((containerHeight - CGRectGetHeight(buttonFrame)) / 2.0f);
-    buttonFrame.size.width = ceilf(buttonFrame.size.width);
-    backButton.frame = buttonFrame;
-    backButton.autoresizingMask = UIViewAutoresizingFlexibleHeight;
-    
-    UIView *leftHandView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetMaxX(backButton.frame), containerHeight)] autorelease];
-    UIView *rightHandView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, buttonPadding, containerHeight)] autorelease];
-    
-//    leftHandView.backgroundColor = [UIColor yellowColor];
-//    rightHandView.backgroundColor = [UIColor greenColor];
-    
-    leftHandView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
-    rightHandView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
-    
-    [leftHandView addSubview:backButton];
+    self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:self.leftBarButtonItemContainer] autorelease];
     
     if (self.youngerMode) {
-        zoomButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [zoomButton setImage:[UIImage imageNamed:@"icon-magnify"] forState:UIControlStateNormal];
-        [zoomButton addTarget:self action:@selector(magnifyAction:) forControlEvents:UIControlEventTouchUpInside];    
-//        zoomButton.backgroundColor = [UIColor redColor];
-        [zoomButton sizeToFit];
+        CGRect rightBarButtonItemFrame = self.youngerRightBarButtonItemContainer.frame;
+        rightBarButtonItemFrame.size.height = containerHeight;
+        self.youngerRightBarButtonItemContainer.frame = rightBarButtonItemFrame;
         
-        CGRect buttonFrame = zoomButton.frame;
-        buttonFrame.origin.x = 0;
-        buttonFrame.origin.y = floorf((containerHeight - CGRectGetHeight(buttonFrame)) / 2.0f);
-        buttonFrame.size.width = ceilf(buttonFrame.size.width);
-        zoomButton.frame = buttonFrame;
-        zoomButton.autoresizingMask = UIViewAutoresizingFlexibleHeight;
-
-        
-        audioButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [audioButton setImage:[UIImage imageNamed:@"icon-play"] forState:UIControlStateNormal];
-        [audioButton addTarget:self action:@selector(audioPlayAction:) forControlEvents:UIControlEventTouchUpInside];   
-//        audioButton.backgroundColor = [UIColor redColor];
-        [audioButton sizeToFit];
-
-        CGRect button2Frame = audioButton.frame;
-        button2Frame.origin.x = button2Frame.size.width + buttonPadding;
-        button2Frame.origin.y = floorf((containerHeight - CGRectGetHeight(button2Frame)) / 2.0f);
-        button2Frame.size.width = ceilf(button2Frame.size.width);
-        audioButton.frame = button2Frame;
-        audioButton.autoresizingMask = UIViewAutoresizingFlexibleHeight;
-
-        [rightHandView addSubview:zoomButton];
-        [rightHandView addSubview:audioButton];
-        
-        CGRect rightFrame = rightHandView.frame;
-        rightFrame.size.width = buttonFrame.size.width + buttonPadding + button2Frame.size.width + buttonPadding;
-        rightHandView.frame = rightFrame;
+        self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:self.youngerRightBarButtonItemContainer] autorelease];
     } else {
-        CGRect frame = olderBottomToolbar.frame;
-        frame.origin.y = CGRectGetMinY(scrubberToolbar.frame) - CGRectGetHeight(olderBottomToolbar.frame);
-        olderBottomToolbar.frame = frame;
-        [self.view addSubview:olderBottomToolbar];
+        self.navigationItem.rightBarButtonItem = nil;
     }
     
-    
-    NSLog(@"Left frame: %@", NSStringFromCGRect(leftHandView.frame));
-    NSLog(@"Right frame: %@", NSStringFromCGRect(rightHandView.frame));
-    self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:leftHandView] autorelease];
-    self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:rightHandView] autorelease];
-    
-    
+    self.titleLabel.text = book.Title;
+    self.navigationItem.titleView = self.titleLabel;
 }
 
 - (void) viewWillAppear:(BOOL)animated
 {
 	[super viewWillAppear:animated];
-//    return;
+    [self setupAssetsForOrientation:self.interfaceOrientation];
 }
 
 - (void) viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    // FIXME: why here rather than in the viewDidLoad?
     self.eucPageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 }
 
 - (void) viewWillDisappear:(BOOL)animated
 {
-    self.navigationController.navigationBar.translucent = NO;
     [self cancelInitialTimer];
     [super viewWillDisappear:animated];
 }
@@ -368,32 +364,8 @@ static int STANDARD_SCRUB_INFO_HEIGHT = 47;
         
     }
     
-}
-
-- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
-{
+    [self setupAssetsForOrientation:toInterfaceOrientation];
     
-    if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {
-        [backButton setImage:[[SCHThemeManager sharedThemeManager] imageForBooksIcon:toInterfaceOrientation] forState:UIControlStateNormal];
-        [audioButton setImage:[UIImage imageNamed:@"icon-play"] forState:UIControlStateNormal];
-        [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"reading-view-portrait-top-bar.png"]];
-
-        if (self.zoomActive) {
-            [zoomButton setImage:[UIImage imageNamed:@"icon-magnify-active"] forState:UIControlStateNormal];
-        } else {
-            [zoomButton setImage:[UIImage imageNamed:@"icon-magnify"] forState:UIControlStateNormal];
-        }
-    } else {
-        [backButton setImage:[UIImage imageNamed:@"Themes/Blue/icon-books-landscape"] forState:UIControlStateNormal];
-        [audioButton setImage:[UIImage imageNamed:@"icon-play-landscape"] forState:UIControlStateNormal];
-        [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"reading-view-landscape-top-bar.png"]];
-        
-        if (self.zoomActive) {
-            [zoomButton setImage:[UIImage imageNamed:@"icon-magnify-active-landscape"] forState:UIControlStateNormal];
-        } else {
-            [zoomButton setImage:[UIImage imageNamed:@"icon-magnify-landscape"] forState:UIControlStateNormal];
-        }
-    }
 }
 
 #pragma mark -
