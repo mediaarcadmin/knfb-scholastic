@@ -9,28 +9,15 @@
 #import <UIKit/UIKit.h>
 #import "BITScrubberView.h"
 #import "SCHReadingView.h"
-#import "SCHCustomToolbar.h"
 
 @class SCHXPSProvider;
+@class SCHCustomToolbar;
 
-// FIXME: can we standardise on synthesized ivars for IBOutlets?
 @interface SCHReadingViewController : UIViewController <BITScrubberViewDelegate, SCHReadingViewDelegate> {
 
-	IBOutlet BITScrubberView    *pageScrubber;
-    IBOutlet UIImageView        *scrubberThumbImage;
-
-	IBOutlet UIView             *scrubberInfoView;
-	IBOutlet UILabel            *pageLabel;
-//	IBOutlet UILabel            *panSpeedLabel;	
-    IBOutlet UIView             *optionsView;
-    
-    IBOutlet UISegmentedControl *flowFixedSegmentedControl;
-    IBOutlet UISegmentedControl *fontSegmentedControl;
-    IBOutlet UISegmentedControl *paperTypeSegmentedControl;
 }
 
 @property (nonatomic, retain) NSString *isbn;
-@property (nonatomic, retain) SCHReadingView *eucPageView;
 @property (nonatomic) BOOL flowView;
 @property (readwrite) BOOL youngerMode;
 
@@ -40,18 +27,23 @@
 @property (nonatomic, retain) IBOutlet UIButton *backButton;
 @property (nonatomic, retain) IBOutlet UIButton *audioButton;
 @property (nonatomic, retain) IBOutlet UIButton *zoomButton;
-
-@property (nonatomic, retain) IBOutlet SCHCustomToolbar   *scrubberToolbar;
-@property (nonatomic, retain) IBOutlet SCHCustomToolbar   *olderBottomToolbar;
+@property (nonatomic, retain) IBOutlet SCHCustomToolbar *scrubberToolbar;
+@property (nonatomic, retain) IBOutlet SCHCustomToolbar *olderBottomToolbar;
 @property (nonatomic, retain) IBOutlet UIImageView *topShadow;
 @property (nonatomic, retain) IBOutlet UIImageView *bottomShadow;
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil isbn:(NSString *)aIsbn;
+@property (nonatomic, retain) IBOutlet BITScrubberView *pageScrubber;
+@property (nonatomic, retain) IBOutlet UIImageView *scrubberThumbImage;
+@property (nonatomic, retain) IBOutlet UIView *scrubberInfoView;
+@property (nonatomic, retain) IBOutlet UILabel *pageLabel;
+@property (nonatomic, retain) IBOutlet UILabel *panSpeedLabel;	
 
-- (IBAction)nextSmartZoom:(id)sender;
-- (IBAction)prevSmartZoom:(id)sender;
-- (IBAction)popViewController:(id)sender;
-- (IBAction)magnifyAction:(id)sender;
-- (IBAction)audioPlayAction:(id)sender;
+@property (nonatomic, retain) IBOutlet UIView *optionsView;
+@property (nonatomic, retain) IBOutlet UISegmentedControl *flowFixedSegmentedControl;
+@property (nonatomic, retain) IBOutlet UISegmentedControl *fontSegmentedControl;
+@property (nonatomic, retain) IBOutlet UISegmentedControl *paperTypeSegmentedControl;
+
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil isbn:(NSString *)aIsbn;
 
 @end
