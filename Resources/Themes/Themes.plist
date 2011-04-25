@@ -57,32 +57,6 @@
 		<string>Blue/icon-theme</string>
 	</dict>
 	<dict>
-		<key>BackgroundImage</key>
-		<string>Test/background</string>
-		<key>BooksIcon</key>
-		<string>Test/icon-books</string>
-		<key>ButtonImage</key>
-		<string>Test/button</string>
-		<key>DoneButtonImage</key>
-		<string>Test/button-done</string>
-		<key>HomeIcon</key>
-		<string>Test/icon-home</string>
-		<key>id</key>
-		<integer>16</integer>
-		<key>Image</key>
-		<string>Test/Test</string>
-		<key>Name</key>
-		<string>Test</string>
-		<key>NavigationBarImage</key>
-		<string>Test/navigation-bar</string>
-		<key>ShelfImage</key>
-		<string>Test/shelf</string>
-		<key>TableViewCellImage</key>
-		<string>Test/table-view-cell</string>
-		<key>ThemeIcon</key>
-		<string>Test/icon-theme</string>
-	</dict>
-	<dict>
 		<key>id</key>
 		<integer>3</integer>
 		<key>Image</key>
