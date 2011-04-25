@@ -83,17 +83,18 @@
 	newPasswordMessage.text = NSLocalizedString(@"Please enter a password for this profile", nil);
     UIImageView *headerImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo"]];
     topBar.items = [NSArray arrayWithObjects:
-                    [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil], 
-                    [[UIBarButtonItem alloc] initWithCustomView:headerImage],
-                    [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil], nil];
-    [headerImage release];
+                    [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace 
+                                                                   target:nil action:nil] autorelease], 
+                    [[[UIBarButtonItem alloc] initWithCustomView:headerImage] autorelease],
+                    [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace 
+                                                                   target:nil action:nil] autorelease], nil];
+    [headerImage release], headerImage = nil;
 }
 
 - (void)viewDidUnload 
 {
     [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
+ 
 	[self releaseViewObjects];
 }
 
@@ -108,14 +109,14 @@
     }
 }
 
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation 
+                                duration:(NSTimeInterval)duration
 {
     [self setupAssetsForOrientation:toInterfaceOrientation];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    // Return YES for supported orientations
     return (YES);
 }
 

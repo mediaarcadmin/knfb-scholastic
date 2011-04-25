@@ -28,7 +28,6 @@ static NSTimeInterval const kAppDelegate_iPhoneSyncManagerWakeDelay = 5.0;
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions 
 {    
 	[super application:application didFinishLaunchingWithOptions:launchOptions];
-    // Override point for customization after application launch.
 	
     SCHProfileViewController *rootViewController = (SCHProfileViewController *)[navigationController topViewController];
     rootViewController.managedObjectContext = self.managedObjectContext;

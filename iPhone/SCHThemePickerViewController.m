@@ -13,11 +13,14 @@
 #import "SCHThemeImageView.h"
 #import "SCHCustomNavigationBar.h"
 
+static NSTimeInterval const kSCHThemePickerViewControllerThemeTransitionDuration = 0.3;
+static NSTimeInterval const kSCHThemePickerViewControllerThemeTransitionAlpha = 0.7;
+
 @interface SCHThemePickerViewController ()
 
 @property (nonatomic, retain) SCHThemeButton *cancelButton;
 @property (nonatomic, retain) SCHThemeButton *doneButton;
-@property (nonatomic, retain) NSString *lastTappedTheme;
+@property (nonatomic, copy) NSString *lastTappedTheme;
 
 - (void)previewTheme:(NSString *)themeName;
 
@@ -30,6 +33,8 @@
 @synthesize cancelButton;
 @synthesize doneButton;
 @synthesize lastTappedTheme;
+
+#pragma mark - Object lifecycle
 
 - (void)releaseViewObjects
 {
@@ -56,7 +61,6 @@
     SCHThemeImageView *themeBackgroundView = [[[SCHThemeImageView alloc] initWithImage:nil] autorelease];
     [themeBackgroundView setTheme:kSCHThemeManagerBackgroundImage];    
     self.tableView.backgroundView = themeBackgroundView;
-//    self.tableView.backgroundColor = [UIColor clearColor];
 
     self.cancelButton = [SCHThemeButton buttonWithType:UIButtonTypeCustom];
     [self.cancelButton setFrame:CGRectMake(0, 0, 60, 30)];
@@ -94,14 +98,28 @@
     [self.shadowView setImage:[[UIImage imageNamed:@"bookshelf-iphone-top-shadow.png"] stretchableImageWithLeftCapWidth:15.0f topCapHeight:0]];
 }
 
+- (void)viewDidUnload
+{
+    [super viewDidUnload];
+    
+	[self releaseViewObjects];
+}
+
 - (void)viewWillAppear:(BOOL)animated 
 {
     [super viewWillAppear:animated];
     [(SCHCustomNavigationBar *)self.navigationController.navigationBar updateTheme];
 }
 
+#pragma mark - Orientation methods
 
-- (void) willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    return(YES);
+}
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation 
+                                duration:(NSTimeInterval)duration
 {
     if (self.lastTappedTheme == nil) {
         [(SCHCustomNavigationBar *)self.navigationController.navigationBar updateTheme:toInterfaceOrientation];
@@ -113,23 +131,35 @@
     }
 }
 
+#pragma - Private Methods
 
 - (void)previewTheme:(NSString *)themeName
 {
     SCHThemeManager *themeManager = [SCHThemeManager sharedThemeManager];
 
-    [UIView animateWithDuration:0.3 delay:0.0 options:UIViewAnimationOptionCurveEaseIn
+    [UIView animateWithDuration:kSCHThemePickerViewControllerThemeTransitionDuration delay:0.0 options:UIViewAnimationOptionCurveEaseIn
                      animations:^{
-                         self.tableView.backgroundView.alpha = 0.7;
-                         self.navigationController.navigationBar.alpha = 0.7;
+                         self.tableView.backgroundView.alpha = kSCHThemePickerViewControllerThemeTransitionAlpha;
+                         self.navigationController.navigationBar.alpha = kSCHThemePickerViewControllerThemeTransitionAlpha;
                      }
                      completion:^(BOOL finished) {
-                         [self.cancelButton setBackgroundImage:[[themeManager imageForTheme:themeName key:kSCHThemeManagerDoneButtonImage orientation:self.interfaceOrientation] stretchableImageWithLeftCapWidth:5 topCapHeight:0] forState:UIControlStateNormal];
-                         [self.doneButton setBackgroundImage:[[themeManager imageForTheme:themeName key:kSCHThemeManagerButtonImage orientation:self.interfaceOrientation] stretchableImageWithLeftCapWidth:5 topCapHeight:0] forState:UIControlStateNormal];
-                         [(SCHThemeImageView *)self.tableView.backgroundView setImage:[themeManager imageForTheme:themeName key:kSCHThemeManagerBackgroundImage orientation:self.interfaceOrientation]];
-                         [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:[themeManager imageForTheme:themeName key:kSCHThemeManagerNavigationBarImage orientation:self.interfaceOrientation]];
+                         [self.cancelButton setBackgroundImage:[[themeManager imageForTheme:themeName 
+                                                                                        key:kSCHThemeManagerDoneButtonImage 
+                                                                                orientation:self.interfaceOrientation] stretchableImageWithLeftCapWidth:5 topCapHeight:0] 
+                                                      forState:UIControlStateNormal];
+                         [self.doneButton setBackgroundImage:[[themeManager imageForTheme:themeName 
+                                                                                      key:kSCHThemeManagerButtonImage 
+                                                                              orientation:self.interfaceOrientation] stretchableImageWithLeftCapWidth:5 topCapHeight:0] 
+                                                    forState:UIControlStateNormal];
+                         [(SCHThemeImageView *)self.tableView.backgroundView setImage:[themeManager imageForTheme:themeName 
+                                                                                                              key:kSCHThemeManagerBackgroundImage 
+                                                                                                      orientation:self.interfaceOrientation]];
+                         [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:[themeManager 
+                                                                                                                imageForTheme:themeName 
+                                                                                                                key:kSCHThemeManagerNavigationBarImage 
+                                                                                                                orientation:self.interfaceOrientation]];
                          
-                         [UIView animateWithDuration:0.3 delay:0.0 options:UIViewAnimationOptionCurveEaseIn
+                         [UIView animateWithDuration:kSCHThemePickerViewControllerThemeTransitionDuration delay:0.0 options:UIViewAnimationOptionCurveEaseIn
                                           animations:^{
                                               self.tableView.backgroundView.alpha = 1.0;
                                               self.navigationController.navigationBar.alpha = 1.0;
@@ -139,7 +169,9 @@
                      }];    
 }
 
-- (void)done
+#pragma - Action Methods
+
+- (IBAction)done
 {
     if (self.lastTappedTheme != nil) {
         [SCHThemeManager sharedThemeManager].theme = self.lastTappedTheme;    
@@ -149,49 +181,11 @@
     [self.tableView reloadData];    
 }
 
-- (void)cancel
+- (IBAction)cancel
 {
     self.lastTappedTheme = nil;
     [self dismissModalViewControllerAnimated:YES];
     [self previewTheme:[SCHThemeManager sharedThemeManager].theme];    
-}
-
-- (void)viewDidUnload
-{
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
-    self.cancelButton = nil;
-    self.doneButton = nil;
-    self.lastTappedTheme = nil;
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    // Return YES for supported orientations
-    return (YES);
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    UILabel *headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(16, 0, self.view.frame.size.width - 32, 50)];
-    headerLabel.text = NSLocalizedString(@"Themes", @"");
-    headerLabel.font = [UIFont boldSystemFontOfSize:17.0f];
-    headerLabel.numberOfLines = 1;
-    headerLabel.backgroundColor = [UIColor clearColor];
-    headerLabel.textColor = [UIColor whiteColor];
-    headerLabel.shadowOffset = CGSizeMake(0, -1);
-    
-    UIView *containerView = [[UIView alloc] initWithFrame:CGRectZero];
-    [containerView addSubview:headerLabel];
-    [headerLabel release];
-    
-    return [containerView autorelease];
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    return 50;
 }
 
 #pragma mark - Table view data source
@@ -220,12 +214,11 @@
         cell.textLabel.shadowColor = [UIColor colorWithWhite:0 alpha:0.5f];
     }
 
-    // Configure the cell...
     cell.textLabel.text = [[[SCHThemeManager sharedThemeManager] themeNames:YES] objectAtIndex:indexPath.row];
     cell.backgroundColor = [UIColor colorWithPatternImage:
                             [[SCHThemeManager sharedThemeManager] imageForTheme:cell.textLabel.text key:kSCHThemeManagerImage orientation:self.interfaceOrientation]];
 
-    return cell;
+    return(cell);
 }
 
 #pragma mark - Table view delegate
@@ -234,11 +227,34 @@
 {
     [aTableView deselectRowAtIndexPath:indexPath animated:NO];
     
-    NSString *themeName = [[[SCHThemeManager sharedThemeManager] themeNames:YES] objectAtIndex:indexPath.row];
+    NSString *themeName = [[[SCHThemeManager sharedThemeManager] themeNames:YES] 
+                           objectAtIndex:indexPath.row];
     if ([themeName isEqualToString:self.lastTappedTheme] == NO) {
         self.lastTappedTheme = themeName;
         [self previewTheme:themeName];
     }
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    UILabel *headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(16, 0, self.view.frame.size.width - 32, 50)];
+    headerLabel.text = NSLocalizedString(@"Themes", @"");
+    headerLabel.font = [UIFont boldSystemFontOfSize:17.0f];
+    headerLabel.numberOfLines = 1;
+    headerLabel.backgroundColor = [UIColor clearColor];
+    headerLabel.textColor = [UIColor whiteColor];
+    headerLabel.shadowOffset = CGSizeMake(0, -1);
+    
+    UIView *containerView = [[UIView alloc] initWithFrame:CGRectZero];
+    [containerView addSubview:headerLabel];
+    [headerLabel release], headerLabel = nil;
+    
+    return([containerView autorelease]);
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return(50);
 }
 
 @end

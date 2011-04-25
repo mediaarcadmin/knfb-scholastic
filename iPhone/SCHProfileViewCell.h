@@ -9,8 +9,8 @@
 #import <UIKit/UIKit.h>
 
 
-@interface SCHProfileViewCell : UITableViewCell {
-    
+@interface SCHProfileViewCell : UITableViewCell 
+{    
 }
 
 @property (nonatomic, retain) UIButton *cellButton;

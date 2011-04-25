@@ -29,8 +29,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
 @synthesize loginController, managedObjectContext, drmRegistrationSession;
 
-#pragma mark -
-#pragma mark View lifecycle
+#pragma mark - Object lifecycle
 
 - (void)releaseViewObjects
 {
@@ -39,13 +38,35 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     [backgroundView release], backgroundView = nil;
 }
 
-- (void)dealloc {
+- (void)dealloc 
+{
 	[managedObjectContext release], managedObjectContext = nil;
     [drmRegistrationSession release], drmRegistrationSession = nil;
     
     [self releaseViewObjects];
     [super dealloc];
 }
+
+#pragma mark - View lifecycle
+
+- (void)viewDidLoad 
+{
+    [super viewDidLoad];
+    [self.navigationController.navigationBar setTintColor:[UIColor colorWithRed:0.832 green:0.000 blue:0.007 alpha:1.000]];
+}
+
+- (void)viewDidUnload 
+{
+    [self releaseViewObjects];
+}
+
+- (void)viewWillAppear:(BOOL)animated 
+{
+    [super viewWillAppear:animated];
+    [self setupAssetsForOrientation:self.interfaceOrientation];
+}
+
+#pragma mark - Orientation methods
 
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation
 {
@@ -61,37 +82,26 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     }
 }
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    [self.navigationController.navigationBar setTintColor:[UIColor colorWithRed:0.832 green:0.000 blue:0.007 alpha:1.000]];
-}
-
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    [self setupAssetsForOrientation:self.interfaceOrientation];
-}
-
-- (void) willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
     [self setupAssetsForOrientation:toInterfaceOrientation];
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    // Override to allow orientations other than the default portrait orientation.
-    return YES;
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation 
+{
+    return(YES);
 }
 
-#pragma mark -
-#pragma mark Login
+#pragma mark - Login
 
-- (void)login {
+- (void)login 
+{
 	[self presentModalViewController:self.loginController animated:YES];		
 }
 
-#pragma mark -
-#pragma mark Switch Changes
+#pragma mark - Switch Changes
 
-- (void) spaceSwitchChanged: (UISwitch *) sender
+- (void)spaceSwitchChanged:(UISwitch *)sender
 {
 	NSNumber *currentValue = [[NSUserDefaults standardUserDefaults] objectForKey:@"kSCHSpaceSaverMode"];
 	
@@ -107,10 +117,10 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 	[[NSUserDefaults standardUserDefaults] synchronize];
 }
 
-#pragma mark -
-#pragma mark Deregistration
+#pragma mark - Deregistration
 
-- (void)deregistration {
+- (void)deregistration 
+{
     // TODO alert warning user what will happen
     SCHDrmRegistrationSession* registrationSession = [[SCHDrmRegistrationSession alloc] init];
     registrationSession.delegate = self;	
@@ -119,18 +129,16 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     [registrationSession release];
 }
 
-#pragma mark -
-#pragma mark Table view data source
+#pragma mark - Table view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    // Return the number of sections.
-    return 2;
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return(2);
 }
 
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    // Return the number of rows in the section.
-    return 1;
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
+{
+    return(1);
 }
 
 - (UIView *)tableView:(UITableView *)aTableView viewForFooterInSection:(NSInteger)section
@@ -154,7 +162,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     footerLabel.shadowOffset = CGSizeMake(0, -1);
     footerLabel.textAlignment = UITextAlignmentCenter;
     [containerView addSubview:footerLabel];
-    [footerLabel release];
+    [footerLabel release], footerLabel = nil;
     
     return([containerView autorelease]);
 }
@@ -162,18 +170,17 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 - (CGFloat)tableView:(UITableView *)aTableView heightForFooterInSection:(NSInteger)section
 {
     if (section != 1) {
-        return aTableView.sectionFooterHeight;
+        return(aTableView.sectionFooterHeight);
     }
     
-    return 82;
+    return(82);
 }
 
-// Customize the appearance of table view cells.
-- (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+- (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath 
+{    
     static NSString *CellIdentifier = @"Cell";
     
-    UITableViewCell *cell =  (UITableViewCell*) [aTableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    UITableViewCell *cell =  (UITableViewCell*)[aTableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
     if (cell == nil) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
@@ -192,7 +199,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
             [switchview setOn:currentValue];
             [switchview addTarget:self action:@selector(spaceSwitchChanged:) forControlEvents:UIControlEventValueChanged];
             cell.accessoryView = switchview;
-            [switchview release];
+            [switchview release], switchview = nil;
             
             cell.textLabel.textAlignment = UITextAlignmentLeft;
             cell.textLabel.text = NSLocalizedString(@"Space Saver Mode", @"");
@@ -202,7 +209,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
             break;
     }
 
-    return cell;
+    return(cell);
 }
 
 - (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -216,15 +223,9 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     }
     
     [aTableView deselectRowAtIndexPath:indexPath animated:YES];
-
 }
 
-- (void)viewDidUnload {
-    [self releaseViewObjects];
-}
-
-#pragma mark -
-#pragma mark DRM Registration Session Delegate methods
+#pragma mark - DRM Registration Session Delegate methods
 
 - (void)registrationSession:(SCHDrmRegistrationSession *)registrationSession didComplete:(NSString *)deviceKey
 {
@@ -236,7 +237,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     }
     else
         NSLog(@"Unknown DRM error:  device key value returned from successful deregistration.");
-    [self.drmRegistrationSession release];
+    self.drmRegistrationSession = nil;
 }
 
 - (void)registrationSession:(SCHDrmRegistrationSession *)registrationSession didFailWithError:(NSError *)error
@@ -248,9 +249,8 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
                                                otherButtonTitles:nil]; 
     [errorAlert show]; 
     [errorAlert release]; 
-    [self.drmRegistrationSession release];
+    self.drmRegistrationSession = nil;
 }
-
 
 @end
 

@@ -36,7 +36,8 @@
 @synthesize settingsButton;
 @synthesize settingsController;
 @synthesize loginController;
-@synthesize fetchedResultsController=fetchedResultsController_, managedObjectContext=managedObjectContext_;
+@synthesize fetchedResultsController=fetchedResultsController_;
+@synthesize managedObjectContext=managedObjectContext_;
 
 #pragma mark - Object lifecycle
 
@@ -70,7 +71,8 @@
 	self.profilePasswordViewController.delegate = self;
     
     self.settingsButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [settingsButton addTarget:self action:@selector(pushSettingsController) forControlEvents:UIControlEventTouchUpInside]; 
+    [settingsButton addTarget:self action:@selector(pushSettingsController) 
+             forControlEvents:UIControlEventTouchUpInside]; 
     
     self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:settingsButton] autorelease];
     
@@ -84,6 +86,7 @@
 
 - (void)viewDidUnload 
 {
+    [super viewDidUnload];
 	[self releaseViewObjects];
 }
 
@@ -115,14 +118,16 @@
         [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:
          [UIImage imageNamed:@"admin-iphone-landscape-top-toolbar.png"]];
         [self.backgroundView setImage:[UIImage imageNamed:@"plain-background-landscape.png"]];
-        [self.settingsButton setImage:[UIImage imageNamed:@"settings-landscape.png"] forState:UIControlStateNormal];
+        [self.settingsButton setImage:[UIImage imageNamed:@"settings-landscape.png"] 
+                             forState:UIControlStateNormal];
         [self.settingsButton sizeToFit];
         
     } else {
         [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:
          [UIImage imageNamed:@"admin-iphone-portrait-top-toolbar.png"]];
         [self.backgroundView setImage:[UIImage imageNamed:@"plain-background-portrait.png"]];
-        [self.settingsButton setImage:[UIImage imageNamed:@"settings-portrait.png"] forState:UIControlStateNormal];
+        [self.settingsButton setImage:[UIImage imageNamed:@"settings-portrait.png"] 
+                             forState:UIControlStateNormal];
         [self.settingsButton sizeToFit];
         
     }
@@ -130,11 +135,11 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    // Return YES for supported orientations
     return (YES);
 }
 
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation 
+                                duration:(NSTimeInterval)duration
 {
     [self setupAssetsForOrientation:toInterfaceOrientation];
 }
@@ -165,16 +170,18 @@
 {    
     static NSString *CellIdentifier = @"Cell";
     
-    SCHProfileViewCell *cell = (SCHProfileViewCell*) [aTableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    SCHProfileViewCell *cell = (SCHProfileViewCell*)[aTableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[[SCHProfileViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+        cell = [[[SCHProfileViewCell alloc] initWithStyle:UITableViewCellStyleDefault 
+                                          reuseIdentifier:CellIdentifier] autorelease];
         cell.delegate = self;
     }
     
     NSManagedObject *managedObject = [self.fetchedResultsController objectAtIndexPath:indexPath];
 	[cell.cellButton setTitle:[NSString stringWithFormat:@"%@%@", 
                                [managedObject valueForKey:kSCHLibreAccessWebServiceFirstName], 
-                               NSLocalizedString(@"'s Bookshelf", @"")] forState:UIControlStateNormal];
+                               NSLocalizedString(@"'s Bookshelf", @"")] 
+                     forState:UIControlStateNormal];
     [cell setIndexPath:indexPath];
     
     return(cell);
@@ -189,7 +196,7 @@
 	}
     
 	[self.navigationController pushViewController:bookShelfViewController animated:YES];
-	[bookShelfViewController release];
+	[bookShelfViewController release], bookShelfViewController = nil;
 }
 
 - (void)pushSettingsController
@@ -215,7 +222,8 @@
             
 #if LOCALDEBUG
             // controller to view book shelf with books filtered to profile
-            [self pushBookshelvesControllerWithProfileItem:[[self fetchedResultsController] objectAtIndexPath:indexPath]];	
+            [self pushBookshelvesControllerWithProfileItem:[[self fetchedResultsController] 
+                                                            objectAtIndexPath:indexPath]];	
 #else	    
             SCHProfileItem *profileItem = [[self fetchedResultsController] objectAtIndexPath:indexPath];
             
@@ -247,21 +255,26 @@
     // Create the fetch request for the entity.
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     // Edit the entity name as appropriate.
-    NSEntityDescription *entity = [NSEntityDescription entityForName:kSCHProfileItem inManagedObjectContext:self.managedObjectContext];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:kSCHProfileItem 
+                                              inManagedObjectContext:self.managedObjectContext];
     [fetchRequest setEntity:entity];
     
     // Set the batch size to a suitable number.
     [fetchRequest setFetchBatchSize:20];
     
     // Edit the sort key as appropriate.
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:kSCHLibreAccessWebServiceScreenName ascending:NO];
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:kSCHLibreAccessWebServiceScreenName 
+                                                                   ascending:NO];
     NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptor, nil];
     
     [fetchRequest setSortDescriptors:sortDescriptors];
     
     // Edit the section name key path and cache name if appropriate.
     // nil for section name key path means "no sections".
-    NSFetchedResultsController *aFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:@"Root"];
+    NSFetchedResultsController *aFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest 
+                                                                                                managedObjectContext:self.managedObjectContext 
+                                                                                                  sectionNameKeyPath:nil 
+                                                                                                           cacheName:@"Root"];
     aFetchedResultsController.delegate = self;
     self.fetchedResultsController = aFetchedResultsController;
     

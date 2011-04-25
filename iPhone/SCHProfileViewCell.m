@@ -16,28 +16,26 @@ static const CGFloat kProfileViewCellButtonWidth = 283.0f;
 @synthesize indexPath;
 @synthesize delegate;
 
-- (void)dealloc
-{
-    [cellButton release], cellButton = nil;
-    [indexPath release], indexPath = nil;
-    delegate = nil;
-    [super dealloc];
-}
+#pragma mark - Object lifecycle
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        
         UIImage *bgImage = [UIImage imageNamed:@"button-blue"];
         UIImage *cellBGImage = [bgImage stretchableImageWithLeftCapWidth:16 topCapHeight:0];
-        CGRect buttonFrame = CGRectMake(ceilf((CGRectGetWidth(self.contentView.bounds) - kProfileViewCellButtonWidth) / 2.0f), ceilf((CGRectGetHeight(self.contentView.bounds) - bgImage.size.height) / 2.0f), kProfileViewCellButtonWidth, bgImage.size.height);
+        CGRect buttonFrame = CGRectMake(ceilf((CGRectGetWidth(self.contentView.bounds) - kProfileViewCellButtonWidth) / 2.0f), 
+                                        ceilf((CGRectGetHeight(self.contentView.bounds) - bgImage.size.height) / 2.0f), 
+                                        kProfileViewCellButtonWidth, 
+                                        bgImage.size.height);
         
         cellButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
         [cellButton setBackgroundImage:cellBGImage forState:UIControlStateNormal];
         [cellButton setFrame:buttonFrame];
         [cellButton setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin];
-        [cellButton addTarget:self action:@selector(pressed:) forControlEvents:UIControlEventTouchUpInside];
+        [cellButton addTarget:self 
+                       action:@selector(pressed:) 
+             forControlEvents:UIControlEventTouchUpInside];
         
         cellButton.titleLabel.font = [UIFont boldSystemFontOfSize:20];
         cellButton.titleLabel.minimumFontSize = 14;
@@ -50,10 +48,19 @@ static const CGFloat kProfileViewCellButtonWidth = 283.0f;
         [self.contentView addSubview:cellButton];
 
         self.selectionStyle = UITableViewCellSelectionStyleNone;
-
     }
-    return self;
+    return(self);
 }
+
+- (void)dealloc
+{
+    [cellButton release], cellButton = nil;
+    [indexPath release], indexPath = nil;
+    delegate = nil;
+    [super dealloc];
+}
+
+#pragma - Action methods
 
 - (void)pressed:(id)sender
 {
