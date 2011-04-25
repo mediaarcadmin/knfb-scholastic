@@ -7,13 +7,13 @@
 //
 
 #import "SCHCustomNavigationBar.h"
+
 #import "SCHThemeManager.h"
-#import <QuartzCore/QuartzCore.h>
 
 @interface SCHCustomNavigationBar ()
 
 @property (nonatomic, retain) UIImageView *backgroundView;
-@property (nonatomic, retain) NSString *imageKey;
+@property (nonatomic, copy) NSString *imageKey;
 
 @end 
 
@@ -23,20 +23,32 @@
 @synthesize backgroundView;
 @synthesize imageKey;
 
+#pragma mark - Object lifecycle
+
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
+    [backgroundImage release], backgroundImage = nil;
     [backgroundView release], backgroundView = nil;
     [imageKey release], imageKey = nil;
     [super dealloc];
 }
 
-- (void) layoutSubviews
+#pragma - Drawing routines
+
+- (void)layoutSubviews
 {
     [super layoutSubviews];
     [self sendSubviewToBack:self.backgroundView];
 }
+
+- (void)drawRect:(CGRect)rect
+{
+    // Do nothing so that the default bar isn't shown during rotation
+}
+
+#pragma - Accessor methods
 
 - (void)setBackgroundImage:(UIImage*)image
 {  
@@ -57,7 +69,7 @@
         [self addSubview:backgroundView];
     }
     
-    return backgroundView;
+    return(backgroundView);
 }
 
 - (void)setTheme:(NSString *)newImageKey
@@ -75,6 +87,8 @@
     }
 }
 
+#pragma Protected methods
+
 - (void)updateTheme
 {
     [self setBackgroundImage:[[SCHThemeManager sharedThemeManager] imageFor:self.imageKey
@@ -87,9 +101,5 @@
                                                                 orientation:interfaceOrientation]];
 }
 
-- (void)drawRect:(CGRect)rect
-{
-    // Do nothing so that the default bar isn't shown during rotation
-}
 
 @end
