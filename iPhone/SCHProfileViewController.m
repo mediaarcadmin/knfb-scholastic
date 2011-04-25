@@ -27,7 +27,6 @@
 
 @end
 
-
 @implementation SCHProfileViewController
 
 @synthesize profilePasswordViewController;
@@ -39,9 +38,7 @@
 @synthesize loginController;
 @synthesize fetchedResultsController=fetchedResultsController_, managedObjectContext=managedObjectContext_;
 
-
-#pragma mark -
-#pragma mark View lifecycle
+#pragma mark - Object lifecycle
 
 - (void)releaseViewObjects
 {
@@ -55,13 +52,62 @@
     [loginController release], loginController = nil;    
 }
 
-- (void)dealloc {    
+- (void)dealloc 
+{    
     [fetchedResultsController_ release], fetchedResultsController_ = nil;
     [managedObjectContext_ release], managedObjectContext_ = nil;
     
     [self releaseViewObjects];
     [super dealloc];
 }
+
+#pragma mark - View lifecycle
+
+- (void)viewDidLoad 
+{
+    [super viewDidLoad];
+	
+	self.profilePasswordViewController.delegate = self;
+    
+    self.settingsButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [settingsButton addTarget:self action:@selector(pushSettingsController) forControlEvents:UIControlEventTouchUpInside]; 
+    
+    self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:settingsButton] autorelease];
+    
+    self.navigationItem.title = NSLocalizedString(@"Back", @"");
+    UIImageView *logoImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo"]];
+    self.navigationItem.titleView = logoImageView;
+    [logoImageView release];
+    
+    self.tableView.tableHeaderView = self.headerView;
+}  
+
+- (void)viewDidUnload 
+{
+	[self releaseViewObjects];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self setupAssetsForOrientation:self.interfaceOrientation];
+}
+
+- (void)viewDidAppear:(BOOL)animated 
+{
+    [super viewDidAppear:animated];
+    
+#if !LOCALDEBUG	
+	SCHAuthenticationManager *authenticationManager = [SCHAuthenticationManager sharedAuthenticationManager];
+	
+	if ([authenticationManager hasUsernameAndPassword] == NO) {
+		[self presentModalViewController:self.loginController animated:NO];	
+		[self.loginController removeCancelButton];
+	}
+#endif
+}
+
+#pragma mark - Orientation methods
 
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation
 {
@@ -82,67 +128,26 @@
     }
 }
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-	
-	self.profilePasswordViewController.delegate = self;
-    
-    settingsButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
-    [settingsButton addTarget:self action:@selector(pushSettingsController) forControlEvents:UIControlEventTouchUpInside]; 
-    
-    self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:settingsButton] autorelease];
-    
-    self.navigationItem.title = NSLocalizedString(@"Back", @"");
-    UIImageView *logoImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo"]];
-    self.navigationItem.titleView = logoImageView;
-    [logoImageView release];
-    
-    self.tableView.tableHeaderView = self.headerView;
-    
-}  
-
-- (void) viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    [self setupAssetsForOrientation:self.interfaceOrientation];
-}
-
-- (void)viewDidUnload {
-	[self releaseViewObjects];
-}
-
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     // Return YES for supported orientations
     return (YES);
 }
 
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-    
-#if !LOCALDEBUG	
-	SCHAuthenticationManager *authenticationManager = [SCHAuthenticationManager sharedAuthenticationManager];
-	
-	if ([authenticationManager hasUsernameAndPassword] == NO) {
-		[self presentModalViewController:self.loginController animated:NO];	
-		[self.loginController removeCancelButton];
-	}
-#endif
-}
-
-- (void) willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
     [self setupAssetsForOrientation:toInterfaceOrientation];
 }
 
-#pragma mark -
-#pragma mark Table view data source
+#pragma mark - Table view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView 
+{
     return(1);
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
+{
 	NSInteger ret = 0;
 	id <NSFetchedResultsSectionInfo> sectionInfo = nil;
 	
@@ -156,8 +161,8 @@
 	return(ret);
 }
 
-- (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+- (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath 
+{    
     static NSString *CellIdentifier = @"Cell";
     
     SCHProfileViewCell *cell = (SCHProfileViewCell*) [aTableView dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -168,33 +173,32 @@
     
     NSManagedObject *managedObject = [self.fetchedResultsController objectAtIndexPath:indexPath];
 	[cell.cellButton setTitle:[NSString stringWithFormat:@"%@%@", 
-								   [managedObject valueForKey:kSCHLibreAccessWebServiceFirstName], 
-								   NSLocalizedString(@"'s Bookshelf", @"")] forState:UIControlStateNormal];
+                               [managedObject valueForKey:kSCHLibreAccessWebServiceFirstName], 
+                               NSLocalizedString(@"'s Bookshelf", @"")] forState:UIControlStateNormal];
     [cell setIndexPath:indexPath];
-
-    return cell;
+    
+    return(cell);
 }
 
-- (void)pushBookshelvesControllerWithProfileItem: (SCHProfileItem *) profileItem
- {
+- (void)pushBookshelvesControllerWithProfileItem:(SCHProfileItem *)profileItem
+{
 	SCHBookShelfViewController *bookShelfViewController = nil;
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
 		bookShelfViewController = [[SCHBookShelfViewController alloc] initWithNibName:NSStringFromClass([SCHBookShelfViewController class]) bundle:nil];
         bookShelfViewController.profileItem = profileItem;
 	}
-		
+    
 	[self.navigationController pushViewController:bookShelfViewController animated:YES];
 	[bookShelfViewController release];
 }
 
-- (void) pushSettingsController
+- (void)pushSettingsController
 {
     settingsController.managedObjectContext = self.managedObjectContext;
     [self.navigationController pushViewController:self.settingsController animated:YES];
 }
 
-#pragma mark -
-#pragma mark Profile Password View Controller delegate
+#pragma mark - Profile Password View Controller delegate
 
 - (void)profilePasswordViewControllerDidComplete:(SCHProfilePasswordViewController *)profilePassword
 {
@@ -202,8 +206,7 @@
     [self pushBookshelvesControllerWithProfileItem:profilePassword.profileItem];	
 }
 
-#pragma mark -
-#pragma mark UITableViewDelegate
+#pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	
@@ -230,19 +233,17 @@
 	[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
+#pragma mark - Fetched results controller
 
-#pragma mark -
-#pragma mark Fetched results controller
-
-- (NSFetchedResultsController *)fetchedResultsController {
-    
+- (NSFetchedResultsController *)fetchedResultsController 
+{
     if (fetchedResultsController_ != nil) {
         return fetchedResultsController_;
     }
     
     /*
      Set up the fetched results controller.
-    */
+     */
     // Create the fetch request for the entity.
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     // Edit the entity name as appropriate.
@@ -277,11 +278,10 @@
     return fetchedResultsController_;
 }    
 
+#pragma mark - Fetched results controller delegate
 
-#pragma mark -
-#pragma mark Fetched results controller delegate
- 
- - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
+- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller 
+{
     // In the simplest, most efficient, case, reload the table view.
     [self.tableView reloadData];
 }
