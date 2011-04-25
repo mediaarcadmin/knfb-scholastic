@@ -16,6 +16,8 @@
 @synthesize managedObjectContext;
 @synthesize backgroundTaskIdentifier;
 
+#pragma mark - Object lifecycle
+
 - (id)init
 {
 	self = [super init];
@@ -26,6 +28,15 @@
 	return(self);
 }
 
+- (void)dealloc 
+{
+    [managedObjectContext release], managedObjectContext = nil;
+    
+    [super dealloc];
+}
+
+#pragma mark - Methods
+
 - (BOOL)synchronize
 {
 	return(NO);
@@ -34,6 +45,8 @@
 - (void)clear
 {
 }
+
+#pragma mark - Delegate methods
 
 - (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result
 {	
@@ -56,6 +69,8 @@
 	
 	[super method:method didFailWithError:error];
 }
+
+#pragma mark - Private methods
 
 - (void)save
 {

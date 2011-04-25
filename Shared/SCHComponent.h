@@ -15,7 +15,6 @@
 
 @interface SCHComponent : NSObject <BITAPIProxyDelegate> 
 {
-
 }
 
 @property (assign, nonatomic) id<SCHComponentDelegate> delegate;	

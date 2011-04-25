@@ -14,6 +14,8 @@
 @synthesize delegate;
 @synthesize libreAccessWebService;
 
+#pragma mark - Object lifecycle
+
 - (id)init
 {
 	self = [super init];
@@ -27,10 +29,12 @@
 
 - (void)dealloc
 {	
-	self.libreAccessWebService = nil;
+	[libreAccessWebService release], libreAccessWebService = nil;
 	
 	[super dealloc];
 }
+
+#pragma mark - Delegate methods
 
 - (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result
 {	
@@ -47,6 +51,8 @@
 		[(id)self.delegate component:self didFailWithError:error];		
 	}
 }
+
+#pragma mark - Private methods
 
 - (id)makeNullNil:(id)object
 {
