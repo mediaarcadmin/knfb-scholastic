@@ -261,18 +261,23 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
 - (void)clearOnMainThread
 {
     NSString *username = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUsername];	
-    NSString *deviceKey = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerDeviceKey];	
+    
+    /* TODO:  We can't deregister without an authentication token, which we 
+     can't assume is available here; we have to authenticate the device.  But  
+     if we are clearing because we're going into local mode, then we're not 
+     to be in an authenticated state.
+     NSString *deviceKey = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerDeviceKey];	
+     if (deviceKey != nil && 
+     [[deviceKey stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {
+     // Get a token for deregistration.
+     [libreAccessWebService authenticateDevice:deviceKey forUserKey:nil];
+     } 
+     */
+    
     
     [aToken release], aToken = nil;
-    [tokenExpires release], tokenExpires = nil;
-
-    if (deviceKey != nil && 
-        [[deviceKey stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {
-        // TODO: deregisterDevice
-        // [drmRegistrationSession deregisterDevice:deviceKey];
-    }
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:kSCHAuthenticationManagerDeviceKey];    
-
+    [tokenExpires release], tokenExpires = nil;    
+    
     if (username != nil && 
         [[username stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {
         [SFHFKeychainUtils deleteItemForUsername:username andServiceName:kSCHAuthenticationManagerServiceName error:nil];
@@ -326,7 +331,18 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
 
         NSNumber *deviceIsDeregistered = [result objectForKey:kSCHLibreAccessWebServiceDeviceIsDeregistered];
         if ([deviceIsDeregistered isKindOfClass:[NSNumber class]] == YES && [deviceIsDeregistered boolValue] == YES) {
-            [[NSUserDefaults standardUserDefaults] removeObjectForKey:kSCHAuthenticationManagerDeviceKey];
+            //[[NSUserDefaults standardUserDefaults] removeObjectForKey:kSCHAuthenticationManagerDeviceKey];
+            // Someone has deregistered the device externally using parent tools, so we must complete 
+            // the process on the client.
+            if ( drmRegistrationSession == nil ) {
+                drmRegistrationSession = [[SCHDrmRegistrationSession alloc] init];
+                drmRegistrationSession.delegate = self;
+                [drmRegistrationSession deregisterDevice:[result objectForKey:kSCHLibreAccessWebServiceAuthToken]];
+            }
+            waitingOnResponse = NO;
+            [self postFailureWithError:[drmRegistrationSession drmError:kSCHDrmRegistrationError 
+                                                                message:@"Cannot process books because device has been deregistered."]];
+            return;
         } else {
             aToken = [[result objectForKey:kSCHLibreAccessWebServiceAuthToken] retain];
             NSInteger expiresIn = MAX(0, [[result objectForKey:kSCHLibreAccessWebServiceExpiresIn] integerValue] - 1);
@@ -365,8 +381,11 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
         [libreAccessWebService authenticateDevice:deviceKey forUserKey:nil];
     }
     else
-        NSLog(@"Unknown DRM error:  no device key returned from successful registration.");
+        // Successful deregistration
+        // removeObjectForKey does not change the value...
+        [[NSUserDefaults standardUserDefaults] setObject:nil forKey:kSCHAuthenticationManagerDeviceKey];
     [drmRegistrationSession release];
+    drmRegistrationSession = nil;
 }
 
 - (void)registrationSession:(SCHDrmRegistrationSession *)registrationSession didFailWithError:(NSError *)error
@@ -375,6 +394,7 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
 	waitingOnResponse = NO;
 	[self postFailureWithError:error];       
     [drmRegistrationSession release];
+    drmRegistrationSession = nil;
 }
 
 @end

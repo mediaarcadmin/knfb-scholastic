@@ -9,6 +9,7 @@
 #import "SCHLicenseAcquisitionOperation.h"
 #import "SCHBookManager.h"
 #import "SCHAppBook.h"
+#import "SCHAuthenticationManager.h"
 
 @interface SCHLicenseAcquisitionOperation ()
 
@@ -20,6 +21,22 @@
 #pragma mark -
 
 @implementation SCHLicenseAcquisitionOperation
+
+@synthesize licenseAcquisitionSession;
+
+- (void)dealloc {
+	self.licenseAcquisitionSession = nil;
+	[super dealloc];
+}
+
+- (void) start
+{
+    licenseAcquisitionSession = [[SCHDrmLicenseAcquisitionSession alloc] initWithBook:self.isbn];
+    licenseAcquisitionSession.delegate = self;
+    
+    [super start];
+}
+
 
 - (void) updateBookWithSuccess
 {
@@ -36,10 +53,22 @@
 }
 
 - (void) beginOperation
+{ 
+    [licenseAcquisitionSession acquireLicense:[[SCHAuthenticationManager sharedAuthenticationManager] aToken] bookID:self.isbn];
+ 
+}
+
+#pragma mark -
+#pragma mark DRM License Acquisition Session Delegate methods
+
+- (void)licenseAcquisitionSession:(SCHDrmLicenseAcquisitionSession *)licenseAcquisitionSession didComplete:(id)result
 {
-    NSLog(@"License acquisition goes here - ISBN is available as %@.", self.isbn);
-    
     [self updateBookWithSuccess];
+}
+
+- (void)licenseAcquisitionSession:(SCHDrmLicenseAcquisitionSession *)licenseAcquisitionSession didFailWithError:(NSError *)error
+{
+    [self updateBookWithFailure];
 }
 
 @end

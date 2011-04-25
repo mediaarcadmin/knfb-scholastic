@@ -36,8 +36,8 @@ typedef enum  {
 }
 
 @property (nonatomic, assign) BOOL sessionInitialized;
-@property (nonatomic, retain) NSURLConnection *urlConnection;
-@property (nonatomic, retain) NSMutableData *connectionData;
+@property (nonatomic, retain) NSString* bookID;
+@property (nonatomic, retain) NSString* boundBookID;
 
 - (NSMutableURLRequest *)createDrmRequest:(const void*)msg messageSize:(NSUInteger)msgSize  url:(NSString*)url soapAction:(SCHDrmSoapActionType)action;
 - (NSError*)drmError:(NSInteger)errCode message:(NSString*)message;

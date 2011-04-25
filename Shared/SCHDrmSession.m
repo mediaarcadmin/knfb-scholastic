@@ -10,13 +10,7 @@
  
 @implementation SCHDrmSession 
 
-@synthesize sessionInitialized, connectionData, urlConnection;
-
--(void) dealloc {
-	self.connectionData = nil;
-	self.urlConnection = nil;
-	[super dealloc];
-}
+@synthesize sessionInitialized, bookID, boundBookID;
 
 - (NSError*)drmError:(NSInteger)errCode message:(NSString*)message {
 	NSDictionary *userInfo = [NSDictionary dictionaryWithObject:message
