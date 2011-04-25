@@ -16,6 +16,7 @@
 #import "SCHProfileItem.h"
 #import "SCHProfileViewCell.h"
 #import "SCHCustomNavigationBar.h"
+#import "SCHAuthenticationManager.h"
 
 @interface SCHProfileViewController() <UITableViewDelegate> 
 

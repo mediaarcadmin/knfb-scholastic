@@ -7,11 +7,13 @@
 //
 
 #import "SCHMultipleBookshelvesController.h"
+
 #import "SCHTopPicksBookShelfViewController.h"
 #import "SCHLocalDebug.h"
 #import "SCHContentProfileItem.h"
 #import "SCHTopFavoritesComponent.h"
 #import <QuartzCore/QuartzCore.h>
+#import "SCHProfileItem.h"
 
 @interface SCHMultipleBookshelvesController()
 

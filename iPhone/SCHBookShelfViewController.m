@@ -7,21 +7,20 @@
 //
 
 #import "SCHBookShelfViewController.h"
-#import "SCHReadingViewController.h"
+
+#import <QuartzCore/QuartzCore.h>
 #import "BITReadingOptionsView.h"
-#import "SCHLibreAccessWebService.h"
-#import "SCHLocalDebug.h"
 #import "SCHBookManager.h"
-#import "SCHBookShelfTableViewCell.h"
-#import "SCHThumbnailFactory.h"
 #import "SCHSyncManager.h"
 #import "SCHBookShelfGridViewCell.h"
 #import "SCHXPSProvider.h"
-#import <QuartzCore/QuartzCore.h>
 #import "SCHAppBook.h"
 #import "SCHCustomNavigationBar.h"
 #import "SCHThemeManager.h"
 #import "SCHThemeButton.h"
+#import "SCHBookShelfGridView.h"
+#import "KNFBTimeOrderedCache.h"
+#import "SCHProfileItem.h"
 
 static NSInteger const kSCHBookShelfViewControllerGridCellHeightPortrait = 138;
 static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
@@ -29,7 +28,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 @interface SCHBookShelfViewController () <UIGestureRecognizerDelegate>
 
 @property (nonatomic, retain) UIBarButtonItem *themeButton;
-@property int moveToValue;
+@property (nonatomic, assign) int moveToValue;
 
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation;
 - (void)updateTheme;
@@ -40,35 +39,54 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 
 @implementation SCHBookShelfViewController
 
-@synthesize books;
-@synthesize gridView, loadingView, componentCache;
+@synthesize gridView;
 @synthesize shadowView;
+@synthesize loadingView;
 @synthesize themePickerContainer;
 @synthesize customNavigationBar;
+@synthesize componentCache;
+@synthesize books;
 @synthesize profileItem;
 @synthesize themeButton;
 @synthesize moveToValue;
 
+#pragma mark - Object lifecycle
+
 - (void)releaseViewObjects 
 {
-    [componentCache release], componentCache = nil;
+    [gridView release], gridView = nil;
     [shadowView release], shadowView = nil;
     [loadingView release], loadingView = nil;
-    [gridView release], gridView = nil;
+    [themePickerContainer release], themePickerContainer = nil;
+    [customNavigationBar release], customNavigationBar = nil;
+    
+    [componentCache release], componentCache = nil;
+    
+    [themeButton release], themeButton = nil;
+    
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-#pragma mark -
-#pragma mark View lifecycle
+- (void)dealloc 
+{    
+    [books release], books = nil;
+    [profileItem release], profileItem = nil;
+    
+    [self releaseViewObjects];   
+    [super dealloc];
+}
 
-- (void)viewDidLoad {
+#pragma mark - View lifecycle
+
+- (void)viewDidLoad 
+{
     [super viewDidLoad];
 
     SCHThemeButton *button = [SCHThemeButton buttonWithType:UIButtonTypeCustom];
     [button setThemeIcon:kSCHThemeManagerThemeIcon];
     [button sizeToFit];    
     [button addTarget:self action:@selector(changeTheme) forControlEvents:UIControlEventTouchUpInside];    
-    themeButton = [[UIBarButtonItem alloc] initWithCustomView:button];
+    self.themeButton = [[[UIBarButtonItem alloc] initWithCustomView:button] autorelease];
     self.navigationItem.rightBarButtonItem = self.themeButton;
 
     button = [SCHThemeButton buttonWithType:UIButtonTypeCustom];
@@ -87,14 +105,14 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
     longPress.delaysTouchesBegan = YES;
     longPress.delegate = self;
     [self.gridView addGestureRecognizer:longPress];
-    [longPress release];
+    [longPress release], longPress = nil;
 	self.moveToValue = -1;
 	
 	KNFBTimeOrderedCache *aCache = [[KNFBTimeOrderedCache alloc] init];
 	aCache.countLimit = 30; // Arbitrary 30 object limit
 	aCache.totalCostLimit = 1024*1024; // Arbitrary 1MB limit. This may need wteaked or set on a per-device basis
 	self.componentCache = aCache;
-	[aCache release];
+	[aCache release], aCache = nil;
 	
     [customNavigationBar setTheme:kSCHThemeManagerNavigationBarImage];
 		
@@ -108,10 +126,8 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 	[self.view bringSubviewToFront:self.loadingView];
 	
 	if (![[SCHSyncManager sharedSyncManager] havePerformedFirstSyncUpToBooks] && [[SCHSyncManager sharedSyncManager] isSynchronizing]) {
-//		NSLog(@"Showing loading view...");
 		self.loadingView.hidden = NO;
 	} else {
-//		NSLog(@"Hiding loading view...");
 		self.loadingView.hidden = YES;
 	}
     
@@ -130,22 +146,19 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
     [self.gridView reloadData];
 }
 
-- (void) viewWillAppear:(BOOL)animated
+- (void)viewDidUnload 
+{
+    [super viewDidUnload];
+	[self releaseViewObjects];
+}
+
+- (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     [self setupAssetsForOrientation:self.interfaceOrientation];
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    // Return YES for supported orientations
-    return (YES);
-}
-
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
-{
-    [self setupAssetsForOrientation:toInterfaceOrientation];
-}
+#pragma mark - Orientation methods
 
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
@@ -159,9 +172,21 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
     } else {
         [self.gridView setShelfHeight:kSCHBookShelfViewControllerGridCellHeightPortrait];
         [self.gridView setShelfInset:CGSizeMake(0, -2)];
-
+        
     }
 }
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    return(YES);
+}
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    [self setupAssetsForOrientation:toInterfaceOrientation];
+}
+
+#pragma - Private methods
 
 - (void)updateTheme
 {
@@ -173,12 +198,15 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 	[self presentModalViewController:self.themePickerContainer animated:YES];		
 }
 
-- (void)back
+#pragma - Action methods
+
+- (IBAction)back
 {
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
+- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer 
+{
     [self setEditing:YES animated:YES];
     return NO;
 }
@@ -213,6 +241,8 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
     [self setEditing:NO animated:YES];
 }
 
+#pragma - Accessor Methods
+
 - (void)setProfileItem:(SCHProfileItem *)newProfileItem
 {
 	[profileItem release];
@@ -237,20 +267,17 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 	[self.gridView reloadData];
 }
 
-#pragma mark -
-#pragma mark Core Data Table View Methods
+#pragma mark - Core Data Table View Methods
 
-- (void) updateTable:(NSNotification *)notification
+- (void)updateTable:(NSNotification *)notification
 {
 	self.books = [self.profileItem allISBNs];
 	self.loadingView.hidden = YES;
 }
 
-#pragma mark -
-#pragma mark Core Data Grid View Methods
-#pragma mark MRGridViewDataSource methods
+#pragma mark - MRGridViewDataSource methods
 
--(MRGridViewCell*)gridView:(MRGridView*)aGridView cellForGridIndex:(NSInteger)index 
+- (MRGridViewCell *)gridView:(MRGridView*)aGridView cellForGridIndex:(NSInteger)index 
 {
 	static NSString* cellIdentifier = @"ScholasticGridViewCell";
 	SCHBookShelfGridViewCell* gridCell = (SCHBookShelfGridViewCell *) [aGridView dequeueReusableCellWithIdentifier:cellIdentifier];
@@ -263,37 +290,33 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 
 	[gridCell setIsbn:[self.books objectAtIndex:index]];
 	
-	return gridCell;
+	return(gridCell);
 }
 
--(NSInteger)numberOfItemsInGridView:(MRGridView*)gridView 
+- (NSInteger)numberOfItemsInGridView:(MRGridView*)gridView 
 {
-    return [self.books count];
+    return([self.books count]);
 }
 
--(NSString*)contentDescriptionForCellAtIndex:(NSInteger)index 
+- (NSString *)contentDescriptionForCellAtIndex:(NSInteger)index 
 {
-	return nil;
+	return(nil);
 }
 
--(BOOL) gridView:(MRGridView*)gridView canMoveCellAtIndex: (NSInteger)index 
+- (BOOL)gridView:(MRGridView*)gridView canMoveCellAtIndex: (NSInteger)index 
 { 
-//	NSLog(@"Starting move for cell %d", index);
 	self.moveToValue = -1;
-	return YES;
+	return(YES);
 }
 
--(void) gridView:(MRGridView*)gridView moveCellAtIndex: (NSInteger)fromIndex toIndex: (NSInteger)toIndex
+- (void)gridView:(MRGridView *)gridView moveCellAtIndex:(NSInteger)fromIndex 
+         toIndex:(NSInteger)toIndex
 {
-//	NSLog(@"Moving cell from index %d to index %d", fromIndex, toIndex);
-	
 	self.moveToValue = toIndex;
 }
 
--(void) gridView:(MRGridView*)gridView finishedMovingCellToIndex:(NSInteger)toIndex
+- (void)gridView:(MRGridView*)gridView finishedMovingCellToIndex:(NSInteger)toIndex
 {
-//	NSLog(@"Finished moving cell to index %d", toIndex);
-	
 	if (self.moveToValue != -1 && (toIndex != self.moveToValue)) {
 		NSLog(@"Moving cell from index %d to index %d", toIndex, self.moveToValue);
         [self.books exchangeObjectAtIndex:toIndex withObjectAtIndex:self.moveToValue];
@@ -306,15 +329,17 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
         }                 
 	}
 }
--(void) gridView:(MRGridView*)gridView commitEditingStyle:(MRGridViewCellEditingStyle)editingStyle forIndex:(NSInteger)index
+
+- (void)gridView:(MRGridView *)gridView commitEditingStyle:(MRGridViewCellEditingStyle)editingStyle 
+        forIndex:(NSInteger)index
 {
+    // nop
 }
 
-#pragma mark MRGridViewDelegate methods
+#pragma mark - MRGridViewDelegate methods
 
--(void)gridView:(MRGridView *)aGridView didSelectCellAtIndex:(NSInteger)index 
+- (void)gridView:(MRGridView *)aGridView didSelectCellAtIndex:(NSInteger)index 
 {
-    
     if (index >= [self.books count]) {
         return;
     }
@@ -332,14 +357,9 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 		return;
 	}
 	
-	
 	NSLog(@"Showing book %@.", book.Title);
 	
-//	SCHReadingViewController *pageView = [[SCHReadingViewController alloc] initWithNibName:nil bundle:nil];
-//	pageView.isbn = book.ContentIdentifier;
-
 	BITReadingOptionsView *optionsView = [[BITReadingOptionsView alloc] initWithNibName:nil bundle:nil];
-//	optionsView.pageViewController = pageView;
 	optionsView.isbn = book.ContentIdentifier;
     optionsView.profileItem = self.profileItem;
 	
@@ -364,31 +384,12 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 	}
 	
 	[self.navigationController pushViewController:optionsView animated:YES];
-	[optionsView release];
-//	[pageView release];	
-	
+	[optionsView release], optionsView = nil;
 }
 
--(void)gridView:(MRGridView *)gridView confirmationForDeletionAtIndex:(NSInteger)index 
+- (void)gridView:(MRGridView *)gridView confirmationForDeletionAtIndex:(NSInteger)index 
 {
-	
-}
-
-#pragma mark -
-#pragma mark Memory management
-
-- (void)didReceiveMemoryWarning {
-    // Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
-    
-    // Relinquish ownership any cached data, images, etc. that aren't in use.
-}
-
-- (void)viewDidUnload {
-    // Relinquish ownership of anything that can be recreated in viewDidLoad or on demand.
-    // For example: self.myOutlet = nil;
-	[self releaseViewObjects];
-
+	// nop
 }
 
 @end

@@ -8,16 +8,17 @@
 
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
-#import "SCHBookShelfGridView.h"
+
 #import "MRGridViewDelegate.h"
 #import "MRGridViewDataSource.h"
-#import "KNFBTimeOrderedCache.h"
-#import "SCHProfileItem.h"
 
+@class SCHBookShelfGridView;
 @class SCHCustomNavigationBar;
+@class KNFBTimeOrderedCache;
+@class SCHProfileItem;
 
-@interface SCHBookShelfViewController : UIViewController <MRGridViewDelegate, MRGridViewDataSource> {
-
+@interface SCHBookShelfViewController : UIViewController <MRGridViewDelegate, MRGridViewDataSource> 
+{
 }
 
 @property (nonatomic, retain) IBOutlet SCHBookShelfGridView *gridView;
