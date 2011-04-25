@@ -10,14 +10,12 @@
 #import <CoreData/CoreData.h>
 
 #import "SCHProfilePasswordViewControllerDelegate.h"
-#import "SCHCustomToolbar.h"
 
 @class SCHProfileItem;
+@class SCHCustomToolbar;
 
 @interface SCHProfilePasswordViewController : UIViewController 
 {
-
-    SCHCustomToolbar *topBar;
 }
 
 @property (retain, nonatomic) IBOutlet UILabel *newPasswordMessage;

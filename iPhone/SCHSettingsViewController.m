@@ -7,15 +7,10 @@
 //
 
 #import "SCHSettingsViewController.h"
+
 #import "SCHLoginViewController.h"
-#import "AppDelegate_Shared.h"
-#import "SCHUserSettingsItem.h"
 #import "SCHAuthenticationManager.h"
 #import "SCHDrmRegistrationSession.h"
-#import "SCHProfileViewCell.h"
-#import "SCHThemeManager.h"
-#import "SCHThemeButton.h"
-#import "SCHThemeImageView.h"
 #import "SCHCustomNavigationBar.h"
 
 extern NSString * const kSCHAuthenticationManagerDeviceKey;

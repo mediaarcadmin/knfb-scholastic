@@ -13,7 +13,6 @@
 
 @class SCHProfilePasswordViewController;
 @class SCHSettingsViewController;
-@class SCHWebServiceSync;
 @class SCHLoginViewController;
 
 @interface SCHProfileViewController : UIViewController <NSFetchedResultsControllerDelegate, SCHProfilePasswordViewControllerDelegate> {

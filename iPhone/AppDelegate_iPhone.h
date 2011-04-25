@@ -11,8 +11,8 @@
 
 @class SCHCustomNavigationBar;
 
-@interface AppDelegate_iPhone : AppDelegate_Shared {
-	UINavigationController *navigationController;
+@interface AppDelegate_iPhone : AppDelegate_Shared 
+{
 }
 
 @property (nonatomic, retain) IBOutlet UINavigationController *navigationController;

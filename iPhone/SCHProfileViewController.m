@@ -12,20 +12,10 @@
 #import "SCHSettingsViewController.h"
 #import "SCHBookShelfViewController.h"
 #import "SCHLoginViewController.h"
-#import "SCHAuthenticationManager.h"
 #import "SCHLibreAccessWebService.h"
-#import "SCHContentProfileItem.h"
 #import "SCHProfileItem.h"
-#import "SCHBookShelfViewController.h"
-#import "SCHSyncManager.h"
 #import "SCHProfileViewCell.h"
-#import "SCHThemeManager.h"
 #import "SCHCustomNavigationBar.h"
-
-// Cell Icons 
-static NSString * const kRootViewControllerProfileIcon = @"Profile.png";
-static NSString * const kRootViewControllerProfileLockedIcon = @"ProfileLocked.png";
-static NSString * const kRootViewControllerSettingsIcon = @"Settings.png";
 
 @interface SCHProfileViewController() <UITableViewDelegate> 
 
@@ -34,7 +24,6 @@ static NSString * const kRootViewControllerSettingsIcon = @"Settings.png";
 - (void)releaseViewObjects;
 
 @property (nonatomic, retain) UIButton *settingsButton;
-@property (nonatomic, retain) SCHWebServiceSync *webServiceSync;
 
 @end
 
@@ -48,7 +37,6 @@ static NSString * const kRootViewControllerSettingsIcon = @"Settings.png";
 @synthesize settingsButton;
 @synthesize settingsController;
 @synthesize loginController;
-@synthesize webServiceSync;
 @synthesize fetchedResultsController=fetchedResultsController_, managedObjectContext=managedObjectContext_;
 
 
@@ -68,7 +56,6 @@ static NSString * const kRootViewControllerSettingsIcon = @"Settings.png";
 }
 
 - (void)dealloc {    
-    [webServiceSync release], webServiceSync = nil;	
     [fetchedResultsController_ release], fetchedResultsController_ = nil;
     [managedObjectContext_ release], managedObjectContext_ = nil;
     
