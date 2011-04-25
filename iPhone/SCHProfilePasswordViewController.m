@@ -14,6 +14,7 @@
 
 @interface SCHProfilePasswordViewController ()
 
+- (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation;
 - (void)authenticatePassword;
 - (void)setPassword;
 - (void)releaseViewObjects;
@@ -31,23 +32,27 @@
 @synthesize delegate;
 @synthesize topBar;
 
+#pragma mark - Object lifecycle
+
 - (void)releaseViewObjects 
 {
-	self.newPasswordMessage = nil;
-	self.password = nil;
-	self.confirmPassword = nil;	
+	[newPasswordMessage release], newPasswordMessage = nil;
+	[password release], password = nil;
+	[confirmPassword release], confirmPassword = nil;	
+    [topBar release], topBar = nil;
 }
 
 - (void)dealloc 
 {
 	[self releaseViewObjects];
 	
-	self.profileItem = nil;
-	self.managedObjectContext = nil;
+	[profileItem release], profileItem = nil;
+	[managedObjectContext release], managedObjectContext = nil;
 	
-    [topBar release];
     [super dealloc];
 }
+
+#pragma mark - View lifecycle
 
 - (void)viewWillAppear:(BOOL)animated	
 {
@@ -62,12 +67,7 @@
 	
 	self.confirmPassword.hidden = !self.setPasswordMode;
     
-    if (UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation])) {
-        [topBar setBackgroundImage:[UIImage imageNamed:@"admin-iphone-landscape-top-toolbar.png"]];
-    } else {
-        [topBar setBackgroundImage:[UIImage imageNamed:@"admin-iphone-portrait-top-toolbar.png"]];
-    }
-
+    [self setupAssetsForOrientation:self.interfaceOrientation];
 }
 
 - (void)viewDidAppear:(BOOL)animated 
@@ -76,7 +76,6 @@
 	[self.password becomeFirstResponder];
 }
 
-// Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad 
 {
     [super viewDidLoad];
@@ -88,7 +87,6 @@
                     [[UIBarButtonItem alloc] initWithCustomView:headerImage],
                     [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil], nil];
     [headerImage release];
-
 }
 
 - (void)viewDidUnload 
@@ -99,23 +97,29 @@
 	[self releaseViewObjects];
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    // Return YES for supported orientations
-    return (YES);
-}
+#pragma mark - Orientation methods
 
-- (void) willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+- (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation
 {
-    if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
+    if (UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation])) {
         [topBar setBackgroundImage:[UIImage imageNamed:@"admin-iphone-landscape-top-toolbar.png"]];
     } else {
         [topBar setBackgroundImage:[UIImage imageNamed:@"admin-iphone-portrait-top-toolbar.png"]];
     }
 }
 
-#pragma mark -
-#pragma mark Action methods
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    [self setupAssetsForOrientation:toInterfaceOrientation];
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    // Return YES for supported orientations
+    return (YES);
+}
+
+#pragma mark - Action methods
 
 - (IBAction)OK:(id)sender
 {
@@ -125,6 +129,13 @@
 		[self authenticatePassword];
 	}
 }
+
+- (IBAction)cancel:(id)sender
+{
+	[self dismissModalViewControllerAnimated:YES];	
+}
+
+#pragma mark - Private methods
 
 - (void)authenticatePassword
 {
@@ -157,7 +168,6 @@
 		[errorAlert show]; 
 		[errorAlert release];
 	} else {	
-		
 		[self.profileItem setRawPassword:self.password.text];
 		
 		[self.managedObjectContext save:nil];
@@ -172,13 +182,7 @@
 	}
 }
 
-- (IBAction)cancel:(id)sender
-{
-	[self dismissModalViewControllerAnimated:YES];	
-}
-
-#pragma mark UITextField Delegate Methods
-#pragma mark -
+#pragma mark - UITextField Delegate Methods
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField 
 {
@@ -194,13 +198,5 @@
 	
 	return(ret); 
 } 
-
-- (void)didReceiveMemoryWarning 
-{
-    // Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
-    
-    // Release any cached data, images, etc. that aren't in use.
-}
 
 @end
