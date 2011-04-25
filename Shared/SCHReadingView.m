@@ -74,6 +74,12 @@
     return 0;
 }
 
+-(NSInteger) pageCount
+{
+    // Do nothing
+    return 0;
+}
+
 
 
 @end

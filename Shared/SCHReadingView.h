@@ -47,4 +47,5 @@ typedef enum {
 - (void) setFontPointIndex: (NSInteger) index;
 - (NSInteger) maximumFontIndex;
 
+- (NSInteger) pageCount;
 @end

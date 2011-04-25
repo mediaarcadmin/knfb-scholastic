@@ -10,49 +10,98 @@
 #import <QuartzCore/QuartzCore.h>
 #import "SCHAppBook.h"
 #import "SCHBookManager.h"
-#import "KNFBTextFlowPageRange.h"
-#import "SCHDictionaryManager.h"
 #import "SCHFlowView.h"
 #import "SCHLayoutView.h"
 #import "SCHXPSProvider.h"
-#import "SCHThemeManager.h"
 #import "SCHCustomNavigationBar.h"
+#import "SCHCustomToolbar.h"
 
-static int STANDARD_SCRUB_INFO_HEIGHT = 47;
 
+// constants
+static const CGFloat kReadingViewStandardScrubHeight = 47.0f;
 static const CGFloat kReadingViewBackButtonPadding = 7.0f;
+
+#pragma mark - Class Extension
 
 @interface SCHReadingViewController ()
 
-- (void) toggleToolbarVisibility;
-- (void) setToolbarVisibility: (BOOL) visibility animated: (BOOL) animated;
-- (void) cancelInitialTimer;
-- (void) adjustScrubberInfoViewHeightForImageSize: (CGSize) imageSize;
+// the page view, either fixed or flow
+@property (nonatomic, retain) SCHReadingView *readingView;
 
-- (IBAction) storyInteractionAction: (id) sender;
-- (IBAction) notesAction: (id) sender;
-- (IBAction) settingsAction: (id) sender;
-
-- (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation;
-- (void)releaseViewObjects;
-
+// toolbars/nav bar visible/not visible
 @property (readwrite) BOOL toolbarsVisible;
-@property (readwrite) BOOL zoomActive;
+
+// timer used to fade toolbars out after a certain period of time
 @property (nonatomic, retain) NSTimer *initialFadeTimer;
+
+// smart zoom active/inactive
+@property (readwrite) BOOL zoomActive;
+
+// the first page that the view is currently showing
 @property (readwrite) NSInteger currentPageIndex;
+
+// XPS book data provider
 @property (nonatomic, assign) SCHXPSProvider *xpsProvider;
+
+// temporary flag to prevent nav bar from being positioned behind the status bar on rotation
 @property (readwrite) BOOL currentlyRotating;
 
+// the current font size index (of an array of font sizes provided by libEucalyptus)
 @property (readwrite) int currentFontSizeIndex;
+
+// the current paper type for the reading view
 @property (readwrite) SCHReadingViewPaperType paperType;
+
+- (void)releaseViewObjects;
+
+- (void)toggleToolbarVisibility;
+- (void)setToolbarVisibility: (BOOL) visibility animated: (BOOL) animated;
+- (void)cancelInitialTimer;
+- (void)adjustScrubberInfoViewHeightForImageSize: (CGSize) imageSize;
+
+- (IBAction)storyInteractionAction: (id) sender;
+- (IBAction)notesAction: (id) sender;
+- (IBAction)settingsAction: (id) sender;
+- (IBAction)nextSmartZoom:(id)sender;
+- (IBAction)prevSmartZoom:(id)sender;
+- (IBAction)popViewController:(id)sender;
+- (IBAction)magnifyAction:(id)sender;
+- (IBAction)audioPlayAction:(id)sender;
+
+- (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation;
+
 
 @end
 
+#pragma mark - SCHReadingViewController
+
 @implementation SCHReadingViewController
 
-// FIXME: can we have one synthesize per line so that automatic merges are easy
-@synthesize isbn, flowView, eucPageView, youngerMode;
-@synthesize toolbarsVisible, zoomActive, initialFadeTimer, currentPageIndex, xpsProvider, currentlyRotating, currentFontSizeIndex, paperType;
+#pragma mark Object Synthesis
+
+@synthesize isbn;
+@synthesize flowView;
+@synthesize readingView;
+@synthesize youngerMode;
+@synthesize toolbarsVisible;
+@synthesize zoomActive;
+@synthesize initialFadeTimer;
+@synthesize currentPageIndex;
+@synthesize xpsProvider;
+@synthesize currentlyRotating;
+@synthesize currentFontSizeIndex;
+@synthesize paperType;
+
+@synthesize optionsView;
+@synthesize fontSegmentedControl;
+@synthesize flowFixedSegmentedControl;
+@synthesize paperTypeSegmentedControl;
+@synthesize scrubberThumbImage;
+
+@synthesize pageScrubber;
+@synthesize scrubberInfoView;
+@synthesize pageLabel;
+@synthesize panSpeedLabel;
 
 @synthesize titleLabel;
 @synthesize leftBarButtonItemContainer;
@@ -65,22 +114,19 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 @synthesize topShadow;
 @synthesize bottomShadow;
 
-#pragma mark - Memory Management
+#pragma mark - Dealloc and View Teardown
 
 - (void)dealloc {
-    
-    [optionsView release];
-    [fontSegmentedControl release];
-    [flowFixedSegmentedControl release];
-    [paperTypeSegmentedControl release];
-    [scrubberThumbImage release];
-    
     [self releaseViewObjects];
+
+    [xpsProvider release], xpsProvider = nil;
+    [readingView release], readingView = nil;
+    
+    [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.isbn];
+    
     [super dealloc];
 }
 
-// FIXME: release all nib or viewDidUnload retained objects here
-// Have only added the ones I have added or amended myself
 - (void)releaseViewObjects
 {
     [titleLabel release], titleLabel = nil;
@@ -93,65 +139,23 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [olderBottomToolbar release], olderBottomToolbar = nil;
     [topShadow release], topShadow = nil;
     [bottomShadow release], bottomShadow = nil;
+    [pageScrubber release], pageScrubber = nil;
+    [scrubberThumbImage release], scrubberThumbImage = nil;
+    [scrubberInfoView release], scrubberInfoView = nil;
+    [pageLabel release], pageLabel = nil;
+    [panSpeedLabel release], panSpeedLabel = nil;
+    [optionsView release], optionsView = nil;
+    [fontSegmentedControl release], fontSegmentedControl = nil;
+    [flowFixedSegmentedControl release], flowFixedSegmentedControl = nil;
+    [paperTypeSegmentedControl release], paperTypeSegmentedControl = nil;
 }
 
 - (void)viewDidUnload {
-    // FIXME: this method does not get called on dealloc
-    [optionsView release];
-    optionsView = nil;
-    [fontSegmentedControl release];
-    fontSegmentedControl = nil;
-    [flowFixedSegmentedControl release];
-    flowFixedSegmentedControl = nil;
-    [paperTypeSegmentedControl release];
-    paperTypeSegmentedControl = nil;
-    [scrubberThumbImage release];
-    scrubberThumbImage = nil;
     [super viewDidUnload];
-    [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.isbn];
-    self.xpsProvider = nil;
-    self.eucPageView = nil;
-    
     [self releaseViewObjects];
 }
 
-- (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation
-{    
-    if (UIInterfaceOrientationIsPortrait(orientation)) {
-        [self.backButton setImage:[UIImage imageNamed:@"icon-books.png"] forState:UIControlStateNormal];
-        
-        [self.audioButton setImage:[UIImage imageNamed:@"icon-play.png"] forState:UIControlStateNormal];
-        [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"reading-view-portrait-top-bar.png"]];
-        self.scrubberToolbar.backgroundImage = [UIImage imageNamed:@"reading-view-portrait-scrubber-bar.png"];
-        self.olderBottomToolbar.backgroundImage = [UIImage imageNamed:@"reading-view-portrait-bottom-bar.png"];
-        
-        if (self.zoomActive) {
-            [self.zoomButton setImage:[UIImage imageNamed:@"icon-magnify-active.png"] forState:UIControlStateNormal];
-        } else {
-            [self.zoomButton setImage:[UIImage imageNamed:@"icon-magnify.png"] forState:UIControlStateNormal];
-        }
-    } else {
-        [self.backButton setImage:[UIImage imageNamed:@"icon-books-landscape.png"] forState:UIControlStateNormal];
-        
-        [self.audioButton setImage:[UIImage imageNamed:@"icon-play-landscape.png"] forState:UIControlStateNormal];
-        [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"reading-view-landscape-top-bar.png"]];
-        self.scrubberToolbar.backgroundImage = [UIImage imageNamed:@"reading-view-landscape-scrubber-bar.png"];
-        self.olderBottomToolbar.backgroundImage = [UIImage imageNamed:@"reading-view-landscape-bottom-bar.png"];
-        
-        if (self.zoomActive) {
-            [self.zoomButton setImage:[UIImage imageNamed:@"icon-magnify-active-landscape.png"] forState:UIControlStateNormal];
-        } else {
-            [self.zoomButton setImage:[UIImage imageNamed:@"icon-magnify-landscape.png"] forState:UIControlStateNormal];
-        }
-    }    
-    
-    CGRect topShadowFrame = self.topShadow.frame;
-    topShadowFrame.origin.y = CGRectGetMinY(self.navigationController.navigationBar.frame) + 
-    [(SCHCustomNavigationBar *)self.navigationController.navigationBar backgroundImage].size.height;
-    self.topShadow.frame = topShadowFrame;
-    
-}
-
+#pragma mark - Memory Warnings
 
 - (void)didReceiveMemoryWarning {
     // Releases the view if it doesn't have a superview.
@@ -159,6 +163,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     
     // FIXME: pass along memory warning to reading views?
 }
+
+
 
 
 #pragma mark - Object Initialiser
@@ -180,45 +186,34 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (void)viewDidLoad {
     [super viewDidLoad];
 	
-	self.currentPageIndex = 0;
-	toolbarsVisible = YES;
+	self.currentPageIndex = 1;
+	self.toolbarsVisible = YES;
     self.xpsProvider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.isbn];
 	
     SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];
     
     NSLog(@"XPSCategory: %@", book.XPSCategory);
     
-	pageScrubber.delegate = self;
-	pageScrubber.minimumValue = 1;
-	pageScrubber.maximumValue = [self.xpsProvider pageCount];
-	pageScrubber.continuous = YES;
-	pageScrubber.value = self.currentPageIndex + 1;
-	
-    // FIXME: localise this text and make sure we get it from the bookview so its pagination aware
-    pageLabel.text = [NSString stringWithFormat:@"Page %d of %d", self.currentPageIndex, [self.xpsProvider pageCount] - 1];
-    
-    // FIXME: the variable eucPageView is confusingly named
     if (self.flowView) {
-        self.eucPageView = [[SCHFlowView alloc] initWithFrame:self.view.bounds isbn:self.isbn];
+        self.readingView = [[SCHFlowView alloc] initWithFrame:self.view.bounds isbn:self.isbn];
     } else {
-        self.eucPageView = [[SCHLayoutView alloc] initWithFrame:self.view.bounds isbn:self.isbn]; 
+        self.readingView = [[SCHLayoutView alloc] initWithFrame:self.view.bounds isbn:self.isbn]; 
     }
     
-    self.eucPageView.delegate = self;
-    
+    self.readingView.delegate = self;
+
     // FIXME: this should be a stored preference
     self.currentFontSizeIndex = 2;
-    [self.eucPageView setFontPointIndex:self.currentFontSizeIndex];
+    [self.readingView setFontPointIndex:self.currentFontSizeIndex];
     
-    // FIXME: can we standardise access to sythesized ivars via properties except in init and dealloc
     if (self.flowView) {
-        [fontSegmentedControl setEnabled:YES forSegmentAtIndex:0];
-        [fontSegmentedControl setEnabled:YES forSegmentAtIndex:1];
-        [flowFixedSegmentedControl setSelectedSegmentIndex:0];
+        [self.fontSegmentedControl setEnabled:YES forSegmentAtIndex:0];
+        [self.fontSegmentedControl setEnabled:YES forSegmentAtIndex:1];
+        [self.flowFixedSegmentedControl setSelectedSegmentIndex:0];
     } else {
-        [fontSegmentedControl setEnabled:NO forSegmentAtIndex:0];
-        [fontSegmentedControl setEnabled:NO forSegmentAtIndex:1];
-        [flowFixedSegmentedControl setSelectedSegmentIndex:1];
+        [self.fontSegmentedControl setEnabled:NO forSegmentAtIndex:0];
+        [self.fontSegmentedControl setEnabled:NO forSegmentAtIndex:1];
+        [self.flowFixedSegmentedControl setSelectedSegmentIndex:1];
     }
     
     
@@ -227,29 +222,29 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     
     switch (self.paperType) {
         case SCHReadingViewPaperTypeWhite:
-            [paperTypeSegmentedControl setSelectedSegmentIndex:0];
+            [self.paperTypeSegmentedControl setSelectedSegmentIndex:0];
             break;
         case SCHReadingViewPaperTypeBlack:
-            [paperTypeSegmentedControl setSelectedSegmentIndex:1];
+            [self.paperTypeSegmentedControl setSelectedSegmentIndex:1];
             break;
         case SCHReadingViewPaperTypeSepia:
-            [paperTypeSegmentedControl setSelectedSegmentIndex:2];
+            [self.paperTypeSegmentedControl setSelectedSegmentIndex:2];
             break;
     }
 
-    [self.eucPageView setPaperType:self.paperType];
-    self.eucPageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    [self.readingView setPaperType:self.paperType];
+    self.readingView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 
     
     self.wantsFullScreenLayout = YES;
     self.navigationController.navigationBar.translucent = YES;
     
-    [self.view addSubview:self.eucPageView];
-    [self.view sendSubviewToBack:self.eucPageView];
+    [self.view addSubview:self.readingView];
+    [self.view sendSubviewToBack:self.readingView];
     
 
-	scrubberInfoView.layer.cornerRadius = 5.0f;
-	scrubberInfoView.layer.masksToBounds = YES;
+	self.scrubberInfoView.layer.cornerRadius = 5.0f;
+	self.scrubberInfoView.layer.masksToBounds = YES;
     
 	[self setToolbarVisibility:YES animated:NO];
 	
@@ -301,6 +296,16 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         CGRectGetHeight(bottomShadowFrame);
     }
     self.bottomShadow.frame = bottomShadowFrame;
+    
+    NSString *localisedPageLabelText = NSLocalizedString(@"pageCountString", @"Page %d of %d");
+    [self.pageLabel setText:[NSString stringWithFormat:localisedPageLabelText, self.currentPageIndex, [self.readingView pageCount]]];
+    
+    self.pageScrubber.delegate = self;
+	self.pageScrubber.minimumValue = 1;
+	self.pageScrubber.maximumValue = [self.readingView pageCount];
+	self.pageScrubber.continuous = YES;
+	self.pageScrubber.value = self.currentPageIndex;
+	
 }
 
 - (void) viewWillAppear:(BOOL)animated
@@ -318,6 +323,43 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 #pragma mark - Rotation
 
+- (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation
+{    
+    if (UIInterfaceOrientationIsPortrait(orientation)) {
+        [self.backButton setImage:[UIImage imageNamed:@"icon-books.png"] forState:UIControlStateNormal];
+        
+        [self.audioButton setImage:[UIImage imageNamed:@"icon-play.png"] forState:UIControlStateNormal];
+        [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"reading-view-portrait-top-bar.png"]];
+        self.scrubberToolbar.backgroundImage = [UIImage imageNamed:@"reading-view-portrait-scrubber-bar.png"];
+        self.olderBottomToolbar.backgroundImage = [UIImage imageNamed:@"reading-view-portrait-bottom-bar.png"];
+        
+        if (self.zoomActive) {
+            [self.zoomButton setImage:[UIImage imageNamed:@"icon-magnify-active.png"] forState:UIControlStateNormal];
+        } else {
+            [self.zoomButton setImage:[UIImage imageNamed:@"icon-magnify.png"] forState:UIControlStateNormal];
+        }
+    } else {
+        [self.backButton setImage:[UIImage imageNamed:@"icon-books-landscape.png"] forState:UIControlStateNormal];
+        
+        [self.audioButton setImage:[UIImage imageNamed:@"icon-play-landscape.png"] forState:UIControlStateNormal];
+        [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"reading-view-landscape-top-bar.png"]];
+        self.scrubberToolbar.backgroundImage = [UIImage imageNamed:@"reading-view-landscape-scrubber-bar.png"];
+        self.olderBottomToolbar.backgroundImage = [UIImage imageNamed:@"reading-view-landscape-bottom-bar.png"];
+        
+        if (self.zoomActive) {
+            [self.zoomButton setImage:[UIImage imageNamed:@"icon-magnify-active-landscape.png"] forState:UIControlStateNormal];
+        } else {
+            [self.zoomButton setImage:[UIImage imageNamed:@"icon-magnify-landscape.png"] forState:UIControlStateNormal];
+        }
+    }    
+    
+    CGRect topShadowFrame = self.topShadow.frame;
+    topShadowFrame.origin.y = CGRectGetMinY(self.navigationController.navigationBar.frame) + 
+    [(SCHCustomNavigationBar *)self.navigationController.navigationBar backgroundImage].size.height;
+    self.topShadow.frame = topShadowFrame;
+    
+}
+
 // Override to allow orientations other than the default portrait orientation.
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     // Return YES for supported orientations.
@@ -332,9 +374,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (void) willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
     self.currentlyRotating = YES;
-    if ([scrubberInfoView superview]) {
+    if ([self.scrubberInfoView superview]) {
         
-        CGRect scrubFrame = scrubberInfoView.frame;
+        CGRect scrubFrame = self.scrubberInfoView.frame;
         
         CGRect statusFrame = [[UIApplication sharedApplication] statusBarFrame];
         float statusBarHeight = MIN(statusFrame.size.height, statusFrame.size.width);
@@ -352,29 +394,29 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         scrubFrame.origin.y = statusBarHeight + newNavBarHeight + 10;
         
         
-        if (!self.flowView && scrubberThumbImage) {
+        if (!self.flowView && self.scrubberThumbImage) {
             
-            int maxHeight = (self.view.frame.size.width - scrubberToolbar.frame.size.height - newNavBarHeight - STANDARD_SCRUB_INFO_HEIGHT - 40);
+            int maxHeight = (self.view.frame.size.width - scrubberToolbar.frame.size.height - newNavBarHeight - kReadingViewStandardScrubHeight - 40);
             
             NSLog(@"Max height: %d", maxHeight);
             
-            if (scrubberThumbImage.image.size.height > maxHeight) {
-                scrubberThumbImage.contentMode = UIViewContentModeScaleAspectFit;
-                scrubFrame.size.height = STANDARD_SCRUB_INFO_HEIGHT + maxHeight;
+            if (self.scrubberThumbImage.image.size.height > maxHeight) {
+                self.scrubberThumbImage.contentMode = UIViewContentModeScaleAspectFit;
+                scrubFrame.size.height = kReadingViewStandardScrubHeight + maxHeight;
             } else {
-                scrubberThumbImage.contentMode = UIViewContentModeTop;
-                scrubFrame.size.height = STANDARD_SCRUB_INFO_HEIGHT + scrubberThumbImage.image.size.height + 20;
+                self.scrubberThumbImage.contentMode = UIViewContentModeTop;
+                scrubFrame.size.height = kReadingViewStandardScrubHeight + self.scrubberThumbImage.image.size.height + 20;
             }
             
             
             NSLog(@"Scrub frame height: %f", scrubFrame.size.height);
             
         } else {
-            scrubFrame.size.height = STANDARD_SCRUB_INFO_HEIGHT;
+            scrubFrame.size.height = kReadingViewStandardScrubHeight;
         }
 
         
-        scrubberInfoView.frame = scrubFrame;
+        self.scrubberInfoView.frame = scrubFrame;
         
     }
     
@@ -405,7 +447,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
             [button setImage:[UIImage imageNamed:@"icon-magnify-landscape"] forState:UIControlStateNormal];
         }
 
-        [self.eucPageView didExitSmartZoomMode];
+        [self.readingView didExitSmartZoomMode];
     } else {
         self.zoomActive = YES;
         if (UIInterfaceOrientationIsPortrait([[UIApplication sharedApplication] statusBarOrientation]  )) {
@@ -413,7 +455,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         } else {
             [button setImage:[UIImage imageNamed:@"icon-magnify-active-landscape"] forState:UIControlStateNormal];
         }
-        [self.eucPageView didEnterSmartZoomMode];
+        [self.readingView didEnterSmartZoomMode];
     }
     
 }
@@ -438,28 +480,141 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     NSLog(@"Settings action");
     [self cancelInitialTimer];
     
-    if (optionsView.superview) {
-        [optionsView removeFromSuperview];
+    if (self.optionsView.superview) {
+        [self.optionsView removeFromSuperview];
     } else {
         
-        CGRect optionsFrame = optionsView.frame;
+        CGRect optionsFrame = self.optionsView.frame;
         optionsFrame.origin.x = 0;
         optionsFrame.origin.y = olderBottomToolbar.frame.origin.y - optionsFrame.size.height;
         
         optionsFrame.size.width = self.view.frame.size.width;
-        optionsView.frame = optionsFrame;
+        self.optionsView.frame = optionsFrame;
         
-        [self.view addSubview:optionsView];
+        [self.view addSubview:self.optionsView];
     }
 }
+
+#pragma mark - Smart Zoom
+
+- (IBAction)nextSmartZoom:(id)sender
+{
+    NSLog(@"Next");
+    [self.readingView jumpToNextZoomBlock];
+}
+
+- (IBAction)prevSmartZoom:(id)sender
+{
+    NSLog(@"Previous");
+    [self.readingView jumpToPreviousZoomBlock];
+}
+
+#pragma mark - Flowed/Fixed Toggle
+
+- (IBAction) flowedFixedSegmentChanged: (UISegmentedControl *) segControl
+{
+    int selected = segControl.selectedSegmentIndex;
+    
+    if (selected == 0) {
+        // flowed
+        NSLog(@"Picking flowed view!");
+        self.flowView = YES;
+        [self.fontSegmentedControl setEnabled:YES forSegmentAtIndex:0];
+        [self.fontSegmentedControl setEnabled:YES forSegmentAtIndex:1];
+    } else {
+        // fixed
+        NSLog(@"Picking fixed view!");
+        self.flowView = NO;
+        [self.fontSegmentedControl setEnabled:NO forSegmentAtIndex:0];
+        [self.fontSegmentedControl setEnabled:NO forSegmentAtIndex:1];
+    }
+    
+    [self.readingView removeFromSuperview];
+    self.readingView = nil;
+    
+    if (self.flowView) {
+        self.readingView = [[SCHFlowView alloc] initWithFrame:self.view.bounds isbn:self.isbn];
+    } else {
+        self.readingView = [[SCHLayoutView alloc] initWithFrame:self.view.bounds isbn:self.isbn]; 
+    }
+    
+    self.readingView.delegate = self;
+    self.readingView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    
+    [self.readingView jumpToPageAtIndex:self.currentPageIndex - 1 animated:NO];
+    
+    [self.view addSubview:self.readingView];
+    [self.view sendSubviewToBack:self.readingView];
+    [self.readingView setPaperType:self.paperType];
+}
+
+#pragma mark - Paper Type Toggle
+
+- (IBAction) paperTypeSegmentChanged: (UISegmentedControl *) segControl
+{
+    int selected = segControl.selectedSegmentIndex;
+    
+    if (selected == 0) {
+        // white
+        [self.readingView setPaperType:SCHReadingViewPaperTypeWhite];
+        self.paperType = SCHReadingViewPaperTypeWhite;
+    } else if (selected == 1) {
+        // black
+        [self.readingView setPaperType:SCHReadingViewPaperTypeBlack];
+        self.paperType = SCHReadingViewPaperTypeBlack;
+    } else {
+        // sepia
+        [self.readingView setPaperType:SCHReadingViewPaperTypeSepia];
+        self.paperType = SCHReadingViewPaperTypeSepia;
+    }
+    
+}
+
+#pragma mark - Font Size Toggle
+
+- (IBAction) fontSizeSegmentPressed: (UISegmentedControl *) segControl
+{
+    int selected = segControl.selectedSegmentIndex;
+    
+    int index = self.currentFontSizeIndex;
+    
+    if (selected == 0) {
+        // decrease font size
+        index--;
+    } else {
+        // increase font size
+        index++;
+    }
+    
+    if (index > [self.readingView maximumFontIndex]) {
+        index = [self.readingView maximumFontIndex];
+    }
+    
+    if (index < 0) {
+        index = 0;
+    }
+    
+    [self.readingView setFontPointIndex:index];
+    self.currentFontSizeIndex = index;
+    
+    self.pageScrubber.minimumValue = 1;
+	self.pageScrubber.maximumValue = [self.readingView pageCount];
+	self.pageScrubber.continuous = YES;
+	self.pageScrubber.value = self.currentPageIndex;
+
+    
+}
+
 
 #pragma mark - SCHReadingViewDelegate methods
 
 - (void)readingView:(SCHReadingView *)readingView hasMovedToPageAtIndex:(NSUInteger)pageIndex
 {
-    self.currentPageIndex = pageIndex;
-    [pageScrubber setValue:self.currentPageIndex + 1];
-    pageLabel.text = [NSString stringWithFormat:@"Page %d of %d", self.currentPageIndex + 1, [self.xpsProvider pageCount]];
+    self.currentPageIndex = pageIndex + 1;
+    [self.pageScrubber setValue:self.currentPageIndex];
+    NSString *localisedPageLabelText = NSLocalizedString(@"pageCountString", @"Page %d of %d");
+    [self.pageLabel setText:[NSString stringWithFormat:localisedPageLabelText, self.currentPageIndex, [self.readingView pageCount]]];
+
 }
 
 - (void) unhandledTouchOnPageForReadingView: (SCHReadingView *) readingView
@@ -470,7 +625,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (void) adjustScrubberInfoViewHeightForImageSize: (CGSize) imageSize
 {
-    CGRect scrubFrame = scrubberInfoView.frame;
+    CGRect scrubFrame = self.scrubberInfoView.frame;
     scrubFrame.origin.x = self.view.bounds.size.width / 2 - (scrubFrame.size.width / 2);
     
     CGRect statusFrame = [[UIApplication sharedApplication] statusBarFrame];
@@ -482,7 +637,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     if (!self.flowView && imageSize.width > 0 && imageSize.height > 0) {
         
         // the maximum space available for an image
-        int maxImageHeight = (self.view.frame.size.height - scrubberToolbar.frame.size.height - self.navigationController.navigationBar.frame.size.height - STANDARD_SCRUB_INFO_HEIGHT - 60);
+        int maxImageHeight = (self.view.frame.size.height - scrubberToolbar.frame.size.height - self.navigationController.navigationBar.frame.size.height - kReadingViewStandardScrubHeight - 60);
         
         // if the double toolbar is visible, reduce available space
         if ([olderBottomToolbar superview]) {
@@ -490,8 +645,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         }
         
         // if the options view is also visible, reduce available space
-        if ([optionsView superview]) {
-            maxImageHeight -= optionsView.frame.size.height;
+        if ([self.optionsView superview]) {
+            maxImageHeight -= self.optionsView.frame.size.height;
         }
         
         // shrink the thumb image to 75% - thumb quality is not great
@@ -507,54 +662,55 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
         // if there's not enough space to sensibly render the image, don't try - just go with the text
         if (maxImageHeight < 40) {
-            scrubFrame.size.height = STANDARD_SCRUB_INFO_HEIGHT;
+            scrubFrame.size.height = kReadingViewStandardScrubHeight;
         } else {
             // otherwise, set up the imageview and info frame to the correct height
-            scrubFrame.size.height = STANDARD_SCRUB_INFO_HEIGHT + desiredHeight;
+            scrubFrame.size.height = kReadingViewStandardScrubHeight + desiredHeight;
             
-            CGRect imageRect = scrubberThumbImage.frame;
+            CGRect imageRect = self.scrubberThumbImage.frame;
             imageRect.size.height = desiredHeight - 10;
-            scrubberThumbImage.frame = imageRect;
+            self.scrubberThumbImage.frame = imageRect;
             
-            scrubFrame.size.height = STANDARD_SCRUB_INFO_HEIGHT + desiredHeight;
+            scrubFrame.size.height = kReadingViewStandardScrubHeight + desiredHeight;
             
-            if (scrubFrame.size.height < STANDARD_SCRUB_INFO_HEIGHT) {
-                scrubFrame.size.height = STANDARD_SCRUB_INFO_HEIGHT;
+            if (scrubFrame.size.height < kReadingViewStandardScrubHeight) {
+                scrubFrame.size.height = kReadingViewStandardScrubHeight;
             }
             
             NSLog(@"Scrub frame height: %f", scrubFrame.size.height);
         }
     } else {
-        scrubFrame.size.height = STANDARD_SCRUB_INFO_HEIGHT;
+        scrubFrame.size.height = kReadingViewStandardScrubHeight;
     }
     
-    scrubberInfoView.frame = scrubFrame;
+    self.scrubberInfoView.frame = scrubFrame;
 }
 
 
 #pragma mark -
-#pragma mark Scrubber Actions
+#pragma mark BITScrubberViewDelegate Methods
 
 - (void) scrubberView:(BITScrubberView *)scrubberView scrubberValueUpdated:(float)currentValue
 {
-	if (scrubberView == pageScrubber) {
+	if (scrubberView == self.pageScrubber) {
         NSLog(@"Current value is %d", (int) currentValue);
 		self.currentPageIndex = (int) currentValue;
 		
-		[pageLabel setText:[NSString stringWithFormat:@"Page %d of %d", self.currentPageIndex, [self.xpsProvider pageCount]]];
+        NSString *localisedPageLabelText = NSLocalizedString(@"pageCountString", @"Page %d of %d");
+        [self.pageLabel setText:[NSString stringWithFormat:localisedPageLabelText, self.currentPageIndex, [self.readingView pageCount]]];
         
         if (!self.flowView) {
             
             UIImage *scrubImage = [self.xpsProvider thumbnailForPage:self.currentPageIndex];
             
-            if (scrubberInfoView.frame.size.height == STANDARD_SCRUB_INFO_HEIGHT) {
-                scrubberThumbImage.image = nil;
+            if (self.scrubberInfoView.frame.size.height == kReadingViewStandardScrubHeight) {
+                self.scrubberThumbImage.image = nil;
             } else {
-                scrubberThumbImage.image = scrubImage;
+                self.scrubberThumbImage.image = scrubImage;
             }
         } 
         
-        [self adjustScrubberInfoViewHeightForImageSize:scrubberThumbImage.image.size];
+        [self adjustScrubberInfoViewHeightForImageSize:self.scrubberThumbImage.image.size];
         
 	}
 }
@@ -567,19 +723,20 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     // add the scrub view here
     if (!self.flowView) {
         UIImage *scrubImage = [self.xpsProvider thumbnailForPage:self.currentPageIndex];
-        scrubberThumbImage.image = scrubImage;
+        self.scrubberThumbImage.image = scrubImage;
         [self adjustScrubberInfoViewHeightForImageSize:scrubImage.size];
     } else {
         [self adjustScrubberInfoViewHeightForImageSize:CGSizeZero];
-        scrubberThumbImage.image = nil;
+        self.scrubberThumbImage.image = nil;
     }
     
-    [pageLabel setText:[NSString stringWithFormat:@"Page %d of %d", self.currentPageIndex, [self.xpsProvider pageCount]]];
-    
+    NSString *localisedPageLabelText = NSLocalizedString(@"pageCountString", @"Page %d of %d");
+    [self.pageLabel setText:[NSString stringWithFormat:localisedPageLabelText, self.currentPageIndex, [self.readingView pageCount]]];
+ 
 
-    [scrubberInfoView setAlpha:1.0f];
+    [self.scrubberInfoView setAlpha:1.0f];
 
-    [self.view addSubview:scrubberInfoView];
+    [self.view addSubview:self.scrubberInfoView];
     
 	[self cancelInitialTimer];
 	
@@ -593,16 +750,16 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
                           delay:0.2f 
                         options:UIViewAnimationOptionCurveEaseOut | UIViewAnimationOptionBeginFromCurrentState
                      animations:^{ 
-                         [scrubberInfoView setAlpha:0.0f];
+                         [self.scrubberInfoView setAlpha:0.0f];
                      }
                      completion:^(BOOL finished){
-                         [scrubberInfoView removeFromSuperview];
+                         [self.scrubberInfoView removeFromSuperview];
                      }
      ];
     
     NSLog(@"Turning to page %d", (int) currentValue);
     
-    [self.eucPageView jumpToPageAtIndex:self.currentPageIndex - 1 animated:YES];
+    [self.readingView jumpToPageAtIndex:self.currentPageIndex - 1 animated:YES];
 }
 
 #pragma mark - Toolbar Methods - including timer
@@ -642,21 +799,21 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 	
 	if (self.toolbarsVisible) {
         [self.navigationController.navigationBar setAlpha:1.0f];
-        [scrubberToolbar setAlpha:1.0f];
+        [self.scrubberToolbar setAlpha:1.0f];
         if (!youngerMode) {
             [olderBottomToolbar setAlpha:1.0f];
         }
-        [optionsView setAlpha:1.0f];
+        [self.optionsView setAlpha:1.0f];
         [self.topShadow setAlpha:1.0f];   
         [self.bottomShadow setAlpha:1.0f];  
 	} else {
         [self.navigationController.navigationBar setAlpha:0.0f];
-        [scrubberToolbar setAlpha:0.0f];
+        [self.scrubberToolbar setAlpha:0.0f];
         if (!youngerMode) {
             [olderBottomToolbar setAlpha:0.0f];
         }
         
-        [optionsView setAlpha:0.0f];
+        [self.optionsView setAlpha:0.0f];
         [self.topShadow setAlpha:0.0f];
         [self.bottomShadow setAlpha:0.0f];
 	}
@@ -679,110 +836,5 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 		self.initialFadeTimer = nil;
 	}
 }	
-
-#pragma mark - Smart Zoom
-
-- (IBAction)nextSmartZoom:(id)sender
-{
-    NSLog(@"Next");
-    [self.eucPageView jumpToNextZoomBlock];
-}
-
-- (IBAction)prevSmartZoom:(id)sender
-{
-    NSLog(@"Previous");
-    [self.eucPageView jumpToPreviousZoomBlock];
-}
-
-#pragma mark - Flowed/Fixed Toggle
-
-- (IBAction) flowedFixedSegmentChanged: (UISegmentedControl *) segControl
-{
-    int selected = segControl.selectedSegmentIndex;
-    
-    if (selected == 0) {
-        // flowed
-        NSLog(@"Picking flowed view!");
-        self.flowView = YES;
-        [fontSegmentedControl setEnabled:YES forSegmentAtIndex:0];
-        [fontSegmentedControl setEnabled:YES forSegmentAtIndex:1];
-    } else {
-        // fixed
-        NSLog(@"Picking fixed view!");
-        self.flowView = NO;
-        [fontSegmentedControl setEnabled:NO forSegmentAtIndex:0];
-        [fontSegmentedControl setEnabled:NO forSegmentAtIndex:1];
-    }
-    
-    [self.eucPageView removeFromSuperview];
-    self.eucPageView = nil;
-    
-    if (self.flowView) {
-        self.eucPageView = [[SCHFlowView alloc] initWithFrame:self.view.bounds isbn:self.isbn];
-    } else {
-        self.eucPageView = [[SCHLayoutView alloc] initWithFrame:self.view.bounds isbn:self.isbn]; 
-    }
-    
-    self.eucPageView.delegate = self;
-    self.eucPageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    
-    [self.eucPageView jumpToPageAtIndex:self.currentPageIndex - 1 animated:NO];
-    
-    [self.view addSubview:self.eucPageView];
-    [self.view sendSubviewToBack:self.eucPageView];
-    [self.eucPageView setPaperType:self.paperType];
-}
-
-#pragma mark - Paper Type Toggle
-
-- (IBAction) paperTypeSegmentChanged: (UISegmentedControl *) segControl
-{
-    int selected = segControl.selectedSegmentIndex;
-    
-    if (selected == 0) {
-        // white
-        [self.eucPageView setPaperType:SCHReadingViewPaperTypeWhite];
-        self.paperType = SCHReadingViewPaperTypeWhite;
-    } else if (selected == 1) {
-        // black
-        [self.eucPageView setPaperType:SCHReadingViewPaperTypeBlack];
-        self.paperType = SCHReadingViewPaperTypeBlack;
-    } else {
-        // sepia
-        [self.eucPageView setPaperType:SCHReadingViewPaperTypeSepia];
-        self.paperType = SCHReadingViewPaperTypeSepia;
-    }
-    
-}
-
-#pragma mark - Font Size Toggle
-
-- (IBAction) fontSizeSegmentPressed: (UISegmentedControl *) segControl
-{
-    int selected = segControl.selectedSegmentIndex;
-    
-    int index = self.currentFontSizeIndex;
-    
-    if (selected == 0) {
-        // decrease font size
-        index--;
-    } else {
-        // increase font size
-        index++;
-    }
-    
-    if (index > [self.eucPageView maximumFontIndex]) {
-        index = [self.eucPageView maximumFontIndex];
-    }
-    
-    if (index < 0) {
-        index = 0;
-    }
-    
-    [self.eucPageView setFontPointIndex:index];
-    self.currentFontSizeIndex = index;
-    
-}
-
 
 @end
