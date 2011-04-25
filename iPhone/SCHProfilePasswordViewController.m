@@ -10,7 +10,7 @@
 
 #import "SCHProfileItem.h"
 #import "SCHSyncManager.h"
-#import "USAdditions.h"
+#import "SCHCustomToolbar.h"
 
 @interface SCHProfilePasswordViewController ()
 
@@ -93,7 +93,6 @@
 
 - (void)viewDidUnload 
 {
-    [self setTopBar:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;

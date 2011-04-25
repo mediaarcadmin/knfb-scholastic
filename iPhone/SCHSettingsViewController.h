@@ -12,8 +12,8 @@
 
 @class SCHLoginViewController;
 
-@interface SCHSettingsViewController : UIViewController <SCHDrmRegistrationSessionDelegate>  {
-
+@interface SCHSettingsViewController : UIViewController <SCHDrmRegistrationSessionDelegate>  
+{
 }
 
 @property (nonatomic, retain) IBOutlet SCHLoginViewController *loginController;
