@@ -10,13 +10,12 @@
 #import <Foundation/Foundation.h>
 
 
-@interface SCHCustomToolbar : UIToolbar {
-    
+@interface SCHCustomToolbar : UIToolbar 
+{    
 }
 
 @property (nonatomic, retain) UIImage *backgroundImage;
 
--(void) setBackgroundWith:(UIImage*)backgroundImage;
--(void) clearBackground;
+- (void)clearBackground;
 
 @end

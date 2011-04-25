@@ -14,11 +14,22 @@
 
 @end 
 
-
 @implementation SCHCustomToolbar
 
 @synthesize backgroundImage;
 @synthesize originalBackgroundColor;
+
+#pragma mark - Object lifecycle
+
+- (void)dealloc 
+{
+    [backgroundImage release], backgroundImage = nil;
+    [originalBackgroundColor release], originalBackgroundColor = nil;
+    
+    [super dealloc];
+}
+
+#pragma - Drawing methods
 
 // If we have a custom background image, then draw it, othwerwise call super and draw the standard nav bar
 - (void)drawRect:(CGRect)rect
@@ -31,7 +42,7 @@
 }
 
 // Save the background image and call setNeedsDisplay to force a redraw
--(void) setBackgroundWith:(UIImage*)newBackgroundImage
+- (void)setBackgroundImage:(UIImage *)newBackgroundImage
 {
     if (backgroundImage != newBackgroundImage) {
         [backgroundImage release];
@@ -45,7 +56,7 @@
 }
 
 // clear the background image and call setNeedsDisplay to force a redraw
--(void) clearBackground
+- (void)clearBackground
 {
     if (self.originalBackgroundColor != nil) {
         self.backgroundColor = self.originalBackgroundColor;        

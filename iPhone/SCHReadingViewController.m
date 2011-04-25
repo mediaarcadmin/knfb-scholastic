@@ -122,8 +122,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         
         [self.audioButton setImage:[UIImage imageNamed:@"icon-play.png"] forState:UIControlStateNormal];
         [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"reading-view-portrait-top-bar.png"]];
-        [self.scrubberToolbar setBackgroundWith:[UIImage imageNamed:@"reading-view-portrait-scrubber-bar.png"]];
-        [self.olderBottomToolbar setBackgroundWith:[UIImage imageNamed:@"reading-view-portrait-bottom-bar.png"]];
+        self.scrubberToolbar.backgroundImage = [UIImage imageNamed:@"reading-view-portrait-scrubber-bar.png"];
+        self.olderBottomToolbar.backgroundImage = [UIImage imageNamed:@"reading-view-portrait-bottom-bar.png"];
         
         if (self.zoomActive) {
             [self.zoomButton setImage:[UIImage imageNamed:@"icon-magnify-active.png"] forState:UIControlStateNormal];
@@ -135,8 +135,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         
         [self.audioButton setImage:[UIImage imageNamed:@"icon-play-landscape.png"] forState:UIControlStateNormal];
         [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"reading-view-landscape-top-bar.png"]];
-        [self.scrubberToolbar setBackgroundWith:[UIImage imageNamed:@"reading-view-landscape-scrubber-bar.png"]];
-        [self.olderBottomToolbar setBackgroundWith:[UIImage imageNamed:@"reading-view-landscape-bottom-bar.png"]];
+        self.scrubberToolbar.backgroundImage = [UIImage imageNamed:@"reading-view-landscape-scrubber-bar.png"];
+        self.olderBottomToolbar.backgroundImage = [UIImage imageNamed:@"reading-view-landscape-bottom-bar.png"];
         
         if (self.zoomActive) {
             [self.zoomButton setImage:[UIImage imageNamed:@"icon-magnify-active-landscape.png"] forState:UIControlStateNormal];
