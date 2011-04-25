@@ -144,9 +144,8 @@ static NSString * const kSCHLibreAccessWebServiceY = @"Y";
 
 static NSString * const kSCHLibreAccessWebServiceeReaderCategories = @"eReaderCategories";
 
-
-@interface SCHLibreAccessWebService : BITSOAPProxy <LibreAccessServiceSoap11BindingResponseDelegate, BITObjectMapperProtocol> {
-	LibreAccessServiceSoap11Binding *binding;
+@interface SCHLibreAccessWebService : BITSOAPProxy <LibreAccessServiceSoap11BindingResponseDelegate, BITObjectMapperProtocol> 
+{
 }
 
 - (void)tokenExchange:(NSString *)pToken forUser:(NSString *)userName;

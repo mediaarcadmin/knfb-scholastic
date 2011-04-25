@@ -26,6 +26,8 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 
 @interface SCHLibreAccessWebService ()
 
+@property (nonatomic, retain) LibreAccessServiceSoap11Binding *binding;
+
 - (NSError *)errorFromStatusMessage:(LibreAccessServiceSvc_StatusHolder *)statusMessage;
 - (NSString *)methodNameFromObject:(id)anObject;
 
@@ -89,8 +91,9 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 
 @implementation SCHLibreAccessWebService
 
-#pragma mark -
-#pragma mark Memory management
+@synthesize binding;
+
+#pragma mark - Object lifecycle
 
 - (id)init
 {
@@ -123,7 +126,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 	request.impersonationkey = @"";
 	request.UserName = userName;
 	
-	[binding TokenExchangeAsyncUsingBody:request delegate:self]; 
+	[self.binding TokenExchangeAsyncUsingBody:request delegate:self]; 
 	[[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
 	
 	[request release], request = nil;
@@ -137,7 +140,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 	request.deviceKey = deviceKey;
 	request.userKey = userKey;
 	
-	[binding AuthenticateDeviceAsyncUsingBody:request delegate:self]; 
+	[self.binding AuthenticateDeviceAsyncUsingBody:request delegate:self]; 
 	[[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
 	
 	[request release], request = nil;
@@ -149,7 +152,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
     
     request.authtoken = aToken;
     
-    [binding RenewTokenAsyncUsingBody:request delegate:self]; 
+    [self.binding RenewTokenAsyncUsingBody:request delegate:self]; 
     [[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
     
     [request release], request = nil;
@@ -164,7 +167,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		
 		request.authtoken = [SCHAuthenticationManager sharedAuthenticationManager].aToken;
 		
-		[binding GetUserProfilesAsyncUsingParameters:request delegate:self]; 
+		[self.binding GetUserProfilesAsyncUsingParameters:request delegate:self]; 
 		[[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
 		
 		[request release], request = nil;
@@ -192,7 +195,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		}	
 		[request.SaveProfileList release];
 		
-		[binding SaveUserProfilesAsyncUsingParameters:request delegate:self]; 
+		[self.binding SaveUserProfilesAsyncUsingParameters:request delegate:self]; 
 		[[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
 		
 		[request release], request = nil;
@@ -211,7 +214,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		
 		request.authtoken = [SCHAuthenticationManager sharedAuthenticationManager].aToken;
 		
-		[binding ListUserContentAsyncUsingBody:request delegate:self]; 
+		[self.binding ListUserContentAsyncUsingBody:request delegate:self]; 
 		[[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
 		
 		[request release], request = nil;	
@@ -230,7 +233,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		
 		request.authtoken = [SCHAuthenticationManager sharedAuthenticationManager].aToken;
 
-		[binding ListFavoriteTypesAsyncUsingParameters:request delegate:self]; 
+		[self.binding ListFavoriteTypesAsyncUsingParameters:request delegate:self]; 
 		[[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
 		
 		[request release], request = nil;	
@@ -259,7 +262,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		}
 		[request.TopFavoritesRequestList release];
 		
-		[binding ListTopFavoritesAsyncUsingParameters:request delegate:self]; 
+		[self.binding ListTopFavoritesAsyncUsingParameters:request delegate:self]; 
 		[[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
 		
 		[request release], request = nil;	
@@ -288,7 +291,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 			[item release], item = nil;
 		}
 		
-		[binding ListContentMetadataAsyncUsingBody:request delegate:self]; 
+		[self.binding ListContentMetadataAsyncUsingBody:request delegate:self]; 
 		[[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
 		
 		[request release], request = nil;
@@ -307,7 +310,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		
 		request.authtoken = [SCHAuthenticationManager sharedAuthenticationManager].aToken;
 		
-		[binding ListUserSettingsAsyncUsingParameters:request delegate:self]; 
+		[self.binding ListUserSettingsAsyncUsingParameters:request delegate:self]; 
 		[[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
 		
 		[request release], request = nil;	
@@ -335,7 +338,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		}
 		[request.UserSettingsList release];
 		
-		[binding SaveUserSettingsAsyncUsingParameters:request delegate:self]; 
+		[self.binding SaveUserSettingsAsyncUsingParameters:request delegate:self]; 
 		[[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
 		
 		[request release], request = nil;
@@ -369,7 +372,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		[request.AnnotationsRequestList.AnnotationsRequestItem release];
 		[request.AnnotationsRequestList release];
 		
-		[binding ListProfileContentAnnotationsAsyncUsingParameters:request delegate:self]; 
+		[self.binding ListProfileContentAnnotationsAsyncUsingParameters:request delegate:self]; 
 		[[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
 		
 		[request release], request = nil;
@@ -398,7 +401,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		}
 		[request.AnnotationsList release];
 		
-		[binding SaveProfileContentAnnotationsAsyncUsingParameters:request delegate:self]; 
+		[self.binding SaveProfileContentAnnotationsAsyncUsingParameters:request delegate:self]; 
 		[[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
 		
 		[request release], request = nil;		
@@ -426,7 +429,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		}
 		[request.ContentProfileAssignmentList release];
 		
-		[binding SaveContentProfileAssignmentAsyncUsingParameters:request delegate:self]; 
+		[self.binding SaveContentProfileAssignmentAsyncUsingParameters:request delegate:self]; 
 		[[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
 		
 		[request release], request = nil;	
@@ -454,7 +457,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		}
 		[request.ReadingStatsDetailList release];
 		
-		[binding SaveReadingStatisticsDetailedAsyncUsingParameters:request delegate:self]; 
+		[self.binding SaveReadingStatisticsDetailedAsyncUsingParameters:request delegate:self]; 
 		[[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
 		
 		[request release], request = nil;	
@@ -464,8 +467,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 	return(ret);										
 }
 
-#pragma mark -
-#pragma mark LibreAccessServiceSoap12BindingResponse Delegate methods
+#pragma mark - LibreAccessServiceSoap12BindingResponse Delegate methods
 
 - (void)operation:(LibreAccessServiceSoap11BindingOperation *)operation completedWithResponse:(LibreAccessServiceSoap11BindingResponse *)response
 {	
