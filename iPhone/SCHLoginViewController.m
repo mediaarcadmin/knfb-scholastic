@@ -9,9 +9,15 @@
 #import "SCHLoginViewController.h"
 
 #import "SCHAuthenticationManager.h"
-#import "SFHFKeychainUtils.h"
 #import "SCHSyncManager.h"
 #import "SCHURLManager.h"
+#import "SCHCustomToolbar.h"
+
+@interface SCHLoginViewController ()
+
+- (void)releaseViewObjects;
+
+@end
 
 @implementation SCHLoginViewController
 
@@ -22,11 +28,21 @@
 @synthesize spinner;
 @synthesize topBar;
 
+- (void)releaseViewObjects
+{
+	self.userName = nil;
+	self.password = nil;
+	self.loginButton = nil;
+	self.cancelButton = nil;
+	self.spinner = nil;
+    self.topBar = nil;
+}
+
 - (void)dealloc 
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	
-    [topBar release];
+    [self releaseViewObjects];    
     [super dealloc];
 }
 
@@ -34,10 +50,9 @@
 {
     // Return YES for supported orientations
     return (YES);
-//    return UIInterfaceOrientationIsPortrait(interfaceOrientation);
 }
 
-- (void) viewDidLoad
+- (void)viewDidLoad
 {
     [super viewDidLoad];
     
@@ -50,7 +65,8 @@
     
 }
 
-- (void)viewWillAppear:(BOOL)animated {
+- (void)viewWillAppear:(BOOL)animated 
+{
     [super viewWillAppear:animated];
     if (UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation])) {
         [topBar setBackgroundImage:[UIImage imageNamed:@"admin-iphone-landscape-top-toolbar.png"]];
@@ -76,8 +92,6 @@
         [topBar setBackgroundImage:[UIImage imageNamed:@"admin-iphone-portrait-top-toolbar.png"]];
     }
 }
-
-
 
 - (void)authenticationManager:(NSNotification *)notification
 {
@@ -178,25 +192,20 @@
 }
 */
 
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning 
+{
     // Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
     
     // Release any cached data, images, etc. that aren't in use.
 }
 
-- (void)viewDidUnload {
-    [self setTopBar:nil];
-    [self setTopBar:nil];
+- (void)viewDidUnload 
+{
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
-	self.userName = nil;
-	self.password = nil;
-	self.loginButton = nil;
-	self.cancelButton = nil;
-	self.spinner = nil;
+    [self releaseViewObjects];    
 }
-
 
 @end

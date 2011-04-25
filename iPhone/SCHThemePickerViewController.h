@@ -11,7 +11,6 @@
 
 @interface SCHThemePickerViewController : UIViewController <UITableViewDelegate, UITableViewDataSource> 
 {
-    
 }
 
 @property (nonatomic, retain) IBOutlet UITableView *tableView;

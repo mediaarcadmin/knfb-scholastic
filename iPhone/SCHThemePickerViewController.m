@@ -8,7 +8,6 @@
 
 #import "SCHThemePickerViewController.h"
 
-#import <QuartzCore/QuartzCore.h>
 #import "SCHThemeManager.h"
 #import "SCHThemeButton.h"
 #import "SCHThemeImageView.h"
@@ -36,8 +35,8 @@
 {
     [tableView release], tableView = nil;
     [shadowView release], shadowView = nil;
-    [cancelButton release], shadowView = nil;
-    [doneButton release], shadowView = nil;
+    [cancelButton release], cancelButton = nil;
+    [doneButton release], doneButton = nil;
 }
 
 - (void)dealloc 
@@ -95,7 +94,8 @@
     [self.shadowView setImage:[[UIImage imageNamed:@"bookshelf-iphone-top-shadow.png"] stretchableImageWithLeftCapWidth:15.0f topCapHeight:0]];
 }
 
-- (void)viewWillAppear:(BOOL)animated {
+- (void)viewWillAppear:(BOOL)animated 
+{
     [super viewWillAppear:animated];
     [(SCHCustomNavigationBar *)self.navigationController.navigationBar updateTheme];
 }

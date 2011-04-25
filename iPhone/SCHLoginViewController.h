@@ -7,11 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "SCHCustomToolbar.h"
 
-@interface SCHLoginViewController : UIViewController <UITextFieldDelegate> {
+@class SCHCustomToolbar;
 
-    SCHCustomToolbar *topBar;
+@interface SCHLoginViewController : UIViewController <UITextFieldDelegate> 
+{
 }
 
 @property (nonatomic, retain) IBOutlet UITextField *userName;
