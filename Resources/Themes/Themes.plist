@@ -57,14 +57,6 @@
 		<string>Blue/icon-theme</string>
 	</dict>
 	<dict>
-		<key>id</key>
-		<integer>3</integer>
-		<key>Image</key>
-		<string>Wizardry</string>
-		<key>Name</key>
-		<string>Wizardry</string>
-	</dict>
-	<dict>
 		<key>BackgroundImage</key>
 		<string>Goosebumps/background</string>
 		<key>BooksIcon</key>
@@ -89,30 +81,6 @@
 		<string>Goosebumps/table-view-cell</string>
 		<key>ThemeIcon</key>
 		<string>Goosebumps/icon-theme</string>
-	</dict>
-	<dict>
-		<key>id</key>
-		<integer>5</integer>
-		<key>Image</key>
-		<string>Clouds</string>
-		<key>Name</key>
-		<string>Clouds</string>
-	</dict>
-	<dict>
-		<key>id</key>
-		<integer>6</integer>
-		<key>Image</key>
-		<string>Calmness</string>
-		<key>Name</key>
-		<string>Calmness</string>
-	</dict>
-	<dict>
-		<key>id</key>
-		<string>7</string>
-		<key>Image</key>
-		<string>Dungeon Master</string>
-		<key>Name</key>
-		<string>Dungeon Master</string>
 	</dict>
 </array>
 </plist>
