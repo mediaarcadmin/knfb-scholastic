@@ -46,8 +46,7 @@ static SCHURLManager *sharedURLManager = nil;
 @synthesize libreAccessWebService;
 @synthesize requestCount;
 
-#pragma mark -
-#pragma mark Singleton Instance methods
+#pragma mark - Singleton Instance methods
 
 + (SCHURLManager *)sharedURLManager
 {
@@ -59,8 +58,7 @@ static SCHURLManager *sharedURLManager = nil;
     return(sharedURLManager);
 }
 
-#pragma mark -
-#pragma mark methods
+#pragma mark - methods
 
 - (id)init
 {
@@ -88,8 +86,9 @@ static SCHURLManager *sharedURLManager = nil;
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	
-	self.table = nil;
-	self.libreAccessWebService = nil;
+    [managedObjectContext release], managedObjectContext = nil;
+	[table release], table = nil;
+	[libreAccessWebService release], libreAccessWebService = nil;
 
 	[super dealloc];
 }
@@ -104,8 +103,7 @@ static SCHURLManager *sharedURLManager = nil;
     [self performSelectorOnMainThread:@selector(clearOnMainThread) withObject:nil waitUntilDone:NO];    
 }
 
-#pragma -
-#pragma Private methods
+#pragma - Private methods
 
 + (SCHURLManager *)sharedURLManagerOnMainThread
 {
@@ -177,8 +175,7 @@ static SCHURLManager *sharedURLManager = nil;
 	}
 }
 
-#pragma mark -
-#pragma mark BIT API Proxy Delegate methods
+#pragma mark - BIT API Proxy Delegate methods
 
 - (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result
 {	
@@ -220,8 +217,7 @@ static SCHURLManager *sharedURLManager = nil;
 	}		
 }
 
-#pragma mark -
-#pragma mark Authentication Manager Notification methods
+#pragma mark - Authentication Manager Notification methods
 
 - (void)authenticationManager:(NSNotification *)notification
 {

@@ -17,10 +17,9 @@ static NSString * const kSCHURLManagerFailure = @"URLManagerFailure";
 
 @interface SCHURLManager : NSObject <BITAPIProxyDelegate>
 {	
-
 }
 
-@property (retain) NSManagedObjectContext *managedObjectContext;
+@property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 
 + (SCHURLManager *)sharedURLManager;
 
