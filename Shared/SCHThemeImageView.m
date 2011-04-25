@@ -14,7 +14,7 @@
 
 - (void)updateTheme;
 
-@property (nonatomic, retain) NSString *imageKey;
+@property (nonatomic, copy) NSString *imageKey;
 
 @end
 
@@ -22,11 +22,16 @@
 
 @synthesize imageKey;
 
+#pragma mark - Object lifecycle
+
 - (void)dealloc 
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [imageKey release], imageKey = nil;
     [super dealloc];
 }
+
+#pragma - methods
 
 - (void)setTheme:(NSString *)newImageKey
 {
@@ -43,6 +48,8 @@
                                                    object:nil];                
     }
 }
+
+#pragma - Private methods
 
 - (void)updateTheme
 {

@@ -26,10 +26,9 @@ static NSString * const kSCHThemeManagerThemeIcon = @"ThemeIcon";
 
 @interface SCHThemeManager : NSObject 
 {
-    
 }
 
-@property (nonatomic, retain) NSString *theme;
+@property (nonatomic, copy) NSString *theme;
 
 + (SCHThemeManager *)sharedThemeManager;
 

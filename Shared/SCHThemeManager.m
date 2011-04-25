@@ -29,12 +29,11 @@ static NSString * const kSCHThemeManagerSelectedTheme = @"ThemeManagerSelectedTh
 
 @implementation SCHThemeManager
 
-@dynamic theme;
+@synthesize theme;
 @synthesize allThemes;
 @synthesize selectedTheme;
 
-#pragma mark -
-#pragma mark Singleton Instance methods
+#pragma mark - Singleton Instance methods
 
 + (SCHThemeManager *)sharedThemeManager
 {
@@ -45,22 +44,21 @@ static NSString * const kSCHThemeManagerSelectedTheme = @"ThemeManagerSelectedTh
     return(sharedThemeManager);
 }
 
-#pragma mark -
-#pragma mark methods
+#pragma mark - Object lifecycle
 
 - (id)init
 {
 	self = [super init];
 	if (self != nil) {
-        self.allThemes = [NSArray arrayWithContentsOfFile:
+        allThemes = [[NSArray arrayWithContentsOfFile:
                           [[NSBundle mainBundle] pathForResource:@"Themes" 
                                                           ofType:@"plist" 
-                                                     inDirectory:kSCHThemeManagerDirectory]];
+                                                     inDirectory:kSCHThemeManagerDirectory]] retain];
 
-        if ([self.allThemes count] > 0) {
+        if ([allThemes count] > 0) {
             NSInteger userSelectedTheme = [[NSUserDefaults standardUserDefaults] integerForKey:kSCHThemeManagerSelectedTheme];
             if (userSelectedTheme > 0) {
-                for (NSDictionary *dict in self.allThemes) {
+                for (NSDictionary *dict in allThemes) {
                     if ([[dict objectForKey:kSCHThemeManagerID] integerValue] == userSelectedTheme) {
                         self.selectedTheme = dict;
                         break;
@@ -69,10 +67,10 @@ static NSString * const kSCHThemeManagerSelectedTheme = @"ThemeManagerSelectedTh
             }
 
             // if we couldnt find a theme use the default
-            if (self.selectedTheme == nil) {
-                for (NSDictionary *dict in self.allThemes) {
+            if (selectedTheme == nil) {
+                for (NSDictionary *dict in allThemes) {
                     if ([[dict objectForKey:kSCHThemeManagerDefault] boolValue] == YES) {
-                        self.selectedTheme = dict;
+                        selectedTheme = dict;
                         break;
                     }
                 }            
@@ -88,11 +86,14 @@ static NSString * const kSCHThemeManagerSelectedTheme = @"ThemeManagerSelectedTh
 
 - (void)dealloc 
 {
-    self.allThemes = nil;
-    self.selectedTheme = nil;
+    [theme release], theme = nil;
+    [allThemes release], allThemes = nil;
+    [selectedTheme release], selectedTheme = nil;
     
     [super dealloc];
 }
+
+#pragma - Accessor methods
 
 - (void)setTheme:(NSString *)themeName
 {    
@@ -114,6 +115,8 @@ static NSString * const kSCHThemeManagerSelectedTheme = @"ThemeManagerSelectedTh
     return([self.selectedTheme objectForKey:kSCHThemeManagerName]);
 }
 
+#pragma - methods
+
 - (NSArray *)themeNames:(BOOL)excludeSelectedTheme
 {
     NSMutableArray *ret = [NSMutableArray array];
@@ -127,8 +130,7 @@ static NSString * const kSCHThemeManagerSelectedTheme = @"ThemeManagerSelectedTh
     return(ret);
 }
 
-#pragma mark -
-#pragma mark Image Accessors
+#pragma mark - Image Accessors
 
 - (UIImage *)imageForTheme:(NSString *)themeName key:(NSString *)key orientation:(UIInterfaceOrientation)orientation
 {
@@ -216,8 +218,7 @@ static NSString * const kSCHThemeManagerSelectedTheme = @"ThemeManagerSelectedTh
                                                                   orientation:orientation]]]);
 }
 
-#pragma mark -
-#pragma mark Private methods
+#pragma mark - Private methods
 
 - (NSString *)filePath:(NSString *)filePath orientation:(UIInterfaceOrientation)orientation
 {

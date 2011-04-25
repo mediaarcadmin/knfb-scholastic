@@ -14,11 +14,11 @@
 
 - (void)updateTheme;
 
-@property (nonatomic, retain) NSString *buttonKey;
-@property (nonatomic, retain) NSString *iconKey;
+@property (nonatomic, copy) NSString *buttonKey;
+@property (nonatomic, copy) NSString *iconKey;
 
-@property(nonatomic, assign) NSInteger leftCapWidth;
-@property(nonatomic, assign) NSInteger topCapHeight;
+@property (nonatomic, assign) NSInteger leftCapWidth;
+@property (nonatomic, assign) NSInteger topCapHeight;
 
 @end
 
@@ -29,11 +29,17 @@
 @synthesize leftCapWidth;
 @synthesize topCapHeight;
 
+#pragma mark - Object lifecycle
+
 - (void)dealloc 
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [buttonKey release], buttonKey = nil;
+    [iconKey release], iconKey = nil;
     [super dealloc];
 }
+
+#pragma - methods
 
 - (void)setThemeButton:(NSString *)newButtonKey leftCapWidth:(NSInteger)newLeftCapWidth 
           topCapHeight:(NSInteger)newTopCapHeight
@@ -81,6 +87,8 @@
                                                    object:nil];         
     }
 }
+
+#pragma - Private methods
 
 - (void)updateTheme
 {

@@ -9,8 +9,8 @@
 #import <Foundation/Foundation.h>
 
 
-@interface SCHThemeButton : UIButton {
-    
+@interface SCHThemeButton : UIButton 
+{    
 }
 
 - (void)setThemeButton:(NSString *)newButtonKey leftCapWidth:(NSInteger)newLeftCapWidth 

@@ -9,8 +9,8 @@
 #import <Foundation/Foundation.h>
 
 
-@interface SCHThemeImageView : UIImageView {
-    
+@interface SCHThemeImageView : UIImageView 
+{    
 }
 
 - (void)setTheme:(NSString *)newImageKey;
