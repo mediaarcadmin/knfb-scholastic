@@ -16,22 +16,24 @@
 
 @implementation SCHNonDRMAuthenticationManager
 
+#pragma - methods
+
 - (void)authenticateOnMainThread
 {    
     NSString *storedUsername = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUsername];
     NSString *storedPassword = [SFHFKeychainUtils getPasswordForUsername:storedUsername andServiceName:kSCHAuthenticationManagerServiceName error:nil];
     
-    if (waitingOnResponse == NO) {
+    if (self.waitingOnResponse == NO) {
         if ([[Reachability reachabilityForInternetConnection] isReachable] == YES) {
             if (storedUsername != nil &&
                 [[storedUsername stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0 &&
                 storedPassword != nil &&
                 [[storedPassword stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {
-                [aToken release], aToken = nil;
-                [tokenExpires release], tokenExpires = nil;
+                self.aToken = nil;
+                self.tokenExpires = nil;
 
-                [scholasticWebService authenticateUserName:storedUsername withPassword:storedPassword];
-                waitingOnResponse = YES;         
+                [self.scholasticWebService authenticateUserName:storedUsername withPassword:storedPassword];
+                self.waitingOnResponse = YES;         
             } else {
                 NSError *error = [NSError errorWithDomain:kSCHAuthenticationManagerErrorDomain 
                                                      code:kSCHAuthenticationManagerLoginError 
@@ -54,22 +56,21 @@
     }
 }
 
-#pragma mark -
-#pragma mark BITAPIProxy Delegate methods
+#pragma mark - BITAPIProxy Delegate methods
 
 - (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result
 {
 	if([method compare:kSCHScholasticWebServiceProcessRemote] == NSOrderedSame) {	
-		[libreAccessWebService tokenExchange:[result objectForKey:kSCHScholasticWebServicePToken] 
+		[self.libreAccessWebService tokenExchange:[result objectForKey:kSCHScholasticWebServicePToken] 
                                      forUser:[[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUsername]];
 	} else if([method compare:kSCHLibreAccessWebServiceTokenExchange] == NSOrderedSame) {	
-		[aToken release], aToken = nil;            
-        [tokenExpires release], tokenExpires = nil;
+        self.aToken = nil;
+        self.tokenExpires = nil;        
         
-        aToken = [[result objectForKey:kSCHLibreAccessWebServiceAuthToken] retain];
+        self.aToken = [result objectForKey:kSCHLibreAccessWebServiceAuthToken];
 		NSInteger expiresIn = MAX(0, [[result objectForKey:kSCHLibreAccessWebServiceExpiresIn] integerValue] - 1);
-		tokenExpires = [[NSDate dateWithTimeIntervalSinceNow:expiresIn * kSCHAuthenticationManagerSecondsInAMinute] retain];
-		waitingOnResponse = NO;
+		self.tokenExpires = [NSDate dateWithTimeIntervalSinceNow:expiresIn * kSCHAuthenticationManagerSecondsInAMinute];
+		self.waitingOnResponse = NO;
 		[self postSuccessWithOfflineMode:NO];
 	}
 }
@@ -77,7 +78,7 @@
 - (void)method:(NSString *)method didFailWithError:(NSError *)error
 {
     NSLog(@"AuthenticationManager:%@ %@", method, [error description]);
-	waitingOnResponse = NO;
+	self.waitingOnResponse = NO;
 	[self postFailureWithError:error];
 }
 

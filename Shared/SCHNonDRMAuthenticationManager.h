@@ -1,5 +1,5 @@
 //
-//  SCHOldAuthenticationManager.h
+//  SCHNonDRMAuthenticationManager.h
 //  Scholastic
 //
 //  Created by Gordon Christie on 06/04/2011.
@@ -8,6 +8,8 @@
 
 #import "SCHAuthenticationManager.h"
 
-@interface SCHNonDRMAuthenticationManager : SCHAuthenticationManager {}
+@interface SCHNonDRMAuthenticationManager : SCHAuthenticationManager 
+{
+}
 
 @end

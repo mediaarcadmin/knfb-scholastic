@@ -11,10 +11,6 @@
 #import "BITAPIProxyDelegate.h"
 #import "SCHDrmRegistrationSessionDelegate.h"
 
-@class SCHScholasticWebService;
-@class SCHLibreAccessWebService;
-@class SCHDrmRegistrationSession;
-
 static NSString * const kSCHAuthenticationManagerSuccess = @"AuthenticationManagerSuccess";
 static NSString * const kSCHAuthenticationManagerFailure = @"AuthenticationManagerFailure";
 static NSString * const kSCHAuthenticationManagerAToken = @"aToken";
@@ -25,18 +21,12 @@ static NSString * const kSCHAuthenticationManagerErrorDomain = @"AuthenticationM
 static NSInteger const kSCHAuthenticationManagerGeneralError = 2000;
 static NSInteger const kSCHAuthenticationManagerLoginError = 2001;
 
-@interface SCHAuthenticationManager : NSObject <BITAPIProxyDelegate, SCHDrmRegistrationSessionDelegate>  {
-    NSString *aToken;
-    NSDate *tokenExpires;
-	BOOL waitingOnResponse;
-    
-	SCHScholasticWebService *scholasticWebService;
-	SCHLibreAccessWebService *libreAccessWebService;
-    SCHDrmRegistrationSession *drmRegistrationSession;
+@interface SCHAuthenticationManager : NSObject <BITAPIProxyDelegate, SCHDrmRegistrationSessionDelegate>  
+{
 }
 
-@property (readonly) NSString *aToken;
-@property (readonly) BOOL isAuthenticated;
+@property (nonatomic, copy, readonly) NSString *aToken;
+@property (nonatomic, assign, readonly) BOOL isAuthenticated;
 
 + (SCHAuthenticationManager *)sharedAuthenticationManager;
 
