@@ -17,8 +17,8 @@ static NSString * const kSCHScholasticWebServiceProcessRemote = @"processRemote"
 static NSString * const kSCHScholasticWebServicePToken = @"pToken";
 
 
-@interface SCHScholasticWebService : BITSOAPProxy <AuthenticateSoap11BindingResponseDelegate> {
-	AuthenticateSoap11Binding *binding;
+@interface SCHScholasticWebService : BITSOAPProxy <AuthenticateSoap11BindingResponseDelegate> 
+{
 }
 
 - (void)authenticateUserName:(NSString *)userName withPassword:(NSString *)password;

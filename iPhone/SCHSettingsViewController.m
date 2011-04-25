@@ -57,6 +57,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
 - (void)viewDidUnload 
 {
+    [super viewDidUnload];
     [self releaseViewObjects];
 }
 

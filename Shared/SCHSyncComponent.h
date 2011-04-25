@@ -14,7 +14,6 @@
 
 @interface SCHSyncComponent : SCHComponent
 {
-
 }
 
 @property (assign, nonatomic) BOOL isSynchronizing;

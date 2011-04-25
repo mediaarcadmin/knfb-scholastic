@@ -26,6 +26,8 @@ static NSString * const kSCHScholasticWebServiceAttributeErrorDesc = @"errorDesc
 
 @interface SCHScholasticWebService ()
 
+@property (nonatomic, retain) AuthenticateSoap11Binding *binding;
+
 - (NSString *)parseToken:(NSString *)responseXML error:(NSError **)error;
 
 @end
@@ -33,8 +35,9 @@ static NSString * const kSCHScholasticWebServiceAttributeErrorDesc = @"errorDesc
 
 @implementation SCHScholasticWebService
 
-#pragma mark -
-#pragma mark Memory management
+@synthesize binding;
+
+#pragma mark - Object lifecycle
 
 - (id)init
 {
@@ -54,8 +57,7 @@ static NSString * const kSCHScholasticWebServiceAttributeErrorDesc = @"errorDesc
 	[super dealloc];
 }
 
-#pragma mark -
-#pragma mark API Proxy methods
+#pragma mark - API Proxy methods
 
 - (void)authenticateUserName:(NSString *)userName withPassword:(NSString *)password
 {	
@@ -63,14 +65,13 @@ static NSString * const kSCHScholasticWebServiceAttributeErrorDesc = @"errorDesc
 	
 	request.SPSWSXML = [NSString stringWithFormat:@"<SchWS><attribute name=\"clientID\" value=\"KNFB\"/><attribute name=\"isSingleToken\" value=\"true\"/><attribute name=\"userName\" value=\"%@\"/><attribute name=\"password\" value=\"%@\"/></SchWS>", (userName == nil ? @"" : userName), (password == nil ? @"" : password)];
 	
-	[binding processRemoteAsyncUsingParameters:request delegate:self]; 
+	[self.binding processRemoteAsyncUsingParameters:request delegate:self]; 
 	[[BITNetworkActivityManager sharedNetworkActivityManager] showNetworkActivityIndicator];
 	
 	[request release], request = nil;
 }
 
-#pragma mark -
-#pragma mark AuthenticateSoap12BindingResponse Delegate methods
+#pragma mark - AuthenticateSoap12BindingResponse Delegate methods
 
 - (void)operation:(AuthenticateSoap11BindingOperation *)operation completedWithResponse:(AuthenticateSoap11BindingResponse *)response
 {	
