@@ -59,15 +59,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 -(void)cancelInitialTimer;
 -(void)adjustScrubberInfoViewHeightForImageSize: (CGSize) imageSize;
 
--(IBAction)storyInteractionAction: (id) sender;
--(IBAction)notesAction: (id) sender;
--(IBAction)settingsAction: (id) sender;
--(IBAction)nextSmartZoom:(id)sender;
--(IBAction)prevSmartZoom:(id)sender;
--(IBAction)popViewController:(id)sender;
--(IBAction)magnifyAction:(id)sender;
--(IBAction)audioPlayAction:(id)sender;
-
 -(void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation;
 
 

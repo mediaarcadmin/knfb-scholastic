@@ -21,6 +21,7 @@
 @property (nonatomic) BOOL flowView;
 @property (readwrite) BOOL youngerMode;
 
+// interface builder
 @property (nonatomic, retain) IBOutlet UILabel *titleLabel;
 @property (nonatomic, retain) IBOutlet UIView *leftBarButtonItemContainer;
 @property (nonatomic, retain) IBOutlet UIView *youngerRightBarButtonItemContainer;
@@ -43,7 +44,17 @@
 @property (nonatomic, retain) IBOutlet UISegmentedControl *fontSegmentedControl;
 @property (nonatomic, retain) IBOutlet UISegmentedControl *paperTypeSegmentedControl;
 
-
 -(id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil isbn:(NSString *)aIsbn;
+
+// interface builder
+-(IBAction)storyInteractionAction: (id) sender;
+-(IBAction)notesAction: (id) sender;
+-(IBAction)settingsAction: (id) sender;
+-(IBAction)nextSmartZoom:(id)sender;
+-(IBAction)prevSmartZoom:(id)sender;
+-(IBAction)popViewController:(id)sender;
+-(IBAction)magnifyAction:(id)sender;
+-(IBAction)audioPlayAction:(id)sender;
+
 
 @end
