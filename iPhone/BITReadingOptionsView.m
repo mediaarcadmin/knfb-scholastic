@@ -7,22 +7,31 @@
 //
 
 #import "BITReadingOptionsView.h"
+
 #import <QuartzCore/QuartzCore.h>
 #import "LibreAccessServiceSvc.h"
-//#import "SCHReadingViewController.h"
 #import "SCHThemeManager.h"
 #import "SCHThemeButton.h"
-#import "SCHContentProfileItem.h"
 #import "SCHCustomNavigationBar.h"
+#import "SCHReadingViewController.h"
+#import "SCHProfileItem.h"
 
 @interface BITReadingOptionsView ()
 
 - (void)updateFavoriteDisplay;
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation;
+- (void)releaseViewObjects;
 
 @end
 
 @implementation BITReadingOptionsView
+
+@synthesize coverImageView;
+@synthesize bookCoverView;
+@synthesize optionsView;
+
+@synthesize initialFadeTimer;	
+
 @synthesize pageViewController;
 @synthesize isbn;
 @synthesize thumbnailImage;
@@ -30,18 +39,40 @@
 @synthesize favouriteButton;
 @synthesize shadowView;
 
-- (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation
+#pragma mark - Object lifecycle
+
+- (void)releaseViewObjects
 {
-    [(SCHCustomNavigationBar *)self.navigationController.navigationBar updateTheme:orientation];
-    [self.view.layer setContents:(id)[[SCHThemeManager sharedThemeManager] imageForBackground:orientation].CGImage];
+    [coverImageView release], coverImageView = nil;
+    [bookCoverView release], bookCoverView = nil;
+    [optionsView release], optionsView = nil;
+
+    [self cancelInitialTimer];
+    
+    [favouriteButton release], favouriteButton = nil;
+    [shadowView release], shadowView = nil;
 }
 
-// Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
-- (void)viewDidLoad {
+- (void)dealloc 
+{        
+    [pageViewController release], pageViewController = nil;
+    [isbn release], isbn = nil;
+    [thumbnailImage release], thumbnailImage = nil;
+    [profileItem release], profileItem = nil;
+    
+    [self releaseViewObjects];
+    [super dealloc];
+}
+
+#pragma mark - View lifecycle
+
+- (void)viewDidLoad 
+{
     [super viewDidLoad];
-	optionsView.layer.cornerRadius = 5.0f;
-	optionsView.layer.masksToBounds = YES;
-    [optionsView setAlpha:0];
+    
+	self.optionsView.layer.cornerRadius = 5.0f;
+	self.optionsView.layer.masksToBounds = YES;
+    [self.optionsView setAlpha:0];
     
     self.favouriteButton.titleLabel.textAlignment = UITextAlignmentCenter;
     [self updateFavoriteDisplay];
@@ -56,29 +87,18 @@
     [self.shadowView setImage:[[UIImage imageNamed:@"bookshelf-iphone-top-shadow.png"] stretchableImageWithLeftCapWidth:15.0f topCapHeight:0]];
 }
 
-
-- (void) viewDidAppear:(BOOL)animated
+- (void)viewDidUnload 
 {
-	initialFadeTimer = [NSTimer scheduledTimerWithTimeInterval:1.0f
-														target:self
-													  selector:@selector(tapBookCover:)
-													  userInfo:nil
-													   repeats:NO];
-}	
-
-// Override to allow orientations other than the default portrait orientation.
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    // Return YES for supported orientations.
-    return (YES);
+    [super viewDidUnload];
+    [self releaseViewObjects];
 }
 
-
-- (void) viewWillAppear:(BOOL)animated
+- (void)viewWillAppear:(BOOL)animated
 {
 	[super viewWillAppear:animated];
 	
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque];	
-
+    
 	if (self.thumbnailImage) {
 		[coverImageView setImage:self.thumbnailImage];
 	}
@@ -86,14 +106,38 @@
     [self setupAssetsForOrientation:self.interfaceOrientation];
 }
 
-- (void) willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+- (void)viewDidAppear:(BOOL)animated
 {
-    [self setupAssetsForOrientation:self.interfaceOrientation];
+    [super viewDidAppear:animated];
+	self.initialFadeTimer = [NSTimer scheduledTimerWithTimeInterval:1.0f
+														target:self
+													  selector:@selector(tapBookCover:)
+													  userInfo:nil
+													   repeats:NO];
+}	
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    [self cancelInitialTimer];
 }
 
-- (void)back
+#pragma mark - Orientation methods
+
+- (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation
 {
-    [self.navigationController popViewControllerAnimated:YES];
+    [(SCHCustomNavigationBar *)self.navigationController.navigationBar updateTheme:orientation];
+    [self.view.layer setContents:(id)[[SCHThemeManager sharedThemeManager] imageForBackground:orientation].CGImage];
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation 
+{
+    return(YES);
+}
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    [self setupAssetsForOrientation:self.interfaceOrientation];
 }
 
 #pragma mark - Accessor methods
@@ -120,9 +164,13 @@
 
 #pragma mark - Action methods
 
-- (IBAction) showFlowView: (id) sender
+- (IBAction)back
 {
-    
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (IBAction)showFlowView:(id)sender
+{
     SCHReadingViewController *readingController = [[SCHReadingViewController alloc] initWithNibName:nil bundle:nil isbn:self.isbn];
     readingController.flowView = YES;
     
@@ -141,10 +189,10 @@
     }
 
     [self.navigationController pushViewController:readingController animated:YES];
-    [readingController release];
+    [readingController release], readingController = nil;
 }
 
-- (IBAction) showFixedView: (id) sender
+- (IBAction)showFixedView:(id)sender
 {
     SCHReadingViewController *readingController = [[SCHReadingViewController alloc] initWithNibName:nil bundle:nil isbn:self.isbn];
     readingController.flowView = NO;
@@ -164,10 +212,10 @@
     }
 
     [self.navigationController pushViewController:readingController animated:YES];
-    [readingController release];
+    [readingController release], readingController = nil;
 }
 
-- (IBAction) tapBookCover: (id) sender
+- (IBAction)tapBookCover:(id)sender
 {
 	[UIView beginAnimations:@"coverHide" context:nil];
 	[UIView setAnimationDuration:0.15f];
@@ -187,59 +235,33 @@
     [self updateFavoriteDisplay];    
 }
 
-- (void) cancelInitialTimer
+#pragma mark - Private methods
+
+- (void)cancelInitialTimer
 {
-	if (initialFadeTimer && [initialFadeTimer isValid]) {
-		[initialFadeTimer invalidate];
-		initialFadeTimer = nil;
+	if (self.initialFadeTimer && [self.initialFadeTimer isValid]) {
+		[self.initialFadeTimer invalidate];
+		self.initialFadeTimer = nil;
 	}
 }	
-
-#pragma mark - Private methods
 
 - (void)updateFavoriteDisplay
 {
     if (self.profileItem == nil) {
-        [favouriteButton setTitle:@"" forState:UIControlStateNormal]; 
-        favouriteButton.hidden = YES;
+        [self.favouriteButton setTitle:@"" forState:UIControlStateNormal]; 
+        self.favouriteButton.hidden = YES;
     } else {
         BOOL favorite = [self.profileItem contentIdentifierFavorite:self.isbn];
-        favouriteButton.tag = favorite;        
-        favouriteButton.hidden = NO;
+        self.favouriteButton.tag = favorite;        
+        self.favouriteButton.hidden = NO;
         if (favorite == NO) {
-            [favouriteButton setTitle:NSLocalizedString(@"Add to Favorites", @"") 
+            [self.favouriteButton setTitle:NSLocalizedString(@"Add to Favorites", @"") 
                              forState:UIControlStateNormal];
         } else {
-            [favouriteButton setTitle:NSLocalizedString(@"Remove from Favorites", @"") 
+            [self.favouriteButton setTitle:NSLocalizedString(@"Remove from Favorites", @"") 
                              forState:UIControlStateNormal];            
         }
     }
 }
-
-- (void)didReceiveMemoryWarning {
-    // Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
-    
-    // Release any cached data, images, etc. that aren't in use.
-}
-
-- (void)viewDidUnload {
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
-    self.favouriteButton = nil;
-}
-
-
-- (void)dealloc {
-    self.pageViewController = nil;
-    self.isbn = nil;
-    self.thumbnailImage = nil;
-    self.profileItem = nil;
-    self.favouriteButton = nil;
-    
-    [super dealloc];
-}
-
 
 @end

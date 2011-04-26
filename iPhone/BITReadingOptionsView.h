@@ -7,20 +7,19 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "SCHReadingViewController.h"
-#import "SCHProfileItem.h"
 
-@interface BITReadingOptionsView : UIViewController {
+@class SCHReadingViewController;
+@class SCHProfileItem;
 
-	IBOutlet UIImageView *coverImageView;
-	IBOutlet UIView *bookCoverView;
-	IBOutlet UIView *optionsView;
-//	IBOutlet UILabel *titleLabel;
-//	IBOutlet UILabel *authorLabel;
-	
-	NSTimer *initialFadeTimer;
-	
+@interface BITReadingOptionsView : UIViewController 
+{
 }
+
+@property (nonatomic, retain) IBOutlet UIImageView *coverImageView;
+@property (nonatomic, retain) IBOutlet UIView *bookCoverView;
+@property (nonatomic, retain) IBOutlet UIView *optionsView;
+
+@property (nonatomic, retain) NSTimer *initialFadeTimer;	
 
 @property (nonatomic, retain) SCHReadingViewController *pageViewController;
 @property (nonatomic, retain) NSString *isbn;
@@ -29,10 +28,10 @@
 @property (nonatomic, retain) IBOutlet UIButton *favouriteButton;
 @property (nonatomic, retain) IBOutlet UIImageView *shadowView;
 
-- (IBAction) showFlowView: (id) sender;
-- (IBAction) showFixedView: (id) sender;
-- (IBAction) tapBookCover: (id) sender;
+- (IBAction)showFlowView:(id)sender;
+- (IBAction)showFixedView:(id)sender;
+- (IBAction)tapBookCover:(id)sender;
 - (IBAction)toggleFavorite:(id)sender;
-- (void) cancelInitialTimer;
+- (void)cancelInitialTimer;
 
 @end
