@@ -35,7 +35,7 @@
     [super dealloc];
 }
 
-#pragma - Drawing routines
+#pragma mark - Drawing routines
 
 - (void)layoutSubviews
 {
@@ -48,7 +48,7 @@
     // Do nothing so that the default bar isn't shown during rotation
 }
 
-#pragma - Accessor methods
+#pragma mark - Accessor methods
 
 - (void)setBackgroundImage:(UIImage*)image
 {  
@@ -87,7 +87,7 @@
     }
 }
 
-#pragma Protected methods
+#pragma mark - Protected methods
 
 - (void)updateTheme
 {

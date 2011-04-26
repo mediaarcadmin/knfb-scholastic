@@ -42,8 +42,7 @@ static NSString * const kSCHContentMetadataItemAnnotationsListProfileID = @"Anno
 	return(annotations);	
 }
 
-#pragma -
-#pragma Core Data Generated Accessors
+#pragma mark - Core Data Generated Accessors
 
 - (void)addEReaderCategoriesObject:(SCHeReaderCategories *)value {    
     NSSet *changedObjects = [[NSSet alloc] initWithObjects:&value count:1];

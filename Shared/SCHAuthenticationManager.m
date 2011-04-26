@@ -99,7 +99,7 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
     [super dealloc];
 }
 
-#pragma - methods
+#pragma mark - methods
 
 - (void)authenticateWithUserName:(NSString *)username withPassword:(NSString *)password
 {
@@ -141,7 +141,7 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
                         waitUntilDone:NO];
 }
 
-#pragma - Accessor methods
+#pragma mark - Accessor methods
 
 - (NSString *)aToken
 {
@@ -160,7 +160,7 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
            [[self.aToken stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0);
 }
 
-#pragma - Private methods
+#pragma mark - Private methods
 
 + (SCHAuthenticationManager *)sharedAuthenticationManagerOnMainThread
 {

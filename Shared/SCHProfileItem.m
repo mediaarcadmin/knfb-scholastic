@@ -50,6 +50,8 @@ static NSString * const kSCHProfileItemUserContentItemContentMetadataItem = @"Us
 @dynamic LastName;
 @dynamic AppBookOrder;
 
+#pragma mark - Object lifecycle
+
 - (void)awakeFromInsert
 {
 	[super awakeFromInsert];
@@ -67,6 +69,8 @@ static NSString * const kSCHProfileItemUserContentItemContentMetadataItem = @"Us
     [super willTurnIntoFault];
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
+
+#pragma mark - methods
 
 - (NSMutableArray *)allISBNs
 {
@@ -135,8 +139,7 @@ static NSString * const kSCHProfileItemUserContentItemContentMetadataItem = @"Us
     }
 }
 
-#pragma -
-#pragma Accessor methods
+#pragma mark - Accessor methods
 
 - (void)setRawPassword:(NSString *)value 
 {
@@ -161,8 +164,7 @@ static NSString * const kSCHProfileItemUserContentItemContentMetadataItem = @"Us
 	}
 }
 
-#pragma -
-#pragma Accessor delegated methods
+#pragma mark - Accessor delegated methods
 
 - (BOOL)contentIdentifierFavorite:(NSString *)contentIdentifier
 {
@@ -209,8 +211,7 @@ static NSString * const kSCHProfileItemUserContentItemContentMetadataItem = @"Us
     return(ret);
 }
 
-#pragma -
-#pragma Encryption methods
+#pragma mark - Encryption methods
 
 - (NSString *)MD5:(NSString *)string
 {

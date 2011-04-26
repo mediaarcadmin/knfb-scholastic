@@ -29,7 +29,7 @@
     [super dealloc];
 }
 
-#pragma - Drawing methods
+#pragma mark - Drawing methods
 
 // If we have a custom background image, then draw it, othwerwise call super and draw the standard nav bar
 - (void)drawRect:(CGRect)rect

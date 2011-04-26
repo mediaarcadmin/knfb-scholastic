@@ -60,7 +60,7 @@ static const CGFloat kProfileViewCellButtonWidth = 283.0f;
     [super dealloc];
 }
 
-#pragma - Action methods
+#pragma mark - Action methods
 
 - (void)pressed:(id)sender
 {

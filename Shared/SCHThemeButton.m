@@ -39,7 +39,7 @@
     [super dealloc];
 }
 
-#pragma - methods
+#pragma mark - methods
 
 - (void)setThemeButton:(NSString *)newButtonKey leftCapWidth:(NSInteger)newLeftCapWidth 
           topCapHeight:(NSInteger)newTopCapHeight
@@ -88,7 +88,7 @@
     }
 }
 
-#pragma - Private methods
+#pragma mark - Private methods
 
 - (void)updateTheme
 {

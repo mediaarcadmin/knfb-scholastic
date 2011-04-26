@@ -74,24 +74,24 @@ static NSString * const kSCHAppBookEucalyptusCacheDir = @"libEucalyptusCache";
 @property (readonly) NSString * FileName;
 
 
-- (SCHBookCurrentProcessingState) processingState;
-- (NSString *) processingStateAsString;
-- (BOOL) isProcessing;
-- (void) setProcessing:(BOOL)value;
+- (SCHBookCurrentProcessingState)processingState;
+- (NSString *)processingStateAsString;
+- (BOOL)isProcessing;
+- (void)setProcessing:(BOOL)value;
 
 // the path to the XPS file within the system - by default, in the cache directory
-- (NSString *) xpsPath;
-- (NSString *) coverImagePath;
-- (NSString *) thumbPathForSize: (CGSize) size;
-- (NSString *) cacheDirectory;
-- (NSString *) libEucalyptusCache;
+- (NSString *)xpsPath;
+- (NSString *)coverImagePath;
+- (NSString *)thumbPathForSize:(CGSize)size;
+- (NSString *)cacheDirectory;
+- (NSString *)libEucalyptusCache;
 
 + (NSString *)rootCacheDirectory;
 
-- (float) currentDownloadedPercentage;
-- (BOOL) haveURLs;
-- (BOOL) canOpenBook;
-- (CGSize) bookCoverImageSize;
+- (float)currentDownloadedPercentage;
+- (BOOL)haveURLs;
+- (BOOL)canOpenBook;
+- (CGSize)bookCoverImageSize;
 
 @end
 

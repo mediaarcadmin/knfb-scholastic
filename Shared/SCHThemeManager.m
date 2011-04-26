@@ -93,7 +93,7 @@ static NSString * const kSCHThemeManagerSelectedTheme = @"ThemeManagerSelectedTh
     [super dealloc];
 }
 
-#pragma - Accessor methods
+#pragma mark - Accessor methods
 
 - (void)setTheme:(NSString *)themeName
 {    
@@ -115,7 +115,7 @@ static NSString * const kSCHThemeManagerSelectedTheme = @"ThemeManagerSelectedTh
     return([self.selectedTheme objectForKey:kSCHThemeManagerName]);
 }
 
-#pragma - methods
+#pragma mark - methods
 
 - (NSArray *)themeNames:(BOOL)excludeSelectedTheme
 {

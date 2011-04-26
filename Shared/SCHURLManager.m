@@ -103,7 +103,7 @@ static SCHURLManager *sharedURLManager = nil;
     [self performSelectorOnMainThread:@selector(clearOnMainThread) withObject:nil waitUntilDone:NO];    
 }
 
-#pragma - Private methods
+#pragma mark - Private methods
 
 + (SCHURLManager *)sharedURLManagerOnMainThread
 {

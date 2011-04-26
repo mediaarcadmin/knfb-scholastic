@@ -96,8 +96,7 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-#pragma -
-#pragma Accessor methods
+#pragma mark - Accessor methods
 
 - (void)setProfileItem:(SCHProfileItem *)newProfileItem
 {
@@ -119,8 +118,7 @@
     }
 }
 
-#pragma -
-#pragma Action methods
+#pragma mark - Action methods
 
 - (IBAction) showFlowView: (id) sender
 {
@@ -197,8 +195,7 @@
 	}
 }	
 
-#pragma -
-#pragma Private methods
+#pragma mark - Private methods
 
 - (void)updateFavoriteDisplay
 {

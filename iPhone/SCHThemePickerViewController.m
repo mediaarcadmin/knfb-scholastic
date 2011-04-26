@@ -131,7 +131,7 @@ static NSTimeInterval const kSCHThemePickerViewControllerThemeTransitionAlpha = 
     }
 }
 
-#pragma - Private Methods
+#pragma mark - Private Methods
 
 - (void)previewTheme:(NSString *)themeName
 {
@@ -169,7 +169,7 @@ static NSTimeInterval const kSCHThemePickerViewControllerThemeTransitionAlpha = 
                      }];    
 }
 
-#pragma - Action Methods
+#pragma mark - Action Methods
 
 - (IBAction)done
 {

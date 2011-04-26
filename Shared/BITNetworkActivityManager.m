@@ -29,8 +29,7 @@ static BITNetworkActivityManager *sharedNetworkActivityManager = nil;
 
 @synthesize count;
 
-#pragma mark -
-#pragma mark Singleton Instance methods
+#pragma mark - Singleton Instance methods
 
 + (BITNetworkActivityManager *)sharedNetworkActivityManager
 {
@@ -42,8 +41,7 @@ static BITNetworkActivityManager *sharedNetworkActivityManager = nil;
     return(sharedNetworkActivityManager);
 }
 
-#pragma mark -
-#pragma mark methods
+#pragma mark - methods
 
 - (id)init
 {
@@ -64,8 +62,7 @@ static BITNetworkActivityManager *sharedNetworkActivityManager = nil;
     [self performSelectorOnMainThread:@selector(hideNetworkActivityIndicatorOnMainThread) withObject:nil waitUntilDone:NO];    
 }
 
-#pragma -
-#pragma Private methods
+#pragma mark - Private methods
 
 + (BITNetworkActivityManager *)sharedNetworkActivityManagerOnMainThread
 {

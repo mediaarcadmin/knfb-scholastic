@@ -186,7 +186,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
     [self setupAssetsForOrientation:toInterfaceOrientation];
 }
 
-#pragma - Private methods
+#pragma mark - Private methods
 
 - (void)updateTheme
 {
@@ -198,7 +198,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 	[self presentModalViewController:self.themePickerContainer animated:YES];		
 }
 
-#pragma - Action methods
+#pragma mark - Action methods
 
 - (IBAction)back
 {
@@ -241,7 +241,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
     [self setEditing:NO animated:YES];
 }
 
-#pragma - Accessor Methods
+#pragma mark - Accessor Methods
 
 - (void)setProfileItem:(SCHProfileItem *)newProfileItem
 {

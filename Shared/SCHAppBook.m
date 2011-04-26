@@ -30,52 +30,49 @@
 @dynamic BookCoverWidth;
 @dynamic BookCoverHeight;
 
-#pragma mark -
-#pragma mark Convenience Methods
+#pragma mark - Convenience Methods
 
-#pragma mark Content Metadata
-
-- (NSString *) ContentIdentifier
+- (NSString *)ContentIdentifier
 {
 	return self.ContentMetadataItem.ContentIdentifier;
 }
 
-- (NSString *) Author
+- (NSString *)Author
 {
 	return self.ContentMetadataItem.Author;
 }
 
-- (NSString *) Description
+- (NSString *)Description
 {
 	return self.ContentMetadataItem.Description;
 }
 
-- (NSString *) Version
+- (NSString *)Version
 {
 	return self.ContentMetadataItem.Version;
 }
 
-- (BOOL) Enhanced
+- (BOOL)Enhanced
 {
 	return [self.ContentMetadataItem.Enhanced boolValue];
 }
 
-- (NSString *) Title
+- (NSString *)Title
 {
 	return self.ContentMetadataItem.Title;
 }
 
-- (NSNumber *) FileSize
+- (NSNumber *)FileSize
 {
 	return self.ContentMetadataItem.FileSize;
 }
 
-- (int) PageNumber
+- (int)PageNumber
 {
 	return [self.ContentMetadataItem.PageNumber intValue];
 }
 
-- (NSString *) FileName
+- (NSString *)FileName
 {
 	return self.ContentMetadataItem.FileName;
 }
@@ -90,18 +87,17 @@
 	return (SCHBookCurrentProcessingState) [self.State intValue];
 }
 
-- (BOOL) isProcessing
+- (BOOL)isProcessing
 {
 	return [[SCHProcessingManager sharedProcessingManager] ISBNisProcessing:self.ContentIdentifier];
 }
 
-- (void) setProcessing: (BOOL) value
+- (void)setProcessing:(BOOL)value
 {
 	[[SCHProcessingManager sharedProcessingManager] setProcessing:value forISBN:self.ContentIdentifier];
 }
 
-#pragma mark -
-#pragma mark Cache Directory for Current Book
+#pragma mark - Cache Directory for Current Book
 
 + (NSString *)rootCacheDirectory 
 {
@@ -125,12 +121,12 @@
         }
     }
     
-    [localFileManager release];
+    [localFileManager release], localFileManager = nil;
     
     return bookCacheDirectory;
 }
 
-- (NSString *) libEucalyptusCache
+- (NSString *)libEucalyptusCache
 {
     NSString *cacheDir = [self cacheDirectory];
     NSString *libEucalyptusCacheDirectory = [cacheDir stringByAppendingPathComponent:@"libEucalyptusCache"];
@@ -147,29 +143,25 @@
         }
     }
     
-    [localFileManager release];
+    [localFileManager release], localFileManager = nil;
     
     return libEucalyptusCacheDirectory;
 }
 
-#pragma mark -
-#pragma mark Current Book Information
+#pragma mark - Current Book Information
 
-- (NSString *) xpsPath
+- (NSString *)xpsPath
 {
 #if LOCALDEBUG
 	return [[NSBundle mainBundle] pathForResource:self.ContentMetadataItem.FileName ofType:@"xps"];
 #else
-/*    NSLog(@"returning %@", [NSString stringWithFormat:@"%@/%@-%@.xps", 
-                            [self cacheDirectory], 
-                            self.ContentMetadataItem.ContentIdentifier, self.ContentMetadataItem.Version]);*/
 	return [NSString stringWithFormat:@"%@/%@-%@.xps", 
 			[self cacheDirectory], 
 			self.ContentMetadataItem.ContentIdentifier, self.ContentMetadataItem.Version];
 #endif
 }
 
-- (NSString *) coverImagePath
+- (NSString *)coverImagePath
 {
 	NSString *cacheDir  = [self cacheDirectory];
 	NSString *fullImagePath = [cacheDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png", self.ContentIdentifier]];
@@ -177,7 +169,7 @@
 	return fullImagePath;
 }	
 
-- (NSString *) thumbPathForSize: (CGSize) size
+- (NSString *)thumbPathForSize:(CGSize)size
 {
 	NSString *cacheDir  = [self cacheDirectory];
 
@@ -194,7 +186,7 @@
 	return thumbPath;
 }
 
-- (float) currentDownloadedPercentage
+- (float)currentDownloadedPercentage
 {
 	float percentage = 0.0f;
 	
@@ -215,7 +207,7 @@
 	return percentage;
 }
 
-- (NSString *) processingStateAsString
+- (NSString *)processingStateAsString
 {
 	NSString *status = @"Unknown!";
 	switch ([[self State] intValue]) {
@@ -262,7 +254,7 @@
 	return status;
 }
 
-- (BOOL) canOpenBook 
+- (BOOL)canOpenBook 
 {
 	if ([self.State intValue] == SCHBookProcessingStateReadyToRead) {
 		return YES;
@@ -271,7 +263,7 @@
 	}
 }
 
-- (CGSize) bookCoverImageSize
+- (CGSize)bookCoverImageSize
 {
     return CGSizeMake([self.BookCoverWidth intValue], [self.BookCoverHeight intValue]);
 }

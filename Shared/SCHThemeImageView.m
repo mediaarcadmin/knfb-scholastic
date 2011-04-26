@@ -31,7 +31,7 @@
     [super dealloc];
 }
 
-#pragma - methods
+#pragma mark - methods
 
 - (void)setTheme:(NSString *)newImageKey
 {
@@ -49,7 +49,7 @@
     }
 }
 
-#pragma - Private methods
+#pragma mark - Private methods
 
 - (void)updateTheme
 {
