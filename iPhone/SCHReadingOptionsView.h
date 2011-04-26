@@ -1,5 +1,5 @@
 //
-//  BITReadingOptionsView.h
+//  SCHReadingOptionsView.h
 //  XPSRenderer
 //
 //  Created by Gordon Christie on 13/01/2011.
@@ -11,7 +11,7 @@
 @class SCHReadingViewController;
 @class SCHProfileItem;
 
-@interface BITReadingOptionsView : UIViewController 
+@interface SCHReadingOptionsView : UIViewController 
 {
 }
 

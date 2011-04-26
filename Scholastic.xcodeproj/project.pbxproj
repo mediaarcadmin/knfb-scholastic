@@ -618,7 +618,7 @@
 		F848824113573F4500A2C8D3 /* icon-magnify-active@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F848823D13573F4500A2C8D3 /* icon-magnify-active@2x.png */; };
 		F84CE156134C691D0044729E /* SCHNonDRMAuthenticationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F84CE155134C691D0044729E /* SCHNonDRMAuthenticationManager.m */; };
 		F84CE157134C691D0044729E /* SCHNonDRMAuthenticationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F84CE155134C691D0044729E /* SCHNonDRMAuthenticationManager.m */; };
-		F8509EA312F0621E00197EB5 /* BITScrubberView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8509E9B12F0621E00197EB5 /* BITScrubberView.m */; };
+		F8509EA312F0621E00197EB5 /* SCHScrubberView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8509E9B12F0621E00197EB5 /* SCHScrubberView.m */; };
 		F8509EB812F0625100197EB5 /* libstdc++.6.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F8509EB712F0625100197EB5 /* libstdc++.6.dylib */; };
 		F8509EF612F063C900197EB5 /* MainWindow_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow_iPad.xib */; };
 		F8509EF712F063C900197EB5 /* MainWindow_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2860E389111B897F00E27156 /* MainWindow_iPhone.xib */; };
@@ -664,7 +664,7 @@
 		F8509F3512F063C900197EB5 /* LibreAccessServiceSvc.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF508612E739E900E374F7 /* LibreAccessServiceSvc.m */; };
 		F8509F3712F063C900197EB5 /* NSManagedObjectContext+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF570912ED977C00E374F7 /* NSManagedObjectContext+Extensions.m */; };
 		F8509F3812F063C900197EB5 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF579612EDBE6E00E374F7 /* SFHFKeychainUtils.m */; };
-		F8509F3E12F063C900197EB5 /* BITScrubberView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8509E9B12F0621E00197EB5 /* BITScrubberView.m */; };
+		F8509F3E12F063C900197EB5 /* SCHScrubberView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8509E9B12F0621E00197EB5 /* SCHScrubberView.m */; };
 		F8509F4012F063C900197EB5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		F8509F4112F063C900197EB5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		F8509F4212F063C900197EB5 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
@@ -731,10 +731,10 @@
 		F8C8FC271360659B0097F9DD /* SCHReadingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8C8FC231360659B0097F9DD /* SCHReadingViewController.xib */; };
 		F8C8FC2A136065AD0097F9DD /* SCHCustomNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = F8C8FC29136065AD0097F9DD /* SCHCustomNavigationBar.m */; };
 		F8C8FC2B136065AD0097F9DD /* SCHCustomNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = F8C8FC29136065AD0097F9DD /* SCHCustomNavigationBar.m */; };
-		F8C8FC2F136065C10097F9DD /* BITReadingOptionsView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8C8FC2D136065C10097F9DD /* BITReadingOptionsView.m */; };
-		F8C8FC30136065C10097F9DD /* BITReadingOptionsView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8C8FC2D136065C10097F9DD /* BITReadingOptionsView.m */; };
-		F8C8FC31136065C10097F9DD /* BITReadingOptionsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8C8FC2E136065C10097F9DD /* BITReadingOptionsView.xib */; };
-		F8C8FC32136065C10097F9DD /* BITReadingOptionsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8C8FC2E136065C10097F9DD /* BITReadingOptionsView.xib */; };
+		F8C8FC2F136065C10097F9DD /* SCHReadingOptionsView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8C8FC2D136065C10097F9DD /* SCHReadingOptionsView.m */; };
+		F8C8FC30136065C10097F9DD /* SCHReadingOptionsView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8C8FC2D136065C10097F9DD /* SCHReadingOptionsView.m */; };
+		F8C8FC31136065C10097F9DD /* SCHReadingOptionsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8C8FC2E136065C10097F9DD /* SCHReadingOptionsView.xib */; };
+		F8C8FC32136065C10097F9DD /* SCHReadingOptionsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8C8FC2E136065C10097F9DD /* SCHReadingOptionsView.xib */; };
 		F8C8FC39136066590097F9DD /* icon-magnify-active-landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = F8C8FC33136066590097F9DD /* icon-magnify-active-landscape.png */; };
 		F8C8FC3A136066590097F9DD /* icon-magnify-active-landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = F8C8FC33136066590097F9DD /* icon-magnify-active-landscape.png */; };
 		F8C8FC3B136066590097F9DD /* icon-magnify-active-landscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F8C8FC34136066590097F9DD /* icon-magnify-active-landscape@2x.png */; };
@@ -1495,8 +1495,8 @@
 		F8509E7D12F0620F00197EB5 /* TooManyToys.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = TooManyToys.xps; path = "Shared/Debug Books/TooManyToys.xps"; sourceTree = "<group>"; };
 		F8509E7E12F0620F00197EB5 /* Cars.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = Cars.xps; path = "Shared/Debug Books/Cars.xps"; sourceTree = "<group>"; };
 		F8509E7F12F0621000197EB5 /* Cook Yourself Thin.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Cook Yourself Thin.xps"; path = "Shared/Debug Books/Cook Yourself Thin.xps"; sourceTree = "<group>"; };
-		F8509E9A12F0621E00197EB5 /* BITScrubberView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BITScrubberView.h; sourceTree = "<group>"; };
-		F8509E9B12F0621E00197EB5 /* BITScrubberView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BITScrubberView.m; sourceTree = "<group>"; };
+		F8509E9A12F0621E00197EB5 /* SCHScrubberView.h */ = {isa = PBXFileReference; fileEncoding = 4; path = SCHScrubberView.h; sourceTree = "<group>"; };
+		F8509E9B12F0621E00197EB5 /* SCHScrubberView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHScrubberView.m; sourceTree = "<group>"; };
 		F8509EB712F0625100197EB5 /* libstdc++.6.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libstdc++.6.dylib"; path = "usr/lib/libstdc++.6.dylib"; sourceTree = SDKROOT; };
 		F8509F4D12F063C900197EB5 /* Scholastic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Scholastic.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F85E0307134F59E700E81D58 /* SCHCustomToolbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHCustomToolbar.h; path = Shared/SCHCustomToolbar.h; sourceTree = "<group>"; };
@@ -1550,9 +1550,9 @@
 		F8C8FC231360659B0097F9DD /* SCHReadingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHReadingViewController.xib; sourceTree = "<group>"; };
 		F8C8FC28136065AD0097F9DD /* SCHCustomNavigationBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHCustomNavigationBar.h; sourceTree = "<group>"; };
 		F8C8FC29136065AD0097F9DD /* SCHCustomNavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHCustomNavigationBar.m; sourceTree = "<group>"; };
-		F8C8FC2C136065C10097F9DD /* BITReadingOptionsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BITReadingOptionsView.h; sourceTree = "<group>"; };
-		F8C8FC2D136065C10097F9DD /* BITReadingOptionsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BITReadingOptionsView.m; sourceTree = "<group>"; };
-		F8C8FC2E136065C10097F9DD /* BITReadingOptionsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BITReadingOptionsView.xib; sourceTree = "<group>"; };
+		F8C8FC2C136065C10097F9DD /* SCHReadingOptionsView.h */ = {isa = PBXFileReference; fileEncoding = 4; path = SCHReadingOptionsView.h; sourceTree = "<group>"; };
+		F8C8FC2D136065C10097F9DD /* SCHReadingOptionsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHReadingOptionsView.m; sourceTree = "<group>"; };
+		F8C8FC2E136065C10097F9DD /* SCHReadingOptionsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHReadingOptionsView.xib; sourceTree = "<group>"; };
 		F8C8FC33136066590097F9DD /* icon-magnify-active-landscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-magnify-active-landscape.png"; sourceTree = "<group>"; };
 		F8C8FC34136066590097F9DD /* icon-magnify-active-landscape@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-magnify-active-landscape@2x.png"; sourceTree = "<group>"; };
 		F8C8FC35136066590097F9DD /* icon-magnify-landscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-magnify-landscape.png"; sourceTree = "<group>"; };
@@ -2698,9 +2698,9 @@
 		F8509E9512F0621E00197EB5 /* Reading Options View */ = {
 			isa = PBXGroup;
 			children = (
-				F8C8FC2C136065C10097F9DD /* BITReadingOptionsView.h */,
-				F8C8FC2D136065C10097F9DD /* BITReadingOptionsView.m */,
-				F8C8FC2E136065C10097F9DD /* BITReadingOptionsView.xib */,
+				F8C8FC2C136065C10097F9DD /* SCHReadingOptionsView.h */,
+				F8C8FC2D136065C10097F9DD /* SCHReadingOptionsView.m */,
+				F8C8FC2E136065C10097F9DD /* SCHReadingOptionsView.xib */,
 			);
 			name = "Reading Options View";
 			sourceTree = "<group>";
@@ -2708,8 +2708,8 @@
 		F8509E9912F0621E00197EB5 /* Scrubber View */ = {
 			isa = PBXGroup;
 			children = (
-				F8509E9A12F0621E00197EB5 /* BITScrubberView.h */,
-				F8509E9B12F0621E00197EB5 /* BITScrubberView.m */,
+				F8509E9A12F0621E00197EB5 /* SCHScrubberView.h */,
+				F8509E9B12F0621E00197EB5 /* SCHScrubberView.m */,
 			);
 			name = "Scrubber View";
 			sourceTree = "<group>";
@@ -3107,7 +3107,7 @@
 				52E622F41358385D00245CA7 /* Themes in Resources */,
 				52E623021358544200245CA7 /* SCHThemePickerViewController.xib in Resources */,
 				F8C8FC261360659B0097F9DD /* SCHReadingViewController.xib in Resources */,
-				F8C8FC31136065C10097F9DD /* BITReadingOptionsView.xib in Resources */,
+				F8C8FC31136065C10097F9DD /* SCHReadingOptionsView.xib in Resources */,
 				F8C8FC39136066590097F9DD /* icon-magnify-active-landscape.png in Resources */,
 				F8C8FC3B136066590097F9DD /* icon-magnify-active-landscape@2x.png in Resources */,
 				F8C8FC3D136066590097F9DD /* icon-magnify-landscape.png in Resources */,
@@ -3308,7 +3308,7 @@
 				C9BCD78F135DD26B00AA42B3 /* Shiver.xps in Resources */,
 				C9BCD790135DD26B00AA42B3 /* Cook Yourself Thin.xps in Resources */,
 				F8C8FC271360659B0097F9DD /* SCHReadingViewController.xib in Resources */,
-				F8C8FC32136065C10097F9DD /* BITReadingOptionsView.xib in Resources */,
+				F8C8FC32136065C10097F9DD /* SCHReadingOptionsView.xib in Resources */,
 				F8C8FC3A136066590097F9DD /* icon-magnify-active-landscape.png in Resources */,
 				F8C8FC3C136066590097F9DD /* icon-magnify-active-landscape@2x.png in Resources */,
 				F8C8FC3E136066590097F9DD /* icon-magnify-landscape.png in Resources */,
@@ -3415,7 +3415,7 @@
 				52EF508712E739E900E374F7 /* LibreAccessServiceSvc.m in Sources */,
 				52EF570A12ED977C00E374F7 /* NSManagedObjectContext+Extensions.m in Sources */,
 				52EF579712EDBE6E00E374F7 /* SFHFKeychainUtils.m in Sources */,
-				F8509EA312F0621E00197EB5 /* BITScrubberView.m in Sources */,
+				F8509EA312F0621E00197EB5 /* SCHScrubberView.m in Sources */,
 				C923A27D12F06FE60054426F /* MRGridView.m in Sources */,
 				C923A27E12F06FE60054426F /* MRGridViewCell.m in Sources */,
 				C923A27F12F06FE60054426F /* MRGridViewController.m in Sources */,
@@ -3539,7 +3539,7 @@
 				52BAFB69135DAB8600C2AFF3 /* SCHThemeImageView.m in Sources */,
 				F8C8FC241360659B0097F9DD /* SCHReadingViewController.m in Sources */,
 				F8C8FC2A136065AD0097F9DD /* SCHCustomNavigationBar.m in Sources */,
-				F8C8FC2F136065C10097F9DD /* BITReadingOptionsView.m in Sources */,
+				F8C8FC2F136065C10097F9DD /* SCHReadingOptionsView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3577,7 +3577,7 @@
 				F8509F3512F063C900197EB5 /* LibreAccessServiceSvc.m in Sources */,
 				F8509F3712F063C900197EB5 /* NSManagedObjectContext+Extensions.m in Sources */,
 				F8509F3812F063C900197EB5 /* SFHFKeychainUtils.m in Sources */,
-				F8509F3E12F063C900197EB5 /* BITScrubberView.m in Sources */,
+				F8509F3E12F063C900197EB5 /* SCHScrubberView.m in Sources */,
 				C923A27A12F06FE60054426F /* MRGridView.m in Sources */,
 				C923A27B12F06FE60054426F /* MRGridViewCell.m in Sources */,
 				C923A27C12F06FE60054426F /* MRGridViewController.m in Sources */,
@@ -3702,7 +3702,7 @@
 				C9BCD78B135DBF9E00AA42B3 /* main.m in Sources */,
 				F8C8FC251360659B0097F9DD /* SCHReadingViewController.m in Sources */,
 				F8C8FC2B136065AD0097F9DD /* SCHCustomNavigationBar.m in Sources */,
-				F8C8FC30136065C10097F9DD /* BITReadingOptionsView.m in Sources */,
+				F8C8FC30136065C10097F9DD /* SCHReadingOptionsView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

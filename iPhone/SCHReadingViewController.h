@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "BITScrubberView.h"
+#import "SCHScrubberView.h"
 #import "SCHReadingView.h"
 
 @class SCHXPSProvider;
@@ -33,7 +33,7 @@
 @property (nonatomic, retain) IBOutlet UIImageView *topShadow;
 @property (nonatomic, retain) IBOutlet UIImageView *bottomShadow;
 
-@property (nonatomic, retain) IBOutlet BITScrubberView *pageScrubber;
+@property (nonatomic, retain) IBOutlet SCHScrubberView *pageScrubber;
 @property (nonatomic, retain) IBOutlet UIImageView *scrubberThumbImage;
 @property (nonatomic, retain) IBOutlet UIView *scrubberInfoView;
 @property (nonatomic, retain) IBOutlet UILabel *pageLabel;

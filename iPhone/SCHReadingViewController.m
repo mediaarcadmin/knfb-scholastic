@@ -681,7 +681,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 #pragma mark -
 #pragma mark BITScrubberViewDelegate Methods
 
--(void) scrubberView:(BITScrubberView *)scrubberView scrubberValueUpdated:(float)currentValue
+-(void) scrubberView:(SCHScrubberView *)scrubberView scrubberValueUpdated:(float)currentValue
 {
 	if (scrubberView == self.pageScrubber) {
         NSLog(@"Current value is %d", (int) currentValue);
@@ -706,7 +706,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 	}
 }
 
--(void) scrubberView:(BITScrubberView *)scrubberView beginScrubbingWithValue:(float)currentValue
+-(void) scrubberView:(SCHScrubberView *)scrubberView beginScrubbingWithValue:(float)currentValue
 {
     self.currentPageIndex = (int) currentValue;
     NSLog(@"Current value is %d", (int) currentValue);
@@ -733,7 +733,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 	
 }
 
--(void) scrubberView:(BITScrubberView *)scrubberView endScrubbingWithValue:(float)currentValue
+-(void) scrubberView:(SCHScrubberView *)scrubberView endScrubbingWithValue:(float)currentValue
 {
     self.currentPageIndex = (int) currentValue;
 

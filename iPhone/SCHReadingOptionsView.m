@@ -1,12 +1,12 @@
 //
-//  BITReadingOptionsView.m
+//  SCHReadingOptionsView.m
 //  XPSRenderer
 //
 //  Created by Gordon Christie on 13/01/2011.
 //  Copyright 2011 BitWink Limited. All rights reserved.
 //
 
-#import "BITReadingOptionsView.h"
+#import "SCHReadingOptionsView.h"
 
 #import <QuartzCore/QuartzCore.h>
 #import "LibreAccessServiceSvc.h"
@@ -16,7 +16,7 @@
 #import "SCHReadingViewController.h"
 #import "SCHProfileItem.h"
 
-@interface BITReadingOptionsView ()
+@interface SCHReadingOptionsView ()
 
 - (void)updateFavoriteDisplay;
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation;
@@ -24,7 +24,7 @@
 
 @end
 
-@implementation BITReadingOptionsView
+@implementation SCHReadingOptionsView
 
 @synthesize coverImageView;
 @synthesize bookCoverView;

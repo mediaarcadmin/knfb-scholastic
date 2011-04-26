@@ -9,7 +9,7 @@
 #import "SCHBookShelfViewController.h"
 
 #import <QuartzCore/QuartzCore.h>
-#import "BITReadingOptionsView.h"
+#import "SCHReadingOptionsView.h"
 #import "SCHBookManager.h"
 #import "SCHSyncManager.h"
 #import "SCHBookShelfGridViewCell.h"
@@ -359,7 +359,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 	
 	NSLog(@"Showing book %@.", book.Title);
 	
-	BITReadingOptionsView *optionsView = [[BITReadingOptionsView alloc] initWithNibName:nil bundle:nil];
+	SCHReadingOptionsView *optionsView = [[SCHReadingOptionsView alloc] initWithNibName:nil bundle:nil];
 	optionsView.isbn = book.ContentIdentifier;
     optionsView.profileItem = self.profileItem;
 	

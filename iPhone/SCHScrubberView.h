@@ -10,13 +10,13 @@
 
 #pragma mark -
 #pragma mark BITScrubberViewDelegate
-@class BITScrubberView;
+@class SCHScrubberView;
 @protocol BITScrubberViewDelegate <NSObject>
 
 @optional
-- (void) scrubberView: (BITScrubberView *) scrubberView beginScrubbingWithValue: (float) currentValue;
-- (void) scrubberView: (BITScrubberView *) scrubberView scrubberValueUpdated: (float) currentValue;
-- (void) scrubberView: (BITScrubberView *) scrubberView endScrubbingWithValue: (float) currentValue;
+- (void) scrubberView: (SCHScrubberView *) scrubberView beginScrubbingWithValue: (float) currentValue;
+- (void) scrubberView: (SCHScrubberView *) scrubberView scrubberValueUpdated: (float) currentValue;
+- (void) scrubberView: (SCHScrubberView *) scrubberView endScrubbingWithValue: (float) currentValue;
 
 @end
 
@@ -33,7 +33,7 @@ typedef enum {
 #pragma mark -
 #pragma mark BITScrubberView
 
-@interface BITScrubberView : UIView {
+@interface SCHScrubberView : UIView {
 
 }
 

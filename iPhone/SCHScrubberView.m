@@ -6,12 +6,12 @@
 //  Copyright 2011 BitWink Limited. All rights reserved.
 //
 
-#import "BITScrubberView.h"
+#import "SCHScrubberView.h"
 
 #pragma mark -
 #pragma mark Class Extension
 
-@interface BITScrubberView()
+@interface SCHScrubberView()
 
 - (void) initValues;
 
@@ -27,7 +27,7 @@
 
 #define TRACK_DOT_WIDTH 2
 
-@implementation BITScrubberView
+@implementation SCHScrubberView
 
 @synthesize delegate;
 @synthesize minimumValue;
