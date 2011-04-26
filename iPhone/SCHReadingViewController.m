@@ -110,10 +110,10 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 -(void)dealloc {
     [self releaseViewObjects];
 
+    [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.isbn];
+    
     [xpsProvider release], xpsProvider = nil;
     [readingView release], readingView = nil;
-    
-    [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.isbn];
     
     [super dealloc];
 }
