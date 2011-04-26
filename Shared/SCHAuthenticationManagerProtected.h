@@ -18,7 +18,7 @@ static NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
 @interface SCHAuthenticationManager ()
 
 @property (nonatomic, copy, readwrite) NSString *aToken;
-@property (nonatomic, assign) NSDate *tokenExpires;
+@property (nonatomic, retain) NSDate *tokenExpires;
 @property (nonatomic, assign) BOOL waitingOnResponse;
 @property (nonatomic, retain) SCHScholasticWebService *scholasticWebService;
 @property (nonatomic, retain) SCHLibreAccessWebService *libreAccessWebService;
