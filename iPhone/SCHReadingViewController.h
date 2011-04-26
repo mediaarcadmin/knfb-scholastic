@@ -44,6 +44,6 @@
 @property (nonatomic, retain) IBOutlet UISegmentedControl *paperTypeSegmentedControl;
 
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil isbn:(NSString *)aIsbn;
+-(id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil isbn:(NSString *)aIsbn;
 
 @end
