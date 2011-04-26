@@ -18,6 +18,8 @@
 
 @property (nonatomic, retain) id<SCHDrmRegistrationSessionDelegate> delegate;
 @property (nonatomic, assign) BOOL isJoining;
+@property (nonatomic, retain) NSURLConnection *urlConnection;
+@property (nonatomic, retain) NSMutableData *connectionData;
 
 
 - (void)registerDevice:(NSString *)token;
@@ -37,8 +39,16 @@
 @property (nonatomic, retain) NSString* bookID;
 @property (nonatomic, retain) NSString* boundBookID;
 
-- (void)acquireLicense:(NSString *)token;
-//- (void)acknowledgeLicense;
+- (id)initWithBook:(NSString*)isbn;
+- (void)acquireLicense:(NSString *)token bookID:(NSString*)isbn;
+
+@end
+
+@interface SCHDrmDecryptionSession : SCHDrmSession   
+{
+	struct SCHDrmIVars *drmIVars; 
+}
+
 
 @end
  
