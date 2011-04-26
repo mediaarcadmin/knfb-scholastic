@@ -54,8 +54,11 @@
 
 - (void) beginOperation
 { 
+#if LOCALDEBUG
+    [self updateBookWithSuccess];
+#else
     [licenseAcquisitionSession acquireLicense:[[SCHAuthenticationManager sharedAuthenticationManager] aToken] bookID:self.isbn];
- 
+#endif
 }
 
 #pragma mark -
