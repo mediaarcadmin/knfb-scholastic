@@ -128,36 +128,39 @@ static int mutationCount = 0;
 #pragma mark -
 #pragma mark Book Info vending
 
-- (SCHAppBook *) bookWithIdentifier: (NSString *) isbn
+- (SCHAppBook *)bookWithIdentifier: (NSString *) isbn
 {
 	NSManagedObjectContext *context = [[SCHBookManager sharedBookManager] managedObjectContextForCurrentThread];
     SCHAppBook *book = nil;
     
-    if (isbn) {
+    if (isbn && context) {
 		
         NSEntityDescription *entityDescription = [NSEntityDescription 
                                                   entityForName:kSCHAppBook
                                                   inManagedObjectContext:context];
-        NSFetchRequest *fetchRequest = [entityDescription.managedObjectModel 
-                                        fetchRequestFromTemplateWithName:kSCHAppBookFetchWithContentIdentifier 
-                                        substitutionVariables:[NSDictionary 
-                                                               dictionaryWithObject:isbn 
-                                                               forKey:kSCHAppBookCONTENT_IDENTIFIER]];
-				
-		NSError *error = nil;
-		NSArray *results = [context executeFetchRequest:fetchRequest error:&error];
-		
-		if (error) {
-			NSLog(@"Error while fetching book item: %@", [error localizedDescription]);
-		} else if (!results || [results count] != 1) {
-			NSLog(@"Did not return expected single book for isbn %@.", isbn);
-			NSLog(@"Results: %@", results);
-		} else {
-			book = (SCHAppBook *) [results objectAtIndex:0];
-		}
-    }
-    else
-	{
+        
+        if (!entityDescription) {
+            NSLog(@"WARNING: entity description is nil for %@", isbn);
+        } else {
+            NSFetchRequest *fetchRequest = [entityDescription.managedObjectModel 
+                                            fetchRequestFromTemplateWithName:kSCHAppBookFetchWithContentIdentifier 
+                                            substitutionVariables:[NSDictionary 
+                                                                   dictionaryWithObject:isbn 
+                                                                   forKey:kSCHAppBookCONTENT_IDENTIFIER]];
+            
+            NSError *error = nil;
+            NSArray *results = [context executeFetchRequest:fetchRequest error:&error];
+            
+            if (error) {
+                NSLog(@"Error while fetching book item: %@", [error localizedDescription]);
+            } else if (!results || [results count] != 1) {
+                NSLog(@"Did not return expected single book for isbn %@.", isbn);
+                NSLog(@"Results: %@", results);
+            } else {
+                book = (SCHAppBook *) [results objectAtIndex:0];
+            }
+        }
+    } else {
 		NSLog(@"WARNING: book identifier is nil! request for %@", isbn);
 	}
 	
