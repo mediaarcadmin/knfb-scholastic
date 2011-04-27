@@ -1592,5 +1592,67 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 	return(ret);
 }
 
+#pragma Internal Debug Methods
+
+// Call this from GDB with:
+// call [[[[SCHSyncManager sharedSyncManager] profileSyncComponent] libreAccessWebService] debugCreateDefaultBookshelf]
+// continue
+- (void)debugCreateDefaultBookshelf
+{
+    NSMutableDictionary *item = [NSMutableDictionary dictionary];
+    [item setValue:[NSNumber numberWithBool:YES] forKey:kSCHLibreAccessWebServiceAutoAssignContentToProfiles];
+    [item setValue:[NSNumber numberWithBool:NO] forKey:kSCHLibreAccessWebServiceProfilePasswordRequired];
+    [item setValue:@"John" forKey:kSCHLibreAccessWebServiceFirstName];
+    [item setValue:@"Doe" forKey:kSCHLibreAccessWebServiceLastName];
+    [item setValue:[NSDate date] forKey:kSCHLibreAccessWebServiceBirthday];
+    [item setValue:[NSDate date] forKey:kSCHLibreAccessWebServiceLastModified];
+    [item setValue:@"John Doe" forKey:kSCHLibreAccessWebServiceScreenName];
+    [item setValue:@"" forKey:kSCHLibreAccessWebServicePassword];
+    [item setValue:@"Key" forKey:kSCHLibreAccessWebServiceUserKey];
+    [item setValue:[NSNumber numberWithInt:LibreAccessServiceSvc_ProfileTypes_CHILD] forKey:kSCHLibreAccessWebServiceType];
+    [item setValue:[NSNumber numberWithInt:0] forKey:kSCHLibreAccessWebServiceID];
+    [item setValue:[NSNumber numberWithInt:LibreAccessServiceSvc_SaveActions_CREATE] forKey:kSCHLibreAccessWebServiceAction];
+    [item setValue:[NSNumber numberWithInt:LibreAccessServiceSvc_BookshelfStyle_OLDER_CHILD] forKey:kSCHLibreAccessWebServiceBookshelfStyle];
+    [item setValue:[NSNumber numberWithBool:YES] forKey:kSCHLibreAccessWebServiceStoryInteractionEnabled];
+    
+    [self performSelector:@selector(saveUserProfiles:) withObject:[NSArray arrayWithObject:item] afterDelay:0.1f];
+    
+}
+
+// Call this from GDB with:
+// call [[[[SCHSyncManager sharedSyncManager] profileSyncComponent] libreAccessWebService] debugAssignBook:isbn toProfile:profile]
+// continue
+- (void)debugAssignBook:(NSString *)isbn toProfile:(NSUInteger)profileID
+{
+    
+    /*
+     NSNumber * profileID;
+     LibreAccessServiceSvc_SaveActions action;
+     NSDate * lastmodified;
+     */
+    
+    NSMutableDictionary *profileList = [NSMutableDictionary dictionary];
+    [profileList setValue:[NSNumber numberWithInt:profileID] forKey:kSCHLibreAccessWebServiceProfileID];
+    [profileList setValue:[NSNumber numberWithInt:LibreAccessServiceSvc_SaveActions_CREATE] forKey:kSCHLibreAccessWebServiceAction];
+    [profileList setValue:[NSDate date] forKey:kSCHLibreAccessWebServiceLastModified];
+     
+     /*
+      NSString * contentIdentifier;
+      LibreAccessServiceSvc_ContentIdentifierTypes ContentIdentifierType;
+      LibreAccessServiceSvc_drmqualifiers drmqualifier;
+      NSString * format;
+      LibreAccessServiceSvc_AssignedProfileList * AssignedProfileList;
+      */
+    
+    NSMutableDictionary *item = [NSMutableDictionary dictionary];
+    [item setValue:isbn forKey:kSCHLibreAccessWebServiceContentIdentifier];
+    [item setValue:[NSNumber numberWithInt:LibreAccessServiceSvc_ContentIdentifierTypes_ISBN13] forKey:kSCHLibreAccessWebServiceContentIdentifierType];
+    [item setValue:[NSNumber numberWithInt:LibreAccessServiceSvc_drmqualifiers_FULL_WITH_DRM] forKey:kSCHLibreAccessWebServiceDRMQualifier];
+    [item setValue:@"XPS" forKey:kSCHLibreAccessWebServiceFormat];
+    [item setValue:[NSArray arrayWithObject:profileList] forKey:kSCHLibreAccessWebServiceAssignedProfileList];
+    
+    [self performSelector:@selector(saveContentProfileAssignment:) withObject:[NSArray arrayWithObject:item] afterDelay:0.1f];
+    
+}
 
 @end
