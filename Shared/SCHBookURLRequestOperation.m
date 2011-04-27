@@ -47,17 +47,35 @@
 	NSString *completedISBN = [userInfo valueForKey:kSCHLibreAccessWebServiceContentIdentifier];
 
 	if ([completedISBN compare:self.isbn] == NSOrderedSame) {
+        
+        BOOL success = YES;
+        
+        if (![[userInfo valueForKey:kSCHLibreAccessWebServiceCoverURL] isEqual:[NSNull null]]) {
 	
-		[[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn
-																setValue:[userInfo valueForKey:kSCHLibreAccessWebServiceCoverURL]
+            [[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn
+                                                                    setValue:[userInfo valueForKey:kSCHLibreAccessWebServiceCoverURL]
 																  forKey:kSCHAppBookCoverURL];
-		[[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn
-																setValue:[userInfo valueForKey:kSCHLibreAccessWebServiceContentURL]
-																  forKey:kSCHAppBookFileURL];
-		
-		NSLog(@"Successful URL retrieval for %@!", completedISBN);
-		
-		[[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateNoCoverImage];
+                
+        } else {
+            success = NO;
+        }
+        
+        if (![[userInfo valueForKey:kSCHLibreAccessWebServiceContentURL] isEqual:[NSNull null]]) {
+
+            [[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn
+                                                                    setValue:[userInfo valueForKey:kSCHLibreAccessWebServiceContentURL]
+                                                                      forKey:kSCHAppBookFileURL];
+        } else {
+            success = NO;
+        }
+        
+        if (success) {
+            NSLog(@"Successful URL retrieval for %@!", completedISBN);
+            [[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateNoCoverImage];
+        } else {
+            NSLog(@"Warning: book URL request was missing cover and/or content URL: %@", userInfo);
+            [[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateError];
+        }
 		
         [self endOperation];
 	}
