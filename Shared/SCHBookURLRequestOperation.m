@@ -71,11 +71,11 @@
         
         if (success) {
             NSLog(@"Successful URL retrieval for %@!", completedISBN);
+            [[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateNoCoverImage];
         } else {
             NSLog(@"Warning: book URL request was missing cover and/or content URL: %@", userInfo);
+            [[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateError];
         }
-		
-		[[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateNoCoverImage];
 		
         [self endOperation];
 	}
