@@ -10,16 +10,27 @@
 
 @class SCHCustomToolbar;
 
-@interface SCHLoginViewController : UIViewController <UITextFieldDelegate> 
+//typedef void(^LoginBlock)(void);
+
+@interface SCHLoginViewController : UIViewController <UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate> 
 {
 }
 
-@property (nonatomic, retain) IBOutlet UITextField *userName;
-@property (nonatomic, retain) IBOutlet UITextField *password;
-@property (nonatomic, retain) IBOutlet UIButton *loginButton;
+@property (readwrite) BOOL showHeaders;
+@property (readwrite) BOOL passwordOnly;
+//@property (nonatomic, copy) LoginBlock loginBlock;
+@property (nonatomic, copy) NSString *loginButtonText;
+
+@property (nonatomic, retain) IBOutlet UITextField *userNameField;
+@property (nonatomic, retain) IBOutlet UITextField *passwordField;
 @property (nonatomic, retain) IBOutlet UIButton *cancelButton;
 @property (nonatomic, retain) IBOutlet UIActivityIndicatorView *spinner;
 @property (nonatomic, retain) IBOutlet SCHCustomToolbar *topBar;
+@property (nonatomic, retain) IBOutlet UILabel *headerTitleLabel;
+@property (nonatomic, retain) IBOutlet UIView *headerTitleView;
+@property (nonatomic, retain) IBOutlet UILabel *footerForgotLabel;
+@property (nonatomic, retain) IBOutlet UITableView *tableView;
+
 
 - (IBAction)login:(id)sender;
 - (IBAction)cancel:(id)sender;

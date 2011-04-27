@@ -55,22 +55,24 @@
         UIImage *fullImage = [SCHThumbnailFactory imageWithPath:fullImagePath];
         
         
-		[[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn
-																setValue:[NSNumber numberWithFloat:fullImage.size.width]
-																  forKey:kSCHAppBookCoverImageWidth];
-        
-		[[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn
-																setValue:[NSNumber numberWithFloat:fullImage.size.height]
-																  forKey:kSCHAppBookCoverImageHeight];
-        
-		thumbImage = [SCHThumbnailFactory thumbnailImageOfSize:self.size 
+        if (fullImage) {
+            [[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn
+                                                                    setValue:[NSNumber numberWithFloat:fullImage.size.width]
+                                                                      forKey:kSCHAppBookCoverImageWidth];
+            
+            [[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn
+                                                                    setValue:[NSNumber numberWithFloat:fullImage.size.height]
+                                                                      forKey:kSCHAppBookCoverImageHeight];
+            
+            thumbImage = [SCHThumbnailFactory thumbnailImageOfSize:self.size 
 														  forImage:fullImage
-												maintainAspect:self.aspect];
-		
-		if (thumbImage) {
-			NSData *pngData = UIImagePNGRepresentation(thumbImage);
-			[pngData writeToFile:thumbPath atomically:YES];
-		}
+                                                    maintainAspect:self.aspect];
+            
+            if (thumbImage) {
+                NSData *pngData = UIImagePNGRepresentation(thumbImage);
+                [pngData writeToFile:thumbPath atomically:YES];
+            }
+        }
         
  	}
     
