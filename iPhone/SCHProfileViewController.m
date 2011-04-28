@@ -74,7 +74,7 @@
     self.settingsButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [settingsButton addTarget:self action:@selector(pushSettingsController) 
              forControlEvents:UIControlEventTouchUpInside]; 
-    
+
     self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:settingsButton] autorelease];
     
     self.navigationItem.title = NSLocalizedString(@"Back", @"");
@@ -83,6 +83,10 @@
     [logoImageView release];
     
     self.tableView.tableHeaderView = self.headerView;
+    
+    self.loginController.passwordOnly = NO;
+    self.loginController.showHeaders = YES;
+    
 }  
 
 - (void)viewDidUnload 
