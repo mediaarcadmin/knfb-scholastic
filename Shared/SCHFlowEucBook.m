@@ -11,6 +11,7 @@
 #import "SCHTextFlow.h"
 #import "SCHAppBook.h"
 #import "SCHXPSProvider.h"
+#import "SCHBookPoint.h"
 #import "KNFBXPSConstants.h"
 
 @interface SCHFlowEucBook ()
@@ -77,8 +78,10 @@
 
 -(EucBookPageIndexPoint *)indexPointForPage:(NSUInteger)page 
 {
+    SCHBookPoint *point = [[[SCHBookPoint alloc] init] autorelease];
+    point.layoutPage = page;
     return 0;
-    //return nil;
+    //return [self bookPageIndexPointFromBookmarkPoint:point];
 }
 
 @end
