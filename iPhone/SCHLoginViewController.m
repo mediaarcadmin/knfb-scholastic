@@ -15,6 +15,7 @@
 
 
 static const CGFloat kProfileViewCellButtonWidth = 283.0f;
+static const CGFloat kProfileViewCellButtonHeight = 48.0f;
 
 #pragma mark - Class Extension
 
@@ -157,7 +158,7 @@ static const CGFloat kProfileViewCellButtonWidth = 283.0f;
         [self.loginButton setTitle:self.loginButtonText forState:UIControlStateNormal];
     }
     
-//      [self.topShadow setImage:[[UIImage imageNamed:@"reading-view-iphone-top-shadow.png"] stretchableImageWithLeftCapWidth:15.0f topCapHeight:0]];
+      [self.topShadow setImage:[[UIImage imageNamed:@"reading-view-iphone-top-shadow.png"] stretchableImageWithLeftCapWidth:15.0f topCapHeight:0]];
 
 }
 
@@ -188,6 +189,11 @@ static const CGFloat kProfileViewCellButtonWidth = 283.0f;
         if (barFrame.size.height == 44) {
             barFrame.size.height = 34;
             self.topBar.frame = barFrame;
+            
+            CGRect tableFrame = self.tableView.frame;
+            tableFrame.size.height += 10;
+            tableFrame.origin.y -= 10;
+            self.tableView.frame = tableFrame;
         }
     } else {
         [self.topBar setBackgroundImage:[UIImage imageNamed:@"admin-iphone-portrait-top-toolbar.png"]];
@@ -195,14 +201,18 @@ static const CGFloat kProfileViewCellButtonWidth = 283.0f;
         if (barFrame.size.height == 34) {
             barFrame.size.height = 44;
             self.topBar.frame = barFrame;
+
+            CGRect tableFrame = self.tableView.frame;
+            tableFrame.size.height -= 10;
+            tableFrame.origin.y += 10;
+            self.tableView.frame = tableFrame;
         }
+        
     }
     
     CGRect topShadowFrame = self.topShadow.frame;
-    topShadowFrame.origin.y = CGRectGetMinY(self.topBar.frame) + 
-    [self.topBar backgroundImage].size.height;
+    topShadowFrame.origin.y = CGRectGetMinY(self.tableView.frame);
     self.topShadow.frame = topShadowFrame;
-
 }
 
 #pragma mark - Authentication Manager
@@ -326,7 +336,7 @@ static const CGFloat kProfileViewCellButtonWidth = 283.0f;
             if (indexPath.row == 0 && !self.passwordOnly) {
                 CGRect fieldFrame = self.userNameField.frame;
                 fieldFrame.origin.x = ceilf((CGRectGetWidth(cell.contentView.bounds) - kProfileViewCellButtonWidth) / 2.0f);
-                fieldFrame.size.height = 48;
+                fieldFrame.size.height = kProfileViewCellButtonHeight;
                 fieldFrame.size.width = kProfileViewCellButtonWidth;
                 fieldFrame.origin.y = 2;
                 self.userNameField.frame = fieldFrame;
@@ -335,7 +345,7 @@ static const CGFloat kProfileViewCellButtonWidth = 283.0f;
             } else {
                 CGRect fieldFrame = self.passwordField.frame;
                 fieldFrame.origin.x = ceilf((CGRectGetWidth(cell.contentView.bounds) - kProfileViewCellButtonWidth) / 2.0f);
-                fieldFrame.size.height = 48;
+                fieldFrame.size.height = kProfileViewCellButtonHeight;
                 fieldFrame.size.width = kProfileViewCellButtonWidth;
                 fieldFrame.origin.y = 2;
                 self.passwordField.frame = fieldFrame;
@@ -351,7 +361,7 @@ static const CGFloat kProfileViewCellButtonWidth = 283.0f;
             CGRect buttonFrame = CGRectMake(ceilf((CGRectGetWidth(cell.contentView.bounds) - kProfileViewCellButtonWidth) / 2.0f), 
                                             ceilf(((CGRectGetHeight(cell.contentView.bounds) - 10) - bgImage.size.height) / 2.0f) + 4, 
                                             kProfileViewCellButtonWidth, 
-                                            bgImage.size.height);
+                                            kProfileViewCellButtonHeight);
             
             [self.loginButton setFrame:buttonFrame];
 
@@ -387,9 +397,7 @@ static const CGFloat kProfileViewCellButtonWidth = 283.0f;
     NSIndexPath *indexPath = nil;
     
     if (textField == self.userNameField) {
-//        indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
         CGPoint offset = CGPointMake(0, CGRectGetHeight(self.headerTitleView.frame) - 25);
-        NSLog(@"Offset is %@", NSStringFromCGPoint(offset));
         [self.tableView setContentOffset:offset animated:animated];
     } else if (textField == self.passwordField) {
         if (self.passwordOnly) {
@@ -485,8 +493,6 @@ static const CGFloat kProfileViewCellButtonWidth = 283.0f;
 
     self.tableView.frame = tableFrame;
     [UIView commitAnimations];
-    
-    NSLog(@"Tableframe is now %f high.", self.tableView.frame.size.height);
     
 }
 
