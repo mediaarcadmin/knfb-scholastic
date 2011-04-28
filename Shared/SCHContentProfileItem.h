@@ -7,16 +7,17 @@
 //
 
 #import <CoreData/CoreData.h>
-#import "SCHFavorite.h"
+#import "SCHSyncEntity.h"
 
 @class SCHUserContentItem;
 
 static NSString * const kSCHContentProfileItem = @"SCHContentProfileItem";
 
-@interface SCHContentProfileItem :  SCHFavorite  
+@interface SCHContentProfileItem :  SCHSyncEntity  
 {
 }
 
+@property (nonatomic, retain) NSNumber * IsFavorite;
 @property (nonatomic, retain) NSNumber * ProfileID;
 @property (nonatomic, retain) NSNumber * LastPageLocation;
 @property (nonatomic, retain) SCHUserContentItem * UserContentItem;

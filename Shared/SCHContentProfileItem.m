@@ -12,6 +12,7 @@
 
 @implementation SCHContentProfileItem 
 
+@dynamic IsFavorite;
 @dynamic ProfileID;
 @dynamic LastPageLocation;
 @dynamic UserContentItem;
