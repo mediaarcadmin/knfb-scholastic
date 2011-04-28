@@ -49,42 +49,42 @@
     
     NSMutableArray *allWords = [NSMutableArray array];
     
-    for (NSInteger pageNumber = range.startPage; pageNumber <= range.endPage; pageNumber++) {
+    for (NSInteger pageNumber = range.startPoint.layoutPage; pageNumber <= range.endPoint.layoutPage; pageNumber++) {
         NSInteger pageIndex = pageNumber - 1;
         
         for (KNFBTextFlowBlock *block in [self blocksForPageAtIndex:pageIndex includingFolioBlocks:YES]) {
             if (![block isFolio]) {
                 for (KNFBTextFlowPositionedWord *word in [block words]) {
-                    if ((range.startPage < pageNumber) &&
-                        (block.blockIndex <= range.endBlock) &&
-                        (word.wordIndex <= range.endWord)) {
+                    if ((range.startPoint.layoutPage < pageNumber) &&
+                        (block.blockIndex <= range.endPoint.blockOffset) &&
+                        (word.wordIndex <= range.endPoint.wordOffset)) {
                         
                         [allWords addObject:word];
                         
-                    } else if ((range.endPage > pageNumber) &&
-                               (block.blockIndex >= range.startBlock) &&
-                               (word.wordIndex >= range.startWord)) {
+                    } else if ((range.endPoint.layoutPage > pageNumber) &&
+                               (block.blockIndex >= range.startPoint.blockOffset) &&
+                               (word.wordIndex >= range.startPoint.wordOffset)) {
                         
                         [allWords addObject:word];
                         
-                    } else if ((range.startPage == pageNumber) &&
-                               (block.blockIndex == range.startBlock) &&
-                               (word.wordIndex >= range.startWord)) {
+                    } else if ((range.startPoint.layoutPage == pageNumber) &&
+                               (block.blockIndex == range.startPoint.blockOffset) &&
+                               (word.wordIndex >= range.startPoint.wordOffset)) {
                         
-                        if ((block.blockIndex == range.endBlock) &&
-                            (word.wordIndex <= range.endWord)) {
+                        if ((block.blockIndex == range.endPoint.blockOffset) &&
+                            (word.wordIndex <= range.endPoint.wordOffset)) {
                             [allWords addObject:word];
-                        } else if (block.blockIndex < range.endBlock) {
+                        } else if (block.blockIndex < range.endPoint.blockOffset) {
                             [allWords addObject:word];
                         }
                         
-                    } else if ((range.startPage == pageNumber) &&
-                               (block.blockIndex > range.startBlock)) {
+                    } else if ((range.startPoint.layoutPage == pageNumber) &&
+                               (block.blockIndex > range.startPoint.blockOffset)) {
                         
-                        if ((block.blockIndex == range.endBlock) &&
-                            (word.wordIndex <= range.endWord)) {
+                        if ((block.blockIndex == range.endPoint.blockOffset) &&
+                            (word.wordIndex <= range.endPoint.wordOffset)) {
                             [allWords addObject:word];
-                        } else if (block.blockIndex < range.endBlock) {
+                        } else if (block.blockIndex < range.endPoint.blockOffset) {
                             [allWords addObject:word];
                         }
                         
@@ -111,7 +111,23 @@
                 endBlock:(NSUInteger)endBlock
                  endWord:(NSUInteger)endWord
 {
-    SCHBookRange *bookRange = [[SCHBookRange alloc] initWithStartPage:startPage startBlock:startBlock startWord:startWord endPage:endPage endBlock:endBlock endWord:endWord];
+    SCHBookPoint *startPoint = [[SCHBookPoint alloc] init];
+    startPoint.layoutPage    = startPage;
+    startPoint.blockOffset   = startBlock;
+    startPoint.wordOffset    = startWord;
+    
+    SCHBookPoint *endPoint   = [[SCHBookPoint alloc] init];
+    endPoint.layoutPage      = endPage;
+    endPoint.blockOffset     = endBlock;
+    endPoint.wordOffset      = endWord;
+    
+    SCHBookRange *bookRange  = [[SCHBookRange alloc] init];
+    bookRange.startPoint     = startPoint;
+    bookRange.endPoint       = endPoint;
+    
+    [startPoint release];
+    [endPoint release];
+                               
     return [bookRange autorelease];
 }
 

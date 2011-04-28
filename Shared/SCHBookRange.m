@@ -10,30 +10,14 @@
 
 @implementation SCHBookRange
 
-@synthesize startPage;
-@synthesize startBlock;
-@synthesize startWord;
-@synthesize endPage;
-@synthesize endBlock;
-@synthesize endWord;
+@synthesize startPoint;
+@synthesize endPoint;
 
-- (id)initWithStartPage:(NSUInteger)aStartPage 
-             startBlock:(NSUInteger)aStartBlock
-              startWord:(NSUInteger)aStartWord
-                endPage:(NSUInteger)aEndPage
-               endBlock:(NSUInteger)aEndBlock
-                endWord:(NSUInteger)aEndWord
+- (void)dealloc
 {
-    if ((self = [super init])) {
-        startPage = aStartPage;
-        startBlock = aStartBlock;
-        startWord = aStartWord;
-        endPage = aEndPage;
-        endBlock = aEndBlock;
-        endWord = aEndWord;
-    }
-    
-    return self;
+    [startPoint release], startPoint = nil;
+    [endPoint release], endPoint = nil;
+    [super dealloc];
 }
 
 @end
