@@ -21,10 +21,13 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
 - (void)releaseViewObjects;
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation;
 - (void)scrollToTextField:(UITextField *)textField animated: (BOOL) animated;
+- (IBAction)openScholasticURLInSafari:(id)sender;
 
 @property (nonatomic, retain) UIButton *loginButton;
 
 @end
+
+#pragma mark -
 
 @implementation SCHLoginPasswordViewController
 
@@ -90,7 +93,7 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
         self.controllerType == kSCHControllerDoublePasswordView) {
         leftBBI = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel:)];
 
-        // FIXME: even the width to centre the title properly - don't like this
+        // FIXME - even the width to centre the title properly - don't like this
         topViewFrame = CGRectMake(0, 0, 59, 34);
     } else {
         UIView *leftView = [[UIView alloc] initWithFrame:topViewFrame];
@@ -125,7 +128,6 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
                         [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil], 
                         [[UIBarButtonItem alloc] initWithCustomView:rightView],
                         nil];
-
     }
     
     
@@ -133,9 +135,7 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
     
     [self.topBar setTintColor:[UIColor colorWithRed:0.832 green:0.000 blue:0.007 alpha:1.000]];
 
-
-	self.topField.text = @"";
-	self.bottomField.text = @"";
+    [self clearFields];
     
     [[NSNotificationCenter defaultCenter] addObserver:self 
                                              selector:@selector(keyboardWillShow:) 
@@ -156,6 +156,7 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
         }
         default:
         {
+            // the default is to not show titles
             float fillerHeight = 44;
             UIView *fillerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, fillerHeight)];
             self.tableView.tableHeaderView = fillerView;
@@ -271,7 +272,20 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
     self.topShadow.frame = topShadowFrame;
 }
 
-#pragma mark - Button Actions
+#pragma mark - Username and Password accessors
+
+- (NSString *)username
+{
+    return self.topField.text;
+}
+
+- (NSString *)password
+{
+    return self.bottomField.text;
+}
+
+#pragma mark - External Behaviour Changing
+
 - (void)startShowingProgress
 {
  	[self.topField resignFirstResponder];
@@ -286,15 +300,20 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
     self.loginButton.enabled = YES;
 }
 
+- (void)clearFields
+{
+    self.topField.text = @"";
+    self.bottomField.text = @"";
+}
+
 #pragma mark - Button Actions
 
 - (IBAction)actionButtonAction:(id)sender
 {
+    NSAssert(self.actionBlock != nil, @"Action block must be set!");
+    
     if (self.actionBlock) {
-        NSLog(@"LPVC: executing block.");
         self.actionBlock();
-    } else {
-        NSLog(@"LPVC: ***NOT*** executing block.");
     }
     
     if (self.controllerType == kSCHControllerLoginView) {
@@ -308,6 +327,11 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
 	[self.bottomField resignFirstResponder];
 	
 	[self dismissModalViewControllerAnimated:YES];	
+}
+
+- (IBAction)openScholasticURLInSafari:(id)sender
+{
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.scholastic.com/"]];
 }
 
 #pragma mark - UITableViewDataSource

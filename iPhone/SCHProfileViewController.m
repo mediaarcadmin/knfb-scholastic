@@ -89,7 +89,7 @@
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(authenticationManager:) name:kSCHAuthenticationManagerSuccess object:nil];			
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(authenticationManager:) name:kSCHAuthenticationManagerFailure object:nil];					
         
-        [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithUserName:[self.loginController.topField text] withPassword:[self.loginController.bottomField text]];
+        [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithUserName:[self.loginController username] withPassword:[self.loginController password]];
     };
     
     // block gets set when a row is selected
@@ -235,9 +235,7 @@
             } else {
                 self.profilePasswordController.actionBlock = ^{
                     
-                    NSLog(@"Executing action block!");
-                    
-                    if ([profileItem validatePasswordWith:self.profilePasswordController.bottomField.text] == NO) {
+                    if ([profileItem validatePasswordWith:[self.profilePasswordController password]] == NO) {
                         UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") 
                                                                              message:NSLocalizedString(@"Incorrect password", nil)
                                                                             delegate:nil 
@@ -247,7 +245,7 @@
                         [errorAlert release];
                     } else {
                         [self.profilePasswordController dismissModalViewControllerAnimated:YES];	
-                        self.profilePasswordController.bottomField.text = @"";
+                        [self.profilePasswordController clearFields]; 
                         [self pushBookshelvesControllerWithProfileItem:profileItem];            
                     }	
                 };
