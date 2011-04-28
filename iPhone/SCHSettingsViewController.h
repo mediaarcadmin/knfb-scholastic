@@ -10,13 +10,13 @@
 #import <CoreData/CoreData.h>
 #import "SCHDrmRegistrationSessionDelegate.h"
 
-@class SCHLoginViewController;
+@class SCHLoginPasswordViewController;
 
 @interface SCHSettingsViewController : UIViewController <SCHDrmRegistrationSessionDelegate>  
 {
 }
 
-@property (nonatomic, retain) IBOutlet SCHLoginViewController *loginController;
+@property (nonatomic, retain) IBOutlet SCHLoginPasswordViewController *loginController;
 @property (nonatomic, retain) IBOutlet UITableView *tableView;
 @property (nonatomic, retain) IBOutlet UIImageView *backgroundView;
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;

@@ -1,16 +1,13 @@
 //
-//  SCHLoginViewController.m
+//  SCHLoginPasswordViewController.m
 //  Scholastic
 //
 //  Created by John S. Eddie on 19/01/2011.
 //  Copyright 2011 BitWink. All rights reserved.
 //
 
-#import "SCHLoginViewController.h"
+#import "SCHLoginPasswordViewController.h"
 
-#import "SCHAuthenticationManager.h"
-#import "SCHSyncManager.h"
-#import "SCHURLManager.h"
 #import "SCHCustomToolbar.h"
 
 
@@ -19,7 +16,7 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
 
 #pragma mark - Class Extension
 
-@interface SCHLoginViewController ()
+@interface SCHLoginPasswordViewController ()
 
 - (void)releaseViewObjects;
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation;
@@ -29,10 +26,9 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
 
 @end
 
-@implementation SCHLoginViewController
+@implementation SCHLoginPasswordViewController
 
-@synthesize showHeaders;
-@synthesize passwordOnly;
+@synthesize controllerType;
 @synthesize actionBlock;
 @synthesize loginButtonText;
 
@@ -88,12 +84,25 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
 {
     [super viewDidLoad];
     
+    CGRect topViewFrame = CGRectMake(0, 0, 34, 34);
+    UIView *leftView = [[UIView alloc] initWithFrame:topViewFrame];
+    UIView *rightView = [[UIView alloc] initWithFrame:topViewFrame];
+    self.spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+    self.spinner.center = CGPointMake(topViewFrame.size.width / 2 + 5, topViewFrame.size.height / 2);
+    [rightView addSubview:self.spinner];
+    [self.spinner release];
+    
     UIImageView *headerImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo"]];
     topBar.items = [NSArray arrayWithObjects:
+                    [[UIBarButtonItem alloc] initWithCustomView:leftView],
                     [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil], 
                     [[UIBarButtonItem alloc] initWithCustomView:headerImage],
-                    [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil], nil];
+                    [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil], 
+                    [[UIBarButtonItem alloc] initWithCustomView:rightView],
+                    nil];
     [headerImage release];
+    [leftView release];
+    [rightView release];
 
 	self.userNameField.text = @"";
 	self.passwordField.text = @"";
@@ -108,14 +117,20 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
                                                  name:UIKeyboardWillHideNotification
                                                object:nil];
     
-    if (self.showHeaders) {
-        self.tableView.tableHeaderView = self.headerTitleView;
-        self.tableView.tableFooterView = self.footerForgotLabel;
-    } else {
-        float fillerHeight = 44;
-        UIView *fillerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, fillerHeight)];
-        self.tableView.tableHeaderView = fillerView;
-        [fillerView release];
+    switch (self.controllerType) {
+        case kSCHControllerLoginView:
+        {
+            self.tableView.tableHeaderView = self.headerTitleView;
+            self.tableView.tableFooterView = self.footerForgotLabel;
+            break;   
+        }
+        default:
+        {
+            float fillerHeight = 44;
+            UIView *fillerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, fillerHeight)];
+            self.tableView.tableHeaderView = fillerView;
+            [fillerView release];
+        }
     }
     
     UIImage *bgImage = [UIImage imageNamed:@"button-translucent"];
@@ -141,7 +156,7 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
     [self.loginButton setBackgroundImage:cellBGImage forState:UIControlStateNormal];
     [self.loginButton setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin];
     [self.loginButton addTarget:self 
-                         action:@selector(login:) 
+                         action:@selector(actionButtonAction:) 
                forControlEvents:UIControlEventTouchUpInside];
     
     self.loginButton.titleLabel.font = [UIFont boldSystemFontOfSize:20];
@@ -215,52 +230,29 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
     self.topShadow.frame = topShadowFrame;
 }
 
-#pragma mark - Authentication Manager
-
-- (void)authenticationManager:(NSNotification *)notification
+#pragma mark - Button Actions
+- (void)startShowingProgress
 {
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	
-	[spinner stopAnimating];
-	self.loginButton.enabled = YES;
-	self.cancelButton.enabled = YES;
+ 	[self.userNameField resignFirstResponder];
+	[self.passwordField resignFirstResponder];
+    [spinner startAnimating];
+    self.loginButton.enabled = NO;
+}
 
-	if ([notification.name compare:kSCHAuthenticationManagerSuccess] == NSOrderedSame) {
-		[[SCHURLManager sharedURLManager] clear];
-		[[SCHSyncManager sharedSyncManager] clear];
-		[[SCHSyncManager sharedSyncManager] firstSync];
-		[self dismissModalViewControllerAnimated:YES];	
-	} else {
-		NSError *error = [notification.userInfo objectForKey:kSCHAuthenticationManagerNSError];
-		if (error!= nil) {
-			UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") 
-																 message:[error localizedDescription]
-																delegate:nil 
-													   cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-													   otherButtonTitles:nil]; 
-			[errorAlert show]; 
-			[errorAlert release];
-		}		
-	}
+- (void)stopShowingProgress
+{
+    [spinner stopAnimating];
+    self.loginButton.enabled = YES;
 }
 
 #pragma mark - Button Actions
 
-- (IBAction)login:(id)sender
+- (IBAction)actionButtonAction:(id)sender
 {
     if (self.actionBlock) {
         self.actionBlock();
     }
-    
-	[self.userNameField resignFirstResponder];
-	[self.passwordField resignFirstResponder];
-    [spinner startAnimating];
-    self.loginButton.enabled = NO;
-
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(authenticationManager:) name:kSCHAuthenticationManagerSuccess object:nil];			
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(authenticationManager:) name:kSCHAuthenticationManagerFailure object:nil];					
-    
-    [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithUserName:[self.userNameField text] withPassword:[self.passwordField text]];
+    [self startShowingProgress];
 }
 
 - (IBAction)cancel:(id)sender
@@ -284,20 +276,32 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    if (self.passwordOnly) {
-        return 1;
-    } else {
-        return 2;
+    switch (self.controllerType) {
+        case kSCHControllerLoginView:
+        {
+            return 2;
+        }
+        default:
+        {
+            return 1;
+        }
     }
+    
 }
 
 - (NSInteger)tableView:(UITableView *)aTableView numberOfRowsInSection:(NSInteger)section
 {
     if (section == 0) {
-        if (self.passwordOnly) {
-            return 1;
-        } else {
-            return 2;
+        
+        switch (self.controllerType) {
+            case kSCHControllerPasswordOnlyView:
+            {
+                return 1;
+            }
+            default:
+            {
+                return 2;
+            }
         }
     } else if (section == 1) {
         return 1;
@@ -305,17 +309,7 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
         return 0;
     }
 }
-/*
-- (float)tableView:(UITableView *)aTableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // login button height is different from cell height
-    if ([indexPath section] == 1) {
-        return 54;
-    } else {
-        return aTableView.rowHeight;
-    }
-}
-*/
+
 - (UITableViewCell*)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSString *cellIdentifier = @"loginViewCell";
@@ -333,7 +327,7 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
     switch (indexPath.section) {
         case 0:
         {
-            if (indexPath.row == 0 && !self.passwordOnly) {
+            if (indexPath.row == 0 && self.controllerType != kSCHControllerPasswordOnlyView) {
                 CGRect fieldFrame = self.userNameField.frame;
                 fieldFrame.origin.x = ceilf((CGRectGetWidth(cell.contentView.bounds) - kProfileViewCellButtonWidth) / 2.0f);
                 fieldFrame.size.height = kProfileViewCellButtonHeight;
@@ -386,7 +380,7 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
     
     if (textField == self.passwordField && [self.userNameField.text length] > 0 && [self.passwordField.text length] > 0) {
         [self.passwordField resignFirstResponder];
-        [self login:nil];
+        [self actionButtonAction:nil];
     }
     
     return YES;
@@ -400,7 +394,7 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
         CGPoint offset = CGPointMake(0, CGRectGetHeight(self.headerTitleView.frame) - 25);
         [self.tableView setContentOffset:offset animated:animated];
     } else if (textField == self.passwordField) {
-        if (self.passwordOnly) {
+        if (self.controllerType == kSCHControllerPasswordOnlyView) {
             indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
         } else {
             indexPath = [NSIndexPath indexPathForRow:1 inSection:0];

@@ -11,12 +11,15 @@
 #import "SCHProfilePasswordViewController.h"
 #import "SCHSettingsViewController.h"
 #import "SCHBookShelfViewController.h"
-#import "SCHLoginViewController.h"
+#import "SCHLoginPasswordViewController.h"
 #import "SCHLibreAccessWebService.h"
 #import "SCHProfileItem.h"
 #import "SCHProfileViewCell.h"
 #import "SCHCustomNavigationBar.h"
 #import "SCHAuthenticationManager.h"
+#import "SCHSyncManager.h"
+#import "SCHURLManager.h"
+
 
 @interface SCHProfileViewController() <UITableViewDelegate> 
 
@@ -83,9 +86,13 @@
     [logoImageView release];
     
     self.tableView.tableHeaderView = self.headerView;
-    
-    self.loginController.passwordOnly = NO;
-    self.loginController.showHeaders = YES;
+    self.loginController.controllerType = kSCHControllerLoginView;
+    self.loginController.actionBlock = ^{
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(authenticationManager:) name:kSCHAuthenticationManagerSuccess object:nil];			
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(authenticationManager:) name:kSCHAuthenticationManagerFailure object:nil];					
+        
+        [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithUserName:[self.loginController.userNameField text] withPassword:[self.loginController.passwordField text]];
+    };
     
 }  
 
@@ -245,6 +252,33 @@
 	
 	[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
+
+#pragma mark - Authentication Manager
+
+- (void)authenticationManager:(NSNotification *)notification
+{
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	
+	if ([notification.name compare:kSCHAuthenticationManagerSuccess] == NSOrderedSame) {
+		[[SCHURLManager sharedURLManager] clear];
+		[[SCHSyncManager sharedSyncManager] clear];
+		[[SCHSyncManager sharedSyncManager] firstSync];
+		[self.loginController dismissModalViewControllerAnimated:YES];	
+	} else {
+		NSError *error = [notification.userInfo objectForKey:kSCHAuthenticationManagerNSError];
+		if (error!= nil) {
+			UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") 
+																 message:[error localizedDescription]
+																delegate:nil 
+													   cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+													   otherButtonTitles:nil]; 
+			[errorAlert show]; 
+			[errorAlert release];
+		}	
+        [self.loginController stopShowingProgress];
+	}
+}
+
 
 #pragma mark - Fetched results controller
 

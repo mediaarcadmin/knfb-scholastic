@@ -13,7 +13,7 @@
 
 @class SCHProfilePasswordViewController;
 @class SCHSettingsViewController;
-@class SCHLoginViewController;
+@class SCHLoginPasswordViewController;
 
 @interface SCHProfileViewController : UIViewController <NSFetchedResultsControllerDelegate, SCHProfilePasswordViewControllerDelegate> {
 }
@@ -23,7 +23,7 @@
 @property (nonatomic, retain) IBOutlet UIView *headerView;
 @property (nonatomic, retain) IBOutlet SCHProfilePasswordViewController *profilePasswordViewController;
 @property (nonatomic, retain) IBOutlet SCHSettingsViewController *settingsController;
-@property (nonatomic, retain) IBOutlet SCHLoginViewController *loginController;
+@property (nonatomic, retain) IBOutlet SCHLoginPasswordViewController *loginController;
 
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;

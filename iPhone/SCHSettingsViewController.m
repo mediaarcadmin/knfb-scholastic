@@ -8,7 +8,7 @@
 
 #import "SCHSettingsViewController.h"
 
-#import "SCHLoginViewController.h"
+#import "SCHLoginPasswordViewController.h"
 #import "SCHAuthenticationManager.h"
 #import "SCHDrmRegistrationSession.h"
 #import "SCHCustomNavigationBar.h"
