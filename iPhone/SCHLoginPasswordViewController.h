@@ -20,28 +20,27 @@ typedef void(^SCHActionBlock)(void);
 
 @interface SCHLoginPasswordViewController : UIViewController <UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate> 
 {
+    UILabel *titleTextLabel;
 }
 
 @property (readwrite) SCHLoginViewControllerType controllerType;
 @property (nonatomic, copy) SCHActionBlock actionBlock;
 
 // 
-@property (nonatomic, retain) IBOutlet UITextField *userNameField;
-@property (nonatomic, retain) IBOutlet UITextField *passwordField;
-@property (nonatomic, retain) IBOutlet UIButton *cancelButton;
+@property (nonatomic, retain) IBOutlet UITextField *topField;
+@property (nonatomic, retain) IBOutlet UITextField *bottomField;
 @property (nonatomic, retain) IBOutlet SCHCustomToolbar *topBar;
 @property (nonatomic, retain) IBOutlet UIImageView *topShadow;
 @property (nonatomic, retain) IBOutlet UILabel *headerTitleLabel;
 @property (nonatomic, retain) IBOutlet UIView *headerTitleView;
 @property (nonatomic, retain) IBOutlet UILabel *footerForgotLabel;
 @property (nonatomic, retain) IBOutlet UITableView *tableView;
+@property (nonatomic, retain) IBOutlet UILabel *titleTextLabel;
 
 @property (nonatomic, retain)  UIActivityIndicatorView *spinner;
 
 - (IBAction)actionButtonAction:(id)sender;
 - (IBAction)cancel:(id)sender;
-
-- (void)removeCancelButton;
 
 - (void)startShowingProgress;
 - (void)stopShowingProgress;
