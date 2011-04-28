@@ -9,10 +9,14 @@
 #import <Foundation/Foundation.h>
 #import "KNFBFlowEucBook.h"
 
+@class EucBookPageIndexPoint;
+@class SCHBookPoint;
+
 @interface SCHFlowEucBook : KNFBFlowEucBook {}
 
 @property (nonatomic, readonly) NSString *isbn;
 
 - (id)initWithISBN:(NSString *)newIsbn;
+- (EucBookPageIndexPoint *)bookPageIndexPointFromBookPoint:(SCHBookPoint *)bookPoint;
 
 @end

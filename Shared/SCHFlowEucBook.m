@@ -12,14 +12,15 @@
 #import "SCHAppBook.h"
 #import "SCHXPSProvider.h"
 #import "SCHBookPoint.h"
+#import "SCHTextFlowParagraphSource.h"
 #import "KNFBXPSConstants.h"
+#import <libEucalyptus/EucBookPageIndexPoint.h>
 
 @interface SCHFlowEucBook ()
 
 @property (nonatomic, assign) NSString *isbn;
 
 @end
-
 
 @implementation SCHFlowEucBook
 
@@ -80,8 +81,42 @@
 {
     SCHBookPoint *point = [[[SCHBookPoint alloc] init] autorelease];
     point.layoutPage = page;
-    return 0;
-    //return [self bookPageIndexPointFromBookmarkPoint:point];
+    return [self bookPageIndexPointFromBookPoint:point];
+}
+
+- (EucBookPageIndexPoint *)bookPageIndexPointFromBookPoint:(SCHBookPoint *)bookPoint
+{
+    if(!bookPoint) {
+        return nil;   
+    } else {
+        EucBookPageIndexPoint *eucIndexPoint = [[EucBookPageIndexPoint alloc] init];
+        
+        NSIndexPath *paragraphID = nil;
+        uint32_t wordOffset = 0;
+        
+        SCHBookManager *bookManager = [SCHBookManager sharedBookManager];
+        SCHTextFlowParagraphSource *paragraphSource = [bookManager checkOutParagraphSourceForBookIdentifier:self.isbn];
+        [paragraphSource bookmarkPoint:bookPoint
+                         toParagraphID:&paragraphID 
+                            wordOffset:&wordOffset];
+        [bookManager checkInParagraphSourceForBookIdentifier:self.isbn];
+        
+        eucIndexPoint.source = [paragraphID indexAtPosition:0];
+        eucIndexPoint.block = [EucCSSIntermediateDocument keyForDocumentTreeNodeKey:[paragraphID indexAtPosition:1]];
+        eucIndexPoint.word = wordOffset;
+        eucIndexPoint.element = bookPoint.elementOffset;
+        
+        if (self.fakeCover) {
+            eucIndexPoint.source++;
+        }        
+        
+        // EucIndexPoint words start with word 0 == before the first word,
+        // but Blio thinks that the first word is at 0.  This is a bit lossy,
+        // but there's not much else we can do.    
+        eucIndexPoint.word += 1;
+        
+        return [eucIndexPoint autorelease];  
+    }
 }
 
 @end
