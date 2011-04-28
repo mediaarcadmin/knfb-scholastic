@@ -11,7 +11,7 @@
 
 @implementation NSManagedObjectContext (Extensions)
 
-- (BOOL)emptyEntity:(NSString *)entityName error:(NSError **)error
+- (BOOL)BITemptyEntity:(NSString *)entityName error:(NSError **)error
 {
 	BOOL ret = NO;
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];

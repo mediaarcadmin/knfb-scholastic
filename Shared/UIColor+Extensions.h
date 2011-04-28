@@ -11,7 +11,7 @@
 
 @interface UIColor (Extensions)
 
-+ (UIColor *)colorWithHexString:(NSString *)hexString;
-- (NSString *)hexString;
++ (UIColor *)BITcolorWithHexString:(NSString *)hexString;
+- (NSString *)BIThexString;
 
 @end

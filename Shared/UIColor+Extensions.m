@@ -12,7 +12,7 @@ static NSString * const kUIColorExtensionHexStringPrefix = @"#";
 
 @implementation UIColor (Extensions)
 
-+ (UIColor *)colorWithHexString:(NSString *)hexString
++ (UIColor *)BITcolorWithHexString:(NSString *)hexString
 {
     UIColor *ret = nil;
     
@@ -39,7 +39,7 @@ static NSString * const kUIColorExtensionHexStringPrefix = @"#";
     return(ret);  
 }
 
-- (NSString *)hexString
+- (NSString *)BIThexString
 {
     NSString *ret = nil;
     

@@ -45,7 +45,7 @@
 {
 	NSError *error = nil;
 	
-	if (![self.managedObjectContext emptyEntity:kSCHUserSettingsItem error:&error]) {
+	if (![self.managedObjectContext BITemptyEntity:kSCHUserSettingsItem error:&error]) {
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
 		abort();
 	}	

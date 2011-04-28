@@ -65,7 +65,7 @@
 {
 	NSError *error = nil;
 	
-	if (![self.managedObjectContext emptyEntity:kSCHContentMetadataItem error:&error]) {
+	if (![self.managedObjectContext BITemptyEntity:kSCHContentMetadataItem error:&error]) {
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
 		abort();
 	}	
