@@ -30,7 +30,6 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
 
 @synthesize controllerType;
 @synthesize actionBlock;
-@synthesize loginButtonText;
 
 @synthesize userNameField;
 @synthesize passwordField;
@@ -65,7 +64,6 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
     [actionBlock release], actionBlock = nil;
-    [loginButtonText release], loginButtonText = nil;
 	
     [self releaseViewObjects];    
     [super dealloc];
@@ -166,11 +164,17 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
     self.loginButton.titleLabel.shadowColor = [UIColor colorWithWhite:0 alpha:0.5F];
     self.loginButton.titleLabel.shadowOffset = CGSizeMake(0, -1);
     self.loginButton.titleLabel.textAlignment = UITextAlignmentCenter;
-    
-    if (!self.loginButtonText) {
-        [self.loginButton setTitle:NSLocalizedString(@"Log In", @"Log In") forState:UIControlStateNormal];
-    } else {
-        [self.loginButton setTitle:self.loginButtonText forState:UIControlStateNormal];
+
+    switch (self.controllerType) {
+        case kSCHControllerLoginView:
+            [self.loginButton setTitle:NSLocalizedString(@"Log In", @"Log In") forState:UIControlStateNormal];
+            break;
+        case kSCHControllerPasswordOnlyView:
+            [self.loginButton setTitle:NSLocalizedString(@"Open Bookshelf", @"Open Bookshelf") forState:UIControlStateNormal];
+            break;
+            
+        default:
+            break;
     }
     
       [self.topShadow setImage:[[UIImage imageNamed:@"reading-view-iphone-top-shadow.png"] stretchableImageWithLeftCapWidth:15.0f topCapHeight:0]];
@@ -289,6 +293,7 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
 {
     switch (self.controllerType) {
         case kSCHControllerLoginView:
+        case kSCHControllerPasswordOnlyView:
         {
             return 2;
         }
