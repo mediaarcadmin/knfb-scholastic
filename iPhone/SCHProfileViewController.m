@@ -33,7 +33,7 @@
 
 @implementation SCHProfileViewController
 
-@synthesize profilePasswordViewController;
+@synthesize profilePasswordController;
 @synthesize tableView;
 @synthesize backgroundView;
 @synthesize headerView;
@@ -52,7 +52,7 @@
     [headerView release], headerView = nil;
     [settingsButton release], settingsButton = nil;
     
-    [profilePasswordViewController release], profilePasswordViewController = nil;
+    [profilePasswordController release], profilePasswordController = nil;
     [settingsController release], settingsController = nil;
     [loginController release], loginController = nil;    
 }
@@ -72,7 +72,7 @@
 {
     [super viewDidLoad];
 	
-	self.profilePasswordViewController.delegate = self;
+	//self.profilePasswordViewController.delegate = self;
     
     self.settingsButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [settingsButton addTarget:self action:@selector(pushSettingsController) 
@@ -86,6 +86,7 @@
     [logoImageView release];
     
     self.tableView.tableHeaderView = self.headerView;
+
     self.loginController.controllerType = kSCHControllerLoginView;
     self.loginController.actionBlock = ^{
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(authenticationManager:) name:kSCHAuthenticationManagerSuccess object:nil];			
@@ -94,6 +95,8 @@
         [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithUserName:[self.loginController.userNameField text] withPassword:[self.loginController.passwordField text]];
     };
     
+    self.profilePasswordController.controllerType = kSCHControllerPasswordOnlyView;
+    // block gets set when a row is selected
 }  
 
 - (void)viewDidUnload 
@@ -242,9 +245,26 @@
             if ([profileItem.ProfilePasswordRequired boolValue] == NO) {                
                 [self pushBookshelvesControllerWithProfileItem:profileItem];            
             } else {
-                profilePasswordViewController.managedObjectContext = self.managedObjectContext;
-                profilePasswordViewController.profileItem = profileItem;
-                [self presentModalViewController:profilePasswordViewController animated:YES];
+                self.profilePasswordController.actionBlock = ^{
+                    
+                    NSLog(@"Executing action block!");
+                    
+                    if ([profileItem validatePasswordWith:self.profilePasswordController.passwordField.text] == NO) {
+                        UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") 
+                                                                             message:NSLocalizedString(@"Incorrect password", nil)
+                                                                            delegate:nil 
+                                                                   cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+                                                                   otherButtonTitles:nil]; 
+                        [errorAlert show]; 
+                        [errorAlert release];
+                    } else {
+                        [self.profilePasswordController dismissModalViewControllerAnimated:YES];	
+                        self.profilePasswordController.passwordField.text = @"";
+                        [self pushBookshelvesControllerWithProfileItem:profileItem];            
+                    }	
+                };
+
+                [self presentModalViewController:self.profilePasswordController animated:YES];
             }
 #endif	
 		}	break;

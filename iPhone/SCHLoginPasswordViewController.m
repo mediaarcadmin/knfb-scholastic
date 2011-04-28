@@ -181,6 +181,11 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
 {
     [super viewWillAppear:animated];
     [self setupAssetsForOrientation:[[UIApplication sharedApplication] statusBarOrientation]];
+    
+    if (self.controllerType == kSCHControllerPasswordOnlyView ||
+        self.controllerType == kSCHControllerDoublePasswordView) {
+        [self.passwordField becomeFirstResponder];
+    }
 }
 
 #pragma mark - Orientation
@@ -250,9 +255,15 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
 - (IBAction)actionButtonAction:(id)sender
 {
     if (self.actionBlock) {
+        NSLog(@"LPVC: executing block.");
         self.actionBlock();
+    } else {
+        NSLog(@"LPVC: ***NOT*** executing block.");
     }
-    [self startShowingProgress];
+    
+    if (self.controllerType == kSCHControllerLoginView) {
+        [self startShowingProgress];
+    }
 }
 
 - (IBAction)cancel:(id)sender
@@ -373,17 +384,35 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    if (textField == self.userNameField) {
-        [self.passwordField becomeFirstResponder];
-        return YES;
+    switch (self.controllerType) {
+        case kSCHControllerLoginView:
+        {
+            if (textField == self.userNameField) {
+                [self.passwordField becomeFirstResponder];
+                return YES;
+            }
+            
+            if (textField == self.passwordField && [self.userNameField.text length] > 0 && [self.passwordField.text length] > 0) {
+                [self.passwordField resignFirstResponder];
+                [self actionButtonAction:nil];
+            }
+            
+            return YES;
+            break;
+        }  
+        case kSCHControllerPasswordOnlyView:
+        {
+            if (textField == self.passwordField && [self.passwordField.text length] > 0) {
+                [self actionButtonAction:nil];
+            }
+            return YES;
+            break;
+        }
+        default:
+            NSLog(@"Unknown controller mode!");
+            return NO;
+            break;
     }
-    
-    if (textField == self.passwordField && [self.userNameField.text length] > 0 && [self.passwordField.text length] > 0) {
-        [self.passwordField resignFirstResponder];
-        [self actionButtonAction:nil];
-    }
-    
-    return YES;
 }
 
 - (void)scrollToTextField:(UITextField *)textField animated: (BOOL) animated
