@@ -32,7 +32,7 @@ static const CGFloat kProfileViewCellButtonWidth = 283.0f;
 
 @synthesize showHeaders;
 @synthesize passwordOnly;
-//@synthesize loginBlock;
+@synthesize actionBlock;
 @synthesize loginButtonText;
 
 @synthesize userNameField;
@@ -41,6 +41,7 @@ static const CGFloat kProfileViewCellButtonWidth = 283.0f;
 @synthesize cancelButton;
 @synthesize spinner;
 @synthesize topBar;
+@synthesize topShadow;
 @synthesize headerTitleLabel;
 @synthesize headerTitleView;
 @synthesize footerForgotLabel;
@@ -56,6 +57,7 @@ static const CGFloat kProfileViewCellButtonWidth = 283.0f;
 	[cancelButton release], cancelButton = nil;
 	[spinner release], spinner = nil;
     [topBar release], topBar = nil;
+    [topShadow release], topShadow = nil;
     [headerTitleLabel release], headerTitleLabel = nil;
     [headerTitleView release], headerTitleView = nil;
     [footerForgotLabel release], footerForgotLabel = nil;
@@ -65,7 +67,7 @@ static const CGFloat kProfileViewCellButtonWidth = 283.0f;
 - (void)dealloc 
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-//    [loginBlock release], loginBlock = nil;
+    [actionBlock release], actionBlock = nil;
     [loginButtonText release], loginButtonText = nil;
 	
     [self releaseViewObjects];    
@@ -75,13 +77,8 @@ static const CGFloat kProfileViewCellButtonWidth = 283.0f;
 
 - (void)viewDidUnload 
 {
-    [self releaseViewObjects];    
     [super viewDidUnload];
-}
-
-- (void)didReceiveMemoryWarning 
-{
-    [super didReceiveMemoryWarning];
+    [self releaseViewObjects];    
 }
 
 #pragma mark - View Lifecycle
@@ -160,6 +157,7 @@ static const CGFloat kProfileViewCellButtonWidth = 283.0f;
         [self.loginButton setTitle:self.loginButtonText forState:UIControlStateNormal];
     }
     
+//      [self.topShadow setImage:[[UIImage imageNamed:@"reading-view-iphone-top-shadow.png"] stretchableImageWithLeftCapWidth:15.0f topCapHeight:0]];
 
 }
 
@@ -185,10 +183,26 @@ static const CGFloat kProfileViewCellButtonWidth = 283.0f;
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation
 {
     if (UIInterfaceOrientationIsLandscape(orientation)) {
-        [topBar setBackgroundImage:[UIImage imageNamed:@"admin-iphone-landscape-top-toolbar.png"]];
+        [self.topBar setBackgroundImage:[UIImage imageNamed:@"admin-iphone-landscape-top-toolbar.png"]];
+        CGRect barFrame = self.topBar.frame;
+        if (barFrame.size.height == 44) {
+            barFrame.size.height = 34;
+            self.topBar.frame = barFrame;
+        }
     } else {
-        [topBar setBackgroundImage:[UIImage imageNamed:@"admin-iphone-portrait-top-toolbar.png"]];
+        [self.topBar setBackgroundImage:[UIImage imageNamed:@"admin-iphone-portrait-top-toolbar.png"]];
+        CGRect barFrame = self.topBar.frame;
+        if (barFrame.size.height == 34) {
+            barFrame.size.height = 44;
+            self.topBar.frame = barFrame;
+        }
     }
+    
+    CGRect topShadowFrame = self.topShadow.frame;
+    topShadowFrame.origin.y = CGRectGetMinY(self.topBar.frame) + 
+    [self.topBar backgroundImage].size.height;
+    self.topShadow.frame = topShadowFrame;
+
 }
 
 #pragma mark - Authentication Manager
@@ -224,6 +238,10 @@ static const CGFloat kProfileViewCellButtonWidth = 283.0f;
 
 - (IBAction)login:(id)sender
 {
+    if (self.actionBlock) {
+        self.actionBlock();
+    }
+    
 	[self.userNameField resignFirstResponder];
 	[self.passwordField resignFirstResponder];
     [spinner startAnimating];
@@ -277,18 +295,17 @@ static const CGFloat kProfileViewCellButtonWidth = 283.0f;
         return 0;
     }
 }
-
-- (float)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+/*
+- (float)tableView:(UITableView *)aTableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ([indexPath section] == 0) {
-        return 44;
-    } else if ([indexPath section] == 1) {
+    // login button height is different from cell height
+    if ([indexPath section] == 1) {
         return 54;
     } else {
-        return 0;
+        return aTableView.rowHeight;
     }
 }
-
+*/
 - (UITableViewCell*)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSString *cellIdentifier = @"loginViewCell";
@@ -308,16 +325,18 @@ static const CGFloat kProfileViewCellButtonWidth = 283.0f;
         {
             if (indexPath.row == 0 && !self.passwordOnly) {
                 CGRect fieldFrame = self.userNameField.frame;
-                fieldFrame.origin.x = 10;
-                fieldFrame.size.height = 40;
+                fieldFrame.origin.x = ceilf((CGRectGetWidth(cell.contentView.bounds) - kProfileViewCellButtonWidth) / 2.0f);
+                fieldFrame.size.height = 48;
+                fieldFrame.size.width = kProfileViewCellButtonWidth;
                 fieldFrame.origin.y = 2;
                 self.userNameField.frame = fieldFrame;
                 [cell addSubview:self.userNameField];
                 break;
             } else {
                 CGRect fieldFrame = self.passwordField.frame;
-                fieldFrame.origin.x = 10;
-                fieldFrame.size.height = 40;
+                fieldFrame.origin.x = ceilf((CGRectGetWidth(cell.contentView.bounds) - kProfileViewCellButtonWidth) / 2.0f);
+                fieldFrame.size.height = 48;
+                fieldFrame.size.width = kProfileViewCellButtonWidth;
                 fieldFrame.origin.y = 2;
                 self.passwordField.frame = fieldFrame;
                 [cell addSubview:self.passwordField];
@@ -330,7 +349,7 @@ static const CGFloat kProfileViewCellButtonWidth = 283.0f;
             UIImage *bgImage = [UIImage imageNamed:@"button-blue"];
 
             CGRect buttonFrame = CGRectMake(ceilf((CGRectGetWidth(cell.contentView.bounds) - kProfileViewCellButtonWidth) / 2.0f), 
-                                            ceilf(((CGRectGetHeight(cell.contentView.bounds) - 10) - bgImage.size.height) / 2.0f) + 10, 
+                                            ceilf(((CGRectGetHeight(cell.contentView.bounds) - 10) - bgImage.size.height) / 2.0f) + 4, 
                                             kProfileViewCellButtonWidth, 
                                             bgImage.size.height);
             
@@ -368,7 +387,10 @@ static const CGFloat kProfileViewCellButtonWidth = 283.0f;
     NSIndexPath *indexPath = nil;
     
     if (textField == self.userNameField) {
-        indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+//        indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+        CGPoint offset = CGPointMake(0, CGRectGetHeight(self.headerTitleView.frame) - 25);
+        NSLog(@"Offset is %@", NSStringFromCGPoint(offset));
+        [self.tableView setContentOffset:offset animated:animated];
     } else if (textField == self.passwordField) {
         if (self.passwordOnly) {
             indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
@@ -380,7 +402,6 @@ static const CGFloat kProfileViewCellButtonWidth = 283.0f;
     if (indexPath) {
         [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionNone animated:animated];
     }
-
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
@@ -391,6 +412,8 @@ static const CGFloat kProfileViewCellButtonWidth = 283.0f;
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
 }
+
+#pragma mark - UIKeyboard Notifications
 
 - (void)keyboardWillShow:(NSNotification *) notification
 {
@@ -423,9 +446,9 @@ static const CGFloat kProfileViewCellButtonWidth = 283.0f;
     [UIView commitAnimations];
    
     if ([self.userNameField isFirstResponder]) {
-        [self scrollToTextField:self.userNameField animated:NO];
+        [self scrollToTextField:self.userNameField animated:YES];
     } else if ([self.passwordField isFirstResponder]) {
-        [self scrollToTextField:self.passwordField animated:NO];
+        [self scrollToTextField:self.passwordField animated:YES];
     }
 }
 
