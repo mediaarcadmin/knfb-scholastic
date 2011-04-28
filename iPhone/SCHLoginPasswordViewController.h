@@ -24,7 +24,6 @@ typedef void(^SCHActionBlock)(void);
 
 @property (readwrite) SCHLoginViewControllerType controllerType;
 @property (nonatomic, copy) SCHActionBlock actionBlock;
-@property (nonatomic, copy) NSString *loginButtonText;
 
 // 
 @property (nonatomic, retain) IBOutlet UITextField *userNameField;

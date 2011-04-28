@@ -30,7 +30,6 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
 
 @synthesize controllerType;
 @synthesize actionBlock;
-@synthesize loginButtonText;
 
 @synthesize userNameField;
 @synthesize passwordField;
@@ -65,7 +64,6 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
     [actionBlock release], actionBlock = nil;
-    [loginButtonText release], loginButtonText = nil;
 	
     [self releaseViewObjects];    
     [super dealloc];
@@ -166,11 +164,17 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
     self.loginButton.titleLabel.shadowColor = [UIColor colorWithWhite:0 alpha:0.5F];
     self.loginButton.titleLabel.shadowOffset = CGSizeMake(0, -1);
     self.loginButton.titleLabel.textAlignment = UITextAlignmentCenter;
-    
-    if (!self.loginButtonText) {
-        [self.loginButton setTitle:NSLocalizedString(@"Log In", @"Log In") forState:UIControlStateNormal];
-    } else {
-        [self.loginButton setTitle:self.loginButtonText forState:UIControlStateNormal];
+
+    switch (self.controllerType) {
+        case kSCHControllerLoginView:
+            [self.loginButton setTitle:NSLocalizedString(@"Log In", @"Log In") forState:UIControlStateNormal];
+            break;
+        case kSCHControllerPasswordOnlyView:
+            [self.loginButton setTitle:NSLocalizedString(@"Open Bookshelf", @"Open Bookshelf") forState:UIControlStateNormal];
+            break;
+            
+        default:
+            break;
     }
     
       [self.topShadow setImage:[[UIImage imageNamed:@"reading-view-iphone-top-shadow.png"] stretchableImageWithLeftCapWidth:15.0f topCapHeight:0]];
@@ -181,6 +185,11 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
 {
     [super viewWillAppear:animated];
     [self setupAssetsForOrientation:[[UIApplication sharedApplication] statusBarOrientation]];
+    
+    if (self.controllerType == kSCHControllerPasswordOnlyView ||
+        self.controllerType == kSCHControllerDoublePasswordView) {
+        [self.passwordField becomeFirstResponder];
+    }
 }
 
 #pragma mark - Orientation
@@ -250,9 +259,15 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
 - (IBAction)actionButtonAction:(id)sender
 {
     if (self.actionBlock) {
+        NSLog(@"LPVC: executing block.");
         self.actionBlock();
+    } else {
+        NSLog(@"LPVC: ***NOT*** executing block.");
     }
-    [self startShowingProgress];
+    
+    if (self.controllerType == kSCHControllerLoginView) {
+        [self startShowingProgress];
+    }
 }
 
 - (IBAction)cancel:(id)sender
@@ -278,6 +293,7 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
 {
     switch (self.controllerType) {
         case kSCHControllerLoginView:
+        case kSCHControllerPasswordOnlyView:
         {
             return 2;
         }
@@ -373,17 +389,35 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    if (textField == self.userNameField) {
-        [self.passwordField becomeFirstResponder];
-        return YES;
+    switch (self.controllerType) {
+        case kSCHControllerLoginView:
+        {
+            if (textField == self.userNameField) {
+                [self.passwordField becomeFirstResponder];
+                return YES;
+            }
+            
+            if (textField == self.passwordField && [self.userNameField.text length] > 0 && [self.passwordField.text length] > 0) {
+                [self.passwordField resignFirstResponder];
+                [self actionButtonAction:nil];
+            }
+            
+            return YES;
+            break;
+        }  
+        case kSCHControllerPasswordOnlyView:
+        {
+            if (textField == self.passwordField && [self.passwordField.text length] > 0) {
+                [self actionButtonAction:nil];
+            }
+            return YES;
+            break;
+        }
+        default:
+            NSLog(@"Unknown controller mode!");
+            return NO;
+            break;
     }
-    
-    if (textField == self.passwordField && [self.userNameField.text length] > 0 && [self.passwordField.text length] > 0) {
-        [self.passwordField resignFirstResponder];
-        [self actionButtonAction:nil];
-    }
-    
-    return YES;
 }
 
 - (void)scrollToTextField:(UITextField *)textField animated: (BOOL) animated
