@@ -1024,7 +1024,7 @@
 		52E622FD1358544200245CA7 /* SCHThemePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHThemePickerViewController.h; sourceTree = "<group>"; };
 		52E622FE1358544200245CA7 /* SCHThemePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHThemePickerViewController.m; sourceTree = "<group>"; };
 		52E622FF1358544200245CA7 /* SCHThemePickerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHThemePickerViewController.xib; sourceTree = "<group>"; };
-		52EF4E5C12E6E01C00E374F7 /* SCHLoginPasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; path = SCHLoginPasswordViewController.h; sourceTree = "<group>"; };
+		52EF4E5C12E6E01C00E374F7 /* SCHLoginPasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHLoginPasswordViewController.h; sourceTree = "<group>"; };
 		52EF4E5D12E6E01C00E374F7 /* SCHLoginPasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHLoginPasswordViewController.m; sourceTree = "<group>"; };
 		52EF4E5E12E6E01C00E374F7 /* SCHLoginPasswordViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SCHLoginPasswordViewController.xib; sourceTree = "<group>"; };
 		52EF508512E739E900E374F7 /* LibreAccessServiceSvc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LibreAccessServiceSvc.h; sourceTree = "<group>"; };
