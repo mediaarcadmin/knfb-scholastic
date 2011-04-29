@@ -185,18 +185,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     
     NSLog(@"XPSCategory: %@", book.XPSCategory);
     
-    if (self.flowView) {
-        self.readingView = [[SCHFlowView alloc] initWithFrame:self.view.bounds isbn:self.isbn];
-    } else {
-        self.readingView = [[SCHLayoutView alloc] initWithFrame:self.view.bounds isbn:self.isbn]; 
-    }
-    
     self.readingView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.readingView.delegate = self;
-
-    // FIXME: this should be a stored preference
-    self.currentFontSizeIndex = 2;
-    [self.readingView setFontPointIndex:self.currentFontSizeIndex];
     
     if (self.flowView) {
         [self.fontSegmentedControl setEnabled:YES forSegmentAtIndex:0];
@@ -208,6 +198,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         [self.flowFixedSegmentedControl setSelectedSegmentIndex:1];
     }
     
+    // FIXME: this should be a stored preference
+    self.currentFontSizeIndex = 2;
     
     // FIXME: this should be a stored preference
     SCHReadingViewPaperType storedType = SCHReadingViewPaperTypeWhite;
@@ -488,6 +480,21 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 #pragma mark - Flowed/Fixed Toggle
 
+- (void)setLayoutType:(SCHReadingViewLayoutType)newLayoutType
+{
+    layoutType = newLayoutType;
+    
+    switch (newLayoutType) {
+        case SCHReadingViewLayoutTypeFlow:
+            [self.readingView setPageTexture:[UIImage imageNamed: @"paper-black.png"] isDark:YES];
+            break;
+        case SCHReadingViewLayoutTypeFixed:    
+        default:
+            [self.readingView setPageTexture:[UIImage imageNamed: @"paper-white.png"] isDark:NO];
+            break;
+    }
+}
+
 -(IBAction) flowedFixedSegmentChanged: (UISegmentedControl *) segControl
 {
     int selected = segControl.selectedSegmentIndex;
@@ -546,14 +553,26 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     }
 }
 
--(IBAction)paperTypeSegmentChanged: (UISegmentedControl *) segControl
+- (IBAction)paperTypeSegmentChanged: (UISegmentedControl *) segControl
 {
     self.paperType = segControl.selectedSegmentIndex;
 }
 
 #pragma mark - Font Size Toggle
 
--(IBAction) fontSizeSegmentPressed: (UISegmentedControl *) segControl
+- (void)setCurrentFontSizeIndex:(int)newFontSizeIndex
+{
+    currentFontSizeIndex = newFontSizeIndex;
+    
+    [self.readingView setFontPointIndex:newFontSizeIndex];
+    
+    self.pageScrubber.minimumValue = 1;
+	self.pageScrubber.maximumValue = [self.readingView pageCount];
+	self.pageScrubber.continuous = YES;
+	self.pageScrubber.value = self.currentPageIndex;
+}
+
+- (IBAction) fontSizeSegmentPressed: (UISegmentedControl *) segControl
 {
     int selected = segControl.selectedSegmentIndex;
     
@@ -575,15 +594,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         index = 0;
     }
     
-    [self.readingView setFontPointIndex:index];
     self.currentFontSizeIndex = index;
-    
-    self.pageScrubber.minimumValue = 1;
-	self.pageScrubber.maximumValue = [self.readingView pageCount];
-	self.pageScrubber.continuous = YES;
-	self.pageScrubber.value = self.currentPageIndex;
-
-    
 }
 
 

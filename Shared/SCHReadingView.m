@@ -37,12 +37,6 @@
     [super dealloc];
 }
 
-- (void)initialiseView
-{
-    xpsProvider = [[[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.isbn] retain];
-    textFlow    = [[[SCHBookManager sharedBookManager] checkOutTextFlowForBookIdentifier:self.isbn] retain];
-}
-
 - (id) initWithFrame:(CGRect)frame isbn:(id)aIsbn
 {
     self = [super initWithFrame:frame];
@@ -51,7 +45,8 @@
         isbn = [aIsbn retain];
         self.opaque = YES;
         
-        [self initialiseView];
+        xpsProvider = [[[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.isbn] retain];
+        textFlow    = [[[SCHBookManager sharedBookManager] checkOutTextFlowForBookIdentifier:self.isbn] retain];
     }
     return self;
 }

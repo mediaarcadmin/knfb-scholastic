@@ -19,6 +19,11 @@ typedef enum {
 	SCHReadingViewPaperTypeSepia
 } SCHReadingViewPaperType;
 
+typedef enum {
+	SCHReadingViewLayoutTypeFixed = 0,
+	SCHReadingViewLayoutTypeFlow,
+} SCHReadingViewLayoutType;
+
 @protocol SCHReadingViewDelegate <NSObject>
 
 @optional
