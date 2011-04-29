@@ -9,6 +9,9 @@
 #import <UIKit/UIKit.h>
 
 @class SCHReadingView;
+@class SCHBookPoint;
+@class SCHXPSProvider;
+@class SCHTextFlow;
 
 typedef enum {
 	SCHReadingViewPaperTypeBlack = 0,
@@ -31,10 +34,13 @@ typedef enum {
 
 @property (nonatomic, retain) NSString *isbn;
 @property (nonatomic, retain) id <SCHReadingViewDelegate> delegate;
+@property (nonatomic, retain) SCHXPSProvider *xpsProvider;
+@property (nonatomic, retain) SCHTextFlow *textFlow;
 
 - (id)initWithFrame:(CGRect)frame isbn:(id)isbn;
 
 // Overridden methods
+// FIXME: change these to a protocol
 
 - (void)jumpToPageAtIndex:(NSUInteger)pageIndex animated:(BOOL)animated;
 - (void)jumpToNextZoomBlock;
@@ -46,6 +52,12 @@ typedef enum {
 - (void) setPaperType: (SCHReadingViewPaperType) type;
 - (void) setFontPointIndex: (NSInteger) index;
 - (NSInteger) maximumFontIndex;
-
 - (NSInteger) pageCount;
+
+- (NSUInteger)pageIndexForBookPoint:(SCHBookPoint *)bookPoint;
+- (NSString *)pageLabelForPageAtIndex:(NSUInteger)pageIndex;
+- (NSString *)displayPageNumberForPageAtIndex:(NSUInteger)pageIndex;
+
+- (void)goToBookPoint:(SCHBookPoint *)bookPoint animated:(BOOL)animated;
+
 @end
