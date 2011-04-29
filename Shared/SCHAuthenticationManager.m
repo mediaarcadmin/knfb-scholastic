@@ -13,7 +13,7 @@
 #import "SCHLibreAccessWebService.h"
 #import "SFHFKeychainUtils.h"
 #import "Reachability.h"
-#import "SCHDrmRegistrationSession.h"
+#import "SCHDrmSession.h"
 
 #import "SCHNonDRMAuthenticationManager.h"
 

@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "SCHBookOperation.h"
-#import "SCHDrmRegistrationSession.h"
+#import "SCHDrmSession.h"
 #import "SCHDrmLicenseAcquisitionSessionDelegate.h"
 
 @interface SCHLicenseAcquisitionOperation : SCHBookOperation<SCHDrmLicenseAcquisitionSessionDelegate> {

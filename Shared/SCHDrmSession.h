@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "KNFBDrmBookDecrypter.h"
 
 static NSString * const kSCHDrmErrorDomain = @"DrmErrorDomain";
 static NSInteger const kSCHDrmInitializationError = 2000;
@@ -30,17 +31,53 @@ typedef enum  {
 	SCHDrmSoapActionAcknowledgeLicense,
 } SCHDrmSoapActionType;
 
+struct SCHDrmIVars;
+
 // Do not instantiate this class.
 @interface SCHDrmSession : NSObject {
-	
+	struct SCHDrmIVars *drmIVars; 
 }
-
-@property (nonatomic, assign) BOOL sessionInitialized;
-@property (nonatomic, retain) NSString* bookID;
-@property (nonatomic, retain) NSString* boundBookID;
-
-- (NSMutableURLRequest *)createDrmRequest:(const void*)msg messageSize:(NSUInteger)msgSize  url:(NSString*)url soapAction:(SCHDrmSoapActionType)action;
+- (id)initWithBook:(NSString*)isbn;
 - (NSError*)drmError:(NSInteger)errCode message:(NSString*)message;
 
+@end
+
+
+@protocol SCHDrmRegistrationSessionDelegate;
+
+@interface SCHDrmRegistrationSession : SCHDrmSession   
+{ 
+    id<SCHDrmRegistrationSessionDelegate> delegate;
+    BOOL isJoining;
+    NSURLConnection *urlConnection;
+    NSMutableData *connectionData;
+}
+
+@property (nonatomic, retain) id<SCHDrmRegistrationSessionDelegate> delegate;
+
+- (void)registerDevice:(NSString *)token;
+- (void)deregisterDevice:(NSString *)token;
 
 @end
+
+
+@protocol SCHDrmLicenseAcquisitionSessionDelegate;
+
+@interface SCHDrmLicenseAcquisitionSession : SCHDrmSession      
+{ 
+    id<SCHDrmLicenseAcquisitionSessionDelegate> delegate;
+}
+
+@property (nonatomic, retain) id<SCHDrmLicenseAcquisitionSessionDelegate> delegate;
+
+- (void)acquireLicense:(NSString *)token bookID:(NSString*)isbn;
+
+@end
+
+@interface SCHDrmDecryptionSession : SCHDrmSession<KNFBDrmBookDecrypter>   
+{ 
+}
+
+@end
+ 
+ 

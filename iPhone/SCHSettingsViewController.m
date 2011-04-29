@@ -10,7 +10,7 @@
 
 #import "SCHLoginPasswordViewController.h"
 #import "SCHAuthenticationManager.h"
-#import "SCHDrmRegistrationSession.h"
+#import "SCHDrmSession.h"
 #import "SCHCustomNavigationBar.h"
 
 extern NSString * const kSCHAuthenticationManagerDeviceKey;

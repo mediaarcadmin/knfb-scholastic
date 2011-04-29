@@ -129,10 +129,7 @@
 		52EF553E12E9EB8500E374F7 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52EF553D12E9EB8500E374F7 /* Security.framework */; };
 		52EF570A12ED977C00E374F7 /* NSManagedObjectContext+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF570912ED977C00E374F7 /* NSManagedObjectContext+Extensions.m */; };
 		52EF579712EDBE6E00E374F7 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF579612EDBE6E00E374F7 /* SFHFKeychainUtils.m */; };
-		A3A38E08133A803500C325A3 /* SCHDrmRegistrationSession.m in Sources */ = {isa = PBXBuildFile; fileRef = A3A38E04133A803500C325A3 /* SCHDrmRegistrationSession.m */; };
-		A3A38E09133A803500C325A3 /* SCHDrmSession.m in Sources */ = {isa = PBXBuildFile; fileRef = A3A38E07133A803500C325A3 /* SCHDrmSession.m */; };
-		A3A38E0A133A803500C325A3 /* SCHDrmRegistrationSession.m in Sources */ = {isa = PBXBuildFile; fileRef = A3A38E04133A803500C325A3 /* SCHDrmRegistrationSession.m */; };
-		A3A38E0B133A803500C325A3 /* SCHDrmSession.m in Sources */ = {isa = PBXBuildFile; fileRef = A3A38E07133A803500C325A3 /* SCHDrmSession.m */; };
+		A33F7311136B050A00BAA101 /* SCHDrmSession.m in Sources */ = {isa = PBXBuildFile; fileRef = A33F7310136B050A00BAA101 /* SCHDrmSession.m */; };
 		A3A38E61133A811400C325A3 /* devcerttemplate.dat in Resources */ = {isa = PBXBuildFile; fileRef = A3A38E5F133A811400C325A3 /* devcerttemplate.dat */; };
 		A3A38E62133A811400C325A3 /* iphonecert.dat in Resources */ = {isa = PBXBuildFile; fileRef = A3A38E60133A811400C325A3 /* iphonecert.dat */; };
 		A3A38E63133A811400C325A3 /* devcerttemplate.dat in Resources */ = {isa = PBXBuildFile; fileRef = A3A38E5F133A811400C325A3 /* devcerttemplate.dat */; };
@@ -1037,14 +1034,12 @@
 		52EF579512EDBE6E00E374F7 /* SFHFKeychainUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFHFKeychainUtils.h; sourceTree = "<group>"; };
 		52EF579612EDBE6E00E374F7 /* SFHFKeychainUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFHFKeychainUtils.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Scholastic-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Scholastic-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
+		A33F730F136B050A00BAA101 /* SCHDrmSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHDrmSession.h; path = Shared/SCHDrmSession.h; sourceTree = "<group>"; };
+		A33F7310136B050A00BAA101 /* SCHDrmSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHDrmSession.m; path = Shared/SCHDrmSession.m; sourceTree = "<group>"; };
 		A37E7BD01358DFE90002A733 /* SCHDrmLicenseAcquisitionSessionDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHDrmLicenseAcquisitionSessionDelegate.h; path = Shared/SCHDrmLicenseAcquisitionSessionDelegate.h; sourceTree = "<group>"; };
 		A3A38E01133A7FA300C325A3 /* DrmGlobals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DrmGlobals.h; path = Shared/Libraries/DRM/DrmGlobals.h; sourceTree = "<group>"; };
 		A3A38E02133A7FFF00C325A3 /* KeychainItemWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KeychainItemWrapper.h; path = Shared/Libraries/DRM/KeychainItemWrapper.h; sourceTree = "<group>"; };
-		A3A38E03133A803500C325A3 /* SCHDrmRegistrationSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHDrmRegistrationSession.h; path = Shared/SCHDrmRegistrationSession.h; sourceTree = "<group>"; };
-		A3A38E04133A803500C325A3 /* SCHDrmRegistrationSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHDrmRegistrationSession.m; path = Shared/SCHDrmRegistrationSession.m; sourceTree = "<group>"; };
 		A3A38E05133A803500C325A3 /* SCHDrmRegistrationSessionDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHDrmRegistrationSessionDelegate.h; path = Shared/SCHDrmRegistrationSessionDelegate.h; sourceTree = "<group>"; };
-		A3A38E06133A803500C325A3 /* SCHDrmSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHDrmSession.h; path = Shared/SCHDrmSession.h; sourceTree = "<group>"; };
-		A3A38E07133A803500C325A3 /* SCHDrmSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHDrmSession.m; path = Shared/SCHDrmSession.m; sourceTree = "<group>"; };
 		A3A38E5F133A811400C325A3 /* devcerttemplate.dat */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = devcerttemplate.dat; sourceTree = "<group>"; };
 		A3A38E60133A811400C325A3 /* iphonecert.dat */ = {isa = PBXFileReference; lastKnownFileType = file; path = iphonecert.dat; sourceTree = "<group>"; };
 		A3D933851326D92000037111 /* libPlayReadyPK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPlayReadyPK.a; path = Shared/Libraries/DRM/libPlayReadyPK.a; sourceTree = "<group>"; };
@@ -2029,12 +2024,10 @@
 		52ACF463133B547700B2E28C /* DRM */ = {
 			isa = PBXGroup;
 			children = (
+				A33F730F136B050A00BAA101 /* SCHDrmSession.h */,
+				A33F7310136B050A00BAA101 /* SCHDrmSession.m */,
 				A37E7BD01358DFE90002A733 /* SCHDrmLicenseAcquisitionSessionDelegate.h */,
-				A3A38E03133A803500C325A3 /* SCHDrmRegistrationSession.h */,
-				A3A38E04133A803500C325A3 /* SCHDrmRegistrationSession.m */,
 				A3A38E05133A803500C325A3 /* SCHDrmRegistrationSessionDelegate.h */,
-				A3A38E06133A803500C325A3 /* SCHDrmSession.h */,
-				A3A38E07133A803500C325A3 /* SCHDrmSession.m */,
 			);
 			name = DRM;
 			sourceTree = "<group>";
@@ -3466,8 +3459,6 @@
 				5243545A13337BAC00282B53 /* SCHAppBookOrder.m in Sources */,
 				528433EB133382EA0010BAAB /* SCHAppDictionaryState.m in Sources */,
 				F8BEE8B01334FD44008B40DA /* SCHAppBook.m in Sources */,
-				A3A38E08133A803500C325A3 /* SCHDrmRegistrationSession.m in Sources */,
-				A3A38E09133A803500C325A3 /* SCHDrmSession.m in Sources */,
 				C908D85D133F91FA00661718 /* SCHLayoutView.m in Sources */,
 				C908D85F133F91FA00661718 /* SCHReadingView.m in Sources */,
 				C908D8B1133F945300661718 /* SCHFlowView.m in Sources */,
@@ -3532,6 +3523,7 @@
 				F8C8FC2A136065AD0097F9DD /* SCHCustomNavigationBar.m in Sources */,
 				F8C8FC2F136065C10097F9DD /* SCHReadingOptionsView.m in Sources */,
 				52C489CB1369AC4200460876 /* UIColor+Extensions.m in Sources */,
+				A33F7311136B050A00BAA101 /* SCHDrmSession.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3628,8 +3620,6 @@
 				5243545B13337BAC00282B53 /* SCHAppBookOrder.m in Sources */,
 				528433EC133382EA0010BAAB /* SCHAppDictionaryState.m in Sources */,
 				F8BEE8AF1334FD44008B40DA /* SCHAppBook.m in Sources */,
-				A3A38E0A133A803500C325A3 /* SCHDrmRegistrationSession.m in Sources */,
-				A3A38E0B133A803500C325A3 /* SCHDrmSession.m in Sources */,
 				C908D85E133F91FA00661718 /* SCHLayoutView.m in Sources */,
 				C908D860133F91FA00661718 /* SCHReadingView.m in Sources */,
 				C908D8B2133F945300661718 /* SCHFlowView.m in Sources */,

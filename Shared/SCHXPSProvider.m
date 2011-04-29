@@ -11,6 +11,7 @@
 #import "SCHAppBook.h"
 #import "SCHXPSURLProtocol.h"
 #import "KNFBXPSConstants.h"
+#import "SCHDrmSession.h"
 
 @interface SCHXPSProvider()
 
@@ -47,9 +48,8 @@
 }
 
 - (id<KNFBDrmBookDecrypter>)drmDecrypter {
-#if implemented
 	if (!drmDecrypter ) {
-		drmDecrypter = [[SCHDrmSessionManager alloc] initWithISBN:self.bookISBN]; 
+		drmDecrypter = [[SCHDrmDecryptionSession alloc] initWithBook:self.bookISBN]; 
 		if ([drmDecrypter bindToLicense]) { 
 			decryptionAvailable = YES; 
 			if (reportingStatus != kKNFBDrmBookReportingStatusComplete) { 
@@ -58,9 +58,6 @@
 		} 
 	} 
 	return drmDecrypter;
-#else
-    return nil;
-#endif
 }
 
 // Subclassed methods
