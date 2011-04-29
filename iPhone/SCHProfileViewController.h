@@ -9,19 +9,15 @@
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
 
-#import "SCHProfilePasswordViewControllerDelegate.h"
-
-@class SCHProfilePasswordViewController;
 @class SCHSettingsViewController;
 @class SCHLoginPasswordViewController;
 
-@interface SCHProfileViewController : UIViewController <NSFetchedResultsControllerDelegate, SCHProfilePasswordViewControllerDelegate> {
+@interface SCHProfileViewController : UIViewController <NSFetchedResultsControllerDelegate> {
 }
 
 @property (nonatomic, retain) IBOutlet UITableView *tableView;
 @property (nonatomic, retain) IBOutlet UIImageView *backgroundView;
 @property (nonatomic, retain) IBOutlet UIView *headerView;
-//@property (nonatomic, retain) IBOutlet SCHProfilePasswordViewController *profilePasswordViewController;
 @property (nonatomic, retain) IBOutlet SCHSettingsViewController *settingsController;
 @property (nonatomic, retain) IBOutlet SCHLoginPasswordViewController *loginController;
 @property (nonatomic, retain) IBOutlet SCHLoginPasswordViewController *profilePasswordController;
