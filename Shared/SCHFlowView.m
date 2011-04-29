@@ -11,14 +11,6 @@
 #import "SCHFlowEucBook.h"
 #import "KNFBTextFlowParagraphSource.h"
 #import <libEucalyptus/EucBookView.h>
-//#import "BlioFlowPaginateOperation.h"
-//#import "BlioFlowEucBook.h"
-//#import "BlioBookManager.h"
-//#import "BlioBookmark.h"
-//#import "BlioParagraphSource.h"
-//#import "BlioBUpeBook.h"
-//#import "levenshtein_distance.h"
-
 #import <libEucalyptus/EucBUpeBook.h>
 #import <libEucalyptus/EucBookPageIndexPoint.h>
 #import <libEucalyptus/EucHighlightRange.h>
@@ -26,7 +18,6 @@
 #import <libEucalyptus/EucCSSIntermediateDocument.h>
 #import <libEucalyptus/EucSelectorRange.h>
 #import <libEucalyptus/THPair.h>
-//#import "NSArray+BlioAdditions.h"
 #import <libEucalyptus/EucConfiguration.h>
 
 @interface SCHFlowView ()
@@ -120,23 +111,13 @@
 
 #pragma mark - SCHReadingView methods
 
-- (void)setPaperType:(SCHReadingViewPaperType)type
+- (void)setPageTexture:(UIImage *)image isDark:(BOOL)isDark
 {
-    switch (type) {
-        case SCHReadingViewPaperTypeBlack:
-            [self.eucBookView setPageTexture:[UIImage imageNamed: @"paper-black.png"] isDark:YES];
-            break;
-        case SCHReadingViewPaperTypeWhite:
-            [self.eucBookView setPageTexture:[UIImage imageNamed: @"paper-white.png"] isDark:NO];
-            break;
-        case SCHReadingViewPaperTypeSepia:
-            [self.eucBookView setPageTexture:[UIImage imageNamed: @"paper-neutral.png"] isDark:NO];
-            break;
-    }
+    [self.eucBookView setPageTexture:image isDark:isDark];
     [self.eucBookView setNeedsDisplay];
 }
 
-- (void)setFontPointIndex:(NSInteger)index
+- (void)setFontPointIndex:(NSUInteger)index
 {
     NSArray *eucFontSizeNumbers = [EucConfiguration objectForKey:EucConfigurationFontSizesKey];
     

@@ -49,10 +49,11 @@ typedef enum {
 - (void)didEnterSmartZoomMode;
 - (void)didExitSmartZoomMode;
 
-- (void) setPaperType: (SCHReadingViewPaperType) type;
-- (void) setFontPointIndex: (NSInteger) index;
-- (NSInteger) maximumFontIndex;
-- (NSInteger) pageCount;
+- (void)setFontPointIndex:(NSUInteger)index;
+- (NSInteger)maximumFontIndex;
+- (NSInteger)pageCount;
+
+- (void)setPageTexture:(UIImage *)image isDark:(BOOL)isDark;
 
 - (NSUInteger)pageIndexForBookPoint:(SCHBookPoint *)bookPoint;
 - (NSString *)pageLabelForPageAtIndex:(NSUInteger)pageIndex;

@@ -191,6 +191,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         self.readingView = [[SCHLayoutView alloc] initWithFrame:self.view.bounds isbn:self.isbn]; 
     }
     
+    self.readingView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.readingView.delegate = self;
 
     // FIXME: this should be a stored preference
@@ -209,23 +210,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     
     
     // FIXME: this should be a stored preference
-    self.paperType = SCHReadingViewPaperTypeWhite;
-    
-    switch (self.paperType) {
-        case SCHReadingViewPaperTypeWhite:
-            [self.paperTypeSegmentedControl setSelectedSegmentIndex:0];
-            break;
-        case SCHReadingViewPaperTypeBlack:
-            [self.paperTypeSegmentedControl setSelectedSegmentIndex:1];
-            break;
-        case SCHReadingViewPaperTypeSepia:
-            [self.paperTypeSegmentedControl setSelectedSegmentIndex:2];
-            break;
-    }
-
-    [self.readingView setPaperType:self.paperType];
-    self.readingView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-
+    SCHReadingViewPaperType storedType = SCHReadingViewPaperTypeWhite;
+    [self.paperTypeSegmentedControl setSelectedSegmentIndex:storedType];
     
     self.wantsFullScreenLayout = YES;
     self.navigationController.navigationBar.translucent = YES;
@@ -532,33 +518,37 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     self.readingView.delegate = self;
     self.readingView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
+    self.paperType = self.paperType; // Reload the paper
+
     [self.readingView jumpToPageAtIndex:self.currentPageIndex - 1 animated:NO];
     
     [self.view addSubview:self.readingView];
     [self.view sendSubviewToBack:self.readingView];
-    [self.readingView setPaperType:self.paperType];
 }
 
 #pragma mark - Paper Type Toggle
 
--(IBAction) paperTypeSegmentChanged: (UISegmentedControl *) segControl
+- (void)setPaperType:(SCHReadingViewPaperType)newPaperType
 {
-    int selected = segControl.selectedSegmentIndex;
+    paperType = newPaperType;
     
-    if (selected == 0) {
-        // white
-        [self.readingView setPaperType:SCHReadingViewPaperTypeWhite];
-        self.paperType = SCHReadingViewPaperTypeWhite;
-    } else if (selected == 1) {
-        // black
-        [self.readingView setPaperType:SCHReadingViewPaperTypeBlack];
-        self.paperType = SCHReadingViewPaperTypeBlack;
-    } else {
-        // sepia
-        [self.readingView setPaperType:SCHReadingViewPaperTypeSepia];
-        self.paperType = SCHReadingViewPaperTypeSepia;
+    switch (newPaperType) {
+        case SCHReadingViewPaperTypeBlack:
+            [self.readingView setPageTexture:[UIImage imageNamed: @"paper-black.png"] isDark:YES];
+            break;
+        case SCHReadingViewPaperTypeSepia:
+            [self.readingView setPageTexture:[UIImage imageNamed: @"paper-neutral.png"] isDark:NO];
+            break;
+        case SCHReadingViewPaperTypeWhite:    
+        default:
+            [self.readingView setPageTexture:[UIImage imageNamed: @"paper-white.png"] isDark:NO];
+            break;
     }
-    
+}
+
+-(IBAction)paperTypeSegmentChanged: (UISegmentedControl *) segControl
+{
+    self.paperType = segControl.selectedSegmentIndex;
 }
 
 #pragma mark - Font Size Toggle

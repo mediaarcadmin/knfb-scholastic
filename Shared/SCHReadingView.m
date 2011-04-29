@@ -83,12 +83,7 @@
     // Do nothing
 }
 
-- (void) setPaperType: (SCHReadingViewPaperType) type
-{
-    // Do nothing
-}
-
-- (void) setFontPointIndex: (NSInteger) index
+- (void) setFontPointIndex: (NSUInteger) index
 {
     // Do nothing
 }
@@ -103,6 +98,11 @@
 {
     // Do nothing
     return 0;
+}
+
+- (void)setPageTexture:(UIImage *)image isDark:(BOOL)isDark
+{
+    return;
 }
 
 - (NSUInteger)pageIndexForBookPoint:(SCHBookPoint *)bookPoint

@@ -273,21 +273,10 @@
 	}
 }
 
-- (void) setPaperType: (SCHReadingViewPaperType) type
+- (void)setPageTexture:(UIImage *)image isDark:(BOOL)isDark
 {
-    switch (type) {
-        case SCHReadingViewPaperTypeBlack:
-            [pageTurningView setPageTexture:[UIImage imageNamed: @"paper-black.png"] isDark:YES];
-            break;
-        case SCHReadingViewPaperTypeWhite:
-            [pageTurningView setPageTexture:[UIImage imageNamed: @"paper-white.png"] isDark:NO];
-            break;
-        case SCHReadingViewPaperTypeSepia:
-            [pageTurningView setPageTexture:[UIImage imageNamed: @"paper-neutral.png"] isDark:NO];
-            break;
-    }
-    
-    [pageTurningView setNeedsDraw];
+    [self.pageTurningView setPageTexture:image isDark:isDark];
+    [self.pageTurningView setNeedsDraw];
 }
 
 - (void)jumpToNextZoomBlock
