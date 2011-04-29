@@ -21,20 +21,22 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
 - (void)releaseViewObjects;
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation;
 - (void)scrollToTextField:(UITextField *)textField animated: (BOOL) animated;
+- (IBAction)openScholasticURLInSafari:(id)sender;
 
 @property (nonatomic, retain) UIButton *loginButton;
 
 @end
+
+#pragma mark -
 
 @implementation SCHLoginPasswordViewController
 
 @synthesize controllerType;
 @synthesize actionBlock;
 
-@synthesize userNameField;
-@synthesize passwordField;
+@synthesize topField;
+@synthesize bottomField;
 @synthesize loginButton;
-@synthesize cancelButton;
 @synthesize spinner;
 @synthesize topBar;
 @synthesize topShadow;
@@ -42,15 +44,15 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
 @synthesize headerTitleView;
 @synthesize footerForgotLabel;
 @synthesize tableView;
+@synthesize titleTextLabel;
 
 #pragma mark - Object Lifecycle
 
 - (void)releaseViewObjects
 {
-	[userNameField release], userNameField = nil;
-	[passwordField release], passwordField = nil;
+	[topField release], topField = nil;
+	[bottomField release], bottomField = nil;
 	[loginButton release], loginButton = nil;
-	[cancelButton release], cancelButton = nil;
 	[spinner release], spinner = nil;
     [topBar release], topBar = nil;
     [topShadow release], topShadow = nil;
@@ -58,6 +60,7 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
     [headerTitleView release], headerTitleView = nil;
     [footerForgotLabel release], footerForgotLabel = nil;
     [tableView release], tableView = nil;
+    [titleTextLabel release], titleTextLabel = nil;
 }
 
 - (void)dealloc 
@@ -83,27 +86,56 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
     [super viewDidLoad];
     
     CGRect topViewFrame = CGRectMake(0, 0, 34, 34);
-    UIView *leftView = [[UIView alloc] initWithFrame:topViewFrame];
+    
+    UIBarButtonItem *leftBBI = nil;
+
+    if (self.controllerType == kSCHControllerPasswordOnlyView ||
+        self.controllerType == kSCHControllerDoublePasswordView) {
+        leftBBI = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel:)];
+
+        // FIXME - even the width to centre the title properly - don't like this
+        topViewFrame = CGRectMake(0, 0, 59, 34);
+    } else {
+        UIView *leftView = [[UIView alloc] initWithFrame:topViewFrame];
+        leftBBI = [[UIBarButtonItem alloc] initWithCustomView:leftView];
+        [leftView release];
+    }
+    
     UIView *rightView = [[UIView alloc] initWithFrame:topViewFrame];
     self.spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
     self.spinner.center = CGPointMake(topViewFrame.size.width / 2 + 5, topViewFrame.size.height / 2);
     [rightView addSubview:self.spinner];
     [self.spinner release];
     
+    if (self.controllerType == kSCHControllerLoginView) {
+    
     UIImageView *headerImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo"]];
     topBar.items = [NSArray arrayWithObjects:
-                    [[UIBarButtonItem alloc] initWithCustomView:leftView],
+                    leftBBI,
                     [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil], 
                     [[UIBarButtonItem alloc] initWithCustomView:headerImage],
                     [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil], 
                     [[UIBarButtonItem alloc] initWithCustomView:rightView],
                     nil];
     [headerImage release];
-    [leftView release];
+        
+    } else {
+        titleTextLabel.text = @"Password";
+        topBar.items = [NSArray arrayWithObjects:
+                        leftBBI,
+                        [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil], 
+                        [[UIBarButtonItem alloc] initWithCustomView:self.titleTextLabel],
+                        [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil], 
+                        [[UIBarButtonItem alloc] initWithCustomView:rightView],
+                        nil];
+    }
+    
+    
     [rightView release];
+    
+    [self.topBar setTintColor:[UIColor colorWithRed:0.832 green:0.000 blue:0.007 alpha:1.000]];
 
-	self.userNameField.text = @"";
-	self.passwordField.text = @"";
+    [self clearFields];
     
     [[NSNotificationCenter defaultCenter] addObserver:self 
                                              selector:@selector(keyboardWillShow:) 
@@ -124,6 +156,7 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
         }
         default:
         {
+            // the default is to not show titles
             float fillerHeight = 44;
             UIView *fillerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, fillerHeight)];
             self.tableView.tableHeaderView = fillerView;
@@ -134,17 +167,17 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
     UIImage *bgImage = [UIImage imageNamed:@"button-translucent"];
     UIImage *cellBGImage = [bgImage stretchableImageWithLeftCapWidth:16 topCapHeight:0];
     
-    self.userNameField.background = cellBGImage;
-    self.userNameField.leftViewMode = UITextFieldViewModeAlways;
+    self.topField.background = cellBGImage;
+    self.topField.leftViewMode = UITextFieldViewModeAlways;
     UIView *fillerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 8, 8)];
-    self.userNameField.leftView = fillerView;
+    self.topField.leftView = fillerView;
     [fillerView release];
     
     cellBGImage = [bgImage stretchableImageWithLeftCapWidth:16 topCapHeight:0];
-    self.passwordField.background = cellBGImage;
-    self.passwordField.leftViewMode = UITextFieldViewModeAlways;
+    self.bottomField.background = cellBGImage;
+    self.bottomField.leftViewMode = UITextFieldViewModeAlways;
     fillerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 8, 8)];
-    self.passwordField.leftView = fillerView;
+    self.bottomField.leftView = fillerView;
     [fillerView release];
     
     bgImage = [UIImage imageNamed:@"button-blue"];
@@ -188,7 +221,7 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
     
     if (self.controllerType == kSCHControllerPasswordOnlyView ||
         self.controllerType == kSCHControllerDoublePasswordView) {
-        [self.passwordField becomeFirstResponder];
+        [self.bottomField becomeFirstResponder];
     }
 }
 
@@ -239,11 +272,24 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
     self.topShadow.frame = topShadowFrame;
 }
 
-#pragma mark - Button Actions
+#pragma mark - Username and Password accessors
+
+- (NSString *)username
+{
+    return self.topField.text;
+}
+
+- (NSString *)password
+{
+    return self.bottomField.text;
+}
+
+#pragma mark - External Behaviour Changing
+
 - (void)startShowingProgress
 {
- 	[self.userNameField resignFirstResponder];
-	[self.passwordField resignFirstResponder];
+ 	[self.topField resignFirstResponder];
+	[self.bottomField resignFirstResponder];
     [spinner startAnimating];
     self.loginButton.enabled = NO;
 }
@@ -254,15 +300,20 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
     self.loginButton.enabled = YES;
 }
 
+- (void)clearFields
+{
+    self.topField.text = @"";
+    self.bottomField.text = @"";
+}
+
 #pragma mark - Button Actions
 
 - (IBAction)actionButtonAction:(id)sender
 {
+    NSAssert(self.actionBlock != nil, @"Action block must be set!");
+    
     if (self.actionBlock) {
-        NSLog(@"LPVC: executing block.");
         self.actionBlock();
-    } else {
-        NSLog(@"LPVC: ***NOT*** executing block.");
     }
     
     if (self.controllerType == kSCHControllerLoginView) {
@@ -272,19 +323,15 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
 
 - (IBAction)cancel:(id)sender
 {
-	[self.userNameField resignFirstResponder];
-	[self.passwordField resignFirstResponder];
+	[self.topField resignFirstResponder];
+	[self.bottomField resignFirstResponder];
 	
 	[self dismissModalViewControllerAnimated:YES];	
 }
 
-- (void)removeCancelButton
+- (IBAction)openScholasticURLInSafari:(id)sender
 {
-	CGPoint center = self.loginButton.center;
-	center.x = self.view.superview.center.x;
-	self.loginButton.center = center;
-	
-	self.cancelButton.hidden = YES;
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.scholastic.com/"]];
 }
 
 #pragma mark - UITableViewDataSource
@@ -293,7 +340,6 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
 {
     switch (self.controllerType) {
         case kSCHControllerLoginView:
-        case kSCHControllerPasswordOnlyView:
         {
             return 2;
         }
@@ -344,22 +390,22 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
         case 0:
         {
             if (indexPath.row == 0 && self.controllerType != kSCHControllerPasswordOnlyView) {
-                CGRect fieldFrame = self.userNameField.frame;
+                CGRect fieldFrame = self.topField.frame;
                 fieldFrame.origin.x = ceilf((CGRectGetWidth(cell.contentView.bounds) - kProfileViewCellButtonWidth) / 2.0f);
                 fieldFrame.size.height = kProfileViewCellButtonHeight;
                 fieldFrame.size.width = kProfileViewCellButtonWidth;
                 fieldFrame.origin.y = 2;
-                self.userNameField.frame = fieldFrame;
-                [cell addSubview:self.userNameField];
+                self.topField.frame = fieldFrame;
+                [cell addSubview:self.topField];
                 break;
             } else {
-                CGRect fieldFrame = self.passwordField.frame;
+                CGRect fieldFrame = self.bottomField.frame;
                 fieldFrame.origin.x = ceilf((CGRectGetWidth(cell.contentView.bounds) - kProfileViewCellButtonWidth) / 2.0f);
                 fieldFrame.size.height = kProfileViewCellButtonHeight;
                 fieldFrame.size.width = kProfileViewCellButtonWidth;
                 fieldFrame.origin.y = 2;
-                self.passwordField.frame = fieldFrame;
-                [cell addSubview:self.passwordField];
+                self.bottomField.frame = fieldFrame;
+                [cell addSubview:self.bottomField];
                 break;
             }
             break;
@@ -392,13 +438,13 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
     switch (self.controllerType) {
         case kSCHControllerLoginView:
         {
-            if (textField == self.userNameField) {
-                [self.passwordField becomeFirstResponder];
+            if (textField == self.topField) {
+                [self.bottomField becomeFirstResponder];
                 return YES;
             }
             
-            if (textField == self.passwordField && [self.userNameField.text length] > 0 && [self.passwordField.text length] > 0) {
-                [self.passwordField resignFirstResponder];
+            if (textField == self.bottomField && [self.topField.text length] > 0 && [self.bottomField.text length] > 0) {
+                [self.bottomField resignFirstResponder];
                 [self actionButtonAction:nil];
             }
             
@@ -407,7 +453,7 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
         }  
         case kSCHControllerPasswordOnlyView:
         {
-            if (textField == self.passwordField && [self.passwordField.text length] > 0) {
+            if (textField == self.bottomField && [self.bottomField.text length] > 0) {
                 [self actionButtonAction:nil];
             }
             return YES;
@@ -424,10 +470,10 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
 {
     NSIndexPath *indexPath = nil;
     
-    if (textField == self.userNameField) {
+    if (textField == self.topField) {
         CGPoint offset = CGPointMake(0, CGRectGetHeight(self.headerTitleView.frame) - 25);
         [self.tableView setContentOffset:offset animated:animated];
-    } else if (textField == self.passwordField) {
+    } else if (textField == self.bottomField) {
         if (self.controllerType == kSCHControllerPasswordOnlyView) {
             indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
         } else {
@@ -481,10 +527,10 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
     self.tableView.frame = tableFrame;
     [UIView commitAnimations];
    
-    if ([self.userNameField isFirstResponder]) {
-        [self scrollToTextField:self.userNameField animated:YES];
-    } else if ([self.passwordField isFirstResponder]) {
-        [self scrollToTextField:self.passwordField animated:YES];
+    if ([self.topField isFirstResponder]) {
+        [self scrollToTextField:self.topField animated:YES];
+    } else if ([self.bottomField isFirstResponder]) {
+        [self scrollToTextField:self.bottomField animated:YES];
     }
 }
 

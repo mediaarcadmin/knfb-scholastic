@@ -8,7 +8,6 @@
 
 #import "SCHProfileViewController.h"
 
-#import "SCHProfilePasswordViewController.h"
 #import "SCHSettingsViewController.h"
 #import "SCHBookShelfViewController.h"
 #import "SCHLoginPasswordViewController.h"
@@ -72,8 +71,6 @@
 {
     [super viewDidLoad];
 	
-	//self.profilePasswordViewController.delegate = self;
-    
     self.settingsButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [settingsButton addTarget:self action:@selector(pushSettingsController) 
              forControlEvents:UIControlEventTouchUpInside]; 
@@ -92,11 +89,11 @@
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(authenticationManager:) name:kSCHAuthenticationManagerSuccess object:nil];			
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(authenticationManager:) name:kSCHAuthenticationManagerFailure object:nil];					
         
-        [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithUserName:[self.loginController.userNameField text] withPassword:[self.loginController.passwordField text]];
+        [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithUserName:[self.loginController username] withPassword:[self.loginController password]];
     };
     
-    self.profilePasswordController.controllerType = kSCHControllerPasswordOnlyView;
     // block gets set when a row is selected
+    self.profilePasswordController.controllerType = kSCHControllerPasswordOnlyView;
 }  
 
 - (void)viewDidUnload 
@@ -120,7 +117,6 @@
 	
 	if ([authenticationManager hasUsernameAndPassword] == NO) {
 		[self presentModalViewController:self.loginController animated:NO];	
-		[self.loginController removeCancelButton];
 	}
 #endif
 }
@@ -220,14 +216,6 @@
     [self.navigationController pushViewController:self.settingsController animated:YES];
 }
 
-#pragma mark - Profile Password View Controller delegate
-
-- (void)profilePasswordViewControllerDidComplete:(SCHProfilePasswordViewController *)profilePassword
-{
-    // controller to view book shelf with books filtered to profile
-    [self pushBookshelvesControllerWithProfileItem:profilePassword.profileItem];	
-}
-
 #pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -247,9 +235,7 @@
             } else {
                 self.profilePasswordController.actionBlock = ^{
                     
-                    NSLog(@"Executing action block!");
-                    
-                    if ([profileItem validatePasswordWith:self.profilePasswordController.passwordField.text] == NO) {
+                    if ([profileItem validatePasswordWith:[self.profilePasswordController password]] == NO) {
                         UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") 
                                                                              message:NSLocalizedString(@"Incorrect password", nil)
                                                                             delegate:nil 
@@ -259,7 +245,7 @@
                         [errorAlert release];
                     } else {
                         [self.profilePasswordController dismissModalViewControllerAnimated:YES];	
-                        self.profilePasswordController.passwordField.text = @"";
+                        [self.profilePasswordController clearFields]; 
                         [self pushBookshelvesControllerWithProfileItem:profileItem];            
                     }	
                 };
