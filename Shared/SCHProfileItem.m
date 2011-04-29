@@ -115,7 +115,7 @@ static NSString * const kSCHProfileItemUserContentItemContentMetadataItem = @"Us
         NSEntityDescription *entityDescription = [NSEntityDescription 
                                                   entityForName:kSCHPrivateAnnotations 
                                                   inManagedObjectContext:self.managedObjectContext];
-        NSFetchRequest *fetchRequest = [entityDescription.managedObjectModel fetchRequestFromTemplateWithName:kSCHProfileItemFetchAppBookWithContentIdentifier 
+        NSFetchRequest *fetchRequest = [entityDescription.managedObjectModel fetchRequestFromTemplateWithName:kSCHProfileItemFetchAnnotationsForProfileBook 
                                                                                         substitutionVariables:[NSDictionary dictionaryWithObjectsAndKeys:
                                                                                                                self.ID, kSCHProfileItemPROFILE_ID, isbn, 
                                                                                                                kSCHProfileItemCONTENT_IDENTIFIER, nil]];

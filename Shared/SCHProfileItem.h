@@ -16,7 +16,7 @@
 
 static NSString * const kSCHProfileItem = @"SCHProfileItem";
 
-static NSString * const kSCHProfileItemFetchAppBookWithContentIdentifier = @"fetchAppBookWithContentIdentifier";
+static NSString * const kSCHProfileItemFetchAnnotationsForProfileBook = @"fetchAnnotationsForProfileBook";
 static NSString * const kSCHProfileItemPROFILE_ID = @"PROFILE_ID";
 static NSString * const kSCHProfileItemCONTENT_IDENTIFIER = @"CONTENT_IDENTIFIER";
 
