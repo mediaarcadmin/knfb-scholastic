@@ -169,7 +169,9 @@ static int mutationCount = 0;
 
                 if ([bookArray count] > 0) {
                     book = (SCHAppBook *)[bookArray objectAtIndex:0];
-                    [self.isbnManagedObjectCache setObject:book.objectID forKey:isbn];
+                    if (book.objectID.isTemporaryID == NO) {
+                        [self.isbnManagedObjectCache setObject:book.objectID forKey:isbn];
+                    }
                 }
             }
         } else {
