@@ -10,6 +10,17 @@
 #import "SCHScrubberView.h"
 #import "SCHReadingView.h"
 
+typedef enum {
+	SCHReadingViewPaperTypeBlack = 0,
+	SCHReadingViewPaperTypeWhite,
+	SCHReadingViewPaperTypeSepia
+} SCHReadingViewPaperType;
+
+typedef enum {
+	SCHReadingViewLayoutTypeFixed = 0,
+	SCHReadingViewLayoutTypeFlow,
+} SCHReadingViewLayoutType;
+
 @class SCHXPSProvider;
 @class SCHCustomToolbar;
 
