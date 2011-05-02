@@ -14,6 +14,8 @@
 
 @interface SCHAsyncBookCoverImageView () 
 
+@property (nonatomic, assign) BOOL usePlaceholderImage;
+
 - (void)initialiseView;
 - (void)newImageAvailable:(NSNotification *)notification;
 - (void)calculateCoverSize;
@@ -26,6 +28,7 @@
 @synthesize isbn;
 @synthesize thumbSize;
 @synthesize coverSize;
+@synthesize usePlaceholderImage;
 
 #pragma mark - Object lifecycle
 
@@ -67,10 +70,8 @@
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	
-	[isbn release], isbn = nil;
+	[isbn release];
 	isbn = [newIsbn copy];
-	
-	self.image = [UIImage imageNamed:@"PlaceholderBook"];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(newImageAvailable:)
@@ -78,9 +79,15 @@
 											   object:nil];
 }
 
-- (void)setImage:(UIImage *)image
+- (void)setImage:(UIImage *)newImage
 {
-    [super setImage:image];
+    if (newImage == nil) {
+        newImage = [UIImage imageNamed:@"PlaceholderBook"];        
+        self.usePlaceholderImage = YES;
+    } else {
+        self.usePlaceholderImage = NO;        
+    }
+    [super setImage:newImage];
     [self calculateCoverSize];
 }
 
@@ -103,8 +110,8 @@
 
 - (void)calculateCoverSize
 {
-    if (self.image == nil) {
-        self.coverSize = CGSizeZero;
+    if (self.usePlaceholderImage == YES) {
+        self.coverSize = CGSizeMake(self.frame.size.width, self.frame.size.height);
     } else {
         SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];
         CGSize fullImageSize = [book bookCoverImageSize];
