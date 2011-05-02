@@ -61,8 +61,10 @@
     [UIView setAnimationsEnabled:NO];
 
 	self.asyncImageView.frame = CGRectMake(2, 0, self.frame.size.width - 4, self.frame.size.height - 22);
-	self.progressView.frame = CGRectMake(10, self.frame.size.height - 42, self.frame.size.width - 20, 10);
-
+	if (self.progressView.hidden == NO) {
+        self.progressView.frame = CGRectMake(10, self.frame.size.height - 42, self.frame.size.width - 20, 10);
+    }
+    
     if (asyncImageView && !CGSizeEqualToSize(self.asyncImageView.coverSize, CGSizeZero)) {
     
         CGRect thumbTintFrame = self.thumbTintView.frame;
@@ -83,7 +85,7 @@
 {
 	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];    
 	// image processing
-	BOOL immediateUpdate = [[SCHProcessingManager sharedProcessingManager] requestThumbImageForBookCover:self.asyncImageView
+    BOOL immediateUpdate = [[SCHProcessingManager sharedProcessingManager] requestThumbImageForBookCover:self.asyncImageView
 																									size:self.asyncImageView.thumbSize
                                                                                                     book:book];
 
@@ -97,6 +99,7 @@
 		case SCHBookProcessingStateDownloadPaused:
 			self.thumbTintView.hidden = NO;
 			self.progressView.hidden = NO;
+            [self.progressView setProgress:[book currentDownloadedPercentage]];            
 			break;
 		case SCHBookProcessingStateReadyToRead:
 			self.thumbTintView.hidden = YES;
@@ -107,8 +110,6 @@
 			self.progressView.hidden = YES;
 			break;
 	}
-	
-	[self.progressView setProgress:[book currentDownloadedPercentage]];
 	
 	[self layoutSubviews];
 }	
