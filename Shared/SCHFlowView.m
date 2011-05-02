@@ -11,14 +11,6 @@
 #import "SCHFlowEucBook.h"
 #import "KNFBTextFlowParagraphSource.h"
 #import <libEucalyptus/EucBookView.h>
-//#import "BlioFlowPaginateOperation.h"
-//#import "BlioFlowEucBook.h"
-//#import "BlioBookManager.h"
-//#import "BlioBookmark.h"
-//#import "BlioParagraphSource.h"
-//#import "BlioBUpeBook.h"
-//#import "levenshtein_distance.h"
-
 #import <libEucalyptus/EucBUpeBook.h>
 #import <libEucalyptus/EucBookPageIndexPoint.h>
 #import <libEucalyptus/EucHighlightRange.h>
@@ -26,7 +18,6 @@
 #import <libEucalyptus/EucCSSIntermediateDocument.h>
 #import <libEucalyptus/EucSelectorRange.h>
 #import <libEucalyptus/THPair.h>
-//#import "NSArray+BlioAdditions.h"
 #import <libEucalyptus/EucConfiguration.h>
 
 @interface SCHFlowView ()
@@ -69,16 +60,14 @@
     [eucBookView removeObserver:self forKeyPath:@"pageNumber"];
     [eucBookView release], eucBookView = nil;
     
-    SCHBookManager *bookManager = [SCHBookManager sharedBookManager];
-    
     if(paragraphSource) {
         [paragraphSource release], paragraphSource = nil;
-        [bookManager checkInParagraphSourceForBookIdentifier:self.isbn];   
+        [[SCHBookManager sharedBookManager] checkInParagraphSourceForBookIdentifier:self.isbn];   
     }
     
     if(eucBook) {
         [eucBook release], eucBook = nil;
-        [bookManager checkInEucBookForBookIdentifier:self.isbn];  
+        [[SCHBookManager sharedBookManager] checkInEucBookForBookIdentifier:self.isbn];  
     }
 
     [super dealloc];
@@ -95,48 +84,13 @@
 
 - (void)jumpToPageAtIndex:(NSUInteger)pageIndex animated: (BOOL) animated
 {
-    [eucBookView goToPageNumber:pageIndex + 1 animated:animated];
-}
-
-- (void) setPaperType: (SCHReadingViewPaperType) type
-{
-    switch (type) {
-        case SCHReadingViewPaperTypeBlack:
-            [eucBookView setPageTexture:[UIImage imageNamed: @"paper-black.png"] isDark:YES];
-            break;
-        case SCHReadingViewPaperTypeWhite:
-            [eucBookView setPageTexture:[UIImage imageNamed: @"paper-white.png"] isDark:NO];
-            break;
-        case SCHReadingViewPaperTypeSepia:
-            [eucBookView setPageTexture:[UIImage imageNamed: @"paper-neutral.png"] isDark:NO];
-            break;
-    }
-    [eucBookView setNeedsDisplay];
+    [self.eucBookView goToPageNumber:pageIndex + 1 animated:animated];
 }
 
 - (NSInteger) maximumFontIndex
 {
     return ([[EucConfiguration objectForKey:EucConfigurationFontSizesKey] count] - 1);
 }
-
-
-- (void) setFontPointIndex: (NSInteger) index
-{
-    NSArray *eucFontSizeNumbers = [EucConfiguration objectForKey:EucConfigurationFontSizesKey];
-    
-    if (index < 0 || index > ([eucFontSizeNumbers count] - 1)) {
-        return;
-    }
-    
-    [eucBookView setFontPointSize:[(NSNumber *) [eucFontSizeNumbers objectAtIndex:index] intValue]];
-    [eucBookView setNeedsDisplay];
-}
-
--(NSInteger) pageCount
-{
-    return [eucBookView pageCount];
-}
-
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object
                         change:(NSDictionary *)change context:(void *)context
@@ -153,6 +107,36 @@
     if (self.delegate && [self.delegate respondsToSelector:@selector(unhandledTouchOnPageForReadingView:)]) {
         [self.delegate unhandledTouchOnPageForReadingView:self];
     }
+}
+
+#pragma mark - SCHReadingView methods
+
+- (void)setPageTexture:(UIImage *)image isDark:(BOOL)isDark
+{
+    [self.eucBookView setPageTexture:image isDark:isDark];
+    [self.eucBookView setNeedsDisplay];
+}
+
+- (void)setFontPointIndex:(NSUInteger)index
+{
+    NSArray *eucFontSizeNumbers = [EucConfiguration objectForKey:EucConfigurationFontSizesKey];
+    
+    if (index < 0 || index > ([eucFontSizeNumbers count] - 1)) {
+        return;
+    }
+    
+    [self.eucBookView setFontPointSize:[(NSNumber *) [eucFontSizeNumbers objectAtIndex:index] intValue]];
+    [self.eucBookView setNeedsDisplay];
+}
+
+- (NSInteger)pageCount
+{
+    return [self.eucBookView pageCount];
+}
+
+- (void)goToBookPoint:(SCHBookPoint *)bookPoint animated:(BOOL)animated
+{
+    return;
 }
 
 

@@ -9,8 +9,11 @@
 #import "SCHLayoutView.h"
 #import "SCHXPSProvider.h"
 #import "SCHSmartZoomBlockSource.h"
-#import "KNFBSmartZoomBlock.h"
 #import "SCHBookManager.h"
+#import "SCHBookPoint.h"
+#import "SCHTextFlow.h"
+#import "SCHAppBook.h"
+#import "KNFBSmartZoomBlock.h"
 #import <libEucalyptus/THPositionedCGContext.h>
 
 #define LAYOUT_LHSHOTZONE 0.25f
@@ -18,7 +21,6 @@
 
 @interface SCHLayoutView()
 
-@property (nonatomic, retain) SCHXPSProvider *xpsProvider;
 @property (nonatomic, retain) EucPageTurningView *pageTurningView;
 @property (nonatomic, assign) NSUInteger pageCount;
 @property (nonatomic, assign) NSUInteger currentPageIndex;
@@ -42,7 +44,6 @@
 
 @implementation SCHLayoutView
 
-@synthesize xpsProvider;
 @synthesize pageTurningView;
 @synthesize pageCount;
 @synthesize currentPageIndex;
@@ -56,12 +57,6 @@
 
 - (void)dealloc
 {
-    
-    if (xpsProvider) {
-        [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.isbn];
-        [xpsProvider release], xpsProvider = nil;
-    }
-    
     if (blockSource) {
         [[SCHBookManager sharedBookManager] checkInBlockSourceForBookIdentifier:self.isbn];
         [blockSource release], blockSource = nil;
@@ -76,12 +71,10 @@
 
 - (void)initialiseView
 {
-    xpsProvider = [[[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.isbn] retain];
-    
-    if (xpsProvider) {
+    if (self.xpsProvider) {
         layoutCacheLock = [[NSLock alloc] init];
         
-        pageCount = [xpsProvider pageCount];
+        pageCount = [self.xpsProvider pageCount];
         firstPageCrop = [self cropForPage:1 allowEstimate:NO];
         
         pageTurningView = [[[EucPageTurningView alloc] initWithFrame:self.bounds] retain];
@@ -113,9 +106,9 @@
         
         [self registerGesturesForPageTurningView:pageTurningView];
         
-    }
-    
-    blockSource = [[[SCHBookManager sharedBookManager] checkOutBlockSourceForBookIdentifier:self.isbn] retain];
+        blockSource = [[[SCHBookManager sharedBookManager] checkOutBlockSourceForBookIdentifier:self.isbn] retain];
+        
+    }    
 }
 
 - (id)initWithFrame:(CGRect)frame isbn:(id)aIsbn
@@ -152,6 +145,15 @@
         // to be called on the pageTurningView before we start the zoom
         // (Ick!).
         [self performSelector:@selector(zoomForNewPageAnimatedWithNumberThunk:) withObject:[NSNumber numberWithBool:NO] afterDelay:0.0f];
+    }
+}
+
+- (void)setCurrentPageIndex:(NSUInteger)newPageIndex
+{
+    currentPageIndex = newPageIndex;
+    
+    if (self.delegate && [self.delegate respondsToSelector:@selector(readingView:hasMovedToPageAtIndex:)]) {
+        [self.delegate readingView:self hasMovedToPageAtIndex:currentPageIndex];
     }
 }
 
@@ -257,21 +259,24 @@
     self.currentBlock = nil;
 }
 
-- (void) setPaperType: (SCHReadingViewPaperType) type
+- (void)goToBookPoint:(SCHBookPoint *)bookPoint animated:(BOOL)animated
 {
-    switch (type) {
-        case SCHReadingViewPaperTypeBlack:
-            [pageTurningView setPageTexture:[UIImage imageNamed: @"paper-black.png"] isDark:YES];
-            break;
-        case SCHReadingViewPaperTypeWhite:
-            [pageTurningView setPageTexture:[UIImage imageNamed: @"paper-white.png"] isDark:NO];
-            break;
-        case SCHReadingViewPaperTypeSepia:
-            [pageTurningView setPageTexture:[UIImage imageNamed: @"paper-neutral.png"] isDark:NO];
-            break;
-    }
-    
-    [pageTurningView setNeedsDraw];
+    NSUInteger targetPage = bookPoint.layoutPage;
+	
+	if ((targetPage <= self.pageCount) && (targetPage >=1)) {
+		if (self.pageTurningView) {
+			[self.pageTurningView turnToPageAtIndex:targetPage - 1 animated:animated];      
+			if (!animated) {
+				self.currentPageIndex = self.pageTurningView.focusedPageIndex;
+			}
+		}
+	}
+}
+
+- (void)setPageTexture:(UIImage *)image isDark:(BOOL)isDark
+{
+    [self.pageTurningView setPageTexture:image isDark:isDark];
+    [self.pageTurningView setNeedsDraw];
 }
 
 - (void)jumpToNextZoomBlock
@@ -479,10 +484,6 @@ CGAffineTransform transformRectToFitRect(CGRect sourceRect, CGRect targetRect, B
 - (void)pageTurningViewDidEndPageTurn:(EucPageTurningView *)aPageTurningView
 {
     self.currentPageIndex = aPageTurningView.focusedPageIndex;
-        
-    if (self.delegate && [self.delegate respondsToSelector:@selector(readingView:hasMovedToPageAtIndex:)]) {
-        [self.delegate readingView:self hasMovedToPageAtIndex:self.currentPageIndex];
-    }
 }
 
 #pragma mark - Touch handling

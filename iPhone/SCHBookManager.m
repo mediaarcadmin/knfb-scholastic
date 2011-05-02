@@ -457,7 +457,7 @@ static int mutationCount = 0;
     @synchronized(myCachedEucBooks) {
         SCHFlowEucBook *previouslyCachedEucBook = [myCachedEucBooks objectForKey:isbn];
         if(previouslyCachedEucBook) {
-            NSLog(@"Returning cached EucBook for book with ISBN %@", isbn);
+            //NSLog(@"Returning cached EucBook for book with ISBN %@", isbn);
             [self.cachedEucBookCheckoutCounts addObject:isbn];
             ret = previouslyCachedEucBook;
         } else {

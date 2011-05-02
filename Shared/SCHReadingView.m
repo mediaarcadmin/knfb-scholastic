@@ -7,16 +7,33 @@
 //
 
 #import "SCHReadingView.h"
-
+#import "SCHBookManager.h"
+#import "SCHAppBook.h"
+#import "SCHTextFlow.h"
+#import "SCHBookPoint.h"
+#import <libEucalyptus/THPair.h>
 
 @implementation SCHReadingView
 
-@synthesize isbn, delegate;
+@synthesize isbn;
+@synthesize delegate;
+@synthesize xpsProvider;
+@synthesize textFlow;
 
 - (void) dealloc
 {
+    if (xpsProvider) {
+        [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:isbn];
+        [xpsProvider release], xpsProvider = nil;
+    }
+    
+    if (textFlow) {
+        [[SCHBookManager sharedBookManager] checkInTextFlowForBookIdentifier:isbn];
+        [textFlow release], textFlow = nil;
+    }
+    
     [isbn release], isbn = nil;
-    self.delegate = nil;
+    delegate = nil;
     [super dealloc];
 }
 
@@ -27,6 +44,9 @@
         // Initialization code
         isbn = [aIsbn retain];
         self.opaque = YES;
+        
+        xpsProvider = [[[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.isbn] retain];
+        textFlow    = [[[SCHBookManager sharedBookManager] checkOutTextFlowForBookIdentifier:self.isbn] retain];
     }
     return self;
 }
@@ -58,12 +78,7 @@
     // Do nothing
 }
 
-- (void) setPaperType: (SCHReadingViewPaperType) type
-{
-    // Do nothing
-}
-
-- (void) setFontPointIndex: (NSInteger) index
+- (void) setFontPointIndex: (NSUInteger) index
 {
     // Do nothing
 }
@@ -80,6 +95,51 @@
     return 0;
 }
 
+- (void)setPageTexture:(UIImage *)image isDark:(BOOL)isDark
+{
+    return;
+}
+
+- (NSUInteger)pageIndexForBookPoint:(SCHBookPoint *)bookPoint
+{
+    return bookPoint.layoutPage - 1;
+}
+
+- (NSString *)pageLabelForPageAtIndex:(NSUInteger)pageIndex
+{
+    NSString *ret = nil;
+    
+    NSString* section = [self.textFlow sectionUuidForPageNumber:pageIndex + 1];
+    THPair* chapter   = [self.textFlow presentationNameAndSubTitleForSectionUuid:section];
+    NSString* pageStr = [self displayPageNumberForPageAtIndex:pageIndex];
+    
+    if (section && chapter.first) {
+        if (pageStr) {
+            ret = [NSString stringWithFormat:NSLocalizedString(@"Page %@ \u2013 %@",@"Page label with page number and chapter"), pageStr, chapter.first];
+        } else {
+            ret = [NSString stringWithFormat:@"%@", chapter.first];
+        }
+    } else {
+        if (pageStr) {
+            ret = [NSString stringWithFormat:NSLocalizedString(@"Page %@ of %lu",@"Page label X of Y (page number of page count) in SCHLayoutView"), pageStr, (unsigned long)self.pageCount];
+        } else {
+            SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];
+            ret = [book XPSTitle];
+        }
+    }
+    
+    return ret;
+}
+
+- (NSString *)displayPageNumberForPageAtIndex:(NSUInteger)pageIndex
+{
+    return [self.textFlow displayPageNumberForPageNumber:pageIndex + 1];
+}
+
+- (void)goToBookPoint:(SCHBookPoint *)bookPoint animated:(BOOL)animated
+{
+    return;
+}
 
 
 @end

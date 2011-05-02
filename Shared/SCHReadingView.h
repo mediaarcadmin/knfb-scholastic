@@ -9,12 +9,9 @@
 #import <UIKit/UIKit.h>
 
 @class SCHReadingView;
-
-typedef enum {
-	SCHReadingViewPaperTypeBlack = 0,
-	SCHReadingViewPaperTypeWhite,
-	SCHReadingViewPaperTypeSepia
-} SCHReadingViewPaperType;
+@class SCHBookPoint;
+@class SCHXPSProvider;
+@class SCHTextFlow;
 
 @protocol SCHReadingViewDelegate <NSObject>
 
@@ -31,10 +28,13 @@ typedef enum {
 
 @property (nonatomic, retain) NSString *isbn;
 @property (nonatomic, retain) id <SCHReadingViewDelegate> delegate;
+@property (nonatomic, retain) SCHXPSProvider *xpsProvider;
+@property (nonatomic, retain) SCHTextFlow *textFlow;
 
 - (id)initWithFrame:(CGRect)frame isbn:(id)isbn;
 
 // Overridden methods
+// FIXME: change these to a protocol
 
 - (void)jumpToPageAtIndex:(NSUInteger)pageIndex animated:(BOOL)animated;
 - (void)jumpToNextZoomBlock;
@@ -43,9 +43,16 @@ typedef enum {
 - (void)didEnterSmartZoomMode;
 - (void)didExitSmartZoomMode;
 
-- (void) setPaperType: (SCHReadingViewPaperType) type;
-- (void) setFontPointIndex: (NSInteger) index;
-- (NSInteger) maximumFontIndex;
+- (void)setFontPointIndex:(NSUInteger)index;
+- (NSInteger)maximumFontIndex;
+- (NSInteger)pageCount;
 
-- (NSInteger) pageCount;
+- (void)setPageTexture:(UIImage *)image isDark:(BOOL)isDark;
+
+- (NSUInteger)pageIndexForBookPoint:(SCHBookPoint *)bookPoint;
+- (NSString *)pageLabelForPageAtIndex:(NSUInteger)pageIndex;
+- (NSString *)displayPageNumberForPageAtIndex:(NSUInteger)pageIndex;
+
+- (void)goToBookPoint:(SCHBookPoint *)bookPoint animated:(BOOL)animated;
+
 @end
