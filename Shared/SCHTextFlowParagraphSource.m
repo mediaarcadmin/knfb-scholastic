@@ -107,7 +107,7 @@ static NSString * const kNoWordPlaceholder = @"NO_WORD_PLACEHOLDER";
             upperPageIndexBound = self.textFlow.lastPageIndex;
         }
         
-        NSArray *bookmarkPageBlocks = [textFlow blocksForPageAtIndex:bookmarkPageIndex includingFolioBlocks:YES];
+        NSArray *bookmarkPageBlocks = [self.textFlow blocksForPageAtIndex:bookmarkPageIndex includingFolioBlocks:YES];
         NSArray *words;
         if(bookmarkPageBlocks.count > [bookmarkPoint blockOffset]) {
             words = ((KNFBTextFlowBlock *)[bookmarkPageBlocks objectAtIndex:[bookmarkPoint blockOffset]]).wordStrings;
@@ -136,7 +136,7 @@ static NSString * const kNoWordPlaceholder = @"NO_WORD_PLACEHOLDER";
                         words = [words arrayByAddingObjectsFromArray:newWords];
                         [newWords release];
                     } else {
-                        pageBlocks = [textFlow blocksForPageAtIndex:tryPageOffset includingFolioBlocks:YES];
+                        pageBlocks = [self.textFlow blocksForPageAtIndex:tryPageOffset includingFolioBlocks:YES];
                     }
                 } else {
                     KNFBTextFlowBlock *block = [pageBlocks objectAtIndex:tryBlockOffset];
@@ -167,7 +167,7 @@ static NSString * const kNoWordPlaceholder = @"NO_WORD_PLACEHOLDER";
                         [newWords release];
                         middleWordOffset += needMore;
                     } else {
-                        pageBlocks = [textFlow blocksForPageAtIndex:tryPageOffset includingFolioBlocks:YES];
+                        pageBlocks = [self.textFlow blocksForPageAtIndex:tryPageOffset includingFolioBlocks:YES];
                         tryBlockOffset = pageBlocks.count; // Will decrement to the index of the last block on the next iteration.
                     }
                 } else {
@@ -491,12 +491,12 @@ static NSString * const kNoWordPlaceholder = @"NO_WORD_PLACEHOLDER";
                 --startPageIndex;
             }
             
-            NSArray *flowReferences = textFlow.flowReferences;
+            NSArray *flowReferences = self.textFlow.flowReferences;
             
             NSUInteger sectionStartIndex = 0;
             NSUInteger thisFlow = [paragraphID indexAtPosition:0];
             if(thisFlow < flowReferences.count) {
-                sectionStartIndex = ((KNFBTextFlowFlowReference *)[textFlow.flowReferences objectAtIndex:thisFlow]).startPage;
+                sectionStartIndex = ((KNFBTextFlowFlowReference *)[self.textFlow.flowReferences objectAtIndex:thisFlow]).startPage;
             }
             if(startPageIndex < sectionStartIndex) {
                 startPageIndex = sectionStartIndex;
@@ -505,9 +505,9 @@ static NSString * const kNoWordPlaceholder = @"NO_WORD_PLACEHOLDER";
             NSUInteger sectionEndIndex = 0;
             NSUInteger nextFlow = [paragraphID indexAtPosition:0] + 1;
             if(nextFlow < flowReferences.count) {
-                sectionEndIndex = ((KNFBTextFlowFlowReference *)[textFlow.flowReferences objectAtIndex:nextFlow]).startPage - 1;
+                sectionEndIndex = ((KNFBTextFlowFlowReference *)[self.textFlow.flowReferences objectAtIndex:nextFlow]).startPage - 1;
             } else {
-                sectionEndIndex = textFlow.lastPageIndex;
+                sectionEndIndex = self.textFlow.lastPageIndex;
             }
             if(endPageIndex < startPageIndex || endPageIndex > sectionEndIndex) {
                 endPageIndex = sectionEndIndex;
@@ -597,7 +597,7 @@ static NSString * const kNoWordPlaceholder = @"NO_WORD_PLACEHOLDER";
             // we're looking for.
             for(NSInteger examiningPage = startPageIndex; examiningPage <= endPageIndex; ++examiningPage) {
                 NSUInteger nextNonFlioBlockOffset = 0;
-                NSArray *blocks = [textFlow blocksForPageAtIndex:examiningPage includingFolioBlocks:YES];
+                NSArray *blocks = [self.textFlow blocksForPageAtIndex:examiningPage includingFolioBlocks:YES];
                 NSUInteger blockCount = blocks.count;
                 for(NSUInteger blockOffset = 0; ; ++blockOffset) {
                     NSArray *words = nil;
