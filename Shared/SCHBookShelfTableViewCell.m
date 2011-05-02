@@ -155,15 +155,15 @@
 
 - (void) refreshCell
 {
+    SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];
 	// image processing
 	BOOL immediateUpdate = [[SCHProcessingManager sharedProcessingManager] requestThumbImageForBookCover:self.thumbImageView 
-																							   size:CGSizeMake(IMAGE_FRAME_WIDTH, IMAGE_FRAME_HEIGHT)];
+																							   size:CGSizeMake(IMAGE_FRAME_WIDTH, IMAGE_FRAME_HEIGHT)
+                                                                                                    book:book];
 
 	if (immediateUpdate) {
 		[self setNeedsDisplay];
 	}
-	
-	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];
 	
 	NSString *status = [book processingStateAsString];
 	

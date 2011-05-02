@@ -10,6 +10,7 @@
 #import <CoreData/CoreData.h>
 
 @class SCHAsyncBookCoverImageView;
+@class SCHAppBook;
 
 typedef enum {
 	SCHBookProcessingStateError = -2,
@@ -42,7 +43,7 @@ static NSString * const kSCHProcessingManagerConnectionBusy = @"SCHProcessingMan
 - (void) userSelectedBookWithISBN: (NSString *) isbn;
 
 // thumbnail requests
-- (BOOL) requestThumbImageForBookCover:(SCHAsyncBookCoverImageView *)bookCover size:(CGSize)size;
+- (BOOL) requestThumbImageForBookCover:(SCHAsyncBookCoverImageView *)bookCover size:(CGSize)size book:(SCHAppBook *)book;
 
 // methods for processing
 - (BOOL) ISBNisProcessing: (NSString *) isbn;

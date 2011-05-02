@@ -7,59 +7,62 @@
 //
 
 #import "SCHBookShelfGridViewCell.h"
+
 #import "SCHThumbnailFactory.h"
-#import "SCHProcessingManager.h"
 #import "SCHAppBook.h"
 #import "SCHBookManager.h"
+#import "SCHAsyncBookCoverImageView.h"
 
 @implementation SCHBookShelfGridViewCell
 
-@synthesize asyncImageView, thumbTintView, progressView, isbn;
+@synthesize asyncImageView;
+@synthesize thumbTintView;
+@synthesize progressView;
+@synthesize isbn;
 
-- (id)initWithFrame:(CGRect)frame reuseIdentifier: (NSString*) identifier {
+#pragma mark - Object lifecycle
 
+- (id)initWithFrame:(CGRect)frame reuseIdentifier:(NSString *)identifier 
+{
 	if ((self = [super initWithFrame:frame reuseIdentifier:identifier])) {
         
 		self.asyncImageView = [SCHThumbnailFactory newAsyncImageWithSize:CGSizeMake(self.frame.size.width - 4, self.frame.size.height - 20)];
 		[self.asyncImageView setFrame:CGRectZero];
 		[self.contentView addSubview:self.asyncImageView];
 		
-		self.thumbTintView = [[UIView alloc] initWithFrame:CGRectZero];
+		self.thumbTintView = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
 		[self.thumbTintView setBackgroundColor:[UIColor colorWithRed:0.2f green:0.2f blue:0.2f alpha:0.6f]];
         [self.thumbTintView setContentMode:UIViewContentModeBottom];
 		[self.contentView addSubview:self.thumbTintView];
 		
-/*		self.statusLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-        [self.statusLabel setFont:[UIFont systemFontOfSize:12.0f]];
-        [self.statusLabel setTextColor:[UIColor whiteColor]];
-		[self.statusLabel setBackgroundColor:[UIColor colorWithRed:0.2 green:0.2 blue:0.2 alpha:0.75]];
-        [self.statusLabel setHighlightedTextColor:[UIColor whiteColor]];
-		[self.statusLabel setNumberOfLines:1];
-		[self.statusLabel setTextAlignment:UITextAlignmentCenter];
-		
-        [self.contentView addSubview:self.statusLabel];
-*/		
-		self.progressView = [[UIProgressView alloc] initWithFrame:CGRectMake(10, self.frame.size.height - 42, self.frame.size.width - 20, 10)];
+		self.progressView = [[[UIProgressView alloc] initWithFrame:CGRectMake(10, self.frame.size.height - 42, self.frame.size.width - 20, 10)] autorelease];
 		[self.contentView addSubview:self.progressView];
-		self.progressView.hidden = NO;
-		
+		self.progressView.hidden = NO;		
     }
 	
-	return self;
+	return(self);
 }
 
-#pragma mark -
-#pragma mark Laying out subviews
+- (void)dealloc 
+{
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	[asyncImageView release], asyncImageView = nil;
+	[thumbTintView release], thumbTintView = nil;
+	[progressView release], progressView = nil;
+    [isbn release], isbn = nil;
+    [super dealloc];
+}
 
-- (void)layoutSubviews {
+#pragma mark - Drawing methods
+
+- (void)layoutSubviews 
+{
     [super layoutSubviews];
     [UIView setAnimationsEnabled:NO];
 
-//	self.statusLabel.frame = CGRectMake(-10, self.frame.size.height - 20, self.frame.size.width + 20, 14);
 	self.asyncImageView.frame = CGRectMake(2, 0, self.frame.size.width - 4, self.frame.size.height - 22);
 	self.progressView.frame = CGRectMake(10, self.frame.size.height - 42, self.frame.size.width - 20, 10);
 
-    
     if (asyncImageView && !CGSizeEqualToSize(self.asyncImageView.coverSize, CGSizeZero)) {
     
         CGRect thumbTintFrame = self.thumbTintView.frame;
@@ -73,24 +76,54 @@
         self.thumbTintView.frame = thumbTintFrame;
     }
     
-
     [UIView setAnimationsEnabled:YES];
 }
 
-#pragma mark -
-#pragma mark Setter for SCHBookInfo
+- (void)refreshCell
+{
+	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];    
+	// image processing
+	BOOL immediateUpdate = [[SCHProcessingManager sharedProcessingManager] requestThumbImageForBookCover:self.asyncImageView
+																									size:self.asyncImageView.thumbSize
+                                                                                                    book:book];
 
+	if (immediateUpdate) {
+		[self setNeedsDisplay];
+	}
+    
+	// book status
+	switch ([book processingState]) {
+		case SCHBookProcessingStateDownloadStarted:
+		case SCHBookProcessingStateDownloadPaused:
+			self.thumbTintView.hidden = NO;
+			self.progressView.hidden = NO;
+			break;
+		case SCHBookProcessingStateReadyToRead:
+			self.thumbTintView.hidden = YES;
+			self.progressView.hidden = YES;
+			break;
+        default:
+			self.thumbTintView.hidden = NO;
+			self.progressView.hidden = YES;
+			break;
+	}
+	
+	[self.progressView setProgress:[book currentDownloadedPercentage]];
+	
+	[self layoutSubviews];
+}	
 
-- (void) setIsbn: (NSString *) newIsbn
+#pragma mark - Accessor methods
+
+- (void)setIsbn:(NSString *)newIsbn
 {	
 	if (newIsbn != isbn) {
         [[NSNotificationCenter defaultCenter] removeObserver:self name:@"SCHBookDownloadPercentageUpdate" object:nil];
         [[NSNotificationCenter defaultCenter] removeObserver:self name:@"SCHBookStatusUpdate" object:nil];
         [[NSNotificationCenter defaultCenter] removeObserver:self name:@"SCHNewImageAvailable" object:nil];
 
-		NSString *oldIsbn = isbn;
-		isbn = [newIsbn retain];
-		[oldIsbn release];
+		[isbn release];
+		isbn = [newIsbn copy];
 
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(updatePercentage:) 
@@ -112,57 +145,16 @@
 	}
 }
 
-- (void) checkForCellUpdateFromNotification: (NSNotification *) notification
+#pragma mark - Private methods
+
+- (void)checkForCellUpdateFromNotification:(NSNotification *)notification
 {
     if ([self.isbn compare:[[notification userInfo] objectForKey:@"isbn"]] == NSOrderedSame) {
         [self refreshCell];
     }
-}
-
-- (void) refreshCell
-{
-	// image processing
-	BOOL immediateUpdate = [[SCHProcessingManager sharedProcessingManager] requestThumbImageForBookCover:self.asyncImageView
-																									size:self.asyncImageView.thumbSize];
-	
-	if (immediateUpdate) {
-		[self setNeedsDisplay];
-	}
-	
-	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];
-	
-	//NSString *status = [book processingStateAsString];
-    
-	// book status
-	switch ([book processingState]) {
-		case SCHBookProcessingStateDownloadStarted:
-		case SCHBookProcessingStateDownloadPaused:
-			self.thumbTintView.hidden = NO;
-			self.progressView.hidden = NO;
-//			self.statusLabel.hidden = NO;
-			break;
-		case SCHBookProcessingStateReadyToRead:
-			self.thumbTintView.hidden = YES;
-			self.progressView.hidden = YES;
-//			self.statusLabel.hidden = YES;
-			break;
-        default:
-			self.thumbTintView.hidden = NO;
-			self.progressView.hidden = YES;
-//			self.statusLabel.hidden = NO;
-			break;
-	}
-	
-	[self.progressView setProgress:[book currentDownloadedPercentage]];
-//	self.statusLabel.text = status;
-	
-	[self layoutSubviews];
-	
-//	[self.statusLabel setNeedsDisplay];
 }	
-	
 
-- (void) updatePercentage: (NSNotification *) notification
+- (void)updatePercentage:(NSNotification *)notification
 {
     NSString *updateForISBN = [[notification userInfo] objectForKey:@"isbn"];
     
@@ -170,15 +162,6 @@
         float newPercentage = [(NSNumber *) [[notification userInfo] objectForKey:@"currentPercentage"] floatValue];
         [self.progressView setProgress:newPercentage];
     }
-}
-
-- (void)dealloc {
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
-//	self.statusLabel = nil;
-	self.asyncImageView = nil;
-	self.thumbTintView = nil;
-	self.progressView = nil;
-    [super dealloc];
 }
 
 @end

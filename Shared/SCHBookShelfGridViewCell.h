@@ -7,24 +7,21 @@
 //
 
 #import <Foundation/Foundation.h>
+
 #import "MRGridViewCell.h"
-#import "SCHAsyncBookCoverImageView.h"
 
-@interface SCHBookShelfGridViewCell : MRGridViewCell {
+@class SCHAsyncBookCoverImageView;
 
-	
-	
+@interface SCHBookShelfGridViewCell : MRGridViewCell 
+{
 }
 
-
-@property (nonatomic, retain) NSString *isbn;
+@property (nonatomic, copy) NSString *isbn;
 
 @property (nonatomic, retain) SCHAsyncBookCoverImageView *asyncImageView;
 @property (nonatomic, retain) UIView *thumbTintView;
-//@property (nonatomic, retain) UILabel *statusLabel;
 @property (nonatomic, retain) UIProgressView *progressView;
 
-- (void) refreshCell;
-
+- (void)refreshCell;
 
 @end
