@@ -30,6 +30,8 @@
 @property (nonatomic, retain) NSCountedSet *cachedBlockSourceCheckoutCounts;
 @property (nonatomic, retain) NSLock *threadSafeMutationLock;
 
+@property (nonatomic, retain) NSMutableDictionary *isbnManagedObjectCache;
+
 - (BOOL)save:(NSError **)error;
 
 @end
@@ -50,7 +52,19 @@ static NSDictionary *featureCompatibilityDictionary = nil;
 static int mutationCount = 0;
 
 
-@synthesize cachedXPSProviders, cachedXPSProviderCheckoutCounts, cachedEucBooks, cachedEucBookCheckoutCounts, cachedTextFlows, cachedParagraphSources, cachedBlockSources, cachedTextFlowCheckoutCounts, cachedParagraphSourceCheckoutCounts, cachedBlockSourceCheckoutCounts, persistentStoreCoordinator, threadSafeMutationLock;
+@synthesize cachedXPSProviders;
+@synthesize cachedXPSProviderCheckoutCounts;
+@synthesize cachedEucBooks;
+@synthesize cachedEucBookCheckoutCounts;
+@synthesize cachedTextFlows;
+@synthesize cachedParagraphSources;
+@synthesize cachedBlockSources;
+@synthesize cachedTextFlowCheckoutCounts;
+@synthesize cachedParagraphSourceCheckoutCounts;
+@synthesize cachedBlockSourceCheckoutCounts;
+@synthesize persistentStoreCoordinator;
+@synthesize threadSafeMutationLock;
+@synthesize isbnManagedObjectCache;
 
 + (SCHBookManager *)sharedBookManager
 {
@@ -72,33 +86,35 @@ static int mutationCount = 0;
     return sSharedBookManager;
 }
 
-- (void)dealloc {
-	self.threadSafeMutationLock = nil;
-	[cachedXPSProviders release], cachedXPSProviders = nil;
-    [cachedEucBooks release], cachedEucBooks = nil;
-    [cachedTextFlows release], cachedTextFlows = nil;
-    [cachedParagraphSources release], cachedParagraphSources = nil;
-    [cachedBlockSources release], cachedBlockSources = nil;
-    [super dealloc];
-}
-
 - (id)init
 {
     if ((self = [super init])) {
-        // Initialization code.
 		cachedXPSProviders = [[NSMutableDictionary alloc] init];
 		cachedEucBooks = [[NSMutableDictionary alloc] init];
 		cachedTextFlows = [[NSMutableDictionary alloc] init];
         cachedParagraphSources = [[NSMutableDictionary alloc] init];
         cachedBlockSources = [[NSMutableDictionary alloc] init];
+        isbnManagedObjectCache = [[NSMutableDictionary alloc] init];
     }
-    return self;
+    return(self);
+}
+
+- (void)dealloc 
+{
+	[threadSafeMutationLock release], threadSafeMutationLock = nil;
+	[cachedXPSProviders release], cachedXPSProviders = nil;
+    [cachedEucBooks release], cachedEucBooks = nil;
+    [cachedTextFlows release], cachedTextFlows = nil;
+    [cachedParagraphSources release], cachedParagraphSources = nil;
+    [cachedBlockSources release], cachedBlockSources = nil;
+    [isbnManagedObjectCache release], isbnManagedObjectCache = nil;
+    [super dealloc];
 }
 
 #pragma mark -
 #pragma mark Compatibility Checking
 
-+ (BOOL) checkAppCompatibilityForFeature: (NSString *) key version: (float) version
++ (BOOL)checkAppCompatibilityForFeature:(NSString *)key version:(float)version
 {
     if (!featureCompatibilityDictionary) {
         featureCompatibilityDictionary = 
@@ -114,7 +130,7 @@ static int mutationCount = 0;
 	}
 }
 
-+ (BOOL) appHasFeature: (NSString *) key
++ (BOOL)appHasFeature: (NSString *)key
 {
 	BOOL hasFeature = NO;
 	
@@ -122,53 +138,55 @@ static int mutationCount = 0;
 		hasFeature = YES;
 	}
 	
-	return hasFeature;
+	return(hasFeature);
 }
 
 #pragma mark -
 #pragma mark Book Info vending
 
-- (SCHAppBook *)bookWithIdentifier: (NSString *) isbn
+- (SCHAppBook *)bookWithIdentifier:(NSString *)isbn
 {
 	NSManagedObjectContext *context = [[SCHBookManager sharedBookManager] managedObjectContextForCurrentThread];
     SCHAppBook *book = nil;
+    NSError *error = nil;
     
     if (isbn && context) {
-		
-        NSEntityDescription *entityDescription = [NSEntityDescription 
-                                                  entityForName:kSCHAppBook
-                                                  inManagedObjectContext:context];
-        
-        if (!entityDescription) {
-            NSLog(@"WARNING: entity description is nil for %@", isbn);
-        } else {
-            NSFetchRequest *fetchRequest = [entityDescription.managedObjectModel 
-                                            fetchRequestFromTemplateWithName:kSCHAppBookFetchWithContentIdentifier 
-                                            substitutionVariables:[NSDictionary 
-                                                                   dictionaryWithObject:isbn 
-                                                                   forKey:kSCHAppBookCONTENT_IDENTIFIER]];
+        NSManagedObjectID *managedObjectID = [isbnManagedObjectCache objectForKey:isbn];
+        if (managedObjectID == nil) {
+            NSEntityDescription *entityDescription = [NSEntityDescription 
+                                                      entityForName:kSCHAppBook
+                                                      inManagedObjectContext:context];
             
-            NSError *error = nil;
-            NSArray *results = [context executeFetchRequest:fetchRequest error:&error];
-            
-            if (error) {
-                NSLog(@"Error while fetching book item: %@", [error localizedDescription]);
-            } else if (!results || [results count] != 1) {
-                NSLog(@"Did not return expected single book for isbn %@.", isbn);
-                NSLog(@"Results: %@", results);
+            if (!entityDescription) {
+                NSLog(@"WARNING: entity description is nil for %@", isbn);
             } else {
-                book = (SCHAppBook *) [results objectAtIndex:0];
+                NSFetchRequest *fetchRequest = [entityDescription.managedObjectModel 
+                                                fetchRequestFromTemplateWithName:kSCHAppBookFetchWithContentIdentifier 
+                                                substitutionVariables:[NSDictionary 
+                                                                       dictionaryWithObject:isbn 
+                                                                       forKey:kSCHAppBookCONTENT_IDENTIFIER]];
+                NSArray *bookArray = [context executeFetchRequest:fetchRequest error:&error];
+
+                if ([bookArray count] > 0) {
+                    book = (SCHAppBook *)[bookArray objectAtIndex:0];
+                    [self.isbnManagedObjectCache setObject:book.objectID forKey:isbn];
+                }
             }
+        } else {
+            book = (SCHAppBook *) [context existingObjectWithID:managedObjectID error:&error];
         }
     } else {
 		NSLog(@"WARNING: book identifier is nil! request for %@", isbn);
 	}
 	
-    if (book) {
+    if (error) {
+        NSLog(@"Error while fetching book item: %@", [error localizedDescription]);
+        
+    } else if (book) {
         [context refreshObject:book mergeChanges:YES];
     }
     
-    return book;
+    return(book);
 }
 
 - (NSArray *)allBooksAsISBNs
@@ -200,7 +218,7 @@ static int mutationCount = 0;
 #pragma mark -
 #pragma mark Thread safe set/get book methods
 
-- (void)threadSafeUpdateBookWithISBN: (NSString *) isbn setValue:(id)value forKey:(NSString *)key 
+- (void)threadSafeUpdateBookWithISBN:(NSString *)isbn setValue:(id)value forKey:(NSString *)key 
 {
     
     if (!isbn || [isbn isEqual:[NSNull null]] ||
@@ -241,7 +259,7 @@ static int mutationCount = 0;
     [pool drain];
 }
 
-- (id) threadSafeValueForBookWithISBN: (NSString *) isbn forKey: (NSString *) key
+- (id)threadSafeValueForBookWithISBN:(NSString *)isbn forKey:(NSString *)key
 {
     SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:isbn];
     if (nil == book) {
@@ -252,7 +270,7 @@ static int mutationCount = 0;
     }
 }
 
-- (void)threadSafeUpdateBookWithISBN: (NSString *) isbn state: (SCHBookCurrentProcessingState) state 
+- (void)threadSafeUpdateBookWithISBN:(NSString *)isbn state:(SCHBookCurrentProcessingState)state 
 {
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
     
@@ -296,7 +314,7 @@ static int mutationCount = 0;
 
 }
 
-- (SCHBookCurrentProcessingState) processingStateForBookWithISBN: (NSString *) isbn
+- (SCHBookCurrentProcessingState)processingStateForBookWithISBN:(NSString *)isbn
 {
 	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:isbn];
     if (nil == book) {
@@ -316,7 +334,7 @@ static int mutationCount = 0;
 #pragma mark -
 #pragma mark Main Thread Notifications
 
-- (void) statusNotification: (NSDictionary *) userInfo
+- (void)statusNotification:(NSDictionary *)userInfo
 {
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"SCHBookStateUpdate" object:nil userInfo:userInfo];
 }
@@ -356,7 +374,7 @@ static int mutationCount = 0;
 #pragma mark -
 #pragma mark XPS Provider Check out/Check in
 
-- (SCHXPSProvider *)checkOutXPSProviderForBookIdentifier: (NSString *) isbn
+- (SCHXPSProvider *)checkOutXPSProviderForBookIdentifier:(NSString *)isbn
 {
 	SCHXPSProvider *ret = nil;
 	
@@ -392,11 +410,11 @@ static int mutationCount = 0;
 	
     //NSLog(@"[%d] checkOutXPSProviderForBookWithID %@", [self.cachedXPSProviderCheckoutCounts countForObject:isbn], isbn);
 
-    return ret;
+    return(ret);
 	
 }
 
-- (void)checkInXPSProviderForBookIdentifier: (NSString *) isbn
+- (void)checkInXPSProviderForBookIdentifier:(NSString *)isbn
 {
 
    // NSLog(@"Checking in XPS for book: %@", isbn);
@@ -427,7 +445,7 @@ static int mutationCount = 0;
 #pragma mark -
 #pragma mark EucBook Check out/Check in
 
-- (SCHFlowEucBook *)checkOutEucBookForBookIdentifier: (NSString *) isbn
+- (SCHFlowEucBook *)checkOutEucBookForBookIdentifier:(NSString *)isbn
 {
 	SCHFlowEucBook *ret = nil;
 	
@@ -461,11 +479,10 @@ static int mutationCount = 0;
     
 	[self.persistentStoreCoordinator unlock];
 	
-    return ret;
-	
+    return(ret);
 }
 
-- (void)checkInEucBookForBookIdentifier: (NSString *) isbn
+- (void)checkInEucBookForBookIdentifier:(NSString *)isbn
 {
     
 	//NSLog(@"Checking in EucBook for book: %@", isbn);
@@ -494,7 +511,7 @@ static int mutationCount = 0;
 #pragma mark -
 #pragma mark TextFlow Check out/Check in
 
-- (SCHTextFlow *)checkOutTextFlowForBookIdentifier:(NSString *) isbn
+- (SCHTextFlow *)checkOutTextFlowForBookIdentifier:(NSString *)isbn
 {
     SCHTextFlow *ret = nil;
     
@@ -532,10 +549,10 @@ static int mutationCount = 0;
     
     [self.persistentStoreCoordinator unlock];
     
-    return ret;
+    return(ret);
 }
 
-- (void)checkInTextFlowForBookIdentifier: (NSString *) isbn
+- (void)checkInTextFlowForBookIdentifier:(NSString *)isbn
 {
     // Always check in an XPS Provider alongside a TextFlow to match the fact 
     // that we always check it out
@@ -564,7 +581,7 @@ static int mutationCount = 0;
 #pragma mark -
 #pragma mark ParagraphSource Check out/Check in
 
-- (SCHTextFlowParagraphSource *)checkOutParagraphSourceForBookIdentifier:(NSString *) isbn
+- (SCHTextFlowParagraphSource *)checkOutParagraphSourceForBookIdentifier:(NSString *)isbn
 {   
     SCHTextFlowParagraphSource *ret = nil;
     
@@ -597,10 +614,10 @@ static int mutationCount = 0;
     
     [self.persistentStoreCoordinator unlock];
     
-    return ret;
+    return(ret);
 }
 
-- (void)checkInParagraphSourceForBookIdentifier:(NSString *) isbn
+- (void)checkInParagraphSourceForBookIdentifier:(NSString *)isbn
 {
     NSMutableDictionary *myCachedParagraphSources = self.cachedParagraphSources;
     @synchronized(myCachedParagraphSources) {
@@ -624,7 +641,7 @@ static int mutationCount = 0;
 
 #pragma mark - ParagraphSource Check out/Check in
 
-- (SCHSmartZoomBlockSource *)checkOutBlockSourceForBookIdentifier:(NSString *) isbn
+- (SCHSmartZoomBlockSource *)checkOutBlockSourceForBookIdentifier:(NSString *)isbn
 {   
     SCHSmartZoomBlockSource *ret = nil;
     
@@ -655,10 +672,10 @@ static int mutationCount = 0;
     
     [self.persistentStoreCoordinator unlock];
     
-    return ret;
+    return(ret);
 }
 
-- (void)checkInBlockSourceForBookIdentifier:(NSString *) isbn
+- (void)checkInBlockSourceForBookIdentifier:(NSString *)isbn
 {
     NSMutableDictionary *myCachedBlockSources = self.cachedParagraphSources;
     @synchronized(myCachedBlockSources) {
