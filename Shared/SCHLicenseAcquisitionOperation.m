@@ -31,9 +31,10 @@
 
 - (void) start
 {
+#if !LOCALDEBUG
     licenseAcquisitionSession = [[SCHDrmLicenseAcquisitionSession alloc] initWithBook:self.isbn];
-    licenseAcquisitionSession.delegate = self;
-    
+    [licenseAcquisitionSession setDelegate:self];
+#endif    
     [super start];
 }
 

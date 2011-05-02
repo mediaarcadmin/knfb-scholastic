@@ -99,6 +99,8 @@
 		52AD9D74130000570099FB88 /* SCHSettingsSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9D6E130000570099FB88 /* SCHSettingsSyncComponent.m */; };
 		52BAFB69135DAB8600C2AFF3 /* SCHThemeImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 52BAFB68135DAB8600C2AFF3 /* SCHThemeImageView.m */; };
 		52BAFB6A135DAB8600C2AFF3 /* SCHThemeImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 52BAFB68135DAB8600C2AFF3 /* SCHThemeImageView.m */; };
+		52C489CB1369AC4200460876 /* UIColor+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52C489CA1369AC4200460876 /* UIColor+Extensions.m */; };
+		52C489CC1369AC4200460876 /* UIColor+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52C489CA1369AC4200460876 /* UIColor+Extensions.m */; };
 		52D612B812E4650B0033DA92 /* NSNumber+ObjectTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D612B712E4650B0033DA92 /* NSNumber+ObjectTypes.m */; };
 		52E332E413018EDF002F3011 /* SCHComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 5266D38313007D15004E3AC6 /* SCHComponent.m */; };
 		52E332E513018EDF002F3011 /* SCHTopFavoritesComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 5266D34B13007A1C004E3AC6 /* SCHTopFavoritesComponent.m */; };
@@ -121,20 +123,14 @@
 		52E623011358544200245CA7 /* SCHThemePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E622FE1358544200245CA7 /* SCHThemePickerViewController.m */; };
 		52E623021358544200245CA7 /* SCHThemePickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52E622FF1358544200245CA7 /* SCHThemePickerViewController.xib */; };
 		52E623031358544200245CA7 /* SCHThemePickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52E622FF1358544200245CA7 /* SCHThemePickerViewController.xib */; };
-		52EF4E5F12E6E01C00E374F7 /* SCHLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF4E5D12E6E01C00E374F7 /* SCHLoginViewController.m */; };
-		52EF4E6012E6E01C00E374F7 /* SCHLoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52EF4E5E12E6E01C00E374F7 /* SCHLoginViewController.xib */; };
+		52EF4E5F12E6E01C00E374F7 /* SCHLoginPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF4E5D12E6E01C00E374F7 /* SCHLoginPasswordViewController.m */; };
+		52EF4E6012E6E01C00E374F7 /* SCHLoginPasswordViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52EF4E5E12E6E01C00E374F7 /* SCHLoginPasswordViewController.xib */; };
 		52EF508712E739E900E374F7 /* LibreAccessServiceSvc.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF508612E739E900E374F7 /* LibreAccessServiceSvc.m */; };
 		52EF553E12E9EB8500E374F7 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52EF553D12E9EB8500E374F7 /* Security.framework */; };
 		52EF570A12ED977C00E374F7 /* NSManagedObjectContext+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF570912ED977C00E374F7 /* NSManagedObjectContext+Extensions.m */; };
 		52EF579712EDBE6E00E374F7 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF579612EDBE6E00E374F7 /* SFHFKeychainUtils.m */; };
-		52F559C6130BEA57002C8BDF /* SCHProfilePasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52F559C4130BEA57002C8BDF /* SCHProfilePasswordViewController.m */; };
-		52F559C7130BEA57002C8BDF /* SCHProfilePasswordViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52F559C5130BEA57002C8BDF /* SCHProfilePasswordViewController.xib */; };
-		52F559C8130BEA57002C8BDF /* SCHProfilePasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52F559C4130BEA57002C8BDF /* SCHProfilePasswordViewController.m */; };
-		52F559C9130BEA57002C8BDF /* SCHProfilePasswordViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52F559C5130BEA57002C8BDF /* SCHProfilePasswordViewController.xib */; };
-		A3A38E08133A803500C325A3 /* SCHDrmRegistrationSession.m in Sources */ = {isa = PBXBuildFile; fileRef = A3A38E04133A803500C325A3 /* SCHDrmRegistrationSession.m */; };
-		A3A38E09133A803500C325A3 /* SCHDrmSession.m in Sources */ = {isa = PBXBuildFile; fileRef = A3A38E07133A803500C325A3 /* SCHDrmSession.m */; };
-		A3A38E0A133A803500C325A3 /* SCHDrmRegistrationSession.m in Sources */ = {isa = PBXBuildFile; fileRef = A3A38E04133A803500C325A3 /* SCHDrmRegistrationSession.m */; };
-		A3A38E0B133A803500C325A3 /* SCHDrmSession.m in Sources */ = {isa = PBXBuildFile; fileRef = A3A38E07133A803500C325A3 /* SCHDrmSession.m */; };
+		A331E123136B26FC0008FCB1 /* SCHDrmSession.m in Sources */ = {isa = PBXBuildFile; fileRef = A33F7310136B050A00BAA101 /* SCHDrmSession.m */; };
+		A33F7311136B050A00BAA101 /* SCHDrmSession.m in Sources */ = {isa = PBXBuildFile; fileRef = A33F7310136B050A00BAA101 /* SCHDrmSession.m */; };
 		A3A38E61133A811400C325A3 /* devcerttemplate.dat in Resources */ = {isa = PBXBuildFile; fileRef = A3A38E5F133A811400C325A3 /* devcerttemplate.dat */; };
 		A3A38E62133A811400C325A3 /* iphonecert.dat in Resources */ = {isa = PBXBuildFile; fileRef = A3A38E60133A811400C325A3 /* iphonecert.dat */; };
 		A3A38E63133A811400C325A3 /* devcerttemplate.dat in Resources */ = {isa = PBXBuildFile; fileRef = A3A38E5F133A811400C325A3 /* devcerttemplate.dat */; };
@@ -631,7 +627,7 @@
 		F8509EFB12F063C900197EB5 /* SCHProfileViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 528A2D6112CDE3B10053A343 /* SCHProfileViewController.xib */; };
 		F8509F0012F063C900197EB5 /* SCHSettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 529385B412DF231800045B44 /* SCHSettingsViewController.xib */; };
 		F8509F0112F063C900197EB5 /* SCHBookShelfViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5293883212E03CD000045B44 /* SCHBookShelfViewController.xib */; };
-		F8509F0412F063C900197EB5 /* SCHLoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52EF4E5E12E6E01C00E374F7 /* SCHLoginViewController.xib */; };
+		F8509F0412F063C900197EB5 /* SCHLoginPasswordViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52EF4E5E12E6E01C00E374F7 /* SCHLoginPasswordViewController.xib */; };
 		F8509F0512F063C900197EB5 /* Clifford.xps in Resources */ = {isa = PBXBuildFile; fileRef = F8509E7612F0620D00197EB5 /* Clifford.xps */; };
 		F8509F0612F063C900197EB5 /* Goosebumps.xps in Resources */ = {isa = PBXBuildFile; fileRef = F8509E7712F0620D00197EB5 /* Goosebumps.xps */; };
 		F8509F0912F063C900197EB5 /* OldLady.xps in Resources */ = {isa = PBXBuildFile; fileRef = F8509E7A12F0620E00197EB5 /* OldLady.xps */; };
@@ -664,7 +660,7 @@
 		F8509F2D12F063C900197EB5 /* SCHScholasticWebService.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293872F12DF43D200045B44 /* SCHScholasticWebService.m */; };
 		F8509F2F12F063C900197EB5 /* SCHBookShelfViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293883112E03CD000045B44 /* SCHBookShelfViewController.m */; };
 		F8509F3212F063C900197EB5 /* NSNumber+ObjectTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D612B712E4650B0033DA92 /* NSNumber+ObjectTypes.m */; };
-		F8509F3412F063C900197EB5 /* SCHLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF4E5D12E6E01C00E374F7 /* SCHLoginViewController.m */; };
+		F8509F3412F063C900197EB5 /* SCHLoginPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF4E5D12E6E01C00E374F7 /* SCHLoginPasswordViewController.m */; };
 		F8509F3512F063C900197EB5 /* LibreAccessServiceSvc.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF508612E739E900E374F7 /* LibreAccessServiceSvc.m */; };
 		F8509F3712F063C900197EB5 /* NSManagedObjectContext+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF570912ED977C00E374F7 /* NSManagedObjectContext+Extensions.m */; };
 		F8509F3812F063C900197EB5 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF579612EDBE6E00E374F7 /* SFHFKeychainUtils.m */; };
@@ -1013,6 +1009,8 @@
 		52BAFB67135DAB8600C2AFF3 /* SCHThemeImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHThemeImageView.h; path = Shared/SCHThemeImageView.h; sourceTree = "<group>"; };
 		52BAFB68135DAB8600C2AFF3 /* SCHThemeImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHThemeImageView.m; path = Shared/SCHThemeImageView.m; sourceTree = "<group>"; };
 		52BF57B21352F3FC00B5066E /* SCHAuthenticationManagerProtected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAuthenticationManagerProtected.h; path = Shared/SCHAuthenticationManagerProtected.h; sourceTree = "<group>"; };
+		52C489C91369AC4200460876 /* UIColor+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIColor+Extensions.h"; path = "Shared/UIColor+Extensions.h"; sourceTree = "<group>"; };
+		52C489CA1369AC4200460876 /* UIColor+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIColor+Extensions.m"; path = "Shared/UIColor+Extensions.m"; sourceTree = "<group>"; };
 		52D612B612E4650B0033DA92 /* NSNumber+ObjectTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSNumber+ObjectTypes.h"; path = "Shared/NSNumber+ObjectTypes.h"; sourceTree = "<group>"; };
 		52D612B712E4650B0033DA92 /* NSNumber+ObjectTypes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSNumber+ObjectTypes.m"; path = "Shared/NSNumber+ObjectTypes.m"; sourceTree = "<group>"; };
 		52E334F41303049B002F3011 /* SCHTopPicksBookShelfViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHTopPicksBookShelfViewController.h; path = iPhone/SCHTopPicksBookShelfViewController.h; sourceTree = "<group>"; };
@@ -1028,9 +1026,9 @@
 		52E622FD1358544200245CA7 /* SCHThemePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHThemePickerViewController.h; sourceTree = "<group>"; };
 		52E622FE1358544200245CA7 /* SCHThemePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHThemePickerViewController.m; sourceTree = "<group>"; };
 		52E622FF1358544200245CA7 /* SCHThemePickerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHThemePickerViewController.xib; sourceTree = "<group>"; };
-		52EF4E5C12E6E01C00E374F7 /* SCHLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHLoginViewController.h; sourceTree = "<group>"; };
-		52EF4E5D12E6E01C00E374F7 /* SCHLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHLoginViewController.m; sourceTree = "<group>"; };
-		52EF4E5E12E6E01C00E374F7 /* SCHLoginViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SCHLoginViewController.xib; sourceTree = "<group>"; };
+		52EF4E5C12E6E01C00E374F7 /* SCHLoginPasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHLoginPasswordViewController.h; sourceTree = "<group>"; };
+		52EF4E5D12E6E01C00E374F7 /* SCHLoginPasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHLoginPasswordViewController.m; sourceTree = "<group>"; };
+		52EF4E5E12E6E01C00E374F7 /* SCHLoginPasswordViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SCHLoginPasswordViewController.xib; sourceTree = "<group>"; };
 		52EF508512E739E900E374F7 /* LibreAccessServiceSvc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LibreAccessServiceSvc.h; sourceTree = "<group>"; };
 		52EF508612E739E900E374F7 /* LibreAccessServiceSvc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LibreAccessServiceSvc.m; sourceTree = "<group>"; };
 		52EF543E12E9A5D400E374F7 /* SCHAuthenticationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAuthenticationManager.h; path = Shared/SCHAuthenticationManager.h; sourceTree = "<group>"; };
@@ -1040,19 +1038,13 @@
 		52EF570912ED977C00E374F7 /* NSManagedObjectContext+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSManagedObjectContext+Extensions.m"; path = "Shared/NSManagedObjectContext+Extensions.m"; sourceTree = "<group>"; };
 		52EF579512EDBE6E00E374F7 /* SFHFKeychainUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFHFKeychainUtils.h; sourceTree = "<group>"; };
 		52EF579612EDBE6E00E374F7 /* SFHFKeychainUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFHFKeychainUtils.m; sourceTree = "<group>"; };
-		52F559C3130BEA57002C8BDF /* SCHProfilePasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHProfilePasswordViewController.h; sourceTree = "<group>"; };
-		52F559C4130BEA57002C8BDF /* SCHProfilePasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHProfilePasswordViewController.m; sourceTree = "<group>"; };
-		52F559C5130BEA57002C8BDF /* SCHProfilePasswordViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SCHProfilePasswordViewController.xib; sourceTree = "<group>"; };
-		52F559F1130BF001002C8BDF /* SCHProfilePasswordViewControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHProfilePasswordViewControllerDelegate.h; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Scholastic-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Scholastic-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
+		A33F730F136B050A00BAA101 /* SCHDrmSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHDrmSession.h; path = Shared/SCHDrmSession.h; sourceTree = "<group>"; };
+		A33F7310136B050A00BAA101 /* SCHDrmSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHDrmSession.m; path = Shared/SCHDrmSession.m; sourceTree = "<group>"; };
 		A37E7BD01358DFE90002A733 /* SCHDrmLicenseAcquisitionSessionDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHDrmLicenseAcquisitionSessionDelegate.h; path = Shared/SCHDrmLicenseAcquisitionSessionDelegate.h; sourceTree = "<group>"; };
 		A3A38E01133A7FA300C325A3 /* DrmGlobals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DrmGlobals.h; path = Shared/Libraries/DRM/DrmGlobals.h; sourceTree = "<group>"; };
 		A3A38E02133A7FFF00C325A3 /* KeychainItemWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KeychainItemWrapper.h; path = Shared/Libraries/DRM/KeychainItemWrapper.h; sourceTree = "<group>"; };
-		A3A38E03133A803500C325A3 /* SCHDrmRegistrationSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHDrmRegistrationSession.h; path = Shared/SCHDrmRegistrationSession.h; sourceTree = "<group>"; };
-		A3A38E04133A803500C325A3 /* SCHDrmRegistrationSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHDrmRegistrationSession.m; path = Shared/SCHDrmRegistrationSession.m; sourceTree = "<group>"; };
 		A3A38E05133A803500C325A3 /* SCHDrmRegistrationSessionDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHDrmRegistrationSessionDelegate.h; path = Shared/SCHDrmRegistrationSessionDelegate.h; sourceTree = "<group>"; };
-		A3A38E06133A803500C325A3 /* SCHDrmSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHDrmSession.h; path = Shared/SCHDrmSession.h; sourceTree = "<group>"; };
-		A3A38E07133A803500C325A3 /* SCHDrmSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHDrmSession.m; path = Shared/SCHDrmSession.m; sourceTree = "<group>"; };
 		A3A38E5F133A811400C325A3 /* devcerttemplate.dat */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = devcerttemplate.dat; sourceTree = "<group>"; };
 		A3A38E60133A811400C325A3 /* iphonecert.dat */ = {isa = PBXFileReference; lastKnownFileType = file; path = iphonecert.dat; sourceTree = "<group>"; };
 		A3D933851326D92000037111 /* libPlayReadyPK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPlayReadyPK.a; path = Shared/Libraries/DRM/libPlayReadyPK.a; sourceTree = "<group>"; };
@@ -1664,16 +1656,12 @@
 				528A2D5E12CDE39C0053A343 /* SCHProfileViewController.h */,
 				528A2D5F12CDE39C0053A343 /* SCHProfileViewController.m */,
 				528A2D6112CDE3B10053A343 /* SCHProfileViewController.xib */,
-				52F559C3130BEA57002C8BDF /* SCHProfilePasswordViewController.h */,
-				52F559C4130BEA57002C8BDF /* SCHProfilePasswordViewController.m */,
-				52F559C5130BEA57002C8BDF /* SCHProfilePasswordViewController.xib */,
-				52F559F1130BF001002C8BDF /* SCHProfilePasswordViewControllerDelegate.h */,
 				529385B212DF231800045B44 /* SCHSettingsViewController.h */,
 				529385B312DF231800045B44 /* SCHSettingsViewController.m */,
 				529385B412DF231800045B44 /* SCHSettingsViewController.xib */,
-				52EF4E5C12E6E01C00E374F7 /* SCHLoginViewController.h */,
-				52EF4E5D12E6E01C00E374F7 /* SCHLoginViewController.m */,
-				52EF4E5E12E6E01C00E374F7 /* SCHLoginViewController.xib */,
+				52EF4E5C12E6E01C00E374F7 /* SCHLoginPasswordViewController.h */,
+				52EF4E5D12E6E01C00E374F7 /* SCHLoginPasswordViewController.m */,
+				52EF4E5E12E6E01C00E374F7 /* SCHLoginPasswordViewController.xib */,
 				F8898901135877B100D236ED /* SCHProfileViewCell.h */,
 				F8898902135877B100D236ED /* SCHProfileViewCell.m */,
 				52E622FD1358544200245CA7 /* SCHThemePickerViewController.h */,
@@ -2046,12 +2034,10 @@
 		52ACF463133B547700B2E28C /* DRM */ = {
 			isa = PBXGroup;
 			children = (
+				A33F730F136B050A00BAA101 /* SCHDrmSession.h */,
+				A33F7310136B050A00BAA101 /* SCHDrmSession.m */,
 				A37E7BD01358DFE90002A733 /* SCHDrmLicenseAcquisitionSessionDelegate.h */,
-				A3A38E03133A803500C325A3 /* SCHDrmRegistrationSession.h */,
-				A3A38E04133A803500C325A3 /* SCHDrmRegistrationSession.m */,
 				A3A38E05133A803500C325A3 /* SCHDrmRegistrationSessionDelegate.h */,
-				A3A38E06133A803500C325A3 /* SCHDrmSession.h */,
-				A3A38E07133A803500C325A3 /* SCHDrmSession.m */,
 			);
 			name = DRM;
 			sourceTree = "<group>";
@@ -2104,6 +2090,8 @@
 		52EF594712EECA7200E374F7 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				52C489C91369AC4200460876 /* UIColor+Extensions.h */,
+				52C489CA1369AC4200460876 /* UIColor+Extensions.m */,
 				52EF570812ED977C00E374F7 /* NSManagedObjectContext+Extensions.h */,
 				52EF570912ED977C00E374F7 /* NSManagedObjectContext+Extensions.m */,
 			);
@@ -3018,9 +3006,8 @@
 				528A2D6212CDE3B10053A343 /* SCHProfileViewController.xib in Resources */,
 				529385B612DF231800045B44 /* SCHSettingsViewController.xib in Resources */,
 				5293883412E03CD000045B44 /* SCHBookShelfViewController.xib in Resources */,
-				52EF4E6012E6E01C00E374F7 /* SCHLoginViewController.xib in Resources */,
+				52EF4E6012E6E01C00E374F7 /* SCHLoginPasswordViewController.xib in Resources */,
 				C923B15C12F6B0280054426F /* SCHMultipleBookshelvesController.xib in Resources */,
-				52F559C7130BEA57002C8BDF /* SCHProfilePasswordViewController.xib in Resources */,
 				F8678D8B133218D8001FDB2F /* ScholasticFeatureCompatibility.plist in Resources */,
 				A3A38E61133A811400C325A3 /* devcerttemplate.dat in Resources */,
 				A3A38E62133A811400C325A3 /* iphonecert.dat in Resources */,
@@ -3208,7 +3195,7 @@
 				F8509EFB12F063C900197EB5 /* SCHProfileViewController.xib in Resources */,
 				F8509F0012F063C900197EB5 /* SCHSettingsViewController.xib in Resources */,
 				F8509F0112F063C900197EB5 /* SCHBookShelfViewController.xib in Resources */,
-				F8509F0412F063C900197EB5 /* SCHLoginViewController.xib in Resources */,
+				F8509F0412F063C900197EB5 /* SCHLoginPasswordViewController.xib in Resources */,
 				F8509F0512F063C900197EB5 /* Clifford.xps in Resources */,
 				F8509F0612F063C900197EB5 /* Goosebumps.xps in Resources */,
 				F8509F0912F063C900197EB5 /* OldLady.xps in Resources */,
@@ -3216,7 +3203,6 @@
 				F8509F0C12F063C900197EB5 /* TooManyToys.xps in Resources */,
 				F8509F0D12F063C900197EB5 /* Cars.xps in Resources */,
 				C923B15B12F6B0280054426F /* SCHMultipleBookshelvesController.xib in Resources */,
-				52F559C9130BEA57002C8BDF /* SCHProfilePasswordViewController.xib in Resources */,
 				F8678D8A133218D8001FDB2F /* ScholasticFeatureCompatibility.plist in Resources */,
 				A3A38E63133A811400C325A3 /* devcerttemplate.dat in Resources */,
 				A3A38E64133A811400C325A3 /* iphonecert.dat in Resources */,
@@ -3432,7 +3418,7 @@
 				5293873012DF43D200045B44 /* SCHScholasticWebService.m in Sources */,
 				5293883312E03CD000045B44 /* SCHBookShelfViewController.m in Sources */,
 				52D612B812E4650B0033DA92 /* NSNumber+ObjectTypes.m in Sources */,
-				52EF4E5F12E6E01C00E374F7 /* SCHLoginViewController.m in Sources */,
+				52EF4E5F12E6E01C00E374F7 /* SCHLoginPasswordViewController.m in Sources */,
 				52EF508712E739E900E374F7 /* LibreAccessServiceSvc.m in Sources */,
 				52EF570A12ED977C00E374F7 /* NSManagedObjectContext+Extensions.m in Sources */,
 				52EF579712EDBE6E00E374F7 /* SFHFKeychainUtils.m in Sources */,
@@ -3479,7 +3465,6 @@
 				5266D34C13007A1C004E3AC6 /* SCHTopFavoritesComponent.m in Sources */,
 				5266D38413007D15004E3AC6 /* SCHComponent.m in Sources */,
 				52E334F61303049C002F3011 /* SCHTopPicksBookShelfViewController.m in Sources */,
-				52F559C6130BEA57002C8BDF /* SCHProfilePasswordViewController.m in Sources */,
 				5233E03313154EEA0088F18C /* SCHDeviceInfo.m in Sources */,
 				5233E0D813159CA80088F18C /* BITNetworkActivityManager.m in Sources */,
 				52E36769131D3ED200ACCBEE /* SCHBookshelfSyncComponent.m in Sources */,
@@ -3496,8 +3481,6 @@
 				5243545A13337BAC00282B53 /* SCHAppBookOrder.m in Sources */,
 				528433EB133382EA0010BAAB /* SCHAppDictionaryState.m in Sources */,
 				F8BEE8B01334FD44008B40DA /* SCHAppBook.m in Sources */,
-				A3A38E08133A803500C325A3 /* SCHDrmRegistrationSession.m in Sources */,
-				A3A38E09133A803500C325A3 /* SCHDrmSession.m in Sources */,
 				C908D85D133F91FA00661718 /* SCHLayoutView.m in Sources */,
 				C908D85F133F91FA00661718 /* SCHReadingView.m in Sources */,
 				C908D8B1133F945300661718 /* SCHFlowView.m in Sources */,
@@ -3563,6 +3546,8 @@
 				F8C8FC2F136065C10097F9DD /* SCHReadingOptionsView.m in Sources */,
 				C97D6DA313696D7B0017974B /* SCHBookPoint.m in Sources */,
 				C9E89A4B1369B87A00E7ED53 /* levenshtein_distance.c in Sources */,
+				52C489CB1369AC4200460876 /* UIColor+Extensions.m in Sources */,
+				A33F7311136B050A00BAA101 /* SCHDrmSession.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3570,6 +3555,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A331E123136B26FC0008FCB1 /* SCHDrmSession.m in Sources */,
 				F8509F1312F063C900197EB5 /* AppDelegate_iPad.m in Sources */,
 				F8509F1412F063C900197EB5 /* AppDelegate_Shared.m in Sources */,
 				F8509F1512F063C900197EB5 /* Scholastic.xcdatamodeld in Sources */,
@@ -3596,7 +3582,7 @@
 				F8509F2D12F063C900197EB5 /* SCHScholasticWebService.m in Sources */,
 				F8509F2F12F063C900197EB5 /* SCHBookShelfViewController.m in Sources */,
 				F8509F3212F063C900197EB5 /* NSNumber+ObjectTypes.m in Sources */,
-				F8509F3412F063C900197EB5 /* SCHLoginViewController.m in Sources */,
+				F8509F3412F063C900197EB5 /* SCHLoginPasswordViewController.m in Sources */,
 				F8509F3512F063C900197EB5 /* LibreAccessServiceSvc.m in Sources */,
 				F8509F3712F063C900197EB5 /* NSManagedObjectContext+Extensions.m in Sources */,
 				F8509F3812F063C900197EB5 /* SFHFKeychainUtils.m in Sources */,
@@ -3643,7 +3629,6 @@
 				52E332EA13018EDF002F3011 /* SCHReadingStatsSyncComponent.m in Sources */,
 				52E332EB13018EDF002F3011 /* SCHSettingsSyncComponent.m in Sources */,
 				52E334F71303049C002F3011 /* SCHTopPicksBookShelfViewController.m in Sources */,
-				52F559C8130BEA57002C8BDF /* SCHProfilePasswordViewController.m in Sources */,
 				5233E03413154EEA0088F18C /* SCHDeviceInfo.m in Sources */,
 				5233E0D913159CA80088F18C /* BITNetworkActivityManager.m in Sources */,
 				52E3676A131D3ED200ACCBEE /* SCHBookshelfSyncComponent.m in Sources */,
@@ -3660,8 +3645,6 @@
 				5243545B13337BAC00282B53 /* SCHAppBookOrder.m in Sources */,
 				528433EC133382EA0010BAAB /* SCHAppDictionaryState.m in Sources */,
 				F8BEE8AF1334FD44008B40DA /* SCHAppBook.m in Sources */,
-				A3A38E0A133A803500C325A3 /* SCHDrmRegistrationSession.m in Sources */,
-				A3A38E0B133A803500C325A3 /* SCHDrmSession.m in Sources */,
 				C908D85E133F91FA00661718 /* SCHLayoutView.m in Sources */,
 				C908D860133F91FA00661718 /* SCHReadingView.m in Sources */,
 				C908D8B2133F945300661718 /* SCHFlowView.m in Sources */,
@@ -3728,6 +3711,7 @@
 				F8C8FC30136065C10097F9DD /* SCHReadingOptionsView.m in Sources */,
 				C97D6DA413696D7B0017974B /* SCHBookPoint.m in Sources */,
 				C9E89A4C1369B87A00E7ED53 /* levenshtein_distance.c in Sources */,
+				52C489CC1369AC4200460876 /* UIColor+Extensions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -54,9 +54,9 @@
 {
 	NSError *error = nil;
 	
-	if (![self.managedObjectContext emptyEntity:kSCHUserContentItem error:&error] ||
-		![self.managedObjectContext emptyEntity:kSCHOrderItem error:&error] ||
-		![self.managedObjectContext emptyEntity:kSCHContentProfileItem error:&error]) {
+	if (![self.managedObjectContext BITemptyEntity:kSCHUserContentItem error:&error] ||
+		![self.managedObjectContext BITemptyEntity:kSCHOrderItem error:&error] ||
+		![self.managedObjectContext BITemptyEntity:kSCHContentProfileItem error:&error]) {
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
 		abort();
 	}		

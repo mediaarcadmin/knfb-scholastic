@@ -8,15 +8,17 @@
 
 #import "SCHProfileViewController.h"
 
-#import "SCHProfilePasswordViewController.h"
 #import "SCHSettingsViewController.h"
 #import "SCHBookShelfViewController.h"
-#import "SCHLoginViewController.h"
+#import "SCHLoginPasswordViewController.h"
 #import "SCHLibreAccessWebService.h"
 #import "SCHProfileItem.h"
 #import "SCHProfileViewCell.h"
 #import "SCHCustomNavigationBar.h"
 #import "SCHAuthenticationManager.h"
+#import "SCHSyncManager.h"
+#import "SCHURLManager.h"
+
 
 @interface SCHProfileViewController() <UITableViewDelegate> 
 
@@ -30,7 +32,7 @@
 
 @implementation SCHProfileViewController
 
-@synthesize profilePasswordViewController;
+@synthesize profilePasswordController;
 @synthesize tableView;
 @synthesize backgroundView;
 @synthesize headerView;
@@ -49,7 +51,7 @@
     [headerView release], headerView = nil;
     [settingsButton release], settingsButton = nil;
     
-    [profilePasswordViewController release], profilePasswordViewController = nil;
+    [profilePasswordController release], profilePasswordController = nil;
     [settingsController release], settingsController = nil;
     [loginController release], loginController = nil;    
 }
@@ -69,8 +71,6 @@
 {
     [super viewDidLoad];
 	
-	self.profilePasswordViewController.delegate = self;
-    
     self.settingsButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [settingsButton addTarget:self action:@selector(pushSettingsController) 
              forControlEvents:UIControlEventTouchUpInside]; 
@@ -83,10 +83,17 @@
     [logoImageView release];
     
     self.tableView.tableHeaderView = self.headerView;
+
+    self.loginController.controllerType = kSCHControllerLoginView;
+    self.loginController.actionBlock = ^{
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(authenticationManager:) name:kSCHAuthenticationManagerSuccess object:nil];			
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(authenticationManager:) name:kSCHAuthenticationManagerFailure object:nil];					
+        
+        [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithUserName:[self.loginController username] withPassword:[self.loginController password]];
+    };
     
-    self.loginController.passwordOnly = NO;
-    self.loginController.showHeaders = YES;
-    
+    // block gets set when a row is selected
+    self.profilePasswordController.controllerType = kSCHControllerPasswordOnlyView;
 }  
 
 - (void)viewDidUnload 
@@ -110,7 +117,6 @@
 	
 	if ([authenticationManager hasUsernameAndPassword] == NO) {
 		[self presentModalViewController:self.loginController animated:NO];	
-		[self.loginController removeCancelButton];
 	}
 #endif
 }
@@ -210,14 +216,6 @@
     [self.navigationController pushViewController:self.settingsController animated:YES];
 }
 
-#pragma mark - Profile Password View Controller delegate
-
-- (void)profilePasswordViewControllerDidComplete:(SCHProfilePasswordViewController *)profilePassword
-{
-    // controller to view book shelf with books filtered to profile
-    [self pushBookshelvesControllerWithProfileItem:profilePassword.profileItem];	
-}
-
 #pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -235,9 +233,24 @@
             if ([profileItem.ProfilePasswordRequired boolValue] == NO) {                
                 [self pushBookshelvesControllerWithProfileItem:profileItem];            
             } else {
-                profilePasswordViewController.managedObjectContext = self.managedObjectContext;
-                profilePasswordViewController.profileItem = profileItem;
-                [self presentModalViewController:profilePasswordViewController animated:YES];
+                self.profilePasswordController.actionBlock = ^{
+                    
+                    if ([profileItem validatePasswordWith:[self.profilePasswordController password]] == NO) {
+                        UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") 
+                                                                             message:NSLocalizedString(@"Incorrect password", nil)
+                                                                            delegate:nil 
+                                                                   cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+                                                                   otherButtonTitles:nil]; 
+                        [errorAlert show]; 
+                        [errorAlert release];
+                    } else {
+                        [self.profilePasswordController dismissModalViewControllerAnimated:YES];	
+                        [self.profilePasswordController clearFields]; 
+                        [self pushBookshelvesControllerWithProfileItem:profileItem];            
+                    }	
+                };
+
+                [self presentModalViewController:self.profilePasswordController animated:YES];
             }
 #endif	
 		}	break;
@@ -245,6 +258,33 @@
 	
 	[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
+
+#pragma mark - Authentication Manager
+
+- (void)authenticationManager:(NSNotification *)notification
+{
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	
+	if ([notification.name compare:kSCHAuthenticationManagerSuccess] == NSOrderedSame) {
+		[[SCHURLManager sharedURLManager] clear];
+		[[SCHSyncManager sharedSyncManager] clear];
+		[[SCHSyncManager sharedSyncManager] firstSync];
+		[self.loginController dismissModalViewControllerAnimated:YES];	
+	} else {
+		NSError *error = [notification.userInfo objectForKey:kSCHAuthenticationManagerNSError];
+		if (error!= nil) {
+			UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") 
+																 message:[error localizedDescription]
+																delegate:nil 
+													   cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+													   otherButtonTitles:nil]; 
+			[errorAlert show]; 
+			[errorAlert release];
+		}	
+        [self.loginController stopShowingProgress];
+	}
+}
+
 
 #pragma mark - Fetched results controller
 

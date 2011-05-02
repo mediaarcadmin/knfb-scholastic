@@ -1,5 +1,5 @@
 //
-//  Category.h
+//  UIColor+Extensions.h
 //  Scholastic
 //
 //  Created by John S. Eddie on 27/04/2011.
@@ -9,6 +9,9 @@
 #import <Foundation/Foundation.h>
 
 
-@interface UIColor (Category)
+@interface UIColor (Extensions)
+
++ (UIColor *)BITcolorWithHexString:(NSString *)hexString;
+- (NSString *)BIThexString;
 
 @end

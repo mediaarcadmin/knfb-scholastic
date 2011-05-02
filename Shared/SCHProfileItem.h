@@ -12,8 +12,13 @@
 
 @class SCHAppBookOrder;
 @class SCHContentProfileItem;
+@class SCHPrivateAnnotations;
 
 static NSString * const kSCHProfileItem = @"SCHProfileItem";
+
+static NSString * const kSCHProfileItemFetchAnnotationsForProfileBook = @"fetchAnnotationsForProfileBook";
+static NSString * const kSCHProfileItemPROFILE_ID = @"PROFILE_ID";
+static NSString * const kSCHProfileItemCONTENT_IDENTIFIER = @"CONTENT_IDENTIFIER";
 
 @interface SCHProfileItem : SCHSyncEntity {
 
@@ -35,6 +40,7 @@ static NSString * const kSCHProfileItem = @"SCHProfileItem";
 @property (nonatomic, retain) NSSet* AppBookOrder;
 
 - (NSMutableArray *)allISBNs;
+- (SCHPrivateAnnotations *)annotationsForBook:(NSString *)isbn;
 - (void)saveBookOrder:(NSArray *)books;
 - (void)clearBookOrder;
 - (void)setRawPassword:(NSString *)value;

@@ -102,7 +102,7 @@
 {
 	NSError *error = nil;
 	
-	if (![self.managedObjectContext emptyEntity:kSCHListProfileContentAnnotations error:&error]) {
+	if (![self.managedObjectContext BITemptyEntity:kSCHListProfileContentAnnotations error:&error]) {
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
 		abort();
 	}	

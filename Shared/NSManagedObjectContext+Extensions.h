@@ -10,6 +10,6 @@
 
 @interface NSManagedObjectContext (Extensions)
 
-- (BOOL)emptyEntity:(NSString *)entityName error:(NSError **)error;
+- (BOOL)BITemptyEntity:(NSString *)entityName error:(NSError **)error;
 
 @end
