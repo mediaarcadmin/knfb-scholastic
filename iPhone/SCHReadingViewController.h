@@ -11,14 +11,14 @@
 #import "SCHReadingView.h"
 
 typedef enum {
-	SCHReadingViewPaperTypeBlack = 0,
-	SCHReadingViewPaperTypeWhite,
+	SCHReadingViewPaperTypeWhite = 0,
+	SCHReadingViewPaperTypeBlack,
 	SCHReadingViewPaperTypeSepia
 } SCHReadingViewPaperType;
 
 typedef enum {
-	SCHReadingViewLayoutTypeFixed = 0,
-	SCHReadingViewLayoutTypeFlow,
+	SCHReadingViewLayoutTypeFlow = 0,
+	SCHReadingViewLayoutTypeFixed,
 } SCHReadingViewLayoutType;
 
 @class SCHXPSProvider;
