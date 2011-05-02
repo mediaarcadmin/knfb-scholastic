@@ -8,12 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SCHAsyncBookCoverImageView : UIImageView {
-
+@interface SCHAsyncBookCoverImageView : UIImageView 
+{
 }
 
-@property (nonatomic, retain) NSString *isbn;
-@property (nonatomic) CGSize thumbSize;
-@property (nonatomic) CGSize coverSize;
+@property (nonatomic, copy) NSString *isbn;
+@property (nonatomic, assign) CGSize thumbSize;
+@property (nonatomic, assign) CGSize coverSize;
 
 @end
