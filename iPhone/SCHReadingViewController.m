@@ -16,7 +16,6 @@
 #import "SCHCustomNavigationBar.h"
 #import "SCHCustomToolbar.h"
 
-
 // constants
 static const CGFloat kReadingViewStandardScrubHeight = 47.0f;
 static const CGFloat kReadingViewBackButtonPadding = 7.0f;
@@ -24,6 +23,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 #pragma mark - Class Extension
 
 @interface SCHReadingViewController ()
+
+@property (nonatomic, copy) NSString *isbn;
 
 // the page view, either fixed or flow
 @property (nonatomic, retain) SCHReadingView *readingView;
@@ -49,8 +50,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 // the current font size index (of an array of font sizes provided by libEucalyptus)
 @property (readwrite) int currentFontSizeIndex;
 
-// the current paper type for the reading view
 @property (readwrite) SCHReadingViewPaperType paperType;
+@property (readwrite) SCHReadingViewLayoutType layoutType;
 
 -(void)releaseViewObjects;
 
@@ -61,7 +62,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 -(void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation;
 
-
 @end
 
 #pragma mark - SCHReadingViewController
@@ -71,7 +71,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 #pragma mark Object Synthesis
 
 @synthesize isbn;
-@synthesize flowView;
 @synthesize readingView;
 @synthesize youngerMode;
 @synthesize toolbarsVisible;
@@ -82,6 +81,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 @synthesize currentlyRotating;
 @synthesize currentFontSizeIndex;
 @synthesize paperType;
+@synthesize layoutType;
 
 @synthesize optionsView;
 @synthesize fontSegmentedControl;
@@ -110,10 +110,11 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 -(void)dealloc {
     [self releaseViewObjects];
 
-    [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.isbn];
+    [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:isbn];
     
     [xpsProvider release], xpsProvider = nil;
     [readingView release], readingView = nil;
+    [isbn release], isbn = nil;
     
     [super dealloc];
 }
@@ -146,28 +147,16 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [self releaseViewObjects];
 }
 
-#pragma mark - Memory Warnings
-
--(void)didReceiveMemoryWarning {
-    // Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
-    
-    // FIXME: pass along memory warning to reading views?
-}
-
-
-
-
 #pragma mark - Object Initialiser
-
--(id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil isbn:(NSString *)aIsbn
+-(id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil isbn:(NSString *)aIsbn layout:(SCHReadingViewLayoutType)layout
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
-        self.isbn = aIsbn;
-        self.zoomActive = NO;
-        self.currentlyRotating = NO;
+        isbn = [aIsbn copy];
+        layoutType = layout;
+        zoomActive = NO;
+        currentlyRotating = NO;
     }
     return self;
 }
@@ -188,15 +177,15 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     self.readingView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.readingView.delegate = self;
     
-    if (self.flowView) {
+    if (self.layoutType == SCHReadingViewLayoutTypeFlow) {
         [self.fontSegmentedControl setEnabled:YES forSegmentAtIndex:0];
         [self.fontSegmentedControl setEnabled:YES forSegmentAtIndex:1];
-        [self.flowFixedSegmentedControl setSelectedSegmentIndex:0];
     } else {
         [self.fontSegmentedControl setEnabled:NO forSegmentAtIndex:0];
         [self.fontSegmentedControl setEnabled:NO forSegmentAtIndex:1];
-        [self.flowFixedSegmentedControl setSelectedSegmentIndex:1];
     }
+    
+    [self.flowFixedSegmentedControl setSelectedSegmentIndex:self.layoutType];
     
     // FIXME: this should be a stored preference
     self.currentFontSizeIndex = 2;
@@ -363,7 +352,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         scrubFrame.origin.y = statusBarHeight + newNavBarHeight + 10;
         
         
-        if (!self.flowView && self.scrubberThumbImage) {
+        if (!(self.layoutType == SCHReadingViewLayoutTypeFlow) && self.scrubberThumbImage) {
             
             int maxHeight = (self.view.frame.size.width - scrubberToolbar.frame.size.height - newNavBarHeight - kReadingViewStandardScrubHeight - 40);
             
@@ -468,13 +457,11 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 -(IBAction)nextSmartZoom:(id)sender
 {
-    NSLog(@"Next");
     [self.readingView jumpToNextZoomBlock];
 }
 
 -(IBAction)prevSmartZoom:(id)sender
 {
-    NSLog(@"Previous");
     [self.readingView jumpToPreviousZoomBlock];
 }
 
@@ -484,53 +471,39 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 {
     layoutType = newLayoutType;
     
+    [self.readingView removeFromSuperview];
+    
     switch (newLayoutType) {
         case SCHReadingViewLayoutTypeFlow:
-            [self.readingView setPageTexture:[UIImage imageNamed: @"paper-black.png"] isDark:YES];
+            [self.fontSegmentedControl setEnabled:YES forSegmentAtIndex:0];
+            [self.fontSegmentedControl setEnabled:YES forSegmentAtIndex:1];
+            
+            self.readingView = [[SCHFlowView alloc] initWithFrame:self.view.bounds isbn:self.isbn];
+            
             break;
         case SCHReadingViewLayoutTypeFixed:    
         default:
-            [self.readingView setPageTexture:[UIImage imageNamed: @"paper-white.png"] isDark:NO];
+            [self.fontSegmentedControl setEnabled:NO forSegmentAtIndex:0];
+            [self.fontSegmentedControl setEnabled:NO forSegmentAtIndex:1];
+            
+            self.readingView = [[SCHLayoutView alloc] initWithFrame:self.view.bounds isbn:self.isbn]; 
+            
             break;
-    }
-}
-
--(IBAction) flowedFixedSegmentChanged: (UISegmentedControl *) segControl
-{
-    int selected = segControl.selectedSegmentIndex;
-    
-    if (selected == 0) {
-        // flowed
-        NSLog(@"Picking flowed view!");
-        self.flowView = YES;
-        [self.fontSegmentedControl setEnabled:YES forSegmentAtIndex:0];
-        [self.fontSegmentedControl setEnabled:YES forSegmentAtIndex:1];
-    } else {
-        // fixed
-        NSLog(@"Picking fixed view!");
-        self.flowView = NO;
-        [self.fontSegmentedControl setEnabled:NO forSegmentAtIndex:0];
-        [self.fontSegmentedControl setEnabled:NO forSegmentAtIndex:1];
-    }
-    
-    [self.readingView removeFromSuperview];
-    self.readingView = nil;
-    
-    if (self.flowView) {
-        self.readingView = [[SCHFlowView alloc] initWithFrame:self.view.bounds isbn:self.isbn];
-    } else {
-        self.readingView = [[SCHLayoutView alloc] initWithFrame:self.view.bounds isbn:self.isbn]; 
     }
     
     self.readingView.delegate = self;
     self.readingView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    
     self.paperType = self.paperType; // Reload the paper
-
+    
     [self.readingView jumpToPageAtIndex:self.currentPageIndex - 1 animated:NO];
     
     [self.view addSubview:self.readingView];
     [self.view sendSubviewToBack:self.readingView];
+}
+
+- (IBAction)flowedFixedSegmentChanged:(UISegmentedControl *)segControl
+{
+    self.layoutType = segControl.selectedSegmentIndex;
 }
 
 #pragma mark - Paper Type Toggle
@@ -626,7 +599,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     scrubFrame.origin.y = statusBarHeight + self.navigationController.navigationBar.frame.size.height + 10;
     
     // if we're in fixed view, and there's an image size set, then check if we're showing an image
-    if (!self.flowView && imageSize.width > 0 && imageSize.height > 0) {
+    if ((self.layoutType == SCHReadingViewLayoutTypeFixed) && imageSize.width > 0 && imageSize.height > 0) {
         
         // the maximum space available for an image
         int maxImageHeight = (self.view.frame.size.height - scrubberToolbar.frame.size.height - self.navigationController.navigationBar.frame.size.height - kReadingViewStandardScrubHeight - 60);
@@ -691,7 +664,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         NSString *localisedPageLabelText = NSLocalizedString(@"pageCountString", @"Page %d of %d");
         [self.pageLabel setText:[NSString stringWithFormat:localisedPageLabelText, self.currentPageIndex, [self.readingView pageCount]]];
         
-        if (!self.flowView) {
+        if (self.layoutType == SCHReadingViewLayoutTypeFixed) {
             
             UIImage *scrubImage = [self.xpsProvider thumbnailForPage:self.currentPageIndex];
             
@@ -713,7 +686,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     NSLog(@"Current value is %d", (int) currentValue);
     
     // add the scrub view here
-    if (!self.flowView) {
+    if (self.layoutType == SCHReadingViewLayoutTypeFixed) {
         UIImage *scrubImage = [self.xpsProvider thumbnailForPage:self.currentPageIndex];
         self.scrubberThumbImage.image = scrubImage;
         [self adjustScrubberInfoViewHeightForImageSize:scrubImage.size];

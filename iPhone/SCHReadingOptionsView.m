@@ -171,8 +171,7 @@
 
 - (IBAction)showFlowView:(id)sender
 {
-    SCHReadingViewController *readingController = [[SCHReadingViewController alloc] initWithNibName:nil bundle:nil isbn:self.isbn];
-    readingController.flowView = YES;
+    SCHReadingViewController *readingController = [[SCHReadingViewController alloc] initWithNibName:nil bundle:nil isbn:self.isbn layout:SCHReadingViewLayoutTypeFlow];
     
     switch ([self.profileItem.BookshelfStyle intValue]) {
         case LibreAccessServiceSvc_BookshelfStyle_YOUNG_CHILD:
@@ -194,8 +193,7 @@
 
 - (IBAction)showFixedView:(id)sender
 {
-    SCHReadingViewController *readingController = [[SCHReadingViewController alloc] initWithNibName:nil bundle:nil isbn:self.isbn];
-    readingController.flowView = NO;
+    SCHReadingViewController *readingController = [[SCHReadingViewController alloc] initWithNibName:nil bundle:nil isbn:self.isbn layout:SCHReadingViewLayoutTypeFixed];
     
     switch ([self.profileItem.BookshelfStyle intValue]) {
         case LibreAccessServiceSvc_BookshelfStyle_YOUNG_CHILD:

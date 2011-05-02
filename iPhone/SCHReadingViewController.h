@@ -17,8 +17,6 @@
 
 }
 
-@property (nonatomic, retain) NSString *isbn;
-@property (nonatomic) BOOL flowView;
 @property (readwrite) BOOL youngerMode;
 
 // interface builder
@@ -44,7 +42,7 @@
 @property (nonatomic, retain) IBOutlet UISegmentedControl *fontSegmentedControl;
 @property (nonatomic, retain) IBOutlet UISegmentedControl *paperTypeSegmentedControl;
 
--(id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil isbn:(NSString *)aIsbn;
+-(id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil isbn:(NSString *)aIsbn layout:(SCHReadingViewLayoutType)layoutType;
 
 // interface builder
 -(IBAction)storyInteractionAction: (id) sender;
