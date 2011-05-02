@@ -82,36 +82,34 @@
 
 
 - (void) setIsbn: (NSString *) newIsbn
-{
-
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"SCHBookDownloadPercentageUpdate" object:nil];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"SCHBookStatusUpdate" object:nil];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"SCHNewImageAvailable" object:nil];
-	
+{	
 	if (newIsbn != isbn) {
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:@"SCHBookDownloadPercentageUpdate" object:nil];
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:@"SCHBookStatusUpdate" object:nil];
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:@"SCHNewImageAvailable" object:nil];
+
 		NSString *oldIsbn = isbn;
 		isbn = [newIsbn retain];
 		[oldIsbn release];
-	}
-	
-	[[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(updatePercentage:) 
-												 name:@"SCHBookDownloadPercentageUpdate" 
-											   object:nil];
-	
-	[[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(checkForCellUpdateFromNotification:)
-												 name:@"SCHBookStateUpdate"
-											   object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(checkForCellUpdateFromNotification:)
-												 name:@"SCHNewImageAvailable"
-											   object:nil];
 
-	[self.asyncImageView setIsbn:self.isbn];
-	[self refreshCell];
-	
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(updatePercentage:) 
+                                                     name:@"SCHBookDownloadPercentageUpdate" 
+                                                   object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(checkForCellUpdateFromNotification:)
+                                                     name:@"SCHBookStateUpdate"
+                                                   object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(checkForCellUpdateFromNotification:)
+                                                     name:@"SCHNewImageAvailable"
+                                                   object:nil];
+        
+        [self.asyncImageView setIsbn:self.isbn];
+        [self refreshCell];        
+	}
 }
 
 - (void) checkForCellUpdateFromNotification: (NSNotification *) notification
