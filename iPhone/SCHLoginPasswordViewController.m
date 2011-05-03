@@ -42,7 +42,7 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
 @synthesize topShadow;
 @synthesize headerTitleLabel;
 @synthesize headerTitleView;
-@synthesize footerForgotLabel;
+@synthesize footerForgotButton;
 @synthesize tableView;
 @synthesize titleTextLabel;
 
@@ -58,7 +58,7 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
     [topShadow release], topShadow = nil;
     [headerTitleLabel release], headerTitleLabel = nil;
     [headerTitleView release], headerTitleView = nil;
-    [footerForgotLabel release], footerForgotLabel = nil;
+    [footerForgotButton release], footerForgotButton = nil;
     [tableView release], tableView = nil;
     [titleTextLabel release], titleTextLabel = nil;
 }
@@ -151,7 +151,7 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
         case kSCHControllerLoginView:
         {
             self.tableView.tableHeaderView = self.headerTitleView;
-            self.tableView.tableFooterView = self.footerForgotLabel;
+            self.tableView.tableFooterView = self.footerForgotButton;
             break;   
         }
         default:
