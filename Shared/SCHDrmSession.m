@@ -574,6 +574,62 @@ ErrorExit:
 	[super dealloc];
 }
 
+- (void)acknowledgeLicense:(DRM_LICENSE_RESPONSE*)licenseResponse {
+	
+    DRM_RESULT dr = DRM_SUCCESS;
+    DRM_BYTE *pbChallenge = NULL;
+    DRM_DWORD cbChallenge = 0;
+    DRM_BYTE *pbResponse = NULL;
+    DRM_DWORD cbResponse = 0;
+	
+	dr = Drm_LicenseAcq_GenerateAck( drmIVars->drmAppContext, licenseResponse, pbChallenge, &cbChallenge );
+	if ( dr == DRM_E_BUFFERTOOSMALL )
+	{
+		pbChallenge = Oem_MemAlloc( cbChallenge );
+		ChkDR( Drm_LicenseAcq_GenerateAck( drmIVars->drmAppContext, licenseResponse, pbChallenge, &cbChallenge ));
+	}
+	else
+	{
+		ChkDR( dr );
+	}
+	
+	//NSLog(@"DRM license acknowledgment challenge: %s",(unsigned char*)pbChallenge);
+
+    NSMutableURLRequest* request = [self createDrmRequest:(const void*)pbChallenge 
+                                              messageSize:(NSUInteger)cbChallenge
+                                                      url:drmServerUrl
+                                               soapAction:SCHDrmSoapActionAcknowledgeLicense];
+    NSURLResponse* urlResponse;
+    NSError* err = nil;
+    NSData* responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&urlResponse error:&err];
+    if (responseData == nil) {
+		NSLog(@"License could not be acknowledged because the server did not respond.");
+		return;
+	} 
+    else if (err != nil) {
+		NSLog(@"License could not be acknowledged: %@", [err localizedDescription]);
+		return;
+	}
+	else {
+		pbResponse = (DRM_BYTE*)[responseData bytes];
+		cbResponse = [responseData length];
+		pbResponse[cbResponse] = '\0';
+	}
+    
+    
+	NSLog(@"DRM license acknowledgment response: %s",(unsigned char*)pbResponse);
+	@synchronized (self) {
+		ChkDR( Drm_LicenseAcq_ProcessAckResponse(drmIVars->drmAppContext, pbResponse, cbResponse, NULL) );
+	}
+	
+ErrorExit:
+	if ( pbChallenge )
+		Oem_MemFree(pbChallenge);
+    if ( !DRM_SUCCEEDED(dr)  ) 
+        NSLog(@"Cannot acknowledge license because of DRM error: %08X",dr);
+	
+}
+
 - (void)acquireLicense:(NSString *)token bookID:(NSString*)isbn {
     DRM_RESULT dr = DRM_SUCCESS;
     DRM_CHAR rgchURL[MAX_URL_SIZE];
@@ -685,7 +741,9 @@ ErrorExit:
     for( int idx = 0; idx < oLicenseResponse.m_cAcks; idx++ )
         ChkDR( oLicenseResponse.m_rgoAcks[idx].m_dwResult );
     
-    //ChkDR( [self acknowledgeLicense:&oLicenseResponse] );
+    // Failure of acknowledgment does not entail failure of acquisition,
+    // so we do not check a returned code.
+    [self acknowledgeLicense:&oLicenseResponse];
 	
 ErrorExit:
 	if ( pbChallenge )
