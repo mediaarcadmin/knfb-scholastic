@@ -151,31 +151,33 @@ static int mutationCount = 0;
     NSError *error = nil;
     
     if (isbn && context) {
-        NSManagedObjectID *managedObjectID = [isbnManagedObjectCache objectForKey:isbn];
-        if (managedObjectID == nil) {
-            NSEntityDescription *entityDescription = [NSEntityDescription 
-                                                      entityForName:kSCHAppBook
-                                                      inManagedObjectContext:context];
-            
-            if (!entityDescription) {
-                NSLog(@"WARNING: entity description is nil for %@", isbn);
-            } else {
-                NSFetchRequest *fetchRequest = [entityDescription.managedObjectModel 
-                                                fetchRequestFromTemplateWithName:kSCHAppBookFetchWithContentIdentifier 
-                                                substitutionVariables:[NSDictionary 
-                                                                       dictionaryWithObject:isbn 
-                                                                       forKey:kSCHAppBookCONTENT_IDENTIFIER]];
-                NSArray *bookArray = [context executeFetchRequest:fetchRequest error:&error];
-
-                if ([bookArray count] > 0) {
-                    book = (SCHAppBook *)[bookArray objectAtIndex:0];
-                    if (book.objectID.isTemporaryID == NO) {
-                        [self.isbnManagedObjectCache setObject:book.objectID forKey:isbn];
+        @synchronized(isbnManagedObjectCache) {
+            NSManagedObjectID *managedObjectID = [isbnManagedObjectCache objectForKey:isbn];
+            if (managedObjectID == nil) {
+                NSEntityDescription *entityDescription = [NSEntityDescription 
+                                                          entityForName:kSCHAppBook
+                                                          inManagedObjectContext:context];
+                
+                if (!entityDescription) {
+                    NSLog(@"WARNING: entity description is nil for %@", isbn);
+                } else {
+                    NSFetchRequest *fetchRequest = [entityDescription.managedObjectModel 
+                                                    fetchRequestFromTemplateWithName:kSCHAppBookFetchWithContentIdentifier 
+                                                    substitutionVariables:[NSDictionary 
+                                                                           dictionaryWithObject:isbn 
+                                                                           forKey:kSCHAppBookCONTENT_IDENTIFIER]];
+                    NSArray *bookArray = [context executeFetchRequest:fetchRequest error:&error];
+                    
+                    if ([bookArray count] > 0) {
+                        book = (SCHAppBook *)[bookArray objectAtIndex:0];
+                        if (book.objectID.isTemporaryID == NO) {
+                            [self.isbnManagedObjectCache setObject:book.objectID forKey:isbn];
+                        }
                     }
                 }
+            } else {
+                book = (SCHAppBook *) [context existingObjectWithID:managedObjectID error:&error];
             }
-        } else {
-            book = (SCHAppBook *) [context existingObjectWithID:managedObjectID error:&error];
         }
     } else {
 		NSLog(@"WARNING: book identifier is nil! request for %@", isbn);
