@@ -198,6 +198,23 @@
 	olderProfileItem.BookshelfStyle = [NSNumber numberWithBookshelfStyle:kSCHBookshelfStyleOlderChild];
 	olderProfileItem.LastName = @"Doe";
 	olderProfileItem.LastModified = now;
+
+	SCHProfileItem *allBooksProfileItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHProfileItem inManagedObjectContext:self.managedObjectContext];
+	
+	allBooksProfileItem.LastModified = now;
+	
+	allBooksProfileItem.StoryInteractionEnabled = [NSNumber numberWithBool:YES];
+	allBooksProfileItem.ID = [NSNumber numberWithInt:3];
+	allBooksProfileItem.Birthday = now;
+	allBooksProfileItem.FirstName = @"Jimmy";
+	allBooksProfileItem.ProfilePasswordRequired = [NSNumber numberWithBool:NO];
+	allBooksProfileItem.Type = [NSNumber numberWithProfileType:kSCHProfileTypesCHILD];
+	allBooksProfileItem.ScreenName = @"FullProfile";
+	allBooksProfileItem.AutoAssignContentToProfiles = [NSNumber numberWithBool:YES];
+	allBooksProfileItem.LastScreenNameModified = now;
+	allBooksProfileItem.BookshelfStyle = [NSNumber numberWithBookshelfStyle:kSCHBookshelfStyleOlderChild];
+	allBooksProfileItem.LastName = @"Smith";
+	allBooksProfileItem.LastModified = now;    
     
 	SCHContentMetadataItem *newContentMetadataItem = nil;
 	SCHUserContentItem *newUserContentItem = nil;
@@ -259,6 +276,21 @@
 		
 		[newUserContentItem addProfileListObject:newContentProfileItem];	
 
+        // Add the book to an all books profile
+        newUserContentItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHUserContentItem inManagedObjectContext:self.managedObjectContext];
+		
+		newUserContentItem.LastModified = now;
+		
+		newUserContentItem.ContentIdentifier = newContentMetadataItem.ContentIdentifier;
+		newUserContentItem.ContentIdentifierType = newContentMetadataItem.ContentIdentifierType;
+
+        newContentProfileItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHContentProfileItem inManagedObjectContext:self.managedObjectContext];			
+		
+		newContentProfileItem.LastModified = now;
+		newContentProfileItem.IsFavorite = [NSNumber numberWithBool:YES];
+        newContentProfileItem.ProfileID = [NSNumber numberWithInt:3];
+		
+		[newUserContentItem addProfileListObject:newContentProfileItem];	
         
         NSError *error;
         if (![self.managedObjectContext save:&error]) {

@@ -24,6 +24,7 @@ typedef void(^SCHActionBlock)(void);
 
 @interface SCHLoginPasswordViewController : UIViewController <UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate> 
 {
+    UIButton *footerForgotButton;
 }
 
 #pragma mark - Public Properties and Methods
@@ -58,9 +59,9 @@ typedef void(^SCHActionBlock)(void);
 @property (nonatomic, retain) IBOutlet UIImageView *topShadow;
 @property (nonatomic, retain) IBOutlet UILabel *headerTitleLabel;
 @property (nonatomic, retain) IBOutlet UIView *headerTitleView;
-@property (nonatomic, retain) IBOutlet UILabel *footerForgotLabel;
 @property (nonatomic, retain) IBOutlet UITableView *tableView;
 @property (nonatomic, retain) IBOutlet UILabel *titleTextLabel;
+@property (nonatomic, retain) IBOutlet UIButton *footerForgotButton;
 
 // IBAction - the "Login" or "Go" button action
 - (IBAction)actionButtonAction:(id)sender;

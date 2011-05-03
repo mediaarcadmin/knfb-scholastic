@@ -585,10 +585,8 @@ static SCHProcessingManager *sharedManager = nil;
 #pragma mark Image Thumbnail Requests
 
 // FIXME: could be moved to SCHBookInfo? 
-- (BOOL) requestThumbImageForBookCover:(SCHAsyncBookCoverImageView *)bookCover size:(CGSize)size
+- (BOOL) requestThumbImageForBookCover:(SCHAsyncBookCoverImageView *)bookCover size:(CGSize)size book:(SCHAppBook *)book
 {	
-	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:bookCover.isbn];
-	
 	NSLog(@"Requesting thumb for %@, size %@", bookCover.isbn, NSStringFromCGSize(size));
 	@synchronized(self.thumbImageRequests) {
 		

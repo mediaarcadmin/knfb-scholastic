@@ -77,7 +77,7 @@
         pageCount = [self.xpsProvider pageCount];
         firstPageCrop = [self cropForPage:1 allowEstimate:NO];
         
-        pageTurningView = [[[EucPageTurningView alloc] initWithFrame:self.bounds] retain];
+        pageTurningView = [[EucPageTurningView alloc] initWithFrame:self.bounds];
         pageTurningView.delegate = self;
         pageTurningView.bitmapDataSource = self;
         pageTurningView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
@@ -102,7 +102,7 @@
         
         [pageTurningView setPageTexture:[UIImage imageNamed: @"paper-white.png"] isDark:NO];
         [pageTurningView turnToPageAtIndex:0 animated:NO];
-        [pageTurningView waitForAllPageImagesToBeAvailable];
+       // [pageTurningView waitForAllPageImagesToBeAvailable];
         
         [self registerGesturesForPageTurningView:pageTurningView];
         
