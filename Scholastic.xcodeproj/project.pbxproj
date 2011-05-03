@@ -156,10 +156,6 @@
 		C90111201361823C006694B3 /* button-translucent.png in Resources */ = {isa = PBXBuildFile; fileRef = C901111D1361823C006694B3 /* button-translucent.png */; };
 		C90111211361823C006694B3 /* button-translucent@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C901111E1361823C006694B3 /* button-translucent@2x.png */; };
 		C90111221361823C006694B3 /* button-translucent@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C901111E1361823C006694B3 /* button-translucent@2x.png */; };
-		C9011125136194AC006694B3 /* admin-iphone-users-landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = C9011123136194AC006694B3 /* admin-iphone-users-landscape.png */; };
-		C9011126136194AC006694B3 /* admin-iphone-users-landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = C9011123136194AC006694B3 /* admin-iphone-users-landscape.png */; };
-		C9011127136194AC006694B3 /* admin-iphone-users-landscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C9011124136194AC006694B3 /* admin-iphone-users-landscape@2x.png */; };
-		C9011128136194AC006694B3 /* admin-iphone-users-landscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C9011124136194AC006694B3 /* admin-iphone-users-landscape@2x.png */; };
 		C901112B1361968D006694B3 /* admin-iphone-splash-landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = C90111291361968D006694B3 /* admin-iphone-splash-landscape.png */; };
 		C901112C1361968D006694B3 /* admin-iphone-splash-landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = C90111291361968D006694B3 /* admin-iphone-splash-landscape.png */; };
 		C901112D1361968D006694B3 /* admin-iphone-splash-landscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C901112A1361968D006694B3 /* admin-iphone-splash-landscape@2x.png */; };
@@ -453,10 +449,6 @@
 		C9A1129813608319007FD763 /* admin-iphone-splash-portrait.png in Resources */ = {isa = PBXBuildFile; fileRef = C9A1129113608319007FD763 /* admin-iphone-splash-portrait.png */; };
 		C9A1129913608319007FD763 /* admin-iphone-splash-portrait@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C9A1129213608319007FD763 /* admin-iphone-splash-portrait@2x.png */; };
 		C9A1129A13608319007FD763 /* admin-iphone-splash-portrait@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C9A1129213608319007FD763 /* admin-iphone-splash-portrait@2x.png */; };
-		C9A1129B13608319007FD763 /* admin-iphone-users-portrait.png in Resources */ = {isa = PBXBuildFile; fileRef = C9A1129313608319007FD763 /* admin-iphone-users-portrait.png */; };
-		C9A1129C13608319007FD763 /* admin-iphone-users-portrait.png in Resources */ = {isa = PBXBuildFile; fileRef = C9A1129313608319007FD763 /* admin-iphone-users-portrait.png */; };
-		C9A1129D13608319007FD763 /* admin-iphone-users-portrait@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C9A1129413608319007FD763 /* admin-iphone-users-portrait@2x.png */; };
-		C9A1129E13608319007FD763 /* admin-iphone-users-portrait@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C9A1129413608319007FD763 /* admin-iphone-users-portrait@2x.png */; };
 		C9A1129F13608319007FD763 /* button-blue.png in Resources */ = {isa = PBXBuildFile; fileRef = C9A1129513608319007FD763 /* button-blue.png */; };
 		C9A112A013608319007FD763 /* button-blue.png in Resources */ = {isa = PBXBuildFile; fileRef = C9A1129513608319007FD763 /* button-blue.png */; };
 		C9A112A113608319007FD763 /* button-blue@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C9A1129613608319007FD763 /* button-blue@2x.png */; };
@@ -1208,8 +1200,6 @@
 		C901111813617676006694B3 /* logo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "logo@2x.png"; path = "Resources/UIAssets/logo@2x.png"; sourceTree = "<group>"; };
 		C901111D1361823C006694B3 /* button-translucent.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "button-translucent.png"; path = "Resources/UIAssets/button-translucent.png"; sourceTree = "<group>"; };
 		C901111E1361823C006694B3 /* button-translucent@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "button-translucent@2x.png"; path = "Resources/UIAssets/button-translucent@2x.png"; sourceTree = "<group>"; };
-		C9011123136194AC006694B3 /* admin-iphone-users-landscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "admin-iphone-users-landscape.png"; path = "Resources/UIAssets/admin-iphone-users-landscape.png"; sourceTree = "<group>"; };
-		C9011124136194AC006694B3 /* admin-iphone-users-landscape@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "admin-iphone-users-landscape@2x.png"; path = "Resources/UIAssets/admin-iphone-users-landscape@2x.png"; sourceTree = "<group>"; };
 		C90111291361968D006694B3 /* admin-iphone-splash-landscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "admin-iphone-splash-landscape.png"; path = "Resources/UIAssets/admin-iphone-splash-landscape.png"; sourceTree = "<group>"; };
 		C901112A1361968D006694B3 /* admin-iphone-splash-landscape@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "admin-iphone-splash-landscape@2x.png"; path = "Resources/UIAssets/admin-iphone-splash-landscape@2x.png"; sourceTree = "<group>"; };
 		C901112F1361D028006694B3 /* plain-background-landscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "plain-background-landscape.png"; path = "Resources/UIAssets/plain-background-landscape.png"; sourceTree = "<group>"; };
@@ -1377,8 +1367,6 @@
 		C97D6DA213696D7B0017974B /* SCHBookPoint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookPoint.m; path = Shared/SCHBookPoint.m; sourceTree = "<group>"; };
 		C9A1129113608319007FD763 /* admin-iphone-splash-portrait.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "admin-iphone-splash-portrait.png"; path = "Resources/UIAssets/admin-iphone-splash-portrait.png"; sourceTree = "<group>"; };
 		C9A1129213608319007FD763 /* admin-iphone-splash-portrait@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "admin-iphone-splash-portrait@2x.png"; path = "Resources/UIAssets/admin-iphone-splash-portrait@2x.png"; sourceTree = "<group>"; };
-		C9A1129313608319007FD763 /* admin-iphone-users-portrait.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "admin-iphone-users-portrait.png"; path = "Resources/UIAssets/admin-iphone-users-portrait.png"; sourceTree = "<group>"; };
-		C9A1129413608319007FD763 /* admin-iphone-users-portrait@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "admin-iphone-users-portrait@2x.png"; path = "Resources/UIAssets/admin-iphone-users-portrait@2x.png"; sourceTree = "<group>"; };
 		C9A1129513608319007FD763 /* button-blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "button-blue.png"; path = "Resources/UIAssets/button-blue.png"; sourceTree = "<group>"; };
 		C9A1129613608319007FD763 /* button-blue@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "button-blue@2x.png"; path = "Resources/UIAssets/button-blue@2x.png"; sourceTree = "<group>"; };
 		C9B08B041344D34F001963D0 /* KNFBFlowEucBook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KNFBFlowEucBook.h; sourceTree = "<group>"; };
@@ -2489,8 +2477,6 @@
 				C90111361361DB06006694B3 /* books-background@2x.png */,
 				C90111291361968D006694B3 /* admin-iphone-splash-landscape.png */,
 				C901112A1361968D006694B3 /* admin-iphone-splash-landscape@2x.png */,
-				C9011123136194AC006694B3 /* admin-iphone-users-landscape.png */,
-				C9011124136194AC006694B3 /* admin-iphone-users-landscape@2x.png */,
 				C901111D1361823C006694B3 /* button-translucent.png */,
 				C901111E1361823C006694B3 /* button-translucent@2x.png */,
 				C901111713617676006694B3 /* logo.png */,
@@ -2509,8 +2495,6 @@
 				C90111441361FD49006694B3 /* settings-portrait@2x.png */,
 				C9A1129113608319007FD763 /* admin-iphone-splash-portrait.png */,
 				C9A1129213608319007FD763 /* admin-iphone-splash-portrait@2x.png */,
-				C9A1129313608319007FD763 /* admin-iphone-users-portrait.png */,
-				C9A1129413608319007FD763 /* admin-iphone-users-portrait@2x.png */,
 				C9A1129513608319007FD763 /* button-blue.png */,
 				C9A1129613608319007FD763 /* button-blue@2x.png */,
 			);
@@ -3129,8 +3113,6 @@
 				F8C6DA9E136073D300D9E953 /* paper-white@2x.png in Resources */,
 				C9A1129713608319007FD763 /* admin-iphone-splash-portrait.png in Resources */,
 				C9A1129913608319007FD763 /* admin-iphone-splash-portrait@2x.png in Resources */,
-				C9A1129B13608319007FD763 /* admin-iphone-users-portrait.png in Resources */,
-				C9A1129D13608319007FD763 /* admin-iphone-users-portrait@2x.png in Resources */,
 				C9A1129F13608319007FD763 /* button-blue.png in Resources */,
 				C9A112A113608319007FD763 /* button-blue@2x.png in Resources */,
 				C90110D313616BE1006694B3 /* plain-background-portrait.png in Resources */,
@@ -3143,8 +3125,6 @@
 				C901111B13617676006694B3 /* logo@2x.png in Resources */,
 				C901111F1361823C006694B3 /* button-translucent.png in Resources */,
 				C90111211361823C006694B3 /* button-translucent@2x.png in Resources */,
-				C9011125136194AC006694B3 /* admin-iphone-users-landscape.png in Resources */,
-				C9011127136194AC006694B3 /* admin-iphone-users-landscape@2x.png in Resources */,
 				C901112B1361968D006694B3 /* admin-iphone-splash-landscape.png in Resources */,
 				C901112D1361968D006694B3 /* admin-iphone-splash-landscape@2x.png in Resources */,
 				C90111311361D029006694B3 /* plain-background-landscape.png in Resources */,
@@ -3329,8 +3309,6 @@
 				F8C6DA9F136073D300D9E953 /* paper-white@2x.png in Resources */,
 				C9A1129813608319007FD763 /* admin-iphone-splash-portrait.png in Resources */,
 				C9A1129A13608319007FD763 /* admin-iphone-splash-portrait@2x.png in Resources */,
-				C9A1129C13608319007FD763 /* admin-iphone-users-portrait.png in Resources */,
-				C9A1129E13608319007FD763 /* admin-iphone-users-portrait@2x.png in Resources */,
 				C9A112A013608319007FD763 /* button-blue.png in Resources */,
 				C9A112A213608319007FD763 /* button-blue@2x.png in Resources */,
 				C90110D413616BE1006694B3 /* plain-background-portrait.png in Resources */,
@@ -3343,8 +3321,6 @@
 				C901111C13617676006694B3 /* logo@2x.png in Resources */,
 				C90111201361823C006694B3 /* button-translucent.png in Resources */,
 				C90111221361823C006694B3 /* button-translucent@2x.png in Resources */,
-				C9011126136194AC006694B3 /* admin-iphone-users-landscape.png in Resources */,
-				C9011128136194AC006694B3 /* admin-iphone-users-landscape@2x.png in Resources */,
 				C901112C1361968D006694B3 /* admin-iphone-splash-landscape.png in Resources */,
 				C901112E1361968D006694B3 /* admin-iphone-splash-landscape@2x.png in Resources */,
 				C90111321361D029006694B3 /* plain-background-landscape.png in Resources */,
