@@ -9,12 +9,13 @@
 #import "SCHBookmark.h"
 
 #import "SCHPrivateAnnotations.h"
+#import "SCHLocationBookmark.h"
 
 @implementation SCHBookmark 
 
 @dynamic Disabled;
 @dynamic Text;
-@dynamic Page;
+@dynamic LocationBookmark;
 @dynamic PrivateAnnotations;
 
 @end
