@@ -131,6 +131,8 @@
 		52EF553E12E9EB8500E374F7 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52EF553D12E9EB8500E374F7 /* Security.framework */; };
 		52EF570A12ED977C00E374F7 /* NSManagedObjectContext+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF570912ED977C00E374F7 /* NSManagedObjectContext+Extensions.m */; };
 		52EF579712EDBE6E00E374F7 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF579612EDBE6E00E374F7 /* SFHFKeychainUtils.m */; };
+		52F15A1F1371A2CA0073941E /* SCHBookAnnotations.m in Sources */ = {isa = PBXBuildFile; fileRef = 52F15A1E1371A2CA0073941E /* SCHBookAnnotations.m */; };
+		52F15A201371A2CA0073941E /* SCHBookAnnotations.m in Sources */ = {isa = PBXBuildFile; fileRef = 52F15A1E1371A2CA0073941E /* SCHBookAnnotations.m */; };
 		A331E123136B26FC0008FCB1 /* SCHDrmSession.m in Sources */ = {isa = PBXBuildFile; fileRef = A33F7310136B050A00BAA101 /* SCHDrmSession.m */; };
 		A33F7311136B050A00BAA101 /* SCHDrmSession.m in Sources */ = {isa = PBXBuildFile; fileRef = A33F7310136B050A00BAA101 /* SCHDrmSession.m */; };
 		A3A38E61133A811400C325A3 /* devcerttemplate.dat in Resources */ = {isa = PBXBuildFile; fileRef = A3A38E5F133A811400C325A3 /* devcerttemplate.dat */; };
@@ -1026,6 +1028,8 @@
 		52EF570912ED977C00E374F7 /* NSManagedObjectContext+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSManagedObjectContext+Extensions.m"; path = "Shared/NSManagedObjectContext+Extensions.m"; sourceTree = "<group>"; };
 		52EF579512EDBE6E00E374F7 /* SFHFKeychainUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFHFKeychainUtils.h; sourceTree = "<group>"; };
 		52EF579612EDBE6E00E374F7 /* SFHFKeychainUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFHFKeychainUtils.m; sourceTree = "<group>"; };
+		52F15A1D1371A2CA0073941E /* SCHBookAnnotations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookAnnotations.h; path = Shared/SCHBookAnnotations.h; sourceTree = "<group>"; };
+		52F15A1E1371A2CA0073941E /* SCHBookAnnotations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookAnnotations.m; path = Shared/SCHBookAnnotations.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Scholastic-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Scholastic-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 		A33F730F136B050A00BAA101 /* SCHDrmSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHDrmSession.h; path = Shared/SCHDrmSession.h; sourceTree = "<group>"; };
 		A33F7310136B050A00BAA101 /* SCHDrmSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHDrmSession.m; path = Shared/SCHDrmSession.m; sourceTree = "<group>"; };
@@ -2793,6 +2797,8 @@
 				C93EBEAE13472FEC003B99FD /* SCHTextFlowParagraphSource.m */,
 				C92FA7D01355BE1F001BAA6B /* SCHSmartZoomBlockSource.h */,
 				C92FA7D11355BE20001BAA6B /* SCHSmartZoomBlockSource.m */,
+				52F15A1D1371A2CA0073941E /* SCHBookAnnotations.h */,
+				52F15A1E1371A2CA0073941E /* SCHBookAnnotations.m */,
 			);
 			name = "Book Data";
 			sourceTree = "<group>";
@@ -3507,6 +3513,7 @@
 				52C489CB1369AC4200460876 /* UIColor+Extensions.m in Sources */,
 				A33F7311136B050A00BAA101 /* SCHDrmSession.m in Sources */,
 				521399F013717BB10081FD3D /* SCHLocationBookmark.m in Sources */,
+				52F15A1F1371A2CA0073941E /* SCHBookAnnotations.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3672,6 +3679,7 @@
 				C9E89A4C1369B87A00E7ED53 /* levenshtein_distance.c in Sources */,
 				52C489CC1369AC4200460876 /* UIColor+Extensions.m in Sources */,
 				521399F113717BB10081FD3D /* SCHLocationBookmark.m in Sources */,
+				52F15A201371A2CA0073941E /* SCHBookAnnotations.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
