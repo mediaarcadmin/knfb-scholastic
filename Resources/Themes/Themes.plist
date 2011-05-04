@@ -23,8 +23,6 @@
 		<string>Red/red-navigation-bar</string>
 		<key>ShelfImage</key>
 		<string>Red/red-shelf</string>
-		<key>TableViewCellImage</key>
-		<string>Red/red-table-view-cell</string>
 		<key>ThemeIcon</key>
 		<string>Red/red-icon-theme</string>
 	</dict>
@@ -51,8 +49,6 @@
 		<string>Blue/bookshelf-top-bar</string>
 		<key>ShelfImage</key>
 		<string>Blue/bookshelf-shelf</string>
-		<key>TableViewCellImage</key>
-		<string>Blue/profile-cell-background</string>
 		<key>ThemeIcon</key>
 		<string>Blue/icon-theme</string>
 	</dict>
@@ -77,8 +73,6 @@
 		<string>Goosebumps/navigation-bar</string>
 		<key>ShelfImage</key>
 		<string>Goosebumps/shelf</string>
-		<key>TableViewCellImage</key>
-		<string>Goosebumps/table-view-cell</string>
 		<key>ThemeIcon</key>
 		<string>Goosebumps/icon-theme</string>
 	</dict>

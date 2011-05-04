@@ -176,13 +176,6 @@ static NSString * const kSCHThemeManagerSelectedTheme = @"ThemeManagerSelectedTh
     
 }
 
-- (UIImage *)imageForTableViewCell:(UIInterfaceOrientation)orientation
-{
-    return([UIImage imageNamed:[kSCHThemeManagerDirectory 
-                                stringByAppendingPathComponent:[self filePath:[self.selectedTheme objectForKey:kSCHThemeManagerTableViewCellImage] 
-                                                                  orientation:orientation]]]);
-}
-
 - (UIImage *)imageForBackground:(UIInterfaceOrientation)orientation
 {
     return([UIImage imageNamed:[kSCHThemeManagerDirectory 

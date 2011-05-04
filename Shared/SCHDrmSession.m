@@ -145,6 +145,28 @@ ErrorExit:
         guid->Data4[i] = 0;
 }
 
+- (NSString*)getPriorityError:(DRM_RESULT)result {
+	if (result==DRM_E_SERVER_COMPUTER_LIMIT_REACHED || result==DRM_E_SERVER_DEVICE_LIMIT_REACHED) {
+        return NSLocalizedString(@"You are at your limit of five registered devices.  You must deregister another device before you can register this one.",@"Device limit message.");
+	}
+	else if (result==DRM_E_LICEVAL_LICENSE_REVOKED) { 
+		return NSLocalizedString(@"The license for one your books has been revoked.",@"License revocation message.");
+	}
+	else if (result==DRM_E_CERTIFICATE_REVOKED) {
+		return NSLocalizedString(@"A certificate on your device has been revoked.",@"Certificate revocation message.");
+	}
+	else if (result==DRM_E_DEVCERT_REVOKED) {
+		return NSLocalizedString(@"Your device certificate has been revoked.",@"Device certificate revocation message.");
+	}
+	else if (result==DRM_E_LICENSEEXPIRED) {
+		return NSLocalizedString(@"The license for this book has expired.",@"Expired license message.");
+	}
+	else if (result==DRM_E_LICENSENOTFOUND) {
+		return NSLocalizedString(@"This book is not licensed.",@"Missing license message.");
+	}
+	return nil;
+}
+
 @end
 
 @interface SCHDrmRegistrationSession ()
@@ -205,7 +227,6 @@ ErrorExit:
 	return nil;
 }
 
-
 - (void)registerDevice:(NSString*)token {
 	DRM_RESULT dr = DRM_SUCCESS;
     DRM_DOMAIN_ID domainID;
@@ -215,14 +236,14 @@ ErrorExit:
 	if ( !self.sessionInitialized ) {
         //NSLog(@"DRM error: cannot join domain because DRM is not initialized.");
 		[self callFailureDelegate:[self drmError:kSCHDrmInitializationError 
-										 message:@"Cannot join domain because DRM is not initialized."]];
+										 message:NSLocalizedString(@"Cannot register device because DRM is not initialized.",@"DRM initialization error message")]];
         return;
     }
 	
 	if ( token == nil ) {
 		//NSLog(@"DRM error attempting to join domain outside login session.");
 		[self callFailureDelegate:[self drmError:kSCHDrmInitializationError 
-										 message:@"Cannot join domain because not user is not logged in."]];
+										 message:NSLocalizedString(@"Cannot register device because login is required.",@"DRM login requirement message")]];
 		return;
 	}
 	 
@@ -275,7 +296,7 @@ ErrorExit:
         ChkDR( dr );
     }
 		
-	NSLog(@"DRM join domain challenge: %s",(unsigned char*)pbChallenge);
+	//NSLog(@"DRM join domain challenge: %s",(unsigned char*)pbChallenge);
 	NSMutableURLRequest* request = [self createDrmRequest:(const void*)pbChallenge 
 											messageSize:(NSUInteger)cbChallenge
 													url:drmServerUrl
@@ -286,19 +307,18 @@ ErrorExit:
 	{
 		//NSLog(@"Failed to created url connection for join domain request.");
 		[self callFailureDelegate:[self drmError:kSCHDrmNetworkError 
-										 message:@"Cannot join domain because connection can't be created."]];
+										 message:NSLocalizedString(@"Cannot register device because connection can't be created.",@"DRM connection error message")]];
 		return;
 	}
 	self.isJoining = YES;
     
 ErrorExit:
 	if ( pbChallenge )
-		Oem_MemFree(pbChallenge);
-	// Standard success values.
+		Oem_MemFree(pbChallenge);    
 	if ( !DRM_SUCCEEDED(dr)  ) {
-		NSLog(@"DRM error joining domain: %08X", dr);
+		//NSLog(@"DRM error joining domain: %08X", dr);
 		[self callFailureDelegate:[self drmError:kSCHDrmRegistrationError 
-									 message:@"Cannot join domain because of DRM error."]];
+                                         message:[NSString stringWithFormat:NSLocalizedString(@"Cannot register device because of DRM error: %08X",@"Generic registration error message"),dr]]];
 	}
  
 }
@@ -315,14 +335,14 @@ ErrorExit:
 	if ( !self.sessionInitialized ) {
         //NSLog(@"DRM error: cannot leave domain because DRM is not initialized.");
 		[self callFailureDelegate:[self drmError:kSCHDrmInitializationError 
-										 message:@"Cannot leave domain because DRM is not initialized."]];
+                                        message:NSLocalizedString(@"Cannot deregister device because DRM is not initialized.",@"DRM initialization error message")]];
         return;
     }
 	
 	if ( token == nil ) {
 		//NSLog(@"DRM error: attempting to leave domain outside login session.");
 		[self callFailureDelegate:[self drmError:kSCHDrmInitializationError 
-										 message:@"Cannot leave domain because user is not logged in."]];
+										 message:NSLocalizedString(@"Cannot deregister device because login is required.",@"DRM login requirement message")]];
 		return;
 	}
 	
@@ -339,7 +359,7 @@ ErrorExit:
 			if ( i==0 ) {
 				//NSLog(@"DRM error: attempting to leave domain when no domain has been joined.");
 				[self callFailureDelegate:[self drmError:kSCHDrmInitializationError 
-												 message:@"Cannot leave domain because no domain has been joined."]];
+                                                 message:NSLocalizedString(@"Cannot deregister device because device is not registered.",@"DRM deregistration requires registration message")]];
 				return;
 			}
 			else if ( i== 1 ) {
@@ -393,7 +413,7 @@ ErrorExit:
         ChkDR( dr );
     }
 	
-	NSLog(@"DRM leave domain challenge: %s",(unsigned char*)pbChallenge);
+	//NSLog(@"DRM leave domain challenge: %s",(unsigned char*)pbChallenge);
 	NSMutableURLRequest* request = [self createDrmRequest:(const void*)pbChallenge 
 											  messageSize:(NSUInteger)cbChallenge
 													  url:drmServerUrl
@@ -402,9 +422,8 @@ ErrorExit:
 	self.urlConnection = [[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
 	if (!self.urlConnection)
 	{
-		//NSLog(@"Failed to created url connection for join domain request.");
 		[self callFailureDelegate:[self drmError:kSCHDrmNetworkError 
-										 message:@"Cannot leave domain because connection can't be created."]];
+										 message:NSLocalizedString(@"Cannot deregister device because connection can't be created.",@"DRM connection error message")]];
 		return;
 	}
 	self.isJoining = NO;
@@ -414,9 +433,9 @@ ErrorExit:
 	if ( pbChallenge )
 		Oem_MemFree(pbChallenge);
 	if ( !DRM_SUCCEEDED(dr)  ) {
-		NSLog(@"DRM error leaving domain: %08X", dr);
+		//NSLog(@"DRM error leaving domain: %08X", dr);
 		[self callFailureDelegate:[self drmError:kSCHDrmRegistrationError 
-										 message:@"Cannot leave domain because of DRM error."]];
+										 message:[NSString stringWithFormat:NSLocalizedString(@"Cannot deregister device because of DRM error: %08X",@"Generic deregistration error message"),dr]]];
 	}
 }
 
@@ -432,7 +451,7 @@ ErrorExit:
 	{
 		[self.urlConnection cancel];
 		[self callFailureDelegate:[self drmError:kSCHDrmNetworkError 
-										 message:@"DRM domain request failed because of invalid url."]];
+										message:NSLocalizedString(@"Cannot register device because URL is invalid.",@"DRM invalid url message")]];
 	}
 }
 
@@ -453,7 +472,7 @@ ErrorExit:
 	if (drmResponse == nil) {
 		// This would be weird.
 		[self callFailureDelegate:[self drmError:kSCHDrmRegistrationError 
-										 message:@"DRM domain request failed because of null server response."]];
+										 message:NSLocalizedString(@"Cannot register device because the server did not respond.",@"Unresponsive license server message.")]];
 		return;
 	} 
 	else {
@@ -483,28 +502,37 @@ ErrorExit:
 	
 ErrorExit:
 	if ( DRM_SUCCEEDED(dr)  ) {		
-		NSLog(@"Message from DRM server: %08X", dr2);
+		NSLog(@"Success message from DRM server: %08X", dr2);
 		if (self.isJoining) {
 			// Retrieve the device ID.
 			NSString* deviceID = [self getTagValue:[NSString stringWithCString:(const char*)pbResponse encoding:NSUTF8StringEncoding]
 										xmlTag:@"ClientId"];
 			[self callSuccessDelegate:deviceID];
-			return;
 		}
 		else {
 			[self callSuccessDelegate:nil];
-			return;
 		}
+        return;
 	}
-	if (self.isJoining) {
-		NSLog(@"DRM error joining domain: %08X", dr);
+    // Errors that require specific description.
+    NSString* priorityErr = [self getPriorityError:dr2];
+    if (!priorityErr)
+        priorityErr = [self getPriorityError:dr];
+    if (priorityErr) {
 		[self callFailureDelegate:[self drmError:kSCHDrmRegistrationError 
-												  message:@"Cannot join domain because of DRM error."]];
+                                         message:priorityErr]];
+        return;
+    }
+    // Errors for which we only report a code.
+	if (self.isJoining) {
+		//NSLog(@"DRM error joining domain: %08X", dr);
+		[self callFailureDelegate:[self drmError:kSCHDrmRegistrationError 
+                                         message:[NSString stringWithFormat:NSLocalizedString(@"Cannot register device because of DRM error: %08X",@"Generic registration error message"),dr]]];
 	}
 	else {
-		NSLog(@"DRM error leaving domain: %08X", dr);
+		//NSLog(@"DRM error leaving domain: %08X", dr);
 		[self callFailureDelegate:[self drmError:kSCHDrmRegistrationError 
-												  message:@"Cannot leave domain because of DRM error."]];
+                                         message:[NSString stringWithFormat:NSLocalizedString(@"Cannot deregister device because of DRM error: %08X",@"Generic deregistration error message"),dr]]];
 	}
 	
 }
@@ -544,6 +572,62 @@ ErrorExit:
 -(void) dealloc {
 	self.delegate = nil;
 	[super dealloc];
+}
+
+- (void)acknowledgeLicense:(DRM_LICENSE_RESPONSE*)licenseResponse {
+	
+    DRM_RESULT dr = DRM_SUCCESS;
+    DRM_BYTE *pbChallenge = NULL;
+    DRM_DWORD cbChallenge = 0;
+    DRM_BYTE *pbResponse = NULL;
+    DRM_DWORD cbResponse = 0;
+	
+	dr = Drm_LicenseAcq_GenerateAck( drmIVars->drmAppContext, licenseResponse, pbChallenge, &cbChallenge );
+	if ( dr == DRM_E_BUFFERTOOSMALL )
+	{
+		pbChallenge = Oem_MemAlloc( cbChallenge );
+		ChkDR( Drm_LicenseAcq_GenerateAck( drmIVars->drmAppContext, licenseResponse, pbChallenge, &cbChallenge ));
+	}
+	else
+	{
+		ChkDR( dr );
+	}
+	
+	//NSLog(@"DRM license acknowledgment challenge: %s",(unsigned char*)pbChallenge);
+
+    NSMutableURLRequest* request = [self createDrmRequest:(const void*)pbChallenge 
+                                              messageSize:(NSUInteger)cbChallenge
+                                                      url:drmServerUrl
+                                               soapAction:SCHDrmSoapActionAcknowledgeLicense];
+    NSURLResponse* urlResponse;
+    NSError* err = nil;
+    NSData* responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&urlResponse error:&err];
+    if (responseData == nil) {
+		NSLog(@"License could not be acknowledged because the server did not respond.");
+		return;
+	} 
+    else if (err != nil) {
+		NSLog(@"License could not be acknowledged: %@", [err localizedDescription]);
+		return;
+	}
+	else {
+		pbResponse = (DRM_BYTE*)[responseData bytes];
+		cbResponse = [responseData length];
+		pbResponse[cbResponse] = '\0';
+	}
+    
+    
+	NSLog(@"DRM license acknowledgment response: %s",(unsigned char*)pbResponse);
+	@synchronized (self) {
+		ChkDR( Drm_LicenseAcq_ProcessAckResponse(drmIVars->drmAppContext, pbResponse, cbResponse, NULL) );
+	}
+	
+ErrorExit:
+	if ( pbChallenge )
+		Oem_MemFree(pbChallenge);
+    if ( !DRM_SUCCEEDED(dr)  ) 
+        NSLog(@"Cannot acknowledge license because of DRM error: %08X",dr);
+	
 }
 
 - (void)acquireLicense:(NSString *)token bookID:(NSString*)isbn {
@@ -617,7 +701,7 @@ ErrorExit:
         ChkDR( dr );
     }
     
-	NSLog(@"DRM license challenge: %s",(unsigned char*)pbChallenge);
+	//NSLog(@"DRM license challenge: %s",(unsigned char*)pbChallenge);
     
     NSMutableURLRequest* request = [self createDrmRequest:(const void*)pbChallenge 
                                               messageSize:(NSUInteger)cbChallenge
@@ -629,7 +713,7 @@ ErrorExit:
     NSData* responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&urlResponse error:&err];
     if (responseData == nil) {
 		[self callFailureDelegate:[self drmError:kSCHDrmLicenseAcquisitionError 
-										 message:@"DRM license acquisition failed because of null server response."]];
+										 message:NSLocalizedString(@"License could not be acquired because the server did not respond.",@"Unresponsive license server message.")]];
 		return;
 	} 
     else if (err != nil) {
@@ -657,21 +741,29 @@ ErrorExit:
     for( int idx = 0; idx < oLicenseResponse.m_cAcks; idx++ )
         ChkDR( oLicenseResponse.m_rgoAcks[idx].m_dwResult );
     
-    //ChkDR( [self acknowledgeLicense:&oLicenseResponse] );
+    // Failure of acknowledgment does not entail failure of acquisition,
+    // so we do not check a returned code.
+    [self acknowledgeLicense:&oLicenseResponse];
 	
 ErrorExit:
 	if ( pbChallenge )
 		Oem_MemFree(pbChallenge);
     
-	if ( !DRM_SUCCEEDED(dr)  ) {
-		NSLog(@"DRM error acquiring license: %08X", dr);
-		[self callFailureDelegate:[self drmError:kSCHDrmLicenseAcquisitionError
-                                         message:@"Cannot acquire license because of DRM error."]];
-	}
-    else  {		
+    if ( DRM_SUCCEEDED(dr)  ) {	
         [self callSuccessDelegate];
         return;
     }
+    
+    // Errors that require specific description.
+    NSString* priorityErr = [self getPriorityError:dr];
+    if (priorityErr) {
+		[self callFailureDelegate:[self drmError:kSCHDrmLicenseAcquisitionError 
+                                         message:priorityErr]];
+        return;
+    }
+    // Errors for which we only report a code.
+    [self callFailureDelegate:[self drmError:kSCHDrmLicenseAcquisitionError
+                                     message:[NSString stringWithFormat:NSLocalizedString(@"Cannot acquire license because of DRM error: %08X",@"Generic license acquisition error message"),dr]]];
     
 }
 
