@@ -18,7 +18,7 @@ static NSString * const kSCHHighlight = @"SCHHighlight";
 {
 }
 
-@property (nonatomic, retain) NSString * Color;
+@property (nonatomic, retain) UIColor * Color;
 @property (nonatomic, retain) NSNumber * EndPage;
 @property (nonatomic, retain) SCHPrivateAnnotations * PrivateAnnotations;
 @property (nonatomic, retain) SCHLocationText * LocationText;

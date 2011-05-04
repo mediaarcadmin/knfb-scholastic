@@ -10,6 +10,13 @@
 
 #import "SCHLocationText.h"
 #import "SCHPrivateAnnotations.h"
+#import "UIColor+Extensions.h"
+
+@interface SCHHighlight (PrimitiveAccessors)
+
+@property (nonatomic, retain) NSString *primitiveColor;
+
+@end
 
 @implementation SCHHighlight 
 
@@ -17,5 +24,20 @@
 @dynamic EndPage;
 @dynamic PrivateAnnotations;
 @dynamic LocationText;
+
+- (UIColor *)Color
+{
+    [self willAccessValueForKey:@"Color"];
+    UIColor *tmpValue = [UIColor BITcolorWithHexString:[self primitiveColor]];
+    [self didAccessValueForKey:@"Color"];
+    return(tmpValue);
+}
+
+- (void)setColor:(UIColor *)value
+{
+    [self willChangeValueForKey:@"Color"];
+    [self setPrimitiveColor:[value BIThexString]];
+    [self didChangeValueForKey:@"Color"];
+}
 
 @end
