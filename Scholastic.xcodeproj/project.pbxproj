@@ -28,6 +28,8 @@
 		5200EFF512F6D00B00BAC355 /* SCHeReaderCategories.m in Sources */ = {isa = PBXBuildFile; fileRef = 5200EFF312F6D00B00BAC355 /* SCHeReaderCategories.m */; };
 		5204B860135C1FC500FCBD90 /* SCHThemeButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 5204B85F135C1FC500FCBD90 /* SCHThemeButton.m */; };
 		5204B861135C1FC500FCBD90 /* SCHThemeButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 5204B85F135C1FC500FCBD90 /* SCHThemeButton.m */; };
+		521399F013717BB10081FD3D /* SCHLocationBookmark.m in Sources */ = {isa = PBXBuildFile; fileRef = 521399EF13717BB10081FD3D /* SCHLocationBookmark.m */; };
+		521399F113717BB10081FD3D /* SCHLocationBookmark.m in Sources */ = {isa = PBXBuildFile; fileRef = 521399EF13717BB10081FD3D /* SCHLocationBookmark.m */; };
 		52298A8712F0EF5600BBBCE6 /* SCHNote.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A5E12F0EF5600BBBCE6 /* SCHNote.m */; };
 		52298A8812F0EF5600BBBCE6 /* SCHUserSettingsItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6012F0EF5600BBBCE6 /* SCHUserSettingsItem.m */; };
 		52298A8912F0EF5600BBBCE6 /* SCHContentMetadataItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6212F0EF5600BBBCE6 /* SCHContentMetadataItem.m */; };
@@ -862,6 +864,8 @@
 		5200EFF312F6D00B00BAC355 /* SCHeReaderCategories.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHeReaderCategories.m; path = Shared/SCHeReaderCategories.m; sourceTree = "<group>"; };
 		5204B85E135C1FC500FCBD90 /* SCHThemeButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHThemeButton.h; path = Shared/SCHThemeButton.h; sourceTree = "<group>"; };
 		5204B85F135C1FC500FCBD90 /* SCHThemeButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHThemeButton.m; path = Shared/SCHThemeButton.m; sourceTree = "<group>"; };
+		521399EE13717BB10081FD3D /* SCHLocationBookmark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHLocationBookmark.h; path = Shared/SCHLocationBookmark.h; sourceTree = "<group>"; };
+		521399EF13717BB10081FD3D /* SCHLocationBookmark.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHLocationBookmark.m; path = Shared/SCHLocationBookmark.m; sourceTree = "<group>"; };
 		52298A5D12F0EF5600BBBCE6 /* SCHNote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHNote.h; path = Shared/SCHNote.h; sourceTree = "<group>"; };
 		52298A5E12F0EF5600BBBCE6 /* SCHNote.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHNote.m; path = Shared/SCHNote.m; sourceTree = "<group>"; };
 		52298A5F12F0EF5600BBBCE6 /* SCHUserSettingsItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHUserSettingsItem.h; path = Shared/SCHUserSettingsItem.h; sourceTree = "<group>"; };
@@ -1787,6 +1791,8 @@
 				52298A6412F0EF5600BBBCE6 /* SCHLastPage.m */,
 				5200EFE812F6CFE400BAC355 /* SCHListProfileContentAnnotations.h */,
 				5200EFE912F6CFE400BAC355 /* SCHListProfileContentAnnotations.m */,
+				521399EE13717BB10081FD3D /* SCHLocationBookmark.h */,
+				521399EF13717BB10081FD3D /* SCHLocationBookmark.m */,
 				52298A8112F0EF5600BBBCE6 /* SCHLocationGraphics.h */,
 				52298A8212F0EF5600BBBCE6 /* SCHLocationGraphics.m */,
 				52298A6512F0EF5600BBBCE6 /* SCHLocationText.h */,
@@ -3500,6 +3506,7 @@
 				C9E89A4B1369B87A00E7ED53 /* levenshtein_distance.c in Sources */,
 				52C489CB1369AC4200460876 /* UIColor+Extensions.m in Sources */,
 				A33F7311136B050A00BAA101 /* SCHDrmSession.m in Sources */,
+				521399F013717BB10081FD3D /* SCHLocationBookmark.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3664,6 +3671,7 @@
 				C97D6DA413696D7B0017974B /* SCHBookPoint.m in Sources */,
 				C9E89A4C1369B87A00E7ED53 /* levenshtein_distance.c in Sources */,
 				52C489CC1369AC4200460876 /* UIColor+Extensions.m in Sources */,
+				521399F113717BB10081FD3D /* SCHLocationBookmark.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

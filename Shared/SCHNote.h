@@ -17,7 +17,7 @@ static NSString * const kSCHNote = @"SCHNote";
 {
 }
 
-@property (nonatomic, retain) NSString * Color;
+@property (nonatomic, retain) UIColor * Color;
 @property (nonatomic, retain) NSString * Value;
 @property (nonatomic, retain) SCHLocationGraphics * LocationGraphics;
 @property (nonatomic, retain) NSManagedObject * PrivateAnnotations;

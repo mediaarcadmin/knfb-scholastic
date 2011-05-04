@@ -51,6 +51,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 - (NSDictionary *)objectFromCoords:(LibreAccessServiceSvc_Coords *)anObject;
 - (NSDictionary *)objectFromFavorite:(LibreAccessServiceSvc_Favorite *)anObject;
 - (NSDictionary *)objectFromBookmark:(LibreAccessServiceSvc_Bookmark *)anObject;
+- (NSDictionary *)objectFromLocationBookmark:(LibreAccessServiceSvc_LocationBookmark *)anObject;
 - (NSDictionary *)objectFromLastPage:(LibreAccessServiceSvc_LastPage *)anObject;
 - (NSDictionary *)objectFromItemsCount:(LibreAccessServiceSvc_ItemsCount *)anObject;
 - (NSDictionary *)objectFromFavoriteTypesItem:(LibreAccessServiceSvc_FavoriteTypesItem *)anObject;
@@ -76,6 +77,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 - (void)fromObject:(NSDictionary *)object intoCoords:(LibreAccessServiceSvc_Coords *)intoObject;
 - (void)fromObject:(NSDictionary *)object intoFavorite:(LibreAccessServiceSvc_Favorite *)intoObject;
 - (void)fromObject:(NSDictionary *)object intoBookmark:(LibreAccessServiceSvc_Bookmark *)intoObject;
+- (void)fromObject:(NSDictionary *)object intoLocationBookmark:(LibreAccessServiceSvc_LocationBookmark *)intoObject;
 - (void)fromObject:(NSDictionary *)object intoLastPage:(LibreAccessServiceSvc_LastPage *)intoObject;
 - (void)fromObject:(NSDictionary *)object intoContentProfileAssignmentItem:(LibreAccessServiceSvc_ContentProfileAssignmentItem *)intoObject;
 - (void)fromObject:(NSDictionary *)object intoAssignedProfileItem:(LibreAccessServiceSvc_AssignedProfileItem *)intoObject;
@@ -1057,9 +1059,24 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		[objects setObject:[NSNumber numberWithSaveAction:anObject.action] forKey:kSCHLibreAccessWebServiceAction];
 		[objects setObject:[self objectFromTranslate:anObject.text] forKey:kSCHLibreAccessWebServiceText];
 		[objects setObject:[self objectFromTranslate:anObject.disabled] forKey:kSCHLibreAccessWebServiceDisabled];
-		[objects setObject:[self objectFromTranslate:[anObject.location page]] forKey:kSCHLibreAccessWebServiceLocation];
+		[objects setObject:[self objectFromLocationBookmark:anObject.location] forKey:kSCHLibreAccessWebServiceLocation];
 		[objects setObject:[self objectFromTranslate:anObject.version] forKey:kSCHLibreAccessWebServiceVersion];
 		[objects setObject:[self objectFromTranslate:anObject.lastmodified] forKey:kSCHLibreAccessWebServiceLastModified];
+		
+		ret = objects;					
+	}
+	
+	return(ret);
+}
+
+- (NSDictionary *)objectFromLocationBookmark:(LibreAccessServiceSvc_LocationBookmark *)anObject
+{
+	NSDictionary *ret = nil;
+	
+	if (anObject != nil) {
+		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
+		
+		[objects setObject:[self objectFromTranslate:anObject.page] forKey:kSCHLibreAccessWebServicePage];
 		
 		ret = objects;					
 	}
@@ -1467,10 +1484,17 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		intoObject.text = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceText]];
 		intoObject.disabled = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceDisabled]];		
 		intoObject.location = [[LibreAccessServiceSvc_LocationBookmark alloc] init];
-		intoObject.location.page = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceLocationBookmark]];
+		[self fromObject:[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceLocation]] intoLocationBookmark:intoObject.location];
 		[intoObject.location release];
 		intoObject.version = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceVersion]];						
 		intoObject.lastmodified = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceLastModified]];				
+	}	
+}
+
+- (void)fromObject:(NSDictionary *)object intoLocationBookmark:(LibreAccessServiceSvc_LocationBookmark *)intoObject
+{
+	if (object != nil && intoObject != nil) {
+		intoObject.page = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServicePage]];
 	}	
 }
 
@@ -1592,7 +1616,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 	return(ret);
 }
 
-#pragma Internal Debug Methods
+#pragma mark - Internal Debug Methods
 
 // Call this from GDB with:
 // call [[[[SCHSyncManager sharedSyncManager] profileSyncComponent] libreAccessWebService] debugCreateDefaultBookshelf]

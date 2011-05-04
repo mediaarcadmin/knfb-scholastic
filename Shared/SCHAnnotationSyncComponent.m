@@ -21,6 +21,7 @@
 #import "SCHNote.h"
 #import "SCHCoords.h"
 #import "SCHBookmark.h"
+#import "SCHLocationBookmark.h"
 #import "SCHLastPage.h"
 #import "SCHFavorite.h"
 
@@ -34,6 +35,7 @@
 - (SCHLocationGraphics *)locationGraphics:(NSDictionary *)locationGraphics;
 - (SCHCoords *)coords:(NSDictionary *)coords;
 - (SCHBookmark *)bookmark:(NSDictionary *)bookmark;
+- (SCHLocationBookmark *)locationBookmark:(NSDictionary *)locationBookmark;
 - (SCHLastPage *)lastPage:(NSDictionary *)lastPage;
 - (SCHFavorite *)favorite:(NSDictionary *)favorite;
 
@@ -270,7 +272,20 @@
 		
 		ret.Disabled = [self makeNullNil:[bookmark objectForKey:kSCHLibreAccessWebServiceDisabled]];
 		ret.Text = [self makeNullNil:[bookmark objectForKey:kSCHLibreAccessWebServiceText]];
-		ret.Page = [self makeNullNil:[bookmark objectForKey:kSCHLibreAccessWebServicePage]];
+		ret.LocationBookmark = [self locationBookmark:[bookmark objectForKey:kSCHLibreAccessWebServicePage]];
+	}
+	
+	return(ret);
+}
+
+- (SCHLocationBookmark *)locationBookmark:(NSDictionary *)locationBookmark
+{
+	SCHLocationBookmark *ret = nil;
+	
+	if (locationBookmark != nil) {
+		ret = [NSEntityDescription insertNewObjectForEntityForName:kSCHLocationBookmark inManagedObjectContext:self.managedObjectContext];
+		
+		ret.Page = [self makeNullNil:[locationBookmark objectForKey:kSCHLibreAccessWebServicePage]];
 	}
 	
 	return(ret);
