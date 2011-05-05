@@ -19,6 +19,7 @@
 #import "SCHLibreAccessWebService.h"
 #import "SCHAppBook.h"
 #import "SCHPrivateAnnotations.h"
+#import "SCHBookAnnotations.h"
 
 static NSString * const kSCHProfileItemContentProfileItem = @"ContentProfileItem";
 static NSString * const kSCHProfileItemUserContentItem = @"UserContentItem";
@@ -107,9 +108,9 @@ static NSString * const kSCHProfileItemUserContentItemContentMetadataItem = @"Us
 	return(books);
 }
 
-- (SCHPrivateAnnotations *)annotationsForBook:(NSString *)isbn
+- (SCHBookAnnotations *)annotationsForBook:(NSString *)isbn
 {
-    SCHPrivateAnnotations *privateAnnotations = nil;
+    SCHBookAnnotations *ret = nil;
     
     if (isbn != nil) {
         NSEntityDescription *entityDescription = [NSEntityDescription 
@@ -122,11 +123,11 @@ static NSString * const kSCHProfileItemUserContentItemContentMetadataItem = @"Us
         
         NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest error:nil];
         if ([results count] > 0) {
-            privateAnnotations = (SCHPrivateAnnotations *)[results objectAtIndex:0];
+            ret = [[[SCHBookAnnotations alloc] initWithPrivateAnnotations:[results objectAtIndex:0]] autorelease];
         }    
     }
     
-    return(privateAnnotations);
+    return(ret);
 }
 
 - (void)refreshAllContentMetadataItems

@@ -15,6 +15,7 @@
 #import "SCHXPSProvider.h"
 #import "SCHCustomNavigationBar.h"
 #import "SCHCustomToolbar.h"
+#import "SCHReadingNotesViewController.h"
 
 // constants
 static const CGFloat kReadingViewStandardScrubHeight = 47.0f;
@@ -431,6 +432,13 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 -(IBAction) notesAction: (id) sender
 {
     NSLog(@"Notes action");
+    [self cancelInitialTimer];
+    
+    SCHReadingNotesViewController *notesController = [[SCHReadingNotesViewController alloc] initWithNibName:nil bundle:nil];
+    notesController.isbn = self.isbn;
+    [self.navigationController presentModalViewController:notesController animated:YES];
+    [notesController release];
+    
 }
 
 -(IBAction) settingsAction: (id) sender

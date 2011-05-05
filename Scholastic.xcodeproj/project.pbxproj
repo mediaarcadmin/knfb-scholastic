@@ -28,6 +28,8 @@
 		5200EFF512F6D00B00BAC355 /* SCHeReaderCategories.m in Sources */ = {isa = PBXBuildFile; fileRef = 5200EFF312F6D00B00BAC355 /* SCHeReaderCategories.m */; };
 		5204B860135C1FC500FCBD90 /* SCHThemeButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 5204B85F135C1FC500FCBD90 /* SCHThemeButton.m */; };
 		5204B861135C1FC500FCBD90 /* SCHThemeButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 5204B85F135C1FC500FCBD90 /* SCHThemeButton.m */; };
+		521399F013717BB10081FD3D /* SCHLocationBookmark.m in Sources */ = {isa = PBXBuildFile; fileRef = 521399EF13717BB10081FD3D /* SCHLocationBookmark.m */; };
+		521399F113717BB10081FD3D /* SCHLocationBookmark.m in Sources */ = {isa = PBXBuildFile; fileRef = 521399EF13717BB10081FD3D /* SCHLocationBookmark.m */; };
 		52298A8712F0EF5600BBBCE6 /* SCHNote.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A5E12F0EF5600BBBCE6 /* SCHNote.m */; };
 		52298A8812F0EF5600BBBCE6 /* SCHUserSettingsItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6012F0EF5600BBBCE6 /* SCHUserSettingsItem.m */; };
 		52298A8912F0EF5600BBBCE6 /* SCHContentMetadataItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6212F0EF5600BBBCE6 /* SCHContentMetadataItem.m */; };
@@ -129,6 +131,8 @@
 		52EF553E12E9EB8500E374F7 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52EF553D12E9EB8500E374F7 /* Security.framework */; };
 		52EF570A12ED977C00E374F7 /* NSManagedObjectContext+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF570912ED977C00E374F7 /* NSManagedObjectContext+Extensions.m */; };
 		52EF579712EDBE6E00E374F7 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF579612EDBE6E00E374F7 /* SFHFKeychainUtils.m */; };
+		52F15A1F1371A2CA0073941E /* SCHBookAnnotations.m in Sources */ = {isa = PBXBuildFile; fileRef = 52F15A1E1371A2CA0073941E /* SCHBookAnnotations.m */; };
+		52F15A201371A2CA0073941E /* SCHBookAnnotations.m in Sources */ = {isa = PBXBuildFile; fileRef = 52F15A1E1371A2CA0073941E /* SCHBookAnnotations.m */; };
 		A331E123136B26FC0008FCB1 /* SCHDrmSession.m in Sources */ = {isa = PBXBuildFile; fileRef = A33F7310136B050A00BAA101 /* SCHDrmSession.m */; };
 		A33F7311136B050A00BAA101 /* SCHDrmSession.m in Sources */ = {isa = PBXBuildFile; fileRef = A33F7310136B050A00BAA101 /* SCHDrmSession.m */; };
 		A3A38E61133A811400C325A3 /* devcerttemplate.dat in Resources */ = {isa = PBXBuildFile; fileRef = A3A38E5F133A811400C325A3 /* devcerttemplate.dat */; };
@@ -612,6 +616,12 @@
 		F848823F13573F4500A2C8D3 /* icon-magnify-active.png in Resources */ = {isa = PBXBuildFile; fileRef = F848823C13573F4500A2C8D3 /* icon-magnify-active.png */; };
 		F848824013573F4500A2C8D3 /* icon-magnify-active@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F848823D13573F4500A2C8D3 /* icon-magnify-active@2x.png */; };
 		F848824113573F4500A2C8D3 /* icon-magnify-active@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F848823D13573F4500A2C8D3 /* icon-magnify-active@2x.png */; };
+		F84C00701371B612009A210F /* SCHReadingNotesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F84C006E1371B612009A210F /* SCHReadingNotesViewController.m */; };
+		F84C00711371B612009A210F /* SCHReadingNotesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F84C006E1371B612009A210F /* SCHReadingNotesViewController.m */; };
+		F84C00721371B612009A210F /* SCHReadingNotesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F84C006F1371B612009A210F /* SCHReadingNotesViewController.xib */; };
+		F84C00731371B612009A210F /* SCHReadingNotesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F84C006F1371B612009A210F /* SCHReadingNotesViewController.xib */; };
+		F84C00751371C1D0009A210F /* SCHReadingNotesTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F84C00741371C1D0009A210F /* SCHReadingNotesTableCell.xib */; };
+		F84C00761371C1D0009A210F /* SCHReadingNotesTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F84C00741371C1D0009A210F /* SCHReadingNotesTableCell.xib */; };
 		F84CE156134C691D0044729E /* SCHNonDRMAuthenticationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F84CE155134C691D0044729E /* SCHNonDRMAuthenticationManager.m */; };
 		F84CE157134C691D0044729E /* SCHNonDRMAuthenticationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F84CE155134C691D0044729E /* SCHNonDRMAuthenticationManager.m */; };
 		F8509EA312F0621E00197EB5 /* SCHScrubberView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8509E9B12F0621E00197EB5 /* SCHScrubberView.m */; };
@@ -862,6 +872,8 @@
 		5200EFF312F6D00B00BAC355 /* SCHeReaderCategories.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHeReaderCategories.m; path = Shared/SCHeReaderCategories.m; sourceTree = "<group>"; };
 		5204B85E135C1FC500FCBD90 /* SCHThemeButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHThemeButton.h; path = Shared/SCHThemeButton.h; sourceTree = "<group>"; };
 		5204B85F135C1FC500FCBD90 /* SCHThemeButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHThemeButton.m; path = Shared/SCHThemeButton.m; sourceTree = "<group>"; };
+		521399EE13717BB10081FD3D /* SCHLocationBookmark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHLocationBookmark.h; path = Shared/SCHLocationBookmark.h; sourceTree = "<group>"; };
+		521399EF13717BB10081FD3D /* SCHLocationBookmark.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHLocationBookmark.m; path = Shared/SCHLocationBookmark.m; sourceTree = "<group>"; };
 		52298A5D12F0EF5600BBBCE6 /* SCHNote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHNote.h; path = Shared/SCHNote.h; sourceTree = "<group>"; };
 		52298A5E12F0EF5600BBBCE6 /* SCHNote.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHNote.m; path = Shared/SCHNote.m; sourceTree = "<group>"; };
 		52298A5F12F0EF5600BBBCE6 /* SCHUserSettingsItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHUserSettingsItem.h; path = Shared/SCHUserSettingsItem.h; sourceTree = "<group>"; };
@@ -1022,6 +1034,8 @@
 		52EF570912ED977C00E374F7 /* NSManagedObjectContext+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSManagedObjectContext+Extensions.m"; path = "Shared/NSManagedObjectContext+Extensions.m"; sourceTree = "<group>"; };
 		52EF579512EDBE6E00E374F7 /* SFHFKeychainUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFHFKeychainUtils.h; sourceTree = "<group>"; };
 		52EF579612EDBE6E00E374F7 /* SFHFKeychainUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFHFKeychainUtils.m; sourceTree = "<group>"; };
+		52F15A1D1371A2CA0073941E /* SCHBookAnnotations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookAnnotations.h; path = Shared/SCHBookAnnotations.h; sourceTree = "<group>"; };
+		52F15A1E1371A2CA0073941E /* SCHBookAnnotations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookAnnotations.m; path = Shared/SCHBookAnnotations.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Scholastic-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Scholastic-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 		A33F730F136B050A00BAA101 /* SCHDrmSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHDrmSession.h; path = Shared/SCHDrmSession.h; sourceTree = "<group>"; };
 		A33F7310136B050A00BAA101 /* SCHDrmSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHDrmSession.m; path = Shared/SCHDrmSession.m; sourceTree = "<group>"; };
@@ -1198,8 +1212,8 @@
 		C90111301361D029006694B3 /* plain-background-landscape@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "plain-background-landscape@2x.png"; path = "Resources/UIAssets/plain-background-landscape@2x.png"; sourceTree = "<group>"; };
 		C90111351361DB05006694B3 /* books-background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "books-background.png"; path = "Resources/UIAssets/books-background.png"; sourceTree = "<group>"; };
 		C90111361361DB06006694B3 /* books-background@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "books-background@2x.png"; path = "Resources/UIAssets/books-background@2x.png"; sourceTree = "<group>"; };
-		C901113B1361ECC1006694B3 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
-		C901113E1361ECDB006694B3 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
+		C901113B1361ECC1006694B3 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Default.png; path = Resources/Default.png; sourceTree = "<group>"; };
+		C901113E1361ECDB006694B3 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default@2x.png"; path = "Resources/Default@2x.png"; sourceTree = "<group>"; };
 		C90111421361FD47006694B3 /* settings-landscape@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "settings-landscape@2x.png"; path = "Resources/UIAssets/settings-landscape@2x.png"; sourceTree = "<group>"; };
 		C90111431361FD48006694B3 /* settings-portrait.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "settings-portrait.png"; path = "Resources/UIAssets/settings-portrait.png"; sourceTree = "<group>"; };
 		C90111441361FD49006694B3 /* settings-portrait@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "settings-portrait@2x.png"; path = "Resources/UIAssets/settings-portrait@2x.png"; sourceTree = "<group>"; };
@@ -1465,6 +1479,10 @@
 		F83D86B412FC070F00227031 /* SCHLocalDebugXPSReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHLocalDebugXPSReader.m; path = Shared/SCHLocalDebugXPSReader.m; sourceTree = "<group>"; };
 		F848823C13573F4500A2C8D3 /* icon-magnify-active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-magnify-active.png"; path = "Resources/icon-magnify-active.png"; sourceTree = "<group>"; };
 		F848823D13573F4500A2C8D3 /* icon-magnify-active@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-magnify-active@2x.png"; path = "Resources/icon-magnify-active@2x.png"; sourceTree = "<group>"; };
+		F84C006D1371B612009A210F /* SCHReadingNotesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHReadingNotesViewController.h; sourceTree = "<group>"; };
+		F84C006E1371B612009A210F /* SCHReadingNotesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHReadingNotesViewController.m; sourceTree = "<group>"; };
+		F84C006F1371B612009A210F /* SCHReadingNotesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHReadingNotesViewController.xib; sourceTree = "<group>"; };
+		F84C00741371C1D0009A210F /* SCHReadingNotesTableCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHReadingNotesTableCell.xib; sourceTree = "<group>"; };
 		F84CE154134C691D0044729E /* SCHNonDRMAuthenticationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHNonDRMAuthenticationManager.h; path = Shared/SCHNonDRMAuthenticationManager.h; sourceTree = "<group>"; };
 		F84CE155134C691D0044729E /* SCHNonDRMAuthenticationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHNonDRMAuthenticationManager.m; path = Shared/SCHNonDRMAuthenticationManager.m; sourceTree = "<group>"; };
 		F8509E7612F0620D00197EB5 /* Clifford.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = Clifford.xps; path = "Shared/Debug Books/Clifford.xps"; sourceTree = "<group>"; };
@@ -1522,11 +1540,11 @@
 		F8C4C57F13326E6C0057420E /* SCHDictionaryManifestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHDictionaryManifestOperation.m; path = Shared/SCHDictionaryManifestOperation.m; sourceTree = "<group>"; };
 		F8C5DC6D134B5DF30020D610 /* SCHDictionaryWordForm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHDictionaryWordForm.h; path = Shared/SCHDictionaryWordForm.h; sourceTree = "<group>"; };
 		F8C5DC6E134B5DF30020D610 /* SCHDictionaryWordForm.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHDictionaryWordForm.m; path = Shared/SCHDictionaryWordForm.m; sourceTree = "<group>"; };
-		F8C6DA91136073D300D9E953 /* paper-black.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "paper-black.png"; sourceTree = "<group>"; };
-		F8C6DA92136073D300D9E953 /* paper-black@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "paper-black@2x.png"; sourceTree = "<group>"; };
-		F8C6DA93136073D300D9E953 /* paper-neutral.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "paper-neutral.png"; sourceTree = "<group>"; };
-		F8C6DA94136073D300D9E953 /* paper-neutral@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "paper-neutral@2x.png"; sourceTree = "<group>"; };
-		F8C6DA95136073D300D9E953 /* paper-white@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "paper-white@2x.png"; sourceTree = "<group>"; };
+		F8C6DA91136073D300D9E953 /* paper-black.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "paper-black.png"; path = "Resources/paper-black.png"; sourceTree = "<group>"; };
+		F8C6DA92136073D300D9E953 /* paper-black@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "paper-black@2x.png"; path = "Resources/paper-black@2x.png"; sourceTree = "<group>"; };
+		F8C6DA93136073D300D9E953 /* paper-neutral.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "paper-neutral.png"; path = "Resources/paper-neutral.png"; sourceTree = "<group>"; };
+		F8C6DA94136073D300D9E953 /* paper-neutral@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "paper-neutral@2x.png"; path = "Resources/paper-neutral@2x.png"; sourceTree = "<group>"; };
+		F8C6DA95136073D300D9E953 /* paper-white@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "paper-white@2x.png"; path = "Resources/paper-white@2x.png"; sourceTree = "<group>"; };
 		F8C8FC211360659B0097F9DD /* SCHReadingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHReadingViewController.h; sourceTree = "<group>"; };
 		F8C8FC221360659B0097F9DD /* SCHReadingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHReadingViewController.m; sourceTree = "<group>"; };
 		F8C8FC231360659B0097F9DD /* SCHReadingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHReadingViewController.xib; sourceTree = "<group>"; };
@@ -1679,8 +1697,6 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
-				C901113E1361ECDB006694B3 /* Default@2x.png */,
-				C901113B1361ECC1006694B3 /* Default.png */,
 				2860E386111B897F00E27156 /* iPhone */,
 				29B97317FDCFA39411CA2CEA /* iPad */,
 				28EEBF621118D79A00187D67 /* Shared */,
@@ -1787,6 +1803,8 @@
 				52298A6412F0EF5600BBBCE6 /* SCHLastPage.m */,
 				5200EFE812F6CFE400BAC355 /* SCHListProfileContentAnnotations.h */,
 				5200EFE912F6CFE400BAC355 /* SCHListProfileContentAnnotations.m */,
+				521399EE13717BB10081FD3D /* SCHLocationBookmark.h */,
+				521399EF13717BB10081FD3D /* SCHLocationBookmark.m */,
 				52298A8112F0EF5600BBBCE6 /* SCHLocationGraphics.h */,
 				52298A8212F0EF5600BBBCE6 /* SCHLocationGraphics.m */,
 				52298A6512F0EF5600BBBCE6 /* SCHLocationText.h */,
@@ -1825,6 +1843,8 @@
 		528A2CCF12CCDC400053A343 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				C901113E1361ECDB006694B3 /* Default@2x.png */,
+				C901113B1361ECC1006694B3 /* Default.png */,
 				C9A11290136082A6007FD763 /* UIAssets */,
 				52E622F31358385D00245CA7 /* Themes */,
 				F80FED601355DD6D00DEB3C1 /* icon-magnify.png */,
@@ -1851,11 +1871,11 @@
 				C93ECA2C134B5EF9003B99FD /* libEucalyptus Resources */,
 				C908D87D133F941100661718 /* thumbImage.png */,
 				C908D87F133F941100661718 /* PlaceholderBook.png */,
-				C908D880133F941100661718 /* paper-white.png */,
 				F8C6DA91136073D300D9E953 /* paper-black.png */,
 				F8C6DA92136073D300D9E953 /* paper-black@2x.png */,
 				F8C6DA93136073D300D9E953 /* paper-neutral.png */,
 				F8C6DA94136073D300D9E953 /* paper-neutral@2x.png */,
+				C908D880133F941100661718 /* paper-white.png */,
 				F8C6DA95136073D300D9E953 /* paper-white@2x.png */,
 				C908D881133F941100661718 /* booktexture-nocover.png */,
 				528A2CD112CCDC9E0053A343 /* Icons */,
@@ -2666,6 +2686,10 @@
 				F8C8FC231360659B0097F9DD /* SCHReadingViewController.xib */,
 				F8C8FC28136065AD0097F9DD /* SCHCustomNavigationBar.h */,
 				F8C8FC29136065AD0097F9DD /* SCHCustomNavigationBar.m */,
+				F84C006D1371B612009A210F /* SCHReadingNotesViewController.h */,
+				F84C006E1371B612009A210F /* SCHReadingNotesViewController.m */,
+				F84C006F1371B612009A210F /* SCHReadingNotesViewController.xib */,
+				F84C00741371C1D0009A210F /* SCHReadingNotesTableCell.xib */,
 			);
 			name = "Book Reading";
 			sourceTree = "<group>";
@@ -2787,6 +2811,8 @@
 				C93EBEAE13472FEC003B99FD /* SCHTextFlowParagraphSource.m */,
 				C92FA7D01355BE1F001BAA6B /* SCHSmartZoomBlockSource.h */,
 				C92FA7D11355BE20001BAA6B /* SCHSmartZoomBlockSource.m */,
+				52F15A1D1371A2CA0073941E /* SCHBookAnnotations.h */,
+				52F15A1E1371A2CA0073941E /* SCHBookAnnotations.m */,
 			);
 			name = "Book Data";
 			sourceTree = "<group>";
@@ -3141,6 +3167,8 @@
 				C953FC501370796F003DA646 /* icon-magnify-landscape@2x.png in Resources */,
 				C953FC521370796F003DA646 /* icon-play-landscape.png in Resources */,
 				C953FC541370796F003DA646 /* icon-play-landscape@2x.png in Resources */,
+				F84C00721371B612009A210F /* SCHReadingNotesViewController.xib in Resources */,
+				F84C00751371C1D0009A210F /* SCHReadingNotesTableCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3333,6 +3361,8 @@
 				C953FC511370796F003DA646 /* icon-magnify-landscape@2x.png in Resources */,
 				C953FC531370796F003DA646 /* icon-play-landscape.png in Resources */,
 				C953FC551370796F003DA646 /* icon-play-landscape@2x.png in Resources */,
+				F84C00731371B612009A210F /* SCHReadingNotesViewController.xib in Resources */,
+				F84C00761371C1D0009A210F /* SCHReadingNotesTableCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3500,6 +3530,9 @@
 				C9E89A4B1369B87A00E7ED53 /* levenshtein_distance.c in Sources */,
 				52C489CB1369AC4200460876 /* UIColor+Extensions.m in Sources */,
 				A33F7311136B050A00BAA101 /* SCHDrmSession.m in Sources */,
+				521399F013717BB10081FD3D /* SCHLocationBookmark.m in Sources */,
+				52F15A1F1371A2CA0073941E /* SCHBookAnnotations.m in Sources */,
+				F84C00701371B612009A210F /* SCHReadingNotesViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3664,6 +3697,9 @@
 				C97D6DA413696D7B0017974B /* SCHBookPoint.m in Sources */,
 				C9E89A4C1369B87A00E7ED53 /* levenshtein_distance.c in Sources */,
 				52C489CC1369AC4200460876 /* UIColor+Extensions.m in Sources */,
+				521399F113717BB10081FD3D /* SCHLocationBookmark.m in Sources */,
+				52F15A201371A2CA0073941E /* SCHBookAnnotations.m in Sources */,
+				F84C00711371B612009A210F /* SCHReadingNotesViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

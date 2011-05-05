@@ -13,6 +13,7 @@
 @class SCHAppBookOrder;
 @class SCHContentProfileItem;
 @class SCHPrivateAnnotations;
+@class SCHBookAnnotations;
 
 static NSString * const kSCHProfileItem = @"SCHProfileItem";
 
@@ -40,7 +41,7 @@ static NSString * const kSCHProfileItemCONTENT_IDENTIFIER = @"CONTENT_IDENTIFIER
 @property (nonatomic, retain) NSSet* AppBookOrder;
 
 - (NSMutableArray *)allISBNs;
-- (SCHPrivateAnnotations *)annotationsForBook:(NSString *)isbn;
+- (SCHBookAnnotations *)annotationsForBook:(NSString *)isbn;
 - (void)saveBookOrder:(NSArray *)books;
 - (void)clearBookOrder;
 - (void)setRawPassword:(NSString *)value;

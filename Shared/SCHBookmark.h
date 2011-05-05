@@ -10,6 +10,7 @@
 #import "SCHAnnotation.h"
 
 @class SCHPrivateAnnotations;
+@class SCHLocationBookmark;
 
 static NSString * const kSCHBookmark = @"SCHBookmark";
 
@@ -19,7 +20,7 @@ static NSString * const kSCHBookmark = @"SCHBookmark";
 
 @property (nonatomic, retain) NSNumber * Disabled;
 @property (nonatomic, retain) NSString * Text;
-@property (nonatomic, retain) NSNumber * Page;
+@property (nonatomic, retain) SCHLocationBookmark * LocationBookmark;
 @property (nonatomic, retain) SCHPrivateAnnotations * PrivateAnnotations;
 
 @end
