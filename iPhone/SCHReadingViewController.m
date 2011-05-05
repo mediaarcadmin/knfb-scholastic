@@ -31,37 +31,34 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 @property (nonatomic, retain) SCHReadingView *readingView;
 
 // toolbars/nav bar visible/not visible
-@property (readwrite) BOOL toolbarsVisible;
+@property (nonatomic, assign) BOOL toolbarsVisible;
 
 // timer used to fade toolbars out after a certain period of time
 @property (nonatomic, retain) NSTimer *initialFadeTimer;
 
-// smart zoom active/inactive
-@property (readwrite) BOOL zoomActive;
-
 // the first page that the view is currently showing
-@property (readwrite) NSInteger currentPageIndex;
+@property (nonatomic, assign) NSInteger currentPageIndex;
 
 // XPS book data provider
 @property (nonatomic, assign) SCHXPSProvider *xpsProvider;
 
 // temporary flag to prevent nav bar from being positioned behind the status bar on rotation
-@property (readwrite) BOOL currentlyRotating;
+@property (nonatomic, assign) BOOL currentlyRotating;
 
 // the current font size index (of an array of font sizes provided by libEucalyptus)
-@property (readwrite) int currentFontSizeIndex;
+@property (nonatomic, assign) int currentFontSizeIndex;
 
-@property (readwrite) SCHReadingViewPaperType paperType;
-@property (readwrite) SCHReadingViewLayoutType layoutType;
+@property (nonatomic, assign) SCHReadingViewPaperType paperType;
+@property (nonatomic, assign) SCHReadingViewLayoutType layoutType;
 
--(void)releaseViewObjects;
+- (void)releaseViewObjects;
 
--(void)toggleToolbarVisibility;
--(void)setToolbarVisibility: (BOOL) visibility animated: (BOOL) animated;
--(void)cancelInitialTimer;
--(void)adjustScrubberInfoViewHeightForImageSize: (CGSize) imageSize;
+- (void)toggleToolbarVisibility;
+- (void)setToolbarVisibility:(BOOL)visibility animated:(BOOL)animated;
+- (void)cancelInitialTimer;
+- (void)adjustScrubberInfoViewHeightForImageSize:(CGSize)imageSize;
 
--(void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation;
+- (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation;
 
 @end
 
@@ -75,7 +72,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 @synthesize readingView;
 @synthesize youngerMode;
 @synthesize toolbarsVisible;
-@synthesize zoomActive;
 @synthesize initialFadeTimer;
 @synthesize currentPageIndex;
 @synthesize xpsProvider;
@@ -98,9 +94,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 @synthesize titleLabel;
 @synthesize leftBarButtonItemContainer;
 @synthesize youngerRightBarButtonItemContainer;
+@synthesize olderRightBarButtonItemContainer;
 @synthesize backButton;
 @synthesize audioButton;
-@synthesize zoomButton;
 @synthesize scrubberToolbar;
 @synthesize olderBottomToolbar;
 @synthesize topShadow;
@@ -108,7 +104,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 #pragma mark - Dealloc and View Teardown
 
--(void)dealloc {
+- (void)dealloc 
+{
     [self releaseViewObjects];
 
     [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:isbn];
@@ -120,14 +117,14 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [super dealloc];
 }
 
--(void)releaseViewObjects
+- (void)releaseViewObjects
 {
     [titleLabel release], titleLabel = nil;
     [leftBarButtonItemContainer release], leftBarButtonItemContainer = nil;
     [youngerRightBarButtonItemContainer release], youngerRightBarButtonItemContainer = nil;
+    [olderRightBarButtonItemContainer release], olderRightBarButtonItemContainer = nil;
     [backButton release], backButton = nil;
     [audioButton release], audioButton = nil;
-    [zoomButton release], zoomButton = nil;
     [scrubberToolbar release], scrubberToolbar = nil;
     [olderBottomToolbar release], olderBottomToolbar = nil;
     [topShadow release], topShadow = nil;
@@ -143,20 +140,20 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [paperTypeSegmentedControl release], paperTypeSegmentedControl = nil;
 }
 
--(void)viewDidUnload {
+-(void)viewDidUnload 
+{
     [super viewDidUnload];
     [self releaseViewObjects];
 }
 
 #pragma mark - Object Initialiser
--(id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil isbn:(NSString *)aIsbn layout:(SCHReadingViewLayoutType)layout
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil isbn:(NSString *)aIsbn layout:(SCHReadingViewLayoutType)layout
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
         isbn = [aIsbn copy];
         layoutType = layout;
-        zoomActive = NO;
         currentlyRotating = NO;
     }
     return self;
@@ -164,7 +161,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 #pragma mark - View Lifecycle
 
--(void)viewDidLoad {
+- (void)viewDidLoad 
+{
     [super viewDidLoad];
 	
 	self.currentPageIndex = 1;
@@ -231,7 +229,11 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         
         self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:self.youngerRightBarButtonItemContainer] autorelease];
     } else {
-        self.navigationItem.rightBarButtonItem = nil;
+        CGRect rightBarButtonItemFrame = self.olderRightBarButtonItemContainer.frame;
+        rightBarButtonItemFrame.size.height = containerHeight;
+        self.youngerRightBarButtonItemContainer.frame = rightBarButtonItemFrame;
+        
+        self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:self.olderRightBarButtonItemContainer] autorelease];
     }
     
     self.titleLabel.text = book.Title;
@@ -265,14 +267,14 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     self.pageSlider.value = self.currentPageIndex;
 }
 
--(void) viewWillAppear:(BOOL)animated
+- (void)viewWillAppear:(BOOL)animated
 {
 	[super viewWillAppear:animated];
     [self setupAssetsForOrientation:self.interfaceOrientation];
 }
 
 
--(void) viewWillDisappear:(BOOL)animated
+- (void)viewWillDisappear:(BOOL)animated
 {
     [self cancelInitialTimer];
     [super viewWillDisappear:animated];
@@ -288,26 +290,14 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         [self.audioButton setImage:[UIImage imageNamed:@"icon-play.png"] forState:UIControlStateNormal];
         [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"reading-view-portrait-top-bar.png"]];
         self.scrubberToolbar.backgroundImage = [UIImage imageNamed:@"reading-view-portrait-scrubber-bar.png"];
-        self.olderBottomToolbar.backgroundImage = [UIImage imageNamed:@"reading-view-portrait-bottom-bar.png"];
-        
-        if (self.zoomActive) {
-            [self.zoomButton setImage:[UIImage imageNamed:@"icon-magnify-active.png"] forState:UIControlStateNormal];
-        } else {
-            [self.zoomButton setImage:[UIImage imageNamed:@"icon-magnify.png"] forState:UIControlStateNormal];
-        }
+        self.olderBottomToolbar.backgroundImage = [UIImage imageNamed:@"reading-view-portrait-bottom-bar.png"];        
     } else {
         [self.backButton setImage:[UIImage imageNamed:@"icon-books-landscape.png"] forState:UIControlStateNormal];
         
         [self.audioButton setImage:[UIImage imageNamed:@"icon-play-landscape.png"] forState:UIControlStateNormal];
         [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"reading-view-landscape-top-bar.png"]];
         self.scrubberToolbar.backgroundImage = [UIImage imageNamed:@"reading-view-landscape-scrubber-bar.png"];
-        self.olderBottomToolbar.backgroundImage = [UIImage imageNamed:@"reading-view-landscape-bottom-bar.png"];
-        
-        if (self.zoomActive) {
-            [self.zoomButton setImage:[UIImage imageNamed:@"icon-magnify-active-landscape.png"] forState:UIControlStateNormal];
-        } else {
-            [self.zoomButton setImage:[UIImage imageNamed:@"icon-magnify-landscape.png"] forState:UIControlStateNormal];
-        }
+        self.olderBottomToolbar.backgroundImage = [UIImage imageNamed:@"reading-view-landscape-bottom-bar.png"];        
     }    
     
     CGRect topShadowFrame = self.topShadow.frame;
@@ -318,17 +308,17 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 }
 
 // Override to allow orientations other than the default portrait orientation.
--(BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    // Return YES for supported orientations.
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation 
+{
     return YES;
 }
 
--(void) didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
     self.currentlyRotating = NO;
 }
 
--(void) willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
     self.currentlyRotating = YES;
     if ([self.scrubberInfoView superview]) {
@@ -378,56 +368,28 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     }
     
     [self setupAssetsForOrientation:toInterfaceOrientation];
-    
 }
 
 #pragma mark -
 #pragma mark Button Actions
 
--(IBAction) popViewController: (id) sender
+- (IBAction)popViewController:(id)sender
 {
     self.navigationController.navigationBar.translucent = NO;
 	[self.navigationController popViewControllerAnimated:YES];
 }
 
--(IBAction) magnifyAction: (id) sender
-{
-    NSLog(@"Magnify action");
-    
-    UIButton *button = (UIButton *) sender;
-    
-    if (self.zoomActive) {
-        self.zoomActive = NO;
-        if (UIInterfaceOrientationIsPortrait([[UIApplication sharedApplication] statusBarOrientation]  )) {
-            [button setImage:[UIImage imageNamed:@"icon-magnify"] forState:UIControlStateNormal];
-        } else {
-            [button setImage:[UIImage imageNamed:@"icon-magnify-landscape"] forState:UIControlStateNormal];
-        }
-
-        [self.readingView didExitSmartZoomMode];
-    } else {
-        self.zoomActive = YES;
-        if (UIInterfaceOrientationIsPortrait([[UIApplication sharedApplication] statusBarOrientation]  )) {
-            [button setImage:[UIImage imageNamed:@"icon-magnify-active"] forState:UIControlStateNormal];
-        } else {
-            [button setImage:[UIImage imageNamed:@"icon-magnify-active-landscape"] forState:UIControlStateNormal];
-        }
-        [self.readingView didEnterSmartZoomMode];
-    }
-    
-}
-
--(IBAction) audioPlayAction: (id) sender
+- (IBAction)audioPlayAction:(id)sender
 {
     NSLog(@"Audio Play action");
 }
 
--(IBAction) storyInteractionAction: (id) sender
+- (IBAction)storyInteractionAction:(id)sender
 {
     NSLog(@"Story Interactions action");
 }
 
--(IBAction) notesAction: (id) sender
+- (IBAction)notesAction:(id)sender
 {
     NSLog(@"Notes action");
     [self cancelInitialTimer];
@@ -439,7 +401,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     
 }
 
--(IBAction) settingsAction: (id) sender
+- (IBAction)settingsAction:(id)sender
 {
     NSLog(@"Settings action");
     [self cancelInitialTimer];
@@ -457,18 +419,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         
         [self.view addSubview:self.optionsView];
     }
-}
-
-#pragma mark - Smart Zoom
-
--(IBAction)nextSmartZoom:(id)sender
-{
-    [self.readingView jumpToNextZoomBlock];
-}
-
--(IBAction)prevSmartZoom:(id)sender
-{
-    [self.readingView jumpToPreviousZoomBlock];
 }
 
 #pragma mark - Flowed/Fixed Toggle
@@ -567,7 +517,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     return currentFontSizeIndex;
 }
 
-- (IBAction) fontSizeSegmentPressed: (UISegmentedControl *) segControl
+- (IBAction)fontSizeSegmentPressed:(UISegmentedControl *)segControl
 {
     int selected = segControl.selectedSegmentIndex;
     
@@ -595,7 +545,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 #pragma mark - SCHReadingViewDelegate methods
 
--(void)readingView:(SCHReadingView *)readingView hasMovedToPageAtIndex:(NSUInteger)pageIndex
+- (void)readingView:(SCHReadingView *)readingView hasMovedToPageAtIndex:(NSUInteger)pageIndex
 {
     self.currentPageIndex = pageIndex + 1;
     [self.pageSlider setValue:self.currentPageIndex];
@@ -604,13 +554,13 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 }
 
--(void) unhandledTouchOnPageForReadingView: (SCHReadingView *) readingView
+- (void)unhandledTouchOnPageForReadingView:(SCHReadingView *)readingView
 {
     [self toggleToolbarVisibility];
 }
 
 
--(void) adjustScrubberInfoViewHeightForImageSize: (CGSize) imageSize
+- (void)adjustScrubberInfoViewHeightForImageSize:(CGSize)imageSize
 {
     CGRect scrubFrame = self.scrubberInfoView.frame;
     scrubFrame.origin.x = self.view.bounds.size.width / 2 - (scrubFrame.size.width / 2);
@@ -750,14 +700,14 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 #pragma mark - Toolbar Methods - including timer
 
--(void) hideToolbarsFromTimer
+- (void)hideToolbarsFromTimer
 {
 	[self setToolbarVisibility:NO animated:YES];
 	[self.initialFadeTimer invalidate];
 	self.initialFadeTimer = nil;
 }
 
--(void) setToolbarVisibility: (BOOL) visibility animated: (BOOL) animated
+- (void)setToolbarVisibility:(BOOL)visibility animated:(BOOL)animated
 {
 	NSLog(@"Setting visibility to %@.", visibility?@"True":@"False");
 	self.toolbarsVisible = visibility;
@@ -809,13 +759,13 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 	}
 }
 
--(void) toggleToolbarVisibility
+- (void)toggleToolbarVisibility
 {
 	NSLog(@"Toggling visibility.");
 	[self setToolbarVisibility:!self.toolbarsVisible animated:YES];
 }
 
--(void) cancelInitialTimer
+- (void)cancelInitialTimer
 {
 	if (self.initialFadeTimer && [self.initialFadeTimer isValid]) {
 		[self.initialFadeTimer invalidate];
