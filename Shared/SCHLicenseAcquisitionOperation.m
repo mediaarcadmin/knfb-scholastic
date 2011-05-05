@@ -57,9 +57,13 @@
 { 
 #if LOCALDEBUG
     [self updateBookWithSuccess];
-#else
-    [licenseAcquisitionSession acquireLicense:[[SCHAuthenticationManager sharedAuthenticationManager] aToken] bookID:self.isbn];
+    return;
 #endif
+#if NONDRMAUTHENTICATION
+    [self updateBookWithSuccess];
+    return;
+#endif
+    [licenseAcquisitionSession acquireLicense:[[SCHAuthenticationManager sharedAuthenticationManager] aToken] bookID:self.isbn];
 }
 
 #pragma mark -
