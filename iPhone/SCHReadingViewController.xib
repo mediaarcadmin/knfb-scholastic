@@ -520,6 +520,16 @@
 				<reference key="IBUIBackgroundColor" ref="368037730"/>
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 			</object>
+			<object class="IBUIView" id="14499984">
+				<reference key="NSNextResponder"/>
+				<int key="NSvFlags">301</int>
+				<string key="NSFrameSize">{35, 44}</string>
+				<reference key="NSSuperview"/>
+				<reference key="NSWindow"/>
+				<reference key="NSNextKeyView"/>
+				<reference key="IBUIBackgroundColor" ref="368037730"/>
+				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+			</object>
 			<object class="IBUILabel" id="977771388">
 				<nil key="NSNextResponder"/>
 				<int key="NSvFlags">274</int>
@@ -814,6 +824,14 @@
 					</object>
 					<int key="connectionID">175</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">olderRightBarButtonItemContainer</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="14499984"/>
+					</object>
+					<int key="connectionID">179</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -1056,6 +1074,15 @@
 						<reference key="object" ref="246490974"/>
 						<reference key="parent" ref="811993404"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">176</int>
+						<reference key="object" ref="14499984"/>
+						<object class="NSMutableArray" key="children">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+						</object>
+						<reference key="parent" ref="0"/>
+						<string key="objectName">olderRightBarButtonItemContainer</string>
+					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -1082,6 +1109,7 @@
 					<string>161.IBPluginDependency</string>
 					<string>163.IBPluginDependency</string>
 					<string>166.IBPluginDependency</string>
+					<string>176.IBPluginDependency</string>
 					<string>18.IBPluginDependency</string>
 					<string>18.IBViewBoundsToFrameTransform</string>
 					<string>35.IBPluginDependency</string>
@@ -1110,6 +1138,7 @@
 					<integer value="1"/>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<integer value="0"/>
+					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -1153,7 +1182,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">175</int>
+			<int key="maxID">179</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -1233,6 +1262,7 @@
 							<string>fontSegmentedControl</string>
 							<string>leftBarButtonItemContainer</string>
 							<string>olderBottomToolbar</string>
+							<string>olderRightBarButtonItemContainer</string>
 							<string>optionsView</string>
 							<string>pageLabel</string>
 							<string>pageSlider</string>
@@ -1254,6 +1284,7 @@
 							<string>UISegmentedControl</string>
 							<string>UIView</string>
 							<string>SCHCustomToolbar</string>
+							<string>UIView</string>
 							<string>UIView</string>
 							<string>UILabel</string>
 							<string>UISlider</string>
@@ -1278,6 +1309,7 @@
 							<string>fontSegmentedControl</string>
 							<string>leftBarButtonItemContainer</string>
 							<string>olderBottomToolbar</string>
+							<string>olderRightBarButtonItemContainer</string>
 							<string>optionsView</string>
 							<string>pageLabel</string>
 							<string>pageSlider</string>
@@ -1319,6 +1351,10 @@
 							<object class="IBToOneOutletInfo">
 								<string key="name">olderBottomToolbar</string>
 								<string key="candidateClassName">SCHCustomToolbar</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">olderRightBarButtonItemContainer</string>
+								<string key="candidateClassName">UIView</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">optionsView</string>

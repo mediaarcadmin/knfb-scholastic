@@ -36,6 +36,7 @@ typedef enum
 @property (nonatomic, retain) IBOutlet UILabel *titleLabel;
 @property (nonatomic, retain) IBOutlet UIView *leftBarButtonItemContainer;
 @property (nonatomic, retain) IBOutlet UIView *youngerRightBarButtonItemContainer;
+@property (nonatomic, retain) IBOutlet UIView *olderRightBarButtonItemContainer;
 @property (nonatomic, retain) IBOutlet UIButton *backButton;
 @property (nonatomic, retain) IBOutlet UIButton *audioButton;
 @property (nonatomic, retain) IBOutlet SCHCustomToolbar *scrubberToolbar;

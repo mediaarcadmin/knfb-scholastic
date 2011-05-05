@@ -94,6 +94,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 @synthesize titleLabel;
 @synthesize leftBarButtonItemContainer;
 @synthesize youngerRightBarButtonItemContainer;
+@synthesize olderRightBarButtonItemContainer;
 @synthesize backButton;
 @synthesize audioButton;
 @synthesize scrubberToolbar;
@@ -121,6 +122,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [titleLabel release], titleLabel = nil;
     [leftBarButtonItemContainer release], leftBarButtonItemContainer = nil;
     [youngerRightBarButtonItemContainer release], youngerRightBarButtonItemContainer = nil;
+    [olderRightBarButtonItemContainer release], olderRightBarButtonItemContainer = nil;
     [backButton release], backButton = nil;
     [audioButton release], audioButton = nil;
     [scrubberToolbar release], scrubberToolbar = nil;
@@ -227,7 +229,11 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         
         self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:self.youngerRightBarButtonItemContainer] autorelease];
     } else {
-        self.navigationItem.rightBarButtonItem = nil;
+        CGRect rightBarButtonItemFrame = self.olderRightBarButtonItemContainer.frame;
+        rightBarButtonItemFrame.size.height = containerHeight;
+        self.youngerRightBarButtonItemContainer.frame = rightBarButtonItemFrame;
+        
+        self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:self.olderRightBarButtonItemContainer] autorelease];
     }
     
     self.titleLabel.text = book.Title;
