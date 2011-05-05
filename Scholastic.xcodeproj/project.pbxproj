@@ -434,14 +434,6 @@
 		C93ECB36134B64B1003B99FD /* TextFlowXAML.css in Resources */ = {isa = PBXBuildFile; fileRef = C93ECB2D134B64B1003B99FD /* TextFlowXAML.css */; };
 		C93ECB37134B64B1003B99FD /* TextFlowXAMLOverrides.css in Resources */ = {isa = PBXBuildFile; fileRef = C93ECB2E134B64B1003B99FD /* TextFlowXAMLOverrides.css */; };
 		C93ECB38134B64B1003B99FD /* TextFlowXAMLOverrides.css in Resources */ = {isa = PBXBuildFile; fileRef = C93ECB2E134B64B1003B99FD /* TextFlowXAMLOverrides.css */; };
-		C953FC4A1370796F003DA646 /* icon-magnify-active-landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = C953FC4413707953003DA646 /* icon-magnify-active-landscape.png */; };
-		C953FC4B1370796F003DA646 /* icon-magnify-active-landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = C953FC4413707953003DA646 /* icon-magnify-active-landscape.png */; };
-		C953FC4C1370796F003DA646 /* icon-magnify-active-landscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C953FC4513707957003DA646 /* icon-magnify-active-landscape@2x.png */; };
-		C953FC4D1370796F003DA646 /* icon-magnify-active-landscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C953FC4513707957003DA646 /* icon-magnify-active-landscape@2x.png */; };
-		C953FC4E1370796F003DA646 /* icon-magnify-landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = C953FC4613707959003DA646 /* icon-magnify-landscape.png */; };
-		C953FC4F1370796F003DA646 /* icon-magnify-landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = C953FC4613707959003DA646 /* icon-magnify-landscape.png */; };
-		C953FC501370796F003DA646 /* icon-magnify-landscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C953FC471370795E003DA646 /* icon-magnify-landscape@2x.png */; };
-		C953FC511370796F003DA646 /* icon-magnify-landscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C953FC471370795E003DA646 /* icon-magnify-landscape@2x.png */; };
 		C953FC521370796F003DA646 /* icon-play-landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = C953FC4813707964003DA646 /* icon-play-landscape.png */; };
 		C953FC531370796F003DA646 /* icon-play-landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = C953FC4813707964003DA646 /* icon-play-landscape.png */; };
 		C953FC541370796F003DA646 /* icon-play-landscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C953FC4913707967003DA646 /* icon-play-landscape@2x.png */; };
@@ -1369,10 +1361,6 @@
 		C93ECB2E134B64B1003B99FD /* TextFlowXAMLOverrides.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = TextFlowXAMLOverrides.css; sourceTree = "<group>"; };
 		C93ECB81134B7FA4003B99FD /* After Ever After.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = "After Ever After.xps"; path = "Shared/Debug Books/After Ever After.xps"; sourceTree = "<group>"; };
 		C947D55D133B9C0000FB4404 /* libEucalyptus.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libEucalyptus.xcodeproj; path = Shared/Libraries/Submodules/libEucalyptus/libEucalyptus.xcodeproj; sourceTree = "<group>"; };
-		C953FC4413707953003DA646 /* icon-magnify-active-landscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-magnify-active-landscape.png"; path = "Resources/icon-magnify-active-landscape.png"; sourceTree = "<group>"; };
-		C953FC4513707957003DA646 /* icon-magnify-active-landscape@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-magnify-active-landscape@2x.png"; path = "Resources/icon-magnify-active-landscape@2x.png"; sourceTree = "<group>"; };
-		C953FC4613707959003DA646 /* icon-magnify-landscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-magnify-landscape.png"; path = "Resources/icon-magnify-landscape.png"; sourceTree = "<group>"; };
-		C953FC471370795E003DA646 /* icon-magnify-landscape@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-magnify-landscape@2x.png"; path = "Resources/icon-magnify-landscape@2x.png"; sourceTree = "<group>"; };
 		C953FC4813707964003DA646 /* icon-play-landscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-play-landscape.png"; path = "Resources/icon-play-landscape.png"; sourceTree = "<group>"; };
 		C953FC4913707967003DA646 /* icon-play-landscape@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-play-landscape@2x.png"; path = "Resources/icon-play-landscape@2x.png"; sourceTree = "<group>"; };
 		C95C7CBF135C3C8A00472AF6 /* SCHBookShelfGridView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookShelfGridView.h; path = iPhone/SCHBookShelfGridView.h; sourceTree = "<group>"; };
@@ -1877,10 +1865,6 @@
 				F80FED691355DD6D00DEB3C1 /* icon-settings@2x.png */,
 				F80FED6A1355DD6D00DEB3C1 /* icon-story-interactions.png */,
 				F80FED6B1355DD6D00DEB3C1 /* icon-story-interactions@2x.png */,
-				C953FC4413707953003DA646 /* icon-magnify-active-landscape.png */,
-				C953FC4513707957003DA646 /* icon-magnify-active-landscape@2x.png */,
-				C953FC4613707959003DA646 /* icon-magnify-landscape.png */,
-				C953FC471370795E003DA646 /* icon-magnify-landscape@2x.png */,
 				C953FC4813707964003DA646 /* icon-play-landscape.png */,
 				C953FC4913707967003DA646 /* icon-play-landscape@2x.png */,
 				C93ECB29134B64B1003B99FD /* libKNFBReader Resources */,
@@ -3177,10 +3161,6 @@
 				C90111F8136496E5006694B3 /* reading-view-iphone-bottom-shadow@2x.png in Resources */,
 				C90111FA136496E5006694B3 /* reading-view-iphone-top-shadow.png in Resources */,
 				C90111FC136496E5006694B3 /* reading-view-iphone-top-shadow@2x.png in Resources */,
-				C953FC4A1370796F003DA646 /* icon-magnify-active-landscape.png in Resources */,
-				C953FC4C1370796F003DA646 /* icon-magnify-active-landscape@2x.png in Resources */,
-				C953FC4E1370796F003DA646 /* icon-magnify-landscape.png in Resources */,
-				C953FC501370796F003DA646 /* icon-magnify-landscape@2x.png in Resources */,
 				C953FC521370796F003DA646 /* icon-play-landscape.png in Resources */,
 				C953FC541370796F003DA646 /* icon-play-landscape@2x.png in Resources */,
 				F84C00721371B612009A210F /* SCHReadingNotesViewController.xib in Resources */,
@@ -3375,10 +3355,6 @@
 				C90111F9136496E5006694B3 /* reading-view-iphone-bottom-shadow@2x.png in Resources */,
 				C90111FB136496E5006694B3 /* reading-view-iphone-top-shadow.png in Resources */,
 				C90111FD136496E5006694B3 /* reading-view-iphone-top-shadow@2x.png in Resources */,
-				C953FC4B1370796F003DA646 /* icon-magnify-active-landscape.png in Resources */,
-				C953FC4D1370796F003DA646 /* icon-magnify-active-landscape@2x.png in Resources */,
-				C953FC4F1370796F003DA646 /* icon-magnify-landscape.png in Resources */,
-				C953FC511370796F003DA646 /* icon-magnify-landscape@2x.png in Resources */,
 				C953FC531370796F003DA646 /* icon-play-landscape.png in Resources */,
 				C953FC551370796F003DA646 /* icon-play-landscape@2x.png in Resources */,
 				F84C00731371B612009A210F /* SCHReadingNotesViewController.xib in Resources */,
