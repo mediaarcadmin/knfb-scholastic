@@ -60,7 +60,7 @@ static NSString * const kSCHThemeManagerSelectedTheme = @"ThemeManagerSelectedTh
             if (userSelectedTheme > 0) {
                 for (NSDictionary *dict in allThemes) {
                     if ([[dict objectForKey:kSCHThemeManagerID] integerValue] == userSelectedTheme) {
-                        self.selectedTheme = dict;
+                        selectedTheme = [dict retain];
                         break;
                     }
                 }            
@@ -70,7 +70,7 @@ static NSString * const kSCHThemeManagerSelectedTheme = @"ThemeManagerSelectedTh
             if (selectedTheme == nil) {
                 for (NSDictionary *dict in allThemes) {
                     if ([[dict objectForKey:kSCHThemeManagerDefault] boolValue] == YES) {
-                        selectedTheme = dict;
+                        selectedTheme = [dict retain];
                         break;
                     }
                 }            
