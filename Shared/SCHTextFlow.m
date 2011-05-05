@@ -24,11 +24,13 @@
 @implementation SCHTextFlow
 
 @synthesize isbn;
+@synthesize xpsProvider;
 
 - (id)initWithISBN:(NSString *)newIsbn
 {
     if((self = [super initWithBookID:nil])) {
         isbn = [newIsbn retain];
+        xpsProvider = [[[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:newIsbn] retain];
     }
     
     return self;
@@ -36,6 +38,12 @@
 
 - (void)dealloc
 {
+    
+    if (xpsProvider) {
+        [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.isbn];
+        [xpsProvider release], xpsProvider = nil;
+    }
+    
     [isbn release], isbn = nil;
     [super dealloc];
 }
@@ -140,21 +148,15 @@
 - (NSData *)textFlowDataWithPath:(NSString *)path
 {
     
-    NSData *data = nil;
-    SCHXPSProvider *xpsProvider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.isbn];
+    NSData *data = nil;    
+    data = [self.xpsProvider dataForComponentAtPath:[KNFBXPSEncryptedTextFlowDir stringByAppendingPathComponent:path]];
     
-    data = [xpsProvider dataForComponentAtPath:[KNFBXPSEncryptedTextFlowDir stringByAppendingPathComponent:path]];
-    
-    [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.isbn];
-
     return data;
 }
 
 - (NSData *)textFlowRootFileData
 {
-    SCHXPSProvider *xpsProvider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.isbn];
-    NSData *data = [xpsProvider dataForComponentAtPath:KNFBXPSTextFlowSectionsFile];
-    [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.isbn];
+    NSData *data = [self.xpsProvider dataForComponentAtPath:KNFBXPSTextFlowSectionsFile];
 
     return data;
 }

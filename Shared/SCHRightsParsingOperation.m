@@ -65,9 +65,7 @@
 	if (hasRights) {
 		rightsFileData = [xpsProvider dataForComponentAtPath:KNFBXPSKNFBRightsFile];
 	}
-	
-	[[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.isbn];
-	
+		
 	// check for rights file
 	if (hasRights) {
 		if (rightsFileData) {
@@ -82,8 +80,6 @@
 			} while (!self.parsingComplete);
 		}	
 	}
-
-	xpsProvider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.isbn];
 
 	// check for metadata file
 	NSData *metadataData = [xpsProvider dataForComponentAtPath:KNFBXPSKNFBMetadataFile];

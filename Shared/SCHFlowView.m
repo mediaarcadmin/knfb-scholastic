@@ -50,7 +50,10 @@
         [eucBookView setPageTexture:[UIImage imageNamed: @"paper-white.png"] isDark:NO];
         
         [eucBookView addObserver:self forKeyPath:@"pageNumber" options:NSKeyValueObservingOptionInitial context:NULL];
-            
+        if ([eucBookView respondsToSelector:@selector(currentIndexPoint)]) {
+            [eucBookView addObserver:self forKeyPath:@"currentIndexPoint" options:NSKeyValueObservingOptionInitial context:NULL];
+        }
+        
         [self addSubview:eucBookView];
     }
 }
@@ -99,6 +102,13 @@
         if (self.delegate && [self.delegate respondsToSelector:@selector(readingView:hasMovedToPageAtIndex:)]) {
             [self.delegate readingView:self hasMovedToPageAtIndex:eucBookView.pageNumber - 1];
         }
+    } else if ([keyPath isEqualToString:@"currentIndexPoint"]) {
+        //EucBookPageIndexPoint *currentPoint = [object valueForKeyPath:keyPath];
+        
+        
+        if (self.delegate && [self.delegate respondsToSelector:@selector(readingView:hasMovedToPageAtIndex:)]) {
+            [self.delegate readingView:self hasMovedToPageAtIndex:eucBookView.pageNumber - 1];
+        }
     }
 }
 
@@ -121,7 +131,7 @@
 {
     NSArray *eucFontSizeNumbers = [EucConfiguration objectForKey:EucConfigurationFontSizesKey];
     
-    if (index < 0 || index > ([eucFontSizeNumbers count] - 1)) {
+    if (index > ([eucFontSizeNumbers count] - 1)) {
         return;
     }
     

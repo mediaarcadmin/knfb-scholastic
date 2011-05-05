@@ -14,7 +14,7 @@
 
 @interface SCHFlowEucBook : KNFBFlowEucBook {}
 
-@property (nonatomic, readonly) NSString *isbn;
+@property (nonatomic, copy, readonly) NSString *isbn;
 
 - (id)initWithISBN:(NSString *)newIsbn;
 - (EucBookPageIndexPoint *)bookPageIndexPointFromBookPoint:(SCHBookPoint *)bookPoint;

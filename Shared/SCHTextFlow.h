@@ -8,10 +8,14 @@
 
 #import "KNFBTextFlow.h"
 
+@class SCHXPSProvider;
+
 @interface SCHTextFlow : KNFBTextFlow {
     
 }
 
 - (id)initWithISBN:(NSString *)newIsbn;
+
+@property (nonatomic, retain) SCHXPSProvider *xpsProvider;
 
 @end

@@ -151,8 +151,11 @@ static int mutationCount = 0;
     NSError *error = nil;
     
     if (isbn && context) {
-        @synchronized(isbnManagedObjectCache) {
-            NSManagedObjectID *managedObjectID = [isbnManagedObjectCache objectForKey:isbn];
+        NSManagedObjectID *managedObjectID = nil;
+        
+        @synchronized(self.isbnManagedObjectCache) {
+            managedObjectID = [self.isbnManagedObjectCache objectForKey:isbn];
+        }
             if (managedObjectID == nil) {
                 NSEntityDescription *entityDescription = [NSEntityDescription 
                                                           entityForName:kSCHAppBook
@@ -171,14 +174,15 @@ static int mutationCount = 0;
                     if ([bookArray count] > 0) {
                         book = (SCHAppBook *)[bookArray objectAtIndex:0];
                         if (book.objectID.isTemporaryID == NO) {
-                            [self.isbnManagedObjectCache setObject:book.objectID forKey:isbn];
+                            @synchronized(self.isbnManagedObjectCache) {
+                                [self.isbnManagedObjectCache setObject:book.objectID forKey:isbn];
+                            }
                         }
                     }
                 }
             } else {
                 book = (SCHAppBook *) [context existingObjectWithID:managedObjectID error:&error];
             }
-        }
     } else {
 		NSLog(@"WARNING: book identifier is nil! request for %@", isbn);
 	}
@@ -378,11 +382,16 @@ static int mutationCount = 0;
 #pragma mark -
 #pragma mark XPS Provider Check out/Check in
 
+static int checkoutCountXPS = 0;
+static int allocCountXPS = 0;
+
 - (SCHXPSProvider *)checkOutXPSProviderForBookIdentifier:(NSString *)isbn
 {
 	SCHXPSProvider *ret = nil;
 	
-	//NSLog(@"Checking out XPS for book: %@", isbn);
+    checkoutCountXPS++;
+    
+	//NSLog(@"Checking out XPS for book: %@, count is %d", isbn, checkoutCountXPS);
 	
 	[self.persistentStoreCoordinator lock];
 	
@@ -394,6 +403,7 @@ static int mutationCount = 0;
             [self.cachedXPSProviderCheckoutCounts addObject:isbn];
             ret = previouslyCachedXPSProvider;
         } else {
+            allocCountXPS++;
 			SCHXPSProvider *xpsProvider = [[SCHXPSProvider alloc] initWithISBN:isbn];
 			if(xpsProvider) {
 				NSCountedSet *myCachedXPSProviderCheckoutCounts = self.cachedXPSProviderCheckoutCounts;
@@ -421,7 +431,7 @@ static int mutationCount = 0;
 - (void)checkInXPSProviderForBookIdentifier:(NSString *)isbn
 {
 
-   // NSLog(@"Checking in XPS for book: %@", isbn);
+    //NSLog(@"Checking in XPS for book: %@", isbn);
 	
 	NSMutableDictionary *myCachedXPSProviders = self.cachedXPSProviders;
     @synchronized(myCachedXPSProviders) {
@@ -448,11 +458,15 @@ static int mutationCount = 0;
 
 #pragma mark -
 #pragma mark EucBook Check out/Check in
-
+static int checkoutCountEucBook = 0;
 - (SCHFlowEucBook *)checkOutEucBookForBookIdentifier:(NSString *)isbn
 {
 	SCHFlowEucBook *ret = nil;
 	
+    checkoutCountEucBook++;
+    
+   // NSLog(@"Checking out EucBook for book: %@, count is %d", isbn, checkoutCountEucBook);
+
 	//NSLog(@"Checking out EucBook for book: %@", isbn);
 	
 	[self.persistentStoreCoordinator lock];
@@ -514,14 +528,15 @@ static int mutationCount = 0;
 
 #pragma mark -
 #pragma mark TextFlow Check out/Check in
+static int checkoutCountTextFlow = 0;
 
 - (SCHTextFlow *)checkOutTextFlowForBookIdentifier:(NSString *)isbn
 {
     SCHTextFlow *ret = nil;
+        
+    checkoutCountTextFlow++;
     
-    // Always check out an XPS Provider alongside a TextFlow to guarantee that we have the 
-    // same one underneath it for the duration of any decrypt operation
-    [self checkOutXPSProviderForBookIdentifier:isbn];
+   // NSLog(@"Checking out TextFlow for book: %@, count is %d", isbn, checkoutCountTextFlow);
     
     [self.persistentStoreCoordinator lock];
     
@@ -558,9 +573,6 @@ static int mutationCount = 0;
 
 - (void)checkInTextFlowForBookIdentifier:(NSString *)isbn
 {
-    // Always check in an XPS Provider alongside a TextFlow to match the fact 
-    // that we always check it out
-    [self checkInXPSProviderForBookIdentifier:isbn];
     
     NSMutableDictionary *myCachedTextFlows = self.cachedTextFlows;
     @synchronized(myCachedTextFlows) {
@@ -585,8 +597,12 @@ static int mutationCount = 0;
 #pragma mark -
 #pragma mark ParagraphSource Check out/Check in
 
+static int checkoutCountParagraph = 0;
+
 - (SCHTextFlowParagraphSource *)checkOutParagraphSourceForBookIdentifier:(NSString *)isbn
 {   
+    checkoutCountParagraph++;
+    //NSLog(@"Checking out ParagraphSource for book: %@, count is %d", isbn, checkoutCountParagraph);
     SCHTextFlowParagraphSource *ret = nil;
     
     [self.persistentStoreCoordinator lock];
@@ -645,8 +661,14 @@ static int mutationCount = 0;
 
 #pragma mark - ParagraphSource Check out/Check in
 
+static int checkoutCountBlockSource = 0;
+
 - (SCHSmartZoomBlockSource *)checkOutBlockSourceForBookIdentifier:(NSString *)isbn
 {   
+    
+    checkoutCountBlockSource++;
+    //NSLog(@"Checking out BlockSource for book: %@, count is %d", isbn, checkoutCountBlockSource);
+
     SCHSmartZoomBlockSource *ret = nil;
     
     [self.persistentStoreCoordinator lock];
@@ -702,14 +724,14 @@ static int mutationCount = 0;
 
 - (NSString *)description
 {
-    return [NSString stringWithFormat:@"<%@ %p> - Checkouts: textFlows:<%d> xpsProviders<%d> eucBooks<%d> paragraphSources<%d> blockSources<%d>",
+    return [NSString stringWithFormat:@"<%@ %p> - Checkouts: textFlows: <%d> (%d) xpsProviders <%d> (%d) [%d] eucBooks <%d> (%d) paragraphSources <%d> (%d) blockSources <%d> (%d)",
             [self class],
             self,
-            [cachedTextFlowCheckoutCounts count],
-            [cachedXPSProviderCheckoutCounts count],
-            [cachedEucBookCheckoutCounts count],
-            [cachedParagraphSourceCheckoutCounts count],
-            [cachedBlockSourceCheckoutCounts count]];
+            [cachedTextFlowCheckoutCounts count], checkoutCountTextFlow,
+            [cachedXPSProviderCheckoutCounts count], checkoutCountXPS, allocCountXPS,
+            [cachedEucBookCheckoutCounts count], checkoutCountEucBook,
+            [cachedParagraphSourceCheckoutCounts count], checkoutCountParagraph,
+            [cachedBlockSourceCheckoutCounts count], checkoutCountBlockSource];
 }
 
 @end

@@ -18,13 +18,15 @@
 
 @interface SCHFlowEucBook ()
 
-@property (nonatomic, assign) NSString *isbn;
+@property (nonatomic, copy) NSString *isbn;
+@property (nonatomic, assign) SCHTextFlowParagraphSource *paragraphSource;
 
 @end
 
 @implementation SCHFlowEucBook
 
 @synthesize isbn;
+@synthesize paragraphSource;
 
 - (id)initWithISBN:(NSString *)newIsbn
 {
@@ -32,10 +34,11 @@
     SCHAppBook *book = [bookManager bookWithIdentifier:newIsbn];
 
     if (book && (self = [super init])) {
-        self.isbn = newIsbn;
+        isbn = [newIsbn copy];
+        
         self.textFlow = [[SCHBookManager sharedBookManager] checkOutTextFlowForBookIdentifier:newIsbn];
         self.fakeCover = self.textFlow.flowTreeKind == KNFBTextFlowFlowTreeKindFlow;
-        
+                
         SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:newIsbn];
         self.title = [book XPSTitle];
         self.author = [book XPSAuthor];
@@ -46,10 +49,38 @@
     return self;
 }
 
+- (SCHTextFlowParagraphSource *)paragraphSource
+{
+    if (!paragraphSource) {
+        // Rather than checking a paragraph source in and out we check it out on first use for the duration of our
+        // SCHFlowEucBook. However we don't retain it to avoid a retain cycle as a xaml EucBook will have a paragraph
+        // source that also checks out and retains the SCHFlowEucBook! The correct fix is for a paragraph source to not
+        // retain its checked out FlowEucBook but since that property is in libKNFBReader rather than Scholastic
+        // we are breaking the retain loop here. So long as the checkout mechanism also retains the paragraph source
+        // it will not dealloc duing the lifetime of this object
+        //
+        // N.B. this must be lazily instantiated because checking it out during the init would result in a checkout cycle
+        // loop if the paragraph source is 
+        // being checked
+        paragraphSource = [[SCHBookManager sharedBookManager] checkOutParagraphSourceForBookIdentifier:self.isbn];
+    }
+    
+    return paragraphSource;
+}
+
 - (void)dealloc
 {
-    [[SCHBookManager sharedBookManager] checkInTextFlowForBookIdentifier:self.isbn];
-    self.isbn = nil;
+    
+    if (self.textFlow) {
+        [[SCHBookManager sharedBookManager] checkInTextFlowForBookIdentifier:self.isbn];
+    }
+    
+    if (paragraphSource) {
+        [[SCHBookManager sharedBookManager] checkInParagraphSourceForBookIdentifier:self.isbn];
+        paragraphSource = nil;
+    }
+    
+    [isbn release], isbn = nil;
     
     [super dealloc];
 }
@@ -58,9 +89,7 @@
 - (NSData *)dataForURL:(NSURL *)url
 {
     if([[url absoluteString] isEqualToString:@"textflow:coverimage"]) {
-        SCHXPSProvider *xpsProvider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.isbn];
-        NSData *coverData = [xpsProvider coverThumbData];
-        [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.isbn];
+        NSData *coverData = [[(SCHTextFlow *)self.textFlow xpsProvider] coverThumbData];
         return coverData;
     } else if([[url scheme] isEqualToString:@"textflow"]) {
 		NSString *componentPath = [[url absoluteURL] path];
@@ -69,9 +98,7 @@
 			componentPath = [KNFBXPSEncryptedTextFlowDir stringByAppendingPathComponent:relativePath];
 		}
 		
-        SCHXPSProvider *xpsProvider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.isbn];
-        NSData *ret = [xpsProvider dataForComponentAtPath:componentPath];
-        [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.isbn];
+        NSData *ret = [[(SCHTextFlow *)self.textFlow xpsProvider] dataForComponentAtPath:componentPath];
         return ret;
     }
     return [super dataForURL:url];
@@ -94,12 +121,9 @@
         NSIndexPath *paragraphID = nil;
         uint32_t wordOffset = 0;
         
-        SCHBookManager *bookManager = [SCHBookManager sharedBookManager];
-        SCHTextFlowParagraphSource *paragraphSource = [bookManager checkOutParagraphSourceForBookIdentifier:self.isbn];
-        [paragraphSource bookmarkPoint:bookPoint
+        [self.paragraphSource bookmarkPoint:bookPoint
                          toParagraphID:&paragraphID 
                             wordOffset:&wordOffset];
-        [bookManager checkInParagraphSourceForBookIdentifier:self.isbn];
         
         eucIndexPoint.source = [paragraphID indexAtPosition:0];
         eucIndexPoint.block = [EucCSSIntermediateDocument keyForDocumentTreeNodeKey:[paragraphID indexAtPosition:1]];

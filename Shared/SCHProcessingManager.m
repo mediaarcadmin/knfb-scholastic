@@ -211,7 +211,7 @@ static SCHProcessingManager *sharedManager = nil;
 		// when it finishes processing, so no need to add it for consideration
 		if (![book isProcessing] && [self ISBNNeedsProcessing:isbn]) {
             // FIXME: remove this checkout when the XPS library properly releases the mapped memory
-			[[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:isbn];
+			//[[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:isbn];
 			[self processISBN:isbn];
 		}
 	}	
@@ -269,7 +269,7 @@ static SCHProcessingManager *sharedManager = nil;
     
 	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:isbn];
 	
-	NSLog(@"Processing state of %@ is %@", book.ContentIdentifier, [book processingStateAsString]);
+	NSLog(@"Processing state of %@ is %@", isbn, [book processingStateAsString]);
 	switch (book.processingState) {
 			
 			// *** Book has no URLs ***
@@ -487,7 +487,7 @@ static SCHProcessingManager *sharedManager = nil;
             break;
         case SCHBookProcessingStateReadyToRead:
             // FIXME: remove this checkin when the XPS library properly releases the mapped memory
-            [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:isbn];
+            //[[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:isbn];
             break;
             
 		default:
