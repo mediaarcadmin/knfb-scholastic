@@ -12,6 +12,8 @@
 #import "SCHAuthenticationManager.h"
 #import "SCHDrmSession.h"
 #import "SCHCustomNavigationBar.h"
+#import "SCHURLManager.h"
+#import "SCHSyncManager.h"
 
 extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
@@ -27,7 +29,9 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 @synthesize tableView;
 @synthesize backgroundView;
 
-@synthesize loginController, managedObjectContext, drmRegistrationSession;
+@synthesize loginController;
+@synthesize managedObjectContext;
+@synthesize drmRegistrationSession;
 
 #pragma mark - Object lifecycle
 
@@ -40,6 +44,8 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
 - (void)dealloc 
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
 	[managedObjectContext release], managedObjectContext = nil;
     [drmRegistrationSession release], drmRegistrationSession = nil;
     
@@ -53,6 +59,14 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 {
     [super viewDidLoad];
     [self.navigationController.navigationBar setTintColor:[UIColor colorWithRed:0.832 green:0.000 blue:0.007 alpha:1.000]];
+    
+    self.loginController.controllerType = kSCHControllerLoginView;
+    self.loginController.actionBlock = ^{
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(authenticationManager:) name:kSCHAuthenticationManagerSuccess object:nil];			
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(authenticationManager:) name:kSCHAuthenticationManagerFailure object:nil];					
+        
+        [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithUserName:[self.loginController username] withPassword:[self.loginController password]];
+    };    
 }
 
 - (void)viewDidUnload 
@@ -98,6 +112,32 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 - (void)login 
 {
 	[self presentModalViewController:self.loginController animated:YES];		
+}
+
+#pragma mark - Authentication Manager
+
+- (void)authenticationManager:(NSNotification *)notification
+{
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	
+	if ([notification.name compare:kSCHAuthenticationManagerSuccess] == NSOrderedSame) {
+		[[SCHURLManager sharedURLManager] clear];
+		[[SCHSyncManager sharedSyncManager] clear];
+		[[SCHSyncManager sharedSyncManager] firstSync];
+		[self.loginController dismissModalViewControllerAnimated:YES];	
+	} else {
+		NSError *error = [notification.userInfo objectForKey:kSCHAuthenticationManagerNSError];
+		if (error!= nil) {
+			UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") 
+																 message:[error localizedDescription]
+																delegate:nil 
+													   cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+													   otherButtonTitles:nil]; 
+			[errorAlert show]; 
+			[errorAlert release];
+		}	
+        [self.loginController stopShowingProgress];
+	}
 }
 
 #pragma mark - Switch Changes
