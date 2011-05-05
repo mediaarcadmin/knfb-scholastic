@@ -20,7 +20,7 @@
 @synthesize isbn, executing, finished;
 
 - (void)dealloc {
-	self.isbn = nil;
+	[isbn release], isbn = nil;
 	
 	[super dealloc];
 }
@@ -31,12 +31,14 @@
 		return;
 	}
 	
-	NSString *oldIsbn = newIsbn;
+	NSString *oldIsbn = isbn;
 	isbn = [newIsbn retain];
 	[oldIsbn release];
 	
-	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];
-	[book setProcessing:YES];
+    if (isbn) {
+        SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];
+        [book setProcessing:YES];
+    }
 }
 
 - (void) setIsbnWithoutUpdatingProcessingStatus: (NSString *) newIsbn
@@ -45,7 +47,7 @@
 		return;
 	}
 	
-	NSString *oldIsbn = newIsbn;
+	NSString *oldIsbn = isbn;
 	isbn = [newIsbn retain];
 	[oldIsbn release];
 }
