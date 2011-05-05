@@ -15,6 +15,7 @@
 #import "SCHCustomNavigationBar.h"
 #import "SCHReadingViewController.h"
 #import "SCHProfileItem.h"
+#import "NSNumber+ObjectTypes.h"
 
 @interface SCHReadingOptionsView ()
 
@@ -174,15 +175,15 @@
     SCHReadingViewController *readingController = [[SCHReadingViewController alloc] initWithNibName:nil bundle:nil isbn:self.isbn layout:SCHReadingViewLayoutTypeFlow];
     
     switch ([self.profileItem.BookshelfStyle intValue]) {
-        case LibreAccessServiceSvc_BookshelfStyle_YOUNG_CHILD:
+        case kSCHBookshelfStyleYoungChild:
             readingController.youngerMode = YES;
             break;
             
-        case LibreAccessServiceSvc_BookshelfStyle_OLDER_CHILD:
+        case kSCHBookshelfStyleOlderChild:
             readingController.youngerMode = NO;
             break;
             
-        case LibreAccessServiceSvc_BookshelfStyle_ADULT:
+        case kSCHBookshelfStyleAdult:
             readingController.youngerMode = NO;
             break;
     }
@@ -196,15 +197,15 @@
     SCHReadingViewController *readingController = [[SCHReadingViewController alloc] initWithNibName:nil bundle:nil isbn:self.isbn layout:SCHReadingViewLayoutTypeFixed];
     
     switch ([self.profileItem.BookshelfStyle intValue]) {
-        case LibreAccessServiceSvc_BookshelfStyle_YOUNG_CHILD:
+        case kSCHBookshelfStyleYoungChild:
             readingController.youngerMode = YES;
             break;
             
-        case LibreAccessServiceSvc_BookshelfStyle_OLDER_CHILD:
+        case kSCHBookshelfStyleOlderChild:
             readingController.youngerMode = NO;
             break;
             
-        case LibreAccessServiceSvc_BookshelfStyle_ADULT:
+        case kSCHBookshelfStyleAdult:
             readingController.youngerMode = NO;
             break;
     }
