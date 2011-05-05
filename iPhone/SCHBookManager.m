@@ -489,7 +489,7 @@ static int checkoutCountEucBook = 0;
 				
 				[myCachedEucBooks setObject:eucBook forKey:isbn];
 				[myCachedEucBookCheckoutCounts addObject:isbn];
-                [eucBook release];
+                [eucBook autorelease];
 				ret = eucBook;
 			}
         }

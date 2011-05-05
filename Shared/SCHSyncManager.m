@@ -109,9 +109,9 @@ static NSTimeInterval const kSCHSyncManagerHeartbeatInterval = 30.0;
 
 - (void)setManagedObjectContext:(NSManagedObjectContext *)newManagedObjectContext
 {
-	[managedObjectContext release];
+	[newManagedObjectContext retain];
+	[managedObjectContext release];    
 	managedObjectContext = newManagedObjectContext;
-	[managedObjectContext retain];
 	
 	profileSyncComponent.managedObjectContext = newManagedObjectContext;
 	contentSyncComponent.managedObjectContext = newManagedObjectContext;		

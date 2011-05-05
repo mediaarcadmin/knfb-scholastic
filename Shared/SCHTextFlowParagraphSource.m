@@ -60,7 +60,7 @@ static NSString * const kNoWordPlaceholder = @"NO_WORD_PLACEHOLDER";
         self.textFlow = [[SCHBookManager sharedBookManager] checkOutTextFlowForBookIdentifier:anIsbn];
         
         if(self.textFlow.flowTreeKind == KNFBTextFlowFlowTreeKindXaml) {
-            self.xamlEucBook = [[[SCHBookManager sharedBookManager] checkOutEucBookForBookIdentifier:anIsbn] retain];
+            self.xamlEucBook = [[SCHBookManager sharedBookManager] checkOutEucBookForBookIdentifier:anIsbn];
         }
 
     }

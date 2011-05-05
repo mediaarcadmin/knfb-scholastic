@@ -245,9 +245,9 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 
 - (void)setProfileItem:(SCHProfileItem *)newProfileItem
 {
+    [newProfileItem retain];	    
 	[profileItem release];
     profileItem = newProfileItem;
-    [profileItem retain];	
     
     if ([[profileItem.FirstName stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {
         self.navigationItem.title = [NSString stringWithFormat:@"%@%@", profileItem.FirstName, NSLocalizedString(@"'s Books", @"")];
@@ -260,9 +260,9 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 
 - (void)setBooks:(NSMutableArray *)newBooks
 {
+    [newBooks retain];
 	[books release];
     books = newBooks;
-    [books retain];	
     
 	[self.gridView reloadData];
 }

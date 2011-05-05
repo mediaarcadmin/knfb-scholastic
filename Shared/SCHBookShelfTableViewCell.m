@@ -124,9 +124,9 @@
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"SCHBookStatusUpdate" object:nil];
 
 	if (newIsbn != isbn && [newIsbn compare:isbn] != NSOrderedSame) {
-		NSString *oldIsbn = isbn;
-		isbn = [newIsbn retain];
-		[oldIsbn release];
+		[newIsbn retain];
+		[isbn release];
+        isbn = newIsbn;
 	}
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self
