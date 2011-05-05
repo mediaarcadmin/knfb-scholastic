@@ -88,9 +88,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 @synthesize fontSegmentedControl;
 @synthesize flowFixedSegmentedControl;
 @synthesize paperTypeSegmentedControl;
+@synthesize pageSlider;
 @synthesize scrubberThumbImage;
 
-@synthesize pageScrubber;
 @synthesize scrubberInfoView;
 @synthesize pageLabel;
 @synthesize panSpeedLabel;
@@ -132,7 +132,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [olderBottomToolbar release], olderBottomToolbar = nil;
     [topShadow release], topShadow = nil;
     [bottomShadow release], bottomShadow = nil;
-    [pageScrubber release], pageScrubber = nil;
+    [pageSlider release], pageSlider = nil;
     [scrubberThumbImage release], scrubberThumbImage = nil;
     [scrubberInfoView release], scrubberInfoView = nil;
     [pageLabel release], pageLabel = nil;
@@ -259,12 +259,10 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     NSString *localisedPageLabelText = NSLocalizedString(@"pageCountString", @"Page %d of %d");
     [self.pageLabel setText:[NSString stringWithFormat:localisedPageLabelText, self.currentPageIndex, [self.readingView pageCount]]];
     
-    self.pageScrubber.delegate = self;
-	self.pageScrubber.minimumValue = 1;
-	self.pageScrubber.maximumValue = [self.readingView pageCount];
-	self.pageScrubber.continuous = YES;
-	self.pageScrubber.value = self.currentPageIndex;
-	
+    self.pageSlider.minimumValue = 1;
+    self.pageSlider.maximumValue = [self.readingView pageCount];
+    self.pageSlider.continuous = YES;
+    self.pageSlider.value = self.currentPageIndex;
 }
 
 -(void) viewWillAppear:(BOOL)animated
@@ -509,6 +507,11 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [self.view sendSubviewToBack:self.readingView];
 }
 
+- (SCHReadingViewLayoutType)layoutType
+{
+    return layoutType;
+}
+
 - (IBAction)flowedFixedSegmentChanged:(UISegmentedControl *)segControl
 {
     self.layoutType = segControl.selectedSegmentIndex;
@@ -534,6 +537,11 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     }
 }
 
+- (SCHReadingViewPaperType)paperType
+{
+    return paperType;
+}
+
 - (IBAction)paperTypeSegmentChanged: (UISegmentedControl *) segControl
 {
     self.paperType = segControl.selectedSegmentIndex;
@@ -547,10 +555,16 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     
     [self.readingView setFontPointIndex:newFontSizeIndex];
     
-    self.pageScrubber.minimumValue = 1;
-	self.pageScrubber.maximumValue = [self.readingView pageCount];
-	self.pageScrubber.continuous = YES;
-	self.pageScrubber.value = self.currentPageIndex;
+    self.pageSlider.minimumValue = 1;
+    self.pageSlider.maximumValue = [self.readingView pageCount];
+    self.pageSlider.continuous = YES;
+    self.pageSlider.value = self.currentPageIndex;
+
+}
+
+- (int)currentFontSizeIndex
+{
+    return currentFontSizeIndex;
 }
 
 - (IBAction) fontSizeSegmentPressed: (UISegmentedControl *) segControl
@@ -584,7 +598,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 -(void)readingView:(SCHReadingView *)readingView hasMovedToPageAtIndex:(NSUInteger)pageIndex
 {
     self.currentPageIndex = pageIndex + 1;
-    [self.pageScrubber setValue:self.currentPageIndex];
+    [self.pageSlider setValue:self.currentPageIndex];
     NSString *localisedPageLabelText = NSLocalizedString(@"pageCountString", @"Page %d of %d");
     [self.pageLabel setText:[NSString stringWithFormat:localisedPageLabelText, self.currentPageIndex, [self.readingView pageCount]]];
 
@@ -659,39 +673,12 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     self.scrubberInfoView.frame = scrubFrame;
 }
 
+#pragma mark - UISlider Change Methods
 
-#pragma mark -
-#pragma mark BITScrubberViewDelegate Methods
-
--(void) scrubberView:(SCHScrubberView *)scrubberView scrubberValueUpdated:(float)currentValue
+- (IBAction)scrubValueStartChanges:(UISlider *)slider
 {
-	if (scrubberView == self.pageScrubber) {
-        NSLog(@"Current value is %d", (int) currentValue);
-		self.currentPageIndex = (int) currentValue;
-		
-        NSString *localisedPageLabelText = NSLocalizedString(@"pageCountString", @"Page %d of %d");
-        [self.pageLabel setText:[NSString stringWithFormat:localisedPageLabelText, self.currentPageIndex, [self.readingView pageCount]]];
-        
-        if (self.layoutType == SCHReadingViewLayoutTypeFixed) {
-            
-            UIImage *scrubImage = [self.xpsProvider thumbnailForPage:self.currentPageIndex];
-            
-            if (self.scrubberInfoView.frame.size.height == kReadingViewStandardScrubHeight) {
-                self.scrubberThumbImage.image = nil;
-            } else {
-                self.scrubberThumbImage.image = scrubImage;
-            }
-        } 
-        
-        [self adjustScrubberInfoViewHeightForImageSize:self.scrubberThumbImage.image.size];
-        
-	}
-}
-
--(void) scrubberView:(SCHScrubberView *)scrubberView beginScrubbingWithValue:(float)currentValue
-{
-    self.currentPageIndex = (int) currentValue;
-    NSLog(@"Current value is %d", (int) currentValue);
+    NSLog(@"Scrub started changes!");
+    self.currentPageIndex = (int) [slider value];
     
     // add the scrub view here
     if (self.layoutType == SCHReadingViewLayoutTypeFixed) {
@@ -705,20 +692,21 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     
     NSString *localisedPageLabelText = NSLocalizedString(@"pageCountString", @"Page %d of %d");
     [self.pageLabel setText:[NSString stringWithFormat:localisedPageLabelText, self.currentPageIndex, [self.readingView pageCount]]];
- 
-
+    
+    
     [self.scrubberInfoView setAlpha:1.0f];
-
+    
     [self.view addSubview:self.scrubberInfoView];
     
 	[self cancelInitialTimer];
-	
+    
 }
 
--(void) scrubberView:(SCHScrubberView *)scrubberView endScrubbingWithValue:(float)currentValue
+- (IBAction)scrubValueEndChanges:(UISlider *)slider
 {
-    self.currentPageIndex = (int) currentValue;
-
+    NSLog(@"Scrub ended changes!");
+    self.currentPageIndex = (int) [slider value];
+    
 	[UIView animateWithDuration:0.3f 
                           delay:0.2f 
                         options:UIViewAnimationOptionCurveEaseOut | UIViewAnimationOptionBeginFromCurrentState
@@ -730,9 +718,34 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
                      }
      ];
     
-    NSLog(@"Turning to page %d", (int) currentValue);
+    NSLog(@"Turning to page %d", self.currentPageIndex);
     
     [self.readingView jumpToPageAtIndex:self.currentPageIndex - 1 animated:YES];
+    
+}
+
+- (IBAction)scrubValueChanged:(UISlider *)slider
+{
+    int currentValue = (int) [slider value];
+    NSLog(@"Current value is %d", currentValue);
+    self.currentPageIndex = currentValue;
+    
+    NSString *localisedPageLabelText = NSLocalizedString(@"pageCountString", @"Page %d of %d");
+    [self.pageLabel setText:[NSString stringWithFormat:localisedPageLabelText, self.currentPageIndex, [self.readingView pageCount]]];
+    
+    if (self.layoutType == SCHReadingViewLayoutTypeFixed) {
+        
+        UIImage *scrubImage = [self.xpsProvider thumbnailForPage:self.currentPageIndex];
+        
+        if (self.scrubberInfoView.frame.size.height == kReadingViewStandardScrubHeight) {
+            self.scrubberThumbImage.image = nil;
+        } else {
+            self.scrubberThumbImage.image = scrubImage;
+        }
+    } 
+    
+    [self adjustScrubberInfoViewHeightForImageSize:self.scrubberThumbImage.image.size];
+    
 }
 
 #pragma mark - Toolbar Methods - including timer

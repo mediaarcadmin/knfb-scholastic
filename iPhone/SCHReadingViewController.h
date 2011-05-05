@@ -24,8 +24,9 @@ typedef enum {
 @class SCHXPSProvider;
 @class SCHCustomToolbar;
 
-@interface SCHReadingViewController : UIViewController <BITScrubberViewDelegate, SCHReadingViewDelegate> {
+@interface SCHReadingViewController : UIViewController <SCHReadingViewDelegate> {
 
+    UISlider *pageSlider;
 }
 
 @property (readwrite) BOOL youngerMode;
@@ -42,7 +43,8 @@ typedef enum {
 @property (nonatomic, retain) IBOutlet UIImageView *topShadow;
 @property (nonatomic, retain) IBOutlet UIImageView *bottomShadow;
 
-@property (nonatomic, retain) IBOutlet SCHScrubberView *pageScrubber;
+//@property (nonatomic, retain) IBOutlet SCHScrubberView *pageScrubber;
+@property (nonatomic, retain) IBOutlet UISlider *pageSlider;
 @property (nonatomic, retain) IBOutlet UIImageView *scrubberThumbImage;
 @property (nonatomic, retain) IBOutlet UIView *scrubberInfoView;
 @property (nonatomic, retain) IBOutlet UILabel *pageLabel;

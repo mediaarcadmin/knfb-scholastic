@@ -19,6 +19,7 @@
 			<string>IBUIImageView</string>
 			<string>IBUIButton</string>
 			<string>IBUISegmentedControl</string>
+			<string>IBUISlider</string>
 			<string>IBUIView</string>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
@@ -206,21 +207,24 @@
 						<int key="NSvFlags">266</int>
 						<object class="NSMutableArray" key="NSSubviews">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<object class="IBUIView" id="1010666511">
+							<object class="IBUISlider" id="246490974">
 								<reference key="NSNextResponder" ref="999071566"/>
-								<int key="NSvFlags">290</int>
-								<string key="NSFrame">{{42, 6}, {236, 33}}</string>
+								<int key="NSvFlags">266</int>
+								<string key="NSFrame">{{24, 11}, {272, 23}}</string>
 								<reference key="NSSuperview" ref="999071566"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView"/>
-								<reference key="IBUIBackgroundColor" ref="368037730"/>
+								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+								<int key="IBUIContentHorizontalAlignment">0</int>
+								<int key="IBUIContentVerticalAlignment">0</int>
+								<float key="IBUIValue">0.5</float>
 							</object>
 						</object>
 						<string key="NSFrame">{{0, 436}, {320, 44}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="1010666511"/>
+						<reference key="NSNextKeyView" ref="246490974"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -233,7 +237,7 @@
 							</object>
 							<object class="IBUIBarButtonItem" id="811993404">
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-								<reference key="IBUICustomView" ref="1010666511"/>
+								<reference key="IBUICustomView" ref="246490974"/>
 								<reference key="IBUIToolbar" ref="999071566"/>
 							</object>
 							<object class="IBUIBarButtonItem" id="948756395">
@@ -252,7 +256,7 @@
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 			</object>
 			<object class="IBUIView" id="692504765">
-				<reference key="NSNextResponder"/>
+				<nil key="NSNextResponder"/>
 				<int key="NSvFlags">266</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -389,7 +393,6 @@
 					</object>
 				</object>
 				<string key="NSFrameSize">{320, 86}</string>
-				<reference key="NSSuperview"/>
 				<reference key="NSNextKeyView" ref="796094069"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
@@ -398,7 +401,7 @@
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 			</object>
 			<object class="IBUIView" id="813696724">
-				<nil key="NSNextResponder"/>
+				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">293</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -407,6 +410,7 @@
 						<int key="NSvFlags">293</int>
 						<string key="NSFrame">{{0, 13}, {225, 21}}</string>
 						<reference key="NSSuperview" ref="813696724"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="927935669"/>
 						<reference key="IBUIBackgroundColor" ref="368037730"/>
 						<bool key="IBUIOpaque">NO</bool>
@@ -431,12 +435,16 @@
 						<int key="NSvFlags">290</int>
 						<string key="NSFrame">{{5, 42}, {215, 150}}</string>
 						<reference key="NSSuperview" ref="813696724"/>
+						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
 						<int key="IBUIContentMode">1</int>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 					</object>
 				</object>
 				<string key="NSFrameSize">{225, 203}</string>
+				<reference key="NSSuperview"/>
+				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="211584875"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">1</int>
@@ -445,7 +453,7 @@
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 			</object>
 			<object class="IBUIView" id="285120483">
-				<reference key="NSNextResponder"/>
+				<nil key="NSNextResponder"/>
 				<int key="NSvFlags">301</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -471,13 +479,12 @@
 					</object>
 				</object>
 				<string key="NSFrameSize">{46, 44}</string>
-				<reference key="NSSuperview"/>
 				<reference key="NSNextKeyView" ref="173301827"/>
 				<reference key="IBUIBackgroundColor" ref="368037730"/>
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 			</object>
 			<object class="IBUIView" id="796079887">
-				<reference key="NSNextResponder"/>
+				<nil key="NSNextResponder"/>
 				<int key="NSvFlags">301</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -534,7 +541,6 @@
 					</object>
 				</object>
 				<string key="NSFrameSize">{85, 44}</string>
-				<reference key="NSSuperview"/>
 				<reference key="NSNextKeyView" ref="582037608"/>
 				<reference key="IBUIBackgroundColor" ref="368037730"/>
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -598,14 +604,6 @@
 						<reference key="destination" ref="813696724"/>
 					</object>
 					<int key="connectionID">38</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">pageScrubber</string>
-						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="1010666511"/>
-					</object>
-					<int key="connectionID">55</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
@@ -808,6 +806,59 @@
 					</object>
 					<int key="connectionID">164</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">pageSlider</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="246490974"/>
+					</object>
+					<int key="connectionID">168</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">scrubValueChanged:</string>
+						<reference key="source" ref="246490974"/>
+						<reference key="destination" ref="372490531"/>
+						<int key="IBEventType">13</int>
+					</object>
+					<int key="connectionID">169</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">scrubValueEndChanges:</string>
+						<reference key="source" ref="246490974"/>
+						<reference key="destination" ref="372490531"/>
+						<int key="IBEventType">9</int>
+					</object>
+					<int key="connectionID">172</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">scrubValueEndChanges:</string>
+						<reference key="source" ref="246490974"/>
+						<reference key="destination" ref="372490531"/>
+						<int key="IBEventType">7</int>
+					</object>
+					<int key="connectionID">173</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">scrubValueEndChanges:</string>
+						<reference key="source" ref="246490974"/>
+						<reference key="destination" ref="372490531"/>
+						<int key="IBEventType">8</int>
+					</object>
+					<int key="connectionID">174</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">scrubValueStartChanges:</string>
+						<reference key="source" ref="246490974"/>
+						<reference key="destination" ref="372490531"/>
+						<int key="IBEventType">1</int>
+					</object>
+					<int key="connectionID">175</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -847,8 +898,8 @@
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="948756395"/>
-							<reference ref="811993404"/>
 							<reference ref="640744604"/>
+							<reference ref="811993404"/>
 						</object>
 						<reference key="parent" ref="191373211"/>
 						<string key="objectName">Scrubber Toolbar</string>
@@ -857,20 +908,6 @@
 						<int key="objectID">37</int>
 						<reference key="object" ref="948756395"/>
 						<reference key="parent" ref="999071566"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">54</int>
-						<reference key="object" ref="811993404"/>
-						<object class="NSMutableArray" key="children">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="1010666511"/>
-						</object>
-						<reference key="parent" ref="999071566"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">53</int>
-						<reference key="object" ref="1010666511"/>
-						<reference key="parent" ref="811993404"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">56</int>
@@ -1056,6 +1093,20 @@
 						<reference key="parent" ref="191373211"/>
 						<string key="objectName">Image View</string>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">167</int>
+						<reference key="object" ref="811993404"/>
+						<object class="NSMutableArray" key="children">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<reference ref="246490974"/>
+						</object>
+						<reference key="parent" ref="999071566"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">166</int>
+						<reference key="object" ref="246490974"/>
+						<reference key="parent" ref="811993404"/>
+					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -1082,6 +1133,7 @@
 					<string>159.IBPluginDependency</string>
 					<string>161.IBPluginDependency</string>
 					<string>163.IBPluginDependency</string>
+					<string>166.IBPluginDependency</string>
 					<string>18.IBPluginDependency</string>
 					<string>18.IBViewBoundsToFrameTransform</string>
 					<string>35.IBPluginDependency</string>
@@ -1089,8 +1141,6 @@
 					<string>4.CustomClassName</string>
 					<string>4.IBPluginDependency</string>
 					<string>4.IBViewBoundsToFrameTransform</string>
-					<string>53.CustomClassName</string>
-					<string>53.IBPluginDependency</string>
 					<string>56.IBPluginDependency</string>
 					<string>63.CustomClassName</string>
 					<string>63.IBPluginDependency</string>
@@ -1123,6 +1173,7 @@
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<object class="NSAffineTransform">
 						<bytes key="NSTransformStruct">AQAAAABCHAAAA</bytes>
 					</object>
@@ -1133,8 +1184,6 @@
 					<object class="NSAffineTransform">
 						<bytes key="NSTransformStruct">P4AAAL+AAAAAAAAAw+UAAA</bytes>
 					</object>
-					<string>SCHScrubberView</string>
-					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>SCHCustomToolbar</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -1157,7 +1206,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">165</int>
+			<int key="maxID">175</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -1260,7 +1309,7 @@
 							<string>olderBottomToolbar</string>
 							<string>optionsView</string>
 							<string>pageLabel</string>
-							<string>pageScrubber</string>
+							<string>pageSlider</string>
 							<string>panSpeedLabel</string>
 							<string>paperTypeSegmentedControl</string>
 							<string>scrubberInfoView</string>
@@ -1282,7 +1331,7 @@
 							<string>SCHCustomToolbar</string>
 							<string>UIView</string>
 							<string>UILabel</string>
-							<string>SCHScrubberView</string>
+							<string>UISlider</string>
 							<string>UILabel</string>
 							<string>UISegmentedControl</string>
 							<string>UIView</string>
@@ -1307,7 +1356,7 @@
 							<string>olderBottomToolbar</string>
 							<string>optionsView</string>
 							<string>pageLabel</string>
-							<string>pageScrubber</string>
+							<string>pageSlider</string>
 							<string>panSpeedLabel</string>
 							<string>paperTypeSegmentedControl</string>
 							<string>scrubberInfoView</string>
@@ -1357,8 +1406,8 @@
 								<string key="candidateClassName">UILabel</string>
 							</object>
 							<object class="IBToOneOutletInfo">
-								<string key="name">pageScrubber</string>
-								<string key="candidateClassName">SCHScrubberView</string>
+								<string key="name">pageSlider</string>
+								<string key="candidateClassName">UISlider</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">panSpeedLabel</string>
@@ -1401,14 +1450,6 @@
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">./Classes/SCHReadingViewController.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">SCHScrubberView</string>
-					<string key="superclassName">UIView</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/SCHScrubberView.h</string>
 					</object>
 				</object>
 			</object>
