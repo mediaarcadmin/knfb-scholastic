@@ -14,19 +14,26 @@
 
 @implementation SCHThumbnailOperation
 
-@synthesize aspect, size, flip;
+@synthesize aspect;
+@synthesize size;
+@synthesize flip;
 
 - (void)dealloc {
 	[super dealloc];
 }
 
 // overriding setBookInfo - image operation doesn't set the book as processing
+// since image processing can happen while the book is already processing, as long
+// as the cover image is set.
 - (void) setIsbn:(NSString *) newIsbn
 {
     [self setIsbnWithoutUpdatingProcessingStatus:newIsbn];
 }
 
-- (void) beginOperation {
+#pragma mark - Book Operation methods
+
+- (void)beginOperation 
+{
 	
 	// for testing: insert a random processing delay
 	//	int randomValue = (arc4random() % 5) + 3;
@@ -91,11 +98,10 @@
     [self endOperation];    
 }
 
+// used on the main thread - notifies the UI when new thumbs are available
+// specifically used by SCHASyncBookCoverImageView
 - (void)imageReady:(NSDictionary *)userInfo {
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"SCHNewImageAvailable" object:nil userInfo:userInfo];
 }
-
-
-
 
 @end

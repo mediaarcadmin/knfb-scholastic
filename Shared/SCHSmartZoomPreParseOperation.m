@@ -53,7 +53,7 @@ static void smartZoomFileXMLParsingStartElementHandler(void *ctx, const XML_Char
     
 }
 
-#pragma mark -
+#pragma mark - Class Extension
 
 @interface SCHSmartZoomPreParseOperation ()
 
@@ -62,25 +62,13 @@ static void smartZoomFileXMLParsingStartElementHandler(void *ctx, const XML_Char
 
 @end
 
+#pragma mark -
+
 @implementation SCHSmartZoomPreParseOperation
 
-- (void) updateBookWithSuccess
-{
-    [[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateReadyForPagination];
-    [[[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn] setProcessing:NO];
-    self.finished = YES;
-    self.executing = NO;
-}
+#pragma mark Book Operation methods
 
-- (void) updateBookWithFailure
-{
-    [[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateError];
-    [[[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn] setProcessing:NO];
-    self.finished = YES;
-    self.executing = NO;
-}
-
-- (void) beginOperation
+- (void)beginOperation
 {
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
     
@@ -122,5 +110,25 @@ static void smartZoomFileXMLParsingStartElementHandler(void *ctx, const XML_Char
     
     [pool drain];
 }
+
+#pragma mark - Book Updates
+
+- (void)updateBookWithSuccess
+{
+    [[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateReadyForPagination];
+    [[[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn] setProcessing:NO];
+    self.finished = YES;
+    self.executing = NO;
+}
+
+- (void)updateBookWithFailure
+{
+    [[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateError];
+    [[[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn] setProcessing:NO];
+    self.finished = YES;
+    self.executing = NO;
+}
+
+
 
 @end
