@@ -148,14 +148,4 @@
     }
 }
 
--(NSArray *)hardBreakIndexPoints
-{
-
-}
-
--(EucBookIndexPoint *)offTheEndIndexPoint
-{
-    
-}
-
 @end
