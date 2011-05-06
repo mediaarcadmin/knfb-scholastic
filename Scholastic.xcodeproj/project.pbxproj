@@ -822,13 +822,6 @@
 			remoteGlobalIDString = 7D034F8910C2CCBE0085778B;
 			remoteInfo = TransitionTest;
 		};
-		C947D588133B9C0100FB4404 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C947D55D133B9C0000FB4404 /* libEucalyptus.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 7D9A96D210D7E41100C2E00A;
-			remoteInfo = Paginate;
-		};
 		C9537FE4133BA16B008D8A4B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C947D55D133B9C0000FB4404 /* libEucalyptus.xcodeproj */;
@@ -2449,7 +2442,6 @@
 				C947D583133B9C0100FB4404 /* libcss.a */,
 				C947D585133B9C0100FB4404 /* libminiunzip.a */,
 				C947D587133B9C0100FB4404 /* TransitionTest.app */,
-				C947D589133B9C0100FB4404 /* Paginate.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -2977,13 +2969,6 @@
 			fileType = wrapper.application;
 			path = TransitionTest.app;
 			remoteRef = C947D586133B9C0100FB4404 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		C947D589133B9C0100FB4404 /* Paginate.app */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.application;
-			path = Paginate.app;
-			remoteRef = C947D588133B9C0100FB4404 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */

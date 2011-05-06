@@ -547,6 +547,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (void)readingView:(SCHReadingView *)readingView hasMovedToPageAtIndex:(NSUInteger)pageIndex
 {
+    if (pageIndex == NSUIntegerMax) {
+        return;
+    }
     self.currentPageIndex = pageIndex + 1;
     [self.pageSlider setValue:self.currentPageIndex];
     NSString *localisedPageLabelText = NSLocalizedString(@"pageCountString", @"Page %d of %d");

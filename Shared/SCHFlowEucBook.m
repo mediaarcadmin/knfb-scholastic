@@ -32,18 +32,23 @@
 {
     SCHBookManager *bookManager = [SCHBookManager sharedBookManager];
     SCHAppBook *book = [bookManager bookWithIdentifier:newIsbn];
-
-    if (book && (self = [super init])) {
-        isbn = [newIsbn copy];
+    
+    if (book) {
+        SCHTextFlow *aTextFlow = [[SCHBookManager sharedBookManager] checkOutTextFlowForBookIdentifier:newIsbn];
+        BOOL aFakeCover = aTextFlow.flowTreeKind == KNFBTextFlowFlowTreeKindFlow;
+        NSString *aCacheDirectoryPath = [book libEucalyptusCache];
+    
+        if ((self = [super initWithBookID:nil
+                       cacheDirectoryPath:aCacheDirectoryPath
+                                 textFlow:aTextFlow
+                                fakeCover:aFakeCover])) 
+        {
+            isbn = [newIsbn copy];
         
-        self.textFlow = [[SCHBookManager sharedBookManager] checkOutTextFlowForBookIdentifier:newIsbn];
-        self.fakeCover = self.textFlow.flowTreeKind == KNFBTextFlowFlowTreeKindFlow;
                 
-        SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:newIsbn];
-        self.title = [book XPSTitle];
-        self.author = [book XPSAuthor];
-        
-        self.cacheDirectoryPath = [book libEucalyptusCache];
+            self.title = [book XPSTitle];
+            self.author = [book XPSAuthor];        
+        }
     }
     
     return self;
@@ -141,6 +146,16 @@
         
         return [eucIndexPoint autorelease];  
     }
+}
+
+-(NSArray *)hardBreakIndexPoints
+{
+
+}
+
+-(EucBookIndexPoint *)offTheEndIndexPoint
+{
+    
 }
 
 @end

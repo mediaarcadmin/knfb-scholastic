@@ -133,7 +133,7 @@
 
 - (NSString *)displayPageNumberForPageAtIndex:(NSUInteger)pageIndex
 {
-    return [self.textFlow displayPageNumberForPageNumber:pageIndex + 1];
+    return [self.textFlow contentsTableViewController:nil displayPageNumberForPageIndex:pageIndex];
 }
 
 - (void)goToBookPoint:(SCHBookPoint *)bookPoint animated:(BOOL)animated

@@ -48,19 +48,16 @@
         eucBookView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         eucBookView.vibratesOnInvalidTurn = NO;
         [eucBookView setPageTexture:[UIImage imageNamed: @"paper-white.png"] isDark:NO];
-        
-        [eucBookView addObserver:self forKeyPath:@"pageNumber" options:NSKeyValueObservingOptionInitial context:NULL];
-        if ([eucBookView respondsToSelector:@selector(currentIndexPoint)]) {
-            [eucBookView addObserver:self forKeyPath:@"currentIndexPoint" options:NSKeyValueObservingOptionInitial context:NULL];
-        }
+        [eucBookView addObserver:self forKeyPath:@"currentPageIndex" options:NSKeyValueObservingOptionInitial context:NULL];
         
         [self addSubview:eucBookView];
+        [self.delegate readingView:self hasMovedToPageAtIndex:0];
     }
 }
 
 - (void)dealloc
 {
-    [eucBookView removeObserver:self forKeyPath:@"pageNumber"];
+    [eucBookView removeObserver:self forKeyPath:@"currentPageIndex"];
     [eucBookView release], eucBookView = nil;
     
     if(paragraphSource) {
@@ -87,7 +84,10 @@
 
 - (void)jumpToPageAtIndex:(NSUInteger)pageIndex animated: (BOOL) animated
 {
-    [self.eucBookView goToPageNumber:pageIndex + 1 animated:animated];
+    EucBookPageIndexPoint *point = [[[EucBookPageIndexPoint alloc] init] autorelease];
+                           
+    //[self.eucBookView goToPageIndex:pageIndex animated:animated];
+    [self.eucBookView goToIndexPoint:point animated:animated];
 }
 
 - (NSInteger) maximumFontIndex
@@ -98,16 +98,9 @@
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object
                         change:(NSDictionary *)change context:(void *)context
 {
-    if ([keyPath isEqualToString:@"pageNumber"]) {
+    if ([keyPath isEqualToString:@"currentPageIndex"]) {
         if (self.delegate && [self.delegate respondsToSelector:@selector(readingView:hasMovedToPageAtIndex:)]) {
-            [self.delegate readingView:self hasMovedToPageAtIndex:eucBookView.pageNumber - 1];
-        }
-    } else if ([keyPath isEqualToString:@"currentIndexPoint"]) {
-        //EucBookPageIndexPoint *currentPoint = [object valueForKeyPath:keyPath];
-        
-        
-        if (self.delegate && [self.delegate respondsToSelector:@selector(readingView:hasMovedToPageAtIndex:)]) {
-            [self.delegate readingView:self hasMovedToPageAtIndex:eucBookView.pageNumber - 1];
+            [self.delegate readingView:self hasMovedToPageAtIndex:eucBookView.currentPageIndex];
         }
     }
 }
