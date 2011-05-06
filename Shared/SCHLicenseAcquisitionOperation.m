@@ -24,12 +24,17 @@
 
 @synthesize licenseAcquisitionSession;
 
-- (void)dealloc {
+#pragma mark - Object Lifecycle
+
+- (void)dealloc 
+{
 	self.licenseAcquisitionSession = nil;
 	[super dealloc];
 }
 
-- (void) start
+#pragma mark - Book Operation Methods
+
+- (void)start
 {
 #if !LOCALDEBUG
     licenseAcquisitionSession = [[SCHDrmLicenseAcquisitionSession alloc] initWithBook:self.isbn];
@@ -38,22 +43,7 @@
     [super start];
 }
 
-
-- (void) updateBookWithSuccess
-{
-    [[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateReadyForRightsParsing];
-    [[[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn] setProcessing:NO];
-    [self endOperation];
-}
-
-- (void) updateBookWithFailure
-{
-    [[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateError];
-    [[[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn] setProcessing:NO];
-    [self endOperation];
-}
-
-- (void) beginOperation
+- (void)beginOperation
 { 
 #if LOCALDEBUG
     [self updateBookWithSuccess];
@@ -65,6 +55,24 @@
 #endif
     [licenseAcquisitionSession acquireLicense:[[SCHAuthenticationManager sharedAuthenticationManager] aToken] bookID:self.isbn];
 }
+
+#pragma mark - Book Updates
+
+- (void)updateBookWithSuccess
+{
+    [[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateReadyForRightsParsing];
+    [[[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn] setProcessing:NO];
+    [self endOperation];
+}
+
+- (void)updateBookWithFailure
+{
+    [[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateError];
+    [[[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn] setProcessing:NO];
+    [self endOperation];
+}
+
+
 
 #pragma mark -
 #pragma mark DRM License Acquisition Session Delegate methods

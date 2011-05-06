@@ -78,34 +78,22 @@ static void pageFileXMLParsingStartElementHandler(void *ctx, const XML_Char *nam
     
 }
 
-#pragma mark -
+#pragma mark - Class Extension
 
 @interface SCHTextFlowPreParseOperation ()
     
-- (void) updateBookWithSuccess;
-- (void) updateBookWithFailure;
+- (void)updateBookWithSuccess;
+- (void)updateBookWithFailure;
 
 @end
 
+#pragma mark -
+
 @implementation SCHTextFlowPreParseOperation
 
-- (void) updateBookWithSuccess
-{
-    [[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateReadyForSmartZoomPreParse];
-    [[[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn] setProcessing:NO];
-    self.finished = YES;
-    self.executing = NO;
-}
+#pragma mark Book Operation methods
 
-- (void) updateBookWithFailure
-{
-    [[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateError];
-    [[[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn] setProcessing:NO];
-    self.finished = YES;
-    self.executing = NO;
-}
-
-- (void) beginOperation
+- (void)beginOperation
 {
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
     
@@ -165,18 +153,8 @@ static void pageFileXMLParsingStartElementHandler(void *ctx, const XML_Char *nam
 
     [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.isbn];
 
-    //[self setBookValue:[NSSet setWithSet:pageRangesSet] forKey:@"textFlowPageRanges"];
-    //NSLog(@"Ranges: %@", pageRangesSet);
-    
     NSSortDescriptor *sortPageDescriptor = [[[NSSortDescriptor alloc] initWithKey:@"startPageIndex" ascending:YES] autorelease];
     NSArray *sortedRanges = [[pageRangesSet allObjects] sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortPageDescriptor]];
-//    [self setBookValue:[NSNumber numberWithInteger:[[sortedRanges lastObject] endPageIndex]]
-  //              forKey:@"layoutPageEquivalentCount"];
-    
-
-//    for (KNFBTextFlowPageRange *range in sortedRanges) {
-//        NSLog(@"Range: %d to %d", range.startPageIndex, range.endPageIndex);
-//    }
     
     NSLog(@"layout page equivalent count: %@", [NSNumber numberWithInteger:[[sortedRanges lastObject] endPageIndex]]);
 
@@ -188,5 +166,25 @@ static void pageFileXMLParsingStartElementHandler(void *ctx, const XML_Char *nam
     
     [pool drain];
 }
+
+#pragma mark - Book Updates
+
+- (void)updateBookWithSuccess
+{
+    [[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateReadyForSmartZoomPreParse];
+    [[[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn] setProcessing:NO];
+    self.finished = YES;
+    self.executing = NO;
+}
+
+- (void)updateBookWithFailure
+{
+    [[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateError];
+    [[[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn] setProcessing:NO];
+    self.finished = YES;
+    self.executing = NO;
+}
+
+
 
 @end

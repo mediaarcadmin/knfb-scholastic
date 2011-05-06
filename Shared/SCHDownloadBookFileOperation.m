@@ -11,38 +11,29 @@
 #import "SCHAppBook.h"
 #import "SCHBookManager.h"
 
+#pragma mark - Class Extension
+
 @interface SCHDownloadBookFileOperation ()
 
-@property (readwrite, retain) NSString *localPath;
+@property (nonatomic, copy) NSString *localPath;
 
 @end
 
-
 @implementation SCHDownloadBookFileOperation
 
+@synthesize resume;
+@synthesize localPath;
+@synthesize fileType;
 
-@synthesize resume, localPath, fileType;
-
-- (void)dealloc {
-	self.localPath = nil;
-	
+- (void)dealloc 
+{
+    [localPath release], localPath = nil;
 	[super dealloc];
 }
 
-- (void) start
-{
-	NSString *type = @"XPS Book File";
-	
-	if (self.fileType == kSCHDownloadFileTypeCoverImage) {
-		type = @"Cover Image";
-	}
-	
-	NSLog(@"Starting %@ download.", type);
-    
-    [super start];
-}
+#pragma mark - Operation Methods
 
-- (void) beginOperation
+- (void)beginOperation
 {
     if (self.isbn == nil) {
         NSLog(@"WARNING: tried to download a book without setting the ISBN");
@@ -133,13 +124,12 @@
 	
 	[book setProcessing:NO];
 	return;
-	
 }
 
 #pragma mark -
 #pragma mark Notification methods
 
-- (void) percentageUpdate: (NSDictionary *) userInfo
+- (void)percentageUpdate:(NSDictionary *)userInfo
 {
 	if (self.fileType == kSCHDownloadFileTypeXPSBook) {
 		[[NSNotificationCenter defaultCenter] postNotificationName:@"SCHBookDownloadPercentageUpdate" object:nil userInfo:userInfo];
@@ -149,8 +139,8 @@
 #pragma mark -
 #pragma mark NSURLConnection delegate methods
 
-- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
-
+- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data 
+{
 	@synchronized(self) {
 		NSFileHandle *handle = [NSFileHandle fileHandleForWritingAtPath:self.localPath];
 		[handle seekToEndOfFile];

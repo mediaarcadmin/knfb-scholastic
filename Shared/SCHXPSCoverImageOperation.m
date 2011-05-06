@@ -13,12 +13,14 @@
 
 @implementation SCHXPSCoverImageOperation
 
+#pragma mark - Object Lifecycle
+
 - (void)dealloc {
 	[super dealloc];
 }
 
-
-- (void) beginOperation
+#pragma mark - Book Operation methods
+- (void)beginOperation
 {
 	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];
 	

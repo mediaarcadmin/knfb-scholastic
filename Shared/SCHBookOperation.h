@@ -13,7 +13,7 @@
     
 }
 
-@property (nonatomic, retain) NSString *isbn;
+@property (nonatomic, copy) NSString *isbn;
 @property BOOL executing;
 @property BOOL finished;
 

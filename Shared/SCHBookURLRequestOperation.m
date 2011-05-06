@@ -15,11 +15,16 @@
 
 @implementation SCHBookURLRequestOperation
 
-- (void)dealloc {
+#pragma mark - Object Lifecycle
+
+- (void)dealloc 
+{
 	[super dealloc];
 }
 
-- (void) beginOperation
+#pragma mark - Book Operation Methods
+
+- (void)beginOperation
 {
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(urlSuccess:) name:kSCHURLManagerSuccess object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(urlFailure:) name:kSCHURLManagerFailure object:nil];
@@ -39,7 +44,9 @@
 	
 }
 
-- (void) urlSuccess: (NSNotification *) notification
+#pragma mark - SCHURLManager Notifications
+
+- (void)urlSuccess:(NSNotification *) notification
 {
 	NSAssert([NSThread currentThread] == [NSThread mainThread], @"Notification is not fired on the main thread!");
 	NSDictionary *userInfo = [notification userInfo];
@@ -81,7 +88,7 @@
 	}
 }
 
-- (void) urlFailure: (NSNotification *) notification
+- (void)urlFailure:(NSNotification *)notification
 {
 	NSAssert([NSThread currentThread] == [NSThread mainThread], @"Notification is not fired on the main thread!");
 	NSDictionary *userInfo = [notification userInfo];

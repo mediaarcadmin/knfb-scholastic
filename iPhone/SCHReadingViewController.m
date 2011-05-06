@@ -194,7 +194,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [self.paperTypeSegmentedControl setSelectedSegmentIndex:storedType];
     
     self.wantsFullScreenLayout = YES;
-    self.navigationController.navigationBar.translucent = YES;
+    self.navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
     
     [self.view addSubview:self.readingView];
     [self.view sendSubviewToBack:self.readingView];
@@ -376,7 +376,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (IBAction)popViewController:(id)sender
 {
     [self cancelInitialTimer];
-    self.navigationController.navigationBar.translucent = NO;
     [self setToolbarVisibility:YES animated:NO];
 	[self.navigationController popViewControllerAnimated:YES];
 }
@@ -742,7 +741,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         [self.navigationController.navigationBar setAlpha:1.0f];
         [self.scrubberToolbar setAlpha:1.0f];
         if (!youngerMode) {
-            [olderBottomToolbar setAlpha:1.0f];
+            [self.olderBottomToolbar setAlpha:1.0f];
         }
         [self.optionsView setAlpha:1.0f];
         [self.topShadow setAlpha:1.0f];   
@@ -751,7 +750,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         [self.navigationController.navigationBar setAlpha:0.0f];
         [self.scrubberToolbar setAlpha:0.0f];
         if (!youngerMode) {
-            [olderBottomToolbar setAlpha:0.0f];
+            [self.olderBottomToolbar setAlpha:0.0f];
         }
         
         [self.optionsView setAlpha:0.0f];

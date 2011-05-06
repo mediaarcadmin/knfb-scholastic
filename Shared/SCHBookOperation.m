@@ -10,6 +10,8 @@
 #import "SCHAppBook.h"
 #import "SCHBookManager.h"
 
+#pragma mark - Class Extension
+
 @interface SCHBookOperation ()
 
 @end
@@ -17,55 +19,58 @@
 
 @implementation SCHBookOperation
 
-@synthesize isbn, executing, finished;
+@synthesize isbn;
+@synthesize executing;
+@synthesize finished;
 
-- (void)dealloc {
+#pragma mark - Object Lifecycle
+
+- (void)dealloc 
+{
 	[isbn release], isbn = nil;
 	
 	[super dealloc];
 }
 
-- (void) setIsbn:(NSString *) newIsbn
+- (void)setIsbn:(NSString *) newIsbn
 {
 	if ([self isExecuting] || [self isFinished]) {
 		return;
 	}
 	
-	NSString *oldIsbn = isbn;
-	isbn = [newIsbn retain];
-	[oldIsbn release];
+    [isbn release];
+    isbn = [newIsbn copy];
 	
     if (isbn) {
-        SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];
+        SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:isbn];
         [book setProcessing:YES];
     }
 }
 
-- (void) setIsbnWithoutUpdatingProcessingStatus: (NSString *) newIsbn
+- (void)setIsbnWithoutUpdatingProcessingStatus: (NSString *) newIsbn
 {
 	if ([self isExecuting] || [self isFinished]) {
 		return;
 	}
 	
-	NSString *oldIsbn = isbn;
-	isbn = [newIsbn retain];
-	[oldIsbn release];
+    [isbn release];
+    isbn = [newIsbn copy];
 }
 
-- (void) start
+#pragma mark - Operation Methods
+
+- (void)start
 {
 	if (self.isbn && ![self isCancelled]) {
 		[self beginOperation];
 	}
-	
 }
 
-- (void) cancel
+- (void)cancel
 {
     [self endOperation];
 	[super cancel];
 }
-
 
 - (BOOL)isConcurrent {
 	return YES;
@@ -79,7 +84,7 @@
 	return self.finished;
 }
 
-- (void) beginOperation
+- (void)beginOperation
 {
     // default method; to be overridden
     // this simply sets the book to "not processing" and ends the operation
@@ -95,7 +100,7 @@
 	
 }
 
-- (void) endOperation
+- (void)endOperation
 {
     [self willChangeValueForKey:@"isExecuting"];
     [self willChangeValueForKey:@"isFinished"];

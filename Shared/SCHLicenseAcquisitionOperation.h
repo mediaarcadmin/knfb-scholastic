@@ -15,6 +15,6 @@
     
 }
 
-@property (nonatomic, retain) SCHDrmLicenseAcquisitionSession* licenseAcquisitionSession;
+@property (nonatomic, retain) SCHDrmLicenseAcquisitionSession *licenseAcquisitionSession;
 
 @end

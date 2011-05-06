@@ -9,6 +9,9 @@
 #import <Foundation/Foundation.h>
 
 @class SCHPrivateAnnotations;
+@class SCHBookmark;
+@class SCHHighlight;
+@class SCHNote;
 @class SCHFavorite;
 @class SCHLastPage;
 
@@ -19,8 +22,11 @@
 - (id)initWithPrivateAnnotations:(SCHPrivateAnnotations *)privateAnnotations;
 
 - (NSArray *)bookmarks;
+- (void)addBookmark:(SCHBookmark *)newBookmark;
 - (NSArray *)highlightsForPage:(NSUInteger)page;
+- (void)addHighlight:(SCHHighlight *)newHighlight;
 - (NSArray *)notes;
+- (void)addNote:(SCHNote *)newNote;
 - (SCHFavorite *)favorite;
 - (SCHLastPage *)lastPage;
 

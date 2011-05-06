@@ -12,6 +12,8 @@
 #import "SCHAppBook.h"
 #import "KNFBXPSConstants.h"
 
+#pragma mark - Class Extension
+
 @interface SCHRightsParsingOperation ()
 
 @property BOOL success;
@@ -23,27 +25,30 @@
 
 @implementation SCHRightsParsingOperation
 
-@synthesize success, parsingComplete, metadataParser;
+@synthesize success;
+@synthesize parsingComplete;
+@synthesize metadataParser;
 
-- (void)dealloc {
-    self.metadataParser = nil;
+#pragma mark - Object Lifecycle
+
+- (void)dealloc 
+{
+    [metadataParser release], metadataParser = nil;
 	[super dealloc];
 }
 
-- (void) start
+#pragma mark - Book Operation methods
+
+- (void)start
 {
 	if (self.isbn && ![self isCancelled]) {
-		
 		self.success = YES;
-		
 		[super start];
 	}
 }
 
-
-- (void) beginOperation
+- (void)beginOperation
 {
-	
 	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];
 	SCHXPSProvider *xpsProvider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.isbn];
 	
@@ -91,8 +96,7 @@
 	return;
 }
 
-#pragma mark -
-#pragma mark NSXMLParserDelegate methods
+#pragma mark - NSXMLParserDelegate methods
 
 - (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName attributes:(NSDictionary *)attributeDict {
 
@@ -176,6 +180,5 @@
 	self.success = NO;
 	self.parsingComplete = YES;
 }
-
 
 @end
