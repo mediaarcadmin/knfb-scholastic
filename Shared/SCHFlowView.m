@@ -48,16 +48,15 @@
         eucBookView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         eucBookView.vibratesOnInvalidTurn = NO;
         [eucBookView setPageTexture:[UIImage imageNamed: @"paper-white.png"] isDark:NO];
-        [eucBookView addObserver:self forKeyPath:@"currentPageIndex" options:NSKeyValueObservingOptionInitial context:NULL];
+        [eucBookView addObserver:self forKeyPath:@"currentPageIndexPoint" options:NSKeyValueObservingOptionInitial context:NULL];
         
         [self addSubview:eucBookView];
-        [self.delegate readingView:self hasMovedToPageAtIndex:0];
     }
 }
 
 - (void)dealloc
 {
-    [eucBookView removeObserver:self forKeyPath:@"currentPageIndex"];
+    [eucBookView removeObserver:self forKeyPath:@"currentPageIndexPoint"];
     [eucBookView release], eucBookView = nil;
     
     if(paragraphSource) {
@@ -83,10 +82,13 @@
 }
 
 - (void)jumpToPageAtIndex:(NSUInteger)pageIndex animated: (BOOL) animated
+{                           
+    [self.eucBookView goToPageIndex:pageIndex animated:animated];
+}
+
+- (void)jumpToProgressPositionInBook:(CGFloat)progress animated:(BOOL)animated
 {
-    EucBookPageIndexPoint *point = [[[EucBookPageIndexPoint alloc] init] autorelease];
-                           
-    //[self.eucBookView goToPageIndex:pageIndex animated:animated];
+    EucBookPageIndexPoint *point = [self.eucBook estimatedIndexPointForPercentage:progress];
     [self.eucBookView goToIndexPoint:point animated:animated];
 }
 
@@ -98,9 +100,17 @@
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object
                         change:(NSDictionary *)change context:(void *)context
 {
-    if ([keyPath isEqualToString:@"currentPageIndex"]) {
-        if (self.delegate && [self.delegate respondsToSelector:@selector(readingView:hasMovedToPageAtIndex:)]) {
-            [self.delegate readingView:self hasMovedToPageAtIndex:eucBookView.currentPageIndex];
+    if ([keyPath isEqualToString:@"currentPageIndexPoint"]) {
+        
+        if ((eucBookView.pageCount != 0) && (eucBookView.pageCount != -1)) {
+            if (self.delegate && [self.delegate respondsToSelector:@selector(readingView:hasMovedToPageAtIndex:)]) {
+                [self.delegate readingView:self hasMovedToPageAtIndex:eucBookView.currentPageIndex];
+            }
+        } else {
+            CGFloat progress = [self.eucBook estimatedPercentageForIndexPoint:eucBookView.currentPageIndexPoint];
+            if (self.delegate && [self.delegate respondsToSelector:@selector(readingView:hasMovedToProgressPositionInBook:)]) {
+                [self.delegate readingView:self hasMovedToProgressPositionInBook:progress];
+            }
         }
     }
 }

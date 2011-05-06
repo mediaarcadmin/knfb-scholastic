@@ -25,4 +25,5 @@
 "Themes" = "Themes";
 "Add to Favorites" = "Add to Favorites";
 "Remove from Favorites" = "Remove from Favorites";
-"pageCountString" = "Page %d of %d";
+"Page %d of %d" = "Page %d of %d";
+"%d of book" = "%d of book";

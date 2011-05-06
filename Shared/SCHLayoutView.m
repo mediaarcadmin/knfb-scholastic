@@ -259,6 +259,11 @@
     self.currentBlock = nil;
 }
 
+- (void)jumpToProgressPositionInBook:(CGFloat)progress animated:(BOOL)animated
+{
+    NSLog(@"WARNING: jumpToProgressPositionInBook should not be called on Layout View.");
+}
+
 - (void)goToBookPoint:(SCHBookPoint *)bookPoint animated:(BOOL)animated
 {
     NSUInteger targetPage = bookPoint.layoutPage;

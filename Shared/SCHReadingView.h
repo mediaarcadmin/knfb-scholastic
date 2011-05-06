@@ -18,6 +18,7 @@
 @optional
 
 - (void)readingView:(SCHReadingView *)readingView hasMovedToPageAtIndex:(NSUInteger)pageIndex;
+- (void)readingView:(SCHReadingView *)readingView hasMovedToProgressPositionInBook:(CGFloat)progress;
 - (void)unhandledTouchOnPageForReadingView:(SCHReadingView *)readingView;
 
 @end
@@ -37,6 +38,8 @@
 // FIXME: change these to a protocol
 
 - (void)jumpToPageAtIndex:(NSUInteger)pageIndex animated:(BOOL)animated;
+- (void)jumpToProgressPositionInBook:(CGFloat)progress animated:(BOOL)animated;
+
 - (void)jumpToNextZoomBlock;
 - (void)jumpToPreviousZoomBlock;
 

@@ -58,6 +58,11 @@
     NSLog(@"WARNING: jumpToPage:animated: not being overridden correctly.");
 }
 
+- (void)jumpToProgressPositionInBook:(CGFloat)progress animated:(BOOL)animated
+{
+    NSLog(@"WARNING: jumpToProgressPositionInBook:animated: not being overridden correctly.");
+}
+
 - (void)jumpToNextZoomBlock
 {
     // Do nothing
