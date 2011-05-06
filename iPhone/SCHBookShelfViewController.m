@@ -9,7 +9,8 @@
 #import "SCHBookShelfViewController.h"
 
 #import <QuartzCore/QuartzCore.h>
-#import "SCHReadingOptionsView.h"
+#import "SCHReadingViewController.h"
+#import "NSNumber+ObjectTypes.h"
 #import "SCHBookManager.h"
 #import "SCHSyncManager.h"
 #import "SCHBookShelfGridViewCell.h"
@@ -359,32 +360,29 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 	
 	NSLog(@"Showing book %@.", book.Title);
 	
-	SCHReadingOptionsView *optionsView = [[SCHReadingOptionsView alloc] initWithNibName:nil bundle:nil];
-	optionsView.isbn = book.ContentIdentifier;
-    optionsView.profileItem = self.profileItem;
-	
-	NSString *thumbKey = [NSString stringWithFormat:@"thumb-%@", book.ContentIdentifier];
-	NSData *imageData = [self.componentCache objectForKey:thumbKey];
-	
-	if ([imageData length]) {
-		optionsView.thumbnailImage = [UIImage imageWithData:imageData];
-	} else {
-		SCHXPSProvider *provider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:book.ContentIdentifier];
-		imageData = [provider coverThumbData];
-		[[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:book.ContentIdentifier];
-		
-		if (!imageData) {
-			optionsView.thumbnailImage = [UIImage imageNamed:@"PlaceholderBook"];
-		} else {
-			[self.componentCache setObject:imageData forKey:thumbKey cost:[imageData length]];
-			optionsView.thumbnailImage = [UIImage imageWithData:imageData];
-		}
-		
-		optionsView.thumbnailImage = [UIImage imageWithData:imageData];
-	}
-	
-	[self.navigationController pushViewController:optionsView animated:YES];
-	[optionsView release], optionsView = nil;
+    SCHReadingViewController *readingController = nil;
+    
+    switch ([self.profileItem.BookshelfStyle intValue]) {
+        case kSCHBookshelfStyleYoungChild:
+            readingController = [[SCHReadingViewController alloc] initWithNibName:nil 
+                                                                           bundle:nil 
+                                                                             isbn:book.ContentIdentifier 
+                                                                           layout:SCHReadingViewLayoutTypeFixed];            
+            readingController.youngerMode = YES;
+            [self.navigationController pushViewController:readingController animated:YES];
+            break;
+            
+        case kSCHBookshelfStyleOlderChild:
+            readingController = [[SCHReadingViewController alloc] initWithNibName:nil 
+                                                                           bundle:nil 
+                                                                             isbn:book.ContentIdentifier 
+                                                                           layout:SCHReadingViewLayoutTypeFlow];            
+            readingController.youngerMode = NO;
+            [self.navigationController pushViewController:readingController animated:YES];            
+            break;            
+    }
+
+    [readingController release], readingController = nil;
 }
 
 - (void)gridView:(MRGridView *)gridView confirmationForDeletionAtIndex:(NSInteger)index 
