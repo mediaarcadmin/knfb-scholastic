@@ -156,6 +156,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    self.navigationController.navigationBar.barStyle = UIBarStyleBlackOpaque;
     [self setupAssetsForOrientation:self.interfaceOrientation];
 }
 
