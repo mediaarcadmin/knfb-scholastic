@@ -11,14 +11,6 @@
 
 @class EucBookPaginator;
 
-@interface SCHFlowPaginateOperation : SCHBookOperation {
-    
-    EucBookPaginator *paginator;
-    NSString *bookTitle;
-    CFAbsoluteTime startTime;
-    
-    BOOL bookCheckedOut;
-
-}
+@interface SCHFlowPaginateOperation : SCHBookOperation {}
 
 @end

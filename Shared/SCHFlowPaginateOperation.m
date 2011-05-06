@@ -9,12 +9,9 @@
 #import "SCHFlowPaginateOperation.h"
 #import "SCHAppBook.h"
 #import "SCHBookManager.h"
+#import "SCHFlowEucBook.h"
 
 @interface SCHFlowPaginateOperation ()
-
-@property (nonatomic, copy) NSString *bookTitle;
-@property (nonatomic, assign) CFAbsoluteTime startTime;
-@property (nonatomic, assign) BOOL bookCheckedOut;
 
 - (void) updateBookWithSuccess;
 - (void) updateBookWithFailure;
@@ -22,20 +19,6 @@
 @end
 
 @implementation SCHFlowPaginateOperation
-
-@synthesize bookTitle;
-@synthesize startTime;
-@synthesize bookCheckedOut;
-
-
-- (void)dealloc {
-     
-    if (self.bookCheckedOut) {
-        [[SCHBookManager sharedBookManager] checkInEucBookForBookIdentifier:self.isbn];
-    }
-    
-	[super dealloc];
-}
 
 - (void) updateBookWithSuccess
 {
@@ -53,8 +36,23 @@
 - (void) beginOperation
 {
     [self updateBookWithSuccess];
+    return;
+    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+    
+	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];    
+    CFAbsoluteTime startTime = CFAbsoluteTimeGetCurrent();
 
+    SCHFlowEucBook *eucBook = [[SCHBookManager sharedBookManager] checkOutEucBookForBookIdentifier:self.isbn];
+    if (eucBook) {
+        NSLog(@"Pagination of book %@ took %ld seconds", book.Title, (long)round(CFAbsoluteTimeGetCurrent() - startTime));
+        [[SCHBookManager sharedBookManager] checkInEucBookForBookIdentifier:self.isbn];
+        [self updateBookWithSuccess];
+    } else {
+        NSLog(@"Pagination of book %@ failed. Could not checkout out SCHFlowEucBook", book.Title);
+        [self updateBookWithFailure];
+    }
+    
+    [pool drain];
 }
-
 
 @end
