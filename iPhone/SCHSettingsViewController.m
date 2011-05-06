@@ -14,6 +14,7 @@
 #import "SCHCustomNavigationBar.h"
 #import "SCHURLManager.h"
 #import "SCHSyncManager.h"
+#import "SCHAboutViewController.h"
 
 extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
@@ -174,7 +175,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return(2);
+    return(4);
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
@@ -230,7 +231,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     switch ([indexPath section]) {
         case 0: {
             cell.accessoryView = nil;
-            cell.textLabel.textAlignment = UITextAlignmentCenter;
+            cell.textLabel.textAlignment = UITextAlignmentLeft;
             cell.textLabel.text = NSLocalizedString(@"De-register This Device", @"");
             cell.selectionStyle = UITableViewCellSelectionStyleBlue;
         } break;
@@ -246,6 +247,18 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
             cell.textLabel.text = NSLocalizedString(@"Space Saver Mode", @"");
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
         } break;  
+        case 2: {
+            cell.accessoryView = nil;
+            cell.textLabel.textAlignment = UITextAlignmentLeft;
+            cell.textLabel.text = NSLocalizedString(@"Privacy Policy", @"");
+            cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+        } break;
+        case 3: {
+            cell.accessoryView = nil;
+            cell.textLabel.textAlignment = UITextAlignmentLeft;
+            cell.textLabel.text = NSLocalizedString(@"About", @"");
+            cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+        } break;  
         default:
             break;
     }
@@ -258,6 +271,11 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     switch ([indexPath section]) {
         case 0: {
             [self deregistration];
+        } break;
+        case 3: {
+			SCHAboutViewController *aboutController = [[SCHAboutViewController alloc] init];
+			[self.navigationController pushViewController:aboutController animated:YES];
+			[aboutController release];
         } break;
         default:
             break;
