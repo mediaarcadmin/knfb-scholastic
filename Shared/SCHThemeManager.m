@@ -8,6 +8,8 @@
 
 #import "SCHThemeManager.h"
 
+#import "SCHAppProfile.h"
+
 static SCHThemeManager *sharedThemeManager = nil;
 
 static NSString * const kSCHThemeManagerDirectory = @"Themes";
@@ -15,8 +17,6 @@ static NSString * const kSCHThemeManagerLandscapePostFix = @"-Landscape";
 
 static NSString * const kSCHThemeManagerID = @"id";
 static NSString * const kSCHThemeManagerName = @"Name";
-
-static NSString * const kSCHThemeManagerSelectedTheme = @"ThemeManagerSelectedTheme";
 
 @interface SCHThemeManager ()
 
@@ -32,6 +32,7 @@ static NSString * const kSCHThemeManagerSelectedTheme = @"ThemeManagerSelectedTh
 @synthesize theme;
 @synthesize allThemes;
 @synthesize selectedTheme;
+@synthesize appProfile;
 
 #pragma mark - Singleton Instance methods
 
@@ -56,25 +57,12 @@ static NSString * const kSCHThemeManagerSelectedTheme = @"ThemeManagerSelectedTh
                                                      inDirectory:kSCHThemeManagerDirectory]] retain];
 
         if ([allThemes count] > 0) {
-            NSInteger userSelectedTheme = [[NSUserDefaults standardUserDefaults] integerForKey:kSCHThemeManagerSelectedTheme];
-            if (userSelectedTheme > 0) {
-                for (NSDictionary *dict in allThemes) {
-                    if ([[dict objectForKey:kSCHThemeManagerID] integerValue] == userSelectedTheme) {
-                        selectedTheme = [dict retain];
-                        break;
-                    }
-                }            
-            }
-
-            // if we couldnt find a theme use the default
-            if (selectedTheme == nil) {
-                for (NSDictionary *dict in allThemes) {
-                    if ([[dict objectForKey:kSCHThemeManagerDefault] boolValue] == YES) {
-                        selectedTheme = [dict retain];
-                        break;
-                    }
-                }            
-            }
+            for (NSDictionary *dict in allThemes) {
+                if ([[dict objectForKey:kSCHThemeManagerDefault] boolValue] == YES) {
+                    selectedTheme = [dict retain];
+                    break;
+                }
+            }            
         } else {
             [NSException raise:@"NoThemesException" 
                         format:@"Themes.plist has no configured Themes!"];
@@ -95,13 +83,41 @@ static NSString * const kSCHThemeManagerSelectedTheme = @"ThemeManagerSelectedTh
 
 #pragma mark - Accessor methods
 
+- (void)setAppProfile:(SCHAppProfile *)newAppProfile
+{
+    if (appProfile != newAppProfile) {
+        [newAppProfile retain];
+        [appProfile release];
+        appProfile = newAppProfile;
+        
+        if (appProfile != nil && [appProfile.SelectedTheme integerValue] > 0) {
+            for (NSDictionary *dict in allThemes) {
+                NSInteger profileSelectedTheme = [appProfile.SelectedTheme integerValue];
+                if ([[dict objectForKey:kSCHThemeManagerID] integerValue] == profileSelectedTheme) {
+                    selectedTheme = [dict retain];
+                    break;
+                }
+            }            
+        } else {
+            for (NSDictionary *dict in allThemes) {
+                if ([[dict objectForKey:kSCHThemeManagerDefault] boolValue] == YES) {
+                    selectedTheme = [dict retain];
+                    break;
+                }
+            }            
+        }
+        [[NSNotificationCenter defaultCenter] postNotificationName:kSCHThemeManagerThemeChangeNotification 
+                                                            object:self 
+                                                          userInfo:nil];				                    
+    }
+}
+
 - (void)setTheme:(NSString *)themeName
 {    
     for (NSDictionary *dict in self.allThemes) {
         if ([[dict objectForKey:kSCHThemeManagerName] isEqualToString:themeName] == YES) {
             self.selectedTheme = dict;
-            [[NSUserDefaults standardUserDefaults] setInteger:
-             [[self.selectedTheme objectForKey:kSCHThemeManagerID] integerValue] forKey:kSCHThemeManagerSelectedTheme];
+            appProfile.SelectedTheme = [self.selectedTheme objectForKey:kSCHThemeManagerID];
             [[NSNotificationCenter defaultCenter] postNotificationName:kSCHThemeManagerThemeChangeNotification 
                                                                 object:self 
                                                               userInfo:nil];				            
