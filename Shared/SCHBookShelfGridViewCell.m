@@ -85,13 +85,10 @@
 {
 	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];    
 	// image processing
-    BOOL immediateUpdate = [[SCHProcessingManager sharedProcessingManager] requestThumbImageForBookCover:self.asyncImageView
-																									size:self.asyncImageView.thumbSize
-                                                                                                    book:book];
-
-	if (immediateUpdate) {
-		[self setNeedsDisplay];
-	}
+    [[SCHProcessingManager sharedProcessingManager] requestThumbImageForBookCover:self.asyncImageView
+                                                                             size:self.asyncImageView.thumbSize
+                                                                             book:book];
+	[self setNeedsDisplay];
     
 	// book status
 	switch ([book processingState]) {

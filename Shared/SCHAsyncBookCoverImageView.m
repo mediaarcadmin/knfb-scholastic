@@ -36,7 +36,7 @@
 {
 	if ((self = [super initWithFrame:frame])) {
 		[self initialiseView];
-        self.coverSize = CGSizeZero;        
+        [self setImage:nil];
 	}
 	return(self);
 }
@@ -45,6 +45,7 @@
 {
 	if ((self = [super initWithImage:image])) {
 		[self initialiseView];
+        [self calculateCoverSize];
 	}
 	return(self);
 }
@@ -89,6 +90,7 @@
     }
     [super setImage:newImage];
     [self calculateCoverSize];
+    [self setNeedsLayout];
 }
 
 - (void)newImageAvailable:(NSNotification *)notification 
@@ -101,7 +103,6 @@
         
         if (image && self.thumbSize.width == itemSize.width && self.thumbSize.height == itemSize.height) {
             self.image = image;
-            [self setNeedsDisplay];
         }
     }
 }
@@ -111,7 +112,7 @@
 - (void)calculateCoverSize
 {
     if (self.usePlaceholderImage == YES) {
-        self.coverSize = CGSizeMake(self.frame.size.width, self.frame.size.height);
+        self.coverSize = CGSizeMake(self.image.size.width, self.image.size.height);
     } else {
         SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];
         CGSize fullImageSize = [book bookCoverImageSize];

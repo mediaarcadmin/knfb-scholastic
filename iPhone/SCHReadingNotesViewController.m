@@ -32,6 +32,7 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
 @synthesize noteCellNib;
 @synthesize notesTableView;
 @synthesize notesCell;
+@synthesize topShadow;
 @synthesize topBar;
 
 #pragma mark Object Synthesis
@@ -62,6 +63,7 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
 {
     [notesTableView release], notesTableView = nil;
     [topBar release], topBar = nil;
+    [topShadow release], topShadow = nil;
 }
 
 -(void)viewDidUnload {
@@ -91,8 +93,11 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
     [self.topBar setTintColor:[UIColor colorWithRed:0.490 green:0.773 blue:0.945 alpha:1.0]];
     [self setupAssetsForOrientation:self.interfaceOrientation];
     
-    // because we're iOS 4 and above, use UINib to cache access to the NIB
+    // because we're using iOS 4 and above, use UINib to cache access to the NIB
     self.noteCellNib = [UINib nibWithNibName:@"SCHReadingNotesTableCell" bundle:nil];
+    
+    [self.topShadow setImage:[[UIImage imageNamed:@"reading-view-iphone-top-shadow.png"] stretchableImageWithLeftCapWidth:15.0f topCapHeight:0]];
+
 }
 
 
@@ -113,9 +118,36 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
 {    
     if (UIInterfaceOrientationIsPortrait(orientation)) {
         [self.topBar setBackgroundImage:[UIImage imageNamed:@"reading-view-portrait-top-bar.png"]];
+
+        CGRect barFrame = self.topBar.frame;
+        if (barFrame.size.height == 34) {
+            barFrame.size.height = 44;
+            self.topBar.frame = barFrame;
+            
+            CGRect tableFrame = self.notesTableView.frame;
+            tableFrame.size.height -= 10;
+            tableFrame.origin.y += 10;
+            self.notesTableView.frame = tableFrame;
+        }
     } else {
         [self.topBar setBackgroundImage:[UIImage imageNamed:@"reading-view-landscape-top-bar.png"]];
+        
+        CGRect barFrame = self.topBar.frame;
+        if (barFrame.size.height == 44) {
+            barFrame.size.height = 34;
+            self.topBar.frame = barFrame;
+            
+            CGRect tableFrame = self.notesTableView.frame;
+            tableFrame.size.height += 10;
+            tableFrame.origin.y -= 10;
+            self.notesTableView.frame = tableFrame;
+        }
     }    
+    
+    CGRect topShadowFrame = self.topShadow.frame;
+    topShadowFrame.origin.y = CGRectGetMinY(self.notesTableView.frame);
+    self.topShadow.frame = topShadowFrame;
+
 }
 
 
