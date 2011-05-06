@@ -6,13 +6,13 @@
 		<key>BackgroundImage</key>
 		<string>Red/red-background</string>
 		<key>BooksIcon</key>
-		<string>Red/red-icon-books</string>
+		<string>Blue/blue-icon-books</string>
 		<key>ButtonImage</key>
-		<string>Red/red-button</string>
+		<string>Blue/button-cancel</string>
 		<key>DoneButtonImage</key>
-		<string>Red/red-button-done</string>
+		<string>Blue/button-done</string>
 		<key>HomeIcon</key>
-		<string>Red/red-icon-home</string>
+		<string>Blue/icon-home</string>
 		<key>id</key>
 		<integer>1</integer>
 		<key>Image</key>
@@ -24,7 +24,7 @@
 		<key>ShelfImage</key>
 		<string>Red/red-shelf</string>
 		<key>ThemeIcon</key>
-		<string>Red/red-icon-theme</string>
+		<string>Blue/icon-theme</string>
 	</dict>
 	<dict>
 		<key>BackgroundImage</key>
@@ -56,13 +56,13 @@
 		<key>BackgroundImage</key>
 		<string>Goosebumps/background</string>
 		<key>BooksIcon</key>
-		<string>Goosebumps/icon-books</string>
+		<string>Blue/blue-icon-books</string>
 		<key>ButtonImage</key>
-		<string>Goosebumps/button</string>
+		<string>Blue/button-cancel</string>
 		<key>DoneButtonImage</key>
-		<string>Goosebumps/button-done</string>
+		<string>Blue/button-done</string>
 		<key>HomeIcon</key>
-		<string>Goosebumps/icon-home</string>
+		<string>Blue/icon-home</string>
 		<key>id</key>
 		<integer>4</integer>
 		<key>Image</key>
@@ -74,7 +74,7 @@
 		<key>ShelfImage</key>
 		<string>Goosebumps/shelf</string>
 		<key>ThemeIcon</key>
-		<string>Goosebumps/icon-theme</string>
+		<string>Blue/icon-theme</string>
 	</dict>
 </array>
 </plist>
