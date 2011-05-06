@@ -31,7 +31,6 @@
 
 - (void) start
 {
-
 	NSString *type = @"XPS Book File";
 	
 	if (self.fileType == kSCHDownloadFileTypeCoverImage) {
@@ -45,16 +44,40 @@
 
 - (void) beginOperation
 {
+    if (self.isbn == nil) {
+        NSLog(@"WARNING: tried to download a book without setting the ISBN");
+        [[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateError];
+        [self endOperation];
+        return;
+    }
+    
 	NSError *error = nil;
 	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];
 	
-	// check first to see if the file has been created
+
+    if (book == nil) {
+        NSLog(@"WARNING: invalid SCHAppBook returned for ISBN %@", self.isbn);
+        [[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateError];
+        [self endOperation];
+        return;
+    }
+	
+    // check first to see if the file has been created
 	NSMutableURLRequest *request = nil;
 
 	if (self.fileType == kSCHDownloadFileTypeXPSBook) {
 	
 		self.localPath = [book xpsPath];
-		request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[book BookFileURL]]];
+        NSString *bookFileURL = [book BookFileURL];
+        
+        if (self.localPath == nil || bookFileURL == nil || [bookFileURL compare:@""] == NSOrderedSame) {
+            NSLog(@"WARNING: problem with SCHAppBook (ISBN: %@ localPath: %@ bookFileURL: %@", self.isbn, self.localPath, bookFileURL);
+            [[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateError];
+            [self endOperation];
+            return;
+        }
+        
+		request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:bookFileURL]];
 		
 	} else if (self.fileType == kSCHDownloadFileTypeCoverImage) {
 		
@@ -191,8 +214,7 @@
 {
 	NSLog(@"Error downloading file %@!", [self.localPath lastPathComponent]);
 
-//	[self.bookInfo setProcessingState:SCHBookProcessingStateError];
-	[[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateReadyForBookFileDownload];
+	[[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateError];
 
     [self endOperation];
 }

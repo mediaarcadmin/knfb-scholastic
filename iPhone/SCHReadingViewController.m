@@ -375,7 +375,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (IBAction)popViewController:(id)sender
 {
+    [self cancelInitialTimer];
     self.navigationController.navigationBar.translucent = NO;
+    [self setToolbarVisibility:YES animated:NO];
 	[self.navigationController popViewControllerAnimated:YES];
 }
 
