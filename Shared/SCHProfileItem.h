@@ -11,6 +11,7 @@
 #import "SCHSyncEntity.h"
 
 @class SCHAppBookOrder;
+@class SCHAppProfile;
 @class SCHContentProfileItem;
 @class SCHPrivateAnnotations;
 @class SCHBookAnnotations;
@@ -39,6 +40,7 @@ static NSString * const kSCHProfileItemCONTENT_IDENTIFIER = @"CONTENT_IDENTIFIER
 @property (nonatomic, retain) NSNumber * BookshelfStyle;
 @property (nonatomic, retain) NSString * LastName;
 @property (nonatomic, retain) NSSet* AppBookOrder;
+@property (nonatomic, retain) SCHAppProfile * AppProfile;
 
 - (NSMutableArray *)allISBNs;
 - (SCHBookAnnotations *)annotationsForBook:(NSString *)isbn;

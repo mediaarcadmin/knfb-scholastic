@@ -12,6 +12,7 @@
 
 #import "SCHLibreAccessWebService.h"
 #import "SCHProfileItem.h"
+#import "SCHAppProfile.h"
 
 @interface SCHProfileSyncComponent ()
 
@@ -199,7 +200,9 @@
 	newProfileItem.BookshelfStyle = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceBookshelfStyle]];
 	newProfileItem.LastName = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceLastName]];
 	newProfileItem.LastModified = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceLastModified]];
-	newProfileItem.State = [NSNumber numberWithStatus:kSCHStatusUnmodified];				
+	newProfileItem.State = [NSNumber numberWithStatus:kSCHStatusUnmodified];
+    
+    newProfileItem.AppProfile = [NSEntityDescription insertNewObjectForEntityForName:kSCHAppProfile inManagedObjectContext:self.managedObjectContext];
 }
 
 - (void)syncProfile:(NSDictionary *)webProfile withProfile:(SCHProfileItem *)localProfile

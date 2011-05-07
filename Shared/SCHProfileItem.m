@@ -51,6 +51,7 @@ static NSString * const kSCHProfileItemUserContentItemContentMetadataItem = @"Us
 @dynamic BookshelfStyle;
 @dynamic LastName;
 @dynamic AppBookOrder;
+@dynamic AppProfile;
 
 #pragma mark - Object lifecycle
 
