@@ -59,10 +59,10 @@
 		5233E0D913159CA80088F18C /* BITNetworkActivityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5233E0D713159CA80088F18C /* BITNetworkActivityManager.m */; };
 		5243545A13337BAC00282B53 /* SCHAppBookOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = 5243545713337BAC00282B53 /* SCHAppBookOrder.m */; };
 		5243545B13337BAC00282B53 /* SCHAppBookOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = 5243545713337BAC00282B53 /* SCHAppBookOrder.m */; };
-		525F33321372B39700CB5326 /* icon-books-Landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = 525F332E1372B39700CB5326 /* icon-books-Landscape.png */; };
-		525F33331372B39700CB5326 /* icon-books-Landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = 525F332E1372B39700CB5326 /* icon-books-Landscape.png */; };
-		525F33341372B39700CB5326 /* icon-books-Landscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 525F332F1372B39700CB5326 /* icon-books-Landscape@2x.png */; };
-		525F33351372B39700CB5326 /* icon-books-Landscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 525F332F1372B39700CB5326 /* icon-books-Landscape@2x.png */; };
+		525F33321372B39700CB5326 /* icon-books-landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = 525F332E1372B39700CB5326 /* icon-books-landscape.png */; };
+		525F33331372B39700CB5326 /* icon-books-landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = 525F332E1372B39700CB5326 /* icon-books-landscape.png */; };
+		525F33341372B39700CB5326 /* icon-books-landscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 525F332F1372B39700CB5326 /* icon-books-landscape@2x.png */; };
+		525F33351372B39700CB5326 /* icon-books-landscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 525F332F1372B39700CB5326 /* icon-books-landscape@2x.png */; };
 		525F33361372B39700CB5326 /* icon-books.png in Resources */ = {isa = PBXBuildFile; fileRef = 525F33301372B39700CB5326 /* icon-books.png */; };
 		525F33371372B39700CB5326 /* icon-books.png in Resources */ = {isa = PBXBuildFile; fileRef = 525F33301372B39700CB5326 /* icon-books.png */; };
 		525F33381372B39700CB5326 /* icon-books@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 525F33311372B39700CB5326 /* icon-books@2x.png */; };
@@ -920,8 +920,8 @@
 		5233E0D713159CA80088F18C /* BITNetworkActivityManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BITNetworkActivityManager.m; path = Shared/BITNetworkActivityManager.m; sourceTree = "<group>"; };
 		5243545613337BAC00282B53 /* SCHAppBookOrder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAppBookOrder.h; path = Shared/SCHAppBookOrder.h; sourceTree = "<group>"; };
 		5243545713337BAC00282B53 /* SCHAppBookOrder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHAppBookOrder.m; path = Shared/SCHAppBookOrder.m; sourceTree = "<group>"; };
-		525F332E1372B39700CB5326 /* icon-books-Landscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-books-Landscape.png"; path = "Resources/icon-books-Landscape.png"; sourceTree = "<group>"; };
-		525F332F1372B39700CB5326 /* icon-books-Landscape@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-books-Landscape@2x.png"; path = "Resources/icon-books-Landscape@2x.png"; sourceTree = "<group>"; };
+		525F332E1372B39700CB5326 /* icon-books-landscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-books-landscape.png"; path = "Resources/icon-books-landscape.png"; sourceTree = "<group>"; };
+		525F332F1372B39700CB5326 /* icon-books-landscape@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-books-landscape@2x.png"; path = "Resources/icon-books-landscape@2x.png"; sourceTree = "<group>"; };
 		525F33301372B39700CB5326 /* icon-books.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-books.png"; path = "Resources/icon-books.png"; sourceTree = "<group>"; };
 		525F33311372B39700CB5326 /* icon-books@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-books@2x.png"; path = "Resources/icon-books@2x.png"; sourceTree = "<group>"; };
 		5266D34A13007A1C004E3AC6 /* SCHTopFavoritesComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHTopFavoritesComponent.h; path = Shared/SCHTopFavoritesComponent.h; sourceTree = "<group>"; };
@@ -1846,11 +1846,12 @@
 				A38CF1FA1374503300EABF43 /* credits.html */,
 				C901113E1361ECDB006694B3 /* Default@2x.png */,
 				C901113B1361ECC1006694B3 /* Default.png */,
+				528A2CD112CCDC9E0053A343 /* Icons */,
 				C9A11290136082A6007FD763 /* UIAssets */,
 				52E622F31358385D00245CA7 /* Themes */,
 				F80FED601355DD6D00DEB3C1 /* icon-magnify.png */,
-				525F332E1372B39700CB5326 /* icon-books-Landscape.png */,
-				525F332F1372B39700CB5326 /* icon-books-Landscape@2x.png */,
+				525F332E1372B39700CB5326 /* icon-books-landscape.png */,
+				525F332F1372B39700CB5326 /* icon-books-landscape@2x.png */,
 				525F33301372B39700CB5326 /* icon-books.png */,
 				525F33311372B39700CB5326 /* icon-books@2x.png */,
 				F80FED611355DD6D00DEB3C1 /* icon-magnify@2x.png */,
@@ -1879,7 +1880,6 @@
 				C908D880133F941100661718 /* paper-white.png */,
 				F8C6DA95136073D300D9E953 /* paper-white@2x.png */,
 				C908D881133F941100661718 /* booktexture-nocover.png */,
-				528A2CD112CCDC9E0053A343 /* Icons */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -3147,8 +3147,8 @@
 				C953FC541370796F003DA646 /* icon-play-landscape@2x.png in Resources */,
 				F84C00721371B612009A210F /* SCHReadingNotesViewController.xib in Resources */,
 				F84C00751371C1D0009A210F /* SCHReadingNotesTableCell.xib in Resources */,
-				525F33321372B39700CB5326 /* icon-books-Landscape.png in Resources */,
-				525F33341372B39700CB5326 /* icon-books-Landscape@2x.png in Resources */,
+				525F33321372B39700CB5326 /* icon-books-landscape.png in Resources */,
+				525F33341372B39700CB5326 /* icon-books-landscape@2x.png in Resources */,
 				525F33361372B39700CB5326 /* icon-books.png in Resources */,
 				525F33381372B39700CB5326 /* icon-books@2x.png in Resources */,
 				A38CF1FB1374503300EABF43 /* credits.html in Resources */,
@@ -3341,8 +3341,8 @@
 				C953FC551370796F003DA646 /* icon-play-landscape@2x.png in Resources */,
 				F84C00731371B612009A210F /* SCHReadingNotesViewController.xib in Resources */,
 				F84C00761371C1D0009A210F /* SCHReadingNotesTableCell.xib in Resources */,
-				525F33331372B39700CB5326 /* icon-books-Landscape.png in Resources */,
-				525F33351372B39700CB5326 /* icon-books-Landscape@2x.png in Resources */,
+				525F33331372B39700CB5326 /* icon-books-landscape.png in Resources */,
+				525F33351372B39700CB5326 /* icon-books-landscape@2x.png in Resources */,
 				525F33371372B39700CB5326 /* icon-books.png in Resources */,
 				525F33391372B39700CB5326 /* icon-books@2x.png in Resources */,
 				A38CF1FC1374503300EABF43 /* credits.html in Resources */,
