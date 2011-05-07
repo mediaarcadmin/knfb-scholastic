@@ -103,23 +103,17 @@
     if ([keyPath isEqualToString:@"currentPageIndexPoint"]) {
         
         if ((eucBookView.pageCount != 0) && (eucBookView.pageCount != -1)) {
-            if (self.delegate && [self.delegate respondsToSelector:@selector(readingView:hasMovedToPageAtIndex:)]) {
-                [self.delegate readingView:self hasMovedToPageAtIndex:eucBookView.currentPageIndex];
-            }
+            [self.delegate readingView:self hasMovedToPageAtIndex:eucBookView.currentPageIndex];
         } else {
             CGFloat progress = [self.eucBook estimatedPercentageForIndexPoint:eucBookView.currentPageIndexPoint];
-            if (self.delegate && [self.delegate respondsToSelector:@selector(readingView:hasMovedToProgressPositionInBook:)]) {
-                [self.delegate readingView:self hasMovedToProgressPositionInBook:progress];
-            }
+            [self.delegate readingView:self hasMovedToProgressPositionInBook:progress];
         }
     }
 }
 
 - (void)bookView:(EucBookView *)bookView unhandledTapAtPoint:(CGPoint)point
 {
-    if (self.delegate && [self.delegate respondsToSelector:@selector(unhandledTouchOnPageForReadingView:)]) {
-        [self.delegate unhandledTouchOnPageForReadingView:self];
-    }
+    [self.delegate toggleToolbars];
 }
 
 #pragma mark - SCHReadingView methods

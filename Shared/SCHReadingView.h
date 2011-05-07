@@ -15,11 +15,13 @@
 
 @protocol SCHReadingViewDelegate <NSObject>
 
-@optional
+@required
 
 - (void)readingView:(SCHReadingView *)readingView hasMovedToPageAtIndex:(NSUInteger)pageIndex;
 - (void)readingView:(SCHReadingView *)readingView hasMovedToProgressPositionInBook:(CGFloat)progress;
-- (void)unhandledTouchOnPageForReadingView:(SCHReadingView *)readingView;
+
+- (void)toggleToolbars;
+- (void)hideToolbars;
 
 @end
 

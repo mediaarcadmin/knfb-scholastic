@@ -38,6 +38,7 @@
 - (void)registerGesturesForPageTurningView:(EucPageTurningView *)aPageTurningView;
 - (void)zoomToCurrentBlock;
 - (void)zoomOutToCurrentPage;
+- (void)zoomAtPoint:(CGPoint)point ;
 - (CGPoint)translationToFitRect:(CGRect)aRect onPageAtIndex:(NSUInteger)pageIndex zoomScale:(CGFloat *)scale;
 
 @end
@@ -151,10 +152,7 @@
 - (void)setCurrentPageIndex:(NSUInteger)newPageIndex
 {
     currentPageIndex = newPageIndex;
-    
-    if (self.delegate && [self.delegate respondsToSelector:@selector(readingView:hasMovedToPageAtIndex:)]) {
-        [self.delegate readingView:self hasMovedToPageAtIndex:currentPageIndex];
-    }
+    [self.delegate readingView:self hasMovedToPageAtIndex:currentPageIndex];
 }
 
 - (void)jumpToZoomBlock:(id)zoomBlock
@@ -494,23 +492,23 @@ CGAffineTransform transformRectToFitRect(CGRect sourceRect, CGRect targetRect, B
 #pragma mark - Touch handling
 
 - (void)registerGesturesForPageTurningView:(EucPageTurningView *)aPageTurningView;
-{
+{    
     UITapGestureRecognizer *doubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDoubleTap:)];
     doubleTap.numberOfTapsRequired = 2;
     [aPageTurningView addGestureRecognizer:doubleTap];
-    
+   
     [aPageTurningView.tapGestureRecognizer removeTarget:nil action:nil]; 
     [aPageTurningView.tapGestureRecognizer addTarget:self action:@selector(handleSingleTap:)];
-    
+   
     [aPageTurningView.tapGestureRecognizer requireGestureRecognizerToFail:doubleTap];
-    
+
     aPageTurningView.tapGestureRecognizer.cancelsTouchesInView = NO;
     
     [doubleTap release];
 }
 
-- (void)handleSingleTap:(UITapGestureRecognizer *)sender {     
-
+- (void)handleSingleTap:(UITapGestureRecognizer *)sender 
+{     
     if (sender.state == UIGestureRecognizerStateEnded) {
         CGPoint point = [sender locationInView:self];
         
@@ -528,25 +526,48 @@ CGAffineTransform transformRectToFitRect(CGRect sourceRect, CGRect targetRect, B
                     [self jumpToPageAtIndex:self.pageTurningView.rightPageIndex - 1 animated:YES];
                 }
             }
-            //[self.delegate hideToolbars];
+            [self.delegate hideToolbars];
         } else if (point.x >= rightHandHotZone) {
             if (self.smartZoomActive) {
                 [self jumpToNextZoomBlock];
             } else {
                 [self jumpToPageAtIndex:self.pageTurningView.rightPageIndex + 1 animated:YES];
             }
-            //[self.delegate hideToolbars];
+            [self.delegate hideToolbars];
         } else {
-            if (self.delegate && [self.delegate respondsToSelector:@selector(unhandledTouchOnPageForReadingView:)]) {
-                [self.delegate unhandledTouchOnPageForReadingView:self];
-            }
+            [self.delegate toggleToolbars];
         }
     }
     
 }
 
-- (void)handleDoubleTap:(UITapGestureRecognizer *)sender {     
+- (void)handleDoubleTap:(UITapGestureRecognizer *)sender 
+{     
+    if ((sender.state == UIGestureRecognizerStateEnded) && 
+        !self.pageTurningView.animating)
+    {
+        [self zoomAtPoint:[sender locationInView:self]];
+        [self.delegate hideToolbars];
+    } else {
+        [self.delegate toggleToolbars]; 
+    }
+}
 
+- (void)zoomAtPoint:(CGPoint)point 
+{
+    EucPageTurningView *myPageTurningView = self.pageTurningView;
+    
+    CGFloat currentZoomFactor = myPageTurningView.zoomFactor;
+    CGFloat minZoomFactor = myPageTurningView.fitToBoundsZoomFactor;
+    CGFloat doubleFitToBoundsZoomFactor = minZoomFactor * 2;
+
+    if (currentZoomFactor < doubleFitToBoundsZoomFactor) {
+        CGPoint offset = CGPointMake((CGRectGetMidX(myPageTurningView.bounds) - point.x) * doubleFitToBoundsZoomFactor, (CGRectGetMidY(myPageTurningView.bounds) - point.y) * doubleFitToBoundsZoomFactor); 
+            [myPageTurningView setTranslation:offset zoomFactor:doubleFitToBoundsZoomFactor animated:YES];
+    } else {
+        [self zoomOutToCurrentPage];
+    }
+ 
 }
 
 @end

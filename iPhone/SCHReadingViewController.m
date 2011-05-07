@@ -553,9 +553,14 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [self updateScrubberValue];
 }
 
-- (void)unhandledTouchOnPageForReadingView:(SCHReadingView *)readingView
+- (void)toggleToolbars
 {
     [self toggleToolbarVisibility];
+}
+
+- (void)hideToolbars
+{
+    [self setToolbarVisibility:NO animated:YES];
 }
 
 - (void)adjustScrubberInfoViewHeightForImageSize:(CGSize)imageSize

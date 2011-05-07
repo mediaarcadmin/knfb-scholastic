@@ -44,6 +44,8 @@
         // Initialization code
         isbn = [aIsbn retain];
         self.opaque = YES;
+        self.multipleTouchEnabled = YES;
+        self.userInteractionEnabled = YES;
         
         xpsProvider = [[[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.isbn] retain];
         textFlow    = [[[SCHBookManager sharedBookManager] checkOutTextFlowForBookIdentifier:self.isbn] retain];
