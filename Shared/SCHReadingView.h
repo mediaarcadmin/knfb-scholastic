@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <libEucalyptus/EucSelector.h>
 
 @class SCHReadingView;
 @class SCHBookPoint;
@@ -25,7 +26,7 @@
 
 @end
 
-@interface SCHReadingView : UIView {
+@interface SCHReadingView : UIView <EucSelectorDelegate> {
     
 }
 
@@ -59,5 +60,8 @@
 - (NSString *)displayPageNumberForPageAtIndex:(NSUInteger)pageIndex;
 
 - (void)goToBookPoint:(SCHBookPoint *)bookPoint animated:(BOOL)animated;
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration;
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation;
 
 @end

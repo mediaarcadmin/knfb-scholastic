@@ -310,10 +310,15 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
     self.currentlyRotating = NO;
+    [self.readingView didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+    
+    [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
+    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+    
     self.currentlyRotating = YES;
     if ([self.scrubberInfoView superview]) {
         
@@ -362,6 +367,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     }
     
     [self setupAssetsForOrientation:toInterfaceOrientation];
+    
+    [self.readingView willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
 }
 
 #pragma mark -

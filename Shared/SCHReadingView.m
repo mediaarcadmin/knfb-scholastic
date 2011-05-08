@@ -12,6 +12,7 @@
 #import "SCHTextFlow.h"
 #import "SCHBookPoint.h"
 #import <libEucalyptus/THPair.h>
+#import <libEucalyptus/EucMenuItem.h>
 
 @implementation SCHReadingView
 
@@ -148,5 +149,31 @@
     return;
 }
 
+#pragma mark - EucSelectorDelegate
+
+- (NSArray *)menuItemsForEucSelector:(EucSelector *)selector 
+{
+    EucMenuItem *dictionaryItem = [[[EucMenuItem alloc] initWithTitle:NSLocalizedString(@"Test Menu", "Test Menu option in popup menu")
+                                                               action:nil] autorelease];
+    
+    NSArray *ret = [NSArray arrayWithObjects:dictionaryItem, nil];
+    
+    return ret;
+}
+
+- (UIColor *)eucSelector:(EucSelector *)selector willBeginEditingHighlightWithRange:(EucSelectorRange *)selectedRange
+{
+    return nil;
+}
+
+- (void)eucSelector:(EucSelector *)selector didEndEditingHighlightWithRange:(EucSelectorRange *)originalRange movedToRange:(EucSelectorRange *)movedToRange;
+{
+    
+}
+
+#pragma mark - Rotation
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {}
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {}
 
 @end

@@ -43,8 +43,8 @@
     
     if((eucBookView = [[EucBookView alloc] initWithFrame:self.bounds book:eucBook])) {
         eucBookView.delegate = self;
-        //eucBookView.allowsSelection = YES;
-        //eucBookView.selectorDelegate = self;
+        eucBookView.allowsSelection = YES;
+        eucBookView.selectorDelegate = self;
         eucBookView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         eucBookView.vibratesOnInvalidTurn = NO;
         [eucBookView setPageTexture:[UIImage imageNamed: @"paper-white.png"] isDark:NO];
@@ -76,6 +76,8 @@
 {
     self = [super initWithFrame:frame isbn:isbn];
     if (self) {        
+        self.opaque = YES;
+
         [self initialiseView];
     }
     return self;
