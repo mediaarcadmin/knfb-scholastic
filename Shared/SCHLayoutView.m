@@ -78,12 +78,6 @@
         [blockSource release], blockSource = nil;
     }
     
-    if (selector) {
-        [selector removeObserver:self forKeyPath:@"tracking"];
-        [selector detatch];
-        [selector release], selector = nil;
-    }
-    
     [pageTurningView release], pageTurningView = nil;
     [pageCropsCache release], pageCropsCache = nil;
     [layoutCacheLock release], layoutCacheLock = nil;
@@ -181,6 +175,17 @@
         // to be called on the pageTurningView before we start the zoom
         // (Ick!).
         [self performSelector:@selector(zoomForNewPageAnimatedWithNumberThunk:) withObject:[NSNumber numberWithBool:NO] afterDelay:0.0f];
+    }
+}
+
+- (void)willMoveToSuperview:(UIView *)newSuperview
+{
+    if (!newSuperview) {
+        if (selector) {
+            [selector removeObserver:self forKeyPath:@"tracking"];
+            [selector detatch];
+            [selector release], selector = nil;
+        }
     }
 }
 
