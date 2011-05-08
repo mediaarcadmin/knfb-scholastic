@@ -23,7 +23,6 @@ typedef enum
 	SCHReadingViewLayoutTypeFixed,
 } SCHReadingViewLayoutType;
 
-@class SCHXPSProvider;
 @class SCHCustomToolbar;
 
 @interface SCHReadingViewController : UIViewController <SCHReadingViewDelegate> 

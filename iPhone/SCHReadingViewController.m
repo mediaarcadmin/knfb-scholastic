@@ -41,7 +41,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 @property (nonatomic, assign) CGFloat currentBookProgress;
 
 // XPS book data provider
-@property (nonatomic, assign) SCHXPSProvider *xpsProvider;
+@property (nonatomic, retain) SCHXPSProvider *xpsProvider;
 
 // temporary flag to prevent nav bar from being positioned behind the status bar on rotation
 @property (nonatomic, assign) BOOL currentlyRotating;
@@ -110,11 +110,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (void)dealloc 
 {
     [self releaseViewObjects];
-
-    [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:isbn];
-    
-    [xpsProvider release], xpsProvider = nil;
-    [readingView release], readingView = nil;
     [isbn release], isbn = nil;
     
     [super dealloc];
@@ -141,6 +136,13 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [fontSegmentedControl release], fontSegmentedControl = nil;
     [flowFixedSegmentedControl release], flowFixedSegmentedControl = nil;
     [paperTypeSegmentedControl release], paperTypeSegmentedControl = nil;
+    
+    if (xpsProvider) {
+        [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:isbn];
+    }
+    
+    [xpsProvider release], xpsProvider = nil;
+    [readingView release], readingView = nil;
 }
 
 -(void)viewDidUnload 
@@ -175,9 +177,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];
     
     NSLog(@"XPSCategory: %@", book.XPSCategory);
-    
-    self.readingView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    self.readingView.delegate = self;
     
     if (self.layoutType == SCHReadingViewLayoutTypeFlow) {
         [self.fontSegmentedControl setEnabled:YES forSegmentAtIndex:0];
@@ -430,7 +429,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
             [self.fontSegmentedControl setEnabled:YES forSegmentAtIndex:0];
             [self.fontSegmentedControl setEnabled:YES forSegmentAtIndex:1];
             
-            self.readingView = [[SCHFlowView alloc] initWithFrame:self.view.bounds isbn:self.isbn];
+            SCHFlowView *flowView = [[SCHFlowView alloc] initWithFrame:self.view.bounds isbn:self.isbn];
+            self.readingView = flowView;
+            [flowView release];
             
             break;
         case SCHReadingViewLayoutTypeFixed:    
@@ -438,7 +439,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
             [self.fontSegmentedControl setEnabled:NO forSegmentAtIndex:0];
             [self.fontSegmentedControl setEnabled:NO forSegmentAtIndex:1];
             
-            self.readingView = [[SCHLayoutView alloc] initWithFrame:self.view.bounds isbn:self.isbn]; 
+            SCHLayoutView *layoutView = [[SCHLayoutView alloc] initWithFrame:self.view.bounds isbn:self.isbn];
+            self.readingView = layoutView;
+            [layoutView release];
             
             break;
     }

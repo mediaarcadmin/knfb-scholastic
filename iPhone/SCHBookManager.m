@@ -703,9 +703,9 @@ static int checkoutCountBlockSource = 0;
 
 - (void)checkInBlockSourceForBookIdentifier:(NSString *)isbn
 {
-    NSMutableDictionary *myCachedBlockSources = self.cachedParagraphSources;
+    NSMutableDictionary *myCachedBlockSources = self.cachedBlockSources;
     @synchronized(myCachedBlockSources) {
-        NSCountedSet *myCachedBlockSourceCheckoutCounts = self.cachedParagraphSourceCheckoutCounts;
+        NSCountedSet *myCachedBlockSourceCheckoutCounts = self.cachedBlockSourceCheckoutCounts;
         NSUInteger count = [myCachedBlockSourceCheckoutCounts countForObject:isbn];
         if(count == 0) {
             NSLog(@"Warning! Unexpected checkin of non-checked-out paragraph source");

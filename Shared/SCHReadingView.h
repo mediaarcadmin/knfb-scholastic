@@ -30,7 +30,7 @@
 }
 
 @property (nonatomic, retain) NSString *isbn;
-@property (nonatomic, retain) id <SCHReadingViewDelegate> delegate;
+@property (nonatomic, assign) id <SCHReadingViewDelegate> delegate;
 @property (nonatomic, retain) SCHXPSProvider *xpsProvider;
 @property (nonatomic, retain) SCHTextFlow *textFlow;
 
