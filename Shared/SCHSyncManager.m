@@ -274,7 +274,7 @@ static NSTimeInterval const kSCHSyncManagerHeartbeatInterval = 30.0;
 	[ret setObject:[userContentItem valueForKey:kSCHLibreAccessWebServiceFormat] forKey:kSCHLibreAccessWebServiceFormat];
 	
 	NSMutableDictionary *privateAnnotation = [NSMutableDictionary dictionary];
-	NSDate *date = [NSDate distantPast];
+	NSDate *date = [self.annotationSyncComponent lastSyncDate];
 	
 	[privateAnnotation setObject:[userContentItem valueForKey:kSCHLibreAccessWebServiceVersion] forKey:kSCHLibreAccessWebServiceVersion];
 	[privateAnnotation setObject:date forKey:kSCHLibreAccessWebServiceHighlightsAfter];
