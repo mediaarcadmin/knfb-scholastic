@@ -91,13 +91,13 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
 
     if (self.controllerType == kSCHControllerPasswordOnlyView ||
         self.controllerType == kSCHControllerDoublePasswordView) {
-        leftBBI = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel:)];
+        leftBBI = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel:)] autorelease];
 
         // FIXME - even the width to centre the title properly - don't like this
         topViewFrame = CGRectMake(0, 0, 59, 34);
     } else {
         UIView *leftView = [[UIView alloc] initWithFrame:topViewFrame];
-        leftBBI = [[UIBarButtonItem alloc] initWithCustomView:leftView];
+        leftBBI = [[[UIBarButtonItem alloc] initWithCustomView:leftView] autorelease];
         [leftView release];
     }
     
@@ -112,10 +112,10 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
     UIImageView *headerImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo"]];
     topBar.items = [NSArray arrayWithObjects:
                     leftBBI,
-                    [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil], 
-                    [[UIBarButtonItem alloc] initWithCustomView:headerImage],
-                    [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil], 
-                    [[UIBarButtonItem alloc] initWithCustomView:rightView],
+                    [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease], 
+                    [[[UIBarButtonItem alloc] initWithCustomView:headerImage] autorelease],
+                    [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease], 
+                    [[[UIBarButtonItem alloc] initWithCustomView:rightView] autorelease],
                     nil];
     [headerImage release];
         
@@ -123,10 +123,10 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
         titleTextLabel.text = @"Password";
         topBar.items = [NSArray arrayWithObjects:
                         leftBBI,
-                        [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil], 
-                        [[UIBarButtonItem alloc] initWithCustomView:self.titleTextLabel],
-                        [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil], 
-                        [[UIBarButtonItem alloc] initWithCustomView:rightView],
+                        [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease], 
+                        [[[UIBarButtonItem alloc] initWithCustomView:self.titleTextLabel] autorelease],
+                        [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease], 
+                        [[[UIBarButtonItem alloc] initWithCustomView:rightView] autorelease],
                         nil];
     }
     
@@ -380,7 +380,7 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
     cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     
     if (!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier] autorelease];
         cell.backgroundColor = [UIColor clearColor];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.accessoryType = UITableViewCellAccessoryNone;
@@ -499,10 +499,10 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
 
 - (void)keyboardWillShow:(NSNotification *) notification
 {
- 	CGRect keyboardFrame;
-	CGFloat keyboardHeight;
-    double keyboardAnimDuration;
-    UIViewAnimationCurve keyboardCurve;
+ 	CGRect keyboardFrame = CGRectNull;
+	CGFloat keyboardHeight = 0;
+    double keyboardAnimDuration = 0;
+    UIViewAnimationCurve keyboardCurve = UIViewAnimationCurveLinear;
 
 	// 3.2 and above
 	if (UIKeyboardFrameEndUserInfoKey) {		
@@ -537,21 +537,21 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
 - (void)keyboardWillHide:(NSNotification *) notification
 {
 //    NSLog(@"Firing keyboardWillHide");
- 	CGRect keyboardFrame;
-	CGFloat keyboardHeight;
-    double keyboardAnimDuration;
-    UIViewAnimationCurve keyboardCurve;
+ 	CGRect keyboardFrame = CGRectNull;
+//	CGFloat keyboardHeight = 0;
+    double keyboardAnimDuration = 0;
+    UIViewAnimationCurve keyboardCurve = UIViewAnimationCurveLinear;
 	
 	// 3.2 and above
 	if (UIKeyboardFrameEndUserInfoKey) {		
         [[notification.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] getValue:&keyboardFrame];		
         [[notification.userInfo valueForKey:UIKeyboardAnimationDurationUserInfoKey] getValue:&keyboardAnimDuration];		
         [[notification.userInfo valueForKey:UIKeyboardAnimationCurveUserInfoKey] getValue:&keyboardCurve];		
-        if (UIDeviceOrientationIsPortrait([[UIDevice currentDevice] orientation])) {
-            keyboardHeight = keyboardFrame.size.height;
-        } else {
-            keyboardHeight = keyboardFrame.size.width;
-        }
+//        if (UIDeviceOrientationIsPortrait([[UIDevice currentDevice] orientation])) {
+//            keyboardHeight = keyboardFrame.size.height;
+//        } else {
+//            keyboardHeight = keyboardFrame.size.width;
+//        }
     }
     
     float barHeight = MIN(self.topBar.frame.size.height, self.topBar.frame.size.width);
