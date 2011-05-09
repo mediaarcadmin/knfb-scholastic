@@ -41,7 +41,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 @property (nonatomic, assign) CGFloat currentBookProgress;
 
 // XPS book data provider
-@property (nonatomic, assign) SCHXPSProvider *xpsProvider;
+@property (nonatomic, retain) SCHXPSProvider *xpsProvider;
 
 // temporary flag to prevent nav bar from being positioned behind the status bar on rotation
 @property (nonatomic, assign) BOOL currentlyRotating;
@@ -110,11 +110,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (void)dealloc 
 {
     [self releaseViewObjects];
-
-    [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:isbn];
-    
-    [xpsProvider release], xpsProvider = nil;
-    [readingView release], readingView = nil;
     [isbn release], isbn = nil;
     
     [super dealloc];
@@ -141,6 +136,13 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [fontSegmentedControl release], fontSegmentedControl = nil;
     [flowFixedSegmentedControl release], flowFixedSegmentedControl = nil;
     [paperTypeSegmentedControl release], paperTypeSegmentedControl = nil;
+    
+    if (xpsProvider) {
+        [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:isbn];
+    }
+    
+    [xpsProvider release], xpsProvider = nil;
+    [readingView release], readingView = nil;
 }
 
 -(void)viewDidUnload 
@@ -175,9 +177,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];
     
     NSLog(@"XPSCategory: %@", book.XPSCategory);
-    
-    self.readingView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    self.readingView.delegate = self;
     
     if (self.layoutType == SCHReadingViewLayoutTypeFlow) {
         [self.fontSegmentedControl setEnabled:YES forSegmentAtIndex:0];
@@ -311,10 +310,15 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
     self.currentlyRotating = NO;
+    [self.readingView didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+    
+    [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
+    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+    
     self.currentlyRotating = YES;
     if ([self.scrubberInfoView superview]) {
         
@@ -363,6 +367,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     }
     
     [self setupAssetsForOrientation:toInterfaceOrientation];
+    
+    [self.readingView willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
 }
 
 #pragma mark -
@@ -430,7 +436,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
             [self.fontSegmentedControl setEnabled:YES forSegmentAtIndex:0];
             [self.fontSegmentedControl setEnabled:YES forSegmentAtIndex:1];
             
-            self.readingView = [[SCHFlowView alloc] initWithFrame:self.view.bounds isbn:self.isbn];
+            SCHFlowView *flowView = [[SCHFlowView alloc] initWithFrame:self.view.bounds isbn:self.isbn];
+            self.readingView = flowView;
+            [flowView release];
             
             break;
         case SCHReadingViewLayoutTypeFixed:    
@@ -438,7 +446,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
             [self.fontSegmentedControl setEnabled:NO forSegmentAtIndex:0];
             [self.fontSegmentedControl setEnabled:NO forSegmentAtIndex:1];
             
-            self.readingView = [[SCHLayoutView alloc] initWithFrame:self.view.bounds isbn:self.isbn]; 
+            SCHLayoutView *layoutView = [[SCHLayoutView alloc] initWithFrame:self.view.bounds isbn:self.isbn];
+            self.readingView = layoutView;
+            [layoutView release];
             
             break;
     }
@@ -553,9 +563,14 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [self updateScrubberValue];
 }
 
-- (void)unhandledTouchOnPageForReadingView:(SCHReadingView *)readingView
+- (void)toggleToolbars
 {
     [self toggleToolbarVisibility];
+}
+
+- (void)hideToolbars
+{
+    [self setToolbarVisibility:NO animated:YES];
 }
 
 - (void)adjustScrubberInfoViewHeightForImageSize:(CGSize)imageSize
@@ -632,6 +647,19 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         NSString *localisedText = NSLocalizedString(@"%d%% of book", @"%d of book");
         [self.pageLabel setText:[NSString stringWithFormat:localisedText, MAX((NSUInteger)(self.currentBookProgress * 100), 1)]];
     }  
+    
+    if (self.layoutType == SCHReadingViewLayoutTypeFixed) {
+        
+        if (self.scrubberInfoView.frame.size.height == kReadingViewStandardScrubHeight || self.currentPageIndex <= 0) {
+            self.scrubberThumbImage.image = nil;
+        } else {
+            UIImage *scrubImage = [self.xpsProvider thumbnailForPage:self.currentPageIndex + 1];
+            self.scrubberThumbImage.image = scrubImage;
+        }
+    } else {
+        self.scrubberThumbImage.image = nil;
+    }
+
 }
 
 - (void)updateScrubberValue
@@ -651,25 +679,24 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (IBAction)scrubValueStartChanges:(UISlider *)slider
 {
-    //NSLog(@"Scrub started changes!");
-
     if (self.currentPageIndex == NSUIntegerMax) {
         self.currentBookProgress = [slider value];
     } else {
         self.currentPageIndex = roundf([slider value]);
     }
     
-    [self updateScrubberLabel];
-    
     // add the scrub view here
+    // adjust the height of the scrubber info view first, then update the thumb
     if (self.layoutType == SCHReadingViewLayoutTypeFixed) {
         UIImage *scrubImage = [self.xpsProvider thumbnailForPage:self.currentPageIndex];
         self.scrubberThumbImage.image = scrubImage;
         [self adjustScrubberInfoViewHeightForImageSize:scrubImage.size];
     } else {
-        [self adjustScrubberInfoViewHeightForImageSize:CGSizeZero];
         self.scrubberThumbImage.image = nil;
+        [self adjustScrubberInfoViewHeightForImageSize:CGSizeZero];
     }
+
+    [self updateScrubberLabel];
     
     [self.scrubberInfoView setAlpha:1.0f];
     [self.view addSubview:self.scrubberInfoView];
@@ -680,8 +707,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (IBAction)scrubValueEndChanges:(UISlider *)slider
 {
-    //NSLog(@"Scrub ended changes!");
-    
 	[UIView animateWithDuration:0.3f 
                           delay:0.2f 
                         options:UIViewAnimationOptionCurveEaseOut | UIViewAnimationOptionBeginFromCurrentState
@@ -706,7 +731,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (IBAction)scrubValueChanged:(UISlider *)slider
 {
-    //NSLog(@"Scrub value changes!"); 
     if (self.currentPageIndex == NSUIntegerMax) {
         self.currentBookProgress = [slider value];
     } else {
@@ -715,17 +739,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     
     [self updateScrubberLabel];
         
-    if (self.layoutType == SCHReadingViewLayoutTypeFixed) {
-        
-        UIImage *scrubImage = [self.xpsProvider thumbnailForPage:self.currentPageIndex + 1];
-        
-        if (self.scrubberInfoView.frame.size.height == kReadingViewStandardScrubHeight) {
-            self.scrubberThumbImage.image = nil;
-        } else {
-            self.scrubberThumbImage.image = scrubImage;
-        }
-    } 
-    
     [self adjustScrubberInfoViewHeightForImageSize:self.scrubberThumbImage.image.size];
     
 }

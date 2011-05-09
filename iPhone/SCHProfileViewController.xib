@@ -45,7 +45,7 @@
 			</object>
 			<object class="IBUIView" id="594099141">
 				<reference key="NSNextResponder"/>
-				<int key="NSvFlags">292</int>
+				<int key="NSvFlags">256</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<object class="IBUIImageView" id="440019014">
@@ -155,7 +155,7 @@
 				<bool key="IBUIHorizontal">NO</bool>
 			</object>
 			<object class="IBUIView" id="749504470">
-				<nil key="NSNextResponder"/>
+				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">298</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -164,6 +164,7 @@
 						<int key="NSvFlags">301</int>
 						<string key="NSFrame">{{109, 29}, {103, 68}}</string>
 						<reference key="NSSuperview" ref="749504470"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="929724318"/>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -177,6 +178,7 @@
 						<int key="NSvFlags">301</int>
 						<string key="NSFrame">{{0, 111}, {320, 24}}</string>
 						<reference key="NSSuperview" ref="749504470"/>
+						<reference key="NSWindow"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<int key="IBUIContentMode">7</int>
@@ -202,6 +204,8 @@
 					</object>
 				</object>
 				<string key="NSFrameSize">{320, 154}</string>
+				<reference key="NSSuperview"/>
+				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="129014219"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
@@ -521,52 +525,52 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>cancelButton</string>
-							<string>footerForgotLabel</string>
+							<string>bottomField</string>
+							<string>footerForgotButton</string>
 							<string>headerTitleLabel</string>
 							<string>headerTitleView</string>
-							<string>passwordField</string>
 							<string>tableView</string>
+							<string>titleTextLabel</string>
 							<string>topBar</string>
+							<string>topField</string>
 							<string>topShadow</string>
-							<string>userNameField</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>UITextField</string>
 							<string>UIButton</string>
 							<string>UILabel</string>
-							<string>UILabel</string>
 							<string>UIView</string>
-							<string>UITextField</string>
 							<string>UITableView</string>
+							<string>UILabel</string>
 							<string>SCHCustomToolbar</string>
-							<string>UIImageView</string>
 							<string>UITextField</string>
+							<string>UIImageView</string>
 						</object>
 					</object>
 					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>cancelButton</string>
-							<string>footerForgotLabel</string>
+							<string>bottomField</string>
+							<string>footerForgotButton</string>
 							<string>headerTitleLabel</string>
 							<string>headerTitleView</string>
-							<string>passwordField</string>
 							<string>tableView</string>
+							<string>titleTextLabel</string>
 							<string>topBar</string>
+							<string>topField</string>
 							<string>topShadow</string>
-							<string>userNameField</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<object class="IBToOneOutletInfo">
-								<string key="name">cancelButton</string>
-								<string key="candidateClassName">UIButton</string>
+								<string key="name">bottomField</string>
+								<string key="candidateClassName">UITextField</string>
 							</object>
 							<object class="IBToOneOutletInfo">
-								<string key="name">footerForgotLabel</string>
-								<string key="candidateClassName">UILabel</string>
+								<string key="name">footerForgotButton</string>
+								<string key="candidateClassName">UIButton</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">headerTitleLabel</string>
@@ -577,24 +581,24 @@
 								<string key="candidateClassName">UIView</string>
 							</object>
 							<object class="IBToOneOutletInfo">
-								<string key="name">passwordField</string>
-								<string key="candidateClassName">UITextField</string>
-							</object>
-							<object class="IBToOneOutletInfo">
 								<string key="name">tableView</string>
 								<string key="candidateClassName">UITableView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">titleTextLabel</string>
+								<string key="candidateClassName">UILabel</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">topBar</string>
 								<string key="candidateClassName">SCHCustomToolbar</string>
 							</object>
 							<object class="IBToOneOutletInfo">
-								<string key="name">topShadow</string>
-								<string key="candidateClassName">UIImageView</string>
+								<string key="name">topField</string>
+								<string key="candidateClassName">UITextField</string>
 							</object>
 							<object class="IBToOneOutletInfo">
-								<string key="name">userNameField</string>
-								<string key="candidateClassName">UITextField</string>
+								<string key="name">topShadow</string>
+								<string key="candidateClassName">UIImageView</string>
 							</object>
 						</object>
 					</object>

@@ -442,7 +442,7 @@ static int allocCountXPS = 0;
         } else {
             [myCachedXPSProviderCheckoutCounts removeObject:isbn];
             if (count == 1) {
-              //  NSLog(@"Releasing cached XPSProvider for book with ID %@", bookInfo);
+                //NSLog(@"Releasing cached XPSProvider for book with isbn %@", isbn);
                 [myCachedXPSProviders removeObjectForKey:isbn];
                 if(myCachedXPSProviderCheckoutCounts.count == 0) {
                     // May as well release the set.
@@ -450,7 +450,7 @@ static int allocCountXPS = 0;
                 }
             }
         }
-       // NSLog(@"[%d] checkInXPSProviderForBookWithPath %@", [self.cachedXPSProviderCheckoutCounts countForObject:isbn], isbn);
+        //NSLog(@"[%d] checkInXPSProviderForBookWithPath %@", [self.cachedXPSProviderCheckoutCounts countForObject:isbn], isbn);
 		
     }
 	
@@ -703,9 +703,9 @@ static int checkoutCountBlockSource = 0;
 
 - (void)checkInBlockSourceForBookIdentifier:(NSString *)isbn
 {
-    NSMutableDictionary *myCachedBlockSources = self.cachedParagraphSources;
+    NSMutableDictionary *myCachedBlockSources = self.cachedBlockSources;
     @synchronized(myCachedBlockSources) {
-        NSCountedSet *myCachedBlockSourceCheckoutCounts = self.cachedParagraphSourceCheckoutCounts;
+        NSCountedSet *myCachedBlockSourceCheckoutCounts = self.cachedBlockSourceCheckoutCounts;
         NSUInteger count = [myCachedBlockSourceCheckoutCounts countForObject:isbn];
         if(count == 0) {
             NSLog(@"Warning! Unexpected checkin of non-checked-out paragraph source");

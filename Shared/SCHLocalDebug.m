@@ -24,6 +24,7 @@
 #import "SCHListProfileContentAnnotations.h"
 #import "SCHBookshelfSyncComponent.h"
 #import "SCHAppBook.h"
+#import "SCHAppProfile.h"
 
 @interface SCHLocalDebug ()
 
@@ -181,7 +182,8 @@
 	youngProfileItem.BookshelfStyle = [NSNumber numberWithBookshelfStyle:kSCHBookshelfStyleYoungChild];
 	youngProfileItem.LastName = @"Doe";
 	youngProfileItem.LastModified = now;
-
+    youngProfileItem.AppProfile = [NSEntityDescription insertNewObjectForEntityForName:kSCHAppProfile inManagedObjectContext:self.managedObjectContext];
+    
 	SCHProfileItem *olderProfileItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHProfileItem inManagedObjectContext:self.managedObjectContext];
 	
 	olderProfileItem.LastModified = now;
@@ -198,7 +200,8 @@
 	olderProfileItem.BookshelfStyle = [NSNumber numberWithBookshelfStyle:kSCHBookshelfStyleOlderChild];
 	olderProfileItem.LastName = @"Doe";
 	olderProfileItem.LastModified = now;
-
+    olderProfileItem.AppProfile = [NSEntityDescription insertNewObjectForEntityForName:kSCHAppProfile inManagedObjectContext:self.managedObjectContext];
+    
 	SCHProfileItem *allBooksProfileItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHProfileItem inManagedObjectContext:self.managedObjectContext];
 	
 	allBooksProfileItem.LastModified = now;
@@ -215,6 +218,7 @@
 	allBooksProfileItem.BookshelfStyle = [NSNumber numberWithBookshelfStyle:kSCHBookshelfStyleOlderChild];
 	allBooksProfileItem.LastName = @"Smith";
 	allBooksProfileItem.LastModified = now;    
+    allBooksProfileItem.AppProfile = [NSEntityDescription insertNewObjectForEntityForName:kSCHAppProfile inManagedObjectContext:self.managedObjectContext];
     
 	SCHContentMetadataItem *newContentMetadataItem = nil;
 	SCHUserContentItem *newUserContentItem = nil;

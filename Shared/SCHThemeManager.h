@@ -23,11 +23,14 @@ static NSString * const kSCHThemeManagerHomeIcon = @"HomeIcon";
 static NSString * const kSCHThemeManagerBooksIcon = @"BooksIcon";
 static NSString * const kSCHThemeManagerThemeIcon = @"ThemeIcon";
 
+@class SCHAppProfile;
+
 @interface SCHThemeManager : NSObject 
 {
 }
 
 @property (nonatomic, copy) NSString *theme;
+@property (nonatomic, retain) SCHAppProfile *appProfile;
 
 + (SCHThemeManager *)sharedThemeManager;
 

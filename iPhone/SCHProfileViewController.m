@@ -18,6 +18,7 @@
 #import "SCHAuthenticationManager.h"
 #import "SCHSyncManager.h"
 #import "SCHURLManager.h"
+#import "SCHThemeManager.h"
 
 
 @interface SCHProfileViewController() <UITableViewDelegate> 
@@ -222,15 +223,14 @@
 	
     switch (indexPath.section) {
 		case 0: {
-            
+
+            SCHProfileItem *profileItem = [[self fetchedResultsController] objectAtIndexPath:indexPath];
+			[SCHThemeManager sharedThemeManager].appProfile = profileItem.AppProfile;
 #if LOCALDEBUG
             // controller to view book shelf with books filtered to profile
-            [self pushBookshelvesControllerWithProfileItem:[[self fetchedResultsController] 
-                                                            objectAtIndexPath:indexPath]];	
-#else	    
-            SCHProfileItem *profileItem = [[self fetchedResultsController] objectAtIndexPath:indexPath];
-            
-            if ([profileItem.ProfilePasswordRequired boolValue] == NO) {                
+            [self pushBookshelvesControllerWithProfileItem:profileItem];	
+#else
+            if ([profileItem.ProfilePasswordRequired boolValue] == NO) {
                 [self pushBookshelvesControllerWithProfileItem:profileItem];            
             } else {
                 self.profilePasswordController.actionBlock = ^{

@@ -6,13 +6,13 @@
 		<key>BackgroundImage</key>
 		<string>Red/red-background</string>
 		<key>BooksIcon</key>
-		<string>Red/red-icon-books</string>
+		<string>Shared/icon-books</string>
 		<key>ButtonImage</key>
-		<string>Red/red-button</string>
+		<string>Shared/button-cancel</string>
 		<key>DoneButtonImage</key>
-		<string>Red/red-button-done</string>
+		<string>Shared/button-done</string>
 		<key>HomeIcon</key>
-		<string>Red/red-icon-home</string>
+		<string>Shared/icon-home</string>
 		<key>id</key>
 		<integer>1</integer>
 		<key>Image</key>
@@ -24,21 +24,21 @@
 		<key>ShelfImage</key>
 		<string>Red/red-shelf</string>
 		<key>ThemeIcon</key>
-		<string>Red/red-icon-theme</string>
+		<string>Shared/icon-theme</string>
 	</dict>
 	<dict>
 		<key>BackgroundImage</key>
 		<string>Blue/bookshelf-bg</string>
 		<key>BooksIcon</key>
-		<string>Blue/blue-icon-books</string>
+		<string>Shared/icon-books</string>
 		<key>ButtonImage</key>
-		<string>Blue/button-cancel</string>
+		<string>Shared/button-cancel</string>
 		<key>Default</key>
 		<true/>
 		<key>DoneButtonImage</key>
-		<string>Blue/button-done</string>
+		<string>Shared/button-done</string>
 		<key>HomeIcon</key>
-		<string>Blue/icon-home</string>
+		<string>Shared/icon-home</string>
 		<key>id</key>
 		<integer>2</integer>
 		<key>Image</key>
@@ -50,19 +50,19 @@
 		<key>ShelfImage</key>
 		<string>Blue/bookshelf-shelf</string>
 		<key>ThemeIcon</key>
-		<string>Blue/icon-theme</string>
+		<string>Shared/icon-theme</string>
 	</dict>
 	<dict>
 		<key>BackgroundImage</key>
 		<string>Goosebumps/background</string>
 		<key>BooksIcon</key>
-		<string>Goosebumps/icon-books</string>
+		<string>Shared/icon-books</string>
 		<key>ButtonImage</key>
-		<string>Goosebumps/button</string>
+		<string>Shared/button-cancel</string>
 		<key>DoneButtonImage</key>
-		<string>Goosebumps/button-done</string>
+		<string>Shared/button-done</string>
 		<key>HomeIcon</key>
-		<string>Goosebumps/icon-home</string>
+		<string>Shared/icon-home</string>
 		<key>id</key>
 		<integer>4</integer>
 		<key>Image</key>
@@ -74,7 +74,7 @@
 		<key>ShelfImage</key>
 		<string>Goosebumps/shelf</string>
 		<key>ThemeIcon</key>
-		<string>Goosebumps/icon-theme</string>
+		<string>Shared/icon-theme</string>
 	</dict>
 </array>
 </plist>

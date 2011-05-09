@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <libEucalyptus/EucSelector.h>
 
 @class SCHReadingView;
 @class SCHBookPoint;
@@ -15,20 +16,22 @@
 
 @protocol SCHReadingViewDelegate <NSObject>
 
-@optional
+@required
 
 - (void)readingView:(SCHReadingView *)readingView hasMovedToPageAtIndex:(NSUInteger)pageIndex;
 - (void)readingView:(SCHReadingView *)readingView hasMovedToProgressPositionInBook:(CGFloat)progress;
-- (void)unhandledTouchOnPageForReadingView:(SCHReadingView *)readingView;
+
+- (void)toggleToolbars;
+- (void)hideToolbars;
 
 @end
 
-@interface SCHReadingView : UIView {
+@interface SCHReadingView : UIView <EucSelectorDelegate> {
     
 }
 
 @property (nonatomic, retain) NSString *isbn;
-@property (nonatomic, retain) id <SCHReadingViewDelegate> delegate;
+@property (nonatomic, assign) id <SCHReadingViewDelegate> delegate;
 @property (nonatomic, retain) SCHXPSProvider *xpsProvider;
 @property (nonatomic, retain) SCHTextFlow *textFlow;
 
@@ -57,5 +60,8 @@
 - (NSString *)displayPageNumberForPageAtIndex:(NSUInteger)pageIndex;
 
 - (void)goToBookPoint:(SCHBookPoint *)bookPoint animated:(BOOL)animated;
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration;
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation;
 
 @end

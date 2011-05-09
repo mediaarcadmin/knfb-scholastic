@@ -383,7 +383,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
             break;            
     }
 
-    [readingController release], readingController = nil;
+    [readingController release];
 }
 
 - (void)gridView:(MRGridView *)gridView confirmationForDeletionAtIndex:(NSInteger)index 

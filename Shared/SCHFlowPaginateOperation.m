@@ -37,6 +37,7 @@
 {
     [self updateBookWithSuccess];
     return;
+#if 0
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
     
 	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];    
@@ -53,6 +54,7 @@
     }
     
     [pool drain];
+#endif 
 }
 
 @end
