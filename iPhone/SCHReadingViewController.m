@@ -647,6 +647,19 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         NSString *localisedText = NSLocalizedString(@"%d%% of book", @"%d of book");
         [self.pageLabel setText:[NSString stringWithFormat:localisedText, MAX((NSUInteger)(self.currentBookProgress * 100), 1)]];
     }  
+    
+    if (self.layoutType == SCHReadingViewLayoutTypeFixed) {
+        
+        if (self.scrubberInfoView.frame.size.height == kReadingViewStandardScrubHeight || self.currentPageIndex <= 0) {
+            self.scrubberThumbImage.image = nil;
+        } else {
+            UIImage *scrubImage = [self.xpsProvider thumbnailForPage:self.currentPageIndex + 1];
+            self.scrubberThumbImage.image = scrubImage;
+        }
+    } else {
+        self.scrubberThumbImage.image = nil;
+    }
+
 }
 
 - (void)updateScrubberValue
@@ -666,25 +679,24 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (IBAction)scrubValueStartChanges:(UISlider *)slider
 {
-    //NSLog(@"Scrub started changes!");
-
     if (self.currentPageIndex == NSUIntegerMax) {
         self.currentBookProgress = [slider value];
     } else {
         self.currentPageIndex = roundf([slider value]);
     }
     
-    [self updateScrubberLabel];
-    
     // add the scrub view here
+    // adjust the height of the scrubber info view first, then update the thumb
     if (self.layoutType == SCHReadingViewLayoutTypeFixed) {
         UIImage *scrubImage = [self.xpsProvider thumbnailForPage:self.currentPageIndex];
         self.scrubberThumbImage.image = scrubImage;
         [self adjustScrubberInfoViewHeightForImageSize:scrubImage.size];
     } else {
-        [self adjustScrubberInfoViewHeightForImageSize:CGSizeZero];
         self.scrubberThumbImage.image = nil;
+        [self adjustScrubberInfoViewHeightForImageSize:CGSizeZero];
     }
+
+    [self updateScrubberLabel];
     
     [self.scrubberInfoView setAlpha:1.0f];
     [self.view addSubview:self.scrubberInfoView];
@@ -695,8 +707,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (IBAction)scrubValueEndChanges:(UISlider *)slider
 {
-    //NSLog(@"Scrub ended changes!");
-    
 	[UIView animateWithDuration:0.3f 
                           delay:0.2f 
                         options:UIViewAnimationOptionCurveEaseOut | UIViewAnimationOptionBeginFromCurrentState
@@ -721,7 +731,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (IBAction)scrubValueChanged:(UISlider *)slider
 {
-    //NSLog(@"Scrub value changes!"); 
     if (self.currentPageIndex == NSUIntegerMax) {
         self.currentBookProgress = [slider value];
     } else {
@@ -730,17 +739,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     
     [self updateScrubberLabel];
         
-    if (self.layoutType == SCHReadingViewLayoutTypeFixed) {
-        
-        UIImage *scrubImage = [self.xpsProvider thumbnailForPage:self.currentPageIndex + 1];
-        
-        if (self.scrubberInfoView.frame.size.height == kReadingViewStandardScrubHeight) {
-            self.scrubberThumbImage.image = nil;
-        } else {
-            self.scrubberThumbImage.image = scrubImage;
-        }
-    } 
-    
     [self adjustScrubberInfoViewHeightForImageSize:self.scrubberThumbImage.image.size];
     
 }
