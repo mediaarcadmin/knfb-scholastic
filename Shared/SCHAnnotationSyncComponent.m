@@ -158,12 +158,14 @@
 - (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result
 {	
 	[self updateProfileContentAnnotations:[result objectForKey:kSCHLibreAccessWebServiceListProfileContentAnnotations]];	
-    // TODO: verify this on the working server
+
     if ([self.annotations count] < 1) {
         [self setSyncDate:[NSDate date]];
         [[NSNotificationCenter defaultCenter] postNotificationName:kSCHAnnotationSyncComponentComplete object:self];
-        [super method:method didCompleteWithResult:nil];	
+
     }
+     
+    [super method:method didCompleteWithResult:nil];	
 }
 
 - (void)updateProfileContentAnnotations:(NSDictionary *)profileContentAnnotationList
