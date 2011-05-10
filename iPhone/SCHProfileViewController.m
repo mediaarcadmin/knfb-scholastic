@@ -189,11 +189,8 @@
         cell.delegate = self;
     }
     
-    NSManagedObject *managedObject = [self.fetchedResultsController objectAtIndexPath:indexPath];
-	[cell.cellButton setTitle:[NSString stringWithFormat:@"%@%@", 
-                               [managedObject valueForKey:kSCHLibreAccessWebServiceFirstName], 
-                               NSLocalizedString(@"'s Bookshelf", @"")] 
-                     forState:UIControlStateNormal];
+    SCHProfileItem *managedObject = [self.fetchedResultsController objectAtIndexPath:indexPath];
+	[cell.cellButton setTitle:[managedObject bookshelfName:NO] forState:UIControlStateNormal];
     [cell setIndexPath:indexPath];
     
     return(cell);

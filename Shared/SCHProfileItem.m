@@ -166,6 +166,20 @@ static NSString * const kSCHProfileItemUserContentItemContentMetadataItem = @"Us
 
 #pragma mark - Accessor methods
 
+- (NSString *)bookshelfName:(BOOL)shortName
+{
+    NSString *ret = nil;
+    
+    if ([[self.FirstName stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {
+        ret = [NSString stringWithFormat:@"%@%@", self.FirstName, 
+               (shortName == NO ? NSLocalizedString(@"'s Bookshelf", @"") : NSLocalizedString(@"'s Books", @""))];
+    } else {
+        ret = (shortName == NO ? NSLocalizedString(@"Bookshelf", @"") : NSLocalizedString(@"Books", @""));
+    }
+    
+    return(ret);
+}
+
 - (void)setRawPassword:(NSString *)value 
 {
     self.Password = [self SHA1:value];
