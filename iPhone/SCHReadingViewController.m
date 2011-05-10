@@ -247,7 +247,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     self.navigationItem.titleView = self.titleLabel;
     
     if (self.youngerMode) {
-        [self.olderBottomToolbar setAlpha:0];
+        [self.olderBottomToolbar removeFromSuperview];
     }
     
     [self.topShadow setImage:[[UIImage imageNamed:@"reading-view-iphone-top-shadow.png"] stretchableImageWithLeftCapWidth:15.0f topCapHeight:0]];
@@ -289,14 +289,18 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         [self.audioButton setImage:[UIImage imageNamed:@"icon-play.png"] forState:UIControlStateNormal];
         [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"reading-view-portrait-top-bar.png"]];
         self.scrubberToolbar.backgroundImage = [UIImage imageNamed:@"reading-view-portrait-scrubber-bar.png"];
-        self.olderBottomToolbar.backgroundImage = [UIImage imageNamed:@"reading-view-portrait-bottom-bar.png"];        
+        if (!self.youngerMode) {
+            self.olderBottomToolbar.backgroundImage = [UIImage imageNamed:@"reading-view-portrait-bottom-bar.png"];        
+        }
     } else {
         [self.backButton setImage:[UIImage imageNamed:@"icon-books-landscape.png"] forState:UIControlStateNormal];
         
         [self.audioButton setImage:[UIImage imageNamed:@"icon-play-landscape.png"] forState:UIControlStateNormal];
         [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"reading-view-landscape-top-bar.png"]];
         self.scrubberToolbar.backgroundImage = [UIImage imageNamed:@"reading-view-landscape-scrubber-bar.png"];
-        self.olderBottomToolbar.backgroundImage = [UIImage imageNamed:@"reading-view-landscape-bottom-bar.png"];        
+        if (!self.youngerMode) {
+            self.olderBottomToolbar.backgroundImage = [UIImage imageNamed:@"reading-view-landscape-bottom-bar.png"];        
+        }
     }    
     
     CGRect topShadowFrame = self.topShadow.frame;
@@ -585,9 +589,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     
     CGRect statusFrame = [[UIApplication sharedApplication] statusBarFrame];
     float statusBarHeight = MIN(statusFrame.size.height, statusFrame.size.width);
-    
-    scrubFrame.origin.y = statusBarHeight + self.navigationController.navigationBar.frame.size.height + 10;
-    
+        
     // if we're in fixed view, and there's an image size set, then check if we're showing an image
     if ((self.layoutType == SCHReadingViewLayoutTypeFixed) && imageSize.width > 0 && imageSize.height > 0) {
         
@@ -595,8 +597,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         int maxImageHeight = (self.view.frame.size.height - scrubberToolbar.frame.size.height - self.navigationController.navigationBar.frame.size.height - kReadingViewStandardScrubHeight - 60);
         
         // if the double toolbar is visible, reduce available space
-        if ([olderBottomToolbar superview]) {
-            maxImageHeight -= olderBottomToolbar.frame.size.height;
+        if ([self.olderBottomToolbar superview]) {
+            maxImageHeight -= self.olderBottomToolbar.frame.size.height;
         }
         
         // if the options view is also visible, reduce available space
@@ -637,6 +639,24 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     } else {
         scrubFrame.size.height = kReadingViewStandardScrubHeight;
     }
+    
+    float topLimit = statusBarHeight + self.navigationController.navigationBar.frame.size.height;
+    float bottomLimit = self.view.frame.size.height - scrubberToolbar.frame.size.height;
+    
+    if ([self.olderBottomToolbar superview]) {
+        bottomLimit -= self.olderBottomToolbar.frame.size.height;
+    }
+    
+    if ([self.optionsView superview]) {
+        bottomLimit -= self.optionsView.frame.size.height;
+    }
+    
+    float topPoint = ((bottomLimit - topLimit) / 2) - (scrubFrame.size.height / 2);
+    
+    NSLog(@"Top limit: %f, bottom limit: %f", topLimit, bottomLimit);
+    
+//    scrubFrame.origin.y = statusBarHeight + self.navigationController.navigationBar.frame.size.height + 10;
+    scrubFrame.origin.y = floorf(topLimit + topPoint);
     
     self.scrubberInfoView.frame = scrubFrame;
 }
