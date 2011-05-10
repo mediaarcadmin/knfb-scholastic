@@ -469,6 +469,14 @@
 		C95ECB50133A77F800D88768 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C95ECB48133A770B00D88768 /* OpenGLES.framework */; };
 		C95ECB51133A77FA00D88768 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C95ECB46133A76DE00D88768 /* QuartzCore.framework */; };
 		C95ECB52133A77FC00D88768 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C95ECB44133A76C400D88768 /* Accelerate.framework */; };
+		C960B2601379A298000F61CC /* icon-layout-flowed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C960B25E1379A298000F61CC /* icon-layout-flowed@2x.png */; };
+		C960B2611379A298000F61CC /* icon-layout-flowed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C960B25E1379A298000F61CC /* icon-layout-flowed@2x.png */; };
+		C960B2621379A298000F61CC /* icon-layout-flowed.png in Resources */ = {isa = PBXBuildFile; fileRef = C960B25F1379A298000F61CC /* icon-layout-flowed.png */; };
+		C960B2631379A298000F61CC /* icon-layout-flowed.png in Resources */ = {isa = PBXBuildFile; fileRef = C960B25F1379A298000F61CC /* icon-layout-flowed.png */; };
+		C960B2661379AE89000F61CC /* icon-layout-fixed.png in Resources */ = {isa = PBXBuildFile; fileRef = C960B2641379AE89000F61CC /* icon-layout-fixed.png */; };
+		C960B2671379AE89000F61CC /* icon-layout-fixed.png in Resources */ = {isa = PBXBuildFile; fileRef = C960B2641379AE89000F61CC /* icon-layout-fixed.png */; };
+		C960B2681379AE89000F61CC /* icon-layout-fixed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C960B2651379AE89000F61CC /* icon-layout-fixed@2x.png */; };
+		C960B2691379AE89000F61CC /* icon-layout-fixed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C960B2651379AE89000F61CC /* icon-layout-fixed@2x.png */; };
 		C97D6DA313696D7B0017974B /* SCHBookPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = C97D6DA213696D7B0017974B /* SCHBookPoint.m */; };
 		C97D6DA413696D7B0017974B /* SCHBookPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = C97D6DA213696D7B0017974B /* SCHBookPoint.m */; };
 		C97F2001133B8E2100EA6BC8 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C9F1A579133B83D100FD984C /* libxml2.dylib */; };
@@ -1393,6 +1401,10 @@
 		C95ECB46133A76DE00D88768 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		C95ECB48133A770B00D88768 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		C95ECB4C133A77A500D88768 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		C960B25E1379A298000F61CC /* icon-layout-flowed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-layout-flowed@2x.png"; path = "Resources/UIAssets/icon-layout-flowed@2x.png"; sourceTree = "<group>"; };
+		C960B25F1379A298000F61CC /* icon-layout-flowed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-layout-flowed.png"; path = "Resources/UIAssets/icon-layout-flowed.png"; sourceTree = "<group>"; };
+		C960B2641379AE89000F61CC /* icon-layout-fixed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-layout-fixed.png"; path = "Resources/UIAssets/icon-layout-fixed.png"; sourceTree = "<group>"; };
+		C960B2651379AE89000F61CC /* icon-layout-fixed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-layout-fixed@2x.png"; path = "Resources/UIAssets/icon-layout-fixed@2x.png"; sourceTree = "<group>"; };
 		C97D6DA113696D7B0017974B /* SCHBookPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookPoint.h; path = Shared/SCHBookPoint.h; sourceTree = "<group>"; };
 		C97D6DA213696D7B0017974B /* SCHBookPoint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookPoint.m; path = Shared/SCHBookPoint.m; sourceTree = "<group>"; };
 		C9A1129113608319007FD763 /* admin-iphone-splash-portrait.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "admin-iphone-splash-portrait.png"; path = "Resources/UIAssets/admin-iphone-splash-portrait.png"; sourceTree = "<group>"; };
@@ -1874,6 +1886,10 @@
 				C9A11290136082A6007FD763 /* UIAssets */,
 				52E622F31358385D00245CA7 /* Themes */,
 				F80FED601355DD6D00DEB3C1 /* icon-magnify.png */,
+				C960B25E1379A298000F61CC /* icon-layout-flowed@2x.png */,
+				C960B2641379AE89000F61CC /* icon-layout-fixed.png */,
+				C960B2651379AE89000F61CC /* icon-layout-fixed@2x.png */,
+				C960B25F1379A298000F61CC /* icon-layout-flowed.png */,
 				C94735F51377F482005B2B1D /* icon-font-increase@2x.png */,
 				C94735F61377F482005B2B1D /* icon-font-increase.png */,
 				C94735F71377F482005B2B1D /* icon-font-decrease@2x.png */,
@@ -3187,6 +3203,10 @@
 				C94735FB1377F482005B2B1D /* icon-font-increase.png in Resources */,
 				C94735FD1377F482005B2B1D /* icon-font-decrease@2x.png in Resources */,
 				C94735FF1377F482005B2B1D /* icon-font-decrease.png in Resources */,
+				C960B2601379A298000F61CC /* icon-layout-flowed@2x.png in Resources */,
+				C960B2621379A298000F61CC /* icon-layout-flowed.png in Resources */,
+				C960B2661379AE89000F61CC /* icon-layout-fixed.png in Resources */,
+				C960B2681379AE89000F61CC /* icon-layout-fixed@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3388,6 +3408,10 @@
 				A39009091379866A00D6B608 /* StageFright.xps in Resources */,
 				A390090A1379866A00D6B608 /* TheBurning.xps in Resources */,
 				A390090B1379866A00D6B608 /* WhatISaw.xps in Resources */,
+				C960B2611379A298000F61CC /* icon-layout-flowed@2x.png in Resources */,
+				C960B2631379A298000F61CC /* icon-layout-flowed.png in Resources */,
+				C960B2671379AE89000F61CC /* icon-layout-fixed.png in Resources */,
+				C960B2691379AE89000F61CC /* icon-layout-fixed@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
