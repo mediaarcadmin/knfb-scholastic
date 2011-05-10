@@ -48,15 +48,12 @@
         eucBookView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         eucBookView.vibratesOnInvalidTurn = NO;
         [eucBookView setPageTexture:[UIImage imageNamed: @"paper-white.png"] isDark:NO];
-        [eucBookView addObserver:self forKeyPath:@"currentPageIndexPoint" options:NSKeyValueObservingOptionInitial context:NULL];
-        
         [self addSubview:eucBookView];
     }
 }
 
 - (void)dealloc
 {
-    [eucBookView removeObserver:self forKeyPath:@"currentPageIndexPoint"];
     [eucBookView release], eucBookView = nil;
     
     if(paragraphSource) {
@@ -81,6 +78,19 @@
         [self initialiseView];
     }
     return self;
+}
+
+- (void)didMoveToWindow
+{
+    [super didMoveToWindow];
+    
+    if (self.window) {
+        // This needs to be done here to add the observer after the willMoveToWindow code in
+        // eucBookView which sets the page count
+        [eucBookView addObserver:self forKeyPath:@"currentPageIndexPoint" options:NSKeyValueObservingOptionInitial context:NULL];
+    } else {
+        [eucBookView removeObserver:self forKeyPath:@"currentPageIndexPoint"];
+    }
 }
 
 - (void)jumpToPageAtIndex:(NSUInteger)pageIndex animated: (BOOL) animated
