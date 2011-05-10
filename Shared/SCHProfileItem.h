@@ -46,6 +46,7 @@ static NSString * const kSCHProfileItemCONTENT_IDENTIFIER = @"CONTENT_IDENTIFIER
 - (SCHBookAnnotations *)annotationsForBook:(NSString *)isbn;
 - (void)saveBookOrder:(NSArray *)books;
 - (void)clearBookOrder;
+- (NSString *)bookshelfName:(BOOL)shortName;
 - (void)setRawPassword:(NSString *)value;
 - (BOOL)hasPassword;
 - (BOOL)validatePasswordWith:(NSString *)withPassword;

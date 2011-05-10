@@ -17,6 +17,7 @@ static NSString * const kSCHAnnotationSyncComponentComplete = @"SCHAnnotationSyn
 
 }
 
+- (NSDate *)lastSyncDate;
 - (void)addProfile:(NSNumber *)profileID withBooks:(NSArray *)books;
 - (BOOL)haveProfiles;
 

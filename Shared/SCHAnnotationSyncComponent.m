@@ -24,9 +24,11 @@
 #import "SCHLocationBookmark.h"
 #import "SCHLastPage.h"
 #import "SCHFavorite.h"
+#import "SCHAppState.h"
 
 @interface SCHAnnotationSyncComponent ()
 
+- (void)setSyncDate:(NSDate *)date;
 - (void)updateProfileContentAnnotations:(NSDictionary *)profileContentAnnotationList;
 - (SCHAnnotationsContentItem *)annotationsContentItem:(NSDictionary *)annotationsContentItem;
 - (SCHPrivateAnnotations *)privateAnnotation:(NSDictionary *)privateAnnotation;
@@ -110,11 +112,60 @@
 	}	
 }
 
+- (NSDate *)lastSyncDate
+{
+    NSDate *ret = nil;
+    
+    NSEntityDescription *entityDescription = [NSEntityDescription 
+                                              entityForName:kSCHAppState
+                                              inManagedObjectContext:self.managedObjectContext];
+    NSFetchRequest *fetchRequest = [entityDescription.managedObjectModel 
+                                    fetchRequestTemplateForName:kSCHAppStatefetchAppState];
+    
+    NSArray *state = [self.managedObjectContext executeFetchRequest:fetchRequest error:nil];	
+    
+    if ([state count] > 0) {
+        ret = [self makeNullNil:[[state objectAtIndex:0] LastAnnotationSync]];
+    }
+    
+    return(ret);
+}
+
+- (void)setSyncDate:(NSDate *)date
+{
+    SCHAppState *appState = nil;
+    
+    NSEntityDescription *entityDescription = [NSEntityDescription 
+                                              entityForName:kSCHAppState
+                                              inManagedObjectContext:self.managedObjectContext];
+    NSFetchRequest *fetchRequest = [entityDescription.managedObjectModel 
+                                    fetchRequestTemplateForName:kSCHAppStatefetchAppState];
+    fetchRequest.returnsObjectsAsFaults = NO;
+    
+    NSArray *state = [self.managedObjectContext executeFetchRequest:fetchRequest error:nil];	
+    
+    if ([state count] > 0) {
+        appState = [state objectAtIndex:0];
+    } else {
+        appState = [NSEntityDescription insertNewObjectForEntityForName:kSCHAppState inManagedObjectContext:self.managedObjectContext];
+    }
+    
+    appState.LastAnnotationSync = date;
+    
+    [self save];
+}
+
 - (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result
 {	
 	[self updateProfileContentAnnotations:[result objectForKey:kSCHLibreAccessWebServiceListProfileContentAnnotations]];	
-	[[NSNotificationCenter defaultCenter] postNotificationName:kSCHAnnotationSyncComponentComplete object:self];
-	[super method:method didCompleteWithResult:nil];	
+
+    if ([self.annotations count] < 1) {
+        [self setSyncDate:[NSDate date]];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kSCHAnnotationSyncComponentComplete object:self];
+
+    }
+     
+    [super method:method didCompleteWithResult:nil];	
 }
 
 - (void)updateProfileContentAnnotations:(NSDictionary *)profileContentAnnotationList
@@ -189,6 +240,7 @@
 	return(ret);
 }
 
+// TODO: sync
 - (SCHHighlight *)highlight:(NSDictionary *)highlight
 {
 	SCHHighlight *ret = nil;
@@ -209,6 +261,7 @@
 	return(ret);
 }
 
+// TODO: sync
 - (SCHNote *)note:(NSDictionary *)note
 {
 	SCHNote *ret = nil;
@@ -258,6 +311,7 @@
 	return(ret);
 }
 
+// TODO: sync
 - (SCHBookmark *)bookmark:(NSDictionary *)bookmark
 {
 	SCHBookmark *ret = nil;
@@ -291,6 +345,7 @@
 	return(ret);
 }
 
+// TODO: sync
 - (SCHLastPage *)lastPage:(NSDictionary *)lastPage
 {
 	SCHLastPage *ret = nil;
@@ -308,6 +363,7 @@
 	return(ret);
 }
 
+// TODO: sync
 - (SCHFavorite *)favorite:(NSDictionary *)favorite
 {
 	SCHFavorite *ret = nil;
