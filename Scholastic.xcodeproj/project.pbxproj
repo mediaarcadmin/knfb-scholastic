@@ -158,6 +158,10 @@
 		A39009921379B06900D6B608 /* privacy.html in Resources */ = {isa = PBXBuildFile; fileRef = A39009901379B06900D6B608 /* privacy.html */; };
 		A39009951379B13000D6B608 /* SCHPrivacyPolicyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A39009941379B13000D6B608 /* SCHPrivacyPolicyViewController.m */; };
 		A39009961379B13000D6B608 /* SCHPrivacyPolicyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A39009941379B13000D6B608 /* SCHPrivacyPolicyViewController.m */; };
+		A39009F11379D81200D6B608 /* parent-request.html in Resources */ = {isa = PBXBuildFile; fileRef = A39009EF1379D81200D6B608 /* parent-request.html */; };
+		A39009F21379D81200D6B608 /* parent-request.html in Resources */ = {isa = PBXBuildFile; fileRef = A39009EF1379D81200D6B608 /* parent-request.html */; };
+		A39009F31379D81200D6B608 /* teacher-request.html in Resources */ = {isa = PBXBuildFile; fileRef = A39009F01379D81200D6B608 /* teacher-request.html */; };
+		A39009F41379D81200D6B608 /* teacher-request.html in Resources */ = {isa = PBXBuildFile; fileRef = A39009F01379D81200D6B608 /* teacher-request.html */; };
 		A3A38E61133A811400C325A3 /* devcerttemplate.dat in Resources */ = {isa = PBXBuildFile; fileRef = A3A38E5F133A811400C325A3 /* devcerttemplate.dat */; };
 		A3A38E62133A811400C325A3 /* iphonecert.dat in Resources */ = {isa = PBXBuildFile; fileRef = A3A38E60133A811400C325A3 /* iphonecert.dat */; };
 		A3A38E63133A811400C325A3 /* devcerttemplate.dat in Resources */ = {isa = PBXBuildFile; fileRef = A3A38E5F133A811400C325A3 /* devcerttemplate.dat */; };
@@ -1077,6 +1081,8 @@
 		A39009901379B06900D6B608 /* privacy.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = privacy.html; path = Resources/privacy.html; sourceTree = "<group>"; };
 		A39009931379B13000D6B608 /* SCHPrivacyPolicyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHPrivacyPolicyViewController.h; sourceTree = "<group>"; };
 		A39009941379B13000D6B608 /* SCHPrivacyPolicyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHPrivacyPolicyViewController.m; sourceTree = "<group>"; };
+		A39009EF1379D81200D6B608 /* parent-request.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = "parent-request.html"; path = "Resources/parent-request.html"; sourceTree = "<group>"; };
+		A39009F01379D81200D6B608 /* teacher-request.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = "teacher-request.html"; path = "Resources/teacher-request.html"; sourceTree = "<group>"; };
 		A3A38E01133A7FA300C325A3 /* DrmGlobals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DrmGlobals.h; path = Shared/Libraries/DRM/DrmGlobals.h; sourceTree = "<group>"; };
 		A3A38E02133A7FFF00C325A3 /* KeychainItemWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KeychainItemWrapper.h; path = Shared/Libraries/DRM/KeychainItemWrapper.h; sourceTree = "<group>"; };
 		A3A38E05133A803500C325A3 /* SCHDrmRegistrationSessionDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHDrmRegistrationSessionDelegate.h; path = Shared/SCHDrmRegistrationSessionDelegate.h; sourceTree = "<group>"; };
@@ -1888,6 +1894,8 @@
 		528A2CCF12CCDC400053A343 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				A39009EF1379D81200D6B608 /* parent-request.html */,
+				A39009F01379D81200D6B608 /* teacher-request.html */,
 				A39009901379B06900D6B608 /* privacy.html */,
 				A38CF1FA1374503300EABF43 /* credits.html */,
 				C901113E1361ECDB006694B3 /* Default@2x.png */,
@@ -3218,6 +3226,8 @@
 				C960B2661379AE89000F61CC /* icon-layout-fixed.png in Resources */,
 				C960B2681379AE89000F61CC /* icon-layout-fixed@2x.png in Resources */,
 				A39009911379B06900D6B608 /* privacy.html in Resources */,
+				A39009F11379D81200D6B608 /* parent-request.html in Resources */,
+				A39009F31379D81200D6B608 /* teacher-request.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3424,6 +3434,8 @@
 				C960B2671379AE89000F61CC /* icon-layout-fixed.png in Resources */,
 				C960B2691379AE89000F61CC /* icon-layout-fixed@2x.png in Resources */,
 				A39009921379B06900D6B608 /* privacy.html in Resources */,
+				A39009F21379D81200D6B608 /* parent-request.html in Resources */,
+				A39009F41379D81200D6B608 /* teacher-request.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
