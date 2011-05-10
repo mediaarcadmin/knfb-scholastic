@@ -12,7 +12,6 @@
 
 #import "SCHLibreAccessWebService.h"
 #import "SCHListProfileContentAnnotations.h"
-#import "SCHItemsCount.h"
 #import "SCHAnnotationsList.h"
 #import "SCHAnnotationsContentItem.h"
 #import "SCHPrivateAnnotations.h"
@@ -162,7 +161,6 @@
     if ([self.annotations count] < 1) {
         [self setSyncDate:[NSDate date]];
         [[NSNotificationCenter defaultCenter] postNotificationName:kSCHAnnotationSyncComponentComplete object:self];
-
     }
      
     [super method:method didCompleteWithResult:nil];	
@@ -174,10 +172,13 @@
 	
 	SCHListProfileContentAnnotations *newListProfileContentAnnotations = [NSEntityDescription insertNewObjectForEntityForName:kSCHListProfileContentAnnotations inManagedObjectContext:self.managedObjectContext];
 	SCHAnnotationsList *newAnnotationsList = nil;
-	SCHItemsCount *newItemsCount = [NSEntityDescription insertNewObjectForEntityForName:kSCHItemsCount inManagedObjectContext:self.managedObjectContext];
 	
 	NSDictionary *annotationsList = [self makeNullNil:[profileContentAnnotationList objectForKey:kSCHLibreAccessWebServiceAnnotationsList]];
-	NSDictionary *itemsCount = [self makeNullNil:[profileContentAnnotationList objectForKey:kSCHLibreAccessWebServiceItemsCount]];	
+
+    // uncomment if we require to use this info
+//	NSDictionary *itemsCount = [self makeNullNil:[profileContentAnnotationList objectForKey:kSCHLibreAccessWebServiceItemsCount]];	
+//	NSNumber *found = [self makeNullNil:[itemsCount objectForKey:kSCHLibreAccessWebServiceFound]];
+//	NSNumber *returned = [self makeNullNil:[itemsCount objectForKey:kSCHLibreAccessWebServiceReturned]];	
 	
 	for (NSDictionary *annotationsItem in annotationsList) {
 		newAnnotationsList = [NSEntityDescription insertNewObjectForEntityForName:kSCHAnnotationsList inManagedObjectContext:self.managedObjectContext];
@@ -187,16 +188,30 @@
 		newAnnotationsList.ProfileID = [annotationsItem objectForKey:kSCHLibreAccessWebServiceProfileID];
 		[newListProfileContentAnnotations addAnnotationsListObject:newAnnotationsList];
 	}
-	
-	newItemsCount.Found = [self makeNullNil:[itemsCount objectForKey:kSCHLibreAccessWebServiceFound]];
-	newItemsCount.Returned = [self makeNullNil:[itemsCount objectForKey:kSCHLibreAccessWebServiceReturned]];	
-	newListProfileContentAnnotations.ItemsCount = newItemsCount;
-	
+
 	// Save the context.
 	if (![self.managedObjectContext save:&error]) {
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
 		abort();
 	}	
+}
+
+- (SCHPrivateAnnotations *)localPrivateAnnotationsForProfile:(NSNumber *)profileID
+{
+    SCHPrivateAnnotations *ret = nil;
+	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+	
+	[fetchRequest setEntity:[NSEntityDescription entityForName:kSCHPrivateAnnotations inManagedObjectContext:self.managedObjectContext]];	
+	
+	NSArray *p = [self.managedObjectContext executeFetchRequest:fetchRequest error:nil];	
+	
+    if ([p count] > 0) {
+        ret = [p objectAtIndex:0];
+    }
+    
+	[fetchRequest release], fetchRequest = nil;
+	
+	return(ret);
 }
 
 - (SCHAnnotationsContentItem *)annotationsContentItem:(NSDictionary *)annotationsContentItem

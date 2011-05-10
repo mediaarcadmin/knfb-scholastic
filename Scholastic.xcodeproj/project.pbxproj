@@ -18,10 +18,8 @@
 		28AD733F0D9D9553002E5188 /* MainWindow_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow_iPad.xib */; };
 		28EEBFDD1118E19E00187D67 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28EEBFDC1118E19E00187D67 /* CoreData.framework */; };
 		28EEC04B1118E28000187D67 /* AppDelegate_Shared.m in Sources */ = {isa = PBXBuildFile; fileRef = 28EEC04A1118E28000187D67 /* AppDelegate_Shared.m */; };
-		5200EFEC12F6CFE400BAC355 /* SCHItemsCount.m in Sources */ = {isa = PBXBuildFile; fileRef = 5200EFE712F6CFE400BAC355 /* SCHItemsCount.m */; };
 		5200EFED12F6CFE400BAC355 /* SCHListProfileContentAnnotations.m in Sources */ = {isa = PBXBuildFile; fileRef = 5200EFE912F6CFE400BAC355 /* SCHListProfileContentAnnotations.m */; };
 		5200EFEE12F6CFE400BAC355 /* SCHPrivateAnnotations.m in Sources */ = {isa = PBXBuildFile; fileRef = 5200EFEB12F6CFE400BAC355 /* SCHPrivateAnnotations.m */; };
-		5200EFEF12F6CFE400BAC355 /* SCHItemsCount.m in Sources */ = {isa = PBXBuildFile; fileRef = 5200EFE712F6CFE400BAC355 /* SCHItemsCount.m */; };
 		5200EFF012F6CFE400BAC355 /* SCHListProfileContentAnnotations.m in Sources */ = {isa = PBXBuildFile; fileRef = 5200EFE912F6CFE400BAC355 /* SCHListProfileContentAnnotations.m */; };
 		5200EFF112F6CFE400BAC355 /* SCHPrivateAnnotations.m in Sources */ = {isa = PBXBuildFile; fileRef = 5200EFEB12F6CFE400BAC355 /* SCHPrivateAnnotations.m */; };
 		5200EFF412F6D00B00BAC355 /* SCHeReaderCategories.m in Sources */ = {isa = PBXBuildFile; fileRef = 5200EFF312F6D00B00BAC355 /* SCHeReaderCategories.m */; };
@@ -867,8 +865,6 @@
 		28EEC04A1118E28000187D67 /* AppDelegate_Shared.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate_Shared.m; path = Shared/AppDelegate_Shared.m; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Shared/main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* Scholastic_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Scholastic_Prefix.pch; sourceTree = "<group>"; };
-		5200EFE612F6CFE400BAC355 /* SCHItemsCount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHItemsCount.h; path = Shared/SCHItemsCount.h; sourceTree = "<group>"; };
-		5200EFE712F6CFE400BAC355 /* SCHItemsCount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHItemsCount.m; path = Shared/SCHItemsCount.m; sourceTree = "<group>"; };
 		5200EFE812F6CFE400BAC355 /* SCHListProfileContentAnnotations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHListProfileContentAnnotations.h; path = Shared/SCHListProfileContentAnnotations.h; sourceTree = "<group>"; };
 		5200EFE912F6CFE400BAC355 /* SCHListProfileContentAnnotations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHListProfileContentAnnotations.m; path = Shared/SCHListProfileContentAnnotations.m; sourceTree = "<group>"; };
 		5200EFEA12F6CFE400BAC355 /* SCHPrivateAnnotations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHPrivateAnnotations.h; path = Shared/SCHPrivateAnnotations.h; sourceTree = "<group>"; };
@@ -1815,8 +1811,6 @@
 				52298A7C12F0EF5600BBBCE6 /* SCHFavorite.m */,
 				52298A8512F0EF5600BBBCE6 /* SCHHighlight.h */,
 				52298A8612F0EF5600BBBCE6 /* SCHHighlight.m */,
-				5200EFE612F6CFE400BAC355 /* SCHItemsCount.h */,
-				5200EFE712F6CFE400BAC355 /* SCHItemsCount.m */,
 				52298A6312F0EF5600BBBCE6 /* SCHLastPage.h */,
 				52298A6412F0EF5600BBBCE6 /* SCHLastPage.m */,
 				5200EFE812F6CFE400BAC355 /* SCHListProfileContentAnnotations.h */,
@@ -3443,7 +3437,6 @@
 				52298A9B12F0EF5600BBBCE6 /* SCHHighlight.m in Sources */,
 				52E4692012F1D94E00ECC97A /* SCHLocalDebug.m in Sources */,
 				C923B14312F6AFC60054426F /* SCHMultipleBookshelvesController.m in Sources */,
-				5200EFEF12F6CFE400BAC355 /* SCHItemsCount.m in Sources */,
 				5200EFF012F6CFE400BAC355 /* SCHListProfileContentAnnotations.m in Sources */,
 				5200EFF112F6CFE400BAC355 /* SCHPrivateAnnotations.m in Sources */,
 				5200EFF512F6D00B00BAC355 /* SCHeReaderCategories.m in Sources */,
@@ -3611,7 +3604,6 @@
 				F837C6B412F179B100833448 /* SCHWordIndex.m in Sources */,
 				52E4697512F1F33200ECC97A /* SCHLocalDebug.m in Sources */,
 				C923B14112F6AFC60054426F /* SCHMultipleBookshelvesController.m in Sources */,
-				5200EFEC12F6CFE400BAC355 /* SCHItemsCount.m in Sources */,
 				5200EFED12F6CFE400BAC355 /* SCHListProfileContentAnnotations.m in Sources */,
 				5200EFEE12F6CFE400BAC355 /* SCHPrivateAnnotations.m in Sources */,
 				5200EFF412F6D00B00BAC355 /* SCHeReaderCategories.m in Sources */,

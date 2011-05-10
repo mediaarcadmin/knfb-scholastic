@@ -9,11 +9,9 @@
 #import "SCHListProfileContentAnnotations.h"
 
 #import "SCHAnnotationsList.h"
-#import "SCHItemsCount.h"
 
 @implementation SCHListProfileContentAnnotations 
 
 @dynamic AnnotationsList;
-@dynamic ItemsCount;
 
 @end
