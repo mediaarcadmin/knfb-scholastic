@@ -11,6 +11,6 @@
 
 @class EucBookPaginator;
 
-@interface SCHFlowPaginateOperation : SCHBookOperation {}
+@interface SCHFlowAnalysisOperation : SCHBookOperation {}
 
 @end

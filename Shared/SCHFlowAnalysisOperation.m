@@ -6,19 +6,19 @@
 //  Copyright 2011 BitWink. All rights reserved.
 //
 
-#import "SCHFlowPaginateOperation.h"
+#import "SCHFlowAnalysisOperation.h"
 #import "SCHAppBook.h"
 #import "SCHBookManager.h"
 #import "SCHFlowEucBook.h"
 
-@interface SCHFlowPaginateOperation ()
+@interface SCHFlowAnalysisOperation ()
 
 - (void) updateBookWithSuccess;
 - (void) updateBookWithFailure;
 
 @end
 
-@implementation SCHFlowPaginateOperation
+@implementation SCHFlowAnalysisOperation
 
 - (void) updateBookWithSuccess
 {
@@ -35,18 +35,19 @@
 
 - (void) beginOperation
 {
-    [self updateBookWithSuccess];
-    return;
-#if 0
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
     
-	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];    
+#ifndef __OPTIMIZE__    
+    // This book is only used for logging
+	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];  
+    
     CFAbsoluteTime startTime = CFAbsoluteTimeGetCurrent();
+#endif
+    SCHFlowEucBook *eucBook = [[SCHFlowEucBook alloc] initWithISBN:self.isbn failIfCachedDataNotReady:NO];
 
-    SCHFlowEucBook *eucBook = [[SCHBookManager sharedBookManager] checkOutEucBookForBookIdentifier:self.isbn];
     if (eucBook) {
         NSLog(@"Pagination of book %@ took %ld seconds", book.Title, (long)round(CFAbsoluteTimeGetCurrent() - startTime));
-        [[SCHBookManager sharedBookManager] checkInEucBookForBookIdentifier:self.isbn];
+        [eucBook release];
         [self updateBookWithSuccess];
     } else {
         NSLog(@"Pagination of book %@ failed. Could not checkout out SCHFlowEucBook", book.Title);
@@ -54,7 +55,6 @@
     }
     
     [pool drain];
-#endif 
 }
 
 @end

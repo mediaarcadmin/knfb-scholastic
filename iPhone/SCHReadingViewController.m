@@ -655,7 +655,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     
     float topPoint = ((bottomLimit - topLimit) / 2) - (scrubFrame.size.height / 2);
     
-    NSLog(@"Top limit: %f, bottom limit: %f", topLimit, bottomLimit);
+    //NSLog(@"Top limit: %f, bottom limit: %f", topLimit, bottomLimit);
     
 //    scrubFrame.origin.y = statusBarHeight + self.navigationController.navigationBar.frame.size.height + 10;
     scrubFrame.origin.y = floorf(topLimit + topPoint);
