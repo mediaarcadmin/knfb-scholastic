@@ -27,7 +27,7 @@
 @interface SCHAnnotationSyncComponent ()
 
 - (void)setSyncDate:(NSDate *)date;
-- (void)updateProfileContentAnnotations:(NSDictionary *)profileContentAnnotationList;
+- (void)syncProfileContentAnnotations:(NSDictionary *)profileContentAnnotationList;
 - (SCHAnnotationsContentItem *)annotationsContentItem:(NSDictionary *)annotationsContentItem;
 - (SCHPrivateAnnotations *)privateAnnotation:(NSDictionary *)privateAnnotation;
 - (SCHHighlight *)highlight:(NSDictionary *)highlight;
@@ -155,7 +155,7 @@
 
 - (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result
 {	
-	[self updateProfileContentAnnotations:[result objectForKey:kSCHLibreAccessWebServiceListProfileContentAnnotations]];	
+	[self syncProfileContentAnnotations:[result objectForKey:kSCHLibreAccessWebServiceListProfileContentAnnotations]];	
 
     if ([self.annotations count] < 1) {
         [self setSyncDate:[NSDate date]];
@@ -165,32 +165,50 @@
     [super method:method didCompleteWithResult:nil];	
 }
 
-- (void)updateProfileContentAnnotations:(NSDictionary *)profileContentAnnotationList
+- (void)syncProfileContentAnnotations:(NSDictionary *)profileContentAnnotationList
 {
 	NSError *error = nil;
+	NSDictionary *annotationsList = [self makeNullNil:[profileContentAnnotationList objectForKey:kSCHLibreAccessWebServiceAnnotationsList]];    
 	
-	SCHAnnotationsList *newAnnotationsList = nil;
-	
-	NSDictionary *annotationsList = [self makeNullNil:[profileContentAnnotationList objectForKey:kSCHLibreAccessWebServiceAnnotationsList]];
-
     // uncomment if we require to use this info
-//	NSDictionary *itemsCount = [self makeNullNil:[profileContentAnnotationList objectForKey:kSCHLibreAccessWebServiceItemsCount]];	
-//	NSNumber *found = [self makeNullNil:[itemsCount objectForKey:kSCHLibreAccessWebServiceFound]];
-//	NSNumber *returned = [self makeNullNil:[itemsCount objectForKey:kSCHLibreAccessWebServiceReturned]];	
-	
-	for (NSDictionary *annotationsItem in annotationsList) {
-		newAnnotationsList = [NSEntityDescription insertNewObjectForEntityForName:kSCHAnnotationsList inManagedObjectContext:self.managedObjectContext];
-		for (NSDictionary *annotation in [annotationsItem objectForKey:kSCHLibreAccessWebServiceAnnotationsContentList]) {
-			[newAnnotationsList addAnnotationContentItemObject:[self annotationsContentItem:annotation]];
-		}
-		newAnnotationsList.ProfileID = [annotationsItem objectForKey:kSCHLibreAccessWebServiceProfileID];
-	}
-
+    //	NSDictionary *itemsCount = [self makeNullNil:[profileContentAnnotationList objectForKey:kSCHLibreAccessWebServiceItemsCount]];	
+    //	NSNumber *found = [self makeNullNil:[itemsCount objectForKey:kSCHLibreAccessWebServiceFound]];
+    //	NSNumber *returned = [self makeNullNil:[itemsCount objectForKey:kSCHLibreAccessWebServiceReturned]];	
+    
+    for (NSDictionary *annotationsItem in annotationsList) {
+        NSNumber *profileID = [annotationsItem objectForKey:kSCHLibreAccessWebServiceProfileID];
+        NSArray *localAnnotationList = [self localAnnotationsListForProfile:profileID];
+        
+        if ([localAnnotationList count] < 1) {
+            SCHAnnotationsList *newAnnotationsList = [NSEntityDescription insertNewObjectForEntityForName:kSCHAnnotationsList inManagedObjectContext:self.managedObjectContext];
+            for (NSDictionary *annotation in [annotationsItem objectForKey:kSCHLibreAccessWebServiceAnnotationsContentList]) {
+                [newAnnotationsList addAnnotationContentItemObject:[self annotationsContentItem:annotation]];
+            }
+            newAnnotationsList.ProfileID = [annotationsItem objectForKey:kSCHLibreAccessWebServiceProfileID];
+        } else {
+            // sync me baby
+        }
+    }
+    
 	// Save the context.
 	if (![self.managedObjectContext save:&error]) {
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
 		abort();
-	}	
+	}	    
+}
+- (NSArray *)localAnnotationsListForProfile:(NSNumber *)profileID
+{
+    NSEntityDescription *entityDescription = [NSEntityDescription 
+                                              entityForName:kSCHAnnotationsList
+                                              inManagedObjectContext:self.managedObjectContext];
+    
+    NSFetchRequest *fetchRequest = [entityDescription.managedObjectModel 
+                                    fetchRequestFromTemplateWithName:kSCHAnnotationsListfetchAnnotationListForProfile 
+                                    substitutionVariables:[NSDictionary 
+                                                           dictionaryWithObject:profileID 
+                                                           forKey:kSCHAnnotationsListPROFILE_ID]];
+	
+	return([self.managedObjectContext executeFetchRequest:fetchRequest error:nil]);
 }
 
 - (SCHPrivateAnnotations *)localPrivateAnnotationsForProfile:(NSNumber *)profileID
