@@ -55,5 +55,10 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>UIRequiredDeviceCapabilities</key>
+	<array>
+		<string>opengles-2</string>
+		<string>armv7</string>
+	</array>
 </dict>
 </plist>
