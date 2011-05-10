@@ -15,6 +15,7 @@
 #import "SCHURLManager.h"
 #import "SCHSyncManager.h"
 #import "SCHAboutViewController.h"
+#import "SCHPrivacyPolicyViewController.h"
 
 extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
@@ -271,6 +272,11 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     switch ([indexPath section]) {
         case 0: {
             [self deregistration];
+        } break;
+        case 2: {
+			SCHPrivacyPolicyViewController *privacyController = [[SCHPrivacyPolicyViewController alloc] init];
+			[self.navigationController pushViewController:privacyController animated:YES];
+			[privacyController release];
         } break;
         case 3: {
 			SCHAboutViewController *aboutController = [[SCHAboutViewController alloc] init];
