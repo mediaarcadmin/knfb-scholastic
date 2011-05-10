@@ -12,6 +12,9 @@
 
 static NSString * const kSCHAnnotationsList = @"SCHAnnotationsList";
 
+static NSString * const kSCHAnnotationsListfetchAnnotationListForProfile = @"fetchAnnotationListForProfile";
+static NSString * const kSCHAnnotationsListPROFILE_ID = @"PROFILE_ID";
+
 @interface SCHAnnotationsList :  NSManagedObject  
 {
 }
