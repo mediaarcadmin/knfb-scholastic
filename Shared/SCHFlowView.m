@@ -134,8 +134,10 @@
         return;
     }
     
-    [self.eucBookView setFontPointSize:[(NSNumber *) [eucFontSizeNumbers objectAtIndex:index] intValue]];
-    [self.eucBookView setNeedsDisplay];
+    CGFloat newSize = [[eucFontSizeNumbers objectAtIndex:index] floatValue];
+    
+    [self.eucBookView highlightWordAtIndexPoint:nil animated:YES];
+    [self.eucBookView setFontPointSize:newSize];
 }
 
 - (NSInteger)pageCount

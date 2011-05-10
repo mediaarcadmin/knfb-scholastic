@@ -256,7 +256,7 @@
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 			</object>
 			<object class="IBUIView" id="692504765">
-				<nil key="NSNextResponder"/>
+				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">266</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -268,8 +268,9 @@
 							<object class="IBUISegmentedControl" id="319010100">
 								<reference key="NSNextResponder" ref="796094069"/>
 								<int key="NSvFlags">291</int>
-								<string key="NSFrame">{{134, 10}, {177, 30}}</string>
+								<string key="NSFrame">{{114, 10}, {197, 30}}</string>
 								<reference key="NSSuperview" ref="796094069"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="460102748"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -308,8 +309,10 @@
 							<object class="IBUISegmentedControl" id="460102748">
 								<reference key="NSNextResponder" ref="796094069"/>
 								<int key="NSvFlags">291</int>
-								<string key="NSFrame">{{134, 46}, {177, 30}}</string>
+								<string key="NSFrame">{{114, 46}, {197, 30}}</string>
 								<reference key="NSSuperview" ref="796094069"/>
+								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<int key="IBSegmentControlStyle">2</int>
@@ -349,8 +352,9 @@
 							<object class="IBUISegmentedControl" id="689393356">
 								<reference key="NSNextResponder" ref="796094069"/>
 								<int key="NSvFlags">294</int>
-								<string key="NSFrame">{{10, 10}, {110, 30}}</string>
+								<string key="NSFrame">{{10, 10}, {90, 30}}</string>
 								<reference key="NSSuperview" ref="796094069"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="319010100"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -358,8 +362,8 @@
 								<int key="IBNumberOfSegments">2</int>
 								<object class="NSArray" key="IBSegmentTitles">
 									<bool key="EncodedWithXMLCoder">YES</bool>
-									<string>Font -</string>
-									<string>Font +</string>
+									<string/>
+									<string/>
 								</object>
 								<object class="NSMutableArray" key="IBSegmentWidths">
 									<bool key="EncodedWithXMLCoder">YES</bool>
@@ -378,8 +382,14 @@
 								</object>
 								<object class="NSMutableArray" key="IBSegmentImages">
 									<bool key="EncodedWithXMLCoder">YES</bool>
-									<reference ref="4"/>
-									<reference ref="4"/>
+									<object class="NSCustomResource">
+										<string key="NSClassName">NSImage</string>
+										<string key="NSResourceName">icon-font-decrease.png</string>
+									</object>
+									<object class="NSCustomResource">
+										<string key="NSClassName">NSImage</string>
+										<string key="NSResourceName">icon-font-increase.png</string>
+									</object>
 								</object>
 								<bool key="IBMomentary">YES</bool>
 								<reference key="IBTintColor" ref="844964037"/>
@@ -387,12 +397,15 @@
 						</object>
 						<string key="NSFrameSize">{320, 86}</string>
 						<reference key="NSSuperview" ref="692504765"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="689393356"/>
 						<reference key="IBUIBackgroundColor" ref="368037730"/>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 					</object>
 				</object>
 				<string key="NSFrameSize">{320, 86}</string>
+				<reference key="NSSuperview"/>
+				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="796094069"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
@@ -479,7 +492,7 @@
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 			</object>
 			<object class="IBUIView" id="796079887">
-				<reference key="NSNextResponder"/>
+				<nil key="NSNextResponder"/>
 				<int key="NSvFlags">301</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -488,8 +501,6 @@
 						<int key="NSvFlags">274</int>
 						<string key="NSFrameSize">{35, 44}</string>
 						<reference key="NSSuperview" ref="796079887"/>
-						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">3</int>
 							<bytes key="NSWhite">MSAwAA</bytes>
@@ -514,19 +525,14 @@
 					</object>
 				</object>
 				<string key="NSFrameSize">{35, 44}</string>
-				<reference key="NSSuperview"/>
-				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="304733350"/>
 				<reference key="IBUIBackgroundColor" ref="368037730"/>
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 			</object>
 			<object class="IBUIView" id="14499984">
-				<reference key="NSNextResponder"/>
+				<nil key="NSNextResponder"/>
 				<int key="NSvFlags">301</int>
 				<string key="NSFrameSize">{35, 44}</string>
-				<reference key="NSSuperview"/>
-				<reference key="NSWindow"/>
-				<reference key="NSNextKeyView"/>
 				<reference key="IBUIBackgroundColor" ref="368037730"/>
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 			</object>
@@ -1135,7 +1141,7 @@
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<integer value="1"/>
+					<integer value="0"/>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<integer value="0"/>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -1425,6 +1431,8 @@
 			<bool key="EncodedWithXMLCoder">YES</bool>
 			<object class="NSArray" key="dict.sortedKeys">
 				<bool key="EncodedWithXMLCoder">YES</bool>
+				<string>icon-font-decrease.png</string>
+				<string>icon-font-increase.png</string>
 				<string>icon-notes.png</string>
 				<string>icon-play.png</string>
 				<string>icon-settings.png</string>
@@ -1432,6 +1440,8 @@
 			</object>
 			<object class="NSMutableArray" key="dict.values">
 				<bool key="EncodedWithXMLCoder">YES</bool>
+				<string>{30, 30}</string>
+				<string>{30, 30}</string>
 				<string>{34, 38}</string>
 				<string>{35, 34}</string>
 				<string>{34, 33}</string>

@@ -442,6 +442,14 @@
 		C93ECB36134B64B1003B99FD /* TextFlowXAML.css in Resources */ = {isa = PBXBuildFile; fileRef = C93ECB2D134B64B1003B99FD /* TextFlowXAML.css */; };
 		C93ECB37134B64B1003B99FD /* TextFlowXAMLOverrides.css in Resources */ = {isa = PBXBuildFile; fileRef = C93ECB2E134B64B1003B99FD /* TextFlowXAMLOverrides.css */; };
 		C93ECB38134B64B1003B99FD /* TextFlowXAMLOverrides.css in Resources */ = {isa = PBXBuildFile; fileRef = C93ECB2E134B64B1003B99FD /* TextFlowXAMLOverrides.css */; };
+		C94735F91377F482005B2B1D /* icon-font-increase@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C94735F51377F482005B2B1D /* icon-font-increase@2x.png */; };
+		C94735FA1377F482005B2B1D /* icon-font-increase@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C94735F51377F482005B2B1D /* icon-font-increase@2x.png */; };
+		C94735FB1377F482005B2B1D /* icon-font-increase.png in Resources */ = {isa = PBXBuildFile; fileRef = C94735F61377F482005B2B1D /* icon-font-increase.png */; };
+		C94735FC1377F482005B2B1D /* icon-font-increase.png in Resources */ = {isa = PBXBuildFile; fileRef = C94735F61377F482005B2B1D /* icon-font-increase.png */; };
+		C94735FD1377F482005B2B1D /* icon-font-decrease@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C94735F71377F482005B2B1D /* icon-font-decrease@2x.png */; };
+		C94735FE1377F482005B2B1D /* icon-font-decrease@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C94735F71377F482005B2B1D /* icon-font-decrease@2x.png */; };
+		C94735FF1377F482005B2B1D /* icon-font-decrease.png in Resources */ = {isa = PBXBuildFile; fileRef = C94735F81377F482005B2B1D /* icon-font-decrease.png */; };
+		C94736001377F482005B2B1D /* icon-font-decrease.png in Resources */ = {isa = PBXBuildFile; fileRef = C94735F81377F482005B2B1D /* icon-font-decrease.png */; };
 		C953FC521370796F003DA646 /* icon-play-landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = C953FC4813707964003DA646 /* icon-play-landscape.png */; };
 		C953FC531370796F003DA646 /* icon-play-landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = C953FC4813707964003DA646 /* icon-play-landscape.png */; };
 		C953FC541370796F003DA646 /* icon-play-landscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C953FC4913707967003DA646 /* icon-play-landscape@2x.png */; };
@@ -1364,6 +1372,10 @@
 		C93ECB2D134B64B1003B99FD /* TextFlowXAML.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = TextFlowXAML.css; sourceTree = "<group>"; };
 		C93ECB2E134B64B1003B99FD /* TextFlowXAMLOverrides.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = TextFlowXAMLOverrides.css; sourceTree = "<group>"; };
 		C93ECB81134B7FA4003B99FD /* After Ever After.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = "After Ever After.xps"; path = "Shared/Debug Books/After Ever After.xps"; sourceTree = "<group>"; };
+		C94735F51377F482005B2B1D /* icon-font-increase@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-font-increase@2x.png"; path = "Resources/UIAssets/icon-font-increase@2x.png"; sourceTree = "<group>"; };
+		C94735F61377F482005B2B1D /* icon-font-increase.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-font-increase.png"; path = "Resources/UIAssets/icon-font-increase.png"; sourceTree = "<group>"; };
+		C94735F71377F482005B2B1D /* icon-font-decrease@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-font-decrease@2x.png"; path = "Resources/UIAssets/icon-font-decrease@2x.png"; sourceTree = "<group>"; };
+		C94735F81377F482005B2B1D /* icon-font-decrease.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-font-decrease.png"; path = "Resources/UIAssets/icon-font-decrease.png"; sourceTree = "<group>"; };
 		C947D55D133B9C0000FB4404 /* libEucalyptus.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libEucalyptus.xcodeproj; path = Shared/Libraries/Submodules/libEucalyptus/libEucalyptus.xcodeproj; sourceTree = "<group>"; };
 		C953FC4813707964003DA646 /* icon-play-landscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-play-landscape.png"; path = "Resources/icon-play-landscape.png"; sourceTree = "<group>"; };
 		C953FC4913707967003DA646 /* icon-play-landscape@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-play-landscape@2x.png"; path = "Resources/icon-play-landscape@2x.png"; sourceTree = "<group>"; };
@@ -1856,6 +1868,10 @@
 				C9A11290136082A6007FD763 /* UIAssets */,
 				52E622F31358385D00245CA7 /* Themes */,
 				F80FED601355DD6D00DEB3C1 /* icon-magnify.png */,
+				C94735F51377F482005B2B1D /* icon-font-increase@2x.png */,
+				C94735F61377F482005B2B1D /* icon-font-increase.png */,
+				C94735F71377F482005B2B1D /* icon-font-decrease@2x.png */,
+				C94735F81377F482005B2B1D /* icon-font-decrease.png */,
 				525F332E1372B39700CB5326 /* icon-books-landscape.png */,
 				525F332F1372B39700CB5326 /* icon-books-landscape@2x.png */,
 				525F33301372B39700CB5326 /* icon-books.png */,
@@ -3158,6 +3174,10 @@
 				525F33361372B39700CB5326 /* icon-books.png in Resources */,
 				525F33381372B39700CB5326 /* icon-books@2x.png in Resources */,
 				A38CF1FB1374503300EABF43 /* credits.html in Resources */,
+				C94735F91377F482005B2B1D /* icon-font-increase@2x.png in Resources */,
+				C94735FB1377F482005B2B1D /* icon-font-increase.png in Resources */,
+				C94735FD1377F482005B2B1D /* icon-font-decrease@2x.png in Resources */,
+				C94735FF1377F482005B2B1D /* icon-font-decrease.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3352,6 +3372,10 @@
 				525F33371372B39700CB5326 /* icon-books.png in Resources */,
 				525F33391372B39700CB5326 /* icon-books@2x.png in Resources */,
 				A38CF1FC1374503300EABF43 /* credits.html in Resources */,
+				C94735FA1377F482005B2B1D /* icon-font-increase@2x.png in Resources */,
+				C94735FC1377F482005B2B1D /* icon-font-increase.png in Resources */,
+				C94735FE1377F482005B2B1D /* icon-font-decrease@2x.png in Resources */,
+				C94736001377F482005B2B1D /* icon-font-decrease.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

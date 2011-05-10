@@ -46,6 +46,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 // temporary flag to prevent nav bar from being positioned behind the status bar on rotation
 @property (nonatomic, assign) BOOL currentlyRotating;
 
+// temporary flag to prevent the UISlider sending change event before start and end events
+@property (nonatomic) BOOL currentlyScrubbing;
+
 // the current font size index (of an array of font sizes provided by libEucalyptus)
 @property (nonatomic, assign) int currentFontSizeIndex;
 
@@ -79,6 +82,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 @synthesize currentBookProgress;
 @synthesize xpsProvider;
 @synthesize currentlyRotating;
+@synthesize currentlyScrubbing;
 @synthesize currentFontSizeIndex;
 @synthesize paperType;
 @synthesize layoutType;
@@ -160,6 +164,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         isbn = [aIsbn copy];
         layoutType = layout;
         currentlyRotating = NO;
+        currentlyScrubbing = NO;
     }
     return self;
 }
@@ -607,8 +612,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
             desiredHeight = maxImageHeight;
         }
         
-        NSLog(@"Max height: %d", maxImageHeight);
-        NSLog(@"Desired height: %d", desiredHeight);
+//        NSLog(@"Max height: %d", maxImageHeight);
+//        NSLog(@"Desired height: %d", desiredHeight);
 
         // if there's not enough space to sensibly render the image, don't try - just go with the text
         if (maxImageHeight < 40) {
@@ -627,7 +632,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
                 scrubFrame.size.height = kReadingViewStandardScrubHeight;
             }
             
-            NSLog(@"Scrub frame height: %f", scrubFrame.size.height);
+//            NSLog(@"Scrub frame height: %f", scrubFrame.size.height);
         }
     } else {
         scrubFrame.size.height = kReadingViewStandardScrubHeight;
@@ -647,6 +652,18 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         NSString *localisedText = NSLocalizedString(@"%d%% of book", @"%d of book");
         [self.pageLabel setText:[NSString stringWithFormat:localisedText, MAX((NSUInteger)(self.currentBookProgress * 100), 1)]];
     }  
+    
+    if (self.layoutType == SCHReadingViewLayoutTypeFixed) {
+        if (self.scrubberInfoView.frame.size.height == kReadingViewStandardScrubHeight) {
+            self.scrubberThumbImage.image = nil;
+        } else {
+            UIImage *scrubImage = [self.xpsProvider thumbnailForPage:self.currentPageIndex + 1];
+            self.scrubberThumbImage.image = scrubImage;
+        }
+    } else {
+        self.scrubberThumbImage.image = nil;
+    }
+
 }
 
 - (void)updateScrubberValue
@@ -666,37 +683,36 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (IBAction)scrubValueStartChanges:(UISlider *)slider
 {
-    //NSLog(@"Scrub started changes!");
-
     if (self.currentPageIndex == NSUIntegerMax) {
         self.currentBookProgress = [slider value];
     } else {
         self.currentPageIndex = roundf([slider value]);
     }
     
-    [self updateScrubberLabel];
-    
     // add the scrub view here
+    // adjust the height of the scrubber info view first, then update the thumb
     if (self.layoutType == SCHReadingViewLayoutTypeFixed) {
-        UIImage *scrubImage = [self.xpsProvider thumbnailForPage:self.currentPageIndex];
+        UIImage *scrubImage = [self.xpsProvider thumbnailForPage:self.currentPageIndex + 1];
         self.scrubberThumbImage.image = scrubImage;
         [self adjustScrubberInfoViewHeightForImageSize:scrubImage.size];
     } else {
-        [self adjustScrubberInfoViewHeightForImageSize:CGSizeZero];
         self.scrubberThumbImage.image = nil;
+        [self adjustScrubberInfoViewHeightForImageSize:CGSizeZero];
     }
+
+    [self updateScrubberLabel];
     
     [self.scrubberInfoView setAlpha:1.0f];
     [self.view addSubview:self.scrubberInfoView];
             
 	[self cancelInitialTimer];
     
+    self.currentlyScrubbing = YES;
+    
 }
 
 - (IBAction)scrubValueEndChanges:(UISlider *)slider
 {
-    //NSLog(@"Scrub ended changes!");
-    
 	[UIView animateWithDuration:0.3f 
                           delay:0.2f 
                         options:UIViewAnimationOptionCurveEaseOut | UIViewAnimationOptionBeginFromCurrentState
@@ -717,32 +733,34 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     }
     
     [self updateScrubberLabel];
+    self.currentlyScrubbing = NO;
 }
 
 - (IBAction)scrubValueChanged:(UISlider *)slider
 {
-    //NSLog(@"Scrub value changes!"); 
-    if (self.currentPageIndex == NSUIntegerMax) {
-        self.currentBookProgress = [slider value];
-    } else {
-        self.currentPageIndex = roundf([slider value]);
+    if (!self.currentlyScrubbing) {
+        return;
     }
     
-    [self updateScrubberLabel];
-        
-    if (self.layoutType == SCHReadingViewLayoutTypeFixed) {
-        
-        UIImage *scrubImage = [self.xpsProvider thumbnailForPage:self.currentPageIndex + 1];
-        
-        if (self.scrubberInfoView.frame.size.height == kReadingViewStandardScrubHeight) {
-            self.scrubberThumbImage.image = nil;
-        } else {
-            self.scrubberThumbImage.image = scrubImage;
+    // this boolean prevents unnecessary frame size changes/thumb loading when the scrubber doesn't
+    // change between pages
+    BOOL adjustScrubInfo = NO;
+    
+    if (self.currentPageIndex == NSUIntegerMax) {
+        self.currentBookProgress = [slider value];
+        adjustScrubInfo = YES;
+    } else {
+        int newValue = roundf([slider value]);
+        if (newValue != self.currentPageIndex) {
+            self.currentPageIndex = newValue;
+            adjustScrubInfo = YES;
         }
-    } 
+    }
     
-    [self adjustScrubberInfoViewHeightForImageSize:self.scrubberThumbImage.image.size];
-    
+    if (adjustScrubInfo) {
+        [self adjustScrubberInfoViewHeightForImageSize:self.scrubberThumbImage.image.size];
+        [self updateScrubberLabel];
+    }
 }
 
 #pragma mark - Toolbar Methods - including timer
