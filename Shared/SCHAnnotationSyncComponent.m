@@ -11,7 +11,6 @@
 #import "NSManagedObjectContext+Extensions.h"
 
 #import "SCHLibreAccessWebService.h"
-#import "SCHListProfileContentAnnotations.h"
 #import "SCHAnnotationsList.h"
 #import "SCHAnnotationsContentItem.h"
 #import "SCHPrivateAnnotations.h"
@@ -105,7 +104,7 @@
 {
 	NSError *error = nil;
 	
-	if (![self.managedObjectContext BITemptyEntity:kSCHListProfileContentAnnotations error:&error]) {
+	if (![self.managedObjectContext BITemptyEntity:kSCHAnnotationsList error:&error]) {
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
 		abort();
 	}	
@@ -170,7 +169,6 @@
 {
 	NSError *error = nil;
 	
-	SCHListProfileContentAnnotations *newListProfileContentAnnotations = [NSEntityDescription insertNewObjectForEntityForName:kSCHListProfileContentAnnotations inManagedObjectContext:self.managedObjectContext];
 	SCHAnnotationsList *newAnnotationsList = nil;
 	
 	NSDictionary *annotationsList = [self makeNullNil:[profileContentAnnotationList objectForKey:kSCHLibreAccessWebServiceAnnotationsList]];
@@ -186,7 +184,6 @@
 			[newAnnotationsList addAnnotationContentItemObject:[self annotationsContentItem:annotation]];
 		}
 		newAnnotationsList.ProfileID = [annotationsItem objectForKey:kSCHLibreAccessWebServiceProfileID];
-		[newListProfileContentAnnotations addAnnotationsListObject:newAnnotationsList];
 	}
 
 	// Save the context.

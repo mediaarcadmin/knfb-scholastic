@@ -21,10 +21,10 @@
 #import "SCHUserContentItem.h"
 #import "SCHContentProfileItem.h"
 #import "SCHOrderItem.h"
-#import "SCHListProfileContentAnnotations.h"
 #import "SCHBookshelfSyncComponent.h"
 #import "SCHAppBook.h"
 #import "SCHAppProfile.h"
+#import "SCHAnnotationsList.h"
 
 @interface SCHLocalDebug ()
 
@@ -33,7 +33,7 @@
 - (void)clearUserContentItems;
 - (void)clearBooks;
 - (void)clearUserSettings;
-- (void)clearProfileContentAnnotations;
+- (void)clearAnnotations;
 - (id)makeNullNil:(id)object;
 
 @end
@@ -164,7 +164,7 @@
 	[self clearUserContentItems];
 	[self clearBooks];
 	[self clearUserSettings];
-	[self clearProfileContentAnnotations];
+	[self clearAnnotations];
 	
 	SCHProfileItem *youngProfileItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHProfileItem inManagedObjectContext:self.managedObjectContext];
 	
@@ -362,11 +362,11 @@
 	}	
 }
 
-- (void)clearProfileContentAnnotations
+- (void)clearAnnotations
 {
 	NSError *error = nil;
 	
-	if (![self.managedObjectContext BITemptyEntity:kSCHListProfileContentAnnotations error:&error]) {
+	if (![self.managedObjectContext BITemptyEntity:kSCHAnnotationsList error:&error]) {
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
 		abort();
 	}	

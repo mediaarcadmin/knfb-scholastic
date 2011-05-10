@@ -9,12 +9,10 @@
 #import "SCHAnnotationsList.h"
 
 #import "SCHAnnotationsContentItem.h"
-#import "SCHListProfileContentAnnotations.h"
 
 @implementation SCHAnnotationsList 
 
 @dynamic ProfileID;
 @dynamic AnnotationContentItem;
-@dynamic ListProfileContentAnnotations;
 
 @end

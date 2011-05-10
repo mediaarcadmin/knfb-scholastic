@@ -9,7 +9,6 @@
 #import <CoreData/CoreData.h>
 
 @class SCHAnnotationsContentItem;
-@class SCHListProfileContentAnnotations;
 
 static NSString * const kSCHAnnotationsList = @"SCHAnnotationsList";
 
@@ -19,7 +18,6 @@ static NSString * const kSCHAnnotationsList = @"SCHAnnotationsList";
 
 @property (nonatomic, retain) NSNumber * ProfileID;
 @property (nonatomic, retain) NSSet* AnnotationContentItem;
-@property (nonatomic, retain) SCHListProfileContentAnnotations * ListProfileContentAnnotations;
 
 @end
 
