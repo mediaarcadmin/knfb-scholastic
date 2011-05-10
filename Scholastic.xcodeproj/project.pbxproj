@@ -147,6 +147,9 @@
 		A38CF1FC1374503300EABF43 /* credits.html in Resources */ = {isa = PBXBuildFile; fileRef = A38CF1FA1374503300EABF43 /* credits.html */; };
 		A38CF1FF1374504F00EABF43 /* SCHAboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A38CF1FE1374504F00EABF43 /* SCHAboutViewController.m */; };
 		A38CF2001374504F00EABF43 /* SCHAboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A38CF1FE1374504F00EABF43 /* SCHAboutViewController.m */; };
+		A39009091379866A00D6B608 /* StageFright.xps in Resources */ = {isa = PBXBuildFile; fileRef = A39009061379866A00D6B608 /* StageFright.xps */; };
+		A390090A1379866A00D6B608 /* TheBurning.xps in Resources */ = {isa = PBXBuildFile; fileRef = A39009071379866A00D6B608 /* TheBurning.xps */; };
+		A390090B1379866A00D6B608 /* WhatISaw.xps in Resources */ = {isa = PBXBuildFile; fileRef = A39009081379866A00D6B608 /* WhatISaw.xps */; };
 		A3A38E61133A811400C325A3 /* devcerttemplate.dat in Resources */ = {isa = PBXBuildFile; fileRef = A3A38E5F133A811400C325A3 /* devcerttemplate.dat */; };
 		A3A38E62133A811400C325A3 /* iphonecert.dat in Resources */ = {isa = PBXBuildFile; fileRef = A3A38E60133A811400C325A3 /* iphonecert.dat */; };
 		A3A38E63133A811400C325A3 /* devcerttemplate.dat in Resources */ = {isa = PBXBuildFile; fileRef = A3A38E5F133A811400C325A3 /* devcerttemplate.dat */; };
@@ -591,8 +594,8 @@
 		F81B4BFB1356E9FE00C0DAF4 /* SCHLicenseAcquisitionOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F81B4BF91356E9FE00C0DAF4 /* SCHLicenseAcquisitionOperation.m */; };
 		F81C74761344DA0700B1D9DB /* SCHFlowEucBook.m in Sources */ = {isa = PBXBuildFile; fileRef = F81C74751344DA0700B1D9DB /* SCHFlowEucBook.m */; };
 		F81C74771344DA0700B1D9DB /* SCHFlowEucBook.m in Sources */ = {isa = PBXBuildFile; fileRef = F81C74751344DA0700B1D9DB /* SCHFlowEucBook.m */; };
-		F81C747A1344DC1200B1D9DB /* SCHFlowPaginateOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F81C74791344DC1200B1D9DB /* SCHFlowPaginateOperation.m */; };
-		F81C747B1344DC1200B1D9DB /* SCHFlowPaginateOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F81C74791344DC1200B1D9DB /* SCHFlowPaginateOperation.m */; };
+		F81C747A1344DC1200B1D9DB /* SCHFlowAnalysisOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F81C74791344DC1200B1D9DB /* SCHFlowAnalysisOperation.m */; };
+		F81C747B1344DC1200B1D9DB /* SCHFlowAnalysisOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F81C74791344DC1200B1D9DB /* SCHFlowAnalysisOperation.m */; };
 		F82D39BF131EA79100289FF3 /* SCHBookContents.m in Sources */ = {isa = PBXBuildFile; fileRef = F82D39B4131EA79100289FF3 /* SCHBookContents.m */; };
 		F82D39C5131EA79100289FF3 /* SCHBookContents.m in Sources */ = {isa = PBXBuildFile; fileRef = F82D39B4131EA79100289FF3 /* SCHBookContents.m */; };
 		F82D39D1131EA7C200289FF3 /* SCHAsyncBookCoverImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = F82D39CC131EA7C100289FF3 /* SCHAsyncBookCoverImageView.m */; };
@@ -1048,6 +1051,9 @@
 		A38CF1FA1374503300EABF43 /* credits.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = credits.html; path = Resources/credits.html; sourceTree = "<group>"; };
 		A38CF1FD1374504F00EABF43 /* SCHAboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHAboutViewController.h; sourceTree = "<group>"; };
 		A38CF1FE1374504F00EABF43 /* SCHAboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHAboutViewController.m; sourceTree = "<group>"; };
+		A39009061379866A00D6B608 /* StageFright.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = StageFright.xps; path = "Shared/Debug Books/StageFright.xps"; sourceTree = "<group>"; };
+		A39009071379866A00D6B608 /* TheBurning.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = TheBurning.xps; path = "Shared/Debug Books/TheBurning.xps"; sourceTree = "<group>"; };
+		A39009081379866A00D6B608 /* WhatISaw.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = WhatISaw.xps; path = "Shared/Debug Books/WhatISaw.xps"; sourceTree = "<group>"; };
 		A3A38E01133A7FA300C325A3 /* DrmGlobals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DrmGlobals.h; path = Shared/Libraries/DRM/DrmGlobals.h; sourceTree = "<group>"; };
 		A3A38E02133A7FFF00C325A3 /* KeychainItemWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KeychainItemWrapper.h; path = Shared/Libraries/DRM/KeychainItemWrapper.h; sourceTree = "<group>"; };
 		A3A38E05133A803500C325A3 /* SCHDrmRegistrationSessionDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHDrmRegistrationSessionDelegate.h; path = Shared/SCHDrmRegistrationSessionDelegate.h; sourceTree = "<group>"; };
@@ -1473,8 +1479,8 @@
 		F81B4BF91356E9FE00C0DAF4 /* SCHLicenseAcquisitionOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHLicenseAcquisitionOperation.m; path = Shared/SCHLicenseAcquisitionOperation.m; sourceTree = "<group>"; };
 		F81C74741344DA0700B1D9DB /* SCHFlowEucBook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHFlowEucBook.h; path = Shared/SCHFlowEucBook.h; sourceTree = "<group>"; };
 		F81C74751344DA0700B1D9DB /* SCHFlowEucBook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHFlowEucBook.m; path = Shared/SCHFlowEucBook.m; sourceTree = "<group>"; };
-		F81C74781344DC1200B1D9DB /* SCHFlowPaginateOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHFlowPaginateOperation.h; path = Shared/SCHFlowPaginateOperation.h; sourceTree = "<group>"; };
-		F81C74791344DC1200B1D9DB /* SCHFlowPaginateOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHFlowPaginateOperation.m; path = Shared/SCHFlowPaginateOperation.m; sourceTree = "<group>"; };
+		F81C74781344DC1200B1D9DB /* SCHFlowAnalysisOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHFlowAnalysisOperation.h; path = Shared/SCHFlowAnalysisOperation.h; sourceTree = "<group>"; };
+		F81C74791344DC1200B1D9DB /* SCHFlowAnalysisOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHFlowAnalysisOperation.m; path = Shared/SCHFlowAnalysisOperation.m; sourceTree = "<group>"; };
 		F82D39B3131EA79100289FF3 /* SCHBookContents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookContents.h; path = Shared/SCHBookContents.h; sourceTree = "<group>"; };
 		F82D39B4131EA79100289FF3 /* SCHBookContents.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookContents.m; path = Shared/SCHBookContents.m; sourceTree = "<group>"; };
 		F82D39CB131EA7C100289FF3 /* SCHAsyncBookCoverImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAsyncBookCoverImageView.h; path = Shared/SCHAsyncBookCoverImageView.h; sourceTree = "<group>"; };
@@ -2658,6 +2664,9 @@
 		F8509E7512F0620D00197EB5 /* Debug Books */ = {
 			isa = PBXGroup;
 			children = (
+				A39009061379866A00D6B608 /* StageFright.xps */,
+				A39009071379866A00D6B608 /* TheBurning.xps */,
+				A39009081379866A00D6B608 /* WhatISaw.xps */,
 				52E4691E12F1D94E00ECC97A /* SCHLocalDebug.h */,
 				52E4691F12F1D94E00ECC97A /* SCHLocalDebug.m */,
 				F83D86B312FC070F00227031 /* SCHLocalDebugXPSReader.h */,
@@ -2760,8 +2769,8 @@
 				F878D6AB134498FB00DDB98B /* SCHThumbnailOperation.m */,
 				F878D77A1344A1E300DDB98B /* SCHXPSCoverImageOperation.h */,
 				F878D77B1344A1E400DDB98B /* SCHXPSCoverImageOperation.m */,
-				F81C74781344DC1200B1D9DB /* SCHFlowPaginateOperation.h */,
-				F81C74791344DC1200B1D9DB /* SCHFlowPaginateOperation.m */,
+				F81C74781344DC1200B1D9DB /* SCHFlowAnalysisOperation.h */,
+				F81C74791344DC1200B1D9DB /* SCHFlowAnalysisOperation.m */,
 				F81B4BF81356E9FE00C0DAF4 /* SCHLicenseAcquisitionOperation.h */,
 				F81B4BF91356E9FE00C0DAF4 /* SCHLicenseAcquisitionOperation.m */,
 			);
@@ -3364,6 +3373,9 @@
 				C94735FC1377F482005B2B1D /* icon-font-increase.png in Resources */,
 				C94735FE1377F482005B2B1D /* icon-font-decrease@2x.png in Resources */,
 				C94736001377F482005B2B1D /* icon-font-decrease.png in Resources */,
+				A39009091379866A00D6B608 /* StageFright.xps in Resources */,
+				A390090A1379866A00D6B608 /* TheBurning.xps in Resources */,
+				A390090B1379866A00D6B608 /* WhatISaw.xps in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3491,7 +3503,7 @@
 				C9B08BE81344D34F001963D0 /* KNFBTextFlowXAMLTreeNode.m in Sources */,
 				C9B08BEA1344D34F001963D0 /* KNFBTOCEntry.m in Sources */,
 				F81C74761344DA0700B1D9DB /* SCHFlowEucBook.m in Sources */,
-				F81C747A1344DC1200B1D9DB /* SCHFlowPaginateOperation.m in Sources */,
+				F81C747A1344DC1200B1D9DB /* SCHFlowAnalysisOperation.m in Sources */,
 				C9D4F6281345FFE8007F86E3 /* SCHTextFlow.m in Sources */,
 				C93EBDFD13462883003B99FD /* SCHBookRange.m in Sources */,
 				C93EBEAF13472FED003B99FD /* SCHTextFlowParagraphSource.m in Sources */,
@@ -3658,7 +3670,7 @@
 				C9B08BE91344D34F001963D0 /* KNFBTextFlowXAMLTreeNode.m in Sources */,
 				C9B08BEB1344D34F001963D0 /* KNFBTOCEntry.m in Sources */,
 				F81C74771344DA0700B1D9DB /* SCHFlowEucBook.m in Sources */,
-				F81C747B1344DC1200B1D9DB /* SCHFlowPaginateOperation.m in Sources */,
+				F81C747B1344DC1200B1D9DB /* SCHFlowAnalysisOperation.m in Sources */,
 				C9D4F6291345FFE8007F86E3 /* SCHTextFlow.m in Sources */,
 				C93EBDFE13462883003B99FD /* SCHBookRange.m in Sources */,
 				C93EBEB013472FED003B99FD /* SCHTextFlowParagraphSource.m in Sources */,

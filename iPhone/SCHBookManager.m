@@ -479,7 +479,8 @@ static int checkoutCountEucBook = 0;
             [self.cachedEucBookCheckoutCounts addObject:isbn];
             ret = previouslyCachedEucBook;
         } else {
-			SCHFlowEucBook *eucBook = [[SCHFlowEucBook alloc] initWithISBN:isbn];
+            // This will return nil if the data has not been previously cached in the paginate operation
+			SCHFlowEucBook *eucBook = [[SCHFlowEucBook alloc] initWithISBN:isbn failIfCachedDataNotReady:YES];
 			if(eucBook) {
 				NSCountedSet *myCachedEucBookCheckoutCounts = self.cachedEucBookCheckoutCounts;
 				if(!myCachedEucBookCheckoutCounts) {
