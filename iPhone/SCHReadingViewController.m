@@ -467,6 +467,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     self.paperType = self.paperType; // Reload the paper
     
     [self.readingView jumpToPageAtIndex:self.currentPageIndex animated:NO];
+    [self updateScrubberValue];
+
     
     [self.view addSubview:self.readingView];
     [self.view sendSubviewToBack:self.readingView];
@@ -653,7 +655,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     
     float topPoint = ((bottomLimit - topLimit) / 2) - (scrubFrame.size.height / 2);
     
-    NSLog(@"Top limit: %f, bottom limit: %f", topLimit, bottomLimit);
+    //NSLog(@"Top limit: %f, bottom limit: %f", topLimit, bottomLimit);
     
 //    scrubFrame.origin.y = statusBarHeight + self.navigationController.navigationBar.frame.size.height + 10;
     scrubFrame.origin.y = floorf(topLimit + topPoint);

@@ -16,7 +16,7 @@
 #import "SCHRightsParsingOperation.h"
 #import "SCHTextFlowPreParseOperation.h"
 #import "SCHSmartZoomPreParseOperation.h"
-#import "SCHFlowPaginateOperation.h"
+#import "SCHFlowAnalysisOperation.h"
 #import "SCHLicenseAcquisitionOperation.h"
 #import "SCHBookManager.h"
 #import "SCHAsyncBookCoverImageView.h"
@@ -416,7 +416,7 @@ static SCHProcessingManager *sharedManager = nil;
 		case SCHBookProcessingStateReadyForPagination:
 		{
 			// create paginate operation
-			SCHFlowPaginateOperation *paginateOp = [[SCHFlowPaginateOperation alloc] init];
+			SCHFlowAnalysisOperation *paginateOp = [[SCHFlowAnalysisOperation alloc] init];
 			paginateOp.isbn = isbn;
 			
 			// the book will be redispatched on completion

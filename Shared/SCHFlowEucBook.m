@@ -28,7 +28,13 @@
 @synthesize isbn;
 @synthesize paragraphSource;
 
+
 - (id)initWithISBN:(NSString *)newIsbn
+{
+    return [self initWithISBN:newIsbn failIfCachedDataNotReady:NO];
+}
+
+- (id)initWithISBN:(NSString *)newIsbn failIfCachedDataNotReady:(BOOL)failIfCachedDataNotReady
 {
     SCHBookManager *bookManager = [SCHBookManager sharedBookManager];
     SCHAppBook *book = [bookManager bookWithIdentifier:newIsbn];
@@ -41,7 +47,8 @@
         if ((self = [super initWithBookID:nil
                        cacheDirectoryPath:aCacheDirectoryPath
                                  textFlow:aTextFlow
-                                fakeCover:aFakeCover])) 
+                                fakeCover:aFakeCover
+                 failIfCachedDataNotReady:failIfCachedDataNotReady])) 
         {
             isbn = [newIsbn copy];
         

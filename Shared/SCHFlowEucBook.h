@@ -17,6 +17,7 @@
 @property (nonatomic, copy, readonly) NSString *isbn;
 
 - (id)initWithISBN:(NSString *)newIsbn;
+- (id)initWithISBN:(NSString *)newIsbn failIfCachedDataNotReady:(BOOL)failIfCachedDataNotReady;
 - (EucBookPageIndexPoint *)bookPageIndexPointFromBookPoint:(SCHBookPoint *)bookPoint;
 
 @end
