@@ -467,6 +467,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     self.paperType = self.paperType; // Reload the paper
     
     [self.readingView jumpToPageAtIndex:self.currentPageIndex animated:NO];
+    [self updateScrubberValue];
+
     
     [self.view addSubview:self.readingView];
     [self.view sendSubviewToBack:self.readingView];
