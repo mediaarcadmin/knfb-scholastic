@@ -24,7 +24,7 @@
 #import "SCHBookshelfSyncComponent.h"
 #import "SCHAppBook.h"
 #import "SCHAppProfile.h"
-#import "SCHAnnotationsList.h"
+#import "SCHAnnotationsItem.h"
 
 @interface SCHLocalDebug ()
 
@@ -366,7 +366,7 @@
 {
 	NSError *error = nil;
 	
-	if (![self.managedObjectContext BITemptyEntity:kSCHAnnotationsList error:&error]) {
+	if (![self.managedObjectContext BITemptyEntity:kSCHAnnotationsItem error:&error]) {
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
 		abort();
 	}	

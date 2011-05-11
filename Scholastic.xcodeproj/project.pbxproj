@@ -96,8 +96,8 @@
 		5293873012DF43D200045B44 /* SCHScholasticWebService.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293872F12DF43D200045B44 /* SCHScholasticWebService.m */; };
 		5293883312E03CD000045B44 /* SCHBookShelfViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293883112E03CD000045B44 /* SCHBookShelfViewController.m */; };
 		5293883412E03CD000045B44 /* SCHBookShelfViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5293883212E03CD000045B44 /* SCHBookShelfViewController.xib */; };
-		52AD966B12F9B1B40099FB88 /* SCHAnnotationsList.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD966612F9B1B40099FB88 /* SCHAnnotationsList.m */; };
-		52AD966E12F9B1B40099FB88 /* SCHAnnotationsList.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD966612F9B1B40099FB88 /* SCHAnnotationsList.m */; };
+		52AD966B12F9B1B40099FB88 /* SCHAnnotationsItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD966612F9B1B40099FB88 /* SCHAnnotationsItem.m */; };
+		52AD966E12F9B1B40099FB88 /* SCHAnnotationsItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD966612F9B1B40099FB88 /* SCHAnnotationsItem.m */; };
 		52AD9ACF12FC0EEF0099FB88 /* SCHSyncManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9ACE12FC0EEF0099FB88 /* SCHSyncManager.m */; };
 		52AD9B1C12FC1B6B0099FB88 /* SCHSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9B1B12FC1B6B0099FB88 /* SCHSyncComponent.m */; };
 		52AD9D6F130000570099FB88 /* SCHAnnotationSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9D64130000570099FB88 /* SCHAnnotationSyncComponent.m */; };
@@ -999,8 +999,8 @@
 		5293883012E03CD000045B44 /* SCHBookShelfViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookShelfViewController.h; path = iPhone/SCHBookShelfViewController.h; sourceTree = "<group>"; };
 		5293883112E03CD000045B44 /* SCHBookShelfViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookShelfViewController.m; path = iPhone/SCHBookShelfViewController.m; sourceTree = "<group>"; };
 		5293883212E03CD000045B44 /* SCHBookShelfViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = SCHBookShelfViewController.xib; path = iPhone/SCHBookShelfViewController.xib; sourceTree = "<group>"; };
-		52AD966512F9B1B40099FB88 /* SCHAnnotationsList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAnnotationsList.h; path = Shared/SCHAnnotationsList.h; sourceTree = "<group>"; };
-		52AD966612F9B1B40099FB88 /* SCHAnnotationsList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHAnnotationsList.m; path = Shared/SCHAnnotationsList.m; sourceTree = "<group>"; };
+		52AD966512F9B1B40099FB88 /* SCHAnnotationsItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAnnotationsItem.h; path = Shared/SCHAnnotationsItem.h; sourceTree = "<group>"; };
+		52AD966612F9B1B40099FB88 /* SCHAnnotationsItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHAnnotationsItem.m; path = Shared/SCHAnnotationsItem.m; sourceTree = "<group>"; };
 		52AD9ACD12FC0EEF0099FB88 /* SCHSyncManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHSyncManager.h; path = Shared/SCHSyncManager.h; sourceTree = "<group>"; };
 		52AD9ACE12FC0EEF0099FB88 /* SCHSyncManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHSyncManager.m; path = Shared/SCHSyncManager.m; sourceTree = "<group>"; };
 		52AD9B1A12FC1B6B0099FB88 /* SCHSyncComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHSyncComponent.h; path = Shared/SCHSyncComponent.h; sourceTree = "<group>"; };
@@ -1801,8 +1801,8 @@
 				52298A7A12F0EF5600BBBCE6 /* SCHAnnotation.m */,
 				52298A7712F0EF5600BBBCE6 /* SCHAnnotationsContentItem.h */,
 				52298A7812F0EF5600BBBCE6 /* SCHAnnotationsContentItem.m */,
-				52AD966512F9B1B40099FB88 /* SCHAnnotationsList.h */,
-				52AD966612F9B1B40099FB88 /* SCHAnnotationsList.m */,
+				52AD966512F9B1B40099FB88 /* SCHAnnotationsItem.h */,
+				52AD966612F9B1B40099FB88 /* SCHAnnotationsItem.m */,
 				52298A7112F0EF5600BBBCE6 /* SCHBookmark.h */,
 				52298A7212F0EF5600BBBCE6 /* SCHBookmark.m */,
 				52298A7312F0EF5600BBBCE6 /* SCHContentItem.h */,
@@ -3469,7 +3469,7 @@
 				C923B14312F6AFC60054426F /* SCHMultipleBookshelvesController.m in Sources */,
 				5200EFF112F6CFE400BAC355 /* SCHPrivateAnnotations.m in Sources */,
 				5200EFF512F6D00B00BAC355 /* SCHeReaderCategories.m in Sources */,
-				52AD966E12F9B1B40099FB88 /* SCHAnnotationsList.m in Sources */,
+				52AD966E12F9B1B40099FB88 /* SCHAnnotationsItem.m in Sources */,
 				F81B3A8612FAADB000A20D52 /* SCHBookManager.m in Sources */,
 				F83D86B512FC070F00227031 /* SCHLocalDebugXPSReader.m in Sources */,
 				52AD9ACF12FC0EEF0099FB88 /* SCHSyncManager.m in Sources */,
@@ -3636,7 +3636,7 @@
 				5200EFEE12F6CFE400BAC355 /* SCHPrivateAnnotations.m in Sources */,
 				5200EFF412F6D00B00BAC355 /* SCHeReaderCategories.m in Sources */,
 				F8CD24F612F97E62001C748B /* SCHBookManager.m in Sources */,
-				52AD966B12F9B1B40099FB88 /* SCHAnnotationsList.m in Sources */,
+				52AD966B12F9B1B40099FB88 /* SCHAnnotationsItem.m in Sources */,
 				F81B3A7F12FAAD8E00A20D52 /* SCHNote.m in Sources */,
 				F83D86BE12FC60C600227031 /* SCHLocalDebugXPSReader.m in Sources */,
 				F83D874612FC67A400227031 /* SCHSyncManager.m in Sources */,

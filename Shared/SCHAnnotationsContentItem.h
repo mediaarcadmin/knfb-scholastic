@@ -9,7 +9,7 @@
 #import <CoreData/CoreData.h>
 #import "SCHContentItem.h"
 
-@class SCHAnnotationsList;
+@class SCHAnnotationsItem;
 @class SCHPrivateAnnotations;
 
 static NSString * const kSCHAnnotationsContentItem = @"SCHAnnotationsContentItem";
@@ -19,7 +19,7 @@ static NSString * const kSCHAnnotationsContentItem = @"SCHAnnotationsContentItem
 }
 
 @property (nonatomic, retain) NSString * Format;
-@property (nonatomic, retain) SCHAnnotationsList * AnnotationsList;
+@property (nonatomic, retain) SCHAnnotationsItem * AnnotationsList;
 @property (nonatomic, retain) SCHPrivateAnnotations * PrivateAnnotations;
 
 @end
