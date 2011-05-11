@@ -178,7 +178,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape_iPad =
             [self.gridView setShelfInset:CGSizeMake(0, -1)];
         } else {
             [self.gridView setShelfHeight:kSCHBookShelfViewControllerGridCellHeightLandscape_iPad];
-            [self.gridView setShelfInset:CGSizeMake(0, -1)];
+            [self.gridView setShelfInset:CGSizeMake(0, -2)];
         }
     } else {
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
