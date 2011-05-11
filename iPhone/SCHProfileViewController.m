@@ -199,10 +199,10 @@
 - (void)pushBookshelvesControllerWithProfileItem:(SCHProfileItem *)profileItem
 {
 	SCHBookShelfViewController *bookShelfViewController = nil;
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+//	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
 		bookShelfViewController = [[SCHBookShelfViewController alloc] initWithNibName:NSStringFromClass([SCHBookShelfViewController class]) bundle:nil];
         bookShelfViewController.profileItem = profileItem;
-	}
+//	}
     
 	[self.navigationController pushViewController:bookShelfViewController animated:YES];
 	[bookShelfViewController release], bookShelfViewController = nil;

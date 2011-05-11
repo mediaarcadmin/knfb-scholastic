@@ -26,6 +26,9 @@
 static NSInteger const kSCHBookShelfViewControllerGridCellHeightPortrait = 138;
 static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 
+static NSInteger const kSCHBookShelfViewControllerGridCellHeightPortrait_iPad = 254;
+static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape_iPad = 266;
+
 @interface SCHBookShelfViewController () <UIGestureRecognizerDelegate>
 
 @property (nonatomic, retain) UIBarButtonItem *themeButton;
@@ -98,7 +101,12 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
     
     [self updateTheme];
     
-	[self.gridView setCellSize:CGSizeMake(80,118) withBorderSize:20];
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        [self.gridView setCellSize:CGSizeMake(80,118) withBorderSize:20];
+    } else {
+        [self.gridView setCellSize:CGSizeMake(147,218) withBorderSize:36];
+    }
+    
     [self.gridView setBackgroundColor:[UIColor clearColor]];
     [self.gridView setMinimumNumberOfShelves:10];
     
@@ -162,14 +170,24 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 {
     [self.gridView setShelfImage:[[SCHThemeManager sharedThemeManager] imageForShelf:interfaceOrientation]];        
     [self.view.layer setContents:(id)[[SCHThemeManager sharedThemeManager] imageForBackground:interfaceOrientation].CGImage];
-    [(SCHCustomNavigationBar *)self.navigationController.navigationBar updateTheme:interfaceOrientation];
+    //[(SCHCustomNavigationBar *)self.navigationController.navigationBar updateTheme:interfaceOrientation];
     
     if (UIInterfaceOrientationIsLandscape(interfaceOrientation)) {
-        [self.gridView setShelfHeight:kSCHBookShelfViewControllerGridCellHeightLandscape];
-        [self.gridView setShelfInset:CGSizeMake(0, -1)];
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+            [self.gridView setShelfHeight:kSCHBookShelfViewControllerGridCellHeightLandscape];
+            [self.gridView setShelfInset:CGSizeMake(0, -1)];
+        } else {
+            [self.gridView setShelfHeight:kSCHBookShelfViewControllerGridCellHeightLandscape_iPad];
+            [self.gridView setShelfInset:CGSizeMake(0, -1)];
+        }
     } else {
-        [self.gridView setShelfHeight:kSCHBookShelfViewControllerGridCellHeightPortrait];
-        [self.gridView setShelfInset:CGSizeMake(0, -2)];
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+            [self.gridView setShelfHeight:kSCHBookShelfViewControllerGridCellHeightPortrait];
+            [self.gridView setShelfInset:CGSizeMake(0, -2)];
+        } else {
+            [self.gridView setShelfHeight:kSCHBookShelfViewControllerGridCellHeightPortrait_iPad];
+            [self.gridView setShelfInset:CGSizeMake(0, -2)];
+        }
         
     }
 }
