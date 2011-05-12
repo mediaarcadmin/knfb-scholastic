@@ -7,22 +7,35 @@
 //  
 
 #import "AppDelegate_iPad.h"
+#import "SCHReadingViewController.h"
+#import "SCHAppBook.h"
+#import "SCHBookManager.h"
+#import "SCHCustomNavigationBar.h"
+#import "SCHThemeManager.h"
 
 @implementation AppDelegate_iPad
 
+@synthesize navigationController;
+@synthesize customNavigationBar;
 
 #pragma mark -
 #pragma mark Application lifecycle
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {    
-
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions 
+{    
 	[super application:application didFinishLaunchingWithOptions:launchOptions];
 	
-    // Override point for customization after application launch.
+    SCHProfileViewController *rootViewController = (SCHProfileViewController *)[navigationController topViewController];
+    rootViewController.managedObjectContext = self.managedObjectContext;
     
+    
+    [self.window addSubview:navigationController.view];
     [self.window makeKeyAndVisible];
     
-    return YES;
+    [customNavigationBar setTheme:kSCHThemeManagerNavigationBarImage];
+
+    
+    return(YES);
 }
 
 
@@ -62,6 +75,8 @@
 
 - (void)dealloc {
 	
+    [navigationController release];
+    [customNavigationBar release];
 	[super dealloc];
 }
 

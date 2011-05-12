@@ -14,6 +14,7 @@ static SCHThemeManager *sharedThemeManager = nil;
 
 static NSString * const kSCHThemeManagerDirectory = @"Themes";
 static NSString * const kSCHThemeManagerLandscapePostFix = @"-Landscape";
+static NSString * const kSCHThemeManageriPadPostFix = @"-iPad";
 
 static NSString * const kSCHThemeManagerID = @"id";
 static NSString * const kSCHThemeManagerName = @"Name";
@@ -24,6 +25,7 @@ static NSString * const kSCHThemeManagerName = @"Name";
 @property (nonatomic, retain) NSDictionary *selectedTheme;
 
 - (NSString *)filePath:(NSString *)filePath orientation:(UIInterfaceOrientation)orientation;
+- (NSString *)filePath:(NSString *)filePath orientation:(UIInterfaceOrientation)orientation iPadSpecific: (BOOL) iPadSpecific;
 
 @end
 
@@ -203,7 +205,8 @@ static NSString * const kSCHThemeManagerName = @"Name";
 {
     return([UIImage imageNamed:[kSCHThemeManagerDirectory 
                                 stringByAppendingPathComponent:[self filePath:[self.selectedTheme objectForKey:kSCHThemeManagerShelfImage]
-                                                                  orientation:orientation]]]);
+                                                                  orientation:orientation
+                                                                 iPadSpecific:YES]]]);
 }
 
 - (UIImage *)imageForHomeIcon:(UIInterfaceOrientation)orientation
@@ -231,11 +234,29 @@ static NSString * const kSCHThemeManagerName = @"Name";
 
 - (NSString *)filePath:(NSString *)filePath orientation:(UIInterfaceOrientation)orientation
 {
-    if (UIInterfaceOrientationIsLandscape(orientation) == YES) {
-        return([NSString stringWithFormat:@"%@%@", filePath, kSCHThemeManagerLandscapePostFix]);
+    return [self filePath:filePath orientation:orientation iPadSpecific:NO];
+}
+
+- (NSString *)filePath:(NSString *)filePath orientation:(UIInterfaceOrientation)orientation iPadSpecific: (BOOL) iPadSpecific
+{
+    NSString *fullPath = nil;
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone || !iPadSpecific) {
+        if (UIInterfaceOrientationIsLandscape(orientation) == YES) {
+            fullPath = [NSString stringWithFormat:@"%@%@", filePath, kSCHThemeManagerLandscapePostFix];
+        } else {
+            fullPath = filePath;
+        }
     } else {
-        return(filePath);
+        
+        if (UIInterfaceOrientationIsLandscape(orientation) == YES) {
+            fullPath = [NSString stringWithFormat:@"%@%@%@", filePath, kSCHThemeManagerLandscapePostFix, kSCHThemeManageriPadPostFix];
+        } else {
+            fullPath = [NSString stringWithFormat:@"%@%@", filePath, kSCHThemeManageriPadPostFix];
+        }
     }
+    
+    return fullPath;
 }
 
 @end

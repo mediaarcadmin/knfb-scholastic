@@ -8,10 +8,16 @@
 
 #import <UIKit/UIKit.h>
 #import "AppDelegate_Shared.h"
+#import "SCHProfileViewController.h"
+#import "SCHCustomNavigationBar.h"
 
 @interface AppDelegate_iPad : AppDelegate_Shared {
+    UINavigationController *navigationController;
+    SCHCustomNavigationBar *customNavigationBar;
 }
 
+@property (nonatomic, retain) IBOutlet UINavigationController *navigationController;
+@property (nonatomic, retain) IBOutlet SCHCustomNavigationBar *customNavigationBar;
 
 @end
 
