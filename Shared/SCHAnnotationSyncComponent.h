@@ -14,7 +14,6 @@ static NSString * const kSCHAnnotationSyncComponentComplete = @"SCHAnnotationSyn
 
 @interface SCHAnnotationSyncComponent : SCHSyncComponent 
 {
-
 }
 
 - (NSDate *)lastSyncDate;

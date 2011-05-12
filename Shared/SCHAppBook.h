@@ -31,6 +31,20 @@ static NSString * const kSCHAppBookTextFlowPageRanges = @"TextFlowPageRanges";
 static NSString * const kSCHAppBookSmartZoomPageMarkers = @"SmartZoomPageMarkers";
 static NSString * const kSCHAppBookLayoutPageEquivalentCount = @"LayoutPageEquivalentCount";
 
+// XPS Categories
+static NSString * const kSCHAppBookYoungReader = @"YoungReader";
+static NSString * const kSCHAppBookOldReader = @"OldReader";
+
+static NSString * const kSCHAppBookCategoryPictureBook = @"Picture Book";
+static NSString * const kSCHAppBookCategoryEarlyReader = @"Early Reader";
+static NSString * const kSCHAppBookCategoryAdvancedReader = @"Advanced Reader";
+static NSString * const kSCHAppBookCategoryChapterBook = @"Chapter Book";
+static NSString * const kSCHAppBookCategoryNovelMiddleGrade = @"Novel - Middle Grade";
+static NSString * const kSCHAppBookCategoryNovelYoungAdult = @"Novel - Young Adult";
+static NSString * const kSCHAppBookCategoryGraphicNovel = @"Graphic Novel";
+static NSString * const kSCHAppBookCategoryReference = @"Reference";
+static NSString * const kSCHAppBookCategoryNonFictionEarly = @"Non-Fiction Early";
+static NSString * const kSCHAppBookCategoryNonFictionAdvanced = @"Non-Fiction Advanced";
 
 static NSString * const kSCHAppBook = @"SCHAppBook";
 
@@ -63,15 +77,16 @@ static NSString * const kSCHAppBookEucalyptusCacheDir = @"libEucalyptusCache";
 @property (nonatomic, retain) NSSet *SmartZoomPageMarkers;
 @property (nonatomic, retain) NSNumber *LayoutPageEquivalentCount;
 
-@property (readonly) NSString * ContentIdentifier;
-@property (readonly) NSString * Author;
-@property (readonly) NSString * Description;
-@property (readonly) NSString * Version;
-@property (readonly) BOOL Enhanced;
-@property (readonly) NSString * Title;
-@property (readonly) NSNumber * FileSize;
-@property (readonly) int PageNumber;
-@property (readonly) NSString * FileName;
+@property (nonatomic, readonly) NSString * ContentIdentifier;
+@property (nonatomic, readonly) NSString * Author;
+@property (nonatomic, readonly) NSString * Description;
+@property (nonatomic, readonly) NSString * Version;
+@property (nonatomic, readonly) BOOL Enhanced;
+@property (nonatomic, readonly) NSString * Title;
+@property (nonatomic, readonly) NSNumber * FileSize;
+@property (nonatomic, readonly) int PageNumber;
+@property (nonatomic, readonly) NSString * FileName;
+@property (nonatomic, readonly) NSString *categoryType;
 
 
 - (SCHBookCurrentProcessingState)processingState;

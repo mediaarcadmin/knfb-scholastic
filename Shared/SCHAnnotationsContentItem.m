@@ -8,7 +8,7 @@
 
 #import "SCHAnnotationsContentItem.h"
 
-#import "SCHAnnotationsList.h"
+#import "SCHAnnotationsItem.h"
 #import "SCHPrivateAnnotations.h"
 
 @implementation SCHAnnotationsContentItem 

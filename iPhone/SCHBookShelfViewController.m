@@ -372,8 +372,27 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape_iPad =
 	NSLog(@"Showing book %@.", book.Title);
 	
     SCHReadingViewController *readingController = nil;
-    
-    switch ([self.profileItem.BookshelfStyle intValue]) {
+                   
+    // grab the category from the XPS, 
+    // if it doesnt exist then use the profile to derive the default reading view
+    NSString *categoryType = book.categoryType;
+    SCHBookshelfStyles bookshelfStyle;
+    if (categoryType == nil) {
+        switch ([self.profileItem.BookshelfStyle intValue]) {
+            case kSCHBookshelfStyleYoungChild:
+                bookshelfStyle = kSCHBookshelfStyleYoungChild;                
+                break;
+            case kSCHBookshelfStyleOlderChild:
+                bookshelfStyle = kSCHBookshelfStyleOlderChild;                        
+                break;            
+        }        
+    } else if ([categoryType isEqualToString:kSCHAppBookYoungReader] == YES) {
+        bookshelfStyle = kSCHBookshelfStyleYoungChild;
+    } else if ([categoryType isEqualToString:kSCHAppBookOldReader] == YES) {
+        bookshelfStyle = kSCHBookshelfStyleOlderChild;        
+    }
+                                    
+    switch (bookshelfStyle) {
         case kSCHBookshelfStyleYoungChild:
             readingController = [[SCHReadingViewController alloc] initWithNibName:nil 
                                                                            bundle:nil 
