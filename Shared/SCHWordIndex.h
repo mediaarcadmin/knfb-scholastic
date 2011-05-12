@@ -10,6 +10,8 @@
 
 @class SCHLocationText;
 
+static NSString * const kSCHWordIndex = @"SCHWordIndex";
+
 @interface SCHWordIndex :  NSManagedObject  
 {
 }
