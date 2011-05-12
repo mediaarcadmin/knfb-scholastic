@@ -29,7 +29,21 @@
 - (void)setSyncDate:(NSDate *)date;
 - (NSArray *)localAnnotationsItemForProfile:(NSNumber *)profileID;
 - (void)syncProfileContentAnnotations:(NSDictionary *)profileContentAnnotationList;
-- (void)syncAnnotationsContentItem:(NSDictionary *)webAnnotationsContentItem withAnnotationContentItem:(SCHAnnotationsContentItem *)localAnnotationsContentItem;
+- (void)syncAnnotationsContentList:(NSArray *)webAnnotationsContentList 
+         withAnnotationContentList:(NSArray *)localAnnotationsContentList
+                        insertInto:(SCHAnnotationsItem *)annotationsItem;
+- (void)syncAnnotationsContentItem:(NSDictionary *)webAnnotationsContentItem withAnnotationsContentItem:(SCHAnnotationsContentItem *)localAnnotationsContentItem;
+- (void)syncHighlights:(NSArray *)webHighlights
+        withHighlights:(NSSet *)localHighlights
+            insertInto:(SCHPrivateAnnotations *)privateAnnotations;
+- (void)syncNotes:(NSArray *)webNotes
+        withNotes:(NSSet *)localNotes
+       insertInto:(SCHPrivateAnnotations *)privateAnnotations;
+- (void)syncBookmarks:(NSArray *)webBookmarks
+        withBookmarks:(NSSet *)localBookmarks
+           insertInto:(SCHPrivateAnnotations *)privateAnnotations;
+- (void)syncLastPage:(NSDictionary *)webLastPage withLastPage:(SCHLastPage *)localLastPage;
+- (void)syncFavorite:(NSDictionary *)webFavorite withFavorite:(SCHFavorite *)localFavorite;
 - (SCHAnnotationsContentItem *)annotationsContentItem:(NSDictionary *)annotationsContentItem;
 - (SCHPrivateAnnotations *)privateAnnotation:(NSDictionary *)privateAnnotation;
 - (SCHHighlight *)highlight:(NSDictionary *)highlight;
@@ -184,7 +198,6 @@
 
 - (void)syncProfileContentAnnotations:(NSDictionary *)profileContentAnnotationList
 {
-	NSError *error = nil;
 	NSDictionary *annotationsList = [self makeNullNil:[profileContentAnnotationList objectForKey:kSCHLibreAccessWebServiceAnnotationsList]];
 	
     // uncomment if we require to use this info
@@ -194,11 +207,15 @@
     
     for (NSDictionary *annotationsItem in annotationsList) {
         NSNumber *profileID = [annotationsItem objectForKey:kSCHLibreAccessWebServiceProfileID];
-        NSArray *localAnnotationsItem = [self localAnnotationsItemForProfile:profileID];
+        NSArray *localAnnotationsItems = [self localAnnotationsItemForProfile:profileID];
         
-        if ([localAnnotationsItem count] > 0) {
+        if ([localAnnotationsItems count] > 0) {
             // sync me baby
-            [self syncAnnotationsContentItem:annotationsList withAnnotationContentItem:[localAnnotationsItem objectAtIndex:0]];
+            NSArray *annotationsContentList = [self makeNullNil:[annotationsItem objectForKey:kSCHLibreAccessWebServiceAnnotationsContentList]];
+            if ([annotationsItem objectForKey:kSCHLibreAccessWebServiceAnnotationsContentList] != nil) {
+                [self syncAnnotationsContentList:annotationsContentList
+                       withAnnotationContentList:[[localAnnotationsItems objectAtIndex:0] AnnotationsContentItem] insertInto:[localAnnotationsItems objectAtIndex:0]];
+            }
         } else {
             SCHAnnotationsItem *newAnnotationsItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHAnnotationsItem inManagedObjectContext:self.managedObjectContext];
             newAnnotationsItem.ProfileID = profileID;
@@ -208,18 +225,131 @@
         }
     }
     
-	// Save the context.
-	if (![self.managedObjectContext save:&error]) {
-		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-		abort();
-	}	    
+	[self save];
 }
 
-- (void)syncAnnotationsContentItem:(NSDictionary *)webAnnotationsContentItem withAnnotationContentItem:(SCHAnnotationsContentItem *)localAnnotationsContentItem
+- (void)syncAnnotationsContentList:(NSArray *)webAnnotationsContentList 
+         withAnnotationContentList:(NSArray *)localAnnotationsContentList
+                        insertInto:(SCHAnnotationsItem *)annotationsItem
 {
-    // expect AnnotationsList to be available
+	NSMutableSet *creationPool = [NSMutableSet set];
+	
+	webAnnotationsContentList = [webAnnotationsContentList sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceContentIdentifier ascending:YES]]];		
+	localAnnotationsContentList = [localAnnotationsContentList sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceContentIdentifier ascending:YES]]];
     
+	NSEnumerator *webEnumerator = [webAnnotationsContentList objectEnumerator];			  
+	NSEnumerator *localEnumerator = [localAnnotationsContentList objectEnumerator];			  			  
     
+	NSDictionary *webItem = [webEnumerator nextObject];
+	SCHAnnotationsContentItem *localItem = [localEnumerator nextObject];
+	
+	while (webItem != nil || localItem != nil) {		
+		if (webItem == nil) {
+			break;
+		}
+		
+		if (localItem == nil) {
+			while (webItem != nil) {
+				[creationPool addObject:webItem];
+				webItem = [webEnumerator nextObject];
+			} 
+			break;			
+		}
+		
+		id webItemID = [webItem valueForKey:kSCHLibreAccessWebServiceContentIdentifier];
+		id localItemID = [localItem valueForKey:kSCHLibreAccessWebServiceContentIdentifier];
+		
+		switch ([webItemID compare:localItemID]) {
+			case NSOrderedSame:
+				[self syncAnnotationsContentItem:webItem withAnnotationsContentItem:localItem];
+				webItem = nil;
+				localItem = nil;
+				break;
+			case NSOrderedAscending:
+				[creationPool addObject:webItem];
+				webItem = nil;
+				break;
+			case NSOrderedDescending:
+				localItem = nil;
+				break;			
+		}		
+		
+		if (webItem == nil) {
+			webItem = [webEnumerator nextObject];
+		}
+		if (localItem == nil) {
+			localItem = [localEnumerator nextObject];
+		}		
+	}
+    
+	for (NSDictionary *webItem in creationPool) {
+        [annotationsItem addAnnotationsContentItemObject:[self annotationsContentItem:webItem]];
+	}
+	
+	[self save];
+}
+
+- (void)syncAnnotationsContentItem:(NSDictionary *)webAnnotationsContentItem withAnnotationsContentItem:(SCHAnnotationsContentItem *)localAnnotationsContentItem
+{
+	localAnnotationsContentItem.DRMQualifier = [self makeNullNil:[webAnnotationsContentItem objectForKey:kSCHLibreAccessWebServiceDRMQualifier]];
+	localAnnotationsContentItem.ContentIdentifierType = [self makeNullNil:[webAnnotationsContentItem objectForKey:kSCHLibreAccessWebServiceContentIdentifierType]];
+	localAnnotationsContentItem.ContentIdentifier = [self makeNullNil:[webAnnotationsContentItem objectForKey:kSCHLibreAccessWebServiceContentIdentifier]];
+	
+	localAnnotationsContentItem.Format = [self makeNullNil:[webAnnotationsContentItem objectForKey:kSCHLibreAccessWebServiceFormat]];
+
+    NSDictionary *privateAnnotations = [self makeNullNil:[webAnnotationsContentItem objectForKey:kSCHLibreAccessWebServicePrivateAnnotations]];
+    
+    if (privateAnnotations != nil) {
+        [self syncHighlights:[self makeNullNil:[privateAnnotations objectForKey:kSCHLibreAccessWebServiceHighlights]] 
+              withHighlights:localAnnotationsContentItem.PrivateAnnotations.Highlights insertInto:localAnnotationsContentItem.PrivateAnnotations];
+        [self syncNotes:[self makeNullNil:[privateAnnotations objectForKey:kSCHLibreAccessWebServiceNotes]] 
+              withNotes:localAnnotationsContentItem.PrivateAnnotations.Notes insertInto:localAnnotationsContentItem.PrivateAnnotations];
+        [self syncBookmarks:[self makeNullNil:[privateAnnotations objectForKey:kSCHLibreAccessWebServiceBookmarks]] 
+              withBookmarks:localAnnotationsContentItem.PrivateAnnotations.Bookmarks insertInto:localAnnotationsContentItem.PrivateAnnotations];        
+        [self syncFavorite:[self makeNullNil:[privateAnnotations objectForKey:kSCHLibreAccessWebServiceFavorite]] 
+              withFavorite:localAnnotationsContentItem.PrivateAnnotations.Favorite];        
+        [self syncLastPage:[self makeNullNil:[privateAnnotations objectForKey:kSCHLibreAccessWebServiceLastPage]] 
+              withLastPage:localAnnotationsContentItem.PrivateAnnotations.LastPage];
+    }
+}
+
+- (void)syncHighlights:(NSArray *)webHighlights
+        withHighlights:(NSSet *)localHighlights
+            insertInto:(SCHPrivateAnnotations *)privateAnnotations
+{
+
+}
+
+- (void)syncNotes:(NSArray *)webNotes
+        withNotes:(NSSet *)localNotes
+       insertInto:(SCHPrivateAnnotations *)privateAnnotations
+{
+    
+}
+
+- (void)syncBookmarks:(NSArray *)webBookmarks
+        withBookmarks:(NSSet *)localBookmarks
+           insertInto:(SCHPrivateAnnotations *)privateAnnotations
+{
+    
+}
+
+- (void)syncFavorite:(NSDictionary *)webFavorite withFavorite:(SCHFavorite *)localFavorite
+{
+	localFavorite.IsFavorite = [self makeNullNil:[webFavorite objectForKey:kSCHLibreAccessWebServiceIsFavorite]];
+
+	localFavorite.LastModified = [self makeNullNil:[webFavorite objectForKey:kSCHLibreAccessWebServiceLastModified]];
+	localFavorite.State = [NSNumber numberWithStatus:kSCHStatusUnmodified];				        
+}
+
+- (void)syncLastPage:(NSDictionary *)webLastPage withLastPage:(SCHLastPage *)localLastPage
+{
+	localLastPage.LastPageLocation = [self makeNullNil:[webLastPage objectForKey:kSCHLibreAccessWebServiceLastPageLocation]];
+	localLastPage.Component = [self makeNullNil:[webLastPage objectForKey:kSCHLibreAccessWebServiceComponent]];
+	localLastPage.Percentage = [self makeNullNil:[webLastPage objectForKey:kSCHLibreAccessWebServicePercentage]];	
+    
+	localLastPage.LastModified = [self makeNullNil:[webLastPage objectForKey:kSCHLibreAccessWebServiceLastModified]];
+	localLastPage.State = [NSNumber numberWithStatus:kSCHStatusUnmodified];				    
 }
 
 - (SCHAnnotationsContentItem *)annotationsContentItem:(NSDictionary *)annotationsContentItem
