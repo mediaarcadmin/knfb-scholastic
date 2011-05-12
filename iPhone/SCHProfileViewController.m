@@ -222,7 +222,6 @@
 		case 0: {
 
             SCHProfileItem *profileItem = [[self fetchedResultsController] objectAtIndexPath:indexPath];
-			[SCHThemeManager sharedThemeManager].appProfile = profileItem.AppProfile;
 #if LOCALDEBUG
             // controller to view book shelf with books filtered to profile
             [self pushBookshelvesControllerWithProfileItem:profileItem];	
@@ -247,6 +246,7 @@
                     }	
                 };
 
+                [SCHThemeManager sharedThemeManager].appProfile = profileItem.AppProfile;
                 [self presentModalViewController:self.profilePasswordController animated:YES];
             }
 #endif	

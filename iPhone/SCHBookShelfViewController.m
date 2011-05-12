@@ -123,7 +123,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape_iPad =
 	self.componentCache = aCache;
 	[aCache release], aCache = nil;
 	
-    [customNavigationBar setTheme:kSCHThemeManagerNavigationBarImage];
+//    [customNavigationBar setTheme:kSCHThemeManagerNavigationBarImage];
 		
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(updateTable:)
@@ -170,7 +170,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape_iPad =
 {
     [self.gridView setShelfImage:[[SCHThemeManager sharedThemeManager] imageForShelf:interfaceOrientation]];        
     [self.view.layer setContents:(id)[[SCHThemeManager sharedThemeManager] imageForBackground:interfaceOrientation].CGImage];
-    //[(SCHCustomNavigationBar *)self.navigationController.navigationBar updateTheme:interfaceOrientation];
+    [(SCHCustomNavigationBar *)self.navigationController.navigationBar updateTheme:interfaceOrientation];
     
     if (UIInterfaceOrientationIsLandscape(interfaceOrientation)) {
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
