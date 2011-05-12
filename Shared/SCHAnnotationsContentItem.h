@@ -14,6 +14,9 @@
 
 static NSString * const kSCHAnnotationsContentItem = @"SCHAnnotationsContentItem";
 
+static NSString * const kSCHAnnotationsContentItemfetchAnnotationsContentItemsForBook = @"fetchAnnotationsContentItemsForBook";
+static NSString * const kSCHAnnotationsContentItemCONTENT_IDENTIFIER = @"CONTENT_IDENTIFIER";
+
 @interface SCHAnnotationsContentItem :  SCHContentItem  
 {
 }

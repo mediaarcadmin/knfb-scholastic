@@ -14,6 +14,7 @@
 #import "SCHContentMetadataItem.h"
 #import "SCHUserContentItem.h"
 #import "SCHAppBook.h"
+#import "SCHAnnotationsContentItem.h"
 
 @interface SCHBookshelfSyncComponent ()
 
@@ -25,6 +26,7 @@
 - (void)addContentMetadataItem:(NSDictionary *)webContentMetadataItem;
 - (void)syncContentMetadataItem:(NSDictionary *)webContentMetadataItem withContentMetadataItem:(SCHContentMetadataItem *)localContentMetadataItem;
 - (void)deleteUnusedBooks;
+- (void)deleteAnnotationsForBook:(NSString *)isbn;
 
 @property (nonatomic, assign) NSInteger requestCount;
 
@@ -324,11 +326,34 @@
 		}		
 	}
 	
-	for (id userContentItem in deletePool) {
-		[self.managedObjectContext deleteObject:userContentItem];
+	for (id contentMetadataItem in deletePool) {
+        [self deleteAnnotationsForBook:[contentMetadataItem ContentIdentifier]];
+		[self.managedObjectContext deleteObject:contentMetadataItem];
 	}
 		
 	[self save];
+}
+
+- (void)deleteAnnotationsForBook:(NSString *)isbn
+{
+    NSError *error = nil;
+    
+    if (isbn != nil) {
+        NSEntityDescription *entityDescription = [NSEntityDescription 
+                                                  entityForName:kSCHAnnotationsContentItem
+                                                  inManagedObjectContext:self.managedObjectContext];
+        
+        NSFetchRequest *fetchRequest = [entityDescription.managedObjectModel 
+                                        fetchRequestFromTemplateWithName:kSCHAppBookFetchWithContentIdentifier 
+                                        substitutionVariables:[NSDictionary 
+                                                               dictionaryWithObject:isbn 
+                                                               forKey:kSCHAppBookCONTENT_IDENTIFIER]];
+        NSArray *bookArray = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+        
+        if ([bookArray count] > 0) {
+            [self.managedObjectContext deleteObject:[bookArray objectAtIndex:0]];
+        }
+    }    
 }
 
 @end
