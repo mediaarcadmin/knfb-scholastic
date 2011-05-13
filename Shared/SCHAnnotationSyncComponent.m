@@ -28,6 +28,7 @@
 
 @interface SCHAnnotationSyncComponent ()
 
+- (BOOL)updateProfileContentAnnotations;
 - (void)setSyncDate:(NSDate *)date;
 - (NSArray *)localAnnotationsItemForProfile:(NSNumber *)profileID;
 - (void)syncProfileContentAnnotations:(NSDictionary *)profileContentAnnotationList;
@@ -120,21 +121,12 @@
 	BOOL ret = YES;
 	
 	if (self.isSynchronizing == NO && [self haveProfiles] == YES) {
-		NSNumber *profileID = [[self.annotations allKeys] objectAtIndex:0];
-		NSArray *books = [self.annotations objectForKey:profileID];
-		
 		self.backgroundTaskIdentifier = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{ 
 			self.isSynchronizing = NO;
 			self.backgroundTaskIdentifier = UIBackgroundTaskInvalid;
 		}];
-		
-		self.isSynchronizing = [self.libreAccessWebService listProfileContentAnnotations:books 
-                                                                              forProfile:profileID];
-		if (self.isSynchronizing == NO) {
-			[[SCHAuthenticationManager sharedAuthenticationManager] authenticate];				
-			ret = NO;
-		}
-		[self.annotations removeObjectForKey:profileID];
+
+		ret = [self updateProfileContentAnnotations];
 	}
 	
 	return(ret);
@@ -196,15 +188,54 @@
 
 - (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result
 {	
-	[self syncProfileContentAnnotations:[result objectForKey:kSCHLibreAccessWebServiceListProfileContentAnnotations]];	
+    NSNumber *profileID = [[[self.annotations allKeys] sortedArrayUsingSelector:@selector(compare:)] objectAtIndex:0];
+    
+	if([method compare:kSCHLibreAccessWebServiceSaveProfileContentAnnotations] == NSOrderedSame) {	    
+        NSArray *books = [self.annotations objectForKey:profileID];
 
-    if ([self.annotations count] < 1) {
-        [self setSyncDate:[NSDate date]];
-        [[NSNotificationCenter defaultCenter] postNotificationName:kSCHAnnotationSyncComponentComplete 
-                                                            object:self];
+        self.isSynchronizing = [self.libreAccessWebService listProfileContentAnnotations:books 
+                                                                              forProfile:profileID];
+        if (self.isSynchronizing == NO) {
+            [[SCHAuthenticationManager sharedAuthenticationManager] authenticate];				
+        }        
+    } else if([method compare:kSCHLibreAccessWebServiceListProfileContentAnnotations] == NSOrderedSame) {	    
+        [self syncProfileContentAnnotations:[result objectForKey:kSCHLibreAccessWebServiceListProfileContentAnnotations]];	
+        
+        if ([self.annotations count] < 1) {
+            [self setSyncDate:[NSDate date]];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kSCHAnnotationSyncComponentComplete 
+                                                                object:self];
+        }
+        [self.annotations removeObjectForKey:profileID];
+        [super method:method didCompleteWithResult:nil];	
     }
-     
-    [super method:method didCompleteWithResult:nil];	
+}
+
+- (BOOL)updateProfileContentAnnotations
+{
+	BOOL ret = YES;
+	
+    NSNumber *profileID = [[[self.annotations allKeys] sortedArrayUsingSelector:@selector(compare:)] objectAtIndex:0];
+    NSArray *books = [self.annotations objectForKey:profileID];
+    
+    // TODO: only include those annoations with changes
+    NSArray *updatedAnnotations = [self localAnnotationsItemForProfile:profileID];
+    if ([updatedAnnotations count] > 0) {
+        self.isSynchronizing = [self.libreAccessWebService saveProfileContentAnnotations:updatedAnnotations];
+        if (self.isSynchronizing == NO) {
+            [[SCHAuthenticationManager sharedAuthenticationManager] authenticate];				
+            ret = NO;
+        }
+    } else {
+        self.isSynchronizing = [self.libreAccessWebService listProfileContentAnnotations:books 
+                                                                              forProfile:profileID];
+        if (self.isSynchronizing == NO) {
+            [[SCHAuthenticationManager sharedAuthenticationManager] authenticate];				
+            ret = NO;
+        }
+    }
+	
+	return(ret);    
 }
 
 - (NSArray *)localAnnotationsItemForProfile:(NSNumber *)profileID
