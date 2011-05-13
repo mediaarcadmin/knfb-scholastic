@@ -33,6 +33,7 @@ static NSString * const kSCHLibreAccessWebServiceSaveReadingStatisticsDetailed =
 // Parameters
 static NSString * const kSCHLibreAccessWebServiceAction = @"Action";
 static NSString * const kSCHLibreAccessWebServiceAnnotationsContentList = @"AnnotationsContentList";
+static NSString * const kSCHLibreAccessWebServiceAnnotationsContentItem = @"AnnotationsContentItem";
 static NSString * const kSCHLibreAccessWebServiceAnnotationsList = @"AnnotationsList";
 static NSString * const kSCHLibreAccessWebServiceAssignedBooksOnly = @"AssignedBooksOnly";
 static NSString * const kSCHLibreAccessWebServiceAssignedProfileList = @"AssignedProfileList";

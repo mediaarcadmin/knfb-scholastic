@@ -1337,7 +1337,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 {
 	if (object != nil && intoObject != nil) {
 		intoObject.AnnotationsContentList = [[LibreAccessServiceSvc_AnnotationsContentList alloc] init];
-		for (NSDictionary *item in [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceAnnotationsContentList]]) {
+		for (NSDictionary *item in [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceAnnotationsContentItem]]) {
 			LibreAccessServiceSvc_AnnotationsContentItem *annotationsContentItem = [[LibreAccessServiceSvc_AnnotationsContentItem alloc] init];
 			[self fromObject:item intoAnnotationsContentItem:annotationsContentItem];
 			[intoObject.AnnotationsContentList addAnnotationsContentItem:annotationsContentItem];
