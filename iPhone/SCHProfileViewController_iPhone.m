@@ -186,13 +186,13 @@
                         [errorAlert show]; 
                         [errorAlert release];
                     } else {
+                        [SCHThemeManager sharedThemeManager].appProfile = profileItem.AppProfile;
                         [self.profilePasswordController dismissModalViewControllerAnimated:YES];	
                         [self.profilePasswordController clearFields]; 
                         [self pushBookshelvesControllerWithProfileItem:profileItem];            
                     }	
                 };
                 
-                [SCHThemeManager sharedThemeManager].appProfile = profileItem.AppProfile;
                 [self presentModalViewController:self.profilePasswordController animated:YES];
             }
 #endif	
