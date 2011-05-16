@@ -57,6 +57,7 @@ typedef enum
 -(id)initWithNibName:(NSString *)nibNameOrNil 
               bundle:(NSBundle *)nibBundleOrNil 
                 isbn:(NSString *)aIsbn 
+           profileID:(NSNumber *)aProfileID
               layout:(SCHReadingViewLayoutType)layoutType;
 
 // interface builder

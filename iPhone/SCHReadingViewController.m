@@ -7,7 +7,7 @@
 //
 
 #import "SCHReadingViewController.h"
-#import <QuartzCore/QuartzCore.h>
+
 #import "SCHAppBook.h"
 #import "SCHBookManager.h"
 #import "SCHFlowView.h"
@@ -16,6 +16,7 @@
 #import "SCHCustomNavigationBar.h"
 #import "SCHCustomToolbar.h"
 #import "SCHReadingNotesViewController.h"
+#import "SCHSyncManager.h"
 
 // constants
 static const CGFloat kReadingViewStandardScrubHeight = 47.0f;
@@ -26,6 +27,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 @interface SCHReadingViewController ()
 
 @property (nonatomic, copy) NSString *isbn;
+
+@property (nonatomic, retain) NSNumber *profileID;
 
 // the page view, either fixed or flow
 @property (nonatomic, retain) SCHReadingView *readingView;
@@ -74,6 +77,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 #pragma mark Object Synthesis
 
 @synthesize isbn;
+@synthesize profileID;
 @synthesize readingView;
 @synthesize youngerMode;
 @synthesize toolbarsVisible;
@@ -115,6 +119,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 {
     [self releaseViewObjects];
     [isbn release], isbn = nil;
+    [profileID release], profileID = nil;
     
     [super dealloc];
 }
@@ -149,22 +154,29 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [readingView release], readingView = nil;
 }
 
--(void)viewDidUnload 
+- (void)viewDidUnload 
 {
     [super viewDidUnload];
     [self releaseViewObjects];
 }
 
 #pragma mark - Object Initialiser
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil isbn:(NSString *)aIsbn layout:(SCHReadingViewLayoutType)layout
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil isbn:(NSString *)aIsbn profileID:(NSNumber *)aProfileID layout:(SCHReadingViewLayoutType)layout
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
         isbn = [aIsbn copy];
+        profileID = aProfileID;
         layoutType = layout;
         currentlyRotating = NO;
         currentlyScrubbing = NO;
+        
+        SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];
+        
+        [[SCHSyncManager sharedSyncManager] openDocument:[[book.ContentMetadataItem valueForKey:@"UserContentItem"] objectAtIndex:0] 
+                                              forProfile:self.profileID];
+        
     }
     return self;
 }
@@ -385,6 +397,11 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (IBAction)popViewController:(id)sender
 {
+    SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];
+    
+    [[SCHSyncManager sharedSyncManager] closeDocument:[[book.ContentMetadataItem valueForKey:@"UserContentItem"] objectAtIndex:0] 
+                                          forProfile:self.profileID];
+
     [self cancelInitialTimer];
     [self setToolbarVisibility:YES animated:NO];
 	[self.navigationController popViewControllerAnimated:YES];
