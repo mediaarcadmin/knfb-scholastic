@@ -70,8 +70,8 @@
 		528433EC133382EA0010BAAB /* SCHAppDictionaryState.m in Sources */ = {isa = PBXBuildFile; fileRef = 528433EA133382EA0010BAAB /* SCHAppDictionaryState.m */; };
 		528A2CD312CCDD9E0053A343 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 528A2CD212CCDD9E0053A343 /* Settings.bundle */; };
 		528A2CDB12CCDE070053A343 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 528A2CDA12CCDE070053A343 /* Localizable.strings */; };
-		528A2D6012CDE39C0053A343 /* SCHProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 528A2D5F12CDE39C0053A343 /* SCHProfileViewController.m */; };
-		528A2D6212CDE3B10053A343 /* SCHProfileViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 528A2D6112CDE3B10053A343 /* SCHProfileViewController.xib */; };
+		528A2D6012CDE39C0053A343 /* SCHProfileViewController_Shared.m in Sources */ = {isa = PBXBuildFile; fileRef = 528A2D5F12CDE39C0053A343 /* SCHProfileViewController_Shared.m */; };
+		528A2D6212CDE3B10053A343 /* SCHProfileViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 528A2D6112CDE3B10053A343 /* SCHProfileViewController_iPhone.xib */; };
 		529385B512DF231800045B44 /* SCHSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 529385B312DF231800045B44 /* SCHSettingsViewController.m */; };
 		529385B612DF231800045B44 /* SCHSettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 529385B412DF231800045B44 /* SCHSettingsViewController.xib */; };
 		5293869C12DF3A3300045B44 /* AuthenticateSvc.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293868F12DF3A3300045B44 /* AuthenticateSvc.m */; };
@@ -661,7 +661,7 @@
 		F8509EF712F063C900197EB5 /* MainWindow_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2860E389111B897F00E27156 /* MainWindow_iPhone.xib */; };
 		F8509EF812F063C900197EB5 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 528A2CD212CCDD9E0053A343 /* Settings.bundle */; };
 		F8509EF912F063C900197EB5 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 528A2CDA12CCDE070053A343 /* Localizable.strings */; };
-		F8509EFB12F063C900197EB5 /* SCHProfileViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 528A2D6112CDE3B10053A343 /* SCHProfileViewController.xib */; };
+		F8509EFB12F063C900197EB5 /* SCHProfileViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 528A2D6112CDE3B10053A343 /* SCHProfileViewController_iPhone.xib */; };
 		F8509F0012F063C900197EB5 /* SCHSettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 529385B412DF231800045B44 /* SCHSettingsViewController.xib */; };
 		F8509F0112F063C900197EB5 /* SCHBookShelfViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5293883212E03CD000045B44 /* SCHBookShelfViewController.xib */; };
 		F8509F0412F063C900197EB5 /* SCHLoginPasswordViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52EF4E5E12E6E01C00E374F7 /* SCHLoginPasswordViewController.xib */; };
@@ -675,7 +675,7 @@
 		F8509F1412F063C900197EB5 /* AppDelegate_Shared.m in Sources */ = {isa = PBXBuildFile; fileRef = 28EEC04A1118E28000187D67 /* AppDelegate_Shared.m */; };
 		F8509F1512F063C900197EB5 /* Scholastic.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2819307C112F81BE00ECF9B4 /* Scholastic.xcdatamodeld */; };
 		F8509F1612F063C900197EB5 /* AppDelegate_iPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 2860E388111B897F00E27156 /* AppDelegate_iPhone.m */; };
-		F8509F1712F063C900197EB5 /* SCHProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 528A2D5F12CDE39C0053A343 /* SCHProfileViewController.m */; };
+		F8509F1712F063C900197EB5 /* SCHProfileViewController_Shared.m in Sources */ = {isa = PBXBuildFile; fileRef = 528A2D5F12CDE39C0053A343 /* SCHProfileViewController_Shared.m */; };
 		F8509F1B12F063C900197EB5 /* SCHSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 529385B312DF231800045B44 /* SCHSettingsViewController.m */; };
 		F8509F1C12F063C900197EB5 /* AuthenticateSvc.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293868F12DF3A3300045B44 /* AuthenticateSvc.m */; };
 		F8509F1D12F063C900197EB5 /* NSDate+ISO8601Parsing.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293869312DF3A3300045B44 /* NSDate+ISO8601Parsing.m */; };
@@ -712,6 +712,10 @@
 		F8509F4812F063C900197EB5 /* libstdc++.6.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F8509EB712F0625100197EB5 /* libstdc++.6.dylib */; };
 		F85E0309134F59E800E81D58 /* SCHCustomToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = F85E0308134F59E700E81D58 /* SCHCustomToolbar.m */; };
 		F85E030A134F59E800E81D58 /* SCHCustomToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = F85E0308134F59E700E81D58 /* SCHCustomToolbar.m */; };
+		F86433331381359000BEB8EB /* SCHProfileViewController_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = F8844BF7137D6654003D3014 /* SCHProfileViewController_iPad.m */; };
+		F86433341381359300BEB8EB /* SCHProfileViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8844BF8137D6655003D3014 /* SCHProfileViewController_iPad.xib */; };
+		F864333713813B0100BEB8EB /* SCHBookShelfViewController_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = F864333613813B0100BEB8EB /* SCHBookShelfViewController_iPad.m */; };
+		F864333813813B0100BEB8EB /* SCHBookShelfViewController_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = F864333613813B0100BEB8EB /* SCHBookShelfViewController_iPad.m */; };
 		F8678D8A133218D8001FDB2F /* ScholasticFeatureCompatibility.plist in Resources */ = {isa = PBXBuildFile; fileRef = F8678D89133218D8001FDB2F /* ScholasticFeatureCompatibility.plist */; };
 		F8678D8B133218D8001FDB2F /* ScholasticFeatureCompatibility.plist in Resources */ = {isa = PBXBuildFile; fileRef = F8678D89133218D8001FDB2F /* ScholasticFeatureCompatibility.plist */; };
 		F878D6AC134498FB00DDB98B /* SCHBookURLRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F878D6A3134498FB00DDB98B /* SCHBookURLRequestOperation.m */; };
@@ -728,6 +732,10 @@
 		F878D6B91344996400DDB98B /* SCHBookOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F878D6B71344996400DDB98B /* SCHBookOperation.m */; };
 		F878D77C1344A1E400DDB98B /* SCHXPSCoverImageOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F878D77B1344A1E400DDB98B /* SCHXPSCoverImageOperation.m */; };
 		F878D77D1344A1E400DDB98B /* SCHXPSCoverImageOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F878D77B1344A1E400DDB98B /* SCHXPSCoverImageOperation.m */; };
+		F8844BEF137D5F88003D3014 /* SCHProfileViewController_iPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = F8844BEE137D5F88003D3014 /* SCHProfileViewController_iPhone.m */; };
+		F8844BF0137D5F88003D3014 /* SCHProfileViewController_iPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = F8844BEE137D5F88003D3014 /* SCHProfileViewController_iPhone.m */; };
+		F8844BF9137D6655003D3014 /* SCHProfileViewController_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = F8844BF7137D6654003D3014 /* SCHProfileViewController_iPad.m */; };
+		F8844BFA137D6655003D3014 /* SCHProfileViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8844BF8137D6655003D3014 /* SCHProfileViewController_iPad.xib */; };
 		F8898903135877B100D236ED /* SCHProfileViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F8898902135877B100D236ED /* SCHProfileViewCell.m */; };
 		F8898904135877B100D236ED /* SCHProfileViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F8898902135877B100D236ED /* SCHProfileViewCell.m */; };
 		F8B55E07134B190B0028534A /* SCHDictionaryFileUnzipOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F8B55E06134B190B0028534A /* SCHDictionaryFileUnzipOperation.m */; };
@@ -955,9 +963,9 @@
 		528A2CD212CCDD9E0053A343 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = Settings.bundle; path = Shared/Settings.bundle; sourceTree = "<group>"; };
 		528A2CD912CCDDB00053A343 /* Entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Entitlements.plist; sourceTree = "<group>"; };
 		528A2CDA12CCDE070053A343 /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = Localizable.strings; path = Shared/Localizable.strings; sourceTree = "<group>"; };
-		528A2D5E12CDE39C0053A343 /* SCHProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHProfileViewController.h; sourceTree = "<group>"; };
-		528A2D5F12CDE39C0053A343 /* SCHProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHProfileViewController.m; sourceTree = "<group>"; };
-		528A2D6112CDE3B10053A343 /* SCHProfileViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SCHProfileViewController.xib; sourceTree = "<group>"; };
+		528A2D5E12CDE39C0053A343 /* SCHProfileViewController_Shared.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHProfileViewController_Shared.h; path = iPhone/SCHProfileViewController_Shared.h; sourceTree = "<group>"; };
+		528A2D5F12CDE39C0053A343 /* SCHProfileViewController_Shared.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHProfileViewController_Shared.m; path = iPhone/SCHProfileViewController_Shared.m; sourceTree = "<group>"; };
+		528A2D6112CDE3B10053A343 /* SCHProfileViewController_iPhone.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SCHProfileViewController_iPhone.xib; sourceTree = "<group>"; };
 		529385B212DF231800045B44 /* SCHSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHSettingsViewController.h; sourceTree = "<group>"; };
 		529385B312DF231800045B44 /* SCHSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHSettingsViewController.m; sourceTree = "<group>"; };
 		529385B412DF231800045B44 /* SCHSettingsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SCHSettingsViewController.xib; sourceTree = "<group>"; };
@@ -1540,6 +1548,8 @@
 		F8509F4D12F063C900197EB5 /* Scholastic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Scholastic.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F85E0307134F59E700E81D58 /* SCHCustomToolbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHCustomToolbar.h; path = Shared/SCHCustomToolbar.h; sourceTree = "<group>"; };
 		F85E0308134F59E700E81D58 /* SCHCustomToolbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHCustomToolbar.m; path = Shared/SCHCustomToolbar.m; sourceTree = "<group>"; };
+		F864333513813B0100BEB8EB /* SCHBookShelfViewController_iPad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookShelfViewController_iPad.h; path = iPad/SCHBookShelfViewController_iPad.h; sourceTree = "<group>"; };
+		F864333613813B0100BEB8EB /* SCHBookShelfViewController_iPad.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookShelfViewController_iPad.m; path = iPad/SCHBookShelfViewController_iPad.m; sourceTree = "<group>"; };
 		F8678D89133218D8001FDB2F /* ScholasticFeatureCompatibility.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = ScholasticFeatureCompatibility.plist; sourceTree = "<group>"; };
 		F878D6A2134498FB00DDB98B /* SCHBookURLRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookURLRequestOperation.h; path = Shared/SCHBookURLRequestOperation.h; sourceTree = "<group>"; };
 		F878D6A3134498FB00DDB98B /* SCHBookURLRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookURLRequestOperation.m; path = Shared/SCHBookURLRequestOperation.m; sourceTree = "<group>"; };
@@ -1555,6 +1565,11 @@
 		F878D6B71344996400DDB98B /* SCHBookOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookOperation.m; path = Shared/SCHBookOperation.m; sourceTree = "<group>"; };
 		F878D77A1344A1E300DDB98B /* SCHXPSCoverImageOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHXPSCoverImageOperation.h; path = Shared/SCHXPSCoverImageOperation.h; sourceTree = "<group>"; };
 		F878D77B1344A1E400DDB98B /* SCHXPSCoverImageOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHXPSCoverImageOperation.m; path = Shared/SCHXPSCoverImageOperation.m; sourceTree = "<group>"; };
+		F8844BED137D5F88003D3014 /* SCHProfileViewController_iPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHProfileViewController_iPhone.h; sourceTree = "<group>"; };
+		F8844BEE137D5F88003D3014 /* SCHProfileViewController_iPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHProfileViewController_iPhone.m; sourceTree = "<group>"; };
+		F8844BF6137D6654003D3014 /* SCHProfileViewController_iPad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHProfileViewController_iPad.h; path = iPad/SCHProfileViewController_iPad.h; sourceTree = SOURCE_ROOT; };
+		F8844BF7137D6654003D3014 /* SCHProfileViewController_iPad.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHProfileViewController_iPad.m; path = iPad/SCHProfileViewController_iPad.m; sourceTree = SOURCE_ROOT; };
+		F8844BF8137D6655003D3014 /* SCHProfileViewController_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SCHProfileViewController_iPad.xib; path = iPad/SCHProfileViewController_iPad.xib; sourceTree = SOURCE_ROOT; };
 		F8898901135877B100D236ED /* SCHProfileViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHProfileViewCell.h; sourceTree = "<group>"; };
 		F8898902135877B100D236ED /* SCHProfileViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHProfileViewCell.m; sourceTree = "<group>"; };
 		F8B55E05134B190B0028534A /* SCHDictionaryFileUnzipOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHDictionaryFileUnzipOperation.h; path = Shared/SCHDictionaryFileUnzipOperation.h; sourceTree = "<group>"; };
@@ -1587,8 +1602,8 @@
 		F8C8FC211360659B0097F9DD /* SCHReadingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHReadingViewController.h; sourceTree = "<group>"; };
 		F8C8FC221360659B0097F9DD /* SCHReadingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHReadingViewController.m; sourceTree = "<group>"; };
 		F8C8FC231360659B0097F9DD /* SCHReadingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHReadingViewController.xib; sourceTree = "<group>"; };
-		F8C8FC28136065AD0097F9DD /* SCHCustomNavigationBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHCustomNavigationBar.h; sourceTree = "<group>"; };
-		F8C8FC29136065AD0097F9DD /* SCHCustomNavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHCustomNavigationBar.m; sourceTree = "<group>"; };
+		F8C8FC28136065AD0097F9DD /* SCHCustomNavigationBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHCustomNavigationBar.h; path = iPhone/SCHCustomNavigationBar.h; sourceTree = "<group>"; };
+		F8C8FC29136065AD0097F9DD /* SCHCustomNavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHCustomNavigationBar.m; path = iPhone/SCHCustomNavigationBar.m; sourceTree = "<group>"; };
 		F8CD24C912F9714D001C748B /* SCHBookManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookManager.h; path = iPhone/SCHBookManager.h; sourceTree = "<group>"; };
 		F8CD24CA12F9714D001C748B /* SCHBookManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookManager.m; path = iPhone/SCHBookManager.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -1678,13 +1693,9 @@
 				A3A38E5D133A80F700C325A3 /* Certificates */,
 				F8509E9912F0621E00197EB5 /* Scrubber View */,
 				F8509E9112F0621E00197EB5 /* Book Reading */,
-				F8509E8A12F0621E00197EB5 /* Renderer */,
 				2860E387111B897F00E27156 /* AppDelegate_iPhone.h */,
 				2860E388111B897F00E27156 /* AppDelegate_iPhone.m */,
 				2860E389111B897F00E27156 /* MainWindow_iPhone.xib */,
-				528A2D5E12CDE39C0053A343 /* SCHProfileViewController.h */,
-				528A2D5F12CDE39C0053A343 /* SCHProfileViewController.m */,
-				528A2D6112CDE3B10053A343 /* SCHProfileViewController.xib */,
 				529385B212DF231800045B44 /* SCHSettingsViewController.h */,
 				529385B312DF231800045B44 /* SCHSettingsViewController.m */,
 				529385B412DF231800045B44 /* SCHSettingsViewController.xib */,
@@ -1700,6 +1711,7 @@
 				A38CF1FE1374504F00EABF43 /* SCHAboutViewController.m */,
 				A39009931379B13000D6B608 /* SCHPrivacyPolicyViewController.h */,
 				A39009941379B13000D6B608 /* SCHPrivacyPolicyViewController.m */,
+				F864333B13813E0300BEB8EB /* Profile View Controller */,
 			);
 			path = iPhone;
 			sourceTree = "<group>";
@@ -1707,6 +1719,7 @@
 		28EEBF621118D79A00187D67 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				F8509E8A12F0621E00197EB5 /* XPS Provider */,
 				52EF594712EECA7200E374F7 /* Extensions */,
 				52D19C681338A57B00A68D75 /* Views */,
 				F867904B1332346C001FDB2F /* Dictionary Processing */,
@@ -1758,6 +1771,8 @@
 		29B97317FDCFA39411CA2CEA /* iPad */ = {
 			isa = PBXGroup;
 			children = (
+				F864333A13813DF100BEB8EB /* Profile View Controller */,
+				F864333913813DE000BEB8EB /* Bookshelves */,
 				1D3623240D0F684500981E51 /* AppDelegate_iPad.h */,
 				1D3623250D0F684500981E51 /* AppDelegate_iPad.m */,
 				28AD733E0D9D9553002E5188 /* MainWindow_iPad.xib */,
@@ -2112,6 +2127,7 @@
 		52D19C681338A57B00A68D75 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				F8844BF1137D6416003D3014 /* Profile View Controller */,
 				5204B85D135C1F6E00FCBD90 /* Themes */,
 				C9CEF429133A1BF300FB5BE0 /* Book Reading */,
 				F8E29664130583A0009BD30D /* Image Processing */,
@@ -2640,6 +2656,8 @@
 				C908D857133F91FA00661718 /* SCHLayoutView.m */,
 				F85E0307134F59E700E81D58 /* SCHCustomToolbar.h */,
 				F85E0308134F59E700E81D58 /* SCHCustomToolbar.m */,
+				F8C8FC28136065AD0097F9DD /* SCHCustomNavigationBar.h */,
+				F8C8FC29136065AD0097F9DD /* SCHCustomNavigationBar.m */,
 			);
 			name = "Book Reading";
 			sourceTree = "<group>";
@@ -2720,7 +2738,7 @@
 			name = "Debug Books";
 			sourceTree = "<group>";
 		};
-		F8509E8A12F0621E00197EB5 /* Renderer */ = {
+		F8509E8A12F0621E00197EB5 /* XPS Provider */ = {
 			isa = PBXGroup;
 			children = (
 				C9EFB28C134F782800ADF905 /* SCHXPSProvider.h */,
@@ -2728,7 +2746,8 @@
 				C9EFB291134F795800ADF905 /* SCHXPSURLProtocol.h */,
 				C9EFB292134F795800ADF905 /* SCHXPSURLProtocol.m */,
 			);
-			name = Renderer;
+			name = "XPS Provider";
+			path = iPhone;
 			sourceTree = "<group>";
 		};
 		F8509E9112F0621E00197EB5 /* Book Reading */ = {
@@ -2737,8 +2756,6 @@
 				F8C8FC211360659B0097F9DD /* SCHReadingViewController.h */,
 				F8C8FC221360659B0097F9DD /* SCHReadingViewController.m */,
 				F8C8FC231360659B0097F9DD /* SCHReadingViewController.xib */,
-				F8C8FC28136065AD0097F9DD /* SCHCustomNavigationBar.h */,
-				F8C8FC29136065AD0097F9DD /* SCHCustomNavigationBar.m */,
 				F84C006D1371B612009A210F /* SCHReadingNotesViewController.h */,
 				F84C006E1371B612009A210F /* SCHReadingNotesViewController.m */,
 				F84C006F1371B612009A210F /* SCHReadingNotesViewController.xib */,
@@ -2754,6 +2771,35 @@
 				F8509E9B12F0621E00197EB5 /* SCHScrubberView.m */,
 			);
 			name = "Scrubber View";
+			sourceTree = "<group>";
+		};
+		F864333913813DE000BEB8EB /* Bookshelves */ = {
+			isa = PBXGroup;
+			children = (
+				F864333513813B0100BEB8EB /* SCHBookShelfViewController_iPad.h */,
+				F864333613813B0100BEB8EB /* SCHBookShelfViewController_iPad.m */,
+			);
+			name = Bookshelves;
+			sourceTree = "<group>";
+		};
+		F864333A13813DF100BEB8EB /* Profile View Controller */ = {
+			isa = PBXGroup;
+			children = (
+				F8844BF6137D6654003D3014 /* SCHProfileViewController_iPad.h */,
+				F8844BF7137D6654003D3014 /* SCHProfileViewController_iPad.m */,
+				F8844BF8137D6655003D3014 /* SCHProfileViewController_iPad.xib */,
+			);
+			name = "Profile View Controller";
+			sourceTree = "<group>";
+		};
+		F864333B13813E0300BEB8EB /* Profile View Controller */ = {
+			isa = PBXGroup;
+			children = (
+				F8844BED137D5F88003D3014 /* SCHProfileViewController_iPhone.h */,
+				F8844BEE137D5F88003D3014 /* SCHProfileViewController_iPhone.m */,
+				528A2D6112CDE3B10053A343 /* SCHProfileViewController_iPhone.xib */,
+			);
+			name = "Profile View Controller";
 			sourceTree = "<group>";
 		};
 		F8678D88133216E7001FDB2F /* Configuration */ = {
@@ -2772,6 +2818,15 @@
 				F8C4C3FA1332594A0057420E /* SCHDictionaryManager.m */,
 			);
 			name = "Dictionary Processing";
+			sourceTree = "<group>";
+		};
+		F8844BF1137D6416003D3014 /* Profile View Controller */ = {
+			isa = PBXGroup;
+			children = (
+				528A2D5E12CDE39C0053A343 /* SCHProfileViewController_Shared.h */,
+				528A2D5F12CDE39C0053A343 /* SCHProfileViewController_Shared.m */,
+			);
+			name = "Profile View Controller";
 			sourceTree = "<group>";
 		};
 		F8899217132E15A5007EB541 /* Processing Manager */ = {
@@ -3033,7 +3088,7 @@
 				2860E38B111B897F00E27156 /* MainWindow_iPhone.xib in Resources */,
 				528A2CD312CCDD9E0053A343 /* Settings.bundle in Resources */,
 				528A2CDB12CCDE070053A343 /* Localizable.strings in Resources */,
-				528A2D6212CDE3B10053A343 /* SCHProfileViewController.xib in Resources */,
+				528A2D6212CDE3B10053A343 /* SCHProfileViewController_iPhone.xib in Resources */,
 				529385B612DF231800045B44 /* SCHSettingsViewController.xib in Resources */,
 				5293883412E03CD000045B44 /* SCHBookShelfViewController.xib in Resources */,
 				52EF4E6012E6E01C00E374F7 /* SCHLoginPasswordViewController.xib in Resources */,
@@ -3216,6 +3271,7 @@
 				A39009911379B06900D6B608 /* privacy.html in Resources */,
 				A39009F11379D81200D6B608 /* parent-request.html in Resources */,
 				A39009F31379D81200D6B608 /* teacher-request.html in Resources */,
+				F8844BFA137D6655003D3014 /* SCHProfileViewController_iPad.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3227,7 +3283,7 @@
 				F8509EF712F063C900197EB5 /* MainWindow_iPhone.xib in Resources */,
 				F8509EF812F063C900197EB5 /* Settings.bundle in Resources */,
 				F8509EF912F063C900197EB5 /* Localizable.strings in Resources */,
-				F8509EFB12F063C900197EB5 /* SCHProfileViewController.xib in Resources */,
+				F8509EFB12F063C900197EB5 /* SCHProfileViewController_iPhone.xib in Resources */,
 				F8509F0012F063C900197EB5 /* SCHSettingsViewController.xib in Resources */,
 				F8509F0112F063C900197EB5 /* SCHBookShelfViewController.xib in Resources */,
 				F8509F0412F063C900197EB5 /* SCHLoginPasswordViewController.xib in Resources */,
@@ -3424,6 +3480,7 @@
 				A39009921379B06900D6B608 /* privacy.html in Resources */,
 				A39009F21379D81200D6B608 /* parent-request.html in Resources */,
 				A39009F41379D81200D6B608 /* teacher-request.html in Resources */,
+				F86433341381359300BEB8EB /* SCHProfileViewController_iPad.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3439,7 +3496,7 @@
 				28EEC04B1118E28000187D67 /* AppDelegate_Shared.m in Sources */,
 				2819307D112F81BE00ECF9B4 /* Scholastic.xcdatamodeld in Sources */,
 				2860E38A111B897F00E27156 /* AppDelegate_iPhone.m in Sources */,
-				528A2D6012CDE39C0053A343 /* SCHProfileViewController.m in Sources */,
+				528A2D6012CDE39C0053A343 /* SCHProfileViewController_Shared.m in Sources */,
 				529385B512DF231800045B44 /* SCHSettingsViewController.m in Sources */,
 				5293869C12DF3A3300045B44 /* AuthenticateSvc.m in Sources */,
 				5293869E12DF3A3300045B44 /* NSDate+ISO8601Parsing.m in Sources */,
@@ -3595,6 +3652,9 @@
 				5206FF2513744E7000FCE07C /* SCHAppProfile.m in Sources */,
 				52C7F8721377DEE800DB08C9 /* SCHAppState.m in Sources */,
 				A39009951379B13000D6B608 /* SCHPrivacyPolicyViewController.m in Sources */,
+				F8844BEF137D5F88003D3014 /* SCHProfileViewController_iPhone.m in Sources */,
+				F8844BF9137D6655003D3014 /* SCHProfileViewController_iPad.m in Sources */,
+				F864333713813B0100BEB8EB /* SCHBookShelfViewController_iPad.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3607,7 +3667,7 @@
 				F8509F1412F063C900197EB5 /* AppDelegate_Shared.m in Sources */,
 				F8509F1512F063C900197EB5 /* Scholastic.xcdatamodeld in Sources */,
 				F8509F1612F063C900197EB5 /* AppDelegate_iPhone.m in Sources */,
-				F8509F1712F063C900197EB5 /* SCHProfileViewController.m in Sources */,
+				F8509F1712F063C900197EB5 /* SCHProfileViewController_Shared.m in Sources */,
 				F8509F1B12F063C900197EB5 /* SCHSettingsViewController.m in Sources */,
 				F8509F1C12F063C900197EB5 /* AuthenticateSvc.m in Sources */,
 				F8509F1D12F063C900197EB5 /* NSDate+ISO8601Parsing.m in Sources */,
@@ -3763,6 +3823,9 @@
 				5206FF2613744E7000FCE07C /* SCHAppProfile.m in Sources */,
 				52C7F8731377DEE800DB08C9 /* SCHAppState.m in Sources */,
 				A39009961379B13000D6B608 /* SCHPrivacyPolicyViewController.m in Sources */,
+				F8844BF0137D5F88003D3014 /* SCHProfileViewController_iPhone.m in Sources */,
+				F86433331381359000BEB8EB /* SCHProfileViewController_iPad.m in Sources */,
+				F864333813813B0100BEB8EB /* SCHBookShelfViewController_iPad.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -1,27 +1,23 @@
+ //
+//  SCHProfileViewController_iPhone.m
+//  Scholastic
 //
-//  SCHProfileViewController.m
-//  Tester
-//
-//  Created by John S. Eddie on 30/12/2010.
-//  Copyright 2010 BitWink Limited. All rights reserved.
+//  Created by Gordon Christie on 13/05/2011.
+//  Copyright 2011 BitWink. All rights reserved.
 //
 
-#import "SCHProfileViewController.h"
-
-#import "SCHSettingsViewController.h"
-#import "SCHBookShelfViewController.h"
+#import "SCHProfileViewController_iPhone.h"
 #import "SCHLoginPasswordViewController.h"
-#import "SCHLibreAccessWebService.h"
-#import "SCHProfileItem.h"
-#import "SCHProfileViewCell.h"
-#import "SCHCustomNavigationBar.h"
 #import "SCHAuthenticationManager.h"
-#import "SCHSyncManager.h"
+#import "SCHBookShelfViewController.h"
+#import "SCHSettingsViewController.h"
+#import "SCHCustomNavigationBar.h"
 #import "SCHURLManager.h"
+#import "SCHSyncManager.h"
 #import "SCHThemeManager.h"
+#import "SCHProfileItem.h"
 
-
-@interface SCHProfileViewController() <UITableViewDelegate> 
+@interface SCHProfileViewController_iPhone() <UITableViewDelegate> 
 
 - (void)pushSettingsController;
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation;
@@ -31,7 +27,8 @@
 
 @end
 
-@implementation SCHProfileViewController
+
+@implementation SCHProfileViewController_iPhone
 
 @synthesize profilePasswordController;
 @synthesize tableView;
@@ -40,8 +37,6 @@
 @synthesize settingsButton;
 @synthesize settingsController;
 @synthesize loginController;
-@synthesize fetchedResultsController=fetchedResultsController_;
-@synthesize managedObjectContext=managedObjectContext_;
 
 #pragma mark - Object lifecycle
 
@@ -59,9 +54,6 @@
 
 - (void)dealloc 
 {    
-    [fetchedResultsController_ release], fetchedResultsController_ = nil;
-    [managedObjectContext_ release], managedObjectContext_ = nil;
-    
     [self releaseViewObjects];
     [super dealloc];
 }
@@ -75,7 +67,7 @@
     self.settingsButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [settingsButton addTarget:self action:@selector(pushSettingsController) 
              forControlEvents:UIControlEventTouchUpInside]; 
-
+    
     self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:settingsButton] autorelease];
     
     self.navigationItem.title = NSLocalizedString(@"Back", @"");
@@ -84,7 +76,7 @@
     [logoImageView release];
     
     self.tableView.tableHeaderView = self.headerView;
-
+    
     self.loginController.controllerType = kSCHControllerLoginView;
     self.loginController.actionBlock = ^{
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(authenticationManager:) name:kSCHAuthenticationManagerSuccess object:nil];			
@@ -96,12 +88,6 @@
     // block gets set when a row is selected
     self.profilePasswordController.controllerType = kSCHControllerPasswordOnlyView;
 }  
-
-- (void)viewDidUnload 
-{
-    [super viewDidUnload];
-	[self releaseViewObjects];
-}
 
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -156,54 +142,13 @@
     [self setupAssetsForOrientation:toInterfaceOrientation];
 }
 
-#pragma mark - Table view data source
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView 
-{
-    return(1);
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
-{
-	NSInteger ret = 0;
-	id <NSFetchedResultsSectionInfo> sectionInfo = nil;
-	
-	switch (section) {
-		case 0:
-			sectionInfo = [[self.fetchedResultsController sections] objectAtIndex:section];
-			ret = [sectionInfo numberOfObjects];
-			break;
-	}
-	
-	return(ret);
-}
-
-- (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath 
-{    
-    static NSString *CellIdentifier = @"Cell";
-    
-    SCHProfileViewCell *cell = (SCHProfileViewCell*)[aTableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
-        cell = [[[SCHProfileViewCell alloc] initWithStyle:UITableViewCellStyleDefault 
-                                          reuseIdentifier:CellIdentifier] autorelease];
-        cell.delegate = self;
-    }
-    
-    SCHProfileItem *managedObject = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    NSLog(@"Setting up cell for profile with ID: %@", [managedObject valueForKey:@"ID"]);
-	[cell.cellButton setTitle:[managedObject bookshelfName:NO] forState:UIControlStateNormal];
-    [cell setIndexPath:indexPath];
-    
-    return(cell);
-}
-
+ 
 - (void)pushBookshelvesControllerWithProfileItem:(SCHProfileItem *)profileItem
 {
 	SCHBookShelfViewController *bookShelfViewController = nil;
-//	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-		bookShelfViewController = [[SCHBookShelfViewController alloc] initWithNibName:NSStringFromClass([SCHBookShelfViewController class]) bundle:nil];
-        bookShelfViewController.profileItem = profileItem;
-//	}
+
+    bookShelfViewController = [[SCHBookShelfViewController alloc] initWithNibName:NSStringFromClass([SCHBookShelfViewController class]) bundle:nil];
+    bookShelfViewController.profileItem = profileItem;
     
 	[self.navigationController pushViewController:bookShelfViewController animated:YES];
 	[bookShelfViewController release], bookShelfViewController = nil;
@@ -221,7 +166,7 @@
 	
     switch (indexPath.section) {
 		case 0: {
-
+            
             SCHProfileItem *profileItem = [[self fetchedResultsController] objectAtIndexPath:indexPath];
 #if LOCALDEBUG
             // controller to view book shelf with books filtered to profile
@@ -246,7 +191,7 @@
                         [self pushBookshelvesControllerWithProfileItem:profileItem];            
                     }	
                 };
-
+                
                 [SCHThemeManager sharedThemeManager].appProfile = profileItem.AppProfile;
                 [self presentModalViewController:self.profilePasswordController animated:YES];
             }
@@ -283,57 +228,6 @@
 	}
 }
 
-
-#pragma mark - Fetched results controller
-
-- (NSFetchedResultsController *)fetchedResultsController 
-{
-    if (fetchedResultsController_ != nil) {
-        return fetchedResultsController_;
-    }
-    
-    /*
-     Set up the fetched results controller.
-     */
-    // Create the fetch request for the entity.
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    // Edit the entity name as appropriate.
-    NSEntityDescription *entity = [NSEntityDescription entityForName:kSCHProfileItem 
-                                              inManagedObjectContext:self.managedObjectContext];
-    [fetchRequest setEntity:entity];
-    
-    // Set the batch size to a suitable number.
-    [fetchRequest setFetchBatchSize:20];
-    
-    // Edit the sort key as appropriate.
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:kSCHLibreAccessWebServiceScreenName 
-                                                                   ascending:NO];
-    NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptor, nil];
-    
-    [fetchRequest setSortDescriptors:sortDescriptors];
-    
-    // Edit the section name key path and cache name if appropriate.
-    // nil for section name key path means "no sections".
-    NSFetchedResultsController *aFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest 
-                                                                                                managedObjectContext:self.managedObjectContext 
-                                                                                                  sectionNameKeyPath:nil 
-                                                                                                           cacheName:@"Root"];
-    aFetchedResultsController.delegate = self;
-    self.fetchedResultsController = aFetchedResultsController;
-    
-    [aFetchedResultsController release];
-    [fetchRequest release];
-    [sortDescriptor release];
-    [sortDescriptors release];
-    
-    NSError *error = nil;
-    if (![fetchedResultsController_ performFetch:&error]) {
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-    }
-    
-    return fetchedResultsController_;
-}    
-
 #pragma mark - Fetched results controller delegate
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller 
@@ -342,5 +236,7 @@
     [self.tableView reloadData];
 }
 
-@end
 
+
+
+@end

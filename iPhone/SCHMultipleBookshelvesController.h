@@ -9,8 +9,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <CoreData/CoreData.h>
 
-#import "SCHProfileViewController.h"
 #import "SCHComponentDelegate.h"
 
 @class SCHProfileItem;

@@ -26,9 +26,6 @@
 static NSInteger const kSCHBookShelfViewControllerGridCellHeightPortrait = 138;
 static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 
-static NSInteger const kSCHBookShelfViewControllerGridCellHeightPortrait_iPad = 254;
-static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape_iPad = 266;
-
 @interface SCHBookShelfViewController () <UIGestureRecognizerDelegate>
 
 @property (nonatomic, retain) UIBarButtonItem *themeButton;
@@ -38,6 +35,8 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape_iPad =
 - (void)updateTheme;
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated;
 - (void)finishEditing:(id)sender;
+- (CGSize)cellSize;
+- (CGFloat)cellBorderSize;
 
 @end
 
@@ -101,11 +100,8 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape_iPad =
     
     [self updateTheme];
     
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        [self.gridView setCellSize:CGSizeMake(80,118) withBorderSize:20];
-    } else {
-        [self.gridView setCellSize:CGSizeMake(147,218) withBorderSize:36];
-    }
+    // uses the cellSize and cellBorderSize methods, which can be overridden
+    [self.gridView setCellSize:[self cellSize] withBorderSize:[self cellBorderSize]];
     
     [self.gridView setBackgroundColor:[UIColor clearColor]];
     [self.gridView setMinimumNumberOfShelves:10];
@@ -166,6 +162,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape_iPad =
 
 #pragma mark - Orientation methods
 
+// Note: this is overridden in the iPad subclass
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     [self.gridView setShelfImage:[[SCHThemeManager sharedThemeManager] imageForShelf:interfaceOrientation]];        
@@ -173,22 +170,11 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape_iPad =
     [(SCHCustomNavigationBar *)self.navigationController.navigationBar updateTheme:interfaceOrientation];
     
     if (UIInterfaceOrientationIsLandscape(interfaceOrientation)) {
-        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
             [self.gridView setShelfHeight:kSCHBookShelfViewControllerGridCellHeightLandscape];
             [self.gridView setShelfInset:CGSizeMake(0, -1)];
-        } else {
-            [self.gridView setShelfHeight:kSCHBookShelfViewControllerGridCellHeightLandscape_iPad];
-            [self.gridView setShelfInset:CGSizeMake(0, -2)];
-        }
     } else {
-        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
             [self.gridView setShelfHeight:kSCHBookShelfViewControllerGridCellHeightPortrait];
             [self.gridView setShelfInset:CGSizeMake(0, -2)];
-        } else {
-            [self.gridView setShelfHeight:kSCHBookShelfViewControllerGridCellHeightPortrait_iPad];
-            [self.gridView setShelfInset:CGSizeMake(0, -2)];
-        }
-        
     }
 }
 
@@ -411,7 +397,10 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape_iPad =
                                                                            layout:SCHReadingViewLayoutTypeFlow];            
             readingController.youngerMode = NO;
             [self.navigationController pushViewController:readingController animated:YES];            
-            break;            
+            break;     
+        default:
+            NSLog(@"Warning: unrecognised bookshelf style.");
+            break;
     }
 
     [readingController release];
@@ -420,6 +409,19 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape_iPad =
 - (void)gridView:(MRGridView *)gridView confirmationForDeletionAtIndex:(NSInteger)index 
 {
 	// nop
+}
+
+#pragma mark - Cell Size methods
+
+// overridden in iPad subclass
+- (CGSize)cellSize
+{
+    return CGSizeMake(80,118);
+}
+
+- (CGFloat)cellBorderSize
+{
+    return 20;
 }
 
 @end

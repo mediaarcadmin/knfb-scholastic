@@ -12,10 +12,13 @@
 #import "SCHBookManager.h"
 #import "SCHCustomNavigationBar.h"
 #import "SCHThemeManager.h"
+#import "SCHProfileViewController_iPad.h"
+
 
 @implementation AppDelegate_iPad
 
-@synthesize navigationController;
+@synthesize bookshelfNavigationController;
+@synthesize profileNavigationController;
 @synthesize customNavigationBar;
 
 #pragma mark -
@@ -25,16 +28,14 @@
 {    
 	[super application:application didFinishLaunchingWithOptions:launchOptions];
 	
-    SCHProfileViewController *rootViewController = (SCHProfileViewController *)[navigationController topViewController];
-    rootViewController.managedObjectContext = self.managedObjectContext;
+//    SCHReadingViewController *rootViewController = (SCHReadingViewController *)[navigationController topViewController];
     
     
-    [self.window addSubview:navigationController.view];
+    [self.window addSubview:bookshelfNavigationController.view];
     [self.window makeKeyAndVisible];
     
     [customNavigationBar setTheme:kSCHThemeManagerNavigationBarImage];
 
-    
     return(YES);
 }
 
@@ -75,8 +76,9 @@
 
 - (void)dealloc {
 	
-    [navigationController release];
+    [bookshelfNavigationController release];
     [customNavigationBar release];
+    [profileNavigationController release];
 	[super dealloc];
 }
 

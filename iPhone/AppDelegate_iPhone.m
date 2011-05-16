@@ -8,7 +8,7 @@
 
 #import "AppDelegate_iPhone.h"
 
-#import "SCHProfileViewController.h"
+#import "SCHProfileViewController_iPhone.h"
 #import "SCHSyncManager.h"
 #import "SCHAuthenticationManager.h"
 #import "SCHCustomNavigationBar.h"
@@ -29,7 +29,7 @@ static NSTimeInterval const kAppDelegate_iPhoneSyncManagerWakeDelay = 5.0;
 {    
 	[super application:application didFinishLaunchingWithOptions:launchOptions];
 	
-    SCHProfileViewController *rootViewController = (SCHProfileViewController *)[navigationController topViewController];
+    SCHProfileViewController_iPhone *rootViewController = (SCHProfileViewController_iPhone *)[navigationController topViewController];
     rootViewController.managedObjectContext = self.managedObjectContext;
     
     // Add the navigation controller's view to the window and display.
