@@ -190,6 +190,7 @@
     }
     
     SCHProfileItem *managedObject = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    NSLog(@"Setting up cell for profile with ID: %@", [managedObject valueForKey:@"ID"]);
 	[cell.cellButton setTitle:[managedObject bookshelfName:NO] forState:UIControlStateNormal];
     [cell setIndexPath:indexPath];
     
