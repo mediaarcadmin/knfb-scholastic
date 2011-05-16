@@ -35,6 +35,9 @@ typedef void(^SCHActionBlock)(void);
 // a block to be executed when performing the "Login" or "Go" action
 @property (nonatomic, copy) SCHActionBlock actionBlock;
 
+// a block to be executed when performing the "Cancel" action
+@property (nonatomic, copy) SCHActionBlock cancelBlock;
+
 // activity indicator for login mode
 @property (nonatomic, retain) UIActivityIndicatorView *spinner;
 
@@ -67,6 +70,6 @@ typedef void(^SCHActionBlock)(void);
 - (IBAction)actionButtonAction:(id)sender;
 
 // IBAction - the Cancel action
-- (IBAction)cancel:(id)sender;
+- (IBAction)cancelButtonAction:(id)sender;
 
 @end

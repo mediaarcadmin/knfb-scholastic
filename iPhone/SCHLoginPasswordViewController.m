@@ -33,6 +33,7 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
 
 @synthesize controllerType;
 @synthesize actionBlock;
+@synthesize cancelBlock;
 
 @synthesize topField;
 @synthesize bottomField;
@@ -67,6 +68,7 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
     [actionBlock release], actionBlock = nil;
+    [cancelBlock release], cancelBlock = nil;
 	
     [self releaseViewObjects];    
     [super dealloc];
@@ -91,7 +93,7 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
 
     if (self.controllerType == kSCHControllerPasswordOnlyView ||
         self.controllerType == kSCHControllerDoublePasswordView) {
-        leftBBI = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel:)] autorelease];
+        leftBBI = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelButtonAction:)] autorelease];
 
         // FIXME - even the width to centre the title properly - don't like this
         topViewFrame = CGRectMake(0, 0, 59, 34);
@@ -137,16 +139,17 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
 
     [self clearFields];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self 
-                                             selector:@selector(keyboardWillShow:) 
-                                                 name:UIKeyboardWillShowNotification
-                                               object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillHide:)
-                                                 name:UIKeyboardWillHideNotification
-                                               object:nil];
-    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        [[NSNotificationCenter defaultCenter] addObserver:self 
+                                                 selector:@selector(keyboardWillShow:) 
+                                                     name:UIKeyboardWillShowNotification
+                                                   object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(keyboardWillHide:)
+                                                     name:UIKeyboardWillHideNotification
+                                                   object:nil];
+    }    
     switch (self.controllerType) {
         case kSCHControllerLoginView:
         {
@@ -321,12 +324,16 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
     }
 }
 
-- (IBAction)cancel:(id)sender
+- (IBAction)cancelButtonAction:(id)sender
 {
 	[self.topField resignFirstResponder];
 	[self.bottomField resignFirstResponder];
-	
-	[self dismissModalViewControllerAnimated:YES];	
+    
+    if (self.cancelBlock) {
+        self.cancelBlock();
+    } else {
+        [self dismissModalViewControllerAnimated:YES];	
+    }
 }
 
 - (IBAction)openScholasticURLInSafari:(id)sender
@@ -468,11 +475,16 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
 
 - (void)scrollToTextField:(UITextField *)textField animated: (BOOL) animated
 {
+    NSLog(@"Table view frame: %@", NSStringFromCGRect(self.tableView.frame));
+    
     NSIndexPath *indexPath = nil;
     
     if (textField == self.topField) {
-        CGPoint offset = CGPointMake(0, CGRectGetHeight(self.headerTitleView.frame) - 25);
-        [self.tableView setContentOffset:offset animated:animated];
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+            CGPoint offset = CGPointMake(0, CGRectGetHeight(self.headerTitleView.frame) - 25);
+            NSLog(@"offset point: %@", NSStringFromCGPoint(offset));
+            [self.tableView setContentOffset:offset animated:animated];
+        }
     } else if (textField == self.bottomField) {
         if (self.controllerType == kSCHControllerPasswordOnlyView) {
             indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
@@ -499,13 +511,13 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
 
 - (void)keyboardWillShow:(NSNotification *) notification
 {
- 	CGRect keyboardFrame = CGRectNull;
-	CGFloat keyboardHeight = 0;
+    CGRect keyboardFrame = CGRectNull;
+    CGFloat keyboardHeight = 0;
     double keyboardAnimDuration = 0;
     UIViewAnimationCurve keyboardCurve = UIViewAnimationCurveLinear;
-
-	// 3.2 and above
-	if (UIKeyboardFrameEndUserInfoKey) {		
+    
+    // 3.2 and above
+    if (UIKeyboardFrameEndUserInfoKey) {		
         [[notification.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] getValue:&keyboardFrame];		
         [[notification.userInfo valueForKey:UIKeyboardAnimationDurationUserInfoKey] getValue:&keyboardAnimDuration];		
         [[notification.userInfo valueForKey:UIKeyboardAnimationCurveUserInfoKey] getValue:&keyboardCurve];		
@@ -515,10 +527,10 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
             keyboardHeight = keyboardFrame.size.width;
         }
     }
-	 
+    
     CGRect tableFrame = self.tableView.frame;
     tableFrame.size.height = tableFrame.size.height - keyboardHeight;
-
+    
     [UIView beginAnimations:@"tableSizeAnimation" context:nil];
     [UIView setAnimationCurve:keyboardCurve];
     [UIView setAnimationDuration:keyboardAnimDuration];
@@ -526,7 +538,7 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
     
     self.tableView.frame = tableFrame;
     [UIView commitAnimations];
-   
+    
     if ([self.topField isFirstResponder]) {
         [self scrollToTextField:self.topField animated:YES];
     } else if ([self.bottomField isFirstResponder]) {
@@ -536,38 +548,38 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
 
 - (void)keyboardWillHide:(NSNotification *) notification
 {
-//    NSLog(@"Firing keyboardWillHide");
- 	CGRect keyboardFrame = CGRectNull;
-//	CGFloat keyboardHeight = 0;
+    
+    //    NSLog(@"Firing keyboardWillHide");
+    CGRect keyboardFrame = CGRectNull;
+    //	CGFloat keyboardHeight = 0;
     double keyboardAnimDuration = 0;
     UIViewAnimationCurve keyboardCurve = UIViewAnimationCurveLinear;
-	
-	// 3.2 and above
-	if (UIKeyboardFrameEndUserInfoKey) {		
+    
+    // 3.2 and above
+    if (UIKeyboardFrameEndUserInfoKey) {		
         [[notification.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] getValue:&keyboardFrame];		
         [[notification.userInfo valueForKey:UIKeyboardAnimationDurationUserInfoKey] getValue:&keyboardAnimDuration];		
         [[notification.userInfo valueForKey:UIKeyboardAnimationCurveUserInfoKey] getValue:&keyboardCurve];		
-//        if (UIDeviceOrientationIsPortrait([[UIDevice currentDevice] orientation])) {
-//            keyboardHeight = keyboardFrame.size.height;
-//        } else {
-//            keyboardHeight = keyboardFrame.size.width;
-//        }
+        //        if (UIDeviceOrientationIsPortrait([[UIDevice currentDevice] orientation])) {
+        //            keyboardHeight = keyboardFrame.size.height;
+        //        } else {
+        //            keyboardHeight = keyboardFrame.size.width;
+        //        }
     }
     
     float barHeight = MIN(self.topBar.frame.size.height, self.topBar.frame.size.width);
     
     CGRect tableFrame = self.tableView.frame;
-
+    
     tableFrame.size.height = self.view.bounds.size.height - barHeight;
-
+    
     [UIView beginAnimations:@"tableSizeAnimation" context:nil];
     [UIView setAnimationCurve:keyboardCurve];
     [UIView setAnimationDuration:keyboardAnimDuration];
     [UIView setAnimationBeginsFromCurrentState:YES];
-
+    
     self.tableView.frame = tableFrame;
     [UIView commitAnimations];
-    
 }
 
 @end

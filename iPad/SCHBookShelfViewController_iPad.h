@@ -8,8 +8,13 @@
 
 #import "SCHBookShelfViewController.h"
 
+@class SCHProfileViewController_iPad;
+@class SCHLoginPasswordViewController;
+
 @interface SCHBookShelfViewController_iPad : SCHBookShelfViewController {
     
 }
+
+@property (nonatomic, retain) SCHProfileViewController_iPad *profileViewController;
 
 @end

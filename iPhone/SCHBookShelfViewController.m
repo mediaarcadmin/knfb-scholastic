@@ -162,6 +162,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 
 #pragma mark - Orientation methods
 
+// Note: this is overridden in the iPad subclass
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     [self.gridView setShelfImage:[[SCHThemeManager sharedThemeManager] imageForShelf:interfaceOrientation]];        
@@ -394,7 +395,10 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
                                                                            layout:SCHReadingViewLayoutTypeFlow];            
             readingController.youngerMode = NO;
             [self.navigationController pushViewController:readingController animated:YES];            
-            break;            
+            break;     
+        default:
+            NSLog(@"Warning: unrecognised bookshelf style.");
+            break;
     }
 
     [readingController release];
@@ -405,6 +409,9 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 	// nop
 }
 
+#pragma mark - Cell Size methods
+
+// overridden in iPad subclass
 - (CGSize)cellSize
 {
     return CGSizeMake(80,118);

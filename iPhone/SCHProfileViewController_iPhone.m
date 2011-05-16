@@ -15,6 +15,7 @@
 #import "SCHURLManager.h"
 #import "SCHSyncManager.h"
 #import "SCHThemeManager.h"
+#import "SCHProfileItem.h"
 
 @interface SCHProfileViewController_iPhone() <UITableViewDelegate> 
 

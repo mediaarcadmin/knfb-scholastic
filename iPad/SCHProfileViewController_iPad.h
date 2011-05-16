@@ -9,12 +9,19 @@
 #import <UIKit/UIKit.h>
 #import "SCHProfileViewController_Shared.h"
 
+@class SCHBookShelfViewController_iPad;
+@class SCHLoginPasswordViewController;
 
 @interface SCHProfileViewController_iPad : SCHProfileViewController_Shared <UITableViewDelegate> {
     
-    UITableView *tableView;
 }
 
 @property (nonatomic, retain) IBOutlet UITableView *tableView;
+@property (nonatomic, assign) SCHBookShelfViewController_iPad *bookshelfViewController;
+@property (nonatomic, retain) IBOutlet UIView *headerView;
+@property (nonatomic, retain) IBOutlet UIView *containerView;
+
+@property (nonatomic, retain) IBOutlet SCHLoginPasswordViewController *loginPasswordController;
+@property (nonatomic, retain) IBOutlet SCHLoginPasswordViewController *profilePasswordController;
 
 @end

@@ -11,12 +11,49 @@
 #import "SCHBookShelfGridView.h"
 #import "SCHCustomNavigationBar.h"
 #import "SCHThemeManager.h"
+#import "SCHProfileViewController_iPad.h"
+#import "SCHBookManager.h"
 
 static NSInteger const kSCHBookShelfViewControllerGridCellHeightPortrait_iPad = 254;
 static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape_iPad = 266;
 
+@interface SCHBookShelfViewController_iPad ()
+
+- (void)showProfileListWithAnimation: (BOOL) animated;
+- (void)hideProfileListWithAnimation: (BOOL) animated;
+
+@end
+
 @implementation SCHBookShelfViewController_iPad
 
+@synthesize profileViewController;
+
+- (void)dealloc
+{
+    [profileViewController release], profileViewController = nil;
+    [super dealloc];
+}
+
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    self.profileViewController = [[SCHProfileViewController_iPad alloc] initWithNibName:nil bundle:nil];
+    self.profileViewController.managedObjectContext = [[SCHBookManager sharedBookManager] managedObjectContextForCurrentThread];
+    self.profileViewController.bookshelfViewController = self;
+    
+    self.profileViewController.view.hidden = YES;
+    [self.view addSubview:self.profileViewController.view];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    if (!self.books || [self.books count] == 0) {
+        [self showProfileListWithAnimation:animated];
+    }
+}
 
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
@@ -33,6 +70,45 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape_iPad =
     }
 }
 
+- (void)showProfileListWithAnimation: (BOOL) animated
+{
+    self.profileViewController.view.hidden = NO;
+    if (animated) {
+        [UIView animateWithDuration:0.2
+                         animations:^{
+                             self.profileViewController.view.alpha = 1.0f;
+                         }
+                         completion:^(BOOL finished){
+                         }
+         ];
+    } else {
+        self.profileViewController.view.alpha = 1.0f;
+    }
+}
+
+- (void)hideProfileListWithAnimation: (BOOL) animated
+{
+    if (animated) {
+    [UIView animateWithDuration:0.2
+                     animations:^{
+                         self.profileViewController.view.alpha = 0.0f;
+                     }
+                     completion:^(BOOL finished){
+                         self.profileViewController.view.hidden = YES;
+                     }
+     ];
+    } else {
+        self.profileViewController.view.alpha = 0.0f;
+        self.profileViewController.view.hidden = YES;
+    }
+}
+
+- (void) setProfileItem:(SCHProfileItem *)profileItem
+{
+    [super setProfileItem:profileItem];
+    [self hideProfileListWithAnimation:YES];
+}
+
 - (CGSize)cellSize
 {
     return CGSizeMake(147,218);
@@ -45,10 +121,9 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape_iPad =
 
 - (IBAction) back
 {
-    NSLog(@"Hitting back in iPad.");
-    
-    
-    
+    self.books = nil;
+    self.navigationItem.title = @"";
+    [self showProfileListWithAnimation:YES];
 }
 
 @end
