@@ -316,7 +316,7 @@ static NSTimeInterval const kSCHSyncManagerHeartbeatInterval = 30.0;
 	NSLog(@"Scheduling Open Document");
 	
 	[self.annotationSyncComponent addProfile:profileID 
-                              withBooks:[NSArray arrayWithObject:[self annotationContentItemFromUserContentItem:userContentItem]]];	
+                              withBooks:[NSMutableArray arrayWithObject:[self annotationContentItemFromUserContentItem:userContentItem]]];	
 	[self addToQueue:self.annotationSyncComponent];
 
 	[self kickQueue];
@@ -331,7 +331,7 @@ static NSTimeInterval const kSCHSyncManagerHeartbeatInterval = 30.0;
 	NSLog(@"Scheduling Close Document");
 	
 	[self.annotationSyncComponent addProfile:profileID 
-                              withBooks:[NSArray arrayWithObject:[self annotationContentItemFromUserContentItem:userContentItem]]];	
+                              withBooks:[NSMutableArray arrayWithObject:[self annotationContentItemFromUserContentItem:userContentItem]]];	
 	[self addToQueue:self.annotationSyncComponent];
 //	[self addToQueue:self.readingStatsSyncComponent];
 	

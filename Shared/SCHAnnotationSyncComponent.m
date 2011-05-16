@@ -107,7 +107,12 @@
 - (void)addProfile:(NSNumber *)profileID withBooks:(NSArray *)books
 {
 	if (profileID != nil && books != nil && [books count] > 0) {
-		[self.annotations setObject:books forKey:profileID];		
+        NSMutableArray *profileBooks = [self.annotations objectForKey:profileID]; 
+        if (profileBooks != nil) {
+            [profileBooks addObjectsFromArray:books];
+        } else {
+            [self.annotations setObject:books forKey:profileID];		
+        }
 	}
 }
 

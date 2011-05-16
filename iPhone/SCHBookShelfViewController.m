@@ -383,6 +383,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
             readingController = [[SCHReadingViewController alloc] initWithNibName:nil 
                                                                            bundle:nil 
                                                                              isbn:book.ContentIdentifier 
+                                                                        profileID:profileItem.ID
                                                                            layout:SCHReadingViewLayoutTypeFixed];            
             readingController.youngerMode = YES;
             [self.navigationController pushViewController:readingController animated:YES];
@@ -392,6 +393,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
             readingController = [[SCHReadingViewController alloc] initWithNibName:nil 
                                                                            bundle:nil 
                                                                              isbn:book.ContentIdentifier 
+                                                                        profileID:profileItem.ID                                 
                                                                            layout:SCHReadingViewLayoutTypeFlow];            
             readingController.youngerMode = NO;
             [self.navigationController pushViewController:readingController animated:YES];            
