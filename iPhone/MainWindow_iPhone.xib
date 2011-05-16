@@ -226,7 +226,7 @@
 					<string>UIResponder</string>
 					<string>{{329, 376}, {320, 480}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>SCHProfileViewController</string>
+					<string>SCHProfileViewController_iPhone</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>SCHCustomNavigationBar</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -327,106 +327,21 @@
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
-					<string key="className">SCHLoginViewController</string>
-					<string key="superclassName">UIViewController</string>
-					<object class="NSMutableDictionary" key="actions">
-						<bool key="EncodedWithXMLCoder">YES</bool>
-						<object class="NSArray" key="dict.sortedKeys">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>cancel:</string>
-							<string>login:</string>
-						</object>
-						<object class="NSMutableArray" key="dict.values">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>id</string>
-							<string>id</string>
-						</object>
-					</object>
-					<object class="NSMutableDictionary" key="actionInfosByName">
-						<bool key="EncodedWithXMLCoder">YES</bool>
-						<object class="NSArray" key="dict.sortedKeys">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>cancel:</string>
-							<string>login:</string>
-						</object>
-						<object class="NSMutableArray" key="dict.values">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<object class="IBActionInfo">
-								<string key="name">cancel:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">login:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-						</object>
-					</object>
-					<object class="NSMutableDictionary" key="outlets">
-						<bool key="EncodedWithXMLCoder">YES</bool>
-						<object class="NSArray" key="dict.sortedKeys">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>cancelButton</string>
-							<string>loginButton</string>
-							<string>password</string>
-							<string>spinner</string>
-							<string>userName</string>
-						</object>
-						<object class="NSMutableArray" key="dict.values">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>UIButton</string>
-							<string>UIButton</string>
-							<string>UITextField</string>
-							<string>UIActivityIndicatorView</string>
-							<string>UITextField</string>
-						</object>
-					</object>
-					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<bool key="EncodedWithXMLCoder">YES</bool>
-						<object class="NSArray" key="dict.sortedKeys">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>cancelButton</string>
-							<string>loginButton</string>
-							<string>password</string>
-							<string>spinner</string>
-							<string>userName</string>
-						</object>
-						<object class="NSMutableArray" key="dict.values">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<object class="IBToOneOutletInfo">
-								<string key="name">cancelButton</string>
-								<string key="candidateClassName">UIButton</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">loginButton</string>
-								<string key="candidateClassName">UIButton</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">password</string>
-								<string key="candidateClassName">UITextField</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">spinner</string>
-								<string key="candidateClassName">UIActivityIndicatorView</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">userName</string>
-								<string key="candidateClassName">UITextField</string>
-							</object>
-						</object>
-					</object>
+					<string key="className">SCHCustomToolbar</string>
+					<string key="superclassName">UIToolbar</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/SCHLoginViewController.h</string>
+						<string key="minorKey">./Classes/SCHCustomToolbar.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
-					<string key="className">SCHProfilePasswordViewController</string>
+					<string key="className">SCHLoginPasswordViewController</string>
 					<string key="superclassName">UIViewController</string>
 					<object class="NSMutableDictionary" key="actions">
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>OK:</string>
+							<string>actionButtonAction:</string>
 							<string>cancel:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
@@ -439,13 +354,13 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>OK:</string>
+							<string>actionButtonAction:</string>
 							<string>cancel:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<object class="IBActionInfo">
-								<string key="name">OK:</string>
+								<string key="name">actionButtonAction:</string>
 								<string key="candidateClassName">id</string>
 							</object>
 							<object class="IBActionInfo">
@@ -458,49 +373,99 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>confirmPassword</string>
-							<string>newPasswordMessage</string>
-							<string>password</string>
+							<string>bottomField</string>
+							<string>footerForgotButton</string>
+							<string>headerTitleLabel</string>
+							<string>headerTitleView</string>
+							<string>tableView</string>
+							<string>titleTextLabel</string>
+							<string>topBar</string>
+							<string>topField</string>
+							<string>topShadow</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>UITextField</string>
+							<string>UIButton</string>
 							<string>UILabel</string>
+							<string>UIView</string>
+							<string>UITableView</string>
+							<string>UILabel</string>
+							<string>SCHCustomToolbar</string>
 							<string>UITextField</string>
+							<string>UIImageView</string>
 						</object>
 					</object>
 					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>confirmPassword</string>
-							<string>newPasswordMessage</string>
-							<string>password</string>
+							<string>bottomField</string>
+							<string>footerForgotButton</string>
+							<string>headerTitleLabel</string>
+							<string>headerTitleView</string>
+							<string>tableView</string>
+							<string>titleTextLabel</string>
+							<string>topBar</string>
+							<string>topField</string>
+							<string>topShadow</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<object class="IBToOneOutletInfo">
-								<string key="name">confirmPassword</string>
+								<string key="name">bottomField</string>
 								<string key="candidateClassName">UITextField</string>
 							</object>
 							<object class="IBToOneOutletInfo">
-								<string key="name">newPasswordMessage</string>
+								<string key="name">footerForgotButton</string>
+								<string key="candidateClassName">UIButton</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">headerTitleLabel</string>
 								<string key="candidateClassName">UILabel</string>
 							</object>
 							<object class="IBToOneOutletInfo">
-								<string key="name">password</string>
+								<string key="name">headerTitleView</string>
+								<string key="candidateClassName">UIView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">tableView</string>
+								<string key="candidateClassName">UITableView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">titleTextLabel</string>
+								<string key="candidateClassName">UILabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">topBar</string>
+								<string key="candidateClassName">SCHCustomToolbar</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">topField</string>
 								<string key="candidateClassName">UITextField</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">topShadow</string>
+								<string key="candidateClassName">UIImageView</string>
 							</object>
 						</object>
 					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/SCHProfilePasswordViewController.h</string>
+						<string key="minorKey">./Classes/SCHLoginPasswordViewController.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
-					<string key="className">SCHProfileViewController</string>
+					<string key="className">SCHProfileViewController_Shared</string>
 					<string key="superclassName">UIViewController</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/SCHProfileViewController_Shared.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">SCHProfileViewController_iPhone</string>
+					<string key="superclassName">SCHProfileViewController_Shared</string>
 					<object class="NSMutableDictionary" key="outlets">
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
@@ -508,7 +473,7 @@
 							<string>backgroundView</string>
 							<string>headerView</string>
 							<string>loginController</string>
-							<string>profilePasswordViewController</string>
+							<string>profilePasswordController</string>
 							<string>settingsController</string>
 							<string>tableView</string>
 						</object>
@@ -516,8 +481,8 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>UIImageView</string>
 							<string>UIView</string>
-							<string>SCHLoginViewController</string>
-							<string>SCHProfilePasswordViewController</string>
+							<string>SCHLoginPasswordViewController</string>
+							<string>SCHLoginPasswordViewController</string>
 							<string>SCHSettingsViewController</string>
 							<string>UITableView</string>
 						</object>
@@ -529,7 +494,7 @@
 							<string>backgroundView</string>
 							<string>headerView</string>
 							<string>loginController</string>
-							<string>profilePasswordViewController</string>
+							<string>profilePasswordController</string>
 							<string>settingsController</string>
 							<string>tableView</string>
 						</object>
@@ -545,11 +510,11 @@
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">loginController</string>
-								<string key="candidateClassName">SCHLoginViewController</string>
+								<string key="candidateClassName">SCHLoginPasswordViewController</string>
 							</object>
 							<object class="IBToOneOutletInfo">
-								<string key="name">profilePasswordViewController</string>
-								<string key="candidateClassName">SCHProfilePasswordViewController</string>
+								<string key="name">profilePasswordController</string>
+								<string key="candidateClassName">SCHLoginPasswordViewController</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">settingsController</string>
@@ -563,7 +528,7 @@
 					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/SCHProfileViewController.h</string>
+						<string key="minorKey">./Classes/SCHProfileViewController_iPhone.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
@@ -573,12 +538,14 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>backgroundView</string>
 							<string>loginController</string>
 							<string>tableView</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>SCHLoginViewController</string>
+							<string>UIImageView</string>
+							<string>SCHLoginPasswordViewController</string>
 							<string>UITableView</string>
 						</object>
 					</object>
@@ -586,14 +553,19 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>backgroundView</string>
 							<string>loginController</string>
 							<string>tableView</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<object class="IBToOneOutletInfo">
+								<string key="name">backgroundView</string>
+								<string key="candidateClassName">UIImageView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
 								<string key="name">loginController</string>
-								<string key="candidateClassName">SCHLoginViewController</string>
+								<string key="candidateClassName">SCHLoginPasswordViewController</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">tableView</string>
