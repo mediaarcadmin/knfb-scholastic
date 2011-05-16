@@ -122,7 +122,10 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
     [headerImage release];
         
     } else {
-        titleTextLabel.text = @"Password";
+        self.titleTextLabel.text = @"Password";
+        CGRect titleFrame = self.titleTextLabel.frame;
+        titleFrame.size.width = self.topBar.frame.size.width - 40;
+        self.titleTextLabel.frame = titleFrame;
         topBar.items = [NSArray arrayWithObjects:
                         leftBBI,
                         [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease], 
@@ -222,6 +225,11 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
     [super viewWillAppear:animated];
     [self setupAssetsForOrientation:[[UIApplication sharedApplication] statusBarOrientation]];
     
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
     if (self.controllerType == kSCHControllerPasswordOnlyView ||
         self.controllerType == kSCHControllerDoublePasswordView) {
         [self.bottomField becomeFirstResponder];

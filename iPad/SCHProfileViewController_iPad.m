@@ -123,6 +123,7 @@
 
 - (void)showLoginControllerWithAnimation:(BOOL)animated
 {
+    [self.loginPasswordController viewWillAppear:animated];
     if (animated) {
         self.loginPasswordController.view.alpha = 0.0f;
     }
@@ -139,10 +140,12 @@
                          }
          ];
     }
-
+    [self.loginPasswordController viewDidAppear:animated];
 }
 - (void)showProfilePasswordControllerWithAnimation:(BOOL)animated
 {
+    [self.profilePasswordController viewWillAppear:animated];
+    
     if (animated) {
         self.profilePasswordController.view.alpha = 0.0f;
     }
@@ -159,10 +162,14 @@
                          }
          ];
     }
+    
+    [self.profilePasswordController viewDidAppear:animated];
 
 }
 - (void)showBookshelfListWithAnimation:(BOOL)animated
 {
+    [self.loginPasswordController viewWillDisappear:animated];
+    [self.profilePasswordController viewWillDisappear:animated];
     if (animated) {
     [UIView animateWithDuration:0.2
                      animations:^{
@@ -178,6 +185,8 @@
         [self.loginPasswordController.view removeFromSuperview];
         [self.profilePasswordController.view removeFromSuperview];    
     }
+    [self.loginPasswordController viewDidDisappear:animated];
+    [self.profilePasswordController viewDidDisappear:animated];
 }
 
 
