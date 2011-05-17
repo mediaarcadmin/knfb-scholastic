@@ -17,8 +17,7 @@
 
 @implementation AppDelegate_iPad
 
-@synthesize bookshelfNavigationController;
-@synthesize profileNavigationController;
+@synthesize navigationController;
 @synthesize customNavigationBar;
 
 #pragma mark -
@@ -28,10 +27,7 @@
 {    
 	[super application:application didFinishLaunchingWithOptions:launchOptions];
 	
-//    SCHReadingViewController *rootViewController = (SCHReadingViewController *)[navigationController topViewController];
-    
-    
-    [self.window addSubview:bookshelfNavigationController.view];
+    [self.window addSubview:navigationController.view];
     [self.window makeKeyAndVisible];
     
     [customNavigationBar setTheme:kSCHThemeManagerNavigationBarImage];
@@ -76,9 +72,8 @@
 
 - (void)dealloc {
 	
-    [bookshelfNavigationController release];
+    [navigationController release];
     [customNavigationBar release];
-    [profileNavigationController release];
 	[super dealloc];
 }
 

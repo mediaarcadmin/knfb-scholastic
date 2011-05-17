@@ -15,6 +15,7 @@
 #import "SCHThemeManager.h"
 #import "SCHURLManager.h"
 #import "SCHSyncManager.h"
+#import "SCHBookManager.h"
 
 #pragma mark - Class Extension
 
@@ -23,7 +24,7 @@
 - (void)pushBookshelvesControllerWithProfileItem:(SCHProfileItem *)profileItem;
 - (void)showLoginControllerWithAnimation:(BOOL)animated;
 - (void)showProfilePasswordControllerWithAnimation:(BOOL)animated;
-- (void)showBookshelfListWithAnimation:(BOOL)animated;
+//- (void)showBookshelfListWithAnimation:(BOOL)animated;
 
 @end
 
@@ -62,9 +63,12 @@
 {
     [super viewDidLoad];
 	
-    UIImageView *logoImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo"]];
-    self.navigationItem.titleView = logoImageView;
-    [logoImageView release];
+    self.managedObjectContext = [[SCHBookManager sharedBookManager] managedObjectContextForCurrentThread];
+    self.title = @"";
+    
+//    UIImageView *logoImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo"]];
+//    self.navigationItem.titleView = logoImageView;
+//    [logoImageView release];
 
     self.loginPasswordController.controllerType = kSCHControllerLoginView;
     self.loginPasswordController.actionBlock = ^{
@@ -78,7 +82,8 @@
     // block gets set when a row is selected
     self.profilePasswordController.controllerType = kSCHControllerPasswordOnlyView;
     self.profilePasswordController.cancelBlock = ^{
-        [self showBookshelfListWithAnimation:YES];
+        //[self showBookshelfListWithAnimation:YES];
+        [self.profilePasswordController dismissModalViewControllerAnimated:YES];
     };
     
     self.tableView.tableHeaderView = self.headerView;
@@ -92,18 +97,6 @@
         [self showLoginControllerWithAnimation:YES];
 	}
 #endif
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self 
-                                             selector:@selector(keyboardWillShow:) 
-                                                 name:UIKeyboardWillShowNotification
-                                               object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillHide:)
-                                                 name:UIKeyboardWillHideNotification
-                                               object:nil];
-
-  
 
 }  
 
@@ -123,72 +116,17 @@
 
 - (void)showLoginControllerWithAnimation:(BOOL)animated
 {
-    [self.loginPasswordController viewWillAppear:animated];
-    if (animated) {
-        self.loginPasswordController.view.alpha = 0.0f;
-    }
-    
-    [self.loginPasswordController.view setFrame:self.containerView.bounds];
-    [self.containerView addSubview:self.loginPasswordController.view];
-    
-    if (animated) {
-        [UIView animateWithDuration:0.2
-                         animations:^{
-                             self.loginPasswordController.view.alpha = 1.0f;
-                         }
-                         completion:^(BOOL finished) {
-                         }
-         ];
-    }
-    [self.loginPasswordController viewDidAppear:animated];
+    [self.loginPasswordController setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
+    [self.loginPasswordController setModalPresentationStyle:UIModalPresentationFormSheet];
+    [self.navigationController presentModalViewController:self.loginPasswordController animated:YES];
 }
 - (void)showProfilePasswordControllerWithAnimation:(BOOL)animated
 {
-    [self.profilePasswordController viewWillAppear:animated];
-    
-    if (animated) {
-        self.profilePasswordController.view.alpha = 0.0f;
-    }
-    
-    [self.profilePasswordController.view setFrame:self.containerView.bounds];
-    [self.containerView addSubview:self.profilePasswordController.view];
-
-    if (animated) {
-        [UIView animateWithDuration:0.2
-                         animations:^{
-                             self.profilePasswordController.view.alpha = 1.0f;
-                         }
-                         completion:^(BOOL finished) {
-                         }
-         ];
-    }
-    
-    [self.profilePasswordController viewDidAppear:animated];
+    [self.profilePasswordController setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
+    [self.profilePasswordController setModalPresentationStyle:UIModalPresentationFormSheet];
+    [self.navigationController presentModalViewController:self.profilePasswordController animated:YES];
 
 }
-- (void)showBookshelfListWithAnimation:(BOOL)animated
-{
-    [self.loginPasswordController viewWillDisappear:animated];
-    [self.profilePasswordController viewWillDisappear:animated];
-    if (animated) {
-    [UIView animateWithDuration:0.2
-                     animations:^{
-                         self.loginPasswordController.view.alpha = 0.0f;
-                         self.profilePasswordController.view.alpha = 0.0f;
-                     }
-                     completion:^(BOOL finished) {
-                         [self.loginPasswordController.view removeFromSuperview];
-                         [self.profilePasswordController.view removeFromSuperview];    
-                     }
-     ];
-    } else {
-        [self.loginPasswordController.view removeFromSuperview];
-        [self.profilePasswordController.view removeFromSuperview];    
-    }
-    [self.loginPasswordController viewDidDisappear:animated];
-    [self.profilePasswordController viewDidDisappear:animated];
-}
-
 
 #pragma mark - UITableViewDelegate
 
@@ -203,7 +141,7 @@
             [self pushBookshelvesControllerWithProfileItem:profileItem];	
 #else
             if ([profileItem.ProfilePasswordRequired boolValue] == NO) {
-                [self showBookshelfListWithAnimation:YES];
+//                [self showBookshelfListWithAnimation:YES];
                 [self pushBookshelvesControllerWithProfileItem:profileItem];            
             } else {
                 self.profilePasswordController.actionBlock = ^{
@@ -218,9 +156,10 @@
                         [errorAlert release];
                     } else {
                         [SCHThemeManager sharedThemeManager].appProfile = profileItem.AppProfile;
-                        [self showBookshelfListWithAnimation:YES];
+                        //[self showBookshelfListWithAnimation:YES];
                         [self.profilePasswordController clearFields]; 
                         [self pushBookshelvesControllerWithProfileItem:profileItem];            
+                        [self.profilePasswordController dismissModalViewControllerAnimated:YES];
                     }	
                 };
                 
@@ -236,9 +175,13 @@
 
 - (void)pushBookshelvesControllerWithProfileItem:(SCHProfileItem *)profileItem
 {
-    if (self.bookshelfViewController) {
-        self.bookshelfViewController.profileItem = profileItem;
-    }
+	SCHBookShelfViewController_iPad *bookShelfViewController = nil;
+    
+    bookShelfViewController = [[SCHBookShelfViewController_iPad alloc] initWithNibName:NSStringFromClass([SCHBookShelfViewController class]) bundle:nil];
+    bookShelfViewController.profileItem = profileItem;
+    
+	[self.navigationController pushViewController:bookShelfViewController animated:YES];
+	[bookShelfViewController release], bookShelfViewController = nil;
 }
 
 #pragma mark - Authentication Manager
@@ -252,7 +195,7 @@
 		[[SCHURLManager sharedURLManager] clear];
 		[[SCHSyncManager sharedSyncManager] clear];
 		[[SCHSyncManager sharedSyncManager] firstSync];
-        [self showBookshelfListWithAnimation:YES];
+        [self.loginPasswordController dismissModalViewControllerAnimated:YES];
 	} else {
 		NSError *error = [notification.userInfo objectForKey:kSCHAuthenticationManagerNSError];
 		if (error!= nil) {
@@ -275,62 +218,5 @@
     // In the simplest, most efficient, case, reload the table view.
     [self.tableView reloadData];
 }
-
-#pragma mark - UIKeyboard Notifications
-
-- (void)keyboardWillShow:(NSNotification *) notification
-{
-    CGRect keyboardFrame = CGRectNull;
-    CGFloat keyboardHeight = 0;
-    double keyboardAnimDuration = 0;
-    UIViewAnimationCurve keyboardCurve = UIViewAnimationCurveLinear;
-    
-    // 3.2 and above
-    if (UIKeyboardFrameEndUserInfoKey) {		
-        [[notification.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] getValue:&keyboardFrame];		
-        [[notification.userInfo valueForKey:UIKeyboardAnimationDurationUserInfoKey] getValue:&keyboardAnimDuration];		
-        [[notification.userInfo valueForKey:UIKeyboardAnimationCurveUserInfoKey] getValue:&keyboardCurve];		
-        
-        keyboardHeight = fminf(keyboardFrame.size.width, keyboardFrame.size.height);
-    }
-    
-    // centre point for view
-    CGFloat centerPoint = ((self.view.frame.size.height - keyboardHeight) / 2);
-    
-    [UIView beginAnimations:@"moveContainerView" context:nil];
-    [UIView setAnimationCurve:keyboardCurve];
-    [UIView setAnimationDuration:keyboardAnimDuration];
-    
-    self.containerView.center = CGPointMake(CGRectGetMidX(self.containerView.frame), centerPoint);
-    [UIView commitAnimations];
-
-    
-}
-
-- (void)keyboardWillHide:(NSNotification *) notification
-{
-    
-    CGRect keyboardFrame = CGRectNull;
-    double keyboardAnimDuration = 0;
-    UIViewAnimationCurve keyboardCurve = UIViewAnimationCurveLinear;
-    
-    // 3.2 and above
-    if (UIKeyboardFrameEndUserInfoKey) {		
-        [[notification.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] getValue:&keyboardFrame];		
-        [[notification.userInfo valueForKey:UIKeyboardAnimationDurationUserInfoKey] getValue:&keyboardAnimDuration];		
-        [[notification.userInfo valueForKey:UIKeyboardAnimationCurveUserInfoKey] getValue:&keyboardCurve];		
-    }
-    
-    // centre point for view
-    CGFloat centerPoint = (self.view.frame.size.height / 2);
-    
-    [UIView beginAnimations:@"moveContainerView" context:nil];
-    [UIView setAnimationCurve:keyboardCurve];
-    [UIView setAnimationDuration:keyboardAnimDuration];
-    
-    self.containerView.center = CGPointMake(CGRectGetMidX(self.containerView.frame), centerPoint);
-    [UIView commitAnimations];
-}
-
 
 @end

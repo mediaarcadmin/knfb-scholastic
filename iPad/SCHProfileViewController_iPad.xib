@@ -65,8 +65,8 @@
 				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="978964234"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
-					<int key="NSColorSpace">1</int>
-					<bytes key="NSRGB">MC4zMDcwNTM5NDE5IDAuMzA3MDUzOTQxOSAwLjMwNzA1Mzk0MTkgMC4zNQA</bytes>
+					<int key="NSColorSpace">2</int>
+					<bytes key="NSRGB">MC4yNzg0MzEzODU4IDAuNDExNzY0NzQwOSAwLjYwMDAwMDAyMzgAA</bytes>
 				</object>
 				<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
 				<object class="IBUISimulatedOrientationMetrics" key="IBUISimulatedOrientationMetrics">
@@ -75,18 +75,18 @@
 				</object>
 				<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 			</object>
-			<object class="IBUIView" id="592443813">
+			<object class="IBUIView" id="897561001">
 				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">298</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
-					<object class="IBUIImageView" id="10910454">
-						<reference key="NSNextResponder" ref="592443813"/>
+					<object class="IBUIImageView" id="554175618">
+						<reference key="NSNextResponder" ref="897561001"/>
 						<int key="NSvFlags">301</int>
 						<string key="NSFrame">{{109, 29}, {103, 68}}</string>
-						<reference key="NSSuperview" ref="592443813"/>
+						<reference key="NSSuperview" ref="897561001"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="1025099714"/>
+						<reference key="NSNextKeyView" ref="1048665864"/>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 						<object class="NSCustomResource" key="IBUIImage">
@@ -94,11 +94,11 @@
 							<string key="NSResourceName">books-background.png</string>
 						</object>
 					</object>
-					<object class="IBUILabel" id="1025099714">
-						<reference key="NSNextResponder" ref="592443813"/>
+					<object class="IBUILabel" id="1048665864">
+						<reference key="NSNextResponder" ref="897561001"/>
 						<int key="NSvFlags">301</int>
 						<string key="NSFrame">{{0, 111}, {320, 24}}</string>
-						<reference key="NSSuperview" ref="592443813"/>
+						<reference key="NSSuperview" ref="897561001"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView"/>
 						<bool key="IBUIOpaque">NO</bool>
@@ -116,7 +116,7 @@
 							<int key="NSColorSpace">1</int>
 							<bytes key="NSRGB">MC4wNjI3NDUwOTgwNCAwLjMzNzI1NDkwMiAwLjUwOTgwMzkyMTYAA</bytes>
 						</object>
-						<object class="NSColor" key="IBUIHighlightedColor" id="512673907">
+						<object class="NSColor" key="IBUIHighlightedColor" id="739464050">
 							<int key="NSColorSpace">3</int>
 							<bytes key="NSWhite">MQA</bytes>
 						</object>
@@ -128,7 +128,7 @@
 				<string key="NSFrameSize">{320, 154}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
-				<reference key="NSNextKeyView" ref="10910454"/>
+				<reference key="NSNextKeyView" ref="554175618"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
 					<bytes key="NSWhite">MSAwAA</bytes>
@@ -143,7 +143,8 @@
 				<int key="NSvFlags">282</int>
 				<string key="NSFrameSize">{506, 380}</string>
 				<reference key="NSSuperview"/>
-				<reference key="IBUIBackgroundColor" ref="512673907"/>
+				<reference key="NSWindow"/>
+				<reference key="IBUIBackgroundColor" ref="739464050"/>
 				<bool key="IBUIClipsSubviews">YES</bool>
 				<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 				<bool key="IBUIAlwaysBounceVertical">YES</bool>
@@ -153,9 +154,9 @@
 				<float key="IBUISectionHeaderHeight">22</float>
 				<float key="IBUISectionFooterHeight">22</float>
 			</object>
-			<object class="IBUIViewController" id="670108715">
+			<object class="IBUIViewController" id="268184479">
 				<string key="IBUINibName">SCHLoginPasswordViewController</string>
-				<object class="IBUISimulatedStatusBarMetrics" key="IBUISimulatedStatusBarMetrics" id="981255964">
+				<object class="IBUISimulatedStatusBarMetrics" key="IBUISimulatedStatusBarMetrics" id="523330844">
 					<int key="IBUIStatusBarStyle">2</int>
 				</object>
 				<object class="IBUISimulatedOrientationMetrics" key="IBUISimulatedOrientationMetrics">
@@ -165,9 +166,9 @@
 				<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 				<bool key="IBUIHorizontal">NO</bool>
 			</object>
-			<object class="IBUIViewController" id="478027545">
+			<object class="IBUIViewController" id="75616212">
 				<string key="IBUINibName">SCHLoginPasswordViewController</string>
-				<reference key="IBUISimulatedStatusBarMetrics" ref="981255964"/>
+				<reference key="IBUISimulatedStatusBarMetrics" ref="523330844"/>
 				<object class="IBUISimulatedOrientationMetrics" key="IBUISimulatedOrientationMetrics">
 					<int key="IBUIInterfaceOrientation">1</int>
 					<int key="interfaceOrientation">1</int>
@@ -215,7 +216,7 @@
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">headerView</string>
 						<reference key="source" ref="841351856"/>
-						<reference key="destination" ref="592443813"/>
+						<reference key="destination" ref="897561001"/>
 					</object>
 					<int key="connectionID">14</int>
 				</object>
@@ -231,7 +232,7 @@
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">loginPasswordController</string>
 						<reference key="source" ref="841351856"/>
-						<reference key="destination" ref="670108715"/>
+						<reference key="destination" ref="268184479"/>
 					</object>
 					<int key="connectionID">17</int>
 				</object>
@@ -239,7 +240,7 @@
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">profilePasswordController</string>
 						<reference key="source" ref="841351856"/>
-						<reference key="destination" ref="478027545"/>
+						<reference key="destination" ref="75616212"/>
 					</object>
 					<int key="connectionID">19</int>
 				</object>
@@ -285,24 +286,24 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">11</int>
-						<reference key="object" ref="592443813"/>
+						<reference key="object" ref="897561001"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="10910454"/>
-							<reference ref="1025099714"/>
+							<reference ref="554175618"/>
+							<reference ref="1048665864"/>
 						</object>
 						<reference key="parent" ref="0"/>
 						<string key="objectName">Profile Header View</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">12</int>
-						<reference key="object" ref="10910454"/>
-						<reference key="parent" ref="592443813"/>
+						<reference key="object" ref="554175618"/>
+						<reference key="parent" ref="897561001"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">13</int>
-						<reference key="object" ref="1025099714"/>
-						<reference key="parent" ref="592443813"/>
+						<reference key="object" ref="1048665864"/>
+						<reference key="parent" ref="897561001"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">5</int>
@@ -312,12 +313,12 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">16</int>
-						<reference key="object" ref="670108715"/>
+						<reference key="object" ref="268184479"/>
 						<reference key="parent" ref="0"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">18</int>
-						<reference key="object" ref="478027545"/>
+						<reference key="object" ref="75616212"/>
 						<reference key="parent" ref="0"/>
 						<string key="objectName">Profile Password View Controller</string>
 					</object>
@@ -395,7 +396,7 @@
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>actionButtonAction:</string>
-							<string>cancel:</string>
+							<string>cancelButtonAction:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
@@ -408,7 +409,7 @@
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>actionButtonAction:</string>
-							<string>cancel:</string>
+							<string>cancelButtonAction:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
@@ -417,7 +418,7 @@
 								<string key="candidateClassName">id</string>
 							</object>
 							<object class="IBActionInfo">
-								<string key="name">cancel:</string>
+								<string key="name">cancelButtonAction:</string>
 								<string key="candidateClassName">id</string>
 							</object>
 						</object>
