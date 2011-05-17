@@ -437,6 +437,12 @@
     return [[[THPositionedCGContext alloc] initWithCGContext:CGContext backing:backing] autorelease];
 }
 
+- (UIImage *)pageTurningView:(EucPageTurningView *)aPageTurningView 
+   fastUIImageForPageAtIndex:(NSUInteger)index
+{
+    return [self.xpsProvider thumbnailForPage:index + 1];
+}
+
 #pragma mark - EucPageTurningViewDelegate
 
 - (void)pageTurningViewDidEndPageTurn:(EucPageTurningView *)aPageTurningView
