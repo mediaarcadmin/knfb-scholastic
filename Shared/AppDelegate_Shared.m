@@ -28,13 +28,24 @@ static NSString* const prModelCertFilename = @"iphonecert.dat";
 
 @synthesize window;
 
-#pragma mark -
-#pragma mark Application directory functions
+- (void)dealloc 
+{    
+	[[NSNotificationCenter defaultCenter] removeObserver:managedObjectContext_];
+    [managedObjectContext_ release];
+    [managedObjectModel_ release];
+    [persistentStoreCoordinator_ release];
+    
+    [window release];
+    [super dealloc];
+}
+
+#pragma mark - Application directory functions
 
 /**
  Returns the URL to the application's Documents directory.
  */
-- (NSURL *)applicationDocumentsDirectory {
+- (NSURL *)applicationDocumentsDirectory 
+{
     return [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
 }
 
@@ -69,12 +80,10 @@ static NSString* const prModelCertFilename = @"iphonecert.dat";
 	}
 }
 
+#pragma mark - Application lifecycle
 
-#pragma mark -
-#pragma mark Application lifecycle
-
-
-- (void)ensureCorrectCertsAvailable {
+- (void)ensureCorrectCertsAvailable 
+{
     // Copy DRM resources to writeable directory.
 	if (![self createApplicationSupportDirectory]) {
 		NSLog(@"Application Support directory could not be created for DRM certificates.");
@@ -166,20 +175,23 @@ static NSString* const prModelCertFilename = @"iphonecert.dat";
 /**
  Save changes in the application's managed object context before the application terminates.
  */
-- (void)applicationWillTerminate:(UIApplication *)application {
+- (void)applicationWillTerminate:(UIApplication *)application 
+{
     [self saveContext];
 }
 
 
-- (void)applicationDidEnterBackground:(UIApplication *)application {
+- (void)applicationDidEnterBackground:(UIApplication *)application 
+{
     [self saveContext];
 }
 
-- (void)applicationWillEnterForeground:(UIApplication *)application {
+- (void)applicationWillEnterForeground:(UIApplication *)application 
+{
 }
 
-- (void)saveContext {
-    
+- (void)saveContext 
+{    
     NSError *error = nil;
 	NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
     if (managedObjectContext != nil) {
@@ -195,15 +207,14 @@ static NSString* const prModelCertFilename = @"iphonecert.dat";
     }
 }    
     
-- (void)mergeChangesFromContextDidSaveNotification:(NSNotification *)notification {
+- (void)mergeChangesFromContextDidSaveNotification:(NSNotification *)notification 
+{
     [[self managedObjectContext] lock];
 	[[self managedObjectContext] mergeChangesFromContextDidSaveNotification:notification];
     [[self managedObjectContext] unlock];
 }
 
-
-#pragma mark -
-#pragma mark Core Data stack
+#pragma mark - Core Data stack
 
 /**
  Returns the managed object context for the application.
@@ -225,13 +236,12 @@ static NSString* const prModelCertFilename = @"iphonecert.dat";
     return managedObjectContext_;
 }
 
-
 /**
  Returns the managed object model for the application.
  If the model doesn't already exist, it is created from the application's model.
  */
-- (NSManagedObjectModel *)managedObjectModel {
-    
+- (NSManagedObjectModel *)managedObjectModel 
+{    
     if (managedObjectModel_ != nil) {
         return managedObjectModel_;
     }
@@ -249,8 +259,8 @@ static NSString* const prModelCertFilename = @"iphonecert.dat";
  Returns the persistent store coordinator for the application.
  If the coordinator doesn't already exist, it is created and the application's store added to it.
  */
-- (NSPersistentStoreCoordinator *)persistentStoreCoordinator {
-    
+- (NSPersistentStoreCoordinator *)persistentStoreCoordinator 
+{    
     if (persistentStoreCoordinator_ != nil) {
         return persistentStoreCoordinator_;
     }
@@ -305,9 +315,7 @@ static NSString* const prModelCertFilename = @"iphonecert.dat";
     return persistentStoreCoordinator_;
 }
 
-
-#pragma mark -
-#pragma mark Local Debug Mode
+#pragma mark - Local Debug Mode
 
 - (void)checkForModeSwitch
 {
@@ -339,28 +347,6 @@ static NSString* const prModelCertFilename = @"iphonecert.dat";
 	[[NSUserDefaults standardUserDefaults] setObject:newValue forKey:kSCHClearLocalDebugMode];
 	[[NSUserDefaults standardUserDefaults] synchronize];
 }	
-
-#pragma mark -
-#pragma mark Memory management
-
-- (void)applicationDidReceiveMemoryWarning:(UIApplication *)application {
-    /*
-     Free up as much memory as possible by purging cached data objects that can be recreated (or reloaded from disk) later.
-     */
-}
-
-
-- (void)dealloc {
-    
-	[[NSNotificationCenter defaultCenter] removeObserver:managedObjectContext_];
-    [managedObjectContext_ release];
-    [managedObjectModel_ release];
-    [persistentStoreCoordinator_ release];
-    
-    [window release];
-    [super dealloc];
-}
-
 
 @end
 
