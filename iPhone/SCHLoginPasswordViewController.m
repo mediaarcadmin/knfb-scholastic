@@ -251,7 +251,21 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
 
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation
 {
-    if (UIInterfaceOrientationIsLandscape(orientation)) {
+    
+    
+    if (UIInterfaceOrientationIsPortrait(orientation) || UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        [self.topBar setBackgroundImage:[UIImage imageNamed:@"admin-iphone-portrait-top-toolbar.png"]];
+        CGRect barFrame = self.topBar.frame;
+        if (barFrame.size.height == 34) {
+            barFrame.size.height = 44;
+            self.topBar.frame = barFrame;
+            
+            CGRect tableFrame = self.tableView.frame;
+            tableFrame.size.height -= 10;
+            tableFrame.origin.y += 10;
+            self.tableView.frame = tableFrame;
+        }
+    } else {
         [self.topBar setBackgroundImage:[UIImage imageNamed:@"admin-iphone-landscape-top-toolbar.png"]];
         CGRect barFrame = self.topBar.frame;
         if (barFrame.size.height == 44) {
@@ -263,19 +277,6 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
             tableFrame.origin.y -= 10;
             self.tableView.frame = tableFrame;
         }
-    } else {
-        [self.topBar setBackgroundImage:[UIImage imageNamed:@"admin-iphone-portrait-top-toolbar.png"]];
-        CGRect barFrame = self.topBar.frame;
-        if (barFrame.size.height == 34) {
-            barFrame.size.height = 44;
-            self.topBar.frame = barFrame;
-
-            CGRect tableFrame = self.tableView.frame;
-            tableFrame.size.height -= 10;
-            tableFrame.origin.y += 10;
-            self.tableView.frame = tableFrame;
-        }
-        
     }
     
     CGRect topShadowFrame = self.topShadow.frame;
