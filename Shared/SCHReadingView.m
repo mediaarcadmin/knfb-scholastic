@@ -56,6 +56,12 @@
 
 // Overridden methods
 
+- (SCHBookPoint *)currentBookPoint
+{
+    NSLog(@"WARNING: currentBookPoint not being overridden correctly.");
+    return 0;
+}
+
 - (void)jumpToPageAtIndex:(NSUInteger)page animated:(BOOL)animated
 {
     NSLog(@"WARNING: jumpToPage:animated: not being overridden correctly.");
@@ -64,6 +70,11 @@
 - (void)jumpToProgressPositionInBook:(CGFloat)progress animated:(BOOL)animated
 {
     NSLog(@"WARNING: jumpToProgressPositionInBook:animated: not being overridden correctly.");
+}
+
+- (void)jumpToBookPoint:(SCHBookPoint *)bookPoint animated:(BOOL)animated
+{
+    NSLog(@"WARNING: jumpToBookPoint:animated: not being overridden correctly.");
 }
 
 - (void)jumpToNextZoomBlock
@@ -142,11 +153,6 @@
 - (NSString *)displayPageNumberForPageAtIndex:(NSUInteger)pageIndex
 {
     return [self.textFlow contentsTableViewController:nil displayPageNumberForPageIndex:pageIndex];
-}
-
-- (void)goToBookPoint:(SCHBookPoint *)bookPoint animated:(BOOL)animated
-{
-    return;
 }
 
 #pragma mark - EucSelectorDelegate

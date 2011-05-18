@@ -40,8 +40,11 @@
 // Overridden methods
 // FIXME: change these to a protocol
 
+- (SCHBookPoint *)currentBookPoint;
+
 - (void)jumpToPageAtIndex:(NSUInteger)pageIndex animated:(BOOL)animated;
 - (void)jumpToProgressPositionInBook:(CGFloat)progress animated:(BOOL)animated;
+- (void)jumpToBookPoint:(SCHBookPoint *)bookPoint animated:(BOOL)animated;
 
 - (void)jumpToNextZoomBlock;
 - (void)jumpToPreviousZoomBlock;
@@ -58,8 +61,6 @@
 - (NSUInteger)pageIndexForBookPoint:(SCHBookPoint *)bookPoint;
 - (NSString *)pageLabelForPageAtIndex:(NSUInteger)pageIndex;
 - (NSString *)displayPageNumberForPageAtIndex:(NSUInteger)pageIndex;
-
-- (void)goToBookPoint:(SCHBookPoint *)bookPoint animated:(BOOL)animated;
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration;
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation;

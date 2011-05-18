@@ -19,6 +19,7 @@
 #import "SCHReadingNotesViewController.h"
 #import "SCHSyncManager.h"
 #import "SCHProfileItem.h"
+#import "SCHBookPoint.h"
 
 // constants
 static const CGFloat kReadingViewStandardScrubHeight = 47.0f;
@@ -69,6 +70,10 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (void)updateScrubberValue;
 - (void)updateScrubberLabel;
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation;
+- (void)saveLastPageLocation;
+- (void)jumpToLastPageLocation;
+- (void)jumpToBookPoint:(SCHBookPoint *)bookPoint animated:(BOOL)animated; 
+- (void)jumpToCurrentPlaceInBookAnimated:(BOOL)animated;
 
 @end
 
@@ -170,17 +175,18 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     if (self) {
         // Custom initialization
         isbn = [aIsbn copy];
-        profile = aProfile;
+        profile = [aProfile retain];
         layoutType = layout;
         currentlyRotating = NO;
         currentlyScrubbing = NO;
         
-        SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];
+        SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:isbn];        
+        NSArray *contentItems = [book.ContentMetadataItem valueForKey:@"UserContentItem"];
         
-        self.currentPageIndex = [profile contentIdentifierLastPageLocation:self.isbn];
-        
-        [[SCHSyncManager sharedSyncManager] openDocument:[[book.ContentMetadataItem valueForKey:@"UserContentItem"] objectAtIndex:0] 
-                                              forProfile:self.profile.ID];
+        if ([contentItems count]) {
+            [[SCHSyncManager sharedSyncManager] openDocument:[contentItems objectAtIndex:0] 
+                                              forProfile:profile.ID];
+        }
         
         [[NSNotificationCenter defaultCenter] addObserver:self 
                                                  selector:@selector(didEnterBackgroundNotification:) 
@@ -226,7 +232,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [self.view addSubview:self.readingView];
     [self.view sendSubviewToBack:self.readingView];
     
-
 	self.scrubberInfoView.layer.cornerRadius = 5.0f;
 	self.scrubberInfoView.layer.masksToBounds = YES;
     
@@ -284,6 +289,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         CGRectGetHeight(bottomShadowFrame);
     }
     self.bottomShadow.frame = bottomShadowFrame;
+    
+    [self jumpToLastPageLocation];
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -408,7 +416,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     // store the last page
     SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];
     
-    [self.profile setContentIdentifier:self.isbn lastPageLocation:self.currentPageIndex];
+    [self saveLastPageLocation];
     
     [[SCHSyncManager sharedSyncManager] closeDocument:[[book.ContentMetadataItem valueForKey:@"UserContentItem"] objectAtIndex:0] 
                                            forProfile:self.profile.ID];
@@ -420,6 +428,37 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     }
 }
 
+#pragma mark - Book Positions
+
+- (void)saveLastPageLocation
+{
+    SCHBookPoint *currentBookPoint = [self.readingView currentBookPoint];
+    [self.profile setContentIdentifier:self.isbn lastPageLocation:currentBookPoint.layoutPage];
+}
+
+- (void)jumpToLastPageLocation
+{
+    SCHBookPoint *lastPoint = [[[SCHBookPoint alloc] init] autorelease];
+    lastPoint.layoutPage = [self.profile contentIdentifierLastPageLocation:self.isbn] ? : 1;
+    [self jumpToBookPoint:lastPoint animated:NO];
+}
+
+- (void)jumpToBookPoint:(SCHBookPoint *)bookPoint animated:(BOOL)animated 
+{
+    if (bookPoint) {
+        [self.readingView jumpToBookPoint:bookPoint animated:animated];
+    }
+}
+
+- (void)jumpToCurrentPlaceInBookAnimated:(BOOL)animated
+{
+    if (self.currentPageIndex == NSUIntegerMax) {
+        [self.readingView jumpToProgressPositionInBook:self.currentBookProgress animated:YES];
+    } else {
+        [self.readingView jumpToPageAtIndex:self.currentPageIndex animated:YES];
+    }
+}
+
 #pragma mark -
 #pragma mark Button Actions
 
@@ -427,7 +466,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 {
     SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];
     
-    [self.profile setContentIdentifier:self.isbn lastPageLocation:self.currentPageIndex];
+    [self saveLastPageLocation];
 
     [[SCHSyncManager sharedSyncManager] closeDocument:[[book.ContentMetadataItem valueForKey:@"UserContentItem"] objectAtIndex:0] 
                                            forProfile:self.profile.ID];
@@ -513,10 +552,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     self.readingView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.paperType = self.paperType; // Reload the paper
     
-    [self.readingView jumpToPageAtIndex:self.currentPageIndex animated:NO];
-    [self updateScrubberValue];
-
-    
     [self.view addSubview:self.readingView];
     [self.view sendSubviewToBack:self.readingView];
 }
@@ -528,7 +563,11 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (IBAction)flowedFixedSegmentChanged:(UISegmentedControl *)segControl
 {
+    SCHBookPoint *currentBookPoint = [self.readingView currentBookPoint];
     self.layoutType = segControl.selectedSegmentIndex;
+    
+    [self jumpToBookPoint:currentBookPoint animated:NO];
+    [self updateScrubberValue];
 }
 
 #pragma mark - Paper Type Toggle
@@ -795,11 +834,11 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     
     if (self.currentPageIndex == NSUIntegerMax) {
         self.currentBookProgress = [slider value];
-        [self.readingView jumpToProgressPositionInBook:self.currentBookProgress animated:YES];
     } else {
         self.currentPageIndex = roundf([slider value]);
-        [self.readingView jumpToPageAtIndex:self.currentPageIndex animated:YES];
     }
+    
+    [self jumpToCurrentPlaceInBookAnimated:YES];
     
     [self updateScrubberLabel];
     self.currentlyScrubbing = NO;

@@ -9,6 +9,7 @@
 #import "SCHFlowView.h"
 #import "SCHBookManager.h"
 #import "SCHFlowEucBook.h"
+#import "SCHBookPoint.h"
 #import "KNFBTextFlowParagraphSource.h"
 #import <libEucalyptus/EucBookView.h>
 #import <libEucalyptus/EucBUpeBook.h>
@@ -93,6 +94,28 @@
     }
 }
 
+#pragma mark - BookView Methods
+
+- (SCHBookPoint *)currentBookPoint
+{
+    return [self.eucBook bookPointFromBookPageIndexPoint:[self.eucBook currentPageIndexPoint]];
+}
+
+- (void)jumpToBookPoint:(SCHBookPoint *)bookPoint animated:(BOOL)animated
+{
+    EucBookPageIndexPoint *point;
+    if(bookPoint.layoutPage == 1 && bookPoint.blockOffset == 0 && 
+       bookPoint.wordOffset == 0 && bookPoint.elementOffset == 0) {
+        // This is the start of the book.  Leave the eucIndexPoint empty
+        // so that we refer to the cover.
+        point = [[[EucBookPageIndexPoint alloc] init] autorelease];
+    } else {
+        point = [self.eucBook bookPageIndexPointFromBookPoint:bookPoint];
+    }
+    
+    [self.eucBookView goToIndexPoint:point animated:animated];
+}
+
 - (void)jumpToPageAtIndex:(NSUInteger)pageIndex animated: (BOOL) animated
 {                           
     [self.eucBookView goToPageIndex:pageIndex animated:animated];
@@ -153,11 +176,6 @@
 - (NSInteger)pageCount
 {
     return [self.eucBookView pageCount];
-}
-
-- (void)goToBookPoint:(SCHBookPoint *)bookPoint animated:(BOOL)animated
-{
-    return;
 }
 
 

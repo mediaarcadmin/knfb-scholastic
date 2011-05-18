@@ -155,4 +155,54 @@
     }
 }
 
+- (SCHBookPoint *)bookPointFromBookPageIndexPoint:(EucBookPageIndexPoint *)indexPoint
+{
+    SCHBookPoint *ret = nil;
+    
+    EucBookPageIndexPoint *eucIndexPoint = [indexPoint copy];
+    
+    // EucIndexPoint words start with word 0 == before the first word,
+    // but Scholastic/Blio thinks that the first word is at 0.  This is a bit lossy,
+    // but there's not much else we can do.
+    if (eucIndexPoint.word == 0) {
+        eucIndexPoint.element = 0;
+    } else {
+        eucIndexPoint.word -= 1;
+    }
+    
+    if(eucIndexPoint.source == 0 && self.fakeCover) {
+        ret = [[SCHBookPoint alloc] init];
+        // This is the cover section.
+        ret.layoutPage = 1;
+        ret.blockOffset = 0;
+        ret.wordOffset = 0;
+        ret.elementOffset = 0;
+    } else if (self.fakeCover) {
+        eucIndexPoint.source--;
+    }
+    
+    if (!ret) {
+        ret = [[SCHBookPoint alloc] init];
+        
+        NSUInteger indexes[2] = { eucIndexPoint.source , [EucCSSIntermediateDocument documentTreeNodeKeyForKey:eucIndexPoint.block]};
+        NSIndexPath *indexPath = [[NSIndexPath alloc] initWithIndexes:indexes length:2];
+        
+        SCHBookPoint *bookPoint = [self.paragraphSource bookmarkPointFromParagraphID:indexPath wordOffset:eucIndexPoint.word];
+        
+        [indexPath release];
+        
+        if (bookPoint) {
+            ret.layoutPage    = bookPoint.layoutPage;
+            ret.blockOffset   = bookPoint.blockOffset;
+            ret.wordOffset    = bookPoint.wordOffset;
+            ret.elementOffset = eucIndexPoint.element;
+        }
+    }
+    
+    [eucIndexPoint release];
+    
+    return [ret autorelease];    
+}
+
+
 @end
