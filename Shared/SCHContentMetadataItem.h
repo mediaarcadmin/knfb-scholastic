@@ -10,7 +10,9 @@
 #import <CoreData/CoreData.h>
 #import "SCHContentItem.h"
 
-@class SCHAppBook, SCHeReaderCategories;
+@class SCHAppBook;
+@class SCHeReaderCategories;
+@class SCHUserContentItem;
 
 static NSString * const kSCHContentMetadataItem = @"SCHContentMetadataItem";
 
@@ -30,6 +32,8 @@ static NSString * const kSCHContentMetadataItem = @"SCHContentMetadataItem";
 @property (nonatomic, retain) NSString * FileName;
 @property (nonatomic, retain) SCHAppBook * AppBook;
 @property (nonatomic, retain) NSSet* eReaderCategories;
+
+@property (nonatomic, readonly) SCHUserContentItem *userContentItem;
 
 - (NSArray *)annotationsContentForProfile:(NSNumber *)profileID;
 
