@@ -24,6 +24,7 @@ typedef enum
 } SCHReadingViewLayoutType;
 
 @class SCHCustomToolbar;
+@class SCHProfileItem;
 
 @interface SCHReadingViewController : UIViewController <SCHReadingViewDelegate> 
 {
@@ -57,7 +58,7 @@ typedef enum
 -(id)initWithNibName:(NSString *)nibNameOrNil 
               bundle:(NSBundle *)nibBundleOrNil 
                 isbn:(NSString *)aIsbn 
-           profileID:(NSNumber *)aProfileID
+             profile:(SCHProfileItem *)aProfile
               layout:(SCHReadingViewLayoutType)layoutType;
 
 // interface builder

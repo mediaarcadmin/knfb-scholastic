@@ -16,6 +16,8 @@
 #import "SCHSyncManager.h"
 #import "SCHThemeManager.h"
 #import "SCHProfileItem.h"
+#import "SCHAppProfile.h"
+#import "SCHReadingViewController.h"
 
 @interface SCHProfileViewController_iPhone() <UITableViewDelegate> 
 
@@ -150,8 +152,16 @@
     bookShelfViewController = [[SCHBookShelfViewController alloc] initWithNibName:NSStringFromClass([SCHBookShelfViewController class]) bundle:nil];
     bookShelfViewController.profileItem = profileItem;
     
-	[self.navigationController pushViewController:bookShelfViewController animated:YES];
-	[bookShelfViewController release], bookShelfViewController = nil;
+    if (profileItem.AppProfile.AutomaticallyLaunchBook != nil) {
+        SCHReadingViewController *readingViewController = [bookShelfViewController openBook:profileItem.AppProfile.AutomaticallyLaunchBook];
+        NSArray *viewControllers = [self.navigationController.viewControllers arrayByAddingObjectsFromArray:
+                                    [NSArray arrayWithObjects:bookShelfViewController, readingViewController, nil]];
+        [self.navigationController setViewControllers:(NSArray *)viewControllers animated:YES];
+        profileItem.AppProfile.AutomaticallyLaunchBook = nil;        
+    } else {
+        [self.navigationController pushViewController:bookShelfViewController animated:YES];
+    }
+    [bookShelfViewController release], bookShelfViewController = nil;        
 }
 
 - (void)pushSettingsController
