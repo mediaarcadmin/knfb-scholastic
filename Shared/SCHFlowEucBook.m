@@ -160,9 +160,7 @@
 {
     SCHBookPoint *ret = nil;
     
-    EucBookPageIndexPoint *eucIndexPoint = [indexPoint copy];
-    
-    if(eucIndexPoint.source == 0 && self.fakeCover) {
+    if(indexPoint.source == 0 && self.fakeCover) {
         ret = [[SCHBookPoint alloc] init];
         // This is the cover section.
         ret.layoutPage = 1;
@@ -174,9 +172,9 @@
         
         NSUInteger indexes[2];
         if (self.fakeCover) {
-            indexes[0] = eucIndexPoint.source - 1;
+            indexes[0] = indexPoint.source - 1;
         } else {
-            indexes[0] = eucIndexPoint.source;
+            indexes[0] = indexPoint.source;
         }
         
         // Make sure that the 'block' in our index point actually corresponds to a block-level node (i.e. a paragraph)
@@ -184,46 +182,46 @@
         // We do this by using the layout engine to map the index point to its canonical layout point, which always
         // refers to a valid block ID.
         EucCSSLayoutRunExtractor *extractor = [[EucCSSLayoutRunExtractor alloc] initWithDocument:[self intermediateDocumentForIndexPoint:indexPoint]];
-        EucCSSLayoutPoint layoutPoint = [extractor layoutPointForNode:[extractor.document nodeForKey:eucIndexPoint.block]];
+        EucCSSLayoutPoint layoutPoint = [extractor layoutPointForNode:[extractor.document nodeForKey:indexPoint.block]];
         
         indexes[1] = [EucCSSIntermediateDocument documentTreeNodeKeyForKey:layoutPoint.nodeKey];
         
         NSIndexPath *indexPath = [[NSIndexPath alloc] initWithIndexes:indexes length:2];
 
-        SCHBookPoint *bookPoint = [self.paragraphSource bookmarkPointFromParagraphID:indexPath wordOffset:eucIndexPoint.word];
+        // EucIndexPoint words start with word 0 == before the first word,
+        uint32_t schWordOffset;
+        uint32_t schElementOffset;
+        if (layoutPoint.nodeKey == indexPoint.block) {
+            // The layout mapping, above, didn't change anything, so the 
+            // word and element offset is valid.
+            
+            // EucIndexPoint words start with word 0 == before the first word,
+            // Blio starts at word 0 == the first word.
+            schWordOffset =  indexPoint.word > 0 ? indexPoint.word - 1 : 0;
+            schElementOffset = indexPoint.word> 0 ? indexPoint.element : 0;
+        } else {
+            // This mapping will be a little lossy - the original word and element offsets are
+            // no longer valid, and we don't know what they should be.
+            
+            // EucIndexPoint words start with word 0 == before the first word,
+            // Blio starts at word 0 == the first word.
+            schWordOffset =  layoutPoint.word > 0 ? layoutPoint.word - 1 : 0;
+            schElementOffset =  layoutPoint.word > 0 ? layoutPoint.element : 0;
+        }
+        SCHBookPoint *bookPoint = [self.paragraphSource bookmarkPointFromParagraphID:indexPath wordOffset:schWordOffset];
         
         [indexPath release];        
 
         if (bookPoint) {
-            if (layoutPoint.nodeKey == eucIndexPoint.block) {
-                // The layout mapping, above, didn't change anything, so the 
-                // word and element offset is valid.
-                ret.layoutPage = bookPoint.layoutPage;
-                ret.blockOffset = bookPoint.blockOffset;
-                ret.wordOffset = bookPoint.wordOffset;
-                ret.elementOffset = eucIndexPoint.element;
-            } else {
-                // This mapping will be a little lossy - the original word and element offsets are
-                // no longer valid, and we don't know what they should be.
-                ret.layoutPage = bookPoint.layoutPage;
-                ret.blockOffset = bookPoint.blockOffset;
-                ret.wordOffset = layoutPoint.word;
-                ret.elementOffset = layoutPoint.element;
-            }
-            
-            // EucIndexPoint words start with word 0 == before the first word,
-            // but Scholastic/Blio thinks that the first word is at 0.  This is a bit lossy,
-            // but there's not much else we can do.
-            if (eucIndexPoint.word == 0) {
-                ret.elementOffset = 0;
-            } else {
-                eucIndexPoint.word -= 1;
-            }
+            // The layout mapping, above, didn't change anything, so the 
+            // word and element offset is valid.
+            ret.layoutPage = bookPoint.layoutPage;
+            ret.blockOffset = bookPoint.blockOffset;
+            ret.wordOffset = bookPoint.wordOffset;
+            ret.elementOffset = schElementOffset;
         }
     }
-    
-    [eucIndexPoint release];
-    
+        
     return [ret autorelease];    
 }
 
