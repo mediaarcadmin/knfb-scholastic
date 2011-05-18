@@ -536,6 +536,10 @@
 		C9BCD790135DD26B00AA42B3 /* Cook Yourself Thin.xps in Resources */ = {isa = PBXBuildFile; fileRef = F8509E7F12F0621000197EB5 /* Cook Yourself Thin.xps */; };
 		C9D4F6281345FFE8007F86E3 /* SCHTextFlow.m in Sources */ = {isa = PBXBuildFile; fileRef = C9D4F6271345FFE7007F86E3 /* SCHTextFlow.m */; };
 		C9D4F6291345FFE8007F86E3 /* SCHTextFlow.m in Sources */ = {isa = PBXBuildFile; fileRef = C9D4F6271345FFE7007F86E3 /* SCHTextFlow.m */; };
+		C9E2EA881384115100540FB6 /* icon-highlight.png in Resources */ = {isa = PBXBuildFile; fileRef = C9E2EA861384115100540FB6 /* icon-highlight.png */; };
+		C9E2EA891384115100540FB6 /* icon-highlight.png in Resources */ = {isa = PBXBuildFile; fileRef = C9E2EA861384115100540FB6 /* icon-highlight.png */; };
+		C9E2EA8A1384115100540FB6 /* icon-highlight@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C9E2EA871384115100540FB6 /* icon-highlight@2x.png */; };
+		C9E2EA8B1384115100540FB6 /* icon-highlight@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C9E2EA871384115100540FB6 /* icon-highlight@2x.png */; };
 		C9E89A4B1369B87A00E7ED53 /* levenshtein_distance.c in Sources */ = {isa = PBXBuildFile; fileRef = C9E89A491369B87A00E7ED53 /* levenshtein_distance.c */; };
 		C9E89A4C1369B87A00E7ED53 /* levenshtein_distance.c in Sources */ = {isa = PBXBuildFile; fileRef = C9E89A491369B87A00E7ED53 /* levenshtein_distance.c */; };
 		C9ED566D1343322300A25486 /* libcss.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9ED56631343322300A25486 /* libcss.a */; };
@@ -1463,6 +1467,8 @@
 		C9B08B291344D34F001963D0 /* KNFBTOCEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KNFBTOCEntry.m; sourceTree = "<group>"; };
 		C9D4F6261345FFE7007F86E3 /* SCHTextFlow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHTextFlow.h; path = Shared/SCHTextFlow.h; sourceTree = "<group>"; };
 		C9D4F6271345FFE7007F86E3 /* SCHTextFlow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHTextFlow.m; path = Shared/SCHTextFlow.m; sourceTree = "<group>"; };
+		C9E2EA861384115100540FB6 /* icon-highlight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-highlight.png"; path = "Resources/UIAssets/icon-highlight.png"; sourceTree = "<group>"; };
+		C9E2EA871384115100540FB6 /* icon-highlight@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-highlight@2x.png"; path = "Resources/UIAssets/icon-highlight@2x.png"; sourceTree = "<group>"; };
 		C9E89A491369B87A00E7ED53 /* levenshtein_distance.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = levenshtein_distance.c; sourceTree = "<group>"; };
 		C9E89A4A1369B87A00E7ED53 /* levenshtein_distance.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = levenshtein_distance.h; sourceTree = "<group>"; };
 		C9ED56631343322300A25486 /* libcss.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libcss.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1908,6 +1914,8 @@
 				52E622F31358385D00245CA7 /* Themes */,
 				F80FED601355DD6D00DEB3C1 /* icon-magnify.png */,
 				C960B25E1379A298000F61CC /* icon-layout-flowed@2x.png */,
+				C9E2EA861384115100540FB6 /* icon-highlight.png */,
+				C9E2EA871384115100540FB6 /* icon-highlight@2x.png */,
 				C960B2641379AE89000F61CC /* icon-layout-fixed.png */,
 				C960B2651379AE89000F61CC /* icon-layout-fixed@2x.png */,
 				C960B25F1379A298000F61CC /* icon-layout-flowed.png */,
@@ -3272,6 +3280,8 @@
 				A39009F11379D81200D6B608 /* parent-request.html in Resources */,
 				A39009F31379D81200D6B608 /* teacher-request.html in Resources */,
 				F8844BFA137D6655003D3014 /* SCHProfileViewController_iPad.xib in Resources */,
+				C9E2EA881384115100540FB6 /* icon-highlight.png in Resources */,
+				C9E2EA8A1384115100540FB6 /* icon-highlight@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3481,6 +3491,8 @@
 				A39009F21379D81200D6B608 /* parent-request.html in Resources */,
 				A39009F41379D81200D6B608 /* teacher-request.html in Resources */,
 				F86433341381359300BEB8EB /* SCHProfileViewController_iPad.xib in Resources */,
+				C9E2EA891384115100540FB6 /* icon-highlight.png in Resources */,
+				C9E2EA8B1384115100540FB6 /* icon-highlight@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

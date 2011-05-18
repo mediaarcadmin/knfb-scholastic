@@ -476,6 +476,11 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 	[self.navigationController popViewControllerAnimated:YES];
 }
 
+- (IBAction)toolbarButtonPressed:(id)sender
+{
+    [self cancelInitialTimer];
+}
+
 - (IBAction)audioPlayAction:(id)sender
 {
     NSLog(@"Audio Play action");
@@ -486,10 +491,15 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     NSLog(@"Story Interactions action");
 }
 
+- (IBAction)highlightsAction:(id)sender
+{
+    NSLog(@"HighlightsAction action");
+    
+}
+
 - (IBAction)notesAction:(id)sender
 {
     NSLog(@"Notes action");
-    [self cancelInitialTimer];
     
     SCHReadingNotesViewController *notesController = [[SCHReadingNotesViewController alloc] initWithNibName:nil bundle:nil];
     notesController.isbn = self.isbn;
@@ -501,7 +511,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (IBAction)settingsAction:(id)sender
 {
     NSLog(@"Settings action");
-    [self cancelInitialTimer];
     
     if (self.optionsView.superview) {
         [self.optionsView removeFromSuperview];

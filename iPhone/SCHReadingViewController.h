@@ -62,7 +62,9 @@ typedef enum
               layout:(SCHReadingViewLayoutType)layoutType;
 
 // interface builder
+- (IBAction)toolbarButtonPressed:(id)sender;
 - (IBAction)storyInteractionAction:(id)sender;
+- (IBAction)highlightsAction:(id)sender;
 - (IBAction)notesAction:(id)sender;
 - (IBAction)settingsAction:(id)sender;
 - (IBAction)popViewController:(id)sender;
