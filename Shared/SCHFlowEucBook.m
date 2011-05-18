@@ -15,6 +15,7 @@
 #import "SCHTextFlowParagraphSource.h"
 #import "KNFBXPSConstants.h"
 #import <libEucalyptus/EucBookPageIndexPoint.h>
+#import <libEucalyptus/EucCSSLayoutRunExtractor.h>
 
 @interface SCHFlowEucBook ()
 
@@ -161,15 +162,6 @@
     
     EucBookPageIndexPoint *eucIndexPoint = [indexPoint copy];
     
-    // EucIndexPoint words start with word 0 == before the first word,
-    // but Scholastic/Blio thinks that the first word is at 0.  This is a bit lossy,
-    // but there's not much else we can do.
-    if (eucIndexPoint.word == 0) {
-        eucIndexPoint.element = 0;
-    } else {
-        eucIndexPoint.word -= 1;
-    }
-    
     if(eucIndexPoint.source == 0 && self.fakeCover) {
         ret = [[SCHBookPoint alloc] init];
         // This is the cover section.
@@ -177,25 +169,56 @@
         ret.blockOffset = 0;
         ret.wordOffset = 0;
         ret.elementOffset = 0;
-    } else if (self.fakeCover) {
-        eucIndexPoint.source--;
-    }
-    
-    if (!ret) {
+    } else {
         ret = [[SCHBookPoint alloc] init];
         
-        NSUInteger indexes[2] = { eucIndexPoint.source , [EucCSSIntermediateDocument documentTreeNodeKeyForKey:eucIndexPoint.block]};
-        NSIndexPath *indexPath = [[NSIndexPath alloc] initWithIndexes:indexes length:2];
+        NSUInteger indexes[2];
+        if (self.fakeCover) {
+            indexes[0] = eucIndexPoint.source - 1;
+        } else {
+            indexes[0] = eucIndexPoint.source;
+        }
         
+        // Make sure that the 'block' in our index point actually corresponds to a block-level node (i.e. a paragraph)
+        // in the XML, so that our constructd bookmark point is valid.
+        // We do this by using the layout engine to map the index point to its canonical layout point, which always
+        // refers to a valid block ID.
+        EucCSSLayoutRunExtractor *extractor = [[EucCSSLayoutRunExtractor alloc] initWithDocument:[self intermediateDocumentForIndexPoint:indexPoint]];
+        EucCSSLayoutPoint layoutPoint = [extractor layoutPointForNode:[extractor.document nodeForKey:eucIndexPoint.block]];
+        
+        indexes[1] = [EucCSSIntermediateDocument documentTreeNodeKeyForKey:layoutPoint.nodeKey];
+        
+        NSIndexPath *indexPath = [[NSIndexPath alloc] initWithIndexes:indexes length:2];
+
         SCHBookPoint *bookPoint = [self.paragraphSource bookmarkPointFromParagraphID:indexPath wordOffset:eucIndexPoint.word];
         
-        [indexPath release];
-        
+        [indexPath release];        
+
         if (bookPoint) {
-            ret.layoutPage    = bookPoint.layoutPage;
-            ret.blockOffset   = bookPoint.blockOffset;
-            ret.wordOffset    = bookPoint.wordOffset;
-            ret.elementOffset = eucIndexPoint.element;
+            if (layoutPoint.nodeKey == eucIndexPoint.block) {
+                // The layout mapping, above, didn't change anything, so the 
+                // word and element offset is valid.
+                ret.layoutPage = bookPoint.layoutPage;
+                ret.blockOffset = bookPoint.blockOffset;
+                ret.wordOffset = bookPoint.wordOffset;
+                ret.elementOffset = eucIndexPoint.element;
+            } else {
+                // This mapping will be a little lossy - the original word and element offsets are
+                // no longer valid, and we don't know what they should be.
+                ret.layoutPage = bookPoint.layoutPage;
+                ret.blockOffset = bookPoint.blockOffset;
+                ret.wordOffset = layoutPoint.word;
+                ret.elementOffset = layoutPoint.element;
+            }
+            
+            // EucIndexPoint words start with word 0 == before the first word,
+            // but Scholastic/Blio thinks that the first word is at 0.  This is a bit lossy,
+            // but there's not much else we can do.
+            if (eucIndexPoint.word == 0) {
+                ret.elementOffset = 0;
+            } else {
+                eucIndexPoint.word -= 1;
+            }
         }
     }
     
