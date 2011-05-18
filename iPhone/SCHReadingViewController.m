@@ -20,6 +20,8 @@
 #import "SCHSyncManager.h"
 #import "SCHProfileItem.h"
 #import "SCHBookPoint.h"
+#import "SCHLastPage.h"
+#import "SCHBookAnnotations.h"
 
 // constants
 static const CGFloat kReadingViewStandardScrubHeight = 47.0f;
@@ -432,8 +434,14 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (void)saveLastPageLocation
 {
-    SCHBookPoint *currentBookPoint = [self.readingView currentBookPoint];
-    [self.profile setContentIdentifier:self.isbn lastPageLocation:currentBookPoint.layoutPage];
+    SCHBookAnnotations *annotations = [self.profile annotationsForBook:self.isbn];
+    
+    if (annotations != nil) {
+        SCHBookPoint *currentBookPoint = [self.readingView currentBookPoint];
+        SCHLastPage *lastPage = [annotations lastPage];
+        
+        lastPage.LastPageLocation = [NSNumber numberWithInteger:currentBookPoint.layoutPage];
+    }
 }
 
 - (void)jumpToLastPageLocation

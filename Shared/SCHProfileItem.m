@@ -205,6 +205,7 @@ static NSString * const kSCHProfileItemUserContentItemContentMetadataItem = @"Us
 
 #pragma mark - Accessor delegated methods
 
+// this information is read-only to change use the Favourite annotation
 - (BOOL)contentIdentifierFavorite:(NSString *)contentIdentifier
 {
     SCHContentProfileItem *ret = [self contentProfileItemForBook:contentIdentifier];
@@ -212,25 +213,12 @@ static NSString * const kSCHProfileItemUserContentItemContentMetadataItem = @"Us
     return([ret.IsFavorite boolValue]);
 }
 
-- (void)setContentIdentifier:(NSString *)contentIdentifier favorite:(BOOL)flag
-{
-    SCHContentProfileItem *ret = [self contentProfileItemForBook:contentIdentifier];    
-    
-    ret.IsFavorite = [NSNumber numberWithBool:flag];
-}
-
+// this information is read-only to change use the LastPage annotation
 - (NSInteger)contentIdentifierLastPageLocation:(NSString *)contentIdentifier
 {
     SCHContentProfileItem *ret = [self contentProfileItemForBook:contentIdentifier];
     
     return([ret.LastPageLocation integerValue]);
-}
-
-- (void)setContentIdentifier:(NSString *)contentIdentifier lastPageLocation:(NSInteger)lastPageLocation
-{
-    SCHContentProfileItem *ret = [self contentProfileItemForBook:contentIdentifier];        
-    
-    ret.LastPageLocation = [NSNumber numberWithInteger:lastPageLocation];    
 }
 
 - (SCHContentProfileItem *)contentProfileItemForBook:(NSString *)contentIdentifier
