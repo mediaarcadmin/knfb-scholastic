@@ -16,8 +16,7 @@
 
 }
 
-@property (nonatomic, retain) IBOutlet UINavigationController *bookshelfNavigationController;
-@property (nonatomic, retain) IBOutlet UINavigationController *profileNavigationController;
+@property (nonatomic, retain) IBOutlet UINavigationController *navigationController;
 @property (nonatomic, retain) IBOutlet SCHCustomNavigationBar *customNavigationBar;
 
 @end
