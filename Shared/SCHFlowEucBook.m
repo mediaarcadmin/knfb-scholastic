@@ -15,6 +15,7 @@
 #import "SCHTextFlowParagraphSource.h"
 #import "KNFBXPSConstants.h"
 #import <libEucalyptus/EucBookPageIndexPoint.h>
+#import <libEucalyptus/EucCSSLayoutRunExtractor.h>
 
 @interface SCHFlowEucBook ()
 
@@ -154,5 +155,75 @@
         return [eucIndexPoint autorelease];  
     }
 }
+
+- (SCHBookPoint *)bookPointFromBookPageIndexPoint:(EucBookPageIndexPoint *)indexPoint
+{
+    SCHBookPoint *ret = nil;
+    
+    if(indexPoint.source == 0 && self.fakeCover) {
+        ret = [[SCHBookPoint alloc] init];
+        // This is the cover section.
+        ret.layoutPage = 1;
+        ret.blockOffset = 0;
+        ret.wordOffset = 0;
+        ret.elementOffset = 0;
+    } else {
+        ret = [[SCHBookPoint alloc] init];
+        
+        NSUInteger indexes[2];
+        if (self.fakeCover) {
+            indexes[0] = indexPoint.source - 1;
+        } else {
+            indexes[0] = indexPoint.source;
+        }
+        
+        // Make sure that the 'block' in our index point actually corresponds to a block-level node (i.e. a paragraph)
+        // in the XML, so that our constructd bookmark point is valid.
+        // We do this by using the layout engine to map the index point to its canonical layout point, which always
+        // refers to a valid block ID.
+        EucCSSLayoutRunExtractor *extractor = [[EucCSSLayoutRunExtractor alloc] initWithDocument:[self intermediateDocumentForIndexPoint:indexPoint]];
+        EucCSSLayoutPoint layoutPoint = [extractor layoutPointForNode:[extractor.document nodeForKey:indexPoint.block]];
+        
+        indexes[1] = [EucCSSIntermediateDocument documentTreeNodeKeyForKey:layoutPoint.nodeKey];
+        
+        NSIndexPath *indexPath = [[NSIndexPath alloc] initWithIndexes:indexes length:2];
+
+        // EucIndexPoint words start with word 0 == before the first word,
+        uint32_t schWordOffset;
+        uint32_t schElementOffset;
+        if (layoutPoint.nodeKey == indexPoint.block) {
+            // The layout mapping, above, didn't change anything, so the 
+            // word and element offset is valid.
+            
+            // EucIndexPoint words start with word 0 == before the first word,
+            // Blio starts at word 0 == the first word.
+            schWordOffset =  indexPoint.word > 0 ? indexPoint.word - 1 : 0;
+            schElementOffset = indexPoint.word> 0 ? indexPoint.element : 0;
+        } else {
+            // This mapping will be a little lossy - the original word and element offsets are
+            // no longer valid, and we don't know what they should be.
+            
+            // EucIndexPoint words start with word 0 == before the first word,
+            // Blio starts at word 0 == the first word.
+            schWordOffset =  layoutPoint.word > 0 ? layoutPoint.word - 1 : 0;
+            schElementOffset =  layoutPoint.word > 0 ? layoutPoint.element : 0;
+        }
+        SCHBookPoint *bookPoint = [self.paragraphSource bookmarkPointFromParagraphID:indexPath wordOffset:schWordOffset];
+        
+        [indexPath release];        
+
+        if (bookPoint) {
+            // The layout mapping, above, didn't change anything, so the 
+            // word and element offset is valid.
+            ret.layoutPage = bookPoint.layoutPage;
+            ret.blockOffset = bookPoint.blockOffset;
+            ret.wordOffset = bookPoint.wordOffset;
+            ret.elementOffset = schElementOffset;
+        }
+    }
+        
+    return [ret autorelease];    
+}
+
 
 @end

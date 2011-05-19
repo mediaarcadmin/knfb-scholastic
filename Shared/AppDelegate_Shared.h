@@ -9,8 +9,8 @@
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
 
-@interface AppDelegate_Shared : NSObject <UIApplicationDelegate> {
-    
+@interface AppDelegate_Shared : NSObject <UIApplicationDelegate> 
+{    
     UIWindow *window;
     
 @private

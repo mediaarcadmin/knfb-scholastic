@@ -660,7 +660,7 @@ static int checkoutCountParagraph = 0;
     }
 }
 
-#pragma mark - ParagraphSource Check out/Check in
+#pragma mark - Block Source Check out/Check in
 
 static int checkoutCountBlockSource = 0;
 
@@ -684,7 +684,7 @@ static int checkoutCountBlockSource = 0;
             SCHSmartZoomBlockSource *blockSource = [[SCHSmartZoomBlockSource alloc] initWithISBN:isbn];
             
             if(blockSource) {
-                NSCountedSet *myCachedBlockSourceCheckoutCounts = self.cachedParagraphSourceCheckoutCounts;
+                NSCountedSet *myCachedBlockSourceCheckoutCounts = self.cachedBlockSourceCheckoutCounts;
                 if(!myCachedBlockSourceCheckoutCounts) {
                     myCachedBlockSourceCheckoutCounts = [NSCountedSet set];
                     self.cachedBlockSourceCheckoutCounts = myCachedBlockSourceCheckoutCounts;
@@ -709,7 +709,7 @@ static int checkoutCountBlockSource = 0;
         NSCountedSet *myCachedBlockSourceCheckoutCounts = self.cachedBlockSourceCheckoutCounts;
         NSUInteger count = [myCachedBlockSourceCheckoutCounts countForObject:isbn];
         if(count == 0) {
-            NSLog(@"Warning! Unexpected checkin of non-checked-out paragraph source");
+            NSLog(@"Warning! Unexpected checkin of non-checked-out block source");
         } else {
             [myCachedBlockSourceCheckoutCounts removeObject:isbn];
             if (count == 1) {

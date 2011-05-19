@@ -10,9 +10,11 @@
 #import "SCHAppBook.h"
 #import "SCHeReaderCategories.h"
 #import "SCHAnnotationsContentItem.h"
+#import "SCHUserContentItem.h"
 
 static NSString * const kSCHContentMetadataItemAnnotationsContentItem = @"AnnotationsContentItem";
 static NSString * const kSCHContentMetadataItemAnnotationsListProfileID = @"AnnotationsList.ProfileID";
+static NSString * const kSCHContentMetadataItemUserContentItem = @"UserContentItem";
 
 @implementation SCHContentMetadataItem
 
@@ -29,6 +31,8 @@ static NSString * const kSCHContentMetadataItemAnnotationsListProfileID = @"Anno
 @dynamic AppBook;
 @dynamic eReaderCategories;
 
+@dynamic userContentItem;
+
 - (NSArray *)annotationsContentForProfile:(NSNumber *)profileID
 {
 	NSMutableArray *annotations = [NSMutableArray array];
@@ -40,6 +44,19 @@ static NSString * const kSCHContentMetadataItemAnnotationsListProfileID = @"Anno
 	}
 	
 	return(annotations);	
+}
+
+- (SCHUserContentItem *)userContentItem
+{
+    SCHUserContentItem *ret = nil;
+    
+    // there should only ever be a single matching user content item
+    NSArray *userContentItems = [self valueForKey:kSCHContentMetadataItemUserContentItem];
+    if ([userContentItems count] > 0) {
+        ret = [userContentItems objectAtIndex:0];
+    }
+    
+    return(ret);
 }
 
 #pragma mark - Core Data Generated Accessors

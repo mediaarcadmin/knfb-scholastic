@@ -343,67 +343,71 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
     }
     
 	NSLog(@"Calling grid view selection.");
-	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:[self.books objectAtIndex:index]];
+    
+    SCHReadingViewController *readingController = [self openBook:[self.books objectAtIndex:index]];
+    if (readingController != nil) {
+        [self.navigationController pushViewController:readingController animated:YES]; 
+    }
+}
 
-	// notify the processing manager that the user touched a book info object.
+- (SCHReadingViewController *)openBook:(NSString *)isbn
+{
+    SCHReadingViewController *ret = nil;
+    SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:isbn];
+    
+    // notify the processing manager that the user touched a book info object.
 	// this allows it to pause and resume items, etc.
 	// will do nothing if the book has already been fully downloaded.
-	[[SCHProcessingManager sharedProcessingManager] userSelectedBookWithISBN:book.ContentIdentifier];
+	[[SCHProcessingManager sharedProcessingManager] userSelectedBookWithISBN:isbn];
 	
 	// if the processing manager is working, do not open the book
-	if (![book canOpenBook]) {
-		return;
-	}
-	
-	NSLog(@"Showing book %@.", book.Title);
-	
-    SCHReadingViewController *readingController = nil;
-                   
-    // grab the category from the XPS, 
-    // if it doesnt exist then use the profile to derive the default reading view
-    NSString *categoryType = book.categoryType;
-    SCHBookshelfStyles bookshelfStyle;
-    if (categoryType == nil) {
-        switch ([self.profileItem.BookshelfStyle intValue]) {
+	if ([book canOpenBook]) {
+        NSLog(@"Showing book %@.", book.Title);
+        
+        // grab the category from the XPS, 
+        // if it doesnt exist then use the profile to derive the default reading view
+        NSString *categoryType = book.categoryType;
+        SCHBookshelfStyles bookshelfStyle;
+        if (categoryType == nil) {
+            switch ([self.profileItem.BookshelfStyle intValue]) {
+                case kSCHBookshelfStyleYoungChild:
+                    bookshelfStyle = kSCHBookshelfStyleYoungChild;                
+                    break;
+                case kSCHBookshelfStyleOlderChild:
+                    bookshelfStyle = kSCHBookshelfStyleOlderChild;                        
+                    break;            
+            }        
+        } else if ([categoryType isEqualToString:kSCHAppBookYoungReader] == YES) {
+            bookshelfStyle = kSCHBookshelfStyleYoungChild;
+        } else if ([categoryType isEqualToString:kSCHAppBookOldReader] == YES) {
+            bookshelfStyle = kSCHBookshelfStyleOlderChild;        
+        }
+        
+        switch (bookshelfStyle) {
             case kSCHBookshelfStyleYoungChild:
-                bookshelfStyle = kSCHBookshelfStyleYoungChild;                
+                ret = [[SCHReadingViewController alloc] initWithNibName:nil 
+                                                                 bundle:nil 
+                                                                   isbn:isbn 
+                                                                profile:profileItem
+                                                                 layout:SCHReadingViewLayoutTypeFixed];            
+                ret.youngerMode = YES;
                 break;
+                
             case kSCHBookshelfStyleOlderChild:
-                bookshelfStyle = kSCHBookshelfStyleOlderChild;                        
-                break;            
-        }        
-    } else if ([categoryType isEqualToString:kSCHAppBookYoungReader] == YES) {
-        bookshelfStyle = kSCHBookshelfStyleYoungChild;
-    } else if ([categoryType isEqualToString:kSCHAppBookOldReader] == YES) {
-        bookshelfStyle = kSCHBookshelfStyleOlderChild;        
+                ret = [[SCHReadingViewController alloc] initWithNibName:nil 
+                                                                 bundle:nil 
+                                                                   isbn:isbn 
+                                                                profile:profileItem                                
+                                                                 layout:SCHReadingViewLayoutTypeFlow];            
+                ret.youngerMode = NO;
+                break;     
+            default:
+                NSLog(@"Warning: unrecognised bookshelf style.");
+                break;
+        }
     }
-                                    
-    switch (bookshelfStyle) {
-        case kSCHBookshelfStyleYoungChild:
-            readingController = [[SCHReadingViewController alloc] initWithNibName:nil 
-                                                                           bundle:nil 
-                                                                             isbn:book.ContentIdentifier 
-                                                                        profileID:profileItem.ID
-                                                                           layout:SCHReadingViewLayoutTypeFixed];            
-            readingController.youngerMode = YES;
-            [self.navigationController pushViewController:readingController animated:YES];
-            break;
-            
-        case kSCHBookshelfStyleOlderChild:
-            readingController = [[SCHReadingViewController alloc] initWithNibName:nil 
-                                                                           bundle:nil 
-                                                                             isbn:book.ContentIdentifier 
-                                                                        profileID:profileItem.ID                                 
-                                                                           layout:SCHReadingViewLayoutTypeFlow];            
-            readingController.youngerMode = NO;
-            [self.navigationController pushViewController:readingController animated:YES];            
-            break;     
-        default:
-            NSLog(@"Warning: unrecognised bookshelf style.");
-            break;
-    }
-
-    [readingController release];
+    
+    return([ret autorelease]);
 }
 
 - (void)gridView:(MRGridView *)gridView confirmationForDeletionAtIndex:(NSInteger)index 

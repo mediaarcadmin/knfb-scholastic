@@ -11,6 +11,8 @@
 
 
 @implementation SCHAppProfile
+
+@dynamic AutomaticallyLaunchBook;
 @dynamic SelectedTheme;
 @dynamic ProfileItem;
 

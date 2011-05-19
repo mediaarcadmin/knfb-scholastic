@@ -288,10 +288,25 @@
 
 #pragma mark - SCHReadingView methods
 
-- (void)jumpToPageAtIndex:(NSUInteger)pageIndex animated: (BOOL) animated
+- (SCHBookPoint *)currentBookPoint {
+    SCHBookPoint *ret = [[SCHBookPoint alloc] init];
+    ret.layoutPage = MAX(self.currentPageIndex + 1, 1);
+    return [ret autorelease];
+}
+
+- (void)jumpToBookPoint:(SCHBookPoint *)bookPoint animated:(BOOL)animated
 {
-    if (pageIndex < pageCount) {
+    [self jumpToPageAtIndex:bookPoint.layoutPage - 1 animated:animated];
+}
+
+- (void)jumpToPageAtIndex:(NSUInteger)pageIndex animated: (BOOL) animated
+{	
+	if (pageIndex < pageCount) {
         [self.pageTurningView turnToPageAtIndex:pageIndex animated:animated];
+	}
+    
+    if (!animated) {
+        self.currentPageIndex = self.pageTurningView.focusedPageIndex;
     }
     
     self.currentBlock = nil;
@@ -300,20 +315,6 @@
 - (void)jumpToProgressPositionInBook:(CGFloat)progress animated:(BOOL)animated
 {
     NSLog(@"WARNING: jumpToProgressPositionInBook should not be called on Layout View.");
-}
-
-- (void)goToBookPoint:(SCHBookPoint *)bookPoint animated:(BOOL)animated
-{
-    NSUInteger targetPage = bookPoint.layoutPage;
-	
-	if ((targetPage <= self.pageCount) && (targetPage >=1)) {
-		if (self.pageTurningView) {
-			[self.pageTurningView turnToPageAtIndex:targetPage - 1 animated:animated];      
-			if (!animated) {
-				self.currentPageIndex = self.pageTurningView.focusedPageIndex;
-			}
-		}
-	}
 }
 
 - (void)setPageTexture:(UIImage *)image isDark:(BOOL)isDark

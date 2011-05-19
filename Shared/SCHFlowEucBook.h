@@ -19,5 +19,6 @@
 - (id)initWithISBN:(NSString *)newIsbn;
 - (id)initWithISBN:(NSString *)newIsbn failIfCachedDataNotReady:(BOOL)failIfCachedDataNotReady;
 - (EucBookPageIndexPoint *)bookPageIndexPointFromBookPoint:(SCHBookPoint *)bookPoint;
+- (SCHBookPoint *)bookPointFromBookPageIndexPoint:(EucBookPageIndexPoint *)indexPoint;
 
 @end

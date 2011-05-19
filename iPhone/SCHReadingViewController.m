@@ -9,6 +9,7 @@
 #import "SCHReadingViewController.h"
 
 #import "SCHAppBook.h"
+#import "SCHAppProfile.h"
 #import "SCHBookManager.h"
 #import "SCHFlowView.h"
 #import "SCHLayoutView.h"
@@ -17,6 +18,10 @@
 #import "SCHCustomToolbar.h"
 #import "SCHReadingNotesViewController.h"
 #import "SCHSyncManager.h"
+#import "SCHProfileItem.h"
+#import "SCHBookPoint.h"
+#import "SCHLastPage.h"
+#import "SCHBookAnnotations.h"
 
 // constants
 static const CGFloat kReadingViewStandardScrubHeight = 47.0f;
@@ -28,7 +33,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 @property (nonatomic, copy) NSString *isbn;
 
-@property (nonatomic, retain) NSNumber *profileID;
+@property (nonatomic, retain) SCHProfileItem *profile;
 
 // the page view, either fixed or flow
 @property (nonatomic, retain) SCHReadingView *readingView;
@@ -67,6 +72,10 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (void)updateScrubberValue;
 - (void)updateScrubberLabel;
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation;
+- (void)saveLastPageLocation;
+- (void)jumpToLastPageLocation;
+- (void)jumpToBookPoint:(SCHBookPoint *)bookPoint animated:(BOOL)animated; 
+- (void)jumpToCurrentPlaceInBookAnimated:(BOOL)animated;
 
 @end
 
@@ -77,7 +86,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 #pragma mark Object Synthesis
 
 @synthesize isbn;
-@synthesize profileID;
+@synthesize profile;
 @synthesize readingView;
 @synthesize youngerMode;
 @synthesize toolbarsVisible;
@@ -117,9 +126,10 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (void)dealloc 
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     [self releaseViewObjects];
     [isbn release], isbn = nil;
-    [profileID release], profileID = nil;
+    [profile release], profile = nil;
     
     [super dealloc];
 }
@@ -161,22 +171,29 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 }
 
 #pragma mark - Object Initialiser
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil isbn:(NSString *)aIsbn profileID:(NSNumber *)aProfileID layout:(SCHReadingViewLayoutType)layout
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil isbn:(NSString *)aIsbn profile:(SCHProfileItem *)aProfile layout:(SCHReadingViewLayoutType)layout
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
         isbn = [aIsbn copy];
-        profileID = aProfileID;
+        profile = [aProfile retain];
         layoutType = layout;
         currentlyRotating = NO;
         currentlyScrubbing = NO;
         
-        SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];
+        SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:isbn];        
+        NSArray *contentItems = [book.ContentMetadataItem valueForKey:@"UserContentItem"];
         
-        [[SCHSyncManager sharedSyncManager] openDocument:[[book.ContentMetadataItem valueForKey:@"UserContentItem"] objectAtIndex:0] 
-                                              forProfile:self.profileID];
+        if ([contentItems count]) {
+            [[SCHSyncManager sharedSyncManager] openDocument:[contentItems objectAtIndex:0] 
+                                              forProfile:profile.ID];
+        }
         
+        [[NSNotificationCenter defaultCenter] addObserver:self 
+                                                 selector:@selector(didEnterBackgroundNotification:) 
+                                                     name:UIApplicationDidEnterBackgroundNotification
+                                                   object:nil];
     }
     return self;
 }
@@ -187,7 +204,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 {
     [super viewDidLoad];
 	
-	self.currentPageIndex = 0;
 	self.toolbarsVisible = YES;
     self.xpsProvider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.isbn];
 	
@@ -218,7 +234,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [self.view addSubview:self.readingView];
     [self.view sendSubviewToBack:self.readingView];
     
-
 	self.scrubberInfoView.layer.cornerRadius = 5.0f;
 	self.scrubberInfoView.layer.masksToBounds = YES;
     
@@ -276,6 +291,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         CGRectGetHeight(bottomShadowFrame);
     }
     self.bottomShadow.frame = bottomShadowFrame;
+    
+    [self jumpToLastPageLocation];
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -393,18 +411,82 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 }
 
 #pragma mark -
+#pragma mark Notification methods
+
+- (void)didEnterBackgroundNotification:(NSNotification *)notification
+{
+    // store the last page
+    SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];
+    
+    [self saveLastPageLocation];
+    
+    [[SCHSyncManager sharedSyncManager] closeDocument:[[book.ContentMetadataItem valueForKey:@"UserContentItem"] objectAtIndex:0] 
+                                           forProfile:self.profile.ID];
+    
+    // relaunch the book
+    NSString *categoryType = book.categoryType;
+    if (categoryType != nil && [categoryType isEqualToString:kSCHAppBookCategoryPictureBook] == NO) {
+        self.profile.AppProfile.AutomaticallyLaunchBook = self.isbn;
+    }
+}
+
+#pragma mark - Book Positions
+
+- (void)saveLastPageLocation
+{
+    SCHBookAnnotations *annotations = [self.profile annotationsForBook:self.isbn];
+    
+    if (annotations != nil) {
+        SCHBookPoint *currentBookPoint = [self.readingView currentBookPoint];
+        SCHLastPage *lastPage = [annotations lastPage];
+        
+        lastPage.LastPageLocation = [NSNumber numberWithInteger:currentBookPoint.layoutPage];
+    }
+}
+
+- (void)jumpToLastPageLocation
+{
+    SCHBookPoint *lastPoint = [[[SCHBookPoint alloc] init] autorelease];
+    lastPoint.layoutPage = [self.profile contentIdentifierLastPageLocation:self.isbn] ? : 1;
+    [self jumpToBookPoint:lastPoint animated:NO];
+}
+
+- (void)jumpToBookPoint:(SCHBookPoint *)bookPoint animated:(BOOL)animated 
+{
+    if (bookPoint) {
+        [self.readingView jumpToBookPoint:bookPoint animated:animated];
+    }
+}
+
+- (void)jumpToCurrentPlaceInBookAnimated:(BOOL)animated
+{
+    if (self.currentPageIndex == NSUIntegerMax) {
+        [self.readingView jumpToProgressPositionInBook:self.currentBookProgress animated:YES];
+    } else {
+        [self.readingView jumpToPageAtIndex:self.currentPageIndex animated:YES];
+    }
+}
+
+#pragma mark -
 #pragma mark Button Actions
 
 - (IBAction)popViewController:(id)sender
 {
     SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];
     
+    [self saveLastPageLocation];
+
     [[SCHSyncManager sharedSyncManager] closeDocument:[[book.ContentMetadataItem valueForKey:@"UserContentItem"] objectAtIndex:0] 
-                                          forProfile:self.profileID];
+                                           forProfile:self.profile.ID];
 
     [self cancelInitialTimer];
     [self setToolbarVisibility:YES animated:NO];
 	[self.navigationController popViewControllerAnimated:YES];
+}
+
+- (IBAction)toolbarButtonPressed:(id)sender
+{
+    [self cancelInitialTimer];
 }
 
 - (IBAction)audioPlayAction:(id)sender
@@ -417,10 +499,15 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     NSLog(@"Story Interactions action");
 }
 
+- (IBAction)highlightsAction:(id)sender
+{
+    NSLog(@"HighlightsAction action");
+    
+}
+
 - (IBAction)notesAction:(id)sender
 {
     NSLog(@"Notes action");
-    [self cancelInitialTimer];
     
     SCHReadingNotesViewController *notesController = [[SCHReadingNotesViewController alloc] initWithNibName:nil bundle:nil];
     notesController.isbn = self.isbn;
@@ -432,7 +519,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (IBAction)settingsAction:(id)sender
 {
     NSLog(@"Settings action");
-    [self cancelInitialTimer];
     
     if (self.optionsView.superview) {
         [self.optionsView removeFromSuperview];
@@ -483,10 +569,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     self.readingView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.paperType = self.paperType; // Reload the paper
     
-    [self.readingView jumpToPageAtIndex:self.currentPageIndex animated:NO];
-    [self updateScrubberValue];
-
-    
     [self.view addSubview:self.readingView];
     [self.view sendSubviewToBack:self.readingView];
 }
@@ -498,7 +580,11 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (IBAction)flowedFixedSegmentChanged:(UISegmentedControl *)segControl
 {
+    SCHBookPoint *currentBookPoint = [self.readingView currentBookPoint];
     self.layoutType = segControl.selectedSegmentIndex;
+    
+    [self jumpToBookPoint:currentBookPoint animated:NO];
+    [self updateScrubberValue];
 }
 
 #pragma mark - Paper Type Toggle
@@ -765,11 +851,11 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     
     if (self.currentPageIndex == NSUIntegerMax) {
         self.currentBookProgress = [slider value];
-        [self.readingView jumpToProgressPositionInBook:self.currentBookProgress animated:YES];
     } else {
         self.currentPageIndex = roundf([slider value]);
-        [self.readingView jumpToPageAtIndex:self.currentPageIndex animated:YES];
     }
+    
+    [self jumpToCurrentPlaceInBookAnimated:YES];
     
     [self updateScrubberLabel];
     self.currentlyScrubbing = NO;

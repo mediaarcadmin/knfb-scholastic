@@ -16,6 +16,7 @@
 @class SCHCustomNavigationBar;
 @class KNFBTimeOrderedCache;
 @class SCHProfileItem;
+@class SCHReadingViewController;
 
 @interface SCHBookShelfViewController : UIViewController <MRGridViewDelegate, MRGridViewDataSource> 
 {
@@ -31,5 +32,7 @@
 
 @property (nonatomic, retain) NSMutableArray *books;
 @property (nonatomic, retain) SCHProfileItem *profileItem;
+
+- (SCHReadingViewController *)openBook:(NSString *)isbn;
 
 @end
