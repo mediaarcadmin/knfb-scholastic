@@ -87,15 +87,21 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation
 {
-    if (UIInterfaceOrientationIsLandscape(orientation)) {
-        [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:
-         [UIImage imageNamed:@"admin-iphone-landscape-top-toolbar.png"]];
-        [self.backgroundView setImage:[UIImage imageNamed:@"plain-background-landscape.png"]];
-        
-    } else {
-        [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:
-         [UIImage imageNamed:@"admin-iphone-portrait-top-toolbar.png"]];
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+//        [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:
+  //       [UIImage imageNamed:@"admin-iphone-portrait-top-toolbar.png"]];
         [self.backgroundView setImage:[UIImage imageNamed:@"plain-background-portrait.png"]];        
+    } else {
+        if (UIInterfaceOrientationIsLandscape(orientation)) {
+            [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:
+             [UIImage imageNamed:@"admin-iphone-landscape-top-toolbar.png"]];
+            [self.backgroundView setImage:[UIImage imageNamed:@"plain-background-landscape.png"]];
+            
+        } else {
+            [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:
+             [UIImage imageNamed:@"admin-iphone-portrait-top-toolbar.png"]];
+            [self.backgroundView setImage:[UIImage imageNamed:@"plain-background-portrait.png"]];        
+        }
     }
 }
 

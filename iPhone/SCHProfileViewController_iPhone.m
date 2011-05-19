@@ -65,10 +65,10 @@
     [super viewDidLoad];
 	
     self.settingsButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [settingsButton addTarget:self action:@selector(pushSettingsController) 
+    [self.settingsButton addTarget:self action:@selector(pushSettingsController) 
              forControlEvents:UIControlEventTouchUpInside]; 
     
-    self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:settingsButton] autorelease];
+    self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:self.settingsButton] autorelease];
     
     self.navigationItem.title = NSLocalizedString(@"Back", @"");
     UIImageView *logoImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo"]];

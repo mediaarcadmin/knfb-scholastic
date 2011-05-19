@@ -251,8 +251,6 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
 
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation
 {
-    
-    
     if (UIInterfaceOrientationIsPortrait(orientation) || UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         [self.topBar setBackgroundImage:[UIImage imageNamed:@"admin-iphone-portrait-top-toolbar.png"]];
         CGRect barFrame = self.topBar.frame;
