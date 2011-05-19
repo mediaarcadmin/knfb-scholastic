@@ -66,10 +66,6 @@
 		5266D34C13007A1C004E3AC6 /* SCHTopFavoritesComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 5266D34B13007A1C004E3AC6 /* SCHTopFavoritesComponent.m */; };
 		5266D38413007D15004E3AC6 /* SCHComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 5266D38313007D15004E3AC6 /* SCHComponent.m */; };
 		526750D213290EE800063AC8 /* SCHURLManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 52322C33132693F500BB071D /* SCHURLManager.m */; };
-		526A8A4A138510EC00101A96 /* SCHAudioBookPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 526A8A44138510EC00101A96 /* SCHAudioBookPlayer.m */; };
-		526A8A4B138510EC00101A96 /* SCHAudioBookPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 526A8A44138510EC00101A96 /* SCHAudioBookPlayer.m */; };
-		526A8A4E138510EC00101A96 /* SCHWordTiming.m in Sources */ = {isa = PBXBuildFile; fileRef = 526A8A49138510EC00101A96 /* SCHWordTiming.m */; };
-		526A8A4F138510EC00101A96 /* SCHWordTiming.m in Sources */ = {isa = PBXBuildFile; fileRef = 526A8A49138510EC00101A96 /* SCHWordTiming.m */; };
 		526A8A5C1385166E00101A96 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 526A8A501385143000101A96 /* AVFoundation.framework */; };
 		526A8A5D1385167A00101A96 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 526A8A501385143000101A96 /* AVFoundation.framework */; };
 		526A8A5F1385182100101A96 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 526A8A5E1385182100101A96 /* CoreMedia.framework */; };
@@ -291,6 +287,10 @@
 		C920DAAB138520E400F1583D /* icon-highlights-active.png in Resources */ = {isa = PBXBuildFile; fileRef = C920DAA4138520E400F1583D /* icon-highlights-active.png */; };
 		C920DAAC138520E400F1583D /* icon-highlights.png in Resources */ = {isa = PBXBuildFile; fileRef = C920DAA5138520E400F1583D /* icon-highlights.png */; };
 		C920DAAD138520E400F1583D /* icon-highlights.png in Resources */ = {isa = PBXBuildFile; fileRef = C920DAA5138520E400F1583D /* icon-highlights.png */; };
+		C920DB0B1385226C00F1583D /* SCHWordTiming.m in Sources */ = {isa = PBXBuildFile; fileRef = C920DB061385226C00F1583D /* SCHWordTiming.m */; };
+		C920DB0C1385226C00F1583D /* SCHWordTiming.m in Sources */ = {isa = PBXBuildFile; fileRef = C920DB061385226C00F1583D /* SCHWordTiming.m */; };
+		C920DB0D1385226C00F1583D /* SCHAudioBookPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = C920DB091385226C00F1583D /* SCHAudioBookPlayer.m */; };
+		C920DB0E1385226C00F1583D /* SCHAudioBookPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = C920DB091385226C00F1583D /* SCHAudioBookPlayer.m */; };
 		C923A27A12F06FE60054426F /* MRGridView.m in Sources */ = {isa = PBXBuildFile; fileRef = C923A27312F06FE60054426F /* MRGridView.m */; };
 		C923A27B12F06FE60054426F /* MRGridViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C923A27512F06FE60054426F /* MRGridViewCell.m */; };
 		C923A27C12F06FE60054426F /* MRGridViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C923A27712F06FE60054426F /* MRGridViewController.m */; };
@@ -974,11 +974,6 @@
 		5266D38213007D15004E3AC6 /* SCHComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHComponent.h; path = Shared/SCHComponent.h; sourceTree = "<group>"; };
 		5266D38313007D15004E3AC6 /* SCHComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHComponent.m; path = Shared/SCHComponent.m; sourceTree = "<group>"; };
 		5266D38E13007E27004E3AC6 /* SCHComponentProtected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHComponentProtected.h; path = Shared/SCHComponentProtected.h; sourceTree = "<group>"; };
-		526A8A43138510EC00101A96 /* SCHAudioBookPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAudioBookPlayer.h; path = ../../../../../../Users/john/Projects/BitWink/Scholastic/Scholastic/Shared/SCHAudioBookPlayer.h; sourceTree = SOURCE_ROOT; };
-		526A8A44138510EC00101A96 /* SCHAudioBookPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHAudioBookPlayer.m; path = ../../../../../../Users/john/Projects/BitWink/Scholastic/Scholastic/Shared/SCHAudioBookPlayer.m; sourceTree = SOURCE_ROOT; };
-		526A8A45138510EC00101A96 /* SCHAudioBookPlayerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAudioBookPlayerDelegate.h; path = ../../../../../../Users/john/Projects/BitWink/Scholastic/Scholastic/Shared/SCHAudioBookPlayerDelegate.h; sourceTree = SOURCE_ROOT; };
-		526A8A48138510EC00101A96 /* SCHWordTiming.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHWordTiming.h; path = ../../../../../../Users/john/Projects/BitWink/Scholastic/Scholastic/Shared/SCHWordTiming.h; sourceTree = SOURCE_ROOT; };
-		526A8A49138510EC00101A96 /* SCHWordTiming.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHWordTiming.m; path = ../../../../../../Users/john/Projects/BitWink/Scholastic/Scholastic/Shared/SCHWordTiming.m; sourceTree = SOURCE_ROOT; };
 		526A8A501385143000101A96 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		526A8A5E1385182100101A96 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		528433E9133382EA0010BAAB /* SCHAppDictionaryState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAppDictionaryState.h; path = Shared/SCHAppDictionaryState.h; sourceTree = "<group>"; };
@@ -1326,6 +1321,11 @@
 		C920DAA3138520E400F1583D /* icon-highlights@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-highlights@2x.png"; path = "Resources/UIAssets/icon-highlights@2x.png"; sourceTree = "<group>"; };
 		C920DAA4138520E400F1583D /* icon-highlights-active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-highlights-active.png"; path = "Resources/UIAssets/icon-highlights-active.png"; sourceTree = "<group>"; };
 		C920DAA5138520E400F1583D /* icon-highlights.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-highlights.png"; path = "Resources/UIAssets/icon-highlights.png"; sourceTree = "<group>"; };
+		C920DB061385226C00F1583D /* SCHWordTiming.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHWordTiming.m; path = Shared/SCHWordTiming.m; sourceTree = "<group>"; };
+		C920DB071385226C00F1583D /* SCHWordTiming.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHWordTiming.h; path = Shared/SCHWordTiming.h; sourceTree = "<group>"; };
+		C920DB081385226C00F1583D /* SCHAudioBookPlayerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAudioBookPlayerDelegate.h; path = Shared/SCHAudioBookPlayerDelegate.h; sourceTree = "<group>"; };
+		C920DB091385226C00F1583D /* SCHAudioBookPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHAudioBookPlayer.m; path = Shared/SCHAudioBookPlayer.m; sourceTree = "<group>"; };
+		C920DB0A1385226C00F1583D /* SCHAudioBookPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAudioBookPlayer.h; path = Shared/SCHAudioBookPlayer.h; sourceTree = "<group>"; };
 		C923A27212F06FE60054426F /* MRGridView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MRGridView.h; path = Shared/Libraries/MRGridView/MRGridView.h; sourceTree = "<group>"; };
 		C923A27312F06FE60054426F /* MRGridView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MRGridView.m; path = Shared/Libraries/MRGridView/MRGridView.m; sourceTree = "<group>"; };
 		C923A27412F06FE60054426F /* MRGridViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MRGridViewCell.h; path = Shared/Libraries/MRGridView/MRGridViewCell.h; sourceTree = "<group>"; };
@@ -1924,11 +1924,11 @@
 		526A8A42138510CD00101A96 /* AudioBookPlayer */ = {
 			isa = PBXGroup;
 			children = (
-				526A8A43138510EC00101A96 /* SCHAudioBookPlayer.h */,
-				526A8A44138510EC00101A96 /* SCHAudioBookPlayer.m */,
-				526A8A45138510EC00101A96 /* SCHAudioBookPlayerDelegate.h */,
-				526A8A48138510EC00101A96 /* SCHWordTiming.h */,
-				526A8A49138510EC00101A96 /* SCHWordTiming.m */,
+				C920DB061385226C00F1583D /* SCHWordTiming.m */,
+				C920DB071385226C00F1583D /* SCHWordTiming.h */,
+				C920DB081385226C00F1583D /* SCHAudioBookPlayerDelegate.h */,
+				C920DB091385226C00F1583D /* SCHAudioBookPlayer.m */,
+				C920DB0A1385226C00F1583D /* SCHAudioBookPlayer.h */,
 			);
 			name = AudioBookPlayer;
 			sourceTree = "<group>";
@@ -3713,8 +3713,8 @@
 				F8844BEF137D5F88003D3014 /* SCHProfileViewController_iPhone.m in Sources */,
 				F8844BF9137D6655003D3014 /* SCHProfileViewController_iPad.m in Sources */,
 				F864333713813B0100BEB8EB /* SCHBookShelfViewController_iPad.m in Sources */,
-				526A8A4A138510EC00101A96 /* SCHAudioBookPlayer.m in Sources */,
-				526A8A4E138510EC00101A96 /* SCHWordTiming.m in Sources */,
+				C920DB0B1385226C00F1583D /* SCHWordTiming.m in Sources */,
+				C920DB0D1385226C00F1583D /* SCHAudioBookPlayer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3886,8 +3886,8 @@
 				F8844BF0137D5F88003D3014 /* SCHProfileViewController_iPhone.m in Sources */,
 				F86433331381359000BEB8EB /* SCHProfileViewController_iPad.m in Sources */,
 				F864333813813B0100BEB8EB /* SCHBookShelfViewController_iPad.m in Sources */,
-				526A8A4B138510EC00101A96 /* SCHAudioBookPlayer.m in Sources */,
-				526A8A4F138510EC00101A96 /* SCHWordTiming.m in Sources */,
+				C920DB0C1385226C00F1583D /* SCHWordTiming.m in Sources */,
+				C920DB0E1385226C00F1583D /* SCHAudioBookPlayer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
