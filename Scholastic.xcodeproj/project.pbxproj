@@ -66,6 +66,14 @@
 		5266D34C13007A1C004E3AC6 /* SCHTopFavoritesComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 5266D34B13007A1C004E3AC6 /* SCHTopFavoritesComponent.m */; };
 		5266D38413007D15004E3AC6 /* SCHComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 5266D38313007D15004E3AC6 /* SCHComponent.m */; };
 		526750D213290EE800063AC8 /* SCHURLManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 52322C33132693F500BB071D /* SCHURLManager.m */; };
+		526A8A4A138510EC00101A96 /* SCHAudioBookPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 526A8A44138510EC00101A96 /* SCHAudioBookPlayer.m */; };
+		526A8A4B138510EC00101A96 /* SCHAudioBookPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 526A8A44138510EC00101A96 /* SCHAudioBookPlayer.m */; };
+		526A8A4E138510EC00101A96 /* SCHWordTiming.m in Sources */ = {isa = PBXBuildFile; fileRef = 526A8A49138510EC00101A96 /* SCHWordTiming.m */; };
+		526A8A4F138510EC00101A96 /* SCHWordTiming.m in Sources */ = {isa = PBXBuildFile; fileRef = 526A8A49138510EC00101A96 /* SCHWordTiming.m */; };
+		526A8A5C1385166E00101A96 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 526A8A501385143000101A96 /* AVFoundation.framework */; };
+		526A8A5D1385167A00101A96 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 526A8A501385143000101A96 /* AVFoundation.framework */; };
+		526A8A5F1385182100101A96 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 526A8A5E1385182100101A96 /* CoreMedia.framework */; };
+		526A8A601385183900101A96 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 526A8A5E1385182100101A96 /* CoreMedia.framework */; };
 		528433EB133382EA0010BAAB /* SCHAppDictionaryState.m in Sources */ = {isa = PBXBuildFile; fileRef = 528433EA133382EA0010BAAB /* SCHAppDictionaryState.m */; };
 		528433EC133382EA0010BAAB /* SCHAppDictionaryState.m in Sources */ = {isa = PBXBuildFile; fileRef = 528433EA133382EA0010BAAB /* SCHAppDictionaryState.m */; };
 		528A2CD312CCDD9E0053A343 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 528A2CD212CCDD9E0053A343 /* Settings.bundle */; };
@@ -966,6 +974,13 @@
 		5266D38213007D15004E3AC6 /* SCHComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHComponent.h; path = Shared/SCHComponent.h; sourceTree = "<group>"; };
 		5266D38313007D15004E3AC6 /* SCHComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHComponent.m; path = Shared/SCHComponent.m; sourceTree = "<group>"; };
 		5266D38E13007E27004E3AC6 /* SCHComponentProtected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHComponentProtected.h; path = Shared/SCHComponentProtected.h; sourceTree = "<group>"; };
+		526A8A43138510EC00101A96 /* SCHAudioBookPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAudioBookPlayer.h; path = ../../../../../../Users/john/Projects/BitWink/Scholastic/Scholastic/Shared/SCHAudioBookPlayer.h; sourceTree = SOURCE_ROOT; };
+		526A8A44138510EC00101A96 /* SCHAudioBookPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHAudioBookPlayer.m; path = ../../../../../../Users/john/Projects/BitWink/Scholastic/Scholastic/Shared/SCHAudioBookPlayer.m; sourceTree = SOURCE_ROOT; };
+		526A8A45138510EC00101A96 /* SCHAudioBookPlayerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAudioBookPlayerDelegate.h; path = ../../../../../../Users/john/Projects/BitWink/Scholastic/Scholastic/Shared/SCHAudioBookPlayerDelegate.h; sourceTree = SOURCE_ROOT; };
+		526A8A48138510EC00101A96 /* SCHWordTiming.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHWordTiming.h; path = ../../../../../../Users/john/Projects/BitWink/Scholastic/Scholastic/Shared/SCHWordTiming.h; sourceTree = SOURCE_ROOT; };
+		526A8A49138510EC00101A96 /* SCHWordTiming.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHWordTiming.m; path = ../../../../../../Users/john/Projects/BitWink/Scholastic/Scholastic/Shared/SCHWordTiming.m; sourceTree = SOURCE_ROOT; };
+		526A8A501385143000101A96 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		526A8A5E1385182100101A96 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		528433E9133382EA0010BAAB /* SCHAppDictionaryState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAppDictionaryState.h; path = Shared/SCHAppDictionaryState.h; sourceTree = "<group>"; };
 		528433EA133382EA0010BAAB /* SCHAppDictionaryState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHAppDictionaryState.m; path = Shared/SCHAppDictionaryState.m; sourceTree = "<group>"; };
 		528A2CD212CCDD9E0053A343 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = Settings.bundle; path = Shared/Settings.bundle; sourceTree = "<group>"; };
@@ -1641,9 +1656,11 @@
 				F8509EB812F0625100197EB5 /* libstdc++.6.dylib in Frameworks */,
 				C95ECB52133A77FC00D88768 /* Accelerate.framework in Frameworks */,
 				C95ECB4E133A77F000D88768 /* AudioToolbox.framework in Frameworks */,
+				526A8A5C1385166E00101A96 /* AVFoundation.framework in Frameworks */,
 				529386C312DF3A8900045B44 /* CFNetwork.framework in Frameworks */,
 				28EEBFDD1118E19E00187D67 /* CoreData.framework in Frameworks */,
 				288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */,
+				526A8A5F1385182100101A96 /* CoreMedia.framework in Frameworks */,
 				1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */,
 				C95ECB50133A77F800D88768 /* OpenGLES.framework in Frameworks */,
 				C95ECB51133A77FA00D88768 /* QuartzCore.framework in Frameworks */,
@@ -1662,9 +1679,11 @@
 				F8509F4812F063C900197EB5 /* libstdc++.6.dylib in Frameworks */,
 				C95ECB45133A76C400D88768 /* Accelerate.framework in Frameworks */,
 				C95ECB4D133A77A500D88768 /* AudioToolbox.framework in Frameworks */,
+				526A8A5D1385167A00101A96 /* AVFoundation.framework in Frameworks */,
 				F8509F4412F063C900197EB5 /* CFNetwork.framework in Frameworks */,
 				F8509F4312F063C900197EB5 /* CoreData.framework in Frameworks */,
 				F8509F4212F063C900197EB5 /* CoreGraphics.framework in Frameworks */,
+				526A8A601385183900101A96 /* CoreMedia.framework in Frameworks */,
 				F8509F4012F063C900197EB5 /* Foundation.framework in Frameworks */,
 				C95ECB49133A770B00D88768 /* OpenGLES.framework in Frameworks */,
 				C95ECB47133A76DE00D88768 /* QuartzCore.framework in Frameworks */,
@@ -1731,6 +1750,7 @@
 		28EEBF621118D79A00187D67 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				526A8A42138510CD00101A96 /* AudioBookPlayer */,
 				F8509E8A12F0621E00197EB5 /* XPS Provider */,
 				52EF594712EECA7200E374F7 /* Extensions */,
 				52D19C681338A57B00A68D75 /* Views */,
@@ -1799,6 +1819,7 @@
 				C9F1A579133B83D100FD984C /* libxml2.dylib */,
 				F8509EB712F0625100197EB5 /* libstdc++.6.dylib */,
 				C95ECB4C133A77A500D88768 /* AudioToolbox.framework */,
+				526A8A501385143000101A96 /* AVFoundation.framework */,
 				C95ECB48133A770B00D88768 /* OpenGLES.framework */,
 				C95ECB46133A76DE00D88768 /* QuartzCore.framework */,
 				C95ECB44133A76C400D88768 /* Accelerate.framework */,
@@ -1807,6 +1828,7 @@
 				288765FC0DF74451002DB57D /* CoreGraphics.framework */,
 				28EEBFDC1118E19E00187D67 /* CoreData.framework */,
 				529386C212DF3A8900045B44 /* CFNetwork.framework */,
+				526A8A5E1385182100101A96 /* CoreMedia.framework */,
 				529386C412DF3A9000045B44 /* SystemConfiguration.framework */,
 				52EF553D12E9EB8500E374F7 /* Security.framework */,
 			);
@@ -1897,6 +1919,18 @@
 				52D612B712E4650B0033DA92 /* NSNumber+ObjectTypes.m */,
 			);
 			name = "Core Data Models";
+			sourceTree = "<group>";
+		};
+		526A8A42138510CD00101A96 /* AudioBookPlayer */ = {
+			isa = PBXGroup;
+			children = (
+				526A8A43138510EC00101A96 /* SCHAudioBookPlayer.h */,
+				526A8A44138510EC00101A96 /* SCHAudioBookPlayer.m */,
+				526A8A45138510EC00101A96 /* SCHAudioBookPlayerDelegate.h */,
+				526A8A48138510EC00101A96 /* SCHWordTiming.h */,
+				526A8A49138510EC00101A96 /* SCHWordTiming.m */,
+			);
+			name = AudioBookPlayer;
 			sourceTree = "<group>";
 		};
 		528A2CCE12CCDC380053A343 /* Audio */ = {
@@ -3679,6 +3713,8 @@
 				F8844BEF137D5F88003D3014 /* SCHProfileViewController_iPhone.m in Sources */,
 				F8844BF9137D6655003D3014 /* SCHProfileViewController_iPad.m in Sources */,
 				F864333713813B0100BEB8EB /* SCHBookShelfViewController_iPad.m in Sources */,
+				526A8A4A138510EC00101A96 /* SCHAudioBookPlayer.m in Sources */,
+				526A8A4E138510EC00101A96 /* SCHWordTiming.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3850,6 +3886,8 @@
 				F8844BF0137D5F88003D3014 /* SCHProfileViewController_iPhone.m in Sources */,
 				F86433331381359000BEB8EB /* SCHProfileViewController_iPad.m in Sources */,
 				F864333813813B0100BEB8EB /* SCHBookShelfViewController_iPad.m in Sources */,
+				526A8A4B138510EC00101A96 /* SCHAudioBookPlayer.m in Sources */,
+				526A8A4F138510EC00101A96 /* SCHWordTiming.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
