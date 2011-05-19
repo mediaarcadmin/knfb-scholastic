@@ -9,12 +9,13 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol SCHNotesViewDelegate;
+
 @interface SCHNotesView : UIView {
-    
-    
     
 }
 
+@property (nonatomic, assign) id <SCHNotesViewDelegate> delegate;
 @property (nonatomic, retain) UITextView *textView;
 @property (nonatomic, retain) UILabel *toolbarLabel;
 @property (nonatomic, copy) NSString *page;
@@ -23,5 +24,14 @@
 //- (id)initWithRange:(BlioBookmarkRange *)aRange note:(NSManagedObject *)aNote;
 - (void)showInView:(UIView *)view;
 - (void)showInView:(UIView *)view animated:(BOOL)animated;
+
+@end
+
+@protocol SCHNotesViewDelegate <NSObject>
+
+@optional
+
+- (void)notesViewSaved:(SCHNotesView *)notesView;
+- (void)notesViewCancelled:(SCHNotesView *)notesView;
 
 @end

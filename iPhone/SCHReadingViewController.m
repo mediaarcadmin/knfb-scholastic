@@ -493,22 +493,40 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (IBAction)audioPlayAction:(id)sender
 {
     NSLog(@"Audio Play action");
+
+    if (self.optionsView.superview) {
+        [self.optionsView removeFromSuperview];
+    }
+    
 }
 
 - (IBAction)storyInteractionAction:(id)sender
 {
     NSLog(@"Story Interactions action");
+
+    if (self.optionsView.superview) {
+        [self.optionsView removeFromSuperview];
+    }
+    
 }
 
 - (IBAction)highlightsAction:(id)sender
 {
     NSLog(@"HighlightsAction action");
     
+    if (self.optionsView.superview) {
+        [self.optionsView removeFromSuperview];
+    }
+    
 }
 
 - (IBAction)notesAction:(id)sender
 {
     NSLog(@"Notes action");
+    
+    if (self.optionsView.superview) {
+        [self.optionsView removeFromSuperview];
+    }
     
     SCHReadingNotesViewController *notesController = [[SCHReadingNotesViewController alloc] initWithNibName:nil bundle:nil];
     notesController.isbn = self.isbn;
@@ -973,6 +991,10 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     SCHNotesView *aNotesView = [[SCHNotesView alloc] initWithFrame:CGRectZero];
     aNotesView.page = [NSString stringWithFormat:@"%d", self.currentPageIndex + 1];
     aNotesView.noteText = @"New note";
+    aNotesView.delegate = self;
+    
+    [self setToolbarVisibility:NO animated:YES];
+    
     [aNotesView showInView:self.view animated:YES];
     [aNotesView release];
 }
@@ -982,8 +1004,23 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     SCHNotesView *aNotesView = [[SCHNotesView alloc] initWithFrame:CGRectZero];
     aNotesView.page = [NSString stringWithFormat:@"%d", self.currentPageIndex + 1];
     aNotesView.noteText = @"Existing note";
+    aNotesView.delegate = self;
     [aNotesView showInView:self.view animated:YES];
     [aNotesView release];
+
+    [self setToolbarVisibility:NO animated:YES];
+}
+
+#pragma mark - SCHNotesViewDelegate methods
+
+- (void)notesViewSaved:(SCHNotesView *)notesView
+{
+    [self setToolbarVisibility:YES animated:YES];
+}
+
+- (void)notesViewCancelled:(SCHNotesView *)notesView
+{
+    [self setToolbarVisibility:YES animated:YES];
 }
 
 @end

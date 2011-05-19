@@ -11,22 +11,22 @@
 #import <QuartzCore/QuartzCore.h>
 #import "UIImage+BlioAdditions.h"
 
-static const CGFloat kBlioNotesViewPhoneShadow = 16;
-static const CGFloat kBlioNotesViewPadBorder = 6;
-static const CGFloat kBlioNotesViewNoteHeight = 200;
-static const CGFloat kBlioNotesViewNotePadWidth = 320;
-static const CGFloat kBlioNotesViewNotePadBottomInset = 264;
+static const CGFloat kSCHNotesViewPhoneShadow = 16;
+static const CGFloat kSCHNotesViewPadBorder = 6;
+static const CGFloat kSCHNotesViewNoteHeight = 200;
+static const CGFloat kSCHNotesViewNotePadWidth = 320;
+static const CGFloat kSCHNotesViewNotePadBottomInset = 264;
 
-static const CGFloat kBlioNotesViewNotePhoneYInset = -40;
-static const CGFloat kBlioNotesViewNotePadYInset = -20;
-static const CGFloat kBlioNotesViewToolbarHeight = 44;
-static const CGFloat kBlioNotesViewToolbarLabelWidth = 140;
-static const CGFloat kBlioNotesViewTextXInset = 8;
-static const CGFloat kBlioNotesViewTextTopInset = 8;
-static const CGFloat kBlioNotesViewTextBottomInset = 24;
+static const CGFloat kSCHNotesViewNotePhoneYInset = -40;
+static const CGFloat kSCHNotesViewNotePadYInset = -20;
+static const CGFloat kSCHNotesViewToolbarHeight = 44;
+static const CGFloat kSCHNotesViewToolbarLabelWidth = 140;
+static const CGFloat kSCHNotesViewTextXInset = 8;
+static const CGFloat kSCHNotesViewTextTopInset = 8;
+static const CGFloat kSCHNotesViewTextBottomInset = 24;
 
-static NSString * const BlioNotesViewShowFromTopAnimation = @"BlioNotesViewShowFromTopAnimation";
-static NSString * const BlioNotesViewExitToTopAnimation = @"BlioNotesViewExitToTopAnimation";
+static NSString * const SCHNotesViewShowFromTopAnimation = @"SCHNotesViewShowFromTopAnimation";
+static NSString * const SCHNotesViewExitToTopAnimation = @"SCHNotesViewExitToTopAnimation";
 
 #pragma mark - Class Extension
 
@@ -35,13 +35,13 @@ static NSString * const BlioNotesViewExitToTopAnimation = @"BlioNotesViewExitToT
 @property (nonatomic, assign) UIView *showInView;
 @property CGFloat bottomInset;
 
-
 @end
 
 #pragma mark -
 
 @implementation SCHNotesView
 
+@synthesize delegate;
 @synthesize textView;
 @synthesize noteText;
 @synthesize toolbarLabel;
@@ -50,13 +50,16 @@ static NSString * const BlioNotesViewExitToTopAnimation = @"BlioNotesViewExitToT
 @synthesize bottomInset;
 
 - (void)dealloc {
+    
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         [[NSNotificationCenter defaultCenter] removeObserver:self];
     }
+    
     [page release], page = nil;
     [textView release], textView = nil;
     [toolbarLabel release], toolbarLabel = nil;
     showInView = nil;
+    delegate = nil;
     
     [super dealloc];
 }
@@ -74,7 +77,7 @@ static NSString * const BlioNotesViewExitToTopAnimation = @"BlioNotesViewExitToT
         // Ensures that the note shows above it's sibling views
         self.layer.zPosition = 1000;
         
-        self.bottomInset = kBlioNotesViewNotePadBottomInset;
+        self.bottomInset = kSCHNotesViewNotePadBottomInset;
         
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
             [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
@@ -94,17 +97,17 @@ static NSString * const BlioNotesViewExitToTopAnimation = @"BlioNotesViewExitToT
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
         newFrame = CGRectMake(0, 
-                              (container.bounds.size.height - (2 * kBlioNotesViewPhoneShadow + kBlioNotesViewNoteHeight))/2.0f + kBlioNotesViewNotePhoneYInset,
+                              (container.bounds.size.height - (2 * kSCHNotesViewPhoneShadow + kSCHNotesViewNoteHeight))/2.0f + kSCHNotesViewNotePhoneYInset,
                               container.bounds.size.width,
-                              2 * kBlioNotesViewPhoneShadow + kBlioNotesViewNoteHeight);
-        toolbarFrame = CGRectMake((newFrame.size.width - kBlioNotesViewToolbarLabelWidth)/2.0f, kBlioNotesViewPhoneShadow, kBlioNotesViewToolbarLabelWidth, kBlioNotesViewToolbarHeight);
+                              2 * kSCHNotesViewPhoneShadow + kSCHNotesViewNoteHeight);
+        toolbarFrame = CGRectMake((newFrame.size.width - kSCHNotesViewToolbarLabelWidth)/2.0f, kSCHNotesViewPhoneShadow, kSCHNotesViewToolbarLabelWidth, kSCHNotesViewToolbarHeight);
         
     } else {
-        newFrame = CGRectMake((container.bounds.size.width - kBlioNotesViewNotePadWidth) / 2, 
-                              container.bounds.size.height - (self.bottomInset + kBlioNotesViewNoteHeight) - kBlioNotesViewNotePadYInset,
-                              kBlioNotesViewNotePadWidth,
-                              kBlioNotesViewNoteHeight);
-        toolbarFrame = CGRectMake((newFrame.size.width - kBlioNotesViewToolbarLabelWidth)/2.0f, kBlioNotesViewPadBorder, kBlioNotesViewToolbarLabelWidth, kBlioNotesViewToolbarHeight);
+        newFrame = CGRectMake((container.bounds.size.width - kSCHNotesViewNotePadWidth) / 2, 
+                              container.bounds.size.height - (self.bottomInset + kSCHNotesViewNoteHeight) - kSCHNotesViewNotePadYInset,
+                              kSCHNotesViewNotePadWidth,
+                              kSCHNotesViewNoteHeight);
+        toolbarFrame = CGRectMake((newFrame.size.width - kSCHNotesViewToolbarLabelWidth)/2.0f, kSCHNotesViewPadBorder, kSCHNotesViewToolbarLabelWidth, kSCHNotesViewToolbarHeight);
     }
     
     self.frame = newFrame;
@@ -114,8 +117,10 @@ static NSString * const BlioNotesViewExitToTopAnimation = @"BlioNotesViewExitToT
 }
 
 - (void)showInView:(UIView *)view animated:(BOOL)animated {
+
     [self removeFromSuperview];
     self.showInView = view;
+    
     // Insert below the view so that it gets the rotation resizing
     // The layer zPosition will take care of showing it above it's sibling
     [[self.showInView superview] insertSubview:self belowSubview:self.showInView];
@@ -130,9 +135,9 @@ static NSString * const BlioNotesViewExitToTopAnimation = @"BlioNotesViewExitToT
     
     CGFloat inset;
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        inset = kBlioNotesViewPhoneShadow;
+        inset = kSCHNotesViewPhoneShadow;
     } else {
-        inset = kBlioNotesViewPadBorder;
+        inset = kSCHNotesViewPadBorder;
     }
     
     UIFont *buttonFont = [UIFont boldSystemFontOfSize:12.0f];
@@ -141,12 +146,12 @@ static NSString * const BlioNotesViewExitToTopAnimation = @"BlioNotesViewExitToT
     
     UISegmentedControl *aButtonSegment = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObject:buttonImage]];
     aButtonSegment.segmentedControlStyle = UISegmentedControlStyleBar;
-    aButtonSegment.frame = CGRectMake(inset + kBlioNotesViewTextXInset, inset + ((kBlioNotesViewToolbarHeight - aButtonSegment.frame.size.height)/2.0f), aButtonSegment.frame.size.width + 4, aButtonSegment.frame.size.height);
-//    aButtonSegment.tintColor = [UIColor colorWithRed:0.890 green:0.863f blue:0.592f alpha:1.0f];
+    aButtonSegment.frame = CGRectMake(inset + kSCHNotesViewTextXInset, inset + ((kSCHNotesViewToolbarHeight - aButtonSegment.frame.size.height)/2.0f), aButtonSegment.frame.size.width + 4, aButtonSegment.frame.size.height);
+
     aButtonSegment.tintColor = [UIColor colorWithRed:0.106 green:0.584 blue:0.871 alpha:1.0f];
     [[aButtonSegment imageForSegmentAtIndex:0] setAccessibilityLabel:NSLocalizedString(@"Cancel", @"Accessibility label for Notes View Cancel button")];
     
-    [aButtonSegment addTarget:self action:@selector(dismiss:) forControlEvents:UIControlEventValueChanged];
+    [aButtonSegment addTarget:self action:@selector(cancel:) forControlEvents:UIControlEventValueChanged];
     [aButtonSegment setAutoresizingMask:UIViewAutoresizingFlexibleRightMargin];
     [self addSubview:aButtonSegment];
     [aButtonSegment release];
@@ -156,8 +161,8 @@ static NSString * const BlioNotesViewExitToTopAnimation = @"BlioNotesViewExitToT
     
     aButtonSegment = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObject:buttonImage]];
     aButtonSegment.segmentedControlStyle = UISegmentedControlStyleBar;
-    aButtonSegment.frame = CGRectMake(self.frame.size.width - inset - kBlioNotesViewTextXInset - aButtonSegment.frame.size.width - 8, inset + ((kBlioNotesViewToolbarHeight - aButtonSegment.frame.size.height)/2.0f), aButtonSegment.frame.size.width + 8, aButtonSegment.frame.size.height);
-//    aButtonSegment.tintColor = [UIColor colorWithRed:0.890 green:0.863f blue:0.592f alpha:1.0f];
+    aButtonSegment.frame = CGRectMake(self.frame.size.width - inset - kSCHNotesViewTextXInset - aButtonSegment.frame.size.width - 8, inset + ((kSCHNotesViewToolbarHeight - aButtonSegment.frame.size.height)/2.0f), aButtonSegment.frame.size.width + 8, aButtonSegment.frame.size.height);
+
     aButtonSegment.tintColor = [UIColor colorWithRed:0.106 green:0.584 blue:0.871 alpha:1.0f];
     [[aButtonSegment imageForSegmentAtIndex:0] setAccessibilityLabel:NSLocalizedString(@"Save", @"Accessibility label for Notes View Save button")];
     
@@ -171,21 +176,24 @@ static NSString * const BlioNotesViewExitToTopAnimation = @"BlioNotesViewExitToT
     [dateFormat setDateStyle:NSDateFormatterShortStyle];
     NSString *dateString = [dateFormat stringFromDate:date];  
     [dateFormat release];
-    if (nil != self.page)
-		toolbarLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Page %@, %@",@"\"Page %@, %@\" toolbar label for Notes View"), self.page, dateString];
-    else
-        toolbarLabel.text = [NSString stringWithFormat:@"%@", self.page, dateString];
-    toolbarLabel.adjustsFontSizeToFitWidth = YES;
-    //toolbarLabel.font = [UIFont boldSystemFontOfSize:14.0f];
-    toolbarLabel.font = [UIFont fontWithName:@"Marker Felt" size:18.0f];
-    toolbarLabel.backgroundColor = [UIColor clearColor];
-    toolbarLabel.textAlignment = UITextAlignmentCenter;
+
+    if (nil != self.page) {
+		self.toolbarLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Page %@, %@",@"\"Page %@, %@\" toolbar label for Notes View"), self.page, dateString];
+    } else {
+        self.toolbarLabel.text = [NSString stringWithFormat:@"%@", self.page, dateString];
+    }
+    
+    self.toolbarLabel.adjustsFontSizeToFitWidth = YES;
+    //self.toolbarLabel.font = [UIFont boldSystemFontOfSize:14.0f];
+    self.toolbarLabel.font = [UIFont fontWithName:@"Marker Felt" size:18.0f];
+    self.toolbarLabel.backgroundColor = [UIColor clearColor];
+    self.toolbarLabel.textAlignment = UITextAlignmentCenter;
     
     UITextView *aTextView = [[UITextView alloc] initWithFrame:
-                             CGRectMake(inset + kBlioNotesViewTextXInset, 
-                                        inset + kBlioNotesViewToolbarHeight + kBlioNotesViewTextTopInset, 
-                                        self.frame.size.width - 2*(inset + kBlioNotesViewTextXInset), 
-                                        self.frame.size.height - 2*inset - kBlioNotesViewTextTopInset - kBlioNotesViewTextBottomInset - kBlioNotesViewToolbarHeight)];
+                             CGRectMake(inset + kSCHNotesViewTextXInset, 
+                                        inset + kSCHNotesViewToolbarHeight + kSCHNotesViewTextTopInset, 
+                                        self.frame.size.width - 2*(inset + kSCHNotesViewTextXInset), 
+                                        self.frame.size.height - 2*inset - kSCHNotesViewTextTopInset - kSCHNotesViewTextBottomInset - kSCHNotesViewToolbarHeight)];
     //aTextView.font = [UIFont boldSystemFontOfSize:14.0f];
     aTextView.font = [UIFont fontWithName:@"Marker Felt" size:18.0f];
     aTextView.backgroundColor = [UIColor clearColor];
@@ -199,7 +207,7 @@ static NSString * const BlioNotesViewExitToTopAnimation = @"BlioNotesViewExitToT
     if (animated) {
         CGFloat yOffscreen = -CGRectGetMaxY(self.frame);
         self.transform = CGAffineTransformMakeTranslation(0, yOffscreen);
-        [UIView beginAnimations:BlioNotesViewShowFromTopAnimation context:nil];
+        [UIView beginAnimations:SCHNotesViewShowFromTopAnimation context:nil];
         [UIView setAnimationDelegate:self];
         [UIView setAnimationWillStartSelector:@selector(animationWillStart:context:)];
         [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
@@ -285,16 +293,14 @@ void addRoundedRectToPath(CGContextRef c, CGFloat radius, CGRect rect) {
     
     CGFloat inset;
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        inset = kBlioNotesViewPhoneShadow;
-        CGContextSetShadowWithColor(ctx, CGSizeZero, kBlioNotesViewPhoneShadow, [UIColor colorWithWhite:0.3f alpha:0.8f].CGColor);
+        inset = kSCHNotesViewPhoneShadow;
+        CGContextSetShadowWithColor(ctx, CGSizeZero, kSCHNotesViewPhoneShadow, [UIColor colorWithWhite:0.3f alpha:0.8f].CGColor);
     } else {
-        inset = kBlioNotesViewPadBorder;
+        inset = kSCHNotesViewPadBorder;
     }
     
     CGRect inRect = CGRectInset(rect, inset, inset);
     CGContextBeginTransparencyLayer(ctx, NULL);
-    
-    //[UIColor colorWithRed:0.141 green:0.224 blue:0.443 alpha:1.]
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         CGContextBeginPath(ctx);
@@ -307,8 +313,6 @@ void addRoundedRectToPath(CGContextRef c, CGFloat radius, CGRect rect) {
         drawGlossGradient(ctx, glossRect);
     }
     
-//    CGFloat components[8] = { 0.996f, 0.976f, 0.718f, 1.0f,  // Start color
-//        0.996f, 0.969f, 0.537f, 1.0f }; // End color
     CGFloat components[8] = { 0.561f, 0.804f, 0.953f, 1.0f,  // Start color
         0.486f, 0.773f, 0.945f, 1.0f }; // End color
     
@@ -324,7 +328,7 @@ void addRoundedRectToPath(CGContextRef c, CGFloat radius, CGRect rect) {
     CGContextSetRGBFillColor(ctx, 1.0f, 1.0f, 1.0f, 0.7f);
     
     CGContextSetShadow(ctx, CGSizeMake(0,1), 0);
-    CGContextFillRect(ctx, CGRectMake(inRect.origin.x + kBlioNotesViewTextXInset, inRect.origin.y + kBlioNotesViewToolbarHeight + 1, inRect.size.width - 2 * kBlioNotesViewTextXInset, 1));
+    CGContextFillRect(ctx, CGRectMake(inRect.origin.x + kSCHNotesViewTextXInset, inRect.origin.y + kSCHNotesViewToolbarHeight + 1, inRect.size.width - 2 * kSCHNotesViewTextXInset, 1));
     
     CGContextRestoreGState(ctx);
     
@@ -345,7 +349,7 @@ void addRoundedRectToPath(CGContextRef c, CGFloat radius, CGRect rect) {
     [self.textView resignFirstResponder];
     CGFloat yOffscreen = -CGRectGetMaxY(self.frame);
     
-    [UIView beginAnimations:BlioNotesViewExitToTopAnimation context:self];
+    [UIView beginAnimations:SCHNotesViewExitToTopAnimation context:self];
     [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
     [UIView setAnimationDuration:0.35f];
     [UIView setAnimationDelegate:self];
@@ -355,21 +359,6 @@ void addRoundedRectToPath(CGContextRef c, CGFloat radius, CGRect rect) {
     
     [self.showInView setUserInteractionEnabled:YES];
 	
-	// Remove highlight if there was no pre-existing note and
-	// we didn't just save a new one.  (We can't just use "!self.note"
-	// because a note we just saved may not have yet been persisted.)
-//	if (!self.note  && !self.noteSaved) {
-//		if ([self.delegate respondsToSelector:@selector(removeHighlightAtRange:)]) {
-//			[self.delegate performSelector:@selector(removeHighlightAtRange:) withObject:self.range]; 
-//		}
-//		
-//		if ([self.delegate respondsToSelector:@selector(refreshHighlights)]) {
-//			[self.delegate performSelector:@selector(refreshHighlights)]; 
-//		}
-//        
-//	}
-//	self.noteSaved = NO;
-    
 }
 
 - (void)save:(id)sender {
@@ -380,17 +369,31 @@ void addRoundedRectToPath(CGContextRef c, CGFloat radius, CGRect rect) {
 //        if ([self.delegate respondsToSelector:@selector(notesViewCreateNote:)])
 //            [self.delegate performSelector:@selector(notesViewCreateNote:) withObject:self];
 //    }
+    
+    if ([self.delegate respondsToSelector:@selector(notesViewSaved:)]) {
+        [self.delegate performSelector:@selector(notesViewSaved:) withObject:self];
+    }
+    
+    [self dismiss:sender];
+}
+
+- (void)cancel:(id)sender {
+    
+    if ([self.delegate respondsToSelector:@selector(notesViewCancelled:)]) {
+        [self.delegate performSelector:@selector(notesViewCancelled:) withObject:self];
+    }
+    
     [self dismiss:sender];
 }
 
 - (void)animationWillStart:(NSString *)animationID context:(void *)context {
-    if ([animationID isEqualToString:BlioNotesViewShowFromTopAnimation]) {
+    if ([animationID isEqualToString:SCHNotesViewShowFromTopAnimation]) {
         [self.textView becomeFirstResponder];
     }
 }
 
 - (void)animationDidStop:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context {
-    if ([animationID isEqualToString:BlioNotesViewExitToTopAnimation]) {
+    if ([animationID isEqualToString:SCHNotesViewExitToTopAnimation]) {
         [(UIView *)context removeFromSuperview];
         
 //        if ([self.delegate respondsToSelector:@selector(notesViewDismissed)])
