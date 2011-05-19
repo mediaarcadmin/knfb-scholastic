@@ -16,13 +16,13 @@
 #import "SCHXPSProvider.h"
 #import "SCHCustomNavigationBar.h"
 #import "SCHCustomToolbar.h"
-#import "SCHReadingNotesViewController.h"
+#import "SCHReadingNotesListController.h"
 #import "SCHSyncManager.h"
 #import "SCHProfileItem.h"
 #import "SCHBookPoint.h"
 #import "SCHLastPage.h"
 #import "SCHBookAnnotations.h"
-#import "SCHNotesView.h"
+#import "SCHReadingNoteView.h"
 
 // constants
 static const CGFloat kReadingViewStandardScrubHeight = 47.0f;
@@ -528,7 +528,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         [self.optionsView removeFromSuperview];
     }
     
-    SCHReadingNotesViewController *notesController = [[SCHReadingNotesViewController alloc] initWithNibName:nil bundle:nil];
+    SCHReadingNotesListController *notesController = [[SCHReadingNotesListController alloc] initWithNibName:nil bundle:nil];
     notesController.isbn = self.isbn;
     notesController.delegate = self;
     [self.navigationController presentModalViewController:notesController animated:YES];
@@ -985,10 +985,10 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 #pragma mark - SCHReadingNotesViewDelegate methods
 
-- (void)readingNotesViewCreatingNewNote:(SCHReadingNotesViewController *)readingNotesView
+- (void)readingNotesViewCreatingNewNote:(SCHReadingNotesListController *)readingNotesView
 {
     NSLog(@"Requesting a new note be created!");
-    SCHNotesView *aNotesView = [[SCHNotesView alloc] initWithFrame:CGRectZero];
+    SCHReadingNoteView *aNotesView = [[SCHReadingNoteView alloc] initWithFrame:CGRectZero];
     aNotesView.page = [NSString stringWithFormat:@"%d", self.currentPageIndex + 1];
     aNotesView.noteText = @"New note";
     aNotesView.delegate = self;
@@ -999,9 +999,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [aNotesView release];
 }
 
-- (void)readingNotesView:(SCHReadingNotesViewController *)readingNotesView didSelectNote:(NSString *)note
+- (void)readingNotesView:(SCHReadingNotesListController *)readingNotesView didSelectNote:(NSString *)note
 {
-    SCHNotesView *aNotesView = [[SCHNotesView alloc] initWithFrame:CGRectZero];
+    SCHReadingNoteView *aNotesView = [[SCHReadingNoteView alloc] initWithFrame:CGRectZero];
     aNotesView.page = [NSString stringWithFormat:@"%d", self.currentPageIndex + 1];
     aNotesView.noteText = @"Existing note";
     aNotesView.delegate = self;
@@ -1013,12 +1013,12 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 #pragma mark - SCHNotesViewDelegate methods
 
-- (void)notesViewSaved:(SCHNotesView *)notesView
+- (void)notesViewSaved:(SCHReadingNoteView *)notesView
 {
     [self setToolbarVisibility:YES animated:YES];
 }
 
-- (void)notesViewCancelled:(SCHNotesView *)notesView
+- (void)notesViewCancelled:(SCHReadingNoteView *)notesView
 {
     [self setToolbarVisibility:YES animated:YES];
 }

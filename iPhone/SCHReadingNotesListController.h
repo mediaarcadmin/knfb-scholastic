@@ -1,5 +1,5 @@
 //
-//  SCHReadingNotesViewController.h
+//  SCHReadingNotesListController.h
 //  Scholastic
 //
 //  Created by Gordon Christie on 03/05/2011.
@@ -9,15 +9,15 @@
 #import <UIKit/UIKit.h>
 
 @class SCHCustomToolbar;
-@protocol SCHReadingNotesViewControllerDelegate;
+@protocol SCHReadingNotesListControllerDelegate;
 
-@interface SCHReadingNotesViewController : UIViewController <UITableViewDelegate, UITableViewDataSource> {
+@interface SCHReadingNotesListController : UIViewController <UITableViewDelegate, UITableViewDataSource> {
     
     UIImageView *topShadow;
 }
 
 @property (nonatomic, retain) NSString *isbn;
-@property (nonatomic, assign) id <SCHReadingNotesViewControllerDelegate> delegate;
+@property (nonatomic, assign) id <SCHReadingNotesListControllerDelegate> delegate;
 
 // interface builder
 @property (nonatomic, retain) IBOutlet UITableView *notesTableView;
@@ -31,11 +31,11 @@
 
 @end
 
-@protocol SCHReadingNotesViewControllerDelegate <NSObject>
+@protocol SCHReadingNotesListControllerDelegate <NSObject>
 
 @optional
-- (void)readingNotesView:(SCHReadingNotesViewController *)readingNotesView didSelectNote:(NSString *)note;
-- (void)readingNotesViewCreatingNewNote:(SCHReadingNotesViewController *)readingNotesView;
+- (void)readingNotesView:(SCHReadingNotesListController *)readingNotesView didSelectNote:(NSString *)note;
+- (void)readingNotesViewCreatingNewNote:(SCHReadingNotesListController *)readingNotesView;
 
 @end
 

@@ -1,5 +1,5 @@
 //
-//  SCHNotesView.h
+//  SCHReadingNoteView.h
 //  Scholastic
 //
 //  Created by Gordon Christie on 19/05/2011.
@@ -9,13 +9,13 @@
 
 #import <UIKit/UIKit.h>
 
-@protocol SCHNotesViewDelegate;
+@protocol SCHReadingNoteViewDelegate;
 
-@interface SCHNotesView : UIView {
+@interface SCHReadingNoteView : UIView {
     
 }
 
-@property (nonatomic, assign) id <SCHNotesViewDelegate> delegate;
+@property (nonatomic, assign) id <SCHReadingNoteViewDelegate> delegate;
 @property (nonatomic, retain) UITextView *textView;
 @property (nonatomic, retain) UILabel *toolbarLabel;
 @property (nonatomic, copy) NSString *page;
@@ -27,11 +27,11 @@
 
 @end
 
-@protocol SCHNotesViewDelegate <NSObject>
+@protocol SCHReadingNoteViewDelegate <NSObject>
 
 @optional
 
-- (void)notesViewSaved:(SCHNotesView *)notesView;
-- (void)notesViewCancelled:(SCHNotesView *)notesView;
+- (void)notesViewSaved:(SCHReadingNoteView *)notesView;
+- (void)notesViewCancelled:(SCHReadingNoteView *)notesView;
 
 @end

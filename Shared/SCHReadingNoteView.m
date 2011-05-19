@@ -1,5 +1,5 @@
 //
-//  SCHNotesView.m
+//  SCHReadingNoteView.m
 //  Scholastic
 //
 //  Created by Gordon Christie on 19/05/2011.
@@ -7,7 +7,7 @@
 //
 //  Ported from Blio - BlioNotesView
 
-#import "SCHNotesView.h"
+#import "SCHReadingNoteView.h"
 #import <QuartzCore/QuartzCore.h>
 #import "UIImage+BlioAdditions.h"
 
@@ -30,7 +30,7 @@ static NSString * const SCHNotesViewExitToTopAnimation = @"SCHNotesViewExitToTop
 
 #pragma mark - Class Extension
 
-@interface SCHNotesView()
+@interface SCHReadingNoteView()
 
 @property (nonatomic, assign) UIView *showInView;
 @property CGFloat bottomInset;
@@ -39,7 +39,7 @@ static NSString * const SCHNotesViewExitToTopAnimation = @"SCHNotesViewExitToTop
 
 #pragma mark -
 
-@implementation SCHNotesView
+@implementation SCHReadingNoteView
 
 @synthesize delegate;
 @synthesize textView;
