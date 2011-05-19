@@ -18,5 +18,6 @@
 
 - (void)setup;
 - (void)setupLocalDataWithXPSFiles:(NSArray *)XPSFiles;
+- (void)checkImports;
 
 @end

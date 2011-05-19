@@ -123,16 +123,17 @@ static NSString* const prModelCertFilename = @"iphonecert.dat";
     NSArray *books = [moc executeFetchRequest:request error:&error];
     [request release];
     
+    SCHLocalDebug *localDebug = [[SCHLocalDebug alloc] init];
+    localDebug.managedObjectContext = moc;
     if (![books count])
     {
         NSLog(@"Copying local files as none present in database");
-        SCHLocalDebug *localDebug = [[SCHLocalDebug alloc] init];
-        localDebug.managedObjectContext = moc;
         [localDebug setup];
-        [localDebug release];
     } else {
         NSLog(@"Not copying local files as already present in database");
+        [localDebug checkImports];
     }
+    [localDebug release];
 #endif
 }
 
