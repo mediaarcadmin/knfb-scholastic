@@ -22,6 +22,7 @@
 #import "SCHBookPoint.h"
 #import "SCHLastPage.h"
 #import "SCHBookAnnotations.h"
+#import "SCHNotesView.h"
 
 // constants
 static const CGFloat kReadingViewStandardScrubHeight = 47.0f;
@@ -511,6 +512,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     
     SCHReadingNotesViewController *notesController = [[SCHReadingNotesViewController alloc] initWithNibName:nil bundle:nil];
     notesController.isbn = self.isbn;
+    notesController.delegate = self;
     [self.navigationController presentModalViewController:notesController animated:YES];
     [notesController release];
     
@@ -962,5 +964,26 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 		self.initialFadeTimer = nil;
 	}
 }	
+
+#pragma mark - SCHReadingNotesViewDelegate methods
+
+- (void)readingNotesViewCreatingNewNote:(SCHReadingNotesViewController *)readingNotesView
+{
+    NSLog(@"Requesting a new note be created!");
+    SCHNotesView *aNotesView = [[SCHNotesView alloc] initWithFrame:CGRectZero];
+    aNotesView.page = [NSString stringWithFormat:@"%d", self.currentPageIndex + 1];
+    aNotesView.noteText = @"New note";
+    [aNotesView showInView:self.view animated:YES];
+    [aNotesView release];
+}
+
+- (void)readingNotesView:(SCHReadingNotesViewController *)readingNotesView didSelectNote:(NSString *)note
+{
+    SCHNotesView *aNotesView = [[SCHNotesView alloc] initWithFrame:CGRectZero];
+    aNotesView.page = [NSString stringWithFormat:@"%d", self.currentPageIndex + 1];
+    aNotesView.noteText = @"Existing note";
+    [aNotesView showInView:self.view animated:YES];
+    [aNotesView release];
+}
 
 @end

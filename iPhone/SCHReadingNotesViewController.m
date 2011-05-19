@@ -29,6 +29,7 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
 
 @implementation SCHReadingNotesViewController
 
+@synthesize delegate;
 @synthesize noteCellNib;
 @synthesize notesTableView;
 @synthesize notesCell;
@@ -43,6 +44,8 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
 
 -(void)dealloc {
     [self releaseViewObjects];
+    
+    delegate = nil;
     
     [isbn release], isbn = nil;
     [noteCellNib release], noteCellNib = nil;
@@ -158,6 +161,15 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
     [self dismissModalViewControllerAnimated:YES];
 }
 
+- (IBAction)addNoteButtonAction:(id)sender
+{
+    if (self.delegate && [delegate respondsToSelector:@selector(readingNotesView:didSelectNote:)]) {
+        [delegate readingNotesViewCreatingNewNote:self];
+    }
+
+    [self dismissModalViewControllerAnimated:YES];
+}
+
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -208,6 +220,15 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
     }
     
     return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (self.delegate && [delegate respondsToSelector:@selector(readingNotesView:didSelectNote:)]) {
+        [delegate readingNotesView:self didSelectNote:@"FIXME: dummy note"];
+    }
+    
+    [self dismissModalViewControllerAnimated:YES];
 }
 
 @end
