@@ -32,6 +32,7 @@ static int32_t const kSCHAudioBookPlayerMilliSecondTimescale = 1000;
 @synthesize player;
 @synthesize timeObserver;
 @synthesize wordTiming;
+@dynamic playing;
 
 - (id)initWithAudioFile:(NSURL *)aAudioFile wordTimingFilePath:(NSString *)aWordTimingFilePath 
 {
@@ -123,6 +124,11 @@ static int32_t const kSCHAudioBookPlayerMilliSecondTimescale = 1000;
 - (void)pause
 {
     [self.player pause];
+}
+
+- (BOOL)playing
+{
+    return(self.player.rate > 0.0);
 }
 
 @end

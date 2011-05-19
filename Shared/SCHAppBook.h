@@ -32,6 +32,11 @@ static NSString * const kSCHAppBookSmartZoomPageMarkers = @"SmartZoomPageMarkers
 static NSString * const kSCHAppBookLayoutPageEquivalentCount = @"LayoutPageEquivalentCount";
 static NSString * const kSCHAppBookAudioBookReferences = @"AudioBookReferences";
 
+
+// Audio File keys
+static NSString * const kSCHAppBookAudioFile = @"AudioFile";
+static NSString * const kSCHAppBookTimingFile = @"TimingFile";
+
 // XPS Categories
 static NSString * const kSCHAppBookYoungReader = @"YoungReader";
 static NSString * const kSCHAppBookOldReader = @"OldReader";

@@ -22,6 +22,7 @@
 #import "SCHBookPoint.h"
 #import "SCHLastPage.h"
 #import "SCHBookAnnotations.h"
+#import "SCHAudioBookPlayer.h"
 
 // constants
 static const CGFloat kReadingViewStandardScrubHeight = 47.0f;
@@ -62,6 +63,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 @property (nonatomic, assign) SCHReadingViewPaperType paperType;
 @property (nonatomic, assign) SCHReadingViewLayoutType layoutType;
+
+@property (nonatomic, retain) SCHAudioBookPlayer *audioBookPlayer;
 
 - (void)releaseViewObjects;
 
@@ -122,6 +125,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 @synthesize topShadow;
 @synthesize bottomShadow;
 
+@synthesize audioBookPlayer;
+
 #pragma mark - Dealloc and View Teardown
 
 - (void)dealloc 
@@ -130,6 +135,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [self releaseViewObjects];
     [isbn release], isbn = nil;
     [profile release], profile = nil;
+    [audioBookPlayer release], audioBookPlayer = nil;
     
     [super dealloc];
 }
@@ -492,6 +498,37 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (IBAction)audioPlayAction:(id)sender
 {
     NSLog(@"Audio Play action");
+	
+    SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];
+    NSArray *audioBookReferences = [book valueForKey:kSCHAppBookAudioBookReferences];
+   
+    if(audioBookReferences != nil) {
+        if (self.audioBookPlayer == nil) {
+            NSDictionary *audioBookReference = [audioBookReferences objectAtIndex:0];
+            NSURL *audioFile = [NSURL URLWithString:[audioBookReference valueForKey:kSCHAppBookAudioFile]];
+            NSString *timingFile = [audioBookReference valueForKey:kSCHAppBookTimingFile];
+            self.audioBookPlayer = [[SCHAudioBookPlayer alloc] initWithAudioFile:audioFile 
+                                                              wordTimingFilePath:timingFile];
+            self.audioBookPlayer.delegate = self;
+            [self.audioBookPlayer play];
+        } else if(self.audioBookPlayer.playing == NO) {
+            [self.audioBookPlayer play];
+        } else {
+            [self.audioBookPlayer pause];        
+        }
+    }
+}
+
+#pragma mark - Audio Book Delegate methods
+
+- (void)audioBookPlayerDidFinishPlaying:(SCHAudioBookPlayer *)player successfully:(BOOL)flag
+{
+
+}
+
+- (void)audioBookPlayerErrorDidOccur:(SCHAudioBookPlayer *)player error:(NSError *)error
+{
+
 }
 
 - (IBAction)storyInteractionAction:(id)sender

@@ -15,6 +15,7 @@
 }
 
 @property (nonatomic, assign) id<SCHAudioBookPlayerDelegate> delegate; 
+@property (nonatomic, readonly) BOOL playing;
 
 - (id)initWithAudioFile:(NSURL *)aAudioFile wordTimingFilePath:(NSString *)aWordTimingFilePath;
 - (BOOL)playAtTime:(NSUInteger)milliseconds;
