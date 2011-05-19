@@ -176,7 +176,9 @@
 - (NSString *)xpsPath
 {
 #if LOCALDEBUG
-	return [[NSBundle mainBundle] pathForResource:self.ContentMetadataItem.FileName ofType:@"xps"];
+    return [NSString stringWithFormat:@"%@/%@.xps", 
+            [NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES) lastObject], 
+            self.ContentMetadataItem.FileName];
 #else
 	return [NSString stringWithFormat:@"%@/%@-%@.xps", 
 			[self cacheDirectory], 

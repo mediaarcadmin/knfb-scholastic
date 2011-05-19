@@ -28,7 +28,7 @@
 
 @interface SCHLocalDebug ()
 
-- (void)checkAndCopyLocalFilesToApplicationSupport;
+- (void)checkAndCopyLocalFilesToApplicationSupport:(NSString*)srcDir deleteSrc:(BOOL)delete;
 - (void)clearProfiles;
 - (void)clearUserContentItems;
 - (void)clearBooks;
@@ -49,6 +49,102 @@
 	[super dealloc];
 }
 
+- (void)checkImports 
+{
+    NSArray *xpsFiles = nil;
+    NSError *error = nil;
+    NSArray * importPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString* importPath = ([importPaths count] > 0) ? [importPaths objectAtIndex:0] : nil;
+    NSArray *importContents = (NSArray *)[[NSFileManager defaultManager] contentsOfDirectoryAtPath:importPath error:&error];
+    
+    NSMutableArray *xpsContents = [[NSMutableArray alloc] init];
+    for (NSString *item in [importContents filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"self ENDSWITH '.xps'"]]) {
+        [xpsContents addObject:item];
+    }
+    xpsFiles = [NSArray arrayWithArray:xpsContents];
+    [xpsContents release];
+    
+    if ( [xpsFiles count] == 0 ) {
+        NSLog(@"No files to import.");
+        return;
+    }
+    
+    [self checkAndCopyLocalFilesToApplicationSupport:importPath deleteSrc:YES];
+    
+    NSDate *now = [NSDate date];
+    SCHContentMetadataItem *newContentMetadataItem = nil;
+	SCHUserContentItem *newUserContentItem = nil;
+	SCHContentProfileItem *newContentProfileItem = nil;
+    NSMutableArray *importedBooks = [[NSMutableArray alloc] init];
+    
+    NSArray  *applicationSupportPaths = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);
+    NSString *applicationSupportPath = ([applicationSupportPaths count] > 0) ? [applicationSupportPaths objectAtIndex:0] : nil;
+    if ( applicationSupportPath == nil ) {
+        NSLog(@"Error importing book: application support directory doesn't exist.");
+        return;
+    }
+	for (NSInteger count = 0; count < [xpsFiles count]; count++) {
+        NSString *xpsFile = [xpsFiles objectAtIndex:count];
+        
+		newContentMetadataItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHContentMetadataItem inManagedObjectContext:self.managedObjectContext];
+		newContentMetadataItem.AppBook = [NSEntityDescription insertNewObjectForEntityForName:kSCHAppBook inManagedObjectContext:self.managedObjectContext];
+        
+        NSString *currentPath = [[applicationSupportPath stringByAppendingString:@"/"] stringByAppendingString:xpsFile];
+        xpsFile = [xpsFile stringByDeletingPathExtension];
+		
+		SCHLocalDebugXPSReader *provider = [[SCHLocalDebugXPSReader alloc] initWithPath:currentPath];
+		
+		if (provider.ISBN != nil && [[provider.ISBN stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {
+			newContentMetadataItem.ContentIdentifierType = [NSNumber numberWithContentIdentifierType:kSCHContentItemContentIdentifierTypesISBN13];
+		} else {
+			newContentMetadataItem.ContentIdentifierType = [NSNumber numberWithContentIdentifierType:kSCHContentIdentifierTypesNone];			
+		}
+		newContentMetadataItem.ContentIdentifier = provider.ISBN;
+        [importedBooks addObject:provider.ISBN];
+        
+		newContentMetadataItem.Author = provider.author;
+		newContentMetadataItem.FileSize = [NSNumber numberWithLongLong:provider.fileSize];
+		newContentMetadataItem.PageNumber = [NSNumber numberWithInteger:provider.pageCount];
+		newContentMetadataItem.Title = provider.title;
+		newContentMetadataItem.FileName = xpsFile;		
+		
+		[provider release];
+  
+        // Add the book to the all books (Jimmy's) profile
+        newUserContentItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHUserContentItem inManagedObjectContext:self.managedObjectContext];
+		
+		newUserContentItem.LastModified = now;
+		
+		newUserContentItem.ContentIdentifier = newContentMetadataItem.ContentIdentifier;
+		newUserContentItem.ContentIdentifierType = newContentMetadataItem.ContentIdentifierType;
+        
+        newContentProfileItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHContentProfileItem inManagedObjectContext:self.managedObjectContext];			
+		
+		newContentProfileItem.LastModified = now;
+		newContentProfileItem.IsFavorite = [NSNumber numberWithBool:YES];
+        newContentProfileItem.ProfileID = [NSNumber numberWithInt:3];
+		
+		[newUserContentItem addProfileListObject:newContentProfileItem];	
+        
+        NSError *error;
+        if (![self.managedObjectContext save:&error]) {
+            NSLog(@"Error saving managed object context: %@ : %@", error, [error userInfo]); 
+        }
+       
+        [[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:newUserContentItem.ContentIdentifier state:SCHBookProcessingStateNoCoverImage];
+		
+	}
+    
+	// Save the context.
+	if (![self.managedObjectContext save:&error]) {
+		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+		abort();
+	}	
+    
+	[[NSNotificationCenter defaultCenter] postNotificationName:kSCHBookshelfSyncComponentComplete object:self];
+    
+}
+
 - (void)setup
 {
 	static BOOL runOnce = NO;
@@ -58,14 +154,11 @@
 		NSError *error = nil;
 		NSArray *xpsFiles = nil;
 		
-		[self checkAndCopyLocalFilesToApplicationSupport];
-		
-		//	NSString *bundleRoot = [[NSBundle mainBundle] bundlePath];
+        [self checkAndCopyLocalFilesToApplicationSupport:[[NSBundle mainBundle] bundlePath] deleteSrc:NO];
 		
 		NSArray  *applicationSupportPaths = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);
 		NSString *applicationSupportPath = ([applicationSupportPaths count] > 0) ? [applicationSupportPaths objectAtIndex:0] : nil;
-		
-		NSArray *dirContents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:applicationSupportPath error:&error];
+        NSArray *dirContents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:applicationSupportPath error:&error];
 		
 		if (error) {
 			NSLog(@"Error: %@", [error localizedDescription]);
@@ -82,10 +175,12 @@
 		[trimmedXpsContents release];
 		
 		[self setupLocalDataWithXPSFiles:xpsFiles];		
+        
 	}
 }
 
-- (void)checkAndCopyLocalFilesToApplicationSupport
+
+- (void)checkAndCopyLocalFilesToApplicationSupport:(NSString*)srcDir deleteSrc:(BOOL)delete
 {
 	// first, check the application support directory exists, and if
 	// not, create it. (code from Blio)
@@ -112,15 +207,14 @@
 	
 	// now create a list of bundle XPS files
 	NSError *error = nil;
-	NSString *bundleRoot = [[NSBundle mainBundle] bundlePath];
-	NSArray *bundleDirContents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:bundleRoot error:&error];
+    NSArray *srcDirContents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:srcDir error:&error];
 	
 	if (error) {
 		NSLog(@"Error: %@", [error localizedDescription]);
 		return;
 	}
 	
-	NSArray *bundleXPSContents = [bundleDirContents filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"self ENDSWITH '.xps'"]];
+    NSArray *srcXPSContents = [srcDirContents filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"self ENDSWITH '.xps'"]];
 	
 	NSArray *appDirContents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:applicationSupportPath error:&error];
 	if (error) {
@@ -130,8 +224,7 @@
 	
 	NSArray *supportDirXPSContents = [appDirContents filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"self ENDSWITH '.xps'"]];
 	
-	
-	for (NSString *item in bundleXPSContents) {
+	for (NSString *item in srcXPSContents) {
 		
 		bool fileAlreadyCopied = NO;
 		
@@ -143,7 +236,7 @@
 		}
 		
 		if (!fileAlreadyCopied) {
-			NSString *fullSourcePath = [NSString stringWithFormat:@"%@/%@", bundleRoot, item];
+            NSString *fullSourcePath = [NSString stringWithFormat:@"%@/%@", srcDir, item];
 			NSString *fullDestinationPath = [NSString stringWithFormat:@"%@/%@", applicationSupportPath, item];
 			
 			[[NSFileManager defaultManager] copyItemAtPath:fullSourcePath toPath:fullDestinationPath error:&error];
@@ -151,8 +244,18 @@
 				NSLog(@"File copy error: %@, %@",
 					  error, [error userInfo]);
 			}
+            
+            if (delete) {
+                if (![[NSFileManager defaultManager] removeItemAtPath:fullSourcePath error:&error]) {
+                    NSLog(@"Failed to delete file to import %@ in the Documents Directory with error: %@", 
+                          item, [error localizedDescription]);
+                }
+                else 
+                    NSLog(@"Successfully deleted file to import %@ in the Documents Directory.",item);
+            }
 		}
 	}
+        
 }
 
 - (void)setupLocalDataWithXPSFiles:(NSArray *)XPSFiles

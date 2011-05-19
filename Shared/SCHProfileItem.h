@@ -22,9 +22,10 @@ static NSString * const kSCHProfileItemFetchAnnotationsForProfileBook = @"fetchA
 static NSString * const kSCHProfileItemPROFILE_ID = @"PROFILE_ID";
 static NSString * const kSCHProfileItemCONTENT_IDENTIFIER = @"CONTENT_IDENTIFIER";
 
-@interface SCHProfileItem : SCHSyncEntity {
-
+@interface SCHProfileItem : SCHSyncEntity 
+{
 }
+
 @property (nonatomic, retain) NSNumber * StoryInteractionEnabled;
 @property (nonatomic, retain) NSNumber * ID;
 @property (nonatomic, retain) NSDate * LastPasswordModified;
@@ -52,9 +53,7 @@ static NSString * const kSCHProfileItemCONTENT_IDENTIFIER = @"CONTENT_IDENTIFIER
 - (BOOL)validatePasswordWith:(NSString *)withPassword;
 
 - (BOOL)contentIdentifierFavorite:(NSString *)contentIdentifier;
-- (void)setContentIdentifier:(NSString *)contentIdentifier favorite:(BOOL)flag;
 - (NSInteger)contentIdentifierLastPageLocation:(NSString *)contentIdentifier;
-- (void)setContentIdentifier:(NSString *)contentIdentifier lastPageLocation:(NSInteger)lastPageLocation;
 
 @end
 
