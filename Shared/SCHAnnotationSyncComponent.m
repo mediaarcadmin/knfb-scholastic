@@ -30,6 +30,7 @@
 
 - (BOOL)updateProfileContentAnnotations;
 - (void)setSyncDate:(NSDate *)date;
+- (NSArray *)localModifiedAnnotationsItemForProfile:(NSNumber *)profileID;
 - (NSArray *)localAnnotationsItemForProfile:(NSNumber *)profileID;
 - (void)syncProfileContentAnnotations:(NSDictionary *)profileContentAnnotationList;
 - (void)syncAnnotationsContentList:(NSArray *)webAnnotationsContentList 
@@ -224,7 +225,7 @@
     NSArray *books = [self.annotations objectForKey:profileID];
     
     // TODO: only include those annoations with changes
-    NSArray *updatedAnnotations = [self localAnnotationsItemForProfile:profileID];
+    NSArray *updatedAnnotations = [self localModifiedAnnotationsItemForProfile:profileID];
     if ([updatedAnnotations count] > 0) {
         self.isSynchronizing = [self.libreAccessWebService saveProfileContentAnnotations:updatedAnnotations];
         if (self.isSynchronizing == NO) {
@@ -241,6 +242,29 @@
     }
 	
 	return(ret);    
+}
+
+- (NSArray *)localModifiedAnnotationsItemForProfile:(NSNumber *)profileID
+{	
+    NSArray *ret = nil;
+	NSError *error = nil;
+    
+	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+	
+	[fetchRequest setEntity:[NSEntityDescription entityForName:kSCHAnnotationsItem inManagedObjectContext:self.managedObjectContext]];	
+	NSArray *changedStates = [NSArray arrayWithObjects:[NSNumber numberWithStatus:kSCHStatusCreated], 
+                              [NSNumber numberWithStatus:kSCHStatusModified],
+                              [NSNumber numberWithStatus:kSCHStatusDeleted], nil];
+    // we don't check all the annotations as if they have changed then the last page has also change
+	[fetchRequest setPredicate:[NSPredicate predicateWithFormat:
+                                @"ANY AnnotationsContentItem.PrivateAnnotations.LastPage.State IN %@ OR ANY AnnotationsContentItem.PrivateAnnotations.Favorite.State IN %@", 
+                                changedStates, changedStates]];
+	    
+	ret = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    
+	[fetchRequest release], fetchRequest = nil;
+	
+	return(ret);	
 }
 
 - (NSArray *)localAnnotationsItemForProfile:(NSNumber *)profileID
@@ -519,7 +543,8 @@
                                             inManagedObjectContext:self.managedObjectContext];
 		
 		ret.LastModified = [self makeNullNil:[highlight objectForKey:kSCHLibreAccessWebServiceLastModified]];
-		
+        ret.State = [NSNumber numberWithStatus:kSCHStatusUnmodified];
+        
 		ret.ID = [self makeNullNil:[highlight objectForKey:kSCHLibreAccessWebServiceID]];
 		ret.Version = [self makeNullNil:[highlight objectForKey:kSCHLibreAccessWebServiceVersion]];
 		
@@ -663,7 +688,8 @@
                                             inManagedObjectContext:self.managedObjectContext];
 		
 		ret.LastModified = [self makeNullNil:[note objectForKey:kSCHLibreAccessWebServiceLastModified]];
-		
+        ret.State = [NSNumber numberWithStatus:kSCHStatusUnmodified];
+        
 		ret.ID = [self makeNullNil:[note objectForKey:kSCHLibreAccessWebServiceID]];
 		ret.Version = [self makeNullNil:[note objectForKey:kSCHLibreAccessWebServiceVersion]];
 		
@@ -809,7 +835,8 @@
                                             inManagedObjectContext:self.managedObjectContext];
 		
 		ret.LastModified = [self makeNullNil:[bookmark objectForKey:kSCHLibreAccessWebServiceLastModified]];
-		
+        ret.State = [NSNumber numberWithStatus:kSCHStatusUnmodified];
+        
 		ret.ID = [self makeNullNil:[bookmark objectForKey:kSCHLibreAccessWebServiceID]];
 		ret.Version = [self makeNullNil:[bookmark objectForKey:kSCHLibreAccessWebServiceVersion]];
 		
@@ -860,6 +887,7 @@
                                             inManagedObjectContext:self.managedObjectContext];
 		
 		ret.LastModified = [self makeNullNil:[lastPage objectForKey:kSCHLibreAccessWebServiceLastModified]];
+		ret.State = [NSNumber numberWithStatus:kSCHStatusUnmodified];
 		
 		ret.LastPageLocation = [self makeNullNil:[lastPage objectForKey:kSCHLibreAccessWebServiceLastPageLocation]];
 		ret.Percentage = [self makeNullNil:[lastPage objectForKey:kSCHLibreAccessWebServicePercentage]];
