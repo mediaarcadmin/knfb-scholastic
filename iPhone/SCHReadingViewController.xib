@@ -139,7 +139,7 @@
 								<reference key="IBUINormalTitleShadowColor" ref="155484018"/>
 								<object class="NSCustomResource" key="IBUINormalImage">
 									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">icon-highlight.png</string>
+									<string key="NSResourceName">icon-highlights.png</string>
 								</object>
 							</object>
 							<object class="IBUIButton" id="365933732">
@@ -1557,7 +1557,7 @@
 				<bool key="EncodedWithXMLCoder">YES</bool>
 				<string>icon-font-decrease.png</string>
 				<string>icon-font-increase.png</string>
-				<string>icon-highlight.png</string>
+				<string>icon-highlights.png</string>
 				<string>icon-layout-fixed.png</string>
 				<string>icon-layout-flowed.png</string>
 				<string>icon-notes.png</string>
@@ -1569,7 +1569,7 @@
 				<bool key="EncodedWithXMLCoder">YES</bool>
 				<string>{17, 28}</string>
 				<string>{17, 28}</string>
-				<string>{33, 37}</string>
+				<string>{33, 39}</string>
 				<string>{78, 28}</string>
 				<string>{78, 28}</string>
 				<string>{34, 38}</string>
