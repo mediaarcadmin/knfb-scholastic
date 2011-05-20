@@ -64,6 +64,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 @property (nonatomic, assign) SCHReadingViewPaperType paperType;
 @property (nonatomic, assign) SCHReadingViewLayoutType layoutType;
 
+@property (nonatomic, retain) UIPopoverController *popover;
+
 - (void)releaseViewObjects;
 
 - (void)toggleToolbarVisibility;
@@ -103,8 +105,10 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 @synthesize currentFontSizeIndex;
 @synthesize paperType;
 @synthesize layoutType;
+@synthesize popover;
 
 @synthesize optionsView;
+@synthesize popoverOptionsViewController;
 @synthesize fontSegmentedControl;
 @synthesize flowFixedSegmentedControl;
 @synthesize paperTypeSegmentedControl;
@@ -133,7 +137,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [self releaseViewObjects];
     [isbn release], isbn = nil;
+    [popover release], popover = nil;
     [profile release], profile = nil;
+    [popoverOptionsViewController release], popoverOptionsViewController = nil;
     
     [super dealloc];
 }
@@ -412,6 +418,11 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [self setupAssetsForOrientation:toInterfaceOrientation];
     
     [self.readingView willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+    
+    if (self.popover) {
+        [self.popover dismissPopoverAnimated:YES];
+        self.popover = nil;
+    }
 }
 
 #pragma mark -
@@ -552,22 +563,41 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     
 }
 
-- (IBAction)settingsAction:(id)sender
+- (IBAction)settingsAction:(UIButton *)sender
 {
     NSLog(@"Settings action");
     
-    if (self.optionsView.superview) {
-        [self.optionsView removeFromSuperview];
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        if (self.optionsView.superview) {
+            [self.optionsView removeFromSuperview];
+        } else {
+            
+            CGRect optionsFrame = self.optionsView.frame;
+            optionsFrame.origin.x = 0;
+            optionsFrame.origin.y = olderBottomToolbar.frame.origin.y - optionsFrame.size.height;
+            
+            optionsFrame.size.width = self.view.frame.size.width;
+            self.optionsView.frame = optionsFrame;
+            
+            [self.view addSubview:self.optionsView];
+        }
     } else {
+        if (self.popover) {
+            [self.popover dismissPopoverAnimated:YES];
+            self.popover = nil;
+        } else {
+
+            self.popoverOptionsViewController.contentSizeForViewInPopover = CGSizeMake(320, 86);
+            self.popover = [[UIPopoverController alloc] initWithContentViewController:self.popoverOptionsViewController];
+            self.popover.delegate = self;
+            
+            CGRect popoverRect = sender.frame;
+            popoverRect.origin.x -= 10;
+            
+            [self.popover presentPopoverFromRect:popoverRect inView:self.olderBottomToolbar permittedArrowDirections:UIPopoverArrowDirectionDown animated:YES];
+
+        }
         
-        CGRect optionsFrame = self.optionsView.frame;
-        optionsFrame.origin.x = 0;
-        optionsFrame.origin.y = olderBottomToolbar.frame.origin.y - optionsFrame.size.height;
-        
-        optionsFrame.size.width = self.view.frame.size.width;
-        self.optionsView.frame = optionsFrame;
-        
-        [self.view addSubview:self.optionsView];
     }
 }
 
@@ -768,11 +798,12 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
             maxImageHeight -= self.olderBottomToolbar.frame.size.height;
         }
         
-        // if the options view is also visible, reduce available space
-        if ([self.optionsView superview]) {
-            maxImageHeight -= self.optionsView.frame.size.height;
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+            // if the options view is also visible, reduce available space
+            if ([self.optionsView superview]) {
+                maxImageHeight -= self.optionsView.frame.size.height;
+            }
         }
-        
         // shrink the thumb image to 75% - thumb quality is not great
         int desiredHeight = (int) (imageSize.height * 0.75);
         
@@ -814,7 +845,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         bottomLimit -= self.olderBottomToolbar.frame.size.height;
     }
     
-    if ([self.optionsView superview]) {
+    if ([self.optionsView superview] && UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
         bottomLimit -= self.optionsView.frame.size.height;
     }
     
@@ -991,7 +1022,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         if (!youngerMode) {
             [self.olderBottomToolbar setAlpha:1.0f];
         }
-        [self.optionsView setAlpha:1.0f];
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+            [self.optionsView setAlpha:1.0f];
+        }
         [self.topShadow setAlpha:1.0f];   
         [self.bottomShadow setAlpha:1.0f];  
 	} else {
@@ -1001,7 +1034,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
             [self.olderBottomToolbar setAlpha:0.0f];
         }
         
-        [self.optionsView setAlpha:0.0f];
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+            [self.optionsView setAlpha:0.0f];
+        }
         [self.topShadow setAlpha:0.0f];
         [self.bottomShadow setAlpha:0.0f];
 	}
@@ -1063,6 +1098,14 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (void)notesViewCancelled:(SCHReadingNoteView *)notesView
 {
     [self setToolbarVisibility:YES animated:YES];
+}
+
+#pragma mark - UIPopoverControllerDelegate methods
+
+- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
+{
+    [self.optionsView removeFromSuperview];
+    self.popover = nil;
 }
 
 @end

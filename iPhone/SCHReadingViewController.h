@@ -28,8 +28,9 @@ typedef enum
 @class SCHCustomToolbar;
 @class SCHProfileItem;
 
-@interface SCHReadingViewController : UIViewController <SCHReadingViewDelegate, SCHReadingNotesListControllerDelegate, SCHReadingNoteViewDelegate> 
+@interface SCHReadingViewController : UIViewController <SCHReadingViewDelegate, SCHReadingNotesListControllerDelegate, SCHReadingNoteViewDelegate, UIPopoverControllerDelegate> 
 {
+
 }
 
 @property (nonatomic, assign) BOOL youngerMode;
@@ -53,6 +54,7 @@ typedef enum
 @property (nonatomic, retain) IBOutlet UILabel *panSpeedLabel;	
 
 @property (nonatomic, retain) IBOutlet UIView *optionsView;
+@property (nonatomic, retain) IBOutlet UIViewController *popoverOptionsViewController;
 @property (nonatomic, retain) IBOutlet UISegmentedControl *flowFixedSegmentedControl;
 @property (nonatomic, retain) IBOutlet UISegmentedControl *fontSegmentedControl;
 @property (nonatomic, retain) IBOutlet UISegmentedControl *paperTypeSegmentedControl;
@@ -68,7 +70,7 @@ typedef enum
 - (IBAction)storyInteractionAction:(id)sender;
 - (IBAction)highlightsAction:(id)sender;
 - (IBAction)notesAction:(id)sender;
-- (IBAction)settingsAction:(id)sender;
+- (IBAction)settingsAction:(UIButton *)sender;
 - (IBAction)popViewController:(id)sender;
 - (IBAction)audioPlayAction:(id)sender;
 
