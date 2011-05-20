@@ -753,13 +753,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     SCHBookAnnotations *annotations = [self.profile annotationsForBook:self.isbn];
     
     if (annotations != nil) {
-//        SCHHighlight *newHighlight = [annotations createEmptyHighlight];
-//        newHighlight.endPage = [NSNumber numberWithInt:highlightRange.endPoint.layoutPage];
-//        newHighlight.
-//        
-//        SCHLastPage *lastPage = [annotations lastPage];
-//        [annotations addHighlight:(SCHHighlight *)newHighlight;
-//        lastPage.LastPageLocation = [NSNumber numberWithInteger:currentBookPoint.layoutPage];
+        SCHHighlight *newHighlight = [annotations createHighlightWithHighlightRange:highlightRange color:[self highlightColor]];
+        [annotations addHighlight:newHighlight];
     }
 }
 
