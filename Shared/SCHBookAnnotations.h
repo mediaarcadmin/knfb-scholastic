@@ -14,6 +14,7 @@
 @class SCHNote;
 @class SCHFavorite;
 @class SCHLastPage;
+@class SCHBookRange;
 
 @interface SCHBookAnnotations : NSObject 
 {    
@@ -35,5 +36,6 @@
 
 - (SCHNote *)createEmptyNote;
 - (SCHHighlight *)createEmptyHighlight;
+- (SCHHighlight *)createHighlightWithHighlightRange:(SCHBookRange *)highlightRange color:(UIColor *)color;
 
 @end

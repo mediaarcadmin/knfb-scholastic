@@ -15,6 +15,8 @@
 #import "SCHHighlight.h"
 #import "SCHLocationText.h"
 #import "SCHLocationGraphics.h"
+#import "SCHWordIndex.h"
+#import "SCHBookRange.h"
 
 @interface SCHBookAnnotations ()
 
@@ -180,10 +182,27 @@
     SCHLocationText *locationText = [NSEntityDescription insertNewObjectForEntityForName:kSCHLocationText
                                                                   inManagedObjectContext:self.privateAnnotations.managedObjectContext];
     
+    SCHWordIndex *wordIndex = [NSEntityDescription insertNewObjectForEntityForName:kSCHWordIndex
+                                                            inManagedObjectContext:self.privateAnnotations.managedObjectContext];
+    
+    locationText.WordIndex = wordIndex;
+    
     highlight.PrivateAnnotations = self.privateAnnotations;
     highlight.LocationText = locationText;
 	
 	return highlight;
+}
+
+- (SCHHighlight *)createHighlightWithHighlightRange:(SCHBookRange *)highlightRange color:(UIColor *)color
+{
+    SCHHighlight *newHighlight = [self createEmptyHighlight];
+    newHighlight.EndPage = [NSNumber numberWithInteger:highlightRange.endPoint.layoutPage];
+    newHighlight.Color = color;
+    newHighlight.LocationText.Page = [NSNumber numberWithInteger:highlightRange.startPoint.layoutPage];
+    newHighlight.LocationText.WordIndex.Start = [NSNumber numberWithInteger:highlightRange.startPoint.wordOffset];
+    newHighlight.LocationText.WordIndex.End = [NSNumber numberWithInteger:highlightRange.endPoint.wordOffset];
+    
+    return newHighlight;
 }
 
 @end
