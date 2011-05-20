@@ -1079,6 +1079,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     NSLog(@"Requesting a new note be created!");
     SCHBookAnnotations *annos = [self.profile annotationsForBook:self.isbn];
     SCHNote *newNote = [annos createEmptyNote];
+    newNote.NotePageNumber = [NSNumber numberWithInt:self.currentPageIndex + 1];
 
     SCHReadingNoteView *aNotesView = [[SCHReadingNoteView alloc] initWithNote:newNote];
     
@@ -1106,8 +1107,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 {
     // FIXME: save note
     NSLog(@"Saving note...");
-    NSManagedObjectContext *context = [[SCHBookManager sharedBookManager] managedObjectContextForCurrentThread];
-    [context save:nil];
+    SCHBookAnnotations *bookAnnos = [self.profile annotationsForBook:self.isbn];
+    [bookAnnos addNote:note];
     
     [self setToolbarVisibility:YES animated:YES];
 }

@@ -39,4 +39,26 @@
     [self didChangeValueForKey:@"Color"];
 }
 
+- (NSNumber *)NotePageNumber
+{
+    return [self.LocationGraphics Page];
+}
+
+- (void)setNotePageNumber:(NSNumber *)NotePageNumber
+{
+    self.LocationGraphics.Page = NotePageNumber;
+}
+
+- (NSString *)NoteText
+{
+    return self.Value;
+}
+
+- (void)setNoteText:(NSString *)NoteText
+{
+    self.Value = NoteText;   
+}
+
+
+
 @end
