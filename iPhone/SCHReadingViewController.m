@@ -734,6 +734,10 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     }
 }
 
+#pragma mark - Highlights
+
+
+
 #pragma mark - SCHReadingViewDelegate methods
 
 - (UIColor *)highlightColor
@@ -743,17 +747,18 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (void)addHighlightWithBookRange:(SCHBookRange *)highlightRange
 {
-//    NSLog(@"Add highlight");
-//    SCHBookAnnotations *annotations = [self.profile annotationsForBook:self.isbn];
-//    
-//    if (annotations != nil) {
-//        SCHHighlight *newHighlight = [annotations.managedObjectContext newEntityWithName:@:"SCHHighlight" inCon
-//        
+    NSLog(@"Add highlight");
+    SCHBookAnnotations *annotations = [self.profile annotationsForBook:self.isbn];
+    
+    if (annotations != nil) {
+//        SCHHighlight *newHighlight = [annotations createEmptyHighlight];
+//        newHighlight.endPage = [NSNumber numberWithInt:highlightRange.endPoint.layoutPage];
+//        newHighlight.
 //        
 //        SCHLastPage *lastPage = [annotations lastPage];
 //        [annotations addHighlight:(SCHHighlight *)newHighlight;
 //        lastPage.LastPageLocation = [NSNumber numberWithInteger:currentBookPoint.layoutPage];
-//    }
+    }
 }
 
 - (void)updateHighlightAtBookRange:(SCHBookRange *)fromBookRange toBookRange:(SCHBookRange *)toBookRange
