@@ -19,6 +19,7 @@
 #import "SCHReadingNotesListController.h"
 #import "SCHSyncManager.h"
 #import "SCHProfileItem.h"
+#import "SCHBookRange.h"
 #import "SCHBookPoint.h"
 #import "SCHLastPage.h"
 #import "SCHBookAnnotations.h"
@@ -734,10 +735,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     }
 }
 
-#pragma mark - Highlights
-
-
-
 #pragma mark - SCHReadingViewDelegate methods
 
 - (UIColor *)highlightColor
@@ -745,7 +742,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     return [[UIColor yellowColor] colorWithAlphaComponent:0.3f];
 }
 
-- (void)addHighlightWithBookRange:(SCHBookRange *)highlightRange
+- (void)addHighlightAtBookRange:(SCHBookRange *)highlightRange
 {
     NSLog(@"Add highlight");
     SCHBookAnnotations *annotations = [self.profile annotationsForBook:self.isbn];
@@ -759,6 +756,19 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (void)updateHighlightAtBookRange:(SCHBookRange *)fromBookRange toBookRange:(SCHBookRange *)toBookRange
 {
     NSLog(@"Update highlight");
+}
+
+- (NSArray *)highlightsForBookRange:(SCHBookRange *)bookRange
+{
+    SCHBookAnnotations *annotations = [self.profile annotationsForBook:self.isbn];
+    
+    NSMutableArray *highlights = [NSMutableArray array];
+    
+    for (int i = bookRange.startPoint.layoutPage; i <= bookRange.endPoint.layoutPage; i++) {
+        [highlights addObjectsFromArray:[annotations highlightsForPage:i]];
+    }
+         
+    return highlights;
 }
 
 - (void)readingView:(SCHReadingView *)readingView hasMovedToPageAtIndex:(NSUInteger)pageIndex

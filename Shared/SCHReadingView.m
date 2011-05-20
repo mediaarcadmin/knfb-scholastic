@@ -245,7 +245,7 @@
     } else {
         startIndex = toBookRange.startPoint.layoutPage - 1;
         endIndex   = toBookRange.endPoint.layoutPage - 1;
-        [self.delegate addHighlightWithBookRange:toBookRange];
+        [self.delegate addHighlightAtBookRange:toBookRange];
     }
     
     for (int i = startIndex; i <= endIndex; i++) {
@@ -261,7 +261,7 @@
     NSInteger startIndex = highlightRange.startPoint.layoutPage - 1;
     NSInteger endIndex   = highlightRange.endPoint.layoutPage - 1;
     
-    [self.delegate addHighlightWithBookRange:highlightRange];
+    [self.delegate addHighlightAtBookRange:highlightRange];
     
     for (int i = startIndex; i <= endIndex; i++) {
         [self refreshHighlightsForPageAtIndex:i];

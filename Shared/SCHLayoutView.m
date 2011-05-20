@@ -663,14 +663,13 @@
     range.startPoint = startPoint;
     range.endPoint = endPoint;
     
-   // NSArray *highlightRanges = [self.delegate rangesToHighlightForRange:range];
-    NSArray *highlightRanges = nil;
+    NSArray *highlightRanges = [self.delegate highlightsForBookRange:range];
     
     [startPoint release];
     [endPoint release];
     [range release];
     
-    return [NSArray arrayWithArray:highlightRanges];
+    return highlightRanges;
 }
 
 #pragma mark - EucSelectorDataSource

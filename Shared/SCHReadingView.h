@@ -30,7 +30,8 @@ typedef enum
 
 
 - (UIColor *)highlightColor;
-- (void)addHighlightWithBookRange:(SCHBookRange *)highlightRange;
+- (NSArray *)highlightsForBookRange:(SCHBookRange *)bookRange;
+- (void)addHighlightAtBookRange:(SCHBookRange *)highlightRange;
 - (void)updateHighlightAtBookRange:(SCHBookRange *)fromBookRange toBookRange:(SCHBookRange *)toBookRange;
 
 - (void)readingView:(SCHReadingView *)readingView hasMovedToPageAtIndex:(NSUInteger)pageIndex;
