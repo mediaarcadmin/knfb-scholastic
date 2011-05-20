@@ -214,13 +214,11 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
     switch (section) {
         case 0:
         {
-            NSLog(@"1 row");
             return 1;
             break;
         }   
         case 1:
         {
-            NSLog(@"5 rows");
             return 5;
             break;
         }   
