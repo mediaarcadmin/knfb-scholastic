@@ -11,8 +11,21 @@
 #import "SCHAppBook.h"
 #import "SCHTextFlow.h"
 #import "SCHBookPoint.h"
+#import "SCHBookRange.h"
+#import "KNFBTextFlowBlock.h"
+#import "KNFBTextFlowPositionedWord.h"
 #import <libEucalyptus/THPair.h>
 #import <libEucalyptus/EucMenuItem.h>
+#import <libEucalyptus/EucSelector.h>
+#import <libEucalyptus/EucSelectorRange.h>
+
+@interface SCHReadingView()
+
+@property (nonatomic, retain) EucSelectorRange *currentSelectorRange;
+
+- (void)selectorDismissedWithSelection:(EucSelectorRange *)selectorRange;
+
+@end
 
 @implementation SCHReadingView
 
@@ -20,6 +33,8 @@
 @synthesize delegate;
 @synthesize xpsProvider;
 @synthesize textFlow;
+@synthesize selectionMode;
+@synthesize currentSelectorRange;
 
 - (void) dealloc
 {
@@ -34,7 +49,9 @@
     }
     
     [isbn release], isbn = nil;
+    [currentSelectorRange release], currentSelectorRange = nil;
     delegate = nil;
+    
     [super dealloc];
 }
 
@@ -155,20 +172,51 @@
     return [self.textFlow contentsTableViewController:nil displayPageNumberForPageIndex:pageIndex];
 }
 
-#pragma mark - EucSelectorDelegate
+#pragma mark - Selector
+
+- (EucSelector *)selector
+{ 
+    return nil; 
+}
 
 - (NSArray *)menuItemsForEucSelector:(EucSelector *)selector 
 {
-    EucMenuItem *dictionaryItem = [[[EucMenuItem alloc] initWithTitle:NSLocalizedString(@"Test Menu", "Test Menu option in popup menu")
-                                                               action:nil] autorelease];
-    
-    NSArray *ret = [NSArray arrayWithObjects:dictionaryItem, nil];
-    
+    NSArray *ret = nil;
+
+    switch (self.selectionMode) {
+        case SCHReadingViewSelectionModeOlderDictionary: {
+                if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+                    EucMenuItem *dictionaryItem = [[[EucMenuItem alloc] initWithTitle:NSLocalizedString(@"Look Up", "Older reader iPhone Look Up option in popup menu")
+                                                                               action:nil] autorelease];
+                    
+                    ret = [NSArray arrayWithObjects:dictionaryItem, nil];
+                }
+        } break;
+        case SCHReadingViewSelectionModeYoungerDictionary: {
+            EucMenuItem *dictionaryItem = [[[EucMenuItem alloc] initWithTitle:NSLocalizedString(@"Look Up", "Younger Reader iPhone and iPad Look Up option in popup menu")
+                                                                       action:nil] autorelease];
+            
+            ret = [NSArray arrayWithObjects:dictionaryItem, nil];
+        } break;
+        default:
+            break;
+    }
+        
     return ret;
 }
 
 - (UIColor *)eucSelector:(EucSelector *)selector willBeginEditingHighlightWithRange:(EucSelectorRange *)selectedRange
 {
+//    UIColor *selectionColor = nil;
+//        
+//    switch (self.selectionMode) {
+//        case SCHReadingViewSelectionModeHighlights:
+//            selectionColor = [UIColor yellowColor];
+//            break;
+//        default:
+//            break;
+//    }
+//    
     return nil;
 }
 
@@ -177,9 +225,105 @@
     
 }
 
+- (void)updateHighlight {
+    
+    EucSelectorRange *fromSelectorRange = [self.selector selectedRangeOriginalHighlightRange];
+    EucSelectorRange *toSelectorRange   = [self.selector selectedRange];
+    
+    [self.selector setSelectedRange:nil];
+    
+    SCHBookRange *fromBookRange = [self bookRangeFromSelectorRange:fromSelectorRange];
+    SCHBookRange *toBookRange   = [self bookRangeFromSelectorRange:toSelectorRange];
+
+    NSInteger startIndex;
+    NSInteger endIndex;
+    
+    if ([self.selector selectedRangeIsHighlight]) {
+        startIndex = MIN(fromBookRange.startPoint.layoutPage, toBookRange.startPoint.layoutPage) - 1;
+        endIndex   = MAX(fromBookRange.endPoint.layoutPage, toBookRange.endPoint.layoutPage) - 1;
+        [self.delegate updateHighlightAtBookRange:fromBookRange toBookRange:toBookRange];
+    } else {
+        startIndex = toBookRange.startPoint.layoutPage - 1;
+        endIndex   = toBookRange.endPoint.layoutPage - 1;
+        [self.delegate addHighlightWithBookRange:toBookRange];
+    }
+    
+    for (int i = startIndex; i <= endIndex; i++) {
+        [self refreshHighlightsForPageAtIndex:i];
+    }
+    
+}
+
+- (void)addHighlightWithSelection:(EucSelectorRange *)selectorRange
+{
+    SCHBookRange *highlightRange = [self bookRangeFromSelectorRange:selectorRange];
+    
+    NSInteger startIndex = highlightRange.startPoint.layoutPage - 1;
+    NSInteger endIndex   = highlightRange.endPoint.layoutPage - 1;
+    
+    [self.delegate addHighlightWithBookRange:highlightRange];
+    
+    for (int i = startIndex; i <= endIndex; i++) {
+        [self refreshHighlightsForPageAtIndex:i];
+    }
+}
+
+- (void)selectorDismissedWithSelection:(EucSelectorRange *)selectorRange
+{
+    switch (self.selectionMode) {
+        case SCHReadingViewSelectionModeHighlights:
+            [self addHighlightWithSelection:selectorRange];
+            break;
+        default:
+            break;
+    }
+}
+
+- (EucSelectorRange *)selectorRangeFromBookRange:(SCHBookRange *)range 
+{
+    if (nil == range) return nil;
+    
+    SCHBookPoint *startPoint = range.startPoint;
+    SCHBookPoint *endPoint = range.endPoint;
+    
+    EucSelectorRange *selectorRange = [[EucSelectorRange alloc] init];
+    selectorRange.startBlockId      = [KNFBTextFlowBlock blockIDForPageIndex:startPoint.layoutPage - 1 blockIndex:startPoint.blockOffset];
+    selectorRange.startElementId    = [KNFBTextFlowPositionedWord wordIDForWordIndex:startPoint.wordOffset];
+    selectorRange.endBlockId        = [KNFBTextFlowBlock blockIDForPageIndex:endPoint.layoutPage - 1 blockIndex:endPoint.blockOffset];
+    selectorRange.endElementId      = [KNFBTextFlowPositionedWord wordIDForWordIndex:endPoint.wordOffset];
+    
+    return [selectorRange autorelease];
+}
+
+- (SCHBookRange *)bookRangeFromSelectorRange:(EucSelectorRange *)selectorRange { return nil; }
+
+- (void)refreshHighlightsForPageAtIndex:(NSUInteger)index {}
+
 #pragma mark - Rotation
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {}
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {}
+
+#pragma mark - KVO
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    if ([keyPath isEqualToString:@"trackingStage"]) {
+        switch (self.selector.trackingStage) {
+            case EucSelectorTrackingStageNone:
+                if (self.currentSelectorRange != nil) {
+                    [self selectorDismissedWithSelection:self.currentSelectorRange];
+                }
+                self.currentSelectorRange = nil;
+                break;
+            case EucSelectorTrackingStageFirstSelection:
+            case EucSelectorTrackingStageSelectedAndWaiting:
+            case EucSelectorTrackingStageChangingSelection:
+                self.currentSelectorRange = self.selector.selectedRange;
+                break;
+            default:
+                break;
+        }
+    }
+}
 
 @end

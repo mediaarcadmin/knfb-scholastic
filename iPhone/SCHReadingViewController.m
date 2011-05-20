@@ -72,10 +72,13 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (void)updateScrubberValue;
 - (void)updateScrubberLabel;
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation;
+
 - (void)saveLastPageLocation;
 - (void)jumpToLastPageLocation;
 - (void)jumpToBookPoint:(SCHBookPoint *)bookPoint animated:(BOOL)animated; 
 - (void)jumpToCurrentPlaceInBookAnimated:(BOOL)animated;
+
+- (void)setDictionarySelectionMode;
 
 @end
 
@@ -502,7 +505,14 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (IBAction)highlightsAction:(id)sender
 {
     NSLog(@"HighlightsAction action");
+    UIButton *highlightsButton = (UIButton *)sender;
+    [highlightsButton setSelected:![highlightsButton isSelected]];
     
+    if ([highlightsButton isSelected]) {
+        [self.readingView setSelectionMode:SCHReadingViewSelectionModeHighlights];
+    } else {
+        [self setDictionarySelectionMode];
+    }
 }
 
 - (IBAction)notesAction:(id)sender
@@ -657,7 +667,33 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     self.currentFontSizeIndex = index;
 }
 
+#pragma mark - Dictionary
+
+- (void)setDictionarySelectionMode
+{
+    if (self.youngerMode) {
+        [self.readingView setSelectionMode:SCHReadingViewSelectionModeYoungerDictionary];
+    } else {
+        [self.readingView setSelectionMode:SCHReadingViewSelectionModeOlderDictionary];
+    }
+}
+
 #pragma mark - SCHReadingViewDelegate methods
+
+- (UIColor *)highlightColor
+{
+    return [[UIColor yellowColor] colorWithAlphaComponent:0.3f];
+}
+
+- (void)addHighlightWithBookRange:(SCHBookRange *)highlightRange
+{
+    NSLog(@"Add highlight");
+}
+
+- (void)updateHighlightAtBookRange:(SCHBookRange *)fromBookRange toBookRange:(SCHBookRange *)toBookRange
+{
+    NSLog(@"Update highlight");
+}
 
 - (void)readingView:(SCHReadingView *)readingView hasMovedToPageAtIndex:(NSUInteger)pageIndex
 {

@@ -1,15 +1,16 @@
 //
-//  BlioFlowView.m
-//  BlioApp
+//  SCHFlowView.m
+//  Scholastic
 //
-//  Created by James Montgomerie on 04/01/2010.
-//  Copyright 2010 Things Made Out Of Other Things. All rights reserved.
+//  Created by Matt farrugia
+//  Copyright 2011 BitWink. All rights reserved.
 //
 
 #import "SCHFlowView.h"
 #import "SCHBookManager.h"
 #import "SCHFlowEucBook.h"
 #import "SCHBookPoint.h"
+#import "SCHBookRange.h"
 #import "KNFBTextFlowParagraphSource.h"
 #import <libEucalyptus/EucBookView.h>
 #import <libEucalyptus/EucBUpeBook.h>
@@ -49,7 +50,7 @@
         eucBookView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         eucBookView.vibratesOnInvalidTurn = NO;
         [eucBookView setPageTexture:[UIImage imageNamed: @"paper-white.png"] isDark:NO];
-        [self addSubview:eucBookView];
+        [self addSubview:eucBookView];        
     }
 }
 
@@ -81,6 +82,16 @@
     return self;
 }
 
+- (void)willMoveToWindow:(UIWindow *)newWindow 
+{
+    [super willMoveToWindow:newWindow];
+    
+    // The selector observer must be dealloced here before the selector is torn down inside eucbookview
+    if (newWindow == nil) {
+        [self.eucBookView.selector removeObserver:self forKeyPath:@"trackingStage"];
+    }
+}
+
 - (void)didMoveToWindow
 {
     [super didMoveToWindow];
@@ -88,10 +99,11 @@
     if (self.window) {
         // This needs to be done here to add the observer after the willMoveToWindow code in
         // eucBookView which sets the page count
-        [eucBookView addObserver:self forKeyPath:@"currentPageIndexPoint" options:NSKeyValueObservingOptionInitial context:NULL];
+        [self.eucBookView addObserver:self forKeyPath:@"currentPageIndexPoint" options:NSKeyValueObservingOptionInitial context:NULL];
+        [self.eucBookView.selector addObserver:self forKeyPath:@"trackingStage" options:NSKeyValueObservingOptionPrior context:NULL];
     } else {
-        [eucBookView removeObserver:self forKeyPath:@"currentPageIndexPoint"];
-    }
+        [self.eucBookView removeObserver:self forKeyPath:@"currentPageIndexPoint"];
+    }    
 }
 
 #pragma mark - BookView Methods
@@ -135,8 +147,9 @@
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object
                         change:(NSDictionary *)change context:(void *)context
 {
+    [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+    
     if ([keyPath isEqualToString:@"currentPageIndexPoint"]) {
-        
         if ((eucBookView.pageCount != 0) && (eucBookView.pageCount != -1)) {
             [self.delegate readingView:self hasMovedToPageAtIndex:eucBookView.currentPageIndex];
         } else {
@@ -152,6 +165,11 @@
 }
 
 #pragma mark - SCHReadingView methods
+
+- (EucSelector *)selector
+{
+    return self.eucBookView.selector;
+}
 
 - (void)setPageTexture:(UIImage *)image isDark:(BOOL)isDark
 {
@@ -178,5 +196,34 @@
     return [self.eucBookView pageCount];
 }
 
+- (void)refreshHighlights 
+{
+    return [self.eucBookView refreshHighlights];
+}
+
+- (SCHBookRange *)bookRangeFromSelectorRange:(EucSelectorRange *)selectorRange
+{
+    if (nil == selectorRange) return nil;
+    
+    EucBookPageIndexPoint *indexPoint = [[EucBookPageIndexPoint alloc] init];
+    
+    indexPoint.source = [self.eucBook currentPageIndexPoint].source;
+    
+    indexPoint.block = [selectorRange.startBlockId unsignedIntValue];
+    indexPoint.word = [selectorRange.startElementId unsignedIntValue];
+    SCHBookPoint *startPoint = [self.eucBook bookPointFromBookPageIndexPoint:indexPoint];
+    
+    indexPoint.block = [selectorRange.endBlockId unsignedIntValue];
+    indexPoint.word = [selectorRange.endElementId unsignedIntValue];
+    SCHBookPoint *endPoint = [self.eucBook bookPointFromBookPageIndexPoint:indexPoint];
+    
+    [indexPoint release];
+    
+    SCHBookRange *range = [[SCHBookRange alloc] init];
+    range.startPoint = startPoint;
+    range.endPoint = endPoint;    
+    
+    return [range autorelease];
+}
 
 @end
