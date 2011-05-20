@@ -11,6 +11,8 @@
 @class SCHCustomToolbar;
 @protocol SCHReadingNotesListControllerDelegate;
 
+#pragma mark - Interface
+
 @interface SCHReadingNotesListController : UIViewController <UITableViewDelegate, UITableViewDataSource> {
     
     UIImageView *topShadow;
@@ -30,6 +32,8 @@
 - (IBAction)editNotesButtonAction:(UIBarButtonItem *)sender;
 
 @end
+
+#pragma mark - Delegate 
 
 @protocol SCHReadingNotesListControllerDelegate <NSObject>
 

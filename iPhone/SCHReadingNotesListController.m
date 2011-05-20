@@ -35,9 +35,6 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
 @synthesize notesCell;
 @synthesize topShadow;
 @synthesize topBar;
-
-#pragma mark Object Synthesis
-
 @synthesize isbn;
 
 #pragma mark - Dealloc and View Teardown
@@ -182,6 +179,7 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
     if (newBBI) {
         NSMutableArray *currentItems = [NSMutableArray arrayWithArray:self.topBar.items];
         [currentItems replaceObjectAtIndex:0 withObject:newBBI];
+        [newBBI release];
         
         // adjust the width of the fixed space to keep the title centred
         UIBarButtonItem *fixedSpace = (UIBarButtonItem *) [currentItems objectAtIndex:1];
@@ -247,7 +245,7 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
             cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
             
             if (cell == nil) {
-                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+                cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier] autorelease];
             }
             
             cell.textLabel.text = NSLocalizedString(@"Add a Note", @"Add a Note");
