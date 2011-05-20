@@ -10,6 +10,7 @@
 #import <UIKit/UIKit.h>
 
 @protocol SCHReadingNoteViewDelegate;
+@class SCHNote;
 
 @interface SCHReadingNoteView : UIView {
     
@@ -18,10 +19,10 @@
 @property (nonatomic, assign) id <SCHReadingNoteViewDelegate> delegate;
 @property (nonatomic, retain) UITextView *textView;
 @property (nonatomic, retain) UILabel *toolbarLabel;
-@property (nonatomic, copy) NSString *page;
-@property (nonatomic, copy) NSString *noteText;
+//@property (nonatomic, copy) NSString *page;
+@property (nonatomic, retain) SCHNote *note;
 
-//- (id)initWithRange:(BlioBookmarkRange *)aRange note:(NSManagedObject *)aNote;
+- (id)initWithNote:(SCHNote *)aNote;
 - (void)showInView:(UIView *)view;
 - (void)showInView:(UIView *)view animated:(BOOL)animated;
 
@@ -31,7 +32,7 @@
 
 @optional
 
-- (void)notesViewSaved:(SCHReadingNoteView *)notesView;
+- (void)notesView:(SCHReadingNoteView *)notesView savedNote:(SCHNote *)note;
 - (void)notesViewCancelled:(SCHReadingNoteView *)notesView;
 
 @end

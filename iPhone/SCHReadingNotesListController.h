@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@class SCHCustomToolbar;
+@class SCHCustomToolbar, SCHProfileItem, SCHNote;
 @protocol SCHReadingNotesListControllerDelegate;
 
 #pragma mark - Interface
@@ -18,6 +18,7 @@
     UIImageView *topShadow;
 }
 
+@property (nonatomic, retain) SCHProfileItem *profile;
 @property (nonatomic, retain) NSString *isbn;
 @property (nonatomic, assign) id <SCHReadingNotesListControllerDelegate> delegate;
 
@@ -38,7 +39,7 @@
 @protocol SCHReadingNotesListControllerDelegate <NSObject>
 
 @optional
-- (void)readingNotesView:(SCHReadingNotesListController *)readingNotesView didSelectNote:(NSString *)note;
+- (void)readingNotesView:(SCHReadingNotesListController *)readingNotesView didSelectNote:(SCHNote *)note;
 - (void)readingNotesViewCreatingNewNote:(SCHReadingNotesListController *)readingNotesView;
 
 @end
