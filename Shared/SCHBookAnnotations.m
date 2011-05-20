@@ -11,6 +11,7 @@
 #import "SCHPrivateAnnotations.h"
 #import "SCHLibreAccessWebService.h"
 #import "SCHAnnotationSyncComponent.h"
+#import "SCHNote.h"
 
 @interface SCHBookAnnotations ()
 
@@ -152,6 +153,14 @@
 - (SCHLastPage *)lastPage
 {
     return(self.privateAnnotations.LastPage);
+}
+
+- (SCHNote *)createEmptyNote
+{
+    SCHNote *note = [NSEntityDescription insertNewObjectForEntityForName:kSCHNote 
+                                            inManagedObjectContext:self.privateAnnotations.managedObjectContext];
+	
+	return note;
 }
 
 @end

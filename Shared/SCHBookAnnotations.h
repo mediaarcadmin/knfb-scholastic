@@ -30,4 +30,9 @@
 - (SCHFavorite *)favorite;
 - (SCHLastPage *)lastPage;
 
+// Convenience creation methods
+// FIXME: Confirm this fits with the sync model with John
+
+- (SCHNote *)createEmptyNote;
+
 @end
