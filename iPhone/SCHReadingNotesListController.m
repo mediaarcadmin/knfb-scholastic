@@ -8,7 +8,9 @@
 
 #import "SCHReadingNotesListController.h"
 #import "SCHCustomToolbar.h"
-
+#import "SCHBookAnnotations.h"
+#import "SCHProfileItem.h"
+#import "SCHNote.h"
 
 static NSInteger const CELL_TITLE_LABEL_TAG = 997;
 static NSInteger const CELL_PAGE_LABEL_TAG = 998;
@@ -19,6 +21,7 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
 @interface SCHReadingNotesListController ()
 
 @property (nonatomic, retain) UINib *noteCellNib;
+@property (nonatomic, retain) NSArray *notes;
 
 -(void)releaseViewObjects;
 -(void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation;
@@ -36,6 +39,8 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
 @synthesize topShadow;
 @synthesize topBar;
 @synthesize isbn;
+@synthesize notes;
+@synthesize profile;
 
 #pragma mark - Dealloc and View Teardown
 
@@ -47,6 +52,8 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
     [isbn release], isbn = nil;
     [noteCellNib release], noteCellNib = nil;
     [notesCell release], notesCell = nil;
+    [profile release], profile = nil;
+    [notes release], notes = nil;
     
     [super dealloc];
 }
@@ -98,6 +105,8 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
     
     [self.topShadow setImage:[[UIImage imageNamed:@"reading-view-iphone-top-shadow.png"] stretchableImageWithLeftCapWidth:15.0f topCapHeight:0]];
 
+    SCHBookAnnotations *annotations = [self.profile annotationsForBook:self.isbn];
+    self.notes = [annotations notes];
 }
 
 
@@ -217,7 +226,11 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
         }   
         case 1:
         {
-            return 5;
+            if (self.notes) {
+                return [self.notes count];
+            } else {
+                return 0;
+            }
             break;
         }   
         default:
@@ -272,24 +285,31 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
             }
             
             // use tags to grab the labels and the activity view
-            UIActivityIndicatorView *activityView = (UIActivityIndicatorView *) [cell viewWithTag:CELL_ACTIVITY_INDICATOR_TAG];
+//            UIActivityIndicatorView *activityView = (UIActivityIndicatorView *) [cell viewWithTag:CELL_ACTIVITY_INDICATOR_TAG];
             UILabel *titleLabel = (UILabel *) [cell viewWithTag:CELL_TITLE_LABEL_TAG];
             UILabel *subTitleLabel = (UILabel *) [cell viewWithTag:CELL_PAGE_LABEL_TAG];
             
-            titleLabel.text = [NSString stringWithFormat:@"Note %d", [indexPath row] + 1];
+            SCHNote *note = [self.notes objectAtIndex:[indexPath row]];
+            if (note && note.Value && [note.Value length] > 0) {
+                titleLabel.text = note.Value;
+                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                subTitleLabel.text = [NSString stringWithFormat:@"Page FIXME"];
+            } else {
+                titleLabel.text = @"Empty note";
+            }
             
             // FIXME: for demo purposes, even lines will be loading, odd will not
-            if (activityView) {
-                if ([indexPath row] % 2 == 0) {
-                    [activityView startAnimating];
-                    cell.accessoryType = UITableViewCellAccessoryNone;
-                    subTitleLabel.text = @"";
-                } else {
-                    [activityView stopAnimating];
-                    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-                    subTitleLabel.text = [NSString stringWithFormat:@"Page %d", [indexPath row] + 1];
-                }
-            }
+//            if (activityView) {
+//                if ([indexPath row] % 2 == 0) {
+//                    [activityView startAnimating];
+//                    cell.accessoryType = UITableViewCellAccessoryNone;
+//                    subTitleLabel.text = @"";
+//                } else {
+//                    [activityView stopAnimating];
+//                    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+//                    subTitleLabel.text = [NSString stringWithFormat:@"Page %d", [indexPath row] + 1];
+//                }
+//            }
             
             break;
         }   
@@ -314,7 +334,7 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
         case 1:
         {
             if (self.delegate && [delegate respondsToSelector:@selector(readingNotesView:didSelectNote:)]) {
-                [delegate readingNotesView:self didSelectNote:@"FIXME: dummy note"];
+                [delegate readingNotesView:self didSelectNote:[self.notes objectAtIndex:[indexPath row]]];
             }
             break;
         }

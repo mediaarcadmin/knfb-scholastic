@@ -23,6 +23,10 @@ static NSString * const kSCHNote = @"SCHNote";
 @property (nonatomic, retain) SCHLocationGraphics * LocationGraphics;
 @property (nonatomic, retain) SCHPrivateAnnotations * PrivateAnnotations;
 
+// backed by convenience methods
+@property (nonatomic, retain) NSString *NoteText;
+@property (nonatomic, retain) NSNumber *NotePageNumber;
+
 @end
 
 

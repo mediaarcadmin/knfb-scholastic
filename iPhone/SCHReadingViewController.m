@@ -24,6 +24,8 @@
 #import "SCHLastPage.h"
 #import "SCHBookAnnotations.h"
 #import "SCHReadingNoteView.h"
+#import "SCHBookAnnotations.h"
+#import "SCHNote.h"
 
 // constants
 static const CGFloat kReadingViewStandardScrubHeight = 47.0f;
@@ -1085,9 +1087,12 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (void)readingNotesViewCreatingNewNote:(SCHReadingNotesListController *)readingNotesView
 {
     NSLog(@"Requesting a new note be created!");
-    SCHReadingNoteView *aNotesView = [[SCHReadingNoteView alloc] initWithFrame:CGRectZero];
-    aNotesView.page = [NSString stringWithFormat:@"%d", self.currentPageIndex + 1];
-    aNotesView.noteText = @"New note";
+    SCHBookAnnotations *annos = [self.profile annotationsForBook:self.isbn];
+    SCHNote *newNote = [annos createEmptyNote];
+    newNote.NotePageNumber = [NSNumber numberWithInt:self.currentPageIndex + 1];
+
+    SCHReadingNoteView *aNotesView = [[SCHReadingNoteView alloc] initWithNote:newNote];
+    
     aNotesView.delegate = self;
     
     [self setToolbarVisibility:NO animated:YES];
@@ -1096,11 +1101,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [aNotesView release];
 }
 
-- (void)readingNotesView:(SCHReadingNotesListController *)readingNotesView didSelectNote:(NSString *)note
+- (void)readingNotesView:(SCHReadingNotesListController *)readingNotesView didSelectNote:(SCHNote *)note
 {
-    SCHReadingNoteView *aNotesView = [[SCHReadingNoteView alloc] initWithFrame:CGRectZero];
-    aNotesView.page = [NSString stringWithFormat:@"%d", self.currentPageIndex + 1];
-    aNotesView.noteText = @"Existing note";
+    SCHReadingNoteView *aNotesView = [[SCHReadingNoteView alloc] initWithNote:note];
     aNotesView.delegate = self;
     [aNotesView showInView:self.view animated:YES];
     [aNotesView release];
@@ -1110,8 +1113,13 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 #pragma mark - SCHNotesViewDelegate methods
 
-- (void)notesViewSaved:(SCHReadingNoteView *)notesView
+- (void)notesView:(SCHReadingNoteView *)notesView savedNote:(SCHNote *)note;
 {
+    // FIXME: save note
+    NSLog(@"Saving note...");
+    SCHBookAnnotations *bookAnnos = [self.profile annotationsForBook:self.isbn];
+    [bookAnnos addNote:note];
+    
     [self setToolbarVisibility:YES animated:YES];
 }
 

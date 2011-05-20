@@ -10,6 +10,8 @@
 #import "SCHReadingNoteView.h"
 #import <QuartzCore/QuartzCore.h>
 #import "UIImage+BlioAdditions.h"
+#import "SCHNote.h"
+#import "SCHBookAnnotations.h"
 
 static const CGFloat kSCHNotesViewPhoneShadow = 16;
 static const CGFloat kSCHNotesViewPadBorder = 6;
@@ -43,9 +45,8 @@ static NSString * const SCHNotesViewExitToTopAnimation = @"SCHNotesViewExitToTop
 
 @synthesize delegate;
 @synthesize textView;
-@synthesize noteText;
 @synthesize toolbarLabel;
-@synthesize page;
+@synthesize note;
 @synthesize showInView;
 @synthesize bottomInset;
 
@@ -55,7 +56,7 @@ static NSString * const SCHNotesViewExitToTopAnimation = @"SCHNotesViewExitToTop
         [[NSNotificationCenter defaultCenter] removeObserver:self];
     }
     
-    [page release], page = nil;
+    [note release], note = nil;
     [textView release], textView = nil;
     [toolbarLabel release], toolbarLabel = nil;
     showInView = nil;
@@ -64,7 +65,7 @@ static NSString * const SCHNotesViewExitToTopAnimation = @"SCHNotesViewExitToTop
     [super dealloc];
 }
 
-- (id)initWithFrame:(CGRect)frame {
+- (id)initWithNote:(SCHNote *)aNote {
     
     if ((self = [super initWithFrame:CGRectZero])) {
         // Initialization code
@@ -82,6 +83,9 @@ static NSString * const SCHNotesViewExitToTopAnimation = @"SCHNotesViewExitToTop
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
             [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
         }
+        
+        self.note = aNote;
+        
     }
     return self;
 }
@@ -176,11 +180,14 @@ static NSString * const SCHNotesViewExitToTopAnimation = @"SCHNotesViewExitToTop
     [dateFormat setDateStyle:NSDateFormatterShortStyle];
     NSString *dateString = [dateFormat stringFromDate:date];  
     [dateFormat release];
+    
+    NSNumber *pageNum = [self.note NotePageNumber];
 
-    if (nil != self.page) {
-		self.toolbarLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Page %@, %@",@"\"Page %@, %@\" toolbar label for Notes View"), self.page, dateString];
+    if (nil != pageNum) {
+		self.toolbarLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Page %@, %@",@"\"Page %@, %@\" toolbar label for Notes View"), [pageNum intValue], dateString];
     } else {
-        self.toolbarLabel.text = [NSString stringWithFormat:@"%@", self.page, dateString];
+    // FIXME: change this to use the actual page
+        self.toolbarLabel.text = [NSString stringWithFormat:@"%@", dateString];
     }
     
     self.toolbarLabel.adjustsFontSizeToFitWidth = YES;
@@ -198,7 +205,7 @@ static NSString * const SCHNotesViewExitToTopAnimation = @"SCHNotesViewExitToTop
     aTextView.font = [UIFont fontWithName:@"Marker Felt" size:18.0f];
     aTextView.backgroundColor = [UIColor clearColor];
     aTextView.keyboardAppearance = UIKeyboardAppearanceAlert;
-    aTextView.text = self.noteText;
+    aTextView.text = [self.note NoteText];
     [aTextView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
     [self addSubview:aTextView];
     self.textView = aTextView;
@@ -362,16 +369,10 @@ void addRoundedRectToPath(CGContextRef c, CGFloat radius, CGRect rect) {
 }
 
 - (void)save:(id)sender {
-//    if (nil != self.note) {
-//        if ([self.delegate respondsToSelector:@selector(notesViewUpdateNote:)])
-//            [self.delegate performSelector:@selector(notesViewUpdateNote:) withObject:self];
-//    } else {
-//        if ([self.delegate respondsToSelector:@selector(notesViewCreateNote:)])
-//            [self.delegate performSelector:@selector(notesViewCreateNote:) withObject:self];
-//    }
+    self.note.NoteText = self.textView.text;
     
-    if ([self.delegate respondsToSelector:@selector(notesViewSaved:)]) {
-        [self.delegate performSelector:@selector(notesViewSaved:) withObject:self];
+    if ([self.delegate respondsToSelector:@selector(notesView:savedNote:)]) {
+        [self.delegate notesView:self savedNote:self.note];
     }
     
     [self dismiss:sender];
@@ -395,15 +396,7 @@ void addRoundedRectToPath(CGContextRef c, CGFloat radius, CGRect rect) {
 - (void)animationDidStop:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context {
     if ([animationID isEqualToString:SCHNotesViewExitToTopAnimation]) {
         [(UIView *)context removeFromSuperview];
-        
-//        if ([self.delegate respondsToSelector:@selector(notesViewDismissed)])
-//            [(NSObject *)self.delegate performSelector:@selector(notesViewDismissed) withObject:nil afterDelay:0.2f];
     }
-    
-    
 }                                                  
-
-
-
 
 @end
