@@ -34,5 +34,6 @@
 // FIXME: Confirm this fits with the sync model with John
 
 - (SCHNote *)createEmptyNote;
+- (SCHHighlight *)createEmptyHighlight;
 
 @end

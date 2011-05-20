@@ -12,6 +12,7 @@
 #import "SCHLibreAccessWebService.h"
 #import "SCHAnnotationSyncComponent.h"
 #import "SCHNote.h"
+#import "SCHHighlight.h"
 
 @interface SCHBookAnnotations ()
 
@@ -161,6 +162,14 @@
                                             inManagedObjectContext:self.privateAnnotations.managedObjectContext];
 	
 	return note;
+}
+
+- (SCHHighlight *)createEmptyHighlight
+{
+    SCHHighlight *highlight = [NSEntityDescription insertNewObjectForEntityForName:kSCHHighlight 
+                                                  inManagedObjectContext:self.privateAnnotations.managedObjectContext];
+	
+	return highlight;
 }
 
 @end
