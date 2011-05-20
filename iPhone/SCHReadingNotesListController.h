@@ -26,8 +26,8 @@
 @property (nonatomic, retain) IBOutlet UIImageView *topShadow;
 
 
-- (IBAction)cancelButtonAction:(id)sender;
-- (IBAction)addNoteButtonAction:(id)sender;
+- (IBAction)cancelButtonAction:(UIBarButtonItem *)sender;
+- (IBAction)editNotesButtonAction:(UIBarButtonItem *)sender;
 
 @end
 
