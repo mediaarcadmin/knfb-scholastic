@@ -16,12 +16,13 @@
 #import "SCHXPSProvider.h"
 #import "SCHCustomNavigationBar.h"
 #import "SCHCustomToolbar.h"
-#import "SCHReadingNotesViewController.h"
+#import "SCHReadingNotesListController.h"
 #import "SCHSyncManager.h"
 #import "SCHProfileItem.h"
 #import "SCHBookPoint.h"
 #import "SCHLastPage.h"
 #import "SCHBookAnnotations.h"
+#import "SCHReadingNoteView.h"
 
 // constants
 static const CGFloat kReadingViewStandardScrubHeight = 47.0f;
@@ -495,11 +496,21 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (IBAction)audioPlayAction:(id)sender
 {
     NSLog(@"Audio Play action");
+
+    if (self.optionsView.superview) {
+        [self.optionsView removeFromSuperview];
+    }
+    
 }
 
 - (IBAction)storyInteractionAction:(id)sender
 {
     NSLog(@"Story Interactions action");
+
+    if (self.optionsView.superview) {
+        [self.optionsView removeFromSuperview];
+    }
+    
 }
 
 - (IBAction)highlightsAction:(id)sender
@@ -513,14 +524,23 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     } else {
         [self setDictionarySelectionMode];
     }
+    if (self.optionsView.superview) {
+        [self.optionsView removeFromSuperview];
+    }
+    
 }
 
 - (IBAction)notesAction:(id)sender
 {
     NSLog(@"Notes action");
     
-    SCHReadingNotesViewController *notesController = [[SCHReadingNotesViewController alloc] initWithNibName:nil bundle:nil];
+    if (self.optionsView.superview) {
+        [self.optionsView removeFromSuperview];
+    }
+    
+    SCHReadingNotesListController *notesController = [[SCHReadingNotesListController alloc] initWithNibName:nil bundle:nil];
     notesController.isbn = self.isbn;
+    notesController.delegate = self;
     [self.navigationController presentModalViewController:notesController animated:YES];
     [notesController release];
     
@@ -998,5 +1018,45 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 		self.initialFadeTimer = nil;
 	}
 }	
+
+#pragma mark - SCHReadingNotesViewDelegate methods
+
+- (void)readingNotesViewCreatingNewNote:(SCHReadingNotesListController *)readingNotesView
+{
+    NSLog(@"Requesting a new note be created!");
+    SCHReadingNoteView *aNotesView = [[SCHReadingNoteView alloc] initWithFrame:CGRectZero];
+    aNotesView.page = [NSString stringWithFormat:@"%d", self.currentPageIndex + 1];
+    aNotesView.noteText = @"New note";
+    aNotesView.delegate = self;
+    
+    [self setToolbarVisibility:NO animated:YES];
+    
+    [aNotesView showInView:self.view animated:YES];
+    [aNotesView release];
+}
+
+- (void)readingNotesView:(SCHReadingNotesListController *)readingNotesView didSelectNote:(NSString *)note
+{
+    SCHReadingNoteView *aNotesView = [[SCHReadingNoteView alloc] initWithFrame:CGRectZero];
+    aNotesView.page = [NSString stringWithFormat:@"%d", self.currentPageIndex + 1];
+    aNotesView.noteText = @"Existing note";
+    aNotesView.delegate = self;
+    [aNotesView showInView:self.view animated:YES];
+    [aNotesView release];
+
+    [self setToolbarVisibility:NO animated:YES];
+}
+
+#pragma mark - SCHNotesViewDelegate methods
+
+- (void)notesViewSaved:(SCHReadingNoteView *)notesView
+{
+    [self setToolbarVisibility:YES animated:YES];
+}
+
+- (void)notesViewCancelled:(SCHReadingNoteView *)notesView
+{
+    [self setToolbarVisibility:YES animated:YES];
+}
 
 @end

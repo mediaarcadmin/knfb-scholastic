@@ -61,7 +61,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 {
     [super viewDidLoad];
     [self.navigationController.navigationBar setTintColor:[UIColor colorWithRed:0.832 green:0.000 blue:0.007 alpha:1.000]];
-    
+
     self.loginController.controllerType = kSCHControllerLoginView;
     self.loginController.actionBlock = ^{
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(authenticationManager:) name:kSCHAuthenticationManagerSuccess object:nil];			
@@ -69,6 +69,10 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
         
         [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithUserName:[self.loginController username] withPassword:[self.loginController password]];
     };    
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        self.title = @"Settings";
+    }
 }
 
 - (void)viewDidUnload 
@@ -87,15 +91,21 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation
 {
-    if (UIInterfaceOrientationIsLandscape(orientation)) {
-        [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:
-         [UIImage imageNamed:@"admin-iphone-landscape-top-toolbar.png"]];
-        [self.backgroundView setImage:[UIImage imageNamed:@"plain-background-landscape.png"]];
-        
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+//        [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:
+//         [UIImage imageNamed:@"admin-iphone-portrait-top-toolbar.png"]];
+//        [self.backgroundView setImage:[UIImage imageNamed:@"plain-background-portrait.png"]];        
     } else {
-        [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:
-         [UIImage imageNamed:@"admin-iphone-portrait-top-toolbar.png"]];
-        [self.backgroundView setImage:[UIImage imageNamed:@"plain-background-portrait.png"]];        
+        if (UIInterfaceOrientationIsLandscape(orientation)) {
+            [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:
+             [UIImage imageNamed:@"admin-iphone-landscape-top-toolbar.png"]];
+            [self.backgroundView setImage:[UIImage imageNamed:@"plain-background-landscape.png"]];
+            
+        } else {
+            [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:
+             [UIImage imageNamed:@"admin-iphone-portrait-top-toolbar.png"]];
+            [self.backgroundView setImage:[UIImage imageNamed:@"plain-background-portrait.png"]];        
+        }
     }
 }
 

@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 
 #import "SCHReadingView.h"
+#import "SCHReadingNotesListController.h"
+#import "SCHReadingNoteView.h"
 
 typedef enum 
 {
@@ -26,7 +28,7 @@ typedef enum
 @class SCHCustomToolbar;
 @class SCHProfileItem;
 
-@interface SCHReadingViewController : UIViewController <SCHReadingViewDelegate> 
+@interface SCHReadingViewController : UIViewController <SCHReadingViewDelegate, SCHReadingNotesListControllerDelegate, SCHReadingNoteViewDelegate> 
 {
 }
 

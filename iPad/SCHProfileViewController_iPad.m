@@ -7,6 +7,7 @@
 //
 
 #import "SCHProfileViewController_iPad.h"
+#import <QuartzCore/QuartzCore.h>
 #import "SCHBookshelfViewController_iPad.h"
 #import "SCHBookshelfViewController.h"
 #import "SCHProfileItem.h"
@@ -16,16 +17,22 @@
 #import "SCHURLManager.h"
 #import "SCHSyncManager.h"
 #import "SCHBookManager.h"
+#import "SCHSettingsViewController.h"
+#import "SCHCustomNavigationBar.h"
 #import "SCHAppProfile.h"
 
 #pragma mark - Class Extension
 
 @interface SCHProfileViewController_iPad () 
 
+- (void)releaseViewObjects;
 - (void)pushBookshelvesControllerWithProfileItem:(SCHProfileItem *)profileItem;
 - (void)showLoginControllerWithAnimation:(BOOL)animated;
 - (void)showProfilePasswordControllerWithAnimation:(BOOL)animated;
-//- (void)showBookshelfListWithAnimation:(BOOL)animated;
+- (void)toggleSettingsController;
+
+@property (nonatomic, retain) UIButton *settingsButton;
+@property (nonatomic, retain) UIPopoverController *settingsPopover;
 
 @end
 
@@ -37,6 +44,9 @@
 @synthesize containerView;
 @synthesize loginPasswordController;
 @synthesize profilePasswordController;
+@synthesize settingsNavigationController;
+@synthesize settingsButton;
+@synthesize settingsPopover;
 
 #pragma mark - Object lifecycle
 
@@ -48,6 +58,9 @@
     [containerView release], containerView = nil;
     [loginPasswordController release], loginPasswordController = nil;
     [profilePasswordController release], profilePasswordController = nil;
+    [settingsButton release], settingsButton = nil;
+    [settingsPopover release], settingsPopover = nil;
+    [settingsNavigationController release], settingsNavigationController = nil;
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
@@ -70,6 +83,18 @@
 //    UIImageView *logoImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo"]];
 //    self.navigationItem.titleView = logoImageView;
 //    [logoImageView release];
+    
+    self.containerView.layer.cornerRadius = 5;
+    
+    self.settingsButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [self.settingsButton addTarget:self action:@selector(toggleSettingsController) 
+             forControlEvents:UIControlEventTouchUpInside]; 
+    [self.settingsButton setImage:[UIImage imageNamed:@"settings-portrait.png"] 
+                         forState:UIControlStateNormal];
+    [self.settingsButton sizeToFit];
+
+    self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:self.settingsButton] autorelease];
+
 
     self.loginPasswordController.controllerType = kSCHControllerLoginView;
     self.loginPasswordController.actionBlock = ^{
@@ -80,10 +105,8 @@
         [self.loginPasswordController startShowingProgress];
     };
     
-    // block gets set when a row is selected
     self.profilePasswordController.controllerType = kSCHControllerPasswordOnlyView;
     self.profilePasswordController.cancelBlock = ^{
-        //[self showBookshelfListWithAnimation:YES];
         [self.profilePasswordController dismissModalViewControllerAnimated:YES];
     };
     
@@ -91,6 +114,7 @@
     [self.containerView addSubview:self.tableView];
 
     
+    // check for authentication
 #if !LOCALDEBUG	
 	SCHAuthenticationManager *authenticationManager = [SCHAuthenticationManager sharedAuthenticationManager];
 	
@@ -129,6 +153,30 @@
 
 }
 
+- (void)toggleSettingsController
+{
+    NSLog(@"Toggle settings controller.");
+    
+    if (self.settingsPopover) {
+        [self.settingsPopover dismissPopoverAnimated:YES];
+        self.settingsPopover = nil;
+    } else {
+        [self.settingsNavigationController popToRootViewControllerAnimated:NO];
+        self.settingsPopover = [[UIPopoverController alloc] initWithContentViewController:self.settingsNavigationController];
+        self.settingsPopover.delegate = self;
+        
+        [self.settingsPopover presentPopoverFromBarButtonItem:self.navigationItem.rightBarButtonItem permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    }
+}
+
+#pragma mark - UIPopoverControllerDelegate
+
+- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
+{
+    if (popoverController == self.settingsPopover) {
+        self.settingsPopover = nil;
+    }
+}
 #pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {

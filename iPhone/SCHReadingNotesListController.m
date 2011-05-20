@@ -1,12 +1,12 @@
 //
-//  SCHReadingNotesViewController.m
+//  SCHReadingNotesListController.m
 //  Scholastic
 //
 //  Created by Gordon Christie on 03/05/2011.
 //  Copyright 2011 BitWink. All rights reserved.
 //
 
-#import "SCHReadingNotesViewController.h"
+#import "SCHReadingNotesListController.h"
 #import "SCHCustomToolbar.h"
 
 
@@ -16,7 +16,7 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
 
 #pragma mark - Class Extension
 
-@interface SCHReadingNotesViewController ()
+@interface SCHReadingNotesListController ()
 
 @property (nonatomic, retain) UINib *noteCellNib;
 
@@ -25,10 +25,11 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
 
 @end
 
-#pragma mark - SCHReadingNotesViewController
+#pragma mark - SCHReadingNotesListController
 
-@implementation SCHReadingNotesViewController
+@implementation SCHReadingNotesListController
 
+@synthesize delegate;
 @synthesize noteCellNib;
 @synthesize notesTableView;
 @synthesize notesCell;
@@ -43,6 +44,8 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
 
 -(void)dealloc {
     [self releaseViewObjects];
+    
+    delegate = nil;
     
     [isbn release], isbn = nil;
     [noteCellNib release], noteCellNib = nil;
@@ -94,7 +97,7 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
     [self setupAssetsForOrientation:self.interfaceOrientation];
     
     // because we're using iOS 4 and above, use UINib to cache access to the NIB
-    self.noteCellNib = [UINib nibWithNibName:@"SCHReadingNotesTableCell" bundle:nil];
+    self.noteCellNib = [UINib nibWithNibName:@"SCHReadingNotesListTableCell" bundle:nil];
     
     [self.topShadow setImage:[[UIImage imageNamed:@"reading-view-iphone-top-shadow.png"] stretchableImageWithLeftCapWidth:15.0f topCapHeight:0]];
 
@@ -158,6 +161,15 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
     [self dismissModalViewControllerAnimated:YES];
 }
 
+- (IBAction)addNoteButtonAction:(id)sender
+{
+    if (self.delegate && [delegate respondsToSelector:@selector(readingNotesView:didSelectNote:)]) {
+        [delegate readingNotesViewCreatingNewNote:self];
+    }
+
+    [self dismissModalViewControllerAnimated:YES];
+}
+
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -208,6 +220,15 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
     }
     
     return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (self.delegate && [delegate respondsToSelector:@selector(readingNotesView:didSelectNote:)]) {
+        [delegate readingNotesView:self didSelectNote:@"FIXME: dummy note"];
+    }
+    
+    [self dismissModalViewControllerAnimated:YES];
 }
 
 @end
