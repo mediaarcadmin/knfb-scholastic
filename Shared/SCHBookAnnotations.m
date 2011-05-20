@@ -13,6 +13,8 @@
 #import "SCHAnnotationSyncComponent.h"
 #import "SCHNote.h"
 #import "SCHHighlight.h"
+#import "SCHLocationText.h"
+#import "SCHLocationGraphics.h"
 
 @interface SCHBookAnnotations ()
 
@@ -160,6 +162,12 @@
 {
     SCHNote *note = [NSEntityDescription insertNewObjectForEntityForName:kSCHNote 
                                             inManagedObjectContext:self.privateAnnotations.managedObjectContext];
+        
+    SCHLocationGraphics *locationGraphics = [NSEntityDescription insertNewObjectForEntityForName:kSCHLocationGraphics
+                                                                  inManagedObjectContext:self.privateAnnotations.managedObjectContext];
+                                     
+    note.PrivateAnnotations = self.privateAnnotations;
+    note.LocationGraphics = locationGraphics;
 	
 	return note;
 }
@@ -168,6 +176,12 @@
 {
     SCHHighlight *highlight = [NSEntityDescription insertNewObjectForEntityForName:kSCHHighlight 
                                                   inManagedObjectContext:self.privateAnnotations.managedObjectContext];
+    
+    SCHLocationText *locationText = [NSEntityDescription insertNewObjectForEntityForName:kSCHLocationText
+                                                                  inManagedObjectContext:self.privateAnnotations.managedObjectContext];
+    
+    highlight.PrivateAnnotations = self.privateAnnotations;
+    highlight.LocationText = locationText;
 	
 	return highlight;
 }
