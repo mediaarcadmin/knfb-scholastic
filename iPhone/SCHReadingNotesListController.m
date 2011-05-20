@@ -166,13 +166,16 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
     UIBarButtonItem *newBBI = nil;
     int width = 14;
     
+    [self.notesTableView beginUpdates];
     if ([self.notesTableView isEditing]) {
         newBBI = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editNotesButtonAction:)];
-        [self.notesTableView setEditing:NO animated:YES];
+        [self.notesTableView setEditing:NO animated:NO];
+        [self.notesTableView insertSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationTop];
         width = 14;
     } else {
         newBBI = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(editNotesButtonAction:)];
-        [self.notesTableView setEditing:YES animated:YES];
+        [self.notesTableView setEditing:YES animated:NO];
+        [self.notesTableView deleteSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationBottom];
         width = 7;
     }
     
@@ -186,9 +189,20 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
         
         self.topBar.items = [NSArray arrayWithArray:currentItems];
     }
+    [self.notesTableView endUpdates];
+
 }
 
 #pragma mark - UITableViewDataSource
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    if ([tableView isEditing]) {
+        return 1;
+    } else {
+        return 2;
+    }
+}
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -200,11 +214,13 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
     switch (section) {
         case 0:
         {
+            NSLog(@"1 row");
             return 1;
             break;
         }   
         case 1:
         {
+            NSLog(@"5 rows");
             return 5;
             break;
         }   
