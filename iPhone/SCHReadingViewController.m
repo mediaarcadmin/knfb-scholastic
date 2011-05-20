@@ -464,8 +464,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (void)jumpToLastPageLocation
 {
+    SCHBookAnnotations *annotations = [self.profile annotationsForBook:self.isbn];
     SCHBookPoint *lastPoint = [[[SCHBookPoint alloc] init] autorelease];
-    lastPoint.layoutPage = [self.profile contentIdentifierLastPageLocation:self.isbn] ? : 1;
+    lastPoint.layoutPage = [annotations lastPage] ? [[[annotations lastPage] LastPageLocation] integerValue] : 1;
     [self jumpToBookPoint:lastPoint animated:NO];
 }
 
