@@ -163,14 +163,28 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
 
 - (IBAction)editNotesButtonAction:(UIBarButtonItem *)sender
 {
+    UIBarButtonItem *newBBI = nil;
+    int width = 14;
+    
     if ([self.notesTableView isEditing]) {
-        self.notesTableView.editing = NO;
-        sender.title = @"Done";
-        sender.style = UIBarButtonItemStyleDone;
+        newBBI = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editNotesButtonAction:)];
+        [self.notesTableView setEditing:NO animated:YES];
+        width = 14;
     } else {
-        self.notesTableView.editing = YES;
-        sender.title = @"Edit";
-        sender.style = UIBarButtonItemStyleBordered;
+        newBBI = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(editNotesButtonAction:)];
+        [self.notesTableView setEditing:YES animated:YES];
+        width = 7;
+    }
+    
+    if (newBBI) {
+        NSMutableArray *currentItems = [NSMutableArray arrayWithArray:self.topBar.items];
+        [currentItems replaceObjectAtIndex:0 withObject:newBBI];
+        
+        // adjust the width of the fixed space to keep the title centred
+        UIBarButtonItem *fixedSpace = (UIBarButtonItem *) [currentItems objectAtIndex:1];
+        fixedSpace.width = width;
+        
+        self.topBar.items = [NSArray arrayWithArray:currentItems];
     }
 }
 
