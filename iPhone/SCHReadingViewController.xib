@@ -121,8 +121,8 @@
 							</object>
 							<object class="IBUIButton" id="230255674">
 								<reference key="NSNextResponder" ref="622743106"/>
-								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{87, 6}, {72, 33}}</string>
+								<int key="NSvFlags">301</int>
+								<string key="NSFrame">{{87, 0}, {72, 44}}</string>
 								<reference key="NSSuperview" ref="622743106"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="365933732"/>
@@ -137,6 +137,10 @@
 									<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
 								</object>
 								<reference key="IBUINormalTitleShadowColor" ref="155484018"/>
+								<object class="NSCustomResource" key="IBUISelectedImage">
+									<string key="NSClassName">NSImage</string>
+									<string key="NSResourceName">icon-highlights-active.png</string>
+								</object>
 								<object class="NSCustomResource" key="IBUINormalImage">
 									<string key="NSClassName">NSImage</string>
 									<string key="NSResourceName">icon-highlights.png</string>
@@ -1225,6 +1229,7 @@
 					<string>18.IBPluginDependency</string>
 					<string>18.IBViewBoundsToFrameTransform</string>
 					<string>181.IBPluginDependency</string>
+					<string>181.IBUIButtonInspectorSelectedStateConfigurationMetadataKey</string>
 					<string>183.IBPluginDependency</string>
 					<string>35.IBPluginDependency</string>
 					<string>37.IBPluginDependency</string>
@@ -1268,6 +1273,7 @@
 						<bytes key="NSTransformStruct">AQAAAABCHAAAA</bytes>
 					</object>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<real value="2"/>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -1557,6 +1563,7 @@
 				<bool key="EncodedWithXMLCoder">YES</bool>
 				<string>icon-font-decrease.png</string>
 				<string>icon-font-increase.png</string>
+				<string>icon-highlights-active.png</string>
 				<string>icon-highlights.png</string>
 				<string>icon-layout-fixed.png</string>
 				<string>icon-layout-flowed.png</string>
@@ -1569,7 +1576,8 @@
 				<bool key="EncodedWithXMLCoder">YES</bool>
 				<string>{17, 28}</string>
 				<string>{17, 28}</string>
-				<string>{33, 39}</string>
+				<string>{36, 36}</string>
+				<string>{36, 36}</string>
 				<string>{78, 28}</string>
 				<string>{78, 28}</string>
 				<string>{34, 38}</string>
