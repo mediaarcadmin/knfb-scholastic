@@ -156,67 +156,119 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
 
 #pragma mark - Actions
 
-- (IBAction)cancelButtonAction:(id)sender
+- (IBAction)cancelButtonAction:(UIBarButtonItem *)sender
 {
     [self dismissModalViewControllerAnimated:YES];
 }
 
-- (IBAction)addNoteButtonAction:(id)sender
+- (IBAction)editNotesButtonAction:(UIBarButtonItem *)sender
 {
-    if (self.delegate && [delegate respondsToSelector:@selector(readingNotesView:didSelectNote:)]) {
-        [delegate readingNotesViewCreatingNewNote:self];
+    if ([self.notesTableView isEditing]) {
+        self.notesTableView.editing = NO;
+        sender.title = @"Done";
+        sender.style = UIBarButtonItemStyleDone;
+    } else {
+        self.notesTableView.editing = YES;
+        sender.title = @"Edit";
+        sender.style = UIBarButtonItemStyleBordered;
     }
-
-    [self dismissModalViewControllerAnimated:YES];
 }
 
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (section == 0) {
-        return 5;
-    } else {
-        return 0;
+    // if we're editing, omit the first section
+    if ([tableView isEditing]) {
+        section++;
     }
+    
+    switch (section) {
+        case 0:
+        {
+            return 1;
+            break;
+        }   
+        case 1:
+        {
+            return 5;
+            break;
+        }   
+        default:
+            return 0;
+            break;
+    }
+
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *cellIdentifier = @"SCHReadingNotesTableCell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    UITableViewCell *cell = nil;
     
-    if (cell == nil) {
-        
-        if (self.noteCellNib) {
-            [self.noteCellNib instantiateWithOwner:self options:nil];
-        }
-        
-        // when the nib loads, it places an instantiated version of the cell in self.notesCell
-        cell = self.notesCell;
-        
-        // tidy up after ourselves
-        self.notesCell = nil;
+    NSInteger section = [indexPath section];
+    
+    // if we're editing, omit the first section
+    if ([tableView isEditing]) {
+        section++;
     }
     
-    // use tags to grab the labels and the activity view
-    UIActivityIndicatorView *activityView = (UIActivityIndicatorView *) [cell viewWithTag:CELL_ACTIVITY_INDICATOR_TAG];
-    UILabel *titleLabel = (UILabel *) [cell viewWithTag:CELL_TITLE_LABEL_TAG];
-    UILabel *subTitleLabel = (UILabel *) [cell viewWithTag:CELL_PAGE_LABEL_TAG];
-    
-    titleLabel.text = [NSString stringWithFormat:@"Note %d", [indexPath row] + 1];
-    
-    // FIXME: for demo purposes, even lines will be loading, odd will not
-    if (activityView) {
-        if ([indexPath row] % 2 == 0) {
-            [activityView startAnimating];
-            cell.accessoryType = UITableViewCellAccessoryNone;
-            subTitleLabel.text = @"";
-        } else {
-            [activityView stopAnimating];
-            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-            subTitleLabel.text = [NSString stringWithFormat:@"Page %d", [indexPath row] + 1];
+    switch (section) {
+        case 0:
+        {   
+            NSString *cellIdentifier = @"SCHReadingNotesAddNoteCell";
+            cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+            
+            if (cell == nil) {
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+            }
+            
+            cell.textLabel.text = NSLocalizedString(@"Add a Note", @"Add a Note");
+            cell.imageView.image = [UIImage imageNamed:@"ABAddCircle"];
+            
+            break;
         }
+        case 1:
+        {
+            NSString *cellIdentifier = @"SCHReadingNotesTableCell";
+            cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+            
+            if (cell == nil) {
+                
+                if (self.noteCellNib) {
+                    [self.noteCellNib instantiateWithOwner:self options:nil];
+                }
+                
+                // when the nib loads, it places an instantiated version of the cell in self.notesCell
+                cell = self.notesCell;
+                
+                // tidy up after ourselves
+                self.notesCell = nil;
+            }
+            
+            // use tags to grab the labels and the activity view
+            UIActivityIndicatorView *activityView = (UIActivityIndicatorView *) [cell viewWithTag:CELL_ACTIVITY_INDICATOR_TAG];
+            UILabel *titleLabel = (UILabel *) [cell viewWithTag:CELL_TITLE_LABEL_TAG];
+            UILabel *subTitleLabel = (UILabel *) [cell viewWithTag:CELL_PAGE_LABEL_TAG];
+            
+            titleLabel.text = [NSString stringWithFormat:@"Note %d", [indexPath row] + 1];
+            
+            // FIXME: for demo purposes, even lines will be loading, odd will not
+            if (activityView) {
+                if ([indexPath row] % 2 == 0) {
+                    [activityView startAnimating];
+                    cell.accessoryType = UITableViewCellAccessoryNone;
+                    subTitleLabel.text = @"";
+                } else {
+                    [activityView stopAnimating];
+                    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                    subTitleLabel.text = [NSString stringWithFormat:@"Page %d", [indexPath row] + 1];
+                }
+            }
+            
+            break;
+        }   
+        default:
+            break;
     }
     
     return cell;
@@ -224,8 +276,27 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (self.delegate && [delegate respondsToSelector:@selector(readingNotesView:didSelectNote:)]) {
-        [delegate readingNotesView:self didSelectNote:@"FIXME: dummy note"];
+    // table is set to disallow selection while editing
+    switch ([indexPath section]) {
+        case 0:
+        {
+            if (self.delegate && [delegate respondsToSelector:@selector(readingNotesView:didSelectNote:)]) {
+                [delegate readingNotesViewCreatingNewNote:self];
+            }
+            break;
+        }
+        case 1:
+        {
+            if (self.delegate && [delegate respondsToSelector:@selector(readingNotesView:didSelectNote:)]) {
+                [delegate readingNotesView:self didSelectNote:@"FIXME: dummy note"];
+            }
+            break;
+        }
+        default:
+        {
+            NSLog(@"Unknown row selection in SCHReadingNotesListController (%d)", [indexPath section]);
+            break;
+        }
     }
     
     [self dismissModalViewControllerAnimated:YES];
