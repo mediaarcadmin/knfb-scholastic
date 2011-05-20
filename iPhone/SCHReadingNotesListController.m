@@ -116,7 +116,7 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
 
 -(void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation
 {    
-    if (UIInterfaceOrientationIsPortrait(orientation)) {
+    if (UIInterfaceOrientationIsPortrait(orientation) || UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         [self.topBar setBackgroundImage:[UIImage imageNamed:@"reading-view-portrait-top-bar.png"]];
 
         CGRect barFrame = self.topBar.frame;

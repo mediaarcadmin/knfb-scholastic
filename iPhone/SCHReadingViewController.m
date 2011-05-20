@@ -541,6 +541,12 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     SCHReadingNotesListController *notesController = [[SCHReadingNotesListController alloc] initWithNibName:nil bundle:nil];
     notesController.isbn = self.isbn;
     notesController.delegate = self;
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        notesController.modalPresentationStyle = UIModalPresentationFormSheet;
+        notesController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    }
+    
     [self.navigationController presentModalViewController:notesController animated:YES];
     [notesController release];
     
