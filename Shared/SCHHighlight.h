@@ -11,6 +11,7 @@
 
 @class SCHLocationText;
 @class SCHPrivateAnnotations;
+@class SCHBookRange;
 
 static NSString * const kSCHHighlight = @"SCHHighlight";
 
@@ -22,6 +23,11 @@ static NSString * const kSCHHighlight = @"SCHHighlight";
 @property (nonatomic, retain) NSNumber * EndPage;
 @property (nonatomic, retain) SCHPrivateAnnotations * PrivateAnnotations;
 @property (nonatomic, retain) SCHLocationText * LocationText;
+
+- (NSUInteger)startLayoutPage;
+- (NSUInteger)startWordOffset;
+- (NSUInteger)endLayoutPage;
+- (NSUInteger)endWordOffset;
 
 @end
 

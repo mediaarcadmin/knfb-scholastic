@@ -12,6 +12,7 @@
 #import "SCHTextFlow.h"
 #import "SCHBookPoint.h"
 #import "SCHBookRange.h"
+#import "SCHHighlight.h"
 #import "KNFBTextFlowBlock.h"
 #import "KNFBTextFlowPositionedWord.h"
 #import <libEucalyptus/THPair.h>
@@ -225,6 +226,63 @@
     
 }
 
+- (SCHBookRange *)bookRangeForHighlight:(SCHHighlight *)highlight
+{
+    SCHBookPoint *startPoint = [[SCHBookPoint alloc] init];
+    startPoint.layoutPage = [highlight startLayoutPage];
+    startPoint.wordOffset = [highlight startWordOffset];
+    
+    NSArray *startWordBlocks = [self.textFlow blocksForPageAtIndex:startPoint.layoutPage - 1 includingFolioBlocks:NO];
+
+    for (int i = 0 ; i < [startWordBlocks count]; i++) {
+        KNFBTextFlowBlock *block = [startWordBlocks objectAtIndex:i];
+        if (startPoint.wordOffset < [[block words] count]) {
+            break;
+        } else {
+            startPoint.wordOffset -= [[block words] count];
+            startPoint.blockOffset++;
+        }
+    }
+
+    SCHBookPoint *endPoint = [[SCHBookPoint alloc] init];
+    endPoint.layoutPage = [highlight endLayoutPage];
+    endPoint.wordOffset = [highlight endWordOffset];
+    
+    NSArray *endWordBlocks = [self.textFlow blocksForPageAtIndex:endPoint.layoutPage - 1 includingFolioBlocks:NO];
+    
+    for (int i = 0 ; i < [endWordBlocks count]; i++) {
+        KNFBTextFlowBlock *block = [endWordBlocks objectAtIndex:i];
+        if (endPoint.wordOffset < [[block words] count]) {
+            break;
+        } else {
+            endPoint.wordOffset -= [[block words] count];
+            endPoint.blockOffset++;
+        }
+    }
+    
+    SCHBookRange *bookRange = [[SCHBookRange alloc] init];
+    bookRange.startPoint = startPoint;
+    bookRange.endPoint = endPoint;
+    
+    [startPoint release];
+    [endPoint release];
+    
+    return [bookRange autorelease];
+        
+}
+
+- (NSArray *)highlightsForLayoutPage:(NSUInteger)page
+{
+    NSMutableArray *highlights = [NSMutableArray array];
+    
+    for (SCHHighlight *highlight in [self.delegate highlightsForLayoutPage:page]) {
+        SCHBookRange *range = [self bookRangeForHighlight:highlight];
+        [highlights addObject:range];
+    }
+    
+    return highlights;
+}
+
 - (void)updateHighlight {
     
     EucSelectorRange *fromSelectorRange = [self.selector selectedRangeOriginalHighlightRange];
@@ -258,13 +316,33 @@
 {
     SCHBookRange *highlightRange = [self bookRangeFromSelectorRange:selectorRange];
     
-    NSInteger startIndex = highlightRange.startPoint.layoutPage - 1;
-    NSInteger endIndex   = highlightRange.endPoint.layoutPage - 1;
+    NSUInteger startPage = highlightRange.startPoint.layoutPage;
+    NSUInteger startWord = highlightRange.startPoint.wordOffset;
+    NSUInteger endPage   = highlightRange.endPoint.layoutPage;
+    NSUInteger endWord   = highlightRange.endPoint.wordOffset;
+
+    if (highlightRange.startPoint.blockOffset > 0) {
+        NSArray *startWordBlocks = [self.textFlow blocksForPageAtIndex:startPage - 1 includingFolioBlocks:NO];
+        for (int i = 0; i < highlightRange.startPoint.blockOffset; i++) {
+            if (i < [startWordBlocks count]) {
+                startWord += [[[startWordBlocks objectAtIndex:i] words] count];
+            }
+        }
+    }
     
-    [self.delegate addHighlightAtBookRange:highlightRange];
+    if (highlightRange.endPoint.blockOffset > 0) {
+        NSArray *endWordBlocks = [self.textFlow blocksForPageAtIndex:endPage - 1 includingFolioBlocks:NO];
+        for (int i = 0; i < highlightRange.endPoint.blockOffset; i++) {
+            if (i < [endWordBlocks count]) {
+                endWord += [[[endWordBlocks objectAtIndex:i] words] count];
+            }
+        }
+    }
     
-    for (int i = startIndex; i <= endIndex; i++) {
-        [self refreshHighlightsForPageAtIndex:i];
+    [self.delegate addHighlightBetweenStartPage:startPage startWord:startWord endPage:endPage endWord:endWord];
+    
+    for (int i = startPage; i <= endPage; i++) {
+        [self refreshHighlightsForPageAtIndex:i - 1];
     }
 }
 

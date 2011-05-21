@@ -137,9 +137,10 @@ static NSString * const kSCHProfileItemUserContentItemContentMetadataItem = @"Us
             
             SCHLastPage *newLastPage = [NSEntityDescription insertNewObjectForEntityForName:kSCHLastPage inManagedObjectContext:self.managedObjectContext];
 
-
             SCHPrivateAnnotations *newPrivateAnnotations = [NSEntityDescription insertNewObjectForEntityForName:kSCHPrivateAnnotations inManagedObjectContext:self.managedObjectContext];
             newPrivateAnnotations.LastPage = newLastPage;
+            newPrivateAnnotations.Highlights = [NSSet set];
+            newPrivateAnnotations.Notes = [NSSet set];
 
             SCHAnnotationsContentItem *newAnnotationsContentItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHAnnotationsContentItem inManagedObjectContext:self.managedObjectContext];
             newAnnotationsContentItem.PrivateAnnotations = newPrivateAnnotations;

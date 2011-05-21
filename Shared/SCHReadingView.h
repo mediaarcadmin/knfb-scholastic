@@ -30,8 +30,12 @@ typedef enum
 
 
 - (UIColor *)highlightColor;
-- (NSArray *)highlightsForBookRange:(SCHBookRange *)bookRange;
+//- (NSArray *)highlightsForBookRange:(SCHBookRange *)bookRange;
+- (NSArray *)highlightsForLayoutPage:(NSUInteger)page;
+
+// FIXME: rmeove the range method
 - (void)addHighlightAtBookRange:(SCHBookRange *)highlightRange;
+- (void)addHighlightBetweenStartPage:(NSUInteger)startPage startWord:(NSUInteger)startWord endPage:(NSUInteger)endPage endWord:(NSUInteger)endWord;
 - (void)updateHighlightAtBookRange:(SCHBookRange *)fromBookRange toBookRange:(SCHBookRange *)toBookRange;
 
 - (void)readingView:(SCHReadingView *)readingView hasMovedToPageAtIndex:(NSUInteger)pageIndex;
@@ -80,6 +84,7 @@ typedef enum
 - (NSString *)pageLabelForPageAtIndex:(NSUInteger)pageIndex;
 - (NSString *)displayPageNumberForPageAtIndex:(NSUInteger)pageIndex;
 
+- (NSArray *)highlightsForLayoutPage:(NSUInteger)page;
 - (void)updateHighlight;
 - (void)addHighlightWithSelection:(EucSelectorRange *)selectorRange;
 - (void)refreshHighlightsForPageAtIndex:(NSUInteger)index;

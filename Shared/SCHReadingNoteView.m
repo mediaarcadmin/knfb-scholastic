@@ -184,7 +184,7 @@ static NSString * const SCHNotesViewExitToTopAnimation = @"SCHNotesViewExitToTop
     NSNumber *pageNum = [self.note NotePageNumber];
 
     if (nil != pageNum) {
-		self.toolbarLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Page %@, %@",@"\"Page %@, %@\" toolbar label for Notes View"), [pageNum intValue], dateString];
+		self.toolbarLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Page %d, %@", @"Page and date toolbar label for Notes View"), [pageNum intValue], dateString];
     } else {
     // FIXME: change this to use the actual page
         self.toolbarLabel.text = [NSString stringWithFormat:@"%@", dateString];

@@ -285,7 +285,8 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
             }
             
             // use tags to grab the labels and the activity view
-//            UIActivityIndicatorView *activityView = (UIActivityIndicatorView *) [cell viewWithTag:CELL_ACTIVITY_INDICATOR_TAG];
+            UIActivityIndicatorView *activityView = (UIActivityIndicatorView *) [cell viewWithTag:CELL_ACTIVITY_INDICATOR_TAG];
+            activityView.alpha = 0;
             UILabel *titleLabel = (UILabel *) [cell viewWithTag:CELL_TITLE_LABEL_TAG];
             UILabel *subTitleLabel = (UILabel *) [cell viewWithTag:CELL_PAGE_LABEL_TAG];
             
@@ -293,7 +294,7 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
             if (note && note.Value && [note.Value length] > 0) {
                 titleLabel.text = note.Value;
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-                subTitleLabel.text = [NSString stringWithFormat:@"Page FIXME"];
+                subTitleLabel.text = [NSString stringWithFormat:@"Page %@", [note NotePageNumber]];
             } else {
                 titleLabel.text = @"Empty note";
             }

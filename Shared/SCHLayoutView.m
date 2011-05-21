@@ -19,6 +19,7 @@
 #import <libEucalyptus/THPositionedCGContext.h>
 #import <libEucalyptus/EucSelector.h>
 #import <libEucalyptus/EucSelectorRange.h>
+#import <libEucalyptus/THPair.h>
 
 #define LAYOUT_LHSHOTZONE 0.25f
 #define LAYOUT_RHSHOTZONE 0.75f
@@ -48,6 +49,8 @@
 - (void)zoomAtPoint:(CGPoint)point ;
 
 - (NSArray *)highlightRangesForCurrentPage;
+- (NSArray *)highlightRectsForPageAtIndex:(NSInteger)pageIndex excluding:(SCHBookRange *)excludedBookmark;
+- (NSArray *)rectsFromBlocksAtPageIndex:(NSInteger)pageIndex inBookRange:(SCHBookRange *)bookRange;
 
 - (CGPoint)translationToFitRect:(CGRect)aRect onPageAtIndex:(NSUInteger)pageIndex zoomScale:(CGFloat *)scale;
 - (CGAffineTransform)pageTurningViewTransformForPageAtIndex:(NSInteger)pageIndex;
@@ -478,6 +481,15 @@
     return [self.xpsProvider thumbnailForPage:index + 1];
 }
 
+- (NSArray *)pageTurningView:(EucPageTurningView *)pageTurningView highlightsForPageAtIndex:(NSUInteger)pageIndex
+{
+    
+    EucSelectorRange *selectedRange = [self.selector selectedRange];
+    SCHBookRange *excludedRange = [self bookRangeFromSelectorRange:selectedRange];
+    
+    return [self highlightRectsForPageAtIndex:pageIndex excluding:excludedRange];
+}
+
 #pragma mark - EucPageTurningViewDelegate
 
 - (void)pageTurningViewDidEndPageTurn:(EucPageTurningView *)aPageTurningView
@@ -649,27 +661,73 @@
         endPageIndex = startPageIndex;
     }
     
-    SCHBookPoint *startPoint = [[SCHBookPoint alloc] init];
-	startPoint.layoutPage = startPageIndex + 1;
+    NSMutableArray *allHighlights = [NSMutableArray array];
     
-    SCHBookPoint *endPoint = [[SCHBookPoint alloc] init];
-    endPoint.layoutPage = endPageIndex + 1;
+    for (int i = startPageIndex; i <= endPageIndex; i++) {
+        NSArray *highlightRanges = [self highlightsForLayoutPage:i + 1];
+        [allHighlights addObjectsFromArray:highlightRanges];
+    }
     
-    NSArray *endPageBlocks = [self.textFlow blocksForPageAtIndex:endPageIndex includingFolioBlocks:NO];
-    NSUInteger maxOffset = [endPageBlocks count] + 1;
-    endPoint.blockOffset = maxOffset;
+    return allHighlights;
+}
+
+- (NSArray *)highlightRectsForPageAtIndex:(NSInteger)pageIndex excluding:(SCHBookRange *)excludedBookmark {
+    NSMutableArray *allHighlights = [NSMutableArray array];
     
-    SCHBookRange *range = [[SCHBookRange alloc] init];
-    range.startPoint = startPoint;
-    range.endPoint = endPoint;
+    NSArray *highlightRanges = [self highlightsForLayoutPage:pageIndex + 1];
+    UIColor *highlightColor = [self.delegate highlightColor];
     
-    NSArray *highlightRanges = [self.delegate highlightsForBookRange:range];
+    for (SCHBookRange *highlightRange in highlightRanges) {
+        
+        if (![highlightRange isEqual:excludedBookmark]) {
+			
+			NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+			
+			NSArray *highlightRects = [self rectsFromBlocksAtPageIndex:pageIndex inBookRange:highlightRange];
+            NSArray *coalescedRects = [EucSelector coalescedLineRectsForElementRects:highlightRects];
+            
+            for (NSValue *rectValue in coalescedRects) {
+                THPair *highlightPair = [[THPair alloc] initWithFirst:(id)rectValue second:(id)highlightColor];
+                [allHighlights addObject:highlightPair];
+                [highlightPair release];
+            }
+            
+            [pool drain];
+        }
+        
+    }
     
-    [startPoint release];
-    [endPoint release];
-    [range release];
+    return allHighlights;
+}
+
+- (NSArray *)rectsFromBlocksAtPageIndex:(NSInteger)pageIndex inBookRange:(SCHBookRange *)bookRange {
+	NSMutableArray *rects = [[NSMutableArray alloc] init];
+	
+	NSArray *pageBlocks = [self.textFlow blocksForPageAtIndex:pageIndex includingFolioBlocks:NO];
+	
+	CGAffineTransform  pageTransform = [self pageTurningViewTransformForPageAtIndex:pageIndex offsetOrigin:NO applyZoom:NO];
     
-    return highlightRanges;
+	for (KNFBTextFlowBlock *block in pageBlocks) {                
+		for (KNFBTextFlowPositionedWord *word in [block words]) {
+			// If the range starts before this word:
+			if ( bookRange.startPoint.layoutPage < (pageIndex + 1) ||
+				((bookRange.startPoint.layoutPage == (pageIndex + 1)) && (bookRange.startPoint.blockOffset < block.blockIndex)) ||
+				((bookRange.startPoint.layoutPage == (pageIndex + 1)) && (bookRange.startPoint.blockOffset == block.blockIndex) && (bookRange.startPoint.wordOffset <= word.wordIndex)) ) {
+				// If the range ends after this word:
+				if ( bookRange.endPoint.layoutPage > (pageIndex +1 ) ||
+					((bookRange.endPoint.layoutPage == (pageIndex + 1)) && (bookRange.endPoint.blockOffset > block.blockIndex)) ||
+					((bookRange.endPoint.layoutPage == (pageIndex + 1)) && (bookRange.endPoint.blockOffset == block.blockIndex) && (bookRange.endPoint.wordOffset >= word.wordIndex)) ) {
+					// This word is in the range.
+					CGRect pageRect = CGRectApplyAffineTransform([word rect], pageTransform);
+					[rects addObject:[NSValue valueWithCGRect:pageRect]];
+					
+				}                            
+			}
+		}
+	}
+	
+	return [rects autorelease];
+	
 }
 
 #pragma mark - EucSelectorDataSource

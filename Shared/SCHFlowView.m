@@ -164,6 +164,37 @@
     [self.delegate toggleToolbars];
 }
 
+- (NSArray *)bookView:(EucBookView *)bookView highlightRangesFromPoint:(EucBookPageIndexPoint *)startPoint toPoint:(EucBookPageIndexPoint *)endPoint
+{
+    NSArray *ret = nil;
+    
+    SCHBookPoint *startBookPoint = [self.eucBook bookPointFromBookPageIndexPoint:startPoint];
+    SCHBookPoint *endBookPoint = [self.eucBook bookPointFromBookPageIndexPoint:endPoint];
+    
+    NSMutableArray *allHighlights = [NSMutableArray array];
+    
+    for (int i = startBookPoint.layoutPage; i <= endBookPoint.layoutPage; i++) {
+        NSArray *highlightRanges = [self highlightsForLayoutPage:i];
+        [allHighlights addObjectsFromArray:highlightRanges];
+    }
+            
+    NSUInteger count = allHighlights.count;
+    if(count) {
+        NSMutableArray *eucRanges = [[NSMutableArray alloc] initWithCapacity:count];
+        for(SCHBookRange *bookRange in allHighlights) {
+            EucHighlightRange *eucRange = [[EucHighlightRange alloc] init];
+            eucRange.startPoint = [self.eucBook bookPageIndexPointFromBookPoint:bookRange.startPoint];
+            eucRange.endPoint = [self.eucBook bookPageIndexPointFromBookPoint:bookRange.endPoint];
+            eucRange.color = [self.delegate highlightColor];
+            [eucRanges addObject:eucRange];
+            [eucRange release];
+        }
+        ret = [eucRanges autorelease];
+    }
+    
+    return ret;
+}
+
 #pragma mark - SCHReadingView methods
 
 - (EucSelector *)selector

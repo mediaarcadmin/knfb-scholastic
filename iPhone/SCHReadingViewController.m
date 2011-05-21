@@ -555,6 +555,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     
     SCHReadingNotesListController *notesController = [[SCHReadingNotesListController alloc] initWithNibName:nil bundle:nil];
     notesController.isbn = self.isbn;
+    notesController.profile = self.profile;
     notesController.delegate = self;
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
@@ -745,6 +746,18 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     return [[UIColor yellowColor] colorWithAlphaComponent:0.3f];
 }
 
+- (void)addHighlightBetweenStartPage:(NSUInteger)startPage startWord:(NSUInteger)startWord endPage:(NSUInteger)endPage endWord:(NSUInteger)endWord;
+{
+    NSLog(@"Add highlight");
+    SCHBookAnnotations *annotations = [self.profile annotationsForBook:self.isbn];
+    
+    if (annotations != nil) {
+        SCHHighlight *newHighlight = [annotations createHighlightBetweenStartPage:startPage startWord:startWord endPage:endPage endWord:endWord color:[self highlightColor]];
+        [annotations addHighlight:newHighlight];
+    }
+}
+
+// FIXME: remove this
 - (void)addHighlightAtBookRange:(SCHBookRange *)highlightRange
 {
     NSLog(@"Add highlight");
@@ -761,17 +774,27 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     NSLog(@"Update highlight");
 }
 
-- (NSArray *)highlightsForBookRange:(SCHBookRange *)bookRange
+//// FIXME: remove this
+//- (NSArray *)highlightsForBookRange:(SCHBookRange *)bookRange
+//{
+//    SCHBookAnnotations *annotations = [self.profile annotationsForBook:self.isbn];
+//    
+//    NSMutableArray *highlights = [NSMutableArray array];
+//    
+//    for (int i = bookRange.startPoint.layoutPage; i <= bookRange.endPoint.layoutPage; i++) {
+//        NSArray *highlightsForPage = [annotations highlightsForPage:i];
+//        NSArray *highlighBookRanges = [highlightsForPage valueForKey:@"bookRange"];
+//        [highlights addObjectsFromArray:highlighBookRanges];
+//    }
+//         
+//    return highlights;
+//}
+
+- (NSArray *)highlightsForLayoutPage:(NSUInteger)page
 {
     SCHBookAnnotations *annotations = [self.profile annotationsForBook:self.isbn];
     
-    NSMutableArray *highlights = [NSMutableArray array];
-    
-    for (int i = bookRange.startPoint.layoutPage; i <= bookRange.endPoint.layoutPage; i++) {
-        [highlights addObjectsFromArray:[annotations highlightsForPage:i]];
-    }
-         
-    return highlights;
+    return [annotations highlightsForPage:page];    
 }
 
 - (void)readingView:(SCHReadingView *)readingView hasMovedToPageAtIndex:(NSUInteger)pageIndex

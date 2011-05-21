@@ -94,8 +94,8 @@
     __block NSRange pageRange = NSMakeRange(0, 0);
 
     if (self.sortedHighlights == nil) {
-        NSSortDescriptor *sortDescriptor1 = [NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServicePage ascending:YES];
-        NSSortDescriptor *sortDescriptor2 = [NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceStart ascending:YES];
+        NSSortDescriptor *sortDescriptor1 = [NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceLocationTextPage ascending:YES];
+        NSSortDescriptor *sortDescriptor2 = [NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceEndPage ascending:YES];
         self.sortedHighlights = [self.privateAnnotations.Highlights sortedArrayUsingDescriptors:
                                  [NSArray arrayWithObjects:sortDescriptor1, sortDescriptor2, nil]];
         
@@ -106,9 +106,10 @@
 
     // search for page
     [self.sortedHighlights enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        if ([[obj page] integerValue] == page) {
+        if ([[obj EndPage] integerValue] == page) {
             if (found == NO) {
                 pageRange.location = idx;
+                pageRange.length = 1;
                 found = YES;
             } else {
                 pageRange.length = pageRange.length + 1;
@@ -133,12 +134,14 @@
 - (NSArray *)notes
 {
     if (self.sortedNotes == nil) {
-        NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServicePage ascending:YES];
+        NSSortDescriptor *sortDescriptor1 = [NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceLocationGraphicsPage ascending:YES];
+        NSSortDescriptor *sortDescriptor2 = [NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceLastModified ascending:YES];
+
         self.sortedNotes = [self.privateAnnotations.Notes sortedArrayUsingDescriptors:
-                          [NSArray arrayWithObject:sortDescriptor]];
+                          [NSArray arrayWithObjects:sortDescriptor1, sortDescriptor2, nil]];
         
         // remove deleted objects
-        self.sortedNotes = [self.sortedHighlights filteredArrayUsingPredicate:
+        self.sortedNotes = [self.sortedNotes filteredArrayUsingPredicate:
                                  [NSPredicate predicateWithFormat:@"State != %@", [NSNumber numberWithStatus:kSCHStatusDeleted]]];        
     }
     
@@ -193,6 +196,19 @@
 	return highlight;
 }
 
+- (SCHHighlight *)createHighlightBetweenStartPage:(NSUInteger)startPage startWord:(NSUInteger)startWord endPage:(NSUInteger)endPage endWord:(NSUInteger)endWord color:(UIColor *)color
+{
+    SCHHighlight *newHighlight = [self createEmptyHighlight];
+    newHighlight.EndPage = [NSNumber numberWithInteger:endPage];
+    newHighlight.Color = color;
+    newHighlight.LocationText.Page = [NSNumber numberWithInteger:startPage];
+    newHighlight.LocationText.WordIndex.Start = [NSNumber numberWithInteger:startWord];
+    newHighlight.LocationText.WordIndex.End = [NSNumber numberWithInteger:endWord];
+    
+    return newHighlight;
+}
+
+// FIXME: remove this - it doesn't take into account the block offset
 - (SCHHighlight *)createHighlightWithHighlightRange:(SCHBookRange *)highlightRange color:(UIColor *)color
 {
     SCHHighlight *newHighlight = [self createEmptyHighlight];
