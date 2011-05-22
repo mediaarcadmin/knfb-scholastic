@@ -9,9 +9,6 @@
 #import <libEucalyptus/EucBookView.h>
 #import "SCHReadingView.h"
 
-@protocol BlioBUpeBook;
-@class EucBUpeBook;
-
 @interface SCHFlowView : SCHReadingView <EucBookViewDelegate> {
 
 }

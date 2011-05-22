@@ -14,6 +14,4 @@
     
 }
 
-- (id)initWithFrame:(CGRect)frame isbn:(id)aIsbn;
-
 @end

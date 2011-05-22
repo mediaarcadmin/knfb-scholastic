@@ -34,7 +34,7 @@ typedef enum
 - (NSArray *)highlightsForLayoutPage:(NSUInteger)page;
 
 // FIXME: rmeove the range method
-- (void)addHighlightAtBookRange:(SCHBookRange *)highlightRange;
+//- (void)addHighlightAtBookRange:(SCHBookRange *)highlightRange;
 - (void)addHighlightBetweenStartPage:(NSUInteger)startPage startWord:(NSUInteger)startWord endPage:(NSUInteger)endPage endWord:(NSUInteger)endWord;
 - (void)updateHighlightAtBookRange:(SCHBookRange *)fromBookRange toBookRange:(SCHBookRange *)toBookRange;
 
@@ -50,14 +50,14 @@ typedef enum
     
 }
 
+@property (nonatomic, readonly) id <SCHReadingViewDelegate> delegate;
 @property (nonatomic, retain) NSString *isbn;
-@property (nonatomic, assign) id <SCHReadingViewDelegate> delegate;
 @property (nonatomic, retain) SCHXPSProvider *xpsProvider;
 @property (nonatomic, retain) SCHTextFlow *textFlow;
 @property (nonatomic, assign) SCHReadingViewSelectionMode selectionMode;
 @property (nonatomic, retain, readonly) EucSelector *selector;
 
-- (id)initWithFrame:(CGRect)frame isbn:(id)isbn;
+- (id)initWithFrame:(CGRect)frame isbn:(id)isbn delegate:(id<SCHReadingViewDelegate>)delegate;
 
 // Overridden methods
 // FIXME: change these to a protocol

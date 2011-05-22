@@ -106,13 +106,14 @@
 
     // search for page
     [self.sortedHighlights enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        if ([[obj EndPage] integerValue] == page) {
+        if (([obj startLayoutPage] <= page) &&
+            ([obj endLayoutPage] >= page)) {
             if (found == NO) {
                 pageRange.location = idx;
                 pageRange.length = 1;
                 found = YES;
             } else {
-                pageRange.length = pageRange.length + 1;
+                pageRange.length++;
             }
         } else if (found == YES) {
             *stop = YES;

@@ -49,4 +49,9 @@
     }
 }
 
+- (NSString *)description
+{
+    return [NSString stringWithFormat:@"<SCHBookPoint: %p> [%d %d %d %d]", self, self.layoutPage, self.blockOffset, self. wordOffset, self.elementOffset];
+}
+
 @end

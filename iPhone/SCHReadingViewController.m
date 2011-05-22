@@ -619,7 +619,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
             [self.fontSegmentedControl setEnabled:YES forSegmentAtIndex:0];
             [self.fontSegmentedControl setEnabled:YES forSegmentAtIndex:1];
             
-            SCHFlowView *flowView = [[SCHFlowView alloc] initWithFrame:self.view.bounds isbn:self.isbn];
+            SCHFlowView *flowView = [[SCHFlowView alloc] initWithFrame:self.view.bounds isbn:self.isbn delegate:self];
             self.readingView = flowView;
             [flowView release];
             
@@ -629,14 +629,13 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
             [self.fontSegmentedControl setEnabled:NO forSegmentAtIndex:0];
             [self.fontSegmentedControl setEnabled:NO forSegmentAtIndex:1];
             
-            SCHLayoutView *layoutView = [[SCHLayoutView alloc] initWithFrame:self.view.bounds isbn:self.isbn];
+            SCHLayoutView *layoutView = [[SCHLayoutView alloc] initWithFrame:self.view.bounds isbn:self.isbn delegate:self];
             self.readingView = layoutView;
             [layoutView release];
             
             break;
     }
     
-    self.readingView.delegate = self;
     self.readingView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.paperType = self.paperType; // Reload the paper
     
@@ -758,16 +757,16 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 }
 
 // FIXME: remove this
-- (void)addHighlightAtBookRange:(SCHBookRange *)highlightRange
-{
-    NSLog(@"Add highlight");
-    SCHBookAnnotations *annotations = [self.profile annotationsForBook:self.isbn];
-    
-    if (annotations != nil) {
-        SCHHighlight *newHighlight = [annotations createHighlightWithHighlightRange:highlightRange color:[self highlightColor]];
-        [annotations addHighlight:newHighlight];
-    }
-}
+//- (void)addHighlightAtBookRange:(SCHBookRange *)highlightRange
+//{
+//    NSLog(@"Add highlight");
+//    SCHBookAnnotations *annotations = [self.profile annotationsForBook:self.isbn];
+//    
+//    if (annotations != nil) {
+//        SCHHighlight *newHighlight = [annotations createHighlightWithHighlightRange:highlightRange color:[self highlightColor]];
+//        [annotations addHighlight:newHighlight];
+//    }
+//}
 
 - (void)updateHighlightAtBookRange:(SCHBookRange *)fromBookRange toBookRange:(SCHBookRange *)toBookRange
 {

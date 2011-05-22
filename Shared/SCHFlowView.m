@@ -71,9 +71,9 @@
     [super dealloc];
 }
 
-- (id)initWithFrame:(CGRect)frame isbn:(NSString *)isbn
+- (id)initWithFrame:(CGRect)frame isbn:(id)isbn delegate:(id<SCHReadingViewDelegate>)delegate
 {
-    self = [super initWithFrame:frame isbn:isbn];
+    self = [super initWithFrame:frame isbn:isbn delegate:delegate];
     if (self) {        
         self.opaque = YES;
 
@@ -227,9 +227,10 @@
     return [self.eucBookView pageCount];
 }
 
-- (void)refreshHighlights 
+- (void)refreshHighlightsForPageAtIndex:(NSUInteger)index
 {
-    return [self.eucBookView refreshHighlights];
+    // Just refresh them all even if it is called on multiple pages in flow view
+    [self.eucBookView refreshHighlights];
 }
 
 - (SCHBookRange *)bookRangeFromSelectorRange:(EucSelectorRange *)selectorRange

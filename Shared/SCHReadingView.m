@@ -22,6 +22,7 @@
 
 @interface SCHReadingView()
 
+@property (nonatomic, assign) id <SCHReadingViewDelegate> delegate;
 @property (nonatomic, retain) EucSelectorRange *currentSelectorRange;
 
 - (void)selectorDismissedWithSelection:(EucSelectorRange *)selectorRange;
@@ -56,12 +57,14 @@
     [super dealloc];
 }
 
-- (id) initWithFrame:(CGRect)frame isbn:(id)aIsbn
+- (id)initWithFrame:(CGRect)frame isbn:(id)newIsbn delegate:(id<SCHReadingViewDelegate>)newDelegate
 {
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
-        isbn = [aIsbn retain];
+        isbn = [newIsbn retain];
+        delegate = newDelegate;
+        
         self.opaque = YES;
         self.multipleTouchEnabled = YES;
         self.userInteractionEnabled = YES;
@@ -303,7 +306,7 @@
     } else {
         startIndex = toBookRange.startPoint.layoutPage - 1;
         endIndex   = toBookRange.endPoint.layoutPage - 1;
-        [self.delegate addHighlightAtBookRange:toBookRange];
+        //[self.delegate addHighlightAtBookRange:toBookRange];
     }
     
     for (int i = startIndex; i <= endIndex; i++) {

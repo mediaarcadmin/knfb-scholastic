@@ -141,9 +141,9 @@
     }    
 }
 
-- (id)initWithFrame:(CGRect)frame isbn:(id)aIsbn
+- (id)initWithFrame:(CGRect)frame isbn:(id)isbn delegate:(id<SCHReadingViewDelegate>)delegate
 {
-    self = [super initWithFrame:frame isbn:aIsbn];
+    self = [super initWithFrame:frame isbn:isbn delegate:delegate];
     if (self) {        
         [self initialiseView];
     }
