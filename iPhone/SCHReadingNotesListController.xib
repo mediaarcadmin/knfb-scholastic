@@ -98,17 +98,13 @@
 										<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 										<string key="IBUIText">Notes</string>
 										<object class="NSFont" key="IBUIFont">
-											<string key="NSName">Helvetica-Bold</string>
-											<double key="NSSize">20</double>
+											<string key="NSName">Arial-BoldMT</string>
+											<double key="NSSize">19</double>
 											<int key="NSfFlags">16</int>
-										</object>
-										<object class="NSColor" key="IBUITextColor">
-											<int key="NSColorSpace">2</int>
-											<bytes key="NSRGB">MC4xNDExNzY0NzcxIDAuMjI3NDUwOTk2NiAwLjQ1MDk4MDQyNDkAA</bytes>
 										</object>
 										<nil key="IBUIHighlightedColor"/>
 										<int key="IBUIBaselineAdjustment">1</int>
-										<float key="IBUIMinimumFontSize">20</float>
+										<float key="IBUIMinimumFontSize">17</float>
 										<int key="IBUITextAlignment">1</int>
 									</object>
 								</object>
@@ -170,7 +166,7 @@
 					<object class="IBUIImageView" id="1047549709">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">290</int>
-						<string key="NSFrame">{{0, 44}, {320, 7}}</string>
+						<string key="NSFrame">{{0, 44}, {320, 4}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
 						<reference key="IBUIBackgroundColor" ref="277012071"/>

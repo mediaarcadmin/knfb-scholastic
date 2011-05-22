@@ -290,9 +290,11 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         [self.olderBottomToolbar removeFromSuperview];
     }
     
-    [self.topShadow setImage:[[UIImage imageNamed:@"reading-view-iphone-top-shadow.png"] stretchableImageWithLeftCapWidth:15.0f topCapHeight:0]];
-    
-    [self.bottomShadow setImage:[[UIImage imageNamed:@"reading-view-iphone-bottom-shadow.png"] stretchableImageWithLeftCapWidth:15.0f topCapHeight:0]];
+    // Set non-rotation specific graphics
+    [self.topShadow    setImage:[UIImage imageNamed:@"reading-view-top-shadow.png"]];
+    [self.bottomShadow setImage:[UIImage imageNamed:@"reading-view-bottom-shadow.png"]];
+    [self.scrubberToolbar setBackgroundImage:[UIImage imageNamed:@"reading-view-scrubber-bar.png"]];
+    [self.olderBottomToolbar setBackgroundImage:[UIImage imageNamed:@"reading-view-bottom-bar.png"]];        
     
     CGRect bottomShadowFrame = self.bottomShadow.frame;
 
@@ -331,25 +333,27 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         
         [self.audioButton setImage:[UIImage imageNamed:@"icon-play.png"] forState:UIControlStateNormal];
         [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"reading-view-portrait-top-bar.png"]];
-        self.scrubberToolbar.backgroundImage = [UIImage imageNamed:@"reading-view-portrait-scrubber-bar.png"];
-        if (!self.youngerMode) {
-            self.olderBottomToolbar.backgroundImage = [UIImage imageNamed:@"reading-view-portrait-bottom-bar.png"];        
-        }
     } else {
-        [self.backButton setImage:[UIImage imageNamed:@"icon-books-landscape.png"] forState:UIControlStateNormal];
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+            [self.backButton setImage:[UIImage imageNamed:@"icon-books-landscape.png"] forState:UIControlStateNormal];
+        } else {
+            [self.backButton setImage:[UIImage imageNamed:@"icon-books.png"] forState:UIControlStateNormal];
+        }
         
         [self.audioButton setImage:[UIImage imageNamed:@"icon-play-landscape.png"] forState:UIControlStateNormal];
-        [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"reading-view-landscape-top-bar.png"]];
-        self.scrubberToolbar.backgroundImage = [UIImage imageNamed:@"reading-view-landscape-scrubber-bar.png"];
-        if (!self.youngerMode) {
-            self.olderBottomToolbar.backgroundImage = [UIImage imageNamed:@"reading-view-landscape-bottom-bar.png"];        
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+            [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"reading-view-landscape-top-bar.png"]];
+        } else {
+            [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"reading-view-portrait-top-bar.png"]];
         }
     }    
     
-    CGRect topShadowFrame = self.topShadow.frame;
-    topShadowFrame.origin.y = CGRectGetMinY(self.navigationController.navigationBar.frame) + 
-    [(SCHCustomNavigationBar *)self.navigationController.navigationBar backgroundImage].size.height;
-    self.topShadow.frame = topShadowFrame;
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        CGRect topShadowFrame = self.topShadow.frame;
+        topShadowFrame.origin.y = CGRectGetMinY(self.navigationController.navigationBar.frame) + 
+        [(SCHCustomNavigationBar *)self.navigationController.navigationBar backgroundImage].size.height;
+        self.topShadow.frame = topShadowFrame;
+    }
     
 }
 

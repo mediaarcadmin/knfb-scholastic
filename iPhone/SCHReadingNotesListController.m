@@ -97,13 +97,13 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
 {
     [super viewDidLoad];
     
-    [self.topBar setTintColor:[UIColor colorWithRed:0.490 green:0.773 blue:0.945 alpha:1.0]];
+    [self.topBar setTintColor:[UIColor colorWithWhite:0.7f alpha:1.0f]];
     [self setupAssetsForOrientation:self.interfaceOrientation];
     
     // because we're using iOS 4 and above, use UINib to cache access to the NIB
     self.noteCellNib = [UINib nibWithNibName:@"SCHReadingNotesListTableCell" bundle:nil];
     
-    [self.topShadow setImage:[[UIImage imageNamed:@"reading-view-iphone-top-shadow.png"] stretchableImageWithLeftCapWidth:15.0f topCapHeight:0]];
+    [self.topShadow setImage:[UIImage imageNamed:@"reading-view-top-shadow.png"]];
 
     SCHBookAnnotations *annotations = [self.profile annotationsForBook:self.isbn];
     self.notes = [annotations notes];
@@ -261,6 +261,7 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
                 cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier] autorelease];
             }
             
+            cell.textLabel.font = [UIFont boldSystemFontOfSize:17.0f];
             cell.textLabel.text = NSLocalizedString(@"Add a Note", @"Add a Note");
             cell.imageView.image = [UIImage imageNamed:@"ABAddCircle"];
             
