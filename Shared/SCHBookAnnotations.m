@@ -11,6 +11,12 @@
 #import "SCHPrivateAnnotations.h"
 #import "SCHLibreAccessWebService.h"
 #import "SCHAnnotationSyncComponent.h"
+#import "SCHNote.h"
+#import "SCHHighlight.h"
+#import "SCHLocationText.h"
+#import "SCHLocationGraphics.h"
+#import "SCHWordIndex.h"
+#import "SCHBookRange.h"
 
 @interface SCHBookAnnotations ()
 
@@ -88,8 +94,8 @@
     __block NSRange pageRange = NSMakeRange(0, 0);
 
     if (self.sortedHighlights == nil) {
-        NSSortDescriptor *sortDescriptor1 = [NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServicePage ascending:YES];
-        NSSortDescriptor *sortDescriptor2 = [NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceStart ascending:YES];
+        NSSortDescriptor *sortDescriptor1 = [NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceLocationTextPage ascending:YES];
+        NSSortDescriptor *sortDescriptor2 = [NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceEndPage ascending:YES];
         self.sortedHighlights = [self.privateAnnotations.Highlights sortedArrayUsingDescriptors:
                                  [NSArray arrayWithObjects:sortDescriptor1, sortDescriptor2, nil]];
         
@@ -100,12 +106,14 @@
 
     // search for page
     [self.sortedHighlights enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        if ([[obj page] integerValue] == page) {
+        if (([obj startLayoutPage] <= page) &&
+            ([obj endLayoutPage] >= page)) {
             if (found == NO) {
                 pageRange.location = idx;
+                pageRange.length = 1;
                 found = YES;
             } else {
-                pageRange.length = pageRange.length + 1;
+                pageRange.length++;
             }
         } else if (found == YES) {
             *stop = YES;
@@ -127,12 +135,14 @@
 - (NSArray *)notes
 {
     if (self.sortedNotes == nil) {
-        NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServicePage ascending:YES];
+        NSSortDescriptor *sortDescriptor1 = [NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceLocationGraphicsPage ascending:YES];
+        NSSortDescriptor *sortDescriptor2 = [NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceLastModified ascending:YES];
+
         self.sortedNotes = [self.privateAnnotations.Notes sortedArrayUsingDescriptors:
-                          [NSArray arrayWithObject:sortDescriptor]];
+                          [NSArray arrayWithObjects:sortDescriptor1, sortDescriptor2, nil]];
         
         // remove deleted objects
-        self.sortedNotes = [self.sortedHighlights filteredArrayUsingPredicate:
+        self.sortedNotes = [self.sortedNotes filteredArrayUsingPredicate:
                                  [NSPredicate predicateWithFormat:@"State != %@", [NSNumber numberWithStatus:kSCHStatusDeleted]]];        
     }
     
@@ -152,6 +162,64 @@
 - (SCHLastPage *)lastPage
 {
     return(self.privateAnnotations.LastPage);
+}
+
+- (SCHNote *)createEmptyNote
+{
+    SCHNote *note = [NSEntityDescription insertNewObjectForEntityForName:kSCHNote 
+                                            inManagedObjectContext:self.privateAnnotations.managedObjectContext];
+        
+    SCHLocationGraphics *locationGraphics = [NSEntityDescription insertNewObjectForEntityForName:kSCHLocationGraphics
+                                                                  inManagedObjectContext:self.privateAnnotations.managedObjectContext];
+                                     
+    note.PrivateAnnotations = self.privateAnnotations;
+    note.LocationGraphics = locationGraphics;
+	
+	return note;
+}
+
+- (SCHHighlight *)createEmptyHighlight
+{
+    SCHHighlight *highlight = [NSEntityDescription insertNewObjectForEntityForName:kSCHHighlight 
+                                                  inManagedObjectContext:self.privateAnnotations.managedObjectContext];
+    
+    SCHLocationText *locationText = [NSEntityDescription insertNewObjectForEntityForName:kSCHLocationText
+                                                                  inManagedObjectContext:self.privateAnnotations.managedObjectContext];
+    
+    SCHWordIndex *wordIndex = [NSEntityDescription insertNewObjectForEntityForName:kSCHWordIndex
+                                                            inManagedObjectContext:self.privateAnnotations.managedObjectContext];
+    
+    locationText.WordIndex = wordIndex;
+    
+    highlight.PrivateAnnotations = self.privateAnnotations;
+    highlight.LocationText = locationText;
+	
+	return highlight;
+}
+
+- (SCHHighlight *)createHighlightBetweenStartPage:(NSUInteger)startPage startWord:(NSUInteger)startWord endPage:(NSUInteger)endPage endWord:(NSUInteger)endWord color:(UIColor *)color
+{
+    SCHHighlight *newHighlight = [self createEmptyHighlight];
+    newHighlight.EndPage = [NSNumber numberWithInteger:endPage];
+    newHighlight.Color = color;
+    newHighlight.LocationText.Page = [NSNumber numberWithInteger:startPage];
+    newHighlight.LocationText.WordIndex.Start = [NSNumber numberWithInteger:startWord];
+    newHighlight.LocationText.WordIndex.End = [NSNumber numberWithInteger:endWord];
+    
+    return newHighlight;
+}
+
+// FIXME: remove this - it doesn't take into account the block offset
+- (SCHHighlight *)createHighlightWithHighlightRange:(SCHBookRange *)highlightRange color:(UIColor *)color
+{
+    SCHHighlight *newHighlight = [self createEmptyHighlight];
+    newHighlight.EndPage = [NSNumber numberWithInteger:highlightRange.endPoint.layoutPage];
+    newHighlight.Color = color;
+    newHighlight.LocationText.Page = [NSNumber numberWithInteger:highlightRange.startPoint.layoutPage];
+    newHighlight.LocationText.WordIndex.Start = [NSNumber numberWithInteger:highlightRange.startPoint.wordOffset];
+    newHighlight.LocationText.WordIndex.End = [NSNumber numberWithInteger:highlightRange.endPoint.wordOffset];
+    
+    return newHighlight;
 }
 
 @end

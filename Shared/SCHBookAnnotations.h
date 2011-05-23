@@ -14,6 +14,7 @@
 @class SCHNote;
 @class SCHFavorite;
 @class SCHLastPage;
+@class SCHBookRange;
 
 @interface SCHBookAnnotations : NSObject 
 {    
@@ -29,5 +30,13 @@
 - (void)addNote:(SCHNote *)newNote;
 - (SCHFavorite *)favorite;
 - (SCHLastPage *)lastPage;
+
+// Convenience creation methods
+// FIXME: Confirm this fits with the sync model with John
+
+- (SCHNote *)createEmptyNote;
+- (SCHHighlight *)createEmptyHighlight;
+- (SCHHighlight *)createHighlightBetweenStartPage:(NSUInteger)startPage startWord:(NSUInteger)startWord endPage:(NSUInteger)endPage endWord:(NSUInteger)endWord color:(UIColor *)color;
+- (SCHHighlight *)createHighlightWithHighlightRange:(SCHBookRange *)highlightRange color:(UIColor *)color;
 
 @end

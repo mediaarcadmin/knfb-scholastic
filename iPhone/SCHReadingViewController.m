@@ -16,13 +16,17 @@
 #import "SCHXPSProvider.h"
 #import "SCHCustomNavigationBar.h"
 #import "SCHCustomToolbar.h"
-#import "SCHReadingNotesViewController.h"
+#import "SCHReadingNotesListController.h"
 #import "SCHSyncManager.h"
 #import "SCHProfileItem.h"
+#import "SCHBookRange.h"
 #import "SCHBookPoint.h"
 #import "SCHLastPage.h"
 #import "SCHBookAnnotations.h"
 #import "SCHAudioBookPlayer.h"
+#import "SCHReadingNoteView.h"
+#import "SCHBookAnnotations.h"
+#import "SCHNote.h"
 
 // constants
 static const CGFloat kReadingViewStandardScrubHeight = 47.0f;
@@ -66,6 +70,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 @property (nonatomic, retain) SCHAudioBookPlayer *audioBookPlayer;
 
+@property (nonatomic, retain) UIPopoverController *popover;
+
 - (void)releaseViewObjects;
 
 - (void)toggleToolbarVisibility;
@@ -75,10 +81,13 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (void)updateScrubberValue;
 - (void)updateScrubberLabel;
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation;
+
 - (void)saveLastPageLocation;
 - (void)jumpToLastPageLocation;
 - (void)jumpToBookPoint:(SCHBookPoint *)bookPoint animated:(BOOL)animated; 
 - (void)jumpToCurrentPlaceInBookAnimated:(BOOL)animated;
+
+- (void)setDictionarySelectionMode;
 
 @end
 
@@ -102,8 +111,10 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 @synthesize currentFontSizeIndex;
 @synthesize paperType;
 @synthesize layoutType;
+@synthesize popover;
 
 @synthesize optionsView;
+@synthesize popoverOptionsViewController;
 @synthesize fontSegmentedControl;
 @synthesize flowFixedSegmentedControl;
 @synthesize paperTypeSegmentedControl;
@@ -134,8 +145,10 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [self releaseViewObjects];
     [isbn release], isbn = nil;
+    [popover release], popover = nil;
     [profile release], profile = nil;
     [audioBookPlayer release], audioBookPlayer = nil;
+    [popoverOptionsViewController release], popoverOptionsViewController = nil;
     
     [super dealloc];
 }
@@ -283,9 +296,11 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         [self.olderBottomToolbar removeFromSuperview];
     }
     
-    [self.topShadow setImage:[[UIImage imageNamed:@"reading-view-iphone-top-shadow.png"] stretchableImageWithLeftCapWidth:15.0f topCapHeight:0]];
-    
-    [self.bottomShadow setImage:[[UIImage imageNamed:@"reading-view-iphone-bottom-shadow.png"] stretchableImageWithLeftCapWidth:15.0f topCapHeight:0]];
+    // Set non-rotation specific graphics
+    [self.topShadow    setImage:[UIImage imageNamed:@"reading-view-top-shadow.png"]];
+    [self.bottomShadow setImage:[UIImage imageNamed:@"reading-view-bottom-shadow.png"]];
+    [self.scrubberToolbar setBackgroundImage:[UIImage imageNamed:@"reading-view-scrubber-bar.png"]];
+    [self.olderBottomToolbar setBackgroundImage:[UIImage imageNamed:@"reading-view-bottom-bar.png"]];        
     
     CGRect bottomShadowFrame = self.bottomShadow.frame;
 
@@ -324,25 +339,27 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         
         [self.audioButton setImage:[UIImage imageNamed:@"icon-play.png"] forState:UIControlStateNormal];
         [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"reading-view-portrait-top-bar.png"]];
-        self.scrubberToolbar.backgroundImage = [UIImage imageNamed:@"reading-view-portrait-scrubber-bar.png"];
-        if (!self.youngerMode) {
-            self.olderBottomToolbar.backgroundImage = [UIImage imageNamed:@"reading-view-portrait-bottom-bar.png"];        
-        }
     } else {
-        [self.backButton setImage:[UIImage imageNamed:@"icon-books-landscape.png"] forState:UIControlStateNormal];
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+            [self.backButton setImage:[UIImage imageNamed:@"icon-books-landscape.png"] forState:UIControlStateNormal];
+        } else {
+            [self.backButton setImage:[UIImage imageNamed:@"icon-books.png"] forState:UIControlStateNormal];
+        }
         
         [self.audioButton setImage:[UIImage imageNamed:@"icon-play-landscape.png"] forState:UIControlStateNormal];
-        [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"reading-view-landscape-top-bar.png"]];
-        self.scrubberToolbar.backgroundImage = [UIImage imageNamed:@"reading-view-landscape-scrubber-bar.png"];
-        if (!self.youngerMode) {
-            self.olderBottomToolbar.backgroundImage = [UIImage imageNamed:@"reading-view-landscape-bottom-bar.png"];        
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+            [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"reading-view-landscape-top-bar.png"]];
+        } else {
+            [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"reading-view-portrait-top-bar.png"]];
         }
     }    
     
-    CGRect topShadowFrame = self.topShadow.frame;
-    topShadowFrame.origin.y = CGRectGetMinY(self.navigationController.navigationBar.frame) + 
-    [(SCHCustomNavigationBar *)self.navigationController.navigationBar backgroundImage].size.height;
-    self.topShadow.frame = topShadowFrame;
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        CGRect topShadowFrame = self.topShadow.frame;
+        topShadowFrame.origin.y = CGRectGetMinY(self.navigationController.navigationBar.frame) + 
+        [(SCHCustomNavigationBar *)self.navigationController.navigationBar backgroundImage].size.height;
+        self.topShadow.frame = topShadowFrame;
+    }
     
 }
 
@@ -414,6 +431,11 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [self setupAssetsForOrientation:toInterfaceOrientation];
     
     [self.readingView willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+    
+    if (self.popover) {
+        [self.popover dismissPopoverAnimated:YES];
+        self.popover = nil;
+    }
 }
 
 #pragma mark -
@@ -452,8 +474,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (void)jumpToLastPageLocation
 {
+    SCHBookAnnotations *annotations = [self.profile annotationsForBook:self.isbn];
     SCHBookPoint *lastPoint = [[[SCHBookPoint alloc] init] autorelease];
-    lastPoint.layoutPage = [self.profile contentIdentifierLastPageLocation:self.isbn] ? : 1;
+    lastPoint.layoutPage = [annotations lastPage] ? [[[annotations lastPage] LastPageLocation] integerValue] : 1;
     [self jumpToBookPoint:lastPoint animated:NO];
 }
 
@@ -517,6 +540,11 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
             [self.audioBookPlayer pause];        
         }
     }
+
+    if (self.optionsView.superview) {
+        [self.optionsView removeFromSuperview];
+    }
+    
 }
 
 #pragma mark - Audio Book Delegate methods
@@ -534,11 +562,27 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (IBAction)storyInteractionAction:(id)sender
 {
     NSLog(@"Story Interactions action");
+
+    if (self.optionsView.superview) {
+        [self.optionsView removeFromSuperview];
+    }
+    
 }
 
 - (IBAction)highlightsAction:(id)sender
 {
     NSLog(@"HighlightsAction action");
+    UIButton *highlightsButton = (UIButton *)sender;
+    [highlightsButton setSelected:![highlightsButton isSelected]];
+    
+    if ([highlightsButton isSelected]) {
+        [self.readingView setSelectionMode:SCHReadingViewSelectionModeHighlights];
+    } else {
+        [self setDictionarySelectionMode];
+    }
+    if (self.optionsView.superview) {
+        [self.optionsView removeFromSuperview];
+    }
     
 }
 
@@ -546,29 +590,60 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 {
     NSLog(@"Notes action");
     
-    SCHReadingNotesViewController *notesController = [[SCHReadingNotesViewController alloc] initWithNibName:nil bundle:nil];
+    if (self.optionsView.superview) {
+        [self.optionsView removeFromSuperview];
+    }
+    
+    SCHReadingNotesListController *notesController = [[SCHReadingNotesListController alloc] initWithNibName:nil bundle:nil];
     notesController.isbn = self.isbn;
+    notesController.profile = self.profile;
+    notesController.delegate = self;
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        notesController.modalPresentationStyle = UIModalPresentationFormSheet;
+        notesController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    }
+    
     [self.navigationController presentModalViewController:notesController animated:YES];
     [notesController release];
     
 }
 
-- (IBAction)settingsAction:(id)sender
+- (IBAction)settingsAction:(UIButton *)sender
 {
     NSLog(@"Settings action");
     
-    if (self.optionsView.superview) {
-        [self.optionsView removeFromSuperview];
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        if (self.optionsView.superview) {
+            [self.optionsView removeFromSuperview];
+        } else {
+            
+            CGRect optionsFrame = self.optionsView.frame;
+            optionsFrame.origin.x = 0;
+            optionsFrame.origin.y = olderBottomToolbar.frame.origin.y - optionsFrame.size.height;
+            
+            optionsFrame.size.width = self.view.frame.size.width;
+            self.optionsView.frame = optionsFrame;
+            
+            [self.view addSubview:self.optionsView];
+        }
     } else {
+        if (self.popover) {
+            [self.popover dismissPopoverAnimated:YES];
+            self.popover = nil;
+        } else {
+
+            self.popoverOptionsViewController.contentSizeForViewInPopover = CGSizeMake(320, 86);
+            self.popover = [[UIPopoverController alloc] initWithContentViewController:self.popoverOptionsViewController];
+            self.popover.delegate = self;
+            
+            CGRect popoverRect = sender.frame;
+            popoverRect.origin.x -= 10;
+            
+            [self.popover presentPopoverFromRect:popoverRect inView:self.olderBottomToolbar permittedArrowDirections:UIPopoverArrowDirectionDown animated:YES];
+
+        }
         
-        CGRect optionsFrame = self.optionsView.frame;
-        optionsFrame.origin.x = 0;
-        optionsFrame.origin.y = olderBottomToolbar.frame.origin.y - optionsFrame.size.height;
-        
-        optionsFrame.size.width = self.view.frame.size.width;
-        self.optionsView.frame = optionsFrame;
-        
-        [self.view addSubview:self.optionsView];
     }
 }
 
@@ -585,7 +660,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
             [self.fontSegmentedControl setEnabled:YES forSegmentAtIndex:0];
             [self.fontSegmentedControl setEnabled:YES forSegmentAtIndex:1];
             
-            SCHFlowView *flowView = [[SCHFlowView alloc] initWithFrame:self.view.bounds isbn:self.isbn];
+            SCHFlowView *flowView = [[SCHFlowView alloc] initWithFrame:self.view.bounds isbn:self.isbn delegate:self];
             self.readingView = flowView;
             [flowView release];
             
@@ -595,14 +670,13 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
             [self.fontSegmentedControl setEnabled:NO forSegmentAtIndex:0];
             [self.fontSegmentedControl setEnabled:NO forSegmentAtIndex:1];
             
-            SCHLayoutView *layoutView = [[SCHLayoutView alloc] initWithFrame:self.view.bounds isbn:self.isbn];
+            SCHLayoutView *layoutView = [[SCHLayoutView alloc] initWithFrame:self.view.bounds isbn:self.isbn delegate:self];
             self.readingView = layoutView;
             [layoutView release];
             
             break;
     }
     
-    self.readingView.delegate = self;
     self.readingView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.paperType = self.paperType; // Reload the paper
     
@@ -694,7 +768,74 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     self.currentFontSizeIndex = index;
 }
 
+#pragma mark - Dictionary
+
+- (void)setDictionarySelectionMode
+{
+    if (self.youngerMode) {
+        [self.readingView setSelectionMode:SCHReadingViewSelectionModeYoungerDictionary];
+    } else {
+        [self.readingView setSelectionMode:SCHReadingViewSelectionModeOlderDictionary];
+    }
+}
+
 #pragma mark - SCHReadingViewDelegate methods
+
+- (UIColor *)highlightColor
+{
+    return [[UIColor yellowColor] colorWithAlphaComponent:0.3f];
+}
+
+- (void)addHighlightBetweenStartPage:(NSUInteger)startPage startWord:(NSUInteger)startWord endPage:(NSUInteger)endPage endWord:(NSUInteger)endWord;
+{
+    NSLog(@"Add highlight");
+    SCHBookAnnotations *annotations = [self.profile annotationsForBook:self.isbn];
+    
+    if (annotations != nil) {
+        SCHHighlight *newHighlight = [annotations createHighlightBetweenStartPage:startPage startWord:startWord endPage:endPage endWord:endWord color:[self highlightColor]];
+        [annotations addHighlight:newHighlight];
+    }
+}
+
+// FIXME: remove this
+//- (void)addHighlightAtBookRange:(SCHBookRange *)highlightRange
+//{
+//    NSLog(@"Add highlight");
+//    SCHBookAnnotations *annotations = [self.profile annotationsForBook:self.isbn];
+//    
+//    if (annotations != nil) {
+//        SCHHighlight *newHighlight = [annotations createHighlightWithHighlightRange:highlightRange color:[self highlightColor]];
+//        [annotations addHighlight:newHighlight];
+//    }
+//}
+
+- (void)updateHighlightAtBookRange:(SCHBookRange *)fromBookRange toBookRange:(SCHBookRange *)toBookRange
+{
+    NSLog(@"Update highlight");
+}
+
+//// FIXME: remove this
+//- (NSArray *)highlightsForBookRange:(SCHBookRange *)bookRange
+//{
+//    SCHBookAnnotations *annotations = [self.profile annotationsForBook:self.isbn];
+//    
+//    NSMutableArray *highlights = [NSMutableArray array];
+//    
+//    for (int i = bookRange.startPoint.layoutPage; i <= bookRange.endPoint.layoutPage; i++) {
+//        NSArray *highlightsForPage = [annotations highlightsForPage:i];
+//        NSArray *highlighBookRanges = [highlightsForPage valueForKey:@"bookRange"];
+//        [highlights addObjectsFromArray:highlighBookRanges];
+//    }
+//         
+//    return highlights;
+//}
+
+- (NSArray *)highlightsForLayoutPage:(NSUInteger)page
+{
+    SCHBookAnnotations *annotations = [self.profile annotationsForBook:self.isbn];
+    
+    return [annotations highlightsForPage:page];    
+}
 
 - (void)readingView:(SCHReadingView *)readingView hasMovedToPageAtIndex:(NSUInteger)pageIndex
 {
@@ -743,11 +884,12 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
             maxImageHeight -= self.olderBottomToolbar.frame.size.height;
         }
         
-        // if the options view is also visible, reduce available space
-        if ([self.optionsView superview]) {
-            maxImageHeight -= self.optionsView.frame.size.height;
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+            // if the options view is also visible, reduce available space
+            if ([self.optionsView superview]) {
+                maxImageHeight -= self.optionsView.frame.size.height;
+            }
         }
-        
         // shrink the thumb image to 75% - thumb quality is not great
         int desiredHeight = (int) (imageSize.height * 0.75);
         
@@ -789,7 +931,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         bottomLimit -= self.olderBottomToolbar.frame.size.height;
     }
     
-    if ([self.optionsView superview]) {
+    if ([self.optionsView superview] && UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
         bottomLimit -= self.optionsView.frame.size.height;
     }
     
@@ -966,7 +1108,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         if (!youngerMode) {
             [self.olderBottomToolbar setAlpha:1.0f];
         }
-        [self.optionsView setAlpha:1.0f];
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+            [self.optionsView setAlpha:1.0f];
+        }
         [self.topShadow setAlpha:1.0f];   
         [self.bottomShadow setAlpha:1.0f];  
 	} else {
@@ -976,7 +1120,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
             [self.olderBottomToolbar setAlpha:0.0f];
         }
         
-        [self.optionsView setAlpha:0.0f];
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+            [self.optionsView setAlpha:0.0f];
+        }
         [self.topShadow setAlpha:0.0f];
         [self.bottomShadow setAlpha:0.0f];
 	}
@@ -999,5 +1145,59 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 		self.initialFadeTimer = nil;
 	}
 }	
+
+#pragma mark - SCHReadingNotesViewDelegate methods
+
+- (void)readingNotesViewCreatingNewNote:(SCHReadingNotesListController *)readingNotesView
+{
+    NSLog(@"Requesting a new note be created!");
+    SCHBookAnnotations *annos = [self.profile annotationsForBook:self.isbn];
+    SCHNote *newNote = [annos createEmptyNote];
+    newNote.NotePageNumber = [NSNumber numberWithInt:self.currentPageIndex + 1];
+
+    SCHReadingNoteView *aNotesView = [[SCHReadingNoteView alloc] initWithNote:newNote];
+    
+    aNotesView.delegate = self;
+    
+    [self setToolbarVisibility:NO animated:YES];
+    
+    [aNotesView showInView:self.view animated:YES];
+    [aNotesView release];
+}
+
+- (void)readingNotesView:(SCHReadingNotesListController *)readingNotesView didSelectNote:(SCHNote *)note
+{
+    SCHReadingNoteView *aNotesView = [[SCHReadingNoteView alloc] initWithNote:note];
+    aNotesView.delegate = self;
+    [aNotesView showInView:self.view animated:YES];
+    [aNotesView release];
+
+    [self setToolbarVisibility:NO animated:YES];
+}
+
+#pragma mark - SCHNotesViewDelegate methods
+
+- (void)notesView:(SCHReadingNoteView *)notesView savedNote:(SCHNote *)note;
+{
+    // FIXME: save note
+    NSLog(@"Saving note...");
+    SCHBookAnnotations *bookAnnos = [self.profile annotationsForBook:self.isbn];
+    [bookAnnos addNote:note];
+    
+    [self setToolbarVisibility:YES animated:YES];
+}
+
+- (void)notesViewCancelled:(SCHReadingNoteView *)notesView
+{
+    [self setToolbarVisibility:YES animated:YES];
+}
+
+#pragma mark - UIPopoverControllerDelegate methods
+
+- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
+{
+    [self.optionsView removeFromSuperview];
+    self.popover = nil;
+}
 
 @end

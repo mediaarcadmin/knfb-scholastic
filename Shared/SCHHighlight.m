@@ -11,6 +11,9 @@
 #import "SCHLocationText.h"
 #import "SCHPrivateAnnotations.h"
 #import "UIColor+Extensions.h"
+#import "SCHBookRange.h"
+#import "SCHBookPoint.h"
+#import "SCHWordIndex.h"
 
 @interface SCHHighlight (PrimitiveAccessors)
 
@@ -38,6 +41,31 @@
     [self willChangeValueForKey:@"Color"];
     [self setPrimitiveColor:[value BIThexString]];
     [self didChangeValueForKey:@"Color"];
+}
+
+- (NSUInteger)startLayoutPage
+{
+    return [[self.LocationText Page] integerValue];
+}
+
+- (NSUInteger)startWordOffset
+{
+    return [[[self.LocationText WordIndex] Start] integerValue];
+}
+
+- (NSUInteger)endLayoutPage
+{
+    return [self.EndPage integerValue];
+}
+
+- (NSUInteger)endWordOffset
+{
+    return [[[self.LocationText WordIndex] End] integerValue];
+}
+
+- (NSString *)description
+{
+    return [NSString stringWithFormat:@"<SCHHighlight: %p>", self];
 }
 
 @end

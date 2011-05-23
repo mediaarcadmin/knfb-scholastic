@@ -20,6 +20,9 @@
 #import "SCHAppBook.h"
 #import "SCHPrivateAnnotations.h"
 #import "SCHBookAnnotations.h"
+#import "SCHAnnotationsContentItem.h"
+#import "SCHAnnotationsItem.h"
+#import "SCHLastPage.h"
 
 static NSString * const kSCHProfileItemContentProfileItem = @"ContentProfileItem";
 static NSString * const kSCHProfileItemUserContentItem = @"UserContentItem";
@@ -125,7 +128,28 @@ static NSString * const kSCHProfileItemUserContentItemContentMetadataItem = @"Us
         NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest error:nil];
         if ([results count] > 0) {
             ret = [[[SCHBookAnnotations alloc] initWithPrivateAnnotations:[results objectAtIndex:0]] autorelease];
-        }    
+        }  
+        
+#ifdef LOCALDEBUG
+        if ([results count] == 0) {
+            SCHAnnotationsItem *newAnnotationsItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHAnnotationsItem inManagedObjectContext:self.managedObjectContext];
+            newAnnotationsItem.ProfileID = self.ID;
+            
+            SCHLastPage *newLastPage = [NSEntityDescription insertNewObjectForEntityForName:kSCHLastPage inManagedObjectContext:self.managedObjectContext];
+
+            SCHPrivateAnnotations *newPrivateAnnotations = [NSEntityDescription insertNewObjectForEntityForName:kSCHPrivateAnnotations inManagedObjectContext:self.managedObjectContext];
+            newPrivateAnnotations.LastPage = newLastPage;
+            newPrivateAnnotations.Highlights = [NSSet set];
+            newPrivateAnnotations.Notes = [NSSet set];
+
+            SCHAnnotationsContentItem *newAnnotationsContentItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHAnnotationsContentItem inManagedObjectContext:self.managedObjectContext];
+            newAnnotationsContentItem.PrivateAnnotations = newPrivateAnnotations;
+            newAnnotationsContentItem.AnnotationsList = newAnnotationsItem;
+            newAnnotationsContentItem.ContentIdentifier = isbn;
+
+            ret = [[[SCHBookAnnotations alloc] initWithPrivateAnnotations:newPrivateAnnotations] autorelease];
+        }
+#endif
     }
     
     return(ret);

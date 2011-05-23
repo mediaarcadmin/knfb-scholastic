@@ -20,4 +20,9 @@
     [super dealloc];
 }
 
+- (NSString *)description
+{
+    return [NSString stringWithFormat:@"<SCHBookRange: %p> %@ -- %@", self, self.startPoint, self.endPoint];
+}
+
 @end

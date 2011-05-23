@@ -197,6 +197,10 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 
 - (void)changeTheme
 {
+    self.themePickerContainer.modalPresentationStyle = UIModalPresentationFormSheet;
+    self.themePickerContainer.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    self.themePickerContainer.title = @"";
+    
 	[self presentModalViewController:self.themePickerContainer animated:YES];		
 }
 
