@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @class SCHCustomToolbar, SCHProfileItem, SCHNote;
+@class SCHReadingView;
 @protocol SCHReadingNotesListControllerDelegate;
 
 #pragma mark - Interface
@@ -21,6 +22,7 @@
 @property (nonatomic, retain) SCHProfileItem *profile;
 @property (nonatomic, retain) NSString *isbn;
 @property (nonatomic, assign) id <SCHReadingNotesListControllerDelegate> delegate;
+@property (nonatomic, assign) SCHReadingView *readingView;
 
 // interface builder
 @property (nonatomic, retain) IBOutlet UITableView *notesTableView;

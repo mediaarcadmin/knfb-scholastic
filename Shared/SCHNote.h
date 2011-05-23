@@ -11,6 +11,7 @@
 
 @class SCHLocationGraphics;
 @class SCHPrivateAnnotations;
+@class SCHBookPoint;
 
 static NSString * const kSCHNote = @"SCHNote";
 
@@ -25,7 +26,7 @@ static NSString * const kSCHNote = @"SCHNote";
 
 // backed by convenience methods
 @property (nonatomic, retain) NSString *NoteText;
-@property (nonatomic, retain) NSNumber *NotePageNumber;
+@property (nonatomic, retain) SCHBookPoint *NoteBookPoint;
 
 @end
 

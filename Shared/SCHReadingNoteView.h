@@ -11,6 +11,7 @@
 
 @protocol SCHReadingNoteViewDelegate;
 @class SCHNote;
+@class SCHReadingView;
 
 @interface SCHReadingNoteView : UIView {
     
@@ -21,6 +22,7 @@
 @property (nonatomic, retain) UILabel *toolbarLabel;
 //@property (nonatomic, copy) NSString *page;
 @property (nonatomic, retain) SCHNote *note;
+@property (nonatomic, assign) SCHReadingView *readingView;
 
 - (id)initWithNote:(SCHNote *)aNote;
 - (void)showInView:(UIView *)view;
