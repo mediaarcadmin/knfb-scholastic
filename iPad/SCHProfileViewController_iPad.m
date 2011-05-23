@@ -21,6 +21,9 @@
 #import "SCHCustomNavigationBar.h"
 #import "SCHAppProfile.h"
 
+static const CGFloat kProfileiPadTableOffsetPortrait = 280.0f;
+static const CGFloat kProfileiPadTableOffsetLandscape = 220.0f;
+
 #pragma mark - Class Extension
 
 @interface SCHProfileViewController_iPad () 
@@ -30,6 +33,7 @@
 - (void)showLoginControllerWithAnimation:(BOOL)animated;
 - (void)showProfilePasswordControllerWithAnimation:(BOOL)animated;
 - (void)toggleSettingsController;
+- (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation;
 
 @property (nonatomic, retain) UIButton *settingsButton;
 @property (nonatomic, retain) UIPopoverController *settingsPopover;
@@ -42,11 +46,13 @@
 @synthesize bookshelfViewController;
 @synthesize headerView;
 @synthesize containerView;
+@synthesize backgroundView;
 @synthesize loginPasswordController;
 @synthesize profilePasswordController;
 @synthesize settingsNavigationController;
 @synthesize settingsButton;
 @synthesize settingsPopover;
+@synthesize customNavigationBar;
 
 #pragma mark - Object lifecycle
 
@@ -56,11 +62,13 @@
     [bookshelfViewController release], bookshelfViewController = nil;
     [headerView release], headerView = nil;
     [containerView release], containerView = nil;
+    [backgroundView release], backgroundView = nil;
     [loginPasswordController release], loginPasswordController = nil;
     [profilePasswordController release], profilePasswordController = nil;
     [settingsButton release], settingsButton = nil;
     [settingsPopover release], settingsPopover = nil;
     [settingsNavigationController release], settingsNavigationController = nil;
+    [customNavigationBar release], customNavigationBar = nil;
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
@@ -83,16 +91,14 @@
 //    UIImageView *logoImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo"]];
 //    self.navigationItem.titleView = logoImageView;
 //    [logoImageView release];
-    
-    self.containerView.layer.cornerRadius = 5;
-    
+        
     self.settingsButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.settingsButton addTarget:self action:@selector(toggleSettingsController) 
              forControlEvents:UIControlEventTouchUpInside]; 
     [self.settingsButton setImage:[UIImage imageNamed:@"settings-portrait.png"] 
                          forState:UIControlStateNormal];
     [self.settingsButton sizeToFit];
-
+    
     self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:self.settingsButton] autorelease];
 
 
@@ -123,18 +129,48 @@
 	}
 #endif
 
-}  
+}
 
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+- (void)viewWillAppear:(BOOL)animated
 {
-    // Return YES for supported orientations
-	return YES;
+    [super viewWillAppear:animated];
+    [self setupAssetsForOrientation:self.interfaceOrientation];
 }
 
 - (void)viewDidUnload {
     [self releaseViewObjects];
     [super viewDidUnload];
+}
+
+#pragma mark - Orientation methods
+
+- (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation
+{
+    if (UIInterfaceOrientationIsLandscape(orientation)) {
+//        [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:
+//         [UIImage imageNamed:@"admin-iphone-landscape-top-toolbar.png"]];
+        [self.backgroundView setImage:[UIImage imageNamed:@"admin-background-ipad-landscape.png"]];
+        [self.tableView setContentInset:UIEdgeInsetsMake(kProfileiPadTableOffsetLandscape, 0, 0, 0)];
+    } else {
+//        [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:
+//         [UIImage imageNamed:@"admin-iphone-portrait-top-toolbar.png"]];
+        [self.backgroundView setImage:[UIImage imageNamed:@"admin-background-ipad-portrait.png"]];
+        [self.tableView setContentInset:UIEdgeInsetsMake(kProfileiPadTableOffsetPortrait, 0, 0, 0)];
+    }
+    
+    [self.customNavigationBar setBackgroundImage:[UIImage imageNamed:@"admin-iphone-landscape-top-toolbar.png"]];
+
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+{
+    return YES;
+}
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation 
+                                duration:(NSTimeInterval)duration
+{
+    [self setupAssetsForOrientation:toInterfaceOrientation];
 }
 
 #pragma mark - View Shuffling

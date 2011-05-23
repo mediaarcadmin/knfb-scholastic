@@ -295,6 +295,10 @@
 		C920DD661389861700F1583D /* icon-books.png in Resources */ = {isa = PBXBuildFile; fileRef = C920DD5F1389861700F1583D /* icon-books.png */; };
 		C920DD671389861700F1583D /* icon-books@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C920DD601389861700F1583D /* icon-books@2x.png */; };
 		C920DD681389861700F1583D /* icon-books@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C920DD601389861700F1583D /* icon-books@2x.png */; };
+		C920DDEF138A6A0000F1583D /* admin-background-ipad-landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = C920DDEE138A6A0000F1583D /* admin-background-ipad-landscape.png */; };
+		C920DDF0138A6A0000F1583D /* admin-background-ipad-landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = C920DDEE138A6A0000F1583D /* admin-background-ipad-landscape.png */; };
+		C920DDF2138A6A7500F1583D /* admin-background-ipad-portrait.png in Resources */ = {isa = PBXBuildFile; fileRef = C920DDF1138A6A7400F1583D /* admin-background-ipad-portrait.png */; };
+		C920DDF3138A6A7500F1583D /* admin-background-ipad-portrait.png in Resources */ = {isa = PBXBuildFile; fileRef = C920DDF1138A6A7400F1583D /* admin-background-ipad-portrait.png */; };
 		C923A27A12F06FE60054426F /* MRGridView.m in Sources */ = {isa = PBXBuildFile; fileRef = C923A27312F06FE60054426F /* MRGridView.m */; };
 		C923A27B12F06FE60054426F /* MRGridViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C923A27512F06FE60054426F /* MRGridViewCell.m */; };
 		C923A27C12F06FE60054426F /* MRGridViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C923A27712F06FE60054426F /* MRGridViewController.m */; };
@@ -1328,6 +1332,8 @@
 		C920DD5E1389861700F1583D /* icon-books-landscape@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-books-landscape@2x.png"; path = "Resources/UIAssets/FromPSD/icon-books-landscape@2x.png"; sourceTree = "<group>"; };
 		C920DD5F1389861700F1583D /* icon-books.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-books.png"; path = "Resources/UIAssets/FromPSD/icon-books.png"; sourceTree = "<group>"; };
 		C920DD601389861700F1583D /* icon-books@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-books@2x.png"; path = "Resources/UIAssets/FromPSD/icon-books@2x.png"; sourceTree = "<group>"; };
+		C920DDEE138A6A0000F1583D /* admin-background-ipad-landscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "admin-background-ipad-landscape.png"; path = "Resources/UIAssets/admin-background-ipad-landscape.png"; sourceTree = "<group>"; };
+		C920DDF1138A6A7400F1583D /* admin-background-ipad-portrait.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "admin-background-ipad-portrait.png"; path = "Resources/UIAssets/admin-background-ipad-portrait.png"; sourceTree = "<group>"; };
 		C923A27212F06FE60054426F /* MRGridView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MRGridView.h; path = Shared/Libraries/MRGridView/MRGridView.h; sourceTree = "<group>"; };
 		C923A27312F06FE60054426F /* MRGridView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MRGridView.m; path = Shared/Libraries/MRGridView/MRGridView.m; sourceTree = "<group>"; };
 		C923A27412F06FE60054426F /* MRGridViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MRGridViewCell.h; path = Shared/Libraries/MRGridView/MRGridViewCell.h; sourceTree = "<group>"; };
@@ -2384,7 +2390,7 @@
 			name = "libEucalyptus Libraries";
 			sourceTree = "<group>";
 		};
-		C920DD1F1389625F00F1583D /* Toolbars */ = {
+		C920DD1F1389625F00F1583D /* Reading View Toolbars */ = {
 			isa = PBXGroup;
 			children = (
 				C920DD3813896F5A00F1583D /* reading-view-scrubber-bar.png */,
@@ -2400,10 +2406,10 @@
 				C920DD191389600400F1583D /* reading-view-top-shadow.png */,
 				C920DD1A1389600400F1583D /* reading-view-top-shadow@2x.png */,
 			);
-			name = Toolbars;
+			name = "Reading View Toolbars";
 			sourceTree = "<group>";
 		};
-		C920DD3E13897B3B00F1583D /* Toolbar Icons */ = {
+		C920DD3E13897B3B00F1583D /* Reading View Toolbar Icons */ = {
 			isa = PBXGroup;
 			children = (
 				C920DD5D1389861700F1583D /* icon-books-landscape.png */,
@@ -2421,7 +2427,16 @@
 				C920DD4113897B5300F1583D /* icon-higlights-active@2x.png */,
 				C920DD4213897B5300F1583D /* icon-higlights@2x.png */,
 			);
-			name = "Toolbar Icons";
+			name = "Reading View Toolbar Icons";
+			sourceTree = "<group>";
+		};
+		C920DDED138A69B400F1583D /* Profile and Admin Views */ = {
+			isa = PBXGroup;
+			children = (
+				C920DDF1138A6A7400F1583D /* admin-background-ipad-portrait.png */,
+				C920DDEE138A6A0000F1583D /* admin-background-ipad-landscape.png */,
+			);
+			name = "Profile and Admin Views";
 			sourceTree = "<group>";
 		};
 		C923A25F12F06DBE0054426F /* MRGridView */ = {
@@ -2604,8 +2619,9 @@
 		C9A11290136082A6007FD763 /* UIAssets */ = {
 			isa = PBXGroup;
 			children = (
-				C920DD3E13897B3B00F1583D /* Toolbar Icons */,
-				C920DD1F1389625F00F1583D /* Toolbars */,
+				C920DDED138A69B400F1583D /* Profile and Admin Views */,
+				C920DD3E13897B3B00F1583D /* Reading View Toolbar Icons */,
+				C920DD1F1389625F00F1583D /* Reading View Toolbars */,
 				C901115C13630DE1006694B3 /* bookshelf-iphone-top-shadow.png */,
 				C901115D13630DE2006694B3 /* bookshelf-iphone-top-shadow@2x.png */,
 				C90111561362DD70006694B3 /* admin-iphone-top-shadow.png */,
@@ -3352,6 +3368,8 @@
 				C920DD631389861700F1583D /* icon-books-landscape@2x.png in Resources */,
 				C920DD651389861700F1583D /* icon-books.png in Resources */,
 				C920DD671389861700F1583D /* icon-books@2x.png in Resources */,
+				C920DDEF138A6A0000F1583D /* admin-background-ipad-landscape.png in Resources */,
+				C920DDF2138A6A7500F1583D /* admin-background-ipad-portrait.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3563,6 +3581,8 @@
 				C920DD641389861700F1583D /* icon-books-landscape@2x.png in Resources */,
 				C920DD661389861700F1583D /* icon-books.png in Resources */,
 				C920DD681389861700F1583D /* icon-books@2x.png in Resources */,
+				C920DDF0138A6A0000F1583D /* admin-background-ipad-landscape.png in Resources */,
+				C920DDF3138A6A7500F1583D /* admin-background-ipad-portrait.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
