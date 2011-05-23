@@ -19,6 +19,9 @@
 #import "SCHAppProfile.h"
 #import "SCHReadingViewController.h"
 
+static const CGFloat kProfilePhoneTableOffsetPortrait = 76.0f;
+static const CGFloat kProfilePhoneTableOffsetLandscape = 36.0f;
+
 @interface SCHProfileViewController_iPhone() <UITableViewDelegate> 
 
 - (void)pushSettingsController;
@@ -121,7 +124,7 @@
         [self.settingsButton setImage:[UIImage imageNamed:@"settings-landscape.png"] 
                              forState:UIControlStateNormal];
         [self.settingsButton sizeToFit];
-        
+        [self.tableView setContentInset:UIEdgeInsetsMake(kProfilePhoneTableOffsetLandscape, 0, 0, 0)];
     } else {
         [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:
          [UIImage imageNamed:@"admin-iphone-portrait-top-toolbar.png"]];
@@ -129,7 +132,7 @@
         [self.settingsButton setImage:[UIImage imageNamed:@"settings-portrait.png"] 
                              forState:UIControlStateNormal];
         [self.settingsButton sizeToFit];
-        
+        [self.tableView setContentInset:UIEdgeInsetsMake(kProfilePhoneTableOffsetPortrait, 0, 0, 0)];
     }
 }
 

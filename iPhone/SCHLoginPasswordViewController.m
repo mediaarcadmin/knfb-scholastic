@@ -187,7 +187,7 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
     [fillerView release];
     
     bgImage = [UIImage imageNamed:@"button-blue"];
-    cellBGImage = [bgImage stretchableImageWithLeftCapWidth:16 topCapHeight:0];
+    cellBGImage = [bgImage stretchableImageWithLeftCapWidth:4 topCapHeight:0];
     
     self.loginButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.loginButton setBackgroundImage:cellBGImage forState:UIControlStateNormal];

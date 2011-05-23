@@ -21,8 +21,8 @@
 #import "SCHCustomNavigationBar.h"
 #import "SCHAppProfile.h"
 
-static const CGFloat kProfileiPadTableOffsetPortrait = 280.0f;
-static const CGFloat kProfileiPadTableOffsetLandscape = 220.0f;
+static const CGFloat kProfilePadTableOffsetPortrait = 280.0f;
+static const CGFloat kProfilePadTableOffsetLandscape = 220.0f;
 
 #pragma mark - Class Extension
 
@@ -88,9 +88,9 @@ static const CGFloat kProfileiPadTableOffsetLandscape = 220.0f;
     self.managedObjectContext = [[SCHBookManager sharedBookManager] managedObjectContextForCurrentThread];
     self.title = @"";
     
-//    UIImageView *logoImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo"]];
-//    self.navigationItem.titleView = logoImageView;
-//    [logoImageView release];
+    UIImageView *logoImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo"]];
+    self.navigationItem.titleView = logoImageView;
+    [logoImageView release];
         
     self.settingsButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.settingsButton addTarget:self action:@selector(toggleSettingsController) 
@@ -150,12 +150,12 @@ static const CGFloat kProfileiPadTableOffsetLandscape = 220.0f;
 //        [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:
 //         [UIImage imageNamed:@"admin-iphone-landscape-top-toolbar.png"]];
         [self.backgroundView setImage:[UIImage imageNamed:@"admin-background-ipad-landscape.png"]];
-        [self.tableView setContentInset:UIEdgeInsetsMake(kProfileiPadTableOffsetLandscape, 0, 0, 0)];
+        [self.tableView setContentInset:UIEdgeInsetsMake(kProfilePadTableOffsetLandscape, 0, 0, 0)];
     } else {
 //        [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:
 //         [UIImage imageNamed:@"admin-iphone-portrait-top-toolbar.png"]];
         [self.backgroundView setImage:[UIImage imageNamed:@"admin-background-ipad-portrait.png"]];
-        [self.tableView setContentInset:UIEdgeInsetsMake(kProfileiPadTableOffsetPortrait, 0, 0, 0)];
+        [self.tableView setContentInset:UIEdgeInsetsMake(kProfilePadTableOffsetPortrait, 0, 0, 0)];
     }
     
     [self.customNavigationBar setBackgroundImage:[UIImage imageNamed:@"admin-iphone-landscape-top-toolbar.png"]];
