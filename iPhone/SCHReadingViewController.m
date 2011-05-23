@@ -561,6 +561,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     notesController.isbn = self.isbn;
     notesController.profile = self.profile;
     notesController.delegate = self;
+    notesController.readingView = self.readingView;
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         notesController.modalPresentationStyle = UIModalPresentationFormSheet;
@@ -1116,9 +1117,13 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     NSLog(@"Requesting a new note be created!");
     SCHBookAnnotations *annos = [self.profile annotationsForBook:self.isbn];
     SCHNote *newNote = [annos createEmptyNote];
-    newNote.NotePageNumber = [NSNumber numberWithInt:self.currentPageIndex + 1];
+    
+    SCHBookPoint *currentPoint = [self.readingView currentBookPoint];
+    NSLog(@"Current book point: %@", currentPoint);
+    newNote.NoteBookPoint = currentPoint;
 
     SCHReadingNoteView *aNotesView = [[SCHReadingNoteView alloc] initWithNote:newNote];
+    aNotesView.readingView = self.readingView;
     
     aNotesView.delegate = self;
     
@@ -1130,8 +1135,11 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (void)readingNotesView:(SCHReadingNotesListController *)readingNotesView didSelectNote:(SCHNote *)note
 {
+    [self.readingView jumpToBookPoint:note.NoteBookPoint animated:YES];
+    
     SCHReadingNoteView *aNotesView = [[SCHReadingNoteView alloc] initWithNote:note];
     aNotesView.delegate = self;
+    aNotesView.readingView = self.readingView;
     [aNotesView showInView:self.view animated:YES];
     [aNotesView release];
 

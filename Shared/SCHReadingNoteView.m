@@ -12,6 +12,8 @@
 #import "UIImage+BlioAdditions.h"
 #import "SCHNote.h"
 #import "SCHBookAnnotations.h"
+#import "SCHBookPoint.h"
+#import "SCHReadingView.h"
 
 static const CGFloat kSCHNotesViewPhoneShadow = 16;
 static const CGFloat kSCHNotesViewPadBorder = 6;
@@ -49,6 +51,7 @@ static NSString * const SCHNotesViewExitToTopAnimation = @"SCHNotesViewExitToTop
 @synthesize note;
 @synthesize showInView;
 @synthesize bottomInset;
+@synthesize readingView;
 
 - (void)dealloc {
     
@@ -61,6 +64,7 @@ static NSString * const SCHNotesViewExitToTopAnimation = @"SCHNotesViewExitToTop
     [toolbarLabel release], toolbarLabel = nil;
     showInView = nil;
     delegate = nil;
+    readingView = nil;
     
     [super dealloc];
 }
@@ -181,10 +185,13 @@ static NSString * const SCHNotesViewExitToTopAnimation = @"SCHNotesViewExitToTop
     NSString *dateString = [dateFormat stringFromDate:date];  
     [dateFormat release];
     
-    NSNumber *pageNum = [self.note NotePageNumber];
+    SCHBookPoint *bookPoint = [self.note NoteBookPoint];
+    NSInteger pageNum = [self.readingView pageIndexForBookPoint:bookPoint];
+    
+//    NSNumber *pageNum = [self.note NotePageNumber];
 
-    if (nil != pageNum) {
-		self.toolbarLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Page %d, %@", @"Page and date toolbar label for Notes View"), [pageNum intValue], dateString];
+    if (pageNum > 0) {
+		self.toolbarLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Page %d, %@", @"Page and date toolbar label for Notes View"), pageNum, dateString];
     } else {
     // FIXME: change this to use the actual page
         self.toolbarLabel.text = [NSString stringWithFormat:@"%@", dateString];
