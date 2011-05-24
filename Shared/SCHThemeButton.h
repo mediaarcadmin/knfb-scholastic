@@ -14,7 +14,10 @@
 }
 
 - (void)setThemeButton:(NSString *)newButtonKey leftCapWidth:(NSInteger)newLeftCapWidth 
+          topCapHeight:(NSInteger)newTopCapHeight iPadSpecific:(BOOL)setiPadSpecific;
+- (void)setThemeButton:(NSString *)newButtonKey leftCapWidth:(NSInteger)newLeftCapWidth 
           topCapHeight:(NSInteger)newTopCapHeight;
+- (void)setThemeIcon:(NSString *)newIconKey iPadSpecific:(BOOL)iPadSpecific;
 - (void)setThemeIcon:(NSString *)newIconKey;
 
 @end

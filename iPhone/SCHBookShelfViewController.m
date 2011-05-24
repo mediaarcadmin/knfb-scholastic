@@ -86,14 +86,14 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
     [super viewDidLoad];
 
     SCHThemeButton *button = [SCHThemeButton buttonWithType:UIButtonTypeCustom];
-    [button setThemeIcon:kSCHThemeManagerThemeIcon];
+    [button setThemeIcon:kSCHThemeManagerThemeIcon iPadSpecific:YES];
     [button sizeToFit];    
     [button addTarget:self action:@selector(changeTheme) forControlEvents:UIControlEventTouchUpInside];    
     self.themeButton = [[[UIBarButtonItem alloc] initWithCustomView:button] autorelease];
     self.navigationItem.rightBarButtonItem = self.themeButton;
 
     button = [SCHThemeButton buttonWithType:UIButtonTypeCustom];
-    [button setThemeIcon:kSCHThemeManagerHomeIcon];
+    [button setThemeIcon:kSCHThemeManagerHomeIcon iPadSpecific:YES];
     [button sizeToFit];    
     [button addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];    
     self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:button] autorelease];
