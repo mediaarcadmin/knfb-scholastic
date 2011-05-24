@@ -13,6 +13,7 @@
 #import "SCHLibreAccessWebService.h"
 #import "SCHProfileItem.h"
 #import "SCHAppProfile.h"
+#import "SCHAnnotationsItem.h"
 
 @interface SCHProfileSyncComponent ()
 
@@ -203,6 +204,9 @@
 	newProfileItem.State = [NSNumber numberWithStatus:kSCHStatusUnmodified];
     
     newProfileItem.AppProfile = [NSEntityDescription insertNewObjectForEntityForName:kSCHAppProfile inManagedObjectContext:self.managedObjectContext];
+
+    SCHAnnotationsItem *newAnnotationsItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHAnnotationsItem inManagedObjectContext:self.managedObjectContext];
+    newAnnotationsItem.ProfileID = newProfileItem.ID;
 }
 
 - (void)syncProfile:(NSDictionary *)webProfile withProfile:(SCHProfileItem *)localProfile

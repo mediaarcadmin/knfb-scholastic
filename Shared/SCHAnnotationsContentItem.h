@@ -22,7 +22,7 @@ static NSString * const kSCHAnnotationsContentItemCONTENT_IDENTIFIER = @"CONTENT
 }
 
 @property (nonatomic, retain) NSString * Format;
-@property (nonatomic, retain) SCHAnnotationsItem * AnnotationsList;
+@property (nonatomic, retain) SCHAnnotationsItem * AnnotationsItem;
 @property (nonatomic, retain) SCHPrivateAnnotations * PrivateAnnotations;
 
 @end

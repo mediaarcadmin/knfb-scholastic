@@ -25,10 +25,17 @@
 #import "SCHAppBook.h"
 #import "SCHAppProfile.h"
 #import "SCHAnnotationsItem.h"
+#import "SCHFavorite.h"
+#import "SCHLastPage.h"
+#import "SCHPrivateAnnotations.h"
+#import "SCHAnnotationsContentItem.h"
 
 @interface SCHLocalDebug ()
 
-- (void)checkAndCopyLocalFilesToApplicationSupport:(NSString*)srcDir deleteSrc:(BOOL)delete;
+- (void)checkAndCopyLocalFilesToApplicationSupport:(NSString*)srcDir 
+                                         deleteSrc:(BOOL)delete;
+- (void)addAnnotationStructure:(SCHUserContentItem *)userContentItem 
+               annotationsItem:(SCHAnnotationsItem *)annotationsItem;
 - (void)clearProfiles;
 - (void)clearUserContentItems;
 - (void)clearBooks;
@@ -287,6 +294,9 @@
 	youngProfileItem.LastModified = now;
     youngProfileItem.AppProfile = [NSEntityDescription insertNewObjectForEntityForName:kSCHAppProfile inManagedObjectContext:self.managedObjectContext];
     
+    SCHAnnotationsItem *youngAnnotationsItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHAnnotationsItem inManagedObjectContext:self.managedObjectContext];
+    youngAnnotationsItem.ProfileID = youngProfileItem.ID;    
+    
 	SCHProfileItem *olderProfileItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHProfileItem inManagedObjectContext:self.managedObjectContext];
 	
 	olderProfileItem.LastModified = now;
@@ -305,6 +315,9 @@
 	olderProfileItem.LastModified = now;
     olderProfileItem.AppProfile = [NSEntityDescription insertNewObjectForEntityForName:kSCHAppProfile inManagedObjectContext:self.managedObjectContext];
     
+    SCHAnnotationsItem *olderAnnotationsItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHAnnotationsItem inManagedObjectContext:self.managedObjectContext];
+    olderAnnotationsItem.ProfileID = olderProfileItem.ID;    
+    
 	SCHProfileItem *allBooksProfileItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHProfileItem inManagedObjectContext:self.managedObjectContext];
 	
 	allBooksProfileItem.LastModified = now;
@@ -322,6 +335,9 @@
 	allBooksProfileItem.LastName = @"Smith";
 	allBooksProfileItem.LastModified = now;    
     allBooksProfileItem.AppProfile = [NSEntityDescription insertNewObjectForEntityForName:kSCHAppProfile inManagedObjectContext:self.managedObjectContext];
+    
+    SCHAnnotationsItem *allBooksAnnotationsItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHAnnotationsItem inManagedObjectContext:self.managedObjectContext];
+    allBooksAnnotationsItem.ProfileID = allBooksProfileItem.ID;    
     
 	SCHContentMetadataItem *newContentMetadataItem = nil;
 	SCHUserContentItem *newUserContentItem = nil;
@@ -377,8 +393,10 @@
             [newContentMetadataItem.FileName isEqualToString:@"Penguins"] ||
             [newContentMetadataItem.FileName isEqualToString:@"TooManyToys"]) {
             newContentProfileItem.ProfileID = [NSNumber numberWithInt:1];
+            [self addAnnotationStructure:newUserContentItem annotationsItem:youngAnnotationsItem];
         } else {
             newContentProfileItem.ProfileID = [NSNumber numberWithInt:2];
+            [self addAnnotationStructure:newUserContentItem annotationsItem:olderAnnotationsItem];            
         }
 		
 		[newUserContentItem addProfileListObject:newContentProfileItem];	
@@ -396,6 +414,7 @@
 		newContentProfileItem.LastModified = now;
 		newContentProfileItem.IsFavorite = [NSNumber numberWithBool:YES];
         newContentProfileItem.ProfileID = [NSNumber numberWithInt:3];
+        [self addAnnotationStructure:newUserContentItem annotationsItem:allBooksAnnotationsItem];            
 		
 		[newUserContentItem addProfileListObject:newContentProfileItem];	
         
@@ -421,7 +440,40 @@
 	
 }
 
-
+- (void)addAnnotationStructure:(SCHUserContentItem *)userContentItem annotationsItem:(SCHAnnotationsItem *)annotationsItem
+{
+    if (annotationsItem != nil && userContentItem != nil) {
+        NSDate *date = [NSDate date];
+        
+        SCHFavorite *newFavorite = [NSEntityDescription insertNewObjectForEntityForName:kSCHFavorite 
+                                                                 inManagedObjectContext:self.managedObjectContext];
+        newFavorite.LastModified = date;
+        newFavorite.State = [NSNumber numberWithStatus:kSCHStatusCreated];
+        newFavorite.IsFavorite = [NSNumber numberWithBool:NO];
+        
+        SCHLastPage *newLastPage = [NSEntityDescription insertNewObjectForEntityForName:kSCHLastPage 
+                                                                 inManagedObjectContext:self.managedObjectContext];
+        newLastPage.LastModified = date;
+        newLastPage.State = [NSNumber numberWithStatus:kSCHStatusCreated];
+        newLastPage.LastPageLocation = [NSNumber numberWithInteger:0];
+        newLastPage.Percentage = [NSNumber numberWithFloat:0.0];
+        newLastPage.Component = @"";
+        
+        SCHPrivateAnnotations *newPrivateAnnotations = [NSEntityDescription insertNewObjectForEntityForName:kSCHPrivateAnnotations 
+                                                                                     inManagedObjectContext:self.managedObjectContext];
+        newPrivateAnnotations.LastPage = newLastPage;
+        newPrivateAnnotations.Favorite = newFavorite;
+        
+        SCHAnnotationsContentItem *newAnnotationsContentItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHAnnotationsContentItem 
+                                                                                             inManagedObjectContext:self.managedObjectContext];
+        newAnnotationsContentItem.AnnotationsItem = annotationsItem;
+        newAnnotationsContentItem.DRMQualifier = userContentItem.DRMQualifier;
+        newAnnotationsContentItem.ContentIdentifier = userContentItem.ContentIdentifier;
+        newAnnotationsContentItem.Format = userContentItem.Format;
+        newAnnotationsContentItem.ContentIdentifierType = userContentItem.ContentIdentifierType;
+        newAnnotationsContentItem.PrivateAnnotations = newPrivateAnnotations;
+    }
+}
 
 - (void)clearProfiles
 {

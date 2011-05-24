@@ -13,7 +13,7 @@
 #import "SCHUserContentItem.h"
 
 static NSString * const kSCHContentMetadataItemAnnotationsContentItem = @"AnnotationsContentItem";
-static NSString * const kSCHContentMetadataItemAnnotationsListProfileID = @"AnnotationsList.ProfileID";
+static NSString * const kSCHContentMetadataItemAnnotationsItemProfileID = @"AnnotationsItem.ProfileID";
 static NSString * const kSCHContentMetadataItemUserContentItem = @"UserContentItem";
 
 @implementation SCHContentMetadataItem
@@ -38,7 +38,7 @@ static NSString * const kSCHContentMetadataItemUserContentItem = @"UserContentIt
 	NSMutableArray *annotations = [NSMutableArray array];
 	
 	for (SCHAnnotationsContentItem *annotationsContentItem in [self valueForKey:kSCHContentMetadataItemAnnotationsContentItem]) {
-		if ([profileID isEqualToNumber:[annotationsContentItem valueForKeyPath:kSCHContentMetadataItemAnnotationsListProfileID]] == YES) {
+		if ([profileID isEqualToNumber:[annotationsContentItem valueForKeyPath:kSCHContentMetadataItemAnnotationsItemProfileID]] == YES) {
 			[annotations addObject:annotationsContentItem];
 		}
 	}
