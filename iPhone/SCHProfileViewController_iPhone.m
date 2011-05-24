@@ -180,6 +180,7 @@
             SCHProfileItem *profileItem = [[self fetchedResultsController] objectAtIndexPath:indexPath];
 #if LOCALDEBUG
             // controller to view book shelf with books filtered to profile
+            [SCHThemeManager sharedThemeManager].appProfile = profileItem.AppProfile;                        
             [self pushBookshelvesControllerWithProfileItem:profileItem];	
 #else
             if ([profileItem.ProfilePasswordRequired boolValue] == NO) {
