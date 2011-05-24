@@ -149,7 +149,7 @@
 {
     NSString *ret = nil;
     
-    NSString* section = [self.textFlow sectionUuidForPageNumber:pageIndex + 1];
+    NSString* section = [self.textFlow sectionUuidForPageIndex:pageIndex];
     THPair* chapter   = [self.textFlow presentationNameAndSubTitleForSectionUuid:section];
     NSString* pageStr = [self displayPageNumberForPageAtIndex:pageIndex];
     
