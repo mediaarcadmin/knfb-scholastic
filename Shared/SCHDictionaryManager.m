@@ -48,10 +48,6 @@ static char * const kSCHDictionaryManifestEntryColumnSeparator = "\t";
 // timer for preventing false starts
 @property (readwrite, retain) NSTimer *startTimer;
 
-// properties indicating wifi availability/if the connection is idle
-@property BOOL wifiAvailable;
-@property BOOL connectionIdle;
-
 // lock preventing multiple accesses of save simulaneously
 @property (nonatomic, retain) NSLock *threadSafeMutationLock;
 
@@ -208,6 +204,13 @@ static SCHDictionaryManager *sharedManager = nil;
         NSLog(@"Warning: unrecognised category %@ in HTMLForWord.", category);
         return nil;
     }
+
+    // remove whitespace and punctuation characters
+    NSString *trimmedWord = [dictionaryWord stringByTrimmingCharactersInSet:
+                             [NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    trimmedWord = [trimmedWord stringByTrimmingCharactersInSet:
+                             [NSCharacterSet punctuationCharacterSet]];
+    trimmedWord = [trimmedWord lowercaseString];
     
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     // Edit the entity name as appropriate.
@@ -216,7 +219,7 @@ static SCHDictionaryManager *sharedManager = nil;
     [fetchRequest setEntity:entity];
     entity = nil;
     
-    NSPredicate *pred = [NSPredicate predicateWithFormat:@"word == %@", dictionaryWord];
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"word == %@", trimmedWord];
     
     [fetchRequest setPredicate:pred];
     pred = nil;
@@ -502,6 +505,9 @@ static SCHDictionaryManager *sharedManager = nil;
 		}
 		[self.dictionaryDownloadQueue cancelAllOperations];
 	}
+    
+    [self performSelectorOnMainThread:@selector(fireStateChange) withObject:nil waitUntilDone:NO];
+
 }
 
 #pragma mark -
@@ -701,11 +707,6 @@ static SCHDictionaryManager *sharedManager = nil;
         case SCHDictionaryProcessingStateReady:
         {
             NSLog(@"Dictionary is ready.");
-            
-            NSLog(@"a: %@", [self HTMLForWord:@"a" category:kSCHDictionaryOlderReader]);
-            NSLog(@"badger: %@", [self HTMLForWord:@"badger" category:kSCHDictionaryOlderReader]);
-            NSLog(@"rosy: %@", [self HTMLForWord:@"rosy" category:kSCHDictionaryOlderReader]);
-            NSLog(@"teuchter: %@", [self HTMLForWord:@"teuchter" category:kSCHDictionaryOlderReader]);
         }
 		default:
 			break;
@@ -830,6 +831,8 @@ static SCHDictionaryManager *sharedManager = nil;
 	[self.threadSafeMutationLock unlock];
     
     [pool drain];
+
+    [self performSelectorOnMainThread:@selector(fireStateChange) withObject:nil waitUntilDone:NO];
 }
 
 - (SCHDictionaryProcessingState) dictionaryProcessingState
@@ -841,6 +844,11 @@ static SCHDictionaryManager *sharedManager = nil;
     } else {
         return [[state State] intValue];
     }
+}
+
+- (void)fireStateChange
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:kSCHDictionaryStateChange object:nil userInfo:nil];
 }
 
 #pragma mark - Update Check

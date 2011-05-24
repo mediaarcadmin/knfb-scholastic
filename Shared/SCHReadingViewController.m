@@ -25,6 +25,8 @@
 #import "SCHReadingNoteView.h"
 #import "SCHBookAnnotations.h"
 #import "SCHNote.h"
+#import "SCHDictionaryViewController.h"
+#import "SCHDictionaryManager.h"
 
 // constants
 static const CGFloat kReadingViewStandardScrubHeight = 47.0f;
@@ -838,6 +840,28 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     self.currentBookProgress = progress;
     
     [self updateScrubberValue];
+}
+
+- (void)requestDictionaryForWord:(NSString *)word mode:(SCHReadingViewSelectionMode) mode
+{
+    SCHDictionaryViewController *dictionaryViewController = [[SCHDictionaryViewController alloc] initWithNibName:nil bundle:nil];
+    dictionaryViewController.word = word;
+    
+    if (mode == SCHReadingViewSelectionModeYoungerDictionary) {
+        dictionaryViewController.categoryMode = kSCHDictionaryYoungReader;
+    } else if (mode == SCHReadingViewSelectionModeOlderDictionary) {
+        dictionaryViewController.categoryMode = kSCHDictionaryOlderReader;
+    }
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        dictionaryViewController.modalPresentationStyle = UIModalPresentationFormSheet;
+        dictionaryViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    }
+    
+    [self.navigationController presentModalViewController:dictionaryViewController animated:YES];
+    [dictionaryViewController release];
+
+    
 }
 
 - (void)toggleToolbars

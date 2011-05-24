@@ -214,11 +214,43 @@
 - (void)selectOlderWord: (id) object
 {
     NSLog(@"Selected older word: %@", object);
+    
+    SCHBookRange *bookRange = [self bookRangeFromSelectorRange:[self.selector selectedRange]];
+    
+    NSUInteger page = bookRange.startPoint.layoutPage;
+    NSUInteger wordOffset = bookRange.startPoint.wordOffset;
+    
+    NSArray *wordBlocks = [self.textFlow blocksForPageAtIndex:page - 1 includingFolioBlocks:NO];
+    
+    NSString *word = [[[[wordBlocks objectAtIndex:bookRange.startPoint.blockOffset] words] objectAtIndex:wordOffset] string];
+
+    
+    NSLog(@"Word: %@", word);
+  
+    if ([self.delegate respondsToSelector:@selector(requestDictionaryForWord:mode:)]) {
+        [self.delegate requestDictionaryForWord:word mode:SCHReadingViewSelectionModeOlderDictionary];
+    }
 }
 
 - (void)selectYoungerWord: (id) object
 {
     NSLog(@"Selected younger word: %@", object);
+
+    SCHBookRange *bookRange = [self bookRangeFromSelectorRange:[self.selector selectedRange]];
+    
+    NSUInteger page = bookRange.startPoint.layoutPage;
+    NSUInteger wordOffset = bookRange.startPoint.wordOffset;
+    
+    NSArray *wordBlocks = [self.textFlow blocksForPageAtIndex:page - 1 includingFolioBlocks:NO];
+    
+    NSString *word = [[[[wordBlocks objectAtIndex:bookRange.startPoint.blockOffset] words] objectAtIndex:wordOffset] string];
+    
+    
+    NSLog(@"Word: %@", word);
+    
+    if ([self.delegate respondsToSelector:@selector(requestDictionaryForWord:mode:)]) {
+        [self.delegate requestDictionaryForWord:word mode:SCHReadingViewSelectionModeYoungerDictionary];
+    }
 }
 
 - (UIColor *)eucSelector:(EucSelector *)selector willBeginEditingHighlightWithRange:(EucSelectorRange *)selectedRange
