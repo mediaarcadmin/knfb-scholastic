@@ -1736,7 +1736,6 @@
 		2860E386111B897F00E27156 /* iPhone */ = {
 			isa = PBXGroup;
 			children = (
-				A3A38E5D133A80F700C325A3 /* Certificates */,
 				F8509E9912F0621E00197EB5 /* Scrubber View */,
 				2860E387111B897F00E27156 /* AppDelegate_iPhone.h */,
 				2860E388111B897F00E27156 /* AppDelegate_iPhone.m */,
@@ -1958,6 +1957,7 @@
 		528A2CCF12CCDC400053A343 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				A3A38E5D133A80F700C325A3 /* Certificates */,
 				A39009EF1379D81200D6B608 /* parent-request.html */,
 				A39009F01379D81200D6B608 /* teacher-request.html */,
 				A39009901379B06900D6B608 /* privacy.html */,
@@ -2218,6 +2218,7 @@
 				A3A38E60133A811400C325A3 /* iphonecert.dat */,
 			);
 			name = Certificates;
+			path = iPhone;
 			sourceTree = "<group>";
 		};
 		A3D933751326D84900037111 /* DRM */ = {
