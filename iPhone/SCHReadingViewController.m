@@ -1124,7 +1124,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 	}
 }	
 
-#pragma mark - SCHReadingNotesViewDelegate methods
+#pragma mark - SCHReadingNotesListControllerDelegate methods
 
 - (void)readingNotesViewCreatingNewNote:(SCHReadingNotesListController *)readingNotesView
 {
@@ -1175,6 +1175,13 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (void)notesViewCancelled:(SCHReadingNoteView *)notesView
 {
     [self setToolbarVisibility:YES animated:YES];
+}
+
+#pragma mark - SCHReadingInteractionsListControllerDelegate methods
+
+- (void)readingInteractionsView:(SCHReadingInteractionsListController *)interactionsView didSelectInteraction:(NSInteger)interaction
+{
+    NSLog(@"Selected interaction %d.", interaction);
 }
 
 #pragma mark - UIPopoverControllerDelegate methods
