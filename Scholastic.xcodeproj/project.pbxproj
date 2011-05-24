@@ -2972,7 +2972,6 @@
 		F8DC5655138C09DB00F27146 /* Reading View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				F8DC5656138C0BCA00F27146 /* SCHReadingInteractionsListController.xib */,
 				F8DC5657138C0BCA00F27146 /* SCHReadingNotesListController.h */,
 				F8DC5658138C0BCA00F27146 /* SCHReadingNotesListController.m */,
 				F8DC5659138C0BCA00F27146 /* SCHReadingNotesListController.xib */,
@@ -2982,6 +2981,7 @@
 				F8DC565D138C0BCA00F27146 /* SCHReadingViewController.xib */,
 				F8DC564E138BBE7D00F27146 /* SCHReadingInteractionsListController.h */,
 				F8DC564F138BBE7D00F27146 /* SCHReadingInteractionsListController.m */,
+				F8DC5656138C0BCA00F27146 /* SCHReadingInteractionsListController.xib */,
 			);
 			name = "Reading View Controllers";
 			sourceTree = "<group>";
