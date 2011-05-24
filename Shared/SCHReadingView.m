@@ -187,18 +187,20 @@
 {
     NSArray *ret = nil;
 
+    NSLog(@"Selection mode is %d", self.selectionMode);
+    
     switch (self.selectionMode) {
         case SCHReadingViewSelectionModeOlderDictionary: {
-                if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+//                if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
                     EucMenuItem *dictionaryItem = [[[EucMenuItem alloc] initWithTitle:NSLocalizedString(@"Look Up", "Older reader iPhone Look Up option in popup menu")
-                                                                               action:nil] autorelease];
+                                                                               action:@selector(selectOlderWord:)] autorelease];
                     
                     ret = [NSArray arrayWithObjects:dictionaryItem, nil];
-                }
+//                }
         } break;
         case SCHReadingViewSelectionModeYoungerDictionary: {
             EucMenuItem *dictionaryItem = [[[EucMenuItem alloc] initWithTitle:NSLocalizedString(@"Look Up", "Younger Reader iPhone and iPad Look Up option in popup menu")
-                                                                       action:nil] autorelease];
+                                                                       action:@selector(selectYoungerWord:)] autorelease];
             
             ret = [NSArray arrayWithObjects:dictionaryItem, nil];
         } break;
@@ -207,6 +209,16 @@
     }
         
     return ret;
+}
+
+- (void)selectOlderWord: (id) object
+{
+    NSLog(@"Selected older word: %@", object);
+}
+
+- (void)selectYoungerWord: (id) object
+{
+    NSLog(@"Selected younger word: %@", object);
 }
 
 - (UIColor *)eucSelector:(EucSelector *)selector willBeginEditingHighlightWithRange:(EucSelectorRange *)selectedRange

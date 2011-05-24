@@ -797,6 +797,10 @@
 		F8DC566E138C0C2E00F27146 /* SCHThemePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F8DC566B138C0C2E00F27146 /* SCHThemePickerViewController.m */; };
 		F8DC566F138C0C2E00F27146 /* SCHThemePickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8DC566C138C0C2E00F27146 /* SCHThemePickerViewController.xib */; };
 		F8DC5670138C0C2E00F27146 /* SCHThemePickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8DC566C138C0C2E00F27146 /* SCHThemePickerViewController.xib */; };
+		F8DC567F138C150F00F27146 /* SCHDictionaryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F8DC567D138C150F00F27146 /* SCHDictionaryViewController.m */; };
+		F8DC5680138C150F00F27146 /* SCHDictionaryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F8DC567D138C150F00F27146 /* SCHDictionaryViewController.m */; };
+		F8DC5681138C150F00F27146 /* SCHDictionaryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8DC567E138C150F00F27146 /* SCHDictionaryViewController.xib */; };
+		F8DC5682138C150F00F27146 /* SCHDictionaryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8DC567E138C150F00F27146 /* SCHDictionaryViewController.xib */; };
 		F8EDE542138561390079BFD8 /* SCHReadingNoteView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8EDE541138561390079BFD8 /* SCHReadingNoteView.m */; };
 		F8EDE543138561390079BFD8 /* SCHReadingNoteView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8EDE541138561390079BFD8 /* SCHReadingNoteView.m */; };
 		F8EDE54613856BB60079BFD8 /* UIImage+BlioAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = F8EDE54513856BB60079BFD8 /* UIImage+BlioAdditions.m */; };
@@ -1644,6 +1648,9 @@
 		F8DC566A138C0C2E00F27146 /* SCHThemePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHThemePickerViewController.h; path = Shared/SCHThemePickerViewController.h; sourceTree = "<group>"; };
 		F8DC566B138C0C2E00F27146 /* SCHThemePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHThemePickerViewController.m; path = Shared/SCHThemePickerViewController.m; sourceTree = "<group>"; };
 		F8DC566C138C0C2E00F27146 /* SCHThemePickerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SCHThemePickerViewController.xib; path = Shared/SCHThemePickerViewController.xib; sourceTree = "<group>"; };
+		F8DC567C138C150F00F27146 /* SCHDictionaryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHDictionaryViewController.h; path = Shared/SCHDictionaryViewController.h; sourceTree = "<group>"; };
+		F8DC567D138C150F00F27146 /* SCHDictionaryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHDictionaryViewController.m; path = Shared/SCHDictionaryViewController.m; sourceTree = "<group>"; };
+		F8DC567E138C150F00F27146 /* SCHDictionaryViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SCHDictionaryViewController.xib; path = Shared/SCHDictionaryViewController.xib; sourceTree = "<group>"; };
 		F8EDE540138561390079BFD8 /* SCHReadingNoteView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHReadingNoteView.h; path = Shared/SCHReadingNoteView.h; sourceTree = "<group>"; };
 		F8EDE541138561390079BFD8 /* SCHReadingNoteView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHReadingNoteView.m; path = Shared/SCHReadingNoteView.m; sourceTree = "<group>"; };
 		F8EDE54413856BB60079BFD8 /* UIImage+BlioAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+BlioAdditions.h"; sourceTree = "<group>"; };
@@ -2982,6 +2989,9 @@
 				F8DC564E138BBE7D00F27146 /* SCHReadingInteractionsListController.h */,
 				F8DC564F138BBE7D00F27146 /* SCHReadingInteractionsListController.m */,
 				F8DC5656138C0BCA00F27146 /* SCHReadingInteractionsListController.xib */,
+				F8DC567C138C150F00F27146 /* SCHDictionaryViewController.h */,
+				F8DC567D138C150F00F27146 /* SCHDictionaryViewController.m */,
+				F8DC567E138C150F00F27146 /* SCHDictionaryViewController.xib */,
 			);
 			name = "Reading View Controllers";
 			sourceTree = "<group>";
@@ -3382,6 +3392,7 @@
 				F8DC5664138C0BCA00F27146 /* SCHReadingPageListTableCell.xib in Resources */,
 				F8DC5668138C0BCA00F27146 /* SCHReadingViewController.xib in Resources */,
 				F8DC566F138C0C2E00F27146 /* SCHThemePickerViewController.xib in Resources */,
+				F8DC5681138C150F00F27146 /* SCHDictionaryViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3596,6 +3607,7 @@
 				F8DC5665138C0BCA00F27146 /* SCHReadingPageListTableCell.xib in Resources */,
 				F8DC5669138C0BCA00F27146 /* SCHReadingViewController.xib in Resources */,
 				F8DC5670138C0C2E00F27146 /* SCHThemePickerViewController.xib in Resources */,
+				F8DC5682138C150F00F27146 /* SCHDictionaryViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3775,6 +3787,7 @@
 				F8DC5660138C0BCA00F27146 /* SCHReadingNotesListController.m in Sources */,
 				F8DC5666138C0BCA00F27146 /* SCHReadingViewController.m in Sources */,
 				F8DC566D138C0C2E00F27146 /* SCHThemePickerViewController.m in Sources */,
+				F8DC567F138C150F00F27146 /* SCHDictionaryViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3951,6 +3964,7 @@
 				F8DC5661138C0BCA00F27146 /* SCHReadingNotesListController.m in Sources */,
 				F8DC5667138C0BCA00F27146 /* SCHReadingViewController.m in Sources */,
 				F8DC566E138C0C2E00F27146 /* SCHThemePickerViewController.m in Sources */,
+				F8DC5680138C150F00F27146 /* SCHDictionaryViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

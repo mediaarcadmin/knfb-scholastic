@@ -206,6 +206,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
                                                  selector:@selector(didEnterBackgroundNotification:) 
                                                      name:UIApplicationDidEnterBackgroundNotification
                                                    object:nil];
+        
     }
     return self;
 }
@@ -306,8 +307,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     }
     self.bottomShadow.frame = bottomShadowFrame;
     
+    [self setDictionarySelectionMode];
+
     [self jumpToLastPageLocation];
-    
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -640,6 +642,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
             
             SCHFlowView *flowView = [[SCHFlowView alloc] initWithFrame:self.view.bounds isbn:self.isbn delegate:self];
             self.readingView = flowView;
+            [self setDictionarySelectionMode];
+
             [flowView release];
             
             break;
@@ -650,6 +654,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
             
             SCHLayoutView *layoutView = [[SCHLayoutView alloc] initWithFrame:self.view.bounds isbn:self.isbn delegate:self];
             self.readingView = layoutView;
+            
+            [self setDictionarySelectionMode];
+            
             [layoutView release];
             
             break;
@@ -1056,7 +1063,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (void)setToolbarVisibility:(BOOL)visibility animated:(BOOL)animated
 {
-	NSLog(@"Setting visibility to %@.", visibility?@"True":@"False");
+//	NSLog(@"Setting visibility to %@.", visibility?@"True":@"False");
 	self.toolbarsVisible = visibility;
 
     if (!self.currentlyRotating) {
