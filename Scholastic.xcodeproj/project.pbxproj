@@ -125,10 +125,6 @@
 		52E622F51358385D00245CA7 /* Themes in Resources */ = {isa = PBXBuildFile; fileRef = 52E622F31358385D00245CA7 /* Themes */; };
 		52E622FB13584EBF00245CA7 /* SCHThemeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E622FA13584EBE00245CA7 /* SCHThemeManager.m */; };
 		52E622FC13584EBF00245CA7 /* SCHThemeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E622FA13584EBE00245CA7 /* SCHThemeManager.m */; };
-		52E623001358544200245CA7 /* SCHThemePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E622FE1358544200245CA7 /* SCHThemePickerViewController.m */; };
-		52E623011358544200245CA7 /* SCHThemePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E622FE1358544200245CA7 /* SCHThemePickerViewController.m */; };
-		52E623021358544200245CA7 /* SCHThemePickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52E622FF1358544200245CA7 /* SCHThemePickerViewController.xib */; };
-		52E623031358544200245CA7 /* SCHThemePickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52E622FF1358544200245CA7 /* SCHThemePickerViewController.xib */; };
 		52EF4E5F12E6E01C00E374F7 /* SCHLoginPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF4E5D12E6E01C00E374F7 /* SCHLoginPasswordViewController.m */; };
 		52EF4E6012E6E01C00E374F7 /* SCHLoginPasswordViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52EF4E5E12E6E01C00E374F7 /* SCHLoginPasswordViewController.xib */; };
 		52EF508712E739E900E374F7 /* LibreAccessServiceSvc.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF508612E739E900E374F7 /* LibreAccessServiceSvc.m */; };
@@ -797,6 +793,10 @@
 		F8DC5667138C0BCA00F27146 /* SCHReadingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F8DC565C138C0BCA00F27146 /* SCHReadingViewController.m */; };
 		F8DC5668138C0BCA00F27146 /* SCHReadingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8DC565D138C0BCA00F27146 /* SCHReadingViewController.xib */; };
 		F8DC5669138C0BCA00F27146 /* SCHReadingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8DC565D138C0BCA00F27146 /* SCHReadingViewController.xib */; };
+		F8DC566D138C0C2E00F27146 /* SCHThemePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F8DC566B138C0C2E00F27146 /* SCHThemePickerViewController.m */; };
+		F8DC566E138C0C2E00F27146 /* SCHThemePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F8DC566B138C0C2E00F27146 /* SCHThemePickerViewController.m */; };
+		F8DC566F138C0C2E00F27146 /* SCHThemePickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8DC566C138C0C2E00F27146 /* SCHThemePickerViewController.xib */; };
+		F8DC5670138C0C2E00F27146 /* SCHThemePickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8DC566C138C0C2E00F27146 /* SCHThemePickerViewController.xib */; };
 		F8EDE542138561390079BFD8 /* SCHReadingNoteView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8EDE541138561390079BFD8 /* SCHReadingNoteView.m */; };
 		F8EDE543138561390079BFD8 /* SCHReadingNoteView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8EDE541138561390079BFD8 /* SCHReadingNoteView.m */; };
 		F8EDE54613856BB60079BFD8 /* UIImage+BlioAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = F8EDE54513856BB60079BFD8 /* UIImage+BlioAdditions.m */; };
@@ -1073,9 +1073,6 @@
 		52E622F31358385D00245CA7 /* Themes */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Themes; path = Resources/Themes; sourceTree = "<group>"; };
 		52E622F913584EBE00245CA7 /* SCHThemeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHThemeManager.h; path = Shared/SCHThemeManager.h; sourceTree = "<group>"; };
 		52E622FA13584EBE00245CA7 /* SCHThemeManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHThemeManager.m; path = Shared/SCHThemeManager.m; sourceTree = "<group>"; };
-		52E622FD1358544200245CA7 /* SCHThemePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHThemePickerViewController.h; sourceTree = "<group>"; };
-		52E622FE1358544200245CA7 /* SCHThemePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHThemePickerViewController.m; sourceTree = "<group>"; };
-		52E622FF1358544200245CA7 /* SCHThemePickerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHThemePickerViewController.xib; sourceTree = "<group>"; };
 		52EF4E5C12E6E01C00E374F7 /* SCHLoginPasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHLoginPasswordViewController.h; sourceTree = "<group>"; };
 		52EF4E5D12E6E01C00E374F7 /* SCHLoginPasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHLoginPasswordViewController.m; sourceTree = "<group>"; };
 		52EF4E5E12E6E01C00E374F7 /* SCHLoginPasswordViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SCHLoginPasswordViewController.xib; sourceTree = "<group>"; };
@@ -1644,6 +1641,9 @@
 		F8DC565B138C0BCA00F27146 /* SCHReadingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHReadingViewController.h; path = Shared/SCHReadingViewController.h; sourceTree = "<group>"; };
 		F8DC565C138C0BCA00F27146 /* SCHReadingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHReadingViewController.m; path = Shared/SCHReadingViewController.m; sourceTree = "<group>"; };
 		F8DC565D138C0BCA00F27146 /* SCHReadingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SCHReadingViewController.xib; path = Shared/SCHReadingViewController.xib; sourceTree = "<group>"; };
+		F8DC566A138C0C2E00F27146 /* SCHThemePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHThemePickerViewController.h; path = Shared/SCHThemePickerViewController.h; sourceTree = "<group>"; };
+		F8DC566B138C0C2E00F27146 /* SCHThemePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHThemePickerViewController.m; path = Shared/SCHThemePickerViewController.m; sourceTree = "<group>"; };
+		F8DC566C138C0C2E00F27146 /* SCHThemePickerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SCHThemePickerViewController.xib; path = Shared/SCHThemePickerViewController.xib; sourceTree = "<group>"; };
 		F8EDE540138561390079BFD8 /* SCHReadingNoteView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHReadingNoteView.h; path = Shared/SCHReadingNoteView.h; sourceTree = "<group>"; };
 		F8EDE541138561390079BFD8 /* SCHReadingNoteView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHReadingNoteView.m; path = Shared/SCHReadingNoteView.m; sourceTree = "<group>"; };
 		F8EDE54413856BB60079BFD8 /* UIImage+BlioAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+BlioAdditions.h"; sourceTree = "<group>"; };
@@ -1749,9 +1749,6 @@
 				52EF4E5E12E6E01C00E374F7 /* SCHLoginPasswordViewController.xib */,
 				F8898901135877B100D236ED /* SCHProfileViewCell.h */,
 				F8898902135877B100D236ED /* SCHProfileViewCell.m */,
-				52E622FD1358544200245CA7 /* SCHThemePickerViewController.h */,
-				52E622FE1358544200245CA7 /* SCHThemePickerViewController.m */,
-				52E622FF1358544200245CA7 /* SCHThemePickerViewController.xib */,
 				A38CF1FD1374504F00EABF43 /* SCHAboutViewController.h */,
 				A38CF1FE1374504F00EABF43 /* SCHAboutViewController.m */,
 				A39009931379B13000D6B608 /* SCHPrivacyPolicyViewController.h */,
@@ -1853,6 +1850,9 @@
 		5204B85D135C1F6E00FCBD90 /* Themes */ = {
 			isa = PBXGroup;
 			children = (
+				F8DC566A138C0C2E00F27146 /* SCHThemePickerViewController.h */,
+				F8DC566B138C0C2E00F27146 /* SCHThemePickerViewController.m */,
+				F8DC566C138C0C2E00F27146 /* SCHThemePickerViewController.xib */,
 				52E622F913584EBE00245CA7 /* SCHThemeManager.h */,
 				52E622FA13584EBE00245CA7 /* SCHThemeManager.m */,
 				5204B85E135C1FC500FCBD90 /* SCHThemeButton.h */,
@@ -3296,7 +3296,6 @@
 				F848823E13573F4500A2C8D3 /* icon-magnify-active.png in Resources */,
 				F848824013573F4500A2C8D3 /* icon-magnify-active@2x.png in Resources */,
 				52E622F41358385D00245CA7 /* Themes in Resources */,
-				52E623021358544200245CA7 /* SCHThemePickerViewController.xib in Resources */,
 				F8C6DA96136073D300D9E953 /* paper-black.png in Resources */,
 				F8C6DA98136073D300D9E953 /* paper-black@2x.png in Resources */,
 				F8C6DA9A136073D300D9E953 /* paper-neutral.png in Resources */,
@@ -3381,6 +3380,7 @@
 				F8DC5662138C0BCA00F27146 /* SCHReadingNotesListController.xib in Resources */,
 				F8DC5664138C0BCA00F27146 /* SCHReadingPageListTableCell.xib in Resources */,
 				F8DC5668138C0BCA00F27146 /* SCHReadingViewController.xib in Resources */,
+				F8DC566F138C0C2E00F27146 /* SCHThemePickerViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3502,7 +3502,6 @@
 				F848823F13573F4500A2C8D3 /* icon-magnify-active.png in Resources */,
 				F848824113573F4500A2C8D3 /* icon-magnify-active@2x.png in Resources */,
 				52E622F51358385D00245CA7 /* Themes in Resources */,
-				52E623031358544200245CA7 /* SCHThemePickerViewController.xib in Resources */,
 				C9BCD78C135DBFB800AA42B3 /* After Ever After.xps in Resources */,
 				C9BCD78D135DD26B00AA42B3 /* LonelyHeartsClub.xps in Resources */,
 				C9BCD78E135DD26B00AA42B3 /* MazeOfBones.xps in Resources */,
@@ -3595,6 +3594,7 @@
 				F8DC5663138C0BCA00F27146 /* SCHReadingNotesListController.xib in Resources */,
 				F8DC5665138C0BCA00F27146 /* SCHReadingPageListTableCell.xib in Resources */,
 				F8DC5669138C0BCA00F27146 /* SCHReadingViewController.xib in Resources */,
+				F8DC5670138C0C2E00F27146 /* SCHThemePickerViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3748,7 +3748,6 @@
 				C92FA7E81355E8F4001BAA6B /* KNFBSmartZoomBlock.m in Sources */,
 				F8898903135877B100D236ED /* SCHProfileViewCell.m in Sources */,
 				52E622FB13584EBF00245CA7 /* SCHThemeManager.m in Sources */,
-				52E623001358544200245CA7 /* SCHThemePickerViewController.m in Sources */,
 				C95C7CC1135C3C8A00472AF6 /* SCHBookShelfGridView.m in Sources */,
 				C95C7CC5135C3F1400472AF6 /* SCHBookShelfGridShelvesView.m in Sources */,
 				5204B860135C1FC500FCBD90 /* SCHThemeButton.m in Sources */,
@@ -3774,6 +3773,7 @@
 				F8DC5650138BBE7D00F27146 /* SCHReadingInteractionsListController.m in Sources */,
 				F8DC5660138C0BCA00F27146 /* SCHReadingNotesListController.m in Sources */,
 				F8DC5666138C0BCA00F27146 /* SCHReadingViewController.m in Sources */,
+				F8DC566D138C0C2E00F27146 /* SCHThemePickerViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3924,7 +3924,6 @@
 				C92FA7E91355E8F4001BAA6B /* KNFBSmartZoomBlock.m in Sources */,
 				F8898904135877B100D236ED /* SCHProfileViewCell.m in Sources */,
 				52E622FC13584EBF00245CA7 /* SCHThemeManager.m in Sources */,
-				52E623011358544200245CA7 /* SCHThemePickerViewController.m in Sources */,
 				C95C7CC2135C3C8A00472AF6 /* SCHBookShelfGridView.m in Sources */,
 				C95C7CC6135C3F1400472AF6 /* SCHBookShelfGridShelvesView.m in Sources */,
 				5204B861135C1FC500FCBD90 /* SCHThemeButton.m in Sources */,
@@ -3950,6 +3949,7 @@
 				F8DC5651138BBE7D00F27146 /* SCHReadingInteractionsListController.m in Sources */,
 				F8DC5661138C0BCA00F27146 /* SCHReadingNotesListController.m in Sources */,
 				F8DC5667138C0BCA00F27146 /* SCHReadingViewController.m in Sources */,
+				F8DC566E138C0C2E00F27146 /* SCHThemePickerViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
