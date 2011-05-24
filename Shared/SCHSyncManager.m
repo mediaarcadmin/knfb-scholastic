@@ -324,6 +324,9 @@ static NSTimeInterval const kSCHSyncManagerHeartbeatInterval = 30.0;
 
 - (void)closeDocument:(SCHUserContentItem *)userContentItem forProfile:(NSNumber *)profileID
 {
+    // save any changes first
+    NSError *error = nil;
+    [self.managedObjectContext save:&error];
 #if LOCALDEBUG
 	return;
 #endif
