@@ -104,7 +104,7 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
     [self setupAssetsForOrientation:self.interfaceOrientation];
     
     // because we're using iOS 4 and above, use UINib to cache access to the NIB
-    self.noteCellNib = [UINib nibWithNibName:@"SCHReadingNotesListTableCell" bundle:nil];
+    self.noteCellNib = [UINib nibWithNibName:@"SCHReadingPageListTableCell" bundle:nil];
     
     [self.topShadow setImage:[UIImage imageNamed:@"reading-view-top-shadow.png"]];
 
@@ -272,7 +272,7 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
         }
         case 1:
         {
-            NSString *cellIdentifier = @"SCHReadingNotesTableCell";
+            NSString *cellIdentifier = @"SCHReadingPageListTableCell";
             cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
             
             if (cell == nil) {
