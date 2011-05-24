@@ -183,7 +183,7 @@
 	
     switch (indexPath.section) {
 		case 0: {
-            
+            [SCHThemeManager sharedThemeManager].appProfile = profileItem.AppProfile;                                    
             SCHProfileItem *profileItem = [[self fetchedResultsController] objectAtIndexPath:indexPath];
 #if LOCALDEBUG
             // controller to view book shelf with books filtered to profile
