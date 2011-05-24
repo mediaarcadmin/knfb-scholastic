@@ -16,7 +16,6 @@
 #import "SCHXPSProvider.h"
 #import "SCHCustomNavigationBar.h"
 #import "SCHCustomToolbar.h"
-#import "SCHReadingNotesListController.h"
 #import "SCHSyncManager.h"
 #import "SCHProfileItem.h"
 #import "SCHBookRange.h"
@@ -529,6 +528,21 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     if (self.optionsView.superview) {
         [self.optionsView removeFromSuperview];
     }
+    
+    SCHReadingInteractionsListController *interactionsController = [[SCHReadingInteractionsListController alloc] initWithNibName:nil bundle:nil];
+    interactionsController.isbn = self.isbn;
+    interactionsController.profile = self.profile;
+    interactionsController.delegate = self;
+    interactionsController.readingView = self.readingView;
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        interactionsController.modalPresentationStyle = UIModalPresentationFormSheet;
+        interactionsController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    }
+    
+    [self.navigationController presentModalViewController:interactionsController animated:YES];
+    [interactionsController release];
+
     
 }
 
@@ -1110,7 +1124,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 	}
 }	
 
-#pragma mark - SCHReadingNotesViewDelegate methods
+#pragma mark - SCHReadingNotesListControllerDelegate methods
 
 - (void)readingNotesViewCreatingNewNote:(SCHReadingNotesListController *)readingNotesView
 {
@@ -1161,6 +1175,13 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (void)notesViewCancelled:(SCHReadingNoteView *)notesView
 {
     [self setToolbarVisibility:YES animated:YES];
+}
+
+#pragma mark - SCHReadingInteractionsListControllerDelegate methods
+
+- (void)readingInteractionsView:(SCHReadingInteractionsListController *)interactionsView didSelectInteraction:(NSInteger)interaction
+{
+    NSLog(@"Selected interaction %d.", interaction);
 }
 
 #pragma mark - UIPopoverControllerDelegate methods
