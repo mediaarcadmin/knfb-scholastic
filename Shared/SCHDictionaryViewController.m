@@ -7,7 +7,8 @@
 //
 
 #import "SCHDictionaryViewController.h"
-#import "SCHDictionaryManager.h"
+#import "SCHDictionaryDownloadManager.h"
+#import "SCHDictionaryAccessManager.h"
 #import "SCHCustomToolbar.h"
 
 @interface SCHDictionaryViewController ()
@@ -85,7 +86,7 @@
     
     [self.topShadow setImage:[UIImage imageNamed:@"reading-view-top-shadow.png"]];
 
-    if ([[SCHDictionaryManager sharedDictionaryManager] dictionaryProcessingState] != SCHDictionaryProcessingStateReady) {
+    if ([[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryProcessingState] != SCHDictionaryProcessingStateReady) {
         [self.contentView addSubview:self.downloadProgressView];
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setUserInterfaceFromState) name:kSCHDictionaryStateChange object:nil];
@@ -155,9 +156,9 @@
 
 - (void)loadWord
 {
-    NSString *htmlString = [[SCHDictionaryManager sharedDictionaryManager] HTMLForWord:self.word category:self.categoryMode];
+    NSString *htmlString = [[SCHDictionaryAccessManager sharedAccessManager] HTMLForWord:self.word category:self.categoryMode];
     
-    NSURL *baseURL = [NSURL URLWithString:[[SCHDictionaryManager sharedDictionaryManager] dictionaryDirectory]];
+    NSURL *baseURL = [NSURL URLWithString:[[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryDirectory]];
     
     NSLog(@"HTML: %@", htmlString);
     
@@ -168,10 +169,10 @@
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kSCHDictionaryDownloadPercentageUpdate object:nil];
 
-    SCHDictionaryProcessingState state = [[SCHDictionaryManager sharedDictionaryManager] dictionaryProcessingState];
+    SCHDictionaryProcessingState state = [[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryProcessingState];
     
-    BOOL wifiAvailable = [[SCHDictionaryManager sharedDictionaryManager] wifiAvailable];
-    BOOL connectionIdle = [[SCHDictionaryManager sharedDictionaryManager] connectionIdle];
+    BOOL wifiAvailable = [[SCHDictionaryDownloadManager sharedDownloadManager] wifiAvailable];
+    BOOL connectionIdle = [[SCHDictionaryDownloadManager sharedDownloadManager] connectionIdle];
     
     
     if (!wifiAvailable) {

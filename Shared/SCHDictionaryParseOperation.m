@@ -27,7 +27,7 @@
 {
 	if (![self isCancelled]) {
 		
-        SCHDictionaryManager *dictManager = [SCHDictionaryManager sharedDictionaryManager];
+        SCHDictionaryDownloadManager *dictManager = [SCHDictionaryDownloadManager sharedDownloadManager];
         
 		dictManager.isProcessing = YES;
 		
@@ -48,7 +48,7 @@
             [dictManager updateParseWordFormTable];
         }
         
-        [[SCHDictionaryManager sharedDictionaryManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateManifestVersionCheck];
+        [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateManifestVersionCheck];
         dictManager.isProcessing = NO;
 
         [self willChangeValueForKey:@"isExecuting"];

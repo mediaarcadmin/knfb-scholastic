@@ -13,7 +13,7 @@
 #import "SCHUserDefaults.h"
 #import "SCHURLManager.h"
 #import "SCHProcessingManager.h"
-#import "SCHDictionaryManager.h"
+#import "SCHDictionaryDownloadManager.h"
 #import "SCHBookshelfSyncComponent.h"
 
 #if LOCALDEBUG
@@ -166,7 +166,7 @@ static NSString* const prModelCertFilename = @"iphonecert.dat";
     [self performSelector:@selector(copyLocalFilesIfMissing) withObject:nil afterDelay:0.1f]; // Stop the watchdog from killing us on launch
 #endif
 	
-	[[SCHDictionaryManager sharedDictionaryManager] checkIfUpdateNeeded];
+	[[SCHDictionaryDownloadManager sharedDownloadManager] checkIfUpdateNeeded];
 	
 	[self ensureCorrectCertsAvailable];
 	

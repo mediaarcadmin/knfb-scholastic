@@ -1,5 +1,5 @@
 //
-//  SCHDictionaryManager.h
+//  SCHDictionaryDownloadManager.h
 //  Scholastic
 //
 //  Created by Gordon Christie on 17/03/2011.
@@ -13,6 +13,11 @@ static NSString* const kSCHDictionaryYoungReader = @"YD";
 static NSString* const kSCHDictionaryOlderReader = @"OD";
 
 static NSString* const kSCHDictionaryStateChange = @"SCHDictionaryStateChange";
+
+static int const kSCHDictionaryManifestEntryEntryTableBufferSize = 8192;
+static int const kSCHDictionaryManifestEntryWordFormTableBufferSize = 1024;
+
+static char * const kSCHDictionaryManifestEntryColumnSeparator = "\t";
 
 typedef enum {
 	SCHDictionaryProcessingStateError = 0,
@@ -34,7 +39,7 @@ typedef enum {
 @end
 
 
-@interface SCHDictionaryManager : NSObject {
+@interface SCHDictionaryDownloadManager : NSObject {
 
 }
 
@@ -46,7 +51,7 @@ typedef enum {
 // dictionary is currently processing
 @property BOOL isProcessing;
 
-+ (SCHDictionaryManager *) sharedDictionaryManager;
++ (SCHDictionaryDownloadManager *) sharedDownloadManager;
 
 // the local dictionary directory
 - (NSString *) dictionaryDirectory;
@@ -67,9 +72,6 @@ typedef enum {
 - (void) initialParseWordFormTable;
 - (void) updateParseEntryTable;
 - (void) updateParseWordFormTable;
-
-// HTML definition for a word (uses YD/OD as category)
-- (NSString *) HTMLForWord: (NSString *) dictionaryWord category: (NSString *) category;
 
 // properties indicating wifi availability/if the connection is idle
 @property BOOL wifiAvailable;
