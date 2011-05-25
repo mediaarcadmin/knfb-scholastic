@@ -34,7 +34,7 @@
 		
 		NSLog(@"Starting unzip operation..");
         
-        SCHDictionaryManager *dictManager = [SCHDictionaryManager sharedDictionaryManager];
+        SCHDictionaryDownloadManager *dictManager = [SCHDictionaryDownloadManager sharedDownloadManager];
         
 		dictManager.isProcessing = YES;
 		
@@ -65,7 +65,7 @@
 
 - (void) unzipDictionaryFileWithZipDelete: (BOOL) deleteAfterUnzip
 {
-    SCHDictionaryManager *dictManager = [SCHDictionaryManager sharedDictionaryManager];
+    SCHDictionaryDownloadManager *dictManager = [SCHDictionaryDownloadManager sharedDownloadManager];
     ZipArchive *zipArchive = [[ZipArchive alloc] init];
     
     bool zipSuccess = YES;

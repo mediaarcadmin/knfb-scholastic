@@ -7,7 +7,8 @@
 //
 
 #import "SCHDictionaryViewController.h"
-#import "SCHDictionaryManager.h"
+#import "SCHDictionaryDownloadManager.h"
+#import "SCHDictionaryAccessManager.h"
 #import "SCHCustomToolbar.h"
 
 @interface SCHDictionaryViewController ()
@@ -85,7 +86,7 @@
     
     [self.topShadow setImage:[UIImage imageNamed:@"reading-view-top-shadow.png"]];
 
-    if ([[SCHDictionaryManager sharedDictionaryManager] dictionaryProcessingState] != SCHDictionaryProcessingStateReady) {
+    if ([[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryProcessingState] != SCHDictionaryProcessingStateReady) {
         [self.contentView addSubview:self.downloadProgressView];
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setUserInterfaceFromState) name:kSCHDictionaryStateChange object:nil];
@@ -155,9 +156,9 @@
 
 - (void)loadWord
 {
-    NSString *htmlString = [[SCHDictionaryManager sharedDictionaryManager] HTMLForWord:self.word category:self.categoryMode];
+    NSString *htmlString = [[SCHDictionaryAccessManager sharedAccessManager] HTMLForWord:self.word category:self.categoryMode];
     
-    NSURL *baseURL = [NSURL URLWithString:[[SCHDictionaryManager sharedDictionaryManager] dictionaryDirectory]];
+    NSURL *baseURL = [NSURL URLWithString:[[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryDirectory]];
     
     NSLog(@"HTML: %@", htmlString);
     
@@ -168,10 +169,10 @@
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kSCHDictionaryDownloadPercentageUpdate object:nil];
 
-    SCHDictionaryProcessingState state = [[SCHDictionaryManager sharedDictionaryManager] dictionaryProcessingState];
+    SCHDictionaryProcessingState state = [[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryProcessingState];
     
-    BOOL wifiAvailable = [[SCHDictionaryManager sharedDictionaryManager] wifiAvailable];
-    BOOL connectionIdle = [[SCHDictionaryManager sharedDictionaryManager] connectionIdle];
+    BOOL wifiAvailable = [[SCHDictionaryDownloadManager sharedDownloadManager] wifiAvailable];
+    BOOL connectionIdle = [[SCHDictionaryDownloadManager sharedDownloadManager] connectionIdle];
     
     
     if (!wifiAvailable) {
@@ -183,7 +184,7 @@
     } else if (!connectionIdle) {
         self.topLabel.text = @"Books are currently downloading.";
         self.bottomLabel.text = @"You can wait for them to finish, or look up your word later.";
-        [self.activityIndicator stopAnimating];
+        [self.activityIndicator startAnimating];
         self.progressBar.hidden = YES;
         return;
     }
@@ -212,8 +213,8 @@
         {
             self.topLabel.text = @"The dictionary is currently downloading from the Internet.";
             self.bottomLabel.text = @"You can wait for it to finish, or look up your word later.";
-            [self.activityIndicator stopAnimating];
-            self.progressBar.hidden = NO;
+            [self.activityIndicator startAnimating];
+            self.progressBar.hidden = YES;
             [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(downloadPercentageUpdate:) name:kSCHDictionaryDownloadPercentageUpdate object:nil];
             break;
         }
@@ -229,6 +230,11 @@
 
 - (void)downloadPercentageUpdate:(NSNotification *)note {
     
+    if (self.progressBar.hidden) {
+        [self.activityIndicator stopAnimating];
+        self.progressBar.hidden = NO;
+    }
+
     NSDictionary *userInfo = [note userInfo];
     float percentage = [[userInfo objectForKey:@"currentPercentage"] floatValue];
     

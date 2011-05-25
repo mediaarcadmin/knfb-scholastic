@@ -7,7 +7,7 @@
 //
 
 #import "SCHDictionaryManifestOperation.h"
-#import "SCHDictionaryManager.h"
+#import "SCHDictionaryDownloadManager.h"
 
 @interface SCHDictionaryManifestOperation ()
 
@@ -71,9 +71,7 @@
 		}
         
         if (failure) {
-           
-            
-            [[SCHDictionaryManager sharedDictionaryManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateError];
+            //            [[SCHDictionaryManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateWaitingForNetwork];
             
             [self finishOp];
             
@@ -91,7 +89,7 @@
                 [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
             } while (self.parsingDictionaryInfo);
             
-            [SCHDictionaryManager sharedDictionaryManager].manifestUpdates = self.manifestEntries;
+            [SCHDictionaryDownloadManager sharedDownloadManager].manifestUpdates = self.manifestEntries;
             
 		}
 		
@@ -175,8 +173,8 @@
 
 - (void)parserDidEndDocument:(NSXMLParser *)parser
 {
-    [[SCHDictionaryManager sharedDictionaryManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateManifestVersionCheck];
-    [SCHDictionaryManager sharedDictionaryManager].isProcessing = NO;
+    [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateManifestVersionCheck];
+    [SCHDictionaryDownloadManager sharedDownloadManager].isProcessing = NO;
 
 	self.parsingComplete = YES;
 
@@ -184,8 +182,8 @@
 
 - (void)parser:(NSXMLParser *)parser parseErrorOccurred:(NSError *)parseError
 {
-    [[SCHDictionaryManager sharedDictionaryManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateError];
-    [SCHDictionaryManager sharedDictionaryManager].isProcessing = NO;
+    [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateError];
+    [SCHDictionaryDownloadManager sharedDownloadManager].isProcessing = NO;
     
 	NSLog(@"Error: could not parse XML.");
 	self.parsingComplete = YES;
@@ -200,7 +198,7 @@
 
 - (void) startOp
 {
-    [SCHDictionaryManager sharedDictionaryManager].isProcessing = YES;
+    [SCHDictionaryDownloadManager sharedDownloadManager].isProcessing = YES;
     [self willChangeValueForKey:@"isExecuting"];
     [self willChangeValueForKey:@"isFinished"];
     self.executing = YES;
@@ -218,7 +216,7 @@
 	self.executing = NO;
     [self didChangeValueForKey:@"isExecuting"];
     [self didChangeValueForKey:@"isFinished"];
-	[SCHDictionaryManager sharedDictionaryManager].isProcessing = NO;
+	[SCHDictionaryDownloadManager sharedDownloadManager].isProcessing = NO;
 }
 
 - (BOOL)isConcurrent {
