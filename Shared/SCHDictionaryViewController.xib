@@ -17,9 +17,9 @@
 			<string>IBUILabel</string>
 			<string>IBUIToolbar</string>
 			<string>IBProxyObject</string>
-			<string>IBUIImageView</string>
-			<string>IBUIWebView</string>
 			<string>IBUIActivityIndicatorView</string>
+			<string>IBUIWebView</string>
+			<string>IBUIImageView</string>
 			<string>IBUIView</string>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
@@ -54,7 +54,7 @@
 						<string key="NSFrame">{{0, 44}, {320, 4}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
+						<reference key="NSNextKeyView" ref="822073129"/>
 						<object class="NSColor" key="IBUIBackgroundColor" id="776572551">
 							<int key="NSColorSpace">3</int>
 							<bytes key="NSWhite">MCAwAA</bytes>
@@ -79,7 +79,7 @@
 										<string key="NSFrame">{{-40, -5}, {268, 44}}</string>
 										<reference key="NSSuperview" ref="105863607"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView" ref="822073129"/>
+										<reference key="NSNextKeyView" ref="839860039"/>
 										<object class="NSColor" key="IBUIBackgroundColor">
 											<int key="NSColorSpace">3</int>
 											<bytes key="NSWhite">MSAwAA</bytes>
@@ -161,7 +161,7 @@
 								<string key="NSFrameSize">{320, 416}</string>
 								<reference key="NSSuperview" ref="822073129"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="839860039"/>
+								<reference key="NSNextKeyView"/>
 								<object class="NSColor" key="IBUIBackgroundColor">
 									<int key="NSColorSpace">1</int>
 									<bytes key="NSRGB">MSAxIDEAA</bytes>
@@ -199,20 +199,6 @@
 				<int key="NSvFlags">274</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
-					<object class="IBUIImageView" id="314653373">
-						<reference key="NSNextResponder" ref="1024919703"/>
-						<int key="NSvFlags">274</int>
-						<string key="NSFrameSize">{320, 416}</string>
-						<reference key="NSSuperview" ref="1024919703"/>
-						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="473539231"/>
-						<bool key="IBUIUserInteractionEnabled">NO</bool>
-						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-						<object class="NSCustomResource" key="IBUIImage">
-							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">plain-background-portrait.png</string>
-						</object>
-					</object>
 					<object class="IBUILabel" id="473539231">
 						<reference key="NSNextResponder" ref="1024919703"/>
 						<int key="NSvFlags">306</int>
@@ -266,7 +252,7 @@
 					</object>
 					<object class="IBUIProgressView" id="790477103">
 						<reference key="NSNextResponder" ref="1024919703"/>
-						<int key="NSvFlags">-2147483350</int>
+						<int key="NSvFlags">-2147483347</int>
 						<string key="NSFrame">{{20, 203}, {280, 9}}</string>
 						<reference key="NSSuperview" ref="1024919703"/>
 						<reference key="NSWindow"/>
@@ -290,7 +276,7 @@
 				<string key="NSFrameSize">{320, 416}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
-				<reference key="NSNextKeyView" ref="314653373"/>
+				<reference key="NSNextKeyView"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
 					<bytes key="NSWhite">MQA</bytes>
@@ -487,7 +473,6 @@
 							<reference ref="473539231"/>
 							<reference ref="409620124"/>
 							<reference ref="790477103"/>
-							<reference ref="314653373"/>
 							<reference ref="310887774"/>
 						</object>
 						<reference key="parent" ref="0"/>
@@ -524,11 +509,6 @@
 						<reference key="parent" ref="822073129"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">25</int>
-						<reference key="object" ref="314653373"/>
-						<reference key="parent" ref="1024919703"/>
-					</object>
-					<object class="IBObjectRecord">
 						<int key="objectID">28</int>
 						<reference key="object" ref="310887774"/>
 						<reference key="parent" ref="1024919703"/>
@@ -558,7 +538,6 @@
 					<string>19.IBPluginDependency</string>
 					<string>20.IBPluginDependency</string>
 					<string>23.IBPluginDependency</string>
-					<string>25.IBPluginDependency</string>
 					<string>28.IBPluginDependency</string>
 					<string>31.IBPluginDependency</string>
 					<string>4.CustomClassName</string>
@@ -573,7 +552,6 @@
 					<string>SCHDictionaryViewController</string>
 					<string>UIResponder</string>
 					<string>{{556, 412}, {320, 480}}</string>
-					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -632,6 +610,7 @@
 							<string>progressBar</string>
 							<string>topBar</string>
 							<string>topLabel</string>
+							<string>topShadow</string>
 							<string>webView</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
@@ -643,6 +622,7 @@
 							<string>UIProgressView</string>
 							<string>SCHCustomToolbar</string>
 							<string>UILabel</string>
+							<string>UIImageView</string>
 							<string>UIWebView</string>
 						</object>
 					</object>
@@ -657,6 +637,7 @@
 							<string>progressBar</string>
 							<string>topBar</string>
 							<string>topLabel</string>
+							<string>topShadow</string>
 							<string>webView</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
@@ -690,6 +671,10 @@
 								<string key="candidateClassName">UILabel</string>
 							</object>
 							<object class="IBToOneOutletInfo">
+								<string key="name">topShadow</string>
+								<string key="candidateClassName">UIImageView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
 								<string key="name">webView</string>
 								<string key="candidateClassName">UIWebView</string>
 							</object>
@@ -710,10 +695,6 @@
 		</object>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
-		<object class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="NS.key.0">plain-background-portrait.png</string>
-			<string key="NS.object.0">{320, 416}</string>
-		</object>
 		<string key="IBCocoaTouchPluginVersion">301</string>
 	</data>
 </archive>
