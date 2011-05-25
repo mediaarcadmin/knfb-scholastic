@@ -183,7 +183,7 @@
     } else if (!connectionIdle) {
         self.topLabel.text = @"Books are currently downloading.";
         self.bottomLabel.text = @"You can wait for them to finish, or look up your word later.";
-        [self.activityIndicator stopAnimating];
+        [self.activityIndicator startAnimating];
         self.progressBar.hidden = YES;
         return;
     }
@@ -212,8 +212,8 @@
         {
             self.topLabel.text = @"The dictionary is currently downloading from the Internet.";
             self.bottomLabel.text = @"You can wait for it to finish, or look up your word later.";
-            [self.activityIndicator stopAnimating];
-            self.progressBar.hidden = NO;
+            [self.activityIndicator startAnimating];
+            self.progressBar.hidden = YES;
             [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(downloadPercentageUpdate:) name:kSCHDictionaryDownloadPercentageUpdate object:nil];
             break;
         }
@@ -229,6 +229,11 @@
 
 - (void)downloadPercentageUpdate:(NSNotification *)note {
     
+    if (self.progressBar.hidden) {
+        [self.activityIndicator stopAnimating];
+        self.progressBar.hidden = NO;
+    }
+
     NSDictionary *userInfo = [note userInfo];
     float percentage = [[userInfo objectForKey:@"currentPercentage"] floatValue];
     

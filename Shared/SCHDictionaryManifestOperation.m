@@ -71,9 +71,7 @@
 		}
         
         if (failure) {
-           
-            
-            [[SCHDictionaryManager sharedDictionaryManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateError];
+            //            [[SCHDictionaryManager sharedDictionaryManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateWaitingForNetwork];
             
             [self finishOp];
             

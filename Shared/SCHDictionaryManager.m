@@ -485,17 +485,12 @@ static SCHDictionaryManager *sharedManager = nil;
 			self.startTimer = nil; 
 		} 
 
-//		if (!self.startTimer) {
 		NSLog(@"********* Starting timer...");
 		self.startTimer = [NSTimer scheduledTimerWithTimeInterval:10
 														   target:[SCHDictionaryManager sharedDictionaryManager]
 														 selector:@selector(processDictionary)
 														 userInfo:nil
 														  repeats:NO];
-//		} else {
-//			NSLog(@"********* Timer already exists!");
-//		}
-
 	} else {
 		// otherwise, cancel work in progress
 		NSLog(@"Cancelling operations etc.");
@@ -521,7 +516,7 @@ static SCHDictionaryManager *sharedManager = nil;
 	}
 	
 	if (!self.wifiAvailable || !self.connectionIdle) {
-        NSLog(@"Process dictionary called, but connection is busy.");
+        NSLog(@"Process dictionary called, but no wifi/connection busy.");
 		return;
 	}
 	
@@ -707,6 +702,7 @@ static SCHDictionaryManager *sharedManager = nil;
         case SCHDictionaryProcessingStateReady:
         {
             NSLog(@"Dictionary is ready.");
+            break;
         }
 		default:
 			break;

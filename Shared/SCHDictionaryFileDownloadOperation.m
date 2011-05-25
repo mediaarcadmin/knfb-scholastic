@@ -186,7 +186,7 @@
 {
 	NSLog(@"Stopped downloading file - %@", [error localizedDescription]);
 	
-	[[SCHDictionaryManager sharedDictionaryManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateError];
+    //	[[SCHDictionaryManager sharedDictionaryManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateError];
 //	[SCHDictionaryManager sharedDictionaryManager].dictionaryState = SCHDictionaryProcessingStateNeedsDownload;
 	
     [self willChangeValueForKey:@"isExecuting"];
