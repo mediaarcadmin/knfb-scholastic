@@ -505,6 +505,24 @@
 		C960B2671379AE89000F61CC /* icon-layout-fixed.png in Resources */ = {isa = PBXBuildFile; fileRef = C960B2641379AE89000F61CC /* icon-layout-fixed.png */; };
 		C960B2681379AE89000F61CC /* icon-layout-fixed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C960B2651379AE89000F61CC /* icon-layout-fixed@2x.png */; };
 		C960B2691379AE89000F61CC /* icon-layout-fixed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C960B2651379AE89000F61CC /* icon-layout-fixed@2x.png */; };
+		C979C68A138BAC9100581F7F /* login-ipad-background.png in Resources */ = {isa = PBXBuildFile; fileRef = C979C688138BAC9100581F7F /* login-ipad-background.png */; };
+		C979C68B138BAC9100581F7F /* login-ipad-background.png in Resources */ = {isa = PBXBuildFile; fileRef = C979C688138BAC9100581F7F /* login-ipad-background.png */; };
+		C979C68C138BAC9100581F7F /* login-ipad-top-toolbar.png in Resources */ = {isa = PBXBuildFile; fileRef = C979C689138BAC9100581F7F /* login-ipad-top-toolbar.png */; };
+		C979C68D138BAC9100581F7F /* login-ipad-top-toolbar.png in Resources */ = {isa = PBXBuildFile; fileRef = C979C689138BAC9100581F7F /* login-ipad-top-toolbar.png */; };
+		C979C69C138C195200581F7F /* login-iphone-background.png in Resources */ = {isa = PBXBuildFile; fileRef = C979C69A138C195200581F7F /* login-iphone-background.png */; };
+		C979C69D138C195200581F7F /* login-iphone-background.png in Resources */ = {isa = PBXBuildFile; fileRef = C979C69A138C195200581F7F /* login-iphone-background.png */; };
+		C979C69E138C195200581F7F /* login-iphone-background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C979C69B138C195200581F7F /* login-iphone-background@2x.png */; };
+		C979C69F138C195200581F7F /* login-iphone-background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C979C69B138C195200581F7F /* login-iphone-background@2x.png */; };
+		C979C6A2138C1F6300581F7F /* button-login@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C979C6A0138C1F6300581F7F /* button-login@2x.png */; };
+		C979C6A3138C1F6300581F7F /* button-login@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C979C6A0138C1F6300581F7F /* button-login@2x.png */; };
+		C979C6A4138C1F6300581F7F /* button-login.png in Resources */ = {isa = PBXBuildFile; fileRef = C979C6A1138C1F6300581F7F /* button-login.png */; };
+		C979C6A5138C1F6300581F7F /* button-login.png in Resources */ = {isa = PBXBuildFile; fileRef = C979C6A1138C1F6300581F7F /* button-login.png */; };
+		C979C6A8138C237C00581F7F /* button-field.png in Resources */ = {isa = PBXBuildFile; fileRef = C979C6A6138C237C00581F7F /* button-field.png */; };
+		C979C6A9138C237C00581F7F /* button-field.png in Resources */ = {isa = PBXBuildFile; fileRef = C979C6A6138C237C00581F7F /* button-field.png */; };
+		C979C6AA138C237C00581F7F /* button-field@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C979C6A7138C237C00581F7F /* button-field@2x.png */; };
+		C979C6AB138C237C00581F7F /* button-field@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C979C6A7138C237C00581F7F /* button-field@2x.png */; };
+		C979D88A138C2D9100581F7F /* SCHGradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = C979D889138C2D9100581F7F /* SCHGradientView.m */; };
+		C979D88B138C2D9100581F7F /* SCHGradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = C979D889138C2D9100581F7F /* SCHGradientView.m */; };
 		C97D6DA313696D7B0017974B /* SCHBookPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = C97D6DA213696D7B0017974B /* SCHBookPoint.m */; };
 		C97D6DA413696D7B0017974B /* SCHBookPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = C97D6DA213696D7B0017974B /* SCHBookPoint.m */; };
 		C97F2001133B8E2100EA6BC8 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C9F1A579133B83D100FD984C /* libxml2.dylib */; };
@@ -876,20 +894,6 @@
 			proxyType = 2;
 			remoteGlobalIDString = 7D034F8910C2CCBE0085778B;
 			remoteInfo = TransitionTest;
-		};
-		C9537FE4133BA16B008D8A4B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C947D55D133B9C0000FB4404 /* libEucalyptus.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = D2AAC07D0554694100DB518D;
-			remoteInfo = libEucalyptus;
-		};
-		C9537FE6133BA176008D8A4B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C947D55D133B9C0000FB4404 /* libEucalyptus.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = D2AAC07D0554694100DB518D;
-			remoteInfo = libEucalyptus;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -1453,6 +1457,16 @@
 		C960B25F1379A298000F61CC /* icon-layout-flowed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-layout-flowed.png"; path = "Resources/UIAssets/icon-layout-flowed.png"; sourceTree = "<group>"; };
 		C960B2641379AE89000F61CC /* icon-layout-fixed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-layout-fixed.png"; path = "Resources/UIAssets/icon-layout-fixed.png"; sourceTree = "<group>"; };
 		C960B2651379AE89000F61CC /* icon-layout-fixed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-layout-fixed@2x.png"; path = "Resources/UIAssets/icon-layout-fixed@2x.png"; sourceTree = "<group>"; };
+		C979C688138BAC9100581F7F /* login-ipad-background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "login-ipad-background.png"; path = "Resources/UIAssets/login-ipad-background.png"; sourceTree = "<group>"; };
+		C979C689138BAC9100581F7F /* login-ipad-top-toolbar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "login-ipad-top-toolbar.png"; path = "Resources/UIAssets/login-ipad-top-toolbar.png"; sourceTree = "<group>"; };
+		C979C69A138C195200581F7F /* login-iphone-background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "login-iphone-background.png"; path = "Resources/UIAssets/login-iphone-background.png"; sourceTree = "<group>"; };
+		C979C69B138C195200581F7F /* login-iphone-background@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "login-iphone-background@2x.png"; path = "Resources/UIAssets/login-iphone-background@2x.png"; sourceTree = "<group>"; };
+		C979C6A0138C1F6300581F7F /* button-login@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "button-login@2x.png"; path = "Resources/UIAssets/button-login@2x.png"; sourceTree = "<group>"; };
+		C979C6A1138C1F6300581F7F /* button-login.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "button-login.png"; path = "Resources/UIAssets/button-login.png"; sourceTree = "<group>"; };
+		C979C6A6138C237C00581F7F /* button-field.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "button-field.png"; path = "Resources/UIAssets/button-field.png"; sourceTree = "<group>"; };
+		C979C6A7138C237C00581F7F /* button-field@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "button-field@2x.png"; path = "Resources/UIAssets/button-field@2x.png"; sourceTree = "<group>"; };
+		C979D888138C2D9100581F7F /* SCHGradientView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHGradientView.h; path = Shared/SCHGradientView.h; sourceTree = "<group>"; };
+		C979D889138C2D9100581F7F /* SCHGradientView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHGradientView.m; path = Shared/SCHGradientView.m; sourceTree = "<group>"; };
 		C97D6DA113696D7B0017974B /* SCHBookPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookPoint.h; path = Shared/SCHBookPoint.h; sourceTree = "<group>"; };
 		C97D6DA213696D7B0017974B /* SCHBookPoint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookPoint.m; path = Shared/SCHBookPoint.m; sourceTree = "<group>"; };
 		C9A1129113608319007FD763 /* admin-iphone-splash-portrait.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "admin-iphone-splash-portrait.png"; path = "Resources/UIAssets/admin-iphone-splash-portrait.png"; sourceTree = "<group>"; };
@@ -2171,6 +2185,7 @@
 		52D19C681338A57B00A68D75 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				C979C6AC138C2D3500581F7F /* Utility Views */,
 				F8EDE53F138561230079BFD8 /* Notes */,
 				F8844BF1137D6416003D3014 /* Profile View Controller */,
 				5204B85D135C1F6E00FCBD90 /* Themes */,
@@ -2433,6 +2448,14 @@
 		C920DDED138A69B400F1583D /* Profile and Admin Views */ = {
 			isa = PBXGroup;
 			children = (
+				C979C6A6138C237C00581F7F /* button-field.png */,
+				C979C6A7138C237C00581F7F /* button-field@2x.png */,
+				C979C6A0138C1F6300581F7F /* button-login@2x.png */,
+				C979C6A1138C1F6300581F7F /* button-login.png */,
+				C979C69A138C195200581F7F /* login-iphone-background.png */,
+				C979C69B138C195200581F7F /* login-iphone-background@2x.png */,
+				C979C688138BAC9100581F7F /* login-ipad-background.png */,
+				C979C689138BAC9100581F7F /* login-ipad-top-toolbar.png */,
 				C920DDF1138A6A7400F1583D /* admin-background-ipad-portrait.png */,
 				C920DDEE138A6A0000F1583D /* admin-background-ipad-landscape.png */,
 			);
@@ -2614,6 +2637,15 @@
 				C947D587133B9C0100FB4404 /* TransitionTest.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		C979C6AC138C2D3500581F7F /* Utility Views */ = {
+			isa = PBXGroup;
+			children = (
+				C979D888138C2D9100581F7F /* SCHGradientView.h */,
+				C979D889138C2D9100581F7F /* SCHGradientView.m */,
+			);
+			name = "Utility Views";
 			sourceTree = "<group>";
 		};
 		C9A11290136082A6007FD763 /* UIAssets */ = {
@@ -3034,7 +3066,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				C9537FE7133BA176008D8A4B /* PBXTargetDependency */,
 			);
 			name = Scholastic;
 			productName = Scholastic;
@@ -3052,7 +3083,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				C9537FE5133BA16B008D8A4B /* PBXTargetDependency */,
 			);
 			name = "Local Files Scholastic";
 			productName = Scholastic;
@@ -3370,6 +3400,14 @@
 				C920DD671389861700F1583D /* icon-books@2x.png in Resources */,
 				C920DDEF138A6A0000F1583D /* admin-background-ipad-landscape.png in Resources */,
 				C920DDF2138A6A7500F1583D /* admin-background-ipad-portrait.png in Resources */,
+				C979C68A138BAC9100581F7F /* login-ipad-background.png in Resources */,
+				C979C68C138BAC9100581F7F /* login-ipad-top-toolbar.png in Resources */,
+				C979C69C138C195200581F7F /* login-iphone-background.png in Resources */,
+				C979C69E138C195200581F7F /* login-iphone-background@2x.png in Resources */,
+				C979C6A2138C1F6300581F7F /* button-login@2x.png in Resources */,
+				C979C6A4138C1F6300581F7F /* button-login.png in Resources */,
+				C979C6A8138C237C00581F7F /* button-field.png in Resources */,
+				C979C6AA138C237C00581F7F /* button-field@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3583,6 +3621,14 @@
 				C920DD681389861700F1583D /* icon-books@2x.png in Resources */,
 				C920DDF0138A6A0000F1583D /* admin-background-ipad-landscape.png in Resources */,
 				C920DDF3138A6A7500F1583D /* admin-background-ipad-portrait.png in Resources */,
+				C979C68B138BAC9100581F7F /* login-ipad-background.png in Resources */,
+				C979C68D138BAC9100581F7F /* login-ipad-top-toolbar.png in Resources */,
+				C979C69D138C195200581F7F /* login-iphone-background.png in Resources */,
+				C979C69F138C195200581F7F /* login-iphone-background@2x.png in Resources */,
+				C979C6A3138C1F6300581F7F /* button-login@2x.png in Resources */,
+				C979C6A5138C1F6300581F7F /* button-login.png in Resources */,
+				C979C6A9138C237C00581F7F /* button-field.png in Resources */,
+				C979C6AB138C237C00581F7F /* button-field@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3761,6 +3807,7 @@
 				C920DB0D1385226C00F1583D /* SCHAudioBookPlayer.m in Sources */,
 				F8EDE542138561390079BFD8 /* SCHReadingNoteView.m in Sources */,
 				F8EDE54613856BB60079BFD8 /* UIImage+BlioAdditions.m in Sources */,
+				C979D88A138C2D9100581F7F /* SCHGradientView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3936,23 +3983,11 @@
 				C920DB0E1385226C00F1583D /* SCHAudioBookPlayer.m in Sources */,
 				F8EDE543138561390079BFD8 /* SCHReadingNoteView.m in Sources */,
 				F8EDE54713856BB60079BFD8 /* UIImage+BlioAdditions.m in Sources */,
+				C979D88B138C2D9100581F7F /* SCHGradientView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		C9537FE5133BA16B008D8A4B /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = libEucalyptus;
-			targetProxy = C9537FE4133BA16B008D8A4B /* PBXContainerItemProxy */;
-		};
-		C9537FE7133BA176008D8A4B /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = libEucalyptus;
-			targetProxy = C9537FE6133BA176008D8A4B /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		1D6058940D05DD3E006BFB54 /* Debug */ = {
@@ -3973,6 +4008,9 @@
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
 					"\"$(SRCROOT)/Shared/Libraries/Submodules/libKNFBReader/Pagemark\"",
+					"\"$(SRCROOT)/Shared/Libraries/DRM\"",
+					"\"$(SRCROOT)/Shared/Libraries/Submodules/libKNFBReader/Pagemark/ReleasePhone\"",
+					"\"$(SRCROOT)/Shared/Libraries/Submodules/libKNFBReader/Pagemark/Sim\"",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -3998,6 +4036,9 @@
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
 					"\"$(SRCROOT)/Shared/Libraries/Submodules/libKNFBReader/Pagemark\"",
+					"\"$(SRCROOT)/Shared/Libraries/DRM\"",
+					"\"$(SRCROOT)/Shared/Libraries/Submodules/libKNFBReader/Pagemark/ReleasePhone\"",
+					"\"$(SRCROOT)/Shared/Libraries/Submodules/libKNFBReader/Pagemark/Sim\"",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -4057,6 +4098,9 @@
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
 					"\"$(SRCROOT)/Shared/Libraries/Submodules/libKNFBReader/Pagemark\"",
+					"\"$(SRCROOT)/Shared/Libraries/DRM\"",
+					"\"$(SRCROOT)/Shared/Libraries/Submodules/libKNFBReader/Pagemark/ReleasePhone\"",
+					"\"$(SRCROOT)/Shared/Libraries/Submodules/libKNFBReader/Pagemark/Sim\"",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -4146,6 +4190,9 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Shared/Libraries/Submodules/libKNFBReader/Pagemark\"",
+					"\"$(SRCROOT)/Shared/Libraries/DRM\"",
+					"\"$(SRCROOT)/Shared/Libraries/Submodules/libKNFBReader/Pagemark/ReleasePhone\"",
+					"\"$(SRCROOT)/Shared/Libraries/Submodules/libKNFBReader/Pagemark/Sim\"",
 				);
 				OTHER_CFLAGS = "-I/usr/include/libxml2";
 				PRODUCT_NAME = Scholastic;
@@ -4167,6 +4214,9 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Shared/Libraries/Submodules/libKNFBReader/Pagemark\"",
+					"\"$(SRCROOT)/Shared/Libraries/DRM\"",
+					"\"$(SRCROOT)/Shared/Libraries/Submodules/libKNFBReader/Pagemark/ReleasePhone\"",
+					"\"$(SRCROOT)/Shared/Libraries/Submodules/libKNFBReader/Pagemark/Sim\"",
 				);
 				OTHER_CFLAGS = (
 					"-I/usr/include/libxml2",
@@ -4192,6 +4242,9 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Shared/Libraries/Submodules/libKNFBReader/Pagemark\"",
+					"\"$(SRCROOT)/Shared/Libraries/DRM\"",
+					"\"$(SRCROOT)/Shared/Libraries/Submodules/libKNFBReader/Pagemark/ReleasePhone\"",
+					"\"$(SRCROOT)/Shared/Libraries/Submodules/libKNFBReader/Pagemark/Sim\"",
 				);
 				OTHER_CFLAGS = (
 					"-I/usr/include/libxml2",

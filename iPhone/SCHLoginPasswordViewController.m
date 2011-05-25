@@ -7,12 +7,14 @@
 //
 
 #import "SCHLoginPasswordViewController.h"
-
+#import <QuartzCore/QuartzCore.h>
 #import "SCHCustomToolbar.h"
 
-
-static const CGFloat kProfileViewCellButtonWidth = 283.0f;
-static const CGFloat kProfileViewCellButtonHeight = 48.0f;
+static const CGFloat kProfileViewCellFieldWidth = 232.0f;
+static const CGFloat kProfileViewCellFieldHeight = 44.0f;
+static const CGFloat kProfileViewCellButtonWidth = 162.0;
+static const CGFloat kProfileViewCellButtonHeight = 44.0f;
+static const CGFloat kProfileViewInsetPadding = 16.0f;
 
 #pragma mark - Class Extension
 
@@ -41,11 +43,20 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
 @synthesize spinner;
 @synthesize topBar;
 @synthesize topShadow;
+@synthesize backgroundView;
 @synthesize headerTitleLabel;
 @synthesize headerTitleView;
-@synthesize footerForgotButton;
 @synthesize tableView;
 @synthesize titleTextLabel;
+@synthesize welcomeContainer;
+@synthesize welcomeLabel;
+
+@synthesize linkButtonsContainer;
+
+@synthesize adornmentView;
+@synthesize adornmentGradientView;
+@synthesize adornmentInnerBorderView;
+@synthesize adornmentOuterBorderView;
 
 #pragma mark - Object Lifecycle
 
@@ -57,11 +68,21 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
 	[spinner release], spinner = nil;
     [topBar release], topBar = nil;
     [topShadow release], topShadow = nil;
+    [backgroundView release], backgroundView = nil;
     [headerTitleLabel release], headerTitleLabel = nil;
     [headerTitleView release], headerTitleView = nil;
-    [footerForgotButton release], footerForgotButton = nil;
     [tableView release], tableView = nil;
     [titleTextLabel release], titleTextLabel = nil;
+    [welcomeContainer release], welcomeContainer = nil;
+    [welcomeLabel release], welcomeLabel = nil;
+    
+    [linkButtonsContainer release], linkButtonsContainer = nil;
+    
+    [adornmentView release], adornmentView = nil;
+    [adornmentGradientView release], adornmentGradientView = nil;
+    [adornmentInnerBorderView release], adornmentInnerBorderView = nil;
+    [adornmentOuterBorderView release], adornmentOuterBorderView = nil;
+
 }
 
 - (void)dealloc 
@@ -90,6 +111,8 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
     CGRect topViewFrame = CGRectMake(0, 0, 34, 34);
     
     UIBarButtonItem *leftBBI = nil;
+    
+    // FIXME: clean this code up and move it into nibs
 
     if (self.controllerType == kSCHControllerPasswordOnlyView ||
         self.controllerType == kSCHControllerDoublePasswordView) {
@@ -97,6 +120,19 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
 
         // FIXME - even the width to centre the title properly - don't like this
         topViewFrame = CGRectMake(0, 0, 59, 34);
+    } else if (self.controllerType == kSCHControllerLoginView) {
+        [self.welcomeLabel setText:NSLocalizedString(@"Welcome to the Scholastic eReader!", @"Welcome to the Scholastic eReader!")];
+        [self.welcomeContainer setFrame:self.topBar.bounds];
+        [self.welcomeContainer.layer setShadowOpacity:1];
+        [self.welcomeContainer.layer setShadowOffset:CGSizeMake(2, 2)];
+        [self.welcomeContainer.layer setShadowRadius:2];
+        
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            [self.welcomeLabel setFont:[UIFont fontWithName:@"Arial-BoldMT" size:23]];
+        } else {
+            [self.welcomeLabel setFont:[UIFont fontWithName:@"Arial-BoldMT" size:17]];
+        }
+        leftBBI = [[[UIBarButtonItem alloc] initWithCustomView:self.welcomeContainer] autorelease];
     } else {
         UIView *leftView = [[UIView alloc] initWithFrame:topViewFrame];
         leftBBI = [[[UIBarButtonItem alloc] initWithCustomView:leftView] autorelease];
@@ -109,13 +145,20 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
     [rightView addSubview:self.spinner];
     [self.spinner release];
     
+    UIImage *backImage = nil;
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        backImage = [[UIImage imageNamed:@"login-ipad-background.png"] stretchableImageWithLeftCapWidth:0 topCapHeight:20];
+    } else {
+        backImage = [[UIImage imageNamed:@"login-iphone-background.png"] stretchableImageWithLeftCapWidth:182 topCapHeight:20];
+    }
+    
+    [self.backgroundView setImage:backImage];
+    
     if (self.controllerType == kSCHControllerLoginView) {
     
     UIImageView *headerImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo"]];
     topBar.items = [NSArray arrayWithObjects:
                     leftBBI,
-                    [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease], 
-                    [[[UIBarButtonItem alloc] initWithCustomView:headerImage] autorelease],
                     [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease], 
                     [[[UIBarButtonItem alloc] initWithCustomView:rightView] autorelease],
                     nil];
@@ -157,7 +200,6 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
         case kSCHControllerLoginView:
         {
             self.tableView.tableHeaderView = self.headerTitleView;
-            self.tableView.tableFooterView = self.footerForgotButton;
             break;   
         }
         default:
@@ -170,8 +212,8 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
         }
     }
     
-    UIImage *bgImage = [UIImage imageNamed:@"button-translucent"];
-    UIImage *cellBGImage = [bgImage stretchableImageWithLeftCapWidth:16 topCapHeight:0];
+    UIImage *bgImage = [UIImage imageNamed:@"button-field"];
+    UIImage *cellBGImage = [bgImage stretchableImageWithLeftCapWidth:14 topCapHeight:0];
     
     self.topField.background = cellBGImage;
     self.topField.leftViewMode = UITextFieldViewModeAlways;
@@ -186,27 +228,21 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
     self.bottomField.leftView = fillerView;
     [fillerView release];
     
-    bgImage = [UIImage imageNamed:@"button-blue"];
-    cellBGImage = [bgImage stretchableImageWithLeftCapWidth:4 topCapHeight:0];
+    bgImage = [UIImage imageNamed:@"button-login"];
+    cellBGImage = [bgImage stretchableImageWithLeftCapWidth:14 topCapHeight:0];
     
     self.loginButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.loginButton setBackgroundImage:cellBGImage forState:UIControlStateNormal];
-    [self.loginButton setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin];
+    [self.loginButton setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin];
     [self.loginButton addTarget:self 
                          action:@selector(actionButtonAction:) 
                forControlEvents:UIControlEventTouchUpInside];
     
-    self.loginButton.titleLabel.font = [UIFont boldSystemFontOfSize:20];
-    self.loginButton.titleLabel.minimumFontSize = 14;
-    self.loginButton.titleLabel.adjustsFontSizeToFitWidth = YES;
-    self.loginButton.titleLabel.textColor = [UIColor whiteColor];
-    self.loginButton.titleLabel.shadowColor = [UIColor colorWithWhite:0 alpha:0.5F];
-    self.loginButton.titleLabel.shadowOffset = CGSizeMake(0, -1);
-    self.loginButton.titleLabel.textAlignment = UITextAlignmentCenter;
+    self.loginButton.titleLabel.font = [UIFont fontWithName:@"Arial-BoldMT" size:17.0f];
 
     switch (self.controllerType) {
         case kSCHControllerLoginView:
-            [self.loginButton setTitle:NSLocalizedString(@"Log In", @"Log In") forState:UIControlStateNormal];
+            [self.loginButton setTitle:NSLocalizedString(@"Sign In", @"Sign In") forState:UIControlStateNormal];
             break;
         case kSCHControllerPasswordOnlyView:
             [self.loginButton setTitle:NSLocalizedString(@"Open Bookshelf", @"Open Bookshelf") forState:UIControlStateNormal];
@@ -216,7 +252,22 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
             break;
     }
     
-      [self.topShadow setImage:[[UIImage imageNamed:@"reading-view-iphone-top-shadow.png"] stretchableImageWithLeftCapWidth:15.0f topCapHeight:0]];
+    [self.topShadow setImage:[[UIImage imageNamed:@"reading-view-iphone-top-shadow.png"] stretchableImageWithLeftCapWidth:15.0f topCapHeight:0]];
+    
+
+    [self.adornmentInnerBorderView.layer setBorderWidth:3];
+    [self.adornmentInnerBorderView.layer setBorderColor:[UIColor redColor].CGColor];
+    [self.adornmentInnerBorderView.layer setCornerRadius:10.0f];
+    [self.adornmentOuterBorderView.layer setBorderWidth:1];
+    [self.adornmentOuterBorderView.layer setBorderColor:[UIColor redColor].CGColor];
+    [self.adornmentOuterBorderView.layer setCornerRadius:10.0f];    
+    [(CAGradientLayer *)self.adornmentGradientView.layer setColors:
+     [NSArray arrayWithObjects:(id)[UIColor colorWithWhite:1.000 alpha:1.000].CGColor, 
+                               (id)[UIColor colorWithRed:0.746 green:0.874 blue:0.925 alpha:1.000].CGColor, nil]];
+    [(CAGradientLayer *)self.adornmentGradientView.layer setStartPoint:CGPointMake(0, 0.5f)];
+    [(CAGradientLayer *)self.adornmentGradientView.layer setEndPoint:CGPointMake(1, 0.5f)];
+    [self.adornmentGradientView.layer setCornerRadius:10.0f];
+    [self.tableView insertSubview:self.adornmentView atIndex:0];
 
 }
 
@@ -251,8 +302,14 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
 
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation
 {
+
     if (UIInterfaceOrientationIsPortrait(orientation) || UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        [self.topBar setBackgroundImage:[UIImage imageNamed:@"admin-iphone-portrait-top-toolbar.png"]];
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            [self.topBar setBackgroundImage:[UIImage imageNamed:@"login-ipad-top-toolbar.png"]];
+        } else {
+            [self.topBar setBackgroundImage:[UIImage imageNamed:@"admin-iphone-portrait-top-toolbar.png"]];
+        }
+
         CGRect barFrame = self.topBar.frame;
         if (barFrame.size.height == 34) {
             barFrame.size.height = 44;
@@ -280,6 +337,19 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
     CGRect topShadowFrame = self.topShadow.frame;
     topShadowFrame.origin.y = CGRectGetMinY(self.tableView.frame);
     self.topShadow.frame = topShadowFrame;
+    
+    CGFloat adornmentHeight = 0;
+    switch (self.controllerType) {
+        case kSCHControllerPasswordOnlyView: {
+            adornmentHeight = 1 * self.tableView.rowHeight + 2 * kProfileViewInsetPadding + 2 * CGRectGetMinY(self.adornmentInnerBorderView.frame);
+        } break;
+        default: {
+            adornmentHeight = 3 * self.tableView.rowHeight + 2 * kProfileViewInsetPadding + 2 * CGRectGetMinY(self.adornmentInnerBorderView.frame);
+        } break;
+    }
+
+    CGRect adornmentFrame = CGRectMake(CGRectGetMinX(self.welcomeLabel.frame), CGRectGetHeight(self.headerTitleView.frame) - kProfileViewInsetPadding - CGRectGetMinY(self.adornmentInnerBorderView.frame), CGRectGetWidth(self.welcomeLabel.frame), adornmentHeight);
+    [self.adornmentView setFrame:adornmentFrame];
 }
 
 #pragma mark - Username and Password accessors
@@ -355,12 +425,12 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
     switch (self.controllerType) {
         case kSCHControllerLoginView:
         {
-            return 2;
-        }
+            return 3;
+        } break;
         default:
         {
             return 1;
-        }
+        } break;
     }
     
 }
@@ -382,7 +452,7 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
     } else if (section == 1) {
         return 1;
     } else {
-        return 0;
+        return 1;
     }
 }
 
@@ -398,51 +468,94 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
         cell.backgroundColor = [UIColor clearColor];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.accessoryType = UITableViewCellAccessoryNone;
+        CGRect cellFrame = cell.frame;
+        cellFrame.size.height = aTableView.rowHeight;
+        cell.frame = cellFrame;
     }
     
+    CGFloat cellContentsInset =  kProfileViewInsetPadding + CGRectGetMinX(self.adornmentInnerBorderView.frame) + CGRectGetMinX(self.adornmentView.frame);
+
     switch (indexPath.section) {
         case 0:
         {
             if (indexPath.row == 0 && self.controllerType != kSCHControllerPasswordOnlyView) {
                 CGRect fieldFrame = self.topField.frame;
-                fieldFrame.origin.x = ceilf((CGRectGetWidth(cell.contentView.bounds) - kProfileViewCellButtonWidth) / 2.0f);
-                fieldFrame.size.height = kProfileViewCellButtonHeight;
-                fieldFrame.size.width = kProfileViewCellButtonWidth;
-                fieldFrame.origin.y = 2;
+                fieldFrame.origin.x = cellContentsInset;
+                fieldFrame.size.height = kProfileViewCellFieldHeight;
+                fieldFrame.size.width  = kProfileViewCellFieldWidth;
                 self.topField.frame = fieldFrame;
-                [cell addSubview:self.topField];
+                [cell.contentView addSubview:self.topField];
                 break;
             } else {
                 CGRect fieldFrame = self.bottomField.frame;
-                fieldFrame.origin.x = ceilf((CGRectGetWidth(cell.contentView.bounds) - kProfileViewCellButtonWidth) / 2.0f);
-                fieldFrame.size.height = kProfileViewCellButtonHeight;
-                fieldFrame.size.width = kProfileViewCellButtonWidth;
-                fieldFrame.origin.y = 2;
+                fieldFrame.origin.x = cellContentsInset;
+                fieldFrame.size.height = kProfileViewCellFieldHeight;
+                fieldFrame.size.width = kProfileViewCellFieldWidth;
                 self.bottomField.frame = fieldFrame;
-                [cell addSubview:self.bottomField];
+                [cell.contentView addSubview:self.bottomField];
                 break;
             }
             break;
         }
         case 1:
         {
-            UIImage *bgImage = [UIImage imageNamed:@"button-blue"];
-
-            CGRect buttonFrame = CGRectMake(ceilf((CGRectGetWidth(cell.contentView.bounds) - kProfileViewCellButtonWidth) / 2.0f), 
-                                            ceilf(((CGRectGetHeight(cell.contentView.bounds) - 10) - bgImage.size.height) / 2.0f) + 4, 
+            CGRect buttonsFrame    = self.linkButtonsContainer.frame;
+            buttonsFrame.origin.x  = cellContentsInset;
+            buttonsFrame.size.width = CGRectGetWidth(cell.contentView.frame) - cellContentsInset;
+            [self.linkButtonsContainer setFrame:buttonsFrame];
+                        
+            [cell.contentView addSubview:self.linkButtonsContainer];
+            break;
+        }
+        case 2:
+        {
+            CGRect buttonFrame = CGRectMake(CGRectGetWidth(cell.contentView.bounds) - kProfileViewCellButtonWidth - CGRectGetMinX(self.adornmentView.frame), 
+                                            0, 
                                             kProfileViewCellButtonWidth, 
                                             kProfileViewCellButtonHeight);
             
             [self.loginButton setFrame:buttonFrame];
 
             [cell.contentView addSubview:self.loginButton];
-            
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
             break;
         }
     }
     
     return cell;
+}
+
+#pragma mark - UITableViewDelegate
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [self.tableView insertSubview:self.adornmentView atIndex:0];
+}
+
+- (CGFloat)tableView:(UITableView *)aTableView heightForHeaderInSection:(NSInteger)section
+{
+    switch (section) {
+        case 2:
+            return kProfileViewInsetPadding * 2 + CGRectGetMinY(self.adornmentInnerBorderView.frame);
+            break;
+        default:
+            return aTableView.sectionHeaderHeight;
+            break;
+    }
+    
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    switch (section) {
+        case 2: {
+            UIView *spacer = [[UIView alloc] init];
+            spacer.backgroundColor = [UIColor clearColor];
+            return [spacer autorelease];
+        } break;
+        default:
+            return nil;
+            break;
+    }
 }
 
 #pragma mark - UITextFieldDelegate
@@ -482,6 +595,7 @@ static const CGFloat kProfileViewCellButtonHeight = 48.0f;
 
 - (void)scrollToTextField:(UITextField *)textField animated: (BOOL) animated
 {
+    return;
     NSLog(@"Table view frame: %@", NSStringFromCGRect(self.tableView.frame));
     
     NSIndexPath *indexPath = nil;
