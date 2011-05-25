@@ -195,8 +195,9 @@ static NSString * const kSCHProfileItemUserContentItemContentMetadataItem = @"Us
     NSString *ret = nil;
         
     if ([[self.FirstName stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {
-        ret = [NSString stringWithFormat:@"%@%@", self.FirstName, 
-               (shortName == NO ? @"" : NSLocalizedString(@"'s Books", @""))];
+        ret = self.FirstName;
+        //ret = [NSString stringWithFormat:@"%@%@", self.FirstName, 
+        //       (shortName == NO ? @"" : NSLocalizedString(@"'s Books", @""))];
     } else {
         ret = (shortName == NO ? @"" : NSLocalizedString(@"Books", @""));
     }
