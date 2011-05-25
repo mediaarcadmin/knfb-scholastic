@@ -16,6 +16,7 @@
 @property BOOL downloadComplete;
 @property BOOL parsingComplete;
 @property BOOL parsingDictionaryInfo;
+@property BOOL failure;
 
 @property (nonatomic, retain) NSURLConnection *connection;
 @property (nonatomic, retain) NSXMLParser *manifestParser;
@@ -23,12 +24,16 @@
 @property (nonatomic, retain) NSMutableArray *manifestEntries;
 @property (nonatomic, retain) SCHDictionaryManifestEntry *currentEntry;
 
+- (void) startOp;
+- (void) finishOp;
+
 @end
 
 @implementation SCHDictionaryManifestOperation
 
 @synthesize executing, finished, downloadComplete, parsingComplete, parsingDictionaryInfo;
 @synthesize manifestParser, connection, connectionData, manifestEntries, currentEntry;
+@synthesize failure;
 
 - (void)dealloc {
 	self.connection = nil;
@@ -42,39 +47,38 @@
 
 - (void) start
 {
-/*	if (![NSThread isMainThread])
-	{
-		[self performSelectorOnMainThread:@selector(start)
-							   withObject:nil waitUntilDone:NO];
-		return;
-	}*/
-	
 	if (![self isCancelled]) {
+        
+        self.failure = NO;
 		
 		NSLog(@"Starting operation..");
-		[SCHDictionaryManager sharedDictionaryManager].isProcessing = YES;
 		
 		self.connectionData = [[NSMutableData alloc] init];
         self.manifestEntries = [[NSMutableArray alloc] init];
 		
 		self.connection = [NSURLConnection 
 						   connectionWithRequest:[NSURLRequest requestWithURL:
-							//					  [NSURL URLWithString:@"http://10.0.10.6/~gordon/dictionary/UpdateManifest.xml"]]
-                                                [NSURL URLWithString:@"http://bits.blioreader.com/partners/Scholastic/SLInstall/UpdateManifest.xml"]]
+												  [NSURL URLWithString:@"http://10.0.10.6/~gordon/dictionary/UpdateManifest.xml"]]
+                            //                    [NSURL URLWithString:@"http://bits.blioreader.com/partners/Scholastic/SLInstall/QAStandard/UpdateManifest.xml"]]
 						   delegate:self];
 		
-        [self willChangeValueForKey:@"isExecuting"];
-        [self willChangeValueForKey:@"isFinished"];
-		self.executing = YES;
-		self.finished = NO;
-        [self didChangeValueForKey:@"isExecuting"];
-        [self didChangeValueForKey:@"isFinished"];
-		self.downloadComplete = NO;
+        [self startOp];
+        
 		if (self.connection) {
 			do {
 				[[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
 			} while (!self.downloadComplete);
 		}
+        
+        if (failure) {
+           
+            
+            [[SCHDictionaryManager sharedDictionaryManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateError];
+            
+            [self finishOp];
+            
+            return;
+        }
 		
 		if (!finished) {
             
@@ -91,13 +95,7 @@
             
 		}
 		
-        [self willChangeValueForKey:@"isExecuting"];
-        [self willChangeValueForKey:@"isFinished"];
-		self.finished = YES;
-		self.executing = NO;
-        [self didChangeValueForKey:@"isExecuting"];
-        [self didChangeValueForKey:@"isFinished"];
-		[SCHDictionaryManager sharedDictionaryManager].isProcessing = NO;
+        [self finishOp];
 	}
 }
 
@@ -118,12 +116,14 @@
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
 	NSLog(@"finished download, starting parsing..");
+    self.failure = NO;
 	self.downloadComplete = YES;
 }
 
 - (void) connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
 	NSLog(@"failed download!");
+    self.failure = YES;
 	self.downloadComplete = YES;
 }
 
@@ -184,12 +184,33 @@
 
 - (void)parser:(NSXMLParser *)parser parseErrorOccurred:(NSError *)parseError
 {
+    [[SCHDictionaryManager sharedDictionaryManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateError];
+    [SCHDictionaryManager sharedDictionaryManager].isProcessing = NO;
+    
 	NSLog(@"Error: could not parse XML.");
 	self.parsingComplete = YES;
 }
 
 
 - (void) cancel
+{
+    [self finishOp];
+	[super cancel];
+}
+
+- (void) startOp
+{
+    [SCHDictionaryManager sharedDictionaryManager].isProcessing = YES;
+    [self willChangeValueForKey:@"isExecuting"];
+    [self willChangeValueForKey:@"isFinished"];
+    self.executing = YES;
+    self.finished = NO;
+    [self didChangeValueForKey:@"isExecuting"];
+    [self didChangeValueForKey:@"isFinished"];
+    self.downloadComplete = NO;
+}
+
+- (void) finishOp
 {
     [self willChangeValueForKey:@"isExecuting"];
     [self willChangeValueForKey:@"isFinished"];
@@ -198,10 +219,7 @@
     [self didChangeValueForKey:@"isExecuting"];
     [self didChangeValueForKey:@"isFinished"];
 	[SCHDictionaryManager sharedDictionaryManager].isProcessing = NO;
-
-	[super cancel];
 }
-
 
 - (BOOL)isConcurrent {
 	return YES;
