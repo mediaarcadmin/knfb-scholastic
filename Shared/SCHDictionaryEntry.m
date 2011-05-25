@@ -7,7 +7,7 @@
 //
 
 #import "SCHDictionaryEntry.h"
-#import "SCHDictionaryManager.h"
+#import "SCHDictionaryDownloadManager.h"
 
 
 @implementation SCHDictionaryEntry
