@@ -12,6 +12,8 @@ static NSString* const kSCHDictionaryDownloadPercentageUpdate = @"SCHDictionaryD
 static NSString* const kSCHDictionaryYoungReader = @"YD";
 static NSString* const kSCHDictionaryOlderReader = @"OD";
 
+static NSString* const kSCHDictionaryStateChange = @"SCHDictionaryStateChange";
+
 typedef enum {
 	SCHDictionaryProcessingStateError = 0,
 	SCHDictionaryProcessingStateNeedsManifest,
@@ -68,6 +70,10 @@ typedef enum {
 
 // HTML definition for a word (uses YD/OD as category)
 - (NSString *) HTMLForWord: (NSString *) dictionaryWord category: (NSString *) category;
+
+// properties indicating wifi availability/if the connection is idle
+@property BOOL wifiAvailable;
+@property BOOL connectionIdle;
 
 - (void) checkIfUpdateNeeded;
 

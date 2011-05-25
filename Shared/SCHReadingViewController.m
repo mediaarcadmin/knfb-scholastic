@@ -16,7 +16,6 @@
 #import "SCHXPSProvider.h"
 #import "SCHCustomNavigationBar.h"
 #import "SCHCustomToolbar.h"
-#import "SCHReadingNotesListController.h"
 #import "SCHSyncManager.h"
 #import "SCHProfileItem.h"
 #import "SCHBookRange.h"
@@ -26,6 +25,8 @@
 #import "SCHReadingNoteView.h"
 #import "SCHBookAnnotations.h"
 #import "SCHNote.h"
+#import "SCHDictionaryViewController.h"
+#import "SCHDictionaryManager.h"
 
 // constants
 static const CGFloat kReadingViewStandardScrubHeight = 47.0f;
@@ -207,6 +208,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
                                                  selector:@selector(didEnterBackgroundNotification:) 
                                                      name:UIApplicationDidEnterBackgroundNotification
                                                    object:nil];
+        
     }
     return self;
 }
@@ -307,8 +309,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     }
     self.bottomShadow.frame = bottomShadowFrame;
     
+    [self setDictionarySelectionMode];
+
     [self jumpToLastPageLocation];
-    
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -530,6 +533,21 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         [self.optionsView removeFromSuperview];
     }
     
+    SCHReadingInteractionsListController *interactionsController = [[SCHReadingInteractionsListController alloc] initWithNibName:nil bundle:nil];
+    interactionsController.isbn = self.isbn;
+    interactionsController.profile = self.profile;
+    interactionsController.delegate = self;
+    interactionsController.readingView = self.readingView;
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        interactionsController.modalPresentationStyle = UIModalPresentationFormSheet;
+        interactionsController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    }
+    
+    [self.navigationController presentModalViewController:interactionsController animated:YES];
+    [interactionsController release];
+
+    
 }
 
 - (IBAction)highlightsAction:(id)sender
@@ -626,6 +644,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
             
             SCHFlowView *flowView = [[SCHFlowView alloc] initWithFrame:self.view.bounds isbn:self.isbn delegate:self];
             self.readingView = flowView;
+            [self setDictionarySelectionMode];
+
             [flowView release];
             
             break;
@@ -636,6 +656,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
             
             SCHLayoutView *layoutView = [[SCHLayoutView alloc] initWithFrame:self.view.bounds isbn:self.isbn delegate:self];
             self.readingView = layoutView;
+            
+            [self setDictionarySelectionMode];
+            
             [layoutView release];
             
             break;
@@ -817,6 +840,28 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     self.currentBookProgress = progress;
     
     [self updateScrubberValue];
+}
+
+- (void)requestDictionaryForWord:(NSString *)word mode:(SCHReadingViewSelectionMode) mode
+{
+    SCHDictionaryViewController *dictionaryViewController = [[SCHDictionaryViewController alloc] initWithNibName:nil bundle:nil];
+    dictionaryViewController.word = word;
+    
+    if (mode == SCHReadingViewSelectionModeYoungerDictionary) {
+        dictionaryViewController.categoryMode = kSCHDictionaryYoungReader;
+    } else if (mode == SCHReadingViewSelectionModeOlderDictionary) {
+        dictionaryViewController.categoryMode = kSCHDictionaryOlderReader;
+    }
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        dictionaryViewController.modalPresentationStyle = UIModalPresentationFormSheet;
+        dictionaryViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    }
+    
+    [self.navigationController presentModalViewController:dictionaryViewController animated:YES];
+    [dictionaryViewController release];
+
+    
 }
 
 - (void)toggleToolbars
@@ -1042,7 +1087,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (void)setToolbarVisibility:(BOOL)visibility animated:(BOOL)animated
 {
-	NSLog(@"Setting visibility to %@.", visibility?@"True":@"False");
+//	NSLog(@"Setting visibility to %@.", visibility?@"True":@"False");
 	self.toolbarsVisible = visibility;
 
     if (!self.currentlyRotating) {
@@ -1110,7 +1155,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 	}
 }	
 
-#pragma mark - SCHReadingNotesViewDelegate methods
+#pragma mark - SCHReadingNotesListControllerDelegate methods
 
 - (void)readingNotesViewCreatingNewNote:(SCHReadingNotesListController *)readingNotesView
 {
@@ -1161,6 +1206,13 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (void)notesViewCancelled:(SCHReadingNoteView *)notesView
 {
     [self setToolbarVisibility:YES animated:YES];
+}
+
+#pragma mark - SCHReadingInteractionsListControllerDelegate methods
+
+- (void)readingInteractionsView:(SCHReadingInteractionsListController *)interactionsView didSelectInteraction:(NSInteger)interaction
+{
+    NSLog(@"Selected interaction %d.", interaction);
 }
 
 #pragma mark - UIPopoverControllerDelegate methods

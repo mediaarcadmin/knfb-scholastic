@@ -125,10 +125,6 @@
 		52E622F51358385D00245CA7 /* Themes in Resources */ = {isa = PBXBuildFile; fileRef = 52E622F31358385D00245CA7 /* Themes */; };
 		52E622FB13584EBF00245CA7 /* SCHThemeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E622FA13584EBE00245CA7 /* SCHThemeManager.m */; };
 		52E622FC13584EBF00245CA7 /* SCHThemeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E622FA13584EBE00245CA7 /* SCHThemeManager.m */; };
-		52E623001358544200245CA7 /* SCHThemePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E622FE1358544200245CA7 /* SCHThemePickerViewController.m */; };
-		52E623011358544200245CA7 /* SCHThemePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E622FE1358544200245CA7 /* SCHThemePickerViewController.m */; };
-		52E623021358544200245CA7 /* SCHThemePickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52E622FF1358544200245CA7 /* SCHThemePickerViewController.xib */; };
-		52E623031358544200245CA7 /* SCHThemePickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52E622FF1358544200245CA7 /* SCHThemePickerViewController.xib */; };
 		52EF4E5F12E6E01C00E374F7 /* SCHLoginPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF4E5D12E6E01C00E374F7 /* SCHLoginPasswordViewController.m */; };
 		52EF4E6012E6E01C00E374F7 /* SCHLoginPasswordViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52EF4E5E12E6E01C00E374F7 /* SCHLoginPasswordViewController.xib */; };
 		52EF508712E739E900E374F7 /* LibreAccessServiceSvc.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF508612E739E900E374F7 /* LibreAccessServiceSvc.m */; };
@@ -677,12 +673,6 @@
 		F848823F13573F4500A2C8D3 /* icon-magnify-active.png in Resources */ = {isa = PBXBuildFile; fileRef = F848823C13573F4500A2C8D3 /* icon-magnify-active.png */; };
 		F848824013573F4500A2C8D3 /* icon-magnify-active@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F848823D13573F4500A2C8D3 /* icon-magnify-active@2x.png */; };
 		F848824113573F4500A2C8D3 /* icon-magnify-active@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F848823D13573F4500A2C8D3 /* icon-magnify-active@2x.png */; };
-		F84C00701371B612009A210F /* SCHReadingNotesListController.m in Sources */ = {isa = PBXBuildFile; fileRef = F84C006E1371B612009A210F /* SCHReadingNotesListController.m */; };
-		F84C00711371B612009A210F /* SCHReadingNotesListController.m in Sources */ = {isa = PBXBuildFile; fileRef = F84C006E1371B612009A210F /* SCHReadingNotesListController.m */; };
-		F84C00721371B612009A210F /* SCHReadingNotesListController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F84C006F1371B612009A210F /* SCHReadingNotesListController.xib */; };
-		F84C00731371B612009A210F /* SCHReadingNotesListController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F84C006F1371B612009A210F /* SCHReadingNotesListController.xib */; };
-		F84C00751371C1D0009A210F /* SCHReadingNotesListTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F84C00741371C1D0009A210F /* SCHReadingNotesListTableCell.xib */; };
-		F84C00761371C1D0009A210F /* SCHReadingNotesListTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F84C00741371C1D0009A210F /* SCHReadingNotesListTableCell.xib */; };
 		F84CE156134C691D0044729E /* SCHNonDRMAuthenticationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F84CE155134C691D0044729E /* SCHNonDRMAuthenticationManager.m */; };
 		F84CE157134C691D0044729E /* SCHNonDRMAuthenticationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F84CE155134C691D0044729E /* SCHNonDRMAuthenticationManager.m */; };
 		F8509EA312F0621E00197EB5 /* SCHScrubberView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8509E9B12F0621E00197EB5 /* SCHScrubberView.m */; };
@@ -804,13 +794,31 @@
 		F8C6DA9D136073D300D9E953 /* paper-neutral@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F8C6DA94136073D300D9E953 /* paper-neutral@2x.png */; };
 		F8C6DA9E136073D300D9E953 /* paper-white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F8C6DA95136073D300D9E953 /* paper-white@2x.png */; };
 		F8C6DA9F136073D300D9E953 /* paper-white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F8C6DA95136073D300D9E953 /* paper-white@2x.png */; };
-		F8C8FC241360659B0097F9DD /* SCHReadingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F8C8FC221360659B0097F9DD /* SCHReadingViewController.m */; };
-		F8C8FC251360659B0097F9DD /* SCHReadingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F8C8FC221360659B0097F9DD /* SCHReadingViewController.m */; };
-		F8C8FC261360659B0097F9DD /* SCHReadingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8C8FC231360659B0097F9DD /* SCHReadingViewController.xib */; };
-		F8C8FC271360659B0097F9DD /* SCHReadingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8C8FC231360659B0097F9DD /* SCHReadingViewController.xib */; };
 		F8C8FC2A136065AD0097F9DD /* SCHCustomNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = F8C8FC29136065AD0097F9DD /* SCHCustomNavigationBar.m */; };
 		F8C8FC2B136065AD0097F9DD /* SCHCustomNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = F8C8FC29136065AD0097F9DD /* SCHCustomNavigationBar.m */; };
 		F8CD24F612F97E62001C748B /* SCHBookManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F8CD24CA12F9714D001C748B /* SCHBookManager.m */; };
+		F8DC5650138BBE7D00F27146 /* SCHReadingInteractionsListController.m in Sources */ = {isa = PBXBuildFile; fileRef = F8DC564F138BBE7D00F27146 /* SCHReadingInteractionsListController.m */; };
+		F8DC5651138BBE7D00F27146 /* SCHReadingInteractionsListController.m in Sources */ = {isa = PBXBuildFile; fileRef = F8DC564F138BBE7D00F27146 /* SCHReadingInteractionsListController.m */; };
+		F8DC565E138C0BCA00F27146 /* SCHReadingInteractionsListController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8DC5656138C0BCA00F27146 /* SCHReadingInteractionsListController.xib */; };
+		F8DC565F138C0BCA00F27146 /* SCHReadingInteractionsListController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8DC5656138C0BCA00F27146 /* SCHReadingInteractionsListController.xib */; };
+		F8DC5660138C0BCA00F27146 /* SCHReadingNotesListController.m in Sources */ = {isa = PBXBuildFile; fileRef = F8DC5658138C0BCA00F27146 /* SCHReadingNotesListController.m */; };
+		F8DC5661138C0BCA00F27146 /* SCHReadingNotesListController.m in Sources */ = {isa = PBXBuildFile; fileRef = F8DC5658138C0BCA00F27146 /* SCHReadingNotesListController.m */; };
+		F8DC5662138C0BCA00F27146 /* SCHReadingNotesListController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8DC5659138C0BCA00F27146 /* SCHReadingNotesListController.xib */; };
+		F8DC5663138C0BCA00F27146 /* SCHReadingNotesListController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8DC5659138C0BCA00F27146 /* SCHReadingNotesListController.xib */; };
+		F8DC5664138C0BCA00F27146 /* SCHReadingPageListTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8DC565A138C0BCA00F27146 /* SCHReadingPageListTableCell.xib */; };
+		F8DC5665138C0BCA00F27146 /* SCHReadingPageListTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8DC565A138C0BCA00F27146 /* SCHReadingPageListTableCell.xib */; };
+		F8DC5666138C0BCA00F27146 /* SCHReadingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F8DC565C138C0BCA00F27146 /* SCHReadingViewController.m */; };
+		F8DC5667138C0BCA00F27146 /* SCHReadingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F8DC565C138C0BCA00F27146 /* SCHReadingViewController.m */; };
+		F8DC5668138C0BCA00F27146 /* SCHReadingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8DC565D138C0BCA00F27146 /* SCHReadingViewController.xib */; };
+		F8DC5669138C0BCA00F27146 /* SCHReadingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8DC565D138C0BCA00F27146 /* SCHReadingViewController.xib */; };
+		F8DC566D138C0C2E00F27146 /* SCHThemePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F8DC566B138C0C2E00F27146 /* SCHThemePickerViewController.m */; };
+		F8DC566E138C0C2E00F27146 /* SCHThemePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F8DC566B138C0C2E00F27146 /* SCHThemePickerViewController.m */; };
+		F8DC566F138C0C2E00F27146 /* SCHThemePickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8DC566C138C0C2E00F27146 /* SCHThemePickerViewController.xib */; };
+		F8DC5670138C0C2E00F27146 /* SCHThemePickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8DC566C138C0C2E00F27146 /* SCHThemePickerViewController.xib */; };
+		F8DC567F138C150F00F27146 /* SCHDictionaryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F8DC567D138C150F00F27146 /* SCHDictionaryViewController.m */; };
+		F8DC5680138C150F00F27146 /* SCHDictionaryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F8DC567D138C150F00F27146 /* SCHDictionaryViewController.m */; };
+		F8DC5681138C150F00F27146 /* SCHDictionaryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8DC567E138C150F00F27146 /* SCHDictionaryViewController.xib */; };
+		F8DC5682138C150F00F27146 /* SCHDictionaryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8DC567E138C150F00F27146 /* SCHDictionaryViewController.xib */; };
 		F8EDE542138561390079BFD8 /* SCHReadingNoteView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8EDE541138561390079BFD8 /* SCHReadingNoteView.m */; };
 		F8EDE543138561390079BFD8 /* SCHReadingNoteView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8EDE541138561390079BFD8 /* SCHReadingNoteView.m */; };
 		F8EDE54613856BB60079BFD8 /* UIImage+BlioAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = F8EDE54513856BB60079BFD8 /* UIImage+BlioAdditions.m */; };
@@ -1073,9 +1081,6 @@
 		52E622F31358385D00245CA7 /* Themes */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Themes; path = Resources/Themes; sourceTree = "<group>"; };
 		52E622F913584EBE00245CA7 /* SCHThemeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHThemeManager.h; path = Shared/SCHThemeManager.h; sourceTree = "<group>"; };
 		52E622FA13584EBE00245CA7 /* SCHThemeManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHThemeManager.m; path = Shared/SCHThemeManager.m; sourceTree = "<group>"; };
-		52E622FD1358544200245CA7 /* SCHThemePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHThemePickerViewController.h; sourceTree = "<group>"; };
-		52E622FE1358544200245CA7 /* SCHThemePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHThemePickerViewController.m; sourceTree = "<group>"; };
-		52E622FF1358544200245CA7 /* SCHThemePickerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHThemePickerViewController.xib; sourceTree = "<group>"; };
 		52EF4E5C12E6E01C00E374F7 /* SCHLoginPasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHLoginPasswordViewController.h; sourceTree = "<group>"; };
 		52EF4E5D12E6E01C00E374F7 /* SCHLoginPasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHLoginPasswordViewController.m; sourceTree = "<group>"; };
 		52EF4E5E12E6E01C00E374F7 /* SCHLoginPasswordViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SCHLoginPasswordViewController.xib; sourceTree = "<group>"; };
@@ -1569,10 +1574,6 @@
 		F83D86B412FC070F00227031 /* SCHLocalDebugXPSReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHLocalDebugXPSReader.m; path = Shared/SCHLocalDebugXPSReader.m; sourceTree = "<group>"; };
 		F848823C13573F4500A2C8D3 /* icon-magnify-active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-magnify-active.png"; path = "Resources/icon-magnify-active.png"; sourceTree = "<group>"; };
 		F848823D13573F4500A2C8D3 /* icon-magnify-active@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-magnify-active@2x.png"; path = "Resources/icon-magnify-active@2x.png"; sourceTree = "<group>"; };
-		F84C006D1371B612009A210F /* SCHReadingNotesListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHReadingNotesListController.h; sourceTree = "<group>"; };
-		F84C006E1371B612009A210F /* SCHReadingNotesListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHReadingNotesListController.m; sourceTree = "<group>"; };
-		F84C006F1371B612009A210F /* SCHReadingNotesListController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHReadingNotesListController.xib; sourceTree = "<group>"; };
-		F84C00741371C1D0009A210F /* SCHReadingNotesListTableCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHReadingNotesListTableCell.xib; sourceTree = "<group>"; };
 		F84CE154134C691D0044729E /* SCHNonDRMAuthenticationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHNonDRMAuthenticationManager.h; path = Shared/SCHNonDRMAuthenticationManager.h; sourceTree = "<group>"; };
 		F84CE155134C691D0044729E /* SCHNonDRMAuthenticationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHNonDRMAuthenticationManager.m; path = Shared/SCHNonDRMAuthenticationManager.m; sourceTree = "<group>"; };
 		F8509E7612F0620D00197EB5 /* Clifford.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = Clifford.xps; path = "Shared/Debug Books/Clifford.xps"; sourceTree = "<group>"; };
@@ -1644,13 +1645,26 @@
 		F8C6DA93136073D300D9E953 /* paper-neutral.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "paper-neutral.png"; path = "Resources/paper-neutral.png"; sourceTree = "<group>"; };
 		F8C6DA94136073D300D9E953 /* paper-neutral@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "paper-neutral@2x.png"; path = "Resources/paper-neutral@2x.png"; sourceTree = "<group>"; };
 		F8C6DA95136073D300D9E953 /* paper-white@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "paper-white@2x.png"; path = "Resources/paper-white@2x.png"; sourceTree = "<group>"; };
-		F8C8FC211360659B0097F9DD /* SCHReadingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHReadingViewController.h; sourceTree = "<group>"; };
-		F8C8FC221360659B0097F9DD /* SCHReadingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHReadingViewController.m; sourceTree = "<group>"; };
-		F8C8FC231360659B0097F9DD /* SCHReadingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHReadingViewController.xib; sourceTree = "<group>"; };
 		F8C8FC28136065AD0097F9DD /* SCHCustomNavigationBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHCustomNavigationBar.h; path = iPhone/SCHCustomNavigationBar.h; sourceTree = "<group>"; };
 		F8C8FC29136065AD0097F9DD /* SCHCustomNavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHCustomNavigationBar.m; path = iPhone/SCHCustomNavigationBar.m; sourceTree = "<group>"; };
 		F8CD24C912F9714D001C748B /* SCHBookManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookManager.h; path = iPhone/SCHBookManager.h; sourceTree = "<group>"; };
 		F8CD24CA12F9714D001C748B /* SCHBookManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookManager.m; path = iPhone/SCHBookManager.m; sourceTree = "<group>"; };
+		F8DC564E138BBE7D00F27146 /* SCHReadingInteractionsListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHReadingInteractionsListController.h; path = Shared/SCHReadingInteractionsListController.h; sourceTree = SOURCE_ROOT; };
+		F8DC564F138BBE7D00F27146 /* SCHReadingInteractionsListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHReadingInteractionsListController.m; path = Shared/SCHReadingInteractionsListController.m; sourceTree = SOURCE_ROOT; };
+		F8DC5656138C0BCA00F27146 /* SCHReadingInteractionsListController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SCHReadingInteractionsListController.xib; path = Shared/SCHReadingInteractionsListController.xib; sourceTree = "<group>"; };
+		F8DC5657138C0BCA00F27146 /* SCHReadingNotesListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHReadingNotesListController.h; path = Shared/SCHReadingNotesListController.h; sourceTree = "<group>"; };
+		F8DC5658138C0BCA00F27146 /* SCHReadingNotesListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHReadingNotesListController.m; path = Shared/SCHReadingNotesListController.m; sourceTree = "<group>"; };
+		F8DC5659138C0BCA00F27146 /* SCHReadingNotesListController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SCHReadingNotesListController.xib; path = Shared/SCHReadingNotesListController.xib; sourceTree = "<group>"; };
+		F8DC565A138C0BCA00F27146 /* SCHReadingPageListTableCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SCHReadingPageListTableCell.xib; path = Shared/SCHReadingPageListTableCell.xib; sourceTree = "<group>"; };
+		F8DC565B138C0BCA00F27146 /* SCHReadingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHReadingViewController.h; path = Shared/SCHReadingViewController.h; sourceTree = "<group>"; };
+		F8DC565C138C0BCA00F27146 /* SCHReadingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHReadingViewController.m; path = Shared/SCHReadingViewController.m; sourceTree = "<group>"; };
+		F8DC565D138C0BCA00F27146 /* SCHReadingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SCHReadingViewController.xib; path = Shared/SCHReadingViewController.xib; sourceTree = "<group>"; };
+		F8DC566A138C0C2E00F27146 /* SCHThemePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHThemePickerViewController.h; path = Shared/SCHThemePickerViewController.h; sourceTree = "<group>"; };
+		F8DC566B138C0C2E00F27146 /* SCHThemePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHThemePickerViewController.m; path = Shared/SCHThemePickerViewController.m; sourceTree = "<group>"; };
+		F8DC566C138C0C2E00F27146 /* SCHThemePickerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SCHThemePickerViewController.xib; path = Shared/SCHThemePickerViewController.xib; sourceTree = "<group>"; };
+		F8DC567C138C150F00F27146 /* SCHDictionaryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHDictionaryViewController.h; path = Shared/SCHDictionaryViewController.h; sourceTree = "<group>"; };
+		F8DC567D138C150F00F27146 /* SCHDictionaryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHDictionaryViewController.m; path = Shared/SCHDictionaryViewController.m; sourceTree = "<group>"; };
+		F8DC567E138C150F00F27146 /* SCHDictionaryViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SCHDictionaryViewController.xib; path = Shared/SCHDictionaryViewController.xib; sourceTree = "<group>"; };
 		F8EDE540138561390079BFD8 /* SCHReadingNoteView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHReadingNoteView.h; path = Shared/SCHReadingNoteView.h; sourceTree = "<group>"; };
 		F8EDE541138561390079BFD8 /* SCHReadingNoteView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHReadingNoteView.m; path = Shared/SCHReadingNoteView.m; sourceTree = "<group>"; };
 		F8EDE54413856BB60079BFD8 /* UIImage+BlioAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+BlioAdditions.h"; sourceTree = "<group>"; };
@@ -1743,9 +1757,7 @@
 		2860E386111B897F00E27156 /* iPhone */ = {
 			isa = PBXGroup;
 			children = (
-				A3A38E5D133A80F700C325A3 /* Certificates */,
 				F8509E9912F0621E00197EB5 /* Scrubber View */,
-				F8509E9112F0621E00197EB5 /* Book Reading */,
 				2860E387111B897F00E27156 /* AppDelegate_iPhone.h */,
 				2860E388111B897F00E27156 /* AppDelegate_iPhone.m */,
 				2860E389111B897F00E27156 /* MainWindow_iPhone.xib */,
@@ -1757,9 +1769,6 @@
 				52EF4E5E12E6E01C00E374F7 /* SCHLoginPasswordViewController.xib */,
 				F8898901135877B100D236ED /* SCHProfileViewCell.h */,
 				F8898902135877B100D236ED /* SCHProfileViewCell.m */,
-				52E622FD1358544200245CA7 /* SCHThemePickerViewController.h */,
-				52E622FE1358544200245CA7 /* SCHThemePickerViewController.m */,
-				52E622FF1358544200245CA7 /* SCHThemePickerViewController.xib */,
 				A38CF1FD1374504F00EABF43 /* SCHAboutViewController.h */,
 				A38CF1FE1374504F00EABF43 /* SCHAboutViewController.m */,
 				A39009931379B13000D6B608 /* SCHPrivacyPolicyViewController.h */,
@@ -1772,6 +1781,7 @@
 		28EEBF621118D79A00187D67 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				F8DC5655138C09DB00F27146 /* Reading View Controllers */,
 				526A8A42138510CD00101A96 /* AudioBookPlayer */,
 				F8509E8A12F0621E00197EB5 /* XPS Provider */,
 				52EF594712EECA7200E374F7 /* Extensions */,
@@ -1860,6 +1870,9 @@
 		5204B85D135C1F6E00FCBD90 /* Themes */ = {
 			isa = PBXGroup;
 			children = (
+				F8DC566A138C0C2E00F27146 /* SCHThemePickerViewController.h */,
+				F8DC566B138C0C2E00F27146 /* SCHThemePickerViewController.m */,
+				F8DC566C138C0C2E00F27146 /* SCHThemePickerViewController.xib */,
 				52E622F913584EBE00245CA7 /* SCHThemeManager.h */,
 				52E622FA13584EBE00245CA7 /* SCHThemeManager.m */,
 				5204B85E135C1FC500FCBD90 /* SCHThemeButton.h */,
@@ -1965,6 +1978,7 @@
 		528A2CCF12CCDC400053A343 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				A3A38E5D133A80F700C325A3 /* Certificates */,
 				A39009EF1379D81200D6B608 /* parent-request.html */,
 				A39009F01379D81200D6B608 /* teacher-request.html */,
 				A39009901379B06900D6B608 /* privacy.html */,
@@ -2226,6 +2240,7 @@
 				A3A38E60133A811400C325A3 /* iphonecert.dat */,
 			);
 			name = Certificates;
+			path = iPhone;
 			sourceTree = "<group>";
 		};
 		A3D933751326D84900037111 /* DRM */ = {
@@ -2867,20 +2882,6 @@
 			path = iPhone;
 			sourceTree = "<group>";
 		};
-		F8509E9112F0621E00197EB5 /* Book Reading */ = {
-			isa = PBXGroup;
-			children = (
-				F8C8FC211360659B0097F9DD /* SCHReadingViewController.h */,
-				F8C8FC221360659B0097F9DD /* SCHReadingViewController.m */,
-				F8C8FC231360659B0097F9DD /* SCHReadingViewController.xib */,
-				F84C006D1371B612009A210F /* SCHReadingNotesListController.h */,
-				F84C006E1371B612009A210F /* SCHReadingNotesListController.m */,
-				F84C006F1371B612009A210F /* SCHReadingNotesListController.xib */,
-				F84C00741371C1D0009A210F /* SCHReadingNotesListTableCell.xib */,
-			);
-			name = "Book Reading";
-			sourceTree = "<group>";
-		};
 		F8509E9912F0621E00197EB5 /* Scrubber View */ = {
 			isa = PBXGroup;
 			children = (
@@ -3005,6 +3006,26 @@
 				F8B55E37134B2A190028534A /* SCHDictionaryParseOperation.m */,
 			);
 			name = "Dictionary Operations";
+			sourceTree = "<group>";
+		};
+		F8DC5655138C09DB00F27146 /* Reading View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				F8DC5657138C0BCA00F27146 /* SCHReadingNotesListController.h */,
+				F8DC5658138C0BCA00F27146 /* SCHReadingNotesListController.m */,
+				F8DC5659138C0BCA00F27146 /* SCHReadingNotesListController.xib */,
+				F8DC565A138C0BCA00F27146 /* SCHReadingPageListTableCell.xib */,
+				F8DC565B138C0BCA00F27146 /* SCHReadingViewController.h */,
+				F8DC565C138C0BCA00F27146 /* SCHReadingViewController.m */,
+				F8DC565D138C0BCA00F27146 /* SCHReadingViewController.xib */,
+				F8DC564E138BBE7D00F27146 /* SCHReadingInteractionsListController.h */,
+				F8DC564F138BBE7D00F27146 /* SCHReadingInteractionsListController.m */,
+				F8DC5656138C0BCA00F27146 /* SCHReadingInteractionsListController.xib */,
+				F8DC567C138C150F00F27146 /* SCHDictionaryViewController.h */,
+				F8DC567D138C150F00F27146 /* SCHDictionaryViewController.m */,
+				F8DC567E138C150F00F27146 /* SCHDictionaryViewController.xib */,
+			);
+			name = "Reading View Controllers";
 			sourceTree = "<group>";
 		};
 		F8DE53E2130A8C0300691CBA /* Book Data */ = {
@@ -3316,8 +3337,6 @@
 				F848823E13573F4500A2C8D3 /* icon-magnify-active.png in Resources */,
 				F848824013573F4500A2C8D3 /* icon-magnify-active@2x.png in Resources */,
 				52E622F41358385D00245CA7 /* Themes in Resources */,
-				52E623021358544200245CA7 /* SCHThemePickerViewController.xib in Resources */,
-				F8C8FC261360659B0097F9DD /* SCHReadingViewController.xib in Resources */,
 				F8C6DA96136073D300D9E953 /* paper-black.png in Resources */,
 				F8C6DA98136073D300D9E953 /* paper-black@2x.png in Resources */,
 				F8C6DA9A136073D300D9E953 /* paper-neutral.png in Resources */,
@@ -3355,8 +3374,6 @@
 				C901116013630DE3006694B3 /* bookshelf-iphone-top-shadow@2x.png in Resources */,
 				C953FC521370796F003DA646 /* icon-play-landscape.png in Resources */,
 				C953FC541370796F003DA646 /* icon-play-landscape@2x.png in Resources */,
-				F84C00721371B612009A210F /* SCHReadingNotesListController.xib in Resources */,
-				F84C00751371C1D0009A210F /* SCHReadingNotesListTableCell.xib in Resources */,
 				A38CF1FB1374503300EABF43 /* credits.html in Resources */,
 				C94735F91377F482005B2B1D /* icon-font-increase@2x.png in Resources */,
 				C94735FB1377F482005B2B1D /* icon-font-increase.png in Resources */,
@@ -3408,6 +3425,12 @@
 				C979C6A4138C1F6300581F7F /* button-login.png in Resources */,
 				C979C6A8138C237C00581F7F /* button-field.png in Resources */,
 				C979C6AA138C237C00581F7F /* button-field@2x.png in Resources */,
+				F8DC565E138C0BCA00F27146 /* SCHReadingInteractionsListController.xib in Resources */,
+				F8DC5662138C0BCA00F27146 /* SCHReadingNotesListController.xib in Resources */,
+				F8DC5664138C0BCA00F27146 /* SCHReadingPageListTableCell.xib in Resources */,
+				F8DC5668138C0BCA00F27146 /* SCHReadingViewController.xib in Resources */,
+				F8DC566F138C0C2E00F27146 /* SCHThemePickerViewController.xib in Resources */,
+				F8DC5681138C150F00F27146 /* SCHDictionaryViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3529,13 +3552,11 @@
 				F848823F13573F4500A2C8D3 /* icon-magnify-active.png in Resources */,
 				F848824113573F4500A2C8D3 /* icon-magnify-active@2x.png in Resources */,
 				52E622F51358385D00245CA7 /* Themes in Resources */,
-				52E623031358544200245CA7 /* SCHThemePickerViewController.xib in Resources */,
 				C9BCD78C135DBFB800AA42B3 /* After Ever After.xps in Resources */,
 				C9BCD78D135DD26B00AA42B3 /* LonelyHeartsClub.xps in Resources */,
 				C9BCD78E135DD26B00AA42B3 /* MazeOfBones.xps in Resources */,
 				C9BCD78F135DD26B00AA42B3 /* Shiver.xps in Resources */,
 				C9BCD790135DD26B00AA42B3 /* Cook Yourself Thin.xps in Resources */,
-				F8C8FC271360659B0097F9DD /* SCHReadingViewController.xib in Resources */,
 				F8C6DA97136073D300D9E953 /* paper-black.png in Resources */,
 				F8C6DA99136073D300D9E953 /* paper-black@2x.png in Resources */,
 				F8C6DA9B136073D300D9E953 /* paper-neutral.png in Resources */,
@@ -3573,8 +3594,6 @@
 				C901116113630DE3006694B3 /* bookshelf-iphone-top-shadow@2x.png in Resources */,
 				C953FC531370796F003DA646 /* icon-play-landscape.png in Resources */,
 				C953FC551370796F003DA646 /* icon-play-landscape@2x.png in Resources */,
-				F84C00731371B612009A210F /* SCHReadingNotesListController.xib in Resources */,
-				F84C00761371C1D0009A210F /* SCHReadingNotesListTableCell.xib in Resources */,
 				A38CF1FC1374503300EABF43 /* credits.html in Resources */,
 				C94735FA1377F482005B2B1D /* icon-font-increase@2x.png in Resources */,
 				C94735FC1377F482005B2B1D /* icon-font-increase.png in Resources */,
@@ -3629,6 +3648,12 @@
 				C979C6A5138C1F6300581F7F /* button-login.png in Resources */,
 				C979C6A9138C237C00581F7F /* button-field.png in Resources */,
 				C979C6AB138C237C00581F7F /* button-field@2x.png in Resources */,
+				F8DC565F138C0BCA00F27146 /* SCHReadingInteractionsListController.xib in Resources */,
+				F8DC5663138C0BCA00F27146 /* SCHReadingNotesListController.xib in Resources */,
+				F8DC5665138C0BCA00F27146 /* SCHReadingPageListTableCell.xib in Resources */,
+				F8DC5669138C0BCA00F27146 /* SCHReadingViewController.xib in Resources */,
+				F8DC5670138C0C2E00F27146 /* SCHThemePickerViewController.xib in Resources */,
+				F8DC5682138C150F00F27146 /* SCHDictionaryViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3782,12 +3807,10 @@
 				C92FA7E81355E8F4001BAA6B /* KNFBSmartZoomBlock.m in Sources */,
 				F8898903135877B100D236ED /* SCHProfileViewCell.m in Sources */,
 				52E622FB13584EBF00245CA7 /* SCHThemeManager.m in Sources */,
-				52E623001358544200245CA7 /* SCHThemePickerViewController.m in Sources */,
 				C95C7CC1135C3C8A00472AF6 /* SCHBookShelfGridView.m in Sources */,
 				C95C7CC5135C3F1400472AF6 /* SCHBookShelfGridShelvesView.m in Sources */,
 				5204B860135C1FC500FCBD90 /* SCHThemeButton.m in Sources */,
 				52BAFB69135DAB8600C2AFF3 /* SCHThemeImageView.m in Sources */,
-				F8C8FC241360659B0097F9DD /* SCHReadingViewController.m in Sources */,
 				F8C8FC2A136065AD0097F9DD /* SCHCustomNavigationBar.m in Sources */,
 				C97D6DA313696D7B0017974B /* SCHBookPoint.m in Sources */,
 				C9E89A4B1369B87A00E7ED53 /* levenshtein_distance.c in Sources */,
@@ -3795,7 +3818,6 @@
 				A33F7311136B050A00BAA101 /* SCHDrmSession.m in Sources */,
 				521399F013717BB10081FD3D /* SCHLocationBookmark.m in Sources */,
 				52F15A1F1371A2CA0073941E /* SCHBookAnnotations.m in Sources */,
-				F84C00701371B612009A210F /* SCHReadingNotesListController.m in Sources */,
 				A38CF1FF1374504F00EABF43 /* SCHAboutViewController.m in Sources */,
 				5206FF2513744E7000FCE07C /* SCHAppProfile.m in Sources */,
 				52C7F8721377DEE800DB08C9 /* SCHAppState.m in Sources */,
@@ -3808,6 +3830,11 @@
 				F8EDE542138561390079BFD8 /* SCHReadingNoteView.m in Sources */,
 				F8EDE54613856BB60079BFD8 /* UIImage+BlioAdditions.m in Sources */,
 				C979D88A138C2D9100581F7F /* SCHGradientView.m in Sources */,
+				F8DC5650138BBE7D00F27146 /* SCHReadingInteractionsListController.m in Sources */,
+				F8DC5660138C0BCA00F27146 /* SCHReadingNotesListController.m in Sources */,
+				F8DC5666138C0BCA00F27146 /* SCHReadingViewController.m in Sources */,
+				F8DC566D138C0C2E00F27146 /* SCHThemePickerViewController.m in Sources */,
+				F8DC567F138C150F00F27146 /* SCHDictionaryViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3958,20 +3985,17 @@
 				C92FA7E91355E8F4001BAA6B /* KNFBSmartZoomBlock.m in Sources */,
 				F8898904135877B100D236ED /* SCHProfileViewCell.m in Sources */,
 				52E622FC13584EBF00245CA7 /* SCHThemeManager.m in Sources */,
-				52E623011358544200245CA7 /* SCHThemePickerViewController.m in Sources */,
 				C95C7CC2135C3C8A00472AF6 /* SCHBookShelfGridView.m in Sources */,
 				C95C7CC6135C3F1400472AF6 /* SCHBookShelfGridShelvesView.m in Sources */,
 				5204B861135C1FC500FCBD90 /* SCHThemeButton.m in Sources */,
 				52BAFB6A135DAB8600C2AFF3 /* SCHThemeImageView.m in Sources */,
 				C9BCD78B135DBF9E00AA42B3 /* main.m in Sources */,
-				F8C8FC251360659B0097F9DD /* SCHReadingViewController.m in Sources */,
 				F8C8FC2B136065AD0097F9DD /* SCHCustomNavigationBar.m in Sources */,
 				C97D6DA413696D7B0017974B /* SCHBookPoint.m in Sources */,
 				C9E89A4C1369B87A00E7ED53 /* levenshtein_distance.c in Sources */,
 				52C489CC1369AC4200460876 /* UIColor+Extensions.m in Sources */,
 				521399F113717BB10081FD3D /* SCHLocationBookmark.m in Sources */,
 				52F15A201371A2CA0073941E /* SCHBookAnnotations.m in Sources */,
-				F84C00711371B612009A210F /* SCHReadingNotesListController.m in Sources */,
 				A38CF2001374504F00EABF43 /* SCHAboutViewController.m in Sources */,
 				5206FF2613744E7000FCE07C /* SCHAppProfile.m in Sources */,
 				52C7F8731377DEE800DB08C9 /* SCHAppState.m in Sources */,
@@ -3984,6 +4008,11 @@
 				F8EDE543138561390079BFD8 /* SCHReadingNoteView.m in Sources */,
 				F8EDE54713856BB60079BFD8 /* UIImage+BlioAdditions.m in Sources */,
 				C979D88B138C2D9100581F7F /* SCHGradientView.m in Sources */,
+				F8DC5651138BBE7D00F27146 /* SCHReadingInteractionsListController.m in Sources */,
+				F8DC5661138C0BCA00F27146 /* SCHReadingNotesListController.m in Sources */,
+				F8DC5667138C0BCA00F27146 /* SCHReadingViewController.m in Sources */,
+				F8DC566E138C0C2E00F27146 /* SCHThemePickerViewController.m in Sources */,
+				F8DC5680138C150F00F27146 /* SCHDictionaryViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

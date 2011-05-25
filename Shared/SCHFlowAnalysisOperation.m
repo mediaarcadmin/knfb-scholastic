@@ -40,14 +40,14 @@
 #ifndef __OPTIMIZE__    
     // This book is only used for logging
 	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];  
-    
-    CFAbsoluteTime startTime = CFAbsoluteTimeGetCurrent();
 #endif
-    SCHFlowEucBook *eucBook = [[SCHFlowEucBook alloc] initWithISBN:self.isbn failIfCachedDataNotReady:NO];
+    CFAbsoluteTime startTime = CFAbsoluteTimeGetCurrent();
+    SCHFlowEucBook *eucBook = [[SCHBookManager sharedBookManager] checkOutEucBookForBookIdentifier:self.isbn];
 
     if (eucBook) {
-        NSLog(@"Pagination of book %@ took %ld seconds", book.Title, (long)round(CFAbsoluteTimeGetCurrent() - startTime));
-        [eucBook release];
+        [eucBook generateAndCacheUncachedRecachableData];
+        [[SCHBookManager sharedBookManager] checkInEucBookForBookIdentifier:self.isbn];
+        NSLog(@"Analysis of book %@ took %ld seconds", book.Title, (long)round(CFAbsoluteTimeGetCurrent() - startTime));
         [self updateBookWithSuccess];
     } else {
         NSLog(@"Pagination of book %@ failed. Could not checkout out SCHFlowEucBook", book.Title);
