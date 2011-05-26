@@ -27,6 +27,7 @@
 #import "SCHReadingNoteView.h"
 #import "SCHBookAnnotations.h"
 #import "SCHNote.h"
+#import "KNFBXPSConstants.h"
 
 // constants
 static const CGFloat kReadingViewStandardScrubHeight = 47.0f;
@@ -147,6 +148,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [isbn release], isbn = nil;
     [popover release], popover = nil;
     [profile release], profile = nil;
+    [audioBookPlayer stop];
     [audioBookPlayer release], audioBookPlayer = nil;
     [popoverOptionsViewController release], popoverOptionsViewController = nil;
     
@@ -524,18 +526,32 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 	
     SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];
     NSArray *audioBookReferences = [book valueForKey:kSCHAppBookAudioBookReferences];
-   
+    NSError *error = nil;
+    
     if(audioBookReferences != nil) {
         if (self.audioBookPlayer == nil) {
             NSDictionary *audioBookReference = [audioBookReferences objectAtIndex:0];
-            NSURL *audioFile = [NSURL URLWithString:[audioBookReference valueForKey:kSCHAppBookAudioFile]];
-            NSString *timingFile = [audioBookReference valueForKey:kSCHAppBookTimingFile];
-            self.audioBookPlayer = [[SCHAudioBookPlayer alloc] initWithAudioFile:audioFile 
-                                                              wordTimingFilePath:timingFile];
-            self.audioBookPlayer.delegate = self;
-            [self.audioBookPlayer play];
+            NSData *audioData = [self.xpsProvider dataForComponentAtPath:[KNFBXPSAudiobookDirectory stringByAppendingPathComponent:[audioBookReference valueForKey:kSCHAppBookAudioFile]]];
+            if (audioData != nil) {
+                NSData *timingData = [self.xpsProvider dataForComponentAtPath:[KNFBXPSAudiobookDirectory stringByAppendingPathComponent:[audioBookReference valueForKey:kSCHAppBookTimingFile]]];
+                if (timingData != nil) {
+                    self.audioBookPlayer = [[[SCHAudioBookPlayer alloc] init] autorelease];
+                    if ([self.audioBookPlayer prepareToPlay:audioData wordTimingFileData:timingData error:&error wordBlock:^(NSUInteger position) {
+                        NSLog(@"WORD UP! at %d", position);
+                    }] == YES) {
+                        self.audioBookPlayer.delegate = self;
+                        // continue playing or play from position                        
+                        [self.audioBookPlayer play];
+                        //            [self.audioBookPlayer playAtIndex:0];                        
+                    } else {
+                        self.audioBookPlayer = nil;   
+                    }
+                }
+            }
         } else if(self.audioBookPlayer.playing == NO) {
+             // continue playing or play from position
             [self.audioBookPlayer play];
+//            [self.audioBookPlayer playAtIndex:0];
         } else {
             [self.audioBookPlayer pause];        
         }

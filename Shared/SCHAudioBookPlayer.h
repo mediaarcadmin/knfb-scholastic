@@ -8,18 +8,23 @@
 
 #import <Foundation/Foundation.h>
 
+#import <AVFoundation/AVAudioPlayer.h>
+
 #import "SCHAudioBookPlayerDelegate.h"
 
-@interface SCHAudioBookPlayer : NSObject 
+typedef void (^WordBlock)(NSUInteger position);
+
+@interface SCHAudioBookPlayer : NSObject <AVAudioPlayerDelegate>
 {
 }
 
 @property (nonatomic, assign) id<SCHAudioBookPlayerDelegate> delegate; 
 @property (nonatomic, readonly) BOOL playing;
 
-- (id)initWithAudioFile:(NSURL *)aAudioFile wordTimingFilePath:(NSString *)aWordTimingFilePath;
-- (BOOL)playAtTime:(NSUInteger)milliseconds;
+- (BOOL)prepareToPlay:(NSData *)audioData wordTimingFileData:(NSData *)wordTimingData error:(NSError **)outError wordBlock:(WordBlock)wordBlock;
 - (BOOL)play;
+- (BOOL)playAtIndex:(NSUInteger)newTime;
 - (void)pause;
+- (void)stop;
 
 @end
