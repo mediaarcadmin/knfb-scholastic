@@ -567,12 +567,22 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (void)audioBookPlayerDidFinishPlaying:(SCHAudioBookPlayer *)player successfully:(BOOL)flag
 {
-
+    NSLog(@"Audio Play finished playing");
 }
 
 - (void)audioBookPlayerErrorDidOccur:(SCHAudioBookPlayer *)player error:(NSError *)error
 {
-
+    NSLog(@"Audio Play erred!");
+    
+    if (error!= nil) {
+        UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") 
+                                                             message:NSLocalizedString(@"Due to a problem with the audio we can not play this audiobook.", @"") 
+                                                            delegate:nil 
+                                                   cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+                                                   otherButtonTitles:nil]; 
+        [errorAlert show]; 
+        [errorAlert release];
+    }    
 }
 
 - (IBAction)storyInteractionAction:(id)sender

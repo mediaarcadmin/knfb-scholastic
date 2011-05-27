@@ -174,8 +174,8 @@ static NSTimeInterval const kSCHAudioBookPlayerSecondsToMilliseconds = 1000.0;
 
 - (void)stop
 {
-    if (timer != NULL) {
-        dispatch_release(timer), timer = NULL;
+    if (self.timer != NULL) {
+        dispatch_release(self.timer), self.timer = NULL;
     }
     [self.player stop];
 }
