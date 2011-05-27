@@ -17,5 +17,7 @@
 
 - (id)initWithStartTime:(NSUInteger)setStartTime endTime:(NSUInteger)setEndTime;
 - (NSComparisonResult)compareTime:(NSUInteger)time;
+- (NSTimeInterval)startTimeAsSeconds;
+- (NSTimeInterval)endTimeAsSeconds;
 
 @end

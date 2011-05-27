@@ -11,7 +11,7 @@
 #import "SCHWordTimingProcessor.h"
 #import "SCHWordTiming.h"
 
-static NSTimeInterval const kSCHAudioBookPlayerSecondsToMilliseconds = 1000.0;
+static NSTimeInterval const kSCHAudioBookPlayerMilliSecondsInASecond = 1000.0;
 
 @interface SCHAudioBookPlayer ()
 
@@ -89,7 +89,7 @@ static NSTimeInterval const kSCHAudioBookPlayerSecondsToMilliseconds = 1000.0;
                         static SCHWordTiming *lastTriggered = nil;
                         
                         // We're using the WordTimings file use of integers for time
-                        NSUInteger currentPlayTime = (NSUInteger)(self.player.currentTime * kSCHAudioBookPlayerSecondsToMilliseconds);
+                        NSUInteger currentPlayTime = (NSUInteger)(self.player.currentTime * kSCHAudioBookPlayerMilliSecondsInASecond);
                         SCHWordTiming *wordTiming = [self.wordTimings objectAtIndex:currentPosition];
                         
                         switch ([wordTiming compareTime:currentPlayTime]) {
@@ -157,7 +157,7 @@ static NSTimeInterval const kSCHAudioBookPlayerSecondsToMilliseconds = 1000.0;
 
     if (index < [self.wordTimings count]) {
         SCHWordTiming *wordTiming = [self.wordTimings objectAtIndex:index];
-        self.player.currentTime = wordTiming.startTime / kSCHAudioBookPlayerSecondsToMilliseconds;
+        self.player.currentTime = [wordTiming startTimeAsSeconds];
         ret = [self play];
     }
     

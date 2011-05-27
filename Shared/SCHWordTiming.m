@@ -10,6 +10,8 @@
 
 @implementation SCHWordTiming
 
+static NSTimeInterval const kSCHWordTimingMilliSecondsInASecond = 1000.0;
+
 @synthesize startTime;
 @synthesize endTime;
 
@@ -33,6 +35,28 @@
         ret = NSOrderedDescending;
     } else if (time > self.endTime) {
         ret = NSOrderedAscending;        
+    }
+    
+    return(ret);
+}
+
+- (NSTimeInterval)startTimeAsSeconds
+{
+    NSTimeInterval ret = 0.0;
+    
+    if (self.startTime > 0) {
+        ret = (self.startTime / kSCHWordTimingMilliSecondsInASecond);   
+    }
+    
+    return(ret);
+}
+
+- (NSTimeInterval)endTimeAsSeconds
+{
+    NSTimeInterval ret = 0.0;
+    
+    if (self.startTime > 0) {
+        ret = (self.endTime / kSCHWordTimingMilliSecondsInASecond);   
     }
     
     return(ret);
