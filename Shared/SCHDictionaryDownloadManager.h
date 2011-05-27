@@ -9,8 +9,6 @@
 #import <Foundation/Foundation.h>
 
 static NSString* const kSCHDictionaryDownloadPercentageUpdate = @"SCHDictionaryDownloadPercentageUpdate";
-static NSString* const kSCHDictionaryYoungReader = @"YD";
-static NSString* const kSCHDictionaryOlderReader = @"OD";
 
 static NSString* const kSCHDictionaryStateChange = @"SCHDictionaryStateChange";
 

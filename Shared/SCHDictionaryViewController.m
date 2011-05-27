@@ -165,11 +165,11 @@
     
     NSURL *baseURL = [NSURL fileURLWithPath:path];
     
-    NSLog(@"HTML: %@", htmlString);
-    NSLog(@"Path: %@", path);
-    NSLog(@"URL: %@", [baseURL filePathURL]);
-    
     [self.webView loadHTMLString:htmlString baseURL:baseURL];
+    
+//    if ([self.categoryMode compare:kSCHDictionaryYoungReader] == NSOrderedSame) {
+//    }
+
 }
 
 - (void)setUserInterfaceFromState

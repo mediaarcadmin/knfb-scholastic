@@ -8,6 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
+static NSString* const kSCHDictionaryYoungReader = @"YD";
+static NSString* const kSCHDictionaryOlderReader = @"OD";
+
 
 @interface SCHDictionaryAccessManager : NSObject {
     
@@ -17,7 +20,12 @@
 
 + (SCHDictionaryAccessManager *) sharedAccessManager;
 
+- (void) updateOnReady;
+
 // HTML definition for a word (uses YD/OD as category)
 - (NSString *) HTMLForWord: (NSString *) dictionaryWord category: (NSString *) category;
+
+// speak a word for a category
+- (void) speakWord: (NSString *) dictionaryWord category: (NSString *) category;
 
 @end

@@ -19,6 +19,8 @@
 #import <libEucalyptus/EucMenuItem.h>
 #import <libEucalyptus/EucSelector.h>
 #import <libEucalyptus/EucSelectorRange.h>
+#import "SCHDictionaryAccessManager.h"
+#import "SCHDictionaryDownloadManager.h"
 
 @interface SCHReadingView()
 
@@ -187,18 +189,37 @@
 {
     NSArray *ret = nil;
 
-    NSLog(@"Selection mode is %d", self.selectionMode);
-    
     switch (self.selectionMode) {
         case SCHReadingViewSelectionModeOlderDictionary: {
-//                if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-                    EucMenuItem *dictionaryItem = [[[EucMenuItem alloc] initWithTitle:NSLocalizedString(@"Look Up", "Older reader iPhone Look Up option in popup menu")
-                                                                               action:@selector(selectOlderWord:)] autorelease];
-                    
-                    ret = [NSArray arrayWithObjects:dictionaryItem, nil];
-//                }
+            EucMenuItem *dictionaryItem = [[[EucMenuItem alloc] initWithTitle:NSLocalizedString(@"Look Up", "Older reader iPhone Look Up option in popup menu")
+                                                                       action:@selector(selectOlderWord:)] autorelease];
+            
+            ret = [NSArray arrayWithObjects:dictionaryItem, nil];
         } break;
         case SCHReadingViewSelectionModeYoungerDictionary: {
+
+            if ([[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryProcessingState] == SCHDictionaryProcessingStateReady) {
+            
+                SCHBookRange *bookRange = [self bookRangeFromSelectorRange:[selector selectedRange]];
+                
+                if (bookRange.startPoint.layoutPage == bookRange.endPoint.layoutPage && 
+                    bookRange.startPoint.wordOffset == bookRange.endPoint.wordOffset) {
+                    
+                    NSUInteger page = bookRange.startPoint.layoutPage;
+                    NSUInteger wordOffset = bookRange.startPoint.wordOffset;
+                    
+                    NSArray *wordBlocks = [self.textFlow blocksForPageAtIndex:page - 1 includingFolioBlocks:NO];
+                    
+                    if (wordBlocks && [wordBlocks count] > 0) {
+                        
+                        NSString *word = [[[[wordBlocks objectAtIndex:bookRange.startPoint.blockOffset] words] objectAtIndex:wordOffset] string];
+                        
+                        if (word) {
+                            [[SCHDictionaryAccessManager sharedAccessManager] speakWord:word category:kSCHDictionaryYoungReader];
+                        }
+                    }
+                }
+            }
             EucMenuItem *dictionaryItem = [[[EucMenuItem alloc] initWithTitle:NSLocalizedString(@"Look Up", "Younger Reader iPhone and iPad Look Up option in popup menu")
                                                                        action:@selector(selectYoungerWord:)] autorelease];
             
@@ -270,7 +291,7 @@
 
 - (void)eucSelector:(EucSelector *)selector didEndEditingHighlightWithRange:(EucSelectorRange *)originalRange movedToRange:(EucSelectorRange *)movedToRange;
 {
-    
+
 }
 
 - (SCHBookRange *)bookRangeForHighlight:(SCHHighlight *)highlight

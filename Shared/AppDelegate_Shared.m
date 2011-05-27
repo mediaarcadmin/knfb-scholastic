@@ -14,6 +14,7 @@
 #import "SCHURLManager.h"
 #import "SCHProcessingManager.h"
 #import "SCHDictionaryDownloadManager.h"
+#import "SCHDictionaryAccessManager.h"
 #import "SCHBookshelfSyncComponent.h"
 
 #if LOCALDEBUG
@@ -165,12 +166,16 @@ static NSString* const prModelCertFilename = @"iphonecert.dat";
 	// instantiate the shared processing manager
 	[SCHProcessingManager sharedProcessingManager];
     
+    
 #if LOCALDEBUG
 	[[NSNotificationCenter defaultCenter] postNotificationName:kSCHBookshelfSyncComponentComplete object:nil];
     [self performSelector:@selector(copyLocalFilesIfMissing) withObject:nil afterDelay:0.1f]; // Stop the watchdog from killing us on launch
 #endif
 	
 	[[SCHDictionaryDownloadManager sharedDownloadManager] checkIfUpdateNeeded];
+
+	// instantiate the shared dictionary access manager
+	[SCHDictionaryAccessManager sharedAccessManager];
 	
 	[self ensureCorrectCertsAvailable];
 	

@@ -26,7 +26,7 @@
 #import "SCHBookAnnotations.h"
 #import "SCHNote.h"
 #import "SCHDictionaryViewController.h"
-#import "SCHDictionaryDownloadManager.h"
+#import "SCHDictionaryAccessManager.h"
 
 // constants
 static const CGFloat kReadingViewStandardScrubHeight = 47.0f;
