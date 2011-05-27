@@ -137,6 +137,9 @@
 		A33F7311136B050A00BAA101 /* SCHDrmSession.m in Sources */ = {isa = PBXBuildFile; fileRef = A33F7310136B050A00BAA101 /* SCHDrmSession.m */; };
 		A35F45D5138D3A9000055D60 /* DRM in Resources */ = {isa = PBXBuildFile; fileRef = A35F45D4138D3A9000055D60 /* DRM */; };
 		A35F45D6138D3A9000055D60 /* DRM in Resources */ = {isa = PBXBuildFile; fileRef = A35F45D4138D3A9000055D60 /* DRM */; };
+		A35F4645138EC7D000055D60 /* OlliesNewTricks.xps in Resources */ = {isa = PBXBuildFile; fileRef = A35F4642138EC7D000055D60 /* OlliesNewTricks.xps */; };
+		A35F4646138EC7D000055D60 /* WhoWillCarveTurkey.xps in Resources */ = {isa = PBXBuildFile; fileRef = A35F4643138EC7D000055D60 /* WhoWillCarveTurkey.xps */; };
+		A35F4648138EC80800055D60 /* NightOfLivingDummy.xps in Resources */ = {isa = PBXBuildFile; fileRef = A35F4647138EC80800055D60 /* NightOfLivingDummy.xps */; };
 		A38CF1FB1374503300EABF43 /* credits.html in Resources */ = {isa = PBXBuildFile; fileRef = A38CF1FA1374503300EABF43 /* credits.html */; };
 		A38CF1FC1374503300EABF43 /* credits.html in Resources */ = {isa = PBXBuildFile; fileRef = A38CF1FA1374503300EABF43 /* credits.html */; };
 		A38CF1FF1374504F00EABF43 /* SCHAboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A38CF1FE1374504F00EABF43 /* SCHAboutViewController.m */; };
@@ -565,11 +568,7 @@
 		C9B08BEA1344D34F001963D0 /* KNFBTOCEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B08B291344D34F001963D0 /* KNFBTOCEntry.m */; };
 		C9B08BEB1344D34F001963D0 /* KNFBTOCEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B08B291344D34F001963D0 /* KNFBTOCEntry.m */; };
 		C9BCD78B135DBF9E00AA42B3 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
-		C9BCD78C135DBFB800AA42B3 /* After Ever After.xps in Resources */ = {isa = PBXBuildFile; fileRef = C93ECB81134B7FA4003B99FD /* After Ever After.xps */; };
-		C9BCD78D135DD26B00AA42B3 /* LonelyHeartsClub.xps in Resources */ = {isa = PBXBuildFile; fileRef = F8509E7812F0620E00197EB5 /* LonelyHeartsClub.xps */; };
 		C9BCD78E135DD26B00AA42B3 /* MazeOfBones.xps in Resources */ = {isa = PBXBuildFile; fileRef = F8509E7912F0620E00197EB5 /* MazeOfBones.xps */; };
-		C9BCD78F135DD26B00AA42B3 /* Shiver.xps in Resources */ = {isa = PBXBuildFile; fileRef = F8509E7C12F0620F00197EB5 /* Shiver.xps */; };
-		C9BCD790135DD26B00AA42B3 /* Cook Yourself Thin.xps in Resources */ = {isa = PBXBuildFile; fileRef = F8509E7F12F0621000197EB5 /* Cook Yourself Thin.xps */; };
 		C9D4F6281345FFE8007F86E3 /* SCHTextFlow.m in Sources */ = {isa = PBXBuildFile; fileRef = C9D4F6271345FFE7007F86E3 /* SCHTextFlow.m */; };
 		C9D4F6291345FFE8007F86E3 /* SCHTextFlow.m in Sources */ = {isa = PBXBuildFile; fileRef = C9D4F6271345FFE7007F86E3 /* SCHTextFlow.m */; };
 		C9E89A4B1369B87A00E7ED53 /* levenshtein_distance.c in Sources */ = {isa = PBXBuildFile; fileRef = C9E89A491369B87A00E7ED53 /* levenshtein_distance.c */; };
@@ -683,12 +682,6 @@
 		F8509F0012F063C900197EB5 /* SCHSettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 529385B412DF231800045B44 /* SCHSettingsViewController.xib */; };
 		F8509F0112F063C900197EB5 /* SCHBookShelfViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5293883212E03CD000045B44 /* SCHBookShelfViewController.xib */; };
 		F8509F0412F063C900197EB5 /* SCHLoginPasswordViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52EF4E5E12E6E01C00E374F7 /* SCHLoginPasswordViewController.xib */; };
-		F8509F0512F063C900197EB5 /* Clifford.xps in Resources */ = {isa = PBXBuildFile; fileRef = F8509E7612F0620D00197EB5 /* Clifford.xps */; };
-		F8509F0612F063C900197EB5 /* Goosebumps.xps in Resources */ = {isa = PBXBuildFile; fileRef = F8509E7712F0620D00197EB5 /* Goosebumps.xps */; };
-		F8509F0912F063C900197EB5 /* OldLady.xps in Resources */ = {isa = PBXBuildFile; fileRef = F8509E7A12F0620E00197EB5 /* OldLady.xps */; };
-		F8509F0A12F063C900197EB5 /* Penguins.xps in Resources */ = {isa = PBXBuildFile; fileRef = F8509E7B12F0620F00197EB5 /* Penguins.xps */; };
-		F8509F0C12F063C900197EB5 /* TooManyToys.xps in Resources */ = {isa = PBXBuildFile; fileRef = F8509E7D12F0620F00197EB5 /* TooManyToys.xps */; };
-		F8509F0D12F063C900197EB5 /* Cars.xps in Resources */ = {isa = PBXBuildFile; fileRef = F8509E7E12F0620F00197EB5 /* Cars.xps */; };
 		F8509F1312F063C900197EB5 /* AppDelegate_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* AppDelegate_iPad.m */; };
 		F8509F1412F063C900197EB5 /* AppDelegate_Shared.m in Sources */ = {isa = PBXBuildFile; fileRef = 28EEC04A1118E28000187D67 /* AppDelegate_Shared.m */; };
 		F8509F1512F063C900197EB5 /* Scholastic.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2819307C112F81BE00ECF9B4 /* Scholastic.xcdatamodeld */; };
@@ -1099,6 +1092,9 @@
 		A33F730F136B050A00BAA101 /* SCHDrmSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHDrmSession.h; path = Shared/SCHDrmSession.h; sourceTree = "<group>"; };
 		A33F7310136B050A00BAA101 /* SCHDrmSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHDrmSession.m; path = Shared/SCHDrmSession.m; sourceTree = "<group>"; };
 		A35F45D4138D3A9000055D60 /* DRM */ = {isa = PBXFileReference; lastKnownFileType = folder; name = DRM; path = Resources/DRM; sourceTree = "<group>"; };
+		A35F4642138EC7D000055D60 /* OlliesNewTricks.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = OlliesNewTricks.xps; path = "Shared/Debug Books/OlliesNewTricks.xps"; sourceTree = "<group>"; };
+		A35F4643138EC7D000055D60 /* WhoWillCarveTurkey.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = WhoWillCarveTurkey.xps; path = "Shared/Debug Books/WhoWillCarveTurkey.xps"; sourceTree = "<group>"; };
+		A35F4647138EC80800055D60 /* NightOfLivingDummy.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = NightOfLivingDummy.xps; path = "Shared/Debug Books/NightOfLivingDummy.xps"; sourceTree = "<group>"; };
 		A37E7BD01358DFE90002A733 /* SCHDrmLicenseAcquisitionSessionDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHDrmLicenseAcquisitionSessionDelegate.h; path = Shared/SCHDrmLicenseAcquisitionSessionDelegate.h; sourceTree = "<group>"; };
 		A38CF1FA1374503300EABF43 /* credits.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = credits.html; path = Resources/credits.html; sourceTree = "<group>"; };
 		A38CF1FD1374504F00EABF43 /* SCHAboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHAboutViewController.h; sourceTree = "<group>"; };
@@ -1441,7 +1437,6 @@
 		C93ECB2C134B64B1003B99FD /* TextFlowFlow.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = TextFlowFlow.css; sourceTree = "<group>"; };
 		C93ECB2D134B64B1003B99FD /* TextFlowXAML.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = TextFlowXAML.css; sourceTree = "<group>"; };
 		C93ECB2E134B64B1003B99FD /* TextFlowXAMLOverrides.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = TextFlowXAMLOverrides.css; sourceTree = "<group>"; };
-		C93ECB81134B7FA4003B99FD /* After Ever After.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = "After Ever After.xps"; path = "Shared/Debug Books/After Ever After.xps"; sourceTree = "<group>"; };
 		C94735F51377F482005B2B1D /* icon-font-increase@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-font-increase@2x.png"; path = "Resources/UIAssets/icon-font-increase@2x.png"; sourceTree = "<group>"; };
 		C94735F61377F482005B2B1D /* icon-font-increase.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-font-increase.png"; path = "Resources/UIAssets/icon-font-increase.png"; sourceTree = "<group>"; };
 		C94735F71377F482005B2B1D /* icon-font-decrease@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-font-decrease@2x.png"; path = "Resources/UIAssets/icon-font-decrease@2x.png"; sourceTree = "<group>"; };
@@ -1575,16 +1570,7 @@
 		F848823D13573F4500A2C8D3 /* icon-magnify-active@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-magnify-active@2x.png"; path = "Resources/icon-magnify-active@2x.png"; sourceTree = "<group>"; };
 		F84CE154134C691D0044729E /* SCHNonDRMAuthenticationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHNonDRMAuthenticationManager.h; path = Shared/SCHNonDRMAuthenticationManager.h; sourceTree = "<group>"; };
 		F84CE155134C691D0044729E /* SCHNonDRMAuthenticationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHNonDRMAuthenticationManager.m; path = Shared/SCHNonDRMAuthenticationManager.m; sourceTree = "<group>"; };
-		F8509E7612F0620D00197EB5 /* Clifford.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = Clifford.xps; path = "Shared/Debug Books/Clifford.xps"; sourceTree = "<group>"; };
-		F8509E7712F0620D00197EB5 /* Goosebumps.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = Goosebumps.xps; path = "Shared/Debug Books/Goosebumps.xps"; sourceTree = "<group>"; };
-		F8509E7812F0620E00197EB5 /* LonelyHeartsClub.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = LonelyHeartsClub.xps; path = "Shared/Debug Books/LonelyHeartsClub.xps"; sourceTree = "<group>"; };
 		F8509E7912F0620E00197EB5 /* MazeOfBones.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = MazeOfBones.xps; path = "Shared/Debug Books/MazeOfBones.xps"; sourceTree = "<group>"; };
-		F8509E7A12F0620E00197EB5 /* OldLady.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = OldLady.xps; path = "Shared/Debug Books/OldLady.xps"; sourceTree = "<group>"; };
-		F8509E7B12F0620F00197EB5 /* Penguins.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = Penguins.xps; path = "Shared/Debug Books/Penguins.xps"; sourceTree = "<group>"; };
-		F8509E7C12F0620F00197EB5 /* Shiver.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = Shiver.xps; path = "Shared/Debug Books/Shiver.xps"; sourceTree = "<group>"; };
-		F8509E7D12F0620F00197EB5 /* TooManyToys.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = TooManyToys.xps; path = "Shared/Debug Books/TooManyToys.xps"; sourceTree = "<group>"; };
-		F8509E7E12F0620F00197EB5 /* Cars.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = Cars.xps; path = "Shared/Debug Books/Cars.xps"; sourceTree = "<group>"; };
-		F8509E7F12F0621000197EB5 /* Cook Yourself Thin.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Cook Yourself Thin.xps"; path = "Shared/Debug Books/Cook Yourself Thin.xps"; sourceTree = "<group>"; };
 		F8509E9A12F0621E00197EB5 /* SCHScrubberView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHScrubberView.h; sourceTree = "<group>"; };
 		F8509E9B12F0621E00197EB5 /* SCHScrubberView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHScrubberView.m; sourceTree = "<group>"; };
 		F8509EB712F0625100197EB5 /* libstdc++.6.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libstdc++.6.dylib"; path = "usr/lib/libstdc++.6.dylib"; sourceTree = SDKROOT; };
@@ -2839,6 +2825,9 @@
 		F8509E7512F0620D00197EB5 /* Debug Books */ = {
 			isa = PBXGroup;
 			children = (
+				A35F4647138EC80800055D60 /* NightOfLivingDummy.xps */,
+				A35F4642138EC7D000055D60 /* OlliesNewTricks.xps */,
+				A35F4643138EC7D000055D60 /* WhoWillCarveTurkey.xps */,
 				A39009061379866A00D6B608 /* StageFright.xps */,
 				A39009071379866A00D6B608 /* TheBurning.xps */,
 				A39009081379866A00D6B608 /* WhatISaw.xps */,
@@ -2846,17 +2835,7 @@
 				52E4691F12F1D94E00ECC97A /* SCHLocalDebug.m */,
 				F83D86B312FC070F00227031 /* SCHLocalDebugXPSReader.h */,
 				F83D86B412FC070F00227031 /* SCHLocalDebugXPSReader.m */,
-				F8509E7612F0620D00197EB5 /* Clifford.xps */,
-				F8509E7712F0620D00197EB5 /* Goosebumps.xps */,
-				F8509E7812F0620E00197EB5 /* LonelyHeartsClub.xps */,
 				F8509E7912F0620E00197EB5 /* MazeOfBones.xps */,
-				F8509E7A12F0620E00197EB5 /* OldLady.xps */,
-				F8509E7B12F0620F00197EB5 /* Penguins.xps */,
-				F8509E7C12F0620F00197EB5 /* Shiver.xps */,
-				F8509E7D12F0620F00197EB5 /* TooManyToys.xps */,
-				F8509E7E12F0620F00197EB5 /* Cars.xps */,
-				F8509E7F12F0621000197EB5 /* Cook Yourself Thin.xps */,
-				C93ECB81134B7FA4003B99FD /* After Ever After.xps */,
 			);
 			name = "Debug Books";
 			sourceTree = "<group>";
@@ -3438,12 +3417,6 @@
 				F8509F0012F063C900197EB5 /* SCHSettingsViewController.xib in Resources */,
 				F8509F0112F063C900197EB5 /* SCHBookShelfViewController.xib in Resources */,
 				F8509F0412F063C900197EB5 /* SCHLoginPasswordViewController.xib in Resources */,
-				F8509F0512F063C900197EB5 /* Clifford.xps in Resources */,
-				F8509F0612F063C900197EB5 /* Goosebumps.xps in Resources */,
-				F8509F0912F063C900197EB5 /* OldLady.xps in Resources */,
-				F8509F0A12F063C900197EB5 /* Penguins.xps in Resources */,
-				F8509F0C12F063C900197EB5 /* TooManyToys.xps in Resources */,
-				F8509F0D12F063C900197EB5 /* Cars.xps in Resources */,
 				C923B15B12F6B0280054426F /* SCHMultipleBookshelvesController.xib in Resources */,
 				F8678D8A133218D8001FDB2F /* ScholasticFeatureCompatibility.plist in Resources */,
 				C908D86E133F93FA00661718 /* Icon@2x.png in Resources */,
@@ -3542,11 +3515,7 @@
 				F848823F13573F4500A2C8D3 /* icon-magnify-active.png in Resources */,
 				F848824113573F4500A2C8D3 /* icon-magnify-active@2x.png in Resources */,
 				52E622F51358385D00245CA7 /* Themes in Resources */,
-				C9BCD78C135DBFB800AA42B3 /* After Ever After.xps in Resources */,
-				C9BCD78D135DD26B00AA42B3 /* LonelyHeartsClub.xps in Resources */,
 				C9BCD78E135DD26B00AA42B3 /* MazeOfBones.xps in Resources */,
-				C9BCD78F135DD26B00AA42B3 /* Shiver.xps in Resources */,
-				C9BCD790135DD26B00AA42B3 /* Cook Yourself Thin.xps in Resources */,
 				F8C6DA97136073D300D9E953 /* paper-black.png in Resources */,
 				F8C6DA99136073D300D9E953 /* paper-black@2x.png in Resources */,
 				F8C6DA9B136073D300D9E953 /* paper-neutral.png in Resources */,
@@ -3645,6 +3614,9 @@
 				F8DC5670138C0C2E00F27146 /* SCHThemePickerViewController.xib in Resources */,
 				F8DC5682138C150F00F27146 /* SCHDictionaryViewController.xib in Resources */,
 				A35F45D6138D3A9000055D60 /* DRM in Resources */,
+				A35F4645138EC7D000055D60 /* OlliesNewTricks.xps in Resources */,
+				A35F4646138EC7D000055D60 /* WhoWillCarveTurkey.xps in Resources */,
+				A35F4648138EC80800055D60 /* NightOfLivingDummy.xps in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
