@@ -248,6 +248,10 @@ static SCHDictionaryAccessManager *sharedManager = nil;
     
     SCHDictionaryEntry *entry = [self entryForWord:dictionaryWord category:category];
     
+    if (!entry) {
+        return nil;
+    }
+    
     // use the offset to fetch the HTML from entry table
     long offset = [entry.fileOffset longValue];
     
@@ -360,13 +364,11 @@ static SCHDictionaryAccessManager *sharedManager = nil;
         return;
     }
     
-//    NSLog(@"Dictionary entry: %@ %@ %@ %@", entry.baseWordID, entry.word, entry.category, [entry.fileOffset stringValue]);
-    
     NSString *mp3Path = [NSString stringWithFormat:@"%@/Pronunciation/pron_%@.mp3", 
-                      [[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryDirectory], entry.word];
-
+                         [[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryDirectory], entry.word];
+    
     NSURL *url = [NSURL fileURLWithPath:mp3Path];
-
+    
     NSError *error;
     
     if (self.player) {
@@ -375,14 +377,57 @@ static SCHDictionaryAccessManager *sharedManager = nil;
     }
     
     self.player = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:&error];
-	self.player.numberOfLoops = 1;
     
 	if (self.player == nil) {
 		NSLog(@"Error playing word text: %@", [error localizedDescription]);
     } else {
 		[self.player play];
     }
+    
+}
 
+- (void) speakYoungerWordDefinition: (NSString *) dictionaryWord
+{
+    if ([[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryProcessingState] != SCHDictionaryProcessingStateReady) {
+        NSLog(@"Dictionary is not ready yet!");
+        return;
+    }
+    
+    SCHDictionaryEntry *entry = [self entryForWord:dictionaryWord category:kSCHDictionaryYoungReader];
+    
+    // if no result is returned, don't try
+    if (!entry) {
+        return;
+    }
+    
+    //    NSLog(@"Dictionary entry: %@ %@ %@ %@", entry.baseWordID, entry.word, entry.category, [entry.fileOffset stringValue]);
+    
+    NSString *mp3Path = [NSString stringWithFormat:@"%@/ReadthroughAudio/fd_%@.mp3", 
+                         [[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryDirectory], entry.baseWordID];
+    
+    NSURL *url = [NSURL fileURLWithPath:mp3Path];
+    
+    NSError *error;
+    
+    if (self.player) {
+        [self.player stop];
+        self.player = nil;
+    }
+    
+    self.player = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:&error];
+    
+	if (self.player == nil) {
+		NSLog(@"Error playing word definition: %@", [error localizedDescription]);
+    } else {
+		[self.player play];
+    }
+    
+}
+
+- (void) stopAllSpeaking
+{
+    [self.player stop];
+    self.player = nil;
 }
 
 
