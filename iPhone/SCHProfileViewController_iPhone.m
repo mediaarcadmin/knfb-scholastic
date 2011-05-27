@@ -19,8 +19,8 @@
 #import "SCHAppProfile.h"
 #import "SCHReadingViewController.h"
 
-static const CGFloat kProfilePhoneTableOffsetPortrait = 76.0f;
-static const CGFloat kProfilePhoneTableOffsetLandscape = 36.0f;
+static const CGFloat kProfilePhoneTableOffsetPortrait = 70.0f;
+static const CGFloat kProfilePhoneTableOffsetLandscape = 20.0f;
 
 @interface SCHProfileViewController_iPhone() <UITableViewDelegate> 
 
