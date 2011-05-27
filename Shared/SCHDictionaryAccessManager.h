@@ -28,4 +28,11 @@ static NSString* const kSCHDictionaryOlderReader = @"OD";
 // speak a word for a category
 - (void) speakWord: (NSString *) dictionaryWord category: (NSString *) category;
 
+// speak a word definition
+- (void) speakYoungerWordDefinition: (NSString *) dictionaryWord;
+
+// stop all speaking
+- (void) stopAllSpeaking;
+
+
 @end

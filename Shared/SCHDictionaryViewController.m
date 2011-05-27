@@ -33,6 +33,7 @@
 @synthesize topLabel;
 @synthesize bottomLabel;
 @synthesize activityIndicator;
+@synthesize leftBarButtonItemContainer;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -54,6 +55,7 @@
     [webView release], webView = nil;
     [downloadProgressView release], downloadProgressView = nil;
     [progressBar release], progressBar = nil;
+    [leftBarButtonItemContainer release], leftBarButtonItemContainer = nil;
 }
 
 - (void)dealloc
@@ -97,8 +99,25 @@
         [self loadWord];
     }    
     
+    NSMutableArray *toolbarButtons = [[NSMutableArray alloc] init];
+    
+    [toolbarButtons addObject:[[UIBarButtonItem alloc] initWithCustomView:self.leftBarButtonItemContainer]];
+    [toolbarButtons addObjectsFromArray:self.topBar.items];
+    
+    self.topBar.items = [NSArray arrayWithArray:toolbarButtons];
+    [toolbarButtons release];
+    
     [self.topBar setTintColor:[UIColor colorWithWhite:0.7f alpha:1.0f]];
     
+    if (self.categoryMode == kSCHDictionaryYoungReader) {
+        [[SCHDictionaryAccessManager sharedAccessManager] speakYoungerWordDefinition:self.word];
+    }
+}
+
+- (void) viewWillDisappear:(BOOL)animated
+{
+    [[SCHDictionaryAccessManager sharedAccessManager] stopAllSpeaking];
+    [super viewWillDisappear:animated];
 }
 
 #pragma mark - Rotation
@@ -110,7 +129,8 @@
 }
 
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation
-{    
+{
+    
     if (UIInterfaceOrientationIsPortrait(orientation) || UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         [self.topBar setBackgroundImage:[UIImage imageNamed:@"reading-view-portrait-top-bar.png"]];
         
@@ -174,7 +194,11 @@
 
 - (IBAction) playWord
 {
-    [[SCHDictionaryAccessManager sharedAccessManager] speakWord:self.word category:self.categoryMode];
+    if (self.categoryMode == kSCHDictionaryYoungReader) {
+        [[SCHDictionaryAccessManager sharedAccessManager] speakYoungerWordDefinition:self.word];
+    } else {
+        [[SCHDictionaryAccessManager sharedAccessManager] speakWord:self.word category:self.categoryMode];
+    }
 }
 
 - (void)setUserInterfaceFromState
