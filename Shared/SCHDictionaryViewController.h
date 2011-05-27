@@ -29,4 +29,6 @@
 @property (nonatomic, retain) IBOutlet UILabel *bottomLabel;
 @property (nonatomic, retain) IBOutlet UIActivityIndicatorView *activityIndicator;
 
+- (IBAction) playWord;
+
 @end

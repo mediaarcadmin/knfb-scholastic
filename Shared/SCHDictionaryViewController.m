@@ -172,6 +172,11 @@
 
 }
 
+- (IBAction) playWord
+{
+    [[SCHDictionaryAccessManager sharedAccessManager] speakWord:self.word category:self.categoryMode];
+}
+
 - (void)setUserInterfaceFromState
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kSCHDictionaryDownloadPercentageUpdate object:nil];
