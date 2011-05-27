@@ -13,10 +13,18 @@
 #import "SCHBookManager.h"
 #import "SCHDictionaryEntry.h"
 
+@interface SCHDictionaryAccessManager ()
+
+@property (nonatomic, copy) NSString *youngDictionaryCSS;
+@property (nonatomic, copy) NSString *oldDictionaryCSS;
+
+@end
 
 @implementation SCHDictionaryAccessManager
 
 @synthesize dictionaryAccessQueue;
+@synthesize youngDictionaryCSS;
+@synthesize oldDictionaryCSS;
 
 #pragma mark -
 #pragma mark Default Manager Object
@@ -29,6 +37,14 @@ static SCHDictionaryAccessManager *sharedManager = nil;
 		sharedManager = [[SCHDictionaryAccessManager alloc] init];
 		
         sharedManager.dictionaryAccessQueue = dispatch_queue_create("com.scholastic.DictionaryAccessQueue", NULL);
+        
+        sharedManager.youngDictionaryCSS = [NSString stringWithContentsOfFile:[[[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryDirectory] stringByAppendingPathComponent:@"YoungDictionary.css"]
+                                                                     encoding:NSUTF8StringEncoding 
+                                                                        error:nil];
+
+        sharedManager.oldDictionaryCSS = [NSString stringWithContentsOfFile:[[[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryDirectory] stringByAppendingPathComponent:@"OldDictionary.css"]
+                                                                   encoding:NSUTF8StringEncoding 
+                                                                      error:nil];
 	} 
 	
 	return sharedManager;
@@ -39,6 +55,8 @@ static SCHDictionaryAccessManager *sharedManager = nil;
     if (dictionaryAccessQueue) {
         dispatch_release(dictionaryAccessQueue);
         dictionaryAccessQueue = nil;
+        [youngDictionaryCSS release], youngDictionaryCSS = nil;
+        [oldDictionaryCSS release], oldDictionaryCSS = nil;
     }
     [super dealloc];
 }
@@ -69,6 +87,8 @@ static SCHDictionaryAccessManager *sharedManager = nil;
                    [NSCharacterSet punctuationCharacterSet]];
     trimmedWord = [trimmedWord lowercaseString];
     
+    
+    // fetch the word form from core data
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     // Edit the entity name as appropriate.
     NSEntityDescription *entity = [NSEntityDescription entityForName:kSCHDictionaryWordForm 
@@ -106,6 +126,8 @@ static SCHDictionaryAccessManager *sharedManager = nil;
     results = nil;
     [[[SCHBookManager sharedBookManager] managedObjectContextForCurrentThread] refreshObject:wordForm mergeChanges:YES];
     
+    
+    // fetch the dictionary entry
     fetchRequest = [[NSFetchRequest alloc] init];
     
     entity = [NSEntityDescription entityForName:kSCHDictionaryEntry
@@ -143,20 +165,20 @@ static SCHDictionaryAccessManager *sharedManager = nil;
     
     NSLog(@"Dictionary entry: %@ %@ %@ %@", entry.baseWordID, entry.word, entry.category, [entry.fileOffset stringValue]);
     
+    
+    // use the offset to fetch the HTML from entry table
     results = nil;
     
     long offset = [entry.fileOffset longValue];
     
     __block NSString *result = nil;
     
-    SCHDictionaryDownloadManager *dictManager = [SCHDictionaryDownloadManager sharedDownloadManager];
-    
-    NSString *filePath = [[dictManager dictionaryTextFilesDirectory] stringByAppendingPathComponent:@"EntryTable.txt"];
-    
+    NSString *filePath = [[[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryTextFilesDirectory] stringByAppendingPathComponent:@"EntryTable.txt"];
     
     //    [self.entryTableMutationLock lock];
     dispatch_sync(self.dictionaryAccessQueue, ^{
         FILE *file = fopen([filePath UTF8String], "r");
+        
         char line[kSCHDictionaryManifestEntryEntryTableBufferSize];
         char *completeLine, *start, *entryID, *headword, *level, *entryXML;
         NSMutableData *collectLine = nil;   
@@ -215,7 +237,24 @@ static SCHDictionaryAccessManager *sharedManager = nil;
         }
     });
     
-    return result;
+    // write HEAD from YoungDictionary.css/OldDictionary.css
+    // remove existing head from string
+    NSRange headEnd = [result rangeOfString:@"</head>" options:NSCaseInsensitiveSearch]; 
+    
+    NSString *headless = [result substringFromIndex:headEnd.location + headEnd.length];
+    
+    NSString *cssText = nil;
+    
+    if ([category compare:kSCHDictionaryYoungReader] == NSOrderedSame) {
+        cssText = self.youngDictionaryCSS;
+    } else {
+        cssText = self.oldDictionaryCSS;
+    }
+    
+    NSString *resultWithNewHead = [NSString stringWithFormat:@"<html>%@%@", cssText, headless];
+
+    
+    return resultWithNewHead;
 }
 
 

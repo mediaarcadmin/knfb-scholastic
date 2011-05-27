@@ -160,9 +160,14 @@
 {
     NSString *htmlString = [[SCHDictionaryAccessManager sharedAccessManager] HTMLForWord:self.word category:self.categoryMode];
     
-    NSURL *baseURL = [NSURL URLWithString:[[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryDirectory]];
+    NSString *path = [NSString stringWithFormat:@"%@/Images/", 
+                      [[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryDirectory]];
+    
+    NSURL *baseURL = [NSURL fileURLWithPath:path];
     
     NSLog(@"HTML: %@", htmlString);
+    NSLog(@"Path: %@", path);
+    NSLog(@"URL: %@", [baseURL filePathURL]);
     
     [self.webView loadHTMLString:htmlString baseURL:baseURL];
 }
