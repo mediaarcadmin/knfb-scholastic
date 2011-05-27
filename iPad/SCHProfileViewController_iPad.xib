@@ -78,7 +78,7 @@
 						<bool key="IBUIAlwaysBounceVertical">YES</bool>
 						<int key="IBUISectionIndexMinimumDisplayRowCount">0</int>
 						<bool key="IBUIShowsSelectionImmediatelyOnTouchBegin">YES</bool>
-						<float key="IBUIRowHeight">55</float>
+						<float key="IBUIRowHeight">68</float>
 						<float key="IBUISectionHeaderHeight">22</float>
 						<float key="IBUISectionFooterHeight">22</float>
 					</object>
@@ -147,7 +147,7 @@
 						<int key="IBUIContentMode">7</int>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-						<string key="IBUIText">Choose your bookshelf</string>
+						<string key="IBUIText">Choose Your Bookshelf</string>
 						<object class="NSFont" key="IBUIFont">
 							<string key="NSName">Arial-BoldMT</string>
 							<double key="NSSize">24</double>
@@ -167,7 +167,7 @@
 						<int key="IBUITextAlignment">1</int>
 					</object>
 				</object>
-				<string key="NSFrameSize">{320, 78}</string>
+				<string key="NSFrameSize">{320, 72}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="1048665864"/>
@@ -221,6 +221,7 @@
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<object class="IBUIViewController" id="27370276">
 						<object class="IBUINavigationItem" key="IBUINavigationItem" id="403862072">
+							<reference key="IBUINavigationBar"/>
 							<string key="IBUITitle"/>
 							<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 						</object>
@@ -541,52 +542,89 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>adornmentGradientView</string>
+							<string>adornmentInnerBorderView</string>
+							<string>adornmentOuterBorderView</string>
+							<string>adornmentView</string>
+							<string>backgroundView</string>
 							<string>bottomField</string>
-							<string>footerForgotButton</string>
 							<string>headerTitleLabel</string>
 							<string>headerTitleView</string>
+							<string>linkButtonsContainer</string>
 							<string>tableView</string>
 							<string>titleTextLabel</string>
 							<string>topBar</string>
 							<string>topField</string>
 							<string>topShadow</string>
+							<string>welcomeContainer</string>
+							<string>welcomeLabel</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>UIView</string>
+							<string>UIView</string>
+							<string>UIView</string>
+							<string>UIView</string>
+							<string>UIImageView</string>
 							<string>UITextField</string>
-							<string>UIButton</string>
 							<string>UILabel</string>
+							<string>UIView</string>
 							<string>UIView</string>
 							<string>UITableView</string>
 							<string>UILabel</string>
 							<string>SCHCustomToolbar</string>
 							<string>UITextField</string>
 							<string>UIImageView</string>
+							<string>UIView</string>
+							<string>UILabel</string>
 						</object>
 					</object>
 					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>adornmentGradientView</string>
+							<string>adornmentInnerBorderView</string>
+							<string>adornmentOuterBorderView</string>
+							<string>adornmentView</string>
+							<string>backgroundView</string>
 							<string>bottomField</string>
-							<string>footerForgotButton</string>
 							<string>headerTitleLabel</string>
 							<string>headerTitleView</string>
+							<string>linkButtonsContainer</string>
 							<string>tableView</string>
 							<string>titleTextLabel</string>
 							<string>topBar</string>
 							<string>topField</string>
 							<string>topShadow</string>
+							<string>welcomeContainer</string>
+							<string>welcomeLabel</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<object class="IBToOneOutletInfo">
-								<string key="name">bottomField</string>
-								<string key="candidateClassName">UITextField</string>
+								<string key="name">adornmentGradientView</string>
+								<string key="candidateClassName">UIView</string>
 							</object>
 							<object class="IBToOneOutletInfo">
-								<string key="name">footerForgotButton</string>
-								<string key="candidateClassName">UIButton</string>
+								<string key="name">adornmentInnerBorderView</string>
+								<string key="candidateClassName">UIView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">adornmentOuterBorderView</string>
+								<string key="candidateClassName">UIView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">adornmentView</string>
+								<string key="candidateClassName">UIView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">backgroundView</string>
+								<string key="candidateClassName">UIImageView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">bottomField</string>
+								<string key="candidateClassName">UITextField</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">headerTitleLabel</string>
@@ -594,6 +632,10 @@
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">headerTitleView</string>
+								<string key="candidateClassName">UIView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">linkButtonsContainer</string>
 								<string key="candidateClassName">UIView</string>
 							</object>
 							<object class="IBToOneOutletInfo">
@@ -615,6 +657,14 @@
 							<object class="IBToOneOutletInfo">
 								<string key="name">topShadow</string>
 								<string key="candidateClassName">UIImageView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">welcomeContainer</string>
+								<string key="candidateClassName">UIView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">welcomeLabel</string>
+								<string key="candidateClassName">UILabel</string>
 							</object>
 						</object>
 					</object>
@@ -640,6 +690,7 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>backgroundView</string>
 							<string>containerView</string>
+							<string>customNavigationBar</string>
 							<string>headerView</string>
 							<string>loginPasswordController</string>
 							<string>profilePasswordController</string>
@@ -650,6 +701,7 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>UIImageView</string>
 							<string>UIView</string>
+							<string>SCHCustomNavigationBar</string>
 							<string>UIView</string>
 							<string>SCHLoginPasswordViewController</string>
 							<string>SCHLoginPasswordViewController</string>
@@ -663,6 +715,7 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>backgroundView</string>
 							<string>containerView</string>
+							<string>customNavigationBar</string>
 							<string>headerView</string>
 							<string>loginPasswordController</string>
 							<string>profilePasswordController</string>
@@ -678,6 +731,10 @@
 							<object class="IBToOneOutletInfo">
 								<string key="name">containerView</string>
 								<string key="candidateClassName">UIView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">customNavigationBar</string>
+								<string key="candidateClassName">SCHCustomNavigationBar</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">headerView</string>

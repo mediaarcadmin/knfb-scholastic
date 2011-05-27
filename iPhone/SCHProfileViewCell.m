@@ -8,7 +8,7 @@
 
 #import "SCHProfileViewCell.h"
 
-static const CGFloat kProfileViewCellButtonWidth = 200.0f;
+static const CGFloat kProfileViewCellButtonWidth = 296.0f;
 
 @implementation SCHProfileViewCell
 
@@ -25,7 +25,7 @@ static const CGFloat kProfileViewCellButtonWidth = 200.0f;
         self.selectionStyle = UITableViewCellSelectionStyleNone;
 
         UIImage *bgImage = [UIImage imageNamed:@"button-blue"];
-        UIImage *cellBGImage = [bgImage stretchableImageWithLeftCapWidth:4 topCapHeight:0];
+        UIImage *cellBGImage = [bgImage stretchableImageWithLeftCapWidth:15 topCapHeight:0];
         CGRect buttonFrame = CGRectMake(ceilf((CGRectGetWidth(self.contentView.bounds) - kProfileViewCellButtonWidth) / 2.0f), 
                                         ceilf((CGRectGetHeight(self.contentView.bounds) - bgImage.size.height) / 2.0f), 
                                         kProfileViewCellButtonWidth, 
@@ -33,17 +33,18 @@ static const CGFloat kProfileViewCellButtonWidth = 200.0f;
         
         cellButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
         [cellButton setBackgroundImage:cellBGImage forState:UIControlStateNormal];
-        cellButton.backgroundColor = [UIColor yellowColor];
+        cellButton.backgroundColor = [UIColor clearColor];
         [cellButton setFrame:buttonFrame];
         [cellButton setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin];
         [cellButton addTarget:self 
                        action:@selector(pressed:) 
              forControlEvents:UIControlEventTouchUpInside];
         
-        [cellButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        [cellButton setTitleShadowColor:nil forState:UIControlStateNormal];
+        [cellButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [cellButton setTitleShadowColor:[UIColor colorWithWhite:0 alpha:0.5f] forState:UIControlStateNormal];
 
-        cellButton.titleLabel.font = [UIFont fontWithName:@"Arial-BoldMT" size:17.0f];
+        cellButton.titleLabel.font = [UIFont fontWithName:@"Arial-BoldMT" size:26.0f];
+        cellButton.titleLabel.shadowOffset = CGSizeMake(0, -1);
         cellButton.titleLabel.minimumFontSize = 14;
         cellButton.titleLabel.adjustsFontSizeToFitWidth = YES;
         cellButton.titleLabel.textAlignment = UITextAlignmentCenter;
