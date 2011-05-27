@@ -514,6 +514,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
         case SCHDictionaryProcessingStateReady:
         {
             NSLog(@"Dictionary is ready.");
+            [[SCHDictionaryAccessManager sharedAccessManager] updateOnReady];
             break;
         }
 		default:

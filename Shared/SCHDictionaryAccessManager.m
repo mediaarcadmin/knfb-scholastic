@@ -7,16 +7,31 @@
 //
 
 #import "SCHDictionaryAccessManager.h"
-#import "SCHDictionaryDownloadManager.h"
+#import <AVFoundation/AVFoundation.h>
 #import <CoreData/CoreData.h>
+#import "SCHDictionaryDownloadManager.h"
 #import "SCHDictionaryWordForm.h"
 #import "SCHBookManager.h"
 #import "SCHDictionaryEntry.h"
 
+@interface SCHDictionaryAccessManager ()
+
+@property (nonatomic, copy) NSString *youngDictionaryCSS;
+@property (nonatomic, copy) NSString *oldDictionaryCSS;
+@property (nonatomic, retain) AVAudioPlayer *player;
+
+// SCHDictionaryEntry object for a word
+- (SCHDictionaryEntry *) entryForWord: (NSString *) dictionaryWord category: (NSString *) category;
+- (SCHDictionaryWordForm *) wordFormForBaseWord: (NSString *) baseWord category: (NSString *) category;
+
+@end
 
 @implementation SCHDictionaryAccessManager
 
 @synthesize dictionaryAccessQueue;
+@synthesize youngDictionaryCSS;
+@synthesize oldDictionaryCSS;
+@synthesize player;
 
 #pragma mark -
 #pragma mark Default Manager Object
@@ -29,9 +44,19 @@ static SCHDictionaryAccessManager *sharedManager = nil;
 		sharedManager = [[SCHDictionaryAccessManager alloc] init];
 		
         sharedManager.dictionaryAccessQueue = dispatch_queue_create("com.scholastic.DictionaryAccessQueue", NULL);
+        
 	} 
 	
 	return sharedManager;
+}
+
+- (id) init
+{
+    if ((self = [super init])) {
+        [self updateOnReady];
+    }
+    
+    return self;
 }
 
 - (void) dealloc
@@ -39,14 +64,40 @@ static SCHDictionaryAccessManager *sharedManager = nil;
     if (dictionaryAccessQueue) {
         dispatch_release(dictionaryAccessQueue);
         dictionaryAccessQueue = nil;
+        [youngDictionaryCSS release], youngDictionaryCSS = nil;
+        [oldDictionaryCSS release], oldDictionaryCSS = nil;
+        [player release], player = nil;
     }
     [super dealloc];
 }
 
+- (void) updateOnReady
+{
+    self.youngDictionaryCSS = [NSString stringWithContentsOfFile:[[[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryDirectory] stringByAppendingPathComponent:@"YoungDictionary.css"]
+                                                                 encoding:NSUTF8StringEncoding 
+                                                                    error:nil];
+    
+    self.oldDictionaryCSS = [NSString stringWithContentsOfFile:[[[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryDirectory] stringByAppendingPathComponent:@"OldDictionary.css"]
+                                                               encoding:NSUTF8StringEncoding 
+                                                                  error:nil];
+ 
+    // prime the audio player - eliminates delay on playing of word
+    NSString *mp3Path = [NSString stringWithFormat:@"%@/Pronunciation/pron_a.mp3", 
+                         [[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryDirectory]];
+    
+    NSURL *url = [NSURL fileURLWithPath:mp3Path];
+    
+    NSError *error;
+    self.player = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:&error];
+    [self.player prepareToPlay];
+    self.player = nil;
+}
+
+
 #pragma mark -
 #pragma mark Dictionary Definition Methods
 
-- (NSString *) HTMLForWord: (NSString *) dictionaryWord category: (NSString *) category
+- (SCHDictionaryEntry *) entryForWord: (NSString *) dictionaryWord category: (NSString *) category
 {
     if ([[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryProcessingState] != SCHDictionaryProcessingStateReady) {
         NSLog(@"Dictionary is not ready yet!");
@@ -69,58 +120,34 @@ static SCHDictionaryAccessManager *sharedManager = nil;
                    [NSCharacterSet punctuationCharacterSet]];
     trimmedWord = [trimmedWord lowercaseString];
     
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    // Edit the entity name as appropriate.
-    NSEntityDescription *entity = [NSEntityDescription entityForName:kSCHDictionaryWordForm 
-											  inManagedObjectContext:[[SCHBookManager sharedBookManager] managedObjectContextForCurrentThread]];
-    [fetchRequest setEntity:entity];
-    entity = nil;
     
-    NSPredicate *pred = [NSPredicate predicateWithFormat:@"word == %@", trimmedWord];
+    // fetch the word form from core data
+    SCHDictionaryWordForm *wordForm = [self wordFormForBaseWord:trimmedWord category:category];
     
-    [fetchRequest setPredicate:pred];
-    pred = nil;
+    if (!wordForm) {
+        return nil;
+    }
     
-	NSError *error = nil;				
-	NSArray *results = [[[SCHBookManager sharedBookManager] managedObjectContextForCurrentThread] executeFetchRequest:fetchRequest error:&error];
-	
-    [fetchRequest release], fetchRequest = nil;
-	
-	if (error) {
-		NSLog(@"error when retrieving word %@: %@", dictionaryWord, [error localizedDescription]);
-		return nil;
-	}
-	
-	if (!results || [results count] != 1) {
-        int resultCount = -1;
-        if (results) {
-            resultCount = [results count];
-        }
-        
-		NSLog(@"error when retrieving word %@: %d results retrieved.", dictionaryWord, resultCount);
-		return nil;
-	}
-    
-    
-    SCHDictionaryWordForm *wordForm = [results objectAtIndex:0];
-    results = nil;
     [[[SCHBookManager sharedBookManager] managedObjectContextForCurrentThread] refreshObject:wordForm mergeChanges:YES];
     
-    fetchRequest = [[NSFetchRequest alloc] init];
     
-    entity = [NSEntityDescription entityForName:kSCHDictionaryEntry
+    // fetch the dictionary entry
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    
+    NSEntityDescription *entity = [NSEntityDescription entityForName:kSCHDictionaryEntry
                          inManagedObjectContext:[[SCHBookManager sharedBookManager] managedObjectContextForCurrentThread]];
     
     [fetchRequest setEntity:entity];
     
-    pred = [NSPredicate predicateWithFormat:@"baseWordID == %@ AND category == %@", wordForm.baseWordID, category];
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"baseWordID == %@ AND category == %@", wordForm.baseWordID, category];
     
-    NSLog(@"attempting to get dictionary entry for %@, category %@", wordForm.baseWordID, category);
+//    NSLog(@"attempting to get dictionary entry for %@, category %@", wordForm.baseWordID, category);
     
     [fetchRequest setPredicate:pred];
-    pred = nil;
     
-	results = [[[SCHBookManager sharedBookManager] managedObjectContextForCurrentThread] executeFetchRequest:fetchRequest error:&error];
+    NSError *error = nil;
+    
+	NSArray *results = [[[SCHBookManager sharedBookManager] managedObjectContextForCurrentThread] executeFetchRequest:fetchRequest error:&error];
 	
 	[fetchRequest release];
 	
@@ -141,22 +168,96 @@ static SCHDictionaryAccessManager *sharedManager = nil;
     
     SCHDictionaryEntry *entry = [results objectAtIndex:0];
     
-    NSLog(@"Dictionary entry: %@ %@ %@ %@", entry.baseWordID, entry.word, entry.category, [entry.fileOffset stringValue]);
+    return entry;
+}
+
+- (SCHDictionaryWordForm *) wordFormForBaseWord: (NSString *) baseWord category: (NSString *) category
+{
+    if ([[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryProcessingState] != SCHDictionaryProcessingStateReady) {
+        NSLog(@"Dictionary is not ready yet!");
+        return nil;
+    }
     
-    results = nil;
+    // if the category isn't YD or OD, return
+    if (!category ||
+        ([category compare:kSCHDictionaryYoungReader] != NSOrderedSame && 
+         [category compare:kSCHDictionaryOlderReader] != NSOrderedSame)) 
+    {
+        NSLog(@"Warning: unrecognised category %@ in HTMLForWord.", category);
+        return nil;
+    }
     
+    // fetch the word form from core data
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    // Edit the entity name as appropriate.
+    NSEntityDescription *entity = [NSEntityDescription entityForName:kSCHDictionaryWordForm 
+											  inManagedObjectContext:[[SCHBookManager sharedBookManager] managedObjectContextForCurrentThread]];
+    [fetchRequest setEntity:entity];
+    entity = nil;
+    
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"word == %@", baseWord];
+    
+    [fetchRequest setPredicate:pred];
+    pred = nil;
+    
+	NSError *error = nil;				
+	NSArray *results = [[[SCHBookManager sharedBookManager] managedObjectContextForCurrentThread] executeFetchRequest:fetchRequest error:&error];
+	
+    [fetchRequest release], fetchRequest = nil;
+	
+	if (error) {
+		NSLog(@"error when retrieving word %@: %@", baseWord, [error localizedDescription]);
+		return nil;
+	}
+    
+    for (SCHDictionaryWordForm *form in results) {
+        NSLog(@"Word: %@, Root: %@ Category: %@", form.word, form.rootWord, form.category);
+    }
+    
+	if (!results || [results count] < 1) {
+        int resultCount = -1;
+        if (results) {
+            resultCount = [results count];
+        }
+        
+		NSLog(@"error when retrieving word %@: %d results retrieved.", baseWord, resultCount);
+        
+		return nil;
+	}
+    
+    
+    SCHDictionaryWordForm *wordForm = [results objectAtIndex:0];
+    return wordForm;
+}
+
+- (NSString *) HTMLForWord: (NSString *) dictionaryWord category: (NSString *) category
+{
+    if ([[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryProcessingState] != SCHDictionaryProcessingStateReady) {
+        NSLog(@"Dictionary is not ready yet!");
+        return nil;
+    }
+    
+    // if the category isn't YD or OD, return
+    if (!category ||
+        ([category compare:kSCHDictionaryYoungReader] != NSOrderedSame && 
+         [category compare:kSCHDictionaryOlderReader] != NSOrderedSame)) 
+    {
+        NSLog(@"Warning: unrecognised category %@ in HTMLForWord.", category);
+        return nil;
+    }
+    
+    SCHDictionaryEntry *entry = [self entryForWord:dictionaryWord category:category];
+    
+    // use the offset to fetch the HTML from entry table
     long offset = [entry.fileOffset longValue];
     
     __block NSString *result = nil;
     
-    SCHDictionaryDownloadManager *dictManager = [SCHDictionaryDownloadManager sharedDownloadManager];
+    NSString *filePath = [[[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryTextFilesDirectory] stringByAppendingPathComponent:@"EntryTable.txt"];
     
-    NSString *filePath = [[dictManager dictionaryTextFilesDirectory] stringByAppendingPathComponent:@"EntryTable.txt"];
-    
-    
-    //    [self.entryTableMutationLock lock];
     dispatch_sync(self.dictionaryAccessQueue, ^{
         FILE *file = fopen([filePath UTF8String], "r");
+        
         char line[kSCHDictionaryManifestEntryEntryTableBufferSize];
         char *completeLine, *start, *entryID, *headword, *level, *entryXML;
         NSMutableData *collectLine = nil;   
@@ -215,7 +316,73 @@ static SCHDictionaryAccessManager *sharedManager = nil;
         }
     });
     
-    return result;
+    // write HEAD from YoungDictionary.css/OldDictionary.css
+    // remove existing head from string
+    NSRange headEnd = [result rangeOfString:@"</head>" options:NSCaseInsensitiveSearch]; 
+    
+    NSString *headless = [result substringFromIndex:headEnd.location + headEnd.length];
+    
+    NSString *cssText = nil;
+    
+    if ([category compare:kSCHDictionaryYoungReader] == NSOrderedSame) {
+        cssText = self.youngDictionaryCSS;
+    } else {
+        cssText = self.oldDictionaryCSS;
+    }
+    
+    NSString *resultWithNewHead = [NSString stringWithFormat:@"<html>%@%@", cssText, headless];
+
+    
+    return resultWithNewHead;
+}
+
+- (void) speakWord: (NSString *) dictionaryWord category: (NSString *) category
+{
+    
+    if ([[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryProcessingState] != SCHDictionaryProcessingStateReady) {
+        NSLog(@"Dictionary is not ready yet!");
+        return;
+    }
+    
+    // if the category isn't YD or OD, return
+    if (!category ||
+        ([category compare:kSCHDictionaryYoungReader] != NSOrderedSame && 
+         [category compare:kSCHDictionaryOlderReader] != NSOrderedSame)) 
+    {
+        NSLog(@"Warning: unrecognised category %@ in HTMLForWord.", category);
+        return;
+    }
+    
+    SCHDictionaryEntry *entry = [self entryForWord:dictionaryWord category:category];
+    
+    // if no result is returned, don't try
+    if (!entry) {
+        return;
+    }
+    
+//    NSLog(@"Dictionary entry: %@ %@ %@ %@", entry.baseWordID, entry.word, entry.category, [entry.fileOffset stringValue]);
+    
+    NSString *mp3Path = [NSString stringWithFormat:@"%@/Pronunciation/pron_%@.mp3", 
+                      [[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryDirectory], entry.word];
+
+    NSURL *url = [NSURL fileURLWithPath:mp3Path];
+
+    NSError *error;
+    
+    if (self.player) {
+        [self.player stop];
+        self.player = nil;
+    }
+    
+    self.player = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:&error];
+	self.player.numberOfLoops = 1;
+    
+	if (self.player == nil) {
+		NSLog(@"Error playing word text: %@", [error localizedDescription]);
+    } else {
+		[self.player play];
+    }
+
 }
 
 
