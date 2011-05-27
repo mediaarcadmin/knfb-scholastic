@@ -47,16 +47,7 @@ static const CGFloat kProfileViewInsetPadding = 16.0f;
 @synthesize headerTitleLabel;
 @synthesize headerTitleView;
 @synthesize tableView;
-@synthesize titleTextLabel;
-@synthesize welcomeContainer;
-@synthesize welcomeLabel;
-
-@synthesize linkButtonsContainer;
-
-@synthesize adornmentView;
-@synthesize adornmentGradientView;
-@synthesize adornmentInnerBorderView;
-@synthesize adornmentOuterBorderView;
+@synthesize forgotButton;
 
 #pragma mark - Object Lifecycle
 
@@ -72,17 +63,7 @@ static const CGFloat kProfileViewInsetPadding = 16.0f;
     [headerTitleLabel release], headerTitleLabel = nil;
     [headerTitleView release], headerTitleView = nil;
     [tableView release], tableView = nil;
-    [titleTextLabel release], titleTextLabel = nil;
-    [welcomeContainer release], welcomeContainer = nil;
-    [welcomeLabel release], welcomeLabel = nil;
-    
-    [linkButtonsContainer release], linkButtonsContainer = nil;
-    
-    [adornmentView release], adornmentView = nil;
-    [adornmentGradientView release], adornmentGradientView = nil;
-    [adornmentInnerBorderView release], adornmentInnerBorderView = nil;
-    [adornmentOuterBorderView release], adornmentOuterBorderView = nil;
-
+    [forgotButton release], forgotButton = nil;
 }
 
 - (void)dealloc 
@@ -108,6 +89,7 @@ static const CGFloat kProfileViewInsetPadding = 16.0f;
 {
     [super viewDidLoad];
     
+#if 0
     CGRect topViewFrame = CGRectMake(0, 0, 34, 34);
     
     UIBarButtonItem *leftBBI = nil;
@@ -121,18 +103,7 @@ static const CGFloat kProfileViewInsetPadding = 16.0f;
         // FIXME - even the width to centre the title properly - don't like this
         topViewFrame = CGRectMake(0, 0, 59, 34);
     } else if (self.controllerType == kSCHControllerLoginView) {
-        [self.welcomeLabel setText:NSLocalizedString(@"Welcome to the Scholastic eReader!", @"Welcome to the Scholastic eReader!")];
-        [self.welcomeContainer setFrame:self.topBar.bounds];
-        [self.welcomeContainer.layer setShadowOpacity:1];
-        [self.welcomeContainer.layer setShadowOffset:CGSizeMake(2, 2)];
-        [self.welcomeContainer.layer setShadowRadius:2];
-        
-        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-            [self.welcomeLabel setFont:[UIFont fontWithName:@"Arial-BoldMT" size:23]];
-        } else {
-            [self.welcomeLabel setFont:[UIFont fontWithName:@"Arial-BoldMT" size:17]];
-        }
-        leftBBI = [[[UIBarButtonItem alloc] initWithCustomView:self.welcomeContainer] autorelease];
+       
     } else {
         UIView *leftView = [[UIView alloc] initWithFrame:topViewFrame];
         leftBBI = [[[UIBarButtonItem alloc] initWithCustomView:leftView] autorelease];
@@ -182,6 +153,7 @@ static const CGFloat kProfileViewInsetPadding = 16.0f;
     [rightView release];
     
     [self.topBar setTintColor:[UIColor colorWithRed:0.832 green:0.000 blue:0.007 alpha:1.000]];
+#endif
 
     [self clearFields];
     
@@ -252,22 +224,10 @@ static const CGFloat kProfileViewInsetPadding = 16.0f;
             break;
     }
     
-    [self.topShadow setImage:[[UIImage imageNamed:@"reading-view-iphone-top-shadow.png"] stretchableImageWithLeftCapWidth:15.0f topCapHeight:0]];
-    
-
-    [self.adornmentInnerBorderView.layer setBorderWidth:3];
-    [self.adornmentInnerBorderView.layer setBorderColor:[UIColor redColor].CGColor];
-    [self.adornmentInnerBorderView.layer setCornerRadius:10.0f];
-    [self.adornmentOuterBorderView.layer setBorderWidth:1];
-    [self.adornmentOuterBorderView.layer setBorderColor:[UIColor redColor].CGColor];
-    [self.adornmentOuterBorderView.layer setCornerRadius:10.0f];    
-    [(CAGradientLayer *)self.adornmentGradientView.layer setColors:
-     [NSArray arrayWithObjects:(id)[UIColor colorWithWhite:1.000 alpha:1.000].CGColor, 
-                               (id)[UIColor colorWithRed:0.746 green:0.874 blue:0.925 alpha:1.000].CGColor, nil]];
-    [(CAGradientLayer *)self.adornmentGradientView.layer setStartPoint:CGPointMake(0, 0.5f)];
-    [(CAGradientLayer *)self.adornmentGradientView.layer setEndPoint:CGPointMake(1, 0.5f)];
-    [self.adornmentGradientView.layer setCornerRadius:10.0f];
-    [self.tableView insertSubview:self.adornmentView atIndex:0];
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        [self.view.layer setBorderColor:[UIColor blueColor].CGColor];
+        [self.view.layer setBorderWidth:1.5f];
+    }
 
 }
 
@@ -337,19 +297,6 @@ static const CGFloat kProfileViewInsetPadding = 16.0f;
     CGRect topShadowFrame = self.topShadow.frame;
     topShadowFrame.origin.y = CGRectGetMinY(self.tableView.frame);
     self.topShadow.frame = topShadowFrame;
-    
-    CGFloat adornmentHeight = 0;
-    switch (self.controllerType) {
-        case kSCHControllerPasswordOnlyView: {
-            adornmentHeight = 1 * self.tableView.rowHeight + 2 * kProfileViewInsetPadding + 2 * CGRectGetMinY(self.adornmentInnerBorderView.frame);
-        } break;
-        default: {
-            adornmentHeight = 3 * self.tableView.rowHeight + 2 * kProfileViewInsetPadding + 2 * CGRectGetMinY(self.adornmentInnerBorderView.frame);
-        } break;
-    }
-
-    CGRect adornmentFrame = CGRectMake(CGRectGetMinX(self.welcomeLabel.frame), CGRectGetHeight(self.headerTitleView.frame) - kProfileViewInsetPadding - CGRectGetMinY(self.adornmentInnerBorderView.frame), CGRectGetWidth(self.welcomeLabel.frame), adornmentHeight);
-    [self.adornmentView setFrame:adornmentFrame];
 }
 
 #pragma mark - Username and Password accessors
@@ -472,15 +419,12 @@ static const CGFloat kProfileViewInsetPadding = 16.0f;
         cellFrame.size.height = aTableView.rowHeight;
         cell.frame = cellFrame;
     }
-    
-    CGFloat cellContentsInset =  kProfileViewInsetPadding + CGRectGetMinX(self.adornmentInnerBorderView.frame) + CGRectGetMinX(self.adornmentView.frame);
 
     switch (indexPath.section) {
         case 0:
         {
             if (indexPath.row == 0 && self.controllerType != kSCHControllerPasswordOnlyView) {
                 CGRect fieldFrame = self.topField.frame;
-                fieldFrame.origin.x = cellContentsInset;
                 fieldFrame.size.height = kProfileViewCellFieldHeight;
                 fieldFrame.size.width  = kProfileViewCellFieldWidth;
                 self.topField.frame = fieldFrame;
@@ -488,7 +432,6 @@ static const CGFloat kProfileViewInsetPadding = 16.0f;
                 break;
             } else {
                 CGRect fieldFrame = self.bottomField.frame;
-                fieldFrame.origin.x = cellContentsInset;
                 fieldFrame.size.height = kProfileViewCellFieldHeight;
                 fieldFrame.size.width = kProfileViewCellFieldWidth;
                 self.bottomField.frame = fieldFrame;
@@ -498,24 +441,12 @@ static const CGFloat kProfileViewInsetPadding = 16.0f;
             break;
         }
         case 1:
-        {
-            CGRect buttonsFrame    = self.linkButtonsContainer.frame;
-            buttonsFrame.origin.x  = cellContentsInset;
-            buttonsFrame.size.width = CGRectGetWidth(cell.contentView.frame) - cellContentsInset;
-            [self.linkButtonsContainer setFrame:buttonsFrame];
-                        
-            [cell.contentView addSubview:self.linkButtonsContainer];
+        {                        
+            [cell.contentView addSubview:self.forgotButton];
             break;
         }
         case 2:
         {
-            CGRect buttonFrame = CGRectMake(CGRectGetWidth(cell.contentView.bounds) - kProfileViewCellButtonWidth - CGRectGetMinX(self.adornmentView.frame), 
-                                            0, 
-                                            kProfileViewCellButtonWidth, 
-                                            kProfileViewCellButtonHeight);
-            
-            [self.loginButton setFrame:buttonFrame];
-
             [cell.contentView addSubview:self.loginButton];
             break;
         }
@@ -525,24 +456,6 @@ static const CGFloat kProfileViewInsetPadding = 16.0f;
 }
 
 #pragma mark - UITableViewDelegate
-
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    [self.tableView insertSubview:self.adornmentView atIndex:0];
-}
-
-- (CGFloat)tableView:(UITableView *)aTableView heightForHeaderInSection:(NSInteger)section
-{
-    switch (section) {
-        case 2:
-            return kProfileViewInsetPadding * 2 + CGRectGetMinY(self.adornmentInnerBorderView.frame);
-            break;
-        default:
-            return aTableView.sectionHeaderHeight;
-            break;
-    }
-    
-}
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {

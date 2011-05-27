@@ -615,6 +615,8 @@
 		C9EFB294134F795900ADF905 /* SCHXPSURLProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = C9EFB292134F795800ADF905 /* SCHXPSURLProtocol.m */; };
 		C9F1A4D6133B507100FD984C /* libPlayReadyPK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A3D933851326D92000037111 /* libPlayReadyPK.a */; };
 		C9F1A57A133B83D100FD984C /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C9F1A579133B83D100FD984C /* libxml2.dylib */; };
+		C9F5B750138FBBB3009DE113 /* SCHUnderlinedButton.m in Sources */ = {isa = PBXBuildFile; fileRef = C9F5B74F138FBBB3009DE113 /* SCHUnderlinedButton.m */; };
+		C9F5B751138FBBB3009DE113 /* SCHUnderlinedButton.m in Sources */ = {isa = PBXBuildFile; fileRef = C9F5B74F138FBBB3009DE113 /* SCHUnderlinedButton.m */; };
 		F80FED701355DD6D00DEB3C1 /* icon-magnify.png in Resources */ = {isa = PBXBuildFile; fileRef = F80FED601355DD6D00DEB3C1 /* icon-magnify.png */; };
 		F80FED711355DD6D00DEB3C1 /* icon-magnify.png in Resources */ = {isa = PBXBuildFile; fileRef = F80FED601355DD6D00DEB3C1 /* icon-magnify.png */; };
 		F80FED721355DD6D00DEB3C1 /* icon-magnify@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F80FED611355DD6D00DEB3C1 /* icon-magnify@2x.png */; };
@@ -1074,9 +1076,9 @@
 		52E622F31358385D00245CA7 /* Themes */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Themes; path = Resources/Themes; sourceTree = "<group>"; };
 		52E622F913584EBE00245CA7 /* SCHThemeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHThemeManager.h; path = Shared/SCHThemeManager.h; sourceTree = "<group>"; };
 		52E622FA13584EBE00245CA7 /* SCHThemeManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHThemeManager.m; path = Shared/SCHThemeManager.m; sourceTree = "<group>"; };
-		52EF4E5C12E6E01C00E374F7 /* SCHLoginPasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHLoginPasswordViewController.h; sourceTree = "<group>"; };
-		52EF4E5D12E6E01C00E374F7 /* SCHLoginPasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHLoginPasswordViewController.m; sourceTree = "<group>"; };
-		52EF4E5E12E6E01C00E374F7 /* SCHLoginPasswordViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SCHLoginPasswordViewController.xib; sourceTree = "<group>"; };
+		52EF4E5C12E6E01C00E374F7 /* SCHLoginPasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHLoginPasswordViewController.h; path = iPhone/SCHLoginPasswordViewController.h; sourceTree = "<group>"; };
+		52EF4E5D12E6E01C00E374F7 /* SCHLoginPasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHLoginPasswordViewController.m; path = iPhone/SCHLoginPasswordViewController.m; sourceTree = "<group>"; };
+		52EF4E5E12E6E01C00E374F7 /* SCHLoginPasswordViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = SCHLoginPasswordViewController.xib; path = iPhone/SCHLoginPasswordViewController.xib; sourceTree = "<group>"; };
 		52EF508512E739E900E374F7 /* LibreAccessServiceSvc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LibreAccessServiceSvc.h; sourceTree = "<group>"; };
 		52EF508612E739E900E374F7 /* LibreAccessServiceSvc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LibreAccessServiceSvc.m; sourceTree = "<group>"; };
 		52EF543E12E9A5D400E374F7 /* SCHAuthenticationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAuthenticationManager.h; path = Shared/SCHAuthenticationManager.h; sourceTree = "<group>"; };
@@ -1544,6 +1546,8 @@
 		C9EFB291134F795800ADF905 /* SCHXPSURLProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHXPSURLProtocol.h; path = Shared/SCHXPSURLProtocol.h; sourceTree = SOURCE_ROOT; };
 		C9EFB292134F795800ADF905 /* SCHXPSURLProtocol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHXPSURLProtocol.m; path = Shared/SCHXPSURLProtocol.m; sourceTree = SOURCE_ROOT; };
 		C9F1A579133B83D100FD984C /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
+		C9F5B74E138FBBB3009DE113 /* SCHUnderlinedButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHUnderlinedButton.h; path = Shared/SCHUnderlinedButton.h; sourceTree = "<group>"; };
+		C9F5B74F138FBBB3009DE113 /* SCHUnderlinedButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHUnderlinedButton.m; path = Shared/SCHUnderlinedButton.m; sourceTree = "<group>"; };
 		F80FED601355DD6D00DEB3C1 /* icon-magnify.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-magnify.png"; path = "Resources/icon-magnify.png"; sourceTree = "<group>"; };
 		F80FED611355DD6D00DEB3C1 /* icon-magnify@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-magnify@2x.png"; path = "Resources/icon-magnify@2x.png"; sourceTree = "<group>"; };
 		F80FED641355DD6D00DEB3C1 /* icon-play-active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-play-active.png"; path = "Resources/icon-play-active.png"; sourceTree = "<group>"; };
@@ -1751,9 +1755,6 @@
 				529385B212DF231800045B44 /* SCHSettingsViewController.h */,
 				529385B312DF231800045B44 /* SCHSettingsViewController.m */,
 				529385B412DF231800045B44 /* SCHSettingsViewController.xib */,
-				52EF4E5C12E6E01C00E374F7 /* SCHLoginPasswordViewController.h */,
-				52EF4E5D12E6E01C00E374F7 /* SCHLoginPasswordViewController.m */,
-				52EF4E5E12E6E01C00E374F7 /* SCHLoginPasswordViewController.xib */,
 				F8898901135877B100D236ED /* SCHProfileViewCell.h */,
 				F8898902135877B100D236ED /* SCHProfileViewCell.m */,
 				A38CF1FD1374504F00EABF43 /* SCHAboutViewController.h */,
@@ -1768,6 +1769,7 @@
 		28EEBF621118D79A00187D67 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				C9F5B74D138FB057009DE113 /* Login and Password Controller */,
 				F8DC5655138C09DB00F27146 /* Reading View Controllers */,
 				526A8A42138510CD00101A96 /* AudioBookPlayer */,
 				F8509E8A12F0621E00197EB5 /* XPS Provider */,
@@ -2810,6 +2812,18 @@
 			name = XPS;
 			sourceTree = "<group>";
 		};
+		C9F5B74D138FB057009DE113 /* Login and Password Controller */ = {
+			isa = PBXGroup;
+			children = (
+				52EF4E5C12E6E01C00E374F7 /* SCHLoginPasswordViewController.h */,
+				52EF4E5D12E6E01C00E374F7 /* SCHLoginPasswordViewController.m */,
+				52EF4E5E12E6E01C00E374F7 /* SCHLoginPasswordViewController.xib */,
+				C9F5B74E138FBBB3009DE113 /* SCHUnderlinedButton.h */,
+				C9F5B74F138FBBB3009DE113 /* SCHUnderlinedButton.m */,
+			);
+			name = "Login and Password Controller";
+			sourceTree = "<group>";
+		};
 		F84CE153134C68E50044729E /* Authentication Manager */ = {
 			isa = PBXGroup;
 			children = (
@@ -3799,6 +3813,7 @@
 				F8DC566D138C0C2E00F27146 /* SCHThemePickerViewController.m in Sources */,
 				F8DC567F138C150F00F27146 /* SCHDictionaryViewController.m in Sources */,
 				F88A7F7F138D151D006A7D12 /* SCHDictionaryAccessManager.m in Sources */,
+				C9F5B750138FBBB3009DE113 /* SCHUnderlinedButton.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3978,6 +3993,7 @@
 				F8DC566E138C0C2E00F27146 /* SCHThemePickerViewController.m in Sources */,
 				F8DC5680138C150F00F27146 /* SCHDictionaryViewController.m in Sources */,
 				F88A7F80138D151E006A7D12 /* SCHDictionaryAccessManager.m in Sources */,
+				C9F5B751138FBBB3009DE113 /* SCHUnderlinedButton.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

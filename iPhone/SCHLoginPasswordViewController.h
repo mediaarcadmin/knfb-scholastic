@@ -56,24 +56,16 @@ typedef void(^SCHActionBlock)(void);
 #pragma mark - Interface Builder
 
 // Interface Builder
-@property (nonatomic, retain) IBOutlet UITextField *topField;
-@property (nonatomic, retain) IBOutlet UITextField *bottomField;
 @property (nonatomic, retain) IBOutlet SCHCustomToolbar *topBar;
 @property (nonatomic, retain) IBOutlet UIImageView *topShadow;
 @property (nonatomic, retain) IBOutlet UIImageView *backgroundView;
+@property (nonatomic, retain) IBOutlet UITableView *tableView;
+
 @property (nonatomic, retain) IBOutlet UILabel *headerTitleLabel;
 @property (nonatomic, retain) IBOutlet UIView *headerTitleView;
-@property (nonatomic, retain) IBOutlet UITableView *tableView;
-@property (nonatomic, retain) IBOutlet UILabel *titleTextLabel;
-@property (nonatomic, retain) IBOutlet UIView *welcomeContainer;
-@property (nonatomic, retain) IBOutlet UILabel *welcomeLabel;
-
-@property (nonatomic, retain) IBOutlet UIView *linkButtonsContainer;
-
-@property (nonatomic, retain) IBOutlet UIView *adornmentView;
-@property (nonatomic, retain) IBOutlet UIView *adornmentGradientView;
-@property (nonatomic, retain) IBOutlet UIView *adornmentInnerBorderView;
-@property (nonatomic, retain) IBOutlet UIView *adornmentOuterBorderView;
+@property (nonatomic, retain) IBOutlet UITextField *topField;
+@property (nonatomic, retain) IBOutlet UITextField *bottomField;
+@property (nonatomic, retain) IBOutlet UIButton *forgotButton;
 
 
 // IBAction - the "Login" or "Go" button action
