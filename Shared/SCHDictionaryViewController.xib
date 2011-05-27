@@ -202,7 +202,7 @@
 					<object class="IBUILabel" id="473539231">
 						<reference key="NSNextResponder" ref="1024919703"/>
 						<int key="NSvFlags">306</int>
-						<string key="NSFrame">{{0, 33}, {320, 129}}</string>
+						<string key="NSFrame">{{0, 33}, {320, 77}}</string>
 						<reference key="NSSuperview" ref="1024919703"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="790477103"/>
@@ -211,10 +211,10 @@
 						<int key="IBUIContentMode">7</int>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-						<string key="IBUIText">The dictionary is currently downloading from the Internet.</string>
-						<object class="NSFont" key="IBUIFont" id="1060736920">
-							<string key="NSName">Helvetica</string>
-							<double key="NSSize">17</double>
+						<string key="IBUIText">Downloading</string>
+						<object class="NSFont" key="IBUIFont">
+							<string key="NSName">Helvetica-Bold</string>
+							<double key="NSSize">22</double>
 							<int key="NSfFlags">16</int>
 						</object>
 						<object class="NSColor" key="IBUITextColor" id="212163164">
@@ -231,7 +231,7 @@
 					<object class="IBUILabel" id="409620124">
 						<reference key="NSNextResponder" ref="1024919703"/>
 						<int key="NSvFlags">282</int>
-						<string key="NSFrame">{{0, 267}, {320, 129}}</string>
+						<string key="NSFrame">{{20, 232}, {281, 159}}</string>
 						<reference key="NSSuperview" ref="1024919703"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView"/>
@@ -240,8 +240,12 @@
 						<int key="IBUIContentMode">7</int>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-						<string key="IBUIText">You can wait for it to finish, or look up your word later.</string>
-						<reference key="IBUIFont" ref="1060736920"/>
+						<string key="IBUIText">The dictionary is currently downloading from the Internet. You can wait for it to finish, or look up your word later.</string>
+						<object class="NSFont" key="IBUIFont">
+							<string key="NSName">Helvetica</string>
+							<double key="NSSize">17</double>
+							<int key="NSfFlags">16</int>
+						</object>
 						<reference key="IBUITextColor" ref="212163164"/>
 						<nil key="IBUIHighlightedColor"/>
 						<int key="IBUIBaselineAdjustment">1</int>
@@ -253,7 +257,7 @@
 					<object class="IBUIProgressView" id="790477103">
 						<reference key="NSNextResponder" ref="1024919703"/>
 						<int key="NSvFlags">-2147483347</int>
-						<string key="NSFrame">{{20, 203}, {280, 9}}</string>
+						<string key="NSFrame">{{20, 163}, {280, 9}}</string>
 						<reference key="NSSuperview" ref="1024919703"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="310887774"/>
@@ -263,7 +267,7 @@
 					<object class="IBUIActivityIndicatorView" id="310887774">
 						<reference key="NSNextResponder" ref="1024919703"/>
 						<int key="NSvFlags">301</int>
-						<string key="NSFrame">{{142, 189}, {37, 37}}</string>
+						<string key="NSFrame">{{142, 149}, {37, 37}}</string>
 						<reference key="NSSuperview" ref="1024919703"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="409620124"/>
@@ -276,7 +280,7 @@
 				<string key="NSFrameSize">{320, 416}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
-				<reference key="NSNextKeyView"/>
+				<reference key="NSNextKeyView" ref="473539231"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
 					<bytes key="NSWhite">MQA</bytes>

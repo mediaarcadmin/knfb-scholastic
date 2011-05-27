@@ -97,6 +97,8 @@
         [self loadWord];
     }    
     
+    [self.topBar setTintColor:[UIColor colorWithWhite:0.7f alpha:1.0f]];
+    
 }
 
 #pragma mark - Rotation
@@ -176,14 +178,14 @@
     
     
     if (!wifiAvailable) {
-        self.topLabel.text = @"We need a Wifi connection to download the dictionary.";
-        self.bottomLabel.text = @"Please connect to a Wifi network.";
+        self.topLabel.text = @"Wifi Connection Needed";
+        self.bottomLabel.text = @"We need a Wifi connection to download the dictionary. Please connect to a Wifi network.";
         [self.activityIndicator stopAnimating];
         self.progressBar.hidden = YES;
         return;
     } else if (!connectionIdle) {
-        self.topLabel.text = @"Books are currently downloading.";
-        self.bottomLabel.text = @"You can wait for them to finish, or look up your word later.";
+        self.topLabel.text = @"Books Downloading";
+        self.bottomLabel.text = @"Books are currently downloading. You can wait for them to finish, or look up your word later.";
         [self.activityIndicator startAnimating];
         self.progressBar.hidden = YES;
         return;
@@ -192,27 +194,34 @@
     switch (state) {
         case SCHDictionaryProcessingStateError:
         {
-            self.topLabel.text = @"There was an error downloading the dictionary.";
-            self.bottomLabel.text = @"Please try again later.";
+            self.topLabel.text = @"Error";
+            self.bottomLabel.text = @"There was an error downloading the dictionary. Please try again later.";
             [self.activityIndicator stopAnimating];
+            self.progressBar.hidden = YES;
+            break;
+        }
+        case SCHDictionaryProcessingStateNeedsUnzip:
+        case SCHDictionaryProcessingStateNeedsParse:
+        {
+            self.topLabel.text = @"Processing";
+            self.bottomLabel.text = @"The dictionary will be ready shortly. Please wait.";
+            [self.activityIndicator startAnimating];
             self.progressBar.hidden = YES;
             break;
         }
         case SCHDictionaryProcessingStateManifestVersionCheck:
         case SCHDictionaryProcessingStateNeedsManifest:
-        case SCHDictionaryProcessingStateNeedsUnzip:
-        case SCHDictionaryProcessingStateNeedsParse:
         {
-            self.topLabel.text = @"The dictionary is currently downloading from the Internet.";
-            self.bottomLabel.text = @"You can wait for it to finish, or look up your word later.";
+            self.topLabel.text = @"Downloading";
+            self.bottomLabel.text = @"The dictionary is currently downloading from the Internet. You can wait for it to finish, or look up your word later.";
             [self.activityIndicator startAnimating];
             self.progressBar.hidden = YES;
             break;
         }
         case SCHDictionaryProcessingStateNeedsDownload:
         {
-            self.topLabel.text = @"The dictionary is currently downloading from the Internet.";
-            self.bottomLabel.text = @"You can wait for it to finish, or look up your word later.";
+            self.topLabel.text = @"Downloading";
+            self.bottomLabel.text = @"The dictionary is currently downloading from the Internet. You can wait for it to finish, or look up your word later.";
             [self.activityIndicator startAnimating];
             self.progressBar.hidden = YES;
             [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(downloadPercentageUpdate:) name:kSCHDictionaryDownloadPercentageUpdate object:nil];
@@ -222,6 +231,7 @@
         {
             [self.downloadProgressView removeFromSuperview];
             [self loadWord];
+            break;
         }
         default:
             break;
