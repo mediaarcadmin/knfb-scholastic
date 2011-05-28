@@ -10,22 +10,14 @@
 #import <QuartzCore/QuartzCore.h>
 #import "SCHCustomToolbar.h"
 
-static const CGFloat kProfileViewCellFieldWidth = 232.0f;
-static const CGFloat kProfileViewCellFieldHeight = 44.0f;
-static const CGFloat kProfileViewCellButtonWidth = 162.0;
-static const CGFloat kProfileViewCellButtonHeight = 44.0f;
-static const CGFloat kProfileViewInsetPadding = 16.0f;
-
 #pragma mark - Class Extension
 
 @interface SCHLoginPasswordViewController ()
 
 - (void)releaseViewObjects;
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation;
-- (void)scrollToTextField:(UITextField *)textField animated: (BOOL) animated;
+- (void)makeVisibleTextField:(UITextField *)textField;
 - (IBAction)openScholasticURLInSafari:(id)sender;
-
-@property (nonatomic, retain) UIButton *loginButton;
 
 @end
 
@@ -39,36 +31,31 @@ static const CGFloat kProfileViewInsetPadding = 16.0f;
 
 @synthesize topField;
 @synthesize bottomField;
-@synthesize loginButton;
 @synthesize spinner;
 @synthesize topBar;
-@synthesize topShadow;
-@synthesize backgroundView;
-@synthesize headerTitleLabel;
-@synthesize headerTitleView;
-@synthesize tableView;
-@synthesize forgotButton;
+@synthesize topBarLabel;
+@synthesize containerView;
+@synthesize scrollView;
+@synthesize loginButton;
 
 #pragma mark - Object Lifecycle
 
 - (void)releaseViewObjects
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+
 	[topField release], topField = nil;
 	[bottomField release], bottomField = nil;
-	[loginButton release], loginButton = nil;
 	[spinner release], spinner = nil;
     [topBar release], topBar = nil;
-    [topShadow release], topShadow = nil;
-    [backgroundView release], backgroundView = nil;
-    [headerTitleLabel release], headerTitleLabel = nil;
-    [headerTitleView release], headerTitleView = nil;
-    [tableView release], tableView = nil;
-    [forgotButton release], forgotButton = nil;
+    [topBarLabel release], topBarLabel = nil;
+    [containerView release], containerView = nil;
+    [scrollView release], scrollView = nil;
+    [loginButton release], loginButton = nil;
 }
 
 - (void)dealloc 
 {
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
     [actionBlock release], actionBlock = nil;
     [cancelBlock release], cancelBlock = nil;
 	
@@ -89,74 +76,6 @@ static const CGFloat kProfileViewInsetPadding = 16.0f;
 {
     [super viewDidLoad];
     
-#if 0
-    CGRect topViewFrame = CGRectMake(0, 0, 34, 34);
-    
-    UIBarButtonItem *leftBBI = nil;
-    
-    // FIXME: clean this code up and move it into nibs
-
-    if (self.controllerType == kSCHControllerPasswordOnlyView ||
-        self.controllerType == kSCHControllerDoublePasswordView) {
-        leftBBI = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelButtonAction:)] autorelease];
-
-        // FIXME - even the width to centre the title properly - don't like this
-        topViewFrame = CGRectMake(0, 0, 59, 34);
-    } else if (self.controllerType == kSCHControllerLoginView) {
-       
-    } else {
-        UIView *leftView = [[UIView alloc] initWithFrame:topViewFrame];
-        leftBBI = [[[UIBarButtonItem alloc] initWithCustomView:leftView] autorelease];
-        [leftView release];
-    }
-    
-    UIView *rightView = [[UIView alloc] initWithFrame:topViewFrame];
-    self.spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
-    self.spinner.center = CGPointMake(topViewFrame.size.width / 2 + 5, topViewFrame.size.height / 2);
-    [rightView addSubview:self.spinner];
-    [self.spinner release];
-    
-    UIImage *backImage = nil;
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        backImage = [[UIImage imageNamed:@"login-ipad-background.png"] stretchableImageWithLeftCapWidth:0 topCapHeight:20];
-    } else {
-        backImage = [[UIImage imageNamed:@"login-iphone-background.png"] stretchableImageWithLeftCapWidth:182 topCapHeight:20];
-    }
-    
-    [self.backgroundView setImage:backImage];
-    
-    if (self.controllerType == kSCHControllerLoginView) {
-    
-    UIImageView *headerImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo"]];
-    topBar.items = [NSArray arrayWithObjects:
-                    leftBBI,
-                    [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease], 
-                    [[[UIBarButtonItem alloc] initWithCustomView:rightView] autorelease],
-                    nil];
-    [headerImage release];
-        
-    } else {
-        self.titleTextLabel.text = @"Password";
-        CGRect titleFrame = self.titleTextLabel.frame;
-        titleFrame.size.width = self.topBar.frame.size.width - 40;
-        self.titleTextLabel.frame = titleFrame;
-        topBar.items = [NSArray arrayWithObjects:
-                        leftBBI,
-                        [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease], 
-                        [[[UIBarButtonItem alloc] initWithCustomView:self.titleTextLabel] autorelease],
-                        [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease], 
-                        [[[UIBarButtonItem alloc] initWithCustomView:rightView] autorelease],
-                        nil];
-    }
-    
-    
-    [rightView release];
-    
-    [self.topBar setTintColor:[UIColor colorWithRed:0.832 green:0.000 blue:0.007 alpha:1.000]];
-#endif
-
-    [self clearFields];
-    
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
         [[NSNotificationCenter defaultCenter] addObserver:self 
                                                  selector:@selector(keyboardWillShow:) 
@@ -167,68 +86,33 @@ static const CGFloat kProfileViewInsetPadding = 16.0f;
                                                  selector:@selector(keyboardWillHide:)
                                                      name:UIKeyboardWillHideNotification
                                                    object:nil];
-    }    
-    switch (self.controllerType) {
-        case kSCHControllerLoginView:
-        {
-            self.tableView.tableHeaderView = self.headerTitleView;
-            break;   
-        }
-        default:
-        {
-            // the default is to not show titles
-            float fillerHeight = 44;
-            UIView *fillerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, fillerHeight)];
-            self.tableView.tableHeaderView = fillerView;
-            [fillerView release];
-        }
     }
     
+    UIView *fillerView = nil;
     UIImage *bgImage = [UIImage imageNamed:@"button-field"];
-    UIImage *cellBGImage = [bgImage stretchableImageWithLeftCapWidth:14 topCapHeight:0];
+    UIImage *cellBGImage = [bgImage stretchableImageWithLeftCapWidth:15 topCapHeight:0];
     
-    self.topField.background = cellBGImage;
-    self.topField.leftViewMode = UITextFieldViewModeAlways;
-    UIView *fillerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 8, 8)];
-    self.topField.leftView = fillerView;
-    [fillerView release];
-    
-    cellBGImage = [bgImage stretchableImageWithLeftCapWidth:16 topCapHeight:0];
-    self.bottomField.background = cellBGImage;
-    self.bottomField.leftViewMode = UITextFieldViewModeAlways;
-    fillerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 8, 8)];
-    self.bottomField.leftView = fillerView;
-    [fillerView release];
-    
-    bgImage = [UIImage imageNamed:@"button-login"];
-    cellBGImage = [bgImage stretchableImageWithLeftCapWidth:14 topCapHeight:0];
-    
-    self.loginButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [self.loginButton setBackgroundImage:cellBGImage forState:UIControlStateNormal];
-    [self.loginButton setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin];
-    [self.loginButton addTarget:self 
-                         action:@selector(actionButtonAction:) 
-               forControlEvents:UIControlEventTouchUpInside];
-    
-    self.loginButton.titleLabel.font = [UIFont fontWithName:@"Arial-BoldMT" size:17.0f];
-
-    switch (self.controllerType) {
-        case kSCHControllerLoginView:
-            [self.loginButton setTitle:NSLocalizedString(@"Sign In", @"Sign In") forState:UIControlStateNormal];
-            break;
-        case kSCHControllerPasswordOnlyView:
-            [self.loginButton setTitle:NSLocalizedString(@"Open Bookshelf", @"Open Bookshelf") forState:UIControlStateNormal];
-            break;
-            
-        default:
-            break;
+    if (self.topField) {
+        self.topField.background = cellBGImage;
+        self.topField.leftViewMode = UITextFieldViewModeAlways;
+        fillerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 8)];
+        self.topField.leftView = fillerView;
+        [fillerView release];
     }
     
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        [self.view.layer setBorderColor:[UIColor blueColor].CGColor];
-        [self.view.layer setBorderWidth:1.5f];
+    if (self.bottomField) {
+        self.bottomField.background = cellBGImage;
+        self.bottomField.leftViewMode = UITextFieldViewModeAlways;
+        fillerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 8)];
+        self.bottomField.leftView = fillerView;
+        [fillerView release];
     }
-
+    
+    if (self.loginButton) {
+        bgImage = [UIImage imageNamed:@"button-login"];
+        cellBGImage = [bgImage stretchableImageWithLeftCapWidth:10 topCapHeight:0];
+        [self.loginButton setBackgroundImage:cellBGImage forState:UIControlStateNormal];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated 
@@ -263,40 +147,46 @@ static const CGFloat kProfileViewInsetPadding = 16.0f;
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation
 {
 
-    if (UIInterfaceOrientationIsPortrait(orientation) || UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-            [self.topBar setBackgroundImage:[UIImage imageNamed:@"login-ipad-top-toolbar.png"]];
-        } else {
-            [self.topBar setBackgroundImage:[UIImage imageNamed:@"admin-iphone-portrait-top-toolbar.png"]];
+    CGRect barFrame       = self.topBar.frame;
+    UIImage *toolbarImage = nil;
+    UIColor *borderColor  = nil;
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        barFrame.size.height = 44;
+        
+        switch (self.controllerType) {
+            case kSCHControllerPasswordOnlyView:
+            case kSCHControllerDoublePasswordView:
+            case kSCHControllerLoginView:
+                toolbarImage = [UIImage imageNamed:@"login-ipad-top-toolbar.png"];
+                borderColor  = [UIColor colorWithRed:0.396 green:0.545 blue:0.741 alpha:1.000];
+                break;
+            default:
+                toolbarImage = [UIImage imageNamed:@"admin-iphone-portrait-top-toolbar.png"];
+                borderColor  = [UIColor redColor];
+                break;
         }
-
-        CGRect barFrame = self.topBar.frame;
-        if (barFrame.size.height == 34) {
-            barFrame.size.height = 44;
-            self.topBar.frame = barFrame;
-            
-            CGRect tableFrame = self.tableView.frame;
-            tableFrame.size.height -= 10;
-            tableFrame.origin.y += 10;
-            self.tableView.frame = tableFrame;
-        }
+        
+        [self.view.layer setBorderColor:borderColor.CGColor];
+        [self.view.layer setBorderWidth:3.0f];
     } else {
-        [self.topBar setBackgroundImage:[UIImage imageNamed:@"admin-iphone-landscape-top-toolbar.png"]];
-        CGRect barFrame = self.topBar.frame;
-        if (barFrame.size.height == 44) {
-            barFrame.size.height = 34;
-            self.topBar.frame = barFrame;
-            
-            CGRect tableFrame = self.tableView.frame;
-            tableFrame.size.height += 10;
-            tableFrame.origin.y -= 10;
-            self.tableView.frame = tableFrame;
+        if (UIInterfaceOrientationIsPortrait(orientation)) {
+            toolbarImage = [UIImage imageNamed:@"admin-iphone-portrait-top-toolbar.png"];
+            barFrame.size.height = 44;
+        } else {
+            toolbarImage = [UIImage imageNamed:@"admin-iphone-landscape-top-toolbar.png"];
+            barFrame.size.height = 32;
         }
     }
+
+    [self.topBar setBackgroundImage:toolbarImage];
     
-    CGRect topShadowFrame = self.topShadow.frame;
-    topShadowFrame.origin.y = CGRectGetMinY(self.tableView.frame);
-    self.topShadow.frame = topShadowFrame;
+    CGRect containerFrame = self.containerView.frame;
+    CGFloat containerMaxY = CGRectGetMaxY(containerFrame);
+    containerFrame.origin.y = CGRectGetMaxY(barFrame);
+    containerFrame.size.height = containerMaxY - containerFrame.origin.y;
+    self.topBar.frame = barFrame;
+    self.containerView.frame = containerFrame;    
 }
 
 #pragma mark - Username and Password accessors
@@ -365,112 +255,6 @@ static const CGFloat kProfileViewInsetPadding = 16.0f;
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.scholastic.com/"]];
 }
 
-#pragma mark - UITableViewDataSource
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    switch (self.controllerType) {
-        case kSCHControllerLoginView:
-        {
-            return 3;
-        } break;
-        default:
-        {
-            return 1;
-        } break;
-    }
-    
-}
-
-- (NSInteger)tableView:(UITableView *)aTableView numberOfRowsInSection:(NSInteger)section
-{
-    if (section == 0) {
-        
-        switch (self.controllerType) {
-            case kSCHControllerPasswordOnlyView:
-            {
-                return 1;
-            }
-            default:
-            {
-                return 2;
-            }
-        }
-    } else if (section == 1) {
-        return 1;
-    } else {
-        return 1;
-    }
-}
-
-- (UITableViewCell*)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    NSString *cellIdentifier = @"loginViewCell";
-    UITableViewCell *cell = nil;
-    
-    cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-    
-    if (!cell) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier] autorelease];
-        cell.backgroundColor = [UIColor clearColor];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.accessoryType = UITableViewCellAccessoryNone;
-        CGRect cellFrame = cell.frame;
-        cellFrame.size.height = aTableView.rowHeight;
-        cell.frame = cellFrame;
-    }
-
-    switch (indexPath.section) {
-        case 0:
-        {
-            if (indexPath.row == 0 && self.controllerType != kSCHControllerPasswordOnlyView) {
-                CGRect fieldFrame = self.topField.frame;
-                fieldFrame.size.height = kProfileViewCellFieldHeight;
-                fieldFrame.size.width  = kProfileViewCellFieldWidth;
-                self.topField.frame = fieldFrame;
-                [cell.contentView addSubview:self.topField];
-                break;
-            } else {
-                CGRect fieldFrame = self.bottomField.frame;
-                fieldFrame.size.height = kProfileViewCellFieldHeight;
-                fieldFrame.size.width = kProfileViewCellFieldWidth;
-                self.bottomField.frame = fieldFrame;
-                [cell.contentView addSubview:self.bottomField];
-                break;
-            }
-            break;
-        }
-        case 1:
-        {                        
-            [cell.contentView addSubview:self.forgotButton];
-            break;
-        }
-        case 2:
-        {
-            [cell.contentView addSubview:self.loginButton];
-            break;
-        }
-    }
-    
-    return cell;
-}
-
-#pragma mark - UITableViewDelegate
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    switch (section) {
-        case 2: {
-            UIView *spacer = [[UIView alloc] init];
-            spacer.backgroundColor = [UIColor clearColor];
-            return [spacer autorelease];
-        } break;
-        default:
-            return nil;
-            break;
-    }
-}
-
 #pragma mark - UITextFieldDelegate
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
@@ -506,114 +290,34 @@ static const CGFloat kProfileViewInsetPadding = 16.0f;
     }
 }
 
-- (void)scrollToTextField:(UITextField *)textField animated: (BOOL) animated
+- (void)makeVisibleTextField:(UITextField *)textField
 {
-    return;
-    NSLog(@"Table view frame: %@", NSStringFromCGRect(self.tableView.frame));
+    CGFloat textFieldCenterY    = CGRectGetMidY(textField.frame);
+    CGFloat scrollViewQuadrantY = CGRectGetMidY(self.scrollView.frame)/2.0f;
     
-    NSIndexPath *indexPath = nil;
-    
-    if (textField == self.topField) {
-        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-            CGPoint offset = CGPointMake(0, CGRectGetHeight(self.headerTitleView.frame) - 25);
-            NSLog(@"offset point: %@", NSStringFromCGPoint(offset));
-            [self.tableView setContentOffset:offset animated:animated];
-        }
-    } else if (textField == self.bottomField) {
-        if (self.controllerType == kSCHControllerPasswordOnlyView) {
-            indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
-        } else {
-            indexPath = [NSIndexPath indexPathForRow:1 inSection:0];
-        }
-    }
-    
-    if (indexPath) {
-        [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionNone animated:animated];
-    }
+    [UIView animateWithDuration:0.3f animations:^{
+        [self.scrollView setContentOffset:CGPointMake(0, textFieldCenterY - scrollViewQuadrantY)];
+    }];
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
-    [self scrollToTextField:textField animated:YES];
-}
-
-- (void)textFieldDidEndEditing:(UITextField *)textField
-{
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        // Perform on the next run of the run loop to allow keyboardWillShow to trigger
+        [self performSelector:@selector(makeVisibleTextField:) withObject:textField afterDelay:0.01f];
+    }
 }
 
 #pragma mark - UIKeyboard Notifications
 
 - (void)keyboardWillShow:(NSNotification *) notification
 {
-    CGRect keyboardFrame = CGRectNull;
-    CGFloat keyboardHeight = 0;
-    double keyboardAnimDuration = 0;
-    UIViewAnimationCurve keyboardCurve = UIViewAnimationCurveLinear;
-    
-    // 3.2 and above
-    if (UIKeyboardFrameEndUserInfoKey) {		
-        [[notification.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] getValue:&keyboardFrame];		
-        [[notification.userInfo valueForKey:UIKeyboardAnimationDurationUserInfoKey] getValue:&keyboardAnimDuration];		
-        [[notification.userInfo valueForKey:UIKeyboardAnimationCurveUserInfoKey] getValue:&keyboardCurve];		
-        if (UIDeviceOrientationIsPortrait([[UIDevice currentDevice] orientation])) {
-            keyboardHeight = keyboardFrame.size.height;
-        } else {
-            keyboardHeight = keyboardFrame.size.width;
-        }
-    }
-    
-    CGRect tableFrame = self.tableView.frame;
-    tableFrame.size.height = tableFrame.size.height - keyboardHeight;
-    
-    [UIView beginAnimations:@"tableSizeAnimation" context:nil];
-    [UIView setAnimationCurve:keyboardCurve];
-    [UIView setAnimationDuration:keyboardAnimDuration];
-    [UIView setAnimationBeginsFromCurrentState:YES];
-    
-    self.tableView.frame = tableFrame;
-    [UIView commitAnimations];
-    
-    if ([self.topField isFirstResponder]) {
-        [self scrollToTextField:self.topField animated:YES];
-    } else if ([self.bottomField isFirstResponder]) {
-        [self scrollToTextField:self.bottomField animated:YES];
-    }
+    [self.scrollView setContentSize:CGSizeMake(self.scrollView.frame.size.width, self.scrollView.frame.size.height * 1.5f)];
 }
 
 - (void)keyboardWillHide:(NSNotification *) notification
 {
-    
-    //    NSLog(@"Firing keyboardWillHide");
-    CGRect keyboardFrame = CGRectNull;
-    //	CGFloat keyboardHeight = 0;
-    double keyboardAnimDuration = 0;
-    UIViewAnimationCurve keyboardCurve = UIViewAnimationCurveLinear;
-    
-    // 3.2 and above
-    if (UIKeyboardFrameEndUserInfoKey) {		
-        [[notification.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] getValue:&keyboardFrame];		
-        [[notification.userInfo valueForKey:UIKeyboardAnimationDurationUserInfoKey] getValue:&keyboardAnimDuration];		
-        [[notification.userInfo valueForKey:UIKeyboardAnimationCurveUserInfoKey] getValue:&keyboardCurve];		
-        //        if (UIDeviceOrientationIsPortrait([[UIDevice currentDevice] orientation])) {
-        //            keyboardHeight = keyboardFrame.size.height;
-        //        } else {
-        //            keyboardHeight = keyboardFrame.size.width;
-        //        }
-    }
-    
-    float barHeight = MIN(self.topBar.frame.size.height, self.topBar.frame.size.width);
-    
-    CGRect tableFrame = self.tableView.frame;
-    
-    tableFrame.size.height = self.view.bounds.size.height - barHeight;
-    
-    [UIView beginAnimations:@"tableSizeAnimation" context:nil];
-    [UIView setAnimationCurve:keyboardCurve];
-    [UIView setAnimationDuration:keyboardAnimDuration];
-    [UIView setAnimationBeginsFromCurrentState:YES];
-    
-    self.tableView.frame = tableFrame;
-    [UIView commitAnimations];
+    [self.scrollView setContentSize:CGSizeZero];
 }
 
 @end

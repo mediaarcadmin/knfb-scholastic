@@ -90,6 +90,7 @@
 						<string key="NSFrameSize">{320, 7}</string>
 						<reference key="NSSuperview" ref="594099141"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">3</int>
 							<bytes key="NSWhite">MSAwAA</bytes>
@@ -130,6 +131,7 @@
 						<string key="NSFrameSize">{320, 34}</string>
 						<reference key="NSSuperview" ref="755066334"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">3</int>
 							<bytes key="NSWhite">MSAwAA</bytes>
@@ -203,7 +205,7 @@
 				<bool key="IBUIHorizontal">NO</bool>
 			</object>
 			<object class="IBUIViewController" id="32003828">
-				<string key="IBUINibName">SCHLoginPasswordViewController</string>
+				<string key="IBUINibName">SCHLoginPasswordViewController_iPhone</string>
 				<object class="IBUISimulatedStatusBarMetrics" key="IBUISimulatedStatusBarMetrics"/>
 				<object class="IBUISimulatedOrientationMetrics" key="IBUISimulatedOrientationMetrics">
 					<int key="IBUIInterfaceOrientation">1</int>
@@ -505,109 +507,65 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>adornmentGradientView</string>
-							<string>adornmentInnerBorderView</string>
-							<string>adornmentOuterBorderView</string>
-							<string>adornmentView</string>
-							<string>backgroundView</string>
 							<string>bottomField</string>
-							<string>headerTitleLabel</string>
-							<string>headerTitleView</string>
-							<string>linkButtonsContainer</string>
-							<string>tableView</string>
-							<string>titleTextLabel</string>
+							<string>containerView</string>
+							<string>forgotButton</string>
+							<string>loginButton</string>
+							<string>scrollView</string>
+							<string>spinner</string>
 							<string>topBar</string>
 							<string>topField</string>
-							<string>topShadow</string>
-							<string>welcomeContainer</string>
-							<string>welcomeLabel</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>UIView</string>
-							<string>UIView</string>
-							<string>UIView</string>
-							<string>UIView</string>
-							<string>UIImageView</string>
 							<string>UITextField</string>
-							<string>UILabel</string>
 							<string>UIView</string>
-							<string>UIView</string>
-							<string>UITableView</string>
-							<string>UILabel</string>
+							<string>UIButton</string>
+							<string>UIButton</string>
+							<string>UIScrollView</string>
+							<string>UIActivityIndicatorView</string>
 							<string>SCHCustomToolbar</string>
 							<string>UITextField</string>
-							<string>UIImageView</string>
-							<string>UIView</string>
-							<string>UILabel</string>
 						</object>
 					</object>
 					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>adornmentGradientView</string>
-							<string>adornmentInnerBorderView</string>
-							<string>adornmentOuterBorderView</string>
-							<string>adornmentView</string>
-							<string>backgroundView</string>
 							<string>bottomField</string>
-							<string>headerTitleLabel</string>
-							<string>headerTitleView</string>
-							<string>linkButtonsContainer</string>
-							<string>tableView</string>
-							<string>titleTextLabel</string>
+							<string>containerView</string>
+							<string>forgotButton</string>
+							<string>loginButton</string>
+							<string>scrollView</string>
+							<string>spinner</string>
 							<string>topBar</string>
 							<string>topField</string>
-							<string>topShadow</string>
-							<string>welcomeContainer</string>
-							<string>welcomeLabel</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<object class="IBToOneOutletInfo">
-								<string key="name">adornmentGradientView</string>
-								<string key="candidateClassName">UIView</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">adornmentInnerBorderView</string>
-								<string key="candidateClassName">UIView</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">adornmentOuterBorderView</string>
-								<string key="candidateClassName">UIView</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">adornmentView</string>
-								<string key="candidateClassName">UIView</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">backgroundView</string>
-								<string key="candidateClassName">UIImageView</string>
-							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">bottomField</string>
 								<string key="candidateClassName">UITextField</string>
 							</object>
 							<object class="IBToOneOutletInfo">
-								<string key="name">headerTitleLabel</string>
-								<string key="candidateClassName">UILabel</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">headerTitleView</string>
+								<string key="name">containerView</string>
 								<string key="candidateClassName">UIView</string>
 							</object>
 							<object class="IBToOneOutletInfo">
-								<string key="name">linkButtonsContainer</string>
-								<string key="candidateClassName">UIView</string>
+								<string key="name">forgotButton</string>
+								<string key="candidateClassName">UIButton</string>
 							</object>
 							<object class="IBToOneOutletInfo">
-								<string key="name">tableView</string>
-								<string key="candidateClassName">UITableView</string>
+								<string key="name">loginButton</string>
+								<string key="candidateClassName">UIButton</string>
 							</object>
 							<object class="IBToOneOutletInfo">
-								<string key="name">titleTextLabel</string>
-								<string key="candidateClassName">UILabel</string>
+								<string key="name">scrollView</string>
+								<string key="candidateClassName">UIScrollView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">spinner</string>
+								<string key="candidateClassName">UIActivityIndicatorView</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">topBar</string>
@@ -616,18 +574,6 @@
 							<object class="IBToOneOutletInfo">
 								<string key="name">topField</string>
 								<string key="candidateClassName">UITextField</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">topShadow</string>
-								<string key="candidateClassName">UIImageView</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">welcomeContainer</string>
-								<string key="candidateClassName">UIView</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">welcomeLabel</string>
-								<string key="candidateClassName">UILabel</string>
 							</object>
 						</object>
 					</object>

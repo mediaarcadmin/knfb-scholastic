@@ -22,7 +22,7 @@ typedef enum {
 // defining a block type for use in the block property
 typedef void(^SCHActionBlock)(void);
 
-@interface SCHLoginPasswordViewController : UIViewController <UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate> 
+@interface SCHLoginPasswordViewController : UIViewController <UITextFieldDelegate> 
 {
     UIButton *footerForgotButton;
 }
@@ -37,9 +37,6 @@ typedef void(^SCHActionBlock)(void);
 
 // a block to be executed when performing the "Cancel" action
 @property (nonatomic, copy) SCHActionBlock cancelBlock;
-
-// activity indicator for login mode
-@property (nonatomic, retain) UIActivityIndicatorView *spinner;
 
 // start and stop showing the progress indicator
 - (void)startShowingProgress;
@@ -57,16 +54,14 @@ typedef void(^SCHActionBlock)(void);
 
 // Interface Builder
 @property (nonatomic, retain) IBOutlet SCHCustomToolbar *topBar;
-@property (nonatomic, retain) IBOutlet UIImageView *topShadow;
-@property (nonatomic, retain) IBOutlet UIImageView *backgroundView;
-@property (nonatomic, retain) IBOutlet UITableView *tableView;
+@property (nonatomic, retain) IBOutlet UILabel *topBarLabel;
+@property (nonatomic, retain) IBOutlet UIActivityIndicatorView *spinner;
+@property (nonatomic, retain) IBOutlet UIView *containerView;
+@property (nonatomic, retain) IBOutlet UIScrollView *scrollView;
 
-@property (nonatomic, retain) IBOutlet UILabel *headerTitleLabel;
-@property (nonatomic, retain) IBOutlet UIView *headerTitleView;
 @property (nonatomic, retain) IBOutlet UITextField *topField;
 @property (nonatomic, retain) IBOutlet UITextField *bottomField;
-@property (nonatomic, retain) IBOutlet UIButton *forgotButton;
-
+@property (nonatomic, retain) IBOutlet UIButton *loginButton;
 
 // IBAction - the "Login" or "Go" button action
 - (IBAction)actionButtonAction:(id)sender;
