@@ -126,7 +126,7 @@
 		52E622FB13584EBF00245CA7 /* SCHThemeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E622FA13584EBE00245CA7 /* SCHThemeManager.m */; };
 		52E622FC13584EBF00245CA7 /* SCHThemeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E622FA13584EBE00245CA7 /* SCHThemeManager.m */; };
 		52EF4E5F12E6E01C00E374F7 /* SCHLoginPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF4E5D12E6E01C00E374F7 /* SCHLoginPasswordViewController.m */; };
-		52EF4E6012E6E01C00E374F7 /* SCHLoginPasswordViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52EF4E5E12E6E01C00E374F7 /* SCHLoginPasswordViewController_iPhone.xib */; };
+		52EF4E6012E6E01C00E374F7 /* SCHLoginViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52EF4E5E12E6E01C00E374F7 /* SCHLoginViewController_iPhone.xib */; };
 		52EF508712E739E900E374F7 /* LibreAccessServiceSvc.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF508612E739E900E374F7 /* LibreAccessServiceSvc.m */; };
 		52EF553E12E9EB8500E374F7 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52EF553D12E9EB8500E374F7 /* Security.framework */; };
 		52EF570A12ED977C00E374F7 /* NSManagedObjectContext+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF570912ED977C00E374F7 /* NSManagedObjectContext+Extensions.m */; };
@@ -625,6 +625,8 @@
 		C9F5B9FD13916C62009DE113 /* button-go.png in Resources */ = {isa = PBXBuildFile; fileRef = C9F5B9FA13916C62009DE113 /* button-go.png */; };
 		C9F5B9FE13916C62009DE113 /* button-go@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C9F5B9FB13916C62009DE113 /* button-go@2x.png */; };
 		C9F5B9FF13916C62009DE113 /* button-go@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C9F5B9FB13916C62009DE113 /* button-go@2x.png */; };
+		C9F5BA0113918CE9009DE113 /* SCHPasswordViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9F5BA0013918CE8009DE113 /* SCHPasswordViewController_iPhone.xib */; };
+		C9F5BA0213918CE9009DE113 /* SCHPasswordViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9F5BA0013918CE8009DE113 /* SCHPasswordViewController_iPhone.xib */; };
 		F80FED701355DD6D00DEB3C1 /* icon-magnify.png in Resources */ = {isa = PBXBuildFile; fileRef = F80FED601355DD6D00DEB3C1 /* icon-magnify.png */; };
 		F80FED711355DD6D00DEB3C1 /* icon-magnify.png in Resources */ = {isa = PBXBuildFile; fileRef = F80FED601355DD6D00DEB3C1 /* icon-magnify.png */; };
 		F80FED721355DD6D00DEB3C1 /* icon-magnify@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F80FED611355DD6D00DEB3C1 /* icon-magnify@2x.png */; };
@@ -691,7 +693,7 @@
 		F8509EFB12F063C900197EB5 /* SCHProfileViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 528A2D6112CDE3B10053A343 /* SCHProfileViewController_iPhone.xib */; };
 		F8509F0012F063C900197EB5 /* SCHSettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 529385B412DF231800045B44 /* SCHSettingsViewController.xib */; };
 		F8509F0112F063C900197EB5 /* SCHBookShelfViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5293883212E03CD000045B44 /* SCHBookShelfViewController.xib */; };
-		F8509F0412F063C900197EB5 /* SCHLoginPasswordViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52EF4E5E12E6E01C00E374F7 /* SCHLoginPasswordViewController_iPhone.xib */; };
+		F8509F0412F063C900197EB5 /* SCHLoginViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52EF4E5E12E6E01C00E374F7 /* SCHLoginViewController_iPhone.xib */; };
 		F8509F1312F063C900197EB5 /* AppDelegate_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* AppDelegate_iPad.m */; };
 		F8509F1412F063C900197EB5 /* AppDelegate_Shared.m in Sources */ = {isa = PBXBuildFile; fileRef = 28EEC04A1118E28000187D67 /* AppDelegate_Shared.m */; };
 		F8509F1512F063C900197EB5 /* Scholastic.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2819307C112F81BE00ECF9B4 /* Scholastic.xcdatamodeld */; };
@@ -1086,7 +1088,7 @@
 		52E622FA13584EBE00245CA7 /* SCHThemeManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHThemeManager.m; path = Shared/SCHThemeManager.m; sourceTree = "<group>"; };
 		52EF4E5C12E6E01C00E374F7 /* SCHLoginPasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHLoginPasswordViewController.h; path = iPhone/SCHLoginPasswordViewController.h; sourceTree = "<group>"; };
 		52EF4E5D12E6E01C00E374F7 /* SCHLoginPasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHLoginPasswordViewController.m; path = iPhone/SCHLoginPasswordViewController.m; sourceTree = "<group>"; };
-		52EF4E5E12E6E01C00E374F7 /* SCHLoginPasswordViewController_iPhone.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SCHLoginPasswordViewController_iPhone.xib; sourceTree = "<group>"; };
+		52EF4E5E12E6E01C00E374F7 /* SCHLoginViewController_iPhone.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SCHLoginViewController_iPhone.xib; sourceTree = "<group>"; };
 		52EF508512E739E900E374F7 /* LibreAccessServiceSvc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LibreAccessServiceSvc.h; sourceTree = "<group>"; };
 		52EF508612E739E900E374F7 /* LibreAccessServiceSvc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LibreAccessServiceSvc.m; sourceTree = "<group>"; };
 		52EF543E12E9A5D400E374F7 /* SCHAuthenticationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAuthenticationManager.h; path = Shared/SCHAuthenticationManager.h; sourceTree = "<group>"; };
@@ -1560,6 +1562,7 @@
 		C9F5B9F7139162EC009DE113 /* SCHPasswordViewController_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SCHPasswordViewController_iPad.xib; path = iPad/SCHPasswordViewController_iPad.xib; sourceTree = "<group>"; };
 		C9F5B9FA13916C62009DE113 /* button-go.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "button-go.png"; path = "Resources/UIAssets/button-go.png"; sourceTree = "<group>"; };
 		C9F5B9FB13916C62009DE113 /* button-go@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "button-go@2x.png"; path = "Resources/UIAssets/button-go@2x.png"; sourceTree = "<group>"; };
+		C9F5BA0013918CE8009DE113 /* SCHPasswordViewController_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHPasswordViewController_iPhone.xib; sourceTree = "<group>"; };
 		F80FED601355DD6D00DEB3C1 /* icon-magnify.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-magnify.png"; path = "Resources/icon-magnify.png"; sourceTree = "<group>"; };
 		F80FED611355DD6D00DEB3C1 /* icon-magnify@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-magnify@2x.png"; path = "Resources/icon-magnify@2x.png"; sourceTree = "<group>"; };
 		F80FED641355DD6D00DEB3C1 /* icon-play-active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-play-active.png"; path = "Resources/icon-play-active.png"; sourceTree = "<group>"; };
@@ -2842,7 +2845,8 @@
 		C9F5B9F213911E21009DE113 /* Login and Password Controller */ = {
 			isa = PBXGroup;
 			children = (
-				52EF4E5E12E6E01C00E374F7 /* SCHLoginPasswordViewController_iPhone.xib */,
+				52EF4E5E12E6E01C00E374F7 /* SCHLoginViewController_iPhone.xib */,
+				C9F5BA0013918CE8009DE113 /* SCHPasswordViewController_iPhone.xib */,
 			);
 			name = "Login and Password Controller";
 			sourceTree = "<group>";
@@ -3254,7 +3258,7 @@
 				528A2D6212CDE3B10053A343 /* SCHProfileViewController_iPhone.xib in Resources */,
 				529385B612DF231800045B44 /* SCHSettingsViewController.xib in Resources */,
 				5293883412E03CD000045B44 /* SCHBookShelfViewController.xib in Resources */,
-				52EF4E6012E6E01C00E374F7 /* SCHLoginPasswordViewController_iPhone.xib in Resources */,
+				52EF4E6012E6E01C00E374F7 /* SCHLoginViewController_iPhone.xib in Resources */,
 				C923B15C12F6B0280054426F /* SCHMultipleBookshelvesController.xib in Resources */,
 				F8678D8B133218D8001FDB2F /* ScholasticFeatureCompatibility.plist in Resources */,
 				C908D86D133F93FA00661718 /* Icon@2x.png in Resources */,
@@ -3452,6 +3456,7 @@
 				C9F5B9F8139162EC009DE113 /* SCHPasswordViewController_iPad.xib in Resources */,
 				C9F5B9FC13916C62009DE113 /* button-go.png in Resources */,
 				C9F5B9FE13916C62009DE113 /* button-go@2x.png in Resources */,
+				C9F5BA0113918CE9009DE113 /* SCHPasswordViewController_iPhone.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3466,7 +3471,7 @@
 				F8509EFB12F063C900197EB5 /* SCHProfileViewController_iPhone.xib in Resources */,
 				F8509F0012F063C900197EB5 /* SCHSettingsViewController.xib in Resources */,
 				F8509F0112F063C900197EB5 /* SCHBookShelfViewController.xib in Resources */,
-				F8509F0412F063C900197EB5 /* SCHLoginPasswordViewController_iPhone.xib in Resources */,
+				F8509F0412F063C900197EB5 /* SCHLoginViewController_iPhone.xib in Resources */,
 				C923B15B12F6B0280054426F /* SCHMultipleBookshelvesController.xib in Resources */,
 				F8678D8A133218D8001FDB2F /* ScholasticFeatureCompatibility.plist in Resources */,
 				C908D86E133F93FA00661718 /* Icon@2x.png in Resources */,
@@ -3671,6 +3676,7 @@
 				C9F5B9F9139162EC009DE113 /* SCHPasswordViewController_iPad.xib in Resources */,
 				C9F5B9FD13916C62009DE113 /* button-go.png in Resources */,
 				C9F5B9FF13916C62009DE113 /* button-go@2x.png in Resources */,
+				C9F5BA0213918CE9009DE113 /* SCHPasswordViewController_iPhone.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

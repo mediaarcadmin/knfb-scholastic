@@ -174,6 +174,7 @@
 			<object class="IBUITableViewController" id="807603874">
 				<string key="IBUITitle">Settings</string>
 				<object class="IBUINavigationItem" key="IBUINavigationItem" id="823894799">
+					<reference key="IBUINavigationBar"/>
 					<string key="IBUITitle">Settings</string>
 					<object class="IBUIBarButtonItem" key="IBUIBackBarButtonItem" id="623757314">
 						<string key="IBUITitle">Back</string>
@@ -195,7 +196,7 @@
 				<bool key="IBUIHorizontal">NO</bool>
 			</object>
 			<object class="IBUIViewController" id="134382688">
-				<string key="IBUINibName">SCHLoginPasswordViewController</string>
+				<string key="IBUINibName">SCHLoginViewController_iPhone</string>
 				<object class="IBUISimulatedStatusBarMetrics" key="IBUISimulatedStatusBarMetrics"/>
 				<object class="IBUISimulatedOrientationMetrics" key="IBUISimulatedOrientationMetrics">
 					<int key="IBUIInterfaceOrientation">1</int>
@@ -205,7 +206,7 @@
 				<bool key="IBUIHorizontal">NO</bool>
 			</object>
 			<object class="IBUIViewController" id="32003828">
-				<string key="IBUINibName">SCHLoginPasswordViewController_iPhone</string>
+				<string key="IBUINibName">SCHPasswordViewController_iPhone</string>
 				<object class="IBUISimulatedStatusBarMetrics" key="IBUISimulatedStatusBarMetrics"/>
 				<object class="IBUISimulatedOrientationMetrics" key="IBUISimulatedOrientationMetrics">
 					<int key="IBUIInterfaceOrientation">1</int>
@@ -509,11 +510,11 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>bottomField</string>
 							<string>containerView</string>
-							<string>forgotButton</string>
 							<string>loginButton</string>
 							<string>scrollView</string>
 							<string>spinner</string>
 							<string>topBar</string>
+							<string>topBarLabel</string>
 							<string>topField</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
@@ -521,10 +522,10 @@
 							<string>UITextField</string>
 							<string>UIView</string>
 							<string>UIButton</string>
-							<string>UIButton</string>
 							<string>UIScrollView</string>
 							<string>UIActivityIndicatorView</string>
 							<string>SCHCustomToolbar</string>
+							<string>UILabel</string>
 							<string>UITextField</string>
 						</object>
 					</object>
@@ -534,11 +535,11 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>bottomField</string>
 							<string>containerView</string>
-							<string>forgotButton</string>
 							<string>loginButton</string>
 							<string>scrollView</string>
 							<string>spinner</string>
 							<string>topBar</string>
+							<string>topBarLabel</string>
 							<string>topField</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
@@ -550,10 +551,6 @@
 							<object class="IBToOneOutletInfo">
 								<string key="name">containerView</string>
 								<string key="candidateClassName">UIView</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">forgotButton</string>
-								<string key="candidateClassName">UIButton</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">loginButton</string>
@@ -570,6 +567,10 @@
 							<object class="IBToOneOutletInfo">
 								<string key="name">topBar</string>
 								<string key="candidateClassName">SCHCustomToolbar</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">topBarLabel</string>
+								<string key="candidateClassName">UILabel</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">topField</string>

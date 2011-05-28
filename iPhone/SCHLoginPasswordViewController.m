@@ -33,7 +33,7 @@
 @synthesize bottomField;
 @synthesize spinner;
 @synthesize topBar;
-@synthesize topBarLabel;
+@synthesize profileLabel;
 @synthesize containerView;
 @synthesize scrollView;
 @synthesize loginButton;
@@ -48,7 +48,7 @@
 	[bottomField release], bottomField = nil;
 	[spinner release], spinner = nil;
     [topBar release], topBar = nil;
-    [topBarLabel release], topBarLabel = nil;
+    [profileLabel release], profileLabel = nil;
     [containerView release], containerView = nil;
     [scrollView release], scrollView = nil;
     [loginButton release], loginButton = nil;

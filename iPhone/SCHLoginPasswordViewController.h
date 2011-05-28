@@ -54,7 +54,7 @@ typedef void(^SCHActionBlock)(void);
 
 // Interface Builder
 @property (nonatomic, retain) IBOutlet SCHCustomToolbar *topBar;
-@property (nonatomic, retain) IBOutlet UILabel *topBarLabel;
+@property (nonatomic, retain) IBOutlet UILabel *profileLabel;
 @property (nonatomic, retain) IBOutlet UIActivityIndicatorView *spinner;
 @property (nonatomic, retain) IBOutlet UIView *containerView;
 @property (nonatomic, retain) IBOutlet UIScrollView *scrollView;

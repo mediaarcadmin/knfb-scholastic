@@ -90,7 +90,7 @@
 										<int key="IBUIContentVerticalAlignment">0</int>
 										<string key="IBUIText"/>
 										<string key="IBUIPlaceholder">Username</string>
-										<object class="NSColor" key="IBUITextColor" id="1069113545">
+										<object class="NSColor" key="IBUITextColor" id="570005845">
 											<int key="NSColorSpace">2</int>
 											<bytes key="NSRGB">MC4zNzI1NDkwMjcyIDAuNjc4NDMxMzkxNyAwLjg1MDk4MDQ2MDYAA</bytes>
 										</object>
@@ -105,7 +105,7 @@
 											<int key="IBUIReturnKeyType">4</int>
 											<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 										</object>
-										<object class="NSCustomResource" key="IBUIBackground" id="836380817">
+										<object class="NSCustomResource" key="IBUIBackground" id="581310929">
 											<string key="NSClassName">NSImage</string>
 											<string key="NSResourceName">button-field.png</string>
 										</object>
@@ -125,7 +125,7 @@
 										<int key="IBUIContentVerticalAlignment">0</int>
 										<string key="IBUIText"/>
 										<string key="IBUIPlaceholder">Password</string>
-										<reference key="IBUITextColor" ref="1069113545"/>
+										<reference key="IBUITextColor" ref="570005845"/>
 										<reference key="IBUIFont" ref="942540110"/>
 										<bool key="IBUIAdjustsFontSizeToFit">YES</bool>
 										<float key="IBUIMinimumFontSize">17</float>
@@ -134,7 +134,7 @@
 											<bool key="IBUISecureTextEntry">YES</bool>
 											<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 										</object>
-										<reference key="IBUIBackground" ref="836380817"/>
+										<reference key="IBUIBackground" ref="581310929"/>
 										<int key="IBUIClearButtonMode">1</int>
 									</object>
 									<object class="IBUIButton" id="295104663">
@@ -475,14 +475,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">forgotButton</string>
-						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="295104663"/>
-					</object>
-					<int key="connectionID">163</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">spinner</string>
 						<reference key="source" ref="372490531"/>
 						<reference key="destination" ref="328416546"/>
@@ -811,8 +803,8 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>bottomField</string>
 							<string>containerView</string>
-							<string>forgotButton</string>
 							<string>loginButton</string>
+							<string>profileLabel</string>
 							<string>scrollView</string>
 							<string>spinner</string>
 							<string>topBar</string>
@@ -823,7 +815,7 @@
 							<string>UITextField</string>
 							<string>UIView</string>
 							<string>UIButton</string>
-							<string>UIButton</string>
+							<string>UILabel</string>
 							<string>UIScrollView</string>
 							<string>UIActivityIndicatorView</string>
 							<string>SCHCustomToolbar</string>
@@ -836,8 +828,8 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>bottomField</string>
 							<string>containerView</string>
-							<string>forgotButton</string>
 							<string>loginButton</string>
+							<string>profileLabel</string>
 							<string>scrollView</string>
 							<string>spinner</string>
 							<string>topBar</string>
@@ -854,12 +846,12 @@
 								<string key="candidateClassName">UIView</string>
 							</object>
 							<object class="IBToOneOutletInfo">
-								<string key="name">forgotButton</string>
+								<string key="name">loginButton</string>
 								<string key="candidateClassName">UIButton</string>
 							</object>
 							<object class="IBToOneOutletInfo">
-								<string key="name">loginButton</string>
-								<string key="candidateClassName">UIButton</string>
+								<string key="name">profileLabel</string>
+								<string key="candidateClassName">UILabel</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">scrollView</string>

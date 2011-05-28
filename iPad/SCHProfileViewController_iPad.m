@@ -249,7 +249,7 @@ static const CGFloat kProfilePadTableOffsetLandscape = 220.0f;
                 };
                 
                 [self showProfilePasswordControllerWithAnimation:YES];
-                [self.profilePasswordController.topBarLabel setText:[profileItem bookshelfName:YES]];
+                [self.profilePasswordController.profileLabel setText:[profileItem bookshelfName:YES]];
 
             }
 #endif	
