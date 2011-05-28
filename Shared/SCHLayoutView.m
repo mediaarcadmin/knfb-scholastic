@@ -487,6 +487,16 @@
     return [self highlightRectsForPageAtIndex:pageIndex excluding:excludedRange];
 }
 
+- (NSUInteger)pageTurningView:(EucPageTurningView *)pageTurningView pageCountBeforePageAtIndex:(NSUInteger)pageIndex
+{
+    return pageIndex;    
+}
+
+- (NSUInteger)pageTurningView:(EucPageTurningView *)pageTurningView pageCountAfterPageAtIndex:(NSUInteger)pageIndex
+{
+    return self.pageCount - pageIndex - 1;
+}
+
 #pragma mark - EucPageTurningViewDelegate
 
 - (void)pageTurningViewDidEndPageTurn:(EucPageTurningView *)aPageTurningView

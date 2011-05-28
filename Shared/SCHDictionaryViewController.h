@@ -13,6 +13,7 @@
 @interface SCHDictionaryViewController : UIViewController <UIWebViewDelegate> {
     
     UIImageView *topShadow;
+    UIView *leftBarButtonItemContainer;
 }
 
 @property (nonatomic, retain) NSString *categoryMode;
@@ -28,6 +29,7 @@
 @property (nonatomic, retain) IBOutlet UILabel *topLabel;
 @property (nonatomic, retain) IBOutlet UILabel *bottomLabel;
 @property (nonatomic, retain) IBOutlet UIActivityIndicatorView *activityIndicator;
+@property (nonatomic, retain) IBOutlet UIView *leftBarButtonItemContainer;
 
 - (IBAction) playWord;
 
