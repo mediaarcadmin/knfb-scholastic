@@ -16,6 +16,7 @@
 #import "SCHSyncManager.h"
 #import "SCHAboutViewController.h"
 #import "SCHPrivacyPolicyViewController.h"
+#import <QuartzCore/QuartzCore.h>
 
 extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
@@ -70,8 +71,20 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
         [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithUserName:[self.loginController username] withPassword:[self.loginController password]];
     };    
     
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        self.title = @"Settings";
+    self.tableView.backgroundView = nil;
+    self.tableView.backgroundColor = [UIColor clearColor]; // Needed to avoid black corners
+    
+    self.navigationItem.title = NSLocalizedString(@"Back", @"");
+
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        UIImageView *logoImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo.png"]];
+        CGRect logoFrame = logoImageView.bounds;
+        logoFrame.size.height = self.navigationController.navigationBar.frame.size.height;
+        logoImageView.frame = logoFrame;
+        logoImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin;
+        logoImageView.contentMode = UIViewContentModeScaleAspectFit;
+        self.navigationItem.titleView = logoImageView;
+        [logoImageView release];
     }
 }
 
@@ -92,19 +105,20 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation
 {
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-//        [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:
-//         [UIImage imageNamed:@"admin-iphone-portrait-top-toolbar.png"]];
-//        [self.backgroundView setImage:[UIImage imageNamed:@"plain-background-portrait.png"]];        
+        [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:
+         [UIImage imageNamed:@"admin-iphone-landscape-top-toolbar.png"]];
+        [self.backgroundView setImage:[UIImage imageNamed:@"plain-background-portrait.png"]];   
+        [self.navigationController.view.layer setBorderColor:[UIColor colorWithRed:0.651 green:0.051 blue:0.106 alpha:1.000].CGColor];
+        [self.navigationController.view.layer setBorderWidth:2.0f];
     } else {
         if (UIInterfaceOrientationIsLandscape(orientation)) {
             [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:
              [UIImage imageNamed:@"admin-iphone-landscape-top-toolbar.png"]];
             [self.backgroundView setImage:[UIImage imageNamed:@"plain-background-landscape.png"]];
-            
         } else {
             [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:
              [UIImage imageNamed:@"admin-iphone-portrait-top-toolbar.png"]];
-            [self.backgroundView setImage:[UIImage imageNamed:@"plain-background-portrait.png"]];        
+            [self.backgroundView setImage:[UIImage imageNamed:@"plain-background-portrait.png"]];   
         }
     }
 }
@@ -117,6 +131,13 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation 
 {
     return(YES);
+}
+
+#pragma mark - Dismissal
+
+- (IBAction)dismissModalSettingsController:(id)sender
+{
+    [self.parentViewController dismissModalViewControllerAnimated:YES];
 }
 
 #pragma mark - Login

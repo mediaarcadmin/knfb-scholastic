@@ -33,6 +33,7 @@
 @synthesize bottomField;
 @synthesize spinner;
 @synthesize topBar;
+@synthesize barSpacer;
 @synthesize profileLabel;
 @synthesize containerView;
 @synthesize scrollView;
@@ -48,6 +49,7 @@
 	[bottomField release], bottomField = nil;
 	[spinner release], spinner = nil;
     [topBar release], topBar = nil;
+    [barSpacer release], barSpacer = nil;
     [profileLabel release], profileLabel = nil;
     [containerView release], containerView = nil;
     [scrollView release], scrollView = nil;
@@ -109,7 +111,11 @@
     }
     
     if (self.loginButton) {
-        bgImage = [UIImage imageNamed:@"button-login"];
+        if (self.controllerType == kSCHControllerParentToolsView) {
+             bgImage = [UIImage imageNamed:@"button-login-red"];
+        } else {
+            bgImage = [UIImage imageNamed:@"button-login"];
+        }
         cellBGImage = [bgImage stretchableImageWithLeftCapWidth:10 topCapHeight:0];
         [self.loginButton setBackgroundImage:cellBGImage forState:UIControlStateNormal];
     }
@@ -163,19 +169,21 @@
                 break;
             default:
                 toolbarImage = [UIImage imageNamed:@"admin-iphone-portrait-top-toolbar.png"];
-                borderColor  = [UIColor redColor];
+                borderColor  = [UIColor colorWithRed:0.651 green:0.051 blue:0.106 alpha:1.000];
                 break;
         }
         
         [self.view.layer setBorderColor:borderColor.CGColor];
-        [self.view.layer setBorderWidth:3.0f];
+        [self.view.layer setBorderWidth:2.0f];
     } else {
         if (UIInterfaceOrientationIsPortrait(orientation)) {
             toolbarImage = [UIImage imageNamed:@"admin-iphone-portrait-top-toolbar.png"];
             barFrame.size.height = 44;
+            [self.barSpacer setWidth:0];
         } else {
             toolbarImage = [UIImage imageNamed:@"admin-iphone-landscape-top-toolbar.png"];
             barFrame.size.height = 32;
+            [self.barSpacer setWidth:54];
         }
     }
 
@@ -221,6 +229,7 @@
 {
     self.topField.text = @"";
     self.bottomField.text = @"";
+    [self.loginButton setEnabled:YES];
 }
 
 #pragma mark - Button Actions
@@ -242,6 +251,7 @@
 {
 	[self.topField resignFirstResponder];
 	[self.bottomField resignFirstResponder];
+    [self clearFields];
     
     if (self.cancelBlock) {
         self.cancelBlock();
@@ -283,6 +293,14 @@
             return YES;
             break;
         }
+        case kSCHControllerParentToolsView:
+        {
+            if (textField == self.bottomField && [self.bottomField.text length] > 0) {
+                [self actionButtonAction:nil];
+            }
+            return YES;
+            break;
+        }
         default:
             NSLog(@"Unknown controller mode!");
             return NO;
@@ -295,9 +313,11 @@
     CGFloat textFieldCenterY    = CGRectGetMidY(textField.frame);
     CGFloat scrollViewQuadrantY = CGRectGetMidY(self.scrollView.frame)/2.0f;
     
-    [UIView animateWithDuration:0.3f animations:^{
-        [self.scrollView setContentOffset:CGPointMake(0, textFieldCenterY - scrollViewQuadrantY)];
-    }];
+    if (textFieldCenterY > scrollViewQuadrantY) {
+        [UIView animateWithDuration:0.3f animations:^{
+            [self.scrollView setContentOffset:CGPointMake(0, textFieldCenterY - scrollViewQuadrantY)];
+        }];
+    }
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField

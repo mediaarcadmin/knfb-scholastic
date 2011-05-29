@@ -9,7 +9,7 @@
 
 #define SERVEROVERRIDE 0
 #define NONDRMAUTHENTICATION 1
-#define DICTIONARY_DOWNLOAD_DISABLED 0
+#define DICTIONARY_DOWNLOAD_DISABLED 1
 
 // Stops all NSLog() functions executing under release builds
 #ifdef __OPTIMIZE__

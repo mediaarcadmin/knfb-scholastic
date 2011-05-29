@@ -9,10 +9,13 @@
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
 
+@class SCHLoginPasswordViewController;
+
 @interface SCHProfileViewController_Shared : UIViewController <NSFetchedResultsControllerDelegate, UITableViewDataSource, UITableViewDelegate> {
 }
 
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
+
 
 @end

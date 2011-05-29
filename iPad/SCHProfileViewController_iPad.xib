@@ -13,13 +13,14 @@
 		<object class="NSArray" key="IBDocument.IntegratedClassDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
 			<string>IBProxyObject</string>
-			<string>IBUINavigationController</string>
+			<string>IBUIImageView</string>
 			<string>IBUIViewController</string>
 			<string>IBUILabel</string>
-			<string>IBUIImageView</string>
+			<string>IBUINavigationController</string>
+			<string>IBUIBarButtonItem</string>
 			<string>IBUINavigationBar</string>
-			<string>IBUINavigationItem</string>
 			<string>IBUITableView</string>
+			<string>IBUINavigationItem</string>
 			<string>IBUIView</string>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
@@ -217,16 +218,22 @@
 					<bool key="IBUIMultipleTouchEnabled">YES</bool>
 					<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 				</object>
-				<object class="NSMutableArray" key="IBUIViewControllers">
+				<object class="NSArray" key="IBUIViewControllers">
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<object class="IBUIViewController" id="27370276">
 						<object class="IBUINavigationItem" key="IBUINavigationItem" id="403862072">
 							<reference key="IBUINavigationBar"/>
-							<string key="IBUITitle"/>
+							<string key="IBUITitle">Settings</string>
+							<object class="IBUIBarButtonItem" key="IBUILeftBarButtonItem" id="187053090">
+								<string key="IBUITitle">Done</string>
+								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+								<int key="IBUIStyle">1</int>
+								<reference key="IBUINavigationItem" ref="403862072"/>
+							</object>
 							<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 						</object>
 						<reference key="IBUIParentViewController" ref="27393608"/>
-						<string key="IBUINibName">SCHSettingsViewController</string>
+						<string key="IBUINibName">SCHSettingsViewController_iPad</string>
 						<object class="IBUISimulatedOrientationMetrics" key="IBUISimulatedOrientationMetrics">
 							<int key="IBUIInterfaceOrientation">1</int>
 							<int key="interfaceOrientation">1</int>
@@ -312,6 +319,22 @@
 					</object>
 					<int key="connectionID">29</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">settingsNavController</string>
+						<reference key="source" ref="841351856"/>
+						<reference key="destination" ref="27393608"/>
+					</object>
+					<int key="connectionID">36</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">dismissModalSettingsController:</string>
+						<reference key="source" ref="187053090"/>
+						<reference key="destination" ref="27370276"/>
+					</object>
+					<int key="connectionID">37</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -372,6 +395,25 @@
 						<string key="objectName">Profile Password View Controller</string>
 					</object>
 					<object class="IBObjectRecord">
+						<int key="objectID">27</int>
+						<reference key="object" ref="379812279"/>
+						<reference key="parent" ref="766721923"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">5</int>
+						<reference key="object" ref="815132763"/>
+						<object class="NSMutableArray" key="children">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+						</object>
+						<reference key="parent" ref="766721923"/>
+						<string key="objectName">Profile List Table View</string>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">31</int>
+						<reference key="object" ref="937709842"/>
+						<reference key="parent" ref="766721923"/>
+					</object>
+					<object class="IBObjectRecord">
 						<int key="objectID">22</int>
 						<reference key="object" ref="27393608"/>
 						<object class="NSMutableArray" key="children">
@@ -398,26 +440,16 @@
 					<object class="IBObjectRecord">
 						<int key="objectID">25</int>
 						<reference key="object" ref="403862072"/>
+						<object class="NSMutableArray" key="children">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<reference ref="187053090"/>
+						</object>
 						<reference key="parent" ref="27370276"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">27</int>
-						<reference key="object" ref="379812279"/>
-						<reference key="parent" ref="766721923"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">5</int>
-						<reference key="object" ref="815132763"/>
-						<object class="NSMutableArray" key="children">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-						</object>
-						<reference key="parent" ref="766721923"/>
-						<string key="objectName">Profile List Table View</string>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">31</int>
-						<reference key="object" ref="937709842"/>
-						<reference key="parent" ref="766721923"/>
+						<int key="objectID">32</int>
+						<reference key="object" ref="187053090"/>
+						<reference key="parent" ref="403862072"/>
 					</object>
 				</object>
 			</object>
@@ -443,6 +475,7 @@
 					<string>24.IBPluginDependency</string>
 					<string>27.IBPluginDependency</string>
 					<string>31.IBPluginDependency</string>
+					<string>32.IBPluginDependency</string>
 					<string>5.IBPluginDependency</string>
 				</object>
 				<object class="NSMutableArray" key="dict.values">
@@ -468,6 +501,7 @@
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="unlocalizedProperties">
@@ -482,7 +516,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">31</int>
+			<int key="maxID">37</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -544,8 +578,8 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>bottomField</string>
 							<string>containerView</string>
-							<string>forgotButton</string>
 							<string>loginButton</string>
+							<string>profileLabel</string>
 							<string>scrollView</string>
 							<string>spinner</string>
 							<string>topBar</string>
@@ -556,7 +590,7 @@
 							<string>UITextField</string>
 							<string>UIView</string>
 							<string>UIButton</string>
-							<string>UIButton</string>
+							<string>UILabel</string>
 							<string>UIScrollView</string>
 							<string>UIActivityIndicatorView</string>
 							<string>SCHCustomToolbar</string>
@@ -569,8 +603,8 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>bottomField</string>
 							<string>containerView</string>
-							<string>forgotButton</string>
 							<string>loginButton</string>
+							<string>profileLabel</string>
 							<string>scrollView</string>
 							<string>spinner</string>
 							<string>topBar</string>
@@ -587,12 +621,12 @@
 								<string key="candidateClassName">UIView</string>
 							</object>
 							<object class="IBToOneOutletInfo">
-								<string key="name">forgotButton</string>
+								<string key="name">loginButton</string>
 								<string key="candidateClassName">UIButton</string>
 							</object>
 							<object class="IBToOneOutletInfo">
-								<string key="name">loginButton</string>
-								<string key="candidateClassName">UIButton</string>
+								<string key="name">profileLabel</string>
+								<string key="candidateClassName">UILabel</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">scrollView</string>
@@ -638,7 +672,7 @@
 							<string>headerView</string>
 							<string>loginPasswordController</string>
 							<string>profilePasswordController</string>
-							<string>settingsNavigationController</string>
+							<string>settingsNavController</string>
 							<string>tableView</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
@@ -663,7 +697,7 @@
 							<string>headerView</string>
 							<string>loginPasswordController</string>
 							<string>profilePasswordController</string>
-							<string>settingsNavigationController</string>
+							<string>settingsNavController</string>
 							<string>tableView</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
@@ -693,7 +727,7 @@
 								<string key="candidateClassName">SCHLoginPasswordViewController</string>
 							</object>
 							<object class="IBToOneOutletInfo">
-								<string key="name">settingsNavigationController</string>
+								<string key="name">settingsNavController</string>
 								<string key="candidateClassName">UINavigationController</string>
 							</object>
 							<object class="IBToOneOutletInfo">
@@ -710,6 +744,17 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">SCHSettingsViewController</string>
 					<string key="superclassName">UIViewController</string>
+					<object class="NSMutableDictionary" key="actions">
+						<string key="NS.key.0">dismissModalSettingsController:</string>
+						<string key="NS.object.0">id</string>
+					</object>
+					<object class="NSMutableDictionary" key="actionInfosByName">
+						<string key="NS.key.0">dismissModalSettingsController:</string>
+						<object class="IBActionInfo" key="NS.object.0">
+							<string key="name">dismissModalSettingsController:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+					</object>
 					<object class="NSMutableDictionary" key="outlets">
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
@@ -717,12 +762,14 @@
 							<string>backgroundView</string>
 							<string>loginController</string>
 							<string>tableView</string>
+							<string>topBar</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>UIImageView</string>
 							<string>SCHLoginPasswordViewController</string>
 							<string>UITableView</string>
+							<string>SCHCustomToolbar</string>
 						</object>
 					</object>
 					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
@@ -732,6 +779,7 @@
 							<string>backgroundView</string>
 							<string>loginController</string>
 							<string>tableView</string>
+							<string>topBar</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
@@ -746,6 +794,10 @@
 							<object class="IBToOneOutletInfo">
 								<string key="name">tableView</string>
 								<string key="candidateClassName">UITableView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">topBar</string>
+								<string key="candidateClassName">SCHCustomToolbar</string>
 							</object>
 						</object>
 					</object>

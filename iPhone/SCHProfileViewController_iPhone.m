@@ -29,6 +29,7 @@ static const CGFloat kProfilePhoneTableOffsetLandscape = 20.0f;
 - (void)releaseViewObjects;
 
 @property (nonatomic, retain) UIButton *settingsButton;
+@property (nonatomic, retain) SCHLoginPasswordViewController *parentPasswordController; // Lazily instantiated
 
 @end
 
@@ -42,6 +43,7 @@ static const CGFloat kProfilePhoneTableOffsetLandscape = 20.0f;
 @synthesize settingsButton;
 @synthesize settingsController;
 @synthesize loginController;
+@synthesize parentPasswordController;
 
 #pragma mark - Object lifecycle
 
@@ -60,6 +62,7 @@ static const CGFloat kProfilePhoneTableOffsetLandscape = 20.0f;
 - (void)dealloc 
 {    
     [self releaseViewObjects];
+    [parentPasswordController release], parentPasswordController = nil;
     [super dealloc];
 }
 
@@ -76,7 +79,9 @@ static const CGFloat kProfilePhoneTableOffsetLandscape = 20.0f;
     self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:self.settingsButton] autorelease];
     
     self.navigationItem.title = NSLocalizedString(@"Back", @"");
-    UIImageView *logoImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo"]];
+    UIImageView *logoImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo.png"]];
+    logoImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin;
+    logoImageView.contentMode = UIViewContentModeScaleAspectFit;
     self.navigationItem.titleView = logoImageView;
     [logoImageView release];
     
@@ -167,10 +172,38 @@ static const CGFloat kProfilePhoneTableOffsetLandscape = 20.0f;
     [bookShelfViewController release], bookShelfViewController = nil;        
 }
 
+
+- (SCHLoginPasswordViewController *)parentPasswordController
+{
+    if (!parentPasswordController) {
+        parentPasswordController = [[[SCHLoginPasswordViewController alloc] initWithNibName:@"SCHParentToolsViewController_iPhone" bundle:nil] retain];
+        parentPasswordController.controllerType = kSCHControllerParentToolsView;
+    }
+    
+    return parentPasswordController;
+}
+
 - (void)pushSettingsController
 {
-    settingsController.managedObjectContext = self.managedObjectContext;
-    [self.navigationController pushViewController:self.settingsController animated:YES];
+    self.parentPasswordController.actionBlock = ^{
+        
+        if ([[SCHAuthenticationManager sharedAuthenticationManager] validatePassword:[self.parentPasswordController password]] == NO) {
+            UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") 
+                                                                 message:NSLocalizedString(@"Incorrect password", nil)
+                                                                delegate:nil 
+                                                       cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+                                                       otherButtonTitles:nil]; 
+            [errorAlert show]; 
+            [errorAlert release];
+        } else {
+            [self.parentPasswordController dismissModalViewControllerAnimated:YES];	
+            settingsController.managedObjectContext = self.managedObjectContext;
+            [self.navigationController pushViewController:self.settingsController animated:YES];
+        }
+        
+        [self.parentPasswordController clearFields]; 
+    };   
+    [self presentModalViewController:self.parentPasswordController animated:YES];
 }
 
 #pragma mark - UITableViewDelegate

@@ -185,7 +185,6 @@
 											<double key="NSSize">18</double>
 											<int key="NSfFlags">16</int>
 										</object>
-										<int key="IBUIButtonType">1</int>
 										<string key="IBUITitleShadowOffset">{0, -1}</string>
 										<string key="IBUINormalTitle">Login</string>
 										<object class="NSColor" key="IBUIHighlightedTitleColor" id="113250314">
@@ -260,7 +259,6 @@
 								<string key="NSFrameSize">{320, 7}</string>
 								<reference key="NSSuperview" ref="489633664"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
 								<reference key="IBUIBackgroundColor" ref="764302899"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -385,6 +383,10 @@
 								<reference key="IBUICustomView" ref="30401672"/>
 								<reference key="IBUIToolbar" ref="804538622"/>
 							</object>
+						</object>
+						<object class="NSColor" key="IBUITintColor">
+							<int key="NSColorSpace">2</int>
+							<bytes key="NSRGB">MC44OTQxMTc3MTMgMCAwLjExNzY0NzA2NjcAA</bytes>
 						</object>
 					</object>
 				</object>

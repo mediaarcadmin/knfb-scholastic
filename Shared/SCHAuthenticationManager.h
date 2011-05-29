@@ -31,6 +31,7 @@ static NSInteger const kSCHAuthenticationManagerLoginError = 2001;
 + (SCHAuthenticationManager *)sharedAuthenticationManager;
 
 - (void)authenticateWithUserName:(NSString *)userName withPassword:(NSString *)password;
+- (BOOL)validatePassword:(NSString *)password;
 - (void)authenticate;
 - (BOOL)hasUsernameAndPassword;
 - (void)clear;

@@ -16,7 +16,8 @@ typedef enum {
     // a password only view - used for profile password
 	kSCHControllerPasswordOnlyView,
     // a double password view - used for changing/setting profile password
-	kSCHControllerDoublePasswordView
+	kSCHControllerDoublePasswordView,
+    kSCHControllerParentToolsView
 } SCHLoginViewControllerType;
 
 // defining a block type for use in the block property
@@ -54,6 +55,7 @@ typedef void(^SCHActionBlock)(void);
 
 // Interface Builder
 @property (nonatomic, retain) IBOutlet SCHCustomToolbar *topBar;
+@property (nonatomic, retain) IBOutlet UIBarButtonItem *barSpacer;
 @property (nonatomic, retain) IBOutlet UILabel *profileLabel;
 @property (nonatomic, retain) IBOutlet UIActivityIndicatorView *spinner;
 @property (nonatomic, retain) IBOutlet UIView *containerView;

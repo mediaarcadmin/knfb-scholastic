@@ -114,6 +114,11 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
                         waitUntilDone:YES];
 }
 
+- (BOOL)validatePassword:(NSString *)password
+{
+    return YES;
+}
+
 - (void)authenticate
 {
     [self performSelectorOnMainThread:@selector(authenticateOnMainThread) 

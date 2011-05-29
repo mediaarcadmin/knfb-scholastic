@@ -69,7 +69,7 @@
 		528A2D6012CDE39C0053A343 /* SCHProfileViewController_Shared.m in Sources */ = {isa = PBXBuildFile; fileRef = 528A2D5F12CDE39C0053A343 /* SCHProfileViewController_Shared.m */; };
 		528A2D6212CDE3B10053A343 /* SCHProfileViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 528A2D6112CDE3B10053A343 /* SCHProfileViewController_iPhone.xib */; };
 		529385B512DF231800045B44 /* SCHSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 529385B312DF231800045B44 /* SCHSettingsViewController.m */; };
-		529385B612DF231800045B44 /* SCHSettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 529385B412DF231800045B44 /* SCHSettingsViewController.xib */; };
+		529385B612DF231800045B44 /* SCHSettingsViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 529385B412DF231800045B44 /* SCHSettingsViewController_iPad.xib */; };
 		5293869C12DF3A3300045B44 /* AuthenticateSvc.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293868F12DF3A3300045B44 /* AuthenticateSvc.m */; };
 		5293869E12DF3A3300045B44 /* NSDate+ISO8601Parsing.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293869312DF3A3300045B44 /* NSDate+ISO8601Parsing.m */; };
 		5293869F12DF3A3300045B44 /* NSDate+ISO8601Unparsing.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293869512DF3A3300045B44 /* NSDate+ISO8601Unparsing.m */; };
@@ -502,6 +502,16 @@
 		C960B2671379AE89000F61CC /* icon-layout-fixed.png in Resources */ = {isa = PBXBuildFile; fileRef = C960B2641379AE89000F61CC /* icon-layout-fixed.png */; };
 		C960B2681379AE89000F61CC /* icon-layout-fixed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C960B2651379AE89000F61CC /* icon-layout-fixed@2x.png */; };
 		C960B2691379AE89000F61CC /* icon-layout-fixed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C960B2651379AE89000F61CC /* icon-layout-fixed@2x.png */; };
+		C97228301392975C008605E8 /* SCHParentToolsViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = C972282F1392975C008605E8 /* SCHParentToolsViewController_iPhone.xib */; };
+		C97228311392975C008605E8 /* SCHParentToolsViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = C972282F1392975C008605E8 /* SCHParentToolsViewController_iPhone.xib */; };
+		C972283A1392A24F008605E8 /* button-login-red.png in Resources */ = {isa = PBXBuildFile; fileRef = C97228381392A24F008605E8 /* button-login-red.png */; };
+		C972283B1392A24F008605E8 /* button-login-red.png in Resources */ = {isa = PBXBuildFile; fileRef = C97228381392A24F008605E8 /* button-login-red.png */; };
+		C972283C1392A24F008605E8 /* button-login-red@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C97228391392A24F008605E8 /* button-login-red@2x.png */; };
+		C972283D1392A24F008605E8 /* button-login-red@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C97228391392A24F008605E8 /* button-login-red@2x.png */; };
+		C97228401392B245008605E8 /* SCHSettingsViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = C972283F1392B245008605E8 /* SCHSettingsViewController_iPhone.xib */; };
+		C97228411392B245008605E8 /* SCHSettingsViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = C972283F1392B245008605E8 /* SCHSettingsViewController_iPhone.xib */; };
+		C972284F1392C36B008605E8 /* SCHParentToolsViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = C972284E1392C36A008605E8 /* SCHParentToolsViewController_iPad.xib */; };
+		C97228501392C36B008605E8 /* SCHParentToolsViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = C972284E1392C36A008605E8 /* SCHParentToolsViewController_iPad.xib */; };
 		C979C68A138BAC9100581F7F /* login-ipad-background.png in Resources */ = {isa = PBXBuildFile; fileRef = C979C688138BAC9100581F7F /* login-ipad-background.png */; };
 		C979C68B138BAC9100581F7F /* login-ipad-background.png in Resources */ = {isa = PBXBuildFile; fileRef = C979C688138BAC9100581F7F /* login-ipad-background.png */; };
 		C979C68C138BAC9100581F7F /* login-ipad-top-toolbar.png in Resources */ = {isa = PBXBuildFile; fileRef = C979C689138BAC9100581F7F /* login-ipad-top-toolbar.png */; };
@@ -691,7 +701,7 @@
 		F8509EF812F063C900197EB5 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 528A2CD212CCDD9E0053A343 /* Settings.bundle */; };
 		F8509EF912F063C900197EB5 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 528A2CDA12CCDE070053A343 /* Localizable.strings */; };
 		F8509EFB12F063C900197EB5 /* SCHProfileViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 528A2D6112CDE3B10053A343 /* SCHProfileViewController_iPhone.xib */; };
-		F8509F0012F063C900197EB5 /* SCHSettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 529385B412DF231800045B44 /* SCHSettingsViewController.xib */; };
+		F8509F0012F063C900197EB5 /* SCHSettingsViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 529385B412DF231800045B44 /* SCHSettingsViewController_iPad.xib */; };
 		F8509F0112F063C900197EB5 /* SCHBookShelfViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5293883212E03CD000045B44 /* SCHBookShelfViewController.xib */; };
 		F8509F0412F063C900197EB5 /* SCHLoginViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52EF4E5E12E6E01C00E374F7 /* SCHLoginViewController_iPhone.xib */; };
 		F8509F1312F063C900197EB5 /* AppDelegate_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* AppDelegate_iPad.m */; };
@@ -1001,9 +1011,9 @@
 		528A2D5E12CDE39C0053A343 /* SCHProfileViewController_Shared.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHProfileViewController_Shared.h; path = iPhone/SCHProfileViewController_Shared.h; sourceTree = "<group>"; };
 		528A2D5F12CDE39C0053A343 /* SCHProfileViewController_Shared.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHProfileViewController_Shared.m; path = iPhone/SCHProfileViewController_Shared.m; sourceTree = "<group>"; };
 		528A2D6112CDE3B10053A343 /* SCHProfileViewController_iPhone.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SCHProfileViewController_iPhone.xib; sourceTree = "<group>"; };
-		529385B212DF231800045B44 /* SCHSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHSettingsViewController.h; sourceTree = "<group>"; };
-		529385B312DF231800045B44 /* SCHSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHSettingsViewController.m; sourceTree = "<group>"; };
-		529385B412DF231800045B44 /* SCHSettingsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SCHSettingsViewController.xib; sourceTree = "<group>"; };
+		529385B212DF231800045B44 /* SCHSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHSettingsViewController.h; path = iPhone/SCHSettingsViewController.h; sourceTree = "<group>"; };
+		529385B312DF231800045B44 /* SCHSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHSettingsViewController.m; path = iPhone/SCHSettingsViewController.m; sourceTree = "<group>"; };
+		529385B412DF231800045B44 /* SCHSettingsViewController_iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = SCHSettingsViewController_iPad.xib; path = iPhone/SCHSettingsViewController_iPad.xib; sourceTree = "<group>"; };
 		5293868E12DF3A3300045B44 /* AuthenticateSvc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthenticateSvc.h; sourceTree = "<group>"; };
 		5293868F12DF3A3300045B44 /* AuthenticateSvc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthenticateSvc.m; sourceTree = "<group>"; };
 		5293869212DF3A3300045B44 /* NSDate+ISO8601Parsing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+ISO8601Parsing.h"; sourceTree = "<group>"; };
@@ -1468,6 +1478,11 @@
 		C960B25F1379A298000F61CC /* icon-layout-flowed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-layout-flowed.png"; path = "Resources/UIAssets/icon-layout-flowed.png"; sourceTree = "<group>"; };
 		C960B2641379AE89000F61CC /* icon-layout-fixed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-layout-fixed.png"; path = "Resources/UIAssets/icon-layout-fixed.png"; sourceTree = "<group>"; };
 		C960B2651379AE89000F61CC /* icon-layout-fixed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-layout-fixed@2x.png"; path = "Resources/UIAssets/icon-layout-fixed@2x.png"; sourceTree = "<group>"; };
+		C972282F1392975C008605E8 /* SCHParentToolsViewController_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHParentToolsViewController_iPhone.xib; sourceTree = "<group>"; };
+		C97228381392A24F008605E8 /* button-login-red.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "button-login-red.png"; path = "Resources/UIAssets/button-login-red.png"; sourceTree = "<group>"; };
+		C97228391392A24F008605E8 /* button-login-red@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "button-login-red@2x.png"; path = "Resources/UIAssets/button-login-red@2x.png"; sourceTree = "<group>"; };
+		C972283F1392B245008605E8 /* SCHSettingsViewController_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHSettingsViewController_iPhone.xib; sourceTree = "<group>"; };
+		C972284E1392C36A008605E8 /* SCHParentToolsViewController_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SCHParentToolsViewController_iPad.xib; path = iPad/SCHParentToolsViewController_iPad.xib; sourceTree = "<group>"; };
 		C979C688138BAC9100581F7F /* login-ipad-background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "login-ipad-background.png"; path = "Resources/UIAssets/login-ipad-background.png"; sourceTree = "<group>"; };
 		C979C689138BAC9100581F7F /* login-ipad-top-toolbar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "login-ipad-top-toolbar.png"; path = "Resources/UIAssets/login-ipad-top-toolbar.png"; sourceTree = "<group>"; };
 		C979C69A138C195200581F7F /* login-iphone-background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "login-iphone-background.png"; path = "Resources/UIAssets/login-iphone-background.png"; sourceTree = "<group>"; };
@@ -1618,8 +1633,8 @@
 		F8844BF6137D6654003D3014 /* SCHProfileViewController_iPad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHProfileViewController_iPad.h; path = iPad/SCHProfileViewController_iPad.h; sourceTree = SOURCE_ROOT; };
 		F8844BF7137D6654003D3014 /* SCHProfileViewController_iPad.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHProfileViewController_iPad.m; path = iPad/SCHProfileViewController_iPad.m; sourceTree = SOURCE_ROOT; };
 		F8844BF8137D6655003D3014 /* SCHProfileViewController_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SCHProfileViewController_iPad.xib; path = iPad/SCHProfileViewController_iPad.xib; sourceTree = SOURCE_ROOT; };
-		F8898901135877B100D236ED /* SCHProfileViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHProfileViewCell.h; sourceTree = "<group>"; };
-		F8898902135877B100D236ED /* SCHProfileViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHProfileViewCell.m; sourceTree = "<group>"; };
+		F8898901135877B100D236ED /* SCHProfileViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHProfileViewCell.h; path = iPhone/SCHProfileViewCell.h; sourceTree = "<group>"; };
+		F8898902135877B100D236ED /* SCHProfileViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHProfileViewCell.m; path = iPhone/SCHProfileViewCell.m; sourceTree = "<group>"; };
 		F88A7F7D138D151D006A7D12 /* SCHDictionaryAccessManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHDictionaryAccessManager.h; path = Shared/SCHDictionaryAccessManager.h; sourceTree = "<group>"; };
 		F88A7F7E138D151D006A7D12 /* SCHDictionaryAccessManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHDictionaryAccessManager.m; path = Shared/SCHDictionaryAccessManager.m; sourceTree = "<group>"; };
 		F8B55E05134B190B0028534A /* SCHDictionaryFileUnzipOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHDictionaryFileUnzipOperation.h; path = Shared/SCHDictionaryFileUnzipOperation.h; sourceTree = "<group>"; };
@@ -1763,16 +1778,12 @@
 		2860E386111B897F00E27156 /* iPhone */ = {
 			isa = PBXGroup;
 			children = (
-				C9F5B9F213911E21009DE113 /* Login and Password Controller */,
+				C972283E1392B203008605E8 /* Settings Controller */,
+				C9F5B9F213911E21009DE113 /* Authentication Controllers */,
 				F8509E9912F0621E00197EB5 /* Scrubber View */,
 				2860E387111B897F00E27156 /* AppDelegate_iPhone.h */,
 				2860E388111B897F00E27156 /* AppDelegate_iPhone.m */,
 				2860E389111B897F00E27156 /* MainWindow_iPhone.xib */,
-				529385B212DF231800045B44 /* SCHSettingsViewController.h */,
-				529385B312DF231800045B44 /* SCHSettingsViewController.m */,
-				529385B412DF231800045B44 /* SCHSettingsViewController.xib */,
-				F8898901135877B100D236ED /* SCHProfileViewCell.h */,
-				F8898902135877B100D236ED /* SCHProfileViewCell.m */,
 				A38CF1FD1374504F00EABF43 /* SCHAboutViewController.h */,
 				A38CF1FE1374504F00EABF43 /* SCHAboutViewController.m */,
 				A39009931379B13000D6B608 /* SCHPrivacyPolicyViewController.h */,
@@ -1785,7 +1796,8 @@
 		28EEBF621118D79A00187D67 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
-				C9F5B74D138FB057009DE113 /* Login and Password Controller */,
+				C97228421392B27E008605E8 /* Settings Controller */,
+				C9F5B74D138FB057009DE113 /* Authentication Controllers */,
 				F8DC5655138C09DB00F27146 /* Reading View Controllers */,
 				526A8A42138510CD00101A96 /* AudioBookPlayer */,
 				F8509E8A12F0621E00197EB5 /* XPS Provider */,
@@ -1840,7 +1852,8 @@
 		29B97317FDCFA39411CA2CEA /* iPad */ = {
 			isa = PBXGroup;
 			children = (
-				C9F5B9F313911E4C009DE113 /* Login and Password Controller */,
+				C97228431392B28E008605E8 /* Settings Controller */,
+				C9F5B9F313911E4C009DE113 /* Authentication Controllers */,
 				F864333A13813DF100BEB8EB /* Profile View Controller */,
 				F864333913813DE000BEB8EB /* Bookshelves */,
 				1D3623240D0F684500981E51 /* AppDelegate_iPad.h */,
@@ -2459,6 +2472,8 @@
 		C920DDED138A69B400F1583D /* Profile and Admin Views */ = {
 			isa = PBXGroup;
 			children = (
+				C97228381392A24F008605E8 /* button-login-red.png */,
+				C97228391392A24F008605E8 /* button-login-red@2x.png */,
 				C9F5B9FA13916C62009DE113 /* button-go.png */,
 				C9F5B9FB13916C62009DE113 /* button-go@2x.png */,
 				C979C6A6138C237C00581F7F /* button-field.png */,
@@ -2652,6 +2667,31 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		C972283E1392B203008605E8 /* Settings Controller */ = {
+			isa = PBXGroup;
+			children = (
+				C972283F1392B245008605E8 /* SCHSettingsViewController_iPhone.xib */,
+			);
+			name = "Settings Controller";
+			sourceTree = "<group>";
+		};
+		C97228421392B27E008605E8 /* Settings Controller */ = {
+			isa = PBXGroup;
+			children = (
+				529385B212DF231800045B44 /* SCHSettingsViewController.h */,
+				529385B312DF231800045B44 /* SCHSettingsViewController.m */,
+			);
+			name = "Settings Controller";
+			sourceTree = "<group>";
+		};
+		C97228431392B28E008605E8 /* Settings Controller */ = {
+			isa = PBXGroup;
+			children = (
+				529385B412DF231800045B44 /* SCHSettingsViewController_iPad.xib */,
+			);
+			name = "Settings Controller";
+			sourceTree = "<group>";
+		};
 		C979C6AC138C2D3500581F7F /* Utility Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -2831,7 +2871,7 @@
 			name = XPS;
 			sourceTree = "<group>";
 		};
-		C9F5B74D138FB057009DE113 /* Login and Password Controller */ = {
+		C9F5B74D138FB057009DE113 /* Authentication Controllers */ = {
 			isa = PBXGroup;
 			children = (
 				52EF4E5C12E6E01C00E374F7 /* SCHLoginPasswordViewController.h */,
@@ -2839,25 +2879,27 @@
 				C9F5B74E138FBBB3009DE113 /* SCHUnderlinedButton.h */,
 				C9F5B74F138FBBB3009DE113 /* SCHUnderlinedButton.m */,
 			);
-			name = "Login and Password Controller";
+			name = "Authentication Controllers";
 			sourceTree = "<group>";
 		};
-		C9F5B9F213911E21009DE113 /* Login and Password Controller */ = {
+		C9F5B9F213911E21009DE113 /* Authentication Controllers */ = {
 			isa = PBXGroup;
 			children = (
 				52EF4E5E12E6E01C00E374F7 /* SCHLoginViewController_iPhone.xib */,
 				C9F5BA0013918CE8009DE113 /* SCHPasswordViewController_iPhone.xib */,
+				C972282F1392975C008605E8 /* SCHParentToolsViewController_iPhone.xib */,
 			);
-			name = "Login and Password Controller";
+			name = "Authentication Controllers";
 			sourceTree = "<group>";
 		};
-		C9F5B9F313911E4C009DE113 /* Login and Password Controller */ = {
+		C9F5B9F313911E4C009DE113 /* Authentication Controllers */ = {
 			isa = PBXGroup;
 			children = (
 				C9F5B9F413911F8B009DE113 /* SCHLoginViewController_iPad.xib */,
 				C9F5B9F7139162EC009DE113 /* SCHPasswordViewController_iPad.xib */,
+				C972284E1392C36A008605E8 /* SCHParentToolsViewController_iPad.xib */,
 			);
-			name = "Login and Password Controller";
+			name = "Authentication Controllers";
 			sourceTree = "<group>";
 		};
 		F84CE153134C68E50044729E /* Authentication Manager */ = {
@@ -2965,6 +3007,8 @@
 			children = (
 				528A2D5E12CDE39C0053A343 /* SCHProfileViewController_Shared.h */,
 				528A2D5F12CDE39C0053A343 /* SCHProfileViewController_Shared.m */,
+				F8898901135877B100D236ED /* SCHProfileViewCell.h */,
+				F8898902135877B100D236ED /* SCHProfileViewCell.m */,
 			);
 			name = "Profile View Controller";
 			sourceTree = "<group>";
@@ -3256,7 +3300,7 @@
 				528A2CD312CCDD9E0053A343 /* Settings.bundle in Resources */,
 				528A2CDB12CCDE070053A343 /* Localizable.strings in Resources */,
 				528A2D6212CDE3B10053A343 /* SCHProfileViewController_iPhone.xib in Resources */,
-				529385B612DF231800045B44 /* SCHSettingsViewController.xib in Resources */,
+				529385B612DF231800045B44 /* SCHSettingsViewController_iPad.xib in Resources */,
 				5293883412E03CD000045B44 /* SCHBookShelfViewController.xib in Resources */,
 				52EF4E6012E6E01C00E374F7 /* SCHLoginViewController_iPhone.xib in Resources */,
 				C923B15C12F6B0280054426F /* SCHMultipleBookshelvesController.xib in Resources */,
@@ -3457,6 +3501,11 @@
 				C9F5B9FC13916C62009DE113 /* button-go.png in Resources */,
 				C9F5B9FE13916C62009DE113 /* button-go@2x.png in Resources */,
 				C9F5BA0113918CE9009DE113 /* SCHPasswordViewController_iPhone.xib in Resources */,
+				C97228301392975C008605E8 /* SCHParentToolsViewController_iPhone.xib in Resources */,
+				C972283A1392A24F008605E8 /* button-login-red.png in Resources */,
+				C972283C1392A24F008605E8 /* button-login-red@2x.png in Resources */,
+				C97228401392B245008605E8 /* SCHSettingsViewController_iPhone.xib in Resources */,
+				C972284F1392C36B008605E8 /* SCHParentToolsViewController_iPad.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3469,7 +3518,7 @@
 				F8509EF812F063C900197EB5 /* Settings.bundle in Resources */,
 				F8509EF912F063C900197EB5 /* Localizable.strings in Resources */,
 				F8509EFB12F063C900197EB5 /* SCHProfileViewController_iPhone.xib in Resources */,
-				F8509F0012F063C900197EB5 /* SCHSettingsViewController.xib in Resources */,
+				F8509F0012F063C900197EB5 /* SCHSettingsViewController_iPad.xib in Resources */,
 				F8509F0112F063C900197EB5 /* SCHBookShelfViewController.xib in Resources */,
 				F8509F0412F063C900197EB5 /* SCHLoginViewController_iPhone.xib in Resources */,
 				C923B15B12F6B0280054426F /* SCHMultipleBookshelvesController.xib in Resources */,
@@ -3677,6 +3726,11 @@
 				C9F5B9FD13916C62009DE113 /* button-go.png in Resources */,
 				C9F5B9FF13916C62009DE113 /* button-go@2x.png in Resources */,
 				C9F5BA0213918CE9009DE113 /* SCHPasswordViewController_iPhone.xib in Resources */,
+				C97228311392975C008605E8 /* SCHParentToolsViewController_iPhone.xib in Resources */,
+				C972283B1392A24F008605E8 /* button-login-red.png in Resources */,
+				C972283D1392A24F008605E8 /* button-login-red@2x.png in Resources */,
+				C97228411392B245008605E8 /* SCHSettingsViewController_iPhone.xib in Resources */,
+				C97228501392C36B008605E8 /* SCHParentToolsViewController_iPad.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
