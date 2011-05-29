@@ -223,8 +223,8 @@
 					<object class="IBUIViewController" id="27370276">
 						<object class="IBUINavigationItem" key="IBUINavigationItem" id="403862072">
 							<reference key="IBUINavigationBar"/>
-							<string key="IBUITitle">Settings</string>
-							<object class="IBUIBarButtonItem" key="IBUILeftBarButtonItem" id="187053090">
+							<string key="IBUITitle">Parent Tools</string>
+							<object class="IBUIBarButtonItem" key="IBUILeftBarButtonItem" id="325072269">
 								<string key="IBUITitle">Done</string>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 								<int key="IBUIStyle">1</int>
@@ -330,7 +330,7 @@
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
 						<string key="label">dismissModalSettingsController:</string>
-						<reference key="source" ref="187053090"/>
+						<reference key="source" ref="325072269"/>
 						<reference key="destination" ref="27370276"/>
 					</object>
 					<int key="connectionID">37</int>
@@ -442,13 +442,13 @@
 						<reference key="object" ref="403862072"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="187053090"/>
+							<reference ref="325072269"/>
 						</object>
 						<reference key="parent" ref="27370276"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">32</int>
-						<reference key="object" ref="187053090"/>
+						<reference key="object" ref="325072269"/>
 						<reference key="parent" ref="403862072"/>
 					</object>
 				</object>
@@ -576,6 +576,7 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>barSpacer</string>
 							<string>bottomField</string>
 							<string>containerView</string>
 							<string>loginButton</string>
@@ -587,6 +588,7 @@
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>UIBarButtonItem</string>
 							<string>UITextField</string>
 							<string>UIView</string>
 							<string>UIButton</string>
@@ -601,6 +603,7 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>barSpacer</string>
 							<string>bottomField</string>
 							<string>containerView</string>
 							<string>loginButton</string>
@@ -612,6 +615,10 @@
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<object class="IBToOneOutletInfo">
+								<string key="name">barSpacer</string>
+								<string key="candidateClassName">UIBarButtonItem</string>
+							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">bottomField</string>
 								<string key="candidateClassName">UITextField</string>
@@ -762,14 +769,12 @@
 							<string>backgroundView</string>
 							<string>loginController</string>
 							<string>tableView</string>
-							<string>topBar</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>UIImageView</string>
 							<string>SCHLoginPasswordViewController</string>
 							<string>UITableView</string>
-							<string>SCHCustomToolbar</string>
 						</object>
 					</object>
 					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
@@ -779,7 +784,6 @@
 							<string>backgroundView</string>
 							<string>loginController</string>
 							<string>tableView</string>
-							<string>topBar</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
@@ -794,10 +798,6 @@
 							<object class="IBToOneOutletInfo">
 								<string key="name">tableView</string>
 								<string key="candidateClassName">UITableView</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">topBar</string>
-								<string key="candidateClassName">SCHCustomToolbar</string>
 							</object>
 						</object>
 					</object>
