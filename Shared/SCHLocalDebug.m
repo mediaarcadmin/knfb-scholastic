@@ -387,11 +387,8 @@
 		
 		newContentProfileItem.IsFavorite = [NSNumber numberWithBool:YES];
         
-        if ([newContentMetadataItem.FileName isEqualToString:@"Cars"] ||
-            [newContentMetadataItem.FileName isEqualToString:@"Clifford"] ||
-            [newContentMetadataItem.FileName isEqualToString:@"OldLady"] ||
-            [newContentMetadataItem.FileName isEqualToString:@"Penguins"] ||
-            [newContentMetadataItem.FileName isEqualToString:@"TooManyToys"]) {
+        if ([newContentMetadataItem.FileName isEqualToString:@"OlliesNewTricks"] ||
+            [newContentMetadataItem.FileName isEqualToString:@"WhoWillCarveTurkey"]) {
             newContentProfileItem.ProfileID = [NSNumber numberWithInt:1];
             [self addAnnotationStructure:newUserContentItem annotationsItem:youngAnnotationsItem];
         } else {

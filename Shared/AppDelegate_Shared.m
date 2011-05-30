@@ -13,7 +13,8 @@
 #import "SCHUserDefaults.h"
 #import "SCHURLManager.h"
 #import "SCHProcessingManager.h"
-#import "SCHDictionaryManager.h"
+#import "SCHDictionaryDownloadManager.h"
+#import "SCHDictionaryAccessManager.h"
 #import "SCHBookshelfSyncComponent.h"
 
 #if LOCALDEBUG
@@ -90,8 +91,10 @@ static NSString* const prModelCertFilename = @"iphonecert.dat";
 		return;
 	}
 	NSURL* supportDir = [[[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask] lastObject];
-	// TODO ipad certs have same name, must be gotten from a different location
-    NSURL* srcWmModelCert = [[[NSBundle mainBundle] resourceURL] URLByAppendingPathComponent:wmModelCertFilename]; 
+	NSURL* srcWmModelCert = [[[[[NSBundle mainBundle] resourceURL] URLByAppendingPathComponent:@"DRM"] 
+                              URLByAppendingPathComponent:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone?@"iPhone":@"iPad")] 
+                             URLByAppendingPathComponent:wmModelCertFilename]; 
+
 	NSURL* destWmModelCert = [supportDir URLByAppendingPathComponent:wmModelCertFilename];
 	NSError* err = nil;
 	[[NSFileManager defaultManager] copyItemAtURL:srcWmModelCert toURL:destWmModelCert error:&err];
@@ -99,7 +102,9 @@ static NSString* const prModelCertFilename = @"iphonecert.dat";
 		//NSLog(@"Copying DRM-WM certificate: %@, aborting copy.", [err localizedDescription]);
 		return;
 	}
-	NSURL* srcPRModelCert = [[[NSBundle mainBundle] resourceURL] URLByAppendingPathComponent:prModelCertFilename]; 
+    NSURL* srcPRModelCert = [[[[[NSBundle mainBundle] resourceURL] URLByAppendingPathComponent:@"DRM"] 
+                              URLByAppendingPathComponent:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone?@"iPhone":@"iPad")] 
+                             URLByAppendingPathComponent:prModelCertFilename]; 
 	NSURL* destPRModelCert = [supportDir URLByAppendingPathComponent:prModelCertFilename];
 	[[NSFileManager defaultManager] copyItemAtURL:srcPRModelCert toURL:destPRModelCert error:&err];  
 	if ( err != nil) {
@@ -161,12 +166,16 @@ static NSString* const prModelCertFilename = @"iphonecert.dat";
 	// instantiate the shared processing manager
 	[SCHProcessingManager sharedProcessingManager];
     
+    
 #if LOCALDEBUG
 	[[NSNotificationCenter defaultCenter] postNotificationName:kSCHBookshelfSyncComponentComplete object:nil];
     [self performSelector:@selector(copyLocalFilesIfMissing) withObject:nil afterDelay:0.1f]; // Stop the watchdog from killing us on launch
 #endif
 	
-	[[SCHDictionaryManager sharedDictionaryManager] checkIfUpdateNeeded];
+	[[SCHDictionaryDownloadManager sharedDownloadManager] checkIfUpdateNeeded];
+
+	// instantiate the shared dictionary access manager
+	[SCHDictionaryAccessManager sharedAccessManager];
 	
 	[self ensureCorrectCertsAvailable];
 	

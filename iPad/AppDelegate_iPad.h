@@ -17,7 +17,6 @@
 }
 
 @property (nonatomic, retain) IBOutlet UINavigationController *navigationController;
-@property (nonatomic, retain) IBOutlet SCHCustomNavigationBar *customNavigationBar;
 
 @end
 

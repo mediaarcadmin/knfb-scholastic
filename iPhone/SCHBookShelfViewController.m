@@ -84,7 +84,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 - (void)viewDidLoad 
 {
     [super viewDidLoad];
-
+    
     SCHThemeButton *button = [SCHThemeButton buttonWithType:UIButtonTypeCustom];
     [button setThemeIcon:kSCHThemeManagerThemeIcon iPadSpecific:YES];
     [button sizeToFit];    
@@ -98,7 +98,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
     [button addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];    
     self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:button] autorelease];
     
-    [self updateTheme];
+    [(SCHCustomNavigationBar *)self.navigationController.navigationBar setTheme:kSCHThemeManagerNavigationBarImage];
     
     // uses the cellSize and cellBorderSize methods, which can be overridden
     [self.gridView setCellSize:[self cellSize] withBorderSize:[self cellBorderSize]];

@@ -10,7 +10,6 @@
 #import "SCHReadingViewController.h"
 #import "SCHAppBook.h"
 #import "SCHBookManager.h"
-#import "SCHCustomNavigationBar.h"
 #import "SCHThemeManager.h"
 #import "SCHProfileViewController_iPad.h"
 
@@ -18,7 +17,6 @@
 @implementation AppDelegate_iPad
 
 @synthesize navigationController;
-@synthesize customNavigationBar;
 
 #pragma mark -
 #pragma mark Application lifecycle
@@ -30,8 +28,6 @@
     [self.window addSubview:navigationController.view];
     [self.window makeKeyAndVisible];
     
-    [customNavigationBar setTheme:kSCHThemeManagerNavigationBarImage];
-
     return(YES);
 }
 
@@ -73,7 +69,6 @@
 - (void)dealloc {
 	
     [navigationController release];
-    [customNavigationBar release];
 	[super dealloc];
 }
 

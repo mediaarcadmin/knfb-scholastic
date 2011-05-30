@@ -10,6 +10,7 @@
 
 #import "SCHLocationGraphics.h"
 #import "UIColor+Extensions.h"
+#import "SCHBookPoint.h"
 
 @interface SCHNote (PrimitiveAccessors)
 
@@ -39,16 +40,16 @@
     [self didChangeValueForKey:@"Color"];
 }
 
-- (NSNumber *)NotePageNumber
-{
-    return [self.LocationGraphics Page];
-}
-
-- (void)setNotePageNumber:(NSNumber *)NotePageNumber
-{
-    self.LocationGraphics.Page = NotePageNumber;
-}
-
+//- (NSNumber *)NotePageNumber
+//{
+//    return [self.LocationGraphics Page];
+//}
+//
+//- (void)setNotePageNumber:(NSNumber *)NotePageNumber
+//{
+//    self.LocationGraphics.Page = NotePageNumber;
+//}
+//
 - (NSString *)NoteText
 {
     return self.Value;
@@ -59,6 +60,19 @@
     self.Value = NoteText;   
 }
 
+- (SCHBookPoint *) NoteBookPoint
+{
+    SCHBookPoint *point = [[SCHBookPoint alloc] init];
+    point.layoutPage = [self.LocationGraphics.Page intValue];
+    point.wordOffset = [self.LocationGraphics.WordIndex intValue];
+    
+    return point;
+}
 
+- (void)setNoteBookPoint: (SCHBookPoint *) newPoint
+{
+    self.LocationGraphics.Page = [NSNumber numberWithInt:newPoint.layoutPage];
+    self.LocationGraphics.WordIndex = [NSNumber numberWithInt:newPoint.wordOffset];
+}
 
 @end

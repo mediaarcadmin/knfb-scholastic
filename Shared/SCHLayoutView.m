@@ -24,6 +24,8 @@
 #define LAYOUT_LHSHOTZONE 0.25f
 #define LAYOUT_RHSHOTZONE 0.75f
 
+#define LAYOUT_LANDSCAPE_PAGE_EDGE_COUNT 3
+
 @interface SCHLayoutView() <EucSelectorDataSource>
 
 @property (nonatomic, retain) EucPageTurningView *pageTurningView;
@@ -110,8 +112,10 @@
         CGRect myBounds = self.bounds;
         if(myBounds.size.width > myBounds.size.height) {
             pageTurningView.twoUp = YES;
+            pageTurningView.potentiallyVisiblePageEdgeCount = LAYOUT_LANDSCAPE_PAGE_EDGE_COUNT;
         } else {
             pageTurningView.twoUp = NO;
+            pageTurningView.potentiallyVisiblePageEdgeCount = 0;
         } 
         
         if (CGRectEqualToRect(firstPageCrop, CGRectZero)) {
@@ -153,18 +157,11 @@
 - (void)layoutSubviews {
     CGRect myBounds = self.bounds;
     if(myBounds.size.width > myBounds.size.height) {
-        self.pageTurningView.twoUp = YES;        
-        // The first page is page 0 as far as the page turning view is concerned,
-        // so it's an even page, so if it's mean to to be on the left, the odd 
-        // pages should be on the right.
-        
-        // Disabled for now because many books seem to have the property set even
-        // though their first page is the cover, and the odd pages are 
-        // clearly meant to be on the left (e.g. they have page numbers on the 
-        // outside).
-        //self.pageTurningView.oddPagesOnRight = [[[BlioBookManager sharedBookManager] bookWithID:self.bookID] firstLayoutPageOnLeft];
+        self.pageTurningView.twoUp = YES;      
+        self.pageTurningView.potentiallyVisiblePageEdgeCount = LAYOUT_LANDSCAPE_PAGE_EDGE_COUNT;
     } else {
         self.pageTurningView.twoUp = NO;
+        self.pageTurningView.potentiallyVisiblePageEdgeCount = 0;
     }   
     [super layoutSubviews];
     CGSize newSize = self.bounds.size;
@@ -488,6 +485,16 @@
     SCHBookRange *excludedRange = [self bookRangeFromSelectorRange:selectedRange];
     
     return [self highlightRectsForPageAtIndex:pageIndex excluding:excludedRange];
+}
+
+- (NSUInteger)pageTurningView:(EucPageTurningView *)pageTurningView pageCountBeforePageAtIndex:(NSUInteger)pageIndex
+{
+    return pageIndex;    
+}
+
+- (NSUInteger)pageTurningView:(EucPageTurningView *)pageTurningView pageCountAfterPageAtIndex:(NSUInteger)pageIndex
+{
+    return self.pageCount - pageIndex - 1;
 }
 
 #pragma mark - EucPageTurningViewDelegate

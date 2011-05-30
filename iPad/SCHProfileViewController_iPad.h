@@ -11,8 +11,9 @@
 
 @class SCHBookShelfViewController_iPad;
 @class SCHLoginPasswordViewController;
+@class SCHCustomNavigationBar;
 
-@interface SCHProfileViewController_iPad : SCHProfileViewController_Shared <UITableViewDelegate, UIPopoverControllerDelegate> {
+@interface SCHProfileViewController_iPad : SCHProfileViewController_Shared <UITableViewDelegate> {
     
     UINavigationController *settingsNavigationController;
 }
@@ -21,9 +22,11 @@
 @property (nonatomic, assign) SCHBookShelfViewController_iPad *bookshelfViewController;
 @property (nonatomic, retain) IBOutlet UIView *headerView;
 @property (nonatomic, retain) IBOutlet UIView *containerView;
+@property (nonatomic, retain) IBOutlet UIImageView *backgroundView;
 
 @property (nonatomic, retain) IBOutlet SCHLoginPasswordViewController *loginPasswordController;
 @property (nonatomic, retain) IBOutlet SCHLoginPasswordViewController *profilePasswordController;
-@property (nonatomic, retain) IBOutlet UINavigationController *settingsNavigationController;
+@property (nonatomic, retain) IBOutlet UINavigationController *settingsNavController;
+@property (nonatomic, retain) IBOutlet SCHCustomNavigationBar *customNavigationBar;
 
 @end

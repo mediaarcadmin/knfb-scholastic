@@ -32,11 +32,6 @@
 
 - (id)initWithISBN:(NSString *)newIsbn
 {
-    return [self initWithISBN:newIsbn failIfCachedDataNotReady:NO];
-}
-
-- (id)initWithISBN:(NSString *)newIsbn failIfCachedDataNotReady:(BOOL)failIfCachedDataNotReady
-{
     SCHBookManager *bookManager = [SCHBookManager sharedBookManager];
     SCHAppBook *book = [bookManager bookWithIdentifier:newIsbn];
     
@@ -48,11 +43,9 @@
         if ((self = [super initWithBookID:nil
                        cacheDirectoryPath:aCacheDirectoryPath
                                  textFlow:aTextFlow
-                                fakeCover:aFakeCover
-                 failIfCachedDataNotReady:failIfCachedDataNotReady])) 
+                                fakeCover:aFakeCover])) 
         {
             isbn = [newIsbn copy];
-        
                 
             self.title = [book XPSTitle];
             self.author = [book XPSAuthor];        

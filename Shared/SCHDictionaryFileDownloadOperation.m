@@ -54,7 +54,7 @@
 		NSLog(@"Cancelled.");
 	} else {
 		
-		self.localPath = [[SCHDictionaryManager sharedDictionaryManager] dictionaryZipPath];
+		self.localPath = [[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryZipPath];
 		
 		[self beginConnection];
 	}
@@ -168,8 +168,8 @@
 						   withObject:userInfo
 						waitUntilDone:YES];
 	
-	[[SCHDictionaryManager sharedDictionaryManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNeedsUnzip];
-//	[SCHDictionaryManager sharedDictionaryManager].dictionaryState = SCHDictionaryProcessingStateNeedsUnzip;
+	[[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNeedsUnzip];
+//	[SCHDictionaryManager sharedDownloadManager].dictionaryState = SCHDictionaryProcessingStateNeedsUnzip;
 	
     [self willChangeValueForKey:@"isExecuting"];
     [self willChangeValueForKey:@"isFinished"];
@@ -186,8 +186,8 @@
 {
 	NSLog(@"Stopped downloading file - %@", [error localizedDescription]);
 	
-	[[SCHDictionaryManager sharedDictionaryManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateError];
-//	[SCHDictionaryManager sharedDictionaryManager].dictionaryState = SCHDictionaryProcessingStateNeedsDownload;
+    //	[[SCHDictionaryManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateError];
+//	[SCHDictionaryManager sharedDownloadManager].dictionaryState = SCHDictionaryProcessingStateNeedsDownload;
 	
     [self willChangeValueForKey:@"isExecuting"];
     [self willChangeValueForKey:@"isFinished"];
