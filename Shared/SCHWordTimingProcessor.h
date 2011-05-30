@@ -8,10 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-static NSString * const kSCHAudioBookPlayerErrorDomain = @"AudioBookPlayerErrorDomain";
-static NSInteger const kSCHAudioBookPlayerFileError = 2000;
-static NSInteger const kSCHAudioBookPlayerDataError = 2001;
-
 @interface SCHWordTimingProcessor : NSObject 
 {
 }

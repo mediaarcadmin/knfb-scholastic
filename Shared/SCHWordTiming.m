@@ -8,9 +8,9 @@
 
 #import "SCHWordTiming.h"
 
-@implementation SCHWordTiming
-
 static NSTimeInterval const kSCHWordTimingMilliSecondsInASecond = 1000.0;
+
+@implementation SCHWordTiming
 
 @synthesize startTime;
 @synthesize endTime;

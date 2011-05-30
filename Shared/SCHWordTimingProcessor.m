@@ -8,8 +8,8 @@
 
 #import "SCHWordTimingProcessor.h"
 
-#import <AVFoundation/AVTime.h>
 #import "SCHWordTiming.h"
+#import "SCHAudioBookPlayer.h"
 
 // this is the buffer used by fgets and is more than adequate for the RXTFile
 static int const kWordTimingBuffer = 1024;
@@ -27,6 +27,8 @@ static int const kWordTimingTimeTimescale = 1000;
 @implementation SCHWordTimingProcessor
 
 @synthesize filePath;
+
+#pragma mark - Object lifecycle
 
 - (id)initWithWordTimingFilePath:(NSString *)aWordTimingFilePath 
 {

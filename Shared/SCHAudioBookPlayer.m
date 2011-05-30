@@ -9,6 +9,7 @@
 #import "SCHAudioBookPlayer.h"
 
 #import "SCHWordTimingProcessor.h"
+#import "SCHAudioInfoProcessor.h"
 #import "SCHWordTiming.h"
 
 static NSTimeInterval const kSCHAudioBookPlayerMilliSecondsInASecond = 1000.0;
@@ -16,6 +17,7 @@ static NSTimeInterval const kSCHAudioBookPlayerMilliSecondsInASecond = 1000.0;
 @interface SCHAudioBookPlayer ()
 
 @property (nonatomic, retain) AVAudioPlayer *player;  
+@property (nonatomic, retain) NSArray *audioInfo;  
 @property (nonatomic, retain) NSArray *wordTimings;  
 @property (nonatomic, assign) BOOL resumeInterruptedPlayer;
 @property (nonatomic, assign) dispatch_source_t timer;
@@ -26,6 +28,7 @@ static NSTimeInterval const kSCHAudioBookPlayerMilliSecondsInASecond = 1000.0;
 
 @synthesize delegate;
 @synthesize player;
+@synthesize audioInfo;
 @synthesize wordTimings;
 @synthesize resumeInterruptedPlayer;
 @synthesize timer;
@@ -52,6 +55,7 @@ static NSTimeInterval const kSCHAudioBookPlayerMilliSecondsInASecond = 1000.0;
     }
     
     [player release], player = nil;
+    [audioInfo release], audioInfo = nil;
     [wordTimings release], wordTimings = nil;
     
     [super dealloc];
@@ -59,7 +63,9 @@ static NSTimeInterval const kSCHAudioBookPlayerMilliSecondsInASecond = 1000.0;
 
 #pragma mark - methods
 
-- (BOOL)prepareToPlay:(NSData *)audioData wordTimingFileData:(NSData *)wordTimingData error:(NSError **)outError wordBlock:(WordBlock)wordBlock
+- (BOOL)prepareToPlay:(NSData *)audioData audioInfoData:(NSData *)audioInfoData 
+   wordTimingFileData:(NSData *)wordTimingData 
+                error:(NSError **)outError wordBlock:(WordBlock)wordBlock
 {    
     BOOL ret = NO;
     
@@ -70,6 +76,9 @@ static NSTimeInterval const kSCHAudioBookPlayerMilliSecondsInASecond = 1000.0;
             self.player.delegate = self;
             ret = [self.player prepareToPlay];
             if (ret == YES) {
+                SCHAudioInfoProcessor *audioInfoProcessor = [[SCHAudioInfoProcessor alloc] init];
+                self.audioInfo = [audioInfoProcessor audioInfoFrom:audioInfoData error:outError];
+                [audioInfoProcessor release], audioInfoProcessor = nil;
                 self.wordTimings = [SCHWordTimingProcessor startTimesFrom:wordTimingData error:outError];
                 
                 if ([wordTimings count] < 1) {

@@ -533,10 +533,12 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
             NSDictionary *audioBookReference = [audioBookReferences objectAtIndex:0];
             NSData *audioData = [self.xpsProvider dataForComponentAtPath:[KNFBXPSAudiobookDirectory stringByAppendingPathComponent:[audioBookReference valueForKey:kSCHAppBookAudioFile]]];
             if (audioData != nil) {
+                NSData *audioInfoData = [self.xpsProvider dataForComponentAtPath:KNFBXPSAudiobookMetadataFile];
                 NSData *timingData = [self.xpsProvider dataForComponentAtPath:[KNFBXPSAudiobookDirectory stringByAppendingPathComponent:[audioBookReference valueForKey:kSCHAppBookTimingFile]]];
                 if (timingData != nil) {
                     self.audioBookPlayer = [[[SCHAudioBookPlayer alloc] init] autorelease];
-                    if ([self.audioBookPlayer prepareToPlay:audioData wordTimingFileData:timingData error:&error wordBlock:^(NSUInteger position) {
+                    if ([self.audioBookPlayer prepareToPlay:audioData audioInfoData:audioInfoData 
+                                         wordTimingFileData:timingData error:&error wordBlock:^(NSUInteger position) {
                         NSLog(@"WORD UP! at %d", position);
                     }] == YES) {
                         self.audioBookPlayer.delegate = self;
