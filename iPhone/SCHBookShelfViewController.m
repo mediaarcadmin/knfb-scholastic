@@ -43,7 +43,6 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 @implementation SCHBookShelfViewController
 
 @synthesize gridView;
-@synthesize shadowView;
 @synthesize loadingView;
 @synthesize themePickerContainer;
 @synthesize customNavigationBar;
@@ -58,7 +57,6 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 - (void)releaseViewObjects 
 {
     [gridView release], gridView = nil;
-    [shadowView release], shadowView = nil;
     [loadingView release], loadingView = nil;
     [themePickerContainer release], themePickerContainer = nil;
     [customNavigationBar release], customNavigationBar = nil;
@@ -142,8 +140,6 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
     
     [self setupAssetsForOrientation:self.interfaceOrientation];
     
-    [self.shadowView setImage:[[UIImage imageNamed:@"bookshelf-iphone-top-shadow.png"] stretchableImageWithLeftCapWidth:15.0f topCapHeight:0]];
-    
     [self.gridView reloadData];
 }
 
@@ -171,10 +167,10 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
     
     if (UIInterfaceOrientationIsLandscape(interfaceOrientation)) {
             [self.gridView setShelfHeight:kSCHBookShelfViewControllerGridCellHeightLandscape];
-            [self.gridView setShelfInset:CGSizeMake(0, -1)];
+            [self.gridView setShelfInset:CGSizeMake(0, -55)];
     } else {
             [self.gridView setShelfHeight:kSCHBookShelfViewControllerGridCellHeightPortrait];
-            [self.gridView setShelfInset:CGSizeMake(0, -2)];
+            [self.gridView setShelfInset:CGSizeMake(0, -55)];
     }
 }
 
