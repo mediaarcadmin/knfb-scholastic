@@ -15,6 +15,50 @@
 		2860E38A111B897F00E27156 /* AppDelegate_iPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 2860E388111B897F00E27156 /* AppDelegate_iPhone.m */; };
 		2860E38B111B897F00E27156 /* MainWindow_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2860E389111B897F00E27156 /* MainWindow_iPhone.xib */; };
 		288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
+		2891B71E13954355005FC4DD /* StoryInteractionMultipleChoiceText1.xml in Resources */ = {isa = PBXBuildFile; fileRef = 2891B71D13954355005FC4DD /* StoryInteractionMultipleChoiceText1.xml */; };
+		28A08CDE13950C01006FD008 /* SCHStoryInteraction.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A08CC713950C01006FD008 /* SCHStoryInteraction.m */; };
+		28A08CDF13950C01006FD008 /* SCHStoryInteraction.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A08CC713950C01006FD008 /* SCHStoryInteraction.m */; };
+		28A08CE013950C01006FD008 /* SCHStoryInteractionHotSpot.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A08CC913950C01006FD008 /* SCHStoryInteractionHotSpot.m */; };
+		28A08CE113950C01006FD008 /* SCHStoryInteractionHotSpot.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A08CC913950C01006FD008 /* SCHStoryInteractionHotSpot.m */; };
+		28A08CE213950C01006FD008 /* SCHStoryInteractionMultipleChoice.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A08CCB13950C01006FD008 /* SCHStoryInteractionMultipleChoice.m */; };
+		28A08CE313950C01006FD008 /* SCHStoryInteractionMultipleChoice.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A08CCB13950C01006FD008 /* SCHStoryInteractionMultipleChoice.m */; };
+		28A08CE413950C01006FD008 /* SCHStoryInteractionParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A08CCD13950C01006FD008 /* SCHStoryInteractionParser.m */; };
+		28A08CE513950C01006FD008 /* SCHStoryInteractionParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A08CCD13950C01006FD008 /* SCHStoryInteractionParser.m */; };
+		28A08CE613950C01006FD008 /* SCHStoryInteractionPopQuiz.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A08CCF13950C01006FD008 /* SCHStoryInteractionPopQuiz.m */; };
+		28A08CE713950C01006FD008 /* SCHStoryInteractionPopQuiz.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A08CCF13950C01006FD008 /* SCHStoryInteractionPopQuiz.m */; };
+		28A08CE813950C01006FD008 /* SCHStoryInteractionScratchAndSee.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A08CD113950C01006FD008 /* SCHStoryInteractionScratchAndSee.m */; };
+		28A08CE913950C01006FD008 /* SCHStoryInteractionScratchAndSee.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A08CD113950C01006FD008 /* SCHStoryInteractionScratchAndSee.m */; };
+		28A08CEA13950C01006FD008 /* SCHStoryInteractionStartingLetter.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A08CD313950C01006FD008 /* SCHStoryInteractionStartingLetter.m */; };
+		28A08CEB13950C01006FD008 /* SCHStoryInteractionStartingLetter.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A08CD313950C01006FD008 /* SCHStoryInteractionStartingLetter.m */; };
+		28A08CEC13950C01006FD008 /* SCHStoryInteractionTitleTwister.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A08CD513950C01006FD008 /* SCHStoryInteractionTitleTwister.m */; };
+		28A08CED13950C01006FD008 /* SCHStoryInteractionTitleTwister.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A08CD513950C01006FD008 /* SCHStoryInteractionTitleTwister.m */; };
+		28A08CEE13950C01006FD008 /* SCHStoryInteractionWhoSaidIt.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A08CD713950C01006FD008 /* SCHStoryInteractionWhoSaidIt.m */; };
+		28A08CEF13950C01006FD008 /* SCHStoryInteractionWhoSaidIt.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A08CD713950C01006FD008 /* SCHStoryInteractionWhoSaidIt.m */; };
+		28A08CF013950C01006FD008 /* SCHStoryInteractionWordMatch.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A08CD913950C01006FD008 /* SCHStoryInteractionWordMatch.m */; };
+		28A08CF113950C01006FD008 /* SCHStoryInteractionWordMatch.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A08CD913950C01006FD008 /* SCHStoryInteractionWordMatch.m */; };
+		28A08CF213950C01006FD008 /* SCHStoryInteractionWordScrambler.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A08CDB13950C01006FD008 /* SCHStoryInteractionWordScrambler.m */; };
+		28A08CF313950C01006FD008 /* SCHStoryInteractionWordScrambler.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A08CDB13950C01006FD008 /* SCHStoryInteractionWordScrambler.m */; };
+		28A08CF413950C01006FD008 /* SCHStoryInteractionWordSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A08CDD13950C01006FD008 /* SCHStoryInteractionWordSearch.m */; };
+		28A08CF513950C01006FD008 /* SCHStoryInteractionWordSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A08CDD13950C01006FD008 /* SCHStoryInteractionWordSearch.m */; };
+		28A08CFC13952CB4006FD008 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
+		28A08CFD13952CB4006FD008 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
+		28A08CFE13952CB4006FD008 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
+		28A08D0413952CB4006FD008 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 28A08D0213952CB4006FD008 /* InfoPlist.strings */; };
+		28A08D0913952CB4006FD008 /* SCHStoryInteractionParserTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A08D0813952CB4006FD008 /* SCHStoryInteractionParserTests.m */; };
+		28A08D0F13952E1D006FD008 /* StoryInteractionHotSpot1.xml in Resources */ = {isa = PBXBuildFile; fileRef = 28A08D0E13952E1D006FD008 /* StoryInteractionHotSpot1.xml */; };
+		28A08D1013953025006FD008 /* SCHStoryInteractionParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A08CCD13950C01006FD008 /* SCHStoryInteractionParser.m */; };
+		28A08D1113953029006FD008 /* SCHStoryInteraction.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A08CC713950C01006FD008 /* SCHStoryInteraction.m */; };
+		28A08D121395302C006FD008 /* SCHStoryInteractionHotSpot.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A08CC913950C01006FD008 /* SCHStoryInteractionHotSpot.m */; };
+		28A08D131395302F006FD008 /* SCHStoryInteractionMultipleChoice.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A08CCB13950C01006FD008 /* SCHStoryInteractionMultipleChoice.m */; };
+		28A08D1413953032006FD008 /* SCHStoryInteractionPopQuiz.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A08CCF13950C01006FD008 /* SCHStoryInteractionPopQuiz.m */; };
+		28A08D1513953035006FD008 /* SCHStoryInteractionScratchAndSee.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A08CD113950C01006FD008 /* SCHStoryInteractionScratchAndSee.m */; };
+		28A08D1613953039006FD008 /* SCHStoryInteractionStartingLetter.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A08CD313950C01006FD008 /* SCHStoryInteractionStartingLetter.m */; };
+		28A08D171395303C006FD008 /* SCHStoryInteractionTitleTwister.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A08CD513950C01006FD008 /* SCHStoryInteractionTitleTwister.m */; };
+		28A08D1813953040006FD008 /* SCHStoryInteractionWhoSaidIt.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A08CD713950C01006FD008 /* SCHStoryInteractionWhoSaidIt.m */; };
+		28A08D1913953043006FD008 /* SCHStoryInteractionWordMatch.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A08CD913950C01006FD008 /* SCHStoryInteractionWordMatch.m */; };
+		28A08D1A13953046006FD008 /* SCHStoryInteractionWordScrambler.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A08CDB13950C01006FD008 /* SCHStoryInteractionWordScrambler.m */; };
+		28A08D1B13953049006FD008 /* SCHStoryInteractionWordSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A08CDD13950C01006FD008 /* SCHStoryInteractionWordSearch.m */; };
+		28A08D2113953394006FD008 /* libexpat.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 28A08D2013953393006FD008 /* libexpat.a */; };
 		28AD733F0D9D9553002E5188 /* MainWindow_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow_iPad.xib */; };
 		28EEBFDD1118E19E00187D67 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28EEBFDC1118E19E00187D67 /* CoreData.framework */; };
 		28EEC04B1118E28000187D67 /* AppDelegate_Shared.m in Sources */ = {isa = PBXBuildFile; fileRef = 28EEC04A1118E28000187D67 /* AppDelegate_Shared.m */; };
@@ -931,6 +975,38 @@
 		2860E389111B897F00E27156 /* MainWindow_iPhone.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainWindow_iPhone.xib; sourceTree = "<group>"; };
 		2870939E111907710040F596 /* Scholastic.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = Scholastic.xcdatamodel; sourceTree = "<group>"; };
 		288765FC0DF74451002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		2891B71D13954355005FC4DD /* StoryInteractionMultipleChoiceText1.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = StoryInteractionMultipleChoiceText1.xml; sourceTree = "<group>"; };
+		28A08CC613950C01006FD008 /* SCHStoryInteraction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteraction.h; sourceTree = "<group>"; };
+		28A08CC713950C01006FD008 /* SCHStoryInteraction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteraction.m; sourceTree = "<group>"; };
+		28A08CC813950C01006FD008 /* SCHStoryInteractionHotSpot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionHotSpot.h; sourceTree = "<group>"; };
+		28A08CC913950C01006FD008 /* SCHStoryInteractionHotSpot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionHotSpot.m; sourceTree = "<group>"; };
+		28A08CCA13950C01006FD008 /* SCHStoryInteractionMultipleChoice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionMultipleChoice.h; sourceTree = "<group>"; };
+		28A08CCB13950C01006FD008 /* SCHStoryInteractionMultipleChoice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionMultipleChoice.m; sourceTree = "<group>"; };
+		28A08CCC13950C01006FD008 /* SCHStoryInteractionParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionParser.h; sourceTree = "<group>"; };
+		28A08CCD13950C01006FD008 /* SCHStoryInteractionParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionParser.m; sourceTree = "<group>"; };
+		28A08CCE13950C01006FD008 /* SCHStoryInteractionPopQuiz.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionPopQuiz.h; sourceTree = "<group>"; };
+		28A08CCF13950C01006FD008 /* SCHStoryInteractionPopQuiz.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionPopQuiz.m; sourceTree = "<group>"; };
+		28A08CD013950C01006FD008 /* SCHStoryInteractionScratchAndSee.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionScratchAndSee.h; sourceTree = "<group>"; };
+		28A08CD113950C01006FD008 /* SCHStoryInteractionScratchAndSee.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionScratchAndSee.m; sourceTree = "<group>"; };
+		28A08CD213950C01006FD008 /* SCHStoryInteractionStartingLetter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionStartingLetter.h; sourceTree = "<group>"; };
+		28A08CD313950C01006FD008 /* SCHStoryInteractionStartingLetter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionStartingLetter.m; sourceTree = "<group>"; };
+		28A08CD413950C01006FD008 /* SCHStoryInteractionTitleTwister.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionTitleTwister.h; sourceTree = "<group>"; };
+		28A08CD513950C01006FD008 /* SCHStoryInteractionTitleTwister.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionTitleTwister.m; sourceTree = "<group>"; };
+		28A08CD613950C01006FD008 /* SCHStoryInteractionWhoSaidIt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionWhoSaidIt.h; sourceTree = "<group>"; };
+		28A08CD713950C01006FD008 /* SCHStoryInteractionWhoSaidIt.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionWhoSaidIt.m; sourceTree = "<group>"; };
+		28A08CD813950C01006FD008 /* SCHStoryInteractionWordMatch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionWordMatch.h; sourceTree = "<group>"; };
+		28A08CD913950C01006FD008 /* SCHStoryInteractionWordMatch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionWordMatch.m; sourceTree = "<group>"; };
+		28A08CDA13950C01006FD008 /* SCHStoryInteractionWordScrambler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionWordScrambler.h; sourceTree = "<group>"; };
+		28A08CDB13950C01006FD008 /* SCHStoryInteractionWordScrambler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionWordScrambler.m; sourceTree = "<group>"; };
+		28A08CDC13950C01006FD008 /* SCHStoryInteractionWordSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionWordSearch.h; sourceTree = "<group>"; };
+		28A08CDD13950C01006FD008 /* SCHStoryInteractionWordSearch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionWordSearch.m; sourceTree = "<group>"; };
+		28A08CFB13952CB4006FD008 /* UnitTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnitTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		28A08D0113952CB4006FD008 /* UnitTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "UnitTests-Info.plist"; sourceTree = "<group>"; };
+		28A08D0313952CB4006FD008 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		28A08D0513952CB4006FD008 /* UnitTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UnitTests-Prefix.pch"; sourceTree = "<group>"; };
+		28A08D0813952CB4006FD008 /* SCHStoryInteractionParserTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionParserTests.m; sourceTree = "<group>"; };
+		28A08D0E13952E1D006FD008 /* StoryInteractionHotSpot1.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = StoryInteractionHotSpot1.xml; sourceTree = "<group>"; };
+		28A08D2013953393006FD008 /* libexpat.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libexpat.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		28AD733E0D9D9553002E5188 /* MainWindow_iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MainWindow_iPad.xib; path = iPad/MainWindow_iPad.xib; sourceTree = "<group>"; };
 		28EEBFDC1118E19E00187D67 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		28EEC0491118E28000187D67 /* AppDelegate_Shared.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate_Shared.h; path = Shared/AppDelegate_Shared.h; sourceTree = "<group>"; };
@@ -1728,6 +1804,17 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		28A08CF713952CB4006FD008 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				28A08D2113953394006FD008 /* libexpat.a in Frameworks */,
+				28A08CFC13952CB4006FD008 /* UIKit.framework in Frameworks */,
+				28A08CFD13952CB4006FD008 /* Foundation.framework in Frameworks */,
+				28A08CFE13952CB4006FD008 /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F8509F3F12F063C900197EB5 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -1771,6 +1858,7 @@
 			children = (
 				1D6058910D05DD3D006BFB54 /* Scholastic.app */,
 				F8509F4D12F063C900197EB5 /* Scholastic.app */,
+				28A08CFB13952CB4006FD008 /* UnitTests.octest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1793,6 +1881,58 @@
 			path = iPhone;
 			sourceTree = "<group>";
 		};
+		28A08CC513950BD6006FD008 /* Story Interactions */ = {
+			isa = PBXGroup;
+			children = (
+				28A08CC613950C01006FD008 /* SCHStoryInteraction.h */,
+				28A08CC713950C01006FD008 /* SCHStoryInteraction.m */,
+				28A08CCC13950C01006FD008 /* SCHStoryInteractionParser.h */,
+				28A08CCD13950C01006FD008 /* SCHStoryInteractionParser.m */,
+				28A08CC813950C01006FD008 /* SCHStoryInteractionHotSpot.h */,
+				28A08CC913950C01006FD008 /* SCHStoryInteractionHotSpot.m */,
+				28A08CCA13950C01006FD008 /* SCHStoryInteractionMultipleChoice.h */,
+				28A08CCB13950C01006FD008 /* SCHStoryInteractionMultipleChoice.m */,
+				28A08CCE13950C01006FD008 /* SCHStoryInteractionPopQuiz.h */,
+				28A08CCF13950C01006FD008 /* SCHStoryInteractionPopQuiz.m */,
+				28A08CD013950C01006FD008 /* SCHStoryInteractionScratchAndSee.h */,
+				28A08CD113950C01006FD008 /* SCHStoryInteractionScratchAndSee.m */,
+				28A08CD213950C01006FD008 /* SCHStoryInteractionStartingLetter.h */,
+				28A08CD313950C01006FD008 /* SCHStoryInteractionStartingLetter.m */,
+				28A08CD413950C01006FD008 /* SCHStoryInteractionTitleTwister.h */,
+				28A08CD513950C01006FD008 /* SCHStoryInteractionTitleTwister.m */,
+				28A08CD613950C01006FD008 /* SCHStoryInteractionWhoSaidIt.h */,
+				28A08CD713950C01006FD008 /* SCHStoryInteractionWhoSaidIt.m */,
+				28A08CD813950C01006FD008 /* SCHStoryInteractionWordMatch.h */,
+				28A08CD913950C01006FD008 /* SCHStoryInteractionWordMatch.m */,
+				28A08CDA13950C01006FD008 /* SCHStoryInteractionWordScrambler.h */,
+				28A08CDB13950C01006FD008 /* SCHStoryInteractionWordScrambler.m */,
+				28A08CDC13950C01006FD008 /* SCHStoryInteractionWordSearch.h */,
+				28A08CDD13950C01006FD008 /* SCHStoryInteractionWordSearch.m */,
+			);
+			name = "Story Interactions";
+			sourceTree = "<group>";
+		};
+		28A08CFF13952CB4006FD008 /* UnitTests */ = {
+			isa = PBXGroup;
+			children = (
+				28A08D0813952CB4006FD008 /* SCHStoryInteractionParserTests.m */,
+				28A08D0013952CB4006FD008 /* Supporting Files */,
+			);
+			path = UnitTests;
+			sourceTree = "<group>";
+		};
+		28A08D0013952CB4006FD008 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				28A08D0113952CB4006FD008 /* UnitTests-Info.plist */,
+				28A08D0213952CB4006FD008 /* InfoPlist.strings */,
+				28A08D0513952CB4006FD008 /* UnitTests-Prefix.pch */,
+				28A08D0E13952E1D006FD008 /* StoryInteractionHotSpot1.xml */,
+				2891B71D13954355005FC4DD /* StoryInteractionMultipleChoiceText1.xml */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		28EEBF621118D79A00187D67 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
@@ -1806,6 +1946,7 @@
 				F867904B1332346C001FDB2F /* Dictionary Processing */,
 				F8899217132E15A5007EB541 /* Processing Manager */,
 				F8DE53E2130A8C0300691CBA /* Book Data */,
+				28A08CC513950BD6006FD008 /* Story Interactions */,
 				5293872912DF436100045B44 /* Web Services */,
 				5250C4AB12DE075C00542055 /* Core Data Models */,
 				F8678D88133216E7001FDB2F /* Configuration */,
@@ -1834,6 +1975,7 @@
 				29B97317FDCFA39411CA2CEA /* iPad */,
 				28EEBF621118D79A00187D67 /* Shared */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
+				28A08CFF13952CB4006FD008 /* UnitTests */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
 			);
@@ -1866,6 +2008,7 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				28A08D2013953393006FD008 /* libexpat.a */,
 				C9ED56811343328F00A25486 /* libiconv.dylib */,
 				C9F1A579133B83D100FD984C /* libxml2.dylib */,
 				F8509EB712F0625100197EB5 /* libstdc++.6.dylib */,
@@ -3159,6 +3302,24 @@
 			productReference = 1D6058910D05DD3D006BFB54 /* Scholastic.app */;
 			productType = "com.apple.product-type.application";
 		};
+		28A08CFA13952CB4006FD008 /* UnitTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 28A08D0A13952CB4006FD008 /* Build configuration list for PBXNativeTarget "UnitTests" */;
+			buildPhases = (
+				28A08CF613952CB4006FD008 /* Sources */,
+				28A08CF713952CB4006FD008 /* Frameworks */,
+				28A08CF813952CB4006FD008 /* Resources */,
+				28A08CF913952CB4006FD008 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = UnitTests;
+			productName = UnitTests;
+			productReference = 28A08CFB13952CB4006FD008 /* UnitTests.octest */;
+			productType = "com.apple.product-type.bundle";
+		};
 		F8509EF412F063C900197EB5 /* Local Files Scholastic */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = F8509F4912F063C900197EB5 /* Build configuration list for PBXNativeTarget "Local Files Scholastic" */;
@@ -3193,6 +3354,7 @@
 				Japanese,
 				French,
 				German,
+				en,
 			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
 			projectDirPath = "";
@@ -3206,6 +3368,7 @@
 			targets = (
 				1D6058900D05DD3D006BFB54 /* Scholastic */,
 				F8509EF412F063C900197EB5 /* Local Files Scholastic */,
+				28A08CFA13952CB4006FD008 /* UnitTests */,
 			);
 		};
 /* End PBXProject section */
@@ -3509,6 +3672,16 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		28A08CF813952CB4006FD008 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				28A08D0413952CB4006FD008 /* InfoPlist.strings in Resources */,
+				28A08D0F13952E1D006FD008 /* StoryInteractionHotSpot1.xml in Resources */,
+				2891B71E13954355005FC4DD /* StoryInteractionMultipleChoiceText1.xml in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F8509EF512F063C900197EB5 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -3736,6 +3909,22 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		28A08CF913952CB4006FD008 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		1D60588E0D05DD3D006BFB54 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -3914,6 +4103,38 @@
 				F8DC567F138C150F00F27146 /* SCHDictionaryViewController.m in Sources */,
 				F88A7F7F138D151D006A7D12 /* SCHDictionaryAccessManager.m in Sources */,
 				C9F5B750138FBBB3009DE113 /* SCHUnderlinedButton.m in Sources */,
+				28A08CDE13950C01006FD008 /* SCHStoryInteraction.m in Sources */,
+				28A08CE013950C01006FD008 /* SCHStoryInteractionHotSpot.m in Sources */,
+				28A08CE213950C01006FD008 /* SCHStoryInteractionMultipleChoice.m in Sources */,
+				28A08CE413950C01006FD008 /* SCHStoryInteractionParser.m in Sources */,
+				28A08CE613950C01006FD008 /* SCHStoryInteractionPopQuiz.m in Sources */,
+				28A08CE813950C01006FD008 /* SCHStoryInteractionScratchAndSee.m in Sources */,
+				28A08CEA13950C01006FD008 /* SCHStoryInteractionStartingLetter.m in Sources */,
+				28A08CEC13950C01006FD008 /* SCHStoryInteractionTitleTwister.m in Sources */,
+				28A08CEE13950C01006FD008 /* SCHStoryInteractionWhoSaidIt.m in Sources */,
+				28A08CF013950C01006FD008 /* SCHStoryInteractionWordMatch.m in Sources */,
+				28A08CF213950C01006FD008 /* SCHStoryInteractionWordScrambler.m in Sources */,
+				28A08CF413950C01006FD008 /* SCHStoryInteractionWordSearch.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		28A08CF613952CB4006FD008 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				28A08D0913952CB4006FD008 /* SCHStoryInteractionParserTests.m in Sources */,
+				28A08D1013953025006FD008 /* SCHStoryInteractionParser.m in Sources */,
+				28A08D1113953029006FD008 /* SCHStoryInteraction.m in Sources */,
+				28A08D121395302C006FD008 /* SCHStoryInteractionHotSpot.m in Sources */,
+				28A08D131395302F006FD008 /* SCHStoryInteractionMultipleChoice.m in Sources */,
+				28A08D1413953032006FD008 /* SCHStoryInteractionPopQuiz.m in Sources */,
+				28A08D1513953035006FD008 /* SCHStoryInteractionScratchAndSee.m in Sources */,
+				28A08D1613953039006FD008 /* SCHStoryInteractionStartingLetter.m in Sources */,
+				28A08D171395303C006FD008 /* SCHStoryInteractionTitleTwister.m in Sources */,
+				28A08D1813953040006FD008 /* SCHStoryInteractionWhoSaidIt.m in Sources */,
+				28A08D1913953043006FD008 /* SCHStoryInteractionWordMatch.m in Sources */,
+				28A08D1A13953046006FD008 /* SCHStoryInteractionWordScrambler.m in Sources */,
+				28A08D1B13953049006FD008 /* SCHStoryInteractionWordSearch.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4094,10 +4315,33 @@
 				F8DC5680138C150F00F27146 /* SCHDictionaryViewController.m in Sources */,
 				F88A7F80138D151E006A7D12 /* SCHDictionaryAccessManager.m in Sources */,
 				C9F5B751138FBBB3009DE113 /* SCHUnderlinedButton.m in Sources */,
+				28A08CDF13950C01006FD008 /* SCHStoryInteraction.m in Sources */,
+				28A08CE113950C01006FD008 /* SCHStoryInteractionHotSpot.m in Sources */,
+				28A08CE313950C01006FD008 /* SCHStoryInteractionMultipleChoice.m in Sources */,
+				28A08CE513950C01006FD008 /* SCHStoryInteractionParser.m in Sources */,
+				28A08CE713950C01006FD008 /* SCHStoryInteractionPopQuiz.m in Sources */,
+				28A08CE913950C01006FD008 /* SCHStoryInteractionScratchAndSee.m in Sources */,
+				28A08CEB13950C01006FD008 /* SCHStoryInteractionStartingLetter.m in Sources */,
+				28A08CED13950C01006FD008 /* SCHStoryInteractionTitleTwister.m in Sources */,
+				28A08CEF13950C01006FD008 /* SCHStoryInteractionWhoSaidIt.m in Sources */,
+				28A08CF113950C01006FD008 /* SCHStoryInteractionWordMatch.m in Sources */,
+				28A08CF313950C01006FD008 /* SCHStoryInteractionWordScrambler.m in Sources */,
+				28A08CF513950C01006FD008 /* SCHStoryInteractionWordSearch.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		28A08D0213952CB4006FD008 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				28A08D0313952CB4006FD008 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		1D6058940D05DD3E006BFB54 /* Debug */ = {
@@ -4156,6 +4400,78 @@
 				);
 				PRODUCT_NAME = Scholastic;
 				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		28A08D0B13952CB4006FD008 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
+				);
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "UnitTests/UnitTests-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INFOPLIST_FILE = "UnitTests/UnitTests-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SenTestingKit,
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Debug;
+		};
+		28A08D0C13952CB4006FD008 /* Ad Hoc */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
+				);
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "UnitTests/UnitTests-Prefix.pch";
+				INFOPLIST_FILE = "UnitTests/UnitTests-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SenTestingKit,
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = "Ad Hoc";
+		};
+		28A08D0D13952CB4006FD008 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
+				);
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "UnitTests/UnitTests-Prefix.pch";
+				INFOPLIST_FILE = "UnitTests/UnitTests-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SenTestingKit,
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = octest;
 			};
 			name = Release;
 		};
@@ -4375,6 +4691,16 @@
 				1D6058940D05DD3E006BFB54 /* Debug */,
 				528A2CFA12CCED700053A343 /* Ad Hoc */,
 				1D6058950D05DD3E006BFB54 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		28A08D0A13952CB4006FD008 /* Build configuration list for PBXNativeTarget "UnitTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				28A08D0B13952CB4006FD008 /* Debug */,
+				28A08D0C13952CB4006FD008 /* Ad Hoc */,
+				28A08D0D13952CB4006FD008 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<SIConfigFile>
+    <StoryInteractions>
+        <StoryInteraction StoryInteractionType="HotSpot" ID="ttp1">
+            <DocumentPageNumber>28</DocumentPageNumber>
+            <Position>188.0,50.0</Position>
+            <Question1>
+                <QuestionPrompt Transcript="It looks like Ollie was knitting a new sock. Can you find it?" />
+                <Hotspot Left="256.2" Top="673.2" Width="102.0" Height="56.4" OriginalBookWidth="806.00" OriginalBookHeight="606.23">
+                    <Data>AAQA2AAKANgAEADYABYA0wAbANMAIQDTACcA0wAtAM0AMwDNADgAzQA+AM0ARADNAEoAzQBPAM0AVQDNAFsAzQBhAM0AZgDNAGwAzQBsAMcAcgDHAHgAxwB+AMcAgwDHAIMAwQCJAMEAjwDBAJUAwQCVALsAmgC7AKAAtgCmALYArAC2AKwAsACxALAAsQCqALcApAC9AKQAvQCfAL0AmQDDAJkAwwCTAMMAjQDDAIgAyACIAMgAggDIAHwAyAB2AM4AdgDOAHEA1ABrANQAZQDaAGUA2gBfANoAWQDgAFkA4ABUAOUAVADrAFQA8QBUAPcAVAD3AE4A/ABOAQIASAEIAEgBCABCAQ4AQgETAEIBGQBCAR8AQgElAEIBKwBCATAAQgE2AEIBPABCAUIAQgFHAEIBRwA9AU0APQFTAD0BWQA9AV4APQFkAD0BagA9AXAAPQFwADcBcAAxAXAAKwFwACYBagAmAWoAIAFqABoBZAAaAWQAFAFeABQBXgAOAV4ACQFZAAkBUwAJAVMAAwFNAAMBRwADAUIAAwE8AAMBNgADATAAAwErAAMAoAADAJoAAwCVAAMAjwADAIkAAwCJAAkAgwAJAH4ACQB4AAkAcgAJAGwACQBsAA4AZgAOAGEADgBbAA4AWwAUAFUAFABPABQASgAUAEoAGgBEABoAPgAaADgAGgAzABoALQAgACcAIAAhACAAIQAmABsAJgAWACYAEAArAAoAKwAEACsABAAx</Data>
+                </Hotspot>
+            </Question1>
+            <Question2>
+                <QuestionPrompt Transcript="Find something Ollie wears when he does magic tricks." />
+                <Hotspot Left="460.9" Top="596.8" Width="78.9" Height="70.8" OriginalBookWidth="806.00" OriginalBookHeight="606.23">
+                    <Data></Data>
+                </Hotspot>
+            </Question2>
+            <Question3>
+                <QuestionPrompt Transcript="Now find Ollie’s green origami project." />
+                <Hotspot Left="273.5" Top="733.7" Width="64.5" Height="49.1" OriginalBookWidth="806.00" OriginalBookHeight="606.23">
+                    <Data>ADMACQAtAAkAJwAJACEACQAhAA4AGwAOABYADgAQAA4AEAAUAAoAFAAEABQABACfAAoAnwAQAKQAFgCkABsAqgAhAKoAIQCwACcAsAAtALAAMwCwADgAsAA+ALAARACwAEoAsABPALAAVQCwAFsAsABhALAAWwCqAFUAqgBbAKoAYQCqAGYAqgBsAKoAcgCqAHgAqgB+AKoAgwCqAIkAqgCPAKoAlQCqAJoAqgCgAKoApgCqAKwAqgCxAKoAtwCqAL0AqgDDAKoAyACqAM4AqgDUAKoA1ACkANoApADaAJ8A4ACfAOAAmQDgAJMA5QCTAOUAjQDrAI0A6wCIAOsAggDxAIIA9wCCAPcAfAD8AHwA/AB2APwAcQD8ACYA/AAgAPcAIADxACAA6wAgAOUAIADgABoA2gAaANQAGgDOABoAzgAUAMgAFADDABQAvQAUALcAFACxABQArAAUAKYAFACgABQAmgAUAJUAFACPABQAiQAUAIMADgB+AA4AeAAO</Data>
+                </Hotspot>
+            </Question3>
+        </StoryInteraction>
+    </StoryInteractions>
+</SIConfigFile>
