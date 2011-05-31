@@ -46,7 +46,7 @@ static NSTimeInterval const kAppDelegate_iPhoneSyncManagerWakeDelay = 5.0;
     SCHSyncManager *syncManager = [SCHSyncManager sharedSyncManager];
 #if NONDRMAUTHENTICATION
 	SCHAuthenticationManager *authenticationManager = [SCHAuthenticationManager sharedAuthenticationManager];
-	if ([authenticationManager hasUsernameAndPassword] == YES) {
+	if ([authenticationManager isAuthenticated] == YES) {
 #else
     NSString *deviceKey = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerDeviceKey];
     if (deviceKey != nil &&
