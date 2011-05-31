@@ -9,8 +9,10 @@
 #import <UIKit/UIKit.h>
 
 
-@interface SCHNotesCountView : UIView {
+@interface SCHNotesCountView : UIImageView {
     
 }
+
+@property (nonatomic) NSInteger noteCount;
 
 @end
