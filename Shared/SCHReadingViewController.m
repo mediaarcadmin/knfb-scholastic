@@ -842,6 +842,13 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [self updateScrubberValue];
 }
 
+- (void)readingView:(SCHReadingView *)readingView hasSelectedWordForSpeaking:(NSString *)word
+{
+    if (word) {
+        [[SCHDictionaryAccessManager sharedAccessManager] speakWord:word category:kSCHDictionaryYoungReader];
+    }
+}
+
 - (void)requestDictionaryForWord:(NSString *)word mode:(SCHReadingViewSelectionMode) mode
 {
     SCHDictionaryViewController *dictionaryViewController = [[SCHDictionaryViewController alloc] initWithNibName:nil bundle:nil];
@@ -860,9 +867,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     
     [self.navigationController presentModalViewController:dictionaryViewController animated:YES];
     [dictionaryViewController release];
-
-    
 }
+
+#pragma mark - Toolbars
 
 - (void)toggleToolbars
 {
@@ -873,6 +880,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 {
     [self setToolbarVisibility:NO animated:YES];
 }
+
+#pragma mark - Scrubber
 
 - (void)adjustScrubberInfoViewHeightForImageSize:(CGSize)imageSize
 {
@@ -954,7 +963,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     self.scrubberInfoView.frame = scrubFrame;
 }
 
-#pragma mark - Scrubber
 
 - (void)updateScrubberLabel
 {
