@@ -94,6 +94,9 @@ typedef enum
 - (EucSelectorRange *)selectorRangeFromBookRange:(SCHBookRange *)range;
 - (SCHBookRange *)bookRangeFromSelectorRange:(EucSelectorRange *)selectorRange;
 
+- (void)followAlongHighlightWordAtPoint:(SCHBookPoint *)bookPoint;
+- (void)followAlongHighlightWordForLayoutPage:(NSUInteger)layoutPage pageWordOffset:(NSUInteger)pageWordOffset;
+
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration;
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation;
 

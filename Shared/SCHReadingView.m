@@ -310,6 +310,27 @@
     }
 }
 
+- (SCHBookPoint *)bookPointForLayoutPage:(NSUInteger)layoutPage pageWordOffset:(NSUInteger)pageWordOffset
+{
+    SCHBookPoint *bookPoint = [[SCHBookPoint alloc] init];
+    bookPoint.layoutPage = layoutPage;
+    bookPoint.wordOffset = pageWordOffset;
+    
+    NSArray *wordBlocks = [self.textFlow blocksForPageAtIndex:bookPoint.layoutPage - 1 includingFolioBlocks:NO];
+    
+    for (int i = 0 ; i < [wordBlocks count]; i++) {
+        KNFBTextFlowBlock *block = [wordBlocks objectAtIndex:i];
+        if (bookPoint.wordOffset < [[block words] count]) {
+            break;
+        } else {
+            bookPoint.wordOffset -= [[block words] count];
+            bookPoint.blockOffset++;
+        }
+    }
+    
+    return [bookPoint autorelease];
+}
+
 - (void)currentLayoutPage:(NSUInteger *)layoutPage pageWordOffset:(NSUInteger *)pageWordOffset
 {
     SCHBookPoint *bookPoint = [self currentBookPoint];
@@ -319,49 +340,25 @@
     }    
 }
 
+- (void)followAlongHighlightWordAtPoint:(SCHBookPoint *)bookPoint {}
+
+- (void)followAlongHighlightWordForLayoutPage:(NSUInteger)layoutPage pageWordOffset:(NSUInteger)pageWordOffset
+{
+    SCHBookPoint *pointToHighlight = [self bookPointForLayoutPage:layoutPage pageWordOffset:pageWordOffset];
+    [self performSelectorOnMainThread:@selector(followAlongHighlightWordAtPoint:) withObject:pointToHighlight waitUntilDone:NO];
+}
+
 - (SCHBookRange *)bookRangeForHighlight:(SCHHighlight *)highlight
 {
-    SCHBookPoint *startPoint = [[SCHBookPoint alloc] init];
-    startPoint.layoutPage = [highlight startLayoutPage];
-    startPoint.wordOffset = [highlight startWordOffset];
+    SCHBookPoint *startPoint = [self bookPointForLayoutPage:[highlight startLayoutPage] pageWordOffset:[highlight startWordOffset]];
     
-    NSArray *startWordBlocks = [self.textFlow blocksForPageAtIndex:startPoint.layoutPage - 1 includingFolioBlocks:NO];
-
-    for (int i = 0 ; i < [startWordBlocks count]; i++) {
-        KNFBTextFlowBlock *block = [startWordBlocks objectAtIndex:i];
-        if (startPoint.wordOffset < [[block words] count]) {
-            break;
-        } else {
-            startPoint.wordOffset -= [[block words] count];
-            startPoint.blockOffset++;
-        }
-    }
-
-    SCHBookPoint *endPoint = [[SCHBookPoint alloc] init];
-    endPoint.layoutPage = [highlight endLayoutPage];
-    endPoint.wordOffset = [highlight endWordOffset];
-    
-    NSArray *endWordBlocks = [self.textFlow blocksForPageAtIndex:endPoint.layoutPage - 1 includingFolioBlocks:NO];
-    
-    for (int i = 0 ; i < [endWordBlocks count]; i++) {
-        KNFBTextFlowBlock *block = [endWordBlocks objectAtIndex:i];
-        if (endPoint.wordOffset < [[block words] count]) {
-            break;
-        } else {
-            endPoint.wordOffset -= [[block words] count];
-            endPoint.blockOffset++;
-        }
-    }
-    
+    SCHBookPoint *endPoint = [self bookPointForLayoutPage:[highlight endLayoutPage] pageWordOffset:[highlight endWordOffset]];
+       
     SCHBookRange *bookRange = [[SCHBookRange alloc] init];
     bookRange.startPoint = startPoint;
     bookRange.endPoint = endPoint;
     
-    [startPoint release];
-    [endPoint release];
-    
     return [bookRange autorelease];
-        
 }
 
 - (NSArray *)highlightsForLayoutPage:(NSUInteger)page
