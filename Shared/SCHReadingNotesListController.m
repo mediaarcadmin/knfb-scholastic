@@ -299,10 +299,10 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
                 titleLabel.text = note.Value;
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 
-                //NSUInteger layoutPage = note.noteLayoutPage;
-                //NSUInteger pageWordIndex = note.notePageWordIndex;
-                SCHBookPoint *notePoint = nil;
-                //SCHBookPoint *notePoint = [self.readingView bookPointForLayoutPage:layoutPage pageWordIndex:pageWordIndex];
+                NSUInteger layoutPage = note.noteLayoutPage;
+                NSUInteger pageWordOffset = note.notePageWordOffset;
+                SCHBookPoint *notePoint = [self.readingView bookPointForLayoutPage:layoutPage pageWordOffset:pageWordOffset];
+                
                 int pageIndex = [self.readingView pageIndexForBookPoint:notePoint];
                 
                 // MATT DO THIS
