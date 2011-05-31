@@ -743,6 +743,8 @@
 		F8509F4512F063C900197EB5 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 529386C412DF3A9000045B44 /* SystemConfiguration.framework */; };
 		F8509F4612F063C900197EB5 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52EF553D12E9EB8500E374F7 /* Security.framework */; };
 		F8509F4812F063C900197EB5 /* libstdc++.6.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F8509EB712F0625100197EB5 /* libstdc++.6.dylib */; };
+		F85C8CF71394FC42008DD042 /* SCHNotesCountView.m in Sources */ = {isa = PBXBuildFile; fileRef = F85C8CF61394FC42008DD042 /* SCHNotesCountView.m */; };
+		F85C8CF81394FC42008DD042 /* SCHNotesCountView.m in Sources */ = {isa = PBXBuildFile; fileRef = F85C8CF61394FC42008DD042 /* SCHNotesCountView.m */; };
 		F85E0309134F59E800E81D58 /* SCHCustomToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = F85E0308134F59E700E81D58 /* SCHCustomToolbar.m */; };
 		F85E030A134F59E800E81D58 /* SCHCustomToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = F85E0308134F59E700E81D58 /* SCHCustomToolbar.m */; };
 		F86433331381359000BEB8EB /* SCHProfileViewController_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = F8844BF7137D6654003D3014 /* SCHProfileViewController_iPad.m */; };
@@ -1609,6 +1611,8 @@
 		F8509E9B12F0621E00197EB5 /* SCHScrubberView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHScrubberView.m; sourceTree = "<group>"; };
 		F8509EB712F0625100197EB5 /* libstdc++.6.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libstdc++.6.dylib"; path = "usr/lib/libstdc++.6.dylib"; sourceTree = SDKROOT; };
 		F8509F4D12F063C900197EB5 /* Scholastic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Scholastic.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F85C8CF51394FC42008DD042 /* SCHNotesCountView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHNotesCountView.h; path = Shared/SCHNotesCountView.h; sourceTree = "<group>"; };
+		F85C8CF61394FC42008DD042 /* SCHNotesCountView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHNotesCountView.m; path = Shared/SCHNotesCountView.m; sourceTree = "<group>"; };
 		F85E0307134F59E700E81D58 /* SCHCustomToolbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHCustomToolbar.h; path = Shared/SCHCustomToolbar.h; sourceTree = "<group>"; };
 		F85E0308134F59E700E81D58 /* SCHCustomToolbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHCustomToolbar.m; path = Shared/SCHCustomToolbar.m; sourceTree = "<group>"; };
 		F864333513813B0100BEB8EB /* SCHBookShelfViewController_iPad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookShelfViewController_iPad.h; path = iPad/SCHBookShelfViewController_iPad.h; sourceTree = "<group>"; };
@@ -3090,6 +3094,8 @@
 				F8DC567C138C150F00F27146 /* SCHDictionaryViewController.h */,
 				F8DC567D138C150F00F27146 /* SCHDictionaryViewController.m */,
 				F8DC567E138C150F00F27146 /* SCHDictionaryViewController.xib */,
+				F85C8CF51394FC42008DD042 /* SCHNotesCountView.h */,
+				F85C8CF61394FC42008DD042 /* SCHNotesCountView.m */,
 			);
 			name = "Reading View Controllers";
 			sourceTree = "<group>";
@@ -3914,6 +3920,7 @@
 				F8DC567F138C150F00F27146 /* SCHDictionaryViewController.m in Sources */,
 				F88A7F7F138D151D006A7D12 /* SCHDictionaryAccessManager.m in Sources */,
 				C9F5B750138FBBB3009DE113 /* SCHUnderlinedButton.m in Sources */,
+				F85C8CF71394FC42008DD042 /* SCHNotesCountView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4094,6 +4101,7 @@
 				F8DC5680138C150F00F27146 /* SCHDictionaryViewController.m in Sources */,
 				F88A7F80138D151E006A7D12 /* SCHDictionaryAccessManager.m in Sources */,
 				C9F5B751138FBBB3009DE113 /* SCHUnderlinedButton.m in Sources */,
+				F85C8CF81394FC42008DD042 /* SCHNotesCountView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

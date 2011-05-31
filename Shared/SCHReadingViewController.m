@@ -27,6 +27,7 @@
 #import "SCHNote.h"
 #import "SCHDictionaryViewController.h"
 #import "SCHDictionaryAccessManager.h"
+#import "SCHNotesCountView.h"
 
 // constants
 static const CGFloat kReadingViewStandardScrubHeight = 47.0f;
@@ -70,6 +71,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 @property (nonatomic, retain) UIPopoverController *popover;
 
+@property (nonatomic, retain) SCHNotesCountView *notesCountView;
+
 - (void)releaseViewObjects;
 
 - (void)toggleToolbarVisibility;
@@ -110,12 +113,14 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 @synthesize paperType;
 @synthesize layoutType;
 @synthesize popover;
+@synthesize notesCountView;
 
 @synthesize optionsView;
 @synthesize popoverOptionsViewController;
 @synthesize fontSegmentedControl;
 @synthesize flowFixedSegmentedControl;
 @synthesize paperTypeSegmentedControl;
+@synthesize notesButton;
 @synthesize pageSlider;
 @synthesize scrubberThumbImage;
 
@@ -156,6 +161,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [olderRightBarButtonItemContainer release], olderRightBarButtonItemContainer = nil;
     [backButton release], backButton = nil;
     [audioButton release], audioButton = nil;
+    [notesCountView release], notesCountView = nil;
+    [notesButton release], notesButton = nil;
+
     [scrubberToolbar release], scrubberToolbar = nil;
     [olderBottomToolbar release], olderBottomToolbar = nil;
     [topShadow release], topShadow = nil;
@@ -309,6 +317,12 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     }
     self.bottomShadow.frame = bottomShadowFrame;
     
+    UIImage *bgImage = [UIImage imageNamed:@"button-login-red"];
+    
+    
+    self.notesCountView = [[SCHNotesCountView alloc] initWithImage:[bgImage stretchableImageWithLeftCapWidth:8.0f topCapHeight:0]];
+    [self.notesButton addSubview:self.notesCountView];
+    
     [self setDictionarySelectionMode];
 
     [self jumpToLastPageLocation];
@@ -317,6 +331,11 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (void)viewWillAppear:(BOOL)animated
 {
 	[super viewWillAppear:animated];
+    
+    // update the note count
+    NSInteger noteCount = [[[self.profile annotationsForBook:self.isbn] notes] count];
+    self.notesCountView.noteCount = noteCount;
+    
     [self setupAssetsForOrientation:self.interfaceOrientation];
 }
 
