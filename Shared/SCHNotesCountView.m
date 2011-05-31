@@ -49,7 +49,6 @@ static const CGFloat kSCHNotesCountViewPaddingHeight = 3;
     }
     
     [super layoutSubviews];
-    NSLog(@"Laying out subviews!");
     
     CGSize textSize = [self.countLabel.text sizeWithFont:self.countLabel.font];
     
@@ -73,6 +72,7 @@ static const CGFloat kSCHNotesCountViewPaddingHeight = 3;
 {
     noteCount = newNoteCount;
     
+    // limit the number of notes
     NSInteger limitedNoteCount = noteCount;
     if (limitedNoteCount > 999) {
         limitedNoteCount = 999;
