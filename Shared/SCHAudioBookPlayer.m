@@ -302,16 +302,18 @@ static NSUInteger const kSCHAudioBookPlayerNoAudioLoaded = NSUIntegerMax;
                     if (self.player != nil) {
                         [self.player release];
                         self.player.delegate = self;
-                        NSUInteger wordIndex = audioInfoToPrepare.timeIndex + pageWordOffset;                    
-                        if ([self.player prepareToPlay] == YES && wordIndex < [self.wordTimings count]) {
-                            SCHWordTiming *wordTiming = [self.wordTimings objectAtIndex:wordIndex];
-                            self.player.currentTime = [wordTiming startTimeAsSeconds];
+                        if ([self.player prepareToPlay] == YES) {
                             ret = YES;
                             self.loadedAudioReferencesIndex = audioInfoToPrepare.audioReferenceIndex;                            
                         }
                     }
                 }
             }
+        }
+        NSUInteger wordIndex = audioInfoToPrepare.timeIndex + pageWordOffset;                    
+        if (wordIndex < [self.wordTimings count]) {
+            SCHWordTiming *wordTiming = [self.wordTimings objectAtIndex:wordIndex];
+            self.player.currentTime = [wordTiming startTimeAsSeconds];
         }
     }
     
