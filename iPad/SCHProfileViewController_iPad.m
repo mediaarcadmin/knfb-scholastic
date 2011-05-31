@@ -125,7 +125,7 @@ static const CGFloat kProfilePadTableOffsetLandscape = 220.0f;
 #if !LOCALDEBUG	
 	SCHAuthenticationManager *authenticationManager = [SCHAuthenticationManager sharedAuthenticationManager];
 	
-	if ([authenticationManager hasUsernameAndPassword] == NO) {
+	if ([authenticationManager isAuthenticated] == NO) {
         [self showLoginControllerWithAnimation:YES];
 	}
 #endif

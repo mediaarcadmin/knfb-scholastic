@@ -34,7 +34,6 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
 - (void)aTokenOnMainThread;
 - (void)authenticateWithUserNameOnMainThread:(NSValue *)parameters;
 - (void)hasUsernameAndPasswordOnMainThread:(NSValue *)returnValue;
-- (void)clearOnMainThread;
 
 @end
 
@@ -387,7 +386,8 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
         self.aToken = nil;
         self.tokenExpires = nil;        
     }
-    
+
+    [self clearOnMainThread];
 	waitingOnResponse = NO;
 	[self postFailureWithError:error];
 }
