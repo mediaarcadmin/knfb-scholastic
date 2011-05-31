@@ -29,7 +29,6 @@
 @property (nonatomic, retain) EucSelectorRange *singleWordSelectorRange;
 
 - (void)selectorDismissedWithSelection:(EucSelectorRange *)selectorRange;
-- (void)layoutPage:(NSUInteger *)layoutPage pageWordOffset:(NSUInteger *)pageWordOffset forBookPoint:(SCHBookPoint *)bookPoint;
 
 @end
 
