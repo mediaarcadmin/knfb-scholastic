@@ -526,6 +526,10 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 {
     NSLog(@"Audio Play action");
     
+    NSUInteger layoutPage = 0;
+    NSUInteger pageWordOffset = 0;
+    [self.readingView currentLayoutPage:&layoutPage pageWordOffset:&pageWordOffset];
+    
     if (self.audioBookPlayer == nil) {            
         SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];
         NSArray *audioBookReferences = [book valueForKey:kSCHAppBookAudioBookReferences];
@@ -539,7 +543,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
                                               NSLog(@"WORD UP! at page %d word %d", page, wordOffset);
                                           }] == YES) {
                                               self.audioBookPlayer.delegate = self;
-                                              [self.audioBookPlayer playAtPage:0 wordOffset:0];
+                                              [self.audioBookPlayer playAtPage:layoutPage pageWordOffset:pageWordOffset];
                                           } else {
                                               self.audioBookPlayer = nil;   
                                               UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") 
@@ -552,7 +556,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
                                           }
         }
     } else if(self.audioBookPlayer.playing == NO) {
-        [self.audioBookPlayer playAtPage:0 wordOffset:4];
+        [self.audioBookPlayer playAtPage:0 pageWordOffset:4];
     } else {
         [self.audioBookPlayer pause];        
     }

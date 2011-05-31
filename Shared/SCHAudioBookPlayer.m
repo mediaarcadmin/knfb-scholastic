@@ -208,7 +208,7 @@ static NSInteger const kSCHAudioBookPlayerWordTimerInterval = 4 * NSEC_PER_MSEC;
     return(ret);
 }
 
-- (BOOL)playAtPage:(NSUInteger)page wordOffset:(NSUInteger)wordOffset
+- (BOOL)playAtPage:(NSUInteger)page pageWordOffset:(NSUInteger)wordOffset
 {  
     BOOL ret = NO;
     

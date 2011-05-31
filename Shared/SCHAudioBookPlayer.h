@@ -31,7 +31,7 @@ static NSInteger const kSCHAudioBookPlayerDataError = 2001;
 - (BOOL)prepareAudio:(NSArray *)setAudioBookReferences 
                error:(NSError **)outError wordBlock:(WordBlock)wordBlock;
 - (BOOL)play;
-- (BOOL)playAtPage:(NSUInteger)page wordOffset:(NSUInteger)wordOffset;
+- (BOOL)playAtPage:(NSUInteger)page pageWordOffset:(NSUInteger)wordOffset;
 - (void)pause;
 
 @end

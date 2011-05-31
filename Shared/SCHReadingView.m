@@ -28,6 +28,7 @@
 @property (nonatomic, retain) EucSelectorRange *currentSelectorRange;
 
 - (void)selectorDismissedWithSelection:(EucSelectorRange *)selectorRange;
+- (void)layoutPage:(NSUInteger *)layoutPage pageWordOffset:(NSUInteger *)pageWordOffset forBookPoint:(SCHBookPoint *)bookPoint;
 
 @end
 
@@ -292,6 +293,30 @@
 - (void)eucSelector:(EucSelector *)selector didEndEditingHighlightWithRange:(EucSelectorRange *)originalRange movedToRange:(EucSelectorRange *)movedToRange;
 {
 
+}
+
+- (void)layoutPage:(NSUInteger *)layoutPage pageWordOffset:(NSUInteger *)pageWordOffset forBookPoint:(SCHBookPoint *)bookPoint
+{
+    *layoutPage = bookPoint.layoutPage;
+    *pageWordOffset = bookPoint.wordOffset;
+    
+    if (bookPoint.blockOffset > 0) {
+        NSArray *wordBlocks = [self.textFlow blocksForPageAtIndex:bookPoint.layoutPage - 1 includingFolioBlocks:NO];
+        for (int i = 0; i < bookPoint.blockOffset; i++) {
+            if (i < [wordBlocks count]) {
+                pageWordOffset += [[[wordBlocks objectAtIndex:i] words] count];
+            }
+        }
+    }
+}
+
+- (void)currentLayoutPage:(NSUInteger *)layoutPage pageWordOffset:(NSUInteger *)pageWordOffset
+{
+    SCHBookPoint *bookPoint = [self currentBookPoint];
+    
+    if (bookPoint) {
+        [self layoutPage:layoutPage pageWordOffset:pageWordOffset forBookPoint:[self currentBookPoint]];
+    }    
 }
 
 - (SCHBookRange *)bookRangeForHighlight:(SCHHighlight *)highlight
