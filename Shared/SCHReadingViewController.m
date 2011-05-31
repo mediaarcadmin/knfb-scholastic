@@ -317,9 +317,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     }
     self.bottomShadow.frame = bottomShadowFrame;
     
+    // FIXME: using a placeholder, adjust for real image
     UIImage *bgImage = [UIImage imageNamed:@"button-login-red"];
-    
-    
     self.notesCountView = [[SCHNotesCountView alloc] initWithImage:[bgImage stretchableImageWithLeftCapWidth:8.0f topCapHeight:0]];
     [self.notesButton addSubview:self.notesCountView];
     
