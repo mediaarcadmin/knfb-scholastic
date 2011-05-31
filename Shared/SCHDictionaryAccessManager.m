@@ -73,11 +73,11 @@ static SCHDictionaryAccessManager *sharedManager = nil;
 
 - (void) updateOnReady
 {
-    self.youngDictionaryCSS = [NSString stringWithContentsOfFile:[[[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryDirectory] stringByAppendingPathComponent:@"YoungDictionary.css"]
+    self.youngDictionaryCSS = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"YoungDictionary" ofType:@"css"]
                                                                  encoding:NSUTF8StringEncoding 
                                                                     error:nil];
     
-    self.oldDictionaryCSS = [NSString stringWithContentsOfFile:[[[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryDirectory] stringByAppendingPathComponent:@"OldDictionary.css"]
+    self.oldDictionaryCSS = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"OldDictionary" ofType:@"css"]
                                                                encoding:NSUTF8StringEncoding 
                                                                   error:nil];
  
