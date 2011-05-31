@@ -78,6 +78,7 @@
 - (void)method:(NSString *)method didFailWithError:(NSError *)error
 {
     NSLog(@"AuthenticationManager:%@ %@", method, [error description]);
+    [self clearOnMainThread];
 	self.waitingOnResponse = NO;
 	[self postFailureWithError:error];
 }

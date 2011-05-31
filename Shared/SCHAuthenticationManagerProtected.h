@@ -25,5 +25,6 @@ static NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
 @property (nonatomic, retain) SCHDrmRegistrationSession *drmRegistrationSession;
 
 - (void)authenticateOnMainThread;
+- (void)clearOnMainThread;
 
 @end

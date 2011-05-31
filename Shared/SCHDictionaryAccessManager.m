@@ -73,11 +73,11 @@ static SCHDictionaryAccessManager *sharedManager = nil;
 
 - (void) updateOnReady
 {
-    self.youngDictionaryCSS = [NSString stringWithContentsOfFile:[[[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryDirectory] stringByAppendingPathComponent:@"YoungDictionary.css"]
+    self.youngDictionaryCSS = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"YoungDictionary" ofType:@"css"]
                                                                  encoding:NSUTF8StringEncoding 
                                                                     error:nil];
     
-    self.oldDictionaryCSS = [NSString stringWithContentsOfFile:[[[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryDirectory] stringByAppendingPathComponent:@"OldDictionary.css"]
+    self.oldDictionaryCSS = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"OldDictionary" ofType:@"css"]
                                                                encoding:NSUTF8StringEncoding 
                                                                   error:nil];
  
@@ -356,32 +356,44 @@ static SCHDictionaryAccessManager *sharedManager = nil;
         NSLog(@"Warning: unrecognised category %@ in HTMLForWord.", category);
         return;
     }
-    
+
+    /*
     SCHDictionaryEntry *entry = [self entryForWord:dictionaryWord category:category];
     
     // if no result is returned, don't try
     if (!entry) {
         return;
     }
+    */
     
+    // remove whitespace and punctuation characters
+    NSString *trimmedWord = [dictionaryWord stringByTrimmingCharactersInSet:
+                             [NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    trimmedWord = [trimmedWord stringByTrimmingCharactersInSet:
+                   [NSCharacterSet punctuationCharacterSet]];
+    trimmedWord = [trimmedWord lowercaseString];
+
     NSString *mp3Path = [NSString stringWithFormat:@"%@/Pronunciation/pron_%@.mp3", 
-                         [[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryDirectory], entry.word];
+                         [[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryDirectory], trimmedWord];
     
-    NSURL *url = [NSURL fileURLWithPath:mp3Path];
-    
-    NSError *error;
-    
-    if (self.player) {
-        [self.player stop];
-        self.player = nil;
-    }
-    
-    self.player = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:&error];
-    
-	if (self.player == nil) {
-		NSLog(@"Error playing word text: %@", [error localizedDescription]);
+    if ([[NSFileManager defaultManager] fileExistsAtPath:mp3Path]) {
+        NSURL *url = [NSURL fileURLWithPath:mp3Path];
+        NSError *error;
+        
+        if (self.player) {
+            [self.player stop];
+            self.player = nil;
+        }
+        
+        self.player = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:&error];
+        
+        if (self.player == nil) {
+            NSLog(@"Error playing word text: %@", [error localizedDescription]);
+        } else {
+            [self.player play];
+        }
     } else {
-		[self.player play];
+        NSLog(@"No word file exists for word \"%@\".", trimmedWord);
     }
     
 }

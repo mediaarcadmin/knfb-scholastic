@@ -42,6 +42,7 @@
 
 @optional
 - (void)readingNotesView:(SCHReadingNotesListController *)readingNotesView didSelectNote:(SCHNote *)note;
+- (void)readingNotesView:(SCHReadingNotesListController *)readingNotesView didDeleteNote:(SCHNote *)note;
 - (void)readingNotesViewCreatingNewNote:(SCHReadingNotesListController *)readingNotesView;
 
 @end

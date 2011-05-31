@@ -29,6 +29,7 @@
 #import "SCHDictionaryViewController.h"
 #import "SCHDictionaryAccessManager.h"
 #import "KNFBXPSConstants.h"
+#import "SCHNotesCountView.h"
 
 // constants
 static const CGFloat kReadingViewStandardScrubHeight = 47.0f;
@@ -74,6 +75,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 @property (nonatomic, retain) UIPopoverController *popover;
 
+@property (nonatomic, retain) SCHNotesCountView *notesCountView;
+
 - (void)releaseViewObjects;
 
 - (void)toggleToolbarVisibility;
@@ -114,12 +117,14 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 @synthesize paperType;
 @synthesize layoutType;
 @synthesize popover;
+@synthesize notesCountView;
 
 @synthesize optionsView;
 @synthesize popoverOptionsViewController;
 @synthesize fontSegmentedControl;
 @synthesize flowFixedSegmentedControl;
 @synthesize paperTypeSegmentedControl;
+@synthesize notesButton;
 @synthesize pageSlider;
 @synthesize scrubberThumbImage;
 
@@ -163,6 +168,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [olderRightBarButtonItemContainer release], olderRightBarButtonItemContainer = nil;
     [backButton release], backButton = nil;
     [audioButton release], audioButton = nil;
+    [notesCountView release], notesCountView = nil;
+    [notesButton release], notesButton = nil;
+
     [scrubberToolbar release], scrubberToolbar = nil;
     [olderBottomToolbar release], olderBottomToolbar = nil;
     [topShadow release], topShadow = nil;
@@ -315,6 +323,19 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         CGRectGetHeight(bottomShadowFrame);
     }
     self.bottomShadow.frame = bottomShadowFrame;
+    
+    // FIXME: using a placeholder, adjust for real image
+    NSLog(@"Setting up notes count view!");
+    UIImage *bgImage = [UIImage imageNamed:@"button-login-red"];
+    self.notesCountView = [[SCHNotesCountView alloc] initWithImage:[bgImage stretchableImageWithLeftCapWidth:8.0f topCapHeight:0]];
+    [self.notesButton addSubview:self.notesCountView];
+    
+    // update the note count
+    NSInteger noteCount = [[[self.profile annotationsForBook:self.isbn] notes] count];
+    self.notesCountView.noteCount = noteCount;
+
+    
+    NSLog(@"Button: %@, NCV: %@", self.notesButton, self.notesCountView);
     
     [self setDictionarySelectionMode];
 
@@ -904,6 +925,13 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [self updateScrubberValue];
 }
 
+- (void)readingView:(SCHReadingView *)readingView hasSelectedWordForSpeaking:(NSString *)word
+{
+    if (word) {
+        [[SCHDictionaryAccessManager sharedAccessManager] speakWord:word category:kSCHDictionaryYoungReader];
+    }
+}
+
 - (void)requestDictionaryForWord:(NSString *)word mode:(SCHReadingViewSelectionMode) mode
 {
     SCHDictionaryViewController *dictionaryViewController = [[SCHDictionaryViewController alloc] initWithNibName:nil bundle:nil];
@@ -922,9 +950,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     
     [self.navigationController presentModalViewController:dictionaryViewController animated:YES];
     [dictionaryViewController release];
-
-    
 }
+
+#pragma mark - Toolbars
 
 - (void)toggleToolbars
 {
@@ -935,6 +963,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 {
     [self setToolbarVisibility:NO animated:YES];
 }
+
+#pragma mark - Scrubber
 
 - (void)adjustScrubberInfoViewHeightForImageSize:(CGSize)imageSize
 {
@@ -1016,7 +1046,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     self.scrubberInfoView.frame = scrubFrame;
 }
 
-#pragma mark - Scrubber
 
 - (void)updateScrubberLabel
 {
@@ -1226,8 +1255,14 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     SCHNote *newNote = [annos createEmptyNote];
     
     SCHBookPoint *currentPoint = [self.readingView currentBookPoint];
+    
+    NSUInteger layoutPage = 0;
+    NSUInteger pageWordOffset = 0;
+    //[self.readingView layoutPage:&layoutPage pageWordOffset:&pageWordOffset fromBookPoint:curretnPoint];
+    
     NSLog(@"Current book point: %@", currentPoint);
-    newNote.NoteBookPoint = currentPoint;
+    newNote.noteLayoutPage = layoutPage;
+    newNote.notePageWordOffset = pageWordOffset;
 
     SCHReadingNoteView *aNotesView = [[SCHReadingNoteView alloc] initWithNote:newNote];
     aNotesView.readingView = self.readingView;
@@ -1242,15 +1277,33 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (void)readingNotesView:(SCHReadingNotesListController *)readingNotesView didSelectNote:(SCHNote *)note
 {
-    [self.readingView jumpToBookPoint:note.NoteBookPoint animated:YES];
+    //NSUInteger layoutPage = note.noteLayoutPage;
+    //NSUInteger pageWordIndex = note.notePageWordOffset;
+    SCHBookPoint *notePoint = nil;
+    //SCHBookPoint *notePoint = [self.readingView bookPointForLayoutPage:layoutPage pageWordIndex:pageWordIndex];
+
+    [self.readingView jumpToBookPoint:notePoint animated:YES];
     
     SCHReadingNoteView *aNotesView = [[SCHReadingNoteView alloc] initWithNote:note];
     aNotesView.delegate = self;
     aNotesView.readingView = self.readingView;
     [aNotesView showInView:self.view animated:YES];
     [aNotesView release];
-
+    
     [self setToolbarVisibility:NO animated:YES];
+    
+}
+
+- (void)readingNotesView:(SCHReadingNotesListController *)readingNotesView didDeleteNote:(SCHNote *)note
+{
+    NSLog(@"Deleting note...");
+    SCHBookAnnotations *bookAnnos = [self.profile annotationsForBook:self.isbn];
+    [bookAnnos deleteNote:note];
+    
+    // update the note count
+    NSInteger noteCount = [[[self.profile annotationsForBook:self.isbn] notes] count];
+    self.notesCountView.noteCount = noteCount;
+
 }
 
 #pragma mark - SCHNotesViewDelegate methods
@@ -1263,11 +1316,22 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [bookAnnos addNote:note];
     
     [self setToolbarVisibility:YES animated:YES];
+    
+    // update the note count
+    NSInteger noteCount = [[[self.profile annotationsForBook:self.isbn] notes] count];
+    self.notesCountView.noteCount = noteCount;
+    
 }
 
 - (void)notesViewCancelled:(SCHReadingNoteView *)notesView
 {
     [self setToolbarVisibility:YES animated:YES];
+    
+    // update the note count
+    NSInteger noteCount = [[[self.profile annotationsForBook:self.isbn] notes] count];
+    self.notesCountView.noteCount = noteCount;
+    
+    
 }
 
 #pragma mark - SCHReadingInteractionsListControllerDelegate methods

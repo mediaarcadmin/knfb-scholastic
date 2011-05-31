@@ -112,7 +112,7 @@ static const CGFloat kProfilePhoneTableOffsetLandscape = 20.0f;
 #if !LOCALDEBUG	
 	SCHAuthenticationManager *authenticationManager = [SCHAuthenticationManager sharedAuthenticationManager];
 	
-	if ([authenticationManager hasUsernameAndPassword] == NO) {
+	if ([authenticationManager isAuthenticated] == NO) {
 		[self presentModalViewController:self.loginController animated:NO];	
 	}
 #endif

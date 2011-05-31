@@ -60,19 +60,24 @@
     self.Value = NoteText;   
 }
 
-- (SCHBookPoint *) NoteBookPoint
+- (NSUInteger)noteLayoutPage
 {
-    SCHBookPoint *point = [[SCHBookPoint alloc] init];
-    point.layoutPage = [self.LocationGraphics.Page intValue];
-    point.wordOffset = [self.LocationGraphics.WordIndex intValue];
-    
-    return point;
+    return [self.LocationGraphics.Page intValue];
 }
 
-- (void)setNoteBookPoint: (SCHBookPoint *) newPoint
+- (void)setNoteLayoutPage:(NSUInteger)layoutPage
 {
-    self.LocationGraphics.Page = [NSNumber numberWithInt:newPoint.layoutPage];
-    self.LocationGraphics.WordIndex = [NSNumber numberWithInt:newPoint.wordOffset];
+    self.LocationGraphics.Page = [NSNumber numberWithInt:layoutPage];
+}
+
+- (NSUInteger)notePageWordOffset
+{
+    return [self.LocationGraphics.WordIndex intValue];
+}
+
+- (void)setNotePageWordOffset:(NSUInteger)pageWordOffset
+{
+    self.LocationGraphics.WordIndex = [NSNumber numberWithInt:pageWordOffset];
 }
 
 @end
