@@ -63,10 +63,10 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape_iPad =
     
     if (UIInterfaceOrientationIsLandscape(interfaceOrientation)) {
         [self.gridView setShelfHeight:kSCHBookShelfViewControllerGridCellHeightLandscape_iPad];
-        [self.gridView setShelfInset:CGSizeMake(0, -2)];
+        [self.gridView setShelfInset:CGSizeMake(0, -55)];
     } else {
         [self.gridView setShelfHeight:kSCHBookShelfViewControllerGridCellHeightPortrait_iPad];
-        [self.gridView setShelfInset:CGSizeMake(0, -2)];
+        [self.gridView setShelfInset:CGSizeMake(0, -55)];
     }
 }
 
