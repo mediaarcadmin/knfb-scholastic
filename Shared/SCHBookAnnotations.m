@@ -154,6 +154,11 @@
     [self.privateAnnotations addNotesObject:newNote];
 }
 
+- (void)deleteNote:(SCHNote *)note
+{
+    [self.privateAnnotations removeNotesObject:note];
+}
+
 - (SCHFavorite *)favorite
 {
     return(self.privateAnnotations.Favorite);
@@ -174,6 +179,7 @@
                                      
     note.PrivateAnnotations = self.privateAnnotations;
     note.LocationGraphics = locationGraphics;
+    note.NoteText = @"";
 	
 	return note;
 }

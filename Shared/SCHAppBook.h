@@ -30,6 +30,12 @@ static NSString * const kSCHAppBookFileURL = @"BookFileURL";
 static NSString * const kSCHAppBookTextFlowPageRanges = @"TextFlowPageRanges";
 static NSString * const kSCHAppBookSmartZoomPageMarkers = @"SmartZoomPageMarkers";
 static NSString * const kSCHAppBookLayoutPageEquivalentCount = @"LayoutPageEquivalentCount";
+static NSString * const kSCHAppBookAudioBookReferences = @"AudioBookReferences";
+
+
+// Audio File keys
+static NSString * const kSCHAppBookAudioFile = @"AudioFile";
+static NSString * const kSCHAppBookTimingFile = @"TimingFile";
 
 // XPS Categories
 static NSString * const kSCHAppBookYoungReader = @"YoungReader";
@@ -76,6 +82,7 @@ static NSString * const kSCHAppBookEucalyptusCacheDir = @"libEucalyptusCache";
 @property (nonatomic, retain) NSSet *TextFlowPageRanges;
 @property (nonatomic, retain) NSSet *SmartZoomPageMarkers;
 @property (nonatomic, retain) NSNumber *LayoutPageEquivalentCount;
+@property (nonatomic, retain) NSArray *AudioBookReferences;
 
 @property (nonatomic, readonly) NSString * ContentIdentifier;
 @property (nonatomic, readonly) NSString * Author;

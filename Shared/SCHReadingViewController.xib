@@ -265,7 +265,6 @@
 								<string key="NSFrame">{{24, 11}, {272, 23}}</string>
 								<reference key="NSSuperview" ref="999071566"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<int key="IBUIContentHorizontalAlignment">0</int>
@@ -308,7 +307,7 @@
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 			</object>
 			<object class="IBUIView" id="692504765">
-				<reference key="NSNextResponder"/>
+				<nil key="NSNextResponder"/>
 				<int key="NSvFlags">266</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -368,7 +367,6 @@
 								<int key="NSvFlags">291</int>
 								<string key="NSFrame">{{114, 46}, {197, 30}}</string>
 								<reference key="NSSuperview" ref="796094069"/>
-								<reference key="NSNextKeyView"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<int key="IBSegmentControlStyle">2</int>
@@ -458,7 +456,6 @@
 					</object>
 				</object>
 				<string key="NSFrameSize">{320, 86}</string>
-				<reference key="NSSuperview"/>
 				<reference key="NSNextKeyView" ref="796094069"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
@@ -514,7 +511,7 @@
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 			</object>
 			<object class="IBUIView" id="285120483">
-				<reference key="NSNextResponder"/>
+				<nil key="NSNextResponder"/>
 				<int key="NSvFlags">301</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -523,7 +520,6 @@
 						<int key="NSvFlags">274</int>
 						<string key="NSFrame">{{7, 0}, {48, 44}}</string>
 						<reference key="NSSuperview" ref="285120483"/>
-						<reference key="NSWindow"/>
 						<reference key="IBUIBackgroundColor" ref="368037730"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIAutoresizesSubviews">NO</bool>
@@ -541,8 +537,6 @@
 					</object>
 				</object>
 				<string key="NSFrameSize">{48, 44}</string>
-				<reference key="NSSuperview"/>
-				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="173301827"/>
 				<reference key="IBUIBackgroundColor" ref="368037730"/>
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -589,22 +583,16 @@
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 			</object>
 			<object class="IBUIView" id="14499984">
-				<reference key="NSNextResponder"/>
+				<nil key="NSNextResponder"/>
 				<int key="NSvFlags">301</int>
 				<string key="NSFrameSize">{35, 44}</string>
-				<reference key="NSSuperview"/>
-				<reference key="NSWindow"/>
-				<reference key="NSNextKeyView"/>
 				<reference key="IBUIBackgroundColor" ref="368037730"/>
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 			</object>
 			<object class="IBUILabel" id="977771388">
-				<reference key="NSNextResponder"/>
+				<nil key="NSNextResponder"/>
 				<int key="NSvFlags">274</int>
 				<string key="NSFrameSize">{320, 44}</string>
-				<reference key="NSSuperview"/>
-				<reference key="NSWindow"/>
-				<reference key="NSNextKeyView"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
 					<bytes key="NSWhite">MSAwAA</bytes>
@@ -1133,6 +1121,14 @@
 					</object>
 					<int key="connectionID">200</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">notesButton</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="365933732"/>
+					</object>
+					<int key="connectionID">203</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -1589,7 +1585,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">202</int>
+			<int key="maxID">203</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -1682,6 +1678,7 @@
 							<string>flowFixedSegmentedControl</string>
 							<string>fontSegmentedControl</string>
 							<string>leftBarButtonItemContainer</string>
+							<string>notesButton</string>
 							<string>olderBottomToolbar</string>
 							<string>olderRightBarButtonItemContainer</string>
 							<string>optionsView</string>
@@ -1705,6 +1702,7 @@
 							<string>UISegmentedControl</string>
 							<string>UISegmentedControl</string>
 							<string>UIView</string>
+							<string>UIButton</string>
 							<string>SCHCustomToolbar</string>
 							<string>UIView</string>
 							<string>UIView</string>
@@ -1731,6 +1729,7 @@
 							<string>flowFixedSegmentedControl</string>
 							<string>fontSegmentedControl</string>
 							<string>leftBarButtonItemContainer</string>
+							<string>notesButton</string>
 							<string>olderBottomToolbar</string>
 							<string>olderRightBarButtonItemContainer</string>
 							<string>optionsView</string>
@@ -1771,6 +1770,10 @@
 							<object class="IBToOneOutletInfo">
 								<string key="name">leftBarButtonItemContainer</string>
 								<string key="candidateClassName">UIView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">notesButton</string>
+								<string key="candidateClassName">UIButton</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">olderBottomToolbar</string>

@@ -29,6 +29,7 @@
 @dynamic LayoutPageEquivalentCount;
 @dynamic BookCoverWidth;
 @dynamic BookCoverHeight;
+@dynamic AudioBookReferences;
 
 #pragma mark - Convenience Methods
 

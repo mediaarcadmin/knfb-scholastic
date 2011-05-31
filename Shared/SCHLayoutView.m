@@ -737,6 +737,50 @@
 	
 }
 
+- (void)followAlongHighlightWordAtPoint:(SCHBookPoint *)bookPoint
+{
+    SCHBookRange *highlightRange = [[[SCHBookRange alloc] init] autorelease];
+    highlightRange.startPoint = bookPoint;
+    highlightRange.endPoint   = bookPoint;
+	
+    if (bookPoint && ![self.pageTurningView isAnimating]) {
+		BOOL pageIsVisible = YES;
+		NSInteger targetIndex = bookPoint.layoutPage - 1;
+		
+        if ((self.pageTurningView.leftPageIndex != targetIndex) && (self.pageTurningView.rightPageIndex != targetIndex)) {
+            pageIsVisible = NO;
+        }
+        		
+        if (!pageIsVisible) {
+			[self.selector removeTemporaryHighlight];
+            [self jumpToPageAtIndex:targetIndex animated:YES];
+        } else {        
+            CGAffineTransform viewTransform = [self pageTurningViewTransformForPageAtIndex:targetIndex offsetOrigin:YES applyZoom:YES];
+            CGRect visibleRect = CGRectApplyAffineTransform(self.pageTurningView.bounds, CGAffineTransformInvert(viewTransform));
+			CGRect boundingRect = CGRectNull;
+			
+			CGAffineTransform  pageTransform = [self pageTurningViewTransformForPageAtIndex:targetIndex offsetOrigin:NO applyZoom:NO];
+            
+			NSArray *rectValues = [self rectsFromBlocksAtPageIndex:targetIndex inBookRange:highlightRange];
+            
+			for (NSValue *rectValue in rectValues) {
+				CGRect rect = CGRectApplyAffineTransform([rectValue CGRectValue], CGAffineTransformInvert(pageTransform));
+				boundingRect = CGRectUnion(boundingRect, rect);
+			}
+            
+			if (!CGRectEqualToRect(CGRectIntegral(CGRectIntersection(visibleRect, boundingRect)), CGRectIntegral(boundingRect))) {
+				
+				[self zoomOutToCurrentPage];
+			}
+			
+			EucSelectorRange *range = [self selectorRangeFromBookRange:highlightRange];
+			[self.selector temporarilyHighlightSelectorRange:range animated:YES];
+		}
+    } else {
+        [self.selector removeTemporaryHighlight];
+    }
+}
+
 #pragma mark - EucSelectorDataSource
 
 - (NSArray *)blockIdentifiersForEucSelector:(EucSelector *)selector

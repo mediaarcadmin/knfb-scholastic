@@ -185,8 +185,11 @@ static NSString * const SCHNotesViewExitToTopAnimation = @"SCHNotesViewExitToTop
     NSString *dateString = [dateFormat stringFromDate:date];  
     [dateFormat release];
     
-    SCHBookPoint *bookPoint = [self.note NoteBookPoint];
-    NSInteger pageNum = [self.readingView pageIndexForBookPoint:bookPoint];
+    //SCHBookPoint *bookPoint = [self.note NoteBookPoint];
+    //NSInteger pageNum = [self.readingView pageIndexForBookPoint:bookPoint];
+    NSInteger pageNum = 5;
+    
+    // MATT DO THIS
     
 //    NSNumber *pageNum = [self.note NotePageNumber];
 

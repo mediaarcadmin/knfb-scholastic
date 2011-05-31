@@ -22,11 +22,14 @@
 #import "SCHBookPoint.h"
 #import "SCHLastPage.h"
 #import "SCHBookAnnotations.h"
+#import "SCHAudioBookPlayer.h"
 #import "SCHReadingNoteView.h"
 #import "SCHBookAnnotations.h"
 #import "SCHNote.h"
 #import "SCHDictionaryViewController.h"
 #import "SCHDictionaryAccessManager.h"
+#import "KNFBXPSConstants.h"
+#import "SCHNotesCountView.h"
 
 // constants
 static const CGFloat kReadingViewStandardScrubHeight = 47.0f;
@@ -68,7 +71,11 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 @property (nonatomic, assign) SCHReadingViewPaperType paperType;
 @property (nonatomic, assign) SCHReadingViewLayoutType layoutType;
 
+@property (nonatomic, retain) SCHAudioBookPlayer *audioBookPlayer;
+
 @property (nonatomic, retain) UIPopoverController *popover;
+
+@property (nonatomic, retain) SCHNotesCountView *notesCountView;
 
 - (void)releaseViewObjects;
 
@@ -110,12 +117,14 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 @synthesize paperType;
 @synthesize layoutType;
 @synthesize popover;
+@synthesize notesCountView;
 
 @synthesize optionsView;
 @synthesize popoverOptionsViewController;
 @synthesize fontSegmentedControl;
 @synthesize flowFixedSegmentedControl;
 @synthesize paperTypeSegmentedControl;
+@synthesize notesButton;
 @synthesize pageSlider;
 @synthesize scrubberThumbImage;
 
@@ -134,6 +143,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 @synthesize topShadow;
 @synthesize bottomShadow;
 
+@synthesize audioBookPlayer;
+
 #pragma mark - Dealloc and View Teardown
 
 - (void)dealloc 
@@ -143,6 +154,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [isbn release], isbn = nil;
     [popover release], popover = nil;
     [profile release], profile = nil;
+    [audioBookPlayer release], audioBookPlayer = nil;
     [popoverOptionsViewController release], popoverOptionsViewController = nil;
     
     [super dealloc];
@@ -156,6 +168,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [olderRightBarButtonItemContainer release], olderRightBarButtonItemContainer = nil;
     [backButton release], backButton = nil;
     [audioButton release], audioButton = nil;
+    [notesCountView release], notesCountView = nil;
+    [notesButton release], notesButton = nil;
+
     [scrubberToolbar release], scrubberToolbar = nil;
     [olderBottomToolbar release], olderBottomToolbar = nil;
     [topShadow release], topShadow = nil;
@@ -308,6 +323,19 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         CGRectGetHeight(bottomShadowFrame);
     }
     self.bottomShadow.frame = bottomShadowFrame;
+    
+    // FIXME: using a placeholder, adjust for real image
+    NSLog(@"Setting up notes count view!");
+    UIImage *bgImage = [UIImage imageNamed:@"button-login-red"];
+    self.notesCountView = [[SCHNotesCountView alloc] initWithImage:[bgImage stretchableImageWithLeftCapWidth:8.0f topCapHeight:0]];
+    [self.notesButton addSubview:self.notesCountView];
+    
+    // update the note count
+    NSInteger noteCount = [[[self.profile annotationsForBook:self.isbn] notes] count];
+    self.notesCountView.noteCount = noteCount;
+
+    
+    NSLog(@"Button: %@, NCV: %@", self.notesButton, self.notesCountView);
     
     [self setDictionarySelectionMode];
 
@@ -518,11 +546,66 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (IBAction)audioPlayAction:(id)sender
 {
     NSLog(@"Audio Play action");
-
-    if (self.optionsView.superview) {
-        [self.optionsView removeFromSuperview];
+    
+    NSUInteger layoutPage = 0;
+    NSUInteger pageWordOffset = 0;
+    [self.readingView currentLayoutPage:&layoutPage pageWordOffset:&pageWordOffset];
+    
+    if (self.audioBookPlayer == nil) {            
+        SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];
+        NSArray *audioBookReferences = [book valueForKey:kSCHAppBookAudioBookReferences];
+        NSError *error = nil;
+        
+        if(audioBookReferences != nil && [audioBookReferences count] > 0) {        
+            self.audioBookPlayer = [[[SCHAudioBookPlayer alloc] init] autorelease];
+            self.audioBookPlayer.xpsProvider = self.xpsProvider;
+            if ([self.audioBookPlayer prepareAudio:audioBookReferences error:&error 
+                                          wordBlock:^(NSUInteger layoutPage, NSUInteger pageWordOffset) {
+                                              NSLog(@"WORD UP! at layoutPage %d pageWordOffset %d", layoutPage, pageWordOffset);
+                                              [self.readingView followAlongHighlightWordForLayoutPage:layoutPage pageWordOffset:pageWordOffset];
+                                          }] == YES) {
+                                              self.audioBookPlayer.delegate = self;
+                                              [self.audioBookPlayer playAtLayoutPage:layoutPage pageWordOffset:pageWordOffset];
+                                          } else {
+                                              self.audioBookPlayer = nil;   
+                                              UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") 
+                                                                                                   message:NSLocalizedString(@"Due to a problem with the audio we can not play this audiobook.", @"") 
+                                                                                                  delegate:nil 
+                                                                                         cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+                                                                                         otherButtonTitles:nil]; 
+                                              [errorAlert show]; 
+                                              [errorAlert release];                                               
+                                          }
+        }
+    } else if(self.audioBookPlayer.playing == NO) {
+        [self.audioBookPlayer playAtLayoutPage:layoutPage pageWordOffset:pageWordOffset];
+    } else {
+        [self.audioBookPlayer pause];        
     }
     
+    if (self.optionsView.superview) {
+        [self.optionsView removeFromSuperview];
+    }    
+}
+
+#pragma mark - Audio Book Delegate methods
+
+- (void)audioBookPlayerDidFinishPlaying:(SCHAudioBookPlayer *)player successfully:(BOOL)flag
+{
+    NSLog(@"Audio Play finished playing");
+}
+
+- (void)audioBookPlayerErrorDidOccur:(SCHAudioBookPlayer *)player error:(NSError *)error
+{
+    NSLog(@"Audio Play erred!");
+    
+    UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") 
+                                                         message:NSLocalizedString(@"Due to a problem with the audio we can not play this audiobook.", @"") 
+                                                        delegate:nil 
+                                               cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+                                               otherButtonTitles:nil]; 
+    [errorAlert show]; 
+    [errorAlert release];
 }
 
 - (IBAction)storyInteractionAction:(id)sender
@@ -842,6 +925,13 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [self updateScrubberValue];
 }
 
+- (void)readingView:(SCHReadingView *)readingView hasSelectedWordForSpeaking:(NSString *)word
+{
+    if (word) {
+        [[SCHDictionaryAccessManager sharedAccessManager] speakWord:word category:kSCHDictionaryYoungReader];
+    }
+}
+
 - (void)requestDictionaryForWord:(NSString *)word mode:(SCHReadingViewSelectionMode) mode
 {
     SCHDictionaryViewController *dictionaryViewController = [[SCHDictionaryViewController alloc] initWithNibName:nil bundle:nil];
@@ -860,9 +950,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     
     [self.navigationController presentModalViewController:dictionaryViewController animated:YES];
     [dictionaryViewController release];
-
-    
 }
+
+#pragma mark - Toolbars
 
 - (void)toggleToolbars
 {
@@ -873,6 +963,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 {
     [self setToolbarVisibility:NO animated:YES];
 }
+
+#pragma mark - Scrubber
 
 - (void)adjustScrubberInfoViewHeightForImageSize:(CGSize)imageSize
 {
@@ -954,7 +1046,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     self.scrubberInfoView.frame = scrubFrame;
 }
 
-#pragma mark - Scrubber
 
 - (void)updateScrubberLabel
 {
@@ -1164,8 +1255,14 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     SCHNote *newNote = [annos createEmptyNote];
     
     SCHBookPoint *currentPoint = [self.readingView currentBookPoint];
+    
+    NSUInteger layoutPage = 0;
+    NSUInteger pageWordOffset = 0;
+    //[self.readingView layoutPage:&layoutPage pageWordOffset:&pageWordOffset fromBookPoint:curretnPoint];
+    
     NSLog(@"Current book point: %@", currentPoint);
-    newNote.NoteBookPoint = currentPoint;
+    newNote.noteLayoutPage = layoutPage;
+    newNote.notePageWordOffset = pageWordOffset;
 
     SCHReadingNoteView *aNotesView = [[SCHReadingNoteView alloc] initWithNote:newNote];
     aNotesView.readingView = self.readingView;
@@ -1180,15 +1277,33 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (void)readingNotesView:(SCHReadingNotesListController *)readingNotesView didSelectNote:(SCHNote *)note
 {
-    [self.readingView jumpToBookPoint:note.NoteBookPoint animated:YES];
+    //NSUInteger layoutPage = note.noteLayoutPage;
+    //NSUInteger pageWordIndex = note.notePageWordOffset;
+    SCHBookPoint *notePoint = nil;
+    //SCHBookPoint *notePoint = [self.readingView bookPointForLayoutPage:layoutPage pageWordIndex:pageWordIndex];
+
+    [self.readingView jumpToBookPoint:notePoint animated:YES];
     
     SCHReadingNoteView *aNotesView = [[SCHReadingNoteView alloc] initWithNote:note];
     aNotesView.delegate = self;
     aNotesView.readingView = self.readingView;
     [aNotesView showInView:self.view animated:YES];
     [aNotesView release];
-
+    
     [self setToolbarVisibility:NO animated:YES];
+    
+}
+
+- (void)readingNotesView:(SCHReadingNotesListController *)readingNotesView didDeleteNote:(SCHNote *)note
+{
+    NSLog(@"Deleting note...");
+    SCHBookAnnotations *bookAnnos = [self.profile annotationsForBook:self.isbn];
+    [bookAnnos deleteNote:note];
+    
+    // update the note count
+    NSInteger noteCount = [[[self.profile annotationsForBook:self.isbn] notes] count];
+    self.notesCountView.noteCount = noteCount;
+
 }
 
 #pragma mark - SCHNotesViewDelegate methods
@@ -1201,11 +1316,22 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [bookAnnos addNote:note];
     
     [self setToolbarVisibility:YES animated:YES];
+    
+    // update the note count
+    NSInteger noteCount = [[[self.profile annotationsForBook:self.isbn] notes] count];
+    self.notesCountView.noteCount = noteCount;
+    
 }
 
 - (void)notesViewCancelled:(SCHReadingNoteView *)notesView
 {
     [self setToolbarVisibility:YES animated:YES];
+    
+    // update the note count
+    NSInteger noteCount = [[[self.profile annotationsForBook:self.isbn] notes] count];
+    self.notesCountView.noteCount = noteCount;
+    
+    
 }
 
 #pragma mark - SCHReadingInteractionsListControllerDelegate methods

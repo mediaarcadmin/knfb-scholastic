@@ -25,7 +25,7 @@ static NSString * const kSCHThemeManagerName = @"Name";
 @property (nonatomic, retain) NSDictionary *selectedTheme;
 
 - (NSString *)filePath:(NSString *)filePath orientation:(UIInterfaceOrientation)orientation;
-- (NSString *)filePath:(NSString *)filePath orientation:(UIInterfaceOrientation)orientation iPadSpecific: (BOOL) iPadSpecific;
+- (NSString *)filePath:(NSString *)filePath orientation:(UIInterfaceOrientation)orientation iPadSpecific:(BOOL)iPadSpecific;
 
 @end
 
@@ -172,6 +172,12 @@ static NSString * const kSCHThemeManagerName = @"Name";
                                 stringByAppendingPathComponent:[self filePath:[self.selectedTheme objectForKey:imageTitle] orientation:orientation]]]);
 }
 
+- (UIImage *)imageFor:(NSString *)imageTitle orientation:(UIInterfaceOrientation)orientation iPadSpecific:(BOOL)iPadSpecific
+{
+    return([UIImage imageNamed:[kSCHThemeManagerDirectory 
+                                stringByAppendingPathComponent:[self filePath:[self.selectedTheme objectForKey:imageTitle] orientation:orientation iPadSpecific:iPadSpecific]]]);
+}
+
 - (UIImage *)imageForButton:(UIInterfaceOrientation)orientation
 {
     return([UIImage imageNamed:[kSCHThemeManagerDirectory 
@@ -237,7 +243,7 @@ static NSString * const kSCHThemeManagerName = @"Name";
     return [self filePath:filePath orientation:orientation iPadSpecific:NO];
 }
 
-- (NSString *)filePath:(NSString *)filePath orientation:(UIInterfaceOrientation)orientation iPadSpecific: (BOOL) iPadSpecific
+- (NSString *)filePath:(NSString *)filePath orientation:(UIInterfaceOrientation)orientation iPadSpecific:(BOOL)iPadSpecific
 {
     NSString *fullPath = nil;
     

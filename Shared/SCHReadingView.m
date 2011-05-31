@@ -26,8 +26,10 @@
 
 @property (nonatomic, assign) id <SCHReadingViewDelegate> delegate;
 @property (nonatomic, retain) EucSelectorRange *currentSelectorRange;
+@property (nonatomic, retain) EucSelectorRange *singleWordSelectorRange;
 
 - (void)selectorDismissedWithSelection:(EucSelectorRange *)selectorRange;
+- (void)layoutPage:(NSUInteger *)layoutPage pageWordOffset:(NSUInteger *)pageWordOffset forBookPoint:(SCHBookPoint *)bookPoint;
 
 @end
 
@@ -39,6 +41,7 @@
 @synthesize textFlow;
 @synthesize selectionMode;
 @synthesize currentSelectorRange;
+@synthesize singleWordSelectorRange;
 
 - (void) dealloc
 {
@@ -54,6 +57,7 @@
     
     [isbn release], isbn = nil;
     [currentSelectorRange release], currentSelectorRange = nil;
+    [singleWordSelectorRange release], singleWordSelectorRange = nil;
     delegate = nil;
     
     [super dealloc];
@@ -70,7 +74,7 @@
         self.opaque = YES;
         self.multipleTouchEnabled = YES;
         self.userInteractionEnabled = YES;
-        
+
         xpsProvider = [[[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.isbn] retain];
         textFlow    = [[[SCHBookManager sharedBookManager] checkOutTextFlowForBookIdentifier:self.isbn] retain];
     }
@@ -195,31 +199,10 @@
                                                                        action:@selector(selectOlderWord:)] autorelease];
             
             ret = [NSArray arrayWithObjects:dictionaryItem, nil];
+            
         } break;
         case SCHReadingViewSelectionModeYoungerDictionary: {
 
-            if ([[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryProcessingState] == SCHDictionaryProcessingStateReady) {
-            
-                SCHBookRange *bookRange = [self bookRangeFromSelectorRange:[selector selectedRange]];
-                
-                if (bookRange.startPoint.layoutPage == bookRange.endPoint.layoutPage && 
-                    bookRange.startPoint.wordOffset == bookRange.endPoint.wordOffset) {
-                    
-                    NSUInteger page = bookRange.startPoint.layoutPage;
-                    NSUInteger wordOffset = bookRange.startPoint.wordOffset;
-                    
-                    NSArray *wordBlocks = [self.textFlow blocksForPageAtIndex:page - 1 includingFolioBlocks:NO];
-                    
-                    if (wordBlocks && [wordBlocks count] > 0) {
-                        
-                        NSString *word = [[[[wordBlocks objectAtIndex:bookRange.startPoint.blockOffset] words] objectAtIndex:wordOffset] string];
-                        
-                        if (word) {
-                            [[SCHDictionaryAccessManager sharedAccessManager] speakWord:word category:kSCHDictionaryYoungReader];
-                        }
-                    }
-                }
-            }
             EucMenuItem *dictionaryItem = [[[EucMenuItem alloc] initWithTitle:NSLocalizedString(@"Look Up", "Younger Reader iPhone and iPad Look Up option in popup menu")
                                                                        action:@selector(selectYoungerWord:)] autorelease];
             
@@ -294,49 +277,70 @@
 
 }
 
+- (void)layoutPage:(NSUInteger *)layoutPage pageWordOffset:(NSUInteger *)pageWordOffset forBookPoint:(SCHBookPoint *)bookPoint
+{
+    *layoutPage = bookPoint.layoutPage;
+    *pageWordOffset = bookPoint.wordOffset;
+    
+    if (bookPoint.blockOffset > 0) {
+        NSArray *wordBlocks = [self.textFlow blocksForPageAtIndex:bookPoint.layoutPage - 1 includingFolioBlocks:NO];
+        for (int i = 0; i < bookPoint.blockOffset; i++) {
+            if (i < [wordBlocks count]) {
+                pageWordOffset += [[[wordBlocks objectAtIndex:i] words] count];
+            }
+        }
+    }
+}
+
+- (SCHBookPoint *)bookPointForLayoutPage:(NSUInteger)layoutPage pageWordOffset:(NSUInteger)pageWordOffset
+{
+    SCHBookPoint *bookPoint = [[SCHBookPoint alloc] init];
+    bookPoint.layoutPage = layoutPage;
+    bookPoint.wordOffset = pageWordOffset;
+    
+    NSArray *wordBlocks = [self.textFlow blocksForPageAtIndex:bookPoint.layoutPage - 1 includingFolioBlocks:NO];
+    
+    for (int i = 0 ; i < [wordBlocks count]; i++) {
+        KNFBTextFlowBlock *block = [wordBlocks objectAtIndex:i];
+        if (bookPoint.wordOffset < [[block words] count]) {
+            break;
+        } else {
+            bookPoint.wordOffset -= [[block words] count];
+            bookPoint.blockOffset++;
+        }
+    }
+    
+    return [bookPoint autorelease];
+}
+
+- (void)currentLayoutPage:(NSUInteger *)layoutPage pageWordOffset:(NSUInteger *)pageWordOffset
+{
+    SCHBookPoint *bookPoint = [self currentBookPoint];
+    
+    if (bookPoint) {
+        [self layoutPage:layoutPage pageWordOffset:pageWordOffset forBookPoint:[self currentBookPoint]];
+    }    
+}
+
+- (void)followAlongHighlightWordAtPoint:(SCHBookPoint *)bookPoint {}
+
+- (void)followAlongHighlightWordForLayoutPage:(NSUInteger)layoutPage pageWordOffset:(NSUInteger)pageWordOffset
+{
+    SCHBookPoint *pointToHighlight = [self bookPointForLayoutPage:layoutPage pageWordOffset:pageWordOffset];
+    [self performSelectorOnMainThread:@selector(followAlongHighlightWordAtPoint:) withObject:pointToHighlight waitUntilDone:NO];
+}
+
 - (SCHBookRange *)bookRangeForHighlight:(SCHHighlight *)highlight
 {
-    SCHBookPoint *startPoint = [[SCHBookPoint alloc] init];
-    startPoint.layoutPage = [highlight startLayoutPage];
-    startPoint.wordOffset = [highlight startWordOffset];
+    SCHBookPoint *startPoint = [self bookPointForLayoutPage:[highlight startLayoutPage] pageWordOffset:[highlight startWordOffset]];
     
-    NSArray *startWordBlocks = [self.textFlow blocksForPageAtIndex:startPoint.layoutPage - 1 includingFolioBlocks:NO];
-
-    for (int i = 0 ; i < [startWordBlocks count]; i++) {
-        KNFBTextFlowBlock *block = [startWordBlocks objectAtIndex:i];
-        if (startPoint.wordOffset < [[block words] count]) {
-            break;
-        } else {
-            startPoint.wordOffset -= [[block words] count];
-            startPoint.blockOffset++;
-        }
-    }
-
-    SCHBookPoint *endPoint = [[SCHBookPoint alloc] init];
-    endPoint.layoutPage = [highlight endLayoutPage];
-    endPoint.wordOffset = [highlight endWordOffset];
-    
-    NSArray *endWordBlocks = [self.textFlow blocksForPageAtIndex:endPoint.layoutPage - 1 includingFolioBlocks:NO];
-    
-    for (int i = 0 ; i < [endWordBlocks count]; i++) {
-        KNFBTextFlowBlock *block = [endWordBlocks objectAtIndex:i];
-        if (endPoint.wordOffset < [[block words] count]) {
-            break;
-        } else {
-            endPoint.wordOffset -= [[block words] count];
-            endPoint.blockOffset++;
-        }
-    }
-    
+    SCHBookPoint *endPoint = [self bookPointForLayoutPage:[highlight endLayoutPage] pageWordOffset:[highlight endWordOffset]];
+       
     SCHBookRange *bookRange = [[SCHBookRange alloc] init];
     bookRange.startPoint = startPoint;
     bookRange.endPoint = endPoint;
     
-    [startPoint release];
-    [endPoint release];
-    
     return [bookRange autorelease];
-        
 }
 
 - (NSArray *)highlightsForLayoutPage:(NSUInteger)page
@@ -456,13 +460,56 @@
     if ([keyPath isEqualToString:@"trackingStage"]) {
         switch (self.selector.trackingStage) {
             case EucSelectorTrackingStageNone:
+                NSLog(@"No word.");
                 if (self.currentSelectorRange != nil) {
                     [self selectorDismissedWithSelection:self.currentSelectorRange];
                 }
                 self.currentSelectorRange = nil;
+                
+                break;
+            case EucSelectorTrackingStageSelectedAndWaiting:
+                
+                
+                if (self.singleWordSelectorRange != self.selector.selectedRange) {
+                
+                    NSLog(@"Current range : %@ %@ %@ %@", self.singleWordSelectorRange.startBlockId, self.singleWordSelectorRange.startElementId, self.singleWordSelectorRange.endBlockId, self.singleWordSelectorRange.endElementId);
+                    NSLog(@"selected range: %@ %@ %@ %@",      self.selector.selectedRange.startBlockId, self.selector.selectedRange.startElementId, self.selector.selectedRange.endBlockId, self.selector.selectedRange.endElementId);
+                    if ([[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryProcessingState] == SCHDictionaryProcessingStateReady) {
+                        
+                        SCHBookRange *bookRange = [self bookRangeFromSelectorRange:self.selector.selectedRange];
+                        
+                        if (bookRange.startPoint.layoutPage == bookRange.endPoint.layoutPage && 
+                            bookRange.startPoint.wordOffset == bookRange.endPoint.wordOffset) {
+                            
+                            if (self.selectionMode == SCHReadingViewSelectionModeYoungerDictionary) {
+                                
+                                NSUInteger page = bookRange.startPoint.layoutPage;
+                                NSUInteger wordOffset = bookRange.startPoint.wordOffset;
+                                
+                                NSArray *wordBlocks = [self.textFlow blocksForPageAtIndex:page - 1 includingFolioBlocks:NO];
+                                
+                                if (wordBlocks && [wordBlocks count] > 0) {
+                                    
+                                    NSString *word = [[[[wordBlocks objectAtIndex:bookRange.startPoint.blockOffset] words] objectAtIndex:wordOffset] string];
+                                    
+                                    if (word) {
+                                        if (self.delegate && [self.delegate respondsToSelector:@selector(readingView:hasSelectedWordForSpeaking:)]) {
+                                            [self.delegate readingView:self hasSelectedWordForSpeaking:word];
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    
+                    self.singleWordSelectorRange = self.selector.selectedRange;
+                }
+ 
+                self.currentSelectorRange = self.selector.selectedRange;
                 break;
             case EucSelectorTrackingStageFirstSelection:
-            case EucSelectorTrackingStageSelectedAndWaiting:
+                self.currentSelectorRange = self.selector.selectedRange;
+                break;
             case EucSelectorTrackingStageChangingSelection:
                 self.currentSelectorRange = self.selector.selectedRange;
                 break;

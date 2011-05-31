@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 #import "SCHReadingView.h"
+#import "SCHAudioBookPlayerDelegate.h"
 #import "SCHReadingNotesListController.h"
 #import "SCHReadingInteractionsListController.h"
 #import "SCHReadingNoteView.h"
@@ -30,7 +31,7 @@ typedef enum
 @class SCHProfileItem;
 
 @interface SCHReadingViewController : UIViewController <SCHReadingViewDelegate, SCHReadingNotesListControllerDelegate, 
-SCHReadingNoteViewDelegate, SCHReadingInteractionsListControllerDelegate, UIPopoverControllerDelegate> 
+SCHReadingNoteViewDelegate, SCHReadingInteractionsListControllerDelegate, SCHAudioBookPlayerDelegate, UIPopoverControllerDelegate> 
 {
 
 }
@@ -44,6 +45,7 @@ SCHReadingNoteViewDelegate, SCHReadingInteractionsListControllerDelegate, UIPopo
 @property (nonatomic, retain) IBOutlet UIView *olderRightBarButtonItemContainer;
 @property (nonatomic, retain) IBOutlet UIButton *backButton;
 @property (nonatomic, retain) IBOutlet UIButton *audioButton;
+@property (nonatomic, retain) IBOutlet UIButton *notesButton;
 @property (nonatomic, retain) IBOutlet SCHCustomToolbar *scrubberToolbar;
 @property (nonatomic, retain) IBOutlet SCHCustomToolbar *olderBottomToolbar;
 @property (nonatomic, retain) IBOutlet UIImageView *topShadow;

@@ -26,7 +26,8 @@ static NSString * const kSCHNote = @"SCHNote";
 
 // backed by convenience methods
 @property (nonatomic, retain) NSString *NoteText;
-@property (nonatomic, retain) SCHBookPoint *NoteBookPoint;
+@property (nonatomic, assign) NSUInteger noteLayoutPage;
+@property (nonatomic, assign) NSUInteger notePageWordOffset;
 
 @end
 

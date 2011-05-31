@@ -125,7 +125,7 @@ static const CGFloat kProfilePadTableOffsetLandscape = 220.0f;
 #if !LOCALDEBUG	
 	SCHAuthenticationManager *authenticationManager = [SCHAuthenticationManager sharedAuthenticationManager];
 	
-	if ([authenticationManager hasUsernameAndPassword] == NO) {
+	if ([authenticationManager isAuthenticated] == NO) {
         [self showLoginControllerWithAnimation:YES];
 	}
 #endif
@@ -239,10 +239,10 @@ static const CGFloat kProfilePadTableOffsetLandscape = 220.0f;
 	
     switch (indexPath.section) {
 		case 0: {
-            
             SCHProfileItem *profileItem = [[self fetchedResultsController] objectAtIndexPath:indexPath];
 #if LOCALDEBUG
             // controller to view book shelf with books filtered to profile
+            [SCHThemeManager sharedThemeManager].appProfile = profileItem.AppProfile;                                    
             [self pushBookshelvesControllerWithProfileItem:profileItem];	
 #else
             if ([profileItem.ProfilePasswordRequired boolValue] == NO) {
