@@ -197,6 +197,23 @@ static NSUInteger const kSCHAudioBookPlayerNoAudioLoaded = NSUIntegerMax;
     return(ret);
 }
 
+- (void)cleanAudio
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+    if (timer != NULL) {
+        dispatch_release(timer), timer = NULL;
+    }
+    
+    self.player = nil;
+    self.audioBookReferences = nil;
+    self.audioInfos = nil;
+    self.wordTimings = nil;
+    
+    
+    self.loadedAudioReferencesIndex = kSCHAudioBookPlayerNoAudioLoaded;
+}
+
 - (BOOL)play
 {
     BOOL ret = NO;

@@ -533,6 +533,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [[SCHSyncManager sharedSyncManager] closeDocument:[[book.ContentMetadataItem valueForKey:@"UserContentItem"] objectAtIndex:0] 
                                            forProfile:self.profile.ID];
 
+    [self.audioBookPlayer cleanAudio];
+    
     [self cancelInitialTimer];
     [self setToolbarVisibility:YES animated:NO];
 	[self.navigationController popViewControllerAnimated:YES];
