@@ -8,8 +8,6 @@
 
 #import "SCHAudioInfo.h"
 
-static NSTimeInterval const kSCHAudioInfoMilliSecondsInASecond = 1000.0;
-
 @implementation SCHAudioInfo
 
 @synthesize pageIndex;
@@ -30,17 +28,6 @@ static NSTimeInterval const kSCHAudioInfoMilliSecondsInASecond = 1000.0;
         audioReferenceIndex = setAudioReferenceIndex;
     }
     return(self);
-}
-
-- (NSTimeInterval)setTimeOffsetAsSeconds
-{
-    NSTimeInterval ret = 0.0;
-    
-    if (self.timeOffset > 0) {
-        ret = (self.timeOffset / kSCHAudioInfoMilliSecondsInASecond);   
-    }
-    
-    return(ret);
 }
 
 - (NSString *)description

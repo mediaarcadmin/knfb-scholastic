@@ -21,6 +21,5 @@
               timeIndex:(NSUInteger)setTimeIndex
              timeOffset:(NSUInteger)setTimeOffset 
     audioReferenceIndex:(NSUInteger)setAudioReferenceIndex;
-- (NSTimeInterval)setTimeOffsetAsSeconds;
 
 @end

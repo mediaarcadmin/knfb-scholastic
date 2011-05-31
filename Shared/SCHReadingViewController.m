@@ -149,7 +149,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [isbn release], isbn = nil;
     [popover release], popover = nil;
     [profile release], profile = nil;
-    [audioBookPlayer stop];
     [audioBookPlayer release], audioBookPlayer = nil;
     [popoverOptionsViewController release], popoverOptionsViewController = nil;
     
@@ -526,46 +525,41 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (IBAction)audioPlayAction:(id)sender
 {
     NSLog(@"Audio Play action");
-	
-    SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];
-    NSArray *audioBookReferences = [book valueForKey:kSCHAppBookAudioBookReferences];
-    NSError *error = nil;
     
-    if(audioBookReferences != nil) {
-        if (self.audioBookPlayer == nil) {
-            NSDictionary *audioBookReference = [audioBookReferences objectAtIndex:0];
-            NSData *audioData = [self.xpsProvider dataForComponentAtPath:[KNFBXPSAudiobookDirectory stringByAppendingPathComponent:[audioBookReference valueForKey:kSCHAppBookAudioFile]]];
-            if (audioData != nil) {
-                NSData *audioInfoData = [self.xpsProvider dataForComponentAtPath:KNFBXPSAudiobookMetadataFile];
-                NSData *timingData = [self.xpsProvider dataForComponentAtPath:[KNFBXPSAudiobookDirectory stringByAppendingPathComponent:[audioBookReference valueForKey:kSCHAppBookTimingFile]]];
-                if (timingData != nil) {
-                    self.audioBookPlayer = [[[SCHAudioBookPlayer alloc] init] autorelease];
-                    if ([self.audioBookPlayer prepareToPlay:audioData audioInfoData:audioInfoData 
-                                         wordTimingFileData:timingData error:&error wordBlock:^(NSUInteger position) {
-                        NSLog(@"WORD UP! at %d", position);
-                    }] == YES) {
-                        self.audioBookPlayer.delegate = self;
-                        // continue playing or play from position                        
-                        [self.audioBookPlayer play];
-                        //            [self.audioBookPlayer playAtIndex:0];                        
-                    } else {
-                        self.audioBookPlayer = nil;   
-                    }
-                }
-            }
-        } else if(self.audioBookPlayer.playing == NO) {
-             // continue playing or play from position
-            [self.audioBookPlayer play];
-//            [self.audioBookPlayer playAtIndex:0];
-        } else {
-            [self.audioBookPlayer pause];        
+    if (self.audioBookPlayer == nil) {            
+        SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];
+        NSArray *audioBookReferences = [book valueForKey:kSCHAppBookAudioBookReferences];
+        NSError *error = nil;
+        
+        if(audioBookReferences != nil && [audioBookReferences count] > 0) {        
+            self.audioBookPlayer = [[[SCHAudioBookPlayer alloc] init] autorelease];
+            self.audioBookPlayer.xpsProvider = self.xpsProvider;
+            if ([self.audioBookPlayer prepareAudio:audioBookReferences error:&error 
+                                          wordBlock:^(NSUInteger page, NSUInteger wordOffset) {
+                                              NSLog(@"WORD UP! at page %d word %d", page, wordOffset);
+                                          }] == YES) {
+                                              self.audioBookPlayer.delegate = self;
+                                              [self.audioBookPlayer playAtPage:0 wordOffset:0];
+                                          } else {
+                                              self.audioBookPlayer = nil;   
+                                              UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") 
+                                                                                                   message:NSLocalizedString(@"Due to a problem with the audio we can not play this audiobook.", @"") 
+                                                                                                  delegate:nil 
+                                                                                         cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+                                                                                         otherButtonTitles:nil]; 
+                                              [errorAlert show]; 
+                                              [errorAlert release];                                               
+                                          }
         }
+    } else if(self.audioBookPlayer.playing == NO) {
+        [self.audioBookPlayer playAtPage:0 wordOffset:4];
+    } else {
+        [self.audioBookPlayer pause];        
     }
-
+    
     if (self.optionsView.superview) {
         [self.optionsView removeFromSuperview];
-    }
-    
+    }    
 }
 
 #pragma mark - Audio Book Delegate methods
@@ -579,15 +573,13 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 {
     NSLog(@"Audio Play erred!");
     
-    if (error!= nil) {
-        UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") 
-                                                             message:NSLocalizedString(@"Due to a problem with the audio we can not play this audiobook.", @"") 
-                                                            delegate:nil 
-                                                   cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-                                                   otherButtonTitles:nil]; 
-        [errorAlert show]; 
-        [errorAlert release];
-    }    
+    UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") 
+                                                         message:NSLocalizedString(@"Due to a problem with the audio we can not play this audiobook.", @"") 
+                                                        delegate:nil 
+                                               cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+                                               otherButtonTitles:nil]; 
+    [errorAlert show]; 
+    [errorAlert release];
 }
 
 - (IBAction)storyInteractionAction:(id)sender

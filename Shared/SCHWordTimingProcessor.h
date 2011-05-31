@@ -12,10 +12,6 @@
 {
 }
 
-- (id)initWithWordTimingFilePath:(NSString *)aWordTimingFilePath;
-+ (NSArray *)startTimesFrom:(NSData *)wordTimingData error:(NSError **)error;
-- (NSArray *)startTimesWithRange:(NSRange)range error:(NSError **)error;
-- (NSArray *)startTimesFromIndex:(NSUInteger)index error:(NSError **)error;
-- (NSArray *)startTimes:(NSError **)error;
+- (NSArray *)startTimesFrom:(NSData *)wordTimingData error:(NSError **)error;
 
 @end

@@ -12,7 +12,9 @@
 
 #import "SCHAudioBookPlayerDelegate.h"
 
-typedef void (^WordBlock)(NSUInteger position);
+@class SCHXPSProvider;
+
+typedef void (^WordBlock)(NSUInteger page, NSUInteger wordOffset);
 
 static NSString * const kSCHAudioBookPlayerErrorDomain = @"AudioBookPlayerErrorDomain";
 static NSInteger const kSCHAudioBookPlayerFileError = 2000;
@@ -23,14 +25,13 @@ static NSInteger const kSCHAudioBookPlayerDataError = 2001;
 }
 
 @property (nonatomic, assign) id<SCHAudioBookPlayerDelegate> delegate; 
+@property (nonatomic, retain) SCHXPSProvider *xpsProvider;
 @property (nonatomic, readonly) BOOL playing;
 
-- (BOOL)prepareToPlay:(NSData *)audioData audioInfoData:(NSData *)audioInfoData 
-   wordTimingFileData:(NSData *)wordTimingData 
-                error:(NSError **)outError wordBlock:(WordBlock)wordBlock;
+- (BOOL)prepareAudio:(NSArray *)setAudioBookReferences 
+               error:(NSError **)outError wordBlock:(WordBlock)wordBlock;
 - (BOOL)play;
-- (BOOL)playAtIndex:(NSUInteger)newTime;
+- (BOOL)playAtPage:(NSUInteger)page wordOffset:(NSUInteger)wordOffset;
 - (void)pause;
-- (void)stop;
 
 @end

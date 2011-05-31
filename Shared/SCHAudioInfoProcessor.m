@@ -58,7 +58,7 @@
         [xmlParser release], xmlParser = nil; 
     }
         
-    return([self.audioInfo autorelease]);
+    return(self.audioInfo);
 }
 
 - (void)dealloc 
