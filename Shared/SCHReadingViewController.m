@@ -318,9 +318,17 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     self.bottomShadow.frame = bottomShadowFrame;
     
     // FIXME: using a placeholder, adjust for real image
+    NSLog(@"Setting up notes count view!");
     UIImage *bgImage = [UIImage imageNamed:@"button-login-red"];
     self.notesCountView = [[SCHNotesCountView alloc] initWithImage:[bgImage stretchableImageWithLeftCapWidth:8.0f topCapHeight:0]];
     [self.notesButton addSubview:self.notesCountView];
+    
+    // update the note count
+    NSInteger noteCount = [[[self.profile annotationsForBook:self.isbn] notes] count];
+    self.notesCountView.noteCount = noteCount;
+
+    
+    NSLog(@"Button: %@, NCV: %@", self.notesButton, self.notesCountView);
     
     [self setDictionarySelectionMode];
 
@@ -330,11 +338,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (void)viewWillAppear:(BOOL)animated
 {
 	[super viewWillAppear:animated];
-    
-    // update the note count
-    NSInteger noteCount = [[[self.profile annotationsForBook:self.isbn] notes] count];
-    self.notesCountView.noteCount = noteCount;
-    
     [self setupAssetsForOrientation:self.interfaceOrientation];
 }
 
@@ -1213,8 +1216,21 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     aNotesView.readingView = self.readingView;
     [aNotesView showInView:self.view animated:YES];
     [aNotesView release];
-
+    
     [self setToolbarVisibility:NO animated:YES];
+    
+}
+
+- (void)readingNotesView:(SCHReadingNotesListController *)readingNotesView didDeleteNote:(SCHNote *)note
+{
+    NSLog(@"Deleting note...");
+    SCHBookAnnotations *bookAnnos = [self.profile annotationsForBook:self.isbn];
+    [bookAnnos deleteNote:note];
+    
+    // update the note count
+    NSInteger noteCount = [[[self.profile annotationsForBook:self.isbn] notes] count];
+    self.notesCountView.noteCount = noteCount;
+
 }
 
 #pragma mark - SCHNotesViewDelegate methods
@@ -1227,11 +1243,22 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [bookAnnos addNote:note];
     
     [self setToolbarVisibility:YES animated:YES];
+    
+    // update the note count
+    NSInteger noteCount = [[[self.profile annotationsForBook:self.isbn] notes] count];
+    self.notesCountView.noteCount = noteCount;
+    
 }
 
 - (void)notesViewCancelled:(SCHReadingNoteView *)notesView
 {
     [self setToolbarVisibility:YES animated:YES];
+    
+    // update the note count
+    NSInteger noteCount = [[[self.profile annotationsForBook:self.isbn] notes] count];
+    self.notesCountView.noteCount = noteCount;
+    
+    
 }
 
 #pragma mark - SCHReadingInteractionsListControllerDelegate methods

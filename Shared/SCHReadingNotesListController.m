@@ -335,7 +335,7 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
     switch ([indexPath section]) {
         case 0:
         {
-            if (self.delegate && [delegate respondsToSelector:@selector(readingNotesView:didSelectNote:)]) {
+            if (self.delegate && [delegate respondsToSelector:@selector(readingNotesViewCreatingNewNote:)]) {
                 [delegate readingNotesViewCreatingNewNote:self];
             }
             break;
@@ -355,6 +355,56 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
     }
     
     [self dismissModalViewControllerAnimated:YES];
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        NSLog(@"Deleting row %d!", indexPath.row);
+        
+        NSInteger section = [indexPath section];
+        
+        switch (section) {
+            case 0:
+            {
+                NSLog(@"section 0.");
+                break;
+            }
+            case 1:
+            {
+                if (self.delegate && [delegate respondsToSelector:@selector(readingNotesView:didDeleteNote:)]) {
+                    [delegate readingNotesView:self didDeleteNote:[self.notes objectAtIndex:[indexPath row]]];
+                }
+                [self.notesTableView beginUpdates];
+                [self.notesTableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+                SCHBookAnnotations *annotations = [self.profile annotationsForBook:self.isbn];
+                self.notes = [annotations notes];
+                
+                if ([self.notes count] == 0) {
+                    [self.notesTableView deleteSections:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+                    [self editNotesButtonAction:nil];
+                }
+                [self.notesTableView endUpdates];
+                
+                break;
+            }
+            default:
+            {
+                NSLog(@"Unknown row selection in SCHReadingNotesListController (%d)", section);
+                break;
+            }
+        }
+
+    }
+}
+
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (![tableView isEditing] && [indexPath section] == 0) {
+        return NO;
+    } else {
+        return YES;
+    }
 }
 
 @end

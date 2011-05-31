@@ -28,6 +28,7 @@
 - (void)addHighlight:(SCHHighlight *)newHighlight;
 - (NSArray *)notes;
 - (void)addNote:(SCHNote *)newNote;
+- (void)deleteNote:(SCHNote *)note;
 - (SCHFavorite *)favorite;
 - (SCHLastPage *)lastPage;
 
