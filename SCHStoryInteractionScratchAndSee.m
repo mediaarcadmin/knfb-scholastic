@@ -12,6 +12,7 @@
 
 @implementation SCHStoryInteractionScratchAndSeeQuestion
 
+@synthesize questionIndex;
 @synthesize answers;
 @synthesize correctAnswer;
 
@@ -21,9 +22,22 @@
     [super dealloc];
 }
 
-- (UIImage *)image
+- (NSString *)imagePath
 {
-    return nil;
+    NSString *filename = [NSString stringWithFormat:@"%@_q%d.png", self.storyInteraction.ID, self.questionIndex];
+    return [[SCHStoryInteraction resourcesPath] stringByAppendingPathComponent:filename];
+}
+
+- (NSString *)audioPathForAnswerAtIndex:(NSInteger)index
+{
+    NSString *filename = [NSString stringWithFormat:@"%@_q%da%d.mp3", self.storyInteraction.ID, self.questionIndex, index];
+    return [[SCHStoryInteraction resourcesPath] stringByAppendingPathComponent:filename];
+}
+
+- (NSString *)correctAnswerAudioPath
+{
+    NSString *filename = [NSString stringWithFormat:@"%@_ca%d.mp3", self.storyInteraction.ID, self.questionIndex];
+    return [[SCHStoryInteraction resourcesPath] stringByAppendingPathComponent:filename];
 }
 
 @end

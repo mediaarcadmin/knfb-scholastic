@@ -11,6 +11,8 @@
 #import "SCHStoryInteractionParser.h"
 #import "SCHStoryInteractionHotSpot.h"
 #import "SCHStoryInteractionMultipleChoice.h"
+#import "SCHStoryInteractionPopQuiz.h"
+#import "SCHStoryInteractionScratchAndSee.h"
 
 @interface SCHStoryInteractionParserTests : SenTestCase {}
 @property (nonatomic, retain) SCHStoryInteractionParser *parser;
@@ -112,7 +114,86 @@
 
 - (void)testPopQuiz1
 {
+    NSArray *stories = [self parse:@"PopQuiz1"];
+    STAssertEquals([stories count], 1U, @"incorrect story count");
+    STAssertTrue([[stories lastObject] isKindOfClass:[SCHStoryInteractionPopQuiz class]], @"incorrect class");
     
+    SCHStoryInteractionPopQuiz *story = [stories lastObject];
+    STAssertEquals(story.documentPageNumber, 44, @"incorrect documentPageNumber");
+    STAssertTrue(CGPointEqualToPoint(story.position, CGPointMake(180, 10)), @"incorrect position");
+    STAssertEqualObjects(story.scoreResponseLow, @"Don’t be afraid to try again!", @"incorrect scoreResponseLow");
+    STAssertEqualObjects(story.scoreResponseMedium, @"Good job! You’re no dummy!", @"incorrect scoreResponseMedium");
+    STAssertEqualObjects(story.scoreResponseHigh, @"Perfect score! Spook-tacular!", @"incorrect scoreResponseHigh");
+    
+    struct {
+        NSString *prompt;
+        NSArray *answers;
+        NSInteger correctAnswer;
+    } expect[] = {
+        { @"What did Lindy find in the dumpster?",
+            [NSArray arrayWithObjects:@"A dead body", @"A runaway dog", @"A flying squirrel", @"A ventriloquist dummy", nil],
+            3 },
+        { @"What did Mrs. Marshall want Lindy to do?",
+            [NSArray arrayWithObjects:@"Babysit her kids", @"Perform with Slappy", @"Mow the lawn", @"Deliver her newspapers", nil],
+            1 },
+        { @"What happened when Kris first tried to hold Slappy?",
+            [NSArray arrayWithObjects:@"He gave her a high five", @"He slapped her", @"He flipped her", @"He made a face", nil],
+            1 },
+        { @"Who grabbed Kris after she pushed Slappy off the chair?",
+            [NSArray arrayWithObjects:@"Cody", @"Slappy", @"Lindy", @"Mom", nil],
+            2 },
+        { @"Who gave Kris her own ventriloquist dummy?",
+            [NSArray arrayWithObjects:@"Dad", @"Mom", @"Cody Matthews", @"Mrs. Marshall", nil],
+            0 }
+    };
+    NSUInteger expectCount = sizeof(expect)/sizeof(expect[0]);
+
+    STAssertEquals([story.questions count], expectCount, @"incorrect question count");
+    for (NSUInteger i = 0; i < MIN([story.questions count], expectCount); ++i) {
+        SCHStoryInteractionMultipleChoiceQuestion *q = [story.questions objectAtIndex:i];
+        STAssertEqualObjects(q.prompt, expect[i].prompt, @"incorrect prompt for question %d", i+1);
+        STAssertEqualObjects(q.answers, expect[i].answers, @"incorrect answers for question %d", i+1);
+        STAssertEquals(q.correctAnswer, expect[i].correctAnswer, @"incorrect correctAnswer for question %d", i+1);
+    }
+}
+
+- (void)testScratchAndSee1
+{
+    NSArray *stories = [self parse:@"ScratchAndSee1"];
+    STAssertEquals([stories count], 1U, @"incorrect story count");
+    STAssertTrue([[stories lastObject] isKindOfClass:[SCHStoryInteractionScratchAndSee class]], @"incorrect class");
+    
+    SCHStoryInteractionScratchAndSee *story = [stories lastObject];
+    STAssertEquals(story.documentPageNumber, 14, @"incorrect documentPageNumber");
+    STAssertTrue(CGPointEqualToPoint(story.position, CGPointMake(500, 5)), @"incorrect position");
+
+    struct {
+        NSArray *answers;
+        NSInteger correctAnswer;
+    } expect[] = {
+        { [NSArray arrayWithObjects:@"Dancing", @"Eating", @"Cooking", nil], 0 },
+        { [NSArray arrayWithObjects:@"Sitting", @"Skating", @"Doing yoga", nil], 2 },
+        { [NSArray arrayWithObjects:@"Running", @"Shaking", @"Spinning", nil], 1 }
+    };
+    NSUInteger expectCount = sizeof(expect)/sizeof(expect[0]);
+    
+    STAssertEquals([story.questions count], expectCount, @"incorrect question count");
+    for (NSUInteger i = 0; i < MIN([story.questions count], expectCount); ++i) {
+        SCHStoryInteractionScratchAndSeeQuestion *q = [story.questions objectAtIndex:i];
+        STAssertEqualObjects(q.answers, expect[i].answers, @"incorrect answers for question %d", i+1);
+        STAssertEquals(q.correctAnswer, expect[i].correctAnswer, @"incorrect correctAnswer for question %d", i+1);
+        
+        NSString *imagePath = [NSString stringWithFormat:@"ss1_q%d.png", i+1];
+        STAssertEqualObjects([[q imagePath] lastPathComponent], imagePath, @"incorrect imagePath for question %d", i+1);
+        
+        NSString *correctAudioPath = [NSString stringWithFormat:@"ss1_ca%d.mp3", i+1];
+        STAssertEqualObjects([[q correctAnswerAudioPath] lastPathComponent], correctAudioPath, @"incorrect correctAudioPath for question %d", i+1);
+        
+        for (NSInteger j = 0; j < [q.answers count]; ++j) {
+            NSString *audioPath = [NSString stringWithFormat:@"ss1_q%da%d.mp3", i+1, j+1];
+            STAssertEqualObjects([[q audioPathForAnswerAtIndex:j+1] lastPathComponent], audioPath, @"incorrect audioPath for question %d answer %d", i+1, j+1);
+        }
+    }
 }
 
 @end

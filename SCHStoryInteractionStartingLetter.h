@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "SCHStoryInteraction.h"
 
-@interface SCHStoryInteractionStartingLetterAnswer : NSObject {}
+@interface SCHStoryInteractionStartingLetterAnswer : SCHStoryInteractionQuestion {}
 
 @property (nonatomic, readonly) UIImage *image;
 @property (nonatomic, readonly) BOOL isCorrect;

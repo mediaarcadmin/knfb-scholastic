@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "SCHStoryInteraction.h"
 
-@interface SCHStoryInteractionHotSpotQuestion : NSObject {}
+@interface SCHStoryInteractionHotSpotQuestion : SCHStoryInteractionQuestion {}
 
 @property (nonatomic, retain) NSString *prompt;
 @property (nonatomic, assign) CGRect hotSpotRect;

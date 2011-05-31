@@ -9,10 +9,23 @@
 #import "SCHStoryInteraction.h"
 #import "SCHStoryInteractionParser.h"
 
+@implementation SCHStoryInteractionQuestion
+
+@synthesize storyInteraction;
+@synthesize questionIndex;
+
+@end
+
 @implementation SCHStoryInteraction
 
+@synthesize ID;
 @synthesize documentPageNumber;
 @synthesize position;
+
++ (NSString *)resourcesPath
+{
+    return @"/Documents/1/Other/KNFB/Interactions/Interactions.xml";
+}
 
 + (NSArray *)storyInteractionsFromXpsProvider:(SCHXPSProvider *)xpsProvider
 {

@@ -7,26 +7,21 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "SCHStoryInteraction.h"
+#import "SCHStoryInteractionMultipleChoice.h"
 
-@interface SCHStoryInteractionScratchAndSeeQuestion : NSObject {}
+@interface SCHStoryInteractionScratchAndSeeQuestion : SCHStoryInteractionMultipleChoiceQuestion {}
 
-@property (nonatomic, readonly) UIImage *image;
+// XPSProvider-relative path for image file
+- (NSString *)imagePath;
 
-// array of NSStrings
-@property (nonatomic, readonly) NSArray *answers;
+// XPSProvider-relative path for answer audio file
+- (NSString *)audioPathForAnswerAtIndex:(NSInteger)index;
 
-// index into answers
-@property (nonatomic, readonly) NSInteger correctAnswer;
+// XPSProvider-relative path for correct answer audio
+- (NSString *)correctAnswerAudioPath;
 
 @end
 
 
-@interface SCHStoryInteractionScratchAndSee : SCHStoryInteraction {}
-
-@property (nonatomic, readonly) NSString *introduction;
-
-// array of SCHStoryInteractionScratchAndSeeQuestion
-@property (nonatomic, readonly) NSArray *questions;
-
+@interface SCHStoryInteractionScratchAndSee : SCHStoryInteractionMultipleChoice {}
 @end

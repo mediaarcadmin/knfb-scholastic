@@ -16,6 +16,8 @@
 		2860E38B111B897F00E27156 /* MainWindow_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2860E389111B897F00E27156 /* MainWindow_iPhone.xib */; };
 		288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
 		2891B71E13954355005FC4DD /* StoryInteractionMultipleChoiceText1.xml in Resources */ = {isa = PBXBuildFile; fileRef = 2891B71D13954355005FC4DD /* StoryInteractionMultipleChoiceText1.xml */; };
+		2891B72013954804005FC4DD /* StoryInteractionPopQuiz1.xml in Resources */ = {isa = PBXBuildFile; fileRef = 2891B71F13954804005FC4DD /* StoryInteractionPopQuiz1.xml */; };
+		2891B72213954CDC005FC4DD /* StoryInteractionScratchAndSee1.xml in Resources */ = {isa = PBXBuildFile; fileRef = 2891B72113954CDC005FC4DD /* StoryInteractionScratchAndSee1.xml */; };
 		28A08CDE13950C01006FD008 /* SCHStoryInteraction.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A08CC713950C01006FD008 /* SCHStoryInteraction.m */; };
 		28A08CDF13950C01006FD008 /* SCHStoryInteraction.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A08CC713950C01006FD008 /* SCHStoryInteraction.m */; };
 		28A08CE013950C01006FD008 /* SCHStoryInteractionHotSpot.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A08CC913950C01006FD008 /* SCHStoryInteractionHotSpot.m */; };
@@ -976,6 +978,8 @@
 		2870939E111907710040F596 /* Scholastic.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = Scholastic.xcdatamodel; sourceTree = "<group>"; };
 		288765FC0DF74451002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		2891B71D13954355005FC4DD /* StoryInteractionMultipleChoiceText1.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = StoryInteractionMultipleChoiceText1.xml; sourceTree = "<group>"; };
+		2891B71F13954804005FC4DD /* StoryInteractionPopQuiz1.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = StoryInteractionPopQuiz1.xml; sourceTree = "<group>"; };
+		2891B72113954CDC005FC4DD /* StoryInteractionScratchAndSee1.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = StoryInteractionScratchAndSee1.xml; sourceTree = "<group>"; };
 		28A08CC613950C01006FD008 /* SCHStoryInteraction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteraction.h; sourceTree = "<group>"; };
 		28A08CC713950C01006FD008 /* SCHStoryInteraction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteraction.m; sourceTree = "<group>"; };
 		28A08CC813950C01006FD008 /* SCHStoryInteractionHotSpot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionHotSpot.h; sourceTree = "<group>"; };
@@ -1929,6 +1933,8 @@
 				28A08D0513952CB4006FD008 /* UnitTests-Prefix.pch */,
 				28A08D0E13952E1D006FD008 /* StoryInteractionHotSpot1.xml */,
 				2891B71D13954355005FC4DD /* StoryInteractionMultipleChoiceText1.xml */,
+				2891B71F13954804005FC4DD /* StoryInteractionPopQuiz1.xml */,
+				2891B72113954CDC005FC4DD /* StoryInteractionScratchAndSee1.xml */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -3679,6 +3685,8 @@
 				28A08D0413952CB4006FD008 /* InfoPlist.strings in Resources */,
 				28A08D0F13952E1D006FD008 /* StoryInteractionHotSpot1.xml in Resources */,
 				2891B71E13954355005FC4DD /* StoryInteractionMultipleChoiceText1.xml in Resources */,
+				2891B72013954804005FC4DD /* StoryInteractionPopQuiz1.xml in Resources */,
+				2891B72213954CDC005FC4DD /* StoryInteractionScratchAndSee1.xml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

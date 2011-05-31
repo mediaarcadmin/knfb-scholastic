@@ -12,6 +12,8 @@
 
 @implementation SCHStoryInteractionMultipleChoiceQuestion
 
+@synthesize storyInteraction;
+@synthesize questionIndex;
 @synthesize prompt;
 @synthesize answers;
 @synthesize correctAnswer;

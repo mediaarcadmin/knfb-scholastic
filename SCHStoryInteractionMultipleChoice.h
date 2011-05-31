@@ -9,11 +9,11 @@
 #import <Foundation/Foundation.h>
 #import "SCHStoryInteraction.h"
 
-@interface SCHStoryInteractionMultipleChoiceQuestion : NSObject {}
+@interface SCHStoryInteractionMultipleChoiceQuestion : SCHStoryInteractionQuestion {}
 
 @property (nonatomic, retain) NSString *prompt;
 
-// array of NSString or UIImage
+// array of NSStrings
 @property (nonatomic, retain) NSArray *answers;
 
 // index into answers

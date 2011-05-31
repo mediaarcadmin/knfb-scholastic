@@ -7,32 +7,17 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "SCHStoryInteraction.h"
+#import "SCHStoryInteractionMultipleChoice.h"
 
-@interface SCHStoryInteractionPopQuizQuestion : NSObject {}
-
-@property (nonatomic, readonly) NSString *prompt;
-
-// array of NSString
-@property (nonatomic, readonly) NSArray *answers;
-
-// index into answers
-@property (nonatomic, readonly) NSInteger correctAnswer;
-
-@end
-
-@interface SCHStoryInteractionPopQuiz : SCHStoryInteraction {}
-
-// Array of SCHStoryInteractionPopQuizQuestion items
-@property (nonatomic, readonly) NSArray *questions;
+@interface SCHStoryInteractionPopQuiz : SCHStoryInteractionMultipleChoice {}
 
 // Response for a low score
-@property (nonatomic, readonly) NSString *scoreResponseLow;
+@property (nonatomic, retain) NSString *scoreResponseLow;
 
 // Response for a medium score
-@property (nonatomic, readonly) NSString *scoreResponseMedium;
+@property (nonatomic, retain) NSString *scoreResponseMedium;
 
 // Response for a high score
-@property (nonatomic, readonly) NSString *scoreResponseHigh;
+@property (nonatomic, retain) NSString *scoreResponseHigh;
 
 @end

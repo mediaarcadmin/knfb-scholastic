@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "SCHStoryInteraction.h"
 
-@interface SCHStoryInteractionWordMatchQuestion : NSObject {}
+@interface SCHStoryInteractionWordMatchQuestion : SCHStoryInteractionQuestion {}
 
 @property (nonatomic, readonly) NSString *text;
 @property (nonatomic, readonly) UIImage *image;
