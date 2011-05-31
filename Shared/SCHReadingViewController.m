@@ -539,12 +539,12 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
             self.audioBookPlayer = [[[SCHAudioBookPlayer alloc] init] autorelease];
             self.audioBookPlayer.xpsProvider = self.xpsProvider;
             if ([self.audioBookPlayer prepareAudio:audioBookReferences error:&error 
-                                          wordBlock:^(NSUInteger page, NSUInteger wordOffset) {
-                                              NSLog(@"WORD UP! at page %d word %d", page, wordOffset);
-                                              [self.readingView followAlongHighlightWordForLayoutPage:page + 1 pageWordOffset:wordOffset];
+                                          wordBlock:^(NSUInteger layoutPage, NSUInteger pageWordOffset) {
+                                              NSLog(@"WORD UP! at layoutPage %d pageWordOffset %d", layoutPage, pageWordOffset);
+                                              [self.readingView followAlongHighlightWordForLayoutPage:layoutPage pageWordOffset:pageWordOffset];
                                           }] == YES) {
                                               self.audioBookPlayer.delegate = self;
-                                              [self.audioBookPlayer playAtPage:layoutPage - 1 pageWordOffset:pageWordOffset];
+                                              [self.audioBookPlayer playAtLayoutPage:layoutPage pageWordOffset:pageWordOffset];
                                           } else {
                                               self.audioBookPlayer = nil;   
                                               UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") 
@@ -557,7 +557,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
                                           }
         }
     } else if(self.audioBookPlayer.playing == NO) {
-        [self.audioBookPlayer playAtPage:0 pageWordOffset:4];
+        [self.audioBookPlayer playAtLayoutPage:layoutPage pageWordOffset:pageWordOffset];
     } else {
         [self.audioBookPlayer pause];        
     }

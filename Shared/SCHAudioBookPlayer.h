@@ -14,7 +14,7 @@
 
 @class SCHXPSProvider;
 
-typedef void (^WordBlock)(NSUInteger page, NSUInteger wordOffset);
+typedef void (^WordBlock)(NSUInteger layoutPage, NSUInteger pageWordOffset);
 
 static NSString * const kSCHAudioBookPlayerErrorDomain = @"AudioBookPlayerErrorDomain";
 static NSInteger const kSCHAudioBookPlayerFileError = 2000;
@@ -31,7 +31,7 @@ static NSInteger const kSCHAudioBookPlayerDataError = 2001;
 - (BOOL)prepareAudio:(NSArray *)setAudioBookReferences 
                error:(NSError **)outError wordBlock:(WordBlock)wordBlock;
 - (BOOL)play;
-- (BOOL)playAtPage:(NSUInteger)page pageWordOffset:(NSUInteger)wordOffset;
+- (BOOL)playAtLayoutPage:(NSUInteger)layoutPage pageWordOffset:(NSUInteger)pageWordOffset;
 - (void)pause;
 
 @end

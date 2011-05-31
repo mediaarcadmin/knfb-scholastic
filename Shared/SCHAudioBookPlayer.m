@@ -18,6 +18,7 @@
 
 static NSTimeInterval const kSCHAudioBookPlayerMilliSecondsInASecond = 1000.0;
 static NSInteger const kSCHAudioBookPlayerWordTimerInterval = 4 * NSEC_PER_MSEC;
+static NSUInteger const kSCHAudioBookPlayerNoAudioLoaded = NSUIntegerMax;
 
 @interface SCHAudioBookPlayer ()
 
@@ -26,13 +27,13 @@ static NSInteger const kSCHAudioBookPlayerWordTimerInterval = 4 * NSEC_PER_MSEC;
 @property (nonatomic, retain) NSArray *wordTimings;  
 
 @property (nonatomic, retain) AVAudioPlayer *player;  
-@property (nonatomic, assign) NSUInteger currentAudioReferencesIndex;  
+@property (nonatomic, assign) NSUInteger loadedAudioReferencesIndex;  
 @property (nonatomic, assign) BOOL resumeInterruptedPlayer;
 @property (nonatomic, assign) dispatch_source_t timer;
 
-- (SCHAudioInfo *)audioInfoForPage:(NSUInteger)page;
+- (SCHAudioInfo *)audioInfoForPageIndex:(NSUInteger)pageIndex;
 - (BOOL)prepareToPlay:(SCHAudioInfo *)audioInfoToPrepare 
-           wordOffset:(NSUInteger)wordOffset;
+           pageWordOffset:(NSUInteger)pageWordOffset;
 
 @end
 
@@ -44,7 +45,7 @@ static NSInteger const kSCHAudioBookPlayerWordTimerInterval = 4 * NSEC_PER_MSEC;
 @synthesize wordTimings;
 @synthesize xpsProvider;
 @synthesize player;
-@synthesize currentAudioReferencesIndex;
+@synthesize loadedAudioReferencesIndex;
 @synthesize resumeInterruptedPlayer;
 @synthesize timer;
 @dynamic playing;
@@ -55,7 +56,7 @@ static NSInteger const kSCHAudioBookPlayerWordTimerInterval = 4 * NSEC_PER_MSEC;
 {
     self = [super init];
     if (self) {
-        currentAudioReferencesIndex = 0;
+        loadedAudioReferencesIndex = kSCHAudioBookPlayerNoAudioLoaded;
         resumeInterruptedPlayer = NO;
         timer = NULL;
     }
@@ -185,7 +186,7 @@ static NSInteger const kSCHAudioBookPlayerWordTimerInterval = 4 * NSEC_PER_MSEC;
                 if (wordTiming != lastTriggered && [wordTiming compareTime:currentPlayTime] == NSOrderedSame) {
                     lastTriggered = wordTiming;
                     SCHAudioInfo *audioInfo = [self.audioInfos objectAtIndex:currentAudioInfoPosition];
-                    wordBlock(audioInfo.pageIndex, currentPosition - audioInfo.timeIndex);
+                    wordBlock(audioInfo.pageIndex + 1, currentPosition - audioInfo.timeIndex);
                 }                                                
             });            
             
@@ -208,12 +209,12 @@ static NSInteger const kSCHAudioBookPlayerWordTimerInterval = 4 * NSEC_PER_MSEC;
     return(ret);
 }
 
-- (BOOL)playAtPage:(NSUInteger)page pageWordOffset:(NSUInteger)wordOffset
+- (BOOL)playAtLayoutPage:(NSUInteger)layoutPage pageWordOffset:(NSUInteger)pageWordOffset
 {  
     BOOL ret = NO;
     
-    SCHAudioInfo *audioInfo = [self audioInfoForPage:page];
-    if (audioInfo != nil && [self prepareToPlay:audioInfo wordOffset:wordOffset] == YES) {        
+    SCHAudioInfo *audioInfo = [self audioInfoForPageIndex:(layoutPage == 0 ? 0 : layoutPage - 1)];
+    if (audioInfo != nil && [self prepareToPlay:audioInfo pageWordOffset:pageWordOffset] == YES) {        
         ret = [self play];
     }
     
@@ -235,17 +236,16 @@ static NSInteger const kSCHAudioBookPlayerWordTimerInterval = 4 * NSEC_PER_MSEC;
 
 #pragma mark - Private methods
 
-- (SCHAudioInfo *)audioInfoForPage:(NSUInteger)page
+- (SCHAudioInfo *)audioInfoForPageIndex:(NSUInteger)pageIndex
 {    
     SCHAudioInfo *ret = nil;
 
     // find the files to use
     for (NSUInteger i = 0; i < [self.audioInfos count]; i++) {
         SCHAudioInfo *audioInfo = [self.audioInfos objectAtIndex:i];
-        if (audioInfo.pageIndex >= page && 
+        if (audioInfo.pageIndex >= pageIndex && 
             audioInfo.audioReferenceIndex < [self.audioBookReferences count]) {
             ret = audioInfo;
-            self.currentAudioReferencesIndex = i;
             break;
         }
     }
@@ -253,40 +253,45 @@ static NSInteger const kSCHAudioBookPlayerWordTimerInterval = 4 * NSEC_PER_MSEC;
     return(ret);
 }
 
-- (BOOL)prepareToPlay:(SCHAudioInfo *)audioInfoToPrepare wordOffset:(NSUInteger)wordOffset
+- (BOOL)prepareToPlay:(SCHAudioInfo *)audioInfoToPrepare pageWordOffset:(NSUInteger)pageWordOffset
 {    
     BOOL ret = NO;
     NSError *error = nil;
         
     if (audioInfoToPrepare != nil) {
-        NSDictionary *audioBookReference = [self.audioBookReferences objectAtIndex:audioInfoToPrepare.audioReferenceIndex];
-        
-        // word timing
-        NSData *wordTimingData = [self.xpsProvider dataForComponentAtPath:
-                                  [KNFBXPSAudiobookDirectory stringByAppendingPathComponent:
-                                   [audioBookReference valueForKey:kSCHAppBookTimingFile]]];
-        
-        SCHWordTimingProcessor *wordTimingProcessor = [[SCHWordTimingProcessor alloc] init];
-        self.wordTimings = [wordTimingProcessor startTimesFrom:wordTimingData error:&error];
-        [wordTimingProcessor release], wordTimingProcessor = nil;
-        
-        if (self.wordTimings != nil) {
-            // audio
-            NSData *audioData = [self.xpsProvider dataForComponentAtPath:
-                                 [KNFBXPSAudiobookDirectory stringByAppendingPathComponent:
-                                  [audioBookReference valueForKey:kSCHAppBookAudioFile]]];
+        if (audioInfoToPrepare.audioReferenceIndex == self.loadedAudioReferencesIndex) {
+            ret = YES;
+        } else {
+            NSDictionary *audioBookReference = [self.audioBookReferences objectAtIndex:audioInfoToPrepare.audioReferenceIndex];
             
-            // let the show begin
-            if (audioData != nil) {
-                self.player = [[AVAudioPlayer alloc] initWithData:audioData error:&error];
-                if (self.player != nil) {
-                    [self.player release];
-                    self.player.delegate = self;
-                    NSUInteger wordIndex = audioInfoToPrepare.timeIndex + wordOffset;                    
-                    if ([self.player prepareToPlay] == YES && wordIndex < [self.wordTimings count]) {
-                        SCHWordTiming *wordTiming = [self.wordTimings objectAtIndex:wordIndex];
-                        self.player.currentTime = [wordTiming startTimeAsSeconds];
-                        ret = YES;
+            // word timing
+            NSData *wordTimingData = [self.xpsProvider dataForComponentAtPath:
+                                      [KNFBXPSAudiobookDirectory stringByAppendingPathComponent:
+                                       [audioBookReference valueForKey:kSCHAppBookTimingFile]]];
+            
+            SCHWordTimingProcessor *wordTimingProcessor = [[SCHWordTimingProcessor alloc] init];
+            self.wordTimings = [wordTimingProcessor startTimesFrom:wordTimingData error:&error];
+            [wordTimingProcessor release], wordTimingProcessor = nil;
+            
+            if (self.wordTimings != nil) {
+                // audio
+                NSData *audioData = [self.xpsProvider dataForComponentAtPath:
+                                     [KNFBXPSAudiobookDirectory stringByAppendingPathComponent:
+                                      [audioBookReference valueForKey:kSCHAppBookAudioFile]]];
+                
+                // let the show begin
+                if (audioData != nil) {
+                    self.player = [[AVAudioPlayer alloc] initWithData:audioData error:&error];
+                    if (self.player != nil) {
+                        [self.player release];
+                        self.player.delegate = self;
+                        NSUInteger wordIndex = audioInfoToPrepare.timeIndex + pageWordOffset;                    
+                        if ([self.player prepareToPlay] == YES && wordIndex < [self.wordTimings count]) {
+                            SCHWordTiming *wordTiming = [self.wordTimings objectAtIndex:wordIndex];
+                            self.player.currentTime = [wordTiming startTimeAsSeconds];
+                            ret = YES;
+                            self.loadedAudioReferencesIndex = audioInfoToPrepare.audioReferenceIndex;                            
+                        }
                     }
                 }
             }
@@ -323,10 +328,10 @@ static NSInteger const kSCHAudioBookPlayerWordTimerInterval = 4 * NSEC_PER_MSEC;
 
 - (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
 {
-    self.currentAudioReferencesIndex = self.currentAudioReferencesIndex + 1;
-    if (self.currentAudioReferencesIndex < [self.audioBookReferences count]) {
-        if ([self prepareToPlay:[self.audioBookReferences objectAtIndex:self.currentAudioReferencesIndex] 
-                                 wordOffset:0] == YES) {        
+    NSUInteger nextAudioReferencesIndex = self.loadedAudioReferencesIndex + 1;
+    if (nextAudioReferencesIndex < [self.audioBookReferences count]) {
+        if ([self prepareToPlay:[self.audioBookReferences objectAtIndex:nextAudioReferencesIndex] 
+                                 pageWordOffset:0] == YES) {        
             [self play];
         }
     } else {
