@@ -26,7 +26,7 @@
 @dynamic Color;
 @dynamic EndPage;
 @dynamic PrivateAnnotations;
-@dynamic LocationText;
+@dynamic Location;
 
 - (UIColor *)Color
 {
@@ -45,12 +45,12 @@
 
 - (NSUInteger)startLayoutPage
 {
-    return [[self.LocationText Page] integerValue];
+    return [[self.Location Page] integerValue];
 }
 
 - (NSUInteger)startWordOffset
 {
-    return [[[self.LocationText WordIndex] Start] integerValue];
+    return [[[self.Location WordIndex] Start] integerValue];
 }
 
 - (NSUInteger)endLayoutPage
@@ -60,7 +60,7 @@
 
 - (NSUInteger)endWordOffset
 {
-    return [[[self.LocationText WordIndex] End] integerValue];
+    return [[[self.Location WordIndex] End] integerValue];
 }
 
 - (NSString *)description

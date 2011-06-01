@@ -22,7 +22,7 @@ static NSString * const kSCHHighlight = @"SCHHighlight";
 @property (nonatomic, retain) UIColor * Color;
 @property (nonatomic, retain) NSNumber * EndPage;
 @property (nonatomic, retain) SCHPrivateAnnotations * PrivateAnnotations;
-@property (nonatomic, retain) SCHLocationText * LocationText;
+@property (nonatomic, retain) SCHLocationText * Location;
 
 - (NSUInteger)startLayoutPage;
 - (NSUInteger)startWordOffset;
