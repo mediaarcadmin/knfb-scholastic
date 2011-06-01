@@ -12,6 +12,7 @@
 #import "SCHStoryInteraction.h"
 #import "SCHStoryInteractionAboutYouQuiz.h"
 #import "SCHStoryInteractionHotSpot.h"
+#import "SCHStoryInteractionImage.h"
 #import "SCHStoryInteractionMultipleChoice.h"
 #import "SCHStoryInteractionPopQuiz.h"
 #import "SCHStoryInteractionScratchAndSee.h"
@@ -219,6 +220,21 @@ static NSString *attribute(const XML_Char **atts, const char *key)
 {
     self.questions = [NSArray arrayWithArray:parser.questions];
     [super parseComplete:parser];
+}
+
+@end
+
+#pragma mark - Image
+
+@implementation SCHStoryInteractionImage (Parse)
+
+- (void)startElement:(const XML_Char *)name attributes:(const XML_Char **)attributes parser:(SCHStoryInteractionParser *)parser
+{
+    if (strcmp(name, "Image") == 0) {
+        self.imageFilename = attribute(attributes, "Url");
+    } else {
+        [super startElement:name attributes:attributes parser:parser];
+    }
 }
 
 @end

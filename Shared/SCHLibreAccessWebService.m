@@ -13,6 +13,7 @@
 #import "NSNumber+ObjectTypes.h"
 #import "SCHAuthenticationManager.h"
 #import "BITNetworkActivityManager.h"
+#import "UIColor+Extensions.h"
 
 
 static NSString * const kSCHLibreAccessWebServiceUndefinedMethod = @"undefined method";
@@ -934,7 +935,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		
 		[objects setObject:[self objectFromTranslate:anObject.id_] forKey:kSCHLibreAccessWebServiceID];
 		[objects setObject:[NSNumber numberWithSaveAction:anObject.action] forKey:kSCHLibreAccessWebServiceAction];
-		[objects setObject:[self objectFromTranslate:anObject.color] forKey:kSCHLibreAccessWebServiceColor];
+		[objects setObject:[UIColor BITcolorWithHexString:anObject.color] forKey:kSCHLibreAccessWebServiceColor];
 		[objects setObject:[self objectFromLocationText:anObject.location] forKey:kSCHLibreAccessWebServiceLocation];
 		[objects setObject:[self objectFromTranslate:anObject.endPage] forKey:kSCHLibreAccessWebServiceEndPage];
 		[objects setObject:[self objectFromTranslate:anObject.version] forKey:kSCHLibreAccessWebServiceVersion];		
@@ -987,8 +988,8 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		
 		[objects setObject:[self objectFromTranslate:anObject.id_] forKey:kSCHLibreAccessWebServiceID];
 		[objects setObject:[NSNumber numberWithSaveAction:anObject.action] forKey:kSCHLibreAccessWebServiceAction];
-		[objects setObject:[self objectFromLocationGraphics:anObject.location] forKey:kSCHLibreAccessWebServiceLocationGraphics];
-		[objects setObject:[self objectFromTranslate:anObject.color] forKey:kSCHLibreAccessWebServiceColor];
+		[objects setObject:[self objectFromLocationGraphics:anObject.location] forKey:kSCHLibreAccessWebServiceLocation];
+		[objects setObject:[UIColor BITcolorWithHexString:anObject.color] forKey:kSCHLibreAccessWebServiceColor];
 		[objects setObject:[self objectFromTranslate:anObject.value] forKey:kSCHLibreAccessWebServiceValue];
 		[objects setObject:[self objectFromTranslate:anObject.version] forKey:kSCHLibreAccessWebServiceVersion];
 		[objects setObject:[self objectFromTranslate:anObject.lastmodified] forKey:kSCHLibreAccessWebServiceLastModified];
@@ -1238,10 +1239,14 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 				for (id item in anObject) {
 					[ret addObject:[self objectFromHighlight:item]];	
 				}
-			} else if ([firstItem isKindOfClass:[LibreAccessServiceSvc_Notes class]] == YES) {
+			} else if ([firstItem isKindOfClass:[LibreAccessServiceSvc_Note class]] == YES) {
 				for (id item in anObject) {
 					[ret addObject:[self objectFromNote:item]];
 				}
+            } else if ([firstItem isKindOfClass:[LibreAccessServiceSvc_Bookmark class]] == YES) {
+				for (id item in anObject) {
+					[ret addObject:[self objectFromBookmark:item]];
+				} 
 			} else if ([firstItem isKindOfClass:[LibreAccessServiceSvc_FavoriteTypesValuesItem class]] == YES) {
 				for (id item in anObject) {
 					[ret addObject:[self objectFromFavoriteTypesValuesItem:item]];	
@@ -1406,9 +1411,9 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 	if (object != nil && intoObject != nil) {
 		intoObject.id_ = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceID]];
 		intoObject.action = [[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceAction]] saveActionValue];
-		intoObject.color = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceColor]];		
+		intoObject.color = [[object valueForKey:kSCHLibreAccessWebServiceColor] BIThexString];		
 		intoObject.location = [[LibreAccessServiceSvc_LocationText alloc] init];
-		[self fromObject:[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceLocationText]] intoLocationText:intoObject.location];
+		[self fromObject:[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceLocation]] intoLocationText:intoObject.location];
 		[intoObject.location release];
 		intoObject.endPage = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceEndPage]];		
 		intoObject.version = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceVersion]];				
@@ -1440,9 +1445,9 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		intoObject.id_ = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceID]];
 		intoObject.action = [[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceAction]] saveActionValue];
 		intoObject.location = [[LibreAccessServiceSvc_LocationGraphics alloc] init];
-		[self fromObject:[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceLocationGraphics]] intoLocationGraphics:intoObject.location];
+		[self fromObject:[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceLocation]] intoLocationGraphics:intoObject.location];
 		[intoObject.location release];
-		intoObject.color = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceColor]];
+		intoObject.color = [[object valueForKey:kSCHLibreAccessWebServiceColor] BIThexString];
 		intoObject.value = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceValue]];		
 		intoObject.version = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceVersion]];				
 		intoObject.lastmodified = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceLastModified]];				
