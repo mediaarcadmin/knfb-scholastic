@@ -11,7 +11,12 @@
 
 @implementation SCHStoryInteractionSequencing
 
-- (NSInteger)numberOfImages
+- (NSString *)title
+{
+    return @"Sequencing";
+}
+
+-(NSInteger)numberOfImages
 {
     return 3;
 }

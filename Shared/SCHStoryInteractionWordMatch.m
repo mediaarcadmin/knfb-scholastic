@@ -65,4 +65,9 @@
     [super dealloc];
 }
 
+- (NSString *)title
+{
+    return @"Word Match";
+}
+
 @end

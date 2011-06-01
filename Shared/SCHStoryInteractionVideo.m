@@ -20,6 +20,11 @@
     [super dealloc];
 }
 
+- (NSString *)title
+{
+    return @"Video";
+}
+
 - (NSString *)videoPath
 {
     return [[SCHStoryInteraction resourcesPath] stringByAppendingPathComponent:self.videoFilename];

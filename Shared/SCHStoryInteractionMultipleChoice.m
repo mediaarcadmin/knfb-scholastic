@@ -22,6 +22,11 @@
     [super dealloc];
 }
 
+- (NSString *)title
+{
+    return @"Multiple Choice";
+}
+
 @end
 
 

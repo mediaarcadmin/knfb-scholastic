@@ -21,6 +21,11 @@
     [super dealloc];
 }
 
+- (NSString *)title
+{
+    return @"Do You Know";
+}
+
 @end
 
 @implementation SCHStoryInteractionPopQuiz

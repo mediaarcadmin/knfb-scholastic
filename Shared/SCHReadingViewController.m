@@ -30,6 +30,7 @@
 #import "SCHDictionaryAccessManager.h"
 #import "KNFBXPSConstants.h"
 #import "SCHNotesCountView.h"
+#import "SCHBookStoryInteractions.h"
 
 // constants
 static const CGFloat kReadingViewStandardScrubHeight = 47.0f;
@@ -76,6 +77,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 @property (nonatomic, retain) UIPopoverController *popover;
 
 @property (nonatomic, retain) SCHNotesCountView *notesCountView;
+
+@property (nonatomic, retain) SCHBookStoryInteractions *bookStoryInteractions;
 
 - (void)releaseViewObjects;
 
@@ -144,6 +147,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 @synthesize bottomShadow;
 
 @synthesize audioBookPlayer;
+@synthesize bookStoryInteractions;
 
 #pragma mark - Dealloc and View Teardown
 
@@ -155,6 +159,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [popover release], popover = nil;
     [profile release], profile = nil;
     [audioBookPlayer release], audioBookPlayer = nil;
+    [bookStoryInteractions release], bookStoryInteractions = nil;
     [popoverOptionsViewController release], popoverOptionsViewController = nil;
     
     [super dealloc];
@@ -227,6 +232,15 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     }
     return self;
 }
+
+- (SCHBookStoryInteractions *)bookStoryInteractions
+{
+    if (bookStoryInteractions == nil) {
+        bookStoryInteractions = [[SCHBookStoryInteractions alloc] initWithXPSProvider:self.xpsProvider];
+    }
+    return bookStoryInteractions;
+}
+
 
 #pragma mark - View Lifecycle
 
@@ -629,6 +643,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     
     SCHReadingInteractionsListController *interactionsController = [[SCHReadingInteractionsListController alloc] initWithNibName:nil bundle:nil];
     interactionsController.isbn = self.isbn;
+    interactionsController.bookStoryInteractions = self.bookStoryInteractions;
     interactionsController.profile = self.profile;
     interactionsController.delegate = self;
     interactionsController.readingView = self.readingView;

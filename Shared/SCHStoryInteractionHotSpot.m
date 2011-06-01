@@ -50,4 +50,9 @@
     [super dealloc];
 }
 
+- (NSString *)title
+{
+    return @"Touch The Page";
+}
+
 @end

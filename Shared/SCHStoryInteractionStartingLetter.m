@@ -21,6 +21,11 @@
     [super dealloc];
 }
 
+- (NSString *)title
+{
+    return @"Starting Letter";
+}
+
 - (NSString *)imagePath
 {
     NSString *filename = [NSString stringWithFormat:@"%@_%@.png", self.storyInteraction.ID, self.uniqueObjectName];

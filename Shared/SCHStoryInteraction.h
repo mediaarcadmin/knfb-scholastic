@@ -26,10 +26,9 @@
 @property (nonatomic, assign) NSInteger documentPageNumber;
 @property (nonatomic, assign) CGPoint position;
 
+- (NSString *)title;
+
 // base path for interaction resources in XPSProvider
 + (NSString *)resourcesPath;
-
-// an array of all the SCHStoryInteractions from the XPS provider
-+ (NSArray *)storyInteractionsFromXpsProvider:(SCHXPSProvider *)xpsProvider;
 
 @end

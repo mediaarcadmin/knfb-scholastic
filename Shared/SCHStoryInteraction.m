@@ -27,17 +27,15 @@
 @synthesize documentPageNumber;
 @synthesize position;
 
+- (NSString *)title
+{
+    // override in subclasses
+    return nil;
+}
+
 + (NSString *)resourcesPath
 {
     return @"/Documents/1/Other/KNFB/Interactions/Interactions.xml";
-}
-
-+ (NSArray *)storyInteractionsFromXpsProvider:(SCHXPSProvider *)xpsProvider
-{
-    SCHStoryInteractionParser *parser = [[SCHStoryInteraction alloc] init];
-    NSArray *storyInteractions = [parser parseStoryInteractionsFromXPSProvider:xpsProvider];
-    [parser release];
-    return storyInteractions;
 }
 
 @end
