@@ -444,6 +444,12 @@
     return [range autorelease];
 }
 
+- (NSString *)displayPageNumberForBookPoint:(SCHBookPoint *)bookPoint
+{    
+    NSUInteger pageIndex = MAX(bookPoint.layoutPage, 1) - 1;
+    return [self.textFlow contentsTableViewController:nil displayPageNumberForPageIndex:pageIndex];
+}
+
 #pragma mark -
 #pragma mark EucPageTurningViewBitmapDataSource
 

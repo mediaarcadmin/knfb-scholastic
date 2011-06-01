@@ -664,7 +664,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     notesController.isbn = self.isbn;
     notesController.profile = self.profile;
     notesController.delegate = self;
-    notesController.readingView = self.readingView;
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         notesController.modalPresentationStyle = UIModalPresentationFormSheet;
@@ -1266,9 +1265,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     newNote.noteLayoutPage = layoutPage;
     newNote.notePageWordOffset = pageWordOffset;
 
-    SCHReadingNoteView *aNotesView = [[SCHReadingNoteView alloc] initWithNote:newNote];
-    aNotesView.readingView = self.readingView;
-    
+    SCHReadingNoteView *aNotesView = [[SCHReadingNoteView alloc] initWithNote:newNote];    
     aNotesView.delegate = self;
     
     [self setToolbarVisibility:NO animated:YES];
@@ -1287,7 +1284,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     
     SCHReadingNoteView *aNotesView = [[SCHReadingNoteView alloc] initWithNote:note];
     aNotesView.delegate = self;
-    aNotesView.readingView = self.readingView;
     [aNotesView showInView:self.view animated:YES];
     [aNotesView release];
     
@@ -1305,6 +1301,21 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     NSInteger noteCount = [[[self.profile annotationsForBook:self.isbn] notes] count];
     self.notesCountView.noteCount = noteCount;
 
+}
+
+- (SCHBookPoint *)bookPointForNote:(SCHNote *)note
+{
+    // MATT TODO - make this pagination aware so nil is returned if still paginating
+    NSUInteger layoutPage = note.noteLayoutPage;
+    NSUInteger pageWordOffset = note.notePageWordOffset;
+    SCHBookPoint *notePoint = [self.readingView bookPointForLayoutPage:layoutPage pageWordOffset:pageWordOffset];
+    
+    return notePoint;
+}
+
+- (NSString *)displayPageNumberForBookPoint:(SCHBookPoint *)bookPoint
+{
+    return [self.readingView displayPageNumberForBookPoint:bookPoint];
 }
 
 #pragma mark - SCHNotesViewDelegate methods

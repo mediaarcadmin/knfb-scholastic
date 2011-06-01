@@ -150,35 +150,9 @@
     return bookPoint.layoutPage - 1;
 }
 
-- (NSString *)pageLabelForPageAtIndex:(NSUInteger)pageIndex
+- (NSString *)displayPageNumberForBookPoint:(SCHBookPoint *)bookPoint 
 {
-    NSString *ret = nil;
-    
-    NSString* section = [self.textFlow sectionUuidForPageIndex:pageIndex];
-    THPair* chapter   = [self.textFlow presentationNameAndSubTitleForSectionUuid:section];
-    NSString* pageStr = [self displayPageNumberForPageAtIndex:pageIndex];
-    
-    if (section && chapter.first) {
-        if (pageStr) {
-            ret = [NSString stringWithFormat:NSLocalizedString(@"Page %@ \u2013 %@",@"Page label with page number and chapter"), pageStr, chapter.first];
-        } else {
-            ret = [NSString stringWithFormat:@"%@", chapter.first];
-        }
-    } else {
-        if (pageStr) {
-            ret = [NSString stringWithFormat:NSLocalizedString(@"Page %@ of %lu",@"Page label X of Y (page number of page count) in SCHLayoutView"), pageStr, (unsigned long)self.pageCount];
-        } else {
-            SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];
-            ret = [book XPSTitle];
-        }
-    }
-    
-    return ret;
-}
-
-- (NSString *)displayPageNumberForPageAtIndex:(NSUInteger)pageIndex
-{
-    return [self.textFlow contentsTableViewController:nil displayPageNumberForPageIndex:pageIndex];
+    return nil;
 }
 
 #pragma mark - Selector

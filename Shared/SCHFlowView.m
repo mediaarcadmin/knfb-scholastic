@@ -195,6 +195,11 @@
     return ret;
 }
 
+- (NSString *)displayPageNumberForBookPoint:(SCHBookPoint *)bookPoint
+{
+    return [self.eucBookView displayPageNumberForPageIndex:[self.eucBookView pageIndexForIndexPoint:[self.eucBook bookPageIndexPointFromBookPoint:bookPoint]]];
+}
+
 #pragma mark - SCHReadingView methods
 
 - (EucSelector *)selector
