@@ -49,7 +49,6 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 - (NSDictionary *)objectFromWordIndex:(LibreAccessServiceSvc_WordIndex *)anObject;
 - (NSDictionary *)objectFromNote:(LibreAccessServiceSvc_Note *)anObject;
 - (NSDictionary *)objectFromLocationGraphics:(LibreAccessServiceSvc_LocationGraphics *)anObject;
-- (NSDictionary *)objectFromCoords:(LibreAccessServiceSvc_Coords *)anObject;
 - (NSDictionary *)objectFromFavorite:(LibreAccessServiceSvc_Favorite *)anObject;
 - (NSDictionary *)objectFromBookmark:(LibreAccessServiceSvc_Bookmark *)anObject;
 - (NSDictionary *)objectFromLocationBookmark:(LibreAccessServiceSvc_LocationBookmark *)anObject;
@@ -75,7 +74,6 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 - (void)fromObject:(NSDictionary *)object intoWordIndex:(LibreAccessServiceSvc_WordIndex *)intoObject;
 - (void)fromObject:(NSDictionary *)object intoNote:(LibreAccessServiceSvc_Note *)intoObject;
 - (void)fromObject:(NSDictionary *)object intoLocationGraphics:(LibreAccessServiceSvc_LocationGraphics *)intoObject;
-- (void)fromObject:(NSDictionary *)object intoCoords:(LibreAccessServiceSvc_Coords *)intoObject;
 - (void)fromObject:(NSDictionary *)object intoFavorite:(LibreAccessServiceSvc_Favorite *)intoObject;
 - (void)fromObject:(NSDictionary *)object intoBookmark:(LibreAccessServiceSvc_Bookmark *)intoObject;
 - (void)fromObject:(NSDictionary *)object intoLocationBookmark:(LibreAccessServiceSvc_LocationBookmark *)intoObject;
@@ -1008,24 +1006,6 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
 		
 		[objects setObject:[self objectFromTranslate:anObject.page] forKey:kSCHLibreAccessWebServicePage];
-		[objects setObject:[self objectFromCoords:anObject.coords] forKey:kSCHLibreAccessWebServiceCoords];
-		[objects setObject:[self objectFromTranslate:anObject.wordindex] forKey:kSCHLibreAccessWebServiceWordIndex];
-		
-		ret = objects;					
-	}
-	
-	return(ret);
-}
-
-- (NSDictionary *)objectFromCoords:(LibreAccessServiceSvc_Coords *)anObject
-{
-	NSDictionary *ret = nil;
-	
-	if (anObject != nil) {
-		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
-		
-		[objects setObject:[self objectFromTranslate:anObject.x] forKey:kSCHLibreAccessWebServiceX];
-		[objects setObject:[self objectFromTranslate:anObject.y] forKey:kSCHLibreAccessWebServiceY];
 		
 		ret = objects;					
 	}
@@ -1458,18 +1438,6 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 {
 	if (object != nil && intoObject != nil) {
 		intoObject.page = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServicePage]];
-		intoObject.coords = [[LibreAccessServiceSvc_Coords alloc] init];
-		[self fromObject:[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceCoords]] intoCoords:intoObject.coords];
-		[intoObject.coords release];
-		intoObject.wordindex = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceWordIndex]];
-	}	
-}
-
-- (void)fromObject:(NSDictionary *)object intoCoords:(LibreAccessServiceSvc_Coords *)intoObject
-{
-	if (object != nil && intoObject != nil) {
-		intoObject.x = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceX]];
-		intoObject.y = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceY]];
 	}	
 }
 
