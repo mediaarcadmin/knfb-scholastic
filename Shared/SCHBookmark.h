@@ -20,7 +20,7 @@ static NSString * const kSCHBookmark = @"SCHBookmark";
 
 @property (nonatomic, retain) NSNumber * Disabled;
 @property (nonatomic, retain) NSString * Text;
-@property (nonatomic, retain) SCHLocationBookmark * LocationBookmark;
+@property (nonatomic, retain) SCHLocationBookmark * Location;
 @property (nonatomic, retain) SCHPrivateAnnotations * PrivateAnnotations;
 
 @end

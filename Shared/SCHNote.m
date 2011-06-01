@@ -22,7 +22,7 @@
 
 @dynamic Color;
 @dynamic Value;
-@dynamic LocationGraphics;
+@dynamic Location;
 @dynamic PrivateAnnotations;
 
 - (UIColor *)Color
@@ -62,22 +62,12 @@
 
 - (NSUInteger)noteLayoutPage
 {
-    return [self.LocationGraphics.Page intValue];
+    return [self.Location.Page intValue];
 }
 
 - (void)setNoteLayoutPage:(NSUInteger)layoutPage
 {
-    self.LocationGraphics.Page = [NSNumber numberWithInt:layoutPage];
-}
-
-- (NSUInteger)notePageWordOffset
-{
-    return [self.LocationGraphics.WordIndex intValue];
-}
-
-- (void)setNotePageWordOffset:(NSUInteger)pageWordOffset
-{
-    self.LocationGraphics.WordIndex = [NSNumber numberWithInt:pageWordOffset];
+    self.Location.Page = [NSNumber numberWithInt:layoutPage];
 }
 
 @end

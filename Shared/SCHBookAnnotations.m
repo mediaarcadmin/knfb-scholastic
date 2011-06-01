@@ -94,7 +94,7 @@
     __block NSRange pageRange = NSMakeRange(0, 0);
 
     if (self.sortedHighlights == nil) {
-        NSSortDescriptor *sortDescriptor1 = [NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceLocationTextPage ascending:YES];
+        NSSortDescriptor *sortDescriptor1 = [NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceLocationPage ascending:YES];
         NSSortDescriptor *sortDescriptor2 = [NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceEndPage ascending:YES];
         self.sortedHighlights = [self.privateAnnotations.Highlights sortedArrayUsingDescriptors:
                                  [NSArray arrayWithObjects:sortDescriptor1, sortDescriptor2, nil]];
@@ -135,7 +135,7 @@
 - (NSArray *)notes
 {
     if (self.sortedNotes == nil) {
-        NSSortDescriptor *sortDescriptor1 = [NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceLocationGraphicsPage ascending:YES];
+        NSSortDescriptor *sortDescriptor1 = [NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceLocationPage ascending:YES];
         NSSortDescriptor *sortDescriptor2 = [NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceLastModified ascending:YES];
 
         self.sortedNotes = [self.privateAnnotations.Notes sortedArrayUsingDescriptors:
@@ -178,7 +178,7 @@
                                                                   inManagedObjectContext:self.privateAnnotations.managedObjectContext];
                                      
     note.PrivateAnnotations = self.privateAnnotations;
-    note.LocationGraphics = locationGraphics;
+    note.Location = locationGraphics;
     note.NoteText = @"";
 	
 	return note;
@@ -198,7 +198,7 @@
     locationText.WordIndex = wordIndex;
     
     highlight.PrivateAnnotations = self.privateAnnotations;
-    highlight.LocationText = locationText;
+    highlight.Location = locationText;
 	
 	return highlight;
 }
@@ -208,9 +208,9 @@
     SCHHighlight *newHighlight = [self createEmptyHighlight];
     newHighlight.EndPage = [NSNumber numberWithInteger:endPage];
     newHighlight.Color = color;
-    newHighlight.LocationText.Page = [NSNumber numberWithInteger:startPage];
-    newHighlight.LocationText.WordIndex.Start = [NSNumber numberWithInteger:startWord];
-    newHighlight.LocationText.WordIndex.End = [NSNumber numberWithInteger:endWord];
+    newHighlight.Location.Page = [NSNumber numberWithInteger:startPage];
+    newHighlight.Location.WordIndex.Start = [NSNumber numberWithInteger:startWord];
+    newHighlight.Location.WordIndex.End = [NSNumber numberWithInteger:endWord];
     
     return newHighlight;
 }
@@ -221,9 +221,9 @@
     SCHHighlight *newHighlight = [self createEmptyHighlight];
     newHighlight.EndPage = [NSNumber numberWithInteger:highlightRange.endPoint.layoutPage];
     newHighlight.Color = color;
-    newHighlight.LocationText.Page = [NSNumber numberWithInteger:highlightRange.startPoint.layoutPage];
-    newHighlight.LocationText.WordIndex.Start = [NSNumber numberWithInteger:highlightRange.startPoint.wordOffset];
-    newHighlight.LocationText.WordIndex.End = [NSNumber numberWithInteger:highlightRange.endPoint.wordOffset];
+    newHighlight.Location.Page = [NSNumber numberWithInteger:highlightRange.startPoint.layoutPage];
+    newHighlight.Location.WordIndex.Start = [NSNumber numberWithInteger:highlightRange.startPoint.wordOffset];
+    newHighlight.Location.WordIndex.End = [NSNumber numberWithInteger:highlightRange.endPoint.wordOffset];
     
     return newHighlight;
 }

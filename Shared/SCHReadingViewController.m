@@ -1287,7 +1287,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
     NSLog(@"Current book point: %@", currentPoint);
     newNote.noteLayoutPage = layoutPage;
-    newNote.notePageWordOffset = pageWordOffset;
 
     SCHReadingNoteView *aNotesView = [[SCHReadingNoteView alloc] initWithNote:newNote];    
     aNotesView.delegate = self;
@@ -1301,8 +1300,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (void)readingNotesView:(SCHReadingNotesListController *)readingNotesView didSelectNote:(SCHNote *)note
 {
     NSUInteger layoutPage = note.noteLayoutPage;
-    NSUInteger pageWordOffset = note.notePageWordOffset;
-    SCHBookPoint *notePoint = [self.readingView bookPointForLayoutPage:layoutPage pageWordOffset:pageWordOffset];
+    SCHBookPoint *notePoint = [self.readingView bookPointForLayoutPage:layoutPage pageWordOffset:0];
 
     [self.readingView jumpToBookPoint:notePoint animated:YES];
     
@@ -1331,8 +1329,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 {
     // MATT TODO - make this pagination aware so nil is returned if still paginating
     NSUInteger layoutPage = note.noteLayoutPage;
-    NSUInteger pageWordOffset = note.notePageWordOffset;
-    SCHBookPoint *notePoint = [self.readingView bookPointForLayoutPage:layoutPage pageWordOffset:pageWordOffset];
+    SCHBookPoint *notePoint = [self.readingView bookPointForLayoutPage:layoutPage pageWordOffset:0];
     
     return notePoint;
 }
