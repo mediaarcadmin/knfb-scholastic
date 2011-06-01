@@ -572,12 +572,45 @@ static NSString *attribute(const XML_Char **atts, const char *key)
 
 - (void)startElement:(const XML_Char *)name attributes:(const XML_Char **)attributes parser:(SCHStoryInteractionParser *)parser
 {
-    
+    if (strcmp(name, "Introduction") == 0) {
+        self.introduction = attribute(attributes, "Transcript");
+    } else if (strcmp(name, "Word") == 0) {
+        if (!parser.answers) {
+            parser.answers = [NSMutableArray array];
+        }
+        [parser.answers addObject:attribute(attributes, "Transcript")];
+    } else if (strcmp(name, "Row") == 0) {
+        NSString *row = attribute(attributes, "Letters");
+        BOOL isFirstRow = ([parser.array count] == 0);
+        NSCharacterSet *whitespaceAndNewline = [NSCharacterSet whitespaceAndNewlineCharacterSet];
+        NSArray *letters = [row componentsSeparatedByString:@","];
+        for (NSString *letterString in letters) {
+            [parser.array addObject:[[letterString stringByTrimmingCharactersInSet:whitespaceAndNewline] substringToIndex:1]];
+        }
+        if (isFirstRow) {
+            self.matrixColumns = [letters count];
+        } else {
+            if ([letters count] != self.matrixColumns) {
+                NSLog(@"expected %d letters in WordSearch rows '%@'", self.matrixColumns, row);
+            }
+        }
+    } else {
+        [super startElement:name attributes:attributes parser:parser];
+    }
 }
 
-- (void)endElement:(const XML_Char *)name parser:(SCHStoryInteractionParser *)parser
+- (void)parseComplete:(SCHStoryInteractionParser *)parser
 {
+    self.words = [NSArray arrayWithArray:parser.answers];
+
+    NSMutableString *matrix = [[NSMutableString alloc] init];
+    for (NSString *str in parser.array) {
+        [matrix appendString:str];
+    }
+    self.matrix = [NSString stringWithString:matrix];
+    [matrix release];
     
+    [super parseComplete:parser];
 }
 
 @end

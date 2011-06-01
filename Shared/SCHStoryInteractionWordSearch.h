@@ -11,13 +11,14 @@
 
 @interface SCHStoryInteractionWordSearch : SCHStoryInteraction {}
 
-@property (nonatomic, readonly) NSString *introduction;
+@property (nonatomic, retain) NSString *introduction;
+@property (nonatomic, assign) NSInteger matrixColumns;
+@property (nonatomic, retain) NSString *matrix;
 
 // array of NSString
-@property (nonatomic, readonly) NSArray *words;
+@property (nonatomic, retain) NSArray *words;
 
 - (NSInteger)matrixRows;
-- (NSInteger)matrixColumns;
-- (NSString *)matrixLetterAtRow:(NSInteger)row column:(NSInteger)column;
+- (unichar)matrixLetterAtRow:(NSInteger)row column:(NSInteger)column;
 
 @end

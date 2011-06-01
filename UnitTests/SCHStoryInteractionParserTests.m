@@ -19,6 +19,7 @@
 #import "SCHStoryInteractionWhoSaidIt.h"
 #import "SCHStoryInteractionWordMatch.h"
 #import "SCHStoryInteractionWordScrambler.h"
+#import "SCHStoryInteractionWordSearch.h"
 
 @interface SCHStoryInteractionParserTests : SenTestCase {}
 @property (nonatomic, retain) SCHStoryInteractionParser *parser;
@@ -440,6 +441,38 @@
     
     NSArray *expectedHints = [NSArray arrayWithObjects:[NSNumber numberWithInteger:4], [NSNumber numberWithInteger:6], nil];
     STAssertEqualObjects(story.hintIndices, expectedHints, @"incorrect hint indices");
+}
+
+- (void)testWordSearch1
+{
+    NSArray *stories = [self parse:@"WordSearch1"];
+    STAssertEquals([stories count], 1U, @"incorrect story count");
+    STAssertTrue([[stories lastObject] isKindOfClass:[SCHStoryInteractionWordSearch class]], @"incorrect class");
+    
+    SCHStoryInteractionWordSearch *story = [stories lastObject];
+    STAssertEquals(story.documentPageNumber, 20, @"incorrect documentPageNumber");
+    STAssertTrue(CGPointEqualToPoint(story.position, CGPointMake(100, 20)), @"incorrect position");
+
+    NSArray *expectWords = [NSArray arrayWithObjects:@"Pride", @"Watch", @"Sleep", @"Trick", @"Dance", @"Skate", nil];
+    
+    STAssertEqualObjects(story.introduction, @"Find these words from the story.", @"incorrect introduction");
+    STAssertEqualObjects(story.words, expectWords, @"incorrect word list");
+    STAssertEquals([story matrixRows], 6, @"incorrect row count");
+    STAssertEquals([story matrixColumns], 6, @"incorrect column count");
+    
+    const unichar matrix[6][6] = {
+        { 'D', 'P', 'R', 'I', 'D', 'E' },
+        { 'S', 'E', 'Y', 'S', 'A', 'N' },
+        { 'K', 'H', 'I', 'K', 'N', 'R' },
+        { 'A', 'W', 'A', 'T', 'C', 'H' },
+        { 'T', 'S', 'L', 'E', 'E', 'P' },
+        { 'E', 'T', 'R', 'I', 'C', 'K' }
+    };
+    for (int row = 0; row < 6; ++row) {
+        for (int col = 0; col < 6; ++col) {
+            STAssertEquals([story matrixLetterAtRow:row column:col], matrix[row][col], @"incorrect letter at row %d col %d", row+1, col+1);
+        }
+    }
 }
 
 @end
