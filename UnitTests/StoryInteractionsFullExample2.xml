@@ -1,0 +1,129 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<SIConfigFile>
+  <!-- template v1 -->
+  <StoryInteractions>
+    <StoryInteraction StoryInteractionType="WordScrambler">
+      <DocumentPageNumber>26</DocumentPageNumber>
+      <Position>100,20</Position>
+      <Scramble Clue="Lindy and I are going to perform shows at parties!" Answer="SLAPPY" />
+      <!-- Clue value is taken from Intro, Answer value is taken from Answer in interaction script. -->
+      <Hint index="4,6" />
+      <!-- If clue letters are highlighted in the interaction script, replace the * with the number value of the character. So if the "i" in "pie" was highlighted it's number value would be "2". -->
+    </StoryInteraction>
+    <StoryInteraction StoryInteractionType="PopQuiz">
+      <!-- aka Do You Know -->
+      <DocumentPageNumber>44</DocumentPageNumber>
+      <Position>180,10</Position>
+      <Quiz>
+        <Question>
+          <QuestionPrompt Transcript="What did Lindy find in the dumpster?" />
+          <!-- Question and answer Transcript values are taken from their respective sections.  -->
+          <Answers>
+            <Answer Transcript="A dead body" />
+            <Answer Transcript="A runaway dog" />
+            <Answer Transcript="A flying squirrel" />
+            <Answer Transcript="A ventriloquist dummy" IsCorrect="true" />
+          </Answers>
+        </Question>
+        <Question>
+          <QuestionPrompt Transcript="What did Mrs. Marshall want Lindy to do?" />
+          <Answers>
+            <Answer Transcript="Babysit her kids" />
+            <Answer Transcript="Perform with Slappy" IsCorrect="true" />
+            <Answer Transcript="Mow the lawn" />
+            <Answer Transcript="Deliver her newspapers" />
+          </Answers>
+        </Question>
+        <Question>
+          <QuestionPrompt Transcript="What happened when Kris first tried to hold Slappy?" />
+          <Answers>
+            <Answer Transcript="He gave her a high five" />
+            <Answer Transcript="He slapped her" IsCorrect="true" />
+            <Answer Transcript="He flipped her" />
+            <Answer Transcript="He made a face" />
+          </Answers>
+        </Question>
+        <Question>
+          <QuestionPrompt Transcript="Who grabbed Kris after she pushed Slappy off the chair?" />
+          <Answers>
+            <Answer Transcript="Cody" />
+            <Answer Transcript="Slappy" />
+            <Answer Transcript="Lindy" IsCorrect="true" />
+            <Answer Transcript="Mom" />
+          </Answers>
+        </Question>
+        <Question>
+          <QuestionPrompt Transcript="Who gave Kris her own ventriloquist dummy?" />
+          <Answers>
+            <Answer Transcript="Dad" IsCorrect="true" />
+            <Answer Transcript="Mom" />
+            <Answer Transcript="Cody Matthews" />
+            <Answer Transcript="Mrs. Marshall" />
+          </Answers>
+        </Question>
+      </Quiz>
+      <ScoreResponseLow Transcript="Don’t be afraid to try again!" />
+      <!-- Transcript values for ScoreResponse's are taken from the Response column in the interaction script.  -->
+      <ScoreResponseMedium Transcript="Good job! You’re no dummy!" />
+      <ScoreResponseHigh Transcript="Perfect score! Spook-tacular!" />
+    </StoryInteraction>
+    <StoryInteraction StoryInteractionType="TitleTwister">
+      <!-- aka Word Twister -->
+      <DocumentPageNumber>58</DocumentPageNumber>
+      <Position>50,10</Position>
+      <BookTitle Phrase="GOOSEBUMPS" />
+      <!-- Phrase value is taken from Keyword in interaction script -->
+      <Words Words="OPOSSUM, BEGUMS, BESOMS, BOSOMS, BOUSES, EMBOSS, GOBOES, GOMBOS, GOOSES, GUMBOS, MOUSES, MOUSSE, OPUSES, OSMOSE, OSMOUS, POSSUM, SEBUMS, SPOUSE, SPUMES, UGSOME, BEGUM, BESOM, BOGUS, BOOMS, BOSOM, BOUSE, BUMPS, BUSES, GESSO, GEUMS, GOBOS, GOMBO, GOOPS, GOOSE, GUESS, GUMBO, MEOUS, MOOSE, MOPES, MOSSO, MOUES, MOUSE, MUSES, OBOES, PESOS, POEMS, POMES, POMOS, POSES, POSSE, PUBES, PUSES, SEBUM, SEGOS, SMOGS, SOUPS, SOUSE, SPUES, SPUME, SUMOS, SUMPS, SUPES, UMBOS, BEGS, BOGS, BOOM, BOOS, BOPS, BOSS, BUGS, BUMP, BUMS, BUSS, EGOS, EMUS, EPOS, GEMS, GEUM, GOBO, GOBS, GOES, GOOP, GOOS, GUMS, MEGS, MEOU, MESS, MOBS, MOGS, MOOS, MOPE, MOPS, MOSS, MOUE, MUGS, MUSE, MUSS, OBES, OBOE, OOPS, OPES, OPUS, OSES, PEGS, PESO, POEM, POME, POMO, POMS, POOS, POSE, PUBS, PUGS, PUSS, SEGO, SEGS, SMOG, SMUG, SOBS, SOME, SOMS, SOPS, SOUP, SOUS, SPUE, SUBS, SUES, SUMO, SUMP, SUMS, SUPE, SUPS, UMBO, UMPS, USES, BEG, BES, BOG, BOO, BOP, BOS, BUG, BUM, BUS, EGO, EMS, EMU, ESS, GEM, GOB, GOO, GOS, GUM, MEG, MOB, MOG, MOO, MOP, MOS, MUG, MUS, OBE, OES, OMS, OPE, OPS, OSE, PEG, PES, POM, POO, PUB, PUG, PUS, SEG, SOB, SOM, SOP, SOS, SOU, SUB, SUE, SUM, SUP, UMP, UPO, UPS, USE, BE, BO, EM, ES, GO, ME, MO, MU, OE, OM, OP, OS, PE, SO, UM, UP, US&#xD;&#xD;&#xA;" />
+      <!-- Words values are taken from Valid Answers in interaction script. Each word should be comma seperated. These lists can be very long! Make sure there are no line breaks when pasting the words in. -->
+    </StoryInteraction>
+    <StoryInteraction StoryInteractionType="WordScrambler">
+      <DocumentPageNumber>70</DocumentPageNumber>
+      <Position>100,20</Position>
+      <Scramble Clue="He loves making trouble – like stealing Kris’s jewelry and emptying the fridge!" Answer="MR. WOOD" />
+      <!-- Clue value is taken from Intro, Answer value is taken from Answer in interaction script. -->
+      <Hint index="6,7" />
+      <!-- If clue letters are highlighted in the interaction script, replace the * with the number value of the character. So if the "i" in "pie" was highlighted it's number value would be "2". -->
+    </StoryInteraction>
+    <StoryInteraction StoryInteractionType="TitleTwister">
+      <!-- aka Word Twister -->
+      <DocumentPageNumber>76</DocumentPageNumber>
+      <Position>50,10</Position>
+      <BookTitle Phrase="LIVING DUMMY" />
+      <!-- Phrase value is taken from Keyword in interaction script -->
+      <Words Words="DUMMYING, DIMMING, DINGILY, MILDING, DIVING, IDLING, INDIUM, LIMING, LUNGYI, MILIUM, MIMING, MINIUM, MULING, DIMLY, DINGY, DUNGY, DYING, GUILD, GUMMY, ILIUM, LINDY, LINGY, LINUM, LIVID, LUNGI, LYING, MINGY, MINIM, VIGIL, VINYL, VYING, DING, DULY, DUNG, GILD, GLIM, GLUM, GUID, IDLY, IDYL, IGLU, IMID, IMMY, INLY, LIMN, LIMY, LING, LINY, LUNG, LUNY, MIDI, MILD, MIND, MINI, MUNI, NIDI, UGLY, UNDY, VINY, DIG, DIM, DIN, DUG, DUI, DUN, GID, GIN, GNU, GUL, GUM, GUN, GUV, GUY, GYM, IVY, LID, LIN, LUG, LUM, LUV, MID, MIG, MIL, MIM, MUD, MUG, MUM, MUN, NIL, NIM, UMM, VID, VIG, VIM, VUG, VUM, YID, YIN, YUM, ID, IN, LI, MI, MM, MU, MY, NU, UM, UN" />
+      <!-- Words values are taken from Valid Answers in interaction script. Each word should be comma seperated. These lists can be very long! Make sure there are no line breaks when pasting the words in. -->
+    </StoryInteraction>
+    <StoryInteraction StoryInteractionType="WordScrambler">
+      <DocumentPageNumber>90</DocumentPageNumber>
+      <Position>100,20</Position>
+      <Scramble Clue="Slappy insulted this kind couple!" Answer="THE MILLERS" />
+      <!-- Clue value is taken from Intro, Answer value is taken from Answer in interaction script. -->
+      <Hint index="1,3,8,11" />
+      <!-- If clue letters are highlighted in the interaction script, replace the * with the number value of the character. So if the "i" in "pie" was highlighted it's number value would be "2". -->
+    </StoryInteraction>
+    <StoryInteraction StoryInteractionType="WhoSaidIt">
+      <DocumentPageNumber>111</DocumentPageNumber>
+      <!-- Page numbers start at the first page of the XPS file, which is the cover of the book. Page numbers in the interactive script refer to printed page numbers in the book. That means you have to add the difference between how the ereader counts pages and the printed page number. To find the difference you need to add to the interaction script page numbers, open the XPS in XPS Viewer and start counting from the cover to the first printed page number. Add this number to the page number indicated in the interaction script and put that value above. -->
+      <Position>100,5</Position>
+      <Distracter Index="6" />
+      <!-- Index value is a number. It should be the number position of the Distracter in the Quote column in the interaction script. -->
+      <Statements>
+        <Statement Source="Kris" Transcript="I’m telling you, he’s alive!" />
+        <!-- Source value is the name in the Match column. Transcript value is taken from the Quote column. -->
+        <Statement Source="Mr. Wood" Transcript="I’m in charge now. You will listen to me. This is my house now."></Statement>
+        <Statement Source="Mr. Powell" Transcript="I really think you’ve lost your mind. I’m very worried about you." />
+        <Statement Source="Lindy" Transcript="It was just a nightmare. The horrible thing that happened at the concert – it gave you a nightmare, that’s all." />
+        <Statement Source="Mrs. Berman" Transcript="And if I have my way, you’ll be suspended for life!" />
+        <Statement Source="Cody" Transcript="" />
+        <!-- Delete * from the Transcript value for whomever is the distractor. -->
+      </Statements>
+    </StoryInteraction>
+    <StoryInteraction StoryInteractionType="Image" ID="img1">
+      <DocumentPageNumber>162</DocumentPageNumber>
+      <Position>50,0</Position>
+      <Introduction Transcript="" />
+      <!-- Leave transcript blank -->
+      <Image Url="img1_graphic.png" />
+    </StoryInteraction>
+  </StoryInteractions>
+</SIConfigFile>

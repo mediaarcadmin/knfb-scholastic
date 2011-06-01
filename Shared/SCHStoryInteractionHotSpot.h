@@ -16,6 +16,12 @@
 @property (nonatomic, assign) CGSize originalBookSize;
 @property (nonatomic, retain) NSData *data;
 
+// XPSProvider-relative path for question audio
+- (NSString *)audioPathForQuestion;
+
+// XPSProvider-relative path for correct answer audio
+- (NSString *)audioPathForCorrectAnswer;
+
 @end
 
 

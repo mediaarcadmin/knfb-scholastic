@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "SCHStoryInteractionMultipleChoice.h"
 
-@interface SCHStoryInteractionScratchAndSeeQuestion : SCHStoryInteractionMultipleChoiceQuestion {}
+@interface SCHStoryInteractionScratchAndSeeQuestion : SCHStoryInteractionMultipleChoiceTextQuestion {}
 
 // XPSProvider-relative path for image file
 - (NSString *)imagePath;
@@ -23,5 +23,5 @@
 @end
 
 
-@interface SCHStoryInteractionScratchAndSee : SCHStoryInteractionMultipleChoice {}
+@interface SCHStoryInteractionScratchAndSee : SCHStoryInteractionMultipleChoiceText {}
 @end

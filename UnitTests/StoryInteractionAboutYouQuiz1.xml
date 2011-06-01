@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<SIConfigFile>
+    <StoryInteractions>
+        <StoryInteraction StoryInteractionType="AboutYouQuiz">
+            <DocumentPageNumber>162</DocumentPageNumber>
+            <Position>180,10</Position>
+            <Introduction Transcript="Which famous Lucian are you most like?  Take this quiz to find out!" />
+            <!-- Transcript value taken from Introduction text in interaction script -->
+            <Quiz Label="Quiz Name">
+                <Question>
+                    <!-- There can be 3-10 questions. Add or delete everything between <Question> and </Question> to add or delete questions.-->
+                    <QuestionPrompt Transcript="What are you most looking forward to about college?" />
+                    <!-- Transcript value taken from Question text. -->
+                    <Answers>
+                        <Answer Transcript="Writing for the campus newspaper" />
+                        <!-- There can be 2-5 possible answers. Add or delete <Answer Transcript="*"/> elements as neccessary.  -->
+                        <!-- Transcript value is taken from each question set, in the same order as interaction script -->
+                        <Answer Transcript="Performing cool experiments during physics lab" />
+                        <Answer Transcript="Becoming president of the student body" />
+                    </Answers>
+                </Question>
+                <Question>
+                    <QuestionPrompt Transcript="Describe yourself in one word:" />
+                    <Answers>
+                        <Answer Transcript="Creative " />
+                        <Answer Transcript="Intelligent" />
+                        <Answer Transcript="Confident" />
+                    </Answers>
+                </Question>
+                <Question>
+                    <QuestionPrompt Transcript="As a child, what was your favorite way to spend a Saturday? " />
+                    <Answers>
+                        <Answer Transcript="Flying my kite " />
+                        <Answer Transcript="Reading books about space" />
+                        <Answer Transcript="Playing follow the leader" />
+                    </Answers>
+                </Question>
+                <Question>
+                    <QuestionPrompt Transcript="It’s time to eat! What are you craving?" />
+                    <Answers>
+                        <Answer Transcript="Philly Cheese Steak " />
+                        <Answer Transcript="Apple Slices" />
+                        <Answer Transcript="French Fries" />
+                    </Answers>
+                </Question>
+                <Question>
+                    <QuestionPrompt Transcript="Which of these items can be found in your locker?" />
+                    <Answers>
+                        <Answer Transcript="A spare pair of eyeglasses " />
+                        <Answer Transcript="A calculator and microscope " />
+                        <Answer Transcript="A mirror and hairbrush " />
+                    </Answers>
+                </Question>
+                <OutcomeMessages>
+                    <!-- There can be 2-5 possible OutcomeMessage, delete as needed. -->
+                    <!-- Transcript value should be taken from Message column, in the order they are listed. -->
+                    <OutcomeMessage Transcript="You’re a talented writer and have a knack for inventing new things.  You’re a lot like Benjamin Franklin!" />
+                    <OutcomeMessage Transcript="You’re incredibly smart and love studying the sciences.  You’re a lot like Isaac Newton!" />
+                    <OutcomeMessage Transcript="A natural leader, you just love being in charge. You have a lot in common with Winston Churchill!" />
+                </OutcomeMessages>
+                <TiebreakOrder Transcript="B,A,C" />
+                <!-- Make the Transcript value blank if no Tiebreak Order is indicated in script, so that it looks like this: Transcript="" -->
+                <!-- Tie break order indicates the priority of outcome message to use when you have the same number of answers for a category -->
+            </Quiz>
+        </StoryInteraction>
+    </StoryInteractions>
+</SIConfigFile>

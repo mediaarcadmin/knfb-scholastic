@@ -1,0 +1,193 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<SIConfigFile>
+  <StoryInteractions>
+    <StoryInteraction StoryInteractionType="PictureStarterNewEnding"></StoryInteraction>
+    <StoryInteraction StoryInteractionType="WordMatch" ID="wm1">
+      <DocumentPageNumber>8</DocumentPageNumber>
+      <Position>450.0,50.0</Position>
+      <Introduction Transcript="Match the the words with the pictures below." />
+      <Question1>
+        <Statement Transcript="Sit" suffix="sit" />
+        <Statement Transcript="Eat" suffix="eat" />
+        <Statement Transcript="Run" suffix="run" />
+      </Question1>
+      <Question2>
+        <Statement Transcript="Shake" suffix="shake" />
+        <Statement Transcript="Sleep" suffix="sleep" />
+        <Statement Transcript="Stand" suffix="stand" />
+      </Question2>
+      <Question3>
+        <Statement Transcript="Skate" suffix="skate" />
+        <Statement Transcript="Type" suffix="type" />
+        <Statement Transcript="Knit" suffix="knit" />
+      </Question3>
+    </StoryInteraction>
+    <StoryInteraction StoryInteractionType="ScratchAndSee" ID="ss1">
+      <DocumentPageNumber>14</DocumentPageNumber>
+      <Position>500.0,5.0</Position>
+      <Questions>
+        <Question>
+          <Answer IsCorrect="True" Transcript="Dancing" />
+          <Answer Transcript="Eating" />
+          <Answer Transcript="Cooking" />
+        </Question>
+        <Question>
+          <Answer Transcript="Sitting" />
+          <Answer Transcript="Skating" />
+          <Answer IsCorrect="True" Transcript="Doing yoga" />
+        </Question>
+        <Question>
+          <Answer Transcript="Running" />
+          <Answer IsCorrect="True" Transcript="Shaking" />
+          <Answer Transcript="Spinning" />
+        </Question>
+      </Questions>
+    </StoryInteraction>
+    <StoryInteraction StoryInteractionType="WordSearch" ID="ws1">
+      <DocumentPageNumber>20</DocumentPageNumber>
+      <Position>100,20</Position>
+      <Introduction Transcript="Find these words from the story." />
+      <Words>
+        <Word Transcript="Pride" />
+        <Word Transcript="Watch" />
+        <Word Transcript="Sleep" />
+        <Word Transcript="Trick" />
+        <Word Transcript="Dance" />
+        <Word Transcript="Skate" />
+      </Words>
+      <Matrix>
+        <Row Letters="D, P, R, I, D, E" />
+        <Row Letters="S, E, Y, S, A, N" />
+        <Row Letters="K, H, I, K, N, R" />
+        <Row Letters="A, W, A, T, C, H" />
+        <Row Letters="T, S, L, E, E, P" />
+        <Row Letters="E, T, R, I, C, K" />
+      </Matrix>
+    </StoryInteraction>
+    <StoryInteraction StoryInteractionType="StartingLetter" ID="sl1">
+      <DocumentPageNumber>24</DocumentPageNumber>
+      <Position>180,50</Position>
+      <QuestionPrompt Transcript="Computer starts with C. Find three more things that start with the letter C." />
+      <StartingLetter Character="C" />
+      <Pictures>
+        <Answer suffix="book" />
+        <Answer suffix="skates" />
+        <Answer suffix="television" />
+        <Answer suffix="pot" />
+        <Answer suffix="cookies" IsCorrect="True" />
+        <Answer suffix="tree" />
+        <Answer suffix="bowl" />
+        <Answer suffix="cat" IsCorrect="True" />
+        <Answer suffix="chicken" IsCorrect="True" />
+      </Pictures>
+    </StoryInteraction>
+    <StoryInteraction StoryInteractionType="MultipleChoiceText" ID="mc1">
+      <Introduction Transcript="What do you remember about Ollie’s Tricks?" />
+      <DocumentPageNumber>26</DocumentPageNumber>
+      <Position>188.0,100.0</Position>
+      <Question1>
+        <QuestionPrompt Transcript="Which of these tricks CAN'T Ollie do?" />
+        <Answers>
+          <Answer Transcript="Knit socks" />
+          <Answer Transcript="Do magic tricks" />
+          <Answer Transcript="Drive a car" IsCorrect="true" />
+        </Answers>
+      </Question1>
+      <Question2>
+        <QuestionPrompt Transcript="Which of these tricks does Sam know Ollie CAN do?" />
+        <Answers>
+          <Answer Transcript="Make cookies" />
+          <Answer Transcript="Lie down" IsCorrect="true" />
+          <Answer Transcript="Ice Skate" />
+        </Answers>
+      </Question2>
+      <Question3>
+        <QuestionPrompt Transcript="Which of these things did Ollie NOT learn from reading a book?" />
+        <Answers>
+          <Answer Transcript="Ballroom dancing" IsCorrect="true" />
+          <Answer Transcript="Origami" />
+          <Answer Transcript="Computers" />
+        </Answers>
+      </Question3>
+    </StoryInteraction>
+    <StoryInteraction StoryInteractionType="HotSpot" ID="ttp1">
+      <DocumentPageNumber>28</DocumentPageNumber>
+      <Position>188.0,50.0</Position>
+      <Question1>
+        <QuestionPrompt Transcript="It looks like Ollie was knitting a new sock. Can you find it?" />
+        <Hotspot Left="256.2" Top="673.2" Width="102.0" Height="56.4" OriginalBookWidth="806.00" OriginalBookHeight="606.23">
+          <Data>AAQA2AAKANgAEADYABYA0wAbANMAIQDTACcA0wAtAM0AMwDNADgAzQA+AM0ARADNAEoAzQBPAM0AVQDNAFsAzQBhAM0AZgDNAGwAzQBsAMcAcgDHAHgAxwB+AMcAgwDHAIMAwQCJAMEAjwDBAJUAwQCVALsAmgC7AKAAtgCmALYArAC2AKwAsACxALAAsQCqALcApAC9AKQAvQCfAL0AmQDDAJkAwwCTAMMAjQDDAIgAyACIAMgAggDIAHwAyAB2AM4AdgDOAHEA1ABrANQAZQDaAGUA2gBfANoAWQDgAFkA4ABUAOUAVADrAFQA8QBUAPcAVAD3AE4A/ABOAQIASAEIAEgBCABCAQ4AQgETAEIBGQBCAR8AQgElAEIBKwBCATAAQgE2AEIBPABCAUIAQgFHAEIBRwA9AU0APQFTAD0BWQA9AV4APQFkAD0BagA9AXAAPQFwADcBcAAxAXAAKwFwACYBagAmAWoAIAFqABoBZAAaAWQAFAFeABQBXgAOAV4ACQFZAAkBUwAJAVMAAwFNAAMBRwADAUIAAwE8AAMBNgADATAAAwErAAMAoAADAJoAAwCVAAMAjwADAIkAAwCJAAkAgwAJAH4ACQB4AAkAcgAJAGwACQBsAA4AZgAOAGEADgBbAA4AWwAUAFUAFABPABQASgAUAEoAGgBEABoAPgAaADgAGgAzABoALQAgACcAIAAhACAAIQAmABsAJgAWACYAEAArAAoAKwAEACsABAAx</Data>
+        </Hotspot>
+      </Question1>
+      <Question2>
+        <QuestionPrompt Transcript="Find something Ollie wears when he does magic tricks." />
+        <Hotspot Left="460.9" Top="596.8" Width="78.9" Height="70.8" OriginalBookWidth="806.00" OriginalBookHeight="606.23">
+          <Data></Data>
+        </Hotspot>
+      </Question2>
+      <Question3>
+        <QuestionPrompt Transcript="Now find Ollie’s green origami project." />
+        <Hotspot Left="273.5" Top="733.7" Width="64.5" Height="49.1" OriginalBookWidth="806.00" OriginalBookHeight="606.23">
+          <Data>ADMACQAtAAkAJwAJACEACQAhAA4AGwAOABYADgAQAA4AEAAUAAoAFAAEABQABACfAAoAnwAQAKQAFgCkABsAqgAhAKoAIQCwACcAsAAtALAAMwCwADgAsAA+ALAARACwAEoAsABPALAAVQCwAFsAsABhALAAWwCqAFUAqgBbAKoAYQCqAGYAqgBsAKoAcgCqAHgAqgB+AKoAgwCqAIkAqgCPAKoAlQCqAJoAqgCgAKoApgCqAKwAqgCxAKoAtwCqAL0AqgDDAKoAyACqAM4AqgDUAKoA1ACkANoApADaAJ8A4ACfAOAAmQDgAJMA5QCTAOUAjQDrAI0A6wCIAOsAggDxAIIA9wCCAPcAfAD8AHwA/AB2APwAcQD8ACYA/AAgAPcAIADxACAA6wAgAOUAIADgABoA2gAaANQAGgDOABoAzgAUAMgAFADDABQAvQAUALcAFACxABQArAAUAKYAFACgABQAmgAUAJUAFACPABQAiQAUAIMADgB+AA4AeAAO</Data>
+        </Hotspot>
+      </Question3>
+    </StoryInteraction>
+    <StoryInteraction StoryInteractionType="MultipleChoiceText" ID="mc2">
+      <DocumentPageNumber>30</DocumentPageNumber>
+      <Position>188.0,100.0</Position>
+      <Question1>
+        <QuestionPrompt Transcript="Why did Sam think something was wrong with Ollie?" />
+        <Answers>
+          <Answer Transcript="Ollie was watching television" />
+          <Answer Transcript="Ollie was lying with his feet in the air" IsCorrect="true" />
+          <Answer Transcript="Ollie was knitting socks" />
+        </Answers>
+      </Question1>
+      <Question2>
+        <QuestionPrompt Transcript="Ollie refused to do which of these things?" />
+        <Answers>
+          <Answer Transcript="Lie down" />
+          <Answer Transcript="Shake his paw" />
+          <Answer Transcript="Flip a treat into his mouth" IsCorrect="true" />
+        </Answers>
+      </Question2>
+      <Question3>
+        <QuestionPrompt Transcript="Which of these things is Ollie interested in learning?" />
+        <Answers>
+          <Answer Transcript="Ice fishing" />
+          <Answer Transcript="Scuba diving" IsCorrect="true" />
+          <Answer Transcript="Soccer" />
+        </Answers>
+      </Question3>
+    </StoryInteraction>
+    <StoryInteraction StoryInteractionType="WordSearch" ID="ws2">
+      <DocumentPageNumber>32</DocumentPageNumber>
+      <Position>100,20</Position>
+      <Introduction Transcript="Find these words from the story." />
+      <Words>
+        <Word Transcript="Ollie" />
+        <Word Transcript="Sam" />
+        <Word Transcript="Play" />
+        <Word Transcript="Learn" />
+        <Word Transcript="Magic" />
+        <Word Transcript="Fetch" />
+      </Words>
+      <Matrix>
+        <Row Letters="L, I, W, P, T, F" />
+        <Row Letters="E, O, L, L, I, E" />
+        <Row Letters="A, H, S, A, F, T" />
+        <Row Letters="R, M, A, G, I, C" />
+        <Row Letters="N, A, M, C, A, H" />
+        <Row Letters="P, L, A, Y, L, E" />
+      </Matrix>
+    </StoryInteraction>
+    <StoryInteraction StoryInteractionType="Video" ID="vid1">
+      <DocumentPageNumber>34</DocumentPageNumber>
+      <Position>50,20</Position>
+      <Introduction Transcript="" />
+      <!-- Leave transcript blank -->
+      <Video Transcript="Ollie can do so many things! Let’s see some more dynamic dogs!" Url="vid1_1.mp4"></Video>
+      <!-- video files should in the form id_1.mp4, VO should be in the form of id_intro1.mp3 -->
+    </StoryInteraction>
+  </StoryInteractions>
+</SIConfigFile>
