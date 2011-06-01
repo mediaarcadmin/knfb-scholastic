@@ -36,4 +36,9 @@
     [super dealloc];
 }
 
+- (NSString *)title
+{
+    return @"About You Quiz";
+}
+
 @end

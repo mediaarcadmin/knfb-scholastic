@@ -23,4 +23,9 @@
     [super dealloc];
 }
 
+- (NSString *)title
+{
+    return @"Word Scrambler";
+}
+
 @end

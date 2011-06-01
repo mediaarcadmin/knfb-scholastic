@@ -22,6 +22,11 @@
     [super dealloc];
 }
 
+- (NSString *)title
+{
+    return @"Word Search";
+}
+
 - (NSInteger)matrixRows
 {
     return [self.matrix length] / matrixColumns;

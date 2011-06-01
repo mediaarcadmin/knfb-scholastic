@@ -23,8 +23,6 @@
 #import "SCHStoryInteractionWordMatch.h"
 #import "SCHStoryInteractionWordScrambler.h"
 #import "SCHStoryInteractionWordSearch.h"
-#import "SCHXPSProvider.h"
-#import "KNFBXPSConstants.h"
 
 // Parsing Interactions.xml is complex, with many different class types. The parser is kept
 // clean and extensible by defining parsing categories on the model objects involved and
@@ -800,12 +798,6 @@ static void storyInteractionCharacterDataHandler(void *userData, const XML_Char 
     [self.questions addObject:self.question];
     self.question = nil;
     self.answers = nil;
-}
-
-- (NSArray *)parseStoryInteractionsFromXPSProvider:(SCHXPSProvider *)xpsProvider
-{
-    NSData *xml = [xpsProvider dataForComponentAtPath:KNFBXPSStoryInteractionsMetadataFile];
-    return [self parseStoryInteractionsFromData:xml];
 }
 
 - (NSArray *)parseStoryInteractionsFromData:(NSData *)xml

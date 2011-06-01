@@ -8,11 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
-@class SCHXPSProvider;
-
 @interface SCHStoryInteractionParser : NSObject {}
 
-- (NSArray *)parseStoryInteractionsFromXPSProvider:(SCHXPSProvider *)xpsProvider;
 - (NSArray *)parseStoryInteractionsFromData:(NSData *)data;
 
 @end

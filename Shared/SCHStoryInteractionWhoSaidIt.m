@@ -33,4 +33,9 @@
     [super dealloc];
 }
 
+- (NSString *)title
+{
+    return @"Who Said It";
+}
+
 @end

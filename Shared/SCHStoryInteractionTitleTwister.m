@@ -21,4 +21,9 @@
     [super dealloc];
 }
 
+- (NSString *)title
+{
+    return @"Title Twister";
+}
+
 @end

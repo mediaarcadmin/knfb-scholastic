@@ -24,4 +24,9 @@
     return [[SCHStoryInteraction resourcesPath] stringByAppendingPathComponent:self.imageFilename];
 }
 
+- (NSString *)title
+{
+    return @"Picture";
+}
+
 @end
