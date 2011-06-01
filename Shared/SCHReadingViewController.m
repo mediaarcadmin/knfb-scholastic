@@ -565,6 +565,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
                                           wordBlock:^(NSUInteger layoutPage, NSUInteger pageWordOffset) {
                                               NSLog(@"WORD UP! at layoutPage %d pageWordOffset %d", layoutPage, pageWordOffset);
                                               [self.readingView followAlongHighlightWordForLayoutPage:layoutPage pageWordOffset:pageWordOffset];
+                                          } pageTurnBlock:(PageTurnBlock)^(NSUInteger turnToLayoutPage) {
+                                              NSLog(@"Turn to layoutPage %d", turnToLayoutPage);
                                           }] == YES) {
                                               self.audioBookPlayer.delegate = self;
                                               [self.audioBookPlayer playAtLayoutPage:layoutPage pageWordOffset:pageWordOffset];
