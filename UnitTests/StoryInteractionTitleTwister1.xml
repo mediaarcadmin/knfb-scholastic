@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<SIConfigFile>
+<StoryInteractions>
+    <StoryInteraction StoryInteractionType="TitleTwister">
+        <!-- aka Word Twister -->
+        <DocumentPageNumber>58</DocumentPageNumber>
+        <Position>50,10</Position>
+        <BookTitle Phrase="GOOSEBUMPS" />
+        <!-- Phrase value is taken from Keyword in interaction script -->
+        <Words Words="OPOSSUM, BEGUMS, BESOMS, BOSOMS, BOUSES, EMBOSS, GOBOES, GOMBOS, GOOSES, GUMBOS, MOUSES, MOUSSE, OPUSES, OSMOSE, OSMOUS, POSSUM, SEBUMS, SPOUSE, SPUMES, UGSOME, BEGUM, BESOM, BOGUS, BOOMS, BOSOM, BOUSE, BUMPS, BUSES, GESSO, GEUMS, GOBOS, GOMBO, GOOPS, GOOSE, GUESS, GUMBO, MEOUS, MOOSE, MOPES, MOSSO, MOUES, MOUSE, MUSES, OBOES, PESOS, POEMS, POMES, POMOS, POSES, POSSE, PUBES, PUSES, SEBUM, SEGOS, SMOGS, SOUPS, SOUSE, SPUES, SPUME, SUMOS, SUMPS, SUPES, UMBOS, BEGS, BOGS, BOOM, BOOS, BOPS, BOSS, BUGS, BUMP, BUMS, BUSS, EGOS, EMUS, EPOS, GEMS, GEUM, GOBO, GOBS, GOES, GOOP, GOOS, GUMS, MEGS, MEOU, MESS, MOBS, MOGS, MOOS, MOPE, MOPS, MOSS, MOUE, MUGS, MUSE, MUSS, OBES, OBOE, OOPS, OPES, OPUS, OSES, PEGS, PESO, POEM, POME, POMO, POMS, POOS, POSE, PUBS, PUGS, PUSS, SEGO, SEGS, SMOG, SMUG, SOBS, SOME, SOMS, SOPS, SOUP, SOUS, SPUE, SUBS, SUES, SUMO, SUMP, SUMS, SUPE, SUPS, UMBO, UMPS, USES, BEG, BES, BOG, BOO, BOP, BOS, BUG, BUM, BUS, EGO, EMS, EMU, ESS, GEM, GOB, GOO, GOS, GUM, MEG, MOB, MOG, MOO, MOP, MOS, MUG, MUS, OBE, OES, OMS, OPE, OPS, OSE, PEG, PES, POM, POO, PUB, PUG, PUS, SEG, SOB, SOM, SOP, SOS, SOU, SUB, SUE, SUM, SUP, UMP, UPO, UPS, USE, BE, BO, EM, ES, GO, ME, MO, MU, OE, OM, OP, OS, PE, SO, UM, UP, US&#xD;&#xD;&#xA;" />
+        <!-- Words values are taken from Valid Answers in interaction script. Each word should be comma seperated. These lists can be very long! Make sure there are no line breaks when pasting the words in. -->
+    </StoryInteraction>
+</StoryInteractions>
+</SIConfigFile>

@@ -427,12 +427,22 @@ static NSString *attribute(const XML_Char **atts, const char *key)
 
 - (void)startElement:(const XML_Char *)name attributes:(const XML_Char **)attributes parser:(SCHStoryInteractionParser *)parser
 {
-    
-}
-
-- (void)endElement:(const XML_Char *)name parser:(SCHStoryInteractionParser *)parser
-{
-    
+    if (strcmp(name, "BookTitle") == 0) {
+        self.bookTitle = attribute(attributes, "Phrase");
+    } else if (strcmp(name, "Words") == 0) {
+        NSArray *words = [attribute(attributes, "Words") componentsSeparatedByString:@","];
+        NSMutableArray *trimmedWords = [NSMutableArray arrayWithCapacity:[words count]];
+        NSCharacterSet *whitespaceAndNewline = [NSCharacterSet whitespaceAndNewlineCharacterSet];
+        for (NSString *word in words) {
+            NSString *trimmedWord = [word stringByTrimmingCharactersInSet:whitespaceAndNewline];
+            if ([trimmedWord length] > 0) {
+                [trimmedWords addObject:trimmedWord];
+            }
+        }
+        self.words = [NSArray arrayWithArray:trimmedWords];
+    } else {
+        [super startElement:name attributes:attributes parser:parser];
+    }
 }
 
 @end

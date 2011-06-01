@@ -15,6 +15,7 @@
 #import "SCHStoryInteractionPopQuiz.h"
 #import "SCHStoryInteractionScratchAndSee.h"
 #import "SCHStoryInteractionStartingLetter.h"
+#import "SCHStoryInteractionTitleTwister.h"
 
 @interface SCHStoryInteractionParserTests : SenTestCase {}
 @property (nonatomic, retain) SCHStoryInteractionParser *parser;
@@ -298,6 +299,35 @@
         STAssertEqualObjects([[q imagePath] lastPathComponent], imageFilename, @"incorrect image filename for question %d", i+1);
         STAssertEqualObjects([[q audioPath] lastPathComponent], audioFilename, @"incorrect audio filename for question %d", i+1);
     }
+}
+
+- (void)testTitleTwister1
+{
+    NSArray *stories = [self parse:@"TitleTwister1"];
+    STAssertEquals([stories count], 1U, @"incorrect story count");
+    STAssertTrue([[stories lastObject] isKindOfClass:[SCHStoryInteractionTitleTwister class]], @"incorrect class");
+    
+    SCHStoryInteractionTitleTwister *story = [stories lastObject];
+    STAssertEquals(story.documentPageNumber, 58, @"incorrect documentPageNumber");
+    STAssertTrue(CGPointEqualToPoint(story.position, CGPointMake(50, 10)), @"incorrect position");
+
+    NSArray *expectWords = [NSArray arrayWithObjects:@"OPOSSUM", @"BEGUMS", @"BESOMS", @"BOSOMS", @"BOUSES", @"EMBOSS", @"GOBOES", @"GOMBOS", @"GOOSES", @"GUMBOS",
+                            @"MOUSES", @"MOUSSE", @"OPUSES", @"OSMOSE", @"OSMOUS", @"POSSUM", @"SEBUMS", @"SPOUSE", @"SPUMES", @"UGSOME", @"BEGUM", @"BESOM", @"BOGUS",
+                            @"BOOMS", @"BOSOM", @"BOUSE", @"BUMPS", @"BUSES", @"GESSO", @"GEUMS", @"GOBOS", @"GOMBO", @"GOOPS", @"GOOSE", @"GUESS", @"GUMBO", @"MEOUS",
+                            @"MOOSE", @"MOPES", @"MOSSO", @"MOUES", @"MOUSE", @"MUSES", @"OBOES", @"PESOS", @"POEMS", @"POMES", @"POMOS", @"POSES", @"POSSE", @"PUBES",
+                            @"PUSES", @"SEBUM", @"SEGOS", @"SMOGS", @"SOUPS", @"SOUSE", @"SPUES", @"SPUME", @"SUMOS", @"SUMPS", @"SUPES", @"UMBOS", @"BEGS", @"BOGS",
+                            @"BOOM", @"BOOS", @"BOPS", @"BOSS", @"BUGS", @"BUMP", @"BUMS", @"BUSS", @"EGOS", @"EMUS", @"EPOS", @"GEMS", @"GEUM", @"GOBO", @"GOBS",
+                            @"GOES", @"GOOP", @"GOOS", @"GUMS", @"MEGS", @"MEOU", @"MESS", @"MOBS", @"MOGS", @"MOOS", @"MOPE", @"MOPS", @"MOSS", @"MOUE", @"MUGS",
+                            @"MUSE", @"MUSS", @"OBES", @"OBOE", @"OOPS", @"OPES", @"OPUS", @"OSES", @"PEGS", @"PESO", @"POEM", @"POME", @"POMO", @"POMS", @"POOS",
+                            @"POSE", @"PUBS", @"PUGS", @"PUSS", @"SEGO", @"SEGS", @"SMOG", @"SMUG", @"SOBS", @"SOME", @"SOMS", @"SOPS", @"SOUP", @"SOUS", @"SPUE",
+                            @"SUBS", @"SUES", @"SUMO", @"SUMP", @"SUMS", @"SUPE", @"SUPS", @"UMBO", @"UMPS", @"USES", @"BEG", @"BES", @"BOG", @"BOO", @"BOP", @"BOS",
+                            @"BUG", @"BUM", @"BUS", @"EGO", @"EMS", @"EMU", @"ESS", @"GEM", @"GOB", @"GOO", @"GOS", @"GUM", @"MEG", @"MOB", @"MOG", @"MOO", @"MOP",
+                            @"MOS", @"MUG", @"MUS", @"OBE", @"OES", @"OMS", @"OPE", @"OPS", @"OSE", @"PEG", @"PES", @"POM", @"POO", @"PUB", @"PUG", @"PUS", @"SEG",
+                            @"SOB", @"SOM", @"SOP", @"SOS", @"SOU", @"SUB", @"SUE", @"SUM", @"SUP", @"UMP", @"UPO", @"UPS", @"USE", @"BE", @"BO", @"EM", @"ES", @"GO",
+                            @"ME", @"MO", @"MU", @"OE", @"OM", @"OP", @"OS", @"PE", @"SO", @"UM", @"UP", @"US", nil];
+    
+    STAssertEqualObjects(story.bookTitle, @"GOOSEBUMPS", @"incorrect book title");
+    STAssertEqualObjects(story.words, expectWords, @"incorrect word list");
 }
 
 @end
