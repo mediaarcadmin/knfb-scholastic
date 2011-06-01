@@ -24,19 +24,19 @@
 
 - (NSString *)imagePath
 {
-    NSString *filename = [NSString stringWithFormat:@"%@_q%d.png", self.storyInteraction.ID, self.questionIndex];
+    NSString *filename = [NSString stringWithFormat:@"%@_q%d.png", self.storyInteraction.ID, self.questionIndex+1];
     return [[SCHStoryInteraction resourcesPath] stringByAppendingPathComponent:filename];
 }
 
 - (NSString *)audioPathForAnswerAtIndex:(NSInteger)index
 {
-    NSString *filename = [NSString stringWithFormat:@"%@_q%da%d.mp3", self.storyInteraction.ID, self.questionIndex, index];
+    NSString *filename = [NSString stringWithFormat:@"%@_q%da%d.mp3", self.storyInteraction.ID, self.questionIndex+1, index+1];
     return [[SCHStoryInteraction resourcesPath] stringByAppendingPathComponent:filename];
 }
 
 - (NSString *)correctAnswerAudioPath
 {
-    NSString *filename = [NSString stringWithFormat:@"%@_ca%d.mp3", self.storyInteraction.ID, self.questionIndex];
+    NSString *filename = [NSString stringWithFormat:@"%@_ca%d.mp3", self.storyInteraction.ID, self.questionIndex+1];
     return [[SCHStoryInteraction resourcesPath] stringByAppendingPathComponent:filename];
 }
 

@@ -14,6 +14,11 @@
 @synthesize storyInteraction;
 @synthesize questionIndex;
 
+- (NSString *)audioPathForThatsRight
+{
+    return [[SCHStoryInteraction resourcesPath] stringByAppendingPathComponent:@"gen_thatsright.mp3"];
+}
+
 @end
 
 @implementation SCHStoryInteraction

@@ -24,6 +24,18 @@
     [super dealloc];
 }
 
+- (NSString *)audioPathForQuestion
+{
+    NSString *filename = [NSString stringWithFormat:@"%@_q%d.mp3", self.storyInteraction.ID, self.questionIndex+1];
+    return [[SCHStoryInteraction resourcesPath] stringByAppendingPathComponent:filename];
+}
+
+- (NSString *)audioPathForCorrectAnswer
+{
+    NSString *filename = [NSString stringWithFormat:@"%@_ca%d.mp3", self.storyInteraction.ID, self.questionIndex+1];
+    return [[SCHStoryInteraction resourcesPath] stringByAppendingPathComponent:filename];
+}
+
 @end
 
 #pragma mark - SCHStoryInteractionHotSpot

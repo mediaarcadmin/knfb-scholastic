@@ -9,8 +9,24 @@
 #import <Foundation/Foundation.h>
 #import "SCHStoryInteraction.h"
 
-@interface SCHStoryInteractionAboutYouQuiz : SCHStoryInteraction {
-    
-}
+@interface SCHStoryInteractionAboutYouQuizQuestion : SCHStoryInteractionQuestion {}
+
+@property (nonatomic, retain) NSString *prompt;
+
+// array of NSStrings
+@property (nonatomic, retain) NSArray *answers;
+
+@end
+
+
+@interface SCHStoryInteractionAboutYouQuiz : SCHStoryInteraction {}
+
+@property (nonatomic, retain) NSString *introduction;
+
+// array of SCHStoryInteractionAboutYouQuizQuestion
+@property (nonatomic, retain) NSArray *questions;
+
+// array of NSString
+@property (nonatomic, retain) NSArray *outcomeMessages;
 
 @end

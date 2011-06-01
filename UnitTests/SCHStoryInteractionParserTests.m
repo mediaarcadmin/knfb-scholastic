@@ -9,6 +9,7 @@
 #import <SenTestingKit/SenTestingKit.h>
 
 #import "SCHStoryInteractionParser.h"
+#import "SCHStoryInteractionAboutYouQuiz.h"
 #import "SCHStoryInteractionHotSpot.h"
 #import "SCHStoryInteractionMultipleChoice.h"
 #import "SCHStoryInteractionPopQuiz.h"
@@ -45,6 +46,49 @@
     return [self.parser parseStoryInteractionsFromData:data];
 }
 
+- (void)testAboutYouQuiz1
+{
+    NSArray *stories = [self parse:@"AboutYouQuiz1"];
+    STAssertEquals([stories count], 1U, @"incorrect story count");
+    STAssertTrue([[stories lastObject] isKindOfClass:[SCHStoryInteractionAboutYouQuiz class]], @"incorrect class");
+
+    SCHStoryInteractionAboutYouQuiz *story = [stories lastObject];
+    STAssertEquals(story.documentPageNumber, 162, @"incorrect documentPageNumber");
+    STAssertTrue(CGPointEqualToPoint(story.position, CGPointMake(180, 10)), @"incorrect position %@ should be 180,10", NSStringFromCGPoint(story.position));
+    
+    NSArray *expectedOutcomes = [NSArray arrayWithObjects:
+                                 @"You’re a talented writer and have a knack for inventing new things.  You’re a lot like Benjamin Franklin!",
+                                 @"You’re incredibly smart and love studying the sciences.  You’re a lot like Isaac Newton!",
+                                 @"A natural leader, you just love being in charge. You have a lot in common with Winston Churchill!",
+                                 nil];
+    STAssertEqualObjects(story.outcomeMessages, expectedOutcomes, @"incorrect outcome messages");
+    
+    struct {
+        NSString *prompt;
+        NSArray *answers;
+    } expect[] = {
+        { @"What are you most looking forward to about college?",
+            [NSArray arrayWithObjects:@"Writing for the campus newspaper", @"Performing cool experiments during physics lab", @"Becoming president of the student body", nil] },
+        { @"Describe yourself in one word:",
+            [NSArray arrayWithObjects:@"Creative", @"Intelligent", @"Confident", nil] },
+        { @"As a child, what was your favorite way to spend a Saturday?",
+            [NSArray arrayWithObjects:@"Flying my kite", @"Reading books about space", @"Playing follow the leader", nil] },
+        { @"It’s time to eat! What are you craving?",
+            [NSArray arrayWithObjects:@"Philly Cheese Steak", @"Apple Slices", @"French Fries", nil] },
+        { @"Which of these items can be found in your locker?",
+            [NSArray arrayWithObjects:@"A spare pair of eyeglasses", @"A calculator and microscope", @"A mirror and hairbrush", nil]
+        }
+    };
+    NSUInteger expectCount = sizeof(expect)/sizeof(expect[0]);
+    
+    STAssertEquals([story.questions count], expectCount, @"incorrect question count");
+    for (NSUInteger i = 0; i < MIN([story.questions count], expectCount); ++i) {
+        SCHStoryInteractionAboutYouQuizQuestion *q = [story.questions objectAtIndex:i];
+        STAssertEqualObjects(q.prompt, expect[i].prompt, @"incorrect prompt for question %d", i+1);
+        STAssertEqualObjects(q.answers, expect[i].answers, @"incorrect answers for question %d", i+1);
+    }
+}
+
 - (void)testHotSpot1
 {
     NSArray *stories = [self parse:@"HotSpot1"];
@@ -53,7 +97,7 @@
     
     SCHStoryInteractionHotSpot *story = [stories lastObject];
     STAssertEquals(story.documentPageNumber, 28, @"incorrect documentPageNumber");
-    STAssertTrue(CGPointEqualToPoint(story.position, CGPointMake(188, 50)), @"incorrect position %@ should be 180,50", NSStringFromCGPoint(story.position));
+    STAssertTrue(CGPointEqualToPoint(story.position, CGPointMake(188, 50)), @"incorrect position %@ should be 188,50", NSStringFromCGPoint(story.position));
     
     struct {
         NSString *prompt;
@@ -72,6 +116,12 @@
         STAssertEqualObjects(q.prompt, expect[i].prompt, @"incorrect prompt for question %d", i+1);
         STAssertTrue(CGRectEqualToRect(q.hotSpotRect, expect[i].hotSpotRect), @"incorrect hotSpotRect for question %d", i+1);
         STAssertTrue(CGSizeEqualToSize(q.originalBookSize, expect[i].originalBookSize), @"incorrect originalBookSize for question %d", i+1);
+        
+        NSString *questionAudioPath = [NSString stringWithFormat:@"ttp1_q%d.mp3", i+1];
+        STAssertEqualObjects([[q audioPathForQuestion] lastPathComponent], questionAudioPath, @"incorrect question audio path for question %d", i+1);
+        
+        NSString *correctAnswerAudioPath = [NSString stringWithFormat:@"ttp1_ca%d.mp3", i+1];
+        STAssertEqualObjects([[q audioPathForCorrectAnswer] lastPathComponent], correctAnswerAudioPath, @"incorrect correct answer audio path for question %d", i+1);
     }
 }
 
@@ -109,6 +159,19 @@
         STAssertEqualObjects(q.prompt, expect[i].prompt, @"incorrect prompt for question %d", i+1);
         STAssertEqualObjects(q.answers, expect[i].answers, @"incorrect answers for question %d", i+1);
         STAssertEquals(q.correctAnswer, expect[i].correctAnswer, @"incorrect correctAnswer for question %d", i+1);
+     
+        NSString *questionAudioPath = [NSString stringWithFormat:@"mc1_q%d.mp3", i+1];
+        STAssertEqualObjects([[q audioPathForQuestion] lastPathComponent], questionAudioPath, @"incorrect question audio path for question %d", i+1);
+        
+        NSString *correctAnswerAudioPath = [NSString stringWithFormat:@"mc1_ca%d.mp3", i+1];
+        STAssertEqualObjects([[q audioPathForCorrectAnswer] lastPathComponent], correctAnswerAudioPath, @"incorrect correct answer audio path for question %d", i+1);
+        
+        STAssertEqualObjects([[q audioPathForIncorrectAnswer] lastPathComponent], @"gen_tryagain.mp3", @"incorrect incorrect answer audio path for question %d", i+1);
+        
+        for (int j = 0; j < [q.answers count]; ++j) {
+            NSString *answerAudioPath = [NSString stringWithFormat:@"mc1_q%da%d.mp3", i+1, j+1];
+            STAssertEqualObjects([[q audioPathForAnswerAtIndex:j] lastPathComponent], answerAudioPath, @"incorrect answer %d audio path for question %d", j+1, i+1);
+        }
     }
 }
 
@@ -191,7 +254,7 @@
         
         for (NSInteger j = 0; j < [q.answers count]; ++j) {
             NSString *audioPath = [NSString stringWithFormat:@"ss1_q%da%d.mp3", i+1, j+1];
-            STAssertEqualObjects([[q audioPathForAnswerAtIndex:j+1] lastPathComponent], audioPath, @"incorrect audioPath for question %d answer %d", i+1, j+1);
+            STAssertEqualObjects([[q audioPathForAnswerAtIndex:j] lastPathComponent], audioPath, @"incorrect audioPath for question %d answer %d", i+1, j+1);
         }
     }
 }

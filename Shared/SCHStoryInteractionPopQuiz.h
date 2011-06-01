@@ -9,6 +9,19 @@
 #import <Foundation/Foundation.h>
 #import "SCHStoryInteractionMultipleChoice.h"
 
+@interface SCHStoryInteractionPopQuizQuestion : SCHStoryInteractionQuestion {}
+
+@property (nonatomic, retain) NSString *prompt;
+
+// array of NSStrings
+@property (nonatomic, retain) NSArray *answers;
+
+// index into answers
+@property (nonatomic, assign) NSInteger correctAnswer;
+
+@end
+
+
 @interface SCHStoryInteractionPopQuiz : SCHStoryInteractionMultipleChoice {}
 
 // Response for a low score
