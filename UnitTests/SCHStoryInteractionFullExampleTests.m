@@ -11,6 +11,7 @@
 #import "SCHStoryInteractionParser.h"
 #import "SCHStoryInteractionAboutYouQuiz.h"
 #import "SCHStoryInteractionHotSpot.h"
+#import "SCHStoryInteractionImage.h"
 #import "SCHStoryInteractionMultipleChoice.h"
 #import "SCHStoryInteractionPopQuiz.h"
 #import "SCHStoryInteractionScratchAndSee.h"
@@ -64,13 +65,14 @@
     for (NSInteger index = 1; ; ++index) {
         Class storyClass = va_arg(va_args, Class);
         if (storyClass == nil) {
+            STAssertTrue(index == [stories count], @"too many stories");
             break;
         }
         STAssertTrue(index < [stories count], @"too few stories in array");
         if (index >= [stories count]) {
             break;
         }
-        STAssertTrue([[stories objectAtIndex:index] isKindOfClass:storyClass], @"incorrect story type");
+        STAssertEquals([[stories objectAtIndex:index] class], storyClass, @"incorrect story type");
     }
     
     va_end(va_args);
@@ -99,6 +101,7 @@
      [SCHStoryInteractionTitleTwister class],
      [SCHStoryInteractionWordScrambler class],
      [SCHStoryInteractionWhoSaidIt class],
+     [SCHStoryInteractionImage class],
      nil];
 }
 

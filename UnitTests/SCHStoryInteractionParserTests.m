@@ -11,6 +11,7 @@
 #import "SCHStoryInteractionParser.h"
 #import "SCHStoryInteractionAboutYouQuiz.h"
 #import "SCHStoryInteractionHotSpot.h"
+#import "SCHStoryInteractionImage.h"
 #import "SCHStoryInteractionMultipleChoice.h"
 #import "SCHStoryInteractionPopQuiz.h"
 #import "SCHStoryInteractionScratchAndSee.h"
@@ -131,6 +132,19 @@
         NSString *correctAnswerAudioPath = [NSString stringWithFormat:@"ttp1_ca%d.mp3", i+1];
         STAssertEqualObjects([[q audioPathForCorrectAnswer] lastPathComponent], correctAnswerAudioPath, @"incorrect correct answer audio path for question %d", i+1);
     }
+}
+
+- (void)testImage1
+{
+    NSArray *stories = [self parse:@"Image1"];
+    STAssertEquals([stories count], 1U, @"incorrect story count");
+    STAssertTrue([[stories lastObject] isKindOfClass:[SCHStoryInteractionImage class]], @"incorrect class");
+    
+    SCHStoryInteractionImage *story = [stories lastObject];
+    STAssertEquals(story.documentPageNumber, 162, @"incorrect documentPageNumber");
+    STAssertTrue(CGPointEqualToPoint(story.position, CGPointMake(50, 0)), @"incorrect position %@", NSStringFromCGPoint(story.position));
+    
+    STAssertEqualObjects(story.imageFilename, @"img1_graphic.png", @"incorrect image filename");
 }
 
 - (void)testMultipleChoiceText1
