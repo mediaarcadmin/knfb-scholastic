@@ -11,6 +11,8 @@
 
 static const CGFloat kSCHNotesCountViewPaddingWidth = 5;
 static const CGFloat kSCHNotesCountViewPaddingHeight = 3;
+static const CGFloat kSCHNotesCountViewMinWidth = 21;
+static const CGFloat kSCHNotesCountViewMinHeight = 21;
 
 @interface SCHNotesCountView()
 
@@ -29,9 +31,10 @@ static const CGFloat kSCHNotesCountViewPaddingHeight = 3;
     
     if (self) {
         self.countLabel = [[UILabel alloc] init];
-        self.countLabel.font = [UIFont boldSystemFontOfSize:11.0f];
+        self.countLabel.font = [UIFont boldSystemFontOfSize:12.0f];
         self.countLabel.textColor = [UIColor whiteColor];
         self.countLabel.backgroundColor = [UIColor clearColor];
+        self.countLabel.textAlignment = UITextAlignmentCenter;
         [self addSubview:self.countLabel];
         
     }
@@ -51,6 +54,8 @@ static const CGFloat kSCHNotesCountViewPaddingHeight = 3;
     [super layoutSubviews];
     
     CGSize textSize = [self.countLabel.text sizeWithFont:self.countLabel.font];
+    textSize.width = MAX(textSize.width, kSCHNotesCountViewMinWidth - 2 * kSCHNotesCountViewPaddingWidth);
+    textSize.height = MAX(textSize.height, kSCHNotesCountViewMinHeight - 2 * kSCHNotesCountViewPaddingHeight);
     
     CGRect newFrame = self.frame;
     

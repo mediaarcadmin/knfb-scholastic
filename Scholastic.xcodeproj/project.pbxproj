@@ -383,6 +383,10 @@
 		C9261FB91396FD85009FF459 /* Default-Portrait~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C9261FB71396FD85009FF459 /* Default-Portrait~ipad.png */; };
 		C9261FBB1396FD90009FF459 /* Default-Landscape~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C9261FBA1396FD90009FF459 /* Default-Landscape~ipad.png */; };
 		C9261FBC1396FD90009FF459 /* Default-Landscape~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C9261FBA1396FD90009FF459 /* Default-Landscape~ipad.png */; };
+		C9261FBF13970220009FF459 /* notes-count.png in Resources */ = {isa = PBXBuildFile; fileRef = C9261FBD13970220009FF459 /* notes-count.png */; };
+		C9261FC013970220009FF459 /* notes-count.png in Resources */ = {isa = PBXBuildFile; fileRef = C9261FBD13970220009FF459 /* notes-count.png */; };
+		C9261FC113970220009FF459 /* notes-count@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C9261FBE13970220009FF459 /* notes-count@2x.png */; };
+		C9261FC213970220009FF459 /* notes-count@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C9261FBE13970220009FF459 /* notes-count@2x.png */; };
 		C92FA7CD1355B8B7001BAA6B /* KNFBSmartZoomBlockSource.m in Sources */ = {isa = PBXBuildFile; fileRef = C92FA7CC1355B8B7001BAA6B /* KNFBSmartZoomBlockSource.m */; };
 		C92FA7CE1355B8B7001BAA6B /* KNFBSmartZoomBlockSource.m in Sources */ = {isa = PBXBuildFile; fileRef = C92FA7CC1355B8B7001BAA6B /* KNFBSmartZoomBlockSource.m */; };
 		C92FA7D21355BE20001BAA6B /* SCHSmartZoomBlockSource.m in Sources */ = {isa = PBXBuildFile; fileRef = C92FA7D11355BE20001BAA6B /* SCHSmartZoomBlockSource.m */; };
@@ -1527,6 +1531,8 @@
 		C9261FB41396FB45009FF459 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		C9261FB71396FD85009FF459 /* Default-Portrait~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Portrait~ipad.png"; sourceTree = "<group>"; };
 		C9261FBA1396FD90009FF459 /* Default-Landscape~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape~ipad.png"; sourceTree = "<group>"; };
+		C9261FBD13970220009FF459 /* notes-count.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "notes-count.png"; path = "Resources/notes-count.png"; sourceTree = "<group>"; };
+		C9261FBE13970220009FF459 /* notes-count@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "notes-count@2x.png"; path = "Resources/notes-count@2x.png"; sourceTree = "<group>"; };
 		C92FA7CB1355B8B7001BAA6B /* KNFBSmartZoomBlockSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KNFBSmartZoomBlockSource.h; path = SmartZoom/KNFBSmartZoomBlockSource.h; sourceTree = "<group>"; };
 		C92FA7CC1355B8B7001BAA6B /* KNFBSmartZoomBlockSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KNFBSmartZoomBlockSource.m; path = SmartZoom/KNFBSmartZoomBlockSource.m; sourceTree = "<group>"; };
 		C92FA7CF1355B8E0001BAA6B /* KNFBPageZoomBlockSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KNFBPageZoomBlockSource.h; path = SmartZoom/KNFBPageZoomBlockSource.h; sourceTree = "<group>"; };
@@ -3018,6 +3024,8 @@
 				C9722BED1393AA0B008605E8 /* ABAddCircle@2x.png */,
 				C9722BEE1393AA0B008605E8 /* ABAddCircle.png */,
 				C9722BF91393AA80008605E8 /* thumbImage.png */,
+				C9261FBD13970220009FF459 /* notes-count.png */,
+				C9261FBE13970220009FF459 /* notes-count@2x.png */,
 			);
 			name = UIAssets;
 			sourceTree = "<group>";
@@ -3815,6 +3823,8 @@
 				C9261FB51396FB45009FF459 /* Default.png in Resources */,
 				C9261FB81396FD85009FF459 /* Default-Portrait~ipad.png in Resources */,
 				C9261FBB1396FD90009FF459 /* Default-Landscape~ipad.png in Resources */,
+				C9261FBF13970220009FF459 /* notes-count.png in Resources */,
+				C9261FC113970220009FF459 /* notes-count@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4071,6 +4081,8 @@
 				C9261FB61396FB45009FF459 /* Default.png in Resources */,
 				C9261FB91396FD85009FF459 /* Default-Portrait~ipad.png in Resources */,
 				C9261FBC1396FD90009FF459 /* Default-Landscape~ipad.png in Resources */,
+				C9261FC013970220009FF459 /* notes-count.png in Resources */,
+				C9261FC213970220009FF459 /* notes-count@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
