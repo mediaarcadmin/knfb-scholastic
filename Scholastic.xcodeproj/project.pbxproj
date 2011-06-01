@@ -883,10 +883,10 @@
 		F8DC5682138C150F00F27146 /* SCHDictionaryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8DC567E138C150F00F27146 /* SCHDictionaryViewController.xib */; };
 		F8EDE542138561390079BFD8 /* SCHReadingNoteView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8EDE541138561390079BFD8 /* SCHReadingNoteView.m */; };
 		F8EDE543138561390079BFD8 /* SCHReadingNoteView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8EDE541138561390079BFD8 /* SCHReadingNoteView.m */; };
-		F8FF8D81139513B000CD7B73 /* OldDictionary.css in Resources */ = {isa = PBXBuildFile; fileRef = F8FF8D7F139513B000CD7B73 /* OldDictionary.css */; };
-		F8FF8D82139513B000CD7B73 /* OldDictionary.css in Resources */ = {isa = PBXBuildFile; fileRef = F8FF8D7F139513B000CD7B73 /* OldDictionary.css */; };
-		F8FF8D83139513B000CD7B73 /* YoungDictionary.css in Resources */ = {isa = PBXBuildFile; fileRef = F8FF8D80139513B000CD7B73 /* YoungDictionary.css */; };
-		F8FF8D84139513B000CD7B73 /* YoungDictionary.css in Resources */ = {isa = PBXBuildFile; fileRef = F8FF8D80139513B000CD7B73 /* YoungDictionary.css */; };
+		F8FF8D81139513B000CD7B73 /* OldDictionary-additions.css in Resources */ = {isa = PBXBuildFile; fileRef = F8FF8D7F139513B000CD7B73 /* OldDictionary-additions.css */; };
+		F8FF8D82139513B000CD7B73 /* OldDictionary-additions.css in Resources */ = {isa = PBXBuildFile; fileRef = F8FF8D7F139513B000CD7B73 /* OldDictionary-additions.css */; };
+		F8FF8D83139513B000CD7B73 /* YoungDictionary-additions.css in Resources */ = {isa = PBXBuildFile; fileRef = F8FF8D80139513B000CD7B73 /* YoungDictionary-additions.css */; };
+		F8FF8D84139513B000CD7B73 /* YoungDictionary-additions.css in Resources */ = {isa = PBXBuildFile; fileRef = F8FF8D80139513B000CD7B73 /* YoungDictionary-additions.css */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1780,8 +1780,8 @@
 		F8DC567E138C150F00F27146 /* SCHDictionaryViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SCHDictionaryViewController.xib; path = Shared/SCHDictionaryViewController.xib; sourceTree = "<group>"; };
 		F8EDE540138561390079BFD8 /* SCHReadingNoteView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHReadingNoteView.h; path = Shared/SCHReadingNoteView.h; sourceTree = "<group>"; };
 		F8EDE541138561390079BFD8 /* SCHReadingNoteView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHReadingNoteView.m; path = Shared/SCHReadingNoteView.m; sourceTree = "<group>"; };
-		F8FF8D7F139513B000CD7B73 /* OldDictionary.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; name = OldDictionary.css; path = Resources/OldDictionary.css; sourceTree = "<group>"; };
-		F8FF8D80139513B000CD7B73 /* YoungDictionary.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; name = YoungDictionary.css; path = Resources/YoungDictionary.css; sourceTree = "<group>"; };
+		F8FF8D7F139513B000CD7B73 /* OldDictionary-additions.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; name = "OldDictionary-additions.css"; path = "Resources/OldDictionary-additions.css"; sourceTree = "<group>"; };
+		F8FF8D80139513B000CD7B73 /* YoungDictionary-additions.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; name = "YoungDictionary-additions.css"; path = "Resources/YoungDictionary-additions.css"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2166,8 +2166,8 @@
 		528A2CCF12CCDC400053A343 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				F8FF8D7F139513B000CD7B73 /* OldDictionary.css */,
-				F8FF8D80139513B000CD7B73 /* YoungDictionary.css */,
+				F8FF8D7F139513B000CD7B73 /* OldDictionary-additions.css */,
+				F8FF8D80139513B000CD7B73 /* YoungDictionary-additions.css */,
 				A35F45D4138D3A9000055D60 /* DRM */,
 				A39009EF1379D81200D6B608 /* parent-request.html */,
 				A39009F01379D81200D6B608 /* teacher-request.html */,
@@ -3689,8 +3689,8 @@
 				C9722BF51393AA75008605E8 /* Icon@2x.png in Resources */,
 				C9722BF71393AA75008605E8 /* Icon-72.png in Resources */,
 				C9722BFA1393AA80008605E8 /* thumbImage.png in Resources */,
-				F8FF8D81139513B000CD7B73 /* OldDictionary.css in Resources */,
-				F8FF8D83139513B000CD7B73 /* YoungDictionary.css in Resources */,
+				F8FF8D81139513B000CD7B73 /* OldDictionary-additions.css in Resources */,
+				F8FF8D83139513B000CD7B73 /* YoungDictionary-additions.css in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3922,8 +3922,8 @@
 				C9722BF61393AA75008605E8 /* Icon@2x.png in Resources */,
 				C9722BF81393AA75008605E8 /* Icon-72.png in Resources */,
 				C9722BFB1393AA80008605E8 /* thumbImage.png in Resources */,
-				F8FF8D82139513B000CD7B73 /* OldDictionary.css in Resources */,
-				F8FF8D84139513B000CD7B73 /* YoungDictionary.css in Resources */,
+				F8FF8D82139513B000CD7B73 /* OldDictionary-additions.css in Resources */,
+				F8FF8D84139513B000CD7B73 /* YoungDictionary-additions.css in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
