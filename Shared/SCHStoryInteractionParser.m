@@ -421,7 +421,7 @@ static NSString *attribute(const XML_Char **atts, const char *key)
 
 @end
 
-#pragma mark -
+#pragma mark - TitleTwister
 
 @implementation SCHStoryInteractionTitleTwister (Parse)
 
@@ -447,18 +447,42 @@ static NSString *attribute(const XML_Char **atts, const char *key)
 
 @end
 
-#pragma mark -
+#pragma mark - WhoSaidIt
+
+@implementation SCHStoryInteractionWhoSaidItStatement (Parse)
+
+- (void)startElement:(const XML_Char *)name attributes:(const XML_Char **)attributes parser:(SCHStoryInteractionParser *)parser
+{
+    if (strcmp(name, "Statement") == 0) {
+        self.source = attribute(attributes, "Source");
+        self.text = attribute(attributes, "Transcript");
+    } else {
+        [super startElement:name attributes:attributes parser:parser];
+    }
+}
+
+@end
 
 @implementation SCHStoryInteractionWhoSaidIt (Parse)
 
 - (void)startElement:(const XML_Char *)name attributes:(const XML_Char **)attributes parser:(SCHStoryInteractionParser *)parser
 {
-    
+    if (strcmp(name, "Distracter") == 0) {
+        // translate to 0-based index
+        self.distracterIndex = [attribute(attributes, "Index") integerValue] - 1;
+    } else if (strcmp(name, "Statement") == 0) {
+        [parser beginQuestion:[SCHStoryInteractionWhoSaidItStatement class]];
+        [parser.question startElement:name attributes:attributes parser:parser];
+        [parser endQuestion];
+    } else {
+        [super startElement:name attributes:attributes parser:parser];
+    }
 }
 
-- (void)endElement:(const XML_Char *)name parser:(SCHStoryInteractionParser *)parser
+- (void)parseComplete:(SCHStoryInteractionParser *)parser
 {
-    
+    self.statements = [NSArray arrayWithArray:parser.questions];
+    [super parseComplete:parser];
 }
 
 @end

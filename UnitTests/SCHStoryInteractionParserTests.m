@@ -16,6 +16,7 @@
 #import "SCHStoryInteractionScratchAndSee.h"
 #import "SCHStoryInteractionStartingLetter.h"
 #import "SCHStoryInteractionTitleTwister.h"
+#import "SCHStoryInteractionWhoSaidIt.h"
 
 @interface SCHStoryInteractionParserTests : SenTestCase {}
 @property (nonatomic, retain) SCHStoryInteractionParser *parser;
@@ -328,6 +329,39 @@
     
     STAssertEqualObjects(story.bookTitle, @"GOOSEBUMPS", @"incorrect book title");
     STAssertEqualObjects(story.words, expectWords, @"incorrect word list");
+}
+
+- (void)testWhoSaidIt1
+{
+    NSArray *stories = [self parse:@"WhoSaidIt1"];
+    STAssertEquals([stories count], 1U, @"incorrect story count");
+    STAssertTrue([[stories lastObject] isKindOfClass:[SCHStoryInteractionWhoSaidIt class]], @"incorrect class");
+    
+    SCHStoryInteractionWhoSaidIt *story = [stories lastObject];
+    STAssertEquals(story.documentPageNumber, 111, @"incorrect documentPageNumber");
+    STAssertTrue(CGPointEqualToPoint(story.position, CGPointMake(100, 5)), @"incorrect position");
+    
+    STAssertEquals(story.distracterIndex, 5, @"incorrect distracter index");
+    
+    struct {
+        NSString *source;
+        NSString *statement;
+    } expect[] = {
+        { @"Kris", @"I’m telling you, he’s alive!" },
+        { @"Mr. Wood", @"I’m in charge now. You will listen to me. This is my house now." },
+        { @"Mr. Powell", @"I really think you’ve lost your mind. I’m very worried about you." },
+        { @"Lindy", @"It was just a nightmare. The horrible thing that happened at the concert – it gave you a nightmare, that’s all." },
+        { @"Mrs. Berman", @"And if I have my way, you’ll be suspended for life!" },
+        { @"Cody", @"" }
+    };
+    NSUInteger expectCount = sizeof(expect)/sizeof(expect[0]);
+    
+    STAssertEquals([story.statements count], expectCount, @"incorrect number of statements");
+    for (NSUInteger i = 0; i < MIN([story.statements count], expectCount); ++i) {
+        SCHStoryInteractionWhoSaidItStatement *s = [story.statements objectAtIndex:i];
+        STAssertEqualObjects(s.source, expect[i].source, @"incorrect source for statement %d", i+1);
+        STAssertEqualObjects(s.text, expect[i].statement, @"incorrect text for statement %d", i+1);
+    }
 }
 
 @end

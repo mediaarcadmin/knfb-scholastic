@@ -25,7 +25,7 @@
 @implementation SCHStoryInteractionWhoSaidIt
 
 @synthesize statements;
-@synthesize distracter;
+@synthesize distracterIndex;
 
 - (void)dealloc
 {

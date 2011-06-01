@@ -9,19 +9,19 @@
 #import <Foundation/Foundation.h>
 #import "SCHStoryInteraction.h"
 
-@interface SCHStoryInteractionWhoSaidItStatement : NSObject {}
+@interface SCHStoryInteractionWhoSaidItStatement : SCHStoryInteractionQuestion {}
 
-@property (nonatomic, readonly) NSString *source;
-@property (nonatomic, readonly) NSString *text;
+@property (nonatomic, retain) NSString *source;
+@property (nonatomic, retain) NSString *text;
 
 @end
 
 @interface SCHStoryInteractionWhoSaidIt : SCHStoryInteraction {}
 
-// one of the items in statements
-@property (nonatomic, readonly) SCHStoryInteractionWhoSaidItStatement *distracter;
+// index into 'statements'
+@property (nonatomic, assign) NSInteger distracterIndex;
 
 // array of SCHStoryInteractionWhoSaidItStatement
-@property (nonatomic, readonly) NSArray *statements;
+@property (nonatomic, retain) NSArray *statements;
 
 @end
