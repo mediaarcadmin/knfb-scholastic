@@ -22,7 +22,7 @@
 @end
 
 
-@interface SCHStoryInteractionPopQuiz : SCHStoryInteractionMultipleChoice {}
+@interface SCHStoryInteractionPopQuiz : SCHStoryInteractionMultipleChoiceText {}
 
 // Response for a low score
 @property (nonatomic, retain) NSString *scoreResponseLow;

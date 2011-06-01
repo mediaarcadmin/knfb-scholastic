@@ -222,9 +222,9 @@ static NSString *attribute(const XML_Char **atts, const char *key)
 
 @end
 
-#pragma mark - MultipleChoice
+#pragma mark - MultipleChoiceText
 
-@implementation SCHStoryInteractionMultipleChoiceQuestion (Parse)
+@implementation SCHStoryInteractionMultipleChoiceTextQuestion (Parse)
 
 - (void)startElement:(const XML_Char *)name attributes:(const XML_Char **)attributes parser:(SCHStoryInteractionParser *)parser
 {
@@ -257,14 +257,61 @@ static NSString *attribute(const XML_Char **atts, const char *key)
 
 @end
 
-@implementation SCHStoryInteractionMultipleChoice (Parse)
+@implementation SCHStoryInteractionMultipleChoicePictureQuestion (Parse)
+
+- (void)startElement:(const XML_Char *)name attributes:(const XML_Char **)attributes parser:(SCHStoryInteractionParser *)parser
+{
+    if (strcmp(name, "QuestionPrompt") == 0) {
+        self.prompt = attribute(attributes, "Transcript");
+    } else if (strcmp(name, "Answer") == 0) {
+        if ([[attribute(attributes, "IsCorrect") lowercaseString] isEqualToString:@"true"]) {
+            self.correctAnswer = [parser.answers count];
+        }
+        [parser.answers addObject:[NSNull null]];
+    } else {
+        [super startElement:name attributes:attributes parser:parser];
+    }
+}
+
+- (void)parseComplete:(SCHStoryInteractionParser *)parser
+{
+    [super parseComplete:parser];
+    self.answers = nil;
+}
+
+@end
+
+@implementation SCHStoryInteractionMultipleChoiceText (Parse)
 
 - (void)startElement:(const XML_Char *)name attributes:(const XML_Char **)attributes parser:(SCHStoryInteractionParser *)parser
 {
     if (strcmp(name, "Introduction") == 0) {
         self.introduction = attribute(attributes, "Transcript");
     } else if (strcmp(name, "Question1") == 0 || strcmp(name, "Question2") == 0 || strcmp(name, "Question3") == 0) {
-        [parser beginQuestion:[SCHStoryInteractionMultipleChoiceQuestion class]];
+        [parser beginQuestion:[SCHStoryInteractionMultipleChoiceTextQuestion class]];
+    } else {
+        [super startElement:name attributes:attributes parser:parser];
+    }
+}
+
+- (void)parseComplete:(SCHStoryInteractionParser *)parser
+{
+    self.questions = [NSArray arrayWithArray:parser.questions];
+    [super parseComplete:parser];
+}
+
+@end
+
+#pragma mark - MultipleChoicePictures
+
+@implementation SCHStoryInteractionMultipleChoiceWithAnswerPictures (Parse)
+
+- (void)startElement:(const XML_Char *)name attributes:(const XML_Char **)attributes parser:(SCHStoryInteractionParser *)parser
+{
+    if (strcmp(name, "Introduction") == 0) {
+        self.introduction = attribute(attributes, "Transcript");
+    } else if (strcmp(name, "Question1") == 0 || strcmp(name, "Question2") == 0 || strcmp(name, "Question3") == 0) {
+        [parser beginQuestion:[SCHStoryInteractionMultipleChoicePictureQuestion class]];
     } else {
         [super startElement:name attributes:attributes parser:parser];
     }

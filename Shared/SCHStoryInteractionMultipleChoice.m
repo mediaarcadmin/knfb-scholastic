@@ -8,9 +8,26 @@
 
 #import "SCHStoryInteractionMultipleChoice.h"
 
-#pragma mark - SCHStoryInteractionMultipleChoiceAnswer
+#pragma mark - base
 
-@implementation SCHStoryInteractionMultipleChoiceQuestion
+@implementation SCHStoryInteractionMultipleChoice
+
+@synthesize introduction;
+@synthesize questions;
+
+- (void)dealloc
+{
+    [introduction release];
+    [questions release];
+    [super dealloc];
+}
+
+@end
+
+
+#pragma mark - text
+
+@implementation SCHStoryInteractionMultipleChoiceTextQuestion
 
 @synthesize storyInteraction;
 @synthesize questionIndex;
@@ -50,43 +67,21 @@
 
 @end
 
-
-#pragma mark - SCHStoryInteractionMultipleChoice
-
-@implementation SCHStoryInteractionMultipleChoice
-
-@synthesize introduction;
-@synthesize questions;
-
-- (void)dealloc
-{
-    [introduction release];
-    [questions release];
-    [super dealloc];
-}
-
-- (BOOL)answersArePictures
-{
-    return NO;
-}
-
+@implementation SCHStoryInteractionMultipleChoiceText
 @end
 
 
-@implementation SCHStoryInteractionMultipleChoiceText
+#pragma mark - picture
 
-- (BOOL)answersArePictures
+@implementation SCHStoryInteractionMultipleChoicePictureQuestion
+
+- (NSString *)imagePathForAnswerAtIndex:(NSInteger)answerIndex
 {
-    return NO;
+    NSString *filename = [NSString stringWithFormat:@"%@_q%da%d.png", self.storyInteraction.ID, self.questionIndex+1, answerIndex+1];
+    return [[SCHStoryInteraction resourcesPath] stringByAppendingPathComponent:filename];
 }
 
 @end
 
 @implementation SCHStoryInteractionMultipleChoiceWithAnswerPictures
-
-- (BOOL)answersArePictures
-{
-    return YES;
-}
-
 @end

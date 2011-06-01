@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<SIConfigFile>
+    <StoryInteractions>
+        <StoryInteraction StoryInteractionType="MultipleChoiceWithAnswerPictures" ID="mcp1">
+            <DocumentPageNumber>30</DocumentPageNumber>
+            <Position>188.0,50.0</Position>
+            <Introduction Transcript="Think about some of the words used to describe the animals in this story." />
+            <!-- Taken from One-time Introduction in the interaction script. If no introduction is noted delete the *. -->
+            <Question1>
+                <QuestionPrompt Transcript="Who is SNEAKY?" />
+                <!-- Transcript value is taken from Question column in interaction script. -->
+                <Answer />
+                <Answer IsCorrect="true" />
+                <!-- Only correct answers should have the IsCorrect attribute -->
+                <Answer />
+            </Question1>
+            <Question2>
+                <QuestionPrompt Transcript="Who is SILLY?" />
+                <Answer IsCorrect="true" />
+                <Answer />
+                <Answer />
+            </Question2>
+            <Question3>
+                <QuestionPrompt Transcript="Who is SMELLY?" />
+                <Answer />
+                <Answer />
+                <Answer IsCorrect="true" />
+            </Question3>
+        </StoryInteraction>
+    </StoryInteractions>
+</SIConfigFile>

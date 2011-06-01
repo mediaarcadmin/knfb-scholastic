@@ -131,13 +131,13 @@
     }
 }
 
-- (void)testMultipleChoice1
+- (void)testMultipleChoiceText1
 {
     NSArray *stories = [self parse:@"MultipleChoiceText1"];
     STAssertEquals([stories count], 1U, @"incorrect story count");
-    STAssertTrue([[stories lastObject] isKindOfClass:[SCHStoryInteractionMultipleChoice class]], @"incorrect class");
+    STAssertTrue([[stories lastObject] isKindOfClass:[SCHStoryInteractionMultipleChoiceText class]], @"incorrect class");
     
-    SCHStoryInteractionMultipleChoice *story = [stories lastObject];
+    SCHStoryInteractionMultipleChoiceText *story = [stories lastObject];
     STAssertEquals(story.documentPageNumber, 26, @"incorrect documentPageNumber");
     STAssertTrue(CGPointEqualToPoint(story.position, CGPointMake(188, 100)), @"incorrect position");
     STAssertEqualObjects(story.introduction, @"What do you remember about Ollie’s Tricks?", @"incorrect introduction text");
@@ -161,7 +161,7 @@
     
     STAssertEquals([story.questions count], expectCount, @"incorrect question count");
     for (NSUInteger i = 0; i < MIN([story.questions count], expectCount); ++i) {
-        SCHStoryInteractionMultipleChoiceQuestion *q = [story.questions objectAtIndex:i];
+        SCHStoryInteractionMultipleChoiceTextQuestion *q = [story.questions objectAtIndex:i];
         STAssertEqualObjects(q.prompt, expect[i].prompt, @"incorrect prompt for question %d", i+1);
         STAssertEqualObjects(q.answers, expect[i].answers, @"incorrect answers for question %d", i+1);
         STAssertEquals(q.correctAnswer, expect[i].correctAnswer, @"incorrect correctAnswer for question %d", i+1);
@@ -175,6 +175,53 @@
         STAssertEqualObjects([[q audioPathForIncorrectAnswer] lastPathComponent], @"gen_tryagain.mp3", @"incorrect incorrect answer audio path for question %d", i+1);
         
         for (int j = 0; j < [q.answers count]; ++j) {
+            NSString *answerAudioPath = [NSString stringWithFormat:@"mc1_q%da%d.mp3", i+1, j+1];
+            STAssertEqualObjects([[q audioPathForAnswerAtIndex:j] lastPathComponent], answerAudioPath, @"incorrect answer %d audio path for question %d", j+1, i+1);
+        }
+    }
+}
+
+- (void)testMultipleChoicePictures1
+{
+    
+    NSArray *stories = [self parse:@"MultipleChoicePicture1"];
+    STAssertEquals([stories count], 1U, @"incorrect story count");
+    STAssertTrue([[stories lastObject] isKindOfClass:[SCHStoryInteractionMultipleChoiceWithAnswerPictures class]], @"incorrect class");
+    
+    SCHStoryInteractionMultipleChoiceWithAnswerPictures *story = [stories lastObject];
+    STAssertEquals(story.documentPageNumber, 30, @"incorrect documentPageNumber");
+    STAssertTrue(CGPointEqualToPoint(story.position, CGPointMake(188, 50)), @"incorrect position");
+    STAssertEqualObjects(story.introduction, @"Think about some of the words used to describe the animals in this story.", @"incorrect introduction text");
+    
+    struct {
+        NSString *prompt;
+        NSInteger numberOfAnswers;
+        NSInteger correctAnswer;
+    } expect[] = {
+        { @"Who is SNEAKY?", 3, 1 },
+        { @"Who is SILLY?", 3, 0 },
+        { @"Who is SMELLY?", 3, 2 }
+    };
+    NSUInteger expectCount = sizeof(expect)/sizeof(expect[0]);
+    
+    STAssertEquals([story.questions count], expectCount, @"incorrect question count");
+    for (NSUInteger i = 0; i < MIN([story.questions count], expectCount); ++i) {
+        SCHStoryInteractionMultipleChoicePictureQuestion *q = [story.questions objectAtIndex:i];
+        STAssertEqualObjects(q.prompt, expect[i].prompt, @"incorrect prompt for question %d", i+1);
+        STAssertEquals(q.correctAnswer, expect[i].correctAnswer, @"incorrect correctAnswer for question %d", i+1);
+
+        NSString *questionAudioPath = [NSString stringWithFormat:@"mcp1_q%d.mp3", i+1];
+        STAssertEqualObjects([[q audioPathForQuestion] lastPathComponent], questionAudioPath, @"incorrect question audio path for question %d", i+1);
+        
+        NSString *correctAnswerAudioPath = [NSString stringWithFormat:@"mcp1_ca%d.mp3", i+1];
+        STAssertEqualObjects([[q audioPathForCorrectAnswer] lastPathComponent], correctAnswerAudioPath, @"incorrect correct answer audio path for question %d", i+1);
+        
+        STAssertEqualObjects([[q audioPathForIncorrectAnswer] lastPathComponent], @"gen_tryagain.mp3", @"incorrect incorrect answer audio path for question %d", i+1);
+        
+        for (int j = 0; j < [q.answers count]; ++j) {
+            NSString *questionImagePath = [NSString stringWithFormat:@"mcp1_q%da%d.png", i+1, j+1];
+            STAssertEqualObjects([[q imagePathForAnswerAtIndex:j] lastPathComponent], questionImagePath, @"incorrect answer %d image path for question %d", j+1, i+1);
+                                           
             NSString *answerAudioPath = [NSString stringWithFormat:@"mc1_q%da%d.mp3", i+1, j+1];
             STAssertEqualObjects([[q audioPathForAnswerAtIndex:j] lastPathComponent], answerAudioPath, @"incorrect answer %d audio path for question %d", j+1, i+1);
         }
@@ -219,7 +266,7 @@
 
     STAssertEquals([story.questions count], expectCount, @"incorrect question count");
     for (NSUInteger i = 0; i < MIN([story.questions count], expectCount); ++i) {
-        SCHStoryInteractionMultipleChoiceQuestion *q = [story.questions objectAtIndex:i];
+        SCHStoryInteractionMultipleChoiceTextQuestion *q = [story.questions objectAtIndex:i];
         STAssertEqualObjects(q.prompt, expect[i].prompt, @"incorrect prompt for question %d", i+1);
         STAssertEqualObjects(q.answers, expect[i].answers, @"incorrect answers for question %d", i+1);
         STAssertEquals(q.correctAnswer, expect[i].correctAnswer, @"incorrect correctAnswer for question %d", i+1);
