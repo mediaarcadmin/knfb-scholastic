@@ -61,12 +61,14 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape_iPad =
     [self.view.layer setContents:(id)[[SCHThemeManager sharedThemeManager] imageForBackground:interfaceOrientation].CGImage];
     [(SCHCustomNavigationBar *)self.navigationController.navigationBar updateTheme:interfaceOrientation];
     
+    CGFloat inset = 86;
+
     if (UIInterfaceOrientationIsLandscape(interfaceOrientation)) {
         [self.gridView setShelfHeight:kSCHBookShelfViewControllerGridCellHeightLandscape_iPad];
-        [self.gridView setShelfInset:CGSizeMake(0, -55)];
+        [self.gridView setShelfInset:CGSizeMake(0, -inset)];
     } else {
         [self.gridView setShelfHeight:kSCHBookShelfViewControllerGridCellHeightPortrait_iPad];
-        [self.gridView setShelfInset:CGSizeMake(0, -55)];
+        [self.gridView setShelfInset:CGSizeMake(0, -inset)];
     }
 }
 
