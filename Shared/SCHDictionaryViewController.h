@@ -14,6 +14,7 @@
     
     UIImageView *topShadow;
     UIView *leftBarButtonItemContainer;
+    UIView *notFoundView;
 }
 
 @property (nonatomic, retain) NSString *categoryMode;
@@ -22,6 +23,7 @@
 @property (nonatomic, retain) IBOutlet UIImageView *topShadow;
 @property (nonatomic, retain) IBOutlet SCHCustomToolbar *topBar;
 @property (nonatomic, retain) IBOutlet UIView *contentView;
+@property (nonatomic, retain) IBOutlet UIView *notFoundView;
 @property (nonatomic, retain) IBOutlet UIWebView *webView;
 @property (nonatomic, retain) IBOutlet UIView *downloadProgressView;
 

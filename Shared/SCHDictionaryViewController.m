@@ -27,6 +27,7 @@
 @synthesize topShadow;
 @synthesize topBar;
 @synthesize contentView;
+@synthesize notFoundView;
 @synthesize webView;
 @synthesize downloadProgressView;
 @synthesize progressBar;
@@ -56,6 +57,7 @@
     [downloadProgressView release], downloadProgressView = nil;
     [progressBar release], progressBar = nil;
     [leftBarButtonItemContainer release], leftBarButtonItemContainer = nil;
+    [notFoundView release], notFoundView = nil;
 }
 
 - (void)dealloc
@@ -179,6 +181,11 @@
 - (void)loadWord
 {
     NSString *htmlString = [[SCHDictionaryAccessManager sharedAccessManager] HTMLForWord:self.word category:self.categoryMode];
+    
+    if (!htmlString) {
+        [self.contentView addSubview:self.notFoundView];
+        return;
+    }
     
     NSString *path = [NSString stringWithFormat:@"%@/Images/", 
                       [[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryDirectory]];
