@@ -11,7 +11,6 @@
 #import "SCHBookAnnotations.h"
 #import "SCHProfileItem.h"
 #import "SCHNote.h"
-#import "SCHReadingView.h"
 
 static NSInteger const CELL_TITLE_LABEL_TAG = 997;
 static NSInteger const CELL_PAGE_LABEL_TAG = 998;
@@ -42,7 +41,6 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
 @synthesize isbn;
 @synthesize notes;
 @synthesize profile;
-@synthesize readingView;
 
 #pragma mark - Dealloc and View Teardown
 
@@ -56,7 +54,6 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
     [notesCell release], notesCell = nil;
     [profile release], profile = nil;
     [notes release], notes = nil;
-    readingView = nil;
     
     [super dealloc];
 }
@@ -295,37 +292,18 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
             UILabel *subTitleLabel = (UILabel *) [cell viewWithTag:CELL_PAGE_LABEL_TAG];
             
             SCHNote *note = [self.notes objectAtIndex:[indexPath row]];
-            if (note && note.Value && [note.Value length] > 0) {
-                titleLabel.text = note.Value;
-                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-                
-                NSUInteger layoutPage = note.noteLayoutPage;
-                NSUInteger pageWordOffset = note.notePageWordOffset;
-                SCHBookPoint *notePoint = [self.readingView bookPointForLayoutPage:layoutPage pageWordOffset:pageWordOffset];
-                
-                int pageIndex = [self.readingView pageIndexForBookPoint:notePoint];
-                
-                // MATT DO THIS
-//                subTitleLabel.text = [NSString stringWithFormat:@"Page %@", [self.readingView displayPageNumberForPageAtIndex:pageIndex]];
-                
-                subTitleLabel.text = [self.readingView pageLabelForPageAtIndex:pageIndex];
+            titleLabel.text = note.Value;
+            
+            SCHBookPoint *notePoint = [self.delegate bookPointForNote:note];
+            
+            if (notePoint) {
+                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;  
+                NSString *displayPage = [self.delegate displayPageNumberForBookPoint:notePoint];
+                subTitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Page %@", @"Display page for Notes List Controller"), displayPage];
             } else {
-                titleLabel.text = @"Empty note";
+                activityView.alpha = 1;
             }
-            
-            // FIXME: for demo purposes, even lines will be loading, odd will not
-//            if (activityView) {
-//                if ([indexPath row] % 2 == 0) {
-//                    [activityView startAnimating];
-//                    cell.accessoryType = UITableViewCellAccessoryNone;
-//                    subTitleLabel.text = @"";
-//                } else {
-//                    [activityView stopAnimating];
-//                    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-//                    subTitleLabel.text = [NSString stringWithFormat:@"Page %d", [indexPath row] + 1];
-//                }
-//            }
-            
+                 
             break;
         }   
         default:

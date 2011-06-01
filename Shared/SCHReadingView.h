@@ -85,11 +85,14 @@ typedef enum
 
 - (void)setPageTexture:(UIImage *)image isDark:(BOOL)isDark;
 
-- (NSUInteger)pageIndexForBookPoint:(SCHBookPoint *)bookPoint;
-- (NSString *)pageLabelForPageAtIndex:(NSUInteger)pageIndex;
-- (NSString *)displayPageNumberForPageAtIndex:(NSUInteger)pageIndex;
-- (void)layoutPage:(NSUInteger *)layoutPage pageWordOffset:(NSUInteger *)pageWordOffset forBookPoint:(SCHBookPoint *)bookPoint;
-- (SCHBookPoint *)bookPointForLayoutPage:(NSUInteger)layoutPage pageWordOffset:(NSUInteger)pageWordOffset;
+- (NSString *)displayPageNumberForBookPoint:(SCHBookPoint *)bookPoint;
+
+- (void)layoutPage:(NSUInteger *)layoutPage 
+    pageWordOffset:(NSUInteger *)pageWordOffset 
+      forBookPoint:(SCHBookPoint *)bookPoint;
+
+- (SCHBookPoint *)bookPointForLayoutPage:(NSUInteger)layoutPage 
+                          pageWordOffset:(NSUInteger)pageWordOffset;
 
 - (NSArray *)highlightsForLayoutPage:(NSUInteger)page;
 - (void)updateHighlight;
@@ -98,6 +101,7 @@ typedef enum
 - (EucSelectorRange *)selectorRangeFromBookRange:(SCHBookRange *)range;
 - (SCHBookRange *)bookRangeFromSelectorRange:(EucSelectorRange *)selectorRange;
 
+- (void)dismissFollowAlongHighlighter;
 - (void)followAlongHighlightWordAtPoint:(SCHBookPoint *)bookPoint;
 - (void)followAlongHighlightWordForLayoutPage:(NSUInteger)layoutPage pageWordOffset:(NSUInteger)pageWordOffset;
 

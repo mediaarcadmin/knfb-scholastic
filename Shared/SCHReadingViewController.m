@@ -565,6 +565,11 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
                                           wordBlock:^(NSUInteger layoutPage, NSUInteger pageWordOffset) {
                                               NSLog(@"WORD UP! at layoutPage %d pageWordOffset %d", layoutPage, pageWordOffset);
                                               [self.readingView followAlongHighlightWordForLayoutPage:layoutPage pageWordOffset:pageWordOffset];
+                                          } pageTurnBlock:(PageTurnBlock)^(NSUInteger turnToLayoutPage) {
+                                              NSLog(@"Turn to layoutPage %d", turnToLayoutPage);
+                                              if (self.layoutType == SCHReadingViewLayoutTypeFixed) {
+                                                  [self.readingView jumpToPageAtIndex:turnToLayoutPage animated:YES];
+                                              }
                                           }] == YES) {
                                               self.audioBookPlayer.delegate = self;
                                               [self.audioBookPlayer playAtLayoutPage:layoutPage pageWordOffset:pageWordOffset];
@@ -582,7 +587,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     } else if(self.audioBookPlayer.playing == NO) {
         [self.audioBookPlayer playAtLayoutPage:layoutPage pageWordOffset:pageWordOffset];
     } else {
-        [self.audioBookPlayer pause];        
+        [self.audioBookPlayer pause];
+        [self.readingView dismissFollowAlongHighlighter];    
     }
     
     if (self.optionsView.superview) {
@@ -595,11 +601,14 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (void)audioBookPlayerDidFinishPlaying:(SCHAudioBookPlayer *)player successfully:(BOOL)flag
 {
     NSLog(@"Audio Play finished playing");
+    [self.readingView dismissFollowAlongHighlighter];    
 }
 
 - (void)audioBookPlayerErrorDidOccur:(SCHAudioBookPlayer *)player error:(NSError *)error
 {
     NSLog(@"Audio Play erred!");
+    
+    [self.readingView dismissFollowAlongHighlighter];    
     
     UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") 
                                                          message:NSLocalizedString(@"Due to a problem with the audio we can not play this audiobook.", @"") 
@@ -664,7 +673,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     notesController.isbn = self.isbn;
     notesController.profile = self.profile;
     notesController.delegate = self;
-    notesController.readingView = self.readingView;
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         notesController.modalPresentationStyle = UIModalPresentationFormSheet;
@@ -1266,9 +1274,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     newNote.noteLayoutPage = layoutPage;
     newNote.notePageWordOffset = pageWordOffset;
 
-    SCHReadingNoteView *aNotesView = [[SCHReadingNoteView alloc] initWithNote:newNote];
-    aNotesView.readingView = self.readingView;
-    
+    SCHReadingNoteView *aNotesView = [[SCHReadingNoteView alloc] initWithNote:newNote];    
     aNotesView.delegate = self;
     
     [self setToolbarVisibility:NO animated:YES];
@@ -1287,7 +1293,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     
     SCHReadingNoteView *aNotesView = [[SCHReadingNoteView alloc] initWithNote:note];
     aNotesView.delegate = self;
-    aNotesView.readingView = self.readingView;
     [aNotesView showInView:self.view animated:YES];
     [aNotesView release];
     
@@ -1305,6 +1310,21 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     NSInteger noteCount = [[[self.profile annotationsForBook:self.isbn] notes] count];
     self.notesCountView.noteCount = noteCount;
 
+}
+
+- (SCHBookPoint *)bookPointForNote:(SCHNote *)note
+{
+    // MATT TODO - make this pagination aware so nil is returned if still paginating
+    NSUInteger layoutPage = note.noteLayoutPage;
+    NSUInteger pageWordOffset = note.notePageWordOffset;
+    SCHBookPoint *notePoint = [self.readingView bookPointForLayoutPage:layoutPage pageWordOffset:pageWordOffset];
+    
+    return notePoint;
+}
+
+- (NSString *)displayPageNumberForBookPoint:(SCHBookPoint *)bookPoint
+{
+    return [self.readingView displayPageNumberForBookPoint:bookPoint];
 }
 
 #pragma mark - SCHNotesViewDelegate methods

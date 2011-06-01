@@ -523,6 +523,18 @@
 		C94735FE1377F482005B2B1D /* icon-font-decrease@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C94735F71377F482005B2B1D /* icon-font-decrease@2x.png */; };
 		C94735FF1377F482005B2B1D /* icon-font-decrease.png in Resources */ = {isa = PBXBuildFile; fileRef = C94735F81377F482005B2B1D /* icon-font-decrease.png */; };
 		C94736001377F482005B2B1D /* icon-font-decrease.png in Resources */ = {isa = PBXBuildFile; fileRef = C94735F81377F482005B2B1D /* icon-font-decrease.png */; };
+		C949B3A413963B5F00525C6A /* MagnificationLoupeHigh@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C949B39E13963B5F00525C6A /* MagnificationLoupeHigh@2x.png */; };
+		C949B3A513963B5F00525C6A /* MagnificationLoupeHigh@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C949B39E13963B5F00525C6A /* MagnificationLoupeHigh@2x.png */; };
+		C949B3A613963B5F00525C6A /* MagnificationLoupeHigh.png in Resources */ = {isa = PBXBuildFile; fileRef = C949B39F13963B5F00525C6A /* MagnificationLoupeHigh.png */; };
+		C949B3A713963B5F00525C6A /* MagnificationLoupeHigh.png in Resources */ = {isa = PBXBuildFile; fileRef = C949B39F13963B5F00525C6A /* MagnificationLoupeHigh.png */; };
+		C949B3A813963B5F00525C6A /* LineLoupeMask@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C949B3A013963B5F00525C6A /* LineLoupeMask@2x.png */; };
+		C949B3A913963B5F00525C6A /* LineLoupeMask@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C949B3A013963B5F00525C6A /* LineLoupeMask@2x.png */; };
+		C949B3AA13963B5F00525C6A /* LineLoupeMask.png in Resources */ = {isa = PBXBuildFile; fileRef = C949B3A113963B5F00525C6A /* LineLoupeMask.png */; };
+		C949B3AB13963B5F00525C6A /* LineLoupeMask.png in Resources */ = {isa = PBXBuildFile; fileRef = C949B3A113963B5F00525C6A /* LineLoupeMask.png */; };
+		C949B3AC13963B5F00525C6A /* LineLoupeLow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C949B3A213963B5F00525C6A /* LineLoupeLow@2x.png */; };
+		C949B3AD13963B5F00525C6A /* LineLoupeLow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C949B3A213963B5F00525C6A /* LineLoupeLow@2x.png */; };
+		C949B3AE13963B5F00525C6A /* LineLoupeLow.png in Resources */ = {isa = PBXBuildFile; fileRef = C949B3A313963B5F00525C6A /* LineLoupeLow.png */; };
+		C949B3AF13963B5F00525C6A /* LineLoupeLow.png in Resources */ = {isa = PBXBuildFile; fileRef = C949B3A313963B5F00525C6A /* LineLoupeLow.png */; };
 		C953FC521370796F003DA646 /* icon-play-landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = C953FC4813707964003DA646 /* icon-play-landscape.png */; };
 		C953FC531370796F003DA646 /* icon-play-landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = C953FC4813707964003DA646 /* icon-play-landscape.png */; };
 		C953FC541370796F003DA646 /* icon-play-landscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C953FC4913707967003DA646 /* icon-play-landscape@2x.png */; };
@@ -895,10 +907,10 @@
 		F8DC5682138C150F00F27146 /* SCHDictionaryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8DC567E138C150F00F27146 /* SCHDictionaryViewController.xib */; };
 		F8EDE542138561390079BFD8 /* SCHReadingNoteView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8EDE541138561390079BFD8 /* SCHReadingNoteView.m */; };
 		F8EDE543138561390079BFD8 /* SCHReadingNoteView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8EDE541138561390079BFD8 /* SCHReadingNoteView.m */; };
-		F8FF8D81139513B000CD7B73 /* OldDictionary.css in Resources */ = {isa = PBXBuildFile; fileRef = F8FF8D7F139513B000CD7B73 /* OldDictionary.css */; };
-		F8FF8D82139513B000CD7B73 /* OldDictionary.css in Resources */ = {isa = PBXBuildFile; fileRef = F8FF8D7F139513B000CD7B73 /* OldDictionary.css */; };
-		F8FF8D83139513B000CD7B73 /* YoungDictionary.css in Resources */ = {isa = PBXBuildFile; fileRef = F8FF8D80139513B000CD7B73 /* YoungDictionary.css */; };
-		F8FF8D84139513B000CD7B73 /* YoungDictionary.css in Resources */ = {isa = PBXBuildFile; fileRef = F8FF8D80139513B000CD7B73 /* YoungDictionary.css */; };
+		F8FF8D81139513B000CD7B73 /* OldDictionary-additions.css in Resources */ = {isa = PBXBuildFile; fileRef = F8FF8D7F139513B000CD7B73 /* OldDictionary-additions.css */; };
+		F8FF8D82139513B000CD7B73 /* OldDictionary-additions.css in Resources */ = {isa = PBXBuildFile; fileRef = F8FF8D7F139513B000CD7B73 /* OldDictionary-additions.css */; };
+		F8FF8D83139513B000CD7B73 /* YoungDictionary-additions.css in Resources */ = {isa = PBXBuildFile; fileRef = F8FF8D80139513B000CD7B73 /* YoungDictionary-additions.css */; };
+		F8FF8D84139513B000CD7B73 /* YoungDictionary-additions.css in Resources */ = {isa = PBXBuildFile; fileRef = F8FF8D80139513B000CD7B73 /* YoungDictionary-additions.css */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1567,6 +1579,12 @@
 		C94735F71377F482005B2B1D /* icon-font-decrease@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-font-decrease@2x.png"; path = "Resources/UIAssets/icon-font-decrease@2x.png"; sourceTree = "<group>"; };
 		C94735F81377F482005B2B1D /* icon-font-decrease.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-font-decrease.png"; path = "Resources/UIAssets/icon-font-decrease.png"; sourceTree = "<group>"; };
 		C947D55D133B9C0000FB4404 /* libEucalyptus.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libEucalyptus.xcodeproj; path = Shared/Libraries/Submodules/libEucalyptus/libEucalyptus.xcodeproj; sourceTree = "<group>"; };
+		C949B39E13963B5F00525C6A /* MagnificationLoupeHigh@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MagnificationLoupeHigh@2x.png"; sourceTree = "<group>"; };
+		C949B39F13963B5F00525C6A /* MagnificationLoupeHigh.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MagnificationLoupeHigh.png; sourceTree = "<group>"; };
+		C949B3A013963B5F00525C6A /* LineLoupeMask@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LineLoupeMask@2x.png"; sourceTree = "<group>"; };
+		C949B3A113963B5F00525C6A /* LineLoupeMask.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LineLoupeMask.png; sourceTree = "<group>"; };
+		C949B3A213963B5F00525C6A /* LineLoupeLow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LineLoupeLow@2x.png"; sourceTree = "<group>"; };
+		C949B3A313963B5F00525C6A /* LineLoupeLow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LineLoupeLow.png; sourceTree = "<group>"; };
 		C953FC4813707964003DA646 /* icon-play-landscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-play-landscape.png"; path = "Resources/icon-play-landscape.png"; sourceTree = "<group>"; };
 		C953FC4913707967003DA646 /* icon-play-landscape@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-play-landscape@2x.png"; path = "Resources/icon-play-landscape@2x.png"; sourceTree = "<group>"; };
 		C95C7CBF135C3C8A00472AF6 /* SCHBookShelfGridView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookShelfGridView.h; path = iPhone/SCHBookShelfGridView.h; sourceTree = "<group>"; };
@@ -1803,8 +1821,8 @@
 		F8DC567E138C150F00F27146 /* SCHDictionaryViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SCHDictionaryViewController.xib; path = Shared/SCHDictionaryViewController.xib; sourceTree = "<group>"; };
 		F8EDE540138561390079BFD8 /* SCHReadingNoteView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHReadingNoteView.h; path = Shared/SCHReadingNoteView.h; sourceTree = "<group>"; };
 		F8EDE541138561390079BFD8 /* SCHReadingNoteView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHReadingNoteView.m; path = Shared/SCHReadingNoteView.m; sourceTree = "<group>"; };
-		F8FF8D7F139513B000CD7B73 /* OldDictionary.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; name = OldDictionary.css; path = Resources/OldDictionary.css; sourceTree = "<group>"; };
-		F8FF8D80139513B000CD7B73 /* YoungDictionary.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; name = YoungDictionary.css; path = Resources/YoungDictionary.css; sourceTree = "<group>"; };
+		F8FF8D7F139513B000CD7B73 /* OldDictionary-additions.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; name = "OldDictionary-additions.css"; path = "Resources/OldDictionary-additions.css"; sourceTree = "<group>"; };
+		F8FF8D80139513B000CD7B73 /* YoungDictionary-additions.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; name = "YoungDictionary-additions.css"; path = "Resources/YoungDictionary-additions.css"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2200,8 +2218,8 @@
 		528A2CCF12CCDC400053A343 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				F8FF8D7F139513B000CD7B73 /* OldDictionary.css */,
-				F8FF8D80139513B000CD7B73 /* YoungDictionary.css */,
+				F8FF8D7F139513B000CD7B73 /* OldDictionary-additions.css */,
+				F8FF8D80139513B000CD7B73 /* YoungDictionary-additions.css */,
 				A35F45D4138D3A9000055D60 /* DRM */,
 				A39009EF1379D81200D6B608 /* parent-request.html */,
 				A39009F01379D81200D6B608 /* teacher-request.html */,
@@ -2775,6 +2793,12 @@
 		C93ECA2D134B5EF9003B99FD /* Apple */ = {
 			isa = PBXGroup;
 			children = (
+				C949B39E13963B5F00525C6A /* MagnificationLoupeHigh@2x.png */,
+				C949B39F13963B5F00525C6A /* MagnificationLoupeHigh.png */,
+				C949B3A013963B5F00525C6A /* LineLoupeMask@2x.png */,
+				C949B3A113963B5F00525C6A /* LineLoupeMask.png */,
+				C949B3A213963B5F00525C6A /* LineLoupeLow@2x.png */,
+				C949B3A313963B5F00525C6A /* LineLoupeLow.png */,
 				C93ECA2E134B5EF9003B99FD /* iPodLikeSliderBlueLeftCap.png */,
 				C93ECA2F134B5EF9003B99FD /* iPodLikeSliderBlueLeftCap@2x.png */,
 				C93ECA30134B5EF9003B99FD /* iPodLikeSliderKnob-Small.png */,
@@ -3723,8 +3747,14 @@
 				C9722BF51393AA75008605E8 /* Icon@2x.png in Resources */,
 				C9722BF71393AA75008605E8 /* Icon-72.png in Resources */,
 				C9722BFA1393AA80008605E8 /* thumbImage.png in Resources */,
-				F8FF8D81139513B000CD7B73 /* OldDictionary.css in Resources */,
-				F8FF8D83139513B000CD7B73 /* YoungDictionary.css in Resources */,
+				F8FF8D81139513B000CD7B73 /* OldDictionary-additions.css in Resources */,
+				F8FF8D83139513B000CD7B73 /* YoungDictionary-additions.css in Resources */,
+				C949B3A413963B5F00525C6A /* MagnificationLoupeHigh@2x.png in Resources */,
+				C949B3A613963B5F00525C6A /* MagnificationLoupeHigh.png in Resources */,
+				C949B3A813963B5F00525C6A /* LineLoupeMask@2x.png in Resources */,
+				C949B3AA13963B5F00525C6A /* LineLoupeMask.png in Resources */,
+				C949B3AC13963B5F00525C6A /* LineLoupeLow@2x.png in Resources */,
+				C949B3AE13963B5F00525C6A /* LineLoupeLow.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3965,8 +3995,14 @@
 				C9722BF61393AA75008605E8 /* Icon@2x.png in Resources */,
 				C9722BF81393AA75008605E8 /* Icon-72.png in Resources */,
 				C9722BFB1393AA80008605E8 /* thumbImage.png in Resources */,
-				F8FF8D82139513B000CD7B73 /* OldDictionary.css in Resources */,
-				F8FF8D84139513B000CD7B73 /* YoungDictionary.css in Resources */,
+				F8FF8D82139513B000CD7B73 /* OldDictionary-additions.css in Resources */,
+				F8FF8D84139513B000CD7B73 /* YoungDictionary-additions.css in Resources */,
+				C949B3A513963B5F00525C6A /* MagnificationLoupeHigh@2x.png in Resources */,
+				C949B3A713963B5F00525C6A /* MagnificationLoupeHigh.png in Resources */,
+				C949B3A913963B5F00525C6A /* LineLoupeMask@2x.png in Resources */,
+				C949B3AB13963B5F00525C6A /* LineLoupeMask.png in Resources */,
+				C949B3AD13963B5F00525C6A /* LineLoupeLow@2x.png in Resources */,
+				C949B3AF13963B5F00525C6A /* LineLoupeLow.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
