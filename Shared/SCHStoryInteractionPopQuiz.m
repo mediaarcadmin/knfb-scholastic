@@ -8,6 +8,21 @@
 
 #import "SCHStoryInteractionPopQuiz.h"
 
+@implementation SCHStoryInteractionPopQuizQuestion
+
+@synthesize prompt;
+@synthesize answers;
+@synthesize correctAnswer;
+
+- (void)dealloc
+{
+    [prompt release];
+    [answers release];
+    [super dealloc];
+}
+
+@end
+
 @implementation SCHStoryInteractionPopQuiz
 
 @synthesize scoreResponseLow;

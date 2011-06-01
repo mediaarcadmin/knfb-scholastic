@@ -12,6 +12,8 @@
 
 @synthesize introduction;
 @synthesize words;
+@synthesize matrix;
+@synthesize matrixColumns;
 
 - (void)dealloc
 {
@@ -22,17 +24,13 @@
 
 - (NSInteger)matrixRows
 {
-    return 0;
+    return [self.matrix length] / matrixColumns;
 }
 
-- (NSInteger)matrixColumns
+- (unichar)matrixLetterAtRow:(NSInteger)row column:(NSInteger)column
 {
-    return 0;
-}
-
-- (NSString *)matrixLetterAtRow:(NSInteger)row column:(NSInteger)column
-{
-    return nil;
+    NSInteger index = row * matrixColumns + column;
+    return [self.matrix characterAtIndex:index];
 }
 
 @end

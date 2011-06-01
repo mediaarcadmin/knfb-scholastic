@@ -48,7 +48,7 @@ static NSUInteger const kSCHAudioBookPlayerNoAudioLoaded = NSUIntegerMax;
 @synthesize loadedAudioReferencesIndex;
 @synthesize resumeInterruptedPlayer;
 @synthesize timer;
-@dynamic playing;
+@synthesize playing;
 
 #pragma mark - Object lifecycle
 
@@ -68,7 +68,7 @@ static NSUInteger const kSCHAudioBookPlayerNoAudioLoaded = NSUIntegerMax;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 
     if (timer != NULL) {
-        dispatch_release(timer), timer = NULL;
+        dispatch_source_cancel(timer);
     }
     
     [audioBookReferences release], audioBookReferences = nil;
@@ -112,6 +112,9 @@ static NSUInteger const kSCHAudioBookPlayerNoAudioLoaded = NSUIntegerMax;
             self.timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, q_default); 
             dispatch_time_t now = dispatch_walltime(DISPATCH_TIME_NOW, 0);
             dispatch_source_set_timer(self.timer, now, kSCHAudioBookPlayerWordTimerInterval, NSEC_PER_MSEC);
+            dispatch_source_set_cancel_handler(self.timer, ^{
+                dispatch_release(self.timer), self.timer = NULL;
+            });
             dispatch_source_set_event_handler(self.timer, ^{                
                 static NSUInteger currentPosition = 0;
                 static NSUInteger currentAudioInfoPosition = 0;
@@ -203,8 +206,8 @@ static NSUInteger const kSCHAudioBookPlayerNoAudioLoaded = NSUIntegerMax;
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
-    if (timer != NULL) {
-        dispatch_release(timer), timer = NULL;
+    if (self.timer != NULL) {
+        dispatch_source_cancel(self.timer);
     }
     
     self.player = nil;

@@ -11,9 +11,9 @@
 
 @interface SCHStoryInteractionTitleTwister : SCHStoryInteraction {}
 
-@property (nonatomic, readonly) NSString *bookTitle;
+@property (nonatomic, retain) NSString *bookTitle;
 
 // array of NSStrings
-@property (nonatomic, readonly) NSArray *words;
+@property (nonatomic, retain) NSArray *words;
 
 @end

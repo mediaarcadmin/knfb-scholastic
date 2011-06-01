@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<SIConfigFile>
+    <StoryInteractions>
+        <StoryInteraction StoryInteractionType="StartingLetter" ID="sl1">
+            <DocumentPageNumber>24</DocumentPageNumber>
+            <Position>180,50</Position>
+            <QuestionPrompt Transcript="Computer starts with C. Find three more things that start with the letter C." />
+            <StartingLetter Character="C" />
+            <Pictures>
+                <Answer suffix="book" />
+                <Answer suffix="skates" />
+                <Answer suffix="television" />
+                <Answer suffix="pot" />
+                <Answer suffix="cookies" IsCorrect="True" />
+                <Answer suffix="tree" />
+                <Answer suffix="bowl" />
+                <Answer suffix="cat" IsCorrect="True" />
+                <Answer suffix="chicken" IsCorrect="True" />
+            </Pictures>
+        </StoryInteraction>
+    </StoryInteractions>
+</SIConfigFile>

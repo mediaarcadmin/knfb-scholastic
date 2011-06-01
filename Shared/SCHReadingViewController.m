@@ -587,7 +587,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     } else if(self.audioBookPlayer.playing == NO) {
         [self.audioBookPlayer playAtLayoutPage:layoutPage pageWordOffset:pageWordOffset];
     } else {
-        [self.audioBookPlayer pause];        
+        [self.audioBookPlayer pause];
+        [self.readingView dismissFollowAlongHighlighter];    
     }
     
     if (self.optionsView.superview) {
@@ -600,11 +601,14 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (void)audioBookPlayerDidFinishPlaying:(SCHAudioBookPlayer *)player successfully:(BOOL)flag
 {
     NSLog(@"Audio Play finished playing");
+    [self.readingView dismissFollowAlongHighlighter];    
 }
 
 - (void)audioBookPlayerErrorDidOccur:(SCHAudioBookPlayer *)player error:(NSError *)error
 {
     NSLog(@"Audio Play erred!");
+    
+    [self.readingView dismissFollowAlongHighlighter];    
     
     UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") 
                                                          message:NSLocalizedString(@"Due to a problem with the audio we can not play this audiobook.", @"") 

@@ -16,6 +16,8 @@
 @property (nonatomic, assign) SCHStoryInteraction *storyInteraction;
 @property (nonatomic, assign) NSInteger questionIndex;
 
+- (NSString *)audioPathForThatsRight;
+
 @end
 
 @interface SCHStoryInteraction : NSObject {}

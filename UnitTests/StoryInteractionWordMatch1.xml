@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<SIConfigFile>
+    <StoryInteractions>
+        <StoryInteraction StoryInteractionType="WordMatch" ID="wm1">
+            <DocumentPageNumber>8</DocumentPageNumber>
+            <Position>450.0,50.0</Position>
+            <Introduction Transcript="Match the the words with the pictures below." />
+            <Question1>
+                <Statement Transcript="Sit" suffix="sit" />
+                <Statement Transcript="Eat" suffix="eat" />
+                <Statement Transcript="Run" suffix="run" />
+            </Question1>
+            <Question2>
+                <Statement Transcript="Shake" suffix="shake" />
+                <Statement Transcript="Sleep" suffix="sleep" />
+                <Statement Transcript="Stand" suffix="stand" />
+            </Question2>
+            <Question3>
+                <Statement Transcript="Skate" suffix="skate" />
+                <Statement Transcript="Type" suffix="type" />
+                <Statement Transcript="Knit" suffix="knit" />
+            </Question3>
+        </StoryInteraction>
+    </StoryInteractions>
+</SIConfigFile>

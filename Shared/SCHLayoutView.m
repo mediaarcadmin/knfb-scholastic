@@ -304,6 +304,14 @@
 
 - (void)jumpToPageAtIndex:(NSUInteger)pageIndex animated: (BOOL) animated
 {	
+    if (![NSThread isMainThread]) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self jumpToPageAtIndex:pageIndex animated:animated];
+        });
+        
+        return;
+    }
+        
 	if (pageIndex < pageCount) {
         [self.pageTurningView turnToPageAtIndex:pageIndex animated:animated];
 	}
@@ -513,7 +521,7 @@
 - (void)pageTurningViewWillBeginAnimating:(EucPageTurningView *)aPageTurningView
 {
     self.selector.selectionDisabled = YES;
-    [self.selector removeTemporaryHighlight];
+    [self dismissFollowAlongHighlighter];
 }
 
 - (void)pageTurningViewDidEndAnimation:(EucPageTurningView *)aPageTurningView
@@ -540,7 +548,7 @@
     // zooming is going on.
     //[self.selector setShouldHideMenu:YES];
     [self.selector setSelectionDisabled:YES];
-	[self.selector removeTemporaryHighlight];
+    [self dismissFollowAlongHighlighter];
 	self.temporaryHighlightRange = nil;
 	
 }
@@ -743,8 +751,22 @@
 	
 }
 
+- (void)dismissFollowAlongHighlighter
+{
+    [self.selector removeTemporaryHighlight];
+}
+
 - (void)followAlongHighlightWordAtPoint:(SCHBookPoint *)bookPoint
 {
+    
+    if (![NSThread isMainThread]) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self followAlongHighlightWordAtPoint:bookPoint];
+        });
+        
+        return;
+    }
+    
     SCHBookRange *highlightRange = [[[SCHBookRange alloc] init] autorelease];
     highlightRange.startPoint = bookPoint;
     highlightRange.endPoint   = bookPoint;
@@ -758,7 +780,7 @@
         }
         		
         if (!pageIsVisible) {
-			[self.selector removeTemporaryHighlight];
+            [self dismissFollowAlongHighlighter];
             [self jumpToPageAtIndex:targetIndex animated:YES];
         } else {        
             CGAffineTransform viewTransform = [self pageTurningViewTransformForPageAtIndex:targetIndex offsetOrigin:YES applyZoom:YES];
@@ -783,7 +805,7 @@
 			[self.selector temporarilyHighlightSelectorRange:range animated:YES];
 		}
     } else {
-        [self.selector removeTemporaryHighlight];
+        [self dismissFollowAlongHighlighter];
     }
 }
 

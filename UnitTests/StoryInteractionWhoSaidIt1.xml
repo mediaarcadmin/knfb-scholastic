@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<SIConfigFile>
+    <StoryInteractions>
+        <StoryInteraction StoryInteractionType="WhoSaidIt">
+            <DocumentPageNumber>111</DocumentPageNumber>
+            <!-- Page numbers start at the first page of the XPS file, which is the cover of the book. Page numbers in the interactive script refer to printed page numbers in the book. That means you have to add the difference between how the ereader counts pages and the printed page number. To find the difference you need to add to the interaction script page numbers, open the XPS in XPS Viewer and start counting from the cover to the first printed page number. Add this number to the page number indicated in the interaction script and put that value above. -->
+            <Position>100,5</Position>
+            <Distracter Index="6" />
+            <!-- Index value is a number. It should be the number position of the Distracter in the Quote column in the interaction script. -->
+            <Statements>
+                <Statement Source="Kris" Transcript="I’m telling you, he’s alive!" />
+                <!-- Source value is the name in the Match column. Transcript value is taken from the Quote column. -->
+                <Statement Source="Mr. Wood" Transcript="I’m in charge now. You will listen to me. This is my house now."></Statement>
+                <Statement Source="Mr. Powell" Transcript="I really think you’ve lost your mind. I’m very worried about you." />
+                <Statement Source="Lindy" Transcript="It was just a nightmare. The horrible thing that happened at the concert – it gave you a nightmare, that’s all." />
+                <Statement Source="Mrs. Berman" Transcript="And if I have my way, you’ll be suspended for life!" />
+                <Statement Source="Cody" Transcript="" />
+                <!-- Delete * from the Transcript value for whomever is the distractor. -->
+            </Statements>
+        </StoryInteraction>
+    </StoryInteractions>
+</SIConfigFile>
