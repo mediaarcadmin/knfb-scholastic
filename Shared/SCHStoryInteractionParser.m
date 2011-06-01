@@ -17,6 +17,7 @@
 #import "SCHStoryInteractionScratchAndSee.h"
 #import "SCHStoryInteractionStartingLetter.h"
 #import "SCHStoryInteractionTitleTwister.h"
+#import "SCHStoryInteractionVideo.h"
 #import "SCHStoryInteractionWhoSaidIt.h"
 #import "SCHStoryInteractionWordMatch.h"
 #import "SCHStoryInteractionWordScrambler.h"
@@ -488,6 +489,22 @@ static NSString *attribute(const XML_Char **atts, const char *key)
         }
         self.words = [NSArray arrayWithArray:trimmedWords];
         [trimmedWords release];
+    } else {
+        [super startElement:name attributes:attributes parser:parser];
+    }
+}
+
+@end
+
+#pragma mark - Video
+
+@implementation SCHStoryInteractionVideo (Parse)
+
+- (void)startElement:(const XML_Char *)name attributes:(const XML_Char **)attributes parser:(SCHStoryInteractionParser *)parser
+{
+    if (strcmp(name, "Video") == 0) {
+        self.videoTranscript = attribute(attributes, "Transcript");
+        self.videoFilename = attribute(attributes, "Url");
     } else {
         [super startElement:name attributes:attributes parser:parser];
     }

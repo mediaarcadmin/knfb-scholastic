@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<SIConfigFile>
+    <StoryInteractions>
+        <StoryInteraction StoryInteractionType="Video" ID="vid1">
+            <DocumentPageNumber>34</DocumentPageNumber>
+            <Position>50,20</Position>
+            <Introduction Transcript="" />
+            <!-- Leave transcript blank -->
+            <Video Transcript="Ollie can do so many things! Let’s see some more dynamic dogs!" Url="vid1_1.mp4"></Video>
+            <!-- video files should in the form id_1.mp4, VO should be in the form of id_intro1.mp3 -->
+        </StoryInteraction>
+    </StoryInteractions>
+</SIConfigFile>

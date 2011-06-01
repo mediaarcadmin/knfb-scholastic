@@ -17,6 +17,7 @@
 #import "SCHStoryInteractionSequencing.h"
 #import "SCHStoryInteractionStartingLetter.h"
 #import "SCHStoryInteractionTitleTwister.h"
+#import "SCHStoryInteractionVideo.h"
 #import "SCHStoryInteractionWhoSaidIt.h"
 #import "SCHStoryInteractionWordMatch.h"
 #import "SCHStoryInteractionWordScrambler.h"
@@ -400,6 +401,20 @@
     
     STAssertEqualObjects(story.bookTitle, @"GOOSEBUMPS", @"incorrect book title");
     STAssertEqualObjects(story.words, expectWords, @"incorrect word list");
+}
+
+- (void)testVideo1
+{
+    NSArray *stories = [self parse:@"Video1"];
+    STAssertEquals([stories count], 1U, @"incorrect story count");
+    STAssertTrue([[stories lastObject] isKindOfClass:[SCHStoryInteractionVideo class]], @"incorrect class");
+    
+    SCHStoryInteractionVideo *story = [stories lastObject];
+    STAssertEquals(story.documentPageNumber, 34, @"incorrect documentPageNumber");
+    STAssertTrue(CGPointEqualToPoint(story.position, CGPointMake(50, 20)), @"incorrect position");
+    
+    STAssertEqualObjects(story.videoTranscript, @"Ollie can do so many things! Let’s see some more dynamic dogs!", @"incorrect transcript");
+    STAssertEqualObjects(story.videoFilename, @"vid1_1.mp4", @"incorrect video filename");
 }
 
 - (void)testWhoSaidIt1

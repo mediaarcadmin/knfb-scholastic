@@ -1,0 +1,191 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<SIConfigFile>
+  <!-- template v1 -->
+  <StoryInteractions>
+    <StoryInteraction StoryInteractionType="TitleTwister">
+      <!-- aka Word Twister -->
+      <DocumentPageNumber>28</DocumentPageNumber>
+      <Position>0,0</Position>
+      <BookTitle Phrase="MAZE OF BONES" />
+      <!-- Phrase value is taken from Keyword in interaction script -->
+      <Words Words="MESOZOAN, AMBONES, BASEMEN, BAZOOMS, BEMEANS, BEMOANS, BENAMES, SOMEONE, BAZOOS, BEANOS, BEMEAN, BEMOAN, BENAME, BONZES, BOOZES, ENEMAS, FEAZES, FOEMAN, FOEMEN, MENSAE, OZONES, SEAMEN, SNOOZE, ABOON, AEONS, AMBOS, AMENS, AZONS, BANES, BAZOO, BEAMS, BEANO, BEANS, BEEFS, BEMAS, BENES, BESOM, BONZE, BOOMS, BOONS, BOOZE, BOSOM, BOSON, BOZOS, EBONS, ENEMA, FAMES, FANES, FANOS, FAZES, FEASE, FEAZE, FEEBS, FEMES, FEZES, FOAMS, MABES, MANES, MANOS, MANSE, MASON, MAZES, MEANS, MENSA, MENSE, MESNE, MESON, MEZES, MOANS, MONAS, MONOS, MOONS, MOOSE, MOZOS, NABES, NAMES, NEEMS, NEMAS, NOMAS, NOMES, NOMOS, NOOSE, OBESE, OBOES, OMENS, OOZES, OZONE, SAMBO, SEMEN, SMAZE, SOMAN, ZOEAE, ZOEAS, ZONAE, ZONES, ZOOMS, ZOONS, ABOS, AEON, AMBO, AMEN, ANES, AZON, BAMS, BANE, BANS, BASE, BEAM, BEAN, BEEF, BEEN, BEES, BEMA, BENE, BENS, BOAS, BONE, BOOM, BOON, BOOS, BOZO, EASE, EBON, EMES, EONS, ESNE, FABS, FAME, FANE, FANO, FANS, FAZE, FEEB, FEES, FEME, FEMS, FENS, FOAM, FOBS, FOES, FONS, MABE, MAES, MANE, MANO, MANS, MEAN, MENO, MESA, MEZE, MOAN, MOAS, MOBS, MONO, MONS, MOON, MOOS, MOZO, NABE, NABS, NAME, NAOS, NEBS, NEEM, NEMA, NOBS, NOES, NOMA, NOME, NOMS, NOSE, OAFS, OBAS, OBES, OBOE, OMEN, ONES, ONOS, OOZE, SABE, SAFE, SAME, SANE, SEAM, SEEM, SEEN, SEME, SENE, SNOB, SOBA, SOFA, SOMA, SOME, SONE, SOON, ZEES, ZOEA, ZONA, ZONE, ZOOM, ZOON, ZOOS, ABO, ABS, ANE, AZO, BAM, BAN, BAS, BEE, BEN, BES, BOA, BOO, BOS, EFS, EME, EMS, ENS, EON, FAB, FAN, FAS, FEE, FEM, FEN, FES, FEZ, FOB, FOE, FON, MAE, MAN, MAS, MEN, MOA, MOB, MON, MOO, MOS, NAB, NAE, NAM, NEB, NEE, NOB, NOM, NOO, NOS, OAF, OBA, OBE, OES, OMS, ONE, ONO, ONS, OSE, SAB, SAE, SEA, SEE, SEN, SOB, SOM, SON, ZAS, ZEE, ZOA, ZOO, AB, AE, AM, AN, AS, BA, BE, BO, EF, EM, EN, ES, FA, FE, MA, ME, MO, NA, NE, NO, OE, OF, OM, ON, OS, SO, ZA" />
+      <!-- Words values are taken from Valid Answers in interaction script. Each word should be comma seperated. These lists can be very long! Make sure there are no line breaks when pasting the words in. -->
+    </StoryInteraction>
+    <StoryInteraction StoryInteractionType="PopQuiz">
+      <!-- aka Do You Know -->
+      <DocumentPageNumber>68</DocumentPageNumber>
+      <Position>180,10</Position>
+      <Quiz>
+        <Question>
+          <QuestionPrompt Transcript="What did Grace Cahill do right before she died? " />
+          <!-- Question and answer Transcript values are taken from their respective sections.  -->
+          <Answers>
+            <Answer Transcript="Go swimming" />
+            <Answer Transcript="Change her will" IsCorrect="true" />
+            <Answer Transcript="Eat dinner" />
+            <Answer Transcript="Buy a new dress" />
+          </Answers>
+        </Question>
+        <Question>
+          <QuestionPrompt Transcript="Currently, what is Dan Cahill’s favorite thing to collect? " />
+          <Answers>
+            <Answer Transcript="&#x9;&#xD;&#xA;&#xD;&#xA;Baseball Cards" />
+            <Answer Transcript="Coins" />
+            <Answer Transcript="Charcoal Rubbings" IsCorrect="true" />
+            <Answer Transcript="Stamps" />
+          </Answers>
+        </Question>
+        <Question>
+          <QuestionPrompt Transcript="How many teams accept Grace Cahill’s challenge? " />
+          <Answers>
+            <Answer Transcript="None" />
+            <Answer Transcript="Seven" IsCorrect="true" />
+            <Answer Transcript="Two" />
+            <Answer Transcript="Fifteen" />
+          </Answers>
+        </Question>
+        <Question>
+          <QuestionPrompt Transcript="What is Grace Cahill’s cat’s name? " />
+          <Answers>
+            <Answer Transcript="Saladin" IsCorrect="true" />
+            <Answer Transcript="Snowball" />
+            <Answer Transcript="Artemus" />
+            <Answer Transcript="Sylvester" />
+          </Answers>
+        </Question>
+        <Question>
+          <QuestionPrompt Transcript="What does Amy save from the fire? " />
+          <Answers>
+            <Answer Transcript="A map" />
+            <Answer Transcript="Poor Richard’s Almanac&#xD;&#xA;&#x9;&#xD;&#xA;&#xD;&#xA;" />
+            <Answer Transcript="A statue" />
+            <Answer Transcript="A jewelry box" IsCorrect="true" />
+          </Answers>
+        </Question>
+      </Quiz>
+      <ScoreResponseLow Transcript="Dig deeper for more clues!" />
+      <!-- Transcript values for ScoreResponse's are taken from the Response column in the interaction script.  -->
+      <ScoreResponseMedium Transcript="You’ve got a clue!" />
+      <ScoreResponseHigh Transcript="A perfect score! Are you a Cahill?" />
+    </StoryInteraction>
+    <StoryInteraction StoryInteractionType="WordScrambler">
+      <DocumentPageNumber>106</DocumentPageNumber>
+      <Position>100, 20</Position>
+      <Scramble Clue="Alistair Oh escaped the mansion with this famous book." Answer="POOR RICHARD’S ALMANAC" />
+      <!-- Clue value is taken from Intro, Answer value is taken from Answer in interaction script. -->
+      <Hint index="1,9,14,18" />
+      <!-- If clue letters are highlighted in the interaction script, replace the * with the number value of the character. So if the "i" in "pie" was highlighted it's number value would be "2". -->
+    </StoryInteraction>
+    <StoryInteraction StoryInteractionType="WhoSaidIt">
+      <DocumentPageNumber>132</DocumentPageNumber>
+      <!-- Page numbers start at the first page of the XPS file, which is the cover of the book. Page numbers in the interactive script refer to printed page numbers in the book. That means you have to add the difference between how the ereader counts pages and the printed page number. To find the difference you need to add to the interaction script page numbers, open the XPS in XPS Viewer and start counting from the cover to the first printed page number. Add this number to the page number indicated in the interaction script and put that value above. -->
+      <Position>100,5</Position>
+      <Distracter Index="6" />
+      <!-- Index value is a number. It should be the number position of the Distracter in the Quote column in the interaction script. -->
+      <Statements>
+        <Statement Source="Jonah Wizard" Transcript="And my new album, &quot;Gangsta Life,&quot; is number three on the French charts." />
+        <!-- Source value is the name in the Match column. Transcript value is taken from the Quote column. -->
+        <Statement Source="Nellie" Transcript="I’m going to regret this.  But I might as well regret it in Paris." />
+        <Statement Source="Mr. McIntyre" Transcript="Trust no one!" />
+        <Statement Source="Amy Cahill" Transcript="B-Benjamin Franklin was way more important than you, Jonah!" />
+        <Statement Source="Alistair Oh" Transcript="One phone call and I can mobilize help from Tokyo to Rio De Janeiro." />
+        <Statement Source="Dan Cahill" Transcript="" />
+        <!-- Delete * from the Transcript value for whomever is the distractor. -->
+      </Statements>
+    </StoryInteraction>
+    <StoryInteraction StoryInteractionType="AboutYouQuiz">
+      <DocumentPageNumber>162</DocumentPageNumber>
+      <Position>180,10</Position>
+      <Introduction Transcript="Which famous Lucian are you most like?  Take this quiz to find out!" />
+      <!-- Transcript value taken from Introduction text in interaction script -->
+      <Quiz Label="Quiz Name">
+        <Question>
+          <!-- There can be 3-10 questions. Add or delete everything between <Question> and </Question> to add or delete questions.-->
+          <QuestionPrompt Transcript="What are you most looking forward to about college?" />
+          <!-- Transcript value taken from Question text. -->
+          <Answers>
+            <Answer Transcript="Writing for the campus newspaper" />
+            <!-- There can be 2-5 possible answers. Add or delete <Answer Transcript="*"/> elements as neccessary.  -->
+            <!-- Transcript value is taken from each question set, in the same order as interaction script -->
+            <Answer Transcript="Performing cool experiments during physics lab" />
+            <Answer Transcript="Becoming president of the student body" />
+          </Answers>
+        </Question>
+        <Question>
+          <QuestionPrompt Transcript="Describe yourself in one word:" />
+          <Answers>
+            <Answer Transcript="Creative " />
+            <Answer Transcript="Intelligent" />
+            <Answer Transcript="Confident" />
+          </Answers>
+        </Question>
+        <Question>
+          <QuestionPrompt Transcript="As a child, what was your favorite way to spend a Saturday? " />
+          <Answers>
+            <Answer Transcript="Flying my kite " />
+            <Answer Transcript="Reading books about space" />
+            <Answer Transcript="Playing follow the leader" />
+          </Answers>
+        </Question>
+        <Question>
+          <QuestionPrompt Transcript="It’s time to eat! What are you craving?" />
+          <Answers>
+            <Answer Transcript="Philly Cheese Steak " />
+            <Answer Transcript="Apple Slices" />
+            <Answer Transcript="French Fries" />
+          </Answers>
+        </Question>
+        <Question>
+          <QuestionPrompt Transcript="Which of these items can be found in your locker?" />
+          <Answers>
+            <Answer Transcript="A spare pair of eyeglasses " />
+            <Answer Transcript="A calculator and microscope " />
+            <Answer Transcript="A mirror and hairbrush " />
+          </Answers>
+        </Question>
+        <OutcomeMessages>
+          <!-- There can be 2-5 possible OutcomeMessage, delete as needed. -->
+          <!-- Transcript value should be taken from Message column, in the order they are listed. -->
+          <OutcomeMessage Transcript="You’re a talented writer and have a knack for inventing new things.  You’re a lot like Benjamin Franklin!" />
+          <OutcomeMessage Transcript="You’re incredibly smart and love studying the sciences.  You’re a lot like Isaac Newton!" />
+          <OutcomeMessage Transcript="A natural leader, you just love being in charge. You have a lot in common with Winston Churchill!" />
+        </OutcomeMessages>
+        <TiebreakOrder Transcript="B,A,C" />
+        <!-- Make the Transcript value blank if no Tiebreak Order is indicated in script, so that it looks like this: Transcript="" -->
+        <!-- Tie break order indicates the priority of outcome message to use when you have the same number of answers for a category -->
+      </Quiz>
+    </StoryInteraction>
+    <StoryInteraction StoryInteractionType="WordScrambler">
+      <DocumentPageNumber>176</DocumentPageNumber>
+      <Position>100, 20</Position>
+      <Scramble Clue="They don’t keep cats in this underground maze!" Answer="THE CATACOMBS" />
+      <!-- Clue value is taken from Intro, Answer value is taken from Answer in interaction script. -->
+      <Hint index="2,6,12" />
+      <!-- If clue letters are highlighted in the interaction script, replace the * with the number value of the character. So if the "i" in "pie" was highlighted it's number value would be "2". -->
+    </StoryInteraction>
+    <StoryInteraction StoryInteractionType="TitleTwister">
+      <!-- aka Word Twister -->
+      <DocumentPageNumber>194</DocumentPageNumber>
+      <Position>0,0</Position>
+      <BookTitle Phrase="FRENCH CHOCOLATE " />
+      <!-- Phrase value is taken from Keyword in interaction script -->
+      <Words Words="ENTEROCOCCAL, HENCEFORTH, CERECLOTH, CHLORACNE, CHOCOLATE, COCHLEATE, COETERNAL, COLCOTHAR, CONCEALER, CONCOCTER, FACECLOTH, OCHLOCRAT, TOLERANCE, TRACHEOLE, TROCHLEAE, ACCENTOR, ACROLECT, ANCHORET, ANETHOLE, CANCELER, CAROTENE, CATECHOL, CHELATOR, CHLORATE, CLARENCE, CLENCHER, COANCHOR, COCHLEAE, COCHLEAR, COCREATE, COFACTOR, COHERENT, COLOCATE, COLORANT, CONCERTO, CONCRETE, CONFLATE, CONFOCAL, CORELATE, CORONACH, CORONATE, ECOTONAL, ELECTRON, ENCROACH, ETHNARCH, FALCONER, FALCONET, FLETCHER, FLORENCE, FOOTRACE, HALFTONE, HOLOCENE, LEATHERN, OOTHECAE, OOTHECAL, REACCENT, RECLOTHE, RELOCATE, RHONCHAL, TROCHLEA, ACCRETE, ACETONE, ALTHORN, ANETHOL, ANOTHER, ARCHFOE, CALECHE, CAROCHE, CARTOON, CATCHER, CENACLE, CENTARE, CENTRAL, CHALONE, CHALOTH, CHANCEL, CHANCER, CHANCRE, CHANTER, CHANTOR, CHARNEL, CHEATER, CHEETAH, CHELATE, CHEROOT, CHOLATE, CHOLENT, CHOLERA, CHORALE, CHOREAL, CHORTEN, CHORTLE, CLEANER, COACHER, COACTOR, COCHLEA, COENACT, COERECT, CONCEAL, CONCERT, CONCHAE, CONCHAL, CONCOCT, CONFECT, CONTROL, COOLANT, CORACLE, CORANTO, CORNEAL, CORONAE, CORONAL, CORONEL, CORONET, CRENATE, CROCHET, EARTHEN, ECHELON, ECOTONE, ELECTOR, ELECTRO, ENACTOR, ENFORCE, ENTERAL, ENTHRAL, ETERNAL, ETHANOL, FEATHER, FETCHER, FLOATER, FOOTLER, FRONTAL, HALTERE, HATCHEL, HATCHER, HEARTEN, HEATHEN, HEATHER, HECTARE, HONOREE, LACTONE, LARCHEN, LEACHER, LEATHER, LECTERN, LETHEAN, LOATHER, LOCATER, LOCATOR, NOTCHER, OCHREAE, OCREATE, OCTANOL, OFTENER, OOTHECA, ORTOLAN, RACCOON, RATHOLE, RECHEAT, RECLEAN, REENACT, REFLATE, REFLECT, REFLOAT, RETEACH, TEACHER, TELERAN, TEREFAH, THEREOF, THEREON, TORCHON, TRACHLE, TRANCHE, TREACLE, TROCHAL, TROCHEE, ACCENT, ACHENE, AETHER, AFREET, AHCHOO, ANCHOR, ANTHER, ANTLER, ARCHON, AREOLE, ATONER, CACHET, CAHOOT, CANCEL, CANCER, CANOER, CANTER, CANTLE, CANTOR, CARCEL, CAREEN, CARNET, CAROCH, CARTEL, CARTON, CENOTE, CENTAL, CENTER, CENTRA, CENTRE, CERATE, CERCAL, CEREAL, CETANE, CHAFER, CHALEH, CHALET, CHALOT, CHANCE, CHEERO, CHELAE, CHETAH, CHOLER, CHORAL, CHOREA, CLARET, CLENCH, CLOCHE, CLONER, CLOTHE, COALER, COATEE, COATER, COCCAL, COERCE, COHERE, COHORT, COLONE, COLTER, CONCHA, CONCHO, CONFER, CONTRA, COOLER, COOLTH, COOTER, CORNEA, CORNEL, CORNET, CORONA, CRANCH, CRATCH, CRATON, CREATE, CRECHE, CRENEL, CREOLE, CROTCH, CROTON, ECARTE, ECHOER, ELATER, ENCORE, ENFACE, ENHALO, ENLACE, ENROOT, ENTERA, ETALON, ETCHER, ETHANE, FACETE, FACTOR, FALCON, FALTER, FATHER, FEATER, FENCER, FLACON, FLECHE, FLEECH, FLENCH, FLETCH, FLORAE, FLORET, FOETAL, FOETOR, FOLATE, FONTAL, FOOTER, FOOTLE, HAFTER, HALTER, HANTLE, HARLOT, HEALER, HEALTH, HEARTH, HEATER, HECTOR, HEFTER, HEREAT, HEREOF, HEREON, HERETO, HETERO, HONCHO, HOOFER, HOORAH, HOOTCH, HOOTER, HORNET, LANCER, LANCET, LATEEN, LATHER, LEANER, LEARNT, LECHER, LECTOR, LEFTER, LOAFER, LOANER, LOATHE, LOCATE, LOCHAN, LOFTER, LOOFAH, LOOTER, NEATER, NECTAR, NETHER, NOTHER, OCELOT, OCHONE, OCHREA, OCREAE, OCTANE, OLEATE, ORACHE, ORACLE, ORNATE, RACHET, RACOON, RANCHO, RATOON, RECANE, RECANT, RECENT, RECOAL, RECOAT, RECTAL, REECHO, REFACE, REFECT, REFELT, REFLET, REHEAT, RELACE, RELATE, RELENT, RELOAN, RENTAL, RETOOL, ROCHET, ROOTLE, ROTCHE, TANREC, TECHNO, TEFLON, TELFER, TENACE, TENREC, TERCEL, THALER, THECAE, THECAL, THENAL, THENAR, THENCE, THORON, THRONE, TOCHER, TOLANE, TOOLER, TRANCE, TREFAH, TRENCH, TROCHE, ACHOO, ACORN, ACTOR, AFOOT, AFORE, AFTER, ALERT, ALOFT, ALONE, ALOOF, ALTER, ALTHO, ANCHO, ANELE, ANOLE, ANTRE, ARENE, ARETE, ARTEL, ATONE, CACHE, CANER, CANOE, CANTO, CARET, CARLE, CAROL, CARTE, CATCH, CATER, CECAL, CENTO, CEORL, CHAFE, CHANT, CHARE, CHART, CHEAT, CHEER, CHELA, CHERT, CHETH, CHORE, CLACH, CLARO, CLEAN, CLEAR, CLEAT, CLEFT, CLONE, CLOOT, CLOTH, COACH, COACT, COCOA, COLON, COLOR, CONCH, CONTE, CONTO, COOEE, COOER, CORAL, COTAN, CRAFT, CRANE, CRATE, CREEL, CROFT, CRONE, CROON, EARTH, EATEN, EATER, ECLAT, ELATE, ELECT, ENACT, ENATE, ENROL, ENTER, ERECT, ETHER, FACER, FACET, FARCE, FARLE, FECAL, FELON, FENCE, FERAL, FETAL, FETCH, FETOR, FLARE, FLEER, FLEET, FLOAT, FLOOR, FLORA, FLOTA, FOCAL, FOEHN, FORCE, FORTE, FORTH, FRANC, FRENA, FRONT, FROTH, HALER, HALON, HANCE, HAOLE, HATCH, HATER, HEART, HEATH, HELOT, HENCE, HERON, HONER, HONOR, HOOCH, HORAH, HORAL, HOTCH, HOTEL, LACER, LANCE, LARCH, LAREE, LATCH, LATEN, LATER, LATHE, LEACH, LEANT, LEARN, LEECH, LENTO, LEONE, LETCH, LETHE, LOACH, LOATH, LONER, LOOFA, LORAN, LOTAH, NACHO, NACRE, NARCO, NATCH, NEATH, NEROL, NORTH, NOTAL, NOTCH, NOTER, OATEN, OATER, OCEAN, OCHER, OCHRE, OCREA, OCTAL, OCTAN, OFTEN, OFTER, ONCET, ORACH, ORATE, ORLON, ORTHO, OTHER, RACON, RANCE, RANCH, RANEE, RATCH, RATEL, RATHE, REACH, REACT, RECCE, RECON, RECTA, RECTO, REFEL, RELET, RENAL, RENTE, RETCH, ROACH, ROTCH, TACHE, TALER, TALON, TAROC, TEACH, TELAE, TELCO, TENCH, TENOR, TERCE, TERNE, THANE, THECA, THERE, THOLE, THORN, THORO, THREE, THROE, TOLAN, TOLAR, TONAL, TONER, TORAH, TORCH, TRACE, TREEN, TRONA, TRONE, ACHE, ACNE, ACRE, AEON, AERO, ALEC, ALEE, ALEF, ALOE, ALTO, ANTE, ARCH, ARCO, CAFE, CALF, CALO, CANE, CANT, CARE, CARL, CARN, CART, CATE, CECA, CELT, CENT, CERE, CERO, CETE, CHAO, CHAR, CHAT, CHEF, CHON, CLAN, CLEF, CLON, CLOT, COAL, COAT, COCA, COCO, COFT, COHO, COLA, COLE, COLT, CONE, COOF, COOL, COON, COOT, CORE, CORF, CORN, COTE, CROC, EACH, EARL, EARN, EATH, ECHE, ECHO, ECHT, ELAN, ENOL, ERNE, ETCH, ETNA, FACE, FACT, FANE, FANO, FARE, FARL, FARO, FART, FATE, FEAL, FEAR, FEAT, FEEL, FEET, FELT, FERE, FERN, FETA, FETE, FLAN, FLAT, FLEA, FLEE, FLOC, FLOE, FOAL, FOHN, FONT, FOOL, FOOT, FORA, FORE, FORT, FRAE, FRAT, FREE, FRET, FROE, HAEN, HAET, HAFT, HALE, HALF, HALO, HALT, HANT, HARE, HARL, HART, HATE, HATH, HEAL, HEAR, HEAT, HEEL, HEFT, HELO, HENT, HERE, HERL, HERN, HERO, HETH, HOAR, HOER, HOLE, HOLT, HONE, HOOF, HOOT, HORA, HORN, LACE, LANE, LATE, LATH, LEAF, LEAN, LEAR, LECH, LEER, LEET, LEFT, LEHR, LENO, LENT, LOAF, LOAN, LOCA, LOCH, LOCO, LOFT, LONE, LOOF, LOON, LOOT, LORE, LORN, LOTA, LOTH, NARC, NEAR, NEAT, NOEL, NOLO, NOTA, NOTE, OATH, OLEA, OLEO, ONCE, ONTO, ORAL, ORCA, ORLE, RACE, RAFT, RALE, RANT, RATE, RATH, RATO, REAL, REEF, REEL, REFT, RENT, RETE, RHEA, ROAN, ROLE, ROLF, ROOF, ROOT, ROTA, ROTE, ROTL, ROTO, TACE, TACH, TACO, TAEL, TAHR, TALC, TALE, TARE, TARN, TARO, TEAL, TEAR, TECH, TEEL, TEEN, TELA, TELE, TERN, THAE, THAN, THEE, THEN, THRO, TOEA, TOLA, TOLE, TONE, TOOL, TOON, TORA, TORC, TORE, TORN, TORO, TREE, TREF, ACE, ACT, AFT, ALE, ALT, ANE, ANT, ARC, ARE, ARF, ART, ATE, CAN, CAR, CAT, CEE, CEL, COL, CON, COO, COR, COT, EAR, EAT, EEL, EFT, ELF, EON, ERA, ERE, ERN, ETA, ETH, FAN, FAR, FAT, FEE, FEH, FEN, FER, FET, FOE, FOH, FON, FOR, FRO, HAE, HAH, HAO, HAT, HEH, HEN, HER, HET, HOE, HON, HOT, LAC, LAR, LAT, LEA, LEE, LET, LOO, LOT, NAE, NAH, NEE, NET, NOH, NOO, NOR, NOT, NTH, OAF, OAR, OAT, OCA, OFT, OHO, OLE, ONE, ONO, OOH, OOT, ORA, ORC, ORE, ORT, RAH, RAN, RAT, REC, REE, REF, RET, RHO, ROC, ROE, ROT, TAE, TAN, TAO, TAR, TEA, TEE, TEL, TEN, THE, THO, TOE, TON, TOO, TOR, AE, AH, AL, AN, AR, AT, EF, EH, EL, EN, ER, ET, FA, FE, HA, HE, HO, LA, LO, NA, NE, NO, OE, OF, OH, ON, OR, RE, TA" />
+      <!-- Words values are taken from Valid Answers in interaction script. Each word should be comma seperated. These lists can be very long! Make sure there are no line breaks when pasting the words in. -->
+    </StoryInteraction>
+    <StoryInteraction StoryInteractionType="CardCollection" ID="cc">
+      <DocumentPageNumber>228</DocumentPageNumber>
+      <Position>0,0</Position>
+      <header src="cc_header.png" />
+      <Cards>
+        <Card srcfront="cc_card1front.png" srcback="cc_card1back.png" />
+        <Card srcfront="cc_card2front.png" srcback="cc_card2back.png" />
+        <Card srcfront="cc_card3front.png" srcback="cc_card3back.png" />
+        <Card srcfront="cc_card4front.png" srcback="cc_card4back.png" />
+        <Card srcfront="cc_card5front.png" srcback="cc_card5back.png" />
+        <Card srcfront="cc_card6front.png" srcback="cc_card6back.png" />
+        <Card srcfront="cc_card7front.png" srcback="cc_card7back.png" />
+        <Card srcfront="cc_card8front.png" srcback="cc_card8back.png" />
+      </Cards>
+    </StoryInteraction>
+  </StoryInteractions>
+</SIConfigFile>
