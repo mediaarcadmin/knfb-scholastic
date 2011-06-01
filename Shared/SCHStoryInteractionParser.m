@@ -431,7 +431,7 @@ static NSString *attribute(const XML_Char **atts, const char *key)
         self.bookTitle = attribute(attributes, "Phrase");
     } else if (strcmp(name, "Words") == 0) {
         NSArray *words = [attribute(attributes, "Words") componentsSeparatedByString:@","];
-        NSMutableArray *trimmedWords = [NSMutableArray arrayWithCapacity:[words count]];
+        NSMutableArray *trimmedWords = [[NSMutableArray alloc] initWithCapacity:[words count]];
         NSCharacterSet *whitespaceAndNewline = [NSCharacterSet whitespaceAndNewlineCharacterSet];
         for (NSString *word in words) {
             NSString *trimmedWord = [word stringByTrimmingCharactersInSet:whitespaceAndNewline];
@@ -440,6 +440,7 @@ static NSString *attribute(const XML_Char **atts, const char *key)
             }
         }
         self.words = [NSArray arrayWithArray:trimmedWords];
+        [trimmedWords release];
     } else {
         [super startElement:name attributes:attributes parser:parser];
     }
@@ -541,18 +542,26 @@ static NSString *attribute(const XML_Char **atts, const char *key)
 
 @end
 
-#pragma mark -
+#pragma mark - Word Scrambler
 
 @implementation SCHStoryInteractionWordScrambler (Parse)
 
 - (void)startElement:(const XML_Char *)name attributes:(const XML_Char **)attributes parser:(SCHStoryInteractionParser *)parser
 {
-    
-}
-
-- (void)endElement:(const XML_Char *)name parser:(SCHStoryInteractionParser *)parser
-{
-    
+    if (strcmp(name, "Scramble") == 0) {
+        self.clue = attribute(attributes, "Clue");
+        self.answer = attribute(attributes, "Answer");
+    } else if (strcmp(name, "Hint") == 0) {
+        NSArray *hints = [attribute(attributes, "index") componentsSeparatedByString:@","];
+        NSMutableArray *hintNumbers = [[NSMutableArray alloc] initWithCapacity:[hints count]];
+        for (NSString *hint in hints) {
+            [hintNumbers addObject:[NSNumber numberWithInteger:[hint integerValue]]];
+        }
+        self.hintIndices = [NSArray arrayWithArray:hintNumbers];
+        [hintNumbers release];
+    } else {
+        [super startElement:name attributes:attributes parser:parser];
+    }
 }
 
 @end

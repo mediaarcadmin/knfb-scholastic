@@ -18,6 +18,7 @@
 #import "SCHStoryInteractionTitleTwister.h"
 #import "SCHStoryInteractionWhoSaidIt.h"
 #import "SCHStoryInteractionWordMatch.h"
+#import "SCHStoryInteractionWordScrambler.h"
 
 @interface SCHStoryInteractionParserTests : SenTestCase {}
 @property (nonatomic, retain) SCHStoryInteractionParser *parser;
@@ -422,6 +423,23 @@
             STAssertEqualObjects([[item audioPath] lastPathComponent], audioPath, @"incorrect audio path for item %d of question %d", j+1, i+1);
         }  
     }
+}
+
+- (void)testWordScrambler1
+{
+    NSArray *stories = [self parse:@"WordScrambler1"];
+    STAssertEquals([stories count], 1U, @"incorrect story count");
+    STAssertTrue([[stories lastObject] isKindOfClass:[SCHStoryInteractionWordScrambler class]], @"incorrect class");
+    
+    SCHStoryInteractionWordScrambler *story = [stories lastObject];
+    STAssertEquals(story.documentPageNumber, 26, @"incorrect documentPageNumber");
+    STAssertTrue(CGPointEqualToPoint(story.position, CGPointMake(100, 20)), @"incorrect position");
+    
+    STAssertEqualObjects(story.clue, @"Lindy and I are going to perform shows at parties!", @"incorrect clue");
+    STAssertEqualObjects(story.answer, @"SLAPPY", @"incorrect answer");
+    
+    NSArray *expectedHints = [NSArray arrayWithObjects:[NSNumber numberWithInteger:4], [NSNumber numberWithInteger:6], nil];
+    STAssertEqualObjects(story.hintIndices, expectedHints, @"incorrect hint indices");
 }
 
 @end
