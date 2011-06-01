@@ -72,6 +72,10 @@
 		28A60EED139657890090853E /* StoryInteractionWordScrambler1.xml in Resources */ = {isa = PBXBuildFile; fileRef = 28A60EEC139657890090853E /* StoryInteractionWordScrambler1.xml */; };
 		28A60EEF139666900090853E /* StoryInteractionWordSearch1.xml in Resources */ = {isa = PBXBuildFile; fileRef = 28A60EEE139666900090853E /* StoryInteractionWordSearch1.xml */; };
 		28A60EF113966DC30090853E /* StoryInteractionMultipleChoicePicture1.xml in Resources */ = {isa = PBXBuildFile; fileRef = 28A60EF013966DC20090853E /* StoryInteractionMultipleChoicePicture1.xml */; };
+		28A60EF41396713D0090853E /* SCHStoryInteractionSequencing.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A60EF31396713C0090853E /* SCHStoryInteractionSequencing.m */; };
+		28A60EF51396713D0090853E /* SCHStoryInteractionSequencing.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A60EF31396713C0090853E /* SCHStoryInteractionSequencing.m */; };
+		28A60EF61396713D0090853E /* SCHStoryInteractionSequencing.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A60EF31396713C0090853E /* SCHStoryInteractionSequencing.m */; };
+		28A60EF8139672930090853E /* StoryInteractionSequencing1.xml in Resources */ = {isa = PBXBuildFile; fileRef = 28A60EF7139672930090853E /* StoryInteractionSequencing1.xml */; };
 		28AD733F0D9D9553002E5188 /* MainWindow_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow_iPad.xib */; };
 		28EEBFDD1118E19E00187D67 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28EEBFDC1118E19E00187D67 /* CoreData.framework */; };
 		28EEC04B1118E28000187D67 /* AppDelegate_Shared.m in Sources */ = {isa = PBXBuildFile; fileRef = 28EEC04A1118E28000187D67 /* AppDelegate_Shared.m */; };
@@ -1032,6 +1036,9 @@
 		28A60EEC139657890090853E /* StoryInteractionWordScrambler1.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = StoryInteractionWordScrambler1.xml; sourceTree = "<group>"; };
 		28A60EEE139666900090853E /* StoryInteractionWordSearch1.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = StoryInteractionWordSearch1.xml; sourceTree = "<group>"; };
 		28A60EF013966DC20090853E /* StoryInteractionMultipleChoicePicture1.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = StoryInteractionMultipleChoicePicture1.xml; sourceTree = "<group>"; };
+		28A60EF21396713B0090853E /* SCHStoryInteractionSequencing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionSequencing.h; sourceTree = "<group>"; };
+		28A60EF31396713C0090853E /* SCHStoryInteractionSequencing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionSequencing.m; sourceTree = "<group>"; };
+		28A60EF7139672930090853E /* StoryInteractionSequencing1.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = StoryInteractionSequencing1.xml; sourceTree = "<group>"; };
 		28AD733E0D9D9553002E5188 /* MainWindow_iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MainWindow_iPad.xib; path = iPad/MainWindow_iPad.xib; sourceTree = "<group>"; };
 		28EEBFDC1118E19E00187D67 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		28EEC0491118E28000187D67 /* AppDelegate_Shared.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate_Shared.h; path = Shared/AppDelegate_Shared.h; sourceTree = "<group>"; };
@@ -1928,6 +1935,8 @@
 				28A08CCF13950C01006FD008 /* SCHStoryInteractionPopQuiz.m */,
 				28A08CD013950C01006FD008 /* SCHStoryInteractionScratchAndSee.h */,
 				28A08CD113950C01006FD008 /* SCHStoryInteractionScratchAndSee.m */,
+				28A60EF21396713B0090853E /* SCHStoryInteractionSequencing.h */,
+				28A60EF31396713C0090853E /* SCHStoryInteractionSequencing.m */,
 				28A08CD213950C01006FD008 /* SCHStoryInteractionStartingLetter.h */,
 				28A08CD313950C01006FD008 /* SCHStoryInteractionStartingLetter.m */,
 				28A08CD413950C01006FD008 /* SCHStoryInteractionTitleTwister.h */,
@@ -1966,6 +1975,7 @@
 				28A60EF013966DC20090853E /* StoryInteractionMultipleChoicePicture1.xml */,
 				2891B71F13954804005FC4DD /* StoryInteractionPopQuiz1.xml */,
 				2891B72113954CDC005FC4DD /* StoryInteractionScratchAndSee1.xml */,
+				28A60EF7139672930090853E /* StoryInteractionSequencing1.xml */,
 				28A60EE4139647410090853E /* StoryInteractionStartingLetter1.xml */,
 				28A60EE6139649580090853E /* StoryInteractionTitleTwister1.xml */,
 				28A60EE813964CCC0090853E /* StoryInteractionWhoSaidIt1.xml */,
@@ -3735,6 +3745,7 @@
 				28A60EED139657890090853E /* StoryInteractionWordScrambler1.xml in Resources */,
 				28A60EEF139666900090853E /* StoryInteractionWordSearch1.xml in Resources */,
 				28A60EF113966DC30090853E /* StoryInteractionMultipleChoicePicture1.xml in Resources */,
+				28A60EF8139672930090853E /* StoryInteractionSequencing1.xml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4173,6 +4184,7 @@
 				C9722BFE1393AAD0008605E8 /* UIImage+BlioAdditions.m in Sources */,
 				F85C8CF71394FC42008DD042 /* SCHNotesCountView.m in Sources */,
 				28A60EDF139622FB0090853E /* SCHStoryInteractionAboutYouQuiz.m in Sources */,
+				28A60EF41396713D0090853E /* SCHStoryInteractionSequencing.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4194,6 +4206,7 @@
 				28A08D1A13953046006FD008 /* SCHStoryInteractionWordScrambler.m in Sources */,
 				28A08D1B13953049006FD008 /* SCHStoryInteractionWordSearch.m in Sources */,
 				28A60EE1139622FB0090853E /* SCHStoryInteractionAboutYouQuiz.m in Sources */,
+				28A60EF61396713D0090853E /* SCHStoryInteractionSequencing.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4392,6 +4405,7 @@
 				C9722BFF1393AAD0008605E8 /* UIImage+BlioAdditions.m in Sources */,
 				F85C8CF81394FC42008DD042 /* SCHNotesCountView.m in Sources */,
 				28A60EE0139622FB0090853E /* SCHStoryInteractionAboutYouQuiz.m in Sources */,
+				28A60EF51396713D0090853E /* SCHStoryInteractionSequencing.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

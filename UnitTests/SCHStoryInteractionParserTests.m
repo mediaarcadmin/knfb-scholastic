@@ -14,6 +14,7 @@
 #import "SCHStoryInteractionMultipleChoice.h"
 #import "SCHStoryInteractionPopQuiz.h"
 #import "SCHStoryInteractionScratchAndSee.h"
+#import "SCHStoryInteractionSequencing.h"
 #import "SCHStoryInteractionStartingLetter.h"
 #import "SCHStoryInteractionTitleTwister.h"
 #import "SCHStoryInteractionWhoSaidIt.h"
@@ -309,6 +310,26 @@
             NSString *audioPath = [NSString stringWithFormat:@"ss1_q%da%d.mp3", i+1, j+1];
             STAssertEqualObjects([[q audioPathForAnswerAtIndex:j] lastPathComponent], audioPath, @"incorrect audioPath for question %d answer %d", i+1, j+1);
         }
+    }
+}
+
+- (void)testSequencing1
+{
+    NSArray *stories = [self parse:@"Sequencing1"];
+    STAssertEquals([stories count], 1U, @"incorrect story count");
+    STAssertTrue([[stories lastObject] isKindOfClass:[SCHStoryInteractionSequencing class]], @"incorrect class");
+    
+    SCHStoryInteractionSequencing *story = [stories lastObject];
+    STAssertEquals(story.documentPageNumber, 34, @"incorrect documentPageNumber");
+    STAssertTrue(CGPointEqualToPoint(story.position, CGPointMake(188, 50)), @"incorrect position");
+    
+    STAssertEquals([story numberOfImages], 3, @"incorrect image count");
+    for (int i = 0; i < [story numberOfImages]; ++i) {
+        NSString *imageFilename = [NSString stringWithFormat:@"se1_img%d.png", i+1];
+        STAssertEqualObjects([[story imagePathForIndex:i] lastPathComponent], imageFilename, @"incorrect filename for image %d", i+1);
+        
+        NSString *audioFilename = [NSString stringWithFormat:@"se1_ca%d.mp3", i+1];
+        STAssertEqualObjects([[story audioPathForCorrectAnswerAtIndex:i] lastPathComponent], audioFilename, @"incorrect filename for audio %d", i+1);
     }
 }
 
