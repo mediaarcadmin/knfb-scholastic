@@ -433,7 +433,6 @@
     if ([keyPath isEqualToString:@"trackingStage"]) {
         switch (self.selector.trackingStage) {
             case EucSelectorTrackingStageNone:
-                NSLog(@"No word.");
                 if (self.currentSelectorRange != nil) {
                     [self selectorDismissedWithSelection:self.currentSelectorRange];
                 }
@@ -445,8 +444,8 @@
                 
                 if (self.singleWordSelectorRange != self.selector.selectedRange) {
                 
-                    NSLog(@"Current range : %@ %@ %@ %@", self.singleWordSelectorRange.startBlockId, self.singleWordSelectorRange.startElementId, self.singleWordSelectorRange.endBlockId, self.singleWordSelectorRange.endElementId);
-                    NSLog(@"selected range: %@ %@ %@ %@",      self.selector.selectedRange.startBlockId, self.selector.selectedRange.startElementId, self.selector.selectedRange.endBlockId, self.selector.selectedRange.endElementId);
+//                    NSLog(@"Current range : %@ %@ %@ %@", self.singleWordSelectorRange.startBlockId, self.singleWordSelectorRange.startElementId, self.singleWordSelectorRange.endBlockId, self.singleWordSelectorRange.endElementId);
+//                    NSLog(@"selected range: %@ %@ %@ %@",      self.selector.selectedRange.startBlockId, self.selector.selectedRange.startElementId, self.selector.selectedRange.endBlockId, self.selector.selectedRange.endElementId);
                     if ([[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryProcessingState] == SCHDictionaryProcessingStateReady) {
                         
                         SCHBookRange *bookRange = [self bookRangeFromSelectorRange:self.selector.selectedRange];

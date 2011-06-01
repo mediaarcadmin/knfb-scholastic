@@ -1237,7 +1237,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (void)toggleToolbarVisibility
 {
-	NSLog(@"Toggling visibility.");
+//	NSLog(@"Toggling visibility.");
 	[self setToolbarVisibility:!self.toolbarsVisible animated:YES];
 }
 

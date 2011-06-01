@@ -366,8 +366,6 @@ static SCHDictionaryAccessManager *sharedManager = nil;
                                      cssText,
                                      [resultWithNewHead substringFromIndex:headEnd.location]];
     
-    NSLog(@"Resulting string: %@", resultWithAdditions);
-    
     return resultWithAdditions;
 }
 
