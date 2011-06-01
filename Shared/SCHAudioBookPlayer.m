@@ -83,7 +83,9 @@ static NSUInteger const kSCHAudioBookPlayerNoAudioLoaded = NSUIntegerMax;
 #pragma mark - methods
 
 - (BOOL)prepareAudio:(NSArray *)setAudioBookReferences 
-                error:(NSError **)outError wordBlock:(WordBlock)wordBlock {
+               error:(NSError **)outError 
+           wordBlock:(WordBlock)wordBlock 
+       pageTurnBlock:(PageTurnBlock)pageTurnBlock {
     BOOL ret = NO;
     
     if (setAudioBookReferences != nil && [setAudioBookReferences count] > 0) {
