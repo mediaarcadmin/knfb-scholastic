@@ -487,18 +487,56 @@ static NSString *attribute(const XML_Char **atts, const char *key)
 
 @end
 
-#pragma mark -
+#pragma mark - WordMatch
+
+@implementation SCHStoryInteractionWordMatchQuestion (Parse)
+
+- (void)startElement:(const XML_Char *)name attributes:(const XML_Char **)attributes parser:(SCHStoryInteractionParser *)parser
+{
+    if (strcmp(name, "Statement") == 0) {
+        SCHStoryInteractionWordMatchQuestionItem *item = [[SCHStoryInteractionWordMatchQuestionItem alloc] init];
+        item.storyInteraction = parser.story;
+        item.text = attribute(attributes, "Transcript");
+        item.uniqueObjectName = attribute(attributes, "suffix");
+        [parser.answers addObject:item];
+        [item release];
+    }
+}
+
+- (void)endElement:(const XML_Char *)name parser:(SCHStoryInteractionParser *)parser
+{
+    if (strcmp(name, "Question1") == 0 || strcmp(name, "Question2") == 0 || strcmp(name, "Question3") == 0) {
+        [parser endQuestion];
+    } else {
+        [super endElement:name parser:parser];
+    }
+}
+
+- (void)parseComplete:(SCHStoryInteractionParser *)parser
+{
+    self.items = [NSArray arrayWithArray:parser.answers];
+    [super parseComplete:parser];
+}
+
+@end
 
 @implementation SCHStoryInteractionWordMatch (Parse)
 
 - (void)startElement:(const XML_Char *)name attributes:(const XML_Char **)attributes parser:(SCHStoryInteractionParser *)parser
 {
-    
+    if (strcmp(name, "Introduction") == 0) {
+        self.introduction = attribute(attributes, "Transcript");
+    } else if (strcmp(name, "Question1") == 0 || strcmp(name, "Question2") == 0 || strcmp(name, "Question3") == 0) {
+        [parser beginQuestion:[SCHStoryInteractionWordMatchQuestion class]];
+    } else {
+        [super startElement:name attributes:attributes parser:parser];
+    }
 }
 
-- (void)endElement:(const XML_Char *)name parser:(SCHStoryInteractionParser *)parser
+- (void)parseComplete:(SCHStoryInteractionParser *)parser
 {
-    
+    self.questions = [NSArray arrayWithArray:parser.questions];
+    [super parseComplete:parser];
 }
 
 @end

@@ -17,6 +17,7 @@
 #import "SCHStoryInteractionStartingLetter.h"
 #import "SCHStoryInteractionTitleTwister.h"
 #import "SCHStoryInteractionWhoSaidIt.h"
+#import "SCHStoryInteractionWordMatch.h"
 
 @interface SCHStoryInteractionParserTests : SenTestCase {}
 @property (nonatomic, retain) SCHStoryInteractionParser *parser;
@@ -361,6 +362,65 @@
         SCHStoryInteractionWhoSaidItStatement *s = [story.statements objectAtIndex:i];
         STAssertEqualObjects(s.source, expect[i].source, @"incorrect source for statement %d", i+1);
         STAssertEqualObjects(s.text, expect[i].statement, @"incorrect text for statement %d", i+1);
+    }
+}
+
+- (void)testWordMatch1
+{
+    NSArray *stories = [self parse:@"WordMatch1"];
+    STAssertEquals([stories count], 1U, @"incorrect story count");
+    STAssertTrue([[stories lastObject] isKindOfClass:[SCHStoryInteractionWordMatch class]], @"incorrect class");
+    
+    SCHStoryInteractionWordMatch *story = [stories lastObject];
+    STAssertEquals(story.documentPageNumber, 8, @"incorrect documentPageNumber");
+    STAssertTrue(CGPointEqualToPoint(story.position, CGPointMake(450, 50)), @"incorrect position");
+    
+    STAssertEqualObjects(story.introduction, @"Match the the words with the pictures below.", @"incorrect introduction");
+
+    struct item {
+        NSString *text;
+        NSString *suffix;
+    };
+    struct item q1items[] = {
+        { @"Sit", @"sit" },
+        { @"Eat", @"eat" },
+        { @"Run", @"run" }
+    };
+    struct item q2items[] = {
+        { @"Shake", @"shake" },
+        { @"Sleep", @"sleep" },
+        { @"Stand", @"stand" },
+    };
+    struct item q3items[] = {
+        { @"Skate", @"skate" },
+        { @"Type", @"type" },
+        { @"Knit", @"knit" }
+    };
+    struct {
+        struct item *items;
+        NSUInteger count;
+    } expect[] = {
+        { q1items, sizeof(q1items)/sizeof(q1items[0]) },
+        { q2items, sizeof(q2items)/sizeof(q2items[0]) },
+        { q3items, sizeof(q3items)/sizeof(q3items[0]) },
+    };
+    NSUInteger expectQuestionCount = sizeof(expect)/sizeof(expect[0]);
+    
+    STAssertEquals([story.questions count], expectQuestionCount, @"incorrect question count");
+    for (NSUInteger i = 0; i < MIN([story.questions count], expectQuestionCount); ++i) {
+        SCHStoryInteractionWordMatchQuestion *q = [story.questions objectAtIndex:i];
+        STAssertEquals([q.items count], expect[i].count, @"incorrect item count for question %d", i+1);
+        
+        for (NSUInteger j = 0; j < MIN([q.items count], expect[i].count); ++j) {
+            SCHStoryInteractionWordMatchQuestionItem *item = [q.items objectAtIndex:j];
+            STAssertEqualObjects(item.text, expect[i].items[j].text, @"incorrect text for item %d of question %d", j+1, i+1);
+            
+            NSString *imagePath = [NSString stringWithFormat:@"wm1_%@.png", expect[i].items[j].suffix];
+            STAssertEqualObjects([[item imagePath] lastPathComponent], imagePath, @"incorrect image path for item %d of question %d", j+1, i+1);
+
+            NSString *audioPath = [NSString stringWithFormat:@"wm1_%@.mp3", expect[i].items[j].suffix];
+            STAssertEqualObjects([[item audioPath] lastPathComponent], audioPath, @"incorrect audio path for item %d of question %d", j+1, i+1);
+        }  
     }
 }
 

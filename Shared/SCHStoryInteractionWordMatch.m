@@ -8,21 +8,45 @@
 
 #import "SCHStoryInteractionWordMatch.h"
 
-#pragma mark - SCHStoryInteractionWordMatchQuestion
+#pragma mark - SCHStoryInteractionWordMatchQuestionItem
 
-@implementation SCHStoryInteractionWordMatchQuestion
+@implementation SCHStoryInteractionWordMatchQuestionItem
 
+@synthesize storyInteraction;
 @synthesize text;
+@synthesize uniqueObjectName;
 
 - (void)dealloc
 {
     [text release];
+    [uniqueObjectName release];
     [super dealloc];
 }
 
-- (UIImage *)image
+- (NSString *)imagePath
 {
-    return nil;
+    NSString *filename = [NSString stringWithFormat:@"%@_%@.png", self.storyInteraction.ID, self.uniqueObjectName];
+    return [[SCHStoryInteraction resourcesPath] stringByAppendingPathComponent:filename];        
+}
+
+- (NSString *)audioPath
+{
+    NSString *filename = [NSString stringWithFormat:@"%@_%@.mp3", self.storyInteraction.ID, self.uniqueObjectName];
+    return [[SCHStoryInteraction resourcesPath] stringByAppendingPathComponent:filename];        
+}
+
+@end
+
+#pragma mark - SCHStoryInteractionWordMatchQuestion
+
+@implementation SCHStoryInteractionWordMatchQuestion
+
+@synthesize items;
+
+- (void)dealloc
+{
+    [items release];
+    [super dealloc];
 }
 
 @end
