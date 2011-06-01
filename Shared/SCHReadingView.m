@@ -295,12 +295,14 @@
     }    
 }
 
+- (void)dismissFollowAlongHighlighter {}
+
 - (void)followAlongHighlightWordAtPoint:(SCHBookPoint *)bookPoint {}
 
 - (void)followAlongHighlightWordForLayoutPage:(NSUInteger)layoutPage pageWordOffset:(NSUInteger)pageWordOffset
 {
     SCHBookPoint *pointToHighlight = [self bookPointForLayoutPage:layoutPage pageWordOffset:pageWordOffset];
-    [self performSelectorOnMainThread:@selector(followAlongHighlightWordAtPoint:) withObject:pointToHighlight waitUntilDone:NO];
+    [self followAlongHighlightWordAtPoint:pointToHighlight];
 }
 
 - (SCHBookRange *)bookRangeForHighlight:(SCHHighlight *)highlight
