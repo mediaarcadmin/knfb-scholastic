@@ -382,16 +382,41 @@ static NSString *attribute(const XML_Char **atts, const char *key)
 
 #pragma mark - StartingLetter
 
+@implementation SCHStoryInteractionStartingLetterQuestion (Parse)
+
+- (void)startElement:(const XML_Char *)name attributes:(const XML_Char **)attributes parser:(SCHStoryInteractionParser *)parser
+{
+    if (strcmp(name, "Answer") == 0) {
+        self.uniqueObjectName = attribute(attributes, "suffix");
+        self.isCorrect = [[attribute(attributes, "IsCorrect") lowercaseString] isEqualToString:@"true"];
+    } else {
+        [super startElement:name attributes:attributes parser:parser];
+    }
+}
+
+@end
+
 @implementation SCHStoryInteractionStartingLetter (Parse)
 
 - (void)startElement:(const XML_Char *)name attributes:(const XML_Char **)attributes parser:(SCHStoryInteractionParser *)parser
 {
-    
+    if (strcmp(name, "QuestionPrompt") == 0) {
+        self.prompt = attribute(attributes, "Transcript");
+    } else if (strcmp(name, "StartingLetter") == 0) {
+        self.startingLetter = attribute(attributes, "Character");
+    } else if (strcmp(name, "Answer") == 0) {
+        [parser beginQuestion:[SCHStoryInteractionStartingLetterQuestion class]];
+        [parser.question startElement:name attributes:attributes parser:parser];
+        [parser endQuestion];
+    } else {
+        [super startElement:name attributes:attributes parser:parser];
+    }
 }
 
-- (void)endElement:(const XML_Char *)name parser:(SCHStoryInteractionParser *)parser
+- (void)parseComplete:(SCHStoryInteractionParser *)parser
 {
-    
+    self.questions = [NSArray arrayWithArray:parser.questions];
+    [super parseComplete:parser];
 }
 
 @end

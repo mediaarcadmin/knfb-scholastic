@@ -8,20 +8,29 @@
 
 #import "SCHStoryInteractionStartingLetter.h"
 
-#pragma mark - SCHStoryInteractionStartingLetterAnswer
+#pragma mark - SCHStoryInteractionStartingLetterQuestion
 
-@implementation SCHStoryInteractionStartingLetterAnswer
+@implementation SCHStoryInteractionStartingLetterQuestion
 
 @synthesize isCorrect;
+@synthesize uniqueObjectName;
 
 - (void)dealloc
 {
+    [uniqueObjectName release];
     [super dealloc];
 }
 
-- (UIImage *)image
+- (NSString *)imagePath
 {
-    return nil;
+    NSString *filename = [NSString stringWithFormat:@"%@_%@.png", self.storyInteraction.ID, self.uniqueObjectName];
+    return [[SCHStoryInteraction resourcesPath] stringByAppendingPathComponent:filename];    
+}
+
+- (NSString *)audioPath
+{
+    NSString *filename = [NSString stringWithFormat:@"%@_%@.mp3", self.storyInteraction.ID, self.uniqueObjectName];
+    return [[SCHStoryInteraction resourcesPath] stringByAppendingPathComponent:filename];    
 }
 
 @end
@@ -32,13 +41,13 @@
 
 @synthesize prompt;
 @synthesize startingLetter;
-@synthesize answers;
+@synthesize questions;
 
 - (void)dealloc
 {
     [prompt release];
     [startingLetter release];
-    [answers release];
+    [questions release];
     [super dealloc];
 }
 

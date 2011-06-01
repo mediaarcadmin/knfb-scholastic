@@ -9,20 +9,27 @@
 #import <Foundation/Foundation.h>
 #import "SCHStoryInteraction.h"
 
-@interface SCHStoryInteractionStartingLetterAnswer : SCHStoryInteractionQuestion {}
+@interface SCHStoryInteractionStartingLetterQuestion : SCHStoryInteractionQuestion {}
 
-@property (nonatomic, readonly) UIImage *image;
-@property (nonatomic, readonly) BOOL isCorrect;
+@property (nonatomic, assign) BOOL isCorrect;
+
+@property (nonatomic, retain) NSString *uniqueObjectName;
+
+// XPSProvider-relative path for question image
+- (NSString *)imagePath;
+
+// XPSProvider-relative path for question audio
+- (NSString *)audioPath;
 
 @end
 
 
 @interface SCHStoryInteractionStartingLetter : SCHStoryInteraction {}
 
-@property (nonatomic, readonly) NSString *prompt;
-@property (nonatomic, readonly) NSString *startingLetter;
+@property (nonatomic, retain) NSString *prompt;
+@property (nonatomic, retain) NSString *startingLetter;
 
-// array of SCHStoryInteractionStartingLetterAnswer
-@property (nonatomic, readonly) NSArray *answers;
+// array of SCHStoryInteractionStartingLetterQuestion
+@property (nonatomic, retain) NSArray *questions;
 
 @end

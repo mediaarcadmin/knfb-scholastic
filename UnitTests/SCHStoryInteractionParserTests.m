@@ -14,6 +14,7 @@
 #import "SCHStoryInteractionMultipleChoice.h"
 #import "SCHStoryInteractionPopQuiz.h"
 #import "SCHStoryInteractionScratchAndSee.h"
+#import "SCHStoryInteractionStartingLetter.h"
 
 @interface SCHStoryInteractionParserTests : SenTestCase {}
 @property (nonatomic, retain) SCHStoryInteractionParser *parser;
@@ -256,6 +257,46 @@
             NSString *audioPath = [NSString stringWithFormat:@"ss1_q%da%d.mp3", i+1, j+1];
             STAssertEqualObjects([[q audioPathForAnswerAtIndex:j] lastPathComponent], audioPath, @"incorrect audioPath for question %d answer %d", i+1, j+1);
         }
+    }
+}
+
+- (void)testStartingLetter1
+{
+    NSArray *stories = [self parse:@"StartingLetter1"];
+    STAssertEquals([stories count], 1U, @"incorrect story count");
+    STAssertTrue([[stories lastObject] isKindOfClass:[SCHStoryInteractionStartingLetter class]], @"incorrect class");
+    
+    SCHStoryInteractionStartingLetter *story = [stories lastObject];
+    STAssertEquals(story.documentPageNumber, 24, @"incorrect documentPageNumber");
+    STAssertTrue(CGPointEqualToPoint(story.position, CGPointMake(180, 50)), @"incorrect position");
+    
+    STAssertEqualObjects(story.prompt, @"Computer starts with C. Find three more things that start with the letter C.", @"incorrect prompt");
+    STAssertEqualObjects(story.startingLetter, @"C", @"incorrect starting letter");
+    
+    struct {
+        NSString *suffix;
+        BOOL isCorrect;
+    } expect[] = {
+        { @"book", NO },
+        { @"skates", NO },
+        { @"television", NO },
+        { @"pot", NO },
+        { @"cookies", YES },
+        { @"tree", NO },
+        { @"bowl", NO },
+        { @"cat", YES },
+        { @"chicken", YES }
+    };
+    NSUInteger expectCount = sizeof(expect)/sizeof(expect[0]);
+    
+    STAssertEquals([story.questions count], expectCount, @"incorrect number of questions");
+    for (NSUInteger i = 0; i < MIN([story.questions count], expectCount); ++i) {
+        SCHStoryInteractionStartingLetterQuestion *q = [story.questions objectAtIndex:i];
+        STAssertEquals(q.isCorrect, expect[i].isCorrect, @"incorrect correct flag for question %d", i+1);
+        NSString *imageFilename = [NSString stringWithFormat:@"sl1_%@.png", expect[i].suffix];
+        NSString *audioFilename = [NSString stringWithFormat:@"sl1_%@.mp3", expect[i].suffix];
+        STAssertEqualObjects([[q imagePath] lastPathComponent], imageFilename, @"incorrect image filename for question %d", i+1);
+        STAssertEqualObjects([[q audioPath] lastPathComponent], audioFilename, @"incorrect audio filename for question %d", i+1);
     }
 }
 
