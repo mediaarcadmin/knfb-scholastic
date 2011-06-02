@@ -891,8 +891,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     SCHBookAnnotations *annotations = [self.profile annotationsForBook:self.isbn];
     
     if (annotations != nil) {
-        SCHHighlight *newHighlight = [annotations createHighlightBetweenStartPage:startPage startWord:startWord endPage:endPage endWord:endWord color:[self highlightColor]];
-        [annotations addHighlight:newHighlight];
+        [annotations createHighlightBetweenStartPage:startPage startWord:startWord endPage:endPage endWord:endWord color:[self highlightColor]];
     }
 }
 
