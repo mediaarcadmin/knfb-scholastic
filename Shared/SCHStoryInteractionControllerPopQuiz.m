@@ -8,19 +8,21 @@
 
 #import "SCHStoryInteractionControllerPopQuiz.h"
 #import "SCHStoryInteractionPopQuiz.h"
+#import "SCHStoryInteractionProgressView.h"
 
 @interface SCHStoryInteractionControllerPopQuiz ()
 
 @property (nonatomic, retain) NSArray *answerButtons;
 @property (nonatomic, assign) NSInteger currentQuestionIndex;
 
+- (void)nextQuestion;
 - (void)setupQuestion;
 
 @end
 
 @implementation SCHStoryInteractionControllerPopQuiz
 
-@synthesize progressContainer;
+@synthesize progressView;
 @synthesize questionLabel;
 @synthesize answerButton1;
 @synthesize answerButton2;
@@ -31,7 +33,7 @@
 
 - (void)dealloc
 {
-    [progressContainer release];
+    [progressView release];
     [questionLabel release];
     [answerButton1 release];
     [answerButton2 release];
@@ -50,11 +52,23 @@
 {
     self.answerButtons = [NSArray arrayWithObjects:self.answerButton1, self.answerButton2, self.answerButton3, self.answerButton4, nil];
     self.currentQuestionIndex = 0;
+    self.progressView.numberOfSteps = [[(SCHStoryInteractionPopQuiz *)self.storyInteraction questions] count];
     [self setupQuestion];
+}
+
+- (void)nextQuestion
+{
+    self.currentQuestionIndex++;
+    if (self.currentQuestionIndex == self.progressView.numberOfSteps) {
+        [self removeFromHostView];
+    } else {
+        [self setupQuestion];
+    }
 }
 
 - (void)setupQuestion
 {
+    self.progressView.currentStep = self.currentQuestionIndex;
     self.questionLabel.text = [self currentQuestion].prompt;
     NSInteger i = 0;
     for (NSString *answer in [self currentQuestion].answers) {
@@ -75,7 +89,25 @@
 
 - (IBAction)answerButtonTapped:(id)sender
 {
+    NSInteger chosenAnswer = [self.answerButtons indexOfObject:sender];
+    if (chosenAnswer == NSNotFound) {
+        return;
+    }
     
+    if (chosenAnswer == [self currentQuestion].correctAnswer) {
+        [sender setBackgroundImage:[UIImage imageNamed:@"popquiz-answer-button-green"] forState:UIControlStateNormal];
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 1.0 * NSEC_PER_SEC);
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            [sender setBackgroundImage:[UIImage imageNamed:@"popquiz-answer-button-yellow"] forState:UIControlStateNormal];
+            [self nextQuestion];
+        });
+    } else {
+        [sender setBackgroundImage:[UIImage imageNamed:@"popquiz-answer-button-red"] forState:UIControlStateNormal];
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 1.0 * NSEC_PER_SEC);
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            [sender setBackgroundImage:[UIImage imageNamed:@"popquiz-answer-button-yellow"] forState:UIControlStateNormal];
+        });
+    }
 }
 
 @end

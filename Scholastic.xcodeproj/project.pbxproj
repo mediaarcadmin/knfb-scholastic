@@ -11,6 +11,8 @@
 		1D60589B0D05DD56006BFB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
+		280C99C71397C65E00381C31 /* SCHStoryInteractionProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 280C99C61397C65E00381C31 /* SCHStoryInteractionProgressView.m */; };
+		280C99C81397C65E00381C31 /* SCHStoryInteractionProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 280C99C61397C65E00381C31 /* SCHStoryInteractionProgressView.m */; };
 		2819307D112F81BE00ECF9B4 /* Scholastic.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2819307C112F81BE00ECF9B4 /* Scholastic.xcdatamodeld */; };
 		2860E38A111B897F00E27156 /* AppDelegate_iPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 2860E388111B897F00E27156 /* AppDelegate_iPhone.m */; };
 		2860E38B111B897F00E27156 /* MainWindow_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2860E389111B897F00E27156 /* MainWindow_iPhone.xib */; };
@@ -112,10 +114,10 @@
 		28A60F861397BB3C0090853E /* popquiz-answer-button-yellow.png in Resources */ = {isa = PBXBuildFile; fileRef = 28A60F7D1397BB3C0090853E /* popquiz-answer-button-yellow.png */; };
 		28A60F871397BB3C0090853E /* popquiz-bg-iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 28A60F7E1397BB3C0090853E /* popquiz-bg-iphone.png */; };
 		28A60F881397BB3C0090853E /* popquiz-bg-iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 28A60F7E1397BB3C0090853E /* popquiz-bg-iphone.png */; };
-		28A60F891397BB3C0090853E /* popquiz-progress-filled.png in Resources */ = {isa = PBXBuildFile; fileRef = 28A60F7F1397BB3C0090853E /* popquiz-progress-filled.png */; };
-		28A60F8A1397BB3C0090853E /* popquiz-progress-filled.png in Resources */ = {isa = PBXBuildFile; fileRef = 28A60F7F1397BB3C0090853E /* popquiz-progress-filled.png */; };
-		28A60F8B1397BB3C0090853E /* popquiz-progress-unfilled.png in Resources */ = {isa = PBXBuildFile; fileRef = 28A60F801397BB3C0090853E /* popquiz-progress-unfilled.png */; };
-		28A60F8C1397BB3C0090853E /* popquiz-progress-unfilled.png in Resources */ = {isa = PBXBuildFile; fileRef = 28A60F801397BB3C0090853E /* popquiz-progress-unfilled.png */; };
+		28A60F891397BB3C0090853E /* storyinteraction-progress-filled.png in Resources */ = {isa = PBXBuildFile; fileRef = 28A60F7F1397BB3C0090853E /* storyinteraction-progress-filled.png */; };
+		28A60F8A1397BB3C0090853E /* storyinteraction-progress-filled.png in Resources */ = {isa = PBXBuildFile; fileRef = 28A60F7F1397BB3C0090853E /* storyinteraction-progress-filled.png */; };
+		28A60F8B1397BB3C0090853E /* storyinteraction-progress-unfilled.png in Resources */ = {isa = PBXBuildFile; fileRef = 28A60F801397BB3C0090853E /* storyinteraction-progress-unfilled.png */; };
+		28A60F8C1397BB3C0090853E /* storyinteraction-progress-unfilled.png in Resources */ = {isa = PBXBuildFile; fileRef = 28A60F801397BB3C0090853E /* storyinteraction-progress-unfilled.png */; };
 		28A60F8E1397C1780090853E /* storyinteraction-close.png in Resources */ = {isa = PBXBuildFile; fileRef = 28A60F8D1397C1780090853E /* storyinteraction-close.png */; };
 		28A60F8F1397C1790090853E /* storyinteraction-close.png in Resources */ = {isa = PBXBuildFile; fileRef = 28A60F8D1397C1780090853E /* storyinteraction-close.png */; };
 		28AD733F0D9D9553002E5188 /* MainWindow_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow_iPad.xib */; };
@@ -1049,6 +1051,8 @@
 		1D3623250D0F684500981E51 /* AppDelegate_iPad.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate_iPad.m; path = iPad/AppDelegate_iPad.m; sourceTree = "<group>"; };
 		1D6058910D05DD3D006BFB54 /* Scholastic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Scholastic.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		280C99C51397C65E00381C31 /* SCHStoryInteractionProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionProgressView.h; sourceTree = "<group>"; };
+		280C99C61397C65E00381C31 /* SCHStoryInteractionProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionProgressView.m; sourceTree = "<group>"; };
 		2860E387111B897F00E27156 /* AppDelegate_iPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate_iPhone.h; sourceTree = "<group>"; };
 		2860E388111B897F00E27156 /* AppDelegate_iPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate_iPhone.m; sourceTree = "<group>"; };
 		2860E389111B897F00E27156 /* MainWindow_iPhone.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainWindow_iPhone.xib; sourceTree = "<group>"; };
@@ -1129,8 +1133,8 @@
 		28A60F7C1397BB3C0090853E /* popquiz-answer-button-red.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "popquiz-answer-button-red.png"; sourceTree = "<group>"; };
 		28A60F7D1397BB3C0090853E /* popquiz-answer-button-yellow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "popquiz-answer-button-yellow.png"; sourceTree = "<group>"; };
 		28A60F7E1397BB3C0090853E /* popquiz-bg-iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "popquiz-bg-iphone.png"; sourceTree = "<group>"; };
-		28A60F7F1397BB3C0090853E /* popquiz-progress-filled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "popquiz-progress-filled.png"; sourceTree = "<group>"; };
-		28A60F801397BB3C0090853E /* popquiz-progress-unfilled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "popquiz-progress-unfilled.png"; sourceTree = "<group>"; };
+		28A60F7F1397BB3C0090853E /* storyinteraction-progress-filled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-progress-filled.png"; sourceTree = "<group>"; };
+		28A60F801397BB3C0090853E /* storyinteraction-progress-unfilled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-progress-unfilled.png"; sourceTree = "<group>"; };
 		28A60F8D1397C1780090853E /* storyinteraction-close.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-close.png"; sourceTree = "<group>"; };
 		28AD733E0D9D9553002E5188 /* MainWindow_iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MainWindow_iPad.xib; path = iPad/MainWindow_iPad.xib; sourceTree = "<group>"; };
 		28EEBFDC1118E19E00187D67 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
@@ -2133,6 +2137,8 @@
 			children = (
 				28A60F761397B96B0090853E /* SCHStretchableImageButton.h */,
 				28A60F771397B96B0090853E /* SCHStretchableImageButton.m */,
+				280C99C51397C65E00381C31 /* SCHStoryInteractionProgressView.h */,
+				280C99C61397C65E00381C31 /* SCHStoryInteractionProgressView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -2141,12 +2147,12 @@
 			isa = PBXGroup;
 			children = (
 				28A60F8D1397C1780090853E /* storyinteraction-close.png */,
+				28A60F7F1397BB3C0090853E /* storyinteraction-progress-filled.png */,
+				28A60F801397BB3C0090853E /* storyinteraction-progress-unfilled.png */,
 				28A60F7B1397BB3C0090853E /* popquiz-answer-button-green.png */,
 				28A60F7C1397BB3C0090853E /* popquiz-answer-button-red.png */,
 				28A60F7D1397BB3C0090853E /* popquiz-answer-button-yellow.png */,
 				28A60F7E1397BB3C0090853E /* popquiz-bg-iphone.png */,
-				28A60F7F1397BB3C0090853E /* popquiz-progress-filled.png */,
-				28A60F801397BB3C0090853E /* popquiz-progress-unfilled.png */,
 			);
 			name = StoryInteractions;
 			path = Resources/UIAssets/StoryInteractions;
@@ -3918,8 +3924,8 @@
 				28A60F831397BB3C0090853E /* popquiz-answer-button-red.png in Resources */,
 				28A60F851397BB3C0090853E /* popquiz-answer-button-yellow.png in Resources */,
 				28A60F871397BB3C0090853E /* popquiz-bg-iphone.png in Resources */,
-				28A60F891397BB3C0090853E /* popquiz-progress-filled.png in Resources */,
-				28A60F8B1397BB3C0090853E /* popquiz-progress-unfilled.png in Resources */,
+				28A60F891397BB3C0090853E /* storyinteraction-progress-filled.png in Resources */,
+				28A60F8B1397BB3C0090853E /* storyinteraction-progress-unfilled.png in Resources */,
 				28A60F8E1397C1780090853E /* storyinteraction-close.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -4185,8 +4191,8 @@
 				28A60F841397BB3C0090853E /* popquiz-answer-button-red.png in Resources */,
 				28A60F861397BB3C0090853E /* popquiz-answer-button-yellow.png in Resources */,
 				28A60F881397BB3C0090853E /* popquiz-bg-iphone.png in Resources */,
-				28A60F8A1397BB3C0090853E /* popquiz-progress-filled.png in Resources */,
-				28A60F8C1397BB3C0090853E /* popquiz-progress-unfilled.png in Resources */,
+				28A60F8A1397BB3C0090853E /* storyinteraction-progress-filled.png in Resources */,
+				28A60F8C1397BB3C0090853E /* storyinteraction-progress-unfilled.png in Resources */,
 				28A60F8F1397C1790090853E /* storyinteraction-close.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -4413,6 +4419,7 @@
 				28A60F6913977B8B0090853E /* SCHStoryInteractionControllerMultipleChoiceText.m in Sources */,
 				28A60F731397B6760090853E /* SCHStoryInteractionControllerPopQuiz.m in Sources */,
 				28A60F781397B96B0090853E /* SCHStretchableImageButton.m in Sources */,
+				280C99C71397C65E00381C31 /* SCHStoryInteractionProgressView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4645,6 +4652,7 @@
 				28A60F6A13977B8B0090853E /* SCHStoryInteractionControllerMultipleChoiceText.m in Sources */,
 				28A60F741397B6760090853E /* SCHStoryInteractionControllerPopQuiz.m in Sources */,
 				28A60F791397B96B0090853E /* SCHStretchableImageButton.m in Sources */,
+				280C99C81397C65E00381C31 /* SCHStoryInteractionProgressView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -9,9 +9,11 @@
 #import <Foundation/Foundation.h>
 #import "SCHStoryInteractionController.h"
 
+@class SCHStoryInteractionProgressView;
+
 @interface SCHStoryInteractionControllerPopQuiz : SCHStoryInteractionController {}
 
-@property (nonatomic, retain) IBOutlet UIView *progressContainer;
+@property (nonatomic, retain) IBOutlet SCHStoryInteractionProgressView *progressView;
 @property (nonatomic, retain) IBOutlet UILabel *questionLabel;
 @property (nonatomic, retain) IBOutlet UIButton *answerButton1;
 @property (nonatomic, retain) IBOutlet UIButton *answerButton2;
