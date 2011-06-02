@@ -90,8 +90,8 @@ static NSTimeInterval const kSCHThemePickerViewControllerThemeTransitionAlpha = 
     [self.doneButton addTarget:self action:@selector(done) forControlEvents:UIControlEventTouchUpInside];    
     self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:doneButton] autorelease];
     
-    self.tableView.rowHeight = 58;
-    self.tableView.separatorColor = [UIColor colorWithRed:0.000 green:0.365 blue:0.616 alpha:1.000];
+    self.tableView.rowHeight = 50;
+    self.tableView.separatorColor = [UIColor whiteColor];
     
     [(SCHCustomNavigationBar *)self.navigationController.navigationBar setTheme:kSCHThemeManagerNavigationBarImage];
     
@@ -212,11 +212,13 @@ static NSTimeInterval const kSCHThemePickerViewControllerThemeTransitionAlpha = 
         cell.textLabel.font = [UIFont boldSystemFontOfSize:22.0f];
         cell.textLabel.shadowOffset = CGSizeMake(0, 1);
         cell.textLabel.shadowColor = [UIColor colorWithWhite:0 alpha:0.5f];
+        cell.textLabel.backgroundColor = [UIColor clearColor];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
 
     cell.textLabel.text = [[[SCHThemeManager sharedThemeManager] themeNames:YES] objectAtIndex:indexPath.row];
     cell.backgroundColor = [UIColor colorWithPatternImage:
-                            [[SCHThemeManager sharedThemeManager] imageForTheme:cell.textLabel.text key:kSCHThemeManagerImage orientation:self.interfaceOrientation]];
+                            [[SCHThemeManager sharedThemeManager] imageForTheme:cell.textLabel.text key:kSCHThemeManagerImage orientation:self.interfaceOrientation iPadSpecific:YES]];
 
     return(cell);
 }
@@ -255,6 +257,11 @@ static NSTimeInterval const kSCHThemePickerViewControllerThemeTransitionAlpha = 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     return(50);
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+    [self.tableView reloadData];
 }
 
 @end

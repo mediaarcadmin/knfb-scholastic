@@ -13,6 +13,7 @@
 #import "SCHReadingNotesListController.h"
 #import "SCHReadingInteractionsListController.h"
 #import "SCHReadingNoteView.h"
+#import "SCHStoryInteractionControllerDelegate.h"
 
 typedef enum 
 {
@@ -31,10 +32,9 @@ typedef enum
 @class SCHProfileItem;
 
 @interface SCHReadingViewController : UIViewController <SCHReadingViewDelegate, SCHReadingNotesListControllerDelegate, 
-SCHReadingNoteViewDelegate, SCHReadingInteractionsListControllerDelegate, SCHAudioBookPlayerDelegate, UIPopoverControllerDelegate> 
-{
-
-}
+SCHReadingNoteViewDelegate, SCHReadingInteractionsListControllerDelegate, SCHAudioBookPlayerDelegate, UIPopoverControllerDelegate,
+SCHStoryInteractionControllerDelegate> 
+{}
 
 @property (nonatomic, assign) BOOL youngerMode;
 
