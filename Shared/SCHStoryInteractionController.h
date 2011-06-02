@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @class SCHStoryInteraction;
+@protocol SCHStoryInteractionControllerDelegate;
 
 // Because Story Interactions have a non-modal behaviour in the reading view, StoryInteractionController 
 // is not a UIViewController but relies on ReadingViewController to host its view. 
@@ -16,6 +17,7 @@
 @interface SCHStoryInteractionController : NSObject {}
 
 @property (nonatomic, readonly) SCHStoryInteraction *storyInteraction;
+@property (nonatomic, assign) id<SCHStoryInteractionControllerDelegate> delegate;
 
 // obtain a Controller for a StoryInteraction.
 + (SCHStoryInteractionController *)storyInteractionControllerForStoryInteraction:(SCHStoryInteraction *)storyInteraction;

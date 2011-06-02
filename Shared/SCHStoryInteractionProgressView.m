@@ -8,8 +8,8 @@
 
 #import "SCHStoryInteractionProgressView.h"
 
-#define kImageWidth 17
-#define kImageHeight 17
+#define kImageWidth 18
+#define kImageHeight 18
 #define kImageGap 5
 
 @interface SCHStoryInteractionProgressView ()

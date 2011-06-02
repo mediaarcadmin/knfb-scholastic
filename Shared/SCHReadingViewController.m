@@ -1381,6 +1381,15 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [self.storyInteractionController presentInHostView:self.view];
 }
 
+#pragma mark - SCHStoryInteractionControllerDelegate methods
+
+- (void)storyInteractionControllerDidDismiss:(SCHStoryInteractionController *)aStoryInteractionController
+{
+    if (aStoryInteractionController == self.storyInteractionController) {
+        self.storyInteractionController = nil;
+    }
+}
+
 #pragma mark - UIPopoverControllerDelegate methods
 
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController

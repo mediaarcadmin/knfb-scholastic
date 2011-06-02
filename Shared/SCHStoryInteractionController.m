@@ -9,6 +9,7 @@
 #import "SCHStoryInteractionController.h"
 #import "SCHStoryInteractionTypes.h"
 #import "SCHStoryInteractionControllerMultipleChoiceText.h"
+#import "SCHStoryInteractionControllerDelegate.h"
 
 @interface SCHStoryInteractionController ()
 @property (nonatomic, retain) NSArray *nibObjects;
@@ -18,6 +19,7 @@
 
 @synthesize nibObjects;
 @synthesize storyInteraction;
+@synthesize delegate;
 
 + (SCHStoryInteractionController *)storyInteractionControllerForStoryInteraction:(SCHStoryInteraction *)storyInteraction
 {
@@ -74,6 +76,11 @@
         if ([object isKindOfClass:[UIView class]]) {
             [object removeFromSuperview];
         }
+    }
+    
+    if (delegate && [delegate respondsToSelector:@selector(storyInteractionControllerDidDismiss:)]) {
+        // may result in self being dealloc'ed so don't do anything else after this
+        [delegate storyInteractionControllerDidDismiss:self];
     }
 }
 
