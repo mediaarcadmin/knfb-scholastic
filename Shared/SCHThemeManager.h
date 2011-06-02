@@ -37,7 +37,9 @@ static NSString * const kSCHThemeManagerThemeIcon = @"ThemeIcon";
 - (NSArray *)themeNames:(BOOL)excludeSelectedTheme;
 - (UIImage *)imageForTheme:(NSString *)themeName key:(NSString *)key 
                orientation:(UIInterfaceOrientation)orientation;
-
+- (UIImage *)imageForTheme:(NSString *)themeName key:(NSString *)key 
+               orientation:(UIInterfaceOrientation)orientation
+              iPadSpecific:(BOOL)iPadSpecific;
 - (UIImage *)imageFor:(NSString *)imageTitle 
           orientation:(UIInterfaceOrientation)orientation;
 - (UIImage *)imageFor:(NSString *)imageTitle 

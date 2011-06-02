@@ -4,30 +4,6 @@
 <array>
 	<dict>
 		<key>BackgroundImage</key>
-		<string>Red/red-background</string>
-		<key>BooksIcon</key>
-		<string>Shared/icon-books</string>
-		<key>ButtonImage</key>
-		<string>Shared/button-cancel</string>
-		<key>DoneButtonImage</key>
-		<string>Shared/button-done</string>
-		<key>HomeIcon</key>
-		<string>Shared/icon-home</string>
-		<key>id</key>
-		<integer>1</integer>
-		<key>Image</key>
-		<string>Red/Red</string>
-		<key>Name</key>
-		<string>Red</string>
-		<key>NavigationBarImage</key>
-		<string>Red/red-navigation-bar</string>
-		<key>ShelfImage</key>
-		<string>Red/red-shelf</string>
-		<key>ThemeIcon</key>
-		<string>Shared/icon-theme</string>
-	</dict>
-	<dict>
-		<key>BackgroundImage</key>
 		<string>Blue/bookshelf-bg</string>
 		<key>BooksIcon</key>
 		<string>Shared/icon-books</string>
@@ -40,7 +16,7 @@
 		<key>HomeIcon</key>
 		<string>Shared/icon-home</string>
 		<key>id</key>
-		<integer>2</integer>
+		<integer>1</integer>
 		<key>Image</key>
 		<string>Blue/Blue</string>
 		<key>Name</key>
@@ -54,7 +30,55 @@
 	</dict>
 	<dict>
 		<key>BackgroundImage</key>
-		<string>Goosebumps/background</string>
+		<string>Snake Skin/bookshelf-bg</string>
+		<key>BooksIcon</key>
+		<string>Shared/icon-books</string>
+		<key>ButtonImage</key>
+		<string>Shared/button-cancel</string>
+		<key>DoneButtonImage</key>
+		<string>Shared/button-done</string>
+		<key>HomeIcon</key>
+		<string>Shared/icon-home</string>
+		<key>id</key>
+		<integer>2</integer>
+		<key>Image</key>
+		<string>Snake Skin/Snake Skin</string>
+		<key>Name</key>
+		<string>Snake Skin</string>
+		<key>NavigationBarImage</key>
+		<string>Snake Skin/bookshelf-top-bar</string>
+		<key>ShelfImage</key>
+		<string>Snake Skin/bookshelf-shelf</string>
+		<key>ThemeIcon</key>
+		<string>Shared/icon-theme</string>
+	</dict>
+	<dict>
+		<key>BackgroundImage</key>
+		<string>Waterdrops/bookshelf-bg</string>
+		<key>BooksIcon</key>
+		<string>Shared/icon-books</string>
+		<key>ButtonImage</key>
+		<string>Shared/button-cancel</string>
+		<key>DoneButtonImage</key>
+		<string>Shared/button-done</string>
+		<key>HomeIcon</key>
+		<string>Shared/icon-home</string>
+		<key>id</key>
+		<integer>3</integer>
+		<key>Image</key>
+		<string>Waterdrops/Waterdrops</string>
+		<key>Name</key>
+		<string>Waterdrops</string>
+		<key>NavigationBarImage</key>
+		<string>Waterdrops/bookshelf-top-bar</string>
+		<key>ShelfImage</key>
+		<string>Waterdrops/bookshelf-shelf</string>
+		<key>ThemeIcon</key>
+		<string>Shared/icon-theme</string>
+	</dict>
+	<dict>
+		<key>BackgroundImage</key>
+		<string>Starry Night/bookshelf-bg</string>
 		<key>BooksIcon</key>
 		<string>Shared/icon-books</string>
 		<key>ButtonImage</key>
@@ -66,13 +90,85 @@
 		<key>id</key>
 		<integer>4</integer>
 		<key>Image</key>
-		<string>Goosebumps/Goosebumps</string>
+		<string>Starry Night/Starry Night</string>
 		<key>Name</key>
-		<string>Goosebumps</string>
+		<string>Starry Night</string>
 		<key>NavigationBarImage</key>
-		<string>Goosebumps/navigation-bar</string>
+		<string>Starry Night/bookshelf-top-bar</string>
 		<key>ShelfImage</key>
-		<string>Goosebumps/shelf</string>
+		<string>Starry Night/bookshelf-shelf</string>
+		<key>ThemeIcon</key>
+		<string>Shared/icon-theme</string>
+	</dict>
+	<dict>
+		<key>BackgroundImage</key>
+		<string>Fence/bookshelf-bg</string>
+		<key>BooksIcon</key>
+		<string>Shared/icon-books</string>
+		<key>ButtonImage</key>
+		<string>Shared/button-cancel</string>
+		<key>DoneButtonImage</key>
+		<string>Shared/button-done</string>
+		<key>HomeIcon</key>
+		<string>Shared/icon-home</string>
+		<key>id</key>
+		<integer>5</integer>
+		<key>Image</key>
+		<string>Fence/Fence</string>
+		<key>Name</key>
+		<string>Fence</string>
+		<key>NavigationBarImage</key>
+		<string>Fence/bookshelf-top-bar</string>
+		<key>ShelfImage</key>
+		<string>Fence/bookshelf-shelf</string>
+		<key>ThemeIcon</key>
+		<string>Shared/icon-theme</string>
+	</dict>
+	<dict>
+		<key>BackgroundImage</key>
+		<string>Grid/bookshelf-bg</string>
+		<key>BooksIcon</key>
+		<string>Shared/icon-books</string>
+		<key>ButtonImage</key>
+		<string>Shared/button-cancel</string>
+		<key>DoneButtonImage</key>
+		<string>Shared/button-done</string>
+		<key>HomeIcon</key>
+		<string>Shared/icon-home</string>
+		<key>id</key>
+		<integer>6</integer>
+		<key>Image</key>
+		<string>Grid/Grid</string>
+		<key>Name</key>
+		<string>Grid</string>
+		<key>NavigationBarImage</key>
+		<string>Grid/bookshelf-top-bar</string>
+		<key>ShelfImage</key>
+		<string>Grid/bookshelf-shelf</string>
+		<key>ThemeIcon</key>
+		<string>Shared/icon-theme</string>
+	</dict>
+	<dict>
+		<key>BackgroundImage</key>
+		<string>Dots/bookshelf-bg</string>
+		<key>BooksIcon</key>
+		<string>Shared/icon-books</string>
+		<key>ButtonImage</key>
+		<string>Shared/button-cancel</string>
+		<key>DoneButtonImage</key>
+		<string>Shared/button-done</string>
+		<key>HomeIcon</key>
+		<string>Shared/icon-home</string>
+		<key>id</key>
+		<integer>7</integer>
+		<key>Image</key>
+		<string>Dots/Dots</string>
+		<key>Name</key>
+		<string>Dots</string>
+		<key>NavigationBarImage</key>
+		<string>Dots/bookshelf-top-bar</string>
+		<key>ShelfImage</key>
+		<string>Dots/bookshelf-shelf</string>
 		<key>ThemeIcon</key>
 		<string>Shared/icon-theme</string>
 	</dict>

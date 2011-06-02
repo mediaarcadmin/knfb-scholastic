@@ -344,8 +344,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     
     // FIXME: using a placeholder, adjust for real image
     NSLog(@"Setting up notes count view!");
-    UIImage *bgImage = [UIImage imageNamed:@"button-login-red"];
-    self.notesCountView = [[SCHNotesCountView alloc] initWithImage:[bgImage stretchableImageWithLeftCapWidth:8.0f topCapHeight:0]];
+    UIImage *bgImage = [UIImage imageNamed:@"notes-count"];
+    self.notesCountView = [[SCHNotesCountView alloc] initWithImage:[bgImage stretchableImageWithLeftCapWidth:10.0f topCapHeight:0]];
     [self.notesButton addSubview:self.notesCountView];
     
     // update the note count

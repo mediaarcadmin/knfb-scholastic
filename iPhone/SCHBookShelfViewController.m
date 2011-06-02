@@ -164,13 +164,15 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
     [self.gridView setShelfImage:[[SCHThemeManager sharedThemeManager] imageForShelf:interfaceOrientation]];        
     [self.view.layer setContents:(id)[[SCHThemeManager sharedThemeManager] imageForBackground:interfaceOrientation].CGImage];
     [(SCHCustomNavigationBar *)self.navigationController.navigationBar updateTheme:interfaceOrientation];
-    
+     
+    CGFloat inset = 56;
+
     if (UIInterfaceOrientationIsLandscape(interfaceOrientation)) {
             [self.gridView setShelfHeight:kSCHBookShelfViewControllerGridCellHeightLandscape];
-            [self.gridView setShelfInset:CGSizeMake(0, -55)];
+            [self.gridView setShelfInset:CGSizeMake(0, -inset)];
     } else {
             [self.gridView setShelfHeight:kSCHBookShelfViewControllerGridCellHeightPortrait];
-            [self.gridView setShelfInset:CGSizeMake(0, -55)];
+            [self.gridView setShelfInset:CGSizeMake(0, -inset)];
     }
 }
 
