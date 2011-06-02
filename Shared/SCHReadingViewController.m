@@ -579,10 +579,10 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
                                           wordBlock:^(NSUInteger layoutPage, NSUInteger pageWordOffset) {
                                               NSLog(@"WORD UP! at layoutPage %d pageWordOffset %d", layoutPage, pageWordOffset);
                                               [self.readingView followAlongHighlightWordForLayoutPage:layoutPage pageWordOffset:pageWordOffset];
-                                          } pageTurnBlock:(PageTurnBlock)^(NSUInteger turnToLayoutPage) {
+                                          } pageTurnBlock:^(NSUInteger turnToLayoutPage) {
                                               NSLog(@"Turn to layoutPage %d", turnToLayoutPage);
                                               if (self.layoutType == SCHReadingViewLayoutTypeFixed) {
-                                                  [self.readingView jumpToPageAtIndex:turnToLayoutPage animated:YES];
+                                                  [self.readingView jumpToPageAtIndex:turnToLayoutPage - 1 animated:YES];
                                               }
                                           }] == YES) {
                                               self.audioBookPlayer.delegate = self;
