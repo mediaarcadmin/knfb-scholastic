@@ -143,6 +143,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 @synthesize leftBarButtonItemContainer;
 @synthesize youngerRightBarButtonItemContainer;
 @synthesize olderRightBarButtonItemContainer;
+@synthesize youngerRightBarButtonItemContainerPad;
 @synthesize backButton;
 @synthesize audioButton;
 @synthesize scrubberToolbar;
@@ -177,6 +178,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [leftBarButtonItemContainer release], leftBarButtonItemContainer = nil;
     [youngerRightBarButtonItemContainer release], youngerRightBarButtonItemContainer = nil;
     [olderRightBarButtonItemContainer release], olderRightBarButtonItemContainer = nil;
+    [youngerRightBarButtonItemContainerPad release], youngerRightBarButtonItemContainerPad = nil;
     [backButton release], backButton = nil;
     [audioButton release], audioButton = nil;
     [notesCountView release], notesCountView = nil;
@@ -349,11 +351,19 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:self.leftBarButtonItemContainer] autorelease];
     
     if (self.youngerMode) {
-        CGRect rightBarButtonItemFrame = self.youngerRightBarButtonItemContainer.frame;
-        rightBarButtonItemFrame.size.height = containerHeight;
-        self.youngerRightBarButtonItemContainer.frame = rightBarButtonItemFrame;
-        
-        self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:self.youngerRightBarButtonItemContainer] autorelease];
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            CGRect rightBarButtonItemFrame = self.youngerRightBarButtonItemContainerPad.frame;
+            rightBarButtonItemFrame.size.height = containerHeight;
+            self.youngerRightBarButtonItemContainerPad.frame = rightBarButtonItemFrame;
+            
+            self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:self.youngerRightBarButtonItemContainerPad] autorelease];
+        } else {
+            CGRect rightBarButtonItemFrame = self.youngerRightBarButtonItemContainer.frame;
+            rightBarButtonItemFrame.size.height = containerHeight;
+            self.youngerRightBarButtonItemContainer.frame = rightBarButtonItemFrame;
+            
+            self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:self.youngerRightBarButtonItemContainer] autorelease];
+        }
     } else {
         CGRect rightBarButtonItemFrame = self.olderRightBarButtonItemContainer.frame;
         rightBarButtonItemFrame.size.height = containerHeight;
@@ -423,6 +433,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         [self.backButton setImage:[UIImage imageNamed:@"icon-books.png"] forState:UIControlStateNormal];
         
         [self.audioButton setImage:[UIImage imageNamed:@"icon-play.png"] forState:UIControlStateNormal];
+        [self.audioButton setImage:[UIImage imageNamed:@"icon-play-active.png"] forState:UIControlStateSelected];
         [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"reading-view-portrait-top-bar.png"]];
     } else {
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
@@ -432,6 +443,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         }
         
         [self.audioButton setImage:[UIImage imageNamed:@"icon-play-landscape.png"] forState:UIControlStateNormal];
+        [self.audioButton setImage:[UIImage imageNamed:@"icon-play-landscape-active.png"] forState:UIControlStateSelected];
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
             [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"reading-view-landscape-top-bar.png"]];
         } else {
@@ -605,9 +617,28 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [self cancelInitialTimer];
 }
 
+- (IBAction)toggleSmartZoom:(id)sender
+{
+    UIButton *smartZoomButton = (UIButton *)sender;
+    [smartZoomButton setSelected:![smartZoomButton isSelected]];
+    
+    if ([smartZoomButton isSelected]) {
+        [self.readingView didEnterSmartZoomMode];
+    } else {
+        [self.readingView didExitSmartZoomMode];
+    }
+
+    if (self.optionsView.superview) {
+        [self.optionsView removeFromSuperview];
+    }
+}
+
 - (IBAction)audioPlayAction:(id)sender
 {
     NSLog(@"Audio Play action");
+    
+    UIButton *audioPlayButton = (UIButton *)sender;
+    [audioPlayButton setSelected:![audioPlayButton isSelected]];
     
     NSUInteger layoutPage = 0;
     NSUInteger pageWordOffset = 0;

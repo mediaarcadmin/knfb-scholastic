@@ -44,6 +44,7 @@ SCHStoryInteractionControllerDelegate>
 @property (nonatomic, retain) IBOutlet UIView *leftBarButtonItemContainer;
 @property (nonatomic, retain) IBOutlet UIView *youngerRightBarButtonItemContainer;
 @property (nonatomic, retain) IBOutlet UIView *olderRightBarButtonItemContainer;
+@property (nonatomic, retain) IBOutlet UIView *youngerRightBarButtonItemContainerPad;
 @property (nonatomic, retain) IBOutlet UIButton *backButton;
 @property (nonatomic, retain) IBOutlet UIButton *audioButton;
 @property (nonatomic, retain) IBOutlet UIButton *notesButton;
@@ -79,5 +80,6 @@ SCHStoryInteractionControllerDelegate>
 - (IBAction)settingsAction:(UIButton *)sender;
 - (IBAction)popViewController:(id)sender;
 - (IBAction)audioPlayAction:(id)sender;
+- (IBAction)toggleSmartZoom:(id)sender;
 
 @end
