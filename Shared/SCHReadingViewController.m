@@ -31,6 +31,7 @@
 #import "KNFBXPSConstants.h"
 #import "SCHNotesCountView.h"
 #import "SCHBookStoryInteractions.h"
+#import "SCHStoryInteractionController.h"
 
 // constants
 static const CGFloat kReadingViewStandardScrubHeight = 47.0f;
@@ -79,6 +80,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 @property (nonatomic, retain) SCHNotesCountView *notesCountView;
 
 @property (nonatomic, retain) SCHBookStoryInteractions *bookStoryInteractions;
+@property (nonatomic, retain) SCHStoryInteractionController *storyInteractionController;
 
 - (void)releaseViewObjects;
 
@@ -148,6 +150,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 @synthesize audioBookPlayer;
 @synthesize bookStoryInteractions;
+@synthesize storyInteractionController;
 
 #pragma mark - Dealloc and View Teardown
 
@@ -161,6 +164,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [audioBookPlayer release], audioBookPlayer = nil;
     [bookStoryInteractions release], bookStoryInteractions = nil;
     [popoverOptionsViewController release], popoverOptionsViewController = nil;
+    [storyInteractionController release], storyInteractionController = nil;
     
     [super dealloc];
 }
@@ -579,10 +583,10 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
                                           wordBlock:^(NSUInteger layoutPage, NSUInteger pageWordOffset) {
                                               NSLog(@"WORD UP! at layoutPage %d pageWordOffset %d", layoutPage, pageWordOffset);
                                               [self.readingView followAlongHighlightWordForLayoutPage:layoutPage pageWordOffset:pageWordOffset];
-                                          } pageTurnBlock:(PageTurnBlock)^(NSUInteger turnToLayoutPage) {
+                                          } pageTurnBlock:^(NSUInteger turnToLayoutPage) {
                                               NSLog(@"Turn to layoutPage %d", turnToLayoutPage);
                                               if (self.layoutType == SCHReadingViewLayoutTypeFixed) {
-                                                  [self.readingView jumpToPageAtIndex:turnToLayoutPage animated:YES];
+                                                  [self.readingView jumpToPageAtIndex:turnToLayoutPage - 1 animated:YES];
                                               }
                                           }] == YES) {
                                               self.audioBookPlayer.delegate = self;
@@ -1372,6 +1376,18 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (void)readingInteractionsView:(SCHReadingInteractionsListController *)interactionsView didSelectInteraction:(NSInteger)interaction
 {
     NSLog(@"Selected interaction %d.", interaction);
+    SCHStoryInteraction *storyInteraction = [[self.bookStoryInteractions allStoryInteractions] objectAtIndex:interaction];
+    self.storyInteractionController = [SCHStoryInteractionController storyInteractionControllerForStoryInteraction:storyInteraction];
+    [self.storyInteractionController presentInHostView:self.view];
+}
+
+#pragma mark - SCHStoryInteractionControllerDelegate methods
+
+- (void)storyInteractionControllerDidDismiss:(SCHStoryInteractionController *)aStoryInteractionController
+{
+    if (aStoryInteractionController == self.storyInteractionController) {
+        self.storyInteractionController = nil;
+    }
 }
 
 #pragma mark - UIPopoverControllerDelegate methods

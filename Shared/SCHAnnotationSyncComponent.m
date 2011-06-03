@@ -19,7 +19,6 @@
 #import "SCHWordIndex.h"
 #import "SCHNote.h"
 #import "SCHLocationGraphics.h"
-#import "SCHCoords.h"
 #import "SCHBookmark.h"
 #import "SCHLocationBookmark.h"
 #import "SCHLastPage.h"
@@ -61,9 +60,6 @@
 - (void)syncLocationGraphics:(NSDictionary *)webLocationGraphics 
         withLocationGraphics:(SCHLocationGraphics *)localLocationGraphics;
 - (SCHLocationGraphics *)locationGraphics:(NSDictionary *)locationGraphics;
-- (void)syncCoords:(NSDictionary *)webCoords
-        withCoords:(SCHCoords *)localCoords;
-- (SCHCoords *)coords:(NSDictionary *)coords;
 - (void)syncBookmarks:(NSArray *)webBookmarks
         withBookmarks:(NSSet *)localBookmarks
            insertInto:(SCHPrivateAnnotations *)privateAnnotations;
@@ -704,11 +700,7 @@
 - (void)syncLocationGraphics:(NSDictionary *)webLocationGraphics 
         withLocationGraphics:(SCHLocationGraphics *)localLocationGraphics
 {
-	localLocationGraphics.WordIndex = [self makeNullNil:[webLocationGraphics objectForKey:kSCHLibreAccessWebServiceWordIndex]];
 	localLocationGraphics.Page = [self makeNullNil:[webLocationGraphics objectForKey:kSCHLibreAccessWebServicePage]];    
-    
-    [self syncCoords:[self makeNullNil:[webLocationGraphics objectForKey:kSCHLibreAccessWebServiceCoords]] 
-          withCoords:localLocationGraphics.Coords];    
 }
 
 - (SCHLocationGraphics *)locationGraphics:(NSDictionary *)locationGraphics
@@ -720,30 +712,6 @@
                                             inManagedObjectContext:self.managedObjectContext];
 		
 		ret.Page = [self makeNullNil:[locationGraphics objectForKey:kSCHLibreAccessWebServicePage]];
-		ret.Coords = [self coords:[locationGraphics objectForKey:kSCHLibreAccessWebServiceCoords]];
-		ret.WordIndex = [self makeNullNil:[locationGraphics objectForKey:kSCHLibreAccessWebServiceWordIndex]];		
-	}
-	
-	return(ret);
-}
-
-- (void)syncCoords:(NSDictionary *)webCoords
-        withCoords:(SCHCoords *)localCoords
-{
-	localCoords.X = [self makeNullNil:[webCoords objectForKey:kSCHLibreAccessWebServiceX]];
-	localCoords.Y = [self makeNullNil:[webCoords objectForKey:kSCHLibreAccessWebServiceY]];        
-}
-
-- (SCHCoords *)coords:(NSDictionary *)coords
-{
-	SCHCoords *ret = nil;
-	
-	if (coords != nil) {
-		ret = [NSEntityDescription insertNewObjectForEntityForName:kSCHCoords 
-                                            inManagedObjectContext:self.managedObjectContext];
-		
-		ret.X = [self makeNullNil:[coords objectForKey:kSCHLibreAccessWebServiceX]];
-		ret.Y = [self makeNullNil:[coords objectForKey:kSCHLibreAccessWebServiceY]];		
 	}
 	
 	return(ret);

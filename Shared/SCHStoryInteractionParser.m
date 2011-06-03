@@ -9,20 +9,7 @@
 #import <expat/expat.h>
 
 #import "SCHStoryInteractionParser.h"
-#import "SCHStoryInteraction.h"
-#import "SCHStoryInteractionAboutYouQuiz.h"
-#import "SCHStoryInteractionHotSpot.h"
-#import "SCHStoryInteractionImage.h"
-#import "SCHStoryInteractionMultipleChoice.h"
-#import "SCHStoryInteractionPopQuiz.h"
-#import "SCHStoryInteractionScratchAndSee.h"
-#import "SCHStoryInteractionStartingLetter.h"
-#import "SCHStoryInteractionTitleTwister.h"
-#import "SCHStoryInteractionVideo.h"
-#import "SCHStoryInteractionWhoSaidIt.h"
-#import "SCHStoryInteractionWordMatch.h"
-#import "SCHStoryInteractionWordScrambler.h"
-#import "SCHStoryInteractionWordSearch.h"
+#import "SCHStoryInteractionTypes.h"
 
 // Parsing Interactions.xml is complex, with many different class types. The parser is kept
 // clean and extensible by defining parsing categories on the model objects involved and

@@ -9,20 +9,7 @@
 #import <SenTestingKit/SenTestingKit.h>
 
 #import "SCHStoryInteractionParser.h"
-#import "SCHStoryInteractionAboutYouQuiz.h"
-#import "SCHStoryInteractionHotSpot.h"
-#import "SCHStoryInteractionImage.h"
-#import "SCHStoryInteractionMultipleChoice.h"
-#import "SCHStoryInteractionPopQuiz.h"
-#import "SCHStoryInteractionScratchAndSee.h"
-#import "SCHStoryInteractionSequencing.h"
-#import "SCHStoryInteractionStartingLetter.h"
-#import "SCHStoryInteractionTitleTwister.h"
-#import "SCHStoryInteractionVideo.h"
-#import "SCHStoryInteractionWhoSaidIt.h"
-#import "SCHStoryInteractionWordMatch.h"
-#import "SCHStoryInteractionWordScrambler.h"
-#import "SCHStoryInteractionWordSearch.h"
+#import "SCHStoryInteractionTypes.h"
 
 @interface SCHStoryInteractionFullExampleTests : SenTestCase {}
 @property (nonatomic, retain) SCHStoryInteractionParser *parser;

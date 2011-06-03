@@ -8,14 +8,11 @@
 
 #import "SCHLocationGraphics.h"
 
-#import "SCHCoords.h"
 #import "SCHNote.h"
 
 @implementation SCHLocationGraphics 
 
-@dynamic WordIndex;
 @dynamic Page;
 @dynamic Note;
-@dynamic Coords;
 
 @end

@@ -8,7 +8,6 @@
 
 #import <CoreData/CoreData.h>
 
-@class SCHCoords;
 @class SCHNote;
 
 static NSString * const kSCHLocationGraphics = @"SCHLocationGraphics";
@@ -17,10 +16,8 @@ static NSString * const kSCHLocationGraphics = @"SCHLocationGraphics";
 {
 }
 
-@property (nonatomic, retain) NSNumber * WordIndex;
 @property (nonatomic, retain) NSNumber * Page;
 @property (nonatomic, retain) SCHNote * Note;
-@property (nonatomic, retain) SCHCoords * Coords;
 
 @end
 

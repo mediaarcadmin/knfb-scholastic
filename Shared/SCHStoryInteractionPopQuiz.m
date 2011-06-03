@@ -21,11 +21,6 @@
     [super dealloc];
 }
 
-- (NSString *)title
-{
-    return @"Do You Know";
-}
-
 @end
 
 @implementation SCHStoryInteractionPopQuiz
@@ -41,5 +36,11 @@
     [scoreResponseHigh release];
     [super dealloc];
 }
+
+- (NSString *)title
+{
+    return @"Do You Know";
+}
+
 
 @end
