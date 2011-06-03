@@ -10,7 +10,7 @@
 
 @class SCHProfileViewController_iPad;
 
-@interface SCHBookShelfViewController_iPad : SCHBookShelfViewController {
+@interface SCHBookShelfViewController_iPad : SCHBookShelfViewController <UIPopoverControllerDelegate> {
     
 }
 

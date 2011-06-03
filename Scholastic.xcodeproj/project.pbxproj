@@ -890,6 +890,10 @@
 		F878D6B91344996400DDB98B /* SCHBookOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F878D6B71344996400DDB98B /* SCHBookOperation.m */; };
 		F878D77C1344A1E400DDB98B /* SCHXPSCoverImageOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F878D77B1344A1E400DDB98B /* SCHXPSCoverImageOperation.m */; };
 		F878D77D1344A1E400DDB98B /* SCHXPSCoverImageOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F878D77B1344A1E400DDB98B /* SCHXPSCoverImageOperation.m */; };
+		F87B6E271398D046005CC0FA /* SCHBookShelfPopoverTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = F87B6E251398D046005CC0FA /* SCHBookShelfPopoverTableView.m */; };
+		F87B6E281398D046005CC0FA /* SCHBookShelfPopoverTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = F87B6E251398D046005CC0FA /* SCHBookShelfPopoverTableView.m */; };
+		F87B6E291398D046005CC0FA /* SCHBookShelfPopoverTableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F87B6E261398D046005CC0FA /* SCHBookShelfPopoverTableView.xib */; };
+		F87B6E2A1398D046005CC0FA /* SCHBookShelfPopoverTableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F87B6E261398D046005CC0FA /* SCHBookShelfPopoverTableView.xib */; };
 		F8844BEF137D5F88003D3014 /* SCHProfileViewController_iPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = F8844BEE137D5F88003D3014 /* SCHProfileViewController_iPhone.m */; };
 		F8844BF0137D5F88003D3014 /* SCHProfileViewController_iPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = F8844BEE137D5F88003D3014 /* SCHProfileViewController_iPhone.m */; };
 		F8844BF9137D6655003D3014 /* SCHProfileViewController_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = F8844BF7137D6654003D3014 /* SCHProfileViewController_iPad.m */; };
@@ -1849,6 +1853,9 @@
 		F878D6B71344996400DDB98B /* SCHBookOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookOperation.m; path = Shared/SCHBookOperation.m; sourceTree = "<group>"; };
 		F878D77A1344A1E300DDB98B /* SCHXPSCoverImageOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHXPSCoverImageOperation.h; path = Shared/SCHXPSCoverImageOperation.h; sourceTree = "<group>"; };
 		F878D77B1344A1E400DDB98B /* SCHXPSCoverImageOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHXPSCoverImageOperation.m; path = Shared/SCHXPSCoverImageOperation.m; sourceTree = "<group>"; };
+		F87B6E241398D046005CC0FA /* SCHBookShelfPopoverTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookShelfPopoverTableView.h; path = iPad/SCHBookShelfPopoverTableView.h; sourceTree = "<group>"; };
+		F87B6E251398D046005CC0FA /* SCHBookShelfPopoverTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookShelfPopoverTableView.m; path = iPad/SCHBookShelfPopoverTableView.m; sourceTree = "<group>"; };
+		F87B6E261398D046005CC0FA /* SCHBookShelfPopoverTableView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SCHBookShelfPopoverTableView.xib; path = iPad/SCHBookShelfPopoverTableView.xib; sourceTree = "<group>"; };
 		F8844BED137D5F88003D3014 /* SCHProfileViewController_iPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHProfileViewController_iPhone.h; sourceTree = "<group>"; };
 		F8844BEE137D5F88003D3014 /* SCHProfileViewController_iPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHProfileViewController_iPhone.m; sourceTree = "<group>"; };
 		F8844BF6137D6654003D3014 /* SCHProfileViewController_iPad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHProfileViewController_iPad.h; path = iPad/SCHProfileViewController_iPad.h; sourceTree = SOURCE_ROOT; };
@@ -3336,6 +3343,9 @@
 			children = (
 				F864333513813B0100BEB8EB /* SCHBookShelfViewController_iPad.h */,
 				F864333613813B0100BEB8EB /* SCHBookShelfViewController_iPad.m */,
+				F87B6E241398D046005CC0FA /* SCHBookShelfPopoverTableView.h */,
+				F87B6E251398D046005CC0FA /* SCHBookShelfPopoverTableView.m */,
+				F87B6E261398D046005CC0FA /* SCHBookShelfPopoverTableView.xib */,
 			);
 			name = Bookshelves;
 			sourceTree = "<group>";
@@ -3923,6 +3933,7 @@
 				28A60F891397BB3C0090853E /* storyinteraction-progress-filled.png in Resources */,
 				28A60F8B1397BB3C0090853E /* storyinteraction-progress-unfilled.png in Resources */,
 				28A60F8E1397C1780090853E /* storyinteraction-close.png in Resources */,
+				F87B6E291398D046005CC0FA /* SCHBookShelfPopoverTableView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4190,6 +4201,7 @@
 				28A60F8A1397BB3C0090853E /* storyinteraction-progress-filled.png in Resources */,
 				28A60F8C1397BB3C0090853E /* storyinteraction-progress-unfilled.png in Resources */,
 				28A60F8F1397C1790090853E /* storyinteraction-close.png in Resources */,
+				F87B6E2A1398D046005CC0FA /* SCHBookShelfPopoverTableView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4415,6 +4427,7 @@
 				28A60F731397B6760090853E /* SCHStoryInteractionControllerPopQuiz.m in Sources */,
 				28A60F781397B96B0090853E /* SCHStretchableImageButton.m in Sources */,
 				280C99C71397C65E00381C31 /* SCHStoryInteractionProgressView.m in Sources */,
+				F87B6E271398D046005CC0FA /* SCHBookShelfPopoverTableView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4647,6 +4660,7 @@
 				28A60F741397B6760090853E /* SCHStoryInteractionControllerPopQuiz.m in Sources */,
 				28A60F791397B96B0090853E /* SCHStretchableImageButton.m in Sources */,
 				280C99C81397C65E00381C31 /* SCHStoryInteractionProgressView.m in Sources */,
+				F87B6E281398D046005CC0FA /* SCHBookShelfPopoverTableView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

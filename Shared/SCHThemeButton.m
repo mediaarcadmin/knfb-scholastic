@@ -62,10 +62,13 @@
                                                  selector:@selector(updateTheme) 
                                                      name:kSCHThemeManagerThemeChangeNotification 
                                                    object:nil]; 
-        [[NSNotificationCenter defaultCenter] addObserver:self 
-                                                 selector:@selector(updateTheme) 
-                                                     name:UIApplicationDidChangeStatusBarOrientationNotification 
-                                                   object:nil]; 
+        // disable rotation changes for iPad
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+            [[NSNotificationCenter defaultCenter] addObserver:self 
+                                                     selector:@selector(updateTheme) 
+                                                         name:UIApplicationDidChangeStatusBarOrientationNotification 
+                                                       object:nil]; 
+        }
     }
 }
 
@@ -91,10 +94,13 @@
                                                  selector:@selector(updateTheme) 
                                                      name:kSCHThemeManagerThemeChangeNotification 
                                                    object:nil];                
-        [[NSNotificationCenter defaultCenter] addObserver:self 
-                                                 selector:@selector(updateTheme) 
-                                                     name:UIApplicationDidChangeStatusBarOrientationNotification 
-                                                   object:nil];         
+        // disable rotation changes for iPad
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+            [[NSNotificationCenter defaultCenter] addObserver:self 
+                                                     selector:@selector(updateTheme) 
+                                                         name:UIApplicationDidChangeStatusBarOrientationNotification 
+                                                       object:nil];         
+        }
     }
 }
 
