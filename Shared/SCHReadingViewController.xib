@@ -45,7 +45,7 @@
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 			</object>
 			<object class="IBUIView" id="191373211">
-				<nil key="NSNextResponder"/>
+				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">274</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -308,7 +308,7 @@
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 			</object>
 			<object class="IBUIView" id="692504765">
-				<nil key="NSNextResponder"/>
+				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">266</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -322,6 +322,7 @@
 								<int key="NSvFlags">291</int>
 								<string key="NSFrame">{{114, 10}, {197, 30}}</string>
 								<reference key="NSSuperview" ref="796094069"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="460102748"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -411,6 +412,7 @@
 								<int key="NSvFlags">294</int>
 								<string key="NSFrame">{{10, 10}, {90, 30}}</string>
 								<reference key="NSSuperview" ref="796094069"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="319010100"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -453,12 +455,15 @@
 						</object>
 						<string key="NSFrameSize">{320, 86}</string>
 						<reference key="NSSuperview" ref="692504765"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="689393356"/>
 						<reference key="IBUIBackgroundColor" ref="368037730"/>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 					</object>
 				</object>
 				<string key="NSFrameSize">{320, 86}</string>
+				<reference key="NSSuperview"/>
+				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="796094069"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
@@ -545,7 +550,7 @@
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 			</object>
 			<object class="IBUIView" id="796079887">
-				<nil key="NSNextResponder"/>
+				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">301</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -586,7 +591,6 @@
 				<string key="NSFrameSize">{49, 44}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
-				<string key="NSFrameSize">{35, 44}</string>
 				<reference key="NSNextKeyView" ref="304733350"/>
 				<reference key="IBUIBackgroundColor" ref="368037730"/>
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -1212,6 +1216,14 @@
 					<int key="connectionID">204</int>
 				</object>
 				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">paperTypePopoverSegmentedControl</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="924565569"/>
+					</object>
+					<int key="connectionID">205</int>
+				</object>
+				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
 						<string key="label">audioPlayAction:</string>
 						<reference key="source" ref="292840498"/>
@@ -1236,23 +1248,6 @@
 						<int key="IBEventType">7</int>
 					</object>
 					<int key="connectionID">211</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchEventConnection" key="connection">
-						<string key="label">toolbarButtonPressed:</string>
-						<reference key="source" ref="140280380"/>
-						<reference key="destination" ref="372490531"/>
-						<int key="IBEventType">7</int>
-					</object>
-					<int key="connectionID">212</int>
-=======
-					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">paperTypePopoverSegmentedControl</string>
-						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="924565569"/>
-					</object>
-					<int key="connectionID">205</int>
->>>>>>> 562a082583cfe8821ab4873a9f0d8661a9c46082
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
