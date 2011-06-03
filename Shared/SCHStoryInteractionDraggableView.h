@@ -17,6 +17,10 @@
 
 // if this draggable view snaps onto a SCHStoryInteractionDraggableTargetView in the
 // view hierarchy, that target is returned here; else nil
-- (SCHStoryInteractionDraggableTargetView *)target;
+@property (nonatomic, readonly) SCHStoryInteractionDraggableTargetView *attachedTarget;
+
+// set the targets which this draggable can attach to
+- (void)setDragTargets:(NSArray *)dragTargets;
+
 
 @end

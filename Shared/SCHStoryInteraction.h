@@ -26,6 +26,9 @@
 @property (nonatomic, assign) NSInteger documentPageNumber;
 @property (nonatomic, assign) CGPoint position;
 
+// YES if this is an interaction for older readers
+- (BOOL)isOlderStoryInteraction;
+
 - (NSString *)title;
 
 // base path for interaction resources in XPSProvider

@@ -27,6 +27,11 @@
 @synthesize documentPageNumber;
 @synthesize position;
 
+- (BOOL)isOlderStoryInteraction
+{
+    return NO;
+}
+
 - (NSString *)title
 {
     // override in subclasses

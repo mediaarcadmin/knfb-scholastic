@@ -89,11 +89,6 @@
     }
 }
 
-- (IBAction)closeButtonTapped:(id)sender
-{
-    [self removeFromHostView];
-}
-
 - (IBAction)answerButtonTapped:(id)sender
 {
     NSInteger chosenAnswer = [self.answerButtons indexOfObject:sender];
