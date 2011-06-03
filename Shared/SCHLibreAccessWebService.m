@@ -1348,33 +1348,40 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 	}
 }												
 
+// only creates annotation objects that have a status, i.e. need to be saved
 - (void)fromObject:(NSDictionary *)object intoPrivateAnnotations:(LibreAccessServiceSvc_PrivateAnnotations *)intoObject
 {
 	if (object != nil && intoObject != nil) {
 		intoObject.Highlights = [[LibreAccessServiceSvc_Highlights alloc] init];
 		for (NSDictionary *item in [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceHighlights]]) {
-			LibreAccessServiceSvc_Highlight *highlight = [[LibreAccessServiceSvc_Highlight alloc] init];
-			[self fromObject:item intoHighlight:highlight];
-			[intoObject.Highlights addHighlight:highlight];
-			[highlight release], highlight = nil;
+			if ([[self fromObjectTranslate:[item valueForKey:kSCHLibreAccessWebServiceAction]] saveActionValue] != kSCHSaveActionsNone) {
+                LibreAccessServiceSvc_Highlight *highlight = [[LibreAccessServiceSvc_Highlight alloc] init];
+                [self fromObject:item intoHighlight:highlight];
+                [intoObject.Highlights addHighlight:highlight];
+                [highlight release], highlight = nil;
+            }
 		}
 		[intoObject.Highlights release];
 		
 		intoObject.Notes = [[LibreAccessServiceSvc_Notes alloc] init];
 		for (NSDictionary *item in [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceNotes]]) {
-			LibreAccessServiceSvc_Note *note = [[LibreAccessServiceSvc_Note alloc] init];
-			[self fromObject:item intoNote:note];
-			[intoObject.Notes addNote:note];
-			[note release], note = nil;
+            if ([[self fromObjectTranslate:[item valueForKey:kSCHLibreAccessWebServiceAction]] saveActionValue] != kSCHSaveActionsNone) {
+                LibreAccessServiceSvc_Note *note = [[LibreAccessServiceSvc_Note alloc] init];
+                [self fromObject:item intoNote:note];
+                [intoObject.Notes addNote:note];
+                [note release], note = nil;
+            }
 		}									
 		[intoObject.Notes release];
 		
 		intoObject.Bookmarks = [[LibreAccessServiceSvc_Bookmarks alloc] init];
 		for (NSDictionary *item in [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceBookmarks]]) {
-			LibreAccessServiceSvc_Bookmark *bookmark = [[LibreAccessServiceSvc_Bookmark alloc] init];
-			[self fromObject:item intoBookmark:bookmark];
-			[intoObject.Bookmarks addBookmark:bookmark];
-			[bookmark release], bookmark = nil;
+            if ([[self fromObjectTranslate:[item valueForKey:kSCHLibreAccessWebServiceAction]] saveActionValue] != kSCHSaveActionsNone) {
+                LibreAccessServiceSvc_Bookmark *bookmark = [[LibreAccessServiceSvc_Bookmark alloc] init];
+                [self fromObject:item intoBookmark:bookmark];
+                [intoObject.Bookmarks addBookmark:bookmark];
+                [bookmark release], bookmark = nil;
+            }
 		}									
 		[intoObject.Bookmarks release];
 		
@@ -1444,6 +1451,12 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 {
 	if (object != nil && intoObject != nil) {
 		intoObject.page = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServicePage]];
+		intoObject.coords = [[LibreAccessServiceSvc_Coords alloc] init];
+		[intoObject.coords release];
+        // default values as Scholastic doesnt actually use these values
+		intoObject.coords.x = [NSNumber numberWithInteger:0];
+        intoObject.coords.y = [NSNumber numberWithInteger:0];
+//		intoObject.wordindex = nil;
 	}	
 }
 
