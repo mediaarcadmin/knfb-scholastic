@@ -17,6 +17,7 @@
 
 @implementation SCHStoryInteractionController
 
+@synthesize containerView;
 @synthesize nibObjects;
 @synthesize storyInteraction;
 @synthesize delegate;
@@ -36,6 +37,7 @@
 - (void)dealloc
 {
     [self removeFromHostView];
+    [containerView release];
     [nibObjects release];
     [storyInteraction release];
     [super dealloc];
@@ -60,23 +62,30 @@
 
 - (void)presentInHostView:(UIView *)hostView
 {
+    // set up the transparent full-size container to trap touch events before they get
+    // to the underlying view; this effectively makes the story interaction modal
+    UIView *container = [[UIView alloc] initWithFrame:hostView.bounds];
+    container.backgroundColor = [UIColor clearColor];
+    container.userInteractionEnabled = YES;
+    [hostView addSubview:container];
+    
+    CGPoint center = CGPointMake(CGRectGetMidX(container.bounds), CGRectGetMidY(container.bounds));
     for (id object in self.nibObjects) {
         if ([object isKindOfClass:[UIView class]]) {
-            CGPoint center = CGPointMake(CGRectGetMidX(hostView.bounds), CGRectGetMidY(hostView.bounds));
             [(UIView *)object setCenter:center];
-            [hostView addSubview:object];
+            [container addSubview:object];
         }
     }
+    
+    self.containerView = container;
+    [container release];
+
     [self setupView];
 }
 
 - (void)removeFromHostView
 {
-    for (id object in self.nibObjects) {
-        if ([object isKindOfClass:[UIView class]]) {
-            [object removeFromSuperview];
-        }
-    }
+    [self.containerView removeFromSuperview];
     
     if (delegate && [delegate respondsToSelector:@selector(storyInteractionControllerDidDismiss:)]) {
         // may result in self being dealloc'ed so don't do anything else after this

@@ -119,6 +119,8 @@ static NSUInteger const kSCHAudioBookPlayerNoAudioLoaded = NSUIntegerMax;
                 static NSUInteger currentPosition = 0;
                 static NSUInteger currentAudioInfoPosition = 0;
                 static SCHWordTiming *lastTriggered = nil;
+                static NSUInteger pageTurnAtTime = NSUIntegerMax;
+                static NSUInteger pageTurnToLayoutPage = 1;
 
                 // We're using the WordTimings file use of integers for time
                 NSUInteger currentPlayTime = (NSUInteger)(self.player.currentTime * kSCHAudioBookPlayerMilliSecondsInASecond);
@@ -187,11 +189,25 @@ static NSUInteger const kSCHAudioBookPlayerNoAudioLoaded = NSUIntegerMax;
                         }
                         break;                                
                 }  
-                
+
+                if (pageTurnAtTime <= currentPlayTime) {
+                    pageTurnAtTime = NSUIntegerMax;
+                    pageTurnBlock(pageTurnToLayoutPage);
+                }
+
                 if (wordTiming != lastTriggered && [wordTiming compareTime:currentPlayTime] == NSOrderedSame) {
                     lastTriggered = wordTiming;
                     SCHAudioInfo *audioInfo = [self.audioInfos objectAtIndex:currentAudioInfoPosition];
                     wordBlock(audioInfo.pageIndex + 1, currentPosition - audioInfo.timeIndex);
+                    
+                    pageTurnAtTime = NSUIntegerMax; 
+                    if (currentAudioInfoPosition + 1 < [self.audioInfos count]) {
+                        SCHAudioInfo *nextAudioInfo = [self.audioInfos objectAtIndex:currentAudioInfoPosition + 1];
+                        if (currentPosition == nextAudioInfo.timeIndex - 1) {
+                            pageTurnAtTime = wordTiming.endTime;
+                            pageTurnToLayoutPage = nextAudioInfo.pageIndex + 1;
+                        }
+                    }
                 }                                                
             });            
             
