@@ -194,9 +194,9 @@
     
     [self.webView loadHTMLString:htmlString baseURL:baseURL];
     
-//    if ([self.categoryMode compare:kSCHDictionaryYoungReader] == NSOrderedSame) {
-//    }
-
+    if (self.categoryMode == kSCHDictionaryYoungReader) {
+        [[SCHDictionaryAccessManager sharedAccessManager] speakYoungerWordDefinition:self.word];
+    }
 }
 
 - (IBAction) playWord

@@ -188,6 +188,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 
 #pragma mark - Private methods
 
+// Note: this is overridden in the iPad controller
 - (void)updateTheme
 {
     [self setupAssetsForOrientation:self.interfaceOrientation];
