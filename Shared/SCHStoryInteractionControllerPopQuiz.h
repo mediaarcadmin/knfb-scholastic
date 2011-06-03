@@ -20,7 +20,6 @@
 @property (nonatomic, retain) IBOutlet UIButton *answerButton3;
 @property (nonatomic, retain) IBOutlet UIButton *answerButton4;
 
-- (IBAction)closeButtonTapped:(id)sender;
 - (IBAction)answerButtonTapped:(id)sender;
 
 @end

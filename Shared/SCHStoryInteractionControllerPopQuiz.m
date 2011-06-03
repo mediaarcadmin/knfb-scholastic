@@ -72,19 +72,21 @@
     self.questionLabel.text = [self currentQuestion].prompt;
     NSInteger i = 0;
     for (NSString *answer in [self currentQuestion].answers) {
+        UIImage *highlight;
+        if (i == [self currentQuestion].correctAnswer) {
+            highlight = [UIImage imageNamed:@"popquiz-answer-button-green"];
+        } else {
+            highlight = [UIImage imageNamed:@"popquiz-answer-button-red"];
+        }
         UIButton *button = [self.answerButtons objectAtIndex:i];
         [button setTitle:answer forState:UIControlStateNormal];
         [button setHidden:NO];
+        [button setBackgroundImage:highlight forState:UIControlStateSelected];
         ++i;
     }
     for (; i < [self.answerButtons count]; ++i) {
         [[self.answerButtons objectAtIndex:i] setHidden:YES];
     }
-}
-
-- (IBAction)closeButtonTapped:(id)sender
-{
-    [self removeFromHostView];
 }
 
 - (IBAction)answerButtonTapped:(id)sender
@@ -94,20 +96,14 @@
         return;
     }
     
-    if (chosenAnswer == [self currentQuestion].correctAnswer) {
-        [sender setBackgroundImage:[UIImage imageNamed:@"popquiz-answer-button-green"] forState:UIControlStateNormal];
-        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 1.0 * NSEC_PER_SEC);
-        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-            [sender setBackgroundImage:[UIImage imageNamed:@"popquiz-answer-button-yellow"] forState:UIControlStateNormal];
+    [sender setSelected:YES];
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 1.0 * NSEC_PER_SEC);
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        [sender setSelected:NO];
+        if (chosenAnswer == [self currentQuestion].correctAnswer) {
             [self nextQuestion];
-        });
-    } else {
-        [sender setBackgroundImage:[UIImage imageNamed:@"popquiz-answer-button-red"] forState:UIControlStateNormal];
-        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 1.0 * NSEC_PER_SEC);
-        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-            [sender setBackgroundImage:[UIImage imageNamed:@"popquiz-answer-button-yellow"] forState:UIControlStateNormal];
-        });
-    }
+        }
+    });
 }
 
 @end
