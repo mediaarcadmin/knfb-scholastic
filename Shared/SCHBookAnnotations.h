@@ -24,8 +24,10 @@
 
 - (NSArray *)bookmarks;
 - (void)addBookmark:(SCHBookmark *)newBookmark;
+- (void)deleteBookmark:(SCHBookmark *)bookmark;
 - (NSArray *)highlightsForPage:(NSUInteger)page;
 - (void)addHighlight:(SCHHighlight *)newHighlight;
+- (void)deleteHighlight:(SCHHighlight *)highlight;
 - (NSArray *)notes;
 - (void)addNote:(SCHNote *)newNote;
 - (void)deleteNote:(SCHNote *)note;
