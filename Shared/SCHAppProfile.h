@@ -20,5 +20,8 @@ static NSString * const kSCHAppProfile = @"SCHAppProfile";
 @property (nonatomic, retain) NSString * AutomaticallyLaunchBook;
 @property (nonatomic, retain) NSNumber * SelectedTheme;
 @property (nonatomic, retain) SCHProfileItem * ProfileItem;
+@property (nonatomic, retain) NSNumber *FontIndex;
+@property (nonatomic, retain) NSNumber *LayoutType;
+@property (nonatomic, retain) NSNumber *PaperType;
 
 @end

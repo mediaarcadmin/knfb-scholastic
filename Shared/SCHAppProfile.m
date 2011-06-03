@@ -15,5 +15,8 @@
 @dynamic AutomaticallyLaunchBook;
 @dynamic SelectedTheme;
 @dynamic ProfileItem;
+@dynamic FontIndex;
+@dynamic LayoutType;
+@dynamic PaperType;
 
 @end

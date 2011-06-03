@@ -391,19 +391,19 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
                 ret = [[SCHReadingViewController alloc] initWithNibName:nil 
                                                                  bundle:nil 
                                                                    isbn:isbn 
-                                                                profile:profileItem
-                                                                 layout:SCHReadingViewLayoutTypeFixed];            
+                                                                profile:profileItem];            
                 ret.youngerMode = YES;
                 break;
                 
             case kSCHBookshelfStyleOlderChild:
+            {
                 ret = [[SCHReadingViewController alloc] initWithNibName:nil 
                                                                  bundle:nil 
                                                                    isbn:isbn 
-                                                                profile:profileItem                                
-                                                                 layout:SCHReadingViewLayoutTypeFlow];            
+                                                                profile:profileItem];
                 ret.youngerMode = NO;
                 break;     
+            }
             default:
                 NSLog(@"Warning: unrecognised bookshelf style.");
                 break;

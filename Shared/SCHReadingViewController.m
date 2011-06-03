@@ -129,6 +129,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 @synthesize popoverOptionsViewController;
 @synthesize fontSegmentedControl;
 @synthesize flowFixedSegmentedControl;
+@synthesize flowFixedPopoverSegmentedControl;
 @synthesize paperTypeSegmentedControl;
 @synthesize notesButton;
 @synthesize pageSlider;
@@ -194,6 +195,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [fontSegmentedControl release], fontSegmentedControl = nil;
     [flowFixedSegmentedControl release], flowFixedSegmentedControl = nil;
     [paperTypeSegmentedControl release], paperTypeSegmentedControl = nil;
+    [flowFixedPopoverSegmentedControl release], flowFixedPopoverSegmentedControl = nil;
     
     if (xpsProvider) {
         [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:isbn];
@@ -210,14 +212,13 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 }
 
 #pragma mark - Object Initialiser
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil isbn:(NSString *)aIsbn profile:(SCHProfileItem *)aProfile layout:(SCHReadingViewLayoutType)layout
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil isbn:(NSString *)aIsbn profile:(SCHProfileItem *)aProfile
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
         isbn = [aIsbn copy];
         profile = [aProfile retain];
-        layoutType = layout;
         currentlyRotating = NO;
         currentlyScrubbing = NO;
         
@@ -258,24 +259,66 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 	
     SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];
     
-    NSLog(@"XPSCategory: %@", book.XPSCategory);
-    
-    if (self.layoutType == SCHReadingViewLayoutTypeFlow) {
-        [self.fontSegmentedControl setEnabled:YES forSegmentAtIndex:0];
-        [self.fontSegmentedControl setEnabled:YES forSegmentAtIndex:1];
+    // Older reader defaults: fixed view for iPad, flow view for iPhone
+    // Younger reader defaults: always fixed, no need to save
+
+    if (self.youngerMode) {
+        self.layoutType = SCHReadingViewLayoutTypeFixed;
     } else {
-        [self.fontSegmentedControl setEnabled:NO forSegmentAtIndex:0];
-        [self.fontSegmentedControl setEnabled:NO forSegmentAtIndex:1];
+        
+        // Default layout type
+        NSNumber *savedLayoutType = [[self.profile AppProfile] LayoutType];
+        if (savedLayoutType) {
+            self.layoutType = [savedLayoutType intValue];
+        } else {
+            if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+                self.layoutType = SCHReadingViewLayoutTypeFlow;
+            } else {
+                self.layoutType = SCHReadingViewLayoutTypeFixed;
+            }
+        }
+
+        // Default font size index
+        NSNumber *savedFontSizeIndex = [[self.profile AppProfile] FontIndex];
+        if (savedFontSizeIndex) {
+            self.currentFontSizeIndex = [savedFontSizeIndex intValue];
+        } else {
+            self.currentFontSizeIndex = 2;
+        }
+
+        // Default paper type
+        NSNumber *savedPaperType = [[self.profile AppProfile] PaperType];
+        if (savedPaperType) {
+            self.paperType = [savedPaperType intValue];
+        } else {
+            self.paperType = SCHReadingViewPaperTypeWhite;
+        }
+        
+        SCHReadingViewPaperType storedType = SCHReadingViewPaperTypeWhite;
+
+        
+        // set up the segmented controls
+        if (self.layoutType == SCHReadingViewLayoutTypeFlow) {
+            [self.fontSegmentedControl setEnabled:YES forSegmentAtIndex:0];
+            [self.fontSegmentedControl setEnabled:YES forSegmentAtIndex:1];
+        } else {
+            [self.fontSegmentedControl setEnabled:NO forSegmentAtIndex:0];
+            [self.fontSegmentedControl setEnabled:NO forSegmentAtIndex:1];
+        }
+        
+        [self.flowFixedSegmentedControl setSelectedSegmentIndex:self.layoutType];
+        [self.flowFixedPopoverSegmentedControl setSelectedSegmentIndex:self.layoutType];
+        
+        [self.paperTypeSegmentedControl setSelectedSegmentIndex:storedType];
+        
+        
+        // add in the actions here for flowFixedSegmentedControl
+        // to prevent actions being fired while setting defaults
+        [self.flowFixedSegmentedControl addTarget:self action:@selector(flowedFixedSegmentChanged:) forControlEvents:UIControlEventValueChanged];
+        [self.flowFixedPopoverSegmentedControl addTarget:self action:@selector(flowedFixedSegmentChanged:) forControlEvents:UIControlEventValueChanged];
+
     }
-    
-    [self.flowFixedSegmentedControl setSelectedSegmentIndex:self.layoutType];
-    
-    // FIXME: this should be a stored preference
-    self.currentFontSizeIndex = 2;
-    
-    // FIXME: this should be a stored preference
-    SCHReadingViewPaperType storedType = SCHReadingViewPaperTypeWhite;
-    [self.paperTypeSegmentedControl setSelectedSegmentIndex:storedType];
+
     
     self.wantsFullScreenLayout = YES;
     self.navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
@@ -353,8 +396,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     NSInteger noteCount = [[[self.profile annotationsForBook:self.isbn] notes] count];
     self.notesCountView.noteCount = noteCount;
 
-    
-    NSLog(@"Button: %@, NCV: %@", self.notesButton, self.notesCountView);
     
     [self setDictionarySelectionMode];
 
@@ -748,6 +789,13 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 {
     layoutType = newLayoutType;
     
+    NSNumber *savedLayoutType = [[self.profile AppProfile] LayoutType];
+
+    if (!savedLayoutType || [savedLayoutType intValue] != newLayoutType) {
+        savedLayoutType = [NSNumber numberWithInt:newLayoutType];
+        [[self.profile AppProfile] setLayoutType:savedLayoutType];
+    }
+    
     [self.readingView removeFromSuperview];
     
     switch (newLayoutType) {
@@ -804,6 +852,13 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 {
     paperType = newPaperType;
     
+    NSNumber *savedPaperType = [[self.profile AppProfile] PaperType];
+    
+    if (!savedPaperType || [savedPaperType intValue] != newPaperType) {
+        savedPaperType = [NSNumber numberWithInt:newPaperType];
+        [[self.profile AppProfile] setPaperType:savedPaperType];
+    }
+
     switch (newPaperType) {
         case SCHReadingViewPaperTypeBlack:
             [self.readingView setPageTexture:[UIImage imageNamed: @"paper-black.png"] isDark:YES];
@@ -833,6 +888,13 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (void)setCurrentFontSizeIndex:(int)newFontSizeIndex
 {
     currentFontSizeIndex = newFontSizeIndex;
+    
+    NSNumber *savedFontSizeIndex = [[self.profile AppProfile] FontIndex];
+    
+    if (!savedFontSizeIndex || [savedFontSizeIndex intValue] != newFontSizeIndex) {
+        savedFontSizeIndex = [NSNumber numberWithInt:newFontSizeIndex];
+        [[self.profile AppProfile] setFontIndex:savedFontSizeIndex];
+    }
     
     [self.readingView setFontPointIndex:newFontSizeIndex];
     [self updateScrubberValue];
