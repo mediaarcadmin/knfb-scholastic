@@ -32,6 +32,7 @@
 #import "SCHNotesCountView.h"
 #import "SCHBookStoryInteractions.h"
 #import "SCHStoryInteractionController.h"
+#import "SCHHighlight.h"
 
 // constants
 static const CGFloat kReadingViewStandardScrubHeight = 47.0f;
@@ -892,7 +893,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     
     if (annotations != nil) {
         SCHHighlight *newHighlight = [annotations createHighlightBetweenStartPage:startPage startWord:startWord endPage:endPage endWord:endWord color:[self highlightColor]];
-        [annotations addHighlight:newHighlight];
+        SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];
+        newHighlight.Version = [NSNumber numberWithInteger:[book.Version integerValue]];
     }
 }
 
@@ -1280,8 +1282,11 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (void)readingNotesViewCreatingNewNote:(SCHReadingNotesListController *)readingNotesView
 {
     NSLog(@"Requesting a new note be created!");
+    SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];
     SCHBookAnnotations *annos = [self.profile annotationsForBook:self.isbn];
     SCHNote *newNote = [annos createEmptyNote];
+    
+    newNote.Version = [NSNumber numberWithInteger:[book.Version integerValue]];
     
     SCHBookPoint *currentPoint = [self.readingView currentBookPoint];
     
