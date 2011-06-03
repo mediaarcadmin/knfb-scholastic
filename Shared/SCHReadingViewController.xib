@@ -45,7 +45,7 @@
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 			</object>
 			<object class="IBUIView" id="191373211">
-				<reference key="NSNextResponder"/>
+				<nil key="NSNextResponder"/>
 				<int key="NSvFlags">274</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -291,7 +291,6 @@
 					</object>
 				</object>
 				<string key="NSFrameSize">{320, 480}</string>
-				<reference key="NSSuperview"/>
 				<reference key="NSNextKeyView" ref="498520415"/>
 				<reference key="IBUIBackgroundColor" ref="932114097"/>
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -359,6 +358,7 @@
 								<string key="NSFrame">{{114, 46}, {197, 30}}</string>
 								<reference key="NSSuperview" ref="796094069"/>
 								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<int key="IBSegmentControlStyle">2</int>
@@ -538,7 +538,7 @@
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 			</object>
 			<object class="IBUIView" id="796079887">
-				<reference key="NSNextResponder"/>
+				<nil key="NSNextResponder"/>
 				<int key="NSvFlags">301</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -571,7 +571,6 @@
 					</object>
 				</object>
 				<string key="NSFrameSize">{35, 44}</string>
-				<reference key="NSSuperview"/>
 				<reference key="NSNextKeyView" ref="304733350"/>
 				<reference key="IBUIBackgroundColor" ref="368037730"/>
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -667,6 +666,7 @@
 									<string key="NSFrame">{{114, 46}, {197, 30}}</string>
 									<reference key="NSSuperview" ref="640732432"/>
 									<reference key="NSWindow"/>
+									<reference key="NSNextKeyView"/>
 									<bool key="IBUIOpaque">NO</bool>
 									<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 									<int key="IBSegmentControlStyle">2</int>
@@ -1118,6 +1118,14 @@
 						<reference key="destination" ref="313722661"/>
 					</object>
 					<int key="connectionID">204</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">paperTypePopoverSegmentedControl</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="924565569"/>
+					</object>
+					<int key="connectionID">205</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -1575,7 +1583,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">204</int>
+			<int key="maxID">205</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -1676,6 +1684,7 @@
 							<string>pageLabel</string>
 							<string>pageSlider</string>
 							<string>panSpeedLabel</string>
+							<string>paperTypePopoverSegmentedControl</string>
 							<string>paperTypeSegmentedControl</string>
 							<string>popoverOptionsViewController</string>
 							<string>scrubberInfoView</string>
@@ -1701,6 +1710,7 @@
 							<string>UILabel</string>
 							<string>UISlider</string>
 							<string>UILabel</string>
+							<string>UISegmentedControl</string>
 							<string>UISegmentedControl</string>
 							<string>UIViewController</string>
 							<string>UIView</string>
@@ -1729,6 +1739,7 @@
 							<string>pageLabel</string>
 							<string>pageSlider</string>
 							<string>panSpeedLabel</string>
+							<string>paperTypePopoverSegmentedControl</string>
 							<string>paperTypeSegmentedControl</string>
 							<string>popoverOptionsViewController</string>
 							<string>scrubberInfoView</string>
@@ -1795,6 +1806,10 @@
 							<object class="IBToOneOutletInfo">
 								<string key="name">panSpeedLabel</string>
 								<string key="candidateClassName">UILabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">paperTypePopoverSegmentedControl</string>
+								<string key="candidateClassName">UISegmentedControl</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">paperTypeSegmentedControl</string>
