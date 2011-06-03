@@ -53,14 +53,16 @@ static NSInteger const kSCHBookShelfEdgePadding = 12;
 {
     [super viewDidLoad];
     
-    SCHThemeButton *homeButton = (SCHThemeButton *) [self.navigationItem.leftBarButtonItem customView];
-    SCHThemeButton *themeButton = (SCHThemeButton *) [self. navigationItem.rightBarButtonItem customView];
-    
-    [themeButton removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
+    SCHThemeButton *themeButton = [SCHThemeButton buttonWithType:UIButtonTypeCustom];
+    [themeButton setThemeIcon:kSCHThemeManagerThemeIcon iPadSpecific:YES];
+    [themeButton sizeToFit];    
     [themeButton addTarget:self action:@selector(themeAction:) forControlEvents:UIControlEventTouchUpInside];
     
-    NSLog(@"Theme buttons: %@ %@", homeButton, themeButton);
-    
+    SCHThemeButton *homeButton = [SCHThemeButton buttonWithType:UIButtonTypeCustom];
+    [homeButton setThemeIcon:kSCHThemeManagerHomeIcon iPadSpecific:YES];
+    [homeButton sizeToFit];    
+    [homeButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];    
+
     self.topTenPicksButton = [SCHThemeButton buttonWithType:UIButtonTypeCustom];
     [self.topTenPicksButton setFrame:CGRectMake(0, 0, 120, 30)];
     [self.topTenPicksButton setTitle:NSLocalizedString(@"Top 10 Picks", @"") forState:UIControlStateNormal];
@@ -75,7 +77,6 @@ static NSInteger const kSCHBookShelfEdgePadding = 12;
     [self.topTenPicksButton addTarget:self action:@selector(topTenAction:) forControlEvents:UIControlEventTouchUpInside];    
 
     UIView *containerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.topTenPicksButton.frame) + kSCHBookShelfButtonPadding + CGRectGetWidth(themeButton.frame) + kSCHBookShelfEdgePadding, CGRectGetHeight(themeButton.frame))];
-    
     [containerView addSubview:self.topTenPicksButton];
     
     CGRect themeFrame = themeButton.frame;
@@ -87,7 +88,6 @@ static NSInteger const kSCHBookShelfEdgePadding = 12;
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:containerView];
     [containerView release];
 
-    
     if ([self.profileItem.BookshelfStyle intValue] == kSCHBookshelfStyleYoungChild) {
         containerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(homeButton.frame) + kSCHBookShelfEdgePadding, CGRectGetHeight(homeButton.frame))];
         
