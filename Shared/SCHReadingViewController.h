@@ -35,6 +35,8 @@ typedef enum
 SCHReadingNoteViewDelegate, SCHReadingInteractionsListControllerDelegate, SCHAudioBookPlayerDelegate, UIPopoverControllerDelegate,
 SCHStoryInteractionControllerDelegate> 
 {}
+UISegmentedControl *paperTypePopoverSegmentedControl;
+
 
 
 @property (nonatomic, assign) BOOL youngerMode;
@@ -65,6 +67,7 @@ SCHStoryInteractionControllerDelegate>
 @property (nonatomic, retain) IBOutlet UISegmentedControl *paperTypeSegmentedControl;
 @property (nonatomic, retain) IBOutlet UISegmentedControl *flowFixedSegmentedControl;
 @property (nonatomic, retain) IBOutlet UISegmentedControl *flowFixedPopoverSegmentedControl;
+@property (nonatomic, retain) IBOutlet UISegmentedControl *paperTypePopoverSegmentedControl;
 
 
 -(id)initWithNibName:(NSString *)nibNameOrNil 

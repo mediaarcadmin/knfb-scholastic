@@ -130,6 +130,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 @synthesize fontSegmentedControl;
 @synthesize flowFixedSegmentedControl;
 @synthesize flowFixedPopoverSegmentedControl;
+@synthesize paperTypePopoverSegmentedControl;
 @synthesize paperTypeSegmentedControl;
 @synthesize notesButton;
 @synthesize pageSlider;
@@ -198,6 +199,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [flowFixedSegmentedControl release], flowFixedSegmentedControl = nil;
     [paperTypeSegmentedControl release], paperTypeSegmentedControl = nil;
     [flowFixedPopoverSegmentedControl release], flowFixedPopoverSegmentedControl = nil;
+    [paperTypePopoverSegmentedControl release], paperTypePopoverSegmentedControl = nil;
     
     if (xpsProvider) {
         [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:isbn];
@@ -296,7 +298,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
             self.paperType = SCHReadingViewPaperTypeWhite;
         }
         
-        SCHReadingViewPaperType storedType = SCHReadingViewPaperTypeWhite;
+        [self.paperTypeSegmentedControl setSelectedSegmentIndex:self.paperType];
+        [self.paperTypePopoverSegmentedControl setSelectedSegmentIndex:self.paperType];
 
         
         // set up the segmented controls
@@ -311,7 +314,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         [self.flowFixedSegmentedControl setSelectedSegmentIndex:self.layoutType];
         [self.flowFixedPopoverSegmentedControl setSelectedSegmentIndex:self.layoutType];
         
-        [self.paperTypeSegmentedControl setSelectedSegmentIndex:storedType];
         
         
         // add in the actions here for flowFixedSegmentedControl
