@@ -14,9 +14,10 @@
 #import "SCHProfileViewController_iPad.h"
 #import "SCHBookManager.h"
 #import "SCHThemeButton.h"
-#import "SCHBookShelfPopoverTableView.h"
+#import "SCHBookShelfSortPopoverTableView.h"
 #import "SCHProfileItem.h"
 #import "NSNumber+ObjectTypes.h"
+#import "SCHAppProfile.h"
 
 static NSInteger const kSCHBookShelfViewControllerGridCellHeightPortrait_iPad = 254;
 static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape_iPad = 266;
@@ -187,7 +188,10 @@ static NSInteger const kSCHBookShelfEdgePadding = 12;
         self.popover = nil;
     }
     
-    SCHBookShelfPopoverTableView *popoverTable = [[SCHBookShelfPopoverTableView alloc] initWithNibName:nil bundle:nil];
+    SCHBookShelfSortPopoverTableView *popoverTable = [[SCHBookShelfSortPopoverTableView alloc] initWithNibName:nil bundle:nil];
+    popoverTable.sortType = self.sortType;
+    popoverTable.delegate = self;
+    
     popoverTable.title = @"Sort By";
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:popoverTable];
 
@@ -215,7 +219,7 @@ static NSInteger const kSCHBookShelfEdgePadding = 12;
         self.popover = nil;
     }
     
-    SCHBookShelfPopoverTableView *popoverTable = [[SCHBookShelfPopoverTableView alloc] initWithNibName:nil bundle:nil];
+    SCHBookShelfSortPopoverTableView *popoverTable = [[SCHBookShelfSortPopoverTableView alloc] initWithNibName:nil bundle:nil];
     popoverTable.title = @"Top Ten Books";
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:popoverTable];
     
@@ -273,4 +277,16 @@ static NSInteger const kSCHBookShelfEdgePadding = 12;
     self.popover = nil;
 }
 
+#pragma mark - Sort Popover Delegate
+
+- (void)sortPopoverPickedSortType: (SCHBookSortType) newType
+{
+    self.sortType = newType;
+    [[self.profileItem AppProfile] setSortType:[NSNumber numberWithInt:newType]];
+
+    self.books = [self.profileItem allISBNs];
+	self.loadingView.hidden = YES;
+
+    [self.popover dismissPopoverAnimated:YES];
+}
 @end

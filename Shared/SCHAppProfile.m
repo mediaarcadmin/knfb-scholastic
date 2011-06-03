@@ -18,5 +18,6 @@
 @dynamic FontIndex;
 @dynamic LayoutType;
 @dynamic PaperType;
+@dynamic SortType;
 
 @end
