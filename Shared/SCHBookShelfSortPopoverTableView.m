@@ -87,6 +87,14 @@
         cell.accessoryType = UITableViewCellAccessoryNone;
     }
     
+    if (([indexPath row] == 1) || [indexPath row] == 4 || [indexPath row] == 5) {
+        cell.textLabel.textColor = [UIColor darkGrayColor];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    } else {
+        cell.textLabel.textColor = [UIColor blackColor];
+        cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+    }
+    
     return cell;
 }
 
@@ -94,12 +102,15 @@
 {
     SCHBookSortType newSortType = -1;
     
+    BOOL enabled = YES;
+    
     switch ([indexPath row]) {
         case 0:
             newSortType = kSCHBookSortTypeUser;
             break;
         case 1:
-            newSortType = kSCHBookSortTypeFavorites;
+//            newSortType = kSCHBookSortTypeFavorites;
+            enabled = NO;
             break;
         case 2:
             newSortType = kSCHBookSortTypeTitle;
@@ -108,16 +119,18 @@
             newSortType = kSCHBookSortTypeAuthor;
             break;
         case 4:
-            newSortType = kSCHBookSortTypeNewest;
+//            newSortType = kSCHBookSortTypeNewest;
+            enabled = NO;
             break;
         case 5:
-            newSortType = kSCHBookSortTypeLastRead;
+//            newSortType = kSCHBookSortTypeLastRead;
+            enabled = NO;
             break;
         default:
             break;
     }
     
-    if (self.delegate && [self.delegate respondsToSelector:@selector(sortPopoverPickedSortType:)]) {
+    if (enabled && self.delegate && [self.delegate respondsToSelector:@selector(sortPopoverPickedSortType:)]) {
         [self.delegate sortPopoverPickedSortType:newSortType];
     }
 }
