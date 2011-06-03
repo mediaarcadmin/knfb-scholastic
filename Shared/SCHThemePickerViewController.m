@@ -29,7 +29,6 @@ static NSTimeInterval const kSCHThemePickerViewControllerThemeTransitionAlpha = 
 @implementation SCHThemePickerViewController
 
 @synthesize tableView;
-@synthesize shadowView;
 @synthesize cancelButton;
 @synthesize doneButton;
 @synthesize lastTappedTheme;
@@ -39,7 +38,6 @@ static NSTimeInterval const kSCHThemePickerViewControllerThemeTransitionAlpha = 
 - (void)releaseViewObjects
 {
     [tableView release], tableView = nil;
-    [shadowView release], shadowView = nil;
     [cancelButton release], cancelButton = nil;
     [doneButton release], doneButton = nil;
 }
@@ -100,9 +98,6 @@ static NSTimeInterval const kSCHThemePickerViewControllerThemeTransitionAlpha = 
     }
     self.tableView.rowHeight = 50;
     self.tableView.separatorColor = [UIColor whiteColor];
-    
-    
-    [self.shadowView setImage:[[UIImage imageNamed:@"bookshelf-iphone-top-shadow.png"] stretchableImageWithLeftCapWidth:15.0f topCapHeight:0]];
 }
 
 - (void)viewDidUnload
