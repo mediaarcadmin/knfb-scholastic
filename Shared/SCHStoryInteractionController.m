@@ -12,7 +12,6 @@
 #import "SCHStoryInteractionControllerDelegate.h"
 
 @interface SCHStoryInteractionController ()
-@property (nonatomic, retain) UIView *containerView;
 @property (nonatomic, retain) NSArray *nibObjects;
 @end
 
