@@ -87,6 +87,11 @@
     [self.privateAnnotations addBookmarksObject:newBookmark];
 }
 
+- (void)deleteBookmark:(SCHBookmark *)bookmark
+{
+    [bookmark syncDelete];    
+}
+
 - (NSArray *)highlightsForPage:(NSUInteger)page
 {
     NSArray *ret = nil;
@@ -132,6 +137,11 @@
     [self.privateAnnotations addHighlightsObject:newHighlight];
 }
 
+- (void)deleteHighlight:(SCHHighlight *)highlight
+{
+    [highlight syncDelete];
+}
+
 - (NSArray *)notes
 {
     if (self.sortedNotes == nil) {
@@ -156,7 +166,7 @@
 
 - (void)deleteNote:(SCHNote *)note
 {
-    [self.privateAnnotations removeNotesObject:note];
+    [note syncDelete];
 }
 
 - (SCHFavorite *)favorite
@@ -178,7 +188,7 @@
                                                                   inManagedObjectContext:self.privateAnnotations.managedObjectContext];
                                      
     note.PrivateAnnotations = self.privateAnnotations;
-    note.Color = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:1.0];
+    note.Color = [UIColor whiteColor];
     note.Location = locationGraphics;
     note.NoteText = @"";
 	

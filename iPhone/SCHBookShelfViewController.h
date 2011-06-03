@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
 
+#import "SCHProfileItem.h"
 #import "MRGridViewDelegate.h"
 #import "MRGridViewDataSource.h"
 
@@ -31,6 +32,8 @@
 
 @property (nonatomic, retain) NSMutableArray *books;
 @property (nonatomic, retain) SCHProfileItem *profileItem;
+
+@property (nonatomic) SCHBookSortType sortType;
 
 - (SCHReadingViewController *)openBook:(NSString *)isbn;
 

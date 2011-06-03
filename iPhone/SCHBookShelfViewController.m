@@ -22,6 +22,7 @@
 #import "SCHBookShelfGridView.h"
 #import "KNFBTimeOrderedCache.h"
 #import "SCHProfileItem.h"
+#import "SCHAppProfile.h"
 
 static NSInteger const kSCHBookShelfViewControllerGridCellHeightPortrait = 138;
 static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
@@ -30,6 +31,8 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 
 @property (nonatomic, retain) UIBarButtonItem *themeButton;
 @property (nonatomic, assign) int moveToValue;
+@property (nonatomic, retain) UIBarButtonItem *currentRightButton;
+
 
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation;
 - (void)updateTheme;
@@ -37,6 +40,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 - (void)finishEditing:(id)sender;
 - (CGSize)cellSize;
 - (CGFloat)cellBorderSize;
+- (void)updateTable:(NSNotification *)notification;
 
 @end
 
@@ -51,6 +55,8 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 @synthesize profileItem;
 @synthesize themeButton;
 @synthesize moveToValue;
+@synthesize sortType;
+@synthesize currentRightButton;
 
 #pragma mark - Object lifecycle
 
@@ -82,6 +88,8 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 - (void)viewDidLoad 
 {
     [super viewDidLoad];
+    
+    self.sortType = [[[self.profileItem AppProfile] SortType] intValue];
     
     SCHThemeButton *button = [SCHThemeButton buttonWithType:UIButtonTypeCustom];
     [button setThemeIcon:kSCHThemeManagerThemeIcon iPadSpecific:YES];
@@ -188,6 +196,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 
 #pragma mark - Private methods
 
+// Note: this is overridden in the iPad controller
 - (void)updateTheme
 {
     [self setupAssetsForOrientation:self.interfaceOrientation];
@@ -211,7 +220,10 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer 
 {
-    [self setEditing:YES animated:YES];
+    if (self.sortType == kSCHBookSortTypeUser) {
+        [self setEditing:YES animated:YES];
+    }
+    
     return NO;
 }
 
@@ -219,6 +231,9 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 {
     if (editing) {
         if (![self.gridView isEditing]) {
+            
+            self.currentRightButton = self.navigationItem.rightBarButtonItem;
+            
             SCHThemeButton *button = [SCHThemeButton buttonWithType:UIButtonTypeCustom];
             [button setFrame:CGRectMake(0, 0, 60, 30)];
             [button setTitle:NSLocalizedString(@"Done", @"") forState:UIControlStateNormal];
@@ -234,7 +249,8 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
             self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:button] autorelease];
         }
     } else {
-        [self.navigationItem setRightBarButtonItem:self.themeButton animated:animated];
+        [self.navigationItem setRightBarButtonItem:self.currentRightButton animated:animated];
+        self.currentRightButton = nil;
     }
     
     [self.gridView setEditing:editing animated:animated];
@@ -306,7 +322,8 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 - (BOOL)gridView:(MRGridView*)gridView canMoveCellAtIndex: (NSInteger)index 
 { 
 	self.moveToValue = -1;
-	return(YES);
+    
+    return(YES);
 }
 
 - (void)gridView:(MRGridView *)gridView moveCellAtIndex:(NSInteger)fromIndex 
@@ -390,19 +407,19 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
                 ret = [[SCHReadingViewController alloc] initWithNibName:nil 
                                                                  bundle:nil 
                                                                    isbn:isbn 
-                                                                profile:profileItem
-                                                                 layout:SCHReadingViewLayoutTypeFixed];            
+                                                                profile:profileItem];            
                 ret.youngerMode = YES;
                 break;
                 
             case kSCHBookshelfStyleOlderChild:
+            {
                 ret = [[SCHReadingViewController alloc] initWithNibName:nil 
                                                                  bundle:nil 
                                                                    isbn:isbn 
-                                                                profile:profileItem                                
-                                                                 layout:SCHReadingViewLayoutTypeFlow];            
+                                                                profile:profileItem];
                 ret.youngerMode = NO;
                 break;     
+            }
             default:
                 NSLog(@"Warning: unrecognised bookshelf style.");
                 break;

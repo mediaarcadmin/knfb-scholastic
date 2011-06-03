@@ -22,6 +22,15 @@ static NSString * const kSCHProfileItemFetchAnnotationsForProfileBook = @"fetchA
 static NSString * const kSCHProfileItemPROFILE_ID = @"PROFILE_ID";
 static NSString * const kSCHProfileItemCONTENT_IDENTIFIER = @"CONTENT_IDENTIFIER";
 
+typedef enum {
+    kSCHBookSortTypeUser,
+    kSCHBookSortTypeFavorites,
+    kSCHBookSortTypeTitle,
+    kSCHBookSortTypeAuthor,
+    kSCHBookSortTypeNewest,
+    kSCHBookSortTypeLastRead,
+} SCHBookSortType;
+
 @interface SCHProfileItem : SCHSyncEntity 
 {
 }
