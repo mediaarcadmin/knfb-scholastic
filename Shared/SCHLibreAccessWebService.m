@@ -1451,6 +1451,12 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 {
 	if (object != nil && intoObject != nil) {
 		intoObject.page = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServicePage]];
+		intoObject.coords = [[LibreAccessServiceSvc_Coords alloc] init];
+		[intoObject.coords release];
+        // default values as Scholastic doesnt actually use these values
+		intoObject.coords.x = [NSNumber numberWithInteger:0];
+        intoObject.coords.y = [NSNumber numberWithInteger:0];
+//		intoObject.wordindex = nil;
 	}	
 }
 
