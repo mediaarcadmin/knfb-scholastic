@@ -62,13 +62,10 @@
                                                  selector:@selector(updateTheme) 
                                                      name:kSCHThemeManagerThemeChangeNotification 
                                                    object:nil]; 
-        // disable rotation changes for iPad
-        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-            [[NSNotificationCenter defaultCenter] addObserver:self 
-                                                     selector:@selector(updateTheme) 
-                                                         name:UIApplicationDidChangeStatusBarOrientationNotification 
-                                                       object:nil]; 
-        }
+        [[NSNotificationCenter defaultCenter] addObserver:self 
+                                                 selector:@selector(updateTheme) 
+                                                     name:UIApplicationDidChangeStatusBarOrientationNotification 
+                                                   object:nil]; 
     }
 }
 
@@ -94,13 +91,10 @@
                                                  selector:@selector(updateTheme) 
                                                      name:kSCHThemeManagerThemeChangeNotification 
                                                    object:nil];                
-        // disable rotation changes for iPad
-        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-            [[NSNotificationCenter defaultCenter] addObserver:self 
-                                                     selector:@selector(updateTheme) 
-                                                         name:UIApplicationDidChangeStatusBarOrientationNotification 
-                                                       object:nil];         
-        }
+        [[NSNotificationCenter defaultCenter] addObserver:self 
+                                                 selector:@selector(updateTheme) 
+                                                     name:UIApplicationDidChangeStatusBarOrientationNotification 
+                                                   object:nil];         
     }
 }
 
@@ -113,9 +107,17 @@
 
 - (void)updateTheme
 {
+    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
+    
+    // override button sizes for iPad
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        orientation = UIInterfaceOrientationPortrait;
+    }
+    
     if (self.buttonKey != nil) {
         UIImage *image = [[[SCHThemeManager sharedThemeManager] imageFor:self.buttonKey 
-                                                             orientation:[[UIApplication sharedApplication] statusBarOrientation] iPadSpecific:self.iPadSpecific] 
+                                                             orientation:orientation 
+                                                            iPadSpecific:self.iPadSpecific] 
                           stretchableImageWithLeftCapWidth:self.leftCapWidth topCapHeight:self.topCapHeight];
         // heights change when going between portrait and landscape so we change them
         CGRect rect = self.frame;
@@ -125,7 +127,8 @@
     }
     if (self.iconKey != nil) {
         UIImage *image = [[SCHThemeManager sharedThemeManager] imageFor:self.iconKey 
-                                                             orientation:[[UIApplication sharedApplication] statusBarOrientation] iPadSpecific:self.iPadSpecific];
+                                                             orientation:orientation
+                                                           iPadSpecific:self.iPadSpecific];
         // heights change when going between portrait and landscape so we change them
         CGRect rect = self.frame;
         rect.size.height = image.size.height;
