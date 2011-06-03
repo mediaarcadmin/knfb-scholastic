@@ -9,8 +9,9 @@
 #import <UIKit/UIKit.h>
 
 
-@interface SCHBookShelfPopoverTableView : UITableViewController {
+@interface SCHBookShelfPopoverTableView : UIViewController <UITableViewDelegate, UITableViewDataSource> {
     
 }
+@property (nonatomic, retain) IBOutlet UITableView *itemsTableView;
 
 @end

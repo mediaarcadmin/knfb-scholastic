@@ -156,6 +156,16 @@ static NSInteger const kSCHBookShelfEdgePadding = 12;
     }
 }
 
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    if (self.popover) {
+        [self.popover dismissPopoverAnimated:YES];
+        self.popover = nil;
+    }
+    
+    [self setupAssetsForOrientation:toInterfaceOrientation];
+}
+
 #pragma mark - Grid View Cell Dimensions
 
 - (CGSize)cellSize
@@ -178,6 +188,7 @@ static NSInteger const kSCHBookShelfEdgePadding = 12;
     }
     
     SCHBookShelfPopoverTableView *popoverTable = [[SCHBookShelfPopoverTableView alloc] initWithNibName:nil bundle:nil];
+    popoverTable.title = @"Sort By";
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:popoverTable];
 
     self.popover = [[UIPopoverController alloc] initWithContentViewController:navController];
@@ -205,6 +216,7 @@ static NSInteger const kSCHBookShelfEdgePadding = 12;
     }
     
     SCHBookShelfPopoverTableView *popoverTable = [[SCHBookShelfPopoverTableView alloc] initWithNibName:nil bundle:nil];
+    popoverTable.title = @"Top Ten Books";
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:popoverTable];
     
     self.popover = [[UIPopoverController alloc] initWithContentViewController:navController];
