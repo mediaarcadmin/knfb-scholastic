@@ -264,7 +264,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
         case 0: {
             cell.accessoryView = nil;
             cell.textLabel.textAlignment = UITextAlignmentLeft;
-            cell.textLabel.text = NSLocalizedString(@"De-register This Device", @"");
+            cell.textLabel.text = NSLocalizedString(@"Deregister This Device", @"");
             cell.selectionStyle = UITableViewCellSelectionStyleBlue;
         } break;
         case 1: {
