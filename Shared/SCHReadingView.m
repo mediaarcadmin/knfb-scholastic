@@ -27,6 +27,7 @@
 @property (nonatomic, assign) id <SCHReadingViewDelegate> delegate;
 @property (nonatomic, retain) EucSelectorRange *currentSelectorRange;
 @property (nonatomic, retain) EucSelectorRange *singleWordSelectorRange;
+@property (nonatomic, assign) BOOL createHighlightFromSelection;
 
 - (void)selectorDismissedWithSelection:(EucSelectorRange *)selectorRange;
 - (SCHBookRange *)firstBookRangeFromSelectorRange:(EucSelectorRange *)selectorRange;
@@ -42,6 +43,7 @@
 @synthesize selectionMode;
 @synthesize currentSelectorRange;
 @synthesize singleWordSelectorRange;
+@synthesize createHighlightFromSelection;
 
 - (void) dealloc
 {
@@ -70,6 +72,7 @@
         // Initialization code
         isbn = [newIsbn retain];
         delegate = newDelegate;
+        createHighlightFromSelection = YES;
         
         self.opaque = YES;
         self.multipleTouchEnabled = YES;
@@ -269,24 +272,16 @@
     }
 }
 
+#pragma mark - EucSelectorDelegate
+
 - (UIColor *)eucSelector:(EucSelector *)selector willBeginEditingHighlightWithRange:(EucSelectorRange *)selectedRange
 {
-//    UIColor *selectionColor = nil;
-//        
-//    switch (self.selectionMode) {
-//        case SCHReadingViewSelectionModeHighlights:
-//            selectionColor = [UIColor yellowColor];
-//            break;
-//        default:
-//            break;
-//    }
-//    
+    // This disables the creation of a new highlight on top of the old one
+    self.createHighlightFromSelection = NO;
+    [self.selector setSelectedRange:nil];
+    //[self.selector performSelector:@selector(setSelectedRange:) withObject:nil afterDelay:0.1f];
+    
     return nil;
-}
-
-- (void)eucSelector:(EucSelector *)selector didEndEditingHighlightWithRange:(EucSelectorRange *)originalRange movedToRange:(EucSelectorRange *)movedToRange;
-{
-
 }
 
 - (void)currentLayoutPage:(NSUInteger *)layoutPage pageWordOffset:(NSUInteger *)pageWordOffset
@@ -302,11 +297,15 @@
 {
     switch (self.selectionMode) {
         case SCHReadingViewSelectionModeHighlights:
-            [self addHighlightWithSelection:selectorRange];
+            if (self.createHighlightFromSelection) {
+                [self addHighlightWithSelection:selectorRange];
+            }
             break;
         default:
             break;
     }
+    
+    self.createHighlightFromSelection = YES;    
 }
 
 - (EucSelectorRange *)selectorRangeFromBookRange:(SCHBookRange *)range 
@@ -402,6 +401,24 @@
 
 #pragma mark - Highlights
 
+- (NSArray *)highlightRangesForEucSelector:(EucSelector *)selector
+{  
+    NSMutableArray *selectorRanges = [NSMutableArray array];
+    
+    switch (self.selectionMode) {
+        case SCHReadingViewSelectionModeHighlights:
+            for (SCHBookRange *highlightRange in [self highlightRangesForCurrentPage]) {
+                EucSelectorRange *range = [self selectorRangeFromBookRange:highlightRange];
+                [selectorRanges addObject:range];
+            }
+            break;
+        default:
+            break;
+    }
+
+    return selectorRanges;
+}
+
 - (void)dismissFollowAlongHighlighter {}
 
 - (void)followAlongHighlightWordAtPoint:(SCHBookPoint *)bookPoint {}
@@ -425,6 +442,11 @@
     return [bookRange autorelease];
 }
 
+- (NSArray *)highlightRangesForCurrentPage
+{
+    return nil;
+}
+
 - (NSArray *)highlightsForLayoutPage:(NSUInteger)page
 {
     NSMutableArray *highlights = [NSMutableArray array];
@@ -435,35 +457,6 @@
     }
     
     return highlights;
-}
-
-- (void)updateHighlight {
-    
-    EucSelectorRange *fromSelectorRange = [self.selector selectedRangeOriginalHighlightRange];
-    EucSelectorRange *toSelectorRange   = [self.selector selectedRange];
-    
-    [self.selector setSelectedRange:nil];
-    
-    SCHBookRange *fromBookRange = [self firstBookRangeFromSelectorRange:fromSelectorRange];
-    SCHBookRange *toBookRange   = [self firstBookRangeFromSelectorRange:toSelectorRange];
-
-    NSInteger startIndex;
-    NSInteger endIndex;
-    
-    if ([self.selector selectedRangeIsHighlight]) {
-        startIndex = MIN(fromBookRange.startPoint.layoutPage, toBookRange.startPoint.layoutPage) - 1;
-        endIndex   = MAX(fromBookRange.endPoint.layoutPage, toBookRange.endPoint.layoutPage) - 1;
-        [self.delegate updateHighlightAtBookRange:fromBookRange toBookRange:toBookRange];
-    } else {
-        startIndex = toBookRange.startPoint.layoutPage - 1;
-        endIndex   = toBookRange.endPoint.layoutPage - 1;
-        //[self.delegate addHighlightAtBookRange:toBookRange];
-    }
-    
-    for (int i = startIndex; i <= endIndex; i++) {
-        [self refreshHighlightsForPageAtIndex:i];
-    }
-    
 }
 
 - (void)addHighlightWithSelection:(EucSelectorRange *)selectorRange
@@ -485,6 +478,25 @@
     }
 }
 
+- (void)deleteHighlightWithSelection:(EucSelectorRange *)selectorRange
+{
+    for (SCHBookRange *highlightRange in [self bookRangesFromSelectorRange:selectorRange]) {    
+        NSUInteger startLayoutPage     = 0;
+        NSUInteger startPageWordOffset = 0;
+        NSUInteger endLayoutPage       = 0;
+        NSUInteger endPageWordOffset   = 0;
+        
+        [self layoutPage:&startLayoutPage pageWordOffset:&startPageWordOffset forBookPoint:highlightRange.startPoint];
+        [self layoutPage:&endLayoutPage pageWordOffset:&endPageWordOffset forBookPoint:highlightRange.endPoint];
+        
+        [self.delegate deleteHighlightBetweenStartPage:startLayoutPage startWord:startPageWordOffset endPage:endLayoutPage endWord:endPageWordOffset];
+        
+        for (int i = startLayoutPage; i <= endLayoutPage; i++) {
+            [self refreshHighlightsForPageAtIndex:i - 1];
+        }
+    }
+}
+
 - (void)refreshHighlightsForPageAtIndex:(NSUInteger)index {}
 
 #pragma mark - Rotation
@@ -498,6 +510,7 @@
     if ([keyPath isEqualToString:@"trackingStage"]) {
         switch (self.selector.trackingStage) {
             case EucSelectorTrackingStageNone:
+                NSLog(@"stage none, selectorRange: %@", self.currentSelectorRange);
                 if (self.currentSelectorRange != nil) {
                     [self selectorDismissedWithSelection:self.currentSelectorRange];
                 }

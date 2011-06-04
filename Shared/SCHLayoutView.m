@@ -905,18 +905,6 @@
     return @"";
 }
 
-- (NSArray *)highlightRangesForEucSelector:(EucSelector *)selector
-{
-    NSMutableArray *selectorRanges = [NSMutableArray array];
-    
-    for (SCHBookRange *highlightRange in [self highlightRangesForCurrentPage]) {
-        EucSelectorRange *range = [self selectorRangeFromBookRange:highlightRange];
-        [selectorRanges addObject:range];
-    }
-    
-    return [NSArray arrayWithArray:selectorRanges];
-}
-
 - (UIImage *)viewSnapshotImageForEucSelector:(EucSelector *)selector
 {
     return [self.pageTurningView screenshot];
@@ -931,62 +919,6 @@
            self.pageTurningView.userInteractionEnabled = !((EucSelector *)object).isTracking;
        }
     }
-}
-
-#pragma mark - EucSelector Delegate
-
-- (UIColor *)eucSelector:(EucSelector *)aSelector willBeginEditingHighlightWithRange:(EucSelectorRange *)selectedRange
-{    
-    [super eucSelector:aSelector willBeginEditingHighlightWithRange:selectedRange];
-     
-    for (SCHBookRange *highlightRange in [self highlightRangesForCurrentPage]) {
-        EucSelectorRange *range = [self selectorRangeFromBookRange:highlightRange];
-        if ([selectedRange isEqual:range]) {
-            NSUInteger startIndex = highlightRange.startPoint.layoutPage - 1;
-            NSUInteger endIndex = highlightRange.endPoint.layoutPage - 1;
-            
-            for (int i = startIndex; i <= endIndex; i++) {
-                [self refreshHighlightsForPageAtIndex:i];
-                //[self.pageTurningView refreshHighlightsForPageAtIndex:i];
-            }
-            
-			//[self.pageTurningView drawView];
-            //return [highlightRange.color colorWithAlphaComponent:0.3f];
-            return [self.delegate highlightColor];
-        }
-    }
-    
-    return nil;
-}
-
-- (void)eucSelector:(EucSelector *)aSelector didEndEditingHighlightWithRange:(EucSelectorRange *)fromRange movedToRange:(EucSelectorRange *)toRange
-{
-	[super eucSelector:aSelector didEndEditingHighlightWithRange:fromRange movedToRange:toRange];
-    
-#if 0
-	BlioBookmarkRange *fromBookmarkRange = [self bookmarkRangeFromSelectorRange:fromRange];
-	BlioBookmarkRange *toBookmarkRange = [self bookmarkRangeFromSelectorRange:toRange ? : fromRange];
-	
-	if ((nil != toRange) && ![fromRange isEqual:toRange]) {
-		
-        if ([self.delegate respondsToSelector:@selector(updateHighlightAtRange:toRange:withColor:)])
-            [self.delegate updateHighlightAtRange:fromBookmarkRange toRange:toBookmarkRange withColor:nil];
-        
-    }
-	
-	NSInteger startIndex = MIN(fromBookmarkRange.startPoint.layoutPage, toBookmarkRange.startPoint.layoutPage) - 1;
-	NSInteger endIndex = MAX(fromBookmarkRange.endPoint.layoutPage, toBookmarkRange.endPoint.layoutPage) - 1;
-	
-	// Set this to nil now because the refresh depends on it
-    [self.selector setSelectedRange:nil];
-	
-	for (int i = startIndex; i <= endIndex; i++) {
-        [self refreshHighlightsForPageAtIndex:i];
-		//[self.pageTurningView refreshHighlightsForPageAtIndex:i];
-	}
-	
-	//[self.pageTurningView drawView];
-#endif
 }
 
 #pragma mark - View Geometry

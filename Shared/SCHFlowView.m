@@ -19,6 +19,7 @@
 #import <libEucalyptus/EucMenuItem.h>
 #import <libEucalyptus/EucCSSIntermediateDocument.h>
 #import <libEucalyptus/EucSelectorRange.h>
+#import <libEucalyptus/EucHighlightRange.h>
 #import <libEucalyptus/THPair.h>
 #import <libEucalyptus/EucConfiguration.h>
 

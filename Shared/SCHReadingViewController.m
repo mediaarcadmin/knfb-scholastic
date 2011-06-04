@@ -822,6 +822,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 {
     layoutType = newLayoutType;
     
+    SCHReadingViewSelectionMode currentMode = [self.readingView selectionMode];
+    
     NSNumber *savedLayoutType = [[self.profile AppProfile] LayoutType];
 
     if (!savedLayoutType || [savedLayoutType intValue] != newLayoutType) {
@@ -861,6 +863,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     self.readingView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.paperType = self.paperType; // Reload the paper
     
+    [self.readingView setSelectionMode:currentMode];
     [self.view addSubview:self.readingView];
     [self.view sendSubviewToBack:self.readingView];
 }
@@ -983,7 +986,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (void)addHighlightBetweenStartPage:(NSUInteger)startPage startWord:(NSUInteger)startWord endPage:(NSUInteger)endPage endWord:(NSUInteger)endWord;
 {
-    NSLog(@"Add highlight");
     SCHBookAnnotations *annotations = [self.profile annotationsForBook:self.isbn];
     
     if (annotations != nil) {
@@ -993,38 +995,11 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     }
 }
 
-// FIXME: remove this
-//- (void)addHighlightAtBookRange:(SCHBookRange *)highlightRange
-//{
-//    NSLog(@"Add highlight");
-//    SCHBookAnnotations *annotations = [self.profile annotationsForBook:self.isbn];
-//    
-//    if (annotations != nil) {
-//        SCHHighlight *newHighlight = [annotations createHighlightWithHighlightRange:highlightRange color:[self highlightColor]];
-//        [annotations addHighlight:newHighlight];
-//    }
-//}
-
-- (void)updateHighlightAtBookRange:(SCHBookRange *)fromBookRange toBookRange:(SCHBookRange *)toBookRange
+- (void)deleteHighlightBetweenStartPage:(NSUInteger)startPage startWord:(NSUInteger)startWord endPage:(NSUInteger)endPage endWord:(NSUInteger)endWord;
 {
-    NSLog(@"Update highlight");
+    NSLog(@"Delete highlight");
+    //SCHBookAnnotations *annotations = [self.profile annotationsForBook:self.isbn];
 }
-
-//// FIXME: remove this
-//- (NSArray *)highlightsForBookRange:(SCHBookRange *)bookRange
-//{
-//    SCHBookAnnotations *annotations = [self.profile annotationsForBook:self.isbn];
-//    
-//    NSMutableArray *highlights = [NSMutableArray array];
-//    
-//    for (int i = bookRange.startPoint.layoutPage; i <= bookRange.endPoint.layoutPage; i++) {
-//        NSArray *highlightsForPage = [annotations highlightsForPage:i];
-//        NSArray *highlighBookRanges = [highlightsForPage valueForKey:@"bookRange"];
-//        [highlights addObjectsFromArray:highlighBookRanges];
-//    }
-//         
-//    return highlights;
-//}
 
 - (NSArray *)highlightsForLayoutPage:(NSUInteger)page
 {
