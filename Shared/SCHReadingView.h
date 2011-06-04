@@ -100,7 +100,7 @@ typedef enum
 - (void)refreshHighlightsForPageAtIndex:(NSUInteger)index;
 - (EucSelectorRange *)selectorRangeFromBookRange:(SCHBookRange *)range;
 - (NSArray *)bookRangesFromSelectorRange:(EucSelectorRange *)selectorRange;
-
+- (SCHBookRange *)bookRangeFromSelectorRange:(EucSelectorRange *)selectorRange;
 - (void)dismissFollowAlongHighlighter;
 - (void)followAlongHighlightWordAtPoint:(SCHBookPoint *)bookPoint;
 - (void)followAlongHighlightWordForLayoutPage:(NSUInteger)layoutPage pageWordOffset:(NSUInteger)pageWordOffset;

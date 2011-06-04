@@ -167,7 +167,7 @@
         NSArray *wordBlocks = [self.textFlow blocksForPageAtIndex:bookPoint.layoutPage - 1 includingFolioBlocks:NO];
         for (int i = 0; i < bookPoint.blockOffset; i++) {
             if (i < [wordBlocks count]) {
-                pageWordOffset += [[[wordBlocks objectAtIndex:i] words] count];
+                *pageWordOffset += [[[wordBlocks objectAtIndex:i] words] count];
             }
         }
     }
@@ -338,7 +338,67 @@
     return ret;
 }
 
-- (NSArray *)bookRangesFromSelectorRange:(EucSelectorRange *)selectorRange { return nil; }
+- (NSArray *)bookRangesFromSelectorRange:(EucSelectorRange *)selectorRange
+{
+    
+    SCHBookRange *bookRange = [self bookRangeFromSelectorRange:selectorRange];
+    NSMutableArray *bookRanges = [NSMutableArray array];
+    
+    if (nil == bookRange) {
+        return bookRanges;
+    }
+    
+    for (int i = bookRange.startPoint.layoutPage; i <= bookRange.endPoint.layoutPage; i++) {
+        SCHBookPoint *startPoint = [[SCHBookPoint alloc] init];
+        SCHBookPoint *endPoint = [[SCHBookPoint alloc] init];
+        
+        [startPoint setLayoutPage:i];
+        [endPoint   setLayoutPage:i];
+        
+        NSArray *pageBlocks = [self.textFlow blocksForPageAtIndex:i - 1 includingFolioBlocks:NO];
+        NSUInteger maxBlockOffset = 0;
+        NSUInteger maxWordOffset = 0;
+        
+        if ([pageBlocks count]) {
+            maxBlockOffset = [pageBlocks count] - 1;
+            maxWordOffset  = MAX([[[pageBlocks objectAtIndex:maxBlockOffset] words] count], 1) - 1;
+        }
+        
+        if (i == bookRange.startPoint.layoutPage) {
+            [startPoint setBlockOffset:bookRange.startPoint.blockOffset];
+            [startPoint setWordOffset:bookRange.startPoint.wordOffset];
+        } else {
+            [startPoint setBlockOffset:0];
+            [startPoint setWordOffset:0];
+        }
+        
+        if (i == bookRange.endPoint.layoutPage) {
+            [endPoint setBlockOffset:bookRange.endPoint.blockOffset];
+            [endPoint setWordOffset:bookRange.endPoint.wordOffset];
+        } else {
+            [endPoint setBlockOffset:maxBlockOffset];
+            [endPoint setWordOffset:maxWordOffset];
+        }
+        
+        SCHBookRange *range = [[SCHBookRange alloc] init];
+        [range setStartPoint:startPoint];
+        [range setEndPoint:endPoint];
+        [bookRanges addObject:range];
+        
+        [startPoint release];
+        [endPoint release];
+        [range release];
+    }
+    
+    NSLog(@"Book ranges: %@", bookRanges);
+    
+    return bookRanges;
+}
+
+- (SCHBookRange *)bookRangeFromSelectorRange:(EucSelectorRange *)selectorRange
+{ 
+    return nil;
+}
 
 #pragma mark - Highlights
 

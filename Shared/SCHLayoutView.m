@@ -1,4 +1,4 @@
-//
+    //
 //  SCHLayoutView.m
 //  Scholastic
 //
@@ -421,14 +421,9 @@
 
 }
 
-- (NSArray *)bookRangesFromSelectorRange:(EucSelectorRange *)selectorRange
+- (SCHBookRange *)bookRangeFromSelectorRange:(EucSelectorRange *)selectorRange
 {
-    
-    NSMutableArray *bookRanges = [NSMutableArray array];
-    
-    if (nil == selectorRange) {
-        return bookRanges;
-    }
+    if (nil == selectorRange) return nil;
     
     NSInteger startPageIndex   = [KNFBTextFlowBlock pageIndexForBlockID:[selectorRange startBlockId]];
     NSInteger endPageIndex     = [KNFBTextFlowBlock pageIndexForBlockID:[selectorRange endBlockId]];
@@ -437,51 +432,24 @@
     NSInteger startWordOffset  = [KNFBTextFlowPositionedWord wordIndexForWordID:[selectorRange startElementId]];
     NSInteger endWordOffset    = [KNFBTextFlowPositionedWord wordIndexForWordID:[selectorRange endElementId]];
     
-    for (int i = startPageIndex; i <= endPageIndex; i++) {
-        SCHBookPoint *startPoint = [[SCHBookPoint alloc] init];
-        SCHBookPoint *endPoint = [[SCHBookPoint alloc] init];
-        
-        [startPoint setLayoutPage:i + 1];
-        [endPoint   setLayoutPage:i + 1];
-        
-        NSArray *pageBlocks = [self.textFlow blocksForPageAtIndex:i includingFolioBlocks:NO];
-        NSUInteger maxBlockOffset = 0;
-        NSUInteger maxWordOffset = 0;
-        
-        if ([pageBlocks count]) {
-            maxBlockOffset = [pageBlocks count] - 1;
-            maxWordOffset  = MAX([[[pageBlocks objectAtIndex:maxBlockOffset] words] count], 1) - 1;
-        }
-        
-        if (i == startPageIndex) {
-            [startPoint setBlockOffset:startBlockOffset];
-            [startPoint setWordOffset:startWordOffset];
-        } else {
-            [startPoint setBlockOffset:0];
-            [startPoint setWordOffset:0];
-        }
-        
-        if (i == endPageIndex) {
-            [endPoint setBlockOffset:endBlockOffset];
-            [endPoint setWordOffset:endWordOffset];
-        } else {
-            [endPoint setBlockOffset:maxBlockOffset];
-            [endPoint setWordOffset:maxWordOffset];
-        }
+    SCHBookPoint *startPoint = [[SCHBookPoint alloc] init];
+    [startPoint setLayoutPage:startPageIndex + 1];
+    [startPoint setBlockOffset:startBlockOffset];
+    [startPoint setWordOffset:startWordOffset];
     
-        SCHBookRange *range = [[SCHBookRange alloc] init];
-        [range setStartPoint:startPoint];
-        [range setEndPoint:endPoint];
-        [bookRanges addObject:range];
-        
-        [startPoint release];
-        [endPoint release];
-        [range release];
-    }
+    SCHBookPoint *endPoint = [[SCHBookPoint alloc] init];
+    [endPoint setLayoutPage:endPageIndex + 1];
+    [endPoint setBlockOffset:endBlockOffset];
+    [endPoint setWordOffset:endWordOffset];
     
-    NSLog(@"Book ranges: %@", bookRanges);
+    SCHBookRange *range = [[SCHBookRange alloc] init];
+    [range setStartPoint:startPoint];
+    [range setEndPoint:endPoint];
     
-    return bookRanges;
+    [startPoint release];
+    [endPoint release];
+    
+    return [range autorelease];
 }
 
 - (NSString *)displayPageNumberForBookPoint:(SCHBookPoint *)bookPoint
