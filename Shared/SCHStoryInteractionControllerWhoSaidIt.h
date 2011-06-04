@@ -32,4 +32,7 @@
 @property (nonatomic, retain) IBOutlet SCHStoryInteractionDraggableView *source6;
 @property (nonatomic, retain) IBOutlet UIButton *checkAnswersButton;
 
+- (IBAction)checkAnswers:(id)sender;
+
+
 @end

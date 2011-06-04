@@ -75,24 +75,33 @@
     self.sources = [NSArray arrayWithObjects:self.source1, self.source2, self.source3, self.source4, self.source5, self.source6, nil];
     self.targets = [NSArray arrayWithObjects:self.target1, self.target2, self.target3, self.target4, self.target5, nil];
 
+    // set up the labels and tag the targets with the correct indices
     SCHStoryInteractionWhoSaidIt *whoSaidIt = (SCHStoryInteractionWhoSaidIt *)[self storyInteraction];
-    NSInteger i = 0;
-    for (UILabel *label in self.statementLabels) {
-        if (i == whoSaidIt.distracterIndex) {
-            i++;
+    NSInteger targetIndex = 0;
+    for (SCHStoryInteractionWhoSaidItStatement *statement in whoSaidIt.statements) {
+        if (statement.questionIndex != whoSaidIt.distracterIndex) {
+            [[self.statementLabels objectAtIndex:targetIndex] setText:statement.text];
+            [[self.targets objectAtIndex:targetIndex] setTag:statement.questionIndex];
+            targetIndex++;
         }
-        label.tag = i;
-        label.text = [[whoSaidIt.statements objectAtIndex:i] text];
-        i++;
     }
-    
-    i = 0;
+
+    // jumble up the sources and tag with the correct indices
+    NSMutableArray *statements = [whoSaidIt.statements mutableCopy];
     for (SCHStoryInteractionDraggableView *source in self.sources) {
-        source.title = [[whoSaidIt.statements objectAtIndex:i] source];
-        source.tag = i;
+        int index = arc4random() % [statements count];
+        SCHStoryInteractionWhoSaidItStatement *statement = [statements objectAtIndex:index];
+        source.title = statement.source;
+        source.tag = statement.questionIndex;
         [source setDragTargets:self.targets];
-        i++;
+        [statements removeObjectAtIndex:index];
     }
+    [statements release];
+}
+
+- (void)checkAnswers:(id)sender
+{
+    [self.sources makeObjectsPerformSelector:@selector(flashCorrectness)];
 }
 
 @end

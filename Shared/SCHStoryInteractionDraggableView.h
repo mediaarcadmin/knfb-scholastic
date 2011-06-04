@@ -15,12 +15,11 @@
 // a text label to display in the view
 @property (nonatomic, copy) NSString *title;
 
-// if this draggable view snaps onto a SCHStoryInteractionDraggableTargetView in the
-// view hierarchy, that target is returned here; else nil
-@property (nonatomic, readonly) SCHStoryInteractionDraggableTargetView *attachedTarget;
-
 // set the targets which this draggable can attach to
 - (void)setDragTargets:(NSArray *)dragTargets;
 
+// flash green if this object's tag equals the attached target's tag, red if the tags
+// do not match, and do nothing if this object is not attached to a target
+- (void)flashCorrectness;
 
 @end

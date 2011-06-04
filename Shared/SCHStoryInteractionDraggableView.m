@@ -16,8 +16,9 @@
 
 @interface SCHStoryInteractionDraggableView ()
 
+@property (nonatomic, assign) SCHStoryInteractionDraggableTargetView *attachedTarget;
 @property (nonatomic, assign) CGPoint touchOffset;
-@property (nonatomic, assign) CGPoint dragOrigin;
+@property (nonatomic, assign) CGPoint originalCenter;
 @property (nonatomic, copy) NSArray *targets;
 
 - (void)beginDrag;
@@ -29,7 +30,7 @@
 
 @synthesize targets;
 @synthesize touchOffset;
-@synthesize dragOrigin;
+@synthesize originalCenter;
 @synthesize attachedTarget;
 
 - (void)dealloc
@@ -60,6 +61,7 @@
 
 - (void)setDragTargets:(NSArray *)dragTargets
 {
+    self.originalCenter = self.center;
     self.targets = dragTargets;
     [self setUserInteractionEnabled:YES];
 }
@@ -68,6 +70,21 @@
 {
     [self viewWithTag:kTitleViewTag].frame = CGRectMake(0, 12, CGRectGetWidth(self.bounds), CGRectGetHeight(self.bounds)-12);
     [super layoutSubviews];
+}
+
+- (void)flashCorrectness
+{
+    if (!attachedTarget) {
+        return;
+    }
+    UIImage *image = [UIImage imageNamed:(self.tag == self.attachedTarget.tag ? @"storyinteraction-draggable-green" : @"storyinteraction-draggable-red")];
+    self.highlightedImage = image;
+    [self setHighlighted:YES];
+    
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 1.0 * NSEC_PER_SEC);
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        [self setHighlighted:NO];
+    });
 }
 
 #pragma mark - touch support
@@ -83,7 +100,6 @@ static CGFloat distanceSq(CGPoint p1, CGPoint p2)
 {
     CGPoint point = [[touches anyObject] locationInView:self.superview];
     self.touchOffset = CGPointMake(self.center.x - point.x, self.center.y - self.center.y);
-    self.dragOrigin = self.center;
     [self beginDrag];
 }
 
@@ -92,13 +108,18 @@ static CGFloat distanceSq(CGPoint p1, CGPoint p2)
     CGPoint point = [[touches anyObject] locationInView:self.superview];
     self.center = CGPointMake(point.x + self.touchOffset.x, point.y + self.touchOffset.y);
     
-    attachedTarget = nil;
+    self.attachedTarget.occupied = NO;
+    self.attachedTarget = nil;
     for (SCHStoryInteractionDraggableTargetView *target in self.targets) {
+        if (target.occupied) {
+            continue;
+        }
         CGPoint targetCenter = CGPointMake(target.center.x - kTargetOffsetX, target.center.y);
         CGPoint selfCenter = CGPointMake(self.center.x, self.center.y + kTargetOffsetY);
         if (distanceSq(targetCenter, selfCenter) < kSnapDistanceSq) {
             self.center = CGPointMake(target.center.x - kTargetOffsetX, target.center.y - kTargetOffsetY);
-            attachedTarget = target;
+            self.attachedTarget = target;
+            self.attachedTarget.occupied = YES;
         }
     }
 }
@@ -133,7 +154,7 @@ static CGFloat distanceSq(CGPoint p1, CGPoint p2)
                          self.transform = CGAffineTransformIdentity;
                          self.alpha = 1;
                          if (cancelled) {
-                             self.center = self.dragOrigin;
+                             self.center = self.originalCenter;
                          }
                      }];
 }

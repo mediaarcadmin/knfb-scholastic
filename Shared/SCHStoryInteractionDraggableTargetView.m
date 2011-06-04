@@ -8,7 +8,8 @@
 
 #import "SCHStoryInteractionDraggableTargetView.h"
 
-
 @implementation SCHStoryInteractionDraggableTargetView
+
+@synthesize occupied;
 
 @end

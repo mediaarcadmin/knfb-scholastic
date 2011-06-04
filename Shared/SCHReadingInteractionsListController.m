@@ -245,7 +245,6 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [self dismissModalViewControllerAnimated:YES];
-    return;
     // table is set to disallow selection while editing
     switch ([indexPath section]) {
         case 0:

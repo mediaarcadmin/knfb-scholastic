@@ -8,7 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
-
 @interface SCHStoryInteractionDraggableTargetView : UIImageView {}
+
+@property (nonatomic, assign) BOOL occupied;
 
 @end
