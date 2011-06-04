@@ -209,20 +209,10 @@ static NSTimeInterval const kSCHThemePickerViewControllerThemeTransitionAlpha = 
     UITableViewCell *cell = [aTableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
-        cell.textLabel.textAlignment = UITextAlignmentCenter;
-        cell.textLabel.textColor = [UIColor whiteColor];
-        cell.textLabel.font = [UIFont boldSystemFontOfSize:22.0f];
-        cell.textLabel.shadowOffset = CGSizeMake(0, 1);
-        cell.textLabel.shadowColor = [UIColor colorWithWhite:0 alpha:0.5f];
-        cell.textLabel.backgroundColor = [UIColor clearColor];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
 
     NSString *theme = [[[SCHThemeManager sharedThemeManager] themeNames:YES] objectAtIndex:indexPath.row];
-    
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        cell.textLabel.text = theme;
-    }
     
     cell.backgroundColor = [UIColor colorWithPatternImage:
                             [[SCHThemeManager sharedThemeManager] imageForTheme:theme key:kSCHThemeManagerImage orientation:self.interfaceOrientation iPadSpecific:YES]];
