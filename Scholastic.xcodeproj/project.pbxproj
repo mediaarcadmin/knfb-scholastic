@@ -2252,8 +2252,6 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
-				C9261FBA1396FD90009FF459 /* Default-Landscape~ipad.png */,
-				C9261FB71396FD85009FF459 /* Default-Portrait~ipad.png */,
 				2860E386111B897F00E27156 /* iPhone */,
 				29B97317FDCFA39411CA2CEA /* iPad */,
 				28EEBF621118D79A00187D67 /* Shared */,
@@ -2436,6 +2434,8 @@
 				A38CF1FA1374503300EABF43 /* credits.html */,
 				C9261FB41396FB45009FF459 /* Default.png */,
 				C9261FB11396FB36009FF459 /* Default@2x.png */,
+				C9261FBA1396FD90009FF459 /* Default-Landscape~ipad.png */,
+				C9261FB71396FD85009FF459 /* Default-Portrait~ipad.png */,
 				528A2CD112CCDC9E0053A343 /* Icons */,
 				C9A11290136082A6007FD763 /* UIAssets */,
 				52E622F31358385D00245CA7 /* Themes */,
