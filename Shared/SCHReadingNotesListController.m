@@ -345,6 +345,8 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    // FIXME: The code below crashes so its just returning for now
+    return;
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         NSLog(@"Deleting row %d!", indexPath.row);
         
