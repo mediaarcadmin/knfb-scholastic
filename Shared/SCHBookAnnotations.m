@@ -89,7 +89,11 @@
 
 - (void)deleteBookmark:(SCHBookmark *)bookmark
 {
+#if LOCALDEBUG
+    [self.privateAnnotations removeBookmarksObject:bookmark];
+#else
     [bookmark syncDelete];    
+#endif
 }
 
 - (NSArray *)highlightsForPage:(NSUInteger)page
@@ -139,7 +143,11 @@
 
 - (void)deleteHighlight:(SCHHighlight *)highlight
 {
+#if LOCALDEBUG
+    [self.privateAnnotations removeHighlightsObject:highlight];
+#else
     [highlight syncDelete];
+#endif
 }
 
 - (NSArray *)notes
@@ -166,7 +174,11 @@
 
 - (void)deleteNote:(SCHNote *)note
 {
+#if LOCALDEBUG
+    [self.privateAnnotations removeNotesObject:note];
+#else
     [note syncDelete];
+#endif
 }
 
 - (SCHFavorite *)favorite
