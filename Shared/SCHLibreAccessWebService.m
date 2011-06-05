@@ -58,6 +58,10 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 - (NSDictionary *)objectFromFavoriteTypesValuesItem:(LibreAccessServiceSvc_FavoriteTypesValuesItem *)anObject;
 - (NSDictionary *)objectFromTopFavoritesItem:(LibreAccessServiceSvc_TopFavoritesResponseItem *)anObject;
 - (NSDictionary *)objectFromTopFavoritesContentItem:(LibreAccessServiceSvc_TopFavoritesContentItem *)anObject;
+- (NSDictionary *)objectFromAnnotationStatusItem:(LibreAccessServiceSvc_AnnotationStatusItem *)anObject;
+- (NSDictionary *)objectFromStatusHolder:(LibreAccessServiceSvc_StatusHolder *)anObject;
+- (NSDictionary *)objectFromAnnotationStatusContentItem:(LibreAccessServiceSvc_AnnotationStatusContentItem *)anObject;
+- (NSDictionary *)objectFromAnnotationTypeStatusItem:(LibreAccessServiceSvc_AnnotationTypeStatusItem *)anObject;
 
 - (id)objectFromTranslate:(id)anObject;
 
@@ -383,7 +387,6 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 	return(ret);							
 }
 
-// TODO: implement response and add to Core Data
 - (BOOL)saveProfileContentAnnotations:(NSArray *)annotations
 {
 	BOOL ret = NO;
@@ -486,6 +489,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 			}
 			
 			LibreAccessServiceSvc_StatusHolder *status = nil;
+            BOOL errorTriggered = NO;
 			@try {
 				status = (LibreAccessServiceSvc_StatusHolder *)[bodyPart valueForKey:kSCHLibreAccessWebServiceStatusHolderStatusMessage];
 			}
@@ -498,11 +502,14 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 				   [status isKindOfClass:[LibreAccessServiceSvc_StatusHolder class]] == YES && 
 				   status.status != LibreAccessServiceSvc_statuscodes_SUCCESS &&
 				   [(id)self.delegate respondsToSelector:@selector(method:didFailWithError:)]) {
+                    errorTriggered = YES;
 					[(id)self.delegate method:methodName didFailWithError:[self errorFromStatusMessage:status]];			
 				}
 			}
 			
-			if([(id)self.delegate respondsToSelector:@selector(method:didCompleteWithResult:)]) {
+// TODO: uncomment when Favorite syncing error is resolved
+//			if(errorTriggered == NO && [(id)self.delegate respondsToSelector:@selector(method:didCompleteWithResult:)]) {
+            if([(id)self.delegate respondsToSelector:@selector(method:didCompleteWithResult:)]) {
 				[(id)self.delegate method:methodName didCompleteWithResult:[self objectFrom:bodyPart]];									
 			}
 		}		
@@ -639,6 +646,8 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 			ret = [NSDictionary dictionaryWithObject:[self objectFromTranslate:[[anObject FavoriteTypesList] FavoriteTypesItem]] forKey:kSCHLibreAccessWebServiceFavoriteTypesList];
 		} else if ([anObject isKindOfClass:[LibreAccessServiceSvc_ListTopFavoritesResponse class]] == YES) {
 			ret = [NSDictionary dictionaryWithObject:[self objectFromTranslate:[[anObject TopFavoritesResponseList] TopFavoritesResponseItem]] forKey:kSCHLibreAccessWebServiceTopFavoritesList];
+		} else if ([anObject isKindOfClass:[LibreAccessServiceSvc_SaveProfileContentAnnotationsResponse class]] == YES) {
+			ret = [NSDictionary dictionaryWithObject:[self objectFromTranslate:[[anObject AnnotationStatusList] AnnotationStatusItem]] forKey:kSCHLibreAccessWebServiceAnnotationStatusList];
 		}
 	}
 	
@@ -1163,6 +1172,94 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 	return(ret);
 }
 
+- (NSDictionary *)objectFromAnnotationStatusItem:(LibreAccessServiceSvc_AnnotationStatusItem *)anObject
+{
+	NSDictionary *ret = nil;
+	
+	if (anObject != nil) {
+		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
+		
+		[objects setObject:[self objectFromTranslate:anObject.profileId] forKey:kSCHLibreAccessWebServiceProfileID];
+		[objects setObject:[self objectFromTranslate:anObject.statusmessage] forKey:kSCHLibreAccessWebServiceStatusMessage];
+		[objects setObject:[self objectFromTranslate:[anObject.AnnotationStatusContentList AnnotationStatusContentItem]] forKey:kSCHLibreAccessWebServiceAnnotationStatusContentList];
+		
+		ret = objects;					
+	}
+	
+	return(ret);
+}
+
+- (NSDictionary *)objectFromStatusHolder:(LibreAccessServiceSvc_StatusHolder *)anObject
+{
+	NSDictionary *ret = nil;
+	
+	if (anObject != nil) {
+		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
+		
+		[objects setObject:[NSNumber numberWithStatusCode:anObject.status] forKey:kSCHLibreAccessWebServiceStatus];
+		[objects setObject:[self objectFromTranslate:anObject.statuscode] forKey:kSCHLibreAccessWebServiceStatusCode];
+		[objects setObject:[self objectFromTranslate:anObject.statusmessage] forKey:kSCHLibreAccessWebServiceStatusMessage];
+		
+		ret = objects;					
+	}
+	
+	return(ret);
+}
+
+- (NSDictionary *)objectFromAnnotationStatusContentItem:(LibreAccessServiceSvc_AnnotationStatusContentItem *)anObject
+{
+	NSDictionary *ret = nil;
+	
+	if (anObject != nil) {
+		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
+		
+		[objects setObject:[self objectFromTranslate:anObject.contentIdentifier] forKey:kSCHLibreAccessWebServiceContentIdentifier];
+		[objects setObject:[self objectFromTranslate:anObject.statusmessage] forKey:kSCHLibreAccessWebServiceStatusMessage];        
+		[objects setObject:[self objectFromTranslate:anObject.PrivateAnnotationsStatus] forKey:kSCHLibreAccessWebServicePrivateAnnotationsStatus];
+		
+		ret = objects;					
+	}
+	
+	return(ret);
+}
+
+- (NSDictionary *)objectFromPrivateAnnotationsStatus:(LibreAccessServiceSvc_PrivateAnnotationsStatus *)anObject
+{
+	NSDictionary *ret = nil;
+	
+	if (anObject != nil) {
+		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
+		
+		[objects setObject:[self objectFromTranslate:[anObject.HighlightsStatusList AnnotationTypeStatusItem]] forKey:kSCHLibreAccessWebServiceHighlightsStatusList];
+        [objects setObject:[self objectFromTranslate:[anObject.NotesStatusList AnnotationTypeStatusItem]] forKey:kSCHLibreAccessWebServiceNotesStatusList];
+        [objects setObject:[self objectFromTranslate:[anObject.BookmarksStatusList AnnotationTypeStatusItem]] forKey:kSCHLibreAccessWebServiceBookmarksStatusList];
+
+        [objects setObject:[self objectFromTranslate:anObject.FavoriteStatus] forKey:kSCHLibreAccessWebServiceFavoriteStatus];
+        [objects setObject:[self objectFromTranslate:anObject.LastPageStatus] forKey:kSCHLibreAccessWebServiceLastPageStatus];
+        
+		ret = objects;					
+	}
+	
+	return(ret);
+}
+
+- (NSDictionary *)objectFromAnnotationTypeStatusItem:(LibreAccessServiceSvc_AnnotationTypeStatusItem *)anObject
+{
+	NSDictionary *ret = nil;
+	
+	if (anObject != nil) {
+		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
+		
+		[objects setObject:[self objectFromTranslate:anObject.id_] forKey:kSCHLibreAccessWebServiceID];
+        [objects setObject:[NSNumber numberWithSaveAction:anObject.action] forKey:kSCHLibreAccessWebServiceAction];
+		[objects setObject:[self objectFromTranslate:anObject.statusmessage] forKey:kSCHLibreAccessWebServiceStatusMessage];
+                
+		ret = objects;					
+	}
+	
+	return(ret);
+}
+
 - (id)objectFromTranslate:(id)anObject
 {
 	id ret = nil;
@@ -1243,10 +1340,28 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 				for (id item in anObject) {
 					[ret addObject:[self objectFromTopFavoritesContentItem:item]];	
 				}
-			}
-		}		
+			} else if ([firstItem isKindOfClass:[LibreAccessServiceSvc_AnnotationStatusItem class]] == YES) {
+				for (id item in anObject) {
+					[ret addObject:[self objectFromAnnotationStatusItem:item]];	
+				}
+			} else if ([firstItem isKindOfClass:[LibreAccessServiceSvc_AnnotationStatusContentItem class]] == YES) {
+				for (id item in anObject) {
+					[ret addObject:[self objectFromAnnotationStatusContentItem:item]];	
+				}                
+			} else if ([firstItem isKindOfClass:[LibreAccessServiceSvc_AnnotationTypeStatusItem class]] == YES) {
+				for (id item in anObject) {
+					[ret addObject:[self objectFromAnnotationTypeStatusItem:item]];	
+				}                                
+			}		
+        }		
 	} else if([anObject isKindOfClass:[USBoolean class]] == YES) {
 		ret = [NSNumber numberWithBool:[anObject boolValue]];
+    } else if ([anObject isKindOfClass:[LibreAccessServiceSvc_StatusHolder class]] == YES) {
+        ret = [self objectFromStatusHolder:anObject];	
+    } else if ([anObject isKindOfClass:[LibreAccessServiceSvc_PrivateAnnotationsStatus class]] == YES) {
+        ret = [self objectFromPrivateAnnotationsStatus:anObject];	
+    } else if ([anObject isKindOfClass:[LibreAccessServiceSvc_AnnotationTypeStatusItem class]] == YES) {
+        ret = [self objectFromAnnotationTypeStatusItem:anObject];	
 	} else {
 		ret = anObject;
 	}

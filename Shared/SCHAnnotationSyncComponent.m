@@ -29,6 +29,8 @@
 
 - (BOOL)updateProfileContentAnnotations;
 - (void)setSyncDate:(NSDate *)date;
+- (void)applyAnnotationCreationID:(NSArray *)annotationsArray;
+- (void)trackAnnotationCreation:(NSSet *)annotationsArray;
 - (NSArray *)localModifiedAnnotationsItemForProfile:(NSNumber *)profileID;
 - (NSArray *)localAnnotationsItemForProfile:(NSNumber *)profileID;
 - (void)syncProfileContentAnnotations:(NSDictionary *)profileContentAnnotationList;
@@ -77,18 +79,21 @@
 - (SCHFavorite *)favorite:(NSDictionary *)favorite;
 
 @property (retain, nonatomic) NSMutableDictionary *annotations;
+@property (retain, nonatomic) NSMutableArray *createdAnnotations;
 
 @end
 
 @implementation SCHAnnotationSyncComponent
 
 @synthesize annotations;
+@synthesize createdAnnotations;
 
 - (id)init
 {
 	self = [super init];
 	if (self != nil) {
-		annotations = [[NSMutableDictionary dictionary] retain];		
+		annotations = [[NSMutableDictionary dictionary] retain];
+		createdAnnotations = [[NSMutableArray array] retain];
 	}
 	
 	return(self);
@@ -97,6 +102,7 @@
 - (void)dealloc
 {
 	[annotations release], annotations = nil;
+    [createdAnnotations release], createdAnnotations = nil;
 	
 	[super dealloc];
 }
@@ -195,6 +201,18 @@
 	if([method compare:kSCHLibreAccessWebServiceSaveProfileContentAnnotations] == NSOrderedSame) {	    
         NSArray *books = [self.annotations objectForKey:profileID];
 
+        if ([self.createdAnnotations count] > 0) {
+            for (NSDictionary *annotationStatusItem in [result objectForKey:kSCHLibreAccessWebServiceAnnotationStatusList]) {
+                for (NSDictionary *annotationStatusContentItem in [annotationStatusItem objectForKey:kSCHLibreAccessWebServiceAnnotationStatusContentList]) {            
+                    NSDictionary *privateAnnotationsStatus = [annotationStatusContentItem objectForKey:kSCHLibreAccessWebServicePrivateAnnotationsStatus];
+                    
+                    [self applyAnnotationCreationID:[privateAnnotationsStatus objectForKey:kSCHLibreAccessWebServiceHighlightsStatusList]];
+                    [self applyAnnotationCreationID:[privateAnnotationsStatus objectForKey:kSCHLibreAccessWebServiceNotesStatusList]];
+                    [self applyAnnotationCreationID:[privateAnnotationsStatus objectForKey:kSCHLibreAccessWebServiceBookmarksStatusList]];
+                }
+            }
+        }
+        
         self.isSynchronizing = [self.libreAccessWebService listProfileContentAnnotations:books 
                                                                               forProfile:profileID];
         if (self.isSynchronizing == NO) {
@@ -213,6 +231,31 @@
     }
 }
 
+- (void)applyAnnotationCreationID:(NSArray *)annotationsArray
+{
+    NSManagedObjectID *managedObjectID = nil;
+    NSManagedObject *annotationManagedObject = nil;
+    
+    for (NSDictionary *annotation in annotationsArray) {
+        if ([[annotation objectForKey:kSCHLibreAccessWebServiceStatus] saveActionValue] == kSCHStatusCreated &&
+            [self.createdAnnotations count] > 0) {
+            managedObjectID = [self.createdAnnotations objectAtIndex:0];
+            if (managedObjectID != nil) {
+                annotationManagedObject = [self.managedObjectContext objectWithID:managedObjectID];
+                [annotationManagedObject setValue:[annotation objectForKey:kSCHLibreAccessWebServiceID] forKey:kSCHLibreAccessWebServiceID];
+            }
+            [self.createdAnnotations removeObjectAtIndex:0];
+        }
+    }
+}
+
+- (void)method:(NSString *)method didFailWithError:(NSError *)error
+{
+	// TODO: uncomment when Favorite syncing error is resolved
+    //[self.createdAnnotations removeAllObjects];
+	[super method:method didFailWithError:error];
+}
+
 - (BOOL)updateProfileContentAnnotations
 {
 	BOOL ret = YES;
@@ -220,9 +263,18 @@
     NSNumber *profileID = [[[self.annotations allKeys] sortedArrayUsingSelector:@selector(compare:)] objectAtIndex:0];
     NSArray *books = [self.annotations objectForKey:profileID];
     
-    // TODO: only include those annoations with changes
+	[self.createdAnnotations removeAllObjects];
     NSArray *updatedAnnotations = [self localModifiedAnnotationsItemForProfile:profileID];
     if ([updatedAnnotations count] > 0) {
+        
+        for (SCHAnnotationsItem *annotionItem in updatedAnnotations) {
+            for (SCHAnnotationsContentItem *annotationContentItem in annotionItem.AnnotationsContentItem) {
+                [self trackAnnotationCreation:annotationContentItem.PrivateAnnotations.Highlights];
+                [self trackAnnotationCreation:annotationContentItem.PrivateAnnotations.Notes];
+                [self trackAnnotationCreation:annotationContentItem.PrivateAnnotations.Bookmarks];
+            }
+        }
+        
         self.isSynchronizing = [self.libreAccessWebService saveProfileContentAnnotations:updatedAnnotations];
         if (self.isSynchronizing == NO) {
             [[SCHAuthenticationManager sharedAuthenticationManager] authenticate];				
@@ -238,6 +290,15 @@
     }
 	
 	return(ret);    
+}
+
+- (void)trackAnnotationCreation:(NSSet *)annotationsArray
+{
+    for (SCHAnnotation *annotation in annotationsArray) {
+        if ([annotation.State statusValue] == kSCHStatusCreated) {
+            [self.createdAnnotations addObject:[annotation objectID]];
+        }
+    }
 }
 
 - (NSArray *)localModifiedAnnotationsItemForProfile:(NSNumber *)profileID
