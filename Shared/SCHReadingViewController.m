@@ -398,8 +398,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     }
     self.bottomShadow.frame = bottomShadowFrame;
     
-    // FIXME: using a placeholder, adjust for real image
-    NSLog(@"Setting up notes count view!");
     UIImage *bgImage = [UIImage imageNamed:@"notes-count"];
     self.notesCountView = [[SCHNotesCountView alloc] initWithImage:[bgImage stretchableImageWithLeftCapWidth:10.0f topCapHeight:0]];
     [self.notesButton addSubview:self.notesCountView];
@@ -575,7 +573,15 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 {
     SCHBookAnnotations *annotations = [self.profile annotationsForBook:self.isbn];
     SCHBookPoint *lastPoint = [[[SCHBookPoint alloc] init] autorelease];
-    lastPoint.layoutPage = [annotations lastPage] ? [[[annotations lastPage] LastPageLocation] integerValue] : 1;
+    
+    NSNumber *lastPageLocation = [[annotations lastPage] LastPageLocation];
+    
+    if (lastPageLocation) {
+        lastPoint.layoutPage = MAX([lastPageLocation integerValue], 1);
+    } else {
+        lastPoint.layoutPage = 1;
+    }
+  
     [self jumpToBookPoint:lastPoint animated:NO];
 }
 

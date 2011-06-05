@@ -452,7 +452,7 @@
                                                                  inManagedObjectContext:self.managedObjectContext];
         newLastPage.LastModified = date;
         newLastPage.State = [NSNumber numberWithStatus:kSCHStatusCreated];
-        newLastPage.LastPageLocation = [NSNumber numberWithInteger:0];
+        newLastPage.LastPageLocation = [NSNumber numberWithInteger:1];
         newLastPage.Percentage = [NSNumber numberWithFloat:0.0];
         newLastPage.Component = @"";
         
