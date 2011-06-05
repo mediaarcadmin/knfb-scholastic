@@ -1423,11 +1423,14 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (SCHBookPoint *)bookPointForNote:(SCHNote *)note
 {
-    // MATT TODO - make this pagination aware so nil is returned if still paginating
-    NSUInteger layoutPage = note.noteLayoutPage;
-    SCHBookPoint *notePoint = [self.readingView bookPointForLayoutPage:layoutPage pageWordOffset:0];
+    if (self.currentPageIndex == NSUIntegerMax) {
+        return nil; // return nil if still paginating
+    } else {
+        NSUInteger layoutPage = note.noteLayoutPage;
+        SCHBookPoint *notePoint = [self.readingView bookPointForLayoutPage:layoutPage pageWordOffset:0];
     
-    return notePoint;
+        return notePoint;
+    }
 }
 
 - (NSString *)displayPageNumberForBookPoint:(SCHBookPoint *)bookPoint
