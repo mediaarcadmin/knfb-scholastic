@@ -499,6 +499,11 @@
 
 - (void)refreshHighlightsForPageAtIndex:(NSUInteger)index {}
 
+- (void)dismissSelector
+{
+    [self.selector setSelectedRange:nil];
+}
+
 #pragma mark - Rotation
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {}

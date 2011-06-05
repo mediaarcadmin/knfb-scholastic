@@ -617,6 +617,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (IBAction)toolbarButtonPressed:(id)sender
 {
     [self cancelInitialTimer];
+    [self.readingView dismissSelector];
 }
 
 - (IBAction)toggleSmartZoom:(id)sender
@@ -745,6 +746,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [highlightsButton setSelected:![highlightsButton isSelected]];
     
     if ([highlightsButton isSelected]) {
+        // Need to dismiss selector now to ensure a highlight isn't added immediately
+        [self.readingView dismissSelector];
         [self.readingView setSelectionMode:SCHReadingViewSelectionModeHighlights];
     } else {
         [self setDictionarySelectionMode];
@@ -876,10 +879,15 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (IBAction)flowedFixedSegmentChanged:(UISegmentedControl *)segControl
 {
     SCHBookPoint *currentBookPoint = [self.readingView currentBookPoint];
-    self.layoutType = segControl.selectedSegmentIndex;
+    [self.readingView dismissSelector];
     
-    [self jumpToBookPoint:currentBookPoint animated:NO];
-    [self updateScrubberValue];
+    // Dispatch this after a delay to allow the slector to be immediately dismissed
+    dispatch_time_t delay = dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC * 0.01);
+    dispatch_after(delay, dispatch_get_main_queue(), ^{
+        self.layoutType = segControl.selectedSegmentIndex;
+        [self jumpToBookPoint:currentBookPoint animated:NO];
+        [self updateScrubberValue];
+    });
 }
 
 #pragma mark - Paper Type Toggle
@@ -1188,6 +1196,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (IBAction)scrubValueStartChanges:(UISlider *)slider
 {
+    
+    [self.readingView dismissSelector];
+    
     if (self.currentPageIndex == NSUIntegerMax) {
         self.currentBookProgress = [slider value];
     } else {

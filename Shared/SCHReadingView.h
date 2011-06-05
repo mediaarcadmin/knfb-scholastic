@@ -95,6 +95,7 @@ typedef enum
 - (void)addHighlightWithSelection:(EucSelectorRange *)selectorRange;
 - (void)deleteHighlightWithSelection:(EucSelectorRange *)selectorRange;
 - (void)refreshHighlightsForPageAtIndex:(NSUInteger)index;
+- (void)dismissSelector;
 
 - (EucSelectorRange *)selectorRangeFromBookRange:(SCHBookRange *)range;
 - (NSArray *)bookRangesFromSelectorRange:(EucSelectorRange *)selectorRange;
