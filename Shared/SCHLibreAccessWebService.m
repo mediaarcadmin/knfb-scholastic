@@ -648,7 +648,10 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 			ret = [NSDictionary dictionaryWithObject:[self objectFromTranslate:[[anObject TopFavoritesResponseList] TopFavoritesResponseItem]] forKey:kSCHLibreAccessWebServiceTopFavoritesList];
 		} else if ([anObject isKindOfClass:[LibreAccessServiceSvc_SaveProfileContentAnnotationsResponse class]] == YES) {
 			ret = [NSDictionary dictionaryWithObject:[self objectFromTranslate:[[anObject AnnotationStatusList] AnnotationStatusItem]] forKey:kSCHLibreAccessWebServiceAnnotationStatusList];
+		} else if ([anObject isKindOfClass:[LibreAccessServiceSvc_SaveUserProfilesResponse class]] == YES) {
+			ret = [NSDictionary dictionaryWithObject:[self objectFromTranslate:[[anObject ProfileStatusList] ProfileStatusItem]] forKey:kSCHLibreAccessWebServiceProfileStatusList];
 		}
+        
 	}
 	
 	return(ret);
@@ -1352,7 +1355,11 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 				for (id item in anObject) {
 					[ret addObject:[self objectFromAnnotationTypeStatusItem:item]];	
 				}                                
-			}		
+			} else if ([firstItem isKindOfClass:[LibreAccessServiceSvc_ProfileStatusItem class]] == YES) {
+				for (id item in anObject) {
+					[ret addObject:[self objectFromProfileStatusItem:item]];	
+				}                                
+			}
         }		
 	} else if([anObject isKindOfClass:[USBoolean class]] == YES) {
 		ret = [NSNumber numberWithBool:[anObject boolValue]];

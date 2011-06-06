@@ -560,6 +560,12 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     if (categoryType != nil && [categoryType isEqualToString:kSCHAppBookCategoryPictureBook] == NO) {
         self.profile.AppProfile.AutomaticallyLaunchBook = self.isbn;
     }
+    
+    NSError *error = nil;
+    if ([self.profile.managedObjectContext save:&error] == NO) {
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        abort();
+    } 
 }
 
 #pragma mark - Book Positions
