@@ -518,6 +518,7 @@
         withHighlights:(NSSet *)localHighlights
             insertInto:(SCHPrivateAnnotations *)privateAnnotations
 {
+    NSMutableSet *deletePool = [NSMutableSet set];
 	NSMutableSet *creationPool = [NSMutableSet set];
 	
 	webHighlights = [webHighlights sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceID ascending:YES]]];		
@@ -531,6 +532,10 @@
 	
 	while (webItem != nil || localItem != nil) {		
 		if (webItem == nil) {
+			while (localItem != nil) {
+				[deletePool addObject:localItem];
+				localItem = [localEnumerator nextObject];
+			} 
 			break;
 		}
 		
@@ -556,6 +561,7 @@
 				webItem = nil;
 				break;
 			case NSOrderedDescending:
+				[deletePool addObject:localItem];
 				localItem = nil;
 				break;			
 		}		
@@ -568,6 +574,10 @@
 		}		
 	}
     
+    for (SCHHighlight *localItem in deletePool) {
+		[self.managedObjectContext deleteObject:localItem];
+	}
+
 	for (NSDictionary *webItem in creationPool) {
         [privateAnnotations addHighlightsObject:[self highlight:webItem]];
 	}
@@ -663,6 +673,7 @@
         withNotes:(NSSet *)localNotes
        insertInto:(SCHPrivateAnnotations *)privateAnnotations
 {
+    NSMutableSet *deletePool = [NSMutableSet set];
 	NSMutableSet *creationPool = [NSMutableSet set];
 	
 	webNotes = [webNotes sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceID ascending:YES]]];		
@@ -676,6 +687,10 @@
 	
 	while (webItem != nil || localItem != nil) {		
 		if (webItem == nil) {
+			while (localItem != nil) {
+				[deletePool addObject:localItem];
+				localItem = [localEnumerator nextObject];
+			} 
 			break;
 		}
 		
@@ -701,6 +716,7 @@
 				webItem = nil;
 				break;
 			case NSOrderedDescending:
+				[deletePool addObject:localItem];
 				localItem = nil;
 				break;			
 		}		
@@ -712,7 +728,11 @@
 			localItem = [localEnumerator nextObject];
 		}		
 	}
-    
+
+    for (SCHNote *localItem in deletePool) {
+		[self.managedObjectContext deleteObject:localItem];
+	}
+
 	for (NSDictionary *webItem in creationPool) {
         [privateAnnotations addNotesObject:[self note:webItem]];
 	}
@@ -782,6 +802,7 @@
         withBookmarks:(NSSet *)localBookmarks
            insertInto:(SCHPrivateAnnotations *)privateAnnotations
 {
+    NSMutableSet *deletePool = [NSMutableSet set];
 	NSMutableSet *creationPool = [NSMutableSet set];
 	
 	webBookmarks = [webBookmarks sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceID ascending:YES]]];		
@@ -795,6 +816,10 @@
 	
 	while (webItem != nil || localItem != nil) {		
 		if (webItem == nil) {
+			while (localItem != nil) {
+				[deletePool addObject:localItem];
+				localItem = [localEnumerator nextObject];
+			} 
 			break;
 		}
 		
@@ -820,6 +845,7 @@
 				webItem = nil;
 				break;
 			case NSOrderedDescending:
+                [deletePool addObject:localItem];
 				localItem = nil;
 				break;			
 		}		
@@ -832,6 +858,10 @@
 		}		
 	}
     
+    for (SCHBookmark *localItem in deletePool) {
+		[self.managedObjectContext deleteObject:localItem];
+	}
+
 	for (NSDictionary *webItem in creationPool) {
         [privateAnnotations addBookmarksObject:[self bookmark:webItem]];
 	}
