@@ -23,6 +23,10 @@
 // hosting view
 @property (nonatomic, assign) id<SCHStoryInteractionControllerDelegate> delegate;
 
+// the current interface orientation; the hosting UIViewController should initialise this
+// before presenting the view and update it as necessary
+@property (nonatomic, assign) UIInterfaceOrientation interfaceOrientation;
+
 // a transparent hosting-view sized container for the story interaction views; if
 // necessary gesture recognizers can be attached to this to collect events outside
 // the main story interaction view

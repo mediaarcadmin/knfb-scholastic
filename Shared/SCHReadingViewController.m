@@ -168,6 +168,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [audioBookPlayer release], audioBookPlayer = nil;
     [bookStoryInteractions release], bookStoryInteractions = nil;
     [popoverOptionsViewController release], popoverOptionsViewController = nil;
+    
+    storyInteractionController.delegate = nil; // we don't want callbacks
     [storyInteractionController release], storyInteractionController = nil;
     
     [super dealloc];
@@ -471,6 +473,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     self.currentlyRotating = NO;
     [self.readingView didRotateFromInterfaceOrientation:fromInterfaceOrientation];
     
+    self.storyInteractionController.interfaceOrientation = self.interfaceOrientation;
+    self.storyInteractionController.containerView.hidden = NO;
+    
     [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
 }
 
@@ -533,6 +538,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         [self.popover dismissPopoverAnimated:YES];
         self.popover = nil;
     }
+    
+    self.storyInteractionController.containerView.hidden = YES;
 }
 
 #pragma mark -
@@ -1473,6 +1480,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     NSLog(@"Selected interaction %d.", interaction);
     SCHStoryInteraction *storyInteraction = [[self.bookStoryInteractions allStoryInteractions] objectAtIndex:interaction];
     self.storyInteractionController = [SCHStoryInteractionController storyInteractionControllerForStoryInteraction:storyInteraction];
+    self.storyInteractionController.interfaceOrientation = self.interfaceOrientation;
+    self.storyInteractionController.delegate = self;
     [self.storyInteractionController presentInHostView:self.view];
 }
 
