@@ -8,8 +8,8 @@
 
 #import "SCHStoryInteractionProgressView.h"
 
-#define kImageWidth 18
-#define kImageHeight 18
+#define kImageWidth 21
+#define kImageHeight 21
 #define kImageGap 5
 
 @interface SCHStoryInteractionProgressView ()
@@ -49,10 +49,12 @@
     NSMutableArray *newIndicators = [NSMutableArray arrayWithCapacity:numberOfSteps];
     for (NSUInteger i = 0; i < numberOfSteps; ++i) {
         if (i <= currentStep) {
-            UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"storyinteraction-progress-filled"]];
-            imageView.frame = CGRectMake(0, 0, kImageWidth, kImageHeight);
+            UIImage *image = [UIImage imageNamed:@"storyinteraction-progress-filled"];
+            UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
+            imageView.contentMode = UIViewContentModeCenter;
+            imageView.frame = CGRectMake(0, 0, image.size.width, image.size.height);
             imageView.backgroundColor = [UIColor clearColor];
-            UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, kImageWidth, kImageHeight)];
+            UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, image.size.width, image.size.height)];
             label.text = [NSString stringWithFormat:@"%d", i+1];
             label.textColor = [UIColor whiteColor];
             label.font = [UIFont boldSystemFontOfSize:14];
@@ -67,8 +69,10 @@
             [imageView release];
             [label release];
         } else {
-            UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"storyinteraction-progress-unfilled"]];
-            imageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+            UIImage *image = [UIImage imageNamed:@"storyinteraction-progress-unfilled"];
+            UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
+            imageView.contentMode = UIViewContentModeCenter;
+            imageView.frame = CGRectMake(0, 0, image.size.width, image.size.height);
             [newIndicators addObject:imageView];
             [imageView release];
         }

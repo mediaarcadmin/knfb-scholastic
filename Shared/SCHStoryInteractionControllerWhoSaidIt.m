@@ -101,7 +101,23 @@
 
 - (void)checkAnswers:(id)sender
 {
-    [self.sources makeObjectsPerformSelector:@selector(flashCorrectness)];
+    for (SCHStoryInteractionDraggableView *source in self.sources) {
+        SCHStoryInteractionDraggableTargetView *target = source.attachedTarget;
+        if (!target) {
+            continue;
+        }
+        NSString *root = (source.tag == target.tag ? @"storyinteraction-draggable-green-" : @"storyinteraction-draggable-red-");
+        UIImage *image = [UIImage imageNamed:[root stringByAppendingString:UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"ipad" : @"iphone"]];
+        source.highlightedImage = image;
+        [source setHighlighted:YES];
+    }
+
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 1.0 * NSEC_PER_SEC);
+    dispatch_after(popTime, dispatch_get_main_queue(), ^{
+        for (SCHStoryInteractionDraggableView *source in self.sources) {
+            [source setHighlighted:NO];
+        }
+    });
 }
 
 @end

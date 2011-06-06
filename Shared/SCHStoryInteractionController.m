@@ -13,10 +13,12 @@
 #import "SCHStoryInteractionDraggableView.h"
 
 #define kBackgroundLeftCap 10
-#define kBackgroundTopCap 74
+#define kBackgroundTopCap_iPhone 40
+#define kBackgroundTopCap_iPad 50
 #define kContentsInsetLeft 5
 #define kContentsInsetRight 5
-#define kContentsInsetTop 74
+#define kContentsInsetTop_iPhone 36
+#define kContentsInsetTop_iPad 46
 #define kContentsInsetBottom 5
 #define kTitleInsetLeft 10
 #define kTitleInsetTop 10
@@ -27,6 +29,7 @@
 @property (nonatomic, retain) UIView *contentsView;
 @property (nonatomic, retain) UIImageView *backgroundView;
 
+- (UIImage *)deviceSpecificImageNamed:(NSString *)name;
 - (void)updateOrientation;
 
 @end
@@ -84,26 +87,36 @@
 - (void)presentInHostView:(UIView *)hostView
 {
     if (self.containerView == nil) {
+        
+        int kBackgroundTopCap, kContentsInsetTop;
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+            kBackgroundTopCap = kBackgroundTopCap_iPhone;
+            kContentsInsetTop = kContentsInsetTop_iPhone;
+        } else {
+            kBackgroundTopCap = kBackgroundTopCap_iPad;
+            kContentsInsetTop = kContentsInsetTop_iPad;
+        }
+
         // set up the transparent full-size container to trap touch events before they get
         // to the underlying view; this effectively makes the story interaction modal
         UIView *container = [[UIView alloc] initWithFrame:hostView.bounds];
         container.backgroundColor = [UIColor clearColor];
         container.userInteractionEnabled = YES;
         
-        UIImage *backgroundImage = [UIImage imageNamed:[self.storyInteraction isOlderStoryInteraction] ? @"storyinteraction-bg-older" : @"storyinteraction-bg-younger"];
+        NSString *age = [self.storyInteraction isOlderStoryInteraction] ? @"older" : @"younger";
+        UIImage *backgroundImage = [self deviceSpecificImageNamed:[NSString stringWithFormat:@"storyinteraction-bg-%@", age]];
         UIImage *backgroundStretch = [backgroundImage stretchableImageWithLeftCapWidth:kBackgroundLeftCap topCapHeight:kBackgroundTopCap];
         UIImageView *background = [[UIImageView alloc] initWithImage:backgroundStretch];
         
         // first object in the NIB must be the container view for the interaction
         self.contentsView = [self.nibObjects objectAtIndex:0];
-        CGFloat backgroundWidth = CGRectGetWidth(self.contentsView.bounds) + kContentsInsetLeft + kContentsInsetRight;
-        CGFloat backgroundHeight = CGRectGetHeight(self.contentsView.bounds) + kContentsInsetTop + kContentsInsetBottom;
+        CGFloat backgroundWidth = MIN(CGRectGetWidth(self.contentsView.bounds) + kContentsInsetLeft + kContentsInsetRight, CGRectGetWidth(hostView.bounds));
+        CGFloat backgroundHeight = MIN(CGRectGetHeight(self.contentsView.bounds) + kContentsInsetTop + kContentsInsetBottom, CGRectGetHeight(hostView.bounds));
         
         background.userInteractionEnabled = YES;
         background.bounds = CGRectMake(0, 0, backgroundWidth, backgroundHeight);
         background.center = CGPointMake(CGRectGetMidX(container.bounds), CGRectGetMidY(container.bounds));
-        self.contentsView.center = CGPointMake(kContentsInsetLeft + CGRectGetWidth(contentsView.bounds)/2,
-                                               kContentsInsetTop + CGRectGetHeight(contentsView.bounds)/2);
+        self.contentsView.center = CGPointMake(backgroundWidth/2, (backgroundHeight-kContentsInsetTop-kContentsInsetBottom)/2+kContentsInsetTop);
         [background addSubview:self.contentsView];
         [container addSubview:background];
         
@@ -111,7 +124,7 @@
                                                                        backgroundWidth - kTitleInsetLeft*2,
                                                                        kContentsInsetTop - kTitleInsetTop*2)];
         titleView.backgroundColor = [UIColor clearColor];
-        titleView.font = [UIFont boldSystemFontOfSize:24];
+        titleView.font = [UIFont boldSystemFontOfSize:UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? 24 : 20];
         titleView.text = [self.storyInteraction title];
         titleView.textAlignment = UITextAlignmentCenter;
         titleView.textColor = [UIColor whiteColor];
@@ -129,6 +142,18 @@
         [container release];
         [background release];
 
+        // any other views in the nib are added to the title bar
+        NSInteger x = backgroundWidth - kContentsInsetRight;
+        for (NSUInteger i = [self.nibObjects count]-1; i > 0; --i) {
+            UIView *view = [self.nibObjects objectAtIndex:i];
+            CGRect viewFrame = view.frame;
+            viewFrame.origin.x = x - viewFrame.size.width;
+            viewFrame.origin.y = (kContentsInsetTop - viewFrame.size.height) / 2;
+            view.frame = viewFrame;
+            [self.backgroundView addSubview:view];
+            x -= viewFrame.size.width + 5;
+        }
+        
         [self setupView];
     }
     
@@ -139,14 +164,18 @@
 - (void)updateOrientation
 {
     CGRect superviewBounds = self.containerView.superview.bounds;
-    NSLog(@"superviewBounds=%@", NSStringFromCGRect(superviewBounds));
-    
-    if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
-        self.containerView.transform = CGAffineTransformIdentity;
-        self.containerView.bounds = self.containerView.superview.bounds;
+    BOOL rotate;
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        rotate = UIInterfaceOrientationIsLandscape(self.interfaceOrientation);
     } else {
+        rotate = UIInterfaceOrientationIsPortrait(self.interfaceOrientation);
+    }
+    if (rotate) {
         self.containerView.transform = CGAffineTransformMakeRotation(-M_PI/2);
         self.containerView.bounds = CGRectMake(0, 0, CGRectGetHeight(superviewBounds), CGRectGetWidth(superviewBounds));
+    } else {
+        self.containerView.transform = CGAffineTransformIdentity;
+        self.containerView.bounds = self.containerView.superview.bounds;
     }
     self.containerView.center = CGPointMake(CGRectGetMidX(superviewBounds), CGRectGetMidY(superviewBounds));
     self.backgroundView.center = CGPointMake(CGRectGetMidX(self.containerView.bounds), CGRectGetMidY(self.containerView.bounds));
@@ -171,6 +200,17 @@
         // may result in self being dealloc'ed so don't do anything else after this
         [delegate storyInteractionControllerDidDismiss:self];
     }
+}
+
+- (UIImage *)deviceSpecificImageNamed:(NSString *)name
+{
+    // most images have device-specific versions
+    UIImage *image = [UIImage imageNamed:[name stringByAppendingString:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone ? @"-iphone" : @"-ipad")]];
+    if (!image) {
+        // not found; look for a common image
+        image = [UIImage imageNamed:name];
+    }
+    return image;
 }
 
 #pragma mark - subclass overrides

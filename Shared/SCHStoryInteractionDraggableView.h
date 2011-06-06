@@ -15,11 +15,10 @@
 // a text label to display in the view
 @property (nonatomic, copy) NSString *title;
 
+// The target this source is currently attached to
+@property (nonatomic, assign) SCHStoryInteractionDraggableTargetView *attachedTarget;
+
 // set the targets which this draggable can attach to
 - (void)setDragTargets:(NSArray *)dragTargets;
-
-// flash green if this object's tag equals the attached target's tag, red if the tags
-// do not match, and do nothing if this object is not attached to a target
-- (void)flashCorrectness;
 
 @end

@@ -1492,6 +1492,10 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     self.storyInteractionController.interfaceOrientation = self.interfaceOrientation;
     self.storyInteractionController.delegate = self;
     [self.storyInteractionController presentInHostView:self.view];
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        [self.navigationController setNavigationBarHidden:YES animated:YES];
+    }
 }
 
 #pragma mark - SCHStoryInteractionControllerDelegate methods
@@ -1500,6 +1504,10 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 {
     if (aStoryInteractionController == self.storyInteractionController) {
         self.storyInteractionController = nil;
+        
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+            [self.navigationController setNavigationBarHidden:NO animated:YES];
+        }
     }
 }
 

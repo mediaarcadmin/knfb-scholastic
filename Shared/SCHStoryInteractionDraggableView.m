@@ -11,12 +11,13 @@
 
 #define kTitleViewTag 572
 #define kSnapDistanceSq 900
-#define kTargetOffsetX 12
-#define kTargetOffsetY 6
+#define kTargetOffsetX_iPad 12
+#define kTargetOffsetY_iPad 6
+#define kTargetOffsetX_iPhone 7
+#define kTargetOffsetY_iPhone 3
 
 @interface SCHStoryInteractionDraggableView ()
 
-@property (nonatomic, assign) SCHStoryInteractionDraggableTargetView *attachedTarget;
 @property (nonatomic, assign) CGPoint touchOffset;
 @property (nonatomic, assign) CGPoint originalCenter;
 @property (nonatomic, copy) NSArray *targets;
@@ -55,6 +56,8 @@
     label.textColor = [UIColor blackColor];
     label.textAlignment = UITextAlignmentCenter;
     label.text = title;
+    label.font = [UIFont systemFontOfSize:UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? 20 : 14];
+    label.adjustsFontSizeToFitWidth = YES;
     [self addSubview:label];
     [label release];
 }
@@ -68,23 +71,8 @@
 
 - (void)layoutSubviews
 {
-    [self viewWithTag:kTitleViewTag].frame = CGRectMake(0, 12, CGRectGetWidth(self.bounds), CGRectGetHeight(self.bounds)-12);
+    [self viewWithTag:kTitleViewTag].frame = CGRectMake(4, 12, CGRectGetWidth(self.bounds)-8, CGRectGetHeight(self.bounds)-12);
     [super layoutSubviews];
-}
-
-- (void)flashCorrectness
-{
-    if (!attachedTarget) {
-        return;
-    }
-    UIImage *image = [UIImage imageNamed:(self.tag == self.attachedTarget.tag ? @"storyinteraction-draggable-green" : @"storyinteraction-draggable-red")];
-    self.highlightedImage = image;
-    [self setHighlighted:YES];
-    
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 1.0 * NSEC_PER_SEC);
-    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        [self setHighlighted:NO];
-    });
 }
 
 #pragma mark - touch support
@@ -105,6 +93,9 @@ static CGFloat distanceSq(CGPoint p1, CGPoint p2)
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {
+    const int kTargetOffsetX = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ? kTargetOffsetX_iPad : kTargetOffsetX_iPhone;
+    const int kTargetOffsetY = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ? kTargetOffsetY_iPad : kTargetOffsetY_iPhone;
+    
     CGPoint point = [[touches anyObject] locationInView:self.superview];
     self.center = CGPointMake(point.x + self.touchOffset.x, point.y + self.touchOffset.y);
     
