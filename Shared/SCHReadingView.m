@@ -27,8 +27,10 @@
 @property (nonatomic, assign) id <SCHReadingViewDelegate> delegate;
 @property (nonatomic, retain) EucSelectorRange *currentSelectorRange;
 @property (nonatomic, retain) EucSelectorRange *singleWordSelectorRange;
+@property (nonatomic, assign) BOOL createHighlightFromSelection;
 
 - (void)selectorDismissedWithSelection:(EucSelectorRange *)selectorRange;
+- (SCHBookRange *)firstBookRangeFromSelectorRange:(EucSelectorRange *)selectorRange;
 
 @end
 
@@ -41,6 +43,7 @@
 @synthesize selectionMode;
 @synthesize currentSelectorRange;
 @synthesize singleWordSelectorRange;
+@synthesize createHighlightFromSelection;
 
 - (void) dealloc
 {
@@ -69,6 +72,7 @@
         // Initialization code
         isbn = [newIsbn retain];
         delegate = newDelegate;
+        createHighlightFromSelection = YES;
         
         self.opaque = YES;
         self.multipleTouchEnabled = YES;
@@ -155,6 +159,44 @@
     return nil;
 }
 
+#pragma mark - SCHBookPoint Conversions
+
+- (void)layoutPage:(NSUInteger *)layoutPage pageWordOffset:(NSUInteger *)pageWordOffset forBookPoint:(SCHBookPoint *)bookPoint
+{
+    *layoutPage = bookPoint.layoutPage;
+    *pageWordOffset = bookPoint.wordOffset;
+    
+    if (bookPoint.blockOffset > 0) {
+        NSArray *wordBlocks = [self.textFlow blocksForPageAtIndex:bookPoint.layoutPage - 1 includingFolioBlocks:NO];
+        for (int i = 0; i < bookPoint.blockOffset; i++) {
+            if (i < [wordBlocks count]) {
+                *pageWordOffset += [[[wordBlocks objectAtIndex:i] words] count];
+            }
+        }
+    }
+}
+
+- (SCHBookPoint *)bookPointForLayoutPage:(NSUInteger)layoutPage pageWordOffset:(NSUInteger)pageWordOffset
+{
+    SCHBookPoint *bookPoint = [[SCHBookPoint alloc] init];
+    bookPoint.layoutPage = layoutPage;
+    bookPoint.wordOffset = pageWordOffset;
+    
+    NSArray *wordBlocks = [self.textFlow blocksForPageAtIndex:bookPoint.layoutPage - 1 includingFolioBlocks:NO];
+    
+    for (int i = 0 ; i < [wordBlocks count]; i++) {
+        KNFBTextFlowBlock *block = [wordBlocks objectAtIndex:i];
+        if (bookPoint.wordOffset < [[block words] count]) {
+            break;
+        } else {
+            bookPoint.wordOffset -= [[block words] count];
+            bookPoint.blockOffset++;
+        }
+    }
+    
+    return [bookPoint autorelease];
+}
+
 #pragma mark - Selector
 
 - (EucSelector *)selector
@@ -192,7 +234,7 @@
 {
     NSLog(@"Selected older word: %@", object);
     
-    SCHBookRange *bookRange = [self bookRangeFromSelectorRange:[self.selector selectedRange]];
+    SCHBookRange *bookRange = [self firstBookRangeFromSelectorRange:[self.selector selectedRange]];
     
     NSUInteger page = bookRange.startPoint.layoutPage;
     NSUInteger wordOffset = bookRange.startPoint.wordOffset;
@@ -213,7 +255,7 @@
 {
     NSLog(@"Selected younger word: %@", object);
 
-    SCHBookRange *bookRange = [self bookRangeFromSelectorRange:[self.selector selectedRange]];
+    SCHBookRange *bookRange = [self firstBookRangeFromSelectorRange:[self.selector selectedRange]];
     
     NSUInteger page = bookRange.startPoint.layoutPage;
     NSUInteger wordOffset = bookRange.startPoint.wordOffset;
@@ -230,60 +272,16 @@
     }
 }
 
+#pragma mark - EucSelectorDelegate
+
 - (UIColor *)eucSelector:(EucSelector *)selector willBeginEditingHighlightWithRange:(EucSelectorRange *)selectedRange
 {
-//    UIColor *selectionColor = nil;
-//        
-//    switch (self.selectionMode) {
-//        case SCHReadingViewSelectionModeHighlights:
-//            selectionColor = [UIColor yellowColor];
-//            break;
-//        default:
-//            break;
-//    }
-//    
+    // This disables the creation of a new highlight on top of the old one
+    self.createHighlightFromSelection = NO;
+    [self.selector setSelectedRange:nil];
+    //[self.selector performSelector:@selector(setSelectedRange:) withObject:nil afterDelay:0.1f];
+    
     return nil;
-}
-
-- (void)eucSelector:(EucSelector *)selector didEndEditingHighlightWithRange:(EucSelectorRange *)originalRange movedToRange:(EucSelectorRange *)movedToRange;
-{
-
-}
-
-- (void)layoutPage:(NSUInteger *)layoutPage pageWordOffset:(NSUInteger *)pageWordOffset forBookPoint:(SCHBookPoint *)bookPoint
-{
-    *layoutPage = bookPoint.layoutPage;
-    *pageWordOffset = bookPoint.wordOffset;
-    
-    if (bookPoint.blockOffset > 0) {
-        NSArray *wordBlocks = [self.textFlow blocksForPageAtIndex:bookPoint.layoutPage - 1 includingFolioBlocks:NO];
-        for (int i = 0; i < bookPoint.blockOffset; i++) {
-            if (i < [wordBlocks count]) {
-                pageWordOffset += [[[wordBlocks objectAtIndex:i] words] count];
-            }
-        }
-    }
-}
-
-- (SCHBookPoint *)bookPointForLayoutPage:(NSUInteger)layoutPage pageWordOffset:(NSUInteger)pageWordOffset
-{
-    SCHBookPoint *bookPoint = [[SCHBookPoint alloc] init];
-    bookPoint.layoutPage = layoutPage;
-    bookPoint.wordOffset = pageWordOffset;
-    
-    NSArray *wordBlocks = [self.textFlow blocksForPageAtIndex:bookPoint.layoutPage - 1 includingFolioBlocks:NO];
-    
-    for (int i = 0 ; i < [wordBlocks count]; i++) {
-        KNFBTextFlowBlock *block = [wordBlocks objectAtIndex:i];
-        if (bookPoint.wordOffset < [[block words] count]) {
-            break;
-        } else {
-            bookPoint.wordOffset -= [[block words] count];
-            bookPoint.blockOffset++;
-        }
-    }
-    
-    return [bookPoint autorelease];
 }
 
 - (void)currentLayoutPage:(NSUInteger *)layoutPage pageWordOffset:(NSUInteger *)pageWordOffset
@@ -293,6 +291,132 @@
     if (bookPoint) {
         [self layoutPage:layoutPage pageWordOffset:pageWordOffset forBookPoint:[self currentBookPoint]];
     }    
+}
+
+- (void)selectorDismissedWithSelection:(EucSelectorRange *)selectorRange
+{
+    switch (self.selectionMode) {
+        case SCHReadingViewSelectionModeHighlights:
+            if (self.createHighlightFromSelection) {
+                [self addHighlightWithSelection:selectorRange];
+            }
+            break;
+        default:
+            break;
+    }
+    
+    self.createHighlightFromSelection = YES;    
+}
+
+- (EucSelectorRange *)selectorRangeFromBookRange:(SCHBookRange *)range 
+{
+    if (nil == range) return nil;
+    
+    SCHBookPoint *startPoint = range.startPoint;
+    SCHBookPoint *endPoint = range.endPoint;
+    
+    EucSelectorRange *selectorRange = [[EucSelectorRange alloc] init];
+    selectorRange.startBlockId      = [KNFBTextFlowBlock blockIDForPageIndex:startPoint.layoutPage - 1 blockIndex:startPoint.blockOffset];
+    selectorRange.startElementId    = [KNFBTextFlowPositionedWord wordIDForWordIndex:startPoint.wordOffset];
+    selectorRange.endBlockId        = [KNFBTextFlowBlock blockIDForPageIndex:endPoint.layoutPage - 1 blockIndex:endPoint.blockOffset];
+    selectorRange.endElementId      = [KNFBTextFlowPositionedWord wordIDForWordIndex:endPoint.wordOffset];
+    
+    return [selectorRange autorelease];
+}
+
+- (SCHBookRange *)firstBookRangeFromSelectorRange:(EucSelectorRange *)selectorRange
+{
+    id ret = nil;
+    
+    NSArray *bookRanges = [self bookRangesFromSelectorRange:selectorRange];
+    
+    if ([bookRanges count]) {
+        ret = [bookRanges objectAtIndex:0];
+    }
+    
+    return ret;
+}
+
+- (NSArray *)bookRangesFromSelectorRange:(EucSelectorRange *)selectorRange
+{
+    
+    SCHBookRange *bookRange = [self bookRangeFromSelectorRange:selectorRange];
+    NSMutableArray *bookRanges = [NSMutableArray array];
+    
+    if (nil == bookRange) {
+        return bookRanges;
+    }
+    
+    for (int i = bookRange.startPoint.layoutPage; i <= bookRange.endPoint.layoutPage; i++) {
+        SCHBookPoint *startPoint = [[SCHBookPoint alloc] init];
+        SCHBookPoint *endPoint = [[SCHBookPoint alloc] init];
+        
+        [startPoint setLayoutPage:i];
+        [endPoint   setLayoutPage:i];
+        
+        NSArray *pageBlocks = [self.textFlow blocksForPageAtIndex:i - 1 includingFolioBlocks:NO];
+        NSUInteger maxBlockOffset = 0;
+        NSUInteger maxWordOffset = 0;
+        
+        if ([pageBlocks count]) {
+            maxBlockOffset = [pageBlocks count] - 1;
+            maxWordOffset  = MAX([[[pageBlocks objectAtIndex:maxBlockOffset] words] count], 1) - 1;
+        }
+        
+        if (i == bookRange.startPoint.layoutPage) {
+            [startPoint setBlockOffset:bookRange.startPoint.blockOffset];
+            [startPoint setWordOffset:bookRange.startPoint.wordOffset];
+        } else {
+            [startPoint setBlockOffset:0];
+            [startPoint setWordOffset:0];
+        }
+        
+        if (i == bookRange.endPoint.layoutPage) {
+            [endPoint setBlockOffset:bookRange.endPoint.blockOffset];
+            [endPoint setWordOffset:bookRange.endPoint.wordOffset];
+        } else {
+            [endPoint setBlockOffset:maxBlockOffset];
+            [endPoint setWordOffset:maxWordOffset];
+        }
+        
+        SCHBookRange *range = [[SCHBookRange alloc] init];
+        [range setStartPoint:startPoint];
+        [range setEndPoint:endPoint];
+        [bookRanges addObject:range];
+        
+        [startPoint release];
+        [endPoint release];
+        [range release];
+    }
+    
+    NSLog(@"Book ranges: %@", bookRanges);
+    
+    return bookRanges;
+}
+
+- (SCHBookRange *)bookRangeFromSelectorRange:(EucSelectorRange *)selectorRange
+{ 
+    return nil;
+}
+
+#pragma mark - Highlights
+
+- (NSArray *)highlightRangesForEucSelector:(EucSelector *)selector
+{  
+    NSMutableArray *selectorRanges = [NSMutableArray array];
+    
+    switch (self.selectionMode) {
+        case SCHReadingViewSelectionModeHighlights:
+            for (SCHBookRange *highlightRange in [self highlightRangesForCurrentPage]) {
+                EucSelectorRange *range = [self selectorRangeFromBookRange:highlightRange];
+                [selectorRanges addObject:range];
+            }
+            break;
+        default:
+            break;
+    }
+
+    return selectorRanges;
 }
 
 - (void)dismissFollowAlongHighlighter {}
@@ -318,6 +442,11 @@
     return [bookRange autorelease];
 }
 
+- (NSArray *)highlightRangesForCurrentPage
+{
+    return nil;
+}
+
 - (NSArray *)highlightsForLayoutPage:(NSUInteger)page
 {
     NSMutableArray *highlights = [NSMutableArray array];
@@ -330,99 +459,50 @@
     return highlights;
 }
 
-- (void)updateHighlight {
-    
-    EucSelectorRange *fromSelectorRange = [self.selector selectedRangeOriginalHighlightRange];
-    EucSelectorRange *toSelectorRange   = [self.selector selectedRange];
-    
-    [self.selector setSelectedRange:nil];
-    
-    SCHBookRange *fromBookRange = [self bookRangeFromSelectorRange:fromSelectorRange];
-    SCHBookRange *toBookRange   = [self bookRangeFromSelectorRange:toSelectorRange];
-
-    NSInteger startIndex;
-    NSInteger endIndex;
-    
-    if ([self.selector selectedRangeIsHighlight]) {
-        startIndex = MIN(fromBookRange.startPoint.layoutPage, toBookRange.startPoint.layoutPage) - 1;
-        endIndex   = MAX(fromBookRange.endPoint.layoutPage, toBookRange.endPoint.layoutPage) - 1;
-        [self.delegate updateHighlightAtBookRange:fromBookRange toBookRange:toBookRange];
-    } else {
-        startIndex = toBookRange.startPoint.layoutPage - 1;
-        endIndex   = toBookRange.endPoint.layoutPage - 1;
-        //[self.delegate addHighlightAtBookRange:toBookRange];
-    }
-    
-    for (int i = startIndex; i <= endIndex; i++) {
-        [self refreshHighlightsForPageAtIndex:i];
-    }
-    
-}
-
 - (void)addHighlightWithSelection:(EucSelectorRange *)selectorRange
 {
-    SCHBookRange *highlightRange = [self bookRangeFromSelectorRange:selectorRange];
-    
-    NSUInteger startPage = highlightRange.startPoint.layoutPage;
-    NSUInteger startWord = highlightRange.startPoint.wordOffset;
-    NSUInteger endPage   = highlightRange.endPoint.layoutPage;
-    NSUInteger endWord   = highlightRange.endPoint.wordOffset;
+    for (SCHBookRange *highlightRange in [self bookRangesFromSelectorRange:selectorRange]) {    
+        NSUInteger startLayoutPage     = 0;
+        NSUInteger startPageWordOffset = 0;
+        NSUInteger endLayoutPage       = 0;
+        NSUInteger endPageWordOffset   = 0;
+        
+        [self layoutPage:&startLayoutPage pageWordOffset:&startPageWordOffset forBookPoint:highlightRange.startPoint];
+        [self layoutPage:&endLayoutPage pageWordOffset:&endPageWordOffset forBookPoint:highlightRange.endPoint];
 
-    if (highlightRange.startPoint.blockOffset > 0) {
-        NSArray *startWordBlocks = [self.textFlow blocksForPageAtIndex:startPage - 1 includingFolioBlocks:NO];
-        for (int i = 0; i < highlightRange.startPoint.blockOffset; i++) {
-            if (i < [startWordBlocks count]) {
-                startWord += [[[startWordBlocks objectAtIndex:i] words] count];
-            }
+        [self.delegate addHighlightBetweenStartPage:startLayoutPage startWord:startPageWordOffset endPage:endLayoutPage endWord:endPageWordOffset];
+    
+        for (int i = startLayoutPage; i <= endLayoutPage; i++) {
+            [self refreshHighlightsForPageAtIndex:i - 1];
         }
     }
-    
-    if (highlightRange.endPoint.blockOffset > 0) {
-        NSArray *endWordBlocks = [self.textFlow blocksForPageAtIndex:endPage - 1 includingFolioBlocks:NO];
-        for (int i = 0; i < highlightRange.endPoint.blockOffset; i++) {
-            if (i < [endWordBlocks count]) {
-                endWord += [[[endWordBlocks objectAtIndex:i] words] count];
-            }
+}
+
+- (void)deleteHighlightWithSelection:(EucSelectorRange *)selectorRange
+{
+    for (SCHBookRange *highlightRange in [self bookRangesFromSelectorRange:selectorRange]) {    
+        NSUInteger startLayoutPage     = 0;
+        NSUInteger startPageWordOffset = 0;
+        NSUInteger endLayoutPage       = 0;
+        NSUInteger endPageWordOffset   = 0;
+        
+        [self layoutPage:&startLayoutPage pageWordOffset:&startPageWordOffset forBookPoint:highlightRange.startPoint];
+        [self layoutPage:&endLayoutPage pageWordOffset:&endPageWordOffset forBookPoint:highlightRange.endPoint];
+        
+        [self.delegate deleteHighlightBetweenStartPage:startLayoutPage startWord:startPageWordOffset endPage:endLayoutPage endWord:endPageWordOffset];
+        
+        for (int i = startLayoutPage; i <= endLayoutPage; i++) {
+            [self refreshHighlightsForPageAtIndex:i - 1];
         }
     }
-    
-    [self.delegate addHighlightBetweenStartPage:startPage startWord:startWord endPage:endPage endWord:endWord];
-    
-    for (int i = startPage; i <= endPage; i++) {
-        [self refreshHighlightsForPageAtIndex:i - 1];
-    }
 }
-
-- (void)selectorDismissedWithSelection:(EucSelectorRange *)selectorRange
-{
-    switch (self.selectionMode) {
-        case SCHReadingViewSelectionModeHighlights:
-            [self addHighlightWithSelection:selectorRange];
-            break;
-        default:
-            break;
-    }
-}
-
-- (EucSelectorRange *)selectorRangeFromBookRange:(SCHBookRange *)range 
-{
-    if (nil == range) return nil;
-    
-    SCHBookPoint *startPoint = range.startPoint;
-    SCHBookPoint *endPoint = range.endPoint;
-    
-    EucSelectorRange *selectorRange = [[EucSelectorRange alloc] init];
-    selectorRange.startBlockId      = [KNFBTextFlowBlock blockIDForPageIndex:startPoint.layoutPage - 1 blockIndex:startPoint.blockOffset];
-    selectorRange.startElementId    = [KNFBTextFlowPositionedWord wordIDForWordIndex:startPoint.wordOffset];
-    selectorRange.endBlockId        = [KNFBTextFlowBlock blockIDForPageIndex:endPoint.layoutPage - 1 blockIndex:endPoint.blockOffset];
-    selectorRange.endElementId      = [KNFBTextFlowPositionedWord wordIDForWordIndex:endPoint.wordOffset];
-    
-    return [selectorRange autorelease];
-}
-
-- (SCHBookRange *)bookRangeFromSelectorRange:(EucSelectorRange *)selectorRange { return nil; }
 
 - (void)refreshHighlightsForPageAtIndex:(NSUInteger)index {}
+
+- (void)dismissSelector
+{
+    [self.selector setSelectedRange:nil];
+}
 
 #pragma mark - Rotation
 
@@ -435,6 +515,7 @@
     if ([keyPath isEqualToString:@"trackingStage"]) {
         switch (self.selector.trackingStage) {
             case EucSelectorTrackingStageNone:
+                NSLog(@"stage none, selectorRange: %@", self.currentSelectorRange);
                 if (self.currentSelectorRange != nil) {
                     [self selectorDismissedWithSelection:self.currentSelectorRange];
                 }
@@ -450,7 +531,7 @@
 //                    NSLog(@"selected range: %@ %@ %@ %@",      self.selector.selectedRange.startBlockId, self.selector.selectedRange.startElementId, self.selector.selectedRange.endBlockId, self.selector.selectedRange.endElementId);
                     if ([[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryProcessingState] == SCHDictionaryProcessingStateReady) {
                         
-                        SCHBookRange *bookRange = [self bookRangeFromSelectorRange:self.selector.selectedRange];
+                        SCHBookRange *bookRange = [self firstBookRangeFromSelectorRange:self.selector.selectedRange];
                         
                         if (bookRange.startPoint.layoutPage == bookRange.endPoint.layoutPage && 
                             bookRange.startPoint.wordOffset == bookRange.endPoint.wordOffset) {

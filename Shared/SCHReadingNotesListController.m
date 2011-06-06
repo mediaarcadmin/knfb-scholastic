@@ -287,7 +287,6 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
             
             // use tags to grab the labels and the activity view
             UIActivityIndicatorView *activityView = (UIActivityIndicatorView *) [cell viewWithTag:CELL_ACTIVITY_INDICATOR_TAG];
-            activityView.alpha = 0;
             UILabel *titleLabel = (UILabel *) [cell viewWithTag:CELL_TITLE_LABEL_TAG];
             UILabel *subTitleLabel = (UILabel *) [cell viewWithTag:CELL_PAGE_LABEL_TAG];
             
@@ -300,7 +299,10 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;  
                 NSString *displayPage = [self.delegate displayPageNumberForBookPoint:notePoint];
                 subTitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Page %@", @"Display page for Notes List Controller"), displayPage];
+                subTitleLabel.alpha = 1;
+                activityView.alpha = 0;
             } else {
+                subTitleLabel.alpha = 0;
                 activityView.alpha = 1;
             }
                  
@@ -343,6 +345,8 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    // FIXME: The code below crashes so its just returning for now
+    return;
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         NSLog(@"Deleting row %d!", indexPath.row);
         

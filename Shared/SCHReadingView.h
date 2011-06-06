@@ -30,14 +30,10 @@ typedef enum
 
 
 - (UIColor *)highlightColor;
-//- (NSArray *)highlightsForBookRange:(SCHBookRange *)bookRange;
 - (NSArray *)highlightsForLayoutPage:(NSUInteger)page;
 
-// FIXME: rmeove the range method
-//- (void)addHighlightAtBookRange:(SCHBookRange *)highlightRange;
 - (void)addHighlightBetweenStartPage:(NSUInteger)startPage startWord:(NSUInteger)startWord endPage:(NSUInteger)endPage endWord:(NSUInteger)endWord;
-- (void)updateHighlightAtBookRange:(SCHBookRange *)fromBookRange toBookRange:(SCHBookRange *)toBookRange;
-
+- (void)deleteHighlightBetweenStartPage:(NSUInteger)startPage startWord:(NSUInteger)startWord endPage:(NSUInteger)endPage endWord:(NSUInteger)endWord;
 
 - (void)readingView:(SCHReadingView *)readingView hasMovedToPageAtIndex:(NSUInteger)pageIndex;
 - (void)readingView:(SCHReadingView *)readingView hasMovedToProgressPositionInBook:(CGFloat)progress;
@@ -94,13 +90,16 @@ typedef enum
 - (SCHBookPoint *)bookPointForLayoutPage:(NSUInteger)layoutPage 
                           pageWordOffset:(NSUInteger)pageWordOffset;
 
+- (NSArray *)highlightRangesForCurrentPage;
 - (NSArray *)highlightsForLayoutPage:(NSUInteger)page;
-- (void)updateHighlight;
 - (void)addHighlightWithSelection:(EucSelectorRange *)selectorRange;
+- (void)deleteHighlightWithSelection:(EucSelectorRange *)selectorRange;
 - (void)refreshHighlightsForPageAtIndex:(NSUInteger)index;
-- (EucSelectorRange *)selectorRangeFromBookRange:(SCHBookRange *)range;
-- (SCHBookRange *)bookRangeFromSelectorRange:(EucSelectorRange *)selectorRange;
+- (void)dismissSelector;
 
+- (EucSelectorRange *)selectorRangeFromBookRange:(SCHBookRange *)range;
+- (NSArray *)bookRangesFromSelectorRange:(EucSelectorRange *)selectorRange;
+- (SCHBookRange *)bookRangeFromSelectorRange:(EucSelectorRange *)selectorRange;
 - (void)dismissFollowAlongHighlighter;
 - (void)followAlongHighlightWordAtPoint:(SCHBookPoint *)bookPoint;
 - (void)followAlongHighlightWordForLayoutPage:(NSUInteger)layoutPage pageWordOffset:(NSUInteger)pageWordOffset;

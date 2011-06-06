@@ -400,8 +400,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     }
     self.bottomShadow.frame = bottomShadowFrame;
     
-    // FIXME: using a placeholder, adjust for real image
-    NSLog(@"Setting up notes count view!");
     UIImage *bgImage = [UIImage imageNamed:@"notes-count"];
     self.notesCountView = [[SCHNotesCountView alloc] initWithImage:[bgImage stretchableImageWithLeftCapWidth:10.0f topCapHeight:0]];
     [self.notesButton addSubview:self.notesCountView];
@@ -582,7 +580,15 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 {
     SCHBookAnnotations *annotations = [self.profile annotationsForBook:self.isbn];
     SCHBookPoint *lastPoint = [[[SCHBookPoint alloc] init] autorelease];
-    lastPoint.layoutPage = [annotations lastPage] ? [[[annotations lastPage] LastPageLocation] integerValue] : 1;
+    
+    NSNumber *lastPageLocation = [[annotations lastPage] LastPageLocation];
+    
+    if (lastPageLocation) {
+        lastPoint.layoutPage = MAX([lastPageLocation integerValue], 1);
+    } else {
+        lastPoint.layoutPage = 1;
+    }
+  
     [self jumpToBookPoint:lastPoint animated:NO];
 }
 
@@ -624,6 +630,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (IBAction)toolbarButtonPressed:(id)sender
 {
     [self cancelInitialTimer];
+    [self.readingView dismissSelector];
 }
 
 - (IBAction)toggleSmartZoom:(id)sender
@@ -752,6 +759,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [highlightsButton setSelected:![highlightsButton isSelected]];
     
     if ([highlightsButton isSelected]) {
+        // Need to dismiss selector now to ensure a highlight isn't added immediately
+        [self.readingView dismissSelector];
         [self.readingView setSelectionMode:SCHReadingViewSelectionModeHighlights];
     } else {
         [self setDictionarySelectionMode];
@@ -829,6 +838,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 {
     layoutType = newLayoutType;
     
+    SCHReadingViewSelectionMode currentMode = [self.readingView selectionMode];
+    
     NSNumber *savedLayoutType = [[self.profile AppProfile] LayoutType];
 
     if (!savedLayoutType || [savedLayoutType intValue] != newLayoutType) {
@@ -868,6 +879,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     self.readingView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.paperType = self.paperType; // Reload the paper
     
+    [self.readingView setSelectionMode:currentMode];
     [self.view addSubview:self.readingView];
     [self.view sendSubviewToBack:self.readingView];
 }
@@ -880,10 +892,15 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (IBAction)flowedFixedSegmentChanged:(UISegmentedControl *)segControl
 {
     SCHBookPoint *currentBookPoint = [self.readingView currentBookPoint];
-    self.layoutType = segControl.selectedSegmentIndex;
+    [self.readingView dismissSelector];
     
-    [self jumpToBookPoint:currentBookPoint animated:NO];
-    [self updateScrubberValue];
+    // Dispatch this after a delay to allow the slector to be immediately dismissed
+    dispatch_time_t delay = dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC * 0.01);
+    dispatch_after(delay, dispatch_get_main_queue(), ^{
+        self.layoutType = segControl.selectedSegmentIndex;
+        [self jumpToBookPoint:currentBookPoint animated:NO];
+        [self updateScrubberValue];
+    });
 }
 
 #pragma mark - Paper Type Toggle
@@ -990,7 +1007,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (void)addHighlightBetweenStartPage:(NSUInteger)startPage startWord:(NSUInteger)startWord endPage:(NSUInteger)endPage endWord:(NSUInteger)endWord;
 {
-    NSLog(@"Add highlight");
     SCHBookAnnotations *annotations = [self.profile annotationsForBook:self.isbn];
     
     if (annotations != nil) {
@@ -1000,38 +1016,11 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     }
 }
 
-// FIXME: remove this
-//- (void)addHighlightAtBookRange:(SCHBookRange *)highlightRange
-//{
-//    NSLog(@"Add highlight");
-//    SCHBookAnnotations *annotations = [self.profile annotationsForBook:self.isbn];
-//    
-//    if (annotations != nil) {
-//        SCHHighlight *newHighlight = [annotations createHighlightWithHighlightRange:highlightRange color:[self highlightColor]];
-//        [annotations addHighlight:newHighlight];
-//    }
-//}
-
-- (void)updateHighlightAtBookRange:(SCHBookRange *)fromBookRange toBookRange:(SCHBookRange *)toBookRange
+- (void)deleteHighlightBetweenStartPage:(NSUInteger)startPage startWord:(NSUInteger)startWord endPage:(NSUInteger)endPage endWord:(NSUInteger)endWord;
 {
-    NSLog(@"Update highlight");
+    NSLog(@"Delete highlight");
+    //SCHBookAnnotations *annotations = [self.profile annotationsForBook:self.isbn];
 }
-
-//// FIXME: remove this
-//- (NSArray *)highlightsForBookRange:(SCHBookRange *)bookRange
-//{
-//    SCHBookAnnotations *annotations = [self.profile annotationsForBook:self.isbn];
-//    
-//    NSMutableArray *highlights = [NSMutableArray array];
-//    
-//    for (int i = bookRange.startPoint.layoutPage; i <= bookRange.endPoint.layoutPage; i++) {
-//        NSArray *highlightsForPage = [annotations highlightsForPage:i];
-//        NSArray *highlighBookRanges = [highlightsForPage valueForKey:@"bookRange"];
-//        [highlights addObjectsFromArray:highlighBookRanges];
-//    }
-//         
-//    return highlights;
-//}
 
 - (NSArray *)highlightsForLayoutPage:(NSUInteger)page
 {
@@ -1220,6 +1209,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (IBAction)scrubValueStartChanges:(UISlider *)slider
 {
+    
+    [self.readingView dismissSelector];
+    
     if (self.currentPageIndex == NSUIntegerMax) {
         self.currentBookProgress = [slider value];
     } else {
@@ -1438,11 +1430,14 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (SCHBookPoint *)bookPointForNote:(SCHNote *)note
 {
-    // MATT TODO - make this pagination aware so nil is returned if still paginating
-    NSUInteger layoutPage = note.noteLayoutPage;
-    SCHBookPoint *notePoint = [self.readingView bookPointForLayoutPage:layoutPage pageWordOffset:0];
+    if (self.currentPageIndex == NSUIntegerMax) {
+        return nil; // return nil if still paginating
+    } else {
+        NSUInteger layoutPage = note.noteLayoutPage;
+        SCHBookPoint *notePoint = [self.readingView bookPointForLayoutPage:layoutPage pageWordOffset:0];
     
-    return notePoint;
+        return notePoint;
+    }
 }
 
 - (NSString *)displayPageNumberForBookPoint:(SCHBookPoint *)bookPoint
