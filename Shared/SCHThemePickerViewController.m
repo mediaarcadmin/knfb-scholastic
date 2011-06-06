@@ -199,7 +199,7 @@ static NSTimeInterval const kSCHThemePickerViewControllerThemeTransitionAlpha = 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [[[SCHThemeManager sharedThemeManager] themeNames:YES] count];
+    return [[[SCHThemeManager sharedThemeManager] themeNames:NO] count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -212,11 +212,12 @@ static NSTimeInterval const kSCHThemePickerViewControllerThemeTransitionAlpha = 
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
 
-    NSString *theme = [[[SCHThemeManager sharedThemeManager] themeNames:YES] objectAtIndex:indexPath.row];
+    NSString *theme = [[[SCHThemeManager sharedThemeManager] themeNames:NO] objectAtIndex:indexPath.row];
     
     cell.backgroundColor = [UIColor colorWithPatternImage:
                             [[SCHThemeManager sharedThemeManager] imageForTheme:theme key:kSCHThemeManagerImage orientation:self.interfaceOrientation iPadSpecific:YES]];
-
+    cell.accessoryType =  ([theme isEqualToString:[SCHThemeManager sharedThemeManager].theme] == YES ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone);
+    
     return(cell);
 }
 
@@ -226,7 +227,7 @@ static NSTimeInterval const kSCHThemePickerViewControllerThemeTransitionAlpha = 
 {
     [aTableView deselectRowAtIndexPath:indexPath animated:NO];
     
-    NSString *themeName = [[[SCHThemeManager sharedThemeManager] themeNames:YES] 
+    NSString *themeName = [[[SCHThemeManager sharedThemeManager] themeNames:NO] 
                            objectAtIndex:indexPath.row];
     if ([themeName isEqualToString:self.lastTappedTheme] == NO) {
         self.lastTappedTheme = themeName;
@@ -281,7 +282,7 @@ static NSTimeInterval const kSCHThemePickerViewControllerThemeTransitionAlpha = 
 
 - (CGSize) contentSizeForViewInPopover
 {
-    CGFloat height = ([[[SCHThemeManager sharedThemeManager] themeNames:YES] count] * 44) + 44 + 10;
+    CGFloat height = ([[[SCHThemeManager sharedThemeManager] themeNames:NO] count] * 44) + 44 + 10;
     return CGSizeMake(320, height);
 }
 
