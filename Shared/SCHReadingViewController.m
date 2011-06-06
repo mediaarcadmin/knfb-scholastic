@@ -1470,6 +1470,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (void)notesViewCancelled:(SCHReadingNoteView *)notesView
 {
+    SCHBookAnnotations *bookAnnos = [self.profile annotationsForBook:self.isbn];
+    [bookAnnos deleteNote:notesView.note];
+    
     [self setToolbarVisibility:YES animated:YES];
     
     // update the note count
