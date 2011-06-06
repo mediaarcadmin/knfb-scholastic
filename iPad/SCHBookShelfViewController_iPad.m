@@ -32,6 +32,7 @@ static NSInteger const kSCHBookShelfEdgePadding = 12;
 @property (nonatomic, retain) UIPopoverController *popover;
 
 - (void)updateTheme;
+- (void)setupToolbar;
 
 @end
 
@@ -54,6 +55,12 @@ static NSInteger const kSCHBookShelfEdgePadding = 12;
 {
     [super viewDidLoad];
     
+    [self setupToolbar];
+
+}
+
+- (void)setupToolbar
+{
     SCHThemeButton *themeButton = [SCHThemeButton buttonWithType:UIButtonTypeCustom];
     [themeButton setThemeIcon:kSCHThemeManagerThemeIcon iPadSpecific:YES];
     [themeButton sizeToFit];    
@@ -63,7 +70,7 @@ static NSInteger const kSCHBookShelfEdgePadding = 12;
     [homeButton setThemeIcon:kSCHThemeManagerHomeIcon iPadSpecific:YES];
     [homeButton sizeToFit];    
     [homeButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];    
-
+    
     self.topTenPicksButton = [SCHThemeButton buttonWithType:UIButtonTypeCustom];
     [self.topTenPicksButton setFrame:CGRectMake(0, 0, 120, 30)];
     [self.topTenPicksButton setTitle:NSLocalizedString(@"Top 10 Picks", @"") forState:UIControlStateNormal];
@@ -76,7 +83,7 @@ static NSInteger const kSCHBookShelfEdgePadding = 12;
     
     [self.topTenPicksButton setThemeButton:kSCHThemeManagerButtonImage leftCapWidth:5 topCapHeight:0];
     [self.topTenPicksButton addTarget:self action:@selector(topTenAction:) forControlEvents:UIControlEventTouchUpInside];    
-
+    
     UIView *containerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.topTenPicksButton.frame) + kSCHBookShelfButtonPadding + CGRectGetWidth(themeButton.frame) + kSCHBookShelfEdgePadding, CGRectGetHeight(themeButton.frame))];
     [containerView addSubview:self.topTenPicksButton];
     
@@ -88,7 +95,7 @@ static NSInteger const kSCHBookShelfEdgePadding = 12;
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:containerView];
     [containerView release];
-
+    
     if ([self.profileItem.BookshelfStyle intValue] == kSCHBookshelfStyleYoungChild) {
         containerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(homeButton.frame) + kSCHBookShelfEdgePadding, CGRectGetHeight(homeButton.frame))];
         
@@ -112,7 +119,7 @@ static NSInteger const kSCHBookShelfEdgePadding = 12;
         self.sortButton.titleLabel.shadowOffset = CGSizeMake(0, -1);
         
         [self.sortButton setThemeButton:kSCHThemeManagerButtonImage leftCapWidth:5 topCapHeight:0];
-        [self.sortButton addTarget:self action:@selector(sortAction:) forControlEvents:UIControlEventTouchUpInside];    
+        [self.sortButton addTarget:self action:@selector(sortAction:) forControlEvents:UIControlEventTouchUpInside];   
         
         containerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(homeButton.frame) + kSCHBookShelfButtonPadding + CGRectGetWidth(self.sortButton.frame) + kSCHBookShelfButtonPadding, CGRectGetHeight(homeButton.frame))];
         
@@ -132,7 +139,18 @@ static NSInteger const kSCHBookShelfEdgePadding = 12;
         [containerView release];
         
     }
+}
 
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
+{
+    [super setEditing:editing animated:animated];
+    
+    if (editing) {
+        self.sortButton.hidden = YES;
+    } else {
+        self.sortButton.hidden = NO;
+    }
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated
