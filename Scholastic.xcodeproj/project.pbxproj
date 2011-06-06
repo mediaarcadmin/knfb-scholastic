@@ -112,8 +112,6 @@
 		28A60F841397BB3C0090853E /* popquiz-answer-button-red.png in Resources */ = {isa = PBXBuildFile; fileRef = 28A60F7C1397BB3C0090853E /* popquiz-answer-button-red.png */; };
 		28A60F851397BB3C0090853E /* popquiz-answer-button-yellow.png in Resources */ = {isa = PBXBuildFile; fileRef = 28A60F7D1397BB3C0090853E /* popquiz-answer-button-yellow.png */; };
 		28A60F861397BB3C0090853E /* popquiz-answer-button-yellow.png in Resources */ = {isa = PBXBuildFile; fileRef = 28A60F7D1397BB3C0090853E /* popquiz-answer-button-yellow.png */; };
-		28A60F871397BB3C0090853E /* popquiz-bg-iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 28A60F7E1397BB3C0090853E /* popquiz-bg-iphone.png */; };
-		28A60F881397BB3C0090853E /* popquiz-bg-iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 28A60F7E1397BB3C0090853E /* popquiz-bg-iphone.png */; };
 		28A60F891397BB3C0090853E /* storyinteraction-progress-filled.png in Resources */ = {isa = PBXBuildFile; fileRef = 28A60F7F1397BB3C0090853E /* storyinteraction-progress-filled.png */; };
 		28A60F8A1397BB3C0090853E /* storyinteraction-progress-filled.png in Resources */ = {isa = PBXBuildFile; fileRef = 28A60F7F1397BB3C0090853E /* storyinteraction-progress-filled.png */; };
 		28A60F8B1397BB3C0090853E /* storyinteraction-progress-unfilled.png in Resources */ = {isa = PBXBuildFile; fileRef = 28A60F801397BB3C0090853E /* storyinteraction-progress-unfilled.png */; };
@@ -1135,7 +1133,6 @@
 		28A60F7B1397BB3C0090853E /* popquiz-answer-button-green.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "popquiz-answer-button-green.png"; sourceTree = "<group>"; };
 		28A60F7C1397BB3C0090853E /* popquiz-answer-button-red.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "popquiz-answer-button-red.png"; sourceTree = "<group>"; };
 		28A60F7D1397BB3C0090853E /* popquiz-answer-button-yellow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "popquiz-answer-button-yellow.png"; sourceTree = "<group>"; };
-		28A60F7E1397BB3C0090853E /* popquiz-bg-iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "popquiz-bg-iphone.png"; sourceTree = "<group>"; };
 		28A60F7F1397BB3C0090853E /* storyinteraction-progress-filled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-progress-filled.png"; sourceTree = "<group>"; };
 		28A60F801397BB3C0090853E /* storyinteraction-progress-unfilled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-progress-unfilled.png"; sourceTree = "<group>"; };
 		28A60F8D1397C1780090853E /* storyinteraction-close.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-close.png"; sourceTree = "<group>"; };
@@ -2157,7 +2154,6 @@
 				28A60F7B1397BB3C0090853E /* popquiz-answer-button-green.png */,
 				28A60F7C1397BB3C0090853E /* popquiz-answer-button-red.png */,
 				28A60F7D1397BB3C0090853E /* popquiz-answer-button-yellow.png */,
-				28A60F7E1397BB3C0090853E /* popquiz-bg-iphone.png */,
 			);
 			name = StoryInteractions;
 			path = Resources/UIAssets/StoryInteractions;
@@ -3929,7 +3925,6 @@
 				28A60F811397BB3C0090853E /* popquiz-answer-button-green.png in Resources */,
 				28A60F831397BB3C0090853E /* popquiz-answer-button-red.png in Resources */,
 				28A60F851397BB3C0090853E /* popquiz-answer-button-yellow.png in Resources */,
-				28A60F871397BB3C0090853E /* popquiz-bg-iphone.png in Resources */,
 				28A60F891397BB3C0090853E /* storyinteraction-progress-filled.png in Resources */,
 				28A60F8B1397BB3C0090853E /* storyinteraction-progress-unfilled.png in Resources */,
 				28A60F8E1397C1780090853E /* storyinteraction-close.png in Resources */,
@@ -4197,7 +4192,6 @@
 				28A60F821397BB3C0090853E /* popquiz-answer-button-green.png in Resources */,
 				28A60F841397BB3C0090853E /* popquiz-answer-button-red.png in Resources */,
 				28A60F861397BB3C0090853E /* popquiz-answer-button-yellow.png in Resources */,
-				28A60F881397BB3C0090853E /* popquiz-bg-iphone.png in Resources */,
 				28A60F8A1397BB3C0090853E /* storyinteraction-progress-filled.png in Resources */,
 				28A60F8C1397BB3C0090853E /* storyinteraction-progress-unfilled.png in Resources */,
 				28A60F8F1397C1790090853E /* storyinteraction-close.png in Resources */,
