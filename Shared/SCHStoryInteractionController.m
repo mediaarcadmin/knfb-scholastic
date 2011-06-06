@@ -25,6 +25,9 @@
 
 @property (nonatomic, retain) NSArray *nibObjects;
 @property (nonatomic, retain) UIView *contentsView;
+@property (nonatomic, retain) UIImageView *backgroundView;
+
+- (void)updateOrientation;
 
 @end
 
@@ -33,8 +36,10 @@
 @synthesize containerView;
 @synthesize nibObjects;
 @synthesize contentsView;
+@synthesize backgroundView;
 @synthesize storyInteraction;
 @synthesize delegate;
+@synthesize interfaceOrientation;
 
 + (SCHStoryInteractionController *)storyInteractionControllerForStoryInteraction:(SCHStoryInteraction *)storyInteraction
 {
@@ -54,6 +59,7 @@
     [containerView release];
     [nibObjects release];
     [contentsView release];
+    [backgroundView release];
     [storyInteraction release];
     [super dealloc];
 }
@@ -77,52 +83,79 @@
 
 - (void)presentInHostView:(UIView *)hostView
 {
-    // set up the transparent full-size container to trap touch events before they get
-    // to the underlying view; this effectively makes the story interaction modal
-    UIView *container = [[UIView alloc] initWithFrame:hostView.bounds];
-    container.backgroundColor = [UIColor clearColor];
-    container.userInteractionEnabled = YES;
-    [hostView addSubview:container];
-    
-    UIImage *backgroundImage = [UIImage imageNamed:[self.storyInteraction isOlderStoryInteraction] ? @"storyinteraction-bg-older" : @"storyinteraction-bg-younger"];
-    UIImage *backgroundStretch = [backgroundImage stretchableImageWithLeftCapWidth:kBackgroundLeftCap topCapHeight:kBackgroundTopCap];
-    UIImageView *backgroundView = [[UIImageView alloc] initWithImage:backgroundStretch];
-    
-    // first object in the NIB must be the container view for the interaction
-    self.contentsView = [self.nibObjects objectAtIndex:0];
-    CGFloat backgroundWidth = CGRectGetWidth(self.contentsView.bounds) + kContentsInsetLeft + kContentsInsetRight;
-    CGFloat backgroundHeight = CGRectGetHeight(self.contentsView.bounds) + kContentsInsetTop + kContentsInsetBottom;
+    if (self.containerView == nil) {
+        // set up the transparent full-size container to trap touch events before they get
+        // to the underlying view; this effectively makes the story interaction modal
+        UIView *container = [[UIView alloc] initWithFrame:hostView.bounds];
+        container.backgroundColor = [UIColor clearColor];
+        container.userInteractionEnabled = YES;
+        
+        UIImage *backgroundImage = [UIImage imageNamed:[self.storyInteraction isOlderStoryInteraction] ? @"storyinteraction-bg-older" : @"storyinteraction-bg-younger"];
+        UIImage *backgroundStretch = [backgroundImage stretchableImageWithLeftCapWidth:kBackgroundLeftCap topCapHeight:kBackgroundTopCap];
+        UIImageView *background = [[UIImageView alloc] initWithImage:backgroundStretch];
+        
+        // first object in the NIB must be the container view for the interaction
+        self.contentsView = [self.nibObjects objectAtIndex:0];
+        CGFloat backgroundWidth = CGRectGetWidth(self.contentsView.bounds) + kContentsInsetLeft + kContentsInsetRight;
+        CGFloat backgroundHeight = CGRectGetHeight(self.contentsView.bounds) + kContentsInsetTop + kContentsInsetBottom;
+        
+        background.userInteractionEnabled = YES;
+        background.bounds = CGRectMake(0, 0, backgroundWidth, backgroundHeight);
+        background.center = CGPointMake(CGRectGetMidX(container.bounds), CGRectGetMidY(container.bounds));
+        self.contentsView.center = CGPointMake(kContentsInsetLeft + CGRectGetWidth(contentsView.bounds)/2,
+                                               kContentsInsetTop + CGRectGetHeight(contentsView.bounds)/2);
+        [background addSubview:self.contentsView];
+        [container addSubview:background];
+        
+        UILabel *titleView = [[UILabel alloc] initWithFrame:CGRectMake(kTitleInsetLeft, kTitleInsetTop,
+                                                                       backgroundWidth - kTitleInsetLeft*2,
+                                                                       kContentsInsetTop - kTitleInsetTop*2)];
+        titleView.backgroundColor = [UIColor clearColor];
+        titleView.font = [UIFont boldSystemFontOfSize:24];
+        titleView.text = [self.storyInteraction title];
+        titleView.textAlignment = UITextAlignmentCenter;
+        titleView.textColor = [UIColor whiteColor];
+        [background addSubview:titleView];
+        [titleView release];
+        
+        UIButton *closeButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        closeButton.frame = CGRectMake(-10, -10, 30, 30);
+        [closeButton setImage:[UIImage imageNamed:@"storyinteraction-close"] forState:UIControlStateNormal];
+        [closeButton addTarget:self action:@selector(closeButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+        [background addSubview:closeButton];
+        
+        self.containerView = container;
+        self.backgroundView = background;
+        [container release];
+        [background release];
 
-    backgroundView.userInteractionEnabled = YES;
-    backgroundView.bounds = CGRectMake(0, 0, backgroundWidth, backgroundHeight);
-    backgroundView.center = CGPointMake(CGRectGetMidX(container.bounds), CGRectGetMidY(container.bounds));
-    self.contentsView.center = CGPointMake(kContentsInsetLeft + CGRectGetWidth(contentsView.bounds)/2,
-                                           kContentsInsetTop + CGRectGetHeight(contentsView.bounds)/2);
-    [backgroundView addSubview:self.contentsView];
-    [container addSubview:backgroundView];
+        [self setupView];
+    }
     
-    UILabel *titleView = [[UILabel alloc] initWithFrame:CGRectMake(kTitleInsetLeft, kTitleInsetTop,
-                                                                   backgroundWidth - kTitleInsetLeft*2,
-                                                                   kContentsInsetTop - kTitleInsetTop*2)];
-    titleView.backgroundColor = [UIColor clearColor];
-    titleView.font = [UIFont boldSystemFontOfSize:24];
-    titleView.text = [self.storyInteraction title];
-    titleView.textAlignment = UITextAlignmentCenter;
-    titleView.textColor = [UIColor whiteColor];
-    [backgroundView addSubview:titleView];
-    [titleView release];
+    [hostView addSubview:self.containerView];
+    [self updateOrientation];
+}
+
+- (void)updateOrientation
+{
+    CGRect superviewBounds = self.containerView.superview.bounds;
+    NSLog(@"superviewBounds=%@", NSStringFromCGRect(superviewBounds));
     
-    UIButton *closeButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    closeButton.frame = CGRectMake(CGRectGetMinX(backgroundView.frame)-10, CGRectGetMinY(backgroundView.frame)-10, 30, 30);
-    [closeButton setImage:[UIImage imageNamed:@"storyinteraction-close"] forState:UIControlStateNormal];
-    [closeButton addTarget:self action:@selector(closeButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-    [container addSubview:closeButton];
+    if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
+        self.containerView.transform = CGAffineTransformIdentity;
+        self.containerView.bounds = self.containerView.superview.bounds;
+    } else {
+        self.containerView.transform = CGAffineTransformMakeRotation(-M_PI/2);
+        self.containerView.bounds = CGRectMake(0, 0, CGRectGetHeight(superviewBounds), CGRectGetWidth(superviewBounds));
+    }
+    self.containerView.center = CGPointMake(CGRectGetMidX(superviewBounds), CGRectGetMidY(superviewBounds));
+    self.backgroundView.center = CGPointMake(CGRectGetMidX(self.containerView.bounds), CGRectGetMidY(self.containerView.bounds));
+}
 
-    self.containerView = container;
-    [container release];
-    [backgroundView release];
-
-    [self setupView];
+- (void)setInterfaceOrientation:(UIInterfaceOrientation)aInterfaceOrientation
+{
+    interfaceOrientation = aInterfaceOrientation;
+    [self updateOrientation];
 }
 
 - (void)closeButtonTapped:(id)sender
