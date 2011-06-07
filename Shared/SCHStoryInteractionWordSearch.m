@@ -27,6 +27,11 @@
     return @"Word Search";
 }
 
+- (NSString *)interactionViewTitle
+{
+    return self.introduction;
+}
+
 - (NSInteger)matrixRows
 {
     return [self.matrix length] / matrixColumns;

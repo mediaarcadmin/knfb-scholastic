@@ -88,6 +88,8 @@
 {
     if (self.containerView == nil) {
         
+        BOOL iPad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
+        
         int kBackgroundTopCap, kContentsInsetTop;
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
             kBackgroundTopCap = kBackgroundTopCap_iPhone;
@@ -124,10 +126,10 @@
                                                                                       backgroundWidth - kTitleInsetLeft*2,
                                                                                       kContentsInsetTop - kTitleInsetTop*2))];
         titleView.backgroundColor = [UIColor clearColor];
-        titleView.font = [UIFont boldSystemFontOfSize:UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? 24 : 20];
-        titleView.text = [self.storyInteraction title];
+        titleView.font = [UIFont boldSystemFontOfSize:iPad ? 24 : 20];
+        titleView.text = [self.storyInteraction interactionViewTitle];
         titleView.textAlignment = UITextAlignmentCenter;
-        titleView.textColor = [UIColor whiteColor];
+        titleView.textColor = iPad ? [UIColor colorWithRed:0.113 green:0.392 blue:0.690 alpha:1.] : [UIColor whiteColor];
         [background addSubview:titleView];
         [titleView release];
         
