@@ -138,6 +138,14 @@
         [closeButton setImage:[UIImage imageNamed:@"storyinteraction-close"] forState:UIControlStateNormal];
         [closeButton addTarget:self action:@selector(closeButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
         [background addSubview:closeButton];
+
+        if ([self.storyInteraction isOlderStoryInteraction] == NO) {
+            UIButton *audioButton = [UIButton buttonWithType:UIButtonTypeCustom];
+            audioButton.frame = CGRectMake(backgroundWidth - 20, -10, 30, 30);
+            [audioButton setImage:[UIImage imageNamed:@"icon-play.png"] forState:UIControlStateNormal];
+            [audioButton addTarget:self action:@selector(playAudioButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+            [background addSubview:audioButton];
+        }
         
         self.containerView = container;
         self.backgroundView = background;
@@ -200,6 +208,11 @@
 - (void)closeButtonTapped:(id)sender
 {
     [self removeFromHostView];
+}
+
+- (IBAction)playAudioButtonTapped:(id)sender
+{
+    NSLog(@"Playing audio"); 
 }
 
 - (void)removeFromHostView
