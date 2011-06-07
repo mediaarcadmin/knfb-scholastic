@@ -99,7 +99,7 @@
 
         // set up the transparent full-size container to trap touch events before they get
         // to the underlying view; this effectively makes the story interaction modal
-        UIView *container = [[UIView alloc] initWithFrame:hostView.bounds];
+        UIView *container = [[UIView alloc] initWithFrame:CGRectIntegral(hostView.bounds)];
         container.backgroundColor = [UIColor clearColor];
         container.userInteractionEnabled = YES;
         
@@ -114,15 +114,15 @@
         CGFloat backgroundHeight = MIN(CGRectGetHeight(self.contentsView.bounds) + kContentsInsetTop + kContentsInsetBottom, CGRectGetHeight(hostView.bounds));
         
         background.userInteractionEnabled = YES;
-        background.bounds = CGRectMake(0, 0, backgroundWidth, backgroundHeight);
-        background.center = CGPointMake(CGRectGetMidX(container.bounds), CGRectGetMidY(container.bounds));
-        self.contentsView.center = CGPointMake(backgroundWidth/2, (backgroundHeight-kContentsInsetTop-kContentsInsetBottom)/2+kContentsInsetTop);
+        background.bounds = CGRectIntegral(CGRectMake(0, 0, backgroundWidth, backgroundHeight));
+        background.center = CGPointMake(floor(CGRectGetMidX(container.bounds)), floor(CGRectGetMidY(container.bounds)));
+        self.contentsView.center = CGPointMake(floor(backgroundWidth/2), floor((backgroundHeight-kContentsInsetTop-kContentsInsetBottom)/2+kContentsInsetTop));
         [background addSubview:self.contentsView];
         [container addSubview:background];
         
-        UILabel *titleView = [[UILabel alloc] initWithFrame:CGRectMake(kTitleInsetLeft, kTitleInsetTop,
-                                                                       backgroundWidth - kTitleInsetLeft*2,
-                                                                       kContentsInsetTop - kTitleInsetTop*2)];
+        UILabel *titleView = [[UILabel alloc] initWithFrame:CGRectIntegral(CGRectMake(kTitleInsetLeft, kTitleInsetTop,
+                                                                                      backgroundWidth - kTitleInsetLeft*2,
+                                                                                      kContentsInsetTop - kTitleInsetTop*2))];
         titleView.backgroundColor = [UIColor clearColor];
         titleView.font = [UIFont boldSystemFontOfSize:UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? 24 : 20];
         titleView.text = [self.storyInteraction title];
@@ -147,8 +147,8 @@
         for (NSUInteger i = [self.nibObjects count]-1; i > 0; --i) {
             UIView *view = [self.nibObjects objectAtIndex:i];
             CGRect viewFrame = view.frame;
-            viewFrame.origin.x = x - viewFrame.size.width;
-            viewFrame.origin.y = (kContentsInsetTop - viewFrame.size.height) / 2;
+            viewFrame.origin.x = floor(x - viewFrame.size.width);
+            viewFrame.origin.y = floor((kContentsInsetTop - viewFrame.size.height) / 2);
             view.frame = viewFrame;
             [self.backgroundView addSubview:view];
             x -= viewFrame.size.width + 5;
@@ -172,13 +172,13 @@
     }
     if (rotate) {
         self.containerView.transform = CGAffineTransformMakeRotation(-M_PI/2);
-        self.containerView.bounds = CGRectMake(0, 0, CGRectGetHeight(superviewBounds), CGRectGetWidth(superviewBounds));
+        self.containerView.bounds = CGRectIntegral(CGRectMake(0, 0, CGRectGetHeight(superviewBounds), CGRectGetWidth(superviewBounds)));
     } else {
         self.containerView.transform = CGAffineTransformIdentity;
-        self.containerView.bounds = self.containerView.superview.bounds;
+        self.containerView.bounds = CGRectIntegral(self.containerView.superview.bounds);
     }
-    self.containerView.center = CGPointMake(CGRectGetMidX(superviewBounds), CGRectGetMidY(superviewBounds));
-    self.backgroundView.center = CGPointMake(CGRectGetMidX(self.containerView.bounds), CGRectGetMidY(self.containerView.bounds));
+    self.containerView.center = CGPointMake(floor(CGRectGetMidX(superviewBounds)), floor(CGRectGetMidY(superviewBounds)));
+    self.backgroundView.center = CGPointMake(floor(CGRectGetMidX(self.containerView.bounds)), floor(CGRectGetMidY(self.containerView.bounds)));
 }
 
 - (void)setInterfaceOrientation:(UIInterfaceOrientation)aInterfaceOrientation

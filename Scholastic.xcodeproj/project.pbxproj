@@ -129,6 +129,30 @@
 		28CC9866139CD575001F560F /* SCHStoryInteractionControllerWhoSaidIt.m in Sources */ = {isa = PBXBuildFile; fileRef = 28CC9861139CD575001F560F /* SCHStoryInteractionControllerWhoSaidIt.m */; };
 		28CC9867139CD575001F560F /* SCHStoryInteractionWhoSaidIt_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28CC9862139CD575001F560F /* SCHStoryInteractionWhoSaidIt_iPad.xib */; };
 		28CC9868139CD575001F560F /* SCHStoryInteractionWhoSaidIt_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28CC9862139CD575001F560F /* SCHStoryInteractionWhoSaidIt_iPad.xib */; };
+		28CC986A139CE544001F560F /* SCHStoryInteractionPopQuiz_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28CC9869139CE544001F560F /* SCHStoryInteractionPopQuiz_iPad.xib */; };
+		28CC986B139CE544001F560F /* SCHStoryInteractionPopQuiz_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28CC9869139CE544001F560F /* SCHStoryInteractionPopQuiz_iPad.xib */; };
+		28D050AE139CE93400D0C602 /* SCHStoryInteractionWhoSaidIt_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28D050AD139CE93400D0C602 /* SCHStoryInteractionWhoSaidIt_iPhone.xib */; };
+		28D050AF139CE93400D0C602 /* SCHStoryInteractionWhoSaidIt_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28D050AD139CE93400D0C602 /* SCHStoryInteractionWhoSaidIt_iPhone.xib */; };
+		28D050B1139CE9F400D0C602 /* storyinteraction-draggable-target-iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 28D050B0139CE9F400D0C602 /* storyinteraction-draggable-target-iphone.png */; };
+		28D050B2139CE9F400D0C602 /* storyinteraction-draggable-target-iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 28D050B0139CE9F400D0C602 /* storyinteraction-draggable-target-iphone.png */; };
+		28D050BA139CEA0F00D0C602 /* storyinteraction-draggable-green-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 28D050B4139CEA0F00D0C602 /* storyinteraction-draggable-green-ipad.png */; };
+		28D050BB139CEA0F00D0C602 /* storyinteraction-draggable-green-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 28D050B4139CEA0F00D0C602 /* storyinteraction-draggable-green-ipad.png */; };
+		28D050BC139CEA0F00D0C602 /* storyinteraction-draggable-red-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 28D050B5139CEA0F00D0C602 /* storyinteraction-draggable-red-ipad.png */; };
+		28D050BD139CEA0F00D0C602 /* storyinteraction-draggable-red-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 28D050B5139CEA0F00D0C602 /* storyinteraction-draggable-red-ipad.png */; };
+		28D050BE139CEA0F00D0C602 /* storyinteraction-draggable-target-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 28D050B6139CEA0F00D0C602 /* storyinteraction-draggable-target-ipad.png */; };
+		28D050BF139CEA0F00D0C602 /* storyinteraction-draggable-target-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 28D050B6139CEA0F00D0C602 /* storyinteraction-draggable-target-ipad.png */; };
+		28D050C0139CEA0F00D0C602 /* storyinteraction-draggable-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 28D050B7139CEA0F00D0C602 /* storyinteraction-draggable-ipad.png */; };
+		28D050C1139CEA0F00D0C602 /* storyinteraction-draggable-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 28D050B7139CEA0F00D0C602 /* storyinteraction-draggable-ipad.png */; };
+		28D050C5139CEAC200D0C602 /* storyinteraction-draggable-green-iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 28D050C2139CEAC200D0C602 /* storyinteraction-draggable-green-iphone.png */; };
+		28D050C6139CEAC200D0C602 /* storyinteraction-draggable-green-iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 28D050C2139CEAC200D0C602 /* storyinteraction-draggable-green-iphone.png */; };
+		28D050C7139CEAC200D0C602 /* storyinteraction-draggable-iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 28D050C3139CEAC200D0C602 /* storyinteraction-draggable-iphone.png */; };
+		28D050C8139CEAC200D0C602 /* storyinteraction-draggable-iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 28D050C3139CEAC200D0C602 /* storyinteraction-draggable-iphone.png */; };
+		28D050C9139CEAC200D0C602 /* storyinteraction-draggable-red-iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 28D050C4139CEAC200D0C602 /* storyinteraction-draggable-red-iphone.png */; };
+		28D050CA139CEAC200D0C602 /* storyinteraction-draggable-red-iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 28D050C4139CEAC200D0C602 /* storyinteraction-draggable-red-iphone.png */; };
+		28D050CC139D087200D0C602 /* storyinteraction-bg-older-iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 28D050CB139D087200D0C602 /* storyinteraction-bg-older-iphone.png */; };
+		28D050CD139D087200D0C602 /* storyinteraction-bg-older-iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 28D050CB139D087200D0C602 /* storyinteraction-bg-older-iphone.png */; };
+		28D050CF139D299500D0C602 /* storyinteraction-bg-older-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 28D050CE139D299500D0C602 /* storyinteraction-bg-older-ipad.png */; };
+		28D050D0139D299500D0C602 /* storyinteraction-bg-older-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 28D050CE139D299500D0C602 /* storyinteraction-bg-older-ipad.png */; };
 		28EEBFDD1118E19E00187D67 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28EEBFDC1118E19E00187D67 /* CoreData.framework */; };
 		28EEC04B1118E28000187D67 /* AppDelegate_Shared.m in Sources */ = {isa = PBXBuildFile; fileRef = 28EEC04A1118E28000187D67 /* AppDelegate_Shared.m */; };
 		28F6BFD7139D3028005AF558 /* SCHStoryInteractionPopQuiz_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28F6BFD5139D3028005AF558 /* SCHStoryInteractionPopQuiz_iPad.xib */; };
@@ -1160,6 +1184,18 @@
 		28CC9860139CD575001F560F /* SCHStoryInteractionControllerWhoSaidIt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionControllerWhoSaidIt.h; sourceTree = "<group>"; };
 		28CC9861139CD575001F560F /* SCHStoryInteractionControllerWhoSaidIt.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionControllerWhoSaidIt.m; sourceTree = "<group>"; };
 		28CC9862139CD575001F560F /* SCHStoryInteractionWhoSaidIt_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionWhoSaidIt_iPad.xib; sourceTree = "<group>"; };
+		28CC9869139CE544001F560F /* SCHStoryInteractionPopQuiz_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionPopQuiz_iPad.xib; sourceTree = "<group>"; };
+		28D050AD139CE93400D0C602 /* SCHStoryInteractionWhoSaidIt_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionWhoSaidIt_iPhone.xib; sourceTree = "<group>"; };
+		28D050B0139CE9F400D0C602 /* storyinteraction-draggable-target-iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-draggable-target-iphone.png"; sourceTree = "<group>"; };
+		28D050B4139CEA0F00D0C602 /* storyinteraction-draggable-green-ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-draggable-green-ipad.png"; sourceTree = "<group>"; };
+		28D050B5139CEA0F00D0C602 /* storyinteraction-draggable-red-ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-draggable-red-ipad.png"; sourceTree = "<group>"; };
+		28D050B6139CEA0F00D0C602 /* storyinteraction-draggable-target-ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-draggable-target-ipad.png"; sourceTree = "<group>"; };
+		28D050B7139CEA0F00D0C602 /* storyinteraction-draggable-ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-draggable-ipad.png"; sourceTree = "<group>"; };
+		28D050C2139CEAC200D0C602 /* storyinteraction-draggable-green-iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-draggable-green-iphone.png"; sourceTree = "<group>"; };
+		28D050C3139CEAC200D0C602 /* storyinteraction-draggable-iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-draggable-iphone.png"; sourceTree = "<group>"; };
+		28D050C4139CEAC200D0C602 /* storyinteraction-draggable-red-iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-draggable-red-iphone.png"; sourceTree = "<group>"; };
+		28D050CB139D087200D0C602 /* storyinteraction-bg-older-iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-bg-older-iphone.png"; sourceTree = "<group>"; };
+		28D050CE139D299500D0C602 /* storyinteraction-bg-older-ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-bg-older-ipad.png"; sourceTree = "<group>"; };
 		28EEBFDC1118E19E00187D67 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		28EEC0491118E28000187D67 /* AppDelegate_Shared.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate_Shared.h; path = Shared/AppDelegate_Shared.h; sourceTree = "<group>"; };
 		28EEC04A1118E28000187D67 /* AppDelegate_Shared.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate_Shared.m; path = Shared/AppDelegate_Shared.m; sourceTree = "<group>"; };
@@ -2150,13 +2186,13 @@
 				28A60F5E139770C90090853E /* SCHStoryInteractionController.h */,
 				28A60F5F139770C90090853E /* SCHStoryInteractionController.m */,
 				28A60F6B1397AAC90090853E /* SCHStoryInteractionPopQuiz_iPhone.xib */,
-				28F6BFD5139D3028005AF558 /* SCHStoryInteractionPopQuiz_iPad.xib */,
+				28CC9869139CE544001F560F /* SCHStoryInteractionPopQuiz_iPad.xib */,
 				28A60F711397B6730090853E /* SCHStoryInteractionControllerPopQuiz.h */,
 				28A60F721397B6750090853E /* SCHStoryInteractionControllerPopQuiz.m */,
 				28A60F64139777900090853E /* SCHStoryInteractionMultipleChoiceText_iPhone.xib */,
 				28A60F6713977B8A0090853E /* SCHStoryInteractionControllerMultipleChoiceText.h */,
 				28A60F6813977B8B0090853E /* SCHStoryInteractionControllerMultipleChoiceText.m */,
-				28F6BFD6139D3028005AF558 /* SCHStoryInteractionWhoSaidIt_iPhone.xib */,
+				28D050AD139CE93400D0C602 /* SCHStoryInteractionWhoSaidIt_iPhone.xib */,
 				28CC9862139CD575001F560F /* SCHStoryInteractionWhoSaidIt_iPad.xib */,
 				28CC9860139CD575001F560F /* SCHStoryInteractionControllerWhoSaidIt.h */,
 				28CC9861139CD575001F560F /* SCHStoryInteractionControllerWhoSaidIt.m */,
@@ -2184,6 +2220,16 @@
 		28A60F7A1397BB340090853E /* StoryInteractions */ = {
 			isa = PBXGroup;
 			children = (
+				28D050CB139D087200D0C602 /* storyinteraction-bg-older-iphone.png */,
+				28D050CE139D299500D0C602 /* storyinteraction-bg-older-ipad.png */,
+				28D050B4139CEA0F00D0C602 /* storyinteraction-draggable-green-ipad.png */,
+				28D050C2139CEAC200D0C602 /* storyinteraction-draggable-green-iphone.png */,
+				28D050B5139CEA0F00D0C602 /* storyinteraction-draggable-red-ipad.png */,
+				28D050C4139CEAC200D0C602 /* storyinteraction-draggable-red-iphone.png */,
+				28D050B6139CEA0F00D0C602 /* storyinteraction-draggable-target-ipad.png */,
+				28D050B0139CE9F400D0C602 /* storyinteraction-draggable-target-iphone.png */,
+				28D050B7139CEA0F00D0C602 /* storyinteraction-draggable-ipad.png */,
+				28D050C3139CEAC200D0C602 /* storyinteraction-draggable-iphone.png */,
 				28A60F8D1397C1780090853E /* storyinteraction-close.png */,
 				28A60F7F1397BB3C0090853E /* storyinteraction-progress-filled.png */,
 				28A60F801397BB3C0090853E /* storyinteraction-progress-unfilled.png */,
@@ -3966,8 +4012,18 @@
 				28A60F8E1397C1780090853E /* storyinteraction-close.png in Resources */,
 				F87B6E301398ED65005CC0FA /* SCHBookShelfSortPopoverTableView.xib in Resources */,
 				28CC9867139CD575001F560F /* SCHStoryInteractionWhoSaidIt_iPad.xib in Resources */,
-				28F6BFD7139D3028005AF558 /* SCHStoryInteractionPopQuiz_iPad.xib in Resources */,
-				28F6BFD9139D3028005AF558 /* SCHStoryInteractionWhoSaidIt_iPhone.xib in Resources */,
+				28CC986A139CE544001F560F /* SCHStoryInteractionPopQuiz_iPad.xib in Resources */,
+				28D050AE139CE93400D0C602 /* SCHStoryInteractionWhoSaidIt_iPhone.xib in Resources */,
+				28D050B1139CE9F400D0C602 /* storyinteraction-draggable-target-iphone.png in Resources */,
+				28D050BA139CEA0F00D0C602 /* storyinteraction-draggable-green-ipad.png in Resources */,
+				28D050BC139CEA0F00D0C602 /* storyinteraction-draggable-red-ipad.png in Resources */,
+				28D050BE139CEA0F00D0C602 /* storyinteraction-draggable-target-ipad.png in Resources */,
+				28D050C0139CEA0F00D0C602 /* storyinteraction-draggable-ipad.png in Resources */,
+				28D050C5139CEAC200D0C602 /* storyinteraction-draggable-green-iphone.png in Resources */,
+				28D050C7139CEAC200D0C602 /* storyinteraction-draggable-iphone.png in Resources */,
+				28D050C9139CEAC200D0C602 /* storyinteraction-draggable-red-iphone.png in Resources */,
+				28D050CC139D087200D0C602 /* storyinteraction-bg-older-iphone.png in Resources */,
+				28D050CF139D299500D0C602 /* storyinteraction-bg-older-ipad.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4236,8 +4292,18 @@
 				28A60F8F1397C1790090853E /* storyinteraction-close.png in Resources */,
 				F87B6E311398ED65005CC0FA /* SCHBookShelfSortPopoverTableView.xib in Resources */,
 				28CC9868139CD575001F560F /* SCHStoryInteractionWhoSaidIt_iPad.xib in Resources */,
-				28F6BFD8139D3028005AF558 /* SCHStoryInteractionPopQuiz_iPad.xib in Resources */,
-				28F6BFDA139D3028005AF558 /* SCHStoryInteractionWhoSaidIt_iPhone.xib in Resources */,
+				28CC986B139CE544001F560F /* SCHStoryInteractionPopQuiz_iPad.xib in Resources */,
+				28D050AF139CE93400D0C602 /* SCHStoryInteractionWhoSaidIt_iPhone.xib in Resources */,
+				28D050B2139CE9F400D0C602 /* storyinteraction-draggable-target-iphone.png in Resources */,
+				28D050BB139CEA0F00D0C602 /* storyinteraction-draggable-green-ipad.png in Resources */,
+				28D050BD139CEA0F00D0C602 /* storyinteraction-draggable-red-ipad.png in Resources */,
+				28D050BF139CEA0F00D0C602 /* storyinteraction-draggable-target-ipad.png in Resources */,
+				28D050C1139CEA0F00D0C602 /* storyinteraction-draggable-ipad.png in Resources */,
+				28D050C6139CEAC200D0C602 /* storyinteraction-draggable-green-iphone.png in Resources */,
+				28D050C8139CEAC200D0C602 /* storyinteraction-draggable-iphone.png in Resources */,
+				28D050CA139CEAC200D0C602 /* storyinteraction-draggable-red-iphone.png in Resources */,
+				28D050CD139D087200D0C602 /* storyinteraction-bg-older-iphone.png in Resources */,
+				28D050D0139D299500D0C602 /* storyinteraction-bg-older-ipad.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
