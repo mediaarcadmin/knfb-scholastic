@@ -914,6 +914,12 @@
 		F8509F4512F063C900197EB5 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 529386C412DF3A9000045B44 /* SystemConfiguration.framework */; };
 		F8509F4612F063C900197EB5 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52EF553D12E9EB8500E374F7 /* Security.framework */; };
 		F8509F4812F063C900197EB5 /* libstdc++.6.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F8509EB712F0625100197EB5 /* libstdc++.6.dylib */; };
+		F8537F13139E3BB10092C743 /* SCHStoryInteractionAboutYouQuiz_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8537F12139E3BB10092C743 /* SCHStoryInteractionAboutYouQuiz_iPhone.xib */; };
+		F8537F14139E3BB10092C743 /* SCHStoryInteractionAboutYouQuiz_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8537F12139E3BB10092C743 /* SCHStoryInteractionAboutYouQuiz_iPhone.xib */; };
+		F8537F17139E3E4C0092C743 /* SCHStoryInteractionControllerAboutYouQuiz.m in Sources */ = {isa = PBXBuildFile; fileRef = F8537F16139E3E4C0092C743 /* SCHStoryInteractionControllerAboutYouQuiz.m */; };
+		F8537F18139E3E4C0092C743 /* SCHStoryInteractionControllerAboutYouQuiz.m in Sources */ = {isa = PBXBuildFile; fileRef = F8537F16139E3E4C0092C743 /* SCHStoryInteractionControllerAboutYouQuiz.m */; };
+		F8537F1A139E47B40092C743 /* SCHStoryInteractionAboutYouQuiz_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8537F19139E47B40092C743 /* SCHStoryInteractionAboutYouQuiz_iPad.xib */; };
+		F8537F1B139E47B40092C743 /* SCHStoryInteractionAboutYouQuiz_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8537F19139E47B40092C743 /* SCHStoryInteractionAboutYouQuiz_iPad.xib */; };
 		F85C8CF71394FC42008DD042 /* SCHNotesCountView.m in Sources */ = {isa = PBXBuildFile; fileRef = F85C8CF61394FC42008DD042 /* SCHNotesCountView.m */; };
 		F85C8CF81394FC42008DD042 /* SCHNotesCountView.m in Sources */ = {isa = PBXBuildFile; fileRef = F85C8CF61394FC42008DD042 /* SCHNotesCountView.m */; };
 		F85E0309134F59E800E81D58 /* SCHCustomToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = F85E0308134F59E700E81D58 /* SCHCustomToolbar.m */; };
@@ -1906,6 +1912,10 @@
 		F8509E9B12F0621E00197EB5 /* SCHScrubberView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHScrubberView.m; sourceTree = "<group>"; };
 		F8509EB712F0625100197EB5 /* libstdc++.6.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libstdc++.6.dylib"; path = "usr/lib/libstdc++.6.dylib"; sourceTree = SDKROOT; };
 		F8509F4D12F063C900197EB5 /* Scholastic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Scholastic.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F8537F12139E3BB10092C743 /* SCHStoryInteractionAboutYouQuiz_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionAboutYouQuiz_iPhone.xib; sourceTree = "<group>"; };
+		F8537F15139E3E4C0092C743 /* SCHStoryInteractionControllerAboutYouQuiz.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionControllerAboutYouQuiz.h; sourceTree = "<group>"; };
+		F8537F16139E3E4C0092C743 /* SCHStoryInteractionControllerAboutYouQuiz.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionControllerAboutYouQuiz.m; sourceTree = "<group>"; };
+		F8537F19139E47B40092C743 /* SCHStoryInteractionAboutYouQuiz_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionAboutYouQuiz_iPad.xib; sourceTree = "<group>"; };
 		F85C8CF51394FC42008DD042 /* SCHNotesCountView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHNotesCountView.h; path = Shared/SCHNotesCountView.h; sourceTree = "<group>"; };
 		F85C8CF61394FC42008DD042 /* SCHNotesCountView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHNotesCountView.m; path = Shared/SCHNotesCountView.m; sourceTree = "<group>"; };
 		F85E0307134F59E700E81D58 /* SCHCustomToolbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHCustomToolbar.h; path = Shared/SCHCustomToolbar.h; sourceTree = "<group>"; };
@@ -2216,6 +2226,10 @@
 				28CC9862139CD575001F560F /* SCHStoryInteractionWhoSaidIt_iPad.xib */,
 				28CC9860139CD575001F560F /* SCHStoryInteractionControllerWhoSaidIt.h */,
 				28CC9861139CD575001F560F /* SCHStoryInteractionControllerWhoSaidIt.m */,
+				F8537F15139E3E4C0092C743 /* SCHStoryInteractionControllerAboutYouQuiz.h */,
+				F8537F16139E3E4C0092C743 /* SCHStoryInteractionControllerAboutYouQuiz.m */,
+				F8537F12139E3BB10092C743 /* SCHStoryInteractionAboutYouQuiz_iPhone.xib */,
+				F8537F19139E47B40092C743 /* SCHStoryInteractionAboutYouQuiz_iPad.xib */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -4052,6 +4066,8 @@
 				527B42AC139E5DCD0030B82B /* answer-tick.png in Resources */,
 				527B42AF139E5DD90030B82B /* answer-cross.png in Resources */,
 				527B42B2139E75490030B82B /* answer-blank.png in Resources */,
+				F8537F13139E3BB10092C743 /* SCHStoryInteractionAboutYouQuiz_iPhone.xib in Resources */,
+				F8537F1A139E47B40092C743 /* SCHStoryInteractionAboutYouQuiz_iPad.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4336,6 +4352,8 @@
 				527B42AD139E5DCD0030B82B /* answer-tick.png in Resources */,
 				527B42B0139E6F240030B82B /* answer-cross.png in Resources */,
 				527B42B3139E75490030B82B /* answer-blank.png in Resources */,
+				F8537F14139E3BB10092C743 /* SCHStoryInteractionAboutYouQuiz_iPhone.xib in Resources */,
+				F8537F1B139E47B40092C743 /* SCHStoryInteractionAboutYouQuiz_iPad.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4568,6 +4586,7 @@
 				28CC9865139CD575001F560F /* SCHStoryInteractionControllerWhoSaidIt.m in Sources */,
 				280B01AD139E32FA0068661C /* SCHStoryInteractionMultipleChoiceText.m in Sources */,
 				280B01B1139E336D0068661C /* SCHStoryInteractionMultipleChoiceWithAnswerPictures.m in Sources */,
+				F8537F17139E3E4C0092C743 /* SCHStoryInteractionControllerAboutYouQuiz.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4809,6 +4828,7 @@
 				28CC9866139CD575001F560F /* SCHStoryInteractionControllerWhoSaidIt.m in Sources */,
 				280B01AE139E32FA0068661C /* SCHStoryInteractionMultipleChoiceText.m in Sources */,
 				280B01B2139E336D0068661C /* SCHStoryInteractionMultipleChoiceWithAnswerPictures.m in Sources */,
+				F8537F18139E3E4C0092C743 /* SCHStoryInteractionControllerAboutYouQuiz.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
