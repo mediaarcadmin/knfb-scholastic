@@ -38,6 +38,11 @@
     return nil;
 }
 
+- (NSString *)interactionViewTitle
+{
+    return [self title];
+}
+
 + (NSString *)resourcesPath
 {
     return @"/Documents/1/Other/KNFB/Interactions/Interactions.xml";
