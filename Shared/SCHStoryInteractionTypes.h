@@ -11,6 +11,8 @@
 #import "SCHStoryInteractionHotSpot.h"
 #import "SCHStoryInteractionImage.h"
 #import "SCHStoryInteractionMultipleChoice.h"
+#import "SCHStoryInteractionMultipleChoiceText.h"
+#import "SCHStoryInteractionMultipleChoiceWithAnswerPictures.h"
 #import "SCHStoryInteractionPopQuiz.h"
 #import "SCHStoryInteractionScratchAndSee.h"
 #import "SCHStoryInteractionSequencing.h"

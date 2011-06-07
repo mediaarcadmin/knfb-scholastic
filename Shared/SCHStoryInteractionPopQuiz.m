@@ -25,12 +25,16 @@
 
 @implementation SCHStoryInteractionPopQuiz
 
+@synthesize introduction;
+@synthesize questions;
 @synthesize scoreResponseLow;
 @synthesize scoreResponseMedium;
 @synthesize scoreResponseHigh;
 
 - (void)dealloc
 {
+    [introduction release];
+    [questions release];
     [scoreResponseLow release];
     [scoreResponseMedium release];
     [scoreResponseHigh release];
