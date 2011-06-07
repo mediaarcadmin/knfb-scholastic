@@ -11,6 +11,12 @@
 		1D60589B0D05DD56006BFB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
+		280B01AD139E32FA0068661C /* SCHStoryInteractionMultipleChoiceText.m in Sources */ = {isa = PBXBuildFile; fileRef = 280B01AC139E32FA0068661C /* SCHStoryInteractionMultipleChoiceText.m */; };
+		280B01AE139E32FA0068661C /* SCHStoryInteractionMultipleChoiceText.m in Sources */ = {isa = PBXBuildFile; fileRef = 280B01AC139E32FA0068661C /* SCHStoryInteractionMultipleChoiceText.m */; };
+		280B01B1139E336D0068661C /* SCHStoryInteractionMultipleChoiceWithAnswerPictures.m in Sources */ = {isa = PBXBuildFile; fileRef = 280B01B0139E336C0068661C /* SCHStoryInteractionMultipleChoiceWithAnswerPictures.m */; };
+		280B01B2139E336D0068661C /* SCHStoryInteractionMultipleChoiceWithAnswerPictures.m in Sources */ = {isa = PBXBuildFile; fileRef = 280B01B0139E336C0068661C /* SCHStoryInteractionMultipleChoiceWithAnswerPictures.m */; };
+		280B01B3139E35500068661C /* SCHStoryInteractionMultipleChoiceText.m in Sources */ = {isa = PBXBuildFile; fileRef = 280B01AC139E32FA0068661C /* SCHStoryInteractionMultipleChoiceText.m */; };
+		280B01B4139E35540068661C /* SCHStoryInteractionMultipleChoiceWithAnswerPictures.m in Sources */ = {isa = PBXBuildFile; fileRef = 280B01B0139E336C0068661C /* SCHStoryInteractionMultipleChoiceWithAnswerPictures.m */; };
 		280C99C71397C65E00381C31 /* SCHStoryInteractionProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 280C99C61397C65E00381C31 /* SCHStoryInteractionProgressView.m */; };
 		280C99C81397C65E00381C31 /* SCHStoryInteractionProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 280C99C61397C65E00381C31 /* SCHStoryInteractionProgressView.m */; };
 		2819307D112F81BE00ECF9B4 /* Scholastic.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2819307C112F81BE00ECF9B4 /* Scholastic.xcdatamodeld */; };
@@ -1091,6 +1097,10 @@
 		1D3623250D0F684500981E51 /* AppDelegate_iPad.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate_iPad.m; path = iPad/AppDelegate_iPad.m; sourceTree = "<group>"; };
 		1D6058910D05DD3D006BFB54 /* Scholastic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Scholastic.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		280B01AB139E32FA0068661C /* SCHStoryInteractionMultipleChoiceText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionMultipleChoiceText.h; sourceTree = "<group>"; };
+		280B01AC139E32FA0068661C /* SCHStoryInteractionMultipleChoiceText.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionMultipleChoiceText.m; sourceTree = "<group>"; };
+		280B01AF139E336C0068661C /* SCHStoryInteractionMultipleChoiceWithAnswerPictures.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionMultipleChoiceWithAnswerPictures.h; sourceTree = "<group>"; };
+		280B01B0139E336C0068661C /* SCHStoryInteractionMultipleChoiceWithAnswerPictures.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionMultipleChoiceWithAnswerPictures.m; sourceTree = "<group>"; };
 		280C99C51397C65E00381C31 /* SCHStoryInteractionProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionProgressView.h; sourceTree = "<group>"; };
 		280C99C61397C65E00381C31 /* SCHStoryInteractionProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionProgressView.m; sourceTree = "<group>"; };
 		280C99C91397EA1900381C31 /* SCHStoryInteractionControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionControllerDelegate.h; sourceTree = "<group>"; };
@@ -2156,6 +2166,10 @@
 				28A60F52139687E00090853E /* SCHStoryInteractionImage.m */,
 				28A08CCA13950C01006FD008 /* SCHStoryInteractionMultipleChoice.h */,
 				28A08CCB13950C01006FD008 /* SCHStoryInteractionMultipleChoice.m */,
+				280B01AB139E32FA0068661C /* SCHStoryInteractionMultipleChoiceText.h */,
+				280B01AC139E32FA0068661C /* SCHStoryInteractionMultipleChoiceText.m */,
+				280B01AF139E336C0068661C /* SCHStoryInteractionMultipleChoiceWithAnswerPictures.h */,
+				280B01B0139E336C0068661C /* SCHStoryInteractionMultipleChoiceWithAnswerPictures.m */,
 				28A08CCE13950C01006FD008 /* SCHStoryInteractionPopQuiz.h */,
 				28A08CCF13950C01006FD008 /* SCHStoryInteractionPopQuiz.m */,
 				28A08CD013950C01006FD008 /* SCHStoryInteractionScratchAndSee.h */,
@@ -4547,6 +4561,8 @@
 				28CC9863139CD575001F560F /* SCHBoxWithShadowView.m in Sources */,
 				28CC9865139CD575001F560F /* SCHStoryInteractionControllerWhoSaidIt.m in Sources */,
 				F8537F17139E3E4C0092C743 /* SCHStoryInteractionControllerAboutYouQuiz.m in Sources */,
+				280B01AD139E32FA0068661C /* SCHStoryInteractionMultipleChoiceText.m in Sources */,
+				280B01B1139E336D0068661C /* SCHStoryInteractionMultipleChoiceWithAnswerPictures.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4573,6 +4589,8 @@
 				28A60F4E13967A560090853E /* SCHStoryInteractionVideo.m in Sources */,
 				28A60F55139687E00090853E /* SCHStoryInteractionImage.m in Sources */,
 				28A60F5C13968B8E0090853E /* SCHBookStoryInteractions.m in Sources */,
+				280B01B3139E35500068661C /* SCHStoryInteractionMultipleChoiceText.m in Sources */,
+				280B01B4139E35540068661C /* SCHStoryInteractionMultipleChoiceWithAnswerPictures.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4785,6 +4803,8 @@
 				28CC9864139CD575001F560F /* SCHBoxWithShadowView.m in Sources */,
 				28CC9866139CD575001F560F /* SCHStoryInteractionControllerWhoSaidIt.m in Sources */,
 				F8537F18139E3E4C0092C743 /* SCHStoryInteractionControllerAboutYouQuiz.m in Sources */,
+				280B01AE139E32FA0068661C /* SCHStoryInteractionMultipleChoiceText.m in Sources */,
+				280B01B2139E336D0068661C /* SCHStoryInteractionMultipleChoiceWithAnswerPictures.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -136,6 +136,14 @@
         [closeButton setImage:[UIImage imageNamed:@"storyinteraction-close"] forState:UIControlStateNormal];
         [closeButton addTarget:self action:@selector(closeButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
         [background addSubview:closeButton];
+
+        if ([self.storyInteraction isOlderStoryInteraction] == NO) {
+            UIButton *audioButton = [UIButton buttonWithType:UIButtonTypeCustom];
+            audioButton.frame = CGRectMake(backgroundWidth - 20, -10, 30, 30);
+            [audioButton setImage:[UIImage imageNamed:@"icon-play.png"] forState:UIControlStateNormal];
+            [audioButton addTarget:self action:@selector(playAudioButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+            [background addSubview:audioButton];
+        }
         
         self.containerView = container;
         self.backgroundView = background;
@@ -163,6 +171,9 @@
 
 - (void)updateOrientation
 {
+    if (!self.containerView.superview) {
+        return;
+    }
     CGRect superviewBounds = self.containerView.superview.bounds;
     BOOL rotate;
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
@@ -179,6 +190,11 @@
     }
     self.containerView.center = CGPointMake(floor(CGRectGetMidX(superviewBounds)), floor(CGRectGetMidY(superviewBounds)));
     self.backgroundView.center = CGPointMake(floor(CGRectGetMidX(self.containerView.bounds)), floor(CGRectGetMidY(self.containerView.bounds)));
+
+    NSLog(@"hostView.center = %@ .bounds = %@", NSStringFromCGPoint(self.containerView.superview.center), NSStringFromCGRect(superviewBounds));
+    NSLog(@"containerView.center = %@ .bounds = %@", NSStringFromCGPoint(self.containerView.center), NSStringFromCGRect(self.containerView.bounds));
+    NSLog(@"backgroundView.center = %@ .bounds = %@", NSStringFromCGPoint(self.backgroundView.center), NSStringFromCGRect(self.backgroundView.bounds));
+    NSLog(@"contentsView.center = %@ .bounds = %@", NSStringFromCGPoint(self.contentsView.center), NSStringFromCGRect(self.contentsView.bounds));
 }
 
 - (void)setInterfaceOrientation:(UIInterfaceOrientation)aInterfaceOrientation
@@ -190,6 +206,11 @@
 - (void)closeButtonTapped:(id)sender
 {
     [self removeFromHostView];
+}
+
+- (IBAction)playAudioButtonTapped:(id)sender
+{
+    NSLog(@"Playing audio"); 
 }
 
 - (void)removeFromHostView

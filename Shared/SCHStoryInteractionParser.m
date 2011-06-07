@@ -380,6 +380,12 @@ static NSString *attribute(const XML_Char **atts, const char *key)
     }
 }
 
+- (void)parseComplete:(SCHStoryInteractionParser *)parser
+{
+    self.questions = [NSArray arrayWithArray:parser.questions];
+    [super parseComplete:parser];
+}
+
 @end
 
 
@@ -425,6 +431,12 @@ static NSString *attribute(const XML_Char **atts, const char *key)
     } else {
         [super startElement:name attributes:attributes parser:parser];
     }
+}
+
+- (void)parseComplete:(SCHStoryInteractionParser *)parser
+{
+    self.questions = [NSArray arrayWithArray:parser.questions];
+    [super parseComplete:parser];
 }
 
 @end

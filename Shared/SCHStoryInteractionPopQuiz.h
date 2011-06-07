@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "SCHStoryInteractionMultipleChoice.h"
+#import "SCHStoryInteraction.h"
 
 @interface SCHStoryInteractionPopQuizQuestion : SCHStoryInteractionQuestion {}
 
@@ -22,7 +22,10 @@
 @end
 
 
-@interface SCHStoryInteractionPopQuiz : SCHStoryInteractionMultipleChoiceText {}
+@interface SCHStoryInteractionPopQuiz : SCHStoryInteraction {}
+
+@property (nonatomic, retain) NSString *introduction;
+@property (nonatomic, retain) NSArray *questions;
 
 // Response for a low score
 @property (nonatomic, retain) NSString *scoreResponseLow;

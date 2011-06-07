@@ -9,21 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "SCHStoryInteraction.h"
 
-#pragma mark - abstract base
 
-@interface SCHStoryInteractionMultipleChoice : SCHStoryInteraction {}
-
-@property (nonatomic, retain) NSString *introduction;
-
-// array of SCHStoryInteractionMultipleChoiceTextQuestion or SCHStoryInteractionMultipleChoicePictureQuestion
-@property (nonatomic, retain) NSArray *questions;
-
-@end
-
-
-#pragma mark - text
-
-@interface SCHStoryInteractionMultipleChoiceTextQuestion : SCHStoryInteractionQuestion {}
+@interface SCHStoryInteractionMultipleChoiceQuestion : SCHStoryInteractionQuestion {}
 
 @property (nonatomic, retain) NSString *prompt;
 
@@ -47,17 +34,11 @@
 
 @end
 
-@interface SCHStoryInteractionMultipleChoiceText : SCHStoryInteractionMultipleChoice {}
-@end
 
-#pragma mark - picture
+@interface SCHStoryInteractionMultipleChoice : SCHStoryInteraction {}
 
-@interface SCHStoryInteractionMultipleChoicePictureQuestion : SCHStoryInteractionMultipleChoiceTextQuestion {}
-
-// XPSProvider-relative path for a picture answer
-- (NSString *)imagePathForAnswerAtIndex:(NSInteger)answerIndex;
+@property (nonatomic, retain) NSString *introduction;
+@property (nonatomic, retain) NSArray *questions;
 
 @end
 
-@interface SCHStoryInteractionMultipleChoiceWithAnswerPictures : SCHStoryInteractionMultipleChoice {}
-@end
