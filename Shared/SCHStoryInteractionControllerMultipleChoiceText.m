@@ -108,4 +108,12 @@
     }
 }
 
+- (IBAction)playAudioButtonTapped:(id)sender
+{
+    NSString *path = [[self currentQuestion] audioPathForQuestion];
+    if (path != nil) {
+        [self playAudioAtPath:path completion:nil];
+    }   
+}
+
 @end
