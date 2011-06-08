@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
+@class SCHXPSProvider;
 @class SCHStoryInteraction;
 @protocol SCHStoryInteractionControllerDelegate;
 
@@ -15,6 +16,9 @@
 // is not a UIViewController but relies on another view and controller as hosts.
 
 @interface SCHStoryInteractionController : NSObject {}
+
+// XPS Provider for this story's book
+@property (nonatomic, retain) SCHXPSProvider *xpsProvider;
 
 // the story interaction model for this controller
 @property (nonatomic, readonly) SCHStoryInteraction *storyInteraction;
@@ -43,6 +47,12 @@
 // remove the story interaction from the host view; also sends storyInteractionControllerDidDismiss: to
 // the delegate
 - (void)removeFromHostView;
+
+// play an audio file from the XPS provider and invoke a completion block when the playback is complete
+- (void)playAudioAtPath:(NSString *)path completion:(void(^)(void))completion;
+
+// get an image from the XPS provider
+- (UIImage *)imageAtPath:(NSString *)path;
 
 #pragma mark - subclass overrides
 

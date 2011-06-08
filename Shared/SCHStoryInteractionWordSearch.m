@@ -43,4 +43,25 @@
     return [self.matrix characterAtIndex:index];
 }
 
+- (NSString *)audioPathForQuestion
+{
+    NSString *filename = [NSString stringWithFormat:@"%@_intro.mp3", self.ID];
+    return [[SCHStoryInteraction resourcesPath] stringByAppendingPathComponent:filename];
+}
+
+- (NSString *)audioPathForCorrectAnswer
+{
+    return [[SCHStoryInteraction resourcesPath] stringByAppendingPathComponent:@"gen_thatsright.mp3"];
+}
+
+- (NSString *)audioPathForIncorrectAnswer
+{
+    return [[SCHStoryInteraction resourcesPath] stringByAppendingPathComponent:@"gen_tryagain.mp3"];
+}
+
+- (NSString *)audioPathForYouFoundThemAll
+{
+    return [[SCHStoryInteraction resourcesPath] stringByAppendingPathComponent:@"gen_gotthemall.mp3"];
+}
+
 @end
