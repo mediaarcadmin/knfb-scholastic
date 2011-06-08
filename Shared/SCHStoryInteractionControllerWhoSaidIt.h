@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "SCHStoryInteractionController.h"
 
-@class SCHStoryInteractionWhoSaidItSourceView;
+@class SCHStoryInteractionDraggableView;
 @class SCHStoryInteractionDraggableTargetView;
 
 @interface SCHStoryInteractionControllerWhoSaidIt : SCHStoryInteractionController {}
@@ -24,12 +24,12 @@
 @property (nonatomic, retain) IBOutlet SCHStoryInteractionDraggableTargetView *target3;
 @property (nonatomic, retain) IBOutlet SCHStoryInteractionDraggableTargetView *target4;
 @property (nonatomic, retain) IBOutlet SCHStoryInteractionDraggableTargetView *target5;
-@property (nonatomic, retain) IBOutlet SCHStoryInteractionWhoSaidItSourceView *source1;
-@property (nonatomic, retain) IBOutlet SCHStoryInteractionWhoSaidItSourceView *source2;
-@property (nonatomic, retain) IBOutlet SCHStoryInteractionWhoSaidItSourceView *source3;
-@property (nonatomic, retain) IBOutlet SCHStoryInteractionWhoSaidItSourceView *source4;
-@property (nonatomic, retain) IBOutlet SCHStoryInteractionWhoSaidItSourceView *source5;
-@property (nonatomic, retain) IBOutlet SCHStoryInteractionWhoSaidItSourceView *source6;
+@property (nonatomic, retain) IBOutlet SCHStoryInteractionDraggableView *source1;
+@property (nonatomic, retain) IBOutlet SCHStoryInteractionDraggableView *source2;
+@property (nonatomic, retain) IBOutlet SCHStoryInteractionDraggableView *source3;
+@property (nonatomic, retain) IBOutlet SCHStoryInteractionDraggableView *source4;
+@property (nonatomic, retain) IBOutlet SCHStoryInteractionDraggableView *source5;
+@property (nonatomic, retain) IBOutlet SCHStoryInteractionDraggableView *source6;
 @property (nonatomic, retain) IBOutlet UIButton *checkAnswersButton;
 
 - (IBAction)checkAnswers:(id)sender;

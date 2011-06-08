@@ -9,9 +9,10 @@
 #import <QuartzCore/QuartzCore.h>
 
 #import "SCHStoryInteractionControllerWhoSaidIt.h"
-#import "SCHStoryInteractionWhoSaidItSourceView.h"
+#import "SCHStoryInteractionDraggableView.h"
 #import "SCHStoryInteractionDraggableTargetView.h"
 #import "SCHStoryInteractionWhoSaidIt.h"
+#import "UIView+SubviewOfClass.h"
 
 #define kSnapDistanceSq 900
 #define kSourceOffsetY_iPad 6
@@ -105,10 +106,11 @@
 
     // jumble up the sources and tag with the correct indices
     NSMutableArray *statements = [whoSaidIt.statements mutableCopy];
-    for (SCHStoryInteractionWhoSaidItSourceView *source in self.sources) {
+    for (SCHStoryInteractionDraggableView *source in self.sources) {
         int index = arc4random() % [statements count];
         SCHStoryInteractionWhoSaidItStatement *statement = [statements objectAtIndex:index];
-        source.title = statement.source;
+        UILabel *label = (UILabel *)[source subviewOfClass:[UILabel class]];
+        label.text = statement.source;
         source.tag = statement.questionIndex;
         source.centerOffset = sourceCenterOffset;
         source.snapDistanceSq = kSnapDistanceSq;
@@ -127,14 +129,16 @@
         }
         NSString *root = (source.tag == target.tag ? @"storyinteraction-draggable-green-" : @"storyinteraction-draggable-red-");
         UIImage *image = [UIImage imageNamed:[root stringByAppendingString:UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"ipad" : @"iphone"]];
-        source.highlightedImage = image;
-        [source setHighlighted:YES];
+        UIImageView *imageView = (UIImageView *)[source subviewOfClass:[UIImageView class]];
+        imageView.highlightedImage = image;
+        [imageView setHighlighted:YES];
     }
 
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 1.0 * NSEC_PER_SEC);
     dispatch_after(popTime, dispatch_get_main_queue(), ^{
         for (SCHStoryInteractionDraggableView *source in self.sources) {
-            [source setHighlighted:NO];
+            UIImageView *imageView = (UIImageView *)[source subviewOfClass:[UIImageView class]];
+            [imageView setHighlighted:NO];
         }
     });
 }

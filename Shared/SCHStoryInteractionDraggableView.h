@@ -10,7 +10,7 @@
 
 @class SCHStoryInteractionDraggableTargetView;
 
-@interface SCHStoryInteractionDraggableView : UIImageView {}
+@interface SCHStoryInteractionDraggableView : UIView {}
 
 // the offset from this view's true center to the point which should align with the target's center
 @property (nonatomic, assign) CGPoint centerOffset;
