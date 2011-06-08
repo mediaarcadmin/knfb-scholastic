@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+#import <AVFoundation/AVAudioPlayer.h>
+
 @class SCHXPSProvider;
 @class SCHStoryInteraction;
 @protocol SCHStoryInteractionControllerDelegate;
@@ -15,7 +17,10 @@
 // Because Story Interactions have a non-modal behaviour in the reading view, StoryInteractionController 
 // is not a UIViewController but relies on another view and controller as hosts.
 
-@interface SCHStoryInteractionController : NSObject {}
+@interface SCHStoryInteractionController : NSObject <AVAudioPlayerDelegate> {}
+
+// Unique Book Identifier
+@property (nonatomic, copy) NSString *isbn;
 
 // XPS Provider for this story's book
 @property (nonatomic, retain) SCHXPSProvider *xpsProvider;

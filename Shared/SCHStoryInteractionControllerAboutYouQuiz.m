@@ -180,6 +180,7 @@
         }
     }
     
+    [highestQuestions release];
     return resultMessage;
 }
 

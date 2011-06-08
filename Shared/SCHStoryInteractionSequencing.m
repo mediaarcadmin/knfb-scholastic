@@ -8,6 +8,7 @@
 
 #import "SCHStoryInteractionSequencing.h"
 
+#import "KNFBXPSConstants.h"
 
 @implementation SCHStoryInteractionSequencing
 
@@ -23,24 +24,24 @@
 
 - (NSString *)audioPathForQuestion
 {
-    return [[SCHStoryInteraction resourcesPath] stringByAppendingPathComponent:@"gen_putinorder.mp3"];
+    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:@"gen_putinorder.mp3"];
 }
 
 - (NSString *)audioPathForCorrectAnswer
 {
-    return [[SCHStoryInteraction resourcesPath] stringByAppendingPathComponent:@"tada.mp3"];
+    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:@"tada.mp3"];
 }
 
 - (NSString *)imagePathForIndex:(NSInteger)index
 {
     NSString *filename = [NSString stringWithFormat:@"%@_img%d.png", self.ID, index+1];
-    return [[SCHStoryInteraction resourcesPath] stringByAppendingPathComponent:filename];
+    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:filename];
 }
 
 - (NSString *)audioPathForCorrectAnswerAtIndex:(NSInteger)index
 {
     NSString *filename = [NSString stringWithFormat:@"%@_ca%d.mp3", self.ID, index+1];
-    return [[SCHStoryInteraction resourcesPath] stringByAppendingPathComponent:filename];
+    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:filename];
 }
 
 @end

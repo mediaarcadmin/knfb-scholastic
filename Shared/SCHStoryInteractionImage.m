@@ -8,6 +8,7 @@
 
 #import "SCHStoryInteractionImage.h"
 
+#import "KNFBXPSConstants.h"
 
 @implementation SCHStoryInteractionImage
 
@@ -21,7 +22,7 @@
 
 - (NSString *)imagePath
 {
-    return [[SCHStoryInteraction resourcesPath] stringByAppendingPathComponent:self.imageFilename];
+    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:self.imageFilename];
 }
 
 - (NSString *)title
