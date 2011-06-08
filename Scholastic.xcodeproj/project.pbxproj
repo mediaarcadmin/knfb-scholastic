@@ -124,12 +124,12 @@
 		28A60F741397B6760090853E /* SCHStoryInteractionControllerPopQuiz.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A60F721397B6750090853E /* SCHStoryInteractionControllerPopQuiz.m */; };
 		28A60F781397B96B0090853E /* SCHStretchableImageButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A60F771397B96B0090853E /* SCHStretchableImageButton.m */; };
 		28A60F791397B96B0090853E /* SCHStretchableImageButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A60F771397B96B0090853E /* SCHStretchableImageButton.m */; };
-		28A60F811397BB3C0090853E /* popquiz-answer-button-green.png in Resources */ = {isa = PBXBuildFile; fileRef = 28A60F7B1397BB3C0090853E /* popquiz-answer-button-green.png */; };
-		28A60F821397BB3C0090853E /* popquiz-answer-button-green.png in Resources */ = {isa = PBXBuildFile; fileRef = 28A60F7B1397BB3C0090853E /* popquiz-answer-button-green.png */; };
-		28A60F831397BB3C0090853E /* popquiz-answer-button-red.png in Resources */ = {isa = PBXBuildFile; fileRef = 28A60F7C1397BB3C0090853E /* popquiz-answer-button-red.png */; };
-		28A60F841397BB3C0090853E /* popquiz-answer-button-red.png in Resources */ = {isa = PBXBuildFile; fileRef = 28A60F7C1397BB3C0090853E /* popquiz-answer-button-red.png */; };
-		28A60F851397BB3C0090853E /* popquiz-answer-button-yellow.png in Resources */ = {isa = PBXBuildFile; fileRef = 28A60F7D1397BB3C0090853E /* popquiz-answer-button-yellow.png */; };
-		28A60F861397BB3C0090853E /* popquiz-answer-button-yellow.png in Resources */ = {isa = PBXBuildFile; fileRef = 28A60F7D1397BB3C0090853E /* popquiz-answer-button-yellow.png */; };
+		28A60F811397BB3C0090853E /* answer-button-green.png in Resources */ = {isa = PBXBuildFile; fileRef = 28A60F7B1397BB3C0090853E /* answer-button-green.png */; };
+		28A60F821397BB3C0090853E /* answer-button-green.png in Resources */ = {isa = PBXBuildFile; fileRef = 28A60F7B1397BB3C0090853E /* answer-button-green.png */; };
+		28A60F831397BB3C0090853E /* answer-button-red.png in Resources */ = {isa = PBXBuildFile; fileRef = 28A60F7C1397BB3C0090853E /* answer-button-red.png */; };
+		28A60F841397BB3C0090853E /* answer-button-red.png in Resources */ = {isa = PBXBuildFile; fileRef = 28A60F7C1397BB3C0090853E /* answer-button-red.png */; };
+		28A60F851397BB3C0090853E /* answer-button-yellow.png in Resources */ = {isa = PBXBuildFile; fileRef = 28A60F7D1397BB3C0090853E /* answer-button-yellow.png */; };
+		28A60F861397BB3C0090853E /* answer-button-yellow.png in Resources */ = {isa = PBXBuildFile; fileRef = 28A60F7D1397BB3C0090853E /* answer-button-yellow.png */; };
 		28A60F891397BB3C0090853E /* storyinteraction-progress-filled.png in Resources */ = {isa = PBXBuildFile; fileRef = 28A60F7F1397BB3C0090853E /* storyinteraction-progress-filled.png */; };
 		28A60F8A1397BB3C0090853E /* storyinteraction-progress-filled.png in Resources */ = {isa = PBXBuildFile; fileRef = 28A60F7F1397BB3C0090853E /* storyinteraction-progress-filled.png */; };
 		28A60F8B1397BB3C0090853E /* storyinteraction-progress-unfilled.png in Resources */ = {isa = PBXBuildFile; fileRef = 28A60F801397BB3C0090853E /* storyinteraction-progress-unfilled.png */; };
@@ -218,8 +218,8 @@
 		526750D213290EE800063AC8 /* SCHURLManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 52322C33132693F500BB071D /* SCHURLManager.m */; };
 		526A8A5C1385166E00101A96 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 526A8A501385143000101A96 /* AVFoundation.framework */; };
 		526A8A5D1385167A00101A96 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 526A8A501385143000101A96 /* AVFoundation.framework */; };
-		527B42A9139E584E0030B82B /* popquiz-answer-button-blue.png in Resources */ = {isa = PBXBuildFile; fileRef = 527B42A8139E584D0030B82B /* popquiz-answer-button-blue.png */; };
-		527B42AA139E584E0030B82B /* popquiz-answer-button-blue.png in Resources */ = {isa = PBXBuildFile; fileRef = 527B42A8139E584D0030B82B /* popquiz-answer-button-blue.png */; };
+		527B42A9139E584E0030B82B /* answer-button-blue.png in Resources */ = {isa = PBXBuildFile; fileRef = 527B42A8139E584D0030B82B /* answer-button-blue.png */; };
+		527B42AA139E584E0030B82B /* answer-button-blue.png in Resources */ = {isa = PBXBuildFile; fileRef = 527B42A8139E584D0030B82B /* answer-button-blue.png */; };
 		527B42AC139E5DCD0030B82B /* answer-tick.png in Resources */ = {isa = PBXBuildFile; fileRef = 527B42AB139E5DCD0030B82B /* answer-tick.png */; };
 		527B42AD139E5DCD0030B82B /* answer-tick.png in Resources */ = {isa = PBXBuildFile; fileRef = 527B42AB139E5DCD0030B82B /* answer-tick.png */; };
 		527B42AF139E5DD90030B82B /* answer-cross.png in Resources */ = {isa = PBXBuildFile; fileRef = 527B42AE139E5DD80030B82B /* answer-cross.png */; };
@@ -1209,9 +1209,9 @@
 		28A60F721397B6750090853E /* SCHStoryInteractionControllerPopQuiz.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionControllerPopQuiz.m; sourceTree = "<group>"; };
 		28A60F761397B96B0090853E /* SCHStretchableImageButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStretchableImageButton.h; sourceTree = "<group>"; };
 		28A60F771397B96B0090853E /* SCHStretchableImageButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStretchableImageButton.m; sourceTree = "<group>"; };
-		28A60F7B1397BB3C0090853E /* popquiz-answer-button-green.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "popquiz-answer-button-green.png"; sourceTree = "<group>"; };
-		28A60F7C1397BB3C0090853E /* popquiz-answer-button-red.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "popquiz-answer-button-red.png"; sourceTree = "<group>"; };
-		28A60F7D1397BB3C0090853E /* popquiz-answer-button-yellow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "popquiz-answer-button-yellow.png"; sourceTree = "<group>"; };
+		28A60F7B1397BB3C0090853E /* answer-button-green.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "answer-button-green.png"; sourceTree = "<group>"; };
+		28A60F7C1397BB3C0090853E /* answer-button-red.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "answer-button-red.png"; sourceTree = "<group>"; };
+		28A60F7D1397BB3C0090853E /* answer-button-yellow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "answer-button-yellow.png"; sourceTree = "<group>"; };
 		28A60F7F1397BB3C0090853E /* storyinteraction-progress-filled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-progress-filled.png"; sourceTree = "<group>"; };
 		28A60F801397BB3C0090853E /* storyinteraction-progress-unfilled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-progress-unfilled.png"; sourceTree = "<group>"; };
 		28A60F8D1397C1780090853E /* storyinteraction-close.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-close.png"; sourceTree = "<group>"; };
@@ -1310,7 +1310,7 @@
 		5266D38E13007E27004E3AC6 /* SCHComponentProtected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHComponentProtected.h; path = Shared/SCHComponentProtected.h; sourceTree = "<group>"; };
 		526A8A501385143000101A96 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		526A8A5E1385182100101A96 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
-		527B42A8139E584D0030B82B /* popquiz-answer-button-blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "popquiz-answer-button-blue.png"; path = "../../../../../../../../../Users/john/Projects/BitWink/Scholastic/Scholastic/Resources/UIAssets/StoryInteractions/popquiz-answer-button-blue.png"; sourceTree = "<group>"; };
+		527B42A8139E584D0030B82B /* answer-button-blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "answer-button-blue.png"; path = "../../../../../../../../../Users/john/Projects/BitWink/Scholastic/Scholastic/Resources/UIAssets/StoryInteractions/answer-button-blue.png"; sourceTree = "<group>"; };
 		527B42AB139E5DCD0030B82B /* answer-tick.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "answer-tick.png"; path = "../../../../../../../../../Users/john/Projects/BitWink/Scholastic/Scholastic/Resources/answer-tick.png"; sourceTree = "<group>"; };
 		527B42AE139E5DD80030B82B /* answer-cross.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "answer-cross.png"; path = "../../../../../../../../../Users/john/Projects/BitWink/Scholastic/Scholastic/Resources/answer-cross.png"; sourceTree = "<group>"; };
 		527B42B1139E75480030B82B /* answer-blank.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "answer-blank.png"; path = "../../../../../../../../../Users/john/Projects/BitWink/Scholastic/Scholastic/Resources/answer-blank.png"; sourceTree = "<group>"; };
@@ -2254,13 +2254,6 @@
 				2856BA05139E3C3700A73D58 /* SCHStoryInteractionWordSearch_iPad.xib */,
 				2856BA01139E3BF800A73D58 /* SCHStoryInteractionControllerWordSearch.h */,
 				2856BA02139E3BF800A73D58 /* SCHStoryInteractionControllerWordSearch.m */,
-				2856BA05139E3C3700A73D58 /* SCHStoryInteractionWordSearch_iPad.xib */,
-				2856BA01139E3BF800A73D58 /* SCHStoryInteractionControllerWordSearch.h */,
-				2856BA02139E3BF800A73D58 /* SCHStoryInteractionControllerWordSearch.m */,
-				F8537F15139E3E4C0092C743 /* SCHStoryInteractionControllerAboutYouQuiz.h */,
-				F8537F16139E3E4C0092C743 /* SCHStoryInteractionControllerAboutYouQuiz.m */,
-				F8537F12139E3BB10092C743 /* SCHStoryInteractionAboutYouQuiz_iPhone.xib */,
-				F8537F19139E47B40092C743 /* SCHStoryInteractionAboutYouQuiz_iPad.xib */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -2289,10 +2282,6 @@
 		28A60F7A1397BB340090853E /* StoryInteractions */ = {
 			isa = PBXGroup;
 			children = (
-				527B42B1139E75480030B82B /* answer-blank.png */,
-				527B42AE139E5DD80030B82B /* answer-cross.png */,
-				527B42AB139E5DCD0030B82B /* answer-tick.png */,
-				527B42A8139E584D0030B82B /* popquiz-answer-button-blue.png */,
 				28D050CB139D087200D0C602 /* storyinteraction-bg-older-iphone.png */,
 				28D050CE139D299500D0C602 /* storyinteraction-bg-older-ipad.png */,
 				2856BA0F139E53AA00A73D58 /* storyinteraction-bg-younger-ipad.png */,
@@ -2307,9 +2296,13 @@
 				28A60F8D1397C1780090853E /* storyinteraction-close.png */,
 				28A60F7F1397BB3C0090853E /* storyinteraction-progress-filled.png */,
 				28A60F801397BB3C0090853E /* storyinteraction-progress-unfilled.png */,
-				28A60F7B1397BB3C0090853E /* popquiz-answer-button-green.png */,
-				28A60F7C1397BB3C0090853E /* popquiz-answer-button-red.png */,
-				28A60F7D1397BB3C0090853E /* popquiz-answer-button-yellow.png */,
+				28A60F7B1397BB3C0090853E /* answer-button-green.png */,
+				28A60F7C1397BB3C0090853E /* answer-button-red.png */,
+				28A60F7D1397BB3C0090853E /* answer-button-yellow.png */,
+				527B42A8139E584D0030B82B /* answer-button-blue.png */,
+				527B42B1139E75480030B82B /* answer-blank.png */,
+				527B42AE139E5DD80030B82B /* answer-cross.png */,
+				527B42AB139E5DCD0030B82B /* answer-tick.png */,
 				2856BA0C139E507700A73D58 /* storyinteraction-wordsearch-letter.png */,
 			);
 			name = StoryInteractions;
@@ -4079,9 +4072,9 @@
 				C9261FC113970220009FF459 /* notes-count@2x.png in Resources */,
 				28A60F65139777900090853E /* SCHStoryInteractionMultipleChoiceText_iPhone.xib in Resources */,
 				28A60F6C1397AACB0090853E /* SCHStoryInteractionPopQuiz_iPhone.xib in Resources */,
-				28A60F811397BB3C0090853E /* popquiz-answer-button-green.png in Resources */,
-				28A60F831397BB3C0090853E /* popquiz-answer-button-red.png in Resources */,
-				28A60F851397BB3C0090853E /* popquiz-answer-button-yellow.png in Resources */,
+				28A60F811397BB3C0090853E /* answer-button-green.png in Resources */,
+				28A60F831397BB3C0090853E /* answer-button-red.png in Resources */,
+				28A60F851397BB3C0090853E /* answer-button-yellow.png in Resources */,
 				28A60F891397BB3C0090853E /* storyinteraction-progress-filled.png in Resources */,
 				28A60F8B1397BB3C0090853E /* storyinteraction-progress-unfilled.png in Resources */,
 				28A60F8E1397C1780090853E /* storyinteraction-close.png in Resources */,
@@ -4099,7 +4092,7 @@
 				28D050C9139CEAC200D0C602 /* storyinteraction-draggable-red-iphone.png in Resources */,
 				28D050CC139D087200D0C602 /* storyinteraction-bg-older-iphone.png in Resources */,
 				28D050CF139D299500D0C602 /* storyinteraction-bg-older-ipad.png in Resources */,
-				527B42A9139E584E0030B82B /* popquiz-answer-button-blue.png in Resources */,
+				527B42A9139E584E0030B82B /* answer-button-blue.png in Resources */,
 				527B42AC139E5DCD0030B82B /* answer-tick.png in Resources */,
 				527B42AF139E5DD90030B82B /* answer-cross.png in Resources */,
 				527B42B2139E75490030B82B /* answer-blank.png in Resources */,
@@ -4108,11 +4101,6 @@
 				2856BA06139E3C3700A73D58 /* SCHStoryInteractionWordSearch_iPad.xib in Resources */,
 				2856BA0D139E507700A73D58 /* storyinteraction-wordsearch-letter.png in Resources */,
 				2856BA10139E53AA00A73D58 /* storyinteraction-bg-younger-ipad.png in Resources */,
-				2856BA06139E3C3700A73D58 /* SCHStoryInteractionWordSearch_iPad.xib in Resources */,
-				2856BA0D139E507700A73D58 /* storyinteraction-wordsearch-letter.png in Resources */,
-				2856BA10139E53AA00A73D58 /* storyinteraction-bg-younger-ipad.png in Resources */,
-				F8537F13139E3BB10092C743 /* SCHStoryInteractionAboutYouQuiz_iPhone.xib in Resources */,
-				F8537F1A139E47B40092C743 /* SCHStoryInteractionAboutYouQuiz_iPad.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4373,9 +4361,9 @@
 				C9261FC213970220009FF459 /* notes-count@2x.png in Resources */,
 				28A60F66139777900090853E /* SCHStoryInteractionMultipleChoiceText_iPhone.xib in Resources */,
 				28A60F6D1397AACB0090853E /* SCHStoryInteractionPopQuiz_iPhone.xib in Resources */,
-				28A60F821397BB3C0090853E /* popquiz-answer-button-green.png in Resources */,
-				28A60F841397BB3C0090853E /* popquiz-answer-button-red.png in Resources */,
-				28A60F861397BB3C0090853E /* popquiz-answer-button-yellow.png in Resources */,
+				28A60F821397BB3C0090853E /* answer-button-green.png in Resources */,
+				28A60F841397BB3C0090853E /* answer-button-red.png in Resources */,
+				28A60F861397BB3C0090853E /* answer-button-yellow.png in Resources */,
 				28A60F8A1397BB3C0090853E /* storyinteraction-progress-filled.png in Resources */,
 				28A60F8C1397BB3C0090853E /* storyinteraction-progress-unfilled.png in Resources */,
 				28A60F8F1397C1790090853E /* storyinteraction-close.png in Resources */,
@@ -4393,7 +4381,7 @@
 				28D050CA139CEAC200D0C602 /* storyinteraction-draggable-red-iphone.png in Resources */,
 				28D050CD139D087200D0C602 /* storyinteraction-bg-older-iphone.png in Resources */,
 				28D050D0139D299500D0C602 /* storyinteraction-bg-older-ipad.png in Resources */,
-				527B42AA139E584E0030B82B /* popquiz-answer-button-blue.png in Resources */,
+				527B42AA139E584E0030B82B /* answer-button-blue.png in Resources */,
 				527B42AD139E5DCD0030B82B /* answer-tick.png in Resources */,
 				527B42B0139E6F240030B82B /* answer-cross.png in Resources */,
 				527B42B3139E75490030B82B /* answer-blank.png in Resources */,
@@ -4402,11 +4390,6 @@
 				2856BA07139E3C3700A73D58 /* SCHStoryInteractionWordSearch_iPad.xib in Resources */,
 				2856BA0E139E507700A73D58 /* storyinteraction-wordsearch-letter.png in Resources */,
 				2856BA11139E53AA00A73D58 /* storyinteraction-bg-younger-ipad.png in Resources */,
-				2856BA07139E3C3700A73D58 /* SCHStoryInteractionWordSearch_iPad.xib in Resources */,
-				2856BA0E139E507700A73D58 /* storyinteraction-wordsearch-letter.png in Resources */,
-				2856BA11139E53AA00A73D58 /* storyinteraction-bg-younger-ipad.png in Resources */,
-				F8537F14139E3BB10092C743 /* SCHStoryInteractionAboutYouQuiz_iPhone.xib in Resources */,
-				F8537F1B139E47B40092C743 /* SCHStoryInteractionAboutYouQuiz_iPad.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4637,13 +4620,9 @@
 				28CC985C139CD550001F560F /* SCHStoryInteractionDraggableView.m in Sources */,
 				28CC9863139CD575001F560F /* SCHBoxWithShadowView.m in Sources */,
 				28CC9865139CD575001F560F /* SCHStoryInteractionControllerWhoSaidIt.m in Sources */,
-				F8537F17139E3E4C0092C743 /* SCHStoryInteractionControllerAboutYouQuiz.m in Sources */,
 				280B01AD139E32FA0068661C /* SCHStoryInteractionMultipleChoiceText.m in Sources */,
 				280B01B1139E336D0068661C /* SCHStoryInteractionMultipleChoiceWithAnswerPictures.m in Sources */,
 				F8537F17139E3E4C0092C743 /* SCHStoryInteractionControllerAboutYouQuiz.m in Sources */,
-				2856BA03139E3BF800A73D58 /* SCHStoryInteractionControllerWordSearch.m in Sources */,
-				2856BA0A139E407600A73D58 /* SCHStoryInteractionStrikeOutLabelView.m in Sources */,
-				2856BA14139E570700A73D58 /* SCHStoryInteractionWordSearchContainerView.m in Sources */,
 				2856BA03139E3BF800A73D58 /* SCHStoryInteractionControllerWordSearch.m in Sources */,
 				2856BA0A139E407600A73D58 /* SCHStoryInteractionStrikeOutLabelView.m in Sources */,
 				2856BA14139E570700A73D58 /* SCHStoryInteractionWordSearchContainerView.m in Sources */,
@@ -4886,13 +4865,9 @@
 				28CC985D139CD550001F560F /* SCHStoryInteractionDraggableView.m in Sources */,
 				28CC9864139CD575001F560F /* SCHBoxWithShadowView.m in Sources */,
 				28CC9866139CD575001F560F /* SCHStoryInteractionControllerWhoSaidIt.m in Sources */,
-				F8537F18139E3E4C0092C743 /* SCHStoryInteractionControllerAboutYouQuiz.m in Sources */,
 				280B01AE139E32FA0068661C /* SCHStoryInteractionMultipleChoiceText.m in Sources */,
 				280B01B2139E336D0068661C /* SCHStoryInteractionMultipleChoiceWithAnswerPictures.m in Sources */,
 				F8537F18139E3E4C0092C743 /* SCHStoryInteractionControllerAboutYouQuiz.m in Sources */,
-				2856BA04139E3BF800A73D58 /* SCHStoryInteractionControllerWordSearch.m in Sources */,
-				2856BA0B139E407600A73D58 /* SCHStoryInteractionStrikeOutLabelView.m in Sources */,
-				2856BA15139E570700A73D58 /* SCHStoryInteractionWordSearchContainerView.m in Sources */,
 				2856BA04139E3BF800A73D58 /* SCHStoryInteractionControllerWordSearch.m in Sources */,
 				2856BA0B139E407600A73D58 /* SCHStoryInteractionStrikeOutLabelView.m in Sources */,
 				2856BA15139E570700A73D58 /* SCHStoryInteractionWordSearchContainerView.m in Sources */,

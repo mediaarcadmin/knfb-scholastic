@@ -70,10 +70,10 @@
         UIImage *highlight = nil;
         UIImage *selectedIcon = nil;
         if (i == [self currentQuestion].correctAnswer) {
-            highlight = [[UIImage imageNamed:@"popquiz-answer-button-green"] stretchableImageWithLeftCapWidth:5 topCapHeight:0];
+            highlight = [[UIImage imageNamed:@"answer-button-green"] stretchableImageWithLeftCapWidth:5 topCapHeight:0];
             selectedIcon = [UIImage imageNamed:@"answer-tick"];
         } else {
-            highlight = [[UIImage imageNamed:@"popquiz-answer-button-red"] stretchableImageWithLeftCapWidth:5 topCapHeight:0];    
+            highlight = [[UIImage imageNamed:@"answer-button-red"] stretchableImageWithLeftCapWidth:5 topCapHeight:0];    
             selectedIcon = [UIImage imageNamed:@"answer-cross"];
         }
         UIButton *button = [self.answerButtons objectAtIndex:i];
@@ -82,7 +82,7 @@
         [button setImage:[UIImage imageNamed:@"answer-blank"] forState:UIControlStateNormal];
         [button setHidden:NO];
         [button setSelected:NO];
-        [button setBackgroundImage:[[UIImage imageNamed:@"popquiz-answer-button-blue"] stretchableImageWithLeftCapWidth:5 topCapHeight:0] forState:UIControlStateNormal];        
+        [button setBackgroundImage:[[UIImage imageNamed:@"answer-button-blue"] stretchableImageWithLeftCapWidth:5 topCapHeight:0] forState:UIControlStateNormal];        
         [button setBackgroundImage:highlight forState:UIControlStateSelected];
         [button setImage:selectedIcon forState:UIControlStateSelected];
         ++i;

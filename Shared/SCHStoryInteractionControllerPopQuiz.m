@@ -74,9 +74,9 @@
     for (NSString *answer in [self currentQuestion].answers) {
         UIImage *highlight;
         if (i == [self currentQuestion].correctAnswer) {
-            highlight = [UIImage imageNamed:@"popquiz-answer-button-green"];
+            highlight = [UIImage imageNamed:@"answer-button-green"];
         } else {
-            highlight = [UIImage imageNamed:@"popquiz-answer-button-red"];
+            highlight = [UIImage imageNamed:@"answer-button-red"];
         }
         UIButton *button = [self.answerButtons objectAtIndex:i];
         [button setTitle:answer forState:UIControlStateNormal];
