@@ -789,17 +789,17 @@
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>SCHStoryInteractionDraggableTargetView</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>SCHStoryInteractionDraggableView</string>
+					<string>SCHStoryInteractionWhoSaidItSourceView</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>SCHStoryInteractionDraggableView</string>
+					<string>SCHStoryInteractionWhoSaidItSourceView</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>SCHStoryInteractionDraggableView</string>
+					<string>SCHStoryInteractionWhoSaidItSourceView</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>SCHStoryInteractionDraggableView</string>
+					<string>SCHStoryInteractionWhoSaidItSourceView</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>SCHStoryInteractionDraggableView</string>
+					<string>SCHStoryInteractionWhoSaidItSourceView</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>SCHStoryInteractionDraggableView</string>
+					<string>SCHStoryInteractionWhoSaidItSourceView</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>SCHStretchableImageButton</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -900,12 +900,12 @@
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>UIButton</string>
-							<string>SCHStoryInteractionDraggableView</string>
-							<string>SCHStoryInteractionDraggableView</string>
-							<string>SCHStoryInteractionDraggableView</string>
-							<string>SCHStoryInteractionDraggableView</string>
-							<string>SCHStoryInteractionDraggableView</string>
-							<string>SCHStoryInteractionDraggableView</string>
+							<string>SCHStoryInteractionWhoSaidItSourceView</string>
+							<string>SCHStoryInteractionWhoSaidItSourceView</string>
+							<string>SCHStoryInteractionWhoSaidItSourceView</string>
+							<string>SCHStoryInteractionWhoSaidItSourceView</string>
+							<string>SCHStoryInteractionWhoSaidItSourceView</string>
+							<string>SCHStoryInteractionWhoSaidItSourceView</string>
 							<string>UILabel</string>
 							<string>UILabel</string>
 							<string>UILabel</string>
@@ -948,27 +948,27 @@
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">source1</string>
-								<string key="candidateClassName">SCHStoryInteractionDraggableView</string>
+								<string key="candidateClassName">SCHStoryInteractionWhoSaidItSourceView</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">source2</string>
-								<string key="candidateClassName">SCHStoryInteractionDraggableView</string>
+								<string key="candidateClassName">SCHStoryInteractionWhoSaidItSourceView</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">source3</string>
-								<string key="candidateClassName">SCHStoryInteractionDraggableView</string>
+								<string key="candidateClassName">SCHStoryInteractionWhoSaidItSourceView</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">source4</string>
-								<string key="candidateClassName">SCHStoryInteractionDraggableView</string>
+								<string key="candidateClassName">SCHStoryInteractionWhoSaidItSourceView</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">source5</string>
-								<string key="candidateClassName">SCHStoryInteractionDraggableView</string>
+								<string key="candidateClassName">SCHStoryInteractionWhoSaidItSourceView</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">source6</string>
-								<string key="candidateClassName">SCHStoryInteractionDraggableView</string>
+								<string key="candidateClassName">SCHStoryInteractionWhoSaidItSourceView</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">statementLabel1</string>
@@ -1031,6 +1031,14 @@
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">./Classes/SCHStoryInteractionDraggableView.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">SCHStoryInteractionWhoSaidItSourceView</string>
+					<string key="superclassName">SCHStoryInteractionDraggableView</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/SCHStoryInteractionWhoSaidItSourceView.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">

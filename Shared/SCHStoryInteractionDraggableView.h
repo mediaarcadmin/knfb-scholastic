@@ -12,8 +12,11 @@
 
 @interface SCHStoryInteractionDraggableView : UIImageView {}
 
-// a text label to display in the view
-@property (nonatomic, copy) NSString *title;
+// the offset from this view's true center to the point which should align with the target's center
+@property (nonatomic, assign) CGPoint centerOffset;
+
+// square of the minimum distance this view needs to be from a target in order to snap to it
+@property (nonatomic, assign) CGFloat snapDistanceSq;
 
 // The target this source is currently attached to
 @property (nonatomic, assign) SCHStoryInteractionDraggableTargetView *attachedTarget;

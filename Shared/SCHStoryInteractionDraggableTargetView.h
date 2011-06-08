@@ -10,6 +10,8 @@
 
 @interface SCHStoryInteractionDraggableTargetView : UIImageView {}
 
+@property (nonatomic, assign) CGPoint centerOffset;
+@property (nonatomic, readonly) CGPoint targetCenter;
 @property (nonatomic, assign) BOOL occupied;
 
 @end

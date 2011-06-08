@@ -9,9 +9,15 @@
 #import <QuartzCore/QuartzCore.h>
 
 #import "SCHStoryInteractionControllerWhoSaidIt.h"
-#import "SCHStoryInteractionDraggableView.h"
+#import "SCHStoryInteractionWhoSaidItSourceView.h"
 #import "SCHStoryInteractionDraggableTargetView.h"
 #import "SCHStoryInteractionWhoSaidIt.h"
+
+#define kSnapDistanceSq 900
+#define kSourceOffsetY_iPad 6
+#define kSourceOffsetY_iPhone 3
+#define kTargetOffsetX_iPad -12
+#define kTargetOffsetX_iPhone -7
 
 @interface SCHStoryInteractionControllerWhoSaidIt ()
 
@@ -75,24 +81,37 @@
     self.sources = [NSArray arrayWithObjects:self.source1, self.source2, self.source3, self.source4, self.source5, self.source6, nil];
     self.targets = [NSArray arrayWithObjects:self.target1, self.target2, self.target3, self.target4, self.target5, nil];
 
+    CGPoint targetCenterOffset, sourceCenterOffset;
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        targetCenterOffset = CGPointMake(kTargetOffsetX_iPad, 0);
+        sourceCenterOffset = CGPointMake(0, kSourceOffsetY_iPad);
+    } else {
+        targetCenterOffset = CGPointMake(kTargetOffsetX_iPhone, 0);
+        sourceCenterOffset = CGPointMake(0, kSourceOffsetY_iPhone);
+    }
+    
     // set up the labels and tag the targets with the correct indices
     SCHStoryInteractionWhoSaidIt *whoSaidIt = (SCHStoryInteractionWhoSaidIt *)[self storyInteraction];
     NSInteger targetIndex = 0;
     for (SCHStoryInteractionWhoSaidItStatement *statement in whoSaidIt.statements) {
         if (statement.questionIndex != whoSaidIt.distracterIndex) {
             [[self.statementLabels objectAtIndex:targetIndex] setText:statement.text];
-            [[self.targets objectAtIndex:targetIndex] setTag:statement.questionIndex];
+            SCHStoryInteractionDraggableTargetView *target = [self.targets objectAtIndex:targetIndex];
+            target.tag = statement.questionIndex;
+            target.centerOffset = targetCenterOffset;
             targetIndex++;
         }
     }
 
     // jumble up the sources and tag with the correct indices
     NSMutableArray *statements = [whoSaidIt.statements mutableCopy];
-    for (SCHStoryInteractionDraggableView *source in self.sources) {
+    for (SCHStoryInteractionWhoSaidItSourceView *source in self.sources) {
         int index = arc4random() % [statements count];
         SCHStoryInteractionWhoSaidItStatement *statement = [statements objectAtIndex:index];
         source.title = statement.source;
         source.tag = statement.questionIndex;
+        source.centerOffset = sourceCenterOffset;
+        source.snapDistanceSq = kSnapDistanceSq;
         [source setDragTargets:self.targets];
         [statements removeObjectAtIndex:index];
     }

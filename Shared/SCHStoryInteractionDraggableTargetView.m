@@ -10,6 +10,12 @@
 
 @implementation SCHStoryInteractionDraggableTargetView
 
+@synthesize centerOffset;
 @synthesize occupied;
+
+- (CGPoint)targetCenter
+{
+    return CGPointMake(self.center.x + self.centerOffset.x, self.center.y + self.centerOffset.y);
+}
 
 @end
