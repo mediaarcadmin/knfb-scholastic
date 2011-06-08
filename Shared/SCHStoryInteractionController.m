@@ -12,6 +12,7 @@
 #import "SCHStoryInteractionControllerDelegate.h"
 #import "SCHStoryInteractionDraggableView.h"
 #import "SCHXPSProvider.h"
+#import "SCHBookManager.h"
 
 #define kBackgroundLeftCap 10
 #define kBackgroundTopCap_iPhone 40
@@ -44,6 +45,7 @@ typedef void (^PlayAudioCompletionBlock)(void);
 @implementation SCHStoryInteractionController
 
 @synthesize xpsProvider;
+@synthesize isbn;
 @synthesize containerView;
 @synthesize nibObjects;
 @synthesize contentsView;
@@ -112,6 +114,8 @@ typedef void (^PlayAudioCompletionBlock)(void);
 - (void)presentInHostView:(UIView *)hostView
 {
     if (self.containerView == nil) {
+        
+        self.xpsProvider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.isbn];
         
         BOOL iPad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
         
@@ -250,12 +254,14 @@ typedef void (^PlayAudioCompletionBlock)(void);
 
 - (void)removeFromHostView
 {
+    [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.isbn];
     [self.containerView removeFromSuperview];
     
     if (delegate && [delegate respondsToSelector:@selector(storyInteractionControllerDidDismiss:)]) {
         // may result in self being dealloc'ed so don't do anything else after this
         [delegate storyInteractionControllerDidDismiss:self];
     }
+    
 }
 
 - (UIImage *)deviceSpecificImageNamed:(NSString *)name
@@ -306,7 +312,9 @@ typedef void (^PlayAudioCompletionBlock)(void);
 
 - (UIImage *)imageAtPath:(NSString *)path
 {
-    return nil;
+    NSData *imageData = [self.xpsProvider dataForComponentAtPath:path];
+    UIImage *image = [UIImage imageWithData:imageData];
+    return image;
 }
 
 #pragma mark - AVAudioPlayer Delegate methods
