@@ -45,7 +45,7 @@
 
 + (NSString *)resourcesPath
 {
-    return @"/Documents/1/Other/KNFB/Interactions/Interactions.xml";
+    return @"/Documents/1/Other/KNFB/Interactions";
 }
 
 @end

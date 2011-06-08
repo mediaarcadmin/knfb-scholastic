@@ -17,6 +17,9 @@
 
 @interface SCHStoryInteractionController : NSObject {}
 
+// Unique Book Identifier
+@property (nonatomic, copy) NSString *isbn;
+
 // XPS Provider for this story's book
 @property (nonatomic, retain) SCHXPSProvider *xpsProvider;
 

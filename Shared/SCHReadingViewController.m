@@ -1498,6 +1498,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     NSLog(@"Selected interaction %d.", interaction);
     SCHStoryInteraction *storyInteraction = [[self.bookStoryInteractions allStoryInteractions] objectAtIndex:interaction];
     self.storyInteractionController = [SCHStoryInteractionController storyInteractionControllerForStoryInteraction:storyInteraction];
+    self.storyInteractionController.isbn = self.isbn;
     self.storyInteractionController.interfaceOrientation = self.interfaceOrientation;
     self.storyInteractionController.delegate = self;
     [self.storyInteractionController presentInHostView:self.view];
