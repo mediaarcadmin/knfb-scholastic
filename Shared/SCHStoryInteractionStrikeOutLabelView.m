@@ -35,8 +35,8 @@
         
         CGContextSetStrokeColorWithColor(context, [self.strikeOutColor CGColor]);
         CGContextSetLineWidth(context, 2.0);
-        CGContextMoveToPoint(context, CGRectGetMinX(textRect), CGRectGetMidY(textRect));
-        CGContextAddLineToPoint(context, CGRectGetMaxX(textRect), CGRectGetMidY(textRect));
+        CGContextMoveToPoint(context, CGRectGetMinX(textRect), CGRectGetMidY(textRect)+2);
+        CGContextAddLineToPoint(context, CGRectGetMaxX(textRect), CGRectGetMidY(textRect)+2);
         CGContextStrokePath(context);
     }
 }

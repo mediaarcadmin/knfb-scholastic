@@ -16,6 +16,7 @@
 @interface SCHStoryInteractionControllerWordSearch ()
 
 @property (nonatomic, retain) NSArray *wordViews;
+@property (nonatomic, assign) NSInteger numberOfWordsFound;
 
 @end
 
@@ -30,6 +31,7 @@
 @synthesize wordView5;
 @synthesize wordView6;
 @synthesize wordViews;
+@synthesize numberOfWordsFound;
 
 - (void)dealloc
 {
@@ -66,8 +68,11 @@
         [[self.wordViews objectAtIndex:i] setText:[wordSearch.words objectAtIndex:i]];
     }
     
-    [self.lettersContainerView populateFromWordSearchModel:wordSearch];
+    UIImage *letterTile = [UIImage imageNamed:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"storyinteraction-wordsearch-letter-ipad" : @"storyinteraction-wordsearch-letter-iphone")];
+    [self.lettersContainerView populateFromWordSearchModel:wordSearch
+                                       withLetterTileImage:letterTile];
     self.lettersContainerView.delegate = self;
+    self.numberOfWordsFound = 0;
 }
 
 #pragma mark - SCHStoryInteractionWordSearchContainerViewDelegate
@@ -84,7 +89,8 @@
         unichar letter = [wordSearch matrixLetterAtRow:startRow+(vertical?i:0) column:startColumn+(vertical?0:i)];
         [selectedLetters appendString:[NSString stringWithCharacters:&letter length:1]];
     }
-    
+
+    BOOL found = NO;
     for (NSString *word in wordSearch.words) {
         if ([[word uppercaseString] isEqualToString:selectedLetters]) {
             // a match!
@@ -92,10 +98,28 @@
             SCHStoryInteractionStrikeOutLabelView *label = [self.wordViews objectAtIndex:index];
             [label setStrikedOut:YES];
             [containerView addPermanentHighlightFromCurrentSelectionWithColor:label.strikeOutColor];
+            [containerView clearSelection];
+            found = YES;
+            break;
         }
     }
-    
-    [containerView clearSelection];
+
+    if (found) {
+        [self playAudioAtPath:[wordSearch audioPathForCorrectAnswer]
+                   completion:^{
+                       if (++self.numberOfWordsFound == [wordSearch.words count]) {
+                           [self playAudioAtPath:[wordSearch audioPathForYouFoundThemAll]
+                                      completion:^{
+                                          [self removeFromHostView];
+                                      }];
+                       }
+                   }];
+    } else {
+        [self playAudioAtPath:[wordSearch audioPathForIncorrectAnswer]
+                   completion:^{
+                       [containerView clearSelection];
+                   }];
+    }
 }
 
 @end

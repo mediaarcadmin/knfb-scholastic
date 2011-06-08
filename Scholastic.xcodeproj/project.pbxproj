@@ -11,6 +11,12 @@
 		1D60589B0D05DD56006BFB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
+		28024701139F6D3300B73703 /* storyinteraction-wordsearch-letter-iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 28024700139F6D3300B73703 /* storyinteraction-wordsearch-letter-iphone.png */; };
+		28024702139F6D3300B73703 /* storyinteraction-wordsearch-letter-iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 28024700139F6D3300B73703 /* storyinteraction-wordsearch-letter-iphone.png */; };
+		28024704139F6D6E00B73703 /* SCHStoryInteractionWordSearch_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28024703139F6D6E00B73703 /* SCHStoryInteractionWordSearch_iPhone.xib */; };
+		28024705139F6D6E00B73703 /* SCHStoryInteractionWordSearch_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28024703139F6D6E00B73703 /* SCHStoryInteractionWordSearch_iPhone.xib */; };
+		28024707139F6FE900B73703 /* storyinteraction-bg-younger-iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 28024706139F6FE900B73703 /* storyinteraction-bg-younger-iphone.png */; };
+		28024708139F6FE900B73703 /* storyinteraction-bg-younger-iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 28024706139F6FE900B73703 /* storyinteraction-bg-younger-iphone.png */; };
 		280B01AD139E32FA0068661C /* SCHStoryInteractionMultipleChoiceText.m in Sources */ = {isa = PBXBuildFile; fileRef = 280B01AC139E32FA0068661C /* SCHStoryInteractionMultipleChoiceText.m */; };
 		280B01AE139E32FA0068661C /* SCHStoryInteractionMultipleChoiceText.m in Sources */ = {isa = PBXBuildFile; fileRef = 280B01AC139E32FA0068661C /* SCHStoryInteractionMultipleChoiceText.m */; };
 		280B01B1139E336D0068661C /* SCHStoryInteractionMultipleChoiceWithAnswerPictures.m in Sources */ = {isa = PBXBuildFile; fileRef = 280B01B0139E336C0068661C /* SCHStoryInteractionMultipleChoiceWithAnswerPictures.m */; };
@@ -26,8 +32,8 @@
 		2856BA07139E3C3700A73D58 /* SCHStoryInteractionWordSearch_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2856BA05139E3C3700A73D58 /* SCHStoryInteractionWordSearch_iPad.xib */; };
 		2856BA0A139E407600A73D58 /* SCHStoryInteractionStrikeOutLabelView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2856BA09139E407600A73D58 /* SCHStoryInteractionStrikeOutLabelView.m */; };
 		2856BA0B139E407600A73D58 /* SCHStoryInteractionStrikeOutLabelView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2856BA09139E407600A73D58 /* SCHStoryInteractionStrikeOutLabelView.m */; };
-		2856BA0D139E507700A73D58 /* storyinteraction-wordsearch-letter.png in Resources */ = {isa = PBXBuildFile; fileRef = 2856BA0C139E507700A73D58 /* storyinteraction-wordsearch-letter.png */; };
-		2856BA0E139E507700A73D58 /* storyinteraction-wordsearch-letter.png in Resources */ = {isa = PBXBuildFile; fileRef = 2856BA0C139E507700A73D58 /* storyinteraction-wordsearch-letter.png */; };
+		2856BA0D139E507700A73D58 /* storyinteraction-wordsearch-letter-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 2856BA0C139E507700A73D58 /* storyinteraction-wordsearch-letter-ipad.png */; };
+		2856BA0E139E507700A73D58 /* storyinteraction-wordsearch-letter-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 2856BA0C139E507700A73D58 /* storyinteraction-wordsearch-letter-ipad.png */; };
 		2856BA10139E53AA00A73D58 /* storyinteraction-bg-younger-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 2856BA0F139E53AA00A73D58 /* storyinteraction-bg-younger-ipad.png */; };
 		2856BA11139E53AA00A73D58 /* storyinteraction-bg-younger-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 2856BA0F139E53AA00A73D58 /* storyinteraction-bg-younger-ipad.png */; };
 		2856BA14139E570700A73D58 /* SCHStoryInteractionWordSearchContainerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2856BA13139E570700A73D58 /* SCHStoryInteractionWordSearchContainerView.m */; };
@@ -1109,6 +1115,9 @@
 		1D3623250D0F684500981E51 /* AppDelegate_iPad.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate_iPad.m; path = iPad/AppDelegate_iPad.m; sourceTree = "<group>"; };
 		1D6058910D05DD3D006BFB54 /* Scholastic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Scholastic.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		28024700139F6D3300B73703 /* storyinteraction-wordsearch-letter-iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-wordsearch-letter-iphone.png"; sourceTree = "<group>"; };
+		28024703139F6D6E00B73703 /* SCHStoryInteractionWordSearch_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionWordSearch_iPhone.xib; sourceTree = "<group>"; };
+		28024706139F6FE900B73703 /* storyinteraction-bg-younger-iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-bg-younger-iphone.png"; sourceTree = "<group>"; };
 		280B01AB139E32FA0068661C /* SCHStoryInteractionMultipleChoiceText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionMultipleChoiceText.h; sourceTree = "<group>"; };
 		280B01AC139E32FA0068661C /* SCHStoryInteractionMultipleChoiceText.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionMultipleChoiceText.m; sourceTree = "<group>"; };
 		280B01AF139E336C0068661C /* SCHStoryInteractionMultipleChoiceWithAnswerPictures.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionMultipleChoiceWithAnswerPictures.h; sourceTree = "<group>"; };
@@ -1121,7 +1130,7 @@
 		2856BA05139E3C3700A73D58 /* SCHStoryInteractionWordSearch_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionWordSearch_iPad.xib; sourceTree = "<group>"; };
 		2856BA08139E407600A73D58 /* SCHStoryInteractionStrikeOutLabelView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionStrikeOutLabelView.h; sourceTree = "<group>"; };
 		2856BA09139E407600A73D58 /* SCHStoryInteractionStrikeOutLabelView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionStrikeOutLabelView.m; sourceTree = "<group>"; };
-		2856BA0C139E507700A73D58 /* storyinteraction-wordsearch-letter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-wordsearch-letter.png"; sourceTree = "<group>"; };
+		2856BA0C139E507700A73D58 /* storyinteraction-wordsearch-letter-ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-wordsearch-letter-ipad.png"; sourceTree = "<group>"; };
 		2856BA0F139E53AA00A73D58 /* storyinteraction-bg-younger-ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-bg-younger-ipad.png"; sourceTree = "<group>"; };
 		2856BA12139E570700A73D58 /* SCHStoryInteractionWordSearchContainerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionWordSearchContainerView.h; sourceTree = "<group>"; };
 		2856BA13139E570700A73D58 /* SCHStoryInteractionWordSearchContainerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionWordSearchContainerView.m; sourceTree = "<group>"; };
@@ -2236,6 +2245,7 @@
 				28CC9860139CD575001F560F /* SCHStoryInteractionControllerWhoSaidIt.h */,
 				28CC9861139CD575001F560F /* SCHStoryInteractionControllerWhoSaidIt.m */,
 				2856BA05139E3C3700A73D58 /* SCHStoryInteractionWordSearch_iPad.xib */,
+				28024703139F6D6E00B73703 /* SCHStoryInteractionWordSearch_iPhone.xib */,
 				2856BA01139E3BF800A73D58 /* SCHStoryInteractionControllerWordSearch.h */,
 				2856BA02139E3BF800A73D58 /* SCHStoryInteractionControllerWordSearch.m */,
 				F8537F15139E3E4C0092C743 /* SCHStoryInteractionControllerAboutYouQuiz.h */,
@@ -2272,6 +2282,7 @@
 			children = (
 				28D050CB139D087200D0C602 /* storyinteraction-bg-older-iphone.png */,
 				28D050CE139D299500D0C602 /* storyinteraction-bg-older-ipad.png */,
+				28024706139F6FE900B73703 /* storyinteraction-bg-younger-iphone.png */,
 				2856BA0F139E53AA00A73D58 /* storyinteraction-bg-younger-ipad.png */,
 				28D050B4139CEA0F00D0C602 /* storyinteraction-draggable-green-ipad.png */,
 				28D050C2139CEAC200D0C602 /* storyinteraction-draggable-green-iphone.png */,
@@ -2287,7 +2298,8 @@
 				28A60F7B1397BB3C0090853E /* popquiz-answer-button-green.png */,
 				28A60F7C1397BB3C0090853E /* popquiz-answer-button-red.png */,
 				28A60F7D1397BB3C0090853E /* popquiz-answer-button-yellow.png */,
-				2856BA0C139E507700A73D58 /* storyinteraction-wordsearch-letter.png */,
+				2856BA0C139E507700A73D58 /* storyinteraction-wordsearch-letter-ipad.png */,
+				28024700139F6D3300B73703 /* storyinteraction-wordsearch-letter-iphone.png */,
 			);
 			name = StoryInteractions;
 			path = Resources/UIAssets/StoryInteractions;
@@ -4077,10 +4089,13 @@
 				28D050CC139D087200D0C602 /* storyinteraction-bg-older-iphone.png in Resources */,
 				28D050CF139D299500D0C602 /* storyinteraction-bg-older-ipad.png in Resources */,
 				2856BA06139E3C3700A73D58 /* SCHStoryInteractionWordSearch_iPad.xib in Resources */,
-				2856BA0D139E507700A73D58 /* storyinteraction-wordsearch-letter.png in Resources */,
+				2856BA0D139E507700A73D58 /* storyinteraction-wordsearch-letter-ipad.png in Resources */,
 				2856BA10139E53AA00A73D58 /* storyinteraction-bg-younger-ipad.png in Resources */,
 				F8537F13139E3BB10092C743 /* SCHStoryInteractionAboutYouQuiz_iPhone.xib in Resources */,
 				F8537F1A139E47B40092C743 /* SCHStoryInteractionAboutYouQuiz_iPad.xib in Resources */,
+				28024701139F6D3300B73703 /* storyinteraction-wordsearch-letter-iphone.png in Resources */,
+				28024704139F6D6E00B73703 /* SCHStoryInteractionWordSearch_iPhone.xib in Resources */,
+				28024707139F6FE900B73703 /* storyinteraction-bg-younger-iphone.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4362,10 +4377,13 @@
 				28D050CD139D087200D0C602 /* storyinteraction-bg-older-iphone.png in Resources */,
 				28D050D0139D299500D0C602 /* storyinteraction-bg-older-ipad.png in Resources */,
 				2856BA07139E3C3700A73D58 /* SCHStoryInteractionWordSearch_iPad.xib in Resources */,
-				2856BA0E139E507700A73D58 /* storyinteraction-wordsearch-letter.png in Resources */,
+				2856BA0E139E507700A73D58 /* storyinteraction-wordsearch-letter-ipad.png in Resources */,
 				2856BA11139E53AA00A73D58 /* storyinteraction-bg-younger-ipad.png in Resources */,
 				F8537F14139E3BB10092C743 /* SCHStoryInteractionAboutYouQuiz_iPhone.xib in Resources */,
 				F8537F1B139E47B40092C743 /* SCHStoryInteractionAboutYouQuiz_iPad.xib in Resources */,
+				28024702139F6D3300B73703 /* storyinteraction-wordsearch-letter-iphone.png in Resources */,
+				28024705139F6D6E00B73703 /* SCHStoryInteractionWordSearch_iPhone.xib in Resources */,
+				28024708139F6FE900B73703 /* storyinteraction-bg-younger-iphone.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -72,11 +72,11 @@
 }
 
 - (void)populateFromWordSearchModel:(SCHStoryInteractionWordSearch *)wordSearch
+                withLetterTileImage:(UIImage *)letterBackground
 {
     self.numberOfRows = [wordSearch matrixRows];
     self.numberOfColumns = [wordSearch matrixColumns];
     const CGFloat scale = [[UIScreen mainScreen] scale];
-    UIImage *letterBackground = [UIImage imageNamed:@"storyinteraction-wordsearch-letter"];
     self.letterSize = CGSizeMake(letterBackground.size.width / scale, letterBackground.size.height / scale);
     CGSize letterAreaSize = CGSizeMake(self.numberOfColumns * self.letterSize.width + (self.numberOfColumns-1) * kLetterGap,
                                        self.numberOfRows * self.letterSize.height + (self.numberOfRows-1) * kLetterGap);

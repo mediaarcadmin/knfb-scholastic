@@ -21,4 +21,16 @@
 - (NSInteger)matrixRows;
 - (unichar)matrixLetterAtRow:(NSInteger)row column:(NSInteger)column;
 
+// XPS-relative path for the question audio
+- (NSString *)audioPathForQuestion;
+
+// XPS-relative path for incorrect answer audio
+- (NSString *)audioPathForIncorrectAnswer;
+
+// XPS-relative path for correct answer audio
+- (NSString *)audioPathForCorrectAnswer;
+
+// XPS-relative path for 'you found them all' all
+- (NSString *)audioPathForYouFoundThemAll;
+
 @end
