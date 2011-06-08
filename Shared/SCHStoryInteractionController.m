@@ -24,14 +24,20 @@
 #define kTitleInsetLeft 10
 #define kTitleInsetTop 5
 
+typedef void (^PlayAudioCompletionBlock)(void);
+
 @interface SCHStoryInteractionController ()
 
 @property (nonatomic, retain) NSArray *nibObjects;
 @property (nonatomic, retain) UIView *contentsView;
 @property (nonatomic, retain) UIImageView *backgroundView;
+@property (nonatomic, retain) AVAudioPlayer *player;
+@property (nonatomic, assign) BOOL resumeInterruptedPlayer;
+@property (nonatomic, copy) PlayAudioCompletionBlock playAudioCompletionBlock;
 
 - (UIImage *)deviceSpecificImageNamed:(NSString *)name;
 - (void)updateOrientation;
+- (void)endAudio;
 
 @end
 
@@ -45,6 +51,9 @@
 @synthesize storyInteraction;
 @synthesize delegate;
 @synthesize interfaceOrientation;
+@synthesize player;
+@synthesize resumeInterruptedPlayer;
+@synthesize playAudioCompletionBlock;
 
 + (SCHStoryInteractionController *)storyInteractionControllerForStoryInteraction:(SCHStoryInteraction *)storyInteraction
 {
@@ -60,6 +69,8 @@
 
 - (void)dealloc
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
     [self removeFromHostView];
     [xpsProvider release];
     [containerView release];
@@ -67,6 +78,8 @@
     [contentsView release];
     [backgroundView release];
     [storyInteraction release];
+    [player release], player = nil;
+    Block_release(playAudioCompletionBlock), playAudioCompletionBlock = nil;
     [super dealloc];
 }
 
@@ -83,6 +96,15 @@
             NSLog(@"failed to load nib %@", nibName);
             return nil;
         }
+        
+        resumeInterruptedPlayer = NO;
+        playAudioCompletionBlock = nil;
+        
+        // register for going into the background
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(willResignActiveNotification:)
+                                                     name:UIApplicationWillResignActiveNotification
+                                                   object:nil];
     }
     return self;
 }
@@ -219,6 +241,13 @@
     NSLog(@"Playing audio"); 
 }
 
+#pragma mark - Notification methods
+
+- (void)willResignActiveNotification:(NSNotification *)notification
+{
+    [self endAudio];
+}
+
 - (void)removeFromHostView
 {
     [self.containerView removeFromSuperview];
@@ -244,14 +273,76 @@
 
 - (void)playAudioAtPath:(NSString *)path completion:(void (^)(void))completion
 {
-    // for now just defer the completion block
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 2 * NSEC_PER_SEC);
-    dispatch_after(popTime, dispatch_get_current_queue(), completion);
+    NSError *error = nil;
+    BOOL failed = YES;
+    
+    NSData *audioData = [self.xpsProvider dataForComponentAtPath:path];
+    if (audioData != nil) {
+        self.player = [[AVAudioPlayer alloc] initWithData:audioData error:&error];
+        if (self.player != nil) {
+            self.resumeInterruptedPlayer = NO;
+            [self.player release];
+            self.player.delegate = self;
+            self.playAudioCompletionBlock = completion;
+            [self.player play];
+            failed = NO;
+        }       
+    }
+    
+    // if something goes wrong we should do completion
+    if(failed == YES && completion != nil) {
+        completion();
+    }
+}
+
+- (void)endAudio
+{
+    self.player = nil;
+    if (self.playAudioCompletionBlock != nil) {
+        self.playAudioCompletionBlock();
+        self.playAudioCompletionBlock = nil;
+    }
 }
 
 - (UIImage *)imageAtPath:(NSString *)path
 {
     return nil;
+}
+
+#pragma mark - AVAudioPlayer Delegate methods
+
+- (void)audioPlayerBeginInterruption:(AVAudioPlayer *)player
+{
+    if (self.player.playing == YES) {
+        [self.player pause];
+        self.resumeInterruptedPlayer = YES;
+    }
+}
+
+- (void)audioPlayerEndInterruption:(AVAudioPlayer *)player
+{
+    if (self.resumeInterruptedPlayer == YES) {
+        self.resumeInterruptedPlayer = NO;
+        [self.player play];
+    }
+}
+
+- (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
+{
+    [self endAudio];
+}
+
+- (void)audioPlayerDecodeErrorDidOccur:(AVAudioPlayer *)player error:(NSError *)error
+{
+    [self endAudio];    
+    
+	UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") 
+                                                         message:[error localizedDescription]
+                                                        delegate:nil 
+                                               cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+                                               otherButtonTitles:nil]; 
+    [errorAlert show]; 
+    [errorAlert release]; 
 }
 
 #pragma mark - subclass overrides

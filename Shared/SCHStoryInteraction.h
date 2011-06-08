@@ -35,7 +35,4 @@
 // Story interaction title for the interaction view itself
 - (NSString *)interactionViewTitle;
 
-// base path for interaction resources in XPSProvider
-+ (NSString *)resourcesPath;
-
 @end

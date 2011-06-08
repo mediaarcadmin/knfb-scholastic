@@ -99,10 +99,11 @@
     if (chosenAnswer != NSNotFound) {
         [sender setSelected:YES];
         if (chosenAnswer == [self currentQuestion].correctAnswer) {
-            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 1.0 * NSEC_PER_SEC);
-            dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            [self playAudioAtPath:[[self currentQuestion] audioPathForCorrectAnswer] completion:^{
                 [self nextQuestion];
-            });    
+            }];
+        } else {
+            [self playAudioAtPath:[[self currentQuestion] audioPathForIncorrectAnswer] completion:nil];
         }
     }
 }

@@ -1500,6 +1500,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     self.storyInteractionController = [SCHStoryInteractionController storyInteractionControllerForStoryInteraction:storyInteraction];
     self.storyInteractionController.interfaceOrientation = self.interfaceOrientation;
     self.storyInteractionController.delegate = self;
+    self.storyInteractionController.xpsProvider = self.xpsProvider;
     [self.storyInteractionController presentInHostView:self.view];
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {

@@ -8,6 +8,8 @@
 
 #import "SCHStoryInteractionVideo.h"
 
+#import "KNFBXPSConstants.h"
+
 @implementation SCHStoryInteractionVideo
 
 @synthesize videoTranscript;
@@ -27,7 +29,7 @@
 
 - (NSString *)videoPath
 {
-    return [[SCHStoryInteraction resourcesPath] stringByAppendingPathComponent:self.videoFilename];
+    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:self.videoFilename];
 }
 
 @end

@@ -8,6 +8,8 @@
 
 #import "SCHStoryInteractionStartingLetter.h"
 
+#import "KNFBXPSConstants.h"
+
 #pragma mark - SCHStoryInteractionStartingLetterQuestion
 
 @implementation SCHStoryInteractionStartingLetterQuestion
@@ -29,13 +31,13 @@
 - (NSString *)imagePath
 {
     NSString *filename = [NSString stringWithFormat:@"%@_%@.png", self.storyInteraction.ID, self.uniqueObjectName];
-    return [[SCHStoryInteraction resourcesPath] stringByAppendingPathComponent:filename];    
+    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:filename];    
 }
 
 - (NSString *)audioPath
 {
     NSString *filename = [NSString stringWithFormat:@"%@_%@.mp3", self.storyInteraction.ID, self.uniqueObjectName];
-    return [[SCHStoryInteraction resourcesPath] stringByAppendingPathComponent:filename];    
+    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:filename];    
 }
 
 @end

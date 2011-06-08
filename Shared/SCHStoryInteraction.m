@@ -9,6 +9,8 @@
 #import "SCHStoryInteraction.h"
 #import "SCHStoryInteractionParser.h"
 
+#import "KNFBXPSConstants.h"
+
 @implementation SCHStoryInteractionQuestion
 
 @synthesize storyInteraction;
@@ -16,7 +18,7 @@
 
 - (NSString *)audioPathForThatsRight
 {
-    return [[SCHStoryInteraction resourcesPath] stringByAppendingPathComponent:@"gen_thatsright.mp3"];
+    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:@"gen_thatsright.mp3"];
 }
 
 @end
@@ -41,11 +43,6 @@
 - (NSString *)interactionViewTitle
 {
     return [self title];
-}
-
-+ (NSString *)resourcesPath
-{
-    return @"/Documents/1/Other/KNFB/Interactions/Interactions.xml";
 }
 
 @end
