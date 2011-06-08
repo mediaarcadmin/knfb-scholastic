@@ -29,4 +29,6 @@
 // array of NSString
 @property (nonatomic, retain) NSArray *outcomeMessages;
 
+@property (nonatomic, retain) NSArray *tiebreakOrder;
+
 @end

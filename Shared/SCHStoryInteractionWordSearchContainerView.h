@@ -24,7 +24,9 @@
 
 @property (nonatomic, assign) id<SCHStoryInteractionWordSearchContainerViewDelegate> delegate;
 
-- (void)populateFromWordSearchModel:(SCHStoryInteractionWordSearch *)wordSearch;
+- (void)populateFromWordSearchModel:(SCHStoryInteractionWordSearch *)wordSearch
+                withLetterTileImage:(UIImage *)letterBackground;
+
 - (void)clearSelection;
 - (void)addPermanentHighlightFromCurrentSelectionWithColor:(UIColor *)color;
 

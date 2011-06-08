@@ -59,6 +59,10 @@
                                  nil];
     STAssertEqualObjects(story.outcomeMessages, expectedOutcomes, @"incorrect outcome messages");
     
+    NSArray *expectedTiebreakOrder = [NSArray arrayWithObjects:[NSNumber numberWithInt:1],[NSNumber numberWithInt:0],[NSNumber numberWithInt:2], nil];
+    
+    STAssertEqualObjects(story.tiebreakOrder, expectedTiebreakOrder, @"Tiebreak order did not parse correctly");
+    
     struct {
         NSString *prompt;
         NSArray *answers;
@@ -83,6 +87,7 @@
         STAssertEqualObjects(q.prompt, expect[i].prompt, @"incorrect prompt for question %d", i+1);
         STAssertEqualObjects(q.answers, expect[i].answers, @"incorrect answers for question %d", i+1);
     }
+    
 }
 
 - (void)testHotSpot1
