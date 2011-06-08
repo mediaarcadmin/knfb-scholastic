@@ -54,6 +54,7 @@
 - (void)removeFromHostView;
 
 // play an audio file from the XPS provider and invoke a completion block when the playback is complete
+- (BOOL)useAudioButton;
 - (void)playAudioAtPath:(NSString *)path completion:(void(^)(void))completion;
 
 // get an image from the XPS provider
@@ -64,5 +65,6 @@
 // send then the nib is loaded and its view objects are attached to the container; similar
 // to viewDidLoad, but used a separate message name to avoid confusion.
 - (void)setupView;
+- (NSString *)audioPath;
 
 @end

@@ -169,7 +169,7 @@ typedef void (^PlayAudioCompletionBlock)(void);
         [closeButton addTarget:self action:@selector(closeButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
         [background addSubview:closeButton];
 
-        if ([self.storyInteraction isOlderStoryInteraction] == NO) {
+        if ([self useAudioButton] == YES) {
             UIButton *audioButton = [UIButton buttonWithType:UIButtonTypeCustom];
             audioButton.frame = CGRectMake(backgroundWidth - 20, -10, 30, 30);
             [audioButton setImage:[UIImage imageNamed:@"icon-play.png"] forState:UIControlStateNormal];
@@ -270,7 +270,20 @@ typedef void (^PlayAudioCompletionBlock)(void);
     return image;
 }
 
-#pragma mark - XPSProvider accessors
+#pragma mark - Audio methods
+
+- (BOOL)useAudioButton
+{
+    return([self.storyInteraction isOlderStoryInteraction] == NO); 
+}
+
+- (IBAction)playAudioButtonTapped:(id)sender
+{
+    NSString *path = [self audioPath];
+    if (path != nil) {
+        [self playAudioAtPath:path completion:nil];
+    }   
+}
 
 - (void)playAudioAtPath:(NSString *)path completion:(void (^)(void))completion
 {
@@ -303,13 +316,6 @@ typedef void (^PlayAudioCompletionBlock)(void);
         self.playAudioCompletionBlock();
         self.playAudioCompletionBlock = nil;
     }
-}
-
-- (UIImage *)imageAtPath:(NSString *)path
-{
-    NSData *imageData = [self.xpsProvider dataForComponentAtPath:path];
-    UIImage *image = [UIImage imageWithData:imageData];
-    return image;
 }
 
 #pragma mark - AVAudioPlayer Delegate methods
@@ -348,13 +354,23 @@ typedef void (^PlayAudioCompletionBlock)(void);
     [errorAlert release]; 
 }
 
+#pragma mark - XPSProvider accessors
+
+- (UIImage *)imageAtPath:(NSString *)path
+{
+    NSData *imageData = [self.xpsProvider dataForComponentAtPath:path];
+    UIImage *image = [UIImage imageWithData:imageData];
+    return image;
+}
+
 #pragma mark - subclass overrides
 
 - (void)setupView
 {}
 
-- (IBAction)playAudioButtonTapped:(id)sender
+- (NSString *)audioPath
 {
+    return(nil);
 }
 
 @end
