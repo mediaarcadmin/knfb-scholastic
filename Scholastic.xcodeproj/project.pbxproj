@@ -224,6 +224,12 @@
 		5233E03413154EEA0088F18C /* SCHDeviceInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 5233E03213154EEA0088F18C /* SCHDeviceInfo.m */; };
 		5233E0D813159CA80088F18C /* BITNetworkActivityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5233E0D713159CA80088F18C /* BITNetworkActivityManager.m */; };
 		5233E0D913159CA80088F18C /* BITNetworkActivityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5233E0D713159CA80088F18C /* BITNetworkActivityManager.m */; };
+		523E19ED13A0206E00A785B6 /* SCHStoryInteractionControllerVideo.m in Sources */ = {isa = PBXBuildFile; fileRef = 523E19EB13A0206E00A785B6 /* SCHStoryInteractionControllerVideo.m */; };
+		523E19EE13A0206E00A785B6 /* SCHStoryInteractionControllerVideo.m in Sources */ = {isa = PBXBuildFile; fileRef = 523E19EB13A0206E00A785B6 /* SCHStoryInteractionControllerVideo.m */; };
+		523E19EF13A0206E00A785B6 /* SCHStoryInteractionVideo_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 523E19EC13A0206E00A785B6 /* SCHStoryInteractionVideo_iPhone.xib */; };
+		523E19F013A0206E00A785B6 /* SCHStoryInteractionVideo_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 523E19EC13A0206E00A785B6 /* SCHStoryInteractionVideo_iPhone.xib */; };
+		523E19F213A0241D00A785B6 /* SCHStoryInteractionVideo_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 523E19F113A0241D00A785B6 /* SCHStoryInteractionVideo_iPad.xib */; };
+		523E19F313A0241D00A785B6 /* SCHStoryInteractionVideo_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 523E19F113A0241D00A785B6 /* SCHStoryInteractionVideo_iPad.xib */; };
 		5243545A13337BAC00282B53 /* SCHAppBookOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = 5243545713337BAC00282B53 /* SCHAppBookOrder.m */; };
 		5243545B13337BAC00282B53 /* SCHAppBookOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = 5243545713337BAC00282B53 /* SCHAppBookOrder.m */; };
 		525E82D3138FFFF7006A6775 /* SCHAudioInfoProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 525E82D2138FFFF7006A6775 /* SCHAudioInfoProcessor.m */; };
@@ -1332,6 +1338,10 @@
 		5233E03213154EEA0088F18C /* SCHDeviceInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHDeviceInfo.m; path = Shared/SCHDeviceInfo.m; sourceTree = "<group>"; };
 		5233E0D613159CA80088F18C /* BITNetworkActivityManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BITNetworkActivityManager.h; path = Shared/BITNetworkActivityManager.h; sourceTree = "<group>"; };
 		5233E0D713159CA80088F18C /* BITNetworkActivityManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BITNetworkActivityManager.m; path = Shared/BITNetworkActivityManager.m; sourceTree = "<group>"; };
+		523E19EA13A0206E00A785B6 /* SCHStoryInteractionControllerVideo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHStoryInteractionControllerVideo.h; path = /Users/john/Projects/BitWink/Scholastic/Scholastic/Shared/SCHStoryInteractionControllerVideo.h; sourceTree = "<absolute>"; };
+		523E19EB13A0206E00A785B6 /* SCHStoryInteractionControllerVideo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHStoryInteractionControllerVideo.m; path = /Users/john/Projects/BitWink/Scholastic/Scholastic/Shared/SCHStoryInteractionControllerVideo.m; sourceTree = "<absolute>"; };
+		523E19EC13A0206E00A785B6 /* SCHStoryInteractionVideo_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SCHStoryInteractionVideo_iPhone.xib; path = /Users/john/Projects/BitWink/Scholastic/Scholastic/Shared/SCHStoryInteractionVideo_iPhone.xib; sourceTree = "<absolute>"; };
+		523E19F113A0241D00A785B6 /* SCHStoryInteractionVideo_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SCHStoryInteractionVideo_iPad.xib; path = ../../../../../../../Users/john/Projects/BitWink/Scholastic/Scholastic/Shared/SCHStoryInteractionVideo_iPad.xib; sourceTree = "<group>"; };
 		5243545613337BAC00282B53 /* SCHAppBookOrder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAppBookOrder.h; path = Shared/SCHAppBookOrder.h; sourceTree = "<group>"; };
 		5243545713337BAC00282B53 /* SCHAppBookOrder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHAppBookOrder.m; path = Shared/SCHAppBookOrder.m; sourceTree = "<group>"; };
 		525E82D1138FFFF6006A6775 /* SCHAudioInfoProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAudioInfoProcessor.h; path = Shared/SCHAudioInfoProcessor.h; sourceTree = "<group>"; };
@@ -2434,6 +2444,10 @@
 			children = (
 				28A60F4A13967A560090853E /* SCHStoryInteractionVideo.h */,
 				28A60F4B13967A560090853E /* SCHStoryInteractionVideo.m */,
+				523E19EA13A0206E00A785B6 /* SCHStoryInteractionControllerVideo.h */,
+				523E19EB13A0206E00A785B6 /* SCHStoryInteractionControllerVideo.m */,
+				523E19EC13A0206E00A785B6 /* SCHStoryInteractionVideo_iPhone.xib */,
+				523E19F113A0241D00A785B6 /* SCHStoryInteractionVideo_iPad.xib */,
 			);
 			name = Video;
 			sourceTree = "<group>";
@@ -4276,6 +4290,8 @@
 				F859D99E139F9F93009DB54F /* storyinteractions-initialScratch@2x.png in Resources */,
 				527BBAE213A011D4000B407C /* SCHStoryInteractionImage_iPhone.xib in Resources */,
 				527BBAE513A0186D000B407C /* SCHStoryInteractionImage_iPad.xib in Resources */,
+				523E19EF13A0206E00A785B6 /* SCHStoryInteractionVideo_iPhone.xib in Resources */,
+				523E19F213A0241D00A785B6 /* SCHStoryInteractionVideo_iPad.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4574,6 +4590,8 @@
 				289ABFDC139FDCF100662AD7 /* SCHStoryInteractionMultipleChoiceText_iPad.xib in Resources */,
 				527BBAE313A011D4000B407C /* SCHStoryInteractionImage_iPhone.xib in Resources */,
 				527BBAE613A0186D000B407C /* SCHStoryInteractionImage_iPad.xib in Resources */,
+				523E19F013A0206E00A785B6 /* SCHStoryInteractionVideo_iPhone.xib in Resources */,
+				523E19F313A0241D00A785B6 /* SCHStoryInteractionVideo_iPad.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4815,6 +4833,7 @@
 				F8DA34CF139F88AC0032B1B3 /* SCHStoryInteractionControllerScratchAndSee.m in Sources */,
 				F859D998139F9D0E009DB54F /* SCHStoryInteractionScratchView.m in Sources */,
 				527BBAE013A011D4000B407C /* SCHStoryInteractionControllerImage.m in Sources */,
+				523E19ED13A0206E00A785B6 /* SCHStoryInteractionControllerVideo.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5061,6 +5080,7 @@
 				28024739139F774D00B73703 /* SCHStoryInteractionControllerAboutYouQuiz.m in Sources */,
 				2802473A139F775100B73703 /* SCHStoryInteractionControllerWordSearch.m in Sources */,
 				527BBAE113A011D4000B407C /* SCHStoryInteractionControllerImage.m in Sources */,
+				523E19EE13A0206E00A785B6 /* SCHStoryInteractionControllerVideo.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
