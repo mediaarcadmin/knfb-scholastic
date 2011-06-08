@@ -185,7 +185,6 @@
 		5206FF2513744E7000FCE07C /* SCHAppProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = 5206FF2413744E7000FCE07C /* SCHAppProfile.m */; };
 		5206FF2613744E7000FCE07C /* SCHAppProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = 5206FF2413744E7000FCE07C /* SCHAppProfile.m */; };
 		520CD295139F84530018EA7E /* SCHStoryInteractionMultipleChoiceText_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 520CD294139F84530018EA7E /* SCHStoryInteractionMultipleChoiceText_iPad.xib */; };
-		520CD296139F84530018EA7E /* SCHStoryInteractionMultipleChoiceText_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 520CD294139F84530018EA7E /* SCHStoryInteractionMultipleChoiceText_iPad.xib */; };
 		521399F013717BB10081FD3D /* SCHLocationBookmark.m in Sources */ = {isa = PBXBuildFile; fileRef = 521399EF13717BB10081FD3D /* SCHLocationBookmark.m */; };
 		521399F113717BB10081FD3D /* SCHLocationBookmark.m in Sources */ = {isa = PBXBuildFile; fileRef = 521399EF13717BB10081FD3D /* SCHLocationBookmark.m */; };
 		52298A8712F0EF5600BBBCE6 /* SCHNote.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A5E12F0EF5600BBBCE6 /* SCHNote.m */; };
