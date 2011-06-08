@@ -27,12 +27,14 @@
 @synthesize introduction;
 @synthesize questions;
 @synthesize outcomeMessages;
+@synthesize tiebreakOrder;
 
 - (void)dealloc
 {
     [introduction release];
     [questions release];
     [outcomeMessages release];
+    [tiebreakOrder release];
     [super dealloc];
 }
 
