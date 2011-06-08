@@ -48,6 +48,7 @@
 						<int key="NSvFlags">-2147483358</int>
 						<string key="NSFrame">{{10, 194}, {240, 40}}</string>
 						<reference key="NSSuperview" ref="797319424"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="699524793"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<int key="IBUITag">2</int>
@@ -82,6 +83,7 @@
 						<int key="NSvFlags">-2147483358</int>
 						<string key="NSFrame">{{10, 242}, {240, 40}}</string>
 						<reference key="NSSuperview" ref="797319424"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="645779420"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<int key="IBUITag">3</int>
@@ -106,6 +108,7 @@
 						<int key="NSvFlags">-2147483358</int>
 						<string key="NSFrame">{{10, 290}, {240, 40}}</string>
 						<reference key="NSSuperview" ref="797319424"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<int key="IBUITag">3</int>
@@ -130,25 +133,33 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{20, 20}, {220, 166}}</string>
 						<reference key="NSSuperview" ref="797319424"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="126411929"/>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+						<object class="NSCustomResource" key="IBUIImage">
+							<string key="NSClassName">NSImage</string>
+							<string key="NSResourceName">storyinteractions-initialScratch.png</string>
+						</object>
 					</object>
 					<object class="IBUIView" id="126411929">
 						<reference key="NSNextResponder" ref="797319424"/>
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{20, 20}, {220, 166}}</string>
 						<reference key="NSSuperview" ref="797319424"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="465280677"/>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">3</int>
-							<bytes key="NSWhite">MC42NjY2NjY2NjY3IDAuNQA</bytes>
+							<bytes key="NSWhite">MCAwAA</bytes>
 						</object>
+						<int key="IBUIContentMode">2</int>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 					</object>
 				</object>
 				<string key="NSFrameSize">{260, 350}</string>
 				<reference key="NSSuperview"/>
+				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="778809060"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
@@ -278,15 +289,18 @@
 						<reference key="parent" ref="797319424"/>
 					</object>
 					<object class="IBObjectRecord">
+						<int key="objectID">11</int>
+						<reference key="object" ref="126411929"/>
+						<object class="NSMutableArray" key="children">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+						</object>
+						<reference key="parent" ref="797319424"/>
+						<string key="objectName">Scratch View</string>
+					</object>
+					<object class="IBObjectRecord">
 						<int key="objectID">10</int>
 						<reference key="object" ref="778809060"/>
 						<reference key="parent" ref="797319424"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">11</int>
-						<reference key="object" ref="126411929"/>
-						<reference key="parent" ref="797319424"/>
-						<string key="objectName">View</string>
 					</object>
 				</object>
 			</object>
@@ -297,6 +311,7 @@
 					<string>-1.CustomClassName</string>
 					<string>-2.CustomClassName</string>
 					<string>10.IBPluginDependency</string>
+					<string>11.CustomClassName</string>
 					<string>11.IBPluginDependency</string>
 					<string>2.IBEditorWindowLastContentRect</string>
 					<string>2.IBPluginDependency</string>
@@ -315,6 +330,7 @@
 					<string>SCHStoryInteractionControllerScratchAndSee</string>
 					<string>UIResponder</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<string>SCHStoryInteractionScratchView</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>{{354, 412}, {320, 480}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -343,7 +359,107 @@
 			<nil key="sourceID"/>
 			<int key="maxID">19</int>
 		</object>
-		<object class="IBClassDescriber" key="IBDocument.Classes"/>
+		<object class="IBClassDescriber" key="IBDocument.Classes">
+			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
+				<bool key="EncodedWithXMLCoder">YES</bool>
+				<object class="IBPartialClassDescription">
+					<string key="className">SCHStoryInteractionController</string>
+					<string key="superclassName">NSObject</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/SCHStoryInteractionController.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">SCHStoryInteractionControllerScratchAndSee</string>
+					<string key="superclassName">SCHStoryInteractionController</string>
+					<object class="NSMutableDictionary" key="actions">
+						<string key="NS.key.0">questionButtonTapped:</string>
+						<string key="NS.object.0">id</string>
+					</object>
+					<object class="NSMutableDictionary" key="actionInfosByName">
+						<string key="NS.key.0">questionButtonTapped:</string>
+						<object class="IBActionInfo" key="NS.object.0">
+							<string key="name">questionButtonTapped:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+					</object>
+					<object class="NSMutableDictionary" key="outlets">
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSArray" key="dict.sortedKeys">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>answerButton1</string>
+							<string>answerButton2</string>
+							<string>answerButton3</string>
+							<string>pictureView</string>
+							<string>scratchView</string>
+						</object>
+						<object class="NSMutableArray" key="dict.values">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>UIButton</string>
+							<string>UIButton</string>
+							<string>UIButton</string>
+							<string>UIImageView</string>
+							<string>SCHStoryInteractionScratchView</string>
+						</object>
+					</object>
+					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSArray" key="dict.sortedKeys">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>answerButton1</string>
+							<string>answerButton2</string>
+							<string>answerButton3</string>
+							<string>pictureView</string>
+							<string>scratchView</string>
+						</object>
+						<object class="NSMutableArray" key="dict.values">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<object class="IBToOneOutletInfo">
+								<string key="name">answerButton1</string>
+								<string key="candidateClassName">UIButton</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">answerButton2</string>
+								<string key="candidateClassName">UIButton</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">answerButton3</string>
+								<string key="candidateClassName">UIButton</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">pictureView</string>
+								<string key="candidateClassName">UIImageView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">scratchView</string>
+								<string key="candidateClassName">SCHStoryInteractionScratchView</string>
+							</object>
+						</object>
+					</object>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/SCHStoryInteractionControllerScratchAndSee.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">SCHStoryInteractionScratchView</string>
+					<string key="superclassName">UIView</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/SCHStoryInteractionScratchView.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">SCHStretchableImageButton</string>
+					<string key="superclassName">UIButton</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/SCHStretchableImageButton.h</string>
+					</object>
+				</object>
+			</object>
+		</object>
 		<int key="IBDocument.localizationMode">0</int>
 		<string key="IBDocument.TargetRuntimeIdentifier">IBCocoaTouchFramework</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDevelopmentDependencies">
@@ -353,8 +469,17 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<object class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="NS.key.0">popquiz-answer-button-yellow.png</string>
-			<string key="NS.object.0">{16, 16}</string>
+			<bool key="EncodedWithXMLCoder">YES</bool>
+			<object class="NSArray" key="dict.sortedKeys">
+				<bool key="EncodedWithXMLCoder">YES</bool>
+				<string>popquiz-answer-button-yellow.png</string>
+				<string>storyinteractions-initialScratch.png</string>
+			</object>
+			<object class="NSMutableArray" key="dict.values">
+				<bool key="EncodedWithXMLCoder">YES</bool>
+				<string>{16, 16}</string>
+				<string>{125, 123}</string>
+			</object>
 		</object>
 		<string key="IBCocoaTouchPluginVersion">301</string>
 	</data>
