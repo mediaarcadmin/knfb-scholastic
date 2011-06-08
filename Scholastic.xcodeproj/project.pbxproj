@@ -148,6 +148,12 @@
 		28BFE9D4139F918900415075 /* storyinteraction-draggable-top-circle-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 28BFE9D2139F918900415075 /* storyinteraction-draggable-top-circle-ipad.png */; };
 		28BFE9DB139F9C6400415075 /* UIView+SubviewOfClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 28BFE9DA139F9C6400415075 /* UIView+SubviewOfClass.m */; };
 		28BFE9DC139F9C6400415075 /* UIView+SubviewOfClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 28BFE9DA139F9C6400415075 /* UIView+SubviewOfClass.m */; };
+		28BFE9DE139FCAD600415075 /* storyinteraction-sequencing-target-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 28BFE9DD139FCAD500415075 /* storyinteraction-sequencing-target-ipad.png */; };
+		28BFE9DF139FCAD600415075 /* storyinteraction-sequencing-target-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 28BFE9DD139FCAD500415075 /* storyinteraction-sequencing-target-ipad.png */; };
+		28BFE9E0139FD05C00415075 /* storyinteraction-wordsearch-letter-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 2856BA0C139E507700A73D58 /* storyinteraction-wordsearch-letter-ipad.png */; };
+		28BFE9E1139FD05C00415075 /* storyinteraction-wordsearch-letter-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 2856BA0C139E507700A73D58 /* storyinteraction-wordsearch-letter-ipad.png */; };
+		28BFE9E2139FD06600415075 /* storyinteraction-bg-younger-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 2856BA0F139E53AA00A73D58 /* storyinteraction-bg-younger-ipad.png */; };
+		28BFE9E3139FD06700415075 /* storyinteraction-bg-younger-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 2856BA0F139E53AA00A73D58 /* storyinteraction-bg-younger-ipad.png */; };
 		28CC985A139CD550001F560F /* SCHStoryInteractionDraggableTargetView.m in Sources */ = {isa = PBXBuildFile; fileRef = 28CC9857139CD550001F560F /* SCHStoryInteractionDraggableTargetView.m */; };
 		28CC985B139CD550001F560F /* SCHStoryInteractionDraggableTargetView.m in Sources */ = {isa = PBXBuildFile; fileRef = 28CC9857139CD550001F560F /* SCHStoryInteractionDraggableTargetView.m */; };
 		28CC985C139CD550001F560F /* SCHStoryInteractionDraggableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 28CC9859139CD550001F560F /* SCHStoryInteractionDraggableView.m */; };
@@ -1225,8 +1231,9 @@
 		28BFE9CC139F8F9100415075 /* SCHStoryInteractionControllerSequencing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionControllerSequencing.m; sourceTree = "<group>"; };
 		28BFE9CF139F8FB900415075 /* SCHStoryInteractionSequencing_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionSequencing_iPad.xib; sourceTree = "<group>"; };
 		28BFE9D2139F918900415075 /* storyinteraction-draggable-top-circle-ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-draggable-top-circle-ipad.png"; sourceTree = "<group>"; };
-		28BFE9D9139F9C6400415075 /* UIView+SubviewOfClass.h */ = {isa = PBXFileReference; fileEncoding = 4; path = "UIView+SubviewOfClass.h"; sourceTree = "<group>"; };
+		28BFE9D9139F9C6400415075 /* UIView+SubviewOfClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+SubviewOfClass.h"; sourceTree = "<group>"; };
 		28BFE9DA139F9C6400415075 /* UIView+SubviewOfClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+SubviewOfClass.m"; sourceTree = "<group>"; };
+		28BFE9DD139FCAD500415075 /* storyinteraction-sequencing-target-ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-sequencing-target-ipad.png"; sourceTree = "<group>"; };
 		28CC9856139CD550001F560F /* SCHStoryInteractionDraggableTargetView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionDraggableTargetView.h; sourceTree = "<group>"; };
 		28CC9857139CD550001F560F /* SCHStoryInteractionDraggableTargetView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionDraggableTargetView.m; sourceTree = "<group>"; };
 		28CC9858139CD550001F560F /* SCHStoryInteractionDraggableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionDraggableView.h; sourceTree = "<group>"; };
@@ -2317,6 +2324,7 @@
 				28A60F7B1397BB3C0090853E /* answer-button-green.png */,
 				28A60F7C1397BB3C0090853E /* answer-button-red.png */,
 				28A60F7D1397BB3C0090853E /* answer-button-yellow.png */,
+				28BFE9DD139FCAD500415075 /* storyinteraction-sequencing-target-ipad.png */,
 				2856BA0C139E507700A73D58 /* storyinteraction-wordsearch-letter-ipad.png */,
 				28024700139F6D3300B73703 /* storyinteraction-wordsearch-letter-iphone.png */,
 			);
@@ -4216,6 +4224,9 @@
 				28024707139F6FE900B73703 /* storyinteraction-bg-younger-iphone.png in Resources */,
 				28BFE9D0139F8FB900415075 /* SCHStoryInteractionSequencing_iPad.xib in Resources */,
 				28BFE9D3139F918900415075 /* storyinteraction-draggable-top-circle-ipad.png in Resources */,
+				28BFE9DE139FCAD600415075 /* storyinteraction-sequencing-target-ipad.png in Resources */,
+				28BFE9E1139FD05C00415075 /* storyinteraction-wordsearch-letter-ipad.png in Resources */,
+				28BFE9E3139FD06700415075 /* storyinteraction-bg-younger-ipad.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4504,6 +4515,9 @@
 				28024708139F6FE900B73703 /* storyinteraction-bg-younger-iphone.png in Resources */,
 				28BFE9D1139F8FB900415075 /* SCHStoryInteractionSequencing_iPad.xib in Resources */,
 				28BFE9D4139F918900415075 /* storyinteraction-draggable-top-circle-ipad.png in Resources */,
+				28BFE9DF139FCAD600415075 /* storyinteraction-sequencing-target-ipad.png in Resources */,
+				28BFE9E0139FD05C00415075 /* storyinteraction-wordsearch-letter-ipad.png in Resources */,
+				28BFE9E2139FD06600415075 /* storyinteraction-bg-younger-ipad.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
