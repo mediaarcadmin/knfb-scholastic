@@ -15,11 +15,7 @@
 @property (nonatomic, retain) IBOutlet UIButton *answerButton1;
 @property (nonatomic, retain) IBOutlet UIButton *answerButton2;
 @property (nonatomic, retain) IBOutlet UIButton *answerButton3;
-@property (nonatomic, retain) IBOutlet UIButton *closeButton;
-@property (nonatomic, retain) IBOutlet UIButton *playAudioButton;
 
 - (IBAction)answerButtonTapped:(id)sender;
-- (IBAction)closeButtonTapped:(id)sender;
-- (IBAction)playAudioButtonTapped:(id)sender;
 
 @end

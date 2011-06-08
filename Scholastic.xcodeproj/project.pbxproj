@@ -206,6 +206,14 @@
 		526750D213290EE800063AC8 /* SCHURLManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 52322C33132693F500BB071D /* SCHURLManager.m */; };
 		526A8A5C1385166E00101A96 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 526A8A501385143000101A96 /* AVFoundation.framework */; };
 		526A8A5D1385167A00101A96 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 526A8A501385143000101A96 /* AVFoundation.framework */; };
+		527B42A9139E584E0030B82B /* popquiz-answer-button-blue.png in Resources */ = {isa = PBXBuildFile; fileRef = 527B42A8139E584D0030B82B /* popquiz-answer-button-blue.png */; };
+		527B42AA139E584E0030B82B /* popquiz-answer-button-blue.png in Resources */ = {isa = PBXBuildFile; fileRef = 527B42A8139E584D0030B82B /* popquiz-answer-button-blue.png */; };
+		527B42AC139E5DCD0030B82B /* answer-tick.png in Resources */ = {isa = PBXBuildFile; fileRef = 527B42AB139E5DCD0030B82B /* answer-tick.png */; };
+		527B42AD139E5DCD0030B82B /* answer-tick.png in Resources */ = {isa = PBXBuildFile; fileRef = 527B42AB139E5DCD0030B82B /* answer-tick.png */; };
+		527B42AF139E5DD90030B82B /* answer-cross.png in Resources */ = {isa = PBXBuildFile; fileRef = 527B42AE139E5DD80030B82B /* answer-cross.png */; };
+		527B42B0139E6F240030B82B /* answer-cross.png in Resources */ = {isa = PBXBuildFile; fileRef = 527B42AE139E5DD80030B82B /* answer-cross.png */; };
+		527B42B2139E75490030B82B /* answer-blank.png in Resources */ = {isa = PBXBuildFile; fileRef = 527B42B1139E75480030B82B /* answer-blank.png */; };
+		527B42B3139E75490030B82B /* answer-blank.png in Resources */ = {isa = PBXBuildFile; fileRef = 527B42B1139E75480030B82B /* answer-blank.png */; };
 		528433EB133382EA0010BAAB /* SCHAppDictionaryState.m in Sources */ = {isa = PBXBuildFile; fileRef = 528433EA133382EA0010BAAB /* SCHAppDictionaryState.m */; };
 		528433EC133382EA0010BAAB /* SCHAppDictionaryState.m in Sources */ = {isa = PBXBuildFile; fileRef = 528433EA133382EA0010BAAB /* SCHAppDictionaryState.m */; };
 		528A2CD312CCDD9E0053A343 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 528A2CD212CCDD9E0053A343 /* Settings.bundle */; };
@@ -1275,6 +1283,10 @@
 		5266D38E13007E27004E3AC6 /* SCHComponentProtected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHComponentProtected.h; path = Shared/SCHComponentProtected.h; sourceTree = "<group>"; };
 		526A8A501385143000101A96 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		526A8A5E1385182100101A96 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		527B42A8139E584D0030B82B /* popquiz-answer-button-blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "popquiz-answer-button-blue.png"; path = "../../../../../../../../../Users/john/Projects/BitWink/Scholastic/Scholastic/Resources/UIAssets/StoryInteractions/popquiz-answer-button-blue.png"; sourceTree = "<group>"; };
+		527B42AB139E5DCD0030B82B /* answer-tick.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "answer-tick.png"; path = "../../../../../../../../../Users/john/Projects/BitWink/Scholastic/Scholastic/Resources/answer-tick.png"; sourceTree = "<group>"; };
+		527B42AE139E5DD80030B82B /* answer-cross.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "answer-cross.png"; path = "../../../../../../../../../Users/john/Projects/BitWink/Scholastic/Scholastic/Resources/answer-cross.png"; sourceTree = "<group>"; };
+		527B42B1139E75480030B82B /* answer-blank.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "answer-blank.png"; path = "../../../../../../../../../Users/john/Projects/BitWink/Scholastic/Scholastic/Resources/answer-blank.png"; sourceTree = "<group>"; };
 		528433E9133382EA0010BAAB /* SCHAppDictionaryState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAppDictionaryState.h; path = Shared/SCHAppDictionaryState.h; sourceTree = "<group>"; };
 		528433EA133382EA0010BAAB /* SCHAppDictionaryState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHAppDictionaryState.m; path = Shared/SCHAppDictionaryState.m; sourceTree = "<group>"; };
 		528A2CD212CCDD9E0053A343 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = Settings.bundle; path = Shared/Settings.bundle; sourceTree = "<group>"; };
@@ -2228,6 +2240,10 @@
 		28A60F7A1397BB340090853E /* StoryInteractions */ = {
 			isa = PBXGroup;
 			children = (
+				527B42B1139E75480030B82B /* answer-blank.png */,
+				527B42AE139E5DD80030B82B /* answer-cross.png */,
+				527B42AB139E5DCD0030B82B /* answer-tick.png */,
+				527B42A8139E584D0030B82B /* popquiz-answer-button-blue.png */,
 				28D050CB139D087200D0C602 /* storyinteraction-bg-older-iphone.png */,
 				28D050CE139D299500D0C602 /* storyinteraction-bg-older-ipad.png */,
 				28D050B4139CEA0F00D0C602 /* storyinteraction-draggable-green-ipad.png */,
@@ -4032,6 +4048,10 @@
 				28D050C9139CEAC200D0C602 /* storyinteraction-draggable-red-iphone.png in Resources */,
 				28D050CC139D087200D0C602 /* storyinteraction-bg-older-iphone.png in Resources */,
 				28D050CF139D299500D0C602 /* storyinteraction-bg-older-ipad.png in Resources */,
+				527B42A9139E584E0030B82B /* popquiz-answer-button-blue.png in Resources */,
+				527B42AC139E5DCD0030B82B /* answer-tick.png in Resources */,
+				527B42AF139E5DD90030B82B /* answer-cross.png in Resources */,
+				527B42B2139E75490030B82B /* answer-blank.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4312,6 +4332,10 @@
 				28D050CA139CEAC200D0C602 /* storyinteraction-draggable-red-iphone.png in Resources */,
 				28D050CD139D087200D0C602 /* storyinteraction-bg-older-iphone.png in Resources */,
 				28D050D0139D299500D0C602 /* storyinteraction-bg-older-ipad.png in Resources */,
+				527B42AA139E584E0030B82B /* popquiz-answer-button-blue.png in Resources */,
+				527B42AD139E5DCD0030B82B /* answer-tick.png in Resources */,
+				527B42B0139E6F240030B82B /* answer-cross.png in Resources */,
+				527B42B3139E75490030B82B /* answer-blank.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
