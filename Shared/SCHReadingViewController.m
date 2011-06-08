@@ -412,6 +412,15 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [self setDictionarySelectionMode];
 
     [self jumpToLastPageLocation];
+    
+    // temporary button to get access to younger story interactions
+    if (self.youngerMode) {
+        UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [button setTitle:@"SI" forState:UIControlStateNormal];
+        [button setFrame:CGRectMake(CGRectGetMaxX(self.view.bounds)-30, 0, 30, 30)];
+        [button addTarget:self action:@selector(storyInteractionAction:) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:button];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated

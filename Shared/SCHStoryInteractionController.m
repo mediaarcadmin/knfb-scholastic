@@ -11,6 +11,7 @@
 #import "SCHStoryInteractionControllerMultipleChoiceText.h"
 #import "SCHStoryInteractionControllerDelegate.h"
 #import "SCHStoryInteractionDraggableView.h"
+#import "SCHXPSProvider.h"
 
 #define kBackgroundLeftCap 10
 #define kBackgroundTopCap_iPhone 40
@@ -21,7 +22,7 @@
 #define kContentsInsetTop_iPad 46
 #define kContentsInsetBottom 5
 #define kTitleInsetLeft 10
-#define kTitleInsetTop 10
+#define kTitleInsetTop 5
 
 @interface SCHStoryInteractionController ()
 
@@ -36,6 +37,7 @@
 
 @implementation SCHStoryInteractionController
 
+@synthesize xpsProvider;
 @synthesize containerView;
 @synthesize nibObjects;
 @synthesize contentsView;
@@ -59,6 +61,7 @@
 - (void)dealloc
 {
     [self removeFromHostView];
+    [xpsProvider release];
     [containerView release];
     [nibObjects release];
     [contentsView release];
@@ -87,6 +90,8 @@
 - (void)presentInHostView:(UIView *)hostView
 {
     if (self.containerView == nil) {
+        
+        BOOL iPad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
         
         int kBackgroundTopCap, kContentsInsetTop;
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
@@ -124,10 +129,11 @@
                                                                                       backgroundWidth - kTitleInsetLeft*2,
                                                                                       kContentsInsetTop - kTitleInsetTop*2))];
         titleView.backgroundColor = [UIColor clearColor];
-        titleView.font = [UIFont boldSystemFontOfSize:UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? 24 : 20];
-        titleView.text = [self.storyInteraction title];
+        titleView.font = [UIFont boldSystemFontOfSize:iPad ? 24 : 18];
+        titleView.text = [self.storyInteraction interactionViewTitle];
         titleView.textAlignment = UITextAlignmentCenter;
-        titleView.textColor = [UIColor whiteColor];
+        titleView.textColor = iPad ? [UIColor whiteColor] : [UIColor colorWithRed:0.113 green:0.392 blue:0.690 alpha:1.];
+        titleView.adjustsFontSizeToFitWidth = YES;
         [background addSubview:titleView];
         [titleView release];
         
@@ -232,6 +238,20 @@
         image = [UIImage imageNamed:name];
     }
     return image;
+}
+
+#pragma mark - XPSProvider accessors
+
+- (void)playAudioAtPath:(NSString *)path completion:(void (^)(void))completion
+{
+    // for now just defer the completion block
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 2 * NSEC_PER_SEC);
+    dispatch_after(popTime, dispatch_get_current_queue(), completion);
+}
+
+- (UIImage *)imageAtPath:(NSString *)path
+{
+    return nil;
 }
 
 #pragma mark - subclass overrides

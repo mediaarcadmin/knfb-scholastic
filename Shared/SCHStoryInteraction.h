@@ -29,7 +29,11 @@
 // YES if this is an interaction for older readers
 - (BOOL)isOlderStoryInteraction;
 
+// Short story interaction title for the pop up list view
 - (NSString *)title;
+
+// Story interaction title for the interaction view itself
+- (NSString *)interactionViewTitle;
 
 // base path for interaction resources in XPSProvider
 + (NSString *)resourcesPath;
