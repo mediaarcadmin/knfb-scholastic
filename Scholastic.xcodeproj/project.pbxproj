@@ -41,6 +41,7 @@
 		2891B71E13954355005FC4DD /* StoryInteractionMultipleChoiceText1.xml in Resources */ = {isa = PBXBuildFile; fileRef = 2891B71D13954355005FC4DD /* StoryInteractionMultipleChoiceText1.xml */; };
 		2891B72013954804005FC4DD /* StoryInteractionPopQuiz1.xml in Resources */ = {isa = PBXBuildFile; fileRef = 2891B71F13954804005FC4DD /* StoryInteractionPopQuiz1.xml */; };
 		2891B72213954CDC005FC4DD /* StoryInteractionScratchAndSee1.xml in Resources */ = {isa = PBXBuildFile; fileRef = 2891B72113954CDC005FC4DD /* StoryInteractionScratchAndSee1.xml */; };
+		289ABFDC139FDCF100662AD7 /* SCHStoryInteractionMultipleChoiceText_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 520CD294139F84530018EA7E /* SCHStoryInteractionMultipleChoiceText_iPad.xib */; };
 		28A08CDE13950C01006FD008 /* SCHStoryInteraction.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A08CC713950C01006FD008 /* SCHStoryInteraction.m */; };
 		28A08CDF13950C01006FD008 /* SCHStoryInteraction.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A08CC713950C01006FD008 /* SCHStoryInteraction.m */; };
 		28A08CE013950C01006FD008 /* SCHStoryInteractionHotSpot.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A08CC913950C01006FD008 /* SCHStoryInteractionHotSpot.m */; };
@@ -1277,7 +1278,7 @@
 		5204B85F135C1FC500FCBD90 /* SCHThemeButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHThemeButton.m; path = Shared/SCHThemeButton.m; sourceTree = "<group>"; };
 		5206FF2313744E7000FCE07C /* SCHAppProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAppProfile.h; path = Shared/SCHAppProfile.h; sourceTree = "<group>"; };
 		5206FF2413744E7000FCE07C /* SCHAppProfile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHAppProfile.m; path = Shared/SCHAppProfile.m; sourceTree = "<group>"; };
-		520CD294139F84530018EA7E /* SCHStoryInteractionMultipleChoiceText_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SCHStoryInteractionMultipleChoiceText_iPad.xib; path = ../../../../../../../Users/john/Projects/BitWink/Scholastic/Scholastic/Shared/SCHStoryInteractionMultipleChoiceText_iPad.xib; sourceTree = "<group>"; };
+		520CD294139F84530018EA7E /* SCHStoryInteractionMultipleChoiceText_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionMultipleChoiceText_iPad.xib; sourceTree = "<group>"; };
 		521399EE13717BB10081FD3D /* SCHLocationBookmark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHLocationBookmark.h; path = Shared/SCHLocationBookmark.h; sourceTree = "<group>"; };
 		521399EF13717BB10081FD3D /* SCHLocationBookmark.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHLocationBookmark.m; path = Shared/SCHLocationBookmark.m; sourceTree = "<group>"; };
 		52298A5D12F0EF5600BBBCE6 /* SCHNote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHNote.h; path = Shared/SCHNote.h; sourceTree = "<group>"; };
@@ -4554,6 +4555,7 @@
 				F8DA34D6139F891C0032B1B3 /* SCHStoryInteractionScratchAndSee_iPad.xib in Resources */,
 				F859D99D139F9F93009DB54F /* storyinteractions-initialScratch.png in Resources */,
 				F859D99F139F9F93009DB54F /* storyinteractions-initialScratch@2x.png in Resources */,
+				289ABFDC139FDCF100662AD7 /* SCHStoryInteractionMultipleChoiceText_iPad.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

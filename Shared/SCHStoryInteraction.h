@@ -11,8 +11,8 @@
 @class SCHXPSProvider;
 @class SCHStoryInteraction;
 
-// TODO: move this to KNFBXPSConstants submodule
-static NSString * const KNFBXPSStoryInteractionsDirectory = @"/Documents/1/Other/KNFB/Interactions/";
+// TODO: move to KNFBXPSConstants module
+extern NSString * const KNFBXPSStoryInteractionsDirectory;
 
 @interface SCHStoryInteractionQuestion : NSObject {}
 

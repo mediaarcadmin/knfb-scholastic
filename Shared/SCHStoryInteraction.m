@@ -9,7 +9,8 @@
 #import "SCHStoryInteraction.h"
 #import "SCHStoryInteractionParser.h"
 
-#import "KNFBXPSConstants.h"
+// TODO: move this to KNFBXPSConstants submodule
+NSString * const KNFBXPSStoryInteractionsDirectory = @"/Documents/1/Other/KNFB/Interactions/";
 
 @implementation SCHStoryInteractionQuestion
 
