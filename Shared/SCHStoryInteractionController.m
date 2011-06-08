@@ -240,11 +240,6 @@ typedef void (^PlayAudioCompletionBlock)(void);
     [self removeFromHostView];
 }
 
-- (IBAction)playAudioButtonTapped:(id)sender
-{
-    NSLog(@"Playing audio"); 
-}
-
 #pragma mark - Notification methods
 
 - (void)willResignActiveNotification:(NSNotification *)notification
@@ -357,5 +352,9 @@ typedef void (^PlayAudioCompletionBlock)(void);
 
 - (void)setupView
 {}
+
+- (IBAction)playAudioButtonTapped:(id)sender
+{
+}
 
 @end
