@@ -38,7 +38,7 @@
     [super dealloc];
 }
 
-- (void)setupView
+- (void)setupViewAtIndex:(NSInteger)screenIndex
 {
     SCHStoryInteractionSequencing *sequencing = (SCHStoryInteractionSequencing *)self.storyInteraction;
     NSAssert([sequencing numberOfImages] == kNumberOfImages, @"controller/views designed for exactly 3 images!");

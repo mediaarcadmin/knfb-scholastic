@@ -37,7 +37,7 @@
     [super dealloc];
 }
 
-- (void)setupView
+- (void)setupViewAtIndex:(NSInteger)screenIndex
 {
     CGPoint targetCenterOffset, sourceCenterOffset;
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {

@@ -26,4 +26,9 @@
     return @"Title Twister";
 }
 
+- (BOOL)isOlderStoryInteraction
+{
+    return YES;
+}
+
 @end

@@ -22,7 +22,6 @@
 
 @implementation SCHStoryInteractionControllerMultipleChoiceText
 
-@synthesize promptLabel;
 @synthesize answerButton1;
 @synthesize answerButton2;
 @synthesize answerButton3;
@@ -31,7 +30,6 @@
 
 - (void)dealloc
 {
-    [promptLabel release], promptLabel = nil;
     [answerButton1 release], answerButton1 = nil;
     [answerButton2 release], answerButton2 = nil;
     [answerButton3 release], answerButton3 = nil;
@@ -45,7 +43,7 @@
     return [[(SCHStoryInteractionMultipleChoiceText *)self.storyInteraction questions] objectAtIndex:currentQuestionIndex];
 }
 
-- (void)setupView
+- (void)setupViewAtIndex:(NSInteger)screenIndex
 {
     self.answerButtons = [NSArray arrayWithObjects:self.answerButton1, self.answerButton2, self.answerButton3, nil];
     self.currentQuestionIndex = 0;
@@ -64,27 +62,33 @@
 
 - (void)setupQuestion
 {
-    self.promptLabel.text = [self currentQuestion].prompt;
+    BOOL iPad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
+
+    [self setTitle:[self currentQuestion].prompt];
+
     NSInteger i = 0;
     for (NSString *answer in [self currentQuestion].answers) {
         UIImage *highlight = nil;
-        UIImage *selectedIcon = nil;
         if (i == [self currentQuestion].correctAnswer) {
             highlight = [[UIImage imageNamed:@"answer-button-green"] stretchableImageWithLeftCapWidth:5 topCapHeight:0];
-            selectedIcon = [UIImage imageNamed:@"answer-tick"];
         } else {
             highlight = [[UIImage imageNamed:@"answer-button-red"] stretchableImageWithLeftCapWidth:5 topCapHeight:0];    
-            selectedIcon = [UIImage imageNamed:@"answer-cross"];
         }
         UIButton *button = [self.answerButtons objectAtIndex:i];
         [button setTitle:answer forState:UIControlStateNormal];
-        [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [button setImage:[UIImage imageNamed:@"answer-blank"] forState:UIControlStateNormal];
+        [button setTitleColor:(iPad ? [UIColor whiteColor] : [UIColor colorWithRed:0.113 green:0.392 blue:0.690 alpha:1.0]) forState:UIControlStateNormal];
         [button setHidden:NO];
         [button setSelected:NO];
-        [button setBackgroundImage:[[UIImage imageNamed:@"answer-button-blue"] stretchableImageWithLeftCapWidth:5 topCapHeight:0] forState:UIControlStateNormal];        
+        [button setBackgroundImage:[(iPad == YES ? [UIImage imageNamed:@"answer-button-blue"] : [UIImage imageNamed:@"answer-button-yellow"]) stretchableImageWithLeftCapWidth:5 topCapHeight:0] forState:UIControlStateNormal];        
         [button setBackgroundImage:highlight forState:UIControlStateSelected];
-        [button setImage:selectedIcon forState:UIControlStateSelected];
+        if (iPad == YES) {
+            [button setImage:[UIImage imageNamed:@"answer-blank"] forState:UIControlStateNormal];
+            if (i == [self currentQuestion].correctAnswer) {
+                [button setImage:[UIImage imageNamed:@"answer-tick"] forState:UIControlStateSelected];
+            } else {
+                [button setImage:[UIImage imageNamed:@"answer-cross"] forState:UIControlStateSelected];
+            }
+        }
         ++i;
     }
     for (; i < [self.answerButtons count]; ++i) {

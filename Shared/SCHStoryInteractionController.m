@@ -32,6 +32,7 @@ typedef void (^PlayAudioCompletionBlock)(void);
 @property (nonatomic, retain) NSArray *nibObjects;
 @property (nonatomic, assign) NSInteger currentScreenIndex;
 @property (nonatomic, retain) UIView *contentsView;
+@property (nonatomic, retain) UILabel *titleView;
 @property (nonatomic, retain) UIImageView *backgroundView;
 @property (nonatomic, retain) AVAudioPlayer *player;
 @property (nonatomic, assign) BOOL resumeInterruptedPlayer;
@@ -48,6 +49,7 @@ typedef void (^PlayAudioCompletionBlock)(void);
 @synthesize xpsProvider;
 @synthesize isbn;
 @synthesize containerView;
+@synthesize titleView;
 @synthesize nibObjects;
 @synthesize currentScreenIndex;
 @synthesize contentsView;
@@ -78,6 +80,7 @@ typedef void (^PlayAudioCompletionBlock)(void);
     [self removeFromHostView];
     [xpsProvider release];
     [containerView release];
+    [titleView release], titleView = nil;
     [nibObjects release];
     [contentsView release];
     [backgroundView release];
@@ -154,17 +157,17 @@ typedef void (^PlayAudioCompletionBlock)(void);
         [background addSubview:self.contentsView];
         [container addSubview:background];
         
-        UILabel *titleView = [[UILabel alloc] initWithFrame:CGRectIntegral(CGRectMake(kTitleInsetLeft, kTitleInsetTop,
+        self.titleView = [[UILabel alloc] initWithFrame:CGRectIntegral(CGRectMake(kTitleInsetLeft, kTitleInsetTop,
                                                                                       backgroundWidth - kTitleInsetLeft*2,
                                                                                       kContentsInsetTop - kTitleInsetTop*2))];
-        titleView.backgroundColor = [UIColor clearColor];
-        titleView.font = [UIFont boldSystemFontOfSize:iPad ? 24 : 18];
-        titleView.text = [self.storyInteraction interactionViewTitle];
-        titleView.textAlignment = UITextAlignmentCenter;
-        titleView.textColor = iPad ? [UIColor whiteColor] : [UIColor colorWithRed:0.113 green:0.392 blue:0.690 alpha:1.];
-        titleView.adjustsFontSizeToFitWidth = YES;
-        [background addSubview:titleView];
-        [titleView release];
+        self.titleView.backgroundColor = [UIColor clearColor];
+        self.titleView.font = [UIFont boldSystemFontOfSize:iPad ? 24 : 18];
+        [self setTitle:[self.storyInteraction interactionViewTitle]];
+        self.titleView.textAlignment = UITextAlignmentCenter;
+        self.titleView.textColor = iPad ? [UIColor whiteColor] : [UIColor colorWithRed:0.113 green:0.392 blue:0.690 alpha:1.];
+        self.titleView.adjustsFontSizeToFitWidth = YES;
+        [background addSubview:self.titleView];
+        [self.titleView release];
         
         UIButton *closeButton = [UIButton buttonWithType:UIButtonTypeCustom];
         closeButton.frame = CGRectMake(-10, -10, 30, 30);
@@ -185,26 +188,14 @@ typedef void (^PlayAudioCompletionBlock)(void);
         [container release];
         [background release];
 
-        // any other views in the nib are added to the title bar
-        NSInteger x = backgroundWidth - kContentsInsetRight;
-        for (NSUInteger i = [self.nibObjects count]-1; i > 0; --i) {
-            UIView *view = [self.nibObjects objectAtIndex:i];
-            CGRect viewFrame = view.frame;
-            viewFrame.origin.x = floor(x - viewFrame.size.width);
-            viewFrame.origin.y = floor((kContentsInsetTop - viewFrame.size.height) / 2);
-            view.frame = viewFrame;
-            [self.backgroundView addSubview:view];
-            x -= viewFrame.size.width + 5;
-        }
-        
-        [self setupView];
+        [self setupViewAtIndex:self.currentScreenIndex];
     }
     
     [hostView addSubview:self.containerView];
     [self updateOrientation];
 }
 
-- (void)presentNextScreen
+- (void)presentNextView
 {
     UIView *host = [self.containerView superview];
     self.currentScreenIndex = (self.currentScreenIndex + 1) % [self.nibObjects count];
@@ -366,9 +357,16 @@ typedef void (^PlayAudioCompletionBlock)(void);
     return image;
 }
 
+#pragma mark - Story Interaction accessors
+
+- (void)setTitle:(NSString *)title
+{
+    self.titleView.text = title;
+}
+
 #pragma mark - subclass overrides
 
-- (void)setupView
+- (void)setupViewAtIndex:(NSInteger)screenIndex
 {}
 
 - (NSString *)audioPath
