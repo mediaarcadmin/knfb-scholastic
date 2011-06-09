@@ -188,14 +188,14 @@ typedef void (^PlayAudioCompletionBlock)(void);
         [container release];
         [background release];
 
-        [self setupView];
+        [self setupViewAtIndex:self.currentScreenIndex];
     }
     
     [hostView addSubview:self.containerView];
     [self updateOrientation];
 }
 
-- (void)presentNextScreen
+- (void)presentNextView
 {
     UIView *host = [self.containerView superview];
     self.currentScreenIndex = (self.currentScreenIndex + 1) % [self.nibObjects count];
@@ -366,7 +366,7 @@ typedef void (^PlayAudioCompletionBlock)(void);
 
 #pragma mark - subclass overrides
 
-- (void)setupView
+- (void)setupViewAtIndex:(NSInteger)screenIndex
 {}
 
 - (NSString *)audioPath

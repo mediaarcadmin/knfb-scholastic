@@ -25,7 +25,7 @@
     [super dealloc];
 }
 
-- (void)setupView
+- (void)setupViewAtIndex:(NSInteger)screenIndex
 {
     
 }
@@ -34,7 +34,7 @@
 
 - (void)goButtonTapped:(id)sender
 {
-    [self presentNextScreen];
+    [self presentNextView];
 }
 
 - (void)doneButtonTapped:(id)sender

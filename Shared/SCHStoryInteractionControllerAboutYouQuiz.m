@@ -60,7 +60,7 @@
 }
 
 
-- (void)setupView
+- (void)setupViewAtIndex:(NSInteger)screenIndex
 {
     self.showTitleView = YES;
     self.showResultView = NO;
