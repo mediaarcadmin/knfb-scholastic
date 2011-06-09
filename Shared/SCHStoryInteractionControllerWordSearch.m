@@ -15,8 +15,8 @@
 
 @interface SCHStoryInteractionControllerWordSearch ()
 
-@property (nonatomic, retain) NSArray *wordViews;
-@property (nonatomic, assign) NSInteger numberOfWordsFound;
+@property (nonatomic, retain) NSMutableArray *remainingWords;
+- (NSInteger)wordIndexFor:(NSString *)word;
 
 @end
 
@@ -24,39 +24,26 @@
 
 @synthesize lettersContainerView;
 @synthesize wordsContainerView;
-@synthesize wordView1;
-@synthesize wordView2;
-@synthesize wordView3;
-@synthesize wordView4;
-@synthesize wordView5;
-@synthesize wordView6;
 @synthesize wordViews;
-@synthesize numberOfWordsFound;
+@synthesize remainingWords;
 
 - (void)dealloc
 {
     [lettersContainerView release];
     [wordsContainerView release];
-    [wordView1 release];
-    [wordView2 release];
-    [wordView3 release];
-    [wordView4 release];
-    [wordView5 release];
-    [wordView6 release];
     [wordViews release];
+    [remainingWords release];
     [super dealloc];
 }
 
 - (void)setupView
 {
-    self.wordView1.strikeOutColor = [UIColor redColor];
-    self.wordView2.strikeOutColor = [UIColor greenColor];
-    self.wordView3.strikeOutColor = [UIColor cyanColor];
-    self.wordView4.strikeOutColor = [UIColor magentaColor];
-    self.wordView5.strikeOutColor = [UIColor orangeColor];
-    self.wordView6.strikeOutColor = [UIColor brownColor];
-    
-    self.wordViews = [NSArray arrayWithObjects:self.wordView1, self.wordView2, self.wordView3, self.wordView4, self.wordView5, self.wordView6, nil];
+    [[self.wordViews objectAtIndex:0] setStrikeOutColor:[UIColor redColor]];
+    [[self.wordViews objectAtIndex:1] setStrikeOutColor:[UIColor greenColor]];
+    [[self.wordViews objectAtIndex:2] setStrikeOutColor:[UIColor cyanColor]];
+    [[self.wordViews objectAtIndex:3] setStrikeOutColor:[UIColor magentaColor]];
+    [[self.wordViews objectAtIndex:4] setStrikeOutColor:[UIColor orangeColor]];
+    [[self.wordViews objectAtIndex:5] setStrikeOutColor:[UIColor brownColor]];
     
     SCHStoryInteractionWordSearch *wordSearch = (SCHStoryInteractionWordSearch *)self.storyInteraction;
     
@@ -75,7 +62,11 @@
     self.lettersContainerView.letterGap = iPad ? 10 : 2;
     [self.lettersContainerView populateFromWordSearchModel:wordSearch
                                        withLetterTileImage:letterTile];
-    self.numberOfWordsFound = 0;
+
+    self.remainingWords = [NSMutableArray array];
+    for (NSString *word in wordSearch.words) {
+        [self.remainingWords addObject:[word uppercaseString]];
+    }
 }
 
 #pragma mark - SCHStoryInteractionWordSearchContainerViewDelegate
@@ -93,36 +84,43 @@
         [selectedLetters appendString:[NSString stringWithCharacters:&letter length:1]];
     }
 
-    BOOL found = NO;
-    for (NSString *word in wordSearch.words) {
-        if ([[word uppercaseString] isEqualToString:selectedLetters]) {
-            // a match!
-            NSInteger index = [wordSearch.words indexOfObject:word];
-            SCHStoryInteractionStrikeOutLabelView *label = [self.wordViews objectAtIndex:index];
-            [label setStrikedOut:YES];
-            [containerView addPermanentHighlightFromCurrentSelectionWithColor:label.strikeOutColor];
-            [containerView clearSelection];
-            found = YES;
-            break;
-        }
-    }
+    NSInteger index = [self wordIndexFor:selectedLetters];
 
-    if (found) {
+    if ([self.remainingWords containsObject:selectedLetters]) {
+        [self.remainingWords removeObject:selectedLetters];
+        SCHStoryInteractionStrikeOutLabelView *label = [self.wordViews objectAtIndex:index];
+        [label setStrikedOut:YES];
+        [containerView addPermanentHighlightFromCurrentSelectionWithColor:label.strikeOutColor];
+        [containerView clearSelection];
         [self playAudioAtPath:[wordSearch audioPathForCorrectAnswer]
                    completion:^{
-                       if (++self.numberOfWordsFound == [wordSearch.words count]) {
+                       if ([self.remainingWords count] == 0) {
                            [self playAudioAtPath:[wordSearch audioPathForYouFoundThemAll]
                                       completion:^{
                                           [self removeFromHostView];
                                       }];
                        }
                    }];
-    } else {
+    } else if (index == NSNotFound) {
         [self playAudioAtPath:[wordSearch audioPathForIncorrectAnswer]
                    completion:^{
                        [containerView clearSelection];
                    }];
+    } else {
+        // just ignore reselection of an answer already found
+        [containerView clearSelection];
     }
+}
+
+- (NSInteger)wordIndexFor:(NSString *)word
+{
+    SCHStoryInteractionWordSearch *wordSearch = (SCHStoryInteractionWordSearch *)self.storyInteraction;
+    for (NSInteger i = 0, n = [wordSearch.words count]; i < n; ++i) {
+        if ([[wordSearch.words objectAtIndex:i] caseInsensitiveCompare:word] == NSOrderedSame) {
+            return i;
+        }
+    }
+    return NSNotFound;
 }
 
 @end

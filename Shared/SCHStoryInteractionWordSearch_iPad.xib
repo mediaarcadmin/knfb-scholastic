@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="7.10">
 	<data>
-		<int key="IBDocument.SystemTarget">1056</int>
+		<int key="IBDocument.SystemTarget">1280</int>
 		<string key="IBDocument.SystemVersion">10J869</string>
-		<string key="IBDocument.InterfaceBuilderVersion">1306</string>
+		<string key="IBDocument.InterfaceBuilderVersion">1864</string>
 		<string key="IBDocument.AppKitVersion">1038.35</string>
 		<string key="IBDocument.HIToolboxVersion">461.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-			<string key="NS.object.0">301</string>
+			<string key="NS.object.0">865</string>
 		</object>
 		<object class="NSArray" key="IBDocument.IntegratedClassDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -21,11 +21,8 @@
 			<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 		</object>
 		<object class="NSMutableDictionary" key="IBDocument.Metadata">
-			<bool key="EncodedWithXMLCoder">YES</bool>
-			<object class="NSArray" key="dict.sortedKeys" id="0">
-				<bool key="EncodedWithXMLCoder">YES</bool>
-			</object>
-			<reference key="dict.values" ref="0"/>
+			<string key="NS.key.0">PluginDependencyRecalculationVersion</string>
+			<integer value="1" key="NS.object.0"/>
 		</object>
 		<object class="NSMutableArray" key="IBDocument.RootObjects" id="1000">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -64,11 +61,6 @@
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 								<string key="IBUIText">Word 1</string>
-								<object class="NSFont" key="IBUIFont" id="339258856">
-									<string key="NSName">Helvetica-Bold</string>
-									<double key="NSSize">20</double>
-									<int key="NSfFlags">16</int>
-								</object>
 								<object class="NSColor" key="IBUITextColor" id="636553881">
 									<int key="NSColorSpace">2</int>
 									<bytes key="NSRGB">MC4xMTM3MjU0OTAyIDAuMzkyMTU2ODYyNyAwLjY5MDE5NjA3ODQAA</bytes>
@@ -77,6 +69,17 @@
 								<int key="IBUIBaselineAdjustment">1</int>
 								<float key="IBUIMinimumFontSize">10</float>
 								<int key="IBUITextAlignment">1</int>
+								<object class="IBUIFontDescription" key="IBUIFontDescription" id="118654257">
+									<string key="name">Helvetica-Bold</string>
+									<string key="family">Helvetica</string>
+									<int key="traits">2</int>
+									<double key="pointSize">20</double>
+								</object>
+								<object class="NSFont" key="IBUIFont" id="339258856">
+									<string key="NSName">Helvetica-Bold</string>
+									<double key="NSSize">20</double>
+									<int key="NSfFlags">16</int>
+								</object>
 							</object>
 							<object class="IBUILabel" id="370409407">
 								<reference key="NSNextResponder" ref="719541700"/>
@@ -92,12 +95,13 @@
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 								<string key="IBUIText">Word 2</string>
-								<reference key="IBUIFont" ref="339258856"/>
 								<reference key="IBUITextColor" ref="636553881"/>
 								<nil key="IBUIHighlightedColor"/>
 								<int key="IBUIBaselineAdjustment">1</int>
 								<float key="IBUIMinimumFontSize">10</float>
 								<int key="IBUITextAlignment">1</int>
+								<reference key="IBUIFontDescription" ref="118654257"/>
+								<reference key="IBUIFont" ref="339258856"/>
 							</object>
 							<object class="IBUILabel" id="903736087">
 								<reference key="NSNextResponder" ref="719541700"/>
@@ -113,12 +117,13 @@
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 								<string key="IBUIText">Word 3</string>
-								<reference key="IBUIFont" ref="339258856"/>
 								<reference key="IBUITextColor" ref="636553881"/>
 								<nil key="IBUIHighlightedColor"/>
 								<int key="IBUIBaselineAdjustment">1</int>
 								<float key="IBUIMinimumFontSize">10</float>
 								<int key="IBUITextAlignment">1</int>
+								<reference key="IBUIFontDescription" ref="118654257"/>
+								<reference key="IBUIFont" ref="339258856"/>
 							</object>
 							<object class="IBUILabel" id="801010653">
 								<reference key="NSNextResponder" ref="719541700"/>
@@ -134,12 +139,13 @@
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 								<string key="IBUIText">Word 4</string>
-								<reference key="IBUIFont" ref="339258856"/>
 								<reference key="IBUITextColor" ref="636553881"/>
 								<nil key="IBUIHighlightedColor"/>
 								<int key="IBUIBaselineAdjustment">1</int>
 								<float key="IBUIMinimumFontSize">10</float>
 								<int key="IBUITextAlignment">1</int>
+								<reference key="IBUIFontDescription" ref="118654257"/>
+								<reference key="IBUIFont" ref="339258856"/>
 							</object>
 							<object class="IBUILabel" id="44019739">
 								<reference key="NSNextResponder" ref="719541700"/>
@@ -155,12 +161,13 @@
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 								<string key="IBUIText">Word 5</string>
-								<reference key="IBUIFont" ref="339258856"/>
 								<reference key="IBUITextColor" ref="636553881"/>
 								<nil key="IBUIHighlightedColor"/>
 								<int key="IBUIBaselineAdjustment">1</int>
 								<float key="IBUIMinimumFontSize">10</float>
 								<int key="IBUITextAlignment">1</int>
+								<reference key="IBUIFontDescription" ref="118654257"/>
+								<reference key="IBUIFont" ref="339258856"/>
 							</object>
 							<object class="IBUILabel" id="364885636">
 								<reference key="NSNextResponder" ref="719541700"/>
@@ -168,7 +175,6 @@
 								<string key="NSFrame">{{240, 62}, {100, 28}}</string>
 								<reference key="NSSuperview" ref="719541700"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
 								<reference key="IBUIBackgroundColor" ref="546005677"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -176,12 +182,13 @@
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 								<string key="IBUIText">Word 6</string>
-								<reference key="IBUIFont" ref="339258856"/>
 								<reference key="IBUITextColor" ref="636553881"/>
 								<nil key="IBUIHighlightedColor"/>
 								<int key="IBUIBaselineAdjustment">1</int>
 								<float key="IBUIMinimumFontSize">10</float>
 								<int key="IBUITextAlignment">1</int>
+								<reference key="IBUIFontDescription" ref="118654257"/>
+								<reference key="IBUIFont" ref="339258856"/>
 							</object>
 						</object>
 						<string key="NSFrame">{{70, 380}, {360, 110}}</string>
@@ -236,59 +243,71 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">wordView1</string>
-						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="622009230"/>
-					</object>
-					<int key="connectionID">11</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">wordView2</string>
-						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="370409407"/>
-					</object>
-					<int key="connectionID">12</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">wordView3</string>
-						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="903736087"/>
-					</object>
-					<int key="connectionID">13</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">wordView4</string>
-						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="801010653"/>
-					</object>
-					<int key="connectionID">14</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">wordView5</string>
-						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="44019739"/>
-					</object>
-					<int key="connectionID">15</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">wordView6</string>
-						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="364885636"/>
-					</object>
-					<int key="connectionID">16</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">lettersContainerView</string>
 						<reference key="source" ref="372490531"/>
 						<reference key="destination" ref="429154508"/>
 					</object>
 					<int key="connectionID">18</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletCollectionConnection" key="connection">
+						<string key="label">wordViews</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="622009230"/>
+						<string key="cachedDesigntimeCollectionClassName">NSArray</string>
+						<bool key="addsContentToExistingCollection">NO</bool>
+					</object>
+					<int key="connectionID">19</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletCollectionConnection" key="connection">
+						<string key="label">wordViews</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="370409407"/>
+						<string key="cachedDesigntimeCollectionClassName">NSArray</string>
+						<bool key="addsContentToExistingCollection">NO</bool>
+					</object>
+					<int key="connectionID">20</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletCollectionConnection" key="connection">
+						<string key="label">wordViews</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="903736087"/>
+						<string key="cachedDesigntimeCollectionClassName">NSArray</string>
+						<bool key="addsContentToExistingCollection">NO</bool>
+					</object>
+					<int key="connectionID">21</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletCollectionConnection" key="connection">
+						<string key="label">wordViews</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="801010653"/>
+						<string key="cachedDesigntimeCollectionClassName">NSArray</string>
+						<bool key="addsContentToExistingCollection">NO</bool>
+					</object>
+					<int key="connectionID">22</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletCollectionConnection" key="connection">
+						<string key="label">wordViews</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="44019739"/>
+						<string key="cachedDesigntimeCollectionClassName">NSArray</string>
+						<bool key="addsContentToExistingCollection">NO</bool>
+					</object>
+					<int key="connectionID">23</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletCollectionConnection" key="connection">
+						<string key="label">wordViews</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="364885636"/>
+						<string key="cachedDesigntimeCollectionClassName">NSArray</string>
+						<bool key="addsContentToExistingCollection">NO</bool>
+					</object>
+					<int key="connectionID">24</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -296,7 +315,9 @@
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<object class="IBObjectRecord">
 						<int key="objectID">0</int>
-						<reference key="object" ref="0"/>
+						<object class="NSArray" key="object" id="0">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+						</object>
 						<reference key="children" ref="1000"/>
 						<nil key="parent"/>
 					</object>
@@ -377,8 +398,9 @@
 				<object class="NSArray" key="dict.sortedKeys">
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<string>-1.CustomClassName</string>
+					<string>-1.IBPluginDependency</string>
 					<string>-2.CustomClassName</string>
-					<string>1.IBEditorWindowLastContentRect</string>
+					<string>-2.IBPluginDependency</string>
 					<string>1.IBPluginDependency</string>
 					<string>17.CustomClassName</string>
 					<string>17.IBPluginDependency</string>
@@ -399,8 +421,9 @@
 				<object class="NSMutableArray" key="dict.values">
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<string>SCHStoryInteractionControllerWordSearch</string>
+					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>UIResponder</string>
-					<string>{{514, 109}, {768, 1024}}</string>
+					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>SCHStoryInteractionWordSearchContainerView</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -431,7 +454,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">18</int>
+			<int key="maxID">24</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -452,23 +475,11 @@
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>lettersContainerView</string>
-							<string>wordView1</string>
-							<string>wordView2</string>
-							<string>wordView3</string>
-							<string>wordView4</string>
-							<string>wordView5</string>
-							<string>wordView6</string>
 							<string>wordsContainerView</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>SCHStoryInteractionWordSearchContainerView</string>
-							<string>SCHStoryInteractionStrikeOutLabelView</string>
-							<string>SCHStoryInteractionStrikeOutLabelView</string>
-							<string>SCHStoryInteractionStrikeOutLabelView</string>
-							<string>SCHStoryInteractionStrikeOutLabelView</string>
-							<string>SCHStoryInteractionStrikeOutLabelView</string>
-							<string>SCHStoryInteractionStrikeOutLabelView</string>
 							<string>UIView</string>
 						</object>
 					</object>
@@ -477,12 +488,6 @@
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>lettersContainerView</string>
-							<string>wordView1</string>
-							<string>wordView2</string>
-							<string>wordView3</string>
-							<string>wordView4</string>
-							<string>wordView5</string>
-							<string>wordView6</string>
 							<string>wordsContainerView</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
@@ -492,33 +497,17 @@
 								<string key="candidateClassName">SCHStoryInteractionWordSearchContainerView</string>
 							</object>
 							<object class="IBToOneOutletInfo">
-								<string key="name">wordView1</string>
-								<string key="candidateClassName">SCHStoryInteractionStrikeOutLabelView</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">wordView2</string>
-								<string key="candidateClassName">SCHStoryInteractionStrikeOutLabelView</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">wordView3</string>
-								<string key="candidateClassName">SCHStoryInteractionStrikeOutLabelView</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">wordView4</string>
-								<string key="candidateClassName">SCHStoryInteractionStrikeOutLabelView</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">wordView5</string>
-								<string key="candidateClassName">SCHStoryInteractionStrikeOutLabelView</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">wordView6</string>
-								<string key="candidateClassName">SCHStoryInteractionStrikeOutLabelView</string>
-							</object>
-							<object class="IBToOneOutletInfo">
 								<string key="name">wordsContainerView</string>
 								<string key="candidateClassName">UIView</string>
 							</object>
+						</object>
+					</object>
+					<object class="NSMutableDictionary" key="toManyOutletInfosByName">
+						<string key="NS.key.0">wordViews</string>
+						<object class="IBToManyOutletInfo" key="NS.object.0">
+							<string key="name">wordViews</string>
+							<string key="candidateClassName">SCHStoryInteractionStrikeOutLabelView</string>
+							<string key="collectionClassName">NSArray</string>
 						</object>
 					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
@@ -552,6 +541,6 @@
 		</object>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
-		<string key="IBCocoaTouchPluginVersion">301</string>
+		<string key="IBCocoaTouchPluginVersion">865</string>
 	</data>
 </archive>
