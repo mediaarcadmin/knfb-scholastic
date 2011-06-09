@@ -43,6 +43,9 @@
 // the main story interaction view
 @property (nonatomic, retain) UIView *containerView;
 
+// The current contents view (loaded from a nib)
+@property (nonatomic, retain) UIView *contentsView;
+
 // obtain a Controller for a StoryInteraction.
 + (SCHStoryInteractionController *)storyInteractionControllerForStoryInteraction:(SCHStoryInteraction *)storyInteraction;
 

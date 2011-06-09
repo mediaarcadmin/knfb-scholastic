@@ -12,7 +12,8 @@
 
 @property (nonatomic, assign) NSInteger matchTag;
 @property (nonatomic, assign) CGPoint centerOffset;
-@property (nonatomic, readonly) CGPoint targetCenter;
 @property (nonatomic, assign) BOOL occupied;
+
+- (CGPoint)targetCenterInView:(UIView *)view;
 
 @end

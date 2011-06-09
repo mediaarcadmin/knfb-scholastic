@@ -45,6 +45,16 @@
     return [self.matrix characterAtIndex:index];
 }
 
+- (NSInteger)wordIndexForLetters:(NSString *)letters
+{
+    for (NSInteger i = 0, n = [words count]; i < n; ++i) {
+        if ([[words objectAtIndex:i] caseInsensitiveCompare:letters] == NSOrderedSame) {
+            return i;
+        }
+    }
+    return NSNotFound;
+}
+
 - (NSString *)audioPathForQuestion
 {
     NSString *filename = [NSString stringWithFormat:@"%@_intro.mp3", self.ID];

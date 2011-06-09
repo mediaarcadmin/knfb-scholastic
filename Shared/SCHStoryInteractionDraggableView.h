@@ -8,7 +8,13 @@
 
 #import <Foundation/Foundation.h>
 
+@class SCHStoryInteractionDraggableView;
 @class SCHStoryInteractionDraggableTargetView;
+
+@protocol SCHStoryInteractionDraggableViewDelegate
+@required
+- (void)draggableView:(SCHStoryInteractionDraggableView *)draggable didAttachToTarget:(SCHStoryInteractionDraggableTargetView *)target;
+@end
 
 @interface SCHStoryInteractionDraggableView : UIView {}
 
@@ -24,7 +30,13 @@
 // The target this source is currently attached to
 @property (nonatomic, assign) SCHStoryInteractionDraggableTargetView *attachedTarget;
 
+// optional delegate for this draggable
+@property (nonatomic, assign) id<SCHStoryInteractionDraggableViewDelegate> delegate;
+
 // set the targets which this draggable can attach to
 - (void)setDragTargets:(NSArray *)dragTargets;
+
+// send this draggable back to its original position
+- (void)moveToOriginalPosition;
 
 @end

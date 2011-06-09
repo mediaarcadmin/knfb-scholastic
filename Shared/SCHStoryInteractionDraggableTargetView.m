@@ -14,9 +14,15 @@
 @synthesize centerOffset;
 @synthesize occupied;
 
-- (CGPoint)targetCenter
+- (CGPoint)targetCenterInView:(UIView *)view
 {
-    return CGPointMake(self.center.x + self.centerOffset.x, self.center.y + self.centerOffset.y);
+    CGPoint c;
+    if (view == self.superview) {
+        c = self.center;
+    } else {
+        c = [self convertPoint:self.center toView:view];
+    }
+    return CGPointMake(c.x + self.centerOffset.x, c.y + self.centerOffset.y);
 }
 
 @end

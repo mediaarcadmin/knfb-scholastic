@@ -29,6 +29,7 @@
 @synthesize touchOffset;
 @synthesize originalCenter;
 @synthesize attachedTarget;
+@synthesize delegate;
 
 - (void)dealloc
 {
@@ -41,6 +42,17 @@
     self.originalCenter = self.center;
     self.targets = dragTargets;
     [self setUserInteractionEnabled:YES];
+}
+
+- (void)moveToOriginalPosition
+{
+    [UIView animateWithDuration:0.5
+                          delay:0
+                        options:UIViewAnimationCurveEaseInOut
+                     animations:^{
+                         self.center = self.originalCenter;
+                     }
+                     completion:nil];
 }
 
 #pragma mark - touch support
@@ -71,8 +83,9 @@ static CGFloat distanceSq(CGPoint p1, CGPoint p2)
             continue;
         }
         CGPoint selfCenter = CGPointMake(self.center.x + self.centerOffset.x, self.center.y + self.centerOffset.y);
-        if (distanceSq(target.targetCenter, selfCenter) < self.snapDistanceSq) {
-            self.center = CGPointMake(target.targetCenter.x - self.centerOffset.x, target.targetCenter.y - self.centerOffset.y);
+        CGPoint targetCenter = [target targetCenterInView:self.superview];
+        if (distanceSq(targetCenter, selfCenter) < self.snapDistanceSq) {
+            self.center = CGPointMake(targetCenter.x - self.centerOffset.x, targetCenter.y - self.centerOffset.y);
             self.attachedTarget = target;
             self.attachedTarget.occupied = YES;
         }
@@ -83,6 +96,10 @@ static CGFloat distanceSq(CGPoint p1, CGPoint p2)
 {
     // if we don't drop on a target, return to original position
     [self endDrag:(attachedTarget == nil)];
+
+    if (delegate) {
+        [delegate draggableView:self didAttachToTarget:self.attachedTarget];
+    }
 }
 
 - (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
