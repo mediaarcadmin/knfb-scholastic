@@ -207,13 +207,7 @@ typedef void (^PlayAudioCompletionBlock)(void);
         return;
     }
     CGRect superviewBounds = self.containerView.superview.bounds;
-    BOOL rotate;
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        rotate = UIInterfaceOrientationIsLandscape(self.interfaceOrientation);
-    } else {
-        rotate = UIInterfaceOrientationIsPortrait(self.interfaceOrientation);
-    }
-    if (rotate) {
+    if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
         self.containerView.transform = CGAffineTransformMakeRotation(-M_PI/2);
         self.containerView.bounds = CGRectIntegral(CGRectMake(0, 0, CGRectGetHeight(superviewBounds), CGRectGetWidth(superviewBounds)));
     } else {
@@ -222,11 +216,6 @@ typedef void (^PlayAudioCompletionBlock)(void);
     }
     self.containerView.center = CGPointMake(floor(CGRectGetMidX(superviewBounds)), floor(CGRectGetMidY(superviewBounds)));
     self.backgroundView.center = CGPointMake(floor(CGRectGetMidX(self.containerView.bounds)), floor(CGRectGetMidY(self.containerView.bounds)));
-
-    NSLog(@"hostView.center = %@ .bounds = %@", NSStringFromCGPoint(self.containerView.superview.center), NSStringFromCGRect(superviewBounds));
-    NSLog(@"containerView.center = %@ .bounds = %@", NSStringFromCGPoint(self.containerView.center), NSStringFromCGRect(self.containerView.bounds));
-    NSLog(@"backgroundView.center = %@ .bounds = %@", NSStringFromCGPoint(self.backgroundView.center), NSStringFromCGRect(self.backgroundView.bounds));
-    NSLog(@"contentsView.center = %@ .bounds = %@", NSStringFromCGPoint(self.contentsView.center), NSStringFromCGRect(self.contentsView.bounds));
 }
 
 - (void)setInterfaceOrientation:(UIInterfaceOrientation)aInterfaceOrientation
