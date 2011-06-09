@@ -57,6 +57,18 @@
 @synthesize introduction;
 @synthesize questions;
 
+- (NSString *)introductionAudioPath
+{
+    NSString *filename = [NSString stringWithFormat:@"gen_scratchaway.mp3"];
+    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:filename];
+}
+
+- (NSString *)whatDoYouSeeAudioPath
+{
+    NSString *filename = [NSString stringWithFormat:@"gen_whatdoyousee.mp3"];
+    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:filename];
+}
+
 - (void)dealloc
 {
     [introduction release];

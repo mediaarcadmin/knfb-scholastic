@@ -24,4 +24,11 @@
 
 
 @interface SCHStoryInteractionScratchAndSee : SCHStoryInteractionMultipleChoice {}
+
+// XPSProvider-relative path for intro audio
+- (NSString *)introductionAudioPath;
+
+// XPSProvider-relative path for "What do you see?"
+- (NSString *)whatDoYouSeeAudioPath;
+
 @end

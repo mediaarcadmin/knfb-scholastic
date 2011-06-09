@@ -9,6 +9,8 @@
 #import "SCHStoryInteractionControllerScratchAndSee.h"
 #import "SCHStoryInteractionScratchAndSee.h"
 
+static const NSInteger kSCHScratchPointCount = 200;
+
 @interface SCHStoryInteractionControllerScratchAndSee ()
 
 @property (nonatomic, retain) NSArray *answerButtons;
@@ -21,6 +23,8 @@
 - (void)correctAnswer:(NSInteger) selection;
 - (void)wrongAnswer:(NSInteger) selection;
 
+- (void)setProgressViewForScratchCount: (NSInteger) scratchCount;
+
 @end
 
 
@@ -31,6 +35,9 @@
 @synthesize answerButton1;
 @synthesize answerButton2;
 @synthesize answerButton3;
+@synthesize progressImageView;
+@synthesize progressCoverImageView;
+@synthesize progressView;
 @synthesize currentQuestionIndex;
 @synthesize askingQuestions;
 
@@ -43,6 +50,9 @@
     [pictureView release], pictureView = nil;
     [scratchView release], scratchView = nil;
     [answerButtons release], answerButtons = nil;
+    [progressImageView release], progressImageView = nil;
+    [progressCoverImageView release], progressCoverImageView = nil;
+    [progressView release], progressView = nil;
     [super dealloc];
 }
 
@@ -64,8 +74,19 @@
         [button setHidden:YES];
         ++i;
     }
+    
+    self.progressCoverImageView.image = [[UIImage imageNamed:@"progressbar-cover"] stretchableImageWithLeftCapWidth:16 topCapHeight:0];
+    
+    self.progressImageView.image = [UIImage imageNamed:@"progressbar-fill"];
+    
+    self.progressView.hidden = NO;
 
     [self setupQuestion];
+    
+    [self playAudioAtPath:[(SCHStoryInteractionScratchAndSee *)self.storyInteraction introductionAudioPath]
+               completion:^{}];
+    
+    
 }
 
 - (void)setupQuestion
@@ -73,6 +94,10 @@
     if (!self.askingQuestions) {
         UIImage *image = [self imageAtPath:[[self currentQuestion] imagePath]];
         self.scratchView.answerImage = image;
+        [self setProgressViewForScratchCount:0];
+        self.progressView.hidden = NO;
+    } else {
+        self.progressView.hidden = YES;
     }
     
     NSLog(@"Image: %@", [self.currentQuestion imagePath]);
@@ -87,6 +112,7 @@
         }
         UIButton *button = [self.answerButtons objectAtIndex:i];
         [button setTitle:answer forState:UIControlStateNormal];
+        [button setSelected:NO];
         if (self.askingQuestions) {
             [button setHidden:NO];
         } else {
@@ -134,23 +160,61 @@
 
 - (void)correctAnswer:(NSInteger) selection{
     NSLog(@"Correct answer.");
-    [self nextQuestion];
+    
+    [(UIButton *) [self.answerButtons objectAtIndex:selection] setSelected:YES];
+    self.scratchView.showFullImage = YES;
+    
+    [self playAudioAtPath:[[self currentQuestion] audioPathForAnswerAtIndex:selection]
+               completion:^{
+                   [self playAudioAtPath:[[self currentQuestion] correctAnswerAudioPath]
+                              completion:^{
+                                  [self nextQuestion];
+                              }];
+               }];
+
 }
 
 - (void)wrongAnswer:(NSInteger) selection {
     NSLog(@"Wrong answer.");
+
+    [(UIButton *) [self.answerButtons objectAtIndex:selection] setSelected:YES];
+
+    [self playAudioAtPath:[[self currentQuestion] audioPathForAnswerAtIndex:selection]
+               completion:^{
+                   [self playAudioAtPath:[[self currentQuestion] audioPathForIncorrectAnswer]
+                              completion:^{
+                              }];
+               }];
+}
+
+- (void)setProgressViewForScratchCount: (NSInteger) scratchCount
+{
+    float percentage = 1 - (((float)scratchCount / (float)kSCHScratchPointCount));
+    
+    NSLog(@"Percentage: %f scratchCount: %d", percentage, scratchCount);
+    
+    CGRect frame = self.progressImageView.frame;
+    frame.size.width = (self.progressView.frame.size.width * percentage);
+    self.progressImageView.frame = frame;
 }
 
 
 - (void)scratchView:(SCHStoryInteractionScratchView *)aScratchView uncoveredPoints:(NSInteger)points
 {
-    if (points > 60 && !self.askingQuestions) {
+    if (points > kSCHScratchPointCount && !self.askingQuestions) {
         self.askingQuestions = YES;
+        self.progressView.hidden = YES;
         aScratchView.interactionEnabled = NO;
+
+        [self playAudioAtPath:[(SCHStoryInteractionScratchAndSee *)self.storyInteraction whatDoYouSeeAudioPath] 
+                               completion:^{}];
+        
         [self setupQuestion];
     } else {
         self.askingQuestions = NO;
         aScratchView.interactionEnabled = YES;
+        
+        [self setProgressViewForScratchCount:points];
     }
 }
 

@@ -15,7 +15,7 @@ static const float kSCHScratchEraseSize = 24.0f;
 @property (nonatomic, retain) NSMutableArray *pointsArray;
 @property (nonatomic, assign) BOOL firstDraw;
 
-- (void)clipImage;
+- (void)clipImage: (CGRect)rect;
 - (void)updateDelegate;
 
 @end
@@ -27,6 +27,7 @@ static const float kSCHScratchEraseSize = 24.0f;
 @synthesize pointsArray;
 @synthesize firstDraw;
 @synthesize interactionEnabled;
+@synthesize showFullImage;
 
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
@@ -36,6 +37,7 @@ static const float kSCHScratchEraseSize = 24.0f;
         self.firstDraw = YES;
         self.pointsArray = [[NSMutableArray alloc] init];
         self.interactionEnabled = YES;
+        self.showFullImage = NO;
 
     }
     return self;
@@ -47,7 +49,7 @@ static const float kSCHScratchEraseSize = 24.0f;
         return;
     }
     
-    [self clipImage];
+    [self clipImage:rect];
 }
 
 - (void)setAnswerImage:(UIImage *)newAnswerImage
@@ -58,27 +60,35 @@ static const float kSCHScratchEraseSize = 24.0f;
     
     [self.pointsArray removeAllObjects];
     self.interactionEnabled = YES;
+    self.showFullImage = NO;
     
     [self setNeedsDisplay];
 
 }
 
-- (void)clipImage
+- (void)setShowFullImage:(BOOL)aShowFullImage
+{
+    showFullImage = aShowFullImage;
+    [self setNeedsDisplay];
+}
+
+- (void)clipImage: (CGRect)rect
 {
     UIImage *img = self.answerImage;
 
-    CGRect bounds = CGRectMake(0, 0, self.answerImage.size.width, self.answerImage.size.height);
-    
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    CGMutablePathRef path = CGPathCreateMutable();
-    
-    for (int i = 0; i < [self.pointsArray count] - 1; i++) {
-        CGPoint pt = [(NSValue *) [self.pointsArray objectAtIndex:i] CGPointValue];
-        CGPathAddEllipseInRect(path, NULL, CGRectMake(pt.x - (kSCHScratchEraseSize/2), pt.y - (kSCHScratchEraseSize/2), kSCHScratchEraseSize, kSCHScratchEraseSize));
+    CGRect bounds = CGRectMake(0, 0, rect.size.width, rect.size.height);
+    if (!showFullImage) {    
+        CGContextRef context = UIGraphicsGetCurrentContext();
+        CGMutablePathRef path = CGPathCreateMutable();
+        
+        for (int i = 0; i < [self.pointsArray count] - 1; i++) {
+            CGPoint pt = [(NSValue *) [self.pointsArray objectAtIndex:i] CGPointValue];
+            CGPathAddEllipseInRect(path, NULL, CGRectMake(pt.x - (kSCHScratchEraseSize/2), pt.y - (kSCHScratchEraseSize/2), kSCHScratchEraseSize, kSCHScratchEraseSize));
+        }
+        
+        CGContextAddPath(context, path);
+        CGContextClip(context);
     }
-    
-    CGContextAddPath(context, path);
-    CGContextClip(context);
     [img drawInRect:bounds];
 }
 
