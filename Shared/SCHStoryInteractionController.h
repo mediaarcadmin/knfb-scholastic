@@ -56,7 +56,7 @@
 - (void)removeFromHostView;
 
 // switch to the next view in the NIB
-- (void)presentNextScreen;
+- (void)presentNextView;
 
 // play an audio file from the XPS provider and invoke a completion block when the playback is complete
 - (BOOL)useAudioButton;
@@ -72,7 +72,9 @@
 
 // send then the nib is loaded and its view objects are attached to the container; similar
 // to viewDidLoad, but used a separate message name to avoid confusion.
-- (void)setupView;
+- (void)setupViewAtIndex:(NSInteger)screenIndex;
+
+// audio path for the audio which should play when the top-corner audio button is tapped
 - (NSString *)audioPath;
 
 @end

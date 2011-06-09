@@ -36,7 +36,7 @@
     [super dealloc];
 }
 
-- (void)setupView
+- (void)setupViewAtIndex:(NSInteger)screenIndex
 {
     [[self.wordViews objectAtIndex:0] setStrikeOutColor:[UIColor redColor]];
     [[self.wordViews objectAtIndex:1] setStrikeOutColor:[UIColor greenColor]];

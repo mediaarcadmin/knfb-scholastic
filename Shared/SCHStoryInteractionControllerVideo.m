@@ -22,7 +22,7 @@
     [super dealloc];
 }
 
-- (void)setupView
+- (void)setupViewAtIndex:(NSInteger)screenIndex
 {
     NSString *moviePath = [(SCHStoryInteractionVideo *)self.storyInteraction videoPath];
     NSData *movieData = [self.xpsProvider dataForComponentAtPath:moviePath];

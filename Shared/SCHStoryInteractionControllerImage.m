@@ -22,7 +22,7 @@
     [super dealloc];
 }
 
-- (void)setupView
+- (void)setupViewAtIndex:(NSInteger)screenIndex
 {
     NSString *imagePath = [(SCHStoryInteractionImage *)self.storyInteraction imagePath];
     NSData *imageData = [self.xpsProvider dataForComponentAtPath:imagePath];
