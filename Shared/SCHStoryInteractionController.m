@@ -31,6 +31,7 @@ typedef void (^PlayAudioCompletionBlock)(void);
 
 @property (nonatomic, retain) NSArray *nibObjects;
 @property (nonatomic, retain) UIView *contentsView;
+@property (nonatomic, retain) UILabel *titleView;
 @property (nonatomic, retain) UIImageView *backgroundView;
 @property (nonatomic, retain) AVAudioPlayer *player;
 @property (nonatomic, assign) BOOL resumeInterruptedPlayer;
@@ -47,6 +48,7 @@ typedef void (^PlayAudioCompletionBlock)(void);
 @synthesize xpsProvider;
 @synthesize isbn;
 @synthesize containerView;
+@synthesize titleView;
 @synthesize nibObjects;
 @synthesize contentsView;
 @synthesize backgroundView;
@@ -76,6 +78,7 @@ typedef void (^PlayAudioCompletionBlock)(void);
     [self removeFromHostView];
     [xpsProvider release];
     [containerView release];
+    [titleView release], titleView = nil;
     [nibObjects release];
     [contentsView release];
     [backgroundView release];
@@ -151,17 +154,17 @@ typedef void (^PlayAudioCompletionBlock)(void);
         [background addSubview:self.contentsView];
         [container addSubview:background];
         
-        UILabel *titleView = [[UILabel alloc] initWithFrame:CGRectIntegral(CGRectMake(kTitleInsetLeft, kTitleInsetTop,
+        self.titleView = [[UILabel alloc] initWithFrame:CGRectIntegral(CGRectMake(kTitleInsetLeft, kTitleInsetTop,
                                                                                       backgroundWidth - kTitleInsetLeft*2,
                                                                                       kContentsInsetTop - kTitleInsetTop*2))];
-        titleView.backgroundColor = [UIColor clearColor];
-        titleView.font = [UIFont boldSystemFontOfSize:iPad ? 24 : 18];
-        titleView.text = [self.storyInteraction interactionViewTitle];
-        titleView.textAlignment = UITextAlignmentCenter;
-        titleView.textColor = iPad ? [UIColor whiteColor] : [UIColor colorWithRed:0.113 green:0.392 blue:0.690 alpha:1.];
-        titleView.adjustsFontSizeToFitWidth = YES;
-        [background addSubview:titleView];
-        [titleView release];
+        self.titleView.backgroundColor = [UIColor clearColor];
+        self.titleView.font = [UIFont boldSystemFontOfSize:iPad ? 24 : 18];
+        [self setTitle:[self.storyInteraction interactionViewTitle]];
+        self.titleView.textAlignment = UITextAlignmentCenter;
+        self.titleView.textColor = iPad ? [UIColor whiteColor] : [UIColor colorWithRed:0.113 green:0.392 blue:0.690 alpha:1.];
+        self.titleView.adjustsFontSizeToFitWidth = YES;
+        [background addSubview:self.titleView];
+        [self.titleView release];
         
         UIButton *closeButton = [UIButton buttonWithType:UIButtonTypeCustom];
         closeButton.frame = CGRectMake(-10, -10, 30, 30);
@@ -350,6 +353,13 @@ typedef void (^PlayAudioCompletionBlock)(void);
     NSData *imageData = [self.xpsProvider dataForComponentAtPath:path];
     UIImage *image = [UIImage imageWithData:imageData];
     return image;
+}
+
+#pragma mark - Story Interaction accessors
+
+- (void)setTitle:(NSString *)title
+{
+    self.titleView.text = title;
 }
 
 #pragma mark - subclass overrides

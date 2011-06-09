@@ -60,6 +60,9 @@
 // get an image from the XPS provider
 - (UIImage *)imageAtPath:(NSString *)path;
 
+// set the title for the story interaction
+- (void)setTitle:(NSString *)title;
+
 #pragma mark - subclass overrides
 
 // send then the nib is loaded and its view objects are attached to the container; similar
