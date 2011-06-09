@@ -183,6 +183,7 @@ static const NSInteger kSCHScratchPointCount = 200;
                completion:^{
                    [self playAudioAtPath:[[self currentQuestion] audioPathForIncorrectAnswer]
                               completion:^{
+                                  [(UIButton *) [self.answerButtons objectAtIndex:selection] setSelected:NO];
                               }];
                }];
 }

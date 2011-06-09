@@ -2062,10 +2062,10 @@
 		F8DA34CE139F88AC0032B1B3 /* SCHStoryInteractionControllerScratchAndSee.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionControllerScratchAndSee.m; sourceTree = "<group>"; };
 		F8DA34D1139F88F80032B1B3 /* SCHStoryInteractionScratchAndSee_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionScratchAndSee_iPhone.xib; sourceTree = "<group>"; };
 		F8DA34D4139F891C0032B1B3 /* SCHStoryInteractionScratchAndSee_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionScratchAndSee_iPad.xib; sourceTree = "<group>"; };
-		F8DB746313A0DCC3006E8D06 /* progressbar-fill.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "progressbar-fill.png"; path = "Resources/progressbar-fill.png"; sourceTree = "<group>"; };
-		F8DB746813A0DDA2006E8D06 /* progressbar-cover.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "progressbar-cover.png"; path = "Resources/progressbar-cover.png"; sourceTree = "<group>"; };
-		F8DB746B13A0E439006E8D06 /* storyinteractions-initialScratch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "storyinteractions-initialScratch.png"; path = "Resources/storyinteractions-initialScratch.png"; sourceTree = "<group>"; };
-		F8DB746C13A0E439006E8D06 /* storyinteractions-initialScratch@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "storyinteractions-initialScratch@2x.png"; path = "Resources/storyinteractions-initialScratch@2x.png"; sourceTree = "<group>"; };
+		F8DB746313A0DCC3006E8D06 /* progressbar-fill.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "progressbar-fill.png"; path = "../../progressbar-fill.png"; sourceTree = "<group>"; };
+		F8DB746813A0DDA2006E8D06 /* progressbar-cover.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "progressbar-cover.png"; path = "../../progressbar-cover.png"; sourceTree = "<group>"; };
+		F8DB746B13A0E439006E8D06 /* storyinteractions-initialScratch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "storyinteractions-initialScratch.png"; path = "../../storyinteractions-initialScratch.png"; sourceTree = "<group>"; };
+		F8DB746C13A0E439006E8D06 /* storyinteractions-initialScratch@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "storyinteractions-initialScratch@2x.png"; path = "../../storyinteractions-initialScratch@2x.png"; sourceTree = "<group>"; };
 		F8DC564E138BBE7D00F27146 /* SCHReadingInteractionsListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHReadingInteractionsListController.h; path = Shared/SCHReadingInteractionsListController.h; sourceTree = SOURCE_ROOT; };
 		F8DC564F138BBE7D00F27146 /* SCHReadingInteractionsListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHReadingInteractionsListController.m; path = Shared/SCHReadingInteractionsListController.m; sourceTree = SOURCE_ROOT; };
 		F8DC5656138C0BCA00F27146 /* SCHReadingInteractionsListController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SCHReadingInteractionsListController.xib; path = Shared/SCHReadingInteractionsListController.xib; sourceTree = "<group>"; };
@@ -2377,6 +2377,10 @@
 				28BFE9DD139FCAD500415075 /* storyinteraction-sequencing-target-ipad.png */,
 				2856BA0C139E507700A73D58 /* storyinteraction-wordsearch-letter-ipad.png */,
 				28024700139F6D3300B73703 /* storyinteraction-wordsearch-letter-iphone.png */,
+				F8DB746B13A0E439006E8D06 /* storyinteractions-initialScratch.png */,
+				F8DB746C13A0E439006E8D06 /* storyinteractions-initialScratch@2x.png */,
+				F8DB746813A0DDA2006E8D06 /* progressbar-cover.png */,
+				F8DB746313A0DCC3006E8D06 /* progressbar-fill.png */,
 			);
 			name = StoryInteractions;
 			path = Resources/UIAssets/StoryInteractions;
@@ -2753,10 +2757,6 @@
 				F8C6DA94136073D300D9E953 /* paper-neutral@2x.png */,
 				C908D880133F941100661718 /* paper-white.png */,
 				F8C6DA95136073D300D9E953 /* paper-white@2x.png */,
-				F8DB746B13A0E439006E8D06 /* storyinteractions-initialScratch.png */,
-				F8DB746C13A0E439006E8D06 /* storyinteractions-initialScratch@2x.png */,
-				F8DB746813A0DDA2006E8D06 /* progressbar-cover.png */,
-				F8DB746313A0DCC3006E8D06 /* progressbar-fill.png */,
 				C908D881133F941100661718 /* booktexture-nocover.png */,
 			);
 			name = Resources;
