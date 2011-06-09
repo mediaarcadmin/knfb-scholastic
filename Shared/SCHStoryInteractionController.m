@@ -30,6 +30,7 @@ typedef void (^PlayAudioCompletionBlock)(void);
 @interface SCHStoryInteractionController ()
 
 @property (nonatomic, retain) NSArray *nibObjects;
+@property (nonatomic, assign) NSInteger currentScreenIndex;
 @property (nonatomic, retain) UIView *contentsView;
 @property (nonatomic, retain) UILabel *titleView;
 @property (nonatomic, retain) UIImageView *backgroundView;
@@ -50,6 +51,7 @@ typedef void (^PlayAudioCompletionBlock)(void);
 @synthesize containerView;
 @synthesize titleView;
 @synthesize nibObjects;
+@synthesize currentScreenIndex;
 @synthesize contentsView;
 @synthesize backgroundView;
 @synthesize storyInteraction;
@@ -104,6 +106,7 @@ typedef void (^PlayAudioCompletionBlock)(void);
         
         resumeInterruptedPlayer = NO;
         playAudioCompletionBlock = nil;
+        currentScreenIndex = 0;
         
         // register for going into the background
         [[NSNotificationCenter defaultCenter] addObserver:self
@@ -143,7 +146,7 @@ typedef void (^PlayAudioCompletionBlock)(void);
         UIImageView *background = [[UIImageView alloc] initWithImage:backgroundStretch];
         
         // first object in the NIB must be the container view for the interaction
-        self.contentsView = [self.nibObjects objectAtIndex:0];
+        self.contentsView = [self.nibObjects objectAtIndex:self.currentScreenIndex];
         CGFloat backgroundWidth = MIN(CGRectGetWidth(self.contentsView.bounds) + kContentsInsetLeft + kContentsInsetRight, CGRectGetWidth(hostView.bounds));
         CGFloat backgroundHeight = MIN(CGRectGetHeight(self.contentsView.bounds) + kContentsInsetTop + kContentsInsetBottom, CGRectGetHeight(hostView.bounds));
         
@@ -202,6 +205,15 @@ typedef void (^PlayAudioCompletionBlock)(void);
     
     [hostView addSubview:self.containerView];
     [self updateOrientation];
+}
+
+- (void)presentNextScreen
+{
+    UIView *host = [self.containerView superview];
+    self.currentScreenIndex = (self.currentScreenIndex + 1) % [self.nibObjects count];
+    [self.containerView removeFromSuperview];
+    self.containerView = nil;
+    [self presentInHostView:host];
 }
 
 - (void)updateOrientation
@@ -305,8 +317,10 @@ typedef void (^PlayAudioCompletionBlock)(void);
 {
     self.player = nil;
     if (self.playAudioCompletionBlock != nil) {
-        self.playAudioCompletionBlock();
+        void (^completionBlock)(void) = [self.playAudioCompletionBlock retain];
         self.playAudioCompletionBlock = nil;
+        completionBlock();
+        [completionBlock release];
     }
 }
 

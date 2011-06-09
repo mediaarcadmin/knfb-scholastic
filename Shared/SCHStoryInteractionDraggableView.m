@@ -22,6 +22,7 @@
 
 @implementation SCHStoryInteractionDraggableView
 
+@synthesize matchTag;
 @synthesize centerOffset;
 @synthesize snapDistanceSq;
 @synthesize targets;

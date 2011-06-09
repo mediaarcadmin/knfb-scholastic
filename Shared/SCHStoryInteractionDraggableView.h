@@ -12,6 +12,9 @@
 
 @interface SCHStoryInteractionDraggableView : UIView {}
 
+// a Tag that can be used to check draggables are attached to the correct target
+@property (nonatomic, assign) NSInteger matchTag;
+
 // the offset from this view's true center to the point which should align with the target's center
 @property (nonatomic, assign) CGPoint centerOffset;
 
