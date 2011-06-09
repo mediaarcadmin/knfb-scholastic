@@ -18,12 +18,17 @@
 @property (nonatomic, assign) CGSize letterTileSize;
 @property (nonatomic, retain) NSArray *letterViews;
 @property (nonatomic, retain) NSMutableArray *builtWord;
+@property (nonatomic, assign) NSInteger gapPosition;
 
 - (void)setupOpeningView;
 - (void)setupMainView;
 - (void)clearBuiltWord;
-- (void)addLetterToBuiltWord:(SCHStoryInteractionDraggableLetterView *)letter;
-- (void)updateTarget;
+- (void)repositionLettersInBuiltWord;
+
+- (NSInteger)letterPositionForPointInContentsView:(CGPoint)point;
+- (NSInteger)letterPositionForPointInTarget:(CGPoint)point;
+- (CGPoint)pointInTargetForLetterPosition:(NSInteger)letterPosition;
+- (CGPoint)pointInContentsViewForLetterPosition:(NSInteger)letterPosition;
 
 @end
 
@@ -36,6 +41,7 @@
 @synthesize letterTileSize;
 @synthesize letterViews;
 @synthesize builtWord;
+@synthesize gapPosition;
 
 - (void)dealloc
 {
@@ -96,9 +102,8 @@
         } else {
             SCHStoryInteractionDraggableLetterView *letterView = [[SCHStoryInteractionDraggableLetterView alloc] initWithLetter:letter];
             letterView.center = CGPointMake(x + CGRectGetMidX(letterView.bounds), y + CGRectGetMidY(letterView.bounds));
-            letterView.snapDistanceSq = letterTileSize.width*letterTileSize.height;
+            letterView.homePosition = letterView.center;
             letterView.delegate = self;
-            [letterView setDragTargets:[NSArray arrayWithObject:self.answerBuildTarget]];
             [letters addObject:letterView];
             [self.contentsView addSubview:letterView];
             [letterView release];
@@ -106,29 +111,42 @@
         }
     }
     
+    self.gapPosition = NSNotFound;
     self.letterViews = [NSArray arrayWithArray:letters];
     [self clearBuiltWord];
 }
 
+#pragma mark - built word modification
+
 - (void)clearBuiltWord
 {
     self.builtWord = [NSMutableArray array];
-    [self.letterViews makeObjectsPerformSelector:@selector(moveToOriginalPosition)];
-    [self updateTarget];
+    [self.letterViews makeObjectsPerformSelector:@selector(moveToHomePosition)];
 }
 
-- (void)addLetterToBuiltWord:(SCHStoryInteractionDraggableLetterView *)letter
+- (void)repositionLettersInBuiltWord
 {
-    [self.builtWord addObject:letter];
-    [self updateTarget];
+    [UIView animateWithDuration:0.25
+                     animations:^{
+                         NSInteger letterPosition = 0;
+                         for (SCHStoryInteractionDraggableLetterView *letter in self.builtWord) {
+                             if (letterPosition == self.gapPosition) {
+                                 letterPosition++;
+                             }
+                             letter.center = [self pointInContentsViewForLetterPosition:letterPosition];
+                             NSLog(@"letter %d '%c' %@", letterPosition, letter.letter, NSStringFromCGPoint(letter.center)); 
+                             letterPosition++;
+                         }
+                     }];
 }
 
-- (void)updateTarget
+- (void)setGapPosition:(NSInteger)newGapPosition
 {
-    CGFloat left = -(CGRectGetWidth(self.answerBuildTarget.bounds) - letterTileSize.width) / 2 + kLetterGap;
-    CGFloat nextX = left + (letterTileSize.width + kLetterGap) * [self.builtWord count];
-    self.answerBuildTarget.centerOffset = CGPointMake(nextX, 0);
-    self.answerBuildTarget.occupied = [self.builtWord count] == 7;
+    if (newGapPosition != gapPosition) {
+        NSLog(@"move gapPosition from %d to %d", gapPosition, newGapPosition);
+        gapPosition = newGapPosition;
+        [self repositionLettersInBuiltWord];
+    }
 }
 
 #pragma mark - Actions
@@ -150,27 +168,72 @@
 
 #pragma mark - Draggable view delegate
 
-- (void)draggableView:(SCHStoryInteractionDraggableView *)draggable didAttachToTarget:(SCHStoryInteractionDraggableTargetView *)target
+- (void)draggableViewDidStartDrag:(SCHStoryInteractionDraggableView *)draggableView
 {
-    if (target == self.answerBuildTarget) {
-        [self addLetterToBuiltWord:(SCHStoryInteractionDraggableLetterView *)draggable];
-    } else {
-        // slide the following letters back to fill the gap
-        NSInteger pos = [self.builtWord indexOfObject:draggable];
-        if (pos != NSNotFound) {
-            while (++pos < [self.builtWord count]) {
-                UIView *letter = [self.builtWord objectAtIndex:pos];
-                CGPoint center = letter.center;
-                center.x -= self.letterTileSize.width + kLetterGap;
-                [UIView animateWithDuration:0.25
-                                 animations:^{
-                                     letter.center = center;
-                                 }];
-            }
-        }
-        [self.builtWord removeObject:draggable];
-        [self updateTarget];
+    [self.builtWord removeObject:draggableView];
+}
+
+- (BOOL)draggableView:(SCHStoryInteractionDraggableView *)draggableView shouldSnapFromPosition:(CGPoint)position toPosition:(CGPoint *)snapPosition
+{
+    NSInteger letterPosition = [self letterPositionForPointInContentsView:position];
+    if (letterPosition == NSNotFound) {
+        self.gapPosition = NSNotFound;
+        return NO;
     }
+
+    self.gapPosition = letterPosition;
+
+    // don't really snap, but undo the move from repositionLettersInBuiltWord
+    *snapPosition = position;
+    return YES;
+}
+
+- (void)draggableView:(SCHStoryInteractionDraggableView *)draggableView didMoveToPosition:(CGPoint)position
+{
+    NSInteger letterPosition = [self letterPositionForPointInContentsView:position];
+    if (letterPosition == NSNotFound) {
+        [UIView animateWithDuration:0.25
+                         animations:^{
+                             [draggableView moveToHomePosition];
+                         }];
+    } else {
+        // allow for the fact that the gap position isn't really in the array
+        if (letterPosition > self.gapPosition) {
+            letterPosition--;
+        }
+        [self.builtWord insertObject:draggableView atIndex:letterPosition];
+    }
+    self.gapPosition = NSNotFound;
+}
+
+#pragma mark - Target letter positions
+
+- (NSInteger)letterPositionForPointInContentsView:(CGPoint)point
+{
+    CGRect frame = [self.answerBuildTarget convertRect:self.answerBuildTarget.frame toView:self.contentsView];
+    if (!CGRectContainsPoint(frame, point)) {
+        return NSNotFound;
+    }
+    CGPoint pointInTarget = [self.answerBuildTarget convertPoint:point fromView:self.contentsView];
+    NSInteger letterPosition = [self letterPositionForPointInTarget:pointInTarget];
+    return MAX(0, MIN(letterPosition, [self.builtWord count]));
+}
+
+- (NSInteger)letterPositionForPointInTarget:(CGPoint)point
+{
+    return (point.x - kLetterGap) / (self.letterTileSize.width + kLetterGap);
+}
+
+- (CGPoint)pointInTargetForLetterPosition:(NSInteger)letterPosition
+{
+    return CGPointMake(kLetterGap + self.letterTileSize.width/2 + (self.letterTileSize.width + kLetterGap) * letterPosition,
+                       CGRectGetMidY(self.answerBuildTarget.bounds));
+}
+
+- (CGPoint)pointInContentsViewForLetterPosition:(NSInteger)letterPosition
+{
+    CGPoint pointInTarget = [self pointInTargetForLetterPosition:letterPosition];
+    return [self.answerBuildTarget convertPoint:pointInTarget toView:self.contentsView];
 }
 
 #pragma mark - Table View Data Source

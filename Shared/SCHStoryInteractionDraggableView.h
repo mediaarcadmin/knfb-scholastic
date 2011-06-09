@@ -12,6 +12,7 @@
 
 @protocol SCHStoryInteractionDraggableViewDelegate
 @required
+- (void)draggableViewDidStartDrag:(SCHStoryInteractionDraggableView *)draggableView;
 - (BOOL)draggableView:(SCHStoryInteractionDraggableView *)draggableView shouldSnapFromPosition:(CGPoint)position toPosition:(CGPoint *)snapPosition;
 - (void)draggableView:(SCHStoryInteractionDraggableView *)draggableView didMoveToPosition:(CGPoint)position;
 @end
@@ -23,5 +24,10 @@
 
 // optional delegate for this draggable
 @property (nonatomic, assign) id<SCHStoryInteractionDraggableViewDelegate> delegate;
+
+// home position for this draggable
+@property (nonatomic, assign) CGPoint homePosition;
+
+- (void)moveToHomePosition;
 
 @end

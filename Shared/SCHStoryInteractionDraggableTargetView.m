@@ -11,18 +11,5 @@
 @implementation SCHStoryInteractionDraggableTargetView
 
 @synthesize matchTag;
-@synthesize centerOffset;
-@synthesize occupied;
-
-- (CGPoint)targetCenterInView:(UIView *)view
-{
-    CGPoint c;
-    if (view == self.superview) {
-        c = self.center;
-    } else {
-        c = [self convertPoint:self.center toView:view];
-    }
-    return CGPointMake(c.x + self.centerOffset.x, c.y + self.centerOffset.y);
-}
 
 @end

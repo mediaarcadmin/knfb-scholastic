@@ -23,8 +23,17 @@
 
 @synthesize matchTag;
 @synthesize delegate;
+@synthesize homePosition;
 @synthesize touchOffset;
 @synthesize dragOrigin;
+
+- (void)moveToHomePosition
+{
+    [UIView animateWithDuration:0.25
+                     animations:^{
+                         self.center = self.homePosition;
+                     }];
+}
 
 #pragma mark - touch support
 
@@ -72,6 +81,10 @@
                          self.transform = CGAffineTransformMakeScale(1.1, 1.1);
                          self.alpha = 0.8;
                      }];
+    
+    if (delegate) {
+        [self.delegate draggableViewDidStartDrag:self];
+    }
 }
 
 - (void)endDrag:(BOOL)cancelled

@@ -64,7 +64,6 @@ static NSArray *sortArrayOfViewsVertically(NSArray *array)
 
 @property (nonatomic, assign) CGPoint sourceCenterOffset;
 @property (nonatomic, assign) CGPoint targetCenterOffset;
-@property (nonatomic, retain) NSArray *originalSourcePositions;
 
 @end
 
@@ -76,7 +75,6 @@ static NSArray *sortArrayOfViewsVertically(NSArray *array)
 @synthesize targets;
 @synthesize sourceCenterOffset;
 @synthesize targetCenterOffset;
-@synthesize originalSourcePositions;
 
 - (void)dealloc
 {
@@ -109,14 +107,12 @@ static NSArray *sortArrayOfViewsVertically(NSArray *array)
             [[self.statementLabels objectAtIndex:targetIndex] setText:statement.text];
             SCHStoryInteractionDraggableTargetView *target = [self.targets objectAtIndex:targetIndex];
             target.matchTag = statement.questionIndex;
-            NSLog(@"%d : %@ -> %@", targetIndex, statement.source, statement.text);
             targetIndex++;
         }
     }
 
     // jumble up the sources and tag with the correct indices
     NSMutableArray *statements = [whoSaidIt.statements mutableCopy];
-    NSMutableArray *sourcePositions = [NSMutableArray array];
     for (SCHStoryInteractionDraggableView *source in self.sources) {
         int index = arc4random() % [statements count];
         SCHStoryInteractionWhoSaidItStatement *statement = [statements objectAtIndex:index];
@@ -125,12 +121,10 @@ static NSArray *sortArrayOfViewsVertically(NSArray *array)
         source.tag = -1;
         source.matchTag = statement.questionIndex;
         source.delegate = self;
-        [sourcePositions addObject:[NSValue valueWithCGPoint:source.center]];
+        source.homePosition = source.center;
         [statements removeObjectAtIndex:index];
     }
     [statements release];
-    
-    self.originalSourcePositions = [NSArray arrayWithArray:sourcePositions];
 }
 
 - (void)checkAnswers:(id)sender
@@ -157,6 +151,9 @@ static NSArray *sortArrayOfViewsVertically(NSArray *array)
 }
 
 #pragma mark - draggable view delegate
+
+- (void)draggableViewDidStartDrag:(SCHStoryInteractionDraggableView *)draggableView
+{}
 
 - (BOOL)draggableView:(SCHStoryInteractionDraggableView *)draggableView shouldSnapFromPosition:(CGPoint)position toPosition:(CGPoint *)snapPosition
 {
@@ -186,16 +183,9 @@ static NSArray *sortArrayOfViewsVertically(NSArray *array)
         targetIndex++;
     }
 
-    NSLog(@"source tag = %d", draggableView.tag);
-
     // if not attached to a target, move source back home
     if (draggableView.tag < 0) {
-        NSInteger sourceIndex = [self.sources indexOfObject:draggableView];
-        CGPoint originalPosition = [[self.originalSourcePositions objectAtIndex:sourceIndex] CGPointValue];
-        [UIView animateWithDuration:0.25
-                         animations:^{
-                             draggableView.center = originalPosition;
-                         }];
+        [draggableView moveToHomePosition];
     }
 }
 

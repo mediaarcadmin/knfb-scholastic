@@ -11,9 +11,5 @@
 @interface SCHStoryInteractionDraggableTargetView : UIImageView {}
 
 @property (nonatomic, assign) NSInteger matchTag;
-@property (nonatomic, assign) CGPoint centerOffset;
-@property (nonatomic, assign) BOOL occupied;
-
-- (CGPoint)targetCenterInView:(UIView *)view;
 
 @end
