@@ -14,6 +14,8 @@
 @class SCHStoryInteraction;
 @protocol SCHStoryInteractionControllerDelegate;
 
+// Core presentation functionality for story interactions. 
+
 // Because Story Interactions have a non-modal behaviour in the reading view, StoryInteractionController 
 // is not a UIViewController but relies on another view and controller as hosts.
 
@@ -52,6 +54,9 @@
 // remove the story interaction from the host view; also sends storyInteractionControllerDidDismiss: to
 // the delegate
 - (void)removeFromHostView;
+
+// switch to the next view in the NIB
+- (void)presentNextScreen;
 
 // play an audio file from the XPS provider and invoke a completion block when the playback is complete
 - (BOOL)useAudioButton;
