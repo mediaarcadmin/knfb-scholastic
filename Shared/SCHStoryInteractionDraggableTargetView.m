@@ -10,6 +10,7 @@
 
 @implementation SCHStoryInteractionDraggableTargetView
 
+@synthesize matchTag;
 @synthesize centerOffset;
 @synthesize occupied;
 
