@@ -11,7 +11,6 @@
 
 @interface SCHStoryInteractionControllerMultipleChoiceText : SCHStoryInteractionController {}
 
-@property (nonatomic, retain) IBOutlet UILabel *promptLabel;
 @property (nonatomic, retain) IBOutlet UIButton *answerButton1;
 @property (nonatomic, retain) IBOutlet UIButton *answerButton2;
 @property (nonatomic, retain) IBOutlet UIButton *answerButton3;
