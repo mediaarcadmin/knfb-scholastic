@@ -19,6 +19,9 @@
 @property (nonatomic, retain) IBOutlet UIButton *answerButton1;
 @property (nonatomic, retain) IBOutlet UIButton *answerButton2;
 @property (nonatomic, retain) IBOutlet UIButton *answerButton3;
+@property (nonatomic, retain) IBOutlet UIImageView *progressImageView;
+@property (nonatomic, retain) IBOutlet UIImageView *progressCoverImageView;
+@property (nonatomic, retain) IBOutlet UIView *progressView;
 
 - (IBAction)questionButtonTapped:(UIButton *)sender;
 
