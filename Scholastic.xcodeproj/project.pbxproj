@@ -2383,7 +2383,7 @@
 				28A60F7D1397BB3C0090853E /* answer-button-yellow.png */,
 				28BFE9DD139FCAD500415075 /* storyinteraction-sequencing-target-ipad.png */,
 				2856BA0C139E507700A73D58 /* storyinteraction-lettertile-ipad.png */,
-				28024700139F6D3300B73703 /* storyinteraction-lettertile-iphone.png */,png */,
+				28024700139F6D3300B73703 /* storyinteraction-lettertile-iphone.png */,
 				F8DB746B13A0E439006E8D06 /* storyinteractions-initialScratch.png */,
 				F8DB746C13A0E439006E8D06 /* storyinteractions-initialScratch@2x.png */,
 				F8DB746813A0DDA2006E8D06 /* progressbar-cover.png */,
