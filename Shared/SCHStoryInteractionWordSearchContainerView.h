@@ -23,6 +23,7 @@
 @interface SCHStoryInteractionWordSearchContainerView : UIView {}
 
 @property (nonatomic, assign) id<SCHStoryInteractionWordSearchContainerViewDelegate> delegate;
+@property (nonatomic, assign) NSInteger letterGap;
 
 - (void)populateFromWordSearchModel:(SCHStoryInteractionWordSearch *)wordSearch
                 withLetterTileImage:(UIImage *)letterBackground;

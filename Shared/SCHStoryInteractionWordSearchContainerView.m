@@ -11,12 +11,11 @@
 #import "SCHStoryInteractionWordSearchContainerView.h"
 #import "SCHStoryInteractionWordSearch.h"
 
-#define kLetterGap 10
-
 @interface SelectionLayer : CALayer {}
 @property (nonatomic, assign) CGFloat phase;
 @property (nonatomic, retain) UIColor *color;
 @property (nonatomic, assign) CGSize letterSize;
+@property (nonatomic, assign) NSInteger letterGap;
 @property (nonatomic, assign) NSInteger startRow;
 @property (nonatomic, assign) NSInteger startColumn;
 @property (nonatomic, assign) NSInteger extent;
@@ -37,6 +36,7 @@
 @implementation SCHStoryInteractionWordSearchContainerView
 
 @synthesize delegate;
+@synthesize letterGap;
 @synthesize letterArea;
 @synthesize letterSize;
 @synthesize numberOfRows;
@@ -78,8 +78,8 @@
     self.numberOfColumns = [wordSearch matrixColumns];
     const CGFloat scale = [[UIScreen mainScreen] scale];
     self.letterSize = CGSizeMake(letterBackground.size.width / scale, letterBackground.size.height / scale);
-    CGSize letterAreaSize = CGSizeMake(self.numberOfColumns * self.letterSize.width + (self.numberOfColumns-1) * kLetterGap,
-                                       self.numberOfRows * self.letterSize.height + (self.numberOfRows-1) * kLetterGap);
+    CGSize letterAreaSize = CGSizeMake(self.numberOfColumns * self.letterSize.width + (self.numberOfColumns-1) * self.letterGap,
+                                       self.numberOfRows * self.letterSize.height + (self.numberOfRows-1) * self.letterGap);
     self.letterArea = CGRectMake((self.bounds.size.width - letterAreaSize.width) / 2,
                                  (self.bounds.size.height - letterAreaSize.height) / 2,
                                  letterAreaSize.width, letterAreaSize.height);
@@ -100,9 +100,9 @@
             [label release];
             [self addSubview:bg];
             [bg release];
-            x += self.letterSize.width + kLetterGap;
+            x += self.letterSize.width + self.letterGap;
         }
-        y += self.letterSize.height + kLetterGap;
+        y += self.letterSize.height + self.letterGap;
     }
     
     [self clearSelection];
@@ -111,6 +111,7 @@
     self.selectionLayer.bounds = CGRectMake(0, 0, self.letterArea.size.width, self.letterArea.size.height);
     self.selectionLayer.position = CGPointMake(CGRectGetMidX(self.letterArea), CGRectGetMidY(self.letterArea));
     self.selectionLayer.letterSize = self.letterSize;
+    self.selectionLayer.letterGap = self.letterGap;
     [self.layer addSublayer:self.selectionLayer];
 }
 
@@ -125,6 +126,7 @@
     highlight.bounds = self.selectionLayer.bounds;
     highlight.position = self.selectionLayer.position;
     highlight.letterSize = self.letterSize;
+    highlight.letterGap = self.letterGap;
     highlight.color = color;
     highlight.startColumn = self.selectionLayer.startColumn;
     highlight.startRow = self.selectionLayer.startRow;
@@ -144,8 +146,8 @@
     CGPoint translation = [pan translationInView:self];
     CGPoint endPoint = CGPointMake(self.selectionStartPoint.x + translation.x,
                                    self.selectionStartPoint.y + translation.y);
-    CGFloat stepWidth = self.letterSize.width + kLetterGap;
-    CGFloat stepHeight = self.letterSize.height + kLetterGap;
+    CGFloat stepWidth = self.letterSize.width + self.letterGap;
+    CGFloat stepHeight = self.letterSize.height + self.letterGap;
 
     NSInteger startCol = (NSInteger)((self.selectionStartPoint.x - self.letterArea.origin.x) / stepWidth);
     NSInteger startRow = (NSInteger)((self.selectionStartPoint.y - self.letterArea.origin.y) / stepHeight);
@@ -203,6 +205,7 @@
 @synthesize phase;
 @synthesize color;
 @synthesize letterSize;
+@synthesize letterGap;
 @synthesize startRow;
 @synthesize startColumn;
 @synthesize extent;
@@ -237,11 +240,11 @@
         CGContextSetLineDash(context, self.phase, kDashLengths, sizeof(kDashLengths)/sizeof(kDashLengths[0]));
     }
     
-    CGFloat x1 = (model.letterSize.width + kLetterGap) * model.startColumn + kInset;
-    CGFloat y1 = (model.letterSize.height + kLetterGap) * model.startRow + kInset;
+    CGFloat x1 = (model.letterSize.width + model.letterGap) * model.startColumn + kInset;
+    CGFloat y1 = (model.letterSize.height + model.letterGap) * model.startRow + kInset;
     if (model.isVertical) {
         CGFloat x2 = x1 + model.letterSize.width - kInset*2;
-        CGFloat y2 = y1 + (model.letterSize.height * model.extent) + kLetterGap * (model.extent-1) - kInset*2;
+        CGFloat y2 = y1 + (model.letterSize.height * model.extent) + model.letterGap * (model.extent-1) - kInset*2;
         CGFloat radius = (x2-x1)/2;
         CGContextMoveToPoint(context, x1, y2-radius);
         CGContextAddArc(context, (x1+x2)/2, y2-radius, radius, M_PI, 0, YES);
@@ -249,7 +252,7 @@
         CGContextAddArc(context, (x1+x2)/2, y1+radius, radius, 0, M_PI, YES);
         CGContextClosePath(context);
     } else {
-        CGFloat x2 = x1 + (model.letterSize.width * model.extent) + kLetterGap * (model.extent-1) - kInset*2;
+        CGFloat x2 = x1 + (model.letterSize.width * model.extent) + model.letterGap * (model.extent-1) - kInset*2;
         CGFloat y2 = y1 + model.letterSize.height - kInset*2;
         CGFloat radius = (y2-y1)/2;
         CGContextMoveToPoint(context, x2-radius, y1);

@@ -68,10 +68,13 @@
         [[self.wordViews objectAtIndex:i] setText:[wordSearch.words objectAtIndex:i]];
     }
     
-    UIImage *letterTile = [UIImage imageNamed:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"storyinteraction-wordsearch-letter-ipad" : @"storyinteraction-wordsearch-letter-iphone")];
+    BOOL iPad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
+    
+    UIImage *letterTile = [UIImage imageNamed:(iPad ? @"storyinteraction-wordsearch-letter-ipad" : @"storyinteraction-wordsearch-letter-iphone")];
+    self.lettersContainerView.delegate = self;
+    self.lettersContainerView.letterGap = iPad ? 10 : 2;
     [self.lettersContainerView populateFromWordSearchModel:wordSearch
                                        withLetterTileImage:letterTile];
-    self.lettersContainerView.delegate = self;
     self.numberOfWordsFound = 0;
 }
 
