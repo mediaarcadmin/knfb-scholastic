@@ -12,8 +12,7 @@
 @interface SCHStoryInteractionDraggableView ()
 
 @property (nonatomic, assign) CGPoint touchOffset;
-@property (nonatomic, assign) CGPoint originalCenter;
-@property (nonatomic, copy) NSArray *targets;
+@property (nonatomic, assign) CGPoint dragOrigin;
 
 - (void)beginDrag;
 - (void)endDrag:(BOOL)cancelled;
@@ -23,46 +22,11 @@
 @implementation SCHStoryInteractionDraggableView
 
 @synthesize matchTag;
-@synthesize centerOffset;
-@synthesize snapDistanceSq;
-@synthesize targets;
-@synthesize touchOffset;
-@synthesize originalCenter;
-@synthesize attachedTarget;
 @synthesize delegate;
-
-- (void)dealloc
-{
-    [targets release];
-    [super dealloc];
-}
-
-- (void)setDragTargets:(NSArray *)dragTargets
-{
-    self.originalCenter = self.center;
-    self.targets = dragTargets;
-    [self setUserInteractionEnabled:YES];
-}
-
-- (void)moveToOriginalPosition
-{
-    [UIView animateWithDuration:0.5
-                          delay:0
-                        options:UIViewAnimationCurveEaseInOut
-                     animations:^{
-                         self.center = self.originalCenter;
-                     }
-                     completion:nil];
-}
+@synthesize touchOffset;
+@synthesize dragOrigin;
 
 #pragma mark - touch support
-
-static CGFloat distanceSq(CGPoint p1, CGPoint p2)
-{
-    CGFloat dx = p1.x-p2.x;
-    CGFloat dy = p1.y-p2.y;
-    return dx*dx + dy*dy;
-}
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
@@ -76,29 +40,19 @@ static CGFloat distanceSq(CGPoint p1, CGPoint p2)
     CGPoint point = [[touches anyObject] locationInView:self.superview];
     self.center = CGPointMake(point.x + self.touchOffset.x, point.y + self.touchOffset.y);
     
-    self.attachedTarget.occupied = NO;
-    self.attachedTarget = nil;
-    for (SCHStoryInteractionDraggableTargetView *target in self.targets) {
-        if (target.occupied) {
-            continue;
-        }
-        CGPoint selfCenter = CGPointMake(self.center.x + self.centerOffset.x, self.center.y + self.centerOffset.y);
-        CGPoint targetCenter = [target targetCenterInView:self.superview];
-        if (distanceSq(targetCenter, selfCenter) < self.snapDistanceSq) {
-            self.center = CGPointMake(targetCenter.x - self.centerOffset.x, targetCenter.y - self.centerOffset.y);
-            self.attachedTarget = target;
-            self.attachedTarget.occupied = YES;
-        }
+    CGPoint snapPoint;
+    if (self.delegate && [self.delegate draggableView:self shouldSnapFromPosition:self.center toPosition:&snapPoint]) {
+        self.center = snapPoint;
     }
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
     // if we don't drop on a target, return to original position
-    [self endDrag:(attachedTarget == nil)];
+    [self endDrag:NO];
 
     if (delegate) {
-        [delegate draggableView:self didAttachToTarget:self.attachedTarget];
+        [delegate draggableView:self didMoveToPosition:self.center];
     }
 }
 
@@ -111,6 +65,7 @@ static CGFloat distanceSq(CGPoint p1, CGPoint p2)
 
 - (void)beginDrag
 {
+    self.dragOrigin = self.center;
     [self.superview bringSubviewToFront:self];
     [UIView animateWithDuration:0.25
                      animations:^{
@@ -126,7 +81,7 @@ static CGFloat distanceSq(CGPoint p1, CGPoint p2)
                          self.transform = CGAffineTransformIdentity;
                          self.alpha = 1;
                          if (cancelled) {
-                             self.center = self.originalCenter;
+                             self.center = self.dragOrigin;
                          }
                      }];
 }
