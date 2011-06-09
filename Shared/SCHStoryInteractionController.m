@@ -185,18 +185,6 @@ typedef void (^PlayAudioCompletionBlock)(void);
         [container release];
         [background release];
 
-        // any other views in the nib are added to the title bar
-        NSInteger x = backgroundWidth - kContentsInsetRight;
-        for (NSUInteger i = [self.nibObjects count]-1; i > 0; --i) {
-            UIView *view = [self.nibObjects objectAtIndex:i];
-            CGRect viewFrame = view.frame;
-            viewFrame.origin.x = floor(x - viewFrame.size.width);
-            viewFrame.origin.y = floor((kContentsInsetTop - viewFrame.size.height) / 2);
-            view.frame = viewFrame;
-            [self.backgroundView addSubview:view];
-            x -= viewFrame.size.width + 5;
-        }
-        
         [self setupView];
     }
     
