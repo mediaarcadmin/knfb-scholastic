@@ -21,6 +21,8 @@
 #import "SCHCustomNavigationBar.h"
 #import "SCHAppProfile.h"
 
+extern NSString * const kSCHAuthenticationManagerDeviceKey;
+
 static const CGFloat kProfilePadTableOffsetPortrait = 280.0f;
 static const CGFloat kProfilePadTableOffsetLandscape = 220.0f;
 
@@ -123,9 +125,13 @@ static const CGFloat kProfilePadTableOffsetLandscape = 220.0f;
     
     // check for authentication
 #if !LOCALDEBUG	
+#if NONDRMAUTHENTICATION
 	SCHAuthenticationManager *authenticationManager = [SCHAuthenticationManager sharedAuthenticationManager];
-	
-	if ([authenticationManager isAuthenticated] == NO) {
+	if ([authenticationManager isAuthenticated] == NO) {	
+#else 
+    NSString *deviceKey = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerDeviceKey];
+    if (!deviceKey) { 
+#endif
         [self showLoginControllerWithAnimation:YES];
 	}
 #endif

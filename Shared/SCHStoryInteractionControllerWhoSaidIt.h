@@ -8,11 +8,11 @@
 
 #import <Foundation/Foundation.h>
 #import "SCHStoryInteractionController.h"
+#import "SCHStoryInteractionDraggableView.h"
 
-@class SCHStoryInteractionDraggableView;
 @class SCHStoryInteractionDraggableTargetView;
 
-@interface SCHStoryInteractionControllerWhoSaidIt : SCHStoryInteractionController {}
+@interface SCHStoryInteractionControllerWhoSaidIt : SCHStoryInteractionController <SCHStoryInteractionDraggableViewDelegate> {}
 
 @property (nonatomic, retain) IBOutletCollection(UILabel) NSArray *statementLabels;
 @property (nonatomic, retain) IBOutletCollection(SCHStoryInteractionDraggableView) NSArray *sources;

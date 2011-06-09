@@ -21,6 +21,10 @@
 - (NSInteger)matrixRows;
 - (unichar)matrixLetterAtRow:(NSInteger)row column:(NSInteger)column;
 
+// get the index in 'words' for a string of selected letters, or NSNotFound if the
+// selected letters are not one of the correct words
+- (NSInteger)wordIndexForLetters:(NSString *)letters;
+
 // XPS-relative path for the question audio
 - (NSString *)audioPathForQuestion;
 

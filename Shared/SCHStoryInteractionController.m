@@ -31,7 +31,6 @@ typedef void (^PlayAudioCompletionBlock)(void);
 
 @property (nonatomic, retain) NSArray *nibObjects;
 @property (nonatomic, assign) NSInteger currentScreenIndex;
-@property (nonatomic, retain) UIView *contentsView;
 @property (nonatomic, retain) UILabel *titleView;
 @property (nonatomic, retain) UIImageView *backgroundView;
 @property (nonatomic, retain) AVAudioPlayer *player;

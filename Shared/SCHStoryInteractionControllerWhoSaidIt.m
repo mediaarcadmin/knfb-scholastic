@@ -16,10 +16,56 @@
 #define kSourceLabelTag 1001
 #define kSourceImageTag 1002
 #define kSnapDistanceSq 900
-#define kSourceOffsetY_iPad 6
+#define kSourceOffsetY_iPad 5
 #define kSourceOffsetY_iPhone 3
-#define kTargetOffsetX_iPad -12
+#define kTargetOffsetX_iPad -13
 #define kTargetOffsetX_iPhone -7
+
+static CGFloat distanceSq(CGPoint p1, CGPoint p2)
+{
+    CGFloat dx = p1.x-p2.x;
+    CGFloat dy = p1.y-p2.y;
+    return dx*dx + dy*dy;
+}
+
+static CGPoint pointWithOffset(CGPoint p, CGPoint offset)
+{
+    return CGPointMake(p.x + offset.x, p.y + offset.y);
+}
+
+static UIView *commonSuperview(UIView *v1, UIView *v2)
+{
+    if (v1.superview == nil) {
+        return nil;
+    }
+    for (UIView *v = v2; v != nil; v = v.superview) {
+        if (v == v1.superview) {
+            return v;
+        }
+    }
+    return commonSuperview(v1.superview, v2);
+}
+
+static NSArray *sortArrayOfViewsVertically(NSArray *array)
+{
+    return [array sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+        UIView *v1 = (UIView *)obj1;
+        UIView *v2 = (UIView *)obj2;
+        UIView *sv = commonSuperview(v1, v2);
+        CGPoint c1 = [v1 convertPoint:v1.center toView:sv];
+        CGPoint c2 = [v2 convertPoint:v2.center toView:sv];
+        if (c1.y < c2.y) return NSOrderedAscending;
+        else if (c1.y > c2.y) return NSOrderedDescending;
+        else return NSOrderedSame;
+    }];
+}
+
+@interface SCHStoryInteractionControllerWhoSaidIt ()
+
+@property (nonatomic, assign) CGPoint sourceCenterOffset;
+@property (nonatomic, assign) CGPoint targetCenterOffset;
+
+@end
 
 @implementation SCHStoryInteractionControllerWhoSaidIt
 
@@ -27,6 +73,8 @@
 @synthesize statementLabels;
 @synthesize sources;
 @synthesize targets;
+@synthesize sourceCenterOffset;
+@synthesize targetCenterOffset;
 
 - (void)dealloc
 {
@@ -39,14 +87,17 @@
 
 - (void)setupViewAtIndex:(NSInteger)screenIndex
 {
-    CGPoint targetCenterOffset, sourceCenterOffset;
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        targetCenterOffset = CGPointMake(kTargetOffsetX_iPad, 0);
-        sourceCenterOffset = CGPointMake(0, kSourceOffsetY_iPad);
+        self.targetCenterOffset = CGPointMake(kTargetOffsetX_iPad, 0);
+        self.sourceCenterOffset = CGPointMake(0, kSourceOffsetY_iPad);
     } else {
-        targetCenterOffset = CGPointMake(kTargetOffsetX_iPhone, 0);
-        sourceCenterOffset = CGPointMake(0, kSourceOffsetY_iPhone);
+        self.targetCenterOffset = CGPointMake(kTargetOffsetX_iPhone, 0);
+        self.sourceCenterOffset = CGPointMake(0, kSourceOffsetY_iPhone);
     }
+    
+    // sort the arrays by vertical position to ensure the source labels and targets are ordered the same
+    self.targets = sortArrayOfViewsVertically(self.targets);
+    self.statementLabels = sortArrayOfViewsVertically(self.statementLabels);
     
     // set up the labels and tag the targets with the correct indices
     SCHStoryInteractionWhoSaidIt *whoSaidIt = (SCHStoryInteractionWhoSaidIt *)[self storyInteraction];
@@ -56,7 +107,6 @@
             [[self.statementLabels objectAtIndex:targetIndex] setText:statement.text];
             SCHStoryInteractionDraggableTargetView *target = [self.targets objectAtIndex:targetIndex];
             target.matchTag = statement.questionIndex;
-            target.centerOffset = targetCenterOffset;
             targetIndex++;
         }
     }
@@ -68,10 +118,10 @@
         SCHStoryInteractionWhoSaidItStatement *statement = [statements objectAtIndex:index];
         UILabel *label = (UILabel *)[source viewWithTag:kSourceLabelTag];
         label.text = statement.source;
+        source.tag = -1;
         source.matchTag = statement.questionIndex;
-        source.centerOffset = sourceCenterOffset;
-        source.snapDistanceSq = kSnapDistanceSq;
-        [source setDragTargets:self.targets];
+        source.delegate = self;
+        source.homePosition = source.center;
         [statements removeObjectAtIndex:index];
     }
     [statements release];
@@ -80,10 +130,10 @@
 - (void)checkAnswers:(id)sender
 {
     for (SCHStoryInteractionDraggableView *source in self.sources) {
-        SCHStoryInteractionDraggableTargetView *target = source.attachedTarget;
-        if (!target) {
+        if (source.tag < 0) {
             continue;
         }
+        SCHStoryInteractionDraggableTargetView *target = [self.targets objectAtIndex:source.tag];
         NSString *root = (source.matchTag == target.matchTag ? @"storyinteraction-draggable-green-" : @"storyinteraction-draggable-red-");
         UIImage *image = [UIImage imageNamed:[root stringByAppendingString:UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"ipad" : @"iphone"]];
         UIImageView *imageView = (UIImageView *)[source viewWithTag:kSourceImageTag];
@@ -98,6 +148,45 @@
             [imageView setHighlighted:NO];
         }
     });
+}
+
+#pragma mark - draggable view delegate
+
+- (void)draggableViewDidStartDrag:(SCHStoryInteractionDraggableView *)draggableView
+{}
+
+- (BOOL)draggableView:(SCHStoryInteractionDraggableView *)draggableView shouldSnapFromPosition:(CGPoint)position toPosition:(CGPoint *)snapPosition
+{
+    CGPoint sourceCenter = pointWithOffset(position, self.sourceCenterOffset);
+    for (SCHStoryInteractionDraggableTargetView *target in self.targets) {
+        CGPoint targetCenter = pointWithOffset(target.center, self.targetCenterOffset);
+        if (distanceSq(sourceCenter, targetCenter) < kSnapDistanceSq) {
+            *snapPosition = CGPointMake(targetCenter.x - self.sourceCenterOffset.x, targetCenter.y - self.sourceCenterOffset.y);
+            return YES;
+        }
+    }
+    return NO;
+}
+
+- (void)draggableView:(SCHStoryInteractionDraggableView *)draggableView didMoveToPosition:(CGPoint)position
+{
+    // if we've landed on a target, tag the source with that target's index for checkAnswers
+    draggableView.tag = -1;
+    CGPoint sourceCenter = pointWithOffset(position, self.sourceCenterOffset);
+    NSInteger targetIndex = 0;
+    for (SCHStoryInteractionDraggableTargetView *target in self.targets) {
+        CGPoint targetCenter = pointWithOffset(target.center, self.targetCenterOffset);
+        if (distanceSq(sourceCenter, targetCenter) < kSnapDistanceSq) {
+            draggableView.tag = targetIndex;
+            break;
+        }
+        targetIndex++;
+    }
+
+    // if not attached to a target, move source back home
+    if (draggableView.tag < 0) {
+        [draggableView moveToHomePosition];
+    }
 }
 
 @end

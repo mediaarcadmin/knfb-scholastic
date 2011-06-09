@@ -8,10 +8,11 @@
 
 #import <Foundation/Foundation.h>
 #import "SCHStoryInteractionController.h"
+#import "SCHStoryInteractionDraggableView.h"
 
 @class SCHStoryInteractionDraggableTargetView;
 
-@interface SCHStoryInteractionControllerTitleTwister : SCHStoryInteractionController <UITableViewDataSource> {}
+@interface SCHStoryInteractionControllerTitleTwister : SCHStoryInteractionController <UITableViewDataSource, SCHStoryInteractionDraggableViewDelegate> {}
 
 @property (nonatomic, retain) IBOutlet UILabel *openingScreenTitleLabel;
 @property (nonatomic, retain) IBOutlet SCHStoryInteractionDraggableTargetView *answerBuildTarget;

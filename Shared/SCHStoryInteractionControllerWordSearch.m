@@ -14,10 +14,7 @@
 #import "SCHStoryInteractionWordSearchContainerView.h"
 
 @interface SCHStoryInteractionControllerWordSearch ()
-
 @property (nonatomic, retain) NSMutableArray *remainingWords;
-- (NSInteger)wordIndexFor:(NSString *)word;
-
 @end
 
 @implementation SCHStoryInteractionControllerWordSearch
@@ -57,7 +54,7 @@
     
     BOOL iPad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
     
-    UIImage *letterTile = [UIImage imageNamed:(iPad ? @"storyinteraction-wordsearch-letter-ipad" : @"storyinteraction-wordsearch-letter-iphone")];
+    UIImage *letterTile = [UIImage imageNamed:(iPad ? @"storyinteraction-lettertile-ipad" : @"storyinteraction-lettertile-iphone")];
     self.lettersContainerView.delegate = self;
     self.lettersContainerView.letterGap = iPad ? 10 : 2;
     [self.lettersContainerView populateFromWordSearchModel:wordSearch
@@ -84,7 +81,7 @@
         [selectedLetters appendString:[NSString stringWithCharacters:&letter length:1]];
     }
 
-    NSInteger index = [self wordIndexFor:selectedLetters];
+    NSInteger index = [wordSearch wordIndexForLetters:selectedLetters];
 
     if ([self.remainingWords containsObject:selectedLetters]) {
         [self.remainingWords removeObject:selectedLetters];
@@ -110,17 +107,6 @@
         // just ignore reselection of an answer already found
         [containerView clearSelection];
     }
-}
-
-- (NSInteger)wordIndexFor:(NSString *)word
-{
-    SCHStoryInteractionWordSearch *wordSearch = (SCHStoryInteractionWordSearch *)self.storyInteraction;
-    for (NSInteger i = 0, n = [wordSearch.words count]; i < n; ++i) {
-        if ([[wordSearch.words objectAtIndex:i] caseInsensitiveCompare:word] == NSOrderedSame) {
-            return i;
-        }
-    }
-    return NSNotFound;
 }
 
 @end
