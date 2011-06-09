@@ -19,6 +19,8 @@
 #import "SCHAppProfile.h"
 #import "SCHReadingViewController.h"
 
+extern NSString * const kSCHAuthenticationManagerDeviceKey;
+
 static const CGFloat kProfilePhoneTableOffsetPortrait = 70.0f;
 static const CGFloat kProfilePhoneTableOffsetLandscape = 20.0f;
 
@@ -108,14 +110,19 @@ static const CGFloat kProfilePhoneTableOffsetLandscape = 20.0f;
 - (void)viewDidAppear:(BOOL)animated 
 {
     [super viewDidAppear:animated];
-    
 #if !LOCALDEBUG	
+#if NONDRMAUTHENTICATION
 	SCHAuthenticationManager *authenticationManager = [SCHAuthenticationManager sharedAuthenticationManager];
 	
 	if ([authenticationManager isAuthenticated] == NO) {
+#else
+    NSString *deviceKey = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerDeviceKey];
+    if (!deviceKey) {         
+#endif
 		[self presentModalViewController:self.loginController animated:NO];	
 	}
 #endif
+    
 }
 
 #pragma mark - Orientation methods
