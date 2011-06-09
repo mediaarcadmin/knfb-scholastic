@@ -24,6 +24,13 @@
 
 @synthesize imageButtons;
 
+- (void)dealloc
+{
+    [imageButtons release], imageButtons = nil;
+    
+    [super dealloc];
+}
+
 - (void)setupViewAtIndex:(NSInteger)screenIndex
 {
     [self setTitle:[(SCHStoryInteractionStartingLetter *)self.storyInteraction prompt]];
