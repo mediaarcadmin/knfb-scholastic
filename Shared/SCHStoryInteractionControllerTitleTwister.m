@@ -12,7 +12,7 @@
 #import "SCHStoryInteractionDraggableTargetView.h"
 #import "NSArray+ViewSorting.h"
 
-#define kLetterGap 5
+#define kLetterGap 3
 
 @interface SCHStoryInteractionControllerTitleTwister ()
 
