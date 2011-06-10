@@ -120,7 +120,7 @@
     }
     
     NSInteger x = (CGRectGetWidth(self.contentsView.bounds) - width) / 2;
-    NSInteger y = CGRectGetMinY(self.answerBuildTarget.frame) / 2 + 10;
+    NSInteger y = CGRectGetMinY(self.answerBuildTarget.frame)/2 + letterTileSize.height/2;
     for (NSInteger i = 0; i < length; ++i) {
         unichar letter = [titleTwister.bookTitle characterAtIndex:i];
         if (letter == ' ') {
@@ -235,10 +235,12 @@
         return;
     }
     
-    NSNumber *key = [NSNumber numberWithInt:length];
-    [[self.answersByLength objectForKey:key] addObject:word];
-    [[self.answerTables objectAtIndex:length-3] reloadData];
-    [self updateAnswerTableHeadings];
+    NSMutableArray *answers = [self.answersByLength objectForKey:[NSNumber numberWithInt:length]];
+    if (![answers containsObject:word]) {
+        [answers addObject:word];
+        [[self.answerTables objectAtIndex:length-3] reloadData];
+        [self updateAnswerTableHeadings];
+    }
 }
 
 - (void)clearButtonTapped:(id)sender
