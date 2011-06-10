@@ -69,6 +69,17 @@
     return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:filename];
 }
 
+- (NSString *)scratchSoundEffectFilename
+{
+    return @"sfx_scratch.mp3";
+}
+
+- (NSString *)scratchingCompleteSoundEffectFilename
+{
+    return @"sfx_scratchDing.mp3";
+}
+
+
 - (void)dealloc
 {
     [introduction release];

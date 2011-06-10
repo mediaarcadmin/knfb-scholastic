@@ -112,9 +112,12 @@ static const float kSCHScratchEraseSize = 24.0f;
     if (self.interactionEnabled) {
         UITouch *touch = [touches anyObject];
         CGPoint touchLocation = [touch locationInView:self];
-        [self.pointsArray addObject:[NSValue valueWithCGPoint:touchLocation]];
-        [self setNeedsDisplay];
-        [self updateDelegate];
+        if (touchLocation.x >= 0 && touchLocation.x <= self.frame.size.width
+            && touchLocation.y >= 0 && touchLocation.y <= self.frame.size.height) {
+            [self.pointsArray addObject:[NSValue valueWithCGPoint:touchLocation]];
+            [self setNeedsDisplay];
+            [self updateDelegate];
+        }
     }
 }
 

@@ -2073,7 +2073,6 @@
 		F864333513813B0100BEB8EB /* SCHBookShelfViewController_iPad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookShelfViewController_iPad.h; path = iPad/SCHBookShelfViewController_iPad.h; sourceTree = "<group>"; };
 		F864333613813B0100BEB8EB /* SCHBookShelfViewController_iPad.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookShelfViewController_iPad.m; path = iPad/SCHBookShelfViewController_iPad.m; sourceTree = "<group>"; };
 		F8678D89133218D8001FDB2F /* ScholasticFeatureCompatibility.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = ScholasticFeatureCompatibility.plist; path = ../../../../../../Users/john/Projects/BitWink/Scholastic/Scholastic/Shared/ScholasticFeatureCompatibility.plist; sourceTree = "<group>"; };
-		F86DEBF913A21B6800053999 /* SCHStoryInteraction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteraction.h; sourceTree = "<group>"; };
 		F86DEBFA13A21B6800053999 /* SCHStoryInteractionControllerStartingLetter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionControllerStartingLetter.h; sourceTree = "<group>"; };
 		F86DEBFB13A21B6800053999 /* SCHStoryInteractionControllerStartingLetter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionControllerStartingLetter.m; sourceTree = "<group>"; };
 		F86DEBFC13A21B6800053999 /* SCHStoryInteractionStartingLetter_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionStartingLetter_iPad.xib; sourceTree = "<group>"; };
@@ -2549,7 +2548,6 @@
 			children = (
 				28A08CD213950C01006FD008 /* SCHStoryInteractionStartingLetter.h */,
 				28A08CD313950C01006FD008 /* SCHStoryInteractionStartingLetter.m */,
-				F86DEBF913A21B6800053999 /* SCHStoryInteraction.h */,
 				F86DEBFA13A21B6800053999 /* SCHStoryInteractionControllerStartingLetter.h */,
 				F86DEBFB13A21B6800053999 /* SCHStoryInteractionControllerStartingLetter.m */,
 				F86DEBFC13A21B6800053999 /* SCHStoryInteractionStartingLetter_iPad.xib */,

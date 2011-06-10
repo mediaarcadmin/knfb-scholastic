@@ -65,6 +65,12 @@
 - (BOOL)useAudioButton;
 - (void)playAudioAtPath:(NSString *)path completion:(void(^)(void))completion;
 
+// playing audio files from the app bundle
+- (void)playBundleAudioWithFilename:(NSString *)path completion:(void (^)(void))completion;
+
+// currently playing audio?
+- (BOOL)playingAudio;
+
 // get an image from the XPS provider
 - (UIImage *)imageAtPath:(NSString *)path;
 

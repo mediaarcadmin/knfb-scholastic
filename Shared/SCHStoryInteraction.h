@@ -20,6 +20,9 @@ extern NSString * const KNFBXPSStoryInteractionsDirectory;
 @property (nonatomic, assign) NSInteger questionIndex;
 
 - (NSString *)audioPathForThatsRight;
+- (NSString *)audioPathForTryAgain;
+- (NSString *)storyInteractionCorrectAnswerSoundFilename;
+- (NSString *)storyInteractionWrongAnswerSoundFilename;
 
 @end
 
@@ -37,5 +40,8 @@ extern NSString * const KNFBXPSStoryInteractionsDirectory;
 
 // Story interaction title for the interaction view itself
 - (NSString *)interactionViewTitle;
+
+- (NSString *)storyInteractionButtonAppearingSoundFilename;
+- (NSString *)storyInteractionOpeningSoundFilename;
 
 @end
