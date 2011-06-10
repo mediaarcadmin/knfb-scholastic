@@ -136,6 +136,8 @@ static CGFloat distanceSq(CGPoint p1, CGPoint p2)
 - (void)draggableViewDidStartDrag:(SCHStoryInteractionDraggableView *)draggableView
 {
     [(SCHStoryInteractionDraggableLetterView *)draggableView setLetterColor:[UIColor whiteColor]];
+
+    [self playBundleAudioWithFilename:@"sfx_pickup.mp3" completion:nil];
 }
 
 - (BOOL)draggableView:(SCHStoryInteractionDraggableView *)draggableView shouldSnapFromPosition:(CGPoint)position toPosition:(CGPoint *)snapPosition
@@ -155,9 +157,15 @@ static CGFloat distanceSq(CGPoint p1, CGPoint p2)
 {
     [draggableView moveToHomePosition];
 
-    if ([self hasCorrectSolution]) {
-        [self wordScrambleComplete];
-    }
+    NSInteger index = [self.lettersByPosition indexOfObject:draggableView];
+    BOOL inCorrectPlace = ([[self.letterViews objectAtIndex:index] letter] == [(SCHStoryInteractionDraggableLetterView *)draggableView letter]);
+    
+    [self playBundleAudioWithFilename:(inCorrectPlace ? @"sfx_dropOK.mp3" : @"sfx_dropNo.mp3")
+                           completion:^{
+                               if ([self hasCorrectSolution]) {
+                                   [self wordScrambleComplete];
+                               }
+                           }];
 }
 
 - (NSInteger)letterPositionCloseToPoint:(CGPoint)point
@@ -206,6 +214,8 @@ static CGFloat distanceSq(CGPoint p1, CGPoint p2)
     for (SCHStoryInteractionDraggableLetterView *letter in self.letterViews) {
         letter.letterColor = [UIColor yellowColor];
     }
+    
+    [self playBundleAudioWithFilename:@"sfx_winround.mp3" completion:nil];
 }
 
 @end
