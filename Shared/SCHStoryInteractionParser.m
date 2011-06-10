@@ -510,15 +510,15 @@ static NSString *attribute(const XML_Char **atts, const char *key)
         self.bookTitle = attribute(attributes, "Phrase");
     } else if (strcmp(name, "Words") == 0) {
         NSArray *words = [attribute(attributes, "Words") componentsSeparatedByString:@","];
-        NSMutableArray *trimmedWords = [[NSMutableArray alloc] initWithCapacity:[words count]];
+        NSMutableSet *trimmedWords = [[NSMutableSet alloc] initWithCapacity:[words count]];
         NSCharacterSet *whitespaceAndNewline = [NSCharacterSet whitespaceAndNewlineCharacterSet];
         for (NSString *word in words) {
             NSString *trimmedWord = [word stringByTrimmingCharactersInSet:whitespaceAndNewline];
             if ([trimmedWord length] > 0) {
-                [trimmedWords addObject:trimmedWord];
+                [trimmedWords addObject:[trimmedWord uppercaseString]];
             }
         }
-        self.words = [NSArray arrayWithArray:trimmedWords];
+        self.words = [NSSet setWithSet:trimmedWords];
         [trimmedWords release];
     } else {
         [super startElement:name attributes:attributes parser:parser];

@@ -13,6 +13,7 @@
 #import "SCHThemeManager.h"
 #import "SCHProfileViewController_iPad.h"
 #import "SCHSyncManager.h"
+#import "SCHAuthenticationManager.h"
 
 extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
