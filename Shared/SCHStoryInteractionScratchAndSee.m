@@ -24,11 +24,6 @@
     [super dealloc];
 }
 
-- (NSString *)title
-{
-    return @"Scratch And See";
-}
-
 - (NSString *)imagePath
 {
     NSString *filename = [NSString stringWithFormat:@"%@_q%d.png", self.storyInteraction.ID, self.questionIndex+1];
@@ -67,6 +62,11 @@
 {
     NSString *filename = [NSString stringWithFormat:@"gen_whatdoyousee.mp3"];
     return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:filename];
+}
+
+- (NSString *)title
+{
+    return @"Scratch And See";
 }
 
 - (void)dealloc
