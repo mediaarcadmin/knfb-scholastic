@@ -87,6 +87,7 @@ static const float kSCHScratchEraseSize = 24.0f;
         }
         
         CGContextAddPath(context, path);
+        CGPathRelease(path);
         CGContextClip(context);
     }
     [img drawInRect:bounds];

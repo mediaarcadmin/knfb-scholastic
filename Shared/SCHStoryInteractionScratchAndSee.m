@@ -24,11 +24,6 @@
     [super dealloc];
 }
 
-- (NSString *)title
-{
-    return @"Scratch And See";
-}
-
 - (NSString *)imagePath
 {
     NSString *filename = [NSString stringWithFormat:@"%@_q%d.png", self.storyInteraction.ID, self.questionIndex+1];
@@ -56,6 +51,11 @@
 
 @synthesize introduction;
 @synthesize questions;
+
+- (NSString *)title
+{
+    return @"Scratch And See";
+}
 
 - (NSString *)introductionAudioPath
 {
