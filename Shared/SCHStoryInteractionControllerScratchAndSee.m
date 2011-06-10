@@ -22,6 +22,7 @@ static const NSInteger kSCHScratchPointCount = 200;
 - (void)setupQuestion;
 - (void)correctAnswer:(NSInteger) selection;
 - (void)wrongAnswer:(NSInteger) selection;
+- (void)setButtonsEnabled: (BOOL) enabled;
 
 - (void)setProgressViewForScratchCount: (NSInteger) scratchCount;
 
@@ -83,8 +84,11 @@ static const NSInteger kSCHScratchPointCount = 200;
 
     [self setupQuestion];
     
-    [self playAudioAtPath:[(SCHStoryInteractionScratchAndSee *)self.storyInteraction introductionAudioPath]
-               completion:^{}];
+    [self playBundleAudioWithFilename:[(SCHStoryInteractionScratchAndSee *)self.storyInteraction storyInteractionOpeningSoundFilename]
+               completion:^{
+                   [self playAudioAtPath:[(SCHStoryInteractionScratchAndSee *)self.storyInteraction introductionAudioPath]
+                              completion:^{}];
+               }];
     
     
 }
@@ -147,8 +151,6 @@ static const NSInteger kSCHScratchPointCount = 200;
 
 - (IBAction)questionButtonTapped:(UIButton *)sender
 {
-    NSLog(@"Selected button");
-        
     NSInteger selection = [self.answerButtons indexOfObject:sender];
     
     if (selection == [[self currentQuestion] correctAnswer]) {
@@ -160,32 +162,63 @@ static const NSInteger kSCHScratchPointCount = 200;
 
 - (void)correctAnswer:(NSInteger) selection{
     NSLog(@"Correct answer.");
+    [self setButtonsEnabled:NO];
     
-    [(UIButton *) [self.answerButtons objectAtIndex:selection] setSelected:YES];
+    for (int i = 0; i < [self.answerButtons count]; i++) {
+        if (i == selection) {
+            [(UIButton *) [self.answerButtons objectAtIndex:i] setSelected:YES];
+        } else {
+            [(UIButton *) [self.answerButtons objectAtIndex:i] setSelected:NO];
+        }
+    }
+        
     self.scratchView.showFullImage = YES;
     
-    [self playAudioAtPath:[[self currentQuestion] audioPathForAnswerAtIndex:selection]
-               completion:^{
-                   [self playAudioAtPath:[[self currentQuestion] correctAnswerAudioPath]
-                              completion:^{
-                                  [self nextQuestion];
-                              }];
-               }];
-
+    [self playBundleAudioWithFilename:[[self currentQuestion] storyInteractionCorrectAnswerSoundFilename]
+                           completion:^{
+                               [self playAudioAtPath:[[self currentQuestion] audioPathForAnswerAtIndex:selection]
+                                                      completion:^{
+                                                          [self playAudioAtPath:[[self currentQuestion] audioPathForThatsRight]
+                                                                     completion:^{
+                                                                         [self playAudioAtPath:[[self currentQuestion] correctAnswerAudioPath]
+                                                                                    completion:^{
+                                                                                        [self setButtonsEnabled:YES];
+                                                                                        [self nextQuestion];
+                                                                                    }];
+                                                                     }];
+                                                      }];
+                           }];
+    
 }
 
 - (void)wrongAnswer:(NSInteger) selection {
     NSLog(@"Wrong answer.");
+    [self setButtonsEnabled:NO];
 
     [(UIButton *) [self.answerButtons objectAtIndex:selection] setSelected:YES];
 
-    [self playAudioAtPath:[[self currentQuestion] audioPathForAnswerAtIndex:selection]
-               completion:^{
-                   [self playAudioAtPath:[[self currentQuestion] audioPathForIncorrectAnswer]
-                              completion:^{
-                                  [(UIButton *) [self.answerButtons objectAtIndex:selection] setSelected:NO];
-                              }];
-               }];
+    [self playBundleAudioWithFilename:[[self currentQuestion] storyInteractionWrongAnswerSoundFilename]
+                           completion:^{
+                               [self playAudioAtPath:[[self currentQuestion] audioPathForAnswerAtIndex:selection]
+                                          completion:^{
+                                              [self playAudioAtPath:[[self currentQuestion] audioPathForIncorrectAnswer]
+                                                         completion:^{
+                                                             [(UIButton *) [self.answerButtons objectAtIndex:selection] setSelected:NO];
+                                                             [self setButtonsEnabled:YES];
+                                                         }];
+                                          }];
+                           }];
+}
+
+- (void)setButtonsEnabled: (BOOL) enabled
+{
+    for (int i = 0; i < [self.answerButtons count]; i++) {
+        if (enabled) {
+            [(UIButton *) [self.answerButtons objectAtIndex:i] addTarget:self action:@selector(questionButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+        } else {
+            [(UIButton *) [self.answerButtons objectAtIndex:i] removeTarget:self action:NULL forControlEvents:UIControlEventTouchUpInside];
+        }
+    }
 }
 
 - (void)setProgressViewForScratchCount: (NSInteger) scratchCount
@@ -207,8 +240,18 @@ static const NSInteger kSCHScratchPointCount = 200;
         self.progressView.hidden = YES;
         aScratchView.interactionEnabled = NO;
 
-        [self playAudioAtPath:[(SCHStoryInteractionScratchAndSee *)self.storyInteraction whatDoYouSeeAudioPath] 
-                               completion:^{}];
+        [self playBundleAudioWithFilename:[(SCHStoryInteractionScratchAndSee *)self.storyInteraction scratchingCompleteSoundEffectFilename] 
+                               completion:^{
+                                   [self playAudioAtPath:[(SCHStoryInteractionScratchAndSee *)self.storyInteraction whatDoYouSeeAudioPath] 
+                                              completion:^{
+                                                  [self playAudioAtPath:[[self currentQuestion] audioPathForAnswerAtIndex:0] completion: ^{
+                                                      [self playAudioAtPath:[[self currentQuestion] audioPathForAnswerAtIndex:1] completion: ^{
+                                                          [self playAudioAtPath:[[self currentQuestion] audioPathForAnswerAtIndex:2] completion: ^{
+                                                          }];
+                                                      }];
+                                                  }];
+                                              }];
+                               }];
         
         [self setupQuestion];
     } else {
@@ -216,6 +259,13 @@ static const NSInteger kSCHScratchPointCount = 200;
         aScratchView.interactionEnabled = YES;
         
         [self setProgressViewForScratchCount:points];
+        
+        if (points % 15 == 0) {
+            if (![self playingAudio]) {
+                [self playBundleAudioWithFilename:[(SCHStoryInteractionScratchAndSee *)self.storyInteraction scratchSoundEffectFilename] 
+                                       completion:^{}];
+            }
+        }
     }
 }
 

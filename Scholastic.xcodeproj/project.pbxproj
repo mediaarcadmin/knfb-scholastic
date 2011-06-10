@@ -975,12 +975,62 @@
 		F864333813813B0100BEB8EB /* SCHBookShelfViewController_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = F864333613813B0100BEB8EB /* SCHBookShelfViewController_iPad.m */; };
 		F86DEBFE13A21B6800053999 /* SCHStoryInteractionControllerStartingLetter.m in Sources */ = {isa = PBXBuildFile; fileRef = F86DEBFB13A21B6800053999 /* SCHStoryInteractionControllerStartingLetter.m */; };
 		F86DEBFF13A21B6800053999 /* SCHStoryInteractionControllerStartingLetter.m in Sources */ = {isa = PBXBuildFile; fileRef = F86DEBFB13A21B6800053999 /* SCHStoryInteractionControllerStartingLetter.m */; };
-		F86DEC0013A21B6800053999 /* SCHStoryInteractionStartingLetter_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F86DEBFC13A21B6800053999 /* SCHStoryInteractionStartingLetter_iPad.xib */; };
-		F86DEC0113A21B6800053999 /* SCHStoryInteractionStartingLetter_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F86DEBFC13A21B6800053999 /* SCHStoryInteractionStartingLetter_iPad.xib */; };
-		F86DEC0213A21B6800053999 /* SCHStoryInteractionStartingLetter_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = F86DEBFD13A21B6800053999 /* SCHStoryInteractionStartingLetter_iPhone.xib */; };
-		F86DEC0313A21B6800053999 /* SCHStoryInteractionStartingLetter_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = F86DEBFD13A21B6800053999 /* SCHStoryInteractionStartingLetter_iPhone.xib */; };
 		F86DEC0613A21C5F00053999 /* SCHImageButton.m in Sources */ = {isa = PBXBuildFile; fileRef = F86DEC0513A21C5F00053999 /* SCHImageButton.m */; };
 		F86DEC0713A21C5F00053999 /* SCHImageButton.m in Sources */ = {isa = PBXBuildFile; fileRef = F86DEC0513A21C5F00053999 /* SCHImageButton.m */; };
+		F86DEC2413A21F2600053999 /* sfx_breakpuzzle.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F86DEC0913A21F2600053999 /* sfx_breakpuzzle.mp3 */; };
+		F86DEC2513A21F2600053999 /* sfx_breakpuzzle.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F86DEC0913A21F2600053999 /* sfx_breakpuzzle.mp3 */; };
+		F86DEC2613A21F2600053999 /* sfx_ca.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F86DEC0A13A21F2600053999 /* sfx_ca.mp3 */; };
+		F86DEC2713A21F2600053999 /* sfx_ca.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F86DEC0A13A21F2600053999 /* sfx_ca.mp3 */; };
+		F86DEC2813A21F2600053999 /* sfx_ca_o.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F86DEC0B13A21F2600053999 /* sfx_ca_o.mp3 */; };
+		F86DEC2913A21F2600053999 /* sfx_ca_o.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F86DEC0B13A21F2600053999 /* sfx_ca_o.mp3 */; };
+		F86DEC2A13A21F2600053999 /* sfx_ca_y.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F86DEC0C13A21F2600053999 /* sfx_ca_y.mp3 */; };
+		F86DEC2B13A21F2600053999 /* sfx_ca_y.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F86DEC0C13A21F2600053999 /* sfx_ca_y.mp3 */; };
+		F86DEC2C13A21F2600053999 /* sfx_delete.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F86DEC0D13A21F2600053999 /* sfx_delete.mp3 */; };
+		F86DEC2D13A21F2600053999 /* sfx_delete.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F86DEC0D13A21F2600053999 /* sfx_delete.mp3 */; };
+		F86DEC2E13A21F2600053999 /* sfx_donescratching.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F86DEC0E13A21F2600053999 /* sfx_donescratching.mp3 */; };
+		F86DEC2F13A21F2600053999 /* sfx_donescratching.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F86DEC0E13A21F2600053999 /* sfx_donescratching.mp3 */; };
+		F86DEC3013A21F2600053999 /* sfx_dropNo.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F86DEC0F13A21F2600053999 /* sfx_dropNo.mp3 */; };
+		F86DEC3113A21F2600053999 /* sfx_dropNo.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F86DEC0F13A21F2600053999 /* sfx_dropNo.mp3 */; };
+		F86DEC3213A21F2600053999 /* sfx_dropOK.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F86DEC1013A21F2600053999 /* sfx_dropOK.mp3 */; };
+		F86DEC3313A21F2600053999 /* sfx_dropOK.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F86DEC1013A21F2600053999 /* sfx_dropOK.mp3 */; };
+		F86DEC3413A21F2600053999 /* sfx_penguinfall.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F86DEC1113A21F2600053999 /* sfx_penguinfall.mp3 */; };
+		F86DEC3513A21F2600053999 /* sfx_penguinfall.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F86DEC1113A21F2600053999 /* sfx_penguinfall.mp3 */; };
+		F86DEC3613A21F2600053999 /* sfx_penguinpop.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F86DEC1213A21F2600053999 /* sfx_penguinpop.mp3 */; };
+		F86DEC3713A21F2600053999 /* sfx_penguinpop.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F86DEC1213A21F2600053999 /* sfx_penguinpop.mp3 */; };
+		F86DEC3813A21F2600053999 /* sfx_penguinwin.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F86DEC1313A21F2600053999 /* sfx_penguinwin.mp3 */; };
+		F86DEC3913A21F2600053999 /* sfx_penguinwin.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F86DEC1313A21F2600053999 /* sfx_penguinwin.mp3 */; };
+		F86DEC3A13A21F2600053999 /* sfx_pickup.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F86DEC1413A21F2600053999 /* sfx_pickup.mp3 */; };
+		F86DEC3B13A21F2600053999 /* sfx_pickup.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F86DEC1413A21F2600053999 /* sfx_pickup.mp3 */; };
+		F86DEC3C13A21F2600053999 /* sfx_scratch.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F86DEC1513A21F2600053999 /* sfx_scratch.mp3 */; };
+		F86DEC3D13A21F2600053999 /* sfx_scratch.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F86DEC1513A21F2600053999 /* sfx_scratch.mp3 */; };
+		F86DEC3E13A21F2600053999 /* sfx_scratchDing.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F86DEC1613A21F2600053999 /* sfx_scratchDing.mp3 */; };
+		F86DEC3F13A21F2600053999 /* sfx_scratchDing.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F86DEC1613A21F2600053999 /* sfx_scratchDing.mp3 */; };
+		F86DEC4013A21F2600053999 /* sfx_si_fill.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F86DEC1713A21F2600053999 /* sfx_si_fill.mp3 */; };
+		F86DEC4113A21F2600053999 /* sfx_si_fill.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F86DEC1713A21F2600053999 /* sfx_si_fill.mp3 */; };
+		F86DEC4213A21F2600053999 /* sfx_siappears_o.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F86DEC1813A21F2600053999 /* sfx_siappears_o.mp3 */; };
+		F86DEC4313A21F2600053999 /* sfx_siappears_o.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F86DEC1813A21F2600053999 /* sfx_siappears_o.mp3 */; };
+		F86DEC4413A21F2600053999 /* sfx_siappears_y2B.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F86DEC1913A21F2600053999 /* sfx_siappears_y2B.mp3 */; };
+		F86DEC4513A21F2600053999 /* sfx_siappears_y2B.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F86DEC1913A21F2600053999 /* sfx_siappears_y2B.mp3 */; };
+		F86DEC4613A21F2600053999 /* sfx_silence.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F86DEC1A13A21F2600053999 /* sfx_silence.mp3 */; };
+		F86DEC4713A21F2600053999 /* sfx_silence.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F86DEC1A13A21F2600053999 /* sfx_silence.mp3 */; };
+		F86DEC4813A21F2600053999 /* sfx_siopen_o.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F86DEC1B13A21F2600053999 /* sfx_siopen_o.mp3 */; };
+		F86DEC4913A21F2600053999 /* sfx_siopen_o.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F86DEC1B13A21F2600053999 /* sfx_siopen_o.mp3 */; };
+		F86DEC4A13A21F2600053999 /* sfx_siopen_y.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F86DEC1C13A21F2600053999 /* sfx_siopen_y.mp3 */; };
+		F86DEC4B13A21F2600053999 /* sfx_siopen_y.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F86DEC1C13A21F2600053999 /* sfx_siopen_y.mp3 */; };
+		F86DEC4C13A21F2600053999 /* sfx_wa.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F86DEC1D13A21F2600053999 /* sfx_wa.mp3 */; };
+		F86DEC4D13A21F2600053999 /* sfx_wa.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F86DEC1D13A21F2600053999 /* sfx_wa.mp3 */; };
+		F86DEC4E13A21F2600053999 /* sfx_wa_o.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F86DEC1E13A21F2600053999 /* sfx_wa_o.mp3 */; };
+		F86DEC4F13A21F2600053999 /* sfx_wa_o.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F86DEC1E13A21F2600053999 /* sfx_wa_o.mp3 */; };
+		F86DEC5013A21F2600053999 /* sfx_wa_y.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F86DEC1F13A21F2600053999 /* sfx_wa_y.mp3 */; };
+		F86DEC5113A21F2600053999 /* sfx_wa_y.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F86DEC1F13A21F2600053999 /* sfx_wa_y.mp3 */; };
+		F86DEC5213A21F2600053999 /* sfx_win_o.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F86DEC2013A21F2600053999 /* sfx_win_o.mp3 */; };
+		F86DEC5313A21F2600053999 /* sfx_win_o.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F86DEC2013A21F2600053999 /* sfx_win_o.mp3 */; };
+		F86DEC5413A21F2600053999 /* sfx_win_y.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F86DEC2113A21F2600053999 /* sfx_win_y.mp3 */; };
+		F86DEC5513A21F2600053999 /* sfx_win_y.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F86DEC2113A21F2600053999 /* sfx_win_y.mp3 */; };
+		F86DEC5613A21F2600053999 /* sfx_winround.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F86DEC2213A21F2600053999 /* sfx_winround.mp3 */; };
+		F86DEC5713A21F2600053999 /* sfx_winround.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F86DEC2213A21F2600053999 /* sfx_winround.mp3 */; };
+		F86DEC5813A21F2600053999 /* sfx_youReveal.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F86DEC2313A21F2600053999 /* sfx_youReveal.mp3 */; };
+		F86DEC5913A21F2600053999 /* sfx_youReveal.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F86DEC2313A21F2600053999 /* sfx_youReveal.mp3 */; };
 		F878D6AC134498FB00DDB98B /* SCHBookURLRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F878D6A3134498FB00DDB98B /* SCHBookURLRequestOperation.m */; };
 		F878D6AD134498FB00DDB98B /* SCHBookURLRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F878D6A3134498FB00DDB98B /* SCHBookURLRequestOperation.m */; };
 		F878D6AE134498FB00DDB98B /* SCHDownloadBookFileOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F878D6A5134498FB00DDB98B /* SCHDownloadBookFileOperation.m */; };
@@ -1007,6 +1057,8 @@
 		F8898904135877B100D236ED /* SCHProfileViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F8898902135877B100D236ED /* SCHProfileViewCell.m */; };
 		F88A7F7F138D151D006A7D12 /* SCHDictionaryAccessManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F88A7F7E138D151D006A7D12 /* SCHDictionaryAccessManager.m */; };
 		F88A7F80138D151E006A7D12 /* SCHDictionaryAccessManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F88A7F7E138D151D006A7D12 /* SCHDictionaryAccessManager.m */; };
+		F88F03DF13A24649006D7C1E /* SCHStoryInteractionMultipleChoiceWithAnswerPictures_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F88F03DC13A24649006D7C1E /* SCHStoryInteractionMultipleChoiceWithAnswerPictures_iPad.xib */; };
+		F88F03E013A24649006D7C1E /* SCHStoryInteractionMultipleChoiceWithAnswerPictures_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F88F03DC13A24649006D7C1E /* SCHStoryInteractionMultipleChoiceWithAnswerPictures_iPad.xib */; };
 		F8B55E07134B190B0028534A /* SCHDictionaryFileUnzipOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F8B55E06134B190B0028534A /* SCHDictionaryFileUnzipOperation.m */; };
 		F8B55E08134B190B0028534A /* SCHDictionaryFileUnzipOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F8B55E06134B190B0028534A /* SCHDictionaryFileUnzipOperation.m */; };
 		F8B55E38134B2A190028534A /* SCHDictionaryParseOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F8B55E37134B2A190028534A /* SCHDictionaryParseOperation.m */; };
@@ -2026,13 +2078,39 @@
 		F864333513813B0100BEB8EB /* SCHBookShelfViewController_iPad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookShelfViewController_iPad.h; path = iPad/SCHBookShelfViewController_iPad.h; sourceTree = "<group>"; };
 		F864333613813B0100BEB8EB /* SCHBookShelfViewController_iPad.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookShelfViewController_iPad.m; path = iPad/SCHBookShelfViewController_iPad.m; sourceTree = "<group>"; };
 		F8678D89133218D8001FDB2F /* ScholasticFeatureCompatibility.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = ScholasticFeatureCompatibility.plist; path = ../../../../../../Users/john/Projects/BitWink/Scholastic/Scholastic/Shared/ScholasticFeatureCompatibility.plist; sourceTree = "<group>"; };
-		F86DEBF913A21B6800053999 /* SCHStoryInteraction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteraction.h; sourceTree = "<group>"; };
 		F86DEBFA13A21B6800053999 /* SCHStoryInteractionControllerStartingLetter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionControllerStartingLetter.h; sourceTree = "<group>"; };
 		F86DEBFB13A21B6800053999 /* SCHStoryInteractionControllerStartingLetter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionControllerStartingLetter.m; sourceTree = "<group>"; };
 		F86DEBFC13A21B6800053999 /* SCHStoryInteractionStartingLetter_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionStartingLetter_iPad.xib; sourceTree = "<group>"; };
 		F86DEBFD13A21B6800053999 /* SCHStoryInteractionStartingLetter_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionStartingLetter_iPhone.xib; sourceTree = "<group>"; };
 		F86DEC0413A21C5F00053999 /* SCHImageButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHImageButton.h; sourceTree = "<group>"; };
 		F86DEC0513A21C5F00053999 /* SCHImageButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHImageButton.m; sourceTree = "<group>"; };
+		F86DEC0913A21F2600053999 /* sfx_breakpuzzle.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = sfx_breakpuzzle.mp3; sourceTree = "<group>"; };
+		F86DEC0A13A21F2600053999 /* sfx_ca.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = sfx_ca.mp3; sourceTree = "<group>"; };
+		F86DEC0B13A21F2600053999 /* sfx_ca_o.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = sfx_ca_o.mp3; sourceTree = "<group>"; };
+		F86DEC0C13A21F2600053999 /* sfx_ca_y.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = sfx_ca_y.mp3; sourceTree = "<group>"; };
+		F86DEC0D13A21F2600053999 /* sfx_delete.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = sfx_delete.mp3; sourceTree = "<group>"; };
+		F86DEC0E13A21F2600053999 /* sfx_donescratching.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = sfx_donescratching.mp3; sourceTree = "<group>"; };
+		F86DEC0F13A21F2600053999 /* sfx_dropNo.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = sfx_dropNo.mp3; sourceTree = "<group>"; };
+		F86DEC1013A21F2600053999 /* sfx_dropOK.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = sfx_dropOK.mp3; sourceTree = "<group>"; };
+		F86DEC1113A21F2600053999 /* sfx_penguinfall.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = sfx_penguinfall.mp3; sourceTree = "<group>"; };
+		F86DEC1213A21F2600053999 /* sfx_penguinpop.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = sfx_penguinpop.mp3; sourceTree = "<group>"; };
+		F86DEC1313A21F2600053999 /* sfx_penguinwin.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = sfx_penguinwin.mp3; sourceTree = "<group>"; };
+		F86DEC1413A21F2600053999 /* sfx_pickup.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = sfx_pickup.mp3; sourceTree = "<group>"; };
+		F86DEC1513A21F2600053999 /* sfx_scratch.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = sfx_scratch.mp3; sourceTree = "<group>"; };
+		F86DEC1613A21F2600053999 /* sfx_scratchDing.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = sfx_scratchDing.mp3; sourceTree = "<group>"; };
+		F86DEC1713A21F2600053999 /* sfx_si_fill.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = sfx_si_fill.mp3; sourceTree = "<group>"; };
+		F86DEC1813A21F2600053999 /* sfx_siappears_o.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = sfx_siappears_o.mp3; sourceTree = "<group>"; };
+		F86DEC1913A21F2600053999 /* sfx_siappears_y2B.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = sfx_siappears_y2B.mp3; sourceTree = "<group>"; };
+		F86DEC1A13A21F2600053999 /* sfx_silence.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = sfx_silence.mp3; sourceTree = "<group>"; };
+		F86DEC1B13A21F2600053999 /* sfx_siopen_o.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = sfx_siopen_o.mp3; sourceTree = "<group>"; };
+		F86DEC1C13A21F2600053999 /* sfx_siopen_y.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = sfx_siopen_y.mp3; sourceTree = "<group>"; };
+		F86DEC1D13A21F2600053999 /* sfx_wa.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = sfx_wa.mp3; sourceTree = "<group>"; };
+		F86DEC1E13A21F2600053999 /* sfx_wa_o.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = sfx_wa_o.mp3; sourceTree = "<group>"; };
+		F86DEC1F13A21F2600053999 /* sfx_wa_y.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = sfx_wa_y.mp3; sourceTree = "<group>"; };
+		F86DEC2013A21F2600053999 /* sfx_win_o.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = sfx_win_o.mp3; sourceTree = "<group>"; };
+		F86DEC2113A21F2600053999 /* sfx_win_y.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = sfx_win_y.mp3; sourceTree = "<group>"; };
+		F86DEC2213A21F2600053999 /* sfx_winround.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = sfx_winround.mp3; sourceTree = "<group>"; };
+		F86DEC2313A21F2600053999 /* sfx_youReveal.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = sfx_youReveal.mp3; sourceTree = "<group>"; };
 		F878D6A2134498FB00DDB98B /* SCHBookURLRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookURLRequestOperation.h; path = Shared/SCHBookURLRequestOperation.h; sourceTree = "<group>"; };
 		F878D6A3134498FB00DDB98B /* SCHBookURLRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookURLRequestOperation.m; path = Shared/SCHBookURLRequestOperation.m; sourceTree = "<group>"; };
 		F878D6A4134498FB00DDB98B /* SCHDownloadBookFileOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHDownloadBookFileOperation.h; path = Shared/SCHDownloadBookFileOperation.h; sourceTree = "<group>"; };
@@ -2059,6 +2137,7 @@
 		F8898902135877B100D236ED /* SCHProfileViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHProfileViewCell.m; path = iPhone/SCHProfileViewCell.m; sourceTree = "<group>"; };
 		F88A7F7D138D151D006A7D12 /* SCHDictionaryAccessManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHDictionaryAccessManager.h; path = Shared/SCHDictionaryAccessManager.h; sourceTree = "<group>"; };
 		F88A7F7E138D151D006A7D12 /* SCHDictionaryAccessManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHDictionaryAccessManager.m; path = Shared/SCHDictionaryAccessManager.m; sourceTree = "<group>"; };
+		F88F03DC13A24649006D7C1E /* SCHStoryInteractionMultipleChoiceWithAnswerPictures_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionMultipleChoiceWithAnswerPictures_iPad.xib; sourceTree = "<group>"; };
 		F8B55E05134B190B0028534A /* SCHDictionaryFileUnzipOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHDictionaryFileUnzipOperation.h; path = Shared/SCHDictionaryFileUnzipOperation.h; sourceTree = "<group>"; };
 		F8B55E06134B190B0028534A /* SCHDictionaryFileUnzipOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHDictionaryFileUnzipOperation.m; path = Shared/SCHDictionaryFileUnzipOperation.m; sourceTree = "<group>"; };
 		F8B55E36134B2A190028534A /* SCHDictionaryParseOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHDictionaryParseOperation.h; path = Shared/SCHDictionaryParseOperation.h; sourceTree = "<group>"; };
@@ -2360,12 +2439,13 @@
 				28A08CCB13950C01006FD008 /* SCHStoryInteractionMultipleChoice.m */,
 				280B01AB139E32FA0068661C /* SCHStoryInteractionMultipleChoiceText.h */,
 				280B01AC139E32FA0068661C /* SCHStoryInteractionMultipleChoiceText.m */,
-				280B01AF139E336C0068661C /* SCHStoryInteractionMultipleChoiceWithAnswerPictures.h */,
-				280B01B0139E336C0068661C /* SCHStoryInteractionMultipleChoiceWithAnswerPictures.m */,
 				28A60F6713977B8A0090853E /* SCHStoryInteractionControllerMultipleChoiceText.h */,
 				28A60F6813977B8B0090853E /* SCHStoryInteractionControllerMultipleChoiceText.m */,
 				28A60F64139777900090853E /* SCHStoryInteractionMultipleChoiceText_iPhone.xib */,
 				520CD294139F84530018EA7E /* SCHStoryInteractionMultipleChoiceText_iPad.xib */,
+				280B01AF139E336C0068661C /* SCHStoryInteractionMultipleChoiceWithAnswerPictures.h */,
+				280B01B0139E336C0068661C /* SCHStoryInteractionMultipleChoiceWithAnswerPictures.m */,
+				F88F03DC13A24649006D7C1E /* SCHStoryInteractionMultipleChoiceWithAnswerPictures_iPad.xib */,
 			);
 			name = "Multiple Choice";
 			sourceTree = "<group>";
@@ -2475,7 +2555,6 @@
 			children = (
 				28A08CD213950C01006FD008 /* SCHStoryInteractionStartingLetter.h */,
 				28A08CD313950C01006FD008 /* SCHStoryInteractionStartingLetter.m */,
-				F86DEBF913A21B6800053999 /* SCHStoryInteraction.h */,
 				F86DEBFA13A21B6800053999 /* SCHStoryInteractionControllerStartingLetter.h */,
 				F86DEBFB13A21B6800053999 /* SCHStoryInteractionControllerStartingLetter.m */,
 				F86DEBFC13A21B6800053999 /* SCHStoryInteractionStartingLetter_iPad.xib */,
@@ -2765,6 +2844,7 @@
 		528A2CCF12CCDC400053A343 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				F86DEC0813A21F2600053999 /* Sounds */,
 				F8FF8D7F139513B000CD7B73 /* OldDictionary-additions.css */,
 				F8FF8D80139513B000CD7B73 /* YoungDictionary-additions.css */,
 				A35F45D4138D3A9000055D60 /* DRM */,
@@ -3778,6 +3858,41 @@
 			name = "Dictionary Processing";
 			sourceTree = "<group>";
 		};
+		F86DEC0813A21F2600053999 /* Sounds */ = {
+			isa = PBXGroup;
+			children = (
+				F86DEC0913A21F2600053999 /* sfx_breakpuzzle.mp3 */,
+				F86DEC0A13A21F2600053999 /* sfx_ca.mp3 */,
+				F86DEC0B13A21F2600053999 /* sfx_ca_o.mp3 */,
+				F86DEC0C13A21F2600053999 /* sfx_ca_y.mp3 */,
+				F86DEC0D13A21F2600053999 /* sfx_delete.mp3 */,
+				F86DEC0E13A21F2600053999 /* sfx_donescratching.mp3 */,
+				F86DEC0F13A21F2600053999 /* sfx_dropNo.mp3 */,
+				F86DEC1013A21F2600053999 /* sfx_dropOK.mp3 */,
+				F86DEC1113A21F2600053999 /* sfx_penguinfall.mp3 */,
+				F86DEC1213A21F2600053999 /* sfx_penguinpop.mp3 */,
+				F86DEC1313A21F2600053999 /* sfx_penguinwin.mp3 */,
+				F86DEC1413A21F2600053999 /* sfx_pickup.mp3 */,
+				F86DEC1513A21F2600053999 /* sfx_scratch.mp3 */,
+				F86DEC1613A21F2600053999 /* sfx_scratchDing.mp3 */,
+				F86DEC1713A21F2600053999 /* sfx_si_fill.mp3 */,
+				F86DEC1813A21F2600053999 /* sfx_siappears_o.mp3 */,
+				F86DEC1913A21F2600053999 /* sfx_siappears_y2B.mp3 */,
+				F86DEC1A13A21F2600053999 /* sfx_silence.mp3 */,
+				F86DEC1B13A21F2600053999 /* sfx_siopen_o.mp3 */,
+				F86DEC1C13A21F2600053999 /* sfx_siopen_y.mp3 */,
+				F86DEC1D13A21F2600053999 /* sfx_wa.mp3 */,
+				F86DEC1E13A21F2600053999 /* sfx_wa_o.mp3 */,
+				F86DEC1F13A21F2600053999 /* sfx_wa_y.mp3 */,
+				F86DEC2013A21F2600053999 /* sfx_win_o.mp3 */,
+				F86DEC2113A21F2600053999 /* sfx_win_y.mp3 */,
+				F86DEC2213A21F2600053999 /* sfx_winround.mp3 */,
+				F86DEC2313A21F2600053999 /* sfx_youReveal.mp3 */,
+			);
+			name = Sounds;
+			path = Resources/Sounds;
+			sourceTree = "<group>";
+		};
 		F8844BF1137D6416003D3014 /* Profile View Controller */ = {
 			isa = PBXGroup;
 			children = (
@@ -4359,6 +4474,36 @@
 				28E9B97D13A0D51A0056874F /* SCHStoryInteractionTitleTwister_iPad.xib in Resources */,
 				F86DEC0013A21B6800053999 /* SCHStoryInteractionStartingLetter_iPad.xib in Resources */,
 				F86DEC0213A21B6800053999 /* SCHStoryInteractionStartingLetter_iPhone.xib in Resources */,
+				F86DEC2413A21F2600053999 /* sfx_breakpuzzle.mp3 in Resources */,
+				F86DEC2613A21F2600053999 /* sfx_ca.mp3 in Resources */,
+				F86DEC2813A21F2600053999 /* sfx_ca_o.mp3 in Resources */,
+				F86DEC2A13A21F2600053999 /* sfx_ca_y.mp3 in Resources */,
+				F86DEC2C13A21F2600053999 /* sfx_delete.mp3 in Resources */,
+				F86DEC2E13A21F2600053999 /* sfx_donescratching.mp3 in Resources */,
+				F86DEC3013A21F2600053999 /* sfx_dropNo.mp3 in Resources */,
+				F86DEC3213A21F2600053999 /* sfx_dropOK.mp3 in Resources */,
+				F86DEC3413A21F2600053999 /* sfx_penguinfall.mp3 in Resources */,
+				F86DEC3613A21F2600053999 /* sfx_penguinpop.mp3 in Resources */,
+				F86DEC3813A21F2600053999 /* sfx_penguinwin.mp3 in Resources */,
+				F86DEC3A13A21F2600053999 /* sfx_pickup.mp3 in Resources */,
+				F86DEC3C13A21F2600053999 /* sfx_scratch.mp3 in Resources */,
+				F86DEC3E13A21F2600053999 /* sfx_scratchDing.mp3 in Resources */,
+				F86DEC4013A21F2600053999 /* sfx_si_fill.mp3 in Resources */,
+				F86DEC4213A21F2600053999 /* sfx_siappears_o.mp3 in Resources */,
+				F86DEC4413A21F2600053999 /* sfx_siappears_y2B.mp3 in Resources */,
+				F86DEC4613A21F2600053999 /* sfx_silence.mp3 in Resources */,
+				F86DEC4813A21F2600053999 /* sfx_siopen_o.mp3 in Resources */,
+				F86DEC4A13A21F2600053999 /* sfx_siopen_y.mp3 in Resources */,
+				F86DEC4C13A21F2600053999 /* sfx_wa.mp3 in Resources */,
+				F86DEC4E13A21F2600053999 /* sfx_wa_o.mp3 in Resources */,
+				F86DEC5013A21F2600053999 /* sfx_wa_y.mp3 in Resources */,
+				F86DEC5213A21F2600053999 /* sfx_win_o.mp3 in Resources */,
+				F86DEC5413A21F2600053999 /* sfx_win_y.mp3 in Resources */,
+				F86DEC5613A21F2600053999 /* sfx_winround.mp3 in Resources */,
+				F86DEC5813A21F2600053999 /* sfx_youReveal.mp3 in Resources */,
+				F88F03DF13A24649006D7C1E /* SCHStoryInteractionMultipleChoiceWithAnswerPictures_iPad.xib in Resources */,
+				F86DEC0013A21B6800053999 /* SCHStoryInteractionStartingLetter_iPad.xib in Resources */,
+				F86DEC0213A21B6800053999 /* SCHStoryInteractionStartingLetter_iPhone.xib in Resources */,
 				2827827613A23DF100E968C1 /* SCHStoryInteractionWordScrambler_iPad.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -4665,7 +4810,34 @@
 				28E9B97E13A0D51A0056874F /* SCHStoryInteractionTitleTwister_iPad.xib in Resources */,
 				F86DEC0113A21B6800053999 /* SCHStoryInteractionStartingLetter_iPad.xib in Resources */,
 				F86DEC0313A21B6800053999 /* SCHStoryInteractionStartingLetter_iPhone.xib in Resources */,
-				2827827713A23DF100E968C1 /* SCHStoryInteractionWordScrambler_iPad.xib in Resources */,
+				F86DEC2513A21F2600053999 /* sfx_breakpuzzle.mp3 in Resources */,
+				F86DEC2713A21F2600053999 /* sfx_ca.mp3 in Resources */,
+				F86DEC2913A21F2600053999 /* sfx_ca_o.mp3 in Resources */,
+				F86DEC2B13A21F2600053999 /* sfx_ca_y.mp3 in Resources */,
+				F86DEC2D13A21F2600053999 /* sfx_delete.mp3 in Resources */,
+				F86DEC2F13A21F2600053999 /* sfx_donescratching.mp3 in Resources */,
+				F86DEC3113A21F2600053999 /* sfx_dropNo.mp3 in Resources */,
+				F86DEC3313A21F2600053999 /* sfx_dropOK.mp3 in Resources */,
+				F86DEC3513A21F2600053999 /* sfx_penguinfall.mp3 in Resources */,
+				F86DEC3713A21F2600053999 /* sfx_penguinpop.mp3 in Resources */,
+				F86DEC3913A21F2600053999 /* sfx_penguinwin.mp3 in Resources */,
+				F86DEC3B13A21F2600053999 /* sfx_pickup.mp3 in Resources */,
+				F86DEC3D13A21F2600053999 /* sfx_scratch.mp3 in Resources */,
+				F86DEC3F13A21F2600053999 /* sfx_scratchDing.mp3 in Resources */,
+				F86DEC4113A21F2600053999 /* sfx_si_fill.mp3 in Resources */,
+				F86DEC4313A21F2600053999 /* sfx_siappears_o.mp3 in Resources */,
+				F86DEC4513A21F2600053999 /* sfx_siappears_y2B.mp3 in Resources */,
+				F86DEC4713A21F2600053999 /* sfx_silence.mp3 in Resources */,
+				F86DEC4913A21F2600053999 /* sfx_siopen_o.mp3 in Resources */,
+				F86DEC4B13A21F2600053999 /* sfx_siopen_y.mp3 in Resources */,
+				F86DEC4D13A21F2600053999 /* sfx_wa.mp3 in Resources */,
+				F86DEC4F13A21F2600053999 /* sfx_wa_o.mp3 in Resources */,
+				F86DEC5113A21F2600053999 /* sfx_wa_y.mp3 in Resources */,
+				F86DEC5313A21F2600053999 /* sfx_win_o.mp3 in Resources */,
+				F86DEC5513A21F2600053999 /* sfx_win_y.mp3 in Resources */,
+				F86DEC5713A21F2600053999 /* sfx_winround.mp3 in Resources */,
+				F86DEC5913A21F2600053999 /* sfx_youReveal.mp3 in Resources */,
+				F88F03E013A24649006D7C1E /* SCHStoryInteractionMultipleChoiceWithAnswerPictures_iPad.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
