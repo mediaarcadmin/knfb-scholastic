@@ -13,7 +13,7 @@
 
 @property (nonatomic, retain) NSString *bookTitle;
 
-// array of NSStrings
-@property (nonatomic, retain) NSArray *words;
+// set of uppercase NSStrings
+@property (nonatomic, retain) NSSet *words;
 
 @end

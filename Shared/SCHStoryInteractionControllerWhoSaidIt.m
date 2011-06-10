@@ -12,6 +12,7 @@
 #import "SCHStoryInteractionDraggableView.h"
 #import "SCHStoryInteractionDraggableTargetView.h"
 #import "SCHStoryInteractionWhoSaidIt.h"
+#import "NSArray+ViewSorting.h"
 
 #define kSourceLabelTag 1001
 #define kSourceImageTag 1002
@@ -31,33 +32,6 @@ static CGFloat distanceSq(CGPoint p1, CGPoint p2)
 static CGPoint pointWithOffset(CGPoint p, CGPoint offset)
 {
     return CGPointMake(p.x + offset.x, p.y + offset.y);
-}
-
-static UIView *commonSuperview(UIView *v1, UIView *v2)
-{
-    if (v1.superview == nil) {
-        return nil;
-    }
-    for (UIView *v = v2; v != nil; v = v.superview) {
-        if (v == v1.superview) {
-            return v;
-        }
-    }
-    return commonSuperview(v1.superview, v2);
-}
-
-static NSArray *sortArrayOfViewsVertically(NSArray *array)
-{
-    return [array sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-        UIView *v1 = (UIView *)obj1;
-        UIView *v2 = (UIView *)obj2;
-        UIView *sv = commonSuperview(v1, v2);
-        CGPoint c1 = [v1 convertPoint:v1.center toView:sv];
-        CGPoint c2 = [v2 convertPoint:v2.center toView:sv];
-        if (c1.y < c2.y) return NSOrderedAscending;
-        else if (c1.y > c2.y) return NSOrderedDescending;
-        else return NSOrderedSame;
-    }];
 }
 
 @interface SCHStoryInteractionControllerWhoSaidIt ()
@@ -96,8 +70,8 @@ static NSArray *sortArrayOfViewsVertically(NSArray *array)
     }
     
     // sort the arrays by vertical position to ensure the source labels and targets are ordered the same
-    self.targets = sortArrayOfViewsVertically(self.targets);
-    self.statementLabels = sortArrayOfViewsVertically(self.statementLabels);
+    self.targets = [self.targets viewsSortedVertically];
+    self.statementLabels = [self.statementLabels viewsSortedVertically];
     
     // set up the labels and tag the targets with the correct indices
     SCHStoryInteractionWhoSaidIt *whoSaidIt = (SCHStoryInteractionWhoSaidIt *)[self storyInteraction];
