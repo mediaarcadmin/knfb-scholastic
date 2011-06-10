@@ -89,7 +89,7 @@
 
 - (NSString *)audioPath
 {
-    return([(SCHStoryInteractionStartingLetter *)self.storyInteraction audioPath]);
+    return([(SCHStoryInteractionStartingLetter *)self.storyInteraction audioPathForQuestion]);
 }
 
 @end
