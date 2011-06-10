@@ -29,6 +29,9 @@ static CGFloat distanceSq(CGPoint p1, CGPoint p2)
 - (NSInteger)letterPositionCloseToPoint:(CGPoint)point;
 - (void)swapLetterAtPosition:(NSInteger)position with:(SCHStoryInteractionDraggableView *)letterView;
 
+- (BOOL)hasCorrectSolution;
+- (void)wordScrambleComplete;
+
 @end
 
 @implementation SCHStoryInteractionControllerWordScrambler
@@ -132,6 +135,7 @@ static CGFloat distanceSq(CGPoint p1, CGPoint p2)
 
 - (void)draggableViewDidStartDrag:(SCHStoryInteractionDraggableView *)draggableView
 {
+    [(SCHStoryInteractionDraggableLetterView *)draggableView setLetterColor:[UIColor whiteColor]];
 }
 
 - (BOOL)draggableView:(SCHStoryInteractionDraggableView *)draggableView shouldSnapFromPosition:(CGPoint)position toPosition:(CGPoint *)snapPosition
@@ -150,6 +154,10 @@ static CGFloat distanceSq(CGPoint p1, CGPoint p2)
 - (void)draggableView:(SCHStoryInteractionDraggableView *)draggableView didMoveToPosition:(CGPoint)position
 {
     [draggableView moveToHomePosition];
+
+    if ([self hasCorrectSolution]) {
+        [self wordScrambleComplete];
+    }
 }
 
 - (NSInteger)letterPositionCloseToPoint:(CGPoint)point
@@ -179,6 +187,25 @@ static CGFloat distanceSq(CGPoint p1, CGPoint p2)
     NSInteger swappedIndex = [self.lettersByPosition indexOfObject:letterToSwap];
     [self.lettersByPosition replaceObjectAtIndex:draggableIndex withObject:letterToSwap];
     [self.lettersByPosition replaceObjectAtIndex:swappedIndex withObject:letterView];
+}
+
+#pragma mark - completion
+
+- (BOOL)hasCorrectSolution
+{
+    for (NSInteger i = 0, n = [self.letterViews count]; i < n; ++i) {
+        if ([[self.lettersByPosition objectAtIndex:i] letter] != [[self.letterViews objectAtIndex:i] letter]) {
+            return NO;
+        }
+    }
+    return YES;
+}
+
+- (void)wordScrambleComplete
+{
+    for (SCHStoryInteractionDraggableLetterView *letter in self.letterViews) {
+        letter.letterColor = [UIColor yellowColor];
+    }
 }
 
 @end
