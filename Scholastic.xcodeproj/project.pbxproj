@@ -33,7 +33,6 @@
 		2827824513A20FA200E968C1 /* NSArray+ViewSorting.m in Sources */ = {isa = PBXBuildFile; fileRef = 2827824413A20FA200E968C1 /* NSArray+ViewSorting.m */; };
 		2827824613A20FA200E968C1 /* NSArray+ViewSorting.m in Sources */ = {isa = PBXBuildFile; fileRef = 2827824413A20FA200E968C1 /* NSArray+ViewSorting.m */; };
 		2827827613A23DF100E968C1 /* SCHStoryInteractionWordScrambler_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2827827513A23DF100E968C1 /* SCHStoryInteractionWordScrambler_iPad.xib */; };
-		2827827713A23DF100E968C1 /* SCHStoryInteractionWordScrambler_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2827827513A23DF100E968C1 /* SCHStoryInteractionWordScrambler_iPad.xib */; };
 		2827827A13A241E200E968C1 /* SCHStoryInteractionControllerWordScrambler.m in Sources */ = {isa = PBXBuildFile; fileRef = 2827827913A241E100E968C1 /* SCHStoryInteractionControllerWordScrambler.m */; };
 		2827827B13A241E200E968C1 /* SCHStoryInteractionControllerWordScrambler.m in Sources */ = {isa = PBXBuildFile; fileRef = 2827827913A241E100E968C1 /* SCHStoryInteractionControllerWordScrambler.m */; };
 		2848D34613A0C647007DD45F /* SCHStoryInteractionControllerTitleTwister.m in Sources */ = {isa = PBXBuildFile; fileRef = 2848D34513A0C647007DD45F /* SCHStoryInteractionControllerTitleTwister.m */; };
@@ -4472,8 +4471,6 @@
 				F8DB746D13A0E439006E8D06 /* storyinteractions-initialScratch.png in Resources */,
 				F8DB746F13A0E439006E8D06 /* storyinteractions-initialScratch@2x.png in Resources */,
 				28E9B97D13A0D51A0056874F /* SCHStoryInteractionTitleTwister_iPad.xib in Resources */,
-				F86DEC0013A21B6800053999 /* SCHStoryInteractionStartingLetter_iPad.xib in Resources */,
-				F86DEC0213A21B6800053999 /* SCHStoryInteractionStartingLetter_iPhone.xib in Resources */,
 				F86DEC2413A21F2600053999 /* sfx_breakpuzzle.mp3 in Resources */,
 				F86DEC2613A21F2600053999 /* sfx_ca.mp3 in Resources */,
 				F86DEC2813A21F2600053999 /* sfx_ca_o.mp3 in Resources */,
@@ -4502,8 +4499,6 @@
 				F86DEC5613A21F2600053999 /* sfx_winround.mp3 in Resources */,
 				F86DEC5813A21F2600053999 /* sfx_youReveal.mp3 in Resources */,
 				F88F03DF13A24649006D7C1E /* SCHStoryInteractionMultipleChoiceWithAnswerPictures_iPad.xib in Resources */,
-				F86DEC0013A21B6800053999 /* SCHStoryInteractionStartingLetter_iPad.xib in Resources */,
-				F86DEC0213A21B6800053999 /* SCHStoryInteractionStartingLetter_iPhone.xib in Resources */,
 				2827827613A23DF100E968C1 /* SCHStoryInteractionWordScrambler_iPad.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -4808,8 +4803,6 @@
 				F8DB746E13A0E439006E8D06 /* storyinteractions-initialScratch.png in Resources */,
 				F8DB747013A0E439006E8D06 /* storyinteractions-initialScratch@2x.png in Resources */,
 				28E9B97E13A0D51A0056874F /* SCHStoryInteractionTitleTwister_iPad.xib in Resources */,
-				F86DEC0113A21B6800053999 /* SCHStoryInteractionStartingLetter_iPad.xib in Resources */,
-				F86DEC0313A21B6800053999 /* SCHStoryInteractionStartingLetter_iPhone.xib in Resources */,
 				F86DEC2513A21F2600053999 /* sfx_breakpuzzle.mp3 in Resources */,
 				F86DEC2713A21F2600053999 /* sfx_ca.mp3 in Resources */,
 				F86DEC2913A21F2600053999 /* sfx_ca_o.mp3 in Resources */,
