@@ -10,6 +10,7 @@
 #import "SCHStoryInteractionTitleTwister.h"
 #import "SCHStoryInteractionDraggableLetterView.h"
 #import "SCHStoryInteractionDraggableTargetView.h"
+#import "NSArray+ViewSorting.h"
 
 #define kLetterGap 5
 
@@ -19,16 +20,24 @@
 @property (nonatomic, retain) NSArray *letterViews;
 @property (nonatomic, retain) NSMutableArray *builtWord;
 @property (nonatomic, assign) NSInteger gapPosition;
+@property (nonatomic, retain) NSDictionary *answersByLength;
+@property (nonatomic, retain) NSDictionary *answerCountsByLength;
 
 - (void)setupOpeningView;
 - (void)setupMainView;
+- (void)setupDraggableTilesForTitleTwister:(SCHStoryInteractionTitleTwister *)titleTwister;
+- (void)setupAnswersForTitleTwister:(SCHStoryInteractionTitleTwister *)titleTwister;
+
 - (void)clearBuiltWord;
 - (void)repositionLettersInBuiltWord;
+- (NSString *)builtWordAsString;
 
 - (NSInteger)letterPositionForPointInContentsView:(CGPoint)point;
 - (NSInteger)letterPositionForPointInTarget:(CGPoint)point;
 - (CGPoint)pointInTargetForLetterPosition:(NSInteger)letterPosition;
 - (CGPoint)pointInContentsViewForLetterPosition:(NSInteger)letterPosition;
+
+- (void)updateAnswerTableHeadings;
 
 @end
 
@@ -42,6 +51,8 @@
 @synthesize letterViews;
 @synthesize builtWord;
 @synthesize gapPosition;
+@synthesize answersByLength;
+@synthesize answerCountsByLength;
 
 - (void)dealloc
 {
@@ -51,6 +62,8 @@
     [answerTables release];
     [letterViews release];
     [builtWord release];
+    [answersByLength release];
+    [answerCountsByLength release];
     [super dealloc];
 }
 
@@ -75,13 +88,26 @@
 - (void)setupMainView
 {
     SCHStoryInteractionTitleTwister *titleTwister = (SCHStoryInteractionTitleTwister *)self.storyInteraction;
-    const BOOL iPad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
 
+    [self clearBuiltWord];
+    [self setupDraggableTilesForTitleTwister:titleTwister];
+    [self setupAnswersForTitleTwister:titleTwister];
+    [self updateAnswerTableHeadings];
+    
+    for (UITableView *tableView in self.answerTables) {
+        tableView.rowHeight = 22;
+    }
+}
+
+- (void)setupDraggableTilesForTitleTwister:(SCHStoryInteractionTitleTwister *)titleTwister
+{
+    const BOOL iPad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
+    
     [self.letterViews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     
     NSInteger length = [titleTwister.bookTitle length];
     NSMutableArray *letters = [NSMutableArray arrayWithCapacity:length];
-    UIImage *letterTile = [UIImage imageNamed:(iPad ? @"storyinteraction-wordsearch-letter-ipad" : @"storyinteraction-wordsearch-iphone")];
+    UIImage *letterTile = [UIImage imageNamed:(iPad ? @"storyinteraction-lettertile-ipad" : @"storyinteraction-lettertile-iphone")];
     self.letterTileSize = letterTile.size;
     
     NSInteger width = 0;
@@ -113,10 +139,41 @@
     
     self.gapPosition = NSNotFound;
     self.letterViews = [NSArray arrayWithArray:letters];
-    [self clearBuiltWord];
 }
 
-#pragma mark - built word modification
+- (void)setupAnswersForTitleTwister:(SCHStoryInteractionTitleTwister *)titleTwister
+{
+    int counts[5] = { 0, 0, 0, 0, 0 };
+    for (NSString *word in titleTwister.words) {
+        NSInteger length = [word length];
+        if (3 <= length && length <= 7) {
+            counts[length-3]++;
+        } else {
+            NSLog(@"ignoring %@ due to invalid length", word);
+        }
+    }
+
+    self.answerCountsByLength = [NSDictionary dictionaryWithObjectsAndKeys:
+                                 [NSNumber numberWithInt:counts[0]], [NSNumber numberWithInt:3],
+                                 [NSNumber numberWithInt:counts[1]], [NSNumber numberWithInt:4],
+                                 [NSNumber numberWithInt:counts[2]], [NSNumber numberWithInt:5],
+                                 [NSNumber numberWithInt:counts[3]], [NSNumber numberWithInt:6],
+                                 [NSNumber numberWithInt:counts[4]], [NSNumber numberWithInt:7],
+                                 nil];
+    
+    self.answersByLength = [NSDictionary dictionaryWithObjectsAndKeys:
+                            [NSMutableArray array], [NSNumber numberWithInt:3],
+                            [NSMutableArray array], [NSNumber numberWithInt:4],
+                            [NSMutableArray array], [NSNumber numberWithInt:5],
+                            [NSMutableArray array], [NSNumber numberWithInt:6],
+                            [NSMutableArray array], [NSNumber numberWithInt:7],
+                            nil];
+
+    self.answerHeadingCounts = [self.answerHeadingCounts viewsSortedHorizontally];
+    self.answerTables = [self.answerTables viewsSortedHorizontally];    
+}
+         
+#pragma mark - built word manipulation
 
 - (void)clearBuiltWord
 {
@@ -149,6 +206,16 @@
     }
 }
 
+- (NSString *)builtWordAsString
+{
+    NSMutableString *word = [NSMutableString stringWithCapacity:[self.builtWord count]];
+    for (SCHStoryInteractionDraggableLetterView *letterView in self.builtWord) {
+        unichar letter = letterView.letter;
+        [word appendString:[NSString stringWithCharacters:&letter length:1]];
+    }
+    return [NSString stringWithString:word];
+}
+
 #pragma mark - Actions
 
 - (void)goButtonTapped:(id)sender
@@ -158,7 +225,20 @@
 
 - (void)doneButtonTapped:(id)sender
 {
+    NSString *word = [self builtWordAsString];
+    NSInteger length = [word length];
     
+    SCHStoryInteractionTitleTwister *titleTwister = (SCHStoryInteractionTitleTwister *)self.storyInteraction;
+    if (length < 3 || 7 < length || ![titleTwister.words containsObject:word]) {
+        // TODO try again audio?
+        [self clearBuiltWord];
+        return;
+    }
+    
+    NSNumber *key = [NSNumber numberWithInt:length];
+    [[self.answersByLength objectForKey:key] addObject:word];
+    [[self.answerTables objectAtIndex:length-3] reloadData];
+    [self updateAnswerTableHeadings];
 }
 
 - (void)clearButtonTapped:(id)sender
@@ -236,6 +316,19 @@
     return [self.answerBuildTarget convertPoint:pointInTarget toView:self.contentsView];
 }
 
+#pragma mark - answer table headings
+
+- (void)updateAnswerTableHeadings
+{
+    for (NSInteger i = 0; i < 5; ++i) {
+        NSNumber *key = [NSNumber numberWithInt:i+3];
+        NSInteger found = [[self.answersByLength objectForKey:key] count];
+        NSInteger total = [[self.answerCountsByLength objectForKey:key] integerValue];
+        NSString *heading = [NSString stringWithFormat:@"(Found %d of %d)", found, total];
+        [[self.answerHeadingCounts objectAtIndex:i] setText:heading];
+    }
+}
+
 #pragma mark - Table View Data Source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -245,12 +338,27 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 0;
+    NSInteger index = [self.answerTables indexOfObject:tableView];
+    NSNumber *key = [NSNumber numberWithInt:index+3];
+    return [[self.answersByLength objectForKey:key] count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return nil;
+    static NSString * const CellIdentifier = @"Cell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (!cell) {
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+        cell.textLabel.font = [UIFont boldSystemFontOfSize:20];
+        cell.textLabel.textAlignment = UITextAlignmentCenter;
+    }
+    
+    NSInteger index = [self.answerTables indexOfObject:tableView];
+    NSNumber *key = [NSNumber numberWithInt:index+3];
+    NSArray *answers = [self.answersByLength objectForKey:key];
+
+    cell.textLabel.text = [answers objectAtIndex:indexPath.row];
+    return cell;
 }
 
 @end
