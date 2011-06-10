@@ -12,6 +12,7 @@
 @interface SCHStoryInteractionDraggableLetterView : SCHStoryInteractionDraggableView {}
 
 @property (nonatomic, readonly) unichar letter;
+@property (nonatomic, assign) UIColor *letterColor;
 
 - (id)initWithLetter:(unichar)letter;
 
