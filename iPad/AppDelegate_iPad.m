@@ -12,7 +12,12 @@
 #import "SCHBookManager.h"
 #import "SCHThemeManager.h"
 #import "SCHProfileViewController_iPad.h"
+#import "SCHSyncManager.h"
+#import "SCHAuthenticationManager.h"
 
+extern NSString * const kSCHAuthenticationManagerDeviceKey;
+
+static NSTimeInterval const kAppDelegate_iPadSyncManagerWakeDelay = 5.0;
 
 @implementation AppDelegate_iPad
 
@@ -41,9 +46,17 @@
 
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
-    /*
-     Restart any tasks that were paused (or not yet started) while the application was inactive.
-     */
+    SCHSyncManager *syncManager = [SCHSyncManager sharedSyncManager];
+#if NONDRMAUTHENTICATION
+	SCHAuthenticationManager *authenticationManager = [SCHAuthenticationManager sharedAuthenticationManager];
+	if ([authenticationManager isAuthenticated] == YES) {
+#else
+    NSString *deviceKey = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerDeviceKey];
+    if (deviceKey != nil &&
+        [[deviceKey stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {   
+#endif
+        [syncManager performSelector:@selector(firstSync) withObject:nil afterDelay:kAppDelegate_iPadSyncManagerWakeDelay];
+    }
 }
 
 

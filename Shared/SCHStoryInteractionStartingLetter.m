@@ -23,11 +23,6 @@
     [super dealloc];
 }
 
-- (NSString *)title
-{
-    return @"Starting Letter";
-}
-
 - (NSString *)imagePath
 {
     NSString *filename = [NSString stringWithFormat:@"%@_%@.png", self.storyInteraction.ID, self.uniqueObjectName];
@@ -56,6 +51,17 @@
     [startingLetter release];
     [questions release];
     [super dealloc];
+}
+
+- (NSString *)title
+{
+    return @"Starting Letter";
+}
+
+- (NSString *)audioPath
+{
+    NSString *filename = [NSString stringWithFormat:@"%@_intro.mp3", self.ID];
+    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:filename];    
 }
 
 @end
