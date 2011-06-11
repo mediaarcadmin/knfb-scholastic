@@ -10,12 +10,13 @@
 
 #import "SCHStoryInteractionController.h"
 
-@class MPMoviePlayerController;
+@class SCHPlayButton;
 
 @interface SCHStoryInteractionControllerVideo : SCHStoryInteractionController
 {    
 }
 
-@property (nonatomic, retain) IBOutlet MPMoviePlayerController *movieView;
+@property (nonatomic, retain) IBOutlet UIView *movieContainerView;
+@property (nonatomic, retain) IBOutlet SCHPlayButton *playButton;
 
 @end

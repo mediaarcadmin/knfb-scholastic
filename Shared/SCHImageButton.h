@@ -10,7 +10,7 @@
 
 @class SCHImageButton;
 
-typedef void (^ActionBlock)(SCHImageButton *imageButton);
+typedef void (^ImageButtonActionBlock)(SCHImageButton *imageButton);
 
 @interface SCHImageButton : UIImageView 
 {    
@@ -19,6 +19,6 @@ typedef void (^ActionBlock)(SCHImageButton *imageButton);
 @property (nonatomic, retain) UIColor *normalColor;
 @property (nonatomic, retain) UIColor *selectedColor;
 @property (nonatomic, assign) BOOL selected;
-@property (nonatomic, copy) ActionBlock actionBlock;
+@property (nonatomic, copy) ImageButtonActionBlock actionBlock;
 
 @end
