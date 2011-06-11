@@ -52,7 +52,6 @@
         NSInteger pos = arc4random() % [imageViews count];
         SCHStoryInteractionDraggableView *container = [containers objectAtIndex:pos];
         [container setTag:i];
-        [container setDragTargets:targets];
         [[imageViews objectAtIndex:pos] setImage:image];
         [[targets objectAtIndex:pos] setTag:i];
         [containers removeObjectAtIndex:pos];

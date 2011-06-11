@@ -37,6 +37,8 @@ typedef void (^PlayAudioCompletionBlock)(void);
 @property (nonatomic, assign) BOOL resumeInterruptedPlayer;
 @property (nonatomic, copy) PlayAudioCompletionBlock playAudioCompletionBlock;
 
+@property (nonatomic, assign) dispatch_queue_t audioPlayQueue;
+
 - (UIImage *)deviceSpecificImageNamed:(NSString *)name;
 - (void)updateOrientation;
 - (void)endAudio;
@@ -59,6 +61,7 @@ typedef void (^PlayAudioCompletionBlock)(void);
 @synthesize player;
 @synthesize resumeInterruptedPlayer;
 @synthesize playAudioCompletionBlock;
+@synthesize audioPlayQueue;
 
 + (SCHStoryInteractionController *)storyInteractionControllerForStoryInteraction:(SCHStoryInteraction *)storyInteraction
 {
@@ -86,6 +89,7 @@ typedef void (^PlayAudioCompletionBlock)(void);
     [storyInteraction release];
     [player release], player = nil;
     Block_release(playAudioCompletionBlock), playAudioCompletionBlock = nil;
+    dispatch_release(audioPlayQueue);
     [super dealloc];
 }
 
@@ -102,6 +106,8 @@ typedef void (^PlayAudioCompletionBlock)(void);
             NSLog(@"failed to load nib %@", nibName);
             return nil;
         }
+        
+        self.audioPlayQueue = dispatch_queue_create("audioPlayQueue", NULL);
         
         resumeInterruptedPlayer = NO;
         playAudioCompletionBlock = nil;
@@ -278,25 +284,83 @@ typedef void (^PlayAudioCompletionBlock)(void);
 
 - (void)playAudioAtPath:(NSString *)path completion:(void (^)(void))completion
 {
-    NSError *error = nil;
-    BOOL failed = YES;
-    
-    NSData *audioData = [self.xpsProvider dataForComponentAtPath:path];
-    if (audioData != nil) {
-        self.player = [[AVAudioPlayer alloc] initWithData:audioData error:&error];
-        if (self.player != nil) {
-            self.resumeInterruptedPlayer = NO;
-            [self.player release];
-            self.player.delegate = self;
-            self.playAudioCompletionBlock = completion;
-            [self.player play];
-            failed = NO;
-        }       
+    if (self.player != nil) {
+        [self endAudio];
     }
     
+    __block BOOL failed = YES;
+
+    dispatch_sync(self.audioPlayQueue, ^{
+        
+        NSError *error = nil;
+        NSData *audioData = [self.xpsProvider dataForComponentAtPath:path];
+        if (audioData != nil) {
+            
+            self.player = [[AVAudioPlayer alloc] initWithData:audioData error:&error];
+            if (self.player != nil) {
+                self.resumeInterruptedPlayer = NO;
+                [self.player release];
+                self.player.delegate = self;
+                self.playAudioCompletionBlock = completion;
+                [self.player play];
+                failed = NO;
+            }       
+        }
+        
+    });
+
     // if something goes wrong we should do completion
     if(failed == YES && completion != nil) {
         completion();
+    }
+
+}
+
+- (void)playBundleAudioWithFilename:(NSString *)path completion:(void (^)(void))completion
+{
+    if (self.player != nil) {
+        [self endAudio];
+    }
+    
+    __block BOOL failed = YES;
+
+    dispatch_sync(self.audioPlayQueue, ^{
+        NSError *error = nil;
+        
+        NSArray *pathComponents = [path componentsSeparatedByString:@"."];
+        
+        if (pathComponents && [pathComponents count] == 2) {
+            NSString *bundlePath = [[NSBundle mainBundle] pathForResource:[pathComponents objectAtIndex:0] ofType:[pathComponents objectAtIndex:1]];
+            
+            NSData *audioData = [NSData dataWithContentsOfFile:bundlePath options:NSDataReadingMapped error:nil];
+            if (audioData != nil) {
+                
+                self.player = [[AVAudioPlayer alloc] initWithData:audioData error:&error];
+                if (self.player != nil) {
+                    self.resumeInterruptedPlayer = NO;
+                    [self.player release];
+                    self.player.delegate = self;
+                    self.playAudioCompletionBlock = completion;
+                    [self.player play];
+                    failed = NO;
+                }       
+            }
+        }
+        
+    });
+
+    // if something goes wrong we should do completion
+    if (failed == YES && completion != nil) {
+        completion();
+    }
+}
+
+- (BOOL)playingAudio
+{
+    if (self.player) {
+        return YES;
+    } else {
+        return NO;
     }
 }
 

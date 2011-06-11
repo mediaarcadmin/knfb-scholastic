@@ -8,8 +8,7 @@
 
 #import "SCHStoryInteractionDraggableLetterView.h"
 
-@interface SCHStoryInteractionDraggableLetterView ()
-@end
+#define kLabelTag 123
 
 @implementation SCHStoryInteractionDraggableLetterView
 
@@ -31,12 +30,23 @@
         label.textAlignment = UITextAlignmentCenter;
         label.text = [NSString stringWithCharacters:&aLetter length:1];
         label.font = [UIFont boldSystemFontOfSize:20];
+        label.tag = kLabelTag;
         [self addSubview:label];
         [label release];
         
         letter = aLetter;
     }
     return self;
+}
+
+- (void)setLetterColor:(UIColor *)letterColor
+{
+    [(UILabel *)[self viewWithTag:kLabelTag] setTextColor:letterColor];
+}
+
+- (UIColor *)letterColor
+{
+    return [(UILabel *)[self viewWithTag:kLabelTag] textColor];
 }
 
 @end

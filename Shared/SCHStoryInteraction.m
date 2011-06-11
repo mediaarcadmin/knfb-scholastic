@@ -22,6 +22,30 @@ NSString * const KNFBXPSStoryInteractionsDirectory = @"/Documents/1/Other/KNFB/I
     return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:@"gen_thatsright.mp3"];
 }
 
+- (NSString *)audioPathForTryAgain
+{
+    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:@"gen_tryagain.mp3"];
+}
+
+- (NSString *)storyInteractionCorrectAnswerSoundFilename
+{
+    if ([self.storyInteraction isOlderStoryInteraction]) {
+        return @"sfx_ca_o.mp3";
+    } else {
+        return @"sfx_ca_y.mp3";
+    }
+}
+
+- (NSString *)storyInteractionWrongAnswerSoundFilename
+{
+    if ([self.storyInteraction isOlderStoryInteraction]) {
+        return @"sfx_wa_o.mp3";
+    } else {
+        return @"sfx_wa_y.mp3";
+    }
+}
+
+
 @end
 
 @implementation SCHStoryInteraction
@@ -45,5 +69,25 @@ NSString * const KNFBXPSStoryInteractionsDirectory = @"/Documents/1/Other/KNFB/I
 {
     return [self title];
 }
+
+- (NSString *)storyInteractionButtonAppearingSoundFilename
+{
+    if ([self isOlderStoryInteraction]) {
+        return @"sfx_siappears_o.mp3";
+    } else {
+        return @"sfx_siappears_y2B.mp3";
+    }
+}
+
+- (NSString *)storyInteractionOpeningSoundFilename
+{
+    if ([self isOlderStoryInteraction]) {
+        return @"sfx_siopen_o.mp3";
+    } else {
+        return @"sfx_siopen_y.mp3";
+    }
+}
+
+
 
 @end
