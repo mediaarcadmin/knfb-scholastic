@@ -27,6 +27,12 @@
     return @"Video";
 }
 
+- (NSString *)audioPathForQuestion
+{
+    NSString *filename = [NSString stringWithFormat:@"%@_intro.mp3", self.ID];
+    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:filename];
+}
+
 - (NSString *)videoPath
 {
     return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:self.videoFilename];

@@ -231,11 +231,21 @@
 		52298A9712F0EF5600BBBCE6 /* SCHProfileItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A7E12F0EF5600BBBCE6 /* SCHProfileItem.m */; };
 		52298A9912F0EF5600BBBCE6 /* SCHLocationGraphics.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A8212F0EF5600BBBCE6 /* SCHLocationGraphics.m */; };
 		52298A9B12F0EF5600BBBCE6 /* SCHHighlight.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A8612F0EF5600BBBCE6 /* SCHHighlight.m */; };
+		522EC95E13A5FF74007987AE /* answer-button-blue.png in Resources */ = {isa = PBXBuildFile; fileRef = 522EC95D13A5FF74007987AE /* answer-button-blue.png */; };
+		522EC95F13A5FF74007987AE /* answer-button-blue.png in Resources */ = {isa = PBXBuildFile; fileRef = 522EC95D13A5FF74007987AE /* answer-button-blue.png */; };
 		52322C34132693F500BB071D /* SCHURLManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 52322C33132693F500BB071D /* SCHURLManager.m */; };
 		5233E03313154EEA0088F18C /* SCHDeviceInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 5233E03213154EEA0088F18C /* SCHDeviceInfo.m */; };
 		5233E03413154EEA0088F18C /* SCHDeviceInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 5233E03213154EEA0088F18C /* SCHDeviceInfo.m */; };
 		5233E0D813159CA80088F18C /* BITNetworkActivityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5233E0D713159CA80088F18C /* BITNetworkActivityManager.m */; };
 		5233E0D913159CA80088F18C /* BITNetworkActivityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5233E0D713159CA80088F18C /* BITNetworkActivityManager.m */; };
+		523756AB13A2548E00B38441 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 523756AA13A2548E00B38441 /* MediaPlayer.framework */; };
+		523756AC13A254A900B38441 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 523756AA13A2548E00B38441 /* MediaPlayer.framework */; };
+		523756AF13A275E800B38441 /* SCHPlayButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 523756AE13A275E800B38441 /* SCHPlayButton.m */; };
+		523756B013A275E800B38441 /* SCHPlayButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 523756AE13A275E800B38441 /* SCHPlayButton.m */; };
+		523756B213A278C100B38441 /* SCHPlayButtonPlay.png in Resources */ = {isa = PBXBuildFile; fileRef = 523756B113A278C100B38441 /* SCHPlayButtonPlay.png */; };
+		523756B313A278C100B38441 /* SCHPlayButtonPlay.png in Resources */ = {isa = PBXBuildFile; fileRef = 523756B113A278C100B38441 /* SCHPlayButtonPlay.png */; };
+		523756B513A278FB00B38441 /* SCHPlayButtonPause.png in Resources */ = {isa = PBXBuildFile; fileRef = 523756B413A278FB00B38441 /* SCHPlayButtonPause.png */; };
+		523756B613A278FB00B38441 /* SCHPlayButtonPause.png in Resources */ = {isa = PBXBuildFile; fileRef = 523756B413A278FB00B38441 /* SCHPlayButtonPause.png */; };
 		523E19ED13A0206E00A785B6 /* SCHStoryInteractionControllerVideo.m in Sources */ = {isa = PBXBuildFile; fileRef = 523E19EB13A0206E00A785B6 /* SCHStoryInteractionControllerVideo.m */; };
 		523E19EE13A0206E00A785B6 /* SCHStoryInteractionControllerVideo.m in Sources */ = {isa = PBXBuildFile; fileRef = 523E19EB13A0206E00A785B6 /* SCHStoryInteractionControllerVideo.m */; };
 		523E19EF13A0206E00A785B6 /* SCHStoryInteractionVideo_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 523E19EC13A0206E00A785B6 /* SCHStoryInteractionVideo_iPhone.xib */; };
@@ -1418,6 +1428,7 @@
 		52298A8212F0EF5600BBBCE6 /* SCHLocationGraphics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHLocationGraphics.m; path = Shared/SCHLocationGraphics.m; sourceTree = "<group>"; };
 		52298A8512F0EF5600BBBCE6 /* SCHHighlight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHHighlight.h; path = Shared/SCHHighlight.h; sourceTree = "<group>"; };
 		52298A8612F0EF5600BBBCE6 /* SCHHighlight.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHHighlight.m; path = Shared/SCHHighlight.m; sourceTree = "<group>"; };
+		522EC95D13A5FF74007987AE /* answer-button-blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "answer-button-blue.png"; sourceTree = "<group>"; };
 		52322BF613268C3300BB071D /* SCHUserDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHUserDefaults.h; path = Shared/SCHUserDefaults.h; sourceTree = "<group>"; };
 		52322C32132693F500BB071D /* SCHURLManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHURLManager.h; path = Shared/SCHURLManager.h; sourceTree = "<group>"; };
 		52322C33132693F500BB071D /* SCHURLManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHURLManager.m; path = Shared/SCHURLManager.m; sourceTree = "<group>"; };
@@ -1425,6 +1436,11 @@
 		5233E03213154EEA0088F18C /* SCHDeviceInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHDeviceInfo.m; path = Shared/SCHDeviceInfo.m; sourceTree = "<group>"; };
 		5233E0D613159CA80088F18C /* BITNetworkActivityManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BITNetworkActivityManager.h; path = Shared/BITNetworkActivityManager.h; sourceTree = "<group>"; };
 		5233E0D713159CA80088F18C /* BITNetworkActivityManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BITNetworkActivityManager.m; path = Shared/BITNetworkActivityManager.m; sourceTree = "<group>"; };
+		523756AA13A2548E00B38441 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
+		523756AD13A275E800B38441 /* SCHPlayButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHPlayButton.h; sourceTree = "<group>"; };
+		523756AE13A275E800B38441 /* SCHPlayButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHPlayButton.m; sourceTree = "<group>"; };
+		523756B113A278C100B38441 /* SCHPlayButtonPlay.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SCHPlayButtonPlay.png; path = ../../SCHPlayButtonPlay.png; sourceTree = "<group>"; };
+		523756B413A278FB00B38441 /* SCHPlayButtonPause.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SCHPlayButtonPause.png; path = ../../SCHPlayButtonPause.png; sourceTree = "<group>"; };
 		523E19EA13A0206E00A785B6 /* SCHStoryInteractionControllerVideo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionControllerVideo.h; sourceTree = "<group>"; };
 		523E19EB13A0206E00A785B6 /* SCHStoryInteractionControllerVideo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionControllerVideo.m; sourceTree = "<group>"; };
 		523E19EC13A0206E00A785B6 /* SCHStoryInteractionVideo_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionVideo_iPhone.xib; sourceTree = "<group>"; };
@@ -2204,6 +2220,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				523756AB13A2548E00B38441 /* MediaPlayer.framework in Frameworks */,
 				C9ED56821343328F00A25486 /* libiconv.dylib in Frameworks */,
 				C9ED566D1343322300A25486 /* libcss.a in Frameworks */,
 				C9ED566E1343322300A25486 /* libEucalyptus.a in Frameworks */,
@@ -2276,6 +2293,7 @@
 				C9ED56801343323200A25486 /* libwapcaplet.a in Frameworks */,
 				C9ED56831343329400A25486 /* libiconv.dylib in Frameworks */,
 				C9EFB178134F4C8E00ADF905 /* libXpsSDKipad.a in Frameworks */,
+				523756AC13A254A900B38441 /* MediaPlayer.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2470,6 +2488,8 @@
 		28A60F7A1397BB340090853E /* StoryInteractions */ = {
 			isa = PBXGroup;
 			children = (
+				523756B413A278FB00B38441 /* SCHPlayButtonPause.png */,
+				523756B113A278C100B38441 /* SCHPlayButtonPlay.png */,
 				28D050CB139D087200D0C602 /* storyinteraction-bg-older-iphone.png */,
 				28D050CE139D299500D0C602 /* storyinteraction-bg-older-ipad.png */,
 				28024706139F6FE900B73703 /* storyinteraction-bg-younger-iphone.png */,
@@ -2486,6 +2506,7 @@
 				28A60F8D1397C1780090853E /* storyinteraction-close.png */,
 				28A60F7F1397BB3C0090853E /* storyinteraction-progress-filled.png */,
 				28A60F801397BB3C0090853E /* storyinteraction-progress-unfilled.png */,
+				522EC95D13A5FF74007987AE /* answer-button-blue.png */,
 				28A60F7B1397BB3C0090853E /* answer-button-green.png */,
 				28A60F7C1397BB3C0090853E /* answer-button-red.png */,
 				28A60F7D1397BB3C0090853E /* answer-button-yellow.png */,
@@ -2614,6 +2635,8 @@
 			children = (
 				F86DEC0413A21C5F00053999 /* SCHImageButton.h */,
 				F86DEC0513A21C5F00053999 /* SCHImageButton.m */,
+				523756AD13A275E800B38441 /* SCHPlayButton.h */,
+				523756AE13A275E800B38441 /* SCHPlayButton.m */,
 				28CC9856139CD550001F560F /* SCHStoryInteractionDraggableTargetView.h */,
 				28CC9857139CD550001F560F /* SCHStoryInteractionDraggableTargetView.m */,
 				28CC9858139CD550001F560F /* SCHStoryInteractionDraggableView.h */,
@@ -2708,23 +2731,24 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				28A08D2013953393006FD008 /* libexpat.a */,
 				C9ED56811343328F00A25486 /* libiconv.dylib */,
-				C9F1A579133B83D100FD984C /* libxml2.dylib */,
+				28A08D2013953393006FD008 /* libexpat.a */,
 				F8509EB712F0625100197EB5 /* libstdc++.6.dylib */,
+				C9F1A579133B83D100FD984C /* libxml2.dylib */,
+				C95ECB44133A76C400D88768 /* Accelerate.framework */,
 				C95ECB4C133A77A500D88768 /* AudioToolbox.framework */,
 				526A8A501385143000101A96 /* AVFoundation.framework */,
+				529386C212DF3A8900045B44 /* CFNetwork.framework */,
+				28EEBFDC1118E19E00187D67 /* CoreData.framework */,
+				288765FC0DF74451002DB57D /* CoreGraphics.framework */,
+				526A8A5E1385182100101A96 /* CoreMedia.framework */,
+				1D30AB110D05D00D00671497 /* Foundation.framework */,
+				523756AA13A2548E00B38441 /* MediaPlayer.framework */,
 				C95ECB48133A770B00D88768 /* OpenGLES.framework */,
 				C95ECB46133A76DE00D88768 /* QuartzCore.framework */,
-				C95ECB44133A76C400D88768 /* Accelerate.framework */,
-				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
-				1D30AB110D05D00D00671497 /* Foundation.framework */,
-				288765FC0DF74451002DB57D /* CoreGraphics.framework */,
-				28EEBFDC1118E19E00187D67 /* CoreData.framework */,
-				529386C212DF3A8900045B44 /* CFNetwork.framework */,
-				526A8A5E1385182100101A96 /* CoreMedia.framework */,
-				529386C412DF3A9000045B44 /* SystemConfiguration.framework */,
 				52EF553D12E9EB8500E374F7 /* Security.framework */,
+				529386C412DF3A9000045B44 /* SystemConfiguration.framework */,
+				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -4501,6 +4525,9 @@
 				F86DEC5813A21F2600053999 /* sfx_youReveal.mp3 in Resources */,
 				F88F03DF13A24649006D7C1E /* SCHStoryInteractionMultipleChoiceWithAnswerPictures_iPad.xib in Resources */,
 				2827827613A23DF100E968C1 /* SCHStoryInteractionWordScrambler_iPad.xib in Resources */,
+				523756B213A278C100B38441 /* SCHPlayButtonPlay.png in Resources */,
+				523756B513A278FB00B38441 /* SCHPlayButtonPause.png in Resources */,
+				522EC95E13A5FF74007987AE /* answer-button-blue.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4833,6 +4860,9 @@
 				F86DEC5913A21F2600053999 /* sfx_youReveal.mp3 in Resources */,
 				F88F03E013A24649006D7C1E /* SCHStoryInteractionMultipleChoiceWithAnswerPictures_iPad.xib in Resources */,
 				282782AA13A25EC700E968C1 /* SCHStoryInteractionWordScrambler_iPad.xib in Resources */,
+				523756B313A278C100B38441 /* SCHPlayButtonPlay.png in Resources */,
+				523756B613A278FB00B38441 /* SCHPlayButtonPause.png in Resources */,
+				522EC95F13A5FF74007987AE /* answer-button-blue.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5080,6 +5110,7 @@
 				F86DEC0613A21C5F00053999 /* SCHImageButton.m in Sources */,
 				2827824513A20FA200E968C1 /* NSArray+ViewSorting.m in Sources */,
 				2827827A13A241E200E968C1 /* SCHStoryInteractionControllerWordScrambler.m in Sources */,
+				523756AF13A275E800B38441 /* SCHPlayButton.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5336,6 +5367,7 @@
 				F86DEC0713A21C5F00053999 /* SCHImageButton.m in Sources */,
 				2827824613A20FA200E968C1 /* NSArray+ViewSorting.m in Sources */,
 				2827827B13A241E200E968C1 /* SCHStoryInteractionControllerWordScrambler.m in Sources */,
+				523756B013A275E800B38441 /* SCHPlayButton.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

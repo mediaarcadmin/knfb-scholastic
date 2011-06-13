@@ -14,6 +14,9 @@
 @property (nonatomic, retain) NSString *videoTranscript;
 @property (nonatomic, retain) NSString *videoFilename;
 
+// XPSProvider-relative path for question
+- (NSString *)audioPathForQuestion;
+
 // XPSProvider-relative path
 - (NSString *)videoPath;
 
