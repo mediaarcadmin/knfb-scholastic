@@ -29,7 +29,6 @@ static NSTimeInterval const kSCHThemePickerViewControllerThemeTransitionAlpha = 
 @implementation SCHThemePickerViewController
 
 @synthesize tableView;
-@synthesize shadowView;
 @synthesize cancelButton;
 @synthesize doneButton;
 @synthesize lastTappedTheme;
@@ -39,7 +38,6 @@ static NSTimeInterval const kSCHThemePickerViewControllerThemeTransitionAlpha = 
 - (void)releaseViewObjects
 {
     [tableView release], tableView = nil;
-    [shadowView release], shadowView = nil;
     [cancelButton release], cancelButton = nil;
     [doneButton release], doneButton = nil;
 }
@@ -58,44 +56,48 @@ static NSTimeInterval const kSCHThemePickerViewControllerThemeTransitionAlpha = 
 {
     [super viewDidLoad];
 
-    SCHThemeImageView *themeBackgroundView = [[[SCHThemeImageView alloc] initWithImage:nil] autorelease];
-    [themeBackgroundView setTheme:kSCHThemeManagerBackgroundImage];    
-    self.tableView.backgroundView = themeBackgroundView;
-
-    self.cancelButton = [SCHThemeButton buttonWithType:UIButtonTypeCustom];
-    [self.cancelButton setFrame:CGRectMake(0, 0, 60, 30)];
-    [self.cancelButton setTitle:NSLocalizedString(@"Cancel", @"") forState:UIControlStateNormal];
-    [self.cancelButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [self.cancelButton setTitleColor:[UIColor colorWithWhite:1 alpha:0.5f] forState:UIControlStateHighlighted];
-    [self.cancelButton setReversesTitleShadowWhenHighlighted:YES];
-
-    self.cancelButton.titleLabel.font = [UIFont boldSystemFontOfSize:14];
-    self.cancelButton.titleLabel.shadowOffset = CGSizeMake(0, -1);
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        SCHThemeImageView *themeBackgroundView = [[[SCHThemeImageView alloc] initWithImage:nil] autorelease];
+        [themeBackgroundView setTheme:kSCHThemeManagerBackgroundImage];    
+        self.tableView.backgroundView = themeBackgroundView;
     
-    [self.cancelButton setThemeButton:kSCHThemeManagerDoneButtonImage leftCapWidth:5 topCapHeight:0];
-    [self.cancelButton addTarget:self action:@selector(cancel) forControlEvents:UIControlEventTouchUpInside];    
-    self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:cancelButton] autorelease];
-    
-    self.doneButton = [SCHThemeButton buttonWithType:UIButtonTypeCustom];
-    [self.doneButton setFrame:CGRectMake(0, 0, 60, 30)];
-    [self.doneButton setTitle:NSLocalizedString(@"Done", @"") forState:UIControlStateNormal];
-    [self.doneButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [self.doneButton setTitleColor:[UIColor colorWithWhite:1 alpha:0.5f] forState:UIControlStateHighlighted];
-    [self.doneButton setReversesTitleShadowWhenHighlighted:YES];
-    
-    self.doneButton.titleLabel.font = [UIFont boldSystemFontOfSize:14];
-    self.doneButton.titleLabel.shadowOffset = CGSizeMake(0, -1);
-
-    [self.doneButton setThemeButton:kSCHThemeManagerButtonImage leftCapWidth:5 topCapHeight:0];
-    [self.doneButton addTarget:self action:@selector(done) forControlEvents:UIControlEventTouchUpInside];    
-    self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:doneButton] autorelease];
-    
-    self.tableView.rowHeight = 58;
-    self.tableView.separatorColor = [UIColor colorWithRed:0.000 green:0.365 blue:0.616 alpha:1.000];
-    
-    [(SCHCustomNavigationBar *)self.navigationController.navigationBar setTheme:kSCHThemeManagerNavigationBarImage];
-    
-    [self.shadowView setImage:[[UIImage imageNamed:@"bookshelf-iphone-top-shadow.png"] stretchableImageWithLeftCapWidth:15.0f topCapHeight:0]];
+        self.cancelButton = [SCHThemeButton buttonWithType:UIButtonTypeCustom];
+        [self.cancelButton setFrame:CGRectMake(0, 0, 60, 30)];
+        [self.cancelButton setTitle:NSLocalizedString(@"Cancel", @"") forState:UIControlStateNormal];
+        [self.cancelButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [self.cancelButton setTitleColor:[UIColor colorWithWhite:1 alpha:0.5f] forState:UIControlStateHighlighted];
+        [self.cancelButton setReversesTitleShadowWhenHighlighted:YES];
+        
+        self.cancelButton.titleLabel.font = [UIFont boldSystemFontOfSize:14];
+        self.cancelButton.titleLabel.shadowOffset = CGSizeMake(0, -1);
+        
+        [self.cancelButton setThemeButton:kSCHThemeManagerDoneButtonImage leftCapWidth:5 topCapHeight:0];
+        [self.cancelButton addTarget:self action:@selector(cancel) forControlEvents:UIControlEventTouchUpInside];    
+        self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:cancelButton] autorelease];
+        
+        self.doneButton = [SCHThemeButton buttonWithType:UIButtonTypeCustom];
+        [self.doneButton setFrame:CGRectMake(0, 0, 60, 30)];
+        [self.doneButton setTitle:NSLocalizedString(@"Done", @"") forState:UIControlStateNormal];
+        [self.doneButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [self.doneButton setTitleColor:[UIColor colorWithWhite:1 alpha:0.5f] forState:UIControlStateHighlighted];
+        [self.doneButton setReversesTitleShadowWhenHighlighted:YES];
+        
+        self.doneButton.titleLabel.font = [UIFont boldSystemFontOfSize:14];
+        self.doneButton.titleLabel.shadowOffset = CGSizeMake(0, -1);
+        
+        [self.doneButton setThemeButton:kSCHThemeManagerButtonImage leftCapWidth:5 topCapHeight:0];
+        [self.doneButton addTarget:self action:@selector(done) forControlEvents:UIControlEventTouchUpInside];    
+        self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:doneButton] autorelease];
+        
+        [(SCHCustomNavigationBar *)self.navigationController.navigationBar setTheme:kSCHThemeManagerNavigationBarImage];
+    } else {
+        UIView *backgroundView = [[UIView alloc] initWithFrame:CGRectZero];
+        backgroundView.backgroundColor = [UIColor whiteColor];
+        self.tableView.backgroundView = backgroundView;
+        [backgroundView release];
+    }
+    self.tableView.rowHeight = 50;
+    self.tableView.separatorColor = [UIColor whiteColor];
 }
 
 - (void)viewDidUnload
@@ -197,7 +199,7 @@ static NSTimeInterval const kSCHThemePickerViewControllerThemeTransitionAlpha = 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [[[SCHThemeManager sharedThemeManager] themeNames:YES] count];
+    return [[[SCHThemeManager sharedThemeManager] themeNames:NO] count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -207,17 +209,15 @@ static NSTimeInterval const kSCHThemePickerViewControllerThemeTransitionAlpha = 
     UITableViewCell *cell = [aTableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
-        cell.textLabel.textAlignment = UITextAlignmentCenter;
-        cell.textLabel.textColor = [UIColor whiteColor];
-        cell.textLabel.font = [UIFont boldSystemFontOfSize:22.0f];
-        cell.textLabel.shadowOffset = CGSizeMake(0, 1);
-        cell.textLabel.shadowColor = [UIColor colorWithWhite:0 alpha:0.5f];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
 
-    cell.textLabel.text = [[[SCHThemeManager sharedThemeManager] themeNames:YES] objectAtIndex:indexPath.row];
+    NSString *theme = [[[SCHThemeManager sharedThemeManager] themeNames:NO] objectAtIndex:indexPath.row];
+    
     cell.backgroundColor = [UIColor colorWithPatternImage:
-                            [[SCHThemeManager sharedThemeManager] imageForTheme:cell.textLabel.text key:kSCHThemeManagerImage orientation:self.interfaceOrientation]];
-
+                            [[SCHThemeManager sharedThemeManager] imageForTheme:theme key:kSCHThemeManagerImage orientation:self.interfaceOrientation iPadSpecific:YES]];
+    cell.accessoryType =  ([theme isEqualToString:[SCHThemeManager sharedThemeManager].theme] == YES ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone);
+    
     return(cell);
 }
 
@@ -227,16 +227,26 @@ static NSTimeInterval const kSCHThemePickerViewControllerThemeTransitionAlpha = 
 {
     [aTableView deselectRowAtIndexPath:indexPath animated:NO];
     
-    NSString *themeName = [[[SCHThemeManager sharedThemeManager] themeNames:YES] 
+    NSString *themeName = [[[SCHThemeManager sharedThemeManager] themeNames:NO] 
                            objectAtIndex:indexPath.row];
     if ([themeName isEqualToString:self.lastTappedTheme] == NO) {
         self.lastTappedTheme = themeName;
-        [self previewTheme:themeName];
+        
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+            [self previewTheme:themeName];
+        } else {
+            if (self.lastTappedTheme != nil) {
+                [SCHThemeManager sharedThemeManager].theme = self.lastTappedTheme;    
+                self.lastTappedTheme = nil;
+                [self.tableView reloadData];    
+            }
+        }
     }
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
     UILabel *headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(16, 0, self.view.frame.size.width - 32, 50)];
     headerLabel.text = NSLocalizedString(@"Themes", @"");
     headerLabel.font = [UIFont boldSystemFontOfSize:17.0f];
@@ -250,11 +260,30 @@ static NSTimeInterval const kSCHThemePickerViewControllerThemeTransitionAlpha = 
     [headerLabel release], headerLabel = nil;
     
     return([containerView autorelease]);
+    } else {
+        UIView *containerView = [[UIView alloc] initWithFrame:CGRectZero];
+        return [containerView autorelease];
+    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return(50);
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        return(50);
+    } else {
+        return 10;
+    }
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+    [self.tableView reloadData];
+}
+
+- (CGSize) contentSizeForViewInPopover
+{
+    CGFloat height = ([[[SCHThemeManager sharedThemeManager] themeNames:NO] count] * 44) + 44 + 10;
+    return CGSizeMake(320, height);
 }
 
 @end

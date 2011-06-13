@@ -16,13 +16,14 @@ typedef enum {
     // a password only view - used for profile password
 	kSCHControllerPasswordOnlyView,
     // a double password view - used for changing/setting profile password
-	kSCHControllerDoublePasswordView
+	kSCHControllerDoublePasswordView,
+    kSCHControllerParentToolsView
 } SCHLoginViewControllerType;
 
 // defining a block type for use in the block property
 typedef void(^SCHActionBlock)(void);
 
-@interface SCHLoginPasswordViewController : UIViewController <UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate> 
+@interface SCHLoginPasswordViewController : UIViewController <UITextFieldDelegate> 
 {
     UIButton *footerForgotButton;
 }
@@ -37,9 +38,6 @@ typedef void(^SCHActionBlock)(void);
 
 // a block to be executed when performing the "Cancel" action
 @property (nonatomic, copy) SCHActionBlock cancelBlock;
-
-// activity indicator for login mode
-@property (nonatomic, retain) UIActivityIndicatorView *spinner;
 
 // start and stop showing the progress indicator
 - (void)startShowingProgress;
@@ -56,15 +54,16 @@ typedef void(^SCHActionBlock)(void);
 #pragma mark - Interface Builder
 
 // Interface Builder
+@property (nonatomic, retain) IBOutlet SCHCustomToolbar *topBar;
+@property (nonatomic, retain) IBOutlet UIBarButtonItem *barSpacer;
+@property (nonatomic, retain) IBOutlet UILabel *profileLabel;
+@property (nonatomic, retain) IBOutlet UIActivityIndicatorView *spinner;
+@property (nonatomic, retain) IBOutlet UIView *containerView;
+@property (nonatomic, retain) IBOutlet UIScrollView *scrollView;
+
 @property (nonatomic, retain) IBOutlet UITextField *topField;
 @property (nonatomic, retain) IBOutlet UITextField *bottomField;
-@property (nonatomic, retain) IBOutlet SCHCustomToolbar *topBar;
-@property (nonatomic, retain) IBOutlet UIImageView *topShadow;
-@property (nonatomic, retain) IBOutlet UILabel *headerTitleLabel;
-@property (nonatomic, retain) IBOutlet UIView *headerTitleView;
-@property (nonatomic, retain) IBOutlet UITableView *tableView;
-@property (nonatomic, retain) IBOutlet UILabel *titleTextLabel;
-@property (nonatomic, retain) IBOutlet UIButton *footerForgotButton;
+@property (nonatomic, retain) IBOutlet UIButton *loginButton;
 
 // IBAction - the "Login" or "Go" button action
 - (IBAction)actionButtonAction:(id)sender;

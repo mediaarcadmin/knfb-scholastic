@@ -29,3 +29,5 @@
 "Remove from Favorites" = "Remove from Favorites";
 "Page %d of %d" = "Page %d of %d";
 "%d of book" = "%d of book";
+"Due to a problem with the audio we can not play this audiobook." = "Due to a problem with the audio we can not play this audiobook.";
+"Unable to parse Audio.xml" = "Unable to parse Audio.xml";

@@ -30,18 +30,16 @@ typedef enum
 
 
 - (UIColor *)highlightColor;
-//- (NSArray *)highlightsForBookRange:(SCHBookRange *)bookRange;
 - (NSArray *)highlightsForLayoutPage:(NSUInteger)page;
 
-// FIXME: rmeove the range method
-//- (void)addHighlightAtBookRange:(SCHBookRange *)highlightRange;
 - (void)addHighlightBetweenStartPage:(NSUInteger)startPage startWord:(NSUInteger)startWord endPage:(NSUInteger)endPage endWord:(NSUInteger)endWord;
-- (void)updateHighlightAtBookRange:(SCHBookRange *)fromBookRange toBookRange:(SCHBookRange *)toBookRange;
-
-- (void)requestDictionaryForWord:(NSString *)word mode:(SCHReadingViewSelectionMode) mode;
+- (void)deleteHighlightBetweenStartPage:(NSUInteger)startPage startWord:(NSUInteger)startWord endPage:(NSUInteger)endPage endWord:(NSUInteger)endWord;
 
 - (void)readingView:(SCHReadingView *)readingView hasMovedToPageAtIndex:(NSUInteger)pageIndex;
 - (void)readingView:(SCHReadingView *)readingView hasMovedToProgressPositionInBook:(CGFloat)progress;
+
+- (void)readingView:(SCHReadingView *)readingView hasSelectedWordForSpeaking:(NSString *)word;
+- (void)requestDictionaryForWord:(NSString *)word mode:(SCHReadingViewSelectionMode) mode;
 
 - (void)toggleToolbars;
 - (void)hideToolbars;
@@ -65,6 +63,7 @@ typedef enum
 // FIXME: change these to a protocol
 
 - (SCHBookPoint *)currentBookPoint;
+- (void)currentLayoutPage:(NSUInteger *)layoutPage pageWordOffset:(NSUInteger *)pageWordOffset;
 
 - (void)jumpToPageAtIndex:(NSUInteger)pageIndex animated:(BOOL)animated;
 - (void)jumpToProgressPositionInBook:(CGFloat)progress animated:(BOOL)animated;
@@ -82,16 +81,28 @@ typedef enum
 
 - (void)setPageTexture:(UIImage *)image isDark:(BOOL)isDark;
 
-- (NSUInteger)pageIndexForBookPoint:(SCHBookPoint *)bookPoint;
-- (NSString *)pageLabelForPageAtIndex:(NSUInteger)pageIndex;
-- (NSString *)displayPageNumberForPageAtIndex:(NSUInteger)pageIndex;
+- (NSString *)displayPageNumberForBookPoint:(SCHBookPoint *)bookPoint;
 
+- (void)layoutPage:(NSUInteger *)layoutPage 
+    pageWordOffset:(NSUInteger *)pageWordOffset 
+      forBookPoint:(SCHBookPoint *)bookPoint;
+
+- (SCHBookPoint *)bookPointForLayoutPage:(NSUInteger)layoutPage 
+                          pageWordOffset:(NSUInteger)pageWordOffset;
+
+- (NSArray *)highlightRangesForCurrentPage;
 - (NSArray *)highlightsForLayoutPage:(NSUInteger)page;
-- (void)updateHighlight;
 - (void)addHighlightWithSelection:(EucSelectorRange *)selectorRange;
+- (void)deleteHighlightWithSelection:(EucSelectorRange *)selectorRange;
 - (void)refreshHighlightsForPageAtIndex:(NSUInteger)index;
+- (void)dismissSelector;
+
 - (EucSelectorRange *)selectorRangeFromBookRange:(SCHBookRange *)range;
+- (NSArray *)bookRangesFromSelectorRange:(EucSelectorRange *)selectorRange;
 - (SCHBookRange *)bookRangeFromSelectorRange:(EucSelectorRange *)selectorRange;
+- (void)dismissFollowAlongHighlighter;
+- (void)followAlongHighlightWordAtPoint:(SCHBookPoint *)bookPoint;
+- (void)followAlongHighlightWordForLayoutPage:(NSUInteger)layoutPage pageWordOffset:(NSUInteger)pageWordOffset;
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration;
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation;

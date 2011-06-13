@@ -8,8 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@class SCHCustomToolbar, SCHProfileItem, SCHNote;
-@class SCHReadingView;
+@class SCHCustomToolbar;
+@class SCHProfileItem;
+@class SCHNote;
+@class SCHBookPoint;
 @protocol SCHReadingNotesListControllerDelegate;
 
 #pragma mark - Interface
@@ -22,7 +24,6 @@
 @property (nonatomic, retain) SCHProfileItem *profile;
 @property (nonatomic, retain) NSString *isbn;
 @property (nonatomic, assign) id <SCHReadingNotesListControllerDelegate> delegate;
-@property (nonatomic, assign) SCHReadingView *readingView;
 
 // interface builder
 @property (nonatomic, retain) IBOutlet UITableView *notesTableView;
@@ -40,9 +41,12 @@
 
 @protocol SCHReadingNotesListControllerDelegate <NSObject>
 
-@optional
+@required
 - (void)readingNotesView:(SCHReadingNotesListController *)readingNotesView didSelectNote:(SCHNote *)note;
+- (void)readingNotesView:(SCHReadingNotesListController *)readingNotesView didDeleteNote:(SCHNote *)note;
 - (void)readingNotesViewCreatingNewNote:(SCHReadingNotesListController *)readingNotesView;
+- (SCHBookPoint *)bookPointForNote:(SCHNote *)note; // returns nil if book isn't paginated yet
+- (NSString *)displayPageNumberForBookPoint:(SCHBookPoint *)bookPoint;
 
 @end
 

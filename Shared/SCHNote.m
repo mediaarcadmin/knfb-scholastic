@@ -22,7 +22,7 @@
 
 @dynamic Color;
 @dynamic Value;
-@dynamic LocationGraphics;
+@dynamic Location;
 @dynamic PrivateAnnotations;
 
 - (UIColor *)Color
@@ -60,19 +60,14 @@
     self.Value = NoteText;   
 }
 
-- (SCHBookPoint *) NoteBookPoint
+- (NSUInteger)noteLayoutPage
 {
-    SCHBookPoint *point = [[SCHBookPoint alloc] init];
-    point.layoutPage = [self.LocationGraphics.Page intValue];
-    point.wordOffset = [self.LocationGraphics.WordIndex intValue];
-    
-    return point;
+    return [self.Location.Page intValue];
 }
 
-- (void)setNoteBookPoint: (SCHBookPoint *) newPoint
+- (void)setNoteLayoutPage:(NSUInteger)layoutPage
 {
-    self.LocationGraphics.Page = [NSNumber numberWithInt:newPoint.layoutPage];
-    self.LocationGraphics.WordIndex = [NSNumber numberWithInt:newPoint.wordOffset];
+    self.Location.Page = [NSNumber numberWithInt:layoutPage];
 }
 
 @end

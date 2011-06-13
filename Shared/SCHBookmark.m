@@ -15,7 +15,7 @@
 
 @dynamic Disabled;
 @dynamic Text;
-@dynamic LocationBookmark;
+@dynamic Location;
 @dynamic PrivateAnnotations;
 
 @end

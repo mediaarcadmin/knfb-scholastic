@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<SIConfigFile>
+    <StoryInteractions>
+        <StoryInteraction StoryInteractionType="Image" ID="img1">
+            <DocumentPageNumber>162</DocumentPageNumber>
+            <Position>50,0</Position>
+            <Introduction Transcript="" />
+            <!-- Leave transcript blank -->
+            <Image Url="img1_graphic.png" />
+        </StoryInteraction>
+    </StoryInteractions>
+</SIConfigFile>

@@ -14,7 +14,7 @@
 @implementation SCHAnnotationsContentItem 
 
 @dynamic Format;
-@dynamic AnnotationsList;
+@dynamic AnnotationsItem;
 @dynamic PrivateAnnotations;
 
 @end

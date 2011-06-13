@@ -22,4 +22,6 @@
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, retain) SCHDrmRegistrationSession* drmRegistrationSession;
 
+- (IBAction)dismissModalSettingsController:(id)sender;
+
 @end

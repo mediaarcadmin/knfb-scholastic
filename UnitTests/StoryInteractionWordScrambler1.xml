@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<SIConfigFile>
+    <StoryInteractions>
+        <StoryInteraction StoryInteractionType="WordScrambler">
+            <DocumentPageNumber>26</DocumentPageNumber>
+            <Position>100,20</Position>
+            <Scramble Clue="Lindy and I are going to perform shows at parties!" Answer="SLAPPY" />
+            <!-- Clue value is taken from Intro, Answer value is taken from Answer in interaction script. -->
+            <Hint index="4,6" />
+            <!-- If clue letters are highlighted in the interaction script, replace the * with the number value of the character. So if the "i" in "pie" was highlighted it's number value would be "2". -->
+        </StoryInteraction>
+    </StoryInteractions>
+</SIConfigFile>

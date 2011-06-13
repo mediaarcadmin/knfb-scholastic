@@ -13,6 +13,7 @@
 #import "NSNumber+ObjectTypes.h"
 #import "SCHAuthenticationManager.h"
 #import "BITNetworkActivityManager.h"
+#import "UIColor+Extensions.h"
 
 
 static NSString * const kSCHLibreAccessWebServiceUndefinedMethod = @"undefined method";
@@ -48,7 +49,6 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 - (NSDictionary *)objectFromWordIndex:(LibreAccessServiceSvc_WordIndex *)anObject;
 - (NSDictionary *)objectFromNote:(LibreAccessServiceSvc_Note *)anObject;
 - (NSDictionary *)objectFromLocationGraphics:(LibreAccessServiceSvc_LocationGraphics *)anObject;
-- (NSDictionary *)objectFromCoords:(LibreAccessServiceSvc_Coords *)anObject;
 - (NSDictionary *)objectFromFavorite:(LibreAccessServiceSvc_Favorite *)anObject;
 - (NSDictionary *)objectFromBookmark:(LibreAccessServiceSvc_Bookmark *)anObject;
 - (NSDictionary *)objectFromLocationBookmark:(LibreAccessServiceSvc_LocationBookmark *)anObject;
@@ -58,6 +58,10 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 - (NSDictionary *)objectFromFavoriteTypesValuesItem:(LibreAccessServiceSvc_FavoriteTypesValuesItem *)anObject;
 - (NSDictionary *)objectFromTopFavoritesItem:(LibreAccessServiceSvc_TopFavoritesResponseItem *)anObject;
 - (NSDictionary *)objectFromTopFavoritesContentItem:(LibreAccessServiceSvc_TopFavoritesContentItem *)anObject;
+- (NSDictionary *)objectFromAnnotationStatusItem:(LibreAccessServiceSvc_AnnotationStatusItem *)anObject;
+- (NSDictionary *)objectFromStatusHolder:(LibreAccessServiceSvc_StatusHolder *)anObject;
+- (NSDictionary *)objectFromAnnotationStatusContentItem:(LibreAccessServiceSvc_AnnotationStatusContentItem *)anObject;
+- (NSDictionary *)objectFromAnnotationTypeStatusItem:(LibreAccessServiceSvc_AnnotationTypeStatusItem *)anObject;
 
 - (id)objectFromTranslate:(id)anObject;
 
@@ -74,7 +78,6 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 - (void)fromObject:(NSDictionary *)object intoWordIndex:(LibreAccessServiceSvc_WordIndex *)intoObject;
 - (void)fromObject:(NSDictionary *)object intoNote:(LibreAccessServiceSvc_Note *)intoObject;
 - (void)fromObject:(NSDictionary *)object intoLocationGraphics:(LibreAccessServiceSvc_LocationGraphics *)intoObject;
-- (void)fromObject:(NSDictionary *)object intoCoords:(LibreAccessServiceSvc_Coords *)intoObject;
 - (void)fromObject:(NSDictionary *)object intoFavorite:(LibreAccessServiceSvc_Favorite *)intoObject;
 - (void)fromObject:(NSDictionary *)object intoBookmark:(LibreAccessServiceSvc_Bookmark *)intoObject;
 - (void)fromObject:(NSDictionary *)object intoLocationBookmark:(LibreAccessServiceSvc_LocationBookmark *)intoObject;
@@ -384,7 +387,6 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 	return(ret);							
 }
 
-// TODO: implement response and add to Core Data
 - (BOOL)saveProfileContentAnnotations:(NSArray *)annotations
 {
 	BOOL ret = NO;
@@ -487,6 +489,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 			}
 			
 			LibreAccessServiceSvc_StatusHolder *status = nil;
+            BOOL errorTriggered = NO;
 			@try {
 				status = (LibreAccessServiceSvc_StatusHolder *)[bodyPart valueForKey:kSCHLibreAccessWebServiceStatusHolderStatusMessage];
 			}
@@ -499,11 +502,14 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 				   [status isKindOfClass:[LibreAccessServiceSvc_StatusHolder class]] == YES && 
 				   status.status != LibreAccessServiceSvc_statuscodes_SUCCESS &&
 				   [(id)self.delegate respondsToSelector:@selector(method:didFailWithError:)]) {
+                    errorTriggered = YES;
 					[(id)self.delegate method:methodName didFailWithError:[self errorFromStatusMessage:status]];			
 				}
 			}
 			
-			if([(id)self.delegate respondsToSelector:@selector(method:didCompleteWithResult:)]) {
+// TODO: uncomment when Favorite syncing error is resolved
+//			if(errorTriggered == NO && [(id)self.delegate respondsToSelector:@selector(method:didCompleteWithResult:)]) {
+            if([(id)self.delegate respondsToSelector:@selector(method:didCompleteWithResult:)]) {
 				[(id)self.delegate method:methodName didCompleteWithResult:[self objectFrom:bodyPart]];									
 			}
 		}		
@@ -640,7 +646,12 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 			ret = [NSDictionary dictionaryWithObject:[self objectFromTranslate:[[anObject FavoriteTypesList] FavoriteTypesItem]] forKey:kSCHLibreAccessWebServiceFavoriteTypesList];
 		} else if ([anObject isKindOfClass:[LibreAccessServiceSvc_ListTopFavoritesResponse class]] == YES) {
 			ret = [NSDictionary dictionaryWithObject:[self objectFromTranslate:[[anObject TopFavoritesResponseList] TopFavoritesResponseItem]] forKey:kSCHLibreAccessWebServiceTopFavoritesList];
+		} else if ([anObject isKindOfClass:[LibreAccessServiceSvc_SaveProfileContentAnnotationsResponse class]] == YES) {
+			ret = [NSDictionary dictionaryWithObject:[self objectFromTranslate:[[anObject AnnotationStatusList] AnnotationStatusItem]] forKey:kSCHLibreAccessWebServiceAnnotationStatusList];
+		} else if ([anObject isKindOfClass:[LibreAccessServiceSvc_SaveUserProfilesResponse class]] == YES) {
+			ret = [NSDictionary dictionaryWithObject:[self objectFromTranslate:[[anObject ProfileStatusList] ProfileStatusItem]] forKey:kSCHLibreAccessWebServiceProfileStatusList];
 		}
+        
 	}
 	
 	return(ret);
@@ -934,7 +945,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		
 		[objects setObject:[self objectFromTranslate:anObject.id_] forKey:kSCHLibreAccessWebServiceID];
 		[objects setObject:[NSNumber numberWithSaveAction:anObject.action] forKey:kSCHLibreAccessWebServiceAction];
-		[objects setObject:[self objectFromTranslate:anObject.color] forKey:kSCHLibreAccessWebServiceColor];
+		[objects setObject:[self objectFromTranslate:[UIColor BITcolorWithHexString:anObject.color]] forKey:kSCHLibreAccessWebServiceColor];
 		[objects setObject:[self objectFromLocationText:anObject.location] forKey:kSCHLibreAccessWebServiceLocation];
 		[objects setObject:[self objectFromTranslate:anObject.endPage] forKey:kSCHLibreAccessWebServiceEndPage];
 		[objects setObject:[self objectFromTranslate:anObject.version] forKey:kSCHLibreAccessWebServiceVersion];		
@@ -987,8 +998,8 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		
 		[objects setObject:[self objectFromTranslate:anObject.id_] forKey:kSCHLibreAccessWebServiceID];
 		[objects setObject:[NSNumber numberWithSaveAction:anObject.action] forKey:kSCHLibreAccessWebServiceAction];
-		[objects setObject:[self objectFromLocationGraphics:anObject.location] forKey:kSCHLibreAccessWebServiceLocationGraphics];
-		[objects setObject:[self objectFromTranslate:anObject.color] forKey:kSCHLibreAccessWebServiceColor];
+		[objects setObject:[self objectFromLocationGraphics:anObject.location] forKey:kSCHLibreAccessWebServiceLocation];
+		[objects setObject:[self objectFromTranslate:[UIColor BITcolorWithHexString:anObject.color]] forKey:kSCHLibreAccessWebServiceColor];
 		[objects setObject:[self objectFromTranslate:anObject.value] forKey:kSCHLibreAccessWebServiceValue];
 		[objects setObject:[self objectFromTranslate:anObject.version] forKey:kSCHLibreAccessWebServiceVersion];
 		[objects setObject:[self objectFromTranslate:anObject.lastmodified] forKey:kSCHLibreAccessWebServiceLastModified];
@@ -1007,24 +1018,6 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
 		
 		[objects setObject:[self objectFromTranslate:anObject.page] forKey:kSCHLibreAccessWebServicePage];
-		[objects setObject:[self objectFromCoords:anObject.coords] forKey:kSCHLibreAccessWebServiceCoords];
-		[objects setObject:[self objectFromTranslate:anObject.wordindex] forKey:kSCHLibreAccessWebServiceWordIndex];
-		
-		ret = objects;					
-	}
-	
-	return(ret);
-}
-
-- (NSDictionary *)objectFromCoords:(LibreAccessServiceSvc_Coords *)anObject
-{
-	NSDictionary *ret = nil;
-	
-	if (anObject != nil) {
-		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
-		
-		[objects setObject:[self objectFromTranslate:anObject.x] forKey:kSCHLibreAccessWebServiceX];
-		[objects setObject:[self objectFromTranslate:anObject.y] forKey:kSCHLibreAccessWebServiceY];
 		
 		ret = objects;					
 	}
@@ -1182,6 +1175,94 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 	return(ret);
 }
 
+- (NSDictionary *)objectFromAnnotationStatusItem:(LibreAccessServiceSvc_AnnotationStatusItem *)anObject
+{
+	NSDictionary *ret = nil;
+	
+	if (anObject != nil) {
+		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
+		
+		[objects setObject:[self objectFromTranslate:anObject.profileId] forKey:kSCHLibreAccessWebServiceProfileID];
+		[objects setObject:[self objectFromTranslate:anObject.statusmessage] forKey:kSCHLibreAccessWebServiceStatusMessage];
+		[objects setObject:[self objectFromTranslate:[anObject.AnnotationStatusContentList AnnotationStatusContentItem]] forKey:kSCHLibreAccessWebServiceAnnotationStatusContentList];
+		
+		ret = objects;					
+	}
+	
+	return(ret);
+}
+
+- (NSDictionary *)objectFromStatusHolder:(LibreAccessServiceSvc_StatusHolder *)anObject
+{
+	NSDictionary *ret = nil;
+	
+	if (anObject != nil) {
+		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
+		
+		[objects setObject:[NSNumber numberWithStatusCode:anObject.status] forKey:kSCHLibreAccessWebServiceStatus];
+		[objects setObject:[self objectFromTranslate:anObject.statuscode] forKey:kSCHLibreAccessWebServiceStatusCode];
+		[objects setObject:[self objectFromTranslate:anObject.statusmessage] forKey:kSCHLibreAccessWebServiceStatusMessage];
+		
+		ret = objects;					
+	}
+	
+	return(ret);
+}
+
+- (NSDictionary *)objectFromAnnotationStatusContentItem:(LibreAccessServiceSvc_AnnotationStatusContentItem *)anObject
+{
+	NSDictionary *ret = nil;
+	
+	if (anObject != nil) {
+		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
+		
+		[objects setObject:[self objectFromTranslate:anObject.contentIdentifier] forKey:kSCHLibreAccessWebServiceContentIdentifier];
+		[objects setObject:[self objectFromTranslate:anObject.statusmessage] forKey:kSCHLibreAccessWebServiceStatusMessage];        
+		[objects setObject:[self objectFromTranslate:anObject.PrivateAnnotationsStatus] forKey:kSCHLibreAccessWebServicePrivateAnnotationsStatus];
+		
+		ret = objects;					
+	}
+	
+	return(ret);
+}
+
+- (NSDictionary *)objectFromPrivateAnnotationsStatus:(LibreAccessServiceSvc_PrivateAnnotationsStatus *)anObject
+{
+	NSDictionary *ret = nil;
+	
+	if (anObject != nil) {
+		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
+		
+		[objects setObject:[self objectFromTranslate:[anObject.HighlightsStatusList AnnotationTypeStatusItem]] forKey:kSCHLibreAccessWebServiceHighlightsStatusList];
+        [objects setObject:[self objectFromTranslate:[anObject.NotesStatusList AnnotationTypeStatusItem]] forKey:kSCHLibreAccessWebServiceNotesStatusList];
+        [objects setObject:[self objectFromTranslate:[anObject.BookmarksStatusList AnnotationTypeStatusItem]] forKey:kSCHLibreAccessWebServiceBookmarksStatusList];
+
+        [objects setObject:[self objectFromTranslate:anObject.FavoriteStatus] forKey:kSCHLibreAccessWebServiceFavoriteStatus];
+        [objects setObject:[self objectFromTranslate:anObject.LastPageStatus] forKey:kSCHLibreAccessWebServiceLastPageStatus];
+        
+		ret = objects;					
+	}
+	
+	return(ret);
+}
+
+- (NSDictionary *)objectFromAnnotationTypeStatusItem:(LibreAccessServiceSvc_AnnotationTypeStatusItem *)anObject
+{
+	NSDictionary *ret = nil;
+	
+	if (anObject != nil) {
+		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
+		
+		[objects setObject:[self objectFromTranslate:anObject.id_] forKey:kSCHLibreAccessWebServiceID];
+        [objects setObject:[NSNumber numberWithSaveAction:anObject.action] forKey:kSCHLibreAccessWebServiceAction];
+		[objects setObject:[self objectFromTranslate:anObject.statusmessage] forKey:kSCHLibreAccessWebServiceStatusMessage];
+                
+		ret = objects;					
+	}
+	
+	return(ret);
+}
+
 - (id)objectFromTranslate:(id)anObject
 {
 	id ret = nil;
@@ -1238,10 +1319,14 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 				for (id item in anObject) {
 					[ret addObject:[self objectFromHighlight:item]];	
 				}
-			} else if ([firstItem isKindOfClass:[LibreAccessServiceSvc_Notes class]] == YES) {
+			} else if ([firstItem isKindOfClass:[LibreAccessServiceSvc_Note class]] == YES) {
 				for (id item in anObject) {
 					[ret addObject:[self objectFromNote:item]];
 				}
+            } else if ([firstItem isKindOfClass:[LibreAccessServiceSvc_Bookmark class]] == YES) {
+				for (id item in anObject) {
+					[ret addObject:[self objectFromBookmark:item]];
+				} 
 			} else if ([firstItem isKindOfClass:[LibreAccessServiceSvc_FavoriteTypesValuesItem class]] == YES) {
 				for (id item in anObject) {
 					[ret addObject:[self objectFromFavoriteTypesValuesItem:item]];	
@@ -1258,10 +1343,32 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 				for (id item in anObject) {
 					[ret addObject:[self objectFromTopFavoritesContentItem:item]];	
 				}
+			} else if ([firstItem isKindOfClass:[LibreAccessServiceSvc_AnnotationStatusItem class]] == YES) {
+				for (id item in anObject) {
+					[ret addObject:[self objectFromAnnotationStatusItem:item]];	
+				}
+			} else if ([firstItem isKindOfClass:[LibreAccessServiceSvc_AnnotationStatusContentItem class]] == YES) {
+				for (id item in anObject) {
+					[ret addObject:[self objectFromAnnotationStatusContentItem:item]];	
+				}                
+			} else if ([firstItem isKindOfClass:[LibreAccessServiceSvc_AnnotationTypeStatusItem class]] == YES) {
+				for (id item in anObject) {
+					[ret addObject:[self objectFromAnnotationTypeStatusItem:item]];	
+				}                                
+			} else if ([firstItem isKindOfClass:[LibreAccessServiceSvc_ProfileStatusItem class]] == YES) {
+				for (id item in anObject) {
+					[ret addObject:[self objectFromProfileStatusItem:item]];	
+				}                                
 			}
-		}		
+        }		
 	} else if([anObject isKindOfClass:[USBoolean class]] == YES) {
 		ret = [NSNumber numberWithBool:[anObject boolValue]];
+    } else if ([anObject isKindOfClass:[LibreAccessServiceSvc_StatusHolder class]] == YES) {
+        ret = [self objectFromStatusHolder:anObject];	
+    } else if ([anObject isKindOfClass:[LibreAccessServiceSvc_PrivateAnnotationsStatus class]] == YES) {
+        ret = [self objectFromPrivateAnnotationsStatus:anObject];	
+    } else if ([anObject isKindOfClass:[LibreAccessServiceSvc_AnnotationTypeStatusItem class]] == YES) {
+        ret = [self objectFromAnnotationTypeStatusItem:anObject];	
 	} else {
 		ret = anObject;
 	}
@@ -1285,8 +1392,10 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		intoObject.password = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServicePassword]];
 		intoObject.userkey = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceUserKey]];
 		intoObject.type = [[object valueForKey:kSCHLibreAccessWebServiceType] profileTypeValue];
-		intoObject.id_ = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceID]];
-		intoObject.action = [[object valueForKey:kSCHLibreAccessWebServiceAction] saveActionValue];
+		intoObject.action = [[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceAction]] saveActionValue];
+        if (intoObject.action != kSCHSaveActionsCreate) {
+            intoObject.id_ = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceID]];
+		}
 		intoObject.BookshelfStyle = [[object valueForKey:kSCHLibreAccessWebServiceBookshelfStyle] bookshelfStyleValue];
 		intoObject.storyInteractionEnabled = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceStoryInteractionEnabled]];
 	}
@@ -1361,33 +1470,40 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 	}
 }												
 
+// only creates annotation objects that have a status, i.e. need to be saved
 - (void)fromObject:(NSDictionary *)object intoPrivateAnnotations:(LibreAccessServiceSvc_PrivateAnnotations *)intoObject
 {
 	if (object != nil && intoObject != nil) {
 		intoObject.Highlights = [[LibreAccessServiceSvc_Highlights alloc] init];
 		for (NSDictionary *item in [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceHighlights]]) {
-			LibreAccessServiceSvc_Highlight *highlight = [[LibreAccessServiceSvc_Highlight alloc] init];
-			[self fromObject:item intoHighlight:highlight];
-			[intoObject.Highlights addHighlight:highlight];
-			[highlight release], highlight = nil;
+			if ([[self fromObjectTranslate:[item valueForKey:kSCHLibreAccessWebServiceAction]] saveActionValue] != kSCHSaveActionsNone) {
+                LibreAccessServiceSvc_Highlight *highlight = [[LibreAccessServiceSvc_Highlight alloc] init];
+                [self fromObject:item intoHighlight:highlight];
+                [intoObject.Highlights addHighlight:highlight];
+                [highlight release], highlight = nil;
+            }
 		}
 		[intoObject.Highlights release];
 		
 		intoObject.Notes = [[LibreAccessServiceSvc_Notes alloc] init];
 		for (NSDictionary *item in [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceNotes]]) {
-			LibreAccessServiceSvc_Note *note = [[LibreAccessServiceSvc_Note alloc] init];
-			[self fromObject:item intoNote:note];
-			[intoObject.Notes addNote:note];
-			[note release], note = nil;
+            if ([[self fromObjectTranslate:[item valueForKey:kSCHLibreAccessWebServiceAction]] saveActionValue] != kSCHSaveActionsNone) {
+                LibreAccessServiceSvc_Note *note = [[LibreAccessServiceSvc_Note alloc] init];
+                [self fromObject:item intoNote:note];
+                [intoObject.Notes addNote:note];
+                [note release], note = nil;
+            }
 		}									
 		[intoObject.Notes release];
 		
 		intoObject.Bookmarks = [[LibreAccessServiceSvc_Bookmarks alloc] init];
 		for (NSDictionary *item in [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceBookmarks]]) {
-			LibreAccessServiceSvc_Bookmark *bookmark = [[LibreAccessServiceSvc_Bookmark alloc] init];
-			[self fromObject:item intoBookmark:bookmark];
-			[intoObject.Bookmarks addBookmark:bookmark];
-			[bookmark release], bookmark = nil;
+            if ([[self fromObjectTranslate:[item valueForKey:kSCHLibreAccessWebServiceAction]] saveActionValue] != kSCHSaveActionsNone) {
+                LibreAccessServiceSvc_Bookmark *bookmark = [[LibreAccessServiceSvc_Bookmark alloc] init];
+                [self fromObject:item intoBookmark:bookmark];
+                [intoObject.Bookmarks addBookmark:bookmark];
+                [bookmark release], bookmark = nil;
+            }
 		}									
 		[intoObject.Bookmarks release];
 		
@@ -1404,11 +1520,13 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 - (void)fromObject:(NSDictionary *)object intoHighlight:(LibreAccessServiceSvc_Highlight *)intoObject
 {
 	if (object != nil && intoObject != nil) {
-		intoObject.id_ = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceID]];
 		intoObject.action = [[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceAction]] saveActionValue];
-		intoObject.color = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceColor]];		
+        if (intoObject.action != kSCHSaveActionsCreate) {
+            intoObject.id_ = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceID]];
+		}
+		intoObject.color = [[object valueForKey:kSCHLibreAccessWebServiceColor] BIThexString];		
 		intoObject.location = [[LibreAccessServiceSvc_LocationText alloc] init];
-		[self fromObject:[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceLocationText]] intoLocationText:intoObject.location];
+		[self fromObject:[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceLocation]] intoLocationText:intoObject.location];
 		[intoObject.location release];
 		intoObject.endPage = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceEndPage]];		
 		intoObject.version = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceVersion]];				
@@ -1437,12 +1555,14 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 - (void)fromObject:(NSDictionary *)object intoNote:(LibreAccessServiceSvc_Note *)intoObject
 {
 	if (object != nil && intoObject != nil) {
-		intoObject.id_ = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceID]];
 		intoObject.action = [[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceAction]] saveActionValue];
+        if (intoObject.action != kSCHSaveActionsCreate) {
+            intoObject.id_ = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceID]];
+		}
 		intoObject.location = [[LibreAccessServiceSvc_LocationGraphics alloc] init];
-		[self fromObject:[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceLocationGraphics]] intoLocationGraphics:intoObject.location];
+		[self fromObject:[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceLocation]] intoLocationGraphics:intoObject.location];
 		[intoObject.location release];
-		intoObject.color = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceColor]];
+		intoObject.color = [[object valueForKey:kSCHLibreAccessWebServiceColor] BIThexString];
 		intoObject.value = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceValue]];		
 		intoObject.version = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceVersion]];				
 		intoObject.lastmodified = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceLastModified]];				
@@ -1454,17 +1574,11 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 	if (object != nil && intoObject != nil) {
 		intoObject.page = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServicePage]];
 		intoObject.coords = [[LibreAccessServiceSvc_Coords alloc] init];
-		[self fromObject:[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceCoords]] intoCoords:intoObject.coords];
 		[intoObject.coords release];
-		intoObject.wordindex = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceWordIndex]];
-	}	
-}
-
-- (void)fromObject:(NSDictionary *)object intoCoords:(LibreAccessServiceSvc_Coords *)intoObject
-{
-	if (object != nil && intoObject != nil) {
-		intoObject.x = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceX]];
-		intoObject.y = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceY]];
+        // default values as Scholastic doesnt actually use these values
+		intoObject.coords.x = [NSNumber numberWithInteger:0];
+        intoObject.coords.y = [NSNumber numberWithInteger:0];
+//		intoObject.wordindex = nil;
 	}	
 }
 
@@ -1479,8 +1593,10 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 - (void)fromObject:(NSDictionary *)object intoBookmark:(LibreAccessServiceSvc_Bookmark *)intoObject
 {
 	if (object != nil && intoObject != nil) {
-		intoObject.id_ = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceID]];
 		intoObject.action = [[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceAction]] saveActionValue];
+        if (intoObject.action != kSCHSaveActionsCreate) {
+            intoObject.id_ = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceID]];
+		}
 		intoObject.text = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceText]];
 		intoObject.disabled = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceDisabled]];		
 		intoObject.location = [[LibreAccessServiceSvc_LocationBookmark alloc] init];

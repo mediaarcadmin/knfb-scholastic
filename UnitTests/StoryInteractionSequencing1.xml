@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<SIConfigFile>
+    <StoryInteractions>
+        <StoryInteraction StoryInteractionType="Sequencing" ID="se1">
+            <!-- Happy! Joy! Filenames are inferred from ID, so you don't need to do anything else. -->
+            <DocumentPageNumber>34</DocumentPageNumber>
+            <Position>188.0,50.0</Position>
+        </StoryInteraction>
+    </StoryInteractions>
+</SIConfigFile>

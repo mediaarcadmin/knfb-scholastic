@@ -21,12 +21,12 @@ static NSString * const kSCHNote = @"SCHNote";
 
 @property (nonatomic, retain) UIColor * Color;
 @property (nonatomic, retain) NSString * Value;
-@property (nonatomic, retain) SCHLocationGraphics * LocationGraphics;
+@property (nonatomic, retain) SCHLocationGraphics * Location;
 @property (nonatomic, retain) SCHPrivateAnnotations * PrivateAnnotations;
 
 // backed by convenience methods
 @property (nonatomic, retain) NSString *NoteText;
-@property (nonatomic, retain) SCHBookPoint *NoteBookPoint;
+@property (nonatomic, assign) NSUInteger noteLayoutPage;
 
 @end
 

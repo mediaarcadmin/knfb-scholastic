@@ -7,11 +7,11 @@
 //
 
 #import "SCHBookShelfViewController.h"
+#import "SCHBookShelfSortPopoverTableView.h"
 
 @class SCHProfileViewController_iPad;
-@class SCHLoginPasswordViewController;
 
-@interface SCHBookShelfViewController_iPad : SCHBookShelfViewController {
+@interface SCHBookShelfViewController_iPad : SCHBookShelfViewController <UIPopoverControllerDelegate, SCHBookShelfSortPopoverTableViewDelegate> {
     
 }
 

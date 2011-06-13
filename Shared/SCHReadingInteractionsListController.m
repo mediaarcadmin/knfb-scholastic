@@ -8,12 +8,13 @@
 
 #import "SCHReadingInteractionsListController.h"
 
-
 #import "SCHCustomToolbar.h"
 #import "SCHBookAnnotations.h"
 #import "SCHProfileItem.h"
 #import "SCHNote.h"
 #import "SCHReadingView.h"
+#import "SCHBookStoryInteractions.h"
+#import "SCHStoryInteraction.h"
 
 static NSInteger const CELL_TITLE_LABEL_TAG = 997;
 static NSInteger const CELL_PAGE_LABEL_TAG = 998;
@@ -35,6 +36,7 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
 
 @implementation SCHReadingInteractionsListController
 
+@synthesize bookStoryInteractions;
 @synthesize delegate;
 @synthesize noteCellNib;
 @synthesize notesTableView;
@@ -53,6 +55,7 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
     
     delegate = nil;
     
+    [bookStoryInteractions release], bookStoryInteractions = nil;
     [isbn release], isbn = nil;
     [noteCellNib release], noteCellNib = nil;
     [notesCell release], notesCell = nil;
@@ -184,7 +187,7 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
     switch (section) {
         case 0:
         {
-            return 5;
+            return [[bookStoryInteractions allStoryInteractions] count];
             break;
         }   
         default:
@@ -219,18 +222,19 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
     UILabel *titleLabel = (UILabel *) [cell viewWithTag:CELL_TITLE_LABEL_TAG];
     UILabel *subTitleLabel = (UILabel *) [cell viewWithTag:CELL_PAGE_LABEL_TAG];
     
-    titleLabel.text = @"Interaction";
+    SCHStoryInteraction *storyInteraction = [[self.bookStoryInteractions allStoryInteractions] objectAtIndex:indexPath.row];
+    titleLabel.text = [storyInteraction title];
     
-    // FIXME: for demo purposes, even lines will be loading, odd will not
     if (activityView) {
-        if ([indexPath row] % 2 == 0) {
+        // TODO if the story interaction is still loading
+        if (0) {
             [activityView startAnimating];
             cell.accessoryType = UITableViewCellAccessoryNone;
             subTitleLabel.text = @"";
         } else {
             [activityView stopAnimating];
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-            subTitleLabel.text = [NSString stringWithFormat:@"Page %d", [indexPath row] + 1];
+            subTitleLabel.text = [NSString stringWithFormat:@"Page %d", storyInteraction.documentPageNumber];
         }
     }
     
@@ -240,6 +244,7 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    [self dismissModalViewControllerAnimated:YES];
     // table is set to disallow selection while editing
     switch ([indexPath section]) {
         case 0:

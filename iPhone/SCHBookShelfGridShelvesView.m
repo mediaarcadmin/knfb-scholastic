@@ -49,13 +49,18 @@
 // An empty implementation adversely affects performance during animation.
 - (void)drawRect:(CGRect)rect
 {
+    CGContextRef ctx = UIGraphicsGetCurrentContext();
+    CGContextClearRect(ctx, rect);
+    
     if (self.shelfImage && (self.shelfHeight > 0)) {
         // Drawing code
-        CGFloat yOffset = self.shelfInset.height;
+        CGFloat yOffset = self.shelfInset.height + self.shelfHeight;;
         
         while (yOffset <= rect.size.height) {
+            CGRect shelfRect = CGRectMake(self.shelfInset.width, yOffset + self.shelfImage.size.height, CGRectGetWidth(rect) - 2 * self.shelfInset.width, self.shelfImage.size.height);
+            
+            [self.shelfImage drawInRect:shelfRect];
             yOffset += self.shelfHeight;
-            [self.shelfImage drawAtPoint:CGPointMake(self.shelfInset.width, yOffset - self.shelfImage.size.height)];
         }
     }
 }

@@ -21,6 +21,8 @@
 #import "SCHCustomNavigationBar.h"
 #import "SCHAppProfile.h"
 
+extern NSString * const kSCHAuthenticationManagerDeviceKey;
+
 static const CGFloat kProfilePadTableOffsetPortrait = 280.0f;
 static const CGFloat kProfilePadTableOffsetLandscape = 220.0f;
 
@@ -32,11 +34,11 @@ static const CGFloat kProfilePadTableOffsetLandscape = 220.0f;
 - (void)pushBookshelvesControllerWithProfileItem:(SCHProfileItem *)profileItem;
 - (void)showLoginControllerWithAnimation:(BOOL)animated;
 - (void)showProfilePasswordControllerWithAnimation:(BOOL)animated;
-- (void)toggleSettingsController;
+- (void)pushSettingsController;
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation;
 
 @property (nonatomic, retain) UIButton *settingsButton;
-@property (nonatomic, retain) UIPopoverController *settingsPopover;
+@property (nonatomic, retain) SCHLoginPasswordViewController *parentPasswordController; // Lazily instantiated
 
 @end
 
@@ -49,10 +51,10 @@ static const CGFloat kProfilePadTableOffsetLandscape = 220.0f;
 @synthesize backgroundView;
 @synthesize loginPasswordController;
 @synthesize profilePasswordController;
-@synthesize settingsNavigationController;
+@synthesize settingsNavController;
 @synthesize settingsButton;
-@synthesize settingsPopover;
 @synthesize customNavigationBar;
+@synthesize parentPasswordController;
 
 #pragma mark - Object lifecycle
 
@@ -66,8 +68,7 @@ static const CGFloat kProfilePadTableOffsetLandscape = 220.0f;
     [loginPasswordController release], loginPasswordController = nil;
     [profilePasswordController release], profilePasswordController = nil;
     [settingsButton release], settingsButton = nil;
-    [settingsPopover release], settingsPopover = nil;
-    [settingsNavigationController release], settingsNavigationController = nil;
+    [settingsNavController release], settingsNavController = nil;
     [customNavigationBar release], customNavigationBar = nil;
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -76,6 +77,8 @@ static const CGFloat kProfilePadTableOffsetLandscape = 220.0f;
 - (void)dealloc 
 {    
     [self releaseViewObjects];
+    [parentPasswordController release], parentPasswordController = nil;
+
     [super dealloc];
 }
 
@@ -93,7 +96,7 @@ static const CGFloat kProfilePadTableOffsetLandscape = 220.0f;
     [logoImageView release];
         
     self.settingsButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [self.settingsButton addTarget:self action:@selector(toggleSettingsController) 
+    [self.settingsButton addTarget:self action:@selector(pushSettingsController) 
              forControlEvents:UIControlEventTouchUpInside]; 
     [self.settingsButton setImage:[UIImage imageNamed:@"settings-portrait.png"] 
                          forState:UIControlStateNormal];
@@ -122,9 +125,13 @@ static const CGFloat kProfilePadTableOffsetLandscape = 220.0f;
     
     // check for authentication
 #if !LOCALDEBUG	
+#if NONDRMAUTHENTICATION
 	SCHAuthenticationManager *authenticationManager = [SCHAuthenticationManager sharedAuthenticationManager];
-	
-	if ([authenticationManager hasUsernameAndPassword] == NO) {
+	if ([authenticationManager isAuthenticated] == NO) {	
+#else 
+    NSString *deviceKey = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerDeviceKey];
+    if (!deviceKey) { 
+#endif
         [self showLoginControllerWithAnimation:YES];
 	}
 #endif
@@ -189,40 +196,59 @@ static const CGFloat kProfilePadTableOffsetLandscape = 220.0f;
 
 }
 
-- (void)toggleSettingsController
+- (SCHLoginPasswordViewController *)parentPasswordController
 {
-    NSLog(@"Toggle settings controller.");
+    if (!parentPasswordController) {
+        parentPasswordController = [[[SCHLoginPasswordViewController alloc] initWithNibName:@"SCHParentToolsViewController_iPad" bundle:nil] retain];
+        parentPasswordController.controllerType = kSCHControllerParentToolsView;
+    }
     
-    if (self.settingsPopover) {
-        [self.settingsPopover dismissPopoverAnimated:YES];
-        self.settingsPopover = nil;
-    } else {
-        [self.settingsNavigationController popToRootViewControllerAnimated:NO];
-        self.settingsPopover = [[UIPopoverController alloc] initWithContentViewController:self.settingsNavigationController];
-        self.settingsPopover.delegate = self;
-        
-        [self.settingsPopover presentPopoverFromBarButtonItem:self.navigationItem.rightBarButtonItem permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-    }
+    return parentPasswordController;
 }
 
-#pragma mark - UIPopoverControllerDelegate
-
-- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
+- (void)pushSettingsController
 {
-    if (popoverController == self.settingsPopover) {
-        self.settingsPopover = nil;
-    }
+    self.parentPasswordController.actionBlock = ^{
+        
+        if ([[SCHAuthenticationManager sharedAuthenticationManager] validatePassword:[self.parentPasswordController password]] == NO) {
+            UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") 
+                                                                 message:NSLocalizedString(@"Incorrect password", nil)
+                                                                delegate:nil 
+                                                       cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+                                                       otherButtonTitles:nil]; 
+            [errorAlert show]; 
+            [errorAlert release];
+        } else {
+            [self dismissModalViewControllerAnimated:YES];
+            // FIXME: is there a more robust way to achieve this chaining of ?
+            [self performSelector:@selector(pushSettingsControllerAfterDelay) withObject:nil afterDelay:0.6f];
+        }
+        
+        [self.parentPasswordController clearFields]; 
+    };
+    
+    [self.parentPasswordController setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
+    [self.parentPasswordController setModalPresentationStyle:UIModalPresentationFormSheet];
+    [self presentModalViewController:self.parentPasswordController animated:YES];
 }
+
+- (void)pushSettingsControllerAfterDelay
+{
+    [self.settingsNavController setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
+    [self.settingsNavController setModalPresentationStyle:UIModalPresentationFormSheet];
+    [self presentModalViewController:self.settingsNavController animated:YES];
+}
+
 #pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	
     switch (indexPath.section) {
 		case 0: {
-            
             SCHProfileItem *profileItem = [[self fetchedResultsController] objectAtIndexPath:indexPath];
 #if LOCALDEBUG
             // controller to view book shelf with books filtered to profile
+            [SCHThemeManager sharedThemeManager].appProfile = profileItem.AppProfile;                                    
             [self pushBookshelvesControllerWithProfileItem:profileItem];	
 #else
             if ([profileItem.ProfilePasswordRequired boolValue] == NO) {
@@ -249,7 +275,8 @@ static const CGFloat kProfilePadTableOffsetLandscape = 220.0f;
                 };
                 
                 [self showProfilePasswordControllerWithAnimation:YES];
-                
+                [self.profilePasswordController.profileLabel setText:[profileItem bookshelfName:YES]];
+
             }
 #endif	
 		}	break;

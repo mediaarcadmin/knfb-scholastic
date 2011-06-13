@@ -18,6 +18,8 @@
 
 @property (nonatomic, copy) NSString *youngDictionaryCSS;
 @property (nonatomic, copy) NSString *oldDictionaryCSS;
+@property (nonatomic, copy) NSString *youngAdditions;
+@property (nonatomic, copy) NSString *oldAdditions;
 @property (nonatomic, retain) AVAudioPlayer *player;
 
 // SCHDictionaryEntry object for a word
@@ -31,6 +33,8 @@
 @synthesize dictionaryAccessQueue;
 @synthesize youngDictionaryCSS;
 @synthesize oldDictionaryCSS;
+@synthesize youngAdditions;
+@synthesize oldAdditions;
 @synthesize player;
 
 #pragma mark -
@@ -66,6 +70,8 @@ static SCHDictionaryAccessManager *sharedManager = nil;
         dictionaryAccessQueue = nil;
         [youngDictionaryCSS release], youngDictionaryCSS = nil;
         [oldDictionaryCSS release], oldDictionaryCSS = nil;
+        [youngAdditions release], youngAdditions = nil;
+        [oldAdditions release], oldAdditions = nil;
         [player release], player = nil;
     }
     [super dealloc];
@@ -74,13 +80,22 @@ static SCHDictionaryAccessManager *sharedManager = nil;
 - (void) updateOnReady
 {
     self.youngDictionaryCSS = [NSString stringWithContentsOfFile:[[[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryDirectory] stringByAppendingPathComponent:@"YoungDictionary.css"]
-                                                                 encoding:NSUTF8StringEncoding 
-                                                                    error:nil];
+                                                        encoding:NSUTF8StringEncoding 
+                                                           error:nil];
     
     self.oldDictionaryCSS = [NSString stringWithContentsOfFile:[[[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryDirectory] stringByAppendingPathComponent:@"OldDictionary.css"]
-                                                               encoding:NSUTF8StringEncoding 
-                                                                  error:nil];
- 
+                                                      encoding:NSUTF8StringEncoding 
+                                                         error:nil];
+
+    self.youngAdditions = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"YoungDictionary-additions" ofType:@"css"]
+                                                    encoding:NSUTF8StringEncoding 
+                                                       error:nil];
+    
+    self.oldAdditions = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"OldDictionary-additions" ofType:@"css"]
+                                                  encoding:NSUTF8StringEncoding 
+                                                     error:nil];
+    
+    
     // prime the audio player - eliminates delay on playing of word
     NSString *mp3Path = [NSString stringWithFormat:@"%@/Pronunciation/pron_a.mp3", 
                          [[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryDirectory]];
@@ -336,8 +351,22 @@ static SCHDictionaryAccessManager *sharedManager = nil;
     
     NSString *resultWithNewHead = [NSString stringWithFormat:@"<html>%@%@", cssText, headless];
 
+    // add bitwink additions to the CSS
+
+    if ([category compare:kSCHDictionaryYoungReader] == NSOrderedSame) {
+        cssText = self.youngAdditions;
+    } else {
+        cssText = self.oldAdditions;
+    }
+
+    headEnd = [resultWithNewHead rangeOfString:@"</head>" options:NSCaseInsensitiveSearch];
     
-    return resultWithNewHead;
+    NSString *resultWithAdditions = [NSString stringWithFormat:@"%@%@%@", 
+                                     [resultWithNewHead substringToIndex:headEnd.location],
+                                     cssText,
+                                     [resultWithNewHead substringFromIndex:headEnd.location]];
+    
+    return resultWithAdditions;
 }
 
 - (void) speakWord: (NSString *) dictionaryWord category: (NSString *) category
@@ -356,32 +385,44 @@ static SCHDictionaryAccessManager *sharedManager = nil;
         NSLog(@"Warning: unrecognised category %@ in HTMLForWord.", category);
         return;
     }
-    
+
+    /*
     SCHDictionaryEntry *entry = [self entryForWord:dictionaryWord category:category];
     
     // if no result is returned, don't try
     if (!entry) {
         return;
     }
+    */
     
+    // remove whitespace and punctuation characters
+    NSString *trimmedWord = [dictionaryWord stringByTrimmingCharactersInSet:
+                             [NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    trimmedWord = [trimmedWord stringByTrimmingCharactersInSet:
+                   [NSCharacterSet punctuationCharacterSet]];
+    trimmedWord = [trimmedWord lowercaseString];
+
     NSString *mp3Path = [NSString stringWithFormat:@"%@/Pronunciation/pron_%@.mp3", 
-                         [[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryDirectory], entry.word];
+                         [[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryDirectory], trimmedWord];
     
-    NSURL *url = [NSURL fileURLWithPath:mp3Path];
-    
-    NSError *error;
-    
-    if (self.player) {
-        [self.player stop];
-        self.player = nil;
-    }
-    
-    self.player = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:&error];
-    
-	if (self.player == nil) {
-		NSLog(@"Error playing word text: %@", [error localizedDescription]);
+    if ([[NSFileManager defaultManager] fileExistsAtPath:mp3Path]) {
+        NSURL *url = [NSURL fileURLWithPath:mp3Path];
+        NSError *error;
+        
+        if (self.player) {
+            [self.player stop];
+            self.player = nil;
+        }
+        
+        self.player = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:&error];
+        
+        if (self.player == nil) {
+            NSLog(@"Error playing word text: %@", [error localizedDescription]);
+        } else {
+            [self.player play];
+        }
     } else {
-		[self.player play];
+        NSLog(@"No word file exists for word \"%@\".", trimmedWord);
     }
     
 }

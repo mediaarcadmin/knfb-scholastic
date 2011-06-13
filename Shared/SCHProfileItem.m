@@ -8,6 +8,7 @@
 
 #import "SCHProfileItem.h"
 #import "SCHAppBookOrder.h"
+#import "SCHAppProfile.h"
 
 #import <CommonCrypto/CommonDigest.h>
 
@@ -21,8 +22,6 @@
 #import "SCHPrivateAnnotations.h"
 #import "SCHBookAnnotations.h"
 #import "SCHAnnotationsContentItem.h"
-#import "SCHAnnotationsItem.h"
-#import "SCHLastPage.h"
 
 static NSString * const kSCHProfileItemContentProfileItem = @"ContentProfileItem";
 static NSString * const kSCHProfileItemUserContentItem = @"UserContentItem";
@@ -80,36 +79,99 @@ static NSString * const kSCHProfileItemUserContentItemContentMetadataItem = @"Us
 
 - (NSMutableArray *)allISBNs
 {
-	NSMutableArray *books = [NSMutableArray array];
-	
-	for (SCHContentProfileItem *contentProfileItem in [self valueForKey:kSCHProfileItemContentProfileItem]) {
-		for (SCHContentMetadataItem *contentMetadataItem in [contentProfileItem valueForKeyPath:kSCHProfileItemUserContentItemContentMetadataItem]) {
-			[books addObject:contentMetadataItem.ContentIdentifier];
-		}
-	}
+    NSNumber *sortTypeObj = [[self AppProfile] SortType];
     
-    // order the books
-    if ([self.AppBookOrder count] > 0) {
-        NSArray *bookOrder = [self.AppBookOrder sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:kSCHAppBookOrderOrder ascending:YES]]];
-        for (int i = 0; i < [bookOrder count]; i++) {
-            SCHAppBookOrder *bookOrderItem = [bookOrder objectAtIndex:i];
-            
-            NSUInteger bookIndex = [books indexOfObjectPassingTest:^(id obj, NSUInteger idx, BOOL *stop) {
-                if ([bookOrderItem.ISBN compare:obj] == NSOrderedSame) {
-                    *stop = YES;
-                    return(YES);
-                } else {
-                    return NO;
-                }
-            }];
-            
-            if(bookIndex != NSNotFound) {
-                [books exchangeObjectAtIndex:i withObjectAtIndex:bookIndex];
-            }
-        }
+    if (!sortTypeObj) {
+        sortTypeObj = [NSNumber numberWithInt:kSCHBookSortTypeUser];
+        [[self AppProfile] setSortType:sortTypeObj];
     }
     
-	return(books);
+    SCHBookSortType sortType = [sortTypeObj intValue];
+    
+    if (sortType == kSCHBookSortTypeUser) {
+        
+        NSMutableArray *books = [NSMutableArray array];
+        
+        for (SCHContentProfileItem *contentProfileItem in [self valueForKey:kSCHProfileItemContentProfileItem]) {
+            for (SCHContentMetadataItem *contentMetadataItem in [contentProfileItem valueForKeyPath:kSCHProfileItemUserContentItemContentMetadataItem]) {
+                [books addObject:contentMetadataItem.ContentIdentifier];
+            }
+        }
+        
+        // order the books
+        if ([self.AppBookOrder count] > 0) {
+            NSArray *bookOrder = [self.AppBookOrder sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:kSCHAppBookOrderOrder ascending:YES]]];
+            for (int i = 0; i < [bookOrder count]; i++) {
+                SCHAppBookOrder *bookOrderItem = [bookOrder objectAtIndex:i];
+                
+                NSUInteger bookIndex = [books indexOfObjectPassingTest:^(id obj, NSUInteger idx, BOOL *stop) {
+                    if ([bookOrderItem.ISBN compare:obj] == NSOrderedSame) {
+                        *stop = YES;
+                        return(YES);
+                    } else {
+                        return NO;
+                    }
+                }];
+                
+                if(bookIndex != NSNotFound) {
+                    [books exchangeObjectAtIndex:i withObjectAtIndex:bookIndex];
+                }
+            }
+        }
+        
+        return(books);
+    }
+
+    NSMutableArray *books = [NSMutableArray array];
+    NSMutableArray *bookObjects = [NSMutableArray array];
+    
+    for (SCHContentProfileItem *contentProfileItem in [self valueForKey:kSCHProfileItemContentProfileItem]) {
+        for (SCHContentMetadataItem *contentMetadataItem in [contentProfileItem valueForKeyPath:kSCHProfileItemUserContentItemContentMetadataItem]) {
+            [bookObjects addObject:contentMetadataItem];
+        }
+    }
+
+    switch (sortType) {
+        case kSCHBookSortTypeFavorites:
+        {
+            NSLog(@"FIXME: actually sort by favourites.");
+            break;
+        }
+        case kSCHBookSortTypeTitle:
+        {
+            [bookObjects sortUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"Title" ascending:YES]]];
+            break;
+        }
+        case kSCHBookSortTypeAuthor:
+        {
+            [bookObjects sortUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"Author" ascending:YES]]];
+            break;
+        }
+        case kSCHBookSortTypeNewest:
+        {
+            NSLog(@"Actually sort by newest.");
+            //[books sortUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"Author" ascending:YES]]];
+            break;
+        }
+        case kSCHBookSortTypeLastRead:
+        {
+            NSLog(@"Actually sort by last read.");
+            //[bookObjects sortUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"Annotations.LastPage.LastModified" ascending:YES]]];
+            
+//            SCHContentProfileItem *contentProfileItem = 
+            
+            break;
+        }
+        default:
+            break;
+    }
+    
+    for (SCHContentMetadataItem *item in bookObjects) {
+        [books addObject:item.ContentIdentifier];
+    }
+    
+    return books;
+    
 }
 
 - (SCHBookAnnotations *)annotationsForBook:(NSString *)isbn
@@ -128,28 +190,7 @@ static NSString * const kSCHProfileItemUserContentItemContentMetadataItem = @"Us
         NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest error:nil];
         if ([results count] > 0) {
             ret = [[[SCHBookAnnotations alloc] initWithPrivateAnnotations:[results objectAtIndex:0]] autorelease];
-        }  
-        
-#ifdef LOCALDEBUG
-        if ([results count] == 0) {
-            SCHAnnotationsItem *newAnnotationsItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHAnnotationsItem inManagedObjectContext:self.managedObjectContext];
-            newAnnotationsItem.ProfileID = self.ID;
-            
-            SCHLastPage *newLastPage = [NSEntityDescription insertNewObjectForEntityForName:kSCHLastPage inManagedObjectContext:self.managedObjectContext];
-
-            SCHPrivateAnnotations *newPrivateAnnotations = [NSEntityDescription insertNewObjectForEntityForName:kSCHPrivateAnnotations inManagedObjectContext:self.managedObjectContext];
-            newPrivateAnnotations.LastPage = newLastPage;
-            newPrivateAnnotations.Highlights = [NSSet set];
-            newPrivateAnnotations.Notes = [NSSet set];
-
-            SCHAnnotationsContentItem *newAnnotationsContentItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHAnnotationsContentItem inManagedObjectContext:self.managedObjectContext];
-            newAnnotationsContentItem.PrivateAnnotations = newPrivateAnnotations;
-            newAnnotationsContentItem.AnnotationsList = newAnnotationsItem;
-            newAnnotationsContentItem.ContentIdentifier = isbn;
-
-            ret = [[[SCHBookAnnotations alloc] initWithPrivateAnnotations:newPrivateAnnotations] autorelease];
-        }
-#endif
+        }    
     }
     
     return(ret);

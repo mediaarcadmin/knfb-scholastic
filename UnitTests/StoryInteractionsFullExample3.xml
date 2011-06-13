@@ -1,0 +1,326 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<SIConfigFile>
+  <!-- template v1 -->
+  <!-- Important info regarding filenames in a comment block at the end of the document, starting at line 183. * denotes values that should be input from the interaction script. These are the values you fill in. You should fill the values in the same order they are listed in the interaction script. Filenames for images and audio should always begin with the ID of the interaction. So if the ID is "wm1" then an image file would be named wm1_truck.png. Same goes for audio. Page number is already filled in to accomodate quick testing in the ereader, but you'll need to change this once you're ready to final this xml document. -->
+  <StoryInteractions>
+    <StoryInteraction StoryInteractionType="PictureStarterCustom" ID="ps1">
+      <Introduction Transcript="Who carves the Thanksgiving turkey in your house?  Draw a picture of that person carving." />
+      <Introduction Transcript="Draw a picture of your favorite Thanksgiving food." />
+      <Introduction Transcript="What would it look like if you had Thanksgiving dinner underwater?" />
+      <!-- 
+
+	This interaction is launched from the picture starter button on the ereader interface.
+	ID is used as an arbitrary prefix in filenames. Everything after the ID in the filename is always constant.
+
+	Intro VO:
+	id_q1.mp3
+	id_q2.mp3
+	id_q3.mp3
+
+	Graphic images:
+	id_q1.png
+	id_q2.png
+	id_q3.png
+ -->
+    </StoryInteraction>
+    <StoryInteraction StoryInteractionType="ScratchAndSee" ID="ss1">
+      <DocumentPageNumber>16</DocumentPageNumber>
+      <Position>500.0,5.0</Position>
+      <Questions>
+        <Question>
+          <Answer Transcript="Octopus" />
+          <!-- Transcript value should be taken from Answers column in the interaction script. The IsCorrect attribute should only be present for the correct answer. Refer to the interaction script for placement. If the third or second answer is the correct one, remove the attribute from here and put it in the right place. -->
+          <Answer Transcript="Polar bear" IsCorrect="True" />
+          <Answer Transcript="Great white shark" />
+        </Question>
+        <Question>
+          <Answer Transcript="Tyrannosaurus rex" />
+          <Answer Transcript="Killer whale" IsCorrect="True" />
+          <Answer Transcript="Panda Bear" />
+        </Question>
+        <Question>
+          <Answer Transcript="Elephant" />
+          <Answer Transcript="Leafcutter ants" />
+          <Answer Transcript="Saber-toothed tiger" IsCorrect="True" />
+        </Question>
+      </Questions>
+    </StoryInteraction>
+    <StoryInteraction StoryInteractionType="WordMatch" ID="wm1">
+      <DocumentPageNumber>22</DocumentPageNumber>
+      <Position>450.0,50.0</Position>
+      <Introduction Transcript="Match the words with the pictures below." />
+      <!-- Intro transcript will almost never change, but has the ability to if needed -->
+      <Question1>
+        <Statement Transcript="Turkey" suffix="Turkey" />
+        <!--Example <Statement Transcript="Truck" suffix="truck"/> -->
+        <!-- Transcript should be taken from the Words column in the interaction script. Suffix is the second part of the filename that corresponds to both the image and audio file. For example, if the suffix is "truck" the files should be named
+				id_truck.png and id_truck.mp3. If the filenames do not use the suffix the interaction will break.-->
+        <Statement Transcript="Carrots" suffix="Carrots" />
+        <Statement Transcript="Mashed potatoes" suffix="Mashedpotatoes" />
+      </Question1>
+      <Question2>
+        <Statement Transcript="Hippo" suffix="Hippo" />
+        <Statement Transcript="Shark" suffix="Shark" />
+        <Statement Transcript="Elephant" suffix="Elephant" />
+      </Question2>
+      <Question3>
+        <Statement Transcript="Crab" suffix="Crab" />
+        <Statement Transcript="Moose" suffix="Moose" />
+        <Statement Transcript="Piranha" suffix="Piranha" />
+      </Question3>
+    </StoryInteraction>
+    <StoryInteraction StoryInteractionType="StartingLetter" ID="sl1">
+      <DocumentPageNumber>28</DocumentPageNumber>
+      <Position>180,50</Position>
+      <QuestionPrompt Transcript="Sea, silly, and stop all start with S.  Find 3 more things that start with the letter S." />
+      <!-- Transcript value is taken from Introduction. -->
+      <StartingLetter Character="S" />
+      <!-- Character value is what the starting letter is. It should be a single letter, ie "s". -->
+      <Pictures>
+        <Answer suffix="Skunk" IsCorrect="True" />
+        <!-- Suffix will typically be the same as the names in the Image column in the interaction script. The image and the audio should have exactly the same suffix in their filename, ie if the suffix is "snail" the image should be named id_snail.png and the audio would be id_snail.mp3 -->
+        <Answer suffix="Swordfish" IsCorrect="True">
+          <!-- Only correct answers should have the IsCorrect attribute -->
+        </Answer>
+        <Answer suffix="Spoon" IsCorrect="True" />
+        <Answer suffix="Elephant" />
+        <Answer suffix="Hippo" />
+        <Answer suffix="Ant" />
+        <Answer suffix="Igloo" />
+        <Answer suffix="Turkey" />
+        <Answer suffix="Crab" />
+      </Pictures>
+    </StoryInteraction>
+    <StoryInteraction StoryInteractionType="MultipleChoiceWithAnswerPictures" ID="mcp1">
+      <DocumentPageNumber>30</DocumentPageNumber>
+      <Position>188.0,50.0</Position>
+      <Introduction Transcript="Think about some of the words used to describe the animals in this story." />
+      <!-- Taken from One-time Introduction in the interaction script. If no introduction is noted delete the *. -->
+      <Question1>
+        <QuestionPrompt Transcript="Who is SNEAKY?" />
+        <!-- Transcript value is taken from Question column in interaction script. -->
+        <Answer />
+        <Answer IsCorrect="true" />
+        <!-- Only correct answers should have the IsCorrect attribute -->
+        <Answer />
+      </Question1>
+      <Question2>
+        <QuestionPrompt Transcript="Who is SILLY?" />
+        <Answer IsCorrect="true" />
+        <Answer />
+        <Answer />
+      </Question2>
+      <Question3>
+        <QuestionPrompt Transcript="Who is SMELLY?" />
+        <Answer />
+        <Answer />
+        <Answer IsCorrect="true" />
+      </Question3>
+    </StoryInteraction>
+    <StoryInteraction StoryInteractionType="Sequencing" ID="se1">
+      <!-- Happy! Joy! Filenames are inferred from ID, so you don't need to do anything else. -->
+      <DocumentPageNumber>34</DocumentPageNumber>
+      <Position>188.0,50.0</Position>
+    </StoryInteraction>
+  </StoryInteractions>
+  <!--
+NOTES
+
+Interactions.xml and assets are stored in \KNFB\Interactions
+____________________
+Word Match
+
+VO and images will always be named with it's interaction ID as a prefix, ie wm1_clown.png, wm1_clown.mp3
+
+WM always happens in a set of three questions.
+
+Question VO:
+wm1_intro.mp3
+
+Incorrect answer VO:
+gen_tryagain.mp3
+
+Correct answer VO:
+gen_thatsright.mp3
+gen_gotthemall.mp3
+
+____________________
+Scratch n See
+
+If multiple SS interactions are in the same book, it's number will increase so that the ID is unique though the number may not be sequential, ie ss2, ss5, etc.
+
+
+Images are named in the same order as the Question elements are listed. They are the ID followed by the suffix "q":
+ss1_q1.png
+ss1_q2.png
+ss1_q3.png
+
+Answer responses are named in the order the Answer elements are listed in. They are the ID followed by the suffix "q#a#":
+ss1_q1a1.mp3
+ss1_q1a2.mp3
+ss1_q1a3.mp3
+ss1_q2a1.mp3
+ss1_q3a2.mp3
+ss1_q1a3.mp3
+ss1_q1a1.mp3
+ss1_q1a2.mp3
+ss1_q1a3.mp3
+
+Correct answer responses are named by ID and the suffix "ca#":
+ss1_ca1.mp3
+ss1_ca2.mp3
+ss1_ca3.mp3
+
+All sound effects and general VO retain the same filenames for all occurences of SS regardless of book or ID:
+ding.mp3
+gen_keepscratching.mp3
+gen_thatsnotit.mp3
+gen_scratchaway.mp3
+gen_thatsright.mp3
+gen_tryagain.mp3
+gen_thatsright.mp3
+gen_whatdoyousee.mp3
+_____________________
+Word Search
+
+If multiple SL interactions are in the same book, it's number will increase so that the ID is unique though the number may not be sequential, ie sl2, sl5, etc.
+
+Filenames of Word mp3s should be inferred from ID and Transcript attributes, ie ws1_cow.mp3, ws1_truck.mp3, etc
+
+Question VO:
+ws1_intro.mp3
+
+Incorrect answer VO:
+gen_tryagain.mp3
+
+Correct answer VO:
+gen_foundthemall.mp3
+gen_youfound.mp3
+
+_________________________
+Starting Letters
+VO and images will always be named with it's interaction ID as a prefix.
+
+
+Answer VO and Images are of this format always:
+sl1_uniqueObjectName.extension
+For example, sl1_lunchbox.png and sl1_lunchbox.mp3
+File names should be inferred from the ID attribute and the suffix attribute.
+
+Question VO:
+sl1_intro.mp3
+
+Incorrect answer VO:
+gen_tryagain.mp3
+
+Correct answer VO:
+gen_thatsright.mp3
+gen_gotthemall.mp3
+______________
+Multiple Choice with Text
+
+VO and images will always be named with it's interaction ID as a prefix.
+
+Multiple Choice with Text always happens in a set of three questions.
+
+Answer VO is of this format always:
+mct1_q1a1.mp3
+mct1_q1a2.mp3
+mct1_q1a3.mp3
+mct1_q2a1.mp3
+mct1_q2a2.mp3
+mct1_q2a3.mp3
+mct1_q3a1.mp3
+mct1_q3a2.mp3
+mct1_q3a3.mp3
+
+Question VO:
+mct1_q1.mp3
+mct1_q2.mp3
+mct1_q3.mp3
+
+Incorrect answer VO:
+gen_tryagain.mp3
+
+Correct answer VO:
+gen_thatsright.mp3
+mct1_ca1.mp3
+mct1_ca2.mp3
+mct1_ca3.mp3
+
+VO file naming matches the same order that answers are listed in.
+_________________
+Touch the page
+
+VO is always named with it's interaction ID as a prefix.
+
+Correct Answer VO
+ttp1_ca1.mp3
+ttp1_ca2.mp3
+ttp1_ca3.mp3
+
+Question VO
+ttp1_q1.mp3
+ttp1_q2.mp3
+ttp1_q3.mp3
+
+__________________
+Multiple Choice with Pictures
+
+VO and images will always be named with it's interaction ID as a prefix.
+
+Answer images are of this format always and should appear in the ereader in the same order:
+mcp1_q1a1.png
+mcp1_q1a2.png
+mcp1_q1a3.png
+mcp1_q2a1.png
+mcp1_q2a2.png
+mcp1_q2a3.png
+mcp1_q3a1.png
+mcp1_q3a2.png
+mcp1_q3a3.png
+
+Question VO:
+mcp1_q1.mp3
+mcp1_q2.mp3
+mcp1_q3.mp3
+
+Incorrect answer VO:
+gen_tryagain.mp3
+
+Correct answer VO:
+gen_thatsright.mp3
+mcp1_ca1.mp3
+mcp1_ca2.mp3
+mcp1_ca3.mp3
+
+VO file naming matches the same order that answers are listed in.
+__________________
+Sequencing
+
+This is so easy it's a joke.
+
+Images are named in the correct order to solve the interaction. They are the ID followed by the suffix "img":
+
+se1_img1.png
+se1_img2.png
+se1_img3.png
+
+Correct answer responses are named in the order they should play in after the interaction is solved. They are the ID followed by the suffix "ca":
+se1_ca1.mp3
+se1_ca2.mp3
+se1_ca3.mp3
+
+Question VO:
+gen_putinorder.mp3
+
+Correct answer sound effect:
+tada.mp3
+
+__________________
+
+Video extras
+
+Video files should in the form id_#.mp4 ie, vid1_1.mp4, vid1_2.mp4.
+ -->
+</SIConfigFile>

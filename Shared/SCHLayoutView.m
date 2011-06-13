@@ -1,4 +1,4 @@
-//
+    //
 //  SCHLayoutView.m
 //  Scholastic
 //
@@ -304,6 +304,14 @@
 
 - (void)jumpToPageAtIndex:(NSUInteger)pageIndex animated: (BOOL) animated
 {	
+    if (![NSThread isMainThread]) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self jumpToPageAtIndex:pageIndex animated:animated];
+        });
+        
+        return;
+    }
+        
 	if (pageIndex < pageCount) {
         [self.pageTurningView turnToPageAtIndex:pageIndex animated:animated];
 	}
@@ -444,6 +452,12 @@
     return [range autorelease];
 }
 
+- (NSString *)displayPageNumberForBookPoint:(SCHBookPoint *)bookPoint
+{    
+    NSUInteger pageIndex = MAX(bookPoint.layoutPage, 1) - 1;
+    return [self.textFlow contentsTableViewController:nil displayPageNumberForPageIndex:pageIndex];
+}
+
 #pragma mark -
 #pragma mark EucPageTurningViewBitmapDataSource
 
@@ -482,9 +496,10 @@
 {
     
     EucSelectorRange *selectedRange = [self.selector selectedRange];
-    SCHBookRange *excludedRange = [self bookRangeFromSelectorRange:selectedRange];
+    NSArray *excludedRanges = [self bookRangesFromSelectorRange:selectedRange];
     
-    return [self highlightRectsForPageAtIndex:pageIndex excluding:excludedRange];
+    // MATT FIXME
+    return [self highlightRectsForPageAtIndex:pageIndex excluding:[excludedRanges lastObject]];
 }
 
 - (NSUInteger)pageTurningView:(EucPageTurningView *)pageTurningView pageCountBeforePageAtIndex:(NSUInteger)pageIndex
@@ -507,7 +522,7 @@
 - (void)pageTurningViewWillBeginAnimating:(EucPageTurningView *)aPageTurningView
 {
     self.selector.selectionDisabled = YES;
-    [self.selector removeTemporaryHighlight];
+    [self dismissFollowAlongHighlighter];
 }
 
 - (void)pageTurningViewDidEndAnimation:(EucPageTurningView *)aPageTurningView
@@ -534,7 +549,7 @@
     // zooming is going on.
     //[self.selector setShouldHideMenu:YES];
     [self.selector setSelectionDisabled:YES];
-	[self.selector removeTemporaryHighlight];
+    [self dismissFollowAlongHighlighter];
 	self.temporaryHighlightRange = nil;
 	
 }
@@ -737,6 +752,64 @@
 	
 }
 
+- (void)dismissFollowAlongHighlighter
+{
+    [self.selector removeTemporaryHighlight];
+}
+
+- (void)followAlongHighlightWordAtPoint:(SCHBookPoint *)bookPoint
+{
+    
+    if (![NSThread isMainThread]) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self followAlongHighlightWordAtPoint:bookPoint];
+        });
+        
+        return;
+    }
+    
+    SCHBookRange *highlightRange = [[[SCHBookRange alloc] init] autorelease];
+    highlightRange.startPoint = bookPoint;
+    highlightRange.endPoint   = bookPoint;
+	
+    if (bookPoint && ![self.pageTurningView isAnimating]) {
+		BOOL pageIsVisible = YES;
+		NSInteger targetIndex = bookPoint.layoutPage - 1;
+		
+        if ((self.pageTurningView.leftPageIndex != targetIndex) && (self.pageTurningView.rightPageIndex != targetIndex)) {
+            pageIsVisible = NO;
+        }
+        		
+        if (!pageIsVisible) {
+            [self dismissFollowAlongHighlighter];
+            [self jumpToPageAtIndex:targetIndex animated:YES];
+        } else {        
+            CGAffineTransform viewTransform = [self pageTurningViewTransformForPageAtIndex:targetIndex offsetOrigin:YES applyZoom:YES];
+            CGRect visibleRect = CGRectApplyAffineTransform(self.pageTurningView.bounds, CGAffineTransformInvert(viewTransform));
+			CGRect boundingRect = CGRectNull;
+			
+			CGAffineTransform  pageTransform = [self pageTurningViewTransformForPageAtIndex:targetIndex offsetOrigin:NO applyZoom:NO];
+            
+			NSArray *rectValues = [self rectsFromBlocksAtPageIndex:targetIndex inBookRange:highlightRange];
+            
+			for (NSValue *rectValue in rectValues) {
+				CGRect rect = CGRectApplyAffineTransform([rectValue CGRectValue], CGAffineTransformInvert(pageTransform));
+				boundingRect = CGRectUnion(boundingRect, rect);
+			}
+            
+			if (!CGRectEqualToRect(CGRectIntegral(CGRectIntersection(visibleRect, boundingRect)), CGRectIntegral(boundingRect))) {
+				
+				[self zoomOutToCurrentPage];
+			}
+			
+			EucSelectorRange *range = [self selectorRangeFromBookRange:highlightRange];
+			[self.selector temporarilyHighlightSelectorRange:range animated:YES];
+		}
+    } else {
+        [self dismissFollowAlongHighlighter];
+    }
+}
+
 #pragma mark - EucSelectorDataSource
 
 - (NSArray *)blockIdentifiersForEucSelector:(EucSelector *)selector
@@ -832,18 +905,6 @@
     return @"";
 }
 
-- (NSArray *)highlightRangesForEucSelector:(EucSelector *)selector
-{
-    NSMutableArray *selectorRanges = [NSMutableArray array];
-    
-    for (SCHBookRange *highlightRange in [self highlightRangesForCurrentPage]) {
-        EucSelectorRange *range = [self selectorRangeFromBookRange:highlightRange];
-        [selectorRanges addObject:range];
-    }
-    
-    return [NSArray arrayWithArray:selectorRanges];
-}
-
 - (UIImage *)viewSnapshotImageForEucSelector:(EucSelector *)selector
 {
     return [self.pageTurningView screenshot];
@@ -858,62 +919,6 @@
            self.pageTurningView.userInteractionEnabled = !((EucSelector *)object).isTracking;
        }
     }
-}
-
-#pragma mark - EucSelector Delegate
-
-- (UIColor *)eucSelector:(EucSelector *)aSelector willBeginEditingHighlightWithRange:(EucSelectorRange *)selectedRange
-{    
-    [super eucSelector:aSelector willBeginEditingHighlightWithRange:selectedRange];
-     
-    for (SCHBookRange *highlightRange in [self highlightRangesForCurrentPage]) {
-        EucSelectorRange *range = [self selectorRangeFromBookRange:highlightRange];
-        if ([selectedRange isEqual:range]) {
-            NSUInteger startIndex = highlightRange.startPoint.layoutPage - 1;
-            NSUInteger endIndex = highlightRange.endPoint.layoutPage - 1;
-            
-            for (int i = startIndex; i <= endIndex; i++) {
-                [self refreshHighlightsForPageAtIndex:i];
-                //[self.pageTurningView refreshHighlightsForPageAtIndex:i];
-            }
-            
-			//[self.pageTurningView drawView];
-            //return [highlightRange.color colorWithAlphaComponent:0.3f];
-            return [self.delegate highlightColor];
-        }
-    }
-    
-    return nil;
-}
-
-- (void)eucSelector:(EucSelector *)aSelector didEndEditingHighlightWithRange:(EucSelectorRange *)fromRange movedToRange:(EucSelectorRange *)toRange
-{
-	[super eucSelector:aSelector didEndEditingHighlightWithRange:fromRange movedToRange:toRange];
-    
-#if 0
-	BlioBookmarkRange *fromBookmarkRange = [self bookmarkRangeFromSelectorRange:fromRange];
-	BlioBookmarkRange *toBookmarkRange = [self bookmarkRangeFromSelectorRange:toRange ? : fromRange];
-	
-	if ((nil != toRange) && ![fromRange isEqual:toRange]) {
-		
-        if ([self.delegate respondsToSelector:@selector(updateHighlightAtRange:toRange:withColor:)])
-            [self.delegate updateHighlightAtRange:fromBookmarkRange toRange:toBookmarkRange withColor:nil];
-        
-    }
-	
-	NSInteger startIndex = MIN(fromBookmarkRange.startPoint.layoutPage, toBookmarkRange.startPoint.layoutPage) - 1;
-	NSInteger endIndex = MAX(fromBookmarkRange.endPoint.layoutPage, toBookmarkRange.endPoint.layoutPage) - 1;
-	
-	// Set this to nil now because the refresh depends on it
-    [self.selector setSelectedRange:nil];
-	
-	for (int i = startIndex; i <= endIndex; i++) {
-        [self refreshHighlightsForPageAtIndex:i];
-		//[self.pageTurningView refreshHighlightsForPageAtIndex:i];
-	}
-	
-	//[self.pageTurningView drawView];
-#endif
 }
 
 #pragma mark - View Geometry

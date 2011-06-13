@@ -19,6 +19,7 @@
 #import <libEucalyptus/EucMenuItem.h>
 #import <libEucalyptus/EucCSSIntermediateDocument.h>
 #import <libEucalyptus/EucSelectorRange.h>
+#import <libEucalyptus/EucHighlightRange.h>
 #import <libEucalyptus/THPair.h>
 #import <libEucalyptus/EucConfiguration.h>
 
@@ -38,12 +39,7 @@
 
 - (void)initialiseView
 {
-    SCHBookManager *bookManager = [SCHBookManager sharedBookManager];
-    
-    eucBook = [[bookManager checkOutEucBookForBookIdentifier:self.isbn] retain];
-    paragraphSource = [[bookManager checkOutParagraphSourceForBookIdentifier:self.isbn] retain];
-    
-    if((eucBookView = [[EucBookView alloc] initWithFrame:self.bounds book:eucBook])) {
+    if((eucBookView = [[EucBookView alloc] initWithFrame:self.bounds book:self.eucBook])) {
         eucBookView.delegate = self;
         eucBookView.allowsSelection = YES;
         eucBookView.selectorDelegate = self;
@@ -55,9 +51,7 @@
 }
 
 - (void)dealloc
-{
-    [eucBookView release], eucBookView = nil;
-    
+{    
     if(paragraphSource) {
         [paragraphSource release], paragraphSource = nil;
         [[SCHBookManager sharedBookManager] checkInParagraphSourceForBookIdentifier:self.isbn];   
@@ -76,8 +70,11 @@
     self = [super initWithFrame:frame isbn:isbn delegate:delegate];
     if (self) {        
         self.opaque = YES;
-
-        [self initialiseView];
+        
+        SCHBookManager *bookManager = [SCHBookManager sharedBookManager];
+        
+        eucBook = [[bookManager checkOutEucBookForBookIdentifier:self.isbn] retain];
+        paragraphSource = [[bookManager checkOutParagraphSourceForBookIdentifier:self.isbn] retain];
     }
     return self;
 }
@@ -89,6 +86,15 @@
     // The selector observer must be dealloced here before the selector is torn down inside eucbookview
     if (newWindow == nil) {
         [self.eucBookView.selector removeObserver:self forKeyPath:@"trackingStage"];
+        [self.eucBookView removeObserver:self forKeyPath:@"currentPageIndexPoint"];
+        self.eucBookView = nil;
+
+    } else {
+        // N.B. We must initialise the view _after_ the view frame has been set because
+        // the eucBookView paginates the eucBook using the view bounds. If we initialise too early
+        // the nib frame size will be used instead. The correct fix for this is probably to
+        // initialise the _pageLayoutController in EucBookView in willMoveToWindow rather than init
+        [self initialiseView];
     }
 }
 
@@ -101,9 +107,7 @@
         // eucBookView which sets the page count
         [self.eucBookView addObserver:self forKeyPath:@"currentPageIndexPoint" options:NSKeyValueObservingOptionInitial context:NULL];
         [self.eucBookView.selector addObserver:self forKeyPath:@"trackingStage" options:NSKeyValueObservingOptionPrior context:NULL];
-    } else {
-        [self.eucBookView removeObserver:self forKeyPath:@"currentPageIndexPoint"];
-    }    
+    }
 }
 
 #pragma mark - BookView Methods
@@ -150,7 +154,7 @@
     [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
     
     if ([keyPath isEqualToString:@"currentPageIndexPoint"]) {
-        if ((eucBookView.pageCount != 0) && (eucBookView.pageCount != -1)) {
+        if ((self.eucBookView.pageCount != 0) && (self.eucBookView.pageCount != -1)) {
             [self.delegate readingView:self hasMovedToPageAtIndex:eucBookView.currentPageIndex];
         } else {
             CGFloat progress = [self.eucBook estimatedPercentageForIndexPoint:eucBookView.currentPageIndexPoint];
@@ -193,6 +197,11 @@
     }
     
     return ret;
+}
+
+- (NSString *)displayPageNumberForBookPoint:(SCHBookPoint *)bookPoint
+{
+    return [self.eucBookView displayPageNumberForPageIndex:[self.eucBookView pageIndexForIndexPoint:[self.eucBook bookPageIndexPointFromBookPoint:bookPoint]]];
 }
 
 #pragma mark - SCHReadingView methods

@@ -14,6 +14,7 @@
 #import "SCHXPSCoverImageOperation.h"
 #import "SCHThumbnailOperation.h"
 #import "SCHRightsParsingOperation.h"
+#import "SCHAudioPreParseOperation.h"
 #import "SCHTextFlowPreParseOperation.h"
 #import "SCHSmartZoomPreParseOperation.h"
 #import "SCHFlowAnalysisOperation.h"
@@ -374,6 +375,25 @@ static SCHProcessingManager *sharedManager = nil;
 			break;
 		}	
             
+			// *** Book file needs audio information parsed ***
+		case SCHBookProcessingStateReadyForAudioInfoParsing:
+		{
+			// create audio info processing operation
+			SCHAudioPreParseOperation *rightsOp = [[SCHAudioPreParseOperation alloc] init];
+			rightsOp.isbn = isbn;
+			
+			// the book will be redispatched on completion
+			[rightsOp setCompletionBlock:^{
+				[self redispatchISBN:isbn];
+			}];
+			
+			// add the operation to the local processing queue
+			[self.localProcessingQueue addOperation:rightsOp];
+			[rightsOp release];
+			return;
+			break;
+		}	
+            
 			// *** Book file needs textflow pre-parsing ***
 		case SCHBookProcessingStateReadyForTextFlowPreParse:
 		{
@@ -470,6 +490,7 @@ static SCHProcessingManager *sharedManager = nil;
 		case SCHBookProcessingStateDownloadStarted:
         case SCHBookProcessingStateReadyForLicenseAcquisition:
 		case SCHBookProcessingStateReadyForRightsParsing:
+		case SCHBookProcessingStateReadyForAudioInfoParsing:
         case SCHBookProcessingStateReadyForTextFlowPreParse:
         case SCHBookProcessingStateReadyForSmartZoomPreParse:
         case SCHBookProcessingStateReadyForPagination:
@@ -587,7 +608,7 @@ static SCHProcessingManager *sharedManager = nil;
 // FIXME: could be moved to SCHBookInfo? 
 - (BOOL) requestThumbImageForBookCover:(SCHAsyncBookCoverImageView *)bookCover size:(CGSize)size book:(SCHAppBook *)book
 {	
-	NSLog(@"Requesting thumb for %@, size %@", bookCover.isbn, NSStringFromCGSize(size));
+//	NSLog(@"Requesting thumb for %@, size %@", bookCover.isbn, NSStringFromCGSize(size));
 	@synchronized(self.thumbImageRequests) {
 		
 		// check for an existing file

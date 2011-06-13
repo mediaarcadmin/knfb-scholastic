@@ -9,9 +9,11 @@
 #import <UIKit/UIKit.h>
 
 #import "SCHReadingView.h"
+#import "SCHAudioBookPlayerDelegate.h"
 #import "SCHReadingNotesListController.h"
 #import "SCHReadingInteractionsListController.h"
 #import "SCHReadingNoteView.h"
+#import "SCHStoryInteractionControllerDelegate.h"
 
 typedef enum 
 {
@@ -30,10 +32,12 @@ typedef enum
 @class SCHProfileItem;
 
 @interface SCHReadingViewController : UIViewController <SCHReadingViewDelegate, SCHReadingNotesListControllerDelegate, 
-SCHReadingNoteViewDelegate, SCHReadingInteractionsListControllerDelegate, UIPopoverControllerDelegate> 
-{
+SCHReadingNoteViewDelegate, SCHReadingInteractionsListControllerDelegate, SCHAudioBookPlayerDelegate, UIPopoverControllerDelegate,
+SCHStoryInteractionControllerDelegate> 
+{}
+UISegmentedControl *paperTypePopoverSegmentedControl;
 
-}
+
 
 @property (nonatomic, assign) BOOL youngerMode;
 
@@ -42,8 +46,10 @@ SCHReadingNoteViewDelegate, SCHReadingInteractionsListControllerDelegate, UIPopo
 @property (nonatomic, retain) IBOutlet UIView *leftBarButtonItemContainer;
 @property (nonatomic, retain) IBOutlet UIView *youngerRightBarButtonItemContainer;
 @property (nonatomic, retain) IBOutlet UIView *olderRightBarButtonItemContainer;
+@property (nonatomic, retain) IBOutlet UIView *youngerRightBarButtonItemContainerPad;
 @property (nonatomic, retain) IBOutlet UIButton *backButton;
 @property (nonatomic, retain) IBOutlet UIButton *audioButton;
+@property (nonatomic, retain) IBOutlet UIButton *notesButton;
 @property (nonatomic, retain) IBOutlet SCHCustomToolbar *scrubberToolbar;
 @property (nonatomic, retain) IBOutlet SCHCustomToolbar *olderBottomToolbar;
 @property (nonatomic, retain) IBOutlet UIImageView *topShadow;
@@ -57,15 +63,17 @@ SCHReadingNoteViewDelegate, SCHReadingInteractionsListControllerDelegate, UIPopo
 
 @property (nonatomic, retain) IBOutlet UIView *optionsView;
 @property (nonatomic, retain) IBOutlet UIViewController *popoverOptionsViewController;
-@property (nonatomic, retain) IBOutlet UISegmentedControl *flowFixedSegmentedControl;
 @property (nonatomic, retain) IBOutlet UISegmentedControl *fontSegmentedControl;
 @property (nonatomic, retain) IBOutlet UISegmentedControl *paperTypeSegmentedControl;
+@property (nonatomic, retain) IBOutlet UISegmentedControl *flowFixedSegmentedControl;
+@property (nonatomic, retain) IBOutlet UISegmentedControl *flowFixedPopoverSegmentedControl;
+@property (nonatomic, retain) IBOutlet UISegmentedControl *paperTypePopoverSegmentedControl;
+
 
 -(id)initWithNibName:(NSString *)nibNameOrNil 
               bundle:(NSBundle *)nibBundleOrNil 
                 isbn:(NSString *)aIsbn 
-             profile:(SCHProfileItem *)aProfile
-              layout:(SCHReadingViewLayoutType)layoutType;
+             profile:(SCHProfileItem *)aProfile;
 
 // interface builder
 - (IBAction)toolbarButtonPressed:(id)sender;
@@ -75,5 +83,6 @@ SCHReadingNoteViewDelegate, SCHReadingInteractionsListControllerDelegate, UIPopo
 - (IBAction)settingsAction:(UIButton *)sender;
 - (IBAction)popViewController:(id)sender;
 - (IBAction)audioPlayAction:(id)sender;
+- (IBAction)toggleSmartZoom:(id)sender;
 
 @end

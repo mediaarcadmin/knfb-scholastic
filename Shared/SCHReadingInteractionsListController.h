@@ -10,6 +10,8 @@
 
 @class SCHCustomToolbar, SCHProfileItem, SCHNote;
 @class SCHReadingView;
+@class SCHBookStoryInteractions;
+
 @protocol SCHReadingInteractionsListControllerDelegate;
 
 #pragma mark - Interface
@@ -20,6 +22,7 @@
 }
 
 @property (nonatomic, retain) SCHProfileItem *profile;
+@property (nonatomic, retain) SCHBookStoryInteractions *bookStoryInteractions;
 @property (nonatomic, retain) NSString *isbn;
 @property (nonatomic, assign) id <SCHReadingInteractionsListControllerDelegate> delegate;
 @property (nonatomic, assign) SCHReadingView *readingView;

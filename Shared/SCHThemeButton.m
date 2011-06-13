@@ -16,6 +16,7 @@
 
 @property (nonatomic, copy) NSString *buttonKey;
 @property (nonatomic, copy) NSString *iconKey;
+@property (nonatomic, assign) BOOL iPadSpecific;
 
 @property (nonatomic, assign) NSInteger leftCapWidth;
 @property (nonatomic, assign) NSInteger topCapHeight;
@@ -26,6 +27,7 @@
 
 @synthesize buttonKey;
 @synthesize iconKey;
+@synthesize iPadSpecific;
 @synthesize leftCapWidth;
 @synthesize topCapHeight;
 
@@ -42,9 +44,10 @@
 #pragma mark - methods
 
 - (void)setThemeButton:(NSString *)newButtonKey leftCapWidth:(NSInteger)newLeftCapWidth 
-          topCapHeight:(NSInteger)newTopCapHeight
+          topCapHeight:(NSInteger)newTopCapHeight iPadSpecific:(BOOL)setiPadSpecific
 {
     self.buttonKey = newButtonKey;
+    self.iPadSpecific = setiPadSpecific;
     self.leftCapWidth = newLeftCapWidth;
     self.topCapHeight = newTopCapHeight;
     
@@ -66,9 +69,16 @@
     }
 }
 
-- (void)setThemeIcon:(NSString *)newIconKey
+- (void)setThemeButton:(NSString *)newButtonKey leftCapWidth:(NSInteger)newLeftCapWidth 
+          topCapHeight:(NSInteger)newTopCapHeight
+{
+    [self setThemeButton:newButtonKey leftCapWidth:newLeftCapWidth topCapHeight:newTopCapHeight iPadSpecific:NO];
+}
+
+- (void)setThemeIcon:(NSString *)newIconKey iPadSpecific:(BOOL)setiPadSpecific
 {
     self.iconKey = newIconKey;
+    self.iPadSpecific = setiPadSpecific;
     
     if (self.iconKey == nil) {
         if (self.buttonKey == nil) {
@@ -88,13 +98,26 @@
     }
 }
 
+- (void)setThemeIcon:(NSString *)newIconKey
+{
+    [self setThemeIcon:newIconKey iPadSpecific:NO];
+}
+
 #pragma mark - Private methods
 
 - (void)updateTheme
 {
+    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
+    
+    // override button sizes for iPad
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        orientation = UIInterfaceOrientationPortrait;
+    }
+    
     if (self.buttonKey != nil) {
         UIImage *image = [[[SCHThemeManager sharedThemeManager] imageFor:self.buttonKey 
-                                                             orientation:[[UIApplication sharedApplication] statusBarOrientation]] 
+                                                             orientation:orientation 
+                                                            iPadSpecific:self.iPadSpecific] 
                           stretchableImageWithLeftCapWidth:self.leftCapWidth topCapHeight:self.topCapHeight];
         // heights change when going between portrait and landscape so we change them
         CGRect rect = self.frame;
@@ -104,7 +127,8 @@
     }
     if (self.iconKey != nil) {
         UIImage *image = [[SCHThemeManager sharedThemeManager] imageFor:self.iconKey 
-                                                             orientation:[[UIApplication sharedApplication] statusBarOrientation]];
+                                                             orientation:orientation
+                                                           iPadSpecific:self.iPadSpecific];
         // heights change when going between portrait and landscape so we change them
         CGRect rect = self.frame;
         rect.size.height = image.size.height;

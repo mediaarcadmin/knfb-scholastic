@@ -13,7 +13,6 @@
 #import "SCHNote.h"
 #import "SCHBookAnnotations.h"
 #import "SCHBookPoint.h"
-#import "SCHReadingView.h"
 
 static const CGFloat kSCHNotesViewPhoneShadow = 16;
 static const CGFloat kSCHNotesViewPadBorder = 6;
@@ -51,7 +50,6 @@ static NSString * const SCHNotesViewExitToTopAnimation = @"SCHNotesViewExitToTop
 @synthesize note;
 @synthesize showInView;
 @synthesize bottomInset;
-@synthesize readingView;
 
 - (void)dealloc {
     
@@ -64,7 +62,6 @@ static NSString * const SCHNotesViewExitToTopAnimation = @"SCHNotesViewExitToTop
     [toolbarLabel release], toolbarLabel = nil;
     showInView = nil;
     delegate = nil;
-    readingView = nil;
     
     [super dealloc];
 }
@@ -185,20 +182,20 @@ static NSString * const SCHNotesViewExitToTopAnimation = @"SCHNotesViewExitToTop
     NSString *dateString = [dateFormat stringFromDate:date];  
     [dateFormat release];
     
-    SCHBookPoint *bookPoint = [self.note NoteBookPoint];
-    NSInteger pageNum = [self.readingView pageIndexForBookPoint:bookPoint];
-    
-//    NSNumber *pageNum = [self.note NotePageNumber];
+    SCHBookPoint *notePoint = [self.delegate bookPointForNote:self.note];
+    NSString *displayPage = nil;
 
-    if (pageNum > 0) {
-		self.toolbarLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Page %d, %@", @"Page and date toolbar label for Notes View"), pageNum, dateString];
+    if (notePoint) {
+        displayPage = [self.delegate displayPageNumberForBookPoint:notePoint];
+    }
+    
+    if (displayPage) {
+		self.toolbarLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Page %@, %@", @"Display page and date toolbar label for Notes View"), displayPage, dateString];
     } else {
-    // FIXME: change this to use the actual page
-        self.toolbarLabel.text = [NSString stringWithFormat:@"%@", dateString];
+        self.toolbarLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@", @"Unknown page + date toolbar label for Notes View"), dateString];
     }
     
     self.toolbarLabel.adjustsFontSizeToFitWidth = YES;
-    //self.toolbarLabel.font = [UIFont boldSystemFontOfSize:14.0f];
     self.toolbarLabel.font = [UIFont fontWithName:@"Marker Felt" size:18.0f];
     self.toolbarLabel.backgroundColor = [UIColor clearColor];
     self.toolbarLabel.textAlignment = UITextAlignmentCenter;

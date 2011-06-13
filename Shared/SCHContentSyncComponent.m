@@ -14,6 +14,12 @@
 #import "SCHUserContentItem.h"
 #import "SCHOrderItem.h"
 #import "SCHContentProfileItem.h"
+#import "SCHProfileItem.h"
+#import "SCHAnnotationsItem.h"
+#import "SCHAnnotationsContentItem.h"
+#import "SCHFavorite.h"
+#import "SCHLastPage.h"
+#import "SCHPrivateAnnotations.h"
 
 @interface SCHContentSyncComponent ()
 
@@ -22,13 +28,20 @@
 - (NSArray *)localUserContentItems;
 - (void)syncUserContentItems:(NSArray *)userContentList;
 - (void)addUserContentItem:(NSDictionary *)webUserContentItem;
+- (void)addAnnotationStructure:(SCHUserContentItem *)userContentItem 
+                    forProfile:(SCHContentProfileItem *)contentProfileItem;
 - (SCHOrderItem *)addOrderItem:(NSDictionary *)orderItem;
 - (SCHContentProfileItem *)addContentProfileItem:(NSDictionary *)contentProfileItem;
-- (void)syncUserContentItem:(NSDictionary *)webUserContentItem withUserContentItem:(SCHUserContentItem *)localUserContentItem;
-- (void)syncOrderItems:(NSArray *)webOrderList localOrderList:(NSSet *)localOrderList;
-- (void)syncOrderItem:(NSDictionary *)webOrderItem withOrderItem:(SCHOrderItem *)localOrderItem;
-- (void)syncContentProfileItems:(NSArray *)webContentProfileList localContentProfileList:(NSSet *)localContentProfileList;
-- (void)syncContentProfileItem:(NSDictionary *)webContentProfileItem withContentProfileItem:(SCHContentProfileItem *)localContentProfileItem;
+- (void)syncUserContentItem:(NSDictionary *)webUserContentItem 
+        withUserContentItem:(SCHUserContentItem *)localUserContentItem;
+- (void)syncOrderItems:(NSArray *)webOrderList 
+        localOrderList:(NSSet *)localOrderList;
+- (void)syncOrderItem:(NSDictionary *)webOrderItem 
+        withOrderItem:(SCHOrderItem *)localOrderItem;
+- (void)syncContentProfileItems:(NSArray *)webContentProfileList 
+        localContentProfileList:(NSSet *)localContentProfileList;
+- (void)syncContentProfileItem:(NSDictionary *)webContentProfileItem 
+        withContentProfileItem:(SCHContentProfileItem *)localContentProfileItem;
 
 @end
 
@@ -209,12 +222,60 @@
 	}
 	
 	NSArray *profileList = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceProfileList]];
-	for (NSDictionary *profileItem in profileList) {
-		[newUserContentItem addProfileListObject:[self addContentProfileItem:profileItem]];
+	for (NSDictionary *profileItem in profileList) {     
+        SCHContentProfileItem *contentProfileItem = [self addContentProfileItem:profileItem];
+		[newUserContentItem addProfileListObject:contentProfileItem];
+        [self addAnnotationStructure:newUserContentItem forProfile:contentProfileItem];
 	}
     	
 	newUserContentItem.LastModified = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceLastModified]];
 	newUserContentItem.State = [NSNumber numberWithStatus:kSCHStatusUnmodified];				
+}
+
+- (void)addAnnotationStructure:(SCHUserContentItem *)userContentItem forProfile:(SCHContentProfileItem *)contentProfileItem
+{
+    if (userContentItem != nil && contentProfileItem != nil) {
+        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+        
+        [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHAnnotationsItem inManagedObjectContext:self.managedObjectContext]];	
+        [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"ProfileID == %@", contentProfileItem.ProfileID]];
+        
+        NSArray *annotationsItems = [self.managedObjectContext executeFetchRequest:fetchRequest error:nil];	
+        
+        [fetchRequest release], fetchRequest = nil;
+        
+        if([annotationsItems count] > 0) {
+            NSDate *date = [NSDate date];
+            
+            SCHFavorite *newFavorite = [NSEntityDescription insertNewObjectForEntityForName:kSCHFavorite 
+                                                                     inManagedObjectContext:self.managedObjectContext];
+            newFavorite.LastModified = date;
+            newFavorite.State = [NSNumber numberWithStatus:kSCHStatusCreated];
+            newFavorite.IsFavorite = [NSNumber numberWithBool:NO];
+            
+            SCHLastPage *newLastPage = [NSEntityDescription insertNewObjectForEntityForName:kSCHLastPage 
+                                                                     inManagedObjectContext:self.managedObjectContext];
+            newLastPage.LastModified = date;
+            newLastPage.State = [NSNumber numberWithStatus:kSCHStatusCreated];
+            newLastPage.LastPageLocation = [NSNumber numberWithInteger:0];
+            newLastPage.Percentage = [NSNumber numberWithFloat:0.0];
+            newLastPage.Component = @"";
+            
+            SCHPrivateAnnotations *newPrivateAnnotations = [NSEntityDescription insertNewObjectForEntityForName:kSCHPrivateAnnotations 
+                                                                                         inManagedObjectContext:self.managedObjectContext];
+            newPrivateAnnotations.LastPage = newLastPage;
+            newPrivateAnnotations.Favorite = newFavorite;
+            
+            SCHAnnotationsContentItem *newAnnotationsContentItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHAnnotationsContentItem 
+                                                                                                 inManagedObjectContext:self.managedObjectContext];
+            newAnnotationsContentItem.AnnotationsItem = [annotationsItems objectAtIndex:0];
+            newAnnotationsContentItem.DRMQualifier = userContentItem.DRMQualifier;
+            newAnnotationsContentItem.ContentIdentifier = userContentItem.ContentIdentifier;
+            newAnnotationsContentItem.Format = userContentItem.Format;
+            newAnnotationsContentItem.ContentIdentifierType = userContentItem.ContentIdentifierType;
+            newAnnotationsContentItem.PrivateAnnotations = newPrivateAnnotations;
+        }
+    }
 }
 
 - (SCHOrderItem *)addOrderItem:(NSDictionary *)orderItem

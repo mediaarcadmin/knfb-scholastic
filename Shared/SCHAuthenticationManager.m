@@ -34,7 +34,6 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
 - (void)aTokenOnMainThread;
 - (void)authenticateWithUserNameOnMainThread:(NSValue *)parameters;
 - (void)hasUsernameAndPasswordOnMainThread:(NSValue *)returnValue;
-- (void)clearOnMainThread;
 
 @end
 
@@ -112,6 +111,18 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
     [self performSelectorOnMainThread:@selector(authenticateWithUserNameOnMainThread:) 
                            withObject:[NSValue valueWithPointer:&authenticateWithUserNameParameters]
                         waitUntilDone:YES];
+}
+
+- (BOOL)validatePassword:(NSString *)password
+{
+#if LOCALDEBUG
+    return(YES);
+#else
+    NSString *storedUsername = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUsername];
+    NSString *storedPassword = [SFHFKeychainUtils getPasswordForUsername:storedUsername andServiceName:kSCHAuthenticationManagerServiceName error:nil];
+
+    return([password isEqualToString:storedPassword] == YES);
+#endif
 }
 
 - (void)authenticate
@@ -382,7 +393,8 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
         self.aToken = nil;
         self.tokenExpires = nil;        
     }
-    
+
+    [self clearOnMainThread];
 	waitingOnResponse = NO;
 	[self postFailureWithError:error];
 }

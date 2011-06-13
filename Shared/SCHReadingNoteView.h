@@ -11,7 +11,7 @@
 
 @protocol SCHReadingNoteViewDelegate;
 @class SCHNote;
-@class SCHReadingView;
+@class SCHBookPoint;
 
 @interface SCHReadingNoteView : UIView {
     
@@ -20,9 +20,7 @@
 @property (nonatomic, assign) id <SCHReadingNoteViewDelegate> delegate;
 @property (nonatomic, retain) UITextView *textView;
 @property (nonatomic, retain) UILabel *toolbarLabel;
-//@property (nonatomic, copy) NSString *page;
 @property (nonatomic, retain) SCHNote *note;
-@property (nonatomic, assign) SCHReadingView *readingView;
 
 - (id)initWithNote:(SCHNote *)aNote;
 - (void)showInView:(UIView *)view;
@@ -32,9 +30,12 @@
 
 @protocol SCHReadingNoteViewDelegate <NSObject>
 
-@optional
+@required
 
 - (void)notesView:(SCHReadingNoteView *)notesView savedNote:(SCHNote *)note;
 - (void)notesViewCancelled:(SCHReadingNoteView *)notesView;
+- (SCHBookPoint *)bookPointForNote:(SCHNote *)note; // returns nil if book isn't paginated yet
+- (NSString *)displayPageNumberForBookPoint:(SCHBookPoint *)bookPoint;
+
 
 @end

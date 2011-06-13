@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<SIConfigFile>
+    <StoryInteractions>
+        <StoryInteraction StoryInteractionType="PopQuiz">
+            <!-- aka Do You Know -->
+            <DocumentPageNumber>44</DocumentPageNumber>
+            <Position>180,10</Position>
+            <Quiz>
+                <Question>
+                    <QuestionPrompt Transcript="What did Lindy find in the dumpster?" />
+                    <!-- Question and answer Transcript values are taken from their respective sections.  -->
+                    <Answers>
+                        <Answer Transcript="A dead body" />
+                        <Answer Transcript="A runaway dog" />
+                        <Answer Transcript="A flying squirrel" />
+                        <Answer Transcript="A ventriloquist dummy" IsCorrect="true" />
+                    </Answers>
+                </Question>
+                <Question>
+                    <QuestionPrompt Transcript="What did Mrs. Marshall want Lindy to do?" />
+                    <Answers>
+                        <Answer Transcript="Babysit her kids" />
+                        <Answer Transcript="Perform with Slappy" IsCorrect="true" />
+                        <Answer Transcript="Mow the lawn" />
+                        <Answer Transcript="Deliver her newspapers" />
+                    </Answers>
+                </Question>
+                <Question>
+                    <QuestionPrompt Transcript="What happened when Kris first tried to hold Slappy?" />
+                    <Answers>
+                        <Answer Transcript="He gave her a high five" />
+                        <Answer Transcript="He slapped her" IsCorrect="true" />
+                        <Answer Transcript="He flipped her" />
+                        <Answer Transcript="He made a face" />
+                    </Answers>
+                </Question>
+                <Question>
+                    <QuestionPrompt Transcript="Who grabbed Kris after she pushed Slappy off the chair?" />
+                    <Answers>
+                        <Answer Transcript="Cody" />
+                        <Answer Transcript="Slappy" />
+                        <Answer Transcript="Lindy" IsCorrect="true" />
+                        <Answer Transcript="Mom" />
+                    </Answers>
+                </Question>
+                <Question>
+                    <QuestionPrompt Transcript="Who gave Kris her own ventriloquist dummy?" />
+                    <Answers>
+                        <Answer Transcript="Dad" IsCorrect="true" />
+                        <Answer Transcript="Mom" />
+                        <Answer Transcript="Cody Matthews" />
+                        <Answer Transcript="Mrs. Marshall" />
+                    </Answers>
+                </Question>
+            </Quiz>
+            <ScoreResponseLow Transcript="Don’t be afraid to try again!" />
+            <!-- Transcript values for ScoreResponse's are taken from the Response column in the interaction script.  -->
+            <ScoreResponseMedium Transcript="Good job! You’re no dummy!" />
+            <ScoreResponseHigh Transcript="Perfect score! Spook-tacular!" />
+        </StoryInteraction>
+    </StoryInteractions>
+</SIConfigFile>

@@ -11,7 +11,6 @@
 #import "SCHBookAnnotations.h"
 #import "SCHProfileItem.h"
 #import "SCHNote.h"
-#import "SCHReadingView.h"
 
 static NSInteger const CELL_TITLE_LABEL_TAG = 997;
 static NSInteger const CELL_PAGE_LABEL_TAG = 998;
@@ -24,8 +23,12 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
 @property (nonatomic, retain) UINib *noteCellNib;
 @property (nonatomic, retain) NSArray *notes;
 
--(void)releaseViewObjects;
--(void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation;
+@property (nonatomic) BOOL editMode;
+
+- (void)releaseViewObjects;
+- (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation;
+- (void)setToolbarModeEditing:(BOOL)editing;
+- (void)toggleToolbarEditMode;
 
 @end
 
@@ -42,7 +45,7 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
 @synthesize isbn;
 @synthesize notes;
 @synthesize profile;
-@synthesize readingView;
+@synthesize editMode;
 
 #pragma mark - Dealloc and View Teardown
 
@@ -56,7 +59,6 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
     [notesCell release], notesCell = nil;
     [profile release], profile = nil;
     [notes release], notes = nil;
-    readingView = nil;
     
     [super dealloc];
 }
@@ -88,6 +90,7 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     
     if (self) {
+        self.editMode = NO;
     }
     
     return self;
@@ -172,19 +175,40 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
 
 - (IBAction)editNotesButtonAction:(UIBarButtonItem *)sender
 {
+    [self toggleToolbarEditMode];
+}
+
+- (void) toggleToolbarEditMode
+{
+    [self setToolbarModeEditing:!self.editMode];
+}
+
+- (void) setToolbarModeEditing: (BOOL) editing
+{
     UIBarButtonItem *newBBI = nil;
     int width = 14;
     
-    [self.notesTableView beginUpdates];
-    if ([self.notesTableView isEditing]) {
+    if (!editing) {
         newBBI = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editNotesButtonAction:)];
-        [self.notesTableView setEditing:NO animated:NO];
-        [self.notesTableView insertSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationTop];
+
+        if (self.editMode) {
+            [self.notesTableView setEditing:NO animated:NO];
+            [self.notesTableView beginUpdates];
+            self.editMode = NO;
+            [self.notesTableView insertSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationTop];
+            [self.notesTableView endUpdates];
+        }
+        
         width = 14;
     } else {
         newBBI = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(editNotesButtonAction:)];
-        [self.notesTableView setEditing:YES animated:NO];
-        [self.notesTableView deleteSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationBottom];
+        if (!self.editMode) {
+            [self.notesTableView setEditing:YES animated:NO];
+            [self.notesTableView beginUpdates];
+            self.editMode = YES;
+            [self.notesTableView deleteSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationBottom];
+            [self.notesTableView endUpdates];
+        }
         width = 7;
     }
     
@@ -199,15 +223,14 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
         
         self.topBar.items = [NSArray arrayWithArray:currentItems];
     }
-    [self.notesTableView endUpdates];
-
+ 
 }
 
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    if ([tableView isEditing]) {
+    if (self.editMode) {
         return 1;
     } else {
         return 2;
@@ -217,7 +240,7 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // if we're editing, omit the first section
-    if ([tableView isEditing]) {
+    if (self.editMode) {
         section++;
     }
     
@@ -250,7 +273,7 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
     NSInteger section = [indexPath section];
     
     // if we're editing, omit the first section
-    if ([tableView isEditing]) {
+    if (self.editMode) {
         section++;
     }
     
@@ -290,36 +313,25 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
             
             // use tags to grab the labels and the activity view
             UIActivityIndicatorView *activityView = (UIActivityIndicatorView *) [cell viewWithTag:CELL_ACTIVITY_INDICATOR_TAG];
-            activityView.alpha = 0;
             UILabel *titleLabel = (UILabel *) [cell viewWithTag:CELL_TITLE_LABEL_TAG];
             UILabel *subTitleLabel = (UILabel *) [cell viewWithTag:CELL_PAGE_LABEL_TAG];
             
             SCHNote *note = [self.notes objectAtIndex:[indexPath row]];
-            if (note && note.Value && [note.Value length] > 0) {
-                titleLabel.text = note.Value;
-                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-                
-                int pageIndex = [self.readingView pageIndexForBookPoint:note.NoteBookPoint];
-//                subTitleLabel.text = [NSString stringWithFormat:@"Page %@", [self.readingView displayPageNumberForPageAtIndex:pageIndex]];
-                
-                subTitleLabel.text = [self.readingView pageLabelForPageAtIndex:pageIndex];
+            titleLabel.text = note.Value;
+            
+            SCHBookPoint *notePoint = [self.delegate bookPointForNote:note];
+            
+            if (notePoint) {
+                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;  
+                NSString *displayPage = [self.delegate displayPageNumberForBookPoint:notePoint];
+                subTitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Page %@", @"Display page for Notes List Controller"), displayPage];
+                subTitleLabel.alpha = 1;
+                activityView.alpha = 0;
             } else {
-                titleLabel.text = @"Empty note";
+                subTitleLabel.alpha = 0;
+                activityView.alpha = 1;
             }
-            
-            // FIXME: for demo purposes, even lines will be loading, odd will not
-//            if (activityView) {
-//                if ([indexPath row] % 2 == 0) {
-//                    [activityView startAnimating];
-//                    cell.accessoryType = UITableViewCellAccessoryNone;
-//                    subTitleLabel.text = @"";
-//                } else {
-//                    [activityView stopAnimating];
-//                    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-//                    subTitleLabel.text = [NSString stringWithFormat:@"Page %d", [indexPath row] + 1];
-//                }
-//            }
-            
+                 
             break;
         }   
         default:
@@ -335,7 +347,7 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
     switch ([indexPath section]) {
         case 0:
         {
-            if (self.delegate && [delegate respondsToSelector:@selector(readingNotesView:didSelectNote:)]) {
+            if (self.delegate && [delegate respondsToSelector:@selector(readingNotesViewCreatingNewNote:)]) {
                 [delegate readingNotesViewCreatingNewNote:self];
             }
             break;
@@ -355,6 +367,50 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
     }
     
     [self dismissModalViewControllerAnimated:YES];
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+    BOOL shouldCancelEditing = NO;
+
+    // FIXME: The code below crashes so its just returning for now
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        NSLog(@"Deleting %d, row %d!", indexPath.section, indexPath.row);
+        
+        
+        if (self.delegate && [delegate respondsToSelector:@selector(readingNotesView:didDeleteNote:)]) {
+            [delegate readingNotesView:self didDeleteNote:[self.notes objectAtIndex:[indexPath row]]];
+        }
+        
+        [self.notesTableView beginUpdates];
+
+        SCHBookAnnotations *annotations = [self.profile annotationsForBook:self.isbn];
+        self.notes = [annotations notes];
+        
+        [self.notesTableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        
+        // cover the case where you swipe and remove the last row
+        if ([self.notes count] == 0) {
+            shouldCancelEditing = YES;
+        }
+        
+        [self.notesTableView endUpdates];
+        
+        if (shouldCancelEditing) {
+            [self setToolbarModeEditing:NO];
+        }
+            
+    }
+}
+
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (![tableView isEditing] && [indexPath section] == 0) {
+        return NO;
+    } else {
+        return YES;
+    }
 }
 
 @end

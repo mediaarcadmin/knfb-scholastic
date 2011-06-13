@@ -19,8 +19,10 @@
 #import "SCHAppProfile.h"
 #import "SCHReadingViewController.h"
 
-static const CGFloat kProfilePhoneTableOffsetPortrait = 76.0f;
-static const CGFloat kProfilePhoneTableOffsetLandscape = 36.0f;
+extern NSString * const kSCHAuthenticationManagerDeviceKey;
+
+static const CGFloat kProfilePhoneTableOffsetPortrait = 70.0f;
+static const CGFloat kProfilePhoneTableOffsetLandscape = 20.0f;
 
 @interface SCHProfileViewController_iPhone() <UITableViewDelegate> 
 
@@ -29,6 +31,7 @@ static const CGFloat kProfilePhoneTableOffsetLandscape = 36.0f;
 - (void)releaseViewObjects;
 
 @property (nonatomic, retain) UIButton *settingsButton;
+@property (nonatomic, retain) SCHLoginPasswordViewController *parentPasswordController; // Lazily instantiated
 
 @end
 
@@ -42,6 +45,7 @@ static const CGFloat kProfilePhoneTableOffsetLandscape = 36.0f;
 @synthesize settingsButton;
 @synthesize settingsController;
 @synthesize loginController;
+@synthesize parentPasswordController;
 
 #pragma mark - Object lifecycle
 
@@ -60,6 +64,7 @@ static const CGFloat kProfilePhoneTableOffsetLandscape = 36.0f;
 - (void)dealloc 
 {    
     [self releaseViewObjects];
+    [parentPasswordController release], parentPasswordController = nil;
     [super dealloc];
 }
 
@@ -76,7 +81,9 @@ static const CGFloat kProfilePhoneTableOffsetLandscape = 36.0f;
     self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:self.settingsButton] autorelease];
     
     self.navigationItem.title = NSLocalizedString(@"Back", @"");
-    UIImageView *logoImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo"]];
+    UIImageView *logoImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo.png"]];
+    logoImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin;
+    logoImageView.contentMode = UIViewContentModeScaleAspectFit;
     self.navigationItem.titleView = logoImageView;
     [logoImageView release];
     
@@ -103,14 +110,19 @@ static const CGFloat kProfilePhoneTableOffsetLandscape = 36.0f;
 - (void)viewDidAppear:(BOOL)animated 
 {
     [super viewDidAppear:animated];
-    
 #if !LOCALDEBUG	
+#if NONDRMAUTHENTICATION
 	SCHAuthenticationManager *authenticationManager = [SCHAuthenticationManager sharedAuthenticationManager];
 	
-	if ([authenticationManager hasUsernameAndPassword] == NO) {
+	if ([authenticationManager isAuthenticated] == NO) {
+#else
+    NSString *deviceKey = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerDeviceKey];
+    if (!deviceKey) {         
+#endif
 		[self presentModalViewController:self.loginController animated:NO];	
 	}
 #endif
+    
 }
 
 #pragma mark - Orientation methods
@@ -167,10 +179,38 @@ static const CGFloat kProfilePhoneTableOffsetLandscape = 36.0f;
     [bookShelfViewController release], bookShelfViewController = nil;        
 }
 
+
+- (SCHLoginPasswordViewController *)parentPasswordController
+{
+    if (!parentPasswordController) {
+        parentPasswordController = [[[SCHLoginPasswordViewController alloc] initWithNibName:@"SCHParentToolsViewController_iPhone" bundle:nil] retain];
+        parentPasswordController.controllerType = kSCHControllerParentToolsView;
+    }
+    
+    return parentPasswordController;
+}
+
 - (void)pushSettingsController
 {
-    settingsController.managedObjectContext = self.managedObjectContext;
-    [self.navigationController pushViewController:self.settingsController animated:YES];
+    self.parentPasswordController.actionBlock = ^{
+        
+        if ([[SCHAuthenticationManager sharedAuthenticationManager] validatePassword:[self.parentPasswordController password]] == NO) {
+            UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") 
+                                                                 message:NSLocalizedString(@"Incorrect password", nil)
+                                                                delegate:nil 
+                                                       cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+                                                       otherButtonTitles:nil]; 
+            [errorAlert show]; 
+            [errorAlert release];
+        } else {
+            [self.parentPasswordController dismissModalViewControllerAnimated:YES];	
+            settingsController.managedObjectContext = self.managedObjectContext;
+            [self.navigationController pushViewController:self.settingsController animated:YES];
+        }
+        
+        [self.parentPasswordController clearFields]; 
+    };   
+    [self presentModalViewController:self.parentPasswordController animated:YES];
 }
 
 #pragma mark - UITableViewDelegate
@@ -183,6 +223,7 @@ static const CGFloat kProfilePhoneTableOffsetLandscape = 36.0f;
             SCHProfileItem *profileItem = [[self fetchedResultsController] objectAtIndexPath:indexPath];
 #if LOCALDEBUG
             // controller to view book shelf with books filtered to profile
+            [SCHThemeManager sharedThemeManager].appProfile = profileItem.AppProfile;                        
             [self pushBookshelvesControllerWithProfileItem:profileItem];	
 #else
             if ([profileItem.ProfilePasswordRequired boolValue] == NO) {
@@ -207,6 +248,7 @@ static const CGFloat kProfilePhoneTableOffsetLandscape = 36.0f;
                 };
                 
                 [self presentModalViewController:self.profilePasswordController animated:YES];
+                [self.profilePasswordController.profileLabel setText:[profileItem bookshelfName:YES]];
             }
 #endif	
 		}	break;
