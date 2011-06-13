@@ -1613,6 +1613,10 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (IBAction)scrubValueEndChanges:(UISlider *)slider
 {
+    if (!self.currentlyScrubbing) {
+        return;
+    }
+
 	[UIView animateWithDuration:0.3f 
                           delay:0.2f 
                         options:UIViewAnimationOptionCurveEaseOut | UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowUserInteraction
