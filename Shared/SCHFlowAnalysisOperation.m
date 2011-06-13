@@ -40,8 +40,8 @@
 #ifndef __OPTIMIZE__    
     // This book is only used for logging
 	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];  
-#endif
     CFAbsoluteTime startTime = CFAbsoluteTimeGetCurrent();
+#endif
     SCHFlowEucBook *eucBook = [[SCHBookManager sharedBookManager] checkOutEucBookForBookIdentifier:self.isbn];
 
     if (eucBook) {
