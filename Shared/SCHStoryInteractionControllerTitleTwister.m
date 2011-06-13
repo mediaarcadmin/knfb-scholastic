@@ -83,6 +83,9 @@
 { 
     SCHStoryInteractionTitleTwister *titleTwister = (SCHStoryInteractionTitleTwister *)self.storyInteraction;
     self.openingScreenTitleLabel.text = titleTwister.bookTitle;
+
+    [self playBundleAudioWithFilename:[self.storyInteraction storyInteractionOpeningSoundFilename]
+                           completion:nil];
 }
 
 - (void)setupMainView
@@ -191,7 +194,6 @@
                                  letterPosition++;
                              }
                              letter.center = [self pointInContentsViewForLetterPosition:letterPosition];
-                             NSLog(@"letter %d '%c' %@", letterPosition, letter.letter, NSStringFromCGPoint(letter.center)); 
                              letterPosition++;
                          }
                      }];
@@ -200,7 +202,6 @@
 - (void)setGapPosition:(NSInteger)newGapPosition
 {
     if (newGapPosition != gapPosition) {
-        NSLog(@"move gapPosition from %d to %d", gapPosition, newGapPosition);
         gapPosition = newGapPosition;
         [self repositionLettersInBuiltWord];
     }
@@ -230,17 +231,22 @@
     
     SCHStoryInteractionTitleTwister *titleTwister = (SCHStoryInteractionTitleTwister *)self.storyInteraction;
     if (length < 3 || 7 < length || ![titleTwister.words containsObject:word]) {
-        // TODO try again audio?
-        [self clearBuiltWord];
+        [self playBundleAudioWithFilename:[titleTwister storyInteractionWrongAnswerSoundFilename] completion:nil];
         return;
     }
-    
+
+    [self clearBuiltWord];
+
     NSMutableArray *answers = [self.answersByLength objectForKey:[NSNumber numberWithInt:length]];
-    if (![answers containsObject:word]) {
-        [answers addObject:word];
-        [[self.answerTables objectAtIndex:length-3] reloadData];
-        [self updateAnswerTableHeadings];
+    if ([answers containsObject:word]) {
+        [self playBundleAudioWithFilename:[titleTwister storyInteractionCorrectAnswerSoundFilename] completion:nil];
+        return;
     }
+
+    [self playBundleAudioWithFilename:[titleTwister storyInteractionCorrectAnswerSoundFilename] completion:nil];
+    [answers addObject:word];
+    [[self.answerTables objectAtIndex:length-3] reloadData];
+    [self updateAnswerTableHeadings];
 }
 
 - (void)clearButtonTapped:(id)sender
@@ -252,7 +258,13 @@
 
 - (void)draggableViewDidStartDrag:(SCHStoryInteractionDraggableView *)draggableView
 {
-    [self.builtWord removeObject:draggableView];
+    NSInteger letterPosition = [self.builtWord indexOfObject:draggableView];
+    if (letterPosition != NSNotFound) {
+        [self.builtWord removeObject:draggableView];
+        self.gapPosition = letterPosition;
+    }
+        
+    [self playBundleAudioWithFilename:@"sfx_pickup.mp3" completion:nil];
 }
 
 - (BOOL)draggableView:(SCHStoryInteractionDraggableView *)draggableView shouldSnapFromPosition:(CGPoint)position toPosition:(CGPoint *)snapPosition
@@ -274,11 +286,13 @@
 {
     NSInteger letterPosition = [self letterPositionForPointInContentsView:position];
     if (letterPosition == NSNotFound) {
+        [self playBundleAudioWithFilename:@"sfx_dropNo.mp3" completion:nil];
         [UIView animateWithDuration:0.25
                          animations:^{
                              [draggableView moveToHomePosition];
                          }];
     } else {
+        [self playBundleAudioWithFilename:@"sfx_dropOK.mp3" completion:nil];
         // allow for the fact that the gap position isn't really in the array
         if (letterPosition > self.gapPosition) {
             letterPosition--;

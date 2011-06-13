@@ -19,11 +19,6 @@ extern NSString * const KNFBXPSStoryInteractionsDirectory;
 @property (nonatomic, assign) SCHStoryInteraction *storyInteraction;
 @property (nonatomic, assign) NSInteger questionIndex;
 
-- (NSString *)audioPathForThatsRight;
-- (NSString *)audioPathForTryAgain;
-- (NSString *)storyInteractionCorrectAnswerSoundFilename;
-- (NSString *)storyInteractionWrongAnswerSoundFilename;
-
 @end
 
 @interface SCHStoryInteraction : NSObject {}
@@ -43,5 +38,9 @@ extern NSString * const KNFBXPSStoryInteractionsDirectory;
 
 - (NSString *)storyInteractionButtonAppearingSoundFilename;
 - (NSString *)storyInteractionOpeningSoundFilename;
+- (NSString *)audioPathForThatsRight;
+- (NSString *)audioPathForTryAgain;
+- (NSString *)storyInteractionCorrectAnswerSoundFilename;
+- (NSString *)storyInteractionWrongAnswerSoundFilename;
 
 @end

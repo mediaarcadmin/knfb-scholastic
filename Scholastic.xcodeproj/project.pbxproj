@@ -212,6 +212,11 @@
 		520CD295139F84530018EA7E /* SCHStoryInteractionMultipleChoiceText_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 520CD294139F84530018EA7E /* SCHStoryInteractionMultipleChoiceText_iPad.xib */; };
 		521399F013717BB10081FD3D /* SCHLocationBookmark.m in Sources */ = {isa = PBXBuildFile; fileRef = 521399EF13717BB10081FD3D /* SCHLocationBookmark.m */; };
 		521399F113717BB10081FD3D /* SCHLocationBookmark.m in Sources */ = {isa = PBXBuildFile; fileRef = 521399EF13717BB10081FD3D /* SCHLocationBookmark.m */; };
+		5215871D13A61F8200496572 /* SCHStoryInteractionStartingLetter_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = F86DEBFD13A21B6800053999 /* SCHStoryInteractionStartingLetter_iPhone.xib */; };
+		5215871E13A61F8300496572 /* SCHStoryInteractionStartingLetter_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = F86DEBFD13A21B6800053999 /* SCHStoryInteractionStartingLetter_iPhone.xib */; };
+		5215871F13A61F8600496572 /* SCHStoryInteractionStartingLetter_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F86DEBFC13A21B6800053999 /* SCHStoryInteractionStartingLetter_iPad.xib */; };
+		5215872013A61F8700496572 /* SCHStoryInteractionStartingLetter_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F86DEBFC13A21B6800053999 /* SCHStoryInteractionStartingLetter_iPad.xib */; };
+		5215872113A61F8B00496572 /* SCHStoryInteractionControllerSequencing.m in Sources */ = {isa = PBXBuildFile; fileRef = 28BFE9CC139F8F9100415075 /* SCHStoryInteractionControllerSequencing.m */; };
 		52298A8712F0EF5600BBBCE6 /* SCHNote.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A5E12F0EF5600BBBCE6 /* SCHNote.m */; };
 		52298A8812F0EF5600BBBCE6 /* SCHUserSettingsItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6012F0EF5600BBBCE6 /* SCHUserSettingsItem.m */; };
 		52298A8912F0EF5600BBBCE6 /* SCHContentMetadataItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6212F0EF5600BBBCE6 /* SCHContentMetadataItem.m */; };
@@ -4528,6 +4533,8 @@
 				523756B213A278C100B38441 /* SCHPlayButtonPlay.png in Resources */,
 				523756B513A278FB00B38441 /* SCHPlayButtonPause.png in Resources */,
 				522EC95E13A5FF74007987AE /* answer-button-blue.png in Resources */,
+				5215871E13A61F8300496572 /* SCHStoryInteractionStartingLetter_iPhone.xib in Resources */,
+				5215872013A61F8700496572 /* SCHStoryInteractionStartingLetter_iPad.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4863,6 +4870,8 @@
 				523756B313A278C100B38441 /* SCHPlayButtonPlay.png in Resources */,
 				523756B613A278FB00B38441 /* SCHPlayButtonPause.png in Resources */,
 				522EC95F13A5FF74007987AE /* answer-button-blue.png in Resources */,
+				5215871D13A61F8200496572 /* SCHStoryInteractionStartingLetter_iPhone.xib in Resources */,
+				5215871F13A61F8600496572 /* SCHStoryInteractionStartingLetter_iPad.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5368,6 +5377,7 @@
 				2827824613A20FA200E968C1 /* NSArray+ViewSorting.m in Sources */,
 				2827827B13A241E200E968C1 /* SCHStoryInteractionControllerWordScrambler.m in Sources */,
 				523756B013A275E800B38441 /* SCHPlayButton.m in Sources */,
+				5215872113A61F8B00496572 /* SCHStoryInteractionControllerSequencing.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
