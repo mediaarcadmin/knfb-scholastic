@@ -30,6 +30,7 @@
 - (NSArray *)splitTitle:(NSString *)title intoWordsToFitRect:(CGRect)rect withTileSize:(CGSize)tileSize wordGap:(NSInteger)wordGap;
 - (NSInteger)widthOfText:(NSString *)text withTileSize:(CGSize)tileSize wordGap:(NSInteger)wordGap;
 
+- (NSInteger)arrayIndexForWordLength:(NSInteger)wordLength;
 - (void)clearBuiltWord;
 - (void)repositionLettersInBuiltWord;
 - (NSString *)builtWordAsString;
@@ -38,6 +39,7 @@
 - (NSInteger)letterPositionForPointInTarget:(CGPoint)point;
 - (CGPoint)pointInTargetForLetterPosition:(NSInteger)letterPosition;
 - (CGPoint)pointInContentsViewForLetterPosition:(NSInteger)letterPosition;
+- (BOOL)buildTargetIsFull;
 
 - (void)updateAnswerTableHeadings;
 
@@ -70,6 +72,8 @@
     [answerCountsByLength release];
     [super dealloc];
 }
+
+#pragma mark - view setup
 
 - (void)setupViewAtIndex:(NSInteger)screenIndex
 {
@@ -213,10 +217,10 @@
         int counts[5] = { 0, 0, 0, 0, 0 };
         for (NSString *word in titleTwister.words) {
             NSInteger length = [word length];
-            if (3 <= length && length <= 7) {
-                counts[length-3]++;
-            } else {
+            if (length < 3) {
                 NSLog(@"ignoring %@ due to invalid length", word);
+            } else {
+                counts[[self arrayIndexForWordLength:length]]++;
             }
         }
         
@@ -244,6 +248,11 @@
     self.answerTables = [self.answerTables viewsSortedHorizontally];    
 }
          
+- (NSInteger)arrayIndexForWordLength:(NSInteger)wordLength
+{
+    return MIN(wordLength,7) - 3;
+}
+
 #pragma mark - built word manipulation
 
 - (void)clearBuiltWord
@@ -298,7 +307,7 @@
     NSInteger length = [word length];
     
     SCHStoryInteractionTitleTwister *titleTwister = (SCHStoryInteractionTitleTwister *)self.storyInteraction;
-    if (length < 3 || 7 < length || ![titleTwister.words containsObject:word]) {
+    if (length < 3 || ![titleTwister.words containsObject:word]) {
         [self playBundleAudioWithFilename:[titleTwister storyInteractionWrongAnswerSoundFilename] completion:nil];
         return;
     }
@@ -306,8 +315,8 @@
     NSNumber *answerKey;
     UITableView *answerTable;
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        answerKey = [NSNumber numberWithInt:length];
-        answerTable = [self.answerTables objectAtIndex:length-3];
+        answerKey = [NSNumber numberWithInt:MIN(length, 7)];
+        answerTable = [self.answerTables objectAtIndex:[self arrayIndexForWordLength:length]];
     } else {
         answerKey = [NSNumber numberWithInt:0];
         answerTable = [self.answerTables lastObject];
@@ -346,7 +355,7 @@
 - (BOOL)draggableView:(SCHStoryInteractionDraggableView *)draggableView shouldSnapFromPosition:(CGPoint)position toPosition:(CGPoint *)snapPosition
 {
     NSInteger letterPosition = [self letterPositionForPointInContentsView:position];
-    if (letterPosition == NSNotFound) {
+    if (letterPosition == NSNotFound || [self buildTargetIsFull]) {
         self.gapPosition = NSNotFound;
         return NO;
     }
@@ -361,7 +370,7 @@
 - (void)draggableView:(SCHStoryInteractionDraggableView *)draggableView didMoveToPosition:(CGPoint)position
 {
     NSInteger letterPosition = [self letterPositionForPointInContentsView:position];
-    if (letterPosition == NSNotFound) {
+    if (letterPosition == NSNotFound || [self buildTargetIsFull]) {
         [self playBundleAudioWithFilename:@"sfx_dropNo.mp3" completion:nil];
         [UIView animateWithDuration:0.25
                          animations:^{
@@ -374,11 +383,9 @@
             letterPosition--;
         }
         [self.builtWord insertObject:draggableView atIndex:letterPosition];
-        if (self.gapPosition == NSNotFound) {
-            [self repositionLettersInBuiltWord];
-        }
     }
     self.gapPosition = NSNotFound;
+    [self repositionLettersInBuiltWord];
 }
 
 #pragma mark - Target letter positions
@@ -409,6 +416,12 @@
 {
     CGPoint pointInTarget = [self pointInTargetForLetterPosition:letterPosition];
     return [self.answerBuildTarget convertPoint:pointInTarget toView:self.contentsView];
+}
+
+- (BOOL)buildTargetIsFull
+{
+    CGFloat width = ([self.builtWord count]+1) * (self.letterTileSize.width+kLetterGap)-kLetterGap;
+    return width >= CGRectGetWidth(self.answerBuildTarget.bounds);
 }
 
 #pragma mark - answer table headings
@@ -463,6 +476,7 @@
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
         cell.textLabel.font = [UIFont boldSystemFontOfSize:20];
         cell.textLabel.textAlignment = UITextAlignmentCenter;
+        cell.textLabel.adjustsFontSizeToFitWidth = YES;
     }
     
     cell.textLabel.text = [[self answersForTable:tableView] objectAtIndex:indexPath.row];
