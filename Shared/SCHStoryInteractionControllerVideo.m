@@ -21,7 +21,6 @@ static CGFloat const kSCHStoryInteractionControllerVideoBorderWidth = 3.0;
 @interface SCHStoryInteractionControllerVideo ()
 
 @property (nonatomic, retain) MPMoviePlayerController *moviePlayer;
-@property (nonatomic, retain) NSString *movieFilePath;
 
 - (void)pause;
 - (void)play;
@@ -33,7 +32,6 @@ static CGFloat const kSCHStoryInteractionControllerVideoBorderWidth = 3.0;
 @synthesize movieContainerView;
 @synthesize playButton;
 @synthesize moviePlayer;
-@synthesize movieFilePath;
 
 - (void)dealloc
 {
@@ -42,17 +40,12 @@ static CGFloat const kSCHStoryInteractionControllerVideoBorderWidth = 3.0;
     [movieContainerView release], movieContainerView = nil;
     [moviePlayer stop];
     [moviePlayer release], moviePlayer = nil;
-    [[NSFileManager defaultManager] removeItemAtPath:movieFilePath error:nil];
-    [movieFilePath release], movieFilePath = nil;
     
     [super dealloc];
 }
 
 - (void)setupViewAtIndex:(NSInteger)screenIndex
-{
-    NSArray  *applicationCachePaths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-    NSString *applicationCachePath = ([applicationCachePaths count] > 0) ? [applicationCachePaths objectAtIndex:0] : nil;
-    
+{    
     [self setTitle:[(SCHStoryInteractionVideo *)self.storyInteraction videoTranscript]];
     
     self.movieContainerView.layer.cornerRadius = kSCHStoryInteractionControllerVideoCornerRadius;  
@@ -68,31 +61,26 @@ static CGFloat const kSCHStoryInteractionControllerVideoBorderWidth = 3.0;
         }
     };
     
-    if (applicationCachePath != nil) {
-        NSString *moviePath = [(SCHStoryInteractionVideo *)self.storyInteraction videoPath];
-        if(moviePath != nil) {
-            self.movieFilePath = [applicationCachePath stringByAppendingPathComponent:[moviePath lastPathComponent]];            
-                        
-            NSData *movieData = [self.xpsProvider dataForComponentAtPath:moviePath];
-            
-            if (movieData != nil) {
-                [movieData writeToFile:self.movieFilePath atomically:NO];
-                self.moviePlayer = [[MPMoviePlayerController alloc] initWithContentURL:[NSURL URLWithString:self.movieFilePath]];
-                [[NSNotificationCenter defaultCenter] addObserver:self
-                                                         selector:@selector(moviePlayerPlaybackStateDidChangeNotification:)
-                                                             name:MPMoviePlayerPlaybackStateDidChangeNotification
-                                                           object:nil];
+    NSURL *movieURL = nil;
+    NSString *moviePath = [(SCHStoryInteractionVideo *)self.storyInteraction videoPath];
+    if (moviePath) {
+        movieURL = [self.xpsProvider temporaryURLForComponentAtPath:moviePath];
+    }
+    
+    if (movieURL) {
+        self.moviePlayer = [[MPMoviePlayerController alloc] initWithContentURL:movieURL];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(moviePlayerPlaybackStateDidChangeNotification:)
+                                                     name:MPMoviePlayerPlaybackStateDidChangeNotification
+                                                   object:nil];
 
-                [self.moviePlayer prepareToPlay];
-                self.moviePlayer.controlStyle = MPMovieControlStyleNone;
-                self.moviePlayer.shouldAutoplay = NO;
-                [self.moviePlayer.view setFrame:self.movieContainerView.bounds];
-                [self.movieContainerView addSubview:self.moviePlayer.view];
-                [self.moviePlayer release];
-            } else {
-                self.movieFilePath = nil;
-            }            
-        }
+        [self.moviePlayer prepareToPlay];
+        self.moviePlayer.controlStyle = MPMovieControlStyleNone;
+        self.moviePlayer.shouldAutoplay = NO;
+        [self.moviePlayer.view setFrame:self.movieContainerView.bounds];
+        [self.movieContainerView addSubview:self.moviePlayer.view];
+        [self.moviePlayer release];
+
     }
     
     // register for going into the background
