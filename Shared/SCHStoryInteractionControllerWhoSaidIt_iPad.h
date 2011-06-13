@@ -12,7 +12,7 @@
 
 @class SCHStoryInteractionDraggableTargetView;
 
-@interface SCHStoryInteractionControllerWhoSaidIt : SCHStoryInteractionController <SCHStoryInteractionDraggableViewDelegate> {}
+@interface SCHStoryInteractionControllerWhoSaidIt_iPad : SCHStoryInteractionController <SCHStoryInteractionDraggableViewDelegate> {}
 
 @property (nonatomic, retain) IBOutletCollection(UILabel) NSArray *statementLabels;
 @property (nonatomic, retain) IBOutletCollection(SCHStoryInteractionDraggableView) NSArray *sources;

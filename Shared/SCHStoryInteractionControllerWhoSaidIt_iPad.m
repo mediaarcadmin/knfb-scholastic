@@ -8,7 +8,7 @@
 
 #import <QuartzCore/QuartzCore.h>
 
-#import "SCHStoryInteractionControllerWhoSaidIt.h"
+#import "SCHStoryInteractionControllerWhoSaidIt_iPad.h"
 #import "SCHStoryInteractionDraggableView.h"
 #import "SCHStoryInteractionDraggableTargetView.h"
 #import "SCHStoryInteractionWhoSaidIt.h"
@@ -34,14 +34,14 @@ static CGPoint pointWithOffset(CGPoint p, CGPoint offset)
     return CGPointMake(p.x + offset.x, p.y + offset.y);
 }
 
-@interface SCHStoryInteractionControllerWhoSaidIt ()
+@interface SCHStoryInteractionControllerWhoSaidIt_iPad ()
 
 @property (nonatomic, assign) CGPoint sourceCenterOffset;
 @property (nonatomic, assign) CGPoint targetCenterOffset;
 
 @end
 
-@implementation SCHStoryInteractionControllerWhoSaidIt
+@implementation SCHStoryInteractionControllerWhoSaidIt_iPad
 
 @synthesize checkAnswersButton;
 @synthesize statementLabels;

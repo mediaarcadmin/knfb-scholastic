@@ -69,8 +69,12 @@ typedef void (^PlayAudioCompletionBlock)(void);
     NSString *controllerClassName = [NSString stringWithFormat:@"%@Controller%@", [className substringToIndex:19], [className substringFromIndex:19]];
     Class controllerClass = NSClassFromString(controllerClassName);
     if (!controllerClass) {
-        NSLog(@"Can't find controller class for %@", controllerClassName);
-        return nil;
+        controllerClassName = [controllerClassName stringByAppendingString:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"_iPad" : @"_iPhone")];
+        controllerClass = NSClassFromString(controllerClassName);
+        if (!controllerClass) {
+            NSLog(@"Can't find controller class for %@", controllerClassName);
+            return nil;
+        }
     }
     return [[[controllerClass alloc] initWithStoryInteraction:storyInteraction] autorelease];
 }
@@ -152,8 +156,8 @@ typedef void (^PlayAudioCompletionBlock)(void);
         
         // first object in the NIB must be the container view for the interaction
         self.contentsView = [self.nibObjects objectAtIndex:self.currentScreenIndex];
-        CGFloat backgroundWidth = MIN(CGRectGetWidth(self.contentsView.bounds) + kContentsInsetLeft + kContentsInsetRight, CGRectGetWidth(hostView.bounds));
-        CGFloat backgroundHeight = MIN(CGRectGetHeight(self.contentsView.bounds) + kContentsInsetTop + kContentsInsetBottom, CGRectGetHeight(hostView.bounds));
+        CGFloat backgroundWidth = CGRectGetWidth(self.contentsView.bounds) + kContentsInsetLeft + kContentsInsetRight;
+        CGFloat backgroundHeight = CGRectGetHeight(self.contentsView.bounds) + kContentsInsetTop + kContentsInsetBottom;
         
         background.userInteractionEnabled = YES;
         background.bounds = CGRectIntegral(CGRectMake(0, 0, backgroundWidth, backgroundHeight));
@@ -175,14 +179,14 @@ typedef void (^PlayAudioCompletionBlock)(void);
         [self.titleView release];
         
         UIButton *closeButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        closeButton.frame = CGRectMake(-10, -10, 30, 30);
+        closeButton.frame = iPad ? CGRectMake(-10, -10, 30, 30) : CGRectMake(5, 5, 30, 30);
         [closeButton setImage:[UIImage imageNamed:@"storyinteraction-close"] forState:UIControlStateNormal];
         [closeButton addTarget:self action:@selector(closeButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
         [background addSubview:closeButton];
 
         if ([self useAudioButton] == YES) {
             UIButton *audioButton = [UIButton buttonWithType:UIButtonTypeCustom];
-            audioButton.frame = CGRectMake(backgroundWidth - 20, -10, 30, 30);
+            audioButton.frame = iPad ? CGRectMake(backgroundWidth-20, -10, 30, 30) : CGRectMake(backgroundWidth-35, 5, 30, 30);
             [audioButton setImage:[UIImage imageNamed:@"icon-play.png"] forState:UIControlStateNormal];
             [audioButton addTarget:self action:@selector(playAudioButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
             [background addSubview:audioButton];

@@ -194,7 +194,7 @@
 						<reference key="IBUINormalBackgroundImage" ref="331278937"/>
 					</object>
 				</object>
-				<string key="NSFrameSize">{260, 280}</string>
+				<string key="NSFrameSize">{260, 279}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="542552546"/>
