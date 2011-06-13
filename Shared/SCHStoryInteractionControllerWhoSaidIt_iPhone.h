@@ -7,10 +7,18 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "SCHStoryInteractionController.h"
 
+@interface SCHStoryInteractionControllerWhoSaidIt_iPhone : SCHStoryInteractionController {}
 
-@interface SCHStoryInteractionControllerWhoSaidIt_iPhone : SCHStoryInteractionController {
-    
-}
+@property (nonatomic, retain) IBOutlet UILabel *statementLabel;
+@property (nonatomic, retain) IBOutletCollection(UIButton) NSArray *answerButtons;
+
+@property (nonatomic, retain) IBOutlet UILabel *scoreLabel;
+@property (nonatomic, retain) IBOutlet UILabel *scoreSublabel;
+@property (nonatomic, retain) IBOutlet UIButton *tryAgainButton;
+
+- (IBAction)answerButtonTapped:(id)sender;
+- (IBAction)playAgainButtonTapped:(id)sender;
 
 @end
