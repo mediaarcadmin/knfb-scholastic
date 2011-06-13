@@ -45,6 +45,8 @@
 		2860E38A111B897F00E27156 /* AppDelegate_iPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 2860E388111B897F00E27156 /* AppDelegate_iPhone.m */; };
 		2860E38B111B897F00E27156 /* MainWindow_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2860E389111B897F00E27156 /* MainWindow_iPhone.xib */; };
 		288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
+		2888FE7C13A61CD300FF2FA8 /* SCHStoryInteractionTitleTwister_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2888FE7B13A61CD300FF2FA8 /* SCHStoryInteractionTitleTwister_iPhone.xib */; };
+		2888FE7D13A61CD300FF2FA8 /* SCHStoryInteractionTitleTwister_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2888FE7B13A61CD300FF2FA8 /* SCHStoryInteractionTitleTwister_iPhone.xib */; };
 		2891B71E13954355005FC4DD /* StoryInteractionMultipleChoiceText1.xml in Resources */ = {isa = PBXBuildFile; fileRef = 2891B71D13954355005FC4DD /* StoryInteractionMultipleChoiceText1.xml */; };
 		2891B72013954804005FC4DD /* StoryInteractionPopQuiz1.xml in Resources */ = {isa = PBXBuildFile; fileRef = 2891B71F13954804005FC4DD /* StoryInteractionPopQuiz1.xml */; };
 		2891B72213954CDC005FC4DD /* StoryInteractionScratchAndSee1.xml in Resources */ = {isa = PBXBuildFile; fileRef = 2891B72113954CDC005FC4DD /* StoryInteractionScratchAndSee1.xml */; };
@@ -1266,6 +1268,7 @@
 		2860E389111B897F00E27156 /* MainWindow_iPhone.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainWindow_iPhone.xib; sourceTree = "<group>"; };
 		2870939E111907710040F596 /* Scholastic.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = Scholastic.xcdatamodel; sourceTree = "<group>"; };
 		288765FC0DF74451002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		2888FE7B13A61CD300FF2FA8 /* SCHStoryInteractionTitleTwister_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionTitleTwister_iPhone.xib; sourceTree = "<group>"; };
 		2891B71D13954355005FC4DD /* StoryInteractionMultipleChoiceText1.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = StoryInteractionMultipleChoiceText1.xml; sourceTree = "<group>"; };
 		2891B71F13954804005FC4DD /* StoryInteractionPopQuiz1.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = StoryInteractionPopQuiz1.xml; sourceTree = "<group>"; };
 		2891B72113954CDC005FC4DD /* StoryInteractionScratchAndSee1.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = StoryInteractionScratchAndSee1.xml; sourceTree = "<group>"; };
@@ -2385,7 +2388,7 @@
 				28BFE9C3139F81AC00415075 /* Scratch and See */,
 				28BFE9C4139F81BF00415075 /* Sequencing */,
 				28BFE9C5139F81CC00415075 /* Starting Letter */,
-				28BFE9C6139F81DA00415075 /* Title Twister */,
+				28BFE9C6139F81DA00415075 /* Word Twister */,
 				28BFE9C1139F812200415075 /* Touch The Screen */,
 				28BFE9C7139F81EA00415075 /* Video */,
 				28A60F101396745F0090853E /* Who Said It */,
@@ -2584,7 +2587,7 @@
 			name = "Starting Letter";
 			sourceTree = "<group>";
 		};
-		28BFE9C6139F81DA00415075 /* Title Twister */ = {
+		28BFE9C6139F81DA00415075 /* Word Twister */ = {
 			isa = PBXGroup;
 			children = (
 				28A08CD413950C01006FD008 /* SCHStoryInteractionTitleTwister.h */,
@@ -2592,8 +2595,9 @@
 				2848D34413A0C647007DD45F /* SCHStoryInteractionControllerTitleTwister.h */,
 				2848D34513A0C647007DD45F /* SCHStoryInteractionControllerTitleTwister.m */,
 				28E9B97C13A0D51A0056874F /* SCHStoryInteractionTitleTwister_iPad.xib */,
+				2888FE7B13A61CD300FF2FA8 /* SCHStoryInteractionTitleTwister_iPhone.xib */,
 			);
-			name = "Title Twister";
+			name = "Word Twister";
 			sourceTree = "<group>";
 		};
 		28BFE9C7139F81EA00415075 /* Video */ = {
@@ -4528,6 +4532,7 @@
 				523756B213A278C100B38441 /* SCHPlayButtonPlay.png in Resources */,
 				523756B513A278FB00B38441 /* SCHPlayButtonPause.png in Resources */,
 				522EC95E13A5FF74007987AE /* answer-button-blue.png in Resources */,
+				2888FE7C13A61CD300FF2FA8 /* SCHStoryInteractionTitleTwister_iPhone.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4863,6 +4868,7 @@
 				523756B313A278C100B38441 /* SCHPlayButtonPlay.png in Resources */,
 				523756B613A278FB00B38441 /* SCHPlayButtonPause.png in Resources */,
 				522EC95F13A5FF74007987AE /* answer-button-blue.png in Resources */,
+				2888FE7D13A61CD300FF2FA8 /* SCHStoryInteractionTitleTwister_iPhone.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

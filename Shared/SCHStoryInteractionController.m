@@ -169,7 +169,7 @@ typedef void (^PlayAudioCompletionBlock)(void);
         self.titleView.font = [UIFont boldSystemFontOfSize:iPad ? 24 : 18];
         [self setTitle:[self.storyInteraction interactionViewTitle]];
         self.titleView.textAlignment = UITextAlignmentCenter;
-        self.titleView.textColor = iPad ? [UIColor whiteColor] : [UIColor colorWithRed:0.113 green:0.392 blue:0.690 alpha:1.];
+        self.titleView.textColor = [self.storyInteraction isOlderStoryInteraction] ? [UIColor whiteColor] : [UIColor colorWithRed:0.113 green:0.392 blue:0.690 alpha:1.];
         self.titleView.adjustsFontSizeToFitWidth = YES;
         [background addSubview:self.titleView];
         [self.titleView release];
