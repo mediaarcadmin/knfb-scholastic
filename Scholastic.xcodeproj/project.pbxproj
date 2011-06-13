@@ -274,6 +274,8 @@
 		527BBAE313A011D4000B407C /* SCHStoryInteractionImage_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 527BBADF13A011D4000B407C /* SCHStoryInteractionImage_iPhone.xib */; };
 		527BBAE513A0186D000B407C /* SCHStoryInteractionImage_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 527BBAE413A0186D000B407C /* SCHStoryInteractionImage_iPad.xib */; };
 		527BBAE613A0186D000B407C /* SCHStoryInteractionImage_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 527BBAE413A0186D000B407C /* SCHStoryInteractionImage_iPad.xib */; };
+		527CE87B13A6420900BAC8E1 /* SCHStoryInteractionWordScrambler_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 527CE87A13A6420900BAC8E1 /* SCHStoryInteractionWordScrambler_iPhone.xib */; };
+		527CE87C13A6420900BAC8E1 /* SCHStoryInteractionWordScrambler_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 527CE87A13A6420900BAC8E1 /* SCHStoryInteractionWordScrambler_iPhone.xib */; };
 		528433EB133382EA0010BAAB /* SCHAppDictionaryState.m in Sources */ = {isa = PBXBuildFile; fileRef = 528433EA133382EA0010BAAB /* SCHAppDictionaryState.m */; };
 		528433EC133382EA0010BAAB /* SCHAppDictionaryState.m in Sources */ = {isa = PBXBuildFile; fileRef = 528433EA133382EA0010BAAB /* SCHAppDictionaryState.m */; };
 		528A2CD312CCDD9E0053A343 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 528A2CD212CCDD9E0053A343 /* Settings.bundle */; };
@@ -1467,6 +1469,7 @@
 		527BBADE13A011D4000B407C /* SCHStoryInteractionControllerImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionControllerImage.m; sourceTree = "<group>"; };
 		527BBADF13A011D4000B407C /* SCHStoryInteractionImage_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionImage_iPhone.xib; sourceTree = "<group>"; };
 		527BBAE413A0186D000B407C /* SCHStoryInteractionImage_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionImage_iPad.xib; sourceTree = "<group>"; };
+		527CE87A13A6420900BAC8E1 /* SCHStoryInteractionWordScrambler_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionWordScrambler_iPhone.xib; sourceTree = "<group>"; };
 		528433E9133382EA0010BAAB /* SCHAppDictionaryState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAppDictionaryState.h; path = Shared/SCHAppDictionaryState.h; sourceTree = "<group>"; };
 		528433EA133382EA0010BAAB /* SCHAppDictionaryState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHAppDictionaryState.m; path = Shared/SCHAppDictionaryState.m; sourceTree = "<group>"; };
 		528A2CD212CCDD9E0053A343 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = Settings.bundle; path = Shared/Settings.bundle; sourceTree = "<group>"; };
@@ -2630,6 +2633,7 @@
 				28A08CDB13950C01006FD008 /* SCHStoryInteractionWordScrambler.m */,
 				2827827813A241E100E968C1 /* SCHStoryInteractionControllerWordScrambler.h */,
 				2827827913A241E100E968C1 /* SCHStoryInteractionControllerWordScrambler.m */,
+				527CE87A13A6420900BAC8E1 /* SCHStoryInteractionWordScrambler_iPhone.xib */,
 				2827827513A23DF100E968C1 /* SCHStoryInteractionWordScrambler_iPad.xib */,
 			);
 			name = "Word Scrambler";
@@ -4535,6 +4539,7 @@
 				522EC95E13A5FF74007987AE /* answer-button-blue.png in Resources */,
 				5215871E13A61F8300496572 /* SCHStoryInteractionStartingLetter_iPhone.xib in Resources */,
 				5215872013A61F8700496572 /* SCHStoryInteractionStartingLetter_iPad.xib in Resources */,
+				527CE87B13A6420900BAC8E1 /* SCHStoryInteractionWordScrambler_iPhone.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4872,6 +4877,7 @@
 				522EC95F13A5FF74007987AE /* answer-button-blue.png in Resources */,
 				5215871D13A61F8200496572 /* SCHStoryInteractionStartingLetter_iPhone.xib in Resources */,
 				5215871F13A61F8600496572 /* SCHStoryInteractionStartingLetter_iPad.xib in Resources */,
+				527CE87C13A6420900BAC8E1 /* SCHStoryInteractionWordScrambler_iPhone.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
