@@ -204,6 +204,22 @@
 
 #pragma mark - Selector
 
+- (void)setSelectionMode:(SCHReadingViewSelectionMode)newSelectionMode
+{
+    if(newSelectionMode != selectionMode) {
+        switch (newSelectionMode) {
+            case SCHReadingViewSelectionModeYoungerDictionary:
+            case SCHReadingViewSelectionModeOlderDictionary:
+                self.selector.allowsAdjustment = NO;
+                break;
+            case SCHReadingViewSelectionModeHighlights:
+                self.selector.allowsAdjustment = YES;
+                break;
+        }
+        selectionMode = newSelectionMode;
+    }
+}
+
 - (EucSelector *)selector
 { 
     return nil; 
