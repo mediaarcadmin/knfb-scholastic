@@ -15,11 +15,12 @@
 
 @property (nonatomic, retain) IBOutlet SCHStoryInteractionProgressView *progressView;
 @property (nonatomic, retain) IBOutlet UILabel *questionLabel;
-@property (nonatomic, retain) IBOutlet UIButton *answerButton1;
-@property (nonatomic, retain) IBOutlet UIButton *answerButton2;
-@property (nonatomic, retain) IBOutlet UIButton *answerButton3;
-@property (nonatomic, retain) IBOutlet UIButton *answerButton4;
+@property (nonatomic, retain) IBOutletCollection(UIButton) NSArray *answerButtons;
+
+@property (nonatomic, retain) IBOutlet UILabel *scoreLabel;
+@property (nonatomic, retain) IBOutlet UILabel *scoreSublabel;
 
 - (IBAction)answerButtonTapped:(id)sender;
+- (IBAction)playAgainButtonTapped:(id)sender;
 
 @end
