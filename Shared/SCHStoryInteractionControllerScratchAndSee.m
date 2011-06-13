@@ -174,19 +174,19 @@ static const NSInteger kSCHScratchPointCount = 200;
         
     self.scratchView.showFullImage = YES;
     
-    [self playBundleAudioWithFilename:[[self currentQuestion] storyInteractionCorrectAnswerSoundFilename]
+    [self playBundleAudioWithFilename:[self.storyInteraction storyInteractionCorrectAnswerSoundFilename]
                            completion:^{
                                [self playAudioAtPath:[[self currentQuestion] audioPathForAnswerAtIndex:selection]
-                                                      completion:^{
-                                                          [self playAudioAtPath:[[self currentQuestion] audioPathForThatsRight]
-                                                                     completion:^{
-                                                                         [self playAudioAtPath:[[self currentQuestion] correctAnswerAudioPath]
-                                                                                    completion:^{
-                                                                                        [self setButtonsEnabled:YES];
-                                                                                        [self nextQuestion];
-                                                                                    }];
-                                                                     }];
-                                                      }];
+                                          completion:^{
+                                              [self playAudioAtPath:[self.storyInteraction audioPathForThatsRight]
+                                                         completion:^{
+                                                             [self playAudioAtPath:[[self currentQuestion] correctAnswerAudioPath]
+                                                                        completion:^{
+                                                                            [self setButtonsEnabled:YES];
+                                                                            [self nextQuestion];
+                                                                        }];
+                                                         }];
+                                          }];
                            }];
     
 }
@@ -196,8 +196,8 @@ static const NSInteger kSCHScratchPointCount = 200;
     [self setButtonsEnabled:NO];
 
     [(UIButton *) [self.answerButtons objectAtIndex:selection] setSelected:YES];
-
-    [self playBundleAudioWithFilename:[[self currentQuestion] storyInteractionWrongAnswerSoundFilename]
+    
+    [self playBundleAudioWithFilename:[self.storyInteraction storyInteractionWrongAnswerSoundFilename]
                            completion:^{
                                [self playAudioAtPath:[[self currentQuestion] audioPathForAnswerAtIndex:selection]
                                           completion:^{
