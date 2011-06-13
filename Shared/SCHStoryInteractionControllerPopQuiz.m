@@ -12,8 +12,11 @@
 
 @interface SCHStoryInteractionControllerPopQuiz ()
 
-@property (nonatomic, retain) NSArray *answerButtons;
 @property (nonatomic, assign) NSInteger currentQuestionIndex;
+@property (nonatomic, assign) NSInteger score;
+
+- (void)setupQuestionView;
+- (void)setupScoreView;
 
 - (void)nextQuestion;
 - (void)setupQuestion;
@@ -24,22 +27,19 @@
 
 @synthesize progressView;
 @synthesize questionLabel;
-@synthesize answerButton1;
-@synthesize answerButton2;
-@synthesize answerButton3;
-@synthesize answerButton4;
 @synthesize answerButtons;
+@synthesize scoreLabel;
+@synthesize scoreSublabel;
 @synthesize currentQuestionIndex;
+@synthesize score;
 
 - (void)dealloc
 {
     [progressView release];
     [questionLabel release];
-    [answerButton1 release];
-    [answerButton2 release];
-    [answerButton3 release];
-    [answerButton4 release];
     [answerButtons release];
+    [scoreLabel release];
+    [scoreSublabel release];
     [super dealloc];
 }
 
@@ -49,18 +49,46 @@
 }
 
 - (void)setupViewAtIndex:(NSInteger)screenIndex
+{    
+    switch (screenIndex) {
+        case 0:
+            [self setupQuestionView];
+            break;
+        case 1:
+            [self setupScoreView];
+            break;
+    }
+}
+
+- (void)setupQuestionView
 {
-    self.answerButtons = [NSArray arrayWithObjects:self.answerButton1, self.answerButton2, self.answerButton3, self.answerButton4, nil];
     self.currentQuestionIndex = 0;
+    self.score = 0;
     self.progressView.numberOfSteps = [[(SCHStoryInteractionPopQuiz *)self.storyInteraction questions] count];
     [self setupQuestion];
+
+    [self playBundleAudioWithFilename:[self.storyInteraction storyInteractionOpeningSoundFilename] completion:nil];
+}
+
+- (void)setupScoreView
+{
+    SCHStoryInteractionPopQuiz *popQuiz = (SCHStoryInteractionPopQuiz *)self.storyInteraction;
+    NSInteger maxScore = self.progressView.numberOfSteps;
+    self.scoreLabel.text = [NSString stringWithFormat:@"You got %d out of %d right!", self.score, maxScore];
+    if (score <= maxScore/3) {
+        self.scoreSublabel.text = popQuiz.scoreResponseLow;
+    } else if (score <= maxScore*2/3) {
+        self.scoreSublabel.text = popQuiz.scoreResponseMedium;
+    } else {
+        self.scoreSublabel.text = popQuiz.scoreResponseHigh;
+    }
 }
 
 - (void)nextQuestion
 {
     self.currentQuestionIndex++;
     if (self.currentQuestionIndex == self.progressView.numberOfSteps) {
-        [self removeFromHostView];
+        [self presentNextView];
     } else {
         [self setupQuestion];
     }
@@ -72,11 +100,9 @@
     self.questionLabel.text = [self currentQuestion].prompt;
     NSInteger i = 0;
     for (NSString *answer in [self currentQuestion].answers) {
-        UIImage *highlight;
+        UIImage *highlight = nil;
         if (i == [self currentQuestion].correctAnswer) {
             highlight = [UIImage imageNamed:@"answer-button-green"];
-        } else {
-            highlight = [UIImage imageNamed:@"answer-button-red"];
         }
         UIButton *button = [self.answerButtons objectAtIndex:i];
         [button setTitle:answer forState:UIControlStateNormal];
@@ -96,14 +122,29 @@
         return;
     }
     
-    [sender setSelected:YES];
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 1.0 * NSEC_PER_SEC);
-    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        [sender setSelected:NO];
-        if (chosenAnswer == [self currentQuestion].correctAnswer) {
+
+    if (chosenAnswer == [self currentQuestion].correctAnswer) {
+        [sender setSelected:YES];
+        [self playBundleAudioWithFilename:[self.storyInteraction storyInteractionCorrectAnswerSoundFilename]
+                               completion:nil];
+        self.score++;
+    
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 1.0 * NSEC_PER_SEC);
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            [sender setSelected:NO];
             [self nextQuestion];
-        }
-    });
+        });
+    } else {
+        [self playBundleAudioWithFilename:[self.storyInteraction storyInteractionWrongAnswerSoundFilename]
+                               completion:^{
+                                   [self nextQuestion];
+                               }];
+    }
+}
+
+- (void)playAgainButtonTapped:(id)sender
+{
+    [self presentNextView];
 }
 
 @end

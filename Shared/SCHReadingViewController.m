@@ -1505,7 +1505,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [self.storyInteractionController presentInHostView:self.view];
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        [self.navigationController setNavigationBarHidden:YES animated:YES];
+        [self setToolbarVisibility:NO animated:YES];
     }
 }
 
@@ -1517,7 +1517,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         self.storyInteractionController = nil;
         
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-            [self.navigationController setNavigationBarHidden:NO animated:YES];
+            [self setToolbarVisibility:YES animated:YES];
         }
     }
 }
