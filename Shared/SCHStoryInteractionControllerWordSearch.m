@@ -56,7 +56,7 @@
     
     UIImage *letterTile = [UIImage imageNamed:(iPad ? @"storyinteraction-lettertile-ipad" : @"storyinteraction-lettertile-iphone")];
     self.lettersContainerView.delegate = self;
-    self.lettersContainerView.letterGap = iPad ? 10 : 2;
+    self.lettersContainerView.letterGap = iPad ? 10 : 5;
     [self.lettersContainerView populateFromWordSearchModel:wordSearch
                                        withLetterTileImage:letterTile];
 
