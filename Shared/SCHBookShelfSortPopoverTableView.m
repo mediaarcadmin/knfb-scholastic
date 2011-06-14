@@ -91,13 +91,14 @@
         cell.accessoryType = UITableViewCellAccessoryNone;
     }
     
-    if (([indexPath row] == 1) || [indexPath row] == 4 || [indexPath row] == 5) {
-        cell.textLabel.textColor = [UIColor darkGrayColor];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    } else {
+//    //    if (([indexPath row] == 1) || [indexPath row] == 4 || [indexPath row] == 5) {
+//    if (([indexPath row] == 1)) {
+//        cell.textLabel.textColor = [UIColor darkGrayColor];
+//        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+//    } else {
         cell.textLabel.textColor = [UIColor blackColor];
         cell.selectionStyle = UITableViewCellSelectionStyleBlue;
-    }
+//    }
     
     return cell;
 }
@@ -113,8 +114,8 @@
             newSortType = kSCHBookSortTypeUser;
             break;
         case 1:
-//            newSortType = kSCHBookSortTypeFavorites;
-            enabled = NO;
+            newSortType = kSCHBookSortTypeFavorites;
+//            enabled = NO;
             break;
         case 2:
             newSortType = kSCHBookSortTypeTitle;
@@ -123,12 +124,12 @@
             newSortType = kSCHBookSortTypeAuthor;
             break;
         case 4:
-//            newSortType = kSCHBookSortTypeNewest;
-            enabled = NO;
+           newSortType = kSCHBookSortTypeNewest;
+ //           enabled = NO;
             break;
         case 5:
-//            newSortType = kSCHBookSortTypeLastRead;
-            enabled = NO;
+            newSortType = kSCHBookSortTypeLastRead;
+//            enabled = NO;
             break;
         default:
             break;

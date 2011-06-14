@@ -15,6 +15,7 @@
 @class SCHContentProfileItem;
 @class SCHPrivateAnnotations;
 @class SCHBookAnnotations;
+@class SCHContentMetadataItem;
 
 static NSString * const kSCHProfileItem = @"SCHProfileItem";
 
@@ -72,5 +73,13 @@ typedef enum {
 - (void)removeAppBookOrderObject:(SCHAppBookOrder *)value;
 - (void)addAppBookOrder:(NSSet *)value;
 - (void)removeAppBookOrder:(NSSet *)value;
+
+@end
+
+
+@interface SCHProfileItemSortObject : NSObject
+
+@property (nonatomic, retain) SCHContentMetadataItem *item;
+@property (nonatomic, retain) NSDate *date;
 
 @end

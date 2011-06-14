@@ -22,6 +22,8 @@
 #import "SCHPrivateAnnotations.h"
 #import "SCHBookAnnotations.h"
 #import "SCHAnnotationsContentItem.h"
+#import "SCHOrderItem.h"
+#import "SCHLastPage.h"
 
 static NSString * const kSCHProfileItemContentProfileItem = @"ContentProfileItem";
 static NSString * const kSCHProfileItemUserContentItem = @"UserContentItem";
@@ -134,7 +136,30 @@ static NSString * const kSCHProfileItemUserContentItemContentMetadataItem = @"Us
     switch (sortType) {
         case kSCHBookSortTypeFavorites:
         {
-            NSLog(@"FIXME: actually sort by favourites.");
+            NSLog(@"Sort by favourites.");
+            
+            NSMutableArray *favorites = [[NSMutableArray alloc] init];
+            NSMutableArray *notFavorites = [[NSMutableArray alloc] init];
+            
+            for (SCHContentMetadataItem *item in bookObjects) {
+                NSLog(@"Book: %@", item);
+                if ([(SCHFavorite *) [[[item annotationsContentForProfile:self.ID] objectAtIndex:0] PrivateAnnotations].Favorite IsFavorite]) {
+                    [favorites addObject:item];
+                } else {
+                    [notFavorites addObject:item];
+                }
+            }
+            
+            // sub-sort by title
+            [favorites sortUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"Title" ascending:YES]]];
+            [notFavorites sortUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"Title" ascending:YES]]];
+
+            [bookObjects removeAllObjects];
+            [bookObjects addObjectsFromArray:favorites];
+            [bookObjects addObjectsFromArray:notFavorites];
+            [favorites release];
+            [notFavorites release];
+            
             break;
         }
         case kSCHBookSortTypeTitle:
@@ -149,16 +174,78 @@ static NSString * const kSCHProfileItemUserContentItemContentMetadataItem = @"Us
         }
         case kSCHBookSortTypeNewest:
         {
-            NSLog(@"Actually sort by newest.");
-            //[books sortUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"Author" ascending:YES]]];
+            NSMutableArray *sortArray = [[NSMutableArray alloc] initWithCapacity:[books count]];
+
+            for (SCHContentMetadataItem *book in bookObjects) {
+                NSEntityDescription *entityDescription = [NSEntityDescription 
+                                                          entityForName:kSCHUserContentItem
+                                                          inManagedObjectContext:self.managedObjectContext];
+                NSFetchRequest *fetchRequest = [entityDescription.managedObjectModel 
+                                                fetchRequestTemplateForName:kSCHUserContentItemFetchWithContentIdentifier];
+                
+                [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"ContentIdentifier == %@", book.ContentIdentifier]];
+                
+                NSArray *userContentItems = [self.managedObjectContext executeFetchRequest:fetchRequest error:nil];	
+                userContentItems = [userContentItems sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"LastModified" ascending:NO]]];
+
+                if ([userContentItems count] > 0) {
+                    // take the first user content item from the list - this will be the most recent update (since the sort above is descending)
+                    SCHUserContentItem *item = [userContentItems objectAtIndex:0];
+                    NSSet *orderItems = [item OrderList];
+                    SCHOrderItem *orderItem = [[orderItems allObjects] objectAtIndex:0];
+                    NSDate *date = [orderItem OrderDate];
+                    
+                    SCHProfileItemSortObject *sortObj = [[SCHProfileItemSortObject alloc] init];
+                    sortObj.date = date;
+                    sortObj.item = book;
+                    
+                    [sortArray addObject:sortObj];
+                    [sortObj release];
+                    
+                }
+            }
+            
+            [sortArray sortUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"date" ascending:NO]]];
+            
+            [bookObjects removeAllObjects];
+            
+            for (SCHProfileItemSortObject *sortObj in sortArray) {
+                [bookObjects addObject:sortObj.item];
+            }
+            
+            [sortArray release];
+
             break;
         }
         case kSCHBookSortTypeLastRead:
         {
-            NSLog(@"Actually sort by last read.");
+            NSLog(@"Sort by last read.");
             //[bookObjects sortUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"Annotations.LastPage.LastModified" ascending:YES]]];
+         
+            NSMutableArray *sortArray = [[NSMutableArray alloc] initWithCapacity:[books count]];
+
+            for (SCHContentMetadataItem *item in bookObjects) {
+                SCHPrivateAnnotations *privAnnotations = [(SCHAnnotationsContentItem *)[[item annotationsContentForProfile:self.ID] objectAtIndex:0] PrivateAnnotations];
+                    
+                SCHProfileItemSortObject *sortObj = [[SCHProfileItemSortObject alloc] init];
+                sortObj.date = privAnnotations.LastPage.LastModified;
+                sortObj.item = item;
+                
+                [sortArray addObject:sortObj];
+                [sortObj release];
+
+            }
             
-//            SCHContentProfileItem *contentProfileItem = 
+            [sortArray sortUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"date" ascending:NO]]];
+            
+            [bookObjects removeAllObjects];
+            
+            for (SCHProfileItemSortObject *sortObj in sortArray) {
+                [bookObjects addObject:sortObj.item];
+            }
+            
+            [sortArray release];
+
             
             break;
         }
@@ -166,6 +253,7 @@ static NSString * const kSCHProfileItemUserContentItemContentMetadataItem = @"Us
             break;
     }
     
+    // build the ISBN list
     for (SCHContentMetadataItem *item in bookObjects) {
         [books addObject:item.ContentIdentifier];
     }
@@ -329,5 +417,12 @@ static NSString * const kSCHProfileItemUserContentItemContentMetadataItem = @"Us
 	
 	return([[NSData dataWithBytes:md length:strlen((char *)md)] base64Encoding]);
 }
+
+@end
+
+@implementation SCHProfileItemSortObject
+
+@synthesize item;
+@synthesize date;
 
 @end
