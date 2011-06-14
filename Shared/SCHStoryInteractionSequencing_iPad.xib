@@ -55,6 +55,10 @@
 								<reference key="NSSuperview" ref="597559804"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="185001863"/>
+								<object class="NSColor" key="IBUIBackgroundColor" id="568342350">
+									<int key="NSColorSpace">3</int>
+									<bytes key="NSWhite">MCAwAA</bytes>
+								</object>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 							</object>
@@ -77,13 +81,7 @@
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="559845826"/>
-						<object class="NSColor" key="IBUIBackgroundColor">
-							<int key="NSColorSpace">3</int>
-							<bytes key="NSWhite">MQA</bytes>
-							<object class="NSColorSpace" key="NSCustomColorSpace" id="361532614">
-								<int key="NSID">2</int>
-							</object>
-						</object>
+						<reference key="IBUIBackgroundColor" ref="568342350"/>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 					</object>
 					<object class="IBUIView" id="565648132">
@@ -98,6 +96,7 @@
 								<reference key="NSSuperview" ref="565648132"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="1069598299"/>
+								<reference key="IBUIBackgroundColor" ref="568342350"/>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 							</object>
@@ -117,11 +116,7 @@
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="829321082"/>
-						<object class="NSColor" key="IBUIBackgroundColor">
-							<int key="NSColorSpace">3</int>
-							<bytes key="NSWhite">MQA</bytes>
-							<reference key="NSCustomColorSpace" ref="361532614"/>
-						</object>
+						<reference key="IBUIBackgroundColor" ref="568342350"/>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 					</object>
 					<object class="IBUIView" id="1040383122">
@@ -136,6 +131,7 @@
 								<reference key="NSSuperview" ref="1040383122"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="899913985"/>
+								<reference key="IBUIBackgroundColor" ref="568342350"/>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 							</object>
@@ -155,11 +151,7 @@
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="804923531"/>
-						<object class="NSColor" key="IBUIBackgroundColor">
-							<int key="NSColorSpace">3</int>
-							<bytes key="NSWhite">MQA</bytes>
-							<reference key="NSCustomColorSpace" ref="361532614"/>
-						</object>
+						<reference key="IBUIBackgroundColor" ref="568342350"/>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 					</object>
 					<object class="IBUIView" id="390925612">
@@ -189,7 +181,9 @@
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">3</int>
 							<bytes key="NSWhite">MQA</bytes>
-							<reference key="NSCustomColorSpace" ref="361532614"/>
+							<object class="NSColorSpace" key="NSCustomColorSpace" id="361532614">
+								<int key="NSID">2</int>
+							</object>
 						</object>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 					</object>
@@ -302,7 +296,6 @@
 						<string key="NSFrame">{{285, 296}, {42, 21}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<int key="IBUIContentMode">7</int>
@@ -332,76 +325,85 @@
 			<object class="NSMutableArray" key="connectionRecords">
 				<bool key="EncodedWithXMLCoder">YES</bool>
 				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">imageContainer1</string>
+					<object class="IBCocoaTouchOutletCollectionConnection" key="connection">
+						<string key="label">imageContainers</string>
 						<reference key="source" ref="372490531"/>
 						<reference key="destination" ref="597559804"/>
+						<string key="cachedDesigntimeCollectionClassName">NSArray</string>
 					</object>
-					<int key="connectionID">22</int>
+					<int key="connectionID">31</int>
 				</object>
 				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">imageContainer2</string>
+					<object class="IBCocoaTouchOutletCollectionConnection" key="connection">
+						<string key="label">imageContainers</string>
 						<reference key="source" ref="372490531"/>
 						<reference key="destination" ref="565648132"/>
+						<string key="cachedDesigntimeCollectionClassName">NSArray</string>
 					</object>
-					<int key="connectionID">23</int>
+					<int key="connectionID">32</int>
 				</object>
 				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">imageContainer3</string>
+					<object class="IBCocoaTouchOutletCollectionConnection" key="connection">
+						<string key="label">imageContainers</string>
 						<reference key="source" ref="372490531"/>
 						<reference key="destination" ref="1040383122"/>
+						<string key="cachedDesigntimeCollectionClassName">NSArray</string>
 					</object>
-					<int key="connectionID">24</int>
+					<int key="connectionID">33</int>
 				</object>
 				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">imageView1</string>
+					<object class="IBCocoaTouchOutletCollectionConnection" key="connection">
+						<string key="label">imageViews</string>
 						<reference key="source" ref="372490531"/>
 						<reference key="destination" ref="559845826"/>
+						<string key="cachedDesigntimeCollectionClassName">NSArray</string>
 					</object>
-					<int key="connectionID">25</int>
+					<int key="connectionID">34</int>
 				</object>
 				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">imageView2</string>
+					<object class="IBCocoaTouchOutletCollectionConnection" key="connection">
+						<string key="label">imageViews</string>
 						<reference key="source" ref="372490531"/>
 						<reference key="destination" ref="829321082"/>
+						<string key="cachedDesigntimeCollectionClassName">NSArray</string>
 					</object>
-					<int key="connectionID">26</int>
+					<int key="connectionID">35</int>
 				</object>
 				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">imageView3</string>
+					<object class="IBCocoaTouchOutletCollectionConnection" key="connection">
+						<string key="label">imageViews</string>
 						<reference key="source" ref="372490531"/>
 						<reference key="destination" ref="804923531"/>
+						<string key="cachedDesigntimeCollectionClassName">NSArray</string>
 					</object>
-					<int key="connectionID">27</int>
+					<int key="connectionID">36</int>
 				</object>
 				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">target1</string>
+					<object class="IBCocoaTouchOutletCollectionConnection" key="connection">
+						<string key="label">targets</string>
 						<reference key="source" ref="372490531"/>
 						<reference key="destination" ref="390925612"/>
+						<string key="cachedDesigntimeCollectionClassName">NSArray</string>
 					</object>
-					<int key="connectionID">28</int>
+					<int key="connectionID">37</int>
 				</object>
 				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">target2</string>
+					<object class="IBCocoaTouchOutletCollectionConnection" key="connection">
+						<string key="label">targets</string>
 						<reference key="source" ref="372490531"/>
 						<reference key="destination" ref="285214974"/>
+						<string key="cachedDesigntimeCollectionClassName">NSArray</string>
 					</object>
-					<int key="connectionID">29</int>
+					<int key="connectionID">38</int>
 				</object>
 				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">target3</string>
+					<object class="IBCocoaTouchOutletCollectionConnection" key="connection">
+						<string key="label">targets</string>
 						<reference key="source" ref="372490531"/>
 						<reference key="destination" ref="56138513"/>
+						<string key="cachedDesigntimeCollectionClassName">NSArray</string>
 					</object>
-					<int key="connectionID">30</int>
+					<int key="connectionID">39</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -637,7 +639,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">30</int>
+			<int key="maxID">39</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -653,84 +655,30 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">SCHStoryInteractionControllerSequencing</string>
 					<string key="superclassName">SCHStoryInteractionController</string>
-					<object class="NSMutableDictionary" key="outlets">
+					<object class="NSMutableDictionary" key="toManyOutletInfosByName">
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>imageContainer1</string>
-							<string>imageContainer2</string>
-							<string>imageContainer3</string>
-							<string>imageView1</string>
-							<string>imageView2</string>
-							<string>imageView3</string>
-							<string>target1</string>
-							<string>target2</string>
-							<string>target3</string>
+							<string>imageContainers</string>
+							<string>imageViews</string>
+							<string>targets</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>SCHStoryInteractionDraggableView</string>
-							<string>SCHStoryInteractionDraggableView</string>
-							<string>SCHStoryInteractionDraggableView</string>
-							<string>UIImageView</string>
-							<string>UIImageView</string>
-							<string>UIImageView</string>
-							<string>SCHStoryInteractionDraggableTargetView</string>
-							<string>SCHStoryInteractionDraggableTargetView</string>
-							<string>SCHStoryInteractionDraggableTargetView</string>
-						</object>
-					</object>
-					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<bool key="EncodedWithXMLCoder">YES</bool>
-						<object class="NSArray" key="dict.sortedKeys">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>imageContainer1</string>
-							<string>imageContainer2</string>
-							<string>imageContainer3</string>
-							<string>imageView1</string>
-							<string>imageView2</string>
-							<string>imageView3</string>
-							<string>target1</string>
-							<string>target2</string>
-							<string>target3</string>
-						</object>
-						<object class="NSMutableArray" key="dict.values">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<object class="IBToOneOutletInfo">
-								<string key="name">imageContainer1</string>
+							<object class="IBToManyOutletInfo">
+								<string key="name">imageContainers</string>
 								<string key="candidateClassName">SCHStoryInteractionDraggableView</string>
+								<string key="collectionClassName">NSArray</string>
 							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">imageContainer2</string>
-								<string key="candidateClassName">SCHStoryInteractionDraggableView</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">imageContainer3</string>
-								<string key="candidateClassName">SCHStoryInteractionDraggableView</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">imageView1</string>
+							<object class="IBToManyOutletInfo">
+								<string key="name">imageViews</string>
 								<string key="candidateClassName">UIImageView</string>
+								<string key="collectionClassName">NSArray</string>
 							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">imageView2</string>
-								<string key="candidateClassName">UIImageView</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">imageView3</string>
-								<string key="candidateClassName">UIImageView</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">target1</string>
+							<object class="IBToManyOutletInfo">
+								<string key="name">targets</string>
 								<string key="candidateClassName">SCHStoryInteractionDraggableTargetView</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">target2</string>
-								<string key="candidateClassName">SCHStoryInteractionDraggableTargetView</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">target3</string>
-								<string key="candidateClassName">SCHStoryInteractionDraggableTargetView</string>
+								<string key="collectionClassName">NSArray</string>
 							</object>
 						</object>
 					</object>
