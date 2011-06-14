@@ -66,10 +66,6 @@
 
 - (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    // FIXME: temporarily disabling table view for top ten view. needs its own controller.
-    if ([self.title compare:@"Top Ten Books"] == NSOrderedSame) {
-        return 0;
-    }
     return 6;
 }
 

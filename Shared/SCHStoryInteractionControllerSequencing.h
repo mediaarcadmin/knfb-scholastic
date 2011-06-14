@@ -8,20 +8,14 @@
 
 #import <Foundation/Foundation.h>
 #import "SCHStoryInteractionController.h"
+#import "SCHStoryInteractionDraggableView.h"
 
-@class SCHStoryInteractionDraggableView;
 @class SCHStoryInteractionDraggableTargetView;
 
-@interface SCHStoryInteractionControllerSequencing : SCHStoryInteractionController {}
+@interface SCHStoryInteractionControllerSequencing : SCHStoryInteractionController <SCHStoryInteractionDraggableViewDelegate> {}
 
-@property (nonatomic, retain) IBOutlet SCHStoryInteractionDraggableView *imageContainer1;
-@property (nonatomic, retain) IBOutlet SCHStoryInteractionDraggableView *imageContainer2;
-@property (nonatomic, retain) IBOutlet SCHStoryInteractionDraggableView *imageContainer3;
-@property (nonatomic, retain) IBOutlet UIImageView *imageView1;
-@property (nonatomic, retain) IBOutlet UIImageView *imageView2;
-@property (nonatomic, retain) IBOutlet UIImageView *imageView3;
-@property (nonatomic, retain) IBOutlet SCHStoryInteractionDraggableTargetView *target1;
-@property (nonatomic, retain) IBOutlet SCHStoryInteractionDraggableTargetView *target2;
-@property (nonatomic, retain) IBOutlet SCHStoryInteractionDraggableTargetView *target3;
+@property (nonatomic, retain) IBOutletCollection(SCHStoryInteractionDraggableView) NSArray *imageContainers;
+@property (nonatomic, retain) IBOutletCollection(UIImageView) NSArray *imageViews;
+@property (nonatomic, retain) IBOutletCollection(SCHStoryInteractionDraggableTargetView) NSArray *targets;
 
 @end

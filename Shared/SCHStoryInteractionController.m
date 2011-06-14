@@ -25,6 +25,8 @@
 #define kTitleInsetLeft 10
 #define kTitleInsetTop 5
 
+static NSUInteger const kSCHStoryInteractionControllerButtonSize = 30;
+
 typedef void (^PlayAudioCompletionBlock)(void);
 
 @interface SCHStoryInteractionController ()
@@ -166,9 +168,16 @@ typedef void (^PlayAudioCompletionBlock)(void);
         [background addSubview:self.contentsView];
         [container addSubview:background];
         
-        self.titleView = [[UILabel alloc] initWithFrame:CGRectIntegral(CGRectMake(kTitleInsetLeft, kTitleInsetTop,
+        if (iPad == YES) {
+            self.titleView = [[UILabel alloc] initWithFrame:CGRectIntegral(CGRectMake(kTitleInsetLeft, kTitleInsetTop,
                                                                                       backgroundWidth - kTitleInsetLeft*2,
+                                                                                      kContentsInsetTop - kTitleInsetTop*2))];            
+        } else {
+            self.titleView = [[UILabel alloc] initWithFrame:CGRectIntegral(CGRectMake(kTitleInsetLeft + kSCHStoryInteractionControllerButtonSize, kTitleInsetTop,
+                                                                                      backgroundWidth - (kSCHStoryInteractionControllerButtonSize * 2) - kTitleInsetLeft*2,
                                                                                       kContentsInsetTop - kTitleInsetTop*2))];
+        }
+
         self.titleView.backgroundColor = [UIColor clearColor];
         self.titleView.font = [UIFont boldSystemFontOfSize:iPad ? 24 : 18];
         [self setTitle:[self.storyInteraction interactionViewTitle]];
@@ -179,14 +188,16 @@ typedef void (^PlayAudioCompletionBlock)(void);
         [self.titleView release];
         
         UIButton *closeButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        closeButton.frame = iPad ? CGRectMake(-10, -10, 30, 30) : CGRectMake(5, 5, 30, 30);
+        closeButton.frame = iPad ? CGRectMake(-10, -10, kSCHStoryInteractionControllerButtonSize, kSCHStoryInteractionControllerButtonSize) : 
+        CGRectMake(5, 5, kSCHStoryInteractionControllerButtonSize, kSCHStoryInteractionControllerButtonSize);
         [closeButton setImage:[UIImage imageNamed:@"storyinteraction-close"] forState:UIControlStateNormal];
         [closeButton addTarget:self action:@selector(closeButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
         [background addSubview:closeButton];
 
         if ([self useAudioButton] == YES) {
             UIButton *audioButton = [UIButton buttonWithType:UIButtonTypeCustom];
-            audioButton.frame = iPad ? CGRectMake(backgroundWidth-20, -10, 30, 30) : CGRectMake(backgroundWidth-35, 5, 30, 30);
+            audioButton.frame = iPad ? CGRectMake(backgroundWidth-20, -10, kSCHStoryInteractionControllerButtonSize, kSCHStoryInteractionControllerButtonSize) : 
+            CGRectMake(backgroundWidth-35, 5, kSCHStoryInteractionControllerButtonSize, kSCHStoryInteractionControllerButtonSize);
             [audioButton setImage:[UIImage imageNamed:@"icon-play.png"] forState:UIControlStateNormal];
             [audioButton addTarget:self action:@selector(playAudioButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
             [background addSubview:audioButton];

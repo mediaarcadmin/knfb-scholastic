@@ -15,6 +15,8 @@
 #import "SCHBookManager.h"
 #import "SCHThemeButton.h"
 #import "SCHBookShelfSortPopoverTableView.h"
+#import "SCHBookShelfTopTenPopoverTableView.h"
+#import "SCHTopFavoritesComponent.h"
 #import "SCHProfileItem.h"
 #import "NSNumber+ObjectTypes.h"
 #import "SCHAppProfile.h"
@@ -23,8 +25,13 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightPortrait_iPad = 
 static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape_iPad = 266;
 static NSInteger const kSCHBookShelfButtonPadding = 25;
 static NSInteger const kSCHBookShelfEdgePadding = 12;
+static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.0;
 
 @interface SCHBookShelfViewController_iPad ()
+
+@property (nonatomic, retain) SCHTopFavoritesComponent *topFavoritesComponent;
+@property (nonatomic, retain) NSMutableArray *topTenBooks;
+@property (nonatomic, retain) NSDate *lastTopTenBookRetrieval;
 
 @property (nonatomic, retain) SCHThemeButton *topTenPicksButton;
 @property (nonatomic, retain) SCHThemeButton *sortButton;
@@ -39,12 +46,18 @@ static NSInteger const kSCHBookShelfEdgePadding = 12;
 @implementation SCHBookShelfViewController_iPad
 
 @synthesize profileViewController;
+@synthesize topFavoritesComponent;
+@synthesize topTenBooks;
+@synthesize lastTopTenBookRetrieval;
 @synthesize topTenPicksButton;
 @synthesize sortButton;
 @synthesize popover;
 
 - (void)dealloc
 {
+    [topFavoritesComponent release], topFavoritesComponent = nil;
+    [topTenBooks release], topTenBooks = nil;
+    [lastTopTenBookRetrieval release], lastTopTenBookRetrieval = nil;
     [popover release], popover = nil;
     [profileViewController release], profileViewController = nil;
     [super dealloc];
@@ -236,8 +249,25 @@ static NSInteger const kSCHBookShelfEdgePadding = 12;
         [self.popover dismissPopoverAnimated:YES];
         self.popover = nil;
     }
+ 
+    if (self.topFavoritesComponent == nil) {
+        self.topTenBooks = [NSMutableArray array];
+        
+        self.topFavoritesComponent = [[SCHTopFavoritesComponent alloc] init];
+        [self.topFavoritesComponent release];
+        self.topFavoritesComponent.delegate = self;
+    }
+
+    if (self.lastTopTenBookRetrieval == nil || 
+        [self.lastTopTenBookRetrieval timeIntervalSinceNow] <= kSCHBookShelfViewControllerTopTenRefreshTime || 
+        [self.topTenBooks count] < 1) {
+        [self.topFavoritesComponent topFavorites];			        
+    }
     
-    SCHBookShelfSortPopoverTableView *popoverTable = [[SCHBookShelfSortPopoverTableView alloc] initWithNibName:nil bundle:nil];
+    SCHBookShelfTopTenPopoverTableView *popoverTable = [[SCHBookShelfTopTenPopoverTableView alloc] initWithNibName:nil bundle:nil];
+    if ([self.topTenBooks count] > 0) {
+        popoverTable.books = self.topTenBooks;
+    }
     popoverTable.title = @"Top Ten Books";
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:popoverTable];
     
@@ -307,4 +337,26 @@ static NSInteger const kSCHBookShelfEdgePadding = 12;
 
     [self.popover dismissPopoverAnimated:YES];
 }
+
+#pragma mark - SCHComponent Delegate
+
+- (void)component:(SCHComponent *)component didCompleteWithResult:(NSDictionary *)result
+{
+	NSMutableArray *topBooks = [result objectForKey:kSCHLibreAccessWebServiceContentMetadataList];
+
+    NSLog(@"%@", topBooks);
+    
+    if (topBooks != (id)[NSNull null] && [topBooks count] > 0) {
+        self.lastTopTenBookRetrieval = [NSDate date];
+        
+        [self.topTenBooks removeAllObjects];
+        [self.topTenBooks addObjectsFromArray:topBooks];
+    }
+}
+
+- (void)component:(SCHComponent *)component didFailWithError:(NSError *)error
+{
+    
+}
+
 @end

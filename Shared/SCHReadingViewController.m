@@ -718,33 +718,12 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     }    
 }
 
-#pragma mark - Audio Book Delegate methods
-
-- (void)audioBookPlayerDidFinishPlaying:(SCHAudioBookPlayer *)player successfully:(BOOL)flag
-{
-    NSLog(@"Audio Play finished playing");
-    [self.readingView dismissFollowAlongHighlighter];    
-}
-
-- (void)audioBookPlayerErrorDidOccur:(SCHAudioBookPlayer *)player error:(NSError *)error
-{
-    NSLog(@"Audio Play erred!");
-    
-    [self.readingView dismissFollowAlongHighlighter];    
-    
-    UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") 
-                                                         message:NSLocalizedString(@"Due to a problem with the audio we can not play this audiobook.", @"") 
-                                                        delegate:nil 
-                                               cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-                                               otherButtonTitles:nil]; 
-    [errorAlert show]; 
-    [errorAlert release];
-}
-
 - (IBAction)storyInteractionAction:(id)sender
 {
     NSLog(@"Story Interactions action");
 
+    [self.audioBookPlayer pause];
+    
     if (self.optionsView.superview) {
         [self.optionsView removeFromSuperview];
     }
@@ -845,6 +824,29 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         }
         
     }
+}
+
+#pragma mark - Audio Book Delegate methods
+
+- (void)audioBookPlayerDidFinishPlaying:(SCHAudioBookPlayer *)player successfully:(BOOL)flag
+{
+    NSLog(@"Audio Play finished playing");
+    [self.readingView dismissFollowAlongHighlighter];    
+}
+
+- (void)audioBookPlayerErrorDidOccur:(SCHAudioBookPlayer *)player error:(NSError *)error
+{
+    NSLog(@"Audio Play erred!");
+    
+    [self.readingView dismissFollowAlongHighlighter];    
+    
+    UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") 
+                                                         message:NSLocalizedString(@"Due to a problem with the audio we can not play this audiobook.", @"") 
+                                                        delegate:nil 
+                                               cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+                                               otherButtonTitles:nil]; 
+    [errorAlert show]; 
+    [errorAlert release];
 }
 
 #pragma mark - Flowed/Fixed Toggle
