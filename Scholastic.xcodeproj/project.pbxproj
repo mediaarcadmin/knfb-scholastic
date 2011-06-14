@@ -267,6 +267,10 @@
 		525E82D4138FFFF7006A6775 /* SCHAudioInfoProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 525E82D2138FFFF7006A6775 /* SCHAudioInfoProcessor.m */; };
 		525E82D713938548006A6775 /* SCHAudioInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 525E82D613938548006A6775 /* SCHAudioInfo.m */; };
 		525E82D813938548006A6775 /* SCHAudioInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 525E82D613938548006A6775 /* SCHAudioInfo.m */; };
+		5264FAC713A7555200D4F659 /* SCHBookShelfTopTenPopoverTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5264FAC513A7555200D4F659 /* SCHBookShelfTopTenPopoverTableView.m */; };
+		5264FAC813A7555200D4F659 /* SCHBookShelfTopTenPopoverTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5264FAC513A7555200D4F659 /* SCHBookShelfTopTenPopoverTableView.m */; };
+		5264FAC913A7555200D4F659 /* SCHBookShelfTopTenPopoverTableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5264FAC613A7555200D4F659 /* SCHBookShelfTopTenPopoverTableView.xib */; };
+		5264FACA13A7555200D4F659 /* SCHBookShelfTopTenPopoverTableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5264FAC613A7555200D4F659 /* SCHBookShelfTopTenPopoverTableView.xib */; };
 		5266D34C13007A1C004E3AC6 /* SCHTopFavoritesComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 5266D34B13007A1C004E3AC6 /* SCHTopFavoritesComponent.m */; };
 		5266D38413007D15004E3AC6 /* SCHComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 5266D38313007D15004E3AC6 /* SCHComponent.m */; };
 		526750D213290EE800063AC8 /* SCHURLManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 52322C33132693F500BB071D /* SCHURLManager.m */; };
@@ -1465,6 +1469,9 @@
 		525E82D2138FFFF7006A6775 /* SCHAudioInfoProcessor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHAudioInfoProcessor.m; path = Shared/SCHAudioInfoProcessor.m; sourceTree = "<group>"; };
 		525E82D513938547006A6775 /* SCHAudioInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAudioInfo.h; path = Shared/SCHAudioInfo.h; sourceTree = "<group>"; };
 		525E82D613938548006A6775 /* SCHAudioInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHAudioInfo.m; path = Shared/SCHAudioInfo.m; sourceTree = "<group>"; };
+		5264FAC413A7555200D4F659 /* SCHBookShelfTopTenPopoverTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookShelfTopTenPopoverTableView.h; path = Shared/SCHBookShelfTopTenPopoverTableView.h; sourceTree = "<group>"; };
+		5264FAC513A7555200D4F659 /* SCHBookShelfTopTenPopoverTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookShelfTopTenPopoverTableView.m; path = Shared/SCHBookShelfTopTenPopoverTableView.m; sourceTree = "<group>"; };
+		5264FAC613A7555200D4F659 /* SCHBookShelfTopTenPopoverTableView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SCHBookShelfTopTenPopoverTableView.xib; path = Shared/SCHBookShelfTopTenPopoverTableView.xib; sourceTree = "<group>"; };
 		5266D34A13007A1C004E3AC6 /* SCHTopFavoritesComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHTopFavoritesComponent.h; path = Shared/SCHTopFavoritesComponent.h; sourceTree = "<group>"; };
 		5266D34B13007A1C004E3AC6 /* SCHTopFavoritesComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHTopFavoritesComponent.m; path = Shared/SCHTopFavoritesComponent.m; sourceTree = "<group>"; };
 		5266D38213007D15004E3AC6 /* SCHComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHComponent.h; path = Shared/SCHComponent.h; sourceTree = "<group>"; };
@@ -3857,6 +3864,9 @@
 				F87B6E2B1398ED65005CC0FA /* SCHBookShelfSortPopoverTableView.h */,
 				F87B6E2C1398ED65005CC0FA /* SCHBookShelfSortPopoverTableView.m */,
 				F87B6E2D1398ED65005CC0FA /* SCHBookShelfSortPopoverTableView.xib */,
+				5264FAC413A7555200D4F659 /* SCHBookShelfTopTenPopoverTableView.h */,
+				5264FAC513A7555200D4F659 /* SCHBookShelfTopTenPopoverTableView.m */,
+				5264FAC613A7555200D4F659 /* SCHBookShelfTopTenPopoverTableView.xib */,
 			);
 			name = Bookshelves;
 			sourceTree = "<group>";
@@ -4551,6 +4561,7 @@
 				5215871E13A61F8300496572 /* SCHStoryInteractionStartingLetter_iPhone.xib in Resources */,
 				5215872013A61F8700496572 /* SCHStoryInteractionStartingLetter_iPad.xib in Resources */,
 				527CE87B13A6420900BAC8E1 /* SCHStoryInteractionWordScrambler_iPhone.xib in Resources */,
+				5264FAC913A7555200D4F659 /* SCHBookShelfTopTenPopoverTableView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4890,6 +4901,7 @@
 				5215871D13A61F8200496572 /* SCHStoryInteractionStartingLetter_iPhone.xib in Resources */,
 				5215871F13A61F8600496572 /* SCHStoryInteractionStartingLetter_iPad.xib in Resources */,
 				527CE87C13A6420900BAC8E1 /* SCHStoryInteractionWordScrambler_iPhone.xib in Resources */,
+				5264FACA13A7555200D4F659 /* SCHBookShelfTopTenPopoverTableView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5139,6 +5151,7 @@
 				2827827A13A241E200E968C1 /* SCHStoryInteractionControllerWordScrambler.m in Sources */,
 				523756AF13A275E800B38441 /* SCHPlayButton.m in Sources */,
 				28A72BC413A65B0B00215DEA /* SCHStoryInteractionControllerWhoSaidIt_iPhone.m in Sources */,
+				5264FAC713A7555200D4F659 /* SCHBookShelfTopTenPopoverTableView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5398,6 +5411,7 @@
 				523756B013A275E800B38441 /* SCHPlayButton.m in Sources */,
 				5215872113A61F8B00496572 /* SCHStoryInteractionControllerSequencing.m in Sources */,
 				28A72BC513A65B0B00215DEA /* SCHStoryInteractionControllerWhoSaidIt_iPhone.m in Sources */,
+				5264FAC813A7555200D4F659 /* SCHBookShelfTopTenPopoverTableView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
