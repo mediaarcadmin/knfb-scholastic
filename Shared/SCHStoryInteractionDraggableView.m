@@ -57,12 +57,7 @@
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    // if we don't drop on a target, return to original position
     [self endDrag:NO];
-
-    if (delegate) {
-        [delegate draggableView:self didMoveToPosition:self.center];
-    }
 }
 
 - (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
@@ -97,6 +92,11 @@
                              self.center = self.dragOrigin;
                          }
                      }];
+
+    
+    if (delegate) {
+        [delegate draggableView:self didMoveToPosition:(cancelled ? self.dragOrigin : self.center)];
+    }
 }
 
 @end
