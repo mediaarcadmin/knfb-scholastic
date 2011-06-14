@@ -220,8 +220,6 @@ static NSString * const kSCHProfileItemUserContentItemContentMetadataItem = @"Us
         case kSCHBookSortTypeLastRead:
         {
             NSLog(@"Sort by last read.");
-            //[bookObjects sortUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"Annotations.LastPage.LastModified" ascending:YES]]];
-         
             NSMutableArray *sortArray = [[NSMutableArray alloc] initWithCapacity:[books count]];
 
             for (SCHContentMetadataItem *item in bookObjects) {
