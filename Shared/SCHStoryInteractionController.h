@@ -34,10 +34,6 @@
 // hosting view
 @property (nonatomic, assign) id<SCHStoryInteractionControllerDelegate> delegate;
 
-// the current interface orientation; the hosting UIViewController should initialise this
-// before presenting the view and update it as necessary
-@property (nonatomic, assign) UIInterfaceOrientation interfaceOrientation;
-
 // a transparent hosting-view sized container for the story interaction views; if
 // necessary gesture recognizers can be attached to this to collect events outside
 // the main story interaction view
@@ -46,13 +42,19 @@
 // The current contents view (loaded from a nib)
 @property (nonatomic, retain) UIView *contentsView;
 
+// rotation about to occur
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration;
+
+// rotation complete
+- (void)didRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation;
+
 // obtain a Controller for a StoryInteraction.
 + (SCHStoryInteractionController *)storyInteractionControllerForStoryInteraction:(SCHStoryInteraction *)storyInteraction;
 
 - (id)initWithStoryInteraction:(SCHStoryInteraction *)storyInteraction;
 
 // present the story interaction centered in the host view
-- (void)presentInHostView:(UIView *)hostView;
+- (void)presentInHostView:(UIView *)hostView withInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation;
 
 // remove the story interaction from the host view; also sends storyInteractionControllerDidDismiss: to
 // the delegate

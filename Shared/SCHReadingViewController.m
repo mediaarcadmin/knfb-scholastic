@@ -481,9 +481,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 {
     self.currentlyRotating = NO;
     [self.readingView didRotateFromInterfaceOrientation:fromInterfaceOrientation];
-    
-    self.storyInteractionController.interfaceOrientation = self.interfaceOrientation;
-    self.storyInteractionController.containerView.hidden = NO;
+    [self.storyInteractionController didRotateToInterfaceOrientation:self.interfaceOrientation];
     
     [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
 }
@@ -542,13 +540,12 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [self setupAssetsForOrientation:toInterfaceOrientation];
     
     [self.readingView willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+    [self.storyInteractionController willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
     
     if (self.popover) {
         [self.popover dismissPopoverAnimated:YES];
         self.popover = nil;
     }
-    
-    self.storyInteractionController.containerView.hidden = YES;
 }
 
 #pragma mark -
@@ -1501,10 +1498,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     SCHStoryInteraction *storyInteraction = [[self.bookStoryInteractions allStoryInteractions] objectAtIndex:interaction];
     self.storyInteractionController = [SCHStoryInteractionController storyInteractionControllerForStoryInteraction:storyInteraction];
     self.storyInteractionController.isbn = self.isbn;
-    self.storyInteractionController.interfaceOrientation = self.interfaceOrientation;
     self.storyInteractionController.delegate = self;
     self.storyInteractionController.xpsProvider = self.xpsProvider;
-    [self.storyInteractionController presentInHostView:self.view];
+    [self.storyInteractionController presentInHostView:self.view withInterfaceOrientation:self.interfaceOrientation];
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
         [self setToolbarVisibility:NO animated:YES];
