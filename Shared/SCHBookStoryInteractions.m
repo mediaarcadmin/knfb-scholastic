@@ -15,12 +15,14 @@
 @interface SCHBookStoryInteractions ()
 @property (nonatomic, retain) NSArray *storyInteractions;
 @property (nonatomic, retain) NSDictionary *storyInteractionsByPage;
+@property (nonatomic, retain) NSMutableDictionary *storyInteractionCurrentCount;
 @end
 
 @implementation SCHBookStoryInteractions
 
 @synthesize storyInteractions;
 @synthesize storyInteractionsByPage;
+@synthesize storyInteractionCurrentCount;
 
 - (void)dealloc
 {
@@ -32,6 +34,9 @@
 - (id)initWithXPSProvider:(SCHXPSProvider *)xpsProvider
 {
     if ((self = [super init])) {
+        
+        self.storyInteractionCurrentCount = [[NSMutableDictionary alloc] init];
+        
         // get the raw array of stories from the parser
         NSData *xml = [xpsProvider dataForComponentAtPath:KNFBXPSStoryInteractionsMetadataFile];
         SCHStoryInteractionParser *parser = [[SCHStoryInteractionParser alloc] init];
@@ -48,6 +53,8 @@
                 [byPage setObject:pageArray forKey:page];
             }
             [pageArray addObject:story];
+            
+            
         }
         self.storyInteractionsByPage = [NSDictionary dictionaryWithDictionary:byPage];
         [byPage release];
