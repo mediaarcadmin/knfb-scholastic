@@ -12,6 +12,7 @@
 
 @protocol SCHStoryInteractionDraggableViewDelegate
 @optional
+- (BOOL)draggableViewShouldStartDrag:(SCHStoryInteractionDraggableView *)draggableView;
 - (void)draggableViewWasTapped:(SCHStoryInteractionDraggableView *)draggableView;
 @required
 - (void)draggableViewDidStartDrag:(SCHStoryInteractionDraggableView *)draggableView;
