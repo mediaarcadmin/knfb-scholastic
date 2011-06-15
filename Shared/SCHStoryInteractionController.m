@@ -131,7 +131,7 @@ typedef void (^PlayAudioCompletionBlock)(void);
             contentInsets = UIEdgeInsetsMake(130, 40, 40, 40);
             titleInsets = UIEdgeInsetsMake(40, 40, 26, 40);
         } else {
-            contentInsets = UIEdgeInsetsMake(64, 5, 5, 5);
+            contentInsets = UIEdgeInsetsMake(70, 5, 5, 5);
             titleInsets = UIEdgeInsetsMake(5, 30, 5, 30);
         }
         
@@ -150,7 +150,7 @@ typedef void (^PlayAudioCompletionBlock)(void);
         
         // first object in the NIB must be the container view for the interaction
         self.contentsView = [self.nibObjects objectAtIndex:self.currentScreenIndex];
-        if (!iPad && (CGRectGetWidth(self.contentsView.bounds) > 470 || CGRectGetHeight(self.contentsView.bounds) > 256)) {
+        if (!iPad && (CGRectGetWidth(self.contentsView.bounds) > 470 || CGRectGetHeight(self.contentsView.bounds) > 250)) {
             NSLog(@"contentView %d is too large: %@", self.currentScreenIndex, NSStringFromCGRect(self.contentsView.bounds));
         }
         
