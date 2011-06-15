@@ -15,6 +15,7 @@
 
 @interface SCHStoryInteractionControllerStartingLetter ()
 
+- (void)shuffleImageButtons;
 - (SCHStoryInteractionStartingLetterQuestion *)questionAtIndex:(NSUInteger)index;
 - (BOOL)questionsCompleted;
 
@@ -31,6 +32,26 @@
     [super dealloc];
 }
 
+- (void)shuffleImageButtons 
+{
+    NSMutableArray *shuffleArray = [NSMutableArray arrayWithArray:self.imageButtons];
+    NSUInteger i = 0;
+    SCHImageButton *imageButton = nil;
+    
+    // create a Fisher–Yates shuffled array
+    srand(time(NULL));
+    for (i = [shuffleArray count] - 1; i > 0; i--)
+    {
+        [shuffleArray exchangeObjectAtIndex:(rand() % i) withObjectAtIndex:i];
+    }    
+    
+    // assign new tags for the image buttons
+    for (i = 0; i < [shuffleArray count]; i++) {
+        imageButton = [shuffleArray objectAtIndex:i];
+        imageButton.tag = i + 1;
+    }
+}
+
 - (void)setupViewAtIndex:(NSInteger)screenIndex
 {
     [self playAudioAtPath:[(SCHStoryInteractionStartingLetter *)self.storyInteraction introductionAudioPath]
@@ -38,6 +59,7 @@
 
     [self setTitle:[(SCHStoryInteractionStartingLetter *)self.storyInteraction prompt]];
     
+    [self shuffleImageButtons];
     for (SCHImageButton *imageButton in self.imageButtons) {
         SCHStoryInteractionStartingLetterQuestion *question = [self questionAtIndex:imageButton.tag - 1];
         if (question != nil) {
