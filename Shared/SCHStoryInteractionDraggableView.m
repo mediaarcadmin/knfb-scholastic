@@ -13,11 +13,18 @@
 
 @interface SCHStoryInteractionDraggableView ()
 
+enum DragState {
+    kDragStateIdle,
+    kDragStateDragging,
+    kDragStateCancelled
+};
+
 @property (nonatomic, assign) CGPoint touchOffset;
 @property (nonatomic, assign) CGPoint dragOrigin;
 @property (nonatomic, assign) NSTimeInterval touchStartTime;
 @property (nonatomic, assign) BOOL tapSupported;
-@property (nonatomic, assign) BOOL dragging;
+@property (nonatomic, assign) BOOL shouldStartDragSupported;
+@property (nonatomic, assign) enum DragState dragState;
 
 - (void)beginDrag;
 - (void)endDragWithTouch:(UITouch *)touch cancelled:(BOOL)cancelled;
@@ -33,12 +40,14 @@
 @synthesize dragOrigin;
 @synthesize touchStartTime;
 @synthesize tapSupported;
-@synthesize dragging;
+@synthesize shouldStartDragSupported;
+@synthesize dragState;
 
 - (void)setDelegate:(NSObject<SCHStoryInteractionDraggableViewDelegate> *)aDelegate
 {
     delegate = aDelegate;
     tapSupported = [aDelegate respondsToSelector:@selector(draggableViewWasTapped:)];
+    shouldStartDragSupported = [aDelegate respondsToSelector:@selector(draggableViewShouldStartDrag:)];
 }
 
 - (void)moveToHomePosition
@@ -53,10 +62,15 @@
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
+    self.dragState = kDragStateIdle;
+    if (self.shouldStartDragSupported && self.delegate && ![self.delegate draggableViewShouldStartDrag:self]) {
+        self.dragState = kDragStateCancelled;
+        return;
+    }
+    
     UITouch *touch = [touches anyObject];
     CGPoint point = [touch locationInView:self.superview];
     self.touchOffset = CGPointMake(self.center.x - point.x, self.center.y - self.center.y);
-    self.dragging = NO;
     
     if (self.tapSupported) {
         self.touchStartTime = touch.timestamp;
@@ -68,7 +82,10 @@
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    if (!self.dragging) {
+    if (self.dragState == kDragStateCancelled) {
+        return;
+    }
+    if (self.dragState == kDragStateIdle) {
         [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(beginDrag) object:nil];
         [self beginDrag];
     }
@@ -96,7 +113,7 @@
 
 - (void)beginDrag
 {
-    self.dragging = YES;
+    self.dragState = kDragStateDragging;
     self.dragOrigin = self.center;
     [self.superview bringSubviewToFront:self];
     [UIView animateWithDuration:0.25
@@ -112,7 +129,7 @@
 
 - (void)endDragWithTouch:(UITouch *)touch cancelled:(BOOL)cancelled
 {
-    if (self.dragging) {
+    if (self.dragState == kDragStateDragging) {
         [UIView animateWithDuration:0.25
                          animations:^{
                              self.transform = CGAffineTransformIdentity;
@@ -124,16 +141,14 @@
         if (delegate) {
             [delegate draggableView:self didMoveToPosition:(cancelled ? self.dragOrigin : self.center)];
         }
-        self.dragging = NO;
-        return;
-    } 
-    
-    if (self.tapSupported) {
+    } else if (self.dragState != kDragStateCancelled && self.tapSupported) {
         [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(beginDrag) object:nil];
         if (delegate && touch.timestamp - self.touchStartTime < kMaxTapTime) {
             [self.delegate draggableViewWasTapped:self];
         }
     }
+
+    self.dragState = kDragStateIdle;
 }
 
 @end
