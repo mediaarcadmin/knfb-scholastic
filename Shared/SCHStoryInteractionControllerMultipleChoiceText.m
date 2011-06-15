@@ -38,6 +38,9 @@
 
 - (void)setupViewAtIndex:(NSInteger)screenIndex
 {
+    [self playAudioAtPath:[(SCHStoryInteractionMultipleChoiceText *)self.storyInteraction introductionAudioPath]
+               completion:^{}];
+    
     self.currentQuestionIndex = 0;
     [self setupQuestion];
 }
@@ -93,8 +96,12 @@
     if (chosenAnswer < [[self currentQuestion].answers count]) {
         [sender setSelected:YES];
         if (chosenAnswer == [self currentQuestion].correctAnswer) {
-            [self playAudioAtPath:[[self currentQuestion] audioPathForCorrectAnswer] completion:^{
-                [self nextQuestion];
+            [self playAudioAtPath:[[self currentQuestion] audioPathForAnswerAtIndex:chosenAnswer] completion:^{
+                [self playAudioAtPath:[(SCHStoryInteractionMultipleChoiceText *)self.storyInteraction audioPathForThatsRight] completion:^{
+                    [self playAudioAtPath:[[self currentQuestion] audioPathForCorrectAnswer] completion:^{
+                        [self nextQuestion];
+                    }];
+                }];
             }];
         } else {
             [self playAudioAtPath:[[self currentQuestion] audioPathForIncorrectAnswer] completion:nil];
