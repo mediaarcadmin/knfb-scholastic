@@ -112,9 +112,9 @@
 							<int key="NSColorSpace">3</int>
 							<bytes key="NSWhite">MC41AA</bytes>
 						</object>
-						<object class="NSCustomResource" key="IBUINormalBackgroundImage" id="864303777">
+						<object class="NSCustomResource" key="IBUINormalBackgroundImage" id="988658670">
 							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">popquiz-answer-button-yellow.png</string>
+							<string key="NSResourceName">answer-button-yellow.png</string>
 						</object>
 					</object>
 					<object class="IBUIButton" id="699524793">
@@ -140,7 +140,7 @@
 							<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
 						</object>
 						<reference key="IBUINormalTitleShadowColor" ref="827537821"/>
-						<reference key="IBUINormalBackgroundImage" ref="864303777"/>
+						<reference key="IBUINormalBackgroundImage" ref="988658670"/>
 					</object>
 					<object class="IBUIButton" id="645779420">
 						<reference key="NSNextResponder" ref="797319424"/>
@@ -148,6 +148,7 @@
 						<string key="NSFrame">{{305, 203}, {130, 40}}</string>
 						<reference key="NSSuperview" ref="797319424"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<int key="IBUITag">3</int>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -164,7 +165,7 @@
 							<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
 						</object>
 						<reference key="IBUINormalTitleShadowColor" ref="827537821"/>
-						<reference key="IBUINormalBackgroundImage" ref="864303777"/>
+						<reference key="IBUINormalBackgroundImage" ref="988658670"/>
 					</object>
 					<object class="IBUIImageView" id="778809060">
 						<reference key="NSNextResponder" ref="797319424"/>
@@ -580,12 +581,12 @@
 			<bool key="EncodedWithXMLCoder">YES</bool>
 			<object class="NSArray" key="dict.sortedKeys">
 				<bool key="EncodedWithXMLCoder">YES</bool>
-				<string>popquiz-answer-button-yellow.png</string>
+				<string>answer-button-yellow.png</string>
 				<string>storyinteractions-initialScratch.png</string>
 			</object>
 			<object class="NSMutableArray" key="dict.values">
 				<bool key="EncodedWithXMLCoder">YES</bool>
-				<string>{16, 16}</string>
+				<string>{14, 40}</string>
 				<string>{125, 125}</string>
 			</object>
 		</object>
