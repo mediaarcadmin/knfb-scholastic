@@ -54,11 +54,9 @@
     
     BOOL iPad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
     
-    UIImage *letterTile = [UIImage imageNamed:(iPad ? @"storyinteraction-lettertile-ipad" : @"storyinteraction-lettertile-iphone")];
     self.lettersContainerView.delegate = self;
-    self.lettersContainerView.letterGap = iPad ? 10 : 5;
-    [self.lettersContainerView populateFromWordSearchModel:wordSearch
-                                       withLetterTileImage:letterTile];
+    self.lettersContainerView.letterGap = iPad ? 4 : 2;
+    [self.lettersContainerView populateFromWordSearchModel:wordSearch];
 
     self.remainingWords = [NSMutableArray array];
     for (NSString *word in wordSearch.words) {
@@ -92,10 +90,7 @@
         [self playAudioAtPath:[wordSearch audioPathForCorrectAnswer]
                    completion:^{
                        if ([self.remainingWords count] == 0) {
-                           [self playAudioAtPath:[wordSearch audioPathForYouFoundThemAll]
-                                      completion:^{
-                                          [self removeFromHostView];
-                                      }];
+                           [self playAudioAtPath:[wordSearch audioPathForYouFoundThemAll] completion:nil];
                        }
                    }];
     } else if (index == NSNotFound) {

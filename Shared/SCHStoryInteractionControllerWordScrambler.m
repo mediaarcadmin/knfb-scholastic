@@ -168,10 +168,7 @@ static CGFloat distanceSq(CGPoint p1, CGPoint p2)
 {
     [draggableView moveToHomePosition];
 
-    NSInteger index = [self.lettersByPosition indexOfObject:draggableView];
-    BOOL inCorrectPlace = ([[self.letterViews objectAtIndex:index] letter] == [(SCHStoryInteractionDraggableLetterView *)draggableView letter]);
-    
-    [self playBundleAudioWithFilename:(inCorrectPlace ? @"sfx_dropOK.mp3" : @"sfx_dropNo.mp3")
+    [self playBundleAudioWithFilename:@"sfx_dropOK.mp3"
                            completion:^{
                                if ([self hasCorrectSolution]) {
                                    [self wordScrambleComplete];

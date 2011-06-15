@@ -11,6 +11,8 @@
 @class SCHStoryInteractionDraggableView;
 
 @protocol SCHStoryInteractionDraggableViewDelegate
+@optional
+- (void)draggableViewWasTapped:(SCHStoryInteractionDraggableView *)draggableView;
 @required
 - (void)draggableViewDidStartDrag:(SCHStoryInteractionDraggableView *)draggableView;
 - (BOOL)draggableView:(SCHStoryInteractionDraggableView *)draggableView shouldSnapFromPosition:(CGPoint)position toPosition:(CGPoint *)snapPosition;
@@ -23,7 +25,7 @@
 @property (nonatomic, assign) NSInteger matchTag;
 
 // optional delegate for this draggable
-@property (nonatomic, assign) id<SCHStoryInteractionDraggableViewDelegate> delegate;
+@property (nonatomic, assign) NSObject<SCHStoryInteractionDraggableViewDelegate> *delegate;
 
 // home position for this draggable
 @property (nonatomic, assign) CGPoint homePosition;
