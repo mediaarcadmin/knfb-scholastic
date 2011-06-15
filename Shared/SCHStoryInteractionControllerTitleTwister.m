@@ -499,7 +499,8 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (!cell) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
-        cell.textLabel.font = [UIFont boldSystemFontOfSize:20];
+        cell.textLabel.font = [UIFont boldSystemFontOfSize:17];
+        cell.textLabel.textColor = [UIColor colorWithRed:0.467 green:0.200 blue:0.745 alpha:1.];
         cell.textLabel.textAlignment = UITextAlignmentCenter;
         cell.textLabel.adjustsFontSizeToFitWidth = YES;
     }
