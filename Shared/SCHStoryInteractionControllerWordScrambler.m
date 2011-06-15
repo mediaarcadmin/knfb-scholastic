@@ -25,6 +25,7 @@ static CGFloat distanceSq(CGPoint p1, CGPoint p2)
 @property (nonatomic, assign) CGSize letterTileSize;
 @property (nonatomic, retain) NSArray *letterPositions;
 @property (nonatomic, retain) NSMutableArray *lettersByPosition;
+@property (nonatomic, retain) NSArray *hintLetters;
 
 - (NSInteger)letterPositionCloseToPoint:(CGPoint)point;
 - (void)swapLetterAtPosition:(NSInteger)position with:(SCHStoryInteractionDraggableView *)letterView;
@@ -42,6 +43,7 @@ static CGFloat distanceSq(CGPoint p1, CGPoint p2)
 @synthesize letterTileSize;
 @synthesize letterPositions;
 @synthesize lettersByPosition;
+@synthesize hintLetters;
 
 - (void)dealloc
 {
@@ -50,6 +52,7 @@ static CGFloat distanceSq(CGPoint p1, CGPoint p2)
     [letterViews release];
     [letterPositions release];
     [lettersByPosition release];
+    [hintLetters release];
     [super dealloc];
 }
 
@@ -73,9 +76,11 @@ static CGFloat distanceSq(CGPoint p1, CGPoint p2)
 
     NSMutableArray *views = [NSMutableArray array];
     NSMutableArray *positions = [NSMutableArray array];
+    NSMutableArray *hints = [NSMutableArray array];
 
     NSInteger numTileRows = [words count];
     CGFloat y = (CGRectGetHeight(self.lettersContainerView.bounds) - numTileRows*letterTileSize.height - (numTileRows-1)*kLetterGap)/2 + letterTileSize.height/2;
+    NSInteger characterIndex = 0;
     
     for (NSString *word in words) {
         NSInteger length = [word length];
@@ -88,15 +93,23 @@ static CGFloat distanceSq(CGPoint p1, CGPoint p2)
             [views addObject:letter];
             [letter release];
             x += letterTileSize.width + kLetterGap;
+            
+            // remember the letters at the defined hint indices
+            if ([wordScrambler.hintIndices containsObject:[NSNumber numberWithInteger:characterIndex]]) {
+                [hints addObject:letter];
+            }
+            characterIndex++;
         }
         y += letterTileSize.height + kLetterGap;
+        characterIndex++; // for the whitespace
     }
     
     self.letterViews = [NSArray arrayWithArray:views];
     self.letterPositions = [NSArray arrayWithArray:positions];
-    self.lettersByPosition = [NSMutableArray array];
+    self.hintLetters = [NSArray arrayWithArray:hints];
     
     // scramble the positions
+    self.lettersByPosition = [NSMutableArray array];
     for (NSValue *position in positions) {
         NSInteger index = arc4random() % [views count];
         SCHStoryInteractionDraggableLetterView *view = [views objectAtIndex:index];
@@ -111,12 +124,8 @@ static CGFloat distanceSq(CGPoint p1, CGPoint p2)
 
 - (void)hintButtonTapped:(id)sender
 {
-    SCHStoryInteractionWordScrambler *wordScrambler = (SCHStoryInteractionWordScrambler *)self.storyInteraction;
-    for (NSNumber *hintIndexObj in wordScrambler.hintIndices) {
-        NSInteger hintPosition = [hintIndexObj integerValue];
-        SCHStoryInteractionDraggableLetterView *hintLetter = [self.letterViews objectAtIndex:hintPosition];
-        [hintLetter setLetterColor:[UIColor yellowColor]];
-        
+    for (SCHStoryInteractionDraggableLetterView *hintLetter in self.hintLetters) {
+        NSInteger hintPosition = [self.letterViews indexOfObject:hintLetter];
         NSInteger hintLetterCurrentPosition = [self.lettersByPosition indexOfObject:hintLetter];
         if (hintLetterCurrentPosition != hintPosition) {
             SCHStoryInteractionDraggableLetterView *letterAtHintPosition = [self.lettersByPosition objectAtIndex:hintPosition];
@@ -128,6 +137,8 @@ static CGFloat distanceSq(CGPoint p1, CGPoint p2)
             [letterAtHintPosition moveToHomePosition];
             [hintLetter moveToHomePosition];
         }
+
+        [hintLetter setLetterColor:[UIColor yellowColor]];
     }
 }
 
