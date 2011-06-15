@@ -31,6 +31,7 @@ typedef void (^PlayAudioCompletionBlock)(void);
 
 @interface SCHStoryInteractionController ()
 
+@property (nonatomic, assign) UIInterfaceOrientation interfaceOrientation;
 @property (nonatomic, retain) NSArray *nibObjects;
 @property (nonatomic, assign) NSInteger currentScreenIndex;
 @property (nonatomic, retain) UILabel *titleView;
@@ -42,7 +43,6 @@ typedef void (^PlayAudioCompletionBlock)(void);
 @property (nonatomic, assign) dispatch_queue_t audioPlayQueue;
 
 - (UIImage *)deviceSpecificImageNamed:(NSString *)name;
-- (void)updateOrientation;
 - (void)endAudio;
 
 @end
@@ -59,11 +59,11 @@ typedef void (^PlayAudioCompletionBlock)(void);
 @synthesize backgroundView;
 @synthesize storyInteraction;
 @synthesize delegate;
-@synthesize interfaceOrientation;
 @synthesize player;
 @synthesize resumeInterruptedPlayer;
 @synthesize playAudioCompletionBlock;
 @synthesize audioPlayQueue;
+@synthesize interfaceOrientation;
 
 + (SCHStoryInteractionController *)storyInteractionControllerForStoryInteraction:(SCHStoryInteraction *)storyInteraction
 {
@@ -128,7 +128,7 @@ typedef void (^PlayAudioCompletionBlock)(void);
     return self;
 }
 
-- (void)presentInHostView:(UIView *)hostView
+- (void)presentInHostView:(UIView *)hostView withInterfaceOrientation:(UIInterfaceOrientation)aInterfaceOrientation
 {
     if (self.containerView == nil) {
         
@@ -212,7 +212,7 @@ typedef void (^PlayAudioCompletionBlock)(void);
     }
     
     [hostView addSubview:self.containerView];
-    [self updateOrientation];
+    [self didRotateToInterfaceOrientation:aInterfaceOrientation];
 }
 
 - (void)presentNextView
@@ -221,11 +221,39 @@ typedef void (^PlayAudioCompletionBlock)(void);
     self.currentScreenIndex = (self.currentScreenIndex + 1) % [self.nibObjects count];
     [self.containerView removeFromSuperview];
     self.containerView = nil;
-    [self presentInHostView:host];
+    [self presentInHostView:host withInterfaceOrientation:self.interfaceOrientation];
 }
 
-- (void)updateOrientation
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
+    if (!self.containerView.superview) {
+        return;
+    }
+    
+    CGFloat superviewWidth = CGRectGetWidth(self.containerView.superview.bounds);
+    CGFloat superviewHeight = CGRectGetHeight(self.containerView.superview.bounds);
+    CGRect superviewBounds = CGRectMake(0, 0, MAX(superviewWidth, superviewHeight), MIN(superviewWidth, superviewHeight));
+    CGPoint superviewCenter = CGPointMake(floorf(CGRectGetMidX(superviewBounds)), floorf(CGRectGetMidY(superviewBounds)));
+
+    [UIView animateWithDuration:duration
+                     animations:^{
+                         if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation) && UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
+                             self.containerView.transform = CGAffineTransformIdentity;
+                             self.containerView.center = superviewCenter;
+                         }
+                         if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation) && UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {
+                             CGFloat portraitOffset = (superviewWidth - superviewHeight)/2;
+                             self.containerView.transform = CGAffineTransformMakeRotation(-M_PI/2);
+                             self.containerView.center = CGPointMake(superviewCenter.x-portraitOffset, superviewCenter.y+portraitOffset);
+                         }
+                         self.containerView.bounds = CGRectIntegral(superviewBounds);
+                         self.backgroundView.center = superviewCenter;
+                     }];
+}
+
+- (void)didRotateToInterfaceOrientation:(UIInterfaceOrientation)aToInterfaceOrientation
+{
+    self.interfaceOrientation = aToInterfaceOrientation;
     if (!self.containerView.superview) {
         return;
     }
@@ -239,12 +267,6 @@ typedef void (^PlayAudioCompletionBlock)(void);
     }
     self.containerView.center = CGPointMake(floor(CGRectGetMidX(superviewBounds)), floor(CGRectGetMidY(superviewBounds)));
     self.backgroundView.center = CGPointMake(floor(CGRectGetMidX(self.containerView.bounds)), floor(CGRectGetMidY(self.containerView.bounds)));
-}
-
-- (void)setInterfaceOrientation:(UIInterfaceOrientation)aInterfaceOrientation
-{
-    interfaceOrientation = aInterfaceOrientation;
-    [self updateOrientation];
 }
 
 - (void)closeButtonTapped:(id)sender
