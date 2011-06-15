@@ -33,6 +33,9 @@
 
 - (void)setupViewAtIndex:(NSInteger)screenIndex
 {
+    [self playAudioAtPath:[(SCHStoryInteractionStartingLetter *)self.storyInteraction introductionAudioPath]
+               completion:^{}];
+
     [self setTitle:[(SCHStoryInteractionStartingLetter *)self.storyInteraction prompt]];
     
     for (SCHImageButton *imageButton in self.imageButtons) {
@@ -48,9 +51,27 @@
             imageButton.actionBlock = ^(SCHImageButton *imageButton) {
                 SCHStoryInteractionStartingLetterQuestion *question = [self questionAtIndex:imageButton.tag - 1]; 
                 if (question != nil) {
-                    [self playAudioAtPath:[question audioPath] completion:^{
-                        [self questionsCompleted];
-                    }];                    
+                    if ([question isCorrect] == YES) {
+                    [self playAudioAtPath:[(SCHStoryInteractionStartingLetter *)self.storyInteraction audioPathForThatsRight] completion:^{                        
+                        [self playAudioAtPath:[question audioPath] completion:^{
+                            [self playAudioAtPath:[(SCHStoryInteractionStartingLetter *)self.storyInteraction audioPathForStartsWith] completion:^{                        
+                                [self playAudioAtPath:[(SCHStoryInteractionStartingLetter *)self.storyInteraction audioPathForLetter] completion:^{                        
+                                    [self questionsCompleted];
+                                }];                                            
+                            }];                    
+                        }];                    
+                    }];                                  
+                    } else {
+                        [self playAudioAtPath:[question audioPath] completion:^{                        
+                            [self playAudioAtPath:[(SCHStoryInteractionStartingLetter *)self.storyInteraction audioPathForDoesntStartWith] completion:^{                        
+                                [self playAudioAtPath:[(SCHStoryInteractionStartingLetter *)self.storyInteraction audioPathForLetter] completion:^{                        
+                                    [self playAudioAtPath:[(SCHStoryInteractionStartingLetter *)self.storyInteraction audioPathForTryAgain] completion:^{                                                            
+                                        [self questionsCompleted];
+                                    }];                                            
+                                }];                                                                                
+                            }];                    
+                        }];                                                          
+                    }
                 }
             };
         }
@@ -81,7 +102,9 @@
     }
     
     if (ret == YES) {
-        [self removeFromHostView];
+        [self playAudioAtPath:[(SCHStoryInteractionStartingLetter *)self.storyInteraction audioPathForYouFoundThemAll] completion:^{
+            [self removeFromHostView];
+        }];
     }
 
     return(ret);

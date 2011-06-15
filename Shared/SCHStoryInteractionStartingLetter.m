@@ -58,10 +58,38 @@
     return @"Starting Letter";
 }
 
+- (NSString *)introductionAudioPath
+{
+    NSString *filename = [NSString stringWithFormat:@"%@_intro.mp3", self.ID];
+    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:filename];
+}
+
 - (NSString *)audioPathForQuestion
 {
     NSString *filename = [NSString stringWithFormat:@"%@_intro.mp3", self.ID];
     return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:filename];
+}
+
+- (NSString *)audioPathForStartsWith
+{
+    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:@"gen_startswith.mp3"];
+}
+
+- (NSString *)audioPathForLetter
+{
+    NSString *filename = [NSString stringWithFormat:@"gen_%@.mp3", self.startingLetter];
+    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:filename];
+
+}
+
+- (NSString *)audioPathForDoesntStartWith
+{
+    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:@"gen_doesntstartwith.mp3"];
+}
+
+- (NSString *)audioPathForYouFoundThemAll
+{
+    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:@"gen_gotthemall.mp3"];
 }
 
 @end

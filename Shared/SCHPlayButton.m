@@ -10,6 +10,8 @@
 
 @interface SCHPlayButton ()
 
+@property (nonatomic, retain) UIColor *tintedBackgroundColor;
+
 - (void)setup;
 
 @end
@@ -18,6 +20,7 @@
 
 @synthesize play;
 @synthesize actionBlock;
+@synthesize tintedBackgroundColor;
 
 #pragma mark - Object lifecycle
 
@@ -40,14 +43,18 @@
 - (void)dealloc 
 {
     Block_release(actionBlock), actionBlock = nil;
+    [tintedBackgroundColor release], tintedBackgroundColor = nil;
     
     [super dealloc];
 }
 
 - (void)setup
 {
+    tintedBackgroundColor = [[[UIColor blackColor] colorWithAlphaComponent:0.5] retain];
+    
     play = NO;
-    self.image = [UIImage imageNamed:@"SCHPlayButtonPlay"];    
+    self.image = [UIImage imageNamed:@"SCHPlayButtonPlay"]; 
+    self.backgroundColor = self.tintedBackgroundColor;                            
     actionBlock = nil;
     
     self.userInteractionEnabled = YES;
@@ -71,13 +78,21 @@
         play = setPlay;
         if (play == NO) {
             self.image = [UIImage imageNamed:@"SCHPlayButtonPause"];
+            self.backgroundColor = [UIColor clearColor];
             self.alpha = 0.0;
         }
-        [UIView animateWithDuration:0.25 delay:0.0 options:UIViewAnimationOptionCurveEaseOut animations:^ {
-            self.alpha = (play == YES ? 0.0 : 1.0);
+        [UIView animateWithDuration:0.3 delay:0.0 options:UIViewAnimationOptionCurveEaseOut animations:^ {
+            if (play == YES) {
+                self.alpha = 0.0;    
+                self.backgroundColor = [UIColor clearColor];
+            } else {
+                self.alpha = 1.0;
+                self.backgroundColor = self.tintedBackgroundColor;
+            }
         } completion:^(BOOL finished){
             if (play == YES) {
                 self.alpha = 1.0;
+                self.backgroundColor = [UIColor clearColor];
                 self.image = nil;
             }
         }];

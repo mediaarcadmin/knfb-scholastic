@@ -53,6 +53,11 @@ static CGFloat const kSCHStoryInteractionControllerVideoBorderWidth = 3.0;
     self.movieContainerView.layer.borderColor = [[UIColor colorWithRed:0.071 green:0.396 blue:0.698 alpha:1.000] CGColor];
     self.movieContainerView.layer.masksToBounds = YES;
 
+    self.playButton.layer.cornerRadius = kSCHStoryInteractionControllerVideoCornerRadius;  
+    self.playButton.layer.borderWidth = kSCHStoryInteractionControllerVideoBorderWidth; 
+    self.movieContainerView.layer.borderColor = [[UIColor colorWithRed:0.071 green:0.396 blue:0.698 alpha:1.000] CGColor];
+    self.playButton.layer.masksToBounds = YES;
+
     self.playButton.actionBlock = ^(SCHPlayButton *button) {
         if (button.play == YES) {
             [self play];

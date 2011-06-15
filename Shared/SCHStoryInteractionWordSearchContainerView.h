@@ -25,9 +25,7 @@
 @property (nonatomic, assign) id<SCHStoryInteractionWordSearchContainerViewDelegate> delegate;
 @property (nonatomic, assign) NSInteger letterGap;
 
-- (void)populateFromWordSearchModel:(SCHStoryInteractionWordSearch *)wordSearch
-                withLetterTileImage:(UIImage *)letterBackground;
-
+- (void)populateFromWordSearchModel:(SCHStoryInteractionWordSearch *)wordSearch;
 - (void)clearSelection;
 - (void)addPermanentHighlightFromCurrentSelectionWithColor:(UIColor *)color;
 

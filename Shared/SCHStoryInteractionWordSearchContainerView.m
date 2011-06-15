@@ -72,12 +72,12 @@
 }
 
 - (void)populateFromWordSearchModel:(SCHStoryInteractionWordSearch *)wordSearch
-                withLetterTileImage:(UIImage *)letterBackground
 {
     self.numberOfRows = [wordSearch matrixRows];
     self.numberOfColumns = [wordSearch matrixColumns];
-    const CGFloat scale = [[UIScreen mainScreen] scale];
-    self.letterSize = CGSizeMake(letterBackground.size.width / scale, letterBackground.size.height / scale);
+    self.letterSize = CGSizeMake((CGRectGetWidth(self.bounds)+self.letterGap)/self.numberOfRows - self.letterGap,
+                                 (CGRectGetHeight(self.bounds)+self.letterGap)/self.numberOfColumns - self.letterGap);
+    
     CGSize letterAreaSize = CGSizeMake(self.numberOfColumns * self.letterSize.width + (self.numberOfColumns-1) * self.letterGap,
                                        self.numberOfRows * self.letterSize.height + (self.numberOfRows-1) * self.letterGap);
     self.letterArea = CGRectMake((self.bounds.size.width - letterAreaSize.width) / 2,
@@ -87,19 +87,16 @@
     for (int row = 0; row < self.numberOfRows; ++row) {
         CGFloat x = self.letterArea.origin.x;
         for (int col = 0; col < self.numberOfColumns; ++col) {
-            UIImageView *bg = [[UIImageView alloc] initWithImage:letterBackground];
-            bg.frame = CGRectMake(x, y, self.letterSize.width, self.letterSize.height);
-            UILabel *label = [[UILabel alloc] initWithFrame:bg.bounds];
+            CGRect tileFrame = CGRectMake(x, y, self.letterSize.width, self.letterSize.height);
+            UILabel *label = [[UILabel alloc] initWithFrame:tileFrame];
             unichar letter = [wordSearch matrixLetterAtRow:row column:col];
             label.text = [NSString stringWithCharacters:&letter length:1];
             label.font = [UIFont boldSystemFontOfSize:20];
             label.textColor = [UIColor whiteColor];
-            label.backgroundColor = [UIColor clearColor];
+            label.backgroundColor = [UIColor colorWithRed:0.129 green:0.267 blue:0.553 alpha:1.];
             label.textAlignment = UITextAlignmentCenter;
-            [bg addSubview:label];
+            [self addSubview:label];
             [label release];
-            [self addSubview:bg];
-            [bg release];
             x += self.letterSize.width + self.letterGap;
         }
         y += self.letterSize.height + self.letterGap;

@@ -40,6 +40,9 @@
 
 - (void)setupViewAtIndex:(NSInteger)screenIndex
 {
+    [self playAudioAtPath:[(SCHStoryInteractionMultipleChoiceWithAnswerPictures *)self.storyInteraction introductionAudioPath]
+               completion:^{}];
+
     self.currentQuestionIndex = 0;
     [self setupQuestion];
 }
