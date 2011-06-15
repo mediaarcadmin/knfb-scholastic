@@ -80,7 +80,7 @@ static CGFloat distanceSq(CGPoint p1, CGPoint p2)
 
     NSInteger numTileRows = [words count];
     CGFloat y = (CGRectGetHeight(self.lettersContainerView.bounds) - numTileRows*letterTileSize.height - (numTileRows-1)*kLetterGap)/2 + letterTileSize.height/2;
-    NSInteger characterIndex = 0;
+    NSInteger characterIndex = 1;
     
     for (NSString *word in words) {
         NSInteger length = [word length];
