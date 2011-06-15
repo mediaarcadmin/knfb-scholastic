@@ -32,8 +32,9 @@
 
 - (NSInteger)arrayIndexForWordLength:(NSInteger)wordLength;
 - (void)clearBuiltWord;
-- (void)repositionLettersInBuiltWord;
+- (void)repositionLettersInBuiltWord:(void(^)(void))completion;
 - (NSString *)builtWordAsString;
+- (void)handleTapGesture:(UITapGestureRecognizer *)tap;
 
 - (NSInteger)letterPositionForPointInContentsView:(CGPoint)point;
 - (NSInteger)letterPositionForPointInTarget:(CGPoint)point;
@@ -148,6 +149,10 @@
                 [self.contentsView addSubview:letterView];
                 [letterView release];
                 x += letterTileSize.width + kLetterGap;
+                
+                UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
+                [letterView addGestureRecognizer:tap];
+                [tap release];
             }
         }
         y += letterTileSize.height + kLetterGap;
@@ -261,7 +266,7 @@
     [self.letterViews makeObjectsPerformSelector:@selector(moveToHomePosition)];
 }
 
-- (void)repositionLettersInBuiltWord
+- (void)repositionLettersInBuiltWord:(void (^)(void))completion
 {
     [UIView animateWithDuration:0.25
                      animations:^{
@@ -273,6 +278,11 @@
                              letter.center = [self pointInContentsViewForLetterPosition:letterPosition];
                              letterPosition++;
                          }
+                     }
+                     completion:^(BOOL finished) {
+                         if (completion) {
+                             completion();
+                         }
                      }];
 }
 
@@ -280,7 +290,7 @@
 {
     if (newGapPosition != gapPosition) {
         gapPosition = newGapPosition;
-        [self repositionLettersInBuiltWord];
+        [self repositionLettersInBuiltWord:nil];
     }
 }
 
@@ -339,6 +349,24 @@
     [self clearBuiltWord];
 }
 
+- (void)handleTapGesture:(UITapGestureRecognizer *)tap
+{
+    if ([self buildTargetIsFull]) {
+        return;
+    }
+    
+    SCHStoryInteractionDraggableLetterView *letter = (SCHStoryInteractionDraggableLetterView *)tap.view;
+    if ([self.builtWord containsObject:letter]) {
+        return;
+    }
+    
+    [self playBundleAudioWithFilename:@"sfx_pickup.mp3" completion:nil];
+    [self.builtWord addObject:letter];
+    [self repositionLettersInBuiltWord:^{
+        [self playBundleAudioWithFilename:@"sfx_dropOK.mp3" completion:nil];
+    }];
+}
+
 #pragma mark - Draggable view delegate
 
 - (void)draggableViewDidStartDrag:(SCHStoryInteractionDraggableView *)draggableView
@@ -385,7 +413,7 @@
         [self.builtWord insertObject:draggableView atIndex:letterPosition];
     }
     self.gapPosition = NSNotFound;
-    [self repositionLettersInBuiltWord];
+    [self repositionLettersInBuiltWord:nil];
 }
 
 #pragma mark - Target letter positions
