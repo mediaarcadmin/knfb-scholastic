@@ -69,7 +69,7 @@
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 							</object>
 						</object>
-						<string key="NSFrame">{{26, 204}, {360, 44}}</string>
+						<string key="NSFrame">{{56, 202}, {360, 44}}</string>
 						<reference key="NSSuperview" ref="797319424"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="707452303"/>
@@ -85,7 +85,7 @@
 					<object class="IBUIButton" id="465280677">
 						<reference key="NSNextResponder" ref="797319424"/>
 						<int key="NSvFlags">-2147483358</int>
-						<string key="NSFrame">{{5, 205}, {130, 40}}</string>
+						<string key="NSFrame">{{35, 203}, {130, 40}}</string>
 						<reference key="NSSuperview" ref="797319424"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="689445653"/>
@@ -120,7 +120,7 @@
 					<object class="IBUIButton" id="699524793">
 						<reference key="NSNextResponder" ref="797319424"/>
 						<int key="NSvFlags">-2147483358</int>
-						<string key="NSFrame">{{140, 205}, {130, 40}}</string>
+						<string key="NSFrame">{{170, 203}, {130, 40}}</string>
 						<reference key="NSSuperview" ref="797319424"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="645779420"/>
@@ -145,10 +145,9 @@
 					<object class="IBUIButton" id="645779420">
 						<reference key="NSNextResponder" ref="797319424"/>
 						<int key="NSvFlags">-2147483358</int>
-						<string key="NSFrame">{{275, 205}, {130, 40}}</string>
+						<string key="NSFrame">{{305, 203}, {130, 40}}</string>
 						<reference key="NSSuperview" ref="797319424"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<int key="IBUITag">3</int>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -170,7 +169,7 @@
 					<object class="IBUIImageView" id="778809060">
 						<reference key="NSNextResponder" ref="797319424"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{116, 12}, {180, 180}}</string>
+						<string key="NSFrame">{{146, 10}, {180, 180}}</string>
 						<reference key="NSSuperview" ref="797319424"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="126411929"/>
@@ -184,11 +183,11 @@
 					<object class="IBUIView" id="126411929">
 						<reference key="NSNextResponder" ref="797319424"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{116, 12}, {180, 180}}</string>
+						<string key="NSFrame">{{146, 10}, {180, 180}}</string>
 						<reference key="NSSuperview" ref="797319424"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="465280677"/>
-						<object class="NSColor" key="IBUIBackgroundColor">
+						<object class="NSColor" key="IBUIBackgroundColor" id="20896609">
 							<int key="NSColorSpace">3</int>
 							<bytes key="NSWhite">MCAwAA</bytes>
 						</object>
@@ -196,14 +195,11 @@
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 					</object>
 				</object>
-				<string key="NSFrameSize">{412, 260}</string>
+				<string key="NSFrameSize">{470, 256}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="778809060"/>
-				<object class="NSColor" key="IBUIBackgroundColor">
-					<int key="NSColorSpace">1</int>
-					<bytes key="NSRGB">MC44MTU2ODYyNzQ1IDAuOTMzMzMzMzMzMyAwLjk5NjA3ODQzMTQAA</bytes>
-				</object>
+				<reference key="IBUIBackgroundColor" ref="20896609"/>
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 			</object>
 		</object>
@@ -327,12 +323,12 @@
 						<reference key="object" ref="797319424"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="645779420"/>
+							<reference ref="689445653"/>
 							<reference ref="465280677"/>
 							<reference ref="699524793"/>
+							<reference ref="645779420"/>
 							<reference ref="778809060"/>
 							<reference ref="126411929"/>
-							<reference ref="689445653"/>
 						</object>
 						<reference key="parent" ref="0"/>
 						<string key="objectName">Quiz Question View</string>
