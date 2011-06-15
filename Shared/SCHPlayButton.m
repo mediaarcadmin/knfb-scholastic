@@ -73,7 +73,7 @@
             self.image = [UIImage imageNamed:@"SCHPlayButtonPause"];
             self.alpha = 0.0;
         }
-        [UIView animateWithDuration:0.5 delay:0.0 options:UIViewAnimationOptionCurveEaseOut animations:^ {
+        [UIView animateWithDuration:0.25 delay:0.0 options:UIViewAnimationOptionCurveEaseOut animations:^ {
             self.alpha = (play == YES ? 0.0 : 1.0);
         } completion:^(BOOL finished){
             if (play == YES) {
