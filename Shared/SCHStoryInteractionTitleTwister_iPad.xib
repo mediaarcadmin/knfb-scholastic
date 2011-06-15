@@ -75,7 +75,7 @@
 					<object class="IBUILabel" id="588222260">
 						<reference key="NSNextResponder" ref="581539367"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{20, 78}, {282, 40}}</string>
+						<string key="NSFrame">{{20, 92}, {282, 40}}</string>
 						<reference key="NSSuperview" ref="581539367"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="1060126703"/>
@@ -102,10 +102,9 @@
 					<object class="IBUIButton" id="1060126703">
 						<reference key="NSNextResponder" ref="581539367"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{125, 134}, {72, 37}}</string>
+						<string key="NSFrame">{{125, 167}, {72, 37}}</string>
 						<reference key="NSSuperview" ref="581539367"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 						<int key="IBUIContentHorizontalAlignment">0</int>
@@ -135,7 +134,7 @@
 						</object>
 					</object>
 				</object>
-				<string key="NSFrameSize">{322, 191}</string>
+				<string key="NSFrameSize">{322, 224}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="878962010"/>
@@ -604,7 +603,6 @@
 								<string key="NSFrame">{{0, 43}, {135, 159}}</string>
 								<reference key="NSSuperview" ref="624981490"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
 								<reference key="IBUIBackgroundColor" ref="515625978"/>
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -1023,8 +1021,8 @@
 						<reference key="object" ref="581539367"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="1060126703"/>
 							<reference ref="878962010"/>
+							<reference ref="1060126703"/>
 							<reference ref="588222260"/>
 						</object>
 						<reference key="parent" ref="0"/>

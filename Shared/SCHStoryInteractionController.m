@@ -14,17 +14,6 @@
 #import "SCHXPSProvider.h"
 #import "SCHBookManager.h"
 
-#define kBackgroundLeftCap 10
-#define kBackgroundTopCap_iPhone 40
-#define kBackgroundTopCap_iPad 50
-#define kContentsInsetLeft 5
-#define kContentsInsetRight 5
-#define kContentsInsetTop_iPhone 36
-#define kContentsInsetTop_iPad 46
-#define kContentsInsetBottom 5
-#define kTitleInsetLeft 10
-#define kTitleInsetTop 5
-
 static NSUInteger const kSCHStoryInteractionControllerButtonSize = 30;
 
 typedef void (^PlayAudioCompletionBlock)(void);
@@ -135,16 +124,17 @@ typedef void (^PlayAudioCompletionBlock)(void);
         self.xpsProvider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.isbn];
         
         BOOL iPad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
-        
-        int kBackgroundTopCap, kContentsInsetTop;
-        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-            kBackgroundTopCap = kBackgroundTopCap_iPhone;
-            kContentsInsetTop = kContentsInsetTop_iPhone;
-        } else {
-            kBackgroundTopCap = kBackgroundTopCap_iPad;
-            kContentsInsetTop = kContentsInsetTop_iPad;
-        }
 
+        UIEdgeInsets contentInsets;
+        UIEdgeInsets titleInsets;
+        if (iPad) {
+            contentInsets = UIEdgeInsetsMake(130, 40, 40, 40);
+            titleInsets = UIEdgeInsetsMake(40, 40, 26, 40);
+        } else {
+            contentInsets = UIEdgeInsetsMake(64, 5, 5, 5);
+            titleInsets = UIEdgeInsetsMake(5, 30, 5, 30);
+        }
+        
         // set up the transparent full-size container to trap touch events before they get
         // to the underlying view; this effectively makes the story interaction modal
         UIView *container = [[UIView alloc] initWithFrame:CGRectIntegral(hostView.bounds)];
@@ -153,43 +143,47 @@ typedef void (^PlayAudioCompletionBlock)(void);
         
         NSString *age = [self.storyInteraction isOlderStoryInteraction] ? @"older" : @"younger";
         UIImage *backgroundImage = [self deviceSpecificImageNamed:[NSString stringWithFormat:@"storyinteraction-bg-%@", age]];
-        UIImage *backgroundStretch = [backgroundImage stretchableImageWithLeftCapWidth:kBackgroundLeftCap topCapHeight:kBackgroundTopCap];
+        UIImage *backgroundStretch = [backgroundImage stretchableImageWithLeftCapWidth:backgroundImage.size.width/2-1
+                                                                          topCapHeight:backgroundImage.size.height/2-1];
         UIImageView *background = [[UIImageView alloc] initWithImage:backgroundStretch];
+        background.contentMode = UIViewContentModeScaleToFill;
         
         // first object in the NIB must be the container view for the interaction
         self.contentsView = [self.nibObjects objectAtIndex:self.currentScreenIndex];
-        CGFloat backgroundWidth = CGRectGetWidth(self.contentsView.bounds) + kContentsInsetLeft + kContentsInsetRight;
-        CGFloat backgroundHeight = CGRectGetHeight(self.contentsView.bounds) + kContentsInsetTop + kContentsInsetBottom;
+        if (!iPad && (CGRectGetWidth(self.contentsView.bounds) > 470 || CGRectGetHeight(self.contentsView.bounds) > 256)) {
+            NSLog(@"contentView %d is too large: %@", self.currentScreenIndex, NSStringFromCGRect(self.contentsView.bounds));
+        }
+        
+        CGFloat backgroundWidth = CGRectGetWidth(self.contentsView.bounds) + contentInsets.left + contentInsets.right;
+        CGFloat backgroundHeight = CGRectGetHeight(self.contentsView.bounds) + contentInsets.top + contentInsets.bottom;
         
         background.userInteractionEnabled = YES;
         background.bounds = CGRectIntegral(CGRectMake(0, 0, backgroundWidth, backgroundHeight));
         background.center = CGPointMake(floor(CGRectGetMidX(container.bounds)), floor(CGRectGetMidY(container.bounds)));
-        self.contentsView.center = CGPointMake(floor(backgroundWidth/2), floor((backgroundHeight-kContentsInsetTop-kContentsInsetBottom)/2+kContentsInsetTop));
+        self.contentsView.center = CGPointMake(floor(backgroundWidth/2), floor((backgroundHeight-contentInsets.top-contentInsets.bottom)/2+contentInsets.top));
         [background addSubview:self.contentsView];
         [container addSubview:background];
         
-        if (iPad == YES) {
-            self.titleView = [[UILabel alloc] initWithFrame:CGRectIntegral(CGRectMake(kTitleInsetLeft, kTitleInsetTop,
-                                                                                      backgroundWidth - kTitleInsetLeft*2,
-                                                                                      kContentsInsetTop - kTitleInsetTop*2))];            
-        } else {
-            self.titleView = [[UILabel alloc] initWithFrame:CGRectIntegral(CGRectMake(kTitleInsetLeft + kSCHStoryInteractionControllerButtonSize, kTitleInsetTop,
-                                                                                      backgroundWidth - (kSCHStoryInteractionControllerButtonSize * 2) - kTitleInsetLeft*2,
-                                                                                      kContentsInsetTop - kTitleInsetTop*2))];
-        }
+        CGRect titleFrame = UIEdgeInsetsInsetRect(CGRectMake(0, 0, backgroundWidth, contentInsets.top), titleInsets);
+        UILabel *title = [[UILabel alloc] initWithFrame:CGRectIntegral(titleFrame)];
+        title.backgroundColor = [UIColor clearColor];
+        title.font = [UIFont boldSystemFontOfSize:iPad ? 24 : 18];
+        title.textAlignment = UITextAlignmentCenter;
+        title.textColor = [self.storyInteraction isOlderStoryInteraction] ? [UIColor whiteColor] : [UIColor colorWithRed:0.113 green:0.392 blue:0.690 alpha:1.];
+        title.adjustsFontSizeToFitWidth = YES;
+        title.numberOfLines = 2;
 
-        self.titleView.backgroundColor = [UIColor clearColor];
-        self.titleView.font = [UIFont boldSystemFontOfSize:iPad ? 24 : 18];
+        self.titleView = title;
         [self setTitle:[self.storyInteraction interactionViewTitle]];
-        self.titleView.textAlignment = UITextAlignmentCenter;
-        self.titleView.textColor = [self.storyInteraction isOlderStoryInteraction] ? [UIColor whiteColor] : [UIColor colorWithRed:0.113 green:0.392 blue:0.690 alpha:1.];
-        self.titleView.adjustsFontSizeToFitWidth = YES;
-        [background addSubview:self.titleView];
-        [self.titleView release];
+        [background addSubview:title];
+        [title release];
         
         UIButton *closeButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        closeButton.frame = iPad ? CGRectMake(-10, -10, kSCHStoryInteractionControllerButtonSize, kSCHStoryInteractionControllerButtonSize) : 
-        CGRectMake(5, 5, kSCHStoryInteractionControllerButtonSize, kSCHStoryInteractionControllerButtonSize);
+        if (iPad) {
+            closeButton.frame = CGRectMake(-10, -10, kSCHStoryInteractionControllerButtonSize, kSCHStoryInteractionControllerButtonSize);
+        } else {
+            closeButton.frame = CGRectMake(5, 5, kSCHStoryInteractionControllerButtonSize, kSCHStoryInteractionControllerButtonSize);
+        }
         [closeButton setImage:[UIImage imageNamed:@"storyinteraction-close"] forState:UIControlStateNormal];
         [closeButton addTarget:self action:@selector(closeButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
         [background addSubview:closeButton];
