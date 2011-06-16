@@ -55,6 +55,8 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
 
 - (void)dealloc
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
     [topFavoritesComponent release], topFavoritesComponent = nil;
     [topTenBooks release], topTenBooks = nil;
     [lastTopTenBookRetrieval release], lastTopTenBookRetrieval = nil;
@@ -261,7 +263,13 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
     if (self.lastTopTenBookRetrieval == nil || 
         [self.lastTopTenBookRetrieval timeIntervalSinceNow] <= kSCHBookShelfViewControllerTopTenRefreshTime || 
         [self.topTenBooks count] < 1) {
-        [self.topFavoritesComponent topFavoritesForAge:self.profileItem.age];			        
+        if ([self.topFavoritesComponent topFavoritesForAge:self.profileItem.age] == NO) {
+            // if we need to authenticate then try again once we are
+            [[NSNotificationCenter defaultCenter] addObserver:self 
+                                                     selector:@selector(authenticationManager:) 
+                                                         name:kSCHAuthenticationManagerSuccess 
+                                                       object:nil];					            
+        }
     }
     
     SCHBookShelfTopTenPopoverTableView *popoverTable = [[SCHBookShelfTopTenPopoverTableView alloc] initWithNibName:nil bundle:nil];
@@ -333,6 +341,19 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
 	self.loadingView.hidden = YES;
 
     [self.popover dismissPopoverAnimated:YES];
+}
+
+#pragma mark - Authentication Manager Delegate
+
+- (void)authenticationManager:(NSNotification *)notification
+{
+	NSDictionary *userInfo = [notification userInfo];
+	
+	if ([[userInfo valueForKey:kSCHAuthenticationManagerOfflineMode] boolValue] == NO) {
+        if ([self.topFavoritesComponent topFavoritesForAge:self.profileItem.age] == YES) {
+            [[NSNotificationCenter defaultCenter] removeObserver:self];
+        }
+	}
 }
 
 #pragma mark - SCHComponent Delegate

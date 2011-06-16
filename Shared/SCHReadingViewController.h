@@ -14,6 +14,7 @@
 #import "SCHReadingInteractionsListController.h"
 #import "SCHReadingNoteView.h"
 #import "SCHStoryInteractionControllerDelegate.h"
+#import <AVFoundation/AVAudioPlayer.h>
 
 typedef enum 
 {
@@ -33,7 +34,7 @@ typedef enum
 
 @interface SCHReadingViewController : UIViewController <SCHReadingViewDelegate, SCHReadingNotesListControllerDelegate, 
 SCHReadingNoteViewDelegate, SCHReadingInteractionsListControllerDelegate, SCHAudioBookPlayerDelegate, UIPopoverControllerDelegate,
-SCHStoryInteractionControllerDelegate> 
+SCHStoryInteractionControllerDelegate, AVAudioPlayerDelegate> 
 {}
 UIView *storyInteractionButtonView;
 
