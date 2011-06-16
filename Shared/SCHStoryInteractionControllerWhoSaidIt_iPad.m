@@ -109,14 +109,14 @@ static CGPoint pointWithOffset(CGPoint p, CGPoint offset)
             continue;
         }
         SCHStoryInteractionDraggableTargetView *target = [self.targets objectAtIndex:source.tag];
-        NSString *root;
+        NSString *imageName;
         if (source.matchTag == target.matchTag) {
             correctCount++;
-            root = @"storyinteraction-draggable-green-";
+            imageName = @"storyinteraction-draggable-green";
         } else {
-            root = @"storyinteraction-draggable-red-";
+            imageName = @"storyinteraction-draggable-red";
         }
-        UIImage *image = [UIImage imageNamed:[root stringByAppendingString:UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"ipad" : @"iphone"]];
+        UIImage *image = [UIImage imageNamed:imageName];
         UIImageView *imageView = (UIImageView *)[source viewWithTag:kSourceImageTag];
         imageView.highlightedImage = image;
         [imageView setHighlighted:YES];
