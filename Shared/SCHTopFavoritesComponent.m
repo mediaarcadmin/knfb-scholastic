@@ -12,8 +12,10 @@
 #import "NSNumber+ObjectTypes.h"
 
 static NSInteger const kSCHTopFavoritesComponentTopCount = 10;
-static NSString * const kSCHTopFavoritesComponentYoungReader = @"Young Reader";
-static NSString * const kSCHTopFavoritesComponentAdvanced = @"Advanced Reader";
+static NSString * const kSCHTopFavoritesComponentCategoryPictureBooks = @"Picture books";
+static NSString * const kSCHTopFavoritesComponentCategoryLevelReader = @"Level reader";
+static NSString * const kSCHTopFavoritesComponentCategoryChapterBooks = @"Chapter books";
+static NSString * const kSCHTopFavoritesComponentCategoryYoungAdults = @"Young Adults";
 
 @implementation SCHTopFavoritesComponent
 
@@ -29,14 +31,25 @@ static NSString * const kSCHTopFavoritesComponentAdvanced = @"Advanced Reader";
 	return(ret);
 }
 
-- (BOOL)topFavorites
+- (BOOL)topFavoritesForAge:(NSUInteger)ageInYears
 {
 	BOOL ret = YES;
 	
 	NSMutableDictionary *favoriteItem = [NSMutableDictionary dictionary];
 	[favoriteItem setObject:[NSNumber numberWithBool:NO] forKey:kSCHLibreAccessWebServiceAssignedBooksOnly];
-	[favoriteItem setObject:[NSNumber numberWithTopFavoritesType:TopFavoritesTypeseReaderCategory] forKey:kSCHLibreAccessWebServiceTopFavoritesType];
-	[favoriteItem setObject:kSCHTopFavoritesComponentYoungReader forKey:kSCHLibreAccessWebServiceTopFavoritesTypeValue];
+	[favoriteItem setObject:[NSNumber numberWithTopFavoritesType:TopFavoritesTypeseReaderCategoryClass] forKey:kSCHLibreAccessWebServiceTopFavoritesType];
+
+    if (ageInYears < 7) {
+        [favoriteItem setObject:kSCHTopFavoritesComponentCategoryPictureBooks forKey:kSCHLibreAccessWebServiceTopFavoritesTypeValue];        
+    }
+    else if (ageInYears < 9) {
+        [favoriteItem setObject:kSCHTopFavoritesComponentCategoryLevelReader forKey:kSCHLibreAccessWebServiceTopFavoritesTypeValue];        
+    }
+    else if (ageInYears < 12) {
+        [favoriteItem setObject:kSCHTopFavoritesComponentCategoryChapterBooks forKey:kSCHLibreAccessWebServiceTopFavoritesTypeValue];        
+    } else {
+        [favoriteItem setObject:kSCHTopFavoritesComponentCategoryYoungAdults forKey:kSCHLibreAccessWebServiceTopFavoritesTypeValue];        
+    }
 	
 	if ([self.libreAccessWebService listTopFavorites:[NSArray arrayWithObject:favoriteItem] withCount:kSCHTopFavoritesComponentTopCount] == NO) {
 		[[SCHAuthenticationManager sharedAuthenticationManager] authenticate];				
@@ -46,11 +59,8 @@ static NSString * const kSCHTopFavoritesComponentAdvanced = @"Advanced Reader";
 	return(ret);
 }
 
-// TODO: we need clarification about how this should work to complete
 - (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result
 {	
-	NSLog(@"%@\n%@", method, result);
-	
 	if([method compare:kSCHLibreAccessWebServiceListFavoriteTypes] == NSOrderedSame) {
 		if([(id)self.delegate respondsToSelector:@selector(component:didCompleteWithResult:)]) {
 			[(id)self.delegate component:self didCompleteWithResult:result];									
