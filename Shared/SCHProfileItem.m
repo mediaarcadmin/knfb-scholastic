@@ -175,34 +175,34 @@ static NSString * const kSCHProfileItemUserContentItemContentMetadataItem = @"Us
         case kSCHBookSortTypeNewest:
         {
             NSMutableArray *sortArray = [[NSMutableArray alloc] initWithCapacity:[books count]];
+            NSEntityDescription *entityDescription = [NSEntityDescription 
+                                                      entityForName:kSCHUserContentItem
+                                                      inManagedObjectContext:self.managedObjectContext];
 
             for (SCHContentMetadataItem *book in bookObjects) {
-                NSEntityDescription *entityDescription = [NSEntityDescription 
-                                                          entityForName:kSCHUserContentItem
-                                                          inManagedObjectContext:self.managedObjectContext];
                 NSFetchRequest *fetchRequest = [entityDescription.managedObjectModel 
                                                 fetchRequestTemplateForName:kSCHUserContentItemFetchWithContentIdentifier];
                 
                 [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"ContentIdentifier == %@", book.ContentIdentifier]];
+                [fetchRequest setFetchLimit:1];
                 
                 NSArray *userContentItems = [self.managedObjectContext executeFetchRequest:fetchRequest error:nil];	
-                userContentItems = [userContentItems sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"LastModified" ascending:NO]]];
-
-                if ([userContentItems count] > 0) {
-                    // take the first user content item from the list - this will be the most recent update (since the sort above is descending)
-                    SCHUserContentItem *item = [userContentItems objectAtIndex:0];
-                    NSSet *orderItems = [item OrderList];
-                    SCHOrderItem *orderItem = [[orderItems allObjects] objectAtIndex:0];
-                    NSDate *date = [orderItem OrderDate];
-                    
-                    SCHProfileItemSortObject *sortObj = [[SCHProfileItemSortObject alloc] init];
-                    sortObj.date = date;
-                    sortObj.item = book;
-                    
-                    [sortArray addObject:sortObj];
-                    [sortObj release];
-                    
+                NSDate *date = [NSDate distantPast];
+                if (userContentItems != nil && [userContentItems count] > 0) {
+                    NSSet *orderItems = [[userContentItems objectAtIndex:0] OrderList];
+                    if ([orderItems count] > 0) {
+                        // use the latest date
+                        NSArray *sortedOrderItems = [[orderItems allObjects] sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"date" ascending:NO]]];
+                        SCHOrderItem *orderItem = [sortedOrderItems objectAtIndex:0];
+                        date = [orderItem OrderDate];
+                    }
                 }
+                SCHProfileItemSortObject *sortObj = [[SCHProfileItemSortObject alloc] init];
+                sortObj.date = date;
+                sortObj.item = book;
+                
+                [sortArray addObject:sortObj];
+                [sortObj release];
             }
             
             [sortArray sortUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"date" ascending:NO]]];

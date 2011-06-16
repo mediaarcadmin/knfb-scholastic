@@ -103,31 +103,48 @@ static CGPoint pointWithOffset(CGPoint p, CGPoint offset)
 
 - (void)checkAnswers:(id)sender
 {
+    NSInteger correctCount = 0;
     for (SCHStoryInteractionDraggableView *source in self.sources) {
         if (source.tag < 0) {
             continue;
         }
         SCHStoryInteractionDraggableTargetView *target = [self.targets objectAtIndex:source.tag];
-        NSString *root = (source.matchTag == target.matchTag ? @"storyinteraction-draggable-green-" : @"storyinteraction-draggable-red-");
+        NSString *root;
+        if (source.matchTag == target.matchTag) {
+            correctCount++;
+            root = @"storyinteraction-draggable-green-";
+        } else {
+            root = @"storyinteraction-draggable-red-";
+        }
         UIImage *image = [UIImage imageNamed:[root stringByAppendingString:UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"ipad" : @"iphone"]];
         UIImageView *imageView = (UIImageView *)[source viewWithTag:kSourceImageTag];
         imageView.highlightedImage = image;
         [imageView setHighlighted:YES];
     }
 
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 1.0 * NSEC_PER_SEC);
-    dispatch_after(popTime, dispatch_get_main_queue(), ^{
-        for (SCHStoryInteractionDraggableView *source in self.sources) {
-            UIImageView *imageView = (UIImageView *)[source viewWithTag:kSourceImageTag];
-            [imageView setHighlighted:NO];
-        }
-    });
+    if (correctCount == [self.targets count]) {
+        [self playBundleAudioWithFilename:@"sfx_winround.mp3"
+                               completion:^{
+                                   [self removeFromHostView];
+                               }];
+    } else {
+        // remove the highlights after a short delay
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 1.0 * NSEC_PER_SEC);
+        dispatch_after(popTime, dispatch_get_main_queue(), ^{
+            for (SCHStoryInteractionDraggableView *source in self.sources) {
+                UIImageView *imageView = (UIImageView *)[source viewWithTag:kSourceImageTag];
+                [imageView setHighlighted:NO];
+            }
+        });
+    }
 }
 
 #pragma mark - draggable view delegate
 
 - (void)draggableViewDidStartDrag:(SCHStoryInteractionDraggableView *)draggableView
-{}
+{
+    [self playBundleAudioWithFilename:@"sfx_pickup.mp3" completion:nil];
+}
 
 - (BOOL)draggableView:(SCHStoryInteractionDraggableView *)draggableView shouldSnapFromPosition:(CGPoint)position toPosition:(CGPoint *)snapPosition
 {
@@ -161,6 +178,8 @@ static CGPoint pointWithOffset(CGPoint p, CGPoint offset)
     if (draggableView.tag < 0) {
         [draggableView moveToHomePosition];
     }
+    
+    [self playBundleAudioWithFilename:@"sfx_dropOK.mp3" completion:nil];
 }
 
 @end

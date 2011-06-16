@@ -45,44 +45,33 @@
 					<object class="IBUIView" id="191373211">
 						<reference key="NSNextResponder" ref="937097102"/>
 						<int key="NSvFlags">274</int>
-						<string key="NSFrameSize">{470, 279}</string>
+						<string key="NSFrameSize">{470, 250}</string>
 						<reference key="NSSuperview" ref="937097102"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
-						<object class="NSColor" key="IBUIBackgroundColor">
+						<reference key="NSNextKeyView" ref="371201540"/>
+						<object class="NSColor" key="IBUIBackgroundColor" id="171691594">
 							<int key="NSColorSpace">3</int>
-							<bytes key="NSWhite">MQA</bytes>
-							<object class="NSColorSpace" key="NSCustomColorSpace" id="1063054341">
-								<int key="NSID">2</int>
-							</object>
+							<bytes key="NSWhite">MCAwAA</bytes>
 						</object>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 					</object>
 					<object class="IBUIImageView" id="371201540">
 						<reference key="NSNextResponder" ref="937097102"/>
 						<int key="NSvFlags">274</int>
-						<string key="NSFrameSize">{470, 279}</string>
+						<string key="NSFrameSize">{470, 250}</string>
 						<reference key="NSSuperview" ref="937097102"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
-						<object class="NSColor" key="IBUIBackgroundColor">
-							<int key="NSColorSpace">3</int>
-							<bytes key="NSWhite">MCAwAA</bytes>
-						</object>
+						<reference key="IBUIBackgroundColor" ref="171691594"/>
 						<int key="IBUIContentMode">4</int>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 					</object>
 				</object>
-				<string key="NSFrameSize">{470, 279}</string>
+				<string key="NSFrameSize">{470, 250}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
-				<reference key="NSNextKeyView"/>
-				<object class="NSColor" key="IBUIBackgroundColor">
-					<int key="NSColorSpace">3</int>
-					<bytes key="NSWhite">MQA</bytes>
-					<reference key="NSCustomColorSpace" ref="1063054341"/>
-				</object>
+				<reference key="NSNextKeyView" ref="191373211"/>
+				<reference key="IBUIBackgroundColor" ref="171691594"/>
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 			</object>
 		</object>

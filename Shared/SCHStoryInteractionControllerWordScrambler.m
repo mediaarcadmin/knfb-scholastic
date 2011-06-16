@@ -26,6 +26,7 @@ static CGFloat distanceSq(CGPoint p1, CGPoint p2)
 @property (nonatomic, retain) NSArray *letterPositions;
 @property (nonatomic, retain) NSMutableArray *lettersByPosition;
 @property (nonatomic, retain) NSArray *hintLetters;
+@property (nonatomic, assign) BOOL hasShownHint;
 
 - (NSInteger)letterPositionCloseToPoint:(CGPoint)point;
 - (void)swapLetterAtPosition:(NSInteger)position with:(SCHStoryInteractionDraggableView *)letterView;
@@ -44,6 +45,7 @@ static CGFloat distanceSq(CGPoint p1, CGPoint p2)
 @synthesize letterPositions;
 @synthesize lettersByPosition;
 @synthesize hintLetters;
+@synthesize hasShownHint;
 
 - (void)dealloc
 {
@@ -118,6 +120,8 @@ static CGFloat distanceSq(CGPoint p1, CGPoint p2)
         [self.lettersByPosition addObject:view];
         [views removeObjectAtIndex:index];
     }
+    
+    self.hasShownHint = NO;
 }
 
 #pragma mark - Actions
@@ -140,28 +144,40 @@ static CGFloat distanceSq(CGPoint p1, CGPoint p2)
 
         [hintLetter setLetterColor:[UIColor yellowColor]];
     }
+    
+    self.hasShownHint = YES;
 }
 
 #pragma mark - draggable delegate
 
+- (BOOL)draggableViewShouldStartDrag:(SCHStoryInteractionDraggableView *)draggableView
+{
+    if (self.hasShownHint && [self.hintLetters containsObject:draggableView]) {
+        return NO;
+    }
+    return YES;
+}
+
 - (void)draggableViewDidStartDrag:(SCHStoryInteractionDraggableView *)draggableView
 {
-    [(SCHStoryInteractionDraggableLetterView *)draggableView setLetterColor:[UIColor whiteColor]];
-
     [self playBundleAudioWithFilename:@"sfx_pickup.mp3" completion:nil];
 }
 
 - (BOOL)draggableView:(SCHStoryInteractionDraggableView *)draggableView shouldSnapFromPosition:(CGPoint)position toPosition:(CGPoint *)snapPosition
 {
     NSInteger letterPosition = [self letterPositionCloseToPoint:position];
-    if (letterPosition == NSNotFound || [self.lettersByPosition objectAtIndex:letterPosition] == draggableView) {
+    if (letterPosition == NSNotFound) {
         return NO;
-    } else {
-        // don't actually snap but set the homePosition so the letter falls there when the drag ends
-        *snapPosition = position;
-        [self swapLetterAtPosition:letterPosition with:draggableView];
-        return YES;
     }
+    SCHStoryInteractionDraggableLetterView *swapLetter = [self.lettersByPosition objectAtIndex:letterPosition];
+    if (swapLetter == draggableView || (self.hasShownHint && [self.hintLetters containsObject:swapLetter])) {
+        return NO;
+    }
+    
+    // don't actually snap but set the homePosition so the letter falls there when the drag ends
+    *snapPosition = position;
+    [self swapLetterAtPosition:letterPosition with:draggableView];
+    return YES;
 }
 
 - (void)draggableView:(SCHStoryInteractionDraggableView *)draggableView didMoveToPosition:(CGPoint)position
@@ -223,7 +239,10 @@ static CGFloat distanceSq(CGPoint p1, CGPoint p2)
         letter.letterColor = [UIColor yellowColor];
     }
     
-    [self playBundleAudioWithFilename:@"sfx_winround.mp3" completion:nil];
+    [self playBundleAudioWithFilename:@"sfx_winround.mp3"
+                           completion:^{
+                               [self removeFromHostView];
+                           }];
 }
 
 @end

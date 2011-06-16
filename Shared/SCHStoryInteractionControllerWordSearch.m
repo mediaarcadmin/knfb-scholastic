@@ -90,7 +90,10 @@
         [self playAudioAtPath:[wordSearch audioPathForCorrectAnswer]
                    completion:^{
                        if ([self.remainingWords count] == 0) {
-                           [self playAudioAtPath:[wordSearch audioPathForYouFoundThemAll] completion:nil];
+                           [self playAudioAtPath:[wordSearch audioPathForYouFoundThemAll]
+                                      completion:^{
+                                          [self removeFromHostView];
+                                      }];
                        }
                    }];
     } else if (index == NSNotFound) {

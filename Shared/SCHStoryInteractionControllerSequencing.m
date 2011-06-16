@@ -72,6 +72,8 @@
         
         SCHStoryInteractionDraggableTargetView *target = (SCHStoryInteractionDraggableTargetView *)[self.targets objectAtIndex:i];
         target.matchTag = i;
+        target.layer.cornerRadius = 5;
+        target.layer.masksToBounds = YES;
         
         [views removeObjectAtIndex:pos];
     }
@@ -94,23 +96,48 @@
     }
     
     BOOL allCorrect = YES;
-    for (NSNumber *imageMatchTag in [self.attachedImages allKeys]) {
-        SCHStoryInteractionDraggableTargetView *target = [self.attachedImages objectForKey:imageMatchTag];
-        if ([imageMatchTag integerValue] != target.matchTag) {
+    for (SCHStoryInteractionDraggableView *draggable in self.imageContainers) {
+        SCHStoryInteractionDraggableTargetView *target = [self.attachedImages objectForKey:[NSNumber numberWithInteger:draggable.matchTag]];
+        if (target.matchTag != draggable.matchTag) {
             allCorrect = NO;
+            break;
         }
     }
     
     if (allCorrect) {
+        // get image views in answer order
+        NSArray *views = [self.imageContainers sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+            return [(SCHStoryInteractionDraggableView *)obj1 matchTag] - [(SCHStoryInteractionDraggableView *)obj2 matchTag];
+        }];
+        
+        // play all the audio files in turn
         SCHStoryInteractionSequencing *sequencing = (SCHStoryInteractionSequencing *)self.storyInteraction;
-        [self playAudioAtPath:[sequencing audioPathForCorrectAnswer] completion:nil];
+        __block NSInteger index = 0;
+        __block dispatch_block_t playBlock;
+        playBlock = Block_copy(^{
+            if (index < kNumberOfImages) {
+                dispatch_block_t playBlockCopy = Block_copy(playBlock);
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.5*NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+                    [self setView:[[views objectAtIndex:index] viewWithTag:kImageViewTag] borderColor:[UIColor greenColor]];
+                    [self playAudioAtPath:[sequencing audioPathForCorrectAnswerAtIndex:index++] completion:playBlockCopy];
+                });
+                Block_release(playBlockCopy);
+            } else {
+                [self removeFromHostView];
+            }
+        });
+        [self playAudioAtPath:[sequencing audioPathForThatsRight] completion:playBlock];
+        Block_release(playBlock);
     } else {
-        // move all images back to start
-        for (SCHStoryInteractionDraggableView *draggable in self.imageContainers) {
-            [draggable moveToHomePosition];
-            [self setView:[draggable viewWithTag:kImageViewTag] borderColor:[UIColor blueColor]];
-        }
-        [self.attachedImages removeAllObjects];
+        [self playAudioAtPath:[self.storyInteraction audioPathForTryAgain]
+                   completion:^{
+                       // move all images back to start
+                       for (SCHStoryInteractionDraggableView *draggable in self.imageContainers) {
+                           [draggable moveToHomePosition];
+                           [self setView:[draggable viewWithTag:kImageViewTag] borderColor:[UIColor blueColor]];
+                       }
+                       [self.attachedImages removeAllObjects];
+                   }];
     }
 }
 
@@ -162,22 +189,10 @@ static CGFloat distanceSq(CGPoint imageCenter, CGPoint targetCenter)
         return;
     }
 
-    SCHStoryInteractionSequencing *sequencing = (SCHStoryInteractionSequencing *)self.storyInteraction;
-
     [self.attachedImages setObject:attachedTarget forKey:[NSNumber numberWithInteger:draggableView.matchTag]];
     
     [self playBundleAudioWithFilename:@"sfx_dropOK.mp3" completion:^{
-        UIImageView *imageView = (UIImageView *)[draggableView viewWithTag:kImageViewTag];
-        if (draggableView.matchTag == attachedTarget.matchTag) {
-            [self setView:imageView borderColor:[UIColor greenColor]];
-            [self playAudioAtPath:[sequencing audioPathForCorrectAnswerAtIndex:attachedTarget.matchTag]
-                       completion:^{
-                           [self checkForAllCorrectAnswers];
-                       }];
-        } else {
-            [self setView:imageView borderColor:[UIColor blueColor]];
-            [self checkForAllCorrectAnswers];
-        }
+        [self checkForAllCorrectAnswers];
     }];
 }
 

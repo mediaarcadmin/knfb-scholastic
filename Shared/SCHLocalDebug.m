@@ -342,7 +342,9 @@
 	SCHContentMetadataItem *newContentMetadataItem = nil;
 	SCHUserContentItem *newUserContentItem = nil;
 	SCHContentProfileItem *newContentProfileItem = nil;
-	
+    SCHOrderItem *newOrderItem = nil; 
+    NSInteger orderID = 1;
+
 	for (NSInteger count = 0; count < [XPSFiles count]; count++) {
         NSString *xpsFile = [XPSFiles objectAtIndex:count];
         
@@ -399,13 +401,6 @@
 		[newUserContentItem addProfileListObject:newContentProfileItem];	
 
         // Add the book to an all books profile
-        newUserContentItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHUserContentItem inManagedObjectContext:self.managedObjectContext];
-		
-		newUserContentItem.LastModified = now;
-		
-		newUserContentItem.ContentIdentifier = newContentMetadataItem.ContentIdentifier;
-		newUserContentItem.ContentIdentifierType = newContentMetadataItem.ContentIdentifierType;
-
         newContentProfileItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHContentProfileItem inManagedObjectContext:self.managedObjectContext];			
 		
 		newContentProfileItem.LastModified = now;
@@ -414,6 +409,11 @@
         [self addAnnotationStructure:newUserContentItem annotationsItem:allBooksAnnotationsItem];            
 		
 		[newUserContentItem addProfileListObject:newContentProfileItem];	
+        
+        newOrderItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHOrderItem inManagedObjectContext:self.managedObjectContext];
+        newOrderItem.OrderID = [[NSNumber numberWithInteger:orderID++] stringValue];
+        newOrderItem.OrderDate = [[NSDate date] dateByAddingTimeInterval:orderID * 60];
+        [newUserContentItem addOrderListObject:newOrderItem];	
         
         NSError *error;
         if (![self.managedObjectContext save:&error]) {

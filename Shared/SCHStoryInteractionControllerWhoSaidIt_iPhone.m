@@ -27,7 +27,6 @@
 @synthesize statementLabel;
 @synthesize answerButtons;
 @synthesize scoreLabel;
-@synthesize scoreSublabel;
 @synthesize tryAgainButton;
 @synthesize currentStatement;
 @synthesize score;
@@ -37,7 +36,6 @@
     [statementLabel release];
     [answerButtons release];
     [scoreLabel release];
-    [scoreSublabel release];
     [tryAgainButton release];
     [super dealloc];
 }
@@ -87,7 +85,6 @@
     SCHStoryInteractionWhoSaidIt *whoSaidIt = (SCHStoryInteractionWhoSaidIt *)self.storyInteraction;
     NSInteger maxScore = [whoSaidIt.statements count]-1;
     self.scoreLabel.text = [NSString stringWithFormat:@"You got %d out of %d right!", self.score, maxScore];
-    self.scoreSublabel.text = (score == maxScore) ? @"Well done!" : @"Try again!";
 }
 
 - (void)setupQuestion
