@@ -13,6 +13,6 @@
 @protocol SCHStoryInteractionControllerDelegate <NSObject>
 
 @optional
-- (void)storyInteractionControllerDidDismiss:(SCHStoryInteractionController *)storyInteractionController;
+- (void)storyInteractionController:(SCHStoryInteractionController *)storyInteractionController didDismissWithSuccess:(BOOL)success;
 
 @end
