@@ -43,4 +43,9 @@
     return @"About You Quiz";
 }
 
+- (BOOL)isOlderStoryInteraction
+{
+    return YES;
+}
+
 @end
