@@ -239,7 +239,10 @@ static CGFloat distanceSq(CGPoint p1, CGPoint p2)
         letter.letterColor = [UIColor yellowColor];
     }
     
-    [self playBundleAudioWithFilename:@"sfx_winround.mp3" completion:nil];
+    [self playBundleAudioWithFilename:@"sfx_winround.mp3"
+                           completion:^{
+                               [self removeFromHostView];
+                           }];
 }
 
 @end

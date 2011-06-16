@@ -122,6 +122,8 @@
                     [self playAudioAtPath:[sequencing audioPathForCorrectAnswerAtIndex:index++] completion:playBlockCopy];
                 });
                 Block_release(playBlockCopy);
+            } else {
+                [self removeFromHostView];
             }
         });
         [self playAudioAtPath:[sequencing audioPathForThatsRight] completion:playBlock];
