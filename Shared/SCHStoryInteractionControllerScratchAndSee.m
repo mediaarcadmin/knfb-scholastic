@@ -8,6 +8,7 @@
 
 #import "SCHStoryInteractionControllerScratchAndSee.h"
 #import "SCHStoryInteractionScratchAndSee.h"
+#import "SCHBookStoryInteractions.h"
 
 static const NSInteger kSCHScratchPointCount = 200;
 
@@ -88,6 +89,14 @@ static const NSInteger kSCHScratchPointCount = 200;
     
     self.progressView.hidden = NO;
 
+    // get the current question
+    NSInteger currentInteraction = [self.storyInteraction.bookStoryInteractions storyInteractionsCompletedForPage:self.storyInteraction.documentPageNumber];
+    
+    if (currentInteraction > 0) {
+        self.currentQuestionIndex += currentInteraction;
+    }
+    
+    
     [self setupQuestion];
     
     [self playBundleAudioWithFilename:[(SCHStoryInteractionScratchAndSee *)self.storyInteraction storyInteractionOpeningSoundFilename]
@@ -167,13 +176,16 @@ static const NSInteger kSCHScratchPointCount = 200;
 
 - (void)nextQuestion
 {
-    self.currentQuestionIndex++;
-    if (self.currentQuestionIndex == [[(SCHStoryInteractionScratchAndSee *)self.storyInteraction questions] count]) {
-        [self removeFromHostView];
-    } else {
-        self.askingQuestions = NO;
-        [self setupQuestion];
-    }
+//    self.currentQuestionIndex++;
+//    if (self.currentQuestionIndex == [[(SCHStoryInteractionScratchAndSee *)self.storyInteraction questions] count]) {
+//        [self removeFromHostView];
+//    } else {
+//        self.askingQuestions = NO;
+//        [self setupQuestion];
+//    }
+    
+    [self.storyInteraction.bookStoryInteractions incrementStoryInteractionsCompletedForPage:self.storyInteraction.documentPageNumber];
+    [self removeFromHostView];
 }
 
 - (SCHStoryInteractionScratchAndSeeQuestion *)currentQuestion

@@ -74,5 +74,11 @@
     return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:filename];
 }
 
+- (NSInteger)questionCount
+{
+    return [[self questions] count];
+}
+
+
 @end
 
