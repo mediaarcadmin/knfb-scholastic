@@ -955,7 +955,6 @@ CGAffineTransform transformRectToFitRect(CGRect sourceRect, CGRect targetRect, B
     CGRect viewBounds = self.pageTurningView.bounds;
     CGFloat zoomScale = CGRectGetWidth(viewBounds) / CGRectGetWidth(targetRect);
 	
-    zoomScale = CGRectGetWidth(viewBounds) / CGRectGetWidth(targetRect);
     *scale = zoomScale;
     
     CGRect cropRect = [self cropForPage:pageIndex + 1 allowEstimate:YES];
