@@ -53,6 +53,8 @@ typedef enum {
 @property (nonatomic, retain) NSSet* AppBookOrder;
 @property (nonatomic, retain) SCHAppProfile * AppProfile;
 
+@property (nonatomic, readonly) NSUInteger age;
+
 - (NSMutableArray *)allISBNs;
 - (SCHBookAnnotations *)annotationsForBook:(NSString *)isbn;
 - (void)saveBookOrder:(NSArray *)books;

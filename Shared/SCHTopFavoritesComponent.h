@@ -15,6 +15,6 @@
 }
 
 - (BOOL)listFavoriteTypes;
-- (BOOL)topFavorites;
+- (BOOL)topFavoritesForAge:(NSUInteger)ageInYears;
 
 @end

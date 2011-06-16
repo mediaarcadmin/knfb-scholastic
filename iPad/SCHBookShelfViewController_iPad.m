@@ -261,7 +261,7 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
     if (self.lastTopTenBookRetrieval == nil || 
         [self.lastTopTenBookRetrieval timeIntervalSinceNow] <= kSCHBookShelfViewControllerTopTenRefreshTime || 
         [self.topTenBooks count] < 1) {
-        [self.topFavoritesComponent topFavorites];			        
+        [self.topFavoritesComponent topFavoritesForAge:self.profileItem.age];			        
     }
     
     SCHBookShelfTopTenPopoverTableView *popoverTable = [[SCHBookShelfTopTenPopoverTableView alloc] initWithNibName:nil bundle:nil];
