@@ -60,11 +60,10 @@ static CGFloat distanceSq(CGPoint p1, CGPoint p2)
 
 - (void)setupViewAtIndex:(NSInteger)screenIndex
 {
-    const BOOL iPad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
     SCHStoryInteractionWordScrambler *wordScrambler = (SCHStoryInteractionWordScrambler *)self.storyInteraction;
     self.clueLabel.text = wordScrambler.clue;
     
-    UIImage *letterTile = [UIImage imageNamed:(iPad ? @"storyinteraction-lettertile-ipad" : @"storyinteraction-lettertile-iphone")];
+    UIImage *letterTile = [UIImage imageNamed:@"storyinteraction-lettertile"];
     self.letterTileSize = letterTile.size;
 
     // determine how many rows and columns of tiles to show
@@ -241,7 +240,7 @@ static CGFloat distanceSq(CGPoint p1, CGPoint p2)
     
     [self playBundleAudioWithFilename:@"sfx_winround.mp3"
                            completion:^{
-                               [self removeFromHostView];
+                               [self removeFromHostViewWithSuccess:YES];
                            }];
 }
 

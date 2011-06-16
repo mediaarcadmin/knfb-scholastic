@@ -100,7 +100,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (void)jumpToCurrentPlaceInBookAnimated:(BOOL)animated;
 
 - (void)setDictionarySelectionMode;
-- (void)setupStoryInteractionButtonAnimated:(BOOL)animated;
+- (void)setupStoryInteractionButtonForCurrentPageAnimated:(BOOL)animated;
+- (void)setupStoryInteractionButtonForPage:(NSInteger)page animated:(BOOL)animated;
+- (void)setStoryInteractionButtonVisible:(BOOL)visible animated:(BOOL)animated;
 
 @end
 
@@ -428,7 +430,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 //        [self.view addSubview:button];
 //    }
 
-    [self setupStoryInteractionButtonAnimated:NO];
+    [self setupStoryInteractionButtonForCurrentPageAnimated:NO];
 
 }
 
@@ -856,40 +858,31 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 }
 
 #pragma mark - Story Interactions methods
-
-- (void)setupStoryInteractionButtonAnimated:(BOOL)animated
+- (void)setupStoryInteractionButtonForPage: (NSInteger) page animated:(BOOL)animated
 {
-    NSInteger page = self.currentPageIndex;
-    
     NSArray *storyInteractions = [self.bookStoryInteractions storyInteractionsForPage:page];
     int totalInteractionCount = [storyInteractions count];
     int questionCount = [self.bookStoryInteractions storyInteractionQuestionCountForPage:page];
     BOOL interactionsFinished = [self.bookStoryInteractions storyInteractionsFinishedOnPage:page];
     
-    NSInteger interactionsDone = [self.bookStoryInteractions storyInteractionsCompletedForPage:page];
+    NSInteger interactionsDone = [self.bookStoryInteractions storyInteractionQuestionsCompletedForPage:page];
     
     if (totalInteractionCount < 1) {
-        // hide the button
-        
-        void (^movementBlock)(void) = ^{
-            CGRect frame = self.storyInteractionButtonView.frame;
-            frame.origin.x += frame.size.width;
-            self.storyInteractionButtonView.frame = frame;
-        };
-        
-        if (animated) {
-            [UIView animateWithDuration:0.3 animations:movementBlock];
-        } else {
-            movementBlock();
-        }
+        [self setStoryInteractionButtonVisible:NO animated:YES];
     } else {
-        
+        [self setStoryInteractionButtonVisible:YES animated:YES];
         if (questionCount < 2) {
             [self.storyInteractionButton setTitle:[NSString stringWithFormat:@"%d/%d%@", interactionsDone, 1, interactionsFinished?@"!!":@""] forState:UIControlStateNormal];
         } else {
             [self.storyInteractionButton setTitle:[NSString stringWithFormat:@"%d/%d%@", interactionsDone, questionCount, interactionsFinished?@"!!":@""] forState:UIControlStateNormal];
         }
         
+    }
+}
+
+- (void)setStoryInteractionButtonVisible:(BOOL)visible animated:(BOOL)animated
+{
+    if (visible) {
         CGRect frame = self.storyInteractionButtonView.frame;
         
         // if the frame is out of screen, move it back on
@@ -906,7 +899,27 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
                 movementBlock();
             }
         }
+    } else {
+        // hide the button
+        
+        void (^movementBlock)(void) = ^{
+            CGRect frame = self.storyInteractionButtonView.frame;
+            frame.origin.x += frame.size.width;
+            self.storyInteractionButtonView.frame = frame;
+        };
+        
+        if (animated) {
+            [UIView animateWithDuration:0.3 animations:movementBlock];
+        } else {
+            movementBlock();
+        }
     }
+}
+
+- (void)setupStoryInteractionButtonForCurrentPageAnimated:(BOOL)animated
+{
+    NSInteger page = self.currentPageIndex;
+    [self setupStoryInteractionButtonForPage:page animated:animated];   
 }
 
 #pragma mark - Audio Book Delegate methods
@@ -1129,6 +1142,11 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     return [annotations highlightsForPage:page];    
 }
 
+- (void)readingViewFixedViewWillBeginTurning:(SCHReadingView *)readingView
+{
+    [self setStoryInteractionButtonVisible:NO animated:YES];
+}
+
 - (void)readingView:(SCHReadingView *)readingView hasMovedToPageAtIndex:(NSUInteger)pageIndex
 {
     //NSLog(@"hasMovedToPageAtIndex %d", pageIndex);
@@ -1138,7 +1156,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [self updateScrubberValue];
     
     // check for story interactions
-    [self setupStoryInteractionButtonAnimated:YES];
+    [self setupStoryInteractionButtonForCurrentPageAnimated:YES];
 
 }
 
@@ -1459,6 +1477,16 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 	if (animated) {
 		[UIView commitAnimations];
 	}
+    
+    // hide/show story interactions stuff if necessary
+    NSArray *storyInteractions = [self.bookStoryInteractions storyInteractionsForPage:self.currentPageIndex];
+    int totalInteractionCount = [storyInteractions count];
+
+    if (totalInteractionCount < 1 || !visibility) {
+        [self setStoryInteractionButtonVisible:NO animated:YES];
+    } else if (totalInteractionCount >= 1) {
+        [self setStoryInteractionButtonVisible:YES animated:YES];
+    }
 }
 
 - (void)toggleToolbarVisibility
@@ -1599,7 +1627,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 #pragma mark - SCHStoryInteractionControllerDelegate methods
 
-- (void)storyInteractionControllerDidDismiss:(SCHStoryInteractionController *)aStoryInteractionController
+- (void)storyInteractionController:(SCHStoryInteractionController *)aStoryInteractionController didDismissWithSuccess:(BOOL)success
 {
     if (aStoryInteractionController == self.storyInteractionController) {
         self.storyInteractionController = nil;
@@ -1608,8 +1636,15 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
             [self setToolbarVisibility:YES animated:YES];
         }
     }
-    
-    [self setupStoryInteractionButtonAnimated:YES];
+    if (success) {
+        [self.bookStoryInteractions incrementStoryInteractionQuestionsCompletedForPage:self.currentPageIndex];
+        [self setupStoryInteractionButtonForCurrentPageAnimated:YES];
+    }
+}
+
+- (NSInteger)currentQuestionForStoryInteraction
+{
+    return [self.bookStoryInteractions storyInteractionQuestionsCompletedForPage:self.currentPageIndex];
 }
 
 #pragma mark - UIPopoverControllerDelegate methods

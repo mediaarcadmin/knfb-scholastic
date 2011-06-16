@@ -125,7 +125,7 @@
     
     if (ret == YES) {
         [self playAudioAtPath:[(SCHStoryInteractionStartingLetter *)self.storyInteraction audioPathForYouFoundThemAll] completion:^{
-            [self removeFromHostView];
+            [self removeFromHostViewWithSuccess:YES];
         }];
     }
 
