@@ -366,29 +366,38 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     
     self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:self.leftBarButtonItemContainer] autorelease];
     
+    CGRect rightBarButtonItemFrame = CGRectZero;
     if (self.youngerMode) {
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-            CGRect rightBarButtonItemFrame = self.youngerRightBarButtonItemContainerPad.frame;
+            rightBarButtonItemFrame = self.youngerRightBarButtonItemContainerPad.frame;
             rightBarButtonItemFrame.size.height = containerHeight;
             self.youngerRightBarButtonItemContainerPad.frame = rightBarButtonItemFrame;
             
             self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:self.youngerRightBarButtonItemContainerPad] autorelease];
         } else {
-            CGRect rightBarButtonItemFrame = self.youngerRightBarButtonItemContainer.frame;
+            rightBarButtonItemFrame = self.youngerRightBarButtonItemContainer.frame;
             rightBarButtonItemFrame.size.height = containerHeight;
             self.youngerRightBarButtonItemContainer.frame = rightBarButtonItemFrame;
             
             self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:self.youngerRightBarButtonItemContainer] autorelease];
         }
     } else {
-        CGRect rightBarButtonItemFrame = self.olderRightBarButtonItemContainer.frame;
+        rightBarButtonItemFrame = self.olderRightBarButtonItemContainer.frame;
         rightBarButtonItemFrame.size.height = containerHeight;
         self.youngerRightBarButtonItemContainer.frame = rightBarButtonItemFrame;
         
         self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:self.olderRightBarButtonItemContainer] autorelease];
     }
     
-    self.titleLabel.text = book.Title;
+    CGRect r = self.titleLabel.frame;
+    r.size.width = (CGRectGetWidth(self.navigationController.navigationBar.bounds) - 
+                    CGRectGetWidth(leftBarButtonItemFrame) - 
+                    CGRectGetWidth(rightBarButtonItemFrame));
+    CGFloat widthDelta = CGRectGetWidth(self.navigationController.navigationBar.bounds) - r.size.width;
+    r.origin.x = (widthDelta > 0 ? widthDelta / 2.0 : 0.0);
+    r.size.height = containerHeight;
+    self.titleLabel.frame = r;
+    self.titleLabel.text = book.Title;    
     self.navigationItem.titleView = self.titleLabel;
     
     if (self.youngerMode) {

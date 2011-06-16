@@ -91,6 +91,7 @@
 { 
     SCHStoryInteractionTitleTwister *titleTwister = (SCHStoryInteractionTitleTwister *)self.storyInteraction;
     self.openingScreenTitleLabel.text = titleTwister.bookTitle;
+    self.openingScreenTitleLabel.font = [UIFont fontWithName:@"Arial Black" size:34];
 }
 
 - (void)setupMainView

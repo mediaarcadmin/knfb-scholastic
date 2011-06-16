@@ -9,17 +9,24 @@
 #import "SCHBookShelfSortPopoverTableView.h"
 
 
+@interface SCHBookShelfSortPopoverTableView ()
+
+@property (nonatomic, retain) NSArray *sortTypeArray;
+
+@end 
+
 @implementation SCHBookShelfSortPopoverTableView
 
 @synthesize delegate;
 @synthesize itemsTableView;
 @synthesize sortType;
+@synthesize sortTypeArray;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        // Custom initialization
+        sortTypeArray = [[NSArray arrayWithObjects:@"Manual", @"Title", @"Author", @"Newest", @"Last Read", nil] retain];
     }
     return self;
 }
@@ -27,6 +34,8 @@
 - (void)dealloc
 {
     [itemsTableView release];
+    [sortTypeArray release], sortTypeArray = nil;
+    
     [super dealloc];
 }
 
@@ -46,6 +55,7 @@
     // Do any additional setup after loading the view from its nib.
     
     [self.itemsTableView setSeparatorColor:[UIColor colorWithRed:0.710 green:0.737 blue:0.816 alpha:1.0]];
+    self.itemsTableView.scrollEnabled = NO;
 }
 
 - (void)viewDidUnload
@@ -66,7 +76,7 @@
 
 - (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 6;
+    return([sortTypeArray count]);
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -77,9 +87,7 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"sortTableCell"];        
     }
     
-    NSArray *sortTypeArray = [NSArray arrayWithObjects:@"Manual", @"My Favorites", @"Title", @"Author", @"Newest", @"Last Read", nil];
-    
-    cell.textLabel.text = [sortTypeArray objectAtIndex:[indexPath row]];
+    cell.textLabel.text = [self.sortTypeArray objectAtIndex:[indexPath row]];
     
     if ([indexPath row] == self.sortType) {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
@@ -87,14 +95,8 @@
         cell.accessoryType = UITableViewCellAccessoryNone;
     }
     
-//    //    if (([indexPath row] == 1) || [indexPath row] == 4 || [indexPath row] == 5) {
-//    if (([indexPath row] == 1)) {
-//        cell.textLabel.textColor = [UIColor darkGrayColor];
-//        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-//    } else {
-        cell.textLabel.textColor = [UIColor blackColor];
-        cell.selectionStyle = UITableViewCellSelectionStyleBlue;
-//    }
+    cell.textLabel.textColor = [UIColor blackColor];
+    cell.selectionStyle = UITableViewCellSelectionStyleBlue;
     
     return cell;
 }
@@ -103,42 +105,34 @@
 {
     SCHBookSortType newSortType = -1;
     
-    BOOL enabled = YES;
-    
     switch ([indexPath row]) {
         case 0:
             newSortType = kSCHBookSortTypeUser;
             break;
         case 1:
-            newSortType = kSCHBookSortTypeFavorites;
-//            enabled = NO;
-            break;
-        case 2:
             newSortType = kSCHBookSortTypeTitle;
             break;
-        case 3:
+        case 2:
             newSortType = kSCHBookSortTypeAuthor;
             break;
-        case 4:
+        case 3:
            newSortType = kSCHBookSortTypeNewest;
- //           enabled = NO;
             break;
-        case 5:
+        case 4:
             newSortType = kSCHBookSortTypeLastRead;
-//            enabled = NO;
             break;
         default:
             break;
     }
     
-    if (enabled && self.delegate && [self.delegate respondsToSelector:@selector(sortPopoverPickedSortType:)]) {
+    if (self.delegate && [self.delegate respondsToSelector:@selector(sortPopoverPickedSortType:)]) {
         [self.delegate sortPopoverPickedSortType:newSortType];
     }
 }
 
-- (CGSize) contentSizeForViewInPopover
+- (CGSize)contentSizeForViewInPopover
 {
-    CGFloat height = (10 * 44) + 44 + 10;
+    CGFloat height = ([sortTypeArray count] * 44);
     return CGSizeMake(320, height);
 }
 

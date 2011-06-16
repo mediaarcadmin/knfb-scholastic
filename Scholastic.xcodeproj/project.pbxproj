@@ -853,6 +853,8 @@
 		C9B08BEB1344D34F001963D0 /* KNFBTOCEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B08B291344D34F001963D0 /* KNFBTOCEntry.m */; };
 		C9BCD78B135DBF9E00AA42B3 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
 		C9BCD78E135DD26B00AA42B3 /* MazeOfBones.xps in Resources */ = {isa = PBXBuildFile; fileRef = F8509E7912F0620E00197EB5 /* MazeOfBones.xps */; };
+		C9C27CB913AA536C00332229 /* Arial Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C9C27CB813AA536A00332229 /* Arial Black.ttf */; };
+		C9C27CBA13AA536C00332229 /* Arial Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C9C27CB813AA536A00332229 /* Arial Black.ttf */; };
 		C9D4F6281345FFE8007F86E3 /* SCHTextFlow.m in Sources */ = {isa = PBXBuildFile; fileRef = C9D4F6271345FFE7007F86E3 /* SCHTextFlow.m */; };
 		C9D4F6291345FFE8007F86E3 /* SCHTextFlow.m in Sources */ = {isa = PBXBuildFile; fileRef = C9D4F6271345FFE7007F86E3 /* SCHTextFlow.m */; };
 		C9E89A4B1369B87A00E7ED53 /* levenshtein_distance.c in Sources */ = {isa = PBXBuildFile; fileRef = C9E89A491369B87A00E7ED53 /* levenshtein_distance.c */; };
@@ -911,6 +913,8 @@
 		C9F5B9FF13916C62009DE113 /* button-go@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C9F5B9FB13916C62009DE113 /* button-go@2x.png */; };
 		C9F5BA0113918CE9009DE113 /* SCHPasswordViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9F5BA0013918CE8009DE113 /* SCHPasswordViewController_iPhone.xib */; };
 		C9F5BA0213918CE9009DE113 /* SCHPasswordViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9F5BA0013918CE8009DE113 /* SCHPasswordViewController_iPhone.xib */; };
+		C9FE8CFA13AA60D300D55181 /* answer-button-yellow~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C9FE8CF913AA60D300D55181 /* answer-button-yellow~ipad.png */; };
+		C9FE8CFB13AA60D300D55181 /* answer-button-yellow~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C9FE8CF913AA60D300D55181 /* answer-button-yellow~ipad.png */; };
 		F80FED701355DD6D00DEB3C1 /* icon-magnify.png in Resources */ = {isa = PBXBuildFile; fileRef = F80FED601355DD6D00DEB3C1 /* icon-magnify.png */; };
 		F80FED711355DD6D00DEB3C1 /* icon-magnify.png in Resources */ = {isa = PBXBuildFile; fileRef = F80FED601355DD6D00DEB3C1 /* icon-magnify.png */; };
 		F80FED721355DD6D00DEB3C1 /* icon-magnify@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F80FED611355DD6D00DEB3C1 /* icon-magnify@2x.png */; };
@@ -2095,6 +2099,7 @@
 		C9B08B271344D34F001963D0 /* KNFBTextFlowXAMLTreeNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KNFBTextFlowXAMLTreeNode.m; sourceTree = "<group>"; };
 		C9B08B281344D34F001963D0 /* KNFBTOCEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KNFBTOCEntry.h; sourceTree = "<group>"; };
 		C9B08B291344D34F001963D0 /* KNFBTOCEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KNFBTOCEntry.m; sourceTree = "<group>"; };
+		C9C27CB813AA536A00332229 /* Arial Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Arial Black.ttf"; sourceTree = "<group>"; };
 		C9D4F6261345FFE7007F86E3 /* SCHTextFlow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHTextFlow.h; path = Shared/SCHTextFlow.h; sourceTree = "<group>"; };
 		C9D4F6271345FFE7007F86E3 /* SCHTextFlow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHTextFlow.m; path = Shared/SCHTextFlow.m; sourceTree = "<group>"; };
 		C9E89A491369B87A00E7ED53 /* levenshtein_distance.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = levenshtein_distance.c; sourceTree = "<group>"; };
@@ -2137,6 +2142,7 @@
 		C9F5B9FA13916C62009DE113 /* button-go.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "button-go.png"; path = "Resources/UIAssets/button-go.png"; sourceTree = "<group>"; };
 		C9F5B9FB13916C62009DE113 /* button-go@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "button-go@2x.png"; path = "Resources/UIAssets/button-go@2x.png"; sourceTree = "<group>"; };
 		C9F5BA0013918CE8009DE113 /* SCHPasswordViewController_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHPasswordViewController_iPhone.xib; sourceTree = "<group>"; };
+		C9FE8CF913AA60D300D55181 /* answer-button-yellow~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "answer-button-yellow~ipad.png"; sourceTree = "<group>"; };
 		F80FED601355DD6D00DEB3C1 /* icon-magnify.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-magnify.png"; path = "Resources/icon-magnify.png"; sourceTree = "<group>"; };
 		F80FED611355DD6D00DEB3C1 /* icon-magnify@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-magnify@2x.png"; path = "Resources/icon-magnify@2x.png"; sourceTree = "<group>"; };
 		F80FED641355DD6D00DEB3C1 /* icon-play-active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-play-active.png"; path = "Resources/icon-play-active.png"; sourceTree = "<group>"; };
@@ -2588,6 +2594,7 @@
 		28A60F7A1397BB340090853E /* StoryInteractions */ = {
 			isa = PBXGroup;
 			children = (
+				C9C27CB813AA536A00332229 /* Arial Black.ttf */,
 				F88764C213AA558B0034DF21 /* old-lightning-bolt-0.png */,
 				F88764C313AA558B0034DF21 /* old-lightning-bolt-1.png */,
 				F88764C413AA558B0034DF21 /* old-lightning-bolt-2.png */,
@@ -2628,6 +2635,7 @@
 				28A60F7B1397BB3C0090853E /* answer-button-green.png */,
 				28A60F7C1397BB3C0090853E /* answer-button-red.png */,
 				28A60F7D1397BB3C0090853E /* answer-button-yellow.png */,
+				C9FE8CF913AA60D300D55181 /* answer-button-yellow~ipad.png */,
 				522B088D13A8A4480059E2C4 /* answer-blank.png */,
 				522B088E13A8A4490059E2C4 /* answer-cross.png */,
 				522B088F13A8A4490059E2C4 /* answer-tick.png */,
@@ -4675,6 +4683,8 @@
 				285BE71E13AA05FC0023E6BE /* storyinteraction-read-aloud.png in Resources */,
 				285BE72013AA05FC0023E6BE /* storyinteraction-read-aloud@2x.png in Resources */,
 				285BE75413AA20C20023E6BE /* storyinteraction-lettertile~iPad.png in Resources */,
+				C9C27CB913AA536C00332229 /* Arial Black.ttf in Resources */,
+				C9FE8CFA13AA60D300D55181 /* answer-button-yellow~ipad.png in Resources */,
 				F88764AE13AA517D0034DF21 /* young-lightning-bolt-0.png in Resources */,
 				F88764B013AA517D0034DF21 /* young-lightning-bolt-1.png in Resources */,
 				F88764B213AA517D0034DF21 /* young-lightning-bolt-2.png in Resources */,
@@ -5038,6 +5048,8 @@
 				285BE71F13AA05FC0023E6BE /* storyinteraction-read-aloud.png in Resources */,
 				285BE72113AA05FC0023E6BE /* storyinteraction-read-aloud@2x.png in Resources */,
 				285BE75513AA20C20023E6BE /* storyinteraction-lettertile~iPad.png in Resources */,
+				C9C27CBA13AA536C00332229 /* Arial Black.ttf in Resources */,
+				C9FE8CFB13AA60D300D55181 /* answer-button-yellow~ipad.png in Resources */,
 				F88764AF13AA517D0034DF21 /* young-lightning-bolt-0.png in Resources */,
 				F88764B113AA517D0034DF21 /* young-lightning-bolt-1.png in Resources */,
 				F88764B313AA517D0034DF21 /* young-lightning-bolt-2.png in Resources */,
