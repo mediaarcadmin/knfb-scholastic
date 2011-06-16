@@ -27,7 +27,7 @@ static NSTimeInterval const kSCHWordTimingMilliSecondsInASecond = 1000.0;
 
 - (NSComparisonResult)compareTime:(NSUInteger)time
 {
-    NSComparisonResult ret;
+    NSComparisonResult ret = NSOrderedSame;
     
     if (time >= self.startTime && time <= self.endTime) {
         ret = NSOrderedSame;

@@ -103,7 +103,7 @@
     
     NSMutableArray *toolbarButtons = [[NSMutableArray alloc] init];
     
-    [toolbarButtons addObject:[[UIBarButtonItem alloc] initWithCustomView:self.leftBarButtonItemContainer]];
+    [toolbarButtons addObject:[[[UIBarButtonItem alloc] initWithCustomView:self.leftBarButtonItemContainer] autorelease]];
     [toolbarButtons addObjectsFromArray:self.topBar.items];
     
     self.topBar.items = [NSArray arrayWithArray:toolbarButtons];
