@@ -14,8 +14,6 @@
 #import "SCHXPSProvider.h"
 #import "SCHBookManager.h"
 
-static NSUInteger const kSCHStoryInteractionControllerButtonSize = 30;
-
 typedef void (^PlayAudioCompletionBlock)(void);
 
 @interface SCHStoryInteractionController ()
@@ -127,18 +125,24 @@ typedef void (^PlayAudioCompletionBlock)(void);
 
         UIEdgeInsets contentInsets;
         UIEdgeInsets titleInsets;
+        CGPoint closePosition;     // relative to top-left corner
+        CGPoint readAloudPosition; // relative to top-right corner
         if (iPad) {
             contentInsets = UIEdgeInsetsMake(130, 40, 40, 40);
-            titleInsets = UIEdgeInsetsMake(40, 40, 26, 40);
+            titleInsets = UIEdgeInsetsMake(40, 65, 26, 65);
+            closePosition = [self.storyInteraction isOlderStoryInteraction] ? CGPointMake(3, -8) : CGPointMake(9, -17);
+            readAloudPosition = CGPointMake(-5, 5);
         } else {
             contentInsets = UIEdgeInsetsMake(70, 5, 5, 5);
-            titleInsets = UIEdgeInsetsMake(5, 30, 5, 30);
+            titleInsets = UIEdgeInsetsMake(5, 50, 5, 50);
+            closePosition = CGPointMake(10, 7);
+            readAloudPosition = CGPointMake(-13, 15);
         }
         
         // set up the transparent full-size container to trap touch events before they get
         // to the underlying view; this effectively makes the story interaction modal
         UIView *container = [[UIView alloc] initWithFrame:CGRectIntegral(hostView.bounds)];
-        container.backgroundColor = [UIColor clearColor];
+        container.backgroundColor = [UIColor colorWithWhite:0 alpha:0.5];
         container.userInteractionEnabled = YES;
         
         NSString *age = [self.storyInteraction isOlderStoryInteraction] ? @"older" : @"younger";
@@ -147,8 +151,8 @@ typedef void (^PlayAudioCompletionBlock)(void);
                                                                           topCapHeight:backgroundImage.size.height/2-1];
         UIImageView *background = [[UIImageView alloc] initWithImage:backgroundStretch];
         background.contentMode = UIViewContentModeScaleToFill;
-        
-        // first object in the NIB must be the container view for the interaction
+
+        // put multiple views at the top-level in the nib for multi-screen interactions
         self.contentsView = [self.nibObjects objectAtIndex:self.currentScreenIndex];
         if (!iPad && (CGRectGetWidth(self.contentsView.bounds) > 470 || CGRectGetHeight(self.contentsView.bounds) > 250)) {
             NSLog(@"contentView %d is too large: %@", self.currentScreenIndex, NSStringFromCGRect(self.contentsView.bounds));
@@ -159,15 +163,15 @@ typedef void (^PlayAudioCompletionBlock)(void);
         
         background.userInteractionEnabled = YES;
         background.bounds = CGRectIntegral(CGRectMake(0, 0, backgroundWidth, backgroundHeight));
-        background.center = CGPointMake(floor(CGRectGetMidX(container.bounds)), floor(CGRectGetMidY(container.bounds)));
-        self.contentsView.center = CGPointMake(floor(backgroundWidth/2), floor((backgroundHeight-contentInsets.top-contentInsets.bottom)/2+contentInsets.top));
+        background.center = CGPointMake(floorf(CGRectGetMidX(container.bounds)), floorf(CGRectGetMidY(container.bounds)));
+        self.contentsView.center = CGPointMake(floorf(backgroundWidth/2), floorf((backgroundHeight-contentInsets.top-contentInsets.bottom)/2+contentInsets.top));
         [background addSubview:self.contentsView];
         [container addSubview:background];
         
         CGRect titleFrame = UIEdgeInsetsInsetRect(CGRectMake(0, 0, backgroundWidth, contentInsets.top), titleInsets);
         UILabel *title = [[UILabel alloc] initWithFrame:CGRectIntegral(titleFrame)];
         title.backgroundColor = [UIColor clearColor];
-        title.font = [UIFont boldSystemFontOfSize:iPad ? 24 : 18];
+        title.font = [UIFont boldSystemFontOfSize:iPad ? 22 : 18];
         title.textAlignment = UITextAlignmentCenter;
         title.textColor = [self.storyInteraction isOlderStoryInteraction] ? [UIColor whiteColor] : [UIColor colorWithRed:0.113 green:0.392 blue:0.690 alpha:1.];
         title.adjustsFontSizeToFitWidth = YES;
@@ -178,21 +182,20 @@ typedef void (^PlayAudioCompletionBlock)(void);
         [background addSubview:title];
         [title release];
         
+        UIImage *closeImage = [self deviceSpecificImageNamed:[NSString stringWithFormat:@"storyinteraction-bolt-%@", age]];
         UIButton *closeButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        if (iPad) {
-            closeButton.frame = CGRectMake(-10, -10, kSCHStoryInteractionControllerButtonSize, kSCHStoryInteractionControllerButtonSize);
-        } else {
-            closeButton.frame = CGRectMake(5, 5, kSCHStoryInteractionControllerButtonSize, kSCHStoryInteractionControllerButtonSize);
-        }
-        [closeButton setImage:[UIImage imageNamed:@"storyinteraction-close"] forState:UIControlStateNormal];
+        closeButton.bounds = (CGRect){ CGPointZero, closeImage.size };
+        closeButton.center = CGPointMake(floorf(closePosition.x+closeImage.size.width/2), floorf(closePosition.y+closeImage.size.height/2));
+        [closeButton setImage:closeImage forState:UIControlStateNormal];
         [closeButton addTarget:self action:@selector(closeButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
         [background addSubview:closeButton];
 
         if ([self useAudioButton] == YES) {
+            UIImage *readAloudImage = [self deviceSpecificImageNamed:@"storyinteraction-read-aloud"];
             UIButton *audioButton = [UIButton buttonWithType:UIButtonTypeCustom];
-            audioButton.frame = iPad ? CGRectMake(backgroundWidth-20, -10, kSCHStoryInteractionControllerButtonSize, kSCHStoryInteractionControllerButtonSize) : 
-            CGRectMake(backgroundWidth-35, 5, kSCHStoryInteractionControllerButtonSize, kSCHStoryInteractionControllerButtonSize);
-            [audioButton setImage:[UIImage imageNamed:@"icon-play.png"] forState:UIControlStateNormal];
+            audioButton.bounds = (CGRect){ CGPointZero, readAloudImage.size };
+            audioButton.center = CGPointMake(floorf(backgroundWidth+readAloudPosition.x-readAloudImage.size.width/2), floorf(readAloudPosition.y+readAloudImage.size.height/2));
+            [audioButton setImage:readAloudImage forState:UIControlStateNormal];
             [audioButton addTarget:self action:@selector(playAudioButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
             [background addSubview:audioButton];
         }

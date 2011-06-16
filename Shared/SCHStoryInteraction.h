@@ -10,6 +10,7 @@
 
 @class SCHXPSProvider;
 @class SCHStoryInteraction;
+@class SCHBookStoryInteractions;
 
 // TODO: move to KNFBXPSConstants module
 extern NSString * const KNFBXPSStoryInteractionsDirectory;
@@ -26,6 +27,7 @@ extern NSString * const KNFBXPSStoryInteractionsDirectory;
 @property (nonatomic, retain) NSString *ID;
 @property (nonatomic, assign) NSInteger documentPageNumber;
 @property (nonatomic, assign) CGPoint position;
+@property (nonatomic, assign) SCHBookStoryInteractions *bookStoryInteractions;
 
 // YES if this is an interaction for older readers
 - (BOOL)isOlderStoryInteraction;
@@ -42,5 +44,9 @@ extern NSString * const KNFBXPSStoryInteractionsDirectory;
 - (NSString *)audioPathForTryAgain;
 - (NSString *)storyInteractionCorrectAnswerSoundFilename;
 - (NSString *)storyInteractionWrongAnswerSoundFilename;
+
+// returns the number of questions contained within the interaction
+// overridden in SCHStoryInteractionMultipleChoice subclass; this class returns 1.
+- (NSInteger)questionCount;
 
 @end

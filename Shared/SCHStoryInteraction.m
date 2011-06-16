@@ -24,6 +24,7 @@ NSString * const KNFBXPSStoryInteractionsDirectory = @"/Documents/1/Other/KNFB/I
 @synthesize ID;
 @synthesize documentPageNumber;
 @synthesize position;
+@synthesize bookStoryInteractions;
 
 - (BOOL)isOlderStoryInteraction
 {
@@ -39,6 +40,11 @@ NSString * const KNFBXPSStoryInteractionsDirectory = @"/Documents/1/Other/KNFB/I
 - (NSString *)interactionViewTitle
 {
     return [self title];
+}
+
+- (NSInteger)questionCount
+{
+    return 1;
 }
 
 - (NSString *)storyInteractionButtonAppearingSoundFilename

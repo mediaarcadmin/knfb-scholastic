@@ -33,6 +33,7 @@
 #import "SCHBookStoryInteractions.h"
 #import "SCHStoryInteractionController.h"
 #import "SCHHighlight.h"
+#import "SCHStoryInteractionTypes.h"
 
 // constants
 static const CGFloat kReadingViewStandardScrubHeight = 47.0f;
@@ -99,6 +100,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (void)jumpToCurrentPlaceInBookAnimated:(BOOL)animated;
 
 - (void)setDictionarySelectionMode;
+- (void)setupStoryInteractionButtonAnimated:(BOOL)animated;
 
 @end
 
@@ -131,6 +133,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 @synthesize flowFixedSegmentedControl;
 @synthesize flowFixedPopoverSegmentedControl;
 @synthesize paperTypePopoverSegmentedControl;
+@synthesize storyInteractionButton;
+@synthesize storyInteractionButtonView;
 @synthesize paperTypeSegmentedControl;
 @synthesize notesButton;
 @synthesize pageSlider;
@@ -202,6 +206,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [paperTypeSegmentedControl release], paperTypeSegmentedControl = nil;
     [flowFixedPopoverSegmentedControl release], flowFixedPopoverSegmentedControl = nil;
     [paperTypePopoverSegmentedControl release], paperTypePopoverSegmentedControl = nil;
+    [storyInteractionButton release], storyInteractionButton = nil;
+    [storyInteractionButtonView release], storyInteractionButtonView = nil;
     
     if (xpsProvider) {
         [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:isbn];
@@ -414,13 +420,16 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [self jumpToLastPageLocation];
     
     // temporary button to get access to younger story interactions
-    if (self.youngerMode) {
-        UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [button setTitle:@"SI" forState:UIControlStateNormal];
-        [button setFrame:CGRectMake(CGRectGetMaxX(self.view.bounds)-30, 0, 30, 30)];
-        [button addTarget:self action:@selector(storyInteractionAction:) forControlEvents:UIControlEventTouchUpInside];
-        [self.view addSubview:button];
-    }
+//    if (self.youngerMode) {
+//        UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+//        [button setTitle:@"SI" forState:UIControlStateNormal];
+//        [button setFrame:CGRectMake(CGRectGetMaxX(self.view.bounds)-30, 0, 30, 30)];
+//        [button addTarget:self action:@selector(storyInteractionAction:) forControlEvents:UIControlEventTouchUpInside];
+//        [self.view addSubview:button];
+//    }
+
+    [self setupStoryInteractionButtonAnimated:NO];
+
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -822,6 +831,83 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         
     }
 }
+- (IBAction)storyInteractionButtonAction:(id)sender {
+    NSLog(@"Pressed story interaction button");
+    
+    NSLog(@"Story Interactions action");
+    
+    [self.audioBookPlayer pause];
+    
+    if (self.optionsView.superview) {
+        [self.optionsView removeFromSuperview];
+    }
+
+    SCHStoryInteraction *storyInteraction = [[self.bookStoryInteractions storyInteractionsForPage:self.currentPageIndex] objectAtIndex:0];
+    self.storyInteractionController = [SCHStoryInteractionController storyInteractionControllerForStoryInteraction:storyInteraction];
+    self.storyInteractionController.isbn = self.isbn;
+    self.storyInteractionController.delegate = self;
+    self.storyInteractionController.xpsProvider = self.xpsProvider;
+    [self.storyInteractionController presentInHostView:self.view withInterfaceOrientation:self.interfaceOrientation];
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        [self setToolbarVisibility:NO animated:YES];
+    }
+
+}
+
+#pragma mark - Story Interactions methods
+
+- (void)setupStoryInteractionButtonAnimated:(BOOL)animated
+{
+    NSInteger page = self.currentPageIndex;
+    
+    NSArray *storyInteractions = [self.bookStoryInteractions storyInteractionsForPage:page];
+    int totalInteractionCount = [storyInteractions count];
+    int questionCount = [self.bookStoryInteractions storyInteractionQuestionCountForPage:page];
+    BOOL interactionsFinished = [self.bookStoryInteractions storyInteractionsFinishedOnPage:page];
+    
+    NSInteger interactionsDone = [self.bookStoryInteractions storyInteractionsCompletedForPage:page];
+    
+    if (totalInteractionCount < 1) {
+        // hide the button
+        
+        void (^movementBlock)(void) = ^{
+            CGRect frame = self.storyInteractionButtonView.frame;
+            frame.origin.x += frame.size.width;
+            self.storyInteractionButtonView.frame = frame;
+        };
+        
+        if (animated) {
+            [UIView animateWithDuration:0.3 animations:movementBlock];
+        } else {
+            movementBlock();
+        }
+    } else {
+        
+        if (questionCount < 2) {
+            [self.storyInteractionButton setTitle:[NSString stringWithFormat:@"%d/%d%@", interactionsDone, 1, interactionsFinished?@"!!":@""] forState:UIControlStateNormal];
+        } else {
+            [self.storyInteractionButton setTitle:[NSString stringWithFormat:@"%d/%d%@", interactionsDone, questionCount, interactionsFinished?@"!!":@""] forState:UIControlStateNormal];
+        }
+        
+        CGRect frame = self.storyInteractionButtonView.frame;
+        
+        // if the frame is out of screen, move it back on
+        if ((frame.origin.x + frame.size.width) > self.view.frame.size.width) {
+            void (^movementBlock)(void) = ^{
+                CGRect frame = self.storyInteractionButtonView.frame;
+                frame.origin.x = self.view.frame.size.width - frame.size.width;
+                self.storyInteractionButtonView.frame = frame;
+            };
+            
+            if (animated) {
+                [UIView animateWithDuration:0.3 animations:movementBlock];
+            } else {
+                movementBlock();
+            }
+        }
+    }
+}
 
 #pragma mark - Audio Book Delegate methods
 
@@ -1050,6 +1136,10 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     self.currentBookProgress = -1;
     
     [self updateScrubberValue];
+    
+    // check for story interactions
+    [self setupStoryInteractionButtonAnimated:YES];
+
 }
 
 - (void)readingView:(SCHReadingView *)readingView hasMovedToProgressPositionInBook:(CGFloat)progress
@@ -1518,6 +1608,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
             [self setToolbarVisibility:YES animated:YES];
         }
     }
+    
+    [self setupStoryInteractionButtonAnimated:YES];
 }
 
 #pragma mark - UIPopoverControllerDelegate methods

@@ -17,5 +17,10 @@
 - (id)initWithXPSProvider:(SCHXPSProvider *)xpsProvider;
 
 - (NSArray *)storyInteractionsForPage:(NSInteger)pageNumber;
+- (NSInteger)storyInteractionQuestionCountForPage:(NSInteger)pageNumber;
+
+- (NSInteger)storyInteractionsCompletedForPage:(NSInteger)page;
+- (void)incrementStoryInteractionsCompletedForPage:(NSInteger)page;
+- (BOOL)storyInteractionsFinishedOnPage:(NSInteger)page;
 
 @end

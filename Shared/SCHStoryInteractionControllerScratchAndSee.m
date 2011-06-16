@@ -8,6 +8,7 @@
 
 #import "SCHStoryInteractionControllerScratchAndSee.h"
 #import "SCHStoryInteractionScratchAndSee.h"
+#import "SCHBookStoryInteractions.h"
 
 static const NSInteger kSCHScratchPointCount = 200;
 
@@ -39,6 +40,9 @@ static const NSInteger kSCHScratchPointCount = 200;
 @synthesize progressImageView;
 @synthesize progressCoverImageView;
 @synthesize progressView;
+@synthesize aLabel;
+@synthesize bLabel;
+@synthesize cLabel;
 @synthesize currentQuestionIndex;
 @synthesize askingQuestions;
 
@@ -54,6 +58,9 @@ static const NSInteger kSCHScratchPointCount = 200;
     [progressImageView release], progressImageView = nil;
     [progressCoverImageView release], progressCoverImageView = nil;
     [progressView release], progressView = nil;
+    [aLabel release], aLabel = nil;
+    [bLabel release], bLabel = nil;
+    [cLabel release], cLabel = nil;
     [super dealloc];
 }
 
@@ -82,6 +89,14 @@ static const NSInteger kSCHScratchPointCount = 200;
     
     self.progressView.hidden = NO;
 
+    // get the current question
+    NSInteger currentInteraction = [self.storyInteraction.bookStoryInteractions storyInteractionsCompletedForPage:self.storyInteraction.documentPageNumber];
+    
+    if (currentInteraction > 0) {
+        self.currentQuestionIndex += currentInteraction;
+    }
+    
+    
     [self setupQuestion];
     
     [self playBundleAudioWithFilename:[(SCHStoryInteractionScratchAndSee *)self.storyInteraction storyInteractionOpeningSoundFilename]
@@ -95,13 +110,25 @@ static const NSInteger kSCHScratchPointCount = 200;
 
 - (void)setupQuestion
 {
+    BOOL iPad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
+    
+
     if (!self.askingQuestions) {
+//        [self setTitle:[self currentQuestion].prompt];
+        [self setTitle:NSLocalizedString(@"Scratch away the question mark to see the picture.", @"")];
         UIImage *image = [self imageAtPath:[[self currentQuestion] imagePath]];
         self.scratchView.answerImage = image;
         [self setProgressViewForScratchCount:0];
         self.progressView.hidden = NO;
+        aLabel.hidden = YES;
+        bLabel.hidden = YES;
+        cLabel.hidden = YES;
     } else {
+        [self setTitle:NSLocalizedString(@"What do you see?", @"")];
         self.progressView.hidden = YES;
+        aLabel.hidden = NO;
+        bLabel.hidden = NO;
+        cLabel.hidden = NO;
     }
     
     NSLog(@"Image: %@", [self.currentQuestion imagePath]);
@@ -109,19 +136,35 @@ static const NSInteger kSCHScratchPointCount = 200;
     NSInteger i = 0;
     for (NSString *answer in [self currentQuestion].answers) {
         UIImage *highlight;
-        if (i == [self currentQuestion].correctAnswer) {
-            highlight = [UIImage imageNamed:@"answer-button-green"];
-        } else {
-            highlight = [UIImage imageNamed:@"answer-button-red"];
-        }
         UIButton *button = [self.answerButtons objectAtIndex:i];
+
+        if (iPad == YES) {
+            [button setImage:[UIImage imageNamed:@"answer-blank"] forState:UIControlStateNormal];
+            if (i == [self currentQuestion].correctAnswer) {
+                [button setImage:[UIImage imageNamed:@"answer-tick"] forState:UIControlStateSelected];
+            } else {
+                [button setImage:[UIImage imageNamed:@"answer-cross"] forState:UIControlStateSelected];
+            }
+        }
+        
+        if (i == [self currentQuestion].correctAnswer) {
+            highlight = [[UIImage imageNamed:@"answer-button-green"] stretchableImageWithLeftCapWidth:5 topCapHeight:0];
+        } else {
+            highlight = [[UIImage imageNamed:@"answer-button-red"] stretchableImageWithLeftCapWidth:5 topCapHeight:0];
+        }
+        
         [button setTitle:answer forState:UIControlStateNormal];
+        [button setTitleColor:(iPad ? [UIColor whiteColor] : [UIColor colorWithRed:0.113 green:0.392 blue:0.690 alpha:1.0]) forState:UIControlStateNormal];
+        [button setBackgroundImage:[(iPad == YES ? [UIImage imageNamed:@"answer-button-blue"] : [UIImage imageNamed:@"answer-button-yellow"]) stretchableImageWithLeftCapWidth:5 topCapHeight:0] forState:UIControlStateNormal];        
+        [button setBackgroundImage:[(iPad == YES ? [UIImage imageNamed:@"answer-button-blue"] : [UIImage imageNamed:@"answer-button-yellow"]) stretchableImageWithLeftCapWidth:5 topCapHeight:0] forState:UIControlStateSelected];        
         [button setSelected:NO];
         if (self.askingQuestions) {
             [button setHidden:NO];
         } else {
             [button setHidden:YES];
         }
+
+        
         [button setBackgroundImage:highlight forState:UIControlStateSelected];
         ++i;
     }
@@ -133,13 +176,16 @@ static const NSInteger kSCHScratchPointCount = 200;
 
 - (void)nextQuestion
 {
-    self.currentQuestionIndex++;
-    if (self.currentQuestionIndex == [[(SCHStoryInteractionScratchAndSee *)self.storyInteraction questions] count]) {
-        [self removeFromHostView];
-    } else {
-        self.askingQuestions = NO;
-        [self setupQuestion];
-    }
+//    self.currentQuestionIndex++;
+//    if (self.currentQuestionIndex == [[(SCHStoryInteractionScratchAndSee *)self.storyInteraction questions] count]) {
+//        [self removeFromHostView];
+//    } else {
+//        self.askingQuestions = NO;
+//        [self setupQuestion];
+//    }
+    
+    [self.storyInteraction.bookStoryInteractions incrementStoryInteractionsCompletedForPage:self.storyInteraction.documentPageNumber];
+    [self removeFromHostView];
 }
 
 - (SCHStoryInteractionScratchAndSeeQuestion *)currentQuestion

@@ -11,7 +11,6 @@
 #import "SCHStoryInteractionScratchView.h"
 
 @interface SCHStoryInteractionControllerScratchAndSee : SCHStoryInteractionController <SCHStoryInteractionScratchViewDelegate> {
-
 }
 
 @property (nonatomic, retain) IBOutlet SCHStoryInteractionScratchView *scratchView;
@@ -23,6 +22,9 @@
 @property (nonatomic, retain) IBOutlet UIImageView *progressCoverImageView;
 @property (nonatomic, retain) IBOutlet UIView *progressView;
 
+@property (nonatomic, retain) IBOutlet UILabel *aLabel;
+@property (nonatomic, retain) IBOutlet UILabel *bLabel;
+@property (nonatomic, retain) IBOutlet UILabel *cLabel;
 - (IBAction)questionButtonTapped:(UIButton *)sender;
 
 @end
