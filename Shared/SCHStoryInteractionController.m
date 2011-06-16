@@ -129,7 +129,7 @@ typedef void (^PlayAudioCompletionBlock)(void);
         CGPoint readAloudPosition; // relative to top-right corner
         if (iPad) {
             contentInsets = UIEdgeInsetsMake(130, 40, 40, 40);
-            titleInsets = UIEdgeInsetsMake(40, 65, 26, 65);
+            titleInsets = UIEdgeInsetsMake(45, 65, 21, 65);
             closePosition = [self.storyInteraction isOlderStoryInteraction] ? CGPointMake(3, -8) : CGPointMake(9, -17);
             readAloudPosition = CGPointMake(-5, 5);
         } else {
@@ -158,8 +158,8 @@ typedef void (^PlayAudioCompletionBlock)(void);
             NSLog(@"contentView %d is too large: %@", self.currentScreenIndex, NSStringFromCGRect(self.contentsView.bounds));
         }
         
-        CGFloat backgroundWidth = CGRectGetWidth(self.contentsView.bounds) + contentInsets.left + contentInsets.right;
-        CGFloat backgroundHeight = CGRectGetHeight(self.contentsView.bounds) + contentInsets.top + contentInsets.bottom;
+        CGFloat backgroundWidth = MAX(backgroundImage.size.width, CGRectGetWidth(self.contentsView.bounds) + contentInsets.left + contentInsets.right);
+        CGFloat backgroundHeight = MAX(backgroundImage.size.height, CGRectGetHeight(self.contentsView.bounds) + contentInsets.top + contentInsets.bottom);
         
         background.userInteractionEnabled = YES;
         background.bounds = CGRectIntegral(CGRectMake(0, 0, backgroundWidth, backgroundHeight));
