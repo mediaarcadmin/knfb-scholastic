@@ -107,12 +107,11 @@
     __block dispatch_block_t playAnswerAudioAndHighlight;
     playAnswerAudioAndHighlight = Block_copy(^{
         UIButton *button = [self.answerButtons objectAtIndex:index];
-        button.layer.borderWidth = 5;
-        button.layer.borderColor = [[UIColor redColor] CGColor];
+        [button setHighlighted:YES];
         dispatch_block_t playAnswerAudioAndHighlightNext = Block_copy(playAnswerAudioAndHighlight);
         [self playAudioAtPath:[[self currentQuestion] audioPathForAnswerAtIndex:index]
                    completion:^{
-                       button.layer.borderWidth = 0;
+                       [button setHighlighted:NO];
                        if (++index < [self.answerButtons count]) {
                            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.5*NSEC_PER_SEC), dispatch_get_main_queue(), playAnswerAudioAndHighlight);
                            Block_release(playAnswerAudioAndHighlightNext);
