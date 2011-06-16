@@ -1477,6 +1477,16 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 	if (animated) {
 		[UIView commitAnimations];
 	}
+    
+    // hide/show story interactions stuff if necessary
+    NSArray *storyInteractions = [self.bookStoryInteractions storyInteractionsForPage:self.currentPageIndex];
+    int totalInteractionCount = [storyInteractions count];
+
+    if (totalInteractionCount < 1 || !visibility) {
+        [self setStoryInteractionButtonVisible:NO animated:YES];
+    } else if (totalInteractionCount >= 1) {
+        [self setStoryInteractionButtonVisible:YES animated:YES];
+    }
 }
 
 - (void)toggleToolbarVisibility
