@@ -89,4 +89,8 @@
 // to change this behaviour
 - (BOOL)shouldPlayQuestionAudioForViewAtIndex:(NSInteger)screenIndex;
 
+// audio path for current question - default implementation uses audioPathForQuestion
+// from the story interaction; override if variable audio per question is needed
+- (NSString *)audioPathForQuestion;
+
 @end

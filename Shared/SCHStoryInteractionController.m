@@ -139,7 +139,7 @@ typedef void (^PlayAudioCompletionBlock)(void);
     if (self.containerView == nil) {
         self.xpsProvider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.isbn];
         
-        NSString *questionAudioPath = [self.storyInteraction audioPathForQuestion];
+        NSString *questionAudioPath = [self audioPathForQuestion];
         [self playBundleAudioWithFilename:[storyInteraction storyInteractionOpeningSoundFilename]
                                completion:^{
                                    if (questionAudioPath && [self shouldPlayQuestionAudioForViewAtIndex:self.currentScreenIndex]) {
@@ -334,7 +334,7 @@ typedef void (^PlayAudioCompletionBlock)(void);
 
 - (IBAction)playAudioButtonTapped:(id)sender
 {
-    NSString *path = [self.storyInteraction audioPathForQuestion];
+    NSString *path = [self audioPathForQuestion];
     if (path != nil) {
         [self playAudioAtPath:path completion:nil];
     }   
@@ -493,6 +493,11 @@ typedef void (^PlayAudioCompletionBlock)(void);
 - (BOOL)shouldPlayQuestionAudioForViewAtIndex:(NSInteger)screenIndex
 {
     return YES;
+}
+
+- (NSString *)audioPathForQuestion
+{
+    return [self.storyInteraction audioPathForQuestion];
 }
 
 @end
