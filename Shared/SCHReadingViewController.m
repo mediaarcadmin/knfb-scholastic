@@ -84,6 +84,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 @property (nonatomic, retain) SCHBookStoryInteractions *bookStoryInteractions;
 @property (nonatomic, retain) SCHStoryInteractionController *storyInteractionController;
 
+@property (nonatomic, retain) AVAudioPlayer *interactionAppearsPlayer;
+
 - (void)releaseViewObjects;
 
 - (void)toggleToolbarVisibility;
@@ -161,6 +163,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 @synthesize audioBookPlayer;
 @synthesize bookStoryInteractions;
 @synthesize storyInteractionController;
+@synthesize interactionAppearsPlayer;
 
 #pragma mark - Dealloc and View Teardown
 
@@ -174,6 +177,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [audioBookPlayer release], audioBookPlayer = nil;
     [bookStoryInteractions release], bookStoryInteractions = nil;
     [popoverOptionsViewController release], popoverOptionsViewController = nil;
+    [interactionAppearsPlayer release], interactionAppearsPlayer = nil;
     
     storyInteractionController.delegate = nil; // we don't want callbacks
     [storyInteractionController release], storyInteractionController = nil;
@@ -362,29 +366,38 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     
     self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:self.leftBarButtonItemContainer] autorelease];
     
+    CGRect rightBarButtonItemFrame = CGRectZero;
     if (self.youngerMode) {
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-            CGRect rightBarButtonItemFrame = self.youngerRightBarButtonItemContainerPad.frame;
+            rightBarButtonItemFrame = self.youngerRightBarButtonItemContainerPad.frame;
             rightBarButtonItemFrame.size.height = containerHeight;
             self.youngerRightBarButtonItemContainerPad.frame = rightBarButtonItemFrame;
             
             self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:self.youngerRightBarButtonItemContainerPad] autorelease];
         } else {
-            CGRect rightBarButtonItemFrame = self.youngerRightBarButtonItemContainer.frame;
+            rightBarButtonItemFrame = self.youngerRightBarButtonItemContainer.frame;
             rightBarButtonItemFrame.size.height = containerHeight;
             self.youngerRightBarButtonItemContainer.frame = rightBarButtonItemFrame;
             
             self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:self.youngerRightBarButtonItemContainer] autorelease];
         }
     } else {
-        CGRect rightBarButtonItemFrame = self.olderRightBarButtonItemContainer.frame;
+        rightBarButtonItemFrame = self.olderRightBarButtonItemContainer.frame;
         rightBarButtonItemFrame.size.height = containerHeight;
         self.youngerRightBarButtonItemContainer.frame = rightBarButtonItemFrame;
         
         self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:self.olderRightBarButtonItemContainer] autorelease];
     }
     
-    self.titleLabel.text = book.Title;
+    CGRect r = self.titleLabel.frame;
+    r.size.width = (CGRectGetWidth(self.navigationController.navigationBar.bounds) - 
+                    CGRectGetWidth(leftBarButtonItemFrame) - 
+                    CGRectGetWidth(rightBarButtonItemFrame));
+    CGFloat widthDelta = CGRectGetWidth(self.navigationController.navigationBar.bounds) - r.size.width;
+    r.origin.x = (widthDelta > 0 ? widthDelta / 2.0 : 0.0);
+    r.size.height = containerHeight;
+    self.titleLabel.frame = r;
+    self.titleLabel.text = book.Title;    
     self.navigationItem.titleView = self.titleLabel;
     
     if (self.youngerMode) {
@@ -844,7 +857,14 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         [self.optionsView removeFromSuperview];
     }
 
-    SCHStoryInteraction *storyInteraction = [[self.bookStoryInteractions storyInteractionsForPage:self.currentPageIndex] objectAtIndex:0];
+    NSInteger page = self.currentPageIndex;
+    if (UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation])) {
+        if (page % 2 != 0) {
+            page++;
+        }
+    }
+    
+    SCHStoryInteraction *storyInteraction = [[self.bookStoryInteractions storyInteractionsForPage:page] objectAtIndex:0];
     self.storyInteractionController = [SCHStoryInteractionController storyInteractionControllerForStoryInteraction:storyInteraction];
     self.storyInteractionController.isbn = self.isbn;
     self.storyInteractionController.delegate = self;
@@ -859,7 +879,12 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 #pragma mark - Story Interactions methods
 - (void)setupStoryInteractionButtonForPage: (NSInteger) page animated:(BOOL)animated
-{
+{ 
+    if (UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation])) {
+        if (page % 2 != 0) {
+            page++;
+        }
+    }
     NSArray *storyInteractions = [self.bookStoryInteractions storyInteractionsForPage:page];
     int totalInteractionCount = [storyInteractions count];
     int questionCount = [self.bookStoryInteractions storyInteractionQuestionCountForPage:page];
@@ -871,12 +896,28 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         [self setStoryInteractionButtonVisible:NO animated:YES];
     } else {
         [self setStoryInteractionButtonVisible:YES animated:YES];
-        if (questionCount < 2) {
-            [self.storyInteractionButton setTitle:[NSString stringWithFormat:@"%d/%d%@", interactionsDone, 1, interactionsFinished?@"!!":@""] forState:UIControlStateNormal];
+        
+        NSString *imagePrefix = nil;
+        
+        if (self.youngerMode) {
+            imagePrefix = @"young";
         } else {
-            [self.storyInteractionButton setTitle:[NSString stringWithFormat:@"%d/%d%@", interactionsDone, questionCount, interactionsFinished?@"!!":@""] forState:UIControlStateNormal];
+            imagePrefix = @"old";
         }
         
+        if (questionCount < 2) {
+            if (interactionsFinished) {
+                [self.storyInteractionButton setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@-lightning-bolt-3", imagePrefix]] forState:UIControlStateNormal];
+            } else {
+                [self.storyInteractionButton setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@-lightning-bolt-0", imagePrefix]] forState:UIControlStateNormal];
+            }
+        } else {
+            if (interactionsFinished && interactionsDone == questionCount) {
+                [self.storyInteractionButton setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@-lightning-bolt-3", imagePrefix]] forState:UIControlStateNormal];
+            } else {
+                [self.storyInteractionButton setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@-lightning-bolt-%d", imagePrefix, interactionsDone]] forState:UIControlStateNormal];
+            }
+        }
     }
 }
 
@@ -898,6 +939,37 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
             } else {
                 movementBlock();
             }
+            
+            // play the sound effect
+            NSLog(@"Figuring out audio.");
+            
+            if (!self.audioBookPlayer || !self.audioBookPlayer.playing) {
+                // play sound effect only if the book reading is not happening
+                
+                NSString *audioFilename = @"sfx_siappears_y2B";
+                
+                if (!self.youngerMode) {
+                    audioFilename = @"sfx_siappears_o";
+                }
+                
+                NSString *bundlePath = [[NSBundle mainBundle] pathForResource:audioFilename ofType:@"mp3"];
+                
+                NSData *audioData = [NSData dataWithContentsOfFile:bundlePath options:NSDataReadingMapped error:nil];
+                if (audioData != nil) {
+                    
+                    NSError *error = nil;
+                    self.interactionAppearsPlayer = [[[AVAudioPlayer alloc] initWithData:audioData error:&error] autorelease];
+                    self.interactionAppearsPlayer.delegate = self;
+                    [self.interactionAppearsPlayer play];
+                    
+                    if (error) {
+                        NSLog(@"Warning: %@", [error localizedDescription]);
+                    }
+                } else {
+                    NSLog(@"Nil bundle data.");
+                }
+            }
+
         }
     } else {
         // hide the button
@@ -1637,14 +1709,30 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         }
     }
     if (success) {
-        [self.bookStoryInteractions incrementStoryInteractionQuestionsCompletedForPage:self.currentPageIndex];
+        
+        NSInteger page = self.currentPageIndex;
+        if (UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation])) {
+            if (page % 2 != 0) {
+                page++;
+            }
+        }
+
+        
+        [self.bookStoryInteractions incrementStoryInteractionQuestionsCompletedForPage:page];
         [self setupStoryInteractionButtonForCurrentPageAnimated:YES];
     }
 }
 
 - (NSInteger)currentQuestionForStoryInteraction
 {
-    return [self.bookStoryInteractions storyInteractionQuestionsCompletedForPage:self.currentPageIndex];
+    NSInteger page = self.currentPageIndex;
+    if (UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation])) {
+        if (page % 2 != 0) {
+            page++;
+        }
+    }
+
+    return [self.bookStoryInteractions storyInteractionQuestionsCompletedForPage:page];
 }
 
 #pragma mark - UIPopoverControllerDelegate methods
@@ -1653,6 +1741,13 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 {
     [self.optionsView removeFromSuperview];
     self.popover = nil;
+}
+
+#pragma mark - AVAudioPlayerDelegate methods
+
+- (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
+{
+    self.interactionAppearsPlayer = nil;
 }
 
 @end

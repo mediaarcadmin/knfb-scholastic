@@ -30,6 +30,7 @@
     
     [self.topTenTableView setSeparatorColor:[UIColor colorWithRed:0.710 green:0.737 blue:0.816 alpha:1.0]];
     self.topTenTableView.allowsSelection = NO;
+    self.topTenTableView.scrollEnabled = NO;    
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -43,10 +44,8 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (self.books == nil || [self.books count] == 0) {
-        self.topTenTableView.scrollEnabled = NO;
         return(1);
     } else {
-        self.topTenTableView.scrollEnabled = YES;        
         return([self.books count]);
     }
 }
@@ -71,7 +70,7 @@
 
 - (CGSize)contentSizeForViewInPopover
 {
-    CGFloat height = (10 * 44) + 44 + 10;
+    CGFloat height = (10 * 44);
     return CGSizeMake(320, height);
 }
 

@@ -34,6 +34,8 @@ static NSString * const kSCHTopFavoritesComponentCategoryYoungAdults = @"Young A
 - (BOOL)topFavoritesForAge:(NSUInteger)ageInYears
 {
 	BOOL ret = YES;
+    
+	NSLog(@"Requesting favorite books for %u year old.", ageInYears);
 	
 	NSMutableDictionary *favoriteItem = [NSMutableDictionary dictionary];
 	[favoriteItem setObject:[NSNumber numberWithBool:NO] forKey:kSCHLibreAccessWebServiceAssignedBooksOnly];

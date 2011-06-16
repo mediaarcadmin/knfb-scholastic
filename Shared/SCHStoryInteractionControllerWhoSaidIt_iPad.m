@@ -38,6 +38,7 @@ static CGPoint pointWithOffset(CGPoint p, CGPoint offset)
 
 @property (nonatomic, assign) CGPoint sourceCenterOffset;
 @property (nonatomic, assign) CGPoint targetCenterOffset;
+@property (nonatomic, retain) NSMutableSet *occupiedTargets;
 
 @end
 
@@ -49,6 +50,7 @@ static CGPoint pointWithOffset(CGPoint p, CGPoint offset)
 @synthesize targets;
 @synthesize sourceCenterOffset;
 @synthesize targetCenterOffset;
+@synthesize occupiedTargets;
 
 - (void)dealloc
 {
@@ -56,11 +58,14 @@ static CGPoint pointWithOffset(CGPoint p, CGPoint offset)
     [statementLabels release];
     [sources release];
     [targets release];
+    [occupiedTargets release];
     [super dealloc];
 }
 
 - (void)setupViewAtIndex:(NSInteger)screenIndex
 {
+    [self playBundleAudioWithFilename:[self.storyInteraction storyInteractionOpeningSoundFilename] completion:nil];
+
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         self.targetCenterOffset = CGPointMake(kTargetOffsetX_iPad, 0);
         self.sourceCenterOffset = CGPointMake(0, kSourceOffsetY_iPad);
@@ -72,6 +77,7 @@ static CGPoint pointWithOffset(CGPoint p, CGPoint offset)
     // sort the arrays by vertical position to ensure the source labels and targets are ordered the same
     self.targets = [self.targets viewsSortedVertically];
     self.statementLabels = [self.statementLabels viewsSortedVertically];
+    self.occupiedTargets = [NSMutableSet set];
     
     // set up the labels and tag the targets with the correct indices
     SCHStoryInteractionWhoSaidIt *whoSaidIt = (SCHStoryInteractionWhoSaidIt *)[self storyInteraction];
@@ -144,17 +150,25 @@ static CGPoint pointWithOffset(CGPoint p, CGPoint offset)
 - (void)draggableViewDidStartDrag:(SCHStoryInteractionDraggableView *)draggableView
 {
     [self playBundleAudioWithFilename:@"sfx_pickup.mp3" completion:nil];
+    
+    if (draggableView.tag > 0) {
+        [self.occupiedTargets removeObject:[NSNumber numberWithInteger:draggableView.tag]];
+    }
 }
 
 - (BOOL)draggableView:(SCHStoryInteractionDraggableView *)draggableView shouldSnapFromPosition:(CGPoint)position toPosition:(CGPoint *)snapPosition
 {
     CGPoint sourceCenter = pointWithOffset(position, self.sourceCenterOffset);
+    NSInteger targetIndex = 0;
     for (SCHStoryInteractionDraggableTargetView *target in self.targets) {
-        CGPoint targetCenter = pointWithOffset(target.center, self.targetCenterOffset);
-        if (distanceSq(sourceCenter, targetCenter) < kSnapDistanceSq) {
-            *snapPosition = CGPointMake(targetCenter.x - self.sourceCenterOffset.x, targetCenter.y - self.sourceCenterOffset.y);
-            return YES;
+        if (![self.occupiedTargets containsObject:[NSNumber numberWithInteger:targetIndex]]) {
+            CGPoint targetCenter = pointWithOffset(target.center, self.targetCenterOffset);
+            if (distanceSq(sourceCenter, targetCenter) < kSnapDistanceSq) {
+                *snapPosition = CGPointMake(targetCenter.x - self.sourceCenterOffset.x, targetCenter.y - self.sourceCenterOffset.y);
+                return YES;
+            }
         }
+        targetIndex++;
     }
     return NO;
 }
@@ -166,10 +180,13 @@ static CGPoint pointWithOffset(CGPoint p, CGPoint offset)
     CGPoint sourceCenter = pointWithOffset(position, self.sourceCenterOffset);
     NSInteger targetIndex = 0;
     for (SCHStoryInteractionDraggableTargetView *target in self.targets) {
-        CGPoint targetCenter = pointWithOffset(target.center, self.targetCenterOffset);
-        if (distanceSq(sourceCenter, targetCenter) < kSnapDistanceSq) {
-            draggableView.tag = targetIndex;
-            break;
+        if (![self.occupiedTargets containsObject:[NSNumber numberWithInteger:targetIndex]]) {
+            CGPoint targetCenter = pointWithOffset(target.center, self.targetCenterOffset);
+            if (distanceSq(sourceCenter, targetCenter) < kSnapDistanceSq) {
+                draggableView.tag = targetIndex;
+                [self.occupiedTargets addObject:[NSNumber numberWithInteger:targetIndex]];
+                break;
+            }
         }
         targetIndex++;
     }
