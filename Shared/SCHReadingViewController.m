@@ -887,10 +887,27 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         [self setStoryInteractionButtonVisible:NO animated:YES];
     } else {
         [self setStoryInteractionButtonVisible:YES animated:YES];
-        if (questionCount < 2) {
-            [self.storyInteractionButton setTitle:(interactionsFinished?@"Done!":@"New") forState:UIControlStateNormal];
+        
+        NSString *imagePrefix = nil;
+        
+        if (self.youngerMode) {
+            imagePrefix = @"young";
         } else {
-            [self.storyInteractionButton setTitle:[NSString stringWithFormat:@"%d/%d%@", interactionsDone, questionCount, interactionsFinished?@"!!":@""] forState:UIControlStateNormal];
+            imagePrefix = @"old";
+        }
+        
+        if (questionCount < 2) {
+            if (interactionsFinished) {
+                [self.storyInteractionButton setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@-lightning-bolt-3", imagePrefix]] forState:UIControlStateNormal];
+            } else {
+                [self.storyInteractionButton setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@-lightning-bolt-0", imagePrefix]] forState:UIControlStateNormal];
+            }
+        } else {
+            if (interactionsFinished && interactionsDone == questionCount) {
+                [self.storyInteractionButton setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@-lightning-bolt-3", imagePrefix]] forState:UIControlStateNormal];
+            } else {
+                [self.storyInteractionButton setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@-lightning-bolt-%d", imagePrefix, interactionsDone]] forState:UIControlStateNormal];
+            }
         }
     }
 }
