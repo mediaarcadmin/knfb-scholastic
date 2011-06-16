@@ -22,6 +22,7 @@ typedef void (^PlayAudioCompletionBlock)(void);
 @property (nonatomic, retain) NSArray *nibObjects;
 @property (nonatomic, assign) NSInteger currentScreenIndex;
 @property (nonatomic, retain) UILabel *titleView;
+@property (nonatomic, retain) UIButton *readAloudButton;
 @property (nonatomic, retain) UIImageView *backgroundView;
 @property (nonatomic, retain) AVAudioPlayer *player;
 @property (nonatomic, assign) BOOL resumeInterruptedPlayer;
@@ -40,6 +41,7 @@ typedef void (^PlayAudioCompletionBlock)(void);
 @synthesize isbn;
 @synthesize containerView;
 @synthesize titleView;
+@synthesize readAloudButton;
 @synthesize nibObjects;
 @synthesize currentScreenIndex;
 @synthesize contentsView;
@@ -76,6 +78,7 @@ typedef void (^PlayAudioCompletionBlock)(void);
     [xpsProvider release];
     [containerView release];
     [titleView release], titleView = nil;
+    [readAloudButton release];
     [nibObjects release];
     [contentsView release];
     [backgroundView release];
@@ -117,27 +120,25 @@ typedef void (^PlayAudioCompletionBlock)(void);
 
 - (void)presentInHostView:(UIView *)hostView withInterfaceOrientation:(UIInterfaceOrientation)aInterfaceOrientation
 {
+    BOOL iPad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
+    UIEdgeInsets contentInsets;
+    UIEdgeInsets titleInsets;
+    CGPoint closePosition;     // relative to top-left corner
+    CGPoint readAloudPosition; // relative to top-right corner
+    if (iPad) {
+        contentInsets = UIEdgeInsetsMake(130, 40, 40, 40);
+        titleInsets = UIEdgeInsetsMake(45, 65, 21, 65);
+        closePosition = [self.storyInteraction isOlderStoryInteraction] ? CGPointMake(3, -8) : CGPointMake(9, -17);
+        readAloudPosition = CGPointMake(-5, 5);
+    } else {
+        contentInsets = UIEdgeInsetsMake(70, 5, 5, 5);
+        titleInsets = UIEdgeInsetsMake(5, 50, 5, 50);
+        closePosition = CGPointMake(10, 7);
+        readAloudPosition = CGPointMake(-13, 15);
+    }
+    
     if (self.containerView == nil) {
-        
         self.xpsProvider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.isbn];
-        
-        BOOL iPad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
-
-        UIEdgeInsets contentInsets;
-        UIEdgeInsets titleInsets;
-        CGPoint closePosition;     // relative to top-left corner
-        CGPoint readAloudPosition; // relative to top-right corner
-        if (iPad) {
-            contentInsets = UIEdgeInsetsMake(130, 40, 40, 40);
-            titleInsets = UIEdgeInsetsMake(40, 65, 26, 65);
-            closePosition = [self.storyInteraction isOlderStoryInteraction] ? CGPointMake(3, -8) : CGPointMake(9, -17);
-            readAloudPosition = CGPointMake(-5, 5);
-        } else {
-            contentInsets = UIEdgeInsetsMake(70, 5, 5, 5);
-            titleInsets = UIEdgeInsetsMake(5, 50, 5, 50);
-            closePosition = CGPointMake(10, 7);
-            readAloudPosition = CGPointMake(-13, 15);
-        }
         
         // set up the transparent full-size container to trap touch events before they get
         // to the underlying view; this effectively makes the story interaction modal
@@ -151,25 +152,10 @@ typedef void (^PlayAudioCompletionBlock)(void);
                                                                           topCapHeight:backgroundImage.size.height/2-1];
         UIImageView *background = [[UIImageView alloc] initWithImage:backgroundStretch];
         background.contentMode = UIViewContentModeScaleToFill;
-
-        // put multiple views at the top-level in the nib for multi-screen interactions
-        self.contentsView = [self.nibObjects objectAtIndex:self.currentScreenIndex];
-        if (!iPad && (CGRectGetWidth(self.contentsView.bounds) > 470 || CGRectGetHeight(self.contentsView.bounds) > 250)) {
-            NSLog(@"contentView %d is too large: %@", self.currentScreenIndex, NSStringFromCGRect(self.contentsView.bounds));
-        }
-        
-        CGFloat backgroundWidth = CGRectGetWidth(self.contentsView.bounds) + contentInsets.left + contentInsets.right;
-        CGFloat backgroundHeight = CGRectGetHeight(self.contentsView.bounds) + contentInsets.top + contentInsets.bottom;
-        
         background.userInteractionEnabled = YES;
-        background.bounds = CGRectIntegral(CGRectMake(0, 0, backgroundWidth, backgroundHeight));
-        background.center = CGPointMake(floorf(CGRectGetMidX(container.bounds)), floorf(CGRectGetMidY(container.bounds)));
-        self.contentsView.center = CGPointMake(floorf(backgroundWidth/2), floorf((backgroundHeight-contentInsets.top-contentInsets.bottom)/2+contentInsets.top));
-        [background addSubview:self.contentsView];
         [container addSubview:background];
-        
-        CGRect titleFrame = UIEdgeInsetsInsetRect(CGRectMake(0, 0, backgroundWidth, contentInsets.top), titleInsets);
-        UILabel *title = [[UILabel alloc] initWithFrame:CGRectIntegral(titleFrame)];
+       
+        UILabel *title = [[UILabel alloc] initWithFrame:CGRectZero];
         title.backgroundColor = [UIColor clearColor];
         title.font = [UIFont boldSystemFontOfSize:iPad ? 22 : 18];
         title.textAlignment = UITextAlignmentCenter;
@@ -178,7 +164,6 @@ typedef void (^PlayAudioCompletionBlock)(void);
         title.numberOfLines = 2;
 
         self.titleView = title;
-        [self setTitle:[self.storyInteraction interactionViewTitle]];
         [background addSubview:title];
         [title release];
         
@@ -194,10 +179,10 @@ typedef void (^PlayAudioCompletionBlock)(void);
             UIImage *readAloudImage = [self deviceSpecificImageNamed:@"storyinteraction-read-aloud"];
             UIButton *audioButton = [UIButton buttonWithType:UIButtonTypeCustom];
             audioButton.bounds = (CGRect){ CGPointZero, readAloudImage.size };
-            audioButton.center = CGPointMake(floorf(backgroundWidth+readAloudPosition.x-readAloudImage.size.width/2), floorf(readAloudPosition.y+readAloudImage.size.height/2));
             [audioButton setImage:readAloudImage forState:UIControlStateNormal];
             [audioButton addTarget:self action:@selector(playAudioButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
             [background addSubview:audioButton];
+            self.readAloudButton = audioButton;
         }
         
         self.containerView = container;
@@ -205,10 +190,56 @@ typedef void (^PlayAudioCompletionBlock)(void);
         [container release];
         [background release];
 
-        [self setupViewAtIndex:self.currentScreenIndex];
+        [hostView addSubview:self.containerView];
+    }
+
+    // put multiple views at the top-level in the nib for multi-screen interactions
+    UIView *newContentsView = [self.nibObjects objectAtIndex:self.currentScreenIndex];
+    if (!iPad && (CGRectGetWidth(newContentsView.bounds) > 470 || CGRectGetHeight(newContentsView.bounds) > 250)) {
+        NSLog(@"contentView %d is too large: %@", self.currentScreenIndex, NSStringFromCGRect(newContentsView.bounds));
+    }
+
+    dispatch_block_t setupGeometry = ^{
+        UIImage *backgroundImage = self.backgroundView.image;
+        CGFloat backgroundWidth = MAX(backgroundImage.size.width, CGRectGetWidth(newContentsView.bounds) + contentInsets.left + contentInsets.right);
+        CGFloat backgroundHeight = MAX(backgroundImage.size.height, CGRectGetHeight(newContentsView.bounds) + contentInsets.top + contentInsets.bottom);
+        
+        self.backgroundView.bounds = CGRectIntegral(CGRectMake(0, 0, backgroundWidth, backgroundHeight));
+        self.backgroundView.center = CGPointMake(floorf(CGRectGetMidX(self.containerView.bounds)), floorf(CGRectGetMidY(self.containerView.bounds)));
+        newContentsView.center = CGPointMake(floorf(backgroundWidth/2), floorf((backgroundHeight-contentInsets.top-contentInsets.bottom)/2+contentInsets.top));
+        
+        self.titleView.frame = UIEdgeInsetsInsetRect(CGRectMake(0, 0, backgroundWidth, contentInsets.top), titleInsets);
+        
+        self.readAloudButton.center = CGPointMake(floorf(backgroundWidth+readAloudPosition.x-CGRectGetMidX(self.readAloudButton.bounds)),
+                                                  floorf(readAloudPosition.y+CGRectGetMidX(self.readAloudButton.bounds)));
+        
+        self.contentsView.alpha = 0;
+        newContentsView.alpha = 1;
+        newContentsView.transform = CGAffineTransformIdentity;
+    };
+
+    if (self.contentsView != nil) {
+        // animate the transition between screens
+        UIView *oldContentsView = self.contentsView;
+        newContentsView.alpha = 0;
+        newContentsView.transform = CGAffineTransformMakeScale(CGRectGetWidth(oldContentsView.bounds)/CGRectGetWidth(newContentsView.bounds),
+                                                               CGRectGetHeight(oldContentsView.bounds)/CGRectGetHeight(newContentsView.bounds));
+        newContentsView.center = oldContentsView.center;
+        [self.backgroundView addSubview:newContentsView];
+        [UIView animateWithDuration:0.3
+                         animations:setupGeometry
+                         completion:^(BOOL finished) {
+                             [oldContentsView removeFromSuperview];
+                         }];
+    } else {
+        setupGeometry();
+        [self.backgroundView addSubview:newContentsView];
     }
     
-    [hostView addSubview:self.containerView];
+    self.contentsView = newContentsView;
+    [self setTitle:[self.storyInteraction interactionViewTitle]];
+
+    [self setupViewAtIndex:self.currentScreenIndex];
     [self didRotateToInterfaceOrientation:aInterfaceOrientation];
 }
 
@@ -216,8 +247,6 @@ typedef void (^PlayAudioCompletionBlock)(void);
 {
     UIView *host = [self.containerView superview];
     self.currentScreenIndex = (self.currentScreenIndex + 1) % [self.nibObjects count];
-    [self.containerView removeFromSuperview];
-    self.containerView = nil;
     [self presentInHostView:host withInterfaceOrientation:self.interfaceOrientation];
 }
 

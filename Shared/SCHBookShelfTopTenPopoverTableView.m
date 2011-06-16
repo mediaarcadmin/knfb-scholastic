@@ -42,7 +42,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (self.books == nil) {
+    if (self.books == nil || [self.books count] == 0) {
         self.topTenTableView.scrollEnabled = NO;
         return(1);
     } else {
@@ -73,6 +73,20 @@
 {
     CGFloat height = (10 * 44) + 44 + 10;
     return CGSizeMake(320, height);
+}
+
+#pragma mark - Accessors
+
+- (void)setBooks:(NSArray *)newBooks
+{
+    if (books != newBooks) {
+        [books release];
+        books = [[newBooks sortedArrayUsingDescriptors:
+                  [NSArray arrayWithObject:
+                   [NSSortDescriptor sortDescriptorWithKey:@"Title" ascending:YES]]] retain];
+
+        [self.topTenTableView reloadData];
+    }
 }
 
 @end
