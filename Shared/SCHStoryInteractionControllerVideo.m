@@ -100,7 +100,7 @@ static CGFloat const kSCHStoryInteractionControllerVideoBorderWidth = 3.0;
 - (IBAction)playAudioButtonTapped:(id)sender
 {
     BOOL iWasPlaying = self.moviePlayer.playbackState == MPMoviePlaybackStatePlaying;
-    NSString *path = [self audioPath];
+    NSString *path = [self.storyInteraction audioPathForQuestion];
     if (path != nil) {
         [self pause];
         [self playAudioAtPath:path completion:^{

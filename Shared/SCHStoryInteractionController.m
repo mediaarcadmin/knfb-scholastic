@@ -139,6 +139,14 @@ typedef void (^PlayAudioCompletionBlock)(void);
     if (self.containerView == nil) {
         self.xpsProvider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.isbn];
         
+        NSString *questionAudioPath = [self.storyInteraction audioPathForQuestion];
+        [self playBundleAudioWithFilename:[storyInteraction storyInteractionOpeningSoundFilename]
+                               completion:^{
+                                   if (questionAudioPath && [self shouldPlayQuestionAudioForViewAtIndex:self.currentScreenIndex]) {
+                                       [self playAudioAtPath:questionAudioPath completion:nil];
+                                   }
+                               }];
+        
         // set up the transparent full-size container to trap touch events before they get
         // to the underlying view; this effectively makes the story interaction modal
         UIView *container = [[UIView alloc] initWithFrame:CGRectIntegral(hostView.bounds)];
@@ -174,7 +182,7 @@ typedef void (^PlayAudioCompletionBlock)(void);
         [closeButton addTarget:self action:@selector(closeButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
         [background addSubview:closeButton];
 
-        if ([self useAudioButton] == YES) {
+        if (questionAudioPath) {
             UIImage *readAloudImage = [UIImage imageNamed:@"storyinteraction-read-aloud"];
             UIButton *audioButton = [UIButton buttonWithType:UIButtonTypeCustom];
             audioButton.bounds = (CGRect){ CGPointZero, readAloudImage.size };
@@ -326,7 +334,7 @@ typedef void (^PlayAudioCompletionBlock)(void);
 
 - (IBAction)playAudioButtonTapped:(id)sender
 {
-    NSString *path = [self audioPath];
+    NSString *path = [self.storyInteraction audioPathForQuestion];
     if (path != nil) {
         [self playAudioAtPath:path completion:nil];
     }   
@@ -482,9 +490,9 @@ typedef void (^PlayAudioCompletionBlock)(void);
 - (void)setupViewAtIndex:(NSInteger)screenIndex
 {}
 
-- (NSString *)audioPath
+- (BOOL)shouldPlayQuestionAudioForViewAtIndex:(NSInteger)screenIndex
 {
-    return(nil);
+    return YES;
 }
 
 @end

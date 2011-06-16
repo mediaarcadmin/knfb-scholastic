@@ -58,12 +58,6 @@
     return @"Starting Letter";
 }
 
-- (NSString *)introductionAudioPath
-{
-    NSString *filename = [NSString stringWithFormat:@"%@_intro.mp3", self.ID];
-    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:filename];
-}
-
 - (NSString *)audioPathForQuestion
 {
     NSString *filename = [NSString stringWithFormat:@"%@_intro.mp3", self.ID];

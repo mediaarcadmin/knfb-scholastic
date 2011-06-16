@@ -91,9 +91,6 @@
 { 
     SCHStoryInteractionTitleTwister *titleTwister = (SCHStoryInteractionTitleTwister *)self.storyInteraction;
     self.openingScreenTitleLabel.text = titleTwister.bookTitle;
-
-    [self playBundleAudioWithFilename:[self.storyInteraction storyInteractionOpeningSoundFilename]
-                           completion:nil];
 }
 
 - (void)setupMainView

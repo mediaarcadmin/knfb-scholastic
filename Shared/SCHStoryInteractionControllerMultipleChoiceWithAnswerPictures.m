@@ -41,9 +41,6 @@
 
 - (void)setupViewAtIndex:(NSInteger)screenIndex
 {
-    [self playAudioAtPath:[(SCHStoryInteractionMultipleChoiceWithAnswerPictures *)self.storyInteraction introductionAudioPath]
-               completion:^{}];
-
     // get the current question
     if (self.delegate && [self.delegate respondsToSelector:@selector(currentQuestionForStoryInteraction)]) {
         self.currentQuestionIndex += [self.delegate currentQuestionForStoryInteraction];    
@@ -53,12 +50,6 @@
 
 - (void)nextQuestion
 {
-//    self.currentQuestionIndex++;
-//    if (self.currentQuestionIndex == [[(SCHStoryInteractionMultipleChoiceWithAnswerPictures *)self.storyInteraction questions] count]) {
-//        [self removeFromHostView];
-//    } else {
-//        [self setupQuestion];
-//    }
     [self removeFromHostViewWithSuccess:YES];
 }
 

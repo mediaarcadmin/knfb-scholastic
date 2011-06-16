@@ -37,8 +37,6 @@
 {
     SCHStoryInteractionWordSearch *wordSearch = (SCHStoryInteractionWordSearch *)self.storyInteraction;
     
-    [self playAudioAtPath:[wordSearch audioPathForQuestion] completion:nil];
-    
     [[self.wordViews objectAtIndex:0] setStrikeOutColor:[UIColor redColor]];
     [[self.wordViews objectAtIndex:1] setStrikeOutColor:[UIColor greenColor]];
     [[self.wordViews objectAtIndex:2] setStrikeOutColor:[UIColor cyanColor]];

@@ -60,8 +60,6 @@ static CGFloat distanceSq(CGPoint p1, CGPoint p2)
 
 - (void)setupViewAtIndex:(NSInteger)screenIndex
 {
-    [self playBundleAudioWithFilename:[self.storyInteraction storyInteractionOpeningSoundFilename] completion:nil];
-
     SCHStoryInteractionWordScrambler *wordScrambler = (SCHStoryInteractionWordScrambler *)self.storyInteraction;
     self.clueLabel.text = wordScrambler.clue;
     

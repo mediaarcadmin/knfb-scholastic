@@ -60,6 +60,11 @@
     }
 }
 
+- (BOOL)shouldPlayQuestionAudioForViewAtIndex:(NSInteger)screenIndex
+{
+    return screenIndex == 0;
+}
+
 - (void)setupQuestionView
 {
     self.currentQuestionIndex = 0;

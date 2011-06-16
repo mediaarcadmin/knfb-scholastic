@@ -29,9 +29,4 @@
     self.imageView.image = [UIImage imageWithData:imageData];
 }
 
-- (BOOL)useAudioButton
-{
-    return(NO);
-}
-
 @end

@@ -54,9 +54,6 @@
 
 - (void)setupViewAtIndex:(NSInteger)screenIndex
 {
-    [self playAudioAtPath:[(SCHStoryInteractionStartingLetter *)self.storyInteraction introductionAudioPath]
-               completion:^{}];
-
     [self setTitle:[(SCHStoryInteractionStartingLetter *)self.storyInteraction prompt]];
     
     [self shuffleImageButtons];
@@ -130,11 +127,6 @@
     }
 
     return(ret);
-}
-
-- (NSString *)audioPath
-{
-    return([(SCHStoryInteractionStartingLetter *)self.storyInteraction audioPathForQuestion]);
 }
 
 @end

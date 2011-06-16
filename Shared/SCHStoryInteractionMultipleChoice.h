@@ -41,7 +41,7 @@
 @property (nonatomic, retain) NSArray *questions;
 
 // XPSProvider-relative path for intro audio
-- (NSString *)introductionAudioPath;
+- (NSString *)audioPathForQuestion;
 
 @end
 

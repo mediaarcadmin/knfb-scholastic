@@ -38,8 +38,10 @@ extern NSString * const KNFBXPSStoryInteractionsDirectory;
 // Story interaction title for the interaction view itself
 - (NSString *)interactionViewTitle;
 
+// XPS-relative paths; return nil if the particular audio is not required
 - (NSString *)storyInteractionButtonAppearingSoundFilename;
 - (NSString *)storyInteractionOpeningSoundFilename;
+- (NSString *)audioPathForQuestion;
 - (NSString *)audioPathForThatsRight;
 - (NSString *)audioPathForTryAgain;
 - (NSString *)storyInteractionCorrectAnswerSoundFilename;

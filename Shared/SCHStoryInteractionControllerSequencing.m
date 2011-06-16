@@ -50,8 +50,6 @@
     SCHStoryInteractionSequencing *sequencing = (SCHStoryInteractionSequencing *)self.storyInteraction;
     NSAssert([sequencing numberOfImages] == kNumberOfImages, @"controller/views designed for exactly 3 images!");
 
-    [self playAudioAtPath:[sequencing audioPathForQuestion] completion:nil];
-    
     self.imageContainers = [self.imageContainers viewsSortedHorizontally];
     self.imageViews = [self.imageViews viewsSortedHorizontally];
     self.targets = [self.targets viewsSortedHorizontally];
