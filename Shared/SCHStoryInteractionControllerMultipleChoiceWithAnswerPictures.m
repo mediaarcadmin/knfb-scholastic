@@ -11,6 +11,7 @@
 #import "SCHStoryInteractionMultipleChoiceWithAnswerPictures.h"
 #import "SCHImageButton.h"
 #import "KNFBXPSProvider.h"
+#import "SCHStoryInteractionControllerDelegate.h"
 
 @interface SCHStoryInteractionControllerMultipleChoiceWithAnswerPictures ()
 
@@ -43,18 +44,22 @@
     [self playAudioAtPath:[(SCHStoryInteractionMultipleChoiceWithAnswerPictures *)self.storyInteraction introductionAudioPath]
                completion:^{}];
 
-    self.currentQuestionIndex = 0;
+    // get the current question
+    if (self.delegate && [self.delegate respondsToSelector:@selector(currentQuestionForStoryInteraction)]) {
+        self.currentQuestionIndex += [self.delegate currentQuestionForStoryInteraction];    
+    }
     [self setupQuestion];
 }
 
 - (void)nextQuestion
 {
-    self.currentQuestionIndex++;
-    if (self.currentQuestionIndex == [[(SCHStoryInteractionMultipleChoiceWithAnswerPictures *)self.storyInteraction questions] count]) {
-        [self removeFromHostView];
-    } else {
-        [self setupQuestion];
-    }
+//    self.currentQuestionIndex++;
+//    if (self.currentQuestionIndex == [[(SCHStoryInteractionMultipleChoiceWithAnswerPictures *)self.storyInteraction questions] count]) {
+//        [self removeFromHostView];
+//    } else {
+//        [self setupQuestion];
+//    }
+    [self removeFromHostViewWithSuccess:YES];
 }
 
 - (void)setupQuestion

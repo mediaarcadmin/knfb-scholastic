@@ -123,7 +123,7 @@
                 });
                 Block_release(playBlockCopy);
             } else {
-                [self removeFromHostView];
+                [self removeFromHostViewWithSuccess:YES];
             }
         });
         [self playAudioAtPath:[sequencing audioPathForThatsRight] completion:playBlock];

@@ -92,7 +92,7 @@
                        if ([self.remainingWords count] == 0) {
                            [self playAudioAtPath:[wordSearch audioPathForYouFoundThemAll]
                                       completion:^{
-                                          [self removeFromHostView];
+                                          [self removeFromHostViewWithSuccess:YES];
                                       }];
                        }
                    }];

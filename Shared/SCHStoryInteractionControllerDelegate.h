@@ -14,5 +14,6 @@
 
 @optional
 - (void)storyInteractionController:(SCHStoryInteractionController *)storyInteractionController didDismissWithSuccess:(BOOL)success;
+- (NSInteger)currentQuestionForStoryInteraction;
 
 @end

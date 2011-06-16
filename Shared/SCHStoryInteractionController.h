@@ -58,8 +58,6 @@
 
 // remove the story interaction from the host view; also sends storyInteractionControllerDidDismiss: to
 // the delegate
-// FIXME: remove the original once transition complete.
-- (void)removeFromHostView;
 - (void)removeFromHostViewWithSuccess:(BOOL)success;
 
 // switch to the next view in the NIB

@@ -9,6 +9,7 @@
 #import "SCHStoryInteractionControllerScratchAndSee.h"
 #import "SCHStoryInteractionScratchAndSee.h"
 #import "SCHBookStoryInteractions.h"
+#import "SCHStoryInteractionControllerDelegate.h"
 
 static const NSInteger kSCHScratchPointCount = 200;
 
@@ -90,12 +91,9 @@ static const NSInteger kSCHScratchPointCount = 200;
     self.progressView.hidden = NO;
 
     // get the current question
-    NSInteger currentInteraction = [self.storyInteraction.bookStoryInteractions storyInteractionQuestionsCompletedForPage:self.storyInteraction.documentPageNumber];
-    
-    if (currentInteraction > 0) {
-        self.currentQuestionIndex += currentInteraction;
+    if (self.delegate && [self.delegate respondsToSelector:@selector(currentQuestionForStoryInteraction)]) {
+        self.currentQuestionIndex += [self.delegate currentQuestionForStoryInteraction];    
     }
-    
     
     [self setupQuestion];
     

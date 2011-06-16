@@ -1608,8 +1608,15 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
             [self setToolbarVisibility:YES animated:YES];
         }
     }
-    [self.bookStoryInteractions incrementStoryInteractionQuestionsCompletedForPage:self.currentPageIndex];
-    [self setupStoryInteractionButtonAnimated:YES];
+    if (success) {
+        [self.bookStoryInteractions incrementStoryInteractionQuestionsCompletedForPage:self.currentPageIndex];
+        [self setupStoryInteractionButtonAnimated:YES];
+    }
+}
+
+- (NSInteger)currentQuestionForStoryInteraction
+{
+    return [self.bookStoryInteractions storyInteractionQuestionsCompletedForPage:self.currentPageIndex];
 }
 
 #pragma mark - UIPopoverControllerDelegate methods

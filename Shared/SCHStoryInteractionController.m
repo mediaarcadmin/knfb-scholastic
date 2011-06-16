@@ -72,7 +72,7 @@ typedef void (^PlayAudioCompletionBlock)(void);
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
-    [self removeFromHostView];
+    [self removeFromHostViewWithSuccess:NO];
     [xpsProvider release];
     [containerView release];
     [titleView release], titleView = nil;
@@ -276,11 +276,6 @@ typedef void (^PlayAudioCompletionBlock)(void);
 - (void)willResignActiveNotification:(NSNotification *)notification
 {
     [self endAudio];
-}
-
-- (void)removeFromHostView
-{
-    [self removeFromHostViewWithSuccess:YES];
 }
 
 - (void)removeFromHostViewWithSuccess:(BOOL)success
