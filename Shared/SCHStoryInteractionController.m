@@ -30,7 +30,6 @@ typedef void (^PlayAudioCompletionBlock)(void);
 
 @property (nonatomic, assign) dispatch_queue_t audioPlayQueue;
 
-- (UIImage *)deviceSpecificImageNamed:(NSString *)name;
 - (void)endAudio;
 
 @end
@@ -316,17 +315,6 @@ typedef void (^PlayAudioCompletionBlock)(void);
         // may result in self being dealloc'ed so don't do anything else after this
         [delegate storyInteractionController:self didDismissWithSuccess:success];
     }
-}
-
-- (UIImage *)deviceSpecificImageNamed:(NSString *)name
-{
-    // most images have device-specific versions
-    UIImage *image = [UIImage imageNamed:[name stringByAppendingString:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone ? @"-iphone" : @"-ipad")]];
-    if (!image) {
-        // not found; look for a common image
-        image = [UIImage imageNamed:name];
-    }
-    return image;
 }
 
 #pragma mark - Audio methods

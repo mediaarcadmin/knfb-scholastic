@@ -113,9 +113,9 @@
 							<int key="NSColorSpace">3</int>
 							<bytes key="NSWhite">MC41AA</bytes>
 						</object>
-						<object class="NSCustomResource" key="IBUINormalBackgroundImage" id="307349252">
+						<object class="NSCustomResource" key="IBUINormalBackgroundImage" id="1064994459">
 							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">popquiz-answer-button-yellow.png</string>
+							<string key="NSResourceName">answer-button-yellow.png</string>
 						</object>
 					</object>
 					<object class="IBUIButton" id="163701049">
@@ -141,7 +141,7 @@
 							<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
 						</object>
 						<reference key="IBUINormalTitleShadowColor" ref="650964707"/>
-						<reference key="IBUINormalBackgroundImage" ref="307349252"/>
+						<reference key="IBUINormalBackgroundImage" ref="1064994459"/>
 					</object>
 					<object class="IBUIButton" id="489278870">
 						<reference key="NSNextResponder" ref="415172968"/>
@@ -166,7 +166,7 @@
 							<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
 						</object>
 						<reference key="IBUINormalTitleShadowColor" ref="650964707"/>
-						<reference key="IBUINormalBackgroundImage" ref="307349252"/>
+						<reference key="IBUINormalBackgroundImage" ref="1064994459"/>
 					</object>
 					<object class="IBUIButton" id="377787671">
 						<reference key="NSNextResponder" ref="415172968"/>
@@ -191,7 +191,7 @@
 							<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
 						</object>
 						<reference key="IBUINormalTitleShadowColor" ref="650964707"/>
-						<reference key="IBUINormalBackgroundImage" ref="307349252"/>
+						<reference key="IBUINormalBackgroundImage" ref="1064994459"/>
 					</object>
 					<object class="IBUIButton" id="977206857">
 						<reference key="NSNextResponder" ref="415172968"/>
@@ -216,7 +216,7 @@
 							<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
 						</object>
 						<reference key="IBUINormalTitleShadowColor" ref="650964707"/>
-						<reference key="IBUINormalBackgroundImage" ref="307349252"/>
+						<reference key="IBUINormalBackgroundImage" ref="1064994459"/>
 					</object>
 				</object>
 				<string key="NSFrameSize">{260, 279}</string>
@@ -602,7 +602,7 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<object class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="NS.key.0">popquiz-answer-button-yellow.png</string>
+			<string key="NS.key.0">answer-button-yellow.png</string>
 			<string key="NS.object.0">{14, 40}</string>
 		</object>
 		<string key="IBCocoaTouchPluginVersion">301</string>

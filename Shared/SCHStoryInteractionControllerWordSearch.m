@@ -35,14 +35,16 @@
 
 - (void)setupViewAtIndex:(NSInteger)screenIndex
 {
+    SCHStoryInteractionWordSearch *wordSearch = (SCHStoryInteractionWordSearch *)self.storyInteraction;
+    
+    [self playAudioAtPath:[wordSearch audioPathForQuestion] completion:nil];
+    
     [[self.wordViews objectAtIndex:0] setStrikeOutColor:[UIColor redColor]];
     [[self.wordViews objectAtIndex:1] setStrikeOutColor:[UIColor greenColor]];
     [[self.wordViews objectAtIndex:2] setStrikeOutColor:[UIColor cyanColor]];
     [[self.wordViews objectAtIndex:3] setStrikeOutColor:[UIColor magentaColor]];
     [[self.wordViews objectAtIndex:4] setStrikeOutColor:[UIColor orangeColor]];
     [[self.wordViews objectAtIndex:5] setStrikeOutColor:[UIColor brownColor]];
-    
-    SCHStoryInteractionWordSearch *wordSearch = (SCHStoryInteractionWordSearch *)self.storyInteraction;
     
     self.wordsContainerView.layer.borderColor = [[UIColor colorWithRed:0.278 green:0.667 blue:0.937 alpha:1.] CGColor];
     self.wordsContainerView.layer.borderWidth = 2;
