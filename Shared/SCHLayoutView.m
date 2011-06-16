@@ -514,6 +514,11 @@
 
 #pragma mark - EucPageTurningViewDelegate
 
+- (void)pageTurningViewWillBeginPageTurn:(EucPageTurningView *)pageTurningView
+{
+    [self.delegate readingViewFixedViewWillBeginTurning:self];
+}
+
 - (void)pageTurningViewDidEndPageTurn:(EucPageTurningView *)aPageTurningView
 {
     self.currentPageIndex = aPageTurningView.focusedPageIndex;
