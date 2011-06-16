@@ -112,13 +112,11 @@
 
 - (void)setupDraggableTilesForTitleTwister:(SCHStoryInteractionTitleTwister *)titleTwister
 {
-    const BOOL iPad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
-    
     [self.letterViews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     
     NSInteger length = [titleTwister.bookTitle length];
     NSMutableArray *letters = [NSMutableArray arrayWithCapacity:length];
-    UIImage *letterTile = [UIImage imageNamed:(iPad ? @"storyinteraction-lettertile-ipad" : @"storyinteraction-lettertile-iphone")];
+    UIImage *letterTile = [UIImage imageNamed:@"storyinteraction-lettertile"];
     self.letterTileSize = letterTile.size;
     NSInteger wordGap = letterTileSize.width/3 + kLetterGap;
 

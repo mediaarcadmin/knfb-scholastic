@@ -16,8 +16,7 @@
 
 - (id)initWithLetter:(unichar)aLetter
 {
-    const BOOL iPad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
-    UIImage *bgImage = [UIImage imageNamed:iPad ? @"storyinteraction-lettertile-ipad" : @"storyinteraction-lettertile-iphone"];
+    UIImage *bgImage = [UIImage imageNamed:@"storyinteraction-lettertile"];
     
     if ((self = [super initWithFrame:CGRectMake(0, 0, bgImage.size.width, bgImage.size.height)])) {
         UIImageView *iv = [[UIImageView alloc] initWithImage:bgImage];

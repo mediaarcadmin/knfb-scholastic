@@ -147,7 +147,7 @@ typedef void (^PlayAudioCompletionBlock)(void);
         container.userInteractionEnabled = YES;
         
         NSString *age = [self.storyInteraction isOlderStoryInteraction] ? @"older" : @"younger";
-        UIImage *backgroundImage = [self deviceSpecificImageNamed:[NSString stringWithFormat:@"storyinteraction-bg-%@", age]];
+        UIImage *backgroundImage = [UIImage imageNamed:[NSString stringWithFormat:@"storyinteraction-bg-%@", age]];
         UIImage *backgroundStretch = [backgroundImage stretchableImageWithLeftCapWidth:backgroundImage.size.width/2-1
                                                                           topCapHeight:backgroundImage.size.height/2-1];
         UIImageView *background = [[UIImageView alloc] initWithImage:backgroundStretch];
@@ -167,7 +167,7 @@ typedef void (^PlayAudioCompletionBlock)(void);
         [background addSubview:title];
         [title release];
         
-        UIImage *closeImage = [self deviceSpecificImageNamed:[NSString stringWithFormat:@"storyinteraction-bolt-%@", age]];
+        UIImage *closeImage = [UIImage imageNamed:[NSString stringWithFormat:@"storyinteraction-bolt-%@", age]];
         UIButton *closeButton = [UIButton buttonWithType:UIButtonTypeCustom];
         closeButton.bounds = (CGRect){ CGPointZero, closeImage.size };
         closeButton.center = CGPointMake(floorf(closePosition.x+closeImage.size.width/2), floorf(closePosition.y+closeImage.size.height/2));
@@ -176,7 +176,7 @@ typedef void (^PlayAudioCompletionBlock)(void);
         [background addSubview:closeButton];
 
         if ([self useAudioButton] == YES) {
-            UIImage *readAloudImage = [self deviceSpecificImageNamed:@"storyinteraction-read-aloud"];
+            UIImage *readAloudImage = [UIImage imageNamed:@"storyinteraction-read-aloud"];
             UIButton *audioButton = [UIButton buttonWithType:UIButtonTypeCustom];
             audioButton.bounds = (CGRect){ CGPointZero, readAloudImage.size };
             [audioButton setImage:readAloudImage forState:UIControlStateNormal];
