@@ -30,7 +30,7 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
 @interface SCHBookShelfViewController_iPad ()
 
 @property (nonatomic, retain) SCHTopFavoritesComponent *topFavoritesComponent;
-@property (nonatomic, retain) NSMutableArray *topTenBooks;
+@property (nonatomic, retain) NSArray *topTenBooks;
 @property (nonatomic, retain) NSDate *lastTopTenBookRetrieval;
 
 @property (nonatomic, retain) SCHThemeButton *topTenPicksButton;
@@ -251,7 +251,7 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
     }
  
     if (self.topFavoritesComponent == nil) {
-        self.topTenBooks = [NSMutableArray array];
+        self.topTenBooks = nil;
         
         self.topFavoritesComponent = [[SCHTopFavoritesComponent alloc] init];
         [self.topFavoritesComponent release];
@@ -265,13 +265,11 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
     }
     
     SCHBookShelfTopTenPopoverTableView *popoverTable = [[SCHBookShelfTopTenPopoverTableView alloc] initWithNibName:nil bundle:nil];
-    if ([self.topTenBooks count] > 0) {
-        popoverTable.books = self.topTenBooks;
-    }
+    popoverTable.books = self.topTenBooks;
+
     popoverTable.title = @"Top Ten Books";
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:popoverTable];
     
-    self.popover = [[UIPopoverController alloc] initWithContentViewController:navController];
+    self.popover = [[UIPopoverController alloc] initWithContentViewController:popoverTable];
     self.popover.delegate = self;
     
     CGRect senderFrame = sender.superview.frame;
@@ -282,7 +280,6 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
     NSLog(@"Sender frame: %@", NSStringFromCGRect(senderFrame));
     
     [self.popover presentPopoverFromRect:senderFrame inView:self.view permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
-    [navController release];
     [popoverTable release];
     NSLog(@"Top ten!");
 }
@@ -349,8 +346,11 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
     if (topBooks != (id)[NSNull null] && [topBooks count] > 0) {
         self.lastTopTenBookRetrieval = [NSDate date];
         
-        [self.topTenBooks removeAllObjects];
-        [self.topTenBooks addObjectsFromArray:topBooks];
+        self.topTenBooks = topBooks;
+        
+        if (self.popover != nil && [self.popover.contentViewController isKindOfClass:[SCHBookShelfTopTenPopoverTableView class]] == YES) {
+            ((SCHBookShelfTopTenPopoverTableView *)self.popover.contentViewController).books = self.topTenBooks;
+        }
     }
 }
 
