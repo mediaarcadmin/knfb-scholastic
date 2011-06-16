@@ -844,7 +844,14 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         [self.optionsView removeFromSuperview];
     }
 
-    SCHStoryInteraction *storyInteraction = [[self.bookStoryInteractions storyInteractionsForPage:self.currentPageIndex] objectAtIndex:0];
+    NSInteger page = self.currentPageIndex;
+    if (UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation])) {
+        if (page % 2 != 0) {
+            page++;
+        }
+    }
+    
+    SCHStoryInteraction *storyInteraction = [[self.bookStoryInteractions storyInteractionsForPage:page] objectAtIndex:0];
     self.storyInteractionController = [SCHStoryInteractionController storyInteractionControllerForStoryInteraction:storyInteraction];
     self.storyInteractionController.isbn = self.isbn;
     self.storyInteractionController.delegate = self;
@@ -859,7 +866,12 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 #pragma mark - Story Interactions methods
 - (void)setupStoryInteractionButtonForPage: (NSInteger) page animated:(BOOL)animated
-{
+{ 
+    if (UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation])) {
+        if (page % 2 != 0) {
+            page++;
+        }
+    }
     NSArray *storyInteractions = [self.bookStoryInteractions storyInteractionsForPage:page];
     int totalInteractionCount = [storyInteractions count];
     int questionCount = [self.bookStoryInteractions storyInteractionQuestionCountForPage:page];
@@ -1637,14 +1649,30 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         }
     }
     if (success) {
-        [self.bookStoryInteractions incrementStoryInteractionQuestionsCompletedForPage:self.currentPageIndex];
+        
+        NSInteger page = self.currentPageIndex;
+        if (UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation])) {
+            if (page % 2 != 0) {
+                page++;
+            }
+        }
+
+        
+        [self.bookStoryInteractions incrementStoryInteractionQuestionsCompletedForPage:page];
         [self setupStoryInteractionButtonForCurrentPageAnimated:YES];
     }
 }
 
 - (NSInteger)currentQuestionForStoryInteraction
 {
-    return [self.bookStoryInteractions storyInteractionQuestionsCompletedForPage:self.currentPageIndex];
+    NSInteger page = self.currentPageIndex;
+    if (UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation])) {
+        if (page % 2 != 0) {
+            page++;
+        }
+    }
+
+    return [self.bookStoryInteractions storyInteractionQuestionsCompletedForPage:page];
 }
 
 #pragma mark - UIPopoverControllerDelegate methods
