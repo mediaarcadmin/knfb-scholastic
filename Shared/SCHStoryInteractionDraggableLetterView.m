@@ -28,7 +28,7 @@
         label.textColor = [UIColor whiteColor];
         label.textAlignment = UITextAlignmentCenter;
         label.text = [NSString stringWithCharacters:&aLetter length:1];
-        label.font = [UIFont boldSystemFontOfSize:20];
+        label.font = [UIFont fontWithName:@"Arial-BoldMT" size:30];
         label.tag = kLabelTag;
         [self addSubview:label];
         [label release];

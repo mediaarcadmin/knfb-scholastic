@@ -65,6 +65,11 @@ NSString * const KNFBXPSStoryInteractionsDirectory = @"/Documents/1/Other/KNFB/I
     }
 }
 
+- (NSString *)audioPathForQuestion
+{
+    return nil;
+}
+
 - (NSString *)audioPathForThatsRight
 {
     return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:@"gen_thatsright.mp3"];

@@ -96,17 +96,12 @@ static const NSInteger kSCHScratchPointCount = 200;
     }
     
     [self setupQuestion];
-    
-    [self playBundleAudioWithFilename:[(SCHStoryInteractionScratchAndSee *)self.storyInteraction storyInteractionOpeningSoundFilename]
-               completion:^{
-                   BOOL completed = [self.storyInteraction.bookStoryInteractions storyInteractionsFinishedOnPage:self.storyInteraction.documentPageNumber];
-                   if (!completed && self.currentQuestionIndex == 0) {
-                       [self playAudioAtPath:[(SCHStoryInteractionScratchAndSee *)self.storyInteraction introductionAudioPath]
-                                  completion:^{}];
-                   }
-               }];
-    
-    
+}
+
+- (BOOL)shouldPlayQuestionAudioForViewAtIndex:(NSInteger)screenIndex
+{
+    BOOL completed = [self.storyInteraction.bookStoryInteractions storyInteractionsFinishedOnPage:self.storyInteraction.documentPageNumber];
+    return !completed && self.currentQuestionIndex == 0;
 }
 
 - (void)setupQuestion

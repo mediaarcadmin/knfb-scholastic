@@ -52,7 +52,7 @@
 @synthesize introduction;
 @synthesize questions;
 
-- (NSString *)introductionAudioPath
+- (NSString *)audioPathForQuestion
 {
     NSString *filename = [NSString stringWithFormat:@"gen_scratchaway.mp3"];
     return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:filename];

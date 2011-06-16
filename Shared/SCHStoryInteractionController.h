@@ -85,7 +85,12 @@
 // to viewDidLoad, but used a separate message name to avoid confusion.
 - (void)setupViewAtIndex:(NSInteger)screenIndex;
 
-// audio path for the audio which should play when the top-corner audio button is tapped
-- (NSString *)audioPath;
+// normally the question audio (if any) is played when the view appears; override
+// to change this behaviour
+- (BOOL)shouldPlayQuestionAudioForViewAtIndex:(NSInteger)screenIndex;
+
+// audio path for current question - default implementation uses audioPathForQuestion
+// from the story interaction; override if variable audio per question is needed
+- (NSString *)audioPathForQuestion;
 
 @end

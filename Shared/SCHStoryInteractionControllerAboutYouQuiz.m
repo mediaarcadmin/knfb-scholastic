@@ -62,8 +62,6 @@
 
 - (void)setupViewAtIndex:(NSInteger)screenIndex
 {
-    [self playBundleAudioWithFilename:[self.storyInteraction storyInteractionOpeningSoundFilename] completion:nil];
-
     self.showTitleView = YES;
     self.showResultView = NO;
     self.answerButtons = [NSArray arrayWithObjects:self.answerButton1, self.answerButton2, self.answerButton3, self.answerButton4, self.answerButton5, nil];

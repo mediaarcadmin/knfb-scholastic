@@ -64,8 +64,6 @@ static CGPoint pointWithOffset(CGPoint p, CGPoint offset)
 
 - (void)setupViewAtIndex:(NSInteger)screenIndex
 {
-    [self playBundleAudioWithFilename:[self.storyInteraction storyInteractionOpeningSoundFilename] completion:nil];
-
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         self.targetCenterOffset = CGPointMake(kTargetOffsetX_iPad, 0);
         self.sourceCenterOffset = CGPointMake(0, kSourceOffsetY_iPad);

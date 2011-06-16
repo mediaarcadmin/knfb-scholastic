@@ -32,9 +32,6 @@
 // array of SCHStoryInteractionStartingLetterQuestion
 @property (nonatomic, retain) NSArray *questions;
 
-// XPSProvider-relative path for intro audio
-- (NSString *)introductionAudioPath;
-
 // XPSProvider-relative path for question audio
 - (NSString *)audioPathForQuestion;
 

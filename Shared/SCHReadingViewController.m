@@ -869,7 +869,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     self.storyInteractionController.isbn = self.isbn;
     self.storyInteractionController.delegate = self;
     self.storyInteractionController.xpsProvider = self.xpsProvider;
-    [self.storyInteractionController presentInHostView:self.view withInterfaceOrientation:self.interfaceOrientation];
+    [self.storyInteractionController presentInHostView:self.navigationController.view withInterfaceOrientation:self.interfaceOrientation];
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
         [self setToolbarVisibility:NO animated:YES];
@@ -1690,7 +1690,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     self.storyInteractionController.isbn = self.isbn;
     self.storyInteractionController.delegate = self;
     self.storyInteractionController.xpsProvider = self.xpsProvider;
-    [self.storyInteractionController presentInHostView:self.view withInterfaceOrientation:self.interfaceOrientation];
+    [self.storyInteractionController presentInHostView:self.navigationController.view withInterfaceOrientation:self.interfaceOrientation];
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
         [self setToolbarVisibility:NO animated:YES];

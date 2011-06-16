@@ -13,6 +13,7 @@
 #import "SCHStoryInteractionDraggableView.h"
 #import "SCHXPSProvider.h"
 #import "SCHBookManager.h"
+#import <QuartzCore/QuartzCore.h>
 
 typedef void (^PlayAudioCompletionBlock)(void);
 
@@ -139,6 +140,14 @@ typedef void (^PlayAudioCompletionBlock)(void);
     if (self.containerView == nil) {
         self.xpsProvider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.isbn];
         
+        NSString *questionAudioPath = [self audioPathForQuestion];
+        [self playBundleAudioWithFilename:[storyInteraction storyInteractionOpeningSoundFilename]
+                               completion:^{
+                                   if (questionAudioPath && [self shouldPlayQuestionAudioForViewAtIndex:self.currentScreenIndex]) {
+                                       [self playAudioAtPath:questionAudioPath completion:nil];
+                                   }
+                               }];
+        
         // set up the transparent full-size container to trap touch events before they get
         // to the underlying view; this effectively makes the story interaction modal
         UIView *container = [[UIView alloc] initWithFrame:CGRectIntegral(hostView.bounds)];
@@ -156,11 +165,15 @@ typedef void (^PlayAudioCompletionBlock)(void);
        
         UILabel *title = [[UILabel alloc] initWithFrame:CGRectZero];
         title.backgroundColor = [UIColor clearColor];
-        title.font = [UIFont boldSystemFontOfSize:iPad ? 22 : 18];
+        //title.font = [UIFont boldSystemFontOfSize:iPad ? 22 : 18];
+        title.font = [UIFont fontWithName:@"Arial Black" size:iPad ? 30 : 36];
         title.textAlignment = UITextAlignmentCenter;
         title.textColor = [self.storyInteraction isOlderStoryInteraction] ? [UIColor whiteColor] : [UIColor colorWithRed:0.113 green:0.392 blue:0.690 alpha:1.];
         title.adjustsFontSizeToFitWidth = YES;
         title.numberOfLines = 2;
+        title.layer.shadowOpacity = 0.7f;
+        title.layer.shadowRadius = 2;
+        title.layer.shadowOffset = CGSizeZero;
 
         self.titleView = title;
         [background addSubview:title];
@@ -174,7 +187,7 @@ typedef void (^PlayAudioCompletionBlock)(void);
         [closeButton addTarget:self action:@selector(closeButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
         [background addSubview:closeButton];
 
-        if ([self useAudioButton] == YES) {
+        if (questionAudioPath) {
             UIImage *readAloudImage = [UIImage imageNamed:@"storyinteraction-read-aloud"];
             UIButton *audioButton = [UIButton buttonWithType:UIButtonTypeCustom];
             audioButton.bounds = (CGRect){ CGPointZero, readAloudImage.size };
@@ -204,6 +217,8 @@ typedef void (^PlayAudioCompletionBlock)(void);
         CGFloat backgroundHeight = MAX(backgroundImage.size.height, CGRectGetHeight(newContentsView.bounds) + contentInsets.top + contentInsets.bottom);
         
         self.backgroundView.bounds = CGRectIntegral(CGRectMake(0, 0, backgroundWidth, backgroundHeight));
+//        self.backgroundView.bounds = CGRectIntegral(CGRectMake(0, 0, 362, 362));
+
         self.backgroundView.center = CGPointMake(floorf(CGRectGetMidX(self.containerView.bounds)), floorf(CGRectGetMidY(self.containerView.bounds)));
         newContentsView.center = CGPointMake(floorf(backgroundWidth/2), floorf((backgroundHeight-contentInsets.top-contentInsets.bottom)/2+contentInsets.top));
         
@@ -326,7 +341,7 @@ typedef void (^PlayAudioCompletionBlock)(void);
 
 - (IBAction)playAudioButtonTapped:(id)sender
 {
-    NSString *path = [self audioPath];
+    NSString *path = [self audioPathForQuestion];
     if (path != nil) {
         [self playAudioAtPath:path completion:nil];
     }   
@@ -482,9 +497,14 @@ typedef void (^PlayAudioCompletionBlock)(void);
 - (void)setupViewAtIndex:(NSInteger)screenIndex
 {}
 
-- (NSString *)audioPath
+- (BOOL)shouldPlayQuestionAudioForViewAtIndex:(NSInteger)screenIndex
 {
-    return(nil);
+    return YES;
+}
+
+- (NSString *)audioPathForQuestion
+{
+    return [self.storyInteraction audioPathForQuestion];
 }
 
 @end
