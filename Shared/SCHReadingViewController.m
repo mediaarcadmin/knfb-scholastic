@@ -84,6 +84,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 @property (nonatomic, retain) SCHBookStoryInteractions *bookStoryInteractions;
 @property (nonatomic, retain) SCHStoryInteractionController *storyInteractionController;
 
+@property (nonatomic, retain) AVAudioPlayer *interactionAppearsPlayer;
+
 - (void)releaseViewObjects;
 
 - (void)toggleToolbarVisibility;
@@ -161,6 +163,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 @synthesize audioBookPlayer;
 @synthesize bookStoryInteractions;
 @synthesize storyInteractionController;
+@synthesize interactionAppearsPlayer;
 
 #pragma mark - Dealloc and View Teardown
 
@@ -174,6 +177,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [audioBookPlayer release], audioBookPlayer = nil;
     [bookStoryInteractions release], bookStoryInteractions = nil;
     [popoverOptionsViewController release], popoverOptionsViewController = nil;
+    [interactionAppearsPlayer release], interactionAppearsPlayer = nil;
     
     storyInteractionController.delegate = nil; // we don't want callbacks
     [storyInteractionController release], storyInteractionController = nil;
@@ -884,11 +888,10 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     } else {
         [self setStoryInteractionButtonVisible:YES animated:YES];
         if (questionCount < 2) {
-            [self.storyInteractionButton setTitle:[NSString stringWithFormat:@"%d/%d%@", interactionsDone, 1, interactionsFinished?@"!!":@""] forState:UIControlStateNormal];
+            [self.storyInteractionButton setTitle:(interactionsFinished?@"Done!":@"New") forState:UIControlStateNormal];
         } else {
             [self.storyInteractionButton setTitle:[NSString stringWithFormat:@"%d/%d%@", interactionsDone, questionCount, interactionsFinished?@"!!":@""] forState:UIControlStateNormal];
         }
-        
     }
 }
 
@@ -910,6 +913,37 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
             } else {
                 movementBlock();
             }
+            
+            // play the sound effect
+            NSLog(@"Figuring out audio.");
+            
+            if (!self.audioBookPlayer || !self.audioBookPlayer.playing) {
+                // play sound effect only if the book reading is not happening
+                
+                NSString *audioFilename = @"sfx_siappears_y2B";
+                
+                if (!self.youngerMode) {
+                    audioFilename = @"sfx_siappears_o";
+                }
+                
+                NSString *bundlePath = [[NSBundle mainBundle] pathForResource:audioFilename ofType:@"mp3"];
+                
+                NSData *audioData = [NSData dataWithContentsOfFile:bundlePath options:NSDataReadingMapped error:nil];
+                if (audioData != nil) {
+                    
+                    NSError *error = nil;
+                    self.interactionAppearsPlayer = [[[AVAudioPlayer alloc] initWithData:audioData error:&error] autorelease];
+                    self.interactionAppearsPlayer.delegate = self;
+                    [self.interactionAppearsPlayer play];
+                    
+                    if (error) {
+                        NSLog(@"Warning: %@", [error localizedDescription]);
+                    }
+                } else {
+                    NSLog(@"Nil bundle data.");
+                }
+            }
+
         }
     } else {
         // hide the button
@@ -1681,6 +1715,13 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 {
     [self.optionsView removeFromSuperview];
     self.popover = nil;
+}
+
+#pragma mark - AVAudioPlayerDelegate methods
+
+- (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
+{
+    self.interactionAppearsPlayer = nil;
 }
 
 @end
