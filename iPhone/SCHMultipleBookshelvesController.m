@@ -190,7 +190,7 @@
     {
 		if (page == [self topPicksBookshelfPosition]) {
 			controller = [[SCHTopPicksBookShelfViewController alloc] initWithNibName:NSStringFromClass([SCHBookShelfViewController class]) bundle:nil];			
-			[self.topFavoritesComponent topFavorites];			
+			[self.topFavoritesComponent topFavoritesForAge:self.profileItem.age];			
 		} else {
 			controller = [[SCHBookShelfViewController alloc] initWithNibName:NSStringFromClass([SCHBookShelfViewController class]) bundle:nil];
 			controller.profileItem = self.profileItem;

@@ -35,6 +35,10 @@ typedef enum
 SCHReadingNoteViewDelegate, SCHReadingInteractionsListControllerDelegate, SCHAudioBookPlayerDelegate, UIPopoverControllerDelegate,
 SCHStoryInteractionControllerDelegate> 
 {}
+UIView *storyInteractionButtonView;
+
+UIButton *storyInteractionButton;
+
 UISegmentedControl *paperTypePopoverSegmentedControl;
 
 
@@ -68,6 +72,9 @@ UISegmentedControl *paperTypePopoverSegmentedControl;
 @property (nonatomic, retain) IBOutlet UISegmentedControl *flowFixedSegmentedControl;
 @property (nonatomic, retain) IBOutlet UISegmentedControl *flowFixedPopoverSegmentedControl;
 @property (nonatomic, retain) IBOutlet UISegmentedControl *paperTypePopoverSegmentedControl;
+
+@property (nonatomic, retain) IBOutlet UIButton *storyInteractionButton;
+@property (nonatomic, retain) IBOutlet UIView *storyInteractionButtonView;
 
 
 -(id)initWithNibName:(NSString *)nibNameOrNil 

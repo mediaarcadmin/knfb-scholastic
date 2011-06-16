@@ -29,6 +29,7 @@
     // Do any additional setup after loading the view from its nib.
     
     [self.topTenTableView setSeparatorColor:[UIColor colorWithRed:0.710 green:0.737 blue:0.816 alpha:1.0]];
+    self.topTenTableView.allowsSelection = NO;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -42,11 +43,9 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (self.books == nil) {
-        self.topTenTableView.allowsSelection = NO;
         self.topTenTableView.scrollEnabled = NO;
         return(1);
     } else {
-        self.topTenTableView.allowsSelection = YES;
         self.topTenTableView.scrollEnabled = YES;        
         return([self.books count]);
     }
@@ -57,7 +56,8 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"topTenTableCell"];
     
     if (!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"topTenTableCell"];        
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"topTenTableCell"]; 
+        cell.textLabel.font = [cell.textLabel.font fontWithSize:16];
     }
     
     if (self.books == nil || [self.books count] == 0) {
@@ -67,15 +67,6 @@
     }
             
     return(cell);
-}
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    [self.topTenTableView deselectRowAtIndexPath:indexPath animated:YES];
-    
-    if (self.books != nil) {
-        // I guess we need to do something here?
-    }
 }
 
 - (CGSize)contentSizeForViewInPopover

@@ -57,6 +57,8 @@ static NSString * const kSCHProfileItemUserContentItemContentMetadataItem = @"Us
 @dynamic AppBookOrder;
 @dynamic AppProfile;
 
+@synthesize age;
+
 #pragma mark - Object lifecycle
 
 - (void)awakeFromInsert
@@ -353,6 +355,24 @@ static NSString * const kSCHProfileItemUserContentItemContentMetadataItem = @"Us
 	} else {
 		return(YES);
 	}
+}
+
+- (NSUInteger)age
+{
+    NSUInteger ret = 0;
+    
+    if(self.Birthday != nil) {
+        NSCalendar *gregorian = [[NSCalendar alloc]
+                                 initWithCalendarIdentifier:NSGregorianCalendar];
+        
+        NSDateComponents *components = [gregorian components:NSYearCalendarUnit
+                                                    fromDate:self.Birthday
+                                                      toDate:[NSDate date] options:0];
+        [gregorian release], gregorian = nil;
+        ret = components.year;
+    }
+    
+    return(ret);
 }
 
 #pragma mark - Accessor delegated methods
