@@ -269,7 +269,10 @@
 {
 	NSError *error = nil;
 	NSDate *now = [NSDate date];
-	
+    NSCalendar *gregorian = [[NSCalendar alloc]
+                             initWithCalendarIdentifier:NSGregorianCalendar];
+    NSDateComponents *dateComponents = [[NSDateComponents alloc] init];
+    
 	[self clearProfiles];
 	[self clearUserContentItems];
 	[self clearBooks];
@@ -282,7 +285,8 @@
 	
 	youngProfileItem.StoryInteractionEnabled = [NSNumber numberWithBool:YES];
 	youngProfileItem.ID = [NSNumber numberWithInt:1];
-	youngProfileItem.Birthday = now;
+    dateComponents.year = -5;
+	youngProfileItem.Birthday = [gregorian dateByAddingComponents:dateComponents toDate:[NSDate date] options:0];
 	youngProfileItem.FirstName = @"Joe";
 	youngProfileItem.ProfilePasswordRequired = [NSNumber numberWithBool:NO];
 	youngProfileItem.Type = [NSNumber numberWithProfileType:kSCHProfileTypesCHILD];
@@ -303,7 +307,8 @@
 	
 	olderProfileItem.StoryInteractionEnabled = [NSNumber numberWithBool:YES];
 	olderProfileItem.ID = [NSNumber numberWithInt:2];
-	olderProfileItem.Birthday = now;
+    dateComponents.year = -14;
+	olderProfileItem.Birthday = [gregorian dateByAddingComponents:dateComponents toDate:[NSDate date] options:0];
 	olderProfileItem.FirstName = @"John";
 	olderProfileItem.ProfilePasswordRequired = [NSNumber numberWithBool:NO];
 	olderProfileItem.Type = [NSNumber numberWithProfileType:kSCHProfileTypesCHILD];
@@ -324,7 +329,8 @@
 	
 	allBooksProfileItem.StoryInteractionEnabled = [NSNumber numberWithBool:YES];
 	allBooksProfileItem.ID = [NSNumber numberWithInt:3];
-	allBooksProfileItem.Birthday = now;
+    dateComponents.year = -8;
+	allBooksProfileItem.Birthday = [gregorian dateByAddingComponents:dateComponents toDate:[NSDate date] options:0];
 	allBooksProfileItem.FirstName = @"Jimmy";
 	allBooksProfileItem.ProfilePasswordRequired = [NSNumber numberWithBool:NO];
 	allBooksProfileItem.Type = [NSNumber numberWithProfileType:kSCHProfileTypesCHILD];
@@ -412,7 +418,7 @@
         
         newOrderItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHOrderItem inManagedObjectContext:self.managedObjectContext];
         newOrderItem.OrderID = [[NSNumber numberWithInteger:orderID++] stringValue];
-        newOrderItem.OrderDate = [[NSDate date] dateByAddingTimeInterval:orderID * 60];
+        newOrderItem.OrderDate = [NSDate dateWithTimeIntervalSinceNow:orderID * 60];
         [newUserContentItem addOrderListObject:newOrderItem];	
         
         NSError *error;
@@ -432,6 +438,9 @@
 		abort();
 	}	
 	
+    [dateComponents release], dateComponents = nil;
+    [gregorian release], gregorian = nil;
+     
 	// fire off processing
 	[[NSNotificationCenter defaultCenter] postNotificationName:kSCHBookshelfSyncComponentComplete object:self];
 	
