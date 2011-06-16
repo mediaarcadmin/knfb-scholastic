@@ -9,6 +9,7 @@
 #import "SCHStoryInteractionControllerScratchAndSee.h"
 #import "SCHStoryInteractionScratchAndSee.h"
 #import "SCHBookStoryInteractions.h"
+#import "SCHStoryInteractionControllerDelegate.h"
 
 static const NSInteger kSCHScratchPointCount = 200;
 
@@ -90,19 +91,19 @@ static const NSInteger kSCHScratchPointCount = 200;
     self.progressView.hidden = NO;
 
     // get the current question
-    NSInteger currentInteraction = [self.storyInteraction.bookStoryInteractions storyInteractionsCompletedForPage:self.storyInteraction.documentPageNumber];
-    
-    if (currentInteraction > 0) {
-        self.currentQuestionIndex += currentInteraction;
+    if (self.delegate && [self.delegate respondsToSelector:@selector(currentQuestionForStoryInteraction)]) {
+        self.currentQuestionIndex += [self.delegate currentQuestionForStoryInteraction];    
     }
-    
     
     [self setupQuestion];
     
     [self playBundleAudioWithFilename:[(SCHStoryInteractionScratchAndSee *)self.storyInteraction storyInteractionOpeningSoundFilename]
                completion:^{
-                   [self playAudioAtPath:[(SCHStoryInteractionScratchAndSee *)self.storyInteraction introductionAudioPath]
-                              completion:^{}];
+                   BOOL completed = [self.storyInteraction.bookStoryInteractions storyInteractionsFinishedOnPage:self.storyInteraction.documentPageNumber];
+                   if (!completed && self.currentQuestionIndex == 0) {
+                       [self playAudioAtPath:[(SCHStoryInteractionScratchAndSee *)self.storyInteraction introductionAudioPath]
+                                  completion:^{}];
+                   }
                }];
     
     
@@ -184,8 +185,7 @@ static const NSInteger kSCHScratchPointCount = 200;
 //        [self setupQuestion];
 //    }
     
-    [self.storyInteraction.bookStoryInteractions incrementStoryInteractionsCompletedForPage:self.storyInteraction.documentPageNumber];
-    [self removeFromHostView];
+    [self removeFromHostViewWithSuccess:YES];
 }
 
 - (SCHStoryInteractionScratchAndSeeQuestion *)currentQuestion

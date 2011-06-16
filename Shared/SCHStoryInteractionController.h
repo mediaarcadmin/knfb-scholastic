@@ -58,7 +58,7 @@
 
 // remove the story interaction from the host view; also sends storyInteractionControllerDidDismiss: to
 // the delegate
-- (void)removeFromHostView;
+- (void)removeFromHostViewWithSuccess:(BOOL)success;
 
 // switch to the next view in the NIB
 - (void)presentNextView;

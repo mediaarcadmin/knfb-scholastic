@@ -240,7 +240,7 @@ static CGFloat distanceSq(CGPoint p1, CGPoint p2)
     
     [self playBundleAudioWithFilename:@"sfx_winround.mp3"
                            completion:^{
-                               [self removeFromHostView];
+                               [self removeFromHostViewWithSuccess:YES];
                            }];
 }
 

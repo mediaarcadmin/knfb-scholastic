@@ -125,7 +125,7 @@ static CGPoint pointWithOffset(CGPoint p, CGPoint offset)
     if (correctCount == [self.targets count]) {
         [self playBundleAudioWithFilename:@"sfx_winround.mp3"
                                completion:^{
-                                   [self removeFromHostView];
+                                   [self removeFromHostViewWithSuccess:YES];
                                }];
     } else {
         // remove the highlights after a short delay

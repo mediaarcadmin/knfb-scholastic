@@ -99,7 +99,7 @@
 
 #pragma mark - Interactions Complete methods
 
-- (NSInteger)storyInteractionsCompletedForPage:(NSInteger)page
+- (NSInteger)storyInteractionQuestionsCompletedForPage:(NSInteger)page
 {
     int result = -1;
     
@@ -114,7 +114,7 @@
     return result;
 }
 
-- (void)incrementStoryInteractionsCompletedForPage:(NSInteger)page
+- (void)incrementStoryInteractionQuestionsCompletedForPage:(NSInteger)page
 {
     NSNumber *count = [self.storyInteractionCurrentCount objectForKey:[NSNumber numberWithInteger:page]];
     
@@ -148,5 +148,11 @@
 {
     return [[self.storyInteractionsComplete objectForKey:[NSNumber numberWithInt:page]] boolValue];
 }
+
+- (void)setStoryInteractionsFinishedForPage:(NSInteger)page
+{
+    [self.storyInteractionsComplete setObject:[NSNumber numberWithBool:YES] forKey:[NSNumber numberWithInt:page]];
+}
+
 
 @end

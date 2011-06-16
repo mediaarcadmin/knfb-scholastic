@@ -866,7 +866,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     int questionCount = [self.bookStoryInteractions storyInteractionQuestionCountForPage:page];
     BOOL interactionsFinished = [self.bookStoryInteractions storyInteractionsFinishedOnPage:page];
     
-    NSInteger interactionsDone = [self.bookStoryInteractions storyInteractionsCompletedForPage:page];
+    NSInteger interactionsDone = [self.bookStoryInteractions storyInteractionQuestionsCompletedForPage:page];
     
     if (totalInteractionCount < 1) {
         // hide the button
@@ -1599,7 +1599,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 #pragma mark - SCHStoryInteractionControllerDelegate methods
 
-- (void)storyInteractionControllerDidDismiss:(SCHStoryInteractionController *)aStoryInteractionController
+- (void)storyInteractionController:(SCHStoryInteractionController *)aStoryInteractionController didDismissWithSuccess:(BOOL)success
 {
     if (aStoryInteractionController == self.storyInteractionController) {
         self.storyInteractionController = nil;
@@ -1608,8 +1608,15 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
             [self setToolbarVisibility:YES animated:YES];
         }
     }
-    
-    [self setupStoryInteractionButtonAnimated:YES];
+    if (success) {
+        [self.bookStoryInteractions incrementStoryInteractionQuestionsCompletedForPage:self.currentPageIndex];
+        [self setupStoryInteractionButtonAnimated:YES];
+    }
+}
+
+- (NSInteger)currentQuestionForStoryInteraction
+{
+    return [self.bookStoryInteractions storyInteractionQuestionsCompletedForPage:self.currentPageIndex];
 }
 
 #pragma mark - UIPopoverControllerDelegate methods

@@ -74,7 +74,7 @@ typedef void (^PlayAudioCompletionBlock)(void);
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
-    [self removeFromHostView];
+    [self removeFromHostViewWithSuccess:NO];
     [xpsProvider release];
     [containerView release];
     [titleView release], titleView = nil;
@@ -297,7 +297,7 @@ typedef void (^PlayAudioCompletionBlock)(void);
 
 - (void)closeButtonTapped:(id)sender
 {
-    [self removeFromHostView];
+    [self removeFromHostViewWithSuccess:NO];
 }
 
 #pragma mark - Notification methods
@@ -307,16 +307,15 @@ typedef void (^PlayAudioCompletionBlock)(void);
     [self endAudio];
 }
 
-- (void)removeFromHostView
+- (void)removeFromHostViewWithSuccess:(BOOL)success
 {
     [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.isbn];
     [self.containerView removeFromSuperview];
     
-    if (delegate && [delegate respondsToSelector:@selector(storyInteractionControllerDidDismiss:)]) {
+    if (delegate && [delegate respondsToSelector:@selector(storyInteractionController:didDismissWithSuccess:)]) {
         // may result in self being dealloc'ed so don't do anything else after this
-        [delegate storyInteractionControllerDidDismiss:self];
+        [delegate storyInteractionController:self didDismissWithSuccess:success];
     }
-    
 }
 
 - (UIImage *)deviceSpecificImageNamed:(NSString *)name

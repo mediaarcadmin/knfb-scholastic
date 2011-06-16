@@ -10,6 +10,8 @@
 
 #import "SCHStoryInteractionMultipleChoiceText.h"
 
+#import "SCHStoryInteractionControllerDelegate.h"
+
 @interface SCHStoryInteractionControllerMultipleChoiceText ()
 
 @property (nonatomic, assign) NSInteger currentQuestionIndex;
@@ -40,19 +42,23 @@
 {
     [self playAudioAtPath:[(SCHStoryInteractionMultipleChoiceText *)self.storyInteraction introductionAudioPath]
                completion:^{}];
-    
-    self.currentQuestionIndex = 0;
+
+    // get the current question
+    if (self.delegate && [self.delegate respondsToSelector:@selector(currentQuestionForStoryInteraction)]) {
+        self.currentQuestionIndex += [self.delegate currentQuestionForStoryInteraction];    
+    }
     [self setupQuestion];
 }
 
 - (void)nextQuestion
 {
-    self.currentQuestionIndex++;
-    if (self.currentQuestionIndex == [[(SCHStoryInteractionMultipleChoiceText *)self.storyInteraction questions] count]) {
-        [self removeFromHostView];
-    } else {
-        [self setupQuestion];
-    }
+//    self.currentQuestionIndex++;
+//    if (self.currentQuestionIndex == [[(SCHStoryInteractionMultipleChoiceText *)self.storyInteraction questions] count]) {
+//        [self removeFromHostView];
+//    } else {
+//        [self setupQuestion];
+//    }
+    [self removeFromHostViewWithSuccess:YES];
 }
 
 - (void)setupQuestion

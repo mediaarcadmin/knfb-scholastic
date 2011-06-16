@@ -374,7 +374,6 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
     
     BOOL shouldCancelEditing = NO;
 
-    // FIXME: The code below crashes so its just returning for now
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         NSLog(@"Deleting %d, row %d!", indexPath.section, indexPath.row);
         
