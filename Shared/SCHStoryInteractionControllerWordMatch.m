@@ -20,7 +20,8 @@
 #define kLabelTag 101
 #define kImageViewTag 102
 #define kSnapDistanceSq 900
-#define kSourceOffsetY 5
+#define kSourceOffsetY_iPad 5
+#define kSourceOffsetY_iPhone 3
 
 static CGFloat distanceSq(CGPoint p1, CGPoint p2)
 {
@@ -31,6 +32,7 @@ static CGFloat distanceSq(CGPoint p1, CGPoint p2)
 
 @interface SCHStoryInteractionControllerWordMatch ()
 
+@property (nonatomic, assign) NSInteger sourceOffsetY;
 @property (nonatomic, retain) NSMutableSet *occupiedTargets;
 @property (nonatomic, assign) NSInteger numberOfCorrectItems;
 
@@ -45,6 +47,7 @@ static CGFloat distanceSq(CGPoint p1, CGPoint p2)
 @synthesize wordViews;
 @synthesize targetViews;
 @synthesize imageViews;
+@synthesize sourceOffsetY;
 @synthesize occupiedTargets;
 @synthesize numberOfCorrectItems;
 
@@ -72,6 +75,8 @@ static CGFloat distanceSq(CGPoint p1, CGPoint p2)
 
 - (void)setupViewAtIndex:(NSInteger)screenIndex
 {
+    self.sourceOffsetY = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ? kSourceOffsetY_iPad : kSourceOffsetY_iPhone;
+    
     self.wordViews = [self.wordViews viewsSortedHorizontally];
     self.targetViews = [self.targetViews viewsSortedHorizontally];
     self.imageViews = [self.imageViews viewsSortedHorizontally];
@@ -81,6 +86,11 @@ static CGFloat distanceSq(CGPoint p1, CGPoint p2)
         imageView.layer.borderColor = [[UIColor colorWithRed:0.165 green:0.322 blue:0.678 alpha:1.] CGColor];
         imageView.layer.cornerRadius = 6;
         imageView.layer.masksToBounds = YES;
+    }
+    
+    for (UIView *view in self.targetViews) {
+        view.layer.cornerRadius = 6;
+        view.layer.masksToBounds = YES;
     }
     
     self.occupiedTargets = [NSMutableSet set]; 
@@ -130,12 +140,12 @@ static CGFloat distanceSq(CGPoint p1, CGPoint p2)
 
 - (BOOL)draggableView:(SCHStoryInteractionDraggableView *)draggableView shouldSnapFromPosition:(CGPoint)position toPosition:(CGPoint *)snapPosition
 {
-    CGPoint sourceCenter = CGPointMake(position.x, position.y+kSourceOffsetY);
+    CGPoint sourceCenter = CGPointMake(position.x, position.y+self.sourceOffsetY);
     NSInteger targetIndex = 0;
     for (SCHStoryInteractionDraggableTargetView *target in self.targetViews) {
         if (![self.occupiedTargets containsObject:target]) {
             if (distanceSq(sourceCenter, target.center) < kSnapDistanceSq) {
-                *snapPosition = CGPointMake(target.center.x, target.center.y-kSourceOffsetY);
+                *snapPosition = CGPointMake(target.center.x, target.center.y-self.sourceOffsetY);
                 return YES;
             }
         }
@@ -146,7 +156,7 @@ static CGFloat distanceSq(CGPoint p1, CGPoint p2)
 
 - (void)draggableView:(SCHStoryInteractionDraggableView *)draggableView didMoveToPosition:(CGPoint)position
 {
-    CGPoint sourceCenter = CGPointMake(position.x, position.y+kSourceOffsetY);
+    CGPoint sourceCenter = CGPointMake(position.x, position.y+self.sourceOffsetY);
     SCHStoryInteractionDraggableTargetView *onTarget = nil;
     for (SCHStoryInteractionDraggableTargetView *target in self.targetViews) {
         if (![self.occupiedTargets containsObject:target]) {

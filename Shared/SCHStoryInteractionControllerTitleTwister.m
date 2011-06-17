@@ -178,18 +178,19 @@
                 [letterRow appendString:[word substringToIndex:split]];
             }
             [letterRows addObject:letterRow];
-            letterRow = [[word substringFromIndex:split] mutableCopy];
+            letterRow = [[[word substringFromIndex:split] mutableCopy] autorelease];
             width = [letterRow length] * (tileSize.width+kLetterGap);
         } else {
             // add this word on a new row
             [letterRows addObject:letterRow];
-            letterRow = [word mutableCopy];
+            letterRow = [[word mutableCopy] autorelease];
             width = wordWidth;
         }
     }
     if ([letterRow length] > 0) {
         [letterRows addObject:letterRow];
     }
+
     return letterRows;
 }
 

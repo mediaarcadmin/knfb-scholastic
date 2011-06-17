@@ -355,7 +355,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     
 	[self setToolbarVisibility:YES animated:NO];
 	
-	self.initialFadeTimer = [NSTimer scheduledTimerWithTimeInterval:2.0f
+	self.initialFadeTimer = [NSTimer scheduledTimerWithTimeInterval:5.0f
                                                              target:self
                                                            selector:@selector(hideToolbarsFromTimer)
                                                            userInfo:nil
@@ -752,13 +752,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 {
     NSLog(@"Story Interactions action");
 
-    // FIXME: this needs to be fixed so that audio reading continues properly. for some reason it's not.
-    
-//    [self.audioBookPlayer pause];
-//    if (self.audioBookPlayer && [self.audioBookPlayer playing]) {
-//        [self.audioBookPlayer pause];
-//    }
-    
     if (self.optionsView.superview) {
         [self.optionsView removeFromSuperview];
     }
@@ -896,6 +889,11 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 #pragma mark - Story Interactions methods
 - (void)setupStoryInteractionButtonForPage: (NSInteger) page animated:(BOOL)animated
 { 
+    // don't do any of this in flow view
+    if ([self.readingView isKindOfClass:[SCHFlowView class]]) {
+        return;
+    }
+    
     if (UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation])) {
         if (page % 2 != 0) {
             page++;
@@ -951,6 +949,11 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (void)setStoryInteractionButtonVisible:(BOOL)visible animated:(BOOL)animated withSound:(BOOL)sound
 {
     if (visible) {
+        // don't do this in flow view
+        if ([self.readingView isKindOfClass:[SCHFlowView class]]) {
+            return;
+        }
+        
         CGRect frame = self.storyInteractionButtonView.frame;
         
         // if the frame is out of screen, move it back on
@@ -1005,6 +1008,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         }
     } else {
         // hide the button
+        // (hiding the button is acceptable in flow view)
         
         void (^movementBlock)(void) = ^{
             CGRect frame = self.storyInteractionButtonView.frame;
@@ -1077,6 +1081,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
             [self setDictionarySelectionMode];
 
             [flowView release];
+            
+            [self setStoryInteractionButtonVisible:NO animated:YES withSound:NO];
             
             break;
         case SCHReadingViewLayoutTypeFixed:    

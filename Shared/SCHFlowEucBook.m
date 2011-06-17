@@ -178,6 +178,7 @@
         EucCSSLayoutPoint layoutPoint = [extractor layoutPointForNode:[extractor.document nodeForKey:indexPoint.block]];
         
         indexes[1] = [EucCSSIntermediateDocument documentTreeNodeKeyForKey:layoutPoint.nodeKey];
+        [extractor release];
         
         NSIndexPath *indexPath = [[NSIndexPath alloc] initWithIndexes:indexes length:2];
 
