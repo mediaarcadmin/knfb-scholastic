@@ -13,6 +13,7 @@
 #import "SCHStoryInteractionDraggableView.h"
 #import "SCHStoryInteractionDraggableTargetView.h"
 #import "NSArray+ViewSorting.h"
+#import "NSArray+Shuffling.h"
 
 #define kImageViewTag 1234
 #define kNumberOfImages 3
@@ -54,16 +55,15 @@
     self.imageViews = [self.imageViews viewsSortedHorizontally];
     self.targets = [self.targets viewsSortedHorizontally];
     
-    NSMutableArray *views = [NSMutableArray arrayWithArray:self.imageViews];
+    NSArray *shuffledImages = [self.imageViews shuffled];
     for (NSInteger i = 0; i < kNumberOfImages; ++i) {
         UIImage *image = [self imageAtPath:[sequencing imagePathForIndex:i]];
-        NSInteger pos = arc4random() % [views count];
-        UIImageView *view = [views objectAtIndex:pos];
-        view.image = image;
-        view.tag = kImageViewTag;
-        [self setView:view borderColor:[UIColor blueColor]];
+        UIImageView *imageView = [shuffledImages objectAtIndex:i];
+        imageView.image = image;
+        imageView.tag = kImageViewTag;
+        [self setView:imageView borderColor:[UIColor blueColor]];
         
-        SCHStoryInteractionDraggableView *container = (SCHStoryInteractionDraggableView *)view.superview;
+        SCHStoryInteractionDraggableView *container = (SCHStoryInteractionDraggableView *)imageView.superview;
         container.homePosition = container.center;
         container.matchTag = i;
         container.delegate = self;
@@ -72,8 +72,6 @@
         target.matchTag = i;
         target.layer.cornerRadius = 5;
         target.layer.masksToBounds = YES;
-        
-        [views removeObjectAtIndex:pos];
     }
     
     self.attachedImages = [NSMutableDictionary dictionary];

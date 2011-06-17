@@ -13,6 +13,7 @@
 #import "SCHStoryInteractionDraggableTargetView.h"
 #import "SCHStoryInteractionWhoSaidIt.h"
 #import "NSArray+ViewSorting.h"
+#import "NSArray+Shuffling.h"
 
 #define kSourceLabelTag 1001
 #define kSourceImageTag 1002
@@ -90,9 +91,9 @@ static CGPoint pointWithOffset(CGPoint p, CGPoint offset)
     }
 
     // jumble up the sources and tag with the correct indices
-    NSMutableArray *statements = [whoSaidIt.statements mutableCopy];
+    NSArray *statements = [whoSaidIt.statements shuffled];
+    NSInteger index = 0;
     for (SCHStoryInteractionDraggableView *source in self.sources) {
-        int index = arc4random() % [statements count];
         SCHStoryInteractionWhoSaidItStatement *statement = [statements objectAtIndex:index];
         UILabel *label = (UILabel *)[source viewWithTag:kSourceLabelTag];
         label.text = statement.source;
@@ -100,9 +101,8 @@ static CGPoint pointWithOffset(CGPoint p, CGPoint offset)
         source.matchTag = statement.questionIndex;
         source.delegate = self;
         source.homePosition = source.center;
-        [statements removeObjectAtIndex:index];
+        index++;
     }
-    [statements release];
 }
 
 - (void)checkAnswers:(id)sender
