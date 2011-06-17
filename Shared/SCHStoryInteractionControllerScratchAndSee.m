@@ -192,7 +192,7 @@ static const NSInteger kSCHScratchPointCount = 200;
 
 - (void)correctAnswer:(NSInteger) selection{
     NSLog(@"Correct answer.");
-    [self setUserInteractionsEnabled:YES];
+    [self setUserInteractionsEnabled:NO];
     
     for (int i = 0; i < [self.answerButtons count]; i++) {
         if (i == selection) {
@@ -263,7 +263,9 @@ static const NSInteger kSCHScratchPointCount = 200;
         [self enqueueAudioWithPath:[(SCHStoryInteractionScratchAndSee *)self.storyInteraction scratchingCompleteSoundEffectFilename] 
                         fromBundle:YES
                         startDelay:0
-            synchronizedStartBlock:nil
+            synchronizedStartBlock:^{
+                [self setUserInteractionsEnabled:NO];
+            }
               synchronizedEndBlock:nil];
         [self enqueueAudioWithPath:[(SCHStoryInteractionScratchAndSee *)self.storyInteraction whatDoYouSeeAudioPath]
                         fromBundle:NO
@@ -281,6 +283,11 @@ static const NSInteger kSCHScratchPointCount = 200;
                 }
                   synchronizedEndBlock:^{
                       [button setHighlighted:NO];
+                      
+                      if (i == 2) {
+                          [self setUserInteractionsEnabled:YES];
+                      }
+                      
                   }];
         }
     } else {
