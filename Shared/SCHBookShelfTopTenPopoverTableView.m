@@ -56,6 +56,7 @@
     
     if (!cell) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"topTenTableCell"] autorelease]; 
+        cell.textLabel.textColor = [UIColor colorWithRed:0.004 green:0.184 blue:0.369 alpha:1.000];
         cell.textLabel.font = [cell.textLabel.font fontWithSize:16];
     }
     
@@ -70,7 +71,7 @@
 
 - (CGSize)contentSizeForViewInPopover
 {
-    CGFloat height = (10 * 44);
+    CGFloat height = (11 * 44);
     return CGSizeMake(320, height);
 }
 
