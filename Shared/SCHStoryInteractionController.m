@@ -487,6 +487,9 @@ typedef void (^PlayAudioCompletionBlock)(void);
 
 - (void)endAudio
 {
+    // retain self in case the completion block releases this object
+    // prevents crash when calling playFromSynchronizedAudioQueue
+    [self retain];
     self.player = nil;
     if (self.playAudioCompletionBlock != nil) {
         void (^completionBlock)(void) = [self.playAudioCompletionBlock retain];
@@ -495,6 +498,9 @@ typedef void (^PlayAudioCompletionBlock)(void);
         [completionBlock release];
     }
     [self playFromSynchronizedAudioQueue];
+    
+    // clean up previous retain
+    [self release];
 }
 
 #pragma mark - AVAudioPlayer Delegate methods
