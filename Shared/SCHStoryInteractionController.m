@@ -180,7 +180,7 @@ typedef void (^PlayAudioCompletionBlock)(void);
         UILabel *title = [[UILabel alloc] initWithFrame:CGRectZero];
         title.backgroundColor = [UIColor clearColor];
         //title.font = [UIFont boldSystemFontOfSize:iPad ? 22 : 18];
-        title.font = [UIFont fontWithName:@"Arial Black" size:iPad ? 30 : 36];
+        title.font = [UIFont fontWithName:@"Arial Black" size:iPad ? 30 : 25];
         title.textAlignment = UITextAlignmentCenter;
         title.textColor = [self.storyInteraction isOlderStoryInteraction] ? [UIColor whiteColor] : [UIColor colorWithRed:0.113 green:0.392 blue:0.690 alpha:1.];
         title.adjustsFontSizeToFitWidth = YES;
