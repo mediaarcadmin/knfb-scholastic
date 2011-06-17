@@ -80,9 +80,9 @@
     SCHStoryInteractionPopQuiz *popQuiz = (SCHStoryInteractionPopQuiz *)self.storyInteraction;
     NSInteger maxScore = self.progressView.numberOfSteps;
     self.scoreLabel.text = [NSString stringWithFormat:@"You got %d out of %d right!", self.score, maxScore];
-    if (score <= maxScore/3) {
+    if (score <= (int) ceil((float)maxScore/3.0f)) {
         self.scoreSublabel.text = popQuiz.scoreResponseLow;
-    } else if (score <= maxScore*2/3) {
+    } else if (score <= ceil((float)maxScore*2.0f/3.0f)) {
         self.scoreSublabel.text = popQuiz.scoreResponseMedium;
     } else {
         self.scoreSublabel.text = popQuiz.scoreResponseHigh;
