@@ -19,7 +19,7 @@
 
 - (void)nextQuestion;
 - (void)setupQuestion;
-- (void)playQuestionAudioAndHighlightAnswers;
+- (void)playQuestionAudioAndHighlightAnswersWithIntroduction:(BOOL)withIntroduction;
 
 @end
 
@@ -95,44 +95,43 @@
         }
     }
     
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self playQuestionAudioAndHighlightAnswers];
-    });
+    // play intro audio on first question only
+    [self playQuestionAudioAndHighlightAnswersWithIntroduction:(self.currentQuestionIndex == 0)];
 }
 
-- (void)playQuestionAudioAndHighlightAnswers
+- (void)playQuestionAudioAndHighlightAnswersWithIntroduction:(BOOL)withIntroduction
 {
-    // highlight each button in turn, reading out the answer text
-    __block NSInteger index = 0;
-    __block dispatch_block_t playAnswerAudioAndHighlight;
-    playAnswerAudioAndHighlight = Block_copy(^{
-        UIButton *button = [self.answerButtons objectAtIndex:index];
-        [button setHighlighted:YES];
-        dispatch_block_t playAnswerAudioAndHighlightNext = Block_copy(playAnswerAudioAndHighlight);
-        [self playAudioAtPath:[[self currentQuestion] audioPathForAnswerAtIndex:index]
-                   completion:^{
-                       [button setHighlighted:NO];
-                       if (++index < [self.answerButtons count]) {
-                           dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.5*NSEC_PER_SEC), dispatch_get_main_queue(), playAnswerAudioAndHighlight);
-                           Block_release(playAnswerAudioAndHighlightNext);
-                       }
-                   }];
-    });
-    
-    if (self.currentQuestionIndex == 0) {
-        dispatch_block_t playAnswerAudioAndHighlightCopy = Block_copy(playAnswerAudioAndHighlight);
-        // into then first question prompt
-        [self playAudioAtPath:[(SCHStoryInteractionControllerMultipleChoiceText *)self.storyInteraction audioPathForQuestion]
-                   completion:^{
-                       [self playAudioAtPath:[self audioPathForQuestion] completion:playAnswerAudioAndHighlightCopy];
-                       Block_release(playAnswerAudioAndHighlightCopy);
-                   }];
-    } else {
-        // question prompt only
-        [self playAudioAtPath:[self audioPathForQuestion] completion:playAnswerAudioAndHighlight];
+    if (withIntroduction) {
+        [self enqueueAudioWithPath:[self.storyInteraction audioPathForQuestion]
+                        fromBundle:NO
+                        startDelay:NO
+            synchronizedStartBlock:nil
+              synchronizedEndBlock:nil];
     }
+    [self enqueueAudioWithPath:[self audioPathForQuestion]
+                    fromBundle:NO
+                    startDelay:0
+        synchronizedStartBlock:nil
+          synchronizedEndBlock:nil];
     
-    Block_release(playAnswerAudioAndHighlight);
+    NSInteger index = 0;
+    for (UIButton *button in self.answerButtons) {
+        [self enqueueAudioWithPath:[[self currentQuestion] audioPathForAnswerAtIndex:index]
+                        fromBundle:NO
+                        startDelay:0.5
+            synchronizedStartBlock:^{
+                [button setHighlighted:YES];
+            }
+              synchronizedEndBlock:^{
+                  [button setHighlighted:NO];
+              }];
+        index++;
+    }
+}
+
+- (void)playAudioButtonTapped:(id)sender
+{
+    [self playQuestionAudioAndHighlightAnswersWithIntroduction:NO];
 }
 
 - (IBAction)answerButtonTapped:(UIButton *)sender

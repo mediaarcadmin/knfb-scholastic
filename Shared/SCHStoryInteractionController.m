@@ -17,6 +17,14 @@
 
 typedef void (^PlayAudioCompletionBlock)(void);
 
+@interface SynchronizedAudioItem : NSObject {}
+@property (nonatomic, copy) NSString *path;
+@property (nonatomic, assign) BOOL audioFromBundle;
+@property (nonatomic, assign) NSTimeInterval startDelay;
+@property (nonatomic, copy) dispatch_block_t startBlock;
+@property (nonatomic, copy) dispatch_block_t endBlock;
+@end
+
 @interface SCHStoryInteractionController ()
 
 @property (nonatomic, assign) UIInterfaceOrientation interfaceOrientation;
@@ -28,10 +36,12 @@ typedef void (^PlayAudioCompletionBlock)(void);
 @property (nonatomic, retain) AVAudioPlayer *player;
 @property (nonatomic, assign) BOOL resumeInterruptedPlayer;
 @property (nonatomic, copy) PlayAudioCompletionBlock playAudioCompletionBlock;
+@property (nonatomic, retain) NSMutableArray *synchronizedAudioQueue;
 
 @property (nonatomic, assign) dispatch_queue_t audioPlayQueue;
 
 - (void)endAudio;
+- (void)playFromSynchronizedAudioQueue;
 
 @end
 
@@ -52,6 +62,7 @@ typedef void (^PlayAudioCompletionBlock)(void);
 @synthesize resumeInterruptedPlayer;
 @synthesize playAudioCompletionBlock;
 @synthesize audioPlayQueue;
+@synthesize synchronizedAudioQueue;
 @synthesize interfaceOrientation;
 
 + (SCHStoryInteractionController *)storyInteractionControllerForStoryInteraction:(SCHStoryInteraction *)storyInteraction
@@ -73,6 +84,7 @@ typedef void (^PlayAudioCompletionBlock)(void);
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [self.player pause];
     
     [self removeFromHostViewWithSuccess:NO];
     [xpsProvider release];
@@ -83,6 +95,7 @@ typedef void (^PlayAudioCompletionBlock)(void);
     [contentsView release];
     [backgroundView release];
     [storyInteraction release];
+    [synchronizedAudioQueue release];
     [player release], player = nil;
     Block_release(playAudioCompletionBlock), playAudioCompletionBlock = nil;
     dispatch_release(audioPlayQueue);
@@ -104,6 +117,7 @@ typedef void (^PlayAudioCompletionBlock)(void);
         }
         
         self.audioPlayQueue = dispatch_queue_create("audioPlayQueue", NULL);
+        self.synchronizedAudioQueue = [[NSMutableArray alloc] init];
         
         resumeInterruptedPlayer = NO;
         playAudioCompletionBlock = nil;
@@ -334,11 +348,6 @@ typedef void (^PlayAudioCompletionBlock)(void);
 
 #pragma mark - Audio methods
 
-- (BOOL)useAudioButton
-{
-    return([self.storyInteraction isOlderStoryInteraction] == NO); 
-}
-
 - (IBAction)playAudioButtonTapped:(id)sender
 {
     NSString *path = [self audioPathForQuestion];
@@ -350,6 +359,7 @@ typedef void (^PlayAudioCompletionBlock)(void);
 - (void)playAudioAtPath:(NSString *)path completion:(void (^)(void))completion
 {
     if (self.player != nil) {
+        [self.synchronizedAudioQueue removeAllObjects];
         [self endAudio];
     }
     
@@ -384,6 +394,7 @@ typedef void (^PlayAudioCompletionBlock)(void);
 - (void)playBundleAudioWithFilename:(NSString *)path completion:(void (^)(void))completion
 {
     if (self.player != nil) {
+        [self.synchronizedAudioQueue removeAllObjects];
         [self endAudio];
     }
     
@@ -408,7 +419,7 @@ typedef void (^PlayAudioCompletionBlock)(void);
                     self.playAudioCompletionBlock = completion;
                     [self.player play];
                     failed = NO;
-                }       
+                }   
             }
         }
         
@@ -418,6 +429,51 @@ typedef void (^PlayAudioCompletionBlock)(void);
     if (failed == YES && completion != nil) {
         completion();
     }
+}
+
+- (void)enqueueAudioWithPath:(NSString *)path
+                  fromBundle:(BOOL)fromBundle
+                  startDelay:(NSTimeInterval)startDelay
+      synchronizedStartBlock:(dispatch_block_t)startBlock
+        synchronizedEndBlock:(dispatch_block_t)endBlock
+{
+    SynchronizedAudioItem *item = [[SynchronizedAudioItem alloc] init];
+    item.path = path;
+    item.audioFromBundle = fromBundle;
+    item.startDelay = startDelay;
+    item.startBlock = startBlock;
+    item.endBlock = endBlock;
+    [self.synchronizedAudioQueue addObject:item];
+    if (![self playingAudio] && [self.synchronizedAudioQueue count] == 1) {
+        [self playFromSynchronizedAudioQueue];
+    }
+}
+
+- (void)playFromSynchronizedAudioQueue
+{
+    if ([self.synchronizedAudioQueue count] == 0) {
+        return;
+    }
+    SynchronizedAudioItem *item = [self.synchronizedAudioQueue objectAtIndex:0];
+    
+    dispatch_block_t playBlock = ^{
+        if (item.startBlock != nil) {
+            item.startBlock();
+        }
+        if (item.audioFromBundle) {
+            [self playBundleAudioWithFilename:item.path completion:item.endBlock];
+        } else {
+            [self playAudioAtPath:item.path completion:item.endBlock];
+        }
+    };
+    
+    if (item.startDelay > 0) {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, item.startDelay*NSEC_PER_SEC), dispatch_get_main_queue(), playBlock);
+    } else {
+        playBlock();
+    }
+
+    [self.synchronizedAudioQueue removeObjectAtIndex:0];
 }
 
 - (BOOL)playingAudio
@@ -438,6 +494,7 @@ typedef void (^PlayAudioCompletionBlock)(void);
         completionBlock();
         [completionBlock release];
     }
+    [self playFromSynchronizedAudioQueue];
 }
 
 #pragma mark - AVAudioPlayer Delegate methods
@@ -458,7 +515,7 @@ typedef void (^PlayAudioCompletionBlock)(void);
     }
 }
 
-- (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
+- (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)aPlayer successfully:(BOOL)flag
 {
     [self endAudio];
 }
@@ -505,6 +562,24 @@ typedef void (^PlayAudioCompletionBlock)(void);
 - (NSString *)audioPathForQuestion
 {
     return [self.storyInteraction audioPathForQuestion];
+}
+
+@end
+
+@implementation SynchronizedAudioItem
+
+@synthesize path;
+@synthesize audioFromBundle;
+@synthesize startDelay;
+@synthesize startBlock;
+@synthesize endBlock;
+
+- (void)dealloc
+{
+    [path release];
+    [startBlock release];
+    [endBlock release];
+    [super dealloc];
 }
 
 @end
