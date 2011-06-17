@@ -80,6 +80,12 @@
       synchronizedStartBlock:(dispatch_block_t)startBlock
         synchronizedEndBlock:(dispatch_block_t)endBlock;
 
+// convenience version of above with no delay and no synchronized blocks
+- (void)enqueueAudioWithPath:(NSString *)path fromBundle:(BOOL)fromBundle;
+
+// cancel any playing or queued audio
+- (void)cancelQueuedAudio;
+
 // get an image from the XPS provider
 - (UIImage *)imageAtPath:(NSString *)path;
 

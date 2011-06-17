@@ -141,13 +141,16 @@
     if (chosenAnswer < [[self currentQuestion].answers count]) {
         [sender setSelected:YES];
         if (chosenAnswer == [self currentQuestion].correctAnswer) {
-            [self playAudioAtPath:[[self currentQuestion] audioPathForAnswerAtIndex:chosenAnswer] completion:^{
-                [self playAudioAtPath:[(SCHStoryInteractionMultipleChoiceText *)self.storyInteraction audioPathForThatsRight] completion:^{
-                    [self playAudioAtPath:[[self currentQuestion] audioPathForCorrectAnswer] completion:^{
+            [self cancelQueuedAudio];
+            [self enqueueAudioWithPath:[[self currentQuestion] audioPathForAnswerAtIndex:chosenAnswer] fromBundle:NO];
+            [self enqueueAudioWithPath:[(SCHStoryInteractionMultipleChoiceText *)self.storyInteraction audioPathForThatsRight] fromBundle:NO];
+            [self enqueueAudioWithPath:[[self currentQuestion] audioPathForCorrectAnswer]
+                            fromBundle:NO
+                            startDelay:0
+                synchronizedStartBlock:nil
+                  synchronizedEndBlock:^{
                         [self nextQuestion];
-                    }];
-                }];
-            }];
+                  }];
         } else {
             [self playAudioAtPath:[[self currentQuestion] audioPathForIncorrectAnswer] completion:nil];
         }

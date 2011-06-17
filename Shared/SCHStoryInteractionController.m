@@ -84,7 +84,7 @@ typedef void (^PlayAudioCompletionBlock)(void);
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [self.player pause];
+    [self cancelQueuedAudio];
     
     [self removeFromHostViewWithSuccess:NO];
     [xpsProvider release];
@@ -355,6 +355,8 @@ typedef void (^PlayAudioCompletionBlock)(void);
 
 - (void)removeFromHostViewWithSuccess:(BOOL)success
 {
+    [self cancelQueuedAudio];
+    
     [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.isbn];
     [self.containerView removeFromSuperview];
     
@@ -376,10 +378,7 @@ typedef void (^PlayAudioCompletionBlock)(void);
 
 - (void)playAudioAtPath:(NSString *)path completion:(void (^)(void))completion
 {
-    if (self.player != nil) {
-        [self.synchronizedAudioQueue removeAllObjects];
-        [self endAudio];
-    }
+    [self cancelQueuedAudio];
     
     __block BOOL failed = YES;
 
@@ -411,10 +410,7 @@ typedef void (^PlayAudioCompletionBlock)(void);
 
 - (void)playBundleAudioWithFilename:(NSString *)path completion:(void (^)(void))completion
 {
-    if (self.player != nil) {
-        [self.synchronizedAudioQueue removeAllObjects];
-        [self endAudio];
-    }
+    [self cancelQueuedAudio];
     
     __block BOOL failed = YES;
 
@@ -464,6 +460,20 @@ typedef void (^PlayAudioCompletionBlock)(void);
     [self.synchronizedAudioQueue addObject:item];
     if (![self playingAudio] && [self.synchronizedAudioQueue count] == 1) {
         [self playFromSynchronizedAudioQueue];
+    }
+}
+
+- (void)enqueueAudioWithPath:(NSString *)path fromBundle:(BOOL)fromBundle
+{
+    [self enqueueAudioWithPath:path fromBundle:fromBundle startDelay:0 synchronizedStartBlock:nil synchronizedEndBlock:nil];
+}
+
+- (void)cancelQueuedAudio
+{
+    if (self.player != nil) {
+        [self.synchronizedAudioQueue removeAllObjects];
+        [self.player pause];
+        [self endAudio];
     }
 }
 
