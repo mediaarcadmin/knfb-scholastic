@@ -126,6 +126,16 @@
 		}
 	}
 	
+    
+    NSLog(@"Filesize: %llu Expected: %llu", fileSize, [response expectedContentLength]);
+    
+	if (fileSize == [response expectedContentLength]) {
+        [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNeedsUnzip];
+        [connection cancel];
+        [self cancel];
+        return;
+	}    
+    
 	self.expectedFileSize = [response expectedContentLength] + fileSize;
 	self.previousPercentage = -1;
 	
