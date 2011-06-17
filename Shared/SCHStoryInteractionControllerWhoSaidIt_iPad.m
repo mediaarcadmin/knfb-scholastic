@@ -149,7 +149,7 @@ static CGPoint pointWithOffset(CGPoint p, CGPoint offset)
 {
     [self playBundleAudioWithFilename:@"sfx_pickup.mp3" completion:nil];
     
-    if (draggableView.tag > 0) {
+    if (draggableView.tag >= 0) {
         [self.occupiedTargets removeObject:[NSNumber numberWithInteger:draggableView.tag]];
     }
 }
