@@ -42,10 +42,6 @@
 	return(NO);
 }
 
-- (void)clear
-{
-}
-
 #pragma mark - Delegate methods
 
 - (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result

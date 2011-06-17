@@ -43,6 +43,7 @@
 
 - (void)clear
 {
+    [super clear];
 	NSError *error = nil;
 	
 	if (![self.managedObjectContext BITemptyEntity:kSCHUserSettingsItem error:&error]) {

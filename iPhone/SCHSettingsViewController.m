@@ -342,6 +342,8 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     if ( deviceKey == nil ) {
         // removeObjectForKey does not change the value...
         [[NSUserDefaults standardUserDefaults] setObject:nil forKey:kSCHAuthenticationManagerDeviceKey];
+		[[SCHURLManager sharedURLManager] clear];
+		[[SCHSyncManager sharedSyncManager] clear];        
         [self login];
         [self.navigationController popViewControllerAnimated:NO];
     }

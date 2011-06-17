@@ -34,6 +34,12 @@
 	[super dealloc];
 }
 
+- (void)clear
+{
+    self.libreAccessWebService = [[SCHLibreAccessWebService alloc] init];	
+    self.libreAccessWebService.delegate = self;    
+}
+
 #pragma mark - Delegate methods
 
 - (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result
