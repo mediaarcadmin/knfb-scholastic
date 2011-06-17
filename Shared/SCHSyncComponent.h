@@ -20,6 +20,5 @@
 @property (retain, nonatomic) NSManagedObjectContext *managedObjectContext;
 
 - (BOOL)synchronize;
-- (void)clear;
 
 @end

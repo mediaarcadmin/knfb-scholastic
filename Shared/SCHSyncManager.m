@@ -181,6 +181,8 @@ static NSTimeInterval const kSCHSyncManagerHeartbeatInterval = 30.0;
 
 - (void)clear
 {
+    [self.queue removeAllObjects];
+    
 	[self.profileSyncComponent clear];	
 	[self.contentSyncComponent clear];	
 	[self.bookshelfSyncComponent clear];

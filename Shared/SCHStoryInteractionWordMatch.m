@@ -14,7 +14,6 @@
 
 @implementation SCHStoryInteractionWordMatchQuestionItem
 
-@synthesize storyInteraction;
 @synthesize text;
 @synthesize uniqueObjectName;
 
@@ -70,6 +69,21 @@
 - (NSString *)title
 {
     return @"Word Match";
+}
+
+- (NSInteger)questionCount
+{
+    return [[self questions] count];
+}
+
+- (NSString *)audioPathForQuestion
+{
+    return [NSString stringWithFormat:@"%@_intro.mp3", self.ID];
+}
+
+- (NSString *)audioPathForGotThemAll
+{
+    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:@"gen_gotthemall.mp3"];
 }
 
 @end
