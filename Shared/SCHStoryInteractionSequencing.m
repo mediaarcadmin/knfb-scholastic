@@ -14,6 +14,8 @@
 
 - (id)init
 {
+    self = [super init];
+    [self release];
     return nil;
 }
 

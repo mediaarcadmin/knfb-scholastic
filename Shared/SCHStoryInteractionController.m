@@ -462,6 +462,7 @@ typedef void (^PlayAudioCompletionBlock)(void);
     item.startBlock = startBlock;
     item.endBlock = endBlock;
     [self.synchronizedAudioQueue addObject:item];
+    [item release];
     if (![self playingAudio] && [self.synchronizedAudioQueue count] == 1) {
         [self playFromSynchronizedAudioQueue];
     }
