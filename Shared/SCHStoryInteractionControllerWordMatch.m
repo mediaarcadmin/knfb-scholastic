@@ -21,7 +21,7 @@
 #define kImageViewTag 102
 #define kSnapDistanceSq 900
 #define kSourceOffsetY_iPad 5
-#define kSourceOffsetY_iPhone 2
+#define kSourceOffsetY_iPhone 3
 
 static CGFloat distanceSq(CGPoint p1, CGPoint p2)
 {
