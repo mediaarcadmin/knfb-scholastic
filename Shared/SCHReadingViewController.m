@@ -85,6 +85,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 @property (nonatomic, retain) SCHStoryInteractionController *storyInteractionController;
 
 @property (nonatomic, retain) AVAudioPlayer *interactionAppearsPlayer;
+@property (nonatomic, assign) NSInteger lastPageInteractionSoundPlayedOn;
 
 - (void)releaseViewObjects;
 
@@ -104,7 +105,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (void)setDictionarySelectionMode;
 - (void)setupStoryInteractionButtonForCurrentPageAnimated:(BOOL)animated;
 - (void)setupStoryInteractionButtonForPage:(NSInteger)page animated:(BOOL)animated;
-- (void)setStoryInteractionButtonVisible:(BOOL)visible animated:(BOOL)animated;
+- (void)setStoryInteractionButtonVisible:(BOOL)visible animated:(BOOL)animated withSound:(BOOL)sound;
 
 @end
 
@@ -164,6 +165,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 @synthesize bookStoryInteractions;
 @synthesize storyInteractionController;
 @synthesize interactionAppearsPlayer;
+@synthesize lastPageInteractionSoundPlayedOn;
 
 #pragma mark - Dealloc and View Teardown
 
@@ -252,6 +254,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
                                                  selector:@selector(didEnterBackgroundNotification:) 
                                                      name:UIApplicationDidEnterBackgroundNotification
                                                    object:nil];
+        
+        self.lastPageInteractionSoundPlayedOn = -1;
         
     }
     return self;
@@ -432,6 +436,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     
     [self setDictionarySelectionMode];
 
+    [self setupStoryInteractionButtonForCurrentPageAnimated:NO];
     [self jumpToLastPageLocation];
     
     // temporary button to get access to younger story interactions
@@ -443,7 +448,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 //        [self.view addSubview:button];
 //    }
 
-    [self setupStoryInteractionButtonForCurrentPageAnimated:NO];
 
 }
 
@@ -716,6 +720,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
                                           }] == YES) {
                                               self.audioBookPlayer.delegate = self;
                                               [self.audioBookPlayer playAtLayoutPage:layoutPage pageWordOffset:pageWordOffset];
+                                              [self setToolbarVisibility:NO animated:YES];
                                           } else {
                                               self.audioBookPlayer = nil;   
                                               UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") 
@@ -729,9 +734,11 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         }
     } else if(self.audioBookPlayer.playing == NO) {
         [self.audioBookPlayer playAtLayoutPage:layoutPage pageWordOffset:pageWordOffset];
+        [self setToolbarVisibility:NO animated:YES];
     } else {
         [self.audioBookPlayer pause];
-        [self.readingView dismissFollowAlongHighlighter];    
+        [self.readingView dismissFollowAlongHighlighter];  
+        [self setupStoryInteractionButtonForPage:self.currentPageIndex animated:YES];
     }
     
     if (self.optionsView.superview) {
@@ -743,7 +750,12 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 {
     NSLog(@"Story Interactions action");
 
-    [self.audioBookPlayer pause];
+    // FIXME: this needs to be fixed so that audio reading continues properly. for some reason it's not.
+    
+//    [self.audioBookPlayer pause];
+//    if (self.audioBookPlayer && [self.audioBookPlayer playing]) {
+//        [self.audioBookPlayer pause];
+//    }
     
     if (self.optionsView.superview) {
         [self.optionsView removeFromSuperview];
@@ -892,10 +904,21 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     
     NSInteger interactionsDone = [self.bookStoryInteractions storyInteractionQuestionsCompletedForPage:page];
     
-    if (totalInteractionCount < 1) {
-        [self setStoryInteractionButtonVisible:NO animated:YES];
+    // only play sounds if the appearance is animated
+    BOOL playSounds = animated;
+    
+    // override this if we've already played a sound for this page
+    if (self.lastPageInteractionSoundPlayedOn == page) {
+        playSounds = NO;
+    }
+
+    self.lastPageInteractionSoundPlayedOn = page;
+    
+    // if the audio book is playing, hide the story interaction button
+    if (totalInteractionCount < 1 || (self.audioBookPlayer && self.audioBookPlayer.playing)) {
+        [self setStoryInteractionButtonVisible:NO animated:YES withSound:playSounds];
     } else {
-        [self setStoryInteractionButtonVisible:YES animated:YES];
+        [self setStoryInteractionButtonVisible:YES animated:YES withSound:playSounds];
         
         NSString *imagePrefix = nil;
         
@@ -921,7 +944,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     }
 }
 
-- (void)setStoryInteractionButtonVisible:(BOOL)visible animated:(BOOL)animated
+- (void)setStoryInteractionButtonVisible:(BOOL)visible animated:(BOOL)animated withSound:(BOOL)sound
 {
     if (visible) {
         CGRect frame = self.storyInteractionButtonView.frame;
@@ -932,7 +955,10 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
                 CGRect frame = self.storyInteractionButtonView.frame;
                 frame.origin.x = self.view.frame.size.width - frame.size.width;
                 self.storyInteractionButtonView.frame = frame;
+                self.storyInteractionButtonView.alpha = 1.0f;
             };
+            
+            self.storyInteractionButtonView.alpha = 0.0f;
             
             if (animated) {
                 [UIView animateWithDuration:0.3 animations:movementBlock];
@@ -943,8 +969,10 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
             // play the sound effect
             NSLog(@"Figuring out audio.");
             
-            if (!self.audioBookPlayer || !self.audioBookPlayer.playing) {
-                // play sound effect only if the book reading is not happening
+            if (sound && !self.storyInteractionController && (!self.audioBookPlayer || !self.audioBookPlayer.playing)) {
+                // play sound effect only if requested - e.g. toolbar hide/show doesn't play sound
+                // play sound effect only if there isn't a story interaction visible
+                // play sound effect only if the book reading is not happening (which should never happen!)
                 
                 NSString *audioFilename = @"sfx_siappears_y2B";
                 
@@ -978,6 +1006,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
             CGRect frame = self.storyInteractionButtonView.frame;
             frame.origin.x += frame.size.width;
             self.storyInteractionButtonView.frame = frame;
+            self.storyInteractionButtonView.alpha = 0.0f;
         };
         
         if (animated) {
@@ -1216,7 +1245,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (void)readingViewFixedViewWillBeginTurning:(SCHReadingView *)readingView
 {
-    [self setStoryInteractionButtonVisible:NO animated:YES];
+    [self setStoryInteractionButtonVisible:NO animated:YES withSound:YES];
 }
 
 - (void)readingView:(SCHReadingView *)readingView hasMovedToPageAtIndex:(NSUInteger)pageIndex
@@ -1554,10 +1583,12 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     NSArray *storyInteractions = [self.bookStoryInteractions storyInteractionsForPage:self.currentPageIndex];
     int totalInteractionCount = [storyInteractions count];
 
-    if (totalInteractionCount < 1 || !visibility) {
-        [self setStoryInteractionButtonVisible:NO animated:YES];
-    } else if (totalInteractionCount >= 1) {
-        [self setStoryInteractionButtonVisible:YES animated:YES];
+    if (!self.initialFadeTimer) {
+        if (totalInteractionCount < 1 || !visibility) {
+            [self setStoryInteractionButtonVisible:NO animated:YES withSound:NO];
+        } else if (totalInteractionCount >= 1 && !(self.audioBookPlayer && [self.audioBookPlayer playing])) {
+            [self setStoryInteractionButtonVisible:YES animated:YES withSound:NO];
+        }
     }
 }
 
@@ -1692,9 +1723,10 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     self.storyInteractionController.xpsProvider = self.xpsProvider;
     [self.storyInteractionController presentInHostView:self.navigationController.view withInterfaceOrientation:self.interfaceOrientation];
     
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        [self setToolbarVisibility:NO animated:YES];
-    }
+    SCHBookPoint *notePoint = [self.readingView bookPointForLayoutPage:[storyInteraction documentPageNumber]+1 pageWordOffset:0];
+    [self.readingView jumpToBookPoint:notePoint animated:YES];
+    
+    [self setToolbarVisibility:NO animated:YES];
 }
 
 #pragma mark - SCHStoryInteractionControllerDelegate methods
@@ -1703,11 +1735,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 {
     if (aStoryInteractionController == self.storyInteractionController) {
         self.storyInteractionController = nil;
-        
-        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-            [self setToolbarVisibility:YES animated:YES];
-        }
     }
+    
     if (success) {
         
         NSInteger page = self.currentPageIndex;
