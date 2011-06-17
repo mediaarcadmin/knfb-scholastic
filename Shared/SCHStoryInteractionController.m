@@ -179,15 +179,33 @@ typedef void (^PlayAudioCompletionBlock)(void);
        
         UILabel *title = [[UILabel alloc] initWithFrame:CGRectZero];
         title.backgroundColor = [UIColor clearColor];
-        //title.font = [UIFont boldSystemFontOfSize:iPad ? 22 : 18];
-        title.font = [UIFont fontWithName:@"Arial Black" size:iPad ? 30 : 25];
+        
+        BOOL hasShadow = NO;
+        
+        if (iPad) {
+            if ([age isEqualToString:@"younger"]) {
+                title.font = [UIFont fontWithName:@"Arial-BoldMT" size:22];
+            } else {
+                hasShadow = YES;
+                title.font = [UIFont fontWithName:@"Arial Black" size:30];
+            }
+        } else {
+            if ([age isEqualToString:@"younger"]) {
+                title.font = [UIFont fontWithName:@"Arial-BoldMT" size:17];
+            } else {
+                hasShadow = YES;
+                title.font = [UIFont fontWithName:@"Arial Black" size:25];
+            }
+        }
         title.textAlignment = UITextAlignmentCenter;
         title.textColor = [self.storyInteraction isOlderStoryInteraction] ? [UIColor whiteColor] : [UIColor colorWithRed:0.113 green:0.392 blue:0.690 alpha:1.];
         title.adjustsFontSizeToFitWidth = YES;
         title.numberOfLines = 2;
-        title.layer.shadowOpacity = 0.7f;
-        title.layer.shadowRadius = 2;
-        title.layer.shadowOffset = CGSizeZero;
+        if (hasShadow) {
+            title.layer.shadowOpacity = 0.7f;
+            title.layer.shadowRadius = 2;
+            title.layer.shadowOffset = CGSizeZero;
+        }
 
         self.titleView = title;
         [background addSubview:title];
