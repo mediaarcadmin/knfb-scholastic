@@ -112,7 +112,11 @@
         CGRect myBounds = self.bounds;
         if(myBounds.size.width > myBounds.size.height) {
             pageTurningView.twoUp = YES;
-            pageTurningView.potentiallyVisiblePageEdgeCount = LAYOUT_LANDSCAPE_PAGE_EDGE_COUNT;
+            if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+                pageTurningView.potentiallyVisiblePageEdgeCount = LAYOUT_LANDSCAPE_PAGE_EDGE_COUNT;
+            } else {
+                pageTurningView.potentiallyVisiblePageEdgeCount = 0;
+            }
         } else {
             pageTurningView.twoUp = NO;
             pageTurningView.potentiallyVisiblePageEdgeCount = 0;
@@ -158,7 +162,11 @@
     CGRect myBounds = self.bounds;
     if(myBounds.size.width > myBounds.size.height) {
         self.pageTurningView.twoUp = YES;      
-        self.pageTurningView.potentiallyVisiblePageEdgeCount = LAYOUT_LANDSCAPE_PAGE_EDGE_COUNT;
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            pageTurningView.potentiallyVisiblePageEdgeCount = LAYOUT_LANDSCAPE_PAGE_EDGE_COUNT;
+        } else {
+            pageTurningView.potentiallyVisiblePageEdgeCount = 0;
+        }
     } else {
         self.pageTurningView.twoUp = NO;
         self.pageTurningView.potentiallyVisiblePageEdgeCount = 0;
