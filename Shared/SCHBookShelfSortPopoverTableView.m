@@ -85,6 +85,8 @@
     
     if (!cell) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"sortTableCell"] autorelease];        
+        cell.textLabel.textColor = [UIColor colorWithRed:0.004 green:0.184 blue:0.369 alpha:1.000];
+        cell.textLabel.font = [cell.textLabel.font fontWithSize:16];        
     }
     
     cell.textLabel.text = [self.sortTypeArray objectAtIndex:[indexPath row]];
@@ -94,10 +96,7 @@
     } else {
         cell.accessoryType = UITableViewCellAccessoryNone;
     }
-    
-    cell.textLabel.textColor = [UIColor blackColor];
-    cell.selectionStyle = UITableViewCellSelectionStyleBlue;
-    
+        
     return cell;
 }
 
@@ -132,7 +131,7 @@
 
 - (CGSize)contentSizeForViewInPopover
 {
-    CGFloat height = ([sortTypeArray count] * 44);
+    CGFloat height = (([sortTypeArray count] + 1) * 44);
     return CGSizeMake(320, height);
 }
 

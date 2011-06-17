@@ -25,7 +25,6 @@ static NSString * const kSCHProfileItemCONTENT_IDENTIFIER = @"CONTENT_IDENTIFIER
 
 typedef enum {
     kSCHBookSortTypeUser,
-    kSCHBookSortTypeFavorites,
     kSCHBookSortTypeTitle,
     kSCHBookSortTypeAuthor,
     kSCHBookSortTypeNewest,

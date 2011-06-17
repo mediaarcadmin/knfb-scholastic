@@ -224,11 +224,8 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
     SCHBookShelfSortPopoverTableView *popoverTable = [[SCHBookShelfSortPopoverTableView alloc] initWithNibName:nil bundle:nil];
     popoverTable.sortType = self.sortType;
     popoverTable.delegate = self;
-    
-    popoverTable.title = @"Sort By";
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:popoverTable];
 
-    self.popover = [[UIPopoverController alloc] initWithContentViewController:navController];
+    self.popover = [[UIPopoverController alloc] initWithContentViewController:popoverTable];
     self.popover.delegate = self;
     
     CGRect senderFrame = sender.superview.frame;
@@ -239,7 +236,6 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
     NSLog(@"Sender frame: %@", NSStringFromCGRect(senderFrame));
     
     [self.popover presentPopoverFromRect:senderFrame inView:self.view permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
-    [navController release];
     [popoverTable release];
 
     NSLog(@"Sort!");
@@ -274,8 +270,6 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
     
     SCHBookShelfTopTenPopoverTableView *popoverTable = [[SCHBookShelfTopTenPopoverTableView alloc] initWithNibName:nil bundle:nil];
     popoverTable.books = self.topTenBooks;
-
-    popoverTable.title = @"Top Ten Books";
     
     self.popover = [[UIPopoverController alloc] initWithContentViewController:popoverTable];
     self.popover.delegate = self;
