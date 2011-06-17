@@ -14,6 +14,13 @@
 
 @synthesize imageFilename;
 
+- (id)init
+{
+    self = [super init];
+    [self release];
+    return nil;
+}
+
 - (void)dealloc
 {
     [imageFilename release];

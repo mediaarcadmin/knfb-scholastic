@@ -106,4 +106,9 @@
 // from the story interaction; override if variable audio per question is needed
 - (NSString *)audioPathForQuestion;
 
+// Story interactions can use this to disable interactions
+// also disables superview user interactions, as interactions are passed through
+// with great power comes great responsibility - use carefully!
+- (void)setUserInteractionsEnabled:(BOOL)enabled;
+
 @end

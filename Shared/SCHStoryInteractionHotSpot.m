@@ -19,6 +19,13 @@
 @synthesize originalBookSize;
 @synthesize data;
 
+- (id)init
+{
+    self = [super init];
+    [self release];
+    return nil;
+}
+
 - (void)dealloc
 {
     [prompt release];
