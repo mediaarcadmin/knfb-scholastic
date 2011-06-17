@@ -865,7 +865,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     
     NSLog(@"Story Interactions action");
     
-    [self.audioBookPlayer pause];
+    if ([self.audioBookPlayer playing]) {
+        [self.audioBookPlayer pause];
+    }
     
     if (self.optionsView.superview) {
         [self.optionsView removeFromSuperview];

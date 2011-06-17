@@ -136,34 +136,35 @@ static NSString * const kSCHProfileItemUserContentItemContentMetadataItem = @"Us
     }
 
     switch (sortType) {
-        case kSCHBookSortTypeFavorites:
-        {
-            NSLog(@"Sort by favourites.");
-            
-            NSMutableArray *favorites = [[NSMutableArray alloc] init];
-            NSMutableArray *notFavorites = [[NSMutableArray alloc] init];
-            
-            for (SCHContentMetadataItem *item in bookObjects) {
-                NSLog(@"Book: %@", item);
-                if ([(SCHFavorite *) [[[item annotationsContentForProfile:self.ID] objectAtIndex:0] PrivateAnnotations].Favorite IsFavorite]) {
-                    [favorites addObject:item];
-                } else {
-                    [notFavorites addObject:item];
-                }
-            }
-            
-            // sub-sort by title
-            [favorites sortUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"Title" ascending:YES]]];
-            [notFavorites sortUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"Title" ascending:YES]]];
-
-            [bookObjects removeAllObjects];
-            [bookObjects addObjectsFromArray:favorites];
-            [bookObjects addObjectsFromArray:notFavorites];
-            [favorites release];
-            [notFavorites release];
-            
-            break;
-        }
+            // favourites has been disabled for now, we'll keep the code here in case it's re-enabled later
+//        case kSCHBookSortTypeFavorites:
+//        {
+//            NSLog(@"Sort by favourites.");
+//            
+//            NSMutableArray *favorites = [[NSMutableArray alloc] init];
+//            NSMutableArray *notFavorites = [[NSMutableArray alloc] init];
+//            
+//            for (SCHContentMetadataItem *item in bookObjects) {
+//                NSLog(@"Book: %@", item);
+//                if ([(SCHFavorite *) [[[item annotationsContentForProfile:self.ID] objectAtIndex:0] PrivateAnnotations].Favorite IsFavorite]) {
+//                    [favorites addObject:item];
+//                } else {
+//                    [notFavorites addObject:item];
+//                }
+//            }
+//            
+//            // sub-sort by title
+//            [favorites sortUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"Title" ascending:YES]]];
+//            [notFavorites sortUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"Title" ascending:YES]]];
+//
+//            [bookObjects removeAllObjects];
+//            [bookObjects addObjectsFromArray:favorites];
+//            [bookObjects addObjectsFromArray:notFavorites];
+//            [favorites release];
+//            [notFavorites release];
+//            
+//            break;
+//        }
         case kSCHBookSortTypeTitle:
         {
             [bookObjects sortUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"Title" ascending:YES]]];
