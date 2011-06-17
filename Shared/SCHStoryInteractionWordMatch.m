@@ -78,7 +78,7 @@
 
 - (NSString *)audioPathForQuestion
 {
-    return [NSString stringWithFormat:@"%@_intro.mp3", self.ID];
+    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:@"gen_matchthewords.mp3"];
 }
 
 - (NSString *)audioPathForGotThemAll

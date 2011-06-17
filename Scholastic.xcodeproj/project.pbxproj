@@ -68,6 +68,8 @@
 		286E210B13AB54A800CB4232 /* SCHStoryInteractionWordMatch_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 286E210913AB54A800CB4232 /* SCHStoryInteractionWordMatch_iPad.xib */; };
 		286E210D13AB581D00CB4232 /* storyinteraction-wordmatch-target.png in Resources */ = {isa = PBXBuildFile; fileRef = 286E210C13AB581D00CB4232 /* storyinteraction-wordmatch-target.png */; };
 		286E210E13AB581D00CB4232 /* storyinteraction-wordmatch-target.png in Resources */ = {isa = PBXBuildFile; fileRef = 286E210C13AB581D00CB4232 /* storyinteraction-wordmatch-target.png */; };
+		286E213F13AB7EBF00CB4232 /* NSArray+Shuffling.m in Sources */ = {isa = PBXBuildFile; fileRef = 286E213E13AB7EBF00CB4232 /* NSArray+Shuffling.m */; };
+		286E214013AB7EBF00CB4232 /* NSArray+Shuffling.m in Sources */ = {isa = PBXBuildFile; fileRef = 286E213E13AB7EBF00CB4232 /* NSArray+Shuffling.m */; };
 		288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
 		2888FE7C13A61CD300FF2FA8 /* SCHStoryInteractionTitleTwister_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2888FE7B13A61CD300FF2FA8 /* SCHStoryInteractionTitleTwister_iPhone.xib */; };
 		2888FE7D13A61CD300FF2FA8 /* SCHStoryInteractionTitleTwister_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2888FE7B13A61CD300FF2FA8 /* SCHStoryInteractionTitleTwister_iPhone.xib */; };
@@ -1349,6 +1351,8 @@
 		286E210613AB53FF00CB4232 /* SCHStoryInteractionControllerWordMatch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionControllerWordMatch.m; sourceTree = "<group>"; };
 		286E210913AB54A800CB4232 /* SCHStoryInteractionWordMatch_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionWordMatch_iPad.xib; sourceTree = "<group>"; };
 		286E210C13AB581D00CB4232 /* storyinteraction-wordmatch-target.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-wordmatch-target.png"; sourceTree = "<group>"; };
+		286E213D13AB7EBE00CB4232 /* NSArray+Shuffling.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+Shuffling.h"; sourceTree = "<group>"; };
+		286E213E13AB7EBF00CB4232 /* NSArray+Shuffling.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+Shuffling.m"; sourceTree = "<group>"; };
 		2870939E111907710040F596 /* Scholastic.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = Scholastic.xcdatamodel; sourceTree = "<group>"; };
 		288765FC0DF74451002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		2888FE7B13A61CD300FF2FA8 /* SCHStoryInteractionTitleTwister_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionTitleTwister_iPhone.xib; sourceTree = "<group>"; };
@@ -2436,6 +2440,8 @@
 				28A60F5F139770C90090853E /* SCHStoryInteractionController.m */,
 				2827824313A20FA200E968C1 /* NSArray+ViewSorting.h */,
 				2827824413A20FA200E968C1 /* NSArray+ViewSorting.m */,
+				286E213D13AB7EBE00CB4232 /* NSArray+Shuffling.h */,
+				286E213E13AB7EBF00CB4232 /* NSArray+Shuffling.m */,
 			);
 			name = Common;
 			sourceTree = "<group>";
@@ -5328,6 +5334,7 @@
 				5264FAC713A7555200D4F659 /* SCHBookShelfTopTenPopoverTableView.m in Sources */,
 				5297B44913A8C362008ADD9B /* SCHStoryInteractionControllerMultipleChoiceWithAnswerPictures.m in Sources */,
 				286E210713AB53FF00CB4232 /* SCHStoryInteractionControllerWordMatch.m in Sources */,
+				286E213F13AB7EBF00CB4232 /* NSArray+Shuffling.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5590,6 +5597,7 @@
 				5264FAC813A7555200D4F659 /* SCHBookShelfTopTenPopoverTableView.m in Sources */,
 				5297B44A13A8C362008ADD9B /* SCHStoryInteractionControllerMultipleChoiceWithAnswerPictures.m in Sources */,
 				286E210813AB53FF00CB4232 /* SCHStoryInteractionControllerWordMatch.m in Sources */,
+				286E214013AB7EBF00CB4232 /* NSArray+Shuffling.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
