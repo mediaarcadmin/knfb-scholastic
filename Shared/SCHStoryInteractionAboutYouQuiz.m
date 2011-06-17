@@ -29,6 +29,11 @@
 @synthesize outcomeMessages;
 @synthesize tiebreakOrder;
 
+- (id)init
+{
+    return nil;
+}
+
 - (void)dealloc
 {
     [introduction release];

@@ -14,6 +14,11 @@
 
 @synthesize imageFilename;
 
+- (id)init
+{
+    return nil;
+}
+
 - (void)dealloc
 {
     [imageFilename release];

@@ -12,6 +12,11 @@
 
 @implementation SCHStoryInteractionSequencing
 
+- (id)init
+{
+    return nil;
+}
+
 - (NSString *)title
 {
     return @"Sequencing";

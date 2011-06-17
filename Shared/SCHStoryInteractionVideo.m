@@ -15,6 +15,11 @@
 @synthesize videoTranscript;
 @synthesize videoFilename;
 
+- (id)init
+{
+    return nil;
+}
+
 - (void)dealloc
 {
     [videoTranscript release];
