@@ -64,7 +64,6 @@
 - (void)presentNextView;
 
 // play an audio file from the XPS provider and invoke a completion block when the playback is complete
-- (BOOL)useAudioButton;
 - (void)playAudioAtPath:(NSString *)path completion:(void(^)(void))completion;
 
 // playing audio files from the app bundle
@@ -72,6 +71,14 @@
 
 // currently playing audio?
 - (BOOL)playingAudio;
+
+// enqueue an audio file (either from bundle or XPSProvider) with blocks to execute synchronized with
+// the start and end of the audio
+- (void)enqueueAudioWithPath:(NSString *)path
+                  fromBundle:(BOOL)fromBundle
+                  startDelay:(NSTimeInterval)startDelay
+      synchronizedStartBlock:(dispatch_block_t)startBlock
+        synchronizedEndBlock:(dispatch_block_t)endBlock;
 
 // get an image from the XPS provider
 - (UIImage *)imageAtPath:(NSString *)path;

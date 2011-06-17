@@ -108,24 +108,28 @@
             return [(SCHStoryInteractionDraggableView *)obj1 matchTag] - [(SCHStoryInteractionDraggableView *)obj2 matchTag];
         }];
         
-        // play all the audio files in turn
+        // play 'that's right'
         SCHStoryInteractionSequencing *sequencing = (SCHStoryInteractionSequencing *)self.storyInteraction;
-        __block NSInteger index = 0;
-        __block dispatch_block_t playBlock;
-        playBlock = Block_copy(^{
-            if (index < kNumberOfImages) {
-                dispatch_block_t playBlockCopy = Block_copy(playBlock);
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.5*NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+        [self enqueueAudioWithPath:[sequencing audioPathForThatsRight]
+                        fromBundle:NO
+                        startDelay:0
+            synchronizedStartBlock:nil
+              synchronizedEndBlock:nil];
+        
+        // play all the answer audio files in turn
+        for (NSInteger index = 0; index < kNumberOfImages; ++index) {
+            [self enqueueAudioWithPath:[sequencing audioPathForCorrectAnswerAtIndex:index]
+                            fromBundle:NO
+                            startDelay:0.5
+                synchronizedStartBlock:^{
                     [self setView:[[views objectAtIndex:index] viewWithTag:kImageViewTag] borderColor:[UIColor greenColor]];
-                    [self playAudioAtPath:[sequencing audioPathForCorrectAnswerAtIndex:index++] completion:playBlockCopy];
-                });
-                Block_release(playBlockCopy);
-            } else {
-                [self removeFromHostViewWithSuccess:YES];
-            }
-        });
-        [self playAudioAtPath:[sequencing audioPathForThatsRight] completion:playBlock];
-        Block_release(playBlock);
+                }
+                  synchronizedEndBlock:^{
+                      if (index == kNumberOfImages-1) {
+                          [self removeFromHostViewWithSuccess:YES];
+                      }
+                  }];
+        }
     } else {
         [self playAudioAtPath:[self.storyInteraction audioPathForTryAgain]
                    completion:^{

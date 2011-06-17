@@ -2461,6 +2461,7 @@
 			children = (
 				C972283E1392B203008605E8 /* Settings Controller */,
 				C9F5B9F213911E21009DE113 /* Authentication Controllers */,
+				F864333B13813E0300BEB8EB /* Profile View Controller */,
 				F8509E9912F0621E00197EB5 /* Scrubber View */,
 				2860E387111B897F00E27156 /* AppDelegate_iPhone.h */,
 				2860E388111B897F00E27156 /* AppDelegate_iPhone.m */,
@@ -2469,7 +2470,6 @@
 				A38CF1FE1374504F00EABF43 /* SCHAboutViewController.m */,
 				A39009931379B13000D6B608 /* SCHPrivacyPolicyViewController.h */,
 				A39009941379B13000D6B608 /* SCHPrivacyPolicyViewController.m */,
-				F864333B13813E0300BEB8EB /* Profile View Controller */,
 			);
 			path = iPhone;
 			sourceTree = "<group>";

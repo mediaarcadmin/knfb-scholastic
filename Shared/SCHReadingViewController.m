@@ -391,8 +391,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     
     CGRect r = self.titleLabel.frame;
     r.size.width = (CGRectGetWidth(self.navigationController.navigationBar.bounds) - 
-                    CGRectGetWidth(leftBarButtonItemFrame) - 
-                    CGRectGetWidth(rightBarButtonItemFrame));
+                    (MAX(CGRectGetWidth(leftBarButtonItemFrame),  
+                    CGRectGetWidth(rightBarButtonItemFrame)) * 2.0));
     CGFloat widthDelta = CGRectGetWidth(self.navigationController.navigationBar.bounds) - r.size.width;
     r.origin.x = (widthDelta > 0 ? widthDelta / 2.0 : 0.0);
     r.size.height = containerHeight;

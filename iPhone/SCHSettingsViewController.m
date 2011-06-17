@@ -144,6 +144,8 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
 - (void)login 
 {
+    [self.loginController setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
+    [self.loginController setModalPresentationStyle:UIModalPresentationFormSheet];    
 	[self presentModalViewController:self.loginController animated:YES];		
 }
 
@@ -195,12 +197,24 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
 - (void)deregistration 
 {
-    // TODO alert warning user what will happen
-    SCHDrmRegistrationSession* registrationSession = [[SCHDrmRegistrationSession alloc] init];
-    registrationSession.delegate = self;	
-    self.drmRegistrationSession = registrationSession;
-    [self.drmRegistrationSession deregisterDevice:[[SCHAuthenticationManager sharedAuthenticationManager] aToken]];
-    [registrationSession release];
+    UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Confirmation", @"Confirmation") 
+                                                         message:NSLocalizedString(@"This will remove all books and settings", nil)
+                                                        delegate:self 
+                                               cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
+                                               otherButtonTitles:NSLocalizedString(@"Continue", @""), nil]; 
+    [errorAlert show]; 
+    [errorAlert release];
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex != alertView.cancelButtonIndex) {
+        SCHDrmRegistrationSession* registrationSession = [[SCHDrmRegistrationSession alloc] init];
+        registrationSession.delegate = self;	
+        self.drmRegistrationSession = registrationSession;
+        [self.drmRegistrationSession deregisterDevice:[[SCHAuthenticationManager sharedAuthenticationManager] aToken]];
+        [registrationSession release];    
+    }
 }
 
 #pragma mark - Table view data source

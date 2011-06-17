@@ -493,15 +493,26 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 		{
 			NSLog(@"needs parse...");
 
+            // if there's no manifest set, restart the process
+            // this prevents double processing in the event of interruptions during parsing
+            if (self.manifestUpdates == nil) {
+                [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNeedsManifest];
+                [self processDictionary];
+                return;
+            }
+
             SCHDictionaryManifestEntry *entry = [self.manifestUpdates objectAtIndex:0];
 
 			// create dictionary parse operation
 			SCHDictionaryParseOperation *parseOp = [[SCHDictionaryParseOperation alloc] init];
 			parseOp.manifestEntry = entry;
             
-			// dictionary processing is redispatched on completion
+			// when parsing is successful, delete the zip file
 			[parseOp setCompletionBlock:^{
                 self.dictionaryVersion = entry.toVersion;
+                NSFileManager *localFileManager = [[NSFileManager alloc] init];
+                [localFileManager removeItemAtPath:[self dictionaryZipPath] error:nil];
+                [localFileManager release];
 				[self processDictionary];
 			}];
 			
@@ -713,8 +724,33 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
         SCHDictionaryDownloadManager *dictManager = [SCHDictionaryDownloadManager sharedDownloadManager];
         NSManagedObjectContext *context = [[SCHBookManager sharedBookManager] managedObjectContextForCurrentThread];
         
-        NSString *filePath = [[dictManager dictionaryTextFilesDirectory] stringByAppendingPathComponent:@"EntryTable.txt"];
+        NSLog(@"Removing any existing %@ objects.", kSCHDictionaryEntry);
+        
+        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+        [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHDictionaryEntry inManagedObjectContext:context]];
+        [fetchRequest setIncludesPropertyValues:NO]; //only fetch the managedObjectID
+        
         NSError *error = nil;
+        NSArray *items = [context executeFetchRequest:fetchRequest error:&error];
+        [fetchRequest release];
+        
+        //error handling goes here
+        
+        if (error) {
+            NSLog(@"Error during processing; could not remove %@ objects. %@", kSCHDictionaryEntry, [error localizedDescription]);
+            
+        }
+        
+        for (NSManagedObject *item in items) {
+            [context deleteObject:item];
+        }
+        
+        [context save:&error];
+        
+        // begin processing
+        
+        NSString *filePath = [[dictManager dictionaryTextFilesDirectory] stringByAppendingPathComponent:@"EntryTable.txt"];
+        error = nil;
         char *completeLine, *start, *entryID, *headword, *level;
         NSMutableData *collectLine = nil;                
         NSString *tmpCompleteLine = nil;    
@@ -816,8 +852,32 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
         SCHDictionaryDownloadManager *dictManager = [SCHDictionaryDownloadManager sharedDownloadManager];
         NSManagedObjectContext *context = [[SCHBookManager sharedBookManager] managedObjectContextForCurrentThread];
         
-        NSString *filePath = [[dictManager dictionaryTextFilesDirectory] stringByAppendingPathComponent:@"WordFormTable.txt"];
+        NSLog(@"Removing any existing %@ objects.", kSCHDictionaryWordForm);
+        
+        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+        [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHDictionaryWordForm inManagedObjectContext:context]];
+        [fetchRequest setIncludesPropertyValues:NO]; //only fetch the managedObjectID
+        
         NSError *error = nil;
+        NSArray *items = [context executeFetchRequest:fetchRequest error:&error];
+        [fetchRequest release];
+        
+        //error handling goes here
+        
+        if (error) {
+            NSLog(@"Error during processing; could not remove %@ objects. %@", kSCHDictionaryWordForm, [error localizedDescription]);
+        }
+        
+        for (NSManagedObject *item in items) {
+            [context deleteObject:item];
+        }
+        
+        [context save:&error];
+        
+        // begin processing
+        
+        NSString *filePath = [[dictManager dictionaryTextFilesDirectory] stringByAppendingPathComponent:@"WordFormTable.txt"];
+        error = nil;
         char *completeLine, *start, *wordform, *headword, *entryID, *category;
         NSMutableData *collectLine = nil;
         NSString *tmpCompleteLine = nil;            
