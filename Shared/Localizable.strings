@@ -21,6 +21,8 @@
 "Deregister" = "Deregister";
 "Cancel" = "Cancel";
 "Done" = "Done";
+"Continue" = "Continue";
+"Confirmation" = "Confirmation";
 "Device Options" = "Device Options";
 "Space Saver Mode allows you to download individual books - turn it off to automatically download all books." = "Space Saver Mode allows you to download individual books - turn it off to automatically download all books.";
 "Space Saver Mode" = "Space Saver Mode";
@@ -32,3 +34,4 @@
 "Due to a problem with the audio we can not play this audiobook." = "Due to a problem with the audio we can not play this audiobook.";
 "Unable to parse Audio.xml" = "Unable to parse Audio.xml";
 "Check again soon" = "Check again soon";
+"This will remove all books and settings" = "This will remove all books and settings";
