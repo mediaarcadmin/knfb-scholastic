@@ -91,6 +91,7 @@
 
 - (void)nextQuestion
 {
+    [self setUserInteractionsEnabled:YES];
     self.currentQuestionIndex++;
     if (self.currentQuestionIndex == self.progressView.numberOfSteps) {
         [self presentNextView];
@@ -108,6 +109,8 @@
         UIImage *highlight = nil;
         if (i == [self currentQuestion].correctAnswer) {
             highlight = [UIImage imageNamed:@"answer-button-green"];
+        } else {
+            highlight = [UIImage imageNamed:@"answer-button-red"];
         }
         UIButton *button = [self.answerButtons objectAtIndex:i];
         [button setTitle:answer forState:UIControlStateNormal];
@@ -122,28 +125,29 @@
 
 - (IBAction)answerButtonTapped:(id)sender
 {
+    [self setUserInteractionsEnabled:NO];
     NSInteger chosenAnswer = [self.answerButtons indexOfObject:sender];
     if (chosenAnswer == NSNotFound) {
         return;
     }
     
 
+    [sender setSelected:YES];
+
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 1.0 * NSEC_PER_SEC);
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        [sender setSelected:NO];
+        [self nextQuestion];
+    });
+    
     if (chosenAnswer == [self currentQuestion].correctAnswer) {
-        [sender setSelected:YES];
         [self playBundleAudioWithFilename:[self.storyInteraction storyInteractionCorrectAnswerSoundFilename]
                                completion:nil];
         self.score++;
     
-        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 1.0 * NSEC_PER_SEC);
-        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-            [sender setSelected:NO];
-            [self nextQuestion];
-        });
     } else {
         [self playBundleAudioWithFilename:[self.storyInteraction storyInteractionWrongAnswerSoundFilename]
-                               completion:^{
-                                   [self nextQuestion];
-                               }];
+                               completion:nil];
     }
 }
 
