@@ -128,6 +128,9 @@ static CGFloat distanceSq(CGPoint p1, CGPoint p2)
                    completion:^{
                        [self removeFromHostViewWithSuccess:YES];
                    }];
+    } else {
+        // reenable if we're not done
+        [self setUserInteractionsEnabled:YES];
     }
 }
 
@@ -190,7 +193,9 @@ static CGFloat distanceSq(CGPoint p1, CGPoint p2)
         [self enqueueAudioWithPath:[self.storyInteraction audioPathForThatsRight]
                         fromBundle:NO
                         startDelay:0
-            synchronizedStartBlock:nil
+            synchronizedStartBlock:^{
+                [self setUserInteractionsEnabled:NO];
+            }
               synchronizedEndBlock:nil];
 
         SCHStoryInteractionWordMatchQuestionItem *item = [[[self currentQuestion] items] objectAtIndex:onTarget.matchTag];
