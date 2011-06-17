@@ -14,7 +14,6 @@
 }
 
 @property (nonatomic, retain) IBOutlet SCHStoryInteractionScratchView *scratchView;
-@property (nonatomic, retain) IBOutlet UIImageView *pictureView;
 @property (nonatomic, retain) IBOutlet UIButton *answerButton1;
 @property (nonatomic, retain) IBOutlet UIButton *answerButton2;
 @property (nonatomic, retain) IBOutlet UIButton *answerButton3;

@@ -44,20 +44,6 @@
 				<int key="NSvFlags">274</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
-					<object class="IBUIImageView" id="493803606">
-						<reference key="NSNextResponder" ref="540000794"/>
-						<int key="NSvFlags">274</int>
-						<string key="NSFrame">{{95, 20}, {190, 190}}</string>
-						<reference key="NSSuperview" ref="540000794"/>
-						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="886613442"/>
-						<bool key="IBUIUserInteractionEnabled">NO</bool>
-						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-						<object class="NSCustomResource" key="IBUIImage">
-							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">storyinteractions-initialScratch.png</string>
-						</object>
-					</object>
 					<object class="IBUIView" id="886613442">
 						<reference key="NSNextResponder" ref="540000794"/>
 						<int key="NSvFlags">274</int>
@@ -214,7 +200,6 @@
 						<string key="NSFrame">{{40, 329}, {20, 21}}</string>
 						<reference key="NSSuperview" ref="540000794"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<int key="IBUIContentMode">7</int>
@@ -270,7 +255,7 @@
 				<string key="NSFrameSize">{380, 380}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
-				<reference key="NSNextKeyView" ref="493803606"/>
+				<reference key="NSNextKeyView"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">1</int>
 					<bytes key="NSRGB">MC44MTU2ODYyNzQ1IDAuOTMzMzMzMzMzMyAwLjk5NjA3ODQzMTQAA</bytes>
@@ -281,14 +266,6 @@
 		<object class="IBObjectContainer" key="IBDocument.Objects">
 			<object class="NSMutableArray" key="connectionRecords">
 				<bool key="EncodedWithXMLCoder">YES</bool>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">pictureView</string>
-						<reference key="source" ref="841351856"/>
-						<reference key="destination" ref="493803606"/>
-					</object>
-					<int key="connectionID">21</int>
-				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">scratchView</string>
@@ -422,7 +399,6 @@
 						<reference key="object" ref="540000794"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="493803606"/>
 							<reference ref="886613442"/>
 							<reference ref="598778003"/>
 							<reference ref="778738729"/>
@@ -434,11 +410,6 @@
 						</object>
 						<reference key="parent" ref="0"/>
 						<string key="objectName">View</string>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">16</int>
-						<reference key="object" ref="493803606"/>
-						<reference key="parent" ref="540000794"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">17</int>
@@ -507,7 +478,6 @@
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<string>-1.CustomClassName</string>
 					<string>-2.CustomClassName</string>
-					<string>16.IBPluginDependency</string>
 					<string>17.CustomClassName</string>
 					<string>17.IBPluginDependency</string>
 					<string>2.IBEditorWindowLastContentRect</string>
@@ -532,7 +502,6 @@
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<string>SCHStoryInteractionControllerScratchAndSee</string>
 					<string>UIResponder</string>
-					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>SCHStoryInteractionScratchView</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>{{514, 109}, {768, 1024}}</string>
@@ -711,10 +680,6 @@
 		</object>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
-		<object class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="NS.key.0">storyinteractions-initialScratch.png</string>
-			<string key="NS.object.0">{125, 125}</string>
-		</object>
 		<string key="IBCocoaTouchPluginVersion">301</string>
 	</data>
 </archive>
