@@ -103,6 +103,7 @@
 
 - (void)nextQuestion
 {
+    [self setUserInteractionsEnabled:YES];
     SCHStoryInteractionWhoSaidIt *whoSaidIt = (SCHStoryInteractionWhoSaidIt *)self.storyInteraction;
     do {
         self.currentStatement++;
@@ -119,6 +120,8 @@
 
 - (void)answerButtonTapped:(id)sender
 {
+    [self setUserInteractionsEnabled:NO];
+
     UIButton *button = (UIButton *)sender;
     if (button.tag == self.currentStatement) {
         [button setBackgroundImage:[UIImage imageNamed:@"answer-button-green"] forState:UIControlStateNormal];

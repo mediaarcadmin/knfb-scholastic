@@ -86,7 +86,6 @@ typedef void (^PlayAudioCompletionBlock)(void);
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [self.player pause];
     
-    [self removeFromHostViewWithSuccess:NO];
     [xpsProvider release];
     [containerView release];
     [titleView release], titleView = nil;
@@ -128,6 +127,7 @@ typedef void (^PlayAudioCompletionBlock)(void);
                                                  selector:@selector(willResignActiveNotification:)
                                                      name:UIApplicationWillResignActiveNotification
                                                    object:nil];
+        
     }
     return self;
 }
@@ -346,6 +346,12 @@ typedef void (^PlayAudioCompletionBlock)(void);
     [self removeFromHostViewWithSuccess:NO];
 }
 
+- (void)setUserInteractionsEnabled:(BOOL)enabled
+{
+    self.containerView.superview.userInteractionEnabled = enabled;
+    self.containerView.userInteractionEnabled = enabled;
+}
+
 #pragma mark - Notification methods
 
 - (void)willResignActiveNotification:(NSNotification *)notification
@@ -356,6 +362,10 @@ typedef void (^PlayAudioCompletionBlock)(void);
 - (void)removeFromHostViewWithSuccess:(BOOL)success
 {
     [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.isbn];
+    
+    // always, always re-enable user interactions for the superview...
+    [self setUserInteractionsEnabled:YES];
+    
     [self.containerView removeFromSuperview];
     
     if (delegate && [delegate respondsToSelector:@selector(storyInteractionController:didDismissWithSuccess:)]) {
@@ -472,7 +482,12 @@ typedef void (^PlayAudioCompletionBlock)(void);
     if ([self.synchronizedAudioQueue count] == 0) {
         return;
     }
+    
+    // FIXME: crashing in here. suspect it's related to the fix below to prevent the 
+    // StoryInteractionController being deallocated (endAudio:)
+    
     SynchronizedAudioItem *item = [self.synchronizedAudioQueue objectAtIndex:0];
+    
     
     dispatch_block_t playBlock = ^{
         if (item.startBlock != nil) {

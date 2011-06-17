@@ -31,7 +31,6 @@
 - (void)dealloc
 {
     [answerButtons release], answerButtons = nil;
-
     [super dealloc];
 }
 
@@ -97,6 +96,8 @@
     
     // play intro audio on first question only
     [self playQuestionAudioAndHighlightAnswersWithIntroduction:(self.currentQuestionIndex == 0)];
+    
+    [self setUserInteractionsEnabled:YES];
 }
 
 - (void)playQuestionAudioAndHighlightAnswersWithIntroduction:(BOOL)withIntroduction
@@ -141,6 +142,9 @@
     if (chosenAnswer < [[self currentQuestion].answers count]) {
         [sender setSelected:YES];
         if (chosenAnswer == [self currentQuestion].correctAnswer) {
+            // disable the close button and the other buttons
+            [self setUserInteractionsEnabled:NO];
+            
             [self playAudioAtPath:[[self currentQuestion] audioPathForAnswerAtIndex:chosenAnswer] completion:^{
                 [self playAudioAtPath:[(SCHStoryInteractionMultipleChoiceText *)self.storyInteraction audioPathForThatsRight] completion:^{
                     [self playAudioAtPath:[[self currentQuestion] audioPathForCorrectAnswer] completion:^{
@@ -149,7 +153,10 @@
                 }];
             }];
         } else {
-            [self playAudioAtPath:[[self currentQuestion] audioPathForIncorrectAnswer] completion:nil];
+            [self setUserInteractionsEnabled:NO];
+            [self playAudioAtPath:[[self currentQuestion] audioPathForIncorrectAnswer] completion:^{
+                [self setUserInteractionsEnabled:YES];
+            }];
         }
     }
 }

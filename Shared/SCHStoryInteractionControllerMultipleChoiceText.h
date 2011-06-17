@@ -11,6 +11,7 @@
 
 @interface SCHStoryInteractionControllerMultipleChoiceText : SCHStoryInteractionController {}
 
+
 @property (nonatomic, retain) IBOutletCollection(UIButton) NSArray *answerButtons;
 
 - (IBAction)answerButtonTapped:(id)sender;
