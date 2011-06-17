@@ -27,6 +27,5 @@
 @property (nonatomic, retain) IBOutlet SCHLoginPasswordViewController *loginPasswordController;
 @property (nonatomic, retain) IBOutlet SCHLoginPasswordViewController *profilePasswordController;
 @property (nonatomic, retain) IBOutlet UINavigationController *settingsNavController;
-@property (nonatomic, retain) IBOutlet SCHCustomNavigationBar *customNavigationBar;
 
 @end

@@ -47,7 +47,7 @@
         self.audioInfo = [NSMutableArray array];
         NSXMLParser *xmlParser = [[NSXMLParser alloc] initWithData:audioData];
         xmlParser.delegate = self;
-        if ([xmlParser parse] == NO) {
+        if ([xmlParser parse] == NO && error != nil) {
             NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"Unable to parse Audio.xml"
                                                                  forKey:NSLocalizedDescriptionKey];		
             

@@ -12,7 +12,7 @@
 
 @class SCHLoginPasswordViewController;
 
-@interface SCHSettingsViewController : UIViewController <SCHDrmRegistrationSessionDelegate>  
+@interface SCHSettingsViewController : UIViewController <SCHDrmRegistrationSessionDelegate, UIAlertViewDelegate>  
 {
 }
 

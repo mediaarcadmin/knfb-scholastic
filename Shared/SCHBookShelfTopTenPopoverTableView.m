@@ -55,7 +55,7 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"topTenTableCell"];
     
     if (!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"topTenTableCell"]; 
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"topTenTableCell"] autorelease]; 
         cell.textLabel.font = [cell.textLabel.font fontWithSize:16];
     }
     
