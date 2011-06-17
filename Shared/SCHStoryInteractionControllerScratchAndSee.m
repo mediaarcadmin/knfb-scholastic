@@ -34,7 +34,6 @@ static const NSInteger kSCHScratchPointCount = 200;
 @implementation SCHStoryInteractionControllerScratchAndSee
 
 @synthesize scratchView;
-@synthesize pictureView;
 @synthesize answerButton1;
 @synthesize answerButton2;
 @synthesize answerButton3;
@@ -53,7 +52,6 @@ static const NSInteger kSCHScratchPointCount = 200;
     [answerButton1 release], answerButton1 = nil;
     [answerButton2 release], answerButton2 = nil;
     [answerButton3 release], answerButton3 = nil;
-    [pictureView release], pictureView = nil;
     [scratchView release], scratchView = nil;
     [answerButtons release], answerButtons = nil;
     [progressImageView release], progressImageView = nil;
@@ -172,14 +170,6 @@ static const NSInteger kSCHScratchPointCount = 200;
 
 - (void)nextQuestion
 {
-//    self.currentQuestionIndex++;
-//    if (self.currentQuestionIndex == [[(SCHStoryInteractionScratchAndSee *)self.storyInteraction questions] count]) {
-//        [self removeFromHostView];
-//    } else {
-//        self.askingQuestions = NO;
-//        [self setupQuestion];
-//    }
-    
     [self removeFromHostViewWithSuccess:YES];
 }
 
@@ -213,7 +203,7 @@ static const NSInteger kSCHScratchPointCount = 200;
         }
     }
         
-    self.scratchView.showFullImage = YES;
+    [self.scratchView setShowFullImage:YES];
     
     [self playBundleAudioWithFilename:[self.storyInteraction storyInteractionCorrectAnswerSoundFilename]
                            completion:^{
@@ -281,20 +271,30 @@ static const NSInteger kSCHScratchPointCount = 200;
         self.progressView.hidden = YES;
         aScratchView.interactionEnabled = NO;
 
-        [self playBundleAudioWithFilename:[(SCHStoryInteractionScratchAndSee *)self.storyInteraction scratchingCompleteSoundEffectFilename] 
-                               completion:^{
-                                   [self playAudioAtPath:[(SCHStoryInteractionScratchAndSee *)self.storyInteraction whatDoYouSeeAudioPath] 
-                                              completion:^{
-                                                  [self playAudioAtPath:[[self currentQuestion] audioPathForAnswerAtIndex:0] completion: ^{
-                                                      [self playAudioAtPath:[[self currentQuestion] audioPathForAnswerAtIndex:1] completion: ^{
-                                                          [self playAudioAtPath:[[self currentQuestion] audioPathForAnswerAtIndex:2] completion: ^{
-                                                          }];
-                                                      }];
-                                                  }];
-                                              }];
-                               }];
-        
         [self setupQuestion];
+        [self enqueueAudioWithPath:[(SCHStoryInteractionScratchAndSee *)self.storyInteraction scratchingCompleteSoundEffectFilename] 
+                        fromBundle:YES
+                        startDelay:0
+            synchronizedStartBlock:nil
+              synchronizedEndBlock:nil];
+        [self enqueueAudioWithPath:[(SCHStoryInteractionScratchAndSee *)self.storyInteraction whatDoYouSeeAudioPath]
+                        fromBundle:NO
+                        startDelay:0
+            synchronizedStartBlock:nil
+              synchronizedEndBlock:nil];
+        
+        for (NSInteger i = 0; i < 3; ++i) {
+            UIButton *button = [self.answerButtons objectAtIndex:i];
+            [self enqueueAudioWithPath:[[self currentQuestion] audioPathForAnswerAtIndex:i]
+                            fromBundle:NO
+                            startDelay:0.5
+                synchronizedStartBlock:^{
+                    [button setHighlighted:YES];
+                }
+                  synchronizedEndBlock:^{
+                      [button setHighlighted:NO];
+                  }];
+        }
     } else {
         self.askingQuestions = NO;
         aScratchView.interactionEnabled = YES;

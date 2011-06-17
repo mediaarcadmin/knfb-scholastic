@@ -16,7 +16,8 @@
 @property (nonatomic, assign) id <SCHStoryInteractionScratchViewDelegate> delegate;
 @property (nonatomic, retain) UIImage *answerImage;
 @property (nonatomic, assign) BOOL interactionEnabled;
-@property (nonatomic, assign) BOOL showFullImage;
+
+- (void)setShowFullImage:(BOOL)showFullImage;
 
 @end
 

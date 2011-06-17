@@ -7,15 +7,18 @@
 //
 
 #import "SCHStoryInteractionScratchView.h"
+#import <QuartzCore/QuartzCore.h>
 
 static const float kSCHScratchEraseSize = 24.0f;
 
 @interface SCHStoryInteractionScratchView ()
 
 @property (nonatomic, retain) NSMutableArray *pointsArray;
-@property (nonatomic, assign) BOOL firstDraw;
+@property (nonatomic, retain) CAShapeLayer *mask;
+@property (nonatomic, retain) CALayer *maskImageLayer;
+@property (nonatomic, retain) CALayer *answerImageLayer;
 
-- (void)clipImage: (CGRect)rect;
+- (void)updateImageMask;
 - (void)updateDelegate;
 
 @end
@@ -25,31 +28,45 @@ static const float kSCHScratchEraseSize = 24.0f;
 @synthesize delegate;
 @synthesize answerImage;
 @synthesize pointsArray;
-@synthesize firstDraw;
 @synthesize interactionEnabled;
-@synthesize showFullImage;
+@synthesize mask;
+@synthesize maskImageLayer;
+@synthesize answerImageLayer;
 
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
     self = [super initWithCoder:aDecoder];
     if (self) {
         // Initialization code
-        self.firstDraw = YES;
         self.pointsArray = [[NSMutableArray alloc] init];
         self.interactionEnabled = YES;
-        self.showFullImage = NO;
-
+        
+        maskImageLayer = [[CALayer layer] retain];
+        maskImageLayer.frame = self.layer.bounds;
+        maskImageLayer.contents = (id)[UIImage imageNamed:@"storyinteractions-initialScratch.png"].CGImage;
+        [self.layer addSublayer:maskImageLayer];
+        
+        answerImageLayer = [[CALayer layer] retain];
+        answerImageLayer.frame = self.layer.bounds;
+        [self.layer addSublayer:answerImageLayer];
+                
+        mask = [[CAShapeLayer layer] retain];
+        mask.backgroundColor = [UIColor clearColor].CGColor;
+        mask.frame = self.layer.bounds;
+        answerImageLayer.mask = mask;
+        
     }
     return self;
 }
 
-- (void)drawRect:(CGRect)rect
+- (void)layoutSubviews
 {
-    if (!self.pointsArray || [self.pointsArray count] < 2) {
-        return;
-    }
+    [super layoutSubviews];
     
-    [self clipImage:rect];
+    self.answerImageLayer.bounds = self.layer.bounds;
+    self.maskImageLayer.bounds = self.layer.bounds;
+    self.mask.bounds = self.layer.bounds;
+
 }
 
 - (void)setAnswerImage:(UIImage *)newAnswerImage
@@ -60,37 +77,33 @@ static const float kSCHScratchEraseSize = 24.0f;
     
     [self.pointsArray removeAllObjects];
     self.interactionEnabled = YES;
-    self.showFullImage = NO;
+    [self setShowFullImage:NO];
     
-    [self setNeedsDisplay];
-
+    self.answerImageLayer.contents = (id)answerImage.CGImage;
 }
 
-- (void)setShowFullImage:(BOOL)aShowFullImage
-{
-    showFullImage = aShowFullImage;
-    [self setNeedsDisplay];
-}
-
-- (void)clipImage: (CGRect)rect
-{
-    UIImage *img = self.answerImage;
-
-    CGRect bounds = CGRectMake(0, 0, rect.size.width, rect.size.height);
-    if (!showFullImage) {    
-        CGContextRef context = UIGraphicsGetCurrentContext();
-        CGMutablePathRef path = CGPathCreateMutable();
-        
-        for (int i = 0; i < [self.pointsArray count] - 1; i++) {
-            CGPoint pt = [(NSValue *) [self.pointsArray objectAtIndex:i] CGPointValue];
-            CGPathAddEllipseInRect(path, NULL, CGRectMake(pt.x - (kSCHScratchEraseSize/2), pt.y - (kSCHScratchEraseSize/2), kSCHScratchEraseSize, kSCHScratchEraseSize));
-        }
-        
-        CGContextAddPath(context, path);
-        CGPathRelease(path);
-        CGContextClip(context);
+- (void)setShowFullImage:(BOOL)showFullImage
+{    
+    if (showFullImage) {
+        answerImageLayer.mask = nil;
+    } else {
+        answerImageLayer.mask = mask;
     }
-    [img drawInRect:bounds];
+}
+
+- (void)updateImageMask
+{
+    CGMutablePathRef path = CGPathCreateMutable();
+
+    for (int i = 0; i < [self.pointsArray count] - 1; i++) {
+        CGPoint pt = [(NSValue *) [self.pointsArray objectAtIndex:i] CGPointValue];
+        CGPathAddEllipseInRect(path, NULL, CGRectMake(pt.x - (kSCHScratchEraseSize/2), pt.y - (kSCHScratchEraseSize/2), kSCHScratchEraseSize, kSCHScratchEraseSize));
+    }
+    
+    self.mask.path = path;
+    
+    CGPathRelease(path);
+
 }
 
 - (void)dealloc
@@ -98,6 +111,10 @@ static const float kSCHScratchEraseSize = 24.0f;
     delegate = nil;
     [answerImage release], answerImage = nil;
     [pointsArray release], pointsArray = nil;
+    [mask release], mask = nil;
+    [maskImageLayer release], maskImageLayer = nil;
+    [answerImageLayer release], answerImageLayer = nil;
+    
     [super dealloc];
 }
 
@@ -116,7 +133,7 @@ static const float kSCHScratchEraseSize = 24.0f;
         if (touchLocation.x >= 0 && touchLocation.x <= self.frame.size.width
             && touchLocation.y >= 0 && touchLocation.y <= self.frame.size.height) {
             [self.pointsArray addObject:[NSValue valueWithCGPoint:touchLocation]];
-            [self setNeedsDisplay];
+            [self updateImageMask];
             [self updateDelegate];
         }
     }
