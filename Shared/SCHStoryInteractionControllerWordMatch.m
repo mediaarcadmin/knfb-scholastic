@@ -14,6 +14,7 @@
 #import "SCHStoryInteractionDraggableView.h"
 #import "SCHStoryInteractionDraggableTargetView.h"
 #import "NSArray+ViewSorting.h"
+#import "NSArray+Shuffling.h"
 
 #define kNumberOfItems 3
 #define kLabelTag 101
@@ -30,7 +31,6 @@ static CGFloat distanceSq(CGPoint p1, CGPoint p2)
 
 @interface SCHStoryInteractionControllerWordMatch ()
 
-@property (nonatomic, assign) NSInteger currentQuestionIndex;
 @property (nonatomic, retain) NSMutableSet *occupiedTargets;
 @property (nonatomic, assign) NSInteger numberOfCorrectItems;
 
@@ -45,7 +45,6 @@ static CGFloat distanceSq(CGPoint p1, CGPoint p2)
 @synthesize wordViews;
 @synthesize targetViews;
 @synthesize imageViews;
-@synthesize currentQuestionIndex;
 @synthesize occupiedTargets;
 @synthesize numberOfCorrectItems;
 
@@ -60,7 +59,15 @@ static CGFloat distanceSq(CGPoint p1, CGPoint p2)
 
 - (SCHStoryInteractionWordMatchQuestion *)currentQuestion
 {
-    return [[(SCHStoryInteractionWordMatch *)self.storyInteraction questions] objectAtIndex:self.currentQuestionIndex];
+    NSInteger currentQuestionIndex = [self.delegate currentQuestionForStoryInteraction];
+    return [[(SCHStoryInteractionWordMatch *)self.storyInteraction questions] objectAtIndex:currentQuestionIndex];
+}
+
+- (BOOL)shouldPlayQuestionAudioForViewAtIndex:(NSInteger)screenIndex
+{
+    // play question audio on first question only
+    return ([self.delegate currentQuestionForStoryInteraction] == 0
+            && ![self.delegate storyInteractionFinished]);
 }
 
 - (void)setupViewAtIndex:(NSInteger)screenIndex
@@ -69,12 +76,6 @@ static CGFloat distanceSq(CGPoint p1, CGPoint p2)
     self.targetViews = [self.targetViews viewsSortedHorizontally];
     self.imageViews = [self.imageViews viewsSortedHorizontally];
 
-    self.currentQuestionIndex = 0;
-    // get the current question
-    if (self.delegate && [self.delegate respondsToSelector:@selector(currentQuestionForStoryInteraction)]) {
-        self.currentQuestionIndex += [self.delegate currentQuestionForStoryInteraction];    
-    }
-    
     for (UIImageView *imageView in self.imageViews) {
         imageView.layer.borderWidth = 2;
         imageView.layer.borderColor = [[UIColor colorWithRed:0.165 green:0.322 blue:0.678 alpha:1.] CGColor];
@@ -89,15 +90,13 @@ static CGFloat distanceSq(CGPoint p1, CGPoint p2)
 
 - (void)setupQuestion
 {
+    self.numberOfCorrectItems = 0;
+
     SCHStoryInteractionWordMatchQuestion *question = [self currentQuestion];
     
-    NSMutableArray *sources = [self.wordViews mutableCopy];
-    self.numberOfCorrectItems = 0;
-    
+    NSArray *sources = [self.wordViews shuffled];
     for (NSInteger i = 0; i < kNumberOfItems; ++i) {
-        NSInteger viewIndex = arc4random() % [sources count];
-        SCHStoryInteractionDraggableView *source = [sources objectAtIndex:viewIndex];
-        
+        SCHStoryInteractionDraggableView *source = [sources objectAtIndex:i];
         SCHStoryInteractionWordMatchQuestionItem *item = [question.items objectAtIndex:i];
         UIImage *image = [self imageAtPath:[item imagePath]];
         
@@ -108,8 +107,6 @@ static CGFloat distanceSq(CGPoint p1, CGPoint p2)
         [source setMatchTag:i];
         [source setHomePosition:source.center];
         [[self.targetViews objectAtIndex:i] setMatchTag:i];
-        
-        [sources removeObjectAtIndex:viewIndex];
     }
 }
 

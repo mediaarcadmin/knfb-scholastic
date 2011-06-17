@@ -8,6 +8,7 @@
 
 #import "SCHStoryInteractionControllerWhoSaidIt_iPhone.h"
 #import "SCHStoryInteractionWhoSaidIt.h"
+#import "NSArray+Shuffling.h"
 
 @interface SCHStoryInteractionControllerWhoSaidIt_iPhone ()
 
@@ -57,19 +58,14 @@
     // mix up the answers
     SCHStoryInteractionWhoSaidIt *whoSaidIt = (SCHStoryInteractionWhoSaidIt *)self.storyInteraction;
     NSInteger numAnswers = MIN([self.answerButtons count], [whoSaidIt.statements count]);
-    NSMutableArray *answerIndices = [NSMutableArray arrayWithCapacity:numAnswers];
+    NSArray *shuffledStatements = [whoSaidIt.statements shuffled];
+
     for (NSInteger i = 0; i < numAnswers; ++i) {
-        [answerIndices addObject:[NSNumber numberWithInteger:i]];
-    }
-    for (NSInteger i = 0; i < numAnswers; ++i) {
-        NSNumber *index = [answerIndices objectAtIndex:(arc4random() % [answerIndices count])];
-        SCHStoryInteractionWhoSaidItStatement *statement = [whoSaidIt.statements objectAtIndex:[index integerValue]];
-        NSLog(@"%@ -> %@", statement.source, statement.text);
+        SCHStoryInteractionWhoSaidItStatement *statement = [shuffledStatements objectAtIndex:i];
         UIButton *button = [self.answerButtons objectAtIndex:i];
         [button setTitle:statement.source forState:UIControlStateNormal];
         [button setHidden:NO];
-        [button setTag:[index integerValue]];
-        [answerIndices removeObject:index];
+        [button setTag:[whoSaidIt.statements indexOfObject:statement]];
     }
     for (NSInteger i = numAnswers; i < [self.answerButtons count]; ++i) {
         [[self.answerButtons objectAtIndex:i] setHidden:YES];

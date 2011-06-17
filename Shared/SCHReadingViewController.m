@@ -83,6 +83,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 @property (nonatomic, retain) SCHBookStoryInteractions *bookStoryInteractions;
 @property (nonatomic, retain) SCHStoryInteractionController *storyInteractionController;
+@property (nonatomic, assign) BOOL storyInteractionsCompleteOnCurrentPage;
 
 @property (nonatomic, retain) AVAudioPlayer *interactionAppearsPlayer;
 @property (nonatomic, assign) NSInteger lastPageInteractionSoundPlayedOn;
@@ -165,6 +166,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 @synthesize bookStoryInteractions;
 @synthesize storyInteractionController;
 @synthesize interactionAppearsPlayer;
+@synthesize storyInteractionsCompleteOnCurrentPage;
 @synthesize lastPageInteractionSoundPlayedOn;
 
 #pragma mark - Dealloc and View Teardown
@@ -1259,6 +1261,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [self updateScrubberValue];
     
     // check for story interactions
+    self.storyInteractionsCompleteOnCurrentPage = NO;
     [self setupStoryInteractionButtonForCurrentPageAnimated:YES];
 
 }
@@ -1750,6 +1753,10 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
         
         [self.bookStoryInteractions incrementStoryInteractionQuestionsCompletedForPage:page];
+        if ([self.bookStoryInteractions storyInteractionsFinishedOnPage:page]) {
+            self.storyInteractionsCompleteOnCurrentPage = YES;
+        }
+        
         [self setupStoryInteractionButtonForCurrentPageAnimated:YES];
     }
 }
@@ -1764,6 +1771,11 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     }
 
     return [self.bookStoryInteractions storyInteractionQuestionsCompletedForPage:page];
+}
+
+- (BOOL)storyInteractionFinished
+{
+    return self.storyInteractionsCompleteOnCurrentPage;
 }
 
 #pragma mark - UIPopoverControllerDelegate methods
