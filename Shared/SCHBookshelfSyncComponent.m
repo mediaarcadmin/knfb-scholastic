@@ -65,6 +65,7 @@
 
 - (void)clear
 {
+    [super clear];
 	NSError *error = nil;
 	
 	if (![self.managedObjectContext BITemptyEntity:kSCHContentMetadataItem error:&error]) {
