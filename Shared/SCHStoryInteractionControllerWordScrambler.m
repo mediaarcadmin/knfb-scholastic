@@ -8,6 +8,7 @@
 
 #import "SCHStoryInteractionControllerWordScrambler.h"
 #import "SCHStoryInteractionWordScrambler.h"
+#import "NSArray+Shuffling.h"
 
 #define kLetterGap 3
 #define kSnapDistanceSq 400
@@ -111,13 +112,13 @@ static CGFloat distanceSq(CGPoint p1, CGPoint p2)
     
     // scramble the positions
     self.lettersByPosition = [NSMutableArray array];
+    NSArray *shuffledLetters = [views shuffled];
+    NSInteger index = 0;
     for (NSValue *position in positions) {
-        NSInteger index = arc4random() % [views count];
-        SCHStoryInteractionDraggableLetterView *view = [views objectAtIndex:index];
+        SCHStoryInteractionDraggableLetterView *view = [shuffledLetters objectAtIndex:index++];
         view.center = [position CGPointValue];
         view.homePosition = view.center;
         [self.lettersByPosition addObject:view];
-        [views removeObjectAtIndex:index];
     }
     
     self.hasShownHint = NO;
