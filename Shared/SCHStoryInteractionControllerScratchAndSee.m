@@ -34,7 +34,6 @@ static const NSInteger kSCHScratchPointCount = 200;
 @implementation SCHStoryInteractionControllerScratchAndSee
 
 @synthesize scratchView;
-@synthesize pictureView;
 @synthesize answerButton1;
 @synthesize answerButton2;
 @synthesize answerButton3;
@@ -53,7 +52,6 @@ static const NSInteger kSCHScratchPointCount = 200;
     [answerButton1 release], answerButton1 = nil;
     [answerButton2 release], answerButton2 = nil;
     [answerButton3 release], answerButton3 = nil;
-    [pictureView release], pictureView = nil;
     [scratchView release], scratchView = nil;
     [answerButtons release], answerButtons = nil;
     [progressImageView release], progressImageView = nil;
@@ -213,7 +211,7 @@ static const NSInteger kSCHScratchPointCount = 200;
         }
     }
         
-    self.scratchView.showFullImage = YES;
+    [self.scratchView setShowFullImage:YES];
     
     [self playBundleAudioWithFilename:[self.storyInteraction storyInteractionCorrectAnswerSoundFilename]
                            completion:^{
