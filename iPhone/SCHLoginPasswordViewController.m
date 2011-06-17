@@ -214,13 +214,17 @@
 - (void)startShowingProgress
 {
  	[self.topField resignFirstResponder];
+    self.topField.enabled = NO;
 	[self.bottomField resignFirstResponder];
+    self.bottomField.enabled = NO;
     [spinner startAnimating];
     self.loginButton.enabled = NO;
 }
 
 - (void)stopShowingProgress
 {
+    self.topField.enabled = YES;
+    self.bottomField.enabled = YES;
     [spinner stopAnimating];
     self.loginButton.enabled = YES;
 }
