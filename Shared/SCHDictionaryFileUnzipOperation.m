@@ -47,7 +47,8 @@
         [self didChangeValueForKey:@"isExecuting"];
         [self didChangeValueForKey:@"isFinished"];
         
-        [self unzipDictionaryFileWithZipDelete:YES];
+        // Don't delete the zip file here - delete it once the file is fully processed
+        [self unzipDictionaryFileWithZipDelete:NO];
         
 		dictManager.isProcessing = NO;
         
