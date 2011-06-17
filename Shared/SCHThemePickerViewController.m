@@ -95,6 +95,8 @@ static NSTimeInterval const kSCHThemePickerViewControllerThemeTransitionAlpha = 
         backgroundView.backgroundColor = [UIColor whiteColor];
         self.tableView.backgroundView = backgroundView;
         [backgroundView release];
+        
+        self.tableView.scrollEnabled = NO;
     }
     self.tableView.rowHeight = 50;
     self.tableView.separatorColor = [UIColor whiteColor];
@@ -216,7 +218,11 @@ static NSTimeInterval const kSCHThemePickerViewControllerThemeTransitionAlpha = 
     
     cell.backgroundColor = [UIColor colorWithPatternImage:
                             [[SCHThemeManager sharedThemeManager] imageForTheme:theme key:kSCHThemeManagerImage orientation:self.interfaceOrientation iPadSpecific:YES]];
-    cell.accessoryType =  ([theme isEqualToString:[SCHThemeManager sharedThemeManager].theme] == YES ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone);
+    if ([theme isEqualToString:[SCHThemeManager sharedThemeManager].theme] == YES) {
+        cell.accessoryView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"popoverTickLight"]] autorelease];
+    } else {
+        cell.accessoryView = nil;
+    }
     
     return(cell);
 }
@@ -282,7 +288,7 @@ static NSTimeInterval const kSCHThemePickerViewControllerThemeTransitionAlpha = 
 
 - (CGSize) contentSizeForViewInPopover
 {
-    CGFloat height = ([[[SCHThemeManager sharedThemeManager] themeNames:NO] count] * 44) + 44 + 10;
+    CGFloat height = ([[[SCHThemeManager sharedThemeManager] themeNames:NO] count] * 44) + 44 + 18;
     return CGSizeMake(320, height);
 }
 

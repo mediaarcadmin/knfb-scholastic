@@ -370,6 +370,12 @@
 		52C7F8721377DEE800DB08C9 /* SCHAppState.m in Sources */ = {isa = PBXBuildFile; fileRef = 52C7F8711377DEE800DB08C9 /* SCHAppState.m */; };
 		52C7F8731377DEE800DB08C9 /* SCHAppState.m in Sources */ = {isa = PBXBuildFile; fileRef = 52C7F8711377DEE800DB08C9 /* SCHAppState.m */; };
 		52D612B812E4650B0033DA92 /* NSNumber+ObjectTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D612B712E4650B0033DA92 /* NSNumber+ObjectTypes.m */; };
+		52DAE4F813ABA0970003560E /* popoverTick.png in Resources */ = {isa = PBXBuildFile; fileRef = 52DAE4F713ABA0970003560E /* popoverTick.png */; };
+		52DAE4F913ABA0970003560E /* popoverTick.png in Resources */ = {isa = PBXBuildFile; fileRef = 52DAE4F713ABA0970003560E /* popoverTick.png */; };
+		52DAE4FB13ABA3DD0003560E /* popoverTickLight.png in Resources */ = {isa = PBXBuildFile; fileRef = 52DAE4FA13ABA3DD0003560E /* popoverTickLight.png */; };
+		52DAE4FC13ABA3DD0003560E /* popoverTickLight.png in Resources */ = {isa = PBXBuildFile; fileRef = 52DAE4FA13ABA3DD0003560E /* popoverTickLight.png */; };
+		52DAE4FF13ABA51A0003560E /* popoverTick@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52DAE4FD13ABA51A0003560E /* popoverTick@2x.png */; };
+		52DAE50013ABA51A0003560E /* popoverTickLight@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 52DAE4FE13ABA51A0003560E /* popoverTickLight@2x.png */; };
 		52E332E413018EDF002F3011 /* SCHComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 5266D38313007D15004E3AC6 /* SCHComponent.m */; };
 		52E332E513018EDF002F3011 /* SCHTopFavoritesComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 5266D34B13007A1C004E3AC6 /* SCHTopFavoritesComponent.m */; };
 		52E332E613018EDF002F3011 /* SCHAnnotationSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9D64130000570099FB88 /* SCHAnnotationSyncComponent.m */; };
@@ -1650,6 +1656,10 @@
 		52C7F8711377DEE800DB08C9 /* SCHAppState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHAppState.m; path = Shared/SCHAppState.m; sourceTree = "<group>"; };
 		52D612B612E4650B0033DA92 /* NSNumber+ObjectTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSNumber+ObjectTypes.h"; path = "Shared/NSNumber+ObjectTypes.h"; sourceTree = "<group>"; };
 		52D612B712E4650B0033DA92 /* NSNumber+ObjectTypes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSNumber+ObjectTypes.m"; path = "Shared/NSNumber+ObjectTypes.m"; sourceTree = "<group>"; };
+		52DAE4F713ABA0970003560E /* popoverTick.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = popoverTick.png; path = Resources/popoverTick.png; sourceTree = "<group>"; };
+		52DAE4FA13ABA3DD0003560E /* popoverTickLight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = popoverTickLight.png; path = Resources/popoverTickLight.png; sourceTree = "<group>"; };
+		52DAE4FD13ABA51A0003560E /* popoverTick@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "popoverTick@2x.png"; path = "Resources/popoverTick@2x.png"; sourceTree = "<group>"; };
+		52DAE4FE13ABA51A0003560E /* popoverTickLight@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "popoverTickLight@2x.png"; path = "Resources/popoverTickLight@2x.png"; sourceTree = "<group>"; };
 		52E334F41303049B002F3011 /* SCHTopPicksBookShelfViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHTopPicksBookShelfViewController.h; path = iPhone/SCHTopPicksBookShelfViewController.h; sourceTree = "<group>"; };
 		52E334F51303049B002F3011 /* SCHTopPicksBookShelfViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHTopPicksBookShelfViewController.m; path = iPhone/SCHTopPicksBookShelfViewController.m; sourceTree = "<group>"; };
 		52E3355A1303F71F002F3011 /* SCHComponentDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHComponentDelegate.h; path = Shared/SCHComponentDelegate.h; sourceTree = "<group>"; };
@@ -3729,6 +3739,10 @@
 		C9A11290136082A6007FD763 /* UIAssets */ = {
 			isa = PBXGroup;
 			children = (
+				52DAE4FA13ABA3DD0003560E /* popoverTickLight.png */,
+				52DAE4FE13ABA51A0003560E /* popoverTickLight@2x.png */,
+				52DAE4F713ABA0970003560E /* popoverTick.png */,
+				52DAE4FD13ABA51A0003560E /* popoverTick@2x.png */,
 				28A60F7A1397BB340090853E /* StoryInteractions */,
 				C920DDED138A69B400F1583D /* Profile and Admin Views */,
 				C920DD3E13897B3B00F1583D /* Reading View Toolbar Icons */,
@@ -4715,6 +4729,10 @@
 				F88764CC13AA558B0034DF21 /* old-lightning-bolt-3.png in Resources */,
 				286E210A13AB54A800CB4232 /* SCHStoryInteractionWordMatch_iPad.xib in Resources */,
 				286E210D13AB581D00CB4232 /* storyinteraction-wordmatch-target.png in Resources */,
+				52DAE4F813ABA0970003560E /* popoverTick.png in Resources */,
+				52DAE4FB13ABA3DD0003560E /* popoverTickLight.png in Resources */,
+				52DAE4FF13ABA51A0003560E /* popoverTick@2x.png in Resources */,
+				52DAE50013ABA51A0003560E /* popoverTickLight@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5082,6 +5100,8 @@
 				F88764CD13AA558B0034DF21 /* old-lightning-bolt-3.png in Resources */,
 				286E210B13AB54A800CB4232 /* SCHStoryInteractionWordMatch_iPad.xib in Resources */,
 				286E210E13AB581D00CB4232 /* storyinteraction-wordmatch-target.png in Resources */,
+				52DAE4F913ABA0970003560E /* popoverTick.png in Resources */,
+				52DAE4FC13ABA3DD0003560E /* popoverTickLight.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
