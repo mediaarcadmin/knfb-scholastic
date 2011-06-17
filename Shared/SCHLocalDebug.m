@@ -82,7 +82,7 @@
     SCHContentMetadataItem *newContentMetadataItem = nil;
 	SCHUserContentItem *newUserContentItem = nil;
 	SCHContentProfileItem *newContentProfileItem = nil;
-    NSMutableArray *importedBooks = [[NSMutableArray alloc] init];
+    NSMutableArray *importedBooks = [NSMutableArray array];
     
     NSArray  *applicationSupportPaths = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);
     NSString *applicationSupportPath = ([applicationSupportPaths count] > 0) ? [applicationSupportPaths objectAtIndex:0] : nil;

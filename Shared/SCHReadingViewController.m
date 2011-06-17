@@ -355,7 +355,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     
 	[self setToolbarVisibility:YES animated:NO];
 	
-	self.initialFadeTimer = [NSTimer scheduledTimerWithTimeInterval:2.0f
+	self.initialFadeTimer = [NSTimer scheduledTimerWithTimeInterval:5.0f
                                                              target:self
                                                            selector:@selector(hideToolbarsFromTimer)
                                                            userInfo:nil

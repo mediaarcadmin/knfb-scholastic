@@ -92,9 +92,9 @@
     cell.textLabel.text = [self.sortTypeArray objectAtIndex:[indexPath row]];
     
     if ([indexPath row] == self.sortType) {
-        cell.accessoryType = UITableViewCellAccessoryCheckmark;
+        cell.accessoryView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"popoverTick"]] autorelease];
     } else {
-        cell.accessoryType = UITableViewCellAccessoryNone;
+        cell.accessoryView = nil;
     }
         
     return cell;
@@ -131,7 +131,7 @@
 
 - (CGSize)contentSizeForViewInPopover
 {
-    CGFloat height = (([sortTypeArray count] + 1) * 44);
+    CGFloat height = ([sortTypeArray count] * 44);
     return CGSizeMake(320, height);
 }
 
