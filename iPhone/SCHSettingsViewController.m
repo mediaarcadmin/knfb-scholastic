@@ -159,7 +159,9 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 		[[SCHURLManager sharedURLManager] clear];
 		[[SCHSyncManager sharedSyncManager] clear];
 		[[SCHSyncManager sharedSyncManager] firstSync];
-		[self.loginController dismissModalViewControllerAnimated:YES];	
+        if (self.parentViewController.parentViewController != nil) {
+            [self.parentViewController.parentViewController dismissModalViewControllerAnimated:YES];
+        }
 	} else {
 		NSError *error = [notification.userInfo objectForKey:kSCHAuthenticationManagerNSError];
 		if (error!= nil) {
@@ -342,6 +344,8 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     if ( deviceKey == nil ) {
         // removeObjectForKey does not change the value...
         [[NSUserDefaults standardUserDefaults] setObject:nil forKey:kSCHAuthenticationManagerDeviceKey];
+		[[SCHURLManager sharedURLManager] clear];
+		[[SCHSyncManager sharedSyncManager] clear];        
         [self login];
         [self.navigationController popViewControllerAnimated:NO];
     }
