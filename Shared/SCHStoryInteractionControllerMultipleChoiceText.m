@@ -16,6 +16,7 @@
 @interface SCHStoryInteractionControllerMultipleChoiceText ()
 
 @property (nonatomic, assign) NSInteger currentQuestionIndex;
+@property (nonatomic, assign) BOOL answeredCorrectly;
 
 - (void)nextQuestion;
 - (void)setupQuestion;
@@ -27,6 +28,7 @@
 
 @synthesize answerButtons;
 @synthesize currentQuestionIndex;
+@synthesize answeredCorrectly;
 
 - (void)dealloc
 {
@@ -65,6 +67,7 @@
 {
     BOOL iPad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
 
+    self.answeredCorrectly = NO;
     [self setTitle:[self currentQuestion].prompt];
 
     for (UIButton *button in self.answerButtons) {
@@ -96,12 +99,11 @@
     
     // play intro audio on first question only
     [self playQuestionAudioAndHighlightAnswersWithIntroduction:(self.currentQuestionIndex == 0)];
-    
-    [self setUserInteractionsEnabled:YES];
 }
 
 - (void)playQuestionAudioAndHighlightAnswersWithIntroduction:(BOOL)withIntroduction
 {
+    [self cancelQueuedAudio];
     if (withIntroduction) {
         [self enqueueAudioWithPath:[self.storyInteraction audioPathForQuestion]
                         fromBundle:NO
@@ -132,19 +134,21 @@
 
 - (void)playAudioButtonTapped:(id)sender
 {
-    [self playQuestionAudioAndHighlightAnswersWithIntroduction:NO];
+    if (!self.answeredCorrectly) { 
+        [self playQuestionAudioAndHighlightAnswersWithIntroduction:NO];
+    }
 }
 
 - (IBAction)answerButtonTapped:(UIButton *)sender
 {
     NSUInteger chosenAnswer = sender.tag - 1;
+
+    self.contentsView.userInteractionEnabled = NO;
     
     if (chosenAnswer < [[self currentQuestion].answers count]) {
         [sender setSelected:YES];
         if (chosenAnswer == [self currentQuestion].correctAnswer) {
-            // disable the close button and the other buttons
-            [self setUserInteractionsEnabled:NO];
-            
+            self.answeredCorrectly = YES;
             [self cancelQueuedAudio];
             [self enqueueAudioWithPath:[[self currentQuestion] audioPathForAnswerAtIndex:chosenAnswer] fromBundle:NO];
             [self enqueueAudioWithPath:[(SCHStoryInteractionMultipleChoiceText *)self.storyInteraction audioPathForThatsRight] fromBundle:NO];
@@ -153,13 +157,14 @@
                             startDelay:0
                 synchronizedStartBlock:nil
                   synchronizedEndBlock:^{
-                        [self nextQuestion];
+                      self.contentsView.userInteractionEnabled = YES;
+                      [self nextQuestion];
                   }];
         } else {
-            [self setUserInteractionsEnabled:NO];
-            [self playAudioAtPath:[[self currentQuestion] audioPathForIncorrectAnswer] completion:^{
-                [self setUserInteractionsEnabled:YES];
-            }];
+            [self playAudioAtPath:[[self currentQuestion] audioPathForIncorrectAnswer]
+                       completion:^{
+                           self.contentsView.userInteractionEnabled = YES;
+                       }];
         }
     }
 }

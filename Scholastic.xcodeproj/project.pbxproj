@@ -74,6 +74,8 @@
 		286E215613AB989D00CB4232 /* SCHStoryInteractionWordMatch_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 286E215413AB989D00CB4232 /* SCHStoryInteractionWordMatch_iPhone.xib */; };
 		286E215813AB99DC00CB4232 /* storyinteraction-wordmatch-target~iPad.png in Resources */ = {isa = PBXBuildFile; fileRef = 286E215713AB99DC00CB4232 /* storyinteraction-wordmatch-target~iPad.png */; };
 		286E215913AB99DC00CB4232 /* storyinteraction-wordmatch-target~iPad.png in Resources */ = {isa = PBXBuildFile; fileRef = 286E215713AB99DC00CB4232 /* storyinteraction-wordmatch-target~iPad.png */; };
+		286E21A513ABF8BD00CB4232 /* SCHQueuedAudioPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 286E21A413ABF8BD00CB4232 /* SCHQueuedAudioPlayer.m */; };
+		286E21A613ABF8BD00CB4232 /* SCHQueuedAudioPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 286E21A413ABF8BD00CB4232 /* SCHQueuedAudioPlayer.m */; };
 		288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
 		2888FE7C13A61CD300FF2FA8 /* SCHStoryInteractionTitleTwister_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2888FE7B13A61CD300FF2FA8 /* SCHStoryInteractionTitleTwister_iPhone.xib */; };
 		2888FE7D13A61CD300FF2FA8 /* SCHStoryInteractionTitleTwister_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2888FE7B13A61CD300FF2FA8 /* SCHStoryInteractionTitleTwister_iPhone.xib */; };
@@ -1365,6 +1367,8 @@
 		286E213E13AB7EBF00CB4232 /* NSArray+Shuffling.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+Shuffling.m"; sourceTree = "<group>"; };
 		286E215413AB989D00CB4232 /* SCHStoryInteractionWordMatch_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionWordMatch_iPhone.xib; sourceTree = "<group>"; };
 		286E215713AB99DC00CB4232 /* storyinteraction-wordmatch-target~iPad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-wordmatch-target~iPad.png"; sourceTree = "<group>"; };
+		286E21A313ABF8BD00CB4232 /* SCHQueuedAudioPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHQueuedAudioPlayer.h; sourceTree = "<group>"; };
+		286E21A413ABF8BD00CB4232 /* SCHQueuedAudioPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHQueuedAudioPlayer.m; sourceTree = "<group>"; };
 		2870939E111907710040F596 /* Scholastic.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = Scholastic.xcdatamodel; sourceTree = "<group>"; };
 		288765FC0DF74451002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		2888FE7B13A61CD300FF2FA8 /* SCHStoryInteractionTitleTwister_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionTitleTwister_iPhone.xib; sourceTree = "<group>"; };
@@ -2458,6 +2462,8 @@
 				2827824413A20FA200E968C1 /* NSArray+ViewSorting.m */,
 				286E213D13AB7EBE00CB4232 /* NSArray+Shuffling.h */,
 				286E213E13AB7EBF00CB4232 /* NSArray+Shuffling.m */,
+				286E21A313ABF8BD00CB4232 /* SCHQueuedAudioPlayer.h */,
+				286E21A413ABF8BD00CB4232 /* SCHQueuedAudioPlayer.m */,
 			);
 			name = Common;
 			sourceTree = "<group>";
@@ -5367,6 +5373,7 @@
 				5297B44913A8C362008ADD9B /* SCHStoryInteractionControllerMultipleChoiceWithAnswerPictures.m in Sources */,
 				286E210713AB53FF00CB4232 /* SCHStoryInteractionControllerWordMatch.m in Sources */,
 				286E213F13AB7EBF00CB4232 /* NSArray+Shuffling.m in Sources */,
+				286E21A513ABF8BD00CB4232 /* SCHQueuedAudioPlayer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5630,6 +5637,7 @@
 				5297B44A13A8C362008ADD9B /* SCHStoryInteractionControllerMultipleChoiceWithAnswerPictures.m in Sources */,
 				286E210813AB53FF00CB4232 /* SCHStoryInteractionControllerWordMatch.m in Sources */,
 				286E214013AB7EBF00CB4232 /* NSArray+Shuffling.m in Sources */,
+				286E21A613ABF8BD00CB4232 /* SCHQueuedAudioPlayer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
