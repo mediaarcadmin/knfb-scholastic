@@ -144,7 +144,6 @@
 
 - (void)testCancelRaceWithFinish
 {
-    
     NSArray *data = [NSArray arrayWithObjects:[NSData data], [NSData data], [NSData data], nil];
     __block int started = 0;
     __block int ended = 0;
@@ -178,6 +177,109 @@
     STAssertEquals(started, 3, @"third start block should not be called");
     STAssertEquals([DummyAVAudioPlayer lastNewInstance], dummy2, @"no new player should be created");
     [dummy2 release];    
+}
+
+- (void)testCancelAndReenqueue
+{
+    NSArray *data = [NSArray arrayWithObjects:[NSData data], [NSData data], [NSData data], nil];
+    __block int started = 0;
+    __block int ended = 0;
+    
+    for (NSInteger i = 0; i < [data count]; ++i) {
+        [queuedAudioPlayer enqueueAudioTaskWithFetchBlock:^NSData *(void) { return [data objectAtIndex:i]; }
+                                   synchronizedStartBlock:^{ started |= 1<<i; }
+                                     synchronizedEndBlock:^{ ended |= 1<<i; }];
+    }
+    
+    DummyAVAudioPlayer *dummy1 = [DummyAVAudioPlayer lastNewInstance];
+    STAssertEquals(dummy1.data, [data objectAtIndex:0], @"dummy1 should have first data");
+    STAssertTrue(dummy1.playing, @"dummy1 should be playing");
+    STAssertEquals(started, 1, @"first start block should be called");
+
+    [queuedAudioPlayer cancel];
+    
+    __block int started2 = 0;
+    __block int ended2 = 0;
+    for (NSInteger i = 1; i < [data count]; ++i) {
+        [queuedAudioPlayer enqueueAudioTaskWithFetchBlock:^NSData *(void) { return [data objectAtIndex:i]; }
+                                   synchronizedStartBlock:^{ started2 |= 1<<i; }
+                                     synchronizedEndBlock:^{ ended2 |= 1<<i; }];
+    }
+    
+    DummyAVAudioPlayer *dummy2 = [DummyAVAudioPlayer lastNewInstance];
+    STAssertFalse(dummy1 == dummy2, @"new player should be created");
+    STAssertEquals(dummy2.data, [data objectAtIndex:1], @"dummy2 should have second data");
+    STAssertTrue(dummy2.playing, @"new player should be playing");
+    STAssertEquals(started, 1, @"original items should not be started");
+    STAssertEquals(started2, 2, @"new item should be started");
+
+    [queuedAudioPlayer audioPlayerDidFinishPlaying:(AVAudioPlayer *)dummy2 successfully:YES];
+    
+    DummyAVAudioPlayer *dummy3 = [DummyAVAudioPlayer lastNewInstance];
+    STAssertTrue(dummy3.playing, @"dummy3 should have been started");
+    STAssertEquals(started, 1, @"original items should not be started");
+    STAssertEquals(started2, 6, @"new blocks should be started");
+}
+
+- (void)testWithRealDataPath
+{
+    NSString *path = [[NSBundle bundleWithIdentifier:@"com.bitwink.UnitTests"] pathForResource:@"sfx_scratch" ofType:@"mp3"];
+    NSData * (^fetchBlock)(void) = ^NSData*(void) {
+        return [NSData dataWithContentsOfMappedFile:path];
+    };
+    
+    [queuedAudioPlayer enqueueAudioTaskWithFetchBlock:fetchBlock
+                               synchronizedStartBlock:nil
+                                 synchronizedEndBlock:nil];
+    [queuedAudioPlayer enqueueAudioTaskWithFetchBlock:fetchBlock
+                               synchronizedStartBlock:nil
+                                 synchronizedEndBlock:nil];
+    
+    DummyAVAudioPlayer *player = [DummyAVAudioPlayer lastNewInstance];
+    STAssertNotNil(player.data, @"player should have data");
+    STAssertEquals([player.data length], 9647U, @"player data should be correct length");
+    
+    [queuedAudioPlayer audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:YES];
+    
+    DummyAVAudioPlayer *player2 = [DummyAVAudioPlayer lastNewInstance];
+    STAssertFalse(player == player2, @"must have new player");
+    STAssertNotNil(player2.data, @"player should have data");
+    STAssertEquals([player2.data length], 9647U, @"player data should be correct length");
+}
+
+- (void)testChainedEnqueue
+{
+    // simulates original -playAudioAtPath interface in SCHStoryInteractionController
+    NSData *data1 = [NSData data];
+    NSData *data2 = [NSData data];
+    __block int started = 0;
+    __block int ended = 0;
+    
+    [queuedAudioPlayer enqueueAudioTaskWithFetchBlock:^NSData *(void) { return data1; }
+                               synchronizedStartBlock:^{ started |= 1; }
+                                 synchronizedEndBlock:^{
+                                     ended |= 1;
+                                     [queuedAudioPlayer cancel];
+                                     [queuedAudioPlayer enqueueAudioTaskWithFetchBlock:^NSData *(void) { return data2; }
+                                                                synchronizedStartBlock:^{ started |= 2; }
+                                                                  synchronizedEndBlock:^{ ended |= 2; }];
+                                 }];
+    DummyAVAudioPlayer *player = [DummyAVAudioPlayer lastNewInstance];
+    STAssertEquals(started, 1, @"first block should be started");
+    STAssertEquals(player.data, data1, @"first player data incorrect");
+    
+    [queuedAudioPlayer audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:YES];
+    
+    STAssertEquals(ended, 1, @"first block should be ended");
+    STAssertEquals(started, 3, @"second block should be started");
+    
+    DummyAVAudioPlayer *player2 = [DummyAVAudioPlayer lastNewInstance];
+    STAssertFalse(player == player2, @"must have new player");
+    STAssertEquals(player2.data, data2, @"second player data incorrect");
+    
+    [queuedAudioPlayer audioPlayerDidFinishPlaying:(AVAudioPlayer *)player2 successfully:YES];
+
+    STAssertEquals(ended, 3, @"second block should be ended");
 }
 
 @end

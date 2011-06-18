@@ -153,11 +153,16 @@
     // the endBlock could conceivably result in the dealloc of the
     // player, so retain self until the empty queue check is done
     [self retain];
-    
+
+    dispatch_block_t endBlock = nil;
     if (self.currentItem && self.currentItem.endBlock != nil) {
-        self.currentItem.endBlock();
+        endBlock = Block_copy(self.currentItem.endBlock);
     }
     self.currentItem = nil;
+    if (endBlock) {
+        endBlock();
+        Block_release(endBlock);
+    }
     
     [self playNextItemInQueue];
     
