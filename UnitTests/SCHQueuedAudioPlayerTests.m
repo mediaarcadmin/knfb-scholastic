@@ -142,4 +142,42 @@
     [dummy2 release];
 }
 
+- (void)testCancelRaceWithFinish
+{
+    
+    NSArray *data = [NSArray arrayWithObjects:[NSData data], [NSData data], [NSData data], nil];
+    __block int started = 0;
+    __block int ended = 0;
+    
+    for (NSInteger i = 0; i < [data count]; ++i) {
+        [queuedAudioPlayer enqueueAudioTaskWithFetchBlock:^NSData *(void) { return [data objectAtIndex:i]; }
+                                   synchronizedStartBlock:^{ started |= 1<<i; }
+                                     synchronizedEndBlock:^{ ended |= 1<<i; }];
+    }
+    
+    DummyAVAudioPlayer *dummy1 = [DummyAVAudioPlayer lastNewInstance];
+    STAssertEquals(dummy1.data, [data objectAtIndex:0], @"dummy1 should have first data");
+    STAssertTrue(dummy1.playing, @"dummy1 should be playing");
+    STAssertEquals(started, 1, @"first start block should be called");
+    STAssertEquals(ended, 0, @"first end block should not be called");
+    [queuedAudioPlayer audioPlayerDidFinishPlaying:(AVAudioPlayer *)dummy1 successfully:YES];
+    STAssertEquals(ended, 1, @"first end block should be called");
+    
+    DummyAVAudioPlayer *dummy2 = [[DummyAVAudioPlayer lastNewInstance] retain];
+    STAssertFalse(dummy1 == dummy2, @"new player should be created");
+    STAssertEquals(dummy2.data, [data objectAtIndex:1], @"dummy2 should have second data");
+    STAssertTrue(dummy2.playing, @"new player should be playing");
+    STAssertEquals(started, 3, @"second start block should be called");
+
+    // we invoke cancel but the player still invokes its delegate didFinishPlaying 
+    [queuedAudioPlayer cancel];
+    [queuedAudioPlayer audioPlayerDidFinishPlaying:(AVAudioPlayer *)dummy2 successfully:YES];
+    
+    STAssertFalse(dummy2.playing, @"dummy2 should have been stopped");
+    STAssertEquals(ended, 1, @"second end block shold not be called");
+    STAssertEquals(started, 3, @"third start block should not be called");
+    STAssertEquals([DummyAVAudioPlayer lastNewInstance], dummy2, @"no new player should be created");
+    [dummy2 release];    
+}
+
 @end
