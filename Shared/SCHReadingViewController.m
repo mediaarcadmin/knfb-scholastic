@@ -943,6 +943,12 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
                 [self.storyInteractionButton setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@-lightning-bolt-%d", imagePrefix, interactionsDone]] forState:UIControlStateNormal];
             }
         }
+        
+        
+        CGRect buttonFrame = self.storyInteractionButtonView.frame;
+        buttonFrame.size = [self.storyInteractionButton imageForState:UIControlStateNormal].size;
+        buttonFrame.origin.x = CGRectGetWidth(self.storyInteractionButtonView.superview.frame) - buttonFrame.size.width;
+        self.storyInteractionButtonView.frame = buttonFrame;
     }
 }
 
