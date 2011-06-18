@@ -22,6 +22,7 @@
 @property (nonatomic, assign) NSTimeInterval gap;
 @property (nonatomic, retain) AudioItem *currentItem;
 
+- (AVAudioPlayer *)newAudioPlayerWithData:(NSData *)data;
 - (void)playNextItemInQueue;
 
 @end
@@ -102,13 +103,7 @@
         return;
     }
     
-    NSError *error = nil;
-    AVAudioPlayer *player = [[AVAudioPlayer alloc] initWithData:data error:&error];
-    if (!player) {
-        NSLog(@"failed to create player: %@", error);
-        return;
-    }
-    
+    AVAudioPlayer *player = [self newAudioPlayerWithData:data];
     player.delegate = self;
     self.audioPlayer = player;
     [player release];
@@ -125,6 +120,16 @@
     } else {
         playBlock();
     }
+}
+
+- (AVAudioPlayer *)newAudioPlayerWithData:(NSData *)data
+{
+    NSError *error = nil;
+    AVAudioPlayer *player = [[AVAudioPlayer alloc] initWithData:data error:&error];
+    if (!player) {
+        NSLog(@"failed to create player: %@", error);
+    }
+    return player;
 }
 
 #pragma - AVAudioPlayerDelegate

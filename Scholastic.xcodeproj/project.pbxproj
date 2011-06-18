@@ -76,6 +76,10 @@
 		286E215913AB99DC00CB4232 /* storyinteraction-wordmatch-target~iPad.png in Resources */ = {isa = PBXBuildFile; fileRef = 286E215713AB99DC00CB4232 /* storyinteraction-wordmatch-target~iPad.png */; };
 		286E21A513ABF8BD00CB4232 /* SCHQueuedAudioPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 286E21A413ABF8BD00CB4232 /* SCHQueuedAudioPlayer.m */; };
 		286E21A613ABF8BD00CB4232 /* SCHQueuedAudioPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 286E21A413ABF8BD00CB4232 /* SCHQueuedAudioPlayer.m */; };
+		286E21A913AC851700CB4232 /* SCHQueuedAudioPlayerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 286E21A813AC851700CB4232 /* SCHQueuedAudioPlayerTests.m */; };
+		286E21AE13AC8AF300CB4232 /* SCHQueuedAudioPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 286E21A413ABF8BD00CB4232 /* SCHQueuedAudioPlayer.m */; };
+		286E21B213AC93CB00CB4232 /* DummyAVAudioPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 286E21B113AC93CB00CB4232 /* DummyAVAudioPlayer.m */; };
+		286E21B313AC954900CB4232 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 526A8A501385143000101A96 /* AVFoundation.framework */; };
 		288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
 		2888FE7C13A61CD300FF2FA8 /* SCHStoryInteractionTitleTwister_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2888FE7B13A61CD300FF2FA8 /* SCHStoryInteractionTitleTwister_iPhone.xib */; };
 		2888FE7D13A61CD300FF2FA8 /* SCHStoryInteractionTitleTwister_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2888FE7B13A61CD300FF2FA8 /* SCHStoryInteractionTitleTwister_iPhone.xib */; };
@@ -1369,6 +1373,9 @@
 		286E215713AB99DC00CB4232 /* storyinteraction-wordmatch-target~iPad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-wordmatch-target~iPad.png"; sourceTree = "<group>"; };
 		286E21A313ABF8BD00CB4232 /* SCHQueuedAudioPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHQueuedAudioPlayer.h; sourceTree = "<group>"; };
 		286E21A413ABF8BD00CB4232 /* SCHQueuedAudioPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHQueuedAudioPlayer.m; sourceTree = "<group>"; };
+		286E21A813AC851700CB4232 /* SCHQueuedAudioPlayerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHQueuedAudioPlayerTests.m; sourceTree = "<group>"; };
+		286E21B013AC93CB00CB4232 /* DummyAVAudioPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DummyAVAudioPlayer.h; sourceTree = "<group>"; };
+		286E21B113AC93CB00CB4232 /* DummyAVAudioPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DummyAVAudioPlayer.m; sourceTree = "<group>"; };
 		2870939E111907710040F596 /* Scholastic.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = Scholastic.xcdatamodel; sourceTree = "<group>"; };
 		288765FC0DF74451002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		2888FE7B13A61CD300FF2FA8 /* SCHStoryInteractionTitleTwister_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionTitleTwister_iPhone.xib; sourceTree = "<group>"; };
@@ -2394,6 +2401,7 @@
 				28A08CFC13952CB4006FD008 /* UIKit.framework in Frameworks */,
 				28A08CFD13952CB4006FD008 /* Foundation.framework in Frameworks */,
 				28A08CFE13952CB4006FD008 /* CoreGraphics.framework in Frameworks */,
+				286E21B313AC954900CB4232 /* AVFoundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2512,6 +2520,15 @@
 			path = iPhone;
 			sourceTree = "<group>";
 		};
+		286E21AA13AC88E100CB4232 /* Dummy Implementations */ = {
+			isa = PBXGroup;
+			children = (
+				286E21B013AC93CB00CB4232 /* DummyAVAudioPlayer.h */,
+				286E21B113AC93CB00CB4232 /* DummyAVAudioPlayer.m */,
+			);
+			name = "Dummy Implementations";
+			sourceTree = "<group>";
+		};
 		28A08CC513950BD6006FD008 /* Story Interactions */ = {
 			isa = PBXGroup;
 			children = (
@@ -2542,6 +2559,8 @@
 				28A08D0813952CB4006FD008 /* SCHStoryInteractionParserTests.m */,
 				28A60F1A139676180090853E /* SCHStoryInteractionFullExampleTests.m */,
 				28E9B98513A0F6730056874F /* SCHStoryInteractionWordSearchTests.m */,
+				286E21A813AC851700CB4232 /* SCHQueuedAudioPlayerTests.m */,
+				286E21AA13AC88E100CB4232 /* Dummy Implementations */,
 				28A08D0013952CB4006FD008 /* Supporting Files */,
 			);
 			path = UnitTests;
@@ -5403,6 +5422,9 @@
 				280B01B3139E35500068661C /* SCHStoryInteractionMultipleChoiceText.m in Sources */,
 				280B01B4139E35540068661C /* SCHStoryInteractionMultipleChoiceWithAnswerPictures.m in Sources */,
 				28E9B98613A0F6730056874F /* SCHStoryInteractionWordSearchTests.m in Sources */,
+				286E21A913AC851700CB4232 /* SCHQueuedAudioPlayerTests.m in Sources */,
+				286E21AE13AC8AF300CB4232 /* SCHQueuedAudioPlayer.m in Sources */,
+				286E21B213AC93CB00CB4232 /* DummyAVAudioPlayer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
