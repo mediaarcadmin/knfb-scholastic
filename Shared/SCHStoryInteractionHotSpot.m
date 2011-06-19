@@ -19,13 +19,6 @@
 @synthesize originalBookSize;
 @synthesize data;
 
-- (id)init
-{
-    self = [super init];
-    [self release];
-    return nil;
-}
-
 - (void)dealloc
 {
     [prompt release];
@@ -52,6 +45,13 @@
 @implementation SCHStoryInteractionHotSpot
 
 @synthesize questions;
+
+- (id)init
+{
+    self = [super init];
+    [self release];
+    return nil;
+}
 
 - (void)dealloc
 {
