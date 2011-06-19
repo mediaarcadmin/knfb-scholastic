@@ -91,7 +91,11 @@
 { 
     SCHStoryInteractionTitleTwister *titleTwister = (SCHStoryInteractionTitleTwister *)self.storyInteraction;
     self.openingScreenTitleLabel.text = titleTwister.bookTitle;
-    self.openingScreenTitleLabel.font = [UIFont fontWithName:@"Arial Black" size:34];
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        self.openingScreenTitleLabel.font = [UIFont fontWithName:@"Arial Black" size:34];
+    } else {
+        self.openingScreenTitleLabel.font = [UIFont fontWithName:@"Arial Black" size:32];
+    }
 }
 
 - (void)setupMainView
