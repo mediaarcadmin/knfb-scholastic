@@ -101,17 +101,16 @@
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<int key="IBUIContentHorizontalAlignment">0</int>
 						<int key="IBUIContentVerticalAlignment">0</int>
-						<object class="NSFont" key="IBUIFont" id="650439971">
+						<object class="NSFont" key="IBUIFont" id="681507636">
 							<string key="NSName">Arial-BoldMT</string>
 							<double key="NSSize">18</double>
 							<int key="NSfFlags">16</int>
 						</object>
-						<int key="IBUIButtonType">1</int>
-						<object class="NSColor" key="IBUIHighlightedTitleColor" id="1034460498">
+						<object class="NSColor" key="IBUIHighlightedTitleColor" id="862505446">
 							<int key="NSColorSpace">1</int>
 							<bytes key="NSRGB">MC4xMzcyNTQ5MDg3IDAuMjIzNTI5NDEzMyAwLjQzMTM3MjU1MzEAA</bytes>
 						</object>
-						<reference key="IBUINormalTitleColor" ref="1034460498"/>
+						<reference key="IBUINormalTitleColor" ref="862505446"/>
 						<object class="NSColor" key="IBUINormalTitleShadowColor" id="711775775">
 							<int key="NSColorSpace">3</int>
 							<bytes key="NSWhite">MC41AA</bytes>
@@ -132,10 +131,9 @@
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<int key="IBUIContentHorizontalAlignment">0</int>
 						<int key="IBUIContentVerticalAlignment">0</int>
-						<reference key="IBUIFont" ref="650439971"/>
-						<int key="IBUIButtonType">1</int>
-						<reference key="IBUIHighlightedTitleColor" ref="1034460498"/>
-						<reference key="IBUINormalTitleColor" ref="1034460498"/>
+						<reference key="IBUIFont" ref="681507636"/>
+						<reference key="IBUIHighlightedTitleColor" ref="862505446"/>
+						<reference key="IBUINormalTitleColor" ref="862505446"/>
 						<reference key="IBUINormalTitleShadowColor" ref="711775775"/>
 						<reference key="IBUINormalBackgroundImage" ref="23735794"/>
 					</object>
@@ -150,10 +148,9 @@
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<int key="IBUIContentHorizontalAlignment">0</int>
 						<int key="IBUIContentVerticalAlignment">0</int>
-						<reference key="IBUIFont" ref="650439971"/>
-						<int key="IBUIButtonType">1</int>
-						<reference key="IBUIHighlightedTitleColor" ref="1034460498"/>
-						<reference key="IBUINormalTitleColor" ref="1034460498"/>
+						<reference key="IBUIFont" ref="681507636"/>
+						<reference key="IBUIHighlightedTitleColor" ref="862505446"/>
+						<reference key="IBUINormalTitleColor" ref="862505446"/>
 						<reference key="IBUINormalTitleShadowColor" ref="711775775"/>
 						<reference key="IBUINormalBackgroundImage" ref="23735794"/>
 					</object>
@@ -168,10 +165,9 @@
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<int key="IBUIContentHorizontalAlignment">0</int>
 						<int key="IBUIContentVerticalAlignment">0</int>
-						<reference key="IBUIFont" ref="650439971"/>
-						<int key="IBUIButtonType">1</int>
-						<reference key="IBUIHighlightedTitleColor" ref="1034460498"/>
-						<reference key="IBUINormalTitleColor" ref="1034460498"/>
+						<reference key="IBUIFont" ref="681507636"/>
+						<reference key="IBUIHighlightedTitleColor" ref="862505446"/>
+						<reference key="IBUINormalTitleColor" ref="862505446"/>
 						<reference key="IBUINormalTitleShadowColor" ref="711775775"/>
 						<reference key="IBUINormalBackgroundImage" ref="23735794"/>
 					</object>
@@ -186,10 +182,9 @@
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<int key="IBUIContentHorizontalAlignment">0</int>
 						<int key="IBUIContentVerticalAlignment">0</int>
-						<reference key="IBUIFont" ref="650439971"/>
-						<int key="IBUIButtonType">1</int>
-						<reference key="IBUIHighlightedTitleColor" ref="1034460498"/>
-						<reference key="IBUINormalTitleColor" ref="1034460498"/>
+						<reference key="IBUIFont" ref="681507636"/>
+						<reference key="IBUIHighlightedTitleColor" ref="862505446"/>
+						<reference key="IBUINormalTitleColor" ref="862505446"/>
 						<reference key="IBUINormalTitleShadowColor" ref="711775775"/>
 						<reference key="IBUINormalBackgroundImage" ref="23735794"/>
 					</object>
@@ -204,10 +199,9 @@
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<int key="IBUIContentHorizontalAlignment">0</int>
 						<int key="IBUIContentVerticalAlignment">0</int>
-						<reference key="IBUIFont" ref="650439971"/>
-						<int key="IBUIButtonType">1</int>
-						<reference key="IBUIHighlightedTitleColor" ref="1034460498"/>
-						<reference key="IBUINormalTitleColor" ref="1034460498"/>
+						<reference key="IBUIFont" ref="681507636"/>
+						<reference key="IBUIHighlightedTitleColor" ref="862505446"/>
+						<reference key="IBUINormalTitleColor" ref="862505446"/>
 						<reference key="IBUINormalTitleShadowColor" ref="711775775"/>
 						<reference key="IBUINormalBackgroundImage" ref="23735794"/>
 					</object>
@@ -568,22 +562,22 @@
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>SCHStretchableImageButton</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<real value="1"/>
+					<real value="0.0"/>
 					<string>SCHStretchableImageButton</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<real value="1"/>
+					<real value="0.0"/>
 					<string>SCHStretchableImageButton</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<real value="1"/>
+					<real value="0.0"/>
 					<string>SCHStretchableImageButton</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<real value="1"/>
+					<real value="0.0"/>
 					<string>SCHStretchableImageButton</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<real value="1"/>
+					<real value="0.0"/>
 					<string>SCHStretchableImageButton</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<real value="1"/>
+					<real value="0.0"/>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>SCHStretchableImageButton</string>
