@@ -236,7 +236,7 @@
         int counts[5] = { 0, 0, 0, 0, 0 };
         for (NSString *word in titleTwister.words) {
             NSInteger length = [word length];
-            if (length < 3) {
+            if (length < 3 || 7 < length) {
                 NSLog(@"ignoring %@ due to invalid length", word);
             } else {
                 counts[[self arrayIndexForWordLength:length]]++;
