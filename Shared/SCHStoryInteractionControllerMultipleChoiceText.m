@@ -111,7 +111,7 @@
             synchronizedStartBlock:nil
               synchronizedEndBlock:nil];
     }
-    [self enqueueAudioWithPath:[self audioPathForQuestion]
+    [self enqueueAudioWithPath:[[self currentQuestion] audioPathForQuestion]
                     fromBundle:NO
                     startDelay:0
         synchronizedStartBlock:nil

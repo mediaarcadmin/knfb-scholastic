@@ -100,6 +100,7 @@
         data = self.currentItem.fetchBlock();
     }
     if (data == nil) {
+        self.currentItem = nil;
         return;
     }
     
