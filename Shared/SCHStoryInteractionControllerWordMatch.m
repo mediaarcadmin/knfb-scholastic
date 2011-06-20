@@ -15,6 +15,7 @@
 #import "SCHStoryInteractionDraggableTargetView.h"
 #import "NSArray+ViewSorting.h"
 #import "NSArray+Shuffling.h"
+#import "SCHGeometry.h"
 
 #define kNumberOfItems 3
 #define kLabelTag 101
@@ -22,13 +23,6 @@
 #define kSnapDistanceSq 900
 #define kSourceOffsetY_iPad 5
 #define kSourceOffsetY_iPhone 3
-
-static CGFloat distanceSq(CGPoint p1, CGPoint p2)
-{
-    CGFloat dx = p1.x-p2.x;
-    CGFloat dy = p1.y-p2.y;
-    return dx*dx + dy*dy;
-}
 
 @interface SCHStoryInteractionControllerWordMatch ()
 
@@ -147,7 +141,7 @@ static CGFloat distanceSq(CGPoint p1, CGPoint p2)
     NSInteger targetIndex = 0;
     for (SCHStoryInteractionDraggableTargetView *target in self.targetViews) {
         if (![self.occupiedTargets containsObject:target]) {
-            if (distanceSq(sourceCenter, target.center) < kSnapDistanceSq) {
+            if (SCHCGPointDistanceSq(sourceCenter, target.center) < kSnapDistanceSq) {
                 *snapPosition = CGPointMake(target.center.x, target.center.y-self.sourceOffsetY);
                 return YES;
             }
@@ -163,7 +157,7 @@ static CGFloat distanceSq(CGPoint p1, CGPoint p2)
     SCHStoryInteractionDraggableTargetView *onTarget = nil;
     for (SCHStoryInteractionDraggableTargetView *target in self.targetViews) {
         if (![self.occupiedTargets containsObject:target]) {
-            if (distanceSq(sourceCenter, target.center) < kSnapDistanceSq) {
+            if (SCHCGPointDistanceSq(sourceCenter, target.center) < kSnapDistanceSq) {
                 onTarget = target;
                 break;
             }

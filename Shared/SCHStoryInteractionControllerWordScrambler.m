@@ -9,16 +9,10 @@
 #import "SCHStoryInteractionControllerWordScrambler.h"
 #import "SCHStoryInteractionWordScrambler.h"
 #import "NSArray+Shuffling.h"
+#import "SCHGeometry.h"
 
 #define kLetterGap 3
 #define kSnapDistanceSq 400
-
-static CGFloat distanceSq(CGPoint p1, CGPoint p2)
-{
-    CGFloat dx = p1.x-p2.x;
-    CGFloat dy = p1.y-p2.y;
-    return dx*dx+dy*dy;
-}
 
 @interface SCHStoryInteractionControllerWordScrambler ()
 
@@ -196,7 +190,7 @@ static CGFloat distanceSq(CGPoint p1, CGPoint p2)
 {
     for (NSInteger i = 0, n = [self.letterPositions count]; i < n; ++i) {
         CGPoint letterPosition = [[self.letterPositions objectAtIndex:i] CGPointValue];
-        if (distanceSq(point, letterPosition) < kSnapDistanceSq) {
+        if (SCHCGPointDistanceSq(point, letterPosition) < kSnapDistanceSq) {
             return i;
         }
     }

@@ -224,6 +224,8 @@
 		28E9B98613A0F6730056874F /* SCHStoryInteractionWordSearchTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 28E9B98513A0F6730056874F /* SCHStoryInteractionWordSearchTests.m */; };
 		28EEBFDD1118E19E00187D67 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28EEBFDC1118E19E00187D67 /* CoreData.framework */; };
 		28EEC04B1118E28000187D67 /* AppDelegate_Shared.m in Sources */ = {isa = PBXBuildFile; fileRef = 28EEC04A1118E28000187D67 /* AppDelegate_Shared.m */; };
+		28FFD49213AF5D6D00F28637 /* SCHGeometry.m in Sources */ = {isa = PBXBuildFile; fileRef = 28FFD49113AF5D6D00F28637 /* SCHGeometry.m */; };
+		28FFD49313AF5D6D00F28637 /* SCHGeometry.m in Sources */ = {isa = PBXBuildFile; fileRef = 28FFD49113AF5D6D00F28637 /* SCHGeometry.m */; };
 		5200EFEE12F6CFE400BAC355 /* SCHPrivateAnnotations.m in Sources */ = {isa = PBXBuildFile; fileRef = 5200EFEB12F6CFE400BAC355 /* SCHPrivateAnnotations.m */; };
 		5200EFF112F6CFE400BAC355 /* SCHPrivateAnnotations.m in Sources */ = {isa = PBXBuildFile; fileRef = 5200EFEB12F6CFE400BAC355 /* SCHPrivateAnnotations.m */; };
 		5200EFF412F6D00B00BAC355 /* SCHeReaderCategories.m in Sources */ = {isa = PBXBuildFile; fileRef = 5200EFF312F6D00B00BAC355 /* SCHeReaderCategories.m */; };
@@ -1549,6 +1551,8 @@
 		28EEBFDC1118E19E00187D67 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		28EEC0491118E28000187D67 /* AppDelegate_Shared.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate_Shared.h; path = Shared/AppDelegate_Shared.h; sourceTree = "<group>"; };
 		28EEC04A1118E28000187D67 /* AppDelegate_Shared.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate_Shared.m; path = Shared/AppDelegate_Shared.m; sourceTree = "<group>"; };
+		28FFD49013AF5D6D00F28637 /* SCHGeometry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHGeometry.h; sourceTree = "<group>"; };
+		28FFD49113AF5D6D00F28637 /* SCHGeometry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHGeometry.m; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Shared/main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* Scholastic_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Scholastic_Prefix.pch; sourceTree = "<group>"; };
 		5200EFEA12F6CFE400BAC355 /* SCHPrivateAnnotations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHPrivateAnnotations.h; path = Shared/SCHPrivateAnnotations.h; sourceTree = "<group>"; };
@@ -5587,6 +5591,7 @@
 				286E210713AB53FF00CB4232 /* SCHStoryInteractionControllerWordMatch.m in Sources */,
 				286E213F13AB7EBF00CB4232 /* NSArray+Shuffling.m in Sources */,
 				286E21A513ABF8BD00CB4232 /* SCHQueuedAudioPlayer.m in Sources */,
+				28FFD49213AF5D6D00F28637 /* SCHGeometry.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5854,6 +5859,7 @@
 				286E210813AB53FF00CB4232 /* SCHStoryInteractionControllerWordMatch.m in Sources */,
 				286E214013AB7EBF00CB4232 /* NSArray+Shuffling.m in Sources */,
 				286E21A613ABF8BD00CB4232 /* SCHQueuedAudioPlayer.m in Sources */,
+				28FFD49313AF5D6D00F28637 /* SCHGeometry.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

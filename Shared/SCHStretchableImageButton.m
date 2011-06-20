@@ -41,7 +41,19 @@
 {    
     if (normalBackgroundImage) {
         UIImage *stretchable = [normalBackgroundImage stretchableImageWithLeftCapWidth:kLeftCap topCapHeight:kTopCap];
-        [super setBackgroundImage:stretchable forState:state];
+        [super setBackgroundImage:stretchable forState:UIControlStateNormal];
+        
+        static const UIControlState states[] = {
+            UIControlStateHighlighted,
+            UIControlStateDisabled,
+            UIControlStateSelected
+        };
+        for (int i = 0; i < sizeof(states)/sizeof(states[0]); ++i) {
+            UIImage *image = [self backgroundImageForState:states[i]];
+            if (image != nil && image != stretchable) {
+                [super setBackgroundImage:[image stretchableImageWithLeftCapWidth:kLeftCap topCapHeight:kTopCap] forState:states[i]];
+            }
+        }
     }
     
 }
