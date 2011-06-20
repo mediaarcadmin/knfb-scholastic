@@ -908,12 +908,12 @@
 		C9AC85EE13AE6AB4000ECDAE /* storyinteraction-lettertile~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C9AC85EB13AE6AA1000ECDAE /* storyinteraction-lettertile~iphone.png */; };
 		C9AC85EF13AE6AB4000ECDAE /* storyinteraction-lettertile@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C9AC85EC13AE6AA9000ECDAE /* storyinteraction-lettertile@2x~iphone.png */; };
 		C9AC85F013AE6AB4000ECDAE /* storyinteraction-lettertile@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C9AC85EC13AE6AA9000ECDAE /* storyinteraction-lettertile@2x~iphone.png */; };
-		C9AC85F413AE7D00000ECDAE /* story-interactions-initialScratch~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C9AC85F113AE7CE3000ECDAE /* story-interactions-initialScratch~iphone.png */; };
-		C9AC85F513AE7D00000ECDAE /* story-interactions-initialScratch~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C9AC85F113AE7CE3000ECDAE /* story-interactions-initialScratch~iphone.png */; };
-		C9AC85F613AE7D00000ECDAE /* story-interactions-initialScratch@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C9AC85F213AE7CEA000ECDAE /* story-interactions-initialScratch@2x~iphone.png */; };
-		C9AC85F713AE7D00000ECDAE /* story-interactions-initialScratch@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C9AC85F213AE7CEA000ECDAE /* story-interactions-initialScratch@2x~iphone.png */; };
-		C9AC85F813AE7D00000ECDAE /* story-interactions-initialScratch~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C9AC85F313AE7CF5000ECDAE /* story-interactions-initialScratch~ipad.png */; };
-		C9AC85F913AE7D00000ECDAE /* story-interactions-initialScratch~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C9AC85F313AE7CF5000ECDAE /* story-interactions-initialScratch~ipad.png */; };
+		C9AC85F413AE7D00000ECDAE /* storyinteraction-initialScratch~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C9AC85F113AE7CE3000ECDAE /* storyinteraction-initialScratch~iphone.png */; };
+		C9AC85F513AE7D00000ECDAE /* storyinteraction-initialScratch~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C9AC85F113AE7CE3000ECDAE /* storyinteraction-initialScratch~iphone.png */; };
+		C9AC85F613AE7D00000ECDAE /* storyinteraction-initialScratch@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C9AC85F213AE7CEA000ECDAE /* storyinteraction-initialScratch@2x~iphone.png */; };
+		C9AC85F713AE7D00000ECDAE /* storyinteraction-initialScratch@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C9AC85F213AE7CEA000ECDAE /* storyinteraction-initialScratch@2x~iphone.png */; };
+		C9AC85F813AE7D00000ECDAE /* storyinteraction-initialScratch~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C9AC85F313AE7CF5000ECDAE /* storyinteraction-initialScratch~ipad.png */; };
+		C9AC85F913AE7D00000ECDAE /* storyinteraction-initialScratch~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C9AC85F313AE7CF5000ECDAE /* storyinteraction-initialScratch~ipad.png */; };
 		C9AC860013AE7EAA000ECDAE /* storyinteraction-progress-unfilled~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C9AC85FA13AE7E6C000ECDAE /* storyinteraction-progress-unfilled~iphone.png */; };
 		C9AC860113AE7EAA000ECDAE /* storyinteraction-progress-unfilled~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C9AC85FA13AE7E6C000ECDAE /* storyinteraction-progress-unfilled~iphone.png */; };
 		C9AC860213AE7EAA000ECDAE /* storyinteraction-progress-unfilled@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C9AC85FB13AE7E76000ECDAE /* storyinteraction-progress-unfilled@2x~iphone.png */; };
@@ -2211,9 +2211,9 @@
 		C9AC85DA13AE64C1000ECDAE /* storyinteraction-draggable@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-draggable@2x~iphone.png"; sourceTree = "<group>"; };
 		C9AC85EB13AE6AA1000ECDAE /* storyinteraction-lettertile~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-lettertile~iphone.png"; sourceTree = "<group>"; };
 		C9AC85EC13AE6AA9000ECDAE /* storyinteraction-lettertile@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-lettertile@2x~iphone.png"; sourceTree = "<group>"; };
-		C9AC85F113AE7CE3000ECDAE /* story-interactions-initialScratch~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "story-interactions-initialScratch~iphone.png"; sourceTree = "<group>"; };
-		C9AC85F213AE7CEA000ECDAE /* story-interactions-initialScratch@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "story-interactions-initialScratch@2x~iphone.png"; sourceTree = "<group>"; };
-		C9AC85F313AE7CF5000ECDAE /* story-interactions-initialScratch~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "story-interactions-initialScratch~ipad.png"; sourceTree = "<group>"; };
+		C9AC85F113AE7CE3000ECDAE /* storyinteraction-initialScratch~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-initialScratch~iphone.png"; sourceTree = "<group>"; };
+		C9AC85F213AE7CEA000ECDAE /* storyinteraction-initialScratch@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-initialScratch@2x~iphone.png"; sourceTree = "<group>"; };
+		C9AC85F313AE7CF5000ECDAE /* storyinteraction-initialScratch~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-initialScratch~ipad.png"; sourceTree = "<group>"; };
 		C9AC85FA13AE7E6C000ECDAE /* storyinteraction-progress-unfilled~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-progress-unfilled~iphone.png"; sourceTree = "<group>"; };
 		C9AC85FB13AE7E76000ECDAE /* storyinteraction-progress-unfilled@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-progress-unfilled@2x~iphone.png"; sourceTree = "<group>"; };
 		C9AC85FC13AE7E80000ECDAE /* storyinteraction-progress-unfilled~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-progress-unfilled~ipad.png"; sourceTree = "<group>"; };
@@ -2847,9 +2847,9 @@
 				C9AC863C13AF6552000ECDAE /* storyinteraction-lettertile-small@2x~iphone.png */,
 				C9AC85EB13AE6AA1000ECDAE /* storyinteraction-lettertile~iphone.png */,
 				C9AC85EC13AE6AA9000ECDAE /* storyinteraction-lettertile@2x~iphone.png */,
-				C9AC85F113AE7CE3000ECDAE /* story-interactions-initialScratch~iphone.png */,
-				C9AC85F213AE7CEA000ECDAE /* story-interactions-initialScratch@2x~iphone.png */,
-				C9AC85F313AE7CF5000ECDAE /* story-interactions-initialScratch~ipad.png */,
+				C9AC85F113AE7CE3000ECDAE /* storyinteraction-initialScratch~iphone.png */,
+				C9AC85F213AE7CEA000ECDAE /* storyinteraction-initialScratch@2x~iphone.png */,
+				C9AC85F313AE7CF5000ECDAE /* storyinteraction-initialScratch~ipad.png */,
 				F8DB746813A0DDA2006E8D06 /* progressbar-cover.png */,
 				F8DB746313A0DCC3006E8D06 /* progressbar-fill.png */,
 			);
@@ -4938,9 +4938,9 @@
 				C9AC85E913AE64C8000ECDAE /* storyinteraction-draggable@2x~iphone.png in Resources */,
 				C9AC85ED13AE6AB4000ECDAE /* storyinteraction-lettertile~iphone.png in Resources */,
 				C9AC85EF13AE6AB4000ECDAE /* storyinteraction-lettertile@2x~iphone.png in Resources */,
-				C9AC85F413AE7D00000ECDAE /* story-interactions-initialScratch~iphone.png in Resources */,
-				C9AC85F613AE7D00000ECDAE /* story-interactions-initialScratch@2x~iphone.png in Resources */,
-				C9AC85F813AE7D00000ECDAE /* story-interactions-initialScratch~ipad.png in Resources */,
+				C9AC85F413AE7D00000ECDAE /* storyinteraction-initialScratch~iphone.png in Resources */,
+				C9AC85F613AE7D00000ECDAE /* storyinteraction-initialScratch@2x~iphone.png in Resources */,
+				C9AC85F813AE7D00000ECDAE /* storyinteraction-initialScratch~ipad.png in Resources */,
 				C9AC860013AE7EAA000ECDAE /* storyinteraction-progress-unfilled~iphone.png in Resources */,
 				C9AC860213AE7EAA000ECDAE /* storyinteraction-progress-unfilled@2x~iphone.png in Resources */,
 				C9AC860413AE7EAA000ECDAE /* storyinteraction-progress-unfilled~ipad.png in Resources */,
@@ -5345,9 +5345,9 @@
 				C9AC85EA13AE64C8000ECDAE /* storyinteraction-draggable@2x~iphone.png in Resources */,
 				C9AC85EE13AE6AB4000ECDAE /* storyinteraction-lettertile~iphone.png in Resources */,
 				C9AC85F013AE6AB4000ECDAE /* storyinteraction-lettertile@2x~iphone.png in Resources */,
-				C9AC85F513AE7D00000ECDAE /* story-interactions-initialScratch~iphone.png in Resources */,
-				C9AC85F713AE7D00000ECDAE /* story-interactions-initialScratch@2x~iphone.png in Resources */,
-				C9AC85F913AE7D00000ECDAE /* story-interactions-initialScratch~ipad.png in Resources */,
+				C9AC85F513AE7D00000ECDAE /* storyinteraction-initialScratch~iphone.png in Resources */,
+				C9AC85F713AE7D00000ECDAE /* storyinteraction-initialScratch@2x~iphone.png in Resources */,
+				C9AC85F913AE7D00000ECDAE /* storyinteraction-initialScratch~ipad.png in Resources */,
 				C9AC860113AE7EAA000ECDAE /* storyinteraction-progress-unfilled~iphone.png in Resources */,
 				C9AC860313AE7EAA000ECDAE /* storyinteraction-progress-unfilled@2x~iphone.png in Resources */,
 				C9AC860513AE7EAA000ECDAE /* storyinteraction-progress-unfilled~ipad.png in Resources */,

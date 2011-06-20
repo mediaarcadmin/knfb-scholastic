@@ -43,7 +43,7 @@ static const float kSCHScratchEraseSize = 24.0f;
         
         maskImageLayer = [[CALayer layer] retain];
         maskImageLayer.frame = self.layer.bounds;
-        maskImageLayer.contents = (id)[UIImage imageNamed:@"storyinteractions-initialScratch.png"].CGImage;
+        maskImageLayer.contents = (id)[UIImage imageNamed:@"storyinteraction-initialScratch"].CGImage;
         [self.layer addSublayer:maskImageLayer];
         
         answerImageLayer = [[CALayer layer] retain];
