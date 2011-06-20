@@ -270,7 +270,6 @@
 		52298A9312F0EF5600BBBCE6 /* SCHProfileStatusItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A7612F0EF5600BBBCE6 /* SCHProfileStatusItem.m */; };
 		52298A9412F0EF5600BBBCE6 /* SCHAnnotationsContentItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A7812F0EF5600BBBCE6 /* SCHAnnotationsContentItem.m */; };
 		52298A9512F0EF5600BBBCE6 /* SCHAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A7A12F0EF5600BBBCE6 /* SCHAnnotation.m */; };
-		52298A9612F0EF5600BBBCE6 /* SCHFavorite.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A7C12F0EF5600BBBCE6 /* SCHFavorite.m */; };
 		52298A9712F0EF5600BBBCE6 /* SCHProfileItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A7E12F0EF5600BBBCE6 /* SCHProfileItem.m */; };
 		52298A9912F0EF5600BBBCE6 /* SCHLocationGraphics.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A8212F0EF5600BBBCE6 /* SCHLocationGraphics.m */; };
 		52298A9B12F0EF5600BBBCE6 /* SCHHighlight.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A8612F0EF5600BBBCE6 /* SCHHighlight.m */; };
@@ -967,7 +966,6 @@
 		F837C6A512F1798E00833448 /* SCHContentItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A7412F0EF5600BBBCE6 /* SCHContentItem.m */; };
 		F837C6A612F1798E00833448 /* SCHContentMetadataItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6212F0EF5600BBBCE6 /* SCHContentMetadataItem.m */; };
 		F837C6A712F1798F00833448 /* SCHContentProfileItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6E12F0EF5600BBBCE6 /* SCHContentProfileItem.m */; };
-		F837C6A912F1799100833448 /* SCHFavorite.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A7C12F0EF5600BBBCE6 /* SCHFavorite.m */; };
 		F837C6AA12F1799200833448 /* SCHHighlight.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A8612F0EF5600BBBCE6 /* SCHHighlight.m */; };
 		F837C6AB12F1799300833448 /* SCHLastPage.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6412F0EF5600BBBCE6 /* SCHLastPage.m */; };
 		F837C6AC12F1799500833448 /* SCHLocationText.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6612F0EF5600BBBCE6 /* SCHLocationText.m */; };
@@ -1527,8 +1525,6 @@
 		52298A7812F0EF5600BBBCE6 /* SCHAnnotationsContentItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHAnnotationsContentItem.m; path = Shared/SCHAnnotationsContentItem.m; sourceTree = "<group>"; };
 		52298A7912F0EF5600BBBCE6 /* SCHAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAnnotation.h; path = Shared/SCHAnnotation.h; sourceTree = "<group>"; };
 		52298A7A12F0EF5600BBBCE6 /* SCHAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHAnnotation.m; path = Shared/SCHAnnotation.m; sourceTree = "<group>"; };
-		52298A7B12F0EF5600BBBCE6 /* SCHFavorite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHFavorite.h; path = Shared/SCHFavorite.h; sourceTree = "<group>"; };
-		52298A7C12F0EF5600BBBCE6 /* SCHFavorite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHFavorite.m; path = Shared/SCHFavorite.m; sourceTree = "<group>"; };
 		52298A7D12F0EF5600BBBCE6 /* SCHProfileItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHProfileItem.h; path = Shared/SCHProfileItem.h; sourceTree = "<group>"; };
 		52298A7E12F0EF5600BBBCE6 /* SCHProfileItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHProfileItem.m; path = Shared/SCHProfileItem.m; sourceTree = "<group>"; };
 		52298A8112F0EF5600BBBCE6 /* SCHLocationGraphics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHLocationGraphics.h; path = Shared/SCHLocationGraphics.h; sourceTree = "<group>"; };
@@ -2974,8 +2970,6 @@
 				F8C5DC6E134B5DF30020D610 /* SCHDictionaryWordForm.m */,
 				5200EFF212F6D00B00BAC355 /* SCHeReaderCategories.h */,
 				5200EFF312F6D00B00BAC355 /* SCHeReaderCategories.m */,
-				52298A7B12F0EF5600BBBCE6 /* SCHFavorite.h */,
-				52298A7C12F0EF5600BBBCE6 /* SCHFavorite.m */,
 				52298A8512F0EF5600BBBCE6 /* SCHHighlight.h */,
 				52298A8612F0EF5600BBBCE6 /* SCHHighlight.m */,
 				52298A6312F0EF5600BBBCE6 /* SCHLastPage.h */,
@@ -5190,7 +5184,6 @@
 				52298A9312F0EF5600BBBCE6 /* SCHProfileStatusItem.m in Sources */,
 				52298A9412F0EF5600BBBCE6 /* SCHAnnotationsContentItem.m in Sources */,
 				52298A9512F0EF5600BBBCE6 /* SCHAnnotation.m in Sources */,
-				52298A9612F0EF5600BBBCE6 /* SCHFavorite.m in Sources */,
 				52298A9712F0EF5600BBBCE6 /* SCHProfileItem.m in Sources */,
 				52298A9912F0EF5600BBBCE6 /* SCHLocationGraphics.m in Sources */,
 				52298A9B12F0EF5600BBBCE6 /* SCHHighlight.m in Sources */,
@@ -5444,7 +5437,6 @@
 				F837C6A512F1798E00833448 /* SCHContentItem.m in Sources */,
 				F837C6A612F1798E00833448 /* SCHContentMetadataItem.m in Sources */,
 				F837C6A712F1798F00833448 /* SCHContentProfileItem.m in Sources */,
-				F837C6A912F1799100833448 /* SCHFavorite.m in Sources */,
 				F837C6AA12F1799200833448 /* SCHHighlight.m in Sources */,
 				F837C6AB12F1799300833448 /* SCHLastPage.m in Sources */,
 				F837C6AC12F1799500833448 /* SCHLocationText.m in Sources */,

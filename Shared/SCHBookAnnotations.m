@@ -181,11 +181,6 @@
 #endif
 }
 
-- (SCHFavorite *)favorite
-{
-    return(self.privateAnnotations.Favorite);
-}
-
 - (SCHLastPage *)lastPage
 {
     return(self.privateAnnotations.LastPage);

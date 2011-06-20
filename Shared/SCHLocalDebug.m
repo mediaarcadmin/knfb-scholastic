@@ -25,7 +25,6 @@
 #import "SCHAppBook.h"
 #import "SCHAppProfile.h"
 #import "SCHAnnotationsItem.h"
-#import "SCHFavorite.h"
 #import "SCHLastPage.h"
 #import "SCHPrivateAnnotations.h"
 #import "SCHAnnotationsContentItem.h"
@@ -450,13 +449,7 @@
 {
     if (annotationsItem != nil && userContentItem != nil) {
         NSDate *date = [NSDate date];
-        
-        SCHFavorite *newFavorite = [NSEntityDescription insertNewObjectForEntityForName:kSCHFavorite 
-                                                                 inManagedObjectContext:self.managedObjectContext];
-        newFavorite.LastModified = date;
-        newFavorite.State = [NSNumber numberWithStatus:kSCHStatusCreated];
-        newFavorite.IsFavorite = [NSNumber numberWithBool:NO];
-        
+                
         SCHLastPage *newLastPage = [NSEntityDescription insertNewObjectForEntityForName:kSCHLastPage 
                                                                  inManagedObjectContext:self.managedObjectContext];
         newLastPage.LastModified = date;
@@ -468,7 +461,6 @@
         SCHPrivateAnnotations *newPrivateAnnotations = [NSEntityDescription insertNewObjectForEntityForName:kSCHPrivateAnnotations 
                                                                                      inManagedObjectContext:self.managedObjectContext];
         newPrivateAnnotations.LastPage = newLastPage;
-        newPrivateAnnotations.Favorite = newFavorite;
         
         SCHAnnotationsContentItem *newAnnotationsContentItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHAnnotationsContentItem 
                                                                                              inManagedObjectContext:self.managedObjectContext];

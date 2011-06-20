@@ -10,7 +10,6 @@
 
 @class SCHAnnotationsContentItem;
 @class SCHBookmark;
-@class SCHFavorite;
 @class SCHHighlight;
 @class SCHLastPage;
 @class SCHNote;
@@ -26,7 +25,6 @@ static NSString * const kSCHPrivateAnnotations = @"SCHPrivateAnnotations";
 @property (nonatomic, retain) NSSet* Bookmarks;
 @property (nonatomic, retain) NSSet* Highlights;
 @property (nonatomic, retain) NSSet* Notes;
-@property (nonatomic, retain) SCHFavorite * Favorite;
 
 @end
 

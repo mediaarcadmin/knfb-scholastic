@@ -12,7 +12,6 @@
 @class SCHBookmark;
 @class SCHHighlight;
 @class SCHNote;
-@class SCHFavorite;
 @class SCHLastPage;
 @class SCHBookRange;
 
@@ -31,7 +30,6 @@
 - (NSArray *)notes;
 - (void)addNote:(SCHNote *)newNote;
 - (void)deleteNote:(SCHNote *)note;
-- (SCHFavorite *)favorite;
 - (SCHLastPage *)lastPage;
 
 // Convenience creation methods
