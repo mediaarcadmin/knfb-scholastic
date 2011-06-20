@@ -14,6 +14,7 @@
 #import "SCHStoryInteractionWhoSaidIt.h"
 #import "NSArray+ViewSorting.h"
 #import "NSArray+Shuffling.h"
+#import "SCHGeometry.h"
 
 #define kSourceLabelTag 1001
 #define kSourceImageTag 1002
@@ -22,13 +23,6 @@
 #define kSourceOffsetY_iPhone 3
 #define kTargetOffsetX_iPad -13
 #define kTargetOffsetX_iPhone -7
-
-static CGFloat distanceSq(CGPoint p1, CGPoint p2)
-{
-    CGFloat dx = p1.x-p2.x;
-    CGFloat dy = p1.y-p2.y;
-    return dx*dx + dy*dy;
-}
 
 static CGPoint pointWithOffset(CGPoint p, CGPoint offset)
 {
@@ -161,7 +155,7 @@ static CGPoint pointWithOffset(CGPoint p, CGPoint offset)
     for (SCHStoryInteractionDraggableTargetView *target in self.targets) {
         if (![self.occupiedTargets containsObject:[NSNumber numberWithInteger:targetIndex]]) {
             CGPoint targetCenter = pointWithOffset(target.center, self.targetCenterOffset);
-            if (distanceSq(sourceCenter, targetCenter) < kSnapDistanceSq) {
+            if (SCHCGPointDistanceSq(sourceCenter, targetCenter) < kSnapDistanceSq) {
                 *snapPosition = CGPointMake(targetCenter.x - self.sourceCenterOffset.x, targetCenter.y - self.sourceCenterOffset.y);
                 return YES;
             }
@@ -180,7 +174,7 @@ static CGPoint pointWithOffset(CGPoint p, CGPoint offset)
     for (SCHStoryInteractionDraggableTargetView *target in self.targets) {
         if (![self.occupiedTargets containsObject:[NSNumber numberWithInteger:targetIndex]]) {
             CGPoint targetCenter = pointWithOffset(target.center, self.targetCenterOffset);
-            if (distanceSq(sourceCenter, targetCenter) < kSnapDistanceSq) {
+            if (SCHCGPointDistanceSq(sourceCenter, targetCenter) < kSnapDistanceSq) {
                 draggableView.tag = targetIndex;
                 [self.occupiedTargets addObject:[NSNumber numberWithInteger:targetIndex]];
                 break;
