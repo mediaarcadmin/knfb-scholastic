@@ -340,6 +340,8 @@
 		5297B44A13A8C362008ADD9B /* SCHStoryInteractionControllerMultipleChoiceWithAnswerPictures.m in Sources */ = {isa = PBXBuildFile; fileRef = 5297B44813A8C362008ADD9B /* SCHStoryInteractionControllerMultipleChoiceWithAnswerPictures.m */; };
 		5297B44C13A8C489008ADD9B /* SCHStoryInteractionMultipleChoiceWithAnswerPictures_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5297B44B13A8C489008ADD9B /* SCHStoryInteractionMultipleChoiceWithAnswerPictures_iPhone.xib */; };
 		5297B44D13A8C489008ADD9B /* SCHStoryInteractionMultipleChoiceWithAnswerPictures_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5297B44B13A8C489008ADD9B /* SCHStoryInteractionMultipleChoiceWithAnswerPictures_iPhone.xib */; };
+		52A6763113AF3744007A7FE6 /* UIColor+Scholastic.m in Sources */ = {isa = PBXBuildFile; fileRef = 52A6763013AF3744007A7FE6 /* UIColor+Scholastic.m */; };
+		52A6763213AF3744007A7FE6 /* UIColor+Scholastic.m in Sources */ = {isa = PBXBuildFile; fileRef = 52A6763013AF3744007A7FE6 /* UIColor+Scholastic.m */; };
 		52AD966B12F9B1B40099FB88 /* SCHAnnotationsItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD966612F9B1B40099FB88 /* SCHAnnotationsItem.m */; };
 		52AD966E12F9B1B40099FB88 /* SCHAnnotationsItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD966612F9B1B40099FB88 /* SCHAnnotationsItem.m */; };
 		52AD9ACF12FC0EEF0099FB88 /* SCHSyncManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9ACE12FC0EEF0099FB88 /* SCHSyncManager.m */; };
@@ -1696,6 +1698,8 @@
 		5297B44713A8C362008ADD9B /* SCHStoryInteractionControllerMultipleChoiceWithAnswerPictures.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionControllerMultipleChoiceWithAnswerPictures.h; sourceTree = "<group>"; };
 		5297B44813A8C362008ADD9B /* SCHStoryInteractionControllerMultipleChoiceWithAnswerPictures.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionControllerMultipleChoiceWithAnswerPictures.m; sourceTree = "<group>"; };
 		5297B44B13A8C489008ADD9B /* SCHStoryInteractionMultipleChoiceWithAnswerPictures_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionMultipleChoiceWithAnswerPictures_iPhone.xib; sourceTree = "<group>"; };
+		52A6762F13AF3744007A7FE6 /* UIColor+Scholastic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIColor+Scholastic.h"; path = "Shared/UIColor+Scholastic.h"; sourceTree = "<group>"; };
+		52A6763013AF3744007A7FE6 /* UIColor+Scholastic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIColor+Scholastic.m"; path = "Shared/UIColor+Scholastic.m"; sourceTree = "<group>"; };
 		52AD966512F9B1B40099FB88 /* SCHAnnotationsItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAnnotationsItem.h; path = Shared/SCHAnnotationsItem.h; sourceTree = "<group>"; };
 		52AD966612F9B1B40099FB88 /* SCHAnnotationsItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHAnnotationsItem.m; path = Shared/SCHAnnotationsItem.m; sourceTree = "<group>"; };
 		52AD9ACD12FC0EEF0099FB88 /* SCHSyncManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHSyncManager.h; path = Shared/SCHSyncManager.h; sourceTree = "<group>"; };
@@ -3005,6 +3009,8 @@
 				5233E0D613159CA80088F18C /* BITNetworkActivityManager.h */,
 				5233E0D713159CA80088F18C /* BITNetworkActivityManager.m */,
 				52322BF613268C3300BB071D /* SCHUserDefaults.h */,
+				52A6762F13AF3744007A7FE6 /* UIColor+Scholastic.h */,
+				52A6763013AF3744007A7FE6 /* UIColor+Scholastic.m */,
 			);
 			name = Shared;
 			sourceTree = "<group>";
@@ -5580,6 +5586,7 @@
 				286E210713AB53FF00CB4232 /* SCHStoryInteractionControllerWordMatch.m in Sources */,
 				286E213F13AB7EBF00CB4232 /* NSArray+Shuffling.m in Sources */,
 				286E21A513ABF8BD00CB4232 /* SCHQueuedAudioPlayer.m in Sources */,
+				52A6763113AF3744007A7FE6 /* UIColor+Scholastic.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5846,6 +5853,7 @@
 				286E210813AB53FF00CB4232 /* SCHStoryInteractionControllerWordMatch.m in Sources */,
 				286E214013AB7EBF00CB4232 /* NSArray+Shuffling.m in Sources */,
 				286E21A613ABF8BD00CB4232 /* SCHQueuedAudioPlayer.m in Sources */,
+				52A6763213AF3744007A7FE6 /* UIColor+Scholastic.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
