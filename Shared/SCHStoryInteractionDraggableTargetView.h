@@ -10,6 +10,6 @@
 
 @interface SCHStoryInteractionDraggableTargetView : UIImageView {}
 
-@property (nonatomic, assign) BOOL occupied;
+@property (nonatomic, assign) NSInteger matchTag;
 
 @end

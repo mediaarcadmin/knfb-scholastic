@@ -8,17 +8,29 @@
 
 #import <Foundation/Foundation.h>
 
-@class SCHStoryInteractionDraggableTargetView;
+@class SCHStoryInteractionDraggableView;
 
-@interface SCHStoryInteractionDraggableView : UIImageView {}
+@protocol SCHStoryInteractionDraggableViewDelegate
+@optional
+- (BOOL)draggableViewShouldStartDrag:(SCHStoryInteractionDraggableView *)draggableView;
+- (void)draggableViewWasTapped:(SCHStoryInteractionDraggableView *)draggableView;
+@required
+- (void)draggableViewDidStartDrag:(SCHStoryInteractionDraggableView *)draggableView;
+- (BOOL)draggableView:(SCHStoryInteractionDraggableView *)draggableView shouldSnapFromPosition:(CGPoint)position toPosition:(CGPoint *)snapPosition;
+- (void)draggableView:(SCHStoryInteractionDraggableView *)draggableView didMoveToPosition:(CGPoint)position;
+@end
 
-// a text label to display in the view
-@property (nonatomic, copy) NSString *title;
+@interface SCHStoryInteractionDraggableView : UIView {}
 
-// The target this source is currently attached to
-@property (nonatomic, assign) SCHStoryInteractionDraggableTargetView *attachedTarget;
+// a Tag that can be used to check draggables are attached to the correct target
+@property (nonatomic, assign) NSInteger matchTag;
 
-// set the targets which this draggable can attach to
-- (void)setDragTargets:(NSArray *)dragTargets;
+// optional delegate for this draggable
+@property (nonatomic, assign) NSObject<SCHStoryInteractionDraggableViewDelegate> *delegate;
+
+// home position for this draggable
+@property (nonatomic, assign) CGPoint homePosition;
+
+- (void)moveToHomePosition;
 
 @end

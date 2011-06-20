@@ -8,14 +8,21 @@
 
 #import <Foundation/Foundation.h>
 
+#import <AVFoundation/AVAudioPlayer.h>
+
 @class SCHXPSProvider;
 @class SCHStoryInteraction;
 @protocol SCHStoryInteractionControllerDelegate;
 
+// Core presentation functionality for story interactions. 
+
 // Because Story Interactions have a non-modal behaviour in the reading view, StoryInteractionController 
 // is not a UIViewController but relies on another view and controller as hosts.
 
-@interface SCHStoryInteractionController : NSObject {}
+@interface SCHStoryInteractionController : NSObject <AVAudioPlayerDelegate> {}
+
+// Unique Book Identifier
+@property (nonatomic, copy) NSString *isbn;
 
 // XPS Provider for this story's book
 @property (nonatomic, retain) SCHXPSProvider *xpsProvider;
@@ -27,14 +34,19 @@
 // hosting view
 @property (nonatomic, assign) id<SCHStoryInteractionControllerDelegate> delegate;
 
-// the current interface orientation; the hosting UIViewController should initialise this
-// before presenting the view and update it as necessary
-@property (nonatomic, assign) UIInterfaceOrientation interfaceOrientation;
-
 // a transparent hosting-view sized container for the story interaction views; if
 // necessary gesture recognizers can be attached to this to collect events outside
 // the main story interaction view
 @property (nonatomic, retain) UIView *containerView;
+
+// The current contents view (loaded from a nib)
+@property (nonatomic, retain) UIView *contentsView;
+
+// rotation about to occur
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration;
+
+// rotation complete
+- (void)didRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation;
 
 // obtain a Controller for a StoryInteraction.
 + (SCHStoryInteractionController *)storyInteractionControllerForStoryInteraction:(SCHStoryInteraction *)storyInteraction;
@@ -42,22 +54,61 @@
 - (id)initWithStoryInteraction:(SCHStoryInteraction *)storyInteraction;
 
 // present the story interaction centered in the host view
-- (void)presentInHostView:(UIView *)hostView;
+- (void)presentInHostView:(UIView *)hostView withInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation;
 
 // remove the story interaction from the host view; also sends storyInteractionControllerDidDismiss: to
 // the delegate
-- (void)removeFromHostView;
+- (void)removeFromHostViewWithSuccess:(BOOL)success;
+
+// switch to the next view in the NIB
+- (void)presentNextView;
 
 // play an audio file from the XPS provider and invoke a completion block when the playback is complete
 - (void)playAudioAtPath:(NSString *)path completion:(void(^)(void))completion;
 
+// playing audio files from the app bundle
+- (void)playBundleAudioWithFilename:(NSString *)path completion:(void (^)(void))completion;
+
+// currently playing audio?
+- (BOOL)playingAudio;
+
+// enqueue an audio file (either from bundle or XPSProvider) with blocks to execute synchronized with
+// the start and end of the audio
+- (void)enqueueAudioWithPath:(NSString *)path
+                  fromBundle:(BOOL)fromBundle
+                  startDelay:(NSTimeInterval)startDelay
+      synchronizedStartBlock:(dispatch_block_t)startBlock
+        synchronizedEndBlock:(dispatch_block_t)endBlock;
+
+// convenience version of above with no delay and no synchronized blocks
+- (void)enqueueAudioWithPath:(NSString *)path fromBundle:(BOOL)fromBundle;
+
+// cancel any playing or queued audio
+- (void)cancelQueuedAudio;
+
 // get an image from the XPS provider
 - (UIImage *)imageAtPath:(NSString *)path;
+
+// set the title for the story interaction
+- (void)setTitle:(NSString *)title;
 
 #pragma mark - subclass overrides
 
 // send then the nib is loaded and its view objects are attached to the container; similar
 // to viewDidLoad, but used a separate message name to avoid confusion.
-- (void)setupView;
+- (void)setupViewAtIndex:(NSInteger)screenIndex;
+
+// normally the question audio (if any) is played when the view appears; override
+// to change this behaviour
+- (BOOL)shouldPlayQuestionAudioForViewAtIndex:(NSInteger)screenIndex;
+
+// audio path for current question - default implementation uses audioPathForQuestion
+// from the story interaction; override if variable audio per question is needed
+- (NSString *)audioPathForQuestion;
+
+// Story interactions can use this to disable interactions
+// also disables superview user interactions, as interactions are passed through
+// with great power comes great responsibility - use carefully!
+- (void)setUserInteractionsEnabled:(BOOL)enabled;
 
 @end

@@ -8,10 +8,18 @@
 
 #import "SCHStoryInteractionImage.h"
 
+#import "KNFBXPSConstants.h"
 
 @implementation SCHStoryInteractionImage
 
 @synthesize imageFilename;
+
+- (id)init
+{
+    self = [super init];
+    [self release];
+    return nil;
+}
 
 - (void)dealloc
 {
@@ -21,7 +29,7 @@
 
 - (NSString *)imagePath
 {
-    return [[SCHStoryInteraction resourcesPath] stringByAppendingPathComponent:self.imageFilename];
+    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:self.imageFilename];
 }
 
 - (NSString *)title

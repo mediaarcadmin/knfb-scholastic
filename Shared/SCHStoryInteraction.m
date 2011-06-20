@@ -9,15 +9,13 @@
 #import "SCHStoryInteraction.h"
 #import "SCHStoryInteractionParser.h"
 
+// TODO: move this to KNFBXPSConstants submodule
+NSString * const KNFBXPSStoryInteractionsDirectory = @"/Documents/1/Other/KNFB/Interactions/";
+
 @implementation SCHStoryInteractionQuestion
 
 @synthesize storyInteraction;
 @synthesize questionIndex;
-
-- (NSString *)audioPathForThatsRight
-{
-    return [[SCHStoryInteraction resourcesPath] stringByAppendingPathComponent:@"gen_thatsright.mp3"];
-}
 
 @end
 
@@ -26,6 +24,7 @@
 @synthesize ID;
 @synthesize documentPageNumber;
 @synthesize position;
+@synthesize bookStoryInteractions;
 
 - (BOOL)isOlderStoryInteraction
 {
@@ -43,9 +42,61 @@
     return [self title];
 }
 
-+ (NSString *)resourcesPath
+- (NSInteger)questionCount
 {
-    return @"/Documents/1/Other/KNFB/Interactions/Interactions.xml";
+    return 1;
 }
+
+- (NSString *)storyInteractionButtonAppearingSoundFilename
+{
+    if ([self isOlderStoryInteraction]) {
+        return @"sfx_siappears_o.mp3";
+    } else {
+        return @"sfx_siappears_y2B.mp3";
+    }
+}
+
+- (NSString *)storyInteractionOpeningSoundFilename
+{
+    if ([self isOlderStoryInteraction]) {
+        return @"sfx_siopen_o.mp3";
+    } else {
+        return @"sfx_siopen_y.mp3";
+    }
+}
+
+- (NSString *)audioPathForQuestion
+{
+    return nil;
+}
+
+- (NSString *)audioPathForThatsRight
+{
+    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:@"gen_thatsright.mp3"];
+}
+
+- (NSString *)audioPathForTryAgain
+{
+    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:@"gen_tryagain.mp3"];
+}
+
+- (NSString *)storyInteractionCorrectAnswerSoundFilename
+{
+    if ([self isOlderStoryInteraction]) {
+        return @"sfx_ca_o.mp3";
+    } else {
+        return @"sfx_ca_y.mp3";
+    }
+}
+
+- (NSString *)storyInteractionWrongAnswerSoundFilename
+{
+    if ([self isOlderStoryInteraction]) {
+        return @"sfx_wa_o.mp3";
+    } else {
+        return @"sfx_wa_y.mp3";
+    }
+}
+
 
 @end

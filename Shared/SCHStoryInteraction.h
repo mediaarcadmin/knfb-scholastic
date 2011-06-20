@@ -10,13 +10,15 @@
 
 @class SCHXPSProvider;
 @class SCHStoryInteraction;
+@class SCHBookStoryInteractions;
+
+// TODO: move to KNFBXPSConstants module
+extern NSString * const KNFBXPSStoryInteractionsDirectory;
 
 @interface SCHStoryInteractionQuestion : NSObject {}
 
 @property (nonatomic, assign) SCHStoryInteraction *storyInteraction;
 @property (nonatomic, assign) NSInteger questionIndex;
-
-- (NSString *)audioPathForThatsRight;
 
 @end
 
@@ -25,6 +27,7 @@
 @property (nonatomic, retain) NSString *ID;
 @property (nonatomic, assign) NSInteger documentPageNumber;
 @property (nonatomic, assign) CGPoint position;
+@property (nonatomic, assign) SCHBookStoryInteractions *bookStoryInteractions;
 
 // YES if this is an interaction for older readers
 - (BOOL)isOlderStoryInteraction;
@@ -35,7 +38,17 @@
 // Story interaction title for the interaction view itself
 - (NSString *)interactionViewTitle;
 
-// base path for interaction resources in XPSProvider
-+ (NSString *)resourcesPath;
+// XPS-relative paths; return nil if the particular audio is not required
+- (NSString *)storyInteractionButtonAppearingSoundFilename;
+- (NSString *)storyInteractionOpeningSoundFilename;
+- (NSString *)audioPathForQuestion;
+- (NSString *)audioPathForThatsRight;
+- (NSString *)audioPathForTryAgain;
+- (NSString *)storyInteractionCorrectAnswerSoundFilename;
+- (NSString *)storyInteractionWrongAnswerSoundFilename;
+
+// returns the number of questions contained within the interaction
+// overridden in SCHStoryInteractionMultipleChoice subclass; this class returns 1.
+- (NSInteger)questionCount;
 
 @end

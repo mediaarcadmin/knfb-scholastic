@@ -11,9 +11,8 @@
 
 @class SCHStoryInteractionWordMatch;
 
-@interface SCHStoryInteractionWordMatchQuestionItem : NSObject {}
+@interface SCHStoryInteractionWordMatchQuestionItem : SCHStoryInteractionQuestion {}
 
-@property (nonatomic, assign) SCHStoryInteraction *storyInteraction;
 @property (nonatomic, retain) NSString *text;
 @property (nonatomic, retain) NSString *uniqueObjectName;
 
@@ -40,5 +39,7 @@
 
 // array of SCHStoryInteractionWordMatchQuestion
 @property (nonatomic, retain) NSArray *questions;
+
+- (NSString *)audioPathForGotThemAll;
 
 @end

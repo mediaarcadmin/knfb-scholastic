@@ -48,7 +48,7 @@
 {
     NSMutableArray *newIndicators = [NSMutableArray arrayWithCapacity:numberOfSteps];
     for (NSUInteger i = 0; i < numberOfSteps; ++i) {
-        if (i <= currentStep) {
+        if (i == currentStep) {
             UIImage *image = [UIImage imageNamed:@"storyinteraction-progress-filled"];
             UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
             imageView.contentMode = UIViewContentModeCenter;

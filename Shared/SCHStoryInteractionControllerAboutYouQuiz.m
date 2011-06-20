@@ -60,7 +60,7 @@
 }
 
 
-- (void)setupView
+- (void)setupViewAtIndex:(NSInteger)screenIndex
 {
     self.showTitleView = YES;
     self.showResultView = NO;
@@ -76,6 +76,11 @@
         [self.outcomeCounts addObject:[NSNumber numberWithInt:0]];
     }
     
+    for (UIButton *button in answerButtons) {
+        button.titleLabel.lineBreakMode = UILineBreakModeWordWrap;
+        button.titleLabel.textAlignment = UITextAlignmentCenter;
+    }
+    
     [self setupQuestion];
 }
 
@@ -85,10 +90,12 @@
         [self.progressView setHidden:YES];
         self.questionLabel.text = [(SCHStoryInteractionAboutYouQuiz *)self.storyInteraction introduction];
         
-        [self.answerButton1 setTitle:NSLocalizedString(@"Go", @"Go") forState:UIControlStateNormal];
+        [self.answerButton2 setTitle:NSLocalizedString(@"Go", @"Go") forState:UIControlStateNormal];
         
-        for (NSInteger i = 1; i < [[self answerButtons] count]; i++) {
-            [[self.answerButtons objectAtIndex:i] setHidden:YES];
+        for (NSInteger i = 0; i < [[self answerButtons] count]; i++) {
+            if (i != 1) {
+                [[self.answerButtons objectAtIndex:i] setHidden:YES];
+            }
         }
     } else if (self.showResultView) {
         [self.progressView setHidden:YES];
@@ -98,7 +105,7 @@
             [[self.answerButtons objectAtIndex:i] setHidden:YES];
         }
     } else {
-    
+        [self.progressView setHidden:NO];
         self.progressView.currentStep = self.currentQuestionIndex;
         self.questionLabel.text = [[self currentQuestion] prompt];
         NSInteger i = 0;
@@ -133,18 +140,47 @@
 - (NSString *)calculatedResult
 {
     NSArray *outcomeMessages = [(SCHStoryInteractionAboutYouQuiz *)self.storyInteraction outcomeMessages];
+    NSString *resultMessage = nil;
     
     NSInteger highestValue = -1;
-    NSInteger highestQuestion = -1;
+    NSMutableArray *highestQuestions = [[NSMutableArray alloc] init];
     
     for (NSInteger i = 0; i < [self.outcomeCounts count]; i++) {
         if ([[self.outcomeCounts objectAtIndex:i] intValue] > highestValue) {
             highestValue = [[self.outcomeCounts objectAtIndex:i] intValue];
-            highestQuestion = i;
+            [highestQuestions removeAllObjects];
+            [highestQuestions addObject:[NSNumber numberWithInt:i]];
+        } else if ([[self.outcomeCounts objectAtIndex:i] intValue] == highestValue) {
+            [highestQuestions addObject:[NSNumber numberWithInt:i]];
         }
     }
     
-    return [outcomeMessages objectAtIndex:highestQuestion];
+    NSArray *tiebreakOrder = [(SCHStoryInteractionAboutYouQuiz *) self.storyInteraction tiebreakOrder];
+    
+    if (tiebreakOrder && [tiebreakOrder count] > 0) {
+        for (NSNumber *item in tiebreakOrder) {
+            if (item) {
+                NSInteger itemvalue = [item intValue];
+                
+                for (NSInteger i = 0; i < [highestQuestions count]; i++) {
+                    NSInteger questionNumber = [[highestQuestions objectAtIndex:i] intValue];
+                    
+                    NSLog(@"Comparing %d to %d", questionNumber, itemvalue);
+                    if (questionNumber == itemvalue) {
+                        resultMessage = [outcomeMessages objectAtIndex:[[highestQuestions objectAtIndex:i] intValue]];
+                        break;
+                    }
+                }
+                
+                if (resultMessage) {
+                    break;
+                }
+            }
+        }
+    }
+    
+    [highestQuestions release];
+    return resultMessage;
 }
 
 
@@ -161,9 +197,9 @@
         currentCount = [NSNumber numberWithInt:[currentCount intValue] + 1];
         [self.outcomeCounts replaceObjectAtIndex:[selection intValue] withObject:currentCount];
         
+        [self nextQuestion];
     }
     
-    [self nextQuestion];
 }
 
 

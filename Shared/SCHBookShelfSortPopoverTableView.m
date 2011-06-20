@@ -9,17 +9,24 @@
 #import "SCHBookShelfSortPopoverTableView.h"
 
 
+@interface SCHBookShelfSortPopoverTableView ()
+
+@property (nonatomic, retain) NSArray *sortTypeArray;
+
+@end 
+
 @implementation SCHBookShelfSortPopoverTableView
 
 @synthesize delegate;
 @synthesize itemsTableView;
 @synthesize sortType;
+@synthesize sortTypeArray;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        // Custom initialization
+        sortTypeArray = [[NSArray arrayWithObjects:@"Manual", @"Title", @"Author", @"Newest", @"Last Read", nil] retain];
     }
     return self;
 }
@@ -27,6 +34,8 @@
 - (void)dealloc
 {
     [itemsTableView release];
+    [sortTypeArray release], sortTypeArray = nil;
+    
     [super dealloc];
 }
 
@@ -46,6 +55,7 @@
     // Do any additional setup after loading the view from its nib.
     
     [self.itemsTableView setSeparatorColor:[UIColor colorWithRed:0.710 green:0.737 blue:0.816 alpha:1.0]];
+    self.itemsTableView.scrollEnabled = NO;
 }
 
 - (void)viewDidUnload
@@ -64,13 +74,9 @@
 
 #pragma mark - UITableView delegate and data source
 
-- (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    // FIXME: temporarily disabling table view for top ten view. needs its own controller.
-    if ([self.title compare:@"Top Ten Books"] == NSOrderedSame) {
-        return 0;
-    }
-    return 6;
+    return([sortTypeArray count]);
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -78,27 +84,19 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"sortTableCell"];
     
     if (!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"sortTableCell"];        
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"sortTableCell"] autorelease];        
+        cell.textLabel.textColor = [UIColor colorWithRed:0.004 green:0.184 blue:0.369 alpha:1.000];
+        cell.textLabel.font = [cell.textLabel.font fontWithSize:16];        
     }
     
-    NSArray *sortTypeArray = [NSArray arrayWithObjects:@"Manual", @"My Favorites", @"Title", @"Author", @"Newest", @"Last Read", nil];
-    
-    cell.textLabel.text = [sortTypeArray objectAtIndex:[indexPath row]];
+    cell.textLabel.text = [self.sortTypeArray objectAtIndex:[indexPath row]];
     
     if ([indexPath row] == self.sortType) {
-        cell.accessoryType = UITableViewCellAccessoryCheckmark;
+        cell.accessoryView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"popoverTick"]] autorelease];
     } else {
-        cell.accessoryType = UITableViewCellAccessoryNone;
+        cell.accessoryView = nil;
     }
-    
-    if (([indexPath row] == 1) || [indexPath row] == 4 || [indexPath row] == 5) {
-        cell.textLabel.textColor = [UIColor darkGrayColor];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    } else {
-        cell.textLabel.textColor = [UIColor blackColor];
-        cell.selectionStyle = UITableViewCellSelectionStyleBlue;
-    }
-    
+        
     return cell;
 }
 
@@ -106,42 +104,34 @@
 {
     SCHBookSortType newSortType = -1;
     
-    BOOL enabled = YES;
-    
     switch ([indexPath row]) {
         case 0:
             newSortType = kSCHBookSortTypeUser;
             break;
         case 1:
-//            newSortType = kSCHBookSortTypeFavorites;
-            enabled = NO;
-            break;
-        case 2:
             newSortType = kSCHBookSortTypeTitle;
             break;
-        case 3:
+        case 2:
             newSortType = kSCHBookSortTypeAuthor;
             break;
-        case 4:
-//            newSortType = kSCHBookSortTypeNewest;
-            enabled = NO;
+        case 3:
+           newSortType = kSCHBookSortTypeNewest;
             break;
-        case 5:
-//            newSortType = kSCHBookSortTypeLastRead;
-            enabled = NO;
+        case 4:
+            newSortType = kSCHBookSortTypeLastRead;
             break;
         default:
             break;
     }
     
-    if (enabled && self.delegate && [self.delegate respondsToSelector:@selector(sortPopoverPickedSortType:)]) {
+    if (self.delegate && [self.delegate respondsToSelector:@selector(sortPopoverPickedSortType:)]) {
         [self.delegate sortPopoverPickedSortType:newSortType];
     }
 }
 
-- (CGSize) contentSizeForViewInPopover
+- (CGSize)contentSizeForViewInPopover
 {
-    CGFloat height = (10 * 44) + 44 + 10;
+    CGFloat height = ([sortTypeArray count] * 44);
     return CGSizeMake(320, height);
 }
 

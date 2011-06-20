@@ -139,9 +139,27 @@ static NSString *attribute(const XML_Char **atts, const char *key)
 {
     if (strcmp(name, "Question") == 0) {
         [parser beginQuestion:[SCHStoryInteractionAboutYouQuizQuestion class]];
+    } else if (strcmp(name, "Introduction") == 0) {
+        self.introduction = attribute(attributes, "Transcript");
     } else if (strcmp(name, "OutcomeMessage") == 0) {
         NSString *outcomeMessage = attribute(attributes, "Transcript");
         [parser.array addObject:outcomeMessage];
+    } else if (strcmp(name, "TiebreakOrder") == 0) {
+        NSString *orderString = attribute(attributes, "Transcript");
+        
+        NSMutableArray *convertedOrder = [NSMutableArray array];
+        
+        NSArray *items = [orderString componentsSeparatedByString:@","];
+        
+        for (NSString *item in items) {
+            if (item && [item length] > 0) {
+                NSInteger charValue = [item UTF8String] [0] - 65;
+                [convertedOrder addObject:[NSNumber numberWithInt:charValue]];
+            }
+        }
+
+        self.tiebreakOrder = [NSArray arrayWithArray:convertedOrder];
+        
     } else {
         [super startElement:name attributes:attributes parser:parser];
     }
@@ -492,15 +510,15 @@ static NSString *attribute(const XML_Char **atts, const char *key)
         self.bookTitle = attribute(attributes, "Phrase");
     } else if (strcmp(name, "Words") == 0) {
         NSArray *words = [attribute(attributes, "Words") componentsSeparatedByString:@","];
-        NSMutableArray *trimmedWords = [[NSMutableArray alloc] initWithCapacity:[words count]];
+        NSMutableSet *trimmedWords = [[NSMutableSet alloc] initWithCapacity:[words count]];
         NSCharacterSet *whitespaceAndNewline = [NSCharacterSet whitespaceAndNewlineCharacterSet];
         for (NSString *word in words) {
             NSString *trimmedWord = [word stringByTrimmingCharactersInSet:whitespaceAndNewline];
             if ([trimmedWord length] > 0) {
-                [trimmedWords addObject:trimmedWord];
+                [trimmedWords addObject:[trimmedWord uppercaseString]];
             }
         }
-        self.words = [NSArray arrayWithArray:trimmedWords];
+        self.words = [NSSet setWithSet:trimmedWords];
         [trimmedWords release];
     } else {
         [super startElement:name attributes:attributes parser:parser];

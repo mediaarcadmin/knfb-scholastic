@@ -8,10 +8,19 @@
 
 #import "SCHStoryInteractionVideo.h"
 
+#import "KNFBXPSConstants.h"
+
 @implementation SCHStoryInteractionVideo
 
 @synthesize videoTranscript;
 @synthesize videoFilename;
+
+- (id)init
+{
+    self = [super init];
+    [self release];
+    return nil;
+}
 
 - (void)dealloc
 {
@@ -25,9 +34,15 @@
     return @"Video";
 }
 
+- (NSString *)audioPathForQuestion
+{
+    NSString *filename = [NSString stringWithFormat:@"%@_intro.mp3", self.ID];
+    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:filename];
+}
+
 - (NSString *)videoPath
 {
-    return [[SCHStoryInteraction resourcesPath] stringByAppendingPathComponent:self.videoFilename];
+    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:self.videoFilename];
 }
 
 @end

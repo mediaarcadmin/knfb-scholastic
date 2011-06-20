@@ -14,6 +14,7 @@
 #import "SCHReadingInteractionsListController.h"
 #import "SCHReadingNoteView.h"
 #import "SCHStoryInteractionControllerDelegate.h"
+#import <AVFoundation/AVAudioPlayer.h>
 
 typedef enum 
 {
@@ -33,8 +34,12 @@ typedef enum
 
 @interface SCHReadingViewController : UIViewController <SCHReadingViewDelegate, SCHReadingNotesListControllerDelegate, 
 SCHReadingNoteViewDelegate, SCHReadingInteractionsListControllerDelegate, SCHAudioBookPlayerDelegate, UIPopoverControllerDelegate,
-SCHStoryInteractionControllerDelegate> 
+SCHStoryInteractionControllerDelegate, AVAudioPlayerDelegate> 
 {}
+UIView *storyInteractionButtonView;
+
+UIButton *storyInteractionButton;
+
 UISegmentedControl *paperTypePopoverSegmentedControl;
 
 
@@ -50,6 +55,7 @@ UISegmentedControl *paperTypePopoverSegmentedControl;
 @property (nonatomic, retain) IBOutlet UIButton *backButton;
 @property (nonatomic, retain) IBOutlet UIButton *audioButton;
 @property (nonatomic, retain) IBOutlet UIButton *notesButton;
+@property (nonatomic, retain) IBOutlet UIButton *storyInteractionsListButton;
 @property (nonatomic, retain) IBOutlet SCHCustomToolbar *scrubberToolbar;
 @property (nonatomic, retain) IBOutlet SCHCustomToolbar *olderBottomToolbar;
 @property (nonatomic, retain) IBOutlet UIImageView *topShadow;
@@ -68,6 +74,9 @@ UISegmentedControl *paperTypePopoverSegmentedControl;
 @property (nonatomic, retain) IBOutlet UISegmentedControl *flowFixedSegmentedControl;
 @property (nonatomic, retain) IBOutlet UISegmentedControl *flowFixedPopoverSegmentedControl;
 @property (nonatomic, retain) IBOutlet UISegmentedControl *paperTypePopoverSegmentedControl;
+
+@property (nonatomic, retain) IBOutlet UIButton *storyInteractionButton;
+@property (nonatomic, retain) IBOutlet UIView *storyInteractionButtonView;
 
 
 -(id)initWithNibName:(NSString *)nibNameOrNil 

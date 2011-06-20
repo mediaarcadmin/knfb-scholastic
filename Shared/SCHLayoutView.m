@@ -112,7 +112,11 @@
         CGRect myBounds = self.bounds;
         if(myBounds.size.width > myBounds.size.height) {
             pageTurningView.twoUp = YES;
-            pageTurningView.potentiallyVisiblePageEdgeCount = LAYOUT_LANDSCAPE_PAGE_EDGE_COUNT;
+            if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+                pageTurningView.potentiallyVisiblePageEdgeCount = LAYOUT_LANDSCAPE_PAGE_EDGE_COUNT;
+            } else {
+                pageTurningView.potentiallyVisiblePageEdgeCount = 0;
+            }
         } else {
             pageTurningView.twoUp = NO;
             pageTurningView.potentiallyVisiblePageEdgeCount = 0;
@@ -158,7 +162,11 @@
     CGRect myBounds = self.bounds;
     if(myBounds.size.width > myBounds.size.height) {
         self.pageTurningView.twoUp = YES;      
-        self.pageTurningView.potentiallyVisiblePageEdgeCount = LAYOUT_LANDSCAPE_PAGE_EDGE_COUNT;
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            pageTurningView.potentiallyVisiblePageEdgeCount = LAYOUT_LANDSCAPE_PAGE_EDGE_COUNT;
+        } else {
+            pageTurningView.potentiallyVisiblePageEdgeCount = 0;
+        }
     } else {
         self.pageTurningView.twoUp = NO;
         self.pageTurningView.potentiallyVisiblePageEdgeCount = 0;
@@ -513,6 +521,11 @@
 }
 
 #pragma mark - EucPageTurningViewDelegate
+
+- (void)pageTurningViewWillBeginPageTurn:(EucPageTurningView *)pageTurningView
+{
+    [self.delegate readingViewFixedViewWillBeginTurning:self];
+}
 
 - (void)pageTurningViewDidEndPageTurn:(EucPageTurningView *)aPageTurningView
 {
@@ -950,7 +963,6 @@ CGAffineTransform transformRectToFitRect(CGRect sourceRect, CGRect targetRect, B
     CGRect viewBounds = self.pageTurningView.bounds;
     CGFloat zoomScale = CGRectGetWidth(viewBounds) / CGRectGetWidth(targetRect);
 	
-    zoomScale = CGRectGetWidth(viewBounds) / CGRectGetWidth(targetRect);
     *scale = zoomScale;
     
     CGRect cropRect = [self cropForPage:pageIndex + 1 allowEstimate:YES];

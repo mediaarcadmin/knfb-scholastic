@@ -142,6 +142,7 @@
 
 - (void)clear
 {
+    [super clear];
 	NSError *error = nil;
 	
 	if (![self.managedObjectContext BITemptyEntity:kSCHAnnotationsItem error:&error]) {

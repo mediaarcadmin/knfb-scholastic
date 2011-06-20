@@ -15,6 +15,7 @@
 @class SCHContentProfileItem;
 @class SCHPrivateAnnotations;
 @class SCHBookAnnotations;
+@class SCHContentMetadataItem;
 
 static NSString * const kSCHProfileItem = @"SCHProfileItem";
 
@@ -24,7 +25,6 @@ static NSString * const kSCHProfileItemCONTENT_IDENTIFIER = @"CONTENT_IDENTIFIER
 
 typedef enum {
     kSCHBookSortTypeUser,
-    kSCHBookSortTypeFavorites,
     kSCHBookSortTypeTitle,
     kSCHBookSortTypeAuthor,
     kSCHBookSortTypeNewest,
@@ -52,6 +52,8 @@ typedef enum {
 @property (nonatomic, retain) NSSet* AppBookOrder;
 @property (nonatomic, retain) SCHAppProfile * AppProfile;
 
+@property (nonatomic, readonly) NSUInteger age;
+
 - (NSMutableArray *)allISBNs;
 - (SCHBookAnnotations *)annotationsForBook:(NSString *)isbn;
 - (void)saveBookOrder:(NSArray *)books;
@@ -72,5 +74,13 @@ typedef enum {
 - (void)removeAppBookOrderObject:(SCHAppBookOrder *)value;
 - (void)addAppBookOrder:(NSSet *)value;
 - (void)removeAppBookOrder:(NSSet *)value;
+
+@end
+
+
+@interface SCHProfileItemSortObject : NSObject
+
+@property (nonatomic, retain) SCHContentMetadataItem *item;
+@property (nonatomic, retain) NSDate *date;
 
 @end

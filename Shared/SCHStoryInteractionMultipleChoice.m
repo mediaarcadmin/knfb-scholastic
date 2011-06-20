@@ -8,6 +8,8 @@
 
 #import "SCHStoryInteractionMultipleChoice.h"
 
+#import "KNFBXPSConstants.h"
+
 @implementation SCHStoryInteractionMultipleChoiceQuestion
 
 @synthesize storyInteraction;
@@ -26,24 +28,24 @@
 - (NSString *)audioPathForQuestion
 {
     NSString *filename = [NSString stringWithFormat:@"%@_q%d.mp3", self.storyInteraction.ID, self.questionIndex+1];
-    return [[SCHStoryInteraction resourcesPath] stringByAppendingPathComponent:filename];
+    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:filename];
 }
 
 - (NSString *)audioPathForAnswerAtIndex:(NSInteger)answerIndex
 {
     NSString *filename = [NSString stringWithFormat:@"%@_q%da%d.mp3", self.storyInteraction.ID, self.questionIndex+1, answerIndex+1];
-    return [[SCHStoryInteraction resourcesPath] stringByAppendingPathComponent:filename];
+    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:filename];
 }
 
 - (NSString *)audioPathForIncorrectAnswer
 {
-    return [[SCHStoryInteraction resourcesPath] stringByAppendingPathComponent:@"gen_tryagain.mp3"];
+    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:@"gen_tryagain.mp3"];
 }
 
 - (NSString *)audioPathForCorrectAnswer
 {
     NSString *filename = [NSString stringWithFormat:@"%@_ca%d.mp3", self.storyInteraction.ID, self.questionIndex+1];
-    return [[SCHStoryInteraction resourcesPath] stringByAppendingPathComponent:filename];
+    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:filename];
 }
 
 @end
@@ -65,6 +67,18 @@
 {
     return @"Multiple Choice";
 }
+
+- (NSString *)audioPathForQuestion
+{
+    NSString *filename = [NSString stringWithFormat:@"%@_intro.mp3", self.ID];
+    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:filename];
+}
+
+- (NSInteger)questionCount
+{
+    return [[self questions] count];
+}
+
 
 @end
 

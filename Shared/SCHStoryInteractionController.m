@@ -6,45 +6,44 @@
 //  Copyright 2011 BitWink. All rights reserved.
 //
 
+#import <QuartzCore/QuartzCore.h>
+
 #import "SCHStoryInteractionController.h"
 #import "SCHStoryInteractionTypes.h"
 #import "SCHStoryInteractionControllerMultipleChoiceText.h"
 #import "SCHStoryInteractionControllerDelegate.h"
 #import "SCHStoryInteractionDraggableView.h"
 #import "SCHXPSProvider.h"
-
-#define kBackgroundLeftCap 10
-#define kBackgroundTopCap_iPhone 40
-#define kBackgroundTopCap_iPad 50
-#define kContentsInsetLeft 5
-#define kContentsInsetRight 5
-#define kContentsInsetTop_iPhone 36
-#define kContentsInsetTop_iPad 46
-#define kContentsInsetBottom 5
-#define kTitleInsetLeft 10
-#define kTitleInsetTop 5
+#import "SCHBookManager.h"
+#import "SCHQueuedAudioPlayer.h"
 
 @interface SCHStoryInteractionController ()
 
+@property (nonatomic, assign) UIInterfaceOrientation interfaceOrientation;
 @property (nonatomic, retain) NSArray *nibObjects;
-@property (nonatomic, retain) UIView *contentsView;
+@property (nonatomic, assign) NSInteger currentScreenIndex;
+@property (nonatomic, retain) UILabel *titleView;
+@property (nonatomic, retain) UIButton *readAloudButton;
 @property (nonatomic, retain) UIImageView *backgroundView;
-
-- (UIImage *)deviceSpecificImageNamed:(NSString *)name;
-- (void)updateOrientation;
+@property (nonatomic, retain) SCHQueuedAudioPlayer *audioPlayer;
 
 @end
 
 @implementation SCHStoryInteractionController
 
 @synthesize xpsProvider;
+@synthesize isbn;
 @synthesize containerView;
+@synthesize titleView;
+@synthesize readAloudButton;
 @synthesize nibObjects;
+@synthesize currentScreenIndex;
 @synthesize contentsView;
 @synthesize backgroundView;
 @synthesize storyInteraction;
 @synthesize delegate;
 @synthesize interfaceOrientation;
+@synthesize audioPlayer;
 
 + (SCHStoryInteractionController *)storyInteractionControllerForStoryInteraction:(SCHStoryInteraction *)storyInteraction
 {
@@ -52,21 +51,29 @@
     NSString *controllerClassName = [NSString stringWithFormat:@"%@Controller%@", [className substringToIndex:19], [className substringFromIndex:19]];
     Class controllerClass = NSClassFromString(controllerClassName);
     if (!controllerClass) {
-        NSLog(@"Can't find controller class for %@", controllerClassName);
-        return nil;
+        controllerClassName = [controllerClassName stringByAppendingString:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @"_iPad" : @"_iPhone")];
+        controllerClass = NSClassFromString(controllerClassName);
+        if (!controllerClass) {
+            NSLog(@"Can't find controller class for %@", controllerClassName);
+            return nil;
+        }
     }
     return [[[controllerClass alloc] initWithStoryInteraction:storyInteraction] autorelease];
 }
 
 - (void)dealloc
 {
-    [self removeFromHostView];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
     [xpsProvider release];
     [containerView release];
+    [titleView release], titleView = nil;
+    [readAloudButton release];
     [nibObjects release];
     [contentsView release];
     [backgroundView release];
     [storyInteraction release];
+    [audioPlayer release];
     [super dealloc];
 }
 
@@ -83,72 +90,118 @@
             NSLog(@"failed to load nib %@", nibName);
             return nil;
         }
+
+        SCHQueuedAudioPlayer *player = [[SCHQueuedAudioPlayer alloc] init];
+        self.audioPlayer = player;
+        [player release];
+        
+        currentScreenIndex = 0;
+        
+        // register for going into the background
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(willResignActiveNotification:)
+                                                     name:UIApplicationWillResignActiveNotification
+                                                   object:nil];
+        
     }
     return self;
 }
 
-- (void)presentInHostView:(UIView *)hostView
+- (void)presentInHostView:(UIView *)hostView withInterfaceOrientation:(UIInterfaceOrientation)aInterfaceOrientation
 {
+    BOOL iPad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
+    UIEdgeInsets contentInsets;
+    UIEdgeInsets titleInsets;
+    CGPoint closePosition;     // relative to top-left corner
+    CGPoint readAloudPosition; // relative to top-right corner
+    if (iPad) {
+        contentInsets = UIEdgeInsetsMake(130, 40, 40, 40);
+        titleInsets = UIEdgeInsetsMake(45, 65, 21, 65);
+        closePosition = [self.storyInteraction isOlderStoryInteraction] ? CGPointMake(3, -8) : CGPointMake(9, -17);
+        readAloudPosition = CGPointMake(-5, 5);
+    } else {
+        contentInsets = UIEdgeInsetsMake(70, 5, 5, 5);
+        titleInsets = UIEdgeInsetsMake(5, 50, 5, 50);
+        closePosition = CGPointMake(10, 7);
+        readAloudPosition = CGPointMake(-13, 15);
+    }
+    
     if (self.containerView == nil) {
+        self.xpsProvider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.isbn];
         
-        BOOL iPad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
+        NSString *questionAudioPath = [self audioPathForQuestion];
+        [self playBundleAudioWithFilename:[storyInteraction storyInteractionOpeningSoundFilename]
+                               completion:^{
+                                   if (questionAudioPath && [self shouldPlayQuestionAudioForViewAtIndex:self.currentScreenIndex]) {
+                                       [self playAudioAtPath:questionAudioPath completion:nil];
+                                   }
+                               }];
         
-        int kBackgroundTopCap, kContentsInsetTop;
-        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-            kBackgroundTopCap = kBackgroundTopCap_iPhone;
-            kContentsInsetTop = kContentsInsetTop_iPhone;
-        } else {
-            kBackgroundTopCap = kBackgroundTopCap_iPad;
-            kContentsInsetTop = kContentsInsetTop_iPad;
-        }
-
         // set up the transparent full-size container to trap touch events before they get
         // to the underlying view; this effectively makes the story interaction modal
         UIView *container = [[UIView alloc] initWithFrame:CGRectIntegral(hostView.bounds)];
-        container.backgroundColor = [UIColor clearColor];
+        container.backgroundColor = [UIColor colorWithWhite:0 alpha:0.5];
         container.userInteractionEnabled = YES;
         
         NSString *age = [self.storyInteraction isOlderStoryInteraction] ? @"older" : @"younger";
-        UIImage *backgroundImage = [self deviceSpecificImageNamed:[NSString stringWithFormat:@"storyinteraction-bg-%@", age]];
-        UIImage *backgroundStretch = [backgroundImage stretchableImageWithLeftCapWidth:kBackgroundLeftCap topCapHeight:kBackgroundTopCap];
+        UIImage *backgroundImage = [UIImage imageNamed:[NSString stringWithFormat:@"storyinteraction-bg-%@", age]];
+        UIImage *backgroundStretch = [backgroundImage stretchableImageWithLeftCapWidth:backgroundImage.size.width/2-1
+                                                                          topCapHeight:backgroundImage.size.height/2-1];
         UIImageView *background = [[UIImageView alloc] initWithImage:backgroundStretch];
-        
-        // first object in the NIB must be the container view for the interaction
-        self.contentsView = [self.nibObjects objectAtIndex:0];
-        CGFloat backgroundWidth = MIN(CGRectGetWidth(self.contentsView.bounds) + kContentsInsetLeft + kContentsInsetRight, CGRectGetWidth(hostView.bounds));
-        CGFloat backgroundHeight = MIN(CGRectGetHeight(self.contentsView.bounds) + kContentsInsetTop + kContentsInsetBottom, CGRectGetHeight(hostView.bounds));
-        
+        background.contentMode = UIViewContentModeScaleToFill;
         background.userInteractionEnabled = YES;
-        background.bounds = CGRectIntegral(CGRectMake(0, 0, backgroundWidth, backgroundHeight));
-        background.center = CGPointMake(floor(CGRectGetMidX(container.bounds)), floor(CGRectGetMidY(container.bounds)));
-        self.contentsView.center = CGPointMake(floor(backgroundWidth/2), floor((backgroundHeight-kContentsInsetTop-kContentsInsetBottom)/2+kContentsInsetTop));
-        [background addSubview:self.contentsView];
         [container addSubview:background];
+       
+        UILabel *title = [[UILabel alloc] initWithFrame:CGRectZero];
+        title.backgroundColor = [UIColor clearColor];
         
-        UILabel *titleView = [[UILabel alloc] initWithFrame:CGRectIntegral(CGRectMake(kTitleInsetLeft, kTitleInsetTop,
-                                                                                      backgroundWidth - kTitleInsetLeft*2,
-                                                                                      kContentsInsetTop - kTitleInsetTop*2))];
-        titleView.backgroundColor = [UIColor clearColor];
-        titleView.font = [UIFont boldSystemFontOfSize:iPad ? 24 : 18];
-        titleView.text = [self.storyInteraction interactionViewTitle];
-        titleView.textAlignment = UITextAlignmentCenter;
-        titleView.textColor = iPad ? [UIColor whiteColor] : [UIColor colorWithRed:0.113 green:0.392 blue:0.690 alpha:1.];
-        titleView.adjustsFontSizeToFitWidth = YES;
-        [background addSubview:titleView];
-        [titleView release];
+        BOOL hasShadow = NO;
         
+        if (iPad) {
+            if ([age isEqualToString:@"younger"]) {
+                title.font = [UIFont fontWithName:@"Arial-BoldMT" size:22];
+            } else {
+                hasShadow = YES;
+                title.font = [UIFont fontWithName:@"Arial Black" size:30];
+            }
+        } else {
+            if ([age isEqualToString:@"younger"]) {
+                title.font = [UIFont fontWithName:@"Arial-BoldMT" size:17];
+            } else {
+                hasShadow = YES;
+                title.font = [UIFont fontWithName:@"Arial Black" size:25];
+            }
+        }
+        title.textAlignment = UITextAlignmentCenter;
+        title.textColor = [self.storyInteraction isOlderStoryInteraction] ? [UIColor whiteColor] : [UIColor colorWithRed:0.113 green:0.392 blue:0.690 alpha:1.];
+        title.adjustsFontSizeToFitWidth = YES;
+        title.numberOfLines = 2;
+        if (hasShadow) {
+            title.layer.shadowOpacity = 0.7f;
+            title.layer.shadowRadius = 2;
+            title.layer.shadowOffset = CGSizeZero;
+        }
+
+        self.titleView = title;
+        [background addSubview:title];
+        [title release];
+        
+        UIImage *closeImage = [UIImage imageNamed:[NSString stringWithFormat:@"storyinteraction-bolt-%@", age]];
         UIButton *closeButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        closeButton.frame = CGRectMake(-10, -10, 30, 30);
-        [closeButton setImage:[UIImage imageNamed:@"storyinteraction-close"] forState:UIControlStateNormal];
+        closeButton.bounds = (CGRect){ CGPointZero, closeImage.size };
+        closeButton.center = CGPointMake(floorf(closePosition.x+closeImage.size.width/2), floorf(closePosition.y+closeImage.size.height/2));
+        [closeButton setImage:closeImage forState:UIControlStateNormal];
         [closeButton addTarget:self action:@selector(closeButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
         [background addSubview:closeButton];
 
-        if ([self.storyInteraction isOlderStoryInteraction] == NO) {
+        if (questionAudioPath) {
+            UIImage *readAloudImage = [UIImage imageNamed:@"storyinteraction-read-aloud"];
             UIButton *audioButton = [UIButton buttonWithType:UIButtonTypeCustom];
-            audioButton.frame = CGRectMake(backgroundWidth - 20, -10, 30, 30);
-            [audioButton setImage:[UIImage imageNamed:@"icon-play.png"] forState:UIControlStateNormal];
+            audioButton.bounds = (CGRect){ CGPointZero, readAloudImage.size };
+            [audioButton setImage:readAloudImage forState:UIControlStateNormal];
             [audioButton addTarget:self action:@selector(playAudioButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
             [background addSubview:audioButton];
+            self.readAloudButton = audioButton;
         }
         
         self.containerView = container;
@@ -156,38 +209,103 @@
         [container release];
         [background release];
 
-        // any other views in the nib are added to the title bar
-        NSInteger x = backgroundWidth - kContentsInsetRight;
-        for (NSUInteger i = [self.nibObjects count]-1; i > 0; --i) {
-            UIView *view = [self.nibObjects objectAtIndex:i];
-            CGRect viewFrame = view.frame;
-            viewFrame.origin.x = floor(x - viewFrame.size.width);
-            viewFrame.origin.y = floor((kContentsInsetTop - viewFrame.size.height) / 2);
-            view.frame = viewFrame;
-            [self.backgroundView addSubview:view];
-            x -= viewFrame.size.width + 5;
-        }
+        [hostView addSubview:self.containerView];
+    }
+
+    // put multiple views at the top-level in the nib for multi-screen interactions
+    UIView *newContentsView = [self.nibObjects objectAtIndex:self.currentScreenIndex];
+    if (!iPad && (CGRectGetWidth(newContentsView.bounds) > 470 || CGRectGetHeight(newContentsView.bounds) > 250)) {
+        NSLog(@"contentView %d is too large: %@", self.currentScreenIndex, NSStringFromCGRect(newContentsView.bounds));
+    }
+
+    dispatch_block_t setupGeometry = ^{
+        UIImage *backgroundImage = self.backgroundView.image;
+        CGFloat backgroundWidth = MAX(backgroundImage.size.width, CGRectGetWidth(newContentsView.bounds) + contentInsets.left + contentInsets.right);
+        CGFloat backgroundHeight = MAX(backgroundImage.size.height, CGRectGetHeight(newContentsView.bounds) + contentInsets.top + contentInsets.bottom);
         
-        [self setupView];
+        self.backgroundView.bounds = CGRectIntegral(CGRectMake(0, 0, backgroundWidth, backgroundHeight));
+//        self.backgroundView.bounds = CGRectIntegral(CGRectMake(0, 0, 362, 362));
+
+        self.backgroundView.center = CGPointMake(floorf(CGRectGetMidX(self.containerView.bounds)), floorf(CGRectGetMidY(self.containerView.bounds)));
+        newContentsView.center = CGPointMake(floorf(backgroundWidth/2), floorf((backgroundHeight-contentInsets.top-contentInsets.bottom)/2+contentInsets.top));
+        
+        self.titleView.frame = UIEdgeInsetsInsetRect(CGRectMake(0, 0, backgroundWidth, contentInsets.top), titleInsets);
+        
+        self.readAloudButton.center = CGPointMake(floorf(backgroundWidth+readAloudPosition.x-CGRectGetMidX(self.readAloudButton.bounds)),
+                                                  floorf(readAloudPosition.y+CGRectGetMidX(self.readAloudButton.bounds)));
+        
+        self.contentsView.alpha = 0;
+        newContentsView.alpha = 1;
+        newContentsView.transform = CGAffineTransformIdentity;
+    };
+
+    if (self.contentsView != nil) {
+        // animate the transition between screens
+        UIView *oldContentsView = self.contentsView;
+        newContentsView.alpha = 0;
+        newContentsView.transform = CGAffineTransformMakeScale(CGRectGetWidth(oldContentsView.bounds)/CGRectGetWidth(newContentsView.bounds),
+                                                               CGRectGetHeight(oldContentsView.bounds)/CGRectGetHeight(newContentsView.bounds));
+        newContentsView.center = oldContentsView.center;
+        [self.backgroundView addSubview:newContentsView];
+        [UIView animateWithDuration:0.3
+                         animations:setupGeometry
+                         completion:^(BOOL finished) {
+                             [oldContentsView removeFromSuperview];
+                         }];
+    } else {
+        setupGeometry();
+        [self.backgroundView addSubview:newContentsView];
     }
     
-    [hostView addSubview:self.containerView];
-    [self updateOrientation];
+    self.contentsView = newContentsView;
+    [self setTitle:[self.storyInteraction interactionViewTitle]];
+
+    [self setupViewAtIndex:self.currentScreenIndex];
+    [self didRotateToInterfaceOrientation:aInterfaceOrientation];
 }
 
-- (void)updateOrientation
+- (void)presentNextView
+{
+    UIView *host = [self.containerView superview];
+    self.currentScreenIndex = (self.currentScreenIndex + 1) % [self.nibObjects count];
+    [self presentInHostView:host withInterfaceOrientation:self.interfaceOrientation];
+}
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
     if (!self.containerView.superview) {
         return;
     }
-    CGRect superviewBounds = self.containerView.superview.bounds;
-    BOOL rotate;
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        rotate = UIInterfaceOrientationIsLandscape(self.interfaceOrientation);
-    } else {
-        rotate = UIInterfaceOrientationIsPortrait(self.interfaceOrientation);
+    
+    CGFloat superviewWidth = CGRectGetWidth(self.containerView.superview.bounds);
+    CGFloat superviewHeight = CGRectGetHeight(self.containerView.superview.bounds);
+    CGRect superviewBounds = CGRectMake(0, 0, MAX(superviewWidth, superviewHeight), MIN(superviewWidth, superviewHeight));
+    CGPoint superviewCenter = CGPointMake(floorf(CGRectGetMidX(superviewBounds)), floorf(CGRectGetMidY(superviewBounds)));
+
+    [UIView animateWithDuration:duration
+                     animations:^{
+                         if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation) && UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
+                             self.containerView.transform = CGAffineTransformIdentity;
+                             self.containerView.center = superviewCenter;
+                         }
+                         if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation) && UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {
+                             CGFloat portraitOffset = (superviewWidth - superviewHeight)/2;
+                             self.containerView.transform = CGAffineTransformMakeRotation(-M_PI/2);
+                             self.containerView.center = CGPointMake(superviewCenter.x-portraitOffset, superviewCenter.y+portraitOffset);
+                         }
+                         self.containerView.bounds = CGRectIntegral(superviewBounds);
+                         self.backgroundView.center = superviewCenter;
+                     }];
+}
+
+- (void)didRotateToInterfaceOrientation:(UIInterfaceOrientation)aToInterfaceOrientation
+{
+    self.interfaceOrientation = aToInterfaceOrientation;
+    if (!self.containerView.superview) {
+        return;
     }
-    if (rotate) {
+    CGRect superviewBounds = self.containerView.superview.bounds;
+    if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
         self.containerView.transform = CGAffineTransformMakeRotation(-M_PI/2);
         self.containerView.bounds = CGRectIntegral(CGRectMake(0, 0, CGRectGetHeight(superviewBounds), CGRectGetWidth(superviewBounds)));
     } else {
@@ -196,67 +314,141 @@
     }
     self.containerView.center = CGPointMake(floor(CGRectGetMidX(superviewBounds)), floor(CGRectGetMidY(superviewBounds)));
     self.backgroundView.center = CGPointMake(floor(CGRectGetMidX(self.containerView.bounds)), floor(CGRectGetMidY(self.containerView.bounds)));
-
-    NSLog(@"hostView.center = %@ .bounds = %@", NSStringFromCGPoint(self.containerView.superview.center), NSStringFromCGRect(superviewBounds));
-    NSLog(@"containerView.center = %@ .bounds = %@", NSStringFromCGPoint(self.containerView.center), NSStringFromCGRect(self.containerView.bounds));
-    NSLog(@"backgroundView.center = %@ .bounds = %@", NSStringFromCGPoint(self.backgroundView.center), NSStringFromCGRect(self.backgroundView.bounds));
-    NSLog(@"contentsView.center = %@ .bounds = %@", NSStringFromCGPoint(self.contentsView.center), NSStringFromCGRect(self.contentsView.bounds));
-}
-
-- (void)setInterfaceOrientation:(UIInterfaceOrientation)aInterfaceOrientation
-{
-    interfaceOrientation = aInterfaceOrientation;
-    [self updateOrientation];
 }
 
 - (void)closeButtonTapped:(id)sender
 {
-    [self removeFromHostView];
+    [self removeFromHostViewWithSuccess:NO];
 }
+
+- (void)setUserInteractionsEnabled:(BOOL)enabled
+{
+    NSLog(@"user interactions enabled = %d", enabled);
+    self.containerView.superview.userInteractionEnabled = enabled;
+    self.containerView.userInteractionEnabled = enabled;
+}
+
+#pragma mark - Notification methods
+
+- (void)willResignActiveNotification:(NSNotification *)notification
+{
+    [self.audioPlayer cancel];
+}
+
+- (void)removeFromHostViewWithSuccess:(BOOL)success
+{
+    [self cancelQueuedAudio];
+    
+    [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.isbn];
+    
+    // always, always re-enable user interactions for the superview...
+    [self setUserInteractionsEnabled:YES];
+    
+    [self.containerView removeFromSuperview];
+    
+    if (delegate && [delegate respondsToSelector:@selector(storyInteractionController:didDismissWithSuccess:)]) {
+        // may result in self being dealloc'ed so don't do anything else after this
+        [delegate storyInteractionController:self didDismissWithSuccess:success];
+    }
+}
+
+#pragma mark - Audio methods
 
 - (IBAction)playAudioButtonTapped:(id)sender
 {
-    NSLog(@"Playing audio"); 
+    NSString *path = [self audioPathForQuestion];
+    if (path != nil) {
+        [self playAudioAtPath:path completion:nil];
+    }   
 }
-
-- (void)removeFromHostView
-{
-    [self.containerView removeFromSuperview];
-    
-    if (delegate && [delegate respondsToSelector:@selector(storyInteractionControllerDidDismiss:)]) {
-        // may result in self being dealloc'ed so don't do anything else after this
-        [delegate storyInteractionControllerDidDismiss:self];
-    }
-}
-
-- (UIImage *)deviceSpecificImageNamed:(NSString *)name
-{
-    // most images have device-specific versions
-    UIImage *image = [UIImage imageNamed:[name stringByAppendingString:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone ? @"-iphone" : @"-ipad")]];
-    if (!image) {
-        // not found; look for a common image
-        image = [UIImage imageNamed:name];
-    }
-    return image;
-}
-
-#pragma mark - XPSProvider accessors
 
 - (void)playAudioAtPath:(NSString *)path completion:(void (^)(void))completion
 {
-    // for now just defer the completion block
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 2 * NSEC_PER_SEC);
-    dispatch_after(popTime, dispatch_get_current_queue(), completion);
+    [self.audioPlayer cancel];
+    [self enqueueAudioWithPath:path fromBundle:NO startDelay:0 synchronizedStartBlock:nil synchronizedEndBlock:completion];
 }
+
+- (void)playBundleAudioWithFilename:(NSString *)filename completion:(void (^)(void))completion
+{
+    [self.audioPlayer cancel];
+    [self enqueueAudioWithPath:filename fromBundle:YES startDelay:0 synchronizedStartBlock:nil synchronizedEndBlock:completion];
+}
+
+- (void)enqueueAudioWithPath:(NSString *)path
+                  fromBundle:(BOOL)fromBundle
+                  startDelay:(NSTimeInterval)startDelay
+      synchronizedStartBlock:(dispatch_block_t)startBlock
+        synchronizedEndBlock:(dispatch_block_t)endBlock
+{
+    [self.audioPlayer enqueueGap:startDelay];
+    
+    SCHQueuedAudioPlayerFetchBlock fetchBlock;
+    if (fromBundle) {
+        fetchBlock = ^NSData*(void){
+            NSString *bundlePath = [[NSBundle mainBundle] pathForResource:path ofType:@""];
+            NSError *error = nil;
+            NSData *data = [NSData dataWithContentsOfFile:bundlePath options:NSDataReadingMapped error:&error];
+            if (!data) {
+                NSLog(@"failed to read %@: %@", bundlePath, error);
+            }
+            return data;
+        };
+    } else {
+        fetchBlock = ^NSData*(void){
+            return [self.xpsProvider dataForComponentAtPath:path];
+        };
+    }
+
+    [self.audioPlayer enqueueAudioTaskWithFetchBlock:fetchBlock synchronizedStartBlock:startBlock synchronizedEndBlock:endBlock];
+}
+
+- (void)enqueueAudioWithPath:(NSString *)path fromBundle:(BOOL)fromBundle
+{
+    [self enqueueAudioWithPath:path fromBundle:fromBundle startDelay:0 synchronizedStartBlock:nil synchronizedEndBlock:nil];
+}
+
+
+- (BOOL)playingAudio
+{
+    return [self.audioPlayer isPlaying];
+}
+
+- (void)cancelQueuedAudio
+{
+    [self.audioPlayer cancel];
+}
+
+
+#pragma mark - XPSProvider accessors
 
 - (UIImage *)imageAtPath:(NSString *)path
 {
-    return nil;
+    NSData *imageData = [self.xpsProvider dataForComponentAtPath:path];
+    UIImage *image = [UIImage imageWithData:imageData];
+    return image;
+}
+
+#pragma mark - Story Interaction accessors
+
+- (void)setTitle:(NSString *)title
+{
+    self.titleView.text = title;
 }
 
 #pragma mark - subclass overrides
 
-- (void)setupView
+- (void)setupViewAtIndex:(NSInteger)screenIndex
 {}
 
+- (BOOL)shouldPlayQuestionAudioForViewAtIndex:(NSInteger)screenIndex
+{
+    return YES;
+}
+
+- (NSString *)audioPathForQuestion
+{
+    return [self.storyInteraction audioPathForQuestion];
+}
+
 @end
+

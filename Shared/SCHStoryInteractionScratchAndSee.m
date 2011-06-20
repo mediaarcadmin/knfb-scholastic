@@ -8,6 +8,8 @@
 
 #import "SCHStoryInteractionScratchAndSee.h"
 
+#import "KNFBXPSConstants.h"
+
 #pragma mark - SCHStoryInteractionScratchAndSeeQuestion
 
 @implementation SCHStoryInteractionScratchAndSeeQuestion
@@ -22,27 +24,22 @@
     [super dealloc];
 }
 
-- (NSString *)title
-{
-    return @"Scratch And See";
-}
-
 - (NSString *)imagePath
 {
     NSString *filename = [NSString stringWithFormat:@"%@_q%d.png", self.storyInteraction.ID, self.questionIndex+1];
-    return [[SCHStoryInteraction resourcesPath] stringByAppendingPathComponent:filename];
+    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:filename];
 }
 
 - (NSString *)audioPathForAnswerAtIndex:(NSInteger)index
 {
     NSString *filename = [NSString stringWithFormat:@"%@_q%da%d.mp3", self.storyInteraction.ID, self.questionIndex+1, index+1];
-    return [[SCHStoryInteraction resourcesPath] stringByAppendingPathComponent:filename];
+    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:filename];
 }
 
 - (NSString *)correctAnswerAudioPath
 {
     NSString *filename = [NSString stringWithFormat:@"%@_ca%d.mp3", self.storyInteraction.ID, self.questionIndex+1];
-    return [[SCHStoryInteraction resourcesPath] stringByAppendingPathComponent:filename];
+    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:filename];
 }
 
 @end
@@ -54,6 +51,34 @@
 
 @synthesize introduction;
 @synthesize questions;
+
+- (NSString *)audioPathForQuestion
+{
+    NSString *filename = [NSString stringWithFormat:@"gen_scratchaway.mp3"];
+    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:filename];
+}
+
+- (NSString *)whatDoYouSeeAudioPath
+{
+    NSString *filename = [NSString stringWithFormat:@"gen_whatdoyousee.mp3"];
+    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:filename];
+}
+
+- (NSString *)title
+{
+    return @"Scratch And See";
+}
+
+- (NSString *)scratchSoundEffectFilename
+{
+    return @"sfx_scratch.mp3";
+}
+
+- (NSString *)scratchingCompleteSoundEffectFilename
+{
+    return @"sfx_scratchDing.mp3";
+}
+
 
 - (void)dealloc
 {

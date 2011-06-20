@@ -27,18 +27,32 @@
 @synthesize introduction;
 @synthesize questions;
 @synthesize outcomeMessages;
+@synthesize tiebreakOrder;
+
+- (id)init
+{
+    self = [super init];
+    [self release];
+    return nil;
+}
 
 - (void)dealloc
 {
     [introduction release];
     [questions release];
     [outcomeMessages release];
+    [tiebreakOrder release];
     [super dealloc];
 }
 
 - (NSString *)title
 {
     return @"About You Quiz";
+}
+
+- (BOOL)isOlderStoryInteraction
+{
+    return YES;
 }
 
 @end

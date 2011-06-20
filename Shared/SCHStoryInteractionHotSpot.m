@@ -8,6 +8,8 @@
 
 #import "SCHStoryInteractionHotSpot.h"
 
+#import "KNFBXPSConstants.h"
+
 #pragma mark - SCHStoryInteractionHotSpotQuestion
 
 @implementation SCHStoryInteractionHotSpotQuestion
@@ -27,13 +29,13 @@
 - (NSString *)audioPathForQuestion
 {
     NSString *filename = [NSString stringWithFormat:@"%@_q%d.mp3", self.storyInteraction.ID, self.questionIndex+1];
-    return [[SCHStoryInteraction resourcesPath] stringByAppendingPathComponent:filename];
+    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:filename];
 }
 
 - (NSString *)audioPathForCorrectAnswer
 {
     NSString *filename = [NSString stringWithFormat:@"%@_ca%d.mp3", self.storyInteraction.ID, self.questionIndex+1];
-    return [[SCHStoryInteraction resourcesPath] stringByAppendingPathComponent:filename];
+    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:filename];
 }
 
 @end
@@ -43,6 +45,13 @@
 @implementation SCHStoryInteractionHotSpot
 
 @synthesize questions;
+
+- (id)init
+{
+    self = [super init];
+    [self release];
+    return nil;
+}
 
 - (void)dealloc
 {

@@ -8,6 +8,8 @@
 
 #import "SCHStoryInteractionStartingLetter.h"
 
+#import "KNFBXPSConstants.h"
+
 #pragma mark - SCHStoryInteractionStartingLetterQuestion
 
 @implementation SCHStoryInteractionStartingLetterQuestion
@@ -21,21 +23,16 @@
     [super dealloc];
 }
 
-- (NSString *)title
-{
-    return @"Starting Letter";
-}
-
 - (NSString *)imagePath
 {
     NSString *filename = [NSString stringWithFormat:@"%@_%@.png", self.storyInteraction.ID, self.uniqueObjectName];
-    return [[SCHStoryInteraction resourcesPath] stringByAppendingPathComponent:filename];    
+    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:filename];    
 }
 
 - (NSString *)audioPath
 {
     NSString *filename = [NSString stringWithFormat:@"%@_%@.mp3", self.storyInteraction.ID, self.uniqueObjectName];
-    return [[SCHStoryInteraction resourcesPath] stringByAppendingPathComponent:filename];    
+    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:filename];    
 }
 
 @end
@@ -54,6 +51,39 @@
     [startingLetter release];
     [questions release];
     [super dealloc];
+}
+
+- (NSString *)title
+{
+    return @"Starting Letter";
+}
+
+- (NSString *)audioPathForQuestion
+{
+    NSString *filename = [NSString stringWithFormat:@"%@_intro.mp3", self.ID];
+    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:filename];
+}
+
+- (NSString *)audioPathForStartsWith
+{
+    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:@"gen_startswith.mp3"];
+}
+
+- (NSString *)audioPathForLetter
+{
+    NSString *filename = [NSString stringWithFormat:@"gen_%@.mp3", self.startingLetter];
+    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:filename];
+
+}
+
+- (NSString *)audioPathForDoesntStartWith
+{
+    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:@"gen_doesntstartwith.mp3"];
+}
+
+- (NSString *)audioPathForYouFoundThemAll
+{
+    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:@"gen_gotthemall.mp3"];
 }
 
 @end

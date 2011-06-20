@@ -8,11 +8,12 @@
 
 #import "SCHStoryInteractionWordMatch.h"
 
+#import "KNFBXPSConstants.h"
+
 #pragma mark - SCHStoryInteractionWordMatchQuestionItem
 
 @implementation SCHStoryInteractionWordMatchQuestionItem
 
-@synthesize storyInteraction;
 @synthesize text;
 @synthesize uniqueObjectName;
 
@@ -26,13 +27,13 @@
 - (NSString *)imagePath
 {
     NSString *filename = [NSString stringWithFormat:@"%@_%@.png", self.storyInteraction.ID, self.uniqueObjectName];
-    return [[SCHStoryInteraction resourcesPath] stringByAppendingPathComponent:filename];        
+    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:filename];        
 }
 
 - (NSString *)audioPath
 {
     NSString *filename = [NSString stringWithFormat:@"%@_%@.mp3", self.storyInteraction.ID, self.uniqueObjectName];
-    return [[SCHStoryInteraction resourcesPath] stringByAppendingPathComponent:filename];        
+    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:filename];        
 }
 
 @end
@@ -68,6 +69,21 @@
 - (NSString *)title
 {
     return @"Word Match";
+}
+
+- (NSInteger)questionCount
+{
+    return [[self questions] count];
+}
+
+- (NSString *)audioPathForQuestion
+{
+    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:@"gen_matchthewords.mp3"];
+}
+
+- (NSString *)audioPathForGotThemAll
+{
+    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:@"gen_gotthemall.mp3"];
 }
 
 @end

@@ -32,4 +32,19 @@
 // array of SCHStoryInteractionStartingLetterQuestion
 @property (nonatomic, retain) NSArray *questions;
 
+// XPSProvider-relative path for question audio
+- (NSString *)audioPathForQuestion;
+
+// XPS-relative path for 'starts with'
+- (NSString *)audioPathForStartsWith;
+
+// XPS-relative path for the letter
+- (NSString *)audioPathForLetter;
+
+// XPS-relative path for 'doesnt start with'
+- (NSString *)audioPathForDoesntStartWith;
+
+// XPS-relative path for 'you found them all'
+- (NSString *)audioPathForYouFoundThemAll;
+
 @end

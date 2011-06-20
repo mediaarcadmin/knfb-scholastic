@@ -23,7 +23,12 @@
 
 - (NSString *)title
 {
-    return @"Title Twister";
+    return @"Word Twister";
+}
+
+- (BOOL)isOlderStoryInteraction
+{
+    return YES;
 }
 
 @end

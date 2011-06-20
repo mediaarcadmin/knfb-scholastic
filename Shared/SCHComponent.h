@@ -19,4 +19,6 @@
 
 @property (assign, nonatomic) id<SCHComponentDelegate> delegate;	
 
+- (void)clear;
+
 @end

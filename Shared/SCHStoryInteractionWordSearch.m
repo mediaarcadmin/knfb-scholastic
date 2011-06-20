@@ -8,6 +8,8 @@
 
 #import "SCHStoryInteractionWordSearch.h"
 
+#import "KNFBXPSConstants.h"
+
 @implementation SCHStoryInteractionWordSearch
 
 @synthesize introduction;
@@ -43,25 +45,35 @@
     return [self.matrix characterAtIndex:index];
 }
 
+- (NSInteger)wordIndexForLetters:(NSString *)letters
+{
+    for (NSInteger i = 0, n = [words count]; i < n; ++i) {
+        if ([[words objectAtIndex:i] caseInsensitiveCompare:letters] == NSOrderedSame) {
+            return i;
+        }
+    }
+    return NSNotFound;
+}
+
 - (NSString *)audioPathForQuestion
 {
     NSString *filename = [NSString stringWithFormat:@"%@_intro.mp3", self.ID];
-    return [[SCHStoryInteraction resourcesPath] stringByAppendingPathComponent:filename];
+    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:filename];
 }
 
 - (NSString *)audioPathForCorrectAnswer
 {
-    return [[SCHStoryInteraction resourcesPath] stringByAppendingPathComponent:@"gen_thatsright.mp3"];
+    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:@"gen_thatsright.mp3"];
 }
 
 - (NSString *)audioPathForIncorrectAnswer
 {
-    return [[SCHStoryInteraction resourcesPath] stringByAppendingPathComponent:@"gen_tryagain.mp3"];
+    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:@"gen_tryagain.mp3"];
 }
 
 - (NSString *)audioPathForYouFoundThemAll
 {
-    return [[SCHStoryInteraction resourcesPath] stringByAppendingPathComponent:@"gen_gotthemall.mp3"];
+    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:@"gen_gotthemall.mp3"];
 }
 
 @end

@@ -9,145 +9,146 @@
 #import "SCHStoryInteractionDraggableView.h"
 #import "SCHStoryInteractionDraggableTargetView.h"
 
-#define kTitleViewTag 572
-#define kSnapDistanceSq 900
-#define kTargetOffsetX_iPad 12
-#define kTargetOffsetY_iPad 6
-#define kTargetOffsetX_iPhone 7
-#define kTargetOffsetY_iPhone 3
+#define kMaxTapTime 0.2
 
 @interface SCHStoryInteractionDraggableView ()
 
+enum DragState {
+    kDragStateIdle,
+    kDragStateDragging,
+    kDragStateCancelled
+};
+
 @property (nonatomic, assign) CGPoint touchOffset;
-@property (nonatomic, assign) CGPoint originalCenter;
-@property (nonatomic, copy) NSArray *targets;
+@property (nonatomic, assign) CGPoint dragOrigin;
+@property (nonatomic, assign) NSTimeInterval touchStartTime;
+@property (nonatomic, assign) BOOL tapSupported;
+@property (nonatomic, assign) BOOL shouldStartDragSupported;
+@property (nonatomic, assign) enum DragState dragState;
 
 - (void)beginDrag;
-- (void)endDrag:(BOOL)cancelled;
+- (void)endDragWithTouch:(UITouch *)touch cancelled:(BOOL)cancelled;
 
 @end
 
 @implementation SCHStoryInteractionDraggableView
 
-@synthesize targets;
+@synthesize matchTag;
+@synthesize delegate;
+@synthesize homePosition;
 @synthesize touchOffset;
-@synthesize originalCenter;
-@synthesize attachedTarget;
+@synthesize dragOrigin;
+@synthesize touchStartTime;
+@synthesize tapSupported;
+@synthesize shouldStartDragSupported;
+@synthesize dragState;
 
-- (void)dealloc
+- (void)setDelegate:(NSObject<SCHStoryInteractionDraggableViewDelegate> *)aDelegate
 {
-    [targets release];
-    [super dealloc];
+    delegate = aDelegate;
+    tapSupported = [aDelegate respondsToSelector:@selector(draggableViewWasTapped:)];
+    shouldStartDragSupported = [aDelegate respondsToSelector:@selector(draggableViewShouldStartDrag:)];
 }
 
-- (NSString *)title
+- (void)moveToHomePosition
 {
-    UILabel *label = (UILabel *)[self viewWithTag:kTitleViewTag];
-    return label.text;
-}
-
-- (void)setTitle:(NSString *)title
-{
-    [[self viewWithTag:kTitleViewTag] removeFromSuperview];
-    
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
-    label.tag = kTitleViewTag;
-    label.backgroundColor = [UIColor clearColor];
-    label.textColor = [UIColor blackColor];
-    label.textAlignment = UITextAlignmentCenter;
-    label.text = title;
-    label.font = [UIFont systemFontOfSize:UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? 20 : 14];
-    label.adjustsFontSizeToFitWidth = YES;
-    [self addSubview:label];
-    [label release];
-}
-
-- (void)setDragTargets:(NSArray *)dragTargets
-{
-    self.originalCenter = self.center;
-    self.targets = dragTargets;
-    [self setUserInteractionEnabled:YES];
-}
-
-- (void)layoutSubviews
-{
-    [self viewWithTag:kTitleViewTag].frame = CGRectMake(4, 12, CGRectGetWidth(self.bounds)-8, CGRectGetHeight(self.bounds)-12);
-    [super layoutSubviews];
+    [UIView animateWithDuration:0.25
+                     animations:^{
+                         self.center = self.homePosition;
+                     }];
 }
 
 #pragma mark - touch support
 
-static CGFloat distanceSq(CGPoint p1, CGPoint p2)
-{
-    CGFloat dx = p1.x-p2.x;
-    CGFloat dy = p1.y-p2.y;
-    return dx*dx + dy*dy;
-}
-
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    CGPoint point = [[touches anyObject] locationInView:self.superview];
+    self.dragState = kDragStateIdle;
+    if (self.shouldStartDragSupported && self.delegate && ![self.delegate draggableViewShouldStartDrag:self]) {
+        self.dragState = kDragStateCancelled;
+        return;
+    }
+    
+    UITouch *touch = [touches anyObject];
+    CGPoint point = [touch locationInView:self.superview];
     self.touchOffset = CGPointMake(self.center.x - point.x, self.center.y - self.center.y);
-    [self beginDrag];
+    
+    if (self.tapSupported) {
+        self.touchStartTime = touch.timestamp;
+        [self performSelector:@selector(beginDrag) withObject:nil afterDelay:kMaxTapTime];
+    } else {
+        [self beginDrag];
+    }
 }
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    const int kTargetOffsetX = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ? kTargetOffsetX_iPad : kTargetOffsetX_iPhone;
-    const int kTargetOffsetY = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ? kTargetOffsetY_iPad : kTargetOffsetY_iPhone;
+    if (self.dragState == kDragStateCancelled) {
+        return;
+    }
+    if (self.dragState == kDragStateIdle) {
+        [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(beginDrag) object:nil];
+        [self beginDrag];
+    }
     
     CGPoint point = [[touches anyObject] locationInView:self.superview];
     self.center = CGPointMake(point.x + self.touchOffset.x, point.y + self.touchOffset.y);
     
-    self.attachedTarget.occupied = NO;
-    self.attachedTarget = nil;
-    for (SCHStoryInteractionDraggableTargetView *target in self.targets) {
-        if (target.occupied) {
-            continue;
-        }
-        CGPoint targetCenter = CGPointMake(target.center.x - kTargetOffsetX, target.center.y);
-        CGPoint selfCenter = CGPointMake(self.center.x, self.center.y + kTargetOffsetY);
-        if (distanceSq(targetCenter, selfCenter) < kSnapDistanceSq) {
-            self.center = CGPointMake(target.center.x - kTargetOffsetX, target.center.y - kTargetOffsetY);
-            self.attachedTarget = target;
-            self.attachedTarget.occupied = YES;
-        }
+    CGPoint snapPoint;
+    if (self.delegate && [self.delegate draggableView:self shouldSnapFromPosition:self.center toPosition:&snapPoint]) {
+        self.center = snapPoint;
     }
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    // if we don't drop on a target, return to original position
-    [self endDrag:(attachedTarget == nil)];
+    [self endDragWithTouch:[touches anyObject] cancelled:NO];
 }
 
 - (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    [self endDrag:YES];
+    [self endDragWithTouch:[touches anyObject] cancelled:YES];
 }
 
 #pragma mark - dragging
 
 - (void)beginDrag
 {
+    self.dragState = kDragStateDragging;
+    self.dragOrigin = self.center;
     [self.superview bringSubviewToFront:self];
     [UIView animateWithDuration:0.25
                      animations:^{
                          self.transform = CGAffineTransformMakeScale(1.1, 1.1);
                          self.alpha = 0.8;
                      }];
+    
+    if (delegate) {
+        [self.delegate draggableViewDidStartDrag:self];
+    }
 }
 
-- (void)endDrag:(BOOL)cancelled
+- (void)endDragWithTouch:(UITouch *)touch cancelled:(BOOL)cancelled
 {
-    [UIView animateWithDuration:0.25
-                     animations:^{
-                         self.transform = CGAffineTransformIdentity;
-                         self.alpha = 1;
-                         if (cancelled) {
-                             self.center = self.originalCenter;
-                         }
-                     }];
+    if (self.dragState == kDragStateDragging) {
+        [UIView animateWithDuration:0.25
+                         animations:^{
+                             self.transform = CGAffineTransformIdentity;
+                             self.alpha = 1;
+                             if (cancelled) {
+                                 self.center = self.dragOrigin;
+                             }
+                         }];
+        if (delegate) {
+            [delegate draggableView:self didMoveToPosition:(cancelled ? self.dragOrigin : self.center)];
+        }
+    } else if (self.dragState != kDragStateCancelled && self.tapSupported) {
+        [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(beginDrag) object:nil];
+        if (delegate && touch.timestamp - self.touchStartTime < kMaxTapTime) {
+            [self.delegate draggableViewWasTapped:self];
+        }
+    }
+
+    self.dragState = kDragStateIdle;
 }
 
 @end

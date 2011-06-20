@@ -59,6 +59,10 @@
                                  nil];
     STAssertEqualObjects(story.outcomeMessages, expectedOutcomes, @"incorrect outcome messages");
     
+    NSArray *expectedTiebreakOrder = [NSArray arrayWithObjects:[NSNumber numberWithInt:1],[NSNumber numberWithInt:0],[NSNumber numberWithInt:2], nil];
+    
+    STAssertEqualObjects(story.tiebreakOrder, expectedTiebreakOrder, @"Tiebreak order did not parse correctly");
+    
     struct {
         NSString *prompt;
         NSArray *answers;
@@ -83,6 +87,7 @@
         STAssertEqualObjects(q.prompt, expect[i].prompt, @"incorrect prompt for question %d", i+1);
         STAssertEqualObjects(q.answers, expect[i].answers, @"incorrect answers for question %d", i+1);
     }
+    
 }
 
 - (void)testHotSpot1
@@ -385,7 +390,7 @@
     STAssertEquals(story.documentPageNumber, 58, @"incorrect documentPageNumber");
     STAssertTrue(CGPointEqualToPoint(story.position, CGPointMake(50, 10)), @"incorrect position");
 
-    NSArray *expectWords = [NSArray arrayWithObjects:@"OPOSSUM", @"BEGUMS", @"BESOMS", @"BOSOMS", @"BOUSES", @"EMBOSS", @"GOBOES", @"GOMBOS", @"GOOSES", @"GUMBOS",
+    NSSet *expectWords = [NSSet setWithObjects:@"OPOSSUM", @"BEGUMS", @"BESOMS", @"BOSOMS", @"BOUSES", @"EMBOSS", @"GOBOES", @"GOMBOS", @"GOOSES", @"GUMBOS",
                             @"MOUSES", @"MOUSSE", @"OPUSES", @"OSMOSE", @"OSMOUS", @"POSSUM", @"SEBUMS", @"SPOUSE", @"SPUMES", @"UGSOME", @"BEGUM", @"BESOM", @"BOGUS",
                             @"BOOMS", @"BOSOM", @"BOUSE", @"BUMPS", @"BUSES", @"GESSO", @"GEUMS", @"GOBOS", @"GOMBO", @"GOOPS", @"GOOSE", @"GUESS", @"GUMBO", @"MEOUS",
                             @"MOOSE", @"MOPES", @"MOSSO", @"MOUES", @"MOUSE", @"MUSES", @"OBOES", @"PESOS", @"POEMS", @"POMES", @"POMOS", @"POSES", @"POSSE", @"PUBES",

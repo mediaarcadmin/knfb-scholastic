@@ -7,12 +7,14 @@
 //
 
 #import "SCHBookShelfViewController.h"
+
 #import "SCHBookShelfSortPopoverTableView.h"
+#import "SCHComponentDelegate.h"
 
 @class SCHProfileViewController_iPad;
 
-@interface SCHBookShelfViewController_iPad : SCHBookShelfViewController <UIPopoverControllerDelegate, SCHBookShelfSortPopoverTableViewDelegate> {
-    
+@interface SCHBookShelfViewController_iPad : SCHBookShelfViewController <UIPopoverControllerDelegate, SCHBookShelfSortPopoverTableViewDelegate, SCHComponentDelegate> 
+{    
 }
 
 @property (nonatomic, retain) SCHProfileViewController_iPad *profileViewController;

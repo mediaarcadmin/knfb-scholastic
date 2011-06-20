@@ -144,6 +144,8 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
 - (void)login 
 {
+    [self.loginController setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
+    [self.loginController setModalPresentationStyle:UIModalPresentationFormSheet];    
 	[self presentModalViewController:self.loginController animated:YES];		
 }
 
@@ -157,7 +159,9 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 		[[SCHURLManager sharedURLManager] clear];
 		[[SCHSyncManager sharedSyncManager] clear];
 		[[SCHSyncManager sharedSyncManager] firstSync];
-		[self.loginController dismissModalViewControllerAnimated:YES];	
+        if (self.parentViewController.parentViewController != nil) {
+            [self.parentViewController.parentViewController dismissModalViewControllerAnimated:YES];
+        }
 	} else {
 		NSError *error = [notification.userInfo objectForKey:kSCHAuthenticationManagerNSError];
 		if (error!= nil) {
@@ -195,12 +199,24 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
 - (void)deregistration 
 {
-    // TODO alert warning user what will happen
-    SCHDrmRegistrationSession* registrationSession = [[SCHDrmRegistrationSession alloc] init];
-    registrationSession.delegate = self;	
-    self.drmRegistrationSession = registrationSession;
-    [self.drmRegistrationSession deregisterDevice:[[SCHAuthenticationManager sharedAuthenticationManager] aToken]];
-    [registrationSession release];
+    UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Confirmation", @"Confirmation") 
+                                                         message:NSLocalizedString(@"This will remove all books and settings", nil)
+                                                        delegate:self 
+                                               cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
+                                               otherButtonTitles:NSLocalizedString(@"Continue", @""), nil]; 
+    [errorAlert show]; 
+    [errorAlert release];
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex != alertView.cancelButtonIndex) {
+        SCHDrmRegistrationSession* registrationSession = [[SCHDrmRegistrationSession alloc] init];
+        registrationSession.delegate = self;	
+        self.drmRegistrationSession = registrationSession;
+        [self.drmRegistrationSession deregisterDevice:[[SCHAuthenticationManager sharedAuthenticationManager] aToken]];
+        [registrationSession release];    
+    }
 }
 
 #pragma mark - Table view data source
@@ -328,6 +344,8 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     if ( deviceKey == nil ) {
         // removeObjectForKey does not change the value...
         [[NSUserDefaults standardUserDefaults] setObject:nil forKey:kSCHAuthenticationManagerDeviceKey];
+		[[SCHURLManager sharedURLManager] clear];
+		[[SCHSyncManager sharedSyncManager] clear];        
         [self login];
         [self.navigationController popViewControllerAnimated:NO];
     }
