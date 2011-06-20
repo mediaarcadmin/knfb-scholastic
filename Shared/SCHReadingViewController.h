@@ -55,6 +55,7 @@ UISegmentedControl *paperTypePopoverSegmentedControl;
 @property (nonatomic, retain) IBOutlet UIButton *backButton;
 @property (nonatomic, retain) IBOutlet UIButton *audioButton;
 @property (nonatomic, retain) IBOutlet UIButton *notesButton;
+@property (nonatomic, retain) IBOutlet UIButton *storyInteractionsListButton;
 @property (nonatomic, retain) IBOutlet SCHCustomToolbar *scrubberToolbar;
 @property (nonatomic, retain) IBOutlet SCHCustomToolbar *olderBottomToolbar;
 @property (nonatomic, retain) IBOutlet UIImageView *topShadow;
