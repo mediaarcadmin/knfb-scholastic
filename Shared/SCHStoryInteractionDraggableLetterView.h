@@ -14,6 +14,9 @@
 @property (nonatomic, readonly) unichar letter;
 @property (nonatomic, assign) UIColor *letterColor;
 
+- (id)initWithLetter:(unichar)letter tileImage:(UIImage *)tileImage;
+
+// init with standard letter tile
 - (id)initWithLetter:(unichar)letter;
 
 @end
