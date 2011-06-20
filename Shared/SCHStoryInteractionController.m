@@ -6,6 +6,8 @@
 //  Copyright 2011 BitWink. All rights reserved.
 //
 
+#import <QuartzCore/QuartzCore.h>
+
 #import "SCHStoryInteractionController.h"
 #import "SCHStoryInteractionTypes.h"
 #import "SCHStoryInteractionControllerMultipleChoiceText.h"
@@ -13,17 +15,7 @@
 #import "SCHStoryInteractionDraggableView.h"
 #import "SCHXPSProvider.h"
 #import "SCHBookManager.h"
-#import <QuartzCore/QuartzCore.h>
-
-typedef void (^PlayAudioCompletionBlock)(void);
-
-@interface SynchronizedAudioItem : NSObject {}
-@property (nonatomic, copy) NSString *path;
-@property (nonatomic, assign) BOOL audioFromBundle;
-@property (nonatomic, assign) NSTimeInterval startDelay;
-@property (nonatomic, copy) dispatch_block_t startBlock;
-@property (nonatomic, copy) dispatch_block_t endBlock;
-@end
+#import "SCHQueuedAudioPlayer.h"
 
 @interface SCHStoryInteractionController ()
 
@@ -33,15 +25,7 @@ typedef void (^PlayAudioCompletionBlock)(void);
 @property (nonatomic, retain) UILabel *titleView;
 @property (nonatomic, retain) UIButton *readAloudButton;
 @property (nonatomic, retain) UIImageView *backgroundView;
-@property (nonatomic, retain) AVAudioPlayer *player;
-@property (nonatomic, assign) BOOL resumeInterruptedPlayer;
-@property (nonatomic, copy) PlayAudioCompletionBlock playAudioCompletionBlock;
-@property (nonatomic, retain) NSMutableArray *synchronizedAudioQueue;
-
-@property (nonatomic, assign) dispatch_queue_t audioPlayQueue;
-
-- (void)endAudio;
-- (void)playFromSynchronizedAudioQueue;
+@property (nonatomic, retain) SCHQueuedAudioPlayer *audioPlayer;
 
 @end
 
@@ -58,12 +42,8 @@ typedef void (^PlayAudioCompletionBlock)(void);
 @synthesize backgroundView;
 @synthesize storyInteraction;
 @synthesize delegate;
-@synthesize player;
-@synthesize resumeInterruptedPlayer;
-@synthesize playAudioCompletionBlock;
-@synthesize audioPlayQueue;
-@synthesize synchronizedAudioQueue;
 @synthesize interfaceOrientation;
+@synthesize audioPlayer;
 
 + (SCHStoryInteractionController *)storyInteractionControllerForStoryInteraction:(SCHStoryInteraction *)storyInteraction
 {
@@ -84,9 +64,7 @@ typedef void (^PlayAudioCompletionBlock)(void);
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [self.player pause];
     
-    [self removeFromHostViewWithSuccess:NO];
     [xpsProvider release];
     [containerView release];
     [titleView release], titleView = nil;
@@ -95,10 +73,7 @@ typedef void (^PlayAudioCompletionBlock)(void);
     [contentsView release];
     [backgroundView release];
     [storyInteraction release];
-    [synchronizedAudioQueue release];
-    [player release], player = nil;
-    Block_release(playAudioCompletionBlock), playAudioCompletionBlock = nil;
-    dispatch_release(audioPlayQueue);
+    [audioPlayer release];
     [super dealloc];
 }
 
@@ -115,12 +90,11 @@ typedef void (^PlayAudioCompletionBlock)(void);
             NSLog(@"failed to load nib %@", nibName);
             return nil;
         }
+
+        SCHQueuedAudioPlayer *player = [[SCHQueuedAudioPlayer alloc] init];
+        self.audioPlayer = player;
+        [player release];
         
-        self.audioPlayQueue = dispatch_queue_create("audioPlayQueue", NULL);
-        self.synchronizedAudioQueue = [[NSMutableArray alloc] init];
-        
-        resumeInterruptedPlayer = NO;
-        playAudioCompletionBlock = nil;
         currentScreenIndex = 0;
         
         // register for going into the background
@@ -128,6 +102,7 @@ typedef void (^PlayAudioCompletionBlock)(void);
                                                  selector:@selector(willResignActiveNotification:)
                                                      name:UIApplicationWillResignActiveNotification
                                                    object:nil];
+        
     }
     return self;
 }
@@ -346,16 +321,29 @@ typedef void (^PlayAudioCompletionBlock)(void);
     [self removeFromHostViewWithSuccess:NO];
 }
 
+- (void)setUserInteractionsEnabled:(BOOL)enabled
+{
+    NSLog(@"user interactions enabled = %d", enabled);
+    self.containerView.superview.userInteractionEnabled = enabled;
+    self.containerView.userInteractionEnabled = enabled;
+}
+
 #pragma mark - Notification methods
 
 - (void)willResignActiveNotification:(NSNotification *)notification
 {
-    [self endAudio];
+    [self.audioPlayer cancel];
 }
 
 - (void)removeFromHostViewWithSuccess:(BOOL)success
 {
+    [self cancelQueuedAudio];
+    
     [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.isbn];
+    
+    // always, always re-enable user interactions for the superview...
+    [self setUserInteractionsEnabled:YES];
+    
     [self.containerView removeFromSuperview];
     
     if (delegate && [delegate respondsToSelector:@selector(storyInteractionController:didDismissWithSuccess:)]) {
@@ -376,77 +364,14 @@ typedef void (^PlayAudioCompletionBlock)(void);
 
 - (void)playAudioAtPath:(NSString *)path completion:(void (^)(void))completion
 {
-    if (self.player != nil) {
-        [self.synchronizedAudioQueue removeAllObjects];
-        [self endAudio];
-    }
-    
-    __block BOOL failed = YES;
-
-    dispatch_sync(self.audioPlayQueue, ^{
-        
-        NSError *error = nil;
-        NSData *audioData = [self.xpsProvider dataForComponentAtPath:path];
-        if (audioData != nil) {
-            
-            self.player = [[AVAudioPlayer alloc] initWithData:audioData error:&error];
-            if (self.player != nil) {
-                self.resumeInterruptedPlayer = NO;
-                [self.player release];
-                self.player.delegate = self;
-                self.playAudioCompletionBlock = completion;
-                [self.player play];
-                failed = NO;
-            }       
-        }
-        
-    });
-
-    // if something goes wrong we should do completion
-    if(failed == YES && completion != nil) {
-        completion();
-    }
-
+    [self.audioPlayer cancel];
+    [self enqueueAudioWithPath:path fromBundle:NO startDelay:0 synchronizedStartBlock:nil synchronizedEndBlock:completion];
 }
 
-- (void)playBundleAudioWithFilename:(NSString *)path completion:(void (^)(void))completion
+- (void)playBundleAudioWithFilename:(NSString *)filename completion:(void (^)(void))completion
 {
-    if (self.player != nil) {
-        [self.synchronizedAudioQueue removeAllObjects];
-        [self endAudio];
-    }
-    
-    __block BOOL failed = YES;
-
-    dispatch_sync(self.audioPlayQueue, ^{
-        NSError *error = nil;
-        
-        NSArray *pathComponents = [path componentsSeparatedByString:@"."];
-        
-        if (pathComponents && [pathComponents count] == 2) {
-            NSString *bundlePath = [[NSBundle mainBundle] pathForResource:[pathComponents objectAtIndex:0] ofType:[pathComponents objectAtIndex:1]];
-            
-            NSData *audioData = [NSData dataWithContentsOfFile:bundlePath options:NSDataReadingMapped error:nil];
-            if (audioData != nil) {
-                
-                self.player = [[AVAudioPlayer alloc] initWithData:audioData error:&error];
-                if (self.player != nil) {
-                    self.resumeInterruptedPlayer = NO;
-                    [self.player release];
-                    self.player.delegate = self;
-                    self.playAudioCompletionBlock = completion;
-                    [self.player play];
-                    failed = NO;
-                }   
-            }
-        }
-        
-    });
-
-    // if something goes wrong we should do completion
-    if (failed == YES && completion != nil) {
-        completion();
-    }
+    [self.audioPlayer cancel];
+    [self enqueueAudioWithPath:filename fromBundle:YES startDelay:0 synchronizedStartBlock:nil synchronizedEndBlock:completion];
 }
 
 - (void)enqueueAudioWithPath:(NSString *)path
@@ -455,108 +380,44 @@ typedef void (^PlayAudioCompletionBlock)(void);
       synchronizedStartBlock:(dispatch_block_t)startBlock
         synchronizedEndBlock:(dispatch_block_t)endBlock
 {
-    SynchronizedAudioItem *item = [[SynchronizedAudioItem alloc] init];
-    item.path = path;
-    item.audioFromBundle = fromBundle;
-    item.startDelay = startDelay;
-    item.startBlock = startBlock;
-    item.endBlock = endBlock;
-    [self.synchronizedAudioQueue addObject:item];
-    [item release];
-    if (![self playingAudio] && [self.synchronizedAudioQueue count] == 1) {
-        [self playFromSynchronizedAudioQueue];
-    }
-}
-
-- (void)playFromSynchronizedAudioQueue
-{
-    if ([self.synchronizedAudioQueue count] == 0) {
-        return;
-    }
-    SynchronizedAudioItem *item = [self.synchronizedAudioQueue objectAtIndex:0];
+    [self.audioPlayer enqueueGap:startDelay];
     
-    dispatch_block_t playBlock = ^{
-        if (item.startBlock != nil) {
-            item.startBlock();
-        }
-        if (item.audioFromBundle) {
-            [self playBundleAudioWithFilename:item.path completion:item.endBlock];
-        } else {
-            [self playAudioAtPath:item.path completion:item.endBlock];
-        }
-    };
-    
-    if (item.startDelay > 0) {
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, item.startDelay*NSEC_PER_SEC), dispatch_get_main_queue(), playBlock);
+    SCHQueuedAudioPlayerFetchBlock fetchBlock;
+    if (fromBundle) {
+        fetchBlock = ^NSData*(void){
+            NSString *bundlePath = [[NSBundle mainBundle] pathForResource:path ofType:@""];
+            NSError *error = nil;
+            NSData *data = [NSData dataWithContentsOfFile:bundlePath options:NSDataReadingMapped error:&error];
+            if (!data) {
+                NSLog(@"failed to read %@: %@", bundlePath, error);
+            }
+            return data;
+        };
     } else {
-        playBlock();
+        fetchBlock = ^NSData*(void){
+            return [self.xpsProvider dataForComponentAtPath:path];
+        };
     }
 
-    [self.synchronizedAudioQueue removeObjectAtIndex:0];
+    [self.audioPlayer enqueueAudioTaskWithFetchBlock:fetchBlock synchronizedStartBlock:startBlock synchronizedEndBlock:endBlock];
 }
+
+- (void)enqueueAudioWithPath:(NSString *)path fromBundle:(BOOL)fromBundle
+{
+    [self enqueueAudioWithPath:path fromBundle:fromBundle startDelay:0 synchronizedStartBlock:nil synchronizedEndBlock:nil];
+}
+
 
 - (BOOL)playingAudio
 {
-    if (self.player) {
-        return YES;
-    } else {
-        return NO;
-    }
+    return [self.audioPlayer isPlaying];
 }
 
-- (void)endAudio
+- (void)cancelQueuedAudio
 {
-    // retain self in case the completion block releases this object
-    // prevents crash when calling playFromSynchronizedAudioQueue
-    [self retain];
-    self.player = nil;
-    if (self.playAudioCompletionBlock != nil) {
-        void (^completionBlock)(void) = [self.playAudioCompletionBlock retain];
-        self.playAudioCompletionBlock = nil;
-        completionBlock();
-        [completionBlock release];
-    }
-    [self playFromSynchronizedAudioQueue];
-    
-    // clean up previous retain
-    [self release];
+    [self.audioPlayer cancel];
 }
 
-#pragma mark - AVAudioPlayer Delegate methods
-
-- (void)audioPlayerBeginInterruption:(AVAudioPlayer *)player
-{
-    if (self.player.playing == YES) {
-        [self.player pause];
-        self.resumeInterruptedPlayer = YES;
-    }
-}
-
-- (void)audioPlayerEndInterruption:(AVAudioPlayer *)player
-{
-    if (self.resumeInterruptedPlayer == YES) {
-        self.resumeInterruptedPlayer = NO;
-        [self.player play];
-    }
-}
-
-- (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)aPlayer successfully:(BOOL)flag
-{
-    [self endAudio];
-}
-
-- (void)audioPlayerDecodeErrorDidOccur:(AVAudioPlayer *)player error:(NSError *)error
-{
-    [self endAudio];    
-    
-	UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") 
-                                                         message:[error localizedDescription]
-                                                        delegate:nil 
-                                               cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-                                               otherButtonTitles:nil]; 
-    [errorAlert show]; 
-    [errorAlert release]; 
-}
 
 #pragma mark - XPSProvider accessors
 
@@ -591,20 +452,3 @@ typedef void (^PlayAudioCompletionBlock)(void);
 
 @end
 
-@implementation SynchronizedAudioItem
-
-@synthesize path;
-@synthesize audioFromBundle;
-@synthesize startDelay;
-@synthesize startBlock;
-@synthesize endBlock;
-
-- (void)dealloc
-{
-    [path release];
-    [startBlock release];
-    [endBlock release];
-    [super dealloc];
-}
-
-@end

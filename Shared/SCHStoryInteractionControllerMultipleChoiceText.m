@@ -16,6 +16,7 @@
 @interface SCHStoryInteractionControllerMultipleChoiceText ()
 
 @property (nonatomic, assign) NSInteger currentQuestionIndex;
+@property (nonatomic, assign) BOOL answeredCorrectly;
 
 - (void)nextQuestion;
 - (void)setupQuestion;
@@ -27,11 +28,11 @@
 
 @synthesize answerButtons;
 @synthesize currentQuestionIndex;
+@synthesize answeredCorrectly;
 
 - (void)dealloc
 {
     [answerButtons release], answerButtons = nil;
-
     [super dealloc];
 }
 
@@ -66,6 +67,7 @@
 {
     BOOL iPad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
 
+    self.answeredCorrectly = NO;
     [self setTitle:[self currentQuestion].prompt];
 
     for (UIButton *button in self.answerButtons) {
@@ -101,6 +103,7 @@
 
 - (void)playQuestionAudioAndHighlightAnswersWithIntroduction:(BOOL)withIntroduction
 {
+    [self cancelQueuedAudio];
     if (withIntroduction) {
         [self enqueueAudioWithPath:[self.storyInteraction audioPathForQuestion]
                         fromBundle:NO
@@ -108,7 +111,7 @@
             synchronizedStartBlock:nil
               synchronizedEndBlock:nil];
     }
-    [self enqueueAudioWithPath:[self audioPathForQuestion]
+    [self enqueueAudioWithPath:[[self currentQuestion] audioPathForQuestion]
                     fromBundle:NO
                     startDelay:0
         synchronizedStartBlock:nil
@@ -131,25 +134,37 @@
 
 - (void)playAudioButtonTapped:(id)sender
 {
-    [self playQuestionAudioAndHighlightAnswersWithIntroduction:NO];
+    if (!self.answeredCorrectly) { 
+        [self playQuestionAudioAndHighlightAnswersWithIntroduction:NO];
+    }
 }
 
 - (IBAction)answerButtonTapped:(UIButton *)sender
 {
     NSUInteger chosenAnswer = sender.tag - 1;
+
+    self.contentsView.userInteractionEnabled = NO;
     
     if (chosenAnswer < [[self currentQuestion].answers count]) {
         [sender setSelected:YES];
         if (chosenAnswer == [self currentQuestion].correctAnswer) {
-            [self playAudioAtPath:[[self currentQuestion] audioPathForAnswerAtIndex:chosenAnswer] completion:^{
-                [self playAudioAtPath:[(SCHStoryInteractionMultipleChoiceText *)self.storyInteraction audioPathForThatsRight] completion:^{
-                    [self playAudioAtPath:[[self currentQuestion] audioPathForCorrectAnswer] completion:^{
-                        [self nextQuestion];
-                    }];
-                }];
-            }];
+            self.answeredCorrectly = YES;
+            [self cancelQueuedAudio];
+            [self enqueueAudioWithPath:[[self currentQuestion] audioPathForAnswerAtIndex:chosenAnswer] fromBundle:NO];
+            [self enqueueAudioWithPath:[(SCHStoryInteractionMultipleChoiceText *)self.storyInteraction audioPathForThatsRight] fromBundle:NO];
+            [self enqueueAudioWithPath:[[self currentQuestion] audioPathForCorrectAnswer]
+                            fromBundle:NO
+                            startDelay:0
+                synchronizedStartBlock:nil
+                  synchronizedEndBlock:^{
+                      self.contentsView.userInteractionEnabled = YES;
+                      [self nextQuestion];
+                  }];
         } else {
-            [self playAudioAtPath:[[self currentQuestion] audioPathForIncorrectAnswer] completion:nil];
+            [self playAudioAtPath:[[self currentQuestion] audioPathForIncorrectAnswer]
+                       completion:^{
+                           self.contentsView.userInteractionEnabled = YES;
+                       }];
         }
     }
 }

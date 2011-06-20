@@ -143,6 +143,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 @synthesize storyInteractionButtonView;
 @synthesize paperTypeSegmentedControl;
 @synthesize notesButton;
+@synthesize storyInteractionsListButton;
 @synthesize pageSlider;
 @synthesize scrubberThumbImage;
 
@@ -200,6 +201,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [audioButton release], audioButton = nil;
     [notesCountView release], notesCountView = nil;
     [notesButton release], notesButton = nil;
+    [storyInteractionsListButton release], storyInteractionsListButton = nil;
 
     [scrubberToolbar release], scrubberToolbar = nil;
     [olderBottomToolbar release], olderBottomToolbar = nil;
@@ -943,6 +945,12 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
                 [self.storyInteractionButton setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@-lightning-bolt-%d", imagePrefix, interactionsDone]] forState:UIControlStateNormal];
             }
         }
+        
+        
+        CGRect buttonFrame = self.storyInteractionButtonView.frame;
+        buttonFrame.size = [self.storyInteractionButton imageForState:UIControlStateNormal].size;
+        buttonFrame.origin.x = CGRectGetWidth(self.storyInteractionButtonView.superview.frame) - buttonFrame.size.width;
+        self.storyInteractionButtonView.frame = buttonFrame;
     }
 }
 
@@ -1083,6 +1091,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
             [flowView release];
             
             [self setStoryInteractionButtonVisible:NO animated:YES withSound:NO];
+            [self.storyInteractionsListButton setEnabled:NO];
             
             break;
         case SCHReadingViewLayoutTypeFixed:    
@@ -1094,6 +1103,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
             self.readingView = layoutView;
             
             [self setDictionarySelectionMode];
+            
+            [self.storyInteractionsListButton setEnabled:YES];
             
             [layoutView release];
             

@@ -265,7 +265,6 @@
 								<string key="NSFrame">{{24, 11}, {272, 23}}</string>
 								<reference key="NSSuperview" ref="999071566"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<int key="IBUIContentHorizontalAlignment">0</int>
@@ -627,9 +626,11 @@
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 			</object>
 			<object class="IBUIView" id="14499984">
-				<nil key="NSNextResponder"/>
+				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">301</int>
 				<string key="NSFrameSize">{35, 44}</string>
+				<reference key="NSSuperview"/>
+				<reference key="NSWindow"/>
 				<reference key="IBUIBackgroundColor" ref="368037730"/>
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 			</object>
@@ -1299,6 +1300,14 @@
 					</object>
 					<int key="connectionID">218</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">storyInteractionsListButton</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="288070350"/>
+					</object>
+					<int key="connectionID">220</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -1817,7 +1826,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">219</int>
+			<int key="maxID">220</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -1933,6 +1942,7 @@
 							<string>scrubberToolbar</string>
 							<string>storyInteractionButton</string>
 							<string>storyInteractionButtonView</string>
+							<string>storyInteractionsListButton</string>
 							<string>titleLabel</string>
 							<string>topShadow</string>
 							<string>youngerRightBarButtonItemContainer</string>
@@ -1962,6 +1972,7 @@
 							<string>SCHCustomToolbar</string>
 							<string>UIButton</string>
 							<string>UIView</string>
+							<string>UIButton</string>
 							<string>UILabel</string>
 							<string>UIImageView</string>
 							<string>UIView</string>
@@ -1994,6 +2005,7 @@
 							<string>scrubberToolbar</string>
 							<string>storyInteractionButton</string>
 							<string>storyInteractionButtonView</string>
+							<string>storyInteractionsListButton</string>
 							<string>titleLabel</string>
 							<string>topShadow</string>
 							<string>youngerRightBarButtonItemContainer</string>
@@ -2088,6 +2100,10 @@
 							<object class="IBToOneOutletInfo">
 								<string key="name">storyInteractionButtonView</string>
 								<string key="candidateClassName">UIView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">storyInteractionsListButton</string>
+								<string key="candidateClassName">UIButton</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">titleLabel</string>

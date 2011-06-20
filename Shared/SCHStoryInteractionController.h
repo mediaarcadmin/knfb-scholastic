@@ -80,6 +80,12 @@
       synchronizedStartBlock:(dispatch_block_t)startBlock
         synchronizedEndBlock:(dispatch_block_t)endBlock;
 
+// convenience version of above with no delay and no synchronized blocks
+- (void)enqueueAudioWithPath:(NSString *)path fromBundle:(BOOL)fromBundle;
+
+// cancel any playing or queued audio
+- (void)cancelQueuedAudio;
+
 // get an image from the XPS provider
 - (UIImage *)imageAtPath:(NSString *)path;
 
@@ -99,5 +105,10 @@
 // audio path for current question - default implementation uses audioPathForQuestion
 // from the story interaction; override if variable audio per question is needed
 - (NSString *)audioPathForQuestion;
+
+// Story interactions can use this to disable interactions
+// also disables superview user interactions, as interactions are passed through
+// with great power comes great responsibility - use carefully!
+- (void)setUserInteractionsEnabled:(BOOL)enabled;
 
 @end

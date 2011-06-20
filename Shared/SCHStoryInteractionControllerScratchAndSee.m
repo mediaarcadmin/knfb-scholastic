@@ -24,7 +24,6 @@ static const NSInteger kSCHScratchPointCount = 200;
 - (void)setupQuestion;
 - (void)correctAnswer:(NSInteger) selection;
 - (void)wrongAnswer:(NSInteger) selection;
-- (void)setButtonsEnabled: (BOOL) enabled;
 
 - (void)setProgressViewForScratchCount: (NSInteger) scratchCount;
 
@@ -193,7 +192,7 @@ static const NSInteger kSCHScratchPointCount = 200;
 
 - (void)correctAnswer:(NSInteger) selection{
     NSLog(@"Correct answer.");
-    [self setButtonsEnabled:NO];
+    [self setUserInteractionsEnabled:NO];
     
     for (int i = 0; i < [self.answerButtons count]; i++) {
         if (i == selection) {
@@ -213,7 +212,7 @@ static const NSInteger kSCHScratchPointCount = 200;
                                                          completion:^{
                                                              [self playAudioAtPath:[[self currentQuestion] correctAnswerAudioPath]
                                                                         completion:^{
-                                                                            [self setButtonsEnabled:YES];
+                                                                            [self setUserInteractionsEnabled:YES];
                                                                             [self nextQuestion];
                                                                         }];
                                                          }];
@@ -224,7 +223,7 @@ static const NSInteger kSCHScratchPointCount = 200;
 
 - (void)wrongAnswer:(NSInteger) selection {
     NSLog(@"Wrong answer.");
-    [self setButtonsEnabled:NO];
+    [self setUserInteractionsEnabled:NO];
 
     [(UIButton *) [self.answerButtons objectAtIndex:selection] setSelected:YES];
     
@@ -235,21 +234,10 @@ static const NSInteger kSCHScratchPointCount = 200;
                                               [self playAudioAtPath:[[self currentQuestion] audioPathForIncorrectAnswer]
                                                          completion:^{
                                                              [(UIButton *) [self.answerButtons objectAtIndex:selection] setSelected:NO];
-                                                             [self setButtonsEnabled:YES];
+                                                             [self setUserInteractionsEnabled:YES];
                                                          }];
                                           }];
                            }];
-}
-
-- (void)setButtonsEnabled: (BOOL) enabled
-{
-    for (int i = 0; i < [self.answerButtons count]; i++) {
-        if (enabled) {
-            [(UIButton *) [self.answerButtons objectAtIndex:i] addTarget:self action:@selector(questionButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-        } else {
-            [(UIButton *) [self.answerButtons objectAtIndex:i] removeTarget:self action:NULL forControlEvents:UIControlEventTouchUpInside];
-        }
-    }
 }
 
 - (void)setProgressViewForScratchCount: (NSInteger) scratchCount
@@ -275,7 +263,9 @@ static const NSInteger kSCHScratchPointCount = 200;
         [self enqueueAudioWithPath:[(SCHStoryInteractionScratchAndSee *)self.storyInteraction scratchingCompleteSoundEffectFilename] 
                         fromBundle:YES
                         startDelay:0
-            synchronizedStartBlock:nil
+            synchronizedStartBlock:^{
+                [self setUserInteractionsEnabled:NO];
+            }
               synchronizedEndBlock:nil];
         [self enqueueAudioWithPath:[(SCHStoryInteractionScratchAndSee *)self.storyInteraction whatDoYouSeeAudioPath]
                         fromBundle:NO
@@ -293,6 +283,11 @@ static const NSInteger kSCHScratchPointCount = 200;
                 }
                   synchronizedEndBlock:^{
                       [button setHighlighted:NO];
+                      
+                      if (i == 2) {
+                          [self setUserInteractionsEnabled:YES];
+                      }
+                      
                   }];
         }
     } else {
