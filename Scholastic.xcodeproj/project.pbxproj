@@ -924,6 +924,12 @@
 		C9AC860913AE7EAA000ECDAE /* storyinteraction-progress-filled~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C9AC85FE13AE7E94000ECDAE /* storyinteraction-progress-filled~iphone.png */; };
 		C9AC860A13AE7EAA000ECDAE /* storyinteraction-progress-filled@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C9AC85FF13AE7E9E000ECDAE /* storyinteraction-progress-filled@2x~iphone.png */; };
 		C9AC860B13AE7EAA000ECDAE /* storyinteraction-progress-filled@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C9AC85FF13AE7E9E000ECDAE /* storyinteraction-progress-filled@2x~iphone.png */; };
+		C9AC863D13AF6553000ECDAE /* storyinteraction-lettertile-small~iPad.png in Resources */ = {isa = PBXBuildFile; fileRef = C9AC863A13AF654F000ECDAE /* storyinteraction-lettertile-small~iPad.png */; };
+		C9AC863E13AF6553000ECDAE /* storyinteraction-lettertile-small~iPad.png in Resources */ = {isa = PBXBuildFile; fileRef = C9AC863A13AF654F000ECDAE /* storyinteraction-lettertile-small~iPad.png */; };
+		C9AC863F13AF6553000ECDAE /* storyinteraction-lettertile-small~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C9AC863B13AF6550000ECDAE /* storyinteraction-lettertile-small~iphone.png */; };
+		C9AC864013AF6553000ECDAE /* storyinteraction-lettertile-small~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C9AC863B13AF6550000ECDAE /* storyinteraction-lettertile-small~iphone.png */; };
+		C9AC864113AF6553000ECDAE /* storyinteraction-lettertile-small@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C9AC863C13AF6552000ECDAE /* storyinteraction-lettertile-small@2x~iphone.png */; };
+		C9AC864213AF6553000ECDAE /* storyinteraction-lettertile-small@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C9AC863C13AF6552000ECDAE /* storyinteraction-lettertile-small@2x~iphone.png */; };
 		C9B08BC81344D34F001963D0 /* KNFBFlowEucBook.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B08B051344D34F001963D0 /* KNFBFlowEucBook.m */; };
 		C9B08BC91344D34F001963D0 /* KNFBFlowEucBook.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B08B051344D34F001963D0 /* KNFBFlowEucBook.m */; };
 		C9B08BCA1344D34F001963D0 /* KNFBTextFlow.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B08B091344D34F001963D0 /* KNFBTextFlow.m */; };
@@ -2210,6 +2216,9 @@
 		C9AC85FD13AE7E89000ECDAE /* storyinteraction-progress-filled~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-progress-filled~ipad.png"; sourceTree = "<group>"; };
 		C9AC85FE13AE7E94000ECDAE /* storyinteraction-progress-filled~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-progress-filled~iphone.png"; sourceTree = "<group>"; };
 		C9AC85FF13AE7E9E000ECDAE /* storyinteraction-progress-filled@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-progress-filled@2x~iphone.png"; sourceTree = "<group>"; };
+		C9AC863A13AF654F000ECDAE /* storyinteraction-lettertile-small~iPad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-lettertile-small~iPad.png"; sourceTree = "<group>"; };
+		C9AC863B13AF6550000ECDAE /* storyinteraction-lettertile-small~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-lettertile-small~iphone.png"; sourceTree = "<group>"; };
+		C9AC863C13AF6552000ECDAE /* storyinteraction-lettertile-small@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-lettertile-small@2x~iphone.png"; sourceTree = "<group>"; };
 		C9B08B041344D34F001963D0 /* KNFBFlowEucBook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KNFBFlowEucBook.h; sourceTree = "<group>"; };
 		C9B08B051344D34F001963D0 /* KNFBFlowEucBook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KNFBFlowEucBook.m; sourceTree = "<group>"; };
 		C9B08B071344D34F001963D0 /* KNFBParagraphSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KNFBParagraphSource.h; sourceTree = "<group>"; };
@@ -2827,6 +2836,9 @@
 				522B088F13A8A4490059E2C4 /* answer-tick.png */,
 				28BFE9DD139FCAD500415075 /* storyinteraction-sequencing-target-ipad.png */,
 				285BE75313AA20C00023E6BE /* storyinteraction-lettertile~iPad.png */,
+				C9AC863A13AF654F000ECDAE /* storyinteraction-lettertile-small~iPad.png */,
+				C9AC863B13AF6550000ECDAE /* storyinteraction-lettertile-small~iphone.png */,
+				C9AC863C13AF6552000ECDAE /* storyinteraction-lettertile-small@2x~iphone.png */,
 				C9AC85EB13AE6AA1000ECDAE /* storyinteraction-lettertile~iphone.png */,
 				C9AC85EC13AE6AA9000ECDAE /* storyinteraction-lettertile@2x~iphone.png */,
 				C9AC85F113AE7CE3000ECDAE /* story-interactions-initialScratch~iphone.png */,
@@ -4929,6 +4941,9 @@
 				C9AC860613AE7EAA000ECDAE /* storyinteraction-progress-filled~ipad.png in Resources */,
 				C9AC860813AE7EAA000ECDAE /* storyinteraction-progress-filled~iphone.png in Resources */,
 				C9AC860A13AE7EAA000ECDAE /* storyinteraction-progress-filled@2x~iphone.png in Resources */,
+				C9AC863D13AF6553000ECDAE /* storyinteraction-lettertile-small~iPad.png in Resources */,
+				C9AC863F13AF6553000ECDAE /* storyinteraction-lettertile-small~iphone.png in Resources */,
+				C9AC864113AF6553000ECDAE /* storyinteraction-lettertile-small@2x~iphone.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5333,6 +5348,9 @@
 				C9AC860713AE7EAA000ECDAE /* storyinteraction-progress-filled~ipad.png in Resources */,
 				C9AC860913AE7EAA000ECDAE /* storyinteraction-progress-filled~iphone.png in Resources */,
 				C9AC860B13AE7EAA000ECDAE /* storyinteraction-progress-filled@2x~iphone.png in Resources */,
+				C9AC863E13AF6553000ECDAE /* storyinteraction-lettertile-small~iPad.png in Resources */,
+				C9AC864013AF6553000ECDAE /* storyinteraction-lettertile-small~iphone.png in Resources */,
+				C9AC864213AF6553000ECDAE /* storyinteraction-lettertile-small@2x~iphone.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
