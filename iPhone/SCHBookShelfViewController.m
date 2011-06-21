@@ -54,6 +54,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 @synthesize customNavigationBar;
 @synthesize gridButton;
 @synthesize listButton;
+@synthesize toggleView;
 @synthesize componentCache;
 @synthesize books;
 @synthesize profileItem;
@@ -77,6 +78,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
     [listTableView release], listTableView = nil;
     [gridButton release], gridButton = nil;
     [listButton release], listButton = nil;
+    [toggleView release], toggleView = nil;
     
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
@@ -154,7 +156,13 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateTheme) name:kSCHThemeManagerThemeChangeNotification object:nil];              
     
     [self setupAssetsForOrientation:self.interfaceOrientation];
-    
+
+    // toggled from prefix header
+#if BOOKSHELF_MODE_TOGGLE_DISABLED
+    [self.toggleView setHidden:YES];
+    [self.gridView setFrame:CGRectMake(0, 0, self.gridView.frame.size.width, self.gridView.frame.size.height + self.toggleView.frame.size.height)];
+#endif
+
     [self.gridView reloadData];
 }
 

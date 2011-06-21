@@ -111,7 +111,6 @@
 								<string key="NSFrame">{{11, 61}, {155, 21}}</string>
 								<reference key="NSSuperview" ref="222914230"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<int key="IBUIContentMode">7</int>
@@ -406,6 +405,14 @@
 					</object>
 					<int key="connectionID">59</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">toggleView</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="1041177677"/>
+					</object>
+					<int key="connectionID">60</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -434,8 +441,8 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="1042208657"/>
 							<reference ref="222914230"/>
-							<reference ref="1041177677"/>
 							<reference ref="500853774"/>
+							<reference ref="1041177677"/>
 						</object>
 						<reference key="parent" ref="0"/>
 						<string key="objectName">View</string>
@@ -599,7 +606,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">59</int>
+			<int key="maxID">60</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -634,6 +641,7 @@
 							<string>listTableView</string>
 							<string>loadingView</string>
 							<string>themePickerContainer</string>
+							<string>toggleView</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
@@ -644,6 +652,7 @@
 							<string>UITableView</string>
 							<string>UIView</string>
 							<string>UINavigationController</string>
+							<string>UIView</string>
 						</object>
 					</object>
 					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
@@ -657,6 +666,7 @@
 							<string>listTableView</string>
 							<string>loadingView</string>
 							<string>themePickerContainer</string>
+							<string>toggleView</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
@@ -687,6 +697,10 @@
 							<object class="IBToOneOutletInfo">
 								<string key="name">themePickerContainer</string>
 								<string key="candidateClassName">UINavigationController</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">toggleView</string>
+								<string key="candidateClassName">UIView</string>
 							</object>
 						</object>
 					</object>
