@@ -15,13 +15,6 @@
 @synthesize videoTranscript;
 @synthesize videoFilename;
 
-- (id)init
-{
-    self = [super init];
-    [self release];
-    return nil;
-}
-
 - (void)dealloc
 {
     [videoTranscript release];

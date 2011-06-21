@@ -17,6 +17,7 @@
 typedef enum 
 {
 	SCHStoryInteractionTitle,
+    SCHStoryInteractionTransparentTitle,
     SCHStoryInteractionNoTitle,
     SCHStoryInteractionFullScreen,
 } SCHFrameStyle;
