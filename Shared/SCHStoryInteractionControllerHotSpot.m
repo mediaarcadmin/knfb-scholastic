@@ -123,11 +123,20 @@
     [cross release];
 }
 
+- (CGPoint)starsImageCenterForPoint:(CGPoint)point
+{
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        return CGPointMake(point.x-24, point.y-51);
+    } else {
+        return CGPointMake(point.x-26, point.y-51);
+    }
+}
+
 - (void)correctTapAtPoint:(CGPoint)point
 {
     CGFloat scale = 1.0f / self.scrollView.zoomScale;
     UIView *stars = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"storyInteraction-findinpage-correct"]];
-    stars.center = CGPointMake(point.x-24, point.y-51);
+    stars.center = [self starsImageCenterForPoint:point];
     stars.transform = CGAffineTransformMakeScale(scale, scale);
     
     [self.pageImageView addSubview:stars];
