@@ -160,12 +160,18 @@
         endBlock = Block_copy(self.currentItem.endBlock);
     }
     self.currentItem = nil;
+    self.audioPlayer.delegate = nil;
+    self.audioPlayer = nil;
+    
     if (endBlock) {
         endBlock();
         Block_release(endBlock);
     }
     
-    [self playNextItemInQueue];
+    // only progress with the queue if the end block did not enqueue a new item
+    if (!self.audioPlayer) {
+        [self playNextItemInQueue];
+    }
     
     [self release];
 }
