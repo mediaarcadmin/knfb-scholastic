@@ -6,10 +6,12 @@
 //  Copyright 2011 BitWink. All rights reserved.
 //
 
-#import <expat/expat.h>
-
 #import "SCHStoryInteractionParser.h"
 #import "SCHStoryInteractionTypes.h"
+#import "USAdditions.h"
+
+// must come after USAdditions.h
+#import <expat/expat.h>
 
 // Parsing Interactions.xml is complex, with many different class types. The parser is kept
 // clean and extensible by defining parsing categories on the model objects involved and
@@ -48,7 +50,7 @@
 - (void)parseComplete:(SCHStoryInteractionParser *)parser;
 @end
 
-static NSString *attribute(const XML_Char **atts, const char *key)
+static NSString *extractXmlAttribute(const XML_Char **atts, const char *key)
 {
     for (int i = 0; atts[i]; i += 2) {
         if (strcmp(atts[i], key) == 0) {
@@ -108,9 +110,9 @@ static NSString *attribute(const XML_Char **atts, const char *key)
 - (void)startElement:(const XML_Char *)name attributes:(const XML_Char **)attributes parser:(SCHStoryInteractionParser *)parser
 {
     if (strcmp(name, "QuestionPrompt") == 0) {
-        self.prompt = attribute(attributes, "Transcript");
+        self.prompt = extractXmlAttribute(attributes, "Transcript");
     } else if (strcmp(name, "Answer") == 0) {
-        [parser.answers addObject:attribute(attributes, "Transcript")];
+        [parser.answers addObject:extractXmlAttribute(attributes, "Transcript")];
     } else {
         [super startElement:name attributes:attributes parser:parser];
     }
@@ -140,12 +142,12 @@ static NSString *attribute(const XML_Char **atts, const char *key)
     if (strcmp(name, "Question") == 0) {
         [parser beginQuestion:[SCHStoryInteractionAboutYouQuizQuestion class]];
     } else if (strcmp(name, "Introduction") == 0) {
-        self.introduction = attribute(attributes, "Transcript");
+        self.introduction = extractXmlAttribute(attributes, "Transcript");
     } else if (strcmp(name, "OutcomeMessage") == 0) {
-        NSString *outcomeMessage = attribute(attributes, "Transcript");
+        NSString *outcomeMessage = extractXmlAttribute(attributes, "Transcript");
         [parser.array addObject:outcomeMessage];
     } else if (strcmp(name, "TiebreakOrder") == 0) {
-        NSString *orderString = attribute(attributes, "Transcript");
+        NSString *orderString = extractXmlAttribute(attributes, "Transcript");
         
         NSMutableArray *convertedOrder = [NSMutableArray array];
         
@@ -181,14 +183,14 @@ static NSString *attribute(const XML_Char **atts, const char *key)
 - (void)startElement:(const XML_Char *)name attributes:(const XML_Char **)attributes parser:(SCHStoryInteractionParser *)parser
 {
     if (strcmp(name, "QuestionPrompt") == 0) {
-        self.prompt = attribute(attributes, "Transcript");
+        self.prompt = extractXmlAttribute(attributes, "Transcript");
     } else if (strcmp(name, "Hotspot") == 0) {
-        self.hotSpotRect = CGRectMake([attribute(attributes, "Left") floatValue],
-                                      [attribute(attributes, "Top") floatValue],
-                                      [attribute(attributes, "Width") floatValue],
-                                      [attribute(attributes, "Height") floatValue]);
-        self.originalBookSize = CGSizeMake([attribute(attributes, "OriginalBookWidth") floatValue],
-                                           [attribute(attributes, "OriginalBookHeight") floatValue]);
+        self.hotSpotRect = CGRectMake([extractXmlAttribute(attributes, "Left") floatValue],
+                                      [extractXmlAttribute(attributes, "Top") floatValue],
+                                      [extractXmlAttribute(attributes, "Width") floatValue],
+                                      [extractXmlAttribute(attributes, "Height") floatValue]);
+        self.originalBookSize = CGSizeMake([extractXmlAttribute(attributes, "OriginalBookWidth") floatValue],
+                                           [extractXmlAttribute(attributes, "OriginalBookHeight") floatValue]);
     } else {
         [super startElement:name attributes:attributes parser:parser];
     }
@@ -200,7 +202,20 @@ static NSString *attribute(const XML_Char **atts, const char *key)
         [parser endQuestion];
     } else if (strcmp(name, "Data") == 0) {
         SCHStoryInteractionHotSpotQuestion *question = (SCHStoryInteractionHotSpotQuestion *)parser.question;
-        question.data = nil; // TODO: decode data string
+        NSData *data = [NSData dataWithBase64EncodedString:parser.text];
+        const uint8_t *bytes = (const uint8_t *)[data bytes];
+        CGMutablePathRef path = CGPathCreateMutable();
+        for (NSInteger i = 0, n = [data length]; i < n; i += 4) {
+            float x = (bytes[i+0] << 8) + (bytes[i+1]);
+            float y = (bytes[i+2] << 8) + (bytes[i+3]);
+            if (i == 0) {
+                CGPathMoveToPoint(path, NULL, x, y);
+            } else {
+                CGPathAddLineToPoint(path, NULL, x, y);
+            }
+        }
+        question.path = CGPathCreateCopy(path);
+        CGPathRelease(path);
     } else {
         [super endElement:name parser:parser];
     }
@@ -234,7 +249,7 @@ static NSString *attribute(const XML_Char **atts, const char *key)
 - (void)startElement:(const XML_Char *)name attributes:(const XML_Char **)attributes parser:(SCHStoryInteractionParser *)parser
 {
     if (strcmp(name, "Image") == 0) {
-        self.imageFilename = attribute(attributes, "Url");
+        self.imageFilename = extractXmlAttribute(attributes, "Url");
     } else {
         [super startElement:name attributes:attributes parser:parser];
     }
@@ -249,12 +264,12 @@ static NSString *attribute(const XML_Char **atts, const char *key)
 - (void)startElement:(const XML_Char *)name attributes:(const XML_Char **)attributes parser:(SCHStoryInteractionParser *)parser
 {
     if (strcmp(name, "QuestionPrompt") == 0) {
-        self.prompt = attribute(attributes, "Transcript");
+        self.prompt = extractXmlAttribute(attributes, "Transcript");
     } else if (strcmp(name, "Answer") == 0) {
-        if ([[attribute(attributes, "IsCorrect") lowercaseString] isEqualToString:@"true"]) {
+        if ([[extractXmlAttribute(attributes, "IsCorrect") lowercaseString] isEqualToString:@"true"]) {
             self.correctAnswer = [parser.answers count];
         }
-        [parser.answers addObject:attribute(attributes, "Transcript")];
+        [parser.answers addObject:extractXmlAttribute(attributes, "Transcript")];
     } else {
         [super startElement:name attributes:attributes parser:parser];
     }
@@ -282,9 +297,9 @@ static NSString *attribute(const XML_Char **atts, const char *key)
 - (void)startElement:(const XML_Char *)name attributes:(const XML_Char **)attributes parser:(SCHStoryInteractionParser *)parser
 {
     if (strcmp(name, "QuestionPrompt") == 0) {
-        self.prompt = attribute(attributes, "Transcript");
+        self.prompt = extractXmlAttribute(attributes, "Transcript");
     } else if (strcmp(name, "Answer") == 0) {
-        if ([[attribute(attributes, "IsCorrect") lowercaseString] isEqualToString:@"true"]) {
+        if ([[extractXmlAttribute(attributes, "IsCorrect") lowercaseString] isEqualToString:@"true"]) {
             self.correctAnswer = [parser.answers count];
         }
         [parser.answers addObject:[NSNull null]];
@@ -306,7 +321,7 @@ static NSString *attribute(const XML_Char **atts, const char *key)
 - (void)startElement:(const XML_Char *)name attributes:(const XML_Char **)attributes parser:(SCHStoryInteractionParser *)parser
 {
     if (strcmp(name, "Introduction") == 0) {
-        self.introduction = attribute(attributes, "Transcript");
+        self.introduction = extractXmlAttribute(attributes, "Transcript");
     } else if (strcmp(name, "Question1") == 0 || strcmp(name, "Question2") == 0 || strcmp(name, "Question3") == 0) {
         [parser beginQuestion:[SCHStoryInteractionMultipleChoiceTextQuestion class]];
     } else {
@@ -329,7 +344,7 @@ static NSString *attribute(const XML_Char **atts, const char *key)
 - (void)startElement:(const XML_Char *)name attributes:(const XML_Char **)attributes parser:(SCHStoryInteractionParser *)parser
 {
     if (strcmp(name, "Introduction") == 0) {
-        self.introduction = attribute(attributes, "Transcript");
+        self.introduction = extractXmlAttribute(attributes, "Transcript");
     } else if (strcmp(name, "Question1") == 0 || strcmp(name, "Question2") == 0 || strcmp(name, "Question3") == 0) {
         [parser beginQuestion:[SCHStoryInteractionMultipleChoicePictureQuestion class]];
     } else {
@@ -352,12 +367,12 @@ static NSString *attribute(const XML_Char **atts, const char *key)
 - (void)startElement:(const XML_Char *)name attributes:(const XML_Char **)attributes parser:(SCHStoryInteractionParser *)parser
 {
     if (strcmp(name, "QuestionPrompt") == 0) {
-        self.prompt = attribute(attributes, "Transcript");
+        self.prompt = extractXmlAttribute(attributes, "Transcript");
     } else if (strcmp(name, "Answer") == 0) {
-        if ([[attribute(attributes, "IsCorrect") lowercaseString] isEqualToString:@"true"]) {
+        if ([[extractXmlAttribute(attributes, "IsCorrect") lowercaseString] isEqualToString:@"true"]) {
             self.correctAnswer = [parser.answers count];
         }
-        [parser.answers addObject:attribute(attributes, "Transcript")];
+        [parser.answers addObject:extractXmlAttribute(attributes, "Transcript")];
     } else {
         [super startElement:name attributes:attributes parser:parser];
     }
@@ -388,11 +403,11 @@ static NSString *attribute(const XML_Char **atts, const char *key)
     if (strcmp(name,"Question") == 0) {
         [parser beginQuestion:[SCHStoryInteractionPopQuizQuestion class]];
     } else if (strcmp(name, "ScoreResponseLow") == 0) {
-        self.scoreResponseLow = attribute(attributes, "Transcript");
+        self.scoreResponseLow = extractXmlAttribute(attributes, "Transcript");
     } else if (strcmp(name, "ScoreResponseMedium") == 0) {
-        self.scoreResponseMedium = attribute(attributes, "Transcript");
+        self.scoreResponseMedium = extractXmlAttribute(attributes, "Transcript");
     } else if (strcmp(name, "ScoreResponseHigh") == 0) {
-        self.scoreResponseHigh = attribute(attributes, "Transcript");
+        self.scoreResponseHigh = extractXmlAttribute(attributes, "Transcript");
     } else {
         [super startElement:name attributes:attributes parser:parser];
     }
@@ -414,10 +429,10 @@ static NSString *attribute(const XML_Char **atts, const char *key)
 - (void)startElement:(const XML_Char *)name attributes:(const XML_Char **)attributes parser:(SCHStoryInteractionParser *)parser
 {
     if (strcmp(name, "Answer") == 0) {
-        if ([[attribute(attributes, "IsCorrect") lowercaseString] isEqualToString:@"true"]) {
+        if ([[extractXmlAttribute(attributes, "IsCorrect") lowercaseString] isEqualToString:@"true"]) {
             self.correctAnswer = [parser.answers count];
         }
-        [parser.answers addObject:attribute(attributes, "Transcript")];
+        [parser.answers addObject:extractXmlAttribute(attributes, "Transcript")];
     } else {
         [super startElement:name attributes:attributes parser:parser];
     }
@@ -466,8 +481,8 @@ static NSString *attribute(const XML_Char **atts, const char *key)
 - (void)startElement:(const XML_Char *)name attributes:(const XML_Char **)attributes parser:(SCHStoryInteractionParser *)parser
 {
     if (strcmp(name, "Answer") == 0) {
-        self.uniqueObjectName = attribute(attributes, "suffix");
-        self.isCorrect = [[attribute(attributes, "IsCorrect") lowercaseString] isEqualToString:@"true"];
+        self.uniqueObjectName = extractXmlAttribute(attributes, "suffix");
+        self.isCorrect = [[extractXmlAttribute(attributes, "IsCorrect") lowercaseString] isEqualToString:@"true"];
     } else {
         [super startElement:name attributes:attributes parser:parser];
     }
@@ -480,9 +495,9 @@ static NSString *attribute(const XML_Char **atts, const char *key)
 - (void)startElement:(const XML_Char *)name attributes:(const XML_Char **)attributes parser:(SCHStoryInteractionParser *)parser
 {
     if (strcmp(name, "QuestionPrompt") == 0) {
-        self.prompt = attribute(attributes, "Transcript");
+        self.prompt = extractXmlAttribute(attributes, "Transcript");
     } else if (strcmp(name, "StartingLetter") == 0) {
-        self.startingLetter = attribute(attributes, "Character");
+        self.startingLetter = extractXmlAttribute(attributes, "Character");
     } else if (strcmp(name, "Answer") == 0) {
         [parser beginQuestion:[SCHStoryInteractionStartingLetterQuestion class]];
         [parser.question startElement:name attributes:attributes parser:parser];
@@ -507,9 +522,9 @@ static NSString *attribute(const XML_Char **atts, const char *key)
 - (void)startElement:(const XML_Char *)name attributes:(const XML_Char **)attributes parser:(SCHStoryInteractionParser *)parser
 {
     if (strcmp(name, "BookTitle") == 0) {
-        self.bookTitle = attribute(attributes, "Phrase");
+        self.bookTitle = extractXmlAttribute(attributes, "Phrase");
     } else if (strcmp(name, "Words") == 0) {
-        NSArray *words = [attribute(attributes, "Words") componentsSeparatedByString:@","];
+        NSArray *words = [extractXmlAttribute(attributes, "Words") componentsSeparatedByString:@","];
         NSMutableSet *trimmedWords = [[NSMutableSet alloc] initWithCapacity:[words count]];
         NSCharacterSet *whitespaceAndNewline = [NSCharacterSet whitespaceAndNewlineCharacterSet];
         for (NSString *word in words) {
@@ -534,8 +549,8 @@ static NSString *attribute(const XML_Char **atts, const char *key)
 - (void)startElement:(const XML_Char *)name attributes:(const XML_Char **)attributes parser:(SCHStoryInteractionParser *)parser
 {
     if (strcmp(name, "Video") == 0) {
-        self.videoTranscript = attribute(attributes, "Transcript");
-        self.videoFilename = attribute(attributes, "Url");
+        self.videoTranscript = extractXmlAttribute(attributes, "Transcript");
+        self.videoFilename = extractXmlAttribute(attributes, "Url");
     } else {
         [super startElement:name attributes:attributes parser:parser];
     }
@@ -550,8 +565,8 @@ static NSString *attribute(const XML_Char **atts, const char *key)
 - (void)startElement:(const XML_Char *)name attributes:(const XML_Char **)attributes parser:(SCHStoryInteractionParser *)parser
 {
     if (strcmp(name, "Statement") == 0) {
-        self.source = attribute(attributes, "Source");
-        self.text = attribute(attributes, "Transcript");
+        self.source = extractXmlAttribute(attributes, "Source");
+        self.text = extractXmlAttribute(attributes, "Transcript");
     } else {
         [super startElement:name attributes:attributes parser:parser];
     }
@@ -565,7 +580,7 @@ static NSString *attribute(const XML_Char **atts, const char *key)
 {
     if (strcmp(name, "Distracter") == 0) {
         // translate to 0-based index
-        self.distracterIndex = [attribute(attributes, "Index") integerValue] - 1;
+        self.distracterIndex = [extractXmlAttribute(attributes, "Index") integerValue] - 1;
     } else if (strcmp(name, "Statement") == 0) {
         [parser beginQuestion:[SCHStoryInteractionWhoSaidItStatement class]];
         [parser.question startElement:name attributes:attributes parser:parser];
@@ -592,8 +607,8 @@ static NSString *attribute(const XML_Char **atts, const char *key)
     if (strcmp(name, "Statement") == 0) {
         SCHStoryInteractionWordMatchQuestionItem *item = [[SCHStoryInteractionWordMatchQuestionItem alloc] init];
         item.storyInteraction = parser.story;
-        item.text = attribute(attributes, "Transcript");
-        item.uniqueObjectName = attribute(attributes, "suffix");
+        item.text = extractXmlAttribute(attributes, "Transcript");
+        item.uniqueObjectName = extractXmlAttribute(attributes, "suffix");
         [parser.answers addObject:item];
         [item release];
     }
@@ -621,7 +636,7 @@ static NSString *attribute(const XML_Char **atts, const char *key)
 - (void)startElement:(const XML_Char *)name attributes:(const XML_Char **)attributes parser:(SCHStoryInteractionParser *)parser
 {
     if (strcmp(name, "Introduction") == 0) {
-        self.introduction = attribute(attributes, "Transcript");
+        self.introduction = extractXmlAttribute(attributes, "Transcript");
     } else if (strcmp(name, "Question1") == 0 || strcmp(name, "Question2") == 0 || strcmp(name, "Question3") == 0) {
         [parser beginQuestion:[SCHStoryInteractionWordMatchQuestion class]];
     } else {
@@ -644,10 +659,10 @@ static NSString *attribute(const XML_Char **atts, const char *key)
 - (void)startElement:(const XML_Char *)name attributes:(const XML_Char **)attributes parser:(SCHStoryInteractionParser *)parser
 {
     if (strcmp(name, "Scramble") == 0) {
-        self.clue = attribute(attributes, "Clue");
-        self.answer = attribute(attributes, "Answer");
+        self.clue = extractXmlAttribute(attributes, "Clue");
+        self.answer = extractXmlAttribute(attributes, "Answer");
     } else if (strcmp(name, "Hint") == 0) {
-        NSArray *hints = [attribute(attributes, "index") componentsSeparatedByString:@","];
+        NSArray *hints = [extractXmlAttribute(attributes, "index") componentsSeparatedByString:@","];
         NSMutableArray *hintNumbers = [[NSMutableArray alloc] initWithCapacity:[hints count]];
         for (NSString *hint in hints) {
             [hintNumbers addObject:[NSNumber numberWithInteger:[hint integerValue]]];
@@ -668,14 +683,14 @@ static NSString *attribute(const XML_Char **atts, const char *key)
 - (void)startElement:(const XML_Char *)name attributes:(const XML_Char **)attributes parser:(SCHStoryInteractionParser *)parser
 {
     if (strcmp(name, "Introduction") == 0) {
-        self.introduction = attribute(attributes, "Transcript");
+        self.introduction = extractXmlAttribute(attributes, "Transcript");
     } else if (strcmp(name, "Word") == 0) {
         if (!parser.answers) {
             parser.answers = [NSMutableArray array];
         }
-        [parser.answers addObject:attribute(attributes, "Transcript")];
+        [parser.answers addObject:extractXmlAttribute(attributes, "Transcript")];
     } else if (strcmp(name, "Row") == 0) {
-        NSString *row = attribute(attributes, "Letters");
+        NSString *row = extractXmlAttribute(attributes, "Letters");
         BOOL isFirstRow = ([parser.array count] == 0);
         NSCharacterSet *whitespaceAndNewline = [NSCharacterSet whitespaceAndNewlineCharacterSet];
         NSArray *letters = [row componentsSeparatedByString:@","];
@@ -766,7 +781,7 @@ static void storyInteractionCharacterDataHandler(void *userData, const XML_Char 
     } else if (self.story != nil) {
         [self.story startElement:name attributes:attributes parser:self];
     } else if (strcmp(name, "StoryInteraction") == 0) {
-        NSString *type = attribute(attributes, "StoryInteractionType");
+        NSString *type = extractXmlAttribute(attributes, "StoryInteractionType");
         if (type) {
             Class storyInteractionClass = NSClassFromString([@"SCHStoryInteraction" stringByAppendingString:type]);
             if (storyInteractionClass) {
@@ -774,7 +789,7 @@ static void storyInteractionCharacterDataHandler(void *userData, const XML_Char 
             }
         }
         if (self.story) {
-            self.story.ID = attribute(attributes, "ID");
+            self.story.ID = extractXmlAttribute(attributes, "ID");
             self.questions = [NSMutableArray array];
             self.array = [NSMutableArray array];
         } else {

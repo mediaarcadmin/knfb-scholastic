@@ -14,9 +14,10 @@
 #import "SCHStoryInteractionVideo.h"
 #import "SCHXPSProvider.h"
 #import "SCHPlayButton.h"
+#import "UIColor+Scholastic.h"
 
 static CGFloat const kSCHStoryInteractionControllerVideoCornerRadius = 14.0;
-static CGFloat const kSCHStoryInteractionControllerVideoBorderWidth = 3.0;
+static CGFloat const kSCHStoryInteractionControllerVideoBorderWidth = 4.0;
 
 @interface SCHStoryInteractionControllerVideo ()
 
@@ -51,12 +52,16 @@ static CGFloat const kSCHStoryInteractionControllerVideoBorderWidth = 3.0;
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         self.movieContainerView.layer.cornerRadius = kSCHStoryInteractionControllerVideoCornerRadius;  
         self.movieContainerView.layer.borderWidth = kSCHStoryInteractionControllerVideoBorderWidth; 
-        self.movieContainerView.layer.borderColor = [[UIColor colorWithRed:0.071 green:0.396 blue:0.698 alpha:1.000] CGColor];
+        if ([self.storyInteraction isOlderStoryInteraction] == YES) {
+            self.movieContainerView.layer.borderColor = [[UIColor SCHPurple1Color] CGColor];    
+        } else {
+            self.movieContainerView.layer.borderColor = [[UIColor SCHBlue2Color] CGColor];    
+        }        
         self.movieContainerView.layer.masksToBounds = YES;
         
         self.playButton.layer.cornerRadius = kSCHStoryInteractionControllerVideoCornerRadius;  
         self.playButton.layer.borderWidth = kSCHStoryInteractionControllerVideoBorderWidth; 
-        self.movieContainerView.layer.borderColor = [[UIColor colorWithRed:0.071 green:0.396 blue:0.698 alpha:1.000] CGColor];
+        self.playButton.layer.borderColor = self.movieContainerView.layer.borderColor;
         self.playButton.layer.masksToBounds = YES;
     }
     
@@ -149,6 +154,11 @@ static CGFloat const kSCHStoryInteractionControllerVideoBorderWidth = 3.0;
 - (NSString *)audioPath
 {
     return([(SCHStoryInteractionVideo *)self.storyInteraction audioPathForQuestion]);
+}
+
+- (SCHFrameStyle)frameStyle
+{
+    return(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone ? SCHStoryInteractionTitle : SCHStoryInteractionTransparentTitle);
 }
 
 @end

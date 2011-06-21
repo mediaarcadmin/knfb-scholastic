@@ -14,3 +14,15 @@ CGFloat SCHCGPointDistanceSq(CGPoint p1, CGPoint p2)
     CGFloat dy = p1.y - p2.y;
     return dx*dx + dy*dy;
 }
+
+static void blockApplier(void *info, const CGPathElement *element)
+{
+    void (^block)(const CGPathElement *) = info;
+    block(element);
+}
+
+
+void SCHCGPathApplyBlock(CGPathRef path, void (^block)(const CGPathElement *))
+{
+    CGPathApply(path, block, blockApplier);
+}

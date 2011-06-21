@@ -1023,4 +1023,10 @@ CGAffineTransform transformRectToFitRect(CGRect sourceRect, CGRect targetRect, B
     return [self pageTurningViewTransformForPageAtIndex:pageIndex offsetOrigin:YES applyZoom:YES];
 }
 
+- (CGPoint)pageCoordinatesFromViewCoordinates:(CGPoint)viewPoint forPageAtIndex:(NSInteger)pageIndex
+{
+    CGAffineTransform viewToPage = CGAffineTransformInvert([self pageTurningViewTransformForPageAtIndex:pageIndex]);
+    return CGPointApplyAffineTransform(viewPoint, viewToPage);
+}
+
 @end

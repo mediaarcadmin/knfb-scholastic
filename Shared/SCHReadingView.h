@@ -91,6 +91,8 @@ typedef enum
 - (SCHBookPoint *)bookPointForLayoutPage:(NSUInteger)layoutPage 
                           pageWordOffset:(NSUInteger)pageWordOffset;
 
+- (CGPoint)pageCoordinatesFromViewCoordinates:(CGPoint)viewPoint forPageAtIndex:(NSInteger)pageIndex;
+
 - (NSArray *)highlightRangesForCurrentPage;
 - (NSArray *)highlightsForLayoutPage:(NSUInteger)page;
 - (void)addHighlightWithSelection:(EucSelectorRange *)selectorRange;
