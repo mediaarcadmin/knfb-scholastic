@@ -8,8 +8,6 @@
 
 #import "SCHStoryInteractionHotSpot.h"
 
-#import "KNFBXPSConstants.h"
-
 #pragma mark - SCHStoryInteractionHotSpotQuestion
 
 @implementation SCHStoryInteractionHotSpotQuestion
@@ -57,13 +55,6 @@
 @implementation SCHStoryInteractionHotSpot
 
 @synthesize questions;
-
-- (id)init
-{
-    self = [super init];
-    [self release];
-    return nil;
-}
 
 - (void)dealloc
 {

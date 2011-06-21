@@ -10,3 +10,6 @@
 
 // Square of distance from p1 to p2
 CGFloat SCHCGPointDistanceSq(CGPoint p1, CGPoint p2);
+
+// like CGPathApply() but with a block instead of an applier function
+void SCHCGPathApplyBlock(CGPathRef path, void (^block)(const CGPathElement *));

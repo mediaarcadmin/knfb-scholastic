@@ -10,6 +10,7 @@
 
 #import "SCHStoryInteractionParser.h"
 #import "SCHStoryInteractionTypes.h"
+#import "SCHGeometry.h"
 
 @interface SCHStoryInteractionParserTests : SenTestCase {}
 @property (nonatomic, retain) SCHStoryInteractionParser *parser;
@@ -87,7 +88,32 @@
         STAssertEqualObjects(q.prompt, expect[i].prompt, @"incorrect prompt for question %d", i+1);
         STAssertEqualObjects(q.answers, expect[i].answers, @"incorrect answers for question %d", i+1);
     }
+}
+
+- (void)checkPath:(CGPathRef)path equalToCoordList:(NSString *)coordString
+{
+    NSArray *coords = [coordString componentsSeparatedByString:@","];
+    if ([coords count] == 0) {
+        STAssertTrue(CGPathIsEmpty(path), @"path should be empty");
+        return;
+    }
     
+    __block NSInteger index = 0;
+    SCHCGPathApplyBlock(path,
+                        ^(const CGPathElement *element) {
+                            STAssertTrue(index*2+1 < [coords count], @"path too long");
+                            CGFloat x = [[coords objectAtIndex:index*2+0] floatValue];
+                            CGFloat y = [[coords objectAtIndex:index*2+1] floatValue];
+                            if (index == 0) {
+                                STAssertEquals(element->type, kCGPathElementMoveToPoint, @"first path element should be moveToPoint");
+                            } else {
+                                STAssertEquals(element->type, kCGPathElementAddLineToPoint, @"subsequent path elements should be addLineToPoint");
+                            }
+                            CGPoint p = element->points[0];
+                            STAssertEqualsWithAccuracy(p.x, x, 1e-3, @"bad x coordinate at index %d", index);
+                            STAssertEqualsWithAccuracy(p.y, y, 1e-3, @"bad y coordinate at index %d", index);
+                            index++;
+                        });
 }
 
 - (void)testHotSpot1
@@ -104,10 +130,23 @@
         NSString *prompt;
         CGRect hotSpotRect;
         CGSize originalBookSize;
+        NSString *pointCoords;
     } expect[] = {
-        { @"It looks like Ollie was knitting a new sock. Can you find it?", CGRectMake(256.2, 673.2, 102.0, 56.4), CGSizeMake(806, 606.23) },
-        { @"Find something Ollie wears when he does magic tricks.", CGRectMake(460.9, 596.8, 78.9, 70.8), CGSizeMake(806, 606.23) },
-        { @"Now find Ollie’s green origami project.", CGRectMake(273.5, 733.7, 64.5, 49.1), CGSizeMake(806, 606.23) }
+        { @"It looks like Ollie was knitting a new sock. Can you find it?",
+            CGRectMake(256.2, 673.2, 102.0, 56.4),
+            CGSizeMake(806, 606.23),
+            @"4,216,10,216,16,216,22,211,27,211,33,211,39,211,45,205,51,205,56,205,62,205,68,205,74,205,79,205,85,205,91,205,97,205,102,205,108,205,108,199,114,199,120,199,126,199,131,199,131,193,137,193,143,193,149,193,149,187,154,187,160,182,166,182,172,182,172,176,177,176,177,170,183,164,189,164,189,159,189,153,195,153,195,147,195,141,195,136,200,136,200,130,200,124,200,118,206,118,206,113,212,107,212,101,218,101,218,95,218,89,224,89,224,84,229,84,235,84,241,84,247,84,247,78,252,78,258,72,264,72,264,66,270,66,275,66,281,66,287,66,293,66,299,66,304,66,310,66,316,66,322,66,327,66,327,61,333,61,339,61,345,61,350,61,356,61,362,61,368,61,368,55,368,49,368,43,368,38,362,38,362,32,362,26,356,26,356,20,350,20,350,14,350,9,345,9,339,9,339,3,333,3,327,3,322,3,316,3,310,3,304,3,299,3,160,3,154,3,149,3,143,3,137,3,137,9,131,9,126,9,120,9,114,9,108,9,108,14,102,14,97,14,91,14,91,20,85,20,79,20,74,20,74,26,68,26,62,26,56,26,51,26,45,32,39,32,33,32,33,38,27,38,22,38,16,43,10,43,4,43,4,49"
+        },
+        { @"Find something Ollie wears when he does magic tricks.",
+            CGRectMake(460.9, 596.8, 78.9, 70.8),
+            CGSizeMake(806, 606.23),
+            @""
+        },
+        { @"Now find Ollie’s green origami project.",
+            CGRectMake(273.5, 733.7, 64.5, 49.1),
+            CGSizeMake(806, 606.23),
+            @"51,9,45,9,39,9,33,9,33,14,27,14,22,14,16,14,16,20,10,20,4,20,4,159,10,159,16,164,22,164,27,170,33,170,33,176,39,176,45,176,51,176,56,176,62,176,68,176,74,176,79,176,85,176,91,176,97,176,91,170,85,170,91,170,97,170,102,170,108,170,114,170,120,170,126,170,131,170,137,170,143,170,149,170,154,170,160,170,166,170,172,170,177,170,183,170,189,170,195,170,200,170,206,170,212,170,212,164,218,164,218,159,224,159,224,153,224,147,229,147,229,141,235,141,235,136,235,130,241,130,247,130,247,124,252,124,252,118,252,113,252,38,252,32,247,32,241,32,235,32,229,32,224,26,218,26,212,26,206,26,206,20,200,20,195,20,189,20,183,20,177,20,172,20,166,20,160,20,154,20,149,20,143,20,137,20,131,14,126,14,120,14"
+        }
     };
     NSUInteger expectCount = sizeof(expect)/sizeof(expect[0]);
 
@@ -117,12 +156,14 @@
         STAssertEqualObjects(q.prompt, expect[i].prompt, @"incorrect prompt for question %d", i+1);
         STAssertTrue(CGRectEqualToRect(q.hotSpotRect, expect[i].hotSpotRect), @"incorrect hotSpotRect for question %d", i+1);
         STAssertTrue(CGSizeEqualToSize(q.originalBookSize, expect[i].originalBookSize), @"incorrect originalBookSize for question %d", i+1);
+        [self checkPath:q.path equalToCoordList:expect[i].pointCoords];
         
         NSString *questionAudioPath = [NSString stringWithFormat:@"ttp1_q%d.mp3", i+1];
         STAssertEqualObjects([[q audioPathForQuestion] lastPathComponent], questionAudioPath, @"incorrect question audio path for question %d", i+1);
         
         NSString *correctAnswerAudioPath = [NSString stringWithFormat:@"ttp1_ca%d.mp3", i+1];
         STAssertEqualObjects([[q audioPathForCorrectAnswer] lastPathComponent], correctAnswerAudioPath, @"incorrect correct answer audio path for question %d", i+1);
+        
     }
 }
 

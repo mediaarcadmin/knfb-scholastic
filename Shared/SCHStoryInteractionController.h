@@ -18,7 +18,8 @@ typedef enum
 {
 	SCHStoryInteractionTitle,
     SCHStoryInteractionNoTitle,
-    SCHStoryInteractionFullScreen
+    SCHStoryInteractionFullScreen,
+    SCHStoryInteractionTitleOnly
 } SCHFrameStyle;
     
 // Core presentation functionality for story interactions. 
