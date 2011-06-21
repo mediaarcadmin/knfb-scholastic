@@ -148,7 +148,8 @@
         
         NSString *age = [self.storyInteraction isOlderStoryInteraction] ? @"older" : @"younger";
         UIImage *backgroundImage = [UIImage imageNamed:[NSString stringWithFormat:@"storyinteraction-bg-%@%@", age,
-                                                        (self.frameStyle == SCHStoryInteractionNoTitle ? @"-notitle" : @"")]];
+                                                        (self.frameStyle == SCHStoryInteractionNoTitle || 
+                                                         self.frameStyle == SCHStoryInteractionTransparentTitle ? @"-notitle" : @"")]];
         UIImage *backgroundStretch = [backgroundImage stretchableImageWithLeftCapWidth:backgroundImage.size.width/2-1
                                                                           topCapHeight:backgroundImage.size.height/2-1];
         UIImageView *background = [[UIImageView alloc] initWithImage:backgroundStretch];
@@ -161,7 +162,8 @@
         
         BOOL hasShadow = NO;
 
-        if (self.frameStyle == SCHStoryInteractionTitle) {
+        if (self.frameStyle == SCHStoryInteractionTitle || 
+            self.frameStyle == SCHStoryInteractionTransparentTitle) {
             if (iPad) {
                 if ([age isEqualToString:@"younger"]) {
                     title.font = [UIFont fontWithName:@"Arial-BoldMT" size:22];
@@ -231,6 +233,7 @@
                 break;
 
             case SCHStoryInteractionTitle:
+            case SCHStoryInteractionTransparentTitle:                
             default:
                 size = CGSizeMake(250.0, 470.0);
                 break;
@@ -262,7 +265,8 @@
             };
             break;
                         
-        case SCHStoryInteractionTitle:    
+        case SCHStoryInteractionTitle: 
+        case SCHStoryInteractionTransparentTitle:                            
         case SCHStoryInteractionNoTitle:            
         default:
             setupGeometry = ^{
