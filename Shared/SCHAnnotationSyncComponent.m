@@ -22,7 +22,6 @@
 #import "SCHBookmark.h"
 #import "SCHLocationBookmark.h"
 #import "SCHLastPage.h"
-#import "SCHFavorite.h"
 #import "SCHAppState.h"
 
 @interface SCHAnnotationSyncComponent ()
@@ -74,9 +73,6 @@
 - (void)syncLastPage:(NSDictionary *)webLastPage 
         withLastPage:(SCHLastPage *)localLastPage;
 - (SCHLastPage *)lastPage:(NSDictionary *)lastPage;
-- (void)syncFavorite:(NSDictionary *)webFavorite 
-        withFavorite:(SCHFavorite *)localFavorite;
-- (SCHFavorite *)favorite:(NSDictionary *)favorite;
 
 @property (retain, nonatomic) NSMutableDictionary *annotations;
 @property (retain, nonatomic) NSMutableArray *createdAnnotations;
@@ -252,8 +248,7 @@
 
 - (void)method:(NSString *)method didFailWithError:(NSError *)error
 {
-	// TODO: uncomment when Favorite syncing error is resolved
-    //[self.createdAnnotations removeAllObjects];
+    [self.createdAnnotations removeAllObjects];
 	[super method:method didFailWithError:error];
 }
 
@@ -315,7 +310,7 @@
                               [NSNumber numberWithStatus:kSCHStatusDeleted], nil];
     // we don't check all the annotations as if they have changed then the last page has also change
 	[fetchRequest setPredicate:[NSPredicate predicateWithFormat:
-                                @"ANY AnnotationsContentItem.PrivateAnnotations.LastPage.State IN %@ OR ANY AnnotationsContentItem.PrivateAnnotations.Favorite.State IN %@", 
+                                @"ANY AnnotationsContentItem.PrivateAnnotations.LastPage.State IN %@", 
                                 changedStates, changedStates]];
 	    
 	ret = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
@@ -465,8 +460,6 @@
                   withBookmarks:localAnnotationsContentItem.PrivateAnnotations.Bookmarks 
                      insertInto:localAnnotationsContentItem.PrivateAnnotations];        
         }
-        [self syncFavorite:[self makeNullNil:[privateAnnotations objectForKey:kSCHLibreAccessWebServiceFavorite]] 
-              withFavorite:localAnnotationsContentItem.PrivateAnnotations.Favorite];        
         [self syncLastPage:[self makeNullNil:[privateAnnotations objectForKey:kSCHLibreAccessWebServiceLastPage]] 
               withLastPage:localAnnotationsContentItem.PrivateAnnotations.LastPage];
     }
@@ -509,7 +502,6 @@
 			[ret addBookmarksObject:[self bookmark:bookmark]];
 		}
 		ret.LastPage = [self lastPage:[privateAnnotation objectForKey:kSCHLibreAccessWebServiceLastPage]];
-		ret.Favorite = [self favorite:[privateAnnotation objectForKey:kSCHLibreAccessWebServiceFavorite]];		 
 	}
 	
 	return(ret);
@@ -952,31 +944,6 @@
 		ret.LastPageLocation = [self makeNullNil:[lastPage objectForKey:kSCHLibreAccessWebServiceLastPageLocation]];
 		ret.Percentage = [self makeNullNil:[lastPage objectForKey:kSCHLibreAccessWebServicePercentage]];
 		ret.Component = [self makeNullNil:[lastPage objectForKey:kSCHLibreAccessWebServiceComponent]];
-	}
-	
-	return(ret);
-}
-
-- (void)syncFavorite:(NSDictionary *)webFavorite withFavorite:(SCHFavorite *)localFavorite
-{
-	localFavorite.IsFavorite = [self makeNullNil:[webFavorite objectForKey:kSCHLibreAccessWebServiceIsFavorite]];
-    
-	localFavorite.LastModified = [self makeNullNil:[webFavorite objectForKey:kSCHLibreAccessWebServiceLastModified]];
-	localFavorite.State = [NSNumber numberWithStatus:kSCHStatusUnmodified];				        
-}
-
-- (SCHFavorite *)favorite:(NSDictionary *)favorite
-{
-	SCHFavorite *ret = nil;
-	
-	if (favorite != nil) {
-		ret = [NSEntityDescription insertNewObjectForEntityForName:kSCHFavorite 
-                                            inManagedObjectContext:self.managedObjectContext];
-		
-		ret.LastModified = [self makeNullNil:[favorite objectForKey:kSCHLibreAccessWebServiceLastModified]];
-		ret.State = [NSNumber numberWithStatus:kSCHStatusUnmodified];
-		
-		ret.IsFavorite = [self makeNullNil:[favorite objectForKey:kSCHLibreAccessWebServiceIsFavorite]];
 	}
 	
 	return(ret);

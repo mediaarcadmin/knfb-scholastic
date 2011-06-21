@@ -10,7 +10,6 @@
 
 #import "SCHAnnotationsContentItem.h"
 #import "SCHBookmark.h"
-#import "SCHFavorite.h"
 #import "SCHHighlight.h"
 #import "SCHLastPage.h"
 #import "SCHNote.h"
@@ -22,6 +21,5 @@
 @dynamic Bookmarks;
 @dynamic Highlights;
 @dynamic Notes;
-@dynamic Favorite;
 
 @end

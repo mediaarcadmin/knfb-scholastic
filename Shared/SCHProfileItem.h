@@ -63,7 +63,6 @@ typedef enum {
 - (BOOL)hasPassword;
 - (BOOL)validatePasswordWith:(NSString *)withPassword;
 
-- (BOOL)contentIdentifierFavorite:(NSString *)contentIdentifier;
 - (NSInteger)contentIdentifierLastPageLocation:(NSString *)contentIdentifier;
 
 @end

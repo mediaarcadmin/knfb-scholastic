@@ -19,14 +19,17 @@
 @class SCHProfileItem;
 @class SCHReadingViewController;
 
-@interface SCHBookShelfViewController : UIViewController <MRGridViewDelegate, MRGridViewDataSource> 
+@interface SCHBookShelfViewController : UIViewController <MRGridViewDelegate, MRGridViewDataSource, UITableViewDelegate, UITableViewDataSource> 
 {
 }
 
+@property (nonatomic, retain) IBOutlet UITableView *listTableView;
 @property (nonatomic, retain) IBOutlet SCHBookShelfGridView *gridView;
 @property (nonatomic, retain) IBOutlet UIView *loadingView;
 @property (nonatomic, retain) IBOutlet UINavigationController *themePickerContainer;
 @property (nonatomic, retain) IBOutlet SCHCustomNavigationBar *customNavigationBar;
+@property (nonatomic, retain) IBOutlet UIButton *gridButton;
+@property (nonatomic, retain) IBOutlet UIButton *listButton;
 
 @property (nonatomic, retain) KNFBTimeOrderedCache *componentCache;
 

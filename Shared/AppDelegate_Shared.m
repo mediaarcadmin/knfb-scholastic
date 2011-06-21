@@ -50,6 +50,11 @@ static NSString* const prModelCertFilename = @"iphonecert.dat";
     return [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
 }
 
+- (NSURL *)applicationSupportDocumentsDirectory 
+{
+    return [[[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask] lastObject];
+}
+
 /**
  Creates the application's Application Support directory if it doesn't already exist.
  */
@@ -144,7 +149,10 @@ static NSString* const prModelCertFilename = @"iphonecert.dat";
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions    
 {
-	
+    if ([self createApplicationSupportDirectory] == NO) {
+		NSLog(@"Application Support directory could not be created.");
+	}
+    
 	NSNumber *currentValue = [[NSUserDefaults standardUserDefaults] objectForKey:@"kSCHSpaceSaverMode"];
 	
 	if (!currentValue) {
@@ -262,7 +270,7 @@ static NSString* const prModelCertFilename = @"iphonecert.dat";
 
 - (NSURL *)storeURL
 {
-    return [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"Scholastic.sqlite"];
+    return [[self applicationSupportDocumentsDirectory] URLByAppendingPathComponent:@"Scholastic.sqlite"];
 }
 
 /**

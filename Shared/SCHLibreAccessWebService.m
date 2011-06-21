@@ -49,7 +49,6 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 - (NSDictionary *)objectFromWordIndex:(LibreAccessServiceSvc_WordIndex *)anObject;
 - (NSDictionary *)objectFromNote:(LibreAccessServiceSvc_Note *)anObject;
 - (NSDictionary *)objectFromLocationGraphics:(LibreAccessServiceSvc_LocationGraphics *)anObject;
-- (NSDictionary *)objectFromFavorite:(LibreAccessServiceSvc_Favorite *)anObject;
 - (NSDictionary *)objectFromBookmark:(LibreAccessServiceSvc_Bookmark *)anObject;
 - (NSDictionary *)objectFromLocationBookmark:(LibreAccessServiceSvc_LocationBookmark *)anObject;
 - (NSDictionary *)objectFromLastPage:(LibreAccessServiceSvc_LastPage *)anObject;
@@ -78,7 +77,6 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 - (void)fromObject:(NSDictionary *)object intoWordIndex:(LibreAccessServiceSvc_WordIndex *)intoObject;
 - (void)fromObject:(NSDictionary *)object intoNote:(LibreAccessServiceSvc_Note *)intoObject;
 - (void)fromObject:(NSDictionary *)object intoLocationGraphics:(LibreAccessServiceSvc_LocationGraphics *)intoObject;
-- (void)fromObject:(NSDictionary *)object intoFavorite:(LibreAccessServiceSvc_Favorite *)intoObject;
 - (void)fromObject:(NSDictionary *)object intoBookmark:(LibreAccessServiceSvc_Bookmark *)intoObject;
 - (void)fromObject:(NSDictionary *)object intoLocationBookmark:(LibreAccessServiceSvc_LocationBookmark *)intoObject;
 - (void)fromObject:(NSDictionary *)object intoLastPage:(LibreAccessServiceSvc_LastPage *)intoObject;
@@ -507,9 +505,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 				}
 			}
 			
-// TODO: uncomment when Favorite syncing error is resolved
-//			if(errorTriggered == NO && [(id)self.delegate respondsToSelector:@selector(method:didCompleteWithResult:)]) {
-            if([(id)self.delegate respondsToSelector:@selector(method:didCompleteWithResult:)]) {
+			if(errorTriggered == NO && [(id)self.delegate respondsToSelector:@selector(method:didCompleteWithResult:)]) {
 				[(id)self.delegate method:methodName didCompleteWithResult:[self objectFrom:bodyPart]];									
 			}
 		}		
@@ -927,9 +923,8 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		[objects setObject:[self objectFromTranslate:[anObject.Highlights Highlight]] forKey:kSCHLibreAccessWebServiceHighlights];
 		[objects setObject:[self objectFromTranslate:[anObject.Notes Note]] forKey:kSCHLibreAccessWebServiceNotes];
 		[objects setObject:[self objectFromTranslate:[anObject.Bookmarks Bookmark]] forKey:kSCHLibreAccessWebServiceBookmarks];
-		[objects setObject:[self objectFromFavorite:anObject.Favorite] forKey:kSCHLibreAccessWebServiceFavorite];
 		[objects setObject:[self objectFromLastPage:anObject.LastPage] forKey:kSCHLibreAccessWebServiceLastPage];
-		
+        
 		ret = objects;					
 	}
 	
@@ -1018,22 +1013,6 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
 		
 		[objects setObject:[self objectFromTranslate:anObject.page] forKey:kSCHLibreAccessWebServicePage];
-		
-		ret = objects;					
-	}
-	
-	return(ret);
-}
-
-- (NSDictionary *)objectFromFavorite:(LibreAccessServiceSvc_Favorite *)anObject
-{
-	NSDictionary *ret = nil;
-	
-	if (anObject != nil) {
-		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
-		
-		[objects setObject:[self objectFromTranslate:anObject.isFavorite] forKey:kSCHLibreAccessWebServiceIsFavorite];
-		[objects setObject:[self objectFromTranslate:anObject.lastmodified] forKey:kSCHLibreAccessWebServiceLastModified];
 		
 		ret = objects;					
 	}
@@ -1237,7 +1216,6 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
         [objects setObject:[self objectFromTranslate:[anObject.NotesStatusList AnnotationTypeStatusItem]] forKey:kSCHLibreAccessWebServiceNotesStatusList];
         [objects setObject:[self objectFromTranslate:[anObject.BookmarksStatusList AnnotationTypeStatusItem]] forKey:kSCHLibreAccessWebServiceBookmarksStatusList];
 
-        [objects setObject:[self objectFromTranslate:anObject.FavoriteStatus] forKey:kSCHLibreAccessWebServiceFavoriteStatus];
         [objects setObject:[self objectFromTranslate:anObject.LastPageStatus] forKey:kSCHLibreAccessWebServiceLastPageStatus];
         
 		ret = objects;					
@@ -1507,10 +1485,6 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		}									
 		[intoObject.Bookmarks release];
 		
-		intoObject.Favorite = [[LibreAccessServiceSvc_Favorite alloc] init];
-		[self fromObject:[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceFavorite]] intoFavorite:intoObject.Favorite];
-		[intoObject.Favorite release];
-		
 		intoObject.LastPage = [[LibreAccessServiceSvc_LastPage alloc] init];
 		[self fromObject:[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceLastPage]] intoLastPage:intoObject.LastPage];
 		[intoObject.LastPage release];		
@@ -1579,14 +1553,6 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		intoObject.coords.x = [NSNumber numberWithInteger:0];
         intoObject.coords.y = [NSNumber numberWithInteger:0];
 //		intoObject.wordindex = nil;
-	}	
-}
-
-- (void)fromObject:(NSDictionary *)object intoFavorite:(LibreAccessServiceSvc_Favorite *)intoObject
-{
-	if (object != nil && intoObject != nil) {
-		intoObject.isFavorite = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceIsFavorite]];
-		intoObject.lastmodified = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceLastModified]];				
 	}	
 }
 

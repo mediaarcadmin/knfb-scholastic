@@ -23,6 +23,7 @@
 #import "KNFBTimeOrderedCache.h"
 #import "SCHProfileItem.h"
 #import "SCHAppProfile.h"
+#import "SCHBookShelfTableViewCell.h"
 
 static NSInteger const kSCHBookShelfViewControllerGridCellHeightPortrait = 138;
 static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
@@ -46,10 +47,13 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 
 @implementation SCHBookShelfViewController
 
+@synthesize listTableView;
 @synthesize gridView;
 @synthesize loadingView;
 @synthesize themePickerContainer;
 @synthesize customNavigationBar;
+@synthesize gridButton;
+@synthesize listButton;
 @synthesize componentCache;
 @synthesize books;
 @synthesize profileItem;
@@ -70,6 +74,9 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
     [componentCache release], componentCache = nil;
     
     [themeButton release], themeButton = nil;
+    [listTableView release], listTableView = nil;
+    [gridButton release], gridButton = nil;
+    [listButton release], listButton = nil;
     
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
@@ -283,6 +290,24 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 	[self.gridView reloadData];
 }
 
+#pragma mark - View Type Toggle methods
+
+- (IBAction)changeToGridView:(UIButton *)sender
+{
+    self.gridButton.highlighted = YES;
+    self.listButton.highlighted = NO;
+    self.listTableView.hidden = YES;
+    self.gridView.hidden = NO;
+}
+
+- (IBAction)changeToListView:(UIButton *)sender
+{
+    self.gridButton.highlighted = NO;
+    self.listButton.highlighted = YES;
+    self.listTableView.hidden = NO;
+    self.gridView.hidden = YES;
+}
+
 #pragma mark - Core Data Table View Methods
 
 - (void)updateTable:(NSNotification *)notification
@@ -290,6 +315,49 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 	self.books = [self.profileItem allISBNs];
 	self.loadingView.hidden = YES;
 }
+
+#pragma mark - UITableViewDataSource methods
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *cellIdentifier = @"ScholasticBookshelfTableCell";
+    
+    SCHBookShelfTableViewCell *cell = (SCHBookShelfTableViewCell *) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    
+    if (!cell) {
+        cell = [[SCHBookShelfTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
+    }
+    
+    cell.isbn = [self.books objectAtIndex:[indexPath row]];
+    
+    return cell;
+}
+
+- (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    if (section == 0) {
+        return [self.books count];
+    } else {
+        return 0;
+    }
+}
+
+#pragma mark - UITableViewDelegate methods
+
+- (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ([indexPath section] != 0 || [indexPath row] >= [self.books count]) {
+        return;
+    }
+    
+	NSLog(@"Calling table row selection.");
+    
+    SCHReadingViewController *readingController = [self openBook:[self.books objectAtIndex:[indexPath row]]];
+    if (readingController != nil) {
+        [self.navigationController pushViewController:readingController animated:YES]; 
+    }
+}
+
 
 #pragma mark - MRGridViewDataSource methods
 
