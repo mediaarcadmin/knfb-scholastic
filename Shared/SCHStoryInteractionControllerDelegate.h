@@ -27,7 +27,7 @@
 // get a snapshot of the current page
 - (UIImage *)currentPageSnapshot;
 
-// view to page transform for the each page in landscape layout
-- (CGAffineTransform)viewToPageTransformForLeftPage:(BOOL)leftPage;
+// transform to convert view coordinates to page coordinates on the layout page
+- (CGAffineTransform)viewToPageTransformForLayoutPage;
 
 @end
