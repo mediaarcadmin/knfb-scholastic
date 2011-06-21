@@ -8,8 +8,10 @@
 
 #import "SCHStoryInteractionDraggableView.h"
 #import "SCHStoryInteractionDraggableTargetView.h"
+#import "SCHGeometry.h"
 
-#define kMaxTapTime 0.2
+#define kMaximumTapTime 0.2
+#define kMinimumDragDistanceSq 25
 
 @interface SCHStoryInteractionDraggableView ()
 
@@ -52,10 +54,13 @@ enum DragState {
 
 - (void)moveToHomePosition
 {
-    [UIView animateWithDuration:0.25
+    [UIView animateWithDuration:0.25f 
+                          delay:0
+                        options:UIViewAnimationOptionAllowUserInteraction
                      animations:^{
                          self.center = self.homePosition;
-                     }];
+                     }
+                     completion:nil];
 }
 
 #pragma mark - touch support
@@ -74,7 +79,7 @@ enum DragState {
     
     if (self.tapSupported) {
         self.touchStartTime = touch.timestamp;
-        [self performSelector:@selector(beginDrag) withObject:nil afterDelay:kMaxTapTime];
+        [self performSelector:@selector(beginDrag) withObject:nil afterDelay:kMaximumTapTime];
     } else {
         [self beginDrag];
     }
@@ -85,13 +90,18 @@ enum DragState {
     if (self.dragState == kDragStateCancelled) {
         return;
     }
+
+    CGPoint point = [[touches anyObject] locationInView:self.superview];
+    CGPoint newCenter = CGPointMake(point.x+self.touchOffset.x, point.y+self.touchOffset.y);
     if (self.dragState == kDragStateIdle) {
+        if (SCHCGPointDistanceSq(self.homePosition, newCenter) < kMinimumDragDistanceSq) {
+            return;
+        }
         [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(beginDrag) object:nil];
         [self beginDrag];
     }
-    
-    CGPoint point = [[touches anyObject] locationInView:self.superview];
-    self.center = CGPointMake(point.x + self.touchOffset.x, point.y + self.touchOffset.y);
+
+    self.center = newCenter;
     
     CGPoint snapPoint;
     if (self.delegate && [self.delegate draggableView:self shouldSnapFromPosition:self.center toPosition:&snapPoint]) {
@@ -116,11 +126,14 @@ enum DragState {
     self.dragState = kDragStateDragging;
     self.dragOrigin = self.center;
     [self.superview bringSubviewToFront:self];
-    [UIView animateWithDuration:0.25
+    [UIView animateWithDuration:0.25f 
+                          delay:0
+                        options:UIViewAnimationOptionAllowUserInteraction
                      animations:^{
                          self.transform = CGAffineTransformMakeScale(1.1, 1.1);
                          self.alpha = 0.8;
-                     }];
+                     }
+                     completion:nil];
     
     if (delegate) {
         [self.delegate draggableViewDidStartDrag:self];
@@ -130,20 +143,23 @@ enum DragState {
 - (void)endDragWithTouch:(UITouch *)touch cancelled:(BOOL)cancelled
 {
     if (self.dragState == kDragStateDragging) {
-        [UIView animateWithDuration:0.25
+        [UIView animateWithDuration:0.25f 
+                              delay:0
+                            options:UIViewAnimationOptionAllowUserInteraction
                          animations:^{
                              self.transform = CGAffineTransformIdentity;
                              self.alpha = 1;
                              if (cancelled) {
                                  self.center = self.dragOrigin;
                              }
-                         }];
+                         }
+                         completion:nil];
         if (delegate) {
             [delegate draggableView:self didMoveToPosition:(cancelled ? self.dragOrigin : self.center)];
         }
     } else if (self.dragState != kDragStateCancelled && self.tapSupported) {
         [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(beginDrag) object:nil];
-        if (delegate && touch.timestamp - self.touchStartTime < kMaxTapTime) {
+        if (delegate && touch.timestamp - self.touchStartTime < kMaximumTapTime) {
             [self.delegate draggableViewWasTapped:self];
         }
     }

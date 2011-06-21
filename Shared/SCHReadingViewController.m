@@ -976,7 +976,11 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
             self.storyInteractionButtonView.alpha = 0.0f;
             
             if (animated) {
-                [UIView animateWithDuration:0.3 animations:movementBlock];
+                [UIView animateWithDuration:0.3f 
+                                      delay:0
+                                    options:UIViewAnimationOptionAllowUserInteraction
+                                 animations:movementBlock
+                                 completion:nil];
             } else {
                 movementBlock();
             }
@@ -1026,7 +1030,11 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         };
         
         if (animated) {
-            [UIView animateWithDuration:0.3 animations:movementBlock];
+            [UIView animateWithDuration:0.3f 
+                                  delay:0
+                                options:UIViewAnimationOptionAllowUserInteraction
+                             animations:movementBlock
+                             completion:nil];
         } else {
             movementBlock();
         }
@@ -1489,7 +1497,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 {
 	[UIView animateWithDuration:0.3f 
                           delay:0.2f 
-                        options:UIViewAnimationOptionCurveEaseOut | UIViewAnimationOptionBeginFromCurrentState
+                        options:UIViewAnimationOptionCurveEaseOut | UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowUserInteraction
                      animations:^{ 
                          [self.scrubberInfoView setAlpha:0.0f];
                      }

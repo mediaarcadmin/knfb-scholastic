@@ -14,12 +14,10 @@
 
 @synthesize letter;
 
-- (id)initWithLetter:(unichar)aLetter
+- (id)initWithLetter:(unichar)aLetter tileImage:(UIImage *)tileImage
 {
-    UIImage *bgImage = [UIImage imageNamed:@"storyinteraction-lettertile"];
-    
-    if ((self = [super initWithFrame:CGRectMake(0, 0, bgImage.size.width, bgImage.size.height)])) {
-        UIImageView *iv = [[UIImageView alloc] initWithImage:bgImage];
+    if ((self = [super initWithFrame:CGRectMake(0, 0, tileImage.size.width, tileImage.size.height)])) {
+        UIImageView *iv = [[UIImageView alloc] initWithImage:tileImage];
         iv.frame = self.bounds;
         [self addSubview:iv];
         [iv release];
@@ -36,6 +34,11 @@
         letter = aLetter;
     }
     return self;
+}
+
+- (id)initWithLetter:(unichar)aLetter
+{
+    return [self initWithLetter:aLetter tileImage:[UIImage imageNamed:@"storyinteraction-lettertile"]];
 }
 
 - (void)setLetterColor:(UIColor *)letterColor

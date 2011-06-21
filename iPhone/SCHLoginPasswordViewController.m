@@ -318,9 +318,13 @@
     CGFloat scrollViewQuadrantY = CGRectGetMidY(self.scrollView.frame)/2.0f;
     
     if (textFieldCenterY > scrollViewQuadrantY) {
-        [UIView animateWithDuration:0.3f animations:^{
-            [self.scrollView setContentOffset:CGPointMake(0, textFieldCenterY - scrollViewQuadrantY)];
-        }];
+        [UIView animateWithDuration:0.3f 
+                              delay:0
+                            options:UIViewAnimationOptionAllowUserInteraction
+                         animations:^{
+                             [self.scrollView setContentOffset:CGPointMake(0, textFieldCenterY - scrollViewQuadrantY)];
+                         }
+                         completion:nil];
     }
 }
 

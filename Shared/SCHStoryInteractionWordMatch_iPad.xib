@@ -238,9 +238,9 @@
 								<reference key="NSNextKeyView" ref="797995784"/>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-								<object class="NSCustomResource" key="IBUIImage" id="204358027">
+								<object class="NSCustomResource" key="IBUIImage" id="673536668">
 									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">storyinteraction-wordmatch-target~iPad.png</string>
+									<string key="NSResourceName">storyinteraction-wordmatch-target~ipad.png</string>
 								</object>
 							</object>
 						</object>
@@ -271,7 +271,7 @@
 								<reference key="NSNextKeyView" ref="257016917"/>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-								<reference key="IBUIImage" ref="204358027"/>
+								<reference key="IBUIImage" ref="673536668"/>
 							</object>
 						</object>
 						<string key="NSFrame">{{186, 283}, {128, 50}}</string>
@@ -299,7 +299,7 @@
 								<reference key="NSNextKeyView"/>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-								<reference key="IBUIImage" ref="204358027"/>
+								<reference key="IBUIImage" ref="673536668"/>
 							</object>
 						</object>
 						<string key="NSFrame">{{334, 283}, {128, 50}}</string>
@@ -719,12 +719,12 @@
 			<object class="NSArray" key="dict.sortedKeys">
 				<bool key="EncodedWithXMLCoder">YES</bool>
 				<string>storyinteraction-draggable.png</string>
-				<string>storyinteraction-wordmatch-target~iPad.png</string>
+				<string>storyinteraction-wordmatch-target~ipad.png</string>
 			</object>
 			<object class="NSMutableArray" key="dict.values">
 				<bool key="EncodedWithXMLCoder">YES</bool>
 				<string>{78, 36}</string>
-				<string>{128, 50}</string>
+				<string>{138, 49}</string>
 			</object>
 		</object>
 		<string key="IBCocoaTouchPluginVersion">301</string>

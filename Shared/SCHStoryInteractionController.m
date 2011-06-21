@@ -338,6 +338,8 @@
     CGPoint superviewCenter = CGPointMake(floorf(CGRectGetMidX(superviewBounds)), floorf(CGRectGetMidY(superviewBounds)));
 
     [UIView animateWithDuration:duration
+                          delay:0
+                        options:UIViewAnimationOptionAllowUserInteraction
                      animations:^{
                          if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation) && UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
                              self.containerView.transform = CGAffineTransformIdentity;
@@ -350,7 +352,8 @@
                          }
                          self.containerView.bounds = CGRectIntegral(superviewBounds);
                          self.backgroundView.center = superviewCenter;
-                     }];
+                     }
+                     completion:nil];
 }
 
 - (void)didRotateToInterfaceOrientation:(UIInterfaceOrientation)aToInterfaceOrientation

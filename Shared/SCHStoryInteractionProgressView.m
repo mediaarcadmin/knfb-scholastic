@@ -8,8 +8,6 @@
 
 #import "SCHStoryInteractionProgressView.h"
 
-#define kImageWidth 21
-#define kImageHeight 21
 #define kImageGap 5
 
 @interface SCHStoryInteractionProgressView ()
@@ -93,11 +91,14 @@
     CGFloat width = CGRectGetWidth(self.bounds);
     CGFloat height = CGRectGetHeight(self.bounds);
     
-    CGFloat x = (width - numberOfSteps*kImageWidth - (numberOfSteps-1)*kImageGap) / 2;
-    CGFloat y = (height - kImageHeight) / 2;
+    UIImage *image = [UIImage imageNamed:@"storyinteraction-progress-filled"];
+    CGSize imageSize = image.size;
+    
+    CGFloat x = (width - numberOfSteps*imageSize.width - (numberOfSteps-1)*kImageGap) / 2;
+    CGFloat y = (height - imageSize.height) / 2;
     for (UIView *view in self.subviews) {
-        view.frame = CGRectMake(x, y, kImageWidth, kImageHeight);
-        x += kImageWidth + kImageGap;
+        view.frame = CGRectMake(x, y, imageSize.width, imageSize.height);
+        x += imageSize.width + kImageGap;
     }
 }
 
