@@ -8,6 +8,8 @@
 
 #import "SCHStoryInteractionControllerImage.h"
 
+#import <QuartzCore/QuartzCore.h>
+
 #import "SCHStoryInteractionImage.h"
 #import "SCHXPSProvider.h"
 
@@ -30,7 +32,7 @@
     NSData *imageData = [self.xpsProvider dataForComponentAtPath:imagePath];
     self.imageView.image = [UIImage imageWithData:imageData];
 
-    if ((UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) == YES) {
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
         [self.scrollView addSubview:self.imageView];
         self.scrollView.delegate = self;
         
@@ -41,7 +43,10 @@
             self.imageView.bounds = rect;        
             self.imageView.frame = rect;
             self.scrollView.contentSize = imageSize;
-            
+            self.scrollView.layer.cornerRadius = 10.0;  
+            self.scrollView.layer.borderWidth = 0.0;
+            self.scrollView.layer.masksToBounds = YES;
+
             CGFloat widthScale = CGRectGetWidth(self.scrollView.bounds) / imageSize.width;
             CGFloat heightScale = CGRectGetHeight(self.scrollView.bounds) / imageSize.height;
             self.scrollView.maximumZoomScale = MAX(widthScale, heightScale) * 1.5;    // restrict the zoom so we don't completely pixelize the image 
@@ -52,6 +57,11 @@
     } else {
         self.scrollView.hidden = YES;
     } 
+}
+
+- (SCHFrameStyle)frameStyle
+{
+    return(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone ? SCHStoryInteractionFullScreen : SCHStoryInteractionNoTitle);
 }
 
 #pragma mark - UIScrollView delegate methods
