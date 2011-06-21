@@ -11,9 +11,4 @@
 
 @implementation SCHStoryInteractionControllerHotSpot
 
-- (SCHFrameStyle)frameStyle
-{
-    return SCHStoryInteractionTitleOnly;
-}
-
 @end

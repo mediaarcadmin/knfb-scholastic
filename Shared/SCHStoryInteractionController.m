@@ -86,12 +86,10 @@
         NSString *nibName = [NSString stringWithFormat:@"%s_%s", object_getClassName(aStoryInteraction),
                              (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? "iPad" : "iPhone")];
         
-        if (self.frameStyle != SCHStoryInteractionTitleOnly) {
-            self.nibObjects = [[NSBundle mainBundle] loadNibNamed:nibName owner:self options:nil];
-            if ([self.nibObjects count] == 0) {
-                NSLog(@"failed to load nib %@", nibName);
-                return nil;
-            }
+        self.nibObjects = [[NSBundle mainBundle] loadNibNamed:nibName owner:self options:nil];
+        if ([self.nibObjects count] == 0) {
+            NSLog(@"failed to load nib %@", nibName);
+            return nil;
         }
 
         SCHQueuedAudioPlayer *player = [[SCHQueuedAudioPlayer alloc] init];
@@ -163,7 +161,7 @@
         
         BOOL hasShadow = NO;
 
-        if (self.frameStyle == SCHStoryInteractionTitle || self.frameStyle == SCHStoryInteractionTitleOnly) {
+        if (self.frameStyle == SCHStoryInteractionTitle) {
             if (iPad) {
                 if ([age isEqualToString:@"younger"]) {
                     title.font = [UIFont fontWithName:@"Arial-BoldMT" size:22];
@@ -220,28 +218,25 @@
         [hostView addSubview:self.containerView];
     }
 
-    UIView *newContentsView = nil;
-    if (self.frameStyle != SCHStoryInteractionTitleOnly) {
-        // put multiple views at the top-level in the nib for multi-screen interactions
-        newContentsView = [self.nibObjects objectAtIndex:self.currentScreenIndex];
-        if (!iPad) {
-            CGSize size = CGSizeZero;
-            switch (self.frameStyle) {
-                case SCHStoryInteractionFullScreen:
-                    size = [UIScreen mainScreen].bounds.size; 
-                    break;
-                case SCHStoryInteractionNoTitle:
-                    size = CGSizeMake(315.0, 470.0);
-                    break;
-                    
-                case SCHStoryInteractionTitle:
-                default:
-                    size = CGSizeMake(250.0, 470.0);
-                    break;
-            }
-            if (CGRectGetWidth(newContentsView.bounds) > size.height || CGRectGetHeight(newContentsView.bounds) > size.width) {
-                NSLog(@"contentView %d is too large: %@", self.currentScreenIndex, NSStringFromCGRect(newContentsView.bounds));
-            }
+    // put multiple views at the top-level in the nib for multi-screen interactions
+    UIView *newContentsView = [self.nibObjects objectAtIndex:self.currentScreenIndex];
+    if (!iPad) {
+        CGSize size = CGSizeZero;
+        switch (self.frameStyle) {
+            case SCHStoryInteractionFullScreen:
+                size = [UIScreen mainScreen].bounds.size; 
+                break;
+            case SCHStoryInteractionNoTitle:
+                size = CGSizeMake(315.0, 470.0);
+                break;
+                
+            case SCHStoryInteractionTitle:
+            default:
+                size = CGSizeMake(250.0, 470.0);
+                break;
+        }
+        if (CGRectGetWidth(newContentsView.bounds) > size.height || CGRectGetHeight(newContentsView.bounds) > size.width) {
+            NSLog(@"contentView %d is too large: %@", self.currentScreenIndex, NSStringFromCGRect(newContentsView.bounds));
         }
     }
 
@@ -287,19 +282,6 @@
                 self.contentsView.alpha = 0;
                 newContentsView.alpha = 1;
                 newContentsView.transform = CGAffineTransformIdentity;
-            };            
-            break;
-
-        case SCHStoryInteractionTitleOnly:
-            setupGeometry = ^{
-                UIImage *backgroundImage = self.backgroundView.image;
-                CGFloat backgroundWidth = MAX(backgroundImage.size.width, (iPad ? 700 : 480) + contentInsets.left + contentInsets.right);
-                CGFloat backgroundHeight = MAX(backgroundImage.size.height, contentInsets.top + contentInsets.bottom);
-                self.backgroundView.bounds = CGRectIntegral(CGRectMake(0, 0, backgroundWidth, backgroundHeight));
-                self.backgroundView.center = CGPointMake(floorf(CGRectGetMidX(self.containerView.bounds)), iPad ? 40 : 0);
-                self.titleView.frame = UIEdgeInsetsInsetRect(CGRectMake(0, 0, backgroundWidth, contentInsets.top), titleInsets);
-                self.readAloudButton.center = CGPointMake(floorf(backgroundWidth+readAloudPosition.x-CGRectGetMidX(self.readAloudButton.bounds)),
-                                                          floorf(readAloudPosition.y+CGRectGetMidX(self.readAloudButton.bounds)));
             };            
             break;
     }
