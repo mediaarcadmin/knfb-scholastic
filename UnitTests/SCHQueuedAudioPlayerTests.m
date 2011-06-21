@@ -282,4 +282,22 @@
     STAssertEquals(ended, 3, @"second block should be ended");
 }
 
+- (void)testReleasePlayerInEndBlock
+{
+    NSData *data = [NSData data];
+    __block BOOL started = NO;
+    __block BOOL ended = NO;
+    
+    [queuedAudioPlayer enqueueAudioTaskWithFetchBlock:^NSData *(void) { return data; }
+                               synchronizedStartBlock:^{ started = YES; }
+                                 synchronizedEndBlock:^{ [queuedAudioPlayer release], queuedAudioPlayer = nil; ended = YES; }];
+    STAssertTrue(started, @"should have started automatically");
+    
+    DummyAVAudioPlayer *player = [DummyAVAudioPlayer lastNewInstance];
+    [queuedAudioPlayer audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:YES];
+    
+    STAssertTrue(ended, @"should have ended cleanly");
+    STAssertNil(queuedAudioPlayer, @"should have released player");
+}
+
 @end
