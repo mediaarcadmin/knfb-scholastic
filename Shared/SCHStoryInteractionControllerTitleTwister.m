@@ -282,7 +282,9 @@
 
 - (void)repositionLettersInBuiltWord
 {
-    [UIView animateWithDuration:0.25
+    [UIView animateWithDuration:0.25f 
+                          delay:0
+                        options:UIViewAnimationOptionAllowUserInteraction
                      animations:^{
                          NSInteger letterPosition = 0;
                          for (SCHStoryInteractionDraggableLetterView *letter in self.builtWord) {
@@ -292,7 +294,8 @@
                              letter.center = [self pointInContentsViewForLetterPosition:letterPosition];
                              letterPosition++;
                          }
-                     }];
+                     }
+                     completion:nil];
 }
 
 - (void)setGapPosition:(NSInteger)newGapPosition
@@ -416,10 +419,13 @@
     NSInteger letterPosition = [self letterPositionForPointInContentsView:position];
     if (letterPosition == NSNotFound || [self buildTargetIsFull]) {
         [self playBundleAudioWithFilename:@"sfx_dropNo.mp3" completion:nil];
-        [UIView animateWithDuration:0.25
+        [UIView animateWithDuration:0.25f 
+                              delay:0
+                            options:UIViewAnimationOptionAllowUserInteraction
                          animations:^{
                              [draggableView moveToHomePosition];
-                         }];
+                         }
+                         completion:nil];
     } else {
         [self playBundleAudioWithFilename:@"sfx_dropOK.mp3" completion:nil];
         // allow for the fact that the gap position isn't really in the array

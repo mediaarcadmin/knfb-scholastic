@@ -141,7 +141,7 @@ static NSTimeInterval const kSCHThemePickerViewControllerThemeTransitionAlpha = 
 {
     SCHThemeManager *themeManager = [SCHThemeManager sharedThemeManager];
 
-    [UIView animateWithDuration:kSCHThemePickerViewControllerThemeTransitionDuration delay:0.0 options:UIViewAnimationOptionCurveEaseIn
+    [UIView animateWithDuration:kSCHThemePickerViewControllerThemeTransitionDuration delay:0.0 options:UIViewAnimationOptionCurveEaseIn | UIViewAnimationOptionAllowUserInteraction
                      animations:^{
                          self.tableView.backgroundView.alpha = kSCHThemePickerViewControllerThemeTransitionAlpha;
                          self.navigationController.navigationBar.alpha = kSCHThemePickerViewControllerThemeTransitionAlpha;
@@ -163,7 +163,7 @@ static NSTimeInterval const kSCHThemePickerViewControllerThemeTransitionAlpha = 
                                                                                                                 key:kSCHThemeManagerNavigationBarImage 
                                                                                                                 orientation:self.interfaceOrientation]];
                          
-                         [UIView animateWithDuration:kSCHThemePickerViewControllerThemeTransitionDuration delay:0.0 options:UIViewAnimationOptionCurveEaseIn
+                         [UIView animateWithDuration:kSCHThemePickerViewControllerThemeTransitionDuration delay:0.0 options:UIViewAnimationOptionCurveEaseIn | UIViewAnimationOptionAllowUserInteraction
                                           animations:^{
                                               self.tableView.backgroundView.alpha = 1.0;
                                               self.navigationController.navigationBar.alpha = 1.0;
