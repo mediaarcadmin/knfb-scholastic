@@ -91,8 +91,6 @@ typedef enum
 - (SCHBookPoint *)bookPointForLayoutPage:(NSUInteger)layoutPage 
                           pageWordOffset:(NSUInteger)pageWordOffset;
 
-- (CGPoint)pageCoordinatesFromViewCoordinates:(CGPoint)viewPoint forPageAtIndex:(NSInteger)pageIndex;
-
 - (NSArray *)highlightRangesForCurrentPage;
 - (NSArray *)highlightsForLayoutPage:(NSUInteger)page;
 - (void)addHighlightWithSelection:(EucSelectorRange *)selectorRange;
@@ -109,5 +107,7 @@ typedef enum
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration;
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation;
+
+- (UIImage *)pageSnapshot;
 
 @end

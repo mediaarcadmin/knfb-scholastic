@@ -923,6 +923,11 @@
     return [self.pageTurningView screenshot];
 }
 
+- (UIImage *)pageSnapshot
+{
+    return [self.pageTurningView screenshot];
+}
+
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     
     [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
@@ -1021,12 +1026,6 @@ CGAffineTransform transformRectToFitRect(CGRect sourceRect, CGRect targetRect, B
 
 - (CGAffineTransform)pageTurningViewTransformForPageAtIndex:(NSInteger)pageIndex {
     return [self pageTurningViewTransformForPageAtIndex:pageIndex offsetOrigin:YES applyZoom:YES];
-}
-
-- (CGPoint)pageCoordinatesFromViewCoordinates:(CGPoint)viewPoint forPageAtIndex:(NSInteger)pageIndex
-{
-    CGAffineTransform viewToPage = CGAffineTransformInvert([self pageTurningViewTransformForPageAtIndex:pageIndex]);
-    return CGPointApplyAffineTransform(viewPoint, viewToPage);
 }
 
 @end
