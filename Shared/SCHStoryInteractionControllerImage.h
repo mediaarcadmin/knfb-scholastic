@@ -10,10 +10,11 @@
 
 #import "SCHStoryInteractionController.h"
 
-@interface SCHStoryInteractionControllerImage : SCHStoryInteractionController 
+@interface SCHStoryInteractionControllerImage : SCHStoryInteractionController <UIScrollViewDelegate>
 {    
 }
 
+@property (nonatomic, retain) IBOutlet UIScrollView *scrollView;
 @property (nonatomic, retain) IBOutlet UIImageView *imageView;
 
 @end

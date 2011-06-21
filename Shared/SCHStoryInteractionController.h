@@ -14,6 +14,13 @@
 @class SCHStoryInteraction;
 @protocol SCHStoryInteractionControllerDelegate;
 
+typedef enum 
+{
+	SCHStoryInteractionTitle,
+    SCHStoryInteractionNoTitle,
+    SCHStoryInteractionFullScreen
+} SCHFrameStyle;
+    
 // Core presentation functionality for story interactions. 
 
 // Because Story Interactions have a non-modal behaviour in the reading view, StoryInteractionController 
@@ -41,6 +48,9 @@
 
 // The current contents view (loaded from a nib)
 @property (nonatomic, retain) UIView *contentsView;
+
+// The frame styling used
+@property (nonatomic, readonly) SCHFrameStyle frameStyle;
 
 // rotation about to occur
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration;
