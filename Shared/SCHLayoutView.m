@@ -55,7 +55,6 @@
 - (NSArray *)rectsFromBlocksAtPageIndex:(NSInteger)pageIndex inBookRange:(SCHBookRange *)bookRange;
 
 - (CGPoint)translationToFitRect:(CGRect)aRect onPageAtIndex:(NSUInteger)pageIndex zoomScale:(CGFloat *)scale;
-- (CGAffineTransform)pageTurningViewTransformForPageAtIndex:(NSInteger)pageIndex;
 - (CGAffineTransform)pageTurningViewTransformForPageAtIndex:(NSInteger)pageIndex offsetOrigin:(BOOL)offset applyZoom:(BOOL)applyZoom;
 
 @end
