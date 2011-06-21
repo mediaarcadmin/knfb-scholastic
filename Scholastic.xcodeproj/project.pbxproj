@@ -17,6 +17,7 @@
 		28024738139F773E00B73703 /* SCHStoryInteractionStrikeOutLabelView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2856BA09139E407600A73D58 /* SCHStoryInteractionStrikeOutLabelView.m */; };
 		28024739139F774D00B73703 /* SCHStoryInteractionControllerAboutYouQuiz.m in Sources */ = {isa = PBXBuildFile; fileRef = F8537F16139E3E4C0092C743 /* SCHStoryInteractionControllerAboutYouQuiz.m */; };
 		2802473A139F775100B73703 /* SCHStoryInteractionControllerWordSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 2856BA02139E3BF800A73D58 /* SCHStoryInteractionControllerWordSearch.m */; };
+		2807DEFC13B0BA5C007C8F41 /* SCHGeometry.m in Sources */ = {isa = PBXBuildFile; fileRef = 28FFD4F113AF635F00F28637 /* SCHGeometry.m */; };
 		280B01AD139E32FA0068661C /* SCHStoryInteractionMultipleChoiceText.m in Sources */ = {isa = PBXBuildFile; fileRef = 280B01AC139E32FA0068661C /* SCHStoryInteractionMultipleChoiceText.m */; };
 		280B01AE139E32FA0068661C /* SCHStoryInteractionMultipleChoiceText.m in Sources */ = {isa = PBXBuildFile; fileRef = 280B01AC139E32FA0068661C /* SCHStoryInteractionMultipleChoiceText.m */; };
 		280B01B1139E336D0068661C /* SCHStoryInteractionMultipleChoiceWithAnswerPictures.m in Sources */ = {isa = PBXBuildFile; fileRef = 280B01B0139E336C0068661C /* SCHStoryInteractionMultipleChoiceWithAnswerPictures.m */; };
@@ -5736,6 +5737,7 @@
 				286E21AE13AC8AF300CB4232 /* SCHQueuedAudioPlayer.m in Sources */,
 				286E21B213AC93CB00CB4232 /* DummyAVAudioPlayer.m in Sources */,
 				2894E81413B0A67B00AEAD79 /* USAdditions.m in Sources */,
+				2807DEFC13B0BA5C007C8F41 /* SCHGeometry.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
