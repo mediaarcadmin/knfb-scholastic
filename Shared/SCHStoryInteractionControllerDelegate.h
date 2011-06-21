@@ -24,7 +24,10 @@
 // has the current story interaction already been completed?
 - (BOOL)storyInteractionFinished;
 
-// get a point in page coordinates for a point on the StoryInteractionController's containerView
-- (CGPoint)containerViewPointToPagePoint:(CGPoint)containerViewPoint;
+// get a snapshot of the current page
+- (UIImage *)currentPageSnapshot;
+
+// view to page transform for the each page in landscape layout
+- (CGAffineTransform)viewToPageTransformForLeftPage:(BOOL)leftPage;
 
 @end

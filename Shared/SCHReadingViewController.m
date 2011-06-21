@@ -1803,9 +1803,16 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     return self.storyInteractionsCompleteOnCurrentPage;
 }
 
-- (CGPoint)containerViewPointToPagePoint:(CGPoint)containerViewPoint
+- (UIImage *)currentPageSnapshot
 {
-    return [self.readingView pageCoordinatesFromViewCoordinates:containerViewPoint forPageAtIndex:self.currentPageIndex];
+    return [self.readingView pageSnapshot];
+}
+
+- (CGAffineTransform)viewToPageTransformForLeftPage:(BOOL)leftPage
+{
+    CGAffineTransform translate = leftPage ? CGAffineTransformMakeTranslation(CGRectGetMidX(self.readingView.bounds), 0) : CGAffineTransformIdentity;
+    CGAffineTransform pageToView = [(SCHLayoutView *)self.readingView pageTurningViewTransformForPageAtIndex:self.currentPageIndex];
+    return CGAffineTransformConcat(translate, CGAffineTransformInvert(pageToView));
 }
 
 #pragma mark - UIPopoverControllerDelegate methods

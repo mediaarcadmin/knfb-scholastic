@@ -18,6 +18,10 @@
 		28024739139F774D00B73703 /* SCHStoryInteractionControllerAboutYouQuiz.m in Sources */ = {isa = PBXBuildFile; fileRef = F8537F16139E3E4C0092C743 /* SCHStoryInteractionControllerAboutYouQuiz.m */; };
 		2802473A139F775100B73703 /* SCHStoryInteractionControllerWordSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 2856BA02139E3BF800A73D58 /* SCHStoryInteractionControllerWordSearch.m */; };
 		2807DEFC13B0BA5C007C8F41 /* SCHGeometry.m in Sources */ = {isa = PBXBuildFile; fileRef = 28FFD4F113AF635F00F28637 /* SCHGeometry.m */; };
+		2807DF2C13B0C2CF007C8F41 /* SCHStoryInteractionHotSpot_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2807DF2B13B0C2CF007C8F41 /* SCHStoryInteractionHotSpot_iPad.xib */; };
+		2807DF2D13B0C2CF007C8F41 /* SCHStoryInteractionHotSpot_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2807DF2B13B0C2CF007C8F41 /* SCHStoryInteractionHotSpot_iPad.xib */; };
+		2807DF2F13B0C99A007C8F41 /* storyinteraction-bg-younger-titleonly~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 2807DF2E13B0C99A007C8F41 /* storyinteraction-bg-younger-titleonly~ipad.png */; };
+		2807DF3013B0C99A007C8F41 /* storyinteraction-bg-younger-titleonly~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 2807DF2E13B0C99A007C8F41 /* storyinteraction-bg-younger-titleonly~ipad.png */; };
 		280B01AD139E32FA0068661C /* SCHStoryInteractionMultipleChoiceText.m in Sources */ = {isa = PBXBuildFile; fileRef = 280B01AC139E32FA0068661C /* SCHStoryInteractionMultipleChoiceText.m */; };
 		280B01AE139E32FA0068661C /* SCHStoryInteractionMultipleChoiceText.m in Sources */ = {isa = PBXBuildFile; fileRef = 280B01AC139E32FA0068661C /* SCHStoryInteractionMultipleChoiceText.m */; };
 		280B01B1139E336D0068661C /* SCHStoryInteractionMultipleChoiceWithAnswerPictures.m in Sources */ = {isa = PBXBuildFile; fileRef = 280B01B0139E336C0068661C /* SCHStoryInteractionMultipleChoiceWithAnswerPictures.m */; };
@@ -1431,6 +1435,8 @@
 		1D6058910D05DD3D006BFB54 /* Scholastic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Scholastic.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		28024703139F6D6E00B73703 /* SCHStoryInteractionWordSearch_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionWordSearch_iPhone.xib; sourceTree = "<group>"; };
+		2807DF2B13B0C2CF007C8F41 /* SCHStoryInteractionHotSpot_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionHotSpot_iPad.xib; sourceTree = "<group>"; };
+		2807DF2E13B0C99A007C8F41 /* storyinteraction-bg-younger-titleonly~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-bg-younger-titleonly~ipad.png"; sourceTree = "<group>"; };
 		280B01AB139E32FA0068661C /* SCHStoryInteractionMultipleChoiceText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionMultipleChoiceText.h; sourceTree = "<group>"; };
 		280B01AC139E32FA0068661C /* SCHStoryInteractionMultipleChoiceText.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionMultipleChoiceText.m; sourceTree = "<group>"; };
 		280B01AF139E336C0068661C /* SCHStoryInteractionMultipleChoiceWithAnswerPictures.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionMultipleChoiceWithAnswerPictures.h; sourceTree = "<group>"; };
@@ -2811,7 +2817,19 @@
 			isa = PBXGroup;
 			children = (
 				C9C27CB813AA536A00332229 /* Arial Black.ttf */,
-				C9AC857713AD08B6000ECDAE /* young-lightning-bolt-0~ipad.png */,
+				C9AC869B13AFAF92000ECDAE /* storyinteraction-bg-younger~ipad.png */,
+				C9AC869C13AFAF97000ECDAE /* storyinteraction-bg-younger@2x.png */,
+				C9AC869D13AFAF99000ECDAE /* storyinteraction-bg-younger.png */,
+				5215349E13B08AB200131E37 /* storyinteraction-bg-younger-notitle~iphone.png */,
+				5215349F13B08AB200131E37 /* storyinteraction-bg-younger-notitle@2x~iphone.png */,
+				C9C1D29D13B0AD4B00441623 /* storyinteraction-bg-younger-notitle~ipad.png */,
+				2807DF2E13B0C99A007C8F41 /* storyinteraction-bg-younger-titleonly~ipad.png */,
+				C9AC869E13AFAF9B000ECDAE /* storyinteraction-bg-older~ipad.png */,
+				C9AC869F13AFAF9D000ECDAE /* storyinteraction-bg-older@2x.png */,
+				C9AC86A013AFAFA3000ECDAE /* storyinteraction-bg-older.png */,
+				5215349B13B08AB200131E37 /* storyinteraction-bg-older-notitle~iphone.png */,
+				5215349C13B08AB200131E37 /* storyinteraction-bg-older-notitle@2x~iphone.png */,
+				C9C1D29E13B0AD4C00441623 /* storyinteraction-bg-older-notitle~ipad.png */,
 				C9AC869113AFAF75000ECDAE /* storyinteraction-lettertile-small~ipad.png */,
 				C9AC869213AFAF77000ECDAE /* storyinteraction-lettertile~ipad.png */,
 				C9AC869313AFAF7B000ECDAE /* storyinteraction-wordmatch-target~ipad.png */,
@@ -2822,12 +2840,7 @@
 				C9AC869813AFAF8A000ECDAE /* storyinteraction-draggable-green~ipad.png */,
 				C9AC869913AFAF8F000ECDAE /* storyinteraction-bolt-younger~ipad.png */,
 				C9AC869A13AFAF90000ECDAE /* storyinteraction-bolt-older~ipad.png */,
-				C9AC869B13AFAF92000ECDAE /* storyinteraction-bg-younger~ipad.png */,
-				C9AC869C13AFAF97000ECDAE /* storyinteraction-bg-younger@2x.png */,
-				C9AC869D13AFAF99000ECDAE /* storyinteraction-bg-younger.png */,
-				C9AC869E13AFAF9B000ECDAE /* storyinteraction-bg-older~ipad.png */,
-				C9AC869F13AFAF9D000ECDAE /* storyinteraction-bg-older@2x.png */,
-				C9AC86A013AFAFA3000ECDAE /* storyinteraction-bg-older.png */,
+				C9AC857713AD08B6000ECDAE /* young-lightning-bolt-0~ipad.png */,
 				C9AC857813AD08B7000ECDAE /* young-lightning-bolt-1~ipad.png */,
 				C9AC857913AD08B9000ECDAE /* young-lightning-bolt-2~ipad.png */,
 				C9AC857A13AD08BA000ECDAE /* young-lightning-bolt-3~ipad.png */,
@@ -2853,12 +2866,6 @@
 				C9AC855013ACE6CB000ECDAE /* old-lightning-bolt-3~iphone.png */,
 				523756B413A278FB00B38441 /* SCHPlayButtonPause.png */,
 				523756B113A278C100B38441 /* SCHPlayButtonPlay.png */,
-				5215349B13B08AB200131E37 /* storyinteraction-bg-older-notitle~iphone.png */,
-				5215349C13B08AB200131E37 /* storyinteraction-bg-older-notitle@2x~iphone.png */,
-				5215349E13B08AB200131E37 /* storyinteraction-bg-younger-notitle~iphone.png */,
-				5215349F13B08AB200131E37 /* storyinteraction-bg-younger-notitle@2x~iphone.png */,
-				C9C1D29D13B0AD4B00441623 /* storyinteraction-bg-younger-notitle~ipad.png */,
-				C9C1D29E13B0AD4C00441623 /* storyinteraction-bg-older-notitle~ipad.png */,
 				C9AC85D913AE64B9000ECDAE /* storyinteraction-draggable~iphone.png */,
 				C9AC868B13AFA82C000ECDAE /* storyinteraction-draggable~ipad.png */,
 				C9AC85DA13AE64C1000ECDAE /* storyinteraction-draggable@2x~iphone.png */,
@@ -2926,6 +2933,7 @@
 				28A08CC913950C01006FD008 /* SCHStoryInteractionHotSpot.m */,
 				2894E7FE13B09E5800AEAD79 /* SCHStoryInteractionControllerHotSpot.h */,
 				2894E7FF13B09E5800AEAD79 /* SCHStoryInteractionControllerHotSpot.m */,
+				2807DF2B13B0C2CF007C8F41 /* SCHStoryInteractionHotSpot_iPad.xib */,
 			);
 			name = "Touch The Screen";
 			sourceTree = "<group>";
@@ -5028,6 +5036,8 @@
 				2894E80E13B09EC800AEAD79 /* storyinteraction-findinpage-wrong@2x~iphone.png in Resources */,
 				2894E81013B09EC800AEAD79 /* storyinteraction-findinpage-correct~iphone.png in Resources */,
 				2894E81213B09EC800AEAD79 /* storyinteraction-findinpage-correct@2x~iphone.png in Resources */,
+				2807DF2C13B0C2CF007C8F41 /* SCHStoryInteractionHotSpot_iPad.xib in Resources */,
+				2807DF2F13B0C99A007C8F41 /* storyinteraction-bg-younger-titleonly~ipad.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5448,6 +5458,8 @@
 				2894E80F13B09EC800AEAD79 /* storyinteraction-findinpage-wrong@2x~iphone.png in Resources */,
 				2894E81113B09EC800AEAD79 /* storyinteraction-findinpage-correct~iphone.png in Resources */,
 				2894E81313B09EC800AEAD79 /* storyinteraction-findinpage-correct@2x~iphone.png in Resources */,
+				2807DF2D13B0C2CF007C8F41 /* SCHStoryInteractionHotSpot_iPad.xib in Resources */,
+				2807DF3013B0C99A007C8F41 /* storyinteraction-bg-younger-titleonly~ipad.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

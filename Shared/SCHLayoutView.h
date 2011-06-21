@@ -14,4 +14,6 @@
     
 }
 
+- (CGAffineTransform)pageTurningViewTransformForPageAtIndex:(NSInteger)pageIndex;
+
 @end
