@@ -81,7 +81,7 @@
             self.backgroundColor = [UIColor clearColor];
             self.alpha = 0.0;
         }
-        [UIView animateWithDuration:0.3 delay:0.0 options:UIViewAnimationOptionCurveEaseOut animations:^ {
+        [UIView animateWithDuration:0.3 delay:0.0 options:UIViewAnimationOptionCurveEaseOut | UIViewAnimationOptionAllowUserInteraction animations:^ {
             if (play == YES) {
                 self.alpha = 0.0;    
                 self.backgroundColor = [UIColor clearColor];

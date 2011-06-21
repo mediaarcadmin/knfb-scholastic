@@ -27,7 +27,7 @@
 - (void)setupMainView;
 - (void)setupDraggableTilesForTitleTwister:(SCHStoryInteractionTitleTwister *)titleTwister;
 - (void)setupAnswersForTitleTwister:(SCHStoryInteractionTitleTwister *)titleTwister;
-- (NSArray *)splitTitle:(NSString *)title intoWordsToFitRect:(CGRect)rect withTileSize:(CGSize)tileSize wordGap:(NSInteger)wordGap;
+- (NSArray *)splitTitle:(NSString *)title intoWordsToFitRect:(CGRect)rect withTileSize:(CGSize)tileSize wordGap:(NSInteger)wordGap allowSplitWords:(BOOL)allowSplitWords;
 - (NSInteger)widthOfText:(NSString *)text withTileSize:(CGSize)tileSize wordGap:(NSInteger)wordGap;
 
 - (NSInteger)arrayIndexForWordLength:(NSInteger)wordLength;
@@ -118,15 +118,26 @@
     
     NSInteger length = [titleTwister.bookTitle length];
     NSMutableArray *letters = [NSMutableArray arrayWithCapacity:length];
+    
     UIImage *letterTile = [UIImage imageNamed:@"storyinteraction-lettertile"];
     self.letterTileSize = letterTile.size;
-    NSInteger wordGap = letterTileSize.width/3 + kLetterGap;
-
+    NSInteger wordGap = self.letterTileSize.width/3 + kLetterGap;
     NSArray *letterRows = [self splitTitle:titleTwister.bookTitle
                         intoWordsToFitRect:self.letterContainerView.bounds
                               withTileSize:self.letterTileSize
-                                   wordGap:wordGap];
- 
+                                   wordGap:wordGap
+                           allowSplitWords:NO];
+    if (!letterRows) {
+        letterTile = [UIImage imageNamed:@"storyinteraction-lettertile-small"];
+        self.letterTileSize = letterTile.size;
+        wordGap = self.letterTileSize.width / 3 + kLetterGap;
+        letterRows = [self splitTitle:titleTwister.bookTitle
+                   intoWordsToFitRect:self.letterContainerView.bounds
+                         withTileSize:self.letterTileSize
+                              wordGap:wordGap
+                      allowSplitWords:YES];
+    }
+        
     NSInteger height = [letterRows count]*self.letterTileSize.height + ([letterRows count]-1)*kLetterGap;
     NSInteger y = (CGRectGetHeight(self.letterContainerView.bounds)-height)/2 + self.letterTileSize.height/2;
     for (NSString *letterRow in letterRows) {
@@ -140,24 +151,28 @@
             } else {
                 // we've calculated the position inside letterContainerView but the actual views are added
                 // to contents view so they can be dragged around the full view
-                SCHStoryInteractionDraggableLetterView *letterView = [[SCHStoryInteractionDraggableLetterView alloc] initWithLetter:letter];
+                SCHStoryInteractionDraggableLetterView *letterView = [[SCHStoryInteractionDraggableLetterView alloc] initWithLetter:letter tileImage:letterTile];
                 letterView.center = [self.letterContainerView convertPoint:CGPointMake(x, y) toView:self.contentsView];
                 letterView.homePosition = letterView.center;
                 letterView.delegate = self;
                 [letters addObject:letterView];
                 [self.contentsView addSubview:letterView];
                 [letterView release];
-                x += letterTileSize.width + kLetterGap;
+                x += self.letterTileSize.width + kLetterGap;
             }
         }
-        y += letterTileSize.height + kLetterGap;
+        y += self.letterTileSize.height + kLetterGap;
     }
     
     self.gapPosition = NSNotFound;
     self.letterViews = [NSArray arrayWithArray:letters];
 }
 
-- (NSArray *)splitTitle:(NSString *)title intoWordsToFitRect:(CGRect)rect withTileSize:(CGSize)tileSize wordGap:(NSInteger)wordGap
+- (NSArray *)splitTitle:(NSString *)title
+     intoWordsToFitRect:(CGRect)rect
+           withTileSize:(CGSize)tileSize
+                wordGap:(NSInteger)wordGap
+        allowSplitWords:(BOOL)allowSplitWords
 {
     NSArray *words = [title componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     NSMutableArray *letterRows = [NSMutableArray array];
@@ -172,8 +187,13 @@
             }
             [letterRow appendString:word];
             width += wordGap + wordWidth;
-        } else if (wordWidth > CGRectGetWidth(rect)) {
-            // this word can't even be fit on a row on its own and must be split
+        } else if (wordWidth <= CGRectGetWidth(rect)) {
+            // add this word on a new row
+            [letterRows addObject:letterRow];
+            letterRow = [[word mutableCopy] autorelease];
+            width = wordWidth;
+        } else if (allowSplitWords) {
+            // need to split this word to make it fit
             NSInteger split = (CGRectGetWidth(rect)-wordGap-width) / tileSize.width;
             if (split > 0) {
                 if ([letterRow length] > 0) {
@@ -185,10 +205,8 @@
             letterRow = [[[word substringFromIndex:split] mutableCopy] autorelease];
             width = [letterRow length] * (tileSize.width+kLetterGap);
         } else {
-            // add this word on a new row
-            [letterRows addObject:letterRow];
-            letterRow = [[word mutableCopy] autorelease];
-            width = wordWidth;
+            // can't fit this word in the available space - abandon ship!
+            return nil;
         }
     }
     if ([letterRow length] > 0) {
@@ -218,7 +236,7 @@
         int counts[5] = { 0, 0, 0, 0, 0 };
         for (NSString *word in titleTwister.words) {
             NSInteger length = [word length];
-            if (length < 3) {
+            if (length < 3 || 7 < length) {
                 NSLog(@"ignoring %@ due to invalid length", word);
             } else {
                 counts[[self arrayIndexForWordLength:length]]++;
@@ -264,7 +282,9 @@
 
 - (void)repositionLettersInBuiltWord
 {
-    [UIView animateWithDuration:0.25
+    [UIView animateWithDuration:0.25f 
+                          delay:0
+                        options:UIViewAnimationOptionAllowUserInteraction
                      animations:^{
                          NSInteger letterPosition = 0;
                          for (SCHStoryInteractionDraggableLetterView *letter in self.builtWord) {
@@ -274,7 +294,8 @@
                              letter.center = [self pointInContentsViewForLetterPosition:letterPosition];
                              letterPosition++;
                          }
-                     }];
+                     }
+                     completion:nil];
 }
 
 - (void)setGapPosition:(NSInteger)newGapPosition
@@ -398,10 +419,13 @@
     NSInteger letterPosition = [self letterPositionForPointInContentsView:position];
     if (letterPosition == NSNotFound || [self buildTargetIsFull]) {
         [self playBundleAudioWithFilename:@"sfx_dropNo.mp3" completion:nil];
-        [UIView animateWithDuration:0.25
+        [UIView animateWithDuration:0.25f 
+                              delay:0
+                            options:UIViewAnimationOptionAllowUserInteraction
                          animations:^{
                              [draggableView moveToHomePosition];
-                         }];
+                         }
+                         completion:nil];
     } else {
         [self playBundleAudioWithFilename:@"sfx_dropOK.mp3" completion:nil];
         // allow for the fact that the gap position isn't really in the array

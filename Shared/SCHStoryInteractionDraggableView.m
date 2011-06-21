@@ -54,10 +54,13 @@ enum DragState {
 
 - (void)moveToHomePosition
 {
-    [UIView animateWithDuration:0.25
+    [UIView animateWithDuration:0.25f 
+                          delay:0
+                        options:UIViewAnimationOptionAllowUserInteraction
                      animations:^{
                          self.center = self.homePosition;
-                     }];
+                     }
+                     completion:nil];
 }
 
 #pragma mark - touch support
@@ -123,11 +126,14 @@ enum DragState {
     self.dragState = kDragStateDragging;
     self.dragOrigin = self.center;
     [self.superview bringSubviewToFront:self];
-    [UIView animateWithDuration:0.25
+    [UIView animateWithDuration:0.25f 
+                          delay:0
+                        options:UIViewAnimationOptionAllowUserInteraction
                      animations:^{
                          self.transform = CGAffineTransformMakeScale(1.1, 1.1);
                          self.alpha = 0.8;
-                     }];
+                     }
+                     completion:nil];
     
     if (delegate) {
         [self.delegate draggableViewDidStartDrag:self];
@@ -137,14 +143,17 @@ enum DragState {
 - (void)endDragWithTouch:(UITouch *)touch cancelled:(BOOL)cancelled
 {
     if (self.dragState == kDragStateDragging) {
-        [UIView animateWithDuration:0.25
+        [UIView animateWithDuration:0.25f 
+                              delay:0
+                            options:UIViewAnimationOptionAllowUserInteraction
                          animations:^{
                              self.transform = CGAffineTransformIdentity;
                              self.alpha = 1;
                              if (cancelled) {
                                  self.center = self.dragOrigin;
                              }
-                         }];
+                         }
+                         completion:nil];
         if (delegate) {
             [delegate draggableView:self didMoveToPosition:(cancelled ? self.dragOrigin : self.center)];
         }

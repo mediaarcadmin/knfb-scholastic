@@ -200,10 +200,13 @@
 - (void)swapLetterAtPosition:(NSInteger)position with:(SCHStoryInteractionDraggableView *)letterView
 {
     SCHStoryInteractionDraggableLetterView *letterToSwap = [self.lettersByPosition objectAtIndex:position];
-    [UIView animateWithDuration:0.25
+    [UIView animateWithDuration:0.25f 
+                          delay:0
+                        options:UIViewAnimationOptionAllowUserInteraction
                      animations:^{
                          letterToSwap.center = letterView.homePosition;
-                     }];
+                     }
+                     completion:nil];
 
     CGPoint newHome = letterToSwap.homePosition;
     letterToSwap.homePosition = letterView.homePosition;

@@ -76,15 +76,15 @@
             NSString *answer = [[self currentQuestion].answers objectAtIndex:answerIndex];
             UIImage *highlight = nil;
             if (answerIndex == [self currentQuestion].correctAnswer) {
-                highlight = [[UIImage imageNamed:@"answer-button-green"] stretchableImageWithLeftCapWidth:5 topCapHeight:0];
+                highlight = [[UIImage imageNamed:@"answer-button-green"] stretchableImageWithLeftCapWidth:10 topCapHeight:0];
             } else {
-                highlight = [[UIImage imageNamed:@"answer-button-red"] stretchableImageWithLeftCapWidth:5 topCapHeight:0];    
+                highlight = [[UIImage imageNamed:@"answer-button-red"] stretchableImageWithLeftCapWidth:10 topCapHeight:0];    
             }
             [button setTitle:answer forState:UIControlStateNormal];
             [button setTitleColor:(iPad ? [UIColor whiteColor] : [UIColor colorWithRed:0.113 green:0.392 blue:0.690 alpha:1.0]) forState:UIControlStateNormal];
             [button setHidden:NO];
             [button setSelected:NO];
-            [button setBackgroundImage:[(iPad == YES ? [UIImage imageNamed:@"answer-button-blue"] : [UIImage imageNamed:@"answer-button-yellow"]) stretchableImageWithLeftCapWidth:5 topCapHeight:0] forState:UIControlStateNormal];        
+            [button setBackgroundImage:[(iPad == YES ? [UIImage imageNamed:@"answer-button-blue"] : [UIImage imageNamed:@"answer-button-yellow"]) stretchableImageWithLeftCapWidth:10 topCapHeight:0] forState:UIControlStateNormal];        
             [button setBackgroundImage:highlight forState:UIControlStateSelected];
             if (iPad == YES) {
                 [button setImage:[UIImage imageNamed:@"answer-blank"] forState:UIControlStateNormal];
