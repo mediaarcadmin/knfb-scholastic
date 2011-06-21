@@ -1803,9 +1803,15 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     return self.storyInteractionsCompleteOnCurrentPage;
 }
 
-- (CGPoint)containerViewPointToPagePoint:(CGPoint)containerViewPoint
+- (UIImage *)currentPageSnapshot
 {
-    return [self.readingView pageCoordinatesFromViewCoordinates:containerViewPoint forPageAtIndex:self.currentPageIndex];
+    return [self.readingView pageSnapshot];
+}
+
+- (CGAffineTransform)viewToPageTransformForLayoutPage
+{
+    CGAffineTransform pageToView = [(SCHLayoutView *)self.readingView pageTurningViewTransformForPageAtIndex:self.currentPageIndex-1];
+    return CGAffineTransformInvert(pageToView);
 }
 
 #pragma mark - UIPopoverControllerDelegate methods

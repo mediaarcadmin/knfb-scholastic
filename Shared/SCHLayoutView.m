@@ -55,8 +55,9 @@
 - (NSArray *)rectsFromBlocksAtPageIndex:(NSInteger)pageIndex inBookRange:(SCHBookRange *)bookRange;
 
 - (CGPoint)translationToFitRect:(CGRect)aRect onPageAtIndex:(NSUInteger)pageIndex zoomScale:(CGFloat *)scale;
-- (CGAffineTransform)pageTurningViewTransformForPageAtIndex:(NSInteger)pageIndex;
 - (CGAffineTransform)pageTurningViewTransformForPageAtIndex:(NSInteger)pageIndex offsetOrigin:(BOOL)offset applyZoom:(BOOL)applyZoom;
+
+- (void)updateCurrentPageIndex;
 
 @end
 
@@ -179,12 +180,13 @@
         if(self.selector.tracking) {
             [self.selector setSelectedRange:nil];
         }
-        
+                
 		self.pageSize = newSize;
         // Perform this after a delay in order to give time for layoutSubviews 
         // to be called on the pageTurningView before we start the zoom
         // (Ick!).
         [self performSelector:@selector(zoomForNewPageAnimatedWithNumberThunk:) withObject:[NSNumber numberWithBool:NO] afterDelay:0.0f];
+        [self performSelector:@selector(updateCurrentPageIndex) withObject:nil afterDelay:0.0f];
     }
 }
 
@@ -199,6 +201,12 @@
         }
     }
 }
+
+- (void)updateCurrentPageIndex
+{
+    self.currentPageIndex = self.pageTurningView.rightPageIndex;
+}
+
 
 - (void)setCurrentPageIndex:(NSUInteger)newPageIndex
 {
@@ -325,7 +333,7 @@
 	}
     
     if (!animated) {
-        self.currentPageIndex = self.pageTurningView.focusedPageIndex;
+        [self updateCurrentPageIndex];
     }
     
     self.currentBlock = nil;
@@ -529,7 +537,7 @@
 
 - (void)pageTurningViewDidEndPageTurn:(EucPageTurningView *)aPageTurningView
 {
-    self.currentPageIndex = aPageTurningView.focusedPageIndex;
+    [self updateCurrentPageIndex];
 }
 
 - (void)pageTurningViewWillBeginAnimating:(EucPageTurningView *)aPageTurningView
@@ -923,6 +931,11 @@
     return [self.pageTurningView screenshot];
 }
 
+- (UIImage *)pageSnapshot
+{
+    return [self.pageTurningView screenshot];
+}
+
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     
     [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
@@ -995,7 +1008,7 @@ CGAffineTransform transformRectToFitRect(CGRect sourceRect, CGRect targetRect, B
 			isOnRight = NO;
 		}
 	}
-	
+    	
 	if (isOnRight) {
 		if (applyZoom) {
 			pageFrame = [self.pageTurningView rightPageFrame];
@@ -1021,12 +1034,6 @@ CGAffineTransform transformRectToFitRect(CGRect sourceRect, CGRect targetRect, B
 
 - (CGAffineTransform)pageTurningViewTransformForPageAtIndex:(NSInteger)pageIndex {
     return [self pageTurningViewTransformForPageAtIndex:pageIndex offsetOrigin:YES applyZoom:YES];
-}
-
-- (CGPoint)pageCoordinatesFromViewCoordinates:(CGPoint)viewPoint forPageAtIndex:(NSInteger)pageIndex
-{
-    CGAffineTransform viewToPage = CGAffineTransformInvert([self pageTurningViewTransformForPageAtIndex:pageIndex]);
-    return CGPointApplyAffineTransform(viewPoint, viewToPage);
 }
 
 @end

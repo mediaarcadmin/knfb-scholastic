@@ -20,6 +20,7 @@ typedef enum
     SCHStoryInteractionTransparentTitle,
     SCHStoryInteractionNoTitle,
     SCHStoryInteractionFullScreen,
+    SCHStoryInteractionTitleOverlaysContents
 } SCHFrameStyle;
     
 // Core presentation functionality for story interactions. 
@@ -49,9 +50,6 @@ typedef enum
 
 // The current contents view (loaded from a nib)
 @property (nonatomic, retain) UIView *contentsView;
-
-// The frame styling used
-@property (nonatomic, readonly) SCHFrameStyle frameStyle;
 
 // rotation about to occur
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration;
@@ -107,6 +105,13 @@ typedef enum
 - (void)setTitle:(NSString *)title;
 
 #pragma mark - subclass overrides
+
+// The frame styling used
+@property (nonatomic, readonly) SCHFrameStyle frameStyle;
+
+// when frameStyle == SCHStoryInteractionTitleOverlaysContents, the subclass can define
+// the frame for the overlaid title view
+- (CGRect)overlaidTitleFrame;
 
 // send then the nib is loaded and its view objects are attached to the container; similar
 // to viewDidLoad, but used a separate message name to avoid confusion.
