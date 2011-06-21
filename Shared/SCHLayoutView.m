@@ -57,6 +57,8 @@
 - (CGPoint)translationToFitRect:(CGRect)aRect onPageAtIndex:(NSUInteger)pageIndex zoomScale:(CGFloat *)scale;
 - (CGAffineTransform)pageTurningViewTransformForPageAtIndex:(NSInteger)pageIndex offsetOrigin:(BOOL)offset applyZoom:(BOOL)applyZoom;
 
+- (void)updateCurrentPageIndex;
+
 @end
 
 @implementation SCHLayoutView
@@ -178,12 +180,13 @@
         if(self.selector.tracking) {
             [self.selector setSelectedRange:nil];
         }
-        
+                
 		self.pageSize = newSize;
         // Perform this after a delay in order to give time for layoutSubviews 
         // to be called on the pageTurningView before we start the zoom
         // (Ick!).
         [self performSelector:@selector(zoomForNewPageAnimatedWithNumberThunk:) withObject:[NSNumber numberWithBool:NO] afterDelay:0.0f];
+        [self performSelector:@selector(updateCurrentPageIndex) withObject:nil afterDelay:0.0f];
     }
 }
 
@@ -198,6 +201,12 @@
         }
     }
 }
+
+- (void)updateCurrentPageIndex
+{
+    self.currentPageIndex = self.pageTurningView.rightPageIndex;
+}
+
 
 - (void)setCurrentPageIndex:(NSUInteger)newPageIndex
 {
@@ -324,7 +333,7 @@
 	}
     
     if (!animated) {
-        self.currentPageIndex = self.pageTurningView.focusedPageIndex;
+        [self updateCurrentPageIndex];
     }
     
     self.currentBlock = nil;
@@ -528,7 +537,7 @@
 
 - (void)pageTurningViewDidEndPageTurn:(EucPageTurningView *)aPageTurningView
 {
-    self.currentPageIndex = aPageTurningView.focusedPageIndex;
+    [self updateCurrentPageIndex];
 }
 
 - (void)pageTurningViewWillBeginAnimating:(EucPageTurningView *)aPageTurningView
@@ -999,7 +1008,7 @@ CGAffineTransform transformRectToFitRect(CGRect sourceRect, CGRect targetRect, B
 			isOnRight = NO;
 		}
 	}
-	
+    	
 	if (isOnRight) {
 		if (applyZoom) {
 			pageFrame = [self.pageTurningView rightPageFrame];
