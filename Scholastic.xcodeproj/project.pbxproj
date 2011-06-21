@@ -213,6 +213,12 @@
 		28E9B98613A0F6730056874F /* SCHStoryInteractionWordSearchTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 28E9B98513A0F6730056874F /* SCHStoryInteractionWordSearchTests.m */; };
 		28EEBFDD1118E19E00187D67 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28EEBFDC1118E19E00187D67 /* CoreData.framework */; };
 		28EEC04B1118E28000187D67 /* AppDelegate_Shared.m in Sources */ = {isa = PBXBuildFile; fileRef = 28EEC04A1118E28000187D67 /* AppDelegate_Shared.m */; };
+		28F689C713B0E616008A9BF9 /* SCHStoryInteractionHotSpot_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28F689C613B0E616008A9BF9 /* SCHStoryInteractionHotSpot_iPhone.xib */; };
+		28F689C813B0E616008A9BF9 /* SCHStoryInteractionHotSpot_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28F689C613B0E616008A9BF9 /* SCHStoryInteractionHotSpot_iPhone.xib */; };
+		28F689CB13B0F305008A9BF9 /* storyinteraction-bg-younger-titleonly~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 28F689C913B0F305008A9BF9 /* storyinteraction-bg-younger-titleonly~iphone.png */; };
+		28F689CC13B0F305008A9BF9 /* storyinteraction-bg-younger-titleonly~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 28F689C913B0F305008A9BF9 /* storyinteraction-bg-younger-titleonly~iphone.png */; };
+		28F689CD13B0F305008A9BF9 /* storyinteraction-bg-younger-titleonly@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 28F689CA13B0F305008A9BF9 /* storyinteraction-bg-younger-titleonly@2x~iphone.png */; };
+		28F689CE13B0F305008A9BF9 /* storyinteraction-bg-younger-titleonly@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 28F689CA13B0F305008A9BF9 /* storyinteraction-bg-younger-titleonly@2x~iphone.png */; };
 		28FFD4F213AF635F00F28637 /* SCHGeometry.m in Sources */ = {isa = PBXBuildFile; fileRef = 28FFD4F113AF635F00F28637 /* SCHGeometry.m */; };
 		28FFD4F313AF635F00F28637 /* SCHGeometry.m in Sources */ = {isa = PBXBuildFile; fileRef = 28FFD4F113AF635F00F28637 /* SCHGeometry.m */; };
 		5200EFEE12F6CFE400BAC355 /* SCHPrivateAnnotations.m in Sources */ = {isa = PBXBuildFile; fileRef = 5200EFEB12F6CFE400BAC355 /* SCHPrivateAnnotations.m */; };
@@ -1586,6 +1592,9 @@
 		28EEBFDC1118E19E00187D67 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		28EEC0491118E28000187D67 /* AppDelegate_Shared.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate_Shared.h; path = Shared/AppDelegate_Shared.h; sourceTree = "<group>"; };
 		28EEC04A1118E28000187D67 /* AppDelegate_Shared.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate_Shared.m; path = Shared/AppDelegate_Shared.m; sourceTree = "<group>"; };
+		28F689C613B0E616008A9BF9 /* SCHStoryInteractionHotSpot_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionHotSpot_iPhone.xib; sourceTree = "<group>"; };
+		28F689C913B0F305008A9BF9 /* storyinteraction-bg-younger-titleonly~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-bg-younger-titleonly~iphone.png"; sourceTree = "<group>"; };
+		28F689CA13B0F305008A9BF9 /* storyinteraction-bg-younger-titleonly@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-bg-younger-titleonly@2x~iphone.png"; sourceTree = "<group>"; };
 		28FFD4F013AF635F00F28637 /* SCHGeometry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHGeometry.h; sourceTree = "<group>"; };
 		28FFD4F113AF635F00F28637 /* SCHGeometry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHGeometry.m; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Shared/main.m; sourceTree = "<group>"; };
@@ -2824,6 +2833,8 @@
 				5215349F13B08AB200131E37 /* storyinteraction-bg-younger-notitle@2x~iphone.png */,
 				C9C1D29D13B0AD4B00441623 /* storyinteraction-bg-younger-notitle~ipad.png */,
 				2807DF2E13B0C99A007C8F41 /* storyinteraction-bg-younger-titleonly~ipad.png */,
+				28F689C913B0F305008A9BF9 /* storyinteraction-bg-younger-titleonly~iphone.png */,
+				28F689CA13B0F305008A9BF9 /* storyinteraction-bg-younger-titleonly@2x~iphone.png */,
 				C9AC869E13AFAF9B000ECDAE /* storyinteraction-bg-older~ipad.png */,
 				C9AC869F13AFAF9D000ECDAE /* storyinteraction-bg-older@2x.png */,
 				C9AC86A013AFAFA3000ECDAE /* storyinteraction-bg-older.png */,
@@ -2934,6 +2945,7 @@
 				2894E7FE13B09E5800AEAD79 /* SCHStoryInteractionControllerHotSpot.h */,
 				2894E7FF13B09E5800AEAD79 /* SCHStoryInteractionControllerHotSpot.m */,
 				2807DF2B13B0C2CF007C8F41 /* SCHStoryInteractionHotSpot_iPad.xib */,
+				28F689C613B0E616008A9BF9 /* SCHStoryInteractionHotSpot_iPhone.xib */,
 			);
 			name = "Touch The Screen";
 			sourceTree = "<group>";
@@ -5038,6 +5050,9 @@
 				2894E81213B09EC800AEAD79 /* storyinteraction-findinpage-correct@2x~iphone.png in Resources */,
 				2807DF2C13B0C2CF007C8F41 /* SCHStoryInteractionHotSpot_iPad.xib in Resources */,
 				2807DF2F13B0C99A007C8F41 /* storyinteraction-bg-younger-titleonly~ipad.png in Resources */,
+				28F689C713B0E616008A9BF9 /* SCHStoryInteractionHotSpot_iPhone.xib in Resources */,
+				28F689CB13B0F305008A9BF9 /* storyinteraction-bg-younger-titleonly~iphone.png in Resources */,
+				28F689CD13B0F305008A9BF9 /* storyinteraction-bg-younger-titleonly@2x~iphone.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5460,6 +5475,9 @@
 				2894E81313B09EC800AEAD79 /* storyinteraction-findinpage-correct@2x~iphone.png in Resources */,
 				2807DF2D13B0C2CF007C8F41 /* SCHStoryInteractionHotSpot_iPad.xib in Resources */,
 				2807DF3013B0C99A007C8F41 /* storyinteraction-bg-younger-titleonly~ipad.png in Resources */,
+				28F689C813B0E616008A9BF9 /* SCHStoryInteractionHotSpot_iPhone.xib in Resources */,
+				28F689CC13B0F305008A9BF9 /* storyinteraction-bg-younger-titleonly~iphone.png in Resources */,
+				28F689CE13B0F305008A9BF9 /* storyinteraction-bg-younger-titleonly@2x~iphone.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

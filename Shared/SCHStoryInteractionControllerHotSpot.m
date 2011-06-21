@@ -12,6 +12,8 @@
 
 @interface SCHStoryInteractionControllerHotSpot ()
 
+@property (nonatomic, retain) UIView *answerMarkerView;
+
 - (void)incorrectTapAtPoint:(CGPoint)point;
 - (void)correctTapAtPoint:(CGPoint)point;
 
@@ -21,11 +23,13 @@
 
 @synthesize scrollView;
 @synthesize pageImageView;
+@synthesize answerMarkerView;
 
 - (void)dealloc
 {
     [scrollView release];
     [pageImageView release];
+    [answerMarkerView release];
     [super dealloc];
 }
 
@@ -36,7 +40,11 @@
 
 - (CGRect)overlaidTitleFrame
 {
-    return CGRectMake(172, 40, 680, 152);
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        return CGRectMake(172, 40, 680, 152);
+    } else {
+        return CGRectMake(0, 0, 480, 64);
+    }
 }
 
 - (SCHStoryInteractionHotSpotQuestion *)currentQuestion
@@ -71,17 +79,19 @@
 
 - (void)imageTapped:(UITapGestureRecognizer *)tap
 {
+    [self.answerMarkerView removeFromSuperview];
+    self.answerMarkerView = nil;
+    
     CGPoint pointInView = [tap locationInView:self.pageImageView];
-    BOOL leftPage = (pointInView.x < CGRectGetMidX(self.pageImageView.bounds));
-    CGAffineTransform viewToPageTransform = [self.delegate viewToPageTransformForLeftPage:leftPage];
+    CGAffineTransform viewToPageTransform = [self.delegate viewToPageTransformForLayoutPage];
     CGPoint pointInPage = CGPointApplyAffineTransform(pointInView, viewToPageTransform);
 
-    NSLog(@"pointInView:%@ left:%d pointInPage:%@ hotSpot:%@",
-          NSStringFromCGPoint(pointInView), leftPage,
+    NSLog(@"pointInView:%@ pointInPage:%@ hotSpot:%@",
+          NSStringFromCGPoint(pointInView),
           NSStringFromCGPoint(pointInPage),
           NSStringFromCGRect([self currentQuestion].hotSpotRect));
     
-    if (leftPage && CGRectContainsPoint([self currentQuestion].hotSpotRect, pointInPage)) {
+    if (CGRectContainsPoint([self currentQuestion].hotSpotRect, pointInPage)) {
         [self correctTapAtPoint:pointInView];
     } else {
         [self incorrectTapAtPoint:pointInView];
@@ -89,7 +99,7 @@
 }
 
 - (void)incorrectTapAtPoint:(CGPoint)point
-{
+{    
     CGFloat scale = 1.0f / self.scrollView.zoomScale;
     UIView *cross = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"storyinteraction-findinpage-wrong"]];
     cross.center = point;
@@ -108,6 +118,8 @@
                                animations:^{ cross.alpha = 0; }
                                completion:^(BOOL finished) { [cross removeFromSuperview]; }];
           }];
+    
+    self.answerMarkerView = cross;
     [cross release];
 }
 
@@ -128,6 +140,8 @@
           synchronizedEndBlock:^{
               [self removeFromHostViewWithSuccess:YES];
           }];
+    
+    self.answerMarkerView = stars;
     [stars release];
 }
 
