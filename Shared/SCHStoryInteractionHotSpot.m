@@ -17,13 +17,25 @@
 @synthesize prompt;
 @synthesize hotSpotRect;
 @synthesize originalBookSize;
-@synthesize data;
+@synthesize path;
 
 - (void)dealloc
 {
     [prompt release];
-    [data release];
+    if (path) {
+        CGPathRelease(path);
+    }
     [super dealloc];
+}
+
+- (void)setPath:(CGPathRef)newPath
+{
+    if (newPath != path) {
+        if (path) {
+            CGPathRelease(path);
+        }
+        path = CGPathRetain(newPath);
+    }
 }
 
 - (NSString *)audioPathForQuestion

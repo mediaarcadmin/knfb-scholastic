@@ -14,7 +14,7 @@
 @property (nonatomic, retain) NSString *prompt;
 @property (nonatomic, assign) CGRect hotSpotRect;
 @property (nonatomic, assign) CGSize originalBookSize;
-@property (nonatomic, retain) NSData *data;
+@property (nonatomic, assign) CGPathRef path;
 
 // XPSProvider-relative path for question audio
 - (NSString *)audioPathForQuestion;

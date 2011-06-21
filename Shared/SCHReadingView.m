@@ -107,6 +107,11 @@
     NSLog(@"WARNING: jumpToBookPoint:animated: not being overridden correctly.");
 }
 
+- (CGPoint)pageCoordinatesFromViewCoordinates:(CGPoint)viewPoint forPageAtIndex:(NSInteger)pageIndex
+{
+    return CGPointZero;
+}
+
 - (void)jumpToNextZoomBlock
 {
     // Do nothing
