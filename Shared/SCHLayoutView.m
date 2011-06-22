@@ -146,7 +146,6 @@
         [selector addObserver:self forKeyPath:@"trackingStage" options:NSKeyValueObservingOptionPrior context:NULL];
         
         blockSource = [[[SCHBookManager sharedBookManager] checkOutBlockSourceForBookIdentifier:self.isbn] retain];
-        
     }    
 }
 
@@ -199,6 +198,8 @@
             [selector detatch];
             [selector release], selector = nil;
         }
+    } else {
+        [self.delegate readingViewWillAppear:self];
     }
 }
 

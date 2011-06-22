@@ -52,7 +52,9 @@
         eucBookView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         eucBookView.vibratesOnInvalidTurn = NO;
         [eucBookView setPageTexture:self.currentPageTexture isDark:self.textureIsDark];
-        [self addSubview:eucBookView];        
+        [self addSubview:eucBookView];  
+        
+        [self.delegate readingViewWillAppear:self];
     }
 }
 
@@ -136,7 +138,7 @@
     } else {
         point = [self.eucBook bookPageIndexPointFromBookPoint:bookPoint];
     }
-    
+    NSLog(@"eucbookview: %@", self.eucBookView);
     [self.eucBookView goToIndexPoint:point animated:animated];
 }
 

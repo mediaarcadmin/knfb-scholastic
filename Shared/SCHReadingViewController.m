@@ -451,7 +451,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
     
     [self setDictionarySelectionMode];
-    [self jumpToLastPageLocation];
     [self setupStoryInteractionButtonForCurrentPagesAnimated:NO];
 
 }
@@ -1356,6 +1355,11 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     SCHBookAnnotations *annotations = [self.profile annotationsForBook:self.isbn];
     
     return [annotations highlightsForPage:page];    
+}
+
+- (void)readingViewWillAppear: (SCHReadingView *) readingView
+{
+    [self jumpToLastPageLocation];
 }
 
 - (void)readingViewWillBeginTurning:(SCHReadingView *)readingView
