@@ -89,11 +89,13 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 @property (nonatomic, retain) AVAudioPlayer *interactionAppearsPlayer;
 @property (nonatomic, assign) NSInteger lastPageInteractionSoundPlayedOn;
 @property (nonatomic, assign) BOOL pauseAudioOnNextPageTurn;
+@property (nonatomic, assign) BOOL initialPageTurn;
 
 - (void)releaseViewObjects;
 
 - (void)toggleToolbarVisibility;
 - (void)setToolbarVisibility:(BOOL)visibility animated:(BOOL)animated;
+- (void)startFadeTimer;
 - (void)cancelInitialTimer;
 - (void)adjustScrubberInfoViewHeightForImageSize:(CGSize)imageSize;
 - (void)updateScrubberValue;
@@ -177,6 +179,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 @synthesize storyInteractionsCompleteOnCurrentPages;
 @synthesize lastPageInteractionSoundPlayedOn;
 @synthesize pauseAudioOnNextPageTurn;
+@synthesize initialPageTurn;
 
 #pragma mark - Dealloc and View Teardown
 
@@ -268,7 +271,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
                                                    object:nil];
         
         self.lastPageInteractionSoundPlayedOn = -1;
-        
+        self.initialPageTurn = YES;
+
     }
     return self;
 }
@@ -373,7 +377,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
                                                            selector:@selector(hideToolbarsFromTimer)
                                                            userInfo:nil
                                                             repeats:NO];
-	
+    [self startFadeTimer];
 
     
     
@@ -1361,6 +1365,14 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     // check for story interactions
     self.storyInteractionsCompleteOnCurrentPages = NO;
     [self setupStoryInteractionButtonForCurrentPagesAnimated:YES];
+    
+    if (self.toolbarsVisible && !self.initialPageTurn) {
+        [self setToolbarVisibility:NO animated:YES];
+    }
+    
+    if (self.initialPageTurn) {
+        self.initialPageTurn = NO;
+    }
 }
 
 - (void)readingView:(SCHReadingView *)readingView hasMovedToPageAtIndex:(NSUInteger)pageIndex
@@ -1418,8 +1430,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [dictionaryViewController release];
 }
 
-#pragma mark - Toolbars
+#pragma mark - SCHReadingViewDelegate Toolbars methods
 
+// these methods are called from the reading view
 - (void)toggleToolbars
 {
     [self pauseAudioPlayback];
@@ -1720,6 +1733,24 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 {
 //	NSLog(@"Toggling visibility.");
 	[self setToolbarVisibility:!self.toolbarsVisible animated:YES];
+    
+    if (self.toolbarsVisible) {
+        [self cancelInitialTimer];
+    }
+}
+
+- (void)startFadeTimer
+{
+    if (self.initialFadeTimer) {
+        [self.initialFadeTimer invalidate];
+        self.initialFadeTimer = nil;
+    }
+    
+    self.initialFadeTimer = [NSTimer scheduledTimerWithTimeInterval:5.0f
+                                                             target:self
+                                                           selector:@selector(hideToolbarsFromTimer)
+                                                           userInfo:nil
+                                                            repeats:NO];
 }
 
 - (void)cancelInitialTimer
