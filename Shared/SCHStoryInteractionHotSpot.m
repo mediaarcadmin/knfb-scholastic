@@ -17,6 +17,13 @@
 @synthesize originalBookSize;
 @synthesize path;
 
+- (id)init
+{
+    self = [super init];
+    [self release];
+    return nil;
+}
+
 - (void)dealloc
 {
     [prompt release];
