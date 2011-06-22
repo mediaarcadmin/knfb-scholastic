@@ -217,7 +217,7 @@
         newContentsView.alpha = 1;
         newContentsView.transform = CGAffineTransformIdentity;
     };
-    
+
     if (self.contentsView != nil) {
         // animate the transition between screens
         NSAssert(self.frameStyle != SCHStoryInteractionTitleOverlaysContents, @"can't have multiple views with SCHStoryInteractionTitleOverlaysContents");
@@ -230,6 +230,7 @@
         [UIView animateWithDuration:0.3
                          animations:setupViews
                          completion:^(BOOL finished) {
+                                             NSLog(@"%@", NSStringFromCGRect(newContentsView.frame));    
                              [oldContentsView removeFromSuperview];
                          }];
     } else {
@@ -240,11 +241,11 @@
             [self.backgroundView addSubview:newContentsView];
         }
     }
-    
+
     [self.containerView bringSubviewToFront:self.backgroundView];
     [self.backgroundView bringSubviewToFront:self.closeButton];
     [self.backgroundView bringSubviewToFront:self.readAloudButton];
-    
+
     self.contentsView = newContentsView;
     
     [self setTitle:[self.storyInteraction interactionViewTitle]];
@@ -379,6 +380,7 @@
 
     readAloud.center = CGPointMake(floorf(backgroundWidth+readAloudPosition.x-CGRectGetMidX(readAloud.bounds)),
                                    floorf(readAloudPosition.y+CGRectGetMidX(readAloud.bounds)));
+                NSLog(@"%@", NSStringFromCGRect(contents.frame));    
 }
 
 - (CGSize)maximumContentsSize
