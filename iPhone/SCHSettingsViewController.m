@@ -17,6 +17,7 @@
 #import "SCHAboutViewController.h"
 #import "SCHPrivacyPolicyViewController.h"
 #import <QuartzCore/QuartzCore.h>
+#import "SCHProcessingManager.h"
 
 extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
@@ -156,8 +157,6 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	
 	if ([notification.name compare:kSCHAuthenticationManagerSuccess] == NSOrderedSame) {
-		[[SCHURLManager sharedURLManager] clear];
-		[[SCHSyncManager sharedSyncManager] clear];
 		[[SCHSyncManager sharedSyncManager] firstSync];
         if (self.parentViewController.parentViewController != nil) {
             [self.parentViewController.parentViewController dismissModalViewControllerAnimated:YES];
@@ -345,7 +344,8 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
         // removeObjectForKey does not change the value...
         [[NSUserDefaults standardUserDefaults] setObject:nil forKey:kSCHAuthenticationManagerDeviceKey];
 		[[SCHURLManager sharedURLManager] clear];
-		[[SCHSyncManager sharedSyncManager] clear];        
+        [[SCHProcessingManager sharedProcessingManager] cancelAllOperations];                
+		[[SCHSyncManager sharedSyncManager] clear];
         [self login];
         [self.navigationController popViewControllerAnimated:NO];
     }

@@ -261,6 +261,13 @@ static SCHProcessingManager *sharedManager = nil;
     }
 }
 
+- (void)cancelAllOperations
+{
+    [self.webServiceOperationQueue cancelAllOperations];
+    [self.networkOperationQueue cancelAllOperations];    
+    [self.localProcessingQueue cancelAllOperations];    
+    [self.imageProcessingQueue cancelAllOperations];        
+}
 
 #pragma mark -
 #pragma mark Processing Methods
