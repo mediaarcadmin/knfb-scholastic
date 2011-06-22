@@ -549,7 +549,7 @@
 
 - (void)pageTurningViewWillBeginPageTurn:(EucPageTurningView *)pageTurningView
 {
-    [self.delegate readingViewFixedViewWillBeginTurning:self];
+    [self.delegate readingViewWillBeginTurning:self];
 }
 
 - (void)pageTurningViewDidEndPageTurn:(EucPageTurningView *)aPageTurningView

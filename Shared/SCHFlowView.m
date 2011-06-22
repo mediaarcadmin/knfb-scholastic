@@ -176,6 +176,11 @@
     [self.delegate toggleToolbars];
 }
 
+- (void)bookViewPageTurnWillBegin:(EucBookView *)bookView
+{
+    [self.delegate readingViewWillBeginTurning:self];
+}
+
 - (NSArray *)bookView:(EucBookView *)bookView highlightRangesFromPoint:(EucBookPageIndexPoint *)startPoint toPoint:(EucBookPageIndexPoint *)endPoint
 {
     NSArray *ret = nil;

@@ -89,7 +89,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 @property (nonatomic, retain) AVAudioPlayer *interactionAppearsPlayer;
 @property (nonatomic, assign) NSInteger lastPageInteractionSoundPlayedOn;
 @property (nonatomic, assign) BOOL pauseAudioOnNextPageTurn;
-@property (nonatomic, assign) BOOL initialPageTurn;
 
 - (void)releaseViewObjects;
 
@@ -179,7 +178,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 @synthesize storyInteractionsCompleteOnCurrentPages;
 @synthesize lastPageInteractionSoundPlayedOn;
 @synthesize pauseAudioOnNextPageTurn;
-@synthesize initialPageTurn;
 
 #pragma mark - Dealloc and View Teardown
 
@@ -271,7 +269,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
                                                    object:nil];
         
         self.lastPageInteractionSoundPlayedOn = -1;
-        self.initialPageTurn = YES;
 
     }
     return self;
@@ -1349,13 +1346,17 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     return [annotations highlightsForPage:page];    
 }
 
-- (void)readingViewFixedViewWillBeginTurning:(SCHReadingView *)readingView
+- (void)readingViewWillBeginTurning:(SCHReadingView *)readingView
 {
-    if (self.pauseAudioOnNextPageTurn) {
-        [self pauseAudioPlayback];
+    if (self.layoutType == SCHReadingViewLayoutTypeFixed) {
+        if (self.pauseAudioOnNextPageTurn) {
+            [self pauseAudioPlayback];
+        }
+        self.pauseAudioOnNextPageTurn = YES;
     }
-    self.pauseAudioOnNextPageTurn = YES;
+    
     [self setStoryInteractionButtonVisible:NO animated:YES withSound:YES];
+    [self setToolbarVisibility:NO animated:YES];
 }
 
 - (void)readingViewHasMoved
@@ -1366,12 +1367,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     self.storyInteractionsCompleteOnCurrentPages = NO;
     [self setupStoryInteractionButtonForCurrentPagesAnimated:YES];
     
-    if (self.toolbarsVisible && !self.initialPageTurn) {
+    if (self.toolbarsVisible && !self.initialFadeTimer) {
         [self setToolbarVisibility:NO animated:YES];
-    }
-    
-    if (self.initialPageTurn) {
-        self.initialPageTurn = NO;
     }
 }
 
@@ -1661,6 +1658,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (void)setToolbarVisibility:(BOOL)visibility animated:(BOOL)animated
 {
+    [self cancelInitialTimer];
 //	NSLog(@"Setting visibility to %@.", visibility?@"True":@"False");
 	self.toolbarsVisible = visibility;
 
