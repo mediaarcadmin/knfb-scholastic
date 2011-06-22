@@ -299,6 +299,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     
     if (self.youngerMode) {
         self.layoutType = SCHReadingViewLayoutTypeFixed;
+        self.paperType = SCHReadingViewPaperTypeWhite;
     } else {
         
 
@@ -1196,7 +1197,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     
     NSNumber *savedPaperType = [[self.profile AppProfile] PaperType];
     
-    if (!savedPaperType || [savedPaperType intValue] != newPaperType) {
+    if (!self.youngerMode && (!savedPaperType || [savedPaperType intValue] != newPaperType)) {
         savedPaperType = [NSNumber numberWithInt:newPaperType];
         [[self.profile AppProfile] setPaperType:savedPaperType];
     }
