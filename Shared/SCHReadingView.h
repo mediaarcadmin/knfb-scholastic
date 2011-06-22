@@ -37,6 +37,7 @@ typedef enum
 
 - (void)readingViewFixedViewWillBeginTurning:(SCHReadingView *)readingView;
 - (void)readingView:(SCHReadingView *)readingView hasMovedToPageAtIndex:(NSUInteger)pageIndex;
+- (void)readingView:(SCHReadingView *)readingView hasMovedToPageIndicesInRange:(NSRange)pageIndicesRange withFocusedPageIndex:(NSUInteger)pageIndex;
 - (void)readingView:(SCHReadingView *)readingView hasMovedToProgressPositionInBook:(CGFloat)progress;
 
 - (void)readingView:(SCHReadingView *)readingView hasSelectedWordForSpeaking:(NSString *)word;

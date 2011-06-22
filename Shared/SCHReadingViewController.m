@@ -58,6 +58,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 // the first page that the view is currently showing
 @property (nonatomic, assign) NSUInteger currentPageIndex;
+@property (nonatomic, assign) NSRange currentPageIndices;
 @property (nonatomic, assign) CGFloat currentBookProgress;
 
 // XPS book data provider
@@ -83,7 +84,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 @property (nonatomic, retain) SCHBookStoryInteractions *bookStoryInteractions;
 @property (nonatomic, retain) SCHStoryInteractionController *storyInteractionController;
-@property (nonatomic, assign) BOOL storyInteractionsCompleteOnCurrentPage;
+@property (nonatomic, assign) BOOL storyInteractionsCompleteOnCurrentPages;
 
 @property (nonatomic, retain) AVAudioPlayer *interactionAppearsPlayer;
 @property (nonatomic, assign) NSInteger lastPageInteractionSoundPlayedOn;
@@ -100,14 +101,17 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation;
 - (void)pauseAudioPlayback;
 
+- (void)readingViewHasMoved;
 - (void)saveLastPageLocation;
 - (void)jumpToLastPageLocation;
 - (void)jumpToBookPoint:(SCHBookPoint *)bookPoint animated:(BOOL)animated; 
 - (void)jumpToCurrentPlaceInBookAnimated:(BOOL)animated;
 
 - (void)setDictionarySelectionMode;
-- (void)setupStoryInteractionButtonForCurrentPageAnimated:(BOOL)animated;
-- (void)setupStoryInteractionButtonForPage:(NSInteger)page animated:(BOOL)animated;
+
+- (NSInteger)storyInteractionPageNumberFromPageIndex:(NSUInteger)pageIndex;
+- (NSUInteger)firstPageIndexWithStoryInteractionsOnCurrentPages;
+- (void)setupStoryInteractionButtonForCurrentPagesAnimated:(BOOL)animated;
 - (void)setStoryInteractionButtonVisible:(BOOL)visible animated:(BOOL)animated withSound:(BOOL)sound;
 
 @end
@@ -125,6 +129,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 @synthesize toolbarsVisible;
 @synthesize initialFadeTimer;
 @synthesize currentPageIndex;
+@synthesize currentPageIndices;
 @synthesize currentBookProgress;
 @synthesize xpsProvider;
 @synthesize currentlyRotating;
@@ -159,7 +164,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 @synthesize olderRightBarButtonItemContainer;
 @synthesize youngerRightBarButtonItemContainerPad;
 @synthesize backButton;
-@synthesize audioButton;
+@synthesize audioButtons;
 @synthesize scrubberToolbar;
 @synthesize olderBottomToolbar;
 @synthesize topShadow;
@@ -169,7 +174,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 @synthesize bookStoryInteractions;
 @synthesize storyInteractionController;
 @synthesize interactionAppearsPlayer;
-@synthesize storyInteractionsCompleteOnCurrentPage;
+@synthesize storyInteractionsCompleteOnCurrentPages;
 @synthesize lastPageInteractionSoundPlayedOn;
 @synthesize pauseAudioOnNextPageTurn;
 
@@ -201,7 +206,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [olderRightBarButtonItemContainer release], olderRightBarButtonItemContainer = nil;
     [youngerRightBarButtonItemContainerPad release], youngerRightBarButtonItemContainerPad = nil;
     [backButton release], backButton = nil;
-    [audioButton release], audioButton = nil;
+    [audioButtons release], audioButtons = nil;
     [notesCountView release], notesCountView = nil;
     [notesButton release], notesButton = nil;
     [storyInteractionsListButton release], storyInteractionsListButton = nil;
@@ -445,19 +450,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
     
     [self setDictionarySelectionMode];
-
-    [self setupStoryInteractionButtonForCurrentPageAnimated:NO];
     [self jumpToLastPageLocation];
-    
-    // temporary button to get access to younger story interactions
-//    if (self.youngerMode) {
-//        UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-//        [button setTitle:@"SI" forState:UIControlStateNormal];
-//        [button setFrame:CGRectMake(CGRectGetMaxX(self.view.bounds)-30, 0, 30, 30)];
-//        [button addTarget:self action:@selector(storyInteractionAction:) forControlEvents:UIControlEventTouchUpInside];
-//        [self.view addSubview:button];
-//    }
-
+    [self setupStoryInteractionButtonForCurrentPagesAnimated:NO];
 
 }
 
@@ -481,8 +475,11 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     if (UIInterfaceOrientationIsPortrait(orientation)) {
         [self.backButton setImage:[UIImage imageNamed:@"icon-books.png"] forState:UIControlStateNormal];
         
-        [self.audioButton setImage:[UIImage imageNamed:@"icon-play.png"] forState:UIControlStateNormal];
-        [self.audioButton setImage:[UIImage imageNamed:@"icon-play-active.png"] forState:UIControlStateSelected];
+        for (UIButton *audioButton in self.audioButtons) {
+            [audioButton setImage:[UIImage imageNamed:@"icon-play.png"] forState:UIControlStateNormal];
+            [audioButton setImage:[UIImage imageNamed:@"icon-play-active.png"] forState:UIControlStateSelected];
+        }
+        
         [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"reading-view-portrait-top-bar.png"]];
     } else {
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
@@ -491,8 +488,11 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
             [self.backButton setImage:[UIImage imageNamed:@"icon-books.png"] forState:UIControlStateNormal];
         }
         
-        [self.audioButton setImage:[UIImage imageNamed:@"icon-play-landscape.png"] forState:UIControlStateNormal];
-        [self.audioButton setImage:[UIImage imageNamed:@"icon-play-landscape-active.png"] forState:UIControlStateSelected];
+        for (UIButton *audioButton in self.audioButtons) {
+            [audioButton setImage:[UIImage imageNamed:@"icon-play-landscape.png"] forState:UIControlStateNormal];
+            [audioButton setImage:[UIImage imageNamed:@"icon-play-landscape-active.png"] forState:UIControlStateSelected];
+        }
+        
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
             [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"reading-view-landscape-top-bar.png"]];
         } else {
@@ -760,6 +760,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         [self setToolbarVisibility:NO animated:YES];
         self.pauseAudioOnNextPageTurn = YES;
     } else {
+        [self.readingView dismissFollowAlongHighlighter];  
         [self pauseAudioPlayback];
     }
     
@@ -770,7 +771,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (IBAction)storyInteractionAction:(id)sender
 {
-    NSLog(@"Story Interactions action");
+    NSLog(@"List Story Interactions action");
 
     if (self.optionsView.superview) {
         [self.optionsView removeFromSuperview];
@@ -881,8 +882,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 {
     NSLog(@"Pressed story interaction button");
     
-    NSLog(@"Story Interactions action");
-    
     if ([self.audioBookPlayer playing]) {
         [self.audioBookPlayer pause];
     }
@@ -891,22 +890,22 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         [self.optionsView removeFromSuperview];
     }
 
-    NSInteger page = self.currentPageIndex;
-    if (UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation])) {
-        if (page % 2 != 0) {
-            page++;
+    NSInteger page = [self storyInteractionPageNumberFromPageIndex:[self firstPageIndexWithStoryInteractionsOnCurrentPages]];
+    
+    NSArray *storyInteractions = [self.bookStoryInteractions storyInteractionsForPage:page];
+    
+    if ([storyInteractions count]) {
+        SCHStoryInteraction *storyInteraction = [storyInteractions objectAtIndex:0];
+    
+        self.storyInteractionController = [SCHStoryInteractionController storyInteractionControllerForStoryInteraction:storyInteraction];
+        self.storyInteractionController.isbn = self.isbn;
+        self.storyInteractionController.delegate = self;
+        self.storyInteractionController.xpsProvider = self.xpsProvider;
+        [self.storyInteractionController presentInHostView:self.navigationController.view withInterfaceOrientation:self.interfaceOrientation];
+    
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+            [self setToolbarVisibility:NO animated:YES];
         }
-    }
-    
-    SCHStoryInteraction *storyInteraction = [[self.bookStoryInteractions storyInteractionsForPage:page] objectAtIndex:0];
-    self.storyInteractionController = [SCHStoryInteractionController storyInteractionControllerForStoryInteraction:storyInteraction];
-    self.storyInteractionController.isbn = self.isbn;
-    self.storyInteractionController.delegate = self;
-    self.storyInteractionController.xpsProvider = self.xpsProvider;
-    [self.storyInteractionController presentInHostView:self.navigationController.view withInterfaceOrientation:self.interfaceOrientation];
-    
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        [self setToolbarVisibility:NO animated:YES];
     }
 
     [self pauseAudioPlayback];
@@ -914,21 +913,19 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 #pragma mark - Story Interactions methods
 
-- (void)setupStoryInteractionButtonForPage: (NSInteger) page animated:(BOOL)animated
+- (void)setupStoryInteractionButtonForCurrentPagesAnimated:(BOOL)animated
 { 
     // don't do any of this in flow view
     if ([self.readingView isKindOfClass:[SCHFlowView class]]) {
         return;
     }
     
-    if (UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation])) {
-        if (page % 2 != 0) {
-            page++;
-        }
-    }
+    NSInteger page = [self storyInteractionPageNumberFromPageIndex:[self firstPageIndexWithStoryInteractionsOnCurrentPages]];
+            
     NSArray *storyInteractions = [self.bookStoryInteractions storyInteractionsForPage:page];
     int totalInteractionCount = [storyInteractions count];
     int questionCount = [self.bookStoryInteractions storyInteractionQuestionCountForPage:page];
+    
     BOOL interactionsFinished = [self.bookStoryInteractions storyInteractionsFinishedOnPage:page];
     
     NSInteger interactionsDone = [self.bookStoryInteractions storyInteractionQuestionsCompletedForPage:page];
@@ -1066,10 +1063,39 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     }
 }
 
-- (void)setupStoryInteractionButtonForCurrentPageAnimated:(BOOL)animated
+- (NSInteger)storyInteractionPageNumberFromPageIndex:(NSUInteger)pageIndex
 {
-    NSInteger page = self.currentPageIndex;
-    [self setupStoryInteractionButtonForPage:page animated:animated];   
+    NSInteger page;
+    
+    if (pageIndex != NSUIntegerMax) {
+        page = pageIndex + 1;
+    } else {
+        page = -1;
+    }
+    
+    return page;
+}
+
+- (NSUInteger)firstPageIndexWithStoryInteractionsOnCurrentPages
+{
+    
+    NSRange pageIndices;
+    
+    if (self.currentPageIndices.location != NSNotFound) {
+        pageIndices = self.currentPageIndices;
+    } else {
+        pageIndices = NSMakeRange(self.currentPageIndex, 1);
+    }
+            
+    for (int pageIndex = pageIndices.location; pageIndex < NSMaxRange(pageIndices); pageIndex++) {
+        NSArray *storyInteractions = [self.bookStoryInteractions storyInteractionsForPage:pageIndex + 1];
+            
+        if ([storyInteractions count]) {
+            return pageIndex;
+        }
+    }
+    
+    return NSUIntegerMax;
 }
 
 #pragma mark - Audio Control
@@ -1079,7 +1105,11 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     if (self.audioBookPlayer != nil && [self.audioBookPlayer playing]) {
         [self.audioBookPlayer pause];
         [self.readingView dismissFollowAlongHighlighter];  
-        [self setupStoryInteractionButtonForPage:self.currentPageIndex animated:YES];
+        [self setupStoryInteractionButtonForCurrentPagesAnimated:YES];
+    }
+    
+    for (UIButton *audioButton in self.audioButtons) {
+        [audioButton setSelected:NO];
     }
 }
 
@@ -1324,18 +1354,31 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [self setStoryInteractionButtonVisible:NO animated:YES withSound:YES];
 }
 
-- (void)readingView:(SCHReadingView *)readingView hasMovedToPageAtIndex:(NSUInteger)pageIndex
+- (void)readingViewHasMoved
 {
-    //NSLog(@"hasMovedToPageAtIndex %d", pageIndex);
-    self.currentPageIndex = pageIndex;
-    self.currentBookProgress = -1;
-    
     [self updateScrubberValue];
     
     // check for story interactions
-    self.storyInteractionsCompleteOnCurrentPage = NO;
-    [self setupStoryInteractionButtonForCurrentPageAnimated:YES];
+    self.storyInteractionsCompleteOnCurrentPages = NO;
+    [self setupStoryInteractionButtonForCurrentPagesAnimated:YES];
+}
 
+- (void)readingView:(SCHReadingView *)readingView hasMovedToPageAtIndex:(NSUInteger)pageIndex
+{
+    self.currentPageIndex = pageIndex;
+    self.currentBookProgress = -1;
+    self.currentPageIndices = NSMakeRange(NSNotFound, 0);
+    
+    [self readingViewHasMoved];
+}
+
+- (void)readingView:(SCHReadingView *)readingView hasMovedToPageIndicesInRange:(NSRange)pageIndicesRange withFocusedPageIndex:(NSUInteger)pageIndex;
+{    
+    self.currentPageIndex = pageIndex;
+    self.currentBookProgress = -1;
+    self.currentPageIndices = pageIndicesRange;
+    
+    [self readingViewHasMoved];
 }
 
 - (void)readingView:(SCHReadingView *)readingView hasMovedToProgressPositionInBook:(CGFloat)progress
@@ -1343,8 +1386,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     //NSLog(@"hasMovedToProgressPositionInBook %f", progress);
     self.currentPageIndex = NSUIntegerMax;
     self.currentBookProgress = progress;
+    self.currentPageIndices = NSMakeRange(NSNotFound, 0);
     
-    [self updateScrubberValue];
+    [self readingViewHasMoved];
 }
 
 - (void)readingView:(SCHReadingView *)readingView hasSelectedWordForSpeaking:(NSString *)word
@@ -1658,7 +1702,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 	}
     
     // hide/show story interactions stuff if necessary
-    NSArray *storyInteractions = [self.bookStoryInteractions storyInteractionsForPage:self.currentPageIndex];
+    NSInteger page = [self storyInteractionPageNumberFromPageIndex:[self firstPageIndexWithStoryInteractionsOnCurrentPages]];
+
+    NSArray *storyInteractions = [self.bookStoryInteractions storyInteractionsForPage:page];
     int totalInteractionCount = [storyInteractions count];
 
     if (!self.initialFadeTimer) {
@@ -1806,7 +1852,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     self.storyInteractionController.xpsProvider = self.xpsProvider;
     [self.storyInteractionController presentInHostView:self.navigationController.view withInterfaceOrientation:self.interfaceOrientation];
     
-    SCHBookPoint *notePoint = [self.readingView bookPointForLayoutPage:[storyInteraction documentPageNumber]+1 pageWordOffset:0];
+    SCHBookPoint *notePoint = [self.readingView bookPointForLayoutPage:[storyInteraction documentPageNumber] pageWordOffset:0];
     [self.readingView jumpToBookPoint:notePoint animated:YES];
     
     [self setToolbarVisibility:NO animated:YES];
@@ -1822,38 +1868,27 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     
     if (success) {
         
-        NSInteger page = self.currentPageIndex;
-        if (UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation])) {
-            if (page % 2 != 0) {
-                page++;
-            }
-        }
+        NSInteger page = [self storyInteractionPageNumberFromPageIndex:[self firstPageIndexWithStoryInteractionsOnCurrentPages]];
 
-        
         [self.bookStoryInteractions incrementStoryInteractionQuestionsCompletedForPage:page];
         if ([self.bookStoryInteractions storyInteractionsFinishedOnPage:page]) {
-            self.storyInteractionsCompleteOnCurrentPage = YES;
+            self.storyInteractionsCompleteOnCurrentPages = YES;
         }
         
-        [self setupStoryInteractionButtonForCurrentPageAnimated:YES];
+        [self setupStoryInteractionButtonForCurrentPagesAnimated:YES];
     }
 }
 
 - (NSInteger)currentQuestionForStoryInteraction
 {
-    NSInteger page = self.currentPageIndex;
-    if (UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation])) {
-        if (page % 2 != 0) {
-            page++;
-        }
-    }
-
+    NSInteger page = [self storyInteractionPageNumberFromPageIndex:[self firstPageIndexWithStoryInteractionsOnCurrentPages]];
+    
     return [self.bookStoryInteractions storyInteractionQuestionsCompletedForPage:page];
 }
 
 - (BOOL)storyInteractionFinished
 {
-    return self.storyInteractionsCompleteOnCurrentPage;
+    return self.storyInteractionsCompleteOnCurrentPages;
 }
 
 - (UIImage *)currentPageSnapshot
