@@ -1725,6 +1725,11 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
             [self setStoryInteractionButtonVisible:YES animated:YES withSound:NO];
         }
     }
+    
+    if (self.popover) {
+        [self.popover dismissPopoverAnimated:YES];
+        self.popover = nil;
+    }
 }
 
 - (void)toggleToolbarVisibility
