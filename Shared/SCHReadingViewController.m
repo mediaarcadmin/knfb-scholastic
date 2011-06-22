@@ -1336,7 +1336,19 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (void)deleteHighlightBetweenStartPage:(NSUInteger)startPage startWord:(NSUInteger)startWord endPage:(NSUInteger)endPage endWord:(NSUInteger)endWord;
 {
     NSLog(@"Delete highlight");
-    //SCHBookAnnotations *annotations = [self.profile annotationsForBook:self.isbn];
+    SCHBookAnnotations *annotations = [self.profile annotationsForBook:self.isbn];
+    
+    
+    for (int page = startPage; page <= endPage; page++) {
+        for (SCHHighlight *highlight in [annotations highlightsForPage:page]) {
+            if (([highlight startLayoutPage] == startPage) &&
+                ([highlight startWordOffset] == startWord) &&
+                ([highlight endLayoutPage] == endPage) &&
+                ([highlight endWordOffset] == endWord)) {
+                [annotations deleteHighlight:highlight];
+            }
+        }
+    }
 }
 
 - (NSArray *)highlightsForLayoutPage:(NSUInteger)page

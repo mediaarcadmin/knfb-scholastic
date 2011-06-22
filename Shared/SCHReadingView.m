@@ -228,6 +228,14 @@
             
             ret = [NSArray arrayWithObjects:dictionaryItem, nil];
         } break;
+        case SCHReadingViewSelectionModeHighlights: {
+            if ([self.selector selectedRangeIsHighlight]) {
+                EucMenuItem *dictionaryItem = [[[EucMenuItem alloc] initWithTitle:NSLocalizedString(@"Delete", "iPhone and iPad Delete option in popup menu")
+                                                                           action:@selector(deleteHighlight:)] autorelease];
+                
+                ret = [NSArray arrayWithObjects:dictionaryItem, nil];
+            }
+        } break;
         default:
             break;
     }
@@ -281,14 +289,37 @@
 
 - (UIColor *)eucSelector:(EucSelector *)selector willBeginEditingHighlightWithRange:(EucSelectorRange *)selectedRange
 {
+    SCHBookRange *highlightRange = [self bookRangeFromSelectorRange:selectedRange];
+    
+    NSInteger startIndex = highlightRange.startPoint.layoutPage - 1;
+    NSInteger endIndex = highlightRange.endPoint.layoutPage - 1;
+            
+    for (int i = startIndex; i <= endIndex; i++) {
+        [self refreshHighlightsForPageAtIndex:i];
+    }
+      
     // This disables the creation of a new highlight on top of the old one
     self.createHighlightFromSelection = NO;
-    [self.selector setSelectedRange:nil];
-    return nil;
-    //[self.selector performSelector:@selector(setSelectedRange:) withObject:nil afterDelay:0.1f];
+    [self.selector setAllowsAdjustment:NO];
     
     return [self.delegate highlightColor];
 }
+
+//- (void)eucSelector:(EucSelector *)selector didEndEditingHighlightWithRange:(EucSelectorRange *)fromRange movedToRange:(EucSelectorRange *)toRange
+//{
+//    SCHBookRange *fromBookRange = [self bookRangeFromSelectorRange:fromRange];
+//	SCHBookRange *toBookRange = [self bookRangeFromSelectorRange:toRange ? : fromRange];
+//	
+//	NSInteger startIndex = MIN(fromBookRange.startPoint.layoutPage, toBookRange.startPoint.layoutPage) - 1;
+//	NSInteger endIndex = MAX(fromBookRange.endPoint.layoutPage, toBookRange.endPoint.layoutPage) - 1;
+//	
+//	// Set this to nil now because the refresh depends on it
+//    [self.selector setSelectedRange:nil];
+//	
+//	for (int i = startIndex; i <= endIndex; i++) {
+//		[self refreshHighlightsForPageAtIndex:i];
+//	}
+//}
 
 - (void)currentLayoutPage:(NSUInteger *)layoutPage pageWordOffset:(NSUInteger *)pageWordOffset
 {
@@ -541,6 +572,11 @@
     }
 }
 
+- (void)deleteHighlight:(id)sender
+{
+    [self deleteHighlightWithSelection:[self.selector selectedRangeOriginalHighlightRange]];
+}
+
 - (void)deleteHighlightWithSelection:(EucSelectorRange *)selectorRange
 {
     for (SCHBookRange *highlightRange in [self bookRangesFromSelectorRange:selectorRange]) {    
@@ -553,6 +589,9 @@
         [self layoutPage:&endLayoutPage pageWordOffset:&endPageWordOffset forBookPoint:highlightRange.endPoint];
         
         [self.delegate deleteHighlightBetweenStartPage:startLayoutPage startWord:startPageWordOffset endPage:endLayoutPage endWord:endPageWordOffset];
+        
+        // Set this to nil now because the refresh depends on it
+        [self.selector setSelectedRange:nil];
         
         for (int i = startLayoutPage; i <= endLayoutPage; i++) {
             [self refreshHighlightsForPageAtIndex:i - 1];
