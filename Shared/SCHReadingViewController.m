@@ -591,6 +591,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     // store the last page
     SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];
     
+    [self.readingView dismissFollowAlongHighlighter];  
+    self.audioBookPlayer = nil;
+    
     [self saveLastPageLocation];
     
     [[SCHSyncManager sharedSyncManager] closeDocument:[[book.ContentMetadataItem valueForKey:@"UserContentItem"] objectAtIndex:0] 
