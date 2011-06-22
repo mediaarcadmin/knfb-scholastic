@@ -1150,11 +1150,18 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     }
     
     self.readingView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    self.paperType = self.paperType; // Reload the paper
+//    self.paperType = self.paperType; // Reload the paper
     
     [self.readingView setSelectionMode:currentMode];
     [self.view addSubview:self.readingView];
     [self.view sendSubviewToBack:self.readingView];
+    
+    NSNumber *savedPaperType = [[self.profile AppProfile] PaperType];
+    self.paperType = [savedPaperType intValue];
+    
+    NSNumber *savedFontSizeIndex = [[self.profile AppProfile] FontIndex];
+    self.currentFontSizeIndex = [savedFontSizeIndex intValue];
+
 }
 
 - (SCHReadingViewLayoutType)layoutType
