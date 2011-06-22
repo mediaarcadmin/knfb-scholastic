@@ -199,6 +199,8 @@
         [hostView addSubview:self.containerView];
     }
 
+    self.interfaceOrientation = aInterfaceOrientation;
+
     // put multiple views at the top-level in the nib for multi-screen interactions
     UIView *newContentsView = [self.nibObjects objectAtIndex:self.currentScreenIndex];
     CGSize maxContentsSize = [self maximumContentsSize];
