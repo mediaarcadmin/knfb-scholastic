@@ -13,6 +13,9 @@
 @property (nonatomic, copy) SCHQueuedAudioPlayerFetchBlock fetchBlock;
 @property (nonatomic, copy) dispatch_block_t startBlock;
 @property (nonatomic, copy) dispatch_block_t endBlock;
+
+- (void) executeStartBlock;
+- (void) executeEndBlock;
 @end
 
 @interface SCHQueuedAudioPlayer ()
@@ -94,11 +97,19 @@
 - (void)playNextItemInQueue
 {
     NSData *data = nil;
-    while ([self.audioQueue count] > 0 && data == nil) {
+    while ([self.audioQueue count] > 0) {
         self.currentItem = [self.audioQueue objectAtIndex:0];
         [self.audioQueue removeObjectAtIndex:0];
         data = self.currentItem.fetchBlock();
+        
+        if (data == nil) {
+            [currentItem executeStartBlock];
+            [currentItem executeEndBlock];
+        } else {
+            break;
+        }
     }
+    
     if (data == nil) {
         self.currentItem = nil;
         return;
@@ -110,9 +121,7 @@
     [player release];
 
     dispatch_block_t playBlock = ^{
-        if (self.currentItem.startBlock) {
-            self.currentItem.startBlock();
-        }
+        [self.currentItem executeStartBlock];
         [self.audioPlayer play];
     };
     
@@ -203,6 +212,21 @@
     [startBlock release];
     [endBlock release];
     [super dealloc];
+}
+
+- (void) executeStartBlock
+{
+    if (self.startBlock) {
+        self.startBlock();
+    }
+    self.startBlock = nil;
+}
+- (void) executeEndBlock
+{
+    if (self.endBlock) {
+        self.endBlock();
+    }
+    self.endBlock = nil;
 }
 
 @end

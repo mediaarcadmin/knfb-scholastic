@@ -122,9 +122,6 @@
                    completion:^{
                        [self removeFromHostViewWithSuccess:YES];
                    }];
-    } else {
-        // reenable if we're not done
-        [self setUserInteractionsEnabled:YES];
     }
 }
 
@@ -132,7 +129,9 @@
 
 - (void)draggableViewDidStartDrag:(SCHStoryInteractionDraggableView *)draggableView
 {
-    [self playBundleAudioWithFilename:@"sfx_pickup.mp3" completion:nil];
+    if (![self playingAudio]) {
+        [self playBundleAudioWithFilename:@"sfx_pickup.mp3" completion:nil];
+    }
 }
 
 - (BOOL)draggableView:(SCHStoryInteractionDraggableView *)draggableView shouldSnapFromPosition:(CGPoint)position toPosition:(CGPoint *)snapPosition
@@ -170,12 +169,14 @@
         [draggableView moveToHomePosition];
         [self playBundleAudioWithFilename:@"sfx_dropNo.mp3" completion:nil];        
     } else if (onTarget.matchTag != draggableView.matchTag) {
+        [self.occupiedTargets addObject:onTarget];
         UIImage* oldImage = [imageView.image retain];
         [imageView setImage:[UIImage imageNamed:@"storyinteraction-draggable-red"]];
         [self playAudioAtPath:[self.storyInteraction audioPathForTryAgain]
                    completion:^{
                        [imageView setImage:oldImage];
                        [draggableView moveToHomePosition];
+                       [self.occupiedTargets removeObject:onTarget];
                    }];
         [oldImage release];
     } else {
@@ -187,9 +188,7 @@
         [self enqueueAudioWithPath:[self.storyInteraction audioPathForThatsRight]
                         fromBundle:NO
                         startDelay:0
-            synchronizedStartBlock:^{
-                [self setUserInteractionsEnabled:NO];
-            }
+            synchronizedStartBlock:nil
               synchronizedEndBlock:nil];
 
         SCHStoryInteractionWordMatchQuestionItem *item = [[[self currentQuestion] items] objectAtIndex:onTarget.matchTag];
