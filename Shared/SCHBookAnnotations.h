@@ -38,6 +38,5 @@
 - (SCHNote *)createEmptyNote;
 - (SCHHighlight *)createEmptyHighlight;
 - (SCHHighlight *)createHighlightBetweenStartPage:(NSUInteger)startPage startWord:(NSUInteger)startWord endPage:(NSUInteger)endPage endWord:(NSUInteger)endWord color:(UIColor *)color;
-- (SCHHighlight *)createHighlightWithHighlightRange:(SCHBookRange *)highlightRange color:(UIColor *)color;
 
 @end

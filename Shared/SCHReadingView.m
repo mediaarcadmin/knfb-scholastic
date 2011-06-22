@@ -33,6 +33,8 @@
 - (void)selectorDidBeginSelectingWithSelection:(EucSelectorRange *)selectorRange;
 - (void)selectorDidEndSelectingWithSelection:(EucSelectorRange *)selectorRange;
 
+- (void)selectedWordInMode:(SCHReadingViewSelectionMode)mode;
+
 - (SCHBookRange *)firstBookRangeFromSelectorRange:(EucSelectorRange *)selectorRange;
 
 @end
@@ -226,6 +228,14 @@
             
             ret = [NSArray arrayWithObjects:dictionaryItem, nil];
         } break;
+        case SCHReadingViewSelectionModeHighlights: {
+            if ([self.selector selectedRangeIsHighlight]) {
+                EucMenuItem *dictionaryItem = [[[EucMenuItem alloc] initWithTitle:NSLocalizedString(@"Delete", "iPhone and iPad Delete option in popup menu")
+                                                                           action:@selector(deleteHighlight:)] autorelease];
+                
+                ret = [NSArray arrayWithObjects:dictionaryItem, nil];
+            }
+        } break;
         default:
             break;
     }
@@ -233,57 +243,83 @@
     return ret;
 }
 
-- (void)selectOlderWord: (id) object
-{    
+- (void)selectedWordInMode:(SCHReadingViewSelectionMode)mode
+{
+    
     SCHBookRange *bookRange = [self firstBookRangeFromSelectorRange:[self.selector selectedRange]];
     [self.selector setSelectedRange:nil];
-
+    
+    NSString *word = nil;
     NSUInteger page = bookRange.startPoint.layoutPage;
+    NSUInteger blockOffset = bookRange.startPoint.blockOffset;
     NSUInteger wordOffset = bookRange.startPoint.wordOffset;
     
-    NSArray *wordBlocks = [self.textFlow blocksForPageAtIndex:page - 1 includingFolioBlocks:NO];
+    NSArray *pageBlocks = [self.textFlow blocksForPageAtIndex:page - 1 includingFolioBlocks:NO];
     
-    NSString *word = [[[[wordBlocks objectAtIndex:bookRange.startPoint.blockOffset] words] objectAtIndex:wordOffset] string];
-
+    if (blockOffset < [pageBlocks count]) {
+        NSArray *words = [[pageBlocks objectAtIndex:blockOffset] words];
+        if (wordOffset < [words count]) {
+            word = [[words objectAtIndex:wordOffset] string];
+        }
+    }
     
     NSLog(@"Word: %@", word);
-  
-    if ([self.delegate respondsToSelector:@selector(requestDictionaryForWord:mode:)]) {
-        [self.delegate requestDictionaryForWord:word mode:SCHReadingViewSelectionModeOlderDictionary];
+    
+    if (word) {
+        if ([self.delegate respondsToSelector:@selector(requestDictionaryForWord:mode:)]) {
+            [self.delegate requestDictionaryForWord:word mode:mode];
+        }
+    } else {
+        NSLog(@"WARNING: could not retrieve selected word from textflow");
     }
+
+}
+
+- (void)selectOlderWord: (id) object
+{    
+    [self selectedWordInMode:SCHReadingViewSelectionModeOlderDictionary];
 }
 
 - (void)selectYoungerWord: (id) object
 {
-    SCHBookRange *bookRange = [self firstBookRangeFromSelectorRange:[self.selector selectedRange]];
-    [self.selector setSelectedRange:nil];
-
-    NSUInteger page = bookRange.startPoint.layoutPage;
-    NSUInteger wordOffset = bookRange.startPoint.wordOffset;
-    
-    NSArray *wordBlocks = [self.textFlow blocksForPageAtIndex:page - 1 includingFolioBlocks:NO];
-    
-    NSString *word = [[[[wordBlocks objectAtIndex:bookRange.startPoint.blockOffset] words] objectAtIndex:wordOffset] string];
-    
-    
-    NSLog(@"Word: %@", word);
-    
-    if ([self.delegate respondsToSelector:@selector(requestDictionaryForWord:mode:)]) {
-        [self.delegate requestDictionaryForWord:word mode:SCHReadingViewSelectionModeYoungerDictionary];
-    }
+    [self selectedWordInMode:SCHReadingViewSelectionModeYoungerDictionary];
 }
 
 #pragma mark - EucSelectorDelegate
 
 - (UIColor *)eucSelector:(EucSelector *)selector willBeginEditingHighlightWithRange:(EucSelectorRange *)selectedRange
 {
+    SCHBookRange *highlightRange = [self bookRangeFromSelectorRange:selectedRange];
+    
+    NSInteger startIndex = highlightRange.startPoint.layoutPage - 1;
+    NSInteger endIndex = highlightRange.endPoint.layoutPage - 1;
+            
+    for (int i = startIndex; i <= endIndex; i++) {
+        [self refreshHighlightsForPageAtIndex:i];
+    }
+      
     // This disables the creation of a new highlight on top of the old one
     self.createHighlightFromSelection = NO;
-    [self.selector setSelectedRange:nil];
-    //[self.selector performSelector:@selector(setSelectedRange:) withObject:nil afterDelay:0.1f];
+    [self.selector setAllowsAdjustment:NO];
     
-    return nil;
+    return [self.delegate highlightColor];
 }
+
+//- (void)eucSelector:(EucSelector *)selector didEndEditingHighlightWithRange:(EucSelectorRange *)fromRange movedToRange:(EucSelectorRange *)toRange
+//{
+//    SCHBookRange *fromBookRange = [self bookRangeFromSelectorRange:fromRange];
+//	SCHBookRange *toBookRange = [self bookRangeFromSelectorRange:toRange ? : fromRange];
+//	
+//	NSInteger startIndex = MIN(fromBookRange.startPoint.layoutPage, toBookRange.startPoint.layoutPage) - 1;
+//	NSInteger endIndex = MAX(fromBookRange.endPoint.layoutPage, toBookRange.endPoint.layoutPage) - 1;
+//	
+//	// Set this to nil now because the refresh depends on it
+//    [self.selector setSelectedRange:nil];
+//	
+//	for (int i = startIndex; i <= endIndex; i++) {
+//		[self refreshHighlightsForPageAtIndex:i];
+//	}
+//}
 
 - (void)currentLayoutPage:(NSUInteger *)layoutPage pageWordOffset:(NSUInteger *)pageWordOffset
 {
@@ -448,9 +484,7 @@
         [endPoint release];
         [range release];
     }
-    
-    NSLog(@"Book ranges: %@", bookRanges);
-    
+        
     return bookRanges;
 }
 
@@ -538,6 +572,11 @@
     }
 }
 
+- (void)deleteHighlight:(id)sender
+{
+    [self deleteHighlightWithSelection:[self.selector selectedRangeOriginalHighlightRange]];
+}
+
 - (void)deleteHighlightWithSelection:(EucSelectorRange *)selectorRange
 {
     for (SCHBookRange *highlightRange in [self bookRangesFromSelectorRange:selectorRange]) {    
@@ -550,6 +589,9 @@
         [self layoutPage:&endLayoutPage pageWordOffset:&endPageWordOffset forBookPoint:highlightRange.endPoint];
         
         [self.delegate deleteHighlightBetweenStartPage:startLayoutPage startWord:startPageWordOffset endPage:endLayoutPage endWord:endPageWordOffset];
+        
+        // Set this to nil now because the refresh depends on it
+        [self.selector setSelectedRange:nil];
         
         for (int i = startLayoutPage; i <= endLayoutPage; i++) {
             [self refreshHighlightsForPageAtIndex:i - 1];

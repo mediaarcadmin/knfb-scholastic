@@ -233,17 +233,4 @@
     return newHighlight;
 }
 
-// FIXME: remove this - it doesn't take into account the block offset
-- (SCHHighlight *)createHighlightWithHighlightRange:(SCHBookRange *)highlightRange color:(UIColor *)color
-{
-    SCHHighlight *newHighlight = [self createEmptyHighlight];
-    newHighlight.EndPage = [NSNumber numberWithInteger:highlightRange.endPoint.layoutPage];
-    newHighlight.Color = color;
-    newHighlight.Location.Page = [NSNumber numberWithInteger:highlightRange.startPoint.layoutPage];
-    newHighlight.Location.WordIndex.Start = [NSNumber numberWithInteger:highlightRange.startPoint.wordOffset];
-    newHighlight.Location.WordIndex.End = [NSNumber numberWithInteger:highlightRange.endPoint.wordOffset];
-    
-    return newHighlight;
-}
-
 @end
