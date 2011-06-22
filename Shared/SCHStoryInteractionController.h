@@ -51,6 +51,11 @@ typedef enum
 // The current contents view (loaded from a nib)
 @property (nonatomic, retain) UIView *contentsView;
 
+@property (nonatomic, retain) UILabel *titleView;
+
+// setup the title text
+- (void)setupTitle;
+
 // rotation about to occur
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration;
 

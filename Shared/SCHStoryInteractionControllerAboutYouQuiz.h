@@ -20,7 +20,6 @@
 
 @property (nonatomic, retain) IBOutlet SCHStoryInteractionProgressView *progressView;
 @property (nonatomic, retain) IBOutlet UILabel *questionLabel;
-
 @property (nonatomic, retain) IBOutletCollection(UIButton) NSArray *answerButtons;
 
 @property (nonatomic, retain) IBOutlet UILabel *outcomeTitleLabel;

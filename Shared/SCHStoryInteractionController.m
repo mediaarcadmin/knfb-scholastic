@@ -22,7 +22,6 @@
 @property (nonatomic, assign) UIInterfaceOrientation interfaceOrientation;
 @property (nonatomic, retain) NSArray *nibObjects;
 @property (nonatomic, assign) NSInteger currentScreenIndex;
-@property (nonatomic, retain) UILabel *titleView;
 @property (nonatomic, retain) UIButton *closeButton;
 @property (nonatomic, retain) UIButton *readAloudButton;
 @property (nonatomic, retain) UIImageView *backgroundView;
@@ -95,7 +94,7 @@
 {
     if ((self = [super init])) {
         storyInteraction = [aStoryInteraction retain];
-
+        
         NSString *nibName = [NSString stringWithFormat:@"%s_%s", object_getClassName(aStoryInteraction),
                              (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? "iPad" : "iPhone")];
         
@@ -104,7 +103,7 @@
             NSLog(@"failed to load nib %@", nibName);
             return nil;
         }
-
+        
         SCHQueuedAudioPlayer *player = [[SCHQueuedAudioPlayer alloc] init];
         self.audioPlayer = player;
         [player release];
@@ -123,8 +122,6 @@
 
 - (void)presentInHostView:(UIView *)hostView withInterfaceOrientation:(UIInterfaceOrientation)aInterfaceOrientation
 {
-    BOOL iPad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
-    
     if (self.containerView == nil) {
         self.xpsProvider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.isbn];
         
@@ -148,31 +145,15 @@
         background.contentMode = UIViewContentModeScaleToFill;
         background.userInteractionEnabled = YES;
         [container addSubview:background];
-       
+        
         UILabel *title = [[UILabel alloc] initWithFrame:CGRectZero];
         title.backgroundColor = [UIColor clearColor];
         
-        BOOL hasShadow = NO;
         if (self.frameStyle != SCHStoryInteractionNoTitle) {
-            if ([self.storyInteraction isOlderStoryInteraction]) {
-                hasShadow = YES;
-                title.font = [UIFont fontWithName:@"Arial Black" size:(iPad ? 30 : 25)];
-            } else {
-                title.font = [UIFont fontWithName:@"Arial-BoldMT" size:(iPad ? 22 : 17)];
-            }
-
-            title.textAlignment = UITextAlignmentCenter;
-            title.textColor = [self.storyInteraction isOlderStoryInteraction] ? [UIColor whiteColor] : [UIColor colorWithRed:0.113 green:0.392 blue:0.690 alpha:1.];
-            title.adjustsFontSizeToFitWidth = YES;
-            title.numberOfLines = 2;
-            if (hasShadow) {
-                title.layer.shadowOpacity = 0.7f;
-                title.layer.shadowRadius = 2;
-                title.layer.shadowOffset = CGSizeZero;
-            }
             self.titleView = title;
+            [self setupTitle];
             [background addSubview:title];
-            [title release];            
+            [title release];   
         }
         
         NSString *age = [self.storyInteraction isOlderStoryInteraction] ? @"older" : @"younger";
@@ -181,7 +162,7 @@
         [self.closeButton setImage:closeImage forState:UIControlStateNormal];
         [self.closeButton addTarget:self action:@selector(closeButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
         [background addSubview:self.closeButton];
-
+        
         if (questionAudioPath) {
             UIImage *readAloudImage = [UIImage imageNamed:@"storyinteraction-read-aloud"];
             self.readAloudButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -195,17 +176,17 @@
         self.backgroundView = background;
         [container release];
         [background release];
-
+        
         [hostView addSubview:self.containerView];
     }
-
+    
     // put multiple views at the top-level in the nib for multi-screen interactions
     UIView *newContentsView = [self.nibObjects objectAtIndex:self.currentScreenIndex];
     CGSize maxContentsSize = [self maximumContentsSize];
     if (CGRectGetWidth(newContentsView.bounds) > maxContentsSize.height || CGRectGetHeight(newContentsView.bounds) > maxContentsSize.width) {
         NSLog(@"contentView %d is too large: %@", self.currentScreenIndex, NSStringFromCGRect(newContentsView.bounds));
     }
-
+    
     dispatch_block_t setupViews = ^{
         [self setupGeometryForContainerView:self.containerView
                              backgroundView:self.backgroundView
@@ -217,7 +198,7 @@
         newContentsView.alpha = 1;
         newContentsView.transform = CGAffineTransformIdentity;
     };
-
+    
     if (self.contentsView != nil) {
         // animate the transition between screens
         NSAssert(self.frameStyle != SCHStoryInteractionTitleOverlaysContents, @"can't have multiple views with SCHStoryInteractionTitleOverlaysContents");
@@ -230,7 +211,6 @@
         [UIView animateWithDuration:0.3
                          animations:setupViews
                          completion:^(BOOL finished) {
-                                             NSLog(@"%@", NSStringFromCGRect(newContentsView.frame));    
                              [oldContentsView removeFromSuperview];
                          }];
     } else {
@@ -241,15 +221,38 @@
             [self.backgroundView addSubview:newContentsView];
         }
     }
-
+    
     [self.containerView bringSubviewToFront:self.backgroundView];
     [self.backgroundView bringSubviewToFront:self.closeButton];
     [self.backgroundView bringSubviewToFront:self.readAloudButton];
-
+    
     self.contentsView = newContentsView;
     
     [self setTitle:[self.storyInteraction interactionViewTitle]];
     [self setupViewAtIndex:self.currentScreenIndex];
+}
+
+- (void)setupTitle
+{
+    BOOL iPad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
+    BOOL hasShadow = NO;
+    
+    if ([self.storyInteraction isOlderStoryInteraction]) {
+        hasShadow = YES;
+        self.titleView.font = [UIFont fontWithName:@"Arial Black" size:(iPad ? 30 : 25)];
+    } else {
+        self.titleView.font = [UIFont fontWithName:@"Arial-BoldMT" size:(iPad ? 22 : 17)];
+    }
+    
+    self.titleView.textAlignment = UITextAlignmentCenter;
+    self.titleView.textColor = [self.storyInteraction isOlderStoryInteraction] ? [UIColor whiteColor] : [UIColor colorWithRed:0.113 green:0.392 blue:0.690 alpha:1.];
+    self.titleView.adjustsFontSizeToFitWidth = YES;
+    self.titleView.numberOfLines = 2;
+    if (hasShadow) {
+        self.titleView.layer.shadowOpacity = 0.7f;
+        self.titleView.layer.shadowRadius = 2;
+        self.titleView.layer.shadowOffset = CGSizeZero;
+    }
 }
 
 - (void)presentNextView
@@ -269,7 +272,7 @@
     CGFloat superviewHeight = CGRectGetHeight(self.containerView.superview.bounds);
     CGRect superviewBounds = CGRectMake(0, 0, MAX(superviewWidth, superviewHeight), MIN(superviewWidth, superviewHeight));
     CGPoint superviewCenter = CGPointMake(floorf(CGRectGetMidX(superviewBounds)), floorf(CGRectGetMidY(superviewBounds)));
-
+    
     [UIView animateWithDuration:duration
                           delay:0
                         options:UIViewAnimationOptionAllowUserInteraction
@@ -338,7 +341,7 @@
         container.bounds = CGRectIntegral(superviewBounds);
     }
     container.center = CGPointMake(floor(CGRectGetMidX(superviewBounds)), floor(CGRectGetMidY(superviewBounds)));
-
+    
     CGFloat backgroundWidth, backgroundHeight;
     switch (self.frameStyle) {
         case SCHStoryInteractionFullScreen: {
@@ -377,10 +380,9 @@
     UIImage *closeImage = [close imageForState:UIControlStateNormal];
     close.bounds = (CGRect){ CGPointZero, closeImage.size };
     close.center = CGPointMake(floorf(closePosition.x+closeImage.size.width/2), floorf(closePosition.y+closeImage.size.height/2));
-
+    
     readAloud.center = CGPointMake(floorf(backgroundWidth+readAloudPosition.x-CGRectGetMidX(readAloud.bounds)),
                                    floorf(readAloudPosition.y+CGRectGetMidX(readAloud.bounds)));
-                NSLog(@"%@", NSStringFromCGRect(contents.frame));    
 }
 
 - (CGSize)maximumContentsSize
@@ -507,7 +509,7 @@
             return [self.xpsProvider dataForComponentAtPath:path];
         };
     }
-
+    
     [self.audioPlayer enqueueAudioTaskWithFetchBlock:fetchBlock synchronizedStartBlock:startBlock synchronizedEndBlock:endBlock];
 }
 

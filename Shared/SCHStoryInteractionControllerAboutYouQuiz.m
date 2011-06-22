@@ -19,7 +19,6 @@ typedef enum {
 @interface SCHStoryInteractionControllerAboutYouQuiz ()
 
 @property (nonatomic, assign) NSInteger currentQuestionIndex;
-
 @property (nonatomic, retain) NSMutableArray *outcomeCounts;
 
 - (void)setupOpeningView;
@@ -37,10 +36,12 @@ typedef enum {
 @implementation SCHStoryInteractionControllerAboutYouQuiz
 
 @synthesize introductionLabel;
+
 @synthesize progressView;
 @synthesize questionLabel;
 @synthesize answerButtons;
 @synthesize currentQuestionIndex;
+
 @synthesize outcomeCounts;
 @synthesize outcomeTitleLabel;
 @synthesize outcomeTextLabel;
@@ -93,22 +94,35 @@ typedef enum {
     for (NSInteger i = 0; i < outcomes; i++) {
         [self.outcomeCounts addObject:[NSNumber numberWithInt:0]];
     }
-        
+
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        self.titleView.font = [UIFont fontWithName:@"Helvetica Bold" size:15];
+        self.titleView.textAlignment = UITextAlignmentLeft;
+    }
     [self setupQuestion];    
 }
 
 - (void)setupOutcomeView
 {
     NSArray *splitResult = [[self calculatedResult] componentsSeparatedByString:@". "];
-
-    self.outcomeTextLabel.text = [splitResult objectAtIndex:0];
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        [self setupTitle];        
+    }
+    self.outcomeTextLabel.text = [NSString stringWithFormat:@"%@.", [splitResult objectAtIndex:0]];
     self.outcomeTitleLabel.text = ([splitResult count] > 1 ? [splitResult objectAtIndex:1] : @"");
 }
 
 - (void)setupQuestion
 {
+    BOOL iPad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
+    
     self.progressView.currentStep = self.currentQuestionIndex;
-    self.questionLabel.text = [[self currentQuestion] prompt];
+    if (iPad == YES) {
+        self.questionLabel.text = [[self currentQuestion] prompt];
+    } else {
+        [self setTitle:[[self currentQuestion] prompt]];
+    }
     NSInteger i = 0;
     for (NSString *answer in [self currentQuestion].answers) {
         UIButton *button = [self.answerButtons objectAtIndex:i];
