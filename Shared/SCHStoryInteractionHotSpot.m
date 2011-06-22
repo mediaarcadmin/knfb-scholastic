@@ -56,12 +56,12 @@
 
 @synthesize questions;
 
-//- (id)init
-//{
-//    self = [super init];
-//    [self release];
-//    return nil;
-//}
+- (id)init
+{
+    self = [super init];
+    [self release];
+    return nil;
+}
 
 - (void)dealloc
 {
