@@ -9,6 +9,9 @@
 #import "SCHStoryInteractionControllerHotSpot.h"
 #import "SCHStoryInteractionHotSpot.h"
 #import "SCHStoryInteractionControllerDelegate.h"
+#import "SCHStarView.h"
+
+#define kNumberOfStars 20
 
 @interface SCHStoryInteractionControllerHotSpot ()
 
@@ -65,6 +68,7 @@
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(imageTapped:)];
     [self.pageImageView addGestureRecognizer:tap];
+    [self.pageImageView setUserInteractionEnabled:YES];
     [tap release];
 }
 
@@ -135,11 +139,40 @@
 - (void)correctTapAtPoint:(CGPoint)point
 {
     CGFloat scale = 1.0f / self.scrollView.zoomScale;
-    UIView *stars = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"storyInteraction-findinpage-correct"]];
-    stars.center = [self starsImageCenterForPoint:point];
-    stars.transform = CGAffineTransformMakeScale(scale, scale);
+    UIColor *fillColors[3] = {
+        [UIColor colorWithRed:0.9 green:0.6 blue:0.2 alpha:1.0],
+        [UIColor yellowColor],
+        [UIColor orangeColor]
+    };
+    BOOL iPad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
     
-    [self.pageImageView addSubview:stars];
+    NSMutableArray *stars = [NSMutableArray arrayWithCapacity:kNumberOfStars];
+    for (NSInteger i = 0; i < kNumberOfStars; ++i) {
+        CGFloat angle = M_PI*2 / kNumberOfStars * i;
+        CGFloat radius = (arc4random() % (iPad ? 150 : 90));
+        CGFloat size = (arc4random() % (iPad ? 25 : 20)) + 5;
+        SCHStarView *star = [[SCHStarView alloc] initWithFrame:CGRectZero];
+        star.targetPoint = CGPointMake(point.x + cos(angle)*radius, point.y + sin(angle)*radius);
+        star.center = CGPointMake(point.x + cos(angle)*3, point.y + sin(angle)*3);
+        star.bounds = CGRectMake(0, 0, size, size);
+        star.fillColor = fillColors[arc4random()%3];
+        star.borderColor = [UIColor greenColor];
+        star.backgroundColor = [UIColor clearColor];
+        star.transform = CGAffineTransformRotate(CGAffineTransformMakeScale(scale, scale), angle);
+        [self.pageImageView addSubview:star];
+        [stars addObject:star];
+    }
+
+    [UIView animateWithDuration:0.7
+                          delay:0
+                        options:UIViewAnimationOptionAllowUserInteraction
+                     animations:^{
+                         [stars makeObjectsPerformSelector:@selector(animateToTargetPoint)];
+                     }
+                     completion:^(BOOL finished) {
+                         [stars makeObjectsPerformSelector:@selector(removeFromSuperview)];
+                     }];
+    
     [self cancelQueuedAudio];
     [self enqueueAudioWithPath:[self.storyInteraction audioPathForThatsRight] fromBundle:NO];
     [self enqueueAudioWithPath:[[self currentQuestion] audioPathForCorrectAnswer]
@@ -150,8 +183,8 @@
               [self removeFromHostViewWithSuccess:YES];
           }];
     
-    self.answerMarkerView = stars;
-    [stars release];
+    // disable more taps
+    [self.pageImageView setUserInteractionEnabled:NO];
 }
 
 @end

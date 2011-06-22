@@ -67,4 +67,9 @@
     return @"Touch The Page";
 }
 
+- (NSInteger)questionCount
+{
+    return [self.questions count];
+}
+
 @end
