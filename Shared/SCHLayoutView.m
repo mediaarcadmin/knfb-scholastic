@@ -204,14 +204,31 @@
 
 - (void)updateCurrentPageIndex
 {
-    self.currentPageIndex = self.pageTurningView.rightPageIndex;
+    NSUInteger newIndex = self.pageTurningView.focusedPageIndex;
+    
+    self.currentPageIndex = newIndex;
 }
 
 
 - (void)setCurrentPageIndex:(NSUInteger)newPageIndex
 {
     currentPageIndex = newPageIndex;
-    [self.delegate readingView:self hasMovedToPageAtIndex:currentPageIndex];
+    
+    BOOL multiplePagesDisplayed = NO;
+    
+    if ((self.pageTurningView.isTwoUp) &&
+        (self.pageTurningView.leftPageIndex  != NSUIntegerMax) && 
+        (self.pageTurningView.rightPageIndex != NSUIntegerMax)) {
+        
+        multiplePagesDisplayed = YES;
+    }
+    
+    if (multiplePagesDisplayed) {
+        NSRange pageIndices = NSMakeRange(self.pageTurningView.leftPageIndex, 2);
+        [self.delegate readingView:self hasMovedToPageIndicesInRange:pageIndices withFocusedPageIndex:currentPageIndex];
+    } else {
+        [self.delegate readingView:self hasMovedToPageAtIndex:currentPageIndex];
+    }
 }
 
 - (void)jumpToZoomBlock:(id)zoomBlock
