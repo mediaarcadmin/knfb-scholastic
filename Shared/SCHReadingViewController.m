@@ -89,13 +89,10 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 @property (nonatomic, assign) NSInteger lastPageInteractionSoundPlayedOn;
 @property (nonatomic, assign) BOOL pauseAudioOnNextPageTurn;
 
-@property (nonatomic, assign) BOOL initialPageTurn;
-
 - (void)releaseViewObjects;
 
 - (void)toggleToolbarVisibility;
 - (void)setToolbarVisibility:(BOOL)visibility animated:(BOOL)animated;
-- (void)startFadeTimer;
 - (void)cancelInitialTimer;
 - (void)adjustScrubberInfoViewHeightForImageSize:(CGSize)imageSize;
 - (void)updateScrubberValue;
@@ -175,8 +172,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 @synthesize storyInteractionsCompleteOnCurrentPage;
 @synthesize lastPageInteractionSoundPlayedOn;
 @synthesize pauseAudioOnNextPageTurn;
-
-@synthesize initialPageTurn;
 
 #pragma mark - Dealloc and View Teardown
 
@@ -268,7 +263,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
                                                    object:nil];
         
         self.lastPageInteractionSoundPlayedOn = -1;
-        self.initialPageTurn = YES;
         
     }
     return self;
@@ -369,7 +363,12 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     
 	[self setToolbarVisibility:YES animated:NO];
 	
-    [self startFadeTimer];
+	self.initialFadeTimer = [NSTimer scheduledTimerWithTimeInterval:5.0f
+                                                             target:self
+                                                           selector:@selector(hideToolbarsFromTimer)
+                                                           userInfo:nil
+                                                            repeats:NO];
+	
 
     
     
@@ -1336,14 +1335,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     // check for story interactions
     self.storyInteractionsCompleteOnCurrentPage = NO;
     [self setupStoryInteractionButtonForCurrentPageAnimated:YES];
-    
-    if (self.toolbarsVisible && !self.initialPageTurn) {
-        [self setToolbarVisibility:NO animated:YES];
-    }
-    
-    if (self.initialPageTurn) {
-        self.initialPageTurn = NO;
-    }
 
 }
 
@@ -1354,14 +1345,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     self.currentBookProgress = progress;
     
     [self updateScrubberValue];
-
-    if (self.toolbarsVisible && !self.initialPageTurn) {
-        [self setToolbarVisibility:NO animated:YES];
-    }
-
-    if (self.initialPageTurn) {
-        self.initialPageTurn = NO;
-    }
 }
 
 - (void)readingView:(SCHReadingView *)readingView hasSelectedWordForSpeaking:(NSString *)word
@@ -1391,19 +1374,16 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [dictionaryViewController release];
 }
 
-#pragma mark - SCHReadingViewDelegate Toolbars methods
+#pragma mark - Toolbars
 
-// these methods are called from the reading view
 - (void)toggleToolbars
 {
-    NSLog(@"Toolbars toggling.");
     [self pauseAudioPlayback];
     [self toggleToolbarVisibility];
 }
 
 - (void)hideToolbars
 {
-    NSLog(@"Toolbars hiding.");
     [self setToolbarVisibility:NO animated:YES];
 }
 
@@ -1617,7 +1597,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (void)hideToolbarsFromTimer
 {
-    NSLog(@"Hiding toolbars from timer.");
 	[self setToolbarVisibility:NO animated:YES];
 	[self.initialFadeTimer invalidate];
 	self.initialFadeTimer = nil;
@@ -1695,24 +1674,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 {
 //	NSLog(@"Toggling visibility.");
 	[self setToolbarVisibility:!self.toolbarsVisible animated:YES];
-    
-    if (self.toolbarsVisible) {
-        [self cancelInitialTimer];
-    }
-}
-
-- (void)startFadeTimer
-{
-    if (self.initialFadeTimer) {
-        [self.initialFadeTimer invalidate];
-        self.initialFadeTimer = nil;
-    }
-    
-    self.initialFadeTimer = [NSTimer scheduledTimerWithTimeInterval:5.0f
-                                                             target:self
-                                                           selector:@selector(hideToolbarsFromTimer)
-                                                           userInfo:nil
-                                                            repeats:NO];
 }
 
 - (void)cancelInitialTimer
