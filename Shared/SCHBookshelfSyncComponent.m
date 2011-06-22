@@ -67,7 +67,20 @@
 {
     [super clear];
 	NSError *error = nil;
+
+	// remove the books cache directory, including XPS, PNG, etc.
+	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+	[fetchRequest setEntity:[NSEntityDescription entityForName:kSCHContentMetadataItem inManagedObjectContext:self.managedObjectContext]];	
 	
+	NSArray *books = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+	for (SCHContentMetadataItem *contentMetadataItem in books) {
+        if ([[NSFileManager defaultManager] removeItemAtPath:contentMetadataItem.AppBook.cacheDirectory error:&error] == NO) {
+            NSLog(@"Failed to delete files for %@, error: %@", 
+                  contentMetadataItem.ContentIdentifier, [error localizedDescription]);
+        }
+	}	
+	[fetchRequest release], fetchRequest = nil;
+    
 	if (![self.managedObjectContext BITemptyEntity:kSCHContentMetadataItem error:&error]) {
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
 		abort();

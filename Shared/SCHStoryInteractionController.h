@@ -65,6 +65,9 @@ typedef enum
 // present the story interaction centered in the host view
 - (void)presentInHostView:(UIView *)hostView withInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation;
 
+// action when tapping the close button
+- (void)closeButtonTapped:(id)sender;
+
 // remove the story interaction from the host view; also sends storyInteractionControllerDidDismiss: to
 // the delegate
 - (void)removeFromHostViewWithSuccess:(BOOL)success;

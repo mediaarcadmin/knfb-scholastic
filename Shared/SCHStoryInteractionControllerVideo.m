@@ -161,4 +161,11 @@ static CGFloat const kSCHStoryInteractionControllerVideoBorderWidth = 4.0;
     return(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone ? SCHStoryInteractionTitle : SCHStoryInteractionTransparentTitle);
 }
 
+- (void)closeButtonTapped:(id)sender
+{
+    [super closeButtonTapped:sender];
+    self.playButton.actionBlock = nil;
+    [moviePlayer stop];
+}
+
 @end

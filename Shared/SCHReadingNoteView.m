@@ -50,6 +50,7 @@ static NSString * const SCHNotesViewExitToTopAnimation = @"SCHNotesViewExitToTop
 @synthesize note;
 @synthesize showInView;
 @synthesize bottomInset;
+@synthesize newNote;
 
 - (void)dealloc {
     
@@ -86,6 +87,8 @@ static NSString * const SCHNotesViewExitToTopAnimation = @"SCHNotesViewExitToTop
         }
         
         self.note = aNote;
+        
+        self.newNote = NO;
         
     }
     return self;
