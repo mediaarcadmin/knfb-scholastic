@@ -29,6 +29,9 @@
 @property (nonatomic, retain) KNFBTextFlowParagraphSource *paragraphSource;
 @property (nonatomic, retain) EucBookView *eucBookView;
 
+@property (nonatomic, retain) UIImage *currentPageTexture;
+@property (nonatomic, assign) BOOL textureIsDark;
+
 @end
 
 @implementation SCHFlowView
@@ -36,6 +39,9 @@
 @synthesize eucBook;
 @synthesize paragraphSource;
 @synthesize eucBookView;
+
+@synthesize currentPageTexture;
+@synthesize textureIsDark;
 
 - (void)initialiseView
 {
@@ -45,7 +51,7 @@
         eucBookView.selectorDelegate = self;
         eucBookView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         eucBookView.vibratesOnInvalidTurn = NO;
-        [eucBookView setPageTexture:[UIImage imageNamed: @"paper-white.png"] isDark:NO];
+        [eucBookView setPageTexture:self.currentPageTexture isDark:self.textureIsDark];
         [self addSubview:eucBookView];        
     }
 }
@@ -61,6 +67,8 @@
         [eucBook release], eucBook = nil;
         [[SCHBookManager sharedBookManager] checkInEucBookForBookIdentifier:self.isbn];  
     }
+    
+    [currentPageTexture release], currentPageTexture = nil;
 
     [super dealloc];
 }
@@ -213,6 +221,9 @@
 
 - (void)setPageTexture:(UIImage *)image isDark:(BOOL)isDark
 {
+    self.currentPageTexture = image;
+    self.textureIsDark = isDark;
+    
     [self.eucBookView setPageTexture:image isDark:isDark];
     [self.eucBookView setNeedsDisplay];
 }

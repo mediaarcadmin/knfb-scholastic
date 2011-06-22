@@ -285,13 +285,20 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 	
     SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];
     
+    self.wantsFullScreenLayout = YES;
+    self.navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
+    
+    [self.view addSubview:self.readingView];
+    [self.view sendSubviewToBack:self.readingView];
+
     // Older reader defaults: fixed view for iPad, flow view for iPhone
     // Younger reader defaults: always fixed, no need to save
-
+    
     if (self.youngerMode) {
         self.layoutType = SCHReadingViewLayoutTypeFixed;
     } else {
         
+
         // Default layout type
         NSNumber *savedLayoutType = [[self.profile AppProfile] LayoutType];
         if (savedLayoutType) {
@@ -303,7 +310,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
                 self.layoutType = SCHReadingViewLayoutTypeFixed;
             }
         }
-
+        
         // Default font size index
         NSNumber *savedFontSizeIndex = [[self.profile AppProfile] FontIndex];
         if (savedFontSizeIndex) {
@@ -311,7 +318,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         } else {
             self.currentFontSizeIndex = 2;
         }
-
+        
         // Default paper type
         NSNumber *savedPaperType = [[self.profile AppProfile] PaperType];
         if (savedPaperType) {
@@ -322,7 +329,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         
         [self.paperTypeSegmentedControl setSelectedSegmentIndex:self.paperType];
         [self.paperTypePopoverSegmentedControl setSelectedSegmentIndex:self.paperType];
+        
 
+        
         
         // set up the segmented controls
         if (self.layoutType == SCHReadingViewLayoutTypeFlow) {
@@ -342,15 +351,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         // to prevent actions being fired while setting defaults
         [self.flowFixedSegmentedControl addTarget:self action:@selector(flowedFixedSegmentChanged:) forControlEvents:UIControlEventValueChanged];
         [self.flowFixedPopoverSegmentedControl addTarget:self action:@selector(flowedFixedSegmentChanged:) forControlEvents:UIControlEventValueChanged];
-
-    }
-
-    
-    self.wantsFullScreenLayout = YES;
-    self.navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
-    
-    [self.view addSubview:self.readingView];
-    [self.view sendSubviewToBack:self.readingView];
+        
+    }    
     
 	self.scrubberInfoView.layer.cornerRadius = 5.0f;
 	self.scrubberInfoView.layer.masksToBounds = YES;
