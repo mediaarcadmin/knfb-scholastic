@@ -164,7 +164,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 @synthesize olderRightBarButtonItemContainer;
 @synthesize youngerRightBarButtonItemContainerPad;
 @synthesize backButton;
-@synthesize audioButton;
+@synthesize audioButtons;
 @synthesize scrubberToolbar;
 @synthesize olderBottomToolbar;
 @synthesize topShadow;
@@ -206,7 +206,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [olderRightBarButtonItemContainer release], olderRightBarButtonItemContainer = nil;
     [youngerRightBarButtonItemContainerPad release], youngerRightBarButtonItemContainerPad = nil;
     [backButton release], backButton = nil;
-    [audioButton release], audioButton = nil;
+    [audioButtons release], audioButtons = nil;
     [notesCountView release], notesCountView = nil;
     [notesButton release], notesButton = nil;
     [storyInteractionsListButton release], storyInteractionsListButton = nil;
@@ -475,8 +475,11 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     if (UIInterfaceOrientationIsPortrait(orientation)) {
         [self.backButton setImage:[UIImage imageNamed:@"icon-books.png"] forState:UIControlStateNormal];
         
-        [self.audioButton setImage:[UIImage imageNamed:@"icon-play.png"] forState:UIControlStateNormal];
-        [self.audioButton setImage:[UIImage imageNamed:@"icon-play-active.png"] forState:UIControlStateSelected];
+        for (UIButton *audioButton in self.audioButtons) {
+            [audioButton setImage:[UIImage imageNamed:@"icon-play.png"] forState:UIControlStateNormal];
+            [audioButton setImage:[UIImage imageNamed:@"icon-play-active.png"] forState:UIControlStateSelected];
+        }
+        
         [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"reading-view-portrait-top-bar.png"]];
     } else {
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
@@ -485,8 +488,11 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
             [self.backButton setImage:[UIImage imageNamed:@"icon-books.png"] forState:UIControlStateNormal];
         }
         
-        [self.audioButton setImage:[UIImage imageNamed:@"icon-play-landscape.png"] forState:UIControlStateNormal];
-        [self.audioButton setImage:[UIImage imageNamed:@"icon-play-landscape-active.png"] forState:UIControlStateSelected];
+        for (UIButton *audioButton in self.audioButtons) {
+            [audioButton setImage:[UIImage imageNamed:@"icon-play-landscape.png"] forState:UIControlStateNormal];
+            [audioButton setImage:[UIImage imageNamed:@"icon-play-landscape-active.png"] forState:UIControlStateSelected];
+        }
+        
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
             [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"reading-view-landscape-top-bar.png"]];
         } else {
@@ -1100,6 +1106,10 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         [self.audioBookPlayer pause];
         [self.readingView dismissFollowAlongHighlighter];  
         [self setupStoryInteractionButtonForCurrentPagesAnimated:YES];
+    }
+    
+    for (UIButton *audioButton in self.audioButtons) {
+        [audioButton setSelected:NO];
     }
 }
 
