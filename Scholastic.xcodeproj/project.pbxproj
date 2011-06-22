@@ -30,6 +30,8 @@
 		280B01B4139E35540068661C /* SCHStoryInteractionMultipleChoiceWithAnswerPictures.m in Sources */ = {isa = PBXBuildFile; fileRef = 280B01B0139E336C0068661C /* SCHStoryInteractionMultipleChoiceWithAnswerPictures.m */; };
 		280C99C71397C65E00381C31 /* SCHStoryInteractionProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 280C99C61397C65E00381C31 /* SCHStoryInteractionProgressView.m */; };
 		280C99C81397C65E00381C31 /* SCHStoryInteractionProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 280C99C61397C65E00381C31 /* SCHStoryInteractionProgressView.m */; };
+		280D6A1813B1D6180032085D /* SCHStarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 280D6A1713B1D6180032085D /* SCHStarView.m */; };
+		280D6A1913B1D6180032085D /* SCHStarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 280D6A1713B1D6180032085D /* SCHStarView.m */; };
 		2819307D112F81BE00ECF9B4 /* Scholastic.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2819307C112F81BE00ECF9B4 /* Scholastic.xcdatamodeld */; };
 		2827824513A20FA200E968C1 /* NSArray+ViewSorting.m in Sources */ = {isa = PBXBuildFile; fileRef = 2827824413A20FA200E968C1 /* NSArray+ViewSorting.m */; };
 		2827824613A20FA200E968C1 /* NSArray+ViewSorting.m in Sources */ = {isa = PBXBuildFile; fileRef = 2827824413A20FA200E968C1 /* NSArray+ViewSorting.m */; };
@@ -80,16 +82,10 @@
 		2894E80113B09E5800AEAD79 /* SCHStoryInteractionControllerHotSpot.m in Sources */ = {isa = PBXBuildFile; fileRef = 2894E7FF13B09E5800AEAD79 /* SCHStoryInteractionControllerHotSpot.m */; };
 		2894E80813B09EC800AEAD79 /* storyinteraction-findinpage-wrong~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 2894E80213B09EC800AEAD79 /* storyinteraction-findinpage-wrong~ipad.png */; };
 		2894E80913B09EC800AEAD79 /* storyinteraction-findinpage-wrong~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 2894E80213B09EC800AEAD79 /* storyinteraction-findinpage-wrong~ipad.png */; };
-		2894E80A13B09EC800AEAD79 /* storyinteraction-findinpage-correct~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 2894E80313B09EC800AEAD79 /* storyinteraction-findinpage-correct~ipad.png */; };
-		2894E80B13B09EC800AEAD79 /* storyinteraction-findinpage-correct~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 2894E80313B09EC800AEAD79 /* storyinteraction-findinpage-correct~ipad.png */; };
 		2894E80C13B09EC800AEAD79 /* storyinteraction-findinpage-wrong~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 2894E80413B09EC800AEAD79 /* storyinteraction-findinpage-wrong~iphone.png */; };
 		2894E80D13B09EC800AEAD79 /* storyinteraction-findinpage-wrong~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 2894E80413B09EC800AEAD79 /* storyinteraction-findinpage-wrong~iphone.png */; };
 		2894E80E13B09EC800AEAD79 /* storyinteraction-findinpage-wrong@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 2894E80513B09EC800AEAD79 /* storyinteraction-findinpage-wrong@2x~iphone.png */; };
 		2894E80F13B09EC800AEAD79 /* storyinteraction-findinpage-wrong@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 2894E80513B09EC800AEAD79 /* storyinteraction-findinpage-wrong@2x~iphone.png */; };
-		2894E81013B09EC800AEAD79 /* storyinteraction-findinpage-correct~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 2894E80613B09EC800AEAD79 /* storyinteraction-findinpage-correct~iphone.png */; };
-		2894E81113B09EC800AEAD79 /* storyinteraction-findinpage-correct~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 2894E80613B09EC800AEAD79 /* storyinteraction-findinpage-correct~iphone.png */; };
-		2894E81213B09EC800AEAD79 /* storyinteraction-findinpage-correct@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 2894E80713B09EC800AEAD79 /* storyinteraction-findinpage-correct@2x~iphone.png */; };
-		2894E81313B09EC800AEAD79 /* storyinteraction-findinpage-correct@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 2894E80713B09EC800AEAD79 /* storyinteraction-findinpage-correct@2x~iphone.png */; };
 		2894E81413B0A67B00AEAD79 /* USAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293869712DF3A3300045B44 /* USAdditions.m */; };
 		2894E81513B0A68B00AEAD79 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C9F1A579133B83D100FD984C /* libxml2.dylib */; };
 		289ABFDC139FDCF100662AD7 /* SCHStoryInteractionMultipleChoiceText_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 520CD294139F84530018EA7E /* SCHStoryInteractionMultipleChoiceText_iPad.xib */; };
@@ -1450,6 +1446,8 @@
 		280C99C51397C65E00381C31 /* SCHStoryInteractionProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionProgressView.h; sourceTree = "<group>"; };
 		280C99C61397C65E00381C31 /* SCHStoryInteractionProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionProgressView.m; sourceTree = "<group>"; };
 		280C99C91397EA1900381C31 /* SCHStoryInteractionControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionControllerDelegate.h; sourceTree = "<group>"; };
+		280D6A1613B1D6180032085D /* SCHStarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStarView.h; sourceTree = "<group>"; };
+		280D6A1713B1D6180032085D /* SCHStarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStarView.m; sourceTree = "<group>"; };
 		2827824313A20FA200E968C1 /* NSArray+ViewSorting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+ViewSorting.h"; sourceTree = "<group>"; };
 		2827824413A20FA200E968C1 /* NSArray+ViewSorting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+ViewSorting.m"; sourceTree = "<group>"; };
 		2827827513A23DF100E968C1 /* SCHStoryInteractionWordScrambler_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionWordScrambler_iPad.xib; sourceTree = "<group>"; };
@@ -2925,9 +2923,9 @@
 				C9AC85F213AE7CEA000ECDAE /* storyinteraction-initialScratch@2x~iphone.png */,
 				C9AC85F313AE7CF5000ECDAE /* storyinteraction-initialScratch~ipad.png */,
 				2894E80213B09EC800AEAD79 /* storyinteraction-findinpage-wrong~ipad.png */,
-				2894E80313B09EC800AEAD79 /* storyinteraction-findinpage-correct~ipad.png */,
 				2894E80413B09EC800AEAD79 /* storyinteraction-findinpage-wrong~iphone.png */,
 				2894E80513B09EC800AEAD79 /* storyinteraction-findinpage-wrong@2x~iphone.png */,
+				2894E80313B09EC800AEAD79 /* storyinteraction-findinpage-correct~ipad.png */,
 				2894E80613B09EC800AEAD79 /* storyinteraction-findinpage-correct~iphone.png */,
 				2894E80713B09EC800AEAD79 /* storyinteraction-findinpage-correct@2x~iphone.png */,
 				F8DB746813A0DDA2006E8D06 /* progressbar-cover.png */,
@@ -2944,6 +2942,8 @@
 				28A08CC913950C01006FD008 /* SCHStoryInteractionHotSpot.m */,
 				2894E7FE13B09E5800AEAD79 /* SCHStoryInteractionControllerHotSpot.h */,
 				2894E7FF13B09E5800AEAD79 /* SCHStoryInteractionControllerHotSpot.m */,
+				280D6A1613B1D6180032085D /* SCHStarView.h */,
+				280D6A1713B1D6180032085D /* SCHStarView.m */,
 				2807DF2B13B0C2CF007C8F41 /* SCHStoryInteractionHotSpot_iPad.xib */,
 				28F689C613B0E616008A9BF9 /* SCHStoryInteractionHotSpot_iPhone.xib */,
 			);
@@ -5043,11 +5043,8 @@
 				C9C1D2D713B0AF5B00441623 /* storyinteraction-bg-younger-notitle~ipad.png in Resources */,
 				C9C1D2D813B0AF5B00441623 /* storyinteraction-bg-older-notitle~ipad.png in Resources */,
 				2894E80813B09EC800AEAD79 /* storyinteraction-findinpage-wrong~ipad.png in Resources */,
-				2894E80A13B09EC800AEAD79 /* storyinteraction-findinpage-correct~ipad.png in Resources */,
 				2894E80C13B09EC800AEAD79 /* storyinteraction-findinpage-wrong~iphone.png in Resources */,
 				2894E80E13B09EC800AEAD79 /* storyinteraction-findinpage-wrong@2x~iphone.png in Resources */,
-				2894E81013B09EC800AEAD79 /* storyinteraction-findinpage-correct~iphone.png in Resources */,
-				2894E81213B09EC800AEAD79 /* storyinteraction-findinpage-correct@2x~iphone.png in Resources */,
 				2807DF2C13B0C2CF007C8F41 /* SCHStoryInteractionHotSpot_iPad.xib in Resources */,
 				2807DF2F13B0C99A007C8F41 /* storyinteraction-bg-younger-titleonly~ipad.png in Resources */,
 				28F689C713B0E616008A9BF9 /* SCHStoryInteractionHotSpot_iPhone.xib in Resources */,
@@ -5468,11 +5465,8 @@
 				C9C1D2DD13B0AF5B00441623 /* storyinteraction-bg-younger-notitle~ipad.png in Resources */,
 				C9C1D2DE13B0AF5B00441623 /* storyinteraction-bg-older-notitle~ipad.png in Resources */,
 				2894E80913B09EC800AEAD79 /* storyinteraction-findinpage-wrong~ipad.png in Resources */,
-				2894E80B13B09EC800AEAD79 /* storyinteraction-findinpage-correct~ipad.png in Resources */,
 				2894E80D13B09EC800AEAD79 /* storyinteraction-findinpage-wrong~iphone.png in Resources */,
 				2894E80F13B09EC800AEAD79 /* storyinteraction-findinpage-wrong@2x~iphone.png in Resources */,
-				2894E81113B09EC800AEAD79 /* storyinteraction-findinpage-correct~iphone.png in Resources */,
-				2894E81313B09EC800AEAD79 /* storyinteraction-findinpage-correct@2x~iphone.png in Resources */,
 				2807DF2D13B0C2CF007C8F41 /* SCHStoryInteractionHotSpot_iPad.xib in Resources */,
 				2807DF3013B0C99A007C8F41 /* storyinteraction-bg-younger-titleonly~ipad.png in Resources */,
 				28F689C813B0E616008A9BF9 /* SCHStoryInteractionHotSpot_iPhone.xib in Resources */,
@@ -5734,6 +5728,7 @@
 				52A6763113AF3744007A7FE6 /* UIColor+Scholastic.m in Sources */,
 				28FFD4F213AF635F00F28637 /* SCHGeometry.m in Sources */,
 				2894E80013B09E5800AEAD79 /* SCHStoryInteractionControllerHotSpot.m in Sources */,
+				280D6A1813B1D6180032085D /* SCHStarView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6005,6 +6000,7 @@
 				52A6763213AF3744007A7FE6 /* UIColor+Scholastic.m in Sources */,
 				28FFD4F313AF635F00F28637 /* SCHGeometry.m in Sources */,
 				2894E80113B09E5800AEAD79 /* SCHStoryInteractionControllerHotSpot.m in Sources */,
+				280D6A1913B1D6180032085D /* SCHStarView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
