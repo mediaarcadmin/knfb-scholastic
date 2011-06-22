@@ -1658,6 +1658,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
     SCHReadingNoteView *aNotesView = [[SCHReadingNoteView alloc] initWithNote:newNote];    
     aNotesView.delegate = self;
+    aNotesView.newNote = YES;
     
     [self setToolbarVisibility:NO animated:YES];
     
@@ -1730,7 +1731,11 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (void)notesViewCancelled:(SCHReadingNoteView *)notesView
 {
     SCHBookAnnotations *bookAnnos = [self.profile annotationsForBook:self.isbn];
-    [bookAnnos deleteNote:notesView.note];
+
+    // if we created the note but it's been cancelled, delete the note
+    if (notesView.newNote) {
+        [bookAnnos deleteNote:notesView.note];
+    }
     
     [self setToolbarVisibility:YES animated:YES];
     

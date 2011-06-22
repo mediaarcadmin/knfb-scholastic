@@ -21,6 +21,7 @@
 @property (nonatomic, retain) UITextView *textView;
 @property (nonatomic, retain) UILabel *toolbarLabel;
 @property (nonatomic, retain) SCHNote *note;
+@property (nonatomic, assign) BOOL newNote;
 
 - (id)initWithNote:(SCHNote *)aNote;
 - (void)showInView:(UIView *)view;
