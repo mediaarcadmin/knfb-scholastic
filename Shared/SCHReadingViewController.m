@@ -150,6 +150,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 @synthesize paperTypePopoverSegmentedControl;
 @synthesize storyInteractionButton;
 @synthesize storyInteractionButtonView;
+@synthesize youngerToolbarToggleView;
 @synthesize paperTypeSegmentedControl;
 @synthesize notesButton;
 @synthesize storyInteractionsListButton;
@@ -164,7 +165,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 @synthesize leftBarButtonItemContainer;
 @synthesize youngerRightBarButtonItemContainer;
 @synthesize olderRightBarButtonItemContainer;
-@synthesize youngerRightBarButtonItemContainerPad;
 @synthesize backButton;
 @synthesize audioButtons;
 @synthesize scrubberToolbar;
@@ -206,7 +206,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [leftBarButtonItemContainer release], leftBarButtonItemContainer = nil;
     [youngerRightBarButtonItemContainer release], youngerRightBarButtonItemContainer = nil;
     [olderRightBarButtonItemContainer release], olderRightBarButtonItemContainer = nil;
-    [youngerRightBarButtonItemContainerPad release], youngerRightBarButtonItemContainerPad = nil;
     [backButton release], backButton = nil;
     [audioButtons release], audioButtons = nil;
     [notesCountView release], notesCountView = nil;
@@ -230,6 +229,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [paperTypePopoverSegmentedControl release], paperTypePopoverSegmentedControl = nil;
     [storyInteractionButton release], storyInteractionButton = nil;
     [storyInteractionButtonView release], storyInteractionButtonView = nil;
+    [youngerToolbarToggleView release], youngerToolbarToggleView = nil;
     
     if (xpsProvider) {
         [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:isbn];
@@ -378,6 +378,12 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [self startFadeTimer];
 
     
+    if (self.youngerMode) {
+        
+    } else {
+        self.youngerToolbarToggleView.hidden = YES;
+    }
+    
     
     CGFloat containerHeight = CGRectGetHeight(self.navigationController.navigationBar.bounds);
     
@@ -389,19 +395,11 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     
     CGRect rightBarButtonItemFrame = CGRectZero;
     if (self.youngerMode) {
-        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-            rightBarButtonItemFrame = self.youngerRightBarButtonItemContainerPad.frame;
-            rightBarButtonItemFrame.size.height = containerHeight;
-            self.youngerRightBarButtonItemContainerPad.frame = rightBarButtonItemFrame;
-            
-            self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:self.youngerRightBarButtonItemContainerPad] autorelease];
-        } else {
-            rightBarButtonItemFrame = self.youngerRightBarButtonItemContainer.frame;
-            rightBarButtonItemFrame.size.height = containerHeight;
-            self.youngerRightBarButtonItemContainer.frame = rightBarButtonItemFrame;
-            
-            self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:self.youngerRightBarButtonItemContainer] autorelease];
-        }
+        rightBarButtonItemFrame = self.youngerRightBarButtonItemContainer.frame;
+        rightBarButtonItemFrame.size.height = containerHeight;
+        self.youngerRightBarButtonItemContainer.frame = rightBarButtonItemFrame;
+        
+        self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:self.youngerRightBarButtonItemContainer] autorelease];
     } else {
         rightBarButtonItemFrame = self.olderRightBarButtonItemContainer.frame;
         rightBarButtonItemFrame.size.height = containerHeight;
@@ -884,6 +882,12 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
     [self pauseAudioPlayback];
 }
+
+- (IBAction)youngerToolbarButtonAction:(id)sender {
+    [self pauseAudioPlayback];
+    [self toggleToolbarVisibility];
+}
+
 
 #pragma mark - Story Interactions methods
 
@@ -1438,6 +1442,13 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 // these methods are called from the reading view
 - (void)toggleToolbars
 {
+    // if we're in younger mode, and we're hiding toolbars, ignore the touch
+    if (self.youngerMode && !self.toolbarsVisible) {
+        return;
+    }
+    
+    // if we're in younger mode and we're showing toolbars, hide them
+    // also if we're in older mode, the touch hides and shows.
     [self pauseAudioPlayback];
     [self toggleToolbarVisibility];
 }
@@ -1684,7 +1695,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 	if (animated) {
 		[UIView beginAnimations:@"toolbarFade" context:nil];
-		[UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
+		[UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
 		[UIView setAnimationDuration:0.3f];
 		[UIView setAnimationBeginsFromCurrentState:YES];
 	}
@@ -1692,7 +1703,15 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 	if (self.toolbarsVisible) {
         [self.navigationController.navigationBar setAlpha:1.0f];
         [self.scrubberToolbar setAlpha:1.0f];
-        if (!youngerMode) {
+        if (youngerMode) {
+//            CGRect frame = self.youngerToolbarToggleView.frame;
+//            if (frame.origin.y == (self.view.frame.size.height - frame.size.height)) {
+//                // button is at the bottom, move it up
+//                frame.origin.y -= self.scrubberToolbar.frame.size.height;
+//                self.youngerToolbarToggleView.frame = frame;
+//            }
+            self.youngerToolbarToggleView.alpha = 0.0f;
+        } else {
             [self.olderBottomToolbar setAlpha:1.0f];
         }
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
@@ -1703,7 +1722,16 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 	} else {
         [self.navigationController.navigationBar setAlpha:0.0f];
         [self.scrubberToolbar setAlpha:0.0f];
-        if (!youngerMode) {
+        if (youngerMode) {
+//            CGRect frame = self.youngerToolbarToggleView.frame;
+//            if (frame.origin.y == (self.view.frame.size.height - frame.size.height - self.scrubberToolbar.frame.size.height)) {
+//                // button is at the top, move it up
+//                frame.origin.y += self.scrubberToolbar.frame.size.height;
+//                self.youngerToolbarToggleView.frame = frame;
+//            }
+            
+            self.youngerToolbarToggleView.alpha = 1.0f;
+        } else {
             [self.olderBottomToolbar setAlpha:0.0f];
         }
         
@@ -1713,7 +1741,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         [self.topShadow setAlpha:0.0f];
         [self.bottomShadow setAlpha:0.0f];
 	}
-	
+
+    
 	if (animated) {
 		[UIView commitAnimations];
 	}
@@ -1731,6 +1760,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
             [self setStoryInteractionButtonVisible:YES animated:YES withSound:NO];
         }
     }
+    
     
     if (self.popover) {
         [self.popover dismissPopoverAnimated:YES];
