@@ -42,9 +42,6 @@
 - (SCHTextFlowParagraphSource *)checkOutParagraphSourceForBookIdentifier:(NSString *)isbn;
 - (void)checkInParagraphSourceForBookIdentifier:(NSString *)isbn;
 
-- (SCHSmartZoomBlockSource *)checkOutBlockSourceForBookIdentifier:(NSString *)isbn;
-- (void)checkInBlockSourceForBookIdentifier:(NSString *)isbn;
-
 + (BOOL)checkAppCompatibilityForFeature:(NSString *)key version:(float)version;
 + (BOOL)appHasFeature:(NSString *)key;
 

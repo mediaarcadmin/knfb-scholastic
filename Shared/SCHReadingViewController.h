@@ -92,6 +92,5 @@ UISegmentedControl *paperTypePopoverSegmentedControl;
 - (IBAction)settingsAction:(UIButton *)sender;
 - (IBAction)popViewController:(id)sender;
 - (IBAction)audioPlayAction:(id)sender;
-- (IBAction)toggleSmartZoom:(id)sender;
 
 @end

@@ -688,24 +688,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [self pauseAudioPlayback];
 }
 
-- (IBAction)toggleSmartZoom:(id)sender
-{
-    UIButton *smartZoomButton = (UIButton *)sender;
-    [smartZoomButton setSelected:![smartZoomButton isSelected]];
-    
-    if ([smartZoomButton isSelected]) {
-        [self.readingView didEnterSmartZoomMode];
-    } else {
-        [self.readingView didExitSmartZoomMode];
-    }
-
-    if (self.optionsView.superview) {
-        [self.optionsView removeFromSuperview];
-    }
-
-    [self pauseAudioPlayback];
-}
-
 - (IBAction)audioPlayAction:(id)sender
 {
     NSLog(@"Audio Play action");

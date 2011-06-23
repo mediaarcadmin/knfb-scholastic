@@ -8,12 +8,10 @@
 
 #import "SCHLayoutView.h"
 #import "SCHXPSProvider.h"
-#import "SCHSmartZoomBlockSource.h"
 #import "SCHBookManager.h"
 #import "SCHBookRange.h"
 #import "SCHTextFlow.h"
 #import "SCHAppBook.h"
-#import "KNFBSmartZoomBlock.h"
 #import "KNFBTextFlowBlock.h"
 #import "KNFBTextFlowPositionedWord.h"
 #import <libEucalyptus/THPositionedCGContext.h>
@@ -32,9 +30,7 @@
 @property (nonatomic, assign) CGSize pageSize;
 @property (nonatomic, retain) NSMutableDictionary *pageCropsCache;
 @property (nonatomic, retain) NSLock *layoutCacheLock;
-@property (nonatomic, retain) SCHSmartZoomBlockSource *blockSource;
 @property (nonatomic, retain) id currentBlock;
-@property (nonatomic, assign) BOOL smartZoomActive;
 @property (nonatomic, retain) EucSelector *selector;
 @property (nonatomic, retain) SCHBookRange *temporaryHighlightRange;
 @property (nonatomic, retain) EucSelectorRange *currentSelectorRange;
@@ -68,9 +64,7 @@
 @synthesize pageSize;
 @synthesize pageCropsCache;
 @synthesize layoutCacheLock;
-@synthesize blockSource;
 @synthesize currentBlock;
-@synthesize smartZoomActive;
 @synthesize selector;
 @synthesize temporaryHighlightRange;
 @synthesize currentSelectorRange;
@@ -78,11 +72,6 @@
 
 - (void)dealloc
 {
-    if (blockSource) {
-        [[SCHBookManager sharedBookManager] checkInBlockSourceForBookIdentifier:self.isbn];
-        [blockSource release], blockSource = nil;
-    }
-    
     [pageTurningView release], pageTurningView = nil;
     [pageCropsCache release], pageCropsCache = nil;
     [layoutCacheLock release], layoutCacheLock = nil;
@@ -144,8 +133,6 @@
         [selector attachToView:self];
         [selector addObserver:self forKeyPath:@"tracking" options:0 context:NULL];
         [selector addObserver:self forKeyPath:@"trackingStage" options:NSKeyValueObservingOptionPrior context:NULL];
-        
-        blockSource = [[[SCHBookManager sharedBookManager] checkOutBlockSourceForBookIdentifier:self.isbn] retain];
     }    
 }
 
@@ -236,20 +223,6 @@
 {
     
 }
-
-- (void)didEnterSmartZoomMode
-{
-    self.smartZoomActive = YES;
-    [self jumpToNextZoomBlock];
-}
-
-- (void)didExitSmartZoomMode
-{
-    self.smartZoomActive = NO;
-    self.currentBlock = nil;
-    [self zoomOutToCurrentPage];
-}
-
 
 - (void)zoomForNewPageAnimated:(BOOL)animated
 {
@@ -366,48 +339,6 @@
 {
     [self.pageTurningView setPageTexture:image isDark:isDark];
     [self.pageTurningView setNeedsDraw];
-}
-
-- (void)jumpToNextZoomBlock
-{
-    id zoomBlock = nil;
-    
-    if (self.currentBlock) {
-        zoomBlock = [self.blockSource nextZoomBlockForZoomBlock:self.currentBlock onSamePage:NO];
-    } else {
-        zoomBlock = [self.blockSource firstZoomBlockFromPageAtIndex:self.currentPageIndex];
-    }
-    
-    NSLog(@"next zoomBlock: %@", zoomBlock);
-
-    self.currentBlock = zoomBlock;
-    
-    if (zoomBlock) {
-        [self zoomToCurrentBlock];
-    } else {
-        [self zoomOutToCurrentPage];
-    }
-}
-
-- (void)jumpToPreviousZoomBlock
-{
-    id zoomBlock = nil;
-    
-    if (self.currentBlock) {
-        zoomBlock = [self.blockSource previousZoomBlockForZoomBlock:self.currentBlock onSamePage:NO];
-    } else {
-        zoomBlock = [self.blockSource firstZoomBlockFromPageAtIndex:self.currentPageIndex];
-    }
-    
-    NSLog(@"prev zoomBlock: %@", zoomBlock);
-
-    self.currentBlock = zoomBlock;
-    
-    if (zoomBlock) {
-        [self zoomToCurrentBlock];
-    } else {
-        [self zoomOutToCurrentPage];
-    }
 }
 
 - (void)zoomOutToCurrentPage

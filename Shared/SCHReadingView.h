@@ -73,12 +73,6 @@ typedef enum
 - (void)jumpToProgressPositionInBook:(CGFloat)progress animated:(BOOL)animated;
 - (void)jumpToBookPoint:(SCHBookPoint *)bookPoint animated:(BOOL)animated;
 
-- (void)jumpToNextZoomBlock;
-- (void)jumpToPreviousZoomBlock;
-
-- (void)didEnterSmartZoomMode;
-- (void)didExitSmartZoomMode;
-
 - (void)setFontPointIndex:(NSUInteger)index;
 - (NSInteger)maximumFontIndex;
 - (NSInteger)pageCount;

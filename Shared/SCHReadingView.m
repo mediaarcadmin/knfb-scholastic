@@ -112,26 +112,6 @@
     NSLog(@"WARNING: jumpToBookPoint:animated: not being overridden correctly.");
 }
 
-- (void)jumpToNextZoomBlock
-{
-    // Do nothing
-}
-
-- (void)jumpToPreviousZoomBlock
-{
-    // Do nothing
-}
-
-- (void)didEnterSmartZoomMode
-{
-    // Do nothing
-}
-
-- (void)didExitSmartZoomMode
-{
-    // Do nothing
-}
-
 - (void) setFontPointIndex: (NSUInteger) index
 {
     // Do nothing
