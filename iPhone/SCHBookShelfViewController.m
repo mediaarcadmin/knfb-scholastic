@@ -235,7 +235,8 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer 
 {
-    if (self.sortType == kSCHBookSortTypeUser) {
+    if (self.sortType == kSCHBookSortTypeUser && 
+        [self.profileItem.BookshelfStyle intValue] != kSCHBookshelfStyleYoungChild) {
         [self setEditing:YES animated:YES];
     }
     
