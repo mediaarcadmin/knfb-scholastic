@@ -441,7 +441,7 @@
 
 - (void)willResignActiveNotification:(NSNotification *)notification
 {
-    [self.audioPlayer cancelExecutingSynchronizedBlocksImmediately:NO];
+    [self.audioPlayer cancelPlaybackExecutingSynchronizedBlocksImmediately:NO];
 }
 
 - (void)removeFromHostViewWithSuccess:(BOOL)success
@@ -473,13 +473,13 @@
 
 - (void)playAudioAtPath:(NSString *)path completion:(void (^)(void))completion
 {
-    [self.audioPlayer cancelExecutingSynchronizedBlocksImmediately:NO];
+    [self.audioPlayer cancelPlaybackExecutingSynchronizedBlocksImmediately:NO];
     [self enqueueAudioWithPath:path fromBundle:NO startDelay:0 synchronizedStartBlock:nil synchronizedEndBlock:completion];
 }
 
 - (void)playBundleAudioWithFilename:(NSString *)filename completion:(void (^)(void))completion
 {
-    [self.audioPlayer cancelExecutingSynchronizedBlocksImmediately:NO];
+    [self.audioPlayer cancelPlaybackExecutingSynchronizedBlocksImmediately:NO];
     [self enqueueAudioWithPath:filename fromBundle:YES startDelay:0 synchronizedStartBlock:nil synchronizedEndBlock:completion];
 }
 
@@ -524,12 +524,12 @@
 
 - (void)cancelQueuedAudio
 {
-    [self.audioPlayer cancelExecutingSynchronizedBlocksImmediately:NO];
+    [self.audioPlayer cancelPlaybackExecutingSynchronizedBlocksImmediately:NO];
 }
 
 - (void)cancelQueuedAudioExecutingSynchronizedBlocksImmediately
 {
-    [self.audioPlayer cancelExecutingSynchronizedBlocksImmediately:YES];
+    [self.audioPlayer cancelPlaybackExecutingSynchronizedBlocksImmediately:YES];
 }
 
 

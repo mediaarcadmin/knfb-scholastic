@@ -39,7 +39,7 @@
 
 - (void)dealloc
 {
-    [self cancelExecutingSynchronizedBlocksImmediately:NO];
+    [self cancelPlaybackExecutingSynchronizedBlocksImmediately:NO];
     [audioPlayer release];
     [audioQueue release];
     [currentItem release];
@@ -78,7 +78,7 @@
     self.gap += silenceInterval;
 }
 
-- (void)cancelExecutingSynchronizedBlocksImmediately:(BOOL)executeBlocks
+- (void)cancelPlaybackExecutingSynchronizedBlocksImmediately:(BOOL)executeBlocks
 {
     [self.audioPlayer pause];
     if (executeBlocks) {
