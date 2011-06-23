@@ -16,6 +16,7 @@
 @interface SCHStoryInteractionControllerHotSpot ()
 
 @property (nonatomic, retain) UIView *answerMarkerView;
+@property (nonatomic, copy) dispatch_block_t zoomCompletionHandler;
 
 - (void)incorrectTapAtPoint:(CGPoint)point;
 - (void)correctTapAtPoint:(CGPoint)point;
@@ -27,12 +28,15 @@
 @synthesize scrollView;
 @synthesize pageImageView;
 @synthesize answerMarkerView;
+@synthesize zoomCompletionHandler;
 
 - (void)dealloc
 {
+    self.scrollView.delegate = nil;
     [scrollView release];
     [pageImageView release];
     [answerMarkerView release];
+    [zoomCompletionHandler release];
     [super dealloc];
 }
 
@@ -72,11 +76,33 @@
     [tap release];
 }
 
+- (void)zoomOutAndDismiss
+{
+    self.zoomCompletionHandler = ^{
+        [self removeFromHostViewWithSuccess:YES];
+    };
+    if (self.scrollView.zoomScale != 1.0f) {
+        [self.scrollView setZoomScale:1.0 animated:YES];
+    } else {
+        self.zoomCompletionHandler();
+    }
+}
+
 #pragma mark - scroll view delegate
 
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
 {
     return self.pageImageView;
+}
+
+- (void)scrollViewDidEndZooming:(UIScrollView *)scrollView withView:(UIView *)view atScale:(float)scale
+{
+    if (self.zoomCompletionHandler != nil) {
+        dispatch_block_t block = Block_copy(self.zoomCompletionHandler);
+        self.zoomCompletionHandler = nil;
+        block();
+        Block_release(block);
+    }
 }
 
 #pragma mark - tapping
@@ -180,7 +206,7 @@
                     startDelay:0.5
         synchronizedStartBlock:nil
           synchronizedEndBlock:^{
-              [self removeFromHostViewWithSuccess:YES];
+              [self zoomOutAndDismiss];
           }];
     
     // disable more taps
