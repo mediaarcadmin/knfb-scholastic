@@ -1274,6 +1274,10 @@
 		F88A7F80138D151E006A7D12 /* SCHDictionaryAccessManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F88A7F7E138D151D006A7D12 /* SCHDictionaryAccessManager.m */; };
 		F88F03DF13A24649006D7C1E /* SCHStoryInteractionMultipleChoiceWithAnswerPictures_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F88F03DC13A24649006D7C1E /* SCHStoryInteractionMultipleChoiceWithAnswerPictures_iPad.xib */; };
 		F88F03E013A24649006D7C1E /* SCHStoryInteractionMultipleChoiceWithAnswerPictures_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F88F03DC13A24649006D7C1E /* SCHStoryInteractionMultipleChoiceWithAnswerPictures_iPad.xib */; };
+		F88FDB2113B35EBA00406C57 /* youngertoolbartoggle.png in Resources */ = {isa = PBXBuildFile; fileRef = F88FDB1F13B35EBA00406C57 /* youngertoolbartoggle.png */; };
+		F88FDB2213B35EBA00406C57 /* youngertoolbartoggle.png in Resources */ = {isa = PBXBuildFile; fileRef = F88FDB1F13B35EBA00406C57 /* youngertoolbartoggle.png */; };
+		F88FDB2313B35EBA00406C57 /* youngertoolbartoggle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F88FDB2013B35EBA00406C57 /* youngertoolbartoggle@2x.png */; };
+		F88FDB2413B35EBA00406C57 /* youngertoolbartoggle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F88FDB2013B35EBA00406C57 /* youngertoolbartoggle@2x.png */; };
 		F8B55E07134B190B0028534A /* SCHDictionaryFileUnzipOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F8B55E06134B190B0028534A /* SCHDictionaryFileUnzipOperation.m */; };
 		F8B55E08134B190B0028534A /* SCHDictionaryFileUnzipOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F8B55E06134B190B0028534A /* SCHDictionaryFileUnzipOperation.m */; };
 		F8B55E38134B2A190028534A /* SCHDictionaryParseOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F8B55E37134B2A190028534A /* SCHDictionaryParseOperation.m */; };
@@ -2467,6 +2471,8 @@
 		F88A7F7D138D151D006A7D12 /* SCHDictionaryAccessManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHDictionaryAccessManager.h; path = Shared/SCHDictionaryAccessManager.h; sourceTree = "<group>"; };
 		F88A7F7E138D151D006A7D12 /* SCHDictionaryAccessManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHDictionaryAccessManager.m; path = Shared/SCHDictionaryAccessManager.m; sourceTree = "<group>"; };
 		F88F03DC13A24649006D7C1E /* SCHStoryInteractionMultipleChoiceWithAnswerPictures_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionMultipleChoiceWithAnswerPictures_iPad.xib; sourceTree = "<group>"; };
+		F88FDB1F13B35EBA00406C57 /* youngertoolbartoggle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = youngertoolbartoggle.png; path = Resources/youngertoolbartoggle.png; sourceTree = "<group>"; };
+		F88FDB2013B35EBA00406C57 /* youngertoolbartoggle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "youngertoolbartoggle@2x.png"; path = "Resources/youngertoolbartoggle@2x.png"; sourceTree = "<group>"; };
 		F8B55E05134B190B0028534A /* SCHDictionaryFileUnzipOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHDictionaryFileUnzipOperation.h; path = Shared/SCHDictionaryFileUnzipOperation.h; sourceTree = "<group>"; };
 		F8B55E06134B190B0028534A /* SCHDictionaryFileUnzipOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHDictionaryFileUnzipOperation.m; path = Shared/SCHDictionaryFileUnzipOperation.m; sourceTree = "<group>"; };
 		F8B55E36134B2A190028534A /* SCHDictionaryParseOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHDictionaryParseOperation.h; path = Shared/SCHDictionaryParseOperation.h; sourceTree = "<group>"; };
@@ -3335,6 +3341,8 @@
 				C908D880133F941100661718 /* paper-white.png */,
 				F8C6DA95136073D300D9E953 /* paper-white@2x.png */,
 				C908D881133F941100661718 /* booktexture-nocover.png */,
+				F88FDB1F13B35EBA00406C57 /* youngertoolbartoggle.png */,
+				F88FDB2013B35EBA00406C57 /* youngertoolbartoggle@2x.png */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -5050,6 +5058,8 @@
 				28F689C713B0E616008A9BF9 /* SCHStoryInteractionHotSpot_iPhone.xib in Resources */,
 				28F689CB13B0F305008A9BF9 /* storyinteraction-bg-younger-titleonly~iphone.png in Resources */,
 				28F689CD13B0F305008A9BF9 /* storyinteraction-bg-younger-titleonly@2x~iphone.png in Resources */,
+				F88FDB2113B35EBA00406C57 /* youngertoolbartoggle.png in Resources */,
+				F88FDB2313B35EBA00406C57 /* youngertoolbartoggle@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5472,6 +5482,8 @@
 				28F689C813B0E616008A9BF9 /* SCHStoryInteractionHotSpot_iPhone.xib in Resources */,
 				28F689CC13B0F305008A9BF9 /* storyinteraction-bg-younger-titleonly~iphone.png in Resources */,
 				28F689CE13B0F305008A9BF9 /* storyinteraction-bg-younger-titleonly@2x~iphone.png in Resources */,
+				F88FDB2213B35EBA00406C57 /* youngertoolbartoggle.png in Resources */,
+				F88FDB2413B35EBA00406C57 /* youngertoolbartoggle@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
