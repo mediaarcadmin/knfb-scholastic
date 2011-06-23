@@ -1946,10 +1946,18 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     return [self.readingView pageSnapshot];
 }
 
-- (CGAffineTransform)viewToPageTransformForLayoutPage
+- (CGAffineTransform)viewToPageTransformForLayoutPage:(NSInteger)layoutPage
 {
-    CGAffineTransform pageToView = [(SCHLayoutView *)self.readingView pageTurningViewTransformForPageAtIndex:self.currentPageIndex-1];
-    return CGAffineTransformInvert(pageToView);
+    
+    NSInteger pageIndex = layoutPage - 1;
+    
+    if (pageIndex >= 0) {
+        CGAffineTransform pageToView = [(SCHLayoutView *)self.readingView pageTurningViewTransformForPageAtIndex:layoutPage - 1];
+        return CGAffineTransformInvert(pageToView);
+    } else {
+        NSLog(@"WARNING: viewToPageTransformForLayoutPage requested for pageIndex < 0");
+        return CGAffineTransformIdentity;
+    }
 }
 
 #pragma mark - UIPopoverControllerDelegate methods

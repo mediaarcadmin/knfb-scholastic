@@ -87,7 +87,7 @@
     self.answerMarkerView = nil;
     
     CGPoint pointInView = [tap locationInView:self.pageImageView];
-    CGAffineTransform viewToPageTransform = [self.delegate viewToPageTransformForLayoutPage];
+    CGAffineTransform viewToPageTransform = [self.delegate viewToPageTransformForLayoutPage:self.storyInteraction.documentPageNumber];
     CGPoint pointInPage = CGPointApplyAffineTransform(pointInView, viewToPageTransform);
 
     NSLog(@"pointInView:%@ pointInPage:%@ hotSpot:%@",
