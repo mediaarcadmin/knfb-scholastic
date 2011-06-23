@@ -130,6 +130,7 @@
         selector.shouldTrackSingleTapsOnHighights = NO;
         selector.dataSource = self;
         selector.delegate =  self;
+        selector.magnifiesDuringSelection = NO;
         [selector attachToView:self];
         [selector addObserver:self forKeyPath:@"tracking" options:0 context:NULL];
         [selector addObserver:self forKeyPath:@"trackingStage" options:NSKeyValueObservingOptionPrior context:NULL];
@@ -620,6 +621,8 @@
     selector.shouldTrackSingleTapsOnHighights = NO;
     selector.dataSource = self;
     selector.delegate =  self;
+    selector.magnifiesDuringSelection = NO;
+
     [selector attachToView:self];
     [selector addObserver:self forKeyPath:@"tracking" options:0 context:NULL];
     [selector addObserver:self forKeyPath:@"trackingStage" options:0 context:NULL];
