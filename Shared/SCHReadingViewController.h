@@ -53,7 +53,7 @@ UISegmentedControl *paperTypePopoverSegmentedControl;
 @property (nonatomic, retain) IBOutlet UIView *olderRightBarButtonItemContainer;
 @property (nonatomic, retain) IBOutlet UIView *youngerRightBarButtonItemContainerPad;
 @property (nonatomic, retain) IBOutlet UIButton *backButton;
-@property (nonatomic, retain) IBOutlet UIButton *audioButton;
+@property (nonatomic, retain) IBOutletCollection(UIButton) NSArray *audioButtons;
 @property (nonatomic, retain) IBOutlet UIButton *notesButton;
 @property (nonatomic, retain) IBOutlet UIButton *storyInteractionsListButton;
 @property (nonatomic, retain) IBOutlet SCHCustomToolbar *scrubberToolbar;
@@ -92,6 +92,5 @@ UISegmentedControl *paperTypePopoverSegmentedControl;
 - (IBAction)settingsAction:(UIButton *)sender;
 - (IBAction)popViewController:(id)sender;
 - (IBAction)audioPlayAction:(id)sender;
-- (IBAction)toggleSmartZoom:(id)sender;
 
 @end

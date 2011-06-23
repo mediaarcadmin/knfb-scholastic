@@ -29,6 +29,9 @@
 @property (nonatomic, retain) KNFBTextFlowParagraphSource *paragraphSource;
 @property (nonatomic, retain) EucBookView *eucBookView;
 
+@property (nonatomic, retain) UIImage *currentPageTexture;
+@property (nonatomic, assign) BOOL textureIsDark;
+
 @end
 
 @implementation SCHFlowView
@@ -36,6 +39,9 @@
 @synthesize eucBook;
 @synthesize paragraphSource;
 @synthesize eucBookView;
+
+@synthesize currentPageTexture;
+@synthesize textureIsDark;
 
 - (void)initialiseView
 {
@@ -45,8 +51,11 @@
         eucBookView.selectorDelegate = self;
         eucBookView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         eucBookView.vibratesOnInvalidTurn = NO;
-        [eucBookView setPageTexture:[UIImage imageNamed: @"paper-white.png"] isDark:NO];
-        [self addSubview:eucBookView];        
+        eucBookView.allowsTapTurn = NO;
+        [eucBookView setPageTexture:self.currentPageTexture isDark:self.textureIsDark];
+        [self addSubview:eucBookView];  
+        
+        [self.delegate readingViewWillAppear:self];
     }
 }
 
@@ -61,6 +70,8 @@
         [eucBook release], eucBook = nil;
         [[SCHBookManager sharedBookManager] checkInEucBookForBookIdentifier:self.isbn];  
     }
+    
+    [currentPageTexture release], currentPageTexture = nil;
 
     [super dealloc];
 }
@@ -128,7 +139,7 @@
     } else {
         point = [self.eucBook bookPageIndexPointFromBookPoint:bookPoint];
     }
-    
+    NSLog(@"eucbookview: %@", self.eucBookView);
     [self.eucBookView goToIndexPoint:point animated:animated];
 }
 
@@ -166,6 +177,11 @@
 - (void)bookView:(EucBookView *)bookView unhandledTapAtPoint:(CGPoint)point
 {
     [self.delegate toggleToolbars];
+}
+
+- (void)bookViewPageTurnWillBegin:(EucBookView *)bookView
+{
+    [self.delegate readingViewWillBeginTurning:self];
 }
 
 - (NSArray *)bookView:(EucBookView *)bookView highlightRangesFromPoint:(EucBookPageIndexPoint *)startPoint toPoint:(EucBookPageIndexPoint *)endPoint
@@ -213,6 +229,9 @@
 
 - (void)setPageTexture:(UIImage *)image isDark:(BOOL)isDark
 {
+    self.currentPageTexture = image;
+    self.textureIsDark = isDark;
+    
     [self.eucBookView setPageTexture:image isDark:isDark];
     [self.eucBookView setNeedsDisplay];
 }

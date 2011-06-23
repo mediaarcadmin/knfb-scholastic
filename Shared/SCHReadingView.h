@@ -35,9 +35,12 @@ typedef enum
 - (void)addHighlightBetweenStartPage:(NSUInteger)startPage startWord:(NSUInteger)startWord endPage:(NSUInteger)endPage endWord:(NSUInteger)endWord;
 - (void)deleteHighlightBetweenStartPage:(NSUInteger)startPage startWord:(NSUInteger)startWord endPage:(NSUInteger)endPage endWord:(NSUInteger)endWord;
 
-- (void)readingViewFixedViewWillBeginTurning:(SCHReadingView *)readingView;
+- (void)readingViewWillBeginTurning:(SCHReadingView *)readingView;
 - (void)readingView:(SCHReadingView *)readingView hasMovedToPageAtIndex:(NSUInteger)pageIndex;
+- (void)readingView:(SCHReadingView *)readingView hasMovedToPageIndicesInRange:(NSRange)pageIndicesRange withFocusedPageIndex:(NSUInteger)pageIndex;
 - (void)readingView:(SCHReadingView *)readingView hasMovedToProgressPositionInBook:(CGFloat)progress;
+
+- (void)readingViewWillAppear: (SCHReadingView *) readingView;
 
 - (void)readingView:(SCHReadingView *)readingView hasSelectedWordForSpeaking:(NSString *)word;
 - (void)requestDictionaryForWord:(NSString *)word mode:(SCHReadingViewSelectionMode) mode;
@@ -69,12 +72,6 @@ typedef enum
 - (void)jumpToPageAtIndex:(NSUInteger)pageIndex animated:(BOOL)animated;
 - (void)jumpToProgressPositionInBook:(CGFloat)progress animated:(BOOL)animated;
 - (void)jumpToBookPoint:(SCHBookPoint *)bookPoint animated:(BOOL)animated;
-
-- (void)jumpToNextZoomBlock;
-- (void)jumpToPreviousZoomBlock;
-
-- (void)didEnterSmartZoomMode;
-- (void)didExitSmartZoomMode;
 
 - (void)setFontPointIndex:(NSUInteger)index;
 - (NSInteger)maximumFontIndex;

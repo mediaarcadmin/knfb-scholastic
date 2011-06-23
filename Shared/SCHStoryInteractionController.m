@@ -179,7 +179,9 @@
         
         [hostView addSubview:self.containerView];
     }
-    
+
+    self.interfaceOrientation = aInterfaceOrientation;
+
     // put multiple views at the top-level in the nib for multi-screen interactions
     UIView *newContentsView = [self.nibObjects objectAtIndex:self.currentScreenIndex];
     CGSize maxContentsSize = [self maximumContentsSize];
@@ -443,7 +445,7 @@
 
 - (void)willResignActiveNotification:(NSNotification *)notification
 {
-    [self.audioPlayer cancel];
+    [self.audioPlayer cancelPlaybackExecutingSynchronizedBlocksImmediately:NO];
 }
 
 - (void)removeFromHostViewWithSuccess:(BOOL)success
@@ -475,13 +477,13 @@
 
 - (void)playAudioAtPath:(NSString *)path completion:(void (^)(void))completion
 {
-    [self.audioPlayer cancel];
+    [self.audioPlayer cancelPlaybackExecutingSynchronizedBlocksImmediately:NO];
     [self enqueueAudioWithPath:path fromBundle:NO startDelay:0 synchronizedStartBlock:nil synchronizedEndBlock:completion];
 }
 
 - (void)playBundleAudioWithFilename:(NSString *)filename completion:(void (^)(void))completion
 {
-    [self.audioPlayer cancel];
+    [self.audioPlayer cancelPlaybackExecutingSynchronizedBlocksImmediately:NO];
     [self enqueueAudioWithPath:filename fromBundle:YES startDelay:0 synchronizedStartBlock:nil synchronizedEndBlock:completion];
 }
 
@@ -526,7 +528,12 @@
 
 - (void)cancelQueuedAudio
 {
-    [self.audioPlayer cancel];
+    [self.audioPlayer cancelPlaybackExecutingSynchronizedBlocksImmediately:NO];
+}
+
+- (void)cancelQueuedAudioExecutingSynchronizedBlocksImmediately
+{
+    [self.audioPlayer cancelPlaybackExecutingSynchronizedBlocksImmediately:YES];
 }
 
 

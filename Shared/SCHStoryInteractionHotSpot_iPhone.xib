@@ -54,7 +54,6 @@
 								<string key="NSFrameSize">{480, 250}</string>
 								<reference key="NSSuperview" ref="926904980"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 							</object>
 						</object>
@@ -65,6 +64,7 @@
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<bool key="IBUIMultipleTouchEnabled">YES</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+						<float key="IBUIMaximumZoomScale">10</float>
 					</object>
 				</object>
 				<string key="NSFrameSize">{480, 250}</string>
