@@ -884,8 +884,12 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 }
 
 - (IBAction)youngerToolbarButtonAction:(id)sender {
+    // Setting highlight stops the flicker
     [self pauseAudioPlayback];
-    [self toggleToolbarVisibility];
+    
+    // Perform this after a delay to allow the button to unhighlight before teh animation starts
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(toggleToolbarVisibility) object:nil];
+    [self performSelector:@selector(toggleToolbarVisibility) withObject:nil afterDelay:0.2f];
 }
 
 
@@ -1689,9 +1693,15 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     
     if (self.toolbarsVisible) {
 		[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
+        self.youngerToolbarToggleView.alpha = 0.0f;
+
 	} else {
 		[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+         if (youngerMode) {
+             self.youngerToolbarToggleView.alpha = 1.0f;
+         }
 	}
+    
 
 	if (animated) {
 		[UIView beginAnimations:@"toolbarFade" context:nil];
@@ -1710,7 +1720,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 //                frame.origin.y -= self.scrubberToolbar.frame.size.height;
 //                self.youngerToolbarToggleView.frame = frame;
 //            }
-            self.youngerToolbarToggleView.alpha = 0.0f;
+            //self.youngerToolbarToggleView.alpha = 0.0f;
         } else {
             [self.olderBottomToolbar setAlpha:1.0f];
         }
@@ -1729,7 +1739,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 //                frame.origin.y += self.scrubberToolbar.frame.size.height;
 //                self.youngerToolbarToggleView.frame = frame;
 //            }
-            
             self.youngerToolbarToggleView.alpha = 1.0f;
         } else {
             [self.olderBottomToolbar setAlpha:0.0f];
