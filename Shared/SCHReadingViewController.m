@@ -114,6 +114,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (NSUInteger)firstPageIndexWithStoryInteractionsOnCurrentPages;
 - (void)setupStoryInteractionButtonForCurrentPagesAnimated:(BOOL)animated;
 - (void)setStoryInteractionButtonVisible:(BOOL)visible animated:(BOOL)animated withSound:(BOOL)sound;
+- (void)presentStoryInteraction:(SCHStoryInteraction *)storyInteraction;
 
 @end
 
@@ -896,16 +897,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     
     if ([storyInteractions count]) {
         SCHStoryInteraction *storyInteraction = [storyInteractions objectAtIndex:0];
-    
-        self.storyInteractionController = [SCHStoryInteractionController storyInteractionControllerForStoryInteraction:storyInteraction];
-        self.storyInteractionController.isbn = self.isbn;
-        self.storyInteractionController.delegate = self;
-        self.storyInteractionController.xpsProvider = self.xpsProvider;
-        [self.storyInteractionController presentInHostView:self.navigationController.view withInterfaceOrientation:self.interfaceOrientation];
-    
-        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-            [self setToolbarVisibility:NO animated:YES];
-        }
+        [self presentStoryInteraction:storyInteraction];
     }
 
     [self pauseAudioPlayback];
@@ -1096,6 +1088,22 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     }
     
     return NSUIntegerMax;
+}
+
+- (void)presentStoryInteraction:(SCHStoryInteraction *)storyInteraction
+{
+    NSAssert([self.readingView isKindOfClass:[SCHLayoutView class]], @"can't have story interactions with flow view");
+    [(SCHLayoutView *)self.readingView zoomOutToCurrentPageWithCompletionHandler:^{
+        self.storyInteractionController = [SCHStoryInteractionController storyInteractionControllerForStoryInteraction:storyInteraction];
+        self.storyInteractionController.isbn = self.isbn;
+        self.storyInteractionController.delegate = self;
+        self.storyInteractionController.xpsProvider = self.xpsProvider;
+        [self.storyInteractionController presentInHostView:self.navigationController.view withInterfaceOrientation:self.interfaceOrientation];
+        
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+            [self setToolbarVisibility:NO animated:YES];
+        }
+    }];
 }
 
 #pragma mark - Audio Control
@@ -1894,18 +1902,11 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (void)readingInteractionsView:(SCHReadingInteractionsListController *)interactionsView didSelectInteraction:(NSInteger)interaction
 {
-    NSLog(@"Selected interaction %d.", interaction);
     SCHStoryInteraction *storyInteraction = [[self.bookStoryInteractions allStoryInteractions] objectAtIndex:interaction];
-    self.storyInteractionController = [SCHStoryInteractionController storyInteractionControllerForStoryInteraction:storyInteraction];
-    self.storyInteractionController.isbn = self.isbn;
-    self.storyInteractionController.delegate = self;
-    self.storyInteractionController.xpsProvider = self.xpsProvider;
-    [self.storyInteractionController presentInHostView:self.navigationController.view withInterfaceOrientation:self.interfaceOrientation];
+    [self presentStoryInteraction:storyInteraction];
     
     SCHBookPoint *notePoint = [self.readingView bookPointForLayoutPage:[storyInteraction documentPageNumber] pageWordOffset:0];
     [self.readingView jumpToBookPoint:notePoint animated:YES];
-    
-    [self setToolbarVisibility:NO animated:YES];
 }
 
 #pragma mark - SCHStoryInteractionControllerDelegate methods

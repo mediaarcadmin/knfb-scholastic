@@ -41,6 +41,7 @@
 @property (nonatomic, retain) EucSelector *selector;
 @property (nonatomic, retain) SCHBookRange *temporaryHighlightRange;
 @property (nonatomic, retain) EucSelectorRange *currentSelectorRange;
+@property (nonatomic, copy) dispatch_block_t zoomCompletionHandler;
 
 - (void)initialiseView;
 - (CGRect)cropForPage:(NSInteger)page allowEstimate:(BOOL)estimate;
@@ -76,6 +77,7 @@
 @synthesize selector;
 @synthesize temporaryHighlightRange;
 @synthesize currentSelectorRange;
+@synthesize zoomCompletionHandler;
 
 - (void)dealloc
 {
@@ -90,6 +92,7 @@
     [currentBlock release], currentBlock = nil;
     [temporaryHighlightRange release], temporaryHighlightRange = nil;
     [currentSelectorRange release], currentSelectorRange = nil;
+    [zoomCompletionHandler release], zoomCompletionHandler = nil;
     
     [super dealloc];
 }
@@ -431,6 +434,16 @@
 	[myPageTurningView setTranslation:offset zoomFactor:zoomFactor animated:YES];
 }
 
+- (void)zoomOutToCurrentPageWithCompletionHandler:(dispatch_block_t)completion
+{
+    if (self.pageTurningView.zoomFactor > 1.0f) {
+        self.zoomCompletionHandler = completion;
+        [self zoomOutToCurrentPage];
+    } else {
+        completion();
+    }
+}
+
 - (void)zoomToCurrentBlock {
 	
     NSUInteger pageIndex = [self.currentBlock pageIndex];
@@ -599,6 +612,13 @@
     // during zoom.
     // [self.selector setShouldHideMenu:NO];
     [self.selector setSelectionDisabled:NO];
+    
+    if (self.zoomCompletionHandler != nil) {
+        dispatch_block_t handler = Block_copy(self.zoomCompletionHandler);
+        self.zoomCompletionHandler = nil;
+        handler();
+        Block_release(handler);
+    }
 }
 
 #pragma mark - Touch handling
