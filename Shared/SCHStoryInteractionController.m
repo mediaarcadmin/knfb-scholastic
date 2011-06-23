@@ -296,20 +296,6 @@
                      completion:nil];
 }
 
-- (void)didRotateToInterfaceOrientation:(UIInterfaceOrientation)aToInterfaceOrientation
-{
-    self.interfaceOrientation = aToInterfaceOrientation;
-    if (!self.containerView.superview) {
-        return;
-    }
-    [self setupGeometryForContainerView:self.containerView
-                         backgroundView:self.backgroundView
-                           contentsView:self.contentsView
-                              titleView:self.titleView
-                            closeButton:self.closeButton
-                        readAloudButton:self.readAloudButton];
-}
-
 - (void)setupGeometryForContainerView:(UIView *)container
                        backgroundView:(UIImageView *)background
                          contentsView:(UIView *)contents
@@ -425,6 +411,36 @@
     UIImage *backgroundStretch = [backgroundImage stretchableImageWithLeftCapWidth:backgroundImage.size.width/2-1
                                                                       topCapHeight:backgroundImage.size.height/2-1];
     return backgroundStretch;
+}
+
+#pragma mark - orientation
+
+- (void)didRotateToInterfaceOrientation:(UIInterfaceOrientation)aToInterfaceOrientation
+{
+    self.interfaceOrientation = aToInterfaceOrientation;
+    if (!self.containerView.superview) {
+        return;
+    }
+    [self setupGeometryForContainerView:self.containerView
+                         backgroundView:self.backgroundView
+                           contentsView:self.contentsView
+                              titleView:self.titleView
+                            closeButton:self.closeButton
+                        readAloudButton:self.readAloudButton];
+}
+
+- (BOOL)isLandscape
+{
+    return UIInterfaceOrientationIsLandscape(self.interfaceOrientation);
+}
+
+- (CGAffineTransform)affineTransformForCurrentOrientation
+{
+    if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
+        return CGAffineTransformIdentity;
+    } else {
+        return CGAffineTransformTranslate(CGAffineTransformMakeRotation(-M_PI/2), -CGRectGetWidth(self.containerView.bounds), 0);
+    }
 }
 
 #pragma mark - actions

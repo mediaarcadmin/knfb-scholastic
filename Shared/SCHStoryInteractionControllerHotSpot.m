@@ -68,12 +68,34 @@
 - (void)setupViewAtIndex:(NSInteger)screenIndex
 {
     [self setTitle:[[self currentQuestion] prompt]];
-    self.pageImageView.image = [self.delegate currentPageSnapshot];
+    if ([self isLandscape]) {
+        self.pageImageView.image = [self.delegate currentPageSnapshot];
+    } else {
+        self.contentsView.backgroundColor = [UIColor clearColor];
+    }
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(imageTapped:)];
     [self.pageImageView addGestureRecognizer:tap];
     [self.pageImageView setUserInteractionEnabled:YES];
     [tap release];
+}
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {
+        self.pageImageView.image = nil;
+        self.contentsView.backgroundColor = [UIColor clearColor];
+    }
+    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+}
+
+- (void)didRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+{
+    if (self.pageImageView.image == nil && UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
+        self.pageImageView.image = [self.delegate currentPageSnapshot];
+        self.contentsView.backgroundColor = [UIColor blackColor];
+    }
+    [super didRotateToInterfaceOrientation:toInterfaceOrientation];
 }
 
 - (void)zoomOutAndDismiss
@@ -113,7 +135,8 @@
     self.answerMarkerView = nil;
     
     CGPoint pointInView = [tap locationInView:self.pageImageView];
-    CGAffineTransform viewToPageTransform = [self.delegate viewToPageTransformForLayoutPage:self.storyInteraction.documentPageNumber];
+    CGAffineTransform viewToPageTransform = CGAffineTransformConcat([self affineTransformForCurrentOrientation],
+                                                                    [self.delegate viewToPageTransformForLayoutPage:self.storyInteraction.documentPageNumber]);
     CGPoint pointInPage = CGPointApplyAffineTransform(pointInView, viewToPageTransform);
 
     NSLog(@"pointInView:%@ pointInPage:%@ hotSpot:%@",
