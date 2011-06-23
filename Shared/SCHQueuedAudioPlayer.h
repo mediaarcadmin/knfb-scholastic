@@ -18,7 +18,7 @@ typedef NSData * (^SCHQueuedAudioPlayerFetchBlock)(void);
 
 - (void)enqueueGap:(NSTimeInterval)silenceInterval;
 
-- (void)cancel;
+- (void)cancelExecutingSynchronizedBlocksImmediately:(BOOL)executeBlocks;
 
 - (BOOL)isPlaying;
 

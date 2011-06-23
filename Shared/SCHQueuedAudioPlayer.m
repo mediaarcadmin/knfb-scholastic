@@ -39,7 +39,7 @@
 
 - (void)dealloc
 {
-    [self cancel];
+    [self cancelExecutingSynchronizedBlocksImmediately:NO];
     [audioPlayer release];
     [audioQueue release];
     [currentItem release];
@@ -78,8 +78,17 @@
     self.gap += silenceInterval;
 }
 
-- (void)cancel
+- (void)cancelExecutingSynchronizedBlocksImmediately:(BOOL)executeBlocks
 {
+    [self.audioPlayer pause];
+    if (executeBlocks) {
+        [self.currentItem executeEndBlock];
+        for (AudioItem *item in self.audioQueue) {
+            [item executeStartBlock];
+            [item executeEndBlock];
+        }
+    }
+    
     [self.audioQueue removeAllObjects];
     if (self.audioPlayer) {
         self.audioPlayer.delegate = nil;

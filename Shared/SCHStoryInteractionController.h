@@ -98,6 +98,10 @@ typedef enum
 // cancel any playing or queued audio
 - (void)cancelQueuedAudio;
 
+// cancel any playing or queued audio, but still execute the synchronized blocks for any
+// pending audio items; the blocks will be executed synchronously and immediately
+- (void)cancelQueuedAudioExecutingSynchronizedBlocksImmediately;
+
 // get an image from the XPS provider
 - (UIImage *)imageAtPath:(NSString *)path;
 
