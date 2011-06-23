@@ -21,9 +21,6 @@
 #import <libEucalyptus/EucSelectorRange.h>
 #import <libEucalyptus/THPair.h>
 
-#define LAYOUT_LHSHOTZONE 0.25f
-#define LAYOUT_RHSHOTZONE 0.75f
-
 #define LAYOUT_LANDSCAPE_PAGE_EDGE_COUNT 3
 
 @interface SCHLayoutView() <EucSelectorDataSource>
@@ -622,35 +619,8 @@
 - (void)handleSingleTap:(UITapGestureRecognizer *)sender 
 {     
     if (sender.state == UIGestureRecognizerStateEnded) {
-        CGPoint point = [sender locationInView:self];
-        
-        CGFloat screenWidth = CGRectGetWidth(self.bounds);
-        CGFloat leftHandHotZone = screenWidth * LAYOUT_LHSHOTZONE;
-        CGFloat rightHandHotZone = screenWidth * LAYOUT_RHSHOTZONE;
-                
-        if (point.x <= leftHandHotZone) {
-            if (self.smartZoomActive) {
-                [self jumpToPreviousZoomBlock];
-            } else {
-                if (self.pageTurningView.isTwoUp) {
-                    [self jumpToPageAtIndex:self.pageTurningView.leftPageIndex - 1 animated:YES];
-                } else {
-                    [self jumpToPageAtIndex:self.pageTurningView.rightPageIndex - 1 animated:YES];
-                }
-            }
-            [self.delegate hideToolbars];
-        } else if (point.x >= rightHandHotZone) {
-            if (self.smartZoomActive) {
-                [self jumpToNextZoomBlock];
-            } else {
-                [self jumpToPageAtIndex:self.pageTurningView.rightPageIndex + 1 animated:YES];
-            }
-            [self.delegate hideToolbars];
-        } else {
-            [self.delegate toggleToolbars];
-        }
+        [self.delegate toggleToolbars];
     }
-    
 }
 
 - (void)handleDoubleTap:(UITapGestureRecognizer *)sender 

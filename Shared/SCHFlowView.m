@@ -51,6 +51,7 @@
         eucBookView.selectorDelegate = self;
         eucBookView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         eucBookView.vibratesOnInvalidTurn = NO;
+        eucBookView.allowsTapTurn = NO;
         [eucBookView setPageTexture:self.currentPageTexture isDark:self.textureIsDark];
         [self addSubview:eucBookView];  
         
