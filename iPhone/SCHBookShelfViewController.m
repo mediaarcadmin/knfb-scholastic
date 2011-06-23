@@ -437,12 +437,20 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
         return;
     }
     
-	NSLog(@"Calling grid view selection.");
-    
-    SCHReadingViewController *readingController = [self openBook:[self.books objectAtIndex:index]];
-    if (readingController != nil) {
-        [self.navigationController pushViewController:readingController animated:YES]; 
-    }
+    CGRect cellFrame = [aGridView frameForCellAtGridIndex:index];
+    UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    spinner.center = CGPointMake(CGRectGetMidX(cellFrame), CGRectGetMidY(cellFrame));
+    [spinner startAnimating];
+    [aGridView addSubview:spinner];
+
+    dispatch_async(dispatch_get_main_queue(), ^{
+        SCHReadingViewController *readingController = [self openBook:[self.books objectAtIndex:index]];
+        if (readingController != nil) {
+            [self.navigationController pushViewController:readingController animated:YES]; 
+        }
+        [spinner removeFromSuperview];
+    });
+    [spinner release];
 }
 
 - (SCHReadingViewController *)openBook:(NSString *)isbn
