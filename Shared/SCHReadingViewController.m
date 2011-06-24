@@ -760,7 +760,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     if (self.optionsView.superview) {
         [self.optionsView removeFromSuperview];
     }
-    
+        
     SCHReadingInteractionsListController *interactionsController = [[SCHReadingInteractionsListController alloc] initWithNibName:nil bundle:nil];
     interactionsController.isbn = self.isbn;
     interactionsController.bookStoryInteractions = self.bookStoryInteractions;
@@ -866,9 +866,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 {
     NSLog(@"Pressed story interaction button");
     
-    if ([self.audioBookPlayer playing]) {
-        [self.audioBookPlayer pause];
-    }
+    [self pauseAudioPlayback];
+    [self.queuedAudioPlayer cancelPlaybackExecutingSynchronizedBlocksImmediately:YES];
     
     if (self.optionsView.superview) {
         [self.optionsView removeFromSuperview];
@@ -882,8 +881,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         SCHStoryInteraction *storyInteraction = [storyInteractions objectAtIndex:0];
         [self presentStoryInteraction:storyInteraction];
     }
-
-    [self pauseAudioPlayback];
 }
 
 - (IBAction)youngerToolbarButtonAction:(id)sender {
