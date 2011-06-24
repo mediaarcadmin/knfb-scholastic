@@ -34,6 +34,7 @@
 #import "SCHStoryInteractionController.h"
 #import "SCHHighlight.h"
 #import "SCHStoryInteractionTypes.h"
+#import "SCHQueuedAudioPlayer.h"
 
 // constants
 static const CGFloat kReadingViewStandardScrubHeight = 47.0f;
@@ -86,7 +87,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 @property (nonatomic, retain) SCHStoryInteractionController *storyInteractionController;
 @property (nonatomic, assign) BOOL storyInteractionsCompleteOnCurrentPages;
 
-@property (nonatomic, retain) AVAudioPlayer *interactionAppearsPlayer;
+@property (nonatomic, retain) SCHQueuedAudioPlayer *queuedAudioPlayer;
 @property (nonatomic, assign) NSInteger lastPageInteractionSoundPlayedOn;
 @property (nonatomic, assign) BOOL pauseAudioOnNextPageTurn;
 
@@ -175,7 +176,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 @synthesize audioBookPlayer;
 @synthesize bookStoryInteractions;
 @synthesize storyInteractionController;
-@synthesize interactionAppearsPlayer;
+@synthesize queuedAudioPlayer;
 @synthesize storyInteractionsCompleteOnCurrentPages;
 @synthesize lastPageInteractionSoundPlayedOn;
 @synthesize pauseAudioOnNextPageTurn;
@@ -192,7 +193,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [audioBookPlayer release], audioBookPlayer = nil;
     [bookStoryInteractions release], bookStoryInteractions = nil;
     [popoverOptionsViewController release], popoverOptionsViewController = nil;
-    [interactionAppearsPlayer release], interactionAppearsPlayer = nil;
+    [queuedAudioPlayer release], queuedAudioPlayer = nil;
     
     storyInteractionController.delegate = nil; // we don't want callbacks
     [storyInteractionController release], storyInteractionController = nil;
@@ -270,6 +271,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
                                                    object:nil];
         
         self.lastPageInteractionSoundPlayedOn = -1;
+        
+        self.queuedAudioPlayer = [[[SCHQueuedAudioPlayer alloc] init] autorelease];
 
     }
     return self;
@@ -990,35 +993,22 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
             }
             
             // play the sound effect
-            NSLog(@"Figuring out audio.");
-            
             if (sound && !self.storyInteractionController && (!self.audioBookPlayer || !self.audioBookPlayer.playing)) {
                 // play sound effect only if requested - e.g. toolbar hide/show doesn't play sound
                 // play sound effect only if there isn't a story interaction visible
                 // play sound effect only if the book reading is not happening (which should never happen!)
                 
-                NSString *audioFilename = @"sfx_siappears_y2B";
-                
-                if (!self.youngerMode) {
-                    audioFilename = @"sfx_siappears_o";
-                }
-                
+                NSString *audioFilename = self.youngerMode ? @"sfx_siappears_y2B" : @"sfx_siappears_o";
                 NSString *bundlePath = [[NSBundle mainBundle] pathForResource:audioFilename ofType:@"mp3"];
                 
-                NSData *audioData = [NSData dataWithContentsOfFile:bundlePath options:NSDataReadingMapped error:nil];
-                if (audioData != nil) {
-                    
-                    NSError *error = nil;
-                    self.interactionAppearsPlayer = [[[AVAudioPlayer alloc] initWithData:audioData error:&error] autorelease];
-                    self.interactionAppearsPlayer.delegate = self;
-                    [self.interactionAppearsPlayer play];
-                    
-                    if (error) {
-                        NSLog(@"Warning: %@", [error localizedDescription]);
-                    }
-                } else {
-                    NSLog(@"Nil bundle data.");
+                [self.queuedAudioPlayer cancelPlaybackExecutingSynchronizedBlocksImmediately:NO];
+                [self.queuedAudioPlayer enqueueAudioTaskWithFetchBlock:^NSData*(void){
+                    return [NSData dataWithContentsOfFile:bundlePath
+                                                  options:NSDataReadingMapped
+                                                    error:nil];
                 }
+                                                synchronizedStartBlock:nil
+                                                  synchronizedEndBlock:nil];
             }
 
         }
@@ -1367,6 +1357,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
             [self pauseAudioPlayback];
         }
         self.pauseAudioOnNextPageTurn = YES;
+        [self.queuedAudioPlayer cancelPlaybackExecutingSynchronizedBlocksImmediately:NO];
     }
     
     [self setStoryInteractionButtonVisible:NO animated:YES withSound:YES];
@@ -1992,13 +1983,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 {
     [self.optionsView removeFromSuperview];
     self.popover = nil;
-}
-
-#pragma mark - AVAudioPlayerDelegate methods
-
-- (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
-{
-    self.interactionAppearsPlayer = nil;
 }
 
 @end

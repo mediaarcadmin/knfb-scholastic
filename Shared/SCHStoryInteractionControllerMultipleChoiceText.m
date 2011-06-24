@@ -103,7 +103,7 @@
 
 - (void)playQuestionAudioAndHighlightAnswersWithIntroduction:(BOOL)withIntroduction
 {
-    [self cancelQueuedAudio];
+    [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
     if (withIntroduction) {
         [self enqueueAudioWithPath:[self.storyInteraction audioPathForQuestion]
                         fromBundle:NO
@@ -149,7 +149,7 @@
         [sender setSelected:YES];
         if (chosenAnswer == [self currentQuestion].correctAnswer) {
             self.answeredCorrectly = YES;
-            [self cancelQueuedAudio];
+            [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
             [self enqueueAudioWithPath:[[self currentQuestion] audioPathForAnswerAtIndex:chosenAnswer] fromBundle:NO];
             [self enqueueAudioWithPath:[(SCHStoryInteractionMultipleChoiceText *)self.storyInteraction audioPathForThatsRight] fromBundle:NO];
             [self enqueueAudioWithPath:[[self currentQuestion] audioPathForCorrectAnswer]
@@ -161,10 +161,14 @@
                       [self nextQuestion];
                   }];
         } else {
-            [self playAudioAtPath:[[self currentQuestion] audioPathForIncorrectAnswer]
-                       completion:^{
-                           self.contentsView.userInteractionEnabled = YES;
-                       }];
+            [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
+            [self enqueueAudioWithPath:[[self currentQuestion] audioPathForIncorrectAnswer]
+                            fromBundle:NO
+                            startDelay:0
+                synchronizedStartBlock:nil
+                  synchronizedEndBlock:^{
+                      self.contentsView.userInteractionEnabled = YES;
+                  }];
         }
     }
 }
