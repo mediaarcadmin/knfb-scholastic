@@ -405,8 +405,24 @@ static SCHDictionaryAccessManager *sharedManager = nil;
     NSString *mp3Path = [NSString stringWithFormat:@"%@/Pronunciation/pron_%@.mp3", 
                          [[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryDirectory], trimmedWord];
     
-    if ([[NSFileManager defaultManager] fileExistsAtPath:mp3Path]) {
-        NSURL *url = [NSURL fileURLWithPath:mp3Path];
+    SCHDictionaryWordForm *rootWord = [[SCHDictionaryAccessManager sharedAccessManager] wordFormForBaseWord:trimmedWord category:category];
+    
+    NSString *mp3PathForRootWord = [NSString stringWithFormat:@"%@/Pronunciation/pron_%@.mp3", 
+                                    [[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryDirectory], rootWord.rootWord];
+    
+    BOOL trimmedWordExists = [[NSFileManager defaultManager] fileExistsAtPath:mp3Path];
+    BOOL rootWordExists = [[NSFileManager defaultManager] fileExistsAtPath:mp3PathForRootWord];
+    
+    if (trimmedWordExists || (!trimmedWordExists && rootWordExists && [category compare:kSCHDictionaryOlderReader] == NSOrderedSame)) {
+        
+        NSURL *url = nil;
+        
+        if (!trimmedWordExists) {
+            url = [NSURL fileURLWithPath:mp3PathForRootWord];
+        } else {
+            url = [NSURL fileURLWithPath:mp3Path];
+        }
+        
         NSError *error;
         
         if (self.player) {
