@@ -551,6 +551,11 @@
     }
 }
 
+- (CGFloat)pageTurningView:(EucPageTurningView *)pageTurningView tapTurnMarginForPageAtIndex:(NSUInteger)index
+{
+    return 0;
+}
+
 - (void)pageTurningView:(EucPageTurningView *)pageTurningView unhandledTapAtPoint:(CGPoint)point;
 {
     [self unhandledTapAtPoint:point];
