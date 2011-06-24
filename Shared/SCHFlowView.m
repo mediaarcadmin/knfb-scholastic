@@ -22,6 +22,7 @@
 #import <libEucalyptus/EucHighlightRange.h>
 #import <libEucalyptus/THPair.h>
 #import <libEucalyptus/EucConfiguration.h>
+#import <libEucalyptus/EucOTFIndex.h>
 
 @interface SCHFlowView ()
 
@@ -56,11 +57,17 @@
         [self addSubview:eucBookView];  
         
         [self.delegate readingViewWillAppear:self];
+        [[NSNotificationCenter defaultCenter] addObserver:self 
+                                                 selector:@selector(paginationComplete:) 
+                                                     name:EucOTFIndexPaginationCompleteNotification 
+                                                   object:nil];	
     }
 }
 
 - (void)dealloc
-{    
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
     if(paragraphSource) {
         [paragraphSource release], paragraphSource = nil;
         [[SCHBookManager sharedBookManager] checkInParagraphSourceForBookIdentifier:self.isbn];   
@@ -167,12 +174,17 @@
     
     if ([keyPath isEqualToString:@"currentPageIndexPoint"]) {
         if ((self.eucBookView.pageCount != 0) && (self.eucBookView.pageCount != -1)) {
-            [self.delegate readingView:self hasMovedToPageAtIndex:eucBookView.currentPageIndex];
+            [self.delegate readingView:self hasMovedToPageAtIndex:self.eucBookView.currentPageIndex];
         } else {
-            CGFloat progress = [self.eucBook estimatedPercentageForIndexPoint:eucBookView.currentPageIndexPoint];
+            CGFloat progress = [self.eucBook estimatedPercentageForIndexPoint:self.eucBookView.currentPageIndexPoint];
             [self.delegate readingView:self hasMovedToProgressPositionInBook:progress];
         }
     }
+}
+
+- (void)paginationComplete:(NSNotification *)notification
+{
+    [self.delegate readingView:self hasMovedToPageAtIndex:self.eucBookView.currentPageIndex];
 }
 
 - (void)bookView:(EucBookView *)bookView unhandledTapAtPoint:(CGPoint)point
