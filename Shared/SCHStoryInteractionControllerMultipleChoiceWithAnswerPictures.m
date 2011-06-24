@@ -16,7 +16,6 @@
 @interface SCHStoryInteractionControllerMultipleChoiceWithAnswerPictures ()
 
 @property (nonatomic, assign) NSInteger currentQuestionIndex;
-@property (nonatomic, assign) BOOL answered;
 
 - (void)nextQuestion;
 - (void)setupQuestion;
@@ -28,7 +27,6 @@
 
 @synthesize answerButtons;
 @synthesize currentQuestionIndex;
-@synthesize answered;
 
 - (void)dealloc
 {
@@ -50,10 +48,8 @@
 
 - (IBAction)playAudioButtonTapped:(id)sender
 {
-    if (!self.answered) {
-        [self cancelQueuedAudio];
-        [self playCurrentQuestionAudio];
-    }
+    [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
+    [self playCurrentQuestionAudio];
 }
 
 - (void)setupViewAtIndex:(NSInteger)screenIndex
@@ -72,7 +68,6 @@
 
 - (void)setupQuestion
 {
-    self.answered = NO;
     [self setTitle:[self currentQuestion].prompt];
     
     for (SCHImageButton *button in self.answerButtons) {
@@ -85,11 +80,11 @@
             button.normalColor = [UIColor colorWithRed:0.071 green:0.396 blue:0.698 alpha:1.000];
             button.selectedColor = ([self currentQuestion].correctAnswer != answerIndex ? [UIColor colorWithRed:0.973 green:0.004 blue:0.094 alpha:1.000] : [UIColor colorWithRed:0.157 green:0.753 blue:0.341 alpha:1.000]);            
             button.actionBlock = ^(SCHImageButton *imageButton) {
-                self.answered = YES;
                 NSUInteger chosenAnswer = imageButton.tag - 1;
 
-                [self cancelQueuedAudio];
+                [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
                 if (chosenAnswer == [self currentQuestion].correctAnswer) {
+                    [self setUserInteractionsEnabled:NO];
                     [self enqueueAudioWithPath:[self.storyInteraction audioPathForThatsRight] fromBundle:NO];
                     [self enqueueAudioWithPath:[[self currentQuestion] audioPathForCorrectAnswer]
                                     fromBundle:NO
