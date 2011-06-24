@@ -24,6 +24,7 @@
 @interface SCHLayoutView() <EucSelectorDataSource>
 
 @property (nonatomic, retain) EucPageTurningView *pageTurningView;
+@property (nonatomic, retain) UITapGestureRecognizer *doubleTapGestureRecognizer;
 @property (nonatomic, assign) NSUInteger pageCount;
 @property (nonatomic, assign) NSUInteger currentPageIndex;
 @property (nonatomic, assign) CGRect firstPageCrop;
@@ -58,6 +59,7 @@
 @implementation SCHLayoutView
 
 @synthesize pageTurningView;
+@synthesize doubleTapGestureRecognizer;
 @synthesize pageCount;
 @synthesize currentPageIndex;
 @synthesize firstPageCrop;
@@ -73,6 +75,7 @@
 - (void)dealloc
 {
     [pageTurningView release], pageTurningView = nil;
+    [doubleTapGestureRecognizer release], doubleTapGestureRecognizer = nil;
     [pageCropsCache release], pageCropsCache = nil;
     [layoutCacheLock release], layoutCacheLock = nil;
     [currentBlock release], currentBlock = nil;
@@ -127,10 +130,14 @@
         [self registerGesturesForPageTurningView:pageTurningView];
         
         selector = [[EucSelector alloc] init];
-        selector.shouldTrackSingleTapsOnHighights = NO;
         selector.dataSource = self;
         selector.delegate =  self;
+        selector.allowsAdjustment = NO;
+        selector.allowsInitialDragSelection = YES;
         selector.magnifiesDuringSelection = NO;
+        selector.shouldTrackSingleTaps = YES;
+        [selector requireGestureRecognizerToFail:self.doubleTapGestureRecognizer];
+        
         [selector attachToView:self];
         [selector addObserver:self forKeyPath:@"tracking" options:0 context:NULL];
         [selector addObserver:self forKeyPath:@"trackingStage" options:NSKeyValueObservingOptionPrior context:NULL];
@@ -565,6 +572,8 @@
 
     aPageTurningView.tapGestureRecognizer.cancelsTouchesInView = NO;
     
+    self.doubleTapGestureRecognizer = doubleTap;
+    
     [doubleTap release];
 }
 
@@ -618,10 +627,13 @@
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
     selector = [[EucSelector alloc] init];
-    selector.shouldTrackSingleTapsOnHighights = NO;
     selector.dataSource = self;
     selector.delegate =  self;
+    selector.allowsAdjustment = NO;
+    selector.allowsInitialDragSelection = YES;
     selector.magnifiesDuringSelection = NO;
+    selector.shouldTrackSingleTaps = YES;
+    [selector requireGestureRecognizerToFail:self.doubleTapGestureRecognizer];
 
     [selector attachToView:self];
     [selector addObserver:self forKeyPath:@"tracking" options:0 context:NULL];
