@@ -153,7 +153,7 @@
     *pageWordOffset = bookPoint.wordOffset;
     
     if (bookPoint.blockOffset > 0) {
-        NSArray *wordBlocks = [self.textFlow blocksForPageAtIndex:bookPoint.layoutPage - 1 includingFolioBlocks:NO];
+        NSArray *wordBlocks = [self.textFlow blocksForPageAtIndex:bookPoint.layoutPage - 1 includingFolioBlocks:YES];
         for (int i = 0; i < bookPoint.blockOffset; i++) {
             if (i < [wordBlocks count]) {
                 *pageWordOffset += [[[wordBlocks objectAtIndex:i] words] count];
@@ -168,7 +168,7 @@
     bookPoint.layoutPage = layoutPage;
     bookPoint.wordOffset = pageWordOffset;
     
-    NSArray *wordBlocks = [self.textFlow blocksForPageAtIndex:bookPoint.layoutPage - 1 includingFolioBlocks:NO];
+    NSArray *wordBlocks = [self.textFlow blocksForPageAtIndex:bookPoint.layoutPage - 1 includingFolioBlocks:YES];
     
     for (int i = 0 ; i < [wordBlocks count]; i++) {
         KNFBTextFlowBlock *block = [wordBlocks objectAtIndex:i];
