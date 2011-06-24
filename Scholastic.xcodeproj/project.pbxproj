@@ -1480,8 +1480,8 @@
 		286E213D13AB7EBE00CB4232 /* NSArray+Shuffling.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+Shuffling.h"; sourceTree = "<group>"; };
 		286E213E13AB7EBF00CB4232 /* NSArray+Shuffling.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+Shuffling.m"; sourceTree = "<group>"; };
 		286E215413AB989D00CB4232 /* SCHStoryInteractionWordMatch_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionWordMatch_iPhone.xib; sourceTree = "<group>"; };
-		286E21A313ABF8BD00CB4232 /* SCHQueuedAudioPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHQueuedAudioPlayer.h; sourceTree = "<group>"; };
-		286E21A413ABF8BD00CB4232 /* SCHQueuedAudioPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHQueuedAudioPlayer.m; sourceTree = "<group>"; };
+		286E21A313ABF8BD00CB4232 /* SCHQueuedAudioPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHQueuedAudioPlayer.h; path = Shared/SCHQueuedAudioPlayer.h; sourceTree = "<group>"; };
+		286E21A413ABF8BD00CB4232 /* SCHQueuedAudioPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHQueuedAudioPlayer.m; path = Shared/SCHQueuedAudioPlayer.m; sourceTree = "<group>"; };
 		286E21A813AC851700CB4232 /* SCHQueuedAudioPlayerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHQueuedAudioPlayerTests.m; sourceTree = "<group>"; };
 		286E21B013AC93CB00CB4232 /* DummyAVAudioPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DummyAVAudioPlayer.h; sourceTree = "<group>"; };
 		286E21B113AC93CB00CB4232 /* DummyAVAudioPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DummyAVAudioPlayer.m; sourceTree = "<group>"; };
@@ -2646,8 +2646,6 @@
 				2827824413A20FA200E968C1 /* NSArray+ViewSorting.m */,
 				286E213D13AB7EBE00CB4232 /* NSArray+Shuffling.h */,
 				286E213E13AB7EBF00CB4232 /* NSArray+Shuffling.m */,
-				286E21A313ABF8BD00CB4232 /* SCHQueuedAudioPlayer.h */,
-				286E21A413ABF8BD00CB4232 /* SCHQueuedAudioPlayer.m */,
 				28FFD4F013AF635F00F28637 /* SCHGeometry.h */,
 				28FFD4F113AF635F00F28637 /* SCHGeometry.m */,
 			);
@@ -3293,6 +3291,8 @@
 		528A2CCE12CCDC380053A343 /* Audio */ = {
 			isa = PBXGroup;
 			children = (
+				286E21A313ABF8BD00CB4232 /* SCHQueuedAudioPlayer.h */,
+				286E21A413ABF8BD00CB4232 /* SCHQueuedAudioPlayer.m */,
 			);
 			name = Audio;
 			sourceTree = "<group>";
