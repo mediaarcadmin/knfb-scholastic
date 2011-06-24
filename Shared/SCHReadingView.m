@@ -208,16 +208,19 @@
             self.selector.shouldTrackSingleTaps = YES;
             self.selector.allowsInitialDragSelection = NO;
             self.selector.shouldTrackSingleTapsOnHighights = NO;
+            self.selector.defaultSelectionColor = nil;
             break;
         case SCHReadingViewSelectionModeOlderDictionary:
             self.selector.shouldTrackSingleTaps = NO;
             self.selector.allowsInitialDragSelection = NO;
             self.selector.shouldTrackSingleTapsOnHighights = NO;
+            self.selector.defaultSelectionColor = nil;
             break;
         case SCHReadingViewSelectionModeHighlights:
             self.selector.shouldTrackSingleTaps = NO;
             self.selector.allowsInitialDragSelection = YES;
             self.selector.shouldTrackSingleTapsOnHighights = YES;
+            self.selector.defaultSelectionColor = [self.delegate highlightColor];
             break;
     }
     
