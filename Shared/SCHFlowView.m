@@ -276,6 +276,15 @@
     [self.eucBookView refreshHighlights];
 }
 
+- (void)refreshPageTurningViewImmediately:(BOOL)immediately
+{
+    if (immediately) {
+        [self.eucBookView.pageTurningView drawView];
+    } else {
+        [self.eucBookView.pageTurningView setNeedsDraw];
+    }
+}
+
 - (SCHBookRange *)bookRangeFromSelectorRange:(EucSelectorRange *)selectorRange
 {
     if (nil == selectorRange) return nil;

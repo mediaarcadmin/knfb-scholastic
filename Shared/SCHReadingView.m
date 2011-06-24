@@ -191,6 +191,7 @@
     
     self.selector.magnifiesDuringSelection = NO;
     self.selector.selectionDelay = 0.2f;
+    self.selector.allowsAdjustment = NO;
 
     [self configureSelectorForSelectionMode]; 
 }
@@ -205,18 +206,15 @@
     switch (self.selectionMode) {
         case SCHReadingViewSelectionModeYoungerDictionary:
             self.selector.shouldTrackSingleTaps = YES;
-            self.selector.allowsAdjustment = NO;
+            self.selector.allowsInitialDragSelection = NO;
             break;
         case SCHReadingViewSelectionModeOlderDictionary:
             self.selector.shouldTrackSingleTaps = NO;
-            self.selector.allowsAdjustment = NO;
+            self.selector.allowsInitialDragSelection = NO;
             break;
         case SCHReadingViewSelectionModeHighlights:
             self.selector.shouldTrackSingleTaps = NO;
-            self.selector.allowsAdjustment = YES;
-        default:
-            self.selector.shouldTrackSingleTaps = NO;
-            self.selector.allowsAdjustment = YES;
+            self.selector.allowsInitialDragSelection = YES;
             break;
     }
     
@@ -329,19 +327,8 @@
 }
 
 - (void)selectorWillBeginSelecting
-{
-    switch (self.selectionMode) {
-        case SCHReadingViewSelectionModeOlderDictionary:
-        case SCHReadingViewSelectionModeYoungerDictionary:
-            [self.selector setAllowsAdjustment:NO];
-            break;
-        default:
-            [self.selector setAllowsAdjustment:YES];
-            break;
-    }
-    
+{    
     [self.delegate hideToolbars];
-
 }
 
 - (void)selectorDidBeginSelectingWithSelection:(EucSelectorRange *)selectorRange
@@ -381,6 +368,11 @@
                     }
                 }
                 
+                // Next run-loop deselect the selector
+                [self performSelector:@selector(dismissSelector) withObject:nil afterDelay:0];
+                
+                break;
+            case SCHReadingViewSelectionModeHighlights:
                 // Next run-loop deselect the selector
                 [self performSelector:@selector(dismissSelector) withObject:nil afterDelay:0];
                 
@@ -574,6 +566,8 @@
             [self refreshHighlightsForPageAtIndex:i - 1];
         }
     }
+    
+    [self refreshPageTurningViewImmediately:YES];
 }
 
 - (void)deleteHighlight:(id)sender
@@ -604,6 +598,8 @@
 }
 
 - (void)refreshHighlightsForPageAtIndex:(NSUInteger)index {}
+
+- (void)refreshPageTurningViewImmediately:(BOOL)immediately {}
 
 - (void)dismissSelector
 {

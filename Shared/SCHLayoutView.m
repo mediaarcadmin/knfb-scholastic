@@ -615,6 +615,15 @@
     [self.pageTurningView setNeedsDraw];
 }
 
+- (void)refreshPageTurningViewImmediately:(BOOL)immediately
+{
+    if (immediately) {
+        [self.pageTurningView drawView];
+    } else {
+        [self.pageTurningView setNeedsDraw];
+    }
+}
+
 - (NSArray *)highlightRangesForCurrentPage {
 	NSUInteger startPageIndex = self.pageTurningView.leftPageIndex;
     NSUInteger endPageIndex = self.pageTurningView.rightPageIndex;
