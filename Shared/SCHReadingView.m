@@ -29,6 +29,7 @@
 @property (nonatomic, retain) EucSelectorRange *singleWordSelectorRange;
 @property (nonatomic, assign) BOOL createHighlightFromSelection;
 
+- (void)configureSelectorForSelectionMode;
 - (void)selectorWillBeginSelecting;
 - (void)selectorDidBeginSelectingWithSelection:(EucSelectorRange *)selectorRange;
 - (void)selectorDidEndSelectingWithSelection:(EucSelectorRange *)selectorRange;
@@ -184,19 +185,49 @@
 
 #pragma mark - Selector
 
+- (void)attachSelector
+{
+    [self.selector addObserver:self forKeyPath:@"trackingStage" options:NSKeyValueObservingOptionPrior context:NULL];
+    
+    self.selector.magnifiesDuringSelection = NO;
+    self.selector.selectionDelay = 0.2f;
+    self.selector.allowsAdjustment = NO;
+
+    [self configureSelectorForSelectionMode]; 
+}
+
+- (void)detachSelector
+{
+    [self.selector removeObserver:self forKeyPath:@"trackingStage"];
+}
+
+- (void)configureSelectorForSelectionMode
+{
+    switch (self.selectionMode) {
+        case SCHReadingViewSelectionModeYoungerDictionary:
+            self.selector.shouldTrackSingleTaps = YES;
+            self.selector.allowsInitialDragSelection = NO;
+            self.selector.shouldTrackSingleTapsOnHighights = NO;
+            break;
+        case SCHReadingViewSelectionModeOlderDictionary:
+            self.selector.shouldTrackSingleTaps = NO;
+            self.selector.allowsInitialDragSelection = NO;
+            self.selector.shouldTrackSingleTapsOnHighights = NO;
+            break;
+        case SCHReadingViewSelectionModeHighlights:
+            self.selector.shouldTrackSingleTaps = NO;
+            self.selector.allowsInitialDragSelection = YES;
+            self.selector.shouldTrackSingleTapsOnHighights = YES;
+            break;
+    }
+    
+}
+
 - (void)setSelectionMode:(SCHReadingViewSelectionMode)newSelectionMode
 {
     if(newSelectionMode != selectionMode) {
-        switch (newSelectionMode) {
-            case SCHReadingViewSelectionModeYoungerDictionary:
-            case SCHReadingViewSelectionModeOlderDictionary:
-                self.selector.allowsAdjustment = NO;
-                break;
-            case SCHReadingViewSelectionModeHighlights:
-                self.selector.allowsAdjustment = YES;
-                break;
-        }
         selectionMode = newSelectionMode;
+        [self configureSelectorForSelectionMode];
     }
 }
 
@@ -273,20 +304,10 @@
 
 - (UIColor *)eucSelector:(EucSelector *)selector willBeginEditingHighlightWithRange:(EucSelectorRange *)selectedRange
 {
-    SCHBookRange *highlightRange = [self bookRangeFromSelectorRange:selectedRange];
+    self.createHighlightFromSelection = NO;  
     
-    NSInteger startIndex = highlightRange.startPoint.layoutPage - 1;
-    NSInteger endIndex = highlightRange.endPoint.layoutPage - 1;
-            
-    for (int i = startIndex; i <= endIndex; i++) {
-        [self refreshHighlightsForPageAtIndex:i];
-    }
-      
-    // This disables the creation of a new highlight on top of the old one
-    self.createHighlightFromSelection = NO;
-    [self.selector setAllowsAdjustment:NO];
-    
-    return [self.delegate highlightColor];
+    // Just return a clear color and keep the original highlights showing on the page
+    return [UIColor clearColor];
 }
 
 - (void)currentLayoutPage:(NSUInteger *)layoutPage pageWordOffset:(NSUInteger *)pageWordOffset
@@ -299,19 +320,8 @@
 }
 
 - (void)selectorWillBeginSelecting
-{
-    switch (self.selectionMode) {
-        case SCHReadingViewSelectionModeOlderDictionary:
-        case SCHReadingViewSelectionModeYoungerDictionary:
-            [self.selector setAllowsAdjustment:NO];
-            break;
-        default:
-            [self.selector setAllowsAdjustment:YES];
-            break;
-    }
-    
+{    
     [self.delegate hideToolbars];
-
 }
 
 - (void)selectorDidBeginSelectingWithSelection:(EucSelectorRange *)selectorRange
@@ -353,6 +363,13 @@
                 
                 // Next run-loop deselect the selector
                 [self performSelector:@selector(dismissSelector) withObject:nil afterDelay:0];
+                
+                break;
+            case SCHReadingViewSelectionModeHighlights:
+                // Next run-loop deselect the selector
+                if (![self.selector selectedRangeIsHighlight]) {
+                    [self performSelector:@selector(dismissSelector) withObject:nil afterDelay:0];
+                }
                 
                 break;
             default:
@@ -544,6 +561,8 @@
             [self refreshHighlightsForPageAtIndex:i - 1];
         }
     }
+    
+    [self refreshPageTurningViewImmediately:YES];
 }
 
 - (void)deleteHighlight:(id)sender
@@ -564,7 +583,7 @@
         
         [self.delegate deleteHighlightBetweenStartPage:startLayoutPage startWord:startPageWordOffset endPage:endLayoutPage endWord:endPageWordOffset];
         
-        // Deleslect now because teh refresh depends on it
+        // Deselect now because the refresh depends on it
         [self dismissSelector];
         
         for (int i = startLayoutPage; i <= endLayoutPage; i++) {
@@ -575,9 +594,21 @@
 
 - (void)refreshHighlightsForPageAtIndex:(NSUInteger)index {}
 
+- (void)refreshPageTurningViewImmediately:(BOOL)immediately {}
+
 - (void)dismissSelector
 {
     [self.selector setSelectedRange:nil];
+}
+
+#pragma mark - Touch handling
+
+- (void)unhandledTapAtPoint:(CGPoint)piont
+{
+    NSLog(@"Selector state: %d", self.selector.trackingStage);
+    // if (self.selector.trackingStage == EucSelectorTrackingStageNone) {
+    [self.delegate toggleToolbars];
+    ///}
 }
 
 #pragma mark - Rotation
