@@ -16,6 +16,7 @@
 @interface SCHStoryInteractionControllerHotSpot ()
 
 @property (nonatomic, retain) UIView *answerMarkerView;
+@property (nonatomic, copy) dispatch_block_t zoomCompletionHandler;
 
 - (void)incorrectTapAtPoint:(CGPoint)point;
 - (void)correctTapAtPoint:(CGPoint)point;
@@ -27,12 +28,15 @@
 @synthesize scrollView;
 @synthesize pageImageView;
 @synthesize answerMarkerView;
+@synthesize zoomCompletionHandler;
 
 - (void)dealloc
 {
+    self.scrollView.delegate = nil;
     [scrollView release];
     [pageImageView release];
     [answerMarkerView release];
+    [zoomCompletionHandler release];
     [super dealloc];
 }
 
@@ -64,7 +68,11 @@
 - (void)setupViewAtIndex:(NSInteger)screenIndex
 {
     [self setTitle:[[self currentQuestion] prompt]];
-    self.pageImageView.image = [self.delegate currentPageSnapshot];
+    if ([self isLandscape]) {
+        self.pageImageView.image = [self.delegate currentPageSnapshot];
+    } else {
+        self.contentsView.backgroundColor = [UIColor clearColor];
+    }
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(imageTapped:)];
     [self.pageImageView addGestureRecognizer:tap];
@@ -72,11 +80,51 @@
     [tap release];
 }
 
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {
+        self.pageImageView.image = nil;
+        self.contentsView.backgroundColor = [UIColor clearColor];
+    }
+    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+}
+
+- (void)didRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+{
+    if (self.pageImageView.image == nil && UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
+        self.pageImageView.image = [self.delegate currentPageSnapshot];
+        self.contentsView.backgroundColor = [UIColor blackColor];
+    }
+    [super didRotateToInterfaceOrientation:toInterfaceOrientation];
+}
+
+- (void)zoomOutAndDismiss
+{
+    self.zoomCompletionHandler = ^{
+        [self removeFromHostViewWithSuccess:YES];
+    };
+    if (self.scrollView.zoomScale != 1.0f) {
+        [self.scrollView setZoomScale:1.0 animated:YES];
+    } else {
+        self.zoomCompletionHandler();
+    }
+}
+
 #pragma mark - scroll view delegate
 
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
 {
     return self.pageImageView;
+}
+
+- (void)scrollViewDidEndZooming:(UIScrollView *)scrollView withView:(UIView *)view atScale:(float)scale
+{
+    if (self.zoomCompletionHandler != nil) {
+        dispatch_block_t block = Block_copy(self.zoomCompletionHandler);
+        self.zoomCompletionHandler = nil;
+        block();
+        Block_release(block);
+    }
 }
 
 #pragma mark - tapping
@@ -87,7 +135,8 @@
     self.answerMarkerView = nil;
     
     CGPoint pointInView = [tap locationInView:self.pageImageView];
-    CGAffineTransform viewToPageTransform = [self.delegate viewToPageTransformForLayoutPage];
+    CGAffineTransform viewToPageTransform = CGAffineTransformConcat([self affineTransformForCurrentOrientation],
+                                                                    [self.delegate viewToPageTransformForLayoutPage:self.storyInteraction.documentPageNumber]);
     CGPoint pointInPage = CGPointApplyAffineTransform(pointInView, viewToPageTransform);
 
     NSLog(@"pointInView:%@ pointInPage:%@ hotSpot:%@",
@@ -180,7 +229,7 @@
                     startDelay:0.5
         synchronizedStartBlock:nil
           synchronizedEndBlock:^{
-              [self removeFromHostViewWithSuccess:YES];
+              [self zoomOutAndDismiss];
           }];
     
     // disable more taps

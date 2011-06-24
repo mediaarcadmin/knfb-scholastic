@@ -50,4 +50,7 @@ static NSString * const kSCHProcessingManagerConnectionBusy = @"SCHProcessingMan
 - (BOOL) ISBNisProcessing: (NSString *) isbn;
 - (void) setProcessing: (BOOL) processing forISBN: (NSString *) isbn;
 
+// stop all the processing
+- (void)cancelAllOperations;
+
 @end

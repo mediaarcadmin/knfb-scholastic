@@ -51,10 +51,9 @@
 				<string key="NSFrameSize">{320, 480}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
-				<reference key="NSNextKeyView"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
-					<int key="NSColorSpace">1</int>
-					<bytes key="NSRGB">MSAxIDEAA</bytes>
+					<int key="NSColorSpace">3</int>
+					<bytes key="NSWhite">MAA</bytes>
 				</object>
 				<bool key="IBUIOpaque">NO</bool>
 				<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
@@ -83,7 +82,6 @@
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<object class="IBUIViewController" id="993829877">
 						<object class="IBUINavigationItem" key="IBUINavigationItem" id="348832505">
-							<reference key="IBUINavigationBar"/>
 							<string key="IBUITitle">Home</string>
 							<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						</object>
@@ -373,68 +371,72 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>barSpacer</string>
 							<string>bottomField</string>
-							<string>footerForgotButton</string>
-							<string>headerTitleLabel</string>
-							<string>headerTitleView</string>
-							<string>tableView</string>
-							<string>titleTextLabel</string>
+							<string>containerView</string>
+							<string>loginButton</string>
+							<string>profileLabel</string>
+							<string>scrollView</string>
+							<string>spinner</string>
 							<string>topBar</string>
 							<string>topField</string>
-							<string>topShadow</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>UIBarButtonItem</string>
 							<string>UITextField</string>
+							<string>UIView</string>
 							<string>UIButton</string>
 							<string>UILabel</string>
-							<string>UIView</string>
-							<string>UITableView</string>
-							<string>UILabel</string>
+							<string>UIScrollView</string>
+							<string>UIActivityIndicatorView</string>
 							<string>SCHCustomToolbar</string>
 							<string>UITextField</string>
-							<string>UIImageView</string>
 						</object>
 					</object>
 					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>barSpacer</string>
 							<string>bottomField</string>
-							<string>footerForgotButton</string>
-							<string>headerTitleLabel</string>
-							<string>headerTitleView</string>
-							<string>tableView</string>
-							<string>titleTextLabel</string>
+							<string>containerView</string>
+							<string>loginButton</string>
+							<string>profileLabel</string>
+							<string>scrollView</string>
+							<string>spinner</string>
 							<string>topBar</string>
 							<string>topField</string>
-							<string>topShadow</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<object class="IBToOneOutletInfo">
+								<string key="name">barSpacer</string>
+								<string key="candidateClassName">UIBarButtonItem</string>
+							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">bottomField</string>
 								<string key="candidateClassName">UITextField</string>
 							</object>
 							<object class="IBToOneOutletInfo">
-								<string key="name">footerForgotButton</string>
-								<string key="candidateClassName">UIButton</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">headerTitleLabel</string>
-								<string key="candidateClassName">UILabel</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">headerTitleView</string>
+								<string key="name">containerView</string>
 								<string key="candidateClassName">UIView</string>
 							</object>
 							<object class="IBToOneOutletInfo">
-								<string key="name">tableView</string>
-								<string key="candidateClassName">UITableView</string>
+								<string key="name">loginButton</string>
+								<string key="candidateClassName">UIButton</string>
 							</object>
 							<object class="IBToOneOutletInfo">
-								<string key="name">titleTextLabel</string>
+								<string key="name">profileLabel</string>
 								<string key="candidateClassName">UILabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">scrollView</string>
+								<string key="candidateClassName">UIScrollView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">spinner</string>
+								<string key="candidateClassName">UIActivityIndicatorView</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">topBar</string>
@@ -443,10 +445,6 @@
 							<object class="IBToOneOutletInfo">
 								<string key="name">topField</string>
 								<string key="candidateClassName">UITextField</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">topShadow</string>
-								<string key="candidateClassName">UIImageView</string>
 							</object>
 						</object>
 					</object>
@@ -534,6 +532,17 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">SCHSettingsViewController</string>
 					<string key="superclassName">UIViewController</string>
+					<object class="NSMutableDictionary" key="actions">
+						<string key="NS.key.0">dismissModalSettingsController:</string>
+						<string key="NS.object.0">id</string>
+					</object>
+					<object class="NSMutableDictionary" key="actionInfosByName">
+						<string key="NS.key.0">dismissModalSettingsController:</string>
+						<object class="IBActionInfo" key="NS.object.0">
+							<string key="name">dismissModalSettingsController:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+					</object>
 					<object class="NSMutableDictionary" key="outlets">
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">

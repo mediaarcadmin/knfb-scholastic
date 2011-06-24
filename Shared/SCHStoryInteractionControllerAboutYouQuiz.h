@@ -7,27 +7,26 @@
 //
 
 #import <Foundation/Foundation.h>
+
 #import "SCHStoryInteractionController.h"
 
 @class SCHStoryInteractionProgressView;
 
+@interface SCHStoryInteractionControllerAboutYouQuiz : SCHStoryInteractionController 
+{
+}
 
-@interface SCHStoryInteractionControllerAboutYouQuiz : SCHStoryInteractionController {}
-
-
+@property (nonatomic, retain) IBOutlet UILabel *introductionLabel;
 
 @property (nonatomic, retain) IBOutlet SCHStoryInteractionProgressView *progressView;
-
 @property (nonatomic, retain) IBOutlet UILabel *questionLabel;
+@property (nonatomic, retain) IBOutletCollection(UIButton) NSArray *answerButtons;
 
-@property (nonatomic, retain) IBOutlet UIButton *answerButton1;
-@property (nonatomic, retain) IBOutlet UIButton *answerButton2;
-@property (nonatomic, retain) IBOutlet UIButton *answerButton3;
-@property (nonatomic, retain) IBOutlet UIButton *answerButton4;
-@property (nonatomic, retain) IBOutlet UIButton *answerButton5;
+@property (nonatomic, retain) IBOutlet UILabel *outcomeTitleLabel;
+@property (nonatomic, retain) IBOutlet UILabel *outcomeTextLabel;
 
-
-
+- (IBAction)startButtonTapped:(id)sender;
 - (IBAction)questionButtonTapped:(id)sender;
+- (IBAction)doneButtonTapped:(id)sender;
 
 @end

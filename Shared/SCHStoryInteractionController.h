@@ -51,6 +51,11 @@ typedef enum
 // The current contents view (loaded from a nib)
 @property (nonatomic, retain) UIView *contentsView;
 
+@property (nonatomic, retain) UILabel *titleView;
+
+// setup the title text
+- (void)setupTitle;
+
 // rotation about to occur
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration;
 
@@ -98,11 +103,22 @@ typedef enum
 // cancel any playing or queued audio
 - (void)cancelQueuedAudio;
 
+// cancel any playing or queued audio, but still execute the synchronized blocks for any
+// pending audio items; the blocks will be executed synchronously and immediately
+- (void)cancelQueuedAudioExecutingSynchronizedBlocksImmediately;
+
 // get an image from the XPS provider
 - (UIImage *)imageAtPath:(NSString *)path;
 
 // set the title for the story interaction
 - (void)setTitle:(NSString *)title;
+
+// view is oriented in landscape as expected for story interactions?
+- (BOOL)isLandscape;
+
+// get an affine transform for the current interface orientation; this will translate points
+// in the current view to the expected landscape orientation for story interactions
+- (CGAffineTransform)affineTransformForCurrentOrientation;
 
 #pragma mark - subclass overrides
 

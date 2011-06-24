@@ -33,6 +33,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 @property (nonatomic, retain) UIBarButtonItem *themeButton;
 @property (nonatomic, assign) int moveToValue;
 @property (nonatomic, retain) UIBarButtonItem *currentRightButton;
+@property (nonatomic, assign) BOOL updateSort;
 
 
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation;
@@ -62,6 +63,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 @synthesize moveToValue;
 @synthesize sortType;
 @synthesize currentRightButton;
+@synthesize updateSort;
 
 #pragma mark - Object lifecycle
 
@@ -177,6 +179,10 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
     [super viewWillAppear:animated];
     self.navigationController.navigationBar.barStyle = UIBarStyleBlackOpaque;
     [self setupAssetsForOrientation:self.interfaceOrientation];
+    if (self.updateSort == YES) {
+        self.updateSort = NO;
+        self.books = [self.profileItem allISBNs];
+    }
 }
 
 #pragma mark - Orientation methods
@@ -235,7 +241,8 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer 
 {
-    if (self.sortType == kSCHBookSortTypeUser) {
+    if (self.sortType == kSCHBookSortTypeUser && 
+        [self.profileItem.BookshelfStyle intValue] != kSCHBookshelfStyleYoungChild) {
         [self setEditing:YES animated:YES];
     }
     
@@ -362,6 +369,9 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
     
     SCHReadingViewController *readingController = [self openBook:[self.books objectAtIndex:[indexPath row]]];
     if (readingController != nil) {
+        if (self.sortType == kSCHBookSortTypeLastRead) {
+            self.updateSort = YES;
+        }
         [self.navigationController pushViewController:readingController animated:YES]; 
     }
 }
@@ -437,12 +447,23 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
         return;
     }
     
-	NSLog(@"Calling grid view selection.");
-    
-    SCHReadingViewController *readingController = [self openBook:[self.books objectAtIndex:index]];
-    if (readingController != nil) {
-        [self.navigationController pushViewController:readingController animated:YES]; 
-    }
+    CGRect cellFrame = [aGridView frameForCellAtGridIndex:index];
+    UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    spinner.center = CGPointMake(CGRectGetMidX(cellFrame), CGRectGetMidY(cellFrame));
+    [spinner startAnimating];
+    [aGridView addSubview:spinner];
+
+    dispatch_async(dispatch_get_main_queue(), ^{
+        SCHReadingViewController *readingController = [self openBook:[self.books objectAtIndex:index]];
+        if (readingController != nil) {
+            if (self.sortType == kSCHBookSortTypeLastRead) {
+                self.updateSort = YES;
+            }            
+            [self.navigationController pushViewController:readingController animated:YES]; 
+        }
+        [spinner removeFromSuperview];
+    });
+    [spinner release];
 }
 
 - (SCHReadingViewController *)openBook:(NSString *)isbn

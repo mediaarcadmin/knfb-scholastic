@@ -16,4 +16,7 @@
 
 - (CGAffineTransform)pageTurningViewTransformForPageAtIndex:(NSInteger)pageIndex;
 
+// animate a zoom out to current page and invoke completion when done
+- (void)zoomOutToCurrentPageWithCompletionHandler:(dispatch_block_t)completion;
+
 @end

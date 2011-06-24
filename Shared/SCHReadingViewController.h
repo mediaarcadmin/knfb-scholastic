@@ -36,12 +36,6 @@ typedef enum
 SCHReadingNoteViewDelegate, SCHReadingInteractionsListControllerDelegate, SCHAudioBookPlayerDelegate, UIPopoverControllerDelegate,
 SCHStoryInteractionControllerDelegate, AVAudioPlayerDelegate> 
 {}
-UIView *storyInteractionButtonView;
-
-UIButton *storyInteractionButton;
-
-UISegmentedControl *paperTypePopoverSegmentedControl;
-
 
 
 @property (nonatomic, assign) BOOL youngerMode;
@@ -51,7 +45,6 @@ UISegmentedControl *paperTypePopoverSegmentedControl;
 @property (nonatomic, retain) IBOutlet UIView *leftBarButtonItemContainer;
 @property (nonatomic, retain) IBOutlet UIView *youngerRightBarButtonItemContainer;
 @property (nonatomic, retain) IBOutlet UIView *olderRightBarButtonItemContainer;
-@property (nonatomic, retain) IBOutlet UIView *youngerRightBarButtonItemContainerPad;
 @property (nonatomic, retain) IBOutlet UIButton *backButton;
 @property (nonatomic, retain) IBOutletCollection(UIButton) NSArray *audioButtons;
 @property (nonatomic, retain) IBOutlet UIButton *notesButton;
@@ -77,6 +70,7 @@ UISegmentedControl *paperTypePopoverSegmentedControl;
 
 @property (nonatomic, retain) IBOutlet UIButton *storyInteractionButton;
 @property (nonatomic, retain) IBOutlet UIView *storyInteractionButtonView;
+@property (nonatomic, retain) IBOutlet UIView *youngerToolbarToggleView;
 
 
 -(id)initWithNibName:(NSString *)nibNameOrNil 
@@ -92,6 +86,5 @@ UISegmentedControl *paperTypePopoverSegmentedControl;
 - (IBAction)settingsAction:(UIButton *)sender;
 - (IBAction)popViewController:(id)sender;
 - (IBAction)audioPlayAction:(id)sender;
-- (IBAction)toggleSmartZoom:(id)sender;
 
 @end

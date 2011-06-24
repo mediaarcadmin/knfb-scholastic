@@ -129,9 +129,8 @@
 
 - (void)draggableViewDidStartDrag:(SCHStoryInteractionDraggableView *)draggableView
 {
-    if (![self playingAudio]) {
-        [self playBundleAudioWithFilename:@"sfx_pickup.mp3" completion:nil];
-    }
+    [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
+    [self enqueueAudioWithPath:@"sfx_pickup.mp3" fromBundle:YES];
 }
 
 - (BOOL)draggableView:(SCHStoryInteractionDraggableView *)draggableView shouldSnapFromPosition:(CGPoint)position toPosition:(CGPoint *)snapPosition
@@ -167,7 +166,8 @@
 
     if (!onTarget) {
         [draggableView moveToHomePosition];
-        [self playBundleAudioWithFilename:@"sfx_dropNo.mp3" completion:nil];        
+        [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
+        [self enqueueAudioWithPath:@"sfx_dropNo.mp3" fromBundle:YES];        
     } else if (onTarget.matchTag != draggableView.matchTag) {
         [self.occupiedTargets addObject:onTarget];
         UIImage* oldImage = [imageView.image retain];

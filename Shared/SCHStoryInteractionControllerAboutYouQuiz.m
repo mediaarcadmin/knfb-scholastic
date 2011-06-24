@@ -9,16 +9,21 @@
 #import "SCHStoryInteractionControllerAboutYouQuiz.h"
 #import "SCHStoryInteractionProgressView.h"
 #import "SCHStoryInteractionAboutYouQuiz.h"
+    
+typedef enum {
+	SCHStoryInteractionOpeningScreen,
+    SCHStoryInteractionMainScreen,
+    SCHStoryInteractionOutcomeScreen
+} SCHStoryInteractionScreen;
 
 @interface SCHStoryInteractionControllerAboutYouQuiz ()
 
-@property (nonatomic, retain) NSArray *answerButtons;
 @property (nonatomic, assign) NSInteger currentQuestionIndex;
-
 @property (nonatomic, retain) NSMutableArray *outcomeCounts;
 
-@property (nonatomic, assign) BOOL showTitleView;
-@property (nonatomic, assign) BOOL showResultView;
+- (void)setupOpeningView;
+- (void)setupMainView;
+- (void)setupOutcomeView;
 
 - (void)nextQuestion;
 - (void)setupQuestion;
@@ -30,94 +35,103 @@
 
 @implementation SCHStoryInteractionControllerAboutYouQuiz
 
+@synthesize introductionLabel;
+
 @synthesize progressView;
 @synthesize questionLabel;
-@synthesize answerButton1;
-@synthesize answerButton2;
-@synthesize answerButton3;
-@synthesize answerButton4;
-@synthesize answerButton5;
 @synthesize answerButtons;
 @synthesize currentQuestionIndex;
+
 @synthesize outcomeCounts;
-@synthesize showTitleView;
-@synthesize showResultView;
+@synthesize outcomeTitleLabel;
+@synthesize outcomeTextLabel;
 
 - (void)dealloc
 {
-    [progressView release], progressView = nil;
-    [questionLabel release], questionLabel = nil;
-    [answerButton1 release], answerButton1 = nil;
-    [answerButton2 release], answerButton2 = nil;
-    [answerButton3 release], answerButton3 = nil;
-    [answerButton4 release], answerButton4 = nil;
-    [answerButton5 release], answerButton5 = nil;
+    [introductionLabel release], introductionLabel = nil;
     
+    [progressView release], progressView = nil;
+    [questionLabel release], questionLabel = nil;    
     [answerButtons release], answerButtons = nil;
-    [outcomeCounts release], outcomeCounts = nil;
+    [outcomeCounts release], outcomeCounts = nil;    
+    
+    [outcomeTitleLabel release], outcomeTitleLabel = nil;
+    [outcomeTextLabel release], outcomeTextLabel = nil;
     
     [super dealloc];
 }
 
-
 - (void)setupViewAtIndex:(NSInteger)screenIndex
 {
-    self.showTitleView = YES;
-    self.showResultView = NO;
-    self.answerButtons = [NSArray arrayWithObjects:self.answerButton1, self.answerButton2, self.answerButton3, self.answerButton4, self.answerButton5, nil];
+    switch (screenIndex) {
+        case SCHStoryInteractionOpeningScreen:
+            [self setupOpeningView];
+            break;
+        case SCHStoryInteractionMainScreen:
+            [self setupMainView];
+            break;
+        case SCHStoryInteractionOutcomeScreen:
+            [self setupOutcomeView];
+            break;            
+    }
+}
+
+- (void)setupOpeningView
+{
+    self.introductionLabel.text = [(SCHStoryInteractionAboutYouQuiz *)self.storyInteraction introduction];    
+}
+
+- (void)setupMainView
+{
+    self.answerButtons = [self.answerButtons sortedArrayUsingDescriptors:
+                          [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"tag" ascending:YES]]];
     self.currentQuestionIndex = 0;
     self.progressView.numberOfSteps = [[(SCHStoryInteractionAboutYouQuiz *)self.storyInteraction questions] count];
     
     NSInteger outcomes = [[(SCHStoryInteractionAboutYouQuiz *)self.storyInteraction outcomeMessages] count];
-    
     self.outcomeCounts = [[NSMutableArray alloc] initWithCapacity:outcomes];
-    
+    [self.outcomeCounts release];
     for (NSInteger i = 0; i < outcomes; i++) {
         [self.outcomeCounts addObject:[NSNumber numberWithInt:0]];
     }
-    
-    for (UIButton *button in answerButtons) {
-        button.titleLabel.lineBreakMode = UILineBreakModeWordWrap;
-        button.titleLabel.textAlignment = UITextAlignmentCenter;
+
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        self.titleView.font = [UIFont fontWithName:@"Helvetica Bold" size:15];
+        self.titleView.textAlignment = UITextAlignmentLeft;
     }
+    [self setupQuestion];    
+}
+
+- (void)setupOutcomeView
+{
+    NSArray *splitResult = [[self calculatedResult] componentsSeparatedByString:@". "];
     
-    [self setupQuestion];
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        [self setupTitle];        
+    }
+    self.outcomeTextLabel.text = [NSString stringWithFormat:@"%@.", [splitResult objectAtIndex:0]];
+    self.outcomeTitleLabel.text = ([splitResult count] > 1 ? [splitResult objectAtIndex:1] : @"");
 }
 
 - (void)setupQuestion
 {
-    if (self.showTitleView) {
-        [self.progressView setHidden:YES];
-        self.questionLabel.text = [(SCHStoryInteractionAboutYouQuiz *)self.storyInteraction introduction];
-        
-        [self.answerButton2 setTitle:NSLocalizedString(@"Go", @"Go") forState:UIControlStateNormal];
-        
-        for (NSInteger i = 0; i < [[self answerButtons] count]; i++) {
-            if (i != 1) {
-                [[self.answerButtons objectAtIndex:i] setHidden:YES];
-            }
-        }
-    } else if (self.showResultView) {
-        [self.progressView setHidden:YES];
-        self.questionLabel.text = [self calculatedResult];
-        
-        for (NSInteger i = 0; i < [[self answerButtons] count]; i++) {
-            [[self.answerButtons objectAtIndex:i] setHidden:YES];
-        }
-    } else {
-        [self.progressView setHidden:NO];
-        self.progressView.currentStep = self.currentQuestionIndex;
+    BOOL iPad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
+    
+    self.progressView.currentStep = self.currentQuestionIndex;
+    if (iPad == YES) {
         self.questionLabel.text = [[self currentQuestion] prompt];
-        NSInteger i = 0;
-        for (NSString *answer in [self currentQuestion].answers) {
-            UIButton *button = [self.answerButtons objectAtIndex:i];
-            [button setTitle:answer forState:UIControlStateNormal];
-            [button setHidden:NO];
-            ++i;
-        }
-        for (; i < [self.answerButtons count]; ++i) {
-            [[self.answerButtons objectAtIndex:i] setHidden:YES];
-        }
+    } else {
+        [self setTitle:[[self currentQuestion] prompt]];
+    }
+    NSInteger i = 0;
+    for (NSString *answer in [self currentQuestion].answers) {
+        UIButton *button = [self.answerButtons objectAtIndex:i];
+        [button setTitle:answer forState:UIControlStateNormal];
+        [button setHidden:NO];
+        ++i;
+    }
+    for (; i < [self.answerButtons count]; ++i) {
+        [[self.answerButtons objectAtIndex:i] setHidden:YES];
     }
 }
 
@@ -125,12 +139,11 @@
 {
     self.currentQuestionIndex++;
     if (self.currentQuestionIndex == self.progressView.numberOfSteps) {
-        self.showResultView = YES;
+        [self presentNextView];
+    } else {
+        [self setupQuestion];
     }
-
-    [self setupQuestion];
 }
-
 
 - (SCHStoryInteractionAboutYouQuizQuestion *)currentQuestion
 {
@@ -183,24 +196,27 @@
     return resultMessage;
 }
 
+#pragma mark - Actions
+
+- (IBAction)startButtonTapped:(id)sender
+{
+    [self presentNextView];
+}
 
 - (IBAction)questionButtonTapped:(id)sender
 {
-    if (self.showTitleView) {
-        self.showTitleView = NO;
-        [self setupQuestion];
-    } else {
-        NSNumber *selection = [NSNumber numberWithInt:[self.answerButtons indexOfObject:sender]];
-
-        NSNumber *currentCount = [self.outcomeCounts objectAtIndex:[selection intValue]];
-        
-        currentCount = [NSNumber numberWithInt:[currentCount intValue] + 1];
-        [self.outcomeCounts replaceObjectAtIndex:[selection intValue] withObject:currentCount];
-        
-        [self nextQuestion];
-    }
+    NSNumber *selection = [NSNumber numberWithInt:[self.answerButtons indexOfObject:sender]];
+    NSNumber *currentCount = [self.outcomeCounts objectAtIndex:[selection intValue]];
     
+    currentCount = [NSNumber numberWithInt:[currentCount intValue] + 1];
+    [self.outcomeCounts replaceObjectAtIndex:[selection intValue] withObject:currentCount];
+    
+    [self nextQuestion];
 }
 
+- (IBAction)doneButtonTapped:(id)sender
+{
+    [self removeFromHostViewWithSuccess:YES];
+}
 
 @end

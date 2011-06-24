@@ -114,6 +114,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (NSUInteger)firstPageIndexWithStoryInteractionsOnCurrentPages;
 - (void)setupStoryInteractionButtonForCurrentPagesAnimated:(BOOL)animated;
 - (void)setStoryInteractionButtonVisible:(BOOL)visible animated:(BOOL)animated withSound:(BOOL)sound;
+- (void)presentStoryInteraction:(SCHStoryInteraction *)storyInteraction;
 
 @end
 
@@ -149,6 +150,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 @synthesize paperTypePopoverSegmentedControl;
 @synthesize storyInteractionButton;
 @synthesize storyInteractionButtonView;
+@synthesize youngerToolbarToggleView;
 @synthesize paperTypeSegmentedControl;
 @synthesize notesButton;
 @synthesize storyInteractionsListButton;
@@ -163,7 +165,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 @synthesize leftBarButtonItemContainer;
 @synthesize youngerRightBarButtonItemContainer;
 @synthesize olderRightBarButtonItemContainer;
-@synthesize youngerRightBarButtonItemContainerPad;
 @synthesize backButton;
 @synthesize audioButtons;
 @synthesize scrubberToolbar;
@@ -205,7 +206,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [leftBarButtonItemContainer release], leftBarButtonItemContainer = nil;
     [youngerRightBarButtonItemContainer release], youngerRightBarButtonItemContainer = nil;
     [olderRightBarButtonItemContainer release], olderRightBarButtonItemContainer = nil;
-    [youngerRightBarButtonItemContainerPad release], youngerRightBarButtonItemContainerPad = nil;
     [backButton release], backButton = nil;
     [audioButtons release], audioButtons = nil;
     [notesCountView release], notesCountView = nil;
@@ -229,6 +229,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [paperTypePopoverSegmentedControl release], paperTypePopoverSegmentedControl = nil;
     [storyInteractionButton release], storyInteractionButton = nil;
     [storyInteractionButtonView release], storyInteractionButtonView = nil;
+    [youngerToolbarToggleView release], youngerToolbarToggleView = nil;
     
     if (xpsProvider) {
         [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:isbn];
@@ -377,6 +378,12 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [self startFadeTimer];
 
     
+    if (self.youngerMode) {
+        
+    } else {
+        self.youngerToolbarToggleView.hidden = YES;
+    }
+    
     
     CGFloat containerHeight = CGRectGetHeight(self.navigationController.navigationBar.bounds);
     
@@ -388,19 +395,11 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     
     CGRect rightBarButtonItemFrame = CGRectZero;
     if (self.youngerMode) {
-        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-            rightBarButtonItemFrame = self.youngerRightBarButtonItemContainerPad.frame;
-            rightBarButtonItemFrame.size.height = containerHeight;
-            self.youngerRightBarButtonItemContainerPad.frame = rightBarButtonItemFrame;
-            
-            self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:self.youngerRightBarButtonItemContainerPad] autorelease];
-        } else {
-            rightBarButtonItemFrame = self.youngerRightBarButtonItemContainer.frame;
-            rightBarButtonItemFrame.size.height = containerHeight;
-            self.youngerRightBarButtonItemContainer.frame = rightBarButtonItemFrame;
-            
-            self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:self.youngerRightBarButtonItemContainer] autorelease];
-        }
+        rightBarButtonItemFrame = self.youngerRightBarButtonItemContainer.frame;
+        rightBarButtonItemFrame.size.height = containerHeight;
+        self.youngerRightBarButtonItemContainer.frame = rightBarButtonItemFrame;
+        
+        self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:self.youngerRightBarButtonItemContainer] autorelease];
     } else {
         rightBarButtonItemFrame = self.olderRightBarButtonItemContainer.frame;
         rightBarButtonItemFrame.size.height = containerHeight;
@@ -687,24 +686,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [self pauseAudioPlayback];
 }
 
-- (IBAction)toggleSmartZoom:(id)sender
-{
-    UIButton *smartZoomButton = (UIButton *)sender;
-    [smartZoomButton setSelected:![smartZoomButton isSelected]];
-    
-    if ([smartZoomButton isSelected]) {
-        [self.readingView didEnterSmartZoomMode];
-    } else {
-        [self.readingView didExitSmartZoomMode];
-    }
-
-    if (self.optionsView.superview) {
-        [self.optionsView removeFromSuperview];
-    }
-
-    [self pauseAudioPlayback];
-}
-
 - (IBAction)audioPlayAction:(id)sender
 {
     NSLog(@"Audio Play action");
@@ -896,20 +877,21 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     
     if ([storyInteractions count]) {
         SCHStoryInteraction *storyInteraction = [storyInteractions objectAtIndex:0];
-    
-        self.storyInteractionController = [SCHStoryInteractionController storyInteractionControllerForStoryInteraction:storyInteraction];
-        self.storyInteractionController.isbn = self.isbn;
-        self.storyInteractionController.delegate = self;
-        self.storyInteractionController.xpsProvider = self.xpsProvider;
-        [self.storyInteractionController presentInHostView:self.navigationController.view withInterfaceOrientation:self.interfaceOrientation];
-    
-        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-            [self setToolbarVisibility:NO animated:YES];
-        }
+        [self presentStoryInteraction:storyInteraction];
     }
 
     [self pauseAudioPlayback];
 }
+
+- (IBAction)youngerToolbarButtonAction:(id)sender {
+    // Setting highlight stops the flicker
+    [self pauseAudioPlayback];
+    
+    // Perform this after a delay to allow the button to unhighlight before teh animation starts
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(toggleToolbarVisibility) object:nil];
+    [self performSelector:@selector(toggleToolbarVisibility) withObject:nil afterDelay:0.2f];
+}
+
 
 #pragma mark - Story Interactions methods
 
@@ -1096,6 +1078,22 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     }
     
     return NSUIntegerMax;
+}
+
+- (void)presentStoryInteraction:(SCHStoryInteraction *)storyInteraction
+{
+    NSAssert([self.readingView isKindOfClass:[SCHLayoutView class]], @"can't have story interactions with flow view");
+    [(SCHLayoutView *)self.readingView zoomOutToCurrentPageWithCompletionHandler:^{
+        self.storyInteractionController = [SCHStoryInteractionController storyInteractionControllerForStoryInteraction:storyInteraction];
+        self.storyInteractionController.isbn = self.isbn;
+        self.storyInteractionController.delegate = self;
+        self.storyInteractionController.xpsProvider = self.xpsProvider;
+        [self.storyInteractionController presentInHostView:self.navigationController.view withInterfaceOrientation:self.interfaceOrientation];
+        
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+            [self setToolbarVisibility:NO animated:YES];
+        }
+    }];
 }
 
 #pragma mark - Audio Control
@@ -1448,6 +1446,13 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 // these methods are called from the reading view
 - (void)toggleToolbars
 {
+    // if we're in younger mode, and we're hiding toolbars, ignore the touch
+    if (self.youngerMode && !self.toolbarsVisible) {
+        return;
+    }
+    
+    // if we're in younger mode and we're showing toolbars, hide them
+    // also if we're in older mode, the touch hides and shows.
     [self pauseAudioPlayback];
     [self toggleToolbarVisibility];
 }
@@ -1692,13 +1697,19 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     
     if (self.toolbarsVisible) {
 		[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
+        self.youngerToolbarToggleView.alpha = 0.0f;
+
 	} else {
 		[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+         if (youngerMode) {
+             self.youngerToolbarToggleView.alpha = 1.0f;
+         }
 	}
+    
 
 	if (animated) {
 		[UIView beginAnimations:@"toolbarFade" context:nil];
-		[UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
+		[UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
 		[UIView setAnimationDuration:0.3f];
 		[UIView setAnimationBeginsFromCurrentState:YES];
 	}
@@ -1706,7 +1717,15 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 	if (self.toolbarsVisible) {
         [self.navigationController.navigationBar setAlpha:1.0f];
         [self.scrubberToolbar setAlpha:1.0f];
-        if (!youngerMode) {
+        if (youngerMode) {
+//            CGRect frame = self.youngerToolbarToggleView.frame;
+//            if (frame.origin.y == (self.view.frame.size.height - frame.size.height)) {
+//                // button is at the bottom, move it up
+//                frame.origin.y -= self.scrubberToolbar.frame.size.height;
+//                self.youngerToolbarToggleView.frame = frame;
+//            }
+            //self.youngerToolbarToggleView.alpha = 0.0f;
+        } else {
             [self.olderBottomToolbar setAlpha:1.0f];
         }
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
@@ -1717,7 +1736,15 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 	} else {
         [self.navigationController.navigationBar setAlpha:0.0f];
         [self.scrubberToolbar setAlpha:0.0f];
-        if (!youngerMode) {
+        if (youngerMode) {
+//            CGRect frame = self.youngerToolbarToggleView.frame;
+//            if (frame.origin.y == (self.view.frame.size.height - frame.size.height - self.scrubberToolbar.frame.size.height)) {
+//                // button is at the top, move it up
+//                frame.origin.y += self.scrubberToolbar.frame.size.height;
+//                self.youngerToolbarToggleView.frame = frame;
+//            }
+            self.youngerToolbarToggleView.alpha = 1.0f;
+        } else {
             [self.olderBottomToolbar setAlpha:0.0f];
         }
         
@@ -1727,7 +1754,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         [self.topShadow setAlpha:0.0f];
         [self.bottomShadow setAlpha:0.0f];
 	}
-	
+
+    
 	if (animated) {
 		[UIView commitAnimations];
 	}
@@ -1745,6 +1773,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
             [self setStoryInteractionButtonVisible:YES animated:YES withSound:NO];
         }
     }
+    
     
     if (self.popover) {
         [self.popover dismissPopoverAnimated:YES];
@@ -1898,18 +1927,11 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (void)readingInteractionsView:(SCHReadingInteractionsListController *)interactionsView didSelectInteraction:(NSInteger)interaction
 {
-    NSLog(@"Selected interaction %d.", interaction);
     SCHStoryInteraction *storyInteraction = [[self.bookStoryInteractions allStoryInteractions] objectAtIndex:interaction];
-    self.storyInteractionController = [SCHStoryInteractionController storyInteractionControllerForStoryInteraction:storyInteraction];
-    self.storyInteractionController.isbn = self.isbn;
-    self.storyInteractionController.delegate = self;
-    self.storyInteractionController.xpsProvider = self.xpsProvider;
-    [self.storyInteractionController presentInHostView:self.navigationController.view withInterfaceOrientation:self.interfaceOrientation];
+    [self presentStoryInteraction:storyInteraction];
     
     SCHBookPoint *notePoint = [self.readingView bookPointForLayoutPage:[storyInteraction documentPageNumber] pageWordOffset:0];
     [self.readingView jumpToBookPoint:notePoint animated:YES];
-    
-    [self setToolbarVisibility:NO animated:YES];
 }
 
 #pragma mark - SCHStoryInteractionControllerDelegate methods
@@ -1950,10 +1972,18 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     return [self.readingView pageSnapshot];
 }
 
-- (CGAffineTransform)viewToPageTransformForLayoutPage
+- (CGAffineTransform)viewToPageTransformForLayoutPage:(NSInteger)layoutPage
 {
-    CGAffineTransform pageToView = [(SCHLayoutView *)self.readingView pageTurningViewTransformForPageAtIndex:self.currentPageIndex-1];
-    return CGAffineTransformInvert(pageToView);
+    
+    NSInteger pageIndex = layoutPage - 1;
+    
+    if (pageIndex >= 0) {
+        CGAffineTransform pageToView = [(SCHLayoutView *)self.readingView pageTurningViewTransformForPageAtIndex:layoutPage - 1];
+        return CGAffineTransformInvert(pageToView);
+    } else {
+        NSLog(@"WARNING: viewToPageTransformForLayoutPage requested for pageIndex < 0");
+        return CGAffineTransformIdentity;
+    }
 }
 
 #pragma mark - UIPopoverControllerDelegate methods
