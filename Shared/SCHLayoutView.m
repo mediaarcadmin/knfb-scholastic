@@ -24,7 +24,6 @@
 @interface SCHLayoutView() <EucSelectorDataSource>
 
 @property (nonatomic, retain) EucPageTurningView *pageTurningView;
-@property (nonatomic, retain) UITapGestureRecognizer *doubleTapGestureRecognizer;
 @property (nonatomic, assign) NSUInteger pageCount;
 @property (nonatomic, assign) NSUInteger currentPageIndex;
 @property (nonatomic, assign) CGRect firstPageCrop;
@@ -60,7 +59,6 @@
 @implementation SCHLayoutView
 
 @synthesize pageTurningView;
-@synthesize doubleTapGestureRecognizer;
 @synthesize pageCount;
 @synthesize currentPageIndex;
 @synthesize firstPageCrop;
@@ -76,7 +74,6 @@
 - (void)dealloc
 {
     [pageTurningView release], pageTurningView = nil;
-    [doubleTapGestureRecognizer release], doubleTapGestureRecognizer = nil;
     [pageCropsCache release], pageCropsCache = nil;
     [layoutCacheLock release], layoutCacheLock = nil;
     [currentBlock release], currentBlock = nil;
@@ -139,7 +136,6 @@
     selector = [[EucSelector alloc] init];
     selector.dataSource = self;
     selector.delegate =  self;
-    [selector requireGestureRecognizerToFail:self.doubleTapGestureRecognizer];
     
     [selector attachToView:self];
     [selector addObserver:self forKeyPath:@"tracking" options:0 context:NULL];
@@ -569,39 +565,17 @@
 #pragma mark - Touch handling
 
 - (void)registerGesturesForPageTurningView:(EucPageTurningView *)aPageTurningView;
-{    
-    UITapGestureRecognizer *doubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDoubleTap:)];
-    doubleTap.numberOfTapsRequired = 2;
-    [aPageTurningView addGestureRecognizer:doubleTap];
-   
+{       
     [aPageTurningView.tapGestureRecognizer removeTarget:nil action:nil]; 
     [aPageTurningView.tapGestureRecognizer addTarget:self action:@selector(handleSingleTap:)];
    
-    [aPageTurningView.tapGestureRecognizer requireGestureRecognizerToFail:doubleTap];
-
     aPageTurningView.tapGestureRecognizer.cancelsTouchesInView = NO;
-    
-    self.doubleTapGestureRecognizer = doubleTap;
-    
-    [doubleTap release];
 }
 
 - (void)handleSingleTap:(UITapGestureRecognizer *)sender 
 {     
     if (sender.state == UIGestureRecognizerStateEnded && !self.selector.isTracking) {
         [self.delegate toggleToolbars];
-    }
-}
-
-- (void)handleDoubleTap:(UITapGestureRecognizer *)sender 
-{     
-    if ((sender.state == UIGestureRecognizerStateEnded) && 
-        !self.pageTurningView.animating)
-    {
-        [self zoomAtPoint:[sender locationInView:self]];
-        [self.delegate hideToolbars];
-    } else {
-        [self.delegate toggleToolbars]; 
     }
 }
 
