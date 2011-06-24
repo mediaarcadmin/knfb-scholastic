@@ -70,26 +70,18 @@
             imageButton.actionBlock = ^(SCHImageButton *imageButton) {
                 SCHStoryInteractionStartingLetterQuestion *question = [self questionAtIndex:imageButton.tag - 1]; 
                 if (question != nil) {
+                    [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
                     if ([question isCorrect] == YES) {
-                    [self playAudioAtPath:[(SCHStoryInteractionStartingLetter *)self.storyInteraction audioPathForThatsRight] completion:^{                        
-                        [self playAudioAtPath:[question audioPath] completion:^{
-                            [self playAudioAtPath:[(SCHStoryInteractionStartingLetter *)self.storyInteraction audioPathForStartsWith] completion:^{                        
-                                [self playAudioAtPath:[(SCHStoryInteractionStartingLetter *)self.storyInteraction audioPathForLetter] completion:^{                        
-                                    [self questionsCompleted];
-                                }];                                            
-                            }];                    
-                        }];                    
-                    }];                                  
+                        [self enqueueAudioWithPath:[(SCHStoryInteractionStartingLetter *)self.storyInteraction audioPathForThatsRight] fromBundle:NO];
+                        [self enqueueAudioWithPath:[question audioPath] fromBundle:NO];
+                        [self enqueueAudioWithPath:[(SCHStoryInteractionStartingLetter *)self.storyInteraction audioPathForStartsWith] fromBundle:NO];
+                        [self enqueueAudioWithPath:[(SCHStoryInteractionStartingLetter *)self.storyInteraction audioPathForLetter] fromBundle:NO];
+                        [self questionsCompleted];                         
                     } else {
-                        [self playAudioAtPath:[question audioPath] completion:^{                        
-                            [self playAudioAtPath:[(SCHStoryInteractionStartingLetter *)self.storyInteraction audioPathForDoesntStartWith] completion:^{                        
-                                [self playAudioAtPath:[(SCHStoryInteractionStartingLetter *)self.storyInteraction audioPathForLetter] completion:^{                        
-                                    [self playAudioAtPath:[(SCHStoryInteractionStartingLetter *)self.storyInteraction audioPathForTryAgain] completion:^{                                                            
-                                        [self questionsCompleted];
-                                    }];                                            
-                                }];                                                                                
-                            }];                    
-                        }];                                                          
+                        [self enqueueAudioWithPath:[question audioPath] fromBundle:NO];
+                        [self enqueueAudioWithPath:[(SCHStoryInteractionStartingLetter *)self.storyInteraction audioPathForDoesntStartWith] fromBundle:NO];
+                        [self enqueueAudioWithPath:[(SCHStoryInteractionStartingLetter *)self.storyInteraction audioPathForLetter] fromBundle:NO];
+                        [self enqueueAudioWithPath:[(SCHStoryInteractionStartingLetter *)self.storyInteraction audioPathForTryAgain] fromBundle:NO];
                     }
                 }
             };
@@ -121,9 +113,14 @@
     }
     
     if (ret == YES) {
-        [self playAudioAtPath:[(SCHStoryInteractionStartingLetter *)self.storyInteraction audioPathForYouFoundThemAll] completion:^{
-            [self removeFromHostViewWithSuccess:YES];
-        }];
+        [self setUserInteractionsEnabled:NO];
+        [self enqueueAudioWithPath:[(SCHStoryInteractionStartingLetter *)self.storyInteraction audioPathForYouFoundThemAll]
+                        fromBundle:NO
+                        startDelay:0
+            synchronizedStartBlock:nil
+              synchronizedEndBlock:^{
+                  [self removeFromHostViewWithSuccess:YES];
+              }];
     }
 
     return(ret);
