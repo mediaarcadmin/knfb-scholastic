@@ -24,6 +24,7 @@
 @property (nonatomic, retain) NSMutableArray *audioQueue;
 @property (nonatomic, assign) NSTimeInterval gap;
 @property (nonatomic, retain) AudioItem *currentItem;
+@property (nonatomic, assign) dispatch_queue_t audioDispatchQueue;
 
 - (AVAudioPlayer *)newAudioPlayerWithData:(NSData *)data;
 - (void)playNextItemInQueue;
@@ -36,6 +37,7 @@
 @synthesize audioQueue;
 @synthesize gap;
 @synthesize currentItem;
+@synthesize audioDispatchQueue;
 
 - (void)dealloc
 {
@@ -43,6 +45,7 @@
     [audioPlayer release];
     [audioQueue release];
     [currentItem release];
+    dispatch_release(audioDispatchQueue), audioDispatchQueue = NULL;
     [super dealloc];
 }
 
@@ -50,6 +53,7 @@
 {
     if ((self = [super init])) {
         self.audioQueue = [NSMutableArray array];
+        self.audioDispatchQueue = dispatch_queue_create("com.bitwink.SCHQueuedAudioPlayer", 0);
         self.gap = 0;
     }
     return self;
@@ -124,21 +128,23 @@
         return;
     }
     
-    AVAudioPlayer *player = [self newAudioPlayerWithData:data];
-    player.delegate = self;
-    self.audioPlayer = player;
-    [player release];
-
-    dispatch_block_t playBlock = ^{
-        [self.currentItem executeStartBlock];
-        [self.audioPlayer play];
-    };
-    
-    if (self.currentItem.startDelay > 0) {
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, self.currentItem.startDelay*NSEC_PER_SEC), dispatch_get_main_queue(), playBlock);
-    } else {
-        playBlock();
-    }
+    dispatch_async(self.audioDispatchQueue, ^{
+        AVAudioPlayer *player = [self newAudioPlayerWithData:data];
+        player.delegate = self;
+        self.audioPlayer = player;
+        [player release];
+        
+        dispatch_block_t playBlock = ^{
+            [self.currentItem executeStartBlock];
+            [self.audioPlayer play];
+        };
+        
+        if (self.currentItem.startDelay > 0) {
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, self.currentItem.startDelay*NSEC_PER_SEC), self.audioDispatchQueue, playBlock);
+        } else {
+            playBlock();
+        }
+    });
 }
 
 - (AVAudioPlayer *)newAudioPlayerWithData:(NSData *)data
@@ -169,40 +175,32 @@
 
 - (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
 {
-    // the endBlock could conceivably result in the dealloc of the
-    // player, so retain self until the empty queue check is done
-    [self retain];
-
     dispatch_block_t endBlock = nil;
     if (self.currentItem && self.currentItem.endBlock != nil) {
         endBlock = Block_copy(self.currentItem.endBlock);
     }
     self.currentItem = nil;
-    self.audioPlayer.delegate = nil;
-    self.audioPlayer = nil;
     
-    if (endBlock) {
-        endBlock();
-        Block_release(endBlock);
-    }
+    dispatch_async(self.audioDispatchQueue, ^{
+        self.audioPlayer.delegate = nil;
+        self.audioPlayer = nil;
+        
+        if (endBlock) {
+            dispatch_sync(dispatch_get_main_queue(), endBlock);
+            Block_release(endBlock);
+        }
     
-    // only progress with the queue if the end block did not enqueue a new item
-    if (!self.audioPlayer) {
-        [self playNextItemInQueue];
-    }
-    
-    [self release];
+        // only progress with the queue if the end block did not enqueue a new item
+        if (!self.audioPlayer) {
+            [self playNextItemInQueue];
+        }
+    });
 }
 
 - (void)audioPlayerDecodeErrorDidOccur:(AVAudioPlayer *)player error:(NSError *)error
 {
-	UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") 
-                                                         message:[error localizedDescription]
-                                                        delegate:nil 
-                                               cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-                                               otherButtonTitles:nil]; 
-    [errorAlert show]; 
-    [errorAlert release]; 
+    NSLog(@"audioPlayerDecodeErrorDidOccur: %@", [error localizedDescription]);
+    [self audioPlayerDidFinishPlaying:player successfully:NO];
 }
 
 @end
@@ -226,16 +224,16 @@
 - (void) executeStartBlock
 {
     if (self.startBlock) {
-        self.startBlock();
+        dispatch_async(dispatch_get_main_queue(), self.startBlock);
+        self.startBlock = nil;
     }
-    self.startBlock = nil;
 }
 - (void) executeEndBlock
 {
     if (self.endBlock) {
-        self.endBlock();
+        dispatch_async(dispatch_get_main_queue(), self.endBlock);
+        self.endBlock = nil;
     }
-    self.endBlock = nil;
 }
 
 @end

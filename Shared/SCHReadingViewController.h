@@ -34,7 +34,7 @@ typedef enum
 
 @interface SCHReadingViewController : UIViewController <SCHReadingViewDelegate, SCHReadingNotesListControllerDelegate, 
 SCHReadingNoteViewDelegate, SCHReadingInteractionsListControllerDelegate, SCHAudioBookPlayerDelegate, UIPopoverControllerDelegate,
-SCHStoryInteractionControllerDelegate, AVAudioPlayerDelegate> 
+SCHStoryInteractionControllerDelegate> 
 {}
 
 
