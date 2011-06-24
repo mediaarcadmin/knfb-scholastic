@@ -272,7 +272,7 @@
     NSUInteger blockOffset = bookRange.startPoint.blockOffset;
     NSUInteger wordOffset = bookRange.startPoint.wordOffset;
     
-    NSArray *pageBlocks = [self.textFlow blocksForPageAtIndex:page - 1 includingFolioBlocks:NO];
+    NSArray *pageBlocks = [self.textFlow blocksForPageAtIndex:page - 1 includingFolioBlocks:YES];
     
     if (blockOffset < [pageBlocks count]) {
         NSArray *words = [[pageBlocks objectAtIndex:blockOffset] words];
