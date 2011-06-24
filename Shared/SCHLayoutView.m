@@ -263,9 +263,18 @@
         self.pageCropsCache = [NSMutableDictionary dictionaryWithCapacity:pageCount];
     }
       
-    CGRect cropRect = [self.xpsProvider cropRectForPage:page];
-    if (!CGRectEqualToRect(cropRect, CGRectZero)) {
-        [self.pageCropsCache setObject:[NSValue valueWithCGRect:cropRect] forKey:[NSNumber numberWithInt:page]];
+    // Grab the next 50 pages in one go to stop this interfering with the main thread on each turn
+    int j = page + 50;
+    for (int i = page; i < j; i++) {
+        if (i <= [self pageCount]) {
+            NSValue *pageCropValue = [self.pageCropsCache objectForKey:[NSNumber numberWithInt:i]];
+            if (nil == pageCropValue) {
+                CGRect cropRect = [self.xpsProvider cropRectForPage:i];
+                if (!CGRectEqualToRect(cropRect, CGRectZero)) {
+                    [self.pageCropsCache setObject:[NSValue valueWithCGRect:cropRect] forKey:[NSNumber numberWithInt:i]];
+                }
+            }
+        }
     }
 }
 
