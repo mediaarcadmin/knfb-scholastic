@@ -187,7 +187,11 @@
 
 - (void)attachSelector
 {
-    [self.selector addObserver:self forKeyPath:@"trackingStage" options:NSKeyValueObservingOptionPrior context:NULL];    
+    [self.selector addObserver:self forKeyPath:@"trackingStage" options:NSKeyValueObservingOptionPrior context:NULL];
+    
+    self.selector.magnifiesDuringSelection = NO;
+    self.selector.selectionDelay = 0.2f;
+
     [self configureSelectorForSelectionMode]; 
 }
 
@@ -216,8 +220,6 @@
             break;
     }
     
-    self.selector.magnifiesDuringSelection = NO;
-
 }
 
 - (void)setSelectionMode:(SCHReadingViewSelectionMode)newSelectionMode
