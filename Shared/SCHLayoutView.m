@@ -37,12 +37,11 @@
 @property (nonatomic, copy) dispatch_block_t zoomCompletionHandler;
 
 - (void)initialiseView;
+
 - (CGRect)cropForPage:(NSInteger)page allowEstimate:(BOOL)estimate;
 - (void)jumpToZoomBlock:(id)zoomBlock;
-- (void)registerGesturesForPageTurningView:(EucPageTurningView *)aPageTurningView;
 - (void)zoomToCurrentBlock;
 - (void)zoomOutToCurrentPage;
-- (void)zoomAtPoint:(CGPoint)point ;
 
 - (NSArray *)highlightRangesForCurrentPage;
 - (NSArray *)highlightRectsForPageAtIndex:(NSInteger)pageIndex excluding:(SCHBookRange *)excludedBookmark;
@@ -120,21 +119,33 @@
         
         [self addSubview:pageTurningView];
         
-        [pageTurningView setPageTexture:[UIImage imageNamed: @"paper-white.png"] isDark:NO];
         [pageTurningView turnToPageAtIndex:0 animated:NO];
-       // [pageTurningView waitForAllPageImagesToBeAvailable];
-        
-        [self registerGesturesForPageTurningView:pageTurningView];
-        
-        selector = [[EucSelector alloc] init];
-        selector.shouldTrackSingleTapsOnHighights = NO;
-        selector.dataSource = self;
-        selector.delegate =  self;
-        selector.magnifiesDuringSelection = NO;
-        [selector attachToView:self];
-        [selector addObserver:self forKeyPath:@"tracking" options:0 context:NULL];
-        [selector addObserver:self forKeyPath:@"trackingStage" options:NSKeyValueObservingOptionPrior context:NULL];
+                
+        [self attachSelector];
     }    
+}
+
+- (void)attachSelector
+{
+    selector = [[EucSelector alloc] init];
+    selector.dataSource = self;
+    selector.delegate =  self;
+    
+    [selector attachToView:self];
+    [selector addObserver:self forKeyPath:@"tracking" options:0 context:NULL];
+    
+    [super attachSelector];
+}
+
+- (void)detachSelector
+{
+    [super detachSelector];
+    
+    if (selector) {
+        [selector removeObserver:self forKeyPath:@"tracking"];
+        [selector detatch];
+        [selector release], selector = nil;
+    }
 }
 
 - (id)initWithFrame:(CGRect)frame isbn:(id)isbn delegate:(id<SCHReadingViewDelegate>)delegate
@@ -180,12 +191,7 @@
 - (void)willMoveToSuperview:(UIView *)newSuperview
 {
     if (!newSuperview) {
-        if (selector) {
-            [selector removeObserver:self forKeyPath:@"tracking"];
-            [selector removeObserver:self forKeyPath:@"trackingStage"];
-            [selector detatch];
-            [selector release], selector = nil;
-        }
+        [self detachSelector];
     } else {
         [self.delegate readingViewWillAppear:self];
     }
@@ -470,12 +476,7 @@
 
 - (NSArray *)pageTurningView:(EucPageTurningView *)pageTurningView highlightsForPageAtIndex:(NSUInteger)pageIndex
 {
-    
-    EucSelectorRange *selectedRange = [self.selector selectedRange];
-    NSArray *excludedRanges = [self bookRangesFromSelectorRange:selectedRange];
-    
-    // MATT FIXME
-    return [self highlightRectsForPageAtIndex:pageIndex excluding:[excludedRanges lastObject]];
+    return [self highlightRectsForPageAtIndex:pageIndex excluding:nil];
 }
 
 - (NSUInteger)pageTurningView:(EucPageTurningView *)pageTurningView pageCountBeforePageAtIndex:(NSUInteger)pageIndex
@@ -550,82 +551,25 @@
     }
 }
 
-#pragma mark - Touch handling
-
-- (void)registerGesturesForPageTurningView:(EucPageTurningView *)aPageTurningView;
-{    
-    UITapGestureRecognizer *doubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDoubleTap:)];
-    doubleTap.numberOfTapsRequired = 2;
-    [aPageTurningView addGestureRecognizer:doubleTap];
-   
-    [aPageTurningView.tapGestureRecognizer removeTarget:nil action:nil]; 
-    [aPageTurningView.tapGestureRecognizer addTarget:self action:@selector(handleSingleTap:)];
-   
-    [aPageTurningView.tapGestureRecognizer requireGestureRecognizerToFail:doubleTap];
-
-    aPageTurningView.tapGestureRecognizer.cancelsTouchesInView = NO;
-    
-    [doubleTap release];
-}
-
-- (void)handleSingleTap:(UITapGestureRecognizer *)sender 
-{     
-    if (sender.state == UIGestureRecognizerStateEnded && !self.selector.isTracking) {
-        [self.delegate toggleToolbars];
-    }
-}
-
-- (void)handleDoubleTap:(UITapGestureRecognizer *)sender 
-{     
-    if ((sender.state == UIGestureRecognizerStateEnded) && 
-        !self.pageTurningView.animating)
-    {
-        [self zoomAtPoint:[sender locationInView:self]];
-        [self.delegate hideToolbars];
-    } else {
-        [self.delegate toggleToolbars]; 
-    }
-}
-
-- (void)zoomAtPoint:(CGPoint)point 
+- (CGFloat)pageTurningView:(EucPageTurningView *)pageTurningView tapTurnMarginForPageAtIndex:(NSUInteger)index
 {
-    EucPageTurningView *myPageTurningView = self.pageTurningView;
-    
-    CGFloat currentZoomFactor = myPageTurningView.zoomFactor;
-    CGFloat minZoomFactor = myPageTurningView.fitToBoundsZoomFactor;
-    CGFloat doubleFitToBoundsZoomFactor = minZoomFactor * 2;
+    return 0;
+}
 
-    if (currentZoomFactor < doubleFitToBoundsZoomFactor) {
-        CGPoint offset = CGPointMake((CGRectGetMidX(myPageTurningView.bounds) - point.x) * doubleFitToBoundsZoomFactor, (CGRectGetMidY(myPageTurningView.bounds) - point.y) * doubleFitToBoundsZoomFactor); 
-            [myPageTurningView setTranslation:offset zoomFactor:doubleFitToBoundsZoomFactor animated:YES];
-    } else {
-        [self zoomOutToCurrentPage];
-    }
- 
+- (void)pageTurningView:(EucPageTurningView *)pageTurningView unhandledTapAtPoint:(CGPoint)point;
+{
+    [self unhandledTapAtPoint:point];
 }
 
 #pragma mark - Rotation
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-    if(self.selector) {
-        [self.selector removeObserver:self forKeyPath:@"tracking"];
-        [self.selector removeObserver:self forKeyPath:@"trackingStage"];
-        [self.selector detatch];
-        self.selector = nil;
-    }
+    [self detachSelector];
 	self.temporaryHighlightRange = nil;
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
-    selector = [[EucSelector alloc] init];
-    selector.shouldTrackSingleTapsOnHighights = NO;
-    selector.dataSource = self;
-    selector.delegate =  self;
-    selector.magnifiesDuringSelection = NO;
-
-    [selector attachToView:self];
-    [selector addObserver:self forKeyPath:@"tracking" options:0 context:NULL];
-    [selector addObserver:self forKeyPath:@"trackingStage" options:NSKeyValueObservingOptionPrior context:NULL];
+    [self attachSelector];
 }
 
 #pragma mark - Highlights
@@ -634,6 +578,15 @@
 {
     [self.pageTurningView refreshHighlightsForPageAtIndex:index];
     [self.pageTurningView setNeedsDraw];
+}
+
+- (void)refreshPageTurningViewImmediately:(BOOL)immediately
+{
+    if (immediately) {
+        [self.pageTurningView drawView];
+    } else {
+        [self.pageTurningView setNeedsDraw];
+    }
 }
 
 - (NSArray *)highlightRangesForCurrentPage {

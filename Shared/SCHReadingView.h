@@ -93,7 +93,13 @@ typedef enum
 - (void)addHighlightWithSelection:(EucSelectorRange *)selectorRange;
 - (void)deleteHighlightWithSelection:(EucSelectorRange *)selectorRange;
 - (void)refreshHighlightsForPageAtIndex:(NSUInteger)index;
+- (void)refreshPageTurningViewImmediately:(BOOL)immediately;
+
+- (void)attachSelector;
+- (void)detachSelector;
 - (void)dismissSelector;
+
+- (void)unhandledTapAtPoint:(CGPoint)point;
 
 - (EucSelectorRange *)selectorRangeFromBookRange:(SCHBookRange *)range;
 - (NSArray *)bookRangesFromSelectorRange:(EucSelectorRange *)selectorRange;

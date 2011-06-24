@@ -22,6 +22,7 @@
 #import <libEucalyptus/EucHighlightRange.h>
 #import <libEucalyptus/THPair.h>
 #import <libEucalyptus/EucConfiguration.h>
+#import <libEucalyptus/EucOTFIndex.h>
 
 @interface SCHFlowView ()
 
@@ -47,8 +48,6 @@
 {
     if((eucBookView = [[EucBookView alloc] initWithFrame:self.bounds book:self.eucBook])) {
         eucBookView.delegate = self;
-        eucBookView.allowsSelection = YES;
-        eucBookView.selectorDelegate = self;
         eucBookView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         eucBookView.vibratesOnInvalidTurn = NO;
         eucBookView.allowsTapTurn = NO;
@@ -56,11 +55,17 @@
         [self addSubview:eucBookView];  
         
         [self.delegate readingViewWillAppear:self];
+        [[NSNotificationCenter defaultCenter] addObserver:self 
+                                                 selector:@selector(paginationComplete:) 
+                                                     name:EucOTFIndexPaginationCompleteNotification 
+                                                   object:nil];	
     }
 }
 
 - (void)dealloc
-{    
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
     if(paragraphSource) {
         [paragraphSource release], paragraphSource = nil;
         [[SCHBookManager sharedBookManager] checkInParagraphSourceForBookIdentifier:self.isbn];   
@@ -90,13 +95,30 @@
     return self;
 }
 
+- (void)attachSelector
+{
+    eucBookView.allowsSelection = YES;
+    eucBookView.selectorDelegate = self;
+    
+    [super attachSelector];
+}
+
+- (void)detachSelector
+{
+    [super detachSelector];
+
+    eucBookView.allowsSelection = NO;
+    eucBookView.selectorDelegate = nil;
+
+}
+
 - (void)willMoveToWindow:(UIWindow *)newWindow 
 {
     [super willMoveToWindow:newWindow];
     
     // The selector observer must be dealloced here before the selector is torn down inside eucbookview
     if (newWindow == nil) {
-        [self.eucBookView.selector removeObserver:self forKeyPath:@"trackingStage"];
+        [self detachSelector];
         [self.eucBookView removeObserver:self forKeyPath:@"currentPageIndexPoint"];
         self.eucBookView = nil;
 
@@ -117,8 +139,7 @@
         // This needs to be done here to add the observer after the willMoveToWindow code in
         // eucBookView which sets the page count
         [self.eucBookView addObserver:self forKeyPath:@"currentPageIndexPoint" options:NSKeyValueObservingOptionInitial context:NULL];
-        [self.eucBookView.selector addObserver:self forKeyPath:@"trackingStage" options:NSKeyValueObservingOptionPrior context:NULL];
-        [self.eucBookView.selector setMagnifiesDuringSelection:NO];
+        [self attachSelector];
     }
 }
 
@@ -167,17 +188,22 @@
     
     if ([keyPath isEqualToString:@"currentPageIndexPoint"]) {
         if ((self.eucBookView.pageCount != 0) && (self.eucBookView.pageCount != -1)) {
-            [self.delegate readingView:self hasMovedToPageAtIndex:eucBookView.currentPageIndex];
+            [self.delegate readingView:self hasMovedToPageAtIndex:self.eucBookView.currentPageIndex];
         } else {
-            CGFloat progress = [self.eucBook estimatedPercentageForIndexPoint:eucBookView.currentPageIndexPoint];
+            CGFloat progress = [self.eucBook estimatedPercentageForIndexPoint:self.eucBookView.currentPageIndexPoint];
             [self.delegate readingView:self hasMovedToProgressPositionInBook:progress];
         }
     }
 }
 
+- (void)paginationComplete:(NSNotification *)notification
+{
+    [self.delegate readingView:self hasMovedToPageAtIndex:self.eucBookView.currentPageIndex];
+}
+
 - (void)bookView:(EucBookView *)bookView unhandledTapAtPoint:(CGPoint)point
 {
-    [self.delegate toggleToolbars];
+    [self unhandledTapAtPoint:point];
 }
 
 - (void)bookViewPageTurnWillBegin:(EucBookView *)bookView
@@ -260,6 +286,15 @@
 {
     // Just refresh them all even if it is called on multiple pages in flow view
     [self.eucBookView refreshHighlights];
+}
+
+- (void)refreshPageTurningViewImmediately:(BOOL)immediately
+{
+    if (immediately) {
+        [self.eucBookView.pageTurningView drawView];
+    } else {
+        [self.eucBookView.pageTurningView setNeedsDraw];
+    }
 }
 
 - (SCHBookRange *)bookRangeFromSelectorRange:(EucSelectorRange *)selectorRange
