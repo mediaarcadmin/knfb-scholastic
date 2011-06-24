@@ -191,7 +191,7 @@
         }
     
         // only progress with the queue if the end block did not enqueue a new item
-        if (!self.audioPlayer) {
+        if (!self.currentItem) {
             [self playNextItemInQueue];
         }
     });

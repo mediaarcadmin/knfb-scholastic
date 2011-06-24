@@ -146,4 +146,8 @@ typedef enum
 // with great power comes great responsibility - use carefully!
 - (void)setUserInteractionsEnabled:(BOOL)enabled;
 
+// The user tapped the play audio button in the top right corner; default behaviour is
+// to repeat the question defined by [self audioPathForQuestion].
+- (IBAction)playAudioButtonTapped:(id)sender;
+
 @end

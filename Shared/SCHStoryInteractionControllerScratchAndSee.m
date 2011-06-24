@@ -26,6 +26,7 @@ static const NSInteger kSCHScratchPointCount = 200;
 - (void)wrongAnswer:(NSInteger) selection;
 
 - (void)setProgressViewForScratchCount: (NSInteger) scratchCount;
+- (void)askQuestion;
 
 @end
 
@@ -101,6 +102,16 @@ static const NSInteger kSCHScratchPointCount = 200;
     return !completed && self.currentQuestionIndex == 0;
 }
 
+- (void)playAudioButtonTapped:(id)sender
+{
+    if (self.askingQuestions) {
+        [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
+        [self askQuestion];
+    } else {
+        [super playAudioButtonTapped:sender];
+    }
+}
+
 - (void)setupQuestion
 {
     BOOL iPad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
@@ -167,6 +178,24 @@ static const NSInteger kSCHScratchPointCount = 200;
 
 }
 
+- (void)askQuestion
+{
+    [self enqueueAudioWithPath:[(SCHStoryInteractionScratchAndSee *)self.storyInteraction whatDoYouSeeAudioPath] fromBundle:NO];
+    
+    for (NSInteger i = 0; i < 3; ++i) {
+        UIButton *button = [self.answerButtons objectAtIndex:i];
+        [self enqueueAudioWithPath:[[self currentQuestion] audioPathForAnswerAtIndex:i]
+                        fromBundle:NO
+                        startDelay:0.5
+            synchronizedStartBlock:^{
+                [button setHighlighted:YES];
+            }
+              synchronizedEndBlock:^{
+                  [button setHighlighted:NO];
+              }];
+    }
+}
+
 - (void)nextQuestion
 {
     [self removeFromHostViewWithSuccess:YES];
@@ -190,8 +219,8 @@ static const NSInteger kSCHScratchPointCount = 200;
     }
 }
 
-- (void)correctAnswer:(NSInteger) selection{
-    NSLog(@"Correct answer.");
+- (void)correctAnswer:(NSInteger) selection
+{
     [self setUserInteractionsEnabled:NO];
     
     for (int i = 0; i < [self.answerButtons count]; i++) {
@@ -204,40 +233,34 @@ static const NSInteger kSCHScratchPointCount = 200;
         
     [self.scratchView setShowFullImage:YES];
     
-    [self playBundleAudioWithFilename:[self.storyInteraction storyInteractionCorrectAnswerSoundFilename]
-                           completion:^{
-                               [self playAudioAtPath:[[self currentQuestion] audioPathForAnswerAtIndex:selection]
-                                          completion:^{
-                                              [self playAudioAtPath:[self.storyInteraction audioPathForThatsRight]
-                                                         completion:^{
-                                                             [self playAudioAtPath:[[self currentQuestion] correctAnswerAudioPath]
-                                                                        completion:^{
-                                                                            [self setUserInteractionsEnabled:YES];
-                                                                            [self nextQuestion];
-                                                                        }];
-                                                         }];
-                                          }];
-                           }];
-    
+    [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
+    [self enqueueAudioWithPath:[self.storyInteraction storyInteractionCorrectAnswerSoundFilename] fromBundle:YES];
+    [self enqueueAudioWithPath:[[self currentQuestion] audioPathForAnswerAtIndex:selection] fromBundle:NO];
+    [self enqueueAudioWithPath:[[self currentQuestion] correctAnswerAudioPath]
+                    fromBundle:NO
+                    startDelay:0
+        synchronizedStartBlock:nil
+          synchronizedEndBlock:^{
+              [self setUserInteractionsEnabled:YES];
+              [self nextQuestion];
+          }];
 }
 
-- (void)wrongAnswer:(NSInteger) selection {
-    NSLog(@"Wrong answer.");
-    [self setUserInteractionsEnabled:NO];
-
-    [(UIButton *) [self.answerButtons objectAtIndex:selection] setSelected:YES];
+- (void)wrongAnswer:(NSInteger) selection
+{
+    UIButton *button = (UIButton *) [self.answerButtons objectAtIndex:selection];
+    [button setSelected:YES];
     
-    [self playBundleAudioWithFilename:[self.storyInteraction storyInteractionWrongAnswerSoundFilename]
-                           completion:^{
-                               [self playAudioAtPath:[[self currentQuestion] audioPathForAnswerAtIndex:selection]
-                                          completion:^{
-                                              [self playAudioAtPath:[[self currentQuestion] audioPathForIncorrectAnswer]
-                                                         completion:^{
-                                                             [(UIButton *) [self.answerButtons objectAtIndex:selection] setSelected:NO];
-                                                             [self setUserInteractionsEnabled:YES];
-                                                         }];
-                                          }];
-                           }];
+    [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
+    [self enqueueAudioWithPath:[self.storyInteraction storyInteractionWrongAnswerSoundFilename] fromBundle:YES];
+    [self enqueueAudioWithPath:[[self currentQuestion] audioPathForAnswerAtIndex:selection] fromBundle:NO];
+    [self enqueueAudioWithPath:[[self currentQuestion] audioPathForIncorrectAnswer]
+                    fromBundle:NO
+                    startDelay:0
+        synchronizedStartBlock:nil
+          synchronizedEndBlock:^{
+              [button setSelected:NO];
+          }];
 }
 
 - (void)setProgressViewForScratchCount: (NSInteger) scratchCount
@@ -257,49 +280,22 @@ static const NSInteger kSCHScratchPointCount = 200;
     if (points > kSCHScratchPointCount && !self.askingQuestions) {
         self.askingQuestions = YES;
         self.progressView.hidden = YES;
-        aScratchView.interactionEnabled = NO;
-
         [self setupQuestion];
-        [self enqueueAudioWithPath:[(SCHStoryInteractionScratchAndSee *)self.storyInteraction scratchingCompleteSoundEffectFilename] 
+
+        [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
+        [self enqueueAudioWithPath:[(SCHStoryInteractionScratchAndSee *)self.storyInteraction scratchingCompleteSoundEffectFilename]
                         fromBundle:YES
                         startDelay:0
-            synchronizedStartBlock:^{
-                [self setUserInteractionsEnabled:NO];
-            }
-              synchronizedEndBlock:nil];
-        [self enqueueAudioWithPath:[(SCHStoryInteractionScratchAndSee *)self.storyInteraction whatDoYouSeeAudioPath]
-                        fromBundle:NO
-                        startDelay:0
             synchronizedStartBlock:nil
-              synchronizedEndBlock:nil];
-        
-        for (NSInteger i = 0; i < 3; ++i) {
-            UIButton *button = [self.answerButtons objectAtIndex:i];
-            [self enqueueAudioWithPath:[[self currentQuestion] audioPathForAnswerAtIndex:i]
-                            fromBundle:NO
-                            startDelay:0.5
-                synchronizedStartBlock:^{
-                    [button setHighlighted:YES];
-                }
-                  synchronizedEndBlock:^{
-                      [button setHighlighted:NO];
-                      
-                      if (i == 2) {
-                          [self setUserInteractionsEnabled:YES];
-                      }
-                      
-                  }];
-        }
+              synchronizedEndBlock:^{
+                  [self askQuestion];
+              }];
     } else {
-        self.askingQuestions = NO;
-        aScratchView.interactionEnabled = YES;
-        
         [self setProgressViewForScratchCount:points];
         
         if (points % 15 == 0) {
             if (![self playingAudio]) {
-                [self playBundleAudioWithFilename:[(SCHStoryInteractionScratchAndSee *)self.storyInteraction scratchSoundEffectFilename] 
-                                       completion:^{}];
+                [self enqueueAudioWithPath:[(SCHStoryInteractionScratchAndSee *)self.storyInteraction scratchSoundEffectFilename] fromBundle:YES];
             }
         }
     }
