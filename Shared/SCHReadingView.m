@@ -29,6 +29,7 @@
 @property (nonatomic, retain) EucSelectorRange *singleWordSelectorRange;
 @property (nonatomic, assign) BOOL createHighlightFromSelection;
 
+- (void)configureSelectorForSelectionMode;
 - (void)selectorWillBeginSelecting;
 - (void)selectorDidBeginSelectingWithSelection:(EucSelectorRange *)selectorRange;
 - (void)selectorDidEndSelectingWithSelection:(EucSelectorRange *)selectorRange;
@@ -184,19 +185,46 @@
 
 #pragma mark - Selector
 
+- (void)attachSelector
+{
+    [self.selector addObserver:self forKeyPath:@"trackingStage" options:NSKeyValueObservingOptionPrior context:NULL];    
+    [self configureSelectorForSelectionMode]; 
+}
+
+- (void)detachSelector
+{
+    [self.selector removeObserver:self forKeyPath:@"trackingStage"];
+}
+
+- (void)configureSelectorForSelectionMode
+{
+    switch (self.selectionMode) {
+        case SCHReadingViewSelectionModeYoungerDictionary:
+            self.selector.shouldTrackSingleTaps = YES;
+            self.selector.allowsAdjustment = NO;
+            break;
+        case SCHReadingViewSelectionModeOlderDictionary:
+            self.selector.shouldTrackSingleTaps = NO;
+            self.selector.allowsAdjustment = NO;
+            break;
+        case SCHReadingViewSelectionModeHighlights:
+            self.selector.shouldTrackSingleTaps = NO;
+            self.selector.allowsAdjustment = YES;
+        default:
+            self.selector.shouldTrackSingleTaps = NO;
+            self.selector.allowsAdjustment = YES;
+            break;
+    }
+    
+    self.selector.magnifiesDuringSelection = NO;
+
+}
+
 - (void)setSelectionMode:(SCHReadingViewSelectionMode)newSelectionMode
 {
     if(newSelectionMode != selectionMode) {
-        switch (newSelectionMode) {
-            case SCHReadingViewSelectionModeYoungerDictionary:
-            case SCHReadingViewSelectionModeOlderDictionary:
-                self.selector.allowsAdjustment = NO;
-                break;
-            case SCHReadingViewSelectionModeHighlights:
-                self.selector.allowsAdjustment = YES;
-                break;
-        }
         selectionMode = newSelectionMode;
+        [self configureSelectorForSelectionMode];
     }
 }
 

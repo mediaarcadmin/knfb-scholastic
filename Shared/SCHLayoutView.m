@@ -38,6 +38,7 @@
 @property (nonatomic, copy) dispatch_block_t zoomCompletionHandler;
 
 - (void)initialiseView;
+
 - (CGRect)cropForPage:(NSInteger)page allowEstimate:(BOOL)estimate;
 - (void)jumpToZoomBlock:(id)zoomBlock;
 - (void)registerGesturesForPageTurningView:(EucPageTurningView *)aPageTurningView;
@@ -129,19 +130,32 @@
         
         [self registerGesturesForPageTurningView:pageTurningView];
         
-        selector = [[EucSelector alloc] init];
-        selector.dataSource = self;
-        selector.delegate =  self;
-        selector.allowsAdjustment = NO;
-        selector.allowsInitialDragSelection = YES;
-        selector.magnifiesDuringSelection = NO;
-        selector.shouldTrackSingleTaps = YES;
-        [selector requireGestureRecognizerToFail:self.doubleTapGestureRecognizer];
-        
-        [selector attachToView:self];
-        [selector addObserver:self forKeyPath:@"tracking" options:0 context:NULL];
-        [selector addObserver:self forKeyPath:@"trackingStage" options:NSKeyValueObservingOptionPrior context:NULL];
+        [self attachSelector];
     }    
+}
+
+- (void)attachSelector
+{
+    selector = [[EucSelector alloc] init];
+    selector.dataSource = self;
+    selector.delegate =  self;
+    [selector requireGestureRecognizerToFail:self.doubleTapGestureRecognizer];
+    
+    [selector attachToView:self];
+    [selector addObserver:self forKeyPath:@"tracking" options:0 context:NULL];
+    
+    [super attachSelector];
+}
+
+- (void)detachSelector
+{
+    [super detachSelector];
+    
+    if (selector) {
+        [selector removeObserver:self forKeyPath:@"tracking"];
+        [selector detatch];
+        [selector release], selector = nil;
+    }
 }
 
 - (id)initWithFrame:(CGRect)frame isbn:(id)isbn delegate:(id<SCHReadingViewDelegate>)delegate
@@ -187,12 +201,7 @@
 - (void)willMoveToSuperview:(UIView *)newSuperview
 {
     if (!newSuperview) {
-        if (selector) {
-            [selector removeObserver:self forKeyPath:@"tracking"];
-            [selector removeObserver:self forKeyPath:@"trackingStage"];
-            [selector detatch];
-            [selector release], selector = nil;
-        }
+        [self detachSelector];
     } else {
         [self.delegate readingViewWillAppear:self];
     }
@@ -616,28 +625,12 @@
 #pragma mark - Rotation
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-    if(self.selector) {
-        [self.selector removeObserver:self forKeyPath:@"tracking"];
-        [self.selector removeObserver:self forKeyPath:@"trackingStage"];
-        [self.selector detatch];
-        self.selector = nil;
-    }
+    [self detachSelector];
 	self.temporaryHighlightRange = nil;
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
-    selector = [[EucSelector alloc] init];
-    selector.dataSource = self;
-    selector.delegate =  self;
-    selector.allowsAdjustment = NO;
-    selector.allowsInitialDragSelection = YES;
-    selector.magnifiesDuringSelection = NO;
-    selector.shouldTrackSingleTaps = YES;
-    [selector requireGestureRecognizerToFail:self.doubleTapGestureRecognizer];
-
-    [selector attachToView:self];
-    [selector addObserver:self forKeyPath:@"tracking" options:0 context:NULL];
-    [selector addObserver:self forKeyPath:@"trackingStage" options:NSKeyValueObservingOptionPrior context:NULL];
+    [self attachSelector];
 }
 
 #pragma mark - Highlights

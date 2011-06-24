@@ -47,8 +47,6 @@
 {
     if((eucBookView = [[EucBookView alloc] initWithFrame:self.bounds book:self.eucBook])) {
         eucBookView.delegate = self;
-        eucBookView.allowsSelection = YES;
-        eucBookView.selectorDelegate = self;
         eucBookView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         eucBookView.vibratesOnInvalidTurn = NO;
         eucBookView.allowsTapTurn = NO;
@@ -90,13 +88,30 @@
     return self;
 }
 
+- (void)attachSelector
+{
+    eucBookView.allowsSelection = YES;
+    eucBookView.selectorDelegate = self;
+    
+    [super attachSelector];
+}
+
+- (void)detachSelector
+{
+    [super detachSelector];
+
+    eucBookView.allowsSelection = NO;
+    eucBookView.selectorDelegate = nil;
+
+}
+
 - (void)willMoveToWindow:(UIWindow *)newWindow 
 {
     [super willMoveToWindow:newWindow];
     
     // The selector observer must be dealloced here before the selector is torn down inside eucbookview
     if (newWindow == nil) {
-        [self.eucBookView.selector removeObserver:self forKeyPath:@"trackingStage"];
+        [self detachSelector];
         [self.eucBookView removeObserver:self forKeyPath:@"currentPageIndexPoint"];
         self.eucBookView = nil;
 
@@ -117,8 +132,7 @@
         // This needs to be done here to add the observer after the willMoveToWindow code in
         // eucBookView which sets the page count
         [self.eucBookView addObserver:self forKeyPath:@"currentPageIndexPoint" options:NSKeyValueObservingOptionInitial context:NULL];
-        [self.eucBookView.selector addObserver:self forKeyPath:@"trackingStage" options:NSKeyValueObservingOptionPrior context:NULL];
-        [self.eucBookView.selector setMagnifiesDuringSelection:NO];
+        [self attachSelector];
     }
 }
 
