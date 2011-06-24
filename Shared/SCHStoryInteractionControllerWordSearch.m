@@ -87,20 +87,27 @@
         [label setStrikedOut:YES];
         [containerView addPermanentHighlightFromCurrentSelectionWithColor:label.strikeOutColor];
         [containerView clearSelection];
-        [self playAudioAtPath:[wordSearch audioPathForCorrectAnswer]
-                   completion:^{
-                       if ([self.remainingWords count] == 0) {
-                           [self playAudioAtPath:[wordSearch audioPathForYouFoundThemAll]
-                                      completion:^{
-                                          [self removeFromHostViewWithSuccess:YES];
-                                      }];
-                       }
-                   }];
+        [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
+        [self enqueueAudioWithPath:[wordSearch audioPathForCorrectAnswer] fromBundle:NO];
+        if ([self.remainingWords count] == 0) {
+            [containerView setUserInteractionEnabled:NO];
+            [self enqueueAudioWithPath:[wordSearch audioPathForYouFoundThemAll]
+                            fromBundle:NO
+                            startDelay:0
+                synchronizedStartBlock:nil
+                  synchronizedEndBlock:^{
+                      [self removeFromHostViewWithSuccess:YES];
+                  }];
+        }
     } else if (index == NSNotFound) {
-        [self playAudioAtPath:[wordSearch audioPathForIncorrectAnswer]
-                   completion:^{
-                       [containerView clearSelection];
-                   }];
+        [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
+        [self enqueueAudioWithPath:[wordSearch audioPathForIncorrectAnswer]
+                        fromBundle:NO
+                        startDelay:0
+            synchronizedStartBlock:nil
+              synchronizedEndBlock:^{
+                  [containerView clearSelection];
+              }];
     } else {
         // just ignore reselection of an answer already found
         [containerView clearSelection];
