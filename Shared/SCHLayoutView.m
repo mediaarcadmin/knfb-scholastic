@@ -40,10 +40,8 @@
 
 - (CGRect)cropForPage:(NSInteger)page allowEstimate:(BOOL)estimate;
 - (void)jumpToZoomBlock:(id)zoomBlock;
-- (void)registerGesturesForPageTurningView:(EucPageTurningView *)aPageTurningView;
 - (void)zoomToCurrentBlock;
 - (void)zoomOutToCurrentPage;
-- (void)zoomAtPoint:(CGPoint)point ;
 
 - (NSArray *)highlightRangesForCurrentPage;
 - (NSArray *)highlightRectsForPageAtIndex:(NSInteger)pageIndex excluding:(SCHBookRange *)excludedBookmark;
@@ -121,12 +119,8 @@
         
         [self addSubview:pageTurningView];
         
-        [pageTurningView setPageTexture:[UIImage imageNamed: @"paper-white.png"] isDark:NO];
         [pageTurningView turnToPageAtIndex:0 animated:NO];
-       // [pageTurningView waitForAllPageImagesToBeAvailable];
-        
-        [self registerGesturesForPageTurningView:pageTurningView];
-        
+                
         [self attachSelector];
     }    
 }
@@ -482,12 +476,7 @@
 
 - (NSArray *)pageTurningView:(EucPageTurningView *)pageTurningView highlightsForPageAtIndex:(NSUInteger)pageIndex
 {
-    
-    EucSelectorRange *selectedRange = [self.selector selectedRange];
-    NSArray *excludedRanges = [self bookRangesFromSelectorRange:selectedRange];
-    
-    // MATT FIXME
-    return [self highlightRectsForPageAtIndex:pageIndex excluding:[excludedRanges lastObject]];
+    return [self highlightRectsForPageAtIndex:pageIndex excluding:nil];
 }
 
 - (NSUInteger)pageTurningView:(EucPageTurningView *)pageTurningView pageCountBeforePageAtIndex:(NSUInteger)pageIndex
@@ -562,38 +551,9 @@
     }
 }
 
-#pragma mark - Touch handling
-
-- (void)registerGesturesForPageTurningView:(EucPageTurningView *)aPageTurningView;
-{       
-    [aPageTurningView.tapGestureRecognizer removeTarget:nil action:nil]; 
-    [aPageTurningView.tapGestureRecognizer addTarget:self action:@selector(handleSingleTap:)];
-   
-    aPageTurningView.tapGestureRecognizer.cancelsTouchesInView = NO;
-}
-
-- (void)handleSingleTap:(UITapGestureRecognizer *)sender 
-{     
-    if (sender.state == UIGestureRecognizerStateEnded && !self.selector.isTracking) {
-        [self.delegate toggleToolbars];
-    }
-}
-
-- (void)zoomAtPoint:(CGPoint)point 
+- (void)pageTurningView:(EucPageTurningView *)pageTurningView unhandledTapAtPoint:(CGPoint)point;
 {
-    EucPageTurningView *myPageTurningView = self.pageTurningView;
-    
-    CGFloat currentZoomFactor = myPageTurningView.zoomFactor;
-    CGFloat minZoomFactor = myPageTurningView.fitToBoundsZoomFactor;
-    CGFloat doubleFitToBoundsZoomFactor = minZoomFactor * 2;
-
-    if (currentZoomFactor < doubleFitToBoundsZoomFactor) {
-        CGPoint offset = CGPointMake((CGRectGetMidX(myPageTurningView.bounds) - point.x) * doubleFitToBoundsZoomFactor, (CGRectGetMidY(myPageTurningView.bounds) - point.y) * doubleFitToBoundsZoomFactor); 
-            [myPageTurningView setTranslation:offset zoomFactor:doubleFitToBoundsZoomFactor animated:YES];
-    } else {
-        [self zoomOutToCurrentPage];
-    }
- 
+    [self unhandledTapAtPoint:point];
 }
 
 #pragma mark - Rotation

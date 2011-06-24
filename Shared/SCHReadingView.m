@@ -207,14 +207,17 @@
         case SCHReadingViewSelectionModeYoungerDictionary:
             self.selector.shouldTrackSingleTaps = YES;
             self.selector.allowsInitialDragSelection = NO;
+            self.selector.shouldTrackSingleTapsOnHighights = NO;
             break;
         case SCHReadingViewSelectionModeOlderDictionary:
             self.selector.shouldTrackSingleTaps = NO;
             self.selector.allowsInitialDragSelection = NO;
+            self.selector.shouldTrackSingleTapsOnHighights = NO;
             break;
         case SCHReadingViewSelectionModeHighlights:
             self.selector.shouldTrackSingleTaps = NO;
             self.selector.allowsInitialDragSelection = YES;
+            self.selector.shouldTrackSingleTapsOnHighights = YES;
             break;
     }
     
@@ -301,20 +304,10 @@
 
 - (UIColor *)eucSelector:(EucSelector *)selector willBeginEditingHighlightWithRange:(EucSelectorRange *)selectedRange
 {
-    SCHBookRange *highlightRange = [self bookRangeFromSelectorRange:selectedRange];
+    self.createHighlightFromSelection = NO;  
     
-    NSInteger startIndex = highlightRange.startPoint.layoutPage - 1;
-    NSInteger endIndex = highlightRange.endPoint.layoutPage - 1;
-            
-    for (int i = startIndex; i <= endIndex; i++) {
-        [self refreshHighlightsForPageAtIndex:i];
-    }
-      
-    // This disables the creation of a new highlight on top of the old one
-    self.createHighlightFromSelection = NO;
-    [self.selector setAllowsAdjustment:NO];
-    
-    return [self.delegate highlightColor];
+    // Just return a clear color and keep the original highlights showing on the page
+    return [UIColor clearColor];
 }
 
 - (void)currentLayoutPage:(NSUInteger *)layoutPage pageWordOffset:(NSUInteger *)pageWordOffset
@@ -374,7 +367,9 @@
                 break;
             case SCHReadingViewSelectionModeHighlights:
                 // Next run-loop deselect the selector
-                [self performSelector:@selector(dismissSelector) withObject:nil afterDelay:0];
+                if (![self.selector selectedRangeIsHighlight]) {
+                    [self performSelector:@selector(dismissSelector) withObject:nil afterDelay:0];
+                }
                 
                 break;
             default:
@@ -588,7 +583,7 @@
         
         [self.delegate deleteHighlightBetweenStartPage:startLayoutPage startWord:startPageWordOffset endPage:endLayoutPage endWord:endPageWordOffset];
         
-        // Deleslect now because teh refresh depends on it
+        // Deselect now because the refresh depends on it
         [self dismissSelector];
         
         for (int i = startLayoutPage; i <= endLayoutPage; i++) {
@@ -604,6 +599,16 @@
 - (void)dismissSelector
 {
     [self.selector setSelectedRange:nil];
+}
+
+#pragma mark - Touch handling
+
+- (void)unhandledTapAtPoint:(CGPoint)piont
+{
+    NSLog(@"Selector state: %d", self.selector.trackingStage);
+    // if (self.selector.trackingStage == EucSelectorTrackingStageNone) {
+    [self.delegate toggleToolbars];
+    ///}
 }
 
 #pragma mark - Rotation

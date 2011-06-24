@@ -191,7 +191,7 @@
 
 - (void)bookView:(EucBookView *)bookView unhandledTapAtPoint:(CGPoint)point
 {
-    [self.delegate toggleToolbars];
+    [self unhandledTapAtPoint:point];
 }
 
 - (void)bookViewPageTurnWillBegin:(EucBookView *)bookView

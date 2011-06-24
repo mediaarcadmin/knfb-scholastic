@@ -99,6 +99,8 @@ typedef enum
 - (void)detachSelector;
 - (void)dismissSelector;
 
+- (void)unhandledTapAtPoint:(CGPoint)point;
+
 - (EucSelectorRange *)selectorRangeFromBookRange:(SCHBookRange *)range;
 - (NSArray *)bookRangesFromSelectorRange:(EucSelectorRange *)selectorRange;
 - (SCHBookRange *)bookRangeFromSelectorRange:(EucSelectorRange *)selectorRange;
