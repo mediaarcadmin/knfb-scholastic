@@ -418,11 +418,16 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 	self.moveToValue = toIndex;
 }
 
-- (void)gridView:(MRGridView*)gridView finishedMovingCellToIndex:(NSInteger)toIndex
+// Although this is called finishedMovingCellToIndex it actually passes the fromIndex
+- (void)gridView:(MRGridView*)gridView finishedMovingCellToIndex:(NSInteger)fromIndex
 {
-	if (self.moveToValue != -1 && (toIndex != self.moveToValue)) {
-		NSLog(@"Moving cell from index %d to index %d", toIndex, self.moveToValue);
-        [self.books exchangeObjectAtIndex:toIndex withObjectAtIndex:self.moveToValue];
+	if (self.moveToValue != -1 && (fromIndex != self.moveToValue)) {
+        id book = [self.books objectAtIndex:fromIndex];
+        [self.books removeObjectAtIndex:fromIndex];
+        
+        NSUInteger toIndex = self.moveToValue;
+        
+        [self.books insertObject:book atIndex:toIndex];
         [self.profileItem saveBookOrder:self.books];
         NSError *error = nil;
         
