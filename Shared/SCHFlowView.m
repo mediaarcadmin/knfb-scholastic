@@ -226,12 +226,17 @@
     SCHBookPoint *endBookPoint = [self.eucBook bookPointFromBookPageIndexPoint:endPoint];
     
     NSMutableArray *allHighlights = [NSMutableArray array];
-    
+        
     for (int i = startBookPoint.layoutPage; i <= endBookPoint.layoutPage; i++) {
         NSArray *highlightRanges = [self highlightsForLayoutPage:i];
-        [allHighlights addObjectsFromArray:highlightRanges];
+        for (SCHBookRange *highlightRange in highlightRanges) {
+            if (([highlightRange.startPoint compare:startBookPoint] != NSOrderedAscending) &&
+                ([highlightRange.endPoint compare:endBookPoint] != NSOrderedDescending)) {
+                [allHighlights addObject:highlightRange];
+            }
+        }
     }
-            
+                
     NSUInteger count = allHighlights.count;
     if(count) {
         NSMutableArray *eucRanges = [[NSMutableArray alloc] initWithCapacity:count];
