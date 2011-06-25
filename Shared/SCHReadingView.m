@@ -441,11 +441,15 @@
         [endPoint   setLayoutPage:i];
         
         NSArray *pageBlocks = [self.textFlow blocksForPageAtIndex:i - 1 includingFolioBlocks:NO];
+        NSUInteger minBlockOffset = 0;
+        NSUInteger minWordOffset = 0;
         NSUInteger maxBlockOffset = 0;
         NSUInteger maxWordOffset = 0;
         
         if ([pageBlocks count]) {
+            KNFBTextFlowBlock *firstBlock = [pageBlocks objectAtIndex:0];
             KNFBTextFlowBlock *lastBlock = [pageBlocks lastObject];
+            minBlockOffset = [firstBlock blockIndex];
             maxBlockOffset = [lastBlock blockIndex];
             maxWordOffset  = MAX([[lastBlock words] count], 1) - 1;
         }
@@ -454,8 +458,8 @@
             [startPoint setBlockOffset:bookRange.startPoint.blockOffset];
             [startPoint setWordOffset:bookRange.startPoint.wordOffset];
         } else {
-            [startPoint setBlockOffset:0];
-            [startPoint setWordOffset:0];
+            [startPoint setBlockOffset:minBlockOffset];
+            [startPoint setWordOffset:minWordOffset];
         }
         
         if (i == bookRange.endPoint.layoutPage) {
