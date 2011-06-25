@@ -445,8 +445,9 @@
         NSUInteger maxWordOffset = 0;
         
         if ([pageBlocks count]) {
-            maxBlockOffset = [pageBlocks count] - 1;
-            maxWordOffset  = MAX([[[pageBlocks objectAtIndex:maxBlockOffset] words] count], 1) - 1;
+            KNFBTextFlowBlock *lastBlock = [pageBlocks lastObject];
+            maxBlockOffset = [lastBlock blockIndex];
+            maxWordOffset  = MAX([[lastBlock words] count], 1) - 1;
         }
         
         if (i == bookRange.startPoint.layoutPage) {
@@ -474,7 +475,7 @@
         [endPoint release];
         [range release];
     }
-        
+            
     return bookRanges;
 }
 
