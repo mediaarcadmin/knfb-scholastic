@@ -423,11 +423,13 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 {
 	if (self.moveToValue != -1 && (fromIndex != self.moveToValue)) {
         id book = [self.books objectAtIndex:fromIndex];
+        [book retain];
         [self.books removeObjectAtIndex:fromIndex];
-        
+
         NSUInteger toIndex = self.moveToValue;
         
         [self.books insertObject:book atIndex:toIndex];
+        [book release];
         [self.profileItem saveBookOrder:self.books];
         NSError *error = nil;
         
