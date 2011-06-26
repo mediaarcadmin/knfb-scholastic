@@ -49,6 +49,10 @@
     }
 }
 
+- (BOOL)isEqual:(id)object {
+    return ([self compare:object] == NSOrderedSame);
+}
+
 - (NSString *)description
 {
     return [NSString stringWithFormat:@"<SCHBookPoint: %p> [%d %d %d %d]", self, self.layoutPage, self.blockOffset, self. wordOffset, self.elementOffset];

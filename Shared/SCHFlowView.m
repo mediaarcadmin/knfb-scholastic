@@ -33,6 +33,8 @@
 @property (nonatomic, retain) UIImage *currentPageTexture;
 @property (nonatomic, assign) BOOL textureIsDark;
 
+- (void)updatePositionInBook;
+
 @end
 
 @implementation SCHFlowView
@@ -55,17 +57,11 @@
         [self addSubview:eucBookView];  
         
         [self.delegate readingViewWillAppear:self];
-        [[NSNotificationCenter defaultCenter] addObserver:self 
-                                                 selector:@selector(paginationComplete:) 
-                                                     name:EucOTFIndexPaginationCompleteNotification 
-                                                   object:nil];	
     }
 }
 
 - (void)dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-    
+{    
     if(paragraphSource) {
         [paragraphSource release], paragraphSource = nil;
         [[SCHBookManager sharedBookManager] checkInParagraphSourceForBookIdentifier:self.isbn];   
@@ -120,6 +116,7 @@
     if (newWindow == nil) {
         [self detachSelector];
         [self.eucBookView removeObserver:self forKeyPath:@"currentPageIndexPoint"];
+        [self.eucBookView removeObserver:self forKeyPath:@"pageCount"];
         self.eucBookView = nil;
 
     } else {
@@ -139,6 +136,7 @@
         // This needs to be done here to add the observer after the willMoveToWindow code in
         // eucBookView which sets the page count
         [self.eucBookView addObserver:self forKeyPath:@"currentPageIndexPoint" options:NSKeyValueObservingOptionInitial context:NULL];
+        [self.eucBookView addObserver:self forKeyPath:@"pageCount" options:NSKeyValueObservingOptionInitial context:NULL];
         [self attachSelector];
     }
 }
@@ -186,19 +184,28 @@
 {
     [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
     
-    if ([keyPath isEqualToString:@"currentPageIndexPoint"]) {
-        if ((self.eucBookView.pageCount != 0) && (self.eucBookView.pageCount != -1)) {
-            [self.delegate readingView:self hasMovedToPageAtIndex:self.eucBookView.currentPageIndex];
-        } else {
-            CGFloat progress = [self.eucBook estimatedPercentageForIndexPoint:self.eucBookView.currentPageIndexPoint];
-            [self.delegate readingView:self hasMovedToProgressPositionInBook:progress];
-        }
+    if (([keyPath isEqualToString:@"currentPageIndexPoint"]) ||
+        ([keyPath isEqualToString:@"pageCount"])) {
+        [self updatePositionInBook];
     }
+
 }
 
-- (void)paginationComplete:(NSNotification *)notification
+- (void)updatePositionInBook
 {
-    [self.delegate readingView:self hasMovedToPageAtIndex:self.eucBookView.currentPageIndex];
+    // For some reason, when the pagination complete notification fires, pageCount but not currentPageIndex gets set
+    // Therefore we need to construct the pageIndex when pageCount gets set at the end of pagination
+    if ((self.eucBookView.pageCount != 0) && (self.eucBookView.pageCount != -1)) {
+        if (self.eucBookView.currentPageIndex != NSUIntegerMax) {
+            [self.delegate readingView:self hasMovedToPageAtIndex:self.eucBookView.currentPageIndex];
+        } else {
+            NSUInteger pageIndex = [self.eucBookView pageIndexForIndexPoint:self.eucBookView.currentPageIndexPoint];
+            [self.delegate readingView:self hasMovedToPageAtIndex:pageIndex];
+        }
+    } else {
+        CGFloat progress = [self.eucBook estimatedPercentageForIndexPoint:self.eucBookView.currentPageIndexPoint];
+        [self.delegate readingView:self hasMovedToProgressPositionInBook:progress];
+    }
 }
 
 - (void)bookView:(EucBookView *)bookView unhandledTapAtPoint:(CGPoint)point
@@ -219,12 +226,17 @@
     SCHBookPoint *endBookPoint = [self.eucBook bookPointFromBookPageIndexPoint:endPoint];
     
     NSMutableArray *allHighlights = [NSMutableArray array];
-    
+        
     for (int i = startBookPoint.layoutPage; i <= endBookPoint.layoutPage; i++) {
         NSArray *highlightRanges = [self highlightsForLayoutPage:i];
-        [allHighlights addObjectsFromArray:highlightRanges];
+        for (SCHBookRange *highlightRange in highlightRanges) {
+            if (([highlightRange.startPoint compare:startBookPoint] != NSOrderedAscending) &&
+                ([highlightRange.endPoint compare:endBookPoint] != NSOrderedDescending)) {
+                [allHighlights addObject:highlightRange];
+            }
+        }
     }
-            
+                
     NSUInteger count = allHighlights.count;
     if(count) {
         NSMutableArray *eucRanges = [[NSMutableArray alloc] initWithCapacity:count];

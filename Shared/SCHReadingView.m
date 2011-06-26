@@ -153,7 +153,7 @@
     *pageWordOffset = bookPoint.wordOffset;
     
     if (bookPoint.blockOffset > 0) {
-        NSArray *wordBlocks = [self.textFlow blocksForPageAtIndex:bookPoint.layoutPage - 1 includingFolioBlocks:NO];
+        NSArray *wordBlocks = [self.textFlow blocksForPageAtIndex:bookPoint.layoutPage - 1 includingFolioBlocks:YES];
         for (int i = 0; i < bookPoint.blockOffset; i++) {
             if (i < [wordBlocks count]) {
                 *pageWordOffset += [[[wordBlocks objectAtIndex:i] words] count];
@@ -168,7 +168,7 @@
     bookPoint.layoutPage = layoutPage;
     bookPoint.wordOffset = pageWordOffset;
     
-    NSArray *wordBlocks = [self.textFlow blocksForPageAtIndex:bookPoint.layoutPage - 1 includingFolioBlocks:NO];
+    NSArray *wordBlocks = [self.textFlow blocksForPageAtIndex:bookPoint.layoutPage - 1 includingFolioBlocks:YES];
     
     for (int i = 0 ; i < [wordBlocks count]; i++) {
         KNFBTextFlowBlock *block = [wordBlocks objectAtIndex:i];
@@ -208,16 +208,19 @@
             self.selector.shouldTrackSingleTaps = YES;
             self.selector.allowsInitialDragSelection = NO;
             self.selector.shouldTrackSingleTapsOnHighights = NO;
+            self.selector.defaultSelectionColor = nil;
             break;
         case SCHReadingViewSelectionModeOlderDictionary:
             self.selector.shouldTrackSingleTaps = NO;
             self.selector.allowsInitialDragSelection = NO;
             self.selector.shouldTrackSingleTapsOnHighights = NO;
+            self.selector.defaultSelectionColor = nil;
             break;
         case SCHReadingViewSelectionModeHighlights:
             self.selector.shouldTrackSingleTaps = NO;
             self.selector.allowsInitialDragSelection = YES;
             self.selector.shouldTrackSingleTapsOnHighights = YES;
+            self.selector.defaultSelectionColor = [self.delegate highlightColor];
             break;
     }
     
@@ -272,7 +275,7 @@
     NSUInteger blockOffset = bookRange.startPoint.blockOffset;
     NSUInteger wordOffset = bookRange.startPoint.wordOffset;
     
-    NSArray *pageBlocks = [self.textFlow blocksForPageAtIndex:page - 1 includingFolioBlocks:NO];
+    NSArray *pageBlocks = [self.textFlow blocksForPageAtIndex:page - 1 includingFolioBlocks:YES];
     
     if (blockOffset < [pageBlocks count]) {
         NSArray *words = [[pageBlocks objectAtIndex:blockOffset] words];
@@ -280,9 +283,7 @@
             word = [[words objectAtIndex:wordOffset] string];
         }
     }
-    
-    NSLog(@"Word: %@", word);
-    
+        
     return word;
 }
 
@@ -355,10 +356,8 @@
                 }
                 break;
             case SCHReadingViewSelectionModeOlderDictionary:
-                if (word) {
-                    if ([self.delegate respondsToSelector:@selector(requestDictionaryForWord:mode:)]) {
-                        [self.delegate requestDictionaryForWord:word mode:SCHReadingViewSelectionModeOlderDictionary];
-                    }
+                if ([self.delegate respondsToSelector:@selector(requestDictionaryForWord:mode:)]) {
+                    [self.delegate requestDictionaryForWord:word mode:SCHReadingViewSelectionModeOlderDictionary];
                 }
                 
                 // Next run-loop deselect the selector
@@ -442,20 +441,25 @@
         [endPoint   setLayoutPage:i];
         
         NSArray *pageBlocks = [self.textFlow blocksForPageAtIndex:i - 1 includingFolioBlocks:NO];
+        NSUInteger minBlockOffset = 0;
+        NSUInteger minWordOffset = 0;
         NSUInteger maxBlockOffset = 0;
         NSUInteger maxWordOffset = 0;
         
         if ([pageBlocks count]) {
-            maxBlockOffset = [pageBlocks count] - 1;
-            maxWordOffset  = MAX([[[pageBlocks objectAtIndex:maxBlockOffset] words] count], 1) - 1;
+            KNFBTextFlowBlock *firstBlock = [pageBlocks objectAtIndex:0];
+            KNFBTextFlowBlock *lastBlock = [pageBlocks lastObject];
+            minBlockOffset = [firstBlock blockIndex];
+            maxBlockOffset = [lastBlock blockIndex];
+            maxWordOffset  = MAX([[lastBlock words] count], 1) - 1;
         }
         
         if (i == bookRange.startPoint.layoutPage) {
             [startPoint setBlockOffset:bookRange.startPoint.blockOffset];
             [startPoint setWordOffset:bookRange.startPoint.wordOffset];
         } else {
-            [startPoint setBlockOffset:0];
-            [startPoint setWordOffset:0];
+            [startPoint setBlockOffset:minBlockOffset];
+            [startPoint setWordOffset:minWordOffset];
         }
         
         if (i == bookRange.endPoint.layoutPage) {
@@ -475,7 +479,7 @@
         [endPoint release];
         [range release];
     }
-        
+            
     return bookRanges;
 }
 
@@ -603,12 +607,26 @@
 
 #pragma mark - Touch handling
 
+- (void)toggleToolbarsIfNoSelection
+{
+    // Don't toggle if the selector's up - just hide in that case.
+    if(!self.selector.selectedRange) {
+        [self.delegate toggleToolbars];
+    } else {
+        [self.delegate hideToolbars];
+    }
+}
+
 - (void)unhandledTapAtPoint:(CGPoint)piont
 {
-    NSLog(@"Selector state: %d", self.selector.trackingStage);
-    // if (self.selector.trackingStage == EucSelectorTrackingStageNone) {
-    [self.delegate toggleToolbars];
-    ///}
+    // Don't toggle if the selector's up - just hide in that case.
+    if(!self.selector.selectedRange) {
+        // Wait until the next runloop cycle to see if the selector selects anything 
+        // in response to this tap. We don't want to display the toolbars if it does.
+        [self performSelector:@selector(toggleToolbarsIfNoSelection) withObject:nil afterDelay:0];
+    } else {
+        [self.delegate hideToolbars];
+    }
 }
 
 #pragma mark - Rotation
