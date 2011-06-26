@@ -62,6 +62,8 @@
 
 - (void)dealloc
 {    
+    [eucBookView release], eucBookView = nil;
+    
     if(paragraphSource) {
         [paragraphSource release], paragraphSource = nil;
         [[SCHBookManager sharedBookManager] checkInParagraphSourceForBookIdentifier:self.isbn];   
@@ -93,8 +95,8 @@
 
 - (void)attachSelector
 {
-    eucBookView.allowsSelection = YES;
-    eucBookView.selectorDelegate = self;
+    self.eucBookView.allowsSelection = YES;
+    self.eucBookView.selectorDelegate = self;
     
     [super attachSelector];
 }
@@ -103,8 +105,8 @@
 {
     [super detachSelector];
 
-    eucBookView.allowsSelection = NO;
-    eucBookView.selectorDelegate = nil;
+    self.eucBookView.allowsSelection = NO;
+    self.eucBookView.selectorDelegate = nil;
 
 }
 
@@ -117,14 +119,14 @@
         [self detachSelector];
         [self.eucBookView removeObserver:self forKeyPath:@"currentPageIndexPoint"];
         [self.eucBookView removeObserver:self forKeyPath:@"pageCount"];
-        self.eucBookView = nil;
-
     } else {
         // N.B. We must initialise the view _after_ the view frame has been set because
         // the eucBookView paginates the eucBook using the view bounds. If we initialise too early
         // the nib frame size will be used instead. The correct fix for this is probably to
         // initialise the _pageLayoutController in EucBookView in willMoveToWindow rather than init
-        [self initialiseView];
+        if (!self.eucBookView) {
+            [self initialiseView];
+        }
     }
 }
 
@@ -159,7 +161,7 @@
     } else {
         point = [self.eucBook bookPageIndexPointFromBookPoint:bookPoint];
     }
-    NSLog(@"eucbookview: %@", self.eucBookView);
+
     [self.eucBookView goToIndexPoint:point animated:animated];
 }
 
