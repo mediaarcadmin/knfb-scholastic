@@ -218,25 +218,85 @@
     [self.delegate readingViewWillBeginTurning:self];
 }
 
+static NSPredicate *sSortedHighlightRangePredicate = nil;
+pthread_once_t sSortedHighlightRangePredicateOnceControl = PTHREAD_ONCE_INIT;
+static void sortedHighlightRangePredicateInit() {
+    sSortedHighlightRangePredicate = [[NSPredicate predicateWithFormat:
+                                       @"NOT ( startPoint.layoutPage > $MAX_LAYOUT_PAGE ) && "
+                                       @"NOT ( endPoint.layoutPage < $MIN_LAYOUT_PAGE ) && "
+                                       @"NOT ( startPoint.layoutPage == $MAX_LAYOUT_PAGE && startPoint.blockOffset > $MAX_BLOCK_OFFSET ) && "
+                                       @"NOT ( endPoint.layoutPage == $MIN_LAYOUT_PAGE && endPoint.blockOffset < $MIN_BLOCK_OFFSET) && "
+                                       @"NOT ( startPoint.layoutPage == $MAX_LAYOUT_PAGE && startPoint.blockOffset == $MAX_BLOCK_OFFSET && startPoint.wordOffset > $MAX_WORD_OFFSET ) && "
+                                       @"NOT ( endPoint.layoutPage == $MIN_LAYOUT_PAGE && endPoint.blockOffset == $MIN_BLOCK_OFFSET && endPoint.wordOffset < $MIN_WORD_OFFSET )"
+                                       ] retain];
+}
+
+- (NSPredicate *)sortedHighlightRangePredicate {
+    pthread_once(&sSortedHighlightRangePredicateOnceControl, sortedHighlightRangePredicateInit);
+    return sSortedHighlightRangePredicate;
+}
+
+- (NSArray *)sortedHighlightsInRange:(SCHBookRange *)range {
+    
+    SCHBookPoint *startBookPoint = range.startPoint;
+    SCHBookPoint *endBookPoint = range.endPoint;
+        
+    NSMutableArray *allHighlights = [NSMutableArray array];
+    
+    for (int i = startBookPoint.layoutPage; i <= endBookPoint.layoutPage; i++) {
+        NSArray *highlightRanges = [self highlightsForLayoutPage:i];
+        [allHighlights addObjectsFromArray:highlightRanges];
+    }
+    
+    NSNumber *minLayoutPage = [NSNumber numberWithInteger:range.startPoint.layoutPage];
+    NSNumber *minBlockOffset = [NSNumber numberWithInteger:range.startPoint.blockOffset];
+    NSNumber *minWordOffset = [NSNumber numberWithInteger:range.startPoint.wordOffset];
+    
+    NSNumber *maxLayoutPage = [NSNumber numberWithInteger:range.endPoint.layoutPage];
+    NSNumber *maxBlockOffset = [NSNumber numberWithInteger:range.endPoint.blockOffset];
+    NSNumber *maxWordOffset = [NSNumber numberWithInteger:range.endPoint.wordOffset];
+    
+    NSDictionary *substitutionVariables = [[NSDictionary alloc] initWithObjectsAndKeys:
+                                           minLayoutPage, @"MIN_LAYOUT_PAGE",
+                                           minBlockOffset, @"MIN_BLOCK_OFFSET",
+                                           minWordOffset, @"MIN_WORD_OFFSET",
+                                           maxLayoutPage, @"MAX_LAYOUT_PAGE",
+                                           maxBlockOffset, @"MAX_BLOCK_OFFSET",
+                                           maxWordOffset, @"MAX_WORD_OFFSET",
+                                           nil];
+    
+    NSPredicate *predicate = [[self sortedHighlightRangePredicate] predicateWithSubstitutionVariables:substitutionVariables];
+    
+    [substitutionVariables release];
+        
+    NSSortDescriptor *sortPageDescriptor = [[[NSSortDescriptor alloc] initWithKey:@"startPoint.layoutPage" ascending:YES] autorelease];
+    NSSortDescriptor *sortParaDescriptor = [[[NSSortDescriptor alloc] initWithKey:@"startPoint.blockOffset" ascending:YES] autorelease];
+    NSSortDescriptor *sortWordDescriptor = [[[NSSortDescriptor alloc] initWithKey:@"startPoint.wordOffset" ascending:YES] autorelease];
+    NSSortDescriptor *sortHyphenDescriptor = [[[NSSortDescriptor alloc] initWithKey:@"startPoint.elementOffset" ascending:YES] autorelease];
+    
+    NSArray *sortDescriptors = [NSArray arrayWithObjects:sortPageDescriptor, sortParaDescriptor, sortWordDescriptor, sortHyphenDescriptor, nil];
+    
+    
+    NSArray *sortedHighlights = [[allHighlights filteredArrayUsingPredicate:predicate] sortedArrayUsingDescriptors:sortDescriptors];
+    
+    return sortedHighlights;
+    
+}
+
 - (NSArray *)bookView:(EucBookView *)bookView highlightRangesFromPoint:(EucBookPageIndexPoint *)startPoint toPoint:(EucBookPageIndexPoint *)endPoint
 {
     NSArray *ret = nil;
     
     SCHBookPoint *startBookPoint = [self.eucBook bookPointFromBookPageIndexPoint:startPoint];
     SCHBookPoint *endBookPoint = [self.eucBook bookPointFromBookPageIndexPoint:endPoint];
-    
-    NSMutableArray *allHighlights = [NSMutableArray array];
+    SCHBookRange *pageRange = [[SCHBookRange alloc] init];
+    pageRange.startPoint = startBookPoint;
+    pageRange.endPoint = endBookPoint;
         
-    for (int i = startBookPoint.layoutPage; i <= endBookPoint.layoutPage; i++) {
-        NSArray *highlightRanges = [self highlightsForLayoutPage:i];
-        for (SCHBookRange *highlightRange in highlightRanges) {
-            if (([highlightRange.startPoint compare:startBookPoint] != NSOrderedAscending) &&
-                ([highlightRange.endPoint compare:endBookPoint] != NSOrderedDescending)) {
-                [allHighlights addObject:highlightRange];
-            }
-        }
-    }
-                
+    NSArray *allHighlights = [self sortedHighlightsInRange:pageRange];
+    
+    [pageRange release];
+            
     NSUInteger count = allHighlights.count;
     if(count) {
         NSMutableArray *eucRanges = [[NSMutableArray alloc] initWithCapacity:count];
