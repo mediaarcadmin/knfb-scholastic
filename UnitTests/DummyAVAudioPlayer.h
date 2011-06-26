@@ -12,7 +12,7 @@
 
 @property (nonatomic, retain) NSData *data;
 @property (nonatomic, assign) id delegate;
-@property (nonatomic, assign) BOOL playing;
+@property (nonatomic, assign) volatile BOOL playing;
 
 + (DummyAVAudioPlayer *)lastNewInstance;
 

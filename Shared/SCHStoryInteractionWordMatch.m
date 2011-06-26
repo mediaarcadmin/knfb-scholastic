@@ -71,6 +71,11 @@
     return @"Word Match";
 }
 
+- (NSString *)interactionViewTitle
+{
+    return [self introduction];
+}
+
 - (NSInteger)questionCount
 {
     return [[self questions] count];

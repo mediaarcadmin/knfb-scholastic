@@ -315,7 +315,7 @@
         readAloudPosition = CGPointMake(-5, 5);
     } else {
         contentInsets = UIEdgeInsetsMake((self.frameStyle == SCHStoryInteractionNoTitle ? 5 : 70), 5, 5, 5);
-        titleInsets = UIEdgeInsetsMake(5, 50, 5, 50);
+        titleInsets = UIEdgeInsetsMake(5, 55, 5, 55);
         closePosition = CGPointMake(10, 7);
         readAloudPosition = CGPointMake(-13, 15);
     }

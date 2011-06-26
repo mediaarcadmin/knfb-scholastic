@@ -10,6 +10,9 @@
 
 @interface SCHQueuedAudioPlayer : NSObject <AVAudioPlayerDelegate> {}
 
+// dispatch queue to execute synchronized blocks on; default is main queue
+@property (nonatomic, assign) dispatch_queue_t synchronizedBlockQueue;
+
 typedef NSData * (^SCHQueuedAudioPlayerFetchBlock)(void);
 
 - (void)enqueueAudioTaskWithFetchBlock:(SCHQueuedAudioPlayerFetchBlock)fetchBlock
