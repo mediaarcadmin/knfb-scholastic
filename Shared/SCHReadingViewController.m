@@ -53,6 +53,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 // toolbars/nav bar visible/not visible
 @property (nonatomic, assign) BOOL toolbarsVisible;
+@property (nonatomic, assign) BOOL suppressToolbarToggle;
 
 // timer used to fade toolbars out after a certain period of time
 @property (nonatomic, retain) NSTimer *initialFadeTimer;
@@ -130,6 +131,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 @synthesize readingView;
 @synthesize youngerMode;
 @synthesize toolbarsVisible;
+@synthesize suppressToolbarToggle;
 @synthesize initialFadeTimer;
 @synthesize currentPageIndex;
 @synthesize currentPageIndices;
@@ -1239,7 +1241,11 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         [[self.profile AppProfile] setFontIndex:savedFontSizeIndex];
     }
     
+    // Suppress toolbar toggle (setting font size will cause the moveToPage callbackto fire and hide the toolbars)
+    self.suppressToolbarToggle = YES; 
     [self.readingView setFontPointIndex:newFontSizeIndex];
+    self.suppressToolbarToggle = NO; 
+    
     [self updateScrubberValue];
 }
 
@@ -1657,6 +1663,11 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (void)setToolbarVisibility:(BOOL)visibility animated:(BOOL)animated
 {
     [self cancelInitialTimer];
+    
+    if (self.suppressToolbarToggle) {
+        return;
+    }
+    
 //	NSLog(@"Setting visibility to %@.", visibility?@"True":@"False");
 	self.toolbarsVisible = visibility;
 
