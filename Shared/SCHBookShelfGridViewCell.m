@@ -25,9 +25,9 @@
 - (id)initWithFrame:(CGRect)frame reuseIdentifier:(NSString *)identifier 
 {
 	if ((self = [super initWithFrame:frame reuseIdentifier:identifier])) {
-        
-		self.asyncImageView = [SCHThumbnailFactory newAsyncImageWithSize:CGSizeMake(self.frame.size.width - 4, self.frame.size.height - 20)];
-		[self.asyncImageView setFrame:CGRectZero];
+                
+		self.asyncImageView = [SCHThumbnailFactory newAsyncImageWithSize:CGSizeMake(self.frame.size.width - 4, self.frame.size.height - 22)];
+		[self.asyncImageView setFrame:CGRectZero];        
 		[self.contentView addSubview:self.asyncImageView];
 		
 		self.thumbTintView = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];

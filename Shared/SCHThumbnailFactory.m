@@ -90,6 +90,11 @@
                 
         CGContextDrawImage(ctx, thumbNailRect, fullImage.CGImage);
         
+        // Add 1 pixel border
+        CGContextSetRGBStrokeColor(ctx, 0, 0, 0, 0.3f);
+        CGContextSetLineWidth(ctx, 2);
+        CGContextStrokeRect(ctx, thumbNailRect);
+        
         CGImageRef scaledImageRef = CGBitmapContextCreateImage(ctx);
         UIImage *scaledImage = [[UIImage alloc] initWithCGImage:scaledImageRef scale:scale orientation:UIImageOrientationUp];
         CGImageRelease(scaledImageRef);
