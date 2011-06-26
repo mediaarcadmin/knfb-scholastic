@@ -28,7 +28,6 @@
 
 - (AVAudioPlayer *)newAudioPlayerWithData:(NSData *)data;
 - (void)playNextItemInQueue;
-- (void)internalCancelPlaybackExecutingBlocks:(BOOL)executeBlocks;
 
 @end
 
@@ -43,11 +42,11 @@
 - (void)dealloc
 {
     self.audioPlayer.delegate = nil;
-    [self internalCancelPlaybackExecutingBlocks:NO];
+    [self.audioPlayer pause];
     [audioPlayer release];
     [audioQueue release];
     [currentItem release];
-    dispatch_release(audioDispatchQueue), audioDispatchQueue = NULL;
+    dispatch_release(audioDispatchQueue);
     [super dealloc];
 }
 
@@ -90,28 +89,23 @@
 - (void)cancelPlaybackExecutingSynchronizedBlocksImmediately:(BOOL)executeBlocks
 {
     dispatch_async(self.audioDispatchQueue, ^{
-        [self internalCancelPlaybackExecutingBlocks:executeBlocks];
-    });
-}
-
-- (void)internalCancelPlaybackExecutingBlocks:(BOOL)executeBlocks
-{
-    [self.audioPlayer pause];
-    if (executeBlocks) {
-        [self.currentItem executeEndBlock];
-        for (AudioItem *item in self.audioQueue) {
-            [item executeStartBlock];
-            [item executeEndBlock];
-        }
-    }
-    
-    [self.audioQueue removeAllObjects];
-    if (self.audioPlayer) {
-        self.audioPlayer.delegate = nil;
-        self.currentItem = nil;
         [self.audioPlayer pause];
-        self.audioPlayer = nil;
-    }
+        if (executeBlocks) {
+            [self.currentItem executeEndBlock];
+            for (AudioItem *item in self.audioQueue) {
+                [item executeStartBlock];
+                [item executeEndBlock];
+            }
+        }
+        
+        [self.audioQueue removeAllObjects];
+        if (self.audioPlayer) {
+            self.audioPlayer.delegate = nil;
+            self.currentItem = nil;
+            [self.audioPlayer pause];
+            self.audioPlayer = nil;
+        }
+    });
 }
 
 - (BOOL)isPlaying
