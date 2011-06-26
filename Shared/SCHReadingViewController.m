@@ -145,14 +145,12 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 @synthesize optionsView;
 @synthesize popoverOptionsViewController;
-@synthesize fontSegmentedControl;
-@synthesize flowFixedSegmentedControl;
-@synthesize flowFixedPopoverSegmentedControl;
-@synthesize paperTypePopoverSegmentedControl;
+@synthesize fontSegmentedControls;
+@synthesize paperTypeSegmentedControls;
+@synthesize flowFixedSegmentedControls;
 @synthesize storyInteractionButton;
 @synthesize storyInteractionButtonView;
 @synthesize youngerToolbarToggleView;
-@synthesize paperTypeSegmentedControl;
 @synthesize notesButton;
 @synthesize storyInteractionsListButton;
 @synthesize pageSlider;
@@ -160,7 +158,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 @synthesize scrubberInfoView;
 @synthesize pageLabel;
-@synthesize panSpeedLabel;
 
 @synthesize titleLabel;
 @synthesize leftBarButtonItemContainer;
@@ -221,13 +218,10 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [scrubberThumbImage release], scrubberThumbImage = nil;
     [scrubberInfoView release], scrubberInfoView = nil;
     [pageLabel release], pageLabel = nil;
-    [panSpeedLabel release], panSpeedLabel = nil;
     [optionsView release], optionsView = nil;
-    [fontSegmentedControl release], fontSegmentedControl = nil;
-    [flowFixedSegmentedControl release], flowFixedSegmentedControl = nil;
-    [paperTypeSegmentedControl release], paperTypeSegmentedControl = nil;
-    [flowFixedPopoverSegmentedControl release], flowFixedPopoverSegmentedControl = nil;
-    [paperTypePopoverSegmentedControl release], paperTypePopoverSegmentedControl = nil;
+    [fontSegmentedControls release], fontSegmentedControls = nil;
+    [paperTypeSegmentedControls release], paperTypeSegmentedControls = nil;
+    [flowFixedSegmentedControls release], flowFixedSegmentedControls = nil;
     [storyInteractionButton release], storyInteractionButton = nil;
     [storyInteractionButtonView release], storyInteractionButtonView = nil;
     [youngerToolbarToggleView release], youngerToolbarToggleView = nil;
@@ -341,31 +335,16 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
             self.paperType = SCHReadingViewPaperTypeWhite;
         }
         
-        [self.paperTypeSegmentedControl setSelectedSegmentIndex:self.paperType];
-        [self.paperTypePopoverSegmentedControl setSelectedSegmentIndex:self.paperType];
-        
-
-        
-        
-        // set up the segmented controls
-        if (self.layoutType == SCHReadingViewLayoutTypeFlow) {
-            [self.fontSegmentedControl setEnabled:YES forSegmentAtIndex:0];
-            [self.fontSegmentedControl setEnabled:YES forSegmentAtIndex:1];
-        } else {
-            [self.fontSegmentedControl setEnabled:NO forSegmentAtIndex:0];
-            [self.fontSegmentedControl setEnabled:NO forSegmentAtIndex:1];
+        for (UISegmentedControl* paperTypeSegmentedControl in self.paperTypeSegmentedControls) {
+            [paperTypeSegmentedControl setSelectedSegmentIndex:self.paperType];
         }
-        
-        [self.flowFixedSegmentedControl setSelectedSegmentIndex:self.layoutType];
-        [self.flowFixedPopoverSegmentedControl setSelectedSegmentIndex:self.layoutType];
-        
-        
         
         // add in the actions here for flowFixedSegmentedControl
         // to prevent actions being fired while setting defaults
-        [self.flowFixedSegmentedControl addTarget:self action:@selector(flowedFixedSegmentChanged:) forControlEvents:UIControlEventValueChanged];
-        [self.flowFixedPopoverSegmentedControl addTarget:self action:@selector(flowedFixedSegmentChanged:) forControlEvents:UIControlEventValueChanged];
-        
+        for (UISegmentedControl* flowFixedSegmentedControl in self.flowFixedSegmentedControls) {
+            [flowFixedSegmentedControl setSelectedSegmentIndex:self.layoutType];
+            [flowFixedSegmentedControl addTarget:self action:@selector(flowedFixedSegmentChanged:) forControlEvents:UIControlEventValueChanged];
+        }
     }    
     
 	self.scrubberInfoView.layer.cornerRadius = 5.0f;
@@ -1139,10 +1118,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [self.readingView removeFromSuperview];
     
     switch (newLayoutType) {
-        case SCHReadingViewLayoutTypeFlow:
-            [self.fontSegmentedControl setEnabled:YES forSegmentAtIndex:0];
-            [self.fontSegmentedControl setEnabled:YES forSegmentAtIndex:1];
-            
+        case SCHReadingViewLayoutTypeFlow: {
             SCHFlowView *flowView = [[SCHFlowView alloc] initWithFrame:self.view.bounds isbn:self.isbn delegate:self];
             self.readingView = flowView;
             [self setDictionarySelectionMode];
@@ -1152,12 +1128,15 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
             [self setStoryInteractionButtonVisible:NO animated:YES withSound:NO];
             [self.storyInteractionsListButton setEnabled:NO];
             
-            break;
-        case SCHReadingViewLayoutTypeFixed:    
-        default:
-            [self.fontSegmentedControl setEnabled:NO forSegmentAtIndex:0];
-            [self.fontSegmentedControl setEnabled:NO forSegmentAtIndex:1];
+            for (UISegmentedControl* fontSegmentedControl in self.fontSegmentedControls) {
+                [fontSegmentedControl setEnabled:YES forSegmentAtIndex:0];
+                [fontSegmentedControl setEnabled:YES forSegmentAtIndex:1];
+            }
             
+            break;
+        }
+        case SCHReadingViewLayoutTypeFixed: 
+        default: {
             SCHLayoutView *layoutView = [[SCHLayoutView alloc] initWithFrame:self.view.bounds isbn:self.isbn delegate:self];
             self.readingView = layoutView;
             
@@ -1165,9 +1144,15 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
             
             [self.storyInteractionsListButton setEnabled:YES];
             
+            for (UISegmentedControl* fontSegmentedControl in self.fontSegmentedControls) {
+                [fontSegmentedControl setEnabled:NO forSegmentAtIndex:0];
+                [fontSegmentedControl setEnabled:NO forSegmentAtIndex:1];
+            }
+
             [layoutView release];
             
             break;
+        }
     }
     
     self.readingView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;

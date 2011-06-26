@@ -58,15 +58,13 @@ SCHStoryInteractionControllerDelegate>
 @property (nonatomic, retain) IBOutlet UIImageView *scrubberThumbImage;
 @property (nonatomic, retain) IBOutlet UIView *scrubberInfoView;
 @property (nonatomic, retain) IBOutlet UILabel *pageLabel;
-@property (nonatomic, retain) IBOutlet UILabel *panSpeedLabel;	
 
 @property (nonatomic, retain) IBOutlet UIView *optionsView;
 @property (nonatomic, retain) IBOutlet UIViewController *popoverOptionsViewController;
-@property (nonatomic, retain) IBOutlet UISegmentedControl *fontSegmentedControl;
-@property (nonatomic, retain) IBOutlet UISegmentedControl *paperTypeSegmentedControl;
-@property (nonatomic, retain) IBOutlet UISegmentedControl *flowFixedSegmentedControl;
-@property (nonatomic, retain) IBOutlet UISegmentedControl *flowFixedPopoverSegmentedControl;
-@property (nonatomic, retain) IBOutlet UISegmentedControl *paperTypePopoverSegmentedControl;
+
+@property (nonatomic, retain) IBOutletCollection(UISegmentedControl) NSArray *fontSegmentedControls;
+@property (nonatomic, retain) IBOutletCollection(UISegmentedControl) NSArray *paperTypeSegmentedControls;
+@property (nonatomic, retain) IBOutletCollection(UISegmentedControl) NSArray *flowFixedSegmentedControls;
 
 @property (nonatomic, retain) IBOutlet UIButton *storyInteractionButton;
 @property (nonatomic, retain) IBOutlet UIView *storyInteractionButtonView;
@@ -86,5 +84,6 @@ SCHStoryInteractionControllerDelegate>
 - (IBAction)settingsAction:(UIButton *)sender;
 - (IBAction)popViewController:(id)sender;
 - (IBAction)audioPlayAction:(id)sender;
+- (IBAction)paperTypeSegmentChanged:(UISegmentedControl *)segControl;
 
 @end
