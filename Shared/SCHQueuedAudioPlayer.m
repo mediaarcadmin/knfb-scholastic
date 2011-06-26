@@ -28,6 +28,7 @@
 
 - (AVAudioPlayer *)newAudioPlayerWithData:(NSData *)data;
 - (void)playNextItemInQueue;
+- (void)internalCancelPlaybackExecutingBlocks:(BOOL)executeBlocks;
 
 @end
 
@@ -41,7 +42,8 @@
 
 - (void)dealloc
 {
-    [self cancelPlaybackExecutingSynchronizedBlocksImmediately:NO];
+    self.audioPlayer.delegate = nil;
+    [self internalCancelPlaybackExecutingBlocks:NO];
     [audioPlayer release];
     [audioQueue release];
     [currentItem release];
@@ -68,13 +70,16 @@
     item.fetchBlock = fetchBlock;
     item.startBlock = startBlock;
     item.endBlock = endBlock;
-    [self.audioQueue addObject:item];
+    
+    dispatch_async(self.audioDispatchQueue, ^{
+        [self.audioQueue addObject:item];
+        if (self.currentItem == nil && [self.audioQueue count] == 1) {
+            [self playNextItemInQueue];
+        }
+    });
+        
     [item release];
     self.gap = 0;
-    
-    if (self.currentItem == nil && [self.audioQueue count] == 1) {
-        [self playNextItemInQueue];
-    }
 }
 
 - (void)enqueueGap:(NSTimeInterval)silenceInterval
@@ -83,6 +88,13 @@
 }
 
 - (void)cancelPlaybackExecutingSynchronizedBlocksImmediately:(BOOL)executeBlocks
+{
+    dispatch_async(self.audioDispatchQueue, ^{
+        [self internalCancelPlaybackExecutingBlocks:executeBlocks];
+    });
+}
+
+- (void)internalCancelPlaybackExecutingBlocks:(BOOL)executeBlocks
 {
     [self.audioPlayer pause];
     if (executeBlocks) {
@@ -109,18 +121,19 @@
 
 - (void)playNextItemInQueue
 {
+    NSAssert(dispatch_get_current_queue() == self.audioDispatchQueue, @"must playNextItemInQueue on audioDispatchQueue");
+    
     NSData *data = nil;
     while ([self.audioQueue count] > 0) {
         self.currentItem = [self.audioQueue objectAtIndex:0];
         [self.audioQueue removeObjectAtIndex:0];
         data = self.currentItem.fetchBlock();
-        
-        if (data == nil) {
-            [currentItem executeStartBlock];
-            [currentItem executeEndBlock];
-        } else {
+        if (data) {
             break;
         }
+        
+        [currentItem executeStartBlock];
+        [currentItem executeEndBlock];
     }
     
     if (data == nil) {
@@ -128,23 +141,21 @@
         return;
     }
     
-    dispatch_async(self.audioDispatchQueue, ^{
-        AVAudioPlayer *player = [self newAudioPlayerWithData:data];
-        player.delegate = self;
-        self.audioPlayer = player;
-        [player release];
-        
-        dispatch_block_t playBlock = ^{
-            [self.currentItem executeStartBlock];
-            [self.audioPlayer play];
-        };
-        
-        if (self.currentItem.startDelay > 0) {
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, self.currentItem.startDelay*NSEC_PER_SEC), self.audioDispatchQueue, playBlock);
-        } else {
-            playBlock();
-        }
-    });
+    AVAudioPlayer *player = [self newAudioPlayerWithData:data];
+    player.delegate = self;
+    self.audioPlayer = player;
+    [player release];
+    
+    dispatch_block_t playBlock = ^{
+        [self.currentItem executeStartBlock];
+        [self.audioPlayer play];
+    };
+    
+    if (self.currentItem.startDelay > 0) {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, self.currentItem.startDelay*NSEC_PER_SEC), self.audioDispatchQueue, playBlock);
+    } else {
+        playBlock();
+    }
 }
 
 - (AVAudioPlayer *)newAudioPlayerWithData:(NSData *)data
@@ -175,20 +186,14 @@
 
 - (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
 {
-    dispatch_block_t endBlock = nil;
-    if (self.currentItem && self.currentItem.endBlock != nil) {
-        endBlock = Block_copy(self.currentItem.endBlock);
-    }
-    self.currentItem = nil;
-    
     dispatch_async(self.audioDispatchQueue, ^{
+        AudioItem *item = [self.currentItem retain];
+        self.currentItem = nil;
         self.audioPlayer.delegate = nil;
         self.audioPlayer = nil;
-        
-        if (endBlock) {
-            dispatch_sync(dispatch_get_main_queue(), endBlock);
-            Block_release(endBlock);
-        }
+
+        [item executeEndBlock];
+        [item release];
     
         // only progress with the queue if the end block did not enqueue a new item
         if (!self.currentItem) {
@@ -228,6 +233,7 @@
         self.startBlock = nil;
     }
 }
+
 - (void) executeEndBlock
 {
     if (self.endBlock) {
