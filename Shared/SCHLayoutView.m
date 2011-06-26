@@ -583,6 +583,12 @@
 
 #pragma mark - Highlights
 
+- (void)addHighlightWithSelection:(EucSelectorRange *)selectorRange
+{
+    [super addHighlightWithSelection:selectorRange];
+    [self refreshPageTurningViewImmediately:YES];
+}
+
 - (void)refreshHighlightsForPageAtIndex:(NSUInteger)index
 {
     [self.pageTurningView refreshHighlightsForPageAtIndex:index];

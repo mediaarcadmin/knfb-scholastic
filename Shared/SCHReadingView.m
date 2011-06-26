@@ -565,8 +565,6 @@
             [self refreshHighlightsForPageAtIndex:i - 1];
         }
     }
-    
-    [self refreshPageTurningViewImmediately:YES];
 }
 
 - (void)deleteHighlight:(id)sender
