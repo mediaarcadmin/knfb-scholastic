@@ -14,8 +14,8 @@
 @property (nonatomic, copy) dispatch_block_t startBlock;
 @property (nonatomic, copy) dispatch_block_t endBlock;
 
-- (void) executeStartBlock;
-- (void) executeEndBlock;
+- (void)executeStartBlockOnQueue:(dispatch_queue_t)queue;
+- (void)executeEndBlockOnQueue:(dispatch_queue_t)queue;
 @end
 
 @interface SCHQueuedAudioPlayer ()
@@ -33,6 +33,7 @@
 
 @implementation SCHQueuedAudioPlayer
 
+@synthesize synchronizedBlockQueue;
 @synthesize audioPlayer;
 @synthesize audioQueue;
 @synthesize gap;
@@ -47,6 +48,7 @@
     [audioQueue release];
     [currentItem release];
     dispatch_release(audioDispatchQueue);
+    dispatch_release(synchronizedBlockQueue);
     [super dealloc];
 }
 
@@ -56,8 +58,20 @@
         self.audioQueue = [NSMutableArray array];
         self.audioDispatchQueue = dispatch_queue_create("com.bitwink.SCHQueuedAudioPlayer", 0);
         self.gap = 0;
+        self.synchronizedBlockQueue = dispatch_get_main_queue();
     }
     return self;
+}
+
+- (void)setSynchronizedBlockQueue:(dispatch_queue_t)aSynchronizedBlockQueue
+{
+    if (aSynchronizedBlockQueue != synchronizedBlockQueue) {
+        if (synchronizedBlockQueue) {
+            dispatch_release(synchronizedBlockQueue);
+        }
+        synchronizedBlockQueue = aSynchronizedBlockQueue ?: dispatch_get_main_queue();
+        dispatch_retain(synchronizedBlockQueue);
+    }
 }
 
 - (void)enqueueAudioTaskWithFetchBlock:(SCHQueuedAudioPlayerFetchBlock)fetchBlock
@@ -91,10 +105,10 @@
     dispatch_async(self.audioDispatchQueue, ^{
         [self.audioPlayer pause];
         if (executeBlocks) {
-            [self.currentItem executeEndBlock];
+            [self.currentItem executeEndBlockOnQueue:self.synchronizedBlockQueue];
             for (AudioItem *item in self.audioQueue) {
-                [item executeStartBlock];
-                [item executeEndBlock];
+                [item executeStartBlockOnQueue:self.synchronizedBlockQueue];
+                [item executeEndBlockOnQueue:self.synchronizedBlockQueue];
             }
         }
         
@@ -126,8 +140,8 @@
             break;
         }
         
-        [currentItem executeStartBlock];
-        [currentItem executeEndBlock];
+        [currentItem executeStartBlockOnQueue:self.synchronizedBlockQueue];
+        [currentItem executeEndBlockOnQueue:self.synchronizedBlockQueue];
     }
     
     if (data == nil) {
@@ -141,8 +155,8 @@
     [player release];
     
     dispatch_block_t playBlock = ^{
-        [self.currentItem executeStartBlock];
         [self.audioPlayer play];
+        [self.currentItem executeStartBlockOnQueue:self.synchronizedBlockQueue];
     };
     
     if (self.currentItem.startDelay > 0) {
@@ -186,7 +200,7 @@
         self.audioPlayer.delegate = nil;
         self.audioPlayer = nil;
 
-        [item executeEndBlock];
+        [item executeEndBlockOnQueue:self.synchronizedBlockQueue];
         [item release];
     
         // only progress with the queue if the end block did not enqueue a new item
@@ -220,18 +234,18 @@
     [super dealloc];
 }
 
-- (void) executeStartBlock
+- (void)executeStartBlockOnQueue:(dispatch_queue_t)queue
 {
     if (self.startBlock) {
-        dispatch_async(dispatch_get_main_queue(), self.startBlock);
+        dispatch_async(queue, self.startBlock);
         self.startBlock = nil;
     }
 }
 
-- (void) executeEndBlock
+- (void)executeEndBlockOnQueue:(dispatch_queue_t)queue
 {
     if (self.endBlock) {
-        dispatch_async(dispatch_get_main_queue(), self.endBlock);
+        dispatch_async(queue, self.endBlock);
         self.endBlock = nil;
     }
 }
