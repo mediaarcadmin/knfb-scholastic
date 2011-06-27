@@ -681,10 +681,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     NSUInteger pageWordOffset = 0;
     [self.readingView currentLayoutPage:&layoutPage pageWordOffset:&pageWordOffset];
     
-    if (UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation])) {
-        layoutPage -= 1;
-    }
-    
     if (self.audioBookPlayer == nil) {            
         SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];
         NSArray *audioBookReferences = [book valueForKey:kSCHAppBookAudioBookReferences];
@@ -695,11 +691,11 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
             self.audioBookPlayer.xpsProvider = self.xpsProvider;
             BOOL success = [self.audioBookPlayer prepareAudio:audioBookReferences error:&error 
                                           wordBlock:^(NSUInteger layoutPage, NSUInteger pageWordOffset) {
-                                              NSLog(@"WORD UP! at layoutPage %d pageWordOffset %d", layoutPage, pageWordOffset);
+                                              //NSLog(@"WORD UP! at layoutPage %d pageWordOffset %d", layoutPage, pageWordOffset);
                                               self.pauseAudioOnNextPageTurn = NO;
                                               [self.readingView followAlongHighlightWordForLayoutPage:layoutPage pageWordOffset:pageWordOffset];
                                           } pageTurnBlock:^(NSUInteger turnToLayoutPage) {
-                                              NSLog(@"Turn to layoutPage %d", turnToLayoutPage);
+                                              //NSLog(@"Turn to layoutPage %d", turnToLayoutPage);
                                               if (self.layoutType == SCHReadingViewLayoutTypeFixed) {
                                                   self.pauseAudioOnNextPageTurn = NO;
                                                   [self.readingView jumpToPageAtIndex:turnToLayoutPage - 1 animated:YES];

@@ -67,6 +67,8 @@ typedef enum
 // FIXME: change these to a protocol
 
 - (SCHBookPoint *)currentBookPoint;
+- (SCHBookPoint *)currentBookPointIgnoringMultipleDisplayPages:(BOOL)ignoreMultipleDisplayPages;
+
 - (void)currentLayoutPage:(NSUInteger *)layoutPage pageWordOffset:(NSUInteger *)pageWordOffset;
 
 - (void)jumpToPageAtIndex:(NSUInteger)pageIndex animated:(BOOL)animated;

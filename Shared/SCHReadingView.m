@@ -98,6 +98,12 @@
     return 0;
 }
 
+- (SCHBookPoint *)currentBookPointIgnoringMultipleDisplayPages:(BOOL)ignoreMultipleDisplayPages
+{
+    // Gets overriden by reading views that support multiple page displays
+    return [self currentBookPoint];
+}
+
 - (void)jumpToPageAtIndex:(NSUInteger)page animated:(BOOL)animated
 {
     NSLog(@"WARNING: jumpToPage:animated: not being overridden correctly.");
@@ -313,10 +319,10 @@
 
 - (void)currentLayoutPage:(NSUInteger *)layoutPage pageWordOffset:(NSUInteger *)pageWordOffset
 {
-    SCHBookPoint *bookPoint = [self currentBookPoint];
+    SCHBookPoint *bookPoint = [self currentBookPointIgnoringMultipleDisplayPages:NO];
     
     if (bookPoint) {
-        [self layoutPage:layoutPage pageWordOffset:pageWordOffset forBookPoint:[self currentBookPoint]];
+        [self layoutPage:layoutPage pageWordOffset:pageWordOffset forBookPoint:bookPoint];
     }    
 }
 

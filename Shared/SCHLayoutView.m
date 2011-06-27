@@ -314,10 +314,36 @@
 
 #pragma mark - SCHReadingView methods
 
-- (SCHBookPoint *)currentBookPoint {
+- (SCHBookPoint *)currentBookPointIgnoringMultipleDisplayPages:(BOOL)ignoreMultipleDisplayPages
+{
+    NSUInteger pageIndex;
+    
+    if (ignoreMultipleDisplayPages) {
+        pageIndex = self.currentPageIndex;
+    } else {
+        BOOL multiplePagesDisplayed = NO;
+    
+        if ((self.pageTurningView.isTwoUp) &&
+            (self.pageTurningView.leftPageIndex  != NSUIntegerMax) && 
+            (self.pageTurningView.rightPageIndex != NSUIntegerMax)) {
+        
+            multiplePagesDisplayed = YES;
+        }
+    
+        if (multiplePagesDisplayed) {
+            pageIndex = self.pageTurningView.leftPageIndex;
+        } else {
+            pageIndex = self.currentPageIndex;
+        }
+    }
+    
     SCHBookPoint *ret = [[SCHBookPoint alloc] init];
-    ret.layoutPage = MAX(self.currentPageIndex + 1, 1);
+    ret.layoutPage = MAX(pageIndex + 1, 1);
     return [ret autorelease];
+}
+
+- (SCHBookPoint *)currentBookPoint {
+    return [self currentBookPointIgnoringMultipleDisplayPages:YES];
 }
 
 - (void)jumpToBookPoint:(SCHBookPoint *)bookPoint animated:(BOOL)animated
