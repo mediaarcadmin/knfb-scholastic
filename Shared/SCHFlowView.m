@@ -110,6 +110,23 @@
 
 }
 
+- (void)configureSelectorForSelectionMode
+{
+    [super configureSelectorForSelectionMode];
+    
+    switch (self.selectionMode) {
+        case SCHReadingViewSelectionModeYoungerDictionary:
+            self.eucBookView.highlightsAreSelectable = NO;
+            break;
+        case SCHReadingViewSelectionModeOlderDictionary:
+            self.eucBookView.highlightsAreSelectable = NO;
+            break;
+        case SCHReadingViewSelectionModeHighlights:
+            self.eucBookView.highlightsAreSelectable = YES;
+            break;
+    }
+}
+
 - (void)willMoveToWindow:(UIWindow *)newWindow 
 {
     [super willMoveToWindow:newWindow];
