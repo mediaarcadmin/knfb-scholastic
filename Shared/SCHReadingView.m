@@ -253,7 +253,7 @@
         } break;
         case SCHReadingViewSelectionModeHighlights: {
             if ([self.selector selectedRangeIsHighlight]) {
-                EucMenuItem *dictionaryItem = [[[EucMenuItem alloc] initWithTitle:NSLocalizedString(@"Delete", "iPhone and iPad Delete option in popup menu")
+                EucMenuItem *dictionaryItem = [[[EucMenuItem alloc] initWithTitle:NSLocalizedString(@"Delete highlight", "iPhone and iPad Delete option in popup menu")
                                                                            action:@selector(deleteHighlight:)] autorelease];
                 
                 ret = [NSArray arrayWithObjects:dictionaryItem, nil];
