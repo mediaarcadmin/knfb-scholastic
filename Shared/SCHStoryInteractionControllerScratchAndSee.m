@@ -282,6 +282,8 @@ static const NSInteger kSCHScratchPointCount = 200;
         self.progressView.hidden = YES;
         [self setupQuestion];
 
+        aScratchView.interactionEnabled = NO;
+
         [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
         [self enqueueAudioWithPath:[(SCHStoryInteractionScratchAndSee *)self.storyInteraction scratchingCompleteSoundEffectFilename]
                         fromBundle:YES

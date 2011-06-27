@@ -208,8 +208,11 @@ static int mutationCount = 0;
     if ([allBooks count] > 0) {
         ret = [NSMutableArray arrayWithCapacity:[allBooks count]];
         for (SCHContentMetadataItem *contentMetadataItem in allBooks) {
-            //[ret addObject:[[SCHBookManager sharedBookManager] bookWithIdentifier:contentMetadataItem.ContentIdentifier]];
-            [ret addObject:contentMetadataItem.ContentIdentifier];
+            
+            // defensive : only add the book if it actually has an ISBN
+            if (contentMetadataItem.ContentIdentifier) {
+                [ret addObject:contentMetadataItem.ContentIdentifier];
+            }
         }
     }
     

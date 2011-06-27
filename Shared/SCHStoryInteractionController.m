@@ -26,6 +26,7 @@
 @property (nonatomic, retain) UIButton *readAloudButton;
 @property (nonatomic, retain) UIImageView *backgroundView;
 @property (nonatomic, retain) SCHQueuedAudioPlayer *audioPlayer;
+@property (nonatomic, retain) UIView *shadeView;
 
 - (void)setupGeometryForContainerView:(UIView *)containerView
                        backgroundView:(UIImageView *)backgroundView
@@ -56,6 +57,7 @@
 @synthesize delegate;
 @synthesize interfaceOrientation;
 @synthesize audioPlayer;
+@synthesize shadeView;
 
 + (SCHStoryInteractionController *)storyInteractionControllerForStoryInteraction:(SCHStoryInteraction *)storyInteraction
 {
@@ -77,16 +79,17 @@
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
-    [xpsProvider release];
-    [containerView release];
+    [xpsProvider release], xpsProvider = nil;
+    [containerView release], containerView = nil;
     [titleView release], titleView = nil;
-    [closeButton release];
-    [readAloudButton release];
-    [nibObjects release];
-    [contentsView release];
-    [backgroundView release];
-    [storyInteraction release];
-    [audioPlayer release];
+    [closeButton release], closeButton = nil;
+    [readAloudButton release], readAloudButton = nil;
+    [nibObjects release], nibObjects = nil;
+    [contentsView release], contentsView = nil;
+    [backgroundView release], backgroundView = nil;
+    [storyInteraction release], storyInteraction = nil;
+    [audioPlayer release], audioPlayer = nil;
+    [shadeView release], shadeView = nil;
     [super dealloc];
 }
 
@@ -122,6 +125,16 @@
 
 - (void)presentInHostView:(UIView *)hostView withInterfaceOrientation:(UIInterfaceOrientation)aInterfaceOrientation
 {
+    // dim the host view
+    if (self.frameStyle != SCHStoryInteractionTitleOverlaysContents && self.shadeView == nil) {
+        UIView *shade = [[UIView alloc] initWithFrame:hostView.bounds];
+        shade.backgroundColor = [UIColor colorWithWhite:0 alpha:0.5];
+        shade.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        self.shadeView = shade;
+        [hostView addSubview:shade];
+        [shade release];
+    }
+    
     if (self.containerView == nil) {
         self.xpsProvider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.isbn];
         
@@ -132,13 +145,10 @@
                                        [self playAudioAtPath:questionAudioPath completion:nil];
                                    }
                                }];
-        
+
         // set up the transparent full-size container to trap touch events before they get
         // to the underlying view; this effectively makes the story interaction modal
-        UIView *container = [[UIView alloc] initWithFrame:CGRectIntegral(hostView.bounds)];
-        if (self.frameStyle != SCHStoryInteractionTitleOverlaysContents) {
-            container.backgroundColor = [UIColor colorWithWhite:0 alpha:0.5];
-        }
+        UIView *container = [[UIView alloc] initWithFrame:hostView.bounds];
         container.userInteractionEnabled = YES;
         
         UIImageView *background = [[UIImageView alloc] initWithImage:[self backgroundImage]];
@@ -474,6 +484,7 @@
     [self setUserInteractionsEnabled:YES];
     
     [self.containerView removeFromSuperview];
+    [self.shadeView removeFromSuperview];
     
     if (delegate && [delegate respondsToSelector:@selector(storyInteractionController:didDismissWithSuccess:)]) {
         // may result in self being dealloc'ed so don't do anything else after this

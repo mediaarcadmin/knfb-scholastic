@@ -696,6 +696,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
             BOOL success = [self.audioBookPlayer prepareAudio:audioBookReferences error:&error 
                                           wordBlock:^(NSUInteger layoutPage, NSUInteger pageWordOffset) {
                                               NSLog(@"WORD UP! at layoutPage %d pageWordOffset %d", layoutPage, pageWordOffset);
+                                              self.pauseAudioOnNextPageTurn = NO;
                                               [self.readingView followAlongHighlightWordForLayoutPage:layoutPage pageWordOffset:pageWordOffset];
                                           } pageTurnBlock:^(NSUInteger turnToLayoutPage) {
                                               NSLog(@"Turn to layoutPage %d", turnToLayoutPage);

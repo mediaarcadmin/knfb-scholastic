@@ -6,6 +6,8 @@
 //  Copyright 2011 BitWink. All rights reserved.
 //
 
+#import <QuartzCore/QuartzCore.h>
+
 #import "SCHStoryInteractionDraggableView.h"
 #import "SCHStoryInteractionDraggableTargetView.h"
 #import "SCHGeometry.h"
@@ -30,6 +32,7 @@ enum DragState {
 
 - (void)beginDrag;
 - (void)endDragWithTouch:(UITouch *)touch cancelled:(BOOL)cancelled;
+- (CGPoint)centerOfRect:(CGRect)rect inContainerRect:(CGRect)container withNewCenter:(CGPoint)center;
 
 @end
 
@@ -92,7 +95,10 @@ enum DragState {
     }
 
     CGPoint point = [[touches anyObject] locationInView:self.superview];
-    CGPoint newCenter = CGPointMake(point.x+self.touchOffset.x, point.y+self.touchOffset.y);
+    CGPoint newCenter = [self centerOfRect:self.frame
+                           inContainerRect:self.superview.bounds
+                             withNewCenter:CGPointMake(point.x+self.touchOffset.x, point.y+self.touchOffset.y)];
+
     if (self.dragState == kDragStateIdle) {
         if (SCHCGPointDistanceSq(self.homePosition, newCenter) < kMinimumDragDistanceSq) {
             return;
@@ -165,6 +171,17 @@ enum DragState {
     }
 
     self.dragState = kDragStateIdle;
+}
+
+- (CGPoint)centerOfRect:(CGRect)rect inContainerRect:(CGRect)container withNewCenter:(CGPoint)center
+{
+    CGFloat x = MAX(center.x, CGRectGetWidth(rect)/2);
+    x = MIN(x, CGRectGetWidth(container)-CGRectGetWidth(rect)/2);
+    
+    CGFloat y = MAX(center.y, CGRectGetHeight(rect)/2);
+    y = MIN(y, CGRectGetHeight(container)-CGRectGetHeight(rect)/2);
+    
+    return CGPointMake(x, y);
 }
 
 @end
