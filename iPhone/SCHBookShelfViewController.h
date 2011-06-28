@@ -12,6 +12,7 @@
 #import "SCHProfileItem.h"
 #import "MRGridViewDelegate.h"
 #import "MRGridViewDataSource.h"
+#import "SCHBookShelfTableViewCell.h"
 
 @class SCHBookShelfGridView;
 @class SCHCustomNavigationBar;
@@ -31,6 +32,7 @@
 @property (nonatomic, retain) IBOutlet UIButton *gridButton;
 @property (nonatomic, retain) IBOutlet UIButton *listButton;
 @property (nonatomic, retain) IBOutlet UIView *toggleView;
+@property (nonatomic, retain) IBOutlet SCHBookShelfTableViewCell *listViewCell;
 
 @property (nonatomic, retain) KNFBTimeOrderedCache *componentCache;
 
