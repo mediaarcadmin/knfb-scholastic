@@ -163,9 +163,9 @@ static CGFloat const kSCHStoryInteractionControllerVideoBorderWidth = 4.0;
 
 - (void)closeButtonTapped:(id)sender
 {
-    [super closeButtonTapped:sender];
     self.playButton.actionBlock = nil;
-    [moviePlayer stop];
+    [self.moviePlayer stop];
+    [super closeButtonTapped:sender];    
 }
 
 @end
