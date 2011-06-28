@@ -372,8 +372,8 @@ static int mutationCount = 0;
     pthread_setspecific(sManagedObjectContextKey, [managedObjectContextForCurrentThread retain]);
 }
 
-
-
+// the remainder of this class is not unit tested
+#ifndef UNITTESTS
 
 #pragma mark -
 #pragma mark XPS Provider Check out/Check in
@@ -665,5 +665,7 @@ static int checkoutCountParagraph = 0;
             [cachedEucBookCheckoutCounts count], checkoutCountEucBook,
             [cachedParagraphSourceCheckoutCounts count], checkoutCountParagraph];
 }
+
+#endif // UNITTESTS
 
 @end

@@ -30,6 +30,7 @@
 - (SCHAppBook *)bookWithIdentifier:(NSString *)isbn;
 - (NSArray *)allBooksAsISBNs;
 
+#ifndef UNITTESTS
 - (SCHXPSProvider *)checkOutXPSProviderForBookIdentifier:(NSString *)isbn;
 - (void)checkInXPSProviderForBookIdentifier:(NSString *)isbn;
 
@@ -41,6 +42,7 @@
 
 - (SCHTextFlowParagraphSource *)checkOutParagraphSourceForBookIdentifier:(NSString *)isbn;
 - (void)checkInParagraphSourceForBookIdentifier:(NSString *)isbn;
+#endif
 
 + (BOOL)checkAppCompatibilityForFeature:(NSString *)key version:(float)version;
 + (BOOL)appHasFeature:(NSString *)key;
