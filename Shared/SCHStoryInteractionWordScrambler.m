@@ -30,7 +30,7 @@
 
 - (NSString *)title
 {
-    return @"Word Scrambler";
+    return @"Scramble";
 }
 
 @end
