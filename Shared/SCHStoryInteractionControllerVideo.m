@@ -104,15 +104,10 @@ static CGFloat const kSCHStoryInteractionControllerVideoBorderWidth = 4.0;
 
 - (IBAction)playAudioButtonTapped:(id)sender
 {
-    BOOL iWasPlaying = self.moviePlayer.playbackState == MPMoviePlaybackStatePlaying;
     NSString *path = [self.storyInteraction audioPathForQuestion];
     if (path != nil) {
         [self pause];
-        [self playAudioAtPath:path completion:^{
-            if (iWasPlaying == YES) {
-                [self play];
-            }
-        }];
+        [self playAudioAtPath:path completion:nil];
     }   
 }
 
@@ -123,6 +118,7 @@ static CGFloat const kSCHStoryInteractionControllerVideoBorderWidth = 4.0;
 
 - (void)play
 {
+    [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
     [self.moviePlayer play];
 }
 
