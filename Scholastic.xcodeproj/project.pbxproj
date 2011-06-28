@@ -1347,6 +1347,8 @@
 		F8DC5680138C150F00F27146 /* SCHDictionaryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F8DC567D138C150F00F27146 /* SCHDictionaryViewController.m */; };
 		F8DC5681138C150F00F27146 /* SCHDictionaryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8DC567E138C150F00F27146 /* SCHDictionaryViewController.xib */; };
 		F8DC5682138C150F00F27146 /* SCHDictionaryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8DC567E138C150F00F27146 /* SCHDictionaryViewController.xib */; };
+		F8E2D3C013B9C7AC001E207B /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8E2D3BF13B9C7AC001E207B /* CoreText.framework */; };
+		F8E2D3C113B9C7D0001E207B /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8E2D3BF13B9C7AC001E207B /* CoreText.framework */; };
 		F8EDE542138561390079BFD8 /* SCHReadingNoteView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8EDE541138561390079BFD8 /* SCHReadingNoteView.m */; };
 		F8EDE543138561390079BFD8 /* SCHReadingNoteView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8EDE541138561390079BFD8 /* SCHReadingNoteView.m */; };
 		F8FF8D81139513B000CD7B73 /* OldDictionary-additions.css in Resources */ = {isa = PBXBuildFile; fileRef = F8FF8D7F139513B000CD7B73 /* OldDictionary-additions.css */; };
@@ -2529,6 +2531,7 @@
 		F8DC567C138C150F00F27146 /* SCHDictionaryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHDictionaryViewController.h; path = Shared/SCHDictionaryViewController.h; sourceTree = "<group>"; };
 		F8DC567D138C150F00F27146 /* SCHDictionaryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHDictionaryViewController.m; path = Shared/SCHDictionaryViewController.m; sourceTree = "<group>"; };
 		F8DC567E138C150F00F27146 /* SCHDictionaryViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SCHDictionaryViewController.xib; path = Shared/SCHDictionaryViewController.xib; sourceTree = "<group>"; };
+		F8E2D3BF13B9C7AC001E207B /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		F8EDE540138561390079BFD8 /* SCHReadingNoteView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHReadingNoteView.h; path = Shared/SCHReadingNoteView.h; sourceTree = "<group>"; };
 		F8EDE541138561390079BFD8 /* SCHReadingNoteView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHReadingNoteView.m; path = Shared/SCHReadingNoteView.m; sourceTree = "<group>"; };
 		F8FF8D7F139513B000CD7B73 /* OldDictionary-additions.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; name = "OldDictionary-additions.css"; path = "Resources/OldDictionary-additions.css"; sourceTree = "<group>"; };
@@ -2568,6 +2571,7 @@
 				529386C512DF3A9000045B44 /* SystemConfiguration.framework in Frameworks */,
 				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
 				C9EFB177134F4C8E00ADF905 /* libXpsSDKipad.a in Frameworks */,
+				F8E2D3C113B9C7D0001E207B /* CoreText.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2588,6 +2592,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F8E2D3C013B9C7AC001E207B /* CoreText.framework in Frameworks */,
 				C9F1A4D6133B507100FD984C /* libPlayReadyPK.a in Frameworks */,
 				F8509F4812F063C900197EB5 /* libstdc++.6.dylib in Frameworks */,
 				C95ECB45133A76C400D88768 /* Accelerate.framework in Frameworks */,
@@ -3178,6 +3183,7 @@
 				529386C212DF3A8900045B44 /* CFNetwork.framework */,
 				28EEBFDC1118E19E00187D67 /* CoreData.framework */,
 				288765FC0DF74451002DB57D /* CoreGraphics.framework */,
+				F8E2D3BF13B9C7AC001E207B /* CoreText.framework */,
 				526A8A5E1385182100101A96 /* CoreMedia.framework */,
 				1D30AB110D05D00D00671497 /* Foundation.framework */,
 				523756AA13A2548E00B38441 /* MediaPlayer.framework */,
