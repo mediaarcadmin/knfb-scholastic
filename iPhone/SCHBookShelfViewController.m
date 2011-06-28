@@ -121,7 +121,6 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
     [self.gridView setCellSize:[self cellSize] withBorderSize:[self cellBorderSize]];
     
     [self.gridView setBackgroundColor:[UIColor clearColor]];
-    [self.gridView setMinimumNumberOfShelves:10];
     
     UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:nil action:nil];
     longPress.delaysTouchesBegan = YES;
