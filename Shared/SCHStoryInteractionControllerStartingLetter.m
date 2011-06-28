@@ -71,17 +71,30 @@
                 SCHStoryInteractionStartingLetterQuestion *question = [self questionAtIndex:imageButton.tag - 1]; 
                 if (question != nil) {
                     [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
+                    [self setUserInteractionsEnabled:NO];                    
                     if ([question isCorrect] == YES) {
                         [self enqueueAudioWithPath:[(SCHStoryInteractionStartingLetter *)self.storyInteraction audioPathForThatsRight] fromBundle:NO];
                         [self enqueueAudioWithPath:[question audioPath] fromBundle:NO];
                         [self enqueueAudioWithPath:[(SCHStoryInteractionStartingLetter *)self.storyInteraction audioPathForStartsWith] fromBundle:NO];
-                        [self enqueueAudioWithPath:[(SCHStoryInteractionStartingLetter *)self.storyInteraction audioPathForLetter] fromBundle:NO];
+                        [self enqueueAudioWithPath:[(SCHStoryInteractionStartingLetter *)self.storyInteraction audioPathForLetter] 
+                                        fromBundle:NO
+                                        startDelay:0.0 
+                            synchronizedStartBlock:nil 
+                              synchronizedEndBlock:^{
+                                  [self setUserInteractionsEnabled:YES];                                      
+                              }];
                         [self questionsCompleted];                         
                     } else {
                         [self enqueueAudioWithPath:[question audioPath] fromBundle:NO];
                         [self enqueueAudioWithPath:[(SCHStoryInteractionStartingLetter *)self.storyInteraction audioPathForDoesntStartWith] fromBundle:NO];
                         [self enqueueAudioWithPath:[(SCHStoryInteractionStartingLetter *)self.storyInteraction audioPathForLetter] fromBundle:NO];
-                        [self enqueueAudioWithPath:[(SCHStoryInteractionStartingLetter *)self.storyInteraction audioPathForTryAgain] fromBundle:NO];
+                        [self enqueueAudioWithPath:[(SCHStoryInteractionStartingLetter *)self.storyInteraction audioPathForTryAgain] 
+                                        fromBundle:NO 
+                                        startDelay:0.0 
+                            synchronizedStartBlock:nil 
+                              synchronizedEndBlock:^{
+                                  [self setUserInteractionsEnabled:YES];                                      
+                              }];
                     }
                 }
             };
@@ -113,12 +126,14 @@
     }
     
     if (ret == YES) {
-        [self setUserInteractionsEnabled:NO];
         [self enqueueAudioWithPath:[(SCHStoryInteractionStartingLetter *)self.storyInteraction audioPathForYouFoundThemAll]
                         fromBundle:NO
                         startDelay:0
-            synchronizedStartBlock:nil
+            synchronizedStartBlock:^{
+                [self setUserInteractionsEnabled:NO];
+            }
               synchronizedEndBlock:^{
+                  [self setUserInteractionsEnabled:YES];                                      
                   [self removeFromHostViewWithSuccess:YES];
               }];
     }

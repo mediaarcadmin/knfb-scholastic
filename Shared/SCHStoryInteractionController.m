@@ -474,21 +474,38 @@
     [self.audioPlayer cancelPlaybackExecutingSynchronizedBlocksImmediately:NO];
 }
 
+- (void)removeFromHostViewAfterDelayWithSuccess:(BOOL)success
+{
+    
+}
+
 - (void)removeFromHostViewWithSuccess:(BOOL)success
 {
     [self cancelQueuedAudio];
     
     [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.isbn];
     
-    // always, always re-enable user interactions for the superview...
-    [self setUserInteractionsEnabled:YES];
+    void (^teardownBlock)(void) = ^{ 
+        // always, always re-enable user interactions for the superview...
+        [self setUserInteractionsEnabled:YES];
+        
+        [self.containerView removeFromSuperview];
+        [self.shadeView removeFromSuperview];
+        
+        if (delegate && [delegate respondsToSelector:@selector(storyInteractionController:didDismissWithSuccess:)]) {
+            // may result in self being dealloc'ed so don't do anything else after this
+            [delegate storyInteractionController:self didDismissWithSuccess:success];
+        }
+    };
     
-    [self.containerView removeFromSuperview];
-    [self.shadeView removeFromSuperview];
-    
-    if (delegate && [delegate respondsToSelector:@selector(storyInteractionController:didDismissWithSuccess:)]) {
-        // may result in self being dealloc'ed so don't do anything else after this
-        [delegate storyInteractionController:self didDismissWithSuccess:success];
+    if (success) {
+        double delayInSeconds = 0.75;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            teardownBlock();
+        });
+    } else {
+        teardownBlock();
     }
 }
 
