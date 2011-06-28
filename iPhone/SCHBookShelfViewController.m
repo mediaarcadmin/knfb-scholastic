@@ -23,7 +23,6 @@
 #import "KNFBTimeOrderedCache.h"
 #import "SCHProfileItem.h"
 #import "SCHAppProfile.h"
-#import "SCHBookShelfTableViewCell.h"
 
 static NSInteger const kSCHBookShelfViewControllerGridCellHeightPortrait = 138;
 static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
@@ -44,11 +43,14 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 - (CGFloat)cellBorderSize;
 - (void)updateTable:(NSNotification *)notification;
 
+@property (nonatomic, retain) UINib *listTableCellNib;
+
 @end
 
 @implementation SCHBookShelfViewController
 
 @synthesize listTableView;
+@synthesize listTableCellNib;
 @synthesize gridView;
 @synthesize loadingView;
 @synthesize themePickerContainer;
@@ -64,6 +66,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 @synthesize sortType;
 @synthesize currentRightButton;
 @synthesize updateSort;
+@synthesize listViewCell;
 
 #pragma mark - Object lifecycle
 
@@ -81,6 +84,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
     [gridButton release], gridButton = nil;
     [listButton release], listButton = nil;
     [toggleView release], toggleView = nil;
+    [listTableCellNib release], listTableCellNib = nil;
     
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
@@ -99,6 +103,13 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 - (void)viewDidLoad 
 {
     [super viewDidLoad];
+    
+    // because we're using iOS 4 and above, use UINib to cache access to the NIB
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        self.listTableCellNib = [UINib nibWithNibName:@"SCHBookShelfTableViewCell_iPad" bundle:nil];
+    } else {
+        NSLog(@"FIXME: add iPhone nib here!");
+    }
     
     self.sortType = [[[self.profileItem AppProfile] SortType] intValue];
     
@@ -302,6 +313,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
     books = newBooks;
     
 	[self.gridView reloadData];
+    [self.listTableView reloadData];
 }
 
 #pragma mark - View Type Toggle methods
@@ -338,8 +350,17 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
     
     SCHBookShelfTableViewCell *cell = (SCHBookShelfTableViewCell *) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     
-    if (!cell) {
-        cell = [[SCHBookShelfTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
+    if (cell == nil) {
+        
+        if (self.listTableCellNib) {
+            [self.listTableCellNib instantiateWithOwner:self options:nil];
+        }
+        
+        // when the nib loads, it places an instantiated version of the cell in self.notesCell
+        cell = self.listViewCell;
+        
+        // tidy up after ourselves
+        self.listViewCell = nil;
     }
     
     cell.isbn = [self.books objectAtIndex:[indexPath row]];
@@ -353,6 +374,15 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
         return [self.books count];
     } else {
         return 0;
+    }
+}
+
+- (float) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        return 100;
+    } else {
+        return 88;
     }
 }
 

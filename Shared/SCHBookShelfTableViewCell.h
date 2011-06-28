@@ -7,24 +7,24 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "SCHAsyncBookCoverImageView.h"
+
+@protocol SCHBookShelfTableViewCellDelegate;
 
 @interface SCHBookShelfTableViewCell : UITableViewCell {
-	
-	
-	
 }
 
-@property (readonly, retain) SCHAsyncBookCoverImageView *thumbImageView;
-@property (nonatomic, retain) UIView *thumbContainerView;
-@property (nonatomic, retain) UIView *thumbTintView;
-@property (nonatomic, retain) UILabel *titleLabel;
-@property (nonatomic, retain) UILabel *subtitleLabel;
-@property (nonatomic, retain) UILabel *statusLabel;
-@property (nonatomic, retain) UIProgressView *progressView;
-@property (nonatomic, retain) NSString *isbn;
 
+@property (nonatomic, copy) NSString *isbn;
+@property (nonatomic, assign) id <SCHBookShelfTableViewCellDelegate> delegate;
 
 - (void) refreshCell;
+
+@end
+
+
+@protocol SCHBookShelfTableViewCellDelegate <NSObject>
+
+@optional
+- (void)bookShelfTableViewCellSelectedDeleteForISBN:(NSString *)isbn;
 
 @end

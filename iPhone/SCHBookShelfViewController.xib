@@ -2,9 +2,9 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="7.10">
 	<data>
 		<int key="IBDocument.SystemTarget">1056</int>
-		<string key="IBDocument.SystemVersion">10J869</string>
+		<string key="IBDocument.SystemVersion">10K540</string>
 		<string key="IBDocument.InterfaceBuilderVersion">1306</string>
-		<string key="IBDocument.AppKitVersion">1038.35</string>
+		<string key="IBDocument.AppKitVersion">1038.36</string>
 		<string key="IBDocument.HIToolboxVersion">461.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -57,14 +57,13 @@
 						<reference key="NSSuperview" ref="509794933"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="1042208657"/>
-						<object class="NSColor" key="IBUIBackgroundColor" id="659354688">
-							<int key="NSColorSpace">3</int>
-							<bytes key="NSWhite">MQA</bytes>
+						<object class="NSColor" key="IBUIBackgroundColor">
+							<int key="NSColorSpace">1</int>
+							<bytes key="NSRGB">MC42NTQ5MDE5NjA4IDAuODQzMTM3MjU0OSAwLjk4NDMxMzcyNTUAA</bytes>
 						</object>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<bool key="IBUIAlwaysBounceVertical">YES</bool>
-						<int key="IBUISeparatorStyle">1</int>
 						<int key="IBUISectionIndexMinimumDisplayRowCount">0</int>
 						<bool key="IBUIShowsSelectionImmediatelyOnTouchBegin">YES</bool>
 						<float key="IBUIRowHeight">88</float>
@@ -129,7 +128,10 @@
 										<int key="NSID">1</int>
 									</object>
 								</object>
-								<reference key="IBUIHighlightedColor" ref="659354688"/>
+								<object class="NSColor" key="IBUIHighlightedColor" id="659354688">
+									<int key="NSColorSpace">3</int>
+									<bytes key="NSWhite">MQA</bytes>
+								</object>
 								<int key="IBUIBaselineAdjustment">1</int>
 								<float key="IBUIMinimumFontSize">10</float>
 								<int key="IBUITextAlignment">1</int>
@@ -628,6 +630,14 @@
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
+					<string key="className">SCHBookShelfTableViewCell</string>
+					<string key="superclassName">UITableViewCell</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/SCHBookShelfTableViewCell.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
 					<string key="className">SCHBookShelfViewController</string>
 					<string key="superclassName">UIViewController</string>
 					<object class="NSMutableDictionary" key="outlets">
@@ -639,6 +649,7 @@
 							<string>gridView</string>
 							<string>listButton</string>
 							<string>listTableView</string>
+							<string>listViewCell</string>
 							<string>loadingView</string>
 							<string>themePickerContainer</string>
 							<string>toggleView</string>
@@ -650,6 +661,7 @@
 							<string>SCHBookShelfGridView</string>
 							<string>UIButton</string>
 							<string>UITableView</string>
+							<string>SCHBookShelfTableViewCell</string>
 							<string>UIView</string>
 							<string>UINavigationController</string>
 							<string>UIView</string>
@@ -664,6 +676,7 @@
 							<string>gridView</string>
 							<string>listButton</string>
 							<string>listTableView</string>
+							<string>listViewCell</string>
 							<string>loadingView</string>
 							<string>themePickerContainer</string>
 							<string>toggleView</string>
@@ -689,6 +702,10 @@
 							<object class="IBToOneOutletInfo">
 								<string key="name">listTableView</string>
 								<string key="candidateClassName">UITableView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">listViewCell</string>
+								<string key="candidateClassName">SCHBookShelfTableViewCell</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">loadingView</string>
