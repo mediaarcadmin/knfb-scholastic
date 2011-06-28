@@ -34,6 +34,7 @@ static NSUInteger const kSCHAudioBookPlayerNoAudioLoaded = NSUIntegerMax;
 - (SCHAudioInfo *)audioInfoForPageIndex:(NSUInteger)pageIndex;
 - (BOOL)prepareToPlay:(SCHAudioInfo *)audioInfoToPrepare 
            pageWordOffset:(NSUInteger)pageWordOffset;
+- (void)suspend;
 
 @end
 
@@ -65,6 +66,8 @@ static NSUInteger const kSCHAudioBookPlayerNoAudioLoaded = NSUIntegerMax;
 
 - (void)dealloc 
 {
+    [UIApplication sharedApplication].idleTimerDisabled = NO;
+    
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 
     if (timer != NULL) {
@@ -231,6 +234,7 @@ static NSUInteger const kSCHAudioBookPlayerNoAudioLoaded = NSUIntegerMax;
     self.audioInfos = nil;
     self.wordTimings = nil;
     
+    [UIApplication sharedApplication].idleTimerDisabled = NO;    
     
     self.loadedAudioReferencesIndex = kSCHAudioBookPlayerNoAudioLoaded;
 }
@@ -241,6 +245,7 @@ static NSUInteger const kSCHAudioBookPlayerNoAudioLoaded = NSUIntegerMax;
     
     ret = [self.player play];
     if (ret == YES && self.timer != NULL) {
+        [UIApplication sharedApplication].idleTimerDisabled = YES;        
         dispatch_resume(self.timer);        
     }
 
@@ -261,9 +266,7 @@ static NSUInteger const kSCHAudioBookPlayerNoAudioLoaded = NSUIntegerMax;
 
 - (void)pause
 {
-    if (self.timer != NULL) {
-        dispatch_suspend(self.timer);
-    }
+    [self suspend];
     [self.player pause];
 }
 
@@ -341,6 +344,14 @@ static NSUInteger const kSCHAudioBookPlayerNoAudioLoaded = NSUIntegerMax;
     return(ret);
 }
 
+- (void)suspend
+{
+    if (self.timer != NULL) {
+        dispatch_suspend(self.timer);
+    }
+    [UIApplication sharedApplication].idleTimerDisabled = NO;    
+}
+
 #pragma mark - Notification methods
 
 - (void)willResignActiveNotification:(NSNotification *)notification
@@ -375,9 +386,7 @@ static NSUInteger const kSCHAudioBookPlayerNoAudioLoaded = NSUIntegerMax;
             [self play];
         }
     } else {
-        if (self.timer != NULL) {
-            dispatch_suspend(self.timer);
-        }
+        [self suspend];
         
         if([(id)self.delegate respondsToSelector:@selector(audioBookPlayerDidFinishPlaying:successfully:)]) {
             [(id)self.delegate audioBookPlayerDidFinishPlaying:self successfully:flag];
@@ -387,9 +396,7 @@ static NSUInteger const kSCHAudioBookPlayerNoAudioLoaded = NSUIntegerMax;
 
 - (void)audioPlayerDecodeErrorDidOccur:(AVAudioPlayer *)player error:(NSError *)error
 {
-    if (self.timer != NULL) {
-        dispatch_suspend(self.timer);
-    }
+    [self suspend];
     
     if([(id)self.delegate respondsToSelector:@selector(audioBookPlayerErrorDidOccur:error:)]) {
         [(id)self.delegate audioBookPlayerErrorDidOccur:self error:error];
