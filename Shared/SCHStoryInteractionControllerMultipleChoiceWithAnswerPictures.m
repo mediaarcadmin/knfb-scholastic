@@ -91,10 +91,18 @@
                                     startDelay:0.5
                         synchronizedStartBlock:nil
                           synchronizedEndBlock:^{
+                              [self setUserInteractionsEnabled:YES];
                               [self nextQuestion];
                           }];
                 } else {
-                    [self enqueueAudioWithPath:[[self currentQuestion] audioPathForIncorrectAnswer] fromBundle:NO];
+                    [self enqueueAudioWithPath:[[self currentQuestion] audioPathForIncorrectAnswer] fromBundle:NO 
+                                    startDelay:0.0
+                        synchronizedStartBlock:^{
+                            [self setUserInteractionsEnabled:NO];
+                        }
+                          synchronizedEndBlock:^{
+                              [self setUserInteractionsEnabled:YES];
+                          }];
                 }
             };
         }
