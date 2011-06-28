@@ -99,6 +99,7 @@ typedef enum
 
 - (void)attachSelector;
 - (void)detachSelector;
+- (void)configureSelectorForSelectionMode;
 - (void)dismissSelector;
 
 - (void)unhandledTapAtPoint:(CGPoint)point;

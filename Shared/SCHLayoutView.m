@@ -207,9 +207,14 @@
 
 - (void)setCurrentPageIndex:(NSUInteger)newPageIndex
 {
-    currentPageIndex = newPageIndex;
+    if(currentPageIndex != self.pageTurningView.leftPageIndex &&
+       currentPageIndex != self.pageTurningView.rightPageIndex) {
+        self.selector.selectedRange = nil;
+    }
     
     BOOL multiplePagesDisplayed = NO;
+    
+    currentPageIndex = newPageIndex;
     
     if ((self.pageTurningView.isTwoUp) &&
         (self.pageTurningView.leftPageIndex  != NSUIntegerMax) && 
@@ -528,25 +533,23 @@
 
 - (void)pageTurningViewWillBeginPageTurn:(EucPageTurningView *)pageTurningView
 {
+    self.selector.selectionDisabled = YES;
     [self.delegate readingViewWillBeginTurning:self];
 }
 
 - (void)pageTurningViewDidEndPageTurn:(EucPageTurningView *)aPageTurningView
 {
     [self updateCurrentPageIndex];
+    self.selector.selectionDisabled = NO;
 }
 
 - (void)pageTurningViewWillBeginAnimating:(EucPageTurningView *)aPageTurningView
 {
-    self.selector.selectionDisabled = YES;
     [self dismissFollowAlongHighlighter];
 }
 
 - (void)pageTurningViewDidEndAnimation:(EucPageTurningView *)aPageTurningView
-{
-    
-    self.selector.selectionDisabled = NO;
-    
+{    
     if(self.temporaryHighlightRange) {
 		NSInteger targetIndex = self.temporaryHighlightRange.startPoint.layoutPage - 1;
 		
@@ -568,7 +571,6 @@
     [self.selector setSelectionDisabled:YES];
     [self dismissFollowAlongHighlighter];
 	self.temporaryHighlightRange = nil;
-	
 }
 
 - (void)pageTurningViewDidEndZooming:(EucPageTurningView *)scrollView 

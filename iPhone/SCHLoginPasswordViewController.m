@@ -266,7 +266,7 @@
 
 - (IBAction)openScholasticURLInSafari:(id)sender
 {
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.scholastic.com/"]];
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://my.scholastic.com/sps_my_account/pwmgmt/ForgotPassword.jsp?AppType=COOL"]];
 }
 
 #pragma mark - UITextFieldDelegate
