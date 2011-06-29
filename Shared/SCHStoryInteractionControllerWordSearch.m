@@ -37,14 +37,14 @@
 {
     SCHStoryInteractionWordSearch *wordSearch = (SCHStoryInteractionWordSearch *)self.storyInteraction;
     
-    [[self.wordViews objectAtIndex:0] setStrikeOutColor:[UIColor redColor]];
-    [[self.wordViews objectAtIndex:1] setStrikeOutColor:[UIColor greenColor]];
-    [[self.wordViews objectAtIndex:2] setStrikeOutColor:[UIColor cyanColor]];
-    [[self.wordViews objectAtIndex:3] setStrikeOutColor:[UIColor magentaColor]];
-    [[self.wordViews objectAtIndex:4] setStrikeOutColor:[UIColor orangeColor]];
+    [[self.wordViews objectAtIndex:0] setStrikeOutColor:[UIColor SCHScholasticRedColor]];
+    [[self.wordViews objectAtIndex:1] setStrikeOutColor:[UIColor SCHGreen1Color]];
+    [[self.wordViews objectAtIndex:2] setStrikeOutColor:[UIColor SCHLightBlue2Color]];
+    [[self.wordViews objectAtIndex:3] setStrikeOutColor:[UIColor SCHPurple1Color]];
+    [[self.wordViews objectAtIndex:4] setStrikeOutColor:[UIColor SCHOrange1Color]];
     [[self.wordViews objectAtIndex:5] setStrikeOutColor:[UIColor brownColor]];
     
-    self.wordsContainerView.layer.borderColor = [[UIColor colorWithRed:0.278 green:0.667 blue:0.937 alpha:1.] CGColor];
+    self.wordsContainerView.layer.borderColor = [[UIColor SCHLightBlue2Color] CGColor];
     self.wordsContainerView.layer.borderWidth = 2;
     self.wordsContainerView.layer.cornerRadius = 10;
     

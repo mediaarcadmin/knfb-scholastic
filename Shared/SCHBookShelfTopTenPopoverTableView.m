@@ -28,7 +28,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    [self.topTenTableView setSeparatorColor:[UIColor colorWithRed:0.710 green:0.737 blue:0.816 alpha:1.0]];
+    [self.topTenTableView setSeparatorColor:[UIColor SCHGrayColor]];
     self.topTenTableView.allowsSelection = NO;
     self.topTenTableView.scrollEnabled = NO;    
 }
@@ -56,7 +56,7 @@
     
     if (!cell) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"topTenTableCell"] autorelease]; 
-        cell.textLabel.textColor = [UIColor colorWithRed:0.004 green:0.184 blue:0.369 alpha:1.000];
+        cell.textLabel.textColor = [UIColor SCHDarkBlue1Color];        
         cell.textLabel.font = [cell.textLabel.font fontWithSize:16];
     }
     

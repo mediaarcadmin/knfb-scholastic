@@ -1291,7 +1291,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (UIColor *)highlightColor
 {
-    return [[UIColor yellowColor] colorWithAlphaComponent:0.3f];
+    return [[UIColor SCHYellowColor] colorWithAlphaComponent:0.4f];
 }
 
 - (void)addHighlightBetweenStartPage:(NSUInteger)startPage startWord:(NSUInteger)startWord endPage:(NSUInteger)endPage endWord:(NSUInteger)endWord;

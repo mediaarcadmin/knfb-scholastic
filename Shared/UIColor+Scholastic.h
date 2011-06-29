@@ -12,14 +12,13 @@
 @interface UIColor (UIColorScholastic)
     
 + (UIColor *)SCHGrayColor;
++ (UIColor *)SCHLightBlue1Color;
++ (UIColor *)SCHLightBlue2Color;
 + (UIColor *)SCHBlue1Color;
 + (UIColor *)SCHBlue2Color;
 + (UIColor *)SCHBlue3Color;
-+ (UIColor *)SCHBlue4Color;
-+ (UIColor *)SCHBlue5Color;
-+ (UIColor *)SCHBlue6Color;
-+ (UIColor *)SCHBlue7Color;
-+ (UIColor *)SCHBlue8Color;
++ (UIColor *)SCHDarkBlue1Color;
++ (UIColor *)SCHDarkBlue2Color;
 + (UIColor *)SCHPurple1Color;
 + (UIColor *)SCHPurple2Color;
 + (UIColor *)SCHGreen1Color;
