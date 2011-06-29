@@ -110,7 +110,7 @@ static int mutationCount = 0;
 		
 		self.wifiReach = [Reachability reachabilityForInternetConnection];
         self.threadSafeMutationLock = [[NSLock alloc] init];
-	}
+    }
 	
 	return self;
 }
@@ -609,7 +609,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 	state.Version = newVersion;
 	
 	NSError *error = nil;
-	[[[SCHBookManager sharedBookManager] managedObjectContextForCurrentThread] save:&error];
+	[[SCHDictionaryAccessManager sharedAccessManager].managedObjectContextForCurrentThread save:&error];
 	
 	if (error) {
 		NSLog(@"Error while saving dictionary version: %@", [error localizedDescription]);
@@ -722,7 +722,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
     dispatch_sync([SCHDictionaryAccessManager sharedAccessManager].dictionaryAccessQueue, ^{
 
         SCHDictionaryDownloadManager *dictManager = [SCHDictionaryDownloadManager sharedDownloadManager];
-        NSManagedObjectContext *context = [[SCHBookManager sharedBookManager] managedObjectContextForCurrentThread];
+        NSManagedObjectContext *context = [SCHDictionaryAccessManager sharedAccessManager].managedObjectContextForCurrentThread;
         
         NSLog(@"Removing any existing %@ objects.", kSCHDictionaryEntry);
         
@@ -850,7 +850,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
     dispatch_sync([SCHDictionaryAccessManager sharedAccessManager].dictionaryAccessQueue, ^{
 
         SCHDictionaryDownloadManager *dictManager = [SCHDictionaryDownloadManager sharedDownloadManager];
-        NSManagedObjectContext *context = [[SCHBookManager sharedBookManager] managedObjectContextForCurrentThread];
+        NSManagedObjectContext *context = [SCHDictionaryAccessManager sharedAccessManager].managedObjectContextForCurrentThread;
         
         NSLog(@"Removing any existing %@ objects.", kSCHDictionaryWordForm);
         
@@ -987,7 +987,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
         
         // first, merge this file into the existing entry table file
         SCHDictionaryDownloadManager *dictManager = [SCHDictionaryDownloadManager sharedDownloadManager];
-        NSManagedObjectContext *context = [[SCHBookManager sharedBookManager] managedObjectContextForCurrentThread];
+        NSManagedObjectContext *context = [SCHDictionaryAccessManager sharedAccessManager].managedObjectContextForCurrentThread;
         
         NSString *existingFilePath = [[dictManager dictionaryTextFilesDirectory] stringByAppendingPathComponent:@"EntryTable.txt"];
         NSString *updateFilePath = [[dictManager dictionaryDirectory] stringByAppendingPathComponent:@"EntryTable.txt"];
@@ -1044,7 +1044,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
                                 NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
                                 // Edit the entity name as appropriate.
                                 NSEntityDescription *entity = [NSEntityDescription entityForName:kSCHDictionaryEntry 
-                                                                          inManagedObjectContext:[[SCHBookManager sharedBookManager] managedObjectContextForCurrentThread]];
+                                                                          inManagedObjectContext:[SCHDictionaryAccessManager sharedAccessManager].managedObjectContextForCurrentThread];
                                 [fetchRequest setEntity:entity];
                                 entity = nil;
                                 
@@ -1054,7 +1054,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
                                 [fetchRequest setPredicate:pred];
                                 pred = nil;
                                 
-                                NSArray *results = [[[SCHBookManager sharedBookManager] managedObjectContextForCurrentThread] executeFetchRequest:fetchRequest error:&error];
+                                NSArray *results = [[SCHDictionaryAccessManager sharedAccessManager].managedObjectContextForCurrentThread executeFetchRequest:fetchRequest error:&error];
                                 
                                 [fetchRequest release], fetchRequest = nil;
                                 
@@ -1077,7 +1077,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
                                 results = nil;
                                 
                                 if (entry) {
-                                    [[[SCHBookManager sharedBookManager] managedObjectContextForCurrentThread] refreshObject:entry mergeChanges:YES];
+                                    [[SCHDictionaryAccessManager sharedAccessManager].managedObjectContextForCurrentThread refreshObject:entry mergeChanges:YES];
                                     entry.word = [NSString stringWithUTF8String:headword];
                                     entry.baseWordID = [NSString stringWithUTF8String:entryID];
                                     entry.fileOffset = [NSNumber numberWithLong:currentOffset];
@@ -1158,7 +1158,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 
     // parse the new text file
     SCHDictionaryDownloadManager *dictManager = [SCHDictionaryDownloadManager sharedDownloadManager];
-    NSManagedObjectContext *context = [[SCHBookManager sharedBookManager] managedObjectContextForCurrentThread];
+    NSManagedObjectContext *context = [SCHDictionaryAccessManager sharedAccessManager].managedObjectContextForCurrentThread;
     
     NSString *filePath = [[dictManager dictionaryDirectory] stringByAppendingPathComponent:@"WordFormTable.txt"];
     NSError *error = nil;
@@ -1211,7 +1211,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
                                     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
                                     // Edit the entity name as appropriate.
                                     NSEntityDescription *entity = [NSEntityDescription entityForName:kSCHDictionaryWordForm 
-                                                                              inManagedObjectContext:[[SCHBookManager sharedBookManager] managedObjectContextForCurrentThread]];
+                                                                              inManagedObjectContext:[SCHDictionaryAccessManager sharedAccessManager].managedObjectContextForCurrentThread];
                                     [fetchRequest setEntity:entity];
                                     entity = nil;
                                     
@@ -1220,7 +1220,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
                                     [fetchRequest setPredicate:pred];
                                     pred = nil;
                                     
-                                    NSArray *results = [[[SCHBookManager sharedBookManager] managedObjectContextForCurrentThread] executeFetchRequest:fetchRequest error:&error];
+                                    NSArray *results = [[SCHDictionaryAccessManager sharedAccessManager].managedObjectContextForCurrentThread executeFetchRequest:fetchRequest error:&error];
                                     
                                     [fetchRequest release], fetchRequest = nil;
                                     
@@ -1245,7 +1245,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
                                     results = nil;
                                     
                                     if (dictionaryWordForm) {
-                                        [[[SCHBookManager sharedBookManager] managedObjectContextForCurrentThread] refreshObject:dictionaryWordForm mergeChanges:YES];
+                                        [[SCHDictionaryAccessManager sharedAccessManager].managedObjectContextForCurrentThread refreshObject:dictionaryWordForm mergeChanges:YES];
                                         dictionaryWordForm.word = [NSString stringWithUTF8String:wordform];
                                         dictionaryWordForm.rootWord = [NSString stringWithUTF8String:headword];
                                         dictionaryWordForm.baseWordID = [NSString stringWithUTF8String:entryID];
@@ -1324,11 +1324,11 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     // Edit the entity name as appropriate.
     NSEntityDescription *entity = [NSEntityDescription entityForName:kSCHAppDictionaryState 
-											  inManagedObjectContext:[[SCHBookManager sharedBookManager] managedObjectContextForCurrentThread]];
+											  inManagedObjectContext:[SCHDictionaryAccessManager sharedAccessManager].managedObjectContextForCurrentThread];
     [fetchRequest setEntity:entity];
     
 	NSError *error = nil;				
-	NSArray *results = [[[SCHBookManager sharedBookManager] managedObjectContextForCurrentThread] executeFetchRequest:fetchRequest error:&error];
+	NSArray *results = [[SCHDictionaryAccessManager sharedAccessManager].managedObjectContextForCurrentThread executeFetchRequest:fetchRequest error:&error];
 	
 	[fetchRequest release];
 	
@@ -1339,16 +1339,16 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 	
 	if (results && [results count] == 1) {
         SCHAppDictionaryState *state = [results objectAtIndex:0];
-        [[[SCHBookManager sharedBookManager] managedObjectContextForCurrentThread] refreshObject:state mergeChanges:YES];
+        [[SCHDictionaryAccessManager sharedAccessManager].managedObjectContextForCurrentThread refreshObject:state mergeChanges:YES];
 		return state;
 	} else {
 		// otherwise, create a dictionary state object
 		SCHAppDictionaryState *newState = [NSEntityDescription insertNewObjectForEntityForName:kSCHAppDictionaryState 
-																		inManagedObjectContext:[[SCHBookManager sharedBookManager] managedObjectContextForCurrentThread]];
+																		inManagedObjectContext:[SCHDictionaryAccessManager sharedAccessManager].managedObjectContextForCurrentThread];
 		newState.State = [NSNumber numberWithInt:SCHDictionaryProcessingStateNeedsManifest];
 		
 		NSError *error = nil;
-		[[[SCHBookManager sharedBookManager] managedObjectContextForCurrentThread] save:&error];
+		[[SCHDictionaryAccessManager sharedAccessManager].managedObjectContextForCurrentThread save:&error];
 		
 		if (error) {
 			NSLog(@"Error while saving app dictionary state: %@", [error localizedDescription]);
@@ -1364,18 +1364,18 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 	NSArray* updates = [[saveNotification.userInfo objectForKey:@"updated"] allObjects];
 	for (NSInteger i = [updates count]-1; i >= 0; i--)
 	{
-		[[[[SCHBookManager sharedBookManager] managedObjectContextForCurrentThread] objectWithID:[[updates objectAtIndex:i] objectID]] willAccessValueForKey:nil];
+		[[[SCHDictionaryAccessManager sharedAccessManager].managedObjectContextForCurrentThread objectWithID:[[updates objectAtIndex:i] objectID]] willAccessValueForKey:nil];
 	}
     
 	// Merge
-    [[[SCHBookManager sharedBookManager] managedObjectContextForCurrentThread] lock];
-	[[[SCHBookManager sharedBookManager] managedObjectContextForCurrentThread] mergeChangesFromContextDidSaveNotification:saveNotification];
-    [[[SCHBookManager sharedBookManager] managedObjectContextForCurrentThread] unlock];
+    [[SCHDictionaryAccessManager sharedAccessManager].managedObjectContextForCurrentThread lock];
+	[[SCHDictionaryAccessManager sharedAccessManager].managedObjectContextForCurrentThread mergeChangesFromContextDidSaveNotification:saveNotification];
+    [[SCHDictionaryAccessManager sharedAccessManager].managedObjectContextForCurrentThread unlock];
 }
 
 - (BOOL)save:(NSError **)error
 {
-    return [[[SCHBookManager sharedBookManager] managedObjectContextForCurrentThread] save:error];
+    return [[SCHDictionaryAccessManager sharedAccessManager].managedObjectContextForCurrentThread save:error];
 }
 
 

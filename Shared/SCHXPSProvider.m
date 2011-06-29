@@ -34,12 +34,8 @@
     [super dealloc];
 }
 
-- (id)initWithISBN:(NSString *)aBookISBN {
-    
-    SCHBookManager *bookManager = [SCHBookManager sharedBookManager];
-    SCHAppBook *book = [bookManager bookWithIdentifier:aBookISBN];
-    NSString *xpsPath = [book xpsPath];
-    
+- (id)initWithISBN:(NSString *)aBookISBN xpsPath:(NSString *)xpsPath
+{
     if (xpsPath && (self = [super initWithPath:xpsPath])) {
         bookISBN = [aBookISBN copy];
     }

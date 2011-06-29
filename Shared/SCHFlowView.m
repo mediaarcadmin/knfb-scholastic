@@ -85,10 +85,10 @@
     if (self) {        
         self.opaque = YES;
         
+        NSManagedObjectContext *moc = [(id)[[UIApplication sharedApplication] delegate] managedObjectContext];
         SCHBookManager *bookManager = [SCHBookManager sharedBookManager];
-        
-        eucBook = [[bookManager checkOutEucBookForBookIdentifier:self.isbn] retain];
-        paragraphSource = [[bookManager checkOutParagraphSourceForBookIdentifier:self.isbn] retain];
+        eucBook = [[bookManager checkOutEucBookForBookIdentifier:self.isbn inManagedObjectContext:moc] retain];
+        paragraphSource = [[bookManager checkOutParagraphSourceForBookIdentifier:self.isbn inManagedObjectContext:moc] retain];
     }
     return self;
 }

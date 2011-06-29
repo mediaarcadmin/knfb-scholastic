@@ -55,7 +55,7 @@
 	
 	
 	
-	SCHXPSProvider *xpsProvider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:bookISBN];
+	SCHXPSProvider *xpsProvider = [[SCHBookManager sharedBookManager] threadSafeCheckOutXPSProviderForBookIdentifier:bookISBN];
     
     if (!xpsProvider) {
 		return;

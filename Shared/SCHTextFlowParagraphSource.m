@@ -52,15 +52,15 @@ static NSString * const kNoWordPlaceholder = @"NO_WORD_PLACEHOLDER";
     [super dealloc];
 }
 
-- (id)initWithISBN:(NSString *)anIsbn
+- (id)initWithISBN:(NSString *)anIsbn managedObjectContext:(NSManagedObjectContext *)moc
 {
     if ((self = [super initWithBookID:nil])) {
         isbn = [anIsbn retain];
         
-        self.textFlow = [[SCHBookManager sharedBookManager] checkOutTextFlowForBookIdentifier:anIsbn];
+        self.textFlow = [[SCHBookManager sharedBookManager] checkOutTextFlowForBookIdentifier:anIsbn inManagedObjectContext:moc];
         
         if(self.textFlow.flowTreeKind == KNFBTextFlowFlowTreeKindXaml) {
-            self.xamlEucBook = [[SCHBookManager sharedBookManager] checkOutEucBookForBookIdentifier:anIsbn];
+            self.xamlEucBook = [[SCHBookManager sharedBookManager] checkOutEucBookForBookIdentifier:anIsbn inManagedObjectContext:moc];
         }
 
     }

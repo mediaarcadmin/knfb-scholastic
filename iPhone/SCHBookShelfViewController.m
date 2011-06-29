@@ -64,6 +64,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 @synthesize sortType;
 @synthesize currentRightButton;
 @synthesize updateSort;
+@synthesize managedObjectContext;
 
 #pragma mark - Object lifecycle
 
@@ -89,6 +90,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 {    
     [books release], books = nil;
     [profileItem release], profileItem = nil;
+    [managedObjectContext release], managedObjectContext = nil;
     
     [self releaseViewObjects];   
     [super dealloc];
@@ -475,7 +477,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 - (SCHReadingViewController *)openBook:(NSString *)isbn
 {
     SCHReadingViewController *ret = nil;
-    SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:isbn];
+    SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:isbn inManagedObjectContext:self.managedObjectContext];
     
     // notify the processing manager that the user touched a book info object.
 	// this allows it to pause and resume items, etc.
@@ -527,6 +529,8 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
                 NSLog(@"Warning: unrecognised bookshelf style.");
                 break;
         }
+        
+        ret.managedObjectContext = self.managedObjectContext;
     }
     
     return([ret autorelease]);

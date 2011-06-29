@@ -11,6 +11,7 @@
 
 @class SCHAsyncBookCoverImageView;
 @class SCHAppBook;
+@class NSManagedObjectContext;
 
 typedef enum {
 	SCHBookProcessingStateError = -2,
@@ -32,9 +33,9 @@ typedef enum {
 static NSString * const kSCHProcessingManagerConnectionIdle = @"SCHProcessingManagerConnectionIdle";
 static NSString * const kSCHProcessingManagerConnectionBusy = @"SCHProcessingManagerConnectionBusy";
 
-@interface SCHProcessingManager : NSObject {
+@interface SCHProcessingManager : NSObject {}
 
-}
+@property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 
 // shared manager instance
 // FIXME: notes on duties - registers for events etc.

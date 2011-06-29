@@ -58,8 +58,8 @@
 
 - (void)beginOperation
 {
-	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];
-	SCHXPSProvider *xpsProvider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.isbn];
+	SCHXPSProvider *xpsProvider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.isbn 
+                                                                                    inManagedObjectContext:self.localManagedObjectContext];
 	
 	// check for audiobook reference file
 	NSData *audiobookReferencesFile = [xpsProvider dataForComponentAtPath:KNFBXPSAudiobookReferencesFile];
@@ -81,13 +81,12 @@
 	}
 	
 	if (self.success) {
-		[[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateReadyForTextFlowPreParse];
+        [self threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateReadyForTextFlowPreParse];
 	} else {
-		[[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateBookVersionNotSupported];
+        [self threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateBookVersionNotSupported];
 	}
-	
-	[book setProcessing:NO];
     
+    [self setBook:self.isbn isProcessing:NO];
     [self endOperation];
 	
 	return;
@@ -126,9 +125,9 @@
           [self.timingFiles objectAtIndex:i], kSCHAppBookTimingFile, nil]];
     }
     
-    [[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn
-                                                            setValue:audioBookReferences
-                                                              forKey:kSCHAppBookAudioBookReferences];
+    [self withBook:self.isbn perform:^(SCHAppBook *book) {
+        [book setValue:audioBookReferences forKey:kSCHAppBookAudioBookReferences];
+    }];
 }
 
 - (void)parser:(NSXMLParser *)parser parseErrorOccurred:(NSError *)parseError

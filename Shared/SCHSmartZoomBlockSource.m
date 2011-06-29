@@ -15,12 +15,14 @@
 @interface SCHSmartZoomBlockSource()
 
 @property (nonatomic, retain) NSString *isbn;
+@property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 
 @end
 
 @implementation SCHSmartZoomBlockSource
 
 @synthesize isbn;
+@synthesize managedObjectContext;
 
 - (void)dealloc
 {
@@ -29,16 +31,18 @@
     }
     
     [isbn release], isbn = nil;
+    [managedObjectContext release], managedObjectContext = nil;
     
     [super dealloc];
 }
 
-- (id)initWithISBN:(NSString *)anIsbn
+- (id)initWithISBN:(NSString *)anIsbn managedObjectContext:(NSManagedObjectContext *)moc
 {
     if ((self = [super init])) {
         isbn = [anIsbn retain];
+        self.managedObjectContext = moc;
         
-        self.xpsProvider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:anIsbn];
+        self.xpsProvider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:anIsbn inManagedObjectContext:moc];
     }
     return self;
 }
@@ -47,7 +51,7 @@
 
 - (NSSet *)persistedSmartZoomPageMarkers;
 {
-    SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];
+    SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn inManagedObjectContext:self.managedObjectContext];
     return [book SmartZoomPageMarkers];
 }
 

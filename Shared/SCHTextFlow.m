@@ -18,6 +18,7 @@
 @interface SCHTextFlow()
 
 @property (nonatomic, retain) NSString *isbn;
+@property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 
 @end
 
@@ -25,12 +26,14 @@
 
 @synthesize isbn;
 @synthesize xpsProvider;
+@synthesize managedObjectContext;
 
-- (id)initWithISBN:(NSString *)newIsbn
+- (id)initWithISBN:(NSString *)newIsbn managedObjectContext:(NSManagedObjectContext *)moc
 {
     if((self = [super initWithBookID:nil])) {
         isbn = [newIsbn retain];
-        xpsProvider = [[[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:newIsbn] retain];
+        self.managedObjectContext = moc;
+        xpsProvider = [[[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:newIsbn inManagedObjectContext:moc] retain];
     }
     
     return self;
@@ -45,11 +48,11 @@
     }
     
     [isbn release], isbn = nil;
+    [managedObjectContext release], managedObjectContext = nil;
     [super dealloc];
 }
 
-#pragma mark -
-#pragma mark Overriden methods
+#pragma mark - Overriden methods
 
 - (NSArray *)wordsForRange:(id)aRange 
 {
@@ -141,7 +144,7 @@
 
 - (NSSet *)persistedTextFlowPageRanges
 {
-    SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];
+    SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn inManagedObjectContext:self.managedObjectContext];
     return [book TextFlowPageRanges];
 }
 

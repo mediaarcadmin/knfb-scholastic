@@ -49,22 +49,18 @@
 
 - (void)beginOperation
 {
-	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];
-	SCHXPSProvider *xpsProvider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.isbn];
+	SCHXPSProvider *xpsProvider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.isbn 
+                                                                                    inManagedObjectContext:self.localManagedObjectContext];
 	
 	BOOL hasAudio = [xpsProvider componentExistsAtPath:KNFBXPSAudiobookMetadataFile];
 	BOOL hasStoryInteractions = [xpsProvider componentExistsAtPath:KNFBXPSStoryInteractionsMetadataFile];
 	BOOL hasExtras = [xpsProvider componentExistsAtPath:KNFBXPSExtrasMetadataFile];
 	
-	[[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn
-															setValue:[NSNumber numberWithBool:hasAudio]
-															  forKey:kSCHAppBookHasAudio];
-	[[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn
-															setValue:[NSNumber numberWithBool:hasStoryInteractions]
-															  forKey:kSCHAppBookHasStoryInteractions];
-	[[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn
-															setValue:[NSNumber numberWithBool:hasExtras]
-															  forKey:kSCHAppBookHasExtras];
+    [self withBook:self.isbn performAndSave:^(SCHAppBook *book) {
+        [book setValue:[NSNumber numberWithBool:hasAudio] forKey:kSCHAppBookHasAudio];
+        [book setValue:[NSNumber numberWithBool:hasStoryInteractions] forKey:kSCHAppBookHasStoryInteractions];
+        [book setValue:[NSNumber numberWithBool:hasExtras] forKey:kSCHAppBookHasExtras];
+    }];
     
 	// check for metadata file
 	NSData *metadataData = [xpsProvider dataForComponentAtPath:KNFBXPSKNFBMetadataFile];
@@ -84,12 +80,14 @@
 	}
 	
 	if (self.success) {
-		[[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateReadyForAudioInfoParsing];
+		[self threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateReadyForAudioInfoParsing];
 	} else {
-		[[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateBookVersionNotSupported];
+		[self threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateBookVersionNotSupported];
 	}
-	
-	[book setProcessing:NO];
+    
+    [self withBook:self.isbn perform:^(SCHAppBook *book) {
+        [book setProcessing:NO];
+    }];
 
     [self endOperation];
 	
@@ -109,9 +107,9 @@
 				if ([isRequired isEqualToString:@"true"]) {
 					
 					float floatVersion = [featureName floatValue];
-					[[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn
-																			setValue:featureName
-																			  forKey:kSCHAppBookDRMVersion];
+                    [self withBook:self.isbn perform:^(SCHAppBook *book) {
+                        [book setValue:featureName forKey:kSCHAppBookDRMVersion];
+                    }];
 					
                     NSLog(@"book drm version: %f", floatVersion);
                     
@@ -130,41 +128,40 @@
         } else if ( [elementName isEqualToString:@"PageLayout"] ) {
             NSString *firstPageSide = [attributeDict objectForKey:@"FirstPageSide"];
             if(firstPageSide && [firstPageSide isEqualToString:@"Left"]) {
-				[[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn
-																		setValue:[NSNumber numberWithBool:YES]
-																		  forKey:kSCHAppBookLayoutStartsOnLeftSide];
-				
+                [self withBook:self.isbn perform:^(SCHAppBook *book) {
+                    [book setValue:[NSNumber numberWithBool:YES] forKey:kSCHAppBookLayoutStartsOnLeftSide];
+                }];
             } else {
-				[[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn
-																		setValue:[NSNumber numberWithBool:NO]
-																		  forKey:kSCHAppBookLayoutStartsOnLeftSide];
+                [self withBook:self.isbn perform:^(SCHAppBook *book) {
+                    [book setValue:[NSNumber numberWithBool:NO] forKey:kSCHAppBookLayoutStartsOnLeftSide];
+                }];
 			}
         } else if ( [elementName isEqualToString:@"Contributor"] ) {
             NSString *authorVal = [attributeDict objectForKey:@"Author"];
             if(authorVal) {
-				[[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn
-																		setValue:authorVal
-																		  forKey:kSCHAppBookXPSAuthor];
+                [self withBook:self.isbn perform:^(SCHAppBook *book) {
+                    [book setValue:authorVal forKey:kSCHAppBookXPSAuthor];
+                }];
 			}
         } else if ( [elementName isEqualToString:@"Title"] ) {
             NSString *titleVal = [attributeDict objectForKey:@"Main"];
             if(titleVal) {
-				[[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn
-																		setValue:titleVal
-																		  forKey:kSCHAppBookXPSTitle];
+                [self withBook:self.isbn perform:^(SCHAppBook *book) {
+                    [book setValue:titleVal forKey:kSCHAppBookXPSTitle];
+                }];
 			}
         } else if ( [elementName isEqualToString:@"Scholastic"] ) {
             NSString *categoryVal = [attributeDict objectForKey:@"Category"];
             if(categoryVal) {
-				[[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn
-																		setValue:categoryVal
-																		  forKey:kSCHAppBookXPSCategory];
+                [self withBook:self.isbn perform:^(SCHAppBook *book) {
+                    [book setValue:categoryVal forKey:kSCHAppBookXPSCategory];
+                }];
 			} else {
 				categoryVal = [attributeDict objectForKey:@"BookCategory"];
 				if (categoryVal) {
-					[[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn
-																			setValue:categoryVal
-																			  forKey:kSCHAppBookXPSCategory];
+                    [self withBook:self.isbn perform:^(SCHAppBook *book) {
+                        [book setValue:categoryVal forKey:kSCHAppBookXPSCategory];
+                    }];
 				}
 			}
         }
@@ -173,6 +170,8 @@
 - (void)parserDidEndDocument:(NSXMLParser *)parser
 {
 	self.parsingComplete = YES;
+    
+    [self withBook:self.isbn performAndSave:nil];
 }
 
 - (void)parser:(NSXMLParser *)parser parseErrorOccurred:(NSError *)parseError

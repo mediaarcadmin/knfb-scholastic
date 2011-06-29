@@ -39,10 +39,14 @@
 	//	int randomValue = (arc4random() % 5) + 3;
 	//	[NSThread sleepForTimeInterval:randomValue];
 
-	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];
-	
-	NSString *fullImagePath = [book coverImagePath];
-	NSString *thumbPath = [book thumbPathForSize:size];
+	__block NSString *fullImagePath;
+    __block NSString *thumbPath;
+    __block CGSize coverImageSize;
+    [self withBook:self.isbn perform:^(SCHAppBook *book) {
+        fullImagePath = [[book coverImagePath] retain];
+        thumbPath = [[book thumbPathForSize:size] retain];
+        coverImageSize = [book bookCoverImageSize];
+    }];
 	
 	UIImage *thumbImage = nil;
 	
@@ -53,9 +57,7 @@
 	if ([threadLocalFileManager fileExistsAtPath:thumbPath]) {
 		thumbImage = [SCHThumbnailFactory imageWithPath:thumbPath];
         
-        CGSize fullSize = [book bookCoverImageSize];
-        
-        coverSize = [SCHThumbnailFactory coverSizeForImageOfSize:fullSize
+        coverSize = [SCHThumbnailFactory coverSizeForImageOfSize:coverImageSize
                                                  thumbNailOfSize:thumbImage.size aspect:self.aspect];
         
 	} else {
@@ -63,13 +65,10 @@
         
         
         if (fullImage) {
-            [[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn
-                                                                    setValue:[NSNumber numberWithFloat:fullImage.size.width]
-                                                                      forKey:kSCHAppBookCoverImageWidth];
-            
-            [[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn
-                                                                    setValue:[NSNumber numberWithFloat:fullImage.size.height]
-                                                                      forKey:kSCHAppBookCoverImageHeight];
+            [self withBook:self.isbn perform:^(SCHAppBook *book) {
+                [book setValue:[NSNumber numberWithFloat:fullImage.size.width] forKey:kSCHAppBookCoverImageWidth];
+                [book setValue:[NSNumber numberWithFloat:fullImage.size.height] forKey:kSCHAppBookCoverImageHeight];
+            }];
             
             thumbImage = [SCHThumbnailFactory thumbnailImageOfSize:self.size 
 														  forImage:fullImage
@@ -94,6 +93,9 @@
 							   withObject:userInfo 
 							waitUntilDone:YES];
 	}
+    
+    [fullImagePath release];
+    [thumbPath release];
     
     [self endOperation];    
 }

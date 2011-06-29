@@ -22,8 +22,8 @@
 
 - (void) updateBookWithSuccess
 {
-    [[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateReadyToRead];
-    [[[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn] setProcessing:NO];
+    [self threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateReadyToRead];
+    [self setBook:self.isbn isProcessing:NO];
     
     [self endOperation];
 }
@@ -38,23 +38,31 @@
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
     
 #ifndef __OPTIMIZE__    
-    // This book is only used for logging
-	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];  
+    // This title is only used for logging
+    __block NSString *title;
+    [self withBook:self.isbn perform:^(SCHAppBook *book) {
+        title = [book.Title retain];
+    }];
     CFAbsoluteTime startTime = CFAbsoluteTimeGetCurrent();
 #endif
-    SCHFlowEucBook *eucBook = [[SCHBookManager sharedBookManager] checkOutEucBookForBookIdentifier:self.isbn];
+    SCHFlowEucBook *eucBook = [[SCHBookManager sharedBookManager] checkOutEucBookForBookIdentifier:self.isbn inManagedObjectContext:self.localManagedObjectContext];
 
     if (eucBook) {
         [eucBook generateAndCacheUncachedRecachableData];
         [[SCHBookManager sharedBookManager] checkInEucBookForBookIdentifier:self.isbn];
-        NSLog(@"Analysis of book %@ took %ld seconds", book.Title, (long)round(CFAbsoluteTimeGetCurrent() - startTime));
+        NSLog(@"Analysis of book %@ took %ld seconds", title, (long)round(CFAbsoluteTimeGetCurrent() - startTime));
         [self updateBookWithSuccess];
     } else {
-        NSLog(@"Pagination of book %@ failed. Could not checkout out SCHFlowEucBook", book.Title);
+        NSLog(@"Pagination of book %@ failed. Could not checkout out SCHFlowEucBook", title);
         [self updateBookWithFailure];
     }
+
+#ifndef __OPTIMIZE__
+    [title release];
+#endif
     
     [pool drain];
+
 }
 
 @end

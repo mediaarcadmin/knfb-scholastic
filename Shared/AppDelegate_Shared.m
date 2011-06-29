@@ -162,7 +162,7 @@ static NSString* const prModelCertFilename = @"iphonecert.dat";
     
     SCHBookManager *bookManager = [SCHBookManager sharedBookManager];
     bookManager.persistentStoreCoordinator = self.persistentStoreCoordinator;
-    bookManager.managedObjectContextForCurrentThread = self.managedObjectContext;
+    bookManager.mainThreadManagedObjectContext = self.managedObjectContext;
     
     SCHSyncManager *syncManager = [SCHSyncManager sharedSyncManager];
 	syncManager.managedObjectContext = self.managedObjectContext;
@@ -172,7 +172,7 @@ static NSString* const prModelCertFilename = @"iphonecert.dat";
 	urlManager.managedObjectContext = self.managedObjectContext;
     
 	// instantiate the shared processing manager
-	[SCHProcessingManager sharedProcessingManager];
+	[SCHProcessingManager sharedProcessingManager].managedObjectContext = self.managedObjectContext;
     
     
 #if LOCALDEBUG
@@ -227,9 +227,11 @@ static NSString* const prModelCertFilename = @"iphonecert.dat";
     
 - (void)mergeChangesFromContextDidSaveNotification:(NSNotification *)notification 
 {
-    [[self managedObjectContext] lock];
-	[[self managedObjectContext] mergeChangesFromContextDidSaveNotification:notification];
-    [[self managedObjectContext] unlock];
+    if (notification.object != self.managedObjectContext) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [[self managedObjectContext] mergeChangesFromContextDidSaveNotification:notification];
+        });
+    }
 }
 
 #pragma mark - Core Data stack

@@ -9,8 +9,10 @@
 #import "KNFBTextFlowParagraphSource.h"
 #import "KNFBParagraphSource.h"
 
+@class NSManagedObjectContext;
+
 @interface SCHTextFlowParagraphSource : KNFBTextFlowParagraphSource <KNFBParagraphSource> {}
 
-- (id)initWithISBN:(NSString *)isbn;
+- (id)initWithISBN:(NSString *)isbn managedObjectContext:(NSManagedObjectContext *)moc;
 
 @end

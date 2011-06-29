@@ -6,6 +6,8 @@
 //  Copyright 2011 BitWink. All rights reserved.
 //
 
+#import <pthread.h>
+
 #import "SCHDictionaryAccessManager.h"
 #import <AVFoundation/AVFoundation.h>
 #import <CoreData/CoreData.h>
@@ -37,6 +39,9 @@
 @synthesize oldAdditions;
 @synthesize player;
 
+// used to keep track of manage contexts
+static pthread_key_t sManagedObjectContextKey;
+
 #pragma mark -
 #pragma mark Default Manager Object
 
@@ -49,6 +54,10 @@ static SCHDictionaryAccessManager *sharedManager = nil;
 		
         sharedManager.dictionaryAccessQueue = dispatch_queue_create("com.scholastic.DictionaryAccessQueue", NULL);
         
+        // By setting this, if we associate an object with sManagedObjectContextKey
+        // using pthread_setspecific, CFRelease will be called on it before
+        // the thread terminates.
+        pthread_key_create(&sManagedObjectContextKey, (void (*)(void *))CFRelease);
 	} 
 	
 	return sharedManager;
@@ -143,14 +152,14 @@ static SCHDictionaryAccessManager *sharedManager = nil;
         return nil;
     }
     
-    [[[SCHBookManager sharedBookManager] managedObjectContextForCurrentThread] refreshObject:wordForm mergeChanges:YES];
+    [[self managedObjectContextForCurrentThread] refreshObject:wordForm mergeChanges:YES];
     
     
     // fetch the dictionary entry
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     
     NSEntityDescription *entity = [NSEntityDescription entityForName:kSCHDictionaryEntry
-                         inManagedObjectContext:[[SCHBookManager sharedBookManager] managedObjectContextForCurrentThread]];
+                         inManagedObjectContext:[self managedObjectContextForCurrentThread]];
     
     [fetchRequest setEntity:entity];
     
@@ -162,7 +171,7 @@ static SCHDictionaryAccessManager *sharedManager = nil;
     
     NSError *error = nil;
     
-	NSArray *results = [[[SCHBookManager sharedBookManager] managedObjectContextForCurrentThread] executeFetchRequest:fetchRequest error:&error];
+	NSArray *results = [[self managedObjectContextForCurrentThread] executeFetchRequest:fetchRequest error:&error];
 	
 	[fetchRequest release];
 	
@@ -206,7 +215,7 @@ static SCHDictionaryAccessManager *sharedManager = nil;
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     // Edit the entity name as appropriate.
     NSEntityDescription *entity = [NSEntityDescription entityForName:kSCHDictionaryWordForm 
-											  inManagedObjectContext:[[SCHBookManager sharedBookManager] managedObjectContextForCurrentThread]];
+											  inManagedObjectContext:[self managedObjectContextForCurrentThread]];
     [fetchRequest setEntity:entity];
     entity = nil;
     
@@ -216,7 +225,7 @@ static SCHDictionaryAccessManager *sharedManager = nil;
     pred = nil;
     
 	NSError *error = nil;				
-	NSArray *results = [[[SCHBookManager sharedBookManager] managedObjectContextForCurrentThread] executeFetchRequest:fetchRequest error:&error];
+	NSArray *results = [[self managedObjectContextForCurrentThread] executeFetchRequest:fetchRequest error:&error];
 	
     [fetchRequest release], fetchRequest = nil;
 	
@@ -487,5 +496,32 @@ static SCHDictionaryAccessManager *sharedManager = nil;
     self.player = nil;
 }
 
+
+#pragma mark - Thread-specific MOC
+
+- (NSManagedObjectContext *)managedObjectContextForCurrentThread
+{
+    NSManagedObjectContext *managedObjectContextForCurrentThread = (NSManagedObjectContext *)pthread_getspecific(sManagedObjectContextKey);
+    if(!managedObjectContextForCurrentThread) {
+        managedObjectContextForCurrentThread = [[NSManagedObjectContext alloc] init]; 
+        managedObjectContextForCurrentThread.persistentStoreCoordinator = [(id)[[UIApplication sharedApplication] delegate] persistentStoreCoordinator]; 
+        self.managedObjectContextForCurrentThread = managedObjectContextForCurrentThread;
+        [managedObjectContextForCurrentThread release];
+    }
+    return managedObjectContextForCurrentThread;
+}
+
+- (void)setManagedObjectContextForCurrentThread:(NSManagedObjectContext *)managedObjectContextForCurrentThread
+{
+    NSManagedObjectContext *oldManagedObjectContextForCurrentThread = (NSManagedObjectContext *)pthread_getspecific(sManagedObjectContextKey);
+    if(oldManagedObjectContextForCurrentThread) {
+        NSLog(@"Unexpectedly setting thread's managed object context on thread %@, which already has one set", [NSThread currentThread]);
+        [oldManagedObjectContextForCurrentThread release];
+    }
+    
+    // CFRelease will be called on the object before the thread terminates
+    // (see comments in +sharedBookManager).
+    pthread_setspecific(sManagedObjectContextKey, [managedObjectContextForCurrentThread retain]);
+}
 
 @end

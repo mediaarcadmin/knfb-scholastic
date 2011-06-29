@@ -44,7 +44,7 @@ struct SCHDrmIVars {
 - (DRM_RESULT)setHeaderForBookWithID:(NSString *)aBookID {
 	DRM_RESULT dr = DRM_SUCCESS;
 	
-	SCHXPSProvider *xpsProvider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:aBookID];
+	SCHXPSProvider *xpsProvider = [[SCHBookManager sharedBookManager] threadSafeCheckOutXPSProviderForBookIdentifier:aBookID];
     NSData *headerData = [xpsProvider dataForComponentAtPath:KNFBXPSKNFBDRMHeaderFile];
     [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:aBookID];
     

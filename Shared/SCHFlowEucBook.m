@@ -20,6 +20,7 @@
 @interface SCHFlowEucBook ()
 
 @property (nonatomic, copy) NSString *isbn;
+@property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, assign) SCHTextFlowParagraphSource *paragraphSource;
 
 @end
@@ -27,16 +28,17 @@
 @implementation SCHFlowEucBook
 
 @synthesize isbn;
+@synthesize managedObjectContext;
 @synthesize paragraphSource;
 
 
-- (id)initWithISBN:(NSString *)newIsbn
+- (id)initWithISBN:(NSString *)newIsbn managedObjectContext:(id)moc
 {
     SCHBookManager *bookManager = [SCHBookManager sharedBookManager];
-    SCHAppBook *book = [bookManager bookWithIdentifier:newIsbn];
+    SCHAppBook *book = [bookManager bookWithIdentifier:newIsbn inManagedObjectContext:moc];
     
     if (book) {
-        SCHTextFlow *aTextFlow = [[SCHBookManager sharedBookManager] checkOutTextFlowForBookIdentifier:newIsbn];
+        SCHTextFlow *aTextFlow = [[SCHBookManager sharedBookManager] checkOutTextFlowForBookIdentifier:newIsbn inManagedObjectContext:moc];
         BOOL aFakeCover = aTextFlow.flowTreeKind == KNFBTextFlowFlowTreeKindFlow;
         NSString *aCacheDirectoryPath = [book libEucalyptusCache];
     
@@ -46,6 +48,7 @@
                                 fakeCover:aFakeCover])) 
         {
             isbn = [newIsbn copy];
+            self.managedObjectContext = moc;
                 
             self.title = [book XPSTitle];
             self.author = [book XPSAuthor];        
@@ -68,7 +71,8 @@
         // N.B. this must be lazily instantiated because checking it out during the init would result in a checkout cycle
         // loop if the paragraph source is 
         // being checked
-        paragraphSource = [[SCHBookManager sharedBookManager] checkOutParagraphSourceForBookIdentifier:self.isbn];
+        paragraphSource = [[SCHBookManager sharedBookManager] checkOutParagraphSourceForBookIdentifier:self.isbn
+                                                                                inManagedObjectContext:self.managedObjectContext];
     }
     
     return paragraphSource;
@@ -87,6 +91,7 @@
     }
     
     [isbn release], isbn = nil;
+    [managedObjectContext release], managedObjectContext = nil;
     
     [super dealloc];
 }

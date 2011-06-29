@@ -137,8 +137,7 @@
             NSLog(@"Error saving managed object context: %@ : %@", error, [error userInfo]); 
         }
        
-        [[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:newUserContentItem.ContentIdentifier state:SCHBookProcessingStateNoCoverImage];
-		
+        newContentMetadataItem.AppBook.State = [NSNumber numberWithInt:SCHBookProcessingStateNoCoverImage];
 	}
     
 	// Save the context.
@@ -427,7 +426,7 @@
 //		SCHBookInfo *bookInfo = [SCHBookManager bookInfoWithBookIdentifier:newUserContentItem.ContentIdentifier];
 //		[bookInfo setProcessingState:SCHBookProcessingStateNoCoverImage];
         
-        [[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:newUserContentItem.ContentIdentifier state:SCHBookProcessingStateNoCoverImage];
+        newContentMetadataItem.AppBook.State = [NSNumber numberWithInt:SCHBookProcessingStateNoCoverImage];
 		
 	}
 

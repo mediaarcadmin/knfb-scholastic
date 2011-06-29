@@ -70,6 +70,7 @@ SCHStoryInteractionControllerDelegate>
 @property (nonatomic, retain) IBOutlet UIView *storyInteractionButtonView;
 @property (nonatomic, retain) IBOutlet UIView *youngerToolbarToggleView;
 
+@property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 
 -(id)initWithNibName:(NSString *)nibNameOrNil 
               bundle:(NSBundle *)nibBundleOrNil 

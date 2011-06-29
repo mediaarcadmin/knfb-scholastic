@@ -126,6 +126,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 #pragma mark Object Synthesis
 
+@synthesize managedObjectContext;
 @synthesize isbn;
 @synthesize profile;
 @synthesize readingView;
@@ -186,6 +187,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [self releaseViewObjects];
+    
+    [managedObjectContext release], managedObjectContext = nil;
     [isbn release], isbn = nil;
     [popover release], popover = nil;
     [profile release], profile = nil;
@@ -253,7 +256,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         currentlyRotating = NO;
         currentlyScrubbing = NO;
         
-        SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:isbn];        
+        SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:isbn inManagedObjectContext:self.managedObjectContext];        
         NSArray *contentItems = [book.ContentMetadataItem valueForKey:@"UserContentItem"];
         
         if ([contentItems count]) {
@@ -290,9 +293,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [super viewDidLoad];
 	
 	self.toolbarsVisible = YES;
-    self.xpsProvider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.isbn];
+    self.xpsProvider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.isbn inManagedObjectContext:self.managedObjectContext];
 	
-    SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];
+    SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn inManagedObjectContext:self.managedObjectContext];
     
     self.wantsFullScreenLayout = YES;
     self.navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
@@ -575,7 +578,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (void)didEnterBackgroundNotification:(NSNotification *)notification
 {
     // store the last page
-    SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];
+    SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn inManagedObjectContext:self.managedObjectContext];
     
     [self.readingView dismissFollowAlongHighlighter];  
     self.audioBookPlayer = nil;
@@ -649,7 +652,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (IBAction)popViewController:(id)sender
 {
-    SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];
+    SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn inManagedObjectContext:self.managedObjectContext];
     
     [self saveLastPageLocation];
 
@@ -682,7 +685,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [self.readingView currentLayoutPage:&layoutPage pageWordOffset:&pageWordOffset];
     
     if (self.audioBookPlayer == nil) {            
-        SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];
+        SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn inManagedObjectContext:self.managedObjectContext];
         NSArray *audioBookReferences = [book valueForKey:kSCHAppBookAudioBookReferences];
         NSError *error = nil;
         
@@ -1300,7 +1303,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     
     if (annotations != nil) {
         SCHHighlight *newHighlight = [annotations createHighlightBetweenStartPage:startPage startWord:startWord endPage:endPage endWord:endWord color:[self highlightColor]];
-        SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];
+        SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn inManagedObjectContext:self.managedObjectContext];
         newHighlight.Version = [NSNumber numberWithInteger:[book.Version integerValue]];
     }
 }
@@ -1799,7 +1802,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (void)readingNotesViewCreatingNewNote:(SCHReadingNotesListController *)readingNotesView
 {
     NSLog(@"Requesting a new note be created!");
-    SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];
+    SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn inManagedObjectContext:self.managedObjectContext];
     SCHBookAnnotations *annos = [self.profile annotationsForBook:self.isbn];
     SCHNote *newNote = [annos createEmptyNote];
     

@@ -58,7 +58,6 @@
 		2860E38A111B897F00E27156 /* AppDelegate_iPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 2860E388111B897F00E27156 /* AppDelegate_iPhone.m */; };
 		2860E38B111B897F00E27156 /* MainWindow_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2860E389111B897F00E27156 /* MainWindow_iPhone.xib */; };
 		2868A45213BA13F1000110D5 /* SCHTestClassWithCoreDataStack.m in Sources */ = {isa = PBXBuildFile; fileRef = 2868A45113BA13F1000110D5 /* SCHTestClassWithCoreDataStack.m */; };
-		2868A45513BA1437000110D5 /* SCHBookManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2868A45413BA1437000110D5 /* SCHBookManagerTests.m */; };
 		2868A45613BA143C000110D5 /* SCHBookManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F8CD24CA12F9714D001C748B /* SCHBookManager.m */; };
 		2868A45713BA14CB000110D5 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28EEBFDC1118E19E00187D67 /* CoreData.framework */; };
 		2868A45913BA1B62000110D5 /* SCHAppBook.m in Sources */ = {isa = PBXBuildFile; fileRef = F8BEE8AE1334FD44008B40DA /* SCHAppBook.m */; };
@@ -5803,7 +5802,6 @@
 				2807DEFC13B0BA5C007C8F41 /* SCHGeometry.m in Sources */,
 				2869896F13B723C300C08908 /* SCHSemaphoreGroup.m in Sources */,
 				2868A45213BA13F1000110D5 /* SCHTestClassWithCoreDataStack.m in Sources */,
-				2868A45513BA1437000110D5 /* SCHBookManagerTests.m in Sources */,
 				2868A45613BA143C000110D5 /* SCHBookManager.m in Sources */,
 				2868A45913BA1B62000110D5 /* SCHAppBook.m in Sources */,
 				2868A45A13BA1B65000110D5 /* SCHContentMetadataItem.m in Sources */,

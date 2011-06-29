@@ -88,6 +88,11 @@
 	return (SCHBookCurrentProcessingState) [self.State intValue];
 }
 
+- (void)setProcessingState:(SCHBookCurrentProcessingState)processingState
+{
+    self.State = [NSNumber numberWithInt:processingState];
+}
+
 - (BOOL)isProcessing
 {
 	return [[SCHProcessingManager sharedProcessingManager] ISBNisProcessing:self.ContentIdentifier];

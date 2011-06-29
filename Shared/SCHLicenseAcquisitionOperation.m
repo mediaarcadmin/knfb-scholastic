@@ -60,15 +60,15 @@
 
 - (void)updateBookWithSuccess
 {
-    [[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateReadyForRightsParsing];
-    [[[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn] setProcessing:NO];
+    [self threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateReadyForRightsParsing];
+    [self setBook:self.isbn isProcessing:NO];
     [self endOperation];
 }
 
 - (void)updateBookWithFailure
 {
-    [[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateError];
-    [[[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn] setProcessing:NO];
+    [self threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateError];
+    [self setBook:self.isbn isProcessing:NO];
     [self endOperation];
 }
 

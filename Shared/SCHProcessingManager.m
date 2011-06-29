@@ -73,6 +73,7 @@
 @synthesize backgroundTask;
 @synthesize thumbImageRequests, currentlyProcessingISBNs;
 @synthesize connectionIsIdle, firedFirstBusyIdleNotification;
+@synthesize managedObjectContext;
 
 #pragma mark -
 #pragma mark Object Lifecycle
@@ -87,6 +88,7 @@
     self.imageProcessingQueue = nil;
 	self.thumbImageRequests = nil;
     self.currentlyProcessingISBNs = nil;
+    self.managedObjectContext = nil;
 	[super dealloc];
 }
 
@@ -195,18 +197,19 @@ static SCHProcessingManager *sharedManager = nil;
 	}		
 }
 
-#pragma mark -
-#pragma mark Books State Check
+#pragma mark - Books State Check
 
 - (void) checkStateForAllBooks
 {
-	NSArray *allBooks = [[SCHBookManager sharedBookManager] allBooksAsISBNs];
+    NSAssert([NSThread isMainThread], @"checkStateForAllBooks must run on main thread");
+    
+	NSArray *allBooks = [[SCHBookManager sharedBookManager] allBooksAsISBNsInManagedObjectContext:self.managedObjectContext];
 	
 	// FIXME: add prioritisation
 
 	// get all the books independent of profile
 	for (NSString *isbn in allBooks) {
-		SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:isbn];
+		SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:isbn inManagedObjectContext:self.managedObjectContext];
 
 		// if the book is currently processing, it will already be taken care of 
 		// when it finishes processing, so no need to add it for consideration
@@ -222,7 +225,9 @@ static SCHProcessingManager *sharedManager = nil;
 
 - (BOOL) ISBNNeedsProcessing: (NSString *) isbn
 {
-	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:isbn];
+    NSAssert([NSThread isMainThread], @"ISBNNeedsProcessing must run on main thread");
+
+	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:isbn inManagedObjectContext:self.managedObjectContext];
 
 	BOOL needsProcessing = YES;
 	BOOL spaceSaverMode = [[NSUserDefaults standardUserDefaults] boolForKey:@"kSCHSpaceSaverMode"];
@@ -275,7 +280,7 @@ static SCHProcessingManager *sharedManager = nil;
 - (void) processISBN: (NSString *) isbn
 {
     
-	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:isbn];
+	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:isbn inManagedObjectContext:self.managedObjectContext];
 	
 	NSLog(@"Processing state of %@ is %@", isbn, [book processingStateAsString]);
 	switch (book.processingState) {
@@ -286,6 +291,7 @@ static SCHProcessingManager *sharedManager = nil;
 			// create URL processing operation
 			SCHBookURLRequestOperation *bookURLOp = [[SCHBookURLRequestOperation alloc] init];
 			bookURLOp.isbn = isbn;
+            [bookURLOp setMainThreadManagedObjectContext:self.managedObjectContext];
 
 			// the book will be redispatched on completion
 			[bookURLOp setCompletionBlock:^{
@@ -313,6 +319,8 @@ static SCHProcessingManager *sharedManager = nil;
 			downloadImageOp.isbn = isbn;
 			downloadImageOp.resume = NO;
 #endif		
+            [downloadImageOp setMainThreadManagedObjectContext:self.managedObjectContext];
+            
 			// the book will be redispatched on completion
 			[downloadImageOp setCompletionBlock:^{
 				[self redispatchISBN:isbn];
@@ -332,6 +340,7 @@ static SCHProcessingManager *sharedManager = nil;
 			bookDownloadOp.fileType = kSCHDownloadFileTypeXPSBook;
 			bookDownloadOp.isbn = isbn;
 			bookDownloadOp.resume = YES;
+            [bookDownloadOp setMainThreadManagedObjectContext:self.managedObjectContext];
 			
 			// the book will be redispatched on completion
 			[bookDownloadOp setCompletionBlock:^{
@@ -350,6 +359,7 @@ static SCHProcessingManager *sharedManager = nil;
 			// create rights processing operation
 			SCHLicenseAcquisitionOperation *licenseOp = [[SCHLicenseAcquisitionOperation alloc] init];
 			licenseOp.isbn = isbn;
+            [licenseOp setMainThreadManagedObjectContext:self.managedObjectContext];
 			
 			// the book will be redispatched on completion
 			[licenseOp setCompletionBlock:^{
@@ -369,6 +379,7 @@ static SCHProcessingManager *sharedManager = nil;
 			// create rights processing operation
 			SCHRightsParsingOperation *rightsOp = [[SCHRightsParsingOperation alloc] init];
 			rightsOp.isbn = isbn;
+            [rightsOp setMainThreadManagedObjectContext:self.managedObjectContext];
 			
 			// the book will be redispatched on completion
 			[rightsOp setCompletionBlock:^{
@@ -388,6 +399,7 @@ static SCHProcessingManager *sharedManager = nil;
 			// create audio info processing operation
 			SCHAudioPreParseOperation *rightsOp = [[SCHAudioPreParseOperation alloc] init];
 			rightsOp.isbn = isbn;
+            [rightsOp setMainThreadManagedObjectContext:self.managedObjectContext];
 			
 			// the book will be redispatched on completion
 			[rightsOp setCompletionBlock:^{
@@ -407,6 +419,7 @@ static SCHProcessingManager *sharedManager = nil;
 			// create pre-parse operation
 			SCHTextFlowPreParseOperation *textflowOp = [[SCHTextFlowPreParseOperation alloc] init];
 			textflowOp.isbn = isbn;
+            [textflowOp setMainThreadManagedObjectContext:self.managedObjectContext];
 			
 			// the book will be redispatched on completion
 			[textflowOp setCompletionBlock:^{
@@ -426,6 +439,7 @@ static SCHProcessingManager *sharedManager = nil;
 			// create pre-parse operation
 			SCHSmartZoomPreParseOperation *smartzoomOp = [[SCHSmartZoomPreParseOperation alloc] init];
 			smartzoomOp.isbn = isbn;
+            [smartzoomOp setMainThreadManagedObjectContext:self.managedObjectContext];
 			
 			// the book will be redispatched on completion
 			[smartzoomOp setCompletionBlock:^{
@@ -445,6 +459,7 @@ static SCHProcessingManager *sharedManager = nil;
 			// create paginate operation
 			SCHFlowAnalysisOperation *paginateOp = [[SCHFlowAnalysisOperation alloc] init];
 			paginateOp.isbn = isbn;
+            [paginateOp setMainThreadManagedObjectContext:self.managedObjectContext];
 			
 			// the book will be redispatched on completion
 			[paginateOp setCompletionBlock:^{
@@ -463,7 +478,6 @@ static SCHProcessingManager *sharedManager = nil;
             // recheck the book state - needs downloading if space saver mode is off
             [self redispatchISBN:isbn];
             return;
-            break;
         }
         case SCHBookProcessingStateError:
 		{
@@ -483,9 +497,12 @@ static SCHProcessingManager *sharedManager = nil;
 
 - (void) redispatchISBN: (NSString *) isbn
 {
+    if (![NSThread isMainThread]) {
+        [self performSelectorOnMainThread:@selector(redispatchISBN) withObject:isbn waitUntilDone:YES];
+        return;
+    }
     
-	// FIXME: main thread please!
-	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:isbn];
+	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:isbn inManagedObjectContext:self.managedObjectContext];
 
 	// check for space saver mode
 	BOOL spaceSaverMode = [[NSUserDefaults standardUserDefaults] boolForKey:@"kSCHSpaceSaverMode"];
@@ -509,7 +526,7 @@ static SCHProcessingManager *sharedManager = nil;
 		case SCHBookProcessingStateReadyForBookFileDownload:
 			if (!spaceSaverMode) {
 //				[bookInfo setProcessingState:SCHBookProcessingStateDownloadStarted];
-				[[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:isbn state:SCHBookProcessingStateDownloadStarted];
+                [book setProcessingState:SCHBookProcessingStateDownloadStarted];
 				[self processISBN:isbn];
 			}
             break;
@@ -527,7 +544,7 @@ static SCHProcessingManager *sharedManager = nil;
 	}
     
     if (book.processingState == SCHBookProcessingStateError) {
-        [[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:isbn state:SCHBookProcessingStateNoURLs];
+        [book setProcessingState:SCHBookProcessingStateNoURLs];
         [self processISBN:isbn];
     }
     
@@ -537,19 +554,21 @@ static SCHProcessingManager *sharedManager = nil;
 
 - (void) checkIfProcessing
 {
+    NSAssert([NSThread isMainThread], @"checkIfProcessing must be called on main thread");
+    
     // check to see if we're processing
 //	int totalOperations = [[self.networkOperationQueue operations] count] + 
 //	[[self.webServiceOperationQueue operations] count];
     
     int totalBooksProcessing = 0;
     
-	NSArray *allBooks = [[SCHBookManager sharedBookManager] allBooksAsISBNs];
+	NSArray *allBooks = [[SCHBookManager sharedBookManager] allBooksAsISBNsInManagedObjectContext:self.managedObjectContext];
 	
 	// FIXME: add prioritisation
     
 	// get all the books independent of profile
 	for (NSString *isbn in allBooks) {
-		SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:isbn];
+		SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:isbn inManagedObjectContext:self.managedObjectContext];
         
         if ([book isProcessing]) {
             totalBooksProcessing++;
@@ -589,20 +608,21 @@ static SCHProcessingManager *sharedManager = nil;
 
 - (void) userSelectedBookWithISBN: (NSString *) isbn
 {
+    NSAssert([NSThread isMainThread], @"userSelectedBookWithISBN: must be called on main thread");
 	
-	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:isbn];
+	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:isbn inManagedObjectContext:self.managedObjectContext];
 	
 	// if the book is currently downloading, pause it
 	// (changing the state will cause the operation to cancel)
 	if (book.processingState == SCHBookProcessingStateDownloadStarted) {
-		[[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:isbn state:SCHBookProcessingStateDownloadPaused];
+        [book setProcessingState:SCHBookProcessingStateDownloadPaused];
 		return;
 	} 
 		
 	// if the book is currently paused or ready for download, start downloading
 	if (book.processingState == SCHBookProcessingStateDownloadPaused ||
 		book.processingState == SCHBookProcessingStateReadyForBookFileDownload) {
-		[[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:isbn state:SCHBookProcessingStateDownloadStarted];
+		[book setProcessingState:SCHBookProcessingStateDownloadStarted];
 		[self processISBN:isbn];
 	}
 	// otherwise ignore the touch

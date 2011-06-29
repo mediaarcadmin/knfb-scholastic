@@ -83,7 +83,8 @@
 
 - (void)refreshCell
 {
-	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];    
+    NSManagedObjectContext *context = [(id)[[UIApplication sharedApplication] delegate] managedObjectContext];
+	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn inManagedObjectContext:context];    
 	// image processing
     [[SCHProcessingManager sharedProcessingManager] requestThumbImageForBookCover:self.asyncImageView
                                                                              size:self.asyncImageView.thumbSize

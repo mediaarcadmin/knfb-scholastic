@@ -166,6 +166,7 @@ static const CGFloat kProfilePhoneTableOffsetLandscape = 20.0f;
 
     bookShelfViewController = [[SCHBookShelfViewController alloc] initWithNibName:NSStringFromClass([SCHBookShelfViewController class]) bundle:nil];
     bookShelfViewController.profileItem = profileItem;
+    bookShelfViewController.managedObjectContext = self.managedObjectContext;
     
     if (profileItem.AppProfile.AutomaticallyLaunchBook != nil) {
         SCHReadingViewController *readingViewController = [bookShelfViewController openBook:profileItem.AppProfile.AutomaticallyLaunchBook];

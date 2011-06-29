@@ -22,33 +22,32 @@
 {
 }
 
+@property (nonatomic, retain) NSManagedObjectContext *mainThreadManagedObjectContext;
 @property (nonatomic, retain) NSPersistentStoreCoordinator *persistentStoreCoordinator;
-@property (nonatomic, retain) NSManagedObjectContext *managedObjectContextForCurrentThread;
 
 + (SCHBookManager *)sharedBookManager;
 
-- (SCHAppBook *)bookWithIdentifier:(NSString *)isbn;
-- (NSArray *)allBooksAsISBNs;
+- (SCHAppBook *)bookWithIdentifier:(NSString *)isbn inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
+- (NSArray *)allBooksAsISBNsInManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
 
-#ifndef UNITTESTS
-- (SCHXPSProvider *)checkOutXPSProviderForBookIdentifier:(NSString *)isbn;
+- (SCHXPSProvider *)checkOutXPSProviderForBookIdentifier:(NSString *)isbn inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
 - (void)checkInXPSProviderForBookIdentifier:(NSString *)isbn;
 
-- (SCHFlowEucBook *)checkOutEucBookForBookIdentifier:(NSString *)isbn;
+// like checkOutXPSProviderForBookIdentifier:inManagedObjectContext: except synchronously
+// jumps to the main thread to do core data access
+- (SCHXPSProvider *)threadSafeCheckOutXPSProviderForBookIdentifier:(NSString *)isbn;
+
+- (SCHFlowEucBook *)checkOutEucBookForBookIdentifier:(NSString *)isbn inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
 - (void)checkInEucBookForBookIdentifier:(NSString *)isbn;
 
-- (SCHTextFlow *)checkOutTextFlowForBookIdentifier:(NSString *)isbn;
+- (SCHTextFlow *)checkOutTextFlowForBookIdentifier:(NSString *)isbn inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
 - (void)checkInTextFlowForBookIdentifier:(NSString *)isbn;
 
-- (SCHTextFlowParagraphSource *)checkOutParagraphSourceForBookIdentifier:(NSString *)isbn;
+- (SCHTextFlowParagraphSource *)checkOutParagraphSourceForBookIdentifier:(NSString *)isbn inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
 - (void)checkInParagraphSourceForBookIdentifier:(NSString *)isbn;
-#endif
 
 + (BOOL)checkAppCompatibilityForFeature:(NSString *)key version:(float)version;
 + (BOOL)appHasFeature:(NSString *)key;
-
-- (void)threadSafeUpdateBookWithISBN: (NSString *)isbn setValue:(id)value forKey:(NSString *)key;
-- (void)threadSafeUpdateBookWithISBN: (NSString *)isbn state:(SCHBookCurrentProcessingState)state;
 
 
 @end

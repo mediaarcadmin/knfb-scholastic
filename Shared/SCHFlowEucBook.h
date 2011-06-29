@@ -11,12 +11,14 @@
 
 @class EucBookPageIndexPoint;
 @class SCHBookPoint;
+@class NSManagedObjectContext;
 
 @interface SCHFlowEucBook : KNFBFlowEucBook {}
 
 @property (nonatomic, copy, readonly) NSString *isbn;
 
-- (id)initWithISBN:(NSString *)newIsbn;
+- (id)initWithISBN:(NSString *)newIsbn managedObjectContext:(NSManagedObjectContext *)moc;
+
 - (EucBookPageIndexPoint *)bookPageIndexPointFromBookPoint:(SCHBookPoint *)bookPoint;
 - (SCHBookPoint *)bookPointFromBookPageIndexPoint:(EucBookPageIndexPoint *)indexPoint;
 

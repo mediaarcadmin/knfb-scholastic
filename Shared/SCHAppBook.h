@@ -97,6 +97,8 @@ static NSString * const kSCHAppBookEucalyptusCacheDir = @"libEucalyptusCache";
 
 
 - (SCHBookCurrentProcessingState)processingState;
+- (void)setProcessingState:(SCHBookCurrentProcessingState)processingState;
+
 - (NSString *)processingStateAsString;
 - (BOOL)isProcessing;
 - (void)setProcessing:(BOOL)value;

@@ -16,6 +16,7 @@
 @interface SCHDownloadBookFileOperation ()
 
 @property (nonatomic, copy) NSString *localPath;
+@property (nonatomic, assign) unsigned long bookFileSize;
 
 @end
 
@@ -24,6 +25,7 @@
 @synthesize resume;
 @synthesize localPath;
 @synthesize fileType;
+@synthesize bookFileSize;
 
 - (void)dealloc 
 {
@@ -37,45 +39,54 @@
 {
     if (self.isbn == nil) {
         NSLog(@"WARNING: tried to download a book without setting the ISBN");
-        [[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateError];
+        [self threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateError];
         [self endOperation];
         return;
     }
     
-	NSError *error = nil;
-	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];
-	
-
-    if (book == nil) {
-        NSLog(@"WARNING: invalid SCHAppBook returned for ISBN %@", self.isbn);
-        [[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateError];
-        [self endOperation];
-        return;
-    }
-	
     // check first to see if the file has been created
 	NSMutableURLRequest *request = nil;
 
+    [self withBook:self.isbn perform:^(SCHAppBook *book) {
+        self.bookFileSize = [book.FileSize unsignedLongValue];
+    }];
+
 	if (self.fileType == kSCHDownloadFileTypeXPSBook) {
 	
-		self.localPath = [book xpsPath];
-        NSString *bookFileURL = [book BookFileURL];
+        __block NSString *bookFileURL = nil;
+        [self withBook:self.isbn perform:^(SCHAppBook *book) {
+            self.localPath = [book xpsPath];
+            bookFileURL = [[book BookFileURL] retain];
+        }];
         
         if (self.localPath == nil || bookFileURL == nil || [bookFileURL compare:@""] == NSOrderedSame) {
             NSLog(@"WARNING: problem with SCHAppBook (ISBN: %@ localPath: %@ bookFileURL: %@", self.isbn, self.localPath, bookFileURL);
-            [[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateError];
+            [self threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateError];
             [self endOperation];
             return;
         }
         
 		request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:bookFileURL]];
+        [bookFileURL release];
 		
 	} else if (self.fileType == kSCHDownloadFileTypeCoverImage) {
+
+        __block NSString *cacheDir = nil;
+        __block NSString *contentIdentifier = nil;
+        __block NSString *coverURL = nil;
+        [self withBook:self.isbn perform:^(SCHAppBook *book) {
+            cacheDir = [[book cacheDirectory] retain];
+            contentIdentifier = [[book ContentIdentifier] retain];
+            coverURL = [[book BookCoverURL] retain];
+        }];
+        
+		self.localPath = [cacheDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png", contentIdentifier]];
 		
-		NSString *cacheDir  = [book cacheDirectory];
-		self.localPath = [cacheDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png", book.ContentIdentifier]];
-		
-		request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:book.BookCoverURL]];
+		request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:coverURL]];
+        
+        [cacheDir release];
+        [contentIdentifier release];
+        [coverURL release];
 
 	} else {
 		[NSException raise:@"SCHDownloadFileOperationUnknownFileType" format:@"Unknown file type for SCHDownloadFileOperation."];
@@ -88,24 +99,24 @@
 
 		if (!self.resume) {
 			// if we're not resuming, delete the existing file first
-			[[NSFileManager defaultManager] removeItemAtPath:localPath error:&error];
-			
-			if (error) {
+            NSError *error = nil;
+			if (![[NSFileManager defaultManager] removeItemAtPath:localPath error:&error]) {
 				NSLog(@"Error when deleting an existing file. Stopping. (%@)", [error localizedDescription]);
 				return;
 			}
 		} else {
-			fileSize = [[[NSFileManager defaultManager] attributesOfItemAtPath:localPath error:&error] fileSize];
-			
-			if (error) {
+            NSError *error = nil;
+			NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:localPath error:&error];
+            if (!attributes) {
 				NSLog(@"Error when reading file attributes. Stopping. (%@)", [error localizedDescription]);
 				return;
 			}
+            fileSize = [attributes fileSize];
 		}
 	}
 		
 	if (fileSize > 0) {
-        NSLog(@"Already have %llu bytes, need %llu bytes more.", fileSize, ([book.FileSize unsignedLongValue] - fileSize));
+        NSLog(@"Already have %llu bytes, need %llu bytes more.", fileSize, self.bookFileSize - fileSize);
 		[request setValue:[NSString stringWithFormat:@"bytes=%llu-", fileSize] forHTTPHeaderField:@"Range"];
 	} else {
 		[[NSFileManager defaultManager] createFileAtPath:self.localPath contents:nil attributes:nil];
@@ -121,8 +132,8 @@
 			[[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
 		} while (!self.finished);
 	}
-	
-	[book setProcessing:NO];
+    
+	[self setBook:self.isbn isProcessing:NO];
 	return;
 }
 
@@ -148,9 +159,7 @@
 		[handle closeFile];
 	}
 	
-	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];
-	
-	if ([self isCancelled] || [book processingState] == SCHBookProcessingStateDownloadPaused) {
+	if ([self isCancelled] || [self processingStateForBook:self.isbn] == SCHBookProcessingStateDownloadPaused) {
 		[connection cancel];
         
         [self endOperation];
@@ -167,7 +176,7 @@
 	}
 	
 	
-	float percentage = (float) ((float) fileSize/[[book FileSize] floatValue]);
+	float percentage = (float) ((float) fileSize/self.bookFileSize);
 	
 	NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
 							  [NSNumber numberWithFloat:percentage], @"currentPercentage",
@@ -187,10 +196,10 @@
 	
 	switch (self.fileType) {
 		case kSCHDownloadFileTypeXPSBook:
-			[[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateReadyForLicenseAcquisition];
+			[self threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateReadyForLicenseAcquisition];
 			break;
 		case kSCHDownloadFileTypeCoverImage:
-			[[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateReadyForBookFileDownload];
+			[self threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateReadyForBookFileDownload];
 			break;
 		default:
 			break;
@@ -204,7 +213,7 @@
 {
 	NSLog(@"Error downloading file %@!", [self.localPath lastPathComponent]);
 
-	[[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateError];
+	[self threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateError];
 
     [self endOperation];
 }

@@ -136,7 +136,7 @@
     }
     
     if (self.containerView == nil) {
-        self.xpsProvider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.isbn];
+        self.xpsProvider = [[SCHBookManager sharedBookManager] threadSafeCheckOutXPSProviderForBookIdentifier:self.isbn];
         
         NSString *questionAudioPath = [self audioPathForQuestion];
         [self playBundleAudioWithFilename:[storyInteraction storyInteractionOpeningSoundFilename]

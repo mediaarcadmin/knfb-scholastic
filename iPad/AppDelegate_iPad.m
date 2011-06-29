@@ -30,6 +30,9 @@ static NSTimeInterval const kAppDelegate_iPadSyncManagerWakeDelay = 5.0;
 {    
 	[super application:application didFinishLaunchingWithOptions:launchOptions];
 	
+    SCHProfileViewController_iPad *rootViewController = (SCHProfileViewController_iPad *)[navigationController topViewController];
+    rootViewController.managedObjectContext = self.managedObjectContext;
+
     [self.window addSubview:navigationController.view];
     [self.window makeKeyAndVisible];
     

@@ -15,6 +15,7 @@
 @interface SCHBookManagerTests : SCHTestClassWithCoreDataStack {
     SCHBookManager *bookManager;
     dispatch_queue_t bgQueue;
+    dispatch_group_t bgGroup;
 }
 @end
 
@@ -23,15 +24,21 @@
 - (void)setUp
 {
     [super setUp];
+    
     bookManager = [SCHBookManager sharedBookManager];
     bookManager.persistentStoreCoordinator = self.persistentStoreCoordinator;
+
+    bgGroup = dispatch_group_create();
     bgQueue = dispatch_queue_create("com.bitwink.unittests.bgqueue", 0);
+    dispatch_set_target_queue(bgQueue, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0));
 }
 
 - (void)tearDown
 {
     [super tearDown];
+    
     dispatch_release(bgQueue), bgQueue = NULL;
+    dispatch_release(bgGroup), bgGroup = NULL;
 }
 
 - (void)save
@@ -53,7 +60,7 @@
     [self save];
 }
 
-- (void)testBookForIdentifier
+- (void)testBookWithIdentifier
 {
     [self addBookWithIdentifier:@"1234"];
     [self addBookWithIdentifier:@"2345"];
@@ -75,9 +82,12 @@
     SCHAppBook *book = [bookManager bookWithIdentifier:isbn];
     book.XPSAuthor = @"Arthur C. Clarke";
     
-    dispatch_sync(bgQueue, ^{
+    dispatch_group_async(bgGroup, bgQueue, ^{
+        STAssertFalse(dispatch_get_current_queue() == dispatch_get_main_queue(), @"background operation must be off main thread");
+        STAssertFalse([bookManager managedObjectContextForCurrentThread] == self.managedObjectContext, @"background thread must have own MOC");
         [bookManager threadSafeUpdateBookWithISBN:isbn setValue:@"Isaac Asimov" forKey:@"XPSAuthor"];
     });
+    dispatch_group_wait(bgGroup, DISPATCH_TIME_FOREVER);
     
     STAssertEqualObjects(book.XPSAuthor, @"Isaac Asimov", @"book author should be updated");
 }
@@ -90,9 +100,13 @@
     SCHAppBook *book = [bookManager bookWithIdentifier:isbn];
     book.State = [NSNumber numberWithInt:SCHBookProcessingStateDownloadStarted];
     
-    dispatch_sync(bgQueue, ^{
+    STAssertEquals([book.State intValue], SCHBookProcessingStateDownloadStarted, @"book state should be initialised");
+
+    dispatch_group_async(bgGroup, bgQueue, ^{
+        STAssertFalse(dispatch_get_current_queue() == dispatch_get_main_queue(), @"background operation must be off main thread");
         [bookManager threadSafeUpdateBookWithISBN:isbn state:SCHBookProcessingStateReadyToRead];
     });
+    dispatch_group_wait(bgGroup, DISPATCH_TIME_FOREVER);
     
     STAssertEquals([book.State intValue], SCHBookProcessingStateReadyToRead, @"book state should be updated");
 }

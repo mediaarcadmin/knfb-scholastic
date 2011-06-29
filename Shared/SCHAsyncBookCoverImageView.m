@@ -114,7 +114,8 @@
     if (self.usePlaceholderImage == YES) {
         self.coverSize = CGSizeMake(self.image.size.width, self.image.size.height);
     } else {
-        SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];
+        NSManagedObjectContext *context = [(id)[[UIApplication sharedApplication] delegate] managedObjectContext];
+        SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn inManagedObjectContext:context];
         CGSize fullImageSize = [book bookCoverImageSize];
         
         if (book && !CGSizeEqualToSize(fullImageSize, CGSizeZero)) {

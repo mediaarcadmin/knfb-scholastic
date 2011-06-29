@@ -86,7 +86,6 @@ static const CGFloat kProfilePadTableOffsetLandscape = 220.0f;
 {
     [super viewDidLoad];
 	
-    self.managedObjectContext = [[SCHBookManager sharedBookManager] managedObjectContextForCurrentThread];
     self.title = @"";
     
     UIImageView *logoImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo"]];
@@ -289,6 +288,7 @@ static const CGFloat kProfilePadTableOffsetLandscape = 220.0f;
     
     bookShelfViewController = [[SCHBookShelfViewController_iPad alloc] initWithNibName:NSStringFromClass([SCHBookShelfViewController class]) bundle:nil];
     bookShelfViewController.profileItem = profileItem;
+    bookShelfViewController.managedObjectContext = self.managedObjectContext;
     
     if (profileItem.AppProfile.AutomaticallyLaunchBook != nil) {
         SCHReadingViewController *readingViewController = [bookShelfViewController openBook:profileItem.AppProfile.AutomaticallyLaunchBook];

@@ -72,7 +72,8 @@ static void smartZoomFileXMLParsingStartElementHandler(void *ctx, const XML_Char
 {
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
     
-    SCHXPSProvider *xpsProvider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.isbn];
+    SCHXPSProvider *xpsProvider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.isbn
+                                                                                    inManagedObjectContext:self.localManagedObjectContext];
     BOOL hasSmartZoom = [xpsProvider componentExistsAtPath:KNFBXPSKNFBSmartZoomFile];
     
     if (hasSmartZoom) {
@@ -100,8 +101,9 @@ static void smartZoomFileXMLParsingStartElementHandler(void *ctx, const XML_Char
         }
         XML_ParserFree(pageMarkerFileParser);
         
-        [[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn setValue:context.buildPageMarkers forKey:kSCHAppBookSmartZoomPageMarkers];
-
+        [self withBook:self.isbn perform:^(SCHAppBook *book) {
+            [book setValue:context.buildPageMarkers forKey:kSCHAppBookSmartZoomPageMarkers];
+        }];
     }
     
     [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.isbn];
@@ -115,16 +117,16 @@ static void smartZoomFileXMLParsingStartElementHandler(void *ctx, const XML_Char
 
 - (void)updateBookWithSuccess
 {
-    [[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateReadyForPagination];
-    [[[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn] setProcessing:NO];
+    [self threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateReadyForPagination];
+    [self setBook:self.isbn isProcessing:NO];
     self.finished = YES;
     self.executing = NO;
 }
 
 - (void)updateBookWithFailure
 {
-    [[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateError];
-    [[[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn] setProcessing:NO];
+    [self threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateError];
+    [self setBook:self.isbn isProcessing:NO];
     self.finished = YES;
     self.executing = NO;
 }
