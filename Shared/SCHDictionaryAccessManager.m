@@ -23,7 +23,6 @@
 @property (nonatomic, copy) NSString *youngAdditions;
 @property (nonatomic, copy) NSString *oldAdditions;
 @property (nonatomic, retain) AVAudioPlayer *player;
-@property (nonatomic, retain) NSManagedObjectContext *accessQueueManagedObjectContext;
 
 // SCHDictionaryEntry object for a word
 - (SCHDictionaryEntry *) entryForWord: (NSString *) dictionaryWord category: (NSString *) category;
@@ -41,7 +40,6 @@
 @synthesize player;
 @synthesize persistentStoreCoordinator;
 @synthesize mainThreadManagedObjectContext;
-@synthesize accessQueueManagedObjectContext;
 
 #pragma mark -
 #pragma mark Default Manager Object
@@ -80,7 +78,6 @@ static SCHDictionaryAccessManager *sharedManager = nil;
         [player release], player = nil;
     }
     [mainThreadManagedObjectContext release], mainThreadManagedObjectContext = nil;
-    [accessQueueManagedObjectContext release], accessQueueManagedObjectContext = nil;
     
     [super dealloc];
 }
@@ -116,20 +113,7 @@ static SCHDictionaryAccessManager *sharedManager = nil;
     self.player = nil;
 }
 
-- (void)createAccessQueueManagedObjectContext
-{
-    self.accessQueueManagedObjectContext = [[[NSManagedObjectContext alloc] init] autorelease];
-    [self.accessQueueManagedObjectContext setPersistentStoreCoordinator:self.persistentStoreCoordinator];
-}
-
-- (void)disposeAcessQueueManagedObjectContext
-{
-    NSAssert(![self.accessQueueManagedObjectContext hasChanges], @"disposing accessQueueManagedObjectContext with changes");
-    self.accessQueueManagedObjectContext = nil;
-}
-
-#pragma mark -
-#pragma mark Dictionary Definition Methods
+#pragma mark - Dictionary Definition Methods
 
 - (SCHDictionaryEntry *) entryForWord: (NSString *) dictionaryWord category: (NSString *) category
 {

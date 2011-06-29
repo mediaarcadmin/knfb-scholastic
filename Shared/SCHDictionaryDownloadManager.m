@@ -44,10 +44,6 @@
 // timer for preventing false starts
 @property (readwrite, retain) NSTimer *startTimer;
 
-// lock preventing multiple accesses of save simulaneously
-@property (nonatomic, retain) NSLock *threadSafeMutationLock;
-
-
 // check current reachability state
 - (void) reachabilityCheck: (Reachability *) curReach;
 
@@ -75,7 +71,6 @@
 @synthesize wifiReach, startTimer, wifiAvailable, connectionIdle;
 @synthesize isProcessing;
 @synthesize manifestUpdates;
-@synthesize threadSafeMutationLock;
 @synthesize mainThreadManagedObjectContext;
 @synthesize persistentStoreCoordinator;
 
@@ -89,7 +84,6 @@
 	self.dictionaryDownloadQueue = nil;
 	[self.wifiReach stopNotifier];
 	self.wifiReach = nil;
-    self.threadSafeMutationLock = nil;
     self.mainThreadManagedObjectContext = nil;
     self.persistentStoreCoordinator = nil;
 	[super dealloc];
@@ -105,7 +99,6 @@
 		self.connectionIdle = YES;
 		
 		self.wifiReach = [Reachability reachabilityForInternetConnection];
-        self.threadSafeMutationLock = [[NSLock alloc] init];
     }
 	
 	return self;
