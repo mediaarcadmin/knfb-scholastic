@@ -109,6 +109,7 @@
     
     for (UITableView *tableView in self.answerTables) {
         tableView.rowHeight = 22;
+        tableView.allowsSelection = NO;
     }
 }
 
@@ -232,25 +233,25 @@
 
 - (void)setupAnswersForTitleTwister:(SCHStoryInteractionTitleTwister *)titleTwister
 {
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        int counts[5] = { 0, 0, 0, 0, 0 };
-        for (NSString *word in titleTwister.words) {
-            NSInteger length = [word length];
-            if (length < 3 || 7 < length) {
-                NSLog(@"ignoring %@ due to invalid length", word);
-            } else {
-                counts[[self arrayIndexForWordLength:length]]++;
-            }
+    int counts[5] = { 0, 0, 0, 0, 0 };
+    for (NSString *word in titleTwister.words) {
+        NSInteger length = [word length];
+        if (length < 3 || 7 < length) {
+            NSLog(@"ignoring %@ due to invalid length", word);
+        } else {
+            counts[[self arrayIndexForWordLength:length]]++;
         }
-        
-        self.answerCountsByLength = [NSDictionary dictionaryWithObjectsAndKeys:
-                                     [NSNumber numberWithInt:counts[0]], [NSNumber numberWithInt:3],
-                                     [NSNumber numberWithInt:counts[1]], [NSNumber numberWithInt:4],
-                                     [NSNumber numberWithInt:counts[2]], [NSNumber numberWithInt:5],
-                                     [NSNumber numberWithInt:counts[3]], [NSNumber numberWithInt:6],
-                                     [NSNumber numberWithInt:counts[4]], [NSNumber numberWithInt:7],
-                                     nil];
+    }
     
+    self.answerCountsByLength = [NSDictionary dictionaryWithObjectsAndKeys:
+                                 [NSNumber numberWithInt:counts[0]], [NSNumber numberWithInt:3],
+                                 [NSNumber numberWithInt:counts[1]], [NSNumber numberWithInt:4],
+                                 [NSNumber numberWithInt:counts[2]], [NSNumber numberWithInt:5],
+                                 [NSNumber numberWithInt:counts[3]], [NSNumber numberWithInt:6],
+                                 [NSNumber numberWithInt:counts[4]], [NSNumber numberWithInt:7],
+                                 nil];
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         self.answersByLength = [NSDictionary dictionaryWithObjectsAndKeys:
                                 [NSMutableArray array], [NSNumber numberWithInt:3],
                                 [NSMutableArray array], [NSNumber numberWithInt:4],
@@ -479,9 +480,13 @@
 - (void)updateAnswerTableHeadings
 {
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        NSNumber *key = [NSNumber numberWithInt:0];
-        NSInteger found = [[self.answersByLength objectForKey:key] count];
-        NSInteger total = [[(SCHStoryInteractionTitleTwister *)self.storyInteraction words] count];
+        NSNumber *allkey = [NSNumber numberWithInt:0];
+        NSInteger found = [[self.answersByLength objectForKey:allkey] count];
+        NSInteger total = 0;
+        for (NSUInteger i = 0; i < 5; ++i) {
+            NSNumber *lengthkey = [NSNumber numberWithInt:i+3];
+            total += [[self.answerCountsByLength objectForKey:lengthkey] integerValue];
+        }
         NSString *heading = [NSString stringWithFormat:@"(%d of %d)", found, total];
         [[self.answerHeadingCounts lastObject] setText:heading];
     } else {
