@@ -1103,6 +1103,24 @@
 		F82D39D5131EA7C200289FF3 /* SCHThumbnailFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = F82D39CE131EA7C200289FF3 /* SCHThumbnailFactory.m */; };
 		F82D39D9131EA7D400289FF3 /* SCHBookShelfTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F82D39D8131EA7D400289FF3 /* SCHBookShelfTableViewCell.m */; };
 		F82D39DA131EA7D400289FF3 /* SCHBookShelfTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F82D39D8131EA7D400289FF3 /* SCHBookShelfTableViewCell.m */; };
+		F837018513BB2B7A009B280D /* SCHBookShelfTableViewCell_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = F837018413BB2B7A009B280D /* SCHBookShelfTableViewCell_iPhone.xib */; };
+		F837018613BB2B7A009B280D /* SCHBookShelfTableViewCell_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = F837018413BB2B7A009B280D /* SCHBookShelfTableViewCell_iPhone.xib */; };
+		F837018913BB2F51009B280D /* ListViewTrashCan.png in Resources */ = {isa = PBXBuildFile; fileRef = F837018713BB2F51009B280D /* ListViewTrashCan.png */; };
+		F837018A13BB2F51009B280D /* ListViewTrashCan.png in Resources */ = {isa = PBXBuildFile; fileRef = F837018713BB2F51009B280D /* ListViewTrashCan.png */; };
+		F837018B13BB2F51009B280D /* ListViewTrashCan@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F837018813BB2F51009B280D /* ListViewTrashCan@2x.png */; };
+		F837018C13BB2F51009B280D /* ListViewTrashCan@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F837018813BB2F51009B280D /* ListViewTrashCan@2x.png */; };
+		F837019413BB3241009B280D /* SampleIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = F837018E13BB3241009B280D /* SampleIcon.png */; };
+		F837019513BB3241009B280D /* SampleIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = F837018E13BB3241009B280D /* SampleIcon.png */; };
+		F837019613BB3241009B280D /* SampleIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F837018F13BB3241009B280D /* SampleIcon@2x.png */; };
+		F837019713BB3241009B280D /* SampleIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F837018F13BB3241009B280D /* SampleIcon@2x.png */; };
+		F837019813BB3241009B280D /* SIIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = F837019013BB3241009B280D /* SIIcon.png */; };
+		F837019913BB3241009B280D /* SIIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = F837019013BB3241009B280D /* SIIcon.png */; };
+		F837019A13BB3241009B280D /* SIIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F837019113BB3241009B280D /* SIIcon@2x.png */; };
+		F837019B13BB3241009B280D /* SIIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F837019113BB3241009B280D /* SIIcon@2x.png */; };
+		F837019C13BB3241009B280D /* SISampleIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = F837019213BB3241009B280D /* SISampleIcon.png */; };
+		F837019D13BB3241009B280D /* SISampleIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = F837019213BB3241009B280D /* SISampleIcon.png */; };
+		F837019E13BB3241009B280D /* SISampleIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F837019313BB3241009B280D /* SISampleIcon@2x.png */; };
+		F837019F13BB3241009B280D /* SISampleIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F837019313BB3241009B280D /* SISampleIcon@2x.png */; };
 		F837C6A112F1798800833448 /* SCHAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A7A12F0EF5600BBBCE6 /* SCHAnnotation.m */; };
 		F837C6A212F1798900833448 /* SCHAnnotationsContentItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A7812F0EF5600BBBCE6 /* SCHAnnotationsContentItem.m */; };
 		F837C6A412F1798B00833448 /* SCHBookmark.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A7212F0EF5600BBBCE6 /* SCHBookmark.m */; };
@@ -1193,6 +1211,8 @@
 		F86433341381359300BEB8EB /* SCHProfileViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8844BF8137D6655003D3014 /* SCHProfileViewController_iPad.xib */; };
 		F864333713813B0100BEB8EB /* SCHBookShelfViewController_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = F864333613813B0100BEB8EB /* SCHBookShelfViewController_iPad.m */; };
 		F864333813813B0100BEB8EB /* SCHBookShelfViewController_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = F864333613813B0100BEB8EB /* SCHBookShelfViewController_iPad.m */; };
+		F8687ED613BA234100B59987 /* BookShelfNewIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = F8687ED513BA234100B59987 /* BookShelfNewIcon.png */; };
+		F8687ED713BA234100B59987 /* BookShelfNewIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = F8687ED513BA234100B59987 /* BookShelfNewIcon.png */; };
 		F86DEBFE13A21B6800053999 /* SCHStoryInteractionControllerStartingLetter.m in Sources */ = {isa = PBXBuildFile; fileRef = F86DEBFB13A21B6800053999 /* SCHStoryInteractionControllerStartingLetter.m */; };
 		F86DEBFF13A21B6800053999 /* SCHStoryInteractionControllerStartingLetter.m in Sources */ = {isa = PBXBuildFile; fileRef = F86DEBFB13A21B6800053999 /* SCHStoryInteractionControllerStartingLetter.m */; };
 		F86DEC0613A21C5F00053999 /* SCHImageButton.m in Sources */ = {isa = PBXBuildFile; fileRef = F86DEC0513A21C5F00053999 /* SCHImageButton.m */; };
@@ -1347,6 +1367,10 @@
 		F8DC5680138C150F00F27146 /* SCHDictionaryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F8DC567D138C150F00F27146 /* SCHDictionaryViewController.m */; };
 		F8DC5681138C150F00F27146 /* SCHDictionaryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8DC567E138C150F00F27146 /* SCHDictionaryViewController.xib */; };
 		F8DC5682138C150F00F27146 /* SCHDictionaryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8DC567E138C150F00F27146 /* SCHDictionaryViewController.xib */; };
+		F8E2D3C013B9C7AC001E207B /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8E2D3BF13B9C7AC001E207B /* CoreText.framework */; };
+		F8E2D3C113B9C7D0001E207B /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8E2D3BF13B9C7AC001E207B /* CoreText.framework */; };
+		F8E2D3D113B9CB8A001E207B /* TTTAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = F8E2D3D013B9CB8A001E207B /* TTTAttributedLabel.m */; };
+		F8E2D3D213B9CB8A001E207B /* TTTAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = F8E2D3D013B9CB8A001E207B /* TTTAttributedLabel.m */; };
 		F8EDE542138561390079BFD8 /* SCHReadingNoteView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8EDE541138561390079BFD8 /* SCHReadingNoteView.m */; };
 		F8EDE543138561390079BFD8 /* SCHReadingNoteView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8EDE541138561390079BFD8 /* SCHReadingNoteView.m */; };
 		F8FF8D81139513B000CD7B73 /* OldDictionary-additions.css in Resources */ = {isa = PBXBuildFile; fileRef = F8FF8D7F139513B000CD7B73 /* OldDictionary-additions.css */; };
@@ -2391,6 +2415,15 @@
 		F82D39CE131EA7C200289FF3 /* SCHThumbnailFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHThumbnailFactory.m; path = Shared/SCHThumbnailFactory.m; sourceTree = "<group>"; };
 		F82D39D7131EA7D400289FF3 /* SCHBookShelfTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookShelfTableViewCell.h; path = Shared/SCHBookShelfTableViewCell.h; sourceTree = "<group>"; };
 		F82D39D8131EA7D400289FF3 /* SCHBookShelfTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookShelfTableViewCell.m; path = Shared/SCHBookShelfTableViewCell.m; sourceTree = "<group>"; };
+		F837018413BB2B7A009B280D /* SCHBookShelfTableViewCell_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SCHBookShelfTableViewCell_iPhone.xib; path = Shared/SCHBookShelfTableViewCell_iPhone.xib; sourceTree = "<group>"; };
+		F837018713BB2F51009B280D /* ListViewTrashCan.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ListViewTrashCan.png; path = Resources/ListViewTrashCan.png; sourceTree = "<group>"; };
+		F837018813BB2F51009B280D /* ListViewTrashCan@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ListViewTrashCan@2x.png"; path = "Resources/ListViewTrashCan@2x.png"; sourceTree = "<group>"; };
+		F837018E13BB3241009B280D /* SampleIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SampleIcon.png; path = Resources/SampleIcon.png; sourceTree = "<group>"; };
+		F837018F13BB3241009B280D /* SampleIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "SampleIcon@2x.png"; path = "Resources/SampleIcon@2x.png"; sourceTree = "<group>"; };
+		F837019013BB3241009B280D /* SIIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SIIcon.png; path = Resources/SIIcon.png; sourceTree = "<group>"; };
+		F837019113BB3241009B280D /* SIIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "SIIcon@2x.png"; path = "Resources/SIIcon@2x.png"; sourceTree = "<group>"; };
+		F837019213BB3241009B280D /* SISampleIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SISampleIcon.png; path = Resources/SISampleIcon.png; sourceTree = "<group>"; };
+		F837019313BB3241009B280D /* SISampleIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "SISampleIcon@2x.png"; path = "Resources/SISampleIcon@2x.png"; sourceTree = "<group>"; };
 		F83D86B312FC070F00227031 /* SCHLocalDebugXPSReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHLocalDebugXPSReader.h; path = Shared/SCHLocalDebugXPSReader.h; sourceTree = "<group>"; };
 		F83D86B412FC070F00227031 /* SCHLocalDebugXPSReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHLocalDebugXPSReader.m; path = Shared/SCHLocalDebugXPSReader.m; sourceTree = "<group>"; };
 		F848823C13573F4500A2C8D3 /* icon-magnify-active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-magnify-active.png"; path = "Resources/icon-magnify-active.png"; sourceTree = "<group>"; };
@@ -2416,6 +2449,7 @@
 		F864333613813B0100BEB8EB /* SCHBookShelfViewController_iPad.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookShelfViewController_iPad.m; path = iPad/SCHBookShelfViewController_iPad.m; sourceTree = "<group>"; };
 		F86666A013AF8C370050979F /* SCHBookShelfTableViewCell_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SCHBookShelfTableViewCell_iPad.xib; path = iPad/SCHBookShelfTableViewCell_iPad.xib; sourceTree = "<group>"; };
 		F8678D89133218D8001FDB2F /* ScholasticFeatureCompatibility.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = ScholasticFeatureCompatibility.plist; path = ../../../../../../Users/john/Projects/BitWink/Scholastic/Scholastic/Shared/ScholasticFeatureCompatibility.plist; sourceTree = "<group>"; };
+		F8687ED513BA234100B59987 /* BookShelfNewIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BookShelfNewIcon.png; path = Resources/BookShelfNewIcon.png; sourceTree = "<group>"; };
 		F86DEBFA13A21B6800053999 /* SCHStoryInteractionControllerStartingLetter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionControllerStartingLetter.h; sourceTree = "<group>"; };
 		F86DEBFB13A21B6800053999 /* SCHStoryInteractionControllerStartingLetter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionControllerStartingLetter.m; sourceTree = "<group>"; };
 		F86DEBFC13A21B6800053999 /* SCHStoryInteractionStartingLetter_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionStartingLetter_iPad.xib; sourceTree = "<group>"; };
@@ -2529,6 +2563,9 @@
 		F8DC567C138C150F00F27146 /* SCHDictionaryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHDictionaryViewController.h; path = Shared/SCHDictionaryViewController.h; sourceTree = "<group>"; };
 		F8DC567D138C150F00F27146 /* SCHDictionaryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHDictionaryViewController.m; path = Shared/SCHDictionaryViewController.m; sourceTree = "<group>"; };
 		F8DC567E138C150F00F27146 /* SCHDictionaryViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SCHDictionaryViewController.xib; path = Shared/SCHDictionaryViewController.xib; sourceTree = "<group>"; };
+		F8E2D3BF13B9C7AC001E207B /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
+		F8E2D3CF13B9CB8A001E207B /* TTTAttributedLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TTTAttributedLabel.h; path = Shared/Libraries/TTTAttributedLabel/TTTAttributedLabel.h; sourceTree = "<group>"; };
+		F8E2D3D013B9CB8A001E207B /* TTTAttributedLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TTTAttributedLabel.m; path = Shared/Libraries/TTTAttributedLabel/TTTAttributedLabel.m; sourceTree = "<group>"; };
 		F8EDE540138561390079BFD8 /* SCHReadingNoteView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHReadingNoteView.h; path = Shared/SCHReadingNoteView.h; sourceTree = "<group>"; };
 		F8EDE541138561390079BFD8 /* SCHReadingNoteView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHReadingNoteView.m; path = Shared/SCHReadingNoteView.m; sourceTree = "<group>"; };
 		F8FF8D7F139513B000CD7B73 /* OldDictionary-additions.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; name = "OldDictionary-additions.css"; path = "Resources/OldDictionary-additions.css"; sourceTree = "<group>"; };
@@ -2568,6 +2605,7 @@
 				529386C512DF3A9000045B44 /* SystemConfiguration.framework in Frameworks */,
 				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
 				C9EFB177134F4C8E00ADF905 /* libXpsSDKipad.a in Frameworks */,
+				F8E2D3C113B9C7D0001E207B /* CoreText.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2588,6 +2626,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F8E2D3C013B9C7AC001E207B /* CoreText.framework in Frameworks */,
 				C9F1A4D6133B507100FD984C /* libPlayReadyPK.a in Frameworks */,
 				F8509F4812F063C900197EB5 /* libstdc++.6.dylib in Frameworks */,
 				C95ECB45133A76C400D88768 /* Accelerate.framework in Frameworks */,
@@ -3178,6 +3217,7 @@
 				529386C212DF3A8900045B44 /* CFNetwork.framework */,
 				28EEBFDC1118E19E00187D67 /* CoreData.framework */,
 				288765FC0DF74451002DB57D /* CoreGraphics.framework */,
+				F8E2D3BF13B9C7AC001E207B /* CoreText.framework */,
 				526A8A5E1385182100101A96 /* CoreMedia.framework */,
 				1D30AB110D05D00D00671497 /* Foundation.framework */,
 				523756AA13A2548E00B38441 /* MediaPlayer.framework */,
@@ -3305,6 +3345,7 @@
 		528A2CCF12CCDC400053A343 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				F837018D13BB322F009B280D /* List View Icons */,
 				F86DEC0813A21F2600053999 /* Sounds */,
 				F8FF8D7F139513B000CD7B73 /* OldDictionary-additions.css */,
 				F8FF8D80139513B000CD7B73 /* YoungDictionary-additions.css */,
@@ -3338,6 +3379,7 @@
 				C953FC4913707967003DA646 /* icon-play-landscape@2x.png */,
 				C93ECB29134B64B1003B99FD /* libKNFBReader Resources */,
 				C93ECA2C134B5EF9003B99FD /* libEucalyptus Resources */,
+				F8687ED513BA234100B59987 /* BookShelfNewIcon.png */,
 				C908D87F133F941100661718 /* PlaceholderBook.png */,
 				F8C6DA91136073D300D9E953 /* paper-black.png */,
 				F8C6DA92136073D300D9E953 /* paper-black@2x.png */,
@@ -3378,6 +3420,7 @@
 				529386FE12DF3EDF00045B44 /* WebAPI */,
 				52EF579412EDBE6E00E374F7 /* security */,
 				528A2CFF12CD026F0053A343 /* BlioLib */,
+				F8E2D3CE13B9CB55001E207B /* TTTAttributedLabel */,
 				C9E89A481369B87A00E7ED53 /* LevenshteinDistance */,
 				F8B55E42134B577A0028534A /* ZipArchive */,
 			);
@@ -3828,15 +3871,16 @@
 				5293883212E03CD000045B44 /* SCHBookShelfViewController.xib */,
 				52E334F41303049B002F3011 /* SCHTopPicksBookShelfViewController.h */,
 				52E334F51303049B002F3011 /* SCHTopPicksBookShelfViewController.m */,
-				F82D39D7131EA7D400289FF3 /* SCHBookShelfTableViewCell.h */,
-				F82D39D8131EA7D400289FF3 /* SCHBookShelfTableViewCell.m */,
 				F8C4C40B133259810057420E /* SCHBookShelfGridViewCell.h */,
 				F8C4C40C133259810057420E /* SCHBookShelfGridViewCell.m */,
 				C95C7CBF135C3C8A00472AF6 /* SCHBookShelfGridView.h */,
 				C95C7CC0135C3C8A00472AF6 /* SCHBookShelfGridView.m */,
 				C95C7CC3135C3F1200472AF6 /* SCHBookShelfGridShelvesView.h */,
 				C95C7CC4135C3F1300472AF6 /* SCHBookShelfGridShelvesView.m */,
+				F82D39D7131EA7D400289FF3 /* SCHBookShelfTableViewCell.h */,
+				F82D39D8131EA7D400289FF3 /* SCHBookShelfTableViewCell.m */,
 				F86666A013AF8C370050979F /* SCHBookShelfTableViewCell_iPad.xib */,
+				F837018413BB2B7A009B280D /* SCHBookShelfTableViewCell_iPhone.xib */,
 			);
 			name = Bookshelves;
 			sourceTree = "<group>";
@@ -4223,6 +4267,21 @@
 			name = "Authentication Controllers";
 			sourceTree = "<group>";
 		};
+		F837018D13BB322F009B280D /* List View Icons */ = {
+			isa = PBXGroup;
+			children = (
+				F837018713BB2F51009B280D /* ListViewTrashCan.png */,
+				F837018813BB2F51009B280D /* ListViewTrashCan@2x.png */,
+				F837018E13BB3241009B280D /* SampleIcon.png */,
+				F837018F13BB3241009B280D /* SampleIcon@2x.png */,
+				F837019013BB3241009B280D /* SIIcon.png */,
+				F837019113BB3241009B280D /* SIIcon@2x.png */,
+				F837019213BB3241009B280D /* SISampleIcon.png */,
+				F837019313BB3241009B280D /* SISampleIcon@2x.png */,
+			);
+			name = "List View Icons";
+			sourceTree = "<group>";
+		};
 		F84CE153134C68E50044729E /* Authentication Manager */ = {
 			isa = PBXGroup;
 			children = (
@@ -4494,6 +4553,15 @@
 				F82D39CE131EA7C200289FF3 /* SCHThumbnailFactory.m */,
 			);
 			name = "Image Processing";
+			sourceTree = "<group>";
+		};
+		F8E2D3CE13B9CB55001E207B /* TTTAttributedLabel */ = {
+			isa = PBXGroup;
+			children = (
+				F8E2D3CF13B9CB8A001E207B /* TTTAttributedLabel.h */,
+				F8E2D3D013B9CB8A001E207B /* TTTAttributedLabel.m */,
+			);
+			name = TTTAttributedLabel;
 			sourceTree = "<group>";
 		};
 		F8EDE53F138561230079BFD8 /* Notes */ = {
@@ -5065,6 +5133,16 @@
 				28F689CD13B0F305008A9BF9 /* storyinteraction-bg-younger-titleonly@2x~iphone.png in Resources */,
 				C9C1D56213B3C01A00441623 /* show-tools.png in Resources */,
 				C9C1D56413B3C01A00441623 /* show-tools@2x.png in Resources */,
+				F8687ED613BA234100B59987 /* BookShelfNewIcon.png in Resources */,
+				F837018513BB2B7A009B280D /* SCHBookShelfTableViewCell_iPhone.xib in Resources */,
+				F837018913BB2F51009B280D /* ListViewTrashCan.png in Resources */,
+				F837018B13BB2F51009B280D /* ListViewTrashCan@2x.png in Resources */,
+				F837019413BB3241009B280D /* SampleIcon.png in Resources */,
+				F837019613BB3241009B280D /* SampleIcon@2x.png in Resources */,
+				F837019813BB3241009B280D /* SIIcon.png in Resources */,
+				F837019A13BB3241009B280D /* SIIcon@2x.png in Resources */,
+				F837019C13BB3241009B280D /* SISampleIcon.png in Resources */,
+				F837019E13BB3241009B280D /* SISampleIcon@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5489,6 +5567,16 @@
 				28F689CE13B0F305008A9BF9 /* storyinteraction-bg-younger-titleonly@2x~iphone.png in Resources */,
 				C9C1D56313B3C01A00441623 /* show-tools.png in Resources */,
 				C9C1D56513B3C01A00441623 /* show-tools@2x.png in Resources */,
+				F8687ED713BA234100B59987 /* BookShelfNewIcon.png in Resources */,
+				F837018613BB2B7A009B280D /* SCHBookShelfTableViewCell_iPhone.xib in Resources */,
+				F837018A13BB2F51009B280D /* ListViewTrashCan.png in Resources */,
+				F837018C13BB2F51009B280D /* ListViewTrashCan@2x.png in Resources */,
+				F837019513BB3241009B280D /* SampleIcon.png in Resources */,
+				F837019713BB3241009B280D /* SampleIcon@2x.png in Resources */,
+				F837019913BB3241009B280D /* SIIcon.png in Resources */,
+				F837019B13BB3241009B280D /* SIIcon@2x.png in Resources */,
+				F837019D13BB3241009B280D /* SISampleIcon.png in Resources */,
+				F837019F13BB3241009B280D /* SISampleIcon@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5746,6 +5834,7 @@
 				28FFD4F213AF635F00F28637 /* SCHGeometry.m in Sources */,
 				2894E80013B09E5800AEAD79 /* SCHStoryInteractionControllerHotSpot.m in Sources */,
 				280D6A1813B1D6180032085D /* SCHStarView.m in Sources */,
+				F8E2D3D113B9CB8A001E207B /* TTTAttributedLabel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6019,6 +6108,7 @@
 				28FFD4F313AF635F00F28637 /* SCHGeometry.m in Sources */,
 				2894E80113B09E5800AEAD79 /* SCHStoryInteractionControllerHotSpot.m in Sources */,
 				280D6A1913B1D6180032085D /* SCHStarView.m in Sources */,
+				F8E2D3D213B9CB8A001E207B /* TTTAttributedLabel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

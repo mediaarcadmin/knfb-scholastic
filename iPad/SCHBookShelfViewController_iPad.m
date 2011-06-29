@@ -178,7 +178,9 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
     [self.gridView setShelfImage:[[SCHThemeManager sharedThemeManager] imageForShelf:interfaceOrientation]];        
     [self.view.layer setContents:(id)[[SCHThemeManager sharedThemeManager] imageForBackground:interfaceOrientation].CGImage];
     [(SCHCustomNavigationBar *)self.navigationController.navigationBar updateTheme:interfaceOrientation];
-    
+    self.listTableView.backgroundColor = [[SCHThemeManager sharedThemeManager] colorForListBackground];
+    self.listToggleView.backgroundColor = [[SCHThemeManager sharedThemeManager] colorForListBackground]; 
+
     CGFloat inset = 86;
 
     if (UIInterfaceOrientationIsLandscape(interfaceOrientation)) {

@@ -9,6 +9,7 @@
 #import "SCHThemeManager.h"
 
 #import "SCHAppProfile.h"
+#import "UIColor+Extensions.h"
 
 static SCHThemeManager *sharedThemeManager = nil;
 
@@ -241,6 +242,11 @@ static NSString * const kSCHThemeManagerName = @"Name";
     return([UIImage imageNamed:[kSCHThemeManagerDirectory 
                                 stringByAppendingPathComponent:[self filePath:[self.selectedTheme objectForKey:kSCHThemeManagerThemeIcon]
                                                                   orientation:orientation]]]);
+}
+
+- (UIColor *)colorForListBackground
+{
+    return ([UIColor BITcolorWithHexString:[self.selectedTheme objectForKey:kSCHThemeManagerColorForListBackground]]);
 }
 
 #pragma mark - Private methods
