@@ -180,10 +180,15 @@ static NSString* const prModelCertFilename = @"iphonecert.dat";
     [self performSelector:@selector(copyLocalFilesIfMissing) withObject:nil afterDelay:0.1f]; // Stop the watchdog from killing us on launch
 #endif
 	
-	[[SCHDictionaryDownloadManager sharedDownloadManager] checkIfUpdateNeeded];
+    SCHDictionaryDownloadManager *ddm = [SCHDictionaryDownloadManager sharedDownloadManager];
+    ddm.mainThreadManagedObjectContext = self.managedObjectContext;
+    ddm.persistentStoreCoordinator = self.persistentStoreCoordinator;
+    [ddm checkIfUpdateNeeded];
 
 	// instantiate the shared dictionary access manager
-	[SCHDictionaryAccessManager sharedAccessManager];
+	SCHDictionaryAccessManager *dam = [SCHDictionaryAccessManager sharedAccessManager];
+    dam.mainThreadManagedObjectContext = self.managedObjectContext;
+    dam.persistentStoreCoordinator = self.persistentStoreCoordinator;
 	
 	[self ensureCorrectCertsAvailable];
 	

@@ -18,8 +18,8 @@ static NSString* const kSCHDictionaryOlderReader = @"OD";
 
 @property dispatch_queue_t dictionaryAccessQueue;
 
-// TODO: clean up threading and MOC access
-@property (nonatomic, assign) NSManagedObjectContext *managedObjectContextForCurrentThread;
+@property (nonatomic, retain) NSManagedObjectContext *mainThreadManagedObjectContext;
+@property (nonatomic, retain) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 
 + (SCHDictionaryAccessManager *) sharedAccessManager;
 

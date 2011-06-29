@@ -23,6 +23,7 @@
 @property (nonatomic, copy) NSString *youngAdditions;
 @property (nonatomic, copy) NSString *oldAdditions;
 @property (nonatomic, retain) AVAudioPlayer *player;
+@property (nonatomic, retain) NSManagedObjectContext *accessQueueManagedObjectContext;
 
 // SCHDictionaryEntry object for a word
 - (SCHDictionaryEntry *) entryForWord: (NSString *) dictionaryWord category: (NSString *) category;
@@ -38,9 +39,9 @@
 @synthesize youngAdditions;
 @synthesize oldAdditions;
 @synthesize player;
-
-// used to keep track of manage contexts
-static pthread_key_t sManagedObjectContextKey;
+@synthesize persistentStoreCoordinator;
+@synthesize mainThreadManagedObjectContext;
+@synthesize accessQueueManagedObjectContext;
 
 #pragma mark -
 #pragma mark Default Manager Object
@@ -53,11 +54,6 @@ static SCHDictionaryAccessManager *sharedManager = nil;
 		sharedManager = [[SCHDictionaryAccessManager alloc] init];
 		
         sharedManager.dictionaryAccessQueue = dispatch_queue_create("com.scholastic.DictionaryAccessQueue", NULL);
-        
-        // By setting this, if we associate an object with sManagedObjectContextKey
-        // using pthread_setspecific, CFRelease will be called on it before
-        // the thread terminates.
-        pthread_key_create(&sManagedObjectContextKey, (void (*)(void *))CFRelease);
 	} 
 	
 	return sharedManager;
@@ -83,6 +79,9 @@ static SCHDictionaryAccessManager *sharedManager = nil;
         [oldAdditions release], oldAdditions = nil;
         [player release], player = nil;
     }
+    [mainThreadManagedObjectContext release], mainThreadManagedObjectContext = nil;
+    [accessQueueManagedObjectContext release], accessQueueManagedObjectContext = nil;
+    
     [super dealloc];
 }
 
@@ -117,12 +116,25 @@ static SCHDictionaryAccessManager *sharedManager = nil;
     self.player = nil;
 }
 
+- (void)createAccessQueueManagedObjectContext
+{
+    self.accessQueueManagedObjectContext = [[[NSManagedObjectContext alloc] init] autorelease];
+    [self.accessQueueManagedObjectContext setPersistentStoreCoordinator:self.persistentStoreCoordinator];
+}
+
+- (void)disposeAcessQueueManagedObjectContext
+{
+    NSAssert(![self.accessQueueManagedObjectContext hasChanges], @"disposing accessQueueManagedObjectContext with changes");
+    self.accessQueueManagedObjectContext = nil;
+}
 
 #pragma mark -
 #pragma mark Dictionary Definition Methods
 
 - (SCHDictionaryEntry *) entryForWord: (NSString *) dictionaryWord category: (NSString *) category
 {
+    NSAssert([NSThread isMainThread], @"entryForWord must be called on main thread");
+    
     if ([[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryProcessingState] != SCHDictionaryProcessingStateReady) {
         NSLog(@"Dictionary is not ready yet!");
         return nil;
@@ -152,15 +164,10 @@ static SCHDictionaryAccessManager *sharedManager = nil;
         return nil;
     }
     
-    [[self managedObjectContextForCurrentThread] refreshObject:wordForm mergeChanges:YES];
-    
-    
     // fetch the dictionary entry
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     
-    NSEntityDescription *entity = [NSEntityDescription entityForName:kSCHDictionaryEntry
-                         inManagedObjectContext:[self managedObjectContextForCurrentThread]];
-    
+    NSEntityDescription *entity = [NSEntityDescription entityForName:kSCHDictionaryEntry inManagedObjectContext:self.mainThreadManagedObjectContext];
     [fetchRequest setEntity:entity];
     
     NSPredicate *pred = [NSPredicate predicateWithFormat:@"baseWordID == %@ AND category == %@", wordForm.baseWordID, category];
@@ -171,22 +178,17 @@ static SCHDictionaryAccessManager *sharedManager = nil;
     
     NSError *error = nil;
     
-	NSArray *results = [[self managedObjectContextForCurrentThread] executeFetchRequest:fetchRequest error:&error];
+	NSArray *results = [self.mainThreadManagedObjectContext executeFetchRequest:fetchRequest error:&error];
 	
 	[fetchRequest release];
 	
-	if (error) {
+	if (results == nil) {
 		NSLog(@"error when retrieving definition for word %@: %@", dictionaryWord, [error localizedDescription]);
 		return nil;
 	}
 	
-	if (!results || [results count] != 1) {
-        int resultCount = -1;
-        if (results) {
-            resultCount = [results count];
-        }
-        
-		NSLog(@"error when retrieving definition for word %@: %d results retrieved.", dictionaryWord, resultCount);
+	if ([results count] != 1) {
+		NSLog(@"error when retrieving definition for word %@: %d results retrieved.", dictionaryWord, [results count]);
 		return nil;
 	}
     
@@ -197,6 +199,8 @@ static SCHDictionaryAccessManager *sharedManager = nil;
 
 - (SCHDictionaryWordForm *) wordFormForBaseWord: (NSString *) baseWord category: (NSString *) category
 {
+    NSAssert([NSThread isMainThread], @"wordFormForBaseWord must be called on main thread");
+    
     if ([[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryProcessingState] != SCHDictionaryProcessingStateReady) {
         NSLog(@"Dictionary is not ready yet!");
         return nil;
@@ -214,8 +218,7 @@ static SCHDictionaryAccessManager *sharedManager = nil;
     // fetch the word form from core data
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     // Edit the entity name as appropriate.
-    NSEntityDescription *entity = [NSEntityDescription entityForName:kSCHDictionaryWordForm 
-											  inManagedObjectContext:[self managedObjectContextForCurrentThread]];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:kSCHDictionaryWordForm inManagedObjectContext:self.mainThreadManagedObjectContext];
     [fetchRequest setEntity:entity];
     entity = nil;
     
@@ -225,11 +228,11 @@ static SCHDictionaryAccessManager *sharedManager = nil;
     pred = nil;
     
 	NSError *error = nil;				
-	NSArray *results = [[self managedObjectContextForCurrentThread] executeFetchRequest:fetchRequest error:&error];
+	NSArray *results = [self.mainThreadManagedObjectContext executeFetchRequest:fetchRequest error:&error];
 	
     [fetchRequest release], fetchRequest = nil;
 	
-	if (error) {
+	if (!results) {
 		NSLog(@"error when retrieving word %@: %@", baseWord, [error localizedDescription]);
 		return nil;
 	}
@@ -238,14 +241,8 @@ static SCHDictionaryAccessManager *sharedManager = nil;
         NSLog(@"Word: %@, Root: %@ Category: %@", form.word, form.rootWord, form.category);
     }
     
-	if (!results || [results count] < 1) {
-        int resultCount = -1;
-        if (results) {
-            resultCount = [results count];
-        }
-        
-		NSLog(@"error when retrieving word %@: %d results retrieved.", baseWord, resultCount);
-        
+	if ([results count] != 1) {
+		NSLog(@"error when retrieving word %@: %d results retrieved.", baseWord, [results count]);
 		return nil;
 	}
     
@@ -256,6 +253,8 @@ static SCHDictionaryAccessManager *sharedManager = nil;
 
 - (NSString *) HTMLForWord: (NSString *) dictionaryWord category: (NSString *) category
 {
+    NSAssert([NSThread isMainThread], @"HTMLForWord must be called on main thread");
+    
     if ([[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryProcessingState] != SCHDictionaryProcessingStateReady) {
         NSLog(@"Dictionary is not ready yet!");
         return nil;
@@ -322,7 +321,7 @@ static SCHDictionaryAccessManager *sharedManager = nil;
                                     entryXML = strtok(NULL, kSCHDictionaryManifestEntryColumnSeparator);
                                     if (entryXML != NULL) {
                                         entryXML[strlen(entryXML)-1] = '\0';    // remove the line end
-                                        result = [NSString stringWithUTF8String:entryXML];
+                                        result = [[NSString stringWithUTF8String:entryXML] retain];
                                         break;
                                     }
                                 }
@@ -496,32 +495,5 @@ static SCHDictionaryAccessManager *sharedManager = nil;
     self.player = nil;
 }
 
-
-#pragma mark - Thread-specific MOC
-
-- (NSManagedObjectContext *)managedObjectContextForCurrentThread
-{
-    NSManagedObjectContext *managedObjectContextForCurrentThread = (NSManagedObjectContext *)pthread_getspecific(sManagedObjectContextKey);
-    if(!managedObjectContextForCurrentThread) {
-        managedObjectContextForCurrentThread = [[NSManagedObjectContext alloc] init]; 
-        managedObjectContextForCurrentThread.persistentStoreCoordinator = [(id)[[UIApplication sharedApplication] delegate] persistentStoreCoordinator]; 
-        self.managedObjectContextForCurrentThread = managedObjectContextForCurrentThread;
-        [managedObjectContextForCurrentThread release];
-    }
-    return managedObjectContextForCurrentThread;
-}
-
-- (void)setManagedObjectContextForCurrentThread:(NSManagedObjectContext *)managedObjectContextForCurrentThread
-{
-    NSManagedObjectContext *oldManagedObjectContextForCurrentThread = (NSManagedObjectContext *)pthread_getspecific(sManagedObjectContextKey);
-    if(oldManagedObjectContextForCurrentThread) {
-        NSLog(@"Unexpectedly setting thread's managed object context on thread %@, which already has one set", [NSThread currentThread]);
-        [oldManagedObjectContextForCurrentThread release];
-    }
-    
-    // CFRelease will be called on the object before the thread terminates
-    // (see comments in +sharedBookManager).
-    pthread_setspecific(sManagedObjectContextKey, [managedObjectContextForCurrentThread retain]);
-}
 
 @end

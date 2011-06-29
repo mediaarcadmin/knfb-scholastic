@@ -36,11 +36,14 @@ typedef enum {
     
 @end
 
+@class SCHAppDictionaryState;
 
 @interface SCHDictionaryDownloadManager : NSObject {
 
 }
 
+@property (nonatomic, retain) NSManagedObjectContext *mainThreadManagedObjectContext;
+@property (nonatomic, retain) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 @property (nonatomic, retain) NSMutableArray *manifestUpdates;
 
 // the current dictionary version
@@ -61,8 +64,10 @@ typedef enum {
 // entry table/word form text files are stored
 - (NSString *)dictionaryTextFilesDirectory;
 
-// the current dictionary state
-- (void)threadSafeUpdateDictionaryState: (SCHDictionaryProcessingState) state;
+// execute a block in Core Data context with access to the current AppDictionaryState
+- (void)withAppDictionaryStatePerform:(void (^)(SCHAppDictionaryState *state))block;
+
+- (void)threadSafeUpdateDictionaryState:(SCHDictionaryProcessingState)processingState;
 - (SCHDictionaryProcessingState) dictionaryProcessingState;
 
 // parsing methods called by the parsing operation

@@ -62,18 +62,10 @@
 - (void) checkOperatingState;
 - (void) processDictionary;
 
-// the core data object for dictionary state - creates a new one if needed
-- (SCHAppDictionaryState *) appDictionaryState;
-
 // Core Data Save method
 - (BOOL)save:(NSError **)error;
 
 @end
-
-
-// mutation count - additional check for thread safety
-static int mutationCount = 0;
-
 
 #pragma mark -
 
@@ -84,6 +76,8 @@ static int mutationCount = 0;
 @synthesize isProcessing;
 @synthesize manifestUpdates;
 @synthesize threadSafeMutationLock;
+@synthesize mainThreadManagedObjectContext;
+@synthesize persistentStoreCoordinator;
 
 #pragma mark -
 #pragma mark Object Lifecycle
@@ -96,6 +90,8 @@ static int mutationCount = 0;
 	[self.wifiReach stopNotifier];
 	self.wifiReach = nil;
     self.threadSafeMutationLock = nil;
+    self.mainThreadManagedObjectContext = nil;
+    self.persistentStoreCoordinator = nil;
 	[super dealloc];
 }
 
@@ -158,13 +154,6 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 												 selector:@selector(enterForeground) 
 													 name:UIApplicationWillEnterForegroundNotification 
 												   object:nil];		
-		
-		[[NSNotificationCenter defaultCenter] addObserver:sharedManager 
-												 selector:@selector(mergeChanges:) 
-													 name:NSManagedObjectContextDidSaveNotification
-												   object:nil];		
-		
-        
         
 		[sharedManager.wifiReach startNotifier];
 	} 
@@ -299,7 +288,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 
 		NSLog(@"********* Starting timer...");
 		self.startTimer = [NSTimer scheduledTimerWithTimeInterval:10
-														   target:[SCHDictionaryDownloadManager sharedDownloadManager]
+														   target:self
 														 selector:@selector(processDictionary)
 														 userInfo:nil
 														  repeats:NO];
@@ -313,8 +302,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 		[self.dictionaryDownloadQueue cancelAllOperations];
 	}
     
-    [self performSelectorOnMainThread:@selector(fireStateChange) withObject:nil waitUntilDone:NO];
-
+    [[NSNotificationCenter defaultCenter] postNotificationName:kSCHDictionaryStateChange object:nil userInfo:nil];
 }
 
 #pragma mark -
@@ -332,7 +320,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 		return;
 	}
 	
-    SCHDictionaryProcessingState state = [[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryProcessingState];
+    SCHDictionaryProcessingState state = [self dictionaryProcessingState];
 	NSLog(@"**** Calling processDictionary with state %d...", state);
     
 	switch (state) {
@@ -406,10 +394,10 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
             }
             
             if (processUpdate) {
-                [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNeedsDownload];
+                [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNeedsDownload];
                 [self processDictionary];
             } else {
-                [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateReady];
+                [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateReady];
                 [self processDictionary];
             }
             
@@ -422,7 +410,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
             
             // if there's no manifest set, restart the process
             if (self.manifestUpdates == nil) {
-                [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNeedsManifest];
+                [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNeedsManifest];
                 [self processDictionary];
                 return;
             }
@@ -479,7 +467,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
                 
                 [localFileManager release];
                 
-                [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNeedsParse];
+                [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNeedsParse];
 				[self processDictionary];
 			}];
 			
@@ -496,7 +484,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
             // if there's no manifest set, restart the process
             // this prevents double processing in the event of interruptions during parsing
             if (self.manifestUpdates == nil) {
-                [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNeedsManifest];
+                [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNeedsManifest];
                 [self processDictionary];
                 return;
             }
@@ -584,13 +572,13 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 
 - (NSString *) dictionaryZipPath
 {
-    if ([[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryVersion] == nil) {
+    if ([self dictionaryVersion] == nil) {
         return [[self dictionaryDirectory] 
                 stringByAppendingPathComponent:@"dictionary.zip"];
     } else {
         return [[self dictionaryDirectory] 
                 stringByAppendingPathComponent:[NSString stringWithFormat:@"dictionary-%@.zip", 
-                                                [[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryVersion]]];
+                                                [self dictionaryVersion]]];
     }
 }
 
@@ -599,22 +587,18 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 
 - (NSString *) dictionaryVersion
 {
-	SCHAppDictionaryState *state = [[SCHDictionaryDownloadManager sharedDownloadManager] appDictionaryState];
-	return [state Version];
+    __block NSString *version;
+    [self withAppDictionaryStatePerform:^(SCHAppDictionaryState *state) {
+        version = [[state Version] retain];
+    }];
+    return [version autorelease];
 }
 
 - (void) setDictionaryVersion:(NSString *) newVersion
 {
-	SCHAppDictionaryState *state = [[SCHDictionaryDownloadManager sharedDownloadManager] appDictionaryState];
-	state.Version = newVersion;
-	
-	NSError *error = nil;
-	[[SCHDictionaryAccessManager sharedAccessManager].managedObjectContextForCurrentThread save:&error];
-	
-	if (error) {
-		NSLog(@"Error while saving dictionary version: %@", [error localizedDescription]);
-	}
-	
+    [self withAppDictionaryStatePerform:^(SCHAppDictionaryState *state) {
+        state.Version = newVersion;
+    }];	
 }
 
 #pragma mark -
@@ -624,51 +608,19 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 {
     NSLog(@"Updating state to %d", newState);
     
-    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-    
-	[self.threadSafeMutationLock lock];
-	
-    {
-        ++mutationCount;
-        if(mutationCount != 1) {
-			[NSException raise:@"SCHDictionaryManagerMutationException" 
-						format:@"Mutation count is greater than 1; multiple threads are accessing data in an unsafe manner."];
-        }
-        SCHDictionaryDownloadManager *dictionaryManager = [SCHDictionaryDownloadManager sharedDownloadManager];
-        SCHAppDictionaryState *state = [dictionaryManager appDictionaryState];
-        if (nil == state) {
-            NSLog(@"Failed to retrieve dictionary state object in SCHDictionaryManager threadSafeUpdateDictionaryState");
-        } else {
-            state.State = [NSNumber numberWithInt: (int) newState];
-        }
-        NSError *anError;
-        if (![dictionaryManager save:&anError]) {
-            NSLog(@"[SCHDictionaryManager threadSafeUpdateDictionaryState:%@] Save failed with error: %@, %@", [state.State stringValue], anError, [anError userInfo]);
-        }
-        --mutationCount;
-    }
-	
-	[self.threadSafeMutationLock unlock];
-    
-    [pool drain];
-
-    [self performSelectorOnMainThread:@selector(fireStateChange) withObject:nil waitUntilDone:NO];
+    [self withAppDictionaryStatePerform:^(SCHAppDictionaryState *state) {
+        state.State = [NSNumber numberWithInt:(int)newState];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kSCHDictionaryStateChange object:nil userInfo:nil];
+    }];
 }
 
 - (SCHDictionaryProcessingState) dictionaryProcessingState
 {
-	SCHAppDictionaryState *state = [[SCHDictionaryDownloadManager sharedDownloadManager] appDictionaryState];
-    if (nil == state) {
-        NSLog(@"Failed to retrieve dictionary state object in dictionaryProcessingState");
-        return SCHDictionaryProcessingStateError;
-    } else {
-        return [[state State] intValue];
-    }
-}
-
-- (void)fireStateChange
-{
-    [[NSNotificationCenter defaultCenter] postNotificationName:kSCHDictionaryStateChange object:nil userInfo:nil];
+    __block SCHDictionaryProcessingState processingState;
+    [self withAppDictionaryStatePerform:^(SCHAppDictionaryState *state) {
+        processingState = [state.State intValue];
+    }];
+    return processingState;
 }
 
 #pragma mark - Update Check
@@ -721,8 +673,9 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
     
     dispatch_sync([SCHDictionaryAccessManager sharedAccessManager].dictionaryAccessQueue, ^{
 
-        SCHDictionaryDownloadManager *dictManager = [SCHDictionaryDownloadManager sharedDownloadManager];
-        NSManagedObjectContext *context = [SCHDictionaryAccessManager sharedAccessManager].managedObjectContextForCurrentThread;
+        SCHDictionaryDownloadManager *dictManager = self;
+        NSManagedObjectContext *context = [[NSManagedObjectContext alloc] init];
+        [context setPersistentStoreCoordinator:self.persistentStoreCoordinator];
         
         NSLog(@"Removing any existing %@ objects.", kSCHDictionaryEntry);
         
@@ -831,14 +784,13 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
             [pool drain];
             fclose(file);
             
-            [context save:&error];
-            
-            if (error)
-            {
+            if (![context save:&error]) {
                 NSLog(@"Error: could not save word entries. %@", [error localizedDescription]);
             } else {
                 NSLog(@"Added %d entries to base words.", savedItems);
             }
+            
+            [context release];
         }
     });
 }
@@ -849,8 +801,9 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
     
     dispatch_sync([SCHDictionaryAccessManager sharedAccessManager].dictionaryAccessQueue, ^{
 
-        SCHDictionaryDownloadManager *dictManager = [SCHDictionaryDownloadManager sharedDownloadManager];
-        NSManagedObjectContext *context = [SCHDictionaryAccessManager sharedAccessManager].managedObjectContextForCurrentThread;
+        SCHDictionaryDownloadManager *dictManager = self;
+        NSManagedObjectContext *context = [[NSManagedObjectContext alloc] init];
+        [context setPersistentStoreCoordinator:self.persistentStoreCoordinator];
         
         NSLog(@"Removing any existing %@ objects.", kSCHDictionaryWordForm);
         
@@ -961,14 +914,13 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
             
             fclose(file);
             
-            [context save:&error];
-            
-            if (error)
-            {
+            if (![context save:&error]) {
                 NSLog(@"Error: could not save word entries. %@", [error localizedDescription]);
             } else {
                 NSLog(@"Added %d entries to word entries.", savedItems);
             }
+            
+            [context release];
         }
     });
 }
@@ -986,8 +938,9 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
         size_t strLength = 0;
         
         // first, merge this file into the existing entry table file
-        SCHDictionaryDownloadManager *dictManager = [SCHDictionaryDownloadManager sharedDownloadManager];
-        NSManagedObjectContext *context = [SCHDictionaryAccessManager sharedAccessManager].managedObjectContextForCurrentThread;
+        SCHDictionaryDownloadManager *dictManager = self;
+        NSManagedObjectContext *context = [[NSManagedObjectContext alloc] init];
+        [context setPersistentStoreCoordinator:self.persistentStoreCoordinator];
         
         NSString *existingFilePath = [[dictManager dictionaryTextFilesDirectory] stringByAppendingPathComponent:@"EntryTable.txt"];
         NSString *updateFilePath = [[dictManager dictionaryDirectory] stringByAppendingPathComponent:@"EntryTable.txt"];
@@ -1043,8 +996,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
                                 // try to find an existing core data entry to update
                                 NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
                                 // Edit the entity name as appropriate.
-                                NSEntityDescription *entity = [NSEntityDescription entityForName:kSCHDictionaryEntry 
-                                                                          inManagedObjectContext:[SCHDictionaryAccessManager sharedAccessManager].managedObjectContextForCurrentThread];
+                                NSEntityDescription *entity = [NSEntityDescription entityForName:kSCHDictionaryEntry inManagedObjectContext:context];
                                 [fetchRequest setEntity:entity];
                                 entity = nil;
                                 
@@ -1054,21 +1006,17 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
                                 [fetchRequest setPredicate:pred];
                                 pred = nil;
                                 
-                                NSArray *results = [[SCHDictionaryAccessManager sharedAccessManager].managedObjectContextForCurrentThread executeFetchRequest:fetchRequest error:&error];
+                                NSArray *results = [context executeFetchRequest:fetchRequest error:&error];
                                 
                                 [fetchRequest release], fetchRequest = nil;
                                 
-                                if (error) {
+                                if (!results) {
                                     NSLog(@"error when retrieving word with ID %@: %@", [NSString stringWithUTF8String:entryID], [error localizedDescription]);
                                     entry = nil;
                                 }
                                 
-                                if (!results || [results count] != 1) {
-                                    int resultCount = -1;
-                                    if (results) {
-                                        resultCount = [results count];
-                                    }
-                                    NSLog(@"error when retrieving word with ID %@: %d results retrieved.", [NSString stringWithUTF8String:entryID], resultCount);
+                                if ([results count] != 1) {
+                                    NSLog(@"error when retrieving word with ID %@: %d results retrieved.", [NSString stringWithUTF8String:entryID], [results count]);
                                     entry = nil;
                                 } else {
                                     entry = [results objectAtIndex:0];
@@ -1077,7 +1025,6 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
                                 results = nil;
                                 
                                 if (entry) {
-                                    [[SCHDictionaryAccessManager sharedAccessManager].managedObjectContextForCurrentThread refreshObject:entry mergeChanges:YES];
                                     entry.word = [NSString stringWithUTF8String:headword];
                                     entry.baseWordID = [NSString stringWithUTF8String:entryID];
                                     entry.fileOffset = [NSNumber numberWithLong:currentOffset];
@@ -1106,9 +1053,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
             
             if (batchItems > 1000) {
                 batchItems = 0;
-                [context save:&error];
-                if (error)
-                {
+                if (![context save:&error]) {
                     NSLog(@"Error: could not save word entries. %@", [error localizedDescription]);
                 }
                 
@@ -1126,10 +1071,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
         fclose(updateFile);
         
         error = nil;
-        [context save:&error];
-        
-        if (error)
-        {
+        if (![context save:&error]) {
             NSLog(@"Error: could not save word entries. %@", [error localizedDescription]);
         }
         
@@ -1145,6 +1087,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
         }
         
         [localFileManager release];
+        [context release];
         
     });
 }
@@ -1155,227 +1098,218 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
     NSLog(@"Updating word form table...");
     
     dispatch_sync([SCHDictionaryAccessManager sharedAccessManager].dictionaryAccessQueue, ^{
-
-    // parse the new text file
-    SCHDictionaryDownloadManager *dictManager = [SCHDictionaryDownloadManager sharedDownloadManager];
-    NSManagedObjectContext *context = [SCHDictionaryAccessManager sharedAccessManager].managedObjectContextForCurrentThread;
-    
-    NSString *filePath = [[dictManager dictionaryDirectory] stringByAppendingPathComponent:@"WordFormTable.txt"];
-    NSError *error = nil;
-    char *completeLine, *start, *wordform, *headword, *entryID, *category;
-    NSMutableData *collectLine = nil;                
-    NSString *tmpCompleteLine = nil;        
-    size_t strLength = 0;
-    
-    FILE *file = fopen([filePath UTF8String], "r");
-    char line[kSCHDictionaryManifestEntryWordFormTableBufferSize];
-    
-    int updatedTotal = 0;
-    int batchItems = 0;
-    
-    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init]; 
-    
-    if (file != NULL) {
-        setlinebuf(file);
-        while (fgets(line, kSCHDictionaryManifestEntryWordFormTableBufferSize, file) != NULL) {
-            
-            if (strLength = strlen(line), strLength > 0 && line[strLength-1] == '\n') {        
+        
+        // parse the new text file
+        SCHDictionaryDownloadManager *dictManager = self;
+        NSManagedObjectContext *context = [[NSManagedObjectContext alloc] init];
+        [context setPersistentStoreCoordinator:self.persistentStoreCoordinator];
+        
+        NSString *filePath = [[dictManager dictionaryDirectory] stringByAppendingPathComponent:@"WordFormTable.txt"];
+        NSError *error = nil;
+        char *completeLine, *start, *wordform, *headword, *entryID, *category;
+        NSMutableData *collectLine = nil;                
+        NSString *tmpCompleteLine = nil;        
+        size_t strLength = 0;
+        
+        FILE *file = fopen([filePath UTF8String], "r");
+        char line[kSCHDictionaryManifestEntryWordFormTableBufferSize];
+        
+        int updatedTotal = 0;
+        int batchItems = 0;
+        
+        NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init]; 
+        
+        if (file != NULL) {
+            setlinebuf(file);
+            while (fgets(line, kSCHDictionaryManifestEntryWordFormTableBufferSize, file) != NULL) {
                 
-                if (collectLine == nil) {
-                    completeLine = line;
-                } else {
-                    [collectLine appendBytes:line length:strlen(line)];                                        
-                    [collectLine appendBytes:(char []){'\0'} length:1];
-                    [tmpCompleteLine release];
-                    tmpCompleteLine = [[NSString alloc] initWithData:collectLine encoding:NSUTF8StringEncoding];
-                    completeLine = (char *)[tmpCompleteLine UTF8String];
-                    [collectLine release], collectLine = nil;
-                }
-                
-                start = strtok(completeLine, kSCHDictionaryManifestEntryColumnSeparator);
-                if (start != NULL) {
-                    wordform = strtok(NULL, kSCHDictionaryManifestEntryColumnSeparator);                   // search
-                    if (wordform != NULL) {
-                        headword = strtok(NULL, kSCHDictionaryManifestEntryColumnSeparator);
-                        if (headword != NULL) {
-                            entryID = strtok(NULL, kSCHDictionaryManifestEntryColumnSeparator);            // MATCH
-                            if (entryID != NULL) {
-                                category = strtok(NULL, kSCHDictionaryManifestEntryColumnSeparator);      // MATCH YD/OD/ALL
-                                if (category != NULL) {
-                                    category[strlen(category)-1] = '\0';    // remove the line end
-                                    NSString *dictWord = [NSString stringWithUTF8String:wordform];
-                                    SCHDictionaryWordForm *dictionaryWordForm = nil;
-                                    
-                                    // try to fetch a core data object matching this entry
-                                    
-                                    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-                                    // Edit the entity name as appropriate.
-                                    NSEntityDescription *entity = [NSEntityDescription entityForName:kSCHDictionaryWordForm 
-                                                                              inManagedObjectContext:[SCHDictionaryAccessManager sharedAccessManager].managedObjectContextForCurrentThread];
-                                    [fetchRequest setEntity:entity];
-                                    entity = nil;
-                                    
-                                    NSPredicate *pred = [NSPredicate predicateWithFormat:@"word == %@", dictWord];
-                                    
-                                    [fetchRequest setPredicate:pred];
-                                    pred = nil;
-                                    
-                                    NSArray *results = [[SCHDictionaryAccessManager sharedAccessManager].managedObjectContextForCurrentThread executeFetchRequest:fetchRequest error:&error];
-                                    
-                                    [fetchRequest release], fetchRequest = nil;
-                                    
-                                    if (error) {
-                                        NSLog(@"error when retrieving word %@: %@", dictWord, [error localizedDescription]);
-                                        dictionaryWordForm = nil;
-                                    }
-                                    
-                                    if (!results || [results count] != 1) {
-                                        int resultCount = -1;
-                                        if (results) {
-                                            resultCount = [results count];
+                if (strLength = strlen(line), strLength > 0 && line[strLength-1] == '\n') {        
+                    
+                    if (collectLine == nil) {
+                        completeLine = line;
+                    } else {
+                        [collectLine appendBytes:line length:strlen(line)];                                        
+                        [collectLine appendBytes:(char []){'\0'} length:1];
+                        [tmpCompleteLine release];
+                        tmpCompleteLine = [[NSString alloc] initWithData:collectLine encoding:NSUTF8StringEncoding];
+                        completeLine = (char *)[tmpCompleteLine UTF8String];
+                        [collectLine release], collectLine = nil;
+                    }
+                    
+                    start = strtok(completeLine, kSCHDictionaryManifestEntryColumnSeparator);
+                    if (start != NULL) {
+                        wordform = strtok(NULL, kSCHDictionaryManifestEntryColumnSeparator);                   // search
+                        if (wordform != NULL) {
+                            headword = strtok(NULL, kSCHDictionaryManifestEntryColumnSeparator);
+                            if (headword != NULL) {
+                                entryID = strtok(NULL, kSCHDictionaryManifestEntryColumnSeparator);            // MATCH
+                                if (entryID != NULL) {
+                                    category = strtok(NULL, kSCHDictionaryManifestEntryColumnSeparator);      // MATCH YD/OD/ALL
+                                    if (category != NULL) {
+                                        category[strlen(category)-1] = '\0';    // remove the line end
+                                        NSString *dictWord = [NSString stringWithUTF8String:wordform];
+                                        SCHDictionaryWordForm *dictionaryWordForm = nil;
+                                        
+                                        // try to fetch a core data object matching this entry
+                                        
+                                        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+                                        // Edit the entity name as appropriate.
+                                        NSEntityDescription *entity = [NSEntityDescription entityForName:kSCHDictionaryWordForm inManagedObjectContext:context];
+                                        [fetchRequest setEntity:entity];
+                                        entity = nil;
+                                        
+                                        NSPredicate *pred = [NSPredicate predicateWithFormat:@"word == %@", dictWord];
+                                        
+                                        [fetchRequest setPredicate:pred];
+                                        pred = nil;
+                                        
+                                        NSArray *results = [context executeFetchRequest:fetchRequest error:&error];
+                                        
+                                        [fetchRequest release], fetchRequest = nil;
+                                        
+                                        if (error) {
+                                            NSLog(@"error when retrieving word %@: %@", dictWord, [error localizedDescription]);
+                                            dictionaryWordForm = nil;
                                         }
                                         
-                                        NSLog(@"error when retrieving word %@: %d results retrieved.", dictWord, resultCount);
-                                        dictionaryWordForm = nil;
-                                    } else {
-                                        dictionaryWordForm = [results objectAtIndex:0];
-                                    }
-                                    
-                                    
-                                    results = nil;
-                                    
-                                    if (dictionaryWordForm) {
-                                        [[SCHDictionaryAccessManager sharedAccessManager].managedObjectContextForCurrentThread refreshObject:dictionaryWordForm mergeChanges:YES];
-                                        dictionaryWordForm.word = [NSString stringWithUTF8String:wordform];
-                                        dictionaryWordForm.rootWord = [NSString stringWithUTF8String:headword];
-                                        dictionaryWordForm.baseWordID = [NSString stringWithUTF8String:entryID];
-                                        dictionaryWordForm.category = [NSString stringWithUTF8String:category];
-                                    } else {
-                                        dictionaryWordForm = [NSEntityDescription insertNewObjectForEntityForName:kSCHDictionaryWordForm inManagedObjectContext:context];
-                                        dictionaryWordForm.word = [NSString stringWithUTF8String:wordform];
-                                        dictionaryWordForm.rootWord = [NSString stringWithUTF8String:headword];
-                                        dictionaryWordForm.baseWordID = [NSString stringWithUTF8String:entryID];
-                                        dictionaryWordForm.category = [NSString stringWithUTF8String:category];
-                                        NSLog(@"Created new word form: %@ %@ %@ %@", dictionaryWordForm.word, dictionaryWordForm.rootWord, dictionaryWordForm.baseWordID, dictionaryWordForm.category);
-                                    }
-                                    
-                                    updatedTotal++;
-                                    batchItems++;  
-                                    
-                                    if (batchItems > 1000) {
-                                        batchItems = 0;
-                                        [context save:&error];
-                                        if (error)
-                                        {
-                                            NSLog(@"Error: could not save word entries. %@", [error localizedDescription]);
+                                        if (!results || [results count] != 1) {
+                                            int resultCount = -1;
+                                            if (results) {
+                                                resultCount = [results count];
+                                            }
+                                            
+                                            NSLog(@"error when retrieving word %@: %d results retrieved.", dictWord, resultCount);
+                                            dictionaryWordForm = nil;
+                                        } else {
+                                            dictionaryWordForm = [results objectAtIndex:0];
                                         }
                                         
-                                        [context reset];
-                                        [pool drain];
-                                        pool = [[NSAutoreleasePool alloc] init];
-                                    } 
+                                        
+                                        results = nil;
+                                        
+                                        if (dictionaryWordForm) {
+                                            dictionaryWordForm.word = [NSString stringWithUTF8String:wordform];
+                                            dictionaryWordForm.rootWord = [NSString stringWithUTF8String:headword];
+                                            dictionaryWordForm.baseWordID = [NSString stringWithUTF8String:entryID];
+                                            dictionaryWordForm.category = [NSString stringWithUTF8String:category];
+                                        } else {
+                                            dictionaryWordForm = [NSEntityDescription insertNewObjectForEntityForName:kSCHDictionaryWordForm inManagedObjectContext:context];
+                                            dictionaryWordForm.word = [NSString stringWithUTF8String:wordform];
+                                            dictionaryWordForm.rootWord = [NSString stringWithUTF8String:headword];
+                                            dictionaryWordForm.baseWordID = [NSString stringWithUTF8String:entryID];
+                                            dictionaryWordForm.category = [NSString stringWithUTF8String:category];
+                                            NSLog(@"Created new word form: %@ %@ %@ %@", dictionaryWordForm.word, dictionaryWordForm.rootWord, dictionaryWordForm.baseWordID, dictionaryWordForm.category);
+                                        }
+                                        
+                                        updatedTotal++;
+                                        batchItems++;  
+                                        
+                                        if (batchItems > 1000) {
+                                            batchItems = 0;
+                                            if (![context save:&error]) {
+                                                NSLog(@"Error: could not save word entries. %@", [error localizedDescription]);
+                                            }
+                                            
+                                            [context reset];
+                                            [pool drain];
+                                            pool = [[NSAutoreleasePool alloc] init];
+                                        } 
+                                    }
                                 }
                             }
                         }
                     }
-                }
-            } else {
-                if (collectLine == nil) {
-                    collectLine = [[NSMutableData alloc] initWithBytes:line length:strlen(line)];
                 } else {
-                    [collectLine appendBytes:line length:strlen(line)];
+                    if (collectLine == nil) {
+                        collectLine = [[NSMutableData alloc] initWithBytes:line length:strlen(line)];
+                    } else {
+                        [collectLine appendBytes:line length:strlen(line)];
+                    }
                 }
+                [collectLine release], collectLine = nil;
+                [tmpCompleteLine release], tmpCompleteLine = nil;
+            }   
+            
+            [pool drain];
+            
+            fclose(file);
+            
+            if (![context save:&error]) {
+                NSLog(@"Error: could not save word entries. %@", [error localizedDescription]);
             }
-            [collectLine release], collectLine = nil;
-            [tmpCompleteLine release], tmpCompleteLine = nil;
-        }   
-        
-        [pool drain];
-        
-        fclose(file);
-        
-        error = nil;
-        [context save:&error];
-        
-        if (error)
-        {
-            NSLog(@"Error: could not save word entries. %@", [error localizedDescription]);
+            
+            
+            NSLog(@"total word form items added or updated: %d", updatedTotal);
+            
+            error = nil;
+            NSFileManager *localFileManager = [[NSFileManager alloc] init];
+            [localFileManager removeItemAtPath:filePath error:&error];
+            [localFileManager release], localFileManager = nil;
+            
+            if (error) {
+                NSLog(@"Error while deleting word form update file: %@", [error localizedDescription]);
+            }
+            
+            [context release];
         }
-        
-        
-        NSLog(@"total word form items added or updated: %d", updatedTotal);
-        
-        error = nil;
-        NSFileManager *localFileManager = [[NSFileManager alloc] init];
-        [localFileManager removeItemAtPath:filePath error:&error];
-        [localFileManager release], localFileManager = nil;
-        
-        if (error) {
-            NSLog(@"Error while deleting word form update file: %@", [error localizedDescription]);
-        }
-    }
     });
 }
 
-#pragma mark -
-#pragma mark Core Data - App Dictionary State
-- (SCHAppDictionaryState *) appDictionaryState
-{
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    // Edit the entity name as appropriate.
-    NSEntityDescription *entity = [NSEntityDescription entityForName:kSCHAppDictionaryState 
-											  inManagedObjectContext:[SCHDictionaryAccessManager sharedAccessManager].managedObjectContextForCurrentThread];
-    [fetchRequest setEntity:entity];
-    
-	NSError *error = nil;				
-	NSArray *results = [[SCHDictionaryAccessManager sharedAccessManager].managedObjectContextForCurrentThread executeFetchRequest:fetchRequest error:&error];
-	
-	[fetchRequest release];
-	
-	if (error) {
-		NSLog(@"error when retrieving app dictionary state: %@", [error localizedDescription]);
-		return nil;
-	}
-	
-	if (results && [results count] == 1) {
-        SCHAppDictionaryState *state = [results objectAtIndex:0];
-        [[SCHDictionaryAccessManager sharedAccessManager].managedObjectContextForCurrentThread refreshObject:state mergeChanges:YES];
-		return state;
-	} else {
-		// otherwise, create a dictionary state object
-		SCHAppDictionaryState *newState = [NSEntityDescription insertNewObjectForEntityForName:kSCHAppDictionaryState 
-																		inManagedObjectContext:[SCHDictionaryAccessManager sharedAccessManager].managedObjectContextForCurrentThread];
-		newState.State = [NSNumber numberWithInt:SCHDictionaryProcessingStateNeedsManifest];
-		
-		NSError *error = nil;
-		[[SCHDictionaryAccessManager sharedAccessManager].managedObjectContextForCurrentThread save:&error];
-		
-		if (error) {
-			NSLog(@"Error while saving app dictionary state: %@", [error localizedDescription]);
-		}
-		
-		return newState;
-	}
-}
+#pragma mark - Core Data - App Dictionary State
 
-- (void) mergeChanges:(NSNotification*)saveNotification
+- (void)withAppDictionaryStatePerform:(void(^)(SCHAppDictionaryState *))block
 {
-	// Fault in all updated objects
-	NSArray* updates = [[saveNotification.userInfo objectForKey:@"updated"] allObjects];
-	for (NSInteger i = [updates count]-1; i >= 0; i--)
-	{
-		[[[SCHDictionaryAccessManager sharedAccessManager].managedObjectContextForCurrentThread objectWithID:[[updates objectAtIndex:i] objectID]] willAccessValueForKey:nil];
-	}
+    dispatch_block_t action = ^{
+        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+        // Edit the entity name as appropriate.
+        NSEntityDescription *entity = [NSEntityDescription entityForName:kSCHAppDictionaryState inManagedObjectContext:self.mainThreadManagedObjectContext];
+        [fetchRequest setEntity:entity];
     
-	// Merge
-    [[SCHDictionaryAccessManager sharedAccessManager].managedObjectContextForCurrentThread lock];
-	[[SCHDictionaryAccessManager sharedAccessManager].managedObjectContextForCurrentThread mergeChangesFromContextDidSaveNotification:saveNotification];
-    [[SCHDictionaryAccessManager sharedAccessManager].managedObjectContextForCurrentThread unlock];
+        NSError *error = nil;				
+        NSArray *results = [self.mainThreadManagedObjectContext executeFetchRequest:fetchRequest error:&error];
+        
+        [fetchRequest release];
+	
+        if (!results) {
+            NSLog(@"error when retrieving app dictionary state: %@", [error localizedDescription]);
+            return;
+        }
+
+        SCHAppDictionaryState *state;
+        
+        if (results && [results count] == 1) {
+            state = [results objectAtIndex:0];
+        } else {
+            // otherwise, create a dictionary state object
+            state = [NSEntityDescription insertNewObjectForEntityForName:kSCHAppDictionaryState 
+                                                                            inManagedObjectContext:self.mainThreadManagedObjectContext];
+            state.State = [NSNumber numberWithInt:SCHDictionaryProcessingStateNeedsManifest];
+        }
+            
+        block(state);
+        
+        if ([self.mainThreadManagedObjectContext hasChanges] && ![self.mainThreadManagedObjectContext save:&error]) {
+            NSLog(@"Error while saving app dictionary state: %@", [error localizedDescription]);
+        }
+    };
+    
+    if (dispatch_get_current_queue() == dispatch_get_main_queue()) {
+        action();
+    } else {
+        dispatch_sync(dispatch_get_main_queue(), action);
+    }
 }
 
 - (BOOL)save:(NSError **)error
 {
-    return [[SCHDictionaryAccessManager sharedAccessManager].managedObjectContextForCurrentThread save:error];
+    __block BOOL rtn;
+    dispatch_sync(dispatch_get_main_queue(), ^{
+        NSError *localError = nil;
+        rtn = [self.mainThreadManagedObjectContext save:&localError];
+        *error = [localError retain];
+    });
+    [*error autorelease];
+    return rtn;
 }
 
 

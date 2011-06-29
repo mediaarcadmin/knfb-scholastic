@@ -8,9 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-
-@interface SCHDictionaryManifestOperation : NSOperation <NSXMLParserDelegate> {
-
-}
+@interface SCHDictionaryManifestOperation : NSOperation <NSXMLParserDelegate> {}
 
 @end
