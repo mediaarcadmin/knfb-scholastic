@@ -1661,14 +1661,15 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 {
     [self cancelInitialTimer];
     
-    if (visibility == YES && self.optionsView.superview) {
-        [self.optionsView removeFromSuperview];
-    }
-    
     if (self.suppressToolbarToggle) {
         return;
     }
-    
+
+    // if the options view was left open from a previous view then remove it
+    if (visibility == YES && self.optionsView.superview) {
+        [self.optionsView removeFromSuperview];
+    }
+
 //	NSLog(@"Setting visibility to %@.", visibility?@"True":@"False");
 	self.toolbarsVisible = visibility;
 
