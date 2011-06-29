@@ -3,6 +3,8 @@
 <plist version="1.0">
 <array>
 	<dict>
+		<key>ListBackgroundColor</key>
+		<string>a7d8fb</string>
 		<key>BackgroundImage</key>
 		<string>Blue/bookshelf-bg</string>
 		<key>BooksIcon</key>
@@ -29,6 +31,8 @@
 		<string>Shared/icon-theme</string>
 	</dict>
 	<dict>
+		<key>ListBackgroundColor</key>
+		<string>def3d8</string>
 		<key>BackgroundImage</key>
 		<string>Snake Skin/bookshelf-bg</string>
 		<key>BooksIcon</key>
@@ -53,6 +57,8 @@
 		<string>Shared/icon-theme</string>
 	</dict>
 	<dict>
+		<key>ListBackgroundColor</key>
+		<string>bde0f1</string>
 		<key>BackgroundImage</key>
 		<string>Waterdrops/bookshelf-bg</string>
 		<key>BooksIcon</key>
@@ -77,6 +83,8 @@
 		<string>Shared/icon-theme</string>
 	</dict>
 	<dict>
+		<key>ListBackgroundColor</key>
+		<string>d1ddfe</string>
 		<key>BackgroundImage</key>
 		<string>Starry Night/bookshelf-bg</string>
 		<key>BooksIcon</key>
@@ -101,6 +109,8 @@
 		<string>Shared/icon-theme</string>
 	</dict>
 	<dict>
+		<key>ListBackgroundColor</key>
+		<string>d8d8d8</string>
 		<key>BackgroundImage</key>
 		<string>Fence/bookshelf-bg</string>
 		<key>BooksIcon</key>
@@ -125,6 +135,8 @@
 		<string>Shared/icon-theme</string>
 	</dict>
 	<dict>
+		<key>ListBackgroundColor</key>
+		<string>c4f6fd</string>
 		<key>BackgroundImage</key>
 		<string>Grid/bookshelf-bg</string>
 		<key>BooksIcon</key>
@@ -149,6 +161,8 @@
 		<string>Shared/icon-theme</string>
 	</dict>
 	<dict>
+		<key>ListBackgroundColor</key>
+		<string>fff4bb</string>
 		<key>BackgroundImage</key>
 		<string>Dots/bookshelf-bg</string>
 		<key>BooksIcon</key>
