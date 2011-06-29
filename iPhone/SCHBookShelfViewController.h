@@ -20,10 +20,11 @@
 @class SCHProfileItem;
 @class SCHReadingViewController;
 
-@interface SCHBookShelfViewController : UIViewController <MRGridViewDelegate, MRGridViewDataSource, UITableViewDelegate, UITableViewDataSource> 
+@interface SCHBookShelfViewController : UIViewController <MRGridViewDelegate, MRGridViewDataSource, UITableViewDelegate, SCHBookShelfTableViewCellDelegate, UITableViewDataSource> 
 {
 }
 
+// interface builder
 @property (nonatomic, retain) IBOutlet UITableView *listTableView;
 @property (nonatomic, retain) IBOutlet SCHBookShelfGridView *gridView;
 @property (nonatomic, retain) IBOutlet UIView *loadingView;

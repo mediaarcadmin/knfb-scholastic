@@ -64,6 +64,7 @@
 										<reference key="NSNextKeyView" ref="349761556"/>
 										<bool key="IBUIOpaque">NO</bool>
 										<int key="IBUIContentMode">2</int>
+										<int key="IBUITag">105</int>
 										<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 										<int key="IBUIContentHorizontalAlignment">0</int>
 										<int key="IBUIContentVerticalAlignment">0</int>
@@ -225,6 +226,7 @@
 									<int key="NSColorSpace">1</int>
 									<bytes key="NSRGB">MC42NTQ5MDE5NjA4IDAuODQzMTM3MjU0OSAwLjk4NDMxMzcyNTUAA</bytes>
 								</object>
+								<int key="IBUITag">200</int>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 							</object>
 						</object>
@@ -251,6 +253,7 @@
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 				<int key="IBUISeparatorStyle">1</int>
 				<reference key="IBUIContentView" ref="187366655"/>
+				<string key="IBUIReuseIdentifier">ScholasticBookshelfTableCell</string>
 			</object>
 		</object>
 		<object class="IBObjectContainer" key="IBDocument.Objects">
@@ -420,7 +423,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">18</int>
+			<int key="maxID">19</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">

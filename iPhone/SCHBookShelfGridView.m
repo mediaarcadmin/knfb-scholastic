@@ -9,9 +9,12 @@
 #import "SCHBookShelfGridView.h"
 #import "SCHBookShelfGridShelvesView.h"
 
+static const NSInteger TOGGLE_OFFSET = -64;
+
 @interface SCHBookShelfGridView()
 
 @property (nonatomic, retain) SCHBookShelfGridShelvesView *bookShelvesView;
+@property (nonatomic, retain) UIView *toggleView;
 
 @end
 
@@ -19,6 +22,7 @@
 
 @synthesize bookShelvesView;
 @synthesize minimumNumberOfShelves;
+@synthesize toggleView;
 
 - (void)dealloc
 {
@@ -32,6 +36,14 @@
     bookShelvesView.backgroundColor = [UIColor clearColor];
     bookShelvesView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [self insertSubview:bookShelvesView atIndex:0];
+    
+    self.toggleView = [[UIView alloc] initWithFrame:CGRectMake(0, TOGGLE_OFFSET, self.frame.size.width, TOGGLE_OFFSET * -1)];
+    self.toggleView.backgroundColor = [UIColor orangeColor];
+    self.toggleView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    self.toggleView.userInteractionEnabled = NO;
+    [self addSubview:self.toggleView];
+    
+    NSLog(@"Frame: %@", NSStringFromCGRect(self.frame));
 }
 
 - (id)initWithFrame:(CGRect)frame 

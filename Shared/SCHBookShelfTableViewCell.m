@@ -12,12 +12,15 @@
 #import "SCHAppBook.h"
 #import "SCHBookManager.h"
 #import <CoreText/CoreText.h>
+#import "SCHThemeManager.h"
 
 static NSInteger const CELL_TEXT_LABEL_TAG = 100;
 static NSInteger const CELL_BOOK_COVER_VIEW_TAG = 101;
 static NSInteger const CELL_NEW_INDICATOR_TAG = 102;
 static NSInteger const CELL_SAMPLE_SI_INDICATOR_TAG = 103;
 static NSInteger const CELL_BOOK_TINT_VIEW_TAG = 104;
+static NSInteger const CELL_DELETE_BUTTON = 105;
+static NSInteger const CELL_BACKGROUND_VIEW = 200;
 
 @interface SCHBookShelfTableViewCell ()
 
@@ -26,6 +29,10 @@ static NSInteger const CELL_BOOK_TINT_VIEW_TAG = 104;
 @property (readonly) UIImageView *newIndicatorIcon;
 @property (readonly) UIImageView *sampleAndSIIndicatorIcon;
 @property (readonly) UIView *bookTintView;
+@property (readonly) UIView *backgroundView;
+@property (readonly) UIButton *deleteButton;
+
+- (void)updateTheme;
 
 @end
 
@@ -43,6 +50,8 @@ static NSInteger const CELL_BOOK_TINT_VIEW_TAG = 104;
     if (self) {
         self.textLabel.backgroundColor = [UIColor clearColor];
         self.bookCoverImageView.thumbSize = CGSizeMake(self.bookCoverImageView.frame.size.width, self.bookCoverImageView.frame.size.height);
+        [self updateTheme];
+        [self.deleteButton addTarget:self action:@selector(pressedDeleteButton:) forControlEvents:UIControlEventTouchUpInside];
     }
     
     return self;
@@ -113,6 +122,11 @@ static NSInteger const CELL_BOOK_TINT_VIEW_TAG = 104;
  
 }
 
+- (void)updateTheme
+{
+    self.backgroundView.backgroundColor = [[SCHThemeManager sharedThemeManager] colorForListBackground];
+}
+
 - (void)setIsbn:(NSString *)newIsbn
 {	
 	if (newIsbn != isbn) {
@@ -127,6 +141,11 @@ static NSInteger const CELL_BOOK_TINT_VIEW_TAG = 104;
 //                                                 selector:@selector(updatePercentage:) 
 //                                                     name:@"SCHBookDownloadPercentageUpdate" 
 //                                                   object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self 
+                                                 selector:@selector(updateTheme) 
+                                                     name:kSCHThemeManagerThemeChangeNotification 
+                                                   object:nil]; 
         
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(checkForCellUpdateFromNotification:)
@@ -143,6 +162,17 @@ static NSInteger const CELL_BOOK_TINT_VIEW_TAG = 104;
 	}
 }
 
+#pragma mark - Delete Button
+
+- (void)pressedDeleteButton:(UIButton *) sender
+{
+    NSLog(@"Pressed delete button!");
+    
+    if (self.delegate && [self.delegate respondsToSelector:@selector(bookShelfTableViewCellSelectedDeleteForISBN:)]) {
+        [self.delegate bookShelfTableViewCellSelectedDeleteForISBN:self.isbn];
+    }
+}
+
 #pragma mark - Private methods
 
 - (void)checkForCellUpdateFromNotification:(NSNotification *)notification
@@ -151,7 +181,6 @@ static NSInteger const CELL_BOOK_TINT_VIEW_TAG = 104;
         [self refreshCell];
     }
 }	
-
 
 #pragma mark - Convenience Methods for Tagged Views
 
@@ -178,6 +207,16 @@ static NSInteger const CELL_BOOK_TINT_VIEW_TAG = 104;
 - (UIView *)bookTintView
 {
     return (UIImageView *)[self.contentView viewWithTag:CELL_BOOK_TINT_VIEW_TAG];
+}
+
+- (UIView *)backgroundView
+{
+    return (UIView *)[self.contentView viewWithTag:CELL_BACKGROUND_VIEW];
+}
+
+- (UIButton *)deleteButton
+{
+    return (UIButton *)[self.contentView viewWithTag:CELL_DELETE_BUTTON];
 }
 
 

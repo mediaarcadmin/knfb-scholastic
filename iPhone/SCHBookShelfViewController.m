@@ -169,12 +169,6 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
     
     [self setupAssetsForOrientation:self.interfaceOrientation];
 
-    // toggled from prefix header
-#if BOOKSHELF_MODE_TOGGLE_DISABLED
-    [self.toggleView setHidden:YES];
-    [self.gridView setFrame:CGRectMake(0, 0, self.gridView.frame.size.width, self.gridView.frame.size.height + self.toggleView.frame.size.height)];
-#endif
-
     [self.gridView reloadData];
 }
 
@@ -203,6 +197,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
     [self.gridView setShelfImage:[[SCHThemeManager sharedThemeManager] imageForShelf:interfaceOrientation]];        
     [self.view.layer setContents:(id)[[SCHThemeManager sharedThemeManager] imageForBackground:interfaceOrientation].CGImage];
     [(SCHCustomNavigationBar *)self.navigationController.navigationBar updateTheme:interfaceOrientation];
+    self.listTableView.backgroundColor = [[SCHThemeManager sharedThemeManager] colorForListBackground];
      
     CGFloat inset = 56;
 
@@ -361,6 +356,9 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
         
         // tidy up after ourselves
         self.listViewCell = nil;
+        
+        // set the cell delegate
+        cell.delegate = self;
     }
     
     cell.isbn = [self.books objectAtIndex:[indexPath row]];
@@ -384,6 +382,13 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
     } else {
         return 88;
     }
+}
+
+#pragma mark - List View Cell Delegate
+
+- (void)bookShelfTableViewCellSelectedDeleteForISBN:(NSString *)isbn;
+{
+    NSLog(@"Deleting list view row associated with ISBN: %@", isbn);
 }
 
 #pragma mark - UITableViewDelegate methods
