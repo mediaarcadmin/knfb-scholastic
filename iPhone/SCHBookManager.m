@@ -284,9 +284,10 @@ static int allocCountXPS = 0;
 	
 }
 
-#pragma mark -
-#pragma mark EucBook Check out/Check in
+#pragma mark - EucBook Check out/Check in
+
 static int checkoutCountEucBook = 0;
+
 - (SCHFlowEucBook *)checkOutEucBookForBookIdentifier:(NSString *)isbn inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext
 {
 	SCHFlowEucBook *ret = nil;
@@ -354,8 +355,8 @@ static int checkoutCountEucBook = 0;
 	
 }
 
-#pragma mark -
-#pragma mark TextFlow Check out/Check in
+#pragma mark - TextFlow Check out/Check in
+
 static int checkoutCountTextFlow = 0;
 
 - (SCHTextFlow *)checkOutTextFlowForBookIdentifier:(NSString *)isbn inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
@@ -422,8 +423,7 @@ static int checkoutCountTextFlow = 0;
     }
 }
 
-#pragma mark -
-#pragma mark ParagraphSource Check out/Check in
+#pragma mark - ParagraphSource Check out/Check in
 
 static int checkoutCountParagraph = 0;
 

@@ -8,18 +8,16 @@
 
 #import <Foundation/Foundation.h>
 #import "SCHProcessingManager.h"
+#import "SCHCoreDataOperation.h"
 
 @class NSManagedObjectContext;
 @class SCHAppBook;
 
-@interface SCHBookOperation : NSOperation {}
+@interface SCHBookOperation : SCHCoreDataOperation {}
 
 @property (nonatomic, copy) NSString *isbn;
 @property BOOL executing;
 @property BOOL finished;
-@property (nonatomic, retain, readonly) NSManagedObjectContext *localManagedObjectContext;
-
-- (void)setMainThreadManagedObjectContext:(NSManagedObjectContext *)mainThreadManagedObjectContext;
 
 - (void) beginOperation;
 - (void) endOperation;
@@ -33,7 +31,7 @@
 - (void)withBook:(NSString *)isbn performAndSave:(void (^)(SCHAppBook *))block;
 
 // thread-safe update of book state
-- (void)threadSafeUpdateBookWithISBN:(NSString *)isbn state:(SCHBookCurrentProcessingState)state;
+- (void)setProcessingState:(SCHBookCurrentProcessingState)state forBook:(NSString *)isbn;
 
 // thread-safe access to book state
 - (SCHBookCurrentProcessingState)processingStateForBook:(NSString *)isbn;

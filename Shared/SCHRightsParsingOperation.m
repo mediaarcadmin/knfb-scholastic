@@ -79,16 +79,9 @@
 		
 	}
 	
-	if (self.success) {
-		[self threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateReadyForAudioInfoParsing];
-	} else {
-		[self threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateBookVersionNotSupported];
-	}
-    
-    [self withBook:self.isbn perform:^(SCHAppBook *book) {
-        [book setProcessing:NO];
-    }];
-
+    [self setProcessingState:(self.success ? SCHBookProcessingStateReadyForAudioInfoParsing : SCHBookProcessingStateBookVersionNotSupported)
+                     forBook:self.isbn];
+    [self setBook:self.isbn isProcessing:NO];
     [self endOperation];
 	
 	return;

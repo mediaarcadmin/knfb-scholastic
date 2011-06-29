@@ -22,7 +22,7 @@
 
 - (void) updateBookWithSuccess
 {
-    [self threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateReadyToRead];
+    [self setProcessingState:SCHBookProcessingStateReadyToRead forBook:self.isbn];
     [self setBook:self.isbn isProcessing:NO];
     
     [self endOperation];

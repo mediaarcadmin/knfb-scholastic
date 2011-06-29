@@ -80,11 +80,8 @@
 		
 	}
 	
-	if (self.success) {
-        [self threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateReadyForTextFlowPreParse];
-	} else {
-        [self threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateBookVersionNotSupported];
-	}
+    [self setProcessingState:(self.success ? SCHBookProcessingStateReadyForTextFlowPreParse : SCHBookProcessingStateBookVersionNotSupported)
+                     forBook:self.isbn];
     
     [self setBook:self.isbn isProcessing:NO];
     [self endOperation];

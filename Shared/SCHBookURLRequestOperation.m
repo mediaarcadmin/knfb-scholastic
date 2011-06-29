@@ -74,10 +74,10 @@
         
         if (success) {
             NSLog(@"Successful URL retrieval for %@!", completedISBN);
-            [self threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateNoCoverImage];
+            [self setProcessingState:SCHBookProcessingStateNoCoverImage forBook:self.isbn];
         } else {
             NSLog(@"Warning: book URL request was missing cover and/or content URL: %@", userInfo);
-            [self threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateError];
+            [self setProcessingState:SCHBookProcessingStateError forBook:self.isbn];
         }
 		
         [self endOperation];
@@ -92,8 +92,7 @@
 	
 	if ([completedISBN compare:self.isbn] == NSOrderedSame) {
 		NSLog(@"Failure for ISBN %@", completedISBN);
-		[self threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateError];
-
+        [self setProcessingState:SCHBookProcessingStateError forBook:self.isbn];
         [self endOperation];
 	}
 }

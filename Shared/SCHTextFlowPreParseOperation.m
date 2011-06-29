@@ -173,7 +173,7 @@ static void pageFileXMLParsingStartElementHandler(void *ctx, const XML_Char *nam
 
 - (void)updateBookWithSuccess
 {
-    [self threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateReadyForSmartZoomPreParse];
+    [self setProcessingState:SCHBookProcessingStateReadyForSmartZoomPreParse forBook:self.isbn];
     [self setBook:self.isbn isProcessing:NO];
     self.finished = YES;
     self.executing = NO;
@@ -181,7 +181,7 @@ static void pageFileXMLParsingStartElementHandler(void *ctx, const XML_Char *nam
 
 - (void)updateBookWithFailure
 {
-    [self threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateError];
+    [self setProcessingState:SCHBookProcessingStateError forBook:self.isbn];
     [self setBook:self.isbn isProcessing:NO];
     self.finished = YES;
     self.executing = NO;

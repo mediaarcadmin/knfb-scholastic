@@ -35,7 +35,7 @@
 	[imageData writeToFile:coverImagePath atomically:YES];
     [coverImagePath release];
 	
-	[self threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateReadyForLicenseAcquisition];
+    [self setProcessingState:SCHBookProcessingStateReadyForLicenseAcquisition forBook:self.isbn];
     [self setBook:self.isbn isProcessing:NO];
     
     [self endOperation];

@@ -15,9 +15,6 @@
 #pragma mark - Class Extension
 
 @interface SCHBookOperation ()
-@property (nonatomic, retain) NSManagedObjectContext *mainThreadManagedObjectContext;
-@property (nonatomic, retain) NSPersistentStoreCoordinator *persistentStoreCoordinator;
-@property (nonatomic, retain) NSMutableArray *pendingChanges;
 @end
 
 
@@ -26,90 +23,14 @@
 @synthesize isbn;
 @synthesize executing;
 @synthesize finished;
-@synthesize persistentStoreCoordinator;
-@synthesize mainThreadManagedObjectContext;
-@synthesize localManagedObjectContext;
-@synthesize pendingChanges;
 
 #pragma mark - Object Lifecycle
 
 - (void)dealloc 
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-    
 	[isbn release], isbn = nil;
-    [mainThreadManagedObjectContext release], mainThreadManagedObjectContext = nil;
-    [localManagedObjectContext release], localManagedObjectContext = nil;
-    [persistentStoreCoordinator release], persistentStoreCoordinator = nil;
-    [pendingChanges release], pendingChanges = nil;
 	
 	[super dealloc];
-}
-
-#pragma mark - Core Data access
-
-- (NSManagedObjectContext *)mainThreadManagedObjectContext
-{
-    NSAssert([NSThread currentThread] == [NSThread mainThread], @"can only access mainThreadManagedObjectContext on main thread");
-    return mainThreadManagedObjectContext;
-}
-
-- (void)setMainThreadManagedObjectContext:(NSManagedObjectContext *)aMainThreadManagedObjectContext
-{
-    if (aMainThreadManagedObjectContext != mainThreadManagedObjectContext) {
-        [mainThreadManagedObjectContext release];
-        mainThreadManagedObjectContext = [aMainThreadManagedObjectContext retain];
-        self.persistentStoreCoordinator = [aMainThreadManagedObjectContext persistentStoreCoordinator];
-    }
-}
-
-- (NSManagedObjectContext *)localManagedObjectContext
-{
-    if (localManagedObjectContext == nil) {
-        NSLog(@"operation %@ creating local managedObjectContext", self);
-        
-        localManagedObjectContext = [[NSManagedObjectContext alloc] init];
-        [localManagedObjectContext setPersistentStoreCoordinator:self.persistentStoreCoordinator];
-        
-        self.pendingChanges = [NSMutableArray array];
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(mergeChanges:)
-                                                     name:NSManagedObjectContextDidSaveNotification
-                                                   object:nil];
-    }
-    return localManagedObjectContext;
-}
-
-- (void)saveLocalChanges
-{
-    if (!localManagedObjectContext) {
-        return;
-    }
-    
-    NSLog(@"operation %@ saving in local managedObjectContext", self);
-    
-    // first apply any changes which came in from other threads
-    @synchronized(self.pendingChanges) {
-        for (NSNotification *note in self.pendingChanges) {
-            [localManagedObjectContext mergeChangesFromContextDidSaveNotification:note];
-        }
-        [self.pendingChanges removeAllObjects];
-    }
-    
-    NSError *error = nil;
-    if (![localManagedObjectContext save:&error]) {
-        NSLog(@"failed to save local changes in %@: %@", self, error);
-    }
-}
-
-- (void)mergeChanges:(NSNotification *)note
-{
-    if (note.object != self.localManagedObjectContext) {
-        @synchronized(self.pendingChanges) {
-            [self.pendingChanges addObject:note];
-        }
-    }
 }
 
 #pragma mark - common operation properties
@@ -234,7 +155,7 @@
     }
 }
 
-- (void)threadSafeUpdateBookWithISBN:(NSString *)aIsbn state:(SCHBookCurrentProcessingState)state 
+- (void)setProcessingState:(SCHBookCurrentProcessingState)state forBook:(NSString *)aIsbn
 {
     [self withBook:aIsbn performAndSave:^(SCHAppBook *book) {
         book.State = [NSNumber numberWithInt: (int) state];

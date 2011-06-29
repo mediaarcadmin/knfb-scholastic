@@ -39,7 +39,7 @@
 {
     if (self.isbn == nil) {
         NSLog(@"WARNING: tried to download a book without setting the ISBN");
-        [self threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateError];
+        [self setProcessingState:SCHBookProcessingStateError forBook:self.isbn];
         [self endOperation];
         return;
     }
@@ -61,7 +61,7 @@
         
         if (self.localPath == nil || bookFileURL == nil || [bookFileURL compare:@""] == NSOrderedSame) {
             NSLog(@"WARNING: problem with SCHAppBook (ISBN: %@ localPath: %@ bookFileURL: %@", self.isbn, self.localPath, bookFileURL);
-            [self threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateError];
+            [self setProcessingState:SCHBookProcessingStateError forBook:self.isbn];
             [self endOperation];
             return;
         }
@@ -196,10 +196,10 @@
 	
 	switch (self.fileType) {
 		case kSCHDownloadFileTypeXPSBook:
-			[self threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateReadyForLicenseAcquisition];
+            [self setProcessingState:SCHBookProcessingStateReadyForLicenseAcquisition forBook:self.isbn];
 			break;
 		case kSCHDownloadFileTypeCoverImage:
-			[self threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateReadyForBookFileDownload];
+            [self setProcessingState:SCHBookProcessingStateReadyForBookFileDownload forBook:self.isbn];
 			break;
 		default:
 			break;
@@ -213,8 +213,7 @@
 {
 	NSLog(@"Error downloading file %@!", [self.localPath lastPathComponent]);
 
-	[self threadSafeUpdateBookWithISBN:self.isbn state:SCHBookProcessingStateError];
-
+    [self setProcessingState:SCHBookProcessingStateError forBook:self.isbn];
     [self endOperation];
 }
 
