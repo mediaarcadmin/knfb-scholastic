@@ -512,7 +512,8 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
                 ret = [[SCHReadingViewController alloc] initWithNibName:nil 
                                                                  bundle:nil 
                                                                    isbn:isbn 
-                                                                profile:profileItem];            
+                                                                profile:profileItem
+                                                   managedObjectContext:self.managedObjectContext];
                 ret.youngerMode = YES;
                 break;
                 
@@ -521,7 +522,8 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
                 ret = [[SCHReadingViewController alloc] initWithNibName:nil 
                                                                  bundle:nil 
                                                                    isbn:isbn 
-                                                                profile:profileItem];
+                                                                profile:profileItem
+                                                   managedObjectContext:self.managedObjectContext];
                 ret.youngerMode = NO;
                 break;     
             }
@@ -530,7 +532,6 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
                 break;
         }
         
-        ret.managedObjectContext = self.managedObjectContext;
     }
     
     return([ret autorelease]);

@@ -246,7 +246,11 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 }
 
 #pragma mark - Object Initialiser
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil isbn:(NSString *)aIsbn profile:(SCHProfileItem *)aProfile
+- (id)initWithNibName:(NSString *)nibNameOrNil
+               bundle:(NSBundle *)nibBundleOrNil
+                 isbn:(NSString *)aIsbn
+              profile:(SCHProfileItem *)aProfile
+ managedObjectContext:(NSManagedObjectContext *)moc
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
@@ -255,6 +259,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         profile = [aProfile retain];
         currentlyRotating = NO;
         currentlyScrubbing = NO;
+        self.managedObjectContext = moc;
         
         SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:isbn inManagedObjectContext:self.managedObjectContext];        
         NSArray *contentItems = [book.ContentMetadataItem valueForKey:@"UserContentItem"];

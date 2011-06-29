@@ -66,6 +66,8 @@
 - (NSManagedObjectContext *)localManagedObjectContext
 {
     if (localManagedObjectContext == nil) {
+        NSLog(@"operation %@ creating local managedObjectContext", self);
+        
         localManagedObjectContext = [[NSManagedObjectContext alloc] init];
         [localManagedObjectContext setPersistentStoreCoordinator:self.persistentStoreCoordinator];
         
@@ -84,6 +86,8 @@
     if (!localManagedObjectContext) {
         return;
     }
+    
+    NSLog(@"operation %@ saving in local managedObjectContext", self);
     
     // first apply any changes which came in from other threads
     @synchronized(self.pendingChanges) {

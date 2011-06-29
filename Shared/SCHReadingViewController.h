@@ -75,7 +75,8 @@ SCHStoryInteractionControllerDelegate>
 -(id)initWithNibName:(NSString *)nibNameOrNil 
               bundle:(NSBundle *)nibBundleOrNil 
                 isbn:(NSString *)aIsbn 
-             profile:(SCHProfileItem *)aProfile;
+             profile:(SCHProfileItem *)aProfile
+managedObjectContext:(NSManagedObjectContext *)moc;
 
 // interface builder
 - (IBAction)toolbarButtonPressed:(id)sender;

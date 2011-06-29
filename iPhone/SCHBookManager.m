@@ -125,51 +125,43 @@ static NSDictionary *featureCompatibilityDictionary = nil;
 
 - (SCHAppBook *)bookWithIdentifier:(NSString *)isbn inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext
 {
+    NSAssert(isbn != nil, @"nil ISBN at bookWithIdentifier");
+    NSAssert(managedObjectContext != nil, @"nil managedObjectContext at bookWithIdentifier");
+    
     SCHAppBook *book = nil;
     NSError *error = nil;
+    NSManagedObjectID *managedObjectID = nil;
     
-    if (isbn && managedObjectContext) {
-        NSManagedObjectID *managedObjectID = nil;
-        
-        @synchronized(self.isbnManagedObjectCache) {
-            managedObjectID = [self.isbnManagedObjectCache objectForKey:isbn];
-        }
-            if (managedObjectID == nil) {
-                NSEntityDescription *entityDescription = [NSEntityDescription 
-                                                          entityForName:kSCHAppBook
-                                                          inManagedObjectContext:managedObjectContext];
-                
-                if (!entityDescription) {
-                    NSLog(@"WARNING: entity description is nil for %@", isbn);
-                } else {
-                    NSFetchRequest *fetchRequest = [entityDescription.managedObjectModel 
-                                                    fetchRequestFromTemplateWithName:kSCHAppBookFetchWithContentIdentifier 
-                                                    substitutionVariables:[NSDictionary 
-                                                                           dictionaryWithObject:isbn 
-                                                                           forKey:kSCHAppBookCONTENT_IDENTIFIER]];
-                    NSArray *bookArray = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
-                    
-                    if ([bookArray count] > 0) {
-                        book = (SCHAppBook *)[bookArray objectAtIndex:0];
-                        if (book.objectID.isTemporaryID == NO) {
-                            @synchronized(self.isbnManagedObjectCache) {
-                                [self.isbnManagedObjectCache setObject:book.objectID forKey:isbn];
-                            }
-                        }
-                    }
-                }
-            } else {
-                book = (SCHAppBook *) [managedObjectContext existingObjectWithID:managedObjectID error:&error];
-            }
-    } else {
-		NSLog(@"WARNING: book identifier is nil! request for %@", isbn);
-	}
-	
-    if (error) {
-        NSLog(@"Error while fetching book item: %@", [error localizedDescription]);
+    @synchronized(self.isbnManagedObjectCache) {
+        managedObjectID = [self.isbnManagedObjectCache objectForKey:isbn];
     }
-
-    return(book);
+    if (managedObjectID != nil) {
+        book = (SCHAppBook *) [managedObjectContext existingObjectWithID:managedObjectID error:&error];
+        if (book == nil) {
+            NSLog(@"failed to fetch book with existing ID %@: %@", managedObjectID, error);
+        }
+        return book;
+    }
+    
+    NSFetchRequest *fetchRequest = [self.persistentStoreCoordinator.managedObjectModel 
+                                    fetchRequestFromTemplateWithName:kSCHAppBookFetchWithContentIdentifier 
+                                    substitutionVariables:[NSDictionary 
+                                                           dictionaryWithObject:isbn 
+                                                           forKey:kSCHAppBookCONTENT_IDENTIFIER]];
+    [fetchRequest setFetchLimit:1];
+    NSArray *bookArray = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    if (!bookArray) {
+        NSLog(@"Error while fetching book item: %@", [error localizedDescription]);
+    } else if ([bookArray count] > 0) {
+        book = (SCHAppBook *)[bookArray objectAtIndex:0];
+        if (![book.objectID isTemporaryID]) {
+            @synchronized(self.isbnManagedObjectCache) {
+                [self.isbnManagedObjectCache setObject:book.objectID forKey:isbn];
+            }
+        }
+    }
+    
+    return book;
 }
 
 - (NSArray *)allBooksAsISBNsInManagedObjectContext:(NSManagedObjectContext *)managedObjectContext

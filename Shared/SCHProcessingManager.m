@@ -290,8 +290,8 @@ static SCHProcessingManager *sharedManager = nil;
 		{ 
 			// create URL processing operation
 			SCHBookURLRequestOperation *bookURLOp = [[SCHBookURLRequestOperation alloc] init];
-			bookURLOp.isbn = isbn;
             [bookURLOp setMainThreadManagedObjectContext:self.managedObjectContext];
+			bookURLOp.isbn = isbn;
 
 			// the book will be redispatched on completion
 			[bookURLOp setCompletionBlock:^{
@@ -310,16 +310,17 @@ static SCHProcessingManager *sharedManager = nil;
 #if LOCALDEBUG
 			// create cover image download operation
 			SCHXPSCoverImageOperation *downloadImageOp = [[SCHXPSCoverImageOperation alloc] init];
+            [downloadImageOp setMainThreadManagedObjectContext:self.managedObjectContext];
 			downloadImageOp.isbn = isbn;
 			
 #else
 			// create cover image download operation
 			SCHDownloadBookFileOperation *downloadImageOp = [[SCHDownloadBookFileOperation alloc] init];
+            [downloadImageOp setMainThreadManagedObjectContext:self.managedObjectContext];
 			downloadImageOp.fileType = kSCHDownloadFileTypeCoverImage;
 			downloadImageOp.isbn = isbn;
 			downloadImageOp.resume = NO;
 #endif		
-            [downloadImageOp setMainThreadManagedObjectContext:self.managedObjectContext];
             
 			// the book will be redispatched on completion
 			[downloadImageOp setCompletionBlock:^{
@@ -337,10 +338,10 @@ static SCHProcessingManager *sharedManager = nil;
 		{
 			// create book file download operation
 			SCHDownloadBookFileOperation *bookDownloadOp = [[SCHDownloadBookFileOperation alloc] init];
+            [bookDownloadOp setMainThreadManagedObjectContext:self.managedObjectContext];
 			bookDownloadOp.fileType = kSCHDownloadFileTypeXPSBook;
 			bookDownloadOp.isbn = isbn;
 			bookDownloadOp.resume = YES;
-            [bookDownloadOp setMainThreadManagedObjectContext:self.managedObjectContext];
 			
 			// the book will be redispatched on completion
 			[bookDownloadOp setCompletionBlock:^{
@@ -358,8 +359,8 @@ static SCHProcessingManager *sharedManager = nil;
 		{
 			// create rights processing operation
 			SCHLicenseAcquisitionOperation *licenseOp = [[SCHLicenseAcquisitionOperation alloc] init];
-			licenseOp.isbn = isbn;
             [licenseOp setMainThreadManagedObjectContext:self.managedObjectContext];
+			licenseOp.isbn = isbn;
 			
 			// the book will be redispatched on completion
 			[licenseOp setCompletionBlock:^{
@@ -378,8 +379,8 @@ static SCHProcessingManager *sharedManager = nil;
 		{
 			// create rights processing operation
 			SCHRightsParsingOperation *rightsOp = [[SCHRightsParsingOperation alloc] init];
-			rightsOp.isbn = isbn;
             [rightsOp setMainThreadManagedObjectContext:self.managedObjectContext];
+			rightsOp.isbn = isbn;
 			
 			// the book will be redispatched on completion
 			[rightsOp setCompletionBlock:^{
@@ -398,8 +399,8 @@ static SCHProcessingManager *sharedManager = nil;
 		{
 			// create audio info processing operation
 			SCHAudioPreParseOperation *rightsOp = [[SCHAudioPreParseOperation alloc] init];
-			rightsOp.isbn = isbn;
             [rightsOp setMainThreadManagedObjectContext:self.managedObjectContext];
+			rightsOp.isbn = isbn;
 			
 			// the book will be redispatched on completion
 			[rightsOp setCompletionBlock:^{
@@ -418,8 +419,8 @@ static SCHProcessingManager *sharedManager = nil;
 		{
 			// create pre-parse operation
 			SCHTextFlowPreParseOperation *textflowOp = [[SCHTextFlowPreParseOperation alloc] init];
-			textflowOp.isbn = isbn;
             [textflowOp setMainThreadManagedObjectContext:self.managedObjectContext];
+			textflowOp.isbn = isbn;
 			
 			// the book will be redispatched on completion
 			[textflowOp setCompletionBlock:^{
@@ -438,8 +439,8 @@ static SCHProcessingManager *sharedManager = nil;
 		{
 			// create pre-parse operation
 			SCHSmartZoomPreParseOperation *smartzoomOp = [[SCHSmartZoomPreParseOperation alloc] init];
-			smartzoomOp.isbn = isbn;
             [smartzoomOp setMainThreadManagedObjectContext:self.managedObjectContext];
+			smartzoomOp.isbn = isbn;
 			
 			// the book will be redispatched on completion
 			[smartzoomOp setCompletionBlock:^{
@@ -458,8 +459,8 @@ static SCHProcessingManager *sharedManager = nil;
 		{
 			// create paginate operation
 			SCHFlowAnalysisOperation *paginateOp = [[SCHFlowAnalysisOperation alloc] init];
-			paginateOp.isbn = isbn;
             [paginateOp setMainThreadManagedObjectContext:self.managedObjectContext];
+			paginateOp.isbn = isbn;
 			
 			// the book will be redispatched on completion
 			[paginateOp setCompletionBlock:^{
@@ -498,7 +499,7 @@ static SCHProcessingManager *sharedManager = nil;
 - (void) redispatchISBN: (NSString *) isbn
 {
     if (![NSThread isMainThread]) {
-        [self performSelectorOnMainThread:@selector(redispatchISBN) withObject:isbn waitUntilDone:YES];
+        [self performSelectorOnMainThread:@selector(redispatchISBN:) withObject:isbn waitUntilDone:YES];
         return;
     }
     
@@ -698,6 +699,7 @@ static SCHProcessingManager *sharedManager = nil;
 				thumbOp.size = size;
 				thumbOp.flip = NO;
 				thumbOp.aspect = YES;
+                [thumbOp setMainThreadManagedObjectContext:self.managedObjectContext];
                 [thumbOp setQueuePriority:NSOperationQueuePriorityHigh];
 				
 				// add the operation to the local processing queue
