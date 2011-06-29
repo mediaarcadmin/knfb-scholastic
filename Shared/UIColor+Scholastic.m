@@ -8,6 +8,7 @@
 
 #import "UIColor+Scholastic.h"
 
+// Scholastic Color Scheme as described in scholastic_eReader_guide_R7_042911.pdf page 29
 
 @implementation UIColor (UIColorScholastic)
 
