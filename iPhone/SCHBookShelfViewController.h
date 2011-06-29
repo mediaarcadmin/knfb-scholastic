@@ -32,7 +32,10 @@
 @property (nonatomic, retain) IBOutlet SCHCustomNavigationBar *customNavigationBar;
 @property (nonatomic, retain) IBOutlet UIButton *gridButton;
 @property (nonatomic, retain) IBOutlet UIButton *listButton;
-@property (nonatomic, retain) IBOutlet UIView *toggleView;
+@property (nonatomic, retain) IBOutlet UIView *listToggleView;
+
+
+
 @property (nonatomic, retain) IBOutlet SCHBookShelfTableViewCell *listViewCell;
 
 @property (nonatomic, retain) KNFBTimeOrderedCache *componentCache;

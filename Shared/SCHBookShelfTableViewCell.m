@@ -88,17 +88,21 @@ static NSInteger const CELL_BACKGROUND_VIEW = 200;
 	}
     
     NSString *titleString = nil;
+    float fontSize = 16.0f;
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         titleString = [NSString stringWithFormat:@"%@\n%@", book.Title, book.Author];
     } else {
         titleString = [NSString stringWithFormat:@"%@ - %@", book.Title, book.Author];
+        fontSize = 11.0f;
     }
     NSMutableAttributedString *attrString = [[NSMutableAttributedString alloc] initWithString:titleString];
 
     
-    UIFont *boldLabelFont = [UIFont fontWithName:@"Arial-BoldMT" size:16.0f];
-    UIFont *labelFont = [UIFont fontWithName:@"Arial" size:16.0f];
+    
+    
+    UIFont *boldLabelFont = [UIFont fontWithName:@"Arial-BoldMT" size:fontSize];
+    UIFont *labelFont = [UIFont fontWithName:@"Arial" size:fontSize];
     
     CTFontRef boldArialFont = CTFontCreateWithName((CFStringRef)boldLabelFont.fontName, boldLabelFont.pointSize, NULL);
     CTFontRef arialFont = CTFontCreateWithName((CFStringRef)labelFont.fontName, labelFont.pointSize, NULL);

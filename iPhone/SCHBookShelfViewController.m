@@ -43,6 +43,11 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 - (CGFloat)cellBorderSize;
 - (void)updateTable:(NSNotification *)notification;
 
+// FIXME: this isn't really necessary
+- (IBAction)changeToListView:(UIButton *)sender;
+- (IBAction)changeToGridView:(UIButton *)sender;
+
+
 @property (nonatomic, retain) UINib *listTableCellNib;
 
 @end
@@ -57,7 +62,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 @synthesize customNavigationBar;
 @synthesize gridButton;
 @synthesize listButton;
-@synthesize toggleView;
+@synthesize listToggleView;
 @synthesize componentCache;
 @synthesize books;
 @synthesize profileItem;
@@ -83,7 +88,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
     [listTableView release], listTableView = nil;
     [gridButton release], gridButton = nil;
     [listButton release], listButton = nil;
-    [toggleView release], toggleView = nil;
+    [listToggleView release], listToggleView = nil;
     [listTableCellNib release], listTableCellNib = nil;
     
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -108,7 +113,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         self.listTableCellNib = [UINib nibWithNibName:@"SCHBookShelfTableViewCell_iPad" bundle:nil];
     } else {
-        NSLog(@"FIXME: add iPhone nib here!");
+        self.listTableCellNib = [UINib nibWithNibName:@"SCHBookShelfTableViewCell_iPhone" bundle:nil];
     }
     
     self.sortType = [[[self.profileItem AppProfile] SortType] intValue];
@@ -169,7 +174,22 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
     
     [self setupAssetsForOrientation:self.interfaceOrientation];
 
+    [self.listTableView setSeparatorColor:[UIColor clearColor]];
+    
+    CGRect frame = self.listTableView.tableHeaderView.frame;
+
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        frame.size.height = 100;
+    } else {
+        frame.size.height = 44;
+    }
+    self.listTableView.tableHeaderView.frame = frame;
+
     [self.gridView reloadData];
+    [self.listTableView reloadData];
+    
+    [self changeToListView:nil];
+
 }
 
 - (void)viewDidUnload 
@@ -198,6 +218,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
     [self.view.layer setContents:(id)[[SCHThemeManager sharedThemeManager] imageForBackground:interfaceOrientation].CGImage];
     [(SCHCustomNavigationBar *)self.navigationController.navigationBar updateTheme:interfaceOrientation];
     self.listTableView.backgroundColor = [[SCHThemeManager sharedThemeManager] colorForListBackground];
+    self.listToggleView.backgroundColor = [[SCHThemeManager sharedThemeManager] colorForListBackground]; 
      
     CGFloat inset = 56;
 
@@ -380,7 +401,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         return 100;
     } else {
-        return 88;
+        return 74;
     }
 }
 
@@ -400,6 +421,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
     }
     
 	NSLog(@"Calling table row selection.");
+    [aTableView deselectRowAtIndexPath:indexPath animated:YES];
     
     SCHReadingViewController *readingController = [self openBook:[self.books objectAtIndex:[indexPath row]]];
     if (readingController != nil) {
