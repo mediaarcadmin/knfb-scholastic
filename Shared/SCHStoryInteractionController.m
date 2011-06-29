@@ -139,12 +139,10 @@
         self.xpsProvider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.isbn];
         
         NSString *questionAudioPath = [self audioPathForQuestion];
-        [self playBundleAudioWithFilename:[storyInteraction storyInteractionOpeningSoundFilename]
-                               completion:^{
-                                   if (questionAudioPath && [self shouldPlayQuestionAudioForViewAtIndex:self.currentScreenIndex]) {
-                                       [self playAudioAtPath:questionAudioPath completion:nil];
-                                   }
-                               }];
+        [self enqueueAudioWithPath:[storyInteraction storyInteractionOpeningSoundFilename] fromBundle:YES];        
+        if (questionAudioPath && [self shouldPlayQuestionAudioForViewAtIndex:self.currentScreenIndex]) {
+            [self enqueueAudioWithPath:questionAudioPath fromBundle:NO];        
+        }        
 
         // set up the transparent full-size container to trap touch events before they get
         // to the underlying view; this effectively makes the story interaction modal
