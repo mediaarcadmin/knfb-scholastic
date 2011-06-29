@@ -150,7 +150,7 @@
 									</object>
 									<object class="IBUIView" id="836594745">
 										<reference key="NSNextResponder" ref="11916819"/>
-										<int key="NSvFlags">292</int>
+										<int key="NSvFlags">297</int>
 										<object class="NSMutableArray" key="NSSubviews">
 											<bool key="EncodedWithXMLCoder">YES</bool>
 											<object class="IBUIImageView" id="528449938">
@@ -179,7 +179,7 @@
 									</object>
 									<object class="IBUILabel" id="448554426">
 										<reference key="NSNextResponder" ref="11916819"/>
-										<int key="NSvFlags">319</int>
+										<int key="NSvFlags">314</int>
 										<string key="NSFrame">{{174, 19}, {351, 60}}</string>
 										<reference key="NSSuperview" ref="11916819"/>
 										<reference key="NSWindow"/>
@@ -209,7 +209,7 @@
 									</object>
 									<object class="IBUIImageView" id="349761556">
 										<reference key="NSNextResponder" ref="11916819"/>
-										<int key="NSvFlags">292</int>
+										<int key="NSvFlags">266</int>
 										<string key="NSFrame">{{23, 98}, {722, 2}}</string>
 										<reference key="NSSuperview" ref="11916819"/>
 										<reference key="NSWindow"/>
@@ -476,10 +476,10 @@
 							<string>gridView</string>
 							<string>listButton</string>
 							<string>listTableView</string>
+							<string>listToggleView</string>
 							<string>listViewCell</string>
 							<string>loadingView</string>
 							<string>themePickerContainer</string>
-							<string>toggleView</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
@@ -488,10 +488,10 @@
 							<string>SCHBookShelfGridView</string>
 							<string>UIButton</string>
 							<string>UITableView</string>
+							<string>UIView</string>
 							<string>SCHBookShelfTableViewCell</string>
 							<string>UIView</string>
 							<string>UINavigationController</string>
-							<string>UIView</string>
 						</object>
 					</object>
 					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
@@ -503,10 +503,10 @@
 							<string>gridView</string>
 							<string>listButton</string>
 							<string>listTableView</string>
+							<string>listToggleView</string>
 							<string>listViewCell</string>
 							<string>loadingView</string>
 							<string>themePickerContainer</string>
-							<string>toggleView</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
@@ -531,6 +531,10 @@
 								<string key="candidateClassName">UITableView</string>
 							</object>
 							<object class="IBToOneOutletInfo">
+								<string key="name">listToggleView</string>
+								<string key="candidateClassName">UIView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
 								<string key="name">listViewCell</string>
 								<string key="candidateClassName">SCHBookShelfTableViewCell</string>
 							</object>
@@ -541,10 +545,6 @@
 							<object class="IBToOneOutletInfo">
 								<string key="name">themePickerContainer</string>
 								<string key="candidateClassName">UINavigationController</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">toggleView</string>
-								<string key="candidateClassName">UIView</string>
 							</object>
 						</object>
 					</object>
