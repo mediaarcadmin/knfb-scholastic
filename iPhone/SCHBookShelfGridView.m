@@ -38,10 +38,12 @@ static const NSInteger TOGGLE_OFFSET = -64;
     [self insertSubview:bookShelvesView atIndex:0];
     
     self.toggleView = [[UIView alloc] initWithFrame:CGRectMake(0, TOGGLE_OFFSET, self.frame.size.width, TOGGLE_OFFSET * -1)];
-    self.toggleView.backgroundColor = [UIColor orangeColor];
+    self.toggleView.backgroundColor = [[UIColor orangeColor] colorWithAlphaComponent:0.5f];
     self.toggleView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     self.toggleView.userInteractionEnabled = NO;
     [self addSubview:self.toggleView];
+    
+    self.contentInset = UIEdgeInsetsMake(-TOGGLE_OFFSET, 0, 0, 0);
     
     NSLog(@"Frame: %@", NSStringFromCGRect(self.frame));
 }
