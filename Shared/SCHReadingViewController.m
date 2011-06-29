@@ -1661,6 +1661,10 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 {
     [self cancelInitialTimer];
     
+    if (visibility == YES && self.optionsView.superview) {
+        [self.optionsView removeFromSuperview];
+    }
+    
     if (self.suppressToolbarToggle) {
         return;
     }
