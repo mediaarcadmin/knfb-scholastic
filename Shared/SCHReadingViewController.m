@@ -880,6 +880,12 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         return;
     }
     
+    // if the story interaction is open, hide the button
+    if (self.storyInteractionController != nil) {
+        [self setStoryInteractionButtonVisible:NO animated:YES withSound:NO];
+        return;
+    }
+    
     NSInteger page = [self storyInteractionPageNumberFromPageIndex:[self firstPageIndexWithStoryInteractionsOnCurrentPages]];
             
     NSArray *storyInteractions = [self.bookStoryInteractions storyInteractionsForPage:page];
@@ -1049,6 +1055,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 {
     NSAssert([self.readingView isKindOfClass:[SCHLayoutView class]], @"can't have story interactions with flow view");
     [(SCHLayoutView *)self.readingView zoomOutToCurrentPageWithCompletionHandler:^{
+        [self setStoryInteractionButtonVisible:NO animated:YES withSound:NO];
         self.storyInteractionController = [SCHStoryInteractionController storyInteractionControllerForStoryInteraction:storyInteraction];
         self.storyInteractionController.isbn = self.isbn;
         self.storyInteractionController.delegate = self;

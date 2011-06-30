@@ -85,6 +85,7 @@
     if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {
         self.pageImageView.image = nil;
         self.contentsView.backgroundColor = [UIColor clearColor];
+        [self.scrollView setZoomScale:1.0f animated:YES];
     }
     [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
 }
@@ -104,7 +105,7 @@
         [self removeFromHostViewWithSuccess:YES];
     };
     if (self.scrollView.zoomScale != 1.0f) {
-        [self.scrollView setZoomScale:1.0 animated:YES];
+        [self.scrollView setZoomScale:1.0f animated:YES];
     } else {
         self.zoomCompletionHandler();
     }
