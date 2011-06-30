@@ -117,7 +117,7 @@ static NSInteger const CELL_BACKGROUND_VIEW = 200;
         CFRelease(arialFont);
         CFRelease(boldArialFont);
         
-        [attrString addAttribute:(NSString *)kCTForegroundColorAttributeName value:(id)[UIColor colorWithRed:0.004 green:0.184 blue:0.376 alpha:1.0].CGColor range:NSMakeRange(0, [titleString length])];
+        [attrString addAttribute:(NSString *)kCTForegroundColorAttributeName value:(id)[UIColor SCHDarkBlue1Color].CGColor range:NSMakeRange(0, [titleString length])];
     }
     
     [self.textLabel setText:attrString];

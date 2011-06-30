@@ -63,6 +63,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 @synthesize gridButton;
 @synthesize listButton;
 @synthesize listToggleView;
+@synthesize gridViewToggleView;
 @synthesize componentCache;
 @synthesize books;
 @synthesize profileItem;
@@ -90,6 +91,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
     [listButton release], listButton = nil;
     [listToggleView release], listToggleView = nil;
     [listTableCellNib release], listTableCellNib = nil;
+    [gridViewToggleView release], gridViewToggleView = nil;
     
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
@@ -175,20 +177,29 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
     [self setupAssetsForOrientation:self.interfaceOrientation];
 
     [self.listTableView setSeparatorColor:[UIColor clearColor]];
-    
-    CGRect frame = self.listTableView.tableHeaderView.frame;
 
+    CGRect listFrame = self.listTableView.tableHeaderView.frame;
+    CGRect gridFrame = self.gridViewToggleView.frame;
+
+    listFrame.size.width = self.view.frame.size.width;
+    gridFrame.size.width = self.view.frame.size.width;
+    
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        frame.size.height = 100;
+        listFrame.size.height = 66;
+        gridFrame.size.height = 66;
     } else {
-        frame.size.height = 44;
+        listFrame.size.height = 34;
+        gridFrame.size.height = 34;
     }
-    self.listTableView.tableHeaderView.frame = frame;
+    self.listTableView.tableHeaderView.frame = listFrame;
+    self.gridViewToggleView.frame = gridFrame;
+    
+    self.gridView.toggleView = self.gridViewToggleView;
 
     [self.gridView reloadData];
     [self.listTableView reloadData];
     
-    [self changeToListView:nil];
+//    [self changeToListView:nil];
 
 }
 

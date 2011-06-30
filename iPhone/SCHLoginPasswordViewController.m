@@ -165,11 +165,11 @@
             case kSCHControllerDoublePasswordView:
             case kSCHControllerLoginView:
                 toolbarImage = [UIImage imageNamed:@"login-ipad-top-toolbar.png"];
-                borderColor  = [UIColor colorWithRed:0.396 green:0.545 blue:0.741 alpha:1.000];
+                borderColor  = [UIColor SCHBlue1Color];
                 break;
             default:
                 toolbarImage = [UIImage imageNamed:@"admin-iphone-portrait-top-toolbar.png"];
-                borderColor  = [UIColor colorWithRed:0.651 green:0.051 blue:0.106 alpha:1.000];
+                borderColor  = [UIColor SCHRed3Color];
                 break;
         }
         
