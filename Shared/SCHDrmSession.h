@@ -33,11 +33,13 @@ typedef enum  {
 
 struct SCHDrmIVars;
 
+@class SCHBookIdentifier;
+
 // Do not instantiate this class.
 @interface SCHDrmSession : NSObject {
 	struct SCHDrmIVars *drmIVars; 
 }
-- (id)initWithBook:(NSString*)isbn;
+- (id)initWithBook:(SCHBookIdentifier*)identifier;
 - (NSError*)drmError:(NSInteger)errCode message:(NSString*)message;
 
 @end
@@ -70,7 +72,7 @@ struct SCHDrmIVars;
 
 @property (nonatomic, retain) id<SCHDrmLicenseAcquisitionSessionDelegate> delegate;
 
-- (void)acquireLicense:(NSString *)token bookID:(NSString*)isbn;
+- (void)acquireLicense:(NSString *)token bookID:(SCHBookIdentifier *)identifier;
 
 @end
 

@@ -12,6 +12,7 @@
 
 @class SCHXPSProvider;
 @class SCHStoryInteraction;
+@class SCHBookIdentifier;
 @protocol SCHStoryInteractionControllerDelegate;
 
 typedef enum 
@@ -31,7 +32,7 @@ typedef enum
 @interface SCHStoryInteractionController : NSObject <AVAudioPlayerDelegate> {}
 
 // Unique Book Identifier
-@property (nonatomic, copy) NSString *isbn;
+@property (nonatomic, retain) SCHBookIdentifier *bookIdentifier;
 
 // XPS Provider for this story's book
 @property (nonatomic, retain) SCHXPSProvider *xpsProvider;

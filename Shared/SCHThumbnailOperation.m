@@ -25,9 +25,9 @@
 // overriding setBookInfo - image operation doesn't set the book as processing
 // since image processing can happen while the book is already processing, as long
 // as the cover image is set.
-- (void) setIsbn:(NSString *) newIsbn
+- (void)setIdentifier:(SCHBookIdentifier *)newIdentifier
 {
-    [self setIsbnWithoutUpdatingProcessingStatus:newIsbn];
+    [self setIdentifierWithoutUpdatingProcessingStatus:newIdentifier];
 }
 
 #pragma mark - Book Operation methods
@@ -42,7 +42,7 @@
 	__block NSString *fullImagePath;
     __block NSString *thumbPath;
     __block CGSize coverImageSize;
-    [self withBook:self.isbn perform:^(SCHAppBook *book) {
+    [self performWithBook:^(SCHAppBook *book) {
         fullImagePath = [[book coverImagePath] retain];
         thumbPath = [[book thumbPathForSize:size] retain];
         coverImageSize = [book bookCoverImageSize];
@@ -65,7 +65,7 @@
         
         
         if (fullImage) {
-            [self withBook:self.isbn perform:^(SCHAppBook *book) {
+            [self performWithBook:^(SCHAppBook *book) {
                 [book setValue:[NSNumber numberWithFloat:fullImage.size.width] forKey:kSCHAppBookCoverImageWidth];
                 [book setValue:[NSNumber numberWithFloat:fullImage.size.height] forKey:kSCHAppBookCoverImageHeight];
             }];
@@ -84,7 +84,7 @@
     
 	if (thumbImage) {
 		NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
-                                  self.isbn, @"isbn",
+                                  self.identifier, @"bookIdentifier",
 								  [NSValue valueWithCGSize:size], @"thumbSize", 
 								  thumbImage, @"image", 
 								  nil];
@@ -102,7 +102,8 @@
 
 // used on the main thread - notifies the UI when new thumbs are available
 // specifically used by SCHASyncBookCoverImageView
-- (void)imageReady:(NSDictionary *)userInfo {
+- (void)imageReady:(NSDictionary *)userInfo
+{
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"SCHNewImageAvailable" object:nil userInfo:userInfo];
 }
 

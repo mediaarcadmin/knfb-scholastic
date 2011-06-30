@@ -37,7 +37,7 @@
 - (void)start
 {
 #if !LOCALDEBUG
-    licenseAcquisitionSession = [[SCHDrmLicenseAcquisitionSession alloc] initWithBook:self.isbn];
+    licenseAcquisitionSession = [[SCHDrmLicenseAcquisitionSession alloc] initWithBook:self.identifier];
     [licenseAcquisitionSession setDelegate:self];
 #endif    
     [super start];
@@ -53,23 +53,23 @@
     [self updateBookWithSuccess];
     return;
 #endif
-    [licenseAcquisitionSession acquireLicense:[[SCHAuthenticationManager sharedAuthenticationManager] aToken] bookID:self.isbn];
+    [licenseAcquisitionSession acquireLicense:[[SCHAuthenticationManager sharedAuthenticationManager] aToken] bookID:self.identifier];
 }
 
 #pragma mark - Book Updates
 
 - (void)updateBookWithSuccess
 {
-    [self setProcessingState:SCHBookProcessingStateReadyForRightsParsing forBook:self.isbn];
-    [self setBook:self.isbn isProcessing:NO];
+    [self setProcessingState:SCHBookProcessingStateReadyForRightsParsing];
+    [self setIsProcessing:NO];
     [self endOperation];
 }
 
 - (void)updateBookWithFailure
 {
-    [self setProcessingState:SCHBookProcessingStateError forBook:self.isbn];
+    [self setProcessingState:SCHBookProcessingStateError];
 
-    [self setBook:self.isbn isProcessing:NO];
+    [self setIsProcessing:NO];
     [self endOperation];
 }
 

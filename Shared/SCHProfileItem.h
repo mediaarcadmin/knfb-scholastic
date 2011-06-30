@@ -54,7 +54,7 @@ typedef enum {
 
 @property (nonatomic, readonly) NSUInteger age;
 
-- (NSMutableArray *)allISBNs;
+- (NSMutableArray *)allBookIdentifiers;
 - (SCHBookAnnotations *)annotationsForBook:(NSString *)isbn;
 - (void)saveBookOrder:(NSArray *)books;
 - (void)clearBookOrder;

@@ -43,7 +43,7 @@
 @implementation SCHStoryInteractionController
 
 @synthesize xpsProvider;
-@synthesize isbn;
+@synthesize bookIdentifier;
 @synthesize containerView;
 @synthesize titleView;
 @synthesize closeButton;
@@ -136,7 +136,7 @@
     }
     
     if (self.containerView == nil) {
-        self.xpsProvider = [[SCHBookManager sharedBookManager] threadSafeCheckOutXPSProviderForBookIdentifier:self.isbn];
+        self.xpsProvider = [[SCHBookManager sharedBookManager] threadSafeCheckOutXPSProviderForBookIdentifier:self.bookIdentifier];
         
         NSString *questionAudioPath = [self audioPathForQuestion];
         [self playBundleAudioWithFilename:[storyInteraction storyInteractionOpeningSoundFilename]
@@ -478,7 +478,7 @@
 {
     [self cancelQueuedAudio];
     
-    [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.isbn];
+    [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.bookIdentifier];
     
     // always, always re-enable user interactions for the superview...
     [self setUserInteractionsEnabled:YES];

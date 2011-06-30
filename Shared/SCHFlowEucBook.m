@@ -12,6 +12,7 @@
 #import "SCHAppBook.h"
 #import "SCHXPSProvider.h"
 #import "SCHBookPoint.h"
+#import "SCHBookIdentifier.h"
 #import "SCHTextFlowParagraphSource.h"
 #import "KNFBXPSConstants.h"
 #import <libEucalyptus/EucBookPageIndexPoint.h>
@@ -19,7 +20,7 @@
 
 @interface SCHFlowEucBook ()
 
-@property (nonatomic, copy) NSString *isbn;
+@property (nonatomic, retain) SCHBookIdentifier *identifier;
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, assign) SCHTextFlowParagraphSource *paragraphSource;
 
@@ -27,18 +28,17 @@
 
 @implementation SCHFlowEucBook
 
-@synthesize isbn;
+@synthesize identifier;
 @synthesize managedObjectContext;
 @synthesize paragraphSource;
 
-
-- (id)initWithISBN:(NSString *)newIsbn managedObjectContext:(id)moc
+- (id)initWithBookIdentifier:(SCHBookIdentifier *)newIdentifier managedObjectContext:(NSManagedObjectContext *)moc
 {
     SCHBookManager *bookManager = [SCHBookManager sharedBookManager];
-    SCHAppBook *book = [bookManager bookWithIdentifier:newIsbn inManagedObjectContext:moc];
+    SCHAppBook *book = [bookManager bookWithIdentifier:newIdentifier inManagedObjectContext:moc];
     
     if (book) {
-        SCHTextFlow *aTextFlow = [[SCHBookManager sharedBookManager] checkOutTextFlowForBookIdentifier:newIsbn inManagedObjectContext:moc];
+        SCHTextFlow *aTextFlow = [[SCHBookManager sharedBookManager] checkOutTextFlowForBookIdentifier:newIdentifier inManagedObjectContext:moc];
         BOOL aFakeCover = aTextFlow.flowTreeKind == KNFBTextFlowFlowTreeKindFlow;
         NSString *aCacheDirectoryPath = [book libEucalyptusCache];
     
@@ -47,7 +47,7 @@
                                  textFlow:aTextFlow
                                 fakeCover:aFakeCover])) 
         {
-            isbn = [newIsbn copy];
+            self.identifier = newIdentifier;
             self.managedObjectContext = moc;
                 
             self.title = [book XPSTitle];
@@ -71,7 +71,7 @@
         // N.B. this must be lazily instantiated because checking it out during the init would result in a checkout cycle
         // loop if the paragraph source is 
         // being checked
-        paragraphSource = [[SCHBookManager sharedBookManager] checkOutParagraphSourceForBookIdentifier:self.isbn
+        paragraphSource = [[SCHBookManager sharedBookManager] checkOutParagraphSourceForBookIdentifier:self.identifier
                                                                                 inManagedObjectContext:self.managedObjectContext];
     }
     
@@ -82,15 +82,15 @@
 {
     
     if (self.textFlow) {
-        [[SCHBookManager sharedBookManager] checkInTextFlowForBookIdentifier:self.isbn];
+        [[SCHBookManager sharedBookManager] checkInTextFlowForBookIdentifier:self.identifier];
     }
     
     if (paragraphSource) {
-        [[SCHBookManager sharedBookManager] checkInParagraphSourceForBookIdentifier:self.isbn];
+        [[SCHBookManager sharedBookManager] checkInParagraphSourceForBookIdentifier:self.identifier];
         paragraphSource = nil;
     }
     
-    [isbn release], isbn = nil;
+    [identifier release], identifier = nil;
     [managedObjectContext release], managedObjectContext = nil;
     
     [super dealloc];

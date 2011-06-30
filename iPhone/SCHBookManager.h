@@ -17,6 +17,7 @@
 @class SCHTextFlowParagraphSource;
 @class SCHAppBook;
 @class SCHSmartZoomBlockSource;
+@class SCHBookIdentifier;
 
 @interface SCHBookManager : NSObject 
 {
@@ -27,24 +28,24 @@
 
 + (SCHBookManager *)sharedBookManager;
 
-- (SCHAppBook *)bookWithIdentifier:(NSString *)isbn inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
-- (NSArray *)allBooksAsISBNsInManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
+- (SCHAppBook *)bookWithIdentifier:(SCHBookIdentifier *)identifier inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
+- (NSArray *)allBookIdentifiersInManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
 
-- (SCHXPSProvider *)checkOutXPSProviderForBookIdentifier:(NSString *)isbn inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
-- (void)checkInXPSProviderForBookIdentifier:(NSString *)isbn;
+- (SCHXPSProvider *)checkOutXPSProviderForBookIdentifier:(SCHBookIdentifier *)identifier inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
+- (void)checkInXPSProviderForBookIdentifier:(SCHBookIdentifier *)identifier;
 
 // like checkOutXPSProviderForBookIdentifier:inManagedObjectContext: except synchronously
 // jumps to the main thread to do core data access
-- (SCHXPSProvider *)threadSafeCheckOutXPSProviderForBookIdentifier:(NSString *)isbn;
+- (SCHXPSProvider *)threadSafeCheckOutXPSProviderForBookIdentifier:(SCHBookIdentifier *)identifier;
 
-- (SCHFlowEucBook *)checkOutEucBookForBookIdentifier:(NSString *)isbn inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
-- (void)checkInEucBookForBookIdentifier:(NSString *)isbn;
+- (SCHFlowEucBook *)checkOutEucBookForBookIdentifier:(SCHBookIdentifier *)identifier inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
+- (void)checkInEucBookForBookIdentifier:(SCHBookIdentifier *)identifier;
 
-- (SCHTextFlow *)checkOutTextFlowForBookIdentifier:(NSString *)isbn inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
-- (void)checkInTextFlowForBookIdentifier:(NSString *)isbn;
+- (SCHTextFlow *)checkOutTextFlowForBookIdentifier:(SCHBookIdentifier *)identifier inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
+- (void)checkInTextFlowForBookIdentifier:(SCHBookIdentifier *)identifier;
 
-- (SCHTextFlowParagraphSource *)checkOutParagraphSourceForBookIdentifier:(NSString *)isbn inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
-- (void)checkInParagraphSourceForBookIdentifier:(NSString *)isbn;
+- (SCHTextFlowParagraphSource *)checkOutParagraphSourceForBookIdentifier:(SCHBookIdentifier *)identifier inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
+- (void)checkInParagraphSourceForBookIdentifier:(SCHBookIdentifier *)identifier;
 
 + (BOOL)checkAppCompatibilityForFeature:(NSString *)key version:(float)version;
 + (BOOL)appHasFeature:(NSString *)key;

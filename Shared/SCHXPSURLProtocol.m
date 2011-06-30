@@ -8,6 +8,7 @@
 
 #import "SCHXPSURLProtocol.h"
 #import "SCHBookManager.h"
+#import "SCHBookIdentifier.h"
 #import "SCHXPSProvider.h"
 
 @implementation SCHXPSURLProtocol
@@ -43,19 +44,20 @@
 	
 	/* retrieve the current request. */
     NSURLRequest *request = [self request];
-	NSString *encodedBookISBN = [[request URL] host];
+	NSString *encodedBookIdentifier = [[request URL] host];
 	
-	NSString *bookISBN = nil;
-	
-	if (encodedBookISBN && ![encodedBookISBN isEqualToString:@"undefined"]) {
-		CFStringRef bookISBNStringRef = CFURLCreateStringByReplacingPercentEscapesUsingEncoding(kCFAllocatorDefault, (CFStringRef)encodedBookISBN, CFSTR(""), kCFStringEncodingUTF8);		
-		bookISBN = [NSString stringWithString:(NSString *)bookISBNStringRef];
+	if (encodedBookIdentifier && ![encodedBookIdentifier isEqualToString:@"undefined"]) {
+		CFStringRef bookISBNStringRef = CFURLCreateStringByReplacingPercentEscapesUsingEncoding(kCFAllocatorDefault, (CFStringRef)encodedBookIdentifier, CFSTR(""), kCFStringEncodingUTF8);		
+		encodedBookIdentifier = [NSString stringWithString:(NSString *)bookISBNStringRef];
 		CFRelease(bookISBNStringRef);
 	}
 	
+    SCHBookIdentifier *bookIdentifier = [[[SCHBookIdentifier alloc] initWithEncodedString:encodedBookIdentifier] autorelease];
+    if (!bookIdentifier) {
+        return;
+    }
 	
-	
-	SCHXPSProvider *xpsProvider = [[SCHBookManager sharedBookManager] threadSafeCheckOutXPSProviderForBookIdentifier:bookISBN];
+	SCHXPSProvider *xpsProvider = [[SCHBookManager sharedBookManager] threadSafeCheckOutXPSProviderForBookIdentifier:bookIdentifier];
     
     if (!xpsProvider) {
 		return;
@@ -86,7 +88,7 @@
 	/* we can release our copy */
 	[response release];
 	
-	[[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:bookISBN];
+	[[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:bookIdentifier];
 	
 }
 

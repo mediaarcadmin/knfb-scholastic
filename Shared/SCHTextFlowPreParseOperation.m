@@ -97,7 +97,7 @@ static void pageFileXMLParsingStartElementHandler(void *ctx, const XML_Char *nam
 {
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
     
-    SCHXPSProvider *xpsProvider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.isbn
+    SCHXPSProvider *xpsProvider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.identifier
                                                                                     inManagedObjectContext:self.localManagedObjectContext];
     NSData *data = [xpsProvider dataForComponentAtPath:KNFBXPSTextFlowSectionsFile];
     
@@ -105,7 +105,7 @@ static void pageFileXMLParsingStartElementHandler(void *ctx, const XML_Char *nam
         NSLog(@"Could not pre-parse TextFlow because TextFlow file did not exist at path: %@.", KNFBXPSTextFlowSectionsFile);
 
         [self updateBookWithFailure];
-        [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.isbn];
+        [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.identifier];
         
         [pool drain];
         return;
@@ -133,7 +133,7 @@ static void pageFileXMLParsingStartElementHandler(void *ctx, const XML_Char *nam
         if (!data) {
             NSLog(@"Could not pre-parse TextFlow because TextFlow file did not exist with name: %@.", [pageRange fileName]);
             [self updateBookWithFailure];
-            [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.isbn];
+            [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.identifier];
             [pool drain];
             return;
         }
@@ -152,14 +152,14 @@ static void pageFileXMLParsingStartElementHandler(void *ctx, const XML_Char *nam
         [innerPool drain];
     }
 
-    [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.isbn];
+    [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.identifier];
 
     NSSortDescriptor *sortPageDescriptor = [[[NSSortDescriptor alloc] initWithKey:@"startPageIndex" ascending:YES] autorelease];
     NSArray *sortedRanges = [[pageRangesSet allObjects] sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortPageDescriptor]];
     
     NSLog(@"layout page equivalent count: %@", [NSNumber numberWithInteger:[[sortedRanges lastObject] endPageIndex]]);
 
-    [self withBook:self.isbn performAndSave:^(SCHAppBook *book) {
+    [self performWithBookAndSave:^(SCHAppBook *book) {
         [book setValue:[NSSet setWithSet:pageRangesSet] forKey:kSCHAppBookTextFlowPageRanges];
         [book setValue:[NSNumber numberWithInteger:[[sortedRanges lastObject] endPageIndex]] forKey:kSCHAppBookLayoutPageEquivalentCount];
     }];
@@ -173,16 +173,16 @@ static void pageFileXMLParsingStartElementHandler(void *ctx, const XML_Char *nam
 
 - (void)updateBookWithSuccess
 {
-    [self setProcessingState:SCHBookProcessingStateReadyForSmartZoomPreParse forBook:self.isbn];
-    [self setBook:self.isbn isProcessing:NO];
+    [self setProcessingState:SCHBookProcessingStateReadyForSmartZoomPreParse];
+    [self setIsProcessing:NO];
     self.finished = YES;
     self.executing = NO;
 }
 
 - (void)updateBookWithFailure
 {
-    [self setProcessingState:SCHBookProcessingStateError forBook:self.isbn];
-    [self setBook:self.isbn isProcessing:NO];
+    [self setProcessingState:SCHBookProcessingStateError];
+    [self setIsProcessing:NO];
     self.finished = YES;
     self.executing = NO;
 }

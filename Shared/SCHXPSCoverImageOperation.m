@@ -22,21 +22,21 @@
 #pragma mark - Book Operation methods
 - (void)beginOperation
 {
-	SCHXPSProvider *xpsProvider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.isbn
+	SCHXPSProvider *xpsProvider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.identifier
                                                                                     inManagedObjectContext:self.localManagedObjectContext];
 	NSData *imageData = [xpsProvider coverThumbData];
-	[[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.isbn];
+	[[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.identifier];
 	
     __block NSString *coverImagePath;
-    [self withBook:self.isbn perform:^(SCHAppBook *book) {
+    [self performWithBook:^(SCHAppBook *book) {
         coverImagePath = [[book coverImagePath] retain];
     }];
     
 	[imageData writeToFile:coverImagePath atomically:YES];
     [coverImagePath release];
 	
-    [self setProcessingState:SCHBookProcessingStateReadyForLicenseAcquisition forBook:self.isbn];
-    [self setBook:self.isbn isProcessing:NO];
+    [self setProcessingState:SCHBookProcessingStateReadyForLicenseAcquisition];
+    [self setIsProcessing:NO];
     
     [self endOperation];
 }

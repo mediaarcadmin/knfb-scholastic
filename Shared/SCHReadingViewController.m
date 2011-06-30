@@ -11,6 +11,7 @@
 #import "SCHAppBook.h"
 #import "SCHAppProfile.h"
 #import "SCHBookManager.h"
+#import "SCHBookIdentifier.h"
 #import "SCHFlowView.h"
 #import "SCHLayoutView.h"
 #import "SCHXPSProvider.h"
@@ -44,7 +45,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 @interface SCHReadingViewController ()
 
-@property (nonatomic, copy) NSString *isbn;
+@property (nonatomic, retain) SCHBookIdentifier *bookIdentifier;
 
 @property (nonatomic, retain) SCHProfileItem *profile;
 
@@ -127,7 +128,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 #pragma mark Object Synthesis
 
 @synthesize managedObjectContext;
-@synthesize isbn;
+@synthesize bookIdentifier;
 @synthesize profile;
 @synthesize readingView;
 @synthesize youngerMode;
@@ -189,7 +190,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [self releaseViewObjects];
     
     [managedObjectContext release], managedObjectContext = nil;
-    [isbn release], isbn = nil;
+    [bookIdentifier release], bookIdentifier = nil;
     [popover release], popover = nil;
     [profile release], profile = nil;
     [audioBookPlayer release], audioBookPlayer = nil;
@@ -232,7 +233,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [youngerToolbarToggleView release], youngerToolbarToggleView = nil;
     
     if (xpsProvider) {
-        [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:isbn];
+        [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.bookIdentifier];
     }
     
     [xpsProvider release], xpsProvider = nil;
@@ -246,22 +247,23 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 }
 
 #pragma mark - Object Initialiser
+
 - (id)initWithNibName:(NSString *)nibNameOrNil
                bundle:(NSBundle *)nibBundleOrNil
-                 isbn:(NSString *)aIsbn
+       bookIdentifier:(SCHBookIdentifier *)aIdentifier 
               profile:(SCHProfileItem *)aProfile
  managedObjectContext:(NSManagedObjectContext *)moc
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
-        isbn = [aIsbn copy];
+        bookIdentifier = [aIdentifier retain];
         profile = [aProfile retain];
         currentlyRotating = NO;
         currentlyScrubbing = NO;
         self.managedObjectContext = moc;
         
-        SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:isbn inManagedObjectContext:self.managedObjectContext];        
+        SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:aIdentifier inManagedObjectContext:self.managedObjectContext];        
         NSArray *contentItems = [book.ContentMetadataItem valueForKey:@"UserContentItem"];
         
         if ([contentItems count]) {
@@ -298,9 +300,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [super viewDidLoad];
 	
 	self.toolbarsVisible = YES;
-    self.xpsProvider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.isbn inManagedObjectContext:self.managedObjectContext];
+    self.xpsProvider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.bookIdentifier inManagedObjectContext:self.managedObjectContext];
 	
-    SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn inManagedObjectContext:self.managedObjectContext];
+    SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.bookIdentifier inManagedObjectContext:self.managedObjectContext];
     
     self.wantsFullScreenLayout = YES;
     self.navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
@@ -437,7 +439,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [self.notesButton addSubview:self.notesCountView];
     
     // update the note count
-    NSInteger noteCount = [[[self.profile annotationsForBook:self.isbn] notes] count];
+    NSInteger noteCount = [[[self.profile annotationsForBook:self.bookIdentifier.isbn] notes] count];
     self.notesCountView.noteCount = noteCount;
 
     
@@ -583,7 +585,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (void)didEnterBackgroundNotification:(NSNotification *)notification
 {
     // store the last page
-    SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn inManagedObjectContext:self.managedObjectContext];
+    SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.bookIdentifier inManagedObjectContext:self.managedObjectContext];
     
     [self.readingView dismissFollowAlongHighlighter];  
     self.audioBookPlayer = nil;
@@ -596,7 +598,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     // relaunch the book
     NSString *categoryType = book.categoryType;
     if (categoryType != nil && [categoryType isEqualToString:kSCHAppBookCategoryPictureBook] == NO) {
-        self.profile.AppProfile.AutomaticallyLaunchBook = self.isbn;
+        self.profile.AppProfile.AutomaticallyLaunchBook = [self.bookIdentifier encodeAsString];
     }
     
     NSError *error = nil;
@@ -610,7 +612,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (void)saveLastPageLocation
 {
-    SCHBookAnnotations *annotations = [self.profile annotationsForBook:self.isbn];
+    SCHBookAnnotations *annotations = [self.profile annotationsForBook:self.bookIdentifier.isbn];
     
     if (annotations != nil) {
         SCHBookPoint *currentBookPoint = [self.readingView currentBookPoint];
@@ -622,7 +624,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (void)jumpToLastPageLocation
 {
-    SCHBookAnnotations *annotations = [self.profile annotationsForBook:self.isbn];
+    SCHBookAnnotations *annotations = [self.profile annotationsForBook:self.bookIdentifier.isbn];
     SCHBookPoint *lastPoint = [[[SCHBookPoint alloc] init] autorelease];
     
     NSNumber *lastPageLocation = [[annotations lastPage] LastPageLocation];
@@ -657,7 +659,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (IBAction)popViewController:(id)sender
 {
-    SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn inManagedObjectContext:self.managedObjectContext];
+    SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.bookIdentifier inManagedObjectContext:self.managedObjectContext];
     
     [self saveLastPageLocation];
 
@@ -690,7 +692,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [self.readingView currentLayoutPage:&layoutPage pageWordOffset:&pageWordOffset];
     
     if (self.audioBookPlayer == nil) {            
-        SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn inManagedObjectContext:self.managedObjectContext];
+        SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.bookIdentifier inManagedObjectContext:self.managedObjectContext];
         NSArray *audioBookReferences = [book valueForKey:kSCHAppBookAudioBookReferences];
         NSError *error = nil;
         
@@ -748,7 +750,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     }
         
     SCHReadingInteractionsListController *interactionsController = [[SCHReadingInteractionsListController alloc] initWithNibName:nil bundle:nil];
-    interactionsController.isbn = self.isbn;
+    interactionsController.bookIdentifier = self.bookIdentifier;
     interactionsController.bookStoryInteractions = self.bookStoryInteractions;
     interactionsController.profile = self.profile;
     interactionsController.delegate = self;
@@ -794,7 +796,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     }
     
     SCHReadingNotesListController *notesController = [[SCHReadingNotesListController alloc] initWithNibName:nil bundle:nil];
-    notesController.isbn = self.isbn;
+    notesController.isbn = self.bookIdentifier.isbn;
     notesController.profile = self.profile;
     notesController.delegate = self;
     
@@ -1058,7 +1060,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     NSAssert([self.readingView isKindOfClass:[SCHLayoutView class]], @"can't have story interactions with flow view");
     [(SCHLayoutView *)self.readingView zoomOutToCurrentPageWithCompletionHandler:^{
         self.storyInteractionController = [SCHStoryInteractionController storyInteractionControllerForStoryInteraction:storyInteraction];
-        self.storyInteractionController.isbn = self.isbn;
+        self.storyInteractionController.bookIdentifier= self.bookIdentifier;
         self.storyInteractionController.delegate = self;
         self.storyInteractionController.xpsProvider = self.xpsProvider;
         [self.storyInteractionController presentInHostView:self.navigationController.view withInterfaceOrientation:self.interfaceOrientation];
@@ -1126,7 +1128,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     
     switch (newLayoutType) {
         case SCHReadingViewLayoutTypeFlow: {
-            SCHFlowView *flowView = [[SCHFlowView alloc] initWithFrame:self.view.bounds isbn:self.isbn delegate:self];
+            SCHFlowView *flowView = [[SCHFlowView alloc] initWithFrame:self.view.bounds bookIdentifier:self.bookIdentifier delegate:self];
             self.readingView = flowView;
             [self setDictionarySelectionMode];
 
@@ -1144,7 +1146,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         }
         case SCHReadingViewLayoutTypeFixed: 
         default: {
-            SCHLayoutView *layoutView = [[SCHLayoutView alloc] initWithFrame:self.view.bounds isbn:self.isbn delegate:self];
+            SCHLayoutView *layoutView = [[SCHLayoutView alloc] initWithFrame:self.view.bounds bookIdentifier:self.bookIdentifier delegate:self];
             self.readingView = layoutView;
             
             [self setDictionarySelectionMode];
@@ -1304,11 +1306,11 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (void)addHighlightBetweenStartPage:(NSUInteger)startPage startWord:(NSUInteger)startWord endPage:(NSUInteger)endPage endWord:(NSUInteger)endWord;
 {
-    SCHBookAnnotations *annotations = [self.profile annotationsForBook:self.isbn];
+    SCHBookAnnotations *annotations = [self.profile annotationsForBook:self.bookIdentifier.isbn];
     
     if (annotations != nil) {
         SCHHighlight *newHighlight = [annotations createHighlightBetweenStartPage:startPage startWord:startWord endPage:endPage endWord:endWord color:[self highlightColor]];
-        SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn inManagedObjectContext:self.managedObjectContext];
+        SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.bookIdentifier inManagedObjectContext:self.managedObjectContext];
         newHighlight.Version = [NSNumber numberWithInteger:[book.Version integerValue]];
     }
 }
@@ -1316,8 +1318,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (void)deleteHighlightBetweenStartPage:(NSUInteger)startPage startWord:(NSUInteger)startWord endPage:(NSUInteger)endPage endWord:(NSUInteger)endWord;
 {
     NSLog(@"Delete highlight");
-    SCHBookAnnotations *annotations = [self.profile annotationsForBook:self.isbn];
-    
+    SCHBookAnnotations *annotations = [self.profile annotationsForBook:self.bookIdentifier.isbn];
     
     for (int page = startPage; page <= endPage; page++) {
         for (SCHHighlight *highlight in [annotations highlightsForPage:page]) {
@@ -1333,7 +1334,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (NSArray *)highlightsForLayoutPage:(NSUInteger)page
 {
-    SCHBookAnnotations *annotations = [self.profile annotationsForBook:self.isbn];
+    SCHBookAnnotations *annotations = [self.profile annotationsForBook:self.bookIdentifier.isbn];
     
     return [annotations highlightsForPage:page];    
 }
@@ -1807,8 +1808,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (void)readingNotesViewCreatingNewNote:(SCHReadingNotesListController *)readingNotesView
 {
     NSLog(@"Requesting a new note be created!");
-    SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn inManagedObjectContext:self.managedObjectContext];
-    SCHBookAnnotations *annos = [self.profile annotationsForBook:self.isbn];
+    SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.bookIdentifier inManagedObjectContext:self.managedObjectContext];
+    SCHBookAnnotations *annos = [self.profile annotationsForBook:self.bookIdentifier.isbn];
     SCHNote *newNote = [annos createEmptyNote];
     
     newNote.Version = [NSNumber numberWithInteger:[book.Version integerValue]];
@@ -1851,11 +1852,11 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (void)readingNotesView:(SCHReadingNotesListController *)readingNotesView didDeleteNote:(SCHNote *)note
 {
     NSLog(@"Deleting note...");
-    SCHBookAnnotations *bookAnnos = [self.profile annotationsForBook:self.isbn];
+    SCHBookAnnotations *bookAnnos = [self.profile annotationsForBook:self.bookIdentifier.isbn];
     [bookAnnos deleteNote:note];
     
     // update the note count
-    NSInteger noteCount = [[[self.profile annotationsForBook:self.isbn] notes] count];
+    NSInteger noteCount = [[[self.profile annotationsForBook:self.bookIdentifier.isbn] notes] count];
     self.notesCountView.noteCount = noteCount;
 
 }
@@ -1883,20 +1884,20 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 {
     // FIXME: save note
     NSLog(@"Saving note...");
-    SCHBookAnnotations *bookAnnos = [self.profile annotationsForBook:self.isbn];
+    SCHBookAnnotations *bookAnnos = [self.profile annotationsForBook:self.bookIdentifier.isbn];
     [bookAnnos addNote:note];
     
     [self setToolbarVisibility:YES animated:YES];
     
     // update the note count
-    NSInteger noteCount = [[[self.profile annotationsForBook:self.isbn] notes] count];
+    NSInteger noteCount = [[[self.profile annotationsForBook:self.bookIdentifier.isbn] notes] count];
     self.notesCountView.noteCount = noteCount;
     
 }
 
 - (void)notesViewCancelled:(SCHReadingNoteView *)notesView
 {
-    SCHBookAnnotations *bookAnnos = [self.profile annotationsForBook:self.isbn];
+    SCHBookAnnotations *bookAnnos = [self.profile annotationsForBook:self.bookIdentifier.isbn];
 
     // if we created the note but it's been cancelled, delete the note
     if (notesView.newNote) {
@@ -1906,7 +1907,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [self setToolbarVisibility:YES animated:YES];
     
     // update the note count
-    NSInteger noteCount = [[[self.profile annotationsForBook:self.isbn] notes] count];
+    NSInteger noteCount = [[[self.profile annotationsForBook:self.bookIdentifier.isbn] notes] count];
     self.notesCountView.noteCount = noteCount;
     
     

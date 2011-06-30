@@ -9,13 +9,14 @@
 #import "KNFBXPSProvider.h"
 
 @class NSManagedObjectContext;
+@class SCHBookIdentifier;
 
 @interface SCHXPSProvider : KNFBXPSProvider {
-    NSString *bookISBN;
+    SCHBookIdentifier *bookIdentifier;
 	id<KNFBDrmBookDecrypter> drmDecrypter;
 }
 
-- (id)initWithISBN:(NSString *)aBookISBN xpsPath:(NSString *)xpsPath;
+- (id)initWithBookIdentifier:(SCHBookIdentifier *)bookIdentifier xpsPath:(NSString *)xpsPath;
 
 // Scholastic convenience methods
 

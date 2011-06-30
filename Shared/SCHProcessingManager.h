@@ -11,6 +11,7 @@
 
 @class SCHAsyncBookCoverImageView;
 @class SCHAppBook;
+@class SCHBookIdentifier;
 @class NSManagedObjectContext;
 
 typedef enum {
@@ -42,14 +43,14 @@ static NSString * const kSCHProcessingManagerConnectionBusy = @"SCHProcessingMan
 + (SCHProcessingManager *) sharedProcessingManager;
 
 // user selection method
-- (void) userSelectedBookWithISBN: (NSString *) isbn;
+- (void) userSelectedBookWithIdentifier: (SCHBookIdentifier *) identifier;
 
 // thumbnail requests
 - (BOOL) requestThumbImageForBookCover:(SCHAsyncBookCoverImageView *)bookCover size:(CGSize)size book:(SCHAppBook *)book;
 
 // methods for processing
-- (BOOL) ISBNisProcessing: (NSString *) isbn;
-- (void) setProcessing: (BOOL) processing forISBN: (NSString *) isbn;
+- (BOOL) identifierIsProcessing: (SCHBookIdentifier *) identifier;
+- (void) setProcessing: (BOOL) processing forIdentifier: (SCHBookIdentifier *) identifier;
 
 // stop all the processing
 - (void)cancelAllOperations;

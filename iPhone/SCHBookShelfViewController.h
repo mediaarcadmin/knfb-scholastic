@@ -18,6 +18,7 @@
 @class KNFBTimeOrderedCache;
 @class SCHProfileItem;
 @class SCHReadingViewController;
+@class SCHBookIdentifier;
 
 @interface SCHBookShelfViewController : UIViewController <MRGridViewDelegate, MRGridViewDataSource, UITableViewDelegate, UITableViewDataSource> 
 {
@@ -40,6 +41,6 @@
 
 @property (nonatomic) SCHBookSortType sortType;
 
-- (SCHReadingViewController *)openBook:(NSString *)isbn;
+- (SCHReadingViewController *)openBook:(SCHBookIdentifier *)identifier;
 
 @end

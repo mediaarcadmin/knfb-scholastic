@@ -11,6 +11,7 @@
 #import "SCHBookOperation.h"
 #import "SCHAppBook.h"
 #import "SCHBookManager.h"
+#import "SCHBookIdentifier.h"
 
 #pragma mark - Class Extension
 
@@ -20,7 +21,7 @@
 
 @implementation SCHBookOperation
 
-@synthesize isbn;
+@synthesize identifier;
 @synthesize executing;
 @synthesize finished;
 
@@ -28,44 +29,42 @@
 
 - (void)dealloc 
 {
-	[isbn release], isbn = nil;
+	[identifier release], identifier = nil;
 	
 	[super dealloc];
 }
 
 #pragma mark - common operation properties
 
-- (void)setIsbn:(NSString *) newIsbn
+- (void)setIdentifier:(SCHBookIdentifier *)newIdentifier
 {
 	if ([self isExecuting] || [self isFinished]) {
 		return;
 	}
 	
-    [isbn release];
-    isbn = [newIsbn copy];
+    [identifier release];
+    identifier = [newIdentifier retain];
 	
-    if (isbn) {        
-        [self withBook:isbn perform:^(SCHAppBook *book) {
-            [book setProcessing:YES];
-        }];
+    if (identifier) { 
+        [self setIsProcessing:YES];
     }
 }
 
-- (void)setIsbnWithoutUpdatingProcessingStatus: (NSString *) newIsbn
+- (void)setIdentifierWithoutUpdatingProcessingStatus: (SCHBookIdentifier *) newIdentifier
 {
 	if ([self isExecuting] || [self isFinished]) {
 		return;
 	}
-	
-    [isbn release];
-    isbn = [newIsbn copy];
+
+	[identifier release];
+    identifier = [newIdentifier retain];
 }
 
 #pragma mark - Operation Methods
 
 - (void)start
 {
-	if (self.isbn && ![self isCancelled]) {
+	if (self.identifier && ![self isCancelled]) {
 		[self beginOperation];
 	}
 }
@@ -96,7 +95,7 @@
     NSLog(@"SCHBookOperation: using default operation. Please override correctly!");
 
     [self endOperation];
-    [self setBook:self.isbn isProcessing:NO];
+    [self setIsProcessing:NO];
 }
 
 - (void)endOperation
@@ -113,14 +112,14 @@
 
 #pragma mark - thread safe access to book object
 
-- (void)withBook:(NSString *)aIsbn perform:(void (^)(SCHAppBook *))block
+- (void)performWithBook:(void (^)(SCHAppBook *))block
 {
-    if (!aIsbn || !block) {
+    if (!self.identifier || !block) {
         return;
     }
     
     dispatch_block_t accessBlock = ^{
-        SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:aIsbn inManagedObjectContext:self.mainThreadManagedObjectContext];
+        SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.identifier inManagedObjectContext:self.mainThreadManagedObjectContext];
         block(book);
     };
     
@@ -131,15 +130,15 @@
     }
 }
 
-- (void)withBook:(NSString *)aIsbn performAndSave:(void (^)(SCHAppBook *))block
+- (void)performWithBookAndSave:(void (^)(SCHAppBook *))block
 {
-    if (!aIsbn) {
+    if (!self.identifier) {
         return;
     }
     
     dispatch_block_t accessBlock = ^{
         if (block) {
-            SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:aIsbn inManagedObjectContext:self.mainThreadManagedObjectContext];
+            SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.identifier inManagedObjectContext:self.mainThreadManagedObjectContext];
             block(book);
         }
         NSError *error = nil;
@@ -155,30 +154,30 @@
     }
 }
 
-- (void)setProcessingState:(SCHBookCurrentProcessingState)state forBook:(NSString *)aIsbn
+- (void)setProcessingState:(SCHBookCurrentProcessingState)state
 {
-    [self withBook:aIsbn performAndSave:^(SCHAppBook *book) {
+    [self performWithBookAndSave:^(SCHAppBook *book) {
         book.State = [NSNumber numberWithInt: (int) state];
 
         NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
-                                  aIsbn, @"isbn",
+                                  self.identifier, @"bookIdentifier",
                                   nil];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"SCHBookStateUpdate" object:nil userInfo:userInfo];
     }];
 }
 
-- (SCHBookCurrentProcessingState)processingStateForBook:(NSString *)aIsbn
+- (SCHBookCurrentProcessingState)processingState
 {
     __block SCHBookCurrentProcessingState state;
-    [self withBook:aIsbn perform:^(SCHAppBook *book) {
+    [self performWithBook:^(SCHAppBook *book) {
         state = [book processingState];
     }];
     return state;
 }
 
-- (void)setBook:(NSString *)aIsbn isProcessing:(BOOL)isProcessing
+- (void)setIsProcessing:(BOOL)isProcessing
 {
-    [self withBook:aIsbn performAndSave:^(SCHAppBook *book) {
+    [self performWithBookAndSave:^(SCHAppBook *book) {
         [book setProcessing:isProcessing];
     }];
 }

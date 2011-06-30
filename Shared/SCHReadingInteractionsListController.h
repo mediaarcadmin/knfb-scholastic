@@ -11,6 +11,7 @@
 @class SCHCustomToolbar, SCHProfileItem, SCHNote;
 @class SCHReadingView;
 @class SCHBookStoryInteractions;
+@class SCHBookIdentifier;
 
 @protocol SCHReadingInteractionsListControllerDelegate;
 
@@ -23,7 +24,7 @@
 
 @property (nonatomic, retain) SCHProfileItem *profile;
 @property (nonatomic, retain) SCHBookStoryInteractions *bookStoryInteractions;
-@property (nonatomic, retain) NSString *isbn;
+@property (nonatomic, retain) SCHBookIdentifier *bookIdentifier;
 @property (nonatomic, assign) id <SCHReadingInteractionsListControllerDelegate> delegate;
 @property (nonatomic, assign) SCHReadingView *readingView;
 

@@ -10,6 +10,8 @@
 #import "SCHContentMetadataItem.h"
 #import "SCHProcessingManager.h"
 
+@class SCHBookIdentifier;
+
 static NSString * const kSCHAppBookProcessingState = @"SCHBookProcessingState";
 
 static NSString * const kSCHAppBookTTSPermitted = @"TTSPermitted";
@@ -55,7 +57,8 @@ static NSString * const kSCHAppBookCategoryNonFictionAdvanced = @"Non-Fiction Ad
 static NSString * const kSCHAppBook = @"SCHAppBook";
 
 static NSString * const kSCHAppBookFetchWithContentIdentifier = @"fetchAppBookWithContentIdentifier";
-static NSString * const kSCHAppBookCONTENT_IDENTIFIER = @"CONTENT_IDENTIFIER";
+extern NSString * const kSCHAppBookCONTENT_IDENTIFIER;
+extern NSString * const kSCHAppBookDRM_QUALIFIER;
 
 static NSString * const kSCHAppBookEucalyptusCacheDir = @"libEucalyptusCache";
 
@@ -116,6 +119,8 @@ static NSString * const kSCHAppBookEucalyptusCacheDir = @"libEucalyptusCache";
 - (BOOL)haveURLs;
 - (BOOL)canOpenBook;
 - (CGSize)bookCoverImageSize;
+
+- (SCHBookIdentifier *)bookIdentifier;
 
 @end
 

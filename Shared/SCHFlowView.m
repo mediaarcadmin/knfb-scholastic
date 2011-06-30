@@ -66,12 +66,12 @@
     
     if(paragraphSource) {
         [paragraphSource release], paragraphSource = nil;
-        [[SCHBookManager sharedBookManager] checkInParagraphSourceForBookIdentifier:self.isbn];   
+        [[SCHBookManager sharedBookManager] checkInParagraphSourceForBookIdentifier:self.identifier];   
     }
     
     if(eucBook) {
         [eucBook release], eucBook = nil;
-        [[SCHBookManager sharedBookManager] checkInEucBookForBookIdentifier:self.isbn];  
+        [[SCHBookManager sharedBookManager] checkInEucBookForBookIdentifier:self.identifier];  
     }
     
     [currentPageTexture release], currentPageTexture = nil;
@@ -79,16 +79,16 @@
     [super dealloc];
 }
 
-- (id)initWithFrame:(CGRect)frame isbn:(id)isbn delegate:(id<SCHReadingViewDelegate>)delegate
+- (id)initWithFrame:(CGRect)frame bookIdentifier:(SCHBookIdentifier *)bookIdentifier delegate:(id<SCHReadingViewDelegate>)delegate
 {
-    self = [super initWithFrame:frame isbn:isbn delegate:delegate];
+    self = [super initWithFrame:frame bookIdentifier:bookIdentifier delegate:delegate];
     if (self) {        
         self.opaque = YES;
         
         NSManagedObjectContext *moc = [(id)[[UIApplication sharedApplication] delegate] managedObjectContext];
         SCHBookManager *bookManager = [SCHBookManager sharedBookManager];
-        eucBook = [[bookManager checkOutEucBookForBookIdentifier:self.isbn inManagedObjectContext:moc] retain];
-        paragraphSource = [[bookManager checkOutParagraphSourceForBookIdentifier:self.isbn inManagedObjectContext:moc] retain];
+        eucBook = [[bookManager checkOutEucBookForBookIdentifier:self.identifier inManagedObjectContext:moc] retain];
+        paragraphSource = [[bookManager checkOutParagraphSourceForBookIdentifier:self.identifier inManagedObjectContext:moc] retain];
     }
     return self;
 }

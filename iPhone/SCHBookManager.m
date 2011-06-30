@@ -14,6 +14,7 @@
 #import "SCHXPSProvider.h"
 #import "SCHFlowEucBook.h"
 #import "SCHTextFlowParagraphSource.h"
+#import "SCHBookIdentifier.h"
 
 @interface SCHBookManager ()
 
@@ -123,9 +124,9 @@ static NSDictionary *featureCompatibilityDictionary = nil;
 
 #pragma mark - Book Info vending
 
-- (SCHAppBook *)bookWithIdentifier:(NSString *)isbn inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext
+- (SCHAppBook *)bookWithIdentifier:(SCHBookIdentifier *)identifier inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext
 {
-    NSAssert(isbn != nil, @"nil ISBN at bookWithIdentifier");
+    NSAssert(identifier != nil, @"nil identifier at bookWithIdentifier");
     NSAssert(managedObjectContext != nil, @"nil managedObjectContext at bookWithIdentifier");
     
     SCHAppBook *book = nil;
@@ -133,7 +134,7 @@ static NSDictionary *featureCompatibilityDictionary = nil;
     NSManagedObjectID *managedObjectID = nil;
     
     @synchronized(self.isbnManagedObjectCache) {
-        managedObjectID = [self.isbnManagedObjectCache objectForKey:isbn];
+        managedObjectID = [self.isbnManagedObjectCache objectForKey:identifier];
     }
     if (managedObjectID != nil) {
         book = (SCHAppBook *) [managedObjectContext existingObjectWithID:managedObjectID error:&error];
@@ -145,9 +146,10 @@ static NSDictionary *featureCompatibilityDictionary = nil;
     
     NSFetchRequest *fetchRequest = [self.persistentStoreCoordinator.managedObjectModel 
                                     fetchRequestFromTemplateWithName:kSCHAppBookFetchWithContentIdentifier 
-                                    substitutionVariables:[NSDictionary 
-                                                           dictionaryWithObject:isbn 
-                                                           forKey:kSCHAppBookCONTENT_IDENTIFIER]];
+                                    substitutionVariables:[NSDictionary dictionaryWithObjectsAndKeys:
+                                                           identifier.isbn, kSCHAppBookCONTENT_IDENTIFIER,
+                                                           identifier.DRMQualifier, kSCHAppBookDRM_QUALIFIER,
+                                                           nil]];
     [fetchRequest setFetchLimit:1];
     NSArray *bookArray = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
     if (!bookArray) {
@@ -156,7 +158,7 @@ static NSDictionary *featureCompatibilityDictionary = nil;
         book = (SCHAppBook *)[bookArray objectAtIndex:0];
         if (![book.objectID isTemporaryID]) {
             @synchronized(self.isbnManagedObjectCache) {
-                [self.isbnManagedObjectCache setObject:book.objectID forKey:isbn];
+                [self.isbnManagedObjectCache setObject:book.objectID forKey:identifier];
             }
         }
     }
@@ -164,7 +166,7 @@ static NSDictionary *featureCompatibilityDictionary = nil;
     return book;
 }
 
-- (NSArray *)allBooksAsISBNsInManagedObjectContext:(NSManagedObjectContext *)managedObjectContext
+- (NSArray *)allBookIdentifiersInManagedObjectContext:(NSManagedObjectContext *)managedObjectContext
 {
     NSMutableArray *ret = nil;
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
@@ -185,7 +187,10 @@ static NSDictionary *featureCompatibilityDictionary = nil;
             
             // defensive : only add the book if it actually has an ISBN
             if (contentMetadataItem.ContentIdentifier) {
-                [ret addObject:contentMetadataItem.ContentIdentifier];
+                SCHBookIdentifier *identifier = [[SCHBookIdentifier alloc] initWithISBN:contentMetadataItem.ContentIdentifier
+                                                                           DRMQualifier:contentMetadataItem.DRMQualifier];
+                [ret addObject:identifier];
+                [identifier release];
             }
         }
     }
@@ -199,27 +204,27 @@ static NSDictionary *featureCompatibilityDictionary = nil;
 static int checkoutCountXPS = 0;
 static int allocCountXPS = 0;
 
-- (SCHXPSProvider *)checkOutXPSProviderForBookIdentifier:(NSString *)isbn inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext
+- (SCHXPSProvider *)checkOutXPSProviderForBookIdentifier:(SCHBookIdentifier *)identifier inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext
 {
 	SCHXPSProvider *ret = nil;
 	
     checkoutCountXPS++;
     
-	//NSLog(@"Checking out XPS for book: %@, count is %d", isbn, checkoutCountXPS);
+	//NSLog(@"Checking out XPS for book: %@, count is %d", identifier, checkoutCountXPS);
 	
 	[self.persistentStoreCoordinator lock];
 	
     NSMutableDictionary *myCachedXPSProviders = self.cachedXPSProviders;
     @synchronized(myCachedXPSProviders) {
-        SCHXPSProvider *previouslyCachedXPSProvider = [myCachedXPSProviders objectForKey:isbn];
+        SCHXPSProvider *previouslyCachedXPSProvider = [myCachedXPSProviders objectForKey:identifier];
         if(previouslyCachedXPSProvider) {
-            //NSLog(@"Returning cached XPSProvider for book with ISBN %@", isbn);
-            [self.cachedXPSProviderCheckoutCounts addObject:isbn];
+            //NSLog(@"Returning cached XPSProvider for book with identifier %@", identifier);
+            [self.cachedXPSProviderCheckoutCounts addObject:identifier];
             ret = previouslyCachedXPSProvider;
         } else {
             allocCountXPS++;
-            SCHAppBook *book = [self bookWithIdentifier:isbn inManagedObjectContext:managedObjectContext];
-			SCHXPSProvider *xpsProvider = [[SCHXPSProvider alloc] initWithISBN:isbn xpsPath:[book xpsPath]];
+            SCHAppBook *book = [self bookWithIdentifier:identifier inManagedObjectContext:managedObjectContext];
+			SCHXPSProvider *xpsProvider = [[SCHXPSProvider alloc] initWithBookIdentifier:identifier xpsPath:[book xpsPath]];
 			if(xpsProvider) {
 				NSCountedSet *myCachedXPSProviderCheckoutCounts = self.cachedXPSProviderCheckoutCounts;
 				if(!myCachedXPSProviderCheckoutCounts) {
@@ -227,8 +232,8 @@ static int allocCountXPS = 0;
 					self.cachedXPSProviderCheckoutCounts = myCachedXPSProviderCheckoutCounts;
 				}
 				
-				[myCachedXPSProviders setObject:xpsProvider forKey:isbn];
-				[myCachedXPSProviderCheckoutCounts addObject:isbn];
+				[myCachedXPSProviders setObject:xpsProvider forKey:identifier];
+				[myCachedXPSProviderCheckoutCounts addObject:identifier];
 				ret = xpsProvider;
 				[xpsProvider release];
 			}
@@ -237,16 +242,16 @@ static int allocCountXPS = 0;
     
 	[self.persistentStoreCoordinator unlock];
 	
-    //NSLog(@"[%d] checkOutXPSProviderForBookWithID %@", [self.cachedXPSProviderCheckoutCounts countForObject:isbn], isbn);
+    //NSLog(@"[%d] checkOutXPSProviderForBookWithID %@", [self.cachedXPSProviderCheckoutCounts countForObject:identifier], identifier);
 
     return(ret);	
 }
 
-- (SCHXPSProvider *)threadSafeCheckOutXPSProviderForBookIdentifier:(NSString *)isbn
+- (SCHXPSProvider *)threadSafeCheckOutXPSProviderForBookIdentifier:(SCHBookIdentifier *)identifier
 {
     __block SCHXPSProvider *xpsProvider = nil;
     dispatch_block_t getBlock = ^{
-        xpsProvider = [[self checkOutXPSProviderForBookIdentifier:isbn inManagedObjectContext:self.mainThreadManagedObjectContext] retain];
+        xpsProvider = [[self checkOutXPSProviderForBookIdentifier:identifier inManagedObjectContext:self.mainThreadManagedObjectContext] retain];
     };
     if (dispatch_get_current_queue() == dispatch_get_main_queue()) {
         getBlock();
@@ -256,29 +261,29 @@ static int allocCountXPS = 0;
     return [xpsProvider autorelease];
 }
 
-- (void)checkInXPSProviderForBookIdentifier:(NSString *)isbn
+- (void)checkInXPSProviderForBookIdentifier:(SCHBookIdentifier *)identifier
 {
 
-    //NSLog(@"Checking in XPS for book: %@", isbn);
+    //NSLog(@"Checking in XPS for book: %@", identifier);
 	
 	NSMutableDictionary *myCachedXPSProviders = self.cachedXPSProviders;
     @synchronized(myCachedXPSProviders) {
         NSCountedSet *myCachedXPSProviderCheckoutCounts = self.cachedXPSProviderCheckoutCounts;
-        NSUInteger count = [myCachedXPSProviderCheckoutCounts countForObject:isbn];
+        NSUInteger count = [myCachedXPSProviderCheckoutCounts countForObject:identifier];
         if(count == 0) {
             NSLog(@"Warning! Unexpected checkin of non-checked-out XPSProvider");
         } else {
-            [myCachedXPSProviderCheckoutCounts removeObject:isbn];
+            [myCachedXPSProviderCheckoutCounts removeObject:identifier];
             if (count == 1) {
-                //NSLog(@"Releasing cached XPSProvider for book with isbn %@", isbn);
-                [myCachedXPSProviders removeObjectForKey:isbn];
+                //NSLog(@"Releasing cached XPSProvider for book with identifier %@", identifier);
+                [myCachedXPSProviders removeObjectForKey:identifier];
                 if(myCachedXPSProviderCheckoutCounts.count == 0) {
                     // May as well release the set.
                     self.cachedXPSProviderCheckoutCounts = nil;
                 }
             }
         }
-        //NSLog(@"[%d] checkInXPSProviderForBookWithPath %@", [self.cachedXPSProviderCheckoutCounts countForObject:isbn], isbn);
+        //NSLog(@"[%d] checkInXPSProviderForBookWithPath %@", [self.cachedXPSProviderCheckoutCounts countForObject:identifier], identifier);
 		
     }
 	
@@ -288,27 +293,27 @@ static int allocCountXPS = 0;
 
 static int checkoutCountEucBook = 0;
 
-- (SCHFlowEucBook *)checkOutEucBookForBookIdentifier:(NSString *)isbn inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext
+- (SCHFlowEucBook *)checkOutEucBookForBookIdentifier:(SCHBookIdentifier *)identifier inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext
 {
 	SCHFlowEucBook *ret = nil;
 	
     checkoutCountEucBook++;
     
-   // NSLog(@"Checking out EucBook for book: %@, count is %d", isbn, checkoutCountEucBook);
+   // NSLog(@"Checking out EucBook for book: %@, count is %d", identifier, checkoutCountEucBook);
 
-	//NSLog(@"Checking out EucBook for book: %@", isbn);
+	//NSLog(@"Checking out EucBook for book: %@", identifier);
 	
 	[self.persistentStoreCoordinator lock];
 	
     NSMutableDictionary *myCachedEucBooks = self.cachedEucBooks;
     @synchronized(myCachedEucBooks) {
-        SCHFlowEucBook *previouslyCachedEucBook = [myCachedEucBooks objectForKey:isbn];
+        SCHFlowEucBook *previouslyCachedEucBook = [myCachedEucBooks objectForKey:identifier];
         if(previouslyCachedEucBook) {
-            //NSLog(@"Returning cached EucBook for book with ISBN %@", isbn);
-            [self.cachedEucBookCheckoutCounts addObject:isbn];
+            //NSLog(@"Returning cached EucBook for book with identifier %@", identifier);
+            [self.cachedEucBookCheckoutCounts addObject:identifier];
             ret = previouslyCachedEucBook;
         } else {
-			SCHFlowEucBook *eucBook = [[SCHFlowEucBook alloc] initWithISBN:isbn managedObjectContext:managedObjectContext];
+			SCHFlowEucBook *eucBook = [[SCHFlowEucBook alloc] initWithBookIdentifier:identifier managedObjectContext:managedObjectContext];
 			if(eucBook) {
 				NSCountedSet *myCachedEucBookCheckoutCounts = self.cachedEucBookCheckoutCounts;
 				if(!myCachedEucBookCheckoutCounts) {
@@ -316,8 +321,8 @@ static int checkoutCountEucBook = 0;
 					self.cachedEucBookCheckoutCounts = myCachedEucBookCheckoutCounts;
 				}
 				
-				[myCachedEucBooks setObject:eucBook forKey:isbn];
-				[myCachedEucBookCheckoutCounts addObject:isbn];
+				[myCachedEucBooks setObject:eucBook forKey:identifier];
+				[myCachedEucBookCheckoutCounts addObject:identifier];
                 [eucBook autorelease];
 				ret = eucBook;
 			}
@@ -329,21 +334,21 @@ static int checkoutCountEucBook = 0;
     return(ret);
 }
 
-- (void)checkInEucBookForBookIdentifier:(NSString *)isbn
+- (void)checkInEucBookForBookIdentifier:(SCHBookIdentifier *)identifier
 {
     
-	//NSLog(@"Checking in EucBook for book: %@", isbn);
+	//NSLog(@"Checking in EucBook for book: %@", identifier);
 	
 	NSMutableDictionary *myCachedEucBooks = self.cachedEucBooks;
     @synchronized(myCachedEucBooks) {
         NSCountedSet *myCachedEucBookCheckoutCounts = self.cachedEucBookCheckoutCounts;
-        NSUInteger count = [myCachedEucBookCheckoutCounts countForObject:isbn];
+        NSUInteger count = [myCachedEucBookCheckoutCounts countForObject:identifier];
         if(count == 0) {
             NSLog(@"Warning! Unexpected checkin of non-checked-out EucBook");
         } else {
-            [myCachedEucBookCheckoutCounts removeObject:isbn];
+            [myCachedEucBookCheckoutCounts removeObject:identifier];
             if (count == 1) {
-                [myCachedEucBooks removeObjectForKey:isbn];
+                [myCachedEucBooks removeObjectForKey:identifier];
                 if(myCachedEucBookCheckoutCounts.count == 0) {
                     // May as well release the set.
                     self.cachedEucBookCheckoutCounts = nil;
@@ -359,7 +364,7 @@ static int checkoutCountEucBook = 0;
 
 static int checkoutCountTextFlow = 0;
 
-- (SCHTextFlow *)checkOutTextFlowForBookIdentifier:(NSString *)isbn inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
+- (SCHTextFlow *)checkOutTextFlowForBookIdentifier:(SCHBookIdentifier *)identifier inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
 {
     SCHTextFlow *ret = nil;
         
@@ -371,24 +376,24 @@ static int checkoutCountTextFlow = 0;
     
     NSMutableDictionary *myCachedTextFlows = self.cachedTextFlows;
     @synchronized(myCachedTextFlows) {
-        SCHTextFlow *previouslyCachedTextFlow = [myCachedTextFlows objectForKey:isbn];
+        SCHTextFlow *previouslyCachedTextFlow = [myCachedTextFlows objectForKey:identifier];
         if(previouslyCachedTextFlow) {
-            //NSLog(@"Returning cached TextFlow for book with ISBN %@", isbn);
-            [self.cachedTextFlowCheckoutCounts addObject:isbn];
+            //NSLog(@"Returning cached TextFlow for book with identifier %@", identifier);
+            [self.cachedTextFlowCheckoutCounts addObject:identifier];
             ret = previouslyCachedTextFlow;
         } else {
             
-            SCHTextFlow *textFlow = [[SCHTextFlow alloc] initWithISBN:isbn managedObjectContext:managedObjectContext];
+            SCHTextFlow *textFlow = [[SCHTextFlow alloc] initWithBookIdentifier:identifier managedObjectContext:managedObjectContext];
             
             if(textFlow) {
-                //NSLog(@"Creating and caching TextFlow for book with ISBN %@", isbn);
+                //NSLog(@"Creating and caching TextFlow for book with identifier %@", identifier);
                 NSCountedSet *myCachedTextFlowCheckoutCounts = self.cachedTextFlowCheckoutCounts;
                 if(!myCachedTextFlowCheckoutCounts) {
                     myCachedTextFlowCheckoutCounts = [NSCountedSet set];
                     self.cachedTextFlowCheckoutCounts = myCachedTextFlowCheckoutCounts;
                 }
-                [myCachedTextFlows setObject:textFlow forKey:isbn];
-                [myCachedTextFlowCheckoutCounts addObject:isbn];
+                [myCachedTextFlows setObject:textFlow forKey:identifier];
+                [myCachedTextFlowCheckoutCounts addObject:identifier];
                 [textFlow release];
                 ret = textFlow;
             }
@@ -400,20 +405,19 @@ static int checkoutCountTextFlow = 0;
     return(ret);
 }
 
-- (void)checkInTextFlowForBookIdentifier:(NSString *)isbn
+- (void)checkInTextFlowForBookIdentifier:(SCHBookIdentifier *)identifier
 {
-    
     NSMutableDictionary *myCachedTextFlows = self.cachedTextFlows;
     @synchronized(myCachedTextFlows) {
         NSCountedSet *myCachedTextFlowCheckoutCounts = self.cachedTextFlowCheckoutCounts;
-        NSUInteger count = [myCachedTextFlowCheckoutCounts countForObject:isbn];
+        NSUInteger count = [myCachedTextFlowCheckoutCounts countForObject:identifier];
         if(count == 0) {
             NSLog(@"Warning! Unexpected checkin of non-checked-out TextFlow");
         } else {
-            [myCachedTextFlowCheckoutCounts removeObject:isbn];
+            [myCachedTextFlowCheckoutCounts removeObject:identifier];
             if (count == 1) {
-                //NSLog(@"Releasing cached TextFlow for book with ISBN %@", isbn);
-                [myCachedTextFlows removeObjectForKey:isbn];
+                //NSLog(@"Releasing cached TextFlow for book with identifier %@", identifier);
+                [myCachedTextFlows removeObjectForKey:identifier];
                 if(myCachedTextFlowCheckoutCounts.count == 0) {
                     // May as well release the set.
                     self.cachedTextFlowCheckoutCounts = nil;
@@ -427,33 +431,33 @@ static int checkoutCountTextFlow = 0;
 
 static int checkoutCountParagraph = 0;
 
-- (SCHTextFlowParagraphSource *)checkOutParagraphSourceForBookIdentifier:(NSString *)isbn inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
+- (SCHTextFlowParagraphSource *)checkOutParagraphSourceForBookIdentifier:(SCHBookIdentifier *)identifier inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
 {   
     checkoutCountParagraph++;
-    //NSLog(@"Checking out ParagraphSource for book: %@, count is %d", isbn, checkoutCountParagraph);
+    //NSLog(@"Checking out ParagraphSource for book: %@, count is %d", identifier, checkoutCountParagraph);
     SCHTextFlowParagraphSource *ret = nil;
     
     [self.persistentStoreCoordinator lock];
     
     NSMutableDictionary *myCachedParagraphSources = self.cachedParagraphSources;
     @synchronized(myCachedParagraphSources) {
-        SCHTextFlowParagraphSource *previouslyCachedParagraphSource = [myCachedParagraphSources objectForKey:isbn];
+        SCHTextFlowParagraphSource *previouslyCachedParagraphSource = [myCachedParagraphSources objectForKey:identifier];
         if(previouslyCachedParagraphSource) {
-            //NSLog(@"Returning cached ParagraphSource for book with ID %@", aBookID);
-            [self.cachedParagraphSourceCheckoutCounts addObject:isbn];
+            //NSLog(@"Returning cached ParagraphSource for book with ID %@", identifier);
+            [self.cachedParagraphSourceCheckoutCounts addObject:identifier];
             ret= previouslyCachedParagraphSource;
         } else {
-            SCHTextFlowParagraphSource *paragraphSource = [[SCHTextFlowParagraphSource alloc] initWithISBN:isbn managedObjectContext:managedObjectContext];
+            SCHTextFlowParagraphSource *paragraphSource = [[SCHTextFlowParagraphSource alloc] initWithBookIdentifier:identifier managedObjectContext:managedObjectContext];
             
             if(paragraphSource) {
-                //NSLog(@"Creating and caching ParagraphSource for book with ID %@", aBookID);
+                //NSLog(@"Creating and caching ParagraphSource for book with ID %@", identifier);
                 NSCountedSet *myCachedParagraphSourceCheckoutCounts = self.cachedParagraphSourceCheckoutCounts;
                 if(!myCachedParagraphSourceCheckoutCounts) {
                     myCachedParagraphSourceCheckoutCounts = [NSCountedSet set];
                     self.cachedParagraphSourceCheckoutCounts = myCachedParagraphSourceCheckoutCounts;
                 }
-                [myCachedParagraphSources setObject:paragraphSource forKey:isbn];
-                [myCachedParagraphSourceCheckoutCounts addObject:isbn];
+                [myCachedParagraphSources setObject:paragraphSource forKey:identifier];
+                [myCachedParagraphSourceCheckoutCounts addObject:identifier];
                 [paragraphSource release];
                 ret = paragraphSource;
             }
@@ -465,19 +469,19 @@ static int checkoutCountParagraph = 0;
     return(ret);
 }
 
-- (void)checkInParagraphSourceForBookIdentifier:(NSString *)isbn
+- (void)checkInParagraphSourceForBookIdentifier:(SCHBookIdentifier *)identifier
 {
     NSMutableDictionary *myCachedParagraphSources = self.cachedParagraphSources;
     @synchronized(myCachedParagraphSources) {
         NSCountedSet *myCachedParagraphSourceCheckoutCounts = self.cachedParagraphSourceCheckoutCounts;
-        NSUInteger count = [myCachedParagraphSourceCheckoutCounts countForObject:isbn];
+        NSUInteger count = [myCachedParagraphSourceCheckoutCounts countForObject:identifier];
         if(count == 0) {
             NSLog(@"Warning! Unexpected checkin of non-checked-out paragraph source");
         } else {
-            [myCachedParagraphSourceCheckoutCounts removeObject:isbn];
+            [myCachedParagraphSourceCheckoutCounts removeObject:identifier];
             if (count == 1) {
-                //NSLog(@"Releasing cached paragraph source for book with ID %@", aBookID);
-                [myCachedParagraphSources removeObjectForKey:isbn];
+                //NSLog(@"Releasing cached paragraph source for book with ID %@", identifier);
+                [myCachedParagraphSources removeObjectForKey:identifier];
                 if(myCachedParagraphSourceCheckoutCounts.count == 0) {
                     // May as well release the set.
                     self.cachedParagraphSourceCheckoutCounts = nil;

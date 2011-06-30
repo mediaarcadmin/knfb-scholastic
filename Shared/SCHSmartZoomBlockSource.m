@@ -8,41 +8,42 @@
 
 #import "SCHSmartZoomBlockSource.h"
 #import "SCHBookManager.h"
+#import "SCHBookIdentifier.h"
 #import "SCHTextFlow.h"
 #import "SCHAppBook.h"
 #import "SCHXPSProvider.h"
 
 @interface SCHSmartZoomBlockSource()
 
-@property (nonatomic, retain) NSString *isbn;
+@property (nonatomic, retain) SCHBookIdentifier *identifier;
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 
 @end
 
 @implementation SCHSmartZoomBlockSource
 
-@synthesize isbn;
+@synthesize identifier;
 @synthesize managedObjectContext;
 
 - (void)dealloc
 {
     if (self.xpsProvider) {
-        [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:isbn];
+        [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.identifier];
     }
     
-    [isbn release], isbn = nil;
+    [identifier release], identifier = nil;
     [managedObjectContext release], managedObjectContext = nil;
     
     [super dealloc];
 }
 
-- (id)initWithISBN:(NSString *)anIsbn managedObjectContext:(NSManagedObjectContext *)moc
+- (id)initWithBookIdentifier:(SCHBookIdentifier *)bookIdentifier managedObjectContext:(NSManagedObjectContext *)moc
 {
     if ((self = [super init])) {
-        isbn = [anIsbn retain];
+        identifier = [bookIdentifier retain];
         self.managedObjectContext = moc;
         
-        self.xpsProvider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:anIsbn inManagedObjectContext:moc];
+        self.xpsProvider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:bookIdentifier inManagedObjectContext:moc];
     }
     return self;
 }
@@ -51,7 +52,7 @@
 
 - (NSSet *)persistedSmartZoomPageMarkers;
 {
-    SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn inManagedObjectContext:self.managedObjectContext];
+    SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.identifier inManagedObjectContext:self.managedObjectContext];
     return [book SmartZoomPageMarkers];
 }
 

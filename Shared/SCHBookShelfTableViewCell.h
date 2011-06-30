@@ -9,11 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "SCHAsyncBookCoverImageView.h"
 
-@interface SCHBookShelfTableViewCell : UITableViewCell {
-	
-	
-	
-}
+@class SCHBookIdentifier;
+
+@interface SCHBookShelfTableViewCell : UITableViewCell {}
 
 @property (readonly, retain) SCHAsyncBookCoverImageView *thumbImageView;
 @property (nonatomic, retain) UIView *thumbContainerView;
@@ -22,7 +20,7 @@
 @property (nonatomic, retain) UILabel *subtitleLabel;
 @property (nonatomic, retain) UILabel *statusLabel;
 @property (nonatomic, retain) UIProgressView *progressView;
-@property (nonatomic, retain) NSString *isbn;
+@property (nonatomic, retain) SCHBookIdentifier *identifier;
 
 
 - (void) refreshCell;

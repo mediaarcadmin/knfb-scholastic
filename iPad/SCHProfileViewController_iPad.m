@@ -20,6 +20,7 @@
 #import "SCHSettingsViewController.h"
 #import "SCHCustomNavigationBar.h"
 #import "SCHAppProfile.h"
+#import "SCHBookIdentifier.h"
 
 extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
@@ -291,7 +292,9 @@ static const CGFloat kProfilePadTableOffsetLandscape = 220.0f;
     bookShelfViewController.managedObjectContext = self.managedObjectContext;
     
     if (profileItem.AppProfile.AutomaticallyLaunchBook != nil) {
-        SCHReadingViewController *readingViewController = [bookShelfViewController openBook:profileItem.AppProfile.AutomaticallyLaunchBook];
+        SCHBookIdentifier *bookIdentifier = [[SCHBookIdentifier alloc] initWithEncodedString:profileItem.AppProfile.AutomaticallyLaunchBook];
+        SCHReadingViewController *readingViewController = [bookShelfViewController openBook:bookIdentifier];
+        [bookIdentifier release];
         NSArray *viewControllers = [self.navigationController.viewControllers arrayByAddingObjectsFromArray:
                                     [NSArray arrayWithObjects:bookShelfViewController, readingViewController, nil]];
         [self.navigationController setViewControllers:(NSArray *)viewControllers animated:YES];

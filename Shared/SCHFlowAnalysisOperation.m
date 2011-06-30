@@ -22,8 +22,8 @@
 
 - (void) updateBookWithSuccess
 {
-    [self setProcessingState:SCHBookProcessingStateReadyToRead forBook:self.isbn];
-    [self setBook:self.isbn isProcessing:NO];
+    [self setProcessingState:SCHBookProcessingStateReadyToRead];
+    [self setIsProcessing:NO];
     
     [self endOperation];
 }
@@ -40,16 +40,16 @@
 #ifndef __OPTIMIZE__    
     // This title is only used for logging
     __block NSString *title;
-    [self withBook:self.isbn perform:^(SCHAppBook *book) {
+    [self performWithBook:^(SCHAppBook *book) {
         title = [book.Title retain];
     }];
     CFAbsoluteTime startTime = CFAbsoluteTimeGetCurrent();
 #endif
-    SCHFlowEucBook *eucBook = [[SCHBookManager sharedBookManager] checkOutEucBookForBookIdentifier:self.isbn inManagedObjectContext:self.localManagedObjectContext];
+    SCHFlowEucBook *eucBook = [[SCHBookManager sharedBookManager] checkOutEucBookForBookIdentifier:self.identifier inManagedObjectContext:self.localManagedObjectContext];
 
     if (eucBook) {
         [eucBook generateAndCacheUncachedRecachableData];
-        [[SCHBookManager sharedBookManager] checkInEucBookForBookIdentifier:self.isbn];
+        [[SCHBookManager sharedBookManager] checkInEucBookForBookIdentifier:self.identifier];
         NSLog(@"Analysis of book %@ took %ld seconds", title, (long)round(CFAbsoluteTimeGetCurrent() - startTime));
         [self updateBookWithSuccess];
     } else {

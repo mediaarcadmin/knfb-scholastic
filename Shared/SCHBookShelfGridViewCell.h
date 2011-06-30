@@ -11,12 +11,13 @@
 #import "MRGridViewCell.h"
 
 @class SCHAsyncBookCoverImageView;
+@class SCHBookIdentifier;
 
 @interface SCHBookShelfGridViewCell : MRGridViewCell 
 {
 }
 
-@property (nonatomic, copy) NSString *isbn;
+@property (nonatomic, retain) SCHBookIdentifier *identifier;
 
 @property (nonatomic, retain) SCHAsyncBookCoverImageView *asyncImageView;
 @property (nonatomic, retain) UIView *thumbTintView;

@@ -9,13 +9,14 @@
 #import "KNFBTextFlow.h"
 
 @class SCHXPSProvider;
+@class SCHBookIdentifier;
 @class NSManagedObjectContext;
 
 @interface SCHTextFlow : KNFBTextFlow {
     
 }
 
-- (id)initWithISBN:(NSString *)newIsbn managedObjectContext:(NSManagedObjectContext *)moc;
+- (id)initWithBookIdentifier:(SCHBookIdentifier *)newIdentifier managedObjectContext:(NSManagedObjectContext *)moc;
 
 @property (nonatomic, retain) SCHXPSProvider *xpsProvider;
 

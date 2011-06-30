@@ -11,6 +11,7 @@
 #import "SCHProcessingManager.h"
 #import "SCHAppBook.h"
 #import "SCHBookManager.h"
+#import "SCHBookIdentifier.h"
 
 #define IMAGE_FRAME_WIDTH   72.0
 #define IMAGE_FRAME_HEIGHT  96.0
@@ -31,7 +32,8 @@
 
 @implementation SCHBookShelfTableViewCell
 
-@synthesize titleLabel, subtitleLabel, statusLabel, thumbImageView, thumbTintView, isbn, thumbContainerView, progressView;
+@synthesize titleLabel, subtitleLabel, statusLabel, thumbImageView, thumbTintView, thumbContainerView, progressView;
+@synthesize identifier;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
 	
@@ -118,15 +120,15 @@
 #pragma mark -
 #pragma mark Setter for ISBN
 
-- (void) setIsbn:(NSString *) newIsbn
+- (void) setIdentifier:(SCHBookIdentifier *)newIdentifier
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"SCHBookDownloadPercentageUpdate" object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"SCHBookStatusUpdate" object:nil];
 
-	if (newIsbn != isbn && [newIsbn compare:isbn] != NSOrderedSame) {
-		[newIsbn retain];
-		[isbn release];
-        isbn = newIsbn;
+    if (newIdentifier != identifier && ![newIdentifier isEqual:self.identifier]) {
+        [newIdentifier retain];
+        [identifier release];
+        identifier = newIdentifier;
 	}
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self
@@ -139,7 +141,7 @@
 												 name:@"SCHBookStateUpdate"
 											   object:nil];
 	
-	[self.thumbImageView setIsbn:self.isbn];
+	[self.thumbImageView setIdentifier:self.identifier];
 	
 	[self refreshCell];
 	
@@ -147,7 +149,7 @@
 
 - (void) checkForCellUpdateFromNotification: (NSNotification *) notification
 {
-    if ([self.isbn compare:[[notification userInfo] objectForKey:@"isbn"]] == NSOrderedSame) {
+    if ([self.identifier isEqual:[[notification userInfo] objectForKey:@"bookIdentifier"]]) {
         [self refreshCell];
     }
 }
@@ -156,7 +158,7 @@
 - (void) refreshCell
 {
     NSManagedObjectContext *context = [(id)[[UIApplication sharedApplication] delegate] managedObjectContext];
-    SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn inManagedObjectContext:context];
+    SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.identifier inManagedObjectContext:context];
 	// image processing
 	BOOL immediateUpdate = [[SCHProcessingManager sharedProcessingManager] requestThumbImageForBookCover:self.thumbImageView 
 																							   size:CGSizeMake(IMAGE_FRAME_WIDTH, IMAGE_FRAME_HEIGHT)
@@ -212,9 +214,9 @@
 
 - (void) updatePercentage: (NSNotification *) notification
 {
-    NSString *updateForISBN = [[notification userInfo] objectForKey:@"isbn"];
+    SCHBookIdentifier *updateForISBN = [[notification userInfo] objectForKey:@"bookIdentifier"];
 
-    if ([updateForISBN compare:self.isbn] == NSOrderedSame) {
+    if ([updateForISBN isEqual:self.identifier]) {
         float newPercentage = [(NSNumber *) [[notification userInfo] objectForKey:@"currentPercentage"] floatValue];
         [self.progressView setProgress:newPercentage];
     }

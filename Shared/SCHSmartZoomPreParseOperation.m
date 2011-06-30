@@ -72,7 +72,7 @@ static void smartZoomFileXMLParsingStartElementHandler(void *ctx, const XML_Char
 {
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
     
-    SCHXPSProvider *xpsProvider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.isbn
+    SCHXPSProvider *xpsProvider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.identifier
                                                                                     inManagedObjectContext:self.localManagedObjectContext];
     BOOL hasSmartZoom = [xpsProvider componentExistsAtPath:KNFBXPSKNFBSmartZoomFile];
     
@@ -83,7 +83,7 @@ static void smartZoomFileXMLParsingStartElementHandler(void *ctx, const XML_Char
         if (nil == data) {    
             // Not all books have this data
             [self updateBookWithFailure];
-            [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.isbn];
+            [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.identifier];
             
             [pool drain];
             return;
@@ -101,12 +101,12 @@ static void smartZoomFileXMLParsingStartElementHandler(void *ctx, const XML_Char
         }
         XML_ParserFree(pageMarkerFileParser);
         
-        [self withBook:self.isbn perform:^(SCHAppBook *book) {
+        [self performWithBook:^(SCHAppBook *book) {
             [book setValue:context.buildPageMarkers forKey:kSCHAppBookSmartZoomPageMarkers];
         }];
     }
     
-    [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.isbn];
+    [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.identifier];
         
     [self updateBookWithSuccess];
     
@@ -117,16 +117,16 @@ static void smartZoomFileXMLParsingStartElementHandler(void *ctx, const XML_Char
 
 - (void)updateBookWithSuccess
 {
-    [self setProcessingState:SCHBookProcessingStateReadyForPagination forBook:self.isbn];
-    [self setBook:self.isbn isProcessing:NO];
+    [self setProcessingState:SCHBookProcessingStateReadyForPagination];
+    [self setIsProcessing:NO];
     self.finished = YES;
     self.executing = NO;
 }
 
 - (void)updateBookWithFailure
 {
-    [self setProcessingState:SCHBookProcessingStateError forBook:self.isbn];
-    [self setBook:self.isbn isProcessing:NO];
+    [self setProcessingState:SCHBookProcessingStateError];
+    [self setIsProcessing:NO];
     self.finished = YES;
     self.executing = NO;
 }

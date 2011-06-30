@@ -31,6 +31,7 @@ typedef enum
 
 @class SCHCustomToolbar;
 @class SCHProfileItem;
+@class SCHBookIdentifier;
 
 @interface SCHReadingViewController : UIViewController <SCHReadingViewDelegate, SCHReadingNotesListControllerDelegate, 
 SCHReadingNoteViewDelegate, SCHReadingInteractionsListControllerDelegate, SCHAudioBookPlayerDelegate, UIPopoverControllerDelegate,
@@ -74,7 +75,7 @@ SCHStoryInteractionControllerDelegate>
 
 -(id)initWithNibName:(NSString *)nibNameOrNil 
               bundle:(NSBundle *)nibBundleOrNil 
-                isbn:(NSString *)aIsbn 
+      bookIdentifier:(SCHBookIdentifier *)aIdentifier 
              profile:(SCHProfileItem *)aProfile
 managedObjectContext:(NSManagedObjectContext *)moc;
 

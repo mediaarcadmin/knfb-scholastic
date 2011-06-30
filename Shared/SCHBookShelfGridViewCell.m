@@ -18,13 +18,13 @@
 @synthesize asyncImageView;
 @synthesize thumbTintView;
 @synthesize progressView;
-@synthesize isbn;
+@synthesize identifier;
 
 #pragma mark - Object lifecycle
 
-- (id)initWithFrame:(CGRect)frame reuseIdentifier:(NSString *)identifier 
+- (id)initWithFrame:(CGRect)frame reuseIdentifier:(NSString *)aReuseIdentifier 
 {
-	if ((self = [super initWithFrame:frame reuseIdentifier:identifier])) {
+	if ((self = [super initWithFrame:frame reuseIdentifier:aReuseIdentifier])) {
                 
 		self.asyncImageView = [SCHThumbnailFactory newAsyncImageWithSize:CGSizeMake(self.frame.size.width - 4, self.frame.size.height - 22)];
 		[self.asyncImageView setFrame:CGRectZero];        
@@ -49,7 +49,7 @@
 	[asyncImageView release], asyncImageView = nil;
 	[thumbTintView release], thumbTintView = nil;
 	[progressView release], progressView = nil;
-    [isbn release], isbn = nil;
+    [identifier release], identifier = nil;
     [super dealloc];
 }
 
@@ -84,7 +84,7 @@
 - (void)refreshCell
 {
     NSManagedObjectContext *context = [(id)[[UIApplication sharedApplication] delegate] managedObjectContext];
-	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn inManagedObjectContext:context];    
+	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.identifier inManagedObjectContext:context];    
 	// image processing
     [[SCHProcessingManager sharedProcessingManager] requestThumbImageForBookCover:self.asyncImageView
                                                                              size:self.asyncImageView.thumbSize
@@ -114,50 +114,51 @@
 
 #pragma mark - Accessor methods
 
-- (void)setIsbn:(NSString *)newIsbn
+- (void)setIdentifier:(SCHBookIdentifier *)newIdentifier
 {	
-	if (newIsbn != isbn) {
-        [[NSNotificationCenter defaultCenter] removeObserver:self name:@"SCHBookDownloadPercentageUpdate" object:nil];
-        [[NSNotificationCenter defaultCenter] removeObserver:self name:@"SCHBookStatusUpdate" object:nil];
-        [[NSNotificationCenter defaultCenter] removeObserver:self name:@"SCHNewImageAvailable" object:nil];
-
-		[isbn release];
-		isbn = [newIsbn copy];
-
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(updatePercentage:) 
-                                                     name:@"SCHBookDownloadPercentageUpdate" 
-                                                   object:nil];
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(checkForCellUpdateFromNotification:)
-                                                     name:@"SCHBookStateUpdate"
-                                                   object:nil];
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(checkForCellUpdateFromNotification:)
-                                                     name:@"SCHNewImageAvailable"
-                                                   object:nil];
-        
-        [self.asyncImageView setIsbn:self.isbn];
-        [self refreshCell];        
-	}
+	if ([newIdentifier isEqual:identifier]) {
+        return;
+    }
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"SCHBookDownloadPercentageUpdate" object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"SCHBookStatusUpdate" object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"SCHNewImageAvailable" object:nil];
+    
+    [identifier release];
+    identifier = [newIdentifier retain];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(updatePercentage:) 
+                                                 name:@"SCHBookDownloadPercentageUpdate" 
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(checkForCellUpdateFromNotification:)
+                                                 name:@"SCHBookStateUpdate"
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(checkForCellUpdateFromNotification:)
+                                                 name:@"SCHNewImageAvailable"
+                                               object:nil];
+    
+    [self.asyncImageView setIdentifier:self.identifier];
+    [self refreshCell];        
 }
 
 #pragma mark - Private methods
 
 - (void)checkForCellUpdateFromNotification:(NSNotification *)notification
 {
-    if ([self.isbn compare:[[notification userInfo] objectForKey:@"isbn"]] == NSOrderedSame) {
+    SCHBookIdentifier *bookIdentifier = [[notification userInfo] objectForKey:@"bookIdentifier"];
+    if ([bookIdentifier isEqual:self.identifier]) {
         [self refreshCell];
     }
 }	
 
 - (void)updatePercentage:(NSNotification *)notification
 {
-    NSString *updateForISBN = [[notification userInfo] objectForKey:@"isbn"];
-    
-    if ([updateForISBN compare:self.isbn] == NSOrderedSame) {
+    SCHBookIdentifier *bookIdentifier = [[notification userInfo] objectForKey:@"bookIdentifier"];
+    if ([bookIdentifier isEqual:self.identifier]) {
         float newPercentage = [(NSNumber *) [[notification userInfo] objectForKey:@"currentPercentage"] floatValue];
         [self.progressView setProgress:newPercentage];
     }

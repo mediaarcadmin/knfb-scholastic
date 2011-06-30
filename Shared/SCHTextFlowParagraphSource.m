@@ -11,6 +11,7 @@
 #import "SCHTextFlow.h"
 #import "SCHFlowEucBook.h"
 #import "SCHBookRange.h"
+#import "SCHBookIdentifier.h"
 #import "KNFBTextFlowParagraphWords.h"
 #import "KNFBTextFlowParagraph.h"
 #import "KNFBTextFlowPositionedWord.h"
@@ -29,38 +30,38 @@ static NSString * const kNoWordPlaceholder = @"NO_WORD_PLACEHOLDER";
 
 @interface SCHTextFlowParagraphSource()
 
-@property (nonatomic, retain) NSString *isbn;
+@property (nonatomic, retain) SCHBookIdentifier *identifier;
 
 @end
 
 @implementation SCHTextFlowParagraphSource
 
-@synthesize isbn;
+@synthesize identifier;
 
 - (void)dealloc
 {
     
     if (self.textFlow) {
         if(self.xamlEucBook) {
-            [[SCHBookManager sharedBookManager] checkInEucBookForBookIdentifier:isbn];
+            [[SCHBookManager sharedBookManager] checkInEucBookForBookIdentifier:identifier];
         }
-        [[SCHBookManager sharedBookManager] checkInTextFlowForBookIdentifier:isbn];
+        [[SCHBookManager sharedBookManager] checkInTextFlowForBookIdentifier:identifier];
     }
     
-    [isbn release], isbn = nil;
+    [identifier release], identifier = nil;
     
     [super dealloc];
 }
 
-- (id)initWithISBN:(NSString *)anIsbn managedObjectContext:(NSManagedObjectContext *)moc
+- (id)initWithBookIdentifier:(SCHBookIdentifier *)newIdentifier managedObjectContext:(NSManagedObjectContext *)moc
 {
     if ((self = [super initWithBookID:nil])) {
-        isbn = [anIsbn retain];
+        identifier = [newIdentifier retain];
         
-        self.textFlow = [[SCHBookManager sharedBookManager] checkOutTextFlowForBookIdentifier:anIsbn inManagedObjectContext:moc];
+        self.textFlow = [[SCHBookManager sharedBookManager] checkOutTextFlowForBookIdentifier:newIdentifier inManagedObjectContext:moc];
         
         if(self.textFlow.flowTreeKind == KNFBTextFlowFlowTreeKindXaml) {
-            self.xamlEucBook = [[SCHBookManager sharedBookManager] checkOutEucBookForBookIdentifier:anIsbn inManagedObjectContext:moc];
+            self.xamlEucBook = [[SCHBookManager sharedBookManager] checkOutEucBookForBookIdentifier:newIdentifier inManagedObjectContext:moc];
         }
 
     }

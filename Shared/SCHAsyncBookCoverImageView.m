@@ -25,7 +25,7 @@
 
 @implementation SCHAsyncBookCoverImageView
 
-@synthesize isbn;
+@synthesize identifier;
 @synthesize thumbSize;
 @synthesize coverSize;
 @synthesize usePlaceholderImage;
@@ -60,19 +60,19 @@
 - (void)dealloc 
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	[isbn release], isbn = nil;
+	[identifier release], identifier = nil;
     
 	[super dealloc];
 }
 
 #pragma mark - Accessor methods
 
-- (void)setIsbn:(NSString *)newIsbn
+- (void)setIdentifier:(SCHBookIdentifier *)newIdentifier
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	
-	[isbn release];
-	isbn = [newIsbn copy];
+    [identifier release];
+    identifier = [newIdentifier retain];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(newImageAvailable:)
@@ -97,7 +97,7 @@
 {
 	NSDictionary *userInfo = [notification userInfo];
     
-    if ([self.isbn compare:[userInfo objectForKey:@"isbn"]] == NSOrderedSame) {
+    if ([self.identifier isEqual:[userInfo objectForKey:@"bookIdentifier"]]) {
         id image = [userInfo valueForKey:@"image"];
         CGSize itemSize = [[userInfo valueForKey:@"thumbSize"] CGSizeValue];
         
@@ -115,7 +115,7 @@
         self.coverSize = CGSizeMake(self.image.size.width, self.image.size.height);
     } else {
         NSManagedObjectContext *context = [(id)[[UIApplication sharedApplication] delegate] managedObjectContext];
-        SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn inManagedObjectContext:context];
+        SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.identifier inManagedObjectContext:context];
         CGSize fullImageSize = [book bookCoverImageSize];
         
         if (book && !CGSizeEqualToSize(fullImageSize, CGSizeZero)) {

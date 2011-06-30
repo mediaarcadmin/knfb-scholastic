@@ -8,6 +8,7 @@
 
 #import "SCHXPSProvider.h"
 #import "SCHBookManager.h"
+#import "SCHBookIdentifier.h"
 #import "SCHAppBook.h"
 #import "SCHXPSURLProtocol.h"
 #import "KNFBXPSConstants.h"
@@ -15,29 +16,31 @@
 
 @interface SCHXPSProvider()
 
-@property (nonatomic, retain) NSString *bookISBN;
+@property (nonatomic, retain) SCHBookIdentifier *bookIdentifier;
 
 @end
 
 @implementation SCHXPSProvider
 
-@synthesize bookISBN;
+@synthesize bookIdentifier;
 
-+ (void)initialize {
++ (void)initialize 
+{
     if(self == [SCHXPSURLProtocol class]) {
         [SCHXPSURLProtocol registerXPSProtocol];
     }
 } 	
 
-- (void)dealloc {  
-    [bookISBN release], bookISBN = nil;
+- (void)dealloc
+{  
+    [bookIdentifier release], bookIdentifier = nil;
     [super dealloc];
 }
 
-- (id)initWithISBN:(NSString *)aBookISBN xpsPath:(NSString *)xpsPath
+- (id)initWithBookIdentifier:(SCHBookIdentifier *)aBookIdentifier xpsPath:(NSString *)xpsPath
 {
     if (xpsPath && (self = [super initWithPath:xpsPath])) {
-        bookISBN = [aBookISBN copy];
+        bookIdentifier = [aBookIdentifier retain];
     }
     
     return self;
@@ -45,7 +48,7 @@
 
 - (id<KNFBDrmBookDecrypter>)drmDecrypter {
 	if (!drmDecrypter ) {
-		drmDecrypter = [[SCHDrmDecryptionSession alloc] initWithBook:self.bookISBN]; 
+		drmDecrypter = [[SCHDrmDecryptionSession alloc] initWithBook:self.bookIdentifier]; 
 		if ([drmDecrypter bindToLicense]) { 
 			decryptionAvailable = YES; 
 			if (reportingStatus != kKNFBDrmBookReportingStatusComplete) { 

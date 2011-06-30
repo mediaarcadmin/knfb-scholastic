@@ -24,6 +24,7 @@
 #import "SCHProfileItem.h"
 #import "SCHAppProfile.h"
 #import "SCHBookShelfTableViewCell.h"
+#import "SCHBookIdentifier.h"
 
 static NSInteger const kSCHBookShelfViewControllerGridCellHeightPortrait = 138;
 static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
@@ -182,7 +183,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
     [self setupAssetsForOrientation:self.interfaceOrientation];
     if (self.updateSort == YES) {
         self.updateSort = NO;
-        self.books = [self.profileItem allISBNs];
+        self.books = [self.profileItem allBookIdentifiers];
     }
 }
 
@@ -294,7 +295,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
     
     self.navigationItem.title = [self.profileItem bookshelfName:YES];
     
-	self.books = [self.profileItem allISBNs];
+	self.books = [self.profileItem allBookIdentifiers];
 }
 
 - (void)setBooks:(NSMutableArray *)newBooks
@@ -328,7 +329,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 
 - (void)updateTable:(NSNotification *)notification
 {
-	self.books = [self.profileItem allISBNs];
+	self.books = [self.profileItem allBookIdentifiers];
 	self.loadingView.hidden = YES;
 }
 
@@ -344,7 +345,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
         cell = [[SCHBookShelfTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
     }
     
-    cell.isbn = [self.books objectAtIndex:[indexPath row]];
+    cell.identifier = [self.books objectAtIndex:[indexPath row]];
     
     return cell;
 }
@@ -391,7 +392,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 		gridCell.frame = [aGridView frameForCellAtGridIndex:index];
 	}
 
-	[gridCell setIsbn:[self.books objectAtIndex:index]];
+	[gridCell setIdentifier:[self.books objectAtIndex:index]];
 	
 	return(gridCell);
 }
@@ -474,15 +475,15 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
     [spinner release];
 }
 
-- (SCHReadingViewController *)openBook:(NSString *)isbn
+- (SCHReadingViewController *)openBook:(SCHBookIdentifier *)identifier
 {
     SCHReadingViewController *ret = nil;
-    SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:isbn inManagedObjectContext:self.managedObjectContext];
+    SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:identifier inManagedObjectContext:self.managedObjectContext];
     
     // notify the processing manager that the user touched a book info object.
 	// this allows it to pause and resume items, etc.
 	// will do nothing if the book has already been fully downloaded.
-	[[SCHProcessingManager sharedProcessingManager] userSelectedBookWithISBN:isbn];
+	[[SCHProcessingManager sharedProcessingManager] userSelectedBookWithIdentifier:identifier];
 	
 	// if the processing manager is working, do not open the book
 	if ([book canOpenBook]) {
@@ -511,7 +512,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
             case kSCHBookshelfStyleYoungChild:
                 ret = [[SCHReadingViewController alloc] initWithNibName:nil 
                                                                  bundle:nil 
-                                                                   isbn:isbn 
+                                                         bookIdentifier:identifier 
                                                                 profile:profileItem
                                                    managedObjectContext:self.managedObjectContext];
                 ret.youngerMode = YES;
@@ -521,7 +522,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
             {
                 ret = [[SCHReadingViewController alloc] initWithNibName:nil 
                                                                  bundle:nil 
-                                                                   isbn:isbn 
+                                                         bookIdentifier:identifier 
                                                                 profile:profileItem
                                                    managedObjectContext:self.managedObjectContext];
                 ret.youngerMode = NO;

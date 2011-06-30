@@ -50,7 +50,7 @@
 
 - (void)start
 {
-	if (self.isbn && ![self isCancelled]) {
+	if (self.identifier && ![self isCancelled]) {
 		self.success = YES;
 		[super start];
 	}
@@ -58,13 +58,13 @@
 
 - (void)beginOperation
 {
-	SCHXPSProvider *xpsProvider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.isbn 
+	SCHXPSProvider *xpsProvider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.identifier 
                                                                                     inManagedObjectContext:self.localManagedObjectContext];
 	
 	// check for audiobook reference file
 	NSData *audiobookReferencesFile = [xpsProvider dataForComponentAtPath:KNFBXPSAudiobookReferencesFile];
 	
-	[[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.isbn];
+	[[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.identifier];
 	
 	if (audiobookReferencesFile) {
 		self.parsingComplete = NO;
@@ -80,10 +80,9 @@
 		
 	}
 	
-    [self setProcessingState:(self.success ? SCHBookProcessingStateReadyForTextFlowPreParse : SCHBookProcessingStateBookVersionNotSupported)
-                     forBook:self.isbn];
+    [self setProcessingState:(self.success ? SCHBookProcessingStateReadyForTextFlowPreParse : SCHBookProcessingStateBookVersionNotSupported)];
     
-    [self setBook:self.isbn isProcessing:NO];
+    [self setIsProcessing:NO];
     [self endOperation];
 	
 	return;
@@ -122,7 +121,7 @@
           [self.timingFiles objectAtIndex:i], kSCHAppBookTimingFile, nil]];
     }
     
-    [self withBook:self.isbn perform:^(SCHAppBook *book) {
+    [self performWithBook:^(SCHAppBook *book) {
         [book setValue:audioBookReferences forKey:kSCHAppBookAudioBookReferences];
     }];
 }

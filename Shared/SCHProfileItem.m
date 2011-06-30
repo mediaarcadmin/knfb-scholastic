@@ -24,6 +24,7 @@
 #import "SCHAnnotationsContentItem.h"
 #import "SCHOrderItem.h"
 #import "SCHLastPage.h"
+#import "SCHBookIdentifier.h"
 
 static NSString * const kSCHProfileItemContentProfileItem = @"ContentProfileItem";
 static NSString * const kSCHProfileItemUserContentItem = @"UserContentItem";
@@ -81,7 +82,7 @@ static NSString * const kSCHProfileItemUserContentItemContentMetadataItem = @"Us
 
 #pragma mark - methods
 
-- (NSMutableArray *)allISBNs
+- (NSMutableArray *)allBookIdentifiers
 {
     NSNumber *sortTypeObj = [[self AppProfile] SortType];
     
@@ -98,7 +99,10 @@ static NSString * const kSCHProfileItemUserContentItemContentMetadataItem = @"Us
         
         for (SCHContentProfileItem *contentProfileItem in [self valueForKey:kSCHProfileItemContentProfileItem]) {
             for (SCHContentMetadataItem *contentMetadataItem in [contentProfileItem valueForKeyPath:kSCHProfileItemUserContentItemContentMetadataItem]) {
-                [books addObject:contentMetadataItem.ContentIdentifier];
+                SCHBookIdentifier *identifier = [[SCHBookIdentifier alloc] initWithISBN:contentMetadataItem.ContentIdentifier
+                                                                           DRMQualifier:contentMetadataItem.DRMQualifier];
+                [books addObject:identifier];
+                [identifier release];
             }
         }
         
@@ -109,7 +113,8 @@ static NSString * const kSCHProfileItemUserContentItemContentMetadataItem = @"Us
                 SCHAppBookOrder *bookOrderItem = [bookOrder objectAtIndex:i];
                 
                 NSUInteger bookIndex = [books indexOfObjectPassingTest:^(id obj, NSUInteger idx, BOOL *stop) {
-                    if ([bookOrderItem.ISBN compare:obj] == NSOrderedSame) {
+                    SCHBookIdentifier *identifier = (SCHBookIdentifier *)obj;
+                    if ([bookOrderItem.ISBN compare:identifier.isbn] == NSOrderedSame) {
                         *stop = YES;
                         return(YES);
                     } else {
@@ -227,7 +232,10 @@ static NSString * const kSCHProfileItemUserContentItemContentMetadataItem = @"Us
     
     // build the ISBN list
     for (SCHContentMetadataItem *item in bookObjects) {
-        [books addObject:item.ContentIdentifier];
+        SCHBookIdentifier *identifier = [[SCHBookIdentifier alloc] initWithISBN:item.ContentIdentifier
+                                                                   DRMQualifier:item.DRMQualifier];
+        [books addObject:identifier];
+        [identifier release];
     }
     
     return books;

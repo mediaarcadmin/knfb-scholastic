@@ -7,6 +7,7 @@
 //
 
 #import "SCHAppBook.h"
+#import "SCHBookIdentifier.h"
 
 @implementation SCHAppBook 
 
@@ -95,12 +96,12 @@
 
 - (BOOL)isProcessing
 {
-	return [[SCHProcessingManager sharedProcessingManager] ISBNisProcessing:self.ContentIdentifier];
+	return [[SCHProcessingManager sharedProcessingManager] identifierIsProcessing:[self bookIdentifier]];
 }
 
 - (void)setProcessing:(BOOL)value
 {
-	[[SCHProcessingManager sharedProcessingManager] setProcessing:value forISBN:self.ContentIdentifier];
+	[[SCHProcessingManager sharedProcessingManager] setProcessing:value forIdentifier:[self bookIdentifier]];
 }
 
 - (NSString *)categoryType
@@ -299,4 +300,14 @@
     return CGSizeMake([self.BookCoverWidth intValue], [self.BookCoverHeight intValue]);
 }
 
+- (SCHBookIdentifier *)bookIdentifier
+{
+    SCHBookIdentifier *identifier = [[SCHBookIdentifier alloc] initWithISBN:self.ContentIdentifier
+                                                               DRMQualifier:self.ContentMetadataItem.DRMQualifier];
+    return [identifier autorelease];
+}
+
 @end
+
+NSString * const kSCHAppBookCONTENT_IDENTIFIER = @"CONTENT_IDENTIFIER";
+NSString * const kSCHAppBookDRM_QUALIFIER = @"DRM_QUALIFIER";

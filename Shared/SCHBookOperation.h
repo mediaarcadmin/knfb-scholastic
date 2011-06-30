@@ -12,31 +12,32 @@
 
 @class NSManagedObjectContext;
 @class SCHAppBook;
+@class SCHBookIdentifier;
 
 @interface SCHBookOperation : SCHCoreDataOperation {}
 
-@property (nonatomic, copy) NSString *isbn;
+@property (nonatomic, retain) SCHBookIdentifier *identifier;
 @property BOOL executing;
 @property BOOL finished;
 
 - (void) beginOperation;
 - (void) endOperation;
-- (void) setIsbnWithoutUpdatingProcessingStatus: (NSString *) newIsbn;
+- (void) setIdentifierWithoutUpdatingProcessingStatus: (SCHBookIdentifier *) newIdentifier;
 
 // thread-safe access to book object; the block is executed synchronously so may make
 // changes to any __block storage locals
-- (void)withBook:(NSString *)isbn perform:(void (^)(SCHAppBook *book))block;
+- (void)performWithBook:(void (^)(SCHAppBook *book))block;
 
 // thread-safe access to book object followed by save; the block is executed asynchronously
-- (void)withBook:(NSString *)isbn performAndSave:(void (^)(SCHAppBook *))block;
+- (void)performWithBookAndSave:(void (^)(SCHAppBook *))block;
 
 // thread-safe update of book state
-- (void)setProcessingState:(SCHBookCurrentProcessingState)state forBook:(NSString *)isbn;
+- (void)setProcessingState:(SCHBookCurrentProcessingState)state;
 
 // thread-safe access to book state
-- (SCHBookCurrentProcessingState)processingStateForBook:(NSString *)isbn;
+- (SCHBookCurrentProcessingState)processingState;
 
 // thread-safe setter for book Processing flag
-- (void)setBook:(NSString *)isbn isProcessing:(BOOL)isProcessing;
+- (void)setIsProcessing:(BOOL)isProcessing;
 
 @end

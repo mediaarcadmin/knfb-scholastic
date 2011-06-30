@@ -339,7 +339,7 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
     self.sortType = newType;
     [[self.profileItem AppProfile] setSortType:[NSNumber numberWithInt:newType]];
 
-    self.books = [self.profileItem allISBNs];
+    self.books = [self.profileItem allBookIdentifiers];
 	self.loadingView.hidden = YES;
 
     [self.popover dismissPopoverAnimated:YES];

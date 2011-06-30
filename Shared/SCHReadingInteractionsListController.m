@@ -15,6 +15,7 @@
 #import "SCHReadingView.h"
 #import "SCHBookStoryInteractions.h"
 #import "SCHStoryInteraction.h"
+#import "SCHBookIdentifier.h"
 
 static NSInteger const CELL_TITLE_LABEL_TAG = 997;
 static NSInteger const CELL_PAGE_LABEL_TAG = 998;
@@ -43,7 +44,7 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
 @synthesize notesCell;
 @synthesize topShadow;
 @synthesize topBar;
-@synthesize isbn;
+@synthesize bookIdentifier;
 @synthesize notes;
 @synthesize profile;
 @synthesize readingView;
@@ -56,7 +57,7 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
     delegate = nil;
     
     [bookStoryInteractions release], bookStoryInteractions = nil;
-    [isbn release], isbn = nil;
+    [bookIdentifier release], bookIdentifier = nil;
     [noteCellNib release], noteCellNib = nil;
     [notesCell release], notesCell = nil;
     [profile release], profile = nil;
@@ -113,7 +114,7 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
     
     [self.topShadow setImage:[UIImage imageNamed:@"reading-view-top-shadow.png"]];
     
-    SCHBookAnnotations *annotations = [self.profile annotationsForBook:self.isbn];
+    SCHBookAnnotations *annotations = [self.profile annotationsForBook:self.bookIdentifier.isbn];
     self.notes = [annotations notes];
 }
 

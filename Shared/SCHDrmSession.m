@@ -10,6 +10,7 @@
 #import "SCHDrmRegistrationSessionDelegate.h"
 #import "SCHDrmLicenseAcquisitionSessionDelegate.h"
 #import "SCHBookManager.h"
+#import "SCHBookIdentifier.h"
 #import "SCHXPSProvider.h"
 #import "KNFBXPSConstants.h"
 #import "DrmGlobals.h"
@@ -23,8 +24,8 @@ struct SCHDrmIVars {
 @interface SCHDrmSession()
 
 @property (nonatomic, assign) BOOL sessionInitialized;
-@property (nonatomic, retain) NSString* bookID;
-@property (nonatomic, retain) NSString* boundBookID;
+@property (nonatomic, retain) SCHBookIdentifier* bookID;
+@property (nonatomic, retain) SCHBookIdentifier* boundBookID;
 
 @end
 
@@ -41,7 +42,7 @@ struct SCHDrmIVars {
 	[super dealloc];
 }
 
-- (DRM_RESULT)setHeaderForBookWithID:(NSString *)aBookID {
+- (DRM_RESULT)setHeaderForBookWithID:(SCHBookIdentifier *)aBookID {
 	DRM_RESULT dr = DRM_SUCCESS;
 	
 	SCHXPSProvider *xpsProvider = [[SCHBookManager sharedBookManager] threadSafeCheckOutXPSProviderForBookIdentifier:aBookID];
@@ -94,10 +95,10 @@ ErrorExit:
  
  
 
--(id)initWithBook:(NSString*)isbn
+-(id)initWithBook:(SCHBookIdentifier*)identifier
 {
     if((self = [super init])) {
-		self.bookID = isbn;
+		self.bookID = identifier;
 		drmIVars = calloc(1, sizeof(struct SCHDrmIVars));
         [self initialize];
     }
@@ -630,7 +631,7 @@ ErrorExit:
 	
 }
 
-- (void)acquireLicense:(NSString *)token bookID:(NSString*)isbn {
+- (void)acquireLicense:(NSString *)token bookID:(SCHBookIdentifier*)identifier {
     DRM_RESULT dr = DRM_SUCCESS;
     DRM_CHAR rgchURL[MAX_URL_SIZE];
     DRM_DWORD cchUrl = MAX_URL_SIZE;
@@ -654,12 +655,12 @@ ErrorExit:
 	DRM_CHAR* customData = (DRM_CHAR*)[[[[[[[[NSString stringWithString:tags1] 
 										   stringByAppendingString:token] 
                                             stringByAppendingString:tags2]
-                                           stringByAppendingString:isbn]
+                                           stringByAppendingString:identifier.isbn]
                                          stringByAppendingString:tags3]
                                         stringByAppendingString:@"ISBN13"]
                                         stringByAppendingString:tags4]
 									   UTF8String];
-	DRM_DWORD customDataSz = (DRM_DWORD)([tags1 length] + [tags2 length] + [tags3 length] + [tags4 length] + [isbn length] + [token length] + 6);
+	DRM_DWORD customDataSz = (DRM_DWORD)([tags1 length] + [tags2 length] + [tags3 length] + [tags4 length] + [identifier.isbn length] + [token length] + 6);
     
     [self emptyGUID:&domainID.m_oServiceID];
     [self emptyGUID:&domainID.m_oAccountID];

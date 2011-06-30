@@ -9,11 +9,12 @@
 #import "KNFBSmartZoomBlockSource.h"
 
 @class NSManagedObjectContext;
+@class SCHBookIdentifier;
 
 @interface SCHSmartZoomBlockSource : KNFBSmartZoomBlockSource {
     
 }
 
-- (id)initWithISBN:(NSString *)isbn managedObjectContext:(NSManagedObjectContext *)managedObjectContext;
+- (id)initWithBookIdentifier:(SCHBookIdentifier *)bookIdentifier managedObjectContext:(NSManagedObjectContext *)managedObjectContext;
 
 @end

@@ -42,7 +42,7 @@
 
 @implementation SCHReadingView
 
-@synthesize isbn;
+@synthesize identifier;
 @synthesize delegate;
 @synthesize xpsProvider;
 @synthesize textFlow;
@@ -54,16 +54,16 @@
 - (void) dealloc
 {
     if (xpsProvider) {
-        [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:isbn];
+        [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.identifier];
         [xpsProvider release], xpsProvider = nil;
     }
     
     if (textFlow) {
-        [[SCHBookManager sharedBookManager] checkInTextFlowForBookIdentifier:isbn];
+        [[SCHBookManager sharedBookManager] checkInTextFlowForBookIdentifier:self.identifier];
         [textFlow release], textFlow = nil;
     }
     
-    [isbn release], isbn = nil;
+    [identifier release], identifier = nil;
     [currentSelectorRange release], currentSelectorRange = nil;
     [singleWordSelectorRange release], singleWordSelectorRange = nil;
     delegate = nil;
@@ -71,12 +71,12 @@
     [super dealloc];
 }
 
-- (id)initWithFrame:(CGRect)frame isbn:(id)newIsbn delegate:(id<SCHReadingViewDelegate>)newDelegate
+- (id)initWithFrame:(CGRect)frame bookIdentifier:(SCHBookIdentifier *)bookIdentifier delegate:(id<SCHReadingViewDelegate>)newDelegate
 {
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
-        isbn = [newIsbn retain];
+        identifier = [bookIdentifier retain];
         delegate = newDelegate;
         createHighlightFromSelection = YES;
         
@@ -85,8 +85,8 @@
         self.userInteractionEnabled = YES;
 
         NSManagedObjectContext *moc = [(id)[[UIApplication sharedApplication] delegate] managedObjectContext];
-        xpsProvider = [[[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.isbn inManagedObjectContext:moc] retain];
-        textFlow    = [[[SCHBookManager sharedBookManager] checkOutTextFlowForBookIdentifier:self.isbn inManagedObjectContext:moc] retain];
+        xpsProvider = [[[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.identifier inManagedObjectContext:moc] retain];
+        textFlow    = [[[SCHBookManager sharedBookManager] checkOutTextFlowForBookIdentifier:self.identifier inManagedObjectContext:moc] retain];
     }
     return self;
 }
