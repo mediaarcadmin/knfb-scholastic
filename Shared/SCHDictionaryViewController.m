@@ -218,6 +218,7 @@
     BOOL wifiAvailable = [[SCHDictionaryDownloadManager sharedDownloadManager] wifiAvailable];
     BOOL connectionIdle = [[SCHDictionaryDownloadManager sharedDownloadManager] connectionIdle];
     
+    self.leftBarButtonItemContainer.hidden = YES;
     
     if (!wifiAvailable) {
         self.topLabel.text = @"Wifi Connection Needed";
@@ -272,6 +273,7 @@
         case SCHDictionaryProcessingStateReady:
         {
             [self.downloadProgressView removeFromSuperview];
+            self.leftBarButtonItemContainer.hidden = NO;
             [self loadWord];
             break;
         }
