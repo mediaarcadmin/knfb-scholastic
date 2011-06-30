@@ -90,6 +90,17 @@
     return [self.storyInteractionsByPage objectForKey:[NSNumber numberWithInteger:pageNumber]];
 }
 
+- (NSArray *)storyInteractionsOfClass:(Class)storyInteractionClass
+{
+    NSMutableArray *result = [NSMutableArray array];
+    for (SCHStoryInteraction *si in self.storyInteractions) {
+        if ([si class] == storyInteractionClass) {
+            [result addObject:si];
+        }
+    }
+    return [NSArray arrayWithArray:result];
+}
+
 - (NSInteger)storyInteractionQuestionCountForPage:(NSInteger)pageNumber
 {
     SCHStoryInteraction *interaction = [[self storyInteractionsForPage:pageNumber] objectAtIndex:0];

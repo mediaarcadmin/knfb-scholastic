@@ -17,6 +17,8 @@
 - (id)initWithXPSProvider:(SCHXPSProvider *)xpsProvider;
 
 - (NSArray *)storyInteractionsForPage:(NSInteger)pageNumber;
+- (NSArray *)storyInteractionsOfClass:(Class)storyInteractionClass;
+
 - (NSInteger)storyInteractionQuestionCountForPage:(NSInteger)pageNumber;
 
 // the total number of questions completed for a page
