@@ -41,6 +41,8 @@
 
 - (void)startLoading {
 	
+    // The hostname of the URLRequest should contain an SCHBookIdentifier encoded with its
+    // -[SCHBookIdentifier encodeAsString] method.
 	
 	/* retrieve the current request. */
     NSURLRequest *request = [self request];
