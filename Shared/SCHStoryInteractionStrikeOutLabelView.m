@@ -32,11 +32,12 @@
     if (strikedOut) {
         CGContextRef context = UIGraphicsGetCurrentContext();
         CGRect textRect = [self textRectForBounds:self.bounds limitedToNumberOfLines:self.numberOfLines];
+        CGFloat textTop = (CGRectGetHeight(self.bounds)-CGRectGetHeight(textRect))/2;
         
         CGContextSetStrokeColorWithColor(context, [self.strikeOutColor CGColor]);
         CGContextSetLineWidth(context, 2.0);
-        CGContextMoveToPoint(context, CGRectGetMinX(textRect), CGRectGetMidY(textRect)+2);
-        CGContextAddLineToPoint(context, CGRectGetMaxX(textRect), CGRectGetMidY(textRect)+2);
+        CGContextMoveToPoint(context, CGRectGetMinX(textRect), textTop+CGRectGetMidY(textRect)+2);
+        CGContextAddLineToPoint(context, CGRectGetMaxX(textRect), textTop+CGRectGetMidY(textRect)+2);
         CGContextStrokePath(context);
     }
 }
