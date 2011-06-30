@@ -43,8 +43,12 @@
         // get the raw array of stories from the parser
         NSData *xml = [xpsProvider dataForComponentAtPath:KNFBXPSStoryInteractionsMetadataFile];
         SCHStoryInteractionParser *parser = [[SCHStoryInteractionParser alloc] init];
-        self.storyInteractions = [parser parseStoryInteractionsFromData:xml];
+        NSArray *all = [parser parseStoryInteractionsFromData:xml];
         [parser release];
+        
+        self.storyInteractions = [all sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+            return [(SCHStoryInteraction *)obj1 documentPageNumber] - [(SCHStoryInteraction *)obj2 documentPageNumber];
+        }];
         
         // add reference to the Book Story Interactions object
         for (SCHStoryInteraction *interaction in self.storyInteractions) {
@@ -68,8 +72,8 @@
             
             // set the complete flag to NO
             [self.storyInteractionsComplete setObject:[NSNumber numberWithBool:NO] forKey:page];
-            
         }
+        
         self.storyInteractionsByPage = [NSDictionary dictionaryWithDictionary:byPage];
         [byPage release];
     }
@@ -78,7 +82,7 @@
 
 - (NSArray *)allStoryInteractions
 {
-    return storyInteractions;
+    return self.storyInteractions;
 }
 
 - (NSArray *)storyInteractionsForPage:(NSInteger)pageNumber
