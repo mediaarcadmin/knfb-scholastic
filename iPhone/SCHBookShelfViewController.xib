@@ -86,7 +86,7 @@
 																<bool key="IBUIOpaque">NO</bool>
 																<int key="IBUIContentMode">7</int>
 																<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-																<int key="IBUIContentVerticalAlignment">2</int>
+																<int key="IBUIContentVerticalAlignment">0</int>
 																<object class="NSFont" key="IBUIFont" id="746256824">
 																	<string key="NSName">Helvetica-Bold</string>
 																	<double key="NSSize">15</double>
@@ -120,7 +120,7 @@
 																<int key="IBUIContentMode">8</int>
 																<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 																<int key="IBUIContentHorizontalAlignment">2</int>
-																<int key="IBUIContentVerticalAlignment">2</int>
+																<int key="IBUIContentVerticalAlignment">0</int>
 																<reference key="IBUIFont" ref="746256824"/>
 																<reference key="IBUIHighlightedTitleColor" ref="731189675"/>
 																<object class="NSColor" key="IBUINormalTitleColor">
@@ -306,7 +306,6 @@
 					<object class="IBUITableViewController" id="891391258">
 						<string key="IBUITitle"/>
 						<object class="IBUINavigationItem" key="IBUINavigationItem" id="205957914">
-							<reference key="IBUINavigationBar"/>
 							<string key="IBUITitle">Themes</string>
 							<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						</object>
@@ -341,7 +340,7 @@
 								<bool key="IBUIOpaque">NO</bool>
 								<int key="IBUIContentMode">7</int>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-								<int key="IBUIContentVerticalAlignment">2</int>
+								<int key="IBUIContentVerticalAlignment">0</int>
 								<reference key="IBUIFont" ref="746256824"/>
 								<reference key="IBUIHighlightedTitleColor" ref="731189675"/>
 								<object class="NSColor" key="IBUINormalTitleColor">
@@ -365,7 +364,7 @@
 								<int key="IBUIContentMode">8</int>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<int key="IBUIContentHorizontalAlignment">2</int>
-								<int key="IBUIContentVerticalAlignment">2</int>
+								<int key="IBUIContentVerticalAlignment">0</int>
 								<reference key="IBUIFont" ref="746256824"/>
 								<reference key="IBUIHighlightedTitleColor" ref="731189675"/>
 								<object class="NSColor" key="IBUINormalTitleColor">
