@@ -2,9 +2,9 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="7.10">
 	<data>
 		<int key="IBDocument.SystemTarget">1056</int>
-		<string key="IBDocument.SystemVersion">10J869</string>
+		<string key="IBDocument.SystemVersion">10K540</string>
 		<string key="IBDocument.InterfaceBuilderVersion">1306</string>
-		<string key="IBDocument.AppKitVersion">1038.35</string>
+		<string key="IBDocument.AppKitVersion">1038.36</string>
 		<string key="IBDocument.HIToolboxVersion">461.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -173,7 +173,7 @@
 						</object>
 						<object class="NSColor" key="IBUITintColor">
 							<int key="NSColorSpace">2</int>
-							<bytes key="NSRGB">MC40Mjc0NTEwMTQ1IDAuNzI5NDExNzgwOCAwLjg5MDE5NjE0NDYAA</bytes>
+							<bytes key="NSRGB">MCAwLjY4MjM1Mjk0MTIgMC45MzcyNTQ5MDIAA</bytes>
 						</object>
 					</object>
 					<object class="IBUIView" id="201541512">
@@ -214,9 +214,9 @@
 										<int key="IBUIContentVerticalAlignment">0</int>
 										<string key="IBUIText"/>
 										<string key="IBUIPlaceholder">Username</string>
-										<object class="NSColor" key="IBUITextColor" id="1048697740">
+										<object class="NSColor" key="IBUITextColor">
 											<int key="NSColorSpace">2</int>
-											<bytes key="NSRGB">MC4zNzI1NDkwMjcyIDAuNjc4NDMxMzkxNyAwLjg1MDk4MDQ2MDYAA</bytes>
+											<bytes key="NSRGB">MCAwLjY4MjM1Mjk0MTIgMC45MzcyNTQ5MDIAA</bytes>
 										</object>
 										<object class="NSFont" key="IBUIFont" id="71860719">
 											<string key="NSName">ArialMT</string>
@@ -249,7 +249,10 @@
 										<int key="IBUIContentVerticalAlignment">0</int>
 										<string key="IBUIText"/>
 										<string key="IBUIPlaceholder">Password</string>
-										<reference key="IBUITextColor" ref="1048697740"/>
+										<object class="NSColor" key="IBUITextColor">
+											<int key="NSColorSpace">2</int>
+											<bytes key="NSRGB">MCAwLjY4MjM1Mjk0MTIgMC45MzcyNTQ5MDIAA</bytes>
+										</object>
 										<reference key="IBUIFont" ref="71860719"/>
 										<bool key="IBUIAdjustsFontSizeToFit">YES</bool>
 										<float key="IBUIMinimumFontSize">17</float>
@@ -282,7 +285,7 @@
 										<string key="IBUINormalTitle">Forgot your username or password?</string>
 										<object class="NSColor" key="IBUIHighlightedTitleColor">
 											<int key="NSColorSpace">2</int>
-											<bytes key="NSRGB">MC4zNzI1NDkwMjcyIDAuNjc4NDMxMzkxNyAwLjg1MDk4MDQ2MDYAA</bytes>
+											<bytes key="NSRGB">MCAwLjY4MjM1Mjk0MTIgMC45MzcyNTQ5MDIAA</bytes>
 										</object>
 										<object class="NSColor" key="IBUINormalTitleColor">
 											<int key="NSColorSpace">2</int>
@@ -345,7 +348,6 @@
 								<string key="NSFrameSize">{540, 7}</string>
 								<reference key="NSSuperview" ref="201541512"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
 								<reference key="IBUIBackgroundColor" ref="703732805"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>

@@ -77,8 +77,8 @@
             NSData *imageData = [self.xpsProvider dataForComponentAtPath:imagePath];
             button.image = [UIImage imageWithData:imageData];
             button.selected = NO;
-            button.normalColor = [UIColor colorWithRed:0.071 green:0.396 blue:0.698 alpha:1.000];
-            button.selectedColor = ([self currentQuestion].correctAnswer != answerIndex ? [UIColor colorWithRed:0.973 green:0.004 blue:0.094 alpha:1.000] : [UIColor colorWithRed:0.157 green:0.753 blue:0.341 alpha:1.000]);            
+            button.normalColor = [UIColor SCHBlue2Color];
+            button.selectedColor = ([self currentQuestion].correctAnswer != answerIndex ?  [UIColor SCHScholasticRedColor] : [UIColor SCHGreen1Color]);                        
             button.actionBlock = ^(SCHImageButton *imageButton) {
                 NSUInteger chosenAnswer = imageButton.tag - 1;
 

@@ -59,7 +59,7 @@
         self.userInteractionEnabled = YES;
 
         self.selectionLayer = [SelectionLayer layer];
-        self.selectionLayer.color = [UIColor yellowColor];
+        self.selectionLayer.color = [UIColor SCHYellowColor];
         
         CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"phase"];
         animation.fromValue = [NSNumber numberWithFloat:0.0];
@@ -93,7 +93,7 @@
             label.text = [NSString stringWithCharacters:&letter length:1];
             label.font = [UIFont boldSystemFontOfSize:20];
             label.textColor = [UIColor whiteColor];
-            label.backgroundColor = [UIColor colorWithRed:0.129 green:0.267 blue:0.553 alpha:1.];
+            label.backgroundColor = [UIColor SCHBlue3Color];
             label.textAlignment = UITextAlignmentCenter;
             [self addSubview:label];
             [label release];

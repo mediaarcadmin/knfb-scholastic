@@ -62,7 +62,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 - (void)viewDidLoad 
 {
     [super viewDidLoad];
-    [self.navigationController.navigationBar setTintColor:[UIColor colorWithRed:0.832 green:0.000 blue:0.007 alpha:1.000]];
+    [self.navigationController.navigationBar setTintColor:[UIColor SCHRed2Color]];
 
     self.loginController.controllerType = kSCHControllerLoginView;
     self.loginController.actionBlock = ^{
@@ -109,7 +109,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
         [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:
          [UIImage imageNamed:@"admin-iphone-landscape-top-toolbar.png"]];
         [self.backgroundView setImage:[UIImage imageNamed:@"plain-background-portrait.png"]];   
-        [self.navigationController.view.layer setBorderColor:[UIColor colorWithRed:0.651 green:0.051 blue:0.106 alpha:1.000].CGColor];
+        [self.navigationController.view.layer setBorderColor:[UIColor SCHRed3Color].CGColor];
         [self.navigationController.view.layer setBorderWidth:2.0f];
     } else {
         if (UIInterfaceOrientationIsLandscape(orientation)) {
@@ -246,7 +246,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     footerLabel.numberOfLines = 3;
     footerLabel.adjustsFontSizeToFitWidth = YES;
     footerLabel.backgroundColor = [UIColor clearColor];
-    footerLabel.textColor = [UIColor colorWithRed:0.063 green:0.337 blue:0.510 alpha:1.0];
+    footerLabel.textColor = [UIColor SCHDarkBlue1Color];
     footerLabel.shadowColor = [UIColor whiteColor];
     footerLabel.shadowOffset = CGSizeMake(0, -1);
     footerLabel.textAlignment = UITextAlignmentCenter;

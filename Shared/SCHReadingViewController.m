@@ -1291,7 +1291,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (UIColor *)highlightColor
 {
-    return [[UIColor yellowColor] colorWithAlphaComponent:0.3f];
+    return [[UIColor SCHYellowColor] colorWithAlphaComponent:0.4f];
 }
 
 - (void)addHighlightBetweenStartPage:(NSUInteger)startPage startWord:(NSUInteger)startWord endPage:(NSUInteger)endPage endWord:(NSUInteger)endWord;
@@ -1661,14 +1661,15 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 {
     [self cancelInitialTimer];
     
-    if (visibility == YES && self.optionsView.superview) {
-        [self.optionsView removeFromSuperview];
-    }
-    
     if (self.suppressToolbarToggle) {
         return;
     }
-    
+
+    // if the options view was left open from a previous view then remove it
+    if (visibility == YES && self.optionsView.superview) {
+        [self.optionsView removeFromSuperview];
+    }
+
 //	NSLog(@"Setting visibility to %@.", visibility?@"True":@"False");
 	self.toolbarsVisible = visibility;
 

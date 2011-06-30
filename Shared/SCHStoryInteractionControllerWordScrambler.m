@@ -136,7 +136,7 @@
             [hintLetter moveToHomePosition];
         }
 
-        [hintLetter setLetterColor:[UIColor yellowColor]];
+        [hintLetter setLetterColor:[UIColor SCHYellowColor]];
     }
     
     self.hasShownHint = YES;
@@ -239,7 +239,7 @@
 - (void)wordScrambleComplete
 {
     for (SCHStoryInteractionDraggableLetterView *letter in self.letterViews) {
-        letter.letterColor = [UIColor yellowColor];
+        letter.letterColor = [UIColor SCHYellowColor];
     }
     
     [self playBundleAudioWithFilename:@"sfx_winround.mp3"

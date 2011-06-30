@@ -93,7 +93,7 @@
 {
     if (self.pageImageView.image == nil && UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
         self.pageImageView.image = [self.delegate currentPageSnapshot];
-        self.contentsView.backgroundColor = [UIColor blackColor];
+        self.contentsView.backgroundColor = [UIColor SCHBlackColor];
     }
     [super didRotateToInterfaceOrientation:toInterfaceOrientation];
 }
@@ -189,9 +189,9 @@
 {
     CGFloat scale = 1.0f / self.scrollView.zoomScale;
     UIColor *fillColors[3] = {
-        [UIColor colorWithRed:0.9 green:0.6 blue:0.2 alpha:1.0],
-        [UIColor yellowColor],
-        [UIColor orangeColor]
+        [UIColor SCHGreen2Color],
+        [UIColor SCHYellowColor],
+        [UIColor SCHOrange1Color]
     };
     BOOL iPad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
     
@@ -205,7 +205,7 @@
         star.center = CGPointMake(point.x + cos(angle)*3, point.y + sin(angle)*3);
         star.bounds = CGRectMake(0, 0, size, size);
         star.fillColor = fillColors[arc4random()%3];
-        star.borderColor = [UIColor greenColor];
+        star.borderColor = [UIColor SCHGreen1Color];        
         star.backgroundColor = [UIColor clearColor];
         star.transform = CGAffineTransformRotate(CGAffineTransformMakeScale(scale, scale), angle);
         [self.pageImageView addSubview:star];
