@@ -98,7 +98,7 @@
 																</object>
 																<object class="NSColor" key="IBUINormalTitleColor">
 																	<int key="NSColorSpace">1</int>
-																	<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
+																	<bytes key="NSRGB">MCAwLjI4MjM1Mjk1NDEgMC41NTY4NjI3NzE1AA</bytes>
 																</object>
 																<object class="NSColor" key="IBUINormalTitleShadowColor" id="149495038">
 																	<int key="NSColorSpace">3</int>
@@ -125,7 +125,7 @@
 																<reference key="IBUIHighlightedTitleColor" ref="731189675"/>
 																<object class="NSColor" key="IBUINormalTitleColor">
 																	<int key="NSColorSpace">1</int>
-																	<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
+																	<bytes key="NSRGB">MCAwLjI4MjM1Mjk1NDEgMC41NTY4NjI3NzE1AA</bytes>
 																</object>
 																<reference key="IBUINormalTitleShadowColor" ref="149495038"/>
 																<object class="NSCustomResource" key="IBUINormalImage">
@@ -181,7 +181,7 @@
 						<reference key="NSNextKeyView" ref="248936544"/>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">1</int>
-							<bytes key="NSRGB">MC42NTQ5MDE5NjA4IDAuODQzMTM3MjU0OSAwLjk4NDMxMzcyNTUAA</bytes>
+							<bytes key="NSRGB">MC44NDMxMzcyNjQzIDAuOTQ1MDk4MDQyNSAxAA</bytes>
 						</object>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -274,7 +274,7 @@
 				<reference key="NSNextKeyView" ref="500853774"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">1</int>
-					<bytes key="NSRGB">MSAwLjk4NjgzODM1MSAwLjI5NjQ2MzMzMjIAA</bytes>
+					<bytes key="NSRGB">MSAwLjk0OTAxOTYxMDkgMAA</bytes>
 				</object>
 				<object class="IBUISimulatedStatusBarMetrics" key="IBUISimulatedStatusBarMetrics">
 					<int key="IBUIStatusBarStyle">2</int>
@@ -306,6 +306,7 @@
 					<object class="IBUITableViewController" id="891391258">
 						<string key="IBUITitle"/>
 						<object class="IBUINavigationItem" key="IBUINavigationItem" id="205957914">
+							<reference key="IBUINavigationBar"/>
 							<string key="IBUITitle">Themes</string>
 							<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						</object>
@@ -345,7 +346,7 @@
 								<reference key="IBUIHighlightedTitleColor" ref="731189675"/>
 								<object class="NSColor" key="IBUINormalTitleColor">
 									<int key="NSColorSpace">1</int>
-									<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
+									<bytes key="NSRGB">MCAwLjI4MjM1Mjk1NDEgMC41NTY4NjI3NzE1AA</bytes>
 								</object>
 								<reference key="IBUINormalTitleShadowColor" ref="149495038"/>
 								<object class="NSCustomResource" key="IBUINormalImage">
@@ -369,7 +370,7 @@
 								<reference key="IBUIHighlightedTitleColor" ref="731189675"/>
 								<object class="NSColor" key="IBUINormalTitleColor">
 									<int key="NSColorSpace">1</int>
-									<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
+									<bytes key="NSRGB">MCAwLjI4MjM1Mjk1NDEgMC41NTY4NjI3NzE1AA</bytes>
 								</object>
 								<reference key="IBUINormalTitleShadowColor" ref="149495038"/>
 								<object class="NSCustomResource" key="IBUINormalImage">
