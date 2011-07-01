@@ -16,6 +16,7 @@
 @class SCHPrivateAnnotations;
 @class SCHBookAnnotations;
 @class SCHContentMetadataItem;
+@class SCHBookIdentifier;
 
 static NSString * const kSCHProfileItem = @"SCHProfileItem";
 
@@ -62,7 +63,7 @@ typedef enum {
 - (void)setRawPassword:(NSString *)value;
 - (BOOL)hasPassword;
 - (BOOL)validatePasswordWith:(NSString *)withPassword;
-- (BOOL) bookIsNewForProfileWithIdentifier: (NSString *)isbn;
+- (BOOL) bookIsNewForProfileWithIdentifier: (SCHBookIdentifier *)identifier;
 
 - (NSInteger)contentIdentifierLastPageLocation:(NSString *)contentIdentifier;
 

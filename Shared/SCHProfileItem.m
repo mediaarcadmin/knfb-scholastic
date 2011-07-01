@@ -242,7 +242,7 @@ static NSString * const kSCHProfileItemUserContentItemContentMetadataItem = @"Us
     
 }
 
-- (BOOL) bookIsNewForProfileWithIdentifier: (NSString *)isbn
+- (BOOL) bookIsNewForProfileWithIdentifier: (SCHBookIdentifier *)identifier
 {
     NSEntityDescription *entityDescription = [NSEntityDescription 
                                               entityForName:kSCHUserContentItem
@@ -251,7 +251,9 @@ static NSString * const kSCHProfileItemUserContentItemContentMetadataItem = @"Us
     NSFetchRequest *fetchRequest = [entityDescription.managedObjectModel 
                                     fetchRequestTemplateForName:kSCHUserContentItemFetchWithContentIdentifier];
     
-    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"ContentIdentifier == %@", isbn]];
+    NSPredicate *isbnPred = [NSPredicate predicateWithFormat:@"ContentIdentifier == %@", identifier.isbn];
+    NSPredicate *drmPred = [NSPredicate predicateWithFormat:@"DRMQualifier = %@", identifier.DRMQualifier];
+    [fetchRequest setPredicate:[NSCompoundPredicate andPredicateWithSubpredicates:[NSArray arrayWithObjects:isbnPred, drmPred, nil]]];
     [fetchRequest setFetchLimit:1];
     
     NSArray *userContentItems = [self.managedObjectContext executeFetchRequest:fetchRequest error:nil];	
