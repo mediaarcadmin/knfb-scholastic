@@ -18,6 +18,7 @@ static const NSInteger kSCHScratchPointCount = 200;
 @property (nonatomic, retain) NSArray *answerButtons;
 @property (nonatomic, assign) NSInteger currentQuestionIndex;
 @property (nonatomic, assign) BOOL askingQuestions;
+@property (nonatomic, assign) NSInteger simultaneousTapCount;
 
 - (SCHStoryInteractionScratchAndSeeQuestion *)currentQuestion;
 - (void)nextQuestion;
@@ -45,6 +46,7 @@ static const NSInteger kSCHScratchPointCount = 200;
 @synthesize cLabel;
 @synthesize currentQuestionIndex;
 @synthesize askingQuestions;
+@synthesize simultaneousTapCount;
 
 @synthesize answerButtons;
 
@@ -176,6 +178,7 @@ static const NSInteger kSCHScratchPointCount = 200;
         [[self.answerButtons objectAtIndex:i] setHidden:YES];
     }
 
+    self.simultaneousTapCount = 0;
 }
 
 - (void)askQuestion
@@ -210,6 +213,20 @@ static const NSInteger kSCHScratchPointCount = 200;
 
 - (IBAction)questionButtonTapped:(UIButton *)sender
 {
+    self.simultaneousTapCount++;
+    if (self.simultaneousTapCount == 1) {
+        [self performSelector:@selector(answerChosen:) withObject:sender afterDelay:kMinimumDistinguishedAnswerDelay];
+    }
+}
+
+- (void)answerChosen:(UIButton *)sender
+{
+    NSInteger tapCount = self.simultaneousTapCount;
+    self.simultaneousTapCount = 0;
+    if (tapCount > 1) {
+        return;
+    }
+
     NSInteger selection = [self.answerButtons indexOfObject:sender];
     
     if (selection == [[self currentQuestion] correctAnswer]) {
