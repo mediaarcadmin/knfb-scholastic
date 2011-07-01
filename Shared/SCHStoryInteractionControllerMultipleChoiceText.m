@@ -16,6 +16,7 @@
 @interface SCHStoryInteractionControllerMultipleChoiceText ()
 
 @property (nonatomic, assign) NSInteger currentQuestionIndex;
+@property (nonatomic, assign) NSInteger simultaneousTapCount;
 @property (nonatomic, assign) BOOL answeredCorrectly;
 
 - (void)nextQuestion;
@@ -28,6 +29,7 @@
 
 @synthesize answerButtons;
 @synthesize currentQuestionIndex;
+@synthesize simultaneousTapCount;
 @synthesize answeredCorrectly;
 
 - (void)dealloc
@@ -68,6 +70,7 @@
     BOOL iPad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
 
     self.answeredCorrectly = NO;
+    self.simultaneousTapCount = 0;
     [self setTitle:[self currentQuestion].prompt];
 
     for (UIButton *button in self.answerButtons) {
@@ -141,35 +144,51 @@
 
 - (IBAction)answerButtonTapped:(UIButton *)sender
 {
-    NSUInteger chosenAnswer = sender.tag - 1;
+    self.simultaneousTapCount++;
+    if (self.simultaneousTapCount == 1) {
+        [self performSelector:@selector(answerChosen:) withObject:sender afterDelay:0.3];
+    }
+}
 
-    self.contentsView.userInteractionEnabled = NO;
+- (void)answerChosen:(UIButton *)sender
+{
+    // ignore simultaneous taps on multiple buttons
+    NSInteger answersTapped = self.simultaneousTapCount;
+    self.simultaneousTapCount = 0;
+    if (answersTapped > 1) {
+        return;
+    }
     
-    if (chosenAnswer < [[self currentQuestion].answers count]) {
-        [sender setSelected:YES];
-        if (chosenAnswer == [self currentQuestion].correctAnswer) {
-            self.answeredCorrectly = YES;
-            [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
-            [self enqueueAudioWithPath:[[self currentQuestion] audioPathForAnswerAtIndex:chosenAnswer] fromBundle:NO];
-            [self enqueueAudioWithPath:[(SCHStoryInteractionMultipleChoiceText *)self.storyInteraction audioPathForThatsRight] fromBundle:NO];
-            [self enqueueAudioWithPath:[[self currentQuestion] audioPathForCorrectAnswer]
-                            fromBundle:NO
-                            startDelay:0
-                synchronizedStartBlock:nil
-                  synchronizedEndBlock:^{
-                      self.contentsView.userInteractionEnabled = YES;
-                      [self nextQuestion];
-                  }];
-        } else {
-            [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
-            [self enqueueAudioWithPath:[[self currentQuestion] audioPathForIncorrectAnswer]
-                            fromBundle:NO
-                            startDelay:0
-                synchronizedStartBlock:nil
-                  synchronizedEndBlock:^{
-                      self.contentsView.userInteractionEnabled = YES;
-                  }];
-        }
+    NSUInteger chosenAnswer = sender.tag - 1;
+    if (chosenAnswer >= [[self currentQuestion].answers count]) {
+        return;
+    }
+    
+    [self setUserInteractionsEnabled:NO];
+    
+    [sender setSelected:YES];
+    if (chosenAnswer == [self currentQuestion].correctAnswer) {
+        self.answeredCorrectly = YES;
+        [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
+        [self enqueueAudioWithPath:[[self currentQuestion] audioPathForAnswerAtIndex:chosenAnswer] fromBundle:NO];
+        [self enqueueAudioWithPath:[(SCHStoryInteractionMultipleChoiceText *)self.storyInteraction audioPathForThatsRight] fromBundle:NO];
+        [self enqueueAudioWithPath:[[self currentQuestion] audioPathForCorrectAnswer]
+                        fromBundle:NO
+                        startDelay:0
+            synchronizedStartBlock:nil
+              synchronizedEndBlock:^{
+                  [self setUserInteractionsEnabled:YES];
+                  [self nextQuestion];
+              }];
+    } else {
+        [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
+        [self enqueueAudioWithPath:[[self currentQuestion] audioPathForIncorrectAnswer]
+                        fromBundle:NO
+                        startDelay:0
+            synchronizedStartBlock:nil
+              synchronizedEndBlock:^{
+                  [self setUserInteractionsEnabled:YES];
+              }];
     }
 }
 

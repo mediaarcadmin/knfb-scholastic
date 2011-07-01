@@ -460,9 +460,13 @@
 
 - (void)setUserInteractionsEnabled:(BOOL)enabled
 {
-    NSLog(@"user interactions enabled = %d", enabled);
     self.containerView.superview.userInteractionEnabled = enabled;
     self.containerView.userInteractionEnabled = enabled;
+}
+
+- (BOOL)isUserInteractionsEnabled
+{
+    return self.containerView.userInteractionEnabled;
 }
 
 #pragma mark - Notification methods

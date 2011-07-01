@@ -71,7 +71,6 @@ static CGFloat const kSCHImageButtonBorderWidthSelected = 4.0;
 
 - (void)tapped:(UIGestureRecognizer *)gestureRecognizer
 {
-    self.selected = YES;
     if (actionBlock != nil) {
         actionBlock(self);
     }
