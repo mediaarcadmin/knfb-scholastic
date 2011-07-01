@@ -421,9 +421,9 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 
 #pragma mark - List View Cell Delegate
 
-- (void)bookShelfTableViewCellSelectedDeleteForISBN:(NSString *)isbn;
+- (void)bookShelfTableViewCellSelectedDeleteForIdentifier:(SCHBookIdentifier *)identifier
 {
-    NSLog(@"Deleting list view row associated with ISBN: %@", isbn);
+    NSLog(@"Deleting list view row associated with identifier: %@", identifier);
 }
 
 #pragma mark - UITableViewDelegate methods

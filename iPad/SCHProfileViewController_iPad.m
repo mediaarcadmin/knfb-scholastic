@@ -291,8 +291,11 @@ static const CGFloat kProfilePadTableOffsetLandscape = 220.0f;
     bookShelfViewController.profileItem = profileItem;
     bookShelfViewController.managedObjectContext = self.managedObjectContext;
     
+    SCHBookIdentifier *bookIdentifier = nil;
     if (profileItem.AppProfile.AutomaticallyLaunchBook != nil) {
-        SCHBookIdentifier *bookIdentifier = [[SCHBookIdentifier alloc] initWithEncodedString:profileItem.AppProfile.AutomaticallyLaunchBook];
+        bookIdentifier = [[SCHBookIdentifier alloc] initWithEncodedString:profileItem.AppProfile.AutomaticallyLaunchBook];
+    }
+    if (bookIdentifier) {
         SCHReadingViewController *readingViewController = [bookShelfViewController openBook:bookIdentifier];
         [bookIdentifier release];
         NSArray *viewControllers = [self.navigationController.viewControllers arrayByAddingObjectsFromArray:

@@ -24,6 +24,6 @@
 @protocol SCHBookShelfTableViewCellDelegate <NSObject>
 
 @optional
-- (void)bookShelfTableViewCellSelectedDeleteForISBN:(NSString *)isbn;
+- (void)bookShelfTableViewCellSelectedDeleteForIdentifier:(SCHBookIdentifier *)identifier;
 
 @end

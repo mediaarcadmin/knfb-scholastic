@@ -11,6 +11,7 @@
 #import "SCHAsyncBookCoverImageView.h"
 #import "SCHAppBook.h"
 #import "SCHBookManager.h"
+#import "SCHBookIdentifier.h"
 #import <CoreText/CoreText.h>
 #import "SCHThemeManager.h"
 
@@ -40,7 +41,7 @@ static NSInteger const CELL_BACKGROUND_VIEW = 200;
 
 @implementation SCHBookShelfTableViewCell
 
-@synthesize isbn;
+@synthesize identifier;
 @synthesize delegate;
 
 - (id) initWithCoder:(NSCoder *)aDecoder
@@ -60,13 +61,16 @@ static NSInteger const CELL_BACKGROUND_VIEW = 200;
 - (void)dealloc 
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-    [isbn release], isbn = nil;
+    [identifier release], identifier = nil;
     [super dealloc];
 }
 
 - (void)refreshCell
 {
-   	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];    
+    NSAssert([NSThread isMainThread], @"must refreshCell on main thread");
+    
+    SCHBookManager *bookManager = [SCHBookManager sharedBookManager];
+   	SCHAppBook *book = [bookManager bookWithIdentifier:self.identifier inManagedObjectContext:bookManager.mainThreadManagedObjectContext];    
 	// image processing
     [[SCHProcessingManager sharedProcessingManager] requestThumbImageForBookCover:self.bookCoverImageView
                                                                              size:self.bookCoverImageView.thumbSize
@@ -131,20 +135,14 @@ static NSInteger const CELL_BACKGROUND_VIEW = 200;
     self.backgroundView.backgroundColor = [[SCHThemeManager sharedThemeManager] colorForListBackground];
 }
 
-- (void)setIsbn:(NSString *)newIsbn
+- (void)setIdentifier:(SCHBookIdentifier *)newIdentifier
 {	
-	if (newIsbn != isbn) {
-//        [[NSNotificationCenter defaultCenter] removeObserver:self name:@"SCHBookDownloadPercentageUpdate" object:nil];
+	if (![newIdentifier isEqual:self.identifier]) {
         [[NSNotificationCenter defaultCenter] removeObserver:self name:@"SCHBookStatusUpdate" object:nil];
         [[NSNotificationCenter defaultCenter] removeObserver:self name:@"SCHNewImageAvailable" object:nil];
-        
-		[isbn release];
-		isbn = [newIsbn copy];
-        
-//        [[NSNotificationCenter defaultCenter] addObserver:self
-//                                                 selector:@selector(updatePercentage:) 
-//                                                     name:@"SCHBookDownloadPercentageUpdate" 
-//                                                   object:nil];
+
+        [identifier release];
+        identifier = [newIdentifier retain];
         
         [[NSNotificationCenter defaultCenter] addObserver:self 
                                                  selector:@selector(updateTheme) 
@@ -161,7 +159,7 @@ static NSInteger const CELL_BACKGROUND_VIEW = 200;
                                                      name:@"SCHNewImageAvailable"
                                                    object:nil];
         
-        [self.bookCoverImageView setIsbn:self.isbn];
+        [self.bookCoverImageView setIdentifier:self.identifier];
         [self refreshCell];        
 	}
 }
@@ -172,8 +170,8 @@ static NSInteger const CELL_BACKGROUND_VIEW = 200;
 {
     NSLog(@"Pressed delete button!");
     
-    if (self.delegate && [self.delegate respondsToSelector:@selector(bookShelfTableViewCellSelectedDeleteForISBN:)]) {
-        [self.delegate bookShelfTableViewCellSelectedDeleteForISBN:self.isbn];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(bookShelfTableViewCellSelectedDeleteForIdentifier:)]) {
+        [self.delegate bookShelfTableViewCellSelectedDeleteForIdentifier:self.identifier];
     }
 }
 
@@ -181,7 +179,7 @@ static NSInteger const CELL_BACKGROUND_VIEW = 200;
 
 - (void)checkForCellUpdateFromNotification:(NSNotification *)notification
 {
-    if ([self.isbn compare:[[notification userInfo] objectForKey:@"isbn"]] == NSOrderedSame) {
+    if ([self.identifier isEqual:[[notification userInfo] objectForKey:@"bookIdentifier"]]) {
         [self refreshCell];
     }
 }	
