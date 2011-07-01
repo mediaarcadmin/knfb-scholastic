@@ -17,6 +17,7 @@
 
 @property (nonatomic, retain) NSMutableArray *remainingWords;
 @property (nonatomic, retain) NSArray *wordViews;
+@property (nonatomic, assign) BOOL finishingUp;
 
 - (void)layoutWordViewsForPad;
 - (void)layoutWordViewsForPhone;
@@ -29,6 +30,7 @@
 @synthesize wordsContainerView;
 @synthesize remainingWords;
 @synthesize wordViews;
+@synthesize finishingUp;
 
 - (void)dealloc
 {
@@ -37,6 +39,14 @@
     [wordViews release];
     [remainingWords release];
     [super dealloc];
+}
+
+- (IBAction)playAudioButtonTapped:(id)sender
+{
+    if (self.finishingUp == NO) {
+        [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
+        [self enqueueAudioWithPath:[self audioPathForQuestion] fromBundle:NO];
+    }
 }
 
 - (void)setupViewAtIndex:(NSInteger)screenIndex
@@ -162,6 +172,7 @@
         [self enqueueAudioWithPath:[wordSearch audioPathForCorrectAnswer] fromBundle:NO];
         if ([self.remainingWords count] == 0) {
             [containerView setUserInteractionEnabled:NO];
+            self.finishingUp = YES;
             [self enqueueAudioWithPath:[wordSearch audioPathForYouFoundThemAll]
                             fromBundle:NO
                             startDelay:0
