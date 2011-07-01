@@ -393,7 +393,10 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
         cell.delegate = self;
     }
     
-    cell.isbn = [self.books objectAtIndex:[indexPath row]];
+    NSString *isbn = [self.books objectAtIndex:[indexPath row]];
+    
+    cell.isNewBook = [self.profileItem bookIsNewForProfileWithIdentifier:isbn];
+    cell.isbn = isbn;
     
     return cell;
 }
