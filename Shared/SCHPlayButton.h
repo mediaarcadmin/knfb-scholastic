@@ -10,6 +10,12 @@
 
 @class SCHPlayButton;
 
+typedef enum {
+    SCHPlayButtonIconNone,
+	SCHPlayButtonIconPlay,
+    SCHPlayButtonIconPause
+} SCHPlayButtonIcon;
+
 typedef void (^PlayButtonActionBlock)(SCHPlayButton *playButton);
 
 @interface SCHPlayButton : UIImageView 
@@ -17,6 +23,7 @@ typedef void (^PlayButtonActionBlock)(SCHPlayButton *playButton);
 }
 
 @property (nonatomic, assign) BOOL play;
+@property (nonatomic, assign) SCHPlayButtonIcon icon;
 @property (nonatomic, copy) PlayButtonActionBlock actionBlock;
 
 @end
