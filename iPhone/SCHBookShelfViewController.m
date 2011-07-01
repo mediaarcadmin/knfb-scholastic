@@ -425,13 +425,13 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 - (void)bookShelfTableViewCellSelectedDeleteForISBN:(NSString *)isbn;
 {
     NSLog(@"Deleting list view row associated with ISBN: %@", isbn);
-    if ([self.profileItem bookIsTrashedWithIdentifier:isbn]) {
-        [self.profileItem setTrashed:NO forBookWithIdentifier:isbn];
-    } else {
-        [self.profileItem setTrashed:YES forBookWithIdentifier:isbn];
-    }
-    [self.listTableView reloadData];
-    [self.gridView reloadData];
+//    if ([self.profileItem bookIsTrashedWithIdentifier:isbn]) {
+//        [self.profileItem setTrashed:NO forBookWithIdentifier:isbn];
+//    } else {
+//        [self.profileItem setTrashed:YES forBookWithIdentifier:isbn];
+//    }
+//    [self.listTableView reloadData];
+//    [self.gridView reloadData];
 }
 
 #pragma mark - UITableViewDelegate methods
