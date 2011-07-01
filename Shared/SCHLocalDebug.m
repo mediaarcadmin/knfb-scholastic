@@ -116,7 +116,7 @@
 		
 		[provider release];
   
-        // Add the book to the all books (Jimmy's) profile
+        // Add the book to the 2nd Profile
         newUserContentItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHUserContentItem inManagedObjectContext:self.managedObjectContext];
 		
 		newUserContentItem.LastModified = now;
@@ -128,7 +128,7 @@
 		
 		newContentProfileItem.LastModified = now;
 		newContentProfileItem.IsFavorite = [NSNumber numberWithBool:YES];
-        newContentProfileItem.ProfileID = [NSNumber numberWithInt:3];
+        newContentProfileItem.ProfileID = [NSNumber numberWithInt:2];
 		
 		[newUserContentItem addProfileListObject:newContentProfileItem];	
         

@@ -20,6 +20,7 @@ typedef enum {
 
 @property (nonatomic, assign) NSInteger currentQuestionIndex;
 @property (nonatomic, retain) NSMutableArray *outcomeCounts;
+@property (nonatomic, assign) NSInteger simultaneousTapCount;
 
 - (void)setupOpeningView;
 - (void)setupMainView;
@@ -41,6 +42,7 @@ typedef enum {
 @synthesize questionLabel;
 @synthesize answerButtons;
 @synthesize currentQuestionIndex;
+@synthesize simultaneousTapCount;
 
 @synthesize outcomeCounts;
 @synthesize outcomeTitleLabel;
@@ -133,6 +135,8 @@ typedef enum {
     for (; i < [self.answerButtons count]; ++i) {
         [[self.answerButtons objectAtIndex:i] setHidden:YES];
     }
+    
+    self.simultaneousTapCount = 0;
 }
 
 - (void)nextQuestion
@@ -205,6 +209,20 @@ typedef enum {
 
 - (IBAction)questionButtonTapped:(id)sender
 {
+    self.simultaneousTapCount++;
+    if (self.simultaneousTapCount == 1) {
+        [self performSelector:@selector(answerChosen:) withObject:sender afterDelay:kMinimumDistinguishedAnswerDelay];
+    }
+}
+
+- (void)answerChosen:(id)sender
+{
+    NSInteger tapCount = self.simultaneousTapCount;
+    self.simultaneousTapCount = 0;
+    if (tapCount > 1) {
+        return;
+    }
+    
     NSNumber *selection = [NSNumber numberWithInt:[self.answerButtons indexOfObject:sender]];
     NSNumber *currentCount = [self.outcomeCounts objectAtIndex:[selection intValue]];
     

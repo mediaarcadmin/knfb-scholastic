@@ -39,6 +39,12 @@
     [super dealloc];
 }
 
+- (IBAction)playAudioButtonTapped:(id)sender
+{
+    [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
+    [self enqueueAudioWithPath:[self audioPathForQuestion] fromBundle:NO];
+}
+
 - (void)setupViewAtIndex:(NSInteger)screenIndex
 {
     BOOL iPad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);

@@ -460,9 +460,13 @@
 
 - (void)setUserInteractionsEnabled:(BOOL)enabled
 {
-    NSLog(@"user interactions enabled = %d", enabled);
     self.containerView.superview.userInteractionEnabled = enabled;
     self.containerView.userInteractionEnabled = enabled;
+}
+
+- (BOOL)isUserInteractionsEnabled
+{
+    return self.containerView.userInteractionEnabled;
 }
 
 #pragma mark - Notification methods
@@ -515,6 +519,12 @@
     if (path != nil) {
         [self playAudioAtPath:path completion:nil];
     }   
+}
+
+- (void)playDefaultButtonAudio
+{
+    [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
+    [self enqueueAudioWithPath:[self.storyInteraction storyInteractionWrongAnswerSoundFilename] fromBundle:YES];
 }
 
 - (void)playAudioAtPath:(NSString *)path completion:(void (^)(void))completion
