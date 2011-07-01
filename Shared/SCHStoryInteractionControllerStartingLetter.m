@@ -65,23 +65,36 @@
             if (imageData != nil) {
                 imageButton.image = [UIImage imageWithData:imageData];
             }
-            imageButton.normalColor = [UIColor colorWithRed:0.071 green:0.396 blue:0.698 alpha:1.000];
-            imageButton.selectedColor = ([question isCorrect] == NO ? [UIColor colorWithRed:0.973 green:0.004 blue:0.094 alpha:1.000] : [UIColor colorWithRed:0.157 green:0.753 blue:0.341 alpha:1.000]);            
+            imageButton.normalColor = [UIColor SCHBlue2Color];
+            imageButton.selectedColor = ([question isCorrect] == NO ? [UIColor SCHScholasticRedColor] : [UIColor SCHGreen1Color]);                        
             imageButton.actionBlock = ^(SCHImageButton *imageButton) {
                 SCHStoryInteractionStartingLetterQuestion *question = [self questionAtIndex:imageButton.tag - 1]; 
                 if (question != nil) {
                     [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
+                    [self setUserInteractionsEnabled:NO];                    
                     if ([question isCorrect] == YES) {
                         [self enqueueAudioWithPath:[(SCHStoryInteractionStartingLetter *)self.storyInteraction audioPathForThatsRight] fromBundle:NO];
                         [self enqueueAudioWithPath:[question audioPath] fromBundle:NO];
                         [self enqueueAudioWithPath:[(SCHStoryInteractionStartingLetter *)self.storyInteraction audioPathForStartsWith] fromBundle:NO];
-                        [self enqueueAudioWithPath:[(SCHStoryInteractionStartingLetter *)self.storyInteraction audioPathForLetter] fromBundle:NO];
+                        [self enqueueAudioWithPath:[(SCHStoryInteractionStartingLetter *)self.storyInteraction audioPathForLetter] 
+                                        fromBundle:NO
+                                        startDelay:0.0 
+                            synchronizedStartBlock:nil 
+                              synchronizedEndBlock:^{
+                                  [self setUserInteractionsEnabled:YES];                                      
+                              }];
                         [self questionsCompleted];                         
                     } else {
                         [self enqueueAudioWithPath:[question audioPath] fromBundle:NO];
                         [self enqueueAudioWithPath:[(SCHStoryInteractionStartingLetter *)self.storyInteraction audioPathForDoesntStartWith] fromBundle:NO];
                         [self enqueueAudioWithPath:[(SCHStoryInteractionStartingLetter *)self.storyInteraction audioPathForLetter] fromBundle:NO];
-                        [self enqueueAudioWithPath:[(SCHStoryInteractionStartingLetter *)self.storyInteraction audioPathForTryAgain] fromBundle:NO];
+                        [self enqueueAudioWithPath:[(SCHStoryInteractionStartingLetter *)self.storyInteraction audioPathForTryAgain] 
+                                        fromBundle:NO 
+                                        startDelay:0.0 
+                            synchronizedStartBlock:nil 
+                              synchronizedEndBlock:^{
+                                  [self setUserInteractionsEnabled:YES];                                      
+                              }];
                     }
                 }
             };
@@ -113,12 +126,14 @@
     }
     
     if (ret == YES) {
-        [self setUserInteractionsEnabled:NO];
         [self enqueueAudioWithPath:[(SCHStoryInteractionStartingLetter *)self.storyInteraction audioPathForYouFoundThemAll]
                         fromBundle:NO
                         startDelay:0
-            synchronizedStartBlock:nil
+            synchronizedStartBlock:^{
+                [self setUserInteractionsEnabled:NO];
+            }
               synchronizedEndBlock:^{
+                  [self setUserInteractionsEnabled:YES];                                      
                   [self removeFromHostViewWithSuccess:YES];
               }];
     }

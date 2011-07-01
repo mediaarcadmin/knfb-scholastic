@@ -285,14 +285,14 @@
 	youngProfileItem.ID = [NSNumber numberWithInt:1];
     dateComponents.year = -5;
 	youngProfileItem.Birthday = [gregorian dateByAddingComponents:dateComponents toDate:[NSDate date] options:0];
-	youngProfileItem.FirstName = @"Joe";
+	youngProfileItem.FirstName = @"Bookshelf #1";
 	youngProfileItem.ProfilePasswordRequired = [NSNumber numberWithBool:NO];
 	youngProfileItem.Type = [NSNumber numberWithProfileType:kSCHProfileTypesCHILD];
-	youngProfileItem.ScreenName = @"Young Child";
+	youngProfileItem.ScreenName = @"Bookshelf #1";
 	youngProfileItem.AutoAssignContentToProfiles = [NSNumber numberWithBool:YES];
 	youngProfileItem.LastScreenNameModified = now;
 	youngProfileItem.BookshelfStyle = [NSNumber numberWithBookshelfStyle:kSCHBookshelfStyleYoungChild];
-	youngProfileItem.LastName = @"Doe";
+	youngProfileItem.LastName = @"Bookshelf #1";
 	youngProfileItem.LastModified = now;
     youngProfileItem.AppProfile = [NSEntityDescription insertNewObjectForEntityForName:kSCHAppProfile inManagedObjectContext:self.managedObjectContext];
     
@@ -307,41 +307,19 @@
 	olderProfileItem.ID = [NSNumber numberWithInt:2];
     dateComponents.year = -14;
 	olderProfileItem.Birthday = [gregorian dateByAddingComponents:dateComponents toDate:[NSDate date] options:0];
-	olderProfileItem.FirstName = @"John";
+	olderProfileItem.FirstName = @"Bookshelf #2";
 	olderProfileItem.ProfilePasswordRequired = [NSNumber numberWithBool:NO];
 	olderProfileItem.Type = [NSNumber numberWithProfileType:kSCHProfileTypesCHILD];
-	olderProfileItem.ScreenName = @"Older Child";
+	olderProfileItem.ScreenName = @"Bookshelf #2";
 	olderProfileItem.AutoAssignContentToProfiles = [NSNumber numberWithBool:YES];
 	olderProfileItem.LastScreenNameModified = now;
 	olderProfileItem.BookshelfStyle = [NSNumber numberWithBookshelfStyle:kSCHBookshelfStyleOlderChild];
-	olderProfileItem.LastName = @"Doe";
+	olderProfileItem.LastName = @"Bookshelf #2";
 	olderProfileItem.LastModified = now;
     olderProfileItem.AppProfile = [NSEntityDescription insertNewObjectForEntityForName:kSCHAppProfile inManagedObjectContext:self.managedObjectContext];
     
     SCHAnnotationsItem *olderAnnotationsItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHAnnotationsItem inManagedObjectContext:self.managedObjectContext];
     olderAnnotationsItem.ProfileID = olderProfileItem.ID;    
-    
-	SCHProfileItem *allBooksProfileItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHProfileItem inManagedObjectContext:self.managedObjectContext];
-	
-	allBooksProfileItem.LastModified = now;
-	
-	allBooksProfileItem.StoryInteractionEnabled = [NSNumber numberWithBool:YES];
-	allBooksProfileItem.ID = [NSNumber numberWithInt:3];
-    dateComponents.year = -8;
-	allBooksProfileItem.Birthday = [gregorian dateByAddingComponents:dateComponents toDate:[NSDate date] options:0];
-	allBooksProfileItem.FirstName = @"Jimmy";
-	allBooksProfileItem.ProfilePasswordRequired = [NSNumber numberWithBool:NO];
-	allBooksProfileItem.Type = [NSNumber numberWithProfileType:kSCHProfileTypesCHILD];
-	allBooksProfileItem.ScreenName = @"FullProfile";
-	allBooksProfileItem.AutoAssignContentToProfiles = [NSNumber numberWithBool:YES];
-	allBooksProfileItem.LastScreenNameModified = now;
-	allBooksProfileItem.BookshelfStyle = [NSNumber numberWithBookshelfStyle:kSCHBookshelfStyleOlderChild];
-	allBooksProfileItem.LastName = @"Smith";
-	allBooksProfileItem.LastModified = now;    
-    allBooksProfileItem.AppProfile = [NSEntityDescription insertNewObjectForEntityForName:kSCHAppProfile inManagedObjectContext:self.managedObjectContext];
-    
-    SCHAnnotationsItem *allBooksAnnotationsItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHAnnotationsItem inManagedObjectContext:self.managedObjectContext];
-    allBooksAnnotationsItem.ProfileID = allBooksProfileItem.ID;    
     
 	SCHContentMetadataItem *newContentMetadataItem = nil;
 	SCHUserContentItem *newUserContentItem = nil;
@@ -393,27 +371,32 @@
 		
 		newContentProfileItem.IsFavorite = [NSNumber numberWithBool:YES];
         
-        if ([newContentMetadataItem.FileName isEqualToString:@"OlliesNewTricks"] ||
-            [newContentMetadataItem.FileName isEqualToString:@"WhoWillCarveTurkey"]) {
+        if ([newContentMetadataItem.FileName isEqualToString:@"9780545308656.6.StableMatesPatch"]) { // Add to both bookshelves
             newContentProfileItem.ProfileID = [NSNumber numberWithInt:1];
             [self addAnnotationStructure:newUserContentItem annotationsItem:youngAnnotationsItem];
-        } else {
+            [newUserContentItem addProfileListObject:newContentProfileItem];	
+
+            // Add it to the 2nd shelf too
+            newContentProfileItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHContentProfileItem inManagedObjectContext:self.managedObjectContext];			
+            newContentProfileItem.LastModified = now;
+            newContentProfileItem.IsFavorite = [NSNumber numberWithBool:YES];
             newContentProfileItem.ProfileID = [NSNumber numberWithInt:2];
             [self addAnnotationStructure:newUserContentItem annotationsItem:olderAnnotationsItem];            
-        }
-		
-		[newUserContentItem addProfileListObject:newContentProfileItem];	
+            
+            [newUserContentItem addProfileListObject:newContentProfileItem];
+        } else if([newContentMetadataItem.FileName isEqualToString:@"9780545289726_r1.OlliesNewTricks"] || 
+                  [newContentMetadataItem.FileName isEqualToString:@"9780545327619_r1.WhoWillCarveTheTurkey"] || 
+                  [newContentMetadataItem.FileName isEqualToString:@"9780545287012_r1.HalloweenParade"]) { // Add to 1st bookshelf
+            newContentProfileItem.ProfileID = [NSNumber numberWithInt:1];
+            [self addAnnotationStructure:newUserContentItem annotationsItem:youngAnnotationsItem];
+            [newUserContentItem addProfileListObject:newContentProfileItem];	
 
-        // Add the book to an all books profile
-        newContentProfileItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHContentProfileItem inManagedObjectContext:self.managedObjectContext];			
-		
-		newContentProfileItem.LastModified = now;
-		newContentProfileItem.IsFavorite = [NSNumber numberWithBool:YES];
-        newContentProfileItem.ProfileID = [NSNumber numberWithInt:3];
-        [self addAnnotationStructure:newUserContentItem annotationsItem:allBooksAnnotationsItem];            
-		
-		[newUserContentItem addProfileListObject:newContentProfileItem];	
-        
+        } else {  // Add to 2nd bookshelf
+            newContentProfileItem.ProfileID = [NSNumber numberWithInt:2];
+            [self addAnnotationStructure:newUserContentItem annotationsItem:olderAnnotationsItem];  
+            [newUserContentItem addProfileListObject:newContentProfileItem];	
+        }
+		        
         newOrderItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHOrderItem inManagedObjectContext:self.managedObjectContext];
         newOrderItem.OrderID = [[NSNumber numberWithInteger:orderID++] stringValue];
         newOrderItem.OrderDate = [NSDate dateWithTimeIntervalSinceNow:orderID * 60];
@@ -423,8 +406,6 @@
         if (![self.managedObjectContext save:&error]) {
             NSLog(@"Error saving managed object context: %@ : %@", error, [error userInfo]); 
         }
-//		SCHBookInfo *bookInfo = [SCHBookManager bookInfoWithBookIdentifier:newUserContentItem.ContentIdentifier];
-//		[bookInfo setProcessingState:SCHBookProcessingStateNoCoverImage];
         
         newContentMetadataItem.AppBook.State = [NSNumber numberWithInt:SCHBookProcessingStateNoCoverImage];
 		

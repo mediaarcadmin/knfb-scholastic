@@ -16,7 +16,7 @@
 {
     self.layer.borderWidth = 2;
     self.layer.cornerRadius = 2;
-    self.layer.borderColor = [[UIColor colorWithRed:0.133 green:0.243 blue:0.549 alpha:1.] CGColor];
+    self.layer.borderColor = [[UIColor SCHDarkBlue1Color] CGColor];
     self.layer.shadowColor = [[UIColor blackColor] CGColor];
     self.layer.shadowOffset = CGSizeMake(2, 2);
     self.layer.shadowOpacity = 0.5;

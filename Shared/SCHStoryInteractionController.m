@@ -139,12 +139,10 @@
         self.xpsProvider = [[SCHBookManager sharedBookManager] threadSafeCheckOutXPSProviderForBookIdentifier:self.bookIdentifier];
         
         NSString *questionAudioPath = [self audioPathForQuestion];
-        [self playBundleAudioWithFilename:[storyInteraction storyInteractionOpeningSoundFilename]
-                               completion:^{
-                                   if (questionAudioPath && [self shouldPlayQuestionAudioForViewAtIndex:self.currentScreenIndex]) {
-                                       [self playAudioAtPath:questionAudioPath completion:nil];
-                                   }
-                               }];
+        [self enqueueAudioWithPath:[storyInteraction storyInteractionOpeningSoundFilename] fromBundle:YES];        
+        if (questionAudioPath && [self shouldPlayQuestionAudioForViewAtIndex:self.currentScreenIndex]) {
+            [self enqueueAudioWithPath:questionAudioPath fromBundle:NO];        
+        }        
 
         // set up the transparent full-size container to trap touch events before they get
         // to the underlying view; this effectively makes the story interaction modal
@@ -257,7 +255,7 @@
     }
     
     self.titleView.textAlignment = UITextAlignmentCenter;
-    self.titleView.textColor = [self.storyInteraction isOlderStoryInteraction] ? [UIColor whiteColor] : [UIColor colorWithRed:0.113 green:0.392 blue:0.690 alpha:1.];
+    self.titleView.textColor = [self.storyInteraction isOlderStoryInteraction] ? [UIColor whiteColor] : [UIColor SCHBlue2Color];
     self.titleView.adjustsFontSizeToFitWidth = YES;
     self.titleView.numberOfLines = 2;
     if (hasShadow) {
@@ -474,21 +472,38 @@
     [self.audioPlayer cancelPlaybackExecutingSynchronizedBlocksImmediately:NO];
 }
 
+- (void)removeFromHostViewAfterDelayWithSuccess:(BOOL)success
+{
+    
+}
+
 - (void)removeFromHostViewWithSuccess:(BOOL)success
 {
     [self cancelQueuedAudio];
     
     [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.bookIdentifier];
     
-    // always, always re-enable user interactions for the superview...
-    [self setUserInteractionsEnabled:YES];
+    void (^teardownBlock)(void) = ^{ 
+        // always, always re-enable user interactions for the superview...
+        [self setUserInteractionsEnabled:YES];
+        
+        [self.containerView removeFromSuperview];
+        [self.shadeView removeFromSuperview];
+        
+        if (delegate && [delegate respondsToSelector:@selector(storyInteractionController:didDismissWithSuccess:)]) {
+            // may result in self being dealloc'ed so don't do anything else after this
+            [delegate storyInteractionController:self didDismissWithSuccess:success];
+        }
+    };
     
-    [self.containerView removeFromSuperview];
-    [self.shadeView removeFromSuperview];
-    
-    if (delegate && [delegate respondsToSelector:@selector(storyInteractionController:didDismissWithSuccess:)]) {
-        // may result in self being dealloc'ed so don't do anything else after this
-        [delegate storyInteractionController:self didDismissWithSuccess:success];
+    if (success) {
+        double delayInSeconds = 0.75;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            teardownBlock();
+        });
+    } else {
+        teardownBlock();
     }
 }
 

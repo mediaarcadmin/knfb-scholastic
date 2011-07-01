@@ -16,5 +16,6 @@
 @property (nonatomic, assign) CGFloat shelfHeight;
 @property (nonatomic, assign) CGSize  shelfInset;
 @property (nonatomic, retain) UIImage *shelfImage;
+@property (nonatomic, retain) UIView *toggleView;
 
 @end

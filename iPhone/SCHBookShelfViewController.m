@@ -23,7 +23,6 @@
 #import "KNFBTimeOrderedCache.h"
 #import "SCHProfileItem.h"
 #import "SCHAppProfile.h"
-#import "SCHBookShelfTableViewCell.h"
 #import "SCHBookIdentifier.h"
 
 static NSInteger const kSCHBookShelfViewControllerGridCellHeightPortrait = 138;
@@ -45,18 +44,27 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 - (CGFloat)cellBorderSize;
 - (void)updateTable:(NSNotification *)notification;
 
+// FIXME: this isn't really necessary
+- (IBAction)changeToListView:(UIButton *)sender;
+- (IBAction)changeToGridView:(UIButton *)sender;
+
+
+@property (nonatomic, retain) UINib *listTableCellNib;
+
 @end
 
 @implementation SCHBookShelfViewController
 
 @synthesize listTableView;
+@synthesize listTableCellNib;
 @synthesize gridView;
 @synthesize loadingView;
 @synthesize themePickerContainer;
 @synthesize customNavigationBar;
 @synthesize gridButton;
 @synthesize listButton;
-@synthesize toggleView;
+@synthesize listToggleView;
+@synthesize gridViewToggleView;
 @synthesize componentCache;
 @synthesize books;
 @synthesize profileItem;
@@ -66,6 +74,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 @synthesize currentRightButton;
 @synthesize updateSort;
 @synthesize managedObjectContext;
+@synthesize listViewCell;
 
 #pragma mark - Object lifecycle
 
@@ -82,7 +91,9 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
     [listTableView release], listTableView = nil;
     [gridButton release], gridButton = nil;
     [listButton release], listButton = nil;
-    [toggleView release], toggleView = nil;
+    [listToggleView release], listToggleView = nil;
+    [listTableCellNib release], listTableCellNib = nil;
+    [gridViewToggleView release], gridViewToggleView = nil;
     
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
@@ -102,6 +113,13 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 - (void)viewDidLoad 
 {
     [super viewDidLoad];
+    
+    // because we're using iOS 4 and above, use UINib to cache access to the NIB
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        self.listTableCellNib = [UINib nibWithNibName:@"SCHBookShelfTableViewCell_iPad" bundle:nil];
+    } else {
+        self.listTableCellNib = [UINib nibWithNibName:@"SCHBookShelfTableViewCell_iPhone" bundle:nil];
+    }
     
     self.sortType = [[[self.profileItem AppProfile] SortType] intValue];
     
@@ -161,13 +179,31 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
     
     [self setupAssetsForOrientation:self.interfaceOrientation];
 
-    // toggled from prefix header
-#if BOOKSHELF_MODE_TOGGLE_DISABLED
-    [self.toggleView setHidden:YES];
-    [self.gridView setFrame:CGRectMake(0, 0, self.gridView.frame.size.width, self.gridView.frame.size.height + self.toggleView.frame.size.height)];
-#endif
+    [self.listTableView setSeparatorColor:[UIColor clearColor]];
+
+    CGRect listFrame = self.listTableView.tableHeaderView.frame;
+    CGRect gridFrame = self.gridViewToggleView.frame;
+
+    listFrame.size.width = self.view.frame.size.width;
+    gridFrame.size.width = self.view.frame.size.width;
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        listFrame.size.height = 66;
+        gridFrame.size.height = 66;
+    } else {
+        listFrame.size.height = 34;
+        gridFrame.size.height = 34;
+    }
+    self.listTableView.tableHeaderView.frame = listFrame;
+    self.gridViewToggleView.frame = gridFrame;
+    
+    self.gridView.toggleView = self.gridViewToggleView;
 
     [self.gridView reloadData];
+    [self.listTableView reloadData];
+    
+//    [self changeToListView:nil];
+
 }
 
 - (void)viewDidUnload 
@@ -195,6 +231,8 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
     [self.gridView setShelfImage:[[SCHThemeManager sharedThemeManager] imageForShelf:interfaceOrientation]];        
     [self.view.layer setContents:(id)[[SCHThemeManager sharedThemeManager] imageForBackground:interfaceOrientation].CGImage];
     [(SCHCustomNavigationBar *)self.navigationController.navigationBar updateTheme:interfaceOrientation];
+    self.listTableView.backgroundColor = [[SCHThemeManager sharedThemeManager] colorForListBackground];
+    self.listToggleView.backgroundColor = [[SCHThemeManager sharedThemeManager] colorForListBackground]; 
      
     CGFloat inset = 56;
 
@@ -305,6 +343,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
     books = newBooks;
     
 	[self.gridView reloadData];
+    [self.listTableView reloadData];
 }
 
 #pragma mark - View Type Toggle methods
@@ -341,8 +380,20 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
     
     SCHBookShelfTableViewCell *cell = (SCHBookShelfTableViewCell *) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     
-    if (!cell) {
-        cell = [[SCHBookShelfTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
+    if (cell == nil) {
+        
+        if (self.listTableCellNib) {
+            [self.listTableCellNib instantiateWithOwner:self options:nil];
+        }
+        
+        // when the nib loads, it places an instantiated version of the cell in self.notesCell
+        cell = self.listViewCell;
+        
+        // tidy up after ourselves
+        self.listViewCell = nil;
+        
+        // set the cell delegate
+        cell.delegate = self;
     }
     
     cell.identifier = [self.books objectAtIndex:[indexPath row]];
@@ -359,6 +410,22 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
     }
 }
 
+- (float) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        return 100;
+    } else {
+        return 74;
+    }
+}
+
+#pragma mark - List View Cell Delegate
+
+- (void)bookShelfTableViewCellSelectedDeleteForISBN:(NSString *)isbn;
+{
+    NSLog(@"Deleting list view row associated with ISBN: %@", isbn);
+}
+
 #pragma mark - UITableViewDelegate methods
 
 - (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -368,6 +435,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
     }
     
 	NSLog(@"Calling table row selection.");
+    [aTableView deselectRowAtIndexPath:indexPath animated:YES];
     
     SCHReadingViewController *readingController = [self openBook:[self.books objectAtIndex:[indexPath row]]];
     if (readingController != nil) {

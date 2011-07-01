@@ -136,7 +136,7 @@
             [hintLetter moveToHomePosition];
         }
 
-        [hintLetter setLetterColor:[UIColor yellowColor]];
+        [hintLetter setLetterColor:[UIColor SCHYellowColor]];
     }
     
     self.hasShownHint = YES;
@@ -177,10 +177,16 @@
 - (void)draggableView:(SCHStoryInteractionDraggableView *)draggableView didMoveToPosition:(CGPoint)position
 {
     [draggableView moveToHomePosition];
+    
+    BOOL complete = [self hasCorrectSolution];
+    
+    if (complete) {
+        [self setUserInteractionsEnabled:NO];
+    }
 
     [self playBundleAudioWithFilename:@"sfx_dropOK.mp3"
                            completion:^{
-                               if ([self hasCorrectSolution]) {
+                               if (complete) {
                                    [self wordScrambleComplete];
                                }
                            }];
@@ -233,7 +239,7 @@
 - (void)wordScrambleComplete
 {
     for (SCHStoryInteractionDraggableLetterView *letter in self.letterViews) {
-        letter.letterColor = [UIColor yellowColor];
+        letter.letterColor = [UIColor SCHYellowColor];
     }
     
     [self playBundleAudioWithFilename:@"sfx_winround.mp3"

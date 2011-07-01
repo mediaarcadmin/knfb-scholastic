@@ -77,7 +77,7 @@
 
     for (UIImageView *imageView in self.imageViews) {
         imageView.layer.borderWidth = 2;
-        imageView.layer.borderColor = [[UIColor colorWithRed:0.165 green:0.322 blue:0.678 alpha:1.] CGColor];
+        imageView.layer.borderColor = [[UIColor SCHBlue3Color] CGColor];
         imageView.layer.cornerRadius = 6;
         imageView.layer.masksToBounds = YES;
     }

@@ -156,7 +156,7 @@ static NSString * const SCHNotesViewExitToTopAnimation = @"SCHNotesViewExitToTop
     aButtonSegment.segmentedControlStyle = UISegmentedControlStyleBar;
     aButtonSegment.frame = CGRectMake(inset + kSCHNotesViewTextXInset, inset + ((kSCHNotesViewToolbarHeight - aButtonSegment.frame.size.height)/2.0f), aButtonSegment.frame.size.width + 4, aButtonSegment.frame.size.height);
 
-    aButtonSegment.tintColor = [UIColor colorWithRed:0.106 green:0.584 blue:0.871 alpha:1.0f];
+    aButtonSegment.tintColor = [UIColor SCHBlue1Color];
     [[aButtonSegment imageForSegmentAtIndex:0] setAccessibilityLabel:NSLocalizedString(@"Cancel", @"Accessibility label for Notes View Cancel button")];
     
     [aButtonSegment addTarget:self action:@selector(cancel:) forControlEvents:UIControlEventValueChanged];
@@ -171,7 +171,7 @@ static NSString * const SCHNotesViewExitToTopAnimation = @"SCHNotesViewExitToTop
     aButtonSegment.segmentedControlStyle = UISegmentedControlStyleBar;
     aButtonSegment.frame = CGRectMake(self.frame.size.width - inset - kSCHNotesViewTextXInset - aButtonSegment.frame.size.width - 8, inset + ((kSCHNotesViewToolbarHeight - aButtonSegment.frame.size.height)/2.0f), aButtonSegment.frame.size.width + 8, aButtonSegment.frame.size.height);
 
-    aButtonSegment.tintColor = [UIColor colorWithRed:0.106 green:0.584 blue:0.871 alpha:1.0f];
+    aButtonSegment.tintColor = [UIColor SCHBlue1Color];
     [[aButtonSegment imageForSegmentAtIndex:0] setAccessibilityLabel:NSLocalizedString(@"Save", @"Accessibility label for Notes View Save button")];
     
     [aButtonSegment addTarget:self action:@selector(save:) forControlEvents:UIControlEventValueChanged];

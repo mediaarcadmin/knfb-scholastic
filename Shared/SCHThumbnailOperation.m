@@ -65,10 +65,10 @@
         
         
         if (fullImage) {
-            [self performWithBook:^(SCHAppBook *book) {
-                [book setValue:[NSNumber numberWithFloat:fullImage.size.width] forKey:kSCHAppBookCoverImageWidth];
-                [book setValue:[NSNumber numberWithFloat:fullImage.size.height] forKey:kSCHAppBookCoverImageHeight];
-            }];
+//            [self performWithBook:^(SCHAppBook *book) {
+//                [book setValue:[NSNumber numberWithFloat:fullImage.size.width] forKey:kSCHAppBookCoverImageWidth];
+//                [book setValue:[NSNumber numberWithFloat:fullImage.size.height] forKey:kSCHAppBookCoverImageHeight];
+//            }];
             
             thumbImage = [SCHThumbnailFactory thumbnailImageOfSize:self.size 
 														  forImage:fullImage

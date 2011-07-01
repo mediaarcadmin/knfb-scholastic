@@ -16,6 +16,5 @@
 
 @property (nonatomic, retain) IBOutlet UIView *wordsContainerView;
 @property (nonatomic, retain) IBOutlet SCHStoryInteractionWordSearchContainerView *lettersContainerView;
-@property (nonatomic, retain) IBOutletCollection(SCHStoryInteractionStrikeOutLabelView) NSArray *wordViews;
 
 @end

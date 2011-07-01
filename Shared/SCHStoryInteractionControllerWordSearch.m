@@ -14,15 +14,21 @@
 #import "SCHStoryInteractionWordSearchContainerView.h"
 
 @interface SCHStoryInteractionControllerWordSearch ()
+
 @property (nonatomic, retain) NSMutableArray *remainingWords;
+@property (nonatomic, retain) NSArray *wordViews;
+
+- (void)layoutWordViewsForPad;
+- (void)layoutWordViewsForPhone;
+
 @end
 
 @implementation SCHStoryInteractionControllerWordSearch
 
 @synthesize lettersContainerView;
 @synthesize wordsContainerView;
-@synthesize wordViews;
 @synthesize remainingWords;
+@synthesize wordViews;
 
 - (void)dealloc
 {
@@ -35,24 +41,48 @@
 
 - (void)setupViewAtIndex:(NSInteger)screenIndex
 {
+    BOOL iPad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
+    
     SCHStoryInteractionWordSearch *wordSearch = (SCHStoryInteractionWordSearch *)self.storyInteraction;
+    NSLog(@"words: %@", wordSearch.words);
     
-    [[self.wordViews objectAtIndex:0] setStrikeOutColor:[UIColor redColor]];
-    [[self.wordViews objectAtIndex:1] setStrikeOutColor:[UIColor greenColor]];
-    [[self.wordViews objectAtIndex:2] setStrikeOutColor:[UIColor cyanColor]];
-    [[self.wordViews objectAtIndex:3] setStrikeOutColor:[UIColor magentaColor]];
-    [[self.wordViews objectAtIndex:4] setStrikeOutColor:[UIColor orangeColor]];
-    [[self.wordViews objectAtIndex:5] setStrikeOutColor:[UIColor brownColor]];
+    NSArray *colors = [NSArray arrayWithObjects:
+                       [UIColor SCHGreen1Color],
+                       [UIColor SCHLightBlue2Color],
+                       [UIColor SCHPurple1Color],
+                       [UIColor SCHOrange1Color],
+                       [UIColor SCHRed2Color],
+                       [UIColor SCHGreen2Color],
+                       [UIColor SCHBlue1Color],
+                       [UIColor SCHOrange2Color],
+                       [UIColor SCHGrayColor],
+                       nil];
     
-    self.wordsContainerView.layer.borderColor = [[UIColor colorWithRed:0.278 green:0.667 blue:0.937 alpha:1.] CGColor];
-    self.wordsContainerView.layer.borderWidth = 2;
-    self.wordsContainerView.layer.cornerRadius = 10;
+    NSMutableArray *views = [NSMutableArray arrayWithCapacity:[wordSearch.words count]];
+    NSInteger colorIndex = 0;
+    for (NSString *word in wordSearch.words) {
+        SCHStoryInteractionStrikeOutLabelView *label = [[SCHStoryInteractionStrikeOutLabelView alloc] initWithFrame:CGRectZero];
+        label.text = word;
+        label.textColor = [UIColor SCHDarkBlue1Color];
+        label.textAlignment = UITextAlignmentCenter;
+        label.backgroundColor = [UIColor clearColor];
+        label.adjustsFontSizeToFitWidth = YES;
+        label.strikeOutColor = [colors objectAtIndex:(colorIndex++ % [colors count])]; 
+        [views addObject:label];
+        [self.wordsContainerView addSubview:label];
+        [label release];
+    }
+    self.wordViews = [NSArray arrayWithArray:views];
     
-    for (int i = 0; i < 6; ++i) {
-        [[self.wordViews objectAtIndex:i] setText:[wordSearch.words objectAtIndex:i]];
+    if (iPad) {
+        [self layoutWordViewsForPad];
+    } else {
+        [self layoutWordViewsForPhone];
     }
     
-    BOOL iPad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
+    self.wordsContainerView.layer.borderColor = [[UIColor SCHLightBlue2Color] CGColor];
+    self.wordsContainerView.layer.borderWidth = 2;
+    self.wordsContainerView.layer.cornerRadius = 10;
     
     self.lettersContainerView.delegate = self;
     self.lettersContainerView.letterGap = iPad ? 4 : 2;
@@ -61,6 +91,47 @@
     self.remainingWords = [NSMutableArray array];
     for (NSString *word in wordSearch.words) {
         [self.remainingWords addObject:[word uppercaseString]];
+    }
+}
+
+- (void)layoutWordViewsForPad
+{
+    static const NSInteger kWordInset = 5;
+    
+    CGRect containerRect = self.wordsContainerView.bounds;
+    NSInteger wordCount = [self.wordViews count];
+    NSInteger numberOfRows = MAX(1, (wordCount + 3) / 4);
+    NSInteger wordsPerRow = wordCount/numberOfRows + (wordCount%2);
+    CGFloat rowHeight = (CGRectGetHeight(containerRect) - kWordInset*2) / numberOfRows;
+    
+    for (NSInteger row = 0; row < numberOfRows; ++row) {
+        NSInteger wordsThisRow = MIN(wordsPerRow, wordCount-wordsPerRow*row);
+        CGFloat colWidth = (CGRectGetWidth(containerRect) - kWordInset*2) / wordsThisRow;
+        CGRect wordRect = CGRectIntegral(CGRectMake(0, 0, colWidth, rowHeight));
+        
+        for (NSInteger col = 0; col < wordsThisRow; ++col) {
+            UILabel *label = [self.wordViews objectAtIndex:(row*wordsPerRow+col)];
+            label.bounds = wordRect;
+            label.center = CGPointMake(floorf(kWordInset+colWidth*col+colWidth/2), floorf(kWordInset+rowHeight*row+rowHeight/2));
+            label.font = [UIFont boldSystemFontOfSize:20];
+        }
+    }
+}
+
+- (void)layoutWordViewsForPhone
+{
+    static const NSInteger kWordInset = 5;
+    
+    CGRect containerRect = self.wordsContainerView.bounds;
+    NSInteger wordCount = [self.wordViews count];
+    CGFloat wordHeight = (CGRectGetHeight(containerRect)-kWordInset*2) / wordCount;
+    CGRect wordRect = CGRectMake(0, 0, CGRectGetWidth(containerRect)-kWordInset*2, wordHeight);
+    
+    for (NSInteger index = 0; index < wordCount; ++index) {
+        UILabel *label = [self.wordViews objectAtIndex:index];
+        label.bounds = wordRect;
+        label.center = CGPointMake(floorf(CGRectGetMidX(containerRect)), floorf(kWordInset+wordHeight*index+wordHeight/2));
+        label.font = [UIFont boldSystemFontOfSize:17];
     }
 }
 

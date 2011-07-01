@@ -890,6 +890,12 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         return;
     }
     
+    // if the story interaction is open, hide the button
+    if (self.storyInteractionController != nil) {
+        [self setStoryInteractionButtonVisible:NO animated:YES withSound:NO];
+        return;
+    }
+    
     NSInteger page = [self storyInteractionPageNumberFromPageIndex:[self firstPageIndexWithStoryInteractionsOnCurrentPages]];
             
     NSArray *storyInteractions = [self.bookStoryInteractions storyInteractionsForPage:page];
@@ -1059,6 +1065,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 {
     NSAssert([self.readingView isKindOfClass:[SCHLayoutView class]], @"can't have story interactions with flow view");
     [(SCHLayoutView *)self.readingView zoomOutToCurrentPageWithCompletionHandler:^{
+        [self setStoryInteractionButtonVisible:NO animated:YES withSound:NO];
         self.storyInteractionController = [SCHStoryInteractionController storyInteractionControllerForStoryInteraction:storyInteraction];
         self.storyInteractionController.bookIdentifier= self.bookIdentifier;
         self.storyInteractionController.delegate = self;
@@ -1301,7 +1308,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (UIColor *)highlightColor
 {
-    return [[UIColor yellowColor] colorWithAlphaComponent:0.3f];
+    return [[UIColor SCHYellowColor] colorWithAlphaComponent:0.4f];
 }
 
 - (void)addHighlightBetweenStartPage:(NSUInteger)startPage startWord:(NSUInteger)startWord endPage:(NSUInteger)endPage endWord:(NSUInteger)endWord;
@@ -1673,7 +1680,12 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     if (self.suppressToolbarToggle) {
         return;
     }
-    
+
+    // if the options view was left open from a previous view then remove it
+    if (visibility == YES && self.optionsView.superview) {
+        [self.optionsView removeFromSuperview];
+    }
+
 //	NSLog(@"Setting visibility to %@.", visibility?@"True":@"False");
 	self.toolbarsVisible = visibility;
 

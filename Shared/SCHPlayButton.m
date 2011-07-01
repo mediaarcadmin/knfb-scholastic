@@ -53,7 +53,7 @@
     tintedBackgroundColor = [[[UIColor blackColor] colorWithAlphaComponent:0.5] retain];
     
     play = NO;
-    self.image = [UIImage imageNamed:@"SCHPlayButtonPlay"]; 
+    self.image = [UIImage imageNamed:@"storyinteraction-video-play"]; 
     self.backgroundColor = self.tintedBackgroundColor;                            
     actionBlock = nil;
     
@@ -77,7 +77,7 @@
     if (play != setPlay) {
         play = setPlay;
         if (play == NO) {
-            self.image = [UIImage imageNamed:@"SCHPlayButtonPause"];
+            self.image = [UIImage imageNamed:@"storyinteraction-video-pause"];
             self.backgroundColor = [UIColor clearColor];
             self.alpha = 0.0;
         }

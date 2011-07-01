@@ -9,6 +9,8 @@
 #import "SCHBookShelfGridView.h"
 #import "SCHBookShelfGridShelvesView.h"
 
+//static const NSInteger TOGGLE_OFFSET = -64;
+
 @interface SCHBookShelfGridView()
 
 @property (nonatomic, retain) SCHBookShelfGridShelvesView *bookShelvesView;
@@ -19,6 +21,7 @@
 
 @synthesize bookShelvesView;
 @synthesize minimumNumberOfShelves;
+@synthesize toggleView;
 
 - (void)dealloc
 {
@@ -32,6 +35,8 @@
     bookShelvesView.backgroundColor = [UIColor clearColor];
     bookShelvesView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [self insertSubview:bookShelvesView atIndex:0];
+    
+    NSLog(@"Frame: %@", NSStringFromCGRect(self.frame));
 }
 
 - (id)initWithFrame:(CGRect)frame 
@@ -50,6 +55,23 @@
 		[self createBookShelves];
 	}
     return self;
+}
+
+- (void)setToggleView:(UIView *)newToggleView
+{
+    UIView *oldView = toggleView;
+    toggleView = [newToggleView retain];
+    [oldView release];
+    
+    if (toggleView) {
+        NSLog(@"Toggle view: %@", self.toggleView);
+        self.toggleView.frame = CGRectMake(0, -self.toggleView.frame.size.height, self.frame.size.width, self.toggleView.frame.size.height);
+        [self addSubview:self.toggleView];
+        self.contentInset = UIEdgeInsetsMake(self.toggleView.frame.size.height, 0, 0, 0);
+        NSLog(@"Toggle view after insetting: %@", self.toggleView);
+    } else {
+        self.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
+    }
 }
 
 - (void)setShelfImage:(UIImage *)aShelfImage

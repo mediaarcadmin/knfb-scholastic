@@ -22,6 +22,7 @@ static NSString * const kSCHThemeManagerShelfImage = @"ShelfImage";
 static NSString * const kSCHThemeManagerHomeIcon = @"HomeIcon";
 static NSString * const kSCHThemeManagerBooksIcon = @"BooksIcon";
 static NSString * const kSCHThemeManagerThemeIcon = @"ThemeIcon";
+static NSString * const kSCHThemeManagerColorForListBackground = @"ListBackgroundColor";
 
 @class SCHAppProfile;
 
@@ -53,6 +54,7 @@ static NSString * const kSCHThemeManagerThemeIcon = @"ThemeIcon";
 - (UIImage *)imageForHomeIcon:(UIInterfaceOrientation)orientation;
 - (UIImage *)imageForBooksIcon:(UIInterfaceOrientation)orientation;
 - (UIImage *)imageForThemeIcon:(UIInterfaceOrientation)orientation;
+- (UIColor *)colorForListBackground;
 
 
 @end

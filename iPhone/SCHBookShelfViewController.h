@@ -12,6 +12,7 @@
 #import "SCHProfileItem.h"
 #import "MRGridViewDelegate.h"
 #import "MRGridViewDataSource.h"
+#import "SCHBookShelfTableViewCell.h"
 
 @class SCHBookShelfGridView;
 @class SCHCustomNavigationBar;
@@ -20,10 +21,11 @@
 @class SCHReadingViewController;
 @class SCHBookIdentifier;
 
-@interface SCHBookShelfViewController : UIViewController <MRGridViewDelegate, MRGridViewDataSource, UITableViewDelegate, UITableViewDataSource> 
+@interface SCHBookShelfViewController : UIViewController <MRGridViewDelegate, MRGridViewDataSource, UITableViewDelegate, SCHBookShelfTableViewCellDelegate, UITableViewDataSource> 
 {
 }
 
+// interface builder
 @property (nonatomic, retain) IBOutlet UITableView *listTableView;
 @property (nonatomic, retain) IBOutlet SCHBookShelfGridView *gridView;
 @property (nonatomic, retain) IBOutlet UIView *loadingView;
@@ -31,7 +33,12 @@
 @property (nonatomic, retain) IBOutlet SCHCustomNavigationBar *customNavigationBar;
 @property (nonatomic, retain) IBOutlet UIButton *gridButton;
 @property (nonatomic, retain) IBOutlet UIButton *listButton;
-@property (nonatomic, retain) IBOutlet UIView *toggleView;
+@property (nonatomic, retain) IBOutlet UIView *listToggleView;
+@property (nonatomic, retain) IBOutlet UIView *gridViewToggleView;
+
+
+
+@property (nonatomic, retain) IBOutlet SCHBookShelfTableViewCell *listViewCell;
 
 @property (nonatomic, retain) KNFBTimeOrderedCache *componentCache;
 

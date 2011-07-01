@@ -7,228 +7,220 @@
 //
 
 #import "SCHBookShelfTableViewCell.h"
-#import "SCHThumbnailFactory.h"
-#import "SCHProcessingManager.h"
+#import "TTTAttributedLabel.h"
+#import "SCHAsyncBookCoverImageView.h"
 #import "SCHAppBook.h"
 #import "SCHBookManager.h"
-#import "SCHBookIdentifier.h"
+#import <CoreText/CoreText.h>
+#import "SCHThemeManager.h"
 
-#define IMAGE_FRAME_WIDTH   72.0
-#define IMAGE_FRAME_HEIGHT  96.0
-#define IMAGE_TOP_MARGIN	11.0
-#define LEFT_MARGIN			8.0
-#define RIGHT_MARGIN		0.0
-
-#define TEXT_TOP_MARGIN		24.0
-#define TEXT_LEFT_MARGIN	8.0
-//#define THUMBRATIO 1.8
-
+static NSInteger const CELL_TEXT_LABEL_TAG = 100;
+static NSInteger const CELL_BOOK_COVER_VIEW_TAG = 101;
+static NSInteger const CELL_NEW_INDICATOR_TAG = 102;
+static NSInteger const CELL_SAMPLE_SI_INDICATOR_TAG = 103;
+static NSInteger const CELL_BOOK_TINT_VIEW_TAG = 104;
+static NSInteger const CELL_DELETE_BUTTON = 105;
+static NSInteger const CELL_BACKGROUND_VIEW = 200;
 
 @interface SCHBookShelfTableViewCell ()
 
-@property (readwrite, retain) SCHAsyncBookCoverImageView *thumbImageView;
+@property (readonly) TTTAttributedLabel *textLabel;
+@property (readonly) SCHAsyncBookCoverImageView *bookCoverImageView;
+@property (readonly) UIImageView *newIndicatorIcon;
+@property (readonly) UIImageView *sampleAndSIIndicatorIcon;
+@property (readonly) UIView *bookTintView;
+@property (readonly) UIView *backgroundView;
+@property (readonly) UIButton *deleteButton;
+
+- (void)updateTheme;
 
 @end
 
+#pragma mark -
+
 @implementation SCHBookShelfTableViewCell
 
-@synthesize titleLabel, subtitleLabel, statusLabel, thumbImageView, thumbTintView, thumbContainerView, progressView;
-@synthesize identifier;
+@synthesize isbn;
+@synthesize delegate;
 
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
-	
-	if ((self = [super initWithStyle:style reuseIdentifier:reuseIdentifier])) {
-		
-		self.frame = CGRectMake(0, 0, self.frame.size.width - IMAGE_FRAME_WIDTH, IMAGE_FRAME_HEIGHT);
-		[self layoutSubviews];
-		
-		//self.thumbContainerView = [[UIView alloc] initWithFrame:CGRectMake(LEFT_MARGIN, IMAGE_TOP_MARGIN, IMAGE_FRAME_WIDTH, IMAGE_FRAME_HEIGHT)];
-		
-		self.thumbImageView = [SCHThumbnailFactory newAsyncImageWithSize:CGSizeMake(IMAGE_FRAME_WIDTH, IMAGE_FRAME_HEIGHT)];
-		[self.contentView addSubview:self.thumbImageView];
-		
-		//self.thumbTintView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, IMAGE_FRAME_WIDTH, IMAGE_FRAME_HEIGHT)];
-		//[self.thumbTintView setBackgroundColor:[UIColor colorWithRed:0.2f green:0.2f blue:0.2f alpha:0.6f]];
-		//[self.thumbContainerView addSubview:self.thumbTintView];
-
-		//[self.thumbContainerView setClipsToBounds:YES];
-		
-		//[self.contentView addSubview:self.thumbContainerView];
-		
-		self.progressView = [[UIProgressView alloc] initWithFrame:CGRectZero];
-		[self.contentView addSubview:self.progressView];
-		
-        self.titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-        [self.titleLabel setFont:[UIFont boldSystemFontOfSize:24.0f]];
-        [self.titleLabel setTextColor:[UIColor blackColor]];
-        [self.titleLabel setHighlightedTextColor:[UIColor whiteColor]];
-		[self.titleLabel setMinimumFontSize:16.0f];
-		[self.titleLabel setNumberOfLines:2];
-		[self.titleLabel setAdjustsFontSizeToFitWidth:YES];
-        [self.contentView addSubview:self.titleLabel];
-		
-        self.subtitleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-        [self.subtitleLabel setFont:[UIFont systemFontOfSize:15.0f]];
-        [self.subtitleLabel setTextColor:[UIColor colorWithRed:0.263f green:0.353f blue:0.487f alpha:1.0f]];
-        [self.subtitleLabel setHighlightedTextColor:[UIColor whiteColor]];
-		[self.subtitleLabel setNumberOfLines:1];
-		
-        [self.contentView addSubview:self.subtitleLabel];
-
-		self.statusLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-        [self.statusLabel setFont:[UIFont systemFontOfSize:12.0f]];
-        [self.statusLabel setTextColor:[UIColor lightGrayColor]];
-        [self.statusLabel setHighlightedTextColor:[UIColor whiteColor]];
-		[self.statusLabel setNumberOfLines:1];
-		[self.statusLabel setTextAlignment:UITextAlignmentCenter];
-		
-        [self.contentView addSubview:self.statusLabel];
-		
-		self.selectionStyle = UITableViewCellSelectionStyleNone;
-	}
-	
+- (id) initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    
+    if (self) {
+        self.textLabel.backgroundColor = [UIColor clearColor];
+        self.bookCoverImageView.thumbSize = CGSizeMake(self.bookCoverImageView.frame.size.width, self.bookCoverImageView.frame.size.height);
+        [self updateTheme];
+        [self.deleteButton addTarget:self action:@selector(pressedDeleteButton:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    
     return self;
 }
 
-#pragma mark -
-#pragma mark Laying out subviews
-
-- (void)layoutSubviews {
-    [super layoutSubviews];
-	
-	CGRect bounds = self.contentView.bounds;
-	
-//	CGRect thumbFrame = CGRectMake(LEFT_MARGIN, IMAGE_TOP_MARGIN, IMAGE_FRAME_WIDTH, IMAGE_FRAME_HEIGHT);
-//    [self.thumbContainerView setFrame:thumbFrame];
-	
-	CGFloat labelX = ceilf(CGRectGetMaxX(self.thumbImageView.frame) + TEXT_LEFT_MARGIN);
-	CGFloat labelWidth = CGRectGetWidth(bounds) - RIGHT_MARGIN - labelX;
-	
-	CGRect titleFrame = CGRectMake(labelX, TEXT_TOP_MARGIN, labelWidth, 44);
-    [self.titleLabel setFrame:titleFrame];
-	
-	CGRect subtitleFrame = CGRectMake(labelX, CGRectGetMaxY(titleFrame) + 1, labelWidth, 22);
-    [self.subtitleLabel setFrame:subtitleFrame];
-
-	CGRect statusFrame = CGRectMake(LEFT_MARGIN - 4, CGRectGetMaxY(self.contentView.bounds) - 21, CGRectGetWidth(self.thumbImageView.frame) + 8, 15);
-    [self.statusLabel setFrame:statusFrame];
-	
-	CGRect progressFrame = CGRectMake(LEFT_MARGIN + 2, self.thumbImageView.frame.size.height - 6, IMAGE_FRAME_WIDTH - 4, 10);
-	[self.progressView setFrame:progressFrame];
+- (void)dealloc 
+{
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+    [isbn release], isbn = nil;
+    [super dealloc];
 }
 
-#pragma mark -
-#pragma mark Setter for ISBN
-
-- (void) setIdentifier:(SCHBookIdentifier *)newIdentifier
+- (void)refreshCell
 {
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"SCHBookDownloadPercentageUpdate" object:nil];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"SCHBookStatusUpdate" object:nil];
-
-    if (newIdentifier != identifier && ![newIdentifier isEqual:self.identifier]) {
-        [newIdentifier retain];
-        [identifier release];
-        identifier = newIdentifier;
-	}
-	
-	[[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(updatePercentage:) 
-												 name:@"SCHBookDownloadPercentageUpdate" 
-											   object:nil];
-
-	[[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(checkForCellUpdateFromNotification:)
-												 name:@"SCHBookStateUpdate"
-											   object:nil];
-	
-	[self.thumbImageView setIdentifier:self.identifier];
-	
-	[self refreshCell];
-	
-}
-
-- (void) checkForCellUpdateFromNotification: (NSNotification *) notification
-{
-    if ([self.identifier isEqual:[[notification userInfo] objectForKey:@"bookIdentifier"]]) {
-        [self refreshCell];
-    }
-}
-
-
-- (void) refreshCell
-{
-    NSManagedObjectContext *context = [(id)[[UIApplication sharedApplication] delegate] managedObjectContext];
-    SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.identifier inManagedObjectContext:context];
+   	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];    
 	// image processing
-	BOOL immediateUpdate = [[SCHProcessingManager sharedProcessingManager] requestThumbImageForBookCover:self.thumbImageView 
-																							   size:CGSizeMake(IMAGE_FRAME_WIDTH, IMAGE_FRAME_HEIGHT)
-                                                                                                    book:book];
-
-	if (immediateUpdate) {
-		[self setNeedsDisplay];
-	}
-	
-	NSString *status = [book processingStateAsString];
-	
+    [[SCHProcessingManager sharedProcessingManager] requestThumbImageForBookCover:self.bookCoverImageView
+                                                                             size:self.bookCoverImageView.thumbSize
+                                                                             book:book];
+	[self setNeedsDisplay];
+    
 	// book status
 	switch ([book processingState]) {
-		case SCHBookProcessingStateError:
-		case SCHBookProcessingStateNoURLs:
-		case SCHBookProcessingStateNoCoverImage:
-		case SCHBookProcessingStateReadyForBookFileDownload:
-			self.thumbTintView.hidden = NO;
-			self.progressView.hidden = YES;
-			break;
-		case SCHBookProcessingStateDownloadStarted:
-		case SCHBookProcessingStateDownloadPaused:
-			self.thumbTintView.hidden = NO;
-			self.progressView.hidden = NO;
-			break;
 		case SCHBookProcessingStateReadyToRead:
-		default:
-			self.thumbTintView.hidden = YES;
-			self.progressView.hidden = YES;
+			self.bookTintView.hidden = YES;
+			break;
+//		case SCHBookProcessingStateDownloadStarted:
+//		case SCHBookProcessingStateDownloadPaused:
+//			self.bookTintView.hidden = NO;
+//			break;
+        default:
+			self.bookTintView.hidden = NO;
 			break;
 	}
-	
-	if ([book canOpenBook]) {
-		self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-	} else {
-		self.accessoryType = UITableViewCellAccessoryNone;
-	}
-	
-	self.editingAccessoryType = UITableViewCellAccessoryNone;
-	
-	[self.progressView setProgress:[book currentDownloadedPercentage]];
-	
-	self.titleLabel.text = book.Title;
-	self.subtitleLabel.text = book.Author;
-	self.statusLabel.text = status;
-	
-	[self layoutSubviews];
-	
-	[self.titleLabel setNeedsDisplay];
-	[self.subtitleLabel setNeedsDisplay];
-	[self.statusLabel setNeedsDisplay];
+    
+    NSString *titleString = nil;
+    float fontSize = 16.0f;
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        titleString = [NSString stringWithFormat:@"%@\n%@", book.Title, book.Author];
+    } else {
+        titleString = [NSString stringWithFormat:@"%@ - %@", book.Title, book.Author];
+        fontSize = 11.0f;
+    }
+    NSMutableAttributedString *attrString = [[NSMutableAttributedString alloc] initWithString:titleString];
+
+    
+    
+    
+    UIFont *boldLabelFont = [UIFont fontWithName:@"Arial-BoldMT" size:fontSize];
+    UIFont *labelFont = [UIFont fontWithName:@"Arial" size:fontSize];
+    
+    CTFontRef boldArialFont = CTFontCreateWithName((CFStringRef)boldLabelFont.fontName, boldLabelFont.pointSize, NULL);
+    CTFontRef arialFont = CTFontCreateWithName((CFStringRef)labelFont.fontName, labelFont.pointSize, NULL);
+
+    if (arialFont && boldArialFont) {
+        [attrString addAttribute:(NSString *)kCTFontAttributeName value:(id)boldArialFont range:NSMakeRange(0, [book.Title length])];
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            [attrString addAttribute:(NSString *)kCTFontAttributeName value:(id)arialFont range:NSMakeRange([book.Title length], [book.Author length] + 1)];
+        } else {
+            [attrString addAttribute:(NSString *)kCTFontAttributeName value:(id)arialFont range:NSMakeRange([book.Title length], [book.Author length] + 3)];
+        }
+        CFRelease(arialFont);
+        CFRelease(boldArialFont);
+        
+        [attrString addAttribute:(NSString *)kCTForegroundColorAttributeName value:(id)[UIColor SCHDarkBlue1Color].CGColor range:NSMakeRange(0, [titleString length])];
+    }
+    
+    [self.textLabel setText:attrString];
+    self.textLabel.backgroundColor = [UIColor clearColor];
+    [attrString release];
+ 
 }
 
-- (void) updatePercentage: (NSNotification *) notification
+- (void)updateTheme
 {
-    SCHBookIdentifier *updateForISBN = [[notification userInfo] objectForKey:@"bookIdentifier"];
+    self.backgroundView.backgroundColor = [[SCHThemeManager sharedThemeManager] colorForListBackground];
+}
 
-    if ([updateForISBN isEqual:self.identifier]) {
-        float newPercentage = [(NSNumber *) [[notification userInfo] objectForKey:@"currentPercentage"] floatValue];
-        [self.progressView setProgress:newPercentage];
+- (void)setIsbn:(NSString *)newIsbn
+{	
+	if (newIsbn != isbn) {
+//        [[NSNotificationCenter defaultCenter] removeObserver:self name:@"SCHBookDownloadPercentageUpdate" object:nil];
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:@"SCHBookStatusUpdate" object:nil];
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:@"SCHNewImageAvailable" object:nil];
+        
+		[isbn release];
+		isbn = [newIsbn copy];
+        
+//        [[NSNotificationCenter defaultCenter] addObserver:self
+//                                                 selector:@selector(updatePercentage:) 
+//                                                     name:@"SCHBookDownloadPercentageUpdate" 
+//                                                   object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self 
+                                                 selector:@selector(updateTheme) 
+                                                     name:kSCHThemeManagerThemeChangeNotification 
+                                                   object:nil]; 
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(checkForCellUpdateFromNotification:)
+                                                     name:@"SCHBookStateUpdate"
+                                                   object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(checkForCellUpdateFromNotification:)
+                                                     name:@"SCHNewImageAvailable"
+                                                   object:nil];
+        
+        [self.bookCoverImageView setIsbn:self.isbn];
+        [self refreshCell];        
+	}
+}
+
+#pragma mark - Delete Button
+
+- (void)pressedDeleteButton:(UIButton *) sender
+{
+    NSLog(@"Pressed delete button!");
+    
+    if (self.delegate && [self.delegate respondsToSelector:@selector(bookShelfTableViewCellSelectedDeleteForISBN:)]) {
+        [self.delegate bookShelfTableViewCellSelectedDeleteForISBN:self.isbn];
     }
 }
 
-- (void)dealloc {
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
+#pragma mark - Private methods
 
-	self.titleLabel = nil;
-	self.subtitleLabel = nil;
-	self.statusLabel = nil;
-    [super dealloc];
+- (void)checkForCellUpdateFromNotification:(NSNotification *)notification
+{
+    if ([self.isbn compare:[[notification userInfo] objectForKey:@"isbn"]] == NSOrderedSame) {
+        [self refreshCell];
+    }
+}	
+
+#pragma mark - Convenience Methods for Tagged Views
+
+- (TTTAttributedLabel *)textLabel
+{
+    return (TTTAttributedLabel *)[self.contentView viewWithTag:CELL_TEXT_LABEL_TAG];
+}
+
+- (SCHAsyncBookCoverImageView *)bookCoverImageView
+{
+    return (SCHAsyncBookCoverImageView *)[self.contentView viewWithTag:CELL_BOOK_COVER_VIEW_TAG];
+}
+
+- (UIImageView *)newIndicatorIcon
+{
+    return (UIImageView *)[self.contentView viewWithTag:CELL_NEW_INDICATOR_TAG];
+}
+
+- (UIImageView *)sampleAndSIIndicatorIcon
+{
+    return (UIImageView *)[self.contentView viewWithTag:CELL_SAMPLE_SI_INDICATOR_TAG];
+}
+
+- (UIView *)bookTintView
+{
+    return (UIImageView *)[self.contentView viewWithTag:CELL_BOOK_TINT_VIEW_TAG];
+}
+
+- (UIView *)backgroundView
+{
+    return (UIView *)[self.contentView viewWithTag:CELL_BACKGROUND_VIEW];
+}
+
+- (UIButton *)deleteButton
+{
+    return (UIButton *)[self.contentView viewWithTag:CELL_DELETE_BUTTON];
 }
 
 
