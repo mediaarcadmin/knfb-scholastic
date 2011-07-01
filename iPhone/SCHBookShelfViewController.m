@@ -395,8 +395,9 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
     
     NSString *isbn = [self.books objectAtIndex:[indexPath row]];
     
-    cell.isNewBook = [self.profileItem bookIsNewForProfileWithIdentifier:isbn];
     cell.isbn = isbn;
+    cell.isNewBook = [self.profileItem bookIsNewForProfileWithIdentifier:isbn];
+    cell.trashed = [self.profileItem bookIsTrashedWithIdentifier:isbn];
     
     return cell;
 }
@@ -424,6 +425,13 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 - (void)bookShelfTableViewCellSelectedDeleteForISBN:(NSString *)isbn;
 {
     NSLog(@"Deleting list view row associated with ISBN: %@", isbn);
+    if ([self.profileItem bookIsTrashedWithIdentifier:isbn]) {
+        [self.profileItem setTrashed:NO forBookWithIdentifier:isbn];
+    } else {
+        [self.profileItem setTrashed:YES forBookWithIdentifier:isbn];
+    }
+    [self.listTableView reloadData];
+    [self.gridView reloadData];
 }
 
 #pragma mark - UITableViewDelegate methods
@@ -436,6 +444,12 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
     
 	NSLog(@"Calling table row selection.");
     [aTableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    NSString *isbn = [self.books objectAtIndex:[indexPath row]];
+    if ([self.profileItem bookIsTrashedWithIdentifier:isbn]) {
+        [self.profileItem setTrashed:NO forBookWithIdentifier:isbn];
+        [self.listTableView reloadData];
+    }
     
     SCHReadingViewController *readingController = [self openBook:[self.books objectAtIndex:[indexPath row]]];
     if (readingController != nil) {
@@ -461,7 +475,8 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 	}
 
 	[gridCell setIsbn:[self.books objectAtIndex:index]];
-	
+    gridCell.trashed = [self.profileItem bookIsTrashedWithIdentifier:[self.books objectAtIndex:index]];
+
 	return(gridCell);
 }
 
@@ -529,6 +544,12 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
     spinner.center = CGPointMake(CGRectGetMidX(cellFrame), CGRectGetMidY(cellFrame));
     [spinner startAnimating];
     [aGridView addSubview:spinner];
+    
+    NSString *isbn = [self.books objectAtIndex:index];
+    if ([self.profileItem bookIsTrashedWithIdentifier:isbn]) {
+        [self.profileItem setTrashed:NO forBookWithIdentifier:isbn];
+        [self.gridView reloadData];
+    }
 
     dispatch_async(dispatch_get_main_queue(), ^{
         SCHReadingViewController *readingController = [self openBook:[self.books objectAtIndex:index]];

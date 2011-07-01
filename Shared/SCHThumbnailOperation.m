@@ -63,13 +63,13 @@
         
         
         if (fullImage) {
-//            [[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn
-//                                                                    setValue:[NSNumber numberWithFloat:fullImage.size.width]
-//                                                                      forKey:kSCHAppBookCoverImageWidth];
-//            
-//            [[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn
-//                                                                    setValue:[NSNumber numberWithFloat:fullImage.size.height]
-//                                                                      forKey:kSCHAppBookCoverImageHeight];
+            [[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn
+                                                                    setValue:[NSNumber numberWithFloat:fullImage.size.width]
+                                                                      forKey:kSCHAppBookCoverImageWidth];
+            
+            [[SCHBookManager sharedBookManager] threadSafeUpdateBookWithISBN:self.isbn
+                                                                    setValue:[NSNumber numberWithFloat:fullImage.size.height]
+                                                                      forKey:kSCHAppBookCoverImageHeight];
             
             thumbImage = [SCHThumbnailFactory thumbnailImageOfSize:self.size 
 														  forImage:fullImage

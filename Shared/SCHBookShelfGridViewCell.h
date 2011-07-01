@@ -17,6 +17,7 @@
 }
 
 @property (nonatomic, copy) NSString *isbn;
+@property (nonatomic, assign) BOOL trashed;
 
 @property (nonatomic, retain) SCHAsyncBookCoverImageView *asyncImageView;
 @property (nonatomic, retain) UIView *thumbTintView;
