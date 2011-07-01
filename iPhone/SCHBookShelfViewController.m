@@ -396,7 +396,10 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
         cell.delegate = self;
     }
     
-    cell.identifier = [self.books objectAtIndex:[indexPath row]];
+    SCHBookIdentifier *identifeir = [self.books objectAtIndex:[indexPath row]];
+    
+    cell.isNewBook = [self.profileItem bookIsNewForProfileWithIdentifier:identfiier];
+    cell.identifier = identifier;
     
     return cell;
 }

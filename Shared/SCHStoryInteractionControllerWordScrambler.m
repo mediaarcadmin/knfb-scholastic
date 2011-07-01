@@ -122,6 +122,7 @@
 
 - (void)hintButtonTapped:(id)sender
 {
+    [self playDefaultButtonAudio];
     for (SCHStoryInteractionDraggableLetterView *hintLetter in self.hintLetters) {
         NSInteger hintPosition = [self.letterViews indexOfObject:hintLetter];
         NSInteger hintLetterCurrentPosition = [self.lettersByPosition indexOfObject:hintLetter];

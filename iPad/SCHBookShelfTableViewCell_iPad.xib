@@ -164,10 +164,6 @@
 												<int key="IBUITag">103</int>
 												<bool key="IBUIUserInteractionEnabled">NO</bool>
 												<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-												<object class="NSCustomResource" key="IBUIImage">
-													<string key="NSClassName">NSImage</string>
-													<string key="NSResourceName">SISampleIcon@2x.png</string>
-												</object>
 											</object>
 										</object>
 										<string key="NSFrame">{{538, 18}, {130, 64}}</string>
@@ -213,6 +209,7 @@
 										<string key="NSFrame">{{23, 98}, {722, 2}}</string>
 										<reference key="NSSuperview" ref="11916819"/>
 										<reference key="NSWindow"/>
+										<reference key="NSNextKeyView"/>
 										<object class="NSColor" key="IBUIBackgroundColor">
 											<int key="NSColorSpace">1</int>
 											<bytes key="NSRGB">MC45NDUwOTgwMzkyIDAuOTQ1MDk4MDM5MiAwLjk0OTAxOTYwNzgAA</bytes>
@@ -591,13 +588,11 @@
 				<bool key="EncodedWithXMLCoder">YES</bool>
 				<string>BookShelfNewIcon.png</string>
 				<string>ListViewTrashCan@2x.png</string>
-				<string>SISampleIcon@2x.png</string>
 			</object>
 			<object class="NSMutableArray" key="dict.values">
 				<bool key="EncodedWithXMLCoder">YES</bool>
 				<string>{42, 44}</string>
 				<string>{29, 54}</string>
-				<string>{133, 67}</string>
 			</object>
 		</object>
 		<string key="IBCocoaTouchPluginVersion">301</string>

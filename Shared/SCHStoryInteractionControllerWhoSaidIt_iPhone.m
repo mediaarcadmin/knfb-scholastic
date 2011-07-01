@@ -14,6 +14,7 @@
 
 @property (nonatomic, assign) NSInteger currentStatement;
 @property (nonatomic, assign) NSInteger score;
+@property (nonatomic, assign) NSInteger simultaneousTapCount;
 
 - (void)setupQuestionView;
 - (void)setupScoreView;
@@ -31,6 +32,7 @@
 @synthesize tryAgainButton;
 @synthesize currentStatement;
 @synthesize score;
+@synthesize simultaneousTapCount;
 
 - (void)dealloc
 {
@@ -99,6 +101,8 @@
     for (UIButton *button in self.answerButtons) {
         [button setBackgroundImage:[UIImage imageNamed:@"answer-button-yellow"] forState:UIControlStateNormal];
     }
+    
+    self.simultaneousTapCount = 0;
 }
 
 - (void)nextQuestion
@@ -120,6 +124,20 @@
 
 - (void)answerButtonTapped:(id)sender
 {
+    self.simultaneousTapCount++;
+    if (self.simultaneousTapCount == 1) {
+        [self performSelector:@selector(answerChosen:) withObject:sender afterDelay:kMinimumDistinguishedAnswerDelay];
+    }
+}
+
+- (void)answerChosen:(id)sender
+{
+    NSInteger tapCount = self.simultaneousTapCount;
+    self.simultaneousTapCount = 0;
+    if (tapCount > 1) {
+        return;
+    }
+    
     [self setUserInteractionsEnabled:NO];
 
     UIButton *button = (UIButton *)sender;
@@ -140,6 +158,7 @@
 
 - (void)playAgainButtonTapped:(id)sender
 {
+    [self playDefaultButtonAudio];
     [self presentNextView];
 }
 

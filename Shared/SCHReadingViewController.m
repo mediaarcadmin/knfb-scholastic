@@ -1408,6 +1408,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (void)readingView:(SCHReadingView *)readingView hasSelectedWordForSpeaking:(NSString *)word
 {
+    [self pauseAudioPlayback];
+    
     if (word) {
         [[SCHDictionaryAccessManager sharedAccessManager] speakWord:word category:kSCHDictionaryYoungReader];
     }

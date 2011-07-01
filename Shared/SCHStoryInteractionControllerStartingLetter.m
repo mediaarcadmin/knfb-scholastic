@@ -15,6 +15,8 @@
 
 @interface SCHStoryInteractionControllerStartingLetter ()
 
+@property (nonatomic, assign) NSInteger simultaneousTapCount;
+
 - (void)shuffleImageButtons;
 - (SCHStoryInteractionStartingLetterQuestion *)questionAtIndex:(NSUInteger)index;
 - (BOOL)questionsCompleted;
@@ -24,6 +26,7 @@
 @implementation SCHStoryInteractionControllerStartingLetter
 
 @synthesize imageButtons;
+@synthesize simultaneousTapCount;
 
 - (void)dealloc
 {
@@ -55,6 +58,7 @@
 - (void)setupViewAtIndex:(NSInteger)screenIndex
 {
     [self setTitle:[(SCHStoryInteractionStartingLetter *)self.storyInteraction prompt]];
+    self.simultaneousTapCount = 0;
     
     [self shuffleImageButtons];
     for (SCHImageButton *imageButton in self.imageButtons) {
@@ -68,34 +72,9 @@
             imageButton.normalColor = [UIColor SCHBlue2Color];
             imageButton.selectedColor = ([question isCorrect] == NO ? [UIColor SCHScholasticRedColor] : [UIColor SCHGreen1Color]);                        
             imageButton.actionBlock = ^(SCHImageButton *imageButton) {
-                SCHStoryInteractionStartingLetterQuestion *question = [self questionAtIndex:imageButton.tag - 1]; 
-                if (question != nil) {
-                    [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
-                    [self setUserInteractionsEnabled:NO];                    
-                    if ([question isCorrect] == YES) {
-                        [self enqueueAudioWithPath:[(SCHStoryInteractionStartingLetter *)self.storyInteraction audioPathForThatsRight] fromBundle:NO];
-                        [self enqueueAudioWithPath:[question audioPath] fromBundle:NO];
-                        [self enqueueAudioWithPath:[(SCHStoryInteractionStartingLetter *)self.storyInteraction audioPathForStartsWith] fromBundle:NO];
-                        [self enqueueAudioWithPath:[(SCHStoryInteractionStartingLetter *)self.storyInteraction audioPathForLetter] 
-                                        fromBundle:NO
-                                        startDelay:0.0 
-                            synchronizedStartBlock:nil 
-                              synchronizedEndBlock:^{
-                                  [self setUserInteractionsEnabled:YES];                                      
-                              }];
-                        [self questionsCompleted];                         
-                    } else {
-                        [self enqueueAudioWithPath:[question audioPath] fromBundle:NO];
-                        [self enqueueAudioWithPath:[(SCHStoryInteractionStartingLetter *)self.storyInteraction audioPathForDoesntStartWith] fromBundle:NO];
-                        [self enqueueAudioWithPath:[(SCHStoryInteractionStartingLetter *)self.storyInteraction audioPathForLetter] fromBundle:NO];
-                        [self enqueueAudioWithPath:[(SCHStoryInteractionStartingLetter *)self.storyInteraction audioPathForTryAgain] 
-                                        fromBundle:NO 
-                                        startDelay:0.0 
-                            synchronizedStartBlock:nil 
-                              synchronizedEndBlock:^{
-                                  [self setUserInteractionsEnabled:YES];                                      
-                              }];
-                    }
+                self.simultaneousTapCount++;
+                if (self.simultaneousTapCount == 1) {
+                    [self performSelector:@selector(answerChosen:) withObject:imageButton afterDelay:kMinimumDistinguishedAnswerDelay];
                 }
             };
         }
@@ -111,6 +90,47 @@
     }
     
     return(ret);
+}
+
+- (void)answerChosen:(SCHImageButton *)imageButton
+{
+    // ignore multiple taps
+    NSInteger tapCount = self.simultaneousTapCount;
+    self.simultaneousTapCount = 0;
+    if (tapCount > 1) {
+        return;
+    }
+    
+    imageButton.selected = YES;
+    SCHStoryInteractionStartingLetterQuestion *question = [self questionAtIndex:imageButton.tag - 1]; 
+    if (question != nil) {
+        [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
+        [self setUserInteractionsEnabled:NO];                    
+        if ([question isCorrect] == YES) {
+            [self enqueueAudioWithPath:[(SCHStoryInteractionStartingLetter *)self.storyInteraction audioPathForThatsRight] fromBundle:NO];
+            [self enqueueAudioWithPath:[question audioPath] fromBundle:NO];
+            [self enqueueAudioWithPath:[(SCHStoryInteractionStartingLetter *)self.storyInteraction audioPathForStartsWith] fromBundle:NO];
+            [self enqueueAudioWithPath:[(SCHStoryInteractionStartingLetter *)self.storyInteraction audioPathForLetter] 
+                            fromBundle:NO
+                            startDelay:0.0 
+                synchronizedStartBlock:nil 
+                  synchronizedEndBlock:^{
+                      [self setUserInteractionsEnabled:YES];                                      
+                  }];
+            [self questionsCompleted];                         
+        } else {
+            [self enqueueAudioWithPath:[question audioPath] fromBundle:NO];
+            [self enqueueAudioWithPath:[(SCHStoryInteractionStartingLetter *)self.storyInteraction audioPathForDoesntStartWith] fromBundle:NO];
+            [self enqueueAudioWithPath:[(SCHStoryInteractionStartingLetter *)self.storyInteraction audioPathForLetter] fromBundle:NO];
+            [self enqueueAudioWithPath:[(SCHStoryInteractionStartingLetter *)self.storyInteraction audioPathForTryAgain] 
+                            fromBundle:NO 
+                            startDelay:0.0 
+                synchronizedStartBlock:nil 
+                  synchronizedEndBlock:^{
+                      [self setUserInteractionsEnabled:YES];                                      
+                  }];
+        }
+    }
 }
 
 - (BOOL)questionsCompleted

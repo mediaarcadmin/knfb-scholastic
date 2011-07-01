@@ -23,7 +23,11 @@ typedef enum
     SCHStoryInteractionFullScreen,
     SCHStoryInteractionTitleOverlaysContents
 } SCHFrameStyle;
-    
+
+// on SIs with multiple answer buttons, any selections within this
+// time (in seconds) are assumed to be simultaneous taps and ignored
+#define kMinimumDistinguishedAnswerDelay 0.2
+
 // Core presentation functionality for story interactions. 
 
 // Because Story Interactions have a non-modal behaviour in the reading view, StoryInteractionController 
@@ -81,6 +85,9 @@ typedef enum
 // switch to the next view in the NIB
 - (void)presentNextView;
 
+// play the default audio sound for a button tap
+- (void)playDefaultButtonAudio;
+
 // play an audio file from the XPS provider and invoke a completion block when the playback is complete
 - (void)playAudioAtPath:(NSString *)path completion:(void(^)(void))completion;
 
@@ -121,6 +128,14 @@ typedef enum
 // in the current view to the expected landscape orientation for story interactions
 - (CGAffineTransform)affineTransformForCurrentOrientation;
 
+// Story interactions can use this to disable interactions
+// also disables superview user interactions, as interactions are passed through
+// with great power comes great responsibility - use carefully!
+- (void)setUserInteractionsEnabled:(BOOL)enabled;
+
+// The current state of setUserInteractionsEnabled
+- (BOOL)isUserInteractionsEnabled;
+
 #pragma mark - subclass overrides
 
 // The frame styling used
@@ -141,11 +156,6 @@ typedef enum
 // audio path for current question - default implementation uses audioPathForQuestion
 // from the story interaction; override if variable audio per question is needed
 - (NSString *)audioPathForQuestion;
-
-// Story interactions can use this to disable interactions
-// also disables superview user interactions, as interactions are passed through
-// with great power comes great responsibility - use carefully!
-- (void)setUserInteractionsEnabled:(BOOL)enabled;
 
 // The user tapped the play audio button in the top right corner; default behaviour is
 // to repeat the question defined by [self audioPathForQuestion].

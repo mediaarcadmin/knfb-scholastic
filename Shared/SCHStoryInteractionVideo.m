@@ -9,6 +9,7 @@
 #import "SCHStoryInteractionVideo.h"
 
 #import "KNFBXPSConstants.h"
+#import "SCHBookStoryInteractions.h"
 
 @implementation SCHStoryInteractionVideo
 
@@ -29,7 +30,8 @@
 
 - (NSString *)audioPathForQuestion
 {
-    NSString *filename = [NSString stringWithFormat:@"%@_intro.mp3", self.ID];
+    NSUInteger videoIndex = [[self.bookStoryInteractions storyInteractionsOfClass:[self class]] indexOfObject:self];
+    NSString *filename = [NSString stringWithFormat:@"%@_intro%lu.mp3", self.ID, videoIndex + 1];
     return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:filename];
 }
 

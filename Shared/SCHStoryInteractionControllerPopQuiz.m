@@ -14,6 +14,7 @@
 
 @property (nonatomic, assign) NSInteger currentQuestionIndex;
 @property (nonatomic, assign) NSInteger score;
+@property (nonatomic, assign) NSInteger simultaneousTapCount;
 
 - (void)setupQuestionView;
 - (void)setupScoreView;
@@ -32,6 +33,7 @@
 @synthesize scoreSublabel;
 @synthesize currentQuestionIndex;
 @synthesize score;
+@synthesize simultaneousTapCount;
 
 - (void)dealloc
 {
@@ -102,6 +104,7 @@
 
 - (void)setupQuestion
 {
+    self.simultaneousTapCount = 0;
     self.progressView.currentStep = self.currentQuestionIndex;
     self.questionLabel.text = [self currentQuestion].prompt;
     NSInteger i = 0;
@@ -125,6 +128,20 @@
 
 - (IBAction)answerButtonTapped:(id)sender
 {
+    self.simultaneousTapCount++;
+    if (self.simultaneousTapCount == 1) {
+        [self performSelector:@selector(answerChosen:) withObject:sender afterDelay:kMinimumDistinguishedAnswerDelay];
+    }
+}
+
+- (void)answerChosen:(id)sender
+{
+    NSInteger tapCount = self.simultaneousTapCount;
+    self.simultaneousTapCount = 0;
+    if (tapCount > 1) {
+        return;
+    }
+    
     [self setUserInteractionsEnabled:NO];
     NSInteger chosenAnswer = [self.answerButtons indexOfObject:sender];
     if (chosenAnswer == NSNotFound) {
