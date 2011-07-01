@@ -146,7 +146,7 @@
 {
     self.simultaneousTapCount++;
     if (self.simultaneousTapCount == 1) {
-        [self performSelector:@selector(answerChosen:) withObject:sender afterDelay:0.3];
+        [self performSelector:@selector(answerChosen:) withObject:sender afterDelay:kMinimumDistinguishedAnswerDelay];
     }
 }
 

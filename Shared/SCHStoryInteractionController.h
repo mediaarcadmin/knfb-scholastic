@@ -22,7 +22,11 @@ typedef enum
     SCHStoryInteractionFullScreen,
     SCHStoryInteractionTitleOverlaysContents
 } SCHFrameStyle;
-    
+
+// on SIs with multiple answer buttons, any selections within this
+// time (in seconds) are assumed to be simultaneous taps and ignored
+#define kMinimumDistinguishedAnswerDelay 0.2
+
 // Core presentation functionality for story interactions. 
 
 // Because Story Interactions have a non-modal behaviour in the reading view, StoryInteractionController 

@@ -85,7 +85,7 @@
             button.actionBlock = ^(SCHImageButton *imageButton) {
                 self.simultaneousTapCount++;
                 if (self.simultaneousTapCount == 1) {
-                    [self performSelector:@selector(answerChosen:) withObject:imageButton afterDelay:0.3];
+                    [self performSelector:@selector(answerChosen:) withObject:imageButton afterDelay:kMinimumDistinguishedAnswerDelay];
                 }
             };
         }
