@@ -126,6 +126,7 @@ static CGPoint pointWithOffset(CGPoint p, CGPoint offset)
                                    [self removeFromHostViewWithSuccess:YES];
                                }];
     } else {
+        [self playDefaultButtonAudio];
         // remove the highlights after a short delay
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 1.0 * NSEC_PER_SEC);
         dispatch_after(popTime, dispatch_get_main_queue(), ^{
