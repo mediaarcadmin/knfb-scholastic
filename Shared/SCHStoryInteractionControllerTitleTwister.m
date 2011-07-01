@@ -364,6 +364,7 @@
 
 - (void)clearButtonTapped:(id)sender
 {
+    [self playDefaultButtonAudio];
     [self clearBuiltWord];
 }
 

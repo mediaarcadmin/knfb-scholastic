@@ -294,4 +294,14 @@
     return CGSizeMake([self.BookCoverWidth intValue], [self.BookCoverHeight intValue]);
 }
 
+- (SCHAppBookFeatures) bookFeatures
+{
+    // FIXME: use the new tuple to determine whether the book is a sample or not
+    if (self.HasStoryInteractions) {
+        return kSCHAppBookFeaturesStoryInteractions;
+    } else {
+        return kSCHAppBookFeaturesNone;
+    }
+}
+
 @end

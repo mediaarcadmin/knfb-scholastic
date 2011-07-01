@@ -521,6 +521,12 @@
     }   
 }
 
+- (void)playDefaultButtonAudio
+{
+    [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
+    [self enqueueAudioWithPath:[self.storyInteraction storyInteractionWrongAnswerSoundFilename] fromBundle:YES];
+}
+
 - (void)playAudioAtPath:(NSString *)path completion:(void (^)(void))completion
 {
     [self.audioPlayer cancelPlaybackExecutingSynchronizedBlocksImmediately:NO];

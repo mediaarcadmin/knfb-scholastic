@@ -91,6 +91,12 @@ static NSUInteger const kSCHAudioBookPlayerNoAudioLoaded = NSUIntegerMax;
        pageTurnBlock:(PageTurnBlock)pageTurnBlock {
     BOOL ret = NO;
     
+    __block NSUInteger currentPosition = 0;
+    __block NSUInteger currentAudioInfoPosition = 0;
+    __block SCHWordTiming *lastTriggered = nil;
+    __block NSUInteger pageTurnAtTime = NSUIntegerMax;
+    __block NSUInteger pageTurnToLayoutPage = 1;
+    
     if (setAudioBookReferences != nil && [setAudioBookReferences count] > 0) {
         // Audiobook Reference
         self.audioBookReferences = setAudioBookReferences;
@@ -119,12 +125,6 @@ static NSUInteger const kSCHAudioBookPlayerNoAudioLoaded = NSUIntegerMax;
                 dispatch_release(self.timer), self.timer = NULL;
             });
             dispatch_source_set_event_handler(self.timer, ^{                
-                static NSUInteger currentPosition = 0;
-                static NSUInteger currentAudioInfoPosition = 0;
-                static SCHWordTiming *lastTriggered = nil;
-                static NSUInteger pageTurnAtTime = NSUIntegerMax;
-                static NSUInteger pageTurnToLayoutPage = 1;
-
                 // We're using the WordTimings file use of integers for time
                 NSUInteger currentPlayTime = (NSUInteger)(self.player.currentTime * kSCHAudioBookPlayerMilliSecondsInASecond);
                 SCHWordTiming *wordTiming = [self.wordTimings objectAtIndex:currentPosition];

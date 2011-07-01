@@ -234,6 +234,45 @@ static NSString * const kSCHProfileItemUserContentItemContentMetadataItem = @"Us
     
 }
 
+- (BOOL) bookIsNewForProfileWithIdentifier: (NSString *)isbn
+{
+    NSEntityDescription *entityDescription = [NSEntityDescription 
+                                              entityForName:kSCHUserContentItem
+                                              inManagedObjectContext:self.managedObjectContext];
+
+    NSFetchRequest *fetchRequest = [entityDescription.managedObjectModel 
+                                    fetchRequestTemplateForName:kSCHUserContentItemFetchWithContentIdentifier];
+    
+    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"ContentIdentifier == %@", isbn]];
+    [fetchRequest setFetchLimit:1];
+    
+    NSArray *userContentItems = [self.managedObjectContext executeFetchRequest:fetchRequest error:nil];	
+    NSDate *creationDate = nil;
+    if (userContentItems != nil && [userContentItems count] > 0) {
+        NSSet *orderItems = [[userContentItems objectAtIndex:0] OrderList];
+        if ([orderItems count] > 0) {
+            // use the latest date
+            NSArray *sortedOrderItems = [[orderItems allObjects] sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"date" ascending:NO]]];
+            SCHOrderItem *orderItem = [sortedOrderItems objectAtIndex:0];
+            creationDate = [orderItem OrderDate];
+        }
+    }
+
+    if (!creationDate) {
+        return NO;
+    }
+    
+    NSDate *now = [NSDate date];
+    NSTimeInterval interval = [now timeIntervalSinceDate:creationDate];
+    
+    // if the date is within 7 days of now, it is new
+    if (interval >= 604800) {
+        return YES;
+    } else {
+        return NO;
+    }
+}
+
 - (SCHBookAnnotations *)annotationsForBook:(NSString *)isbn
 {
     SCHBookAnnotations *ret = nil;

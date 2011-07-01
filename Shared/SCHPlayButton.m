@@ -19,6 +19,7 @@
 @implementation SCHPlayButton
 
 @synthesize play;
+@synthesize icon;
 @synthesize actionBlock;
 @synthesize tintedBackgroundColor;
 
@@ -53,7 +54,7 @@
     tintedBackgroundColor = [[[UIColor blackColor] colorWithAlphaComponent:0.5] retain];
     
     play = NO;
-    self.image = [UIImage imageNamed:@"storyinteraction-video-play"]; 
+    self.icon = SCHPlayButtonIconPlay;
     self.backgroundColor = self.tintedBackgroundColor;                            
     actionBlock = nil;
     
@@ -72,12 +73,29 @@
 
 #pragma mark - Accessors
 
+- (void)setIcon:(SCHPlayButtonIcon)newIcon
+{
+    icon = newIcon;
+    switch (self.icon) {
+        case SCHPlayButtonIconPlay:
+            self.image = [UIImage imageNamed:@"storyinteraction-video-play"];
+            break;
+        case SCHPlayButtonIconPause:
+            self.image = [UIImage imageNamed:@"storyinteraction-video-pause"];
+            break;
+        case SCHPlayButtonIconNone:
+        default:
+            self.image = nil;
+            break;
+    }
+}
+
 - (void)setPlay:(BOOL)setPlay
 {
     if (play != setPlay) {
         play = setPlay;
         if (play == NO) {
-            self.image = [UIImage imageNamed:@"storyinteraction-video-pause"];
+            self.icon = SCHPlayButtonIconPause;
             self.backgroundColor = [UIColor clearColor];
             self.alpha = 0.0;
         }
@@ -93,7 +111,7 @@
             if (play == YES) {
                 self.alpha = 1.0;
                 self.backgroundColor = [UIColor clearColor];
-                self.image = nil;
+                self.icon = SCHPlayButtonIconNone;
             }
         }];
         if (self.actionBlock != nil) {

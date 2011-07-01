@@ -140,6 +140,7 @@
 
 - (void)playAgainButtonTapped:(id)sender
 {
+    [self playDefaultButtonAudio];
     [self presentNextView];
 }
 

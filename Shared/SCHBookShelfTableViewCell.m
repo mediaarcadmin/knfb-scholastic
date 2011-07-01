@@ -42,6 +42,7 @@ static NSInteger const CELL_BACKGROUND_VIEW = 200;
 
 @synthesize isbn;
 @synthesize delegate;
+@synthesize isNewBook;
 
 - (id) initWithCoder:(NSCoder *)aDecoder
 {
@@ -123,7 +124,41 @@ static NSInteger const CELL_BACKGROUND_VIEW = 200;
     [self.textLabel setText:attrString];
     self.textLabel.backgroundColor = [UIColor clearColor];
     [attrString release];
- 
+    
+    if (self.isNewBook) {
+        self.newIndicatorIcon.hidden = NO;
+    } else {
+        self.newIndicatorIcon.hidden = YES;
+    }
+    
+    switch (book.bookFeatures) {
+        case kSCHAppBookFeaturesNone:
+        {
+            self.sampleAndSIIndicatorIcon.image = nil;
+            break;
+        }   
+        case kSCHAppBookFeaturesSample:
+        {
+            self.sampleAndSIIndicatorIcon.image = [UIImage imageNamed:@"SampleIcon"];
+            break;
+        }   
+        case kSCHAppBookFeaturesStoryInteractions:
+        {
+            self.sampleAndSIIndicatorIcon.image = [UIImage imageNamed:@"SIIcon"];
+            break;
+        }   
+        case kSCHAppBookFeaturesSampleWithStoryInteractions:
+        {
+            self.sampleAndSIIndicatorIcon.image = [UIImage imageNamed:@"SISampleIcon"];
+            break;
+        }   
+        default:
+        {
+            NSLog(@"Warning: unknown type for book features.");
+            self.sampleAndSIIndicatorIcon.image = nil;
+            break;
+        }
+    }
 }
 
 - (void)updateTheme

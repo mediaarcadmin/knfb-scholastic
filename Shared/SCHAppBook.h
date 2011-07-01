@@ -59,6 +59,13 @@ static NSString * const kSCHAppBookCONTENT_IDENTIFIER = @"CONTENT_IDENTIFIER";
 
 static NSString * const kSCHAppBookEucalyptusCacheDir = @"libEucalyptusCache";
 
+typedef enum {
+    kSCHAppBookFeaturesNone,
+    kSCHAppBookFeaturesSample,
+    kSCHAppBookFeaturesStoryInteractions,
+    kSCHAppBookFeaturesSampleWithStoryInteractions
+} SCHAppBookFeatures;
+
 @interface SCHAppBook :  NSManagedObject  
 {
 }
@@ -84,6 +91,7 @@ static NSString * const kSCHAppBookEucalyptusCacheDir = @"libEucalyptusCache";
 @property (nonatomic, retain) NSNumber *LayoutPageEquivalentCount;
 @property (nonatomic, retain) NSArray *AudioBookReferences;
 
+// convenience variables from the SCHContentMetadataItem
 @property (nonatomic, readonly) NSString * ContentIdentifier;
 @property (nonatomic, readonly) NSString * Author;
 @property (nonatomic, readonly) NSString * Description;
@@ -114,6 +122,7 @@ static NSString * const kSCHAppBookEucalyptusCacheDir = @"libEucalyptusCache";
 - (BOOL)haveURLs;
 - (BOOL)canOpenBook;
 - (CGSize)bookCoverImageSize;
+- (SCHAppBookFeatures) bookFeatures;
 
 @end
 
