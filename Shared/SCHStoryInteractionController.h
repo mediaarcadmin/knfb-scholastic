@@ -80,6 +80,9 @@ typedef enum
 // switch to the next view in the NIB
 - (void)presentNextView;
 
+// play the default audio sound for a button tap
+- (void)playDefaultButtonAudio;
+
 // play an audio file from the XPS provider and invoke a completion block when the playback is complete
 - (void)playAudioAtPath:(NSString *)path completion:(void(^)(void))completion;
 
