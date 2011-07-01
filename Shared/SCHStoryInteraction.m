@@ -42,6 +42,11 @@ NSString * const KNFBXPSStoryInteractionsDirectory = @"/Documents/1/Other/KNFB/I
     return [self title];
 }
 
+- (BOOL)requiresInteractionWithPage
+{
+    return NO;
+}
+
 - (NSInteger)questionCount
 {
     return 1;

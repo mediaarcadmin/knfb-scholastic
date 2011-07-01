@@ -67,6 +67,11 @@
     return @"Touch The Page";
 }
 
+- (BOOL)requiresInteractionWithPage
+{
+    return YES;
+}
+
 - (NSInteger)questionCount
 {
     return [self.questions count];
