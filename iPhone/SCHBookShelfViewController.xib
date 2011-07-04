@@ -84,6 +84,7 @@
 																<reference key="NSWindow"/>
 																<reference key="NSNextKeyView" ref="1042208657"/>
 																<bool key="IBUIOpaque">NO</bool>
+																<bool key="IBUIAutoresizesSubviews">NO</bool>
 																<int key="IBUIContentMode">7</int>
 																<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 																<int key="IBUIContentVerticalAlignment">0</int>
@@ -117,6 +118,7 @@
 																<reference key="NSWindow"/>
 																<reference key="NSNextKeyView" ref="625187533"/>
 																<bool key="IBUIOpaque">NO</bool>
+																<bool key="IBUIAutoresizesSubviews">NO</bool>
 																<int key="IBUIContentMode">8</int>
 																<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 																<int key="IBUIContentHorizontalAlignment">2</int>

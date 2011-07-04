@@ -23,6 +23,7 @@ static NSInteger const CELL_BOOK_TINT_VIEW_TAG = 104;
 static NSInteger const CELL_DELETE_BUTTON = 105;
 static NSInteger const CELL_BACKGROUND_VIEW = 200;
 static NSInteger const CELL_THUMB_BACKGROUND_VIEW = 201;
+static NSInteger const CELL_RULE_IMAGE_VIEW = 202;
 
 @interface SCHBookShelfTableViewCell ()
 
@@ -34,6 +35,7 @@ static NSInteger const CELL_THUMB_BACKGROUND_VIEW = 201;
 @property (readonly) UIView *backgroundView;
 @property (readonly) UIButton *deleteButton;
 @property (readonly) UIView *thumbBackgroundView;
+@property (readonly) UIImageView *ruleImageView;
 
 - (void)updateTheme;
 
@@ -57,6 +59,8 @@ static NSInteger const CELL_THUMB_BACKGROUND_VIEW = 201;
         self.bookCoverImageView.thumbSize = CGSizeMake(self.bookCoverImageView.frame.size.width, self.bookCoverImageView.frame.size.height);
         [self updateTheme];
         [self.deleteButton addTarget:self action:@selector(pressedDeleteButton:) forControlEvents:UIControlEventTouchUpInside];
+        self.ruleImageView.image = [[UIImage imageNamed:@"ListViewRule"] stretchableImageWithLeftCapWidth:6 topCapHeight:0];
+                                    
     }
     
     return self;
@@ -105,13 +109,10 @@ static NSInteger const CELL_THUMB_BACKGROUND_VIEW = 201;
         titleString = [NSString stringWithFormat:@"%@\n%@", book.Title, book.Author];
     } else {
         titleString = [NSString stringWithFormat:@"%@ - %@", book.Title, book.Author];
-        fontSize = 11.0f;
+        fontSize = 10.0f;
     }
     NSMutableAttributedString *attrString = [[NSMutableAttributedString alloc] initWithString:titleString];
 
-    
-    
-    
     UIFont *boldLabelFont = [UIFont fontWithName:@"Arial-BoldMT" size:fontSize];
     UIFont *labelFont = [UIFont fontWithName:@"Arial" size:fontSize];
     
@@ -125,13 +126,20 @@ static NSInteger const CELL_THUMB_BACKGROUND_VIEW = 201;
         } else {
             [attrString addAttribute:(NSString *)kCTFontAttributeName value:(id)arialFont range:NSMakeRange([book.Title length], [book.Author length] + 3)];
         }
+        
         CFRelease(arialFont);
         CFRelease(boldArialFont);
         
         [attrString addAttribute:(NSString *)kCTForegroundColorAttributeName value:(id)[UIColor SCHDarkBlue1Color].CGColor range:NSMakeRange(0, [titleString length])];
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            [attrString addAttribute:(NSString *)kCTKernAttributeName value:(id)[NSNumber numberWithFloat:-0.4] range:NSMakeRange(0, [titleString length])];
+        } else {
+            [attrString addAttribute:(NSString *)kCTKernAttributeName value:(id)[NSNumber numberWithFloat:-0.3] range:NSMakeRange(0, [titleString length])];
+        }
     }
     
     [self.textLabel setText:attrString];
+    
     self.textLabel.backgroundColor = [UIColor clearColor];
     [attrString release];
     
@@ -192,8 +200,20 @@ static NSInteger const CELL_THUMB_BACKGROUND_VIEW = 201;
 //        thumbTintFrame.origin.y = self.bookCoverImageView.frame.size.height - thumbTintFrame.size.height;
         
         self.bookTintView.frame = thumbTintFrame;
-        NSLog(@"Thumb tint frame: %@", NSStringFromCGRect(self.bookTintView.frame));
+//        NSLog(@"Thumb tint frame: %@", NSStringFromCGRect(self.bookTintView.frame));
     }
+    
+
+    // code to centre the text label vertically
+    CGRect frame = self.textLabel.frame;
+    
+    float textHeight = [self.textLabel sizeThatFits:self.textLabel.frame.size].height;
+    if (textHeight > self.textLabel.frame.size.height) {
+        textHeight = self.textLabel.frame.size.height;
+    }
+    
+    frame.origin.y = ceilf(CGRectGetMidY(self.backgroundView.frame) - (textHeight / 2));
+    self.textLabel.frame = frame;
     
     [UIView setAnimationsEnabled:YES];
 }
@@ -299,6 +319,11 @@ static NSInteger const CELL_THUMB_BACKGROUND_VIEW = 201;
 - (UIButton *)deleteButton
 {
     return (UIButton *)[self.contentView viewWithTag:CELL_DELETE_BUTTON];
+}
+
+- (UIImageView *)ruleImageView
+{
+    return (UIImageView *)[self.contentView viewWithTag:CELL_RULE_IMAGE_VIEW];
 }
 
 

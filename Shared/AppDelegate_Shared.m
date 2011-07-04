@@ -168,7 +168,18 @@ static NSString* const prModelCertFilename = @"iphonecert.dat";
 		[[NSUserDefaults standardUserDefaults] synchronize];
 	}
     
-    [self distributeManagedObjectContext];
+    SCHBookManager *bookManager = [SCHBookManager sharedBookManager];
+    bookManager.persistentStoreCoordinator = self.persistentStoreCoordinator;
+    if (bookManager.managedObjectContextForCurrentThread == nil) {
+        bookManager.managedObjectContextForCurrentThread = self.managedObjectContext;
+    }
+    
+    SCHSyncManager *syncManager = [SCHSyncManager sharedSyncManager];
+	syncManager.managedObjectContext = self.managedObjectContext;
+	[syncManager start];
+	
+	SCHURLManager *urlManager = [SCHURLManager sharedURLManager];
+	urlManager.managedObjectContext = self.managedObjectContext;
     
 	// instantiate the shared processing manager
 	[SCHProcessingManager sharedProcessingManager].managedObjectContext = self.managedObjectContext;
@@ -372,21 +383,7 @@ static NSString* const prModelCertFilename = @"iphonecert.dat";
 	[[NSUserDefaults standardUserDefaults] synchronize];
 }	
 
-#pragma mark - Database control
-
-- (void)distributeManagedObjectContext
-{
-    SCHBookManager *bookManager = [SCHBookManager sharedBookManager];
-    bookManager.persistentStoreCoordinator = self.persistentStoreCoordinator;
-    bookManager.mainThreadManagedObjectContext = self.managedObjectContext;
-    
-    SCHSyncManager *syncManager = [SCHSyncManager sharedSyncManager];
-	syncManager.managedObjectContext = self.managedObjectContext;
-	[syncManager start];
-	
-	SCHURLManager *urlManager = [SCHURLManager sharedURLManager];
-	urlManager.managedObjectContext = self.managedObjectContext;
-}
+#pragma mark - Database clear
 
 - (void)clearDatabase
 {

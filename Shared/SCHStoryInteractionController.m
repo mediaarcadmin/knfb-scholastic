@@ -151,7 +151,6 @@
         
         UIImageView *background = [[UIImageView alloc] initWithImage:[self backgroundImage]];
         background.contentMode = UIViewContentModeScaleToFill;
-        background.userInteractionEnabled = YES;
         [container addSubview:background];
         
         UILabel *title = [[UILabel alloc] initWithFrame:CGRectZero];
@@ -169,7 +168,7 @@
         self.closeButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [self.closeButton setImage:closeImage forState:UIControlStateNormal];
         [self.closeButton addTarget:self action:@selector(closeButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-        [background addSubview:self.closeButton];
+        [container addSubview:self.closeButton];
         
         if (questionAudioPath) {
             UIImage *readAloudImage = [UIImage imageNamed:@"storyinteraction-read-aloud"];
@@ -177,7 +176,7 @@
             self.readAloudButton.bounds = (CGRect){ CGPointZero, readAloudImage.size };
             [self.readAloudButton setImage:readAloudImage forState:UIControlStateNormal];
             [self.readAloudButton addTarget:self action:@selector(playAudioButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-            [background addSubview:self.readAloudButton];
+            [container addSubview:self.readAloudButton];
         }
         
         self.containerView = container;
@@ -227,14 +226,16 @@
         setupViews();
         if (self.frameStyle == SCHStoryInteractionTitleOverlaysContents) {
             [self.containerView addSubview:newContentsView];
+            [self.backgroundView setUserInteractionEnabled:NO];
         } else {
             [self.backgroundView addSubview:newContentsView];
+            [self.backgroundView setUserInteractionEnabled:YES];
         }
     }
     
     [self.containerView bringSubviewToFront:self.backgroundView];
-    [self.backgroundView bringSubviewToFront:self.closeButton];
-    [self.backgroundView bringSubviewToFront:self.readAloudButton];
+    [self.containerView bringSubviewToFront:self.closeButton];
+    [self.containerView bringSubviewToFront:self.readAloudButton];
     
     self.contentsView = newContentsView;
     
@@ -361,17 +362,28 @@
         }
         case SCHStoryInteractionTitleOverlaysContents: {
             CGRect titleFrame = [self overlaidTitleFrame];
-            backgroundWidth = MAX(background.image.size.width, titleFrame.size.width);
-            backgroundHeight = MAX(background.image.size.height, titleFrame.size.height);
+            if (iPad) {
+                backgroundWidth = MAX(background.image.size.width, titleFrame.size.width);
+                backgroundHeight = MAX(background.image.size.height, titleFrame.size.height);
+                background.center = CGPointMake(floorf(CGRectGetMidX(titleFrame)), floorf(CGRectGetMidY(titleFrame)));
+            } else {
+                backgroundWidth = background.image.size.width;
+                backgroundHeight = background.image.size.height;
+                background.center = CGPointMake(floorf(CGRectGetMidX(container.bounds)), floorf(CGRectGetMidY(container.bounds)));
+            }
             background.bounds = CGRectIntegral(CGRectMake(0, 0, backgroundWidth, backgroundHeight));
-            background.center = CGPointMake(floorf(CGRectGetMidX(titleFrame)), floorf(CGRectGetMidY(titleFrame)));
             contents.bounds = container.bounds;
             contents.center = CGPointMake(floorf(CGRectGetMidX(container.bounds)), floorf(CGRectGetMidY(container.bounds)));
             titleInsets.top = titleInsets.bottom;
-            title.frame = UIEdgeInsetsInsetRect(background.bounds, titleInsets);
+            title.frame = UIEdgeInsetsInsetRect((CGRect){CGPointZero, titleFrame.size}, titleInsets);
             break;
         }
     }
+    
+    closePosition.x += background.frame.origin.x;
+    closePosition.y += background.frame.origin.y;
+    readAloudPosition.x += background.frame.origin.x;
+    readAloudPosition.y += background.frame.origin.y;
     
     UIImage *closeImage = [close imageForState:UIControlStateNormal];
     close.bounds = (CGRect){ CGPointZero, closeImage.size };

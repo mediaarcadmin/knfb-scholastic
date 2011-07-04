@@ -1840,7 +1840,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     
     NSUInteger layoutPage = 0;
     NSUInteger pageWordOffset = 0;
-    [self.readingView layoutPage:&layoutPage pageWordOffset:&pageWordOffset forBookPoint:currentPoint];
+    [self.readingView layoutPage:&layoutPage pageWordOffset:&pageWordOffset forBookPoint:currentPoint includingFolioBlocks:YES];
 
     NSLog(@"Current book point: %@", currentPoint);
     newNote.noteLayoutPage = layoutPage;
@@ -1858,7 +1858,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (void)readingNotesView:(SCHReadingNotesListController *)readingNotesView didSelectNote:(SCHNote *)note
 {
     NSUInteger layoutPage = note.noteLayoutPage;
-    SCHBookPoint *notePoint = [self.readingView bookPointForLayoutPage:layoutPage pageWordOffset:0];
+    SCHBookPoint *notePoint = [self.readingView bookPointForLayoutPage:layoutPage pageWordOffset:0 includingFolioBlocks:YES];
 
     [self.readingView jumpToBookPoint:notePoint animated:YES];
     
@@ -1889,7 +1889,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         return nil; // return nil if still paginating
     } else {
         NSUInteger layoutPage = note.noteLayoutPage;
-        SCHBookPoint *notePoint = [self.readingView bookPointForLayoutPage:layoutPage pageWordOffset:0];
+        SCHBookPoint *notePoint = [self.readingView bookPointForLayoutPage:layoutPage pageWordOffset:0 includingFolioBlocks:YES];
     
         return notePoint;
     }
@@ -1942,7 +1942,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     SCHStoryInteraction *storyInteraction = [[self.bookStoryInteractions allStoryInteractions] objectAtIndex:interaction];
     [self presentStoryInteraction:storyInteraction];
     
-    SCHBookPoint *notePoint = [self.readingView bookPointForLayoutPage:[storyInteraction documentPageNumber] pageWordOffset:0];
+    SCHBookPoint *notePoint = [self.readingView bookPointForLayoutPage:[storyInteraction documentPageNumber] pageWordOffset:0 includingFolioBlocks:YES];
     [self.readingView jumpToBookPoint:notePoint animated:YES];
 }
 

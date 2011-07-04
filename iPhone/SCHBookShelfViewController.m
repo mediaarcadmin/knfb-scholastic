@@ -187,12 +187,13 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
     listFrame.size.width = self.view.frame.size.width;
     gridFrame.size.width = self.view.frame.size.width;
     
+    // this is the height of the top toggle view for both iPad and iPhone
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         listFrame.size.height = 66;
         gridFrame.size.height = 66;
     } else {
-        listFrame.size.height = 34;
-        gridFrame.size.height = 34;
+        listFrame.size.height = 44;
+        gridFrame.size.height = 44;
     }
     self.listTableView.tableHeaderView.frame = listFrame;
     self.gridViewToggleView.frame = gridFrame;
@@ -419,7 +420,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         return 100;
     } else {
-        return 74;
+        return 62;
     }
 }
 

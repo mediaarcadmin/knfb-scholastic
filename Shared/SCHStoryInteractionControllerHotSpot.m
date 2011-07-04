@@ -78,6 +78,7 @@
     [self.pageImageView addGestureRecognizer:tap];
     [self.pageImageView setUserInteractionEnabled:YES];
     [tap release];
+    
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
