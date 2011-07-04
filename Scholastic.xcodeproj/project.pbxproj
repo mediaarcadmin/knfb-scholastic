@@ -1530,6 +1530,7 @@
 		280C99C91397EA1900381C31 /* SCHStoryInteractionControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionControllerDelegate.h; sourceTree = "<group>"; };
 		280D6A1613B1D6180032085D /* SCHStarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStarView.h; sourceTree = "<group>"; };
 		280D6A1713B1D6180032085D /* SCHStarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStarView.m; sourceTree = "<group>"; };
+		28194A6B13C1BF2600E3DBE2 /* AppDelegate_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate_Private.h; path = Shared/AppDelegate_Private.h; sourceTree = "<group>"; };
 		2827824313A20FA200E968C1 /* NSArray+ViewSorting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+ViewSorting.h"; sourceTree = "<group>"; };
 		2827824413A20FA200E968C1 /* NSArray+ViewSorting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+ViewSorting.m"; sourceTree = "<group>"; };
 		2827827513A23DF100E968C1 /* SCHStoryInteractionWordScrambler_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionWordScrambler_iPad.xib; sourceTree = "<group>"; };
@@ -3231,6 +3232,7 @@
 				2819307C112F81BE00ECF9B4 /* Scholastic.xcdatamodeld */,
 				28EEC0491118E28000187D67 /* AppDelegate_Shared.h */,
 				28EEC04A1118E28000187D67 /* AppDelegate_Shared.m */,
+				28194A6B13C1BF2600E3DBE2 /* AppDelegate_Private.h */,
 				8D1107310486CEB800E47090 /* Scholastic-Info.plist */,
 				528A2CD212CCDD9E0053A343 /* Settings.bundle */,
 				528A2CD912CCDDB00053A343 /* Entitlements.plist */,

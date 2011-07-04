@@ -694,6 +694,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
                                               //NSLog(@"WORD UP! at layoutPage %d pageWordOffset %d", layoutPage, pageWordOffset);
                                               self.pauseAudioOnNextPageTurn = NO;
                                               [self.readingView followAlongHighlightWordForLayoutPage:layoutPage pageWordOffset:pageWordOffset];
+                                              self.pauseAudioOnNextPageTurn = YES;
                                           } pageTurnBlock:^(NSUInteger turnToLayoutPage) {
                                               //NSLog(@"Turn to layoutPage %d", turnToLayoutPage);
                                               if (self.layoutType == SCHReadingViewLayoutTypeFixed) {
@@ -1354,6 +1355,13 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     
     [self setStoryInteractionButtonVisible:NO animated:YES withSound:YES];
     [self setToolbarVisibility:NO animated:YES];
+}
+
+- (void)readingViewWillBeginUserInitiatedZooming:(SCHReadingView *)readingView
+{
+    if (self.layoutType == SCHReadingViewLayoutTypeFixed) {
+        [self pauseAudioPlayback];
+    }
 }
 
 - (void)readingViewHasMoved

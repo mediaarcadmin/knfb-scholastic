@@ -35,6 +35,7 @@
 @property (nonatomic, retain) SCHBookRange *temporaryHighlightRange;
 @property (nonatomic, retain) EucSelectorRange *currentSelectorRange;
 @property (nonatomic, copy) dispatch_block_t zoomCompletionHandler;
+@property (nonatomic, assign) BOOL suppressZoomingCallback;
 
 - (void)initialiseView;
 
@@ -68,6 +69,7 @@
 @synthesize temporaryHighlightRange;
 @synthesize currentSelectorRange;
 @synthesize zoomCompletionHandler;
+@synthesize suppressZoomingCallback;
 
 - (void)dealloc
 {
@@ -407,6 +409,7 @@
 	
     CGPoint offset = CGPointMake(0, CGRectGetMidY(bounds) * zoomFactor); 
 	[myPageTurningView setTranslation:offset zoomFactor:zoomFactor animated:YES];
+    
 }
 
 - (void)zoomOutToCurrentPageWithCompletionHandler:(dispatch_block_t)completion
@@ -571,6 +574,10 @@
     [self.selector setSelectionDisabled:YES];
     [self dismissFollowAlongHighlighter];
 	self.temporaryHighlightRange = nil;
+    
+    if (!self.suppressZoomingCallback) {
+        [self.delegate readingViewWillBeginUserInitiatedZooming:self];
+    }
 }
 
 - (void)pageTurningViewDidEndZooming:(EucPageTurningView *)scrollView 
@@ -757,8 +764,10 @@
 			}
             
 			if (!CGRectEqualToRect(CGRectIntegral(CGRectIntersection(visibleRect, boundingRect)), CGRectIntegral(boundingRect))) {
-				
-				[self zoomOutToCurrentPage];
+				self.suppressZoomingCallback = YES;
+                [self zoomOutToCurrentPageWithCompletionHandler:^{
+                    self.suppressZoomingCallback = NO;
+                }];
 			}
 			
 			EucSelectorRange *range = [self selectorRangeFromBookRange:highlightRange];
