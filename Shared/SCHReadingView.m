@@ -153,13 +153,13 @@
 
 #pragma mark - SCHBookPoint Conversions
 
-- (void)layoutPage:(NSUInteger *)layoutPage pageWordOffset:(NSUInteger *)pageWordOffset forBookPoint:(SCHBookPoint *)bookPoint
+- (void)layoutPage:(NSUInteger *)layoutPage pageWordOffset:(NSUInteger *)pageWordOffset forBookPoint:(SCHBookPoint *)bookPoint includingFolioBlocks:(BOOL)folio
 {
     *layoutPage = bookPoint.layoutPage;
     *pageWordOffset = bookPoint.wordOffset;
     
     if (bookPoint.blockOffset > 0) {
-        NSArray *wordBlocks = [self.textFlow blocksForPageAtIndex:bookPoint.layoutPage - 1 includingFolioBlocks:YES];
+        NSArray *wordBlocks = [self.textFlow blocksForPageAtIndex:bookPoint.layoutPage - 1 includingFolioBlocks:folio];
         for (int i = 0; i < bookPoint.blockOffset; i++) {
             if (i < [wordBlocks count]) {
                 *pageWordOffset += [[[wordBlocks objectAtIndex:i] words] count];
@@ -168,7 +168,9 @@
     }
 }
 
-- (SCHBookPoint *)bookPointForLayoutPage:(NSUInteger)layoutPage pageWordOffset:(NSUInteger)pageWordOffset
+- (SCHBookPoint *)bookPointForLayoutPage:(NSUInteger)layoutPage 
+                          pageWordOffset:(NSUInteger)pageWordOffset 
+                    includingFolioBlocks:(BOOL)folio
 {
     SCHBookPoint *bookPoint = [[SCHBookPoint alloc] init];
     bookPoint.layoutPage = layoutPage;
@@ -178,7 +180,9 @@
     
     for (int i = 0 ; i < [wordBlocks count]; i++) {
         KNFBTextFlowBlock *block = [wordBlocks objectAtIndex:i];
-        if (bookPoint.wordOffset < [[block words] count]) {
+        if (!folio && [block isFolio]) {
+            bookPoint.blockOffset++;
+        } else if (bookPoint.wordOffset < [[block words] count]) {
             break;
         } else {
             bookPoint.wordOffset -= [[block words] count];
@@ -322,7 +326,7 @@
     SCHBookPoint *bookPoint = [self currentBookPointIgnoringMultipleDisplayPages:NO];
     
     if (bookPoint) {
-        [self layoutPage:layoutPage pageWordOffset:pageWordOffset forBookPoint:bookPoint];
+        [self layoutPage:layoutPage pageWordOffset:pageWordOffset forBookPoint:bookPoint includingFolioBlocks:YES];
     }    
 }
 
@@ -520,15 +524,15 @@
 
 - (void)followAlongHighlightWordForLayoutPage:(NSUInteger)layoutPage pageWordOffset:(NSUInteger)pageWordOffset
 {
-    SCHBookPoint *pointToHighlight = [self bookPointForLayoutPage:layoutPage pageWordOffset:pageWordOffset];
+    SCHBookPoint *pointToHighlight = [self bookPointForLayoutPage:layoutPage pageWordOffset:pageWordOffset includingFolioBlocks:NO];
     [self followAlongHighlightWordAtPoint:pointToHighlight];
 }
 
 - (SCHBookRange *)bookRangeForHighlight:(SCHHighlight *)highlight
 {
-    SCHBookPoint *startPoint = [self bookPointForLayoutPage:[highlight startLayoutPage] pageWordOffset:[highlight startWordOffset]];
+    SCHBookPoint *startPoint = [self bookPointForLayoutPage:[highlight startLayoutPage] pageWordOffset:[highlight startWordOffset] includingFolioBlocks:YES];
     
-    SCHBookPoint *endPoint = [self bookPointForLayoutPage:[highlight endLayoutPage] pageWordOffset:[highlight endWordOffset]];
+    SCHBookPoint *endPoint = [self bookPointForLayoutPage:[highlight endLayoutPage] pageWordOffset:[highlight endWordOffset] includingFolioBlocks:YES];
        
     SCHBookRange *bookRange = [[SCHBookRange alloc] init];
     bookRange.startPoint = startPoint;
@@ -562,8 +566,8 @@
         NSUInteger endLayoutPage       = 0;
         NSUInteger endPageWordOffset   = 0;
         
-        [self layoutPage:&startLayoutPage pageWordOffset:&startPageWordOffset forBookPoint:highlightRange.startPoint];
-        [self layoutPage:&endLayoutPage pageWordOffset:&endPageWordOffset forBookPoint:highlightRange.endPoint];
+        [self layoutPage:&startLayoutPage pageWordOffset:&startPageWordOffset forBookPoint:highlightRange.startPoint includingFolioBlocks:YES];
+        [self layoutPage:&endLayoutPage pageWordOffset:&endPageWordOffset forBookPoint:highlightRange.endPoint includingFolioBlocks:YES];
 
         [self.delegate addHighlightBetweenStartPage:startLayoutPage startWord:startPageWordOffset endPage:endLayoutPage endWord:endPageWordOffset];
     
@@ -586,8 +590,8 @@
         NSUInteger endLayoutPage       = 0;
         NSUInteger endPageWordOffset   = 0;
         
-        [self layoutPage:&startLayoutPage pageWordOffset:&startPageWordOffset forBookPoint:highlightRange.startPoint];
-        [self layoutPage:&endLayoutPage pageWordOffset:&endPageWordOffset forBookPoint:highlightRange.endPoint];
+        [self layoutPage:&startLayoutPage pageWordOffset:&startPageWordOffset forBookPoint:highlightRange.startPoint includingFolioBlocks:YES];
+        [self layoutPage:&endLayoutPage pageWordOffset:&endPageWordOffset forBookPoint:highlightRange.endPoint includingFolioBlocks:YES];
         
         [self.delegate deleteHighlightBetweenStartPage:startLayoutPage startWord:startPageWordOffset endPage:endLayoutPage endWord:endPageWordOffset];
         
