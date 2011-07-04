@@ -107,6 +107,7 @@
         [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
         [self setUserInteractionsEnabled:NO];                    
         if ([question isCorrect] == YES) {
+            [self enqueueAudioWithPath:[self.storyInteraction storyInteractionCorrectAnswerSoundFilename] fromBundle:YES];
             [self enqueueAudioWithPath:[(SCHStoryInteractionStartingLetter *)self.storyInteraction audioPathForThatsRight] fromBundle:NO];
             [self enqueueAudioWithPath:[question audioPath] fromBundle:NO];
             [self enqueueAudioWithPath:[(SCHStoryInteractionStartingLetter *)self.storyInteraction audioPathForStartsWith] fromBundle:NO];
@@ -119,6 +120,7 @@
                   }];
             [self questionsCompleted];                         
         } else {
+            [self enqueueAudioWithPath:[self.storyInteraction storyInteractionWrongAnswerSoundFilename] fromBundle:YES];
             [self enqueueAudioWithPath:[question audioPath] fromBundle:NO];
             [self enqueueAudioWithPath:[(SCHStoryInteractionStartingLetter *)self.storyInteraction audioPathForDoesntStartWith] fromBundle:NO];
             [self enqueueAudioWithPath:[(SCHStoryInteractionStartingLetter *)self.storyInteraction audioPathForLetter] fromBundle:NO];
