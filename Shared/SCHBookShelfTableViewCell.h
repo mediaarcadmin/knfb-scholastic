@@ -15,6 +15,7 @@
 
 @property (nonatomic, retain) SCHBookIdentifier *identifier;
 @property (nonatomic, assign) BOOL isNewBook;
+@property (nonatomic, assign) BOOL trashed;
 @property (nonatomic, assign) id <SCHBookShelfTableViewCellDelegate> delegate;
 
 - (void) refreshCell;

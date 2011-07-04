@@ -99,30 +99,44 @@
 										<int key="NSvFlags">316</int>
 										<object class="NSMutableArray" key="NSSubviews">
 											<bool key="EncodedWithXMLCoder">YES</bool>
-											<object class="IBUIImageView" id="952200392">
+											<object class="IBUIView" id="965481907">
 												<reference key="NSNextResponder" ref="264148417"/>
 												<int key="NSvFlags">274</int>
+												<object class="NSMutableArray" key="NSSubviews">
+													<bool key="EncodedWithXMLCoder">YES</bool>
+													<object class="IBUIView" id="31927377">
+														<reference key="NSNextResponder" ref="965481907"/>
+														<int key="NSvFlags">287</int>
+														<string key="NSFrameSize">{62, 64}</string>
+														<reference key="NSSuperview" ref="965481907"/>
+														<reference key="NSWindow"/>
+														<reference key="NSNextKeyView" ref="952200392"/>
+														<object class="NSColor" key="IBUIBackgroundColor">
+															<int key="NSColorSpace">3</int>
+															<bytes key="NSWhite">MC4zMzMzMzMzMzMzIDAuNDEAA</bytes>
+														</object>
+														<int key="IBUITag">104</int>
+														<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+													</object>
+													<object class="IBUIImageView" id="952200392">
+														<reference key="NSNextResponder" ref="965481907"/>
+														<int key="NSvFlags">274</int>
+														<string key="NSFrameSize">{62, 64}</string>
+														<reference key="NSSuperview" ref="965481907"/>
+														<reference key="NSWindow"/>
+														<reference key="NSNextKeyView" ref="896910337"/>
+														<int key="IBUIContentMode">6</int>
+														<int key="IBUITag">101</int>
+														<bool key="IBUIUserInteractionEnabled">NO</bool>
+														<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+													</object>
+												</object>
 												<string key="NSFrame">{{0, 5}, {62, 64}}</string>
 												<reference key="NSSuperview" ref="264148417"/>
 												<reference key="NSWindow"/>
 												<reference key="NSNextKeyView" ref="31927377"/>
-												<int key="IBUIContentMode">6</int>
-												<int key="IBUITag">101</int>
-												<bool key="IBUIUserInteractionEnabled">NO</bool>
-												<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-											</object>
-											<object class="IBUIView" id="31927377">
-												<reference key="NSNextResponder" ref="264148417"/>
-												<int key="NSvFlags">287</int>
-												<string key="NSFrame">{{0, 6}, {62, 63}}</string>
-												<reference key="NSSuperview" ref="264148417"/>
-												<reference key="NSWindow"/>
-												<reference key="NSNextKeyView" ref="896910337"/>
-												<object class="NSColor" key="IBUIBackgroundColor">
-													<int key="NSColorSpace">3</int>
-													<bytes key="NSWhite">MC4zMzMzMzMzMzMzIDAuNDEAA</bytes>
-												</object>
-												<int key="IBUITag">104</int>
+												<reference key="IBUIBackgroundColor" ref="1036126128"/>
+												<int key="IBUITag">201</int>
 												<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 											</object>
 											<object class="IBUIImageView" id="896910337">
@@ -144,7 +158,7 @@
 										<string key="NSFrame">{{6, 0}, {71, 74}}</string>
 										<reference key="NSSuperview" ref="662339898"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView" ref="952200392"/>
+										<reference key="NSNextKeyView" ref="965481907"/>
 										<reference key="IBUIBackgroundColor" ref="1036126128"/>
 										<bool key="IBUIClipsSubviews">YES</bool>
 										<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -210,7 +224,6 @@
 										<string key="NSFrame">{{9, 72}, {302, 1}}</string>
 										<reference key="NSSuperview" ref="662339898"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView"/>
 										<object class="NSColor" key="IBUIBackgroundColor">
 											<int key="NSColorSpace">1</int>
 											<bytes key="NSRGB">MC45NDUwOTgwMzkyIDAuOTQ1MDk4MDM5MiAwLjk0OTAxOTYwNzgAA</bytes>
@@ -336,9 +349,8 @@
 						<reference key="object" ref="264148417"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="31927377"/>
-							<reference ref="952200392"/>
 							<reference ref="896910337"/>
+							<reference ref="965481907"/>
 						</object>
 						<reference key="parent" ref="662339898"/>
 					</object>
@@ -346,18 +358,6 @@
 						<int key="objectID">19</int>
 						<reference key="object" ref="336668176"/>
 						<reference key="parent" ref="662339898"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">20</int>
-						<reference key="object" ref="31927377"/>
-						<reference key="parent" ref="264148417"/>
-						<string key="objectName">Cover Tint View</string>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">21</int>
-						<reference key="object" ref="952200392"/>
-						<reference key="parent" ref="264148417"/>
-						<string key="objectName">ASync Image View</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">22</int>
@@ -368,6 +368,28 @@
 						<int key="objectID">23</int>
 						<reference key="object" ref="819050221"/>
 						<reference key="parent" ref="225416552"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">25</int>
+						<reference key="object" ref="965481907"/>
+						<object class="NSMutableArray" key="children">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<reference ref="952200392"/>
+							<reference ref="31927377"/>
+						</object>
+						<reference key="parent" ref="264148417"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">21</int>
+						<reference key="object" ref="952200392"/>
+						<reference key="parent" ref="965481907"/>
+						<string key="objectName">ASync Image View</string>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">20</int>
+						<reference key="object" ref="31927377"/>
+						<reference key="parent" ref="965481907"/>
+						<string key="objectName">Cover Tint View</string>
 					</object>
 				</object>
 			</object>
@@ -391,6 +413,7 @@
 					<string>21.IBPluginDependency</string>
 					<string>22.IBPluginDependency</string>
 					<string>23.IBPluginDependency</string>
+					<string>25.IBPluginDependency</string>
 				</object>
 				<object class="NSMutableArray" key="dict.values">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -410,6 +433,7 @@
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="unlocalizedProperties">
@@ -424,7 +448,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">24</int>
+			<int key="maxID">25</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">

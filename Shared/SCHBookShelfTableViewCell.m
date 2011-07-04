@@ -22,6 +22,7 @@ static NSInteger const CELL_SAMPLE_SI_INDICATOR_TAG = 103;
 static NSInteger const CELL_BOOK_TINT_VIEW_TAG = 104;
 static NSInteger const CELL_DELETE_BUTTON = 105;
 static NSInteger const CELL_BACKGROUND_VIEW = 200;
+static NSInteger const CELL_THUMB_BACKGROUND_VIEW = 201;
 
 @interface SCHBookShelfTableViewCell ()
 
@@ -32,6 +33,7 @@ static NSInteger const CELL_BACKGROUND_VIEW = 200;
 @property (readonly) UIView *bookTintView;
 @property (readonly) UIView *backgroundView;
 @property (readonly) UIButton *deleteButton;
+@property (readonly) UIView *thumbBackgroundView;
 
 - (void)updateTheme;
 
@@ -44,6 +46,7 @@ static NSInteger const CELL_BACKGROUND_VIEW = 200;
 @synthesize identifier;
 @synthesize delegate;
 @synthesize isNewBook;
+@synthesize trashed;
 
 - (id) initWithCoder:(NSCoder *)aDecoder
 {
@@ -76,22 +79,25 @@ static NSInteger const CELL_BACKGROUND_VIEW = 200;
     [[SCHProcessingManager sharedProcessingManager] requestThumbImageForBookCover:self.bookCoverImageView
                                                                              size:self.bookCoverImageView.thumbSize
                                                                              book:book];
-	[self setNeedsDisplay];
-    
-	// book status
-	switch ([book processingState]) {
-		case SCHBookProcessingStateReadyToRead:
-			self.bookTintView.hidden = YES;
-			break;
-//		case SCHBookProcessingStateDownloadStarted:
-//		case SCHBookProcessingStateDownloadPaused:
-//			self.bookTintView.hidden = NO;
-//			break;
-        default:
-			self.bookTintView.hidden = NO;
-			break;
-	}
-    
+   
+    if (self.trashed) {
+        self.bookTintView.hidden = NO;
+    } else {
+        // book status
+        switch ([book processingState]) {
+            case SCHBookProcessingStateReadyToRead:
+                self.bookTintView.hidden = YES;
+                break;
+            default:
+            {
+                self.bookTintView.hidden = NO;
+                break;
+            }
+        }
+    }
+
+    [self setNeedsDisplay];
+
     NSString *titleString = nil;
     float fontSize = 16.0f;
     
@@ -165,6 +171,34 @@ static NSInteger const CELL_BACKGROUND_VIEW = 200;
     }
 }
 
+- (void)layoutSubviews 
+{
+    [super layoutSubviews];
+    [UIView setAnimationsEnabled:NO];
+    
+//	self.bookCoverImageView.frame = CGRectMake(2, 0, self.frame.size.width - 4, self.frame.size.height - 22);
+//	if (self.progressView.hidden == NO) {
+//        self.progressView.frame = CGRectMake(10, self.frame.size.height - 42, self.frame.size.width - 20, 10);
+//    }
+    
+    if (self.bookCoverImageView && !CGSizeEqualToSize(self.bookCoverImageView.coverSize, CGSizeZero)) {
+        
+        CGRect thumbTintFrame = self.bookTintView.frame;
+        
+        thumbTintFrame.size.width = self.bookCoverImageView.coverSize.width;
+        thumbTintFrame.size.height = self.bookCoverImageView.coverSize.height;
+        
+//        thumbTintFrame.origin.x = (self.thumbBackgroundView.frame.size.width - thumbTintFrame.size.width) / 2;
+//        thumbTintFrame.origin.y = self.bookCoverImageView.frame.size.height - thumbTintFrame.size.height;
+        
+        self.bookTintView.frame = thumbTintFrame;
+        NSLog(@"Thumb tint frame: %@", NSStringFromCGRect(self.bookTintView.frame));
+    }
+    
+    [UIView setAnimationsEnabled:YES];
+}
+
+
 - (void)updateTheme
 {
     self.backgroundView.backgroundColor = [[SCHThemeManager sharedThemeManager] colorForListBackground];
@@ -197,6 +231,12 @@ static NSInteger const CELL_BACKGROUND_VIEW = 200;
         [self.bookCoverImageView setIdentifier:self.identifier];
         [self refreshCell];        
 	}
+}
+
+- (void)setTrashed:(BOOL)newTrashed
+{
+    trashed = newTrashed;
+    [self refreshCell];
 }
 
 #pragma mark - Delete Button
@@ -249,6 +289,11 @@ static NSInteger const CELL_BACKGROUND_VIEW = 200;
 - (UIView *)backgroundView
 {
     return (UIView *)[self.contentView viewWithTag:CELL_BACKGROUND_VIEW];
+}
+
+- (UIView *)thumbBackgroundView
+{
+    return (UIView *)[self.contentView viewWithTag:CELL_THUMB_BACKGROUND_VIEW];
 }
 
 - (UIButton *)deleteButton

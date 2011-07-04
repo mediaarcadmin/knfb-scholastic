@@ -18,6 +18,7 @@
 }
 
 @property (nonatomic, retain) SCHBookIdentifier *identifier;
+@property (nonatomic, assign) BOOL trashed;
 
 @property (nonatomic, retain) SCHAsyncBookCoverImageView *asyncImageView;
 @property (nonatomic, retain) UIView *thumbTintView;

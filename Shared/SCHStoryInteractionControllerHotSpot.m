@@ -161,6 +161,8 @@
     
     [self.pageImageView addSubview:cross];
     [self cancelQueuedAudio];
+    [self enqueueAudioWithPath:[self.storyInteraction storyInteractionWrongAnswerSoundFilename]
+                    fromBundle:YES];
     [self enqueueAudioWithPath:[self.storyInteraction audioPathForTryAgain]
                     fromBundle:NO
                     startDelay:0
@@ -224,6 +226,8 @@
                      }];
     
     [self cancelQueuedAudio];
+    [self enqueueAudioWithPath:[self.storyInteraction storyInteractionCorrectAnswerSoundFilename]
+                    fromBundle:YES];
     [self enqueueAudioWithPath:[self.storyInteraction audioPathForThatsRight] fromBundle:NO];
     [self enqueueAudioWithPath:[[self currentQuestion] audioPathForCorrectAnswer]
                     fromBundle:NO

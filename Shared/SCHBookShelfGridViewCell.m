@@ -19,6 +19,7 @@
 @synthesize thumbTintView;
 @synthesize progressView;
 @synthesize identifier;
+@synthesize trashed;
 
 #pragma mark - Object lifecycle
 
@@ -92,23 +93,27 @@
 	[self setNeedsDisplay];
     
 	// book status
-	switch ([book processingState]) {
-		case SCHBookProcessingStateDownloadStarted:
-		case SCHBookProcessingStateDownloadPaused:
-			self.thumbTintView.hidden = NO;
-			self.progressView.hidden = NO;
-            [self.progressView setProgress:[book currentDownloadedPercentage]];            
-			break;
-		case SCHBookProcessingStateReadyToRead:
-			self.thumbTintView.hidden = YES;
-			self.progressView.hidden = YES;
-			break;
-        default:
-			self.thumbTintView.hidden = NO;
-			self.progressView.hidden = YES;
-			break;
-	}
-	
+    if (self.trashed) {
+        self.thumbTintView.hidden = NO;
+        self.progressView.hidden = YES;
+    } else {
+        switch ([book processingState]) {
+            case SCHBookProcessingStateDownloadStarted:
+            case SCHBookProcessingStateDownloadPaused:
+                self.thumbTintView.hidden = NO;
+                self.progressView.hidden = NO;
+                [self.progressView setProgress:[book currentDownloadedPercentage]];            
+                break;
+            case SCHBookProcessingStateReadyToRead:
+                self.thumbTintView.hidden = YES;
+                self.progressView.hidden = YES;
+                break;
+            default:
+                self.thumbTintView.hidden = NO;
+                self.progressView.hidden = YES;
+                break;
+        }
+    }	
 	[self layoutSubviews];
 }	
 
@@ -143,6 +148,12 @@
     
     [self.asyncImageView setIdentifier:self.identifier];
     [self refreshCell];        
+}
+
+- (void)setTrashed:(BOOL)newTrashed
+{
+    trashed = newTrashed;
+    [self refreshCell];
 }
 
 #pragma mark - Private methods

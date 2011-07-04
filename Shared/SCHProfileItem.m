@@ -283,6 +283,59 @@ static NSString * const kSCHProfileItemUserContentItemContentMetadataItem = @"Us
     }
 }
 
+// structure: dictionary with profileID->isbndictionary, isbndictionary with isbn->nsnumber (bool)
+- (BOOL)bookIsTrashedWithIdentifier:(SCHBookIdentifier *)identifier
+{
+    NSDictionary *defaultsDictionary = (NSDictionary *)[[NSUserDefaults standardUserDefaults] objectForKey:@"SCHProfileItemTrashedItemsDictionary"];
+    
+    if (!defaultsDictionary) {
+        return NO;
+    }
+    
+    NSDictionary *profileDictionary = [defaultsDictionary objectForKey:[self.ID stringValue]];
+    
+    if (!profileDictionary) {
+        return NO;
+    }
+    
+    NSNumber *item = [profileDictionary objectForKey:identifier];
+    
+    if (!item) {
+        return NO;
+    }
+    
+    return [item boolValue];
+}
+
+- (void)setTrashed:(BOOL)trashed forBookWithIdentifier:(SCHBookIdentifier *)identifier
+{
+    NSDictionary *defaultsDictionary = (NSDictionary *)[[NSUserDefaults standardUserDefaults] objectForKey:@"SCHProfileItemTrashedItemsDictionary"];
+    NSMutableDictionary *trashedItems = nil;
+    
+    if (!defaultsDictionary) {
+        trashedItems = [NSMutableDictionary dictionary];
+    } else {
+        trashedItems = [NSMutableDictionary dictionaryWithDictionary:defaultsDictionary];
+    }
+    
+    NSDictionary *profileDictionary = [trashedItems objectForKey:[self.ID stringValue]];
+    NSMutableDictionary *profileMutableDictionary = nil;
+    
+    if (profileDictionary) {
+        profileMutableDictionary = [NSMutableDictionary dictionaryWithDictionary:profileDictionary];
+    } else {
+        profileMutableDictionary = [NSMutableDictionary dictionary];
+    }
+    
+    NSNumber *newValue = [NSNumber numberWithBool:trashed];
+    
+    [profileMutableDictionary setObject:newValue forKey:identifier];
+    [trashedItems setValue:[NSDictionary dictionaryWithDictionary:profileMutableDictionary] forKey:[self.ID stringValue]];
+    [[NSUserDefaults standardUserDefaults] setValue:[NSDictionary dictionaryWithDictionary:trashedItems] forKey:@"SCHProfileItemTrashedItemsDictionary"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
+}
+
 - (SCHBookAnnotations *)annotationsForBook:(NSString *)isbn
 {
     SCHBookAnnotations *ret = nil;
@@ -324,7 +377,7 @@ static NSString * const kSCHProfileItemUserContentItemContentMetadataItem = @"Us
     for (int idx = 0; idx < [books count]; idx++) {
         SCHAppBookOrder *newBookOrder = [NSEntityDescription insertNewObjectForEntityForName:kSCHAppBookOrder inManagedObjectContext:self.managedObjectContext];
         
-        newBookOrder.ISBN = [books objectAtIndex:idx];
+        newBookOrder.ISBN = [[books objectAtIndex:idx] isbn];
         newBookOrder.Order = [NSNumber numberWithInt:idx];
         
         [self addAppBookOrderObject:newBookOrder];

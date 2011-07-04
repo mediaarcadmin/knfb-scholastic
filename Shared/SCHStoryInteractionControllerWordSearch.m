@@ -165,6 +165,8 @@
         [containerView addPermanentHighlightFromCurrentSelectionWithColor:label.strikeOutColor];
         [containerView clearSelection];
         [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
+        [self enqueueAudioWithPath:[wordSearch storyInteractionCorrectAnswerSoundFilename]
+                        fromBundle:YES];
         [self enqueueAudioWithPath:[wordSearch audioPathForCorrectAnswer] fromBundle:NO];
         if ([self.remainingWords count] == 0) {
             [containerView setUserInteractionEnabled:NO];
@@ -178,6 +180,8 @@
         }
     } else if (index == NSNotFound) {
         [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
+        [self enqueueAudioWithPath:[wordSearch storyInteractionWrongAnswerSoundFilename]
+                        fromBundle:YES];
         [self enqueueAudioWithPath:[wordSearch audioPathForIncorrectAnswer]
                         fromBundle:NO
                         startDelay:0

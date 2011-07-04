@@ -7,6 +7,7 @@
 //  
 
 #import "AppDelegate_iPad.h"
+#import "AppDelegate_Private.h"
 #import "SCHReadingViewController.h"
 #import "SCHAppBook.h"
 #import "SCHBookManager.h"

@@ -398,8 +398,9 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
     
     SCHBookIdentifier *identifier = [self.books objectAtIndex:[indexPath row]];
     
-    cell.isNewBook = [self.profileItem bookIsNewForProfileWithIdentifier:identifier];
     cell.identifier = identifier;
+    cell.isNewBook = [self.profileItem bookIsNewForProfileWithIdentifier:identifier];
+    cell.trashed = [self.profileItem bookIsTrashedWithIdentifier:identifier];
     
     return cell;
 }
@@ -440,6 +441,12 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 	NSLog(@"Calling table row selection.");
     [aTableView deselectRowAtIndexPath:indexPath animated:YES];
     
+    SCHBookIdentifier *identifier = [self.books objectAtIndex:[indexPath row]];
+    if ([self.profileItem bookIsTrashedWithIdentifier:identifier]) {
+        [self.profileItem setTrashed:NO forBookWithIdentifier:identifier];
+        [self.listTableView reloadData];
+    }
+    
     SCHReadingViewController *readingController = [self openBook:[self.books objectAtIndex:[indexPath row]]];
     if (readingController != nil) {
         if (self.sortType == kSCHBookSortTypeLastRead) {
@@ -464,7 +471,8 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 	}
 
 	[gridCell setIdentifier:[self.books objectAtIndex:index]];
-	
+    gridCell.trashed = [self.profileItem bookIsTrashedWithIdentifier:[self.books objectAtIndex:index]];
+
 	return(gridCell);
 }
 
@@ -532,6 +540,12 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
     spinner.center = CGPointMake(CGRectGetMidX(cellFrame), CGRectGetMidY(cellFrame));
     [spinner startAnimating];
     [aGridView addSubview:spinner];
+    
+    SCHBookIdentifier *identifier = [self.books objectAtIndex:index];
+    if ([self.profileItem bookIsTrashedWithIdentifier:identifier]) {
+        [self.profileItem setTrashed:NO forBookWithIdentifier:identifier];
+        [self.gridView reloadData];
+    }
 
     dispatch_async(dispatch_get_main_queue(), ^{
         SCHReadingViewController *readingController = [self openBook:[self.books objectAtIndex:index]];

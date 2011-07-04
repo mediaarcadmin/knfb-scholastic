@@ -170,6 +170,7 @@
     if (chosenAnswer == [self currentQuestion].correctAnswer) {
         self.answeredCorrectly = YES;
         [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
+        [self enqueueAudioWithPath:[self.storyInteraction storyInteractionCorrectAnswerSoundFilename] fromBundle:YES];
         [self enqueueAudioWithPath:[[self currentQuestion] audioPathForAnswerAtIndex:chosenAnswer] fromBundle:NO];
         [self enqueueAudioWithPath:[(SCHStoryInteractionMultipleChoiceText *)self.storyInteraction audioPathForThatsRight] fromBundle:NO];
         [self enqueueAudioWithPath:[[self currentQuestion] audioPathForCorrectAnswer]
@@ -182,6 +183,10 @@
               }];
     } else {
         [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
+        [self enqueueAudioWithPath:[self.storyInteraction storyInteractionWrongAnswerSoundFilename]
+                        fromBundle:YES];
+        [self enqueueAudioWithPath:[[self currentQuestion] audioPathForAnswerAtIndex:chosenAnswer]
+                        fromBundle:NO];
         [self enqueueAudioWithPath:[[self currentQuestion] audioPathForIncorrectAnswer]
                         fromBundle:NO
                         startDelay:0
