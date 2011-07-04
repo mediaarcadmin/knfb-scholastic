@@ -223,12 +223,19 @@ static SCHURLManager *sharedURLManager = nil;
 {
 	NSDictionary *userInfo = [notification userInfo];
 	
-	if ([[userInfo valueForKey:kSCHAuthenticationManagerOfflineMode] boolValue] == NO) {
+    NSNumber *offlineMode = [userInfo valueForKey:kSCHAuthenticationManagerOfflineMode];
+    
+    if (offlineMode != nil && [offlineMode boolValue] == NO) {
 		NSLog(@"Authenticated!");
-		
 		[self shakeTable];	
-	} else if ([table count] > 0) {
-		[self clear];
+	} else {
+        if ([table count] > 0) {
+            [self clear];
+        }
+        NSError *error = [userInfo valueForKey:kSCHAuthenticationManagerNSError];
+        if (error) {
+            NSLog(@"authentication failure: %@", error);
+        }
 		[[NSNotificationCenter defaultCenter] postNotificationName:kSCHURLManagerFailure object:self];			
 	}
 }

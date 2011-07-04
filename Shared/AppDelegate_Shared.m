@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate_Shared.h"
+#import "AppDelegate_Private.h"
 #import "SCHBookManager.h"
 #import "SCHSyncManager.h"
 #import "SCHAuthenticationManager.h"
@@ -24,6 +25,13 @@
 static NSString * const kSCHClearLocalDebugMode = @"kSCHClearLocalDebugMode";
 static NSString* const wmModelCertFilename = @"devcerttemplate.dat";
 static NSString* const prModelCertFilename = @"iphonecert.dat";
+
+@interface AppDelegate_Shared ()
+
+@property (nonatomic, retain, readonly) NSManagedObjectModel *managedObjectModel;
+@property (nonatomic, retain, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
+
+@end
 
 @implementation AppDelegate_Shared
 
@@ -162,7 +170,9 @@ static NSString* const prModelCertFilename = @"iphonecert.dat";
     
     SCHBookManager *bookManager = [SCHBookManager sharedBookManager];
     bookManager.persistentStoreCoordinator = self.persistentStoreCoordinator;
-    bookManager.managedObjectContextForCurrentThread = self.managedObjectContext;
+    if (bookManager.managedObjectContextForCurrentThread == nil) {
+        bookManager.managedObjectContextForCurrentThread = self.managedObjectContext;
+    }
     
     SCHSyncManager *syncManager = [SCHSyncManager sharedSyncManager];
 	syncManager.managedObjectContext = self.managedObjectContext;
@@ -365,6 +375,22 @@ static NSString* const prModelCertFilename = @"iphonecert.dat";
 	[[NSUserDefaults standardUserDefaults] setObject:newValue forKey:kSCHClearLocalDebugMode];
 	[[NSUserDefaults standardUserDefaults] synchronize];
 }	
+
+#pragma mark - Database clear
+
+- (void)clearDatabase
+{
+    [managedObjectContext_ release], managedObjectContext_ = nil;
+    [persistentStoreCoordinator_ release], persistentStoreCoordinator_ = nil;
+    
+    NSError *error = nil;
+    if (![[NSFileManager defaultManager] removeItemAtURL:[self storeURL] error:&error]) {
+        NSLog(@"failed to remove database: %@", error);
+    }
+    
+    NSLog(@"Cleared local database! Exiting.");
+    exit(0);
+}
 
 @end
 

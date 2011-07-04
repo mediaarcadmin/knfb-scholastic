@@ -18,6 +18,7 @@
 #import "SCHPrivacyPolicyViewController.h"
 #import <QuartzCore/QuartzCore.h>
 #import "SCHProcessingManager.h"
+#import "AppDelegate_Shared.h"
 
 extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
@@ -26,6 +27,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation;
 - (void)releaseViewObjects;
 - (void)deregistration;
+- (void)resetLocalSettings;
 
 @end
 
@@ -199,7 +201,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 - (void)deregistration 
 {
     UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Confirmation", @"Confirmation") 
-                                                         message:NSLocalizedString(@"This will remove all books and settings", nil)
+                                                         message:NSLocalizedString(@"This will remove all books and settings.", nil)
                                                         delegate:self 
                                                cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
                                                otherButtonTitles:NSLocalizedString(@"Continue", @""), nil]; 
@@ -210,11 +212,14 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (buttonIndex != alertView.cancelButtonIndex) {
+#if !LOCALDEBUG
         SCHDrmRegistrationSession* registrationSession = [[SCHDrmRegistrationSession alloc] init];
         registrationSession.delegate = self;	
         self.drmRegistrationSession = registrationSession;
         [self.drmRegistrationSession deregisterDevice:[[SCHAuthenticationManager sharedAuthenticationManager] aToken]];
-        [registrationSession release];    
+        [registrationSession release]; 
+#endif
+        [self resetLocalSettings];
     }
 }
 
@@ -279,7 +284,11 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
         case 0: {
             cell.accessoryView = nil;
             cell.textLabel.textAlignment = UITextAlignmentLeft;
-            cell.textLabel.text = NSLocalizedString(@"Deregister This Device", @"");
+            if (LOCALDEBUG) {
+                cell.textLabel.text = NSLocalizedString(@"Reset Content and Settings", @"");
+            } else {
+                cell.textLabel.text = NSLocalizedString(@"Deregister This Device", @"");
+            }
             cell.selectionStyle = UITableViewCellSelectionStyleBlue;
         } break;
         case 1: {
@@ -364,6 +373,18 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     [errorAlert show]; 
     [errorAlert release]; 
     self.drmRegistrationSession = nil;
+}
+
+#pragma mark - Local settings
+
+- (void)resetLocalSettings
+{
+    [NSUserDefaults resetStandardUserDefaults];
+    
+#if LOCALDEBUG
+    AppDelegate_Shared *appDelegate = (AppDelegate_Shared *)[[UIApplication sharedApplication] delegate];
+    [appDelegate clearDatabase];
+#endif
 }
 
 @end
