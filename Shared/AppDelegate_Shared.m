@@ -170,9 +170,7 @@ static NSString* const prModelCertFilename = @"iphonecert.dat";
     
     SCHBookManager *bookManager = [SCHBookManager sharedBookManager];
     bookManager.persistentStoreCoordinator = self.persistentStoreCoordinator;
-    if (bookManager.managedObjectContextForCurrentThread == nil) {
-        bookManager.managedObjectContextForCurrentThread = self.managedObjectContext;
-    }
+    bookManager.mainThreadManagedObjectContext = self.managedObjectContext;
     
     SCHSyncManager *syncManager = [SCHSyncManager sharedSyncManager];
 	syncManager.managedObjectContext = self.managedObjectContext;
