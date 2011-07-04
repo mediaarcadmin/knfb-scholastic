@@ -201,7 +201,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 - (void)deregistration 
 {
     UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Confirmation", @"Confirmation") 
-                                                         message:NSLocalizedString(@"This will remove all books and settings and exit the app.", nil)
+                                                         message:NSLocalizedString(@"This will remove all books and settings.", nil)
                                                         delegate:self 
                                                cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
                                                otherButtonTitles:NSLocalizedString(@"Continue", @""), nil]; 
@@ -381,8 +381,10 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 {
     [NSUserDefaults resetStandardUserDefaults];
     
+#if LOCALDEBUG
     AppDelegate_Shared *appDelegate = (AppDelegate_Shared *)[[UIApplication sharedApplication] delegate];
     [appDelegate clearDatabase];
+#endif
 }
 
 @end

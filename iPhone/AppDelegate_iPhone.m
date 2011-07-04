@@ -29,7 +29,10 @@ static NSTimeInterval const kAppDelegate_iPhoneSyncManagerWakeDelay = 5.0;
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions 
 {    
 	[super application:application didFinishLaunchingWithOptions:launchOptions];
-	
+
+    SCHProfileViewController_iPhone *rootViewController = (SCHProfileViewController_iPhone *)[navigationController topViewController];
+    rootViewController.managedObjectContext = self.managedObjectContext;
+
     // Add the navigation controller's view to the window and display.
     [self.window addSubview:navigationController.view];
     [self.window makeKeyAndVisible];
@@ -62,16 +65,6 @@ static NSTimeInterval const kAppDelegate_iPhoneSyncManagerWakeDelay = 5.0;
     [customNavigationBar release], customNavigationBar = nil;
 
 	[super dealloc];
-}
-
-#pragma mark - Database control
-    
-- (void)distributeManagedObjectContext
-{
-    [super distributeManagedObjectContext];
-
-    SCHProfileViewController_iPhone *rootViewController = (SCHProfileViewController_iPhone *)[navigationController topViewController];
-    rootViewController.managedObjectContext = self.managedObjectContext;
 }
     
 @end

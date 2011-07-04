@@ -13,6 +13,4 @@
 
 @property (nonatomic, retain, readonly) NSManagedObjectContext *managedObjectContext;
 
-- (void)distributeManagedObjectContext;
-
 @end
