@@ -1356,6 +1356,13 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [self setToolbarVisibility:NO animated:YES];
 }
 
+- (void)readingViewWillBeginUserInitiatedZooming:(SCHReadingView *)readingView
+{
+    if (self.layoutType == SCHReadingViewLayoutTypeFixed) {
+        [self pauseAudioPlayback];
+    }
+}
+
 - (void)readingViewHasMoved
 {
     [self updateScrubberValue];
