@@ -87,10 +87,12 @@ typedef enum
 
 - (void)layoutPage:(NSUInteger *)layoutPage 
     pageWordOffset:(NSUInteger *)pageWordOffset 
-      forBookPoint:(SCHBookPoint *)bookPoint;
+      forBookPoint:(SCHBookPoint *)bookPoint
+    includingFolioBlocks:(BOOL)folio;
 
 - (SCHBookPoint *)bookPointForLayoutPage:(NSUInteger)layoutPage 
-                          pageWordOffset:(NSUInteger)pageWordOffset;
+                          pageWordOffset:(NSUInteger)pageWordOffset
+                    includingFolioBlocks:(BOOL)folio;
 
 - (NSArray *)highlightRangesForCurrentPage;
 - (NSArray *)highlightsForLayoutPage:(NSUInteger)page;
