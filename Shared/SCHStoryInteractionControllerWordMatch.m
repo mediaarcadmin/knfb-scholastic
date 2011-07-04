@@ -172,8 +172,12 @@
         [self.occupiedTargets addObject:onTarget];
         UIImage* oldImage = [imageView.image retain];
         [imageView setImage:[UIImage imageNamed:@"storyinteraction-draggable-red"]];
+
+        SCHStoryInteractionWordMatchQuestionItem *item = [[[self currentQuestion] items] objectAtIndex:draggableView.matchTag];
         [self enqueueAudioWithPath:[self.storyInteraction storyInteractionWrongAnswerSoundFilename]
                         fromBundle:YES];
+        [self enqueueAudioWithPath:[item audioPath]
+                        fromBundle:NO];
         [self enqueueAudioWithPath:[self.storyInteraction audioPathForTryAgain]
                         fromBundle:NO
                         startDelay:0
@@ -189,16 +193,13 @@
         [imageView setImage:[UIImage imageNamed:@"storyinteraction-draggable-green"]];
         [draggableView setUserInteractionEnabled:NO];
         [self.occupiedTargets addObject:onTarget];
-        [self enqueueAudioWithPath:[self.storyInteraction storyInteractionCorrectAnswerSoundFilename]
-                        fromBundle:YES];
-        [self enqueueAudioWithPath:[self.storyInteraction audioPathForThatsRight]
-                        fromBundle:NO
-                        startDelay:0
-            synchronizedStartBlock:nil
-              synchronizedEndBlock:nil];
 
         SCHStoryInteractionWordMatchQuestionItem *item = [[[self currentQuestion] items] objectAtIndex:onTarget.matchTag];
+        [self enqueueAudioWithPath:[self.storyInteraction storyInteractionCorrectAnswerSoundFilename]
+                        fromBundle:YES];
         [self enqueueAudioWithPath:[item audioPath]
+                        fromBundle:NO];
+        [self enqueueAudioWithPath:[self.storyInteraction audioPathForThatsRight]
                         fromBundle:NO
                         startDelay:0
             synchronizedStartBlock:nil
