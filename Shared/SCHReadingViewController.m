@@ -694,6 +694,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
                                               //NSLog(@"WORD UP! at layoutPage %d pageWordOffset %d", layoutPage, pageWordOffset);
                                               self.pauseAudioOnNextPageTurn = NO;
                                               [self.readingView followAlongHighlightWordForLayoutPage:layoutPage pageWordOffset:pageWordOffset];
+                                              self.pauseAudioOnNextPageTurn = YES;
                                           } pageTurnBlock:^(NSUInteger turnToLayoutPage) {
                                               //NSLog(@"Turn to layoutPage %d", turnToLayoutPage);
                                               if (self.layoutType == SCHReadingViewLayoutTypeFixed) {
