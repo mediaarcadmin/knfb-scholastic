@@ -164,27 +164,33 @@
 
     UIImageView *imageView = (UIImageView *)[draggableView viewWithTag:kImageViewTag];
 
+    [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
     if (!onTarget) {
         [draggableView moveToHomePosition];
-        [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
         [self enqueueAudioWithPath:@"sfx_dropNo.mp3" fromBundle:YES];        
     } else if (onTarget.matchTag != draggableView.matchTag) {
         [self.occupiedTargets addObject:onTarget];
         UIImage* oldImage = [imageView.image retain];
         [imageView setImage:[UIImage imageNamed:@"storyinteraction-draggable-red"]];
-        [self playAudioAtPath:[self.storyInteraction audioPathForTryAgain]
-                   completion:^{
-                       [imageView setImage:oldImage];
-                       [draggableView moveToHomePosition];
-                       [self.occupiedTargets removeObject:onTarget];
-                   }];
+        [self enqueueAudioWithPath:[self.storyInteraction storyInteractionWrongAnswerSoundFilename]
+                        fromBundle:YES];
+        [self enqueueAudioWithPath:[self.storyInteraction audioPathForTryAgain]
+                        fromBundle:NO
+                        startDelay:0
+            synchronizedStartBlock:nil
+            synchronizedEndBlock:^{
+                [imageView setImage:oldImage];
+                [draggableView moveToHomePosition];
+                [self.occupiedTargets removeObject:onTarget];
+            }];
         [oldImage release];
     } else {
         self.numberOfCorrectItems++;
         [imageView setImage:[UIImage imageNamed:@"storyinteraction-draggable-green"]];
         [draggableView setUserInteractionEnabled:NO];
         [self.occupiedTargets addObject:onTarget];
-
+        [self enqueueAudioWithPath:[self.storyInteraction storyInteractionCorrectAnswerSoundFilename]
+                        fromBundle:YES];
         [self enqueueAudioWithPath:[self.storyInteraction audioPathForThatsRight]
                         fromBundle:NO
                         startDelay:0
