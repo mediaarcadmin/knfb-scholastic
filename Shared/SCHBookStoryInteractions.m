@@ -80,9 +80,20 @@
     return self;
 }
 
-- (NSArray *)allStoryInteractions
+- (NSArray *)allStoryInteractionsExcludingInteractionWithPage:(BOOL)excludeInteractionWithPage
 {
-    return self.storyInteractions;
+    NSArray *unfiltered = self.storyInteractions;
+    if (!excludeInteractionWithPage) {
+        return unfiltered;
+    }
+    
+    NSMutableArray *filtered = [NSMutableArray arrayWithCapacity:[unfiltered count]];
+    for (SCHStoryInteraction *si in unfiltered) {
+        if (![si requiresInteractionWithPage]) {
+            [filtered addObject:si];
+        }
+    }
+    return filtered;
 }
 
 - (NSArray *)storyInteractionsForPage:(NSInteger)pageNumber
