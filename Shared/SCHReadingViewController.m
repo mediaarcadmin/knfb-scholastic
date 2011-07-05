@@ -1955,9 +1955,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         if ([self.bookStoryInteractions storyInteractionsFinishedOnPage:page]) {
             self.storyInteractionsCompleteOnCurrentPages = YES;
         }
-        
-        [self setupStoryInteractionButtonForCurrentPagesAnimated:YES];
     }
+    
+    [self setupStoryInteractionButtonForCurrentPagesAnimated:YES];
 }
 
 - (NSInteger)currentQuestionForStoryInteraction
