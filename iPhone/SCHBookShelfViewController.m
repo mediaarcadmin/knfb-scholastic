@@ -398,11 +398,11 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 
 - (void)bookShelfTableViewCellSelectedDeleteForIdentifier:(SCHBookIdentifier *)identifier
 {
-    NSLog(@"Deleting list view row associated with ISBN: %@", isbn);
-    if ([self.profileItem bookIsTrashedWithIdentifier:isbn]) {
-        [self.profileItem setTrashed:NO forBookWithIdentifier:isbn];
+    NSLog(@"Deleting list view row associated with identifier: %@", identifier);
+    if ([self.profileItem bookIsTrashedWithIdentifier:identifier]) {
+        [self.profileItem setTrashed:NO forBookWithIdentifier:identifier];
     } else {
-        [self.profileItem setTrashed:YES forBookWithIdentifier:isbn];
+        [self.profileItem setTrashed:YES forBookWithIdentifier:identifier];
     }
     [self.listTableView reloadData];
     [self.gridView reloadData];
@@ -516,9 +516,9 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
         return;
     }
 
-    NSString *isbn = [self.books objectAtIndex:index];
-    if ([self.profileItem bookIsTrashedWithIdentifier:isbn]) {
-        [self.profileItem setTrashed:NO forBookWithIdentifier:isbn];
+    SCHBookIdentifier *identifier = [self.books objectAtIndex:index];
+    if ([self.profileItem bookIsTrashedWithIdentifier:identifier]) {
+        [self.profileItem setTrashed:NO forBookWithIdentifier:identifier];
         [self.gridView reloadData];
         return;
     }
