@@ -12,12 +12,13 @@
 		</object>
 		<object class="NSArray" key="IBDocument.IntegratedClassDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<string>IBUILabel</string>
-			<string>IBUITableViewCell</string>
-			<string>IBUIButton</string>
 			<string>IBUIView</string>
 			<string>IBUIImageView</string>
+			<string>IBUILabel</string>
 			<string>IBProxyObject</string>
+			<string>IBUIActivityIndicatorView</string>
+			<string>IBUITableViewCell</string>
+			<string>IBUIButton</string>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -118,13 +119,25 @@
 														<string key="NSFrameSize">{96, 90}</string>
 														<reference key="NSSuperview" ref="2685029"/>
 														<reference key="NSWindow"/>
-														<reference key="NSNextKeyView" ref="411809707"/>
+														<reference key="NSNextKeyView" ref="885257640"/>
 														<object class="NSColor" key="IBUIBackgroundColor">
 															<int key="NSColorSpace">1</int>
 															<bytes key="NSRGB">MC4yIDAuMiAwLjIgMC42AA</bytes>
 														</object>
 														<int key="IBUITag">104</int>
 														<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+													</object>
+													<object class="IBUIActivityIndicatorView" id="885257640">
+														<reference key="NSNextResponder" ref="2685029"/>
+														<int key="NSvFlags">-2147483347</int>
+														<string key="NSFrame">{{29, 27}, {37, 37}}</string>
+														<reference key="NSSuperview" ref="2685029"/>
+														<reference key="NSWindow"/>
+														<reference key="NSNextKeyView" ref="411809707"/>
+														<bool key="IBUIOpaque">NO</bool>
+														<int key="IBUITag">203</int>
+														<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+														<int key="IBUIStyle">0</int>
 													</object>
 												</object>
 												<string key="NSFrame">{{4, 4}, {96, 90}}</string>
@@ -376,6 +389,7 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="632904493"/>
 							<reference ref="553732293"/>
+							<reference ref="885257640"/>
 						</object>
 						<reference key="parent" ref="701951971"/>
 						<string key="objectName">Thumb Background View</string>
@@ -391,6 +405,12 @@
 						<reference key="object" ref="632904493"/>
 						<reference key="parent" ref="2685029"/>
 						<string key="objectName">Cover Tint View</string>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">23</int>
+						<reference key="object" ref="885257640"/>
+						<reference key="parent" ref="2685029"/>
+						<string key="objectName">Large White Activity Indicator</string>
 					</object>
 				</object>
 			</object>
@@ -410,6 +430,7 @@
 					<string>2.CustomClassName</string>
 					<string>2.IBPluginDependency</string>
 					<string>20.IBPluginDependency</string>
+					<string>23.IBPluginDependency</string>
 					<string>3.IBPluginDependency</string>
 					<string>4.CustomClassName</string>
 					<string>4.IBPluginDependency</string>
@@ -431,6 +452,7 @@
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>SCHAsyncBookCoverImageView</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -449,7 +471,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">22</int>
+			<int key="maxID">23</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
