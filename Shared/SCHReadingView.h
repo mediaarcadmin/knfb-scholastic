@@ -74,6 +74,8 @@ typedef enum
 - (void)currentLayoutPage:(NSUInteger *)layoutPage pageWordOffset:(NSUInteger *)pageWordOffset;
 
 - (void)jumpToPageAtIndex:(NSUInteger)pageIndex animated:(BOOL)animated;
+- (void)jumpToPageAtIndex:(NSUInteger)pageIndex animated:(BOOL)animated withCompletionHandler:(dispatch_block_t)completion;
+
 - (void)jumpToProgressPositionInBook:(CGFloat)progress animated:(BOOL)animated;
 - (void)jumpToBookPoint:(SCHBookPoint *)bookPoint animated:(BOOL)animated;
 
@@ -112,8 +114,8 @@ typedef enum
 - (NSArray *)bookRangesFromSelectorRange:(EucSelectorRange *)selectorRange;
 - (SCHBookRange *)bookRangeFromSelectorRange:(EucSelectorRange *)selectorRange;
 - (void)dismissFollowAlongHighlighter;
-- (void)followAlongHighlightWordAtPoint:(SCHBookPoint *)bookPoint;
-- (void)followAlongHighlightWordForLayoutPage:(NSUInteger)layoutPage pageWordOffset:(NSUInteger)pageWordOffset;
+- (void)followAlongHighlightWordAtPoint:(SCHBookPoint *)bookPoint withCompletionHandler:(dispatch_block_t)completion;
+- (void)followAlongHighlightWordForLayoutPage:(NSUInteger)layoutPage pageWordOffset:(NSUInteger)pageWordOffset withCompletionHandler:(dispatch_block_t)completion;
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration;
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation;
