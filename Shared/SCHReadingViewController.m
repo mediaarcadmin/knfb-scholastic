@@ -878,12 +878,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 #pragma mark - Story Interactions methods
 
 - (void)setupStoryInteractionButtonForCurrentPagesAnimated:(BOOL)animated
-{ 
-    // don't do any of this in flow view
-    if ([self.readingView isKindOfClass:[SCHFlowView class]]) {
-        return;
-    }
-    
+{     
     // if the story interaction is open, hide the button
     if (self.storyInteractionController != nil) {
         [self setStoryInteractionButtonVisible:NO animated:YES withSound:NO];
@@ -949,10 +944,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (void)setStoryInteractionButtonVisible:(BOOL)visible animated:(BOOL)animated withSound:(BOOL)sound
 {
     if (visible) {
-        // don't do this in flow view
-        if ([self.readingView isKindOfClass:[SCHFlowView class]]) {
-            return;
-        }
         
         CGRect frame = self.storyInteractionButtonView.frame;
         
@@ -1057,8 +1048,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (void)presentStoryInteraction:(SCHStoryInteraction *)storyInteraction
 {
-    NSAssert([self.readingView isKindOfClass:[SCHLayoutView class]], @"can't have story interactions with flow view");
-    [(SCHLayoutView *)self.readingView zoomOutToCurrentPageWithCompletionHandler:^{
+    void (^presentStoryInteractionBlock)(void) = ^{
         [self setStoryInteractionButtonVisible:NO animated:YES withSound:NO];
         self.storyInteractionController = [SCHStoryInteractionController storyInteractionControllerForStoryInteraction:storyInteraction];
         self.storyInteractionController.isbn = self.isbn;
@@ -1069,7 +1059,13 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
             [self setToolbarVisibility:NO animated:YES];
         }
-    }];
+    };
+    
+    if ([self.readingView isKindOfClass:[SCHLayoutView class]]) {
+        [(SCHLayoutView *)self.readingView zoomOutToCurrentPageWithCompletionHandler:presentStoryInteractionBlock];
+    } else if ([self.readingView isKindOfClass:[SCHFlowView class]]) {
+        presentStoryInteractionBlock();
+    }
 }
 
 #pragma mark - Audio Control
@@ -1134,10 +1130,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
             [self setDictionarySelectionMode];
 
             [flowView release];
-            
-            [self setStoryInteractionButtonVisible:NO animated:YES withSound:NO];
-            [self.storyInteractionsListButton setEnabled:NO];
-            
+                        
             for (UISegmentedControl* fontSegmentedControl in self.fontSegmentedControls) {
                 [fontSegmentedControl setEnabled:YES forSegmentAtIndex:0];
                 [fontSegmentedControl setEnabled:YES forSegmentAtIndex:1];
@@ -1151,9 +1144,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
             self.readingView = layoutView;
             
             [self setDictionarySelectionMode];
-            
-            [self.storyInteractionsListButton setEnabled:YES];
-            
+                        
             for (UISegmentedControl* fontSegmentedControl in self.fontSegmentedControls) {
                 [fontSegmentedControl setEnabled:NO forSegmentAtIndex:0];
                 [fontSegmentedControl setEnabled:NO forSegmentAtIndex:1];
@@ -1929,6 +1920,18 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 }
 
 #pragma mark - SCHReadingInteractionsListControllerDelegate methods
+
+- (SCHBookPoint *)bookPointForStoryInteractionDocumentPageNumber:(NSUInteger)pageNumber
+{
+    if (self.currentPageIndex == NSUIntegerMax) {
+        return nil; // return nil if still paginating
+    } else {
+        NSUInteger layoutPage = pageNumber;
+        SCHBookPoint *bookPoint = [self.readingView bookPointForLayoutPage:layoutPage pageWordOffset:0 includingFolioBlocks:YES];
+        
+        return bookPoint;
+    }
+}
 
 - (void)readingInteractionsView:(SCHReadingInteractionsListController *)interactionsView didSelectInteraction:(NSInteger)interaction
 {
