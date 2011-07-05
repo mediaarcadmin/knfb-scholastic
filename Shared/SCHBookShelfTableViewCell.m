@@ -23,6 +23,7 @@ static NSInteger const CELL_DELETE_BUTTON = 105;
 static NSInteger const CELL_BACKGROUND_VIEW = 200;
 static NSInteger const CELL_THUMB_BACKGROUND_VIEW = 201;
 static NSInteger const CELL_RULE_IMAGE_VIEW = 202;
+static NSInteger const CELL_ACTIVITY_SPINNER = 203;
 
 @interface SCHBookShelfTableViewCell ()
 
@@ -35,6 +36,7 @@ static NSInteger const CELL_RULE_IMAGE_VIEW = 202;
 @property (readonly) UIButton *deleteButton;
 @property (readonly) UIView *thumbBackgroundView;
 @property (readonly) UIImageView *ruleImageView;
+@property (readonly) UIActivityIndicatorView *activitySpinner;
 
 - (void)updateTheme;
 
@@ -49,6 +51,7 @@ static NSInteger const CELL_RULE_IMAGE_VIEW = 202;
 @synthesize isNewBook;
 @synthesize trashed;
 @synthesize lastCell;
+@synthesize loading;
 
 - (id) initWithCoder:(NSCoder *)aDecoder
 {
@@ -84,6 +87,9 @@ static NSInteger const CELL_RULE_IMAGE_VIEW = 202;
    
     if (self.trashed) {
         self.bookTintView.hidden = NO;
+        self.textLabel.alpha = 0.5f;
+        self.deleteButton.hidden = YES;
+        self.sampleAndSIIndicatorIcon.hidden = YES;
     } else {
         // book status
         switch ([book processingState]) {
@@ -96,6 +102,10 @@ static NSInteger const CELL_RULE_IMAGE_VIEW = 202;
                 break;
             }
         }
+        self.textLabel.alpha = 1.0f;
+        self.deleteButton.hidden = NO;
+        self.sampleAndSIIndicatorIcon.hidden = NO;
+
     }
 
     [self setNeedsDisplay];
@@ -181,6 +191,12 @@ static NSInteger const CELL_RULE_IMAGE_VIEW = 202;
     } else {
         self.ruleImageView.hidden = NO;
     }
+
+    if (self.loading) {
+        [self.activitySpinner startAnimating];
+    } else {
+        [self.activitySpinner stopAnimating];
+    }
 }
 
 - (void)layoutSubviews 
@@ -188,23 +204,21 @@ static NSInteger const CELL_RULE_IMAGE_VIEW = 202;
     [super layoutSubviews];
     [UIView setAnimationsEnabled:NO];
     
-//	self.bookCoverImageView.frame = CGRectMake(2, 0, self.frame.size.width - 4, self.frame.size.height - 22);
-//	if (self.progressView.hidden == NO) {
-//        self.progressView.frame = CGRectMake(10, self.frame.size.height - 42, self.frame.size.width - 20, 10);
-//    }
-    
     if (self.bookCoverImageView && !CGSizeEqualToSize(self.bookCoverImageView.coverSize, CGSizeZero)) {
         
         CGRect thumbTintFrame = self.bookTintView.frame;
         
+        NSLog(@"coversize: %@, trashed: %@", NSStringFromCGSize(self.bookCoverImageView.coverSize), self.trashed?@"Yes":@"No");
+        
         thumbTintFrame.size.width = self.bookCoverImageView.coverSize.width;
         thumbTintFrame.size.height = self.bookCoverImageView.coverSize.height;
         
-//        thumbTintFrame.origin.x = (self.thumbBackgroundView.frame.size.width - thumbTintFrame.size.width) / 2;
-//        thumbTintFrame.origin.y = self.bookCoverImageView.frame.size.height - thumbTintFrame.size.height;
+        thumbTintFrame.origin.x = floorf((self.thumbBackgroundView.frame.size.width - thumbTintFrame.size.width) / 2);
+        thumbTintFrame.origin.y = floorf(self.bookCoverImageView.frame.size.height - thumbTintFrame.size.height);
         
         self.bookTintView.frame = thumbTintFrame;
-//        NSLog(@"Thumb tint frame: %@", NSStringFromCGRect(self.bookTintView.frame));
+        NSLog(@"Frame for cover: %@", NSStringFromCGRect(self.bookCoverImageView.frame));
+        NSLog(@"Thumb tint frame: %@, visible: %@", NSStringFromCGRect(self.bookTintView.frame), self.bookTintView.hidden?@"No":@"Yes");
     }
     
 
@@ -266,6 +280,12 @@ static NSInteger const CELL_RULE_IMAGE_VIEW = 202;
 - (void)setTrashed:(BOOL)newTrashed
 {
     trashed = newTrashed;
+    [self refreshCell];
+}
+
+- (void)setLoading:(BOOL)aLoading
+{
+    loading = aLoading;
     [self refreshCell];
 }
 
@@ -334,6 +354,11 @@ static NSInteger const CELL_RULE_IMAGE_VIEW = 202;
 - (UIImageView *)ruleImageView
 {
     return (UIImageView *)[self.contentView viewWithTag:CELL_RULE_IMAGE_VIEW];
+}
+
+- (UIActivityIndicatorView *)activitySpinner
+{
+    return (UIActivityIndicatorView *)[self.contentView viewWithTag:CELL_ACTIVITY_SPINNER];
 }
 
 

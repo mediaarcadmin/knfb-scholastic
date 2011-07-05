@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @class SCHCustomToolbar, SCHProfileItem, SCHNote;
+@class SCHBookPoint;
 @class SCHReadingView;
 @class SCHBookStoryInteractions;
 
@@ -23,6 +24,7 @@
 
 @property (nonatomic, retain) SCHProfileItem *profile;
 @property (nonatomic, retain) SCHBookStoryInteractions *bookStoryInteractions;
+@property (nonatomic, assign) BOOL excludeInteractionWithPage;
 @property (nonatomic, retain) NSString *isbn;
 @property (nonatomic, assign) id <SCHReadingInteractionsListControllerDelegate> delegate;
 @property (nonatomic, assign) SCHReadingView *readingView;
@@ -42,7 +44,10 @@
 
 @protocol SCHReadingInteractionsListControllerDelegate <NSObject>
 
-@optional
+@required
+
+- (SCHBookPoint *)bookPointForStoryInteractionDocumentPageNumber:(NSUInteger)pageNumber; // returns nil if book isn't paginated yet
+- (NSString *)displayPageNumberForBookPoint:(SCHBookPoint *)bookPoint;
 - (void)readingInteractionsView:(SCHReadingInteractionsListController *)interactionsView didSelectInteraction:(NSInteger)interaction;
 
 @end

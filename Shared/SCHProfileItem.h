@@ -64,6 +64,8 @@ typedef enum {
 - (BOOL)validatePasswordWith:(NSString *)withPassword;
 
 - (BOOL)bookIsNewForProfileWithIdentifier:(NSString *)isbn;
+- (void)setBookIsNew:(BOOL)isNew forBookWithIdentifier:(NSString *)isbn;
+
 - (BOOL)bookIsTrashedWithIdentifier:(NSString *)isbn;
 - (void)setTrashed:(BOOL)trashed forBookWithIdentifier:(NSString *)isbn;
 

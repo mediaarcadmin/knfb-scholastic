@@ -80,14 +80,37 @@
     return self;
 }
 
-- (NSArray *)allStoryInteractions
+- (NSArray *)allStoryInteractionsExcludingInteractionWithPage:(BOOL)excludeInteractionWithPage
 {
-    return self.storyInteractions;
+    NSArray *unfiltered = self.storyInteractions;
+    if (!excludeInteractionWithPage) {
+        return unfiltered;
+    }
+    
+    NSMutableArray *filtered = [NSMutableArray arrayWithCapacity:[unfiltered count]];
+    for (SCHStoryInteraction *si in unfiltered) {
+        if (![si requiresInteractionWithPage]) {
+            [filtered addObject:si];
+        }
+    }
+    return filtered;
 }
 
 - (NSArray *)storyInteractionsForPage:(NSInteger)pageNumber
+         excludingInteractionWithPage:(BOOL)excludeInteractionWithPage
 {
-    return [self.storyInteractionsByPage objectForKey:[NSNumber numberWithInteger:pageNumber]];
+    NSArray *unfiltered = [self.storyInteractionsByPage objectForKey:[NSNumber numberWithInteger:pageNumber]];
+    if (!excludeInteractionWithPage) {
+        return unfiltered;
+    }
+    
+    NSMutableArray *filtered = [NSMutableArray arrayWithCapacity:[unfiltered count]];
+    for (SCHStoryInteraction *si in unfiltered) {
+        if (![si requiresInteractionWithPage]) {
+            [filtered addObject:si];
+        }
+    }
+    return filtered;
 }
 
 - (NSArray *)storyInteractionsOfClass:(Class)storyInteractionClass
@@ -103,7 +126,7 @@
 
 - (NSInteger)storyInteractionQuestionCountForPage:(NSInteger)pageNumber
 {
-    SCHStoryInteraction *interaction = [[self storyInteractionsForPage:pageNumber] objectAtIndex:0];
+    SCHStoryInteraction *interaction = [[self storyInteractionsForPage:pageNumber excludingInteractionWithPage:NO] objectAtIndex:0];
     
     if (interaction) {
         return [interaction questionCount];
@@ -145,7 +168,7 @@
         return;
     }
     
-    int questionCount = [[[self storyInteractionsForPage:page] objectAtIndex:0] questionCount];
+    int questionCount = [[[self storyInteractionsForPage:page excludingInteractionWithPage:NO] objectAtIndex:0] questionCount];
     
     count = [NSNumber numberWithInteger:[count intValue] + 1];
     

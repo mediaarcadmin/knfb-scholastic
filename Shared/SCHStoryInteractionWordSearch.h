@@ -31,10 +31,16 @@
 // XPS-relative path for incorrect answer audio
 - (NSString *)audioPathForIncorrectAnswer;
 
+// XPS-relative path for "you found"
+- (NSString *)audioPathForYouFound;
+
+// XPS-relative path for audio for each of the words
+- (NSString *)audioPathForWordAtIndex:(NSInteger)index;
+
 // XPS-relative path for correct answer audio
 - (NSString *)audioPathForCorrectAnswer;
 
-// XPS-relative path for 'you found them all' all
+// XPS-relative path for 'you found them all'
 - (NSString *)audioPathForYouFoundThemAll;
 
 @end
