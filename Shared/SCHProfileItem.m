@@ -236,46 +236,57 @@ static NSString * const kSCHProfileItemUserContentItemContentMetadataItem = @"Us
 
 - (BOOL) bookIsNewForProfileWithIdentifier: (NSString *)isbn
 {
+    NSDictionary *defaultsDictionary = (NSDictionary *)[[NSUserDefaults standardUserDefaults] objectForKey:@"SCHProfileItemNewItemsDictionary"];
     
-    // FIXME: look up in user defaults instead
-    // also needs to change the reading view!
-    
-    NSEntityDescription *entityDescription = [NSEntityDescription 
-                                              entityForName:kSCHUserContentItem
-                                              inManagedObjectContext:self.managedObjectContext];
-
-    NSFetchRequest *fetchRequest = [entityDescription.managedObjectModel 
-                                    fetchRequestTemplateForName:kSCHUserContentItemFetchWithContentIdentifier];
-    
-    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"ContentIdentifier == %@", isbn]];
-    [fetchRequest setFetchLimit:1];
-    
-    NSArray *userContentItems = [self.managedObjectContext executeFetchRequest:fetchRequest error:nil];	
-    NSDate *creationDate = nil;
-    if (userContentItems != nil && [userContentItems count] > 0) {
-        NSSet *orderItems = [[userContentItems objectAtIndex:0] OrderList];
-        if ([orderItems count] > 0) {
-            // use the latest date
-            NSArray *sortedOrderItems = [[orderItems allObjects] sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"date" ascending:NO]]];
-            SCHOrderItem *orderItem = [sortedOrderItems objectAtIndex:0];
-            creationDate = [orderItem OrderDate];
-        }
-    }
-
-    if (!creationDate) {
-        return NO;
-    }
-    
-    NSDate *now = [NSDate date];
-    NSTimeInterval interval = [now timeIntervalSinceDate:creationDate];
-    
-    // if the date is within 7 days of now, it is new
-    if (interval >= 604800) {
+    if (!defaultsDictionary) {
         return YES;
-    } else {
-        return NO;
     }
+    
+    NSDictionary *profileDictionary = [defaultsDictionary objectForKey:[self.ID stringValue]];
+    
+    if (!profileDictionary) {
+        return YES;
+    }
+    
+    NSNumber *item = [profileDictionary objectForKey:isbn];
+    
+    if (!item) {
+        return YES;
+    }
+    
+    return [item boolValue];
+
 }
+
+- (void)setBookIsNew:(BOOL)isNew forBookWithIdentifier:(NSString *)isbn
+{
+    NSDictionary *defaultsDictionary = (NSDictionary *)[[NSUserDefaults standardUserDefaults] objectForKey:@"SCHProfileItemNewItemsDictionary"];
+    NSMutableDictionary *trashedItems = nil;
+    
+    if (!defaultsDictionary) {
+        trashedItems = [NSMutableDictionary dictionary];
+    } else {
+        trashedItems = [NSMutableDictionary dictionaryWithDictionary:defaultsDictionary];
+    }
+    
+    NSDictionary *profileDictionary = [trashedItems objectForKey:[self.ID stringValue]];
+    NSMutableDictionary *profileMutableDictionary = nil;
+    
+    if (profileDictionary) {
+        profileMutableDictionary = [NSMutableDictionary dictionaryWithDictionary:profileDictionary];
+    } else {
+        profileMutableDictionary = [NSMutableDictionary dictionary];
+    }
+    
+    NSNumber *newValue = [NSNumber numberWithBool:isNew];
+    
+    [profileMutableDictionary setValue:newValue forKey:isbn];
+    [trashedItems setValue:[NSDictionary dictionaryWithDictionary:profileMutableDictionary] forKey:[self.ID stringValue]];
+    [[NSUserDefaults standardUserDefaults] setValue:[NSDictionary dictionaryWithDictionary:trashedItems] forKey:@"SCHProfileItemNewItemsDictionary"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
+}
+
 
 // structure: dictionary with profileID->isbndictionary, isbndictionary with isbn->nsnumber (bool)
 - (BOOL)bookIsTrashedWithIdentifier:(NSString *)isbn

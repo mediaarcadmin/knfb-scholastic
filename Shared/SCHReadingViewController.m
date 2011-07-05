@@ -435,7 +435,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     
     [self setDictionarySelectionMode];
     [self setupStoryInteractionButtonForCurrentPagesAnimated:NO];
-
+    
+    [self.profile setBookIsNew:NO forBookWithIdentifier:self.isbn];
 }
 
 - (void)viewWillAppear:(BOOL)animated

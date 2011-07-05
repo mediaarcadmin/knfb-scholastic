@@ -30,7 +30,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 @interface SCHBookShelfViewController () <UIGestureRecognizerDelegate>
 
 @property (nonatomic, assign) int moveToValue;
-@property (nonatomic, assign) BOOL updateSort;
+@property (nonatomic, assign) BOOL updateShelfOnReturnToShelf;
 
 
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation;
@@ -65,7 +65,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 @synthesize profileItem;
 @synthesize moveToValue;
 @synthesize sortType;
-@synthesize updateSort;
+@synthesize updateShelfOnReturnToShelf;
 @synthesize listViewCell;
 
 #pragma mark - Object lifecycle
@@ -207,8 +207,8 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
     [super viewWillAppear:animated];
     self.navigationController.navigationBar.barStyle = UIBarStyleBlackOpaque;
     [self setupAssetsForOrientation:self.interfaceOrientation];
-    if (self.updateSort == YES) {
-        self.updateSort = NO;
+    if (self.updateShelfOnReturnToShelf == YES) {
+        self.updateShelfOnReturnToShelf = NO;
         self.books = [self.profileItem allISBNs];
     }
 }
@@ -420,9 +420,9 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
     
     SCHReadingViewController *readingController = [self openBook:[self.books objectAtIndex:[indexPath row]]];
     if (readingController != nil) {
-        if (self.sortType == kSCHBookSortTypeLastRead) {
-            self.updateSort = YES;
-        }
+//        if (self.sortType == kSCHBookSortTypeLastRead) {
+            self.updateShelfOnReturnToShelf = YES;
+//        }
         [self.navigationController pushViewController:readingController animated:YES]; 
     }
 }
@@ -524,7 +524,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
         SCHReadingViewController *readingController = [self openBook:[self.books objectAtIndex:index]];
         if (readingController != nil) {
             if (self.sortType == kSCHBookSortTypeLastRead) {
-                self.updateSort = YES;
+                self.updateShelfOnReturnToShelf = YES;
             }            
             [self.navigationController pushViewController:readingController animated:YES]; 
         }
