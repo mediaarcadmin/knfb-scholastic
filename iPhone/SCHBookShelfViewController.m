@@ -309,20 +309,24 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 
 - (IBAction)changeToGridView:(UIButton *)sender
 {
-    self.gridButton.highlighted = YES;
-    self.listButton.highlighted = NO;
-    self.listTableView.hidden = YES;
-    self.gridView.hidden = NO;
-    [self.gridView reloadData];
+    if (self.gridView.hidden == YES) {
+        self.gridButton.highlighted = YES;
+        self.listButton.highlighted = NO;
+        self.listTableView.hidden = YES;
+        self.gridView.hidden = NO;
+        [self.gridView reloadData];
+    }
 }
 
 - (IBAction)changeToListView:(UIButton *)sender
 {
-    self.gridButton.highlighted = NO;
-    self.listButton.highlighted = YES;
-    self.listTableView.hidden = NO;
-    self.gridView.hidden = YES;
-    [self.listTableView reloadData];
+    if (self.listTableView.hidden == YES) {
+        self.gridButton.highlighted = NO;
+        self.listButton.highlighted = YES;
+        self.listTableView.hidden = NO;
+        self.gridView.hidden = YES;
+        [self.listTableView reloadData];
+    }
 }
 
 #pragma mark - Core Data Table View Methods
@@ -394,7 +398,14 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 
 - (void)bookShelfTableViewCellSelectedDeleteForIdentifier:(SCHBookIdentifier *)identifier
 {
-    NSLog(@"Deleting list view row associated with identifier: %@", identifier);
+    NSLog(@"Deleting list view row associated with ISBN: %@", isbn);
+    if ([self.profileItem bookIsTrashedWithIdentifier:isbn]) {
+        [self.profileItem setTrashed:NO forBookWithIdentifier:isbn];
+    } else {
+        [self.profileItem setTrashed:YES forBookWithIdentifier:isbn];
+    }
+    [self.listTableView reloadData];
+    [self.gridView reloadData];
 }
 
 #pragma mark - UITableViewDelegate methods
@@ -412,6 +423,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
     if ([self.profileItem bookIsTrashedWithIdentifier:identifier]) {
         [self.profileItem setTrashed:NO forBookWithIdentifier:identifier];
         [self.listTableView reloadData];
+        return;
     }
     
     SCHReadingViewController *readingController = [self openBook:[self.books objectAtIndex:[indexPath row]]];
@@ -503,6 +515,13 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
     if (index >= [self.books count]) {
         return;
     }
+
+    NSString *isbn = [self.books objectAtIndex:index];
+    if ([self.profileItem bookIsTrashedWithIdentifier:isbn]) {
+        [self.profileItem setTrashed:NO forBookWithIdentifier:isbn];
+        [self.gridView reloadData];
+        return;
+    }
     
     CGRect cellFrame = [aGridView frameForCellAtGridIndex:index];
     UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
@@ -510,12 +529,6 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
     [spinner startAnimating];
     [aGridView addSubview:spinner];
     
-    SCHBookIdentifier *identifier = [self.books objectAtIndex:index];
-    if ([self.profileItem bookIsTrashedWithIdentifier:identifier]) {
-        [self.profileItem setTrashed:NO forBookWithIdentifier:identifier];
-        [self.gridView reloadData];
-    }
-
     dispatch_async(dispatch_get_main_queue(), ^{
         SCHReadingViewController *readingController = [self openBook:[self.books objectAtIndex:index]];
         if (readingController != nil) {

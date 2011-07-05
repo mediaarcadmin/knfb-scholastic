@@ -122,6 +122,7 @@
             CGSize aCoverSize = [SCHThumbnailFactory coverSizeForImageOfSize:fullImageSize thumbNailOfSize:self.image.size aspect:YES];
             
             self.coverSize = aCoverSize;
+            NSLog(@"Cover size: %@", NSStringFromCGSize(self.coverSize));
         } else {
             self.coverSize = CGSizeMake(self.frame.size.width, self.frame.size.height);
         }

@@ -104,20 +104,6 @@
 												<int key="NSvFlags">274</int>
 												<object class="NSMutableArray" key="NSSubviews">
 													<bool key="EncodedWithXMLCoder">YES</bool>
-													<object class="IBUIView" id="31927377">
-														<reference key="NSNextResponder" ref="965481907"/>
-														<int key="NSvFlags">287</int>
-														<string key="NSFrameSize">{62, 52}</string>
-														<reference key="NSSuperview" ref="965481907"/>
-														<reference key="NSWindow"/>
-														<reference key="NSNextKeyView" ref="952200392"/>
-														<object class="NSColor" key="IBUIBackgroundColor">
-															<int key="NSColorSpace">3</int>
-															<bytes key="NSWhite">MC4zMzMzMzMzMzMzIDAuNDEAA</bytes>
-														</object>
-														<int key="IBUITag">104</int>
-														<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-													</object>
 													<object class="IBUIImageView" id="952200392">
 														<reference key="NSNextResponder" ref="965481907"/>
 														<int key="NSvFlags">274</int>
@@ -130,8 +116,22 @@
 														<bool key="IBUIUserInteractionEnabled">NO</bool>
 														<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 													</object>
+													<object class="IBUIView" id="31927377">
+														<reference key="NSNextResponder" ref="965481907"/>
+														<int key="NSvFlags">287</int>
+														<string key="NSFrameSize">{62, 52}</string>
+														<reference key="NSSuperview" ref="965481907"/>
+														<reference key="NSWindow"/>
+														<reference key="NSNextKeyView" ref="952200392"/>
+														<object class="NSColor" key="IBUIBackgroundColor">
+															<int key="NSColorSpace">1</int>
+															<bytes key="NSRGB">MC4yIDAuMiAwLjIgMC42AA</bytes>
+														</object>
+														<int key="IBUITag">104</int>
+														<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+													</object>
 												</object>
-												<string key="NSFrame">{{0, 2}, {62, 52}}</string>
+												<string key="NSFrame">{{0, 5}, {62, 52}}</string>
 												<reference key="NSSuperview" ref="264148417"/>
 												<reference key="NSWindow"/>
 												<reference key="NSNextKeyView" ref="31927377"/>
@@ -142,7 +142,7 @@
 											<object class="IBUIImageView" id="896910337">
 												<reference key="NSNextResponder" ref="264148417"/>
 												<int key="NSvFlags">265</int>
-												<string key="NSFrame">{{44, 34}, {26, 26}}</string>
+												<string key="NSFrame">{{42, 37}, {21, 22}}</string>
 												<reference key="NSSuperview" ref="264148417"/>
 												<reference key="NSWindow"/>
 												<reference key="NSNextKeyView" ref="513083961"/>
@@ -221,7 +221,7 @@
 									<object class="IBUIImageView" id="41367515">
 										<reference key="NSNextResponder" ref="662339898"/>
 										<int key="NSvFlags">266</int>
-										<string key="NSFrame">{{9, 60}, {302, 1}}</string>
+										<string key="NSFrame">{{9, 61}, {302, 1}}</string>
 										<reference key="NSSuperview" ref="662339898"/>
 										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView"/>
@@ -265,6 +265,7 @@
 				</object>
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 				<int key="IBUISeparatorStyle">1</int>
+				<int key="IBUISelectionStyle">0</int>
 				<reference key="IBUIContentView" ref="531939357"/>
 				<string key="IBUIReuseIdentifier">ScholasticBookshelfTableCell</string>
 			</object>
@@ -373,8 +374,8 @@
 						<reference key="object" ref="965481907"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="952200392"/>
 							<reference ref="31927377"/>
+							<reference ref="952200392"/>
 						</object>
 						<reference key="parent" ref="264148417"/>
 					</object>
@@ -620,7 +621,7 @@
 			</object>
 			<object class="NSMutableArray" key="dict.values">
 				<bool key="EncodedWithXMLCoder">YES</bool>
-				<string>{42, 44}</string>
+				<string>{21, 22}</string>
 				<string>{15, 27}</string>
 			</object>
 		</object>
