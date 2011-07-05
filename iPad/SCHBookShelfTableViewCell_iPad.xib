@@ -120,14 +120,14 @@
 														<reference key="NSWindow"/>
 														<reference key="NSNextKeyView" ref="411809707"/>
 														<object class="NSColor" key="IBUIBackgroundColor">
-															<int key="NSColorSpace">3</int>
-															<bytes key="NSWhite">MC4zMzMzMzMzMzMzIDAuNDEAA</bytes>
+															<int key="NSColorSpace">1</int>
+															<bytes key="NSRGB">MC4yIDAuMiAwLjIgMC42AA</bytes>
 														</object>
 														<int key="IBUITag">104</int>
 														<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 													</object>
 												</object>
-												<string key="NSFrame">{{4, 3}, {96, 90}}</string>
+												<string key="NSFrame">{{4, 4}, {96, 90}}</string>
 												<reference key="NSSuperview" ref="701951971"/>
 												<reference key="NSWindow"/>
 												<reference key="NSNextKeyView" ref="553732293"/>
@@ -186,7 +186,7 @@
 									<object class="IBUILabel" id="448554426">
 										<reference key="NSNextResponder" ref="11916819"/>
 										<int key="NSvFlags">314</int>
-										<string key="NSFrame">{{157, 19}, {351, 60}}</string>
+										<string key="NSFrame">{{157, 20}, {351, 60}}</string>
 										<reference key="NSSuperview" ref="11916819"/>
 										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="836594745"/>
@@ -216,7 +216,7 @@
 									<object class="IBUIImageView" id="349761556">
 										<reference key="NSNextResponder" ref="11916819"/>
 										<int key="NSvFlags">266</int>
-										<string key="NSFrame">{{23, 97}, {722, 2}}</string>
+										<string key="NSFrame">{{23, 98}, {722, 2}}</string>
 										<reference key="NSSuperview" ref="11916819"/>
 										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView"/>
@@ -448,7 +448,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">20</int>
+			<int key="maxID">22</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
