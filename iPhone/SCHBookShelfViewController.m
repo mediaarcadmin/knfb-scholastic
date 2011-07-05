@@ -360,6 +360,12 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
     cell.isNewBook = [self.profileItem bookIsNewForProfileWithIdentifier:isbn];
     cell.trashed = [self.profileItem bookIsTrashedWithIdentifier:isbn];
     
+    if ([isbn compare:[self.books lastObject]] == NSOrderedSame) {
+        cell.lastCell = YES;
+    } else {
+        cell.lastCell = NO;
+    }
+    
     return cell;
 }
 
