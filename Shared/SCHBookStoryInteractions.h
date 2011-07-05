@@ -12,9 +12,9 @@
 
 @interface SCHBookStoryInteractions : NSObject {}
 
-@property (nonatomic, readonly) NSArray *allStoryInteractions;
-
 - (id)initWithXPSProvider:(SCHXPSProvider *)xpsProvider;
+
+- (NSArray *)allStoryInteractionsExcludingInteractionWithPage:(BOOL)excludeInteractionWithPage;
 
 - (NSArray *)storyInteractionsForPage:(NSInteger)pageNumber
          excludingInteractionWithPage:(BOOL)excludeInteractionWithPage;

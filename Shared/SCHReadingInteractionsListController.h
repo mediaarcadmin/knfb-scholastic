@@ -24,6 +24,7 @@
 
 @property (nonatomic, retain) SCHProfileItem *profile;
 @property (nonatomic, retain) SCHBookStoryInteractions *bookStoryInteractions;
+@property (nonatomic, assign) BOOL excludeInteractionWithPage;
 @property (nonatomic, retain) NSString *isbn;
 @property (nonatomic, assign) id <SCHReadingInteractionsListControllerDelegate> delegate;
 @property (nonatomic, assign) SCHReadingView *readingView;

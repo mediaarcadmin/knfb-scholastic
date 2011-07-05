@@ -701,6 +701,11 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     if (self.optionsView.superview) {
         [self.optionsView removeFromSuperview];
     }
+    
+    BOOL excludeInteractionWithPage = NO;
+    if ([self.readingView isKindOfClass:[SCHFlowView class]]) {
+        excludeInteractionWithPage = YES;
+    }
         
     SCHReadingInteractionsListController *interactionsController = [[SCHReadingInteractionsListController alloc] initWithNibName:nil bundle:nil];
     interactionsController.isbn = self.isbn;
@@ -708,6 +713,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     interactionsController.profile = self.profile;
     interactionsController.delegate = self;
     interactionsController.readingView = self.readingView;
+    interactionsController.excludeInteractionWithPage = excludeInteractionWithPage;
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         interactionsController.modalPresentationStyle = UIModalPresentationFormSheet;
@@ -816,8 +822,13 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
     NSInteger page = [self storyInteractionPageNumberFromPageIndex:[self firstPageIndexWithStoryInteractionsOnCurrentPages]];
     
+    BOOL excludeInteractionWithPage = NO;
+    if ([self.readingView isKindOfClass:[SCHFlowView class]]) {
+        excludeInteractionWithPage = YES;
+    }
+    
     NSArray *storyInteractions = [self.bookStoryInteractions storyInteractionsForPage:page
-                                                         excludingInteractionWithPage:NO];
+                                                         excludingInteractionWithPage:excludeInteractionWithPage];
     
     if ([storyInteractions count]) {
         SCHStoryInteraction *storyInteraction = [storyInteractions objectAtIndex:0];
@@ -846,9 +857,14 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     }
     
     NSInteger page = [self storyInteractionPageNumberFromPageIndex:[self firstPageIndexWithStoryInteractionsOnCurrentPages]];
-            
+    
+    BOOL excludeInteractionWithPage = NO;
+    if ([self.readingView isKindOfClass:[SCHFlowView class]]) {
+        excludeInteractionWithPage = YES;
+    }
+    
     NSArray *storyInteractions = [self.bookStoryInteractions storyInteractionsForPage:page
-                                                         excludingInteractionWithPage:NO];
+                                                         excludingInteractionWithPage:excludeInteractionWithPage];
     int totalInteractionCount = [storyInteractions count];
     int questionCount = [self.bookStoryInteractions storyInteractionQuestionCountForPage:page];
     
@@ -989,6 +1005,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 {
 
     NSRange pageIndices = NSMakeRange(0, 0);
+    BOOL excludeInteractionWithPage = NO;
     
     if ([self.readingView isKindOfClass:[SCHLayoutView class]]) {
         if (self.currentPageIndices.location != NSNotFound) {
@@ -1004,11 +1021,13 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
             SCHBookRange *pageRange = [self.readingView currentBookRange];
             pageIndices = NSMakeRange(pageRange.startPoint.layoutPage - 1, pageRange.endPoint.layoutPage - pageRange.startPoint.layoutPage + 1);
         }
+        
+        excludeInteractionWithPage = YES;
     }
             
     for (int pageIndex = pageIndices.location; pageIndex < NSMaxRange(pageIndices); pageIndex++) {
         NSArray *storyInteractions = [self.bookStoryInteractions storyInteractionsForPage:pageIndex + 1
-                                                             excludingInteractionWithPage:NO];
+                                                             excludingInteractionWithPage:excludeInteractionWithPage];
             
         if ([storyInteractions count]) {
             return pageIndex;
@@ -1731,8 +1750,13 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     // hide/show story interactions stuff if necessary
     NSInteger page = [self storyInteractionPageNumberFromPageIndex:[self firstPageIndexWithStoryInteractionsOnCurrentPages]];
 
+    BOOL excludeInteractionWithPage = NO;
+    if ([self.readingView isKindOfClass:[SCHFlowView class]]) {
+        excludeInteractionWithPage = YES;
+    }
+    
     NSArray *storyInteractions = [self.bookStoryInteractions storyInteractionsForPage:page
-                                                         excludingInteractionWithPage:NO];
+                                                         excludingInteractionWithPage:excludeInteractionWithPage];
     int totalInteractionCount = [storyInteractions count];
 
     if (!self.initialFadeTimer) {
@@ -1907,8 +1931,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 }
 
 - (void)readingInteractionsView:(SCHReadingInteractionsListController *)interactionsView didSelectInteraction:(NSInteger)interaction
-{
-    SCHStoryInteraction *storyInteraction = [[self.bookStoryInteractions allStoryInteractions] objectAtIndex:interaction];
+{    
+    SCHStoryInteraction *storyInteraction = [[self.bookStoryInteractions allStoryInteractionsExcludingInteractionWithPage:interactionsView.excludeInteractionWithPage] objectAtIndex:interaction];
     [self presentStoryInteraction:storyInteraction];
     
     SCHBookPoint *notePoint = [self.readingView bookPointForLayoutPage:[storyInteraction documentPageNumber] pageWordOffset:0 includingFolioBlocks:YES];

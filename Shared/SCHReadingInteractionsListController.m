@@ -37,6 +37,7 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
 @implementation SCHReadingInteractionsListController
 
 @synthesize bookStoryInteractions;
+@synthesize excludeInteractionWithPage;
 @synthesize delegate;
 @synthesize noteCellNib;
 @synthesize notesTableView;
@@ -192,7 +193,7 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
     switch (section) {
         case 0:
         {
-            return [[bookStoryInteractions allStoryInteractions] count];
+            return [[bookStoryInteractions allStoryInteractionsExcludingInteractionWithPage:self.excludeInteractionWithPage] count];
             break;
         }   
         default:
@@ -227,7 +228,7 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
     UILabel *titleLabel = (UILabel *) [cell viewWithTag:CELL_TITLE_LABEL_TAG];
     UILabel *subTitleLabel = (UILabel *) [cell viewWithTag:CELL_PAGE_LABEL_TAG];
     
-    SCHStoryInteraction *storyInteraction = [[self.bookStoryInteractions allStoryInteractions] objectAtIndex:indexPath.row];
+    SCHStoryInteraction *storyInteraction = [[self.bookStoryInteractions allStoryInteractionsExcludingInteractionWithPage:self.excludeInteractionWithPage] objectAtIndex:indexPath.row];
     titleLabel.text = [storyInteraction title];
     
     SCHBookPoint *interactionPoint = [self.delegate bookPointForStoryInteractionDocumentPageNumber:storyInteraction.documentPageNumber];
