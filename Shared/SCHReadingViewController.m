@@ -513,52 +513,11 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 {
     [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
     
+    self.currentlyScrubbing = NO;
+    [self.pageSlider cancelTrackingWithEvent:nil];
+    [self.scrubberInfoView removeFromSuperview];
+    
     self.currentlyRotating = YES;
-    if ([self.scrubberInfoView superview]) {
-        
-        CGRect scrubFrame = self.scrubberInfoView.frame;
-        
-        CGRect statusFrame = [[UIApplication sharedApplication] statusBarFrame];
-        float statusBarHeight = MIN(statusFrame.size.height, statusFrame.size.width);
-        
-        float newNavBarHeight = 44.0f;
-        
-        NSLog(@"Status bar height is currently %f", statusBarHeight);
-        NSLog(@"Nav bar height is currently %f", self.navigationController.navigationBar.frame.size.height);
-        
-        if (newNavBarHeight == self.navigationController.navigationBar.frame.size.height) {
-            newNavBarHeight = 32.0f;
-        }
-        
-        scrubFrame.origin.x = self.view.bounds.size.width / 2 - (scrubFrame.size.width / 2);
-        scrubFrame.origin.y = statusBarHeight + newNavBarHeight + 10;
-        
-        
-        if (!(self.layoutType == SCHReadingViewLayoutTypeFlow) && self.scrubberThumbImage) {
-            
-            int maxHeight = (self.view.frame.size.width - scrubberToolbar.frame.size.height - newNavBarHeight - kReadingViewStandardScrubHeight - 40);
-            
-            NSLog(@"Max height: %d", maxHeight);
-            
-            if (self.scrubberThumbImage.image.size.height > maxHeight) {
-                self.scrubberThumbImage.contentMode = UIViewContentModeScaleAspectFit;
-                scrubFrame.size.height = kReadingViewStandardScrubHeight + maxHeight;
-            } else {
-                self.scrubberThumbImage.contentMode = UIViewContentModeTop;
-                scrubFrame.size.height = kReadingViewStandardScrubHeight + self.scrubberThumbImage.image.size.height + 20;
-            }
-            
-            
-            NSLog(@"Scrub frame height: %f", scrubFrame.size.height);
-            
-        } else {
-            scrubFrame.size.height = kReadingViewStandardScrubHeight;
-        }
-
-        
-        self.scrubberInfoView.frame = scrubFrame;
-        
-    }
     
     [self setupAssetsForOrientation:toInterfaceOrientation];
     
@@ -1955,9 +1914,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         if ([self.bookStoryInteractions storyInteractionsFinishedOnPage:page]) {
             self.storyInteractionsCompleteOnCurrentPages = YES;
         }
-        
-        [self setupStoryInteractionButtonForCurrentPagesAnimated:YES];
     }
+    
+    [self setupStoryInteractionButtonForCurrentPagesAnimated:YES];
 }
 
 - (NSInteger)currentQuestionForStoryInteraction

@@ -30,7 +30,6 @@
 @property (nonatomic, assign) CGSize pageSize;
 @property (nonatomic, retain) NSMutableDictionary *pageCropsCache;
 @property (nonatomic, retain) NSLock *layoutCacheLock;
-@property (nonatomic, retain) id currentBlock;
 @property (nonatomic, retain) EucSelector *selector;
 @property (nonatomic, retain) SCHBookRange *temporaryHighlightRange;
 @property (nonatomic, retain) EucSelectorRange *currentSelectorRange;
@@ -42,7 +41,6 @@
 
 - (CGRect)cropForPage:(NSInteger)page allowEstimate:(BOOL)estimate;
 - (void)jumpToZoomBlock:(id)zoomBlock;
-- (void)zoomToCurrentBlock;
 - (void)zoomOutToCurrentPage;
 
 - (NSArray *)highlightRangesForCurrentPage;
@@ -65,7 +63,6 @@
 @synthesize pageSize;
 @synthesize pageCropsCache;
 @synthesize layoutCacheLock;
-@synthesize currentBlock;
 @synthesize selector;
 @synthesize temporaryHighlightRange;
 @synthesize currentSelectorRange;
@@ -78,7 +75,6 @@
     [pageTurningView release], pageTurningView = nil;
     [pageCropsCache release], pageCropsCache = nil;
     [layoutCacheLock release], layoutCacheLock = nil;
-    [currentBlock release], currentBlock = nil;
     [temporaryHighlightRange release], temporaryHighlightRange = nil;
     [currentSelectorRange release], currentSelectorRange = nil;
     [zoomCompletionHandler release], zoomCompletionHandler = nil;
@@ -435,30 +431,6 @@
             completion();
         }
     }
-}
-
-- (void)zoomToCurrentBlock {
-	
-    NSUInteger pageIndex = [self.currentBlock pageIndex];
-    CGRect targetRect = [self.currentBlock rect];
-    	
-	CGFloat zoomScale;
-	CGPoint translation = [self translationToFitRect:targetRect onPageAtIndex:pageIndex zoomScale:&zoomScale];
-	
-    if (pageIndex != self.currentPageIndex) {
-        if (self.pageTurningView.isTwoUp) {
-            if ((self.pageTurningView.leftPageIndex != pageIndex) && (self.pageTurningView.rightPageIndex != pageIndex)) {
-                [self.pageTurningView turnToPageAtIndex:pageIndex animated:YES];
-            }
-        } else {
-            if (self.pageTurningView.rightPageIndex != pageIndex) {
-                [self.pageTurningView turnToPageAtIndex:pageIndex animated:YES];
-            }
-        }
-    }
-		
-    [self.pageTurningView setTranslation:translation zoomFactor:zoomScale animated:YES];
-
 }
 
 - (SCHBookRange *)bookRangeFromSelectorRange:(EucSelectorRange *)selectorRange
