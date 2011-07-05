@@ -224,7 +224,6 @@
 										<string key="NSFrame">{{9, 60}, {302, 1}}</string>
 										<reference key="NSSuperview" ref="662339898"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView"/>
 										<reference key="IBUIBackgroundColor" ref="1036126128"/>
 										<int key="IBUITag">202</int>
 										<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -234,7 +233,6 @@
 								<string key="NSFrameSize">{320, 62}</string>
 								<reference key="NSSuperview" ref="531939357"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
 								<object class="NSColor" key="IBUIBackgroundColor">
 									<int key="NSColorSpace">1</int>
 									<bytes key="NSRGB">MC40MTU2ODYyNzk1IDAuODA3ODQzMTQ4NyAwLjk2MDc4NDMxNjEAA</bytes>
