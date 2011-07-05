@@ -141,6 +141,10 @@
     }
     
     self.hasShownHint = YES;
+    
+    if ([self hasCorrectSolution]) {
+        [self wordScrambleComplete];
+    }
 }
 
 #pragma mark - draggable delegate

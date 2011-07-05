@@ -11,16 +11,27 @@
 #import "SCHBookStoryInteractions.h"
 #import "SCHStoryInteractionControllerDelegate.h"
 
-static const NSInteger kSCHScratchPointCount = 200;
+static const NSInteger kFirstScratchPointTarget = 180;
+static const NSInteger kSecondScratchPointTarget = 270;
+
+enum ScratchState {
+    kScratchStateFirstScratch,
+    kScratchStateFirstQuestionAttempt,
+    kScratchStateSecondScratch,
+    kScratchStateSecondQuestionAttempt,
+    kScratchStateKeepTrying
+};
 
 @interface SCHStoryInteractionControllerScratchAndSee ()
 
 @property (nonatomic, retain) NSArray *answerButtons;
 @property (nonatomic, assign) NSInteger currentQuestionIndex;
-@property (nonatomic, assign) BOOL askingQuestions;
 @property (nonatomic, assign) NSInteger simultaneousTapCount;
+@property (nonatomic, assign) enum ScratchState scratchState;
 
 - (SCHStoryInteractionScratchAndSeeQuestion *)currentQuestion;
+- (NSInteger)scratchPointTarget;
+
 - (void)nextQuestion;
 - (void)setupQuestion;
 - (void)correctAnswer:(NSInteger) selection;
@@ -45,12 +56,13 @@ static const NSInteger kSCHScratchPointCount = 200;
 @synthesize bLabel;
 @synthesize cLabel;
 @synthesize currentQuestionIndex;
-@synthesize askingQuestions;
 @synthesize simultaneousTapCount;
+@synthesize scratchState;
 
 @synthesize answerButtons;
 
-- (void)dealloc {
+- (void)dealloc
+{
     [answerButton1 release], answerButton1 = nil;
     [answerButton2 release], answerButton2 = nil;
     [answerButton3 release], answerButton3 = nil;
@@ -68,7 +80,6 @@ static const NSInteger kSCHScratchPointCount = 200;
 - (void)setupViewAtIndex:(NSInteger)screenIndex
 {
     self.answerButtons = [NSArray arrayWithObjects:self.answerButton1, self.answerButton2, self.answerButton3, nil];
-    self.askingQuestions = NO;
     self.scratchView.delegate = self;
     
     for (UIButton *button in answerButtons) {
@@ -95,6 +106,7 @@ static const NSInteger kSCHScratchPointCount = 200;
         self.currentQuestionIndex += [self.delegate currentQuestionForStoryInteraction];    
     }
     
+    self.scratchState = kScratchStateFirstScratch;
     [self setupQuestion];
 }
 
@@ -106,25 +118,33 @@ static const NSInteger kSCHScratchPointCount = 200;
 
 - (void)playAudioButtonTapped:(id)sender
 {
-    if (self.askingQuestions) {
-        [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
-        [self askQuestion];
-    } else {
-        [super playAudioButtonTapped:sender];
+    switch (self.scratchState) {
+        case kScratchStateFirstQuestionAttempt:
+        case kScratchStateSecondQuestionAttempt:
+            [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
+            [self askQuestion];
+            break;
+        default:
+            [super playAudioButtonTapped:sender];
+            break;
     }
 }
 
 - (void)setupQuestion
 {
-    BOOL iPad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
+    const BOOL iPad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
+    const BOOL scratching = (self.scratchState == kScratchStateFirstScratch || self.scratchState == kScratchStateSecondScratch);
     
-
-    if (!self.askingQuestions) {
-//        [self setTitle:[self currentQuestion].prompt];
+    if (scratching) {
         [self setTitle:NSLocalizedString(@"Scratch away the question mark to see the picture.", @"")];
-        UIImage *image = [self imageAtPath:[[self currentQuestion] imagePath]];
-        self.scratchView.answerImage = image;
-        [self setProgressViewForScratchCount:0];
+        if (self.scratchState == kScratchStateFirstScratch) {
+            UIImage *image = [self imageAtPath:[[self currentQuestion] imagePath]];
+            self.scratchView.answerImage = image;
+            [self setProgressViewForScratchCount:0];
+        } else {
+            [self setProgressViewForScratchCount:kFirstScratchPointTarget];
+        }
+        self.scratchView.interactionEnabled = YES;
         self.progressView.hidden = NO;
         aLabel.hidden = YES;
         bLabel.hidden = YES;
@@ -136,8 +156,6 @@ static const NSInteger kSCHScratchPointCount = 200;
         bLabel.hidden = NO;
         cLabel.hidden = NO;
     }
-    
-    NSLog(@"Image: %@", [self.currentQuestion imagePath]);
     
     NSInteger i = 0;
     for (NSString *answer in [self currentQuestion].answers) {
@@ -164,13 +182,7 @@ static const NSInteger kSCHScratchPointCount = 200;
         [button setBackgroundImage:[(iPad == YES ? [UIImage imageNamed:@"answer-button-blue"] : [UIImage imageNamed:@"answer-button-yellow"]) stretchableImageWithLeftCapWidth:10 topCapHeight:0] forState:UIControlStateNormal];        
         [button setBackgroundImage:[(iPad == YES ? [UIImage imageNamed:@"answer-button-blue"] : [UIImage imageNamed:@"answer-button-yellow"]) stretchableImageWithLeftCapWidth:10 topCapHeight:0] forState:UIControlStateSelected];        
         [button setSelected:NO];
-        if (self.askingQuestions) {
-            [button setHidden:NO];
-        } else {
-            [button setHidden:YES];
-        }
-
-        
+        [button setHidden:scratching];
         [button setBackgroundImage:highlight forState:UIControlStateSelected];
         ++i;
     }
@@ -199,6 +211,17 @@ static const NSInteger kSCHScratchPointCount = 200;
     }
 }
 
+- (NSInteger)scratchPointTarget
+{
+    switch (self.scratchState) {
+        case kScratchStateFirstScratch:
+            return kFirstScratchPointTarget;
+        case kScratchStateSecondScratch:
+            return kSecondScratchPointTarget;
+        default: return 0;
+    }
+}
+
 - (void)nextQuestion
 {
     [self removeFromHostViewWithSuccess:YES];
@@ -208,8 +231,6 @@ static const NSInteger kSCHScratchPointCount = 200;
 {
     return [[(SCHStoryInteractionScratchAndSee *)self.storyInteraction questions] objectAtIndex:currentQuestionIndex];
 }
-
-
 
 - (IBAction)questionButtonTapped:(UIButton *)sender
 {
@@ -265,37 +286,76 @@ static const NSInteger kSCHScratchPointCount = 200;
 
 - (void)wrongAnswer:(NSInteger) selection
 {
+    SCHStoryInteractionScratchAndSee *scratchAndSee = (SCHStoryInteractionScratchAndSee *)self.storyInteraction;
+    
     UIButton *button = (UIButton *) [self.answerButtons objectAtIndex:selection];
     [button setSelected:YES];
     
     [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
-    [self enqueueAudioWithPath:[self.storyInteraction storyInteractionWrongAnswerSoundFilename] fromBundle:YES];
+    [self enqueueAudioWithPath:[scratchAndSee storyInteractionWrongAnswerSoundFilename] fromBundle:YES];
     [self enqueueAudioWithPath:[[self currentQuestion] audioPathForAnswerAtIndex:selection] fromBundle:NO];
-    [self enqueueAudioWithPath:[[self currentQuestion] audioPathForIncorrectAnswer]
-                    fromBundle:NO
-                    startDelay:0
-        synchronizedStartBlock:nil
-          synchronizedEndBlock:^{
-              [button setSelected:NO];
-          }];
+    
+    switch (self.scratchState) {
+        case kScratchStateFirstQuestionAttempt: {
+            [self enqueueAudioWithPath:[scratchAndSee thatsNotItAudioPath] fromBundle:NO];
+            [self enqueueAudioWithPath:[scratchAndSee keepScratchingAudioPath]
+                            fromBundle:NO
+                            startDelay:0
+                synchronizedStartBlock:nil
+                  synchronizedEndBlock:^{
+                      [button setSelected:NO];
+                      self.scratchState = kScratchStateSecondScratch;
+                      [self setupQuestion];
+                  }];
+            break;
+        }
+        case kScratchStateSecondQuestionAttempt:
+        case kScratchStateKeepTrying: {
+            [self enqueueAudioWithPath:[scratchAndSee audioPathForTryAgain]
+                            fromBundle:NO
+                            startDelay:0
+                synchronizedStartBlock:nil
+                  synchronizedEndBlock:^{
+                      [button setSelected:NO];
+                      self.scratchState = kScratchStateKeepTrying;
+                      [self setupQuestion];
+                  }];
+            break;
+        }
+        default:
+            break;
+    }
 }
 
 - (void)setProgressViewForScratchCount: (NSInteger) scratchCount
 {
-    float percentage = 1 - (((float)scratchCount / (float)kSCHScratchPointCount));
-    
-    NSLog(@"Percentage: %f scratchCount: %d", percentage, scratchCount);
+    float progress = 0;
+    switch (self.scratchState) {
+        case kScratchStateFirstScratch:
+            progress = (float)scratchCount / kFirstScratchPointTarget;
+            break;
+        case kScratchStateSecondScratch:
+            progress = 0.5f + (float)(scratchCount - kFirstScratchPointTarget) / (2*(kSecondScratchPointTarget - kFirstScratchPointTarget));
+            break;
+        default:
+            break;
+    }
     
     CGRect frame = self.progressImageView.frame;
-    frame.size.width = (self.progressView.frame.size.width * percentage);
+    frame.size.width = (self.progressView.frame.size.width * (1.0f - progress));
     self.progressImageView.frame = frame;
 }
 
 
 - (void)scratchView:(SCHStoryInteractionScratchView *)aScratchView uncoveredPoints:(NSInteger)points
 {
-    if (points > kSCHScratchPointCount && !self.askingQuestions) {
-        self.askingQuestions = YES;
+    if ((self.scratchState == kScratchStateFirstScratch || self.scratchState == kScratchStateSecondScratch) && points > [self scratchPointTarget]) {
+        if (self.scratchState == kScratchStateFirstScratch) {
+            self.scratchState = kScratchStateFirstQuestionAttempt;
+        } else if (self.scratchState == kScratchStateSecondScratch) {
+            self.scratchState = kScratchStateSecondQuestionAttempt;
+        }
+        
         self.progressView.hidden = YES;
         [self setupQuestion];
 

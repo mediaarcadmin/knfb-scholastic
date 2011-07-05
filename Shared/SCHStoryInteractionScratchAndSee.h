@@ -28,6 +28,12 @@
 // XPSProvider-relative path for "What do you see?"
 - (NSString *)whatDoYouSeeAudioPath;
 
+// XPSProvider-relative path for "That's not it"
+- (NSString *)thatsNotItAudioPath;
+
+// XPSProvider-relative path for "Keep scratching"
+- (NSString *)keepScratchingAudioPath;
+
 - (NSString *)scratchSoundEffectFilename;
 - (NSString *)scratchingCompleteSoundEffectFilename;
 
