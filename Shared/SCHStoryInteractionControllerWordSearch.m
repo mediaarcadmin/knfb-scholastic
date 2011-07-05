@@ -167,7 +167,8 @@
         [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
         [self enqueueAudioWithPath:[wordSearch storyInteractionCorrectAnswerSoundFilename]
                         fromBundle:YES];
-        [self enqueueAudioWithPath:[wordSearch audioPathForCorrectAnswer] fromBundle:NO];
+        [self enqueueAudioWithPath:[wordSearch audioPathForYouFound] fromBundle:NO];
+        [self enqueueAudioWithPath:[wordSearch audioPathForWordAtIndex:index] fromBundle:NO];
         if ([self.remainingWords count] == 0) {
             [containerView setUserInteractionEnabled:NO];
             [self enqueueAudioWithPath:[wordSearch audioPathForYouFoundThemAll]

@@ -84,6 +84,9 @@ static NSInteger const CELL_RULE_IMAGE_VIEW = 202;
    
     if (self.trashed) {
         self.bookTintView.hidden = NO;
+        self.textLabel.alpha = 0.5f;
+        self.deleteButton.hidden = YES;
+        self.sampleAndSIIndicatorIcon.hidden = YES;
     } else {
         // book status
         switch ([book processingState]) {
@@ -96,6 +99,10 @@ static NSInteger const CELL_RULE_IMAGE_VIEW = 202;
                 break;
             }
         }
+        self.textLabel.alpha = 1.0f;
+        self.deleteButton.hidden = NO;
+        self.sampleAndSIIndicatorIcon.hidden = NO;
+
     }
 
     [self setNeedsDisplay];

@@ -124,14 +124,14 @@
 														<reference key="NSWindow"/>
 														<reference key="NSNextKeyView" ref="952200392"/>
 														<object class="NSColor" key="IBUIBackgroundColor">
-															<int key="NSColorSpace">3</int>
-															<bytes key="NSWhite">MC4zMzMzMzMzMzMzIDAuNDEAA</bytes>
+															<int key="NSColorSpace">1</int>
+															<bytes key="NSRGB">MC4yIDAuMiAwLjIgMC42AA</bytes>
 														</object>
 														<int key="IBUITag">104</int>
 														<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 													</object>
 												</object>
-												<string key="NSFrame">{{0, 2}, {62, 52}}</string>
+												<string key="NSFrame">{{0, 5}, {62, 52}}</string>
 												<reference key="NSSuperview" ref="264148417"/>
 												<reference key="NSWindow"/>
 												<reference key="NSNextKeyView" ref="31927377"/>
@@ -221,7 +221,7 @@
 									<object class="IBUIImageView" id="41367515">
 										<reference key="NSNextResponder" ref="662339898"/>
 										<int key="NSvFlags">266</int>
-										<string key="NSFrame">{{9, 60}, {302, 1}}</string>
+										<string key="NSFrame">{{9, 61}, {302, 1}}</string>
 										<reference key="NSSuperview" ref="662339898"/>
 										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView"/>
@@ -265,6 +265,7 @@
 				</object>
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 				<int key="IBUISeparatorStyle">1</int>
+				<int key="IBUISelectionStyle">0</int>
 				<reference key="IBUIContentView" ref="531939357"/>
 				<string key="IBUIReuseIdentifier">ScholasticBookshelfTableCell</string>
 			</object>
