@@ -236,6 +236,10 @@ static NSString * const kSCHProfileItemUserContentItemContentMetadataItem = @"Us
 
 - (BOOL) bookIsNewForProfileWithIdentifier: (NSString *)isbn
 {
+    
+    // FIXME: look up in user defaults instead
+    // also needs to change the reading view!
+    
     NSEntityDescription *entityDescription = [NSEntityDescription 
                                               entityForName:kSCHUserContentItem
                                               inManagedObjectContext:self.managedObjectContext];
