@@ -311,7 +311,7 @@ static NSString * const kSCHProfileItemUserContentItemContentMetadataItem = @"Us
         return NO;
     }
     
-    NSNumber *item = [profileDictionary objectForKey:identifier];
+    NSNumber *item = [profileDictionary valueForKey:[identifier encodeAsString]];
     
     if (!item) {
         return NO;
@@ -342,7 +342,7 @@ static NSString * const kSCHProfileItemUserContentItemContentMetadataItem = @"Us
     
     NSNumber *newValue = [NSNumber numberWithBool:trashed];
     
-    [profileMutableDictionary setObject:newValue forKey:identifier];
+    [profileMutableDictionary setValue:newValue forKey:[identifier encodeAsString]];
     [trashedItems setValue:[NSDictionary dictionaryWithDictionary:profileMutableDictionary] forKey:[self.ID stringValue]];
     [[NSUserDefaults standardUserDefaults] setValue:[NSDictionary dictionaryWithDictionary:trashedItems] forKey:@"SCHProfileItemTrashedItemsDictionary"];
     [[NSUserDefaults standardUserDefaults] synchronize];
