@@ -125,10 +125,15 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
     return YES;
 }
 
--(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
     [self setupAssetsForOrientation:toInterfaceOrientation];
     
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+    [self.notesTableView reloadData];
 }
 
 -(void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation

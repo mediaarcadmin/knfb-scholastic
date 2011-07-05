@@ -129,6 +129,11 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
     
 }
 
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+    [self.notesTableView reloadData];
+}
+
 -(void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation
 {    
     if (UIInterfaceOrientationIsPortrait(orientation) || UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {

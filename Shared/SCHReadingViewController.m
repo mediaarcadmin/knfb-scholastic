@@ -985,13 +985,23 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (NSUInteger)firstPageIndexWithStoryInteractionsOnCurrentPages
 {
+
+    NSRange pageIndices = NSMakeRange(0, 0);
     
-    NSRange pageIndices;
-    
-    if (self.currentPageIndices.location != NSNotFound) {
-        pageIndices = self.currentPageIndices;
-    } else {
-        pageIndices = NSMakeRange(self.currentPageIndex, 1);
+    if ([self.readingView isKindOfClass:[SCHLayoutView class]]) {
+        if (self.currentPageIndices.location != NSNotFound) {
+            pageIndices = self.currentPageIndices;
+        } else {
+            pageIndices = NSMakeRange(self.currentPageIndex, 1);
+        }
+    } else if ([self.readingView isKindOfClass:[SCHFlowView class]]) {
+        // If pagination isn't complete bail out
+        if (self.currentPageIndex == NSUIntegerMax) {
+            return NSUIntegerMax;
+        } else {
+            SCHBookRange *pageRange = [self.readingView currentBookRange];
+            pageIndices = NSMakeRange(pageRange.startPoint.layoutPage - 1, pageRange.endPoint.layoutPage - pageRange.startPoint.layoutPage + 1);
+        }
     }
             
     for (int pageIndex = pageIndices.location; pageIndex < NSMaxRange(pageIndices); pageIndex++) {
