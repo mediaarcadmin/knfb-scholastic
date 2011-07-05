@@ -29,6 +29,7 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation;
 - (void)setToolbarModeEditing:(BOOL)editing;
 - (void)toggleToolbarEditMode;
+- (void)updateEditButton;
 
 @end
 
@@ -37,6 +38,7 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
 @implementation SCHReadingNotesListController
 
 @synthesize delegate;
+@synthesize editButton;
 @synthesize noteCellNib;
 @synthesize notesTableView;
 @synthesize notesCell;
@@ -55,6 +57,7 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
     delegate = nil;
     
     [isbn release], isbn = nil;
+    [editButton release], editButton = nil;
     [noteCellNib release], noteCellNib = nil;
     [notesCell release], notesCell = nil;
     [profile release], profile = nil;
@@ -115,6 +118,16 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
     self.notes = [annotations notes];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self updateEditButton];
+}
+
+- (void)updateEditButton
+{
+    self.editButton.enabled = ([self.notes count] > 0);
+}
 
 #pragma mark - Rotation
 
@@ -186,6 +199,7 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
 - (void) toggleToolbarEditMode
 {
     [self setToolbarModeEditing:!self.editMode];
+    [self updateEditButton];
 }
 
 - (void) setToolbarModeEditing: (BOOL) editing
@@ -195,6 +209,7 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
     
     if (!editing) {
         newBBI = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editNotesButtonAction:)];
+        self.editButton = newBBI;
 
         if (self.editMode) {
             [self.notesTableView setEditing:NO animated:NO];
@@ -404,7 +419,8 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
         if (shouldCancelEditing) {
             [self setToolbarModeEditing:NO];
         }
-            
+        
+        [self updateEditButton];
     }
 }
 
