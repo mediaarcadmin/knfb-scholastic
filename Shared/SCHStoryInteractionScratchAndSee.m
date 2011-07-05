@@ -54,14 +54,22 @@
 
 - (NSString *)audioPathForQuestion
 {
-    NSString *filename = [NSString stringWithFormat:@"gen_scratchaway.mp3"];
-    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:filename];
+    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:@"gen_scratchaway.mp3"];
 }
 
 - (NSString *)whatDoYouSeeAudioPath
 {
-    NSString *filename = [NSString stringWithFormat:@"gen_whatdoyousee.mp3"];
-    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:filename];
+    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:@"gen_whatdoyousee.mp3"];
+}
+
+- (NSString *)thatsNotItAudioPath
+{
+    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:@"gen_thatsnotit.mp3"];
+}
+
+- (NSString *)keepScratchingAudioPath
+{
+    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:@"gen_keepscratching.mp3"];
 }
 
 - (NSString *)title
