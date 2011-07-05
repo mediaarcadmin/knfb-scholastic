@@ -197,10 +197,11 @@ static NSInteger const CELL_RULE_IMAGE_VIEW = 202;
         thumbTintFrame.size.width = self.bookCoverImageView.coverSize.width;
         thumbTintFrame.size.height = self.bookCoverImageView.coverSize.height;
         
-        thumbTintFrame.origin.x = ceilf((self.thumbBackgroundView.frame.size.width - thumbTintFrame.size.width) / 2);
-        thumbTintFrame.origin.y = ceilf(self.bookCoverImageView.frame.size.height - thumbTintFrame.size.height);
+        thumbTintFrame.origin.x = floorf((self.thumbBackgroundView.frame.size.width - thumbTintFrame.size.width) / 2);
+        thumbTintFrame.origin.y = floorf(self.bookCoverImageView.frame.size.height - thumbTintFrame.size.height);
         
         self.bookTintView.frame = thumbTintFrame;
+        NSLog(@"Frame for cover: %@", NSStringFromCGRect(self.bookCoverImageView.frame));
         NSLog(@"Thumb tint frame: %@, visible: %@", NSStringFromCGRect(self.bookTintView.frame), self.bookTintView.hidden?@"No":@"Yes");
     }
     
