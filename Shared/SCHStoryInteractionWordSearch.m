@@ -66,6 +66,17 @@
     return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:@"gen_thatsright.mp3"];
 }
 
+- (NSString *)audioPathForYouFound
+{
+    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:@"gen_youfound.mp3"];
+}
+
+- (NSString *)audioPathForWordAtIndex:(NSInteger)index
+{
+    NSString *filename = [NSString stringWithFormat:@"%@_%@.mp3", self.ID, [[self.words objectAtIndex:index] lowercaseString]];
+    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:filename];
+}
+
 - (NSString *)audioPathForIncorrectAnswer
 {
     return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:@"gen_tryagain.mp3"];

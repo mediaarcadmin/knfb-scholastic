@@ -488,11 +488,6 @@
     [self.audioPlayer cancelPlaybackExecutingSynchronizedBlocksImmediately:NO];
 }
 
-- (void)removeFromHostViewAfterDelayWithSuccess:(BOOL)success
-{
-    
-}
-
 - (void)removeFromHostViewWithSuccess:(BOOL)success
 {
     [self cancelQueuedAudio];
