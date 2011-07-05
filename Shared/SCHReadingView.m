@@ -109,6 +109,11 @@
     NSLog(@"WARNING: jumpToPage:animated: not being overridden correctly.");
 }
 
+- (void)jumpToPageAtIndex:(NSUInteger)pageIndex animated:(BOOL)animated withCompletionHandler:(dispatch_block_t)completion
+{
+    NSLog(@"WARNING: jumpToPage:animated:withCompletionHandler: not being overridden correctly.");
+}
+
 - (void)jumpToProgressPositionInBook:(CGFloat)progress animated:(BOOL)animated
 {
     NSLog(@"WARNING: jumpToProgressPositionInBook:animated: not being overridden correctly.");
@@ -520,12 +525,12 @@
 
 - (void)dismissFollowAlongHighlighter {}
 
-- (void)followAlongHighlightWordAtPoint:(SCHBookPoint *)bookPoint {}
+- (void)followAlongHighlightWordAtPoint:(SCHBookPoint *)bookPoint withCompletionHandler:(dispatch_block_t)completion {}
 
-- (void)followAlongHighlightWordForLayoutPage:(NSUInteger)layoutPage pageWordOffset:(NSUInteger)pageWordOffset
+- (void)followAlongHighlightWordForLayoutPage:(NSUInteger)layoutPage pageWordOffset:(NSUInteger)pageWordOffset withCompletionHandler:(dispatch_block_t)completion;
 {
     SCHBookPoint *pointToHighlight = [self bookPointForLayoutPage:layoutPage pageWordOffset:pageWordOffset includingFolioBlocks:NO];
-    [self followAlongHighlightWordAtPoint:pointToHighlight];
+    [self followAlongHighlightWordAtPoint:pointToHighlight withCompletionHandler:completion];
 }
 
 - (SCHBookRange *)bookRangeForHighlight:(SCHHighlight *)highlight

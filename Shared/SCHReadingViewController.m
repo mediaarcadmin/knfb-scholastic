@@ -290,6 +290,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [super viewDidLoad];
 	
 	self.toolbarsVisible = YES;
+    self.pauseAudioOnNextPageTurn = YES;
     self.xpsProvider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.isbn];
 	
     SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.isbn];
@@ -694,20 +695,22 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
                                           wordBlock:^(NSUInteger layoutPage, NSUInteger pageWordOffset) {
                                               //NSLog(@"WORD UP! at layoutPage %d pageWordOffset %d", layoutPage, pageWordOffset);
                                               self.pauseAudioOnNextPageTurn = NO;
-                                              [self.readingView followAlongHighlightWordForLayoutPage:layoutPage pageWordOffset:pageWordOffset];
-                                              self.pauseAudioOnNextPageTurn = YES;
+                                              [self.readingView followAlongHighlightWordForLayoutPage:layoutPage pageWordOffset:pageWordOffset withCompletionHandler:^{
+                                                  self.pauseAudioOnNextPageTurn = YES;
+                                              }];
                                           } pageTurnBlock:^(NSUInteger turnToLayoutPage) {
                                               //NSLog(@"Turn to layoutPage %d", turnToLayoutPage);
                                               if (self.layoutType == SCHReadingViewLayoutTypeFixed) {
                                                   self.pauseAudioOnNextPageTurn = NO;
-                                                  [self.readingView jumpToPageAtIndex:turnToLayoutPage - 1 animated:YES];
+                                                  [self.readingView jumpToPageAtIndex:turnToLayoutPage - 1 animated:YES withCompletionHandler:^{
+                                                      self.pauseAudioOnNextPageTurn = YES;
+                                                  }];
                                               }
                                           }];
             if (success) {
                 self.audioBookPlayer.delegate = self;
                 [self.audioBookPlayer playAtLayoutPage:layoutPage pageWordOffset:pageWordOffset];
                 [self setToolbarVisibility:NO animated:YES];
-                self.pauseAudioOnNextPageTurn = YES;
             } else {
                 self.audioBookPlayer = nil;   
                 UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") 
@@ -722,7 +725,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     } else if(self.audioBookPlayer.playing == NO) {
         [self.audioBookPlayer playAtLayoutPage:layoutPage pageWordOffset:pageWordOffset];
         [self setToolbarVisibility:NO animated:YES];
-        self.pauseAudioOnNextPageTurn = YES;
     } else {
         [self.readingView dismissFollowAlongHighlighter];  
         [self pauseAudioPlayback];
@@ -1350,7 +1352,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         if (self.pauseAudioOnNextPageTurn) {
             [self pauseAudioPlayback];
         }
-        self.pauseAudioOnNextPageTurn = YES;
         [self.queuedAudioPlayer cancelPlaybackExecutingSynchronizedBlocksImmediately:NO];
     }
     
