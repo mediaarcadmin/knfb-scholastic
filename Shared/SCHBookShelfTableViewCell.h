@@ -18,6 +18,7 @@
 @property (nonatomic, assign) BOOL isNewBook;
 @property (nonatomic, assign) BOOL trashed;
 @property (nonatomic, assign) BOOL lastCell;
+@property (nonatomic, assign) BOOL loading;
 @property (nonatomic, assign) id <SCHBookShelfTableViewCellDelegate> delegate;
 
 - (void) refreshCell;
