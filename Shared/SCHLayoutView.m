@@ -30,18 +30,17 @@
 @property (nonatomic, assign) CGSize pageSize;
 @property (nonatomic, retain) NSMutableDictionary *pageCropsCache;
 @property (nonatomic, retain) NSLock *layoutCacheLock;
-@property (nonatomic, retain) id currentBlock;
 @property (nonatomic, retain) EucSelector *selector;
 @property (nonatomic, retain) SCHBookRange *temporaryHighlightRange;
 @property (nonatomic, retain) EucSelectorRange *currentSelectorRange;
 @property (nonatomic, copy) dispatch_block_t zoomCompletionHandler;
+@property (nonatomic, copy) dispatch_block_t jumpToPageCompletionHandler;
 @property (nonatomic, assign) BOOL suppressZoomingCallback;
 
 - (void)initialiseView;
 
 - (CGRect)cropForPage:(NSInteger)page allowEstimate:(BOOL)estimate;
 - (void)jumpToZoomBlock:(id)zoomBlock;
-- (void)zoomToCurrentBlock;
 - (void)zoomOutToCurrentPage;
 
 - (NSArray *)highlightRangesForCurrentPage;
@@ -64,11 +63,11 @@
 @synthesize pageSize;
 @synthesize pageCropsCache;
 @synthesize layoutCacheLock;
-@synthesize currentBlock;
 @synthesize selector;
 @synthesize temporaryHighlightRange;
 @synthesize currentSelectorRange;
 @synthesize zoomCompletionHandler;
+@synthesize jumpToPageCompletionHandler;
 @synthesize suppressZoomingCallback;
 
 - (void)dealloc
@@ -76,10 +75,10 @@
     [pageTurningView release], pageTurningView = nil;
     [pageCropsCache release], pageCropsCache = nil;
     [layoutCacheLock release], layoutCacheLock = nil;
-    [currentBlock release], currentBlock = nil;
     [temporaryHighlightRange release], temporaryHighlightRange = nil;
     [currentSelectorRange release], currentSelectorRange = nil;
     [zoomCompletionHandler release], zoomCompletionHandler = nil;
+    [jumpToPageCompletionHandler release], jumpToPageCompletionHandler = nil;
     
     [super dealloc];
 }
@@ -360,23 +359,33 @@
 
 - (void)jumpToPageAtIndex:(NSUInteger)pageIndex animated: (BOOL) animated
 {	
+    [self jumpToPageAtIndex:pageIndex animated:animated withCompletionHandler:nil];
+}
+
+- (void)jumpToPageAtIndex:(NSUInteger)pageIndex animated:(BOOL)animated withCompletionHandler:(dispatch_block_t)completion
+{
     if (![NSThread isMainThread]) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self jumpToPageAtIndex:pageIndex animated:animated];
+            [self jumpToPageAtIndex:pageIndex animated:animated withCompletionHandler:completion];
         });
         
         return;
     }
-        
-	if (pageIndex < pageCount) {
+    
+    if (animated) {
+        self.jumpToPageCompletionHandler = completion;
+    }
+    
+    if (pageIndex < pageCount) {
         [self.pageTurningView turnToPageAtIndex:pageIndex animated:animated];
 	}
     
     if (!animated) {
         [self updateCurrentPageIndex];
+        if (completion != nil) {
+            completion();
+        }
     }
-    
-    self.currentBlock = nil;
 }
 
 - (void)jumpToProgressPositionInBook:(CGFloat)progress animated:(BOOL)animated
@@ -414,36 +423,14 @@
 
 - (void)zoomOutToCurrentPageWithCompletionHandler:(dispatch_block_t)completion
 {
-    if (self.pageTurningView.zoomFactor > 1.0f) {
+    if (self.pageTurningView.zoomFactor > self.pageTurningView.minZoomFactor) {
         self.zoomCompletionHandler = completion;
         [self zoomOutToCurrentPage];
     } else {
-        completion();
-    }
-}
-
-- (void)zoomToCurrentBlock {
-	
-    NSUInteger pageIndex = [self.currentBlock pageIndex];
-    CGRect targetRect = [self.currentBlock rect];
-    	
-	CGFloat zoomScale;
-	CGPoint translation = [self translationToFitRect:targetRect onPageAtIndex:pageIndex zoomScale:&zoomScale];
-	
-    if (pageIndex != self.currentPageIndex) {
-        if (self.pageTurningView.isTwoUp) {
-            if ((self.pageTurningView.leftPageIndex != pageIndex) && (self.pageTurningView.rightPageIndex != pageIndex)) {
-                [self.pageTurningView turnToPageAtIndex:pageIndex animated:YES];
-            }
-        } else {
-            if (self.pageTurningView.rightPageIndex != pageIndex) {
-                [self.pageTurningView turnToPageAtIndex:pageIndex animated:YES];
-            }
+        if (completion) {
+            completion();
         }
     }
-		
-    [self.pageTurningView setTranslation:translation zoomFactor:zoomScale animated:YES];
-
 }
 
 - (SCHBookRange *)bookRangeFromSelectorRange:(EucSelectorRange *)selectorRange
@@ -544,6 +531,13 @@
 {
     [self updateCurrentPageIndex];
     self.selector.selectionDisabled = NO;
+    
+    if (self.jumpToPageCompletionHandler != nil) {
+        dispatch_block_t handler = Block_copy(self.jumpToPageCompletionHandler);
+        self.jumpToPageCompletionHandler = nil;
+        handler();
+        Block_release(handler);
+    }
 }
 
 - (void)pageTurningViewWillBeginAnimating:(EucPageTurningView *)aPageTurningView
@@ -723,12 +717,12 @@
     [self.selector removeTemporaryHighlight];
 }
 
-- (void)followAlongHighlightWordAtPoint:(SCHBookPoint *)bookPoint
+- (void)followAlongHighlightWordAtPoint:(SCHBookPoint *)bookPoint withCompletionHandler:(dispatch_block_t)completion
 {
     
     if (![NSThread isMainThread]) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self followAlongHighlightWordAtPoint:bookPoint];
+            [self followAlongHighlightWordAtPoint:bookPoint withCompletionHandler:completion];
         });
         
         return;
@@ -748,22 +742,10 @@
         		
         if (!pageIsVisible) {
             [self dismissFollowAlongHighlighter];
-            [self jumpToPageAtIndex:targetIndex animated:YES];
+            [self jumpToPageAtIndex:targetIndex animated:YES withCompletionHandler:completion];
         } else {        
-            CGAffineTransform viewTransform = [self pageTurningViewTransformForPageAtIndex:targetIndex offsetOrigin:YES applyZoom:YES];
-            CGRect visibleRect = CGRectApplyAffineTransform(self.pageTurningView.bounds, CGAffineTransformInvert(viewTransform));
-			CGRect boundingRect = CGRectNull;
-			
-			CGAffineTransform  pageTransform = [self pageTurningViewTransformForPageAtIndex:targetIndex offsetOrigin:NO applyZoom:NO];
             
-			NSArray *rectValues = [self rectsFromBlocksAtPageIndex:targetIndex inBookRange:highlightRange];
-            
-			for (NSValue *rectValue in rectValues) {
-				CGRect rect = CGRectApplyAffineTransform([rectValue CGRectValue], CGAffineTransformInvert(pageTransform));
-				boundingRect = CGRectUnion(boundingRect, rect);
-			}
-            
-			if (!CGRectEqualToRect(CGRectIntegral(CGRectIntersection(visibleRect, boundingRect)), CGRectIntegral(boundingRect))) {
+			if (self.pageTurningView.zoomFactor > self.pageTurningView.minZoomFactor) {
 				self.suppressZoomingCallback = YES;
                 [self zoomOutToCurrentPageWithCompletionHandler:^{
                     self.suppressZoomingCallback = NO;
@@ -772,6 +754,10 @@
 			
 			EucSelectorRange *range = [self selectorRangeFromBookRange:highlightRange];
 			[self.selector temporarilyHighlightSelectorRange:range animated:YES];
+            
+            if (completion) {
+                completion();
+            }
 		}
     } else {
         [self dismissFollowAlongHighlighter];

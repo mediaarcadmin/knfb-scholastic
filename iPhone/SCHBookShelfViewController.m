@@ -30,16 +30,12 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 
 @interface SCHBookShelfViewController () <UIGestureRecognizerDelegate>
 
-@property (nonatomic, retain) UIBarButtonItem *themeButton;
 @property (nonatomic, assign) int moveToValue;
-@property (nonatomic, retain) UIBarButtonItem *currentRightButton;
-@property (nonatomic, assign) BOOL updateSort;
+@property (nonatomic, assign) BOOL updateShelfOnReturnToShelf;
 
 
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation;
 - (void)updateTheme;
-- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
-- (void)finishEditing:(id)sender;
 - (CGSize)cellSize;
 - (CGFloat)cellBorderSize;
 - (void)updateTable:(NSNotification *)notification;
@@ -68,13 +64,11 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 @synthesize componentCache;
 @synthesize books;
 @synthesize profileItem;
-@synthesize themeButton;
 @synthesize moveToValue;
 @synthesize sortType;
-@synthesize currentRightButton;
-@synthesize updateSort;
-@synthesize managedObjectContext;
+@synthesize updateShelfOnReturnToShelf;
 @synthesize listViewCell;
+@synthesize managedObjectContext;
 
 #pragma mark - Object lifecycle
 
@@ -87,7 +81,6 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
     
     [componentCache release], componentCache = nil;
     
-    [themeButton release], themeButton = nil;
     [listTableView release], listTableView = nil;
     [gridButton release], gridButton = nil;
     [listButton release], listButton = nil;
@@ -127,8 +120,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
     [button setThemeIcon:kSCHThemeManagerThemeIcon iPadSpecific:YES];
     [button sizeToFit];    
     [button addTarget:self action:@selector(changeTheme) forControlEvents:UIControlEventTouchUpInside];    
-    self.themeButton = [[[UIBarButtonItem alloc] initWithCustomView:button] autorelease];
-    self.navigationItem.rightBarButtonItem = self.themeButton;
+    self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:button] autorelease];
 
     button = [SCHThemeButton buttonWithType:UIButtonTypeCustom];
     [button setThemeIcon:kSCHThemeManagerHomeIcon iPadSpecific:YES];
@@ -218,8 +210,8 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
     [super viewWillAppear:animated];
     self.navigationController.navigationBar.barStyle = UIBarStyleBlackOpaque;
     [self setupAssetsForOrientation:self.interfaceOrientation];
-    if (self.updateSort == YES) {
-        self.updateSort = NO;
+    if (self.updateShelfOnReturnToShelf == YES) {
+        self.updateShelfOnReturnToShelf = NO;
         self.books = [self.profileItem allBookIdentifiers];
     }
 }
@@ -284,44 +276,10 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 {
     if (self.sortType == kSCHBookSortTypeUser && 
         [self.profileItem.BookshelfStyle intValue] != kSCHBookshelfStyleYoungChild) {
-        [self setEditing:YES animated:YES];
+        [self.gridView setEditing:YES animated:YES];
     }
     
     return NO;
-}
-
-- (void)setEditing:(BOOL)editing animated:(BOOL)animated
-{
-    if (editing) {
-        if (![self.gridView isEditing]) {
-            
-            self.currentRightButton = self.navigationItem.rightBarButtonItem;
-            
-            SCHThemeButton *button = [SCHThemeButton buttonWithType:UIButtonTypeCustom];
-            [button setFrame:CGRectMake(0, 0, 60, 30)];
-            [button setTitle:NSLocalizedString(@"Done", @"") forState:UIControlStateNormal];
-            [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-            [button setTitleColor:[UIColor colorWithWhite:1 alpha:0.5f] forState:UIControlStateHighlighted];
-            [button setReversesTitleShadowWhenHighlighted:YES];
-            
-            button.titleLabel.font = [UIFont boldSystemFontOfSize:14];
-            button.titleLabel.shadowOffset = CGSizeMake(0, -1);
-            
-            [button setThemeButton:kSCHThemeManagerDoneButtonImage leftCapWidth:5 topCapHeight:0];
-            [button addTarget:self action:@selector(finishEditing:) forControlEvents:UIControlEventTouchUpInside];    
-            self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:button] autorelease];
-        }
-    } else {
-        [self.navigationItem setRightBarButtonItem:self.currentRightButton animated:animated];
-        self.currentRightButton = nil;
-    }
-    
-    [self.gridView setEditing:editing animated:animated];
-}
-
-- (void)finishEditing:(id)sender
-{
-    [self setEditing:NO animated:YES];
 }
 
 #pragma mark - Accessor Methods
@@ -355,6 +313,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
     self.listButton.highlighted = NO;
     self.listTableView.hidden = YES;
     self.gridView.hidden = NO;
+    [self.gridView reloadData];
 }
 
 - (IBAction)changeToListView:(UIButton *)sender
@@ -363,6 +322,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
     self.listButton.highlighted = YES;
     self.listTableView.hidden = NO;
     self.gridView.hidden = YES;
+    [self.listTableView reloadData];
 }
 
 #pragma mark - Core Data Table View Methods
@@ -402,6 +362,12 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
     cell.identifier = identifier;
     cell.isNewBook = [self.profileItem bookIsNewForProfileWithIdentifier:identifier];
     cell.trashed = [self.profileItem bookIsTrashedWithIdentifier:identifier];
+    
+    if ([identifier isEqual:[self.books lastObject]]) {
+        cell.lastCell = YES;
+    } else {
+        cell.lastCell = NO;
+    }
     
     return cell;
 }
@@ -450,9 +416,9 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
     
     SCHReadingViewController *readingController = [self openBook:[self.books objectAtIndex:[indexPath row]]];
     if (readingController != nil) {
-        if (self.sortType == kSCHBookSortTypeLastRead) {
-            self.updateSort = YES;
-        }
+//        if (self.sortType == kSCHBookSortTypeLastRead) {
+            self.updateShelfOnReturnToShelf = YES;
+//        }
         [self.navigationController pushViewController:readingController animated:YES]; 
     }
 }
@@ -518,7 +484,9 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
         if (![self.profileItem.managedObjectContext save:&error]) {
             NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
             abort();
-        }                 
+        }                
+        
+        [self.gridView setEditing:NO animated:YES];
 	}
 }
 
@@ -552,7 +520,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
         SCHReadingViewController *readingController = [self openBook:[self.books objectAtIndex:index]];
         if (readingController != nil) {
             if (self.sortType == kSCHBookSortTypeLastRead) {
-                self.updateSort = YES;
+                self.updateShelfOnReturnToShelf = YES;
             }            
             [self.navigationController pushViewController:readingController animated:YES]; 
         }

@@ -49,6 +49,7 @@ static NSInteger const CELL_RULE_IMAGE_VIEW = 202;
 @synthesize delegate;
 @synthesize isNewBook;
 @synthesize trashed;
+@synthesize lastCell;
 
 - (id) initWithCoder:(NSCoder *)aDecoder
 {
@@ -60,6 +61,7 @@ static NSInteger const CELL_RULE_IMAGE_VIEW = 202;
         [self updateTheme];
         [self.deleteButton addTarget:self action:@selector(pressedDeleteButton:) forControlEvents:UIControlEventTouchUpInside];
         self.ruleImageView.image = [[UIImage imageNamed:@"ListViewRule"] stretchableImageWithLeftCapWidth:6 topCapHeight:0];
+        self.lastCell = NO;
                                     
     }
     
@@ -176,6 +178,12 @@ static NSInteger const CELL_RULE_IMAGE_VIEW = 202;
             self.sampleAndSIIndicatorIcon.image = nil;
             break;
         }
+    }
+    
+    if (self.lastCell) {
+        self.ruleImageView.hidden = YES;
+    } else {
+        self.ruleImageView.hidden = NO;
     }
 }
 

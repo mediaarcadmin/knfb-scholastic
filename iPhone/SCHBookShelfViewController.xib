@@ -73,12 +73,12 @@
 													<bool key="EncodedWithXMLCoder">YES</bool>
 													<object class="IBUIView" id="786074416">
 														<reference key="NSNextResponder" ref="139216790"/>
-														<int key="NSvFlags">301</int>
+														<int key="NSvFlags">317</int>
 														<object class="NSMutableArray" key="NSSubviews">
 															<bool key="EncodedWithXMLCoder">YES</bool>
 															<object class="IBUIButton" id="625187533">
 																<reference key="NSNextResponder" ref="786074416"/>
-																<int key="NSvFlags">297</int>
+																<int key="NSvFlags">313</int>
 																<string key="NSFrame">{{100, 3}, {72, 37}}</string>
 																<reference key="NSSuperview" ref="786074416"/>
 																<reference key="NSWindow"/>
@@ -87,7 +87,7 @@
 																<bool key="IBUIAutoresizesSubviews">NO</bool>
 																<int key="IBUIContentMode">7</int>
 																<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-																<int key="IBUIContentVerticalAlignment">0</int>
+																<int key="IBUIContentVerticalAlignment">2</int>
 																<object class="NSFont" key="IBUIFont" id="746256824">
 																	<string key="NSName">Helvetica-Bold</string>
 																	<double key="NSSize">15</double>
@@ -112,7 +112,7 @@
 															</object>
 															<object class="IBUIButton" id="934073849">
 																<reference key="NSNextResponder" ref="786074416"/>
-																<int key="NSvFlags">300</int>
+																<int key="NSvFlags">316</int>
 																<string key="NSFrame">{{28, 3}, {72, 37}}</string>
 																<reference key="NSSuperview" ref="786074416"/>
 																<reference key="NSWindow"/>
@@ -122,7 +122,7 @@
 																<int key="IBUIContentMode">8</int>
 																<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 																<int key="IBUIContentHorizontalAlignment">2</int>
-																<int key="IBUIContentVerticalAlignment">0</int>
+																<int key="IBUIContentVerticalAlignment">2</int>
 																<reference key="IBUIFont" ref="746256824"/>
 																<reference key="IBUIHighlightedTitleColor" ref="731189675"/>
 																<object class="NSColor" key="IBUINormalTitleColor">
@@ -235,6 +235,7 @@
 								<string key="NSFrame">{{11, 61}, {155, 21}}</string>
 								<reference key="NSSuperview" ref="222914230"/>
 								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<int key="IBUIContentMode">7</int>
@@ -330,19 +331,20 @@
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<object class="IBUIView" id="465401365">
 						<reference key="NSNextResponder" ref="465884316"/>
-						<int key="NSvFlags">301</int>
+						<int key="NSvFlags">317</int>
 						<object class="NSMutableArray" key="NSSubviews">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<object class="IBUIButton" id="497810693">
 								<reference key="NSNextResponder" ref="465401365"/>
-								<int key="NSvFlags">297</int>
+								<int key="NSvFlags">313</int>
 								<string key="NSFrame">{{100, 3}, {72, 37}}</string>
 								<reference key="NSSuperview" ref="465401365"/>
 								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<int key="IBUIContentMode">7</int>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-								<int key="IBUIContentVerticalAlignment">0</int>
+								<int key="IBUIContentVerticalAlignment">2</int>
 								<reference key="IBUIFont" ref="746256824"/>
 								<reference key="IBUIHighlightedTitleColor" ref="731189675"/>
 								<object class="NSColor" key="IBUINormalTitleColor">
@@ -357,7 +359,7 @@
 							</object>
 							<object class="IBUIButton" id="288569877">
 								<reference key="NSNextResponder" ref="465401365"/>
-								<int key="NSvFlags">300</int>
+								<int key="NSvFlags">316</int>
 								<string key="NSFrame">{{28, 3}, {72, 37}}</string>
 								<reference key="NSSuperview" ref="465401365"/>
 								<reference key="NSWindow"/>
@@ -366,7 +368,7 @@
 								<int key="IBUIContentMode">8</int>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<int key="IBUIContentHorizontalAlignment">2</int>
-								<int key="IBUIContentVerticalAlignment">0</int>
+								<int key="IBUIContentVerticalAlignment">2</int>
 								<reference key="IBUIFont" ref="746256824"/>
 								<reference key="IBUIHighlightedTitleColor" ref="731189675"/>
 								<object class="NSColor" key="IBUINormalTitleColor">

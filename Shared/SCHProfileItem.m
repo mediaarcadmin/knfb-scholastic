@@ -244,44 +244,57 @@ static NSString * const kSCHProfileItemUserContentItemContentMetadataItem = @"Us
 
 - (BOOL) bookIsNewForProfileWithIdentifier: (SCHBookIdentifier *)identifier
 {
-    NSEntityDescription *entityDescription = [NSEntityDescription 
-                                              entityForName:kSCHUserContentItem
-                                              inManagedObjectContext:self.managedObjectContext];
-
-    NSFetchRequest *fetchRequest = [entityDescription.managedObjectModel 
-                                    fetchRequestTemplateForName:kSCHUserContentItemFetchWithContentIdentifier];
+    NSDictionary *defaultsDictionary = (NSDictionary *)[[NSUserDefaults standardUserDefaults] objectForKey:@"SCHProfileItemNewItemsDictionary"];
     
-    NSPredicate *isbnPred = [NSPredicate predicateWithFormat:@"ContentIdentifier == %@", identifier.isbn];
-    NSPredicate *drmPred = [NSPredicate predicateWithFormat:@"DRMQualifier = %@", identifier.DRMQualifier];
-    [fetchRequest setPredicate:[NSCompoundPredicate andPredicateWithSubpredicates:[NSArray arrayWithObjects:isbnPred, drmPred, nil]]];
-    [fetchRequest setFetchLimit:1];
-    
-    NSArray *userContentItems = [self.managedObjectContext executeFetchRequest:fetchRequest error:nil];	
-    NSDate *creationDate = nil;
-    if (userContentItems != nil && [userContentItems count] > 0) {
-        NSSet *orderItems = [[userContentItems objectAtIndex:0] OrderList];
-        if ([orderItems count] > 0) {
-            // use the latest date
-            NSArray *sortedOrderItems = [[orderItems allObjects] sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"date" ascending:NO]]];
-            SCHOrderItem *orderItem = [sortedOrderItems objectAtIndex:0];
-            creationDate = [orderItem OrderDate];
-        }
-    }
-
-    if (!creationDate) {
-        return NO;
-    }
-    
-    NSDate *now = [NSDate date];
-    NSTimeInterval interval = [now timeIntervalSinceDate:creationDate];
-    
-    // if the date is within 7 days of now, it is new
-    if (interval >= 604800) {
+    if (!defaultsDictionary) {
         return YES;
-    } else {
-        return NO;
     }
+    
+    NSDictionary *profileDictionary = [defaultsDictionary objectForKey:[self.ID stringValue]];
+    
+    if (!profileDictionary) {
+        return YES;
+    }
+    
+    NSNumber *item = [profileDictionary valueForKey:[identifier encodeAsString]];
+    
+    if (!item) {
+        return YES;
+    }
+    
+    return [item boolValue];
+
 }
+
+- (void)setBookIsNew:(BOOL)isNew forBookWithIdentifier:(SCHBookIdentifier *)identifier
+{
+    NSDictionary *defaultsDictionary = (NSDictionary *)[[NSUserDefaults standardUserDefaults] objectForKey:@"SCHProfileItemNewItemsDictionary"];
+    NSMutableDictionary *trashedItems = nil;
+    
+    if (!defaultsDictionary) {
+        trashedItems = [NSMutableDictionary dictionary];
+    } else {
+        trashedItems = [NSMutableDictionary dictionaryWithDictionary:defaultsDictionary];
+    }
+    
+    NSDictionary *profileDictionary = [trashedItems objectForKey:[self.ID stringValue]];
+    NSMutableDictionary *profileMutableDictionary = nil;
+    
+    if (profileDictionary) {
+        profileMutableDictionary = [NSMutableDictionary dictionaryWithDictionary:profileDictionary];
+    } else {
+        profileMutableDictionary = [NSMutableDictionary dictionary];
+    }
+    
+    NSNumber *newValue = [NSNumber numberWithBool:isNew];
+    
+    [profileMutableDictionary setValue:newValue forKey:[identifier encodeAsString]];
+    [trashedItems setValue:[NSDictionary dictionaryWithDictionary:profileMutableDictionary] forKey:[self.ID stringValue]];
+    [[NSUserDefaults standardUserDefaults] setValue:[NSDictionary dictionaryWithDictionary:trashedItems] forKey:@"SCHProfileItemNewItemsDictionary"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
+}
+
 
 // structure: dictionary with profileID->isbndictionary, isbndictionary with isbn->nsnumber (bool)
 - (BOOL)bookIsTrashedWithIdentifier:(SCHBookIdentifier *)identifier

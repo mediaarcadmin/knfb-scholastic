@@ -300,6 +300,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [super viewDidLoad];
 	
 	self.toolbarsVisible = YES;
+    self.pauseAudioOnNextPageTurn = YES;
     self.xpsProvider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.bookIdentifier inManagedObjectContext:self.managedObjectContext];
 	
     SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.bookIdentifier inManagedObjectContext:self.managedObjectContext];
@@ -445,7 +446,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     
     [self setDictionarySelectionMode];
     [self setupStoryInteractionButtonForCurrentPagesAnimated:NO];
-
+    
+    [self.profile setBookIsNew:NO forBookWithIdentifier:self.bookIdentifier];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -521,52 +523,11 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 {
     [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
     
+    self.currentlyScrubbing = NO;
+    [self.pageSlider cancelTrackingWithEvent:nil];
+    [self.scrubberInfoView removeFromSuperview];
+    
     self.currentlyRotating = YES;
-    if ([self.scrubberInfoView superview]) {
-        
-        CGRect scrubFrame = self.scrubberInfoView.frame;
-        
-        CGRect statusFrame = [[UIApplication sharedApplication] statusBarFrame];
-        float statusBarHeight = MIN(statusFrame.size.height, statusFrame.size.width);
-        
-        float newNavBarHeight = 44.0f;
-        
-        NSLog(@"Status bar height is currently %f", statusBarHeight);
-        NSLog(@"Nav bar height is currently %f", self.navigationController.navigationBar.frame.size.height);
-        
-        if (newNavBarHeight == self.navigationController.navigationBar.frame.size.height) {
-            newNavBarHeight = 32.0f;
-        }
-        
-        scrubFrame.origin.x = self.view.bounds.size.width / 2 - (scrubFrame.size.width / 2);
-        scrubFrame.origin.y = statusBarHeight + newNavBarHeight + 10;
-        
-        
-        if (!(self.layoutType == SCHReadingViewLayoutTypeFlow) && self.scrubberThumbImage) {
-            
-            int maxHeight = (self.view.frame.size.width - scrubberToolbar.frame.size.height - newNavBarHeight - kReadingViewStandardScrubHeight - 40);
-            
-            NSLog(@"Max height: %d", maxHeight);
-            
-            if (self.scrubberThumbImage.image.size.height > maxHeight) {
-                self.scrubberThumbImage.contentMode = UIViewContentModeScaleAspectFit;
-                scrubFrame.size.height = kReadingViewStandardScrubHeight + maxHeight;
-            } else {
-                self.scrubberThumbImage.contentMode = UIViewContentModeTop;
-                scrubFrame.size.height = kReadingViewStandardScrubHeight + self.scrubberThumbImage.image.size.height + 20;
-            }
-            
-            
-            NSLog(@"Scrub frame height: %f", scrubFrame.size.height);
-            
-        } else {
-            scrubFrame.size.height = kReadingViewStandardScrubHeight;
-        }
-
-        
-        self.scrubberInfoView.frame = scrubFrame;
-        
-    }
     
     [self setupAssetsForOrientation:toInterfaceOrientation];
     
@@ -703,20 +664,22 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
                                           wordBlock:^(NSUInteger layoutPage, NSUInteger pageWordOffset) {
                                               //NSLog(@"WORD UP! at layoutPage %d pageWordOffset %d", layoutPage, pageWordOffset);
                                               self.pauseAudioOnNextPageTurn = NO;
-                                              [self.readingView followAlongHighlightWordForLayoutPage:layoutPage pageWordOffset:pageWordOffset];
-                                              self.pauseAudioOnNextPageTurn = YES;
+                                              [self.readingView followAlongHighlightWordForLayoutPage:layoutPage pageWordOffset:pageWordOffset withCompletionHandler:^{
+                                                  self.pauseAudioOnNextPageTurn = YES;
+                                              }];
                                           } pageTurnBlock:^(NSUInteger turnToLayoutPage) {
                                               //NSLog(@"Turn to layoutPage %d", turnToLayoutPage);
                                               if (self.layoutType == SCHReadingViewLayoutTypeFixed) {
                                                   self.pauseAudioOnNextPageTurn = NO;
-                                                  [self.readingView jumpToPageAtIndex:turnToLayoutPage - 1 animated:YES];
+                                                  [self.readingView jumpToPageAtIndex:turnToLayoutPage - 1 animated:YES withCompletionHandler:^{
+                                                      self.pauseAudioOnNextPageTurn = YES;
+                                                  }];
                                               }
                                           }];
             if (success) {
                 self.audioBookPlayer.delegate = self;
                 [self.audioBookPlayer playAtLayoutPage:layoutPage pageWordOffset:pageWordOffset];
                 [self setToolbarVisibility:NO animated:YES];
-                self.pauseAudioOnNextPageTurn = YES;
             } else {
                 self.audioBookPlayer = nil;   
                 UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") 
@@ -731,7 +694,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     } else if(self.audioBookPlayer.playing == NO) {
         [self.audioBookPlayer playAtLayoutPage:layoutPage pageWordOffset:pageWordOffset];
         [self setToolbarVisibility:NO animated:YES];
-        self.pauseAudioOnNextPageTurn = YES;
     } else {
         [self.readingView dismissFollowAlongHighlighter];  
         [self pauseAudioPlayback];
@@ -1358,7 +1320,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         if (self.pauseAudioOnNextPageTurn) {
             [self pauseAudioPlayback];
         }
-        self.pauseAudioOnNextPageTurn = YES;
         [self.queuedAudioPlayer cancelPlaybackExecutingSynchronizedBlocksImmediately:NO];
     }
     
@@ -1962,9 +1923,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         if ([self.bookStoryInteractions storyInteractionsFinishedOnPage:page]) {
             self.storyInteractionsCompleteOnCurrentPages = YES;
         }
-        
-        [self setupStoryInteractionButtonForCurrentPagesAnimated:YES];
     }
+    
+    [self setupStoryInteractionButtonForCurrentPagesAnimated:YES];
 }
 
 - (NSInteger)currentQuestionForStoryInteraction
