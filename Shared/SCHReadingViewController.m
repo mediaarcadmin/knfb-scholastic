@@ -816,7 +816,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
     NSInteger page = [self storyInteractionPageNumberFromPageIndex:[self firstPageIndexWithStoryInteractionsOnCurrentPages]];
     
-    NSArray *storyInteractions = [self.bookStoryInteractions storyInteractionsForPage:page];
+    NSArray *storyInteractions = [self.bookStoryInteractions storyInteractionsForPage:page
+                                                         excludingInteractionWithPage:NO];
     
     if ([storyInteractions count]) {
         SCHStoryInteraction *storyInteraction = [storyInteractions objectAtIndex:0];
@@ -846,7 +847,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     
     NSInteger page = [self storyInteractionPageNumberFromPageIndex:[self firstPageIndexWithStoryInteractionsOnCurrentPages]];
             
-    NSArray *storyInteractions = [self.bookStoryInteractions storyInteractionsForPage:page];
+    NSArray *storyInteractions = [self.bookStoryInteractions storyInteractionsForPage:page
+                                                         excludingInteractionWithPage:NO];
     int totalInteractionCount = [storyInteractions count];
     int questionCount = [self.bookStoryInteractions storyInteractionQuestionCountForPage:page];
     
@@ -995,7 +997,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     }
             
     for (int pageIndex = pageIndices.location; pageIndex < NSMaxRange(pageIndices); pageIndex++) {
-        NSArray *storyInteractions = [self.bookStoryInteractions storyInteractionsForPage:pageIndex + 1];
+        NSArray *storyInteractions = [self.bookStoryInteractions storyInteractionsForPage:pageIndex + 1
+                                                             excludingInteractionWithPage:NO];
             
         if ([storyInteractions count]) {
             return pageIndex;
@@ -1718,7 +1721,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     // hide/show story interactions stuff if necessary
     NSInteger page = [self storyInteractionPageNumberFromPageIndex:[self firstPageIndexWithStoryInteractionsOnCurrentPages]];
 
-    NSArray *storyInteractions = [self.bookStoryInteractions storyInteractionsForPage:page];
+    NSArray *storyInteractions = [self.bookStoryInteractions storyInteractionsForPage:page
+                                                         excludingInteractionWithPage:NO];
     int totalInteractionCount = [storyInteractions count];
 
     if (!self.initialFadeTimer) {
