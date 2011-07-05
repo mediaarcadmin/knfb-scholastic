@@ -19,6 +19,7 @@ static char * const kSCHDictionaryManifestEntryColumnSeparator = "\t";
 
 typedef enum {
 	SCHDictionaryProcessingStateError = 0,
+	SCHDictionaryProcessingStateNotEnoughFreeSpace,
 	SCHDictionaryProcessingStateNeedsManifest,
 	SCHDictionaryProcessingStateManifestVersionCheck,
 	SCHDictionaryProcessingStateNeedsDownload,

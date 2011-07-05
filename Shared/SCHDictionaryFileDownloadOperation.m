@@ -16,6 +16,9 @@
 @property BOOL executing;
 @property BOOL finished;
 
+// a local file manager, for thread safety
+@property (nonatomic, retain) NSFileManager *localFileManager;
+
 // the total file size reported by the HTTP header
 @property unsigned long long expectedFileSize;
 
@@ -24,8 +27,8 @@
 
 @property (readwrite, retain) NSString *localPath;
 
-- (void) beginConnection;
-- (void) createPercentageUpdate;
+- (void)beginConnection;
+- (void)createPercentageUpdate;
 
 @end
 
@@ -33,20 +36,27 @@
 
 @implementation SCHDictionaryFileDownloadOperation
 
-@synthesize executing, finished, expectedFileSize, previousPercentage, localPath, manifestEntry;
+@synthesize executing;
+@synthesize finished;
+@synthesize expectedFileSize;
+@synthesize previousPercentage;
+@synthesize localPath;
+@synthesize manifestEntry;
+@synthesize localFileManager;
 
 #pragma mark -
 #pragma mark Memory Management
 
-- (void) dealloc
+- (void)dealloc
 {
-	self.localPath = nil;
+	[localPath release], localPath = nil;
+    [localFileManager release], localFileManager = nil;
 	[super dealloc];
 }
 
 #pragma mark -
 #pragma mark Startup
-- (void) start
+- (void)start
 {
     NSAssert(self.manifestEntry != nil, @"File URL cannot be nil for SCHDictionaryFileDownloadOperation.");
 
@@ -55,16 +65,17 @@
 	} else {
 		
 		self.localPath = [[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryZipPath];
-		
+        self.localFileManager = [[NSFileManager alloc] init];
+
 		[self beginConnection];
 	}
 }
 
-- (void) beginConnection
+- (void)beginConnection
 {
 	NSError *error = nil;
 	
-    // FIXME: add a check in here for available device space
+    // check in here for available device space
     
 	// check first to see if the file has been created
 	NSMutableURLRequest *request = nil;
@@ -75,21 +86,21 @@
 	
 	unsigned long long fileSize = 0;
 	
-	if ([[NSFileManager defaultManager] fileExistsAtPath:self.localPath]) {
+	if ([self.localFileManager fileExistsAtPath:self.localPath]) {
 		// check to see how much of the file has been downloaded
 		
-		fileSize = [[[NSFileManager defaultManager] attributesOfItemAtPath:self.localPath error:&error] fileSize];
+		fileSize = [[self.localFileManager attributesOfItemAtPath:self.localPath error:&error] fileSize];
 		
 		if (error) {
 			NSLog(@"Error when reading file attributes. Stopping. (%@)", [error localizedDescription]);
 			return;
 		}
 	}
-	
+    
 	if (fileSize > 0) {
 		[request setValue:[NSString stringWithFormat:@"bytes=%llu-", fileSize] forHTTPHeaderField:@"Range"];
 	} else {
-		[[NSFileManager defaultManager] createFileAtPath:self.localPath contents:nil attributes:nil];
+		[self.localFileManager createFileAtPath:self.localPath contents:nil attributes:nil];
 	}
 	
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
@@ -116,10 +127,10 @@
 	unsigned long long fileSize = 0;
 	NSError *error = nil;
 	
-	if ([[NSFileManager defaultManager] fileExistsAtPath:self.localPath]) {
+	if ([self.localFileManager fileExistsAtPath:self.localPath]) {
 		// check to see how much of the file has been downloaded
 		
-		fileSize = [[[NSFileManager defaultManager] attributesOfItemAtPath:self.localPath error:&error] fileSize];
+		fileSize = [[self.localFileManager attributesOfItemAtPath:self.localPath error:&error] fileSize];
 		
 		if (error) {
 			NSLog(@"Error when reading file attributes. %@", [error localizedDescription]);
@@ -134,8 +145,24 @@
         [connection cancel];
         [self cancel];
         return;
-	}    
+	}
     
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *docDirectory = [paths objectAtIndex:0];            
+    
+    NSDictionary* fsAttr = [self.localFileManager attributesOfFileSystemForPath:docDirectory error:NULL];
+    
+    unsigned long long freeSize = [(NSNumber*)[fsAttr objectForKey:NSFileSystemFreeSize] unsignedLongLongValue];
+    NSLog(@"Freesize: %llu", freeSize);
+    
+    // if the response isn't "unknown length", which is a large number, then check to see if we can fit this onto the device
+    if (([response expectedContentLength] != NSURLResponseUnknownLength) && freeSize == 0 || freeSize < [response expectedContentLength]) {
+        [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNotEnoughFreeSpace];
+        [connection cancel];
+        [self cancel];
+        return;
+    }
+
 	self.expectedFileSize = [response expectedContentLength] + fileSize;
 	self.previousPercentage = -1;
 	
@@ -214,11 +241,11 @@
 #pragma mark -
 #pragma mark Percentage methods
 
-- (void) createPercentageUpdate
+- (void)createPercentageUpdate
 {
 	NSError *error = nil;
 	
-	unsigned long long fileSize = [[[NSFileManager defaultManager] attributesOfItemAtPath:self.localPath error:&error] fileSize];
+	unsigned long long fileSize = [[self.localFileManager attributesOfItemAtPath:self.localPath error:&error] fileSize];
 	
 	if (error) {
 		NSLog(@"Warning: could not get filesize.");
@@ -245,7 +272,7 @@
 	}
 }
 
-- (void) firePercentageUpdate: (NSDictionary *) userInfo
+- (void)firePercentageUpdate: (NSDictionary *) userInfo
 {
 	[[NSNotificationCenter defaultCenter] postNotificationName:kSCHDictionaryDownloadPercentageUpdate object:nil userInfo:userInfo];
 }
@@ -265,7 +292,7 @@
 	return self.finished;
 }
 
-- (void) cancel
+- (void)cancel
 {
 	NSLog(@"%%%% cancelling download file operation");
     [self willChangeValueForKey:@"isExecuting"];
