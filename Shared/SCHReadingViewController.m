@@ -711,6 +711,11 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     if (self.optionsView.superview) {
         [self.optionsView removeFromSuperview];
     }
+    
+    BOOL excludeInteractionWithPage = NO;
+    if ([self.readingView isKindOfClass:[SCHFlowView class]]) {
+        excludeInteractionWithPage = YES;
+    }
         
     SCHReadingInteractionsListController *interactionsController = [[SCHReadingInteractionsListController alloc] initWithNibName:nil bundle:nil];
     interactionsController.bookIdentifier = self.bookIdentifier;
@@ -718,6 +723,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     interactionsController.profile = self.profile;
     interactionsController.delegate = self;
     interactionsController.readingView = self.readingView;
+    interactionsController.excludeInteractionWithPage = excludeInteractionWithPage;
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         interactionsController.modalPresentationStyle = UIModalPresentationFormSheet;
@@ -826,7 +832,13 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
     NSInteger page = [self storyInteractionPageNumberFromPageIndex:[self firstPageIndexWithStoryInteractionsOnCurrentPages]];
     
-    NSArray *storyInteractions = [self.bookStoryInteractions storyInteractionsForPage:page];
+    BOOL excludeInteractionWithPage = NO;
+    if ([self.readingView isKindOfClass:[SCHFlowView class]]) {
+        excludeInteractionWithPage = YES;
+    }
+    
+    NSArray *storyInteractions = [self.bookStoryInteractions storyInteractionsForPage:page
+                                                         excludingInteractionWithPage:excludeInteractionWithPage];
     
     if ([storyInteractions count]) {
         SCHStoryInteraction *storyInteraction = [storyInteractions objectAtIndex:0];
@@ -847,12 +859,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 #pragma mark - Story Interactions methods
 
 - (void)setupStoryInteractionButtonForCurrentPagesAnimated:(BOOL)animated
-{ 
-    // don't do any of this in flow view
-    if ([self.readingView isKindOfClass:[SCHFlowView class]]) {
-        return;
-    }
-    
+{     
     // if the story interaction is open, hide the button
     if (self.storyInteractionController != nil) {
         [self setStoryInteractionButtonVisible:NO animated:YES withSound:NO];
@@ -860,8 +867,14 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     }
     
     NSInteger page = [self storyInteractionPageNumberFromPageIndex:[self firstPageIndexWithStoryInteractionsOnCurrentPages]];
-            
-    NSArray *storyInteractions = [self.bookStoryInteractions storyInteractionsForPage:page];
+    
+    BOOL excludeInteractionWithPage = NO;
+    if ([self.readingView isKindOfClass:[SCHFlowView class]]) {
+        excludeInteractionWithPage = YES;
+    }
+    
+    NSArray *storyInteractions = [self.bookStoryInteractions storyInteractionsForPage:page
+                                                         excludingInteractionWithPage:excludeInteractionWithPage];
     int totalInteractionCount = [storyInteractions count];
     int questionCount = [self.bookStoryInteractions storyInteractionQuestionCountForPage:page];
     
@@ -918,10 +931,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (void)setStoryInteractionButtonVisible:(BOOL)visible animated:(BOOL)animated withSound:(BOOL)sound
 {
     if (visible) {
-        // don't do this in flow view
-        if ([self.readingView isKindOfClass:[SCHFlowView class]]) {
-            return;
-        }
         
         CGRect frame = self.storyInteractionButtonView.frame;
         
@@ -1004,17 +1013,31 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (NSUInteger)firstPageIndexWithStoryInteractionsOnCurrentPages
 {
+
+    NSRange pageIndices = NSMakeRange(0, 0);
+    BOOL excludeInteractionWithPage = NO;
     
-    NSRange pageIndices;
-    
-    if (self.currentPageIndices.location != NSNotFound) {
-        pageIndices = self.currentPageIndices;
-    } else {
-        pageIndices = NSMakeRange(self.currentPageIndex, 1);
+    if ([self.readingView isKindOfClass:[SCHLayoutView class]]) {
+        if (self.currentPageIndices.location != NSNotFound) {
+            pageIndices = self.currentPageIndices;
+        } else {
+            pageIndices = NSMakeRange(self.currentPageIndex, 1);
+        }
+    } else if ([self.readingView isKindOfClass:[SCHFlowView class]]) {
+        // If pagination isn't complete bail out
+        if (self.currentPageIndex == NSUIntegerMax) {
+            return NSUIntegerMax;
+        } else {
+            SCHBookRange *pageRange = [self.readingView currentBookRange];
+            pageIndices = NSMakeRange(pageRange.startPoint.layoutPage - 1, pageRange.endPoint.layoutPage - pageRange.startPoint.layoutPage + 1);
+        }
+        
+        excludeInteractionWithPage = YES;
     }
             
     for (int pageIndex = pageIndices.location; pageIndex < NSMaxRange(pageIndices); pageIndex++) {
-        NSArray *storyInteractions = [self.bookStoryInteractions storyInteractionsForPage:pageIndex + 1];
+        NSArray *storyInteractions = [self.bookStoryInteractions storyInteractionsForPage:pageIndex + 1
+                                                             excludingInteractionWithPage:excludeInteractionWithPage];
             
         if ([storyInteractions count]) {
             return pageIndex;
@@ -1026,8 +1049,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (void)presentStoryInteraction:(SCHStoryInteraction *)storyInteraction
 {
-    NSAssert([self.readingView isKindOfClass:[SCHLayoutView class]], @"can't have story interactions with flow view");
-    [(SCHLayoutView *)self.readingView zoomOutToCurrentPageWithCompletionHandler:^{
+    void (^presentStoryInteractionBlock)(void) = ^{
         [self setStoryInteractionButtonVisible:NO animated:YES withSound:NO];
         self.storyInteractionController = [SCHStoryInteractionController storyInteractionControllerForStoryInteraction:storyInteraction];
         self.storyInteractionController.bookIdentifier= self.bookIdentifier;
@@ -1038,7 +1060,13 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
             [self setToolbarVisibility:NO animated:YES];
         }
-    }];
+    };
+    
+    if ([self.readingView isKindOfClass:[SCHLayoutView class]]) {
+        [(SCHLayoutView *)self.readingView zoomOutToCurrentPageWithCompletionHandler:presentStoryInteractionBlock];
+    } else if ([self.readingView isKindOfClass:[SCHFlowView class]]) {
+        presentStoryInteractionBlock();
+    }
 }
 
 #pragma mark - Audio Control
@@ -1103,10 +1131,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
             [self setDictionarySelectionMode];
 
             [flowView release];
-            
-            [self setStoryInteractionButtonVisible:NO animated:YES withSound:NO];
-            [self.storyInteractionsListButton setEnabled:NO];
-            
+                        
             for (UISegmentedControl* fontSegmentedControl in self.fontSegmentedControls) {
                 [fontSegmentedControl setEnabled:YES forSegmentAtIndex:0];
                 [fontSegmentedControl setEnabled:YES forSegmentAtIndex:1];
@@ -1120,9 +1145,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
             self.readingView = layoutView;
             
             [self setDictionarySelectionMode];
-            
-            [self.storyInteractionsListButton setEnabled:YES];
-            
+                        
             for (UISegmentedControl* fontSegmentedControl in self.fontSegmentedControls) {
                 [fontSegmentedControl setEnabled:NO forSegmentAtIndex:0];
                 [fontSegmentedControl setEnabled:NO forSegmentAtIndex:1];
@@ -1736,7 +1759,13 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     // hide/show story interactions stuff if necessary
     NSInteger page = [self storyInteractionPageNumberFromPageIndex:[self firstPageIndexWithStoryInteractionsOnCurrentPages]];
 
-    NSArray *storyInteractions = [self.bookStoryInteractions storyInteractionsForPage:page];
+    BOOL excludeInteractionWithPage = NO;
+    if ([self.readingView isKindOfClass:[SCHFlowView class]]) {
+        excludeInteractionWithPage = YES;
+    }
+    
+    NSArray *storyInteractions = [self.bookStoryInteractions storyInteractionsForPage:page
+                                                         excludingInteractionWithPage:excludeInteractionWithPage];
     int totalInteractionCount = [storyInteractions count];
 
     if (!self.initialFadeTimer) {
@@ -1898,9 +1927,21 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 #pragma mark - SCHReadingInteractionsListControllerDelegate methods
 
-- (void)readingInteractionsView:(SCHReadingInteractionsListController *)interactionsView didSelectInteraction:(NSInteger)interaction
+- (SCHBookPoint *)bookPointForStoryInteractionDocumentPageNumber:(NSUInteger)pageNumber
 {
-    SCHStoryInteraction *storyInteraction = [[self.bookStoryInteractions allStoryInteractions] objectAtIndex:interaction];
+    if (self.currentPageIndex == NSUIntegerMax) {
+        return nil; // return nil if still paginating
+    } else {
+        NSUInteger layoutPage = pageNumber;
+        SCHBookPoint *bookPoint = [self.readingView bookPointForLayoutPage:layoutPage pageWordOffset:0 includingFolioBlocks:YES];
+        
+        return bookPoint;
+    }
+}
+
+- (void)readingInteractionsView:(SCHReadingInteractionsListController *)interactionsView didSelectInteraction:(NSInteger)interaction
+{    
+    SCHStoryInteraction *storyInteraction = [[self.bookStoryInteractions allStoryInteractionsExcludingInteractionWithPage:interactionsView.excludeInteractionWithPage] objectAtIndex:interaction];
     [self presentStoryInteraction:storyInteraction];
     
     SCHBookPoint *notePoint = [self.readingView bookPointForLayoutPage:[storyInteraction documentPageNumber] pageWordOffset:0 includingFolioBlocks:YES];

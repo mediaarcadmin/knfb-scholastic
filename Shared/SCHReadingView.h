@@ -71,6 +71,7 @@ typedef enum
 
 - (SCHBookPoint *)currentBookPoint;
 - (SCHBookPoint *)currentBookPointIgnoringMultipleDisplayPages:(BOOL)ignoreMultipleDisplayPages;
+- (SCHBookRange *)currentBookRange;
 
 - (void)currentLayoutPage:(NSUInteger *)layoutPage pageWordOffset:(NSUInteger *)pageWordOffset;
 

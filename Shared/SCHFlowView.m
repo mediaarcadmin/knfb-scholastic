@@ -167,6 +167,25 @@
     return [self.eucBook bookPointFromBookPageIndexPoint:[self.eucBook currentPageIndexPoint]];
 }
 
+- (SCHBookRange *)currentBookRange
+{
+    SCHBookRange *pageRange = nil;
+    
+    if (self.eucBookView.currentPageIndex != NSUIntegerMax) {
+        EucBookPageIndexPoint *startPoint = [self.eucBookView indexPointForPageIndex:self.eucBookView.currentPageIndex];
+        EucBookPageIndexPoint *endPoint   = [self.eucBookView indexPointForPageIndex:self.eucBookView.currentPageIndex + 1];
+
+        SCHBookPoint *startBookPoint = [self.eucBook bookPointFromBookPageIndexPoint:startPoint];
+        SCHBookPoint *endBookPoint   = [self.eucBook bookPointFromBookPageIndexPoint:endPoint];
+        
+        pageRange = [[[SCHBookRange alloc] init] autorelease];
+        pageRange.startPoint = startBookPoint;
+        pageRange.endPoint = endBookPoint;        
+    }
+    
+    return pageRange;
+}
+
 - (void)jumpToBookPoint:(SCHBookPoint *)bookPoint animated:(BOOL)animated
 {
     EucBookPageIndexPoint *point;

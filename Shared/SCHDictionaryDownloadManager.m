@@ -622,7 +622,10 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 {
     SCHDictionaryProcessingState state = [self dictionaryProcessingState];
     
-    if (state == SCHDictionaryProcessingStateError || state == SCHDictionaryProcessingStateReady) {
+    if (state == SCHDictionaryProcessingStateError || state == SCHDictionaryProcessingStateNotEnoughFreeSpace) {
+        NSLog(@"There was an error - try the dictionary again.");
+        [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNeedsManifest];
+    } else if (state == SCHDictionaryProcessingStateReady) {
         
 		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         

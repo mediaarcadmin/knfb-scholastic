@@ -26,6 +26,7 @@
 @property (nonatomic, assign) id <SCHReadingNotesListControllerDelegate> delegate;
 
 // interface builder
+@property (nonatomic, retain) IBOutlet UIBarButtonItem *editButton;
 @property (nonatomic, retain) IBOutlet UITableView *notesTableView;
 @property (nonatomic, retain) IBOutlet SCHCustomToolbar *topBar;
 @property (nonatomic, retain) IBOutlet UITableViewCell *notesCell;

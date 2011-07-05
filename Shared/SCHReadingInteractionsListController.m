@@ -38,6 +38,7 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
 @implementation SCHReadingInteractionsListController
 
 @synthesize bookStoryInteractions;
+@synthesize excludeInteractionWithPage;
 @synthesize delegate;
 @synthesize noteCellNib;
 @synthesize notesTableView;
@@ -126,10 +127,15 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
     return YES;
 }
 
--(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
     [self setupAssetsForOrientation:toInterfaceOrientation];
     
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+    [self.notesTableView reloadData];
 }
 
 -(void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation
@@ -188,7 +194,7 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
     switch (section) {
         case 0:
         {
-            return [[bookStoryInteractions allStoryInteractions] count];
+            return [[bookStoryInteractions allStoryInteractionsExcludingInteractionWithPage:self.excludeInteractionWithPage] count];
             break;
         }   
         default:
@@ -223,22 +229,21 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
     UILabel *titleLabel = (UILabel *) [cell viewWithTag:CELL_TITLE_LABEL_TAG];
     UILabel *subTitleLabel = (UILabel *) [cell viewWithTag:CELL_PAGE_LABEL_TAG];
     
-    SCHStoryInteraction *storyInteraction = [[self.bookStoryInteractions allStoryInteractions] objectAtIndex:indexPath.row];
+    SCHStoryInteraction *storyInteraction = [[self.bookStoryInteractions allStoryInteractionsExcludingInteractionWithPage:self.excludeInteractionWithPage] objectAtIndex:indexPath.row];
     titleLabel.text = [storyInteraction title];
     
-    if (activityView) {
-        // TODO if the story interaction is still loading
-        if (0) {
-            [activityView startAnimating];
-            cell.accessoryType = UITableViewCellAccessoryNone;
-            subTitleLabel.text = @"";
-        } else {
-            [activityView stopAnimating];
-            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-            subTitleLabel.text = [NSString stringWithFormat:@"Page %d", storyInteraction.documentPageNumber];
-        }
-    }
+    SCHBookPoint *interactionPoint = [self.delegate bookPointForStoryInteractionDocumentPageNumber:storyInteraction.documentPageNumber];
     
+    if (interactionPoint) {
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;  
+        NSString *displayPage = [self.delegate displayPageNumberForBookPoint:interactionPoint];
+        subTitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Page %@", @"Display page for Story Interaction List Controller"), displayPage];
+        subTitleLabel.alpha = 1;
+        activityView.alpha = 0;
+    } else {
+        subTitleLabel.alpha = 0;
+        activityView.alpha = 1;
+    }    
     
     return cell;
 }

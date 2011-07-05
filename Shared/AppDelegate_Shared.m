@@ -219,6 +219,8 @@ static NSString* const prModelCertFilename = @"iphonecert.dat";
 
 - (void)applicationWillEnterForeground:(UIApplication *)application 
 {
+    // when we enter the foreground, check to see if the dictionary needs updating
+    [[SCHDictionaryDownloadManager sharedDownloadManager] checkIfUpdateNeeded];
 }
 
 - (void)saveContext 

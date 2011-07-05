@@ -235,6 +235,14 @@
     }
 
     switch (state) {
+        case SCHDictionaryProcessingStateNotEnoughFreeSpace:
+        {
+            self.topLabel.text = @"Error";
+            self.bottomLabel.text = @"There is not enough free space on the device. Please clear some space and try again.";
+            [self.activityIndicator stopAnimating];
+            self.progressBar.hidden = YES;
+            break;
+        }
         case SCHDictionaryProcessingStateError:
         {
             self.topLabel.text = @"Error";

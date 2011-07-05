@@ -96,7 +96,13 @@
 - (SCHBookPoint *)currentBookPoint
 {
     NSLog(@"WARNING: currentBookPoint not being overridden correctly.");
-    return 0;
+    return nil;
+}
+
+- (SCHBookRange *)currentBookRange
+{
+    NSLog(@"WARNING: currentBookRange not being overridden correctly.");
+    return nil;
 }
 
 - (SCHBookPoint *)currentBookPointIgnoringMultipleDisplayPages:(BOOL)ignoreMultipleDisplayPages
