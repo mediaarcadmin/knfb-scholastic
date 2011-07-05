@@ -17,6 +17,7 @@
 @property (nonatomic, copy) NSString *isbn;
 @property (nonatomic, assign) BOOL isNewBook;
 @property (nonatomic, assign) BOOL trashed;
+@property (nonatomic, assign) BOOL lastCell;
 @property (nonatomic, assign) id <SCHBookShelfTableViewCellDelegate> delegate;
 
 - (void) refreshCell;
