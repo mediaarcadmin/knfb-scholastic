@@ -1100,6 +1100,10 @@
 		C9F5BA0213918CE9009DE113 /* SCHPasswordViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9F5BA0013918CE8009DE113 /* SCHPasswordViewController_iPhone.xib */; };
 		C9FE8CFA13AA60D300D55181 /* answer-button-yellow~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C9FE8CF913AA60D300D55181 /* answer-button-yellow~ipad.png */; };
 		C9FE8CFB13AA60D300D55181 /* answer-button-yellow~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C9FE8CF913AA60D300D55181 /* answer-button-yellow~ipad.png */; };
+		F8048EA313C33B740060C6F5 /* BookShelfNewIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F8048EA113C33B740060C6F5 /* BookShelfNewIcon@2x.png */; };
+		F8048EA413C33B740060C6F5 /* BookShelfNewIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F8048EA113C33B740060C6F5 /* BookShelfNewIcon@2x.png */; };
+		F8048EA513C33B740060C6F5 /* BookShelfNewIcon~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F8048EA213C33B740060C6F5 /* BookShelfNewIcon~ipad.png */; };
+		F8048EA613C33B740060C6F5 /* BookShelfNewIcon~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F8048EA213C33B740060C6F5 /* BookShelfNewIcon~ipad.png */; };
 		F80A387613C1C37100D2B47C /* SampleIcon~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F80A387513C1C37100D2B47C /* SampleIcon~ipad.png */; };
 		F80A387713C1C37100D2B47C /* SampleIcon~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F80A387513C1C37100D2B47C /* SampleIcon~ipad.png */; };
 		F80A387A13C1C39600D2B47C /* SIIcon~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F80A387813C1C39500D2B47C /* SIIcon~ipad.png */; };
@@ -2459,6 +2463,8 @@
 		C9F5B9FB13916C62009DE113 /* button-go@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "button-go@2x.png"; path = "Resources/UIAssets/button-go@2x.png"; sourceTree = "<group>"; };
 		C9F5BA0013918CE8009DE113 /* SCHPasswordViewController_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHPasswordViewController_iPhone.xib; sourceTree = "<group>"; };
 		C9FE8CF913AA60D300D55181 /* answer-button-yellow~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "answer-button-yellow~ipad.png"; sourceTree = "<group>"; };
+		F8048EA113C33B740060C6F5 /* BookShelfNewIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BookShelfNewIcon@2x.png"; path = "Resources/BookShelfNewIcon@2x.png"; sourceTree = "<group>"; };
+		F8048EA213C33B740060C6F5 /* BookShelfNewIcon~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BookShelfNewIcon~ipad.png"; path = "Resources/BookShelfNewIcon~ipad.png"; sourceTree = "<group>"; };
 		F80A387513C1C37100D2B47C /* SampleIcon~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "SampleIcon~ipad.png"; path = "Resources/SampleIcon~ipad.png"; sourceTree = "<group>"; };
 		F80A387813C1C39500D2B47C /* SIIcon~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "SIIcon~ipad.png"; path = "Resources/SIIcon~ipad.png"; sourceTree = "<group>"; };
 		F80A387913C1C39500D2B47C /* SISampleIcon~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "SISampleIcon~ipad.png"; path = "Resources/SISampleIcon~ipad.png"; sourceTree = "<group>"; };
@@ -3461,7 +3467,6 @@
 				C953FC4913707967003DA646 /* icon-play-landscape@2x.png */,
 				C93ECB29134B64B1003B99FD /* libKNFBReader Resources */,
 				C93ECA2C134B5EF9003B99FD /* libEucalyptus Resources */,
-				F8687ED513BA234100B59987 /* BookShelfNewIcon.png */,
 				C908D87F133F941100661718 /* PlaceholderBook.png */,
 				F8C6DA91136073D300D9E953 /* paper-black.png */,
 				F8C6DA92136073D300D9E953 /* paper-black@2x.png */,
@@ -4352,6 +4357,9 @@
 		F837018D13BB322F009B280D /* List View Icons */ = {
 			isa = PBXGroup;
 			children = (
+				F8687ED513BA234100B59987 /* BookShelfNewIcon.png */,
+				F8048EA113C33B740060C6F5 /* BookShelfNewIcon@2x.png */,
+				F8048EA213C33B740060C6F5 /* BookShelfNewIcon~ipad.png */,
 				F80A38B213C22D4000D2B47C /* ListViewRule.png */,
 				F80A38B313C22D4000D2B47C /* ListViewRule@2x.png */,
 				F80A38B413C22D4100D2B47C /* ListViewRule~ipad.png */,
@@ -5274,6 +5282,8 @@
 				F80A38B513C22D4100D2B47C /* ListViewRule.png in Resources */,
 				F80A38B713C22D4100D2B47C /* ListViewRule@2x.png in Resources */,
 				F80A38B913C22D4100D2B47C /* ListViewRule~ipad.png in Resources */,
+				F8048EA313C33B740060C6F5 /* BookShelfNewIcon@2x.png in Resources */,
+				F8048EA513C33B740060C6F5 /* BookShelfNewIcon~ipad.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5731,6 +5741,8 @@
 				F80A38B613C22D4100D2B47C /* ListViewRule.png in Resources */,
 				F80A38B813C22D4100D2B47C /* ListViewRule@2x.png in Resources */,
 				F80A38BA13C22D4100D2B47C /* ListViewRule~ipad.png in Resources */,
+				F8048EA413C33B740060C6F5 /* BookShelfNewIcon@2x.png in Resources */,
+				F8048EA613C33B740060C6F5 /* BookShelfNewIcon~ipad.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
