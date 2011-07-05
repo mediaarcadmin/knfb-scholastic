@@ -191,7 +191,7 @@
 									<object class="IBUILabel" id="513083961">
 										<reference key="NSNextResponder" ref="662339898"/>
 										<int key="NSvFlags">314</int>
-										<string key="NSFrame">{{85, 12}, {128, 36}}</string>
+										<string key="NSFrame">{{85, 8}, {128, 46}}</string>
 										<reference key="NSSuperview" ref="662339898"/>
 										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="225416552"/>
@@ -215,7 +215,7 @@
 										<nil key="IBUIHighlightedColor"/>
 										<int key="IBUIBaselineAdjustment">1</int>
 										<float key="IBUIMinimumFontSize">10</float>
-										<int key="IBUINumberOfLines">3</int>
+										<int key="IBUINumberOfLines">4</int>
 										<int key="IBUILineBreakMode">0</int>
 									</object>
 									<object class="IBUIImageView" id="41367515">
@@ -224,6 +224,7 @@
 										<string key="NSFrame">{{9, 60}, {302, 1}}</string>
 										<reference key="NSSuperview" ref="662339898"/>
 										<reference key="NSWindow"/>
+										<reference key="NSNextKeyView"/>
 										<reference key="IBUIBackgroundColor" ref="1036126128"/>
 										<int key="IBUITag">202</int>
 										<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -233,6 +234,7 @@
 								<string key="NSFrameSize">{320, 62}</string>
 								<reference key="NSSuperview" ref="531939357"/>
 								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView" ref="264148417"/>
 								<object class="NSColor" key="IBUIBackgroundColor">
 									<int key="NSColorSpace">1</int>
 									<bytes key="NSRGB">MC40MTU2ODYyNzk1IDAuODA3ODQzMTQ4NyAwLjk2MDc4NDMxNjEAA</bytes>
