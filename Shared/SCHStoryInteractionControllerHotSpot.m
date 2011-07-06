@@ -277,10 +277,9 @@
     [self cancelQueuedAudio];
     [self enqueueAudioWithPath:[self.storyInteraction storyInteractionCorrectAnswerSoundFilename]
                     fromBundle:YES];
-    [self enqueueAudioWithPath:[self.storyInteraction audioPathForThatsRight] fromBundle:NO];
     [self enqueueAudioWithPath:[[self currentQuestion] audioPathForCorrectAnswer]
                     fromBundle:NO
-                    startDelay:0.5
+                    startDelay:0
         synchronizedStartBlock:nil
           synchronizedEndBlock:^{
               [self simulateRotationBackToPortraitAndCloseWithSuccess:YES];
