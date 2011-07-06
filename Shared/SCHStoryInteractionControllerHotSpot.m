@@ -104,11 +104,13 @@
 
 - (void)didRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
 {
-    if (self.pageImageView.image == nil && UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
-        self.pageImageView.image = [self.delegate currentPageSnapshot];
-        self.contentsView.backgroundColor = [UIColor SCHBlackColor];
-        [self updateViewToPageTransform];
+    if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
         self.isPortraitWithLandscapePresentation = NO;
+        [self updateViewToPageTransform];
+        if (self.pageImageView.image == nil) {
+            self.pageImageView.image = [self.delegate currentPageSnapshot];
+            self.contentsView.backgroundColor = [UIColor SCHBlackColor];
+        }
     }
     [super didRotateToInterfaceOrientation:toInterfaceOrientation];
 }
