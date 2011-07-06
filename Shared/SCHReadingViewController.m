@@ -440,7 +440,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [self.notesButton addSubview:self.notesCountView];
     
     // update the note count
-    NSInteger noteCount = [[[self.profile annotationsForBook:self.bookIdentifier.isbn] notes] count];
+    NSInteger noteCount = [[[self.profile annotationsForBook:self.bookIdentifier] notes] count];
     self.notesCountView.noteCount = noteCount;
 
     
@@ -573,7 +573,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (void)saveLastPageLocation
 {
-    SCHBookAnnotations *annotations = [self.profile annotationsForBook:self.bookIdentifier.isbn];
+    SCHBookAnnotations *annotations = [self.profile annotationsForBook:self.bookIdentifier];
     
     if (annotations != nil) {
         SCHBookPoint *currentBookPoint = [self.readingView currentBookPoint];
@@ -585,7 +585,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (void)jumpToLastPageLocation
 {
-    SCHBookAnnotations *annotations = [self.profile annotationsForBook:self.bookIdentifier.isbn];
+    SCHBookAnnotations *annotations = [self.profile annotationsForBook:self.bookIdentifier];
     SCHBookPoint *lastPoint = [[[SCHBookPoint alloc] init] autorelease];
     
     NSNumber *lastPageLocation = [[annotations lastPage] LastPageLocation];
@@ -765,7 +765,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     }
     
     SCHReadingNotesListController *notesController = [[SCHReadingNotesListController alloc] initWithNibName:nil bundle:nil];
-    notesController.isbn = self.bookIdentifier.isbn;
+    notesController.bookIdentifier = self.bookIdentifier;
     notesController.profile = self.profile;
     notesController.delegate = self;
     
@@ -1301,7 +1301,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (void)addHighlightBetweenStartPage:(NSUInteger)startPage startWord:(NSUInteger)startWord endPage:(NSUInteger)endPage endWord:(NSUInteger)endWord;
 {
-    SCHBookAnnotations *annotations = [self.profile annotationsForBook:self.bookIdentifier.isbn];
+    SCHBookAnnotations *annotations = [self.profile annotationsForBook:self.bookIdentifier];
     
     if (annotations != nil) {
         SCHHighlight *newHighlight = [annotations createHighlightBetweenStartPage:startPage startWord:startWord endPage:endPage endWord:endWord color:[self highlightColor]];
@@ -1313,7 +1313,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (void)deleteHighlightBetweenStartPage:(NSUInteger)startPage startWord:(NSUInteger)startWord endPage:(NSUInteger)endPage endWord:(NSUInteger)endWord;
 {
     NSLog(@"Delete highlight");
-    SCHBookAnnotations *annotations = [self.profile annotationsForBook:self.bookIdentifier.isbn];
+    SCHBookAnnotations *annotations = [self.profile annotationsForBook:self.bookIdentifier];
     
     for (int page = startPage; page <= endPage; page++) {
         for (SCHHighlight *highlight in [annotations highlightsForPage:page]) {
@@ -1329,7 +1329,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (NSArray *)highlightsForLayoutPage:(NSUInteger)page
 {
-    SCHBookAnnotations *annotations = [self.profile annotationsForBook:self.bookIdentifier.isbn];
+    SCHBookAnnotations *annotations = [self.profile annotationsForBook:self.bookIdentifier];
     
     return [annotations highlightsForPage:page];    
 }
@@ -1824,7 +1824,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 {
     NSLog(@"Requesting a new note be created!");
     SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.bookIdentifier inManagedObjectContext:self.managedObjectContext];
-    SCHBookAnnotations *annos = [self.profile annotationsForBook:self.bookIdentifier.isbn];
+    SCHBookAnnotations *annos = [self.profile annotationsForBook:self.bookIdentifier];
     SCHNote *newNote = [annos createEmptyNote];
     
     newNote.Version = [NSNumber numberWithInteger:[book.Version integerValue]];
@@ -1867,11 +1867,11 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (void)readingNotesView:(SCHReadingNotesListController *)readingNotesView didDeleteNote:(SCHNote *)note
 {
     NSLog(@"Deleting note...");
-    SCHBookAnnotations *bookAnnos = [self.profile annotationsForBook:self.bookIdentifier.isbn];
+    SCHBookAnnotations *bookAnnos = [self.profile annotationsForBook:self.bookIdentifier];
     [bookAnnos deleteNote:note];
     
     // update the note count
-    NSInteger noteCount = [[[self.profile annotationsForBook:self.bookIdentifier.isbn] notes] count];
+    NSInteger noteCount = [[[self.profile annotationsForBook:self.bookIdentifier] notes] count];
     self.notesCountView.noteCount = noteCount;
 
 }
@@ -1899,20 +1899,20 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 {
     // FIXME: save note
     NSLog(@"Saving note...");
-    SCHBookAnnotations *bookAnnos = [self.profile annotationsForBook:self.bookIdentifier.isbn];
+    SCHBookAnnotations *bookAnnos = [self.profile annotationsForBook:self.bookIdentifier];
     [bookAnnos addNote:note];
     
     [self setToolbarVisibility:YES animated:YES];
     
     // update the note count
-    NSInteger noteCount = [[[self.profile annotationsForBook:self.bookIdentifier.isbn] notes] count];
+    NSInteger noteCount = [[[self.profile annotationsForBook:self.bookIdentifier] notes] count];
     self.notesCountView.noteCount = noteCount;
     
 }
 
 - (void)notesViewCancelled:(SCHReadingNoteView *)notesView
 {
-    SCHBookAnnotations *bookAnnos = [self.profile annotationsForBook:self.bookIdentifier.isbn];
+    SCHBookAnnotations *bookAnnos = [self.profile annotationsForBook:self.bookIdentifier];
 
     // if we created the note but it's been cancelled, delete the note
     if (notesView.newNote) {
@@ -1922,7 +1922,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [self setToolbarVisibility:YES animated:YES];
     
     // update the note count
-    NSInteger noteCount = [[[self.profile annotationsForBook:self.bookIdentifier.isbn] notes] count];
+    NSInteger noteCount = [[[self.profile annotationsForBook:self.bookIdentifier] notes] count];
     self.notesCountView.noteCount = noteCount;
     
     

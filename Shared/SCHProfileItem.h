@@ -23,6 +23,7 @@ static NSString * const kSCHProfileItem = @"SCHProfileItem";
 static NSString * const kSCHProfileItemFetchAnnotationsForProfileBook = @"fetchAnnotationsForProfileBook";
 static NSString * const kSCHProfileItemPROFILE_ID = @"PROFILE_ID";
 static NSString * const kSCHProfileItemCONTENT_IDENTIFIER = @"CONTENT_IDENTIFIER";
+static NSString * const kSCHProfileItemDRM_QUALIFIER = @"DRM_QUALIFIER";
 
 typedef enum {
     kSCHBookSortTypeUser,
@@ -56,7 +57,7 @@ typedef enum {
 @property (nonatomic, readonly) NSUInteger age;
 
 - (NSMutableArray *)allBookIdentifiers;
-- (SCHBookAnnotations *)annotationsForBook:(NSString *)isbn;
+- (SCHBookAnnotations *)annotationsForBook:(SCHBookIdentifier *)bookIdentifier;
 - (void)saveBookOrder:(NSArray *)books;
 - (void)clearBookOrder;
 - (NSString *)bookshelfName:(BOOL)shortName;

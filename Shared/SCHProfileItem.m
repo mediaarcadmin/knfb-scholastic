@@ -349,18 +349,19 @@ static NSString * const kSCHProfileItemUserContentItemContentMetadataItem = @"Us
     
 }
 
-- (SCHBookAnnotations *)annotationsForBook:(NSString *)isbn
+- (SCHBookAnnotations *)annotationsForBook:(SCHBookIdentifier *)bookIdentifier
 {
     SCHBookAnnotations *ret = nil;
     
-    if (isbn != nil) {
+    if (bookIdentifier != nil) {
         NSEntityDescription *entityDescription = [NSEntityDescription 
                                                   entityForName:kSCHPrivateAnnotations 
                                                   inManagedObjectContext:self.managedObjectContext];
         NSFetchRequest *fetchRequest = [entityDescription.managedObjectModel fetchRequestFromTemplateWithName:kSCHProfileItemFetchAnnotationsForProfileBook 
                                                                                         substitutionVariables:[NSDictionary dictionaryWithObjectsAndKeys:
-                                                                                                               self.ID, kSCHProfileItemPROFILE_ID, isbn, 
-                                                                                                               kSCHProfileItemCONTENT_IDENTIFIER, nil]];
+                                                                                                               self.ID, kSCHProfileItemPROFILE_ID, bookIdentifier.isbn, 
+                                                                                                               kSCHProfileItemCONTENT_IDENTIFIER, bookIdentifier.DRMQualifier, 
+                                                                                                               kSCHProfileItemDRM_QUALIFIER, nil]];
         
         NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest error:nil];
         if ([results count] > 0) {

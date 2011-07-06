@@ -44,7 +44,7 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
 @synthesize notesCell;
 @synthesize topShadow;
 @synthesize topBar;
-@synthesize isbn;
+@synthesize bookIdentifier;
 @synthesize notes;
 @synthesize profile;
 @synthesize editMode;
@@ -56,7 +56,7 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
     
     delegate = nil;
     
-    [isbn release], isbn = nil;
+    [bookIdentifier release], bookIdentifier = nil;
     [editButton release], editButton = nil;
     [noteCellNib release], noteCellNib = nil;
     [notesCell release], notesCell = nil;
@@ -114,7 +114,7 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
     
     [self.topShadow setImage:[UIImage imageNamed:@"reading-view-top-shadow.png"]];
 
-    SCHBookAnnotations *annotations = [self.profile annotationsForBook:self.isbn];
+    SCHBookAnnotations *annotations = [self.profile annotationsForBook:self.bookIdentifier];
     self.notes = [annotations notes];
 }
 
@@ -404,7 +404,7 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
         
         [self.notesTableView beginUpdates];
 
-        SCHBookAnnotations *annotations = [self.profile annotationsForBook:self.isbn];
+        SCHBookAnnotations *annotations = [self.profile annotationsForBook:self.bookIdentifier];
         self.notes = [annotations notes];
         
         [self.notesTableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];

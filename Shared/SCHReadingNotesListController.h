@@ -12,6 +12,7 @@
 @class SCHProfileItem;
 @class SCHNote;
 @class SCHBookPoint;
+@class SCHBookIdentifier;
 @protocol SCHReadingNotesListControllerDelegate;
 
 #pragma mark - Interface
@@ -22,7 +23,7 @@
 }
 
 @property (nonatomic, retain) SCHProfileItem *profile;
-@property (nonatomic, retain) NSString *isbn;
+@property (nonatomic, retain) SCHBookIdentifier *bookIdentifier;
 @property (nonatomic, assign) id <SCHReadingNotesListControllerDelegate> delegate;
 
 // interface builder

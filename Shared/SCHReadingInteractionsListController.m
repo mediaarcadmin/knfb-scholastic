@@ -115,7 +115,7 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
     
     [self.topShadow setImage:[UIImage imageNamed:@"reading-view-top-shadow.png"]];
     
-    SCHBookAnnotations *annotations = [self.profile annotationsForBook:self.bookIdentifier.isbn];
+    SCHBookAnnotations *annotations = [self.profile annotationsForBook:self.bookIdentifier];
     self.notes = [annotations notes];
 }
 
