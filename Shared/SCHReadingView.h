@@ -122,5 +122,7 @@ typedef enum
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation;
 
 - (UIImage *)pageSnapshot;
+- (void)dismissReadingViewAdornments;
+
 
 @end
