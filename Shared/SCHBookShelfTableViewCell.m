@@ -24,6 +24,7 @@ static NSInteger const CELL_DELETE_BUTTON = 105;
 static NSInteger const CELL_BACKGROUND_VIEW = 200;
 static NSInteger const CELL_THUMB_BACKGROUND_VIEW = 201;
 static NSInteger const CELL_RULE_IMAGE_VIEW = 202;
+static NSInteger const CELL_ACTIVITY_SPINNER = 203;
 
 @interface SCHBookShelfTableViewCell ()
 
@@ -36,6 +37,7 @@ static NSInteger const CELL_RULE_IMAGE_VIEW = 202;
 @property (readonly) UIButton *deleteButton;
 @property (readonly) UIView *thumbBackgroundView;
 @property (readonly) UIImageView *ruleImageView;
+@property (readonly) UIActivityIndicatorView *activitySpinner;
 
 - (void)updateTheme;
 
@@ -50,6 +52,7 @@ static NSInteger const CELL_RULE_IMAGE_VIEW = 202;
 @synthesize isNewBook;
 @synthesize trashed;
 @synthesize lastCell;
+@synthesize loading;
 
 - (id) initWithCoder:(NSCoder *)aDecoder
 {
@@ -192,6 +195,12 @@ static NSInteger const CELL_RULE_IMAGE_VIEW = 202;
     } else {
         self.ruleImageView.hidden = NO;
     }
+
+    if (self.loading) {
+        [self.activitySpinner startAnimating];
+    } else {
+        [self.activitySpinner stopAnimating];
+    }
 }
 
 - (void)layoutSubviews 
@@ -272,6 +281,12 @@ static NSInteger const CELL_RULE_IMAGE_VIEW = 202;
     [self refreshCell];
 }
 
+- (void)setLoading:(BOOL)aLoading
+{
+    loading = aLoading;
+    [self refreshCell];
+}
+
 #pragma mark - Delete Button
 
 - (void)pressedDeleteButton:(UIButton *) sender
@@ -337,6 +352,11 @@ static NSInteger const CELL_RULE_IMAGE_VIEW = 202;
 - (UIImageView *)ruleImageView
 {
     return (UIImageView *)[self.contentView viewWithTag:CELL_RULE_IMAGE_VIEW];
+}
+
+- (UIActivityIndicatorView *)activitySpinner
+{
+    return (UIActivityIndicatorView *)[self.contentView viewWithTag:CELL_ACTIVITY_SPINNER];
 }
 
 

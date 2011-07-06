@@ -2,9 +2,9 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="7.10">
 	<data>
 		<int key="IBDocument.SystemTarget">1056</int>
-		<string key="IBDocument.SystemVersion">10J869</string>
+		<string key="IBDocument.SystemVersion">10K540</string>
 		<string key="IBDocument.InterfaceBuilderVersion">1306</string>
-		<string key="IBDocument.AppKitVersion">1038.35</string>
+		<string key="IBDocument.AppKitVersion">1038.36</string>
 		<string key="IBDocument.HIToolboxVersion">461.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -66,7 +66,7 @@
 							<object class="IBUILabel" id="653266223">
 								<reference key="NSNextResponder" ref="14922743"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{0, 12}, {128, 48}}</string>
+								<string key="NSFrame">{{4, 12}, {120, 48}}</string>
 								<reference key="NSSuperview" ref="14922743"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="533810245"/>
@@ -122,7 +122,7 @@
 							<object class="IBUILabel" id="598138267">
 								<reference key="NSNextResponder" ref="533810245"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{0, 12}, {128, 48}}</string>
+								<string key="NSFrame">{{4, 12}, {120, 48}}</string>
 								<reference key="NSSuperview" ref="533810245"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="804277865"/>
@@ -168,7 +168,7 @@
 							<object class="IBUILabel" id="53384178">
 								<reference key="NSNextResponder" ref="804277865"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{0, 12}, {128, 48}}</string>
+								<string key="NSFrame">{{4, 12}, {120, 48}}</string>
 								<reference key="NSSuperview" ref="804277865"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="471883000"/>
@@ -232,7 +232,7 @@
 							<object class="IBUIImageView" id="553366612">
 								<reference key="NSNextResponder" ref="178385820"/>
 								<int key="NSvFlags">274</int>
-								<string key="NSFrameSize">{128, 50}</string>
+								<string key="NSFrame">{{2, 1}, {124, 48}}</string>
 								<reference key="NSSuperview" ref="178385820"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="797995784"/>
@@ -265,7 +265,7 @@
 							<object class="IBUIImageView" id="495444336">
 								<reference key="NSNextResponder" ref="797995784"/>
 								<int key="NSvFlags">274</int>
-								<string key="NSFrameSize">{128, 50}</string>
+								<string key="NSFrame">{{2, 1}, {124, 48}}</string>
 								<reference key="NSSuperview" ref="797995784"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="257016917"/>
@@ -293,7 +293,7 @@
 							<object class="IBUIImageView" id="943935167">
 								<reference key="NSNextResponder" ref="257016917"/>
 								<int key="NSvFlags">274</int>
-								<string key="NSFrameSize">{128, 50}</string>
+								<string key="NSFrame">{{2, 1}, {124, 48}}</string>
 								<reference key="NSSuperview" ref="257016917"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView"/>
@@ -648,6 +648,17 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">SCHStoryInteractionController</string>
 					<string key="superclassName">NSObject</string>
+					<object class="NSMutableDictionary" key="actions">
+						<string key="NS.key.0">playAudioButtonTapped:</string>
+						<string key="NS.object.0">id</string>
+					</object>
+					<object class="NSMutableDictionary" key="actionInfosByName">
+						<string key="NS.key.0">playAudioButtonTapped:</string>
+						<object class="IBActionInfo" key="NS.object.0">
+							<string key="name">playAudioButtonTapped:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">./Classes/SCHStoryInteractionController.h</string>

@@ -32,7 +32,7 @@
 
 - (void)setupQuestion;
 - (SCHStoryInteractionWordMatchQuestion *)currentQuestion;
-- (void)checkForCompletion;
+- (BOOL)checkForCompletion;
 
 @end
 
@@ -114,7 +114,7 @@
     }
 }
 
-- (void)checkForCompletion
+- (BOOL)checkForCompletion
 {
     if (self.numberOfCorrectItems == kNumberOfItems) {
         SCHStoryInteractionWordMatch *wordMatch = (SCHStoryInteractionWordMatch *)self.storyInteraction;
@@ -122,7 +122,9 @@
                    completion:^{
                        [self removeFromHostViewWithSuccess:YES];
                    }];
+        return YES;
     }
+    return NO;
 }
 
 #pragma mark - draggable view delegate
@@ -161,7 +163,7 @@
             }
         }
     }
-
+    
     UIImageView *imageView = (UIImageView *)[draggableView viewWithTag:kImageViewTag];
 
     [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
@@ -169,6 +171,7 @@
         [draggableView moveToHomePosition];
         [self enqueueAudioWithPath:@"sfx_dropNo.mp3" fromBundle:YES];        
     } else if (onTarget.matchTag != draggableView.matchTag) {
+        [self setUserInteractionsEnabled:NO];
         [self.occupiedTargets addObject:onTarget];
         UIImage* oldImage = [imageView.image retain];
         [imageView setImage:[UIImage imageNamed:@"storyinteraction-draggable-red"]];
@@ -186,9 +189,11 @@
                 [imageView setImage:oldImage];
                 [draggableView moveToHomePosition];
                 [self.occupiedTargets removeObject:onTarget];
+                [self setUserInteractionsEnabled:YES];
             }];
         [oldImage release];
     } else {
+        [self setUserInteractionsEnabled:NO];
         self.numberOfCorrectItems++;
         [imageView setImage:[UIImage imageNamed:@"storyinteraction-draggable-green"]];
         [draggableView setUserInteractionEnabled:NO];
@@ -204,7 +209,9 @@
                         startDelay:0
             synchronizedStartBlock:nil
               synchronizedEndBlock:^{
-                  [self checkForCompletion];
+                  if (![self checkForCompletion]) {
+                      [self setUserInteractionsEnabled:YES];
+                  }
               }];
     }
 }

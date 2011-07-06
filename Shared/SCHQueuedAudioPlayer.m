@@ -25,6 +25,7 @@
 @property (nonatomic, assign) NSTimeInterval gap;
 @property (nonatomic, retain) AudioItem *currentItem;
 @property (nonatomic, assign) dispatch_queue_t audioDispatchQueue;
+@property (nonatomic, assign) BOOL appInBackground;
 
 - (AVAudioPlayer *)newAudioPlayerWithData:(NSData *)data;
 - (void)playNextItemInQueue;
@@ -39,12 +40,14 @@
 @synthesize gap;
 @synthesize currentItem;
 @synthesize audioDispatchQueue;
+@synthesize appInBackground;
 
 - (void)dealloc
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     self.audioPlayer.delegate = nil;
     [self.audioPlayer pause];
-    [audioPlayer release];
+    [audioPlayer release], audioPlayer = nil;
     [audioQueue release];
     [currentItem release];
     dispatch_release(audioDispatchQueue);
@@ -59,8 +62,37 @@
         self.audioDispatchQueue = dispatch_queue_create("com.bitwink.SCHQueuedAudioPlayer", 0);
         self.gap = 0;
         self.synchronizedBlockQueue = dispatch_get_main_queue();
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(willResignActiveNotification:)
+                                                     name:UIApplicationWillResignActiveNotification
+                                                   object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(didBecomeActiveNotification:)
+                                                     name:UIApplicationDidBecomeActiveNotification
+                                                   object:nil];
+        self.appInBackground = NO;
     }
     return self;
+}
+
+#pragma mark - Background notifications
+
+- (void)willResignActiveNotification: (NSNotification *)notification
+{
+    if (self.audioPlayer && [self.audioPlayer isPlaying]) {
+        [self.audioPlayer pause];
+        NSLog(@"Pausing audio.");
+    }
+    self.appInBackground = YES;
+}
+
+- (void)didBecomeActiveNotification: (NSNotification *)notification
+{
+    if (self.audioPlayer && self.appInBackground) {
+        NSLog(@"Resuming audio.");
+        [self.audioPlayer play];
+    }
+    
+    self.appInBackground = NO;
 }
 
 - (void)setSynchronizedBlockQueue:(dispatch_queue_t)aSynchronizedBlockQueue
@@ -155,7 +187,11 @@
     [player release];
     
     dispatch_block_t playBlock = ^{
-        [self.audioPlayer play];
+        if (self.appInBackground) {
+            [self.audioPlayer pause];
+        } else {
+            [self.audioPlayer play];
+        }
         [self.currentItem executeStartBlockOnQueue:self.synchronizedBlockQueue];
     };
     

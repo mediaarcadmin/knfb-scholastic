@@ -17,7 +17,10 @@
 
 @property (nonatomic, retain) UIView *answerMarkerView;
 @property (nonatomic, copy) dispatch_block_t zoomCompletionHandler;
+@property (nonatomic, assign) CGAffineTransform viewToPageTransform;
+@property (nonatomic, assign) BOOL isPortraitWithLandscapePresentation;
 
+- (void)updateViewToPageTransform;
 - (void)incorrectTapAtPoint:(CGPoint)point;
 - (void)correctTapAtPoint:(CGPoint)point;
 
@@ -29,6 +32,8 @@
 @synthesize pageImageView;
 @synthesize answerMarkerView;
 @synthesize zoomCompletionHandler;
+@synthesize viewToPageTransform;
+@synthesize isPortraitWithLandscapePresentation;
 
 - (void)dealloc
 {
@@ -68,12 +73,19 @@
 - (void)setupViewAtIndex:(NSInteger)screenIndex
 {
     [self setTitle:[[self currentQuestion] prompt]];
+    
+    // If presented in portrait, this SI initially shows the portrait book image. Once
+    // rotated to landscape the landscape book image is captured and the SI locks in
+    // landscaope mode thereafter.     
+    self.isPortraitWithLandscapePresentation = NO;
     if ([self isLandscape]) {
         self.pageImageView.image = [self.delegate currentPageSnapshot];
     } else {
         self.contentsView.backgroundColor = [UIColor clearColor];
     }
-    
+
+    [self updateViewToPageTransform];
+
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(imageTapped:)];
     [self.pageImageView addGestureRecognizer:tap];
     [self.pageImageView setUserInteractionEnabled:YES];
@@ -81,35 +93,64 @@
     
 }
 
+
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
     if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {
-        self.pageImageView.image = nil;
-        self.contentsView.backgroundColor = [UIColor clearColor];
-        [self.scrollView setZoomScale:1.0f animated:YES];
+        self.isPortraitWithLandscapePresentation = YES;
     }
     [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
 }
 
 - (void)didRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
 {
-    if (self.pageImageView.image == nil && UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
-        self.pageImageView.image = [self.delegate currentPageSnapshot];
-        self.contentsView.backgroundColor = [UIColor SCHBlackColor];
+    if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
+        self.isPortraitWithLandscapePresentation = NO;
+        [self updateViewToPageTransform];
+        if (self.pageImageView.image == nil) {
+            self.pageImageView.image = [self.delegate currentPageSnapshot];
+            self.contentsView.backgroundColor = [UIColor SCHBlackColor];
+        }
     }
     [super didRotateToInterfaceOrientation:toInterfaceOrientation];
 }
 
-- (void)zoomOutAndDismiss
+- (void)simulateRotationBackToPortraitAndCloseWithSuccess:(BOOL)success
 {
     self.zoomCompletionHandler = ^{
-        [self removeFromHostViewWithSuccess:YES];
+        if (self.isPortraitWithLandscapePresentation) {
+            [UIView animateWithDuration:0.3
+                             animations:^{
+                                 // rotate and scale the left-hand page to fill screen
+                                 CGFloat scaleFactor = self.pageImageView.image.size.width / self.pageImageView.image.size.height;
+                                 CGAffineTransform scale = CGAffineTransformMakeScale(scaleFactor, scaleFactor);
+                                 CGAffineTransform translate = CGAffineTransformMakeTranslation(CGRectGetWidth(self.pageImageView.bounds)/4, 0);
+                                 CGAffineTransform rotate = CGAffineTransformMakeRotation(M_PI/2);
+                                 self.pageImageView.transform = CGAffineTransformConcat(CGAffineTransformConcat(scale, translate), rotate);
+                             }
+                             completion:^(BOOL finished) {
+                                 [self removeFromHostViewWithSuccess:success];
+                             }];
+        } else {
+            [self removeFromHostViewWithSuccess:success];
+        }
     };
+    
     if (self.scrollView.zoomScale != 1.0f) {
         [self.scrollView setZoomScale:1.0f animated:YES];
     } else {
         self.zoomCompletionHandler();
     }
+}
+
+- (void)closeButtonTapped:(id)sender
+{
+    [self simulateRotationBackToPortraitAndCloseWithSuccess:NO];
+}
+
+- (void)updateViewToPageTransform
+{
+    self.viewToPageTransform = [self.delegate viewToPageTransformForLayoutPage:self.storyInteraction.documentPageNumber];
 }
 
 #pragma mark - scroll view delegate
@@ -131,15 +172,24 @@
 
 #pragma mark - tapping
 
+- (CGPoint)viewToPage:(CGPoint)pointInView;
+{
+    CGAffineTransform currentViewToPage;
+    if (self.isPortraitWithLandscapePresentation) {
+        currentViewToPage = self.viewToPageTransform;
+    } else {
+        currentViewToPage = CGAffineTransformConcat([self affineTransformForCurrentOrientation], self.viewToPageTransform);
+    }
+    return CGPointApplyAffineTransform(pointInView, currentViewToPage);
+}
+
 - (void)imageTapped:(UITapGestureRecognizer *)tap
 {
     [self.answerMarkerView removeFromSuperview];
     self.answerMarkerView = nil;
-    
+
     CGPoint pointInView = [tap locationInView:self.pageImageView];
-    CGAffineTransform viewToPageTransform = CGAffineTransformConcat([self affineTransformForCurrentOrientation],
-                                                                    [self.delegate viewToPageTransformForLayoutPage:self.storyInteraction.documentPageNumber]);
-    CGPoint pointInPage = CGPointApplyAffineTransform(pointInView, viewToPageTransform);
+    CGPoint pointInPage = [self viewToPage:pointInView];
 
     NSLog(@"pointInView:%@ pointInPage:%@ hotSpot:%@",
           NSStringFromCGPoint(pointInView),
@@ -191,6 +241,8 @@
 
 - (void)correctTapAtPoint:(CGPoint)point
 {
+    [self setUserInteractionsEnabled:NO];
+    
     CGFloat scale = 1.0f / self.scrollView.zoomScale;
     UIColor *fillColors[3] = {
         [UIColor SCHGreen2Color],
@@ -229,13 +281,12 @@
     [self cancelQueuedAudio];
     [self enqueueAudioWithPath:[self.storyInteraction storyInteractionCorrectAnswerSoundFilename]
                     fromBundle:YES];
-    [self enqueueAudioWithPath:[self.storyInteraction audioPathForThatsRight] fromBundle:NO];
     [self enqueueAudioWithPath:[[self currentQuestion] audioPathForCorrectAnswer]
                     fromBundle:NO
-                    startDelay:0.5
+                    startDelay:0
         synchronizedStartBlock:nil
           synchronizedEndBlock:^{
-              [self zoomOutAndDismiss];
+              [self simulateRotationBackToPortraitAndCloseWithSuccess:YES];
           }];
     
     // disable more taps

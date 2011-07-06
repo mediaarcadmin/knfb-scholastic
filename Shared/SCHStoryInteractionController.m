@@ -113,11 +113,7 @@
         
         currentScreenIndex = 0;
         
-        // register for going into the background
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(willResignActiveNotification:)
-                                                     name:UIApplicationWillResignActiveNotification
-                                                   object:nil];
+        // note that background audio monitoring has been moved into SCHQueuedAudioPlayer
         
     }
     return self;
@@ -273,38 +269,6 @@
     [self presentInHostView:host withInterfaceOrientation:self.interfaceOrientation];
 }
 
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
-{
-    if (!self.containerView.superview) {
-        return;
-    }
-    
-    CGFloat superviewWidth = CGRectGetWidth(self.containerView.superview.bounds);
-    CGFloat superviewHeight = CGRectGetHeight(self.containerView.superview.bounds);
-    CGRect superviewBounds = CGRectMake(0, 0, MAX(superviewWidth, superviewHeight), MIN(superviewWidth, superviewHeight));
-    CGPoint superviewCenter = CGPointMake(floorf(CGRectGetMidX(superviewBounds)), floorf(CGRectGetMidY(superviewBounds)));
-    
-    [UIView animateWithDuration:duration
-                          delay:0
-                        options:UIViewAnimationOptionAllowUserInteraction
-                     animations:^{
-                         if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation) && UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
-                             self.containerView.transform = CGAffineTransformIdentity;
-                             self.containerView.center = superviewCenter;
-                         }
-                         if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation) && UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {
-                             CGFloat portraitOffset = (superviewWidth - superviewHeight)/2;
-                             self.containerView.transform = CGAffineTransformMakeRotation(-M_PI/2);
-                             self.containerView.center = CGPointMake(superviewCenter.x-portraitOffset, superviewCenter.y+portraitOffset);
-                         }
-                         self.containerView.bounds = CGRectIntegral(superviewBounds);
-                         if (self.frameStyle != SCHStoryInteractionTitleOverlaysContents) {
-                             self.backgroundView.center = superviewCenter;
-                         }
-                     }
-                     completion:nil];
-}
-
 - (void)setupGeometryForContainerView:(UIView *)container
                        backgroundView:(UIImageView *)background
                          contentsView:(UIView *)contents
@@ -435,6 +399,38 @@
 
 #pragma mark - orientation
 
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    if (!self.containerView.superview) {
+        return;
+    }
+    
+    CGFloat superviewWidth = CGRectGetWidth(self.containerView.superview.bounds);
+    CGFloat superviewHeight = CGRectGetHeight(self.containerView.superview.bounds);
+    CGRect superviewBounds = CGRectMake(0, 0, MAX(superviewWidth, superviewHeight), MIN(superviewWidth, superviewHeight));
+    CGPoint superviewCenter = CGPointMake(floorf(CGRectGetMidX(superviewBounds)), floorf(CGRectGetMidY(superviewBounds)));
+    
+    [UIView animateWithDuration:duration
+                          delay:0
+                        options:UIViewAnimationOptionAllowUserInteraction
+                     animations:^{
+                         if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation) && UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
+                             self.containerView.transform = CGAffineTransformIdentity;
+                             self.containerView.center = superviewCenter;
+                         }
+                         if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation) && UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {
+                             CGFloat portraitOffset = (superviewWidth - superviewHeight)/2;
+                             self.containerView.transform = CGAffineTransformMakeRotation(-M_PI/2);
+                             self.containerView.center = CGPointMake(superviewCenter.x-portraitOffset, superviewCenter.y+portraitOffset);
+                         }
+                         self.containerView.bounds = CGRectIntegral(superviewBounds);
+                         if (self.frameStyle != SCHStoryInteractionTitleOverlaysContents) {
+                             self.backgroundView.center = superviewCenter;
+                         }
+                     }
+                     completion:nil];
+}
+
 - (void)didRotateToInterfaceOrientation:(UIInterfaceOrientation)aToInterfaceOrientation
 {
     self.interfaceOrientation = aToInterfaceOrientation;
@@ -483,11 +479,6 @@
 
 #pragma mark - Notification methods
 
-- (void)willResignActiveNotification:(NSNotification *)notification
-{
-    [self.audioPlayer cancelPlaybackExecutingSynchronizedBlocksImmediately:NO];
-}
-
 - (void)removeFromHostViewWithSuccess:(BOOL)success
 {
     [self cancelQueuedAudio];
@@ -522,10 +513,13 @@
 
 - (IBAction)playAudioButtonTapped:(id)sender
 {
-    NSString *path = [self audioPathForQuestion];
-    if (path != nil) {
-        [self playAudioAtPath:path completion:nil];
-    }   
+    if (![self.audioPlayer isPlaying]) { 
+        NSString *path = [self audioPathForQuestion];
+        if (path != nil) {
+            [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
+            [self enqueueAudioWithPath:path fromBundle:NO];
+        }   
+    }
 }
 
 - (void)playDefaultButtonAudio

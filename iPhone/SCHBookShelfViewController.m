@@ -32,6 +32,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 
 @property (nonatomic, assign) int moveToValue;
 @property (nonatomic, assign) BOOL updateShelfOnReturnToShelf;
+@property (nonatomic, assign) int currentlyLoadingIndex;
 
 
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation;
@@ -69,6 +70,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 @synthesize updateShelfOnReturnToShelf;
 @synthesize listViewCell;
 @synthesize managedObjectContext;
+@synthesize currentlyLoadingIndex;
 
 #pragma mark - Object lifecycle
 
@@ -196,6 +198,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
     [self.listTableView reloadData];
     
 //    [self changeToListView:nil];
+    self.currentlyLoadingIndex = -1;
 
 }
 
@@ -274,8 +277,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer 
 {
-    if (self.sortType == kSCHBookSortTypeUser && 
-        [self.profileItem.BookshelfStyle intValue] != kSCHBookshelfStyleYoungChild) {
+    if (self.sortType == kSCHBookSortTypeUser) {
         [self.gridView setEditing:YES animated:YES];
     }
     
@@ -373,6 +375,12 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
         cell.lastCell = NO;
     }
     
+    if (self.currentlyLoadingIndex == [indexPath row]) {
+        cell.loading = YES;
+    } else {
+        cell.loading = NO;
+    }
+    
     return cell;
 }
 
@@ -416,6 +424,10 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
         return;
     }
     
+    if (self.currentlyLoadingIndex != -1) {
+        return;
+    }
+    
 	NSLog(@"Calling table row selection.");
     [aTableView deselectRowAtIndexPath:indexPath animated:YES];
     
@@ -426,13 +438,19 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
         return;
     }
     
-    SCHReadingViewController *readingController = [self openBook:[self.books objectAtIndex:[indexPath row]]];
-    if (readingController != nil) {
-//        if (self.sortType == kSCHBookSortTypeLastRead) {
+    self.currentlyLoadingIndex = [indexPath row];
+    [self.listTableView reloadData];
+  
+    double delayInSeconds = 0.02;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        SCHReadingViewController *readingController = [self openBook:[self.books objectAtIndex:[indexPath row]]];
+        if (readingController != nil) {
             self.updateShelfOnReturnToShelf = YES;
-//        }
-        [self.navigationController pushViewController:readingController animated:YES]; 
-    }
+            [self.navigationController pushViewController:readingController animated:YES]; 
+            self.currentlyLoadingIndex = -1;
+        }
+    });
 }
 
 

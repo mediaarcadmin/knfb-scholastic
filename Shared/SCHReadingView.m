@@ -689,4 +689,10 @@
     return nil;
 }
 
+- (void)dismissReadingViewAdornments
+{
+    [self dismissSelector];
+    [self dismissFollowAlongHighlighter];
+}
+
 @end
