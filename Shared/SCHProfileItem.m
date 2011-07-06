@@ -159,10 +159,12 @@ static NSString * const kSCHProfileItemUserContentItemContentMetadataItem = @"Us
                                                       inManagedObjectContext:self.managedObjectContext];
 
             for (SCHContentMetadataItem *book in bookObjects) {
-                NSFetchRequest *fetchRequest = [entityDescription.managedObjectModel 
-                                                fetchRequestTemplateForName:kSCHUserContentItemFetchWithContentIdentifier];
-                
-                [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"ContentIdentifier == %@", book.ContentIdentifier]];
+                NSFetchRequest *fetchRequest = [entityDescription.managedObjectModel
+                                                fetchRequestFromTemplateWithName:kSCHUserContentItemFetchWithContentIdentifier
+                                                substitutionVariables:[NSDictionary dictionaryWithObjectsAndKeys:
+                                                                       book.ContentIdentifier, kSCHUserContentItemCONTENT_IDENTIFIER,
+                                                                       book.DRMQualifier, kSCHUserContentItemDRM_QUALIFIER,
+                                                                       nil]];
                 [fetchRequest setFetchLimit:1];
                 
                 NSArray *userContentItems = [self.managedObjectContext executeFetchRequest:fetchRequest error:nil];	

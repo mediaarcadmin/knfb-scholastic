@@ -16,6 +16,7 @@ static NSString * const kSCHUserContentItem = @"SCHUserContentItem";
 
 static NSString * const kSCHUserContentItemFetchWithContentIdentifier = @"fetchUserContentItemWithContentIdentifier";
 static NSString * const kSCHUserContentItemCONTENT_IDENTIFIER = @"CONTENT_IDENTIFIER";
+static NSString * const kSCHUserContentItemDRM_QUALIFIER = @"DRM_QUALIFIER";
 
 @interface SCHUserContentItem :  SCHSyncEntity  
 {
