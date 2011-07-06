@@ -113,11 +113,7 @@
         
         currentScreenIndex = 0;
         
-        // register for going into the background
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(willResignActiveNotification:)
-                                                     name:UIApplicationWillResignActiveNotification
-                                                   object:nil];
+        // note that background audio monitoring has been moved into SCHQueuedAudioPlayer
         
     }
     return self;
@@ -482,11 +478,6 @@
 }
 
 #pragma mark - Notification methods
-
-- (void)willResignActiveNotification:(NSNotification *)notification
-{
-    [self.audioPlayer cancelPlaybackExecutingSynchronizedBlocksImmediately:NO];
-}
 
 - (void)removeFromHostViewWithSuccess:(BOOL)success
 {
