@@ -288,6 +288,12 @@
 		523E19F313A0241D00A785B6 /* SCHStoryInteractionVideo_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 523E19F113A0241D00A785B6 /* SCHStoryInteractionVideo_iPad.xib */; };
 		5243545A13337BAC00282B53 /* SCHAppBookOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = 5243545713337BAC00282B53 /* SCHAppBookOrder.m */; };
 		5243545B13337BAC00282B53 /* SCHAppBookOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = 5243545713337BAC00282B53 /* SCHAppBookOrder.m */; };
+		5248E10C13C4858900FA2CDC /* SCHReadingStatsContentItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5248E10B13C4858900FA2CDC /* SCHReadingStatsContentItem.m */; };
+		5248E10D13C4858900FA2CDC /* SCHReadingStatsContentItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5248E10B13C4858900FA2CDC /* SCHReadingStatsContentItem.m */; };
+		5248E11013C4858900FA2CDC /* SCHReadingStatsDetailItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5248E10F13C4858900FA2CDC /* SCHReadingStatsDetailItem.m */; };
+		5248E11113C4858900FA2CDC /* SCHReadingStatsDetailItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5248E10F13C4858900FA2CDC /* SCHReadingStatsDetailItem.m */; };
+		5248E11413C4858900FA2CDC /* SCHReadingStatsEntryItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5248E11313C4858900FA2CDC /* SCHReadingStatsEntryItem.m */; };
+		5248E11513C4858900FA2CDC /* SCHReadingStatsEntryItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5248E11313C4858900FA2CDC /* SCHReadingStatsEntryItem.m */; };
 		525E82D3138FFFF7006A6775 /* SCHAudioInfoProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 525E82D2138FFFF7006A6775 /* SCHAudioInfoProcessor.m */; };
 		525E82D4138FFFF7006A6775 /* SCHAudioInfoProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 525E82D2138FFFF7006A6775 /* SCHAudioInfoProcessor.m */; };
 		525E82D713938548006A6775 /* SCHAudioInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 525E82D613938548006A6775 /* SCHAudioInfo.m */; };
@@ -343,6 +349,8 @@
 		5297B44A13A8C362008ADD9B /* SCHStoryInteractionControllerMultipleChoiceWithAnswerPictures.m in Sources */ = {isa = PBXBuildFile; fileRef = 5297B44813A8C362008ADD9B /* SCHStoryInteractionControllerMultipleChoiceWithAnswerPictures.m */; };
 		5297B44C13A8C489008ADD9B /* SCHStoryInteractionMultipleChoiceWithAnswerPictures_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5297B44B13A8C489008ADD9B /* SCHStoryInteractionMultipleChoiceWithAnswerPictures_iPhone.xib */; };
 		5297B44D13A8C489008ADD9B /* SCHStoryInteractionMultipleChoiceWithAnswerPictures_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5297B44B13A8C489008ADD9B /* SCHStoryInteractionMultipleChoiceWithAnswerPictures_iPhone.xib */; };
+		52985F7213C48D32009AD121 /* SCHBookStatistics.m in Sources */ = {isa = PBXBuildFile; fileRef = 52985F7113C48D32009AD121 /* SCHBookStatistics.m */; };
+		52985F7313C48D32009AD121 /* SCHBookStatistics.m in Sources */ = {isa = PBXBuildFile; fileRef = 52985F7113C48D32009AD121 /* SCHBookStatistics.m */; };
 		52A6763113AF3744007A7FE6 /* UIColor+Scholastic.m in Sources */ = {isa = PBXBuildFile; fileRef = 52A6763013AF3744007A7FE6 /* UIColor+Scholastic.m */; };
 		52A6763213AF3744007A7FE6 /* UIColor+Scholastic.m in Sources */ = {isa = PBXBuildFile; fileRef = 52A6763013AF3744007A7FE6 /* UIColor+Scholastic.m */; };
 		52AD966B12F9B1B40099FB88 /* SCHAnnotationsItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD966612F9B1B40099FB88 /* SCHAnnotationsItem.m */; };
@@ -1778,6 +1786,12 @@
 		523E19F113A0241D00A785B6 /* SCHStoryInteractionVideo_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionVideo_iPad.xib; sourceTree = "<group>"; };
 		5243545613337BAC00282B53 /* SCHAppBookOrder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAppBookOrder.h; path = Shared/SCHAppBookOrder.h; sourceTree = "<group>"; };
 		5243545713337BAC00282B53 /* SCHAppBookOrder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHAppBookOrder.m; path = Shared/SCHAppBookOrder.m; sourceTree = "<group>"; };
+		5248E10A13C4858900FA2CDC /* SCHReadingStatsContentItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHReadingStatsContentItem.h; path = Shared/SCHReadingStatsContentItem.h; sourceTree = "<group>"; };
+		5248E10B13C4858900FA2CDC /* SCHReadingStatsContentItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHReadingStatsContentItem.m; path = Shared/SCHReadingStatsContentItem.m; sourceTree = "<group>"; };
+		5248E10E13C4858900FA2CDC /* SCHReadingStatsDetailItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHReadingStatsDetailItem.h; path = Shared/SCHReadingStatsDetailItem.h; sourceTree = "<group>"; };
+		5248E10F13C4858900FA2CDC /* SCHReadingStatsDetailItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHReadingStatsDetailItem.m; path = Shared/SCHReadingStatsDetailItem.m; sourceTree = "<group>"; };
+		5248E11213C4858900FA2CDC /* SCHReadingStatsEntryItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHReadingStatsEntryItem.h; path = Shared/SCHReadingStatsEntryItem.h; sourceTree = "<group>"; };
+		5248E11313C4858900FA2CDC /* SCHReadingStatsEntryItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHReadingStatsEntryItem.m; path = Shared/SCHReadingStatsEntryItem.m; sourceTree = "<group>"; };
 		525E82D1138FFFF6006A6775 /* SCHAudioInfoProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAudioInfoProcessor.h; path = Shared/SCHAudioInfoProcessor.h; sourceTree = "<group>"; };
 		525E82D2138FFFF7006A6775 /* SCHAudioInfoProcessor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHAudioInfoProcessor.m; path = Shared/SCHAudioInfoProcessor.m; sourceTree = "<group>"; };
 		525E82D513938547006A6775 /* SCHAudioInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAudioInfo.h; path = Shared/SCHAudioInfo.h; sourceTree = "<group>"; };
@@ -1857,6 +1871,8 @@
 		5297B44713A8C362008ADD9B /* SCHStoryInteractionControllerMultipleChoiceWithAnswerPictures.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionControllerMultipleChoiceWithAnswerPictures.h; sourceTree = "<group>"; };
 		5297B44813A8C362008ADD9B /* SCHStoryInteractionControllerMultipleChoiceWithAnswerPictures.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionControllerMultipleChoiceWithAnswerPictures.m; sourceTree = "<group>"; };
 		5297B44B13A8C489008ADD9B /* SCHStoryInteractionMultipleChoiceWithAnswerPictures_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionMultipleChoiceWithAnswerPictures_iPhone.xib; sourceTree = "<group>"; };
+		52985F7013C48D32009AD121 /* SCHBookStatistics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookStatistics.h; path = Shared/SCHBookStatistics.h; sourceTree = "<group>"; };
+		52985F7113C48D32009AD121 /* SCHBookStatistics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookStatistics.m; path = Shared/SCHBookStatistics.m; sourceTree = "<group>"; };
 		52A6762F13AF3744007A7FE6 /* UIColor+Scholastic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIColor+Scholastic.h"; path = "Shared/UIColor+Scholastic.h"; sourceTree = "<group>"; };
 		52A6763013AF3744007A7FE6 /* UIColor+Scholastic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIColor+Scholastic.m"; path = "Shared/UIColor+Scholastic.m"; sourceTree = "<group>"; };
 		52AD966512F9B1B40099FB88 /* SCHAnnotationsItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAnnotationsItem.h; path = Shared/SCHAnnotationsItem.h; sourceTree = "<group>"; };
@@ -3417,6 +3433,12 @@
 				52298A7E12F0EF5600BBBCE6 /* SCHProfileItem.m */,
 				52298A7512F0EF5600BBBCE6 /* SCHProfileStatusItem.h */,
 				52298A7612F0EF5600BBBCE6 /* SCHProfileStatusItem.m */,
+				5248E10A13C4858900FA2CDC /* SCHReadingStatsContentItem.h */,
+				5248E10B13C4858900FA2CDC /* SCHReadingStatsContentItem.m */,
+				5248E10E13C4858900FA2CDC /* SCHReadingStatsDetailItem.h */,
+				5248E10F13C4858900FA2CDC /* SCHReadingStatsDetailItem.m */,
+				5248E11213C4858900FA2CDC /* SCHReadingStatsEntryItem.h */,
+				5248E11313C4858900FA2CDC /* SCHReadingStatsEntryItem.m */,
 				52298A6F12F0EF5600BBBCE6 /* SCHSyncEntity.h */,
 				52298A7012F0EF5600BBBCE6 /* SCHSyncEntity.m */,
 				52298A6712F0EF5600BBBCE6 /* SCHUserContentItem.h */,
@@ -4681,6 +4703,8 @@
 				C92FA7D11355BE20001BAA6B /* SCHSmartZoomBlockSource.m */,
 				52F15A1D1371A2CA0073941E /* SCHBookAnnotations.h */,
 				52F15A1E1371A2CA0073941E /* SCHBookAnnotations.m */,
+				52985F7013C48D32009AD121 /* SCHBookStatistics.h */,
+				52985F7113C48D32009AD121 /* SCHBookStatistics.m */,
 			);
 			name = "Book Data";
 			sourceTree = "<group>";
@@ -6033,6 +6057,10 @@
 				2894E80013B09E5800AEAD79 /* SCHStoryInteractionControllerHotSpot.m in Sources */,
 				280D6A1813B1D6180032085D /* SCHStarView.m in Sources */,
 				F8E2D3D113B9CB8A001E207B /* TTTAttributedLabel.m in Sources */,
+				5248E10C13C4858900FA2CDC /* SCHReadingStatsContentItem.m in Sources */,
+				5248E11013C4858900FA2CDC /* SCHReadingStatsDetailItem.m in Sources */,
+				5248E11413C4858900FA2CDC /* SCHReadingStatsEntryItem.m in Sources */,
+				52985F7213C48D32009AD121 /* SCHBookStatistics.m in Sources */,
 				287ADE9F13BB7A1C00D03247 /* SCHCoreDataOperation.m in Sources */,
 				284EF24413BC4CDF00F9BD5A /* SCHBookIdentifier.m in Sources */,
 			);
@@ -6319,6 +6347,10 @@
 				F8E2D3D213B9CB8A001E207B /* TTTAttributedLabel.m in Sources */,
 				287ADEA013BB7A1C00D03247 /* SCHCoreDataOperation.m in Sources */,
 				284EF24513BC4CDF00F9BD5A /* SCHBookIdentifier.m in Sources */,
+				5248E10D13C4858900FA2CDC /* SCHReadingStatsContentItem.m in Sources */,
+				5248E11113C4858900FA2CDC /* SCHReadingStatsDetailItem.m in Sources */,
+				5248E11513C4858900FA2CDC /* SCHReadingStatsEntryItem.m in Sources */,
+				52985F7313C48D32009AD121 /* SCHBookStatistics.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
