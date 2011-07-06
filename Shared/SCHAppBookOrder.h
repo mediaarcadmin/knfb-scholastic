@@ -15,6 +15,7 @@ static NSString * const kSCHAppBookOrder = @"SCHAppBookOrder";
 
 static NSString * const kSCHAppBookOrderOrder = @"Order";
 static NSString * const kSCHAppBookOrderISBN = @"ISBN";
+static NSString * const kSCHAppBookOrderDRMQualifier = @"DRMQualifier";
 
 @interface SCHAppBookOrder : NSManagedObject {
 
@@ -22,6 +23,7 @@ static NSString * const kSCHAppBookOrderISBN = @"ISBN";
 
 @property (nonatomic, retain) NSNumber * Order;
 @property (nonatomic, retain) NSString * ISBN;
+@property (nonatomic, retain) NSNumber * DRMQualifier;
 @property (nonatomic, retain) SCHProfileItem * ProfileItem;
 
 @end

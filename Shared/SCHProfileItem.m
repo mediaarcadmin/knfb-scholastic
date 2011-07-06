@@ -392,6 +392,7 @@ static NSString * const kSCHProfileItemUserContentItemContentMetadataItem = @"Us
         SCHAppBookOrder *newBookOrder = [NSEntityDescription insertNewObjectForEntityForName:kSCHAppBookOrder inManagedObjectContext:self.managedObjectContext];
         
         newBookOrder.ISBN = [[books objectAtIndex:idx] isbn];
+        newBookOrder.DRMQualifier = [[books objectAtIndex:idx] DRMQualifier];        
         newBookOrder.Order = [NSNumber numberWithInt:idx];
         
         [self addAppBookOrderObject:newBookOrder];

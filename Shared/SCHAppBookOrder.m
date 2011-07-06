@@ -13,6 +13,7 @@
 @implementation SCHAppBookOrder
 @dynamic Order;
 @dynamic ISBN;
+@dynamic DRMQualifier;
 @dynamic ProfileItem;
 
 
