@@ -239,6 +239,8 @@
 
 - (void)correctTapAtPoint:(CGPoint)point
 {
+    [self setUserInteractionsEnabled:NO];
+    
     CGFloat scale = 1.0f / self.scrollView.zoomScale;
     UIColor *fillColors[3] = {
         [UIColor SCHGreen2Color],
