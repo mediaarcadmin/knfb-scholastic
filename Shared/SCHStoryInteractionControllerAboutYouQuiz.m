@@ -204,11 +204,13 @@ typedef enum {
 
 - (IBAction)startButtonTapped:(id)sender
 {
+    [self playDefaultButtonAudio];
     [self presentNextView];
 }
 
 - (IBAction)questionButtonTapped:(id)sender
 {
+    [self playDefaultButtonAudio];
     self.simultaneousTapCount++;
     if (self.simultaneousTapCount == 1) {
         [self performSelector:@selector(answerChosen:) withObject:sender afterDelay:kMinimumDistinguishedAnswerDelay];
@@ -234,7 +236,8 @@ typedef enum {
 
 - (IBAction)doneButtonTapped:(id)sender
 {
-    [self removeFromHostViewWithSuccess:YES];
+    [self playDefaultButtonAudio];
+    [self performSelector:@selector(removeFromHostViewWithSuccess:) withObject:[NSNumber numberWithBool:YES] afterDelay:0.5];
 }
 
 @end
