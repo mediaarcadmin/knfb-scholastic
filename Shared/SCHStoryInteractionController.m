@@ -513,10 +513,13 @@
 
 - (IBAction)playAudioButtonTapped:(id)sender
 {
-    NSString *path = [self audioPathForQuestion];
-    if (path != nil) {
-        [self playAudioAtPath:path completion:nil];
-    }   
+    if (![self.audioPlayer isPlaying]) { 
+        NSString *path = [self audioPathForQuestion];
+        if (path != nil) {
+            [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
+            [self enqueueAudioWithPath:path fromBundle:NO];
+        }   
+    }
 }
 
 - (void)playDefaultButtonAudio
