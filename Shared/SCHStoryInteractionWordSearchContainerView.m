@@ -31,6 +31,8 @@
 @property (nonatomic, assign) CGPoint selectionStartPoint;
 @property (nonatomic, retain) SelectionLayer *selectionLayer;
 
+- (void)addMarchingAntsAnimation;
+
 @end
 
 @implementation SCHStoryInteractionWordSearchContainerView
@@ -46,6 +48,7 @@
 
 - (void)dealloc
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     [selectionLayer release];
     [super dealloc];
 }
@@ -61,14 +64,31 @@
         self.selectionLayer = [SelectionLayer layer];
         self.selectionLayer.color = [UIColor SCHYellowColor];
         
-        CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"phase"];
-        animation.fromValue = [NSNumber numberWithFloat:0.0];
-        animation.toValue = [NSNumber numberWithFloat:10.0];
-        animation.duration = 1.0;
-        animation.repeatCount = CGFLOAT_MAX;
-        [self.selectionLayer addAnimation:animation forKey:@"marching-ants"];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(didBecomeActiveNotification:)
+                                                     name:UIApplicationDidBecomeActiveNotification
+                                                   object:nil];
+
+        
+        [self addMarchingAntsAnimation];
     }
     return self;
+}
+
+- (void)didBecomeActiveNotification:(NSNotification *)notification
+{
+    [self addMarchingAntsAnimation];
+}
+
+- (void)addMarchingAntsAnimation
+{
+    CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"phase"];
+    animation.fromValue = [NSNumber numberWithFloat:0.0];
+    animation.toValue = [NSNumber numberWithFloat:10.0];
+    animation.duration = 1.0;
+    animation.repeatCount = CGFLOAT_MAX;
+    [self.selectionLayer removeAllAnimations];
+    [self.selectionLayer addAnimation:animation forKey:@"marching-ants"];
 }
 
 - (void)populateFromWordSearchModel:(SCHStoryInteractionWordSearch *)wordSearch
