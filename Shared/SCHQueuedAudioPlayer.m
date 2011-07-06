@@ -78,16 +78,18 @@
 
 - (void)willResignActiveNotification: (NSNotification *)notification
 {
-    self.appInBackground = YES;
     if (self.audioPlayer && [self.audioPlayer isPlaying]) {
         [self.audioPlayer pause];
+        NSLog(@"Pausing audio.");
     }
+    self.appInBackground = YES;
 }
 
 - (void)didBecomeActiveNotification: (NSNotification *)notification
 {
     if (self.audioPlayer && self.appInBackground) {
         NSLog(@"Resuming audio.");
+        [self.audioPlayer play];
     }
     
     self.appInBackground = NO;
