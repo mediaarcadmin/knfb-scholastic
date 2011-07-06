@@ -1039,6 +1039,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (void)presentStoryInteraction:(SCHStoryInteraction *)storyInteraction
 {
+    [self.readingView dismissReadingViewAdornments];
+    
     void (^presentStoryInteractionBlock)(void) = ^{
         [self setStoryInteractionButtonVisible:NO animated:YES withSound:NO];
         self.storyInteractionController = [SCHStoryInteractionController storyInteractionControllerForStoryInteraction:storyInteraction];
@@ -1685,6 +1687,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     if (self.toolbarsVisible) {
 		[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
         self.youngerToolbarToggleView.alpha = 0.0f;
+        [self.readingView dismissReadingViewAdornments];
 
 	} else {
 		[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
