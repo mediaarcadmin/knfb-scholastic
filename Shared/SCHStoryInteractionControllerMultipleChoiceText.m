@@ -137,7 +137,7 @@
 
 - (void)playAudioButtonTapped:(id)sender
 {
-    if (!self.answeredCorrectly) { 
+    if (![self playingAudio] && !self.answeredCorrectly) { 
         [self playQuestionAudioAndHighlightAnswersWithIntroduction:NO];
     }
 }
