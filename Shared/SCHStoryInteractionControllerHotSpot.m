@@ -239,6 +239,8 @@
 
 - (void)correctTapAtPoint:(CGPoint)point
 {
+    [self setUserInteractionsEnabled:NO];
+    
     CGFloat scale = 1.0f / self.scrollView.zoomScale;
     UIColor *fillColors[3] = {
         [UIColor SCHGreen2Color],
@@ -277,10 +279,9 @@
     [self cancelQueuedAudio];
     [self enqueueAudioWithPath:[self.storyInteraction storyInteractionCorrectAnswerSoundFilename]
                     fromBundle:YES];
-    [self enqueueAudioWithPath:[self.storyInteraction audioPathForThatsRight] fromBundle:NO];
     [self enqueueAudioWithPath:[[self currentQuestion] audioPathForCorrectAnswer]
                     fromBundle:NO
-                    startDelay:0.5
+                    startDelay:0
         synchronizedStartBlock:nil
           synchronizedEndBlock:^{
               [self simulateRotationBackToPortraitAndCloseWithSuccess:YES];

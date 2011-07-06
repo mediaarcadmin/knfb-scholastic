@@ -164,20 +164,24 @@
         [label setStrikedOut:YES];
         [containerView addPermanentHighlightFromCurrentSelectionWithColor:label.strikeOutColor];
         [containerView clearSelection];
+        
+        [self setUserInteractionsEnabled:NO];
         [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
         [self enqueueAudioWithPath:[wordSearch storyInteractionCorrectAnswerSoundFilename]
                         fromBundle:YES];
         [self enqueueAudioWithPath:[wordSearch audioPathForYouFound] fromBundle:NO];
-        [self enqueueAudioWithPath:[wordSearch audioPathForWordAtIndex:index] fromBundle:NO];
+        [self enqueueAudioWithPath:[wordSearch audioPathForWordAtIndex:index]
+                        fromBundle:NO
+                        startDelay:0
+            synchronizedStartBlock:nil
+              synchronizedEndBlock:^{ [self setUserInteractionsEnabled:YES]; }];
+        
         if ([self.remainingWords count] == 0) {
-            [containerView setUserInteractionEnabled:NO];
             [self enqueueAudioWithPath:[wordSearch audioPathForYouFoundThemAll]
                             fromBundle:NO
                             startDelay:0
-                synchronizedStartBlock:nil
-                  synchronizedEndBlock:^{
-                      [self removeFromHostViewWithSuccess:YES];
-                  }];
+                synchronizedStartBlock:^{ [self setUserInteractionsEnabled:NO]; }
+                  synchronizedEndBlock:^{ [self removeFromHostViewWithSuccess:YES]; }];
         }
     } else if (index == NSNotFound) {
         [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
