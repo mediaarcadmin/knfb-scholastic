@@ -7,12 +7,19 @@
 //
 
 #import "SCHContentItem.h"
-
+#import "SCHBookIdentifier.h"
 
 @implementation SCHContentItem 
 
 @dynamic DRMQualifier;
 @dynamic ContentIdentifierType;
 @dynamic ContentIdentifier;
+
+- (SCHBookIdentifier *)bookIdentifier
+{
+    SCHBookIdentifier *identifier = [[SCHBookIdentifier alloc] initWithISBN:self.ContentIdentifier
+                                                               DRMQualifier:self.DRMQualifier];
+    return [identifier autorelease];
+}
 
 @end

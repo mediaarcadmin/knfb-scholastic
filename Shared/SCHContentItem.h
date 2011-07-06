@@ -8,6 +8,7 @@
 
 #import <CoreData/CoreData.h>
 
+@class SCHBookIdentifier;
 
 @interface SCHContentItem :  NSManagedObject  
 {
@@ -16,6 +17,8 @@
 @property (nonatomic, retain) NSNumber * DRMQualifier;
 @property (nonatomic, retain) NSNumber * ContentIdentifierType;
 @property (nonatomic, retain) NSString * ContentIdentifier;
+
+- (SCHBookIdentifier *)bookIdentifier;
 
 @end
 
