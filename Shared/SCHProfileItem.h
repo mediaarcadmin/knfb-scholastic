@@ -15,6 +15,7 @@
 @class SCHContentProfileItem;
 @class SCHPrivateAnnotations;
 @class SCHBookAnnotations;
+@class SCHBookStatistics;
 @class SCHContentMetadataItem;
 @class SCHBookIdentifier;
 
@@ -58,6 +59,7 @@ typedef enum {
 
 - (NSMutableArray *)allBookIdentifiers;
 - (SCHBookAnnotations *)annotationsForBook:(SCHBookIdentifier *)bookIdentifier;
+- (SCHBookStatistics *)newStatisticsForBook:(SCHBookIdentifier *)bookIdentifier;
 - (void)saveBookOrder:(NSArray *)books;
 - (void)clearBookOrder;
 - (NSString *)bookshelfName:(BOOL)shortName;
@@ -70,8 +72,6 @@ typedef enum {
 
 - (BOOL)bookIsTrashedWithIdentifier:(SCHBookIdentifier *)identifier;
 - (void)setTrashed:(BOOL)trashed forBookWithIdentifier:(SCHBookIdentifier *)identifier;
-
-- (NSInteger)contentIdentifierLastPageLocation:(NSString *)contentIdentifier;
 
 @end
 

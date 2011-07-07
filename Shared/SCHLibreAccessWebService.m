@@ -1621,7 +1621,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 {
 	if (object != nil && intoObject != nil) {
 		intoObject.ReadingStatsContentList = [[LibreAccessServiceSvc_ReadingStatsContentList alloc] init];
-		for (NSDictionary *item in [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceReadingStatsContentList]]) {
+		for (NSDictionary *item in [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceReadingStatsContentItem]]) {
 			LibreAccessServiceSvc_ReadingStatsContentItem *readingStatsContentItem = [[LibreAccessServiceSvc_ReadingStatsContentItem alloc] init];
 			[self fromObject:item intoReadingStatsContentItem:readingStatsContentItem];
 			[intoObject.ReadingStatsContentList addReadingStatsContentItem:readingStatsContentItem];
@@ -1640,7 +1640,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		intoObject.drmqualifier = [[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceDRMQualifier]] DRMQualifierValue];		
 		intoObject.format = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceFormat]];
 		intoObject.ReadingStatsEntryList = [[LibreAccessServiceSvc_ReadingStatsEntryList alloc] init];
-		for (NSDictionary *item in [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceReadingStatsContentList]]) {
+		for (NSDictionary *item in [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceReadingStatsEntryItem]]) {
 			LibreAccessServiceSvc_ReadingStatsEntryItem *readingStatsEntryItem = [[LibreAccessServiceSvc_ReadingStatsEntryItem alloc] init];
 			[self fromObject:item intoReadingStatsEntryItem:readingStatsEntryItem];
 			[intoObject.ReadingStatsEntryList addReadingStatsEntryItem:readingStatsEntryItem];

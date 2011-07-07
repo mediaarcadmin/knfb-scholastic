@@ -25,6 +25,10 @@
 #import "SCHOrderItem.h"
 #import "SCHLastPage.h"
 #import "SCHBookIdentifier.h"
+#import "SCHBookStatistics.h"
+#import "SCHReadingStatsDetailItem.h"
+#import "SCHReadingStatsContentItem.h"
+#import "SCHReadingStatsEntryItem.h"
 
 static NSString * const kSCHProfileItemContentProfileItem = @"ContentProfileItem";
 static NSString * const kSCHProfileItemUserContentItem = @"UserContentItem";
@@ -33,7 +37,7 @@ static NSString * const kSCHProfileItemUserContentItemContentMetadataItem = @"Us
 
 @interface SCHProfileItem ()
 
-- (SCHContentProfileItem *)contentProfileItemForBook:(NSString *)contentIdentifier;
+- (SCHReadingStatsContentItem *)newReadingStatsContentItemForBook:(SCHBookIdentifier *)bookIdentifier;
 - (NSString *)MD5:(NSString *)string;
 - (NSString *)SHA1:(NSString *)string;
 
@@ -375,6 +379,84 @@ static NSString * const kSCHProfileItemUserContentItemContentMetadataItem = @"Us
     return(ret);
 }
 
+- (SCHBookStatistics *)newStatisticsForBook:(SCHBookIdentifier *)bookIdentifier
+{
+    SCHBookStatistics *ret = nil;
+    SCHReadingStatsDetailItem *readingStatsDetailItem = nil;
+    SCHReadingStatsContentItem *readingStatsContentItem = nil;
+    SCHReadingStatsEntryItem *readingStatsEntryItem = nil;
+    NSError *error = nil;
+    
+    if (bookIdentifier != nil) {
+        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+        
+        [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHReadingStatsDetailItem 
+                                            inManagedObjectContext:self.managedObjectContext]];	
+        [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"ProfileID == %@", self.ID]];
+        [fetchRequest setFetchLimit:1];
+        
+        NSArray *result = [self.managedObjectContext executeFetchRequest:fetchRequest 
+                                                                   error:&error];
+        [fetchRequest release], fetchRequest = nil;
+        if ([result count] > 0) {
+            readingStatsDetailItem = [result objectAtIndex:0];
+            for (SCHReadingStatsContentItem *contentItem in readingStatsDetailItem.ReadingStatsContentItem) {
+                if ([contentItem.ContentIdentifier isEqualToString:bookIdentifier.isbn] == YES &&
+                    [contentItem.DRMQualifier isEqualToNumber:bookIdentifier.DRMQualifier] == YES) {
+                    readingStatsContentItem = contentItem;
+                    break;
+                }
+            }            
+        } else {
+            readingStatsDetailItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHReadingStatsDetailItem 
+                                                                   inManagedObjectContext:self.managedObjectContext];
+            readingStatsDetailItem.ProfileID = self.ID;  
+        } 
+        
+        if (readingStatsContentItem == nil) {
+            readingStatsContentItem = [self newReadingStatsContentItemForBook:bookIdentifier];   
+            readingStatsContentItem.ReadingStatsDetailItem = readingStatsDetailItem;                
+        }
+
+        readingStatsEntryItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHReadingStatsEntryItem 
+                                                              inManagedObjectContext:self.managedObjectContext];            
+        readingStatsEntryItem.ReadingStatsContentItem = readingStatsContentItem;                            
+        
+        ret = [[[SCHBookStatistics alloc] initWithReadingStatsEntryItem:readingStatsEntryItem] autorelease];
+    }
+    
+    return(ret);
+}
+
+- (SCHReadingStatsContentItem *)newReadingStatsContentItemForBook:(SCHBookIdentifier *)bookIdentifier
+{
+    SCHReadingStatsContentItem *ret = nil;
+    NSError *error = nil;
+    NSEntityDescription *entityDescription = [NSEntityDescription 
+                                              entityForName:kSCHUserContentItem
+                                              inManagedObjectContext:self.managedObjectContext];
+    NSFetchRequest *fetchRequest = [entityDescription.managedObjectModel
+                                    fetchRequestFromTemplateWithName:kSCHUserContentItemFetchWithContentIdentifier
+                                    substitutionVariables:[NSDictionary dictionaryWithObjectsAndKeys:
+                                                           bookIdentifier.isbn, kSCHUserContentItemCONTENT_IDENTIFIER,
+                                                           bookIdentifier.DRMQualifier, kSCHUserContentItemDRM_QUALIFIER,
+                                                           nil]];
+    [fetchRequest setFetchLimit:1];
+    
+    NSArray *userContentItems = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];	
+    if ([userContentItems count] > 0) {
+        SCHUserContentItem *userContentItem = [userContentItems objectAtIndex:0];
+        ret = [NSEntityDescription insertNewObjectForEntityForName:kSCHReadingStatsContentItem 
+                                            inManagedObjectContext:self.managedObjectContext];
+        ret.ContentIdentifier = userContentItem.ContentIdentifier;
+        ret.ContentIdentifierType = userContentItem.ContentIdentifierType;
+        ret.DRMQualifier = userContentItem.DRMQualifier;
+        ret.Format = userContentItem.Format;
+    }
+    
+    return(ret);
+}
+
 - (void)refreshAllContentMetadataItems
 {	
 	for (SCHContentProfileItem *contentProfileItem in [self valueForKey:kSCHProfileItemContentProfileItem]) {
@@ -462,33 +544,6 @@ static NSString * const kSCHProfileItemUserContentItemContentMetadataItem = @"Us
                                                       toDate:[NSDate date] options:0];
         [gregorian release], gregorian = nil;
         ret = components.year;
-    }
-    
-    return(ret);
-}
-
-#pragma mark - Accessor delegated methods
-
-// this information is read-only to change use the LastPage annotation
-- (NSInteger)contentIdentifierLastPageLocation:(NSString *)contentIdentifier
-{
-    SCHContentProfileItem *ret = [self contentProfileItemForBook:contentIdentifier];
-    
-    return([ret.LastPageLocation integerValue]);
-}
-
-- (SCHContentProfileItem *)contentProfileItemForBook:(NSString *)contentIdentifier
-{
-    SCHContentProfileItem *ret = nil;
-    
-    if (contentIdentifier != nil) {
-        for (SCHContentProfileItem *contentProfileItem in [self valueForKey:kSCHProfileItemContentProfileItem]) {
-            SCHUserContentItem *userContentItem = [contentProfileItem valueForKeyPath:kSCHProfileItemUserContentItem];
-            if ([userContentItem.ContentIdentifier isEqualToString:contentIdentifier] == YES) {
-                ret = contentProfileItem;
-                break;
-            }
-        }
     }
     
     return(ret);

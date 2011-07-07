@@ -36,6 +36,7 @@
 #import "SCHHighlight.h"
 #import "SCHStoryInteractionTypes.h"
 #import "SCHQueuedAudioPlayer.h"
+#import "SCHBookStatistics.h"
 
 // constants
 static const CGFloat kReadingViewStandardScrubHeight = 47.0f;
@@ -48,6 +49,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 @property (nonatomic, retain) SCHBookIdentifier *bookIdentifier;
 
 @property (nonatomic, retain) SCHProfileItem *profile;
+@property (nonatomic, retain) SCHBookStatistics *bookStatistics;
 
 // the page view, either fixed or flow
 @property (nonatomic, retain) SCHReadingView *readingView;
@@ -193,6 +195,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [bookIdentifier release], bookIdentifier = nil;
     [popover release], popover = nil;
     [profile release], profile = nil;
+    [bookStatistics release], bookStatistics = nil;
     [audioBookPlayer release], audioBookPlayer = nil;
     [bookStoryInteractions release], bookStoryInteractions = nil;
     [popoverOptionsViewController release], popoverOptionsViewController = nil;
@@ -259,6 +262,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         // Custom initialization
         bookIdentifier = [aIdentifier retain];
         profile = [aProfile retain];
+        bookStatistics = [[profile newStatisticsForBook:bookIdentifier] retain];
         currentlyRotating = NO;
         currentlyScrubbing = NO;
         self.managedObjectContext = moc;

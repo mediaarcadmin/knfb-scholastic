@@ -16,4 +16,9 @@
 
 - (id)initWithReadingStatsEntryItem:(SCHReadingStatsEntryItem *)aReadingStatsEntryItem;
 
+- (void)increaseReadingDurationBy:(NSUInteger)durationInSeconds;
+- (void)increasePagesReadBy:(NSUInteger)pages;
+- (void)increaseStoryInteractionsBy:(NSUInteger)storyInteractions;
+- (void)addToDictionaryLookup:(NSString *)word;
+
 @end
