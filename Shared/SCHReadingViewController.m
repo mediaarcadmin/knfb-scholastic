@@ -132,6 +132,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 @synthesize managedObjectContext;
 @synthesize bookIdentifier;
 @synthesize profile;
+@synthesize bookStatistics;
 @synthesize readingView;
 @synthesize youngerMode;
 @synthesize toolbarsVisible;
