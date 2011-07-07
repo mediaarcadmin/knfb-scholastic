@@ -30,7 +30,7 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(urlSuccess:) name:kSCHURLManagerSuccess object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(urlFailure:) name:kSCHURLManagerFailure object:nil];
 	
-	[[SCHURLManager sharedURLManager] requestURLForISBN:self.identifier.isbn];
+	[[SCHURLManager sharedURLManager] requestURLForBook:self.identifier];
 
 	do {
 		[[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];

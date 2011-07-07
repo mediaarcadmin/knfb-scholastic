@@ -14,13 +14,14 @@
 #import "SCHLibreAccessWebService.h"
 #import "SCHContentMetadataItem.h"
 #import "SCHUserContentItem.h"
+#import "SCHBookIdentifier.h"
 
 static SCHURLManager *sharedURLManager = nil;
 
 @interface SCHURLManager ()
 
 + (SCHURLManager *)sharedURLManagerOnMainThread;
-- (void)requestURLForISBNOnMainThread:(NSString *)ISBN;
+- (void)requestURLForBookOnMainThread:(SCHBookIdentifier *)bookIdentifier;
 - (void)clearOnMainThread;
 - (void)shakeTable;
 
@@ -93,9 +94,9 @@ static SCHURLManager *sharedURLManager = nil;
 	[super dealloc];
 }
 
-- (void)requestURLForISBN:(NSString *)ISBN
+- (void)requestURLForBook:(SCHBookIdentifier *)bookIdentifier
 {
-    [self performSelectorOnMainThread:@selector(requestURLForISBNOnMainThread:) withObject:ISBN waitUntilDone:NO];
+    [self performSelectorOnMainThread:@selector(requestURLForBookOnMainThread:) withObject:bookIdentifier waitUntilDone:NO];
 }
 	
 - (void)clear
@@ -114,17 +115,17 @@ static SCHURLManager *sharedURLManager = nil;
     return(sharedURLManager);
 }
 
-- (void)requestURLForISBNOnMainThread:(NSString *)ISBN
+- (void)requestURLForBookOnMainThread:(SCHBookIdentifier *)bookIdentifier
 {	
-	if (ISBN != nil) {
+	if (bookIdentifier != nil) {
 		NSEntityDescription *entityDescription = [NSEntityDescription 
 												  entityForName:kSCHUserContentItem 
 												  inManagedObjectContext:self.managedObjectContext];
 		NSFetchRequest *fetchRequest = [entityDescription.managedObjectModel 
 										fetchRequestFromTemplateWithName:kSCHUserContentItemFetchWithContentIdentifier 
 										substitutionVariables:[NSDictionary 
-															   dictionaryWithObject:ISBN 
-															   forKey:kSCHUserContentItemCONTENT_IDENTIFIER]];
+															   dictionaryWithObjectsAndKeys:bookIdentifier.isbn, kSCHUserContentItemCONTENT_IDENTIFIER,
+                                                               bookIdentifier.DRMQualifier, kSCHUserContentItemDRM_QUALIFIER, nil]];
 		
 		NSArray *book = [self.managedObjectContext executeFetchRequest:fetchRequest error:nil];	
 		

@@ -11,6 +11,7 @@
 #import "BITAPIProxyDelegate.h"
 
 @class NSManagedObjectContext;
+@class SCHBookIdentifier;
 
 static NSString * const kSCHURLManagerSuccess = @"URLManagerSuccess";
 static NSString * const kSCHURLManagerFailure = @"URLManagerFailure";
@@ -23,7 +24,7 @@ static NSString * const kSCHURLManagerFailure = @"URLManagerFailure";
 
 + (SCHURLManager *)sharedURLManager;
 
-- (void)requestURLForISBN:(NSString *)ISBN;
+- (void)requestURLForBook:(SCHBookIdentifier *)bookIdentifier;
 - (void)clear;
 
 @end
