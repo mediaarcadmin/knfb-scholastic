@@ -50,21 +50,22 @@ static SCHDictionaryAccessManager *sharedManager = nil;
 {
 	if (sharedManager == nil) {
 		sharedManager = [[SCHDictionaryAccessManager alloc] init];
-		
         sharedManager.dictionaryAccessQueue = dispatch_queue_create("com.scholastic.DictionaryAccessQueue", NULL);
+        [[NSNotificationCenter defaultCenter] addObserver:sharedManager selector:@selector(setAccessFromState) name:kSCHDictionaryStateChange object:nil];
+
 	} 
 	
 	return sharedManager;
 }
 
-- (id) init
-{
-    if ((self = [super init])) {
-        [self updateOnReady];
-    }
-    
-    return self;
-}
+//- (id) init
+//{
+//    if ((self = [super init])) {
+//        [self updateOnReady];
+//    }
+//    
+//    return self;
+//}
 
 - (void) dealloc
 {
@@ -76,6 +77,7 @@ static SCHDictionaryAccessManager *sharedManager = nil;
         [youngAdditions release], youngAdditions = nil;
         [oldAdditions release], oldAdditions = nil;
         [player release], player = nil;
+        [[NSNotificationCenter defaultCenter] removeObserver:self];
     }
     [mainThreadManagedObjectContext release], mainThreadManagedObjectContext = nil;
     
@@ -99,18 +101,20 @@ static SCHDictionaryAccessManager *sharedManager = nil;
     self.oldAdditions = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"OldDictionary-additions" ofType:@"css"]
                                                   encoding:NSUTF8StringEncoding 
                                                      error:nil];
+}
+
+- (void)setAccessFromState
+{
+    // if the dictionary isn't ready, we should clear out the existing cached CSS
+    // it'll be reloaded when HTMLforWord is called
+    SCHDictionaryProcessingState state = [[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryProcessingState];
     
-    
-    // prime the audio player - eliminates delay on playing of word
-    NSString *mp3Path = [NSString stringWithFormat:@"%@/Pronunciation/pron_a.mp3", 
-                         [[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryDirectory]];
-    
-    NSURL *url = [NSURL fileURLWithPath:mp3Path];
-    
-    NSError *error;
-    self.player = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:&error];
-    [self.player prepareToPlay];
-    self.player = nil;
+    if (state != SCHDictionaryProcessingStateReady) {
+        self.youngDictionaryCSS = nil;
+        self.oldDictionaryCSS = nil;
+        self.youngAdditions = nil;
+        self.oldAdditions = nil;
+    }
 }
 
 #pragma mark - Dictionary Definition Methods
@@ -244,6 +248,10 @@ static SCHDictionaryAccessManager *sharedManager = nil;
         return nil;
     }
     
+    if (!self.youngDictionaryCSS) {
+        [self updateOnReady];
+    }
+    
     // if the category isn't YD or OD, return
     if (!category ||
         ([category compare:kSCHDictionaryYoungReader] != NSOrderedSame && 
@@ -331,6 +339,11 @@ static SCHDictionaryAccessManager *sharedManager = nil;
     // remove existing head from string
     NSRange headEnd = [result rangeOfString:@"</head>" options:NSCaseInsensitiveSearch]; 
     
+    // check in here to make sure that we can actually take the substring
+    if (headEnd.location + headEnd.length > [result length]) {
+        return nil;
+    }
+    
     NSString *headless = [result substringFromIndex:headEnd.location + headEnd.length];
     
     NSString *cssText = nil;
@@ -352,6 +365,11 @@ static SCHDictionaryAccessManager *sharedManager = nil;
     }
 
     headEnd = [resultWithNewHead rangeOfString:@"</head>" options:NSCaseInsensitiveSearch];
+    
+    // check in here to make sure that we can actually take the substring
+    if ([resultWithNewHead length] < headEnd.location) {
+        return nil;
+    }
     
     NSString *resultWithAdditions = [NSString stringWithFormat:@"%@%@%@", 
                                      [resultWithNewHead substringToIndex:headEnd.location],
