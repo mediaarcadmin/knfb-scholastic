@@ -114,7 +114,8 @@ static NSString * const kSCHProfileItemUserContentItemContentMetadataItem = @"Us
                 
                 NSUInteger bookIndex = [books indexOfObjectPassingTest:^(id obj, NSUInteger idx, BOOL *stop) {
                     SCHBookIdentifier *identifier = (SCHBookIdentifier *)obj;
-                    if ([bookOrderItem.ISBN compare:identifier.isbn] == NSOrderedSame) {
+                    if ([bookOrderItem.ISBN compare:identifier.isbn] == NSOrderedSame &&
+                        [bookOrderItem.DRMQualifier compare:identifier.DRMQualifier] == NSOrderedSame) {
                         *stop = YES;
                         return(YES);
                     } else {
