@@ -339,6 +339,11 @@ static SCHDictionaryAccessManager *sharedManager = nil;
     // remove existing head from string
     NSRange headEnd = [result rangeOfString:@"</head>" options:NSCaseInsensitiveSearch]; 
     
+    // check in here to make sure that we can actually take the substring
+    if (headEnd.location + headEnd.length > [result length]) {
+        return nil;
+    }
+    
     NSString *headless = [result substringFromIndex:headEnd.location + headEnd.length];
     
     NSString *cssText = nil;
@@ -360,6 +365,11 @@ static SCHDictionaryAccessManager *sharedManager = nil;
     }
 
     headEnd = [resultWithNewHead rangeOfString:@"</head>" options:NSCaseInsensitiveSearch];
+    
+    // check in here to make sure that we can actually take the substring
+    if ([resultWithNewHead length] < headEnd.location) {
+        return nil;
+    }
     
     NSString *resultWithAdditions = [NSString stringWithFormat:@"%@%@%@", 
                                      [resultWithNewHead substringToIndex:headEnd.location],
