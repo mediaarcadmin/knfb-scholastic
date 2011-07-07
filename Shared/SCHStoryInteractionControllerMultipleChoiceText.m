@@ -17,9 +17,7 @@
 
 @property (nonatomic, assign) NSInteger currentQuestionIndex;
 @property (nonatomic, assign) NSInteger simultaneousTapCount;
-@property (nonatomic, assign) BOOL answeredCorrectly;
 
-- (void)nextQuestion;
 - (void)setupQuestion;
 - (void)playQuestionAudioAndHighlightAnswersWithIntroduction:(BOOL)withIntroduction;
 
@@ -30,7 +28,6 @@
 @synthesize answerButtons;
 @synthesize currentQuestionIndex;
 @synthesize simultaneousTapCount;
-@synthesize answeredCorrectly;
 
 - (void)dealloc
 {
@@ -60,16 +57,10 @@
     [self setupQuestion];
 }
 
-- (void)nextQuestion
-{
-    [self removeFromHostViewWithSuccess:YES];
-}
-
 - (void)setupQuestion
 {
     BOOL iPad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
 
-    self.answeredCorrectly = NO;
     self.simultaneousTapCount = 0;
     [self setTitle:[self currentQuestion].prompt];
 
@@ -111,13 +102,13 @@
         [self enqueueAudioWithPath:[self.storyInteraction audioPathForQuestion]
                         fromBundle:NO
                         startDelay:NO
-            synchronizedStartBlock:nil
+            synchronizedStartBlock:^{ self.controllerState = SCHStoryInteractionControllerStateAskingOpeningQuestion; }
               synchronizedEndBlock:nil];
     }
     [self enqueueAudioWithPath:[[self currentQuestion] audioPathForQuestion]
                     fromBundle:NO
                     startDelay:0
-        synchronizedStartBlock:nil
+        synchronizedStartBlock:^{ self.controllerState = SCHStoryInteractionControllerStateAskingOpeningQuestion; }
           synchronizedEndBlock:nil];
     
     NSInteger index = 0;
@@ -130,6 +121,9 @@
             }
               synchronizedEndBlock:^{
                   [button setHighlighted:NO];
+                  if (index + 1 == [self.answerButtons count]) {
+                      self.controllerState = SCHStoryInteractionControllerStateInteractionStarted;
+                  }
               }];
         index++;
     }
@@ -137,7 +131,7 @@
 
 - (void)playAudioButtonTapped:(id)sender
 {
-    if (![self playingAudio] && !self.answeredCorrectly) { 
+    if (![self playingAudio] && self.controllerState != SCHStoryInteractionControllerStateInteractionFinishedSuccessfully) { 
         [self playQuestionAudioAndHighlightAnswersWithIntroduction:NO];
     }
 }
@@ -164,12 +158,10 @@
         return;
     }
     
-    [self setUserInteractionsEnabled:NO];
-    
     [sender setSelected:YES];
     if (chosenAnswer == [self currentQuestion].correctAnswer) {
-        self.answeredCorrectly = YES;
-        [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
+        self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
+        [self cancelQueuedAudio];
         [self enqueueAudioWithPath:[self.storyInteraction storyInteractionCorrectAnswerSoundFilename] fromBundle:YES];
         [self enqueueAudioWithPath:[[self currentQuestion] audioPathForAnswerAtIndex:chosenAnswer] fromBundle:NO];
         [self enqueueAudioWithPath:[(SCHStoryInteractionMultipleChoiceText *)self.storyInteraction audioPathForThatsRight] fromBundle:NO];
@@ -178,11 +170,11 @@
                         startDelay:0
             synchronizedStartBlock:nil
               synchronizedEndBlock:^{
-                  [self setUserInteractionsEnabled:YES];
-                  [self nextQuestion];
+                  [self removeFromHostView];
               }];
     } else {
-        [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
+        self.controllerState = SCHStoryInteractionControllerStateInteractionPausedForAnswer;
+        [self cancelQueuedAudio];
         [self enqueueAudioWithPath:[self.storyInteraction storyInteractionWrongAnswerSoundFilename]
                         fromBundle:YES];
         [self enqueueAudioWithPath:[[self currentQuestion] audioPathForAnswerAtIndex:chosenAnswer]
@@ -192,7 +184,7 @@
                         startDelay:0
             synchronizedStartBlock:nil
               synchronizedEndBlock:^{
-                  [self setUserInteractionsEnabled:YES];
+                      self.controllerState = SCHStoryInteractionControllerStateInteractionStarted;
               }];
     }
 }
@@ -201,5 +193,30 @@
 {
     return([[self currentQuestion] audioPathForQuestion]);
 }
+
+- (void)setControllerState:(SCHStoryInteractionControllerState)newControllerState
+{
+    [super setControllerState:newControllerState];
+    
+    switch (self.controllerState) {
+        // story interaction does not need to do anything special for these states.
+        case SCHStoryInteractionControllerStateInteractionPausedForAnswer:
+        case SCHStoryInteractionControllerStateInitialised:
+        case SCHStoryInteractionControllerStateAskingOpeningQuestion:
+        case SCHStoryInteractionControllerStateInteractionStarted:
+        {
+            break;
+        }   
+        case SCHStoryInteractionControllerStateInteractionFinishedSuccessfully:
+        {
+            // disable user interaction in here - the answer has been correctly selected
+            for (UIButton *button in self.answerButtons) {
+                [button setUserInteractionEnabled:NO];
+            }
+            break;
+        }   
+    }
+}
+
 
 @end

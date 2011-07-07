@@ -129,10 +129,18 @@
                                  self.pageImageView.transform = CGAffineTransformConcat(CGAffineTransformConcat(scale, translate), rotate);
                              }
                              completion:^(BOOL finished) {
-                                 [self removeFromHostViewWithSuccess:success];
+                                 // FIXME: change this class to use the state variable
+                                 if (success) {
+                                     [self didSuccessfullyCompleteInteraction];
+                                 }
+                                 [self removeFromHostView];
                              }];
         } else {
-            [self removeFromHostViewWithSuccess:success];
+            // FIXME: change this class to use the state variable
+            if (success) {
+                [self didSuccessfullyCompleteInteraction];
+            }
+            [self removeFromHostView];
         }
     };
     

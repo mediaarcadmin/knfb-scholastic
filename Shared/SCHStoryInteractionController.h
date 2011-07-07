@@ -15,6 +15,15 @@
 @class SCHBookIdentifier;
 @protocol SCHStoryInteractionControllerDelegate;
 
+typedef enum
+{
+    SCHStoryInteractionControllerStateInitialised,                      // the default initialised state
+    SCHStoryInteractionControllerStateAskingOpeningQuestion,            // during the initial question audio
+    SCHStoryInteractionControllerStateInteractionStarted,               // user interaction is happening normally
+    SCHStoryInteractionControllerStateInteractionPausedForAnswer,       // user interaction is paused while an answer is read out
+    SCHStoryInteractionControllerStateInteractionFinishedSuccessfully   // user interaction has been completed successfully
+} SCHStoryInteractionControllerState;
+
 typedef enum 
 {
 	SCHStoryInteractionTitle,
@@ -35,6 +44,12 @@ typedef enum
 
 @interface SCHStoryInteractionController : NSObject <AVAudioPlayerDelegate> {}
 
+// FIXME: remove this!
+- (NSString *) controllerStateAsString: (SCHStoryInteractionControllerState) state;
+
+
+
+
 // Unique Book Identifier
 @property (nonatomic, retain) SCHBookIdentifier *bookIdentifier;
 
@@ -47,6 +62,9 @@ typedef enum
 // the delegate for this controller; should probably be the UIViewController of the
 // hosting view
 @property (nonatomic, assign) id<SCHStoryInteractionControllerDelegate> delegate;
+
+// the current mode of the story interaction
+@property (nonatomic, assign) SCHStoryInteractionControllerState controllerState;
 
 // a transparent hosting-view sized container for the story interaction views; if
 // necessary gesture recognizers can be attached to this to collect events outside
@@ -78,9 +96,12 @@ typedef enum
 // action when tapping the close button
 - (void)closeButtonTapped:(id)sender;
 
+// FIXME: this sends storyInteractionControllerWillDismiss:withSuccess: to the delegate - needed for unconverted interactions
+- (void)didSuccessfullyCompleteInteraction;
+
 // remove the story interaction from the host view; also sends storyInteractionControllerDidDismiss: to
 // the delegate
-- (void)removeFromHostViewWithSuccess:(BOOL)success;
+- (void)removeFromHostView;
 
 // switch to the next view in the NIB
 - (void)presentNextView;

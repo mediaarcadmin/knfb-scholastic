@@ -181,7 +181,11 @@
                             fromBundle:NO
                             startDelay:0
                 synchronizedStartBlock:^{ [self setUserInteractionsEnabled:NO]; }
-                  synchronizedEndBlock:^{ [self removeFromHostViewWithSuccess:YES]; }];
+                  synchronizedEndBlock:^{ 
+                      // FIXME: change this class to use the state variable
+                      [self didSuccessfullyCompleteInteraction];
+                      [self removeFromHostView];
+                  }];
         }
     } else if (index == NSNotFound) {
         [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];

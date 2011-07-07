@@ -14,8 +14,11 @@
 
 @required
 
-// a story interaction completed, with success indicator
-- (void)storyInteractionController:(SCHStoryInteractionController *)storyInteractionController didDismissWithSuccess:(BOOL)success;
+// a story interaction is about to complete, with success indicator
+- (void)storyInteractionController:(SCHStoryInteractionController *)storyInteractionController willDismissWithSuccess:(BOOL)success;
+
+// story interaction has now been dismissed
+- (void)storyInteractionControllerDidDismiss:(SCHStoryInteractionController *)storyInteractionController;
 
 // for story interactions with different questions on each invocation, use this
 // to determine the current question index

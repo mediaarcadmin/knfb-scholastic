@@ -120,7 +120,9 @@
         SCHStoryInteractionWordMatch *wordMatch = (SCHStoryInteractionWordMatch *)self.storyInteraction;
         [self playAudioAtPath:[wordMatch audioPathForGotThemAll]
                    completion:^{
-                       [self removeFromHostViewWithSuccess:YES];
+                       // FIXME: change this class to use the state variable
+                       [self didSuccessfullyCompleteInteraction];
+                       [self removeFromHostView];
                    }];
         return YES;
     }

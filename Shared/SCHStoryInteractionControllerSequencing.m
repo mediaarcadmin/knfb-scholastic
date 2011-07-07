@@ -124,7 +124,9 @@
                 }
                   synchronizedEndBlock:^{
                       if (index == kNumberOfImages-1) {
-                          [self removeFromHostViewWithSuccess:YES];
+                          // FIXME: change this class to use the state variable
+                          [self didSuccessfullyCompleteInteraction];
+                          [self removeFromHostView];
                       }
                   }];
         }

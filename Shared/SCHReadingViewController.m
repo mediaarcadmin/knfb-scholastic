@@ -1953,20 +1953,24 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 #pragma mark - SCHStoryInteractionControllerDelegate methods
 
-- (void)storyInteractionController:(SCHStoryInteractionController *)aStoryInteractionController didDismissWithSuccess:(BOOL)success
+- (void)storyInteractionController:(SCHStoryInteractionController *)aStoryInteractionController willDismissWithSuccess:(BOOL)success 
 {
-    if (aStoryInteractionController == self.storyInteractionController) {
-        self.storyInteractionController = nil;
-    }
-    
     if (success) {
         
         NSInteger page = [self storyInteractionPageNumberFromPageIndex:[self firstPageIndexWithStoryInteractionsOnCurrentPages]];
-
+        
         [self.bookStoryInteractions incrementStoryInteractionQuestionsCompletedForPage:page];
         if ([self.bookStoryInteractions storyInteractionsFinishedOnPage:page]) {
             self.storyInteractionsCompleteOnCurrentPages = YES;
         }
+    }
+    
+}
+
+- (void)storyInteractionControllerDidDismiss:(SCHStoryInteractionController *)aStoryInteractionController
+{
+    if (aStoryInteractionController == self.storyInteractionController) {
+        self.storyInteractionController = nil;
     }
     
     [self setupStoryInteractionButtonForCurrentPagesAnimated:YES];

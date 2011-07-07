@@ -58,6 +58,7 @@
 @synthesize interfaceOrientation;
 @synthesize audioPlayer;
 @synthesize shadeView;
+@synthesize controllerState;
 
 + (SCHStoryInteractionController *)storyInteractionControllerForStoryInteraction:(SCHStoryInteraction *)storyInteraction
 {
@@ -113,10 +114,97 @@
         
         currentScreenIndex = 0;
         
+        controllerState = SCHStoryInteractionControllerStateInitialised;
+        
         // note that background audio monitoring has been moved into SCHQueuedAudioPlayer
         
     }
     return self;
+}
+
+- (void)setControllerState:(SCHStoryInteractionControllerState)newControllerState
+{
+    if (controllerState == newControllerState) {
+        return;
+    }
+    
+    SCHStoryInteractionControllerState oldState = controllerState;
+    controllerState = newControllerState;
+
+    NSLog(@"Changed state from %@ to %@", [self controllerStateAsString:oldState], [self controllerStateAsString:newControllerState]);
+
+    switch (controllerState) {
+        case SCHStoryInteractionControllerStateInitialised:
+        {
+            break;
+        }   
+        case SCHStoryInteractionControllerStateInteractionPausedForAnswer:
+        case SCHStoryInteractionControllerStateAskingOpeningQuestion:
+        {
+            self.readAloudButton.enabled = NO;
+            break;
+        }   
+        case SCHStoryInteractionControllerStateInteractionFinishedSuccessfully:
+        {
+            self.readAloudButton.enabled = NO;
+            
+            // report success so that the reading view can keep track of it properly
+            if (delegate && [delegate respondsToSelector:@selector(storyInteractionController:willDismissWithSuccess:)]) {
+                [delegate storyInteractionController:self willDismissWithSuccess:YES];
+            }
+            break;
+        }   
+        case SCHStoryInteractionControllerStateInteractionStarted:
+        {
+            self.readAloudButton.enabled = YES;
+            break;
+        }   
+        default:
+        {
+            NSLog(@"Warning: unknown SI controller state (%d)", controllerState);
+            break;
+        }
+    }
+}
+
+- (NSString *) controllerStateAsString: (SCHStoryInteractionControllerState) state
+{
+    NSString *returnVal = nil;
+    
+    switch (state) {
+        case SCHStoryInteractionControllerStateInitialised:
+        {
+            returnVal = @"Initialised";
+            break;
+        }   
+        case SCHStoryInteractionControllerStateInteractionPausedForAnswer:
+        {
+            returnVal = @"Paused for Answer";
+            break;
+        }   
+        case SCHStoryInteractionControllerStateAskingOpeningQuestion:
+        {
+            returnVal = @"Asking Opening Question";
+            break;
+        }   
+        case SCHStoryInteractionControllerStateInteractionFinishedSuccessfully:
+        {
+            returnVal = @"Finished Successfully";
+            break;
+        }   
+        case SCHStoryInteractionControllerStateInteractionStarted:
+        {
+            returnVal = @"Started Interaction";
+            break;
+        }   
+        default:
+        {
+            returnVal = @"Unknown!";
+            break;
+        }   
+    }
+    
+    return returnVal;
 }
 
 - (void)presentInHostView:(UIView *)hostView withInterfaceOrientation:(UIInterfaceOrientation)aInterfaceOrientation
@@ -131,13 +219,16 @@
         [shade release];
     }
     
+    SCHStoryInteractionControllerState newState = SCHStoryInteractionControllerStateInitialised;
+    
     if (self.containerView == nil) {
         self.xpsProvider = [[SCHBookManager sharedBookManager] threadSafeCheckOutXPSProviderForBookIdentifier:self.bookIdentifier];
         
         NSString *questionAudioPath = [self audioPathForQuestion];
         [self enqueueAudioWithPath:[storyInteraction storyInteractionOpeningSoundFilename] fromBundle:YES];        
         if (questionAudioPath && [self shouldPlayQuestionAudioForViewAtIndex:self.currentScreenIndex]) {
-            [self enqueueAudioWithPath:questionAudioPath fromBundle:NO];        
+            [self enqueueAudioWithPath:questionAudioPath fromBundle:NO];  
+            newState = SCHStoryInteractionControllerStateAskingOpeningQuestion;
         }        
 
         // set up the transparent full-size container to trap touch events before they get
@@ -237,6 +328,8 @@
     
     [self setTitle:[self.storyInteraction interactionViewTitle]];
     [self setupViewAtIndex:self.currentScreenIndex];
+    
+    self.controllerState = newState;
 }
 
 - (void)setupTitle
@@ -463,7 +556,7 @@
 
 - (void)closeButtonTapped:(id)sender
 {
-    [self removeFromHostViewWithSuccess:NO];
+    [self removeFromHostView];
 }
 
 - (void)setUserInteractionsEnabled:(BOOL)enabled
@@ -479,7 +572,7 @@
 
 #pragma mark - Notification methods
 
-- (void)removeFromHostViewWithSuccess:(BOOL)success
+- (void)removeFromHostView
 {
     [self cancelQueuedAudio];
     
@@ -492,13 +585,13 @@
         [self.containerView removeFromSuperview];
         [self.shadeView removeFromSuperview];
         
-        if (delegate && [delegate respondsToSelector:@selector(storyInteractionController:didDismissWithSuccess:)]) {
+        if (delegate && [delegate respondsToSelector:@selector(storyInteractionControllerDidDismiss:)]) {
             // may result in self being dealloc'ed so don't do anything else after this
-            [delegate storyInteractionController:self didDismissWithSuccess:success];
+            [delegate storyInteractionControllerDidDismiss:self];
         }
     };
     
-    if (success) {
+    if (self.controllerState == SCHStoryInteractionControllerStateInteractionFinishedSuccessfully) {
         double delayInSeconds = 0.75;
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
         dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
@@ -509,6 +602,13 @@
     }
 }
 
+- (void)didSuccessfullyCompleteInteraction
+{
+    NSLog(@"**** FIXME: a story interaction is using an obsolete method. ****");
+    if (delegate && [delegate respondsToSelector:@selector(storyInteractionController:willDismissWithSuccess:)]) {
+        [delegate storyInteractionController:self willDismissWithSuccess:YES];
+    }
+}
 #pragma mark - Audio methods
 
 - (IBAction)playAudioButtonTapped:(id)sender

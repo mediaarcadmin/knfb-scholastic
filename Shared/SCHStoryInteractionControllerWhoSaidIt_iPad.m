@@ -123,7 +123,9 @@ static CGPoint pointWithOffset(CGPoint p, CGPoint offset)
     if (correctCount == [self.targets count]) {
         [self playBundleAudioWithFilename:@"sfx_winround.mp3"
                                completion:^{
-                                   [self removeFromHostViewWithSuccess:YES];
+                                   // FIXME: change this class to use the state variable
+                                   [self didSuccessfullyCompleteInteraction];
+                                   [self removeFromHostView];
                                }];
     } else {
         [self playDefaultButtonAudio];

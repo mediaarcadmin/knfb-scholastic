@@ -224,7 +224,9 @@ enum ScratchState {
 
 - (void)nextQuestion
 {
-    [self removeFromHostViewWithSuccess:YES];
+    // FIXME: change this class to use the state variable
+    [self didSuccessfullyCompleteInteraction];
+    [self removeFromHostView];
 }
 
 - (SCHStoryInteractionScratchAndSeeQuestion *)currentQuestion

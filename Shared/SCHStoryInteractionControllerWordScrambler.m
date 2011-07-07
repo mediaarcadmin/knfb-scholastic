@@ -249,7 +249,9 @@
     
     [self playBundleAudioWithFilename:@"sfx_winround.mp3"
                            completion:^{
-                               [self removeFromHostViewWithSuccess:YES];
+                               // FIXME: change this class to use the state variable
+                               [self didSuccessfullyCompleteInteraction];
+                               [self removeFromHostView];
                            }];
 }
 
