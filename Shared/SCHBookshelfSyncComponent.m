@@ -98,8 +98,18 @@
 			requestCount--;
 			if ([list count] > 0) {
 				NSString *ISBN = [[list objectAtIndex:0] valueForKey:kSCHLibreAccessWebServiceContentIdentifier];
+				NSString *DRMQualifier = [[list objectAtIndex:0] valueForKey:kSCHLibreAccessWebServiceDRMQualifier];                
+                NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
+                if (ISBN != nil) {
+                    [userInfo setObject:ISBN forKey:kSCHLibreAccessWebServiceContentIdentifier];
+                }
+                if (DRMQualifier != nil) {
+                    [userInfo setObject:DRMQualifier forKey:kSCHLibreAccessWebServiceDRMQualifier];
+                }
 				NSLog(@"%@ Book information received", ISBN);
-				[[NSNotificationCenter defaultCenter] postNotificationName:kSCHBookshelfSyncComponentBookReceived object:self userInfo:[NSDictionary dictionaryWithObject:ISBN forKey:kSCHLibreAccessWebServiceContentIdentifier]];				
+				[[NSNotificationCenter defaultCenter] postNotificationName:kSCHBookshelfSyncComponentBookReceived 
+                                                                    object:self 
+                                                                  userInfo:userInfo];				
 			} else {
 				NSLog(@"Book information received");				
 			}
