@@ -123,6 +123,7 @@
 		
 		newUserContentItem.ContentIdentifier = newContentMetadataItem.ContentIdentifier;
 		newUserContentItem.ContentIdentifierType = newContentMetadataItem.ContentIdentifierType;
+		newUserContentItem.DRMQualifier = [NSNumber numberWithDRMQualifier:kSCHDRMQualifiersFullNoDRM];
         
         newContentProfileItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHContentProfileItem inManagedObjectContext:self.managedObjectContext];			
 		
@@ -364,7 +365,8 @@
 		
 		newUserContentItem.ContentIdentifier = newContentMetadataItem.ContentIdentifier;
 		newUserContentItem.ContentIdentifierType = newContentMetadataItem.ContentIdentifierType;
-		
+		newUserContentItem.DRMQualifier = [NSNumber numberWithDRMQualifier:kSCHDRMQualifiersFullNoDRM];
+
 		newContentProfileItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHContentProfileItem inManagedObjectContext:self.managedObjectContext];			
 		
 		newContentProfileItem.LastModified = now;
