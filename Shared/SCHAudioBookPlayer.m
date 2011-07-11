@@ -35,7 +35,8 @@ static NSUInteger const kSCHAudioBookPlayerNoAudioLoaded = NSUIntegerMax;
 - (BOOL)prepareToPlay:(SCHAudioInfo *)audioInfoToPrepare 
            pageWordOffset:(NSUInteger)pageWordOffset;
 - (void)suspend;
-
+- (void)pauseToResume;
+- (void)resumeFromPause;
 @end
 
 @implementation SCHAudioBookPlayer
@@ -115,6 +116,11 @@ static NSUInteger const kSCHAudioBookPlayerNoAudioLoaded = NSUIntegerMax;
                                                      selector:@selector(willResignActiveNotification:)
                                                          name:UIApplicationWillResignActiveNotification
                                                        object:nil];            
+            // register for coming out of background
+            [[NSNotificationCenter defaultCenter] addObserver:self
+                                                     selector:@selector(didBecomeActiveNotification:)
+                                                         name:UIApplicationDidBecomeActiveNotification
+                                                       object:nil];
 
             // word timer
             dispatch_queue_t q_default = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
@@ -129,86 +135,88 @@ static NSUInteger const kSCHAudioBookPlayerNoAudioLoaded = NSUIntegerMax;
                 NSUInteger currentPlayTime = (NSUInteger)(self.player.currentTime * kSCHAudioBookPlayerMilliSecondsInASecond);
                 SCHWordTiming *wordTiming = [self.wordTimings objectAtIndex:currentPosition];
                 
-                switch ([wordTiming compareTime:currentPlayTime]) {
-                    case NSOrderedSame:
-                        // nop - we got our match
-                        break;
-                    case NSOrderedAscending:
-                        // fast forward
-                        for (NSUInteger i = currentPosition + 1; i < [self.wordTimings count]; i++) {
-                            wordTiming = [self.wordTimings objectAtIndex:i];
-                            NSComparisonResult result = [wordTiming compareTime:currentPlayTime];
-                            if (result == NSOrderedSame) {
-                                currentPosition = i;
-                                break;
-                            } else if (result == NSOrderedDescending) {
-                                break;
-                            }
-                        }
-                        for (NSUInteger i = currentAudioInfoPosition; i < [self.audioInfos count]; i++) {                        
-                            SCHAudioInfo *audioInfo = [self.audioInfos objectAtIndex:i];
-                            SCHAudioInfo *nextAudioInfo = nil;
-                            
-                            if (i + 1 < [self.audioInfos count]) {
-                                nextAudioInfo = [self.audioInfos objectAtIndex:i + 1];
-                            }
-                            
-                            if (currentPosition >= audioInfo.timeIndex && 
-                                (nextAudioInfo == nil ||
-                                currentPosition < nextAudioInfo.timeIndex)) {
-                                currentAudioInfoPosition = i;
-                                    break;
-                            }
-                        }
-                        break;
-                    case NSOrderedDescending:
-                        // rewind
-                        if (currentPosition > 0) {
-                            for (NSInteger i = currentPosition - 1; i >= 0; i--) {
+                if (self.player.playing == YES) {
+                    switch ([wordTiming compareTime:currentPlayTime]) {
+                        case NSOrderedSame:
+                            // nop - we got our match
+                            break;
+                        case NSOrderedAscending:
+                            // fast forward
+                            for (NSUInteger i = currentPosition + 1; i < [self.wordTimings count]; i++) {
                                 wordTiming = [self.wordTimings objectAtIndex:i];
-                                NSComparisonResult result = [wordTiming compareTime:currentPlayTime];                                    
+                                NSComparisonResult result = [wordTiming compareTime:currentPlayTime];
                                 if (result == NSOrderedSame) {
                                     currentPosition = i;
                                     break;
-                                } else if (result == NSOrderedAscending) {
+                                } else if (result == NSOrderedDescending) {
                                     break;
                                 }
                             }
-                        }
-                        for (NSInteger i = currentAudioInfoPosition; i >= 0; i--) {                        
-                            SCHAudioInfo *audioInfo = [self.audioInfos objectAtIndex:i];
-                            SCHAudioInfo *nextAudioInfo = nil;
-                            
-                            if (i + 1 < [self.audioInfos count]) {
-                                nextAudioInfo = [self.audioInfos objectAtIndex:i + 1];
-                            }
-                            
-                            if (currentPosition >= audioInfo.timeIndex && 
-                                (nextAudioInfo == nil ||
-                                 currentPosition < nextAudioInfo.timeIndex)) {
-                                    currentAudioInfoPosition = i;
-                                    break;
+                            for (NSUInteger i = currentAudioInfoPosition; i < [self.audioInfos count]; i++) {                        
+                                SCHAudioInfo *audioInfo = [self.audioInfos objectAtIndex:i];
+                                SCHAudioInfo *nextAudioInfo = nil;
+                                
+                                if (i + 1 < [self.audioInfos count]) {
+                                    nextAudioInfo = [self.audioInfos objectAtIndex:i + 1];
                                 }
-                        }
-                        break;                                
-                }  
-
-                if (pageTurnAtTime <= currentPlayTime) {
-                    pageTurnAtTime = NSUIntegerMax;
-                    pageTurnBlock(pageTurnToLayoutPage);
-                }
-
-                if (wordTiming != lastTriggered && [wordTiming compareTime:currentPlayTime] == NSOrderedSame) {
-                    lastTriggered = wordTiming;
-                    SCHAudioInfo *audioInfo = [self.audioInfos objectAtIndex:currentAudioInfoPosition];
-                    wordBlock(audioInfo.pageIndex + 1, currentPosition - audioInfo.timeIndex);
+                                
+                                if (currentPosition >= audioInfo.timeIndex && 
+                                    (nextAudioInfo == nil ||
+                                     currentPosition < nextAudioInfo.timeIndex)) {
+                                        currentAudioInfoPosition = i;
+                                        break;
+                                    }
+                            }
+                            break;
+                        case NSOrderedDescending:
+                            // rewind
+                            if (currentPosition > 0) {
+                                for (NSInteger i = currentPosition - 1; i >= 0; i--) {
+                                    wordTiming = [self.wordTimings objectAtIndex:i];
+                                    NSComparisonResult result = [wordTiming compareTime:currentPlayTime];                                    
+                                    if (result == NSOrderedSame) {
+                                        currentPosition = i;
+                                        break;
+                                    } else if (result == NSOrderedAscending) {
+                                        break;
+                                    }
+                                }
+                            }
+                            for (NSInteger i = currentAudioInfoPosition; i >= 0; i--) {                        
+                                SCHAudioInfo *audioInfo = [self.audioInfos objectAtIndex:i];
+                                SCHAudioInfo *nextAudioInfo = nil;
+                                
+                                if (i + 1 < [self.audioInfos count]) {
+                                    nextAudioInfo = [self.audioInfos objectAtIndex:i + 1];
+                                }
+                                
+                                if (currentPosition >= audioInfo.timeIndex && 
+                                    (nextAudioInfo == nil ||
+                                     currentPosition < nextAudioInfo.timeIndex)) {
+                                        currentAudioInfoPosition = i;
+                                        break;
+                                    }
+                            }
+                            break;                                
+                    }  
                     
-                    pageTurnAtTime = NSUIntegerMax; 
-                    if (currentAudioInfoPosition + 1 < [self.audioInfos count]) {
-                        SCHAudioInfo *nextAudioInfo = [self.audioInfos objectAtIndex:currentAudioInfoPosition + 1];
-                        if (currentPosition == nextAudioInfo.timeIndex - 1) {
-                            pageTurnAtTime = wordTiming.endTime;
-                            pageTurnToLayoutPage = nextAudioInfo.pageIndex + 1;
+                    if (pageTurnAtTime <= currentPlayTime) {
+                        pageTurnAtTime = NSUIntegerMax;
+                        pageTurnBlock(pageTurnToLayoutPage);
+                    }
+                    
+                    if (wordTiming != lastTriggered && [wordTiming compareTime:currentPlayTime] == NSOrderedSame) {
+                        lastTriggered = wordTiming;
+                        SCHAudioInfo *audioInfo = [self.audioInfos objectAtIndex:currentAudioInfoPosition];
+                        wordBlock(audioInfo.pageIndex + 1, currentPosition - audioInfo.timeIndex);
+                        
+                        pageTurnAtTime = NSUIntegerMax; 
+                        if (currentAudioInfoPosition + 1 < [self.audioInfos count]) {
+                            SCHAudioInfo *nextAudioInfo = [self.audioInfos objectAtIndex:currentAudioInfoPosition + 1];
+                            if (currentPosition == nextAudioInfo.timeIndex - 1) {
+                                pageTurnAtTime = wordTiming.endTime;
+                                pageTurnToLayoutPage = nextAudioInfo.pageIndex + 1;
+                            }
                         }
                     }
                 }                                                
@@ -352,29 +360,44 @@ static NSUInteger const kSCHAudioBookPlayerNoAudioLoaded = NSUIntegerMax;
     [UIApplication sharedApplication].idleTimerDisabled = NO;    
 }
 
+- (void)pauseToResume
+{
+    if (self.player.playing == YES) {
+        [self pause];
+        self.resumeInterruptedPlayer = YES;
+    }    
+}
+
+- (void)resumeFromPause
+{
+    if (self.resumeInterruptedPlayer == YES) {
+        self.resumeInterruptedPlayer = NO;
+        [self play];
+    }    
+}
+
 #pragma mark - Notification methods
 
 - (void)willResignActiveNotification:(NSNotification *)notification
 {
-    [self pause];
+    [self pauseToResume];
+}
+
+- (void)didBecomeActiveNotification:(NSNotification *)notification
+{
+    [self resumeFromPause];
 }
 
 #pragma mark - AVAudioPlayer Delegate methods
 
 - (void)audioPlayerBeginInterruption:(AVAudioPlayer *)player
 {
-    if (self.player.playing == YES) {
-        [self.player pause];
-        self.resumeInterruptedPlayer = YES;
-    }
+    [self pauseToResume];
 }
 
 - (void)audioPlayerEndInterruption:(AVAudioPlayer *)player
 {
-    if (self.resumeInterruptedPlayer == YES) {
-        self.resumeInterruptedPlayer = NO;
-        [self play];
-    }
+    [self resumeFromPause];
 }
 
 - (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
