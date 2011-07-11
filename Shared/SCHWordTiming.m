@@ -14,13 +14,25 @@ static NSTimeInterval const kSCHWordTimingMilliSecondsInASecond = 1000.0;
 
 @synthesize startTime;
 @synthesize endTime;
+@synthesize page;
 
-- (id)initWithStartTime:(NSUInteger)setStartTime endTime:(NSUInteger)setEndTime
+- (id)initWithStartTime:(NSUInteger)setStartTime 
+                endTime:(NSUInteger)setEndTime 
+{
+    return([self initWithStartTime:setStartTime 
+                           endTime:setEndTime 
+                              page:NSUIntegerMax]);
+}
+
+- (id)initWithStartTime:(NSUInteger)setStartTime 
+                endTime:(NSUInteger)setEndTime 
+                   page:(NSUInteger)setPage
 {
     self = [super init];
     if (self) {
         startTime = MIN(setStartTime, setEndTime);
         endTime = MAX(setStartTime, setEndTime);
+        page = setPage;
     }
     return(self);
 }
@@ -64,7 +76,11 @@ static NSTimeInterval const kSCHWordTimingMilliSecondsInASecond = 1000.0;
 
 - (NSString *)description
 {
-    return([NSString stringWithFormat:@"%lu - %lu", self.startTime, self.endTime]);
+    if (self.page == NSUIntegerMax) {
+        return([NSString stringWithFormat:@"%lu - %lu", self.startTime, self.endTime]);
+    } else {
+        return([NSString stringWithFormat:@"%lu - %lu (%lu)", self.startTime, self.endTime, self.page]);
+    }
 }
 
 @end

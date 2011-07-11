@@ -25,6 +25,7 @@ static NSUInteger const kSCHAudioBookPlayerNoAudioLoaded = NSUIntegerMax;
 @property (nonatomic, retain) NSArray *audioBookReferences;
 @property (nonatomic, retain) NSArray *audioInfos;  
 @property (nonatomic, retain) NSArray *wordTimings;  
+@property (nonatomic, assign) BOOL usingNewRTXFormat;
 
 @property (nonatomic, retain) AVAudioPlayer *player;  
 @property (nonatomic, assign) NSUInteger loadedAudioReferencesIndex;  
@@ -45,6 +46,7 @@ static NSUInteger const kSCHAudioBookPlayerNoAudioLoaded = NSUIntegerMax;
 @synthesize audioBookReferences;
 @synthesize audioInfos;
 @synthesize wordTimings;
+@synthesize usingNewRTXFormat;
 @synthesize xpsProvider;
 @synthesize player;
 @synthesize loadedAudioReferencesIndex;
@@ -61,6 +63,17 @@ static NSUInteger const kSCHAudioBookPlayerNoAudioLoaded = NSUIntegerMax;
         loadedAudioReferencesIndex = kSCHAudioBookPlayerNoAudioLoaded;
         resumeInterruptedPlayer = NO;
         timer = NULL;
+        
+        // register for going into the background
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(willResignActiveNotification:)
+                                                     name:UIApplicationWillResignActiveNotification
+                                                   object:nil];            
+        // register for coming out of background
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(didBecomeActiveNotification:)
+                                                     name:UIApplicationDidBecomeActiveNotification
+                                                   object:nil];        
     }
     return(self);
 }
@@ -111,17 +124,6 @@ static NSUInteger const kSCHAudioBookPlayerNoAudioLoaded = NSUIntegerMax;
                                                          error:outError];
             [audioInfoProcessor release], audioInfoProcessor = nil;
             
-            // register for going into the background
-            [[NSNotificationCenter defaultCenter] addObserver:self
-                                                     selector:@selector(willResignActiveNotification:)
-                                                         name:UIApplicationWillResignActiveNotification
-                                                       object:nil];            
-            // register for coming out of background
-            [[NSNotificationCenter defaultCenter] addObserver:self
-                                                     selector:@selector(didBecomeActiveNotification:)
-                                                         name:UIApplicationDidBecomeActiveNotification
-                                                       object:nil];
-
             // word timer
             dispatch_queue_t q_default = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
             self.timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, q_default); 
@@ -131,11 +133,11 @@ static NSUInteger const kSCHAudioBookPlayerNoAudioLoaded = NSUIntegerMax;
                 dispatch_release(self.timer), self.timer = NULL;
             });
             dispatch_source_set_event_handler(self.timer, ^{                
-                // We're using the WordTimings file use of integers for time
-                NSUInteger currentPlayTime = (NSUInteger)(self.player.currentTime * kSCHAudioBookPlayerMilliSecondsInASecond);
-                SCHWordTiming *wordTiming = [self.wordTimings objectAtIndex:currentPosition];
+                if (self.player.playing == YES && [self.wordTimings count ] > 0) {
+                    // We're using the WordTimings file use of integers for time
+                    NSUInteger currentPlayTime = (NSUInteger)(self.player.currentTime * kSCHAudioBookPlayerMilliSecondsInASecond);
+                    SCHWordTiming *wordTiming = [self.wordTimings objectAtIndex:currentPosition];
                 
-                if (self.player.playing == YES) {
                     switch ([wordTiming compareTime:currentPlayTime]) {
                         case NSOrderedSame:
                             // nop - we got our match
@@ -208,16 +210,30 @@ static NSUInteger const kSCHAudioBookPlayerNoAudioLoaded = NSUIntegerMax;
                     if (wordTiming != lastTriggered && [wordTiming compareTime:currentPlayTime] == NSOrderedSame) {
                         lastTriggered = wordTiming;
                         SCHAudioInfo *audioInfo = [self.audioInfos objectAtIndex:currentAudioInfoPosition];
-                        wordBlock(audioInfo.pageIndex + 1, currentPosition - audioInfo.timeIndex);
-                        
-                        pageTurnAtTime = NSUIntegerMax; 
-                        if (currentAudioInfoPosition + 1 < [self.audioInfos count]) {
-                            SCHAudioInfo *nextAudioInfo = [self.audioInfos objectAtIndex:currentAudioInfoPosition + 1];
-                            if (currentPosition == nextAudioInfo.timeIndex - 1) {
-                                pageTurnAtTime = wordTiming.endTime;
-                                pageTurnToLayoutPage = nextAudioInfo.pageIndex + 1;
-                            }
+                        if (self.usingNewRTXFormat == YES) {
+                            wordBlock(wordTiming.page + 1, currentPosition - audioInfo.timeIndex);
+                            
+                            pageTurnAtTime = NSUIntegerMax; 
+                            if (currentPosition + 1 < [self.wordTimings count]) {
+                                SCHWordTiming *nextWordTiming = [self.wordTimings objectAtIndex:currentPosition + 1];
+                                if (wordTiming.page != nextWordTiming.page) {
+                                    pageTurnAtTime = wordTiming.endTime;
+                                    pageTurnToLayoutPage = nextWordTiming.page + 1;                                
+                                }
+                            }                                                    
+                        } else {
+                            wordBlock(audioInfo.pageIndex + 1, currentPosition - audioInfo.timeIndex);                            
+                            
+                            pageTurnAtTime = NSUIntegerMax; 
+                            if (currentAudioInfoPosition + 1 < [self.audioInfos count]) {
+                                SCHAudioInfo *nextAudioInfo = [self.audioInfos objectAtIndex:currentAudioInfoPosition + 1];
+                                if (currentPosition == nextAudioInfo.timeIndex - 1) {
+                                    pageTurnAtTime = wordTiming.endTime;
+                                    pageTurnToLayoutPage = nextAudioInfo.pageIndex + 1;
+                                }
+                            }                            
                         }
+                        
                     }
                 }                                                
             });            
@@ -320,6 +336,7 @@ static NSUInteger const kSCHAudioBookPlayerNoAudioLoaded = NSUIntegerMax;
             
             SCHWordTimingProcessor *wordTimingProcessor = [[SCHWordTimingProcessor alloc] init];
             self.wordTimings = [wordTimingProcessor startTimesFrom:wordTimingData error:&error];
+            self.usingNewRTXFormat = wordTimingProcessor.newRTXFormat;
             [wordTimingProcessor release], wordTimingProcessor = nil;
             
             if (self.wordTimings != nil) {
