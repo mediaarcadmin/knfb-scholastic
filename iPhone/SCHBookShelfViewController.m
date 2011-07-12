@@ -24,6 +24,7 @@
 #import "SCHProfileItem.h"
 #import "SCHAppProfile.h"
 #import "SCHBookIdentifier.h"
+#import "SCHProfileSyncComponent.h"
 
 static NSInteger const kSCHBookShelfViewControllerGridCellHeightPortrait = 138;
 static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
@@ -40,6 +41,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 - (CGSize)cellSize;
 - (CGFloat)cellBorderSize;
 - (void)updateTable:(NSNotification *)notification;
+- (void)currentProfileDeleted:(NSNotification *)notification;
 
 // FIXME: this isn't really necessary
 - (IBAction)changeToListView:(UIButton *)sender;
@@ -154,9 +156,13 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 		
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(updateTable:)
-												 name:@"SCHBookshelfSyncComponentComplete"
+												 name:kSCHProfileSyncComponentComplete
 											   object:nil];
 	
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(currentProfileDeleted:)
+												 name:kSCHProfileSyncProfilesDeleted
+											   object:nil];
 	
 	self.loadingView.layer.cornerRadius = 5.0f;
 	[self.view bringSubviewToFront:self.loadingView];
@@ -197,7 +203,6 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
     [self.gridView reloadData];
     [self.listTableView reloadData];
     
-//    [self changeToListView:nil];
     self.currentlyLoadingIndex = -1;
 
     if ([self.profileItem.AppProfile.ShowListView boolValue] == YES) {
@@ -342,6 +347,26 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 {
 	self.books = [self.profileItem allBookIdentifiers];
 	self.loadingView.hidden = YES;
+}
+
+- (void)currentProfileDeleted:(NSNotification *)notification
+{
+    NSArray *profileIDs = [notification.userInfo objectForKey:kSCHProfileSyncDeletedIDs];
+    
+    for (NSNumber *profileID in profileIDs) {
+        if ([profileID isEqualToNumber:self.profileItem.ID] == YES) {
+            NSString *localizedMessage = NSLocalizedString(@"%@ is no longer available", nil);
+            UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Bookshelf Removed", @"Bookshelf Removed") 
+                                                                 message:[NSString stringWithFormat:localizedMessage, [self.profileItem bookshelfName:YES]]
+                                                                delegate:nil 
+                                                       cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+                                                       otherButtonTitles:nil]; 
+            [errorAlert show]; 
+            [errorAlert release];
+            [self back];
+            break;
+        }
+    }
 }
 
 #pragma mark - UITableViewDataSource methods
