@@ -200,6 +200,9 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 //    [self changeToListView:nil];
     self.currentlyLoadingIndex = -1;
 
+    if ([self.profileItem.AppProfile.ShowListView boolValue] == YES) {
+        [self changeToListView:nil];
+    }
 }
 
 - (void)viewDidUnload 
@@ -273,6 +276,8 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 - (IBAction)back
 {
     [self.navigationController popViewControllerAnimated:YES];
+    
+    self.profileItem.AppProfile.ShowListView = [NSNumber numberWithBool:self.listTableView.hidden == NO];
 }
 
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer 

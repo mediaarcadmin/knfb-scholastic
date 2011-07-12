@@ -400,18 +400,18 @@ static SCHProcessingManager *sharedManager = nil;
 		case SCHBookProcessingStateReadyForAudioInfoParsing:
 		{
 			// create audio info processing operation
-			SCHAudioPreParseOperation *rightsOp = [[SCHAudioPreParseOperation alloc] init];
-            [rightsOp setMainThreadManagedObjectContext:self.managedObjectContext];
-			rightsOp.identifier = identifier;
+			SCHAudioPreParseOperation *audioOp = [[SCHAudioPreParseOperation alloc] init];
+            [audioOp setMainThreadManagedObjectContext:self.managedObjectContext];
+			audioOp.identifier = identifier;
 			
 			// the book will be redispatched on completion
-			[rightsOp setCompletionBlock:^{
+			[audioOp setCompletionBlock:^{
 				[self redispatchIdentifier:identifier];
 			}];
 			
 			// add the operation to the local processing queue
-			[self.localProcessingQueue addOperation:rightsOp];
-			[rightsOp release];
+			[self.localProcessingQueue addOperation:audioOp];
+			[audioOp release];
 			return;
 			break;
 		}	
