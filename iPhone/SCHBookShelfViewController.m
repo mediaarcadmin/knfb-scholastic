@@ -246,7 +246,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
     } else {
             [self.gridView setShelfHeight:kSCHBookShelfViewControllerGridCellHeightPortrait];
             [self.gridView setShelfInset:CGSizeMake(0, -inset)];
-    }
+    }    
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -256,7 +256,13 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
+    CGPoint curentOffset = self.gridView.contentOffset;
     [self setupAssetsForOrientation:toInterfaceOrientation];
+    
+    // Forcing a very small adjustment in content offset seems to be needed to get the books to layout correctly on shelves
+    // Addresses ticket #439
+    [self.gridView setContentOffset:CGPointMake(curentOffset.x, curentOffset.y + 1) animated:NO];
+    [self.gridView setContentOffset:CGPointMake(curentOffset.x, curentOffset.y) animated:NO];
 }
 
 #pragma mark - Private methods
