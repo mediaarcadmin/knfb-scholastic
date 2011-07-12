@@ -16,6 +16,7 @@
 #import "SCHAppBook.h"
 #import "SCHAnnotationsContentItem.h"
 #import "SCHBookIdentifier.h"
+#import "SCHReadingStatsContentItem.h"
 
 @interface SCHBookshelfSyncComponent ()
 
@@ -28,6 +29,7 @@
 - (void)syncContentMetadataItem:(NSDictionary *)webContentMetadataItem withContentMetadataItem:(SCHContentMetadataItem *)localContentMetadataItem;
 - (void)deleteUnusedBooks;
 - (void)deleteAnnotationsForBook:(SCHBookIdentifier *)identifier;
+- (void)deleteStatisticsForBook:(SCHBookIdentifier *)identifier;
 
 @property (nonatomic, assign) NSInteger requestCount;
 
@@ -352,6 +354,7 @@
 	}
 	
 	for (id contentMetadataItem in deletePool) {
+        [self deleteStatisticsForBook:[contentMetadataItem bookIdentifier]];
         [self deleteAnnotationsForBook:[contentMetadataItem bookIdentifier]];
 		[self.managedObjectContext deleteObject:contentMetadataItem];
 	}
@@ -374,6 +377,30 @@
                                                                dictionaryWithObjectsAndKeys:
                                                                identifier.isbn, kSCHAppBookCONTENT_IDENTIFIER,
                                                                identifier.DRMQualifier, kSCHAppBookDRM_QUALIFIER,
+                                                               nil]];
+        NSArray *bookArray = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+        
+        if ([bookArray count] > 0) {
+            [self.managedObjectContext deleteObject:[bookArray objectAtIndex:0]];
+        }
+    }    
+}
+
+- (void)deleteStatisticsForBook:(SCHBookIdentifier *)identifier
+{
+    NSError *error = nil;
+    
+    if (identifier != nil) {
+        NSEntityDescription *entityDescription = [NSEntityDescription 
+                                                  entityForName:kSCHReadingStatsContentItem
+                                                  inManagedObjectContext:self.managedObjectContext];
+        
+        NSFetchRequest *fetchRequest = [entityDescription.managedObjectModel 
+                                        fetchRequestFromTemplateWithName:kSCHReadingStatsContentItemFetchReadingStatsContentItemForBook 
+                                        substitutionVariables:[NSDictionary 
+                                                               dictionaryWithObjectsAndKeys:
+                                                               identifier.isbn, kSCHReadingStatsContentItemCONTENT_IDENTIFIER,
+                                                               identifier.DRMQualifier, kSCHReadingStatsContentItemDRM_QUALIFIER,
                                                                nil]];
         NSArray *bookArray = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
         
