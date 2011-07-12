@@ -212,7 +212,7 @@ static NSInteger const CELL_ACTIVITY_SPINNER = 203;
         
         CGRect thumbTintFrame = self.bookTintView.frame;
         
-        NSLog(@"coversize: %@, trashed: %@", NSStringFromCGSize(self.bookCoverImageView.coverSize), self.trashed?@"Yes":@"No");
+        //NSLog(@"coversize: %@, trashed: %@", NSStringFromCGSize(self.bookCoverImageView.coverSize), self.trashed?@"Yes":@"No");
         
         thumbTintFrame.size.width = self.bookCoverImageView.coverSize.width;
         thumbTintFrame.size.height = self.bookCoverImageView.coverSize.height;
@@ -221,8 +221,8 @@ static NSInteger const CELL_ACTIVITY_SPINNER = 203;
         thumbTintFrame.origin.y = floorf(self.bookCoverImageView.frame.size.height - thumbTintFrame.size.height);
         
         self.bookTintView.frame = thumbTintFrame;
-        NSLog(@"Frame for cover: %@", NSStringFromCGRect(self.bookCoverImageView.frame));
-        NSLog(@"Thumb tint frame: %@, visible: %@", NSStringFromCGRect(self.bookTintView.frame), self.bookTintView.hidden?@"No":@"Yes");
+        //NSLog(@"Frame for cover: %@", NSStringFromCGRect(self.bookCoverImageView.frame));
+        //NSLog(@"Thumb tint frame: %@, visible: %@", NSStringFromCGRect(self.bookTintView.frame), self.bookTintView.hidden?@"No":@"Yes");
     }
     
 

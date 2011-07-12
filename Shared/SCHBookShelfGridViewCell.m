@@ -172,6 +172,7 @@
     if ([bookIdentifier isEqual:self.identifier]) {
         float newPercentage = [(NSNumber *) [[notification userInfo] objectForKey:@"currentPercentage"] floatValue];
         [self.progressView setProgress:newPercentage];
+        [self.progressView setHidden:NO];
     }
 }
 

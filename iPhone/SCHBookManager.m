@@ -256,6 +256,8 @@ static int allocCountXPS = 0;
     if (dispatch_get_current_queue() == dispatch_get_main_queue()) {
         getBlock();
     } else {
+        // TODO: investigate ticket 452
+        NSAssert(false, @"This code path does not work. Will be investigated in Ticket 452");
         dispatch_sync(dispatch_get_main_queue(), getBlock);
     }
     return [xpsProvider autorelease];
