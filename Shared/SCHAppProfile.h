@@ -24,5 +24,6 @@ static NSString * const kSCHAppProfile = @"SCHAppProfile";
 @property (nonatomic, retain) NSNumber *LayoutType;
 @property (nonatomic, retain) NSNumber *PaperType;
 @property (nonatomic, retain) NSNumber *SortType;
+@property (nonatomic, retain) NSNumber *ShowListView;
 
 @end

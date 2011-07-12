@@ -19,5 +19,6 @@
 @dynamic LayoutType;
 @dynamic PaperType;
 @dynamic SortType;
+@dynamic ShowListView;
 
 @end
