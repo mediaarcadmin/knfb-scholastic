@@ -31,6 +31,9 @@
 @dynamic BookCoverWidth;
 @dynamic BookCoverHeight;
 @dynamic AudioBookReferences;
+@dynamic OnDiskVersion;
+
+@synthesize diskVersionOutOfDate;
 
 #pragma mark - Convenience Methods
 
@@ -82,6 +85,11 @@
 - (BOOL)haveURLs
 {
 	return(!(self.BookCoverURL == nil || self.BookFileURL == nil));
+}
+
+- (BOOL)diskVersionOutOfDate
+{
+    return([self.OnDiskVersion isEqualToString:self.ContentMetadataItem.Version] == NO);
 }
 
 - (SCHBookCurrentProcessingState) processingState
