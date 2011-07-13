@@ -14,6 +14,9 @@
 #import "SFHFKeychainUtils.h"
 #import "Reachability.h"
 #import "SCHDrmSession.h"
+#import "SCHURLManager.h"
+#import "SCHProcessingManager.h"                
+#import "SCHSyncManager.h"
 
 #import "SCHNonDRMAuthenticationManager.h"
 
@@ -408,10 +411,14 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
                                                   forKey:kSCHAuthenticationManagerDeviceKey];
         [libreAccessWebService authenticateDevice:deviceKey forUserKey:nil];
     }
-    else
+    else {
         // Successful deregistration
         // removeObjectForKey does not change the value...
         [[NSUserDefaults standardUserDefaults] setObject:nil forKey:kSCHAuthenticationManagerDeviceKey];
+        [[SCHURLManager sharedURLManager] clear];
+        [[SCHProcessingManager sharedProcessingManager] cancelAllOperations];                
+        [[SCHSyncManager sharedSyncManager] clear];
+    }
     self.drmRegistrationSession = nil;
 }
 
