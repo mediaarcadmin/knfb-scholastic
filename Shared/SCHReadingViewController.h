@@ -16,6 +16,16 @@
 #import "SCHStoryInteractionControllerDelegate.h"
 #import <AVFoundation/AVAudioPlayer.h>
 
+extern NSString * const kSCHReadingViewErrorDomain;
+
+typedef enum 
+{
+	kSCHReadingViewMissingParametersError = 0,
+	kSCHReadingViewXPSCheckoutFailedError,
+	kSCHReadingViewDecryptionUnavailableError,
+    kSCHReadingViewUnspecifiedError
+} SCHReadingViewError;
+
 typedef enum 
 {
 	SCHReadingViewPaperTypeWhite = 0,
@@ -77,7 +87,8 @@ SCHStoryInteractionControllerDelegate>
               bundle:(NSBundle *)nibBundleOrNil 
       bookIdentifier:(SCHBookIdentifier *)aIdentifier 
              profile:(SCHProfileItem *)aProfile
-managedObjectContext:(NSManagedObjectContext *)moc;
+managedObjectContext:(NSManagedObjectContext *)moc
+               error:(NSError **)error;
 
 // interface builder
 - (IBAction)toolbarButtonPressed:(id)sender;
