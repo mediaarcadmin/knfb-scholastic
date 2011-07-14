@@ -26,13 +26,6 @@
 #import "SCHBookIdentifier.h"
 #import "SCHProfileSyncComponent.h"
 
-NSString *const kSCHBookShelfErrorDomain  = @"com.knfb.scholastic.BookShelfErrorDomain";
-typedef enum 
-{
-	kSCHBookShelfBookNotReadyError = 0,
-    kSCHBookShelfUnspecifiedError
-} SCHBookShelfError;
-
 static NSInteger const kSCHBookShelfViewControllerGridCellHeightPortrait = 138;
 static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 
@@ -49,7 +42,6 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 - (CGFloat)cellBorderSize;
 - (void)updateTable:(NSNotification *)notification;
 - (void)currentProfileDeleted:(NSNotification *)notification;
-- (NSError *)errorWithCode:(NSInteger)code;
 
 // FIXME: this isn't really necessary
 - (IBAction)changeToListView:(UIButton *)sender;
@@ -496,7 +488,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
             [self.navigationController pushViewController:readingController animated:YES]; 
             self.currentlyLoadingIndex = -1;
         } else {
-            if (error && !([[error domain] isEqualToString:kSCHBookShelfErrorDomain] && ([error code] == kSCHBookShelfBookNotReadyError))) {
+            if (error && !([[error domain] isEqualToString:kSCHAppBookErrorDomain] && ([error code] == kSCHAppBookStillBeingProcessedError))) {
                 UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"This Book Could Not Be Opened", @"Could not open book") 
                                                                      message:[error localizedDescription]
                                                                 delegate:nil 
@@ -613,7 +605,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
             }            
             [self.navigationController pushViewController:readingController animated:YES]; 
         } else {
-            if (error && !([[error domain] isEqualToString:kSCHBookShelfErrorDomain] && ([error code] == kSCHBookShelfBookNotReadyError))) {
+            if (error && !([[error domain] isEqualToString:kSCHAppBookErrorDomain] && ([error code] == kSCHAppBookStillBeingProcessedError))) {
                 UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"This Book Could Not Be Opened", @"Could not open book") 
                                                                      message:[error localizedDescription]
                                                                     delegate:nil 
@@ -638,8 +630,8 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 	// will do nothing if the book has already been fully downloaded.
 	[[SCHProcessingManager sharedProcessingManager] userSelectedBookWithIdentifier:identifier];
 	
-	// if the processing manager is working, do not open the book
-	if ([book canOpenBook]) {
+	// if the processing manager is working, do not open the book    
+	if ([book canOpenBookError:error]) {
         NSLog(@"Showing book %@.", book.Title);
         
         // grab the category from the XPS, 
@@ -689,8 +681,6 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
                 break;
         }
         
-    } else {
-        *error = [self errorWithCode:kSCHBookShelfBookNotReadyError];
     }
     
     return([ret autorelease]);
@@ -713,32 +703,6 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 {
     return 20;
 }
-
-#pragma mark - Errors
-
-- (NSError *)errorWithCode:(NSInteger)code
-{
-    NSString *description = nil;
-    
-    switch (code) {
-        case kSCHBookShelfBookNotReadyError:
-            description = NSLocalizedString(@"The book is not ready to be opened", @"The book is not ready to be opened error message from BookShelfViewController");
-            break;
-        case kSCHBookShelfUnspecifiedError:
-        default:
-            description = NSLocalizedString(@"An unspecified error occured. Please try again.", @"Unspecified error message from BookShelfViewController");
-            break;
-    }
-    
-    NSArray *objArray = [NSArray arrayWithObjects:description, nil];
-    NSArray *keyArray = [NSArray arrayWithObjects:NSLocalizedDescriptionKey, nil];
-    NSDictionary *eDict = [NSDictionary dictionaryWithObjects:objArray
-                                                      forKeys:keyArray];
-    
-    return [[[NSError alloc] initWithDomain:kSCHBookShelfErrorDomain
-                                       code:code userInfo:eDict] autorelease];
-}
-
 
 @end
 
