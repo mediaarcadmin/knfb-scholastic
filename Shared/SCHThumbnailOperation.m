@@ -74,7 +74,7 @@
 														  forImage:fullImage
                                                     maintainAspect:self.aspect];
             
-            if (thumbImage) {
+            if (thumbImage && self.isCancelled == NO) {
                 NSData *pngData = UIImagePNGRepresentation(thumbImage);
                 [pngData writeToFile:thumbPath atomically:YES];
             }
@@ -104,6 +104,11 @@
 // specifically used by SCHASyncBookCoverImageView
 - (void)imageReady:(NSDictionary *)userInfo
 {
+    if (self.isCancelled) {
+        [self endOperation];
+		return;
+	}
+
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"SCHNewImageAvailable" object:nil userInfo:userInfo];
 }
 

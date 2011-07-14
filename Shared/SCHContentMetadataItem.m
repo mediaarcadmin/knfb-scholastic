@@ -13,6 +13,7 @@
 #import "SCHUserContentItem.h"
 #import "SCHBookManager.h"
 #import "SCHBookIdentifier.h"
+#import "SCHProcessingManager.h"
 
 static NSString * const kSCHContentMetadataItemAnnotationsContentItem = @"AnnotationsContentItem";
 static NSString * const kSCHContentMetadataItemAnnotationsItemProfileID = @"AnnotationsItem.ProfileID";
@@ -72,7 +73,8 @@ static NSString * const kSCHContentMetadataItemUserContentItem = @"UserContentIt
 - (void)prepareForDeletion
 {
     [super prepareForDeletion];
-    [[SCHBookManager sharedBookManager] removeBookIdentifierFromCache:self.bookIdentifier];
+    [[SCHProcessingManager sharedProcessingManager] cancelAllOperationsForBookIndentifier:self.bookIdentifier];
+    [[SCHBookManager sharedBookManager] removeBookIdentifierFromCache:self.bookIdentifier];    
     [self deleteAllFiles];
 }
 
