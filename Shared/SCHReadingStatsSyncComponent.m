@@ -61,7 +61,7 @@
 	NSLog(@"%@\n%@", method, result);
     
     [self clear];
-    [[NSNotificationCenter defaultCenter] postNotificationName:kSCHReadingStatsSyncComponentComplete object:self];
+    [[NSNotificationCenter defaultCenter] postNotificationName:SCHReadingStatsSyncComponentCompletedNotification object:self];
     [super method:method didCompleteWithResult:nil];				    
 }
 

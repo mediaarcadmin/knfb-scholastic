@@ -10,8 +10,10 @@
 
 #import "SCHSyncComponent.h"
 
-static NSString * const kSCHBookshelfSyncComponentBookReceived = @"SCHBookshelfSyncComponentBookReceived";
-static NSString * const kSCHBookshelfSyncComponentComplete = @"SCHBookshelfSyncComponentComplete";
+static NSString * const SCHBookshelfSyncComponentWillDeleteNotification = @"SCHBookshelfSyncComponentWillDeleteNotification";
+static NSString * const SCHBookshelfSyncComponentDeletedBookIdentifiers = @"SCHBookshelfSyncComponentDeletedBookIdentifiers";
+static NSString * const SCHBookshelfSyncComponentBookReceivedNotification = @"SCHBookshelfSyncComponentBookReceivedNotification";
+static NSString * const SCHBookshelfSyncComponentCompletedNotification = @"SCHBookshelfSyncComponentCompletedNotification";
 
 @interface SCHBookshelfSyncComponent : SCHSyncComponent
 {

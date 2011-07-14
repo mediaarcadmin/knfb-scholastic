@@ -55,7 +55,7 @@
 - (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result
 {	
 	[self updateUserSettings:[result objectForKey:kSCHLibreAccessWebServiceUserSettingsList]];
-	[[NSNotificationCenter defaultCenter] postNotificationName:kSCHSettingsSyncComponentComplete object:self];			
+	[[NSNotificationCenter defaultCenter] postNotificationName:SCHSettingsSyncComponentCompletedNotification object:self];			
 	[super method:method didCompleteWithResult:nil];	
 }
 

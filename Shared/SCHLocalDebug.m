@@ -147,7 +147,7 @@
 		abort();
 	}	
     
-	[[NSNotificationCenter defaultCenter] postNotificationName:kSCHBookshelfSyncComponentComplete object:self];
+	[[NSNotificationCenter defaultCenter] postNotificationName:SCHBookshelfSyncComponentCompletedNotification object:self];
     
 }
 
@@ -423,7 +423,7 @@
     [gregorian release], gregorian = nil;
      
 	// fire off processing
-	[[NSNotificationCenter defaultCenter] postNotificationName:kSCHBookshelfSyncComponentComplete object:self];
+	[[NSNotificationCenter defaultCenter] postNotificationName:SCHBookshelfSyncComponentCompletedNotification object:self];
 	
 }
 

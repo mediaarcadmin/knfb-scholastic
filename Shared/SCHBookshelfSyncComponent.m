@@ -96,7 +96,7 @@
                     [userInfo setObject:DRMQualifier forKey:kSCHLibreAccessWebServiceDRMQualifier];
                 }
 				NSLog(@"%@ Book information received", ISBN);
-				[[NSNotificationCenter defaultCenter] postNotificationName:kSCHBookshelfSyncComponentBookReceived 
+				[[NSNotificationCenter defaultCenter] postNotificationName:SCHBookshelfSyncComponentBookReceivedNotification 
                                                                     object:self 
                                                                   userInfo:userInfo];				
 			} else {
@@ -104,12 +104,12 @@
 			}
 			
 			if (requestCount < 1) {
-				[[NSNotificationCenter defaultCenter] postNotificationName:kSCHBookshelfSyncComponentComplete object:self];
+				[[NSNotificationCenter defaultCenter] postNotificationName:SCHBookshelfSyncComponentCompletedNotification object:self];
 				[super method:method didCompleteWithResult:nil];				
 			}
 		} else {
 			NSLog(@"Book information received");		
-			[[NSNotificationCenter defaultCenter] postNotificationName:kSCHBookshelfSyncComponentComplete object:self];
+			[[NSNotificationCenter defaultCenter] postNotificationName:SCHBookshelfSyncComponentCompletedNotification object:self];
 			[super method:method didCompleteWithResult:nil];				
 		}
 	}	
@@ -350,12 +350,23 @@
 		}		
 	}
 	
-	for (id contentMetadataItem in deletePool) {
-        [self deleteStatisticsForBook:[contentMetadataItem bookIdentifier]];
-        [self deleteAnnotationsForBook:[contentMetadataItem bookIdentifier]];
-		[self.managedObjectContext deleteObject:contentMetadataItem];
-	}
-		
+    if ([deletePool count] > 0) {
+        NSMutableArray *deletedBookIdentifiers = [NSMutableArray array];
+        for (SCHContentMetadataItem *contentMetadataItem in deletePool) {
+            [deletedBookIdentifiers addObject:[contentMetadataItem bookIdentifier]];            
+        }
+        [[NSNotificationCenter defaultCenter] postNotificationName:SCHBookshelfSyncComponentWillDeleteNotification 
+                                                            object:self 
+                                                          userInfo:[NSDictionary dictionaryWithObject:deletedBookIdentifiers 
+                                                                                               forKey:SCHBookshelfSyncComponentDeletedBookIdentifiers]];        
+        
+        for (SCHContentMetadataItem *contentMetadataItem in deletePool) {
+            [self deleteStatisticsForBook:[contentMetadataItem bookIdentifier]];
+            [self deleteAnnotationsForBook:[contentMetadataItem bookIdentifier]];
+            [self.managedObjectContext deleteObject:contentMetadataItem];
+        }
+    }
+
 	[self save];
 }
 
