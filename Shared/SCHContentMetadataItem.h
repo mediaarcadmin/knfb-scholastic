@@ -36,5 +36,6 @@ static NSString * const kSCHContentMetadataItem = @"SCHContentMetadataItem";
 @property (nonatomic, readonly) SCHUserContentItem *userContentItem;
 
 - (NSArray *)annotationsContentForProfile:(NSNumber *)profileID;
+- (void)deleteAllFiles;
 
 @end

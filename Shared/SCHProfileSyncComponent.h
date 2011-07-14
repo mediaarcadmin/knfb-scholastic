@@ -11,10 +11,9 @@
 #import "SCHSyncComponent.h"
 #import "NSNumber+ObjectTypes.h"
 
-
-static NSString * const kSCHProfileSyncProfilesDeleted = @"SCHProfileSyncProfilesDeleted";
-static NSString * const kSCHProfileSyncDeletedIDs = @"SCHProfileSyncDeletedIDs";
-static NSString * const kSCHProfileSyncComponentComplete = @"SCHProfileSyncComponentComplete";
+static NSString * const SCHProfileSyncComponentWillDeleteNotification = @"SCHProfileSyncComponentWillDeleteNotification";
+static NSString * const SCHProfileSyncComponentDeletedProfileIDs = @"SCHProfileSyncComponentDeletedProfileIDs";
+static NSString * const SCHProfileSyncComponentCompletedNotification = @"SCHProfileSyncComponentCompletedNotification";
 
 @interface SCHProfileSyncComponent : SCHSyncComponent
 {

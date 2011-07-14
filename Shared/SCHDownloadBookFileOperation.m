@@ -197,6 +197,9 @@
 	
 	switch (self.fileType) {
 		case kSCHDownloadFileTypeXPSBook:
+            [self performWithBookAndSave:^(SCHAppBook *book) {
+                book.OnDiskVersion = book.Version;                
+            }];
             [self setProcessingState:SCHBookProcessingStateReadyForLicenseAcquisition];
 			break;
 		case kSCHDownloadFileTypeCoverImage:

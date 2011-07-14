@@ -29,6 +29,7 @@
 #import "SCHReadingStatsDetailItem.h"
 #import "SCHReadingStatsContentItem.h"
 #import "SCHReadingStatsEntryItem.h"
+#import "SCHBookshelfSyncComponent.h"
 
 static NSString * const kSCHProfileItemContentProfileItem = @"ContentProfileItem";
 static NSString * const kSCHProfileItemUserContentItem = @"UserContentItem";
@@ -69,13 +70,13 @@ static NSString * const kSCHProfileItemUserContentItemContentMetadataItem = @"Us
 - (void)awakeFromInsert
 {
 	[super awakeFromInsert];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshAllContentMetadataItems) name:@"SCHBookshelfSyncComponentComplete" object:nil];			
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshAllContentMetadataItems) name:SCHBookshelfSyncComponentCompletedNotification object:nil];			
 }
 
 - (void)awakeFromFetch
 {
 	[super awakeFromFetch];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshAllContentMetadataItems) name:@"SCHBookshelfSyncComponentComplete" object:nil];		
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshAllContentMetadataItems) name:SCHBookshelfSyncComponentCompletedNotification object:nil];		
 }
 
 - (void)willTurnIntoFault

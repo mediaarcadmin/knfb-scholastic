@@ -10,7 +10,7 @@
 
 #import "SCHSyncComponent.h"
 
-static NSString * const kSCHReadingStatsSyncComponentComplete = @"SCHReadingStatsSyncComponentComplete";
+static NSString * const SCHReadingStatsSyncComponentCompletedNotification = @"SCHReadingStatsSyncComponentCompletedNotification";
 
 @interface SCHReadingStatsSyncComponent : SCHSyncComponent
 {

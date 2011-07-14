@@ -41,7 +41,7 @@
     self = [super init];
     if (self) {
         privateAnnotations = [aPrivateAnnotation retain];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshData) name:kSCHAnnotationSyncComponentComplete object:nil];        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshData) name:SCHAnnotationSyncComponentCompletedNotification object:nil];        
     }
     return(self);
 }
