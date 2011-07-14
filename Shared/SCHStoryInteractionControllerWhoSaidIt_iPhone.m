@@ -14,7 +14,6 @@
 
 @property (nonatomic, assign) NSInteger currentStatement;
 @property (nonatomic, assign) NSInteger score;
-@property (nonatomic, assign) NSInteger simultaneousTapCount;
 @property dispatch_queue_t buttonAccessQueue;
 
 - (void)setupQuestionView;
@@ -22,8 +21,6 @@
 
 - (void)nextQuestion;
 - (void)setupQuestion;
-
-- (void)answerChosen:(id)sender;
 
 @end
 
@@ -35,7 +32,6 @@
 @synthesize tryAgainButton;
 @synthesize currentStatement;
 @synthesize score;
-@synthesize simultaneousTapCount;
 @synthesize buttonAccessQueue;
 
 
@@ -121,7 +117,6 @@
         [button setBackgroundImage:[UIImage imageNamed:@"answer-button-yellow"] forState:UIControlStateNormal];
     }
     
-    self.simultaneousTapCount = 0;
     self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
 }
 
@@ -151,37 +146,20 @@
         
         self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause;
         
-//        self.simultaneousTapCount++;
-//        if (self.simultaneousTapCount == 1) {
-//            [self performSelector:@selector(answerChosen:) withObject:sender afterDelay:kMinimumDistinguishedAnswerDelay];
-//        }
+        UIButton *button = (UIButton *)sender;
+        if (button.tag == self.currentStatement) {
+            [button setBackgroundImage:[UIImage imageNamed:@"answer-button-green"] forState:UIControlStateNormal];
+            [self playBundleAudioWithFilename:[self.storyInteraction storyInteractionCorrectAnswerSoundFilename] completion:nil];
+            self.score++;
+        } else {
+            [button setBackgroundImage:[UIImage imageNamed:@"answer-button-red"] forState:UIControlStateNormal];
+            [self playBundleAudioWithFilename:[self.storyInteraction storyInteractionWrongAnswerSoundFilename] completion:nil];
+        }
         
-        [self answerChosen:sender];
-    });
-}
-
-- (void)answerChosen:(id)sender
-{
-//    NSInteger tapCount = self.simultaneousTapCount;
-//    self.simultaneousTapCount = 0;
-//    if (tapCount > 1) {
-//        self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
-//        return;
-//    }
-
-    UIButton *button = (UIButton *)sender;
-    if (button.tag == self.currentStatement) {
-        [button setBackgroundImage:[UIImage imageNamed:@"answer-button-green"] forState:UIControlStateNormal];
-        [self playBundleAudioWithFilename:[self.storyInteraction storyInteractionCorrectAnswerSoundFilename] completion:nil];
-        self.score++;
-    } else {
-        [button setBackgroundImage:[UIImage imageNamed:@"answer-button-red"] forState:UIControlStateNormal];
-        [self playBundleAudioWithFilename:[self.storyInteraction storyInteractionWrongAnswerSoundFilename] completion:nil];
-    }
-         
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 1.0 * NSEC_PER_SEC);
-    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        [self nextQuestion];
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 1.0 * NSEC_PER_SEC);
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            [self nextQuestion];
+        });
     });
 }
 
