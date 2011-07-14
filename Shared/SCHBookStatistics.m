@@ -40,35 +40,43 @@
 
 #pragma mark - Accessor methods
 
-- (void)increaseReadingDurationBy:(NSNumber *)duration
+- (void)increaseReadingDurationBy:(NSUInteger)durationInSeconds
 {
-   self.readingStatsEntryItem.ReadingDuration = [NSNumber numberWithUnsignedInteger:
-                                                 [self.readingStatsEntryItem.ReadingDuration unsignedIntegerValue] + 
-    [duration unsignedIntegerValue]];
+    //NSLog(@"increaseReadingDurationBy %d", durationInSeconds);
+   
+    self.readingStatsEntryItem.ReadingDuration = [NSNumber numberWithUnsignedInteger:
+                                                  [self.readingStatsEntryItem.ReadingDuration unsignedIntegerValue] + 
+                                                  durationInSeconds];
 }
 
-- (void)increasePagesReadBy:(NSNumber *)pages
+- (void)increasePagesReadBy:(NSUInteger)pages
 {
+    //NSLog(@"increasePagesReadBy %d", pages);
+
     self.readingStatsEntryItem.PagesRead = [NSNumber numberWithUnsignedInteger:
-                                                  [self.readingStatsEntryItem.PagesRead unsignedIntegerValue] + 
-                                                  [pages unsignedIntegerValue]];
+                                            [self.readingStatsEntryItem.PagesRead unsignedIntegerValue] + 
+                                            pages];
 }
 
-- (void)increaseStoryInteractionsBy:(NSNumber *)storyInteractions
+- (void)increaseStoryInteractionsBy:(NSUInteger)storyInteractions
 {
+    //NSLog(@"increaseStoryInteractionsBy %d", storyInteractions);
+
     self.readingStatsEntryItem.StoryInteractions = [NSNumber numberWithUnsignedInteger:
-                                            [self.readingStatsEntryItem.StoryInteractions unsignedIntegerValue] + 
-                                            [storyInteractions unsignedIntegerValue]];
+                                                    [self.readingStatsEntryItem.StoryInteractions unsignedIntegerValue] + 
+                                                    storyInteractions];
 }
 
 - (void)addToDictionaryLookup:(NSString *)word
 {
+    //NSLog(@"addToDictionaryLookup %@", word);
+
     if (word != nil) {
+        if (self.readingStatsEntryItem.DictionaryLookupsList == nil) {
+            self.readingStatsEntryItem.DictionaryLookupsList = [NSMutableSet set];
+        }
         [self.readingStatsEntryItem.DictionaryLookupsList addObject:word];
     }
 }
-
-//@property (nonatomic, retain) NSString *DeviceKey;
-//@property (nonatomic, retain) NSDate *Timestamp;
 
 @end

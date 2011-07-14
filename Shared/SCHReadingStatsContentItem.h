@@ -13,6 +13,11 @@
 
 static NSString * const kSCHReadingStatsContentItem = @"SCHReadingStatsContentItem";
 
+static NSString * const kSCHReadingStatsContentItemFetchReadingStatsContentItemForBook = @"fetchReadingStatsContentItemForBook";
+static NSString * const kSCHReadingStatsContentItemCONTENT_IDENTIFIER = @"CONTENT_IDENTIFIER";;
+static NSString * const kSCHReadingStatsContentItemDRM_QUALIFIER = @"DRM_QUALIFIER";
+
+
 @interface SCHReadingStatsContentItem : SCHContentItem 
 {
 }

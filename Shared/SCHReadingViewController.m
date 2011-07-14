@@ -36,6 +36,7 @@
 #import "SCHHighlight.h"
 #import "SCHStoryInteractionTypes.h"
 #import "SCHQueuedAudioPlayer.h"
+#import "SCHBookStatistics.h"
 
 // constants
 static const CGFloat kReadingViewStandardScrubHeight = 47.0f;
@@ -48,6 +49,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 @property (nonatomic, retain) SCHBookIdentifier *bookIdentifier;
 
 @property (nonatomic, retain) SCHProfileItem *profile;
+@property (nonatomic, retain) SCHBookStatistics *bookStatistics;
+@property (nonatomic, retain) NSDate *bookStatisticsReadingStartTime;
 
 // the page view, either fixed or flow
 @property (nonatomic, retain) SCHReadingView *readingView;
@@ -107,6 +110,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (void)readingViewHasMoved;
 - (void)saveLastPageLocation;
+- (void)updateBookState;
 - (void)jumpToLastPageLocation;
 - (void)jumpToBookPoint:(SCHBookPoint *)bookPoint animated:(BOOL)animated; 
 - (void)jumpToCurrentPlaceInBookAnimated:(BOOL)animated;
@@ -130,6 +134,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 @synthesize managedObjectContext;
 @synthesize bookIdentifier;
 @synthesize profile;
+@synthesize bookStatistics;
+@synthesize bookStatisticsReadingStartTime;
 @synthesize readingView;
 @synthesize youngerMode;
 @synthesize toolbarsVisible;
@@ -193,6 +199,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [bookIdentifier release], bookIdentifier = nil;
     [popover release], popover = nil;
     [profile release], profile = nil;
+    [bookStatistics release], bookStatistics = nil;
+    [bookStatisticsReadingStartTime release], bookStatisticsReadingStartTime = nil;
     [audioBookPlayer release], audioBookPlayer = nil;
     [bookStoryInteractions release], bookStoryInteractions = nil;
     [popoverOptionsViewController release], popoverOptionsViewController = nil;
@@ -259,8 +267,12 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         // Custom initialization
         bookIdentifier = [aIdentifier retain];
         profile = [aProfile retain];
+        bookStatistics = [[profile newStatisticsForBook:bookIdentifier] retain];
+        
         currentlyRotating = NO;
         currentlyScrubbing = NO;
+        currentPageIndex = NSUIntegerMax;
+        
         self.managedObjectContext = moc;
         
         SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:aIdentifier inManagedObjectContext:self.managedObjectContext];        
@@ -274,6 +286,11 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         [[NSNotificationCenter defaultCenter] addObserver:self 
                                                  selector:@selector(didEnterBackgroundNotification:) 
                                                      name:UIApplicationDidEnterBackgroundNotification
+                                                   object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self 
+                                                 selector:@selector(willEnterForegroundNotification:) 
+                                                     name:UIApplicationWillEnterForegroundNotification
                                                    object:nil];
         
         self.lastPageInteractionSoundPlayedOn = -1;
@@ -448,6 +465,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [self setupStoryInteractionButtonForCurrentPagesAnimated:NO];
     
     [self.profile setBookIsNew:NO forBookWithIdentifier:self.bookIdentifier];
+    
+    self.bookStatisticsReadingStartTime = [NSDate date];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -540,33 +559,48 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     }
 }
 
-#pragma mark -
-#pragma mark Notification methods
-
-- (void)didEnterBackgroundNotification:(NSNotification *)notification
+- (void)updateBookState
 {
-    // store the last page
     SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.bookIdentifier inManagedObjectContext:self.managedObjectContext];
     
-    [self.readingView dismissFollowAlongHighlighter];  
-    self.audioBookPlayer = nil;
+    NSTimeInterval readingDuration = [[NSDate date] timeIntervalSinceDate:self.bookStatisticsReadingStartTime];
+    [self.bookStatistics increaseReadingDurationBy:floor(readingDuration)];
+    self.bookStatisticsReadingStartTime = [NSDate date];
     
     [self saveLastPageLocation];
     
     [[SCHSyncManager sharedSyncManager] closeDocument:[[book.ContentMetadataItem valueForKey:@"UserContentItem"] objectAtIndex:0] 
                                            forProfile:self.profile.ID];
     
+    NSError *error = nil;
+    if ([self.managedObjectContext save:&error] == NO) {
+        NSLog(@"Unresolved error whilst updating book state %@, %@", error, [error userInfo]);
+        abort();
+    } 
+}
+
+#pragma mark -
+#pragma mark Notification methods
+
+- (void)didEnterBackgroundNotification:(NSNotification *)notification
+{
     // relaunch the book
+    SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.bookIdentifier inManagedObjectContext:self.managedObjectContext];
+    
     NSString *categoryType = book.categoryType;
     if (categoryType != nil && [categoryType isEqualToString:kSCHAppBookCategoryPictureBook] == NO) {
         self.profile.AppProfile.AutomaticallyLaunchBook = [self.bookIdentifier encodeAsString];
     }
     
-    NSError *error = nil;
-    if ([self.profile.managedObjectContext save:&error] == NO) {
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        abort();
-    } 
+    [self updateBookState];
+        
+    [self.readingView dismissFollowAlongHighlighter];  
+    self.audioBookPlayer = nil;
+}
+
+- (void)willEnterForegroundNotification:(NSNotification *)notification
+{
+    self.bookStatisticsReadingStartTime = [NSDate date];
 }
 
 #pragma mark - Book Positions
@@ -620,13 +654,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (IBAction)popViewController:(id)sender
 {
-    SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.bookIdentifier inManagedObjectContext:self.managedObjectContext];
-    
-    [self saveLastPageLocation];
-
-    [[SCHSyncManager sharedSyncManager] closeDocument:[[book.ContentMetadataItem valueForKey:@"UserContentItem"] objectAtIndex:0] 
-                                           forProfile:self.profile.ID];
-
+    [self updateBookState];
     [self.audioBookPlayer cleanAudio];
     
     [self cancelInitialTimer];
@@ -1069,6 +1097,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     } else if ([self.readingView isKindOfClass:[SCHFlowView class]]) {
         presentStoryInteractionBlock();
     }
+    
+    [self.bookStatistics increaseStoryInteractionsBy:1];
 }
 
 #pragma mark - Audio Control
@@ -1374,6 +1404,24 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (void)readingView:(SCHReadingView *)readingView hasMovedToPageAtIndex:(NSUInteger)pageIndex
 {
+    // Increment pages read only if we have moved forwards and only if the page advance is <= 1
+    // This will exclude larger jumps made by the scrubber
+    // It's actually a cheat because we don't differentiate between user initiated page turns and page turns from the scrubber or book opening
+    // So we will incorrectly count it if you scrub forward 1 page or if you open the book to the page after the 1st page
+    // We also fail to count the last page the user reads before closing the book
+    // These are corner-cases so don't warrant a more complex solution that is triggered from something other than a page turn.
+    if (self.currentPageIndex != NSUIntegerMax) {
+        NSUInteger oldPageIndex = self.currentPageIndex;
+        NSUInteger newPageIndex = pageIndex;
+        
+        if (newPageIndex > oldPageIndex) {
+            NSUInteger pagesRead = newPageIndex - oldPageIndex;
+            if (pagesRead <= 1) {
+                [self.bookStatistics increasePagesReadBy:pagesRead];
+            }
+        }        
+    }
+    
     self.currentPageIndex = pageIndex;
     self.currentBookProgress = -1;
     self.currentPageIndices = NSMakeRange(NSNotFound, 0);
@@ -1383,6 +1431,31 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (void)readingView:(SCHReadingView *)readingView hasMovedToPageIndicesInRange:(NSRange)pageIndicesRange withFocusedPageIndex:(NSUInteger)pageIndex;
 {    
+    // Increment pages read only if we have moved forwards and only if the page advance is <= 2
+    // This will exclude larger jumps made by the scrubber
+    // It's actually a cheat because we don't differentiate between user initiated page turns and page turns from the scrubber or book opening
+    // So we will incorrectly count it if you scrub forward 1 or 2 pages or if you open the book to pages 2 or 3 (where page 1 is the cover)
+    // We also fail to count the last page the user reads before closing the book
+    // These are corner-cases so don't warrant a more complex solution that is triggered from something other than a page turn.
+    if (self.currentPageIndex != NSUIntegerMax) {
+        NSUInteger oldPageIndex;
+        
+        if (self.currentPageIndices.location == NSNotFound) {
+            oldPageIndex = self.currentPageIndex;
+        } else {
+            oldPageIndex = self.currentPageIndices.location;
+        }
+        
+        NSUInteger newPageIndex = pageIndicesRange.location;
+        
+        if (newPageIndex > oldPageIndex) {
+            NSUInteger pagesRead = newPageIndex - oldPageIndex;
+            if (pagesRead <= 2) {
+                [self.bookStatistics increasePagesReadBy:pagesRead];
+            }
+        }        
+    }
+    
     self.currentPageIndex = pageIndex;
     self.currentBookProgress = -1;
     self.currentPageIndices = pageIndicesRange;
@@ -1392,6 +1465,11 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (void)readingView:(SCHReadingView *)readingView hasMovedToProgressPositionInBook:(CGFloat)progress
 {
+    // N.B. We don't increment pages read at all when pagination is in progress. We cannot reliably differentiate
+    // between a user initiated page turn and a scrubber or book launch because we have no concept of page ordinality
+    // We could in theory translate the previous and current page prgress into an index and try to differentiate large jumps
+    // but it doesn't seem worthwhile for an unreliable result
+    
     //NSLog(@"hasMovedToProgressPositionInBook %f", progress);
     self.currentPageIndex = NSUIntegerMax;
     self.currentBookProgress = progress;
@@ -1427,6 +1505,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     
     [self.navigationController presentModalViewController:dictionaryViewController animated:YES];
     [dictionaryViewController release];
+    
+    [self.bookStatistics addToDictionaryLookup:word];
 }
 
 #pragma mark - SCHReadingViewDelegate Toolbars methods

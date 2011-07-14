@@ -161,7 +161,7 @@ static NSTimeInterval const kSCHSyncManagerHeartbeatInterval = 30.0;
 
 - (void)backgroundSyncHeartbeat:(NSTimer *)theTimer
 {
-	NSLog(@"Background Sync Heartbeat!");
+	//NSLog(@"Background Sync Heartbeat!");
 
 	[self kickQueue];
 }
@@ -230,7 +230,7 @@ static NSTimeInterval const kSCHSyncManagerHeartbeatInterval = 30.0;
 		[self addToQueue:self.annotationSyncComponent];		
 	}
 	
-//	[self addToQueue:self.readingStatsSyncComponent];
+	[self addToQueue:self.readingStatsSyncComponent];
 	[self addToQueue:self.settingsSyncComponent];
 	
 	[self kickQueue];	
@@ -338,7 +338,7 @@ static NSTimeInterval const kSCHSyncManagerHeartbeatInterval = 30.0;
 	[self.annotationSyncComponent addProfile:profileID 
                               withBooks:[NSMutableArray arrayWithObject:[self annotationContentItemFromUserContentItem:userContentItem]]];	
 	[self addToQueue:self.annotationSyncComponent];
-//	[self addToQueue:self.readingStatsSyncComponent];
+	[self addToQueue:self.readingStatsSyncComponent];
 	
 	[self kickQueue];	
 }
@@ -405,9 +405,9 @@ static NSTimeInterval const kSCHSyncManagerHeartbeatInterval = 30.0;
 		} else {
 			NSLog(@"Kicked but already syncing %@", [syncComponent class]);
 		}
-	} else {
-		NSLog(@"Queue is empty");
-	}
+	} // else {
+//		NSLog(@"Queue is empty");
+//	}
 }
 
 @end

@@ -93,6 +93,7 @@ typedef enum {
 @property (nonatomic, retain) NSSet *SmartZoomPageMarkers;
 @property (nonatomic, retain) NSNumber *LayoutPageEquivalentCount;
 @property (nonatomic, retain) NSArray *AudioBookReferences;
+@property (nonatomic, retain) NSString *OnDiskVersion;
 
 // convenience variables from the SCHContentMetadataItem
 @property (nonatomic, readonly) NSString * ContentIdentifier;
@@ -105,6 +106,7 @@ typedef enum {
 @property (nonatomic, readonly) int PageNumber;
 @property (nonatomic, readonly) NSString * FileName;
 @property (nonatomic, readonly) NSString *categoryType;
+@property (nonatomic, readonly) BOOL diskVersionOutOfDate;
 
 
 - (SCHBookCurrentProcessingState)processingState;

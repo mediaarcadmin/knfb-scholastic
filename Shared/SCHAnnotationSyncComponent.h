@@ -10,7 +10,7 @@
 
 #import "SCHSyncComponent.h"
 
-static NSString * const kSCHAnnotationSyncComponentComplete = @"SCHAnnotationSyncComponentComplete";
+static NSString * const SCHAnnotationSyncComponentCompletedNotification = @"SCHAnnotationSyncComponentCompletedNotification";
 
 @interface SCHAnnotationSyncComponent : SCHSyncComponent 
 {

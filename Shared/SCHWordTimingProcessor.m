@@ -11,14 +11,20 @@
 #import "SCHWordTiming.h"
 #import "SCHAudioBookPlayer.h"
 
+static NSString * const kSCHWordTimingProcessorPageElementSeparator = @",";
+static NSUInteger kSCHWordTimingProcessorRTXOldFormatLineCount = 3;
+static NSUInteger kSCHWordTimingProcessorRTXNewFormatLineCount = 9;
 
 @implementation SCHWordTimingProcessor
+
+@synthesize newRTXFormat;
 
 #pragma mark - Object lifecycle
 
 - (NSArray *)startTimesFrom:(NSData *)wordTimingData error:(NSError **)error
 {
     NSMutableArray *ret = [NSMutableArray array];
+    BOOL hitFirstLine = NO;
     
     if (wordTimingData == nil || [wordTimingData length] < 1) {
         if (error != nil) {
@@ -40,14 +46,37 @@
         
         for (NSString *currentLine in timingLines) {
             NSArray *timingElements = [currentLine componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-            if ([timingElements count] > 3 && [[timingElements objectAtIndex:0] integerValue] == 5) {
-                SCHWordTiming *wordTiming = [[SCHWordTiming alloc] initWithStartTime:[[timingElements objectAtIndex:1] integerValue] 
-                                                                             endTime:[[timingElements objectAtIndex:2] integerValue]];
-                [ret addObject:wordTiming];
-                [wordTiming release];
+            if (hitFirstLine == NO) {
+				if ([timingElements count] > kSCHWordTimingProcessorRTXNewFormatLineCount) {
+                    self.newRTXFormat = YES;
+                } else if ([timingElements count] > kSCHWordTimingProcessorRTXOldFormatLineCount) {
+                    self.newRTXFormat = NO;                    
+                } else {
+                    continue;
+                }
+                hitFirstLine = YES;
             }
-        }  
-    }
+            if (self.newRTXFormat == YES) {
+                if ([timingElements count] > kSCHWordTimingProcessorRTXNewFormatLineCount && [[timingElements objectAtIndex:0] integerValue] == 5) {
+                    NSArray *pageElements = [[timingElements objectAtIndex:9] componentsSeparatedByString:kSCHWordTimingProcessorPageElementSeparator];
+                    if ([pageElements count] > 2) {
+                        SCHWordTiming *wordTiming = [[SCHWordTiming alloc] initWithStartTime:[[timingElements objectAtIndex:1] integerValue] 
+                                                                                     endTime:[[timingElements objectAtIndex:2] integerValue]
+                                                                                        page:[[pageElements objectAtIndex:0] integerValue]];
+                        [ret addObject:wordTiming];
+                        [wordTiming release];
+                    }
+                }
+            } else {
+                if ([timingElements count] > kSCHWordTimingProcessorRTXOldFormatLineCount && [[timingElements objectAtIndex:0] integerValue] == 5) {
+                    SCHWordTiming *wordTiming = [[SCHWordTiming alloc] initWithStartTime:[[timingElements objectAtIndex:1] integerValue] 
+                                                                                 endTime:[[timingElements objectAtIndex:2] integerValue]];
+                    [ret addObject:wordTiming];
+                    [wordTiming release];
+                }
+            }
+        }
+    }  
     
 	return(ret);    
 }

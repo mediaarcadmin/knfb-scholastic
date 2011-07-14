@@ -33,3 +33,5 @@
 "Unable to parse Audio.xml" = "Unable to parse Audio.xml";
 "Check again soon" = "Check again soon";
 "This will remove all books and settings" = "This will remove all books and settings";
+"Bookshelf Removed" = "Bookshelf Removed";
+"%@ is no longer available" = "%@ is no longer available";

@@ -99,7 +99,7 @@
 		}		
 	} else if([method compare:kSCHLibreAccessWebServiceGetUserProfiles] == NSOrderedSame) {
 		[self syncProfiles:[result objectForKey:kSCHLibreAccessWebServiceProfileList]];
-		[[NSNotificationCenter defaultCenter] postNotificationName:kSCHProfileSyncComponentComplete object:self];		
+		[[NSNotificationCenter defaultCenter] postNotificationName:SCHProfileSyncComponentCompletedNotification object:self];		
 		[super method:method didCompleteWithResult:nil];	
 	}	
 }
@@ -219,11 +219,21 @@
 			localItem = [localEnumerator nextObject];
 		}		
 	}
-	
-	for (SCHProfileItem *localItem in deletePool) {
-		[self.managedObjectContext deleteObject:localItem];
-	}
-	
+
+    if ([deletePool count] > 0) {
+        NSMutableArray *deletedIDs = [NSMutableArray array];
+        for (SCHProfileItem *localItem in deletePool) {
+            [deletedIDs addObject:localItem.ID];
+        }        
+        [[NSNotificationCenter defaultCenter] postNotificationName:SCHProfileSyncComponentWillDeleteNotification 
+                                                            object:self 
+                                                          userInfo:[NSDictionary dictionaryWithObject:deletedIDs 
+                                                                                               forKey:SCHProfileSyncComponentDeletedProfileIDs]];				
+        for (SCHProfileItem *localItem in deletePool) {
+            [self.managedObjectContext deleteObject:localItem];
+        }                
+    }
+    
 	for (NSDictionary *webItem in creationPool) {
 		[self addProfile:webItem];
 	}

@@ -14,8 +14,13 @@
 
 @property (nonatomic, assign, readonly) NSUInteger startTime;
 @property (nonatomic, assign, readonly) NSUInteger endTime;
+@property (nonatomic, assign, readonly) NSUInteger page;
 
-- (id)initWithStartTime:(NSUInteger)setStartTime endTime:(NSUInteger)setEndTime;
+- (id)initWithStartTime:(NSUInteger)setStartTime 
+                endTime:(NSUInteger)setEndTime;
+- (id)initWithStartTime:(NSUInteger)setStartTime 
+                endTime:(NSUInteger)setEndTime 
+                   page:(NSUInteger)setPage;
 - (NSComparisonResult)compareTime:(NSUInteger)time;
 - (NSTimeInterval)startTimeAsSeconds;
 - (NSTimeInterval)endTimeAsSeconds;

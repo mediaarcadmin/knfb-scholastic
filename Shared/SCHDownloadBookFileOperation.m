@@ -142,6 +142,7 @@
 
 - (void)percentageUpdate:(NSDictionary *)userInfo
 {
+    //NSLog(@"Percentage update sent %@", userInfo);
 	if (self.fileType == kSCHDownloadFileTypeXPSBook) {
 		[[NSNotificationCenter defaultCenter] postNotificationName:@"SCHBookDownloadPercentageUpdate" object:nil userInfo:userInfo];
 	}
@@ -196,6 +197,9 @@
 	
 	switch (self.fileType) {
 		case kSCHDownloadFileTypeXPSBook:
+            [self performWithBookAndSave:^(SCHAppBook *book) {
+                book.OnDiskVersion = book.Version;                
+            }];
             [self setProcessingState:SCHBookProcessingStateReadyForLicenseAcquisition];
 			break;
 		case kSCHDownloadFileTypeCoverImage:
@@ -211,7 +215,7 @@
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
-	NSLog(@"Error downloading file %@!", [self.localPath lastPathComponent]);
+	NSLog(@"Error downloading file %@ (%@ : %@)", [self.localPath lastPathComponent], error, [error userInfo]);
 
     [self setProcessingState:SCHBookProcessingStateError];
     [self endOperation];

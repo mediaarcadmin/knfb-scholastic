@@ -147,7 +147,7 @@
         result = [count intValue];
     }
     
-    NSLog(@"Completed %d interactions for page %d", result, page);
+    //NSLog(@"Completed %d interactions for page %d", result, page);
     
     return result;
 }

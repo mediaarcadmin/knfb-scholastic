@@ -393,7 +393,7 @@ enum ScratchState {
     } else {
         [self setProgressViewForScratchCount:points];
         
-        if (points % 15 == 0) {
+        if (points % 10 == 0) {
             if (![self playingAudio]) {
                 [self enqueueAudioWithPath:[(SCHStoryInteractionScratchAndSee *)self.storyInteraction scratchSoundEffectFilename] fromBundle:YES];
             }

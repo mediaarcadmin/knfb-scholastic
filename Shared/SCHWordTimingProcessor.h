@@ -12,6 +12,8 @@
 {
 }
 
+@property (nonatomic, assign) BOOL newRTXFormat;
+
 - (NSArray *)startTimesFrom:(NSData *)wordTimingData error:(NSError **)error;
 
 @end

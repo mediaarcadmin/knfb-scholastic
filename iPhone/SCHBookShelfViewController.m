@@ -24,6 +24,7 @@
 #import "SCHProfileItem.h"
 #import "SCHAppProfile.h"
 #import "SCHBookIdentifier.h"
+#import "SCHProfileSyncComponent.h"
 
 static NSInteger const kSCHBookShelfViewControllerGridCellHeightPortrait = 138;
 static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
@@ -40,6 +41,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 - (CGSize)cellSize;
 - (CGFloat)cellBorderSize;
 - (void)updateTable:(NSNotification *)notification;
+- (void)currentProfileDeleted:(NSNotification *)notification;
 
 // FIXME: this isn't really necessary
 - (IBAction)changeToListView:(UIButton *)sender;
@@ -154,9 +156,13 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 		
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(updateTable:)
-												 name:@"SCHBookshelfSyncComponentComplete"
+												 name:SCHProfileSyncComponentCompletedNotification
 											   object:nil];
 	
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(currentProfileDeleted:)
+												 name:SCHProfileSyncComponentWillDeleteNotification
+											   object:nil];
 	
 	self.loadingView.layer.cornerRadius = 5.0f;
 	[self.view bringSubviewToFront:self.loadingView];
@@ -197,9 +203,11 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
     [self.gridView reloadData];
     [self.listTableView reloadData];
     
-//    [self changeToListView:nil];
     self.currentlyLoadingIndex = -1;
 
+    if ([self.profileItem.AppProfile.ShowListView boolValue] == YES) {
+        [self changeToListView:nil];
+    }
 }
 
 - (void)viewDidUnload 
@@ -238,7 +246,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
     } else {
             [self.gridView setShelfHeight:kSCHBookShelfViewControllerGridCellHeightPortrait];
             [self.gridView setShelfInset:CGSizeMake(0, -inset)];
-    }
+    }    
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -248,7 +256,13 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
+    CGPoint curentOffset = self.gridView.contentOffset;
     [self setupAssetsForOrientation:toInterfaceOrientation];
+    
+    // Forcing a very small adjustment in content offset seems to be needed to get the books to layout correctly on shelves
+    // Addresses ticket #439
+    [self.gridView setContentOffset:CGPointMake(curentOffset.x, curentOffset.y + 1) animated:NO];
+    [self.gridView setContentOffset:CGPointMake(curentOffset.x, curentOffset.y) animated:NO];
 }
 
 #pragma mark - Private methods
@@ -273,6 +287,8 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 - (IBAction)back
 {
     [self.navigationController popViewControllerAnimated:YES];
+    
+    self.profileItem.AppProfile.ShowListView = [NSNumber numberWithBool:self.listTableView.hidden == NO];
 }
 
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer 
@@ -337,6 +353,26 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 {
 	self.books = [self.profileItem allBookIdentifiers];
 	self.loadingView.hidden = YES;
+}
+
+- (void)currentProfileDeleted:(NSNotification *)notification
+{
+    NSArray *profileIDs = [notification.userInfo objectForKey:SCHProfileSyncComponentDeletedProfileIDs];
+    
+    for (NSNumber *profileID in profileIDs) {
+        if ([profileID isEqualToNumber:self.profileItem.ID] == YES) {
+            NSString *localizedMessage = NSLocalizedString(@"%@ is no longer available", nil);
+            UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Bookshelf Removed", @"Bookshelf Removed") 
+                                                                 message:[NSString stringWithFormat:localizedMessage, [self.profileItem bookshelfName:YES]]
+                                                                delegate:nil 
+                                                       cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+                                                       otherButtonTitles:nil]; 
+            [errorAlert show]; 
+            [errorAlert release];
+            [self back];
+            break;
+        }
+    }
 }
 
 #pragma mark - UITableViewDataSource methods
