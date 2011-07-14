@@ -138,16 +138,16 @@
         {
             break;
         }   
+        case SCHStoryInteractionControllerStateAskingOpeningQuestion:
         case SCHStoryInteractionControllerStateInteractionReadingAnswerWithoutPause:
         {
             self.readAloudButton.enabled = NO;
             break;
         }
         case SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause:
-        case SCHStoryInteractionControllerStateAskingOpeningQuestion:
         {
             self.readAloudButton.enabled = NO;
-//            [self storyInteractionDisableUserInteraction];
+            [self storyInteractionDisableUserInteraction];
             break;
         }   
         case SCHStoryInteractionControllerStateInteractionFinishedSuccessfully:

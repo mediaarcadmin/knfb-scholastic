@@ -15,12 +15,15 @@
 @property (nonatomic, assign) NSInteger currentStatement;
 @property (nonatomic, assign) NSInteger score;
 @property (nonatomic, assign) NSInteger simultaneousTapCount;
+@property dispatch_queue_t buttonAccessQueue;
 
 - (void)setupQuestionView;
 - (void)setupScoreView;
 
 - (void)nextQuestion;
 - (void)setupQuestion;
+
+- (void)answerChosen:(id)sender;
 
 @end
 
@@ -33,9 +36,23 @@
 @synthesize currentStatement;
 @synthesize score;
 @synthesize simultaneousTapCount;
+@synthesize buttonAccessQueue;
+
+
+- (id)initWithStoryInteraction:(SCHStoryInteraction *)storyInteraction
+{
+    self = [super initWithStoryInteraction:storyInteraction];
+    
+    if (self) {
+        self.buttonAccessQueue = dispatch_queue_create("com.scholastic.ButtonAccessQueue", NULL);
+    }
+    
+    return self;
+}
 
 - (void)dealloc
 {
+    dispatch_release(buttonAccessQueue);
     [statementLabel release];
     [answerButtons release];
     [scoreLabel release];
@@ -127,22 +144,30 @@
 
 - (void)answerButtonTapped:(id)sender
 {
-    self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause;
-
-    self.simultaneousTapCount++;
-    if (self.simultaneousTapCount == 1) {
-        [self performSelector:@selector(answerChosen:) withObject:sender afterDelay:kMinimumDistinguishedAnswerDelay];
-    }
+    dispatch_sync(self.buttonAccessQueue, ^{
+        if (self.controllerState == SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause) {
+            return;
+        }
+        
+        self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause;
+        
+//        self.simultaneousTapCount++;
+//        if (self.simultaneousTapCount == 1) {
+//            [self performSelector:@selector(answerChosen:) withObject:sender afterDelay:kMinimumDistinguishedAnswerDelay];
+//        }
+        
+        [self answerChosen:sender];
+    });
 }
 
 - (void)answerChosen:(id)sender
 {
-    NSInteger tapCount = self.simultaneousTapCount;
-    self.simultaneousTapCount = 0;
-    if (tapCount > 1) {
-        self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
-        return;
-    }
+//    NSInteger tapCount = self.simultaneousTapCount;
+//    self.simultaneousTapCount = 0;
+//    if (tapCount > 1) {
+//        self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
+//        return;
+//    }
 
     UIButton *button = (UIButton *)sender;
     if (button.tag == self.currentStatement) {
