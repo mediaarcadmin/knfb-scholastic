@@ -26,6 +26,13 @@
 #import "SCHBookIdentifier.h"
 #import "SCHProfileSyncComponent.h"
 
+NSString *const kSCHBookShelfErrorDomain  = @"com.knfb.scholastic.BookShelfErrorDomain";
+typedef enum 
+{
+	kSCHBookShelfBookNotReadyError = 0,
+    kSCHBookShelfUnspecifiedError
+} SCHBookShelfError;
+
 static NSInteger const kSCHBookShelfViewControllerGridCellHeightPortrait = 138;
 static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 
@@ -42,6 +49,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 - (CGFloat)cellBorderSize;
 - (void)updateTable:(NSNotification *)notification;
 - (void)currentProfileDeleted:(NSNotification *)notification;
+- (NSError *)errorWithCode:(NSInteger)code;
 
 // FIXME: this isn't really necessary
 - (IBAction)changeToListView:(UIButton *)sender;
@@ -480,11 +488,23 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
     double delayInSeconds = 0.02;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        SCHReadingViewController *readingController = [self openBook:[self.books objectAtIndex:[indexPath row]]];
+        NSError *error;
+        
+        SCHReadingViewController *readingController = [self openBook:[self.books objectAtIndex:[indexPath row]] error:&error];
         if (readingController != nil) {
             self.updateShelfOnReturnToShelf = YES;
             [self.navigationController pushViewController:readingController animated:YES]; 
             self.currentlyLoadingIndex = -1;
+        } else {
+            if (error && !([[error domain] isEqualToString:kSCHBookShelfErrorDomain] && ([error code] == kSCHBookShelfBookNotReadyError))) {
+                UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"This Book Could Not Be Opened", @"Could not open book") 
+                                                                     message:[error localizedDescription]
+                                                                delegate:nil 
+                                                           cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+                                                           otherButtonTitles:nil]; 
+                [errorAlert show]; 
+                [errorAlert release];
+            }
         }
     });
 }
@@ -584,19 +604,31 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
     [aGridView addSubview:spinner];
     
     dispatch_async(dispatch_get_main_queue(), ^{
-        SCHReadingViewController *readingController = [self openBook:[self.books objectAtIndex:index]];
+        NSError *error;
+
+        SCHReadingViewController *readingController = [self openBook:[self.books objectAtIndex:index] error:&error];
         if (readingController != nil) {
             if (self.sortType == kSCHBookSortTypeLastRead) {
                 self.updateShelfOnReturnToShelf = YES;
             }            
             [self.navigationController pushViewController:readingController animated:YES]; 
+        } else {
+            if (error && !([[error domain] isEqualToString:kSCHBookShelfErrorDomain] && ([error code] == kSCHBookShelfBookNotReadyError))) {
+                UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"This Book Could Not Be Opened", @"Could not open book") 
+                                                                     message:[error localizedDescription]
+                                                                    delegate:nil 
+                                                           cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+                                                           otherButtonTitles:nil]; 
+                [errorAlert show]; 
+                [errorAlert release];
+            }
         }
         [spinner removeFromSuperview];
     });
     [spinner release];
 }
 
-- (SCHReadingViewController *)openBook:(SCHBookIdentifier *)identifier
+- (SCHReadingViewController *)openBook:(SCHBookIdentifier *)identifier error:(NSError **)error
 {
     SCHReadingViewController *ret = nil;
     SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:identifier inManagedObjectContext:self.managedObjectContext];
@@ -628,14 +660,15 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
         } else if ([categoryType isEqualToString:kSCHAppBookOldReader] == YES) {
             bookshelfStyle = kSCHBookshelfStyleOlderChild;        
         }
-        
+                
         switch (bookshelfStyle) {
             case kSCHBookshelfStyleYoungChild:
                 ret = [[SCHReadingViewController alloc] initWithNibName:nil 
                                                                  bundle:nil 
                                                          bookIdentifier:identifier 
                                                                 profile:profileItem
-                                                   managedObjectContext:self.managedObjectContext];
+                                                   managedObjectContext:self.managedObjectContext
+                                                                  error:error];
                 ret.youngerMode = YES;
                 break;
                 
@@ -645,7 +678,9 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
                                                                  bundle:nil 
                                                          bookIdentifier:identifier 
                                                                 profile:profileItem
-                                                   managedObjectContext:self.managedObjectContext];
+                                                   managedObjectContext:self.managedObjectContext
+                                                                  error:error];
+
                 ret.youngerMode = NO;
                 break;     
             }
@@ -654,6 +689,8 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
                 break;
         }
         
+    } else {
+        *error = [self errorWithCode:kSCHBookShelfBookNotReadyError];
     }
     
     return([ret autorelease]);
@@ -676,6 +713,32 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 {
     return 20;
 }
+
+#pragma mark - Errors
+
+- (NSError *)errorWithCode:(NSInteger)code
+{
+    NSString *description = nil;
+    
+    switch (code) {
+        case kSCHBookShelfBookNotReadyError:
+            description = NSLocalizedString(@"The book is not ready to be opened", @"The book is not ready to be opened error message from BookShelfViewController");
+            break;
+        case kSCHBookShelfUnspecifiedError:
+        default:
+            description = NSLocalizedString(@"An unspecified error occured. Please try again.", @"Unspecified error message from BookShelfViewController");
+            break;
+    }
+    
+    NSArray *objArray = [NSArray arrayWithObjects:description, nil];
+    NSArray *keyArray = [NSArray arrayWithObjects:NSLocalizedDescriptionKey, nil];
+    NSDictionary *eDict = [NSDictionary dictionaryWithObjects:objArray
+                                                      forKeys:keyArray];
+    
+    return [[[NSError alloc] initWithDomain:kSCHBookShelfErrorDomain
+                                       code:code userInfo:eDict] autorelease];
+}
+
 
 @end
 
