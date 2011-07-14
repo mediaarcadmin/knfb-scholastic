@@ -11,6 +11,8 @@
 #import "SCHeReaderCategories.h"
 #import "SCHAnnotationsContentItem.h"
 #import "SCHUserContentItem.h"
+#import "SCHBookManager.h"
+#import "SCHBookIdentifier.h"
 
 static NSString * const kSCHContentMetadataItemAnnotationsContentItem = @"AnnotationsContentItem";
 static NSString * const kSCHContentMetadataItemAnnotationsItemProfileID = @"AnnotationsItem.ProfileID";
@@ -31,7 +33,15 @@ static NSString * const kSCHContentMetadataItemUserContentItem = @"UserContentIt
 @dynamic AppBook;
 @dynamic eReaderCategories;
 
-@dynamic userContentItem;
+@synthesize bookIdentifier;
+@synthesize userContentItem;
+
+- (SCHBookIdentifier *)bookIdentifier
+{
+    SCHBookIdentifier *identifier = [[SCHBookIdentifier alloc] initWithISBN:self.ContentIdentifier
+                                                               DRMQualifier:self.DRMQualifier];
+    return([identifier autorelease]);
+}
 
 - (NSArray *)annotationsContentForProfile:(NSNumber *)profileID
 {
@@ -62,6 +72,7 @@ static NSString * const kSCHContentMetadataItemUserContentItem = @"UserContentIt
 - (void)prepareForDeletion
 {
     [super prepareForDeletion];
+    [[SCHBookManager sharedBookManager] removeBookIdentifierFromCache:self.bookIdentifier];
     [self deleteAllFiles];
 }
 

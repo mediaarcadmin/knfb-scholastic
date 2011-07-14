@@ -82,6 +82,11 @@
 	return self.ContentMetadataItem.FileName;
 }
 
+- (SCHBookIdentifier *)bookIdentifier
+{
+    return(self.ContentMetadataItem.bookIdentifier);
+}
+
 - (BOOL)haveURLs
 {
 	return(!(self.BookCoverURL == nil || self.BookFileURL == nil));
@@ -308,7 +313,7 @@
     return CGSizeMake([self.BookCoverWidth intValue], [self.BookCoverHeight intValue]);
 }
 
-- (SCHAppBookFeatures) bookFeatures
+- (SCHAppBookFeatures)bookFeatures
 {
     // FIXME: use the new tuple to determine whether the book is a sample or not
     if (self.HasStoryInteractions) {
@@ -316,13 +321,6 @@
     } else {
         return kSCHAppBookFeaturesNone;
     }
-}
-
-- (SCHBookIdentifier *)bookIdentifier
-{
-    SCHBookIdentifier *identifier = [[SCHBookIdentifier alloc] initWithISBN:self.ContentIdentifier
-                                                               DRMQualifier:self.ContentMetadataItem.DRMQualifier];
-    return [identifier autorelease];
 }
 
 @end
