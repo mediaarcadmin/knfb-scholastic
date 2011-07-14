@@ -114,9 +114,9 @@
                             startDelay:0 
                 synchronizedStartBlock:^{ 
                     if (questionsCompleted) {
-                        self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause;
-                    } else {
                         self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
+                    } else {
+                        self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithoutPause;
                     }
                 }
                   synchronizedEndBlock:nil];
@@ -137,9 +137,7 @@
                 [self enqueueAudioWithPath:[(SCHStoryInteractionStartingLetter *)self.storyInteraction audioPathForYouFoundThemAll]
                                 fromBundle:NO
                                 startDelay:0
-                    synchronizedStartBlock:^{ 
-                        self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
-                    }
+                    synchronizedStartBlock:nil
                       synchronizedEndBlock:^{
                           [self removeFromHostView];
                       }];
@@ -149,7 +147,7 @@
                             fromBundle:YES 
                             startDelay:0 
                 synchronizedStartBlock:^{ 
-                    self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause;
+                    self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithoutPause;
                 }
                   synchronizedEndBlock:nil];
             [self enqueueAudioWithPath:[question audioPath] fromBundle:NO];

@@ -133,7 +133,7 @@
                   }];
         }
     } else {
-        self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause;
+        self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithoutPause;
         [self playAudioAtPath:[self.storyInteraction audioPathForTryAgain]
                    completion:^{
                        self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
