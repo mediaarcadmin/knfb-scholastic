@@ -9,6 +9,14 @@
 #import "SCHAppBook.h"
 #import "SCHBookIdentifier.h"
 
+NSString *const kSCHAppBookErrorDomain  = @"com.knfb.scholastic.AppBookErrorDomain";
+
+@interface SCHAppBook()
+
+- (NSError *)errorWithCode:(NSInteger)code;
+
+@end
+
 @implementation SCHAppBook 
 
 @dynamic DRMVersion;
@@ -294,11 +302,16 @@
 	return status;
 }
 
-- (BOOL)canOpenBook 
+- (BOOL)canOpenBookError:(NSError **)error 
 {
 	if ([self.State intValue] == SCHBookProcessingStateReadyToRead) {
 		return YES;
 	} else {
+        if ([self.State intValue] == SCHBookProcessingStateUnableToAcquireLicense) {
+            *error = [self errorWithCode:kSCHAppBookUnableToAcquireLicenseError];
+        } else {
+            *error = [self errorWithCode:kSCHAppBookStillBeingProcessedError];
+        }
 		return NO;
 	}
 }
@@ -323,6 +336,34 @@
     SCHBookIdentifier *identifier = [[SCHBookIdentifier alloc] initWithISBN:self.ContentIdentifier
                                                                DRMQualifier:self.ContentMetadataItem.DRMQualifier];
     return [identifier autorelease];
+}
+
+#pragma mark - Errors
+
+- (NSError *)errorWithCode:(NSInteger)code
+{
+    NSString *description = nil;
+    
+    switch (code) {
+        case kSCHAppBookStillBeingProcessedError:
+            description = NSLocalizedString(@"The book is still being processed.", @"Still being processed error message from AppBook");
+            break;
+        case kSCHAppBookUnableToAcquireLicenseError:
+            description = NSLocalizedString(@"It has not been possible to acquire a DRM license for this book. Please make sure this device is authorised and connected to the internet and try again.", @"Decryption not available error message from AppBook");
+            break;
+        case kSCHAppBookUnspecifiedError:
+        default:
+            description = NSLocalizedString(@"An unspecified error occured. Please try again.", @"Unspecified error message from AppBook");
+            break;
+    }
+    
+    NSArray *objArray = [NSArray arrayWithObjects:description, nil];
+    NSArray *keyArray = [NSArray arrayWithObjects:NSLocalizedDescriptionKey, nil];
+    NSDictionary *eDict = [NSDictionary dictionaryWithObjects:objArray
+                                                      forKeys:keyArray];
+    
+    return [[[NSError alloc] initWithDomain:kSCHAppBookErrorDomain
+                                       code:code userInfo:eDict] autorelease];
 }
 
 @end
