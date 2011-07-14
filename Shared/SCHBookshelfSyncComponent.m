@@ -70,19 +70,6 @@
 {
     [super clear];
 	NSError *error = nil;
-
-	// remove the books cache directory, including XPS, PNG, etc.
-	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-	[fetchRequest setEntity:[NSEntityDescription entityForName:kSCHContentMetadataItem inManagedObjectContext:self.managedObjectContext]];	
-	
-	NSArray *books = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
-	for (SCHContentMetadataItem *contentMetadataItem in books) {
-        if ([[NSFileManager defaultManager] removeItemAtPath:contentMetadataItem.AppBook.cacheDirectory error:&error] == NO) {
-            NSLog(@"Failed to delete files for %@, error: %@", 
-                  contentMetadataItem.ContentIdentifier, [error localizedDescription]);
-        }
-	}	
-	[fetchRequest release], fetchRequest = nil;
     
 	if (![self.managedObjectContext BITemptyEntity:kSCHContentMetadataItem error:&error]) {
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
@@ -179,7 +166,10 @@
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
 	
 	[fetchRequest setEntity:[NSEntityDescription entityForName:kSCHContentMetadataItem inManagedObjectContext:self.managedObjectContext]];	
-	[fetchRequest setSortDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceContentIdentifier ascending:YES]]];
+	[fetchRequest setSortDescriptors:[NSArray arrayWithObjects:
+                                      [NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceContentIdentifier ascending:YES],
+                                      [NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceDRMQualifier ascending:YES],
+                                      nil]];
 	
 	NSArray *ret = [self.managedObjectContext executeFetchRequest:fetchRequest error:nil];	
 	
@@ -193,7 +183,10 @@
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
 	
 	[fetchRequest setEntity:[NSEntityDescription entityForName:kSCHUserContentItem inManagedObjectContext:self.managedObjectContext]];	
-	[fetchRequest setSortDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceContentIdentifier ascending:YES]]];
+	[fetchRequest setSortDescriptors:[NSArray arrayWithObjects:
+                                      [NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceContentIdentifier ascending:YES],
+                                      [NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceDRMQualifier ascending:YES],
+                                      nil]];
 	
 	NSArray *ret = [self.managedObjectContext executeFetchRequest:fetchRequest error:nil];	
 	
@@ -206,7 +199,11 @@
 {		
 	NSMutableSet *creationPool = [NSMutableSet set];
 	
-	NSArray *webProfiles = [contentMetadataList sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceContentIdentifier ascending:YES]]];		
+	NSArray *webProfiles = [contentMetadataList sortedArrayUsingDescriptors:
+                            [NSArray arrayWithObjects:
+                             [NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceContentIdentifier ascending:YES],
+                             [NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceDRMQualifier ascending:YES],                                                                             
+                             nil]];		
 	NSArray *localProfiles = [self localContentMetadataItems];
 		
 	NSEnumerator *webEnumerator = [webProfiles objectEnumerator];			  

@@ -59,6 +59,23 @@ static NSString * const kSCHContentMetadataItemUserContentItem = @"UserContentIt
     return(ret);
 }
 
+- (void)prepareForDeletion
+{
+    [super prepareForDeletion];
+    [self deleteAllFiles];
+}
+
+- (void)deleteAllFiles
+{
+    NSError *error = nil;
+    
+    if ([[NSFileManager defaultManager] removeItemAtPath:self.AppBook.cacheDirectory 
+                                                   error:&error] == NO) {
+        NSLog(@"Failed to delete files for %@, error: %@", 
+              self.ContentIdentifier, [error localizedDescription]);
+    }
+}
+
 #pragma mark - Core Data Generated Accessors
 
 - (void)addEReaderCategoriesObject:(SCHeReaderCategories *)value {    
