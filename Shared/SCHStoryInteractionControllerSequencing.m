@@ -75,6 +75,8 @@
     }
     
     self.attachedImages = [NSMutableDictionary dictionary];
+    
+    self.controllerState = SCHStoryInteractionControllerStateInteractionStarted;
 }
 
 - (void)setView:(UIView *)view borderColor:(UIColor *)color
@@ -111,7 +113,9 @@
         [self enqueueAudioWithPath:[sequencing audioPathForThatsRight]
                         fromBundle:NO
                         startDelay:0
-            synchronizedStartBlock:nil
+            synchronizedStartBlock:^{
+                self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
+            }
               synchronizedEndBlock:nil];
         
         // play all the answer audio files in turn
@@ -124,15 +128,15 @@
                 }
                   synchronizedEndBlock:^{
                       if (index == kNumberOfImages-1) {
-                          // FIXME: change this class to use the state variable
-                          [self didSuccessfullyCompleteInteraction];
                           [self removeFromHostView];
                       }
                   }];
         }
     } else {
+        self.controllerState = SCHStoryInteractionControllerStateInteractionPausedForAnswer;
         [self playAudioAtPath:[self.storyInteraction audioPathForTryAgain]
                    completion:^{
+                       self.controllerState = SCHStoryInteractionControllerStateInteractionStarted;
                        // move all images back to start
                        for (SCHStoryInteractionDraggableView *draggable in self.imageContainers) {
                            [draggable moveToHomePosition];
@@ -197,5 +201,25 @@ static CGFloat distanceSq(CGPoint imageCenter, CGPoint targetCenter)
         [self checkForAllCorrectAnswers];
     }];
 }
+
+#pragma mark - Override for SCHStoryInteractionControllerStateReactions
+
+- (void)storyInteractionDisableUserInteraction
+{
+    // disable user interaction
+    for (SCHStoryInteractionDraggableView *item in self.imageContainers) {
+        [item setUserInteractionEnabled:NO];
+    }
+}
+
+- (void)storyInteractionEnableUserInteraction
+{
+    // enable user interaction
+    for (SCHStoryInteractionDraggableView *item in self.imageContainers) {
+        [item setUserInteractionEnabled:YES];
+    }
+}
+
+
 
 @end

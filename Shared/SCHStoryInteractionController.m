@@ -142,6 +142,7 @@
         case SCHStoryInteractionControllerStateAskingOpeningQuestion:
         {
             self.readAloudButton.enabled = NO;
+            [self storyInteractionDisableUserInteraction];
             break;
         }   
         case SCHStoryInteractionControllerStateInteractionFinishedSuccessfully:
@@ -152,11 +153,13 @@
             if (delegate && [delegate respondsToSelector:@selector(storyInteractionController:willDismissWithSuccess:)]) {
                 [delegate storyInteractionController:self willDismissWithSuccess:YES];
             }
+            [self storyInteractionDisableUserInteraction];
             break;
         }   
         case SCHStoryInteractionControllerStateInteractionStarted:
         {
             self.readAloudButton.enabled = YES;
+            [self storyInteractionEnableUserInteraction];
             break;
         }   
         default:
@@ -219,7 +222,7 @@
         [shade release];
     }
     
-    SCHStoryInteractionControllerState newState = SCHStoryInteractionControllerStateInitialised;
+    BOOL askingOpeningQuestion = NO;
     
     if (self.containerView == nil) {
         self.xpsProvider = [[SCHBookManager sharedBookManager] threadSafeCheckOutXPSProviderForBookIdentifier:self.bookIdentifier];
@@ -227,8 +230,12 @@
         NSString *questionAudioPath = [self audioPathForQuestion];
         [self enqueueAudioWithPath:[storyInteraction storyInteractionOpeningSoundFilename] fromBundle:YES];        
         if (questionAudioPath && [self shouldPlayQuestionAudioForViewAtIndex:self.currentScreenIndex]) {
-            [self enqueueAudioWithPath:questionAudioPath fromBundle:NO];  
-            newState = SCHStoryInteractionControllerStateAskingOpeningQuestion;
+//            [self enqueueAudioWithPath:questionAudioPath fromBundle:NO];  
+            [self enqueueAudioWithPath:questionAudioPath fromBundle:NO startDelay:0 synchronizedStartBlock:nil synchronizedEndBlock:^{
+                self.controllerState = SCHStoryInteractionControllerStateInteractionStarted;
+            }];
+            
+            askingOpeningQuestion = YES;
         }        
 
         // set up the transparent full-size container to trap touch events before they get
@@ -264,6 +271,10 @@
             [self.readAloudButton setImage:readAloudImage forState:UIControlStateNormal];
             [self.readAloudButton addTarget:self action:@selector(playAudioButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
             [container addSubview:self.readAloudButton];
+        }
+        
+        if (askingOpeningQuestion) {
+            self.controllerState = SCHStoryInteractionControllerStateAskingOpeningQuestion;
         }
         
         self.containerView = container;
@@ -329,7 +340,7 @@
     [self setTitle:[self.storyInteraction interactionViewTitle]];
     [self setupViewAtIndex:self.currentScreenIndex];
     
-    self.controllerState = newState;
+//    self.controllerState = newState;
 }
 
 - (void)setupTitle
@@ -617,7 +628,18 @@
         NSString *path = [self audioPathForQuestion];
         if (path != nil) {
             [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
-            [self enqueueAudioWithPath:path fromBundle:NO];
+            [self enqueueAudioWithPath:path 
+                            fromBundle:NO 
+                            startDelay:0 
+                synchronizedStartBlock:^{
+                    self.controllerState = SCHStoryInteractionControllerStateAskingOpeningQuestion;
+                    
+                }
+                  synchronizedEndBlock:^{
+                      self.controllerState = SCHStoryInteractionControllerStateInteractionStarted;
+                  }
+             ];
+
         }   
     }
 }
@@ -625,7 +647,13 @@
 - (void)playDefaultButtonAudio
 {
     [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
-    [self enqueueAudioWithPath:[self.storyInteraction storyInteractionWrongAnswerSoundFilename] fromBundle:YES];
+    [self enqueueAudioWithPath:[self.storyInteraction storyInteractionCorrectAnswerSoundFilename] fromBundle:YES];
+}
+
+- (void)playRevealAudio
+{
+    [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
+    [self enqueueAudioWithPath:[self.storyInteraction storyInteractionRevealSoundFilename] fromBundle:YES];
 }
 
 - (void)playAudioAtPath:(NSString *)path completion:(void (^)(void))completion
@@ -706,7 +734,21 @@
     self.titleView.text = title;
 }
 
-#pragma mark - subclass overrides
+#pragma mark - SCHStoryInteractionControllerStateReactions - MUST BE OVERRIDDEN IN SUBCLASS
+
+- (void)storyInteractionEnableUserInteraction
+{
+    [NSException raise:NSInternalInconsistencyException 
+                format:@"You must override %@ in a subclass", NSStringFromSelector(_cmd)];
+}
+
+- (void)storyInteractionDisableUserInteraction
+{
+    [NSException raise:NSInternalInconsistencyException 
+                format:@"You must override %@ in a subclass", NSStringFromSelector(_cmd)];
+}
+
+#pragma mark - optional subclass overrides
 
 - (void)setupViewAtIndex:(NSInteger)screenIndex
 {}

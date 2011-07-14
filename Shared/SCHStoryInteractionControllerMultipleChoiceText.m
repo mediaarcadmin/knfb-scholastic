@@ -92,24 +92,21 @@
     }
     
     // play intro audio on first question only
+    self.controllerState = SCHStoryInteractionControllerStateAskingOpeningQuestion; 
     [self playQuestionAudioAndHighlightAnswersWithIntroduction:(self.currentQuestionIndex == 0)];
 }
 
 - (void)playQuestionAudioAndHighlightAnswersWithIntroduction:(BOOL)withIntroduction
 {
-    [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
+//    [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
+
     if (withIntroduction) {
-        [self enqueueAudioWithPath:[self.storyInteraction audioPathForQuestion]
-                        fromBundle:NO
-                        startDelay:NO
-            synchronizedStartBlock:^{ self.controllerState = SCHStoryInteractionControllerStateAskingOpeningQuestion; }
-              synchronizedEndBlock:nil];
+        [self enqueueAudioWithPath:[self.storyInteraction audioPathForQuestion] 
+                        fromBundle:NO];
     }
-    [self enqueueAudioWithPath:[[self currentQuestion] audioPathForQuestion]
-                    fromBundle:NO
-                    startDelay:0
-        synchronizedStartBlock:^{ self.controllerState = SCHStoryInteractionControllerStateAskingOpeningQuestion; }
-          synchronizedEndBlock:nil];
+
+    [self enqueueAudioWithPath:[[self currentQuestion] audioPathForQuestion] 
+                    fromBundle:NO];
     
     NSInteger index = 0;
     for (UIButton *button in self.answerButtons) {
@@ -132,6 +129,7 @@
 - (void)playAudioButtonTapped:(id)sender
 {
     if (![self playingAudio] && self.controllerState != SCHStoryInteractionControllerStateInteractionFinishedSuccessfully) { 
+        self.controllerState = SCHStoryInteractionControllerStateAskingOpeningQuestion;
         [self playQuestionAudioAndHighlightAnswersWithIntroduction:NO];
     }
 }
@@ -194,27 +192,21 @@
     return([[self currentQuestion] audioPathForQuestion]);
 }
 
-- (void)setControllerState:(SCHStoryInteractionControllerState)newControllerState
+#pragma mark - Override for SCHStoryInteractionControllerStateReactions
+
+- (void)storyInteractionDisableUserInteraction
 {
-    [super setControllerState:newControllerState];
-    
-    switch (self.controllerState) {
-        // story interaction does not need to do anything special for these states.
-        case SCHStoryInteractionControllerStateInteractionPausedForAnswer:
-        case SCHStoryInteractionControllerStateInitialised:
-        case SCHStoryInteractionControllerStateAskingOpeningQuestion:
-        case SCHStoryInteractionControllerStateInteractionStarted:
-        {
-            break;
-        }   
-        case SCHStoryInteractionControllerStateInteractionFinishedSuccessfully:
-        {
-            // disable user interaction in here - the answer has been correctly selected
-            for (UIButton *button in self.answerButtons) {
-                [button setUserInteractionEnabled:NO];
-            }
-            break;
-        }   
+    // disable user interaction
+    for (UIButton *button in self.answerButtons) {
+        [button setUserInteractionEnabled:NO];
+    }
+}
+
+- (void)storyInteractionEnableUserInteraction
+{
+    // enable user interaction
+    for (UIButton *button in self.answerButtons) {
+        [button setUserInteractionEnabled:YES];
     }
 }
 

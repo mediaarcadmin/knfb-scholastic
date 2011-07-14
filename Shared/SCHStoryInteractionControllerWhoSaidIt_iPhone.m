@@ -83,6 +83,8 @@
     SCHStoryInteractionWhoSaidIt *whoSaidIt = (SCHStoryInteractionWhoSaidIt *)self.storyInteraction;
     NSInteger maxScore = [whoSaidIt.statements count]-1;
     self.scoreLabel.text = [NSString stringWithFormat:@"You got %d out of %d right!", self.score, maxScore];
+    // FIXME: only successful if you get top marks? 
+    self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
 }
 
 - (void)setupQuestion
@@ -103,11 +105,11 @@
     }
     
     self.simultaneousTapCount = 0;
+    self.controllerState = SCHStoryInteractionControllerStateInteractionStarted;
 }
 
 - (void)nextQuestion
 {
-    [self setUserInteractionsEnabled:YES];
     SCHStoryInteractionWhoSaidIt *whoSaidIt = (SCHStoryInteractionWhoSaidIt *)self.storyInteraction;
     do {
         self.currentStatement++;
@@ -116,6 +118,7 @@
     if (self.currentStatement < [whoSaidIt.statements count]) {
         [self setupQuestion];
     } else {
+        self.controllerState = SCHStoryInteractionControllerStateInteractionStarted;
         [self presentNextView];
     }
 }
@@ -124,6 +127,8 @@
 
 - (void)answerButtonTapped:(id)sender
 {
+    self.controllerState = SCHStoryInteractionControllerStateInteractionPausedForAnswer;
+
     self.simultaneousTapCount++;
     if (self.simultaneousTapCount == 1) {
         [self performSelector:@selector(answerChosen:) withObject:sender afterDelay:kMinimumDistinguishedAnswerDelay];
@@ -135,10 +140,9 @@
     NSInteger tapCount = self.simultaneousTapCount;
     self.simultaneousTapCount = 0;
     if (tapCount > 1) {
+        self.controllerState = SCHStoryInteractionControllerStateInteractionStarted;
         return;
     }
-    
-    [self setUserInteractionsEnabled:NO];
 
     UIButton *button = (UIButton *)sender;
     if (button.tag == self.currentStatement) {
@@ -160,6 +164,24 @@
 {
     [self playDefaultButtonAudio];
     [self presentNextView];
+}
+
+#pragma mark - Override for SCHStoryInteractionControllerStateReactions
+
+- (void)storyInteractionDisableUserInteraction
+{
+    // disable user interaction
+    for (UIButton *button in self.answerButtons) {
+        [button setUserInteractionEnabled:NO];
+    }
+}
+
+- (void)storyInteractionEnableUserInteraction
+{
+    // enable user interaction
+    for (UIButton *button in self.answerButtons) {
+        [button setUserInteractionEnabled:YES];
+    }
 }
 
 @end

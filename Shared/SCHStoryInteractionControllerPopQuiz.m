@@ -75,6 +75,7 @@
     [self setupQuestion];
 
     [self playBundleAudioWithFilename:[self.storyInteraction storyInteractionOpeningSoundFilename] completion:nil];
+    self.controllerState = SCHStoryInteractionControllerStateInteractionStarted;
 }
 
 - (void)setupScoreView
@@ -89,11 +90,12 @@
     } else {
         self.scoreSublabel.text = popQuiz.scoreResponseHigh;
     }
+    [self playBundleAudioWithFilename:[self.storyInteraction storyInteractionRevealSoundFilename] completion:nil];
 }
 
 - (void)nextQuestion
 {
-    [self setUserInteractionsEnabled:YES];
+    self.controllerState = SCHStoryInteractionControllerStateInteractionStarted;
     self.currentQuestionIndex++;
     if (self.currentQuestionIndex == self.progressView.numberOfSteps) {
         [self presentNextView];
@@ -142,7 +144,7 @@
         return;
     }
     
-    [self setUserInteractionsEnabled:NO];
+    self.controllerState = SCHStoryInteractionControllerStateInteractionPausedForAnswer;
     NSInteger chosenAnswer = [self.answerButtons indexOfObject:sender];
     if (chosenAnswer == NSNotFound) {
         return;
@@ -172,5 +174,25 @@
 {
     [self presentNextView];
 }
+
+#pragma mark - Override for SCHStoryInteractionControllerStateReactions
+
+- (void)storyInteractionDisableUserInteraction
+{
+    // disable user interaction
+    for (UIButton *button in self.answerButtons) {
+        [button setUserInteractionEnabled:NO];
+    }
+}
+
+- (void)storyInteractionEnableUserInteraction
+{
+    // enable user interaction
+    for (UIButton *button in self.answerButtons) {
+        [button setUserInteractionEnabled:YES];
+    }
+}
+
+
 
 @end

@@ -13,7 +13,18 @@
 @class SCHXPSProvider;
 @class SCHStoryInteraction;
 @class SCHBookIdentifier;
+@class SCHStoryInteractionController;
+
 @protocol SCHStoryInteractionControllerDelegate;
+
+@protocol SCHStoryInteractionControllerStateReactions <NSObject>
+
+- (void)storyInteractionDisableUserInteraction;
+- (void)storyInteractionEnableUserInteraction;
+
+@end
+
+
 
 typedef enum
 {
@@ -42,7 +53,7 @@ typedef enum
 // Because Story Interactions have a non-modal behaviour in the reading view, StoryInteractionController 
 // is not a UIViewController but relies on another view and controller as hosts.
 
-@interface SCHStoryInteractionController : NSObject <AVAudioPlayerDelegate> {}
+@interface SCHStoryInteractionController : NSObject <AVAudioPlayerDelegate, SCHStoryInteractionControllerStateReactions> {}
 
 // FIXME: remove this!
 - (NSString *) controllerStateAsString: (SCHStoryInteractionControllerState) state;
@@ -108,6 +119,9 @@ typedef enum
 
 // play the default audio sound for a button tap
 - (void)playDefaultButtonAudio;
+
+// play the audio for revealing an answer (About Me)
+- (void)playRevealAudio;
 
 // play an audio file from the XPS provider and invoke a completion block when the playback is complete
 - (void)playAudioAtPath:(NSString *)path completion:(void(^)(void))completion;

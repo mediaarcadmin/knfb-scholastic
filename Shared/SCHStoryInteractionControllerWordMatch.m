@@ -117,11 +117,10 @@
 - (BOOL)checkForCompletion
 {
     if (self.numberOfCorrectItems == kNumberOfItems) {
+        self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
         SCHStoryInteractionWordMatch *wordMatch = (SCHStoryInteractionWordMatch *)self.storyInteraction;
         [self playAudioAtPath:[wordMatch audioPathForGotThemAll]
                    completion:^{
-                       // FIXME: change this class to use the state variable
-                       [self didSuccessfullyCompleteInteraction];
                        [self removeFromHostView];
                    }];
         return YES;
@@ -173,7 +172,7 @@
         [draggableView moveToHomePosition];
         [self enqueueAudioWithPath:@"sfx_dropNo.mp3" fromBundle:YES];        
     } else if (onTarget.matchTag != draggableView.matchTag) {
-        [self setUserInteractionsEnabled:NO];
+        self.controllerState = SCHStoryInteractionControllerStateInteractionPausedForAnswer;
         [self.occupiedTargets addObject:onTarget];
         UIImage* oldImage = [imageView.image retain];
         [imageView setImage:[UIImage imageNamed:@"storyinteraction-draggable-red"]];
@@ -191,13 +190,14 @@
                 [imageView setImage:oldImage];
                 [draggableView moveToHomePosition];
                 [self.occupiedTargets removeObject:onTarget];
-                [self setUserInteractionsEnabled:YES];
+                self.controllerState = SCHStoryInteractionControllerStateInteractionStarted;
             }];
         [oldImage release];
     } else {
-        [self setUserInteractionsEnabled:NO];
+        self.controllerState = SCHStoryInteractionControllerStateInteractionPausedForAnswer;
         self.numberOfCorrectItems++;
         [imageView setImage:[UIImage imageNamed:@"storyinteraction-draggable-green"]];
+        [draggableView setLockedInPlace:YES];
         [draggableView setUserInteractionEnabled:NO];
         [self.occupiedTargets addObject:onTarget];
 
@@ -212,10 +212,32 @@
             synchronizedStartBlock:nil
               synchronizedEndBlock:^{
                   if (![self checkForCompletion]) {
-                      [self setUserInteractionsEnabled:YES];
+                      self.controllerState = SCHStoryInteractionControllerStateInteractionStarted;
                   }
               }];
     }
 }
+
+#pragma mark - Override for SCHStoryInteractionControllerStateReactions
+
+- (void)storyInteractionDisableUserInteraction
+{
+    // disable user interaction
+    for (SCHStoryInteractionDraggableView *source in self.wordViews) {
+        [source setUserInteractionEnabled:NO];
+    }
+}
+
+- (void)storyInteractionEnableUserInteraction
+{
+    // enable user interaction
+    for (SCHStoryInteractionDraggableView *source in self.wordViews) {
+        if (!source.lockedInPlace) {
+            [source setUserInteractionEnabled:YES];
+        }
+    }
+}
+
+
 
 @end

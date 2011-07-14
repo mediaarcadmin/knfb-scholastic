@@ -51,6 +51,8 @@ extern NSString * const KNFBXPSStoryInteractionsDirectory;
 - (NSString *)storyInteractionOpeningSoundFilename;
 - (NSString *)storyInteractionCorrectAnswerSoundFilename;
 - (NSString *)storyInteractionWrongAnswerSoundFilename;
+- (NSString *)storyInteractionRevealSoundFilename;
+
 
 // returns the number of questions contained within the interaction
 // overridden in SCHStoryInteractionMultipleChoice subclass; this class returns 1.

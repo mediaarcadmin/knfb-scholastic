@@ -57,6 +57,8 @@
     } else {
         self.scrollView.hidden = YES;
     } 
+    
+    self.controllerState = SCHStoryInteractionControllerStateInteractionStarted;
 }
 
 - (SCHFrameStyle)frameStyle
@@ -77,5 +79,19 @@
 {
         // nop - method included to implement zooming
 }
+
+#pragma mark - Override for SCHStoryInteractionControllerStateReactions
+
+- (void)storyInteractionDisableUserInteraction
+{
+    // empty - there is no interaction we need to prevent here
+}
+
+- (void)storyInteractionEnableUserInteraction
+{
+    // empty - there is no interaction we need to prevent here
+}
+
+
 
 @end

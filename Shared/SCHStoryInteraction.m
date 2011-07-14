@@ -103,5 +103,10 @@ NSString * const KNFBXPSStoryInteractionsDirectory = @"/Documents/1/Other/KNFB/I
     }
 }
 
+- (NSString *)storyInteractionRevealSoundFilename
+{
+    return @"sfx_youReveal.mp3";
+}
+
 
 @end

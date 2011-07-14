@@ -31,6 +31,9 @@
 // home position for this draggable
 @property (nonatomic, assign) CGPoint homePosition;
 
+// the correct position has been reached for this item - lock it in place
+@property (nonatomic, assign) BOOL lockedInPlace;
+
 - (void)moveToHomePosition;
 
 @end

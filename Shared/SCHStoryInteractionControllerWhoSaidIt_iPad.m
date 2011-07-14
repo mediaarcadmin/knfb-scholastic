@@ -121,10 +121,11 @@ static CGPoint pointWithOffset(CGPoint p, CGPoint offset)
     }
 
     if (correctCount == [self.targets count]) {
+        
+        self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
+        
         [self playBundleAudioWithFilename:@"sfx_winround.mp3"
                                completion:^{
-                                   // FIXME: change this class to use the state variable
-                                   [self didSuccessfullyCompleteInteraction];
                                    [self removeFromHostView];
                                }];
     } else {
@@ -193,5 +194,32 @@ static CGPoint pointWithOffset(CGPoint p, CGPoint offset)
     
     [self playBundleAudioWithFilename:@"sfx_dropOK.mp3" completion:nil];
 }
+
+#pragma mark - Override for SCHStoryInteractionControllerStateReactions
+
+- (void)storyInteractionDisableUserInteraction
+{
+    // disable user interaction
+    [checkAnswersButton setUserInteractionEnabled:NO];
+    
+    for (SCHStoryInteractionDraggableView *source in sources) {
+        [source setUserInteractionEnabled:NO];
+    }
+}
+
+- (void)storyInteractionEnableUserInteraction
+{
+    // enable user interaction
+    [checkAnswersButton setUserInteractionEnabled:YES];
+    
+    for (SCHStoryInteractionDraggableView *source in sources) {
+        UIImageView *imageView = (UIImageView *)[source viewWithTag:kSourceImageTag];
+        if (![imageView isHighlighted]) {
+            [source setUserInteractionEnabled:YES];
+        }
+    }
+}
+
+
 
 @end
