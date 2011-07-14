@@ -100,6 +100,7 @@
 		
 		SCHLocalDebugXPSReader *provider = [[SCHLocalDebugXPSReader alloc] initWithPath:currentPath];
 		
+        newContentMetadataItem.DRMQualifier = [NSNumber numberWithDRMQualifier:kSCHDRMQualifiersNone];
 		if (provider.ISBN != nil && [[provider.ISBN stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {
 			newContentMetadataItem.ContentIdentifierType = [NSNumber numberWithContentIdentifierType:kSCHContentItemContentIdentifierTypesISBN13];
 		} else {
@@ -123,7 +124,7 @@
 		
 		newUserContentItem.ContentIdentifier = newContentMetadataItem.ContentIdentifier;
 		newUserContentItem.ContentIdentifierType = newContentMetadataItem.ContentIdentifierType;
-		newUserContentItem.DRMQualifier = [NSNumber numberWithDRMQualifier:kSCHDRMQualifiersFullNoDRM];
+		newUserContentItem.DRMQualifier = [NSNumber numberWithDRMQualifier:kSCHDRMQualifiersNone];
         
         newContentProfileItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHContentProfileItem inManagedObjectContext:self.managedObjectContext];			
 		
@@ -338,7 +339,7 @@
 		
 		SCHLocalDebugXPSReader *provider = [[SCHLocalDebugXPSReader alloc] initWithPath:currentPath];
 		
-		//	newContentMetadataItem.DRMQualifier = provider.author;
+		newContentMetadataItem.DRMQualifier = [NSNumber numberWithDRMQualifier:kSCHDRMQualifiersNone];
 		if (provider.ISBN != nil && [[provider.ISBN stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {
 			newContentMetadataItem.ContentIdentifierType = [NSNumber numberWithContentIdentifierType:kSCHContentItemContentIdentifierTypesISBN13];
 		} else {
@@ -365,7 +366,7 @@
 		
 		newUserContentItem.ContentIdentifier = newContentMetadataItem.ContentIdentifier;
 		newUserContentItem.ContentIdentifierType = newContentMetadataItem.ContentIdentifierType;
-		newUserContentItem.DRMQualifier = [NSNumber numberWithDRMQualifier:kSCHDRMQualifiersFullNoDRM];
+		newUserContentItem.DRMQualifier = [NSNumber numberWithDRMQualifier:kSCHDRMQualifiersNone];
 
 		newContentProfileItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHContentProfileItem inManagedObjectContext:self.managedObjectContext];			
 		
