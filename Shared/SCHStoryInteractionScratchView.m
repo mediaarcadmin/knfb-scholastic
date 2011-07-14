@@ -18,7 +18,6 @@ static const float kSCHScratchEraseSize = 24.0f;
 @property (nonatomic, retain) CALayer *maskImageLayer;
 @property (nonatomic, retain) CALayer *answerImageLayer;
 
-- (void)updateImageMask;
 - (void)updateDelegate;
 
 @end
@@ -91,21 +90,6 @@ static const float kSCHScratchEraseSize = 24.0f;
     }
 }
 
-- (void)updateImageMask
-{
-    CGMutablePathRef path = CGPathCreateMutable();
-
-    for (int i = 0; i < [self.pointsArray count] - 1; i++) {
-        CGPoint pt = [(NSValue *) [self.pointsArray objectAtIndex:i] CGPointValue];
-        CGPathAddEllipseInRect(path, NULL, CGRectMake(pt.x - (kSCHScratchEraseSize/2), pt.y - (kSCHScratchEraseSize/2), kSCHScratchEraseSize, kSCHScratchEraseSize));
-    }
-    
-    self.mask.path = path;
-    
-    CGPathRelease(path);
-
-}
-
 - (void)dealloc
 {
     delegate = nil;
@@ -126,14 +110,47 @@ static const float kSCHScratchEraseSize = 24.0f;
     }
 }
 
-- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
+static CGFloat distanceBetweenPoints(CGPoint pt1, CGPoint pt2)
+{
+    CGFloat dx = pt1.x - pt2.x;
+    CGFloat dy = pt1.y - pt2.y;
+    return dx*dx+dy*dy;
+}
+
+- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {    
     if (self.interactionEnabled) {
         UITouch *touch = [touches anyObject];
         CGPoint touchLocation = [touch locationInView:self];
         if (touchLocation.x >= 0 && touchLocation.x <= self.frame.size.width
             && touchLocation.y >= 0 && touchLocation.y <= self.frame.size.height) {
+            
+            __block BOOL tooClose = NO;
+            
+            [self.pointsArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                if (distanceBetweenPoints(touchLocation, [obj CGPointValue]) < kSCHScratchEraseSize) {
+                    *stop = YES;
+                    tooClose = YES;
+                }
+            }];
+             
+             if (tooClose) {
+                 return;
+             }
+                    
             [self.pointsArray addObject:[NSValue valueWithCGPoint:touchLocation]];
-            [self updateImageMask];
+            
+            CGMutablePathRef updatedPath;
+            
+            if (self.mask.path) {
+                updatedPath = CGPathCreateMutableCopy(self.mask.path);
+            } else {
+                updatedPath = CGPathCreateMutable();
+            }
+                
+            CGPathAddEllipseInRect(updatedPath, NULL, CGRectMake(touchLocation.x - (kSCHScratchEraseSize/2), touchLocation.y - (kSCHScratchEraseSize/2), kSCHScratchEraseSize, kSCHScratchEraseSize));
+            self.mask.path = updatedPath;
+            CGPathRelease(updatedPath);
+            
             [self updateDelegate];
         }
     }
