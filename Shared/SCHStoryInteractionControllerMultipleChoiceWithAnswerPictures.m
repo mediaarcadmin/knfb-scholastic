@@ -104,7 +104,7 @@
                     startDelay:startDelay
         synchronizedStartBlock:nil
           synchronizedEndBlock:^{
-              self.controllerState = SCHStoryInteractionControllerStateInteractionStarted;
+              self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
           }];
 }
 
@@ -133,7 +133,7 @@
                   [self removeFromHostView];
               }];
     } else {
-        self.controllerState = SCHStoryInteractionControllerStateInteractionPausedForAnswer;
+        self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause;
         [self cancelQueuedAudio];
 
         [self enqueueAudioWithPath:[self.storyInteraction storyInteractionWrongAnswerSoundFilename]
@@ -142,7 +142,7 @@
                         startDelay:0.0
             synchronizedStartBlock:nil
               synchronizedEndBlock:^{
-                  self.controllerState = SCHStoryInteractionControllerStateInteractionStarted;
+                  self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
               }];
     }
 }

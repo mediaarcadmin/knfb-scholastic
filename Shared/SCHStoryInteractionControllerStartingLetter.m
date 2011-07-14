@@ -114,7 +114,7 @@
                             startDelay:0 
                 synchronizedStartBlock:^{ 
                     if (questionsCompleted) {
-                        self.controllerState = SCHStoryInteractionControllerStateInteractionPausedForAnswer;
+                        self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause;
                     } else {
                         self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
                     }
@@ -129,7 +129,7 @@
                 synchronizedStartBlock:nil
                   synchronizedEndBlock:^{
                       if (!questionsCompleted) {
-                          self.controllerState = SCHStoryInteractionControllerStateInteractionStarted;
+                          self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
                       }
                   }];
             
@@ -149,7 +149,7 @@
                             fromBundle:YES 
                             startDelay:0 
                 synchronizedStartBlock:^{ 
-                    self.controllerState = SCHStoryInteractionControllerStateInteractionPausedForAnswer;
+                    self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause;
                 }
                   synchronizedEndBlock:nil];
             [self enqueueAudioWithPath:[question audioPath] fromBundle:NO];
@@ -160,7 +160,7 @@
                             startDelay:0 
                 synchronizedStartBlock:nil 
                   synchronizedEndBlock:^{
-                      self.controllerState = SCHStoryInteractionControllerStateInteractionStarted;
+                      self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
                   }];
         }
     }

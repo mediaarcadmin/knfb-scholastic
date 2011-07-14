@@ -119,7 +119,7 @@
               synchronizedEndBlock:^{
                   [button setHighlighted:NO];
                   if (index + 1 == [self.answerButtons count]) {
-                      self.controllerState = SCHStoryInteractionControllerStateInteractionStarted;
+                      self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
                   }
               }];
         index++;
@@ -171,7 +171,7 @@
                   [self removeFromHostView];
               }];
     } else {
-        self.controllerState = SCHStoryInteractionControllerStateInteractionPausedForAnswer;
+        self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause;
         [self cancelQueuedAudio];
         [self enqueueAudioWithPath:[self.storyInteraction storyInteractionWrongAnswerSoundFilename]
                         fromBundle:YES];
@@ -182,7 +182,7 @@
                         startDelay:0
             synchronizedStartBlock:nil
               synchronizedEndBlock:^{
-                      self.controllerState = SCHStoryInteractionControllerStateInteractionStarted;
+                      self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
               }];
     }
 }

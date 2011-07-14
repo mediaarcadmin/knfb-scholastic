@@ -209,7 +209,7 @@ enum ScratchState {
               synchronizedEndBlock:^{
                   [button setHighlighted:NO];
                   if (i == 2) {
-                      self.controllerState = SCHStoryInteractionControllerStateInteractionStarted;
+                      self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
                   }
               }];
     }
@@ -263,7 +263,7 @@ enum ScratchState {
 
 - (void)correctAnswer:(NSInteger) selection
 {
-    self.controllerState = SCHStoryInteractionControllerStateInteractionPausedForAnswer;
+    self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause;
     
     for (int i = 0; i < [self.answerButtons count]; i++) {
         if (i == selection) {
@@ -306,7 +306,7 @@ enum ScratchState {
                     fromBundle:YES 
                     startDelay:0 
         synchronizedStartBlock:^{
-            self.controllerState = SCHStoryInteractionControllerStateInteractionPausedForAnswer;
+            self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause;
         }
           synchronizedEndBlock:nil
      ];
@@ -322,7 +322,7 @@ enum ScratchState {
                   synchronizedEndBlock:^{
                       [button setSelected:NO];
                       self.scratchState = kScratchStateSecondScratch;
-                      self.controllerState = SCHStoryInteractionControllerStateInteractionStarted;
+                      self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
                       [self setupQuestion];
                   }];
             break;
@@ -336,7 +336,7 @@ enum ScratchState {
                   synchronizedEndBlock:^{
                       [button setSelected:NO];
                       self.scratchState = kScratchStateKeepTrying;
-                      self.controllerState = SCHStoryInteractionControllerStateInteractionStarted;
+                      self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
                       [self setupQuestion];
                   }];
             break;
@@ -385,7 +385,7 @@ enum ScratchState {
                         fromBundle:YES
                         startDelay:0
             synchronizedStartBlock:^{
-                self.controllerState = SCHStoryInteractionControllerStateInteractionPausedForAnswer;
+                self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause;
             }
               synchronizedEndBlock:^{
                   [self askQuestion];

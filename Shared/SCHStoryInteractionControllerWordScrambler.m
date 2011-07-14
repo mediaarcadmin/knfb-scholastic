@@ -116,7 +116,7 @@
     }
     
     self.hasShownHint = NO;
-    self.controllerState = SCHStoryInteractionControllerStateInteractionStarted;
+    self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
 }
 
 #pragma mark - Actions

@@ -144,7 +144,7 @@ typedef enum {
     }
     
     self.simultaneousTapCount = 0;
-    self.controllerState = SCHStoryInteractionControllerStateInteractionStarted;
+    self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
 }
 
 - (void)nextQuestion
@@ -238,7 +238,7 @@ typedef enum {
     }
 
     [self playDefaultButtonAudio];
-    self.controllerState = SCHStoryInteractionControllerStateInteractionPausedForAnswer;
+    self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause;
     [sender setSelected:YES];
     
     [self performSelector:@selector(unhighlightAndMoveOn:) withObject:sender afterDelay:1.0];
@@ -253,7 +253,7 @@ typedef enum {
     currentCount = [NSNumber numberWithInt:[currentCount intValue] + 1];
     [self.outcomeCounts replaceObjectAtIndex:[selection intValue] withObject:currentCount];
     
-    self.controllerState = SCHStoryInteractionControllerStateInteractionStarted;
+    self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
     
     [sender setSelected:NO];
     [self nextQuestion];

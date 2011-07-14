@@ -138,11 +138,16 @@
         {
             break;
         }   
-        case SCHStoryInteractionControllerStateInteractionPausedForAnswer:
+        case SCHStoryInteractionControllerStateInteractionReadingAnswerWithoutPause:
+        {
+            self.readAloudButton.enabled = NO;
+            break;
+        }
+        case SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause:
         case SCHStoryInteractionControllerStateAskingOpeningQuestion:
         {
             self.readAloudButton.enabled = NO;
-            [self storyInteractionDisableUserInteraction];
+//            [self storyInteractionDisableUserInteraction];
             break;
         }   
         case SCHStoryInteractionControllerStateInteractionFinishedSuccessfully:
@@ -156,7 +161,7 @@
             [self storyInteractionDisableUserInteraction];
             break;
         }   
-        case SCHStoryInteractionControllerStateInteractionStarted:
+        case SCHStoryInteractionControllerStateInteractionInProgress:
         {
             self.readAloudButton.enabled = YES;
             [self storyInteractionEnableUserInteraction];
@@ -180,14 +185,19 @@
             returnVal = @"Initialised";
             break;
         }   
-        case SCHStoryInteractionControllerStateInteractionPausedForAnswer:
+        case SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause:
         {
-            returnVal = @"Paused for Answer";
+            returnVal = @"Reading Answer with Pause";
+            break;
+        }   
+        case SCHStoryInteractionControllerStateInteractionReadingAnswerWithoutPause:
+        {
+            returnVal = @"Reading Answer Without Pause";
             break;
         }   
         case SCHStoryInteractionControllerStateAskingOpeningQuestion:
         {
-            returnVal = @"Asking Opening Question";
+            returnVal = @"Asking Opening Question with Pause";
             break;
         }   
         case SCHStoryInteractionControllerStateInteractionFinishedSuccessfully:
@@ -195,7 +205,7 @@
             returnVal = @"Finished Successfully";
             break;
         }   
-        case SCHStoryInteractionControllerStateInteractionStarted:
+        case SCHStoryInteractionControllerStateInteractionInProgress:
         {
             returnVal = @"Started Interaction";
             break;
@@ -232,7 +242,7 @@
         if (questionAudioPath && [self shouldPlayQuestionAudioForViewAtIndex:self.currentScreenIndex]) {
 //            [self enqueueAudioWithPath:questionAudioPath fromBundle:NO];  
             [self enqueueAudioWithPath:questionAudioPath fromBundle:NO startDelay:0 synchronizedStartBlock:nil synchronizedEndBlock:^{
-                self.controllerState = SCHStoryInteractionControllerStateInteractionStarted;
+                self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
             }];
             
             askingOpeningQuestion = YES;
@@ -636,7 +646,7 @@
                     
                 }
                   synchronizedEndBlock:^{
-                      self.controllerState = SCHStoryInteractionControllerStateInteractionStarted;
+                      self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
                   }
              ];
 

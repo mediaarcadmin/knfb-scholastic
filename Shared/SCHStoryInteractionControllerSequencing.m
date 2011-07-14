@@ -76,7 +76,7 @@
     
     self.attachedImages = [NSMutableDictionary dictionary];
     
-    self.controllerState = SCHStoryInteractionControllerStateInteractionStarted;
+    self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
 }
 
 - (void)setView:(UIView *)view borderColor:(UIColor *)color
@@ -133,10 +133,10 @@
                   }];
         }
     } else {
-        self.controllerState = SCHStoryInteractionControllerStateInteractionPausedForAnswer;
+        self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause;
         [self playAudioAtPath:[self.storyInteraction audioPathForTryAgain]
                    completion:^{
-                       self.controllerState = SCHStoryInteractionControllerStateInteractionStarted;
+                       self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
                        // move all images back to start
                        for (SCHStoryInteractionDraggableView *draggable in self.imageContainers) {
                            [draggable moveToHomePosition];

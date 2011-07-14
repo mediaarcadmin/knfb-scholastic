@@ -169,11 +169,11 @@
         if ([self.remainingWords count] == 0) {
             self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
         } else {
-            self.controllerState = SCHStoryInteractionControllerStateInteractionPausedForAnswer;
+            self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithoutPause;
         }            
         
         
-        [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
+        [self cancelQueuedAudio];
         [self enqueueAudioWithPath:[wordSearch storyInteractionCorrectAnswerSoundFilename]
                         fromBundle:YES];
         [self enqueueAudioWithPath:[wordSearch audioPathForYouFound] fromBundle:NO];
@@ -183,7 +183,7 @@
             synchronizedStartBlock:nil
               synchronizedEndBlock:^{ 
                   if ([self.remainingWords count] > 0) {
-                      self.controllerState = SCHStoryInteractionControllerStateInteractionStarted;
+                      self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
                   }
               }];
         
@@ -201,7 +201,7 @@
         [self enqueueAudioWithPath:[wordSearch storyInteractionWrongAnswerSoundFilename]
                         fromBundle:YES
                         startDelay:0 synchronizedStartBlock:^{
-                            self.controllerState = SCHStoryInteractionControllerStateInteractionPausedForAnswer;
+                            self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithoutPause;
                         }
               synchronizedEndBlock:nil
          ];
@@ -211,7 +211,7 @@
             synchronizedStartBlock:nil
               synchronizedEndBlock:^{
                   [containerView clearSelection];
-                  self.controllerState = SCHStoryInteractionControllerStateInteractionStarted;
+                  self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
               }];
     } else {
         // just ignore reselection of an answer already found

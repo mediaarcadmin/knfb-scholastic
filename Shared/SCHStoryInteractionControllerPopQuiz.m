@@ -75,7 +75,7 @@
     [self setupQuestion];
 
     [self playBundleAudioWithFilename:[self.storyInteraction storyInteractionOpeningSoundFilename] completion:nil];
-    self.controllerState = SCHStoryInteractionControllerStateInteractionStarted;
+    self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
 }
 
 - (void)setupScoreView
@@ -95,7 +95,7 @@
 
 - (void)nextQuestion
 {
-    self.controllerState = SCHStoryInteractionControllerStateInteractionStarted;
+    self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
     self.currentQuestionIndex++;
     if (self.currentQuestionIndex == self.progressView.numberOfSteps) {
         [self presentNextView];
@@ -144,7 +144,7 @@
         return;
     }
     
-    self.controllerState = SCHStoryInteractionControllerStateInteractionPausedForAnswer;
+    self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause;
     NSInteger chosenAnswer = [self.answerButtons indexOfObject:sender];
     if (chosenAnswer == NSNotFound) {
         return;

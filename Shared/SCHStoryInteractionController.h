@@ -28,11 +28,12 @@
 
 typedef enum
 {
-    SCHStoryInteractionControllerStateInitialised,                      // the default initialised state
-    SCHStoryInteractionControllerStateAskingOpeningQuestion,            // during the initial question audio
-    SCHStoryInteractionControllerStateInteractionStarted,               // user interaction is happening normally
-    SCHStoryInteractionControllerStateInteractionPausedForAnswer,       // user interaction is paused while an answer is read out
-    SCHStoryInteractionControllerStateInteractionFinishedSuccessfully   // user interaction has been completed successfully
+    SCHStoryInteractionControllerStateInitialised,                          // the default initialised state
+    SCHStoryInteractionControllerStateAskingOpeningQuestion,                // during the initial question audio
+    SCHStoryInteractionControllerStateInteractionInProgress,                // user interaction is happening normally
+    SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause,    // user interaction is paused while an answer is read out
+    SCHStoryInteractionControllerStateInteractionReadingAnswerWithoutPause, // answer is read out, and the audio button is disabled, but user interaction still enabled
+    SCHStoryInteractionControllerStateInteractionFinishedSuccessfully       // user interaction has been completed successfully
 } SCHStoryInteractionControllerState;
 
 typedef enum 

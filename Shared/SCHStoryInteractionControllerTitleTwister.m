@@ -98,7 +98,7 @@
         self.openingScreenTitleLabel.font = [UIFont fontWithName:@"Arial Black" size:32];
     }
     
-    self.controllerState = SCHStoryInteractionControllerStateInteractionStarted;
+    self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
 }
 
 - (void)setupMainView

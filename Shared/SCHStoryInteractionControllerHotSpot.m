@@ -216,7 +216,7 @@
                     fromBundle:YES
                     startDelay:0
         synchronizedStartBlock:^{
-            self.controllerState = SCHStoryInteractionControllerStateInteractionPausedForAnswer;
+            self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause;
         }
           synchronizedEndBlock:nil];
     [self enqueueAudioWithPath:[self.storyInteraction audioPathForTryAgain]
@@ -229,7 +229,7 @@
                                   options:UIViewAnimationOptionAllowUserInteraction
                                animations:^{ cross.alpha = 0; }
                                completion:^(BOOL finished) { 
-                                   self.controllerState = SCHStoryInteractionControllerStateInteractionStarted;
+                                   self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
                                    [cross removeFromSuperview]; 
                                }];
           }];
@@ -291,7 +291,7 @@
                     fromBundle:YES
                     startDelay:0
         synchronizedStartBlock:^{
-            self.controllerState = SCHStoryInteractionControllerStateInteractionPausedForAnswer;
+            self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause;
         }
           synchronizedEndBlock:nil];
     [self enqueueAudioWithPath:[[self currentQuestion] audioPathForCorrectAnswer]

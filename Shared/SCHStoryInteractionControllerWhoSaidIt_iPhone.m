@@ -105,7 +105,7 @@
     }
     
     self.simultaneousTapCount = 0;
-    self.controllerState = SCHStoryInteractionControllerStateInteractionStarted;
+    self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
 }
 
 - (void)nextQuestion
@@ -118,7 +118,7 @@
     if (self.currentStatement < [whoSaidIt.statements count]) {
         [self setupQuestion];
     } else {
-        self.controllerState = SCHStoryInteractionControllerStateInteractionStarted;
+        self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
         [self presentNextView];
     }
 }
@@ -127,7 +127,7 @@
 
 - (void)answerButtonTapped:(id)sender
 {
-    self.controllerState = SCHStoryInteractionControllerStateInteractionPausedForAnswer;
+    self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause;
 
     self.simultaneousTapCount++;
     if (self.simultaneousTapCount == 1) {
@@ -140,7 +140,7 @@
     NSInteger tapCount = self.simultaneousTapCount;
     self.simultaneousTapCount = 0;
     if (tapCount > 1) {
-        self.controllerState = SCHStoryInteractionControllerStateInteractionStarted;
+        self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
         return;
     }
 

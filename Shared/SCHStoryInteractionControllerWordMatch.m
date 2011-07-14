@@ -172,7 +172,7 @@
         [draggableView moveToHomePosition];
         [self enqueueAudioWithPath:@"sfx_dropNo.mp3" fromBundle:YES];        
     } else if (onTarget.matchTag != draggableView.matchTag) {
-        self.controllerState = SCHStoryInteractionControllerStateInteractionPausedForAnswer;
+        self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause;
         [self.occupiedTargets addObject:onTarget];
         UIImage* oldImage = [imageView.image retain];
         [imageView setImage:[UIImage imageNamed:@"storyinteraction-draggable-red"]];
@@ -190,11 +190,11 @@
                 [imageView setImage:oldImage];
                 [draggableView moveToHomePosition];
                 [self.occupiedTargets removeObject:onTarget];
-                self.controllerState = SCHStoryInteractionControllerStateInteractionStarted;
+                self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
             }];
         [oldImage release];
     } else {
-        self.controllerState = SCHStoryInteractionControllerStateInteractionPausedForAnswer;
+        self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause;
         self.numberOfCorrectItems++;
         [imageView setImage:[UIImage imageNamed:@"storyinteraction-draggable-green"]];
         [draggableView setLockedInPlace:YES];
@@ -212,7 +212,7 @@
             synchronizedStartBlock:nil
               synchronizedEndBlock:^{
                   if (![self checkForCompletion]) {
-                      self.controllerState = SCHStoryInteractionControllerStateInteractionStarted;
+                      self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
                   }
               }];
     }

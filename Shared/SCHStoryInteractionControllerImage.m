@@ -58,7 +58,7 @@
         self.scrollView.hidden = YES;
     } 
     
-    self.controllerState = SCHStoryInteractionControllerStateInteractionStarted;
+    self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
 }
 
 - (SCHFrameStyle)frameStyle
