@@ -156,12 +156,12 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 		
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(updateTable:)
-												 name:kSCHProfileSyncComponentComplete
+												 name:SCHProfileSyncComponentCompletedNotification
 											   object:nil];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(currentProfileDeleted:)
-												 name:kSCHProfileSyncProfilesDeleted
+												 name:SCHProfileSyncComponentWillDeleteNotification
 											   object:nil];
 	
 	self.loadingView.layer.cornerRadius = 5.0f;
@@ -357,7 +357,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 
 - (void)currentProfileDeleted:(NSNotification *)notification
 {
-    NSArray *profileIDs = [notification.userInfo objectForKey:kSCHProfileSyncDeletedIDs];
+    NSArray *profileIDs = [notification.userInfo objectForKey:SCHProfileSyncComponentDeletedProfileIDs];
     
     for (NSNumber *profileID in profileIDs) {
         if ([profileID isEqualToNumber:self.profileItem.ID] == YES) {
