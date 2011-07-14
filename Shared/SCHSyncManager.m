@@ -161,7 +161,7 @@ static NSTimeInterval const kSCHSyncManagerHeartbeatInterval = 30.0;
 
 - (void)backgroundSyncHeartbeat:(NSTimer *)theTimer
 {
-	NSLog(@"Background Sync Heartbeat!");
+	//NSLog(@"Background Sync Heartbeat!");
 
 	[self kickQueue];
 }
@@ -405,9 +405,9 @@ static NSTimeInterval const kSCHSyncManagerHeartbeatInterval = 30.0;
 		} else {
 			NSLog(@"Kicked but already syncing %@", [syncComponent class]);
 		}
-	} else {
-		NSLog(@"Queue is empty");
-	}
+	} // else {
+//		NSLog(@"Queue is empty");
+//	}
 }
 
 @end
