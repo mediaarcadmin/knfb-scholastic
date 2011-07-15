@@ -182,7 +182,8 @@
                         startDelay:0
             synchronizedStartBlock:nil
               synchronizedEndBlock:^{
-                      self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
+                  [sender setSelected:NO];
+                  self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
               }];
     }
 }
