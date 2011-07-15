@@ -307,10 +307,19 @@ NSString *const kSCHAppBookErrorDomain  = @"com.knfb.scholastic.AppBookErrorDoma
 	if ([self.State intValue] == SCHBookProcessingStateReadyToRead) {
 		return YES;
 	} else {
-        if ([self.State intValue] == SCHBookProcessingStateUnableToAcquireLicense) {
-            *error = [self errorWithCode:kSCHAppBookUnableToAcquireLicenseError];
-        } else {
-            *error = [self errorWithCode:kSCHAppBookStillBeingProcessedError];
+        switch ([self.State intValue]) {
+            case SCHBookProcessingStateUnableToAcquireLicense:
+                *error = [self errorWithCode:kSCHAppBookUnableToAcquireLicenseError];
+                break;
+            case SCHBookProcessingStateDownloadFailed:
+                *error = [self errorWithCode:kSCHAppBookDownloadFailedError];
+                break;
+            case SCHBookProcessingStateError:
+                *error = [self errorWithCode:kSCHAppBookUnspecifiedError];
+                break;
+            default:
+                *error = [self errorWithCode:kSCHAppBookStillBeingProcessedError];
+                break;
         }
 		return NO;
 	}
@@ -350,6 +359,9 @@ NSString *const kSCHAppBookErrorDomain  = @"com.knfb.scholastic.AppBookErrorDoma
             break;
         case kSCHAppBookUnableToAcquireLicenseError:
             description = NSLocalizedString(@"It has not been possible to acquire a DRM license for this book. Please make sure this device is authorised and connected to the internet and try again.", @"Decryption not available error message from AppBook");
+            break;
+        case kSCHAppBookDownloadFailedError:
+            description = NSLocalizedString(@"There was a problem whilst downloading this book. Please make sure this device is connected to the internet and try again.", @"Download failed error message from AppBook");
             break;
         case kSCHAppBookUnspecifiedError:
         default:

@@ -25,6 +25,7 @@
 #import "SCHAppProfile.h"
 #import "SCHBookIdentifier.h"
 #import "SCHProfileSyncComponent.h"
+#import "LambdaAlert.h"
 
 static NSInteger const kSCHBookShelfViewControllerGridCellHeightPortrait = 138;
 static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
@@ -489,13 +490,16 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
             self.currentlyLoadingIndex = -1;
         } else {
             if (error && !([[error domain] isEqualToString:kSCHAppBookErrorDomain] && ([error code] == kSCHAppBookStillBeingProcessedError))) {
-                UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"This Book Could Not Be Opened", @"Could not open book") 
-                                                                     message:[error localizedDescription]
-                                                                delegate:nil 
-                                                           cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-                                                           otherButtonTitles:nil]; 
-                [errorAlert show]; 
-                [errorAlert release];
+                LambdaAlert *alert = [[LambdaAlert alloc]
+                                      initWithTitle:NSLocalizedString(@"This Book Could Not Be Opened", @"Could not open book")
+                                      message:[error localizedDescription]];
+                [alert addButtonWithTitle:@"Cancel" block:^{}];
+                [alert addButtonWithTitle:@"Retry" block:^{
+                    [[SCHProcessingManager sharedProcessingManager] userRequestedRetryForBookWithIdentifier:identifier];
+                
+                }];
+                [alert show];
+                [alert release];
             }
         }
     });
@@ -606,13 +610,16 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
             [self.navigationController pushViewController:readingController animated:YES]; 
         } else {
             if (error && !([[error domain] isEqualToString:kSCHAppBookErrorDomain] && ([error code] == kSCHAppBookStillBeingProcessedError))) {
-                UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"This Book Could Not Be Opened", @"Could not open book") 
-                                                                     message:[error localizedDescription]
-                                                                    delegate:nil 
-                                                           cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-                                                           otherButtonTitles:nil]; 
-                [errorAlert show]; 
-                [errorAlert release];
+                LambdaAlert *alert = [[LambdaAlert alloc]
+                                      initWithTitle:NSLocalizedString(@"This Book Could Not Be Opened", @"Could not open book")
+                                      message:[error localizedDescription]];
+                [alert addButtonWithTitle:@"Cancel" block:^{}];
+                [alert addButtonWithTitle:@"Retry" block:^{
+                    [[SCHProcessingManager sharedProcessingManager] userRequestedRetryForBookWithIdentifier:identifier];
+                    
+                }];
+                [alert show];
+                [alert release];
             }
         }
         [spinner removeFromSuperview];

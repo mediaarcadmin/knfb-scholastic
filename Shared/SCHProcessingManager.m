@@ -475,8 +475,14 @@ static SCHProcessingManager *sharedManager = nil;
         }
         case SCHBookProcessingStateError:
         case SCHBookProcessingStateUnableToAcquireLicense:
+        case SCHBookProcessingStateDownloadFailed:
+        case SCHBookProcessingStateBookVersionNotSupported:
+        case SCHBookProcessingStateDownloadPaused:
+        case SCHBookProcessingStateReadyToRead:
 		{
             // Do nothing until the sync kicks off again or the user initiates an action
+            // Prefer explicitly listing these state to just having a default because it catches
+            // Unhandled cases at compile time
             return;
         }
 	}
@@ -521,14 +527,6 @@ static SCHProcessingManager *sharedManager = nil;
         if (book.processingState > SCHBookProcessingStateNoCoverImage) {
             [self checkAndDispatchThumbsForIdentifier:identifier];
         }
-        
-        if (book.processingState == SCHBookProcessingStateError) {
-            [book setProcessingState:SCHBookProcessingStateNoURLs];
-            [self processIdentifier:identifier];
-        } // else if (book.processingState == SCHBookProcessingStateUnableToAcquireLicense) {
-        //        [book setProcessingState:SCHBookProcessingStateReadyForLicenseAcquisition];
-        //        [self processIdentifier:identifier];
-        //    }
         
         [self checkIfProcessing];
     };
@@ -625,7 +623,9 @@ static SCHProcessingManager *sharedManager = nil;
 	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:identifier inManagedObjectContext:self.managedObjectContext];
 
     if (book.processingState == SCHBookProcessingStateError ||
-		book.processingState == SCHBookProcessingStateUnableToAcquireLicense) {
+		book.processingState == SCHBookProcessingStateUnableToAcquireLicense ||
+        book.processingState == SCHBookProcessingStateDownloadFailed) {
+        [book setProcessingState:SCHBookProcessingStateNoURLs];
 		[self redispatchIdentifier:identifier];
 	}
 }

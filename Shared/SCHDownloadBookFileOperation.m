@@ -217,7 +217,7 @@
 {
 	NSLog(@"Error downloading file %@ (%@ : %@)", [self.localPath lastPathComponent], error, [error userInfo]);
 
-    [self setProcessingState:SCHBookProcessingStateError];
+    [self setProcessingState:SCHBookProcessingStateDownloadFailed];
     [self endOperation];
 }
 

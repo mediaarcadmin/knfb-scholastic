@@ -1024,6 +1024,10 @@
 		C9B3766E13BC991200992A6E /* BookShelfModeGridInactive~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C9B3766713BC991100992A6E /* BookShelfModeGridInactive~ipad.png */; };
 		C9B3766F13BC991200992A6E /* BookShelfModeGridActive~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C9B3766813BC991100992A6E /* BookShelfModeGridActive~ipad.png */; };
 		C9B3767013BC991200992A6E /* BookShelfModeGridActive~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C9B3766813BC991100992A6E /* BookShelfModeGridActive~ipad.png */; };
+		C9B59BD413D048D000C7760D /* LambdaAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B59BD113D048D000C7760D /* LambdaAlert.m */; };
+		C9B59BD513D048D000C7760D /* LambdaAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B59BD113D048D000C7760D /* LambdaAlert.m */; };
+		C9B59BD613D048D000C7760D /* LambdaSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B59BD313D048D000C7760D /* LambdaSheet.m */; };
+		C9B59BD713D048D000C7760D /* LambdaSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B59BD313D048D000C7760D /* LambdaSheet.m */; };
 		C9BCD78B135DBF9E00AA42B3 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
 		C9C1D2D113B0AF3500441623 /* SCHBookShelfTableViewCell_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F86666A013AF8C370050979F /* SCHBookShelfTableViewCell_iPad.xib */; };
 		C9C1D2D213B0AF3600441623 /* SCHBookShelfTableViewCell_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F86666A013AF8C370050979F /* SCHBookShelfTableViewCell_iPad.xib */; };
@@ -2445,6 +2449,10 @@
 		C9B3766613BC991100992A6E /* BookShelfModeListActive~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BookShelfModeListActive~ipad.png"; path = "Resources/BookShelfModeListActive~ipad.png"; sourceTree = "<group>"; };
 		C9B3766713BC991100992A6E /* BookShelfModeGridInactive~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BookShelfModeGridInactive~ipad.png"; path = "Resources/BookShelfModeGridInactive~ipad.png"; sourceTree = "<group>"; };
 		C9B3766813BC991100992A6E /* BookShelfModeGridActive~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BookShelfModeGridActive~ipad.png"; path = "Resources/BookShelfModeGridActive~ipad.png"; sourceTree = "<group>"; };
+		C9B59BD013D048D000C7760D /* LambdaAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LambdaAlert.h; sourceTree = "<group>"; };
+		C9B59BD113D048D000C7760D /* LambdaAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LambdaAlert.m; sourceTree = "<group>"; };
+		C9B59BD213D048D000C7760D /* LambdaSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LambdaSheet.h; sourceTree = "<group>"; };
+		C9B59BD313D048D000C7760D /* LambdaSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LambdaSheet.m; sourceTree = "<group>"; };
 		C9C1D29D13B0AD4B00441623 /* storyinteraction-bg-younger-notitle~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-bg-younger-notitle~ipad.png"; sourceTree = "<group>"; };
 		C9C1D29E13B0AD4C00441623 /* storyinteraction-bg-older-notitle~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-bg-older-notitle~ipad.png"; sourceTree = "<group>"; };
 		C9C1D56013B3C01A00441623 /* show-tools.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "show-tools.png"; sourceTree = "<group>"; };
@@ -3560,6 +3568,7 @@
 				F8E2D3CE13B9CB55001E207B /* TTTAttributedLabel */,
 				C9E89A481369B87A00E7ED53 /* LevenshteinDistance */,
 				F8B55E42134B577A0028534A /* ZipArchive */,
+				C9B59BCF13D048D000C7760D /* LambdaAlert */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -4305,6 +4314,18 @@
 				C9B08B291344D34F001963D0 /* KNFBTOCEntry.m */,
 			);
 			path = TextFlow;
+			sourceTree = "<group>";
+		};
+		C9B59BCF13D048D000C7760D /* LambdaAlert */ = {
+			isa = PBXGroup;
+			children = (
+				C9B59BD013D048D000C7760D /* LambdaAlert.h */,
+				C9B59BD113D048D000C7760D /* LambdaAlert.m */,
+				C9B59BD213D048D000C7760D /* LambdaSheet.h */,
+				C9B59BD313D048D000C7760D /* LambdaSheet.m */,
+			);
+			name = LambdaAlert;
+			path = Shared/Libraries/LambdaAlert;
 			sourceTree = "<group>";
 		};
 		C9CEF2F11339F77200FB5BE0 /* Submodules */ = {
@@ -6063,6 +6084,8 @@
 				52985F7213C48D32009AD121 /* SCHBookStatistics.m in Sources */,
 				287ADE9F13BB7A1C00D03247 /* SCHCoreDataOperation.m in Sources */,
 				284EF24413BC4CDF00F9BD5A /* SCHBookIdentifier.m in Sources */,
+				C9B59BD413D048D000C7760D /* LambdaAlert.m in Sources */,
+				C9B59BD613D048D000C7760D /* LambdaSheet.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6351,6 +6374,8 @@
 				5248E11113C4858900FA2CDC /* SCHReadingStatsDetailItem.m in Sources */,
 				5248E11513C4858900FA2CDC /* SCHReadingStatsEntryItem.m in Sources */,
 				52985F7313C48D32009AD121 /* SCHBookStatistics.m in Sources */,
+				C9B59BD513D048D000C7760D /* LambdaAlert.m in Sources */,
+				C9B59BD713D048D000C7760D /* LambdaSheet.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

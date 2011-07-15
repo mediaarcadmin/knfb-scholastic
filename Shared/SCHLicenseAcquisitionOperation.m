@@ -67,7 +67,8 @@
 
 - (void)updateBookWithFailure
 {
-    [self setProcessingState:SCHBookProcessingStateUnableToAcquireLicense];
+    //[self setProcessingState:SCHBookProcessingStateUnableToAcquireLicense];
+    [self setProcessingState:SCHBookProcessingStateError];
 
     [self setIsProcessing:NO];
     [self endOperation];

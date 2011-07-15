@@ -397,7 +397,7 @@ static NSTimeInterval const kSCHSyncManagerHeartbeatInterval = 30.0;
 {
 	if ([self.queue count] > 0) {
 		SCHSyncComponent *syncComponent = [self.queue objectAtIndex:0];
-		
+		NSLog(@"Sync component is %@", syncComponent);
 		if (syncComponent != nil && [syncComponent isSynchronizing] == NO) {
 			NSLog(@"Kicking %@", [syncComponent class]);			
 			// if the queue has stopped then start it up again

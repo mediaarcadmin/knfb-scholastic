@@ -15,6 +15,7 @@
 @class NSManagedObjectContext;
 
 typedef enum {
+    SCHBookProcessingStateDownloadFailed = -4,
     SCHBookProcessingStateUnableToAcquireLicense = -3,
 	SCHBookProcessingStateError = -2,
 	SCHBookProcessingStateBookVersionNotSupported,    // -1

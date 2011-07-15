@@ -16,6 +16,7 @@ typedef enum
 {
 	kSCHAppBookStillBeingProcessedError = 0,
     kSCHAppBookUnableToAcquireLicenseError,
+    kSCHAppBookDownloadFailedError,
     kSCHAppBookUnspecifiedError
 } SCHAppBookError;
 
