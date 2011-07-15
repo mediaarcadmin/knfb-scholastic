@@ -34,8 +34,9 @@ static NSString * const kSCHContentMetadataItem = @"SCHContentMetadataItem";
 @property (nonatomic, retain) SCHAppBook * AppBook;
 @property (nonatomic, retain) NSSet* eReaderCategories;
 
+@property (nonatomic, readonly) NSSet *AnnotationsContentItem;
+@property (nonatomic, readonly) SCHUserContentItem *UserContentItem;
 @property (nonatomic, readonly) SCHBookIdentifier *bookIdentifier;
-@property (nonatomic, readonly) SCHUserContentItem *userContentItem;
 
 - (NSArray *)annotationsContentForProfile:(NSNumber *)profileID;
 - (void)deleteAllFiles;

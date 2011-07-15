@@ -31,11 +31,6 @@
 #import "SCHReadingStatsEntryItem.h"
 #import "SCHBookshelfSyncComponent.h"
 
-static NSString * const kSCHProfileItemContentProfileItem = @"ContentProfileItem";
-static NSString * const kSCHProfileItemUserContentItem = @"UserContentItem";
-static NSString * const kSCHProfileItemContentMetadataItem = @"ContentMetadataItem";
-static NSString * const kSCHProfileItemUserContentItemContentMetadataItem = @"UserContentItem.ContentMetadataItem";
-
 @interface SCHProfileItem ()
 
 - (SCHReadingStatsContentItem *)newReadingStatsContentItemForBook:(SCHBookIdentifier *)bookIdentifier;
@@ -65,24 +60,19 @@ static NSString * const kSCHProfileItemUserContentItemContentMetadataItem = @"Us
 
 @synthesize age;
 
-#pragma mark - Object lifecycle
-
-- (void)awakeFromInsert
+- (NSSet *)ContentProfileItem
 {
-	[super awakeFromInsert];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshAllContentMetadataItems) name:SCHBookshelfSyncComponentCompletedNotification object:nil];			
-}
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    
+    [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHContentProfileItem 
+                                        inManagedObjectContext:self.managedObjectContext]];	
+    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"ProfileID == %@", self.ID]];
+    
+    NSArray *result = [self.managedObjectContext executeFetchRequest:fetchRequest 
+                                                               error:nil];
+    [fetchRequest release], fetchRequest = nil;
 
-- (void)awakeFromFetch
-{
-	[super awakeFromFetch];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshAllContentMetadataItems) name:SCHBookshelfSyncComponentCompletedNotification object:nil];		
-}
-
-- (void)willTurnIntoFault
-{
-    [super willTurnIntoFault];
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
+    return((result == nil ? [NSSet set] : [NSSet setWithArray:result]));
 }
 
 #pragma mark - methods
@@ -102,8 +92,8 @@ static NSString * const kSCHProfileItemUserContentItemContentMetadataItem = @"Us
         
         NSMutableArray *books = [NSMutableArray array];
         
-        for (SCHContentProfileItem *contentProfileItem in [self valueForKey:kSCHProfileItemContentProfileItem]) {
-            for (SCHContentMetadataItem *contentMetadataItem in [contentProfileItem valueForKeyPath:kSCHProfileItemUserContentItemContentMetadataItem]) {
+        for (SCHContentProfileItem *contentProfileItem in [self ContentProfileItem]) {
+            for (SCHContentMetadataItem *contentMetadataItem in contentProfileItem.UserContentItem.ContentMetadataItem) {
                 SCHBookIdentifier *identifier = [[SCHBookIdentifier alloc] initWithISBN:contentMetadataItem.ContentIdentifier
                                                                            DRMQualifier:contentMetadataItem.DRMQualifier];
                 [books addObject:identifier];
@@ -140,8 +130,8 @@ static NSString * const kSCHProfileItemUserContentItemContentMetadataItem = @"Us
     NSMutableArray *books = [NSMutableArray array];
     NSMutableArray *bookObjects = [NSMutableArray array];
     
-    for (SCHContentProfileItem *contentProfileItem in [self valueForKey:kSCHProfileItemContentProfileItem]) {
-        for (SCHContentMetadataItem *contentMetadataItem in [contentProfileItem valueForKeyPath:kSCHProfileItemUserContentItemContentMetadataItem]) {
+    for (SCHContentProfileItem *contentProfileItem in [self ContentProfileItem]) {
+        for (SCHContentMetadataItem *contentMetadataItem in contentProfileItem.UserContentItem.ContentMetadataItem) {
             [bookObjects addObject:contentMetadataItem];
         }
     }
@@ -456,18 +446,6 @@ static NSString * const kSCHProfileItemUserContentItemContentMetadataItem = @"Us
     }
     
     return(ret);
-}
-
-- (void)refreshAllContentMetadataItems
-{	
-	for (SCHContentProfileItem *contentProfileItem in [self valueForKey:kSCHProfileItemContentProfileItem]) {
-        [[self managedObjectContext] refreshObject:contentProfileItem mergeChanges:YES];		
-		SCHUserContentItem *userContentItem = [contentProfileItem valueForKey:kSCHProfileItemUserContentItem];
-        [[self managedObjectContext] refreshObject:userContentItem mergeChanges:YES];		
-		for (SCHContentMetadataItem *contentMetadataItem in [userContentItem valueForKey:kSCHProfileItemContentMetadataItem]) {
-            [[self managedObjectContext] refreshObject:contentMetadataItem mergeChanges:YES];					
-		}
-	}	
 }
 
 - (void)saveBookOrder:(NSArray *)books
