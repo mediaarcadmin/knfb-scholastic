@@ -166,6 +166,13 @@ static NSDictionary *featureCompatibilityDictionary = nil;
     return book;
 }
 
+- (void)removeBookIdentifierFromCache:(SCHBookIdentifier *)identifier
+{
+    @synchronized(self.isbnManagedObjectCache) {
+        [self.isbnManagedObjectCache removeObjectForKey:identifier];
+    }
+}
+
 - (NSArray *)allBookIdentifiersInManagedObjectContext:(NSManagedObjectContext *)managedObjectContext
 {
     NSMutableArray *ret = nil;

@@ -285,7 +285,7 @@
 	localProfile.BookshelfStyle = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceBookshelfStyle]];
 	localProfile.LastName = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceLastName]];
 	localProfile.LastModified = [self makeNullNil:[webProfile valueForKey:kSCHLibreAccessWebServiceLastModified]];
-	localProfile.State = [NSNumber numberWithStatus:kSCHStatusUnmodified];				
+	localProfile.State = [NSNumber numberWithStatus:kSCHStatusSyncUpdate];				
 }
 
 @end

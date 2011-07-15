@@ -142,6 +142,11 @@
 
 - (void)percentageUpdate:(NSDictionary *)userInfo
 {
+	if ([self isCancelled] || [self processingState] == SCHBookProcessingStateDownloadPaused) {
+        [self endOperation];
+		return;
+	}
+    
     //NSLog(@"Percentage update sent %@", userInfo);
 	if (self.fileType == kSCHDownloadFileTypeXPSBook) {
 		[[NSNotificationCenter defaultCenter] postNotificationName:@"SCHBookDownloadPercentageUpdate" object:nil userInfo:userInfo];
@@ -153,21 +158,19 @@
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data 
 {
+    if ([self isCancelled] || [self processingState] == SCHBookProcessingStateDownloadPaused) {
+		[connection cancel];
+        [self endOperation];
+		return;
+	}
+
 	@synchronized(self) {
 		NSFileHandle *handle = [NSFileHandle fileHandleForWritingAtPath:self.localPath];
 		[handle seekToEndOfFile];
 		[handle writeData:data];
 		[handle closeFile];
 	}
-	
-	if ([self isCancelled] || [self processingState] == SCHBookProcessingStateDownloadPaused) {
-		[connection cancel];
-        
-        [self endOperation];
-        
-		return;
-	}
-	
+		
 	NSError *error = nil;
 	
 	unsigned long long fileSize = [[[NSFileManager defaultManager] attributesOfItemAtPath:self.localPath error:&error] fileSize];
@@ -177,7 +180,7 @@
 	}
 	
 	
-	float percentage = (float) ((float) fileSize/self.bookFileSize);
+	float percentage = (self.bookFileSize > 0 ? (float) ((float) fileSize/self.bookFileSize) : 0.0);
 	
 	NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
 							  [NSNumber numberWithFloat:percentage], @"currentPercentage",
@@ -193,6 +196,12 @@
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
+    if ([self isCancelled] || [self processingState] == SCHBookProcessingStateDownloadPaused) {
+		[connection cancel];        
+        [self endOperation];
+		return;
+	}
+    
 	NSLog(@"Finished file %@.", [self.localPath lastPathComponent]);
 	
 	switch (self.fileType) {
@@ -215,6 +224,12 @@
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
+    if ([self isCancelled] || [self processingState] == SCHBookProcessingStateDownloadPaused) {
+		[connection cancel];        
+        [self endOperation];
+		return;
+	}
+
 	NSLog(@"Error downloading file %@ (%@ : %@)", [self.localPath lastPathComponent], error, [error userInfo]);
 
     [self setProcessingState:SCHBookProcessingStateError];

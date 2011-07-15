@@ -48,6 +48,6 @@
 
 @property (nonatomic) SCHBookSortType sortType;
 
-- (SCHReadingViewController *)openBook:(SCHBookIdentifier *)identifier;
+- (SCHReadingViewController *)openBook:(SCHBookIdentifier *)identifier error:(NSError **)error;
 
 @end

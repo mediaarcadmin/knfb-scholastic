@@ -12,6 +12,7 @@
 
 @class SCHAppBook;
 @class SCHeReaderCategories;
+@class SCHBookIdentifier;
 @class SCHUserContentItem;
 
 static NSString * const kSCHContentMetadataItem = @"SCHContentMetadataItem";
@@ -33,6 +34,7 @@ static NSString * const kSCHContentMetadataItem = @"SCHContentMetadataItem";
 @property (nonatomic, retain) SCHAppBook * AppBook;
 @property (nonatomic, retain) NSSet* eReaderCategories;
 
+@property (nonatomic, readonly) SCHBookIdentifier *bookIdentifier;
 @property (nonatomic, readonly) SCHUserContentItem *userContentItem;
 
 - (NSArray *)annotationsContentForProfile:(NSNumber *)profileID;

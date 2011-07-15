@@ -45,6 +45,11 @@
 
 - (void)urlSuccess:(NSNotification *) notification
 {
+    if (self.isCancelled) {
+        [self endOperation];
+		return;
+	}
+
 	NSAssert([NSThread currentThread] == [NSThread mainThread], @"Notification is not fired on the main thread!");
 	NSDictionary *userInfo = [notification userInfo];
 	
@@ -87,6 +92,11 @@
 
 - (void)urlFailure:(NSNotification *)notification
 {
+    if (self.isCancelled) {
+        [self endOperation];
+		return;
+	}
+
 	NSAssert([NSThread currentThread] == [NSThread mainThread], @"Notification is not fired on the main thread!");
 	NSDictionary *userInfo = [notification userInfo];
 	NSString *completedISBN = [userInfo objectForKey:kSCHLibreAccessWebServiceContentIdentifier];

@@ -15,6 +15,7 @@
 @class NSManagedObjectContext;
 
 typedef enum {
+    SCHBookProcessingStateUnableToAcquireLicense = -3,
 	SCHBookProcessingStateError = -2,
 	SCHBookProcessingStateBookVersionNotSupported,
 	SCHBookProcessingStateNoURLs,
@@ -54,5 +55,7 @@ static NSString * const kSCHProcessingManagerConnectionBusy = @"SCHProcessingMan
 
 // stop all the processing
 - (void)cancelAllOperations;
+// stop processing a book
+- (void)cancelAllOperationsForBookIndentifier:(SCHBookIdentifier *)bookIdentifier;
 
 @end

@@ -88,7 +88,12 @@
 
 #pragma mark - NSXMLParserDelegate methods
 
-- (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName attributes:(NSDictionary *)attributeDict {
+- (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName attributes:(NSDictionary *)attributeDict 
+{
+    if (self.isCancelled) {
+        [self endOperation];
+		return;
+	}
 
     if ( [elementName isEqualToString:@"Feature"] ) {
 			
@@ -161,6 +166,11 @@
 
 - (void)parserDidEndDocument:(NSXMLParser *)parser
 {
+    if (self.isCancelled) {
+        [self endOperation];
+		return;
+	}
+
 	self.parsingComplete = YES;
     
     [self performWithBookAndSave:nil];
@@ -168,6 +178,11 @@
 
 - (void)parser:(NSXMLParser *)parser parseErrorOccurred:(NSError *)parseError
 {
+    if (self.isCancelled) {
+        [self endOperation];
+		return;
+	}
+
 	self.success = NO;
 	self.parsingComplete = YES;
 }

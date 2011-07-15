@@ -39,6 +39,8 @@
 #import "SCHBookStatistics.h"
 
 // constants
+NSString *const kSCHReadingViewErrorDomain  = @"com.knfb.scholastic.ReadingViewErrorDomain";
+
 static const CGFloat kReadingViewStandardScrubHeight = 47.0f;
 static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
@@ -96,6 +98,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 @property (nonatomic, assign) NSInteger lastPageInteractionSoundPlayedOn;
 @property (nonatomic, assign) BOOL pauseAudioOnNextPageTurn;
 
+- (id)failureWithErrorCode:(NSInteger)code error:(NSError **)error;
+- (NSError *)errorWithCode:(NSInteger)code;
 - (void)releaseViewObjects;
 
 - (void)toggleToolbarVisibility;
@@ -195,6 +199,12 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [self releaseViewObjects];
     
+    if (xpsProvider) {
+        [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.bookIdentifier];
+    }
+    
+    [xpsProvider release], xpsProvider = nil;
+    
     [managedObjectContext release], managedObjectContext = nil;
     [bookIdentifier release], bookIdentifier = nil;
     [popover release], popover = nil;
@@ -240,11 +250,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [storyInteractionButtonView release], storyInteractionButtonView = nil;
     [youngerToolbarToggleView release], youngerToolbarToggleView = nil;
     
-    if (xpsProvider) {
-        [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.bookIdentifier];
-    }
-    
-    [xpsProvider release], xpsProvider = nil;
     [readingView release], readingView = nil;
 }
 
@@ -256,15 +261,72 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 #pragma mark - Object Initialiser
 
+- (NSError *)errorWithCode:(NSInteger)code
+{
+    NSString *description = nil;
+
+    switch (code) {
+        case kSCHReadingViewMissingParametersError:
+            description = NSLocalizedString(@"An unexpected error occured (missing parameters). Please try again.", @"Missing paramaters error message from ReadingViewController");
+            break;
+        case kSCHReadingViewXPSCheckoutFailedError:
+            description = NSLocalizedString(@"An unexpected error occured (XPS checkout failed). Please try again.", @"XPS Checkout failed error message from ReadingViewController");
+            break;
+        case kSCHReadingViewDecryptionUnavailableError:
+            description = NSLocalizedString(@"It has not been possible to acquire a DRM license for this book. Please make sure this device is authorised and connected to the internet and try again.", @"Decryption not available error message from ReadingViewController");
+            break;
+        case kSCHReadingViewUnspecifiedError:
+        default:
+            description = NSLocalizedString(@"An unspecified error occured. Please try again.", @"Unspecified error message from ReadingViewController");
+            break;
+    }
+
+    NSArray *objArray = [NSArray arrayWithObjects:description, nil];
+    NSArray *keyArray = [NSArray arrayWithObjects:NSLocalizedDescriptionKey, nil];
+    NSDictionary *eDict = [NSDictionary dictionaryWithObjects:objArray
+                                                      forKeys:keyArray];
+    
+    return [[[NSError alloc] initWithDomain:kSCHReadingViewErrorDomain
+                                           code:code userInfo:eDict] autorelease];
+}
+
+- (id)failureWithErrorCode:(NSInteger)code error:(NSError **)error
+{
+    if (error != NULL) {
+        *error = [self errorWithCode:code];
+    }
+    
+    [self release];
+    return nil;
+}
+
 - (id)initWithNibName:(NSString *)nibNameOrNil
                bundle:(NSBundle *)nibBundleOrNil
        bookIdentifier:(SCHBookIdentifier *)aIdentifier 
               profile:(SCHProfileItem *)aProfile
  managedObjectContext:(NSManagedObjectContext *)moc
+                error:(NSError **)error
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    
     if (self) {
         // Custom initialization
+        if (!(aIdentifier && aProfile && moc)) {
+            return [self failureWithErrorCode:kSCHReadingViewMissingParametersError error:error];
+        }
+        
+        xpsProvider = [[[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:aIdentifier inManagedObjectContext:moc] retain];
+
+        if (!xpsProvider) {
+            return [self failureWithErrorCode:kSCHReadingViewXPSCheckoutFailedError error:error];
+        }
+        
+        if ([xpsProvider isEncrypted]) {
+            if (![xpsProvider decryptionIsAvailable]) {
+                return [self failureWithErrorCode:kSCHReadingViewDecryptionUnavailableError error:error];
+            }
+        }
+                
         bookIdentifier = [aIdentifier retain];
         profile = [aProfile retain];
         bookStatistics = [[profile newStatisticsForBook:bookIdentifier] retain];
@@ -273,7 +335,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         currentlyScrubbing = NO;
         currentPageIndex = NSUIntegerMax;
         
-        self.managedObjectContext = moc;
+        managedObjectContext = [moc retain];
         
         SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:aIdentifier inManagedObjectContext:self.managedObjectContext];        
         NSArray *contentItems = [book.ContentMetadataItem valueForKey:@"UserContentItem"];
@@ -297,7 +359,10 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         
         self.queuedAudioPlayer = [[[SCHQueuedAudioPlayer alloc] init] autorelease];
 
+    } else {
+        return [self failureWithErrorCode:kSCHReadingViewUnspecifiedError error:error];
     }
+    
     return self;
 }
 
@@ -318,7 +383,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 	
 	self.toolbarsVisible = YES;
     self.pauseAudioOnNextPageTurn = YES;
-    self.xpsProvider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.bookIdentifier inManagedObjectContext:self.managedObjectContext];
 	
     SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.bookIdentifier inManagedObjectContext:self.managedObjectContext];
     

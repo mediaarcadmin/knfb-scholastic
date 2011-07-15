@@ -10,6 +10,15 @@
 #import "SCHContentMetadataItem.h"
 #import "SCHProcessingManager.h"
 
+extern NSString * const kSCHAppBookErrorDomain;
+
+typedef enum 
+{
+	kSCHAppBookStillBeingProcessedError = 0,
+    kSCHAppBookUnableToAcquireLicenseError,
+    kSCHAppBookUnspecifiedError
+} SCHAppBookError;
+
 @class SCHBookIdentifier;
 
 static NSString * const kSCHAppBookProcessingState = @"SCHBookProcessingState";
@@ -105,6 +114,7 @@ typedef enum {
 @property (nonatomic, readonly) NSNumber * FileSize;
 @property (nonatomic, readonly) int PageNumber;
 @property (nonatomic, readonly) NSString * FileName;
+@property (nonatomic, readonly) SCHBookIdentifier *bookIdentifier;
 @property (nonatomic, readonly) NSString *categoryType;
 @property (nonatomic, readonly) BOOL diskVersionOutOfDate;
 
@@ -127,11 +137,9 @@ typedef enum {
 
 - (float)currentDownloadedPercentage;
 - (BOOL)haveURLs;
-- (BOOL)canOpenBook;
+- (BOOL)canOpenBookError:(NSError **)error;
 - (CGSize)bookCoverImageSize;
 - (SCHAppBookFeatures) bookFeatures;
-
-- (SCHBookIdentifier *)bookIdentifier;
 
 @end
 

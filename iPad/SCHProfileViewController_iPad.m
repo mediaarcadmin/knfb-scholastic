@@ -296,11 +296,23 @@ static const CGFloat kProfilePadTableOffsetLandscape = 220.0f;
         bookIdentifier = [[SCHBookIdentifier alloc] initWithEncodedString:profileItem.AppProfile.AutomaticallyLaunchBook];
     }
     if (bookIdentifier) {
-        SCHReadingViewController *readingViewController = [bookShelfViewController openBook:bookIdentifier];
+        NSError *error;
+        SCHReadingViewController *readingViewController = [bookShelfViewController openBook:bookIdentifier error:&error];
         [bookIdentifier release];
-        NSArray *viewControllers = [self.navigationController.viewControllers arrayByAddingObjectsFromArray:
-                                    [NSArray arrayWithObjects:bookShelfViewController, readingViewController, nil]];
-        [self.navigationController setViewControllers:(NSArray *)viewControllers animated:YES];
+        
+        if (readingViewController) {
+            NSArray *viewControllers = [self.navigationController.viewControllers arrayByAddingObjectsFromArray:
+                                        [NSArray arrayWithObjects:bookShelfViewController, readingViewController, nil]];
+            [self.navigationController setViewControllers:(NSArray *)viewControllers animated:YES];
+        } else {
+            UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"This Book Could Not Be Opened", @"Could not open book") 
+                                                                 message:[error localizedDescription]
+                                                                delegate:nil 
+                                                       cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+                                                       otherButtonTitles:nil]; 
+            [errorAlert show]; 
+            [errorAlert release];
+        }
         profileItem.AppProfile.AutomaticallyLaunchBook = nil;        
     } else {
         [self.navigationController pushViewController:bookShelfViewController animated:YES];

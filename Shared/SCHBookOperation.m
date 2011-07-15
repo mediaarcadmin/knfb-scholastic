@@ -71,19 +71,23 @@
 
 - (void)cancel
 {
-    [self endOperation];
+    // if super is called after endOperation then isCancelled does not get set
 	[super cancel];
+    [self endOperation];
 }
 
-- (BOOL)isConcurrent {
+- (BOOL)isConcurrent 
+{
 	return YES;
 }
 
-- (BOOL)isExecuting {
+- (BOOL)isExecuting 
+{
 	return self.executing;
 }
 
-- (BOOL)isFinished {
+- (BOOL)isFinished 
+{
 	return self.finished;
 }
 
@@ -114,7 +118,7 @@
 
 - (void)performWithBook:(void (^)(SCHAppBook *))block
 {
-    if (!self.identifier || !block) {
+    if (self.isCancelled || !self.identifier || !block) {
         return;
     }
     
@@ -132,7 +136,7 @@
 
 - (void)performWithBookAndSave:(void (^)(SCHAppBook *))block
 {
-    if (!self.identifier) {
+    if (self.isCancelled || !self.identifier) {
         return;
     }
     
@@ -168,7 +172,7 @@
 
 - (SCHBookCurrentProcessingState)processingState
 {
-    __block SCHBookCurrentProcessingState state;
+    __block SCHBookCurrentProcessingState state = SCHBookProcessingStateError;
     [self performWithBook:^(SCHAppBook *book) {
         state = [book processingState];
     }];

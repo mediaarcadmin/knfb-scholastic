@@ -60,6 +60,11 @@
 
 - (void)updateBookWithSuccess
 {
+    if (self.isCancelled) {
+        [self endOperation];
+		return;
+	}
+
     [self setProcessingState:SCHBookProcessingStateReadyForRightsParsing];
     [self setIsProcessing:NO];
     [self endOperation];
@@ -67,7 +72,12 @@
 
 - (void)updateBookWithFailure
 {
-    [self setProcessingState:SCHBookProcessingStateError];
+    if (self.isCancelled) {
+        [self endOperation];
+		return;
+	}
+
+    [self setProcessingState:SCHBookProcessingStateUnableToAcquireLicense];
 
     [self setIsProcessing:NO];
     [self endOperation];
@@ -80,11 +90,21 @@
 
 - (void)licenseAcquisitionSession:(SCHDrmLicenseAcquisitionSession *)licenseAcquisitionSession didComplete:(id)result
 {
+    if (self.isCancelled) {
+        [self endOperation];
+		return;
+	}
+
     [self updateBookWithSuccess];
 }
 
 - (void)licenseAcquisitionSession:(SCHDrmLicenseAcquisitionSession *)licenseAcquisitionSession didFailWithError:(NSError *)error
 {
+    if (self.isCancelled) {
+        [self endOperation];
+		return;
+	}
+
     [self updateBookWithFailure];
 }
 

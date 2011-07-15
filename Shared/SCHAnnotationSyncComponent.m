@@ -588,7 +588,7 @@
     localHighlight.Version = [self makeNullNil:[webHighlight objectForKey:kSCHLibreAccessWebServiceVersion]];
     
 	localHighlight.LastModified = [self makeNullNil:[webHighlight objectForKey:kSCHLibreAccessWebServiceLastModified]];
-	localHighlight.State = [NSNumber numberWithStatus:kSCHStatusUnmodified];				        
+	localHighlight.State = [NSNumber numberWithStatus:kSCHStatusSyncUpdate];				        
     
     [self syncLocationText:[self makeNullNil:[webHighlight objectForKey:kSCHLibreAccessWebServiceLocation]] 
           withLocationText:localHighlight.Location];
@@ -743,7 +743,7 @@
     localNote.Version = [self makeNullNil:[webNote objectForKey:kSCHLibreAccessWebServiceVersion]];
     
 	localNote.LastModified = [self makeNullNil:[webNote objectForKey:kSCHLibreAccessWebServiceLastModified]];
-	localNote.State = [NSNumber numberWithStatus:kSCHStatusUnmodified];				        
+	localNote.State = [NSNumber numberWithStatus:kSCHStatusSyncUpdate];				        
     
     [self syncLocationGraphics:[self makeNullNil:[webNote objectForKey:kSCHLibreAccessWebServiceLocation]] 
           withLocationGraphics:localNote.Location];
@@ -872,7 +872,7 @@
     localBookmark.Version = [self makeNullNil:[webBookmark objectForKey:kSCHLibreAccessWebServiceVersion]];
     
 	localBookmark.LastModified = [self makeNullNil:[webBookmark objectForKey:kSCHLibreAccessWebServiceLastModified]];
-	localBookmark.State = [NSNumber numberWithStatus:kSCHStatusUnmodified];				        
+	localBookmark.State = [NSNumber numberWithStatus:kSCHStatusSyncUpdate];				        
     
     [self syncLocationBookmark:[self makeNullNil:[webBookmark objectForKey:kSCHLibreAccessWebServiceLocation]] 
           withLocationBookmark:localBookmark.Location];
@@ -927,7 +927,7 @@
 	localLastPage.Percentage = [self makeNullNil:[webLastPage objectForKey:kSCHLibreAccessWebServicePercentage]];	
     
 	localLastPage.LastModified = [self makeNullNil:[webLastPage objectForKey:kSCHLibreAccessWebServiceLastModified]];
-	localLastPage.State = [NSNumber numberWithStatus:kSCHStatusUnmodified];				    
+	localLastPage.State = [NSNumber numberWithStatus:kSCHStatusSyncUpdate];				    
 }
 
 - (SCHLastPage *)lastPage:(NSDictionary *)lastPage
