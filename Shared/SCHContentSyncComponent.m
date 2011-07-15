@@ -104,7 +104,7 @@
 	
 	NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest error:nil];
 		
-	if( [results count] > 0) {
+	if ([results count] > 0) {
 		self.isSynchronizing = [self.libreAccessWebService saveContentProfileAssignment:results];
 		if (self.isSynchronizing == NO) {
 			[[SCHAuthenticationManager sharedAuthenticationManager] authenticate];				
@@ -318,7 +318,7 @@
 	[self syncContentProfileItems:[self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceProfileList]] localContentProfileList:localUserContentItem.ProfileList];
 	
 	localUserContentItem.LastModified = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceLastModified]];
-	localUserContentItem.State = [NSNumber numberWithStatus:kSCHStatusUnmodified];				
+	localUserContentItem.State = [NSNumber numberWithStatus:kSCHStatusSyncUpdate];				
 }
 
 - (void)syncOrderItems:(NSArray *)webOrderList localOrderList:(NSSet *)localOrderList
@@ -466,7 +466,7 @@
 - (void)syncContentProfileItem:(NSDictionary *)webContentProfileItem withContentProfileItem:(SCHContentProfileItem *)localContentProfileItem
 {
 	localContentProfileItem.LastModified = [self makeNullNil:[webContentProfileItem objectForKey:kSCHLibreAccessWebServiceLastModified]];
-	localContentProfileItem.State = [NSNumber numberWithStatus:kSCHStatusUnmodified];
+    localContentProfileItem.State = [NSNumber numberWithStatus:kSCHStatusSyncUpdate];
 	
 	localContentProfileItem.IsFavorite = [self makeNullNil:[webContentProfileItem objectForKey:kSCHLibreAccessWebServiceIsFavorite]];
 	

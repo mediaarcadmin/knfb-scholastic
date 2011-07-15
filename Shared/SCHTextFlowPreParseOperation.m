@@ -173,6 +173,11 @@ static void pageFileXMLParsingStartElementHandler(void *ctx, const XML_Char *nam
 
 - (void)updateBookWithSuccess
 {
+    if (self.isCancelled) {
+        [self endOperation];
+		return;
+	}
+
     [self setProcessingState:SCHBookProcessingStateReadyForSmartZoomPreParse];
     [self setIsProcessing:NO];
     self.finished = YES;
@@ -181,6 +186,11 @@ static void pageFileXMLParsingStartElementHandler(void *ctx, const XML_Char *nam
 
 - (void)updateBookWithFailure
 {
+    if (self.isCancelled) {
+        [self endOperation];
+		return;
+	}
+
     [self setProcessingState:SCHBookProcessingStateError];
     [self setIsProcessing:NO];
     self.finished = YES;

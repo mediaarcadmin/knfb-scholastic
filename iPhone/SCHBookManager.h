@@ -29,6 +29,7 @@
 + (SCHBookManager *)sharedBookManager;
 
 - (SCHAppBook *)bookWithIdentifier:(SCHBookIdentifier *)identifier inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
+- (void)removeBookIdentifierFromCache:(SCHBookIdentifier *)identifier;
 - (NSArray *)allBookIdentifiersInManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
 
 - (SCHXPSProvider *)checkOutXPSProviderForBookIdentifier:(SCHBookIdentifier *)identifier inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;

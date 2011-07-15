@@ -92,6 +92,11 @@
 
 - (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName attributes:(NSDictionary *)attributeDict 
 {
+    if (self.isCancelled) {
+        [self endOperation];
+		return;
+	}
+
     if ([elementName isEqualToString:@"Audio"]) {
         NSString *audioFile = [attributeDict objectForKey:@"src"];
         
@@ -110,6 +115,11 @@
 
 - (void)parserDidEndDocument:(NSXMLParser *)parser
 {
+    if (self.isCancelled) {
+        [self endOperation];
+		return;
+	}
+
     NSInteger count = [self.audioFiles count];
     NSMutableArray *audioBookReferences = [NSMutableArray array];
     
@@ -128,6 +138,11 @@
 
 - (void)parser:(NSXMLParser *)parser parseErrorOccurred:(NSError *)parseError
 {
+    if (self.isCancelled) {
+        [self endOperation];
+		return;
+	}
+
 	self.success = NO;
 	self.parsingComplete = YES;
 }

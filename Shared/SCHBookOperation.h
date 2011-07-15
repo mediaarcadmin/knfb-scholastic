@@ -14,15 +14,17 @@
 @class SCHAppBook;
 @class SCHBookIdentifier;
 
-@interface SCHBookOperation : SCHCoreDataOperation {}
+@interface SCHBookOperation : SCHCoreDataOperation 
+{
+}
 
 @property (nonatomic, retain) SCHBookIdentifier *identifier;
-@property BOOL executing;
-@property BOOL finished;
+@property (nonatomic, assign) BOOL executing;
+@property (nonatomic, assign) BOOL finished;
 
-- (void) beginOperation;
-- (void) endOperation;
-- (void) setIdentifierWithoutUpdatingProcessingStatus: (SCHBookIdentifier *) newIdentifier;
+- (void)beginOperation;
+- (void)endOperation;
+- (void)setIdentifierWithoutUpdatingProcessingStatus:(SCHBookIdentifier *)newIdentifier;
 
 // thread-safe access to book object; the block is executed synchronously so may make
 // changes to any __block storage locals

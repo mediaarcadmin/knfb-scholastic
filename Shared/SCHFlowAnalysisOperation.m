@@ -20,20 +20,25 @@
 
 @implementation SCHFlowAnalysisOperation
 
-- (void) updateBookWithSuccess
+- (void)updateBookWithSuccess
 {
+    if (self.isCancelled) {
+        [self endOperation];
+		return;
+	}
+
     [self setProcessingState:SCHBookProcessingStateReadyToRead];
     [self setIsProcessing:NO];
     
     [self endOperation];
 }
 
-- (void) updateBookWithFailure
+- (void)updateBookWithFailure
 {
     [self endOperation];
 }
 
-- (void) beginOperation
+- (void)beginOperation
 {
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
     

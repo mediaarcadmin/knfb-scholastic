@@ -117,6 +117,11 @@ static void smartZoomFileXMLParsingStartElementHandler(void *ctx, const XML_Char
 
 - (void)updateBookWithSuccess
 {
+    if (self.isCancelled) {
+        [self endOperation];
+		return;
+	}
+
     [self setProcessingState:SCHBookProcessingStateReadyForPagination];
     [self setIsProcessing:NO];
     self.finished = YES;
@@ -125,6 +130,11 @@ static void smartZoomFileXMLParsingStartElementHandler(void *ctx, const XML_Char
 
 - (void)updateBookWithFailure
 {
+    if (self.isCancelled) {
+        [self endOperation];
+		return;
+	}
+
     [self setProcessingState:SCHBookProcessingStateError];
     [self setIsProcessing:NO];
     self.finished = YES;

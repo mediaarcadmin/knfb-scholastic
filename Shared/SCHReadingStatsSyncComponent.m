@@ -38,6 +38,11 @@
                 [[SCHAuthenticationManager sharedAuthenticationManager] authenticate];				
                 ret = NO;			
             }		            
+        } else {
+            if([(id)self.delegate respondsToSelector:@selector(component:didCompleteWithResult:)]) {
+                [(id)self.delegate component:self didCompleteWithResult:nil];		
+            }	
+            
         }
 	}
     [fetchRequest release], fetchRequest = nil;

@@ -270,10 +270,48 @@ static SCHProcessingManager *sharedManager = nil;
 
 - (void)cancelAllOperations
 {
-    [self.webServiceOperationQueue cancelAllOperations];
-    [self.networkOperationQueue cancelAllOperations];    
-    [self.localProcessingQueue cancelAllOperations];    
-    [self.imageProcessingQueue cancelAllOperations];        
+    @synchronized(self) {
+        [self.webServiceOperationQueue cancelAllOperations];
+        [self.networkOperationQueue cancelAllOperations];    
+        [self.localProcessingQueue cancelAllOperations];    
+        [self.imageProcessingQueue cancelAllOperations];
+        [self.currentlyProcessingIdentifiers removeAllObjects];
+    }
+}
+
+- (void)cancelAllOperationsForBookIndentifier:(SCHBookIdentifier *)bookIdentifier
+{
+    @synchronized(self) {
+        for (SCHBookOperation *bookOperation in [self.webServiceOperationQueue operations]) {
+            if ([bookOperation.identifier isEqual:bookIdentifier] == YES) {
+                [bookOperation cancel];
+                break;
+            }
+        }
+
+        for (SCHBookOperation *bookOperation in [self.networkOperationQueue operations]) {
+            if ([bookOperation.identifier isEqual:bookIdentifier] == YES) {
+                [bookOperation cancel];
+                break;
+            }
+        }
+
+        for (SCHBookOperation *bookOperation in [self.localProcessingQueue operations]) {
+            if ([bookOperation.identifier isEqual:bookIdentifier] == YES) {
+                [bookOperation cancel];
+                break;
+            }
+        }
+
+        for (SCHBookOperation *bookOperation in [self.imageProcessingQueue operations]) {
+            if ([bookOperation.identifier isEqual:bookIdentifier] == YES) {
+                [bookOperation cancel];
+                break;
+            }
+        }
+
+        [self.currentlyProcessingIdentifiers removeObject:bookIdentifier];
+    }
 }
 
 #pragma mark -
