@@ -17,9 +17,7 @@
 
 @property (nonatomic, assign) NSInteger currentQuestionIndex;
 @property (nonatomic, assign) NSInteger simultaneousTapCount;
-@property (nonatomic, assign) BOOL answeredCorrectly;
 
-- (void)nextQuestion;
 - (void)setupQuestion;
 - (void)playQuestionAudioAndHighlightAnswersWithIntroduction:(BOOL)withIntroduction;
 
@@ -30,7 +28,6 @@
 @synthesize answerButtons;
 @synthesize currentQuestionIndex;
 @synthesize simultaneousTapCount;
-@synthesize answeredCorrectly;
 
 - (void)dealloc
 {
@@ -60,16 +57,10 @@
     [self setupQuestion];
 }
 
-- (void)nextQuestion
-{
-    [self removeFromHostViewWithSuccess:YES];
-}
-
 - (void)setupQuestion
 {
     BOOL iPad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
 
-    self.answeredCorrectly = NO;
     self.simultaneousTapCount = 0;
     [self setTitle:[self currentQuestion].prompt];
 
@@ -101,24 +92,21 @@
     }
     
     // play intro audio on first question only
+    self.controllerState = SCHStoryInteractionControllerStateAskingOpeningQuestion; 
     [self playQuestionAudioAndHighlightAnswersWithIntroduction:(self.currentQuestionIndex == 0)];
 }
 
 - (void)playQuestionAudioAndHighlightAnswersWithIntroduction:(BOOL)withIntroduction
 {
-    [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
+//    [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
+
     if (withIntroduction) {
-        [self enqueueAudioWithPath:[self.storyInteraction audioPathForQuestion]
-                        fromBundle:NO
-                        startDelay:NO
-            synchronizedStartBlock:nil
-              synchronizedEndBlock:nil];
+        [self enqueueAudioWithPath:[self.storyInteraction audioPathForQuestion] 
+                        fromBundle:NO];
     }
-    [self enqueueAudioWithPath:[[self currentQuestion] audioPathForQuestion]
-                    fromBundle:NO
-                    startDelay:0
-        synchronizedStartBlock:nil
-          synchronizedEndBlock:nil];
+
+    [self enqueueAudioWithPath:[[self currentQuestion] audioPathForQuestion] 
+                    fromBundle:NO];
     
     NSInteger index = 0;
     for (UIButton *button in self.answerButtons) {
@@ -130,6 +118,9 @@
             }
               synchronizedEndBlock:^{
                   [button setHighlighted:NO];
+                  if (index + 1 == [self.answerButtons count]) {
+                      self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
+                  }
               }];
         index++;
     }
@@ -137,7 +128,8 @@
 
 - (void)playAudioButtonTapped:(id)sender
 {
-    if (![self playingAudio] && !self.answeredCorrectly) { 
+    if (![self playingAudio] && self.controllerState != SCHStoryInteractionControllerStateInteractionFinishedSuccessfully) { 
+        self.controllerState = SCHStoryInteractionControllerStateAskingOpeningQuestion;
         [self playQuestionAudioAndHighlightAnswersWithIntroduction:NO];
     }
 }
@@ -164,12 +156,10 @@
         return;
     }
     
-    [self setUserInteractionsEnabled:NO];
-    
     [sender setSelected:YES];
     if (chosenAnswer == [self currentQuestion].correctAnswer) {
-        self.answeredCorrectly = YES;
-        [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
+        self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
+        [self cancelQueuedAudio];
         [self enqueueAudioWithPath:[self.storyInteraction storyInteractionCorrectAnswerSoundFilename] fromBundle:YES];
         [self enqueueAudioWithPath:[[self currentQuestion] audioPathForAnswerAtIndex:chosenAnswer] fromBundle:NO];
         [self enqueueAudioWithPath:[(SCHStoryInteractionMultipleChoiceText *)self.storyInteraction audioPathForThatsRight] fromBundle:NO];
@@ -178,11 +168,11 @@
                         startDelay:0
             synchronizedStartBlock:nil
               synchronizedEndBlock:^{
-                  [self setUserInteractionsEnabled:YES];
-                  [self nextQuestion];
+                  [self removeFromHostView];
               }];
     } else {
-        [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
+        self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause;
+        [self cancelQueuedAudio];
         [self enqueueAudioWithPath:[self.storyInteraction storyInteractionWrongAnswerSoundFilename]
                         fromBundle:YES];
         [self enqueueAudioWithPath:[[self currentQuestion] audioPathForAnswerAtIndex:chosenAnswer]
@@ -192,7 +182,8 @@
                         startDelay:0
             synchronizedStartBlock:nil
               synchronizedEndBlock:^{
-                  [self setUserInteractionsEnabled:YES];
+                  [sender setSelected:NO];
+                  self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
               }];
     }
 }
@@ -201,5 +192,24 @@
 {
     return([[self currentQuestion] audioPathForQuestion]);
 }
+
+#pragma mark - Override for SCHStoryInteractionControllerStateReactions
+
+- (void)storyInteractionDisableUserInteraction
+{
+    // disable user interaction
+    for (UIButton *button in self.answerButtons) {
+        [button setUserInteractionEnabled:NO];
+    }
+}
+
+- (void)storyInteractionEnableUserInteraction
+{
+    // enable user interaction
+    for (UIButton *button in self.answerButtons) {
+        [button setUserInteractionEnabled:YES];
+    }
+}
+
 
 @end

@@ -421,6 +421,24 @@
 					</object>
 					<int key="connectionID">26</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletCollectionConnection" key="connection">
+						<string key="label">controlButtons</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="986182578"/>
+						<string key="cachedDesigntimeCollectionClassName">NSArray</string>
+					</object>
+					<int key="connectionID">27</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletCollectionConnection" key="connection">
+						<string key="label">controlButtons</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="1050657917"/>
+						<string key="cachedDesigntimeCollectionClassName">NSArray</string>
+					</object>
+					<int key="connectionID">28</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -614,7 +632,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">26</int>
+			<int key="maxID">28</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -733,6 +751,7 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>answerHeadingCounts</string>
 							<string>answerTables</string>
+							<string>controlButtons</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
@@ -744,6 +763,11 @@
 							<object class="IBToManyOutletInfo">
 								<string key="name">answerTables</string>
 								<string key="candidateClassName">UITableView</string>
+								<string key="collectionClassName">NSArray</string>
+							</object>
+							<object class="IBToManyOutletInfo">
+								<string key="name">controlButtons</string>
+								<string key="candidateClassName">UIButton</string>
 								<string key="collectionClassName">NSArray</string>
 							</object>
 						</object>

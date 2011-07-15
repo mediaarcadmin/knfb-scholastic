@@ -47,6 +47,29 @@ enum DragState {
 @synthesize tapSupported;
 @synthesize shouldStartDragSupported;
 @synthesize dragState;
+@synthesize lockedInPlace;
+
+- (id)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    
+    if (self) {
+        self.lockedInPlace = NO;
+    }
+    
+    return self;
+}
+
+- (id)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    
+    if (self) {
+        self.lockedInPlace = NO;
+    }
+    
+    return self;
+}
 
 - (void)setDelegate:(NSObject<SCHStoryInteractionDraggableViewDelegate> *)aDelegate
 {

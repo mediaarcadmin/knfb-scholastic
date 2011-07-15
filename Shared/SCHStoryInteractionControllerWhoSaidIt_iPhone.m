@@ -14,7 +14,7 @@
 
 @property (nonatomic, assign) NSInteger currentStatement;
 @property (nonatomic, assign) NSInteger score;
-@property (nonatomic, assign) NSInteger simultaneousTapCount;
+@property dispatch_queue_t buttonAccessQueue;
 
 - (void)setupQuestionView;
 - (void)setupScoreView;
@@ -32,10 +32,23 @@
 @synthesize tryAgainButton;
 @synthesize currentStatement;
 @synthesize score;
-@synthesize simultaneousTapCount;
+@synthesize buttonAccessQueue;
+
+
+- (id)initWithStoryInteraction:(SCHStoryInteraction *)storyInteraction
+{
+    self = [super initWithStoryInteraction:storyInteraction];
+    
+    if (self) {
+        self.buttonAccessQueue = dispatch_queue_create("com.scholastic.ButtonAccessQueue", NULL);
+    }
+    
+    return self;
+}
 
 - (void)dealloc
 {
+    dispatch_release(buttonAccessQueue);
     [statementLabel release];
     [answerButtons release];
     [scoreLabel release];
@@ -83,6 +96,8 @@
     SCHStoryInteractionWhoSaidIt *whoSaidIt = (SCHStoryInteractionWhoSaidIt *)self.storyInteraction;
     NSInteger maxScore = [whoSaidIt.statements count]-1;
     self.scoreLabel.text = [NSString stringWithFormat:@"You got %d out of %d right!", self.score, maxScore];
+    // FIXME: only successful if you get top marks? 
+    self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
 }
 
 - (void)setupQuestion
@@ -102,12 +117,11 @@
         [button setBackgroundImage:[UIImage imageNamed:@"answer-button-yellow"] forState:UIControlStateNormal];
     }
     
-    self.simultaneousTapCount = 0;
+    self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
 }
 
 - (void)nextQuestion
 {
-    [self setUserInteractionsEnabled:YES];
     SCHStoryInteractionWhoSaidIt *whoSaidIt = (SCHStoryInteractionWhoSaidIt *)self.storyInteraction;
     do {
         self.currentStatement++;
@@ -116,6 +130,7 @@
     if (self.currentStatement < [whoSaidIt.statements count]) {
         [self setupQuestion];
     } else {
+        self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
         [self presentNextView];
     }
 }
@@ -124,35 +139,27 @@
 
 - (void)answerButtonTapped:(id)sender
 {
-    self.simultaneousTapCount++;
-    if (self.simultaneousTapCount == 1) {
-        [self performSelector:@selector(answerChosen:) withObject:sender afterDelay:kMinimumDistinguishedAnswerDelay];
-    }
-}
-
-- (void)answerChosen:(id)sender
-{
-    NSInteger tapCount = self.simultaneousTapCount;
-    self.simultaneousTapCount = 0;
-    if (tapCount > 1) {
-        return;
-    }
-    
-    [self setUserInteractionsEnabled:NO];
-
-    UIButton *button = (UIButton *)sender;
-    if (button.tag == self.currentStatement) {
-        [button setBackgroundImage:[UIImage imageNamed:@"answer-button-green"] forState:UIControlStateNormal];
-        [self playBundleAudioWithFilename:[self.storyInteraction storyInteractionCorrectAnswerSoundFilename] completion:nil];
-        self.score++;
-    } else {
-        [button setBackgroundImage:[UIImage imageNamed:@"answer-button-red"] forState:UIControlStateNormal];
-        [self playBundleAudioWithFilename:[self.storyInteraction storyInteractionWrongAnswerSoundFilename] completion:nil];
-    }
-         
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 1.0 * NSEC_PER_SEC);
-    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        [self nextQuestion];
+    dispatch_sync(self.buttonAccessQueue, ^{
+        if (self.controllerState == SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause) {
+            return;
+        }
+        
+        self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause;
+        
+        UIButton *button = (UIButton *)sender;
+        if (button.tag == self.currentStatement) {
+            [button setBackgroundImage:[UIImage imageNamed:@"answer-button-green"] forState:UIControlStateNormal];
+            [self playBundleAudioWithFilename:[self.storyInteraction storyInteractionCorrectAnswerSoundFilename] completion:nil];
+            self.score++;
+        } else {
+            [button setBackgroundImage:[UIImage imageNamed:@"answer-button-red"] forState:UIControlStateNormal];
+            [self playBundleAudioWithFilename:[self.storyInteraction storyInteractionWrongAnswerSoundFilename] completion:nil];
+        }
+        
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 1.0 * NSEC_PER_SEC);
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            [self nextQuestion];
+        });
     });
 }
 
@@ -160,6 +167,24 @@
 {
     [self playDefaultButtonAudio];
     [self presentNextView];
+}
+
+#pragma mark - Override for SCHStoryInteractionControllerStateReactions
+
+- (void)storyInteractionDisableUserInteraction
+{
+    // disable user interaction
+    for (UIButton *button in self.answerButtons) {
+        [button setUserInteractionEnabled:NO];
+    }
+}
+
+- (void)storyInteractionEnableUserInteraction
+{
+    // enable user interaction
+    for (UIButton *button in self.answerButtons) {
+        [button setUserInteractionEnabled:YES];
+    }
 }
 
 @end

@@ -155,7 +155,7 @@ static NSInteger const CELL_ACTIVITY_SPINNER = 203;
     self.textLabel.backgroundColor = [UIColor clearColor];
     [attrString release];
     
-    if (self.isNewBook) {
+    if (self.isNewBook && !self.trashed) {
         self.newIndicatorIcon.hidden = NO;
     } else {
         self.newIndicatorIcon.hidden = YES;

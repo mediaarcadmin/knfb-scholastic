@@ -116,6 +116,7 @@
     }
     
     self.hasShownHint = NO;
+    self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
 }
 
 #pragma mark - Actions
@@ -135,6 +136,7 @@
             hintLetter.homePosition = letterAtHintPosition.center;
             [letterAtHintPosition moveToHomePosition];
             [hintLetter moveToHomePosition];
+            hintLetter.lockedInPlace = YES;
         }
 
         [hintLetter setLetterColor:[UIColor SCHYellowColor]];
@@ -186,7 +188,7 @@
     BOOL complete = [self hasCorrectSolution];
     
     if (complete) {
-        [self setUserInteractionsEnabled:NO];
+        self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
     }
 
     [self playBundleAudioWithFilename:@"sfx_dropOK.mp3"
@@ -249,8 +251,30 @@
     
     [self playBundleAudioWithFilename:@"sfx_winround.mp3"
                            completion:^{
-                               [self removeFromHostViewWithSuccess:YES];
+                               [self removeFromHostView];
                            }];
 }
+
+#pragma mark - Override for SCHStoryInteractionControllerStateReactions
+
+- (void)storyInteractionDisableUserInteraction
+{
+    // disable user interaction
+    for (SCHStoryInteractionDraggableView *source in self.letterViews) {
+        [source setUserInteractionEnabled:NO];
+    }
+}
+
+- (void)storyInteractionEnableUserInteraction
+{
+    // enable user interaction
+    for (SCHStoryInteractionDraggableView *source in self.letterViews) {
+        if (!source.lockedInPlace) {
+            [source setUserInteractionEnabled:YES];
+        }
+    }
+}
+
+
 
 @end

@@ -58,6 +58,7 @@
 @synthesize gapPosition;
 @synthesize answersByLength;
 @synthesize answerCountsByLength;
+@synthesize controlButtons;
 
 - (void)dealloc
 {
@@ -96,6 +97,8 @@
     } else {
         self.openingScreenTitleLabel.font = [UIFont fontWithName:@"Arial Black" size:32];
     }
+    
+    self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
 }
 
 - (void)setupMainView
@@ -539,5 +542,28 @@
     cell.textLabel.text = [[self answersForTable:tableView] objectAtIndex:indexPath.row];
     return cell;
 }
+
+#pragma mark - Override for SCHStoryInteractionControllerStateReactions
+
+- (void)storyInteractionDisableUserInteraction
+{
+    // disable user interaction
+    [letterContainerView setUserInteractionEnabled:NO];
+    for (UIButton *item in self.controlButtons) {
+        [item setUserInteractionEnabled:NO];
+    }
+}
+
+- (void)storyInteractionEnableUserInteraction
+{
+    // enable user interaction
+    [letterContainerView setUserInteractionEnabled:YES];
+    for (UIButton *item in self.controlButtons) {
+        [item setUserInteractionEnabled:YES];
+    }
+}
+
+
+
 
 @end
