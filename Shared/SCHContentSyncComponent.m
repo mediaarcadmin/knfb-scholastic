@@ -34,11 +34,13 @@
 - (void)syncUserContentItem:(NSDictionary *)webUserContentItem 
         withUserContentItem:(SCHUserContentItem *)localUserContentItem;
 - (void)syncOrderItems:(NSArray *)webOrderList 
-        localOrderList:(NSSet *)localOrderList;
+        localOrderList:(NSSet *)localOrderList
+            insertInto:(SCHUserContentItem *)userContentItem;
 - (void)syncOrderItem:(NSDictionary *)webOrderItem 
         withOrderItem:(SCHOrderItem *)localOrderItem;
 - (void)syncContentProfileItems:(NSArray *)webContentProfileList 
-        localContentProfileList:(NSSet *)localContentProfileList;
+        localContentProfileList:(NSSet *)localContentProfileList
+                     insertInto:(SCHUserContentItem *)userContentItem;
 - (void)syncContentProfileItem:(NSDictionary *)webContentProfileItem 
         withContentProfileItem:(SCHContentProfileItem *)localContentProfileItem;
 
@@ -313,15 +315,21 @@
 	localUserContentItem.DefaultAssignment = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceDefaultAssignment]];		
 	localUserContentItem.ContentIdentifierType = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceContentIdentifierType]];				
 	
-	[self syncOrderItems:[self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceOrderList]] localOrderList:localUserContentItem.OrderList];
+	[self syncOrderItems:[self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceOrderList]] 
+          localOrderList:localUserContentItem.OrderList
+              insertInto:localUserContentItem];
 
-	[self syncContentProfileItems:[self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceProfileList]] localContentProfileList:localUserContentItem.ProfileList];
+	[self syncContentProfileItems:[self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceProfileList]] 
+          localContentProfileList:localUserContentItem.ProfileList
+     insertInto:localUserContentItem];
 	
 	localUserContentItem.LastModified = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceLastModified]];
 	localUserContentItem.State = [NSNumber numberWithStatus:kSCHStatusSyncUpdate];				
 }
 
-- (void)syncOrderItems:(NSArray *)webOrderList localOrderList:(NSSet *)localOrderList
+- (void)syncOrderItems:(NSArray *)webOrderList 
+        localOrderList:(NSSet *)localOrderList
+            insertInto:(SCHUserContentItem *)userContentItem
 {		
 	NSArray *sortDescriptor = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceOrderID ascending:YES]];
 	NSMutableSet *deletePool = [NSMutableSet set];
@@ -385,7 +393,7 @@
 	}
 	
 	for (NSDictionary *webItem in creationPool) {
-		[self addOrderItem:webItem];
+		[userContentItem addOrderListObject:[self addOrderItem:webItem]];
 	}
 }
 
@@ -395,7 +403,10 @@
 	localOrderItem.OrderDate = [self makeNullNil:[webOrderItem objectForKey:kSCHLibreAccessWebServiceOrderDate]];
 }
 
-- (void)syncContentProfileItems:(NSArray *)webContentProfileList localContentProfileList:(NSSet *)localContentProfileList
+- (void)syncContentProfileItems:(NSArray *)webContentProfileList 
+        localContentProfileList:(NSSet *)localContentProfileList
+                    insertInto:(SCHUserContentItem *)userContentItem
+
 {		
 	NSArray *sortDescriptor = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:kSCHLibreAccessWebServiceProfileID ascending:YES]];
 	NSMutableSet *deletePool = [NSMutableSet set];
@@ -459,7 +470,7 @@
 	}
 	
 	for (NSDictionary *webItem in creationPool) {
-		[self addContentProfileItem:webItem];
+		[userContentItem addProfileListObject:[self addContentProfileItem:webItem]];
 	}
 }
 
