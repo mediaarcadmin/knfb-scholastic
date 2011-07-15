@@ -17,19 +17,19 @@
 typedef enum {
     SCHBookProcessingStateUnableToAcquireLicense = -3,
 	SCHBookProcessingStateError = -2,
-	SCHBookProcessingStateBookVersionNotSupported,
-	SCHBookProcessingStateNoURLs,
-	SCHBookProcessingStateNoCoverImage,
-	SCHBookProcessingStateReadyForBookFileDownload,
-	SCHBookProcessingStateDownloadStarted,
-	SCHBookProcessingStateDownloadPaused,
-	SCHBookProcessingStateReadyForLicenseAcquisition,
-	SCHBookProcessingStateReadyForRightsParsing,
-	SCHBookProcessingStateReadyForAudioInfoParsing,
-	SCHBookProcessingStateReadyForTextFlowPreParse,
-    SCHBookProcessingStateReadyForSmartZoomPreParse,
-	SCHBookProcessingStateReadyForPagination,
-	SCHBookProcessingStateReadyToRead
+	SCHBookProcessingStateBookVersionNotSupported,    // -1
+	SCHBookProcessingStateNoURLs,                     //  0
+	SCHBookProcessingStateNoCoverImage,               //  1
+	SCHBookProcessingStateReadyForBookFileDownload,   //  2
+	SCHBookProcessingStateDownloadStarted,            //  3
+	SCHBookProcessingStateDownloadPaused,             //  4
+	SCHBookProcessingStateReadyForLicenseAcquisition, //  5
+	SCHBookProcessingStateReadyForRightsParsing,      //  6
+	SCHBookProcessingStateReadyForAudioInfoParsing,   //  7
+	SCHBookProcessingStateReadyForTextFlowPreParse,   //  8
+    SCHBookProcessingStateReadyForSmartZoomPreParse,  // 10
+	SCHBookProcessingStateReadyForPagination,         // 11
+	SCHBookProcessingStateReadyToRead                 // 12
 } SCHBookCurrentProcessingState;
 
 static NSString * const kSCHProcessingManagerConnectionIdle = @"SCHProcessingManagerConnectionIdle";
@@ -44,7 +44,8 @@ static NSString * const kSCHProcessingManagerConnectionBusy = @"SCHProcessingMan
 + (SCHProcessingManager *) sharedProcessingManager;
 
 // user selection method
-- (void) userSelectedBookWithIdentifier: (SCHBookIdentifier *) identifier;
+- (void)userSelectedBookWithIdentifier:(SCHBookIdentifier *)identifier;
+- (void)userRequestedRetryForBookWithIdentifier:(SCHBookIdentifier *)identifier;
 
 // thumbnail requests
 - (BOOL) requestThumbImageForBookCover:(SCHAsyncBookCoverImageView *)bookCover size:(CGSize)size book:(SCHAppBook *)book;
