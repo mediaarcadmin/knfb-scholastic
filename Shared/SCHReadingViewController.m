@@ -338,12 +338,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         managedObjectContext = [moc retain];
         
         SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:aIdentifier inManagedObjectContext:self.managedObjectContext];        
-        NSArray *contentItems = [book.ContentMetadataItem valueForKey:@"UserContentItem"];
         
-        if ([contentItems count]) {
-            [[SCHSyncManager sharedSyncManager] openDocument:[contentItems objectAtIndex:0] 
+        [[SCHSyncManager sharedSyncManager] openDocument:book.ContentMetadataItem.UserContentItem 
                                               forProfile:profile.ID];
-        }
         
         [[NSNotificationCenter defaultCenter] addObserver:self 
                                                  selector:@selector(didEnterBackgroundNotification:) 
@@ -633,7 +630,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     
     [self saveLastPageLocation];
     
-    [[SCHSyncManager sharedSyncManager] closeDocument:[[book.ContentMetadataItem valueForKey:@"UserContentItem"] objectAtIndex:0] 
+    [[SCHSyncManager sharedSyncManager] closeDocument:book.ContentMetadataItem.UserContentItem 
                                            forProfile:self.profile.ID];
     
     NSError *error = nil;

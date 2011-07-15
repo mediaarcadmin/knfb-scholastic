@@ -266,7 +266,7 @@ static NSTimeInterval const kSCHSyncManagerHeartbeatInterval = 30.0;
 {
 	NSMutableArray *ret = [NSMutableArray array];
 	
-	for (SCHContentProfileItem *contentProfileItem in [profileItem valueForKey:@"ContentProfileItem"]) {
+	for (SCHContentProfileItem *contentProfileItem in profileItem.ContentProfileItem) {
 		[ret addObject:[self annotationContentItemFromUserContentItem:contentProfileItem.UserContentItem]];
 	}
 	
@@ -317,11 +317,13 @@ static NSTimeInterval const kSCHSyncManagerHeartbeatInterval = 30.0;
 
 	NSLog(@"Scheduling Open Document");
 	
-	[self.annotationSyncComponent addProfile:profileID 
-                              withBooks:[NSMutableArray arrayWithObject:[self annotationContentItemFromUserContentItem:userContentItem]]];	
-	[self addToQueue:self.annotationSyncComponent];
-
-	[self kickQueue];
+    if (userContentItem != nil && profileID != nil) {
+        [self.annotationSyncComponent addProfile:profileID 
+                                       withBooks:[NSMutableArray arrayWithObject:[self annotationContentItemFromUserContentItem:userContentItem]]];	
+        [self addToQueue:self.annotationSyncComponent];
+        
+        [self kickQueue];
+    }
 }
 
 - (void)closeDocument:(SCHUserContentItem *)userContentItem forProfile:(NSNumber *)profileID
@@ -335,12 +337,14 @@ static NSTimeInterval const kSCHSyncManagerHeartbeatInterval = 30.0;
 
 	NSLog(@"Scheduling Close Document");
 	
-	[self.annotationSyncComponent addProfile:profileID 
-                              withBooks:[NSMutableArray arrayWithObject:[self annotationContentItemFromUserContentItem:userContentItem]]];	
-	[self addToQueue:self.annotationSyncComponent];
-	[self addToQueue:self.readingStatsSyncComponent];
-	
-	[self kickQueue];	
+    if (userContentItem != nil && profileID != nil) {
+        [self.annotationSyncComponent addProfile:profileID 
+                                       withBooks:[NSMutableArray arrayWithObject:[self annotationContentItemFromUserContentItem:userContentItem]]];	
+        [self addToQueue:self.annotationSyncComponent];
+        [self addToQueue:self.readingStatsSyncComponent];
+        
+        [self kickQueue];	
+    }
 }
 
 - (void)exitParentalTools:(BOOL)syncNow
