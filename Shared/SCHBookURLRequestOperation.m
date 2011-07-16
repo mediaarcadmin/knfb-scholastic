@@ -99,10 +99,10 @@
 
 	NSAssert([NSThread currentThread] == [NSThread mainThread], @"Notification is not fired on the main thread!");
 	NSDictionary *userInfo = [notification userInfo];
-	NSString *completedISBN = [userInfo objectForKey:kSCHLibreAccessWebServiceContentIdentifier];
+	SCHBookIdentifier *completedBookIdentifier = [userInfo objectForKey:kSCHBookIdentifierBookIdentifier];
 	
-    if ([completedISBN isEqual:self.identifier.isbn]) {
-		NSLog(@"Failure for ISBN %@", completedISBN);
+    if ([completedBookIdentifier isEqual:self.identifier]) {
+		NSLog(@"Failure for ISBN %@", completedBookIdentifier);
         [self setProcessingState:SCHBookProcessingStateError];
         [self endOperation];
 	}

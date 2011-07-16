@@ -14,7 +14,7 @@
 
 @implementation BITSOAPProxy
 
-- (void)reportFault:(SOAPFault *)fault forMethod:(NSString *)method
+- (void)reportFault:(SOAPFault *)fault forMethod:(NSString *)method requestInfo:(NSDictionary *)requestInfo
 {
 	if (fault != nil && [(id)self.delegate respondsToSelector:@selector(method:didFailWithError:)] == YES) {
 		NSDictionary *userInfo = nil;
@@ -27,7 +27,8 @@
 		[(id)self.delegate method:method didFailWithError:
 		 [NSError errorWithDomain:kBITAPIErrorDomain 
 							 code:kBITAPIFaultError 
-						 userInfo:userInfo]];
+						 userInfo:userInfo]
+                      requestInfo:requestInfo];
 	}
 }
 

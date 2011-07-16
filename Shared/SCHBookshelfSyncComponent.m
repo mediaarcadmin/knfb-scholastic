@@ -115,13 +115,13 @@
 	}	
 }
 
-- (void)method:(NSString *)method didFailWithError:(NSError *)error
+- (void)method:(NSString *)method didFailWithError:(NSError *)error requestInfo:(NSDictionary *)requestInfo
 {
 	if (self.useIndividualRequests == YES) {
 		requestCount--;
 	}
 
-	[super method:method didFailWithError:error];
+	[super method:method didFailWithError:error requestInfo:requestInfo];
 }
 
 - (BOOL)updateContentMetadataItems

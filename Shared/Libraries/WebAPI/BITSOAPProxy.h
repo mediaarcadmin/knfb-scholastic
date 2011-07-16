@@ -18,6 +18,8 @@
 
 }
 
-- (void)reportFault:(SOAPFault *)fault forMethod:(NSString *)method;
+- (void)reportFault:(SOAPFault *)fault 
+          forMethod:(NSString *)method 
+        requestInfo:(NSDictionary *)requestInfo;
 
 @end

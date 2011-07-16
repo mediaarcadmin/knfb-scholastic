@@ -9,12 +9,15 @@
 #import <Foundation/Foundation.h>
 #import "NSNumber+ObjectTypes.h"
 
+static NSString * const kSCHBookIdentifierBookIdentifier = @"BookIdentifier";
+
 @interface SCHBookIdentifier : NSObject {}
 
 @property (nonatomic, readonly) NSString *isbn;
 @property (nonatomic, readonly) NSNumber *DRMQualifier;
 
 - (id)initWithISBN:(NSString *)isbn DRMQualifier:(NSNumber *)DRMQualifier;
+- (id)initWithObject:(NSDictionary *)object;
 
 - (id)initWithEncodedString:(NSString *)string;
 - (NSString *)encodeAsString;

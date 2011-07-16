@@ -31,6 +31,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 
 - (NSError *)errorFromStatusMessage:(LibreAccessServiceSvc_StatusHolder *)statusMessage;
 - (NSString *)methodNameFromObject:(id)anObject;
+- (NSDictionary *)requestInfoFromOperation:(LibreAccessServiceSoap11BindingOperation *)operation;
 
 - (NSDictionary *)objectFromTokenExchange:(LibreAccessServiceSvc_TokenExchangeResponse *)anObject;
 - (NSDictionary *)objectFromAuthenticateDevice:(LibreAccessServiceSvc_AuthenticateDeviceResponse *)anObject;
@@ -61,6 +62,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 - (NSDictionary *)objectFromStatusHolder:(LibreAccessServiceSvc_StatusHolder *)anObject;
 - (NSDictionary *)objectFromAnnotationStatusContentItem:(LibreAccessServiceSvc_AnnotationStatusContentItem *)anObject;
 - (NSDictionary *)objectFromAnnotationTypeStatusItem:(LibreAccessServiceSvc_AnnotationTypeStatusItem *)anObject;
+- (NSDictionary *)objectFromISBNItem:(LibreAccessServiceSvc_isbnItem *)anObject;
 
 - (id)objectFromTranslate:(id)anObject;
 
@@ -477,12 +479,15 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 	
 	NSString *methodName = [self methodNameFromObject:operation];
 	
-	if (operation.response.error != nil && [(id)self.delegate respondsToSelector:@selector(method:didFailWithError:)]) {
-		[(id)self.delegate method:methodName didFailWithError:operation.response.error];
+	if (operation.response.error != nil && 
+        [(id)self.delegate respondsToSelector:@selector(method:didFailWithError:requestInfo:)]) {
+		[(id)self.delegate method:methodName didFailWithError:operation.response.error 
+                      requestInfo:[self requestInfoFromOperation:operation]];
 	} else {
 		for (id bodyPart in response.bodyParts) {
 			if ([bodyPart isKindOfClass:[SOAPFault class]]) {
-				[self reportFault:(SOAPFault *)bodyPart forMethod:methodName];
+				[self reportFault:(SOAPFault *)bodyPart forMethod:methodName 
+                      requestInfo:[self requestInfoFromOperation:operation]];
 				continue;
 			}
 			
@@ -499,9 +504,10 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 				if(status != nil && 
 				   [status isKindOfClass:[LibreAccessServiceSvc_StatusHolder class]] == YES && 
 				   status.status != LibreAccessServiceSvc_statuscodes_SUCCESS &&
-				   [(id)self.delegate respondsToSelector:@selector(method:didFailWithError:)]) {
+				   [(id)self.delegate respondsToSelector:@selector(method:didFailWithError:requestInfo:)]) {
                     errorTriggered = YES;
-					[(id)self.delegate method:methodName didFailWithError:[self errorFromStatusMessage:status]];			
+					[(id)self.delegate method:methodName didFailWithError:[self errorFromStatusMessage:status] 
+                                  requestInfo:[self requestInfoFromOperation:operation]];			
 				}
 			}
 			
@@ -601,6 +607,24 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 	}
 	
 	return(ret);
+}
+
+- (NSDictionary *)requestInfoFromOperation:(LibreAccessServiceSoap11BindingOperation *)operation
+{
+    NSDictionary * ret = nil;
+    
+    if ([operation isKindOfClass:[LibreAccessServiceSoap11Binding_ListContentMetadata class]] == YES) {
+        id body = [(id)operation body];
+        
+        NSMutableArray *isbnItems = [NSMutableArray array];
+        for (LibreAccessServiceSvc_isbnItem *isbnItem in [body isbn13s]) {
+            [isbnItems addObject:[self objectFromISBNItem:isbnItem]];
+        }
+        
+        ret = [NSDictionary dictionaryWithObject:isbnItems forKey:kSCHLibreAccessWebServiceListContentMetadata];
+    }
+    
+    return(ret);
 }
 
 #pragma mark -
@@ -1239,6 +1263,24 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 	}
 	
 	return(ret);
+}
+
+- (NSDictionary *)objectFromISBNItem:(LibreAccessServiceSvc_isbnItem *)anObject
+{
+	NSDictionary *ret = nil;
+	
+	if (anObject != nil) {
+		NSMutableDictionary *objects = [NSMutableDictionary dictionary];
+		
+		[objects setObject:[self objectFromTranslate:anObject.ISBN] forKey:kSCHLibreAccessWebServiceContentIdentifier];
+        [objects setObject:[self objectFromTranslate:anObject.Format] forKey:kSCHLibreAccessWebServiceFormat];
+		[objects setObject:[NSNumber numberWithContentIdentifierType:anObject.IdentifierType] forKey:kSCHLibreAccessWebServiceContentIdentifierType];
+		[objects setObject:[NSNumber numberWithDRMQualifier:anObject.Qualifier] forKey:kSCHLibreAccessWebServiceDRMQualifier];
+        
+		ret = objects;					
+	}
+	
+	return(ret);    
 }
 
 - (id)objectFromTranslate:(id)anObject

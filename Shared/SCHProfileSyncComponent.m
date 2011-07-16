@@ -104,10 +104,10 @@
 	}	
 }
 
-- (void)method:(NSString *)method didFailWithError:(NSError *)error
+- (void)method:(NSString *)method didFailWithError:(NSError *)error requestInfo:(NSDictionary *)requestInfo
 {
     [self.createdProfiles removeAllObjects];
-	[super method:method didFailWithError:error];
+	[super method:method didFailWithError:error requestInfo:requestInfo];
 }
 
 - (BOOL)updateProfiles

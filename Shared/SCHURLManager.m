@@ -134,7 +134,9 @@ static SCHURLManager *sharedURLManager = nil;
 			[self shakeTable];
 		} else {
 			[[NSNotificationCenter defaultCenter] postNotificationName:kSCHURLManagerFailure 
-																object:self];
+																object:self
+                                                              userInfo:[NSDictionary dictionaryWithObject:bookIdentifier 
+                                                                                                   forKey:kSCHBookIdentifierBookIdentifier]];
         }
 	}
 }
@@ -190,9 +192,6 @@ static SCHURLManager *sharedURLManager = nil;
 												   valueForKey:kSCHLibreAccessWebServiceContentIdentifier]);
 			[[NSNotificationCenter defaultCenter] postNotificationName:kSCHURLManagerSuccess 
 																object:self userInfo:[list objectAtIndex:0]];				
-		} else {
-			[[NSNotificationCenter defaultCenter] postNotificationName:kSCHURLManagerFailure 
-																object:self];
 		}		
 	}
 	
@@ -204,12 +203,19 @@ static SCHURLManager *sharedURLManager = nil;
 	}	
 }
 
-- (void)method:(NSString *)method didFailWithError:(NSError *)error
+- (void)method:(NSString *)method didFailWithError:(NSError *)error requestInfo:(NSDictionary *)requestInfo
 {
 	requestCount--;
 	
-	[[NSNotificationCenter defaultCenter] postNotificationName:kSCHURLManagerFailure object:self];	
-	
+    NSArray *list = [requestInfo objectForKey:kSCHLibreAccessWebServiceListContentMetadata];
+    
+    if ([list count] > 0) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:kSCHURLManagerFailure 
+                                                            object:self 
+                                                          userInfo:[NSDictionary dictionaryWithObject:[[[SCHBookIdentifier alloc] initWithObject:[list objectAtIndex:0]] autorelease]
+                                                                                               forKey:kSCHBookIdentifierBookIdentifier]];	
+	}
+    
 	if (requestCount < 1) {
 		if (self.backgroundTaskIdentifier != UIBackgroundTaskInvalid) {
 			[[UIApplication sharedApplication] endBackgroundTask:self.backgroundTaskIdentifier];
@@ -229,15 +235,6 @@ static SCHURLManager *sharedURLManager = nil;
     if (offlineMode != nil && [offlineMode boolValue] == NO) {
 		NSLog(@"Authenticated!");
 		[self shakeTable];	
-	} else {
-        if ([table count] > 0) {
-            [self clear];
-        }
-        NSError *error = [userInfo valueForKey:kSCHAuthenticationManagerNSError];
-        if (error) {
-            NSLog(@"authentication failure: %@", error);
-        }
-		[[NSNotificationCenter defaultCenter] postNotificationName:kSCHURLManagerFailure object:self];			
 	}
 }
 
