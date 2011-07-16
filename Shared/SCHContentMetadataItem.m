@@ -15,9 +15,7 @@
 #import "SCHBookIdentifier.h"
 #import "SCHProcessingManager.h"
 
-static NSString * const kSCHContentMetadataItemAnnotationsContentItem = @"AnnotationsContentItem";
 static NSString * const kSCHContentMetadataItemAnnotationsItemProfileID = @"AnnotationsItem.ProfileID";
-static NSString * const kSCHContentMetadataItemUserContentItem = @"UserContentItem";
 
 @implementation SCHContentMetadataItem
 
@@ -35,7 +33,46 @@ static NSString * const kSCHContentMetadataItemUserContentItem = @"UserContentIt
 @dynamic eReaderCategories;
 
 @synthesize bookIdentifier;
-@synthesize userContentItem;
+
+- (NSSet *)AnnotationsContentItem
+{
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    
+    [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHAnnotationsContentItem 
+                                        inManagedObjectContext:self.managedObjectContext]];	
+    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"ContentIdentifier == %@ AND DRMQualifier == %@", 
+                                self.ContentIdentifier, self.DRMQualifier]];
+    
+    NSArray *result = [self.managedObjectContext executeFetchRequest:fetchRequest 
+                                                               error:nil];
+    [fetchRequest release], fetchRequest = nil;
+    
+    return((result == nil ? [NSSet set] : [NSSet setWithArray:result]));
+}
+
+- (SCHUserContentItem *)UserContentItem
+{
+    SCHUserContentItem *ret = nil;
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    
+    [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHUserContentItem
+                                        inManagedObjectContext:self.managedObjectContext]];	
+    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"ContentIdentifier == %@ AND DRMQualifier == %@", 
+                                self.ContentIdentifier, self.DRMQualifier]];
+
+    
+    NSArray *result = [self.managedObjectContext executeFetchRequest:fetchRequest 
+                                                               error:nil];
+    [fetchRequest release], fetchRequest = nil;
+
+    // there should only ever be a single matching user content item
+    if ([result count] > 0) {
+        ret = [result objectAtIndex:0];
+    }
+
+    return(ret);
+}
 
 - (SCHBookIdentifier *)bookIdentifier
 {
@@ -48,26 +85,13 @@ static NSString * const kSCHContentMetadataItemUserContentItem = @"UserContentIt
 {
 	NSMutableArray *annotations = [NSMutableArray array];
 	
-	for (SCHAnnotationsContentItem *annotationsContentItem in [self valueForKey:kSCHContentMetadataItemAnnotationsContentItem]) {
+	for (SCHAnnotationsContentItem *annotationsContentItem in [self AnnotationsContentItem]) {
 		if ([profileID isEqualToNumber:[annotationsContentItem valueForKeyPath:kSCHContentMetadataItemAnnotationsItemProfileID]] == YES) {
 			[annotations addObject:annotationsContentItem];
 		}
 	}
 	
 	return(annotations);	
-}
-
-- (SCHUserContentItem *)userContentItem
-{
-    SCHUserContentItem *ret = nil;
-    
-    // there should only ever be a single matching user content item
-    NSArray *userContentItems = [self valueForKey:kSCHContentMetadataItemUserContentItem];
-    if ([userContentItems count] > 0) {
-        ret = [userContentItems objectAtIndex:0];
-    }
-    
-    return(ret);
 }
 
 - (void)prepareForDeletion

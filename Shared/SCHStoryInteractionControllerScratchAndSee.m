@@ -195,6 +195,7 @@ enum ScratchState {
 
 - (void)askQuestion
 {
+    self.controllerState = SCHStoryInteractionControllerStateAskingOpeningQuestion;
     [self enqueueAudioWithPath:[(SCHStoryInteractionScratchAndSee *)self.storyInteraction whatDoYouSeeAudioPath] fromBundle:NO];
     
     for (NSInteger i = 0; i < 3; ++i) {
@@ -207,6 +208,9 @@ enum ScratchState {
             }
               synchronizedEndBlock:^{
                   [button setHighlighted:NO];
+                  if (i == 2) {
+                      self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
+                  }
               }];
     }
 }
@@ -224,7 +228,7 @@ enum ScratchState {
 
 - (void)nextQuestion
 {
-    [self removeFromHostViewWithSuccess:YES];
+    [self removeFromHostView];
 }
 
 - (SCHStoryInteractionScratchAndSeeQuestion *)currentQuestion
@@ -259,7 +263,7 @@ enum ScratchState {
 
 - (void)correctAnswer:(NSInteger) selection
 {
-    [self setUserInteractionsEnabled:NO];
+    self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause;
     
     for (int i = 0; i < [self.answerButtons count]; i++) {
         if (i == selection) {
@@ -272,14 +276,20 @@ enum ScratchState {
     [self.scratchView setShowFullImage:YES];
     
     [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
-    [self enqueueAudioWithPath:[self.storyInteraction storyInteractionCorrectAnswerSoundFilename] fromBundle:YES];
+    [self enqueueAudioWithPath:[self.storyInteraction storyInteractionCorrectAnswerSoundFilename] 
+                    fromBundle:YES 
+                    startDelay:0 
+        synchronizedStartBlock:^{
+            self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
+        }
+          synchronizedEndBlock:nil];
+    
     [self enqueueAudioWithPath:[[self currentQuestion] audioPathForAnswerAtIndex:selection] fromBundle:NO];
     [self enqueueAudioWithPath:[[self currentQuestion] correctAnswerAudioPath]
                     fromBundle:NO
                     startDelay:0
         synchronizedStartBlock:nil
           synchronizedEndBlock:^{
-              [self setUserInteractionsEnabled:YES];
               [self nextQuestion];
           }];
 }
@@ -292,7 +302,14 @@ enum ScratchState {
     [button setSelected:YES];
     
     [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
-    [self enqueueAudioWithPath:[scratchAndSee storyInteractionWrongAnswerSoundFilename] fromBundle:YES];
+    [self enqueueAudioWithPath:[scratchAndSee storyInteractionWrongAnswerSoundFilename] 
+                    fromBundle:YES 
+                    startDelay:0 
+        synchronizedStartBlock:^{
+            self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause;
+        }
+          synchronizedEndBlock:nil
+     ];
     [self enqueueAudioWithPath:[[self currentQuestion] audioPathForAnswerAtIndex:selection] fromBundle:NO];
     
     switch (self.scratchState) {
@@ -305,6 +322,7 @@ enum ScratchState {
                   synchronizedEndBlock:^{
                       [button setSelected:NO];
                       self.scratchState = kScratchStateSecondScratch;
+                      self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
                       [self setupQuestion];
                   }];
             break;
@@ -318,6 +336,7 @@ enum ScratchState {
                   synchronizedEndBlock:^{
                       [button setSelected:NO];
                       self.scratchState = kScratchStateKeepTrying;
+                      self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
                       [self setupQuestion];
                   }];
             break;
@@ -365,7 +384,9 @@ enum ScratchState {
         [self enqueueAudioWithPath:[(SCHStoryInteractionScratchAndSee *)self.storyInteraction scratchingCompleteSoundEffectFilename]
                         fromBundle:YES
                         startDelay:0
-            synchronizedStartBlock:nil
+            synchronizedStartBlock:^{
+                self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause;
+            }
               synchronizedEndBlock:^{
                   [self askQuestion];
               }];
@@ -379,6 +400,30 @@ enum ScratchState {
         }
     }
 }
+
+#pragma mark - Override for SCHStoryInteractionControllerStateReactions
+
+- (void)storyInteractionDisableUserInteraction
+{
+    NSLog(@"Disabling interactions.");
+    // disable user interaction
+    for (UIButton *button in self.answerButtons) {
+        [button setUserInteractionEnabled:NO];
+    }
+    self.scratchView.userInteractionEnabled = NO;
+}
+
+- (void)storyInteractionEnableUserInteraction
+{
+    NSLog(@"Enabling interactions.");
+    // enable user interaction
+    for (UIButton *button in self.answerButtons) {
+        [button setUserInteractionEnabled:YES];
+    }
+    
+    self.scratchView.userInteractionEnabled = YES;
+}
+
 
 
 @end

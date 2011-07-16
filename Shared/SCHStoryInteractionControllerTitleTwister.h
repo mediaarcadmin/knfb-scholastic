@@ -19,6 +19,7 @@
 @property (nonatomic, retain) IBOutlet SCHStoryInteractionDraggableTargetView *answerBuildTarget;
 @property (nonatomic, retain) IBOutletCollection(UILabel) NSArray *answerHeadingCounts;
 @property (nonatomic, retain) IBOutletCollection(UITableView) NSArray *answerTables;
+@property (nonatomic, retain) IBOutletCollection(UIButton) NSArray *controlButtons;
 
 - (IBAction)goButtonTapped:(id)sender;
 - (IBAction)doneButtonTapped:(id)sender;

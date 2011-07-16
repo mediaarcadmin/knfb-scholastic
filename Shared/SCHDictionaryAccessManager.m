@@ -101,6 +101,21 @@ static SCHDictionaryAccessManager *sharedManager = nil;
     self.oldAdditions = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"OldDictionary-additions" ofType:@"css"]
                                                   encoding:NSUTF8StringEncoding 
                                                      error:nil];
+    
+#if TARGET_IPHONE_SIMULATOR
+    
+    // prime the audio player - eliminates delay on playing of word
+    NSString *mp3Path = [NSString stringWithFormat:@"%@/Pronunciation/pron_a.mp3", 
+                         [[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryDirectory]];
+    
+    NSURL *url = [NSURL fileURLWithPath:mp3Path];
+    
+    NSError *error;
+    self.player = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:&error];
+    [self.player prepareToPlay];
+    self.player = nil;
+#endif
+    
 }
 
 - (void)setAccessFromState

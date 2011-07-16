@@ -31,6 +31,7 @@ static NSString * const kSCHUserContentItemDRM_QUALIFIER = @"DRM_QUALIFIER";
 @property (nonatomic, retain) NSSet* OrderList;
 @property (nonatomic, retain) NSSet* ProfileList;
 
+@property (nonatomic, readonly) NSSet *ContentMetadataItem;
 @property (nonatomic, readonly) NSSet *AssignedProfileList;
 
 @end

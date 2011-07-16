@@ -167,4 +167,18 @@ static CGFloat const kSCHStoryInteractionControllerVideoBorderWidth = 4.0;
     [super closeButtonTapped:sender];    
 }
 
+#pragma mark - Override for SCHStoryInteractionControllerStateReactions
+
+- (void)storyInteractionDisableUserInteraction
+{
+    // don't need to disable for this interaction
+}
+
+- (void)storyInteractionEnableUserInteraction
+{
+    // don't need to enable for this interaction
+}
+
+
+
 @end

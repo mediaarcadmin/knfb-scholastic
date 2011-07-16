@@ -10,6 +10,7 @@
 
 #import "SCHContentProfileItem.h"
 #import "SCHOrderItem.h"
+#import "SCHContentMetadataItem.h"
 
 @implementation SCHUserContentItem 
 
@@ -21,6 +22,22 @@
 @dynamic DRMQualifier;
 @dynamic OrderList;
 @dynamic ProfileList;
+
+- (NSSet *)ContentMetadataItem
+{
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    
+    [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHContentMetadataItem 
+                                        inManagedObjectContext:self.managedObjectContext]];	
+    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"ContentIdentifier == %@ AND DRMQualifier == %@", 
+                                self.ContentIdentifier, self.DRMQualifier]];
+    
+    NSArray *result = [self.managedObjectContext executeFetchRequest:fetchRequest 
+                                                               error:nil];
+    [fetchRequest release], fetchRequest = nil;
+    
+    return((result == nil ? [NSSet set] : [NSSet setWithArray:result]));
+}
 
 - (NSSet *)AssignedProfileList
 {

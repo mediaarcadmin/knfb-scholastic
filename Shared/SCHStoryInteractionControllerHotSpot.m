@@ -118,7 +118,7 @@
 - (void)simulateRotationBackToPortraitAndCloseWithSuccess:(BOOL)success
 {
     self.zoomCompletionHandler = ^{
-        if (self.isPortraitWithLandscapePresentation) {
+       if (self.isPortraitWithLandscapePresentation) {
             [UIView animateWithDuration:0.3
                              animations:^{
                                  // rotate and scale the left-hand page to fill screen
@@ -129,10 +129,10 @@
                                  self.pageImageView.transform = CGAffineTransformConcat(CGAffineTransformConcat(scale, translate), rotate);
                              }
                              completion:^(BOOL finished) {
-                                 [self removeFromHostViewWithSuccess:success];
+                                 [self removeFromHostView];
                              }];
         } else {
-            [self removeFromHostViewWithSuccess:success];
+            [self removeFromHostView];
         }
     };
     
@@ -213,7 +213,12 @@
     [self.pageImageView addSubview:cross];
     [self cancelQueuedAudio];
     [self enqueueAudioWithPath:[self.storyInteraction storyInteractionWrongAnswerSoundFilename]
-                    fromBundle:YES];
+                    fromBundle:YES
+                    startDelay:0
+        synchronizedStartBlock:^{
+            self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause;
+        }
+          synchronizedEndBlock:nil];
     [self enqueueAudioWithPath:[self.storyInteraction audioPathForTryAgain]
                     fromBundle:NO
                     startDelay:0
@@ -223,7 +228,10 @@
                                     delay:0
                                   options:UIViewAnimationOptionAllowUserInteraction
                                animations:^{ cross.alpha = 0; }
-                               completion:^(BOOL finished) { [cross removeFromSuperview]; }];
+                               completion:^(BOOL finished) { 
+                                   self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
+                                   [cross removeFromSuperview]; 
+                               }];
           }];
     
     self.answerMarkerView = cross;
@@ -241,8 +249,6 @@
 
 - (void)correctTapAtPoint:(CGPoint)point
 {
-    [self setUserInteractionsEnabled:NO];
-    
     CGFloat scale = 1.0f / self.scrollView.zoomScale;
     UIColor *fillColors[3] = {
         [UIColor SCHGreen2Color],
@@ -280,7 +286,12 @@
     
     [self cancelQueuedAudio];
     [self enqueueAudioWithPath:[self.storyInteraction storyInteractionCorrectAnswerSoundFilename]
-                    fromBundle:YES];
+                    fromBundle:YES
+                    startDelay:0
+        synchronizedStartBlock:^{
+            self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause;
+        }
+          synchronizedEndBlock:nil];
     [self enqueueAudioWithPath:[[self currentQuestion] audioPathForCorrectAnswer]
                     fromBundle:NO
                     startDelay:0
@@ -289,8 +300,24 @@
               [self simulateRotationBackToPortraitAndCloseWithSuccess:YES];
           }];
     
-    // disable more taps
+    self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
+    
+}
+
+#pragma mark - Override for SCHStoryInteractionControllerStateReactions
+
+- (void)storyInteractionDisableUserInteraction
+{
+    // disable user interaction
     [self.pageImageView setUserInteractionEnabled:NO];
 }
+
+- (void)storyInteractionEnableUserInteraction
+{
+    //enable user interaction
+    [self.pageImageView setUserInteractionEnabled:YES];
+}
+
+
 
 @end

@@ -101,6 +101,13 @@ typedef enum {
         self.titleView.font = [UIFont fontWithName:@"Helvetica Bold" size:15];
         self.titleView.textAlignment = UITextAlignmentLeft;
     }
+    
+    // this code covers the state when the answer button is both selected and highlighted
+    // prevents a flash between selection and moving on to the next question
+    for (UIButton *item in self.answerButtons) {
+        [item setBackgroundImage:[UIImage imageNamed:@"answer-button-green.png"] forState:(UIControlStateHighlighted|UIControlStateSelected)];
+    }
+    
     [self setupQuestion];    
 }
 
@@ -137,12 +144,15 @@ typedef enum {
     }
     
     self.simultaneousTapCount = 0;
+    self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
 }
 
 - (void)nextQuestion
 {
     self.currentQuestionIndex++;
     if (self.currentQuestionIndex == self.progressView.numberOfSteps) {
+        [self playRevealAudio];
+        self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
         [self presentNextView];
     } else {
         [self setupQuestion];
@@ -208,36 +218,70 @@ typedef enum {
     [self presentNextView];
 }
 
-- (IBAction)questionButtonTapped:(id)sender
+- (IBAction)questionButtonTapped:(UIButton *)sender
 {
-    [self playDefaultButtonAudio];
+    NSLog(@"Question button tapped: %d", [self.answerButtons indexOfObject:sender]);
     self.simultaneousTapCount++;
     if (self.simultaneousTapCount == 1) {
+        [sender setSelected:YES];
         [self performSelector:@selector(answerChosen:) withObject:sender afterDelay:kMinimumDistinguishedAnswerDelay];
     }
 }
 
-- (void)answerChosen:(id)sender
+- (void)answerChosen:(UIButton *)sender
 {
     NSInteger tapCount = self.simultaneousTapCount;
     self.simultaneousTapCount = 0;
     if (tapCount > 1) {
+        [sender setSelected:NO];
         return;
     }
+
+    [self playDefaultButtonAudio];
+    self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause;
+    [sender setSelected:YES];
     
+    [self performSelector:@selector(unhighlightAndMoveOn:) withObject:sender afterDelay:1.0];
+
+}
+
+- (void)unhighlightAndMoveOn:(UIButton *) sender
+{
     NSNumber *selection = [NSNumber numberWithInt:[self.answerButtons indexOfObject:sender]];
     NSNumber *currentCount = [self.outcomeCounts objectAtIndex:[selection intValue]];
     
     currentCount = [NSNumber numberWithInt:[currentCount intValue] + 1];
     [self.outcomeCounts replaceObjectAtIndex:[selection intValue] withObject:currentCount];
     
+    self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
+    
+    [sender setSelected:NO];
     [self nextQuestion];
 }
 
 - (IBAction)doneButtonTapped:(id)sender
 {
-    [self playDefaultButtonAudio];
-    [self performSelector:@selector(removeFromHostViewWithSuccess:) withObject:[NSNumber numberWithBool:YES] afterDelay:0.5];
+    [self performSelector:@selector(removeFromHostView) withObject:nil afterDelay:0.5];
 }
+
+#pragma mark - Override for SCHStoryInteractionControllerStateReactions
+
+- (void)storyInteractionDisableUserInteraction
+{
+    // disable user interaction
+    for (UIButton *button in self.answerButtons) {
+        [button setUserInteractionEnabled:NO];
+    }
+}
+
+- (void)storyInteractionEnableUserInteraction
+{
+    // enable user interaction
+    for (UIButton *button in self.answerButtons) {
+        [button setUserInteractionEnabled:YES];
+    }
+}
+
+
 
 @end

@@ -98,6 +98,7 @@
     for (NSString *word in wordSearch.words) {
         [self.remainingWords addObject:[word uppercaseString]];
     }
+    
 }
 
 - (void)layoutWordViewsForPad
@@ -165,8 +166,14 @@
         [containerView addPermanentHighlightFromCurrentSelectionWithColor:label.strikeOutColor];
         [containerView clearSelection];
         
-        [self setUserInteractionsEnabled:NO];
-        [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
+        if ([self.remainingWords count] == 0) {
+            self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
+        } else {
+            self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithoutPause;
+        }            
+        
+        
+        [self cancelQueuedAudio];
         [self enqueueAudioWithPath:[wordSearch storyInteractionCorrectAnswerSoundFilename]
                         fromBundle:YES];
         [self enqueueAudioWithPath:[wordSearch audioPathForYouFound] fromBundle:NO];
@@ -174,30 +181,58 @@
                         fromBundle:NO
                         startDelay:0
             synchronizedStartBlock:nil
-              synchronizedEndBlock:^{ [self setUserInteractionsEnabled:YES]; }];
+              synchronizedEndBlock:^{ 
+                  if ([self.remainingWords count] > 0) {
+                      self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
+                  }
+              }];
         
         if ([self.remainingWords count] == 0) {
             [self enqueueAudioWithPath:[wordSearch audioPathForYouFoundThemAll]
                             fromBundle:NO
                             startDelay:0
-                synchronizedStartBlock:^{ [self setUserInteractionsEnabled:NO]; }
-                  synchronizedEndBlock:^{ [self removeFromHostViewWithSuccess:YES]; }];
+                synchronizedStartBlock:nil
+                  synchronizedEndBlock:^{ 
+                      [self removeFromHostView];
+                  }];
         }
     } else if (index == NSNotFound) {
         [self cancelQueuedAudioExecutingSynchronizedBlocksImmediately];
         [self enqueueAudioWithPath:[wordSearch storyInteractionWrongAnswerSoundFilename]
-                        fromBundle:YES];
+                        fromBundle:YES
+                        startDelay:0 synchronizedStartBlock:^{
+                            self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithoutPause;
+                        }
+              synchronizedEndBlock:nil
+         ];
         [self enqueueAudioWithPath:[wordSearch audioPathForIncorrectAnswer]
                         fromBundle:NO
                         startDelay:0
             synchronizedStartBlock:nil
               synchronizedEndBlock:^{
                   [containerView clearSelection];
+                  self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
               }];
     } else {
         // just ignore reselection of an answer already found
         [containerView clearSelection];
     }
 }
+
+#pragma mark - Override for SCHStoryInteractionControllerStateReactions
+
+- (void)storyInteractionDisableUserInteraction
+{
+    // disable user interaction
+    [self.lettersContainerView setUserInteractionEnabled:NO];
+}
+
+- (void)storyInteractionEnableUserInteraction
+{
+    // enable user interaction
+    [self.lettersContainerView setUserInteractionEnabled:YES];
+}
+
+
 
 @end
