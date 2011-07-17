@@ -514,6 +514,7 @@ static SCHProcessingManager *sharedManager = nil;
         case SCHBookProcessingStateError:
         case SCHBookProcessingStateUnableToAcquireLicense:
         case SCHBookProcessingStateDownloadFailed:
+        case SCHBookProcessingStateURLsNotPopulated:
         case SCHBookProcessingStateBookVersionNotSupported:
         case SCHBookProcessingStateDownloadPaused:
         case SCHBookProcessingStateReadyToRead:
@@ -662,6 +663,7 @@ static SCHProcessingManager *sharedManager = nil;
 
     if (book.processingState == SCHBookProcessingStateError ||
 		book.processingState == SCHBookProcessingStateUnableToAcquireLicense ||
+        book.processingState == SCHBookProcessingStateURLsNotPopulated ||
         book.processingState == SCHBookProcessingStateDownloadFailed) {
         [book setProcessingState:SCHBookProcessingStateNoURLs];
 		[self redispatchIdentifier:identifier];

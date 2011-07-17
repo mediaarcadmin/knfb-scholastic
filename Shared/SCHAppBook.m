@@ -319,6 +319,9 @@ NSString *const kSCHAppBookErrorDomain  = @"com.knfb.scholastic.AppBookErrorDoma
             case SCHBookProcessingStateDownloadFailed:
                 *error = [self errorWithCode:kSCHAppBookDownloadFailedError];
                 break;
+            case SCHBookProcessingStateURLsNotPopulated:
+                *error = [self errorWithCode:kSCHAppBookURLsNotPopulatedError];
+                break;
             case SCHBookProcessingStateError:
                 *error = [self errorWithCode:kSCHAppBookUnspecifiedError];
                 break;
@@ -360,6 +363,9 @@ NSString *const kSCHAppBookErrorDomain  = @"com.knfb.scholastic.AppBookErrorDoma
             break;
         case kSCHAppBookDownloadFailedError:
             description = NSLocalizedString(@"There was a problem whilst downloading this book. Please make sure this device is connected to the internet and try again.", @"Download failed error message from AppBook");
+            break;
+        case kSCHAppBookURLsNotPopulatedError:
+            description = NSLocalizedString(@"There was a problem whilst accessing the URLs for this book. Please make sure this device is connected to the internet and try again. if the problem persists please contact support.", @"URLs not populated error message from AppBook");
             break;
         case kSCHAppBookUnspecifiedError:
         default:

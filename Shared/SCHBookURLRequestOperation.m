@@ -102,8 +102,8 @@
 	SCHBookIdentifier *completedBookIdentifier = [userInfo objectForKey:kSCHBookIdentifierBookIdentifier];
 	
     if ([completedBookIdentifier isEqual:self.identifier]) {
-		NSLog(@"Failure for ISBN %@", completedBookIdentifier);
-        [self setProcessingState:SCHBookProcessingStateError];
+        NSLog(@"Warning: book URL request was missing cover and/or content URL: %@", userInfo);
+        [self setProcessingState:SCHBookProcessingStateURLsNotPopulated];
         [self endOperation];
 	}
 }
