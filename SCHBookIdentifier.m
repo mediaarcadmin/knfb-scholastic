@@ -7,7 +7,7 @@
 //
 
 #import "SCHBookIdentifier.h"
-
+#import "SCHLibreAccessWebService.h"
 
 @implementation SCHBookIdentifier
 
@@ -28,6 +28,32 @@
         DRMQualifier = [aDRMQualifier copy];
     }
     return self;
+}
+
+// creates bookIdentifier objects with a dictionary containing ContentIdentifer 
+// and DRM Qualifier such as ContentMetadataItem's from Core Data or the web service
+- (id)initWithObject:(NSDictionary *)object
+{
+    SCHBookIdentifier *ret = nil;
+    
+    if (object != nil) {
+        NSString *aIsbn = [object objectForKey:kSCHLibreAccessWebServiceContentIdentifier];
+        NSNumber *aDRMQualifier = [object objectForKey:kSCHLibreAccessWebServiceDRMQualifier];
+        
+        if (aIsbn != nil && aDRMQualifier != nil) {
+            ret = [[SCHBookIdentifier alloc] initWithISBN:aIsbn DRMQualifier:aDRMQualifier];
+        } else {
+            [NSException exceptionWithName:NSInvalidArgumentException 
+                                    reason:@"missing contentIdentifer and/or DRMQualifer passed to initWithObject:" 
+                                  userInfo:nil];            
+        }
+    } else {
+        [NSException exceptionWithName:NSInvalidArgumentException 
+                                reason:@"null object passed to initWithObject:" 
+                              userInfo:nil];
+    }
+    
+    return(ret);
 }
 
 - (id)initWithEncodedString:(NSString *)string

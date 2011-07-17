@@ -75,7 +75,7 @@
 	}
 }
 
-- (void)method:(NSString *)method didFailWithError:(NSError *)error
+- (void)method:(NSString *)method didFailWithError:(NSError *)error userInfo:(NSDictionary *)userInfo
 {
     NSLog(@"AuthenticationManager:%@ %@", method, [error description]);
     [self clearOnMainThread];

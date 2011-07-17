@@ -55,15 +55,15 @@
 	[super method:method didCompleteWithResult:nil];	
 }
 
-- (void)method:(NSString *)method didFailWithError:(NSError *)error
+- (void)method:(NSString *)method didFailWithError:(NSError *)error requestInfo:(NSDictionary *)requestInfo
 {
 	if (self.backgroundTaskIdentifier != UIBackgroundTaskInvalid) {
 		[[UIApplication sharedApplication] endBackgroundTask:self.backgroundTaskIdentifier];
 		self.backgroundTaskIdentifier = UIBackgroundTaskInvalid;			
 	}
-	isSynchronizing = NO;
+	self.isSynchronizing = NO;
 	
-	[super method:method didFailWithError:error];
+	[super method:method didFailWithError:error requestInfo:requestInfo];
 }
 
 #pragma mark - Private methods

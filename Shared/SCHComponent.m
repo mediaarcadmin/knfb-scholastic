@@ -49,7 +49,7 @@
 	}	
 }
 
-- (void)method:(NSString *)method didFailWithError:(NSError *)error
+- (void)method:(NSString *)method didFailWithError:(NSError *)error requestInfo:(NSDictionary *)requestInfo
 {
 	NSLog(@"%@\n%@", method, error);
 	
