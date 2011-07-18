@@ -11,6 +11,7 @@
 #import "SCHContentProfileItem.h"
 #import "SCHOrderItem.h"
 #import "SCHContentMetadataItem.h"
+#import "SCHBookIdentifier.h"
 
 @implementation SCHUserContentItem 
 
@@ -23,14 +24,22 @@
 @dynamic OrderList;
 @dynamic ProfileList;
 
+- (SCHBookIdentifier *)bookIdentifier
+{
+    SCHBookIdentifier *identifier = [[SCHBookIdentifier alloc] initWithISBN:self.ContentIdentifier
+                                                               DRMQualifier:self.DRMQualifier];
+    return [identifier autorelease];
+}
+
 - (NSSet *)ContentMetadataItem
 {
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     
     [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHContentMetadataItem 
                                         inManagedObjectContext:self.managedObjectContext]];	
-    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"ContentIdentifier == %@ AND DRMQualifier == %@", 
-                                self.ContentIdentifier, self.DRMQualifier]];
+    // note: ContentMetadataItem doesnt have a DRM Qualifier
+    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"ContentIdentifier == %@", 
+                                self.ContentIdentifier]];
     
     NSArray *result = [self.managedObjectContext executeFetchRequest:fetchRequest 
                                                                error:nil];

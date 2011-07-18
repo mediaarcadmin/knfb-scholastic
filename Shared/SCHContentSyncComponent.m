@@ -196,10 +196,21 @@
 		}		
 	}
 	
-	for (SCHUserContentItem *localItem in deletePool) {
-		[self.managedObjectContext deleteObject:localItem];
-	}
-	
+    if ([deletePool count] > 0) {
+        NSMutableArray *deletedBookIdentifiers = [NSMutableArray array];        
+        for (SCHUserContentItem *userContentItem in deletePool) {
+            [deletedBookIdentifiers addObject:[userContentItem bookIdentifier]];            
+        }
+        [[NSNotificationCenter defaultCenter] postNotificationName:SCHContentSyncComponentWillDeleteNotification 
+                                                            object:self 
+                                                          userInfo:[NSDictionary dictionaryWithObject:deletedBookIdentifiers 
+                                                                                               forKey:SCHContentSyncComponentDeletedBookIdentifiers]];        
+
+        for (SCHUserContentItem *userContentItem in deletePool) {
+            [self.managedObjectContext deleteObject:userContentItem];
+        }
+    }
+    
 	for (NSDictionary *webItem in creationPool) {
 		[self addUserContentItem:webItem];
 	}
