@@ -219,8 +219,6 @@ static int allocCountXPS = 0;
     
 	//NSLog(@"Checking out XPS for book: %@, count is %d", identifier, checkoutCountXPS);
 	
-	[self.persistentStoreCoordinator lock];
-	
     NSMutableDictionary *myCachedXPSProviders = self.cachedXPSProviders;
     @synchronized(myCachedXPSProviders) {
         SCHXPSProvider *previouslyCachedXPSProvider = [myCachedXPSProviders objectForKey:identifier];
@@ -247,8 +245,6 @@ static int allocCountXPS = 0;
         }
     }
     
-	[self.persistentStoreCoordinator unlock];
-	
     //NSLog(@"[%d] checkOutXPSProviderForBookWithID %@", [self.cachedXPSProviderCheckoutCounts countForObject:identifier], identifier);
 
     return(ret);	
@@ -263,8 +259,6 @@ static int allocCountXPS = 0;
     if (dispatch_get_current_queue() == dispatch_get_main_queue()) {
         getBlock();
     } else {
-        // TODO: investigate ticket 452
-        NSAssert(false, @"This code path does not work. Will be investigated in Ticket 452");
         dispatch_sync(dispatch_get_main_queue(), getBlock);
     }
     return [xpsProvider autorelease];
@@ -312,8 +306,6 @@ static int checkoutCountEucBook = 0;
 
 	//NSLog(@"Checking out EucBook for book: %@", identifier);
 	
-	[self.persistentStoreCoordinator lock];
-	
     NSMutableDictionary *myCachedEucBooks = self.cachedEucBooks;
     @synchronized(myCachedEucBooks) {
         SCHFlowEucBook *previouslyCachedEucBook = [myCachedEucBooks objectForKey:identifier];
@@ -338,8 +330,6 @@ static int checkoutCountEucBook = 0;
         }
     }
     
-	[self.persistentStoreCoordinator unlock];
-	
     return(ret);
 }
 
@@ -381,8 +371,6 @@ static int checkoutCountTextFlow = 0;
     
    // NSLog(@"Checking out TextFlow for book: %@, count is %d", isbn, checkoutCountTextFlow);
     
-    [self.persistentStoreCoordinator lock];
-    
     NSMutableDictionary *myCachedTextFlows = self.cachedTextFlows;
     @synchronized(myCachedTextFlows) {
         SCHTextFlow *previouslyCachedTextFlow = [myCachedTextFlows objectForKey:identifier];
@@ -408,8 +396,6 @@ static int checkoutCountTextFlow = 0;
             }
         }
     }
-    
-    [self.persistentStoreCoordinator unlock];
     
     return(ret);
 }
@@ -446,8 +432,6 @@ static int checkoutCountParagraph = 0;
     //NSLog(@"Checking out ParagraphSource for book: %@, count is %d", identifier, checkoutCountParagraph);
     SCHTextFlowParagraphSource *ret = nil;
     
-    [self.persistentStoreCoordinator lock];
-    
     NSMutableDictionary *myCachedParagraphSources = self.cachedParagraphSources;
     @synchronized(myCachedParagraphSources) {
         SCHTextFlowParagraphSource *previouslyCachedParagraphSource = [myCachedParagraphSources objectForKey:identifier];
@@ -472,8 +456,6 @@ static int checkoutCountParagraph = 0;
             }
         }
     }
-    
-    [self.persistentStoreCoordinator unlock];
     
     return(ret);
 }

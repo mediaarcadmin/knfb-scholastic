@@ -38,8 +38,11 @@ static NSInteger const CELL_ACTIVITY_SPINNER = 203;
 @property (readonly) UIView *thumbBackgroundView;
 @property (readonly) UIImageView *ruleImageView;
 @property (readonly) UIActivityIndicatorView *activitySpinner;
+@property (nonatomic, assign) BOOL coalesceRefreshes;
+@property (nonatomic, assign) BOOL needsRefresh;
 
 - (void)updateTheme;
+- (void)deferredRefreshCell;
 
 @end
 
@@ -53,6 +56,8 @@ static NSInteger const CELL_ACTIVITY_SPINNER = 203;
 @synthesize trashed;
 @synthesize lastCell;
 @synthesize loading;
+@synthesize coalesceRefreshes;
+@synthesize needsRefresh;
 
 - (id) initWithCoder:(NSCoder *)aDecoder
 {
@@ -60,6 +65,7 @@ static NSInteger const CELL_ACTIVITY_SPINNER = 203;
     
     if (self) {
         self.textLabel.backgroundColor = [UIColor clearColor];
+        self.textLabel.text = [[[NSAttributedString alloc] initWithString:@""] autorelease];
         self.bookCoverImageView.thumbSize = CGSizeMake(self.bookCoverImageView.frame.size.width, self.bookCoverImageView.frame.size.height);
         [self updateTheme];
         [self.deleteButton addTarget:self action:@selector(pressedDeleteButton:) forControlEvents:UIControlEventTouchUpInside];
@@ -74,11 +80,35 @@ static NSInteger const CELL_ACTIVITY_SPINNER = 203;
 - (void)dealloc 
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];
+    
     [identifier release], identifier = nil;
     [super dealloc];
 }
 
+- (void)beginUpdates
+{
+    self.coalesceRefreshes = YES;
+}
+
+- (void)endUpdates
+{
+    self.coalesceRefreshes = NO;
+    if (self.needsRefresh) {
+        [self deferredRefreshCell];
+    }
+}
+
 - (void)refreshCell
+{
+    if (self.coalesceRefreshes) {
+        self.needsRefresh = YES;
+    } else {
+        [self deferredRefreshCell];
+    }
+}
+
+- (void)deferredRefreshCell
 {
     NSAssert([NSThread isMainThread], @"must refreshCell on main thread");
     
@@ -201,6 +231,8 @@ static NSInteger const CELL_ACTIVITY_SPINNER = 203;
     } else {
         [self.activitySpinner stopAnimating];
     }
+    
+    self.needsRefresh = NO;
 }
 
 - (void)layoutSubviews 
@@ -271,7 +303,6 @@ static NSInteger const CELL_ACTIVITY_SPINNER = 203;
                                                    object:nil];
         
         [self.bookCoverImageView setIdentifier:self.identifier];
-        [self refreshCell];        
 	}
 }
 

@@ -199,14 +199,14 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
     self.gridViewToggleView.frame = gridFrame;
     
     self.gridView.toggleView = self.gridViewToggleView;
-
-    [self.gridView reloadData];
-    [self.listTableView reloadData];
     
     self.currentlyLoadingIndex = -1;
 
     if ([self.profileItem.AppProfile.ShowListView boolValue] == YES) {
+        [self.listTableView reloadData];
         [self changeToListView:nil];
+    } else {
+        [self.gridView reloadData];
     }
 }
 
@@ -456,9 +456,11 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
         // set the cell delegate
         cell.delegate = self;
     }
-    
+
+    [cell beginUpdates];
+
     SCHBookIdentifier *identifier = [self.books objectAtIndex:[indexPath row]];
-    
+
     cell.identifier = identifier;
     cell.isNewBook = [self.profileItem bookIsNewForProfileWithIdentifier:identifier];
     cell.trashed = [self.profileItem bookIsTrashedWithIdentifier:identifier];
@@ -475,12 +477,13 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
         cell.loading = NO;
     }
     
+    [cell endUpdates];
     return cell;
 }
 
 - (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (section == 0) {
+    if (section == 0 && ![tableView isHidden]) {
         return [self.books count];
     } else {
         return 0;
@@ -576,14 +579,19 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 		gridCell.frame = [aGridView frameForCellAtGridIndex:index];
 	}
 
+    [gridCell beginUpdates];
 	[gridCell setIdentifier:[self.books objectAtIndex:index]];
     gridCell.trashed = [self.profileItem bookIsTrashedWithIdentifier:[self.books objectAtIndex:index]];
+    [gridCell endUpdates];
 
 	return(gridCell);
 }
 
-- (NSInteger)numberOfItemsInGridView:(MRGridView*)gridView 
+- (NSInteger)numberOfItemsInGridView:(MRGridView*)aGridView 
 {
+    if ([aGridView isHidden]) {
+        return 0;
+    }
     return([self.books count]);
 }
 

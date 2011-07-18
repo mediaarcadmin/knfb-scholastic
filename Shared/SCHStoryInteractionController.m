@@ -127,11 +127,10 @@
     if (controllerState == newControllerState) {
         return;
     }
-    
-    SCHStoryInteractionControllerState oldState = controllerState;
-    controllerState = newControllerState;
 
-    NSLog(@"Changed state from %@ to %@", [self controllerStateAsString:oldState], [self controllerStateAsString:newControllerState]);
+    NSLog(@"Changed state from %@ to %@", [self controllerStateAsString:controllerState], [self controllerStateAsString:newControllerState]);
+    
+    controllerState = newControllerState;
 
     switch (controllerState) {
         case SCHStoryInteractionControllerStateInitialised:
