@@ -397,7 +397,6 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
         self.tokenExpires = nil;        
     }
 
-    [self clearOnMainThread];
 	waitingOnResponse = NO;
 	[self postFailureWithError:error];
 }
