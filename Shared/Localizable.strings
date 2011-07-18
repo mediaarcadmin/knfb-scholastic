@@ -34,4 +34,5 @@
 "Check again soon" = "Check again soon";
 "This will remove all books and settings" = "This will remove all books and settings";
 "Bookshelf Removed" = "Bookshelf Removed";
-"%@ is no longer available" = "%@ is no longer available";
+"Book Removed" = "Book Removed";
+"%@ has been removed" = "%@ has been removed";

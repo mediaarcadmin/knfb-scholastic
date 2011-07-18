@@ -173,6 +173,14 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
     [super viewWillAppear:animated];
 }
 
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+
+    [self.popover dismissPopoverAnimated:YES];
+    self.popover = nil;
+}
+
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     [self.gridView setShelfImage:[[SCHThemeManager sharedThemeManager] imageForShelf:interfaceOrientation]];        
@@ -345,6 +353,7 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
 	self.loadingView.hidden = YES;
 
     [self.popover dismissPopoverAnimated:YES];
+    self.popover = nil;
 }
 
 #pragma mark - Authentication Manager Delegate
