@@ -20,7 +20,9 @@
 @property (nonatomic, assign) BOOL loading;
 @property (nonatomic, assign) id <SCHBookShelfTableViewCellDelegate> delegate;
 
-- (void) refreshCell;
+- (void)beginUpdates;
+- (void)endUpdates;
+- (void)refreshCell;
 
 @end
 

@@ -24,6 +24,8 @@
 @property (nonatomic, retain) UIView *thumbTintView;
 @property (nonatomic, retain) UIProgressView *progressView;
 
+- (void)beginUpdates;
+- (void)endUpdates;
 - (void)refreshCell;
 
 @end

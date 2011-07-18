@@ -13,6 +13,15 @@
 #import "SCHBookManager.h"
 #import "SCHAsyncBookCoverImageView.h"
 
+@interface SCHBookShelfGridViewCell ()
+
+@property (nonatomic, assign) BOOL coalesceRefreshes;
+@property (nonatomic, assign) BOOL needsRefresh;
+
+- (void)deferredRefreshCell;
+
+@end;
+
 @implementation SCHBookShelfGridViewCell
 
 @synthesize asyncImageView;
@@ -20,6 +29,8 @@
 @synthesize progressView;
 @synthesize identifier;
 @synthesize trashed;
+@synthesize coalesceRefreshes;
+@synthesize needsRefresh;
 
 #pragma mark - Object lifecycle
 
@@ -47,6 +58,8 @@
 - (void)dealloc 
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];
+    
 	[asyncImageView release], asyncImageView = nil;
 	[thumbTintView release], thumbTintView = nil;
 	[progressView release], progressView = nil;
@@ -82,7 +95,29 @@
     [UIView setAnimationsEnabled:YES];
 }
 
+- (void)beginUpdates
+{
+    self.coalesceRefreshes = YES;
+}
+
+- (void)endUpdates
+{
+    self.coalesceRefreshes = NO;
+    if (self.needsRefresh) {
+        [self deferredRefreshCell];
+    }
+}
+
 - (void)refreshCell
+{
+    if (self.coalesceRefreshes) {
+        self.needsRefresh = YES;
+    } else {
+        [self deferredRefreshCell];
+    }
+}
+
+- (void)deferredRefreshCell
 {
     NSManagedObjectContext *context = [(id)[[UIApplication sharedApplication] delegate] managedObjectContext];
 	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.identifier inManagedObjectContext:context];    
@@ -115,6 +150,7 @@
         }
     }	
 	[self layoutSubviews];
+    self.needsRefresh = NO;
 }	
 
 #pragma mark - Accessor methods
