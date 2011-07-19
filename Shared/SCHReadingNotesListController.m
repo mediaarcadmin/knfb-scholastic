@@ -9,6 +9,7 @@
 #import "SCHReadingNotesListController.h"
 #import "SCHCustomToolbar.h"
 #import "SCHBookAnnotations.h"
+#import "SCHAnnotationSyncComponent.h"
 #import "SCHProfileItem.h"
 #import "SCHNote.h"
 
@@ -51,7 +52,8 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
 
 #pragma mark - Dealloc and View Teardown
 
--(void)dealloc {
+- (void)dealloc 
+{
     [self releaseViewObjects];
     
     delegate = nil;
@@ -74,14 +76,17 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
     // Release any cached data, images, etc that aren't in use.
 }
 
--(void)releaseViewObjects
+- (void)releaseViewObjects
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
     [notesTableView release], notesTableView = nil;
     [topBar release], topBar = nil;
     [topShadow release], topShadow = nil;
 }
 
--(void)viewDidUnload {
+- (void)viewDidUnload 
+{
     [super viewDidUnload];
     [self releaseViewObjects];
 }
@@ -116,6 +121,11 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
 
     SCHBookAnnotations *annotations = [self.profile annotationsForBook:self.bookIdentifier];
     self.notes = [annotations notes];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self 
+                                             selector:@selector(annotationSyncComponentCompletedNotification:) 
+                                                 name:SCHAnnotationSyncComponentCompletedNotification 
+                                               object:nil];            
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -183,6 +193,18 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
 
 }
 
+#pragma mark - Sync Propagation methods
+
+- (void)annotationSyncComponentCompletedNotification:(NSNotification *)notification
+{
+    NSNumber *profileID = [notification.userInfo objectForKey:SCHAnnotationSyncComponentCompletedProfileIDs];
+    
+    if ([profileID isEqualToNumber:self.profile.ID] == YES) {
+        SCHBookAnnotations *annotations = [self.profile annotationsForBook:self.bookIdentifier];
+        self.notes = [annotations notes];
+        [self.notesTableView reloadData];
+    }
+}
 
 #pragma mark - Actions
 
