@@ -125,6 +125,7 @@
 {
     [super viewWillAppear:animated];
     [self setupAssetsForOrientation:[[UIApplication sharedApplication] statusBarOrientation]];
+    [self clearFields];
     
 }
 
