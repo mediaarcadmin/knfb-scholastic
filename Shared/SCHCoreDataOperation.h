@@ -12,9 +12,5 @@
 @interface SCHCoreDataOperation : NSOperation {}
 
 @property (nonatomic, retain) NSManagedObjectContext *mainThreadManagedObjectContext;
-@property (nonatomic, retain, readonly) NSManagedObjectContext *localManagedObjectContext;
-
-// save any changes made in localManagedObjectContext to the data store
-- (void)saveLocalChanges;
 
 @end

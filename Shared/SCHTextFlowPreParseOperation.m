@@ -97,8 +97,7 @@ static void pageFileXMLParsingStartElementHandler(void *ctx, const XML_Char *nam
 {
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
     
-    SCHXPSProvider *xpsProvider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.identifier
-                                                                                    inManagedObjectContext:self.localManagedObjectContext];
+    SCHXPSProvider *xpsProvider = [[SCHBookManager sharedBookManager] threadSafeCheckOutXPSProviderForBookIdentifier:self.identifier];
     NSData *data = [xpsProvider dataForComponentAtPath:KNFBXPSTextFlowSectionsFile];
     
     if (nil == data) {

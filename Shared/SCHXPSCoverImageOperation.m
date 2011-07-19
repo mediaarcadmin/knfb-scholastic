@@ -22,8 +22,7 @@
 #pragma mark - Book Operation methods
 - (void)beginOperation
 {
-	SCHXPSProvider *xpsProvider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.identifier
-                                                                                    inManagedObjectContext:self.localManagedObjectContext];
+	SCHXPSProvider *xpsProvider = [[SCHBookManager sharedBookManager] threadSafeCheckOutXPSProviderForBookIdentifier:self.identifier];
 	NSData *imageData = [xpsProvider coverThumbData];
 	[[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.identifier];
 	
