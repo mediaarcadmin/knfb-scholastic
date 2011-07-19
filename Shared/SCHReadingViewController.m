@@ -368,7 +368,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
                                                    object:nil];
 
         [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(noteChanges:)
+                                                 selector:@selector(annotationChanges:)
                                                      name:SCHAnnotationSyncComponentCompletedNotification
                                                    object:nil];
         
@@ -715,12 +715,13 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     }
 }
 
-- (void)noteChanges:(NSNotification *)notification
+- (void)annotationChanges:(NSNotification *)notification
 {
     NSNumber *profileID = [notification.userInfo objectForKey:SCHAnnotationSyncComponentCompletedProfileIDs];
     
     if ([profileID isEqualToNumber:self.profile.ID] == YES) {
         [self updateNotesCounter];
+        [self.readingView refreshHighlightsForPageAtIndex:self.currentPageIndex];
     }
 }
 
@@ -1477,6 +1478,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 {
     NSLog(@"Delete highlight");
     SCHBookAnnotations *annotations = [self.profile annotationsForBook:self.bookIdentifier];
+    NSError *error = nil;
     
     for (int page = startPage; page <= endPage; page++) {
         for (SCHHighlight *highlight in [annotations highlightsForPage:page]) {
@@ -1488,6 +1490,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
             }
         }
     }
+    if (![self.managedObjectContext save:&error]) {
+        NSLog(@"Error saving managed object context: %@ : %@", error, [error userInfo]); 
+    }                
 }
 
 - (NSArray *)highlightsForLayoutPage:(NSUInteger)page
