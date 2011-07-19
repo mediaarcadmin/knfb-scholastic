@@ -118,16 +118,16 @@ static SCHURLManager *sharedURLManager = nil;
 - (void)requestURLForBookOnMainThread:(SCHBookIdentifier *)bookIdentifier
 {	
 	if (bookIdentifier != nil) {
-		NSEntityDescription *entityDescription = [NSEntityDescription 
-												  entityForName:kSCHUserContentItem 
-												  inManagedObjectContext:self.managedObjectContext];
-		NSFetchRequest *fetchRequest = [entityDescription.managedObjectModel 
-										fetchRequestFromTemplateWithName:kSCHUserContentItemFetchWithContentIdentifier 
-										substitutionVariables:[NSDictionary 
-															   dictionaryWithObjectsAndKeys:bookIdentifier.isbn, kSCHUserContentItemCONTENT_IDENTIFIER,
-                                                               bookIdentifier.DRMQualifier, kSCHUserContentItemDRM_QUALIFIER, nil]];
-		
+        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+        
+        [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHContentMetadataItem 
+                                            inManagedObjectContext:self.managedObjectContext]];	
+        [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"ContentIdentifier == %@ AND DRMQualifier == %@", 
+                                    bookIdentifier.isbn, bookIdentifier.DRMQualifier]];
+        
 		NSArray *book = [self.managedObjectContext executeFetchRequest:fetchRequest error:nil];	
+        
+        [fetchRequest release], fetchRequest = nil;
 		
 		if ([book count] > 0) {
 			[table addObject:[book objectAtIndex:0]];

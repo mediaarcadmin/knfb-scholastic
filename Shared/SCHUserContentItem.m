@@ -37,9 +37,9 @@
     
     [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHContentMetadataItem 
                                         inManagedObjectContext:self.managedObjectContext]];	
-    // note: ContentMetadataItem doesnt have a DRM Qualifier
-    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"ContentIdentifier == %@", 
-                                self.ContentIdentifier]];
+    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"ContentIdentifier == %@ AND DRMQualifier == %@", 
+                                self.ContentIdentifier, self.DRMQualifier]];
+    
     
     NSArray *result = [self.managedObjectContext executeFetchRequest:fetchRequest 
                                                                error:nil];
