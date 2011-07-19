@@ -237,10 +237,12 @@ static const CGFloat kProfilePadTableOffsetLandscape = 220.0f;
     [self presentModalViewController:self.settingsNavController animated:YES];
 }
 
-#pragma mark - UITableViewDelegate
-
-- (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	
+#pragma mark - SCHProfileViewCellDelegate
+    
+- (void)profileViewCell:(SCHProfileViewCell *)cell didSelectAnimated:(BOOL)animated
+{
+    NSIndexPath *indexPath = cell.indexPath;
+    
     switch (indexPath.section) {
 		case 0: {
             SCHProfileItem *profileItem = [[self fetchedResultsController] objectAtIndexPath:indexPath];
@@ -278,9 +280,7 @@ static const CGFloat kProfilePadTableOffsetLandscape = 220.0f;
             }
 #endif	
 		}	break;
-	}
-	
-	[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+	}	
 }
 
 - (void)pushBookshelvesControllerWithProfileItem:(SCHProfileItem *)profileItem

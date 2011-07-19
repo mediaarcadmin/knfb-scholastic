@@ -7,6 +7,7 @@
 //
 
 #import "SCHProfileViewCell.h"
+#import <QuartzCore/QuartzCore.h>
 
 static const CGFloat kProfileViewCellButtonWidth = 296.0f;
 
@@ -40,6 +41,10 @@ static const CGFloat kProfileViewCellButtonWidth = 296.0f;
                        action:@selector(pressed:) 
              forControlEvents:UIControlEventTouchUpInside];
         
+        [cellButton addTarget:self 
+                       action:@selector(pressedDown:) 
+             forControlEvents:UIControlEventTouchDown];
+        
         [cellButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [cellButton setTitleShadowColor:[UIColor colorWithWhite:0 alpha:0.5f] forState:UIControlStateNormal];
 
@@ -67,7 +72,12 @@ static const CGFloat kProfileViewCellButtonWidth = 296.0f;
 
 - (void)pressed:(id)sender
 {
-    [self.delegate tableView:nil didSelectRowAtIndexPath:self.indexPath];
+    [self.delegate profileViewCell:self didSelectAnimated:YES];
+}
+
+- (void)pressedDown:(id)sender
+{
+    [CATransaction flush];
 }
 
 @end
