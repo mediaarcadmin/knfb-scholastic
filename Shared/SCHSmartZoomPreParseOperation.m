@@ -72,8 +72,7 @@ static void smartZoomFileXMLParsingStartElementHandler(void *ctx, const XML_Char
 {
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
     
-    SCHXPSProvider *xpsProvider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.identifier
-                                                                                    inManagedObjectContext:self.localManagedObjectContext];
+    SCHXPSProvider *xpsProvider = [[SCHBookManager sharedBookManager] threadSafeCheckOutXPSProviderForBookIdentifier:self.identifier];
     BOOL hasSmartZoom = [xpsProvider componentExistsAtPath:KNFBXPSKNFBSmartZoomFile];
     
     if (hasSmartZoom) {

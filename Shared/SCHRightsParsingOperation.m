@@ -49,8 +49,7 @@
 
 - (void)beginOperation
 {
-	SCHXPSProvider *xpsProvider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.identifier 
-                                                                                    inManagedObjectContext:self.localManagedObjectContext];
+	SCHXPSProvider *xpsProvider = [[SCHBookManager sharedBookManager] threadSafeCheckOutXPSProviderForBookIdentifier:self.identifier];
 	
 	BOOL hasAudio = [xpsProvider componentExistsAtPath:KNFBXPSAudiobookMetadataFile];
 	BOOL hasStoryInteractions = [xpsProvider componentExistsAtPath:KNFBXPSStoryInteractionsMetadataFile];

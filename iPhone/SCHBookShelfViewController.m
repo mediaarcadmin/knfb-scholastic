@@ -42,6 +42,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 - (void)updateTheme;
 - (CGSize)cellSize;
 - (CGFloat)cellBorderSize;
+- (void)reloadData;
 
 // FIXME: this isn't really necessary
 - (IBAction)changeToListView:(UIButton *)sender;
@@ -203,11 +204,10 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
     self.currentlyLoadingIndex = -1;
 
     if ([self.profileItem.AppProfile.ShowListView boolValue] == YES) {
-        [self.listTableView reloadData];
         [self changeToListView:nil];
-    } else {
-        [self.gridView reloadData];
     }
+    
+    [self reloadData];
 }
 
 - (void)viewDidUnload 
@@ -225,6 +225,18 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
         self.updateShelfOnReturnToShelf = NO;
         self.books = [self.profileItem allBookIdentifiers];
     }
+}
+
+- (void)reloadData
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (![self.listTableView isHidden]) {
+            [self.listTableView reloadData];
+        }
+        if (![self.gridView isHidden]) {
+            [self.gridView reloadData];
+        }
+    });
 }
 
 #pragma mark - Orientation methods
@@ -319,8 +331,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 	[books release];
     books = newBooks;
     
-	[self.gridView reloadData];
-    [self.listTableView reloadData];
+    [self reloadData];
 }
 
 #pragma mark - View Type Toggle methods
@@ -332,7 +343,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
         self.listButton.highlighted = NO;
         self.listTableView.hidden = YES;
         self.gridView.hidden = NO;
-        [self.gridView reloadData];
+        [self reloadData];
     }
 }
 
@@ -343,7 +354,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
         self.listButton.highlighted = YES;
         self.listTableView.hidden = NO;
         self.gridView.hidden = YES;
-        [self.listTableView reloadData];
+        [self reloadData];
     }
 }
 
@@ -397,7 +408,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
                 }
             }
             if (refreshTable == YES) {
-                [self.listTableView reloadData];
+                [self reloadData];
                 break;
             }
         }
@@ -509,8 +520,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
     } else {
         [self.profileItem setTrashed:YES forBookWithIdentifier:identifier];
     }
-    [self.listTableView reloadData];
-    [self.gridView reloadData];
+    [self reloadData];
 }
 
 #pragma mark - UITableViewDelegate methods
@@ -531,12 +541,12 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
     SCHBookIdentifier *identifier = [self.books objectAtIndex:[indexPath row]];
     if ([self.profileItem bookIsTrashedWithIdentifier:identifier]) {
         [self.profileItem setTrashed:NO forBookWithIdentifier:identifier];
-        [self.listTableView reloadData];
+        [self reloadData];
         return;
     }
     
     self.currentlyLoadingIndex = [indexPath row];
-    [self.listTableView reloadData];
+    [self reloadData];
   
     double delayInSeconds = 0.02;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
@@ -654,7 +664,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
     SCHBookIdentifier *identifier = [self.books objectAtIndex:index];
     if ([self.profileItem bookIsTrashedWithIdentifier:identifier]) {
         [self.profileItem setTrashed:NO forBookWithIdentifier:identifier];
-        [self.gridView reloadData];
+        [self reloadData];
         return;
     }
     

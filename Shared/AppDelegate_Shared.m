@@ -17,6 +17,7 @@
 #import "SCHDictionaryDownloadManager.h"
 #import "SCHDictionaryAccessManager.h"
 #import "SCHBookshelfSyncComponent.h"
+#import <CoreText/CoreText.h>
 
 #if LOCALDEBUG
 #import "SCHLocalDebug.h"
@@ -181,6 +182,17 @@ static NSString* const prModelCertFilename = @"iphonecert.dat";
     
 	// instantiate the shared processing manager
 	[SCHProcessingManager sharedProcessingManager].managedObjectContext = self.managedObjectContext;
+    
+    // pre-warm Core Text
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSMutableDictionary *attributes = [NSMutableDictionary dictionary];
+        [attributes setObject:@"Arial" forKey:(id)kCTFontFamilyNameAttribute];
+        [attributes setObject:[NSNumber numberWithFloat:36.0f] forKey:(id)kCTFontSizeAttribute];
+        CTFontDescriptorRef fontDesc = CTFontDescriptorCreateWithAttributes((CFDictionaryRef)attributes);
+        CTFontRef matchingFont = CTFontCreateWithFontDescriptor(fontDesc, 36.0f, NULL);
+        CFRelease(matchingFont);
+        CFRelease(fontDesc);
+    });
     
     
 #if LOCALDEBUG

@@ -205,6 +205,14 @@ static NSDictionary *featureCompatibilityDictionary = nil;
     return(ret);
 }
 
+- (void)performOnMainThread:(dispatch_block_t)block
+{
+    if ([NSThread isMainThread]) {
+        block();
+    } else {
+        dispatch_sync(dispatch_get_main_queue(), block);
+    }
+}
 
 #pragma mark - XPS Provider Check out/Check in
 
@@ -253,14 +261,9 @@ static int allocCountXPS = 0;
 - (SCHXPSProvider *)threadSafeCheckOutXPSProviderForBookIdentifier:(SCHBookIdentifier *)identifier
 {
     __block SCHXPSProvider *xpsProvider = nil;
-    dispatch_block_t getBlock = ^{
+    [self performOnMainThread:^{
         xpsProvider = [[self checkOutXPSProviderForBookIdentifier:identifier inManagedObjectContext:self.mainThreadManagedObjectContext] retain];
-    };
-    if (dispatch_get_current_queue() == dispatch_get_main_queue()) {
-        getBlock();
-    } else {
-        dispatch_sync(dispatch_get_main_queue(), getBlock);
-    }
+    }];
     return [xpsProvider autorelease];
 }
 
@@ -331,6 +334,15 @@ static int checkoutCountEucBook = 0;
     }
     
     return(ret);
+}
+
+- (SCHFlowEucBook *)threadSafeCheckOutEucBookForBookIdentifier:(SCHBookIdentifier *)identifier
+{
+    __block SCHFlowEucBook *eucBook;
+    [self performOnMainThread:^{
+        eucBook = [[self checkOutEucBookForBookIdentifier:identifier inManagedObjectContext:self.mainThreadManagedObjectContext] retain];
+    }];
+    return [eucBook autorelease];
 }
 
 - (void)checkInEucBookForBookIdentifier:(SCHBookIdentifier *)identifier

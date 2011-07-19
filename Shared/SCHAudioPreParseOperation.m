@@ -58,8 +58,7 @@
 
 - (void)beginOperation
 {
-	SCHXPSProvider *xpsProvider = [[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.identifier 
-                                                                                    inManagedObjectContext:self.localManagedObjectContext];
+	SCHXPSProvider *xpsProvider = [[SCHBookManager sharedBookManager] threadSafeCheckOutXPSProviderForBookIdentifier:self.identifier];
 	
 	// check for audiobook reference file
 	NSData *audiobookReferencesFile = [xpsProvider dataForComponentAtPath:KNFBXPSAudiobookReferencesFile];
