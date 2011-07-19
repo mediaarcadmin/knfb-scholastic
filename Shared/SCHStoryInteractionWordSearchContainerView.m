@@ -173,6 +173,15 @@
     NSInteger extentCols = endCol - startCol;
     NSInteger extentRows = endRow - startRow;
     
+    if (extentCols < 0) {
+        startCol += extentCols;
+        extentCols = -extentCols;
+    }
+    if (extentRows < 0) {
+        startRow += extentRows;
+        extentRows = -extentRows;
+    }
+    
     [self clearSelection];
     
     if ((extentCols == 0 && extentRows == 0) || (extentCols > 0 && extentRows > 0)) {
