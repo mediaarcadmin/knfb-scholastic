@@ -231,10 +231,12 @@ static const CGFloat kProfilePhoneTableOffsetLandscape = 20.0f;
     [self presentModalViewController:self.parentPasswordController animated:YES];
 }
 
-#pragma mark - UITableViewDelegate
+#pragma mark - SCHProfileViewCellDelegate
+    
+- (void)profileViewCell:(SCHProfileViewCell *)cell didSelectAnimated:(BOOL)animated
+{
+    NSIndexPath *indexPath = cell.indexPath;	
 
-- (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	
     switch (indexPath.section) {
 		case 0: {
             
@@ -271,8 +273,6 @@ static const CGFloat kProfilePhoneTableOffsetLandscape = 20.0f;
 #endif	
 		}	break;
 	}
-	
-	[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 #pragma mark - Authentication Manager
