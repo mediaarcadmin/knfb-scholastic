@@ -242,13 +242,13 @@
 {
     NSAssert(self.actionBlock != nil, @"Action block must be set!");
     
-    if (self.actionBlock) {
-        self.actionBlock();
-    }
-    
     if (self.controllerType == kSCHControllerLoginView) {
         [self startShowingProgress];
-    }
+    }    
+    
+    if (self.actionBlock) {
+        self.actionBlock();
+    }    
 }
 
 - (IBAction)cancelButtonAction:(id)sender

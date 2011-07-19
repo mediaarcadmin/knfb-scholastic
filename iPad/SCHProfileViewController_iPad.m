@@ -107,9 +107,9 @@ static const CGFloat kProfilePadTableOffsetLandscape = 220.0f;
     self.loginPasswordController.actionBlock = ^{
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(authenticationManager:) name:kSCHAuthenticationManagerSuccess object:nil];			
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(authenticationManager:) name:kSCHAuthenticationManagerFailure object:nil];					
-        
-        [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithUserName:[self.loginPasswordController username] withPassword:[self.loginPasswordController password]];
+
         [self.loginPasswordController startShowingProgress];
+        [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithUserName:[self.loginPasswordController username] withPassword:[self.loginPasswordController password]];
     };
     
     self.profilePasswordController.controllerType = kSCHControllerPasswordOnlyView;
