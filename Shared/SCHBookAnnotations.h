@@ -20,20 +20,15 @@
 }
 
 - (id)initWithPrivateAnnotations:(SCHPrivateAnnotations *)privateAnnotations;
+- (void)refreshData;
 
 - (NSArray *)bookmarks;
-- (void)addBookmark:(SCHBookmark *)newBookmark;
 - (void)deleteBookmark:(SCHBookmark *)bookmark;
 - (NSArray *)highlightsForPage:(NSUInteger)page;
-- (void)addHighlight:(SCHHighlight *)newHighlight;
 - (void)deleteHighlight:(SCHHighlight *)highlight;
 - (NSArray *)notes;
-- (void)addNote:(SCHNote *)newNote;
 - (void)deleteNote:(SCHNote *)note;
 - (SCHLastPage *)lastPage;
-
-// Convenience creation methods
-// FIXME: Confirm this fits with the sync model with John
 
 - (SCHNote *)createEmptyNote;
 - (SCHHighlight *)createEmptyHighlight;

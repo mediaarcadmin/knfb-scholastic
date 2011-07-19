@@ -11,8 +11,11 @@
 #import "SCHPrivateAnnotations.h"
 #import "SCHLibreAccessWebService.h"
 #import "SCHAnnotationSyncComponent.h"
+#import "SCHAnnotationsContentItem.h"
+#import "SCHAnnotationsItem.h"
 #import "SCHNote.h"
 #import "SCHHighlight.h"
+#import "SCHBookmark.h"
 #import "SCHLocationText.h"
 #import "SCHLocationGraphics.h"
 #import "SCHWordIndex.h"
@@ -41,7 +44,10 @@
     self = [super init];
     if (self) {
         privateAnnotations = [aPrivateAnnotation retain];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshData) name:SCHAnnotationSyncComponentCompletedNotification object:nil];        
+        [[NSNotificationCenter defaultCenter] addObserver:self 
+                                                 selector:@selector(annotationSyncComponentCompletedNotification:) 
+                                                     name:SCHAnnotationSyncComponentCompletedNotification 
+                                                   object:nil];        
     }
     return(self);
 }
@@ -56,6 +62,15 @@
     [sortedNotes release], sortedNotes = nil;
     
     [super dealloc];
+}
+
+- (void)annotationSyncComponentCompletedNotification:(NSNotification *)notification
+{
+    NSNumber *profileID = [notification.userInfo objectForKey:SCHAnnotationSyncComponentCompletedProfileIDs];
+    
+    if ([profileID isEqualToNumber:self.privateAnnotations.AnnotationsContentItem.AnnotationsItem.ProfileID] == YES) {
+        [self refreshData];
+    }
 }
 
 - (void)refreshData
@@ -82,17 +97,14 @@
     return(self.sortedBookmarks);
 }
 
-- (void)addBookmark:(SCHBookmark *)newBookmark
-{
-    [self.privateAnnotations addBookmarksObject:newBookmark];
-}
-
 - (void)deleteBookmark:(SCHBookmark *)bookmark
 {
 #if LOCALDEBUG
     [self.privateAnnotations removeBookmarksObject:bookmark];
 #else
-    [bookmark syncDelete];    
+    if (bookmark.isDeleted == NO) {
+        [bookmark syncDelete];    
+    }
 #endif
 }
 
@@ -136,17 +148,14 @@
     return(ret);
 }
 
-- (void)addHighlight:(SCHHighlight *)newHighlight
-{
-    [self.privateAnnotations addHighlightsObject:newHighlight];
-}
-
 - (void)deleteHighlight:(SCHHighlight *)highlight
 {
 #if LOCALDEBUG
     [self.privateAnnotations removeHighlightsObject:highlight];
 #else
-    [highlight syncDelete];
+    if (highlight.isDeleted == NO) {
+        [highlight syncDelete];
+    }
 #endif
 }
 
@@ -167,17 +176,14 @@
     return(self.sortedNotes);
 }
 
-- (void)addNote:(SCHNote *)newNote
-{
-    [self.privateAnnotations addNotesObject:newNote];
-}
-
 - (void)deleteNote:(SCHNote *)note
 {
 #if LOCALDEBUG
     [self.privateAnnotations removeNotesObject:note];
 #else
-    [note syncDelete];
+    if (note.isDeleted == NO) {
+        [note syncDelete];
+    }
 #endif
 }
 

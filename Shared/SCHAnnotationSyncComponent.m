@@ -220,9 +220,11 @@
         
         if ([self.annotations count] < 1) {
             [self setSyncDate:[NSDate date]];
-            [[NSNotificationCenter defaultCenter] postNotificationName:SCHAnnotationSyncComponentCompletedNotification 
-                                                                object:self];
         }
+        [[NSNotificationCenter defaultCenter] postNotificationName:SCHAnnotationSyncComponentCompletedNotification 
+                                                            object:self 
+                                                          userInfo:[NSDictionary dictionaryWithObject:profileID 
+                                                                                               forKey:SCHAnnotationSyncComponentCompletedProfileIDs]];        
         [self.annotations removeObjectForKey:profileID];
         [super method:method didCompleteWithResult:nil];	
     }
