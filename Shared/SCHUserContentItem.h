@@ -11,6 +11,7 @@
 
 @class SCHContentProfileItem;
 @class SCHOrderItem;
+@class SCHBookIdentifier;
 
 static NSString * const kSCHUserContentItem = @"SCHUserContentItem";
 
@@ -33,6 +34,8 @@ static NSString * const kSCHUserContentItemDRM_QUALIFIER = @"DRM_QUALIFIER";
 
 @property (nonatomic, readonly) NSSet *ContentMetadataItem;
 @property (nonatomic, readonly) NSSet *AssignedProfileList;
+
+- (SCHBookIdentifier *)bookIdentifier;
 
 @end
 

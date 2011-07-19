@@ -26,6 +26,7 @@
 #import "SCHBookIdentifier.h"
 #import "SCHProfileSyncComponent.h"
 #import "LambdaAlert.h"
+#import "SCHContentProfileItem.h"
 
 static NSInteger const kSCHBookShelfViewControllerGridCellHeightPortrait = 138;
 static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
@@ -41,8 +42,6 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 - (void)updateTheme;
 - (CGSize)cellSize;
 - (CGFloat)cellBorderSize;
-- (void)updateTable:(NSNotification *)notification;
-- (void)currentProfileDeleted:(NSNotification *)notification;
 
 // FIXME: this isn't really necessary
 - (IBAction)changeToListView:(UIButton *)sender;
@@ -156,13 +155,13 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 //    [customNavigationBar setTheme:kSCHThemeManagerNavigationBarImage];
 		
 	[[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(updateTable:)
-												 name:SCHProfileSyncComponentCompletedNotification
+											 selector:@selector(profileDeleted:)
+												 name:SCHProfileSyncComponentWillDeleteNotification
 											   object:nil];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(currentProfileDeleted:)
-												 name:SCHProfileSyncComponentWillDeleteNotification
+											 selector:@selector(managedObjectContextDidSaveNotification:)
+												 name:NSManagedObjectContextDidSaveNotification
 											   object:nil];
 	
 	self.loadingView.layer.cornerRadius = 5.0f;
@@ -348,33 +347,91 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
     }
 }
 
-#pragma mark - Core Data Table View Methods
+#pragma mark - Sync Propagation methods
 
-- (void)updateTable:(NSNotification *)notification
-{
-	self.books = [self.profileItem allBookIdentifiers];
-	self.loadingView.hidden = YES;
-}
-
-- (void)currentProfileDeleted:(NSNotification *)notification
+- (void)profileDeleted:(NSNotification *)notification
 {
     NSArray *profileIDs = [notification.userInfo objectForKey:SCHProfileSyncComponentDeletedProfileIDs];
     
     for (NSNumber *profileID in profileIDs) {
         if ([profileID isEqualToNumber:self.profileItem.ID] == YES) {
-            NSString *localizedMessage = NSLocalizedString(@"%@ is no longer available", nil);
-            UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Bookshelf Removed", @"Bookshelf Removed") 
-                                                                 message:[NSString stringWithFormat:localizedMessage, [self.profileItem bookshelfName:YES]]
-                                                                delegate:nil 
-                                                       cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-                                                       otherButtonTitles:nil]; 
-            [errorAlert show]; 
-            [errorAlert release];
-            [self back];
+            NSString *localizedMessage = [NSString stringWithFormat:
+                                          NSLocalizedString(@"%@ has been removed", nil), [self.profileItem bookshelfName:YES]];            
+            LambdaAlert *alert = [[LambdaAlert alloc]
+                                  initWithTitle:NSLocalizedString(@"Bookshelf Removed", @"Bookshelf Removed") 
+                                  message:localizedMessage];
+            [alert addButtonWithTitle:NSLocalizedString(@"OK", @"OK") block:^{}];
+            [alert show];
+            [alert release];
+            self.profileItem = nil;
+            if (self.modalViewController != nil) {
+                [self.modalViewController dismissModalViewControllerAnimated:YES];
+            }            
+            // we could be viewing another controller so let's go to the root (profile) view
+            [self.navigationController popToRootViewControllerAnimated:YES];
             break;
         }
     }
 }
+
+// detect any changes to the data
+- (void)managedObjectContextDidSaveNotification:(NSNotification *)notification
+{
+    BOOL refreshTable = NO;
+    BOOL refreshBooks = NO;
+    
+    // update the bookshelf name with the change
+    for (SCHProfileItem *object in [[notification userInfo] objectForKey:NSUpdatedObjectsKey]) {
+        if (object == self.profileItem) {
+            self.navigationItem.title = [object bookshelfName:YES];
+        }
+    }
+
+    // update any book information
+    for (SCHContentMetadataItem *object in [[notification userInfo] objectForKey:NSUpdatedObjectsKey]) {
+        if ([object isKindOfClass:[SCHContentMetadataItem class]] == YES) {
+            for (SCHBookIdentifier *bookIdentifer in self.books) {
+                if ([bookIdentifer isEqual:[(id)object bookIdentifier]] == YES) {
+                    refreshTable = YES;
+                    break;                    
+                }
+            }
+            if (refreshTable == YES) {
+                [self.listTableView reloadData];
+                break;
+            }
+        }
+    }
+    
+    for (SCHContentProfileItem *object in [[notification userInfo] objectForKey:NSInsertedObjectsKey]) {
+        // check for new books on the shelf
+        if ([object isKindOfClass:[SCHContentProfileItem class]] == YES) {
+            if ([object.ProfileID isEqualToNumber:self.profileItem.ID] == YES) {
+                refreshBooks = YES;
+                break;
+            }
+        }
+    }
+    
+    if (refreshBooks == NO) {
+        // check for books removed from the shelf
+        for (SCHContentProfileItem *object in [[notification userInfo] objectForKey:NSDeletedObjectsKey]) {
+            if ([object isKindOfClass:[SCHContentProfileItem class]] == YES) {
+                if ([object.ProfileID isEqualToNumber:self.profileItem.ID] == YES) {
+                    refreshBooks = YES;
+                    break;
+                }
+            }
+        }
+    }
+    
+    if (refreshBooks == YES) {
+        self.books = [self.profileItem allBookIdentifiers];
+        self.loadingView.hidden = YES;  
+    }    
+}
+
+#pragma mark - Core Data Table View Methods
 
 #pragma mark - UITableViewDataSource methods
 

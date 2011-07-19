@@ -37,6 +37,8 @@
 #import "SCHStoryInteractionTypes.h"
 #import "SCHQueuedAudioPlayer.h"
 #import "SCHBookStatistics.h"
+#import "SCHContentSyncComponent.h"
+#import "LambdaAlert.h"
 
 // constants
 NSString *const kSCHReadingViewErrorDomain  = @"com.knfb.scholastic.ReadingViewErrorDomain";
@@ -351,6 +353,16 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
                                                  selector:@selector(willEnterForegroundNotification:) 
                                                      name:UIApplicationWillEnterForegroundNotification
                                                    object:nil];
+
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(bookDeleted:)
+                                                     name:SCHContentSyncComponentWillDeleteNotification
+                                                   object:nil];
+
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(managedObjectContextDidSaveNotification:)
+                                                     name:NSManagedObjectContextDidSaveNotification
+                                                   object:nil];
         
         self.lastPageInteractionSoundPlayedOn = -1;
         
@@ -536,11 +548,13 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [self setupAssetsForOrientation:self.interfaceOrientation];
 }
 
-
 - (void)viewWillDisappear:(BOOL)animated
 {
     [self cancelInitialTimer];
     [super viewWillDisappear:animated];
+    
+    [self.popover dismissPopoverAnimated:YES];
+    self.popover = nil;    
 }
 
 #pragma mark - Rotation
@@ -622,22 +636,24 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (void)updateBookState
 {
-    SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.bookIdentifier inManagedObjectContext:self.managedObjectContext];
-    
-    NSTimeInterval readingDuration = [[NSDate date] timeIntervalSinceDate:self.bookStatisticsReadingStartTime];
-    [self.bookStatistics increaseReadingDurationBy:floor(readingDuration)];
-    self.bookStatisticsReadingStartTime = [NSDate date];
-    
-    [self saveLastPageLocation];
-    
-    [[SCHSyncManager sharedSyncManager] closeDocument:book.ContentMetadataItem.UserContentItem 
-                                           forProfile:self.profile.ID];
-    
-    NSError *error = nil;
-    if ([self.managedObjectContext save:&error] == NO) {
-        NSLog(@"Unresolved error whilst updating book state %@, %@", error, [error userInfo]);
-        abort();
-    } 
+    if (self.bookIdentifier != nil) {
+        SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.bookIdentifier inManagedObjectContext:self.managedObjectContext];
+        
+        NSTimeInterval readingDuration = [[NSDate date] timeIntervalSinceDate:self.bookStatisticsReadingStartTime];
+        [self.bookStatistics increaseReadingDurationBy:floor(readingDuration)];
+        self.bookStatisticsReadingStartTime = [NSDate date];
+        
+        [self saveLastPageLocation];
+        
+        [[SCHSyncManager sharedSyncManager] closeDocument:book.ContentMetadataItem.UserContentItem 
+                                               forProfile:self.profile.ID];
+        
+        NSError *error = nil;
+        if ([self.managedObjectContext save:&error] == NO) {
+            NSLog(@"Unresolved error whilst updating book state %@, %@", error, [error userInfo]);
+            abort();
+        } 
+    }
 }
 
 #pragma mark -
@@ -662,6 +678,46 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (void)willEnterForegroundNotification:(NSNotification *)notification
 {
     self.bookStatisticsReadingStartTime = [NSDate date];
+}
+
+#pragma mark - Sync Propagation methods
+
+- (void)bookDeleted:(NSNotification *)notification
+{
+    NSArray *bookIdentifiers = [notification.userInfo objectForKey:SCHContentSyncComponentDeletedBookIdentifiers];
+    
+    for (SCHBookIdentifier *bookId in bookIdentifiers) {
+        if ([bookId isEqual:self.bookIdentifier] == YES) {
+            SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.bookIdentifier inManagedObjectContext:self.managedObjectContext];
+            NSString *localizedMessage = [NSString stringWithFormat:
+                                          NSLocalizedString(@"%@ has been removed", nil), book.Title];
+            LambdaAlert *alert = [[LambdaAlert alloc]
+                                  initWithTitle:NSLocalizedString(@"Book Removed", @"Book Removed") 
+                                  message:localizedMessage];
+            [alert addButtonWithTitle:NSLocalizedString(@"OK", @"OK") block:^{}];
+            [alert show];
+            [alert release];
+            self.bookIdentifier = nil;
+            if (self.modalViewController != nil) {
+                [self.modalViewController dismissModalViewControllerAnimated:YES];
+            }              
+            [self.storyInteractionController removeFromHostView];
+            [self popViewController:self];
+            break;
+        }
+    }
+}
+
+// detect any changes to the data
+- (void)managedObjectContextDidSaveNotification:(NSNotification *)notification
+{    
+    // update the book name with the change
+    for (SCHContentMetadataItem *object in [[notification userInfo] objectForKey:NSUpdatedObjectsKey]) {
+        if ([object isKindOfClass:[SCHContentMetadataItem class]] == YES &&
+            [[object bookIdentifier] isEqual:self.bookIdentifier] == YES) {
+            self.titleLabel.text = object.Title;    
+        }
+    }    
 }
 
 #pragma mark - Book Positions
