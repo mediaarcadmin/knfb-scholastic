@@ -99,8 +99,7 @@
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
 	
 	[fetchRequest setEntity:[NSEntityDescription entityForName:kSCHUserContentItem inManagedObjectContext:self.managedObjectContext]];	
-	NSArray *changedStates = [NSArray arrayWithObjects:[NSNumber numberWithStatus:kSCHStatusCreated], 
-					   [NSNumber numberWithStatus:kSCHStatusModified],
+	NSArray *changedStates = [NSArray arrayWithObjects:[NSNumber numberWithStatus:kSCHStatusModified],
 					   [NSNumber numberWithStatus:kSCHStatusDeleted], nil];
 	[fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"ANY ProfileList.State IN %@", changedStates]];
 	
@@ -263,7 +262,8 @@
             SCHLastPage *newLastPage = [NSEntityDescription insertNewObjectForEntityForName:kSCHLastPage 
                                                                      inManagedObjectContext:self.managedObjectContext];
             newLastPage.LastModified = date;
-            newLastPage.State = [NSNumber numberWithStatus:kSCHStatusCreated];
+            // the server will have this created already
+            newLastPage.State = [NSNumber numberWithStatus:kSCHStatusModified];
             newLastPage.LastPageLocation = [NSNumber numberWithInteger:0];
             newLastPage.Percentage = [NSNumber numberWithFloat:0.0];
             newLastPage.Component = @"";
