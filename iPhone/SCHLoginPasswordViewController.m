@@ -126,6 +126,7 @@
     [super viewWillAppear:animated];
     [self setupAssetsForOrientation:[[UIApplication sharedApplication] statusBarOrientation]];
     
+    self.topBar.hidden = NO;
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -152,10 +153,12 @@
 
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation
 {
-
     CGRect barFrame       = self.topBar.frame;
     UIImage *toolbarImage = nil;
     UIColor *borderColor  = nil;
+    
+    barFrame.origin = CGPointZero;
+    barFrame.size.width = CGRectGetWidth(self.view.bounds);
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         barFrame.size.height = 44;
@@ -241,6 +244,9 @@
 - (IBAction)actionButtonAction:(id)sender
 {
     NSAssert(self.actionBlock != nil, @"Action block must be set!");
+    
+    [self.topField resignFirstResponder];
+    [self.bottomField resignFirstResponder];
     
     if (self.actionBlock) {
         self.actionBlock();

@@ -196,6 +196,12 @@
 		28A72C9C13A7B23800215DEA /* SCHStoryInteractionSequencing_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28A72C9B13A7B23800215DEA /* SCHStoryInteractionSequencing_iPhone.xib */; };
 		28A72C9D13A7B23800215DEA /* SCHStoryInteractionSequencing_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28A72C9B13A7B23800215DEA /* SCHStoryInteractionSequencing_iPhone.xib */; };
 		28AD733F0D9D9553002E5188 /* MainWindow_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow_iPad.xib */; };
+		28BF26F013D5A15400535A82 /* SCHSetupBookshelvesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28BF26EE13D5A15400535A82 /* SCHSetupBookshelvesViewController.m */; };
+		28BF26F113D5A15400535A82 /* SCHSetupBookshelvesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28BF26EE13D5A15400535A82 /* SCHSetupBookshelvesViewController.m */; };
+		28BF26F213D5A15400535A82 /* SCHSetupBookshelvesViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28BF26EF13D5A15400535A82 /* SCHSetupBookshelvesViewController~iphone.xib */; };
+		28BF26F313D5A15400535A82 /* SCHSetupBookshelvesViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28BF26EF13D5A15400535A82 /* SCHSetupBookshelvesViewController~iphone.xib */; };
+		28BF26F813D5AD1000535A82 /* SCHSetupBookshelvesViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28BF26F713D5AD1000535A82 /* SCHSetupBookshelvesViewController~ipad.xib */; };
+		28BF26F913D5AD1000535A82 /* SCHSetupBookshelvesViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28BF26F713D5AD1000535A82 /* SCHSetupBookshelvesViewController~ipad.xib */; };
 		28BFE9CD139F8F9100415075 /* SCHStoryInteractionControllerSequencing.m in Sources */ = {isa = PBXBuildFile; fileRef = 28BFE9CC139F8F9100415075 /* SCHStoryInteractionControllerSequencing.m */; };
 		28BFE9D0139F8FB900415075 /* SCHStoryInteractionSequencing_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28BFE9CF139F8FB900415075 /* SCHStoryInteractionSequencing_iPad.xib */; };
 		28BFE9D1139F8FB900415075 /* SCHStoryInteractionSequencing_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28BFE9CF139F8FB900415075 /* SCHStoryInteractionSequencing_iPad.xib */; };
@@ -1691,6 +1697,10 @@
 		28A72BC313A65B0B00215DEA /* SCHStoryInteractionControllerWhoSaidIt_iPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionControllerWhoSaidIt_iPhone.m; sourceTree = "<group>"; };
 		28A72C9B13A7B23800215DEA /* SCHStoryInteractionSequencing_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionSequencing_iPhone.xib; sourceTree = "<group>"; };
 		28AD733E0D9D9553002E5188 /* MainWindow_iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MainWindow_iPad.xib; path = iPad/MainWindow_iPad.xib; sourceTree = "<group>"; };
+		28BF26ED13D5A15400535A82 /* SCHSetupBookshelvesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHSetupBookshelvesViewController.h; path = Shared/SCHSetupBookshelvesViewController.h; sourceTree = "<group>"; };
+		28BF26EE13D5A15400535A82 /* SCHSetupBookshelvesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHSetupBookshelvesViewController.m; path = Shared/SCHSetupBookshelvesViewController.m; sourceTree = "<group>"; };
+		28BF26EF13D5A15400535A82 /* SCHSetupBookshelvesViewController~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "SCHSetupBookshelvesViewController~iphone.xib"; sourceTree = "<group>"; };
+		28BF26F713D5AD1000535A82 /* SCHSetupBookshelvesViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "SCHSetupBookshelvesViewController~ipad.xib"; path = "iPad/SCHSetupBookshelvesViewController~ipad.xib"; sourceTree = "<group>"; };
 		28BFE9CB139F8F9100415075 /* SCHStoryInteractionControllerSequencing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionControllerSequencing.h; sourceTree = "<group>"; };
 		28BFE9CC139F8F9100415075 /* SCHStoryInteractionControllerSequencing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionControllerSequencing.m; sourceTree = "<group>"; };
 		28BFE9CF139F8FB900415075 /* SCHStoryInteractionSequencing_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionSequencing_iPad.xib; sourceTree = "<group>"; };
@@ -4174,6 +4184,7 @@
 			isa = PBXGroup;
 			children = (
 				C972283F1392B245008605E8 /* SCHSettingsViewController_iPhone.xib */,
+				28BF26EF13D5A15400535A82 /* SCHSetupBookshelvesViewController~iphone.xib */,
 			);
 			name = "Settings Controller";
 			sourceTree = "<group>";
@@ -4183,6 +4194,8 @@
 			children = (
 				529385B212DF231800045B44 /* SCHSettingsViewController.h */,
 				529385B312DF231800045B44 /* SCHSettingsViewController.m */,
+				28BF26ED13D5A15400535A82 /* SCHSetupBookshelvesViewController.h */,
+				28BF26EE13D5A15400535A82 /* SCHSetupBookshelvesViewController.m */,
 			);
 			name = "Settings Controller";
 			sourceTree = "<group>";
@@ -4191,6 +4204,7 @@
 			isa = PBXGroup;
 			children = (
 				529385B412DF231800045B44 /* SCHSettingsViewController_iPad.xib */,
+				28BF26F713D5AD1000535A82 /* SCHSetupBookshelvesViewController~ipad.xib */,
 			);
 			name = "Settings Controller";
 			sourceTree = "<group>";
@@ -5361,6 +5375,8 @@
 				F80A38B913C22D4100D2B47C /* ListViewRule~ipad.png in Resources */,
 				F8048EA313C33B740060C6F5 /* BookShelfNewIcon@2x.png in Resources */,
 				F8048EA513C33B740060C6F5 /* BookShelfNewIcon~ipad.png in Resources */,
+				28BF26F213D5A15400535A82 /* SCHSetupBookshelvesViewController~iphone.xib in Resources */,
+				28BF26F813D5AD1000535A82 /* SCHSetupBookshelvesViewController~ipad.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5820,6 +5836,8 @@
 				F80A38BA13C22D4100D2B47C /* ListViewRule~ipad.png in Resources */,
 				F8048EA413C33B740060C6F5 /* BookShelfNewIcon@2x.png in Resources */,
 				F8048EA613C33B740060C6F5 /* BookShelfNewIcon~ipad.png in Resources */,
+				28BF26F313D5A15400535A82 /* SCHSetupBookshelvesViewController~iphone.xib in Resources */,
+				28BF26F913D5AD1000535A82 /* SCHSetupBookshelvesViewController~ipad.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6086,6 +6104,7 @@
 				284EF24413BC4CDF00F9BD5A /* SCHBookIdentifier.m in Sources */,
 				C9B59BD413D048D000C7760D /* LambdaAlert.m in Sources */,
 				C9B59BD613D048D000C7760D /* LambdaSheet.m in Sources */,
+				28BF26F013D5A15400535A82 /* SCHSetupBookshelvesViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6376,6 +6395,7 @@
 				52985F7313C48D32009AD121 /* SCHBookStatistics.m in Sources */,
 				C9B59BD513D048D000C7760D /* LambdaAlert.m in Sources */,
 				C9B59BD713D048D000C7760D /* LambdaSheet.m in Sources */,
+				28BF26F113D5A15400535A82 /* SCHSetupBookshelvesViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

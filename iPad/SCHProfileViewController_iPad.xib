@@ -199,9 +199,6 @@
 				<bool key="IBUIHorizontal">NO</bool>
 			</object>
 			<object class="IBUINavigationController" id="27393608">
-				<object class="IBUISimulatedStatusBarMetrics" key="IBUISimulatedStatusBarMetrics">
-					<int key="IBUIStatusBarStyle">2</int>
-				</object>
 				<object class="IBUISimulatedOrientationMetrics" key="IBUISimulatedOrientationMetrics">
 					<int key="IBUIInterfaceOrientation">1</int>
 					<int key="interfaceOrientation">1</int>
@@ -218,28 +215,37 @@
 				</object>
 				<object class="NSMutableArray" key="IBUIViewControllers">
 					<bool key="EncodedWithXMLCoder">YES</bool>
-					<object class="IBUIViewController" id="27370276">
-						<object class="IBUINavigationItem" key="IBUINavigationItem" id="403862072">
-							<reference key="IBUINavigationBar"/>
-							<string key="IBUITitle">Parent Tools</string>
-							<object class="IBUIBarButtonItem" key="IBUILeftBarButtonItem" id="325072269">
-								<string key="IBUITitle">Done</string>
-								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-								<int key="IBUIStyle">1</int>
-								<reference key="IBUINavigationItem" ref="403862072"/>
-							</object>
-							<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-						</object>
-						<reference key="IBUIParentViewController" ref="27393608"/>
-						<string key="IBUINibName">SCHSettingsViewController_iPad</string>
-						<object class="IBUISimulatedOrientationMetrics" key="IBUISimulatedOrientationMetrics">
-							<int key="IBUIInterfaceOrientation">1</int>
-							<int key="interfaceOrientation">1</int>
-						</object>
-						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-						<bool key="IBUIHorizontal">NO</bool>
-					</object>
 				</object>
+			</object>
+			<object class="IBUIViewController" id="149419969">
+				<object class="IBUISimulatedStatusBarMetrics" key="IBUISimulatedStatusBarMetrics">
+					<int key="IBUIStatusBarStyle">2</int>
+				</object>
+				<object class="IBUISimulatedOrientationMetrics" key="IBUISimulatedOrientationMetrics">
+					<int key="IBUIInterfaceOrientation">1</int>
+					<int key="interfaceOrientation">1</int>
+				</object>
+				<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+				<bool key="IBUIHorizontal">NO</bool>
+			</object>
+			<object class="IBUIViewController" id="27370276">
+				<object class="IBUINavigationItem" key="IBUINavigationItem" id="403862072">
+					<string key="IBUITitle">Parent Tools</string>
+					<object class="IBUIBarButtonItem" key="IBUILeftBarButtonItem" id="325072269">
+						<string key="IBUITitle">Done</string>
+						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+						<int key="IBUIStyle">1</int>
+						<reference key="IBUINavigationItem" ref="403862072"/>
+					</object>
+					<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+				</object>
+				<string key="IBUINibName">SCHSettingsViewController_iPad</string>
+				<object class="IBUISimulatedOrientationMetrics" key="IBUISimulatedOrientationMetrics">
+					<int key="IBUIInterfaceOrientation">1</int>
+					<int key="interfaceOrientation">1</int>
+				</object>
+				<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+				<bool key="IBUIHorizontal">NO</bool>
 			</object>
 		</object>
 		<object class="IBObjectContainer" key="IBDocument.Objects">
@@ -310,20 +316,36 @@
 					<int key="connectionID">29</int>
 				</object>
 				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">settingsNavController</string>
-						<reference key="source" ref="841351856"/>
-						<reference key="destination" ref="27393608"/>
-					</object>
-					<int key="connectionID">36</int>
-				</object>
-				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
 						<string key="label">dismissModalSettingsController:</string>
 						<reference key="source" ref="325072269"/>
 						<reference key="destination" ref="27370276"/>
 					</object>
 					<int key="connectionID">37</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">setupBookshelvesViewController</string>
+						<reference key="source" ref="841351856"/>
+						<reference key="destination" ref="149419969"/>
+					</object>
+					<int key="connectionID">39</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">settingsViewController</string>
+						<reference key="source" ref="841351856"/>
+						<reference key="destination" ref="27370276"/>
+					</object>
+					<int key="connectionID">40</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">modalNavigationController</string>
+						<reference key="source" ref="841351856"/>
+						<reference key="destination" ref="27393608"/>
+					</object>
+					<int key="connectionID">41</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -409,7 +431,6 @@
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="73892392"/>
-							<reference ref="27370276"/>
 						</object>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -419,13 +440,18 @@
 						<reference key="parent" ref="27393608"/>
 					</object>
 					<object class="IBObjectRecord">
+						<int key="objectID">38</int>
+						<reference key="object" ref="149419969"/>
+						<reference key="parent" ref="0"/>
+					</object>
+					<object class="IBObjectRecord">
 						<int key="objectID">24</int>
 						<reference key="object" ref="27370276"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="403862072"/>
 						</object>
-						<reference key="parent" ref="27393608"/>
+						<reference key="parent" ref="0"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">25</int>
@@ -466,6 +492,8 @@
 					<string>27.IBPluginDependency</string>
 					<string>31.IBPluginDependency</string>
 					<string>32.IBPluginDependency</string>
+					<string>38.CustomClassName</string>
+					<string>38.IBPluginDependency</string>
 					<string>5.IBPluginDependency</string>
 				</object>
 				<object class="NSMutableArray" key="dict.values">
@@ -491,6 +519,8 @@
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<string>SCHSetupBookshelvesViewController</string>
+					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				</object>
 			</object>
@@ -506,7 +536,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">37</int>
+			<int key="maxID">41</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -667,8 +697,10 @@
 							<string>containerView</string>
 							<string>headerView</string>
 							<string>loginPasswordController</string>
+							<string>modalNavigationController</string>
 							<string>profilePasswordController</string>
-							<string>settingsNavController</string>
+							<string>settingsViewController</string>
+							<string>setupBookshelvesViewController</string>
 							<string>tableView</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
@@ -677,8 +709,10 @@
 							<string>UIView</string>
 							<string>UIView</string>
 							<string>SCHLoginPasswordViewController</string>
-							<string>SCHLoginPasswordViewController</string>
 							<string>UINavigationController</string>
+							<string>SCHLoginPasswordViewController</string>
+							<string>SCHSettingsViewController</string>
+							<string>SCHSetupBookshelvesViewController</string>
 							<string>UITableView</string>
 						</object>
 					</object>
@@ -690,8 +724,10 @@
 							<string>containerView</string>
 							<string>headerView</string>
 							<string>loginPasswordController</string>
+							<string>modalNavigationController</string>
 							<string>profilePasswordController</string>
-							<string>settingsNavController</string>
+							<string>settingsViewController</string>
+							<string>setupBookshelvesViewController</string>
 							<string>tableView</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
@@ -713,12 +749,20 @@
 								<string key="candidateClassName">SCHLoginPasswordViewController</string>
 							</object>
 							<object class="IBToOneOutletInfo">
+								<string key="name">modalNavigationController</string>
+								<string key="candidateClassName">UINavigationController</string>
+							</object>
+							<object class="IBToOneOutletInfo">
 								<string key="name">profilePasswordController</string>
 								<string key="candidateClassName">SCHLoginPasswordViewController</string>
 							</object>
 							<object class="IBToOneOutletInfo">
-								<string key="name">settingsNavController</string>
-								<string key="candidateClassName">UINavigationController</string>
+								<string key="name">settingsViewController</string>
+								<string key="candidateClassName">SCHSettingsViewController</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">setupBookshelvesViewController</string>
+								<string key="candidateClassName">SCHSetupBookshelvesViewController</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">tableView</string>
@@ -787,6 +831,36 @@
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">./Classes/SCHSettingsViewController.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">SCHSetupBookshelvesViewController</string>
+					<string key="superclassName">UIViewController</string>
+					<object class="NSMutableDictionary" key="actions">
+						<string key="NS.key.0">setupBookshelves:</string>
+						<string key="NS.object.0">id</string>
+					</object>
+					<object class="NSMutableDictionary" key="actionInfosByName">
+						<string key="NS.key.0">setupBookshelves:</string>
+						<object class="IBActionInfo" key="NS.object.0">
+							<string key="name">setupBookshelves:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+					</object>
+					<object class="NSMutableDictionary" key="outlets">
+						<string key="NS.key.0">setupBookshelvesButton</string>
+						<string key="NS.object.0">UIButton</string>
+					</object>
+					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<string key="NS.key.0">setupBookshelvesButton</string>
+						<object class="IBToOneOutletInfo" key="NS.object.0">
+							<string key="name">setupBookshelvesButton</string>
+							<string key="candidateClassName">UIButton</string>
+						</object>
+					</object>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/SCHSetupBookshelvesViewController.h</string>
 					</object>
 				</object>
 			</object>

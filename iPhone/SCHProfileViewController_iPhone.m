@@ -8,6 +8,7 @@
 
 #import "SCHProfileViewController_iPhone.h"
 #import "SCHLoginPasswordViewController.h"
+#import "SCHSetupBookshelvesViewController.h"
 #import "SCHAuthenticationManager.h"
 #import "SCHBookShelfViewController.h"
 #import "SCHSettingsViewController.h"
@@ -47,6 +48,7 @@ static const CGFloat kProfilePhoneTableOffsetLandscape = 20.0f;
 @synthesize settingsController;
 @synthesize loginController;
 @synthesize parentPasswordController;
+@synthesize setupBookshelvesViewController;
 
 #pragma mark - Object lifecycle
 
@@ -60,6 +62,7 @@ static const CGFloat kProfilePhoneTableOffsetLandscape = 20.0f;
     [profilePasswordController release], profilePasswordController = nil;
     [settingsController release], settingsController = nil;
     [loginController release], loginController = nil;    
+    [setupBookshelvesViewController release], setupBookshelvesViewController = nil;
 }
 
 - (void)dealloc 
@@ -123,7 +126,10 @@ static const CGFloat kProfilePhoneTableOffsetLandscape = 20.0f;
 		[self presentModalViewController:self.loginController animated:NO];	
 	}
 #endif
-    
+//    else if ([[self.fetchedResultsController sections] count] == 0 
+//        || [[[self.fetchedResultsController sections] objectAtIndex:0] numberOfObjects] == 0) {
+//        [self presentModalViewController:self.setupBookshelvesViewController animated:YES];
+//    }
 }
 
 #pragma mark - Orientation methods
@@ -228,6 +234,7 @@ static const CGFloat kProfilePhoneTableOffsetLandscape = 20.0f;
         
         [self.parentPasswordController clearFields]; 
     };   
+    
     [self presentModalViewController:self.parentPasswordController animated:YES];
 }
 
