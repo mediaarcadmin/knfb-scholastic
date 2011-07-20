@@ -262,7 +262,8 @@
             SCHLastPage *newLastPage = [NSEntityDescription insertNewObjectForEntityForName:kSCHLastPage 
                                                                      inManagedObjectContext:self.managedObjectContext];
             newLastPage.LastModified = date;
-            newLastPage.State = [NSNumber numberWithStatus:kSCHStatusCreated];
+            // the server will have this created already
+            newLastPage.State = [NSNumber numberWithStatus:kSCHStatusModified];
             newLastPage.LastPageLocation = [NSNumber numberWithInteger:0];
             newLastPage.Percentage = [NSNumber numberWithFloat:0.0];
             newLastPage.Component = @"";
