@@ -153,10 +153,12 @@
 
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation
 {
-
     CGRect barFrame       = self.topBar.frame;
     UIImage *toolbarImage = nil;
     UIColor *borderColor  = nil;
+    
+    barFrame.origin = CGPointZero;
+    barFrame.size.width = CGRectGetWidth(self.view.bounds);
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         barFrame.size.height = 44;

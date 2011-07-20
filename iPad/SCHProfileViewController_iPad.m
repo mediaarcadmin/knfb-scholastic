@@ -13,6 +13,7 @@
 #import "SCHProfileItem.h"
 #import "SCHLoginPasswordViewController.h"
 #import "SCHAuthenticationManager.h"
+#import "SCHSetupBookshelvesViewController.h"
 #import "SCHThemeManager.h"
 #import "SCHURLManager.h"
 #import "SCHSyncManager.h"
@@ -34,6 +35,7 @@ static const CGFloat kProfilePadTableOffsetLandscape = 220.0f;
 - (void)releaseViewObjects;
 - (void)pushBookshelvesControllerWithProfileItem:(SCHProfileItem *)profileItem;
 - (void)showLoginControllerWithAnimation:(BOOL)animated;
+- (void)showSetupBookshelvesControllerWithAnimation:(BOOL)animated;
 - (void)showProfilePasswordControllerWithAnimation:(BOOL)animated;
 - (void)pushSettingsController;
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation;
@@ -52,9 +54,11 @@ static const CGFloat kProfilePadTableOffsetLandscape = 220.0f;
 @synthesize backgroundView;
 @synthesize loginPasswordController;
 @synthesize profilePasswordController;
-@synthesize settingsNavController;
+@synthesize settingsViewController;
 @synthesize settingsButton;
 @synthesize parentPasswordController;
+@synthesize setupBookshelvesViewController;
+@synthesize modalNavigationController;
 
 #pragma mark - Object lifecycle
 
@@ -68,7 +72,8 @@ static const CGFloat kProfilePadTableOffsetLandscape = 220.0f;
     [loginPasswordController release], loginPasswordController = nil;
     [profilePasswordController release], profilePasswordController = nil;
     [settingsButton release], settingsButton = nil;
-    [settingsNavController release], settingsNavController = nil;
+    [settingsViewController release], settingsViewController = nil;
+    [setupBookshelvesViewController release], setupBookshelvesViewController = nil;
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
@@ -77,6 +82,7 @@ static const CGFloat kProfilePadTableOffsetLandscape = 220.0f;
 {    
     [self releaseViewObjects];
     [parentPasswordController release], parentPasswordController = nil;
+    [modalNavigationController release], modalNavigationController = nil;
 
     [super dealloc];
 }
@@ -101,8 +107,7 @@ static const CGFloat kProfilePadTableOffsetLandscape = 220.0f;
     [self.settingsButton sizeToFit];
     
     self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:self.settingsButton] autorelease];
-
-
+    
     self.loginPasswordController.controllerType = kSCHControllerLoginView;
     self.loginPasswordController.actionBlock = ^{
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(authenticationManager:) name:kSCHAuthenticationManagerSuccess object:nil];			
@@ -114,7 +119,7 @@ static const CGFloat kProfilePadTableOffsetLandscape = 220.0f;
     
     self.profilePasswordController.controllerType = kSCHControllerPasswordOnlyView;
     self.profilePasswordController.cancelBlock = ^{
-        [self.profilePasswordController dismissModalViewControllerAnimated:YES];
+        [self dismissModalViewControllerAnimated:YES];
     };
     
     self.tableView.tableHeaderView = self.headerView;
@@ -130,10 +135,11 @@ static const CGFloat kProfilePadTableOffsetLandscape = 220.0f;
     NSString *deviceKey = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerDeviceKey];
     if (!deviceKey) { 
 #endif
-        [self showLoginControllerWithAnimation:YES];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self showLoginControllerWithAnimation:YES];
+        });
 	}
 #endif
-
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -182,16 +188,29 @@ static const CGFloat kProfilePadTableOffsetLandscape = 220.0f;
 
 - (void)showLoginControllerWithAnimation:(BOOL)animated
 {
-    [self.loginPasswordController setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
-    [self.loginPasswordController setModalPresentationStyle:UIModalPresentationFormSheet];
-    [self.navigationController presentModalViewController:self.loginPasswordController animated:YES];
+    [self.modalNavigationController setViewControllers:[NSArray arrayWithObject:self.loginPasswordController]];
+    [self.modalNavigationController setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
+    [self.modalNavigationController setModalPresentationStyle:UIModalPresentationFormSheet];
+    [self.modalNavigationController setNavigationBarHidden:YES];
+    [self presentModalViewController:self.modalNavigationController animated:YES];
 }
+    
 - (void)showProfilePasswordControllerWithAnimation:(BOOL)animated
 {
     [self.profilePasswordController setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
     [self.profilePasswordController setModalPresentationStyle:UIModalPresentationFormSheet];
-    [self.navigationController presentModalViewController:self.profilePasswordController animated:YES];
+    [self presentModalViewController:self.profilePasswordController animated:YES];
 
+}
+
+- (void)showSetupBookshelvesControllerWithAnimation:(BOOL)animated
+{
+    if (1 || [[self.fetchedResultsController sections] count] == 0 
+        || [[[self.fetchedResultsController sections] objectAtIndex:0] numberOfObjects] == 0) {
+        [self.modalNavigationController pushViewController:self.setupBookshelvesViewController animated:YES];
+    } else {
+        [self dismissModalViewControllerAnimated:YES];
+    }
 }
 
 - (SCHLoginPasswordViewController *)parentPasswordController
@@ -217,24 +236,18 @@ static const CGFloat kProfilePadTableOffsetLandscape = 220.0f;
             [errorAlert show]; 
             [errorAlert release];
         } else {
-            [self dismissModalViewControllerAnimated:YES];
-            // FIXME: is there a more robust way to achieve this chaining of ?
-            [self performSelector:@selector(pushSettingsControllerAfterDelay) withObject:nil afterDelay:0.6f];
+            [self.modalNavigationController setNavigationBarHidden:NO animated:YES];
+            [self.modalNavigationController pushViewController:self.settingsViewController animated:YES];
         }
         
         [self.parentPasswordController clearFields]; 
     };
     
-    [self.parentPasswordController setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
-    [self.parentPasswordController setModalPresentationStyle:UIModalPresentationFormSheet];
-    [self presentModalViewController:self.parentPasswordController animated:YES];
-}
-
-- (void)pushSettingsControllerAfterDelay
-{
-    [self.settingsNavController setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
-    [self.settingsNavController setModalPresentationStyle:UIModalPresentationFormSheet];
-    [self presentModalViewController:self.settingsNavController animated:YES];
+    [self.modalNavigationController setViewControllers:[NSArray arrayWithObject:self.parentPasswordController]];
+    [self.modalNavigationController setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
+    [self.modalNavigationController setModalPresentationStyle:UIModalPresentationFormSheet];
+    [self.modalNavigationController setNavigationBarHidden:YES animated:NO];
+    [self presentModalViewController:self.modalNavigationController animated:YES];
 }
 
 #pragma mark - SCHProfileViewCellDelegate
@@ -270,7 +283,7 @@ static const CGFloat kProfilePadTableOffsetLandscape = 220.0f;
                         //[self showBookshelfListWithAnimation:YES];
                         [self.profilePasswordController clearFields]; 
                         [self pushBookshelvesControllerWithProfileItem:profileItem];            
-                        [self.profilePasswordController dismissModalViewControllerAnimated:YES];
+                        [self dismissModalViewControllerAnimated:YES];
                     }	
                 };
                 
@@ -331,7 +344,7 @@ static const CGFloat kProfilePadTableOffsetLandscape = 220.0f;
 		[[SCHURLManager sharedURLManager] clear];
 		[[SCHSyncManager sharedSyncManager] clear];
 		[[SCHSyncManager sharedSyncManager] firstSync];
-        [self.loginPasswordController dismissModalViewControllerAnimated:YES];
+        [self showSetupBookshelvesControllerWithAnimation:YES];
 	} else {
 		NSError *error = [notification.userInfo objectForKey:kSCHAuthenticationManagerNSError];
 		if (error!= nil) {
