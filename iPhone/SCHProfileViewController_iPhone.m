@@ -114,10 +114,14 @@ static const CGFloat kProfilePhoneTableOffsetLandscape = 20.0f;
 - (void)viewDidAppear:(BOOL)animated 
 {
     [super viewDidAppear:animated];
+    [self performLogin];
+}
+    
+- (void)performLogin
+{
 #if !LOCALDEBUG	
 #if NONDRMAUTHENTICATION
 	SCHAuthenticationManager *authenticationManager = [SCHAuthenticationManager sharedAuthenticationManager];
-	
 	if ([authenticationManager isAuthenticated] == NO) {
 #else
     NSString *deviceKey = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerDeviceKey];
@@ -125,11 +129,7 @@ static const CGFloat kProfilePhoneTableOffsetLandscape = 20.0f;
 #endif
 		[self presentModalViewController:self.loginController animated:NO];	
 	}
-#endif
-//    else if ([[self.fetchedResultsController sections] count] == 0 
-//        || [[[self.fetchedResultsController sections] objectAtIndex:0] numberOfObjects] == 0) {
-//        [self presentModalViewController:self.setupBookshelvesViewController animated:YES];
-//    }
+#endif        
 }
 
 #pragma mark - Orientation methods

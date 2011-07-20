@@ -15,6 +15,7 @@ static NSString * const kSCHAuthenticationManagerSuccess = @"AuthenticationManag
 static NSString * const kSCHAuthenticationManagerFailure = @"AuthenticationManagerFailure";
 static NSString * const kSCHAuthenticationManagerAToken = @"aToken";
 static NSString * const kSCHAuthenticationManagerOfflineMode = @"OfflineMode";
+static NSString * const SCHAuthenticationManagerDRMDeregistrationNotification = @"SCHAuthenticationManagerDRMDeregistrationNotification";
 static NSString * const kSCHAuthenticationManagerNSError = @"NSError";
 
 static NSString * const kSCHAuthenticationManagerErrorDomain = @"AuthenticationManagerErrorDomain";
@@ -35,9 +36,6 @@ static NSInteger const kSCHAuthenticationManagerLoginError = 2001;
 - (void)authenticate;
 - (BOOL)hasUsernameAndPassword;
 - (void)clear;
-
-// Private methods exposed for subclasses to access
-- (void)postSuccessWithOfflineMode:(BOOL)offlineMode;
-- (void)postFailureWithError:(NSError *)error;
+- (void)clearAppProcessing;
 
 @end

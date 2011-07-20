@@ -125,8 +125,24 @@ static const CGFloat kProfilePadTableOffsetLandscape = 220.0f;
     self.tableView.tableHeaderView = self.headerView;
     [self.containerView addSubview:self.tableView];
 
-    
-    // check for authentication
+    [self performLogin];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self setupAssetsForOrientation:self.interfaceOrientation];
+}
+
+- (void)viewDidUnload 
+{
+    [self releaseViewObjects];
+    [super viewDidUnload];
+}
+
+- (void)performLogin
+{
+// check for authentication
 #if !LOCALDEBUG	
 #if NONDRMAUTHENTICATION
 	SCHAuthenticationManager *authenticationManager = [SCHAuthenticationManager sharedAuthenticationManager];
@@ -140,17 +156,6 @@ static const CGFloat kProfilePadTableOffsetLandscape = 220.0f;
         });
 	}
 #endif
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    [self setupAssetsForOrientation:self.interfaceOrientation];
-}
-
-- (void)viewDidUnload {
-    [self releaseViewObjects];
-    [super viewDidUnload];
 }
 
 #pragma mark - Orientation methods

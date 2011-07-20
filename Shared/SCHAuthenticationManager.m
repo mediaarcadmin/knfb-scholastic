@@ -156,6 +156,15 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
                         waitUntilDone:NO];
 }
 
+- (void)clearAppProcessing
+{
+    // removeObjectForKey does not change the value...
+    [[NSUserDefaults standardUserDefaults] setObject:nil forKey:kSCHAuthenticationManagerDeviceKey];
+    [[SCHURLManager sharedURLManager] clear];
+    [[SCHProcessingManager sharedProcessingManager] cancelAllOperations];                
+    [[SCHSyncManager sharedSyncManager] clear];    
+}
+
 #pragma mark - Accessor methods
 
 - (NSString *)aToken
@@ -395,18 +404,17 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
 
 - (void)registrationSession:(SCHDrmRegistrationSession *)registrationSession didComplete:(NSString *)deviceKey
 {
-    if (deviceKey != nil ) {
+    if (deviceKey != nil) {
         [[NSUserDefaults standardUserDefaults] setObject:deviceKey 
                                                   forKey:kSCHAuthenticationManagerDeviceKey];
         [libreAccessWebService authenticateDevice:deviceKey forUserKey:nil];
     }
     else {
         // Successful deregistration
-        // removeObjectForKey does not change the value...
-        [[NSUserDefaults standardUserDefaults] setObject:nil forKey:kSCHAuthenticationManagerDeviceKey];
-        [[SCHURLManager sharedURLManager] clear];
-        [[SCHProcessingManager sharedProcessingManager] cancelAllOperations];                
-        [[SCHSyncManager sharedSyncManager] clear];
+        [self clearAppProcessing];
+        [[NSNotificationCenter defaultCenter] postNotificationName:SCHAuthenticationManagerDRMDeregistrationNotification
+                                                            object:self 
+                                                          userInfo:nil];		        
     }
     self.drmRegistrationSession = nil;
 }
