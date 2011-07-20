@@ -51,6 +51,8 @@ enum LoginScreens {
 @property (nonatomic, retain) UIButton *settingsButton;
 @property (nonatomic, retain) SCHLoginPasswordViewController *parentPasswordController; // Lazily instantiated
 
+- (void)beginLogin;
+
 @end
 
 @implementation SCHProfileViewController_iPad
@@ -133,27 +135,8 @@ enum LoginScreens {
     
     self.tableView.tableHeaderView = self.headerView;
     [self.containerView addSubview:self.tableView];
-    
-    self.loginScreen = kLoginScreenNone;
-    
-    // check for authentication
-#if !LOCALDEBUG	
-#if NONDRMAUTHENTICATION
-	SCHAuthenticationManager *authenticationManager = [SCHAuthenticationManager sharedAuthenticationManager];
-	if ([authenticationManager isAuthenticated] == NO) {
-        self.loginScreen = kLoginScreenPassword;
-    }
-#else 
-    NSString *deviceKey = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerDeviceKey];
-    if (!deviceKey) {
-        self.loginScreen = kLoginScreenPassword;
-	}
-#endif
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self showLoginControllerWithAnimation:YES];
-    });
-#endif
+
+    [self beginLogin];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -162,7 +145,8 @@ enum LoginScreens {
     [self setupAssetsForOrientation:self.interfaceOrientation];
 }
 
-- (void)viewDidUnload {
+- (void)viewDidUnload 
+{
     [self releaseViewObjects];
     [super viewDidUnload];
 }
@@ -198,7 +182,31 @@ enum LoginScreens {
     [self setupAssetsForOrientation:toInterfaceOrientation];
 }
 
-#pragma mark - View Shuffling
+#pragma mark - Login sequence
+
+- (void)beginLogin
+{
+    self.loginScreen = kLoginScreenNone;
+    
+    // check for authentication
+#if !LOCALDEBUG	
+#if NONDRMAUTHENTICATION
+	SCHAuthenticationManager *authenticationManager = [SCHAuthenticationManager sharedAuthenticationManager];
+	if ([authenticationManager isAuthenticated] == NO) {
+        self.loginScreen = kLoginScreenPassword;
+    }
+#else 
+    NSString *deviceKey = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerDeviceKey];
+    if (!deviceKey) {
+        self.loginScreen = kLoginScreenPassword;
+	}
+#endif
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self showLoginControllerWithAnimation:YES];
+    });
+#endif
+}
 
 - (void)showNextLoginScreen
 {
@@ -255,6 +263,8 @@ enum LoginScreens {
     
     return parentPasswordController;
 }
+
+#pragma mark - settings
 
 - (void)pushSettingsController
 {

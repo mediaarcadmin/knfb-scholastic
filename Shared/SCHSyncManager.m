@@ -18,7 +18,6 @@
 #import "SCHContentProfileItem.h"
 #import "SCHUserDefaults.h"
 
-static SCHSyncManager *sharedSyncManager = nil;
 static NSTimeInterval const kSCHSyncManagerHeartbeatInterval = 30.0;
 
 @interface SCHSyncManager ()
@@ -55,9 +54,12 @@ static NSTimeInterval const kSCHSyncManagerHeartbeatInterval = 30.0;
 
 + (SCHSyncManager *)sharedSyncManager
 {
-    if (sharedSyncManager == nil) {
+    static dispatch_once_t pred;
+    static SCHSyncManager *sharedSyncManager = nil;
+    
+    dispatch_once(&pred, ^{
         sharedSyncManager = [[super allocWithZone:NULL] init];		
-    }
+    });
 	
     return(sharedSyncManager);
 }

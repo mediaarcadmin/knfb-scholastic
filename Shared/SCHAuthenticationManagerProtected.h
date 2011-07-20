@@ -27,4 +27,7 @@ static NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
 - (void)authenticateOnMainThread;
 - (void)clearOnMainThread;
 
+- (void)postSuccessWithOfflineMode:(BOOL)offlineMode;
+- (void)postFailureWithError:(NSError *)error;
+
 @end
