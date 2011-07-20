@@ -99,8 +99,7 @@
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
 	
 	[fetchRequest setEntity:[NSEntityDescription entityForName:kSCHUserContentItem inManagedObjectContext:self.managedObjectContext]];	
-	NSArray *changedStates = [NSArray arrayWithObjects:[NSNumber numberWithStatus:kSCHStatusCreated], 
-					   [NSNumber numberWithStatus:kSCHStatusModified],
+	NSArray *changedStates = [NSArray arrayWithObjects:[NSNumber numberWithStatus:kSCHStatusModified],
 					   [NSNumber numberWithStatus:kSCHStatusDeleted], nil];
 	[fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"ANY ProfileList.State IN %@", changedStates]];
 	

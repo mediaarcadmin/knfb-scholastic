@@ -118,8 +118,7 @@
     [self.createdProfiles removeAllObjects];
 	[fetchRequest setEntity:[NSEntityDescription entityForName:kSCHProfileItem inManagedObjectContext:self.managedObjectContext]];	
 	[fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"State IN %@", 
-								[NSArray arrayWithObjects:[NSNumber numberWithStatus:kSCHStatusCreated], 
-								 [NSNumber numberWithStatus:kSCHStatusModified],
+								[NSArray arrayWithObjects:[NSNumber numberWithStatus:kSCHStatusModified],
 								 [NSNumber numberWithStatus:kSCHStatusDeleted], nil]]];
 	NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest error:nil];
 	if([results count] > 0) {
