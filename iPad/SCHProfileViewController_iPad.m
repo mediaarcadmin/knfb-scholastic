@@ -112,9 +112,9 @@ static const CGFloat kProfilePadTableOffsetLandscape = 220.0f;
     self.loginPasswordController.actionBlock = ^{
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(authenticationManager:) name:kSCHAuthenticationManagerSuccess object:nil];			
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(authenticationManager:) name:kSCHAuthenticationManagerFailure object:nil];					
-        
-        [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithUserName:[self.loginPasswordController username] withPassword:[self.loginPasswordController password]];
+
         [self.loginPasswordController startShowingProgress];
+        [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithUserName:[self.loginPasswordController username] withPassword:[self.loginPasswordController password]];
     };
     
     self.profilePasswordController.controllerType = kSCHControllerPasswordOnlyView;
@@ -250,10 +250,12 @@ static const CGFloat kProfilePadTableOffsetLandscape = 220.0f;
     [self presentModalViewController:self.modalNavigationController animated:YES];
 }
 
-#pragma mark - UITableViewDelegate
-
-- (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	
+#pragma mark - SCHProfileViewCellDelegate
+    
+- (void)profileViewCell:(SCHProfileViewCell *)cell didSelectAnimated:(BOOL)animated
+{
+    NSIndexPath *indexPath = cell.indexPath;
+    
     switch (indexPath.section) {
 		case 0: {
             SCHProfileItem *profileItem = [[self fetchedResultsController] objectAtIndexPath:indexPath];
@@ -291,9 +293,7 @@ static const CGFloat kProfilePadTableOffsetLandscape = 220.0f;
             }
 #endif	
 		}	break;
-	}
-	
-	[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+	}	
 }
 
 - (void)pushBookshelvesControllerWithProfileItem:(SCHProfileItem *)profileItem

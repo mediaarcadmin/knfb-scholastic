@@ -239,6 +239,8 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
     NSString *storedPassword = [SFHFKeychainUtils getPasswordForUsername:storedUsername andServiceName:kSCHAuthenticationManagerServiceName error:nil];
     NSString *deviceKey = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerDeviceKey];	
     
+    NSLog(@"Authenticating %@ with %@", storedUsername, deviceKey);
+    
     if (waitingOnResponse == NO) {
         if ([[Reachability reachabilityForInternetConnection] isReachable] == YES) {
             if (self.aToken != nil && [[self.aToken stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {

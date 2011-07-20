@@ -8,10 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
+#import "SCHProfileViewCell.h"
 
 @class SCHLoginPasswordViewController;
 
-@interface SCHProfileViewController_Shared : UIViewController <NSFetchedResultsControllerDelegate, UITableViewDataSource, UITableViewDelegate> {
+@interface SCHProfileViewController_Shared : UIViewController <NSFetchedResultsControllerDelegate, UITableViewDataSource, UITableViewDelegate, SCHProfileViewCellDelegate> {
 }
 
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;

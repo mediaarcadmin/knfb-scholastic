@@ -125,8 +125,8 @@
 {
     [super viewWillAppear:animated];
     [self setupAssetsForOrientation:[[UIApplication sharedApplication] statusBarOrientation]];
+    [self clearFields];
     
-    self.topBar.hidden = NO;
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -245,16 +245,13 @@
 {
     NSAssert(self.actionBlock != nil, @"Action block must be set!");
     
-    [self.topField resignFirstResponder];
-    [self.bottomField resignFirstResponder];
+    if (self.controllerType == kSCHControllerLoginView) {
+        [self startShowingProgress];
+    }    
     
     if (self.actionBlock) {
         self.actionBlock();
-    }
-    
-    if (self.controllerType == kSCHControllerLoginView) {
-        [self startShowingProgress];
-    }
+    }    
 }
 
 - (IBAction)cancelButtonAction:(id)sender

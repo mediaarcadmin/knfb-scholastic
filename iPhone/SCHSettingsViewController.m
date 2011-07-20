@@ -160,6 +160,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 	
 	if ([notification.name compare:kSCHAuthenticationManagerSuccess] == NSOrderedSame) {
 		[[SCHSyncManager sharedSyncManager] firstSync];
+        [self.loginController stopShowingProgress];        
         if (self.parentViewController.parentViewController != nil) {
             [self.parentViewController.parentViewController dismissModalViewControllerAnimated:YES];
         }

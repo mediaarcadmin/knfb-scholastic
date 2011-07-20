@@ -11,6 +11,7 @@
 #import "SCHSyncComponent.h"
 
 static NSString * const SCHAnnotationSyncComponentCompletedNotification = @"SCHAnnotationSyncComponentCompletedNotification";
+static NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotationSyncComponentCompletedProfileIDs";
 
 @interface SCHAnnotationSyncComponent : SCHSyncComponent 
 {

@@ -25,7 +25,6 @@
 #import "SCHBookAnnotations.h"
 #import "SCHAudioBookPlayer.h"
 #import "SCHReadingNoteView.h"
-#import "SCHBookAnnotations.h"
 #import "SCHNote.h"
 #import "SCHDictionaryViewController.h"
 #import "SCHDictionaryAccessManager.h"
@@ -38,6 +37,7 @@
 #import "SCHQueuedAudioPlayer.h"
 #import "SCHBookStatistics.h"
 #import "SCHContentSyncComponent.h"
+#import "SCHAnnotationSyncComponent.h"
 #import "LambdaAlert.h"
 
 // constants
@@ -65,6 +65,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 // timer used to fade toolbars out after a certain period of time
 @property (nonatomic, retain) NSTimer *initialFadeTimer;
+
+// updates the notes counter in the toolbar
+- (void)updateNotesCounter;
 
 // the first page that the view is currently showing
 @property (nonatomic, assign) NSUInteger currentPageIndex;
@@ -363,6 +366,13 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
                                                  selector:@selector(managedObjectContextDidSaveNotification:)
                                                      name:NSManagedObjectContextDidSaveNotification
                                                    object:nil];
+
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(annotationChanges:)
+                                                     name:SCHAnnotationSyncComponentCompletedNotification
+                                                   object:nil];
+        
+        
         
         self.lastPageInteractionSoundPlayedOn = -1;
         
@@ -529,10 +539,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     self.notesCountView = [[SCHNotesCountView alloc] initWithImage:[bgImage stretchableImageWithLeftCapWidth:10.0f topCapHeight:0]];
     [self.notesButton addSubview:self.notesCountView];
     
-    // update the note count
-    NSInteger noteCount = [[[self.profile annotationsForBook:self.bookIdentifier] notes] count];
-    self.notesCountView.noteCount = noteCount;
-
+    [self updateNotesCounter];
     
     [self setDictionarySelectionMode];
     [self setupStoryInteractionButtonForCurrentPagesAnimated:NO];
@@ -705,6 +712,16 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
             [self popViewController:self];
             break;
         }
+    }
+}
+
+- (void)annotationChanges:(NSNotification *)notification
+{
+    NSNumber *profileID = [notification.userInfo objectForKey:SCHAnnotationSyncComponentCompletedProfileIDs];
+    
+    if ([profileID isEqualToNumber:self.profile.ID] == YES) {
+        [self updateNotesCounter];
+        [self.readingView refreshHighlightsForPageAtIndex:self.currentPageIndex];
     }
 }
 
@@ -1461,6 +1478,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 {
     NSLog(@"Delete highlight");
     SCHBookAnnotations *annotations = [self.profile annotationsForBook:self.bookIdentifier];
+    NSError *error = nil;
     
     for (int page = startPage; page <= endPage; page++) {
         for (SCHHighlight *highlight in [annotations highlightsForPage:page]) {
@@ -1472,6 +1490,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
             }
         }
     }
+    if (![self.managedObjectContext save:&error]) {
+        NSLog(@"Error saving managed object context: %@ : %@", error, [error userInfo]); 
+    }                
 }
 
 - (NSArray *)highlightsForLayoutPage:(NSUInteger)page
@@ -2015,6 +2036,12 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 	}
 }	
 
+- (void)updateNotesCounter
+{
+    NSInteger noteCount = [[[self.profile annotationsForBook:self.bookIdentifier] notes] count];
+    self.notesCountView.noteCount = noteCount;
+}
+
 #pragma mark - SCHReadingNotesListControllerDelegate methods
 
 - (void)readingNotesViewCreatingNewNote:(SCHReadingNotesListController *)readingNotesView
@@ -2063,14 +2090,16 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (void)readingNotesView:(SCHReadingNotesListController *)readingNotesView didDeleteNote:(SCHNote *)note
 {
-    NSLog(@"Deleting note...");
     SCHBookAnnotations *bookAnnos = [self.profile annotationsForBook:self.bookIdentifier];
-    [bookAnnos deleteNote:note];
+    NSError *error = nil;
     
-    // update the note count
-    NSInteger noteCount = [[[self.profile annotationsForBook:self.bookIdentifier] notes] count];
-    self.notesCountView.noteCount = noteCount;
-
+    NSLog(@"Deleting note...");
+    [bookAnnos deleteNote:note];
+    if (![note.managedObjectContext save:&error]) {
+        NSLog(@"Error saving managed object context: %@ : %@", error, [error userInfo]); 
+    }
+    
+    [self updateNotesCounter];
 }
 
 - (SCHBookPoint *)bookPointForNote:(SCHNote *)note
@@ -2094,35 +2123,36 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (void)notesView:(SCHReadingNoteView *)notesView savedNote:(SCHNote *)note;
 {
-    // FIXME: save note
+    NSError *error = nil;
+    
     NSLog(@"Saving note...");
-    SCHBookAnnotations *bookAnnos = [self.profile annotationsForBook:self.bookIdentifier];
-    [bookAnnos addNote:note];
+    // a new object will already have been created and added to the data store
+    if (![note.managedObjectContext save:&error]) {
+        NSLog(@"Error saving managed object context: %@ : %@", error, [error userInfo]); 
+    }
     
     [self setToolbarVisibility:YES animated:YES];
     
-    // update the note count
-    NSInteger noteCount = [[[self.profile annotationsForBook:self.bookIdentifier] notes] count];
-    self.notesCountView.noteCount = noteCount;
-    
+    [self updateNotesCounter];
 }
 
 - (void)notesViewCancelled:(SCHReadingNoteView *)notesView
 {
     SCHBookAnnotations *bookAnnos = [self.profile annotationsForBook:self.bookIdentifier];
-
+    NSError *error = nil;
+    
     // if we created the note but it's been cancelled, delete the note
     if (notesView.newNote) {
         [bookAnnos deleteNote:notesView.note];
+        
+        if (![notesView.note.managedObjectContext save:&error]) {
+            NSLog(@"Error saving managed object context: %@ : %@", error, [error userInfo]); 
+        }
     }
     
     [self setToolbarVisibility:YES animated:YES];
     
-    // update the note count
-    NSInteger noteCount = [[[self.profile annotationsForBook:self.bookIdentifier] notes] count];
-    self.notesCountView.noteCount = noteCount;
-    
-    
+    [self updateNotesCounter];
 }
 
 #pragma mark - SCHReadingInteractionsListControllerDelegate methods
