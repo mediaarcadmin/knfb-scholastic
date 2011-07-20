@@ -244,7 +244,10 @@
 - (IBAction)actionButtonAction:(id)sender
 {
     NSAssert(self.actionBlock != nil, @"Action block must be set!");
-    
+
+    [self.topField endEditing:YES];
+    [self.bottomField endEditing:YES];
+
     if (self.controllerType == kSCHControllerLoginView) {
         [self startShowingProgress];
     }

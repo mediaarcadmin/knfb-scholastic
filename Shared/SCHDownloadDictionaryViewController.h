@@ -7,13 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SCHBaseSetupViewController.h"
 
-
-@interface SCHDownloadDictionaryViewController : UIViewController {}
+@interface SCHDownloadDictionaryViewController : SCHBaseSetupViewController {}
 
 @property (nonatomic, retain) IBOutlet UIButton *downlaodDictionaryButton;
 
 - (IBAction)downloadDictionary:(id)sender;
-- (IBAction)back:(id)sender;
 
 @end

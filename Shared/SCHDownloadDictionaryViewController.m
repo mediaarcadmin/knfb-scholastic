@@ -7,7 +7,7 @@
 //
 
 #import "SCHDownloadDictionaryViewController.h"
-
+#import "SCHDictionaryDownloadManager.h"
 
 @implementation SCHDownloadDictionaryViewController
 
@@ -21,25 +21,14 @@
 
 - (void)viewDidLoad
 {
-    UIImage *buttonBGImage = [[UIImage imageNamed:@"button-login-red"] stretchableImageWithLeftCapWidth:10 topCapHeight:0];
-    [self.downlaodDictionaryButton setBackgroundImage:buttonBGImage forState:UIControlStateNormal];
-    
     [super viewDidLoad];
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    return YES;
+    [self setButtonBackground:self.downlaodDictionaryButton];
 }
 
 - (void)downloadDictionary:(id)sender
 {
-    
-}
-
-- (void)back:(id)sender
-{
-    [self.navigationController popViewControllerAnimated:YES];
+    [[SCHDictionaryDownloadManager sharedDownloadManager] startDictionaryDownload];
+    [self.navigationController.parentViewController dismissModalViewControllerAnimated:YES];
 }
 
 @end

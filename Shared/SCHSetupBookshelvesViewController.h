@@ -7,13 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SCHBaseSetupViewController.h"
 
-
-@interface SCHSetupBookshelvesViewController : UIViewController {}
+@interface SCHSetupBookshelvesViewController : SCHBaseSetupViewController {}
 
 @property (nonatomic, retain) IBOutlet UIButton *setupBookshelvesButton;
+@property (nonatomic, retain) IBOutlet UIActivityIndicatorView *spinner;
 
 - (IBAction)setupBookshelves:(id)sender;
-- (IBAction)back:(id)sender;
+
+- (void)showActivity:(BOOL)activity;
 
 @end

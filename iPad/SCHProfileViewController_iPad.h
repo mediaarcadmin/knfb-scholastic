@@ -14,6 +14,7 @@
 @class SCHCustomNavigationBar;
 @class SCHSetupBookshelvesViewController;
 @class SCHSettingsViewController;
+@class SCHDownloadDictionaryViewController;
 
 @interface SCHProfileViewController_iPad : SCHProfileViewController_Shared <UITableViewDelegate, UINavigationControllerDelegate> {
     
@@ -31,5 +32,6 @@
 @property (nonatomic, retain) IBOutlet UINavigationController *modalNavigationController;
 @property (nonatomic, retain) IBOutlet SCHSettingsViewController *settingsViewController;
 @property (nonatomic, retain) IBOutlet SCHSetupBookshelvesViewController *setupBookshelvesViewController;
+@property (nonatomic, retain) IBOutlet SCHDownloadDictionaryViewController *downloadDictionaryViewController;
 
 @end

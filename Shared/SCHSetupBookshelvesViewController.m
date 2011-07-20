@@ -12,35 +12,45 @@
 @implementation SCHSetupBookshelvesViewController
 
 @synthesize setupBookshelvesButton;
+@synthesize spinner;
+
+- (void)releaseViewObjects
+{
+    [setupBookshelvesButton release], setupBookshelvesButton = nil;
+    [spinner release], spinner = nil;
+}
 
 - (void)dealloc
 {
-    [setupBookshelvesButton release], setupBookshelvesButton = nil;
+    [self releaseViewObjects];
     [super dealloc];
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    UIImage *buttonBGImage = [[UIImage imageNamed:@"button-login-red"] stretchableImageWithLeftCapWidth:10 topCapHeight:0];
-    [self.setupBookshelvesButton setBackgroundImage:buttonBGImage forState:UIControlStateNormal];
+    [self setButtonBackground:self.setupBookshelvesButton];
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+- (void)viewDidUnload
 {
-    return YES;
+    [super viewDidUnload];
+    [self releaseViewObjects];
 }
 
 - (void)setupBookshelves:(id)sender
 {
-    // TODO
-    [self.parentViewController dismissModalViewControllerAnimated:YES];
+    // TODO: URL
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.scholastic.com"]];
 }
 
-- (void)back:(id)sender
+- (void)showActivity:(BOOL)activity
 {
-    [self.navigationController popViewControllerAnimated:YES];
+    if (activity) {
+        [self.spinner startAnimating];
+    } else {
+        [self.spinner stopAnimating];
+    }
 }
 
 @end
