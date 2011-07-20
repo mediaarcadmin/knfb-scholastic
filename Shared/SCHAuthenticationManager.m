@@ -20,8 +20,6 @@
 
 #import "SCHNonDRMAuthenticationManager.h"
 
-static SCHAuthenticationManager *sharedAuthenticationManager = nil;
-
 NSString * const kSCHAuthenticationManagerDeviceKey = @"AuthenticationManager.DeviceKey";
 
 struct AuthenticateWithUserNameParameters 
@@ -33,7 +31,6 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
 
 @interface SCHAuthenticationManager ()
 
-+ (SCHAuthenticationManager *)sharedAuthenticationManagerOnMainThread;
 - (void)aTokenOnMainThread;
 - (void)authenticateWithUserNameOnMainThread:(NSValue *)parameters;
 - (void)hasUsernameAndPasswordOnMainThread:(NSValue *)returnValue;
@@ -61,17 +58,21 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
 
 + (SCHAuthenticationManager *)sharedAuthenticationManager
 {
-    if (sharedAuthenticationManager == nil) {
-        // we block until the selector completes to make sure we always have the object before use
-        [SCHAuthenticationManager performSelectorOnMainThread:@selector(sharedAuthenticationManagerOnMainThread) 
-                                                   withObject:nil 
-                                                waitUntilDone:YES];
-    }
+    static dispatch_once_t pred;
+    static SCHAuthenticationManager *sharedAuthenticationManager = nil;
+    
+    dispatch_once(&pred, ^{
+#if NONDRMAUTHENTICATION
+        sharedAuthenticationManager = [[SCHNonDRMAuthenticationManager allocWithZone:NULL] init];
+#else
+        sharedAuthenticationManager = [[super allocWithZone:NULL] init];
+#endif
+    });
     
     return(sharedAuthenticationManager);
 }
 
-#pragma mark - Object lifecycle
+#pragma mark - Object lifecycle 
 
 - (id)init
 {
@@ -175,19 +176,6 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
 }
 
 #pragma mark - Private methods
-
-+ (SCHAuthenticationManager *)sharedAuthenticationManagerOnMainThread
-{
-    if (sharedAuthenticationManager == nil) {
-#if NONDRMAUTHENTICATION
-        sharedAuthenticationManager = [[SCHNonDRMAuthenticationManager allocWithZone:NULL] init];
-#else
-        sharedAuthenticationManager = [[super allocWithZone:NULL] init];
-#endif
-    }
-    
-    return(sharedAuthenticationManager);
-}
 
 - (void)aTokenOnMainThread
 {
