@@ -28,14 +28,22 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 static const CGFloat kProfilePadTableOffsetPortrait = 280.0f;
 static const CGFloat kProfilePadTableOffsetLandscape = 220.0f;
 
+enum LoginScreens {
+    kLoginScreenNone,
+    kLoginScreenPassword,
+    kLoginScreenSetupBookshelves,
+    kLoginScreenDownloadDictionary
+};
+
 #pragma mark - Class Extension
 
 @interface SCHProfileViewController_iPad () 
 
+@property (nonatomic, assign) enum LoginScreens loginScreen;
+
 - (void)releaseViewObjects;
 - (void)pushBookshelvesControllerWithProfileItem:(SCHProfileItem *)profileItem;
 - (void)showLoginControllerWithAnimation:(BOOL)animated;
-- (void)showSetupBookshelvesControllerWithAnimation:(BOOL)animated;
 - (void)showProfilePasswordControllerWithAnimation:(BOOL)animated;
 - (void)pushSettingsController;
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation;
@@ -59,6 +67,7 @@ static const CGFloat kProfilePadTableOffsetLandscape = 220.0f;
 @synthesize parentPasswordController;
 @synthesize setupBookshelvesViewController;
 @synthesize modalNavigationController;
+@synthesize loginScreen;
 
 #pragma mark - Object lifecycle
 
@@ -124,21 +133,26 @@ static const CGFloat kProfilePadTableOffsetLandscape = 220.0f;
     
     self.tableView.tableHeaderView = self.headerView;
     [self.containerView addSubview:self.tableView];
-
+    
+    self.loginScreen = kLoginScreenNone;
     
     // check for authentication
 #if !LOCALDEBUG	
 #if NONDRMAUTHENTICATION
 	SCHAuthenticationManager *authenticationManager = [SCHAuthenticationManager sharedAuthenticationManager];
-	if ([authenticationManager isAuthenticated] == NO) {	
+	if ([authenticationManager isAuthenticated] == NO) {
+        self.loginScreen = kLoginScreenPassword;
+    }
 #else 
     NSString *deviceKey = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerDeviceKey];
-    if (!deviceKey) { 
-#endif
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self showLoginControllerWithAnimation:YES];
-        });
+    if (!deviceKey) {
+        self.loginScreen = kLoginScreenPassword;
 	}
+#endif
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self showLoginControllerWithAnimation:YES];
+    });
 #endif
 }
 
@@ -186,13 +200,42 @@ static const CGFloat kProfilePadTableOffsetLandscape = 220.0f;
 
 #pragma mark - View Shuffling
 
+- (void)showNextLoginScreen
+{
+    if (/*FIXME: remove hack*/ self.loginScreen == kLoginScreenPassword
+        || [[self.fetchedResultsController sections] count] == 0 
+        || [[[self.fetchedResultsController sections] objectAtIndex:0] numberOfObjects] == 0) {
+        self.loginScreen = kLoginScreenSetupBookshelves;
+    }
+    else if (/* FIXME: detect if dictionary downloaded */ YES) {
+        self.loginScreen = kLoginScreenDownloadDictionary;
+    }
+    
+    [self showLoginControllerWithAnimation:YES];
+}
+
 - (void)showLoginControllerWithAnimation:(BOOL)animated
 {
-    [self.modalNavigationController setViewControllers:[NSArray arrayWithObject:self.loginPasswordController]];
-    [self.modalNavigationController setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
-    [self.modalNavigationController setModalPresentationStyle:UIModalPresentationFormSheet];
-    [self.modalNavigationController setNavigationBarHidden:YES];
-    [self presentModalViewController:self.modalNavigationController animated:YES];
+    switch (self.loginScreen) {
+        case kLoginScreenNone:
+            break;
+            
+        case kLoginScreenPassword:
+            [self.modalNavigationController setViewControllers:[NSArray arrayWithObject:self.loginPasswordController]];
+            [self.modalNavigationController setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
+            [self.modalNavigationController setModalPresentationStyle:UIModalPresentationFormSheet];
+            [self.modalNavigationController setNavigationBarHidden:YES];
+            [self presentModalViewController:self.modalNavigationController animated:animated];
+            break;
+            
+        case kLoginScreenSetupBookshelves:
+            [self.modalNavigationController pushViewController:self.setupBookshelvesViewController animated:animated];
+            break;
+            
+        case kLoginScreenDownloadDictionary:
+            // TODO
+            break;
+    }
 }
     
 - (void)showProfilePasswordControllerWithAnimation:(BOOL)animated
@@ -201,16 +244,6 @@ static const CGFloat kProfilePadTableOffsetLandscape = 220.0f;
     [self.profilePasswordController setModalPresentationStyle:UIModalPresentationFormSheet];
     [self presentModalViewController:self.profilePasswordController animated:YES];
 
-}
-
-- (void)showSetupBookshelvesControllerWithAnimation:(BOOL)animated
-{
-    if (1 || [[self.fetchedResultsController sections] count] == 0 
-        || [[[self.fetchedResultsController sections] objectAtIndex:0] numberOfObjects] == 0) {
-        [self.modalNavigationController pushViewController:self.setupBookshelvesViewController animated:YES];
-    } else {
-        [self dismissModalViewControllerAnimated:YES];
-    }
 }
 
 - (SCHLoginPasswordViewController *)parentPasswordController
@@ -265,7 +298,6 @@ static const CGFloat kProfilePadTableOffsetLandscape = 220.0f;
             [self pushBookshelvesControllerWithProfileItem:profileItem];	
 #else
             if ([profileItem.ProfilePasswordRequired boolValue] == NO) {
-//                [self showBookshelfListWithAnimation:YES];
                 [self pushBookshelvesControllerWithProfileItem:profileItem];            
             } else {
                 self.profilePasswordController.actionBlock = ^{
@@ -280,7 +312,6 @@ static const CGFloat kProfilePadTableOffsetLandscape = 220.0f;
                         [errorAlert release];
                     } else {
                         [SCHThemeManager sharedThemeManager].appProfile = profileItem.AppProfile;
-                        //[self showBookshelfListWithAnimation:YES];
                         [self.profilePasswordController clearFields]; 
                         [self pushBookshelvesControllerWithProfileItem:profileItem];            
                         [self dismissModalViewControllerAnimated:YES];
@@ -344,7 +375,7 @@ static const CGFloat kProfilePadTableOffsetLandscape = 220.0f;
 		[[SCHURLManager sharedURLManager] clear];
 		[[SCHSyncManager sharedSyncManager] clear];
 		[[SCHSyncManager sharedSyncManager] firstSync];
-        [self showSetupBookshelvesControllerWithAnimation:YES];
+        [self showNextLoginScreen];
 	} else {
 		NSError *error = [notification.userInfo objectForKey:kSCHAuthenticationManagerNSError];
 		if (error!= nil) {

@@ -15,7 +15,7 @@
 @class SCHSetupBookshelvesViewController;
 @class SCHSettingsViewController;
 
-@interface SCHProfileViewController_iPad : SCHProfileViewController_Shared <UITableViewDelegate> {
+@interface SCHProfileViewController_iPad : SCHProfileViewController_Shared <UITableViewDelegate, UINavigationControllerDelegate> {
     
     UINavigationController *settingsNavigationController;
 }

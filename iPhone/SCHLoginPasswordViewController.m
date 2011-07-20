@@ -247,7 +247,7 @@
     
     if (self.controllerType == kSCHControllerLoginView) {
         [self startShowingProgress];
-    }    
+    }
     
     if (self.actionBlock) {
         self.actionBlock();

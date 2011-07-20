@@ -14,5 +14,6 @@
 @property (nonatomic, retain) IBOutlet UIButton *setupBookshelvesButton;
 
 - (IBAction)setupBookshelves:(id)sender;
+- (IBAction)back:(id)sender;
 
 @end
