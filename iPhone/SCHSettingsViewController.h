@@ -7,16 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "SCHDrmRegistrationSessionDelegate.h"
 #import "SCHBaseSetupViewController.h"
 
 @class SCHCustomToolbar;
+@protocol SCHSettingsViewControllerDelegate; 
 
-@protocol SCHSettingsViewControllerDelegate <NSObject>
-- (void)dismissSettingsForm;
-@end
-
-@interface SCHSettingsViewController : SCHBaseSetupViewController <SCHDrmRegistrationSessionDelegate, UIAlertViewDelegate>  
+@interface SCHSettingsViewController : SCHBaseSetupViewController <UIAlertViewDelegate>  
 {}
 
 @property (nonatomic, retain) IBOutlet SCHCustomToolbar *topBar;
@@ -27,7 +23,6 @@
 @property (nonatomic, retain) IBOutlet UIButton *downloadDictionaryButton;
 @property (nonatomic, retain) IBOutlet UISwitch *spaceSaverSwitch;
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
-@property (nonatomic, retain) SCHDrmRegistrationSession* drmRegistrationSession;
 @property (nonatomic, assign) id<SCHSettingsViewControllerDelegate> settingsDelegate;
 
 - (IBAction)dismissModalSettingsController:(id)sender;

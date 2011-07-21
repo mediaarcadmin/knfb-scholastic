@@ -7,20 +7,18 @@
 //
 
 #import "SCHSettingsViewController.h"
-
+#import "SCHSettingsViewControllerDelegate.h"
 #import "SCHLoginPasswordViewController.h"
-#import "SCHAuthenticationManager.h"
-#import "SCHDrmSession.h"
 #import "SCHCustomNavigationBar.h"
 #import "SCHCustomToolbar.h"
 #import "SCHURLManager.h"
 #import "SCHSyncManager.h"
 #import "SCHAboutViewController.h"
 #import "SCHPrivacyPolicyViewController.h"
-#import <QuartzCore/QuartzCore.h>
 #import "SCHProcessingManager.h"
 #import "SCHDictionaryDownloadManager.h"
 #import "AppDelegate_Shared.h"
+#import "SCHDeregisterDeviceViewController.h"
 
 extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
@@ -42,7 +40,6 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 @synthesize spaceSaverSwitch;
 @synthesize backgroundView;
 @synthesize managedObjectContext;
-@synthesize drmRegistrationSession;
 @synthesize settingsDelegate;
 
 #pragma mark - Object lifecycle
@@ -63,7 +60,6 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
 	[managedObjectContext release], managedObjectContext = nil;
-    [drmRegistrationSession release], drmRegistrationSession = nil;
     
     [self releaseViewObjects];
     [super dealloc];
@@ -93,6 +89,10 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
         self.navigationItem.titleView = logoImageView;
         [logoImageView release];
     }
+    
+#if LOCALDEBUG
+    [self.deregisterDeviceButton setTitle:@"Reset Content and Settings" forState:UIControlStateNormal];
+#endif
 }
 
 - (void)viewDidUnload 
@@ -159,27 +159,15 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
 - (IBAction)deregisterDevice:(id)sender 
 {
-    UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Confirmation", @"Confirmation") 
-                                                         message:NSLocalizedString(@"This will remove all books and settings.", nil)
-                                                        delegate:self 
-                                               cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
-                                               otherButtonTitles:NSLocalizedString(@"Continue", @""), nil]; 
-    [errorAlert show]; 
-    [errorAlert release];
-}
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if (buttonIndex != alertView.cancelButtonIndex) {
-#if !LOCALDEBUG
-        SCHDrmRegistrationSession* registrationSession = [[SCHDrmRegistrationSession alloc] init];
-        registrationSession.delegate = self;	
-        self.drmRegistrationSession = registrationSession;
-        [self.drmRegistrationSession deregisterDevice:[[SCHAuthenticationManager sharedAuthenticationManager] aToken]];
-        [registrationSession release]; 
+#if LOCALDEBUG
+    [self resetLocalSettings];
+    [self.settingsDelegate dismissSettingsForm];
+#else
+    SCHDeregisterDeviceViewController *vc = [[SCHDeregisterDeviceViewController alloc] init];
+    vc.settingsDelegate = self.settingsDelegate;
+    [self.navigationController pushViewController:vc animated:YES];
+    [vc release];
 #endif
-        [self resetLocalSettings];
-    }
 }
 
 - (IBAction)showPrivacyPolicy:(id)sender
@@ -212,31 +200,6 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 {
     [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNeedsManifest];
     self.downloadDictionaryButton.enabled = NO;
-}
-
-#pragma mark - DRM Registration Session Delegate methods
-
-- (void)registrationSession:(SCHDrmRegistrationSession *)registrationSession didComplete:(NSString *)deviceKey
-{
-    if (deviceKey == nil) {
-        [[SCHAuthenticationManager sharedAuthenticationManager] clearAppProcessing];
-        [self.settingsDelegate dismissSettingsForm];
-    } else {
-        NSLog(@"Unknown DRM error: device key value returned from successful deregistration.");
-    }
-    self.drmRegistrationSession = nil;
-}
-
-- (void)registrationSession:(SCHDrmRegistrationSession *)registrationSession didFailWithError:(NSError *)error
-{
-	UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") 
-                                                         message:[error localizedDescription]
-                                                        delegate:nil 
-                                               cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-                                               otherButtonTitles:nil]; 
-    [errorAlert show]; 
-    [errorAlert release]; 
-    self.drmRegistrationSession = nil;
 }
 
 #pragma mark - Local settings

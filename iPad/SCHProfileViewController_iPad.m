@@ -7,7 +7,6 @@
 //
 
 #import "SCHProfileViewController_iPad.h"
-#import <QuartzCore/QuartzCore.h>
 #import "SCHBookshelfViewController_iPad.h"
 #import "SCHBookshelfViewController.h"
 #import "SCHProfileItem.h"
@@ -20,6 +19,7 @@
 #import "SCHAppProfile.h"
 #import "SCHBookIdentifier.h"
 #import "SCHAuthenticationManager.h"
+#import "SCHSettingsViewController.h"
 
 static const CGFloat kProfilePadTableOffsetPortrait = 280.0f;
 static const CGFloat kProfilePadTableOffsetLandscape = 220.0f;
