@@ -53,7 +53,7 @@ static NSTimeInterval const kAppDelegate_iPhoneSyncManagerWakeDelay = 5.0;
     if (deviceKey != nil &&
         [[deviceKey stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {   
 #endif
-       [syncManager performSelector:@selector(firstSync) withObject:nil afterDelay:kAppDelegate_iPhoneSyncManagerWakeDelay];
+        [syncManager performSelector:@selector(firstSync:) withObject:[NSNumber numberWithBool:NO] afterDelay:kAppDelegate_iPhoneSyncManagerWakeDelay];
     }
 }
 

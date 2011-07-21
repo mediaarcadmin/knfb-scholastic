@@ -291,7 +291,7 @@ static const CGFloat kProfilePhoneTableOffsetLandscape = 20.0f;
 	if ([notification.name compare:kSCHAuthenticationManagerSuccess] == NSOrderedSame) {
 		[[SCHURLManager sharedURLManager] clear];
 		[[SCHSyncManager sharedSyncManager] clear];
-		[[SCHSyncManager sharedSyncManager] firstSync];
+		[[SCHSyncManager sharedSyncManager] firstSync:NO];
 		[self.loginController dismissModalViewControllerAnimated:YES];	
 	} else {
 		NSError *error = [notification.userInfo objectForKey:kSCHAuthenticationManagerNSError];
