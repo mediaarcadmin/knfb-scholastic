@@ -68,12 +68,6 @@ typedef enum {
 - (BOOL)hasPassword;
 - (BOOL)validatePasswordWith:(NSString *)withPassword;
 
-- (BOOL)bookIsNewForProfileWithIdentifier:(SCHBookIdentifier *)identifier;
-- (void)setBookIsNew:(BOOL)isNew forBookWithIdentifier:(SCHBookIdentifier *)identifier;
-
-- (BOOL)bookIsTrashedWithIdentifier:(SCHBookIdentifier *)identifier;
-- (void)setTrashed:(BOOL)trashed forBookWithIdentifier:(SCHBookIdentifier *)identifier;
-
 @end
 
 @interface SCHProfileItem (CoreDataGeneratedAccessors)

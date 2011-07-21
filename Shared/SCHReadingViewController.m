@@ -39,6 +39,7 @@
 #import "SCHContentSyncComponent.h"
 #import "SCHAnnotationSyncComponent.h"
 #import "LambdaAlert.h"
+#import "SCHAppContentProfileItem.h"
 
 // constants
 NSString *const kSCHReadingViewErrorDomain  = @"com.knfb.scholastic.ReadingViewErrorDomain";
@@ -131,6 +132,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (void)setupStoryInteractionButtonForCurrentPagesAnimated:(BOOL)animated;
 - (void)setStoryInteractionButtonVisible:(BOOL)visible animated:(BOOL)animated withSound:(BOOL)sound;
 - (void)presentStoryInteraction:(SCHStoryInteraction *)storyInteraction;
+- (void)save;
 
 @end
 
@@ -544,7 +546,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [self setDictionarySelectionMode];
     [self setupStoryInteractionButtonForCurrentPagesAnimated:NO];
     
-    [self.profile setBookIsNew:NO forBookWithIdentifier:self.bookIdentifier];
+    SCHAppContentProfileItem *appContentProfileItem = [self.profile appContentProfileItemForBookIdentifier:self.bookIdentifier];
+    appContentProfileItem.IsNew = [NSNumber numberWithBool:NO];
+    [self save];
     
     self.bookStatisticsReadingStartTime = [NSDate date];
 }
@@ -655,11 +659,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         [[SCHSyncManager sharedSyncManager] closeDocument:book.ContentMetadataItem.UserContentItem 
                                                forProfile:self.profile.ID];
         
-        NSError *error = nil;
-        if ([self.managedObjectContext save:&error] == NO) {
-            NSLog(@"Unresolved error whilst updating book state %@, %@", error, [error userInfo]);
-            abort();
-        } 
+        [self save];
     }
 }
 
@@ -1478,7 +1478,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 {
     NSLog(@"Delete highlight");
     SCHBookAnnotations *annotations = [self.profile annotationsForBook:self.bookIdentifier];
-    NSError *error = nil;
     
     for (int page = startPage; page <= endPage; page++) {
         for (SCHHighlight *highlight in [annotations highlightsForPage:page]) {
@@ -1490,9 +1489,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
             }
         }
     }
-    if (![self.managedObjectContext save:&error]) {
-        NSLog(@"Error saving managed object context: %@ : %@", error, [error userInfo]); 
-    }                
+    [self save];
 }
 
 - (NSArray *)highlightsForLayoutPage:(NSUInteger)page
@@ -2091,14 +2088,10 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (void)readingNotesView:(SCHReadingNotesListController *)readingNotesView didDeleteNote:(SCHNote *)note
 {
     SCHBookAnnotations *bookAnnos = [self.profile annotationsForBook:self.bookIdentifier];
-    NSError *error = nil;
     
     NSLog(@"Deleting note...");
     [bookAnnos deleteNote:note];
-    if (![note.managedObjectContext save:&error]) {
-        NSLog(@"Error saving managed object context: %@ : %@", error, [error userInfo]); 
-    }
-    
+    [self save];    
     [self updateNotesCounter];
 }
 
@@ -2123,14 +2116,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (void)notesView:(SCHReadingNoteView *)notesView savedNote:(SCHNote *)note;
 {
-    NSError *error = nil;
-    
     NSLog(@"Saving note...");
     // a new object will already have been created and added to the data store
-    if (![note.managedObjectContext save:&error]) {
-        NSLog(@"Error saving managed object context: %@ : %@", error, [error userInfo]); 
-    }
-    
+    [self save];    
     [self setToolbarVisibility:YES animated:YES];
     
     [self updateNotesCounter];
@@ -2139,15 +2127,12 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (void)notesViewCancelled:(SCHReadingNoteView *)notesView
 {
     SCHBookAnnotations *bookAnnos = [self.profile annotationsForBook:self.bookIdentifier];
-    NSError *error = nil;
     
     // if we created the note but it's been cancelled, delete the note
     if (notesView.newNote) {
         [bookAnnos deleteNote:notesView.note];
         
-        if (![notesView.note.managedObjectContext save:&error]) {
-            NSLog(@"Error saving managed object context: %@ : %@", error, [error userInfo]); 
-        }
+        [self save];
     }
     
     [self setToolbarVisibility:YES animated:YES];
@@ -2242,4 +2227,14 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     self.popover = nil;
 }
 
+#pragma mark - Core Data methods
+
+- (void)save
+{
+    NSError *error = nil;
+    if ([self.managedObjectContext save:&error] == NO) {
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+		abort();
+    }
+}
 @end
