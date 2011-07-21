@@ -8,9 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+// Allows the use of a NavigationController in a modal form, dismissing the
+// keyboard when pushing new ViewControllers into the navigation controller.
 
-@interface SCHNavigationControllerForModalForm : UINavigationController {
-    
-}
-
+@interface SCHNavigationControllerForModalForm : UINavigationController {}
 @end

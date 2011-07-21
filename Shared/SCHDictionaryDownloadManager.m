@@ -317,7 +317,8 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 	NSLog(@"**** Calling processDictionary with state %d...", state);
     
 	switch (state) {
-        case SCHDictionaryProcessingStateNotRequested:
+        case SCHDictionaryProcessingStateUserSetup:
+        case SCHDictionaryProcessingStateUserDeclined:
         {
             // do nothing
             return;
@@ -623,7 +624,8 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 
 - (BOOL)dictionaryDownloadStarted
 {
-    return [self dictionaryProcessingState] != SCHDictionaryProcessingStateNotRequested;
+    SCHDictionaryProcessingState state = [self dictionaryProcessingState];
+    return (state != SCHDictionaryProcessingStateUserSetup && state != SCHDictionaryProcessingStateUserDeclined);
 }
 
 - (void)startDictionaryDownload
@@ -1296,7 +1298,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
             // otherwise, create a dictionary state object
             state = [NSEntityDescription insertNewObjectForEntityForName:kSCHAppDictionaryState 
                                                                             inManagedObjectContext:self.mainThreadManagedObjectContext];
-            state.State = [NSNumber numberWithInt:SCHDictionaryProcessingStateNotRequested];
+            state.State = [NSNumber numberWithInt:SCHDictionaryProcessingStateUserSetup];
         }
             
         block(state);

@@ -124,6 +124,7 @@
 - (void)viewWillAppear:(BOOL)animated 
 {
     [super viewWillAppear:animated];
+    [self stopShowingProgress];
     [self setupAssetsForOrientation:[[UIApplication sharedApplication] statusBarOrientation]];
     [self clearFields];
     
@@ -245,8 +246,7 @@
 {
     NSAssert(self.actionBlock != nil, @"Action block must be set!");
 
-    [self.topField endEditing:YES];
-    [self.bottomField endEditing:YES];
+    [self.view endEditing:YES];
 
     if (self.controllerType == kSCHControllerLoginView) {
         [self startShowingProgress];
@@ -259,8 +259,7 @@
 
 - (IBAction)cancelButtonAction:(id)sender
 {
-	[self.topField resignFirstResponder];
-	[self.bottomField resignFirstResponder];
+    [self.view endEditing:YES];
     [self clearFields];
     
     if (self.cancelBlock) {

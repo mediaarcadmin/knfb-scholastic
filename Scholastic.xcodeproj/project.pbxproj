@@ -39,6 +39,8 @@
 		2827827A13A241E200E968C1 /* SCHStoryInteractionControllerWordScrambler.m in Sources */ = {isa = PBXBuildFile; fileRef = 2827827913A241E100E968C1 /* SCHStoryInteractionControllerWordScrambler.m */; };
 		2827827B13A241E200E968C1 /* SCHStoryInteractionControllerWordScrambler.m in Sources */ = {isa = PBXBuildFile; fileRef = 2827827913A241E100E968C1 /* SCHStoryInteractionControllerWordScrambler.m */; };
 		282782AA13A25EC700E968C1 /* SCHStoryInteractionWordScrambler_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2827827513A23DF100E968C1 /* SCHStoryInteractionWordScrambler_iPad.xib */; };
+		2830DAC213D822B6001366D9 /* SCHNavigationControllerForModalForm.m in Sources */ = {isa = PBXBuildFile; fileRef = 2830DAC113D822B6001366D9 /* SCHNavigationControllerForModalForm.m */; };
+		2830DAC313D822B6001366D9 /* SCHNavigationControllerForModalForm.m in Sources */ = {isa = PBXBuildFile; fileRef = 2830DAC113D822B6001366D9 /* SCHNavigationControllerForModalForm.m */; };
 		2848D34613A0C647007DD45F /* SCHStoryInteractionControllerTitleTwister.m in Sources */ = {isa = PBXBuildFile; fileRef = 2848D34513A0C647007DD45F /* SCHStoryInteractionControllerTitleTwister.m */; };
 		284EF24413BC4CDF00F9BD5A /* SCHBookIdentifier.m in Sources */ = {isa = PBXBuildFile; fileRef = 284EF24313BC4CDF00F9BD5A /* SCHBookIdentifier.m */; };
 		284EF24513BC4CDF00F9BD5A /* SCHBookIdentifier.m in Sources */ = {isa = PBXBuildFile; fileRef = 284EF24313BC4CDF00F9BD5A /* SCHBookIdentifier.m */; };
@@ -1577,6 +1579,8 @@
 		2827827513A23DF100E968C1 /* SCHStoryInteractionWordScrambler_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionWordScrambler_iPad.xib; sourceTree = "<group>"; };
 		2827827813A241E100E968C1 /* SCHStoryInteractionControllerWordScrambler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionControllerWordScrambler.h; sourceTree = "<group>"; };
 		2827827913A241E100E968C1 /* SCHStoryInteractionControllerWordScrambler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionControllerWordScrambler.m; sourceTree = "<group>"; };
+		2830DAC013D822B6001366D9 /* SCHNavigationControllerForModalForm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHNavigationControllerForModalForm.h; path = Shared/SCHNavigationControllerForModalForm.h; sourceTree = "<group>"; };
+		2830DAC113D822B6001366D9 /* SCHNavigationControllerForModalForm.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHNavigationControllerForModalForm.m; path = Shared/SCHNavigationControllerForModalForm.m; sourceTree = "<group>"; };
 		2848D34413A0C647007DD45F /* SCHStoryInteractionControllerTitleTwister.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionControllerTitleTwister.h; sourceTree = "<group>"; };
 		2848D34513A0C647007DD45F /* SCHStoryInteractionControllerTitleTwister.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionControllerTitleTwister.m; sourceTree = "<group>"; };
 		284EF24213BC4CDF00F9BD5A /* SCHBookIdentifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHBookIdentifier.h; sourceTree = "<group>"; };
@@ -4211,6 +4215,8 @@
 				28BF26EE13D5A15400535A82 /* SCHSetupBookshelvesViewController.m */,
 				28D2AA0C13D6E8F700BEB359 /* SCHDownloadDictionaryViewController.h */,
 				28D2AA0D13D6E8F700BEB359 /* SCHDownloadDictionaryViewController.m */,
+				2830DAC013D822B6001366D9 /* SCHNavigationControllerForModalForm.h */,
+				2830DAC113D822B6001366D9 /* SCHNavigationControllerForModalForm.m */,
 			);
 			name = "Settings Controller";
 			sourceTree = "<group>";
@@ -6125,6 +6131,7 @@
 				28BF26F013D5A15400535A82 /* SCHSetupBookshelvesViewController.m in Sources */,
 				28D2AA0E13D6E8F700BEB359 /* SCHDownloadDictionaryViewController.m in Sources */,
 				28E6BCF113D72C7500A5C9E3 /* SCHBaseSetupViewController.m in Sources */,
+				2830DAC213D822B6001366D9 /* SCHNavigationControllerForModalForm.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6418,6 +6425,7 @@
 				28BF26F113D5A15400535A82 /* SCHSetupBookshelvesViewController.m in Sources */,
 				28D2AA0F13D6E8F700BEB359 /* SCHDownloadDictionaryViewController.m in Sources */,
 				28E6BCF213D72C7500A5C9E3 /* SCHBaseSetupViewController.m in Sources */,
+				2830DAC313D822B6001366D9 /* SCHNavigationControllerForModalForm.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

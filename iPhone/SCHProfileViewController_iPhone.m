@@ -114,7 +114,6 @@ static const CGFloat kProfilePhoneTableOffsetLandscape = 20.0f;
 - (void)viewDidAppear:(BOOL)animated 
 {
     [super viewDidAppear:animated];
-    [self performLogin];
 }
     
 - (void)performLogin
