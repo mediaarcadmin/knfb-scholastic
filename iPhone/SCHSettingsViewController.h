@@ -7,8 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <CoreData/CoreData.h>
 #import "SCHDrmRegistrationSessionDelegate.h"
+#import "SCHBaseSetupViewController.h"
 
 @class SCHCustomToolbar;
 
@@ -16,16 +16,27 @@
 - (void)dismissSettingsForm;
 @end
 
-@interface SCHSettingsViewController : UIViewController <SCHDrmRegistrationSessionDelegate, UIAlertViewDelegate>  
+@interface SCHSettingsViewController : SCHBaseSetupViewController <SCHDrmRegistrationSessionDelegate, UIAlertViewDelegate>  
 {}
 
 @property (nonatomic, retain) IBOutlet SCHCustomToolbar *topBar;
-@property (nonatomic, retain) IBOutlet UITableView *tableView;
 @property (nonatomic, retain) IBOutlet UIImageView *backgroundView;
+@property (nonatomic, retain) IBOutlet UIButton *manageBooksButton;
+@property (nonatomic, retain) IBOutlet UIButton *deregisterDeviceButton;
+@property (nonatomic, retain) IBOutlet UIButton *updateBooksButton;
+@property (nonatomic, retain) IBOutlet UIButton *downloadDictionaryButton;
+@property (nonatomic, retain) IBOutlet UISwitch *spaceSaverSwitch;
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, retain) SCHDrmRegistrationSession* drmRegistrationSession;
 @property (nonatomic, assign) id<SCHSettingsViewControllerDelegate> settingsDelegate;
 
 - (IBAction)dismissModalSettingsController:(id)sender;
+- (IBAction)manageBooks:(id)sender;
+- (IBAction)deregisterDevice:(id)sender;
+- (IBAction)updateBooks:(id)sender;
+- (IBAction)downloadDictionary:(id)sender;
+- (IBAction)showAboutView:(id)sender;
+- (IBAction)showPrivacyPolicy:(id)sender;
+- (IBAction)contactCustomerSupport:(id)sender;
 
 @end

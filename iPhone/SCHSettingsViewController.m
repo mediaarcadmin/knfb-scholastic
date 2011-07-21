@@ -28,7 +28,6 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation;
 - (void)releaseViewObjects;
-- (void)deregistration;
 - (void)resetLocalSettings;
 
 @end
@@ -36,9 +35,12 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 @implementation SCHSettingsViewController
 
 @synthesize topBar;
-@synthesize tableView;
+@synthesize manageBooksButton;
+@synthesize updateBooksButton;
+@synthesize deregisterDeviceButton;
+@synthesize downloadDictionaryButton;
+@synthesize spaceSaverSwitch;
 @synthesize backgroundView;
-
 @synthesize managedObjectContext;
 @synthesize drmRegistrationSession;
 @synthesize settingsDelegate;
@@ -48,7 +50,11 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 - (void)releaseViewObjects
 {
     [topBar release], topBar = nil;
-    [tableView release], tableView = nil;
+    [manageBooksButton release], manageBooksButton = nil;
+    [updateBooksButton release], updateBooksButton = nil;
+    [deregisterDeviceButton release], deregisterDeviceButton = nil;
+    [downloadDictionaryButton release], downloadDictionaryButton = nil;
+    [spaceSaverSwitch release], spaceSaverSwitch = nil;
     [backgroundView release], backgroundView = nil;
 }
 
@@ -69,8 +75,10 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 {
     [super viewDidLoad];
     
-    self.tableView.backgroundView = nil;
-    self.tableView.backgroundColor = [UIColor clearColor]; // Needed to avoid black corners
+    [self setButtonBackground:self.manageBooksButton];
+    [self setButtonBackground:self.updateBooksButton];
+    [self setButtonBackground:self.downloadDictionaryButton];
+    [self setButtonBackground:self.deregisterDeviceButton];
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
         self.navigationItem.title = NSLocalizedString(@"Back", @"");
@@ -78,7 +86,9 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
         CGRect logoFrame = logoImageView.bounds;
         logoFrame.size.height = self.navigationController.navigationBar.frame.size.height;
         logoImageView.frame = logoFrame;
-        logoImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin;
+        logoImageView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin
+                                          | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleHeight
+                                          | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin);
         logoImageView.contentMode = UIViewContentModeScaleAspectFit;
         self.navigationItem.titleView = logoImageView;
         [logoImageView release];
@@ -95,6 +105,12 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 {
     [super viewWillAppear:animated];
     [self setupAssetsForOrientation:self.interfaceOrientation];
+    
+    NSNumber *spaceSaver = [[NSUserDefaults standardUserDefaults] objectForKey:@"kSCHSpaceSaverMode"];
+    self.spaceSaverSwitch.on = [spaceSaver boolValue];
+    
+    SCHDictionaryProcessingState state = [[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryProcessingState];
+    self.downloadDictionaryButton.enabled =  (state == SCHDictionaryProcessingStateUserSetup || state == SCHDictionaryProcessingStateUserDeclined);
 }
 
 #pragma mark - Orientation methods
@@ -133,30 +149,15 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
 - (IBAction)dismissModalSettingsController:(id)sender
 {
+    [[NSUserDefaults standardUserDefaults] setBool:self.spaceSaverSwitch.on forKey:@"kSCHSpaceSaverMode"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+
     [self.settingsDelegate dismissSettingsForm];
 }
 
-#pragma mark - Switch Changes
+#pragma mark - Actions
 
-- (void)spaceSwitchChanged:(UISwitch *)sender
-{
-	NSNumber *currentValue = [[NSUserDefaults standardUserDefaults] objectForKey:@"kSCHSpaceSaverMode"];
-	
-	if (!currentValue) {
-		BOOL newValue = [sender isOn];
-		[[NSUserDefaults standardUserDefaults] setBool:newValue forKey:@"kSCHSpaceSaverMode"];
-		[[NSUserDefaults standardUserDefaults] synchronize];
-		return;
-	}
-	
-	BOOL newValue = !([currentValue boolValue]);
-	[[NSUserDefaults standardUserDefaults] setBool:newValue forKey:@"kSCHSpaceSaverMode"];
-	[[NSUserDefaults standardUserDefaults] synchronize];
-}
-
-#pragma mark - Deregistration
-
-- (void)deregistration 
+- (IBAction)deregisterDevice:(id)sender 
 {
     UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Confirmation", @"Confirmation") 
                                                          message:NSLocalizedString(@"This will remove all books and settings.", nil)
@@ -181,126 +182,36 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     }
 }
 
-#pragma mark - Table view data source
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+- (IBAction)showPrivacyPolicy:(id)sender
 {
-    return(4);
+    SCHPrivacyPolicyViewController *privacyController = [[SCHPrivacyPolicyViewController alloc] init];
+    [self.navigationController pushViewController:privacyController animated:YES];
+    [privacyController release];
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
+- (IBAction)showAboutView:(id)sender
 {
-    return(1);
+    SCHAboutViewController *aboutController = [[SCHAboutViewController alloc] init];
+    [self.navigationController pushViewController:aboutController animated:YES];
+    [aboutController release];
 }
 
-- (UIView *)tableView:(UITableView *)aTableView viewForFooterInSection:(NSInteger)section
+- (IBAction)contactCustomerSupport:(id)sender
 {
-    if (section != 1) {
-        return nil;
-    }
-    
-    CGRect footerFrame = CGRectMake(0, 0, CGRectGetWidth(aTableView.bounds), 82);
-    UIView *containerView = [[UIView alloc] initWithFrame:footerFrame];
-    UILabel *footerLabel = [[UILabel alloc] initWithFrame:CGRectInset(footerFrame, 10, 8)];
-    
-    footerLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleHeight;
-    footerLabel.text =  NSLocalizedString(@"Space Saver Mode allows you to download individual books - turn it off to automatically download all books.", @"");
-    footerLabel.minimumFontSize = 11;
-    footerLabel.numberOfLines = 3;
-    footerLabel.adjustsFontSizeToFitWidth = YES;
-    footerLabel.backgroundColor = [UIColor clearColor];
-    footerLabel.textColor = [UIColor SCHDarkBlue1Color];
-    footerLabel.shadowColor = [UIColor whiteColor];
-    footerLabel.shadowOffset = CGSizeMake(0, -1);
-    footerLabel.textAlignment = UITextAlignmentCenter;
-    [containerView addSubview:footerLabel];
-    [footerLabel release], footerLabel = nil;
-    
-    return([containerView autorelease]);
 }
 
-- (CGFloat)tableView:(UITableView *)aTableView heightForFooterInSection:(NSInteger)section
+- (IBAction)manageBooks:(id)sender
 {
-    if (section != 1) {
-        return(aTableView.sectionFooterHeight);
-    }
-    
-    return(82);
 }
 
-- (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath 
-{    
-    static NSString *CellIdentifier = @"Cell";
-    
-    UITableViewCell *cell =  (UITableViewCell*)[aTableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    
-    if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
-    }
-    
-    switch ([indexPath section]) {
-        case 0: {
-            cell.accessoryView = nil;
-            cell.textLabel.textAlignment = UITextAlignmentLeft;
-            if (LOCALDEBUG) {
-                cell.textLabel.text = NSLocalizedString(@"Reset Content and Settings", @"");
-            } else {
-                cell.textLabel.text = NSLocalizedString(@"Deregister This Device", @"");
-            }
-            cell.selectionStyle = UITableViewCellSelectionStyleBlue;
-        } break;
-        case 1: {
-            UISwitch *switchview = [[UISwitch alloc] initWithFrame:CGRectZero];
-            BOOL currentValue = [[NSUserDefaults standardUserDefaults] boolForKey:@"kSCHSpaceSaverMode"];
-            [switchview setOn:currentValue];
-            [switchview addTarget:self action:@selector(spaceSwitchChanged:) forControlEvents:UIControlEventValueChanged];
-            cell.accessoryView = switchview;
-            [switchview release], switchview = nil;
-            
-            cell.textLabel.textAlignment = UITextAlignmentLeft;
-            cell.textLabel.text = NSLocalizedString(@"Space Saver Mode", @"");
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        } break;  
-        case 2: {
-            cell.accessoryView = nil;
-            cell.textLabel.textAlignment = UITextAlignmentLeft;
-            cell.textLabel.text = NSLocalizedString(@"Privacy Policy", @"");
-            cell.selectionStyle = UITableViewCellSelectionStyleBlue;
-        } break;
-        case 3: {
-            cell.accessoryView = nil;
-            cell.textLabel.textAlignment = UITextAlignmentLeft;
-            cell.textLabel.text = NSLocalizedString(@"About", @"");
-            cell.selectionStyle = UITableViewCellSelectionStyleBlue;
-        } break;  
-        default:
-            break;
-    }
-
-    return(cell);
+- (IBAction)updateBooks:(id)sender
+{
 }
 
-- (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+- (IBAction)downloadDictionary:(id)sender
 {
-    switch ([indexPath section]) {
-        case 0: {
-            [self deregistration];
-        } break;
-        case 2: {
-			SCHPrivacyPolicyViewController *privacyController = [[SCHPrivacyPolicyViewController alloc] init];
-			[self.navigationController pushViewController:privacyController animated:YES];
-			[privacyController release];
-        } break;
-        case 3: {
-			SCHAboutViewController *aboutController = [[SCHAboutViewController alloc] init];
-			[self.navigationController pushViewController:aboutController animated:YES];
-			[aboutController release];
-        } break;
-        default:
-            break;
-    }
-    
-    [aTableView deselectRowAtIndexPath:indexPath animated:YES];
+    [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNeedsManifest];
+    self.downloadDictionaryButton.enabled = NO;
 }
 
 #pragma mark - DRM Registration Session Delegate methods
