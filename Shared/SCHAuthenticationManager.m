@@ -20,8 +20,6 @@
 
 #import "SCHNonDRMAuthenticationManager.h"
 
-static SCHAuthenticationManager *sharedAuthenticationManager = nil;
-
 NSString * const kSCHAuthenticationManagerDeviceKey = @"AuthenticationManager.DeviceKey";
 
 struct AuthenticateWithUserNameParameters 
@@ -33,7 +31,6 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
 
 @interface SCHAuthenticationManager ()
 
-+ (SCHAuthenticationManager *)sharedAuthenticationManagerOnMainThread;
 - (void)aTokenOnMainThread;
 - (void)authenticateWithUserNameOnMainThread:(NSValue *)parameters;
 - (void)hasUsernameAndPasswordOnMainThread:(NSValue *)returnValue;
@@ -61,17 +58,21 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
 
 + (SCHAuthenticationManager *)sharedAuthenticationManager
 {
-    if (sharedAuthenticationManager == nil) {
-        // we block until the selector completes to make sure we always have the object before use
-        [SCHAuthenticationManager performSelectorOnMainThread:@selector(sharedAuthenticationManagerOnMainThread) 
-                                                   withObject:nil 
-                                                waitUntilDone:YES];
-    }
+    static dispatch_once_t pred;
+    static SCHAuthenticationManager *sharedAuthenticationManager = nil;
+    
+    dispatch_once(&pred, ^{
+#if NONDRMAUTHENTICATION
+        sharedAuthenticationManager = [[SCHNonDRMAuthenticationManager allocWithZone:NULL] init];
+#else
+        sharedAuthenticationManager = [[super allocWithZone:NULL] init];
+#endif
+    });
     
     return(sharedAuthenticationManager);
 }
 
-#pragma mark - Object lifecycle
+#pragma mark - Object lifecycle 
 
 - (id)init
 {
@@ -155,6 +156,15 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
                         waitUntilDone:NO];
 }
 
+- (void)clearAppProcessing
+{
+    // removeObjectForKey does not change the value...
+    [[NSUserDefaults standardUserDefaults] setObject:nil forKey:kSCHAuthenticationManagerDeviceKey];
+    [[SCHURLManager sharedURLManager] clear];
+    [[SCHProcessingManager sharedProcessingManager] cancelAllOperations];                
+    [[SCHSyncManager sharedSyncManager] clear];    
+}
+
 #pragma mark - Accessor methods
 
 - (NSString *)aToken
@@ -175,19 +185,6 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
 }
 
 #pragma mark - Private methods
-
-+ (SCHAuthenticationManager *)sharedAuthenticationManagerOnMainThread
-{
-    if (sharedAuthenticationManager == nil) {
-#if NONDRMAUTHENTICATION
-        sharedAuthenticationManager = [[SCHNonDRMAuthenticationManager allocWithZone:NULL] init];
-#else
-        sharedAuthenticationManager = [[super allocWithZone:NULL] init];
-#endif
-    }
-    
-    return(sharedAuthenticationManager);
-}
 
 - (void)aTokenOnMainThread
 {
@@ -238,6 +235,8 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
     NSString *storedUsername = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUsername];
     NSString *storedPassword = [SFHFKeychainUtils getPasswordForUsername:storedUsername andServiceName:kSCHAuthenticationManagerServiceName error:nil];
     NSString *deviceKey = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerDeviceKey];	
+    
+    NSLog(@"Authenticating %@ with %@", storedUsername, deviceKey);
     
     if (waitingOnResponse == NO) {
         if ([[Reachability reachabilityForInternetConnection] isReachable] == YES) {
@@ -405,18 +404,17 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
 
 - (void)registrationSession:(SCHDrmRegistrationSession *)registrationSession didComplete:(NSString *)deviceKey
 {
-    if (deviceKey != nil ) {
+    if (deviceKey != nil) {
         [[NSUserDefaults standardUserDefaults] setObject:deviceKey 
                                                   forKey:kSCHAuthenticationManagerDeviceKey];
         [libreAccessWebService authenticateDevice:deviceKey forUserKey:nil];
     }
     else {
         // Successful deregistration
-        // removeObjectForKey does not change the value...
-        [[NSUserDefaults standardUserDefaults] setObject:nil forKey:kSCHAuthenticationManagerDeviceKey];
-        [[SCHURLManager sharedURLManager] clear];
-        [[SCHProcessingManager sharedProcessingManager] cancelAllOperations];                
-        [[SCHSyncManager sharedSyncManager] clear];
+        [self clearAppProcessing];
+        [[NSNotificationCenter defaultCenter] postNotificationName:SCHAuthenticationManagerDRMDeregistrationNotification
+                                                            object:self 
+                                                          userInfo:nil];		        
     }
     self.drmRegistrationSession = nil;
 }

@@ -46,15 +46,11 @@
     [super viewDidLoad];
 }  
 
-- (void)viewDidUnload 
+- (void)performLogin
 {
-    [super viewDidUnload];
+    // overide in sub classes
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-}
 
 - (void)viewDidAppear:(BOOL)animated 
 {

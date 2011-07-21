@@ -1425,7 +1425,9 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 {
 	if (object != nil && intoObject != nil) {
 		intoObject.ISBN = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceContentIdentifier]];
-		intoObject.Format = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceFormat]];
+        // hard coded to XPS, same as the windows application
+//		intoObject.Format = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceFormat]];
+        intoObject.Format = @"XPS";
 		intoObject.IdentifierType = [[object valueForKey:kSCHLibreAccessWebServiceContentIdentifierType] contentIdentifierTypeValue];
 		intoObject.Qualifier = [[object valueForKey:kSCHLibreAccessWebServiceDRMQualifier] DRMQualifierValue];
 	}

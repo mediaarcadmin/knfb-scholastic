@@ -160,6 +160,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 	
 	if ([notification.name compare:kSCHAuthenticationManagerSuccess] == NSOrderedSame) {
 		[[SCHSyncManager sharedSyncManager] firstSync];
+        [self.loginController stopShowingProgress];        
         if (self.parentViewController.parentViewController != nil) {
             [self.parentViewController.parentViewController dismissModalViewControllerAnimated:YES];
         }
@@ -349,17 +350,13 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
 - (void)registrationSession:(SCHDrmRegistrationSession *)registrationSession didComplete:(NSString *)deviceKey
 {
-    if ( deviceKey == nil ) {
-        // removeObjectForKey does not change the value...
-        [[NSUserDefaults standardUserDefaults] setObject:nil forKey:kSCHAuthenticationManagerDeviceKey];
-		[[SCHURLManager sharedURLManager] clear];
-        [[SCHProcessingManager sharedProcessingManager] cancelAllOperations];                
-		[[SCHSyncManager sharedSyncManager] clear];
+    if (deviceKey == nil) {
+        [[SCHAuthenticationManager sharedAuthenticationManager] clearAppProcessing];
         [self login];
         [self.navigationController popViewControllerAnimated:NO];
+    } else {
+        NSLog(@"Unknown DRM error: device key value returned from successful deregistration.");
     }
-    else
-        NSLog(@"Unknown DRM error:  device key value returned from successful deregistration.");
     self.drmRegistrationSession = nil;
 }
 

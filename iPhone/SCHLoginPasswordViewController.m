@@ -125,6 +125,7 @@
 {
     [super viewWillAppear:animated];
     [self setupAssetsForOrientation:[[UIApplication sharedApplication] statusBarOrientation]];
+    [self clearFields];
     
 }
 
@@ -152,10 +153,12 @@
 
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation
 {
-
     CGRect barFrame       = self.topBar.frame;
     UIImage *toolbarImage = nil;
     UIColor *borderColor  = nil;
+    
+    barFrame.origin = CGPointZero;
+    barFrame.size.width = CGRectGetWidth(self.view.bounds);
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         barFrame.size.height = 44;
@@ -241,14 +244,17 @@
 - (IBAction)actionButtonAction:(id)sender
 {
     NSAssert(self.actionBlock != nil, @"Action block must be set!");
-    
-    if (self.actionBlock) {
-        self.actionBlock();
-    }
-    
+
+    [self.topField endEditing:YES];
+    [self.bottomField endEditing:YES];
+
     if (self.controllerType == kSCHControllerLoginView) {
         [self startShowingProgress];
     }
+    
+    if (self.actionBlock) {
+        self.actionBlock();
+    }    
 }
 
 - (IBAction)cancelButtonAction:(id)sender

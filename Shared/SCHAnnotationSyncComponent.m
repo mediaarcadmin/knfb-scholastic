@@ -307,8 +307,7 @@
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
 	
 	[fetchRequest setEntity:[NSEntityDescription entityForName:kSCHAnnotationsItem inManagedObjectContext:self.managedObjectContext]];	
-	NSArray *changedStates = [NSArray arrayWithObjects:[NSNumber numberWithStatus:kSCHStatusCreated], 
-                              [NSNumber numberWithStatus:kSCHStatusModified],
+	NSArray *changedStates = [NSArray arrayWithObjects:[NSNumber numberWithStatus:kSCHStatusModified],
                               [NSNumber numberWithStatus:kSCHStatusDeleted], nil];
     // we don't check all the annotations as if they have changed then the last page has also change
 	[fetchRequest setPredicate:[NSPredicate predicateWithFormat:

@@ -11,7 +11,7 @@
 
 @class SCHSettingsViewController;
 @class SCHLoginPasswordViewController;
-
+@class SCHSetupBookshelvesViewController;
 
 
 @interface SCHProfileViewController_iPhone : SCHProfileViewController_Shared <UITableViewDelegate> {
@@ -24,6 +24,7 @@
 @property (nonatomic, retain) IBOutlet SCHSettingsViewController *settingsController;
 @property (nonatomic, retain) IBOutlet SCHLoginPasswordViewController *loginController;
 @property (nonatomic, retain) IBOutlet SCHLoginPasswordViewController *profilePasswordController;
+@property (nonatomic, retain) IBOutlet SCHSetupBookshelvesViewController *setupBookshelvesViewController;
 
 
 @end

@@ -12,8 +12,11 @@
 @class SCHBookShelfViewController_iPad;
 @class SCHLoginPasswordViewController;
 @class SCHCustomNavigationBar;
+@class SCHSetupBookshelvesViewController;
+@class SCHSettingsViewController;
+@class SCHDownloadDictionaryViewController;
 
-@interface SCHProfileViewController_iPad : SCHProfileViewController_Shared <UITableViewDelegate> {
+@interface SCHProfileViewController_iPad : SCHProfileViewController_Shared <UITableViewDelegate, UINavigationControllerDelegate> {
     
     UINavigationController *settingsNavigationController;
 }
@@ -26,6 +29,9 @@
 
 @property (nonatomic, retain) IBOutlet SCHLoginPasswordViewController *loginPasswordController;
 @property (nonatomic, retain) IBOutlet SCHLoginPasswordViewController *profilePasswordController;
-@property (nonatomic, retain) IBOutlet UINavigationController *settingsNavController;
+@property (nonatomic, retain) IBOutlet UINavigationController *modalNavigationController;
+@property (nonatomic, retain) IBOutlet SCHSettingsViewController *settingsViewController;
+@property (nonatomic, retain) IBOutlet SCHSetupBookshelvesViewController *setupBookshelvesViewController;
+@property (nonatomic, retain) IBOutlet SCHDownloadDictionaryViewController *downloadDictionaryViewController;
 
 @end

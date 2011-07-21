@@ -8,6 +8,7 @@
 
 #import "SCHProfileViewController_iPhone.h"
 #import "SCHLoginPasswordViewController.h"
+#import "SCHSetupBookshelvesViewController.h"
 #import "SCHAuthenticationManager.h"
 #import "SCHBookShelfViewController.h"
 #import "SCHSettingsViewController.h"
@@ -47,6 +48,7 @@ static const CGFloat kProfilePhoneTableOffsetLandscape = 20.0f;
 @synthesize settingsController;
 @synthesize loginController;
 @synthesize parentPasswordController;
+@synthesize setupBookshelvesViewController;
 
 #pragma mark - Object lifecycle
 
@@ -60,6 +62,7 @@ static const CGFloat kProfilePhoneTableOffsetLandscape = 20.0f;
     [profilePasswordController release], profilePasswordController = nil;
     [settingsController release], settingsController = nil;
     [loginController release], loginController = nil;    
+    [setupBookshelvesViewController release], setupBookshelvesViewController = nil;
 }
 
 - (void)dealloc 
@@ -111,10 +114,14 @@ static const CGFloat kProfilePhoneTableOffsetLandscape = 20.0f;
 - (void)viewDidAppear:(BOOL)animated 
 {
     [super viewDidAppear:animated];
+    [self performLogin];
+}
+    
+- (void)performLogin
+{
 #if !LOCALDEBUG	
 #if NONDRMAUTHENTICATION
 	SCHAuthenticationManager *authenticationManager = [SCHAuthenticationManager sharedAuthenticationManager];
-	
 	if ([authenticationManager isAuthenticated] == NO) {
 #else
     NSString *deviceKey = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerDeviceKey];
@@ -122,8 +129,7 @@ static const CGFloat kProfilePhoneTableOffsetLandscape = 20.0f;
 #endif
 		[self presentModalViewController:self.loginController animated:NO];	
 	}
-#endif
-    
+#endif        
 }
 
 #pragma mark - Orientation methods
@@ -228,6 +234,7 @@ static const CGFloat kProfilePhoneTableOffsetLandscape = 20.0f;
         
         [self.parentPasswordController clearFields]; 
     };   
+    
     [self presentModalViewController:self.parentPasswordController animated:YES];
 }
 

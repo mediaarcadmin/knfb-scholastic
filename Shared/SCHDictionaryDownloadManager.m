@@ -317,6 +317,11 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 	NSLog(@"**** Calling processDictionary with state %d...", state);
     
 	switch (state) {
+        case SCHDictionaryProcessingStateNotRequested:
+        {
+            // do nothing
+            return;
+        }
 		case SCHDictionaryProcessingStateNeedsManifest:
 		{
 			NSLog(@"needs manifest...");
@@ -614,6 +619,18 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
         processingState = [state.State intValue];
     }];
     return processingState;
+}
+
+- (BOOL)dictionaryDownloadStarted
+{
+    return [self dictionaryProcessingState] != SCHDictionaryProcessingStateNotRequested;
+}
+
+- (void)startDictionaryDownload
+{
+    if (![self dictionaryDownloadStarted]) {
+        [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNeedsManifest];
+    }
 }
 
 #pragma mark - Update Check
@@ -1279,7 +1296,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
             // otherwise, create a dictionary state object
             state = [NSEntityDescription insertNewObjectForEntityForName:kSCHAppDictionaryState 
                                                                             inManagedObjectContext:self.mainThreadManagedObjectContext];
-            state.State = [NSNumber numberWithInt:SCHDictionaryProcessingStateNeedsManifest];
+            state.State = [NSNumber numberWithInt:SCHDictionaryProcessingStateNotRequested];
         }
             
         block(state);
@@ -1289,7 +1306,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
         }
     };
     
-    if (dispatch_get_current_queue() == dispatch_get_main_queue()) {
+    if ([NSThread isMainThread]) {
         action();
     } else {
         dispatch_sync(dispatch_get_main_queue(), action);

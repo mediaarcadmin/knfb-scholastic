@@ -642,9 +642,9 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
             NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
             abort();
         }                
-        
-        [self.gridView setEditing:NO animated:YES];
 	}
+
+    [self.gridView setEditing:NO animated:YES];
 }
 
 - (void)gridView:(MRGridView *)gridView commitEditingStyle:(MRGridViewCellEditingStyle)editingStyle 

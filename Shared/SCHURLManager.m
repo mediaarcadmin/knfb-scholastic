@@ -16,11 +16,8 @@
 #import "SCHUserContentItem.h"
 #import "SCHBookIdentifier.h"
 
-static SCHURLManager *sharedURLManager = nil;
-
 @interface SCHURLManager ()
 
-+ (SCHURLManager *)sharedURLManagerOnMainThread;
 - (void)requestURLForBookOnMainThread:(SCHBookIdentifier *)bookIdentifier;
 - (void)clearOnMainThread;
 - (void)shakeTable;
@@ -51,10 +48,12 @@ static SCHURLManager *sharedURLManager = nil;
 
 + (SCHURLManager *)sharedURLManager
 {
-    if (sharedURLManager == nil) {
-        // we block until the selector completes to make sure we always have the object before use
-        [SCHURLManager performSelectorOnMainThread:@selector(sharedURLManagerOnMainThread) withObject:nil waitUntilDone:YES];
-    }
+    static dispatch_once_t pred;
+    static SCHURLManager *sharedURLManager = nil;
+    
+    dispatch_once(&pred, ^{
+        sharedURLManager = [[super allocWithZone:NULL] init];		
+    });
 	
     return(sharedURLManager);
 }
@@ -106,28 +105,19 @@ static SCHURLManager *sharedURLManager = nil;
 
 #pragma mark - Private methods
 
-+ (SCHURLManager *)sharedURLManagerOnMainThread
-{
-    if (sharedURLManager == nil) {
-        sharedURLManager = [[super allocWithZone:NULL] init];		
-    }
-	
-    return(sharedURLManager);
-}
-
 - (void)requestURLForBookOnMainThread:(SCHBookIdentifier *)bookIdentifier
 {	
 	if (bookIdentifier != nil) {
-		NSEntityDescription *entityDescription = [NSEntityDescription 
-												  entityForName:kSCHUserContentItem 
-												  inManagedObjectContext:self.managedObjectContext];
-		NSFetchRequest *fetchRequest = [entityDescription.managedObjectModel 
-										fetchRequestFromTemplateWithName:kSCHUserContentItemFetchWithContentIdentifier 
-										substitutionVariables:[NSDictionary 
-															   dictionaryWithObjectsAndKeys:bookIdentifier.isbn, kSCHUserContentItemCONTENT_IDENTIFIER,
-                                                               bookIdentifier.DRMQualifier, kSCHUserContentItemDRM_QUALIFIER, nil]];
-		
+        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+        
+        [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHContentMetadataItem 
+                                            inManagedObjectContext:self.managedObjectContext]];	
+        [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"ContentIdentifier == %@ AND DRMQualifier == %@", 
+                                    bookIdentifier.isbn, bookIdentifier.DRMQualifier]];
+        
 		NSArray *book = [self.managedObjectContext executeFetchRequest:fetchRequest error:nil];	
+        
+        [fetchRequest release], fetchRequest = nil;
 		
 		if ([book count] > 0) {
 			[table addObject:[book objectAtIndex:0]];
