@@ -382,6 +382,29 @@
     [self presentInHostView:host withInterfaceOrientation:self.interfaceOrientation];
 }
 
+- (void)resizeCurrentViewToSize: (CGSize) newSize
+{
+    dispatch_block_t setupViews = ^{
+        NSLog(@"Contents view frame: %@", NSStringFromCGRect(self.contentsView.frame));
+        self.contentsView.frame = CGRectMake(self.contentsView.frame.origin.x, self.contentsView.frame.origin.y, newSize.width, newSize.height);
+        [self setupGeometryForContainerView:self.containerView
+                             backgroundView:self.backgroundView
+                               contentsView:self.contentsView
+                                  titleView:self.titleView
+                                closeButton:self.closeButton
+                            readAloudButton:self.readAloudButton];
+        NSLog(@"Contents view frame: %@", NSStringFromCGRect(self.contentsView.frame));
+    };
+    
+//    setupViews();
+    
+    [UIView animateWithDuration:0.3
+                          delay:0
+                        options:UIViewAnimationOptionCurveEaseInOut
+                     animations:setupViews
+                     completion:nil];
+}
+
 - (void)setupGeometryForContainerView:(UIView *)container
                        backgroundView:(UIImageView *)background
                          contentsView:(UIView *)contents

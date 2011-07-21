@@ -196,7 +196,20 @@ enum ScratchState {
 - (void)askQuestion
 {
     self.controllerState = SCHStoryInteractionControllerStateAskingOpeningQuestion;
-    [self enqueueAudioWithPath:[(SCHStoryInteractionScratchAndSee *)self.storyInteraction whatDoYouSeeAudioPath] fromBundle:NO];
+
+    const BOOL iPad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
+    
+    if (iPad) {
+        // 282 to 380
+        [self resizeCurrentViewToSize:CGSizeMake(self.contentsView.frame.size.width, 380)];
+        
+    }
+
+    [self enqueueAudioWithPath:[(SCHStoryInteractionScratchAndSee *)self.storyInteraction whatDoYouSeeAudioPath] 
+                    fromBundle:NO 
+                    startDelay:0 
+        synchronizedStartBlock:nil
+          synchronizedEndBlock:nil];
     
     for (NSInteger i = 0; i < 3; ++i) {
         UIButton *button = [self.answerButtons objectAtIndex:i];
@@ -307,6 +320,15 @@ enum ScratchState {
                     startDelay:0 
         synchronizedStartBlock:^{
             self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause;
+            
+            const BOOL iPad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
+            
+            // 282 to 380
+            
+            if (iPad) {
+                [self resizeCurrentViewToSize:CGSizeMake(self.contentsView.frame.size.width, 282)];
+            }
+
         }
           synchronizedEndBlock:nil
      ];

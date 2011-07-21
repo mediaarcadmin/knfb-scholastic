@@ -118,6 +118,9 @@ typedef enum
 // switch to the next view in the NIB
 - (void)presentNextView;
 
+// resize the existing content view
+- (void)resizeCurrentViewToSize: (CGSize) newSize;
+
 // play the default audio sound for a button tap
 - (void)playDefaultButtonAudio;
 
