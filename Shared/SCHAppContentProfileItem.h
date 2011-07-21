@@ -1,5 +1,5 @@
 //
-//  SCHAppProfileBook.h
+//  SCHAppContentProfileItem.h
 //  Scholastic
 //
 //  Created by John S. Eddie on 18/03/2011.
@@ -13,11 +13,9 @@
 @class SCHContentProfileItem;
 @class SCHBookIdentifier;
 
-static NSString * const kSCHAppProfileBook = @"SCHAppProfileBook";
+static NSString * const kSCHAppContentProfileItem = @"SCHAppContentProfileItem";
 
-static NSString * const kSCHAppProfileBookOrder = @"Order";
-static NSString * const kSCHAppProfileBookISBN = @"ISBN";
-static NSString * const kSCHAppProfileBookDRMQualifier = @"DRMQualifier";
+static NSString * const kSCHAppContentProfileItemOrder = @"Order";
 
 @interface SCHAppContentProfileItem : NSManagedObject {
 

@@ -10,7 +10,7 @@
 #import <CoreData/CoreData.h>
 #import "SCHSyncEntity.h"
 
-@class SCHAppBookOrder;
+@class SCHAppContentProfileItem;
 @class SCHAppProfile;
 @class SCHContentProfileItem;
 @class SCHPrivateAnnotations;
@@ -52,17 +52,17 @@ typedef enum {
 @property (nonatomic, retain) NSString * UserKey;
 @property (nonatomic, retain) NSNumber * BookshelfStyle;
 @property (nonatomic, retain) NSString * LastName;
-@property (nonatomic, retain) NSSet* AppBookOrder;
 @property (nonatomic, retain) SCHAppProfile * AppProfile;
+@property (nonatomic, retain) NSSet * AppContentProfileItem;
 
 @property (nonatomic, readonly) NSSet *ContentProfileItem;
 @property (nonatomic, readonly) NSUInteger age;
 
+- (SCHAppContentProfileItem *)appContentProfileItemForBookIdentifier:(SCHBookIdentifier *)bookIdentifier;
 - (NSMutableArray *)allBookIdentifiers;
 - (SCHBookAnnotations *)annotationsForBook:(SCHBookIdentifier *)bookIdentifier;
 - (SCHBookStatistics *)newStatisticsForBook:(SCHBookIdentifier *)bookIdentifier;
 - (void)saveBookOrder:(NSArray *)books;
-- (void)clearBookOrder;
 - (NSString *)bookshelfName:(BOOL)shortName;
 - (void)setRawPassword:(NSString *)value;
 - (BOOL)hasPassword;
@@ -78,10 +78,10 @@ typedef enum {
 
 @interface SCHProfileItem (CoreDataGeneratedAccessors)
 
-- (void)addAppBookOrderObject:(SCHAppBookOrder *)value;
-- (void)removeAppBookOrderObject:(SCHAppBookOrder *)value;
-- (void)addAppBookOrder:(NSSet *)value;
-- (void)removeAppBookOrder:(NSSet *)value;
+- (void)addAppContentProfileItemObject:(SCHAppContentProfileItem *)value;
+- (void)removeAppContentProfileItemObject:(SCHAppContentProfileItem *)value;
+- (void)addAppContentProfileItem:(NSSet *)value;
+- (void)removeAppContentProfileItem:(NSSet *)value;
 
 @end
 

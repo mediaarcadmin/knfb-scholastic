@@ -1,5 +1,5 @@
 //
-//  SCHAppProfileBook.m
+//  SCHAppContentProfileItem.m
 //  Scholastic
 //
 //  Created by John S. Eddie on 18/03/2011.
