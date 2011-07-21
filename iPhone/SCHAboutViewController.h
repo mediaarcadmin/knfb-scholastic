@@ -7,10 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SCHBaseTextViewController.h"
 
-
-@interface SCHAboutViewController : UITableViewController<UIWebViewDelegate> {
-	
-}
+@interface SCHAboutViewController : SCHBaseTextViewController {}
 
 @end

@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "SCHProfileViewController_Shared.h"
-#import "SCHSettingsViewController.h"
+#import "SCHSettingsViewControllerDelegate.h"
 
 @class SCHBookShelfViewController_iPad;
 @class SCHLoginPasswordViewController;
