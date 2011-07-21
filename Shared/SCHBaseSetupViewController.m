@@ -6,14 +6,21 @@
 //  Copyright 2011 BitWink. All rights reserved.
 //
 
+#import <QuartzCore/QuartzCore.h>
 #import "SCHBaseSetupViewController.h"
-
 
 @implementation SCHBaseSetupViewController
 
 - (void)dealloc
 {
     [super dealloc];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self.navigationController.view.layer setBorderColor:[UIColor SCHRed3Color].CGColor];
+    [self.navigationController.view.layer setBorderWidth:2.0f];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

@@ -261,6 +261,7 @@ typedef enum {
 
 - (IBAction)doneButtonTapped:(id)sender
 {
+    [self playDefaultButtonAudio];    
     [self performSelector:@selector(removeFromHostView) withObject:nil afterDelay:0.5];
 }
 

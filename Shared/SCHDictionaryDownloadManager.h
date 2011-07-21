@@ -19,7 +19,8 @@ static char * const kSCHDictionaryManifestEntryColumnSeparator = "\t";
 
 typedef enum {
 	SCHDictionaryProcessingStateError = 0,
-    SCHDictionaryProcessingStateNotRequested,
+    SCHDictionaryProcessingStateUserSetup,
+    SCHDictionaryProcessingStateUserDeclined,
 	SCHDictionaryProcessingStateNotEnoughFreeSpace,
 	SCHDictionaryProcessingStateNeedsManifest,
 	SCHDictionaryProcessingStateManifestVersionCheck,
@@ -71,9 +72,6 @@ typedef enum {
 
 - (void)threadSafeUpdateDictionaryState:(SCHDictionaryProcessingState)processingState;
 - (SCHDictionaryProcessingState) dictionaryProcessingState;
-
-- (BOOL)dictionaryDownloadStarted;
-- (void)startDictionaryDownload;
 
 // parsing methods called by the parsing operation
 - (void) initialParseEntryTable;

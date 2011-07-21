@@ -22,6 +22,8 @@ static NSString * const kSCHAuthenticationManagerErrorDomain = @"AuthenticationM
 static NSInteger const kSCHAuthenticationManagerGeneralError = 2000;
 static NSInteger const kSCHAuthenticationManagerLoginError = 2001;
 
+extern NSString * const kSCHAuthenticationManagerDeviceKey;
+
 @interface SCHAuthenticationManager : NSObject <BITAPIProxyDelegate, SCHDrmRegistrationSessionDelegate>  
 {
 }

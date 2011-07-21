@@ -124,9 +124,18 @@
 - (void)viewWillAppear:(BOOL)animated 
 {
     [super viewWillAppear:animated];
+    [self stopShowingProgress];
     [self setupAssetsForOrientation:[[UIApplication sharedApplication] statusBarOrientation]];
     [self clearFields];
-    
+
+    UIColor *borderColor;
+    if (self.controllerType == kSCHControllerParentToolsView) {
+        borderColor = [UIColor SCHRed2Color];
+    } else {
+        borderColor = [UIColor SCHBlue1Color];
+    }
+    [self.navigationController.view.layer setBorderColor:borderColor.CGColor];
+    [self.navigationController.view.layer setBorderWidth:2.0f];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -245,8 +254,7 @@
 {
     NSAssert(self.actionBlock != nil, @"Action block must be set!");
 
-    [self.topField endEditing:YES];
-    [self.bottomField endEditing:YES];
+    [self.view endEditing:YES];
 
     if (self.controllerType == kSCHControllerLoginView) {
         [self startShowingProgress];
@@ -259,8 +267,7 @@
 
 - (IBAction)cancelButtonAction:(id)sender
 {
-	[self.topField resignFirstResponder];
-	[self.bottomField resignFirstResponder];
+    [self.view endEditing:YES];
     [self clearFields];
     
     if (self.cancelBlock) {

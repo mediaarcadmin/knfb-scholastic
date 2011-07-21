@@ -12,12 +12,14 @@
 #import "SCHAuthenticationManager.h"
 #import "SCHDrmSession.h"
 #import "SCHCustomNavigationBar.h"
+#import "SCHCustomToolbar.h"
 #import "SCHURLManager.h"
 #import "SCHSyncManager.h"
 #import "SCHAboutViewController.h"
 #import "SCHPrivacyPolicyViewController.h"
 #import <QuartzCore/QuartzCore.h>
 #import "SCHProcessingManager.h"
+#import "SCHDictionaryDownloadManager.h"
 #import "AppDelegate_Shared.h"
 
 extern NSString * const kSCHAuthenticationManagerDeviceKey;
@@ -32,18 +34,20 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 @end
 
 @implementation SCHSettingsViewController
+
+@synthesize topBar;
 @synthesize tableView;
 @synthesize backgroundView;
 
-@synthesize loginController;
 @synthesize managedObjectContext;
 @synthesize drmRegistrationSession;
+@synthesize settingsDelegate;
 
 #pragma mark - Object lifecycle
 
 - (void)releaseViewObjects
 {
-    [loginController release], loginController = nil;
+    [topBar release], topBar = nil;
     [tableView release], tableView = nil;
     [backgroundView release], backgroundView = nil;
 }
@@ -64,20 +68,10 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 - (void)viewDidLoad 
 {
     [super viewDidLoad];
-    [self.navigationController.navigationBar setTintColor:[UIColor SCHRed2Color]];
-
-    self.loginController.controllerType = kSCHControllerLoginView;
-    self.loginController.actionBlock = ^{
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(authenticationManager:) name:kSCHAuthenticationManagerSuccess object:nil];			
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(authenticationManager:) name:kSCHAuthenticationManagerFailure object:nil];					
-        
-        [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithUserName:[self.loginController username] withPassword:[self.loginController password]];
-    };    
     
     self.tableView.backgroundView = nil;
     self.tableView.backgroundColor = [UIColor clearColor]; // Needed to avoid black corners
     
-
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
         self.navigationItem.title = NSLocalizedString(@"Back", @"");
         UIImageView *logoImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo.png"]];
@@ -108,8 +102,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation
 {
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:
-         [UIImage imageNamed:@"admin-iphone-landscape-top-toolbar.png"]];
+        [self.topBar setBackgroundImage:[UIImage imageNamed:@"admin-iphone-landscape-top-toolbar.png"]];
         [self.backgroundView setImage:[UIImage imageNamed:@"plain-background-portrait.png"]];   
         [self.navigationController.view.layer setBorderColor:[UIColor SCHRed3Color].CGColor];
         [self.navigationController.view.layer setBorderWidth:2.0f];
@@ -140,43 +133,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
 - (IBAction)dismissModalSettingsController:(id)sender
 {
-    [self.parentViewController dismissModalViewControllerAnimated:YES];
-}
-
-#pragma mark - Login
-
-- (void)login 
-{
-    [self.loginController setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
-    [self.loginController setModalPresentationStyle:UIModalPresentationFormSheet];    
-	[self presentModalViewController:self.loginController animated:YES];		
-}
-
-#pragma mark - Authentication Manager
-
-- (void)authenticationManager:(NSNotification *)notification
-{
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	
-	if ([notification.name compare:kSCHAuthenticationManagerSuccess] == NSOrderedSame) {
-		[[SCHSyncManager sharedSyncManager] firstSync];
-        [self.loginController stopShowingProgress];        
-        if (self.parentViewController.parentViewController != nil) {
-            [self.parentViewController.parentViewController dismissModalViewControllerAnimated:YES];
-        }
-	} else {
-		NSError *error = [notification.userInfo objectForKey:kSCHAuthenticationManagerNSError];
-		if (error!= nil) {
-			UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") 
-																 message:[error localizedDescription]
-																delegate:nil 
-													   cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-													   otherButtonTitles:nil]; 
-			[errorAlert show]; 
-			[errorAlert release];
-		}	
-        [self.loginController stopShowingProgress];
-	}
+    [self.settingsDelegate dismissSettingsForm];
 }
 
 #pragma mark - Switch Changes
@@ -352,8 +309,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 {
     if (deviceKey == nil) {
         [[SCHAuthenticationManager sharedAuthenticationManager] clearAppProcessing];
-        [self login];
-        [self.navigationController popViewControllerAnimated:NO];
+        [self.settingsDelegate dismissSettingsForm];
     } else {
         NSLog(@"Unknown DRM error: device key value returned from successful deregistration.");
     }
@@ -377,6 +333,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 - (void)resetLocalSettings
 {
     [NSUserDefaults resetStandardUserDefaults];
+    [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateUserSetup];
     
 #if LOCALDEBUG
     AppDelegate_Shared *appDelegate = (AppDelegate_Shared *)[[UIApplication sharedApplication] delegate];

@@ -11,13 +11,24 @@
 #import "SCHProfileViewCell.h"
 
 @class SCHLoginPasswordViewController;
+@class SCHSetupBookshelvesViewController;
+@class SCHDownloadDictionaryViewController;
 
 @interface SCHProfileViewController_Shared : UIViewController <NSFetchedResultsControllerDelegate, UITableViewDataSource, UITableViewDelegate, SCHProfileViewCellDelegate> {
 }
 
+@property (nonatomic, retain) IBOutlet UINavigationController *modalNavigationController;
+@property (nonatomic, retain) IBOutlet SCHLoginPasswordViewController *loginPasswordController;
+@property (nonatomic, retain) IBOutlet SCHSetupBookshelvesViewController *setupBookshelvesViewController;
+@property (nonatomic, retain) IBOutlet SCHDownloadDictionaryViewController *downloadDictionaryViewController;
+
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
 
-- (void)performLogin;
+// for use by subclass
+- (void)releaseViewObjects;
+- (void)advanceToNextLoginStep;
+- (void)endLoginSequence;
+- (void)dismissKeyboard;
 
 @end
