@@ -684,7 +684,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     }
     
     [self updateBookState];
-    [self.xpsProvider reportReadingIfRequired];
         
     [self.readingView dismissFollowAlongHighlighter];  
     self.audioBookPlayer = nil;
