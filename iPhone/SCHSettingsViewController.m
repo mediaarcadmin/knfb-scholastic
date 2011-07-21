@@ -72,7 +72,6 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     self.tableView.backgroundView = nil;
     self.tableView.backgroundColor = [UIColor clearColor]; // Needed to avoid black corners
     
-
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
         self.navigationItem.title = NSLocalizedString(@"Back", @"");
         UIImageView *logoImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo.png"]];
