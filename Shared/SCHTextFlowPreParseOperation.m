@@ -104,6 +104,7 @@ static void pageFileXMLParsingStartElementHandler(void *ctx, const XML_Char *nam
         NSLog(@"Could not pre-parse TextFlow because TextFlow file did not exist at path: %@.", KNFBXPSTextFlowSectionsFile);
 
         [self updateBookWithFailure];
+        [xpsProvider reportReadingIfRequired];
         [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.identifier];
         
         [pool drain];
@@ -132,6 +133,7 @@ static void pageFileXMLParsingStartElementHandler(void *ctx, const XML_Char *nam
         if (!data) {
             NSLog(@"Could not pre-parse TextFlow because TextFlow file did not exist with name: %@.", [pageRange fileName]);
             [self updateBookWithFailure];
+            [xpsProvider reportReadingIfRequired];
             [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.identifier];
             [pool drain];
             return;
@@ -151,8 +153,6 @@ static void pageFileXMLParsingStartElementHandler(void *ctx, const XML_Char *nam
         [innerPool drain];
     }
 
-    [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.identifier];
-
     NSSortDescriptor *sortPageDescriptor = [[[NSSortDescriptor alloc] initWithKey:@"startPageIndex" ascending:YES] autorelease];
     NSArray *sortedRanges = [[pageRangesSet allObjects] sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortPageDescriptor]];
     
@@ -162,6 +162,9 @@ static void pageFileXMLParsingStartElementHandler(void *ctx, const XML_Char *nam
         [book setValue:[NSSet setWithSet:pageRangesSet] forKey:kSCHAppBookTextFlowPageRanges];
         [book setValue:[NSNumber numberWithInteger:[[sortedRanges lastObject] endPageIndex]] forKey:kSCHAppBookLayoutPageEquivalentCount];
     }];
+    
+    [xpsProvider reportReadingIfRequired];
+    [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.identifier];
     
     [self updateBookWithSuccess];
     
