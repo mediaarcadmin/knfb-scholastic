@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "SCHProfileViewController_Shared.h"
+#import "SCHSettingsViewControllerDelegate.h"
 
 @class SCHBookShelfViewController_iPad;
 @class SCHLoginPasswordViewController;
@@ -16,7 +17,7 @@
 @class SCHSettingsViewController;
 @class SCHDownloadDictionaryViewController;
 
-@interface SCHProfileViewController_iPad : SCHProfileViewController_Shared <UITableViewDelegate, UINavigationControllerDelegate> {
+@interface SCHProfileViewController_iPad : SCHProfileViewController_Shared <UITableViewDelegate, UINavigationControllerDelegate, SCHSettingsViewControllerDelegate> {
     
     UINavigationController *settingsNavigationController;
 }
@@ -27,11 +28,7 @@
 @property (nonatomic, retain) IBOutlet UIView *containerView;
 @property (nonatomic, retain) IBOutlet UIImageView *backgroundView;
 
-@property (nonatomic, retain) IBOutlet SCHLoginPasswordViewController *loginPasswordController;
 @property (nonatomic, retain) IBOutlet SCHLoginPasswordViewController *profilePasswordController;
-@property (nonatomic, retain) IBOutlet UINavigationController *modalNavigationController;
 @property (nonatomic, retain) IBOutlet SCHSettingsViewController *settingsViewController;
-@property (nonatomic, retain) IBOutlet SCHSetupBookshelvesViewController *setupBookshelvesViewController;
-@property (nonatomic, retain) IBOutlet SCHDownloadDictionaryViewController *downloadDictionaryViewController;
 
 @end

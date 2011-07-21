@@ -7,18 +7,18 @@
 //
 
 #import "SCHSettingsViewController.h"
-
+#import "SCHSettingsViewControllerDelegate.h"
 #import "SCHLoginPasswordViewController.h"
-#import "SCHAuthenticationManager.h"
-#import "SCHDrmSession.h"
 #import "SCHCustomNavigationBar.h"
+#import "SCHCustomToolbar.h"
 #import "SCHURLManager.h"
 #import "SCHSyncManager.h"
 #import "SCHAboutViewController.h"
 #import "SCHPrivacyPolicyViewController.h"
-#import <QuartzCore/QuartzCore.h>
 #import "SCHProcessingManager.h"
+#import "SCHDictionaryDownloadManager.h"
 #import "AppDelegate_Shared.h"
+#import "SCHDeregisterDeviceViewController.h"
 
 extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
@@ -26,25 +26,32 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation;
 - (void)releaseViewObjects;
-- (void)deregistration;
 - (void)resetLocalSettings;
 
 @end
 
 @implementation SCHSettingsViewController
-@synthesize tableView;
-@synthesize backgroundView;
 
-@synthesize loginController;
+@synthesize topBar;
+@synthesize manageBooksButton;
+@synthesize updateBooksButton;
+@synthesize deregisterDeviceButton;
+@synthesize downloadDictionaryButton;
+@synthesize spaceSaverSwitch;
+@synthesize backgroundView;
 @synthesize managedObjectContext;
-@synthesize drmRegistrationSession;
+@synthesize settingsDelegate;
 
 #pragma mark - Object lifecycle
 
 - (void)releaseViewObjects
 {
-    [loginController release], loginController = nil;
-    [tableView release], tableView = nil;
+    [topBar release], topBar = nil;
+    [manageBooksButton release], manageBooksButton = nil;
+    [updateBooksButton release], updateBooksButton = nil;
+    [deregisterDeviceButton release], deregisterDeviceButton = nil;
+    [downloadDictionaryButton release], downloadDictionaryButton = nil;
+    [spaceSaverSwitch release], spaceSaverSwitch = nil;
     [backgroundView release], backgroundView = nil;
 }
 
@@ -53,7 +60,6 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
 	[managedObjectContext release], managedObjectContext = nil;
-    [drmRegistrationSession release], drmRegistrationSession = nil;
     
     [self releaseViewObjects];
     [super dealloc];
@@ -64,31 +70,29 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 - (void)viewDidLoad 
 {
     [super viewDidLoad];
-    [self.navigationController.navigationBar setTintColor:[UIColor SCHRed2Color]];
-
-    self.loginController.controllerType = kSCHControllerLoginView;
-    self.loginController.actionBlock = ^{
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(authenticationManager:) name:kSCHAuthenticationManagerSuccess object:nil];			
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(authenticationManager:) name:kSCHAuthenticationManagerFailure object:nil];					
-        
-        [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithUserName:[self.loginController username] withPassword:[self.loginController password]];
-    };    
     
-    self.tableView.backgroundView = nil;
-    self.tableView.backgroundColor = [UIColor clearColor]; // Needed to avoid black corners
+    [self setButtonBackground:self.manageBooksButton];
+    [self setButtonBackground:self.updateBooksButton];
+    [self setButtonBackground:self.downloadDictionaryButton];
+    [self setButtonBackground:self.deregisterDeviceButton];
     
-
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
         self.navigationItem.title = NSLocalizedString(@"Back", @"");
         UIImageView *logoImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo.png"]];
         CGRect logoFrame = logoImageView.bounds;
         logoFrame.size.height = self.navigationController.navigationBar.frame.size.height;
         logoImageView.frame = logoFrame;
-        logoImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin;
+        logoImageView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin
+                                          | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleHeight
+                                          | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin);
         logoImageView.contentMode = UIViewContentModeScaleAspectFit;
         self.navigationItem.titleView = logoImageView;
         [logoImageView release];
     }
+    
+#if LOCALDEBUG
+    [self.deregisterDeviceButton setTitle:@"Reset Content and Settings" forState:UIControlStateNormal];
+#endif
 }
 
 - (void)viewDidUnload 
@@ -101,6 +105,12 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 {
     [super viewWillAppear:animated];
     [self setupAssetsForOrientation:self.interfaceOrientation];
+    
+    NSNumber *spaceSaver = [[NSUserDefaults standardUserDefaults] objectForKey:@"kSCHSpaceSaverMode"];
+    self.spaceSaverSwitch.on = [spaceSaver boolValue];
+    
+    SCHDictionaryProcessingState state = [[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryProcessingState];
+    self.downloadDictionaryButton.enabled =  (state == SCHDictionaryProcessingStateUserSetup || state == SCHDictionaryProcessingStateUserDeclined);
 }
 
 #pragma mark - Orientation methods
@@ -108,8 +118,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation
 {
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:
-         [UIImage imageNamed:@"admin-iphone-landscape-top-toolbar.png"]];
+        [self.topBar setBackgroundImage:[UIImage imageNamed:@"admin-iphone-landscape-top-toolbar.png"]];
         [self.backgroundView setImage:[UIImage imageNamed:@"plain-background-portrait.png"]];   
         [self.navigationController.view.layer setBorderColor:[UIColor SCHRed3Color].CGColor];
         [self.navigationController.view.layer setBorderWidth:2.0f];
@@ -140,236 +149,57 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
 - (IBAction)dismissModalSettingsController:(id)sender
 {
-    [self.parentViewController dismissModalViewControllerAnimated:YES];
+    [[NSUserDefaults standardUserDefaults] setBool:self.spaceSaverSwitch.on forKey:@"kSCHSpaceSaverMode"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+
+    [self.settingsDelegate dismissSettingsForm];
 }
 
-#pragma mark - Login
+#pragma mark - Actions
 
-- (void)login 
+- (IBAction)deregisterDevice:(id)sender 
 {
-    [self.loginController setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
-    [self.loginController setModalPresentationStyle:UIModalPresentationFormSheet];    
-	[self presentModalViewController:self.loginController animated:YES];		
-}
-
-#pragma mark - Authentication Manager
-
-- (void)authenticationManager:(NSNotification *)notification
-{
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	
-	if ([notification.name compare:kSCHAuthenticationManagerSuccess] == NSOrderedSame) {
-		[[SCHSyncManager sharedSyncManager] firstSync:NO];
-        [self.loginController stopShowingProgress];        
-        if (self.parentViewController.parentViewController != nil) {
-            [self.parentViewController.parentViewController dismissModalViewControllerAnimated:YES];
-        }
-	} else {
-		NSError *error = [notification.userInfo objectForKey:kSCHAuthenticationManagerNSError];
-		if (error!= nil) {
-			UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") 
-																 message:[error localizedDescription]
-																delegate:nil 
-													   cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-													   otherButtonTitles:nil]; 
-			[errorAlert show]; 
-			[errorAlert release];
-		}	
-        [self.loginController stopShowingProgress];
-	}
-}
-
-#pragma mark - Switch Changes
-
-- (void)spaceSwitchChanged:(UISwitch *)sender
-{
-	NSNumber *currentValue = [[NSUserDefaults standardUserDefaults] objectForKey:@"kSCHSpaceSaverMode"];
-	
-	if (!currentValue) {
-		BOOL newValue = [sender isOn];
-		[[NSUserDefaults standardUserDefaults] setBool:newValue forKey:@"kSCHSpaceSaverMode"];
-		[[NSUserDefaults standardUserDefaults] synchronize];
-		return;
-	}
-	
-	BOOL newValue = !([currentValue boolValue]);
-	[[NSUserDefaults standardUserDefaults] setBool:newValue forKey:@"kSCHSpaceSaverMode"];
-	[[NSUserDefaults standardUserDefaults] synchronize];
-}
-
-#pragma mark - Deregistration
-
-- (void)deregistration 
-{
-    UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Confirmation", @"Confirmation") 
-                                                         message:NSLocalizedString(@"This will remove all books and settings.", nil)
-                                                        delegate:self 
-                                               cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
-                                               otherButtonTitles:NSLocalizedString(@"Continue", @""), nil]; 
-    [errorAlert show]; 
-    [errorAlert release];
-}
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if (buttonIndex != alertView.cancelButtonIndex) {
-#if !LOCALDEBUG
-        SCHDrmRegistrationSession* registrationSession = [[SCHDrmRegistrationSession alloc] init];
-        registrationSession.delegate = self;	
-        self.drmRegistrationSession = registrationSession;
-        [self.drmRegistrationSession deregisterDevice:[[SCHAuthenticationManager sharedAuthenticationManager] aToken]];
-        [registrationSession release]; 
+#if LOCALDEBUG
+    [self resetLocalSettings];
+    [self.settingsDelegate dismissSettingsForm];
+#else
+    SCHDeregisterDeviceViewController *vc = [[SCHDeregisterDeviceViewController alloc] init];
+    vc.settingsDelegate = self.settingsDelegate;
+    [self.navigationController pushViewController:vc animated:YES];
+    [vc release];
 #endif
-        [self resetLocalSettings];
-    }
 }
 
-#pragma mark - Table view data source
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+- (IBAction)showPrivacyPolicy:(id)sender
 {
-    return(4);
+    SCHPrivacyPolicyViewController *privacyController = [[SCHPrivacyPolicyViewController alloc] init];
+    [self.navigationController pushViewController:privacyController animated:YES];
+    [privacyController release];
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
+- (IBAction)showAboutView:(id)sender
 {
-    return(1);
+    SCHAboutViewController *aboutController = [[SCHAboutViewController alloc] init];
+    [self.navigationController pushViewController:aboutController animated:YES];
+    [aboutController release];
 }
 
-- (UIView *)tableView:(UITableView *)aTableView viewForFooterInSection:(NSInteger)section
+- (IBAction)contactCustomerSupport:(id)sender
 {
-    if (section != 1) {
-        return nil;
-    }
-    
-    CGRect footerFrame = CGRectMake(0, 0, CGRectGetWidth(aTableView.bounds), 82);
-    UIView *containerView = [[UIView alloc] initWithFrame:footerFrame];
-    UILabel *footerLabel = [[UILabel alloc] initWithFrame:CGRectInset(footerFrame, 10, 8)];
-    
-    footerLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleHeight;
-    footerLabel.text =  NSLocalizedString(@"Space Saver Mode allows you to download individual books - turn it off to automatically download all books.", @"");
-    footerLabel.minimumFontSize = 11;
-    footerLabel.numberOfLines = 3;
-    footerLabel.adjustsFontSizeToFitWidth = YES;
-    footerLabel.backgroundColor = [UIColor clearColor];
-    footerLabel.textColor = [UIColor SCHDarkBlue1Color];
-    footerLabel.shadowColor = [UIColor whiteColor];
-    footerLabel.shadowOffset = CGSizeMake(0, -1);
-    footerLabel.textAlignment = UITextAlignmentCenter;
-    [containerView addSubview:footerLabel];
-    [footerLabel release], footerLabel = nil;
-    
-    return([containerView autorelease]);
 }
 
-- (CGFloat)tableView:(UITableView *)aTableView heightForFooterInSection:(NSInteger)section
+- (IBAction)manageBooks:(id)sender
 {
-    if (section != 1) {
-        return(aTableView.sectionFooterHeight);
-    }
-    
-    return(82);
 }
 
-- (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath 
-{    
-    static NSString *CellIdentifier = @"Cell";
-    
-    UITableViewCell *cell =  (UITableViewCell*)[aTableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    
-    if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
-    }
-    
-    switch ([indexPath section]) {
-        case 0: {
-            cell.accessoryView = nil;
-            cell.textLabel.textAlignment = UITextAlignmentLeft;
-            if (LOCALDEBUG) {
-                cell.textLabel.text = NSLocalizedString(@"Reset Content and Settings", @"");
-            } else {
-                cell.textLabel.text = NSLocalizedString(@"Deregister This Device", @"");
-            }
-            cell.selectionStyle = UITableViewCellSelectionStyleBlue;
-        } break;
-        case 1: {
-            UISwitch *switchview = [[UISwitch alloc] initWithFrame:CGRectZero];
-            BOOL currentValue = [[NSUserDefaults standardUserDefaults] boolForKey:@"kSCHSpaceSaverMode"];
-            [switchview setOn:currentValue];
-            [switchview addTarget:self action:@selector(spaceSwitchChanged:) forControlEvents:UIControlEventValueChanged];
-            cell.accessoryView = switchview;
-            [switchview release], switchview = nil;
-            
-            cell.textLabel.textAlignment = UITextAlignmentLeft;
-            cell.textLabel.text = NSLocalizedString(@"Space Saver Mode", @"");
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        } break;  
-        case 2: {
-            cell.accessoryView = nil;
-            cell.textLabel.textAlignment = UITextAlignmentLeft;
-            cell.textLabel.text = NSLocalizedString(@"Privacy Policy", @"");
-            cell.selectionStyle = UITableViewCellSelectionStyleBlue;
-        } break;
-        case 3: {
-            cell.accessoryView = nil;
-            cell.textLabel.textAlignment = UITextAlignmentLeft;
-            cell.textLabel.text = NSLocalizedString(@"About", @"");
-            cell.selectionStyle = UITableViewCellSelectionStyleBlue;
-        } break;  
-        default:
-            break;
-    }
-
-    return(cell);
-}
-
-- (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+- (IBAction)updateBooks:(id)sender
 {
-    switch ([indexPath section]) {
-        case 0: {
-            [self deregistration];
-        } break;
-        case 2: {
-			SCHPrivacyPolicyViewController *privacyController = [[SCHPrivacyPolicyViewController alloc] init];
-			[self.navigationController pushViewController:privacyController animated:YES];
-			[privacyController release];
-        } break;
-        case 3: {
-			SCHAboutViewController *aboutController = [[SCHAboutViewController alloc] init];
-			[self.navigationController pushViewController:aboutController animated:YES];
-			[aboutController release];
-        } break;
-        default:
-            break;
-    }
-    
-    [aTableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
-#pragma mark - DRM Registration Session Delegate methods
-
-- (void)registrationSession:(SCHDrmRegistrationSession *)registrationSession didComplete:(NSString *)deviceKey
+- (IBAction)downloadDictionary:(id)sender
 {
-    if (deviceKey == nil) {
-        [[SCHAuthenticationManager sharedAuthenticationManager] clearAppProcessing];
-        [self login];
-        [self.navigationController popViewControllerAnimated:NO];
-    } else {
-        NSLog(@"Unknown DRM error: device key value returned from successful deregistration.");
-    }
-    self.drmRegistrationSession = nil;
-}
-
-- (void)registrationSession:(SCHDrmRegistrationSession *)registrationSession didFailWithError:(NSError *)error
-{
-	UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") 
-                                                         message:[error localizedDescription]
-                                                        delegate:nil 
-                                               cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-                                               otherButtonTitles:nil]; 
-    [errorAlert show]; 
-    [errorAlert release]; 
-    self.drmRegistrationSession = nil;
+    [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNeedsManifest];
+    self.downloadDictionaryButton.enabled = NO;
 }
 
 #pragma mark - Local settings
@@ -377,6 +207,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 - (void)resetLocalSettings
 {
     [NSUserDefaults resetStandardUserDefaults];
+    [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateUserSetup];
     
 #if LOCALDEBUG
     AppDelegate_Shared *appDelegate = (AppDelegate_Shared *)[[UIApplication sharedApplication] delegate];
