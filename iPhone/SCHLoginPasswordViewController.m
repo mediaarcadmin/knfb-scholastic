@@ -127,7 +127,15 @@
     [self stopShowingProgress];
     [self setupAssetsForOrientation:[[UIApplication sharedApplication] statusBarOrientation]];
     [self clearFields];
-    
+
+    UIColor *borderColor;
+    if (self.controllerType == kSCHControllerParentToolsView) {
+        borderColor = [UIColor SCHRed2Color];
+    } else {
+        borderColor = [UIColor SCHBlue1Color];
+    }
+    [self.navigationController.view.layer setBorderColor:borderColor.CGColor];
+    [self.navigationController.view.layer setBorderWidth:2.0f];
 }
 
 - (void)viewDidAppear:(BOOL)animated
