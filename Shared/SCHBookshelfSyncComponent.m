@@ -26,8 +26,8 @@
 - (NSArray *)localUserContentItems;
 - (void)syncContentMetadataItems:(NSArray *)contentMetadataList;
 - (void)addContentMetadataItem:(NSDictionary *)webContentMetadataItem;
-- (void)syncContentMetadataItem:(NSDictionary *)webContentMetadataItem withContentMetadataItem:(SCHContentMetadataItem *)localContentMetadataItem;
-- (void)deleteUnusedBooks;
+- (void)syncContentMetadataItem:(NSDictionary *)webContentMetadataItem
+        withContentMetadataItem:(SCHContentMetadataItem *)localContentMetadataItem;
 - (void)deleteAnnotationsForBook:(SCHBookIdentifier *)identifier;
 - (void)deleteStatisticsForBook:(SCHBookIdentifier *)identifier;
 
@@ -128,8 +128,6 @@
 {		
 	BOOL ret = YES;
 	
-	[self deleteUnusedBooks];
-	
 	NSArray *results = [self localUserContentItems];
 	
 	requestCount = 0;
@@ -197,6 +195,7 @@
 
 - (void)syncContentMetadataItems:(NSArray *)contentMetadataList
 {		
+	NSMutableSet *deletePool = [NSMutableSet set];    
 	NSMutableSet *creationPool = [NSMutableSet set];
 	
 	NSArray *webProfiles = [contentMetadataList sortedArrayUsingDescriptors:
@@ -214,6 +213,10 @@
 	
 	while (webItem != nil || localItem != nil) {		
 		if (webItem == nil) {
+			while (localItem != nil) {
+				[deletePool addObject:localItem];
+				localItem = [localEnumerator nextObject];
+			} 
 			break;
 		}
 		
@@ -239,6 +242,7 @@
 				webItem = nil;
 				break;
 			case NSOrderedDescending:
+				[deletePool addObject:localItem];                
 				localItem = nil;
 				break;			
 		}		
@@ -251,6 +255,24 @@
 		}		
 	}
 		
+    if (self.useIndividualRequests == NO &&
+        [deletePool count] > 0) {
+        NSMutableArray *deletedBookIdentifiers = [NSMutableArray array];
+        for (SCHContentMetadataItem *contentMetadataItem in deletePool) {
+            [deletedBookIdentifiers addObject:[contentMetadataItem bookIdentifier]];            
+        }
+        [[NSNotificationCenter defaultCenter] postNotificationName:SCHBookshelfSyncComponentWillDeleteNotification 
+                                                            object:self 
+                                                          userInfo:[NSDictionary dictionaryWithObject:deletedBookIdentifiers 
+                                                                                               forKey:SCHBookshelfSyncComponentDeletedBookIdentifiers]];        
+        
+        for (SCHContentMetadataItem *contentMetadataItem in deletePool) {
+            [self deleteStatisticsForBook:[contentMetadataItem bookIdentifier]];
+            [self deleteAnnotationsForBook:[contentMetadataItem bookIdentifier]];
+            [self.managedObjectContext deleteObject:contentMetadataItem];
+        }
+    }
+    
 	for (NSDictionary *webItem in creationPool) {
 		[self addContentMetadataItem:webItem];
 	}
@@ -300,74 +322,6 @@
 	localContentMetadataItem.PageNumber = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServicePageNumber]];
 	localContentMetadataItem.Title = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceTitle]];
 	localContentMetadataItem.Description = [self makeNullNil:[webContentMetadataItem objectForKey:kSCHLibreAccessWebServiceDescription]];
-}
-
-- (void)deleteUnusedBooks
-{
-	NSMutableSet *deletePool = [NSMutableSet set];
-	
-	NSEnumerator *contentMetadataEnumerator = [[self localContentMetadataItems] objectEnumerator];			  
-	NSEnumerator *userContentEnumerator = [[self localUserContentItems] objectEnumerator];			  			  
-	
-	NSDictionary *contentMetadataItem = [contentMetadataEnumerator nextObject];
-	NSDictionary *userContentItem = [userContentEnumerator nextObject];
-	
-	while (contentMetadataItem != nil || userContentItem != nil) {		
-		if (contentMetadataItem == nil) {
-			break;
-		}
-		
-		if (userContentItem == nil) {
-			while (contentMetadataItem != nil) {
-				[deletePool addObject:contentMetadataItem];
-				contentMetadataItem = [contentMetadataEnumerator nextObject];
-			} 
-			break;			
-		}
-		
-		id contentMetadataItemID = [contentMetadataItem valueForKey:kSCHLibreAccessWebServiceContentIdentifier];
-		id userContentItemID = [userContentItem valueForKey:kSCHLibreAccessWebServiceContentIdentifier];
-		
-		switch ([contentMetadataItemID compare:userContentItemID]) {
-			case NSOrderedSame:
-				contentMetadataItem = nil;
-				userContentItem = nil;
-				break;
-			case NSOrderedAscending:
-				[deletePool addObject:contentMetadataItem];
-				contentMetadataItem = nil;
-				break;
-			case NSOrderedDescending:
-				userContentItem = nil;
-				break;			
-		}		
-		
-		if (contentMetadataItem == nil) {
-			contentMetadataItem = [contentMetadataEnumerator nextObject];
-		}
-		if (userContentItem == nil) {
-			userContentItem = [userContentEnumerator nextObject];
-		}		
-	}
-	
-    if ([deletePool count] > 0) {
-        NSMutableArray *deletedBookIdentifiers = [NSMutableArray array];
-        for (SCHContentMetadataItem *contentMetadataItem in deletePool) {
-            [deletedBookIdentifiers addObject:[contentMetadataItem bookIdentifier]];            
-        }
-        [[NSNotificationCenter defaultCenter] postNotificationName:SCHBookshelfSyncComponentWillDeleteNotification 
-                                                            object:self 
-                                                          userInfo:[NSDictionary dictionaryWithObject:deletedBookIdentifiers 
-                                                                                               forKey:SCHBookshelfSyncComponentDeletedBookIdentifiers]];        
-        
-        for (SCHContentMetadataItem *contentMetadataItem in deletePool) {
-            [self deleteStatisticsForBook:[contentMetadataItem bookIdentifier]];
-            [self deleteAnnotationsForBook:[contentMetadataItem bookIdentifier]];
-            [self.managedObjectContext deleteObject:contentMetadataItem];
-        }
-    }
-
-	[self save];
 }
 
 - (void)deleteAnnotationsForBook:(SCHBookIdentifier *)identifier
