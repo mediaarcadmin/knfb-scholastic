@@ -665,9 +665,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
                                                forProfile:self.profile.ID];
         
         [self save];
-    }
-    
-    [self.xpsProvider reportReadingIfRequired];
+    }    
 }
 
 #pragma mark -
@@ -692,6 +690,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (void)willTerminateNotification:(NSNotification *)notification
 {
     [self updateBookState];
+    [self.xpsProvider reportReadingIfRequired];
 }
 
 - (void)willEnterForegroundNotification:(NSNotification *)notification
@@ -801,6 +800,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (IBAction)popViewController:(id)sender
 {
     [self updateBookState];
+    [self.xpsProvider reportReadingIfRequired];
     [self.audioBookPlayer cleanAudio];
     
     [self cancelInitialTimer];
