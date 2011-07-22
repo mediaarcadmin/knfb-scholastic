@@ -9,22 +9,11 @@
 #import <UIKit/UIKit.h>
 #import "SCHProfileViewController_Shared.h"
 
-@class SCHSettingsViewController;
-@class SCHLoginPasswordViewController;
-@class SCHSetupBookshelvesViewController;
-
-
-@interface SCHProfileViewController_iPhone : SCHProfileViewController_Shared <UITableViewDelegate> {
-    
-}
+@interface SCHProfileViewController_iPhone : SCHProfileViewController_Shared <UITableViewDelegate> {}
 
 @property (nonatomic, retain) IBOutlet UITableView *tableView;
 @property (nonatomic, retain) IBOutlet UIImageView *backgroundView;
 @property (nonatomic, retain) IBOutlet UIView *headerView;
-@property (nonatomic, retain) IBOutlet SCHSettingsViewController *settingsController;
-@property (nonatomic, retain) IBOutlet SCHLoginPasswordViewController *loginController;
-@property (nonatomic, retain) IBOutlet SCHLoginPasswordViewController *profilePasswordController;
-@property (nonatomic, retain) IBOutlet SCHSetupBookshelvesViewController *setupBookshelvesViewController;
 
 
 @end

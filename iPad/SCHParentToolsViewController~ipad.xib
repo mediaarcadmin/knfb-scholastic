@@ -194,6 +194,7 @@
 								<string key="NSFrameSize">{540, 7}</string>
 								<reference key="NSSuperview" ref="584806677"/>
 								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView"/>
 								<reference key="IBUIBackgroundColor" ref="34117478"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>

@@ -12,6 +12,7 @@
 @interface SCHDownloadDictionaryViewController : SCHBaseSetupViewController {}
 
 @property (nonatomic, retain) IBOutlet UIButton *downlaodDictionaryButton;
+@property (nonatomic, retain) IBOutlet UIButton *downloadLaterButton; // on iPhone xib only
 
 - (IBAction)downloadDictionary:(id)sender;
 

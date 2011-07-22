@@ -12,10 +12,12 @@
 @implementation SCHDownloadDictionaryViewController
 
 @synthesize downlaodDictionaryButton;
+@synthesize downloadLaterButton;
 
 - (void)dealloc
 {
     [downlaodDictionaryButton release], downlaodDictionaryButton = nil;
+    [downloadLaterButton release], downloadLaterButton = nil;
     [super dealloc];
 }
 
@@ -23,6 +25,7 @@
 {
     [super viewDidLoad];
     [self setButtonBackground:self.downlaodDictionaryButton];
+    [self setButtonBackground:self.downloadLaterButton];
 }
 
 - (void)back:(id)sender

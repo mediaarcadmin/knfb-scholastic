@@ -30,8 +30,10 @@
 
 - (void)setButtonBackground:(UIButton *)button
 {
-    UIImage *buttonBGImage = [[UIImage imageNamed:@"button-login-red"] stretchableImageWithLeftCapWidth:10 topCapHeight:0];
-    [button setBackgroundImage:buttonBGImage forState:UIControlStateNormal];
+    if (button) {
+        UIImage *buttonBGImage = [[UIImage imageNamed:@"button-login-red"] stretchableImageWithLeftCapWidth:10 topCapHeight:0];
+        [button setBackgroundImage:buttonBGImage forState:UIControlStateNormal];
+    }
 }
 
 - (void)back:(id)sender
