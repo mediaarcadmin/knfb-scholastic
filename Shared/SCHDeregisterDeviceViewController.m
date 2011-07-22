@@ -23,6 +23,7 @@
 @synthesize passwordField;
 @synthesize deregisterButton;
 @synthesize spinner;
+@synthesize scrollView;
 @synthesize drmRegistrationSession;
 
 - (void)releaseViewObjects
@@ -30,6 +31,7 @@
     [promptLabel release], promptLabel = nil;
     [passwordField release], passwordField = nil;
     [deregisterButton release], deregisterButton = nil;
+    [scrollView release], scrollView = nil;
     [spinner release], spinner = nil;
 }
 
@@ -96,6 +98,20 @@
 - (void)forgotPassword:(id)sender
 {
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://my.scholastic.com/sps_my_account/pwmgmt/ForgotPassword.jsp?AppType=COOL"]];
+}
+
+#pragma mark - Text field delegate
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField
+{
+    [self.scrollView setContentSize:CGSizeMake(CGRectGetWidth(self.view.bounds), 2*CGRectGetHeight(self.view.bounds))];
+    [self.scrollView setContentOffset:CGPointMake(0, CGRectGetMinY(self.promptLabel.frame)) animated:YES];
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [self deregister:nil];
+    return NO;
 }
 
 #pragma mark - DRM Registration Session Delegate methods
