@@ -262,30 +262,30 @@
     NSArray *books = [self.annotations objectForKey:profileID];
     
 	[self.createdAnnotations removeAllObjects];
-    NSArray *updatedAnnotations = [self localModifiedAnnotationsItemForProfile:profileID];
-    if ([updatedAnnotations count] > 0) {
-        
-        for (SCHAnnotationsItem *annotionItem in updatedAnnotations) {
-            for (SCHAnnotationsContentItem *annotationContentItem in annotionItem.AnnotationsContentItem) {
-                [self trackAnnotationCreation:annotationContentItem.PrivateAnnotations.Highlights];
-                [self trackAnnotationCreation:annotationContentItem.PrivateAnnotations.Notes];
-                [self trackAnnotationCreation:annotationContentItem.PrivateAnnotations.Bookmarks];
-            }
-        }
-        
-        self.isSynchronizing = [self.libreAccessWebService saveProfileContentAnnotations:updatedAnnotations];
-        if (self.isSynchronizing == NO) {
-            [[SCHAuthenticationManager sharedAuthenticationManager] authenticate];				
-            ret = NO;
-        }
-    } else {
+//    NSArray *updatedAnnotations = [self localModifiedAnnotationsItemForProfile:profileID];
+//    if ([updatedAnnotations count] > 0) {
+//        
+//        for (SCHAnnotationsItem *annotionItem in updatedAnnotations) {
+//            for (SCHAnnotationsContentItem *annotationContentItem in annotionItem.AnnotationsContentItem) {
+//                [self trackAnnotationCreation:annotationContentItem.PrivateAnnotations.Highlights];
+//                [self trackAnnotationCreation:annotationContentItem.PrivateAnnotations.Notes];
+//                [self trackAnnotationCreation:annotationContentItem.PrivateAnnotations.Bookmarks];
+//            }
+//        }
+//        
+//        self.isSynchronizing = [self.libreAccessWebService saveProfileContentAnnotations:updatedAnnotations];
+//        if (self.isSynchronizing == NO) {
+//            [[SCHAuthenticationManager sharedAuthenticationManager] authenticate];				
+//            ret = NO;
+//        }
+//    } else {
         self.isSynchronizing = [self.libreAccessWebService listProfileContentAnnotations:books 
                                                                               forProfile:profileID];
         if (self.isSynchronizing == NO) {
             [[SCHAuthenticationManager sharedAuthenticationManager] authenticate];				
             ret = NO;
         }
-    }
+//    }
 	
 	return(ret);    
 }

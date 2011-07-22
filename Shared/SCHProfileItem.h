@@ -61,7 +61,7 @@ typedef enum {
 - (SCHAppContentProfileItem *)appContentProfileItemForBookIdentifier:(SCHBookIdentifier *)bookIdentifier;
 - (NSMutableArray *)allBookIdentifiers;
 - (SCHBookAnnotations *)annotationsForBook:(SCHBookIdentifier *)bookIdentifier;
-- (SCHBookStatistics *)newStatisticsForBook:(SCHBookIdentifier *)bookIdentifier;
+- (void)newStatistics:(SCHBookStatistics *)bookStatistics forBook:(SCHBookIdentifier *)bookIdentifier;
 - (void)saveBookOrder:(NSArray *)books;
 - (NSString *)bookshelfName:(BOOL)shortName;
 - (void)setRawPassword:(NSString *)value;

@@ -277,15 +277,14 @@
     return(ret);
 }
 
-- (SCHBookStatistics *)newStatisticsForBook:(SCHBookIdentifier *)bookIdentifier
+- (void)newStatistics:(SCHBookStatistics *)bookStatistics forBook:(SCHBookIdentifier *)bookIdentifier
 {
-    SCHBookStatistics *ret = nil;
     SCHReadingStatsDetailItem *readingStatsDetailItem = nil;
     SCHReadingStatsContentItem *readingStatsContentItem = nil;
     SCHReadingStatsEntryItem *readingStatsEntryItem = nil;
     NSError *error = nil;
     
-    if (bookIdentifier != nil) {
+    if (bookStatistics != nil && bookIdentifier != nil) {
         NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
         
         [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHReadingStatsDetailItem 
@@ -320,10 +319,11 @@
                                                               inManagedObjectContext:self.managedObjectContext];            
         readingStatsEntryItem.ReadingStatsContentItem = readingStatsContentItem;                            
         
-        ret = [[[SCHBookStatistics alloc] initWithReadingStatsEntryItem:readingStatsEntryItem] autorelease];
+        readingStatsEntryItem.ReadingDuration = [NSNumber numberWithUnsignedInteger:bookStatistics.readingDuration];
+        readingStatsEntryItem.PagesRead = [NSNumber numberWithUnsignedInteger:bookStatistics.pagesRead];
+        readingStatsEntryItem.StoryInteractions = [NSNumber numberWithUnsignedInteger:bookStatistics.storyInteractions];
+        readingStatsEntryItem.DictionaryLookupsList = bookStatistics.dictionaryLookupsList;        
     }
-    
-    return(ret);
 }
 
 - (SCHReadingStatsContentItem *)newReadingStatsContentItemForBook:(SCHBookIdentifier *)bookIdentifier
