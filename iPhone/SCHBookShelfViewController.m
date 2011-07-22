@@ -27,6 +27,7 @@
 #import "SCHProfileSyncComponent.h"
 #import "LambdaAlert.h"
 #import "SCHContentProfileItem.h"
+#import "SCHAppContentProfileItem.h"
 
 static NSInteger const kSCHBookShelfViewControllerGridCellHeightPortrait = 138;
 static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
@@ -43,6 +44,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 - (CGSize)cellSize;
 - (CGFloat)cellBorderSize;
 - (void)reloadData;
+- (void)save;
 
 // FIXME: this isn't really necessary
 - (IBAction)changeToListView:(UIButton *)sender;
@@ -444,6 +446,15 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 
 #pragma mark - Core Data Table View Methods
 
+- (void)save
+{
+    NSError *error = nil;
+    if ([self.managedObjectContext save:&error] == NO) {
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        abort();
+    }
+}
+
 #pragma mark - UITableViewDataSource methods
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -473,8 +484,9 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
     SCHBookIdentifier *identifier = [self.books objectAtIndex:[indexPath row]];
 
     cell.identifier = identifier;
-    cell.isNewBook = [self.profileItem bookIsNewForProfileWithIdentifier:identifier];
-    cell.trashed = [self.profileItem bookIsTrashedWithIdentifier:identifier];
+    SCHAppContentProfileItem *appContentProfileItem = [self.profileItem appContentProfileItemForBookIdentifier:identifier];
+    cell.isNewBook = [appContentProfileItem.IsNew boolValue];
+    cell.trashed = [appContentProfileItem.IsTrashed boolValue];
     
     if ([identifier isEqual:[self.books lastObject]]) {
         cell.lastCell = YES;
@@ -515,12 +527,15 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 - (void)bookShelfTableViewCellSelectedDeleteForIdentifier:(SCHBookIdentifier *)identifier
 {
     NSLog(@"Deleting list view row associated with identifier: %@", identifier);
-    if ([self.profileItem bookIsTrashedWithIdentifier:identifier]) {
-        [self.profileItem setTrashed:NO forBookWithIdentifier:identifier];
+    SCHAppContentProfileItem *appContentProfileItem = [self.profileItem appContentProfileItemForBookIdentifier:identifier];
+    
+    if ([appContentProfileItem.IsTrashed boolValue]) {
+        appContentProfileItem.IsTrashed = [NSNumber numberWithBool:NO];
     } else {
-        [self.profileItem setTrashed:YES forBookWithIdentifier:identifier];
+        appContentProfileItem.IsTrashed = [NSNumber numberWithBool:YES];
     }
     [self reloadData];
+    [self save];
 }
 
 #pragma mark - UITableViewDelegate methods
@@ -539,9 +554,11 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
     [aTableView deselectRowAtIndexPath:indexPath animated:YES];
     
     SCHBookIdentifier *identifier = [self.books objectAtIndex:[indexPath row]];
-    if ([self.profileItem bookIsTrashedWithIdentifier:identifier]) {
-        [self.profileItem setTrashed:NO forBookWithIdentifier:identifier];
+    SCHAppContentProfileItem *appContentProfileItem = [self.profileItem appContentProfileItemForBookIdentifier:identifier];    
+    if ([appContentProfileItem.IsTrashed boolValue]) {
+        appContentProfileItem.IsTrashed = [NSNumber numberWithBool:NO];
         [self reloadData];
+        [self save];
         return;
     }
     
@@ -591,7 +608,8 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 
     [gridCell beginUpdates];
 	[gridCell setIdentifier:[self.books objectAtIndex:index]];
-    gridCell.trashed = [self.profileItem bookIsTrashedWithIdentifier:[self.books objectAtIndex:index]];
+    SCHAppContentProfileItem *appContentProfileItem = [self.profileItem appContentProfileItemForBookIdentifier:[self.books objectAtIndex:index]];
+    gridCell.trashed = [appContentProfileItem.IsTrashed boolValue];
     [gridCell endUpdates];
 
 	return(gridCell);
@@ -662,9 +680,11 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
     }
 
     SCHBookIdentifier *identifier = [self.books objectAtIndex:index];
-    if ([self.profileItem bookIsTrashedWithIdentifier:identifier]) {
-        [self.profileItem setTrashed:NO forBookWithIdentifier:identifier];
+    SCHAppContentProfileItem *appContentProfileItem = [self.profileItem appContentProfileItemForBookIdentifier:identifier];    
+    if ([appContentProfileItem.IsTrashed boolValue]) {
+        appContentProfileItem.IsTrashed = [NSNumber numberWithBool:NO];
         [self reloadData];
+        [self save];
         return;
     }
     

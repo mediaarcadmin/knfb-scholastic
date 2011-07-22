@@ -16,5 +16,6 @@
 @dynamic ProfileID;
 @dynamic LastPageLocation;
 @dynamic UserContentItem;
+@dynamic AppContentProfileItem;
 
 @end

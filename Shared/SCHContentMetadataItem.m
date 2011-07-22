@@ -32,8 +32,6 @@ static NSString * const kSCHContentMetadataItemAnnotationsItemProfileID = @"Anno
 @dynamic AppBook;
 @dynamic eReaderCategories;
 
-@synthesize bookIdentifier;
-
 - (NSSet *)AnnotationsContentItem
 {
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
@@ -72,13 +70,6 @@ static NSString * const kSCHContentMetadataItemAnnotationsItemProfileID = @"Anno
     }
 
     return(ret);
-}
-
-- (SCHBookIdentifier *)bookIdentifier
-{
-    SCHBookIdentifier *identifier = [[SCHBookIdentifier alloc] initWithISBN:self.ContentIdentifier
-                                                               DRMQualifier:self.DRMQualifier];
-    return([identifier autorelease]);
 }
 
 - (NSArray *)annotationsContentForProfile:(NSNumber *)profileID
