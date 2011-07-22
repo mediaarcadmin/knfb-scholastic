@@ -336,7 +336,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
                 
         bookIdentifier = [aIdentifier retain];
         profile = [aProfile retain];
-        bookStatistics = [[profile newStatisticsForBook:bookIdentifier] retain];
+        bookStatistics = [[SCHBookStatistics alloc] init];
         
         currentlyRotating = NO;
         currentlyScrubbing = NO;
@@ -661,6 +661,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         
         [self saveLastPageLocation];
         
+        [self.profile newStatistics:self.bookStatistics forBook:self.bookIdentifier];
+        self.bookStatistics = nil;
         [[SCHSyncManager sharedSyncManager] closeDocument:book.ContentMetadataItem.UserContentItem 
                                                forProfile:self.profile.ID];
         

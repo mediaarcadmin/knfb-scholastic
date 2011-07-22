@@ -404,7 +404,8 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
 
 - (void)kickQueue
 {
-	if ([self.queue count] > 0) {
+	if ([self.queue count] > 0 && 
+        [UIApplication sharedApplication].applicationState == UIApplicationStateActive) {
 		SCHSyncComponent *syncComponent = [self.queue objectAtIndex:0];
 		NSLog(@"Sync component is %@", syncComponent);
 		if (syncComponent != nil && [syncComponent isSynchronizing] == NO) {
