@@ -315,7 +315,7 @@ static const CGFloat kProfilePadTableOffsetLandscape = 220.0f;
 	if ([notification.name compare:kSCHAuthenticationManagerSuccess] == NSOrderedSame) {
 		[[SCHURLManager sharedURLManager] clear];
 		[[SCHSyncManager sharedSyncManager] clear];
-		[[SCHSyncManager sharedSyncManager] firstSync];
+		[[SCHSyncManager sharedSyncManager] firstSync:NO];
 	} else {
 		NSError *error = [notification.userInfo objectForKey:kSCHAuthenticationManagerNSError];
 		if (error!= nil) {

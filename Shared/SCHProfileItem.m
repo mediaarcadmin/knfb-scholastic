@@ -7,7 +7,7 @@
 //
 
 #import "SCHProfileItem.h"
-#import "SCHAppBookOrder.h"
+#import "SCHAppContentProfileItem.h"
 #import "SCHAppProfile.h"
 
 #import <CommonCrypto/CommonDigest.h>
@@ -55,8 +55,8 @@
 @dynamic UserKey;
 @dynamic BookshelfStyle;
 @dynamic LastName;
-@dynamic AppBookOrder;
 @dynamic AppProfile;
+@dynamic AppContentProfileItem;
 
 @synthesize age;
 
@@ -73,6 +73,20 @@
     [fetchRequest release], fetchRequest = nil;
 
     return((result == nil ? [NSSet set] : [NSSet setWithArray:result]));
+}
+
+- (SCHAppContentProfileItem *)appContentProfileItemForBookIdentifier:(SCHBookIdentifier *)bookIdentifier
+{
+    SCHAppContentProfileItem *ret = nil;
+    
+    for (SCHAppContentProfileItem *appContentProfileItem in self.AppContentProfileItem) {
+        if ([appContentProfileItem.bookIdentifier isEqual:bookIdentifier] == YES) {
+            ret = appContentProfileItem;
+            break;
+        }
+    }
+    
+    return(ret);
 }
 
 #pragma mark - methods
@@ -102,15 +116,15 @@
         }
         
         // order the books
-        if ([self.AppBookOrder count] > 0) {
-            NSArray *bookOrder = [self.AppBookOrder sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:kSCHAppBookOrderOrder ascending:YES]]];
+        if ([self.AppContentProfileItem count] > 0) {
+            NSArray *bookOrder = [self.AppContentProfileItem sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:kSCHAppContentProfileItemOrder ascending:YES]]];
             for (int i = 0; i < [bookOrder count]; i++) {
-                SCHAppBookOrder *bookOrderItem = [bookOrder objectAtIndex:i];
+                SCHAppContentProfileItem *appContentProfileItem = [bookOrder objectAtIndex:i];
                 
                 NSUInteger bookIndex = [books indexOfObjectPassingTest:^(id obj, NSUInteger idx, BOOL *stop) {
                     SCHBookIdentifier *identifier = (SCHBookIdentifier *)obj;
-                    if ([bookOrderItem.ISBN compare:identifier.isbn] == NSOrderedSame &&
-                        [bookOrderItem.DRMQualifier compare:identifier.DRMQualifier] == NSOrderedSame) {
+                    if ([appContentProfileItem.ISBN compare:identifier.isbn] == NSOrderedSame &&
+                        [appContentProfileItem.DRMQualifier compare:identifier.DRMQualifier] == NSOrderedSame) {
                         *stop = YES;
                         return(YES);
                     } else {
@@ -240,113 +254,6 @@
     
 }
 
-- (BOOL) bookIsNewForProfileWithIdentifier: (SCHBookIdentifier *)identifier
-{
-    NSDictionary *defaultsDictionary = (NSDictionary *)[[NSUserDefaults standardUserDefaults] objectForKey:@"SCHProfileItemNewItemsDictionary"];
-    
-    if (!defaultsDictionary) {
-        return YES;
-    }
-    
-    NSDictionary *profileDictionary = [defaultsDictionary objectForKey:[self.ID stringValue]];
-    
-    if (!profileDictionary) {
-        return YES;
-    }
-    
-    NSNumber *item = [profileDictionary valueForKey:[identifier encodeAsString]];
-    
-    if (!item) {
-        return YES;
-    }
-    
-    return [item boolValue];
-
-}
-
-- (void)setBookIsNew:(BOOL)isNew forBookWithIdentifier:(SCHBookIdentifier *)identifier
-{
-    NSDictionary *defaultsDictionary = (NSDictionary *)[[NSUserDefaults standardUserDefaults] objectForKey:@"SCHProfileItemNewItemsDictionary"];
-    NSMutableDictionary *trashedItems = nil;
-    
-    if (!defaultsDictionary) {
-        trashedItems = [NSMutableDictionary dictionary];
-    } else {
-        trashedItems = [NSMutableDictionary dictionaryWithDictionary:defaultsDictionary];
-    }
-    
-    NSDictionary *profileDictionary = [trashedItems objectForKey:[self.ID stringValue]];
-    NSMutableDictionary *profileMutableDictionary = nil;
-    
-    if (profileDictionary) {
-        profileMutableDictionary = [NSMutableDictionary dictionaryWithDictionary:profileDictionary];
-    } else {
-        profileMutableDictionary = [NSMutableDictionary dictionary];
-    }
-    
-    NSNumber *newValue = [NSNumber numberWithBool:isNew];
-    
-    [profileMutableDictionary setValue:newValue forKey:[identifier encodeAsString]];
-    [trashedItems setValue:[NSDictionary dictionaryWithDictionary:profileMutableDictionary] forKey:[self.ID stringValue]];
-    [[NSUserDefaults standardUserDefaults] setValue:[NSDictionary dictionaryWithDictionary:trashedItems] forKey:@"SCHProfileItemNewItemsDictionary"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-    
-}
-
-
-// structure: dictionary with profileID->isbndictionary, isbndictionary with isbn->nsnumber (bool)
-- (BOOL)bookIsTrashedWithIdentifier:(SCHBookIdentifier *)identifier
-{
-    NSDictionary *defaultsDictionary = (NSDictionary *)[[NSUserDefaults standardUserDefaults] objectForKey:@"SCHProfileItemTrashedItemsDictionary"];
-    
-    if (!defaultsDictionary) {
-        return NO;
-    }
-    
-    NSDictionary *profileDictionary = [defaultsDictionary objectForKey:[self.ID stringValue]];
-    
-    if (!profileDictionary) {
-        return NO;
-    }
-    
-    NSNumber *item = [profileDictionary valueForKey:[identifier encodeAsString]];
-    
-    if (!item) {
-        return NO;
-    }
-    
-    return [item boolValue];
-}
-
-- (void)setTrashed:(BOOL)trashed forBookWithIdentifier:(SCHBookIdentifier *)identifier
-{
-    NSDictionary *defaultsDictionary = (NSDictionary *)[[NSUserDefaults standardUserDefaults] objectForKey:@"SCHProfileItemTrashedItemsDictionary"];
-    NSMutableDictionary *trashedItems = nil;
-    
-    if (!defaultsDictionary) {
-        trashedItems = [NSMutableDictionary dictionary];
-    } else {
-        trashedItems = [NSMutableDictionary dictionaryWithDictionary:defaultsDictionary];
-    }
-    
-    NSDictionary *profileDictionary = [trashedItems objectForKey:[self.ID stringValue]];
-    NSMutableDictionary *profileMutableDictionary = nil;
-    
-    if (profileDictionary) {
-        profileMutableDictionary = [NSMutableDictionary dictionaryWithDictionary:profileDictionary];
-    } else {
-        profileMutableDictionary = [NSMutableDictionary dictionary];
-    }
-    
-    NSNumber *newValue = [NSNumber numberWithBool:trashed];
-    
-    [profileMutableDictionary setValue:newValue forKey:[identifier encodeAsString]];
-    [trashedItems setValue:[NSDictionary dictionaryWithDictionary:profileMutableDictionary] forKey:[self.ID stringValue]];
-    [[NSUserDefaults standardUserDefaults] setValue:[NSDictionary dictionaryWithDictionary:trashedItems] forKey:@"SCHProfileItemTrashedItemsDictionary"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-    
-}
-
 - (SCHBookAnnotations *)annotationsForBook:(SCHBookIdentifier *)bookIdentifier
 {
     SCHBookAnnotations *ret = nil;
@@ -450,23 +357,13 @@
 
 - (void)saveBookOrder:(NSArray *)books
 {
-    [self clearBookOrder];
-    
     for (int idx = 0; idx < [books count]; idx++) {
-        SCHAppBookOrder *newBookOrder = [NSEntityDescription insertNewObjectForEntityForName:kSCHAppBookOrder inManagedObjectContext:self.managedObjectContext];
+        SCHBookIdentifier *bookIdentifier = [books objectAtIndex:idx];
+        SCHAppContentProfileItem *appContentProfileItem = [self appContentProfileItemForBookIdentifier:bookIdentifier];
         
-        newBookOrder.ISBN = [[books objectAtIndex:idx] isbn];
-        newBookOrder.DRMQualifier = [[books objectAtIndex:idx] DRMQualifier];        
-        newBookOrder.Order = [NSNumber numberWithInt:idx];
-        
-        [self addAppBookOrderObject:newBookOrder];
-    }
-}
-
-- (void)clearBookOrder 
-{
-    for (NSManagedObject *bookOrder in self.AppBookOrder) {
-        [[self managedObjectContext] deleteObject:bookOrder];
+        if (appContentProfileItem != nil) {
+            appContentProfileItem.Order = [NSNumber numberWithInt:idx];
+        }
     }
 }
 

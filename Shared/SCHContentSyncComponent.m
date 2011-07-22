@@ -19,6 +19,8 @@
 #import "SCHAnnotationsContentItem.h"
 #import "SCHLastPage.h"
 #import "SCHPrivateAnnotations.h"
+#import "SCHAppContentProfileItem.h"
+#import "SCHBookIdentifier.h"
 
 @interface SCHContentSyncComponent ()
 
@@ -30,7 +32,8 @@
 - (void)addAnnotationStructure:(SCHUserContentItem *)userContentItem 
                     forProfile:(SCHContentProfileItem *)contentProfileItem;
 - (SCHOrderItem *)addOrderItem:(NSDictionary *)orderItem;
-- (SCHContentProfileItem *)addContentProfileItem:(NSDictionary *)contentProfileItem;
+- (SCHContentProfileItem *)addContentProfileItem:(NSDictionary *)contentProfileItem
+                                         forBook:(SCHBookIdentifier *)bookIdentifier;
 - (void)syncUserContentItem:(NSDictionary *)webUserContentItem 
         withUserContentItem:(SCHUserContentItem *)localUserContentItem;
 - (void)syncOrderItems:(NSArray *)webOrderList 
@@ -235,7 +238,8 @@
 	
 	NSArray *profileList = [self makeNullNil:[webUserContentItem objectForKey:kSCHLibreAccessWebServiceProfileList]];
 	for (NSDictionary *profileItem in profileList) {     
-        SCHContentProfileItem *contentProfileItem = [self addContentProfileItem:profileItem];
+        SCHContentProfileItem *contentProfileItem = [self addContentProfileItem:profileItem
+                                                                        forBook:newUserContentItem.bookIdentifier];
 		[newUserContentItem addProfileListObject:contentProfileItem];
         [self addAnnotationStructure:newUserContentItem forProfile:contentProfileItem];
 	}
@@ -298,12 +302,14 @@
 	return(ret);
 }
 
-- (SCHContentProfileItem *)addContentProfileItem:(NSDictionary *)contentProfileItem
+- (SCHContentProfileItem *)addContentProfileItem:(NSDictionary *)contentProfileItem 
+                                         forBook:(SCHBookIdentifier *)bookIdentifier;
 {
 	SCHContentProfileItem *ret = nil;
 	
 	if (contentProfileItem != nil) {		
-		ret = [NSEntityDescription insertNewObjectForEntityForName:kSCHContentProfileItem inManagedObjectContext:self.managedObjectContext];			
+		ret = [NSEntityDescription insertNewObjectForEntityForName:kSCHContentProfileItem 
+                                            inManagedObjectContext:self.managedObjectContext];			
 		
 		ret.LastModified = [self makeNullNil:[contentProfileItem objectForKey:kSCHLibreAccessWebServiceLastModified]];
 		ret.State = [NSNumber numberWithStatus:kSCHStatusUnmodified];
@@ -312,6 +318,22 @@
 		
 		ret.ProfileID = [self makeNullNil:[contentProfileItem objectForKey:kSCHLibreAccessWebServiceProfileID]];
 		ret.LastPageLocation = [self makeNullNil:[contentProfileItem objectForKey:kSCHLibreAccessWebServiceLastPageLocation]];
+        
+        SCHAppContentProfileItem *newAppContentProfileItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHAppContentProfileItem 
+                                                                             inManagedObjectContext:self.managedObjectContext];    
+
+        newAppContentProfileItem.ISBN = bookIdentifier.isbn;       
+        newAppContentProfileItem.DRMQualifier = bookIdentifier.DRMQualifier;
+        newAppContentProfileItem.ContentProfileItem = ret;
+        
+        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+        [fetchRequest setEntity:[NSEntityDescription entityForName:kSCHProfileItem 
+                                            inManagedObjectContext:self.managedObjectContext]];	
+        [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"ID == %@", ret.ProfileID]];
+        NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest error:nil];
+        if([results count] > 0) {
+            newAppContentProfileItem.ProfileItem = [results objectAtIndex:0];      
+        }
 	}
 	
 	return(ret);
@@ -481,7 +503,8 @@
 	}
 	
 	for (NSDictionary *webItem in creationPool) {
-		[userContentItem addProfileListObject:[self addContentProfileItem:webItem]];
+		[userContentItem addProfileListObject:[self addContentProfileItem:webItem
+                                                                  forBook:userContentItem.bookIdentifier]];
 	}
 }
 

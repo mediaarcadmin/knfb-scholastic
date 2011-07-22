@@ -285,7 +285,7 @@ enum LoginScreens {
 {
     if (self.loginScreen == kLoginScreenSetupBookshelves) {
         [self.setupBookshelvesViewController showActivity:YES];
-        [[SCHSyncManager sharedSyncManager] firstSync];
+        [[SCHSyncManager sharedSyncManager] firstSync:NO];
     }
 }
 

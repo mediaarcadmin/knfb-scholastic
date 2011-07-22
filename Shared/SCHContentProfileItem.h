@@ -10,6 +10,7 @@
 #import "SCHSyncEntity.h"
 
 @class SCHUserContentItem;
+@class SCHAppContentProfileItem;
 
 static NSString * const kSCHContentProfileItem = @"SCHContentProfileItem";
 
@@ -21,6 +22,7 @@ static NSString * const kSCHContentProfileItem = @"SCHContentProfileItem";
 @property (nonatomic, retain) NSNumber * ProfileID;
 @property (nonatomic, retain) NSNumber * LastPageLocation;
 @property (nonatomic, retain) SCHUserContentItem * UserContentItem;
+@property (nonatomic, retain) SCHAppContentProfileItem * AppContentProfileItem;
 
 @end
 
