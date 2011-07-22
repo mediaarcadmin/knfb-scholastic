@@ -28,6 +28,7 @@ typedef enum {
 	SCHDictionaryProcessingStateNeedsUnzip,
 	SCHDictionaryProcessingStateNeedsParse,
 	SCHDictionaryProcessingStateReady,
+    SCHDictionaryProcessingStateDeleting,
 } SCHDictionaryProcessingState;
 
 
@@ -84,5 +85,9 @@ typedef enum {
 @property BOOL connectionIdle;
 
 - (void) checkIfUpdateNeeded;
+
+// dictionary download control
+- (void)beginDictionaryDownload;
+- (void)deleteDictionary;
 
 @end
