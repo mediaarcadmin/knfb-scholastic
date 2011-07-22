@@ -33,7 +33,7 @@
 
 - (void)downloadDictionary:(id)sender
 {
-    [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNeedsManifest];
+    [[SCHDictionaryDownloadManager sharedDownloadManager] beginDictionaryDownload];
     [self.navigationController.parentViewController dismissModalViewControllerAnimated:YES];
 }
 

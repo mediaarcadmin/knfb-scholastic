@@ -17,6 +17,7 @@
 #import "SCHPrivacyPolicyViewController.h"
 #import "SCHProcessingManager.h"
 #import "SCHDictionaryDownloadManager.h"
+#import "SCHRemoveDictionaryViewController.h"
 #import "AppDelegate_Shared.h"
 #import "SCHDeregisterDeviceViewController.h"
 
@@ -25,6 +26,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 @interface SCHSettingsViewController()
 
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation;
+- (void)updateDictionaryButton;
 - (void)releaseViewObjects;
 - (void)resetLocalSettings;
 
@@ -90,6 +92,11 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
         [logoImageView release];
     }
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(dictionaryStateChanged:)
+                                                 name:kSCHDictionaryStateChange
+                                               object:nil];
+    
 #if LOCALDEBUG
     [self.deregisterDeviceButton setTitle:@"Reset Content and Settings" forState:UIControlStateNormal];
 #endif
@@ -109,8 +116,22 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     NSNumber *spaceSaver = [[NSUserDefaults standardUserDefaults] objectForKey:@"kSCHSpaceSaverMode"];
     self.spaceSaverSwitch.on = [spaceSaver boolValue];
     
+    [self updateDictionaryButton];
+}
+
+- (void)updateDictionaryButton
+{
     SCHDictionaryProcessingState state = [[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryProcessingState];
-    self.downloadDictionaryButton.enabled =  (state == SCHDictionaryProcessingStateUserSetup || state == SCHDictionaryProcessingStateUserDeclined);
+    self.downloadDictionaryButton.enabled = (state == SCHDictionaryProcessingStateUserSetup
+                                             || state == SCHDictionaryProcessingStateUserDeclined
+                                             || state == SCHDictionaryProcessingStateReady);
+    if (state == SCHDictionaryProcessingStateReady) {
+        [self.downloadDictionaryButton setTitle:NSLocalizedString(@"Remove Dictionary", @"remove dictionary button title")
+                                       forState:UIControlStateNormal];
+    } else {
+        [self.downloadDictionaryButton setTitle:NSLocalizedString(@"Download Dictionary", @"download dictionary button title")
+                                       forState:UIControlStateNormal];
+    }
 }
 
 #pragma mark - Orientation methods
@@ -198,8 +219,13 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
 - (IBAction)downloadDictionary:(id)sender
 {
-    [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNeedsManifest];
-    self.downloadDictionaryButton.enabled = NO;
+    if ([[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryProcessingState] == SCHDictionaryProcessingStateReady) {
+        SCHRemoveDictionaryViewController *vc = [[SCHRemoveDictionaryViewController alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
+        [vc release];
+    } else {
+        [[SCHDictionaryDownloadManager sharedDownloadManager] beginDictionaryDownload];
+    }
 }
 
 #pragma mark - Local settings
@@ -213,6 +239,13 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     AppDelegate_Shared *appDelegate = (AppDelegate_Shared *)[[UIApplication sharedApplication] delegate];
     [appDelegate clearDatabase];
 #endif
+}
+
+#pragma mark - notifications
+
+- (void)dictionaryStateChanged:(NSNotification *)note
+{
+    [self updateDictionaryButton];
 }
 
 @end
