@@ -355,6 +355,11 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
                                                    object:nil];
         
         [[NSNotificationCenter defaultCenter] addObserver:self 
+                                                 selector:@selector(willTerminateNotification:) 
+                                                     name:UIApplicationWillTerminateNotification
+                                                   object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self 
                                                  selector:@selector(willEnterForegroundNotification:) 
                                                      name:UIApplicationWillEnterForegroundNotification
                                                    object:nil];
@@ -662,7 +667,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
                                                forProfile:self.profile.ID];
         
         [self save];
-    }
+    }    
 }
 
 #pragma mark -
@@ -682,6 +687,12 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         
     [self.readingView dismissFollowAlongHighlighter];  
     self.audioBookPlayer = nil;
+}
+
+- (void)willTerminateNotification:(NSNotification *)notification
+{
+    [self updateBookState];
+    [self.xpsProvider reportReadingIfRequired];
 }
 
 - (void)willEnterForegroundNotification:(NSNotification *)notification
@@ -791,6 +802,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (IBAction)popViewController:(id)sender
 {
     [self updateBookState];
+    [self.xpsProvider reportReadingIfRequired];
     [self.audioBookPlayer cleanAudio];
     
     [self cancelInitialTimer];
