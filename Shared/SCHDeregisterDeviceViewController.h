@@ -14,10 +14,14 @@
 
 @interface SCHDeregisterDeviceViewController : SCHBaseSetupViewController <SCHDrmRegistrationSessionDelegate> {}
 
+@property (nonatomic, retain) IBOutlet UILabel *promptLabel;
+@property (nonatomic, retain) IBOutlet UITextField *passwordField;
 @property (nonatomic, retain) IBOutlet UIButton *deregisterButton;
+@property (nonatomic, retain) IBOutlet UIActivityIndicatorView *spinner;
 @property (nonatomic, assign) id<SCHSettingsViewControllerDelegate> settingsDelegate;
 
 - (IBAction)back:(id)sender;
 - (IBAction)deregister:(id)sender;
+- (IBAction)forgotPassword:(id)sender;
 
 @end

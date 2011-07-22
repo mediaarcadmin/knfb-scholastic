@@ -184,7 +184,7 @@ static const CGFloat kProfilePadTableOffsetLandscape = 220.0f;
     }
 }
 
-#pragma SCHSettingsViewControllerDelegate
+#pragma mark - settings
 
 - (void)dismissSettingsForm
 {
@@ -194,8 +194,6 @@ static const CGFloat kProfilePadTableOffsetLandscape = 220.0f;
     [self performSelector:@selector(advanceToNextLoginStep) withObject:nil afterDelay:1.0];
 }
 
-
-#pragma mark - settings
 
 - (void)pushSettingsController
 {

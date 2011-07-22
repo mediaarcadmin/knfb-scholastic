@@ -42,6 +42,10 @@
 		2830DAC213D822B6001366D9 /* SCHNavigationControllerForModalForm.m in Sources */ = {isa = PBXBuildFile; fileRef = 2830DAC113D822B6001366D9 /* SCHNavigationControllerForModalForm.m */; };
 		2830DAC313D822B6001366D9 /* SCHNavigationControllerForModalForm.m in Sources */ = {isa = PBXBuildFile; fileRef = 2830DAC113D822B6001366D9 /* SCHNavigationControllerForModalForm.m */; };
 		2848D34613A0C647007DD45F /* SCHStoryInteractionControllerTitleTwister.m in Sources */ = {isa = PBXBuildFile; fileRef = 2848D34513A0C647007DD45F /* SCHStoryInteractionControllerTitleTwister.m */; };
+		284DE1E613D968FB009FE14E /* SCHDeregisterDeviceViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 284DE1E513D968FB009FE14E /* SCHDeregisterDeviceViewController~iphone.xib */; };
+		284DE1E713D968FB009FE14E /* SCHDeregisterDeviceViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 284DE1E513D968FB009FE14E /* SCHDeregisterDeviceViewController~iphone.xib */; };
+		284DE1E913D96924009FE14E /* SCHDeregisterDeviceViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 284DE1E813D96924009FE14E /* SCHDeregisterDeviceViewController~ipad.xib */; };
+		284DE1EA13D96924009FE14E /* SCHDeregisterDeviceViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 284DE1E813D96924009FE14E /* SCHDeregisterDeviceViewController~ipad.xib */; };
 		284EF24413BC4CDF00F9BD5A /* SCHBookIdentifier.m in Sources */ = {isa = PBXBuildFile; fileRef = 284EF24313BC4CDF00F9BD5A /* SCHBookIdentifier.m */; };
 		284EF24513BC4CDF00F9BD5A /* SCHBookIdentifier.m in Sources */ = {isa = PBXBuildFile; fileRef = 284EF24313BC4CDF00F9BD5A /* SCHBookIdentifier.m */; };
 		284EF24613BC4CDF00F9BD5A /* SCHBookIdentifier.m in Sources */ = {isa = PBXBuildFile; fileRef = 284EF24313BC4CDF00F9BD5A /* SCHBookIdentifier.m */; };
@@ -215,8 +219,6 @@
 		28C7415F13D8A09B00EEAB36 /* SCHBaseTextViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28C7415D13D8A09B00EEAB36 /* SCHBaseTextViewController.xib */; };
 		28C7416313D8A4E700EEAB36 /* SCHDeregisterDeviceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28C7416113D8A4E700EEAB36 /* SCHDeregisterDeviceViewController.m */; };
 		28C7416413D8A4E700EEAB36 /* SCHDeregisterDeviceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28C7416113D8A4E700EEAB36 /* SCHDeregisterDeviceViewController.m */; };
-		28C7416513D8A4E700EEAB36 /* SCHDeregisterDeviceViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28C7416213D8A4E700EEAB36 /* SCHDeregisterDeviceViewController.xib */; };
-		28C7416613D8A4E700EEAB36 /* SCHDeregisterDeviceViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28C7416213D8A4E700EEAB36 /* SCHDeregisterDeviceViewController.xib */; };
 		28CC985A139CD550001F560F /* SCHStoryInteractionDraggableTargetView.m in Sources */ = {isa = PBXBuildFile; fileRef = 28CC9857139CD550001F560F /* SCHStoryInteractionDraggableTargetView.m */; };
 		28CC985B139CD550001F560F /* SCHStoryInteractionDraggableTargetView.m in Sources */ = {isa = PBXBuildFile; fileRef = 28CC9857139CD550001F560F /* SCHStoryInteractionDraggableTargetView.m */; };
 		28CC985C139CD550001F560F /* SCHStoryInteractionDraggableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 28CC9859139CD550001F560F /* SCHStoryInteractionDraggableView.m */; };
@@ -1591,6 +1593,8 @@
 		2830DAC113D822B6001366D9 /* SCHNavigationControllerForModalForm.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHNavigationControllerForModalForm.m; path = Shared/SCHNavigationControllerForModalForm.m; sourceTree = "<group>"; };
 		2848D34413A0C647007DD45F /* SCHStoryInteractionControllerTitleTwister.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionControllerTitleTwister.h; sourceTree = "<group>"; };
 		2848D34513A0C647007DD45F /* SCHStoryInteractionControllerTitleTwister.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionControllerTitleTwister.m; sourceTree = "<group>"; };
+		284DE1E513D968FB009FE14E /* SCHDeregisterDeviceViewController~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "SCHDeregisterDeviceViewController~iphone.xib"; sourceTree = "<group>"; };
+		284DE1E813D96924009FE14E /* SCHDeregisterDeviceViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "SCHDeregisterDeviceViewController~ipad.xib"; sourceTree = "<group>"; };
 		284EF24213BC4CDF00F9BD5A /* SCHBookIdentifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHBookIdentifier.h; sourceTree = "<group>"; };
 		284EF24313BC4CDF00F9BD5A /* SCHBookIdentifier.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHBookIdentifier.m; sourceTree = "<group>"; };
 		2856BA01139E3BF800A73D58 /* SCHStoryInteractionControllerWordSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionControllerWordSearch.h; sourceTree = "<group>"; };
@@ -1728,7 +1732,6 @@
 		28C7415D13D8A09B00EEAB36 /* SCHBaseTextViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SCHBaseTextViewController.xib; path = iPhone/SCHBaseTextViewController.xib; sourceTree = "<group>"; };
 		28C7416013D8A4E700EEAB36 /* SCHDeregisterDeviceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHDeregisterDeviceViewController.h; path = Shared/SCHDeregisterDeviceViewController.h; sourceTree = "<group>"; };
 		28C7416113D8A4E700EEAB36 /* SCHDeregisterDeviceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHDeregisterDeviceViewController.m; path = Shared/SCHDeregisterDeviceViewController.m; sourceTree = "<group>"; };
-		28C7416213D8A4E700EEAB36 /* SCHDeregisterDeviceViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SCHDeregisterDeviceViewController.xib; path = Shared/SCHDeregisterDeviceViewController.xib; sourceTree = "<group>"; };
 		28C7416813D8A6F400EEAB36 /* SCHSettingsViewControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHSettingsViewControllerDelegate.h; sourceTree = "<group>"; };
 		28CC9856139CD550001F560F /* SCHStoryInteractionDraggableTargetView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionDraggableTargetView.h; sourceTree = "<group>"; };
 		28CC9857139CD550001F560F /* SCHStoryInteractionDraggableTargetView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionDraggableTargetView.m; sourceTree = "<group>"; };
@@ -4226,6 +4229,7 @@
 			children = (
 				C972283F1392B245008605E8 /* SCHSettingsViewController_iPhone.xib */,
 				28BF26EF13D5A15400535A82 /* SCHSetupBookshelvesViewController~iphone.xib */,
+				284DE1E513D968FB009FE14E /* SCHDeregisterDeviceViewController~iphone.xib */,
 			);
 			name = "Settings Controller";
 			sourceTree = "<group>";
@@ -4246,7 +4250,6 @@
 				2830DAC113D822B6001366D9 /* SCHNavigationControllerForModalForm.m */,
 				28C7416013D8A4E700EEAB36 /* SCHDeregisterDeviceViewController.h */,
 				28C7416113D8A4E700EEAB36 /* SCHDeregisterDeviceViewController.m */,
-				28C7416213D8A4E700EEAB36 /* SCHDeregisterDeviceViewController.xib */,
 			);
 			name = "Settings Controller";
 			sourceTree = "<group>";
@@ -4257,6 +4260,7 @@
 				529385B412DF231800045B44 /* SCHSettingsViewController_iPad.xib */,
 				28BF26F713D5AD1000535A82 /* SCHSetupBookshelvesViewController~ipad.xib */,
 				28D2AA0913D6E80D00BEB359 /* SCHDownloadDictionaryViewController~ipad.xib */,
+				284DE1E813D96924009FE14E /* SCHDeregisterDeviceViewController~ipad.xib */,
 			);
 			name = "Settings Controller";
 			sourceTree = "<group>";
@@ -5431,7 +5435,8 @@
 				28BF26F813D5AD1000535A82 /* SCHSetupBookshelvesViewController~ipad.xib in Resources */,
 				28D2AA0A13D6E80D00BEB359 /* SCHDownloadDictionaryViewController~ipad.xib in Resources */,
 				28C7415E13D8A09B00EEAB36 /* SCHBaseTextViewController.xib in Resources */,
-				28C7416513D8A4E700EEAB36 /* SCHDeregisterDeviceViewController.xib in Resources */,
+				284DE1E613D968FB009FE14E /* SCHDeregisterDeviceViewController~iphone.xib in Resources */,
+				284DE1E913D96924009FE14E /* SCHDeregisterDeviceViewController~ipad.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5895,7 +5900,8 @@
 				28BF26F913D5AD1000535A82 /* SCHSetupBookshelvesViewController~ipad.xib in Resources */,
 				28D2AA0B13D6E80E00BEB359 /* SCHDownloadDictionaryViewController~ipad.xib in Resources */,
 				28C7415F13D8A09B00EEAB36 /* SCHBaseTextViewController.xib in Resources */,
-				28C7416613D8A4E700EEAB36 /* SCHDeregisterDeviceViewController.xib in Resources */,
+				284DE1E713D968FB009FE14E /* SCHDeregisterDeviceViewController~iphone.xib in Resources */,
+				284DE1EA13D96924009FE14E /* SCHDeregisterDeviceViewController~ipad.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
