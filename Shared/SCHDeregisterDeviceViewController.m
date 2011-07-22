@@ -10,6 +10,7 @@
 #import "SCHAuthenticationManager.h"
 #import "SCHDrmSession.h"
 #import "SCHSettingsViewControllerDelegate.h"
+#import "SCHAuthenticationManagerProtected.h"
 
 @interface SCHDeregisterDeviceViewController ()
 @property (nonatomic, retain) SCHDrmRegistrationSession* drmRegistrationSession;
@@ -18,12 +19,18 @@
 @implementation SCHDeregisterDeviceViewController
 
 @synthesize settingsDelegate;
+@synthesize promptLabel;
+@synthesize passwordField;
 @synthesize deregisterButton;
+@synthesize spinner;
 @synthesize drmRegistrationSession;
 
 - (void)releaseViewObjects
 {
-    self.deregisterButton = nil;
+    [promptLabel release], promptLabel = nil;
+    [passwordField release], passwordField = nil;
+    [deregisterButton release], deregisterButton = nil;
+    [spinner release], spinner = nil;
 }
 
 - (void)dealloc
@@ -37,6 +44,16 @@
 {
     [super viewDidLoad];
     [self setButtonBackground:self.deregisterButton];
+    
+    UIView *fillerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 8)];
+    UIImage *cellBGImage = [[UIImage imageNamed:@"button-field"] stretchableImageWithLeftCapWidth:15 topCapHeight:0];
+    self.passwordField.background = cellBGImage;
+    self.passwordField.leftViewMode = UITextFieldViewModeAlways;
+    self.passwordField.leftView = fillerView;
+    [fillerView release];
+
+    NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:kSCHAuthenticationManagerUsername];
+    self.promptLabel.text = [NSString stringWithFormat:self.promptLabel.text, username];
 }
 
 - (void)viewDidUnload
@@ -59,11 +76,26 @@
 
 - (void)deregister:(id)sender
 {
-    SCHDrmRegistrationSession* registrationSession = [[SCHDrmRegistrationSession alloc] init];
-    registrationSession.delegate = self;	
-    self.drmRegistrationSession = registrationSession;
-    [self.drmRegistrationSession deregisterDevice:[[SCHAuthenticationManager sharedAuthenticationManager] aToken]];
-    [registrationSession release]; 
+    if ([[SCHAuthenticationManager sharedAuthenticationManager] validatePassword:self.passwordField.text]) {
+        SCHDrmRegistrationSession* registrationSession = [[SCHDrmRegistrationSession alloc] init];
+        registrationSession.delegate = self;	
+        self.drmRegistrationSession = registrationSession;
+        [self.drmRegistrationSession deregisterDevice:[[SCHAuthenticationManager sharedAuthenticationManager] aToken]];
+        [registrationSession release]; 
+    } else {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"error alert title")
+                                                        message:NSLocalizedString(@"The password was incorrect", @"")
+                                                       delegate:nil
+                                              cancelButtonTitle:NSLocalizedString(@"Try Again", @"try again button after password failure")
+                                              otherButtonTitles:nil];
+        [alert show];
+        [alert release];
+    }
+}
+
+- (void)forgotPassword:(id)sender
+{
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://my.scholastic.com/sps_my_account/pwmgmt/ForgotPassword.jsp?AppType=COOL"]];
 }
 
 #pragma mark - DRM Registration Session Delegate methods
