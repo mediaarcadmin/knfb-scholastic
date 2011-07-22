@@ -10,7 +10,7 @@
 
 #import "MRGridViewCell.h"
 
-@class SCHAsyncBookCoverImageView;
+@class SCHBookCoverView;
 @class SCHBookIdentifier;
 
 @interface SCHBookShelfGridViewCell : MRGridViewCell 
@@ -20,7 +20,8 @@
 @property (nonatomic, retain) SCHBookIdentifier *identifier;
 @property (nonatomic, assign) BOOL trashed;
 
-@property (nonatomic, retain) SCHAsyncBookCoverImageView *asyncImageView;
+//@property (nonatomic, retain) SCHAsyncBookCoverImageView *asyncImageView;
+@property (nonatomic, retain) SCHBookCoverView *bookCoverView;
 @property (nonatomic, retain) UIView *thumbTintView;
 @property (nonatomic, retain) UIProgressView *progressView;
 

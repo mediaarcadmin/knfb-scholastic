@@ -11,7 +11,8 @@
 #import "SCHThumbnailFactory.h"
 #import "SCHAppBook.h"
 #import "SCHBookManager.h"
-#import "SCHAsyncBookCoverImageView.h"
+//#import "SCHAsyncBookCoverImageView.h"
+#import "SCHBookCoverView.h"
 
 @interface SCHBookShelfGridViewCell ()
 
@@ -24,7 +25,7 @@
 
 @implementation SCHBookShelfGridViewCell
 
-@synthesize asyncImageView;
+@synthesize bookCoverView;
 @synthesize thumbTintView;
 @synthesize progressView;
 @synthesize identifier;
@@ -38,14 +39,10 @@
 {
 	if ((self = [super initWithFrame:frame reuseIdentifier:aReuseIdentifier])) {
                 
-		self.asyncImageView = [SCHThumbnailFactory newAsyncImageWithSize:CGSizeMake(self.frame.size.width - 4, self.frame.size.height - 22)];
-		[self.asyncImageView setFrame:CGRectZero];        
-		[self.contentView addSubview:self.asyncImageView];
-		
-		self.thumbTintView = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
-		[self.thumbTintView setBackgroundColor:[UIColor colorWithRed:0.2f green:0.2f blue:0.2f alpha:0.6f]];
-        [self.thumbTintView setContentMode:UIViewContentModeBottom];
-		[self.contentView addSubview:self.thumbTintView];
+        self.bookCoverView = [[SCHBookCoverView alloc] initWithFrame:CGRectZero];
+        self.bookCoverView.coverSize = CGSizeMake(self.frame.size.width - 4, self.frame.size.height - 22);
+        self.bookCoverView.identifier = self.identifier;
+        [self.contentView addSubview:self.bookCoverView];
 		
 		self.progressView = [[[UIProgressView alloc] initWithFrame:CGRectMake(10, self.frame.size.height - 42, self.frame.size.width - 20, 10)] autorelease];
 		[self.contentView addSubview:self.progressView];
@@ -55,12 +52,20 @@
 	return(self);
 }
 
+- (void)prepareForReuse
+{
+    // FIXME: something odd is going on here
+    // being called even for new cells!
+    [self.bookCoverView prepareForReuse];
+    [super prepareForReuse];
+}
+
 - (void)dealloc 
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
     
-	[asyncImageView release], asyncImageView = nil;
+	[bookCoverView release], bookCoverView = nil;
 	[thumbTintView release], thumbTintView = nil;
 	[progressView release], progressView = nil;
     [identifier release], identifier = nil;
@@ -69,31 +74,19 @@
 
 #pragma mark - Drawing methods
 
-- (void)layoutSubviews 
-{
-    [super layoutSubviews];
-    [UIView setAnimationsEnabled:NO];
-
-	self.asyncImageView.frame = CGRectMake(2, 0, self.frame.size.width - 4, self.frame.size.height - 22);
-	if (self.progressView.hidden == NO) {
-        self.progressView.frame = CGRectMake(10, self.frame.size.height - 42, self.frame.size.width - 20, 10);
-    }
-    
-    if (asyncImageView && !CGSizeEqualToSize(self.asyncImageView.coverSize, CGSizeZero)) {
-    
-        CGRect thumbTintFrame = self.thumbTintView.frame;
-        
-        thumbTintFrame.size.width = self.asyncImageView.coverSize.width;
-        thumbTintFrame.size.height = self.asyncImageView.coverSize.height;
-        
-        thumbTintFrame.origin.x = (self.contentView.frame.size.width - thumbTintFrame.size.width) / 2;
-        thumbTintFrame.origin.y = self.asyncImageView.frame.size.height - thumbTintFrame.size.height;
-        
-        self.thumbTintView.frame = thumbTintFrame;
-    }
-    
-    [UIView setAnimationsEnabled:YES];
-}
+//- (void)layoutSubviews 
+//{
+//    [super layoutSubviews];
+////    [UIView setAnimationsEnabled:NO];
+//    
+//    self.bookCoverView.frame = CGRectMake(2, 0, self.frame.size.width - 4, self.frame.size.height - 22);
+//	
+//    if (self.progressView.hidden == NO) {
+//        self.progressView.frame = CGRectMake(10, self.frame.size.height - 42, self.frame.size.width - 20, 10);
+//    }
+//    
+////    [UIView setAnimationsEnabled:YES];
+//}
 
 - (void)beginUpdates
 {
@@ -122,9 +115,8 @@
     NSManagedObjectContext *context = [(id)[[UIApplication sharedApplication] delegate] managedObjectContext];
 	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.identifier inManagedObjectContext:context];    
 	// image processing
-    [[SCHProcessingManager sharedProcessingManager] requestThumbImageForBookCover:self.asyncImageView
-                                                                             size:self.asyncImageView.thumbSize
-                                                                             book:book];
+    [self.bookCoverView refreshBookCoverView];
+    
 	[self setNeedsDisplay];
     
 	// book status
@@ -149,7 +141,13 @@
                 break;
         }
     }	
-	[self layoutSubviews];
+    
+    self.bookCoverView.frame = CGRectMake(2, 0, self.frame.size.width - 4, self.frame.size.height - 22);
+	
+    if (self.progressView.hidden == NO) {
+        self.progressView.frame = CGRectMake(10, self.frame.size.height - 42, self.frame.size.width - 20, 10);
+    }
+
     self.needsRefresh = NO;
 }	
 
@@ -162,7 +160,6 @@
     }
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"SCHBookDownloadPercentageUpdate" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"SCHBookStatusUpdate" object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"SCHNewImageAvailable" object:nil];
     
     [identifier release];
     identifier = [newIdentifier retain];
@@ -177,12 +174,7 @@
                                                  name:@"SCHBookStateUpdate"
                                                object:nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(checkForCellUpdateFromNotification:)
-                                                 name:@"SCHNewImageAvailable"
-                                               object:nil];
-    
-    [self.asyncImageView setIdentifier:self.identifier];
+    [self.bookCoverView setIdentifier:self.identifier];
     [self refreshCell];        
 }
 
