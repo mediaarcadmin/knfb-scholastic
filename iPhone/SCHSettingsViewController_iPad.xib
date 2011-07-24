@@ -2,9 +2,9 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1056</int>
-		<string key="IBDocument.SystemVersion">10K540</string>
+		<string key="IBDocument.SystemVersion">10J869</string>
 		<string key="IBDocument.InterfaceBuilderVersion">1306</string>
-		<string key="IBDocument.AppKitVersion">1038.36</string>
+		<string key="IBDocument.AppKitVersion">1038.35</string>
 		<string key="IBDocument.HIToolboxVersion">461.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -80,7 +80,7 @@
 										<int key="IBUITextAlignment">1</int>
 									</object>
 								</array>
-								<string key="NSFrame">{{114, 0}, {310, 44}}</string>
+								<string key="NSFrame">{{118, 0}, {310, 44}}</string>
 								<reference key="NSSuperview" ref="453328712"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="739250521"/>
@@ -100,7 +100,10 @@
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 						<array class="NSMutableArray" key="IBUIItems">
 							<object class="IBUIBarButtonItem" id="206712500">
-								<string key="IBUITitle">Close</string>
+								<object class="NSCustomResource" key="IBUIImage">
+									<string key="NSClassName">NSImage</string>
+									<string key="NSResourceName">button-close.png</string>
+								</object>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 								<int key="IBUIStyle">1</int>
 								<reference key="IBUIToolbar" ref="453328712"/>
@@ -122,7 +125,7 @@
 							</object>
 							<object class="IBUIBarButtonItem" id="718892693">
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-								<float key="IBUIWidth">61</float>
+								<float key="IBUIWidth">38</float>
 								<reference key="IBUIToolbar" ref="453328712"/>
 								<int key="IBUISystemItemIdentifier">6</int>
 							</object>
@@ -1009,6 +1012,7 @@
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
 			<string key="admin-iphone-top-shadow.png">{7, 7}</string>
+			<string key="button-close.png">{18, 18}</string>
 			<string key="button-login-red.png">{23, 44}</string>
 		</dictionary>
 		<string key="IBCocoaTouchPluginVersion">301</string>
