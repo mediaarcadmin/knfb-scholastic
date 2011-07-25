@@ -144,6 +144,8 @@ typedef enum {
 - (CGSize)bookCoverImageSize;
 - (SCHAppBookFeatures) bookFeatures;
 
+- (void)setForcedProcessing:(BOOL)forceProcess;
+
 @end
 
 

@@ -139,6 +139,7 @@ enum {
 {
     if (self.bookEnabledForUpdate) {
         SCHAppBook *book = [self book];
+        [book setForcedProcessing:YES];
         [book setProcessingState:SCHBookProcessingStateReadyForBookFileDownload];
         [[SCHProcessingManager sharedProcessingManager] userSelectedBookWithIdentifier:[book bookIdentifier]];
     }

@@ -401,6 +401,11 @@ NSString * const kSCHAppBookEucalyptusCacheDir = @"libEucalyptusCache";
     }
 }
 
+- (void)setForcedProcessing:(BOOL)forceProcess
+{
+    self.ForceProcess = [NSNumber numberWithBool:forceProcess];
+}
+
 #pragma mark - Errors
 
 - (NSError *)errorWithCode:(NSInteger)code

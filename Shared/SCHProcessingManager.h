@@ -15,23 +15,23 @@
 @class NSManagedObjectContext;
 
 typedef enum {
-    SCHBookProcessingStateURLsNotPopulated = -5,
-    SCHBookProcessingStateDownloadFailed = -4,
-    SCHBookProcessingStateUnableToAcquireLicense = -3,
-	SCHBookProcessingStateError = -2,
-	SCHBookProcessingStateBookVersionNotSupported,    // -1
-	SCHBookProcessingStateNoURLs,                     //  0
-	SCHBookProcessingStateNoCoverImage,               //  1
-	SCHBookProcessingStateReadyForBookFileDownload,   //  2
-	SCHBookProcessingStateDownloadStarted,            //  3
-	SCHBookProcessingStateDownloadPaused,             //  4
-	SCHBookProcessingStateReadyForLicenseAcquisition, //  5
-	SCHBookProcessingStateReadyForRightsParsing,      //  6
-	SCHBookProcessingStateReadyForAudioInfoParsing,   //  7
-	SCHBookProcessingStateReadyForTextFlowPreParse,   //  8
-    SCHBookProcessingStateReadyForSmartZoomPreParse,  // 10
-	SCHBookProcessingStateReadyForPagination,         // 11
-	SCHBookProcessingStateReadyToRead                 // 12
+    SCHBookProcessingStateURLsNotPopulated           = -5,
+    SCHBookProcessingStateDownloadFailed             = -4,
+    SCHBookProcessingStateUnableToAcquireLicense     = -3,
+	SCHBookProcessingStateError                      = -2,
+	SCHBookProcessingStateBookVersionNotSupported    = -1,
+	SCHBookProcessingStateNoURLs                     = 0,
+	SCHBookProcessingStateNoCoverImage               = 1,
+	SCHBookProcessingStateReadyForBookFileDownload   = 2,
+	SCHBookProcessingStateDownloadStarted            = 3,
+	SCHBookProcessingStateDownloadPaused             = 4,
+	SCHBookProcessingStateReadyForLicenseAcquisition = 5,
+	SCHBookProcessingStateReadyForRightsParsing      = 6,
+	SCHBookProcessingStateReadyForAudioInfoParsing   = 7,
+	SCHBookProcessingStateReadyForTextFlowPreParse   = 8,
+    SCHBookProcessingStateReadyForSmartZoomPreParse  = 9,
+	SCHBookProcessingStateReadyForPagination         = 10,
+	SCHBookProcessingStateReadyToRead                = 11,
 } SCHBookCurrentProcessingState;
 
 // Constants
