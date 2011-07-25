@@ -17,7 +17,6 @@
 - (void)releaseViewObjects;
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation;
 - (void)makeVisibleTextField:(UITextField *)textField;
-- (IBAction)openScholasticURLInSafari:(id)sender;
 
 @end
 
@@ -128,14 +127,16 @@
     [self setupAssetsForOrientation:[[UIApplication sharedApplication] statusBarOrientation]];
     [self clearFields];
 
-    UIColor *borderColor;
-    if (self.controllerType == kSCHControllerParentToolsView) {
-        borderColor = [UIColor SCHRed2Color];
-    } else {
-        borderColor = [UIColor SCHBlue1Color];
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        UIColor *borderColor;
+        if (self.controllerType == kSCHControllerParentToolsView) {
+            borderColor = [UIColor SCHRed2Color];
+        } else {
+            borderColor = [UIColor SCHBlue3Color];
+        }
+        [self.navigationController.view.layer setBorderColor:borderColor.CGColor];
+        [self.navigationController.view.layer setBorderWidth:2.0f];
     }
-    [self.navigationController.view.layer setBorderColor:borderColor.CGColor];
-    [self.navigationController.view.layer setBorderWidth:2.0f];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -277,9 +278,14 @@
     }
 }
 
-- (IBAction)openScholasticURLInSafari:(id)sender
+- (IBAction)openScholasticUsernamePasswordURLInSafari:(id)sender
 {
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://my.scholastic.com/sps_my_account/pwmgmt/ForgotPassword.jsp?AppType=COOL"]];
+}
+
+- (IBAction)openScholasticAccountURLInSafari:(id)sender
+{
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://my.scholastic.com/sps_my_account/accmgmt/GenericSignin.jsp?AppType=COOL"]];
 }
 
 #pragma mark - UITextFieldDelegate

@@ -71,4 +71,7 @@ typedef void(^SCHActionBlock)(void);
 // IBAction - the Cancel action
 - (IBAction)cancelButtonAction:(id)sender;
 
+- (IBAction)openScholasticUsernamePasswordURLInSafari:(id)sender;
+- (IBAction)openScholasticAccountURLInSafari:(id)sender;
+
 @end
