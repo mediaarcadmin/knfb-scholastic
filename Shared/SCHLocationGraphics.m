@@ -10,6 +10,9 @@
 
 #import "SCHNote.h"
 
+// Constants
+NSString * const kSCHLocationGraphics = @"SCHLocationGraphics";
+
 @implementation SCHLocationGraphics 
 
 @dynamic Page;

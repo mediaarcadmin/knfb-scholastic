@@ -13,7 +13,8 @@
 @class SCHPrivateAnnotations;
 @class SCHBookRange;
 
-static NSString * const kSCHHighlight = @"SCHHighlight";
+// Constants
+extern NSString * const kSCHHighlight;
 
 @interface SCHHighlight :  SCHAnnotation  
 {

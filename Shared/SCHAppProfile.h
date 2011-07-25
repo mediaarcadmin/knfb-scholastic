@@ -11,7 +11,8 @@
 
 @class SCHProfileItem;
 
-static NSString * const kSCHAppProfile = @"SCHAppProfile";
+// Constants
+extern NSString * const kSCHAppProfile;
 
 @interface SCHAppProfile : NSManagedObject 
 {

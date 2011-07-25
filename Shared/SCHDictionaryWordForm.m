@@ -8,6 +8,8 @@
 
 #import "SCHDictionaryWordForm.h"
 
+// Constants
+NSString * const kSCHDictionaryWordForm = @"SCHDictionaryWordForm";
 
 @implementation SCHDictionaryWordForm
 @dynamic word;

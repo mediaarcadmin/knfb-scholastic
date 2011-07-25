@@ -10,7 +10,8 @@
 
 @class SCHNote;
 
-static NSString * const kSCHLocationGraphics = @"SCHLocationGraphics";
+// Constants
+extern NSString * const kSCHLocationGraphics;
 
 @interface SCHLocationGraphics :  NSManagedObject  
 {

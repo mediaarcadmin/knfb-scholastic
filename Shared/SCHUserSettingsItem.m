@@ -8,6 +8,8 @@
 
 #import "SCHUserSettingsItem.h"
 
+// Constants
+NSString * const kSCHUserSettingsItem = @"SCHUserSettingsItem";
 
 @implementation SCHUserSettingsItem 
 

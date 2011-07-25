@@ -14,7 +14,8 @@
 @class SCHLastPage;
 @class SCHNote;
 
-static NSString * const kSCHPrivateAnnotations = @"SCHPrivateAnnotations";
+// Constants
+extern NSString * const kSCHPrivateAnnotations;
 
 @interface SCHPrivateAnnotations :  NSManagedObject  
 {

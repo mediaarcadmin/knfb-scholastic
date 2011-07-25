@@ -8,6 +8,12 @@
 
 #import "SCHReadingStatsContentItem.h"
 
+// Constants
+NSString * const kSCHReadingStatsContentItem = @"SCHReadingStatsContentItem";
+
+NSString * const kSCHReadingStatsContentItemFetchReadingStatsContentItemForBook = @"fetchReadingStatsContentItemForBook";
+NSString * const kSCHReadingStatsContentItemCONTENT_IDENTIFIER = @"CONTENT_IDENTIFIER";
+NSString * const kSCHReadingStatsContentItemDRM_QUALIFIER = @"DRM_QUALIFIER";
 
 @implementation SCHReadingStatsContentItem
 

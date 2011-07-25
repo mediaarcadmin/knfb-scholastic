@@ -8,6 +8,8 @@
 
 #import "SCHDeviceInfo.h"
 
+// Constants
+NSString * const kSCHDeviceInfo = @"SCHDeviceInfo";
 
 @implementation SCHDeviceInfo 
 

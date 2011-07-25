@@ -19,12 +19,13 @@
 @class SCHContentMetadataItem;
 @class SCHBookIdentifier;
 
-static NSString * const kSCHProfileItem = @"SCHProfileItem";
+// Constants
+extern NSString * const kSCHProfileItem;
 
-static NSString * const kSCHProfileItemFetchAnnotationsForProfileBook = @"fetchAnnotationsForProfileBook";
-static NSString * const kSCHProfileItemPROFILE_ID = @"PROFILE_ID";
-static NSString * const kSCHProfileItemCONTENT_IDENTIFIER = @"CONTENT_IDENTIFIER";
-static NSString * const kSCHProfileItemDRM_QUALIFIER = @"DRM_QUALIFIER";
+extern NSString * const kSCHProfileItemFetchAnnotationsForProfileBook;
+extern NSString * const kSCHProfileItemPROFILE_ID;
+extern NSString * const kSCHProfileItemCONTENT_IDENTIFIER;
+extern NSString * const kSCHProfileItemDRM_QUALIFIER;
 
 typedef enum {
     kSCHBookSortTypeUser,

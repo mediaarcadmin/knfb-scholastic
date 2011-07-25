@@ -7,12 +7,9 @@
  *
  */
 
-// Domains
-static NSString * const kBITAPIErrorDomain = @"BITAPIErrorDomain";
+// Domains Constants
+extern NSString * const kBITAPIErrorDomain;
 
-// Codes
-static NSInteger const kBITAPIGeneralError = 2000;
-static NSInteger const kBITAPIFaultError = 2001;
-
-// NSLocalizedDescriptionKeys
-//static NSString * const kBITAPIDescription = @"APIErrorDomain";
+// Codes Constants
+extern NSInteger const kBITAPIGeneralError;
+extern NSInteger const kBITAPIFaultError;

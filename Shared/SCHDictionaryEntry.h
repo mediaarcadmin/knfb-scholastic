@@ -9,8 +9,8 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-static NSString * const kSCHDictionaryEntry = @"SCHDictionaryEntry";
-
+// Constants
+extern NSString * const kSCHDictionaryEntry;
 
 @interface SCHDictionaryEntry : NSManagedObject {
 @private

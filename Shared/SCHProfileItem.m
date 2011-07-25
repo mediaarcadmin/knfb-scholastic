@@ -31,6 +31,14 @@
 #import "SCHReadingStatsEntryItem.h"
 #import "SCHBookshelfSyncComponent.h"
 
+// Constants
+NSString * const kSCHProfileItem = @"SCHProfileItem";
+
+NSString * const kSCHProfileItemFetchAnnotationsForProfileBook = @"fetchAnnotationsForProfileBook";
+NSString * const kSCHProfileItemPROFILE_ID = @"PROFILE_ID";
+NSString * const kSCHProfileItemCONTENT_IDENTIFIER = @"CONTENT_IDENTIFIER";
+NSString * const kSCHProfileItemDRM_QUALIFIER = @"DRM_QUALIFIER";
+
 @interface SCHProfileItem ()
 
 - (SCHReadingStatsContentItem *)newReadingStatsContentItemForBook:(SCHBookIdentifier *)bookIdentifier;

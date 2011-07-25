@@ -8,6 +8,8 @@
 
 #import "SCHDictionaryEntry.h"
 
+// Constants
+NSString * const kSCHDictionaryEntry = @"SCHDictionaryEntry";
 
 @implementation SCHDictionaryEntry
 @dynamic baseWordID;

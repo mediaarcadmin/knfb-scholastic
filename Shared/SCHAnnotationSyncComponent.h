@@ -10,8 +10,9 @@
 
 #import "SCHSyncComponent.h"
 
-static NSString * const SCHAnnotationSyncComponentCompletedNotification = @"SCHAnnotationSyncComponentCompletedNotification";
-static NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotationSyncComponentCompletedProfileIDs";
+// Constants
+extern NSString * const SCHAnnotationSyncComponentCompletedNotification;
+extern NSString * const SCHAnnotationSyncComponentCompletedProfileIDs;
 
 @interface SCHAnnotationSyncComponent : SCHSyncComponent 
 {

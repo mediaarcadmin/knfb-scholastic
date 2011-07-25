@@ -15,7 +15,8 @@
 @class SCHBookIdentifier;
 @class SCHUserContentItem;
 
-static NSString * const kSCHContentMetadataItem = @"SCHContentMetadataItem";
+// Constants
+extern NSString * const kSCHContentMetadataItem;
 
 @interface SCHContentMetadataItem : SCHContentItem {
 

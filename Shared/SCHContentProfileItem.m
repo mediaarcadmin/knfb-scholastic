@@ -10,6 +10,9 @@
 
 #import "SCHUserContentItem.h"
 
+// Constants
+NSString * const kSCHContentProfileItem = @"SCHContentProfileItem";
+
 @implementation SCHContentProfileItem 
 
 @dynamic IsFavorite;

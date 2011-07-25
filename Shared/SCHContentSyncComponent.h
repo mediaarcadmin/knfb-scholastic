@@ -10,9 +10,10 @@
 
 #import "SCHSyncComponent.h"
 
-static NSString * const SCHContentSyncComponentWillDeleteNotification = @"SCHContentSyncComponentWillDeleteNotification";
-static NSString * const SCHContentSyncComponentDeletedBookIdentifiers = @"SCHContentSyncComponentDeletedBookIdentifiers";
-static NSString * const SCHContentSyncComponentCompletedNotification = @"SCHContentSyncComponentCompletedNotification";
+// Constants
+extern NSString * const SCHContentSyncComponentWillDeleteNotification;
+extern NSString * const SCHContentSyncComponentDeletedBookIdentifiers;
+extern NSString * const SCHContentSyncComponentCompletedNotification;
 
 @interface SCHContentSyncComponent : SCHSyncComponent
 {

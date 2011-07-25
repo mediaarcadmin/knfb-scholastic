@@ -8,9 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
-static NSString* const kSCHDictionaryYoungReader = @"YD";
-static NSString* const kSCHDictionaryOlderReader = @"OD";
-
+// Constants
+extern NSString* const kSCHDictionaryYoungReader;
+extern NSString* const kSCHDictionaryOlderReader;
 
 @interface SCHDictionaryAccessManager : NSObject {
     

@@ -10,7 +10,8 @@
 
 #import "SCHSyncComponent.h"
 
-static NSString * const SCHSettingsSyncComponentCompletedNotification = @"SCHSettingsSyncComponentCompletedNotification";
+// Constants
+extern NSString * const SCHSettingsSyncComponentCompletedNotification;
 
 @interface SCHSettingsSyncComponent : SCHSyncComponent
 {

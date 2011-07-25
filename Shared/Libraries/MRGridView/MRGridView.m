@@ -14,6 +14,12 @@
 -(void) resetScrollTimer;
 @end
 
+// Constants
+const NSInteger MRGridViewMoveStyleDisplace = 0;
+const NSInteger MRGridViewMoveStyleMarker = 1;
+const CGFloat MRGridViewDragScrollSpeed = 10.0;
+const CGFloat MRGridViewScrollOverlapHeight = 44.0;
+
 @implementation MRGridView
 @synthesize gridDataSource, gridDelegate, currDraggedCell,currentScrollOffset,reusableCells,cellIndices,editing,moveStyle;
 
