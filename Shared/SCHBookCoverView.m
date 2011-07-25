@@ -62,13 +62,7 @@
 - (void)initialiseView 
 {
     // add the image view
-    // assume the image view is the same size as the frame size for now
-//    self.coverSize = CGSizeMake(self.frame.size.width, self.frame.size.height);
     self.coverImageView = [[UIImageView alloc] initWithFrame:self.frame];
-    
-//    NSLog(@"Frames: %@ %@", NSStringFromCGRect(self.frame), NSStringFromCGSize(coverSize));
-    
-//    self.backgroundColor = [UIColor purpleColor];
     [self addSubview:coverImageView];
     [self bringSubviewToFront:coverImageView];
     
@@ -108,6 +102,8 @@
     
     self.coverImageView.image = nil;
     self.currentImageName = nil;
+    
+    [self refreshBookCoverView];
 
 }
 
@@ -142,74 +138,100 @@
         return;
     }
     
-        __block NSString *fullImagePath;
-        __block NSString *thumbPath;
-        __block SCHBookCurrentProcessingState bookState;
-        [self performWithBook:^(SCHAppBook *book) {
-            //        NSLog(@"Getting book information.");
-            bookState = [book processingState];
-            fullImagePath = [[book coverImagePath] retain];
-            thumbPath = [[book thumbPathForSize:CGSizeMake(self.frame.size.width - (self.leftRightInset * 2), self.frame.size.height - self.topInset)] retain];
-        }];
+    __block NSString *fullImagePath;
+    __block NSString *thumbPath;
+    __block SCHBookCurrentProcessingState bookState;
+    [self performWithBook:^(SCHAppBook *book) {
+        //        NSLog(@"Getting book information.");
+        bookState = [book processingState];
+        fullImagePath = [[book coverImagePath] retain];
+        thumbPath = [[book thumbPathForSize:CGSizeMake(self.frame.size.width - (self.leftRightInset * 2), self.frame.size.height - self.topInset)] retain];
+    }];
+    
+    if (bookState <= SCHBookProcessingStateNoCoverImage) {
+        //        NSLog(@"Book does not have a cover image downloaded.");
+        self.coverImageView.image = nil;
+        self.currentImageName = nil;
+        return;
+    }
+    
+    SCHBookIdentifier *localIdentifier = [self.identifier copy];
+    
+    if (self.currentImageName != nil && [self.currentImageName compare:thumbPath] == NSOrderedSame) {
+        NSLog(@"Already using the right thumbnail image.");
+    } else {
+        NSFileManager *threadLocalFileManager = [[[NSFileManager alloc] init] autorelease];
         
-        if (bookState <= SCHBookProcessingStateNoCoverImage) {
-            //        NSLog(@"Book does not have a cover image downloaded.");
-            self.coverImageView.image = nil;
-            self.currentImageName = nil;
-            return;
-        }
-        
-        if (self.currentImageName != nil && [self.currentImageName compare:thumbPath] == NSOrderedSame) {
-            //        NSLog(@"Already using the right thumbnail image.");
-        } else {
-            NSFileManager *threadLocalFileManager = [[[NSFileManager alloc] init] autorelease];
-            
-            // check to see if we have the thumb already cached
-            if ([threadLocalFileManager fileExistsAtPath:thumbPath]) {
-                //            NSLog(@"Thumb exists. Loading image from cache.");
-                // load the cached image
-                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        // check to see if we have the thumb already cached
+        if ([threadLocalFileManager fileExistsAtPath:thumbPath]) {
+            //            NSLog(@"Thumb exists. Loading image from cache.");
+            // load the cached image
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                
+                [thumbPath retain];
+                UIImage *thumbImage = [UIImage imageWithContentsOfFile:thumbPath];
+                self.currentImageName = thumbPath;
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
                     
-                    [thumbPath retain];
-                    UIImage *thumbImage = [UIImage imageWithContentsOfFile:thumbPath];
-                    self.currentImageName = thumbPath;
-                    
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        //                    NSLog(@"Thumb loaded. Setting image.");
+                    if ([self.identifier isEqual:localIdentifier]) {
                         self.coverImageView.image = thumbImage;
                         [self resizeElementsForThumbSize:thumbImage.size];
-                    });
-                    
-                    [thumbPath release];
+                    } else {
+                        NSLog(@"******* Identifier changed (thumb loading).");
+                    }
                 });
                 
-            } else {
-                //            NSLog(@"Thumb does not exist. Creating thumb.");
-                // dispatch the thumbnail operation
-                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                [thumbPath release];
+            });
+            
+        } else {
+            //            NSLog(@"Thumb does not exist. Creating thumb.");
+            // dispatch the thumbnail operation
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                [fullImagePath retain];
+                [thumbPath retain];
+
+                if (![self.identifier isEqual:localIdentifier]) {
+                    NSLog(@"******* Identifier changed (thumb creation 1)");
+                } else {
                     
                     
-                    [fullImagePath retain];
-                    [thumbPath retain];
+                    UIImage *thumbImage = nil;
                     [NSThread sleepForTimeInterval:5];
                     
-                    UIImage *thumbImage = [self createImageWithSourcePath:fullImagePath destinationPath:thumbPath];
-                    self.currentImageName = thumbPath;
+                    if ([threadLocalFileManager fileExistsAtPath:thumbPath]) {
+                        NSLog(@"Was going to create thumb, but it already exists. Loading instead.");
+                        thumbImage = [UIImage imageWithContentsOfFile:thumbPath];
+                        self.currentImageName = thumbPath;
+                    } else {
+                        NSLog(@"Creating thumb.");
+                        thumbImage = [self createImageWithSourcePath:fullImagePath destinationPath:thumbPath];
+                        self.currentImageName = thumbPath;
+                    }
+                    
                     [fullImagePath release];
                     [thumbPath release];
                     
-                    
                     dispatch_async(dispatch_get_main_queue(), ^{
                         //                    NSLog(@"Thumb created. Setting image.");
-                        self.coverImageView.image = thumbImage;
-                        [self resizeElementsForThumbSize:thumbImage.size];
+                        
+                        if ([self.identifier isEqual:localIdentifier]) {
+                            self.coverImageView.image = thumbImage;
+                            [self resizeElementsForThumbSize:thumbImage.size];
+                        } else {
+                            NSLog(@"******* Identifier changed (thumb creation 2)");
+                        }
                     });
-                });
-            }
-            
-            [fullImagePath release];
-            [thumbPath release];
+                }
+            });
         }
+        
+        [fullImagePath release];
+        [thumbPath release];
+    }
+    
+    [localIdentifier release];
 }
 
 - (void)resizeElementsForThumbSize: (CGSize) thumbSize

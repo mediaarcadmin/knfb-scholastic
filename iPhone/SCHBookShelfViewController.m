@@ -206,11 +206,6 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
     if ([self.profileItem.AppProfile.ShowListView boolValue] == YES) {
         [self changeToListView:nil];
     }
-    
-    // FIXME: check to make sure that this is valid - reloadData is called from
-    // within the setBooks method, so don't need to call it twice?
-//    [self reloadData];
-    
 }
 
 - (void)viewDidUnload 
