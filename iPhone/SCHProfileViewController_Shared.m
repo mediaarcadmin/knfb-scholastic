@@ -23,6 +23,7 @@
 #import "SCHSetupBookshelvesViewController.h"
 #import "SCHDownloadDictionaryViewController.h"
 #import "SCHDictionaryDownloadManager.h"
+#import "LambdaAlert.h"
 
 enum LoginScreens {
     kLoginScreenNone,
@@ -41,6 +42,7 @@ enum LoginScreens {
 - (void)dismissKeyboard;
 - (void)advanceToNextLoginStep;
 - (void)endLoginSequence;
+- (void)performLogin;
 
 @end
 
@@ -98,11 +100,7 @@ enum LoginScreens {
 
     self.loginPasswordController.controllerType = kSCHControllerLoginView;
     self.loginPasswordController.actionBlock = ^{
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(authenticationManager:) name:kSCHAuthenticationManagerSuccess object:nil];			
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(authenticationManager:) name:kSCHAuthenticationManagerFailure object:nil];					
-        
-        [self.loginPasswordController startShowingProgress];
-        [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithUserName:[self.loginPasswordController username] withPassword:[self.loginPasswordController password]];
+        [self performLogin];
     };
     
     self.profilePasswordController.controllerType = kSCHControllerPasswordOnlyView;
@@ -254,6 +252,15 @@ enum LoginScreens {
     self.loginScreen = kLoginScreenNone;
 }
 
+- (void)performLogin
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(authenticationManager:) name:kSCHAuthenticationManagerSuccess object:nil];			
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(authenticationManager:) name:kSCHAuthenticationManagerFailure object:nil];					
+    
+    [self.loginPasswordController startShowingProgress];
+    [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithUserName:[self.loginPasswordController username] withPassword:[self.loginPasswordController password]];
+}
+
 - (void)showLoginControllerWithAnimation:(BOOL)animated
 {
     UIViewController *viewController = nil;
@@ -389,15 +396,20 @@ enum LoginScreens {
         [self advanceToNextLoginStep];
 	} else {
 		NSError *error = [notification.userInfo objectForKey:kSCHAuthenticationManagerNSError];
-		if (error!= nil) {
-			UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") 
-																 message:[error localizedDescription]
-																delegate:nil 
-													   cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-													   otherButtonTitles:nil]; 
-			[errorAlert show]; 
-			[errorAlert release];
-		}	
+		if (error != nil) {
+            NSString *localizedMessage = [NSString stringWithFormat:
+                                          NSLocalizedString(@"A problem occured. If this problem persists please contact support quoting\n\n '%@'", nil), 
+                                          [error localizedDescription]];                      
+            LambdaAlert *alert = [[LambdaAlert alloc]
+                                  initWithTitle:NSLocalizedString(@"Login Error", @"Login Error") 
+                                  message:localizedMessage];
+            [alert addButtonWithTitle:NSLocalizedString(@"Retry", @"Retry") block:^{
+                [self performLogin];
+            }];
+            [alert addButtonWithTitle:NSLocalizedString(@"OK", @"OK") block:^{}];            
+            [alert show];
+            [alert release];
+        }	
         [self.loginPasswordController stopShowingProgress];
 	}
 }

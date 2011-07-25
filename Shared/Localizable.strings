@@ -21,6 +21,8 @@
 "Deregister" = "Deregister";
 "Cancel" = "Cancel";
 "Done" = "Done";
+"Retry" = "Retry";
+"OK" = "OK";
 "Continue" = "Continue";
 "Confirmation" = "Confirmation";
 "Device Options" = "Device Options";
@@ -36,3 +38,4 @@
 "Bookshelf Removed" = "Bookshelf Removed";
 "Book Removed" = "Book Removed";
 "%@ has been removed" = "%@ has been removed";
+"A problem occured. If this problem persists please contact support quoting\n\n '%@'" = "A problem occured. If this problem persists please contact support quoting\n\n '%@'";
