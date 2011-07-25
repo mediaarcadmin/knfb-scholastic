@@ -38,9 +38,12 @@
 - (id)initWithFrame:(CGRect)frame reuseIdentifier:(NSString *)aReuseIdentifier 
 {
 	if ((self = [super initWithFrame:frame reuseIdentifier:aReuseIdentifier])) {
-                
         self.bookCoverView = [[SCHBookCoverView alloc] initWithFrame:CGRectZero];
-        self.bookCoverView.coverSize = CGSizeMake(self.frame.size.width - 4, self.frame.size.height - 22);
+        self.bookCoverView.backgroundColor = [UIColor orangeColor];
+//        self.bookCoverView.coverSize = CGSizeMake(self.frame.size.width - 4, self.frame.size.height - 22);
+        self.bookCoverView.frame = CGRectMake(0, 0, self.frame.size.width - 4, self.frame.size.height - 22);
+        self.bookCoverView.topInset = 0;
+        self.bookCoverView.leftRightInset = 0;
         self.bookCoverView.identifier = self.identifier;
         [self.contentView addSubview:self.bookCoverView];
 		

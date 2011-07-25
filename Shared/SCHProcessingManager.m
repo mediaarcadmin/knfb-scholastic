@@ -76,6 +76,7 @@
 @synthesize currentlyProcessingIdentifiers;
 @synthesize connectionIsIdle, firedFirstBusyIdleNotification;
 @synthesize managedObjectContext;
+@synthesize thumbnailAccessQueue;
 
 #pragma mark -
 #pragma mark Object Lifecycle
@@ -91,6 +92,8 @@
 	self.thumbImageRequests = nil;
     self.currentlyProcessingIdentifiers = nil;
     self.managedObjectContext = nil;
+    dispatch_release(thumbnailAccessQueue);
+
 	[super dealloc];
 }
 
@@ -112,6 +115,9 @@
 		
 		self.connectionIsIdle = YES;
         self.firedFirstBusyIdleNotification = NO;
+        
+        self.thumbnailAccessQueue = dispatch_queue_create("com.scholastic.ThumbnailAccessQueue", NULL);
+
 	}
 	
 	return self;

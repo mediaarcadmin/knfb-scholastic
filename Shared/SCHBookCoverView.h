@@ -14,7 +14,8 @@
     
 }
 
-@property (nonatomic, assign) CGSize coverSize;
+@property (nonatomic, assign) CGFloat topInset;
+@property (nonatomic, assign) CGFloat leftRightInset;
 @property (nonatomic, retain) SCHBookIdentifier *identifier;
 
 - (void)refreshBookCoverView;

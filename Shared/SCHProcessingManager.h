@@ -61,4 +61,8 @@ static NSString * const kSCHProcessingManagerConnectionBusy = @"SCHProcessingMan
 // stop processing a book
 - (void)cancelAllOperationsForBookIndentifier:(SCHBookIdentifier *)bookIdentifier;
 
+// FIXME: locking queue for SCHBookCoverView, here temporarily for testings
+@property dispatch_queue_t thumbnailAccessQueue;
+
+
 @end

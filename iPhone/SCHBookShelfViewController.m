@@ -207,7 +207,10 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
         [self changeToListView:nil];
     }
     
-    [self reloadData];
+    // FIXME: check to make sure that this is valid - reloadData is called from
+    // within the setBooks method, so don't need to call it twice?
+//    [self reloadData];
+    
 }
 
 - (void)viewDidUnload 
@@ -229,6 +232,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 
 - (void)reloadData
 {
+    NSLog(@"Calling reloadData on the grid view.");
     dispatch_async(dispatch_get_main_queue(), ^{
         if (![self.listTableView isHidden]) {
             [self.listTableView reloadData];
