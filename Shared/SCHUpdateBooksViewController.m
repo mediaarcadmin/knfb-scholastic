@@ -116,8 +116,6 @@
     return tvc.cell;
 }
 
-#pragma mark - UITableViewDelegate
-
 #pragma mark - NSFetchedResultsController
 
 - (NSFetchedResultsController *)fetchedResultsController
@@ -128,8 +126,9 @@
         [fetch setSortDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"ContentMetadataItem.Title" ascending:YES]]];
         [fetch setResultType:NSManagedObjectIDResultType];
         
-        // FIXME: show all books for now
-        //[fetch setPredicate:[NSPredicate predicateWithFormat:@"OnDiskVersion != ContentMetadataItem.Version"]];
+        NSPredicate *statePred = [NSPredicate predicateWithFormat:@"State = %d", SCHBookProcessingStateReadyToRead];
+        NSPredicate *versionPred = [NSPredicate predicateWithFormat:@"OnDiskVersion != ContentMetadataItem.Version"];
+        [fetch setPredicate:[NSCompoundPredicate andPredicateWithSubpredicates:[NSArray arrayWithObjects:statePred, versionPred, nil]]];
         
         NSFetchedResultsController *frc = [[NSFetchedResultsController alloc] initWithFetchRequest:fetch
                                                                               managedObjectContext:self.managedObjectContext
@@ -147,6 +146,11 @@
         }
     }
     return fetchedResultsController;
+}
+
+- (BOOL)updatesAvailable
+{
+    return [[self fetchedResultControllerSectionInfo] numberOfObjects] > 0;
 }
 
 #pragma mark - Actions 

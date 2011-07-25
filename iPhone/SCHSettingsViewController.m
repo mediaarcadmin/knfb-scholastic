@@ -22,12 +22,16 @@
 #import "SCHDeregisterDeviceViewController.h"
 #import "SCHCheckbox.h"
 #import "SCHUpdateBooksViewController.h"
+#import "SCHBookshelfSyncComponent.h"
 
 extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
 @interface SCHSettingsViewController()
 
+@property (nonatomic, retain) SCHUpdateBooksViewController *updateBooksViewController;
+
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation;
+- (void)updateUpdateBooksButton;
 - (void)updateDictionaryButton;
 - (void)releaseViewObjects;
 - (void)resetLocalSettings;
@@ -43,6 +47,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 @synthesize downloadDictionaryButton;
 @synthesize spaceSaverSwitch;
 @synthesize backgroundView;
+@synthesize updateBooksViewController;
 @synthesize managedObjectContext;
 
 #pragma mark - Object lifecycle
@@ -56,6 +61,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     [downloadDictionaryButton release], downloadDictionaryButton = nil;
     [spaceSaverSwitch release], spaceSaverSwitch = nil;
     [backgroundView release], backgroundView = nil;
+    [updateBooksViewController release], updateBooksViewController = nil;
 }
 
 - (void)dealloc 
@@ -73,6 +79,12 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 - (void)viewDidLoad 
 {
     [super viewDidLoad];
+    
+    NSAssert(self.managedObjectContext != nil, @"must set managedObjectContext before loading view");
+    SCHUpdateBooksViewController *updateBooks = [[SCHUpdateBooksViewController alloc] init];
+    updateBooks.managedObjectContext = self.managedObjectContext;
+    self.updateBooksViewController = updateBooks;
+    [updateBooks release];
     
     [self setButtonBackground:self.manageBooksButton];
     [self setButtonBackground:self.updateBooksButton];
@@ -92,6 +104,11 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
         self.navigationItem.titleView = logoImageView;
         [logoImageView release];
     }
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(didCompleteSync:)
+                                                 name:SCHBookshelfSyncComponentCompletedNotification
+                                               object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(dictionaryStateChanged:)
@@ -117,7 +134,15 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     NSNumber *spaceSaver = [[NSUserDefaults standardUserDefaults] objectForKey:@"kSCHSpaceSaverMode"];
     self.spaceSaverSwitch.selected = [spaceSaver boolValue];
     
+    [self updateUpdateBooksButton];
     [self updateDictionaryButton];
+}
+
+#pragma mark - Button states
+
+- (void)updateUpdateBooksButton
+{
+    self.updateBooksButton.enabled = [self.updateBooksViewController updatesAvailable];
 }
 
 - (void)updateDictionaryButton
@@ -229,10 +254,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
 - (IBAction)updateBooks:(id)sender
 {
-    SCHUpdateBooksViewController *updateBooks = [[SCHUpdateBooksViewController alloc] init];
-    updateBooks.managedObjectContext = self.managedObjectContext;
-    [self.navigationController pushViewController:updateBooks animated:YES];
-    [updateBooks release];
+    [self.navigationController pushViewController:updateBooksViewController animated:YES];
 }
 
 - (IBAction)downloadDictionary:(id)sender
@@ -264,6 +286,11 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 - (void)dictionaryStateChanged:(NSNotification *)note
 {
     [self updateDictionaryButton];
+}
+
+- (void)didCompleteSync:(NSNotification *)note
+{
+    [self updateUpdateBooksButton];
 }
 
 @end

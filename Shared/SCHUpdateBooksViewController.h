@@ -16,6 +16,7 @@
 @property (nonatomic, retain) IBOutlet UILabel *estimatedDownloadTimeLabel;
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 
+- (BOOL)updatesAvailable;
 - (IBAction)updateBooks:(id)sender;
 
 @end
