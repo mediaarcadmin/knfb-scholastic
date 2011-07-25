@@ -127,6 +127,8 @@
         [fetch setEntity:[NSEntityDescription entityForName:@"SCHAppBook" inManagedObjectContext:self.managedObjectContext]];
         [fetch setSortDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"ContentMetadataItem.Title" ascending:YES]]];
         [fetch setResultType:NSManagedObjectIDResultType];
+        
+        // FIXME: show all books for now
         //[fetch setPredicate:[NSPredicate predicateWithFormat:@"OnDiskVersion != ContentMetadataItem.Version"]];
         
         NSFetchedResultsController *frc = [[NSFetchedResultsController alloc] initWithFetchRequest:fetch
