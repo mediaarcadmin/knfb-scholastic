@@ -20,7 +20,24 @@
 
 #import "SCHNonDRMAuthenticationManager.h"
 
+// Constants
+NSString * const kSCHAuthenticationManagerSuccess = @"AuthenticationManagerSuccess";
+NSString * const kSCHAuthenticationManagerFailure = @"AuthenticationManagerFailure";
+NSString * const kSCHAuthenticationManagerAToken = @"aToken";
+NSString * const kSCHAuthenticationManagerOfflineMode = @"OfflineMode";
+NSString * const SCHAuthenticationManagerDRMDeregistrationNotification = @"SCHAuthenticationManagerDRMDeregistrationNotification";
+NSString * const kSCHAuthenticationManagerNSError = @"NSError";
+
+NSString * const kSCHAuthenticationManagerErrorDomain = @"AuthenticationManagerErrorDomain";
+NSInteger const kSCHAuthenticationManagerGeneralError = 2000;
+NSInteger const kSCHAuthenticationManagerLoginError = 2001;
+
 NSString * const kSCHAuthenticationManagerDeviceKey = @"AuthenticationManager.DeviceKey";
+
+NSString * const kSCHAuthenticationManagerUsername = @"AuthenticationManager.Username";
+NSString * const kSCHAuthenticationManagerServiceName = @"Scholastic";
+
+NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
 
 struct AuthenticateWithUserNameParameters 
 {
@@ -236,7 +253,7 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
     NSString *storedPassword = [SFHFKeychainUtils getPasswordForUsername:storedUsername andServiceName:kSCHAuthenticationManagerServiceName error:nil];
     NSString *deviceKey = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerDeviceKey];	
     
-    NSLog(@"Authenticating %@ with %@", storedUsername, deviceKey);
+    NSLog(@"Authenticating %@ with %@", storedUsername, (deviceKey == nil ? @"no deviceKey" :deviceKey));        
     
     if (waitingOnResponse == NO) {
         if ([[Reachability reachabilityForInternetConnection] isReachable] == YES) {

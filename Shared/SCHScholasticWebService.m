@@ -12,6 +12,9 @@
 #import "BITNetworkActivityManager.h"
 #import "TouchXML.h"
 
+// ProcessRemote Constants
+NSString * const kSCHScholasticWebServiceProcessRemote = @"processRemote";
+NSString * const kSCHScholasticWebServicePToken = @"pToken";
 
 static NSString * const kSCHScholasticWebServiceAttribute = @"//attribute";
 static NSString * const kSCHScholasticWebServiceAttributeName = @"name";

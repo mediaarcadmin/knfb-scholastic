@@ -25,6 +25,10 @@
 #import "SCHAppBook.h"
 #import "SCHBookIdentifier.h"
 
+// Constants
+NSString * const kSCHProcessingManagerConnectionIdle = @"SCHProcessingManagerConnectionIdle";
+NSString * const kSCHProcessingManagerConnectionBusy = @"SCHProcessingManagerConnectionBusy";
+
 #pragma mark Class Extension
 
 @interface SCHProcessingManager()

@@ -11,6 +11,9 @@
 #import "SCHPrivateAnnotations.h"
 #import "SCHLocationBookmark.h"
 
+// Constants
+NSString * const kSCHBookmark = @"SCHBookmark";
+
 @implementation SCHBookmark 
 
 @dynamic Disabled;

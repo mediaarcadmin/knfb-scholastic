@@ -13,6 +13,13 @@
 #import "SCHContentMetadataItem.h"
 #import "SCHBookIdentifier.h"
 
+// Constants
+NSString * const kSCHUserContentItem = @"SCHUserContentItem";
+
+NSString * const kSCHUserContentItemFetchWithContentIdentifier = @"fetchUserContentItemWithContentIdentifier";
+NSString * const kSCHUserContentItemCONTENT_IDENTIFIER = @"CONTENT_IDENTIFIER";
+NSString * const kSCHUserContentItemDRM_QUALIFIER = @"DRM_QUALIFIER";
+
 @implementation SCHUserContentItem 
 
 @dynamic Format;

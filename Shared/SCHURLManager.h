@@ -13,8 +13,9 @@
 @class NSManagedObjectContext;
 @class SCHBookIdentifier;
 
-static NSString * const kSCHURLManagerSuccess = @"URLManagerSuccess";
-static NSString * const kSCHURLManagerFailure = @"URLManagerFailure";
+// Constants
+extern NSString * const kSCHURLManagerSuccess;
+extern NSString * const kSCHURLManagerFailure;
 
 @interface SCHURLManager : NSObject <BITAPIProxyDelegate>
 {	

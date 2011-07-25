@@ -16,11 +16,6 @@ typedef enum {
 
 @protocol MRGridViewDelegate, MRGridViewDataSource;
 
-static const NSInteger MRGridViewMoveStyleDisplace = 0;
-static const NSInteger MRGridViewMoveStyleMarker = 1;
-static const CGFloat MRGridViewDragScrollSpeed = 10.0;
-static const CGFloat MRGridViewScrollOverlapHeight = 44.0;
-
 @interface MRGridView : UIScrollView<UIScrollViewDelegate> {
 	id<MRGridViewDataSource> gridDataSource;
 	id<MRGridViewDelegate> gridDelegate;

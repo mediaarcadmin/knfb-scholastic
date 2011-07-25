@@ -23,55 +23,55 @@ typedef enum
 
 @class SCHBookIdentifier;
 
-static NSString * const kSCHAppBookProcessingState = @"SCHBookProcessingState";
+// Constants
+extern NSString * const kSCHAppBookProcessingState;
 
-static NSString * const kSCHAppBookTTSPermitted = @"TTSPermitted";
-static NSString * const kSCHAppBookReflowPermitted = @"ReflowPermitted";
-static NSString * const kSCHAppBookHasAudio = @"HasAudio";
-static NSString * const kSCHAppBookHasStoryInteractions = @"HasStoryInteractions";
-static NSString * const kSCHAppBookHasExtras = @"HasExtras";
-static NSString * const kSCHAppBookLayoutStartsOnLeftSide = @"LayoutStartsOnLeftSide";
-static NSString * const kSCHAppBookDRMVersion = @"DRMVersion";
-static NSString * const kSCHAppBookXPSAuthor = @"XPSAuthor";
-static NSString * const kSCHAppBookXPSTitle = @"XPSTitle";
-static NSString * const kSCHAppBookXPSCategory = @"XPSCategory";
-static NSString * const kSCHAppBookState = @"State";
-static NSString * const kSCHAppBookCoverImageHeight = @"BookCoverHeight";
-static NSString * const kSCHAppBookCoverImageWidth = @"BookCoverWidth";
-static NSString * const kSCHAppBookCoverURL = @"BookCoverURL";
-static NSString * const kSCHAppBookFileURL = @"BookFileURL";
-static NSString * const kSCHAppBookTextFlowPageRanges = @"TextFlowPageRanges";
-static NSString * const kSCHAppBookSmartZoomPageMarkers = @"SmartZoomPageMarkers";
-static NSString * const kSCHAppBookLayoutPageEquivalentCount = @"LayoutPageEquivalentCount";
-static NSString * const kSCHAppBookAudioBookReferences = @"AudioBookReferences";
-
+extern NSString * const kSCHAppBookTTSPermitted;
+extern NSString * const kSCHAppBookReflowPermitted;
+extern NSString * const kSCHAppBookHasAudio;
+extern NSString * const kSCHAppBookHasStoryInteractions;
+extern NSString * const kSCHAppBookHasExtras;
+extern NSString * const kSCHAppBookLayoutStartsOnLeftSide;
+extern NSString * const kSCHAppBookDRMVersion;
+extern NSString * const kSCHAppBookXPSAuthor;
+extern NSString * const kSCHAppBookXPSTitle;
+extern NSString * const kSCHAppBookXPSCategory;
+extern NSString * const kSCHAppBookState;
+extern NSString * const kSCHAppBookCoverImageHeight;
+extern NSString * const kSCHAppBookCoverImageWidth;
+extern NSString * const kSCHAppBookCoverURL;
+extern NSString * const kSCHAppBookFileURL;
+extern NSString * const kSCHAppBookTextFlowPageRanges;
+extern NSString * const kSCHAppBookSmartZoomPageMarkers;
+extern NSString * const kSCHAppBookLayoutPageEquivalentCount;
+extern NSString * const kSCHAppBookAudioBookReferences;
 
 // Audio File keys
-static NSString * const kSCHAppBookAudioFile = @"AudioFile";
-static NSString * const kSCHAppBookTimingFile = @"TimingFile";
+extern NSString * const kSCHAppBookAudioFile;
+extern NSString * const kSCHAppBookTimingFile;
 
 // XPS Categories
-static NSString * const kSCHAppBookYoungReader = @"YoungReader";
-static NSString * const kSCHAppBookOldReader = @"OldReader";
+extern NSString * const kSCHAppBookYoungReader;
+extern NSString * const kSCHAppBookOldReader;
 
-static NSString * const kSCHAppBookCategoryPictureBook = @"Picture Book";
-static NSString * const kSCHAppBookCategoryEarlyReader = @"Early Reader";
-static NSString * const kSCHAppBookCategoryAdvancedReader = @"Advanced Reader";
-static NSString * const kSCHAppBookCategoryChapterBook = @"Chapter Book";
-static NSString * const kSCHAppBookCategoryNovelMiddleGrade = @"Novel - Middle Grade";
-static NSString * const kSCHAppBookCategoryNovelYoungAdult = @"Novel - Young Adult";
-static NSString * const kSCHAppBookCategoryGraphicNovel = @"Graphic Novel";
-static NSString * const kSCHAppBookCategoryReference = @"Reference";
-static NSString * const kSCHAppBookCategoryNonFictionEarly = @"Non-Fiction Early";
-static NSString * const kSCHAppBookCategoryNonFictionAdvanced = @"Non-Fiction Advanced";
+extern NSString * const kSCHAppBookCategoryPictureBook;
+extern NSString * const kSCHAppBookCategoryEarlyReader;
+extern NSString * const kSCHAppBookCategoryAdvancedReader;
+extern NSString * const kSCHAppBookCategoryChapterBook;
+extern NSString * const kSCHAppBookCategoryNovelMiddleGrade;
+extern NSString * const kSCHAppBookCategoryNovelYoungAdult;
+extern NSString * const kSCHAppBookCategoryGraphicNovel;
+extern NSString * const kSCHAppBookCategoryReference;
+extern NSString * const kSCHAppBookCategoryNonFictionEarly;
+extern NSString * const kSCHAppBookCategoryNonFictionAdvanced;
 
-static NSString * const kSCHAppBook = @"SCHAppBook";
+extern NSString * const kSCHAppBook;
 
-static NSString * const kSCHAppBookFetchWithContentIdentifier = @"fetchAppBookWithContentIdentifier";
+extern NSString * const kSCHAppBookFetchWithContentIdentifier;
 extern NSString * const kSCHAppBookCONTENT_IDENTIFIER;
 extern NSString * const kSCHAppBookDRM_QUALIFIER;
 
-static NSString * const kSCHAppBookEucalyptusCacheDir = @"libEucalyptusCache";
+extern NSString * const kSCHAppBookEucalyptusCacheDir;
 
 typedef enum {
     kSCHAppBookFeaturesNone,

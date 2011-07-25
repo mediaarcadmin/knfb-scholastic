@@ -8,21 +8,22 @@
 
 #import <Foundation/Foundation.h>
 
-static NSString * const kSCHThemeManagerThemeChangeNotification = @"SCHThemeManagerThemeChangeNotification";
+// Constants
+extern NSString * const kSCHThemeManagerThemeChangeNotification;
 
-static NSString * const kSCHThemeManagerDefault = @"Default";
+extern NSString * const kSCHThemeManagerDefault;
 
-static NSString * const kSCHThemeManagerImage = @"Image";
+extern NSString * const kSCHThemeManagerImage;
 
-static NSString * const kSCHThemeManagerButtonImage = @"ButtonImage";
-static NSString * const kSCHThemeManagerDoneButtonImage = @"DoneButtonImage";
-static NSString * const kSCHThemeManagerNavigationBarImage = @"NavigationBarImage";
-static NSString * const kSCHThemeManagerBackgroundImage = @"BackgroundImage";
-static NSString * const kSCHThemeManagerShelfImage = @"ShelfImage";
-static NSString * const kSCHThemeManagerHomeIcon = @"HomeIcon";
-static NSString * const kSCHThemeManagerBooksIcon = @"BooksIcon";
-static NSString * const kSCHThemeManagerThemeIcon = @"ThemeIcon";
-static NSString * const kSCHThemeManagerColorForListBackground = @"ListBackgroundColor";
+extern NSString * const kSCHThemeManagerButtonImage;
+extern NSString * const kSCHThemeManagerDoneButtonImage;
+extern NSString * const kSCHThemeManagerNavigationBarImage;
+extern NSString * const kSCHThemeManagerBackgroundImage;
+extern NSString * const kSCHThemeManagerShelfImage;
+extern NSString * const kSCHThemeManagerHomeIcon;
+extern NSString * const kSCHThemeManagerBooksIcon;
+extern NSString * const kSCHThemeManagerThemeIcon;
+extern NSString * const kSCHThemeManagerColorForListBackground;
 
 @class SCHAppProfile;
 

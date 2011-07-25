@@ -9,7 +9,56 @@
 #import "SCHAppBook.h"
 #import "SCHBookIdentifier.h"
 
-NSString *const kSCHAppBookErrorDomain  = @"com.knfb.scholastic.AppBookErrorDomain";
+// Constants
+NSString * const kSCHAppBookErrorDomain  = @"com.knfb.scholastic.AppBookErrorDomain";
+
+NSString * const kSCHAppBookProcessingState = @"SCHBookProcessingState";
+
+NSString * const kSCHAppBookTTSPermitted = @"TTSPermitted";
+NSString * const kSCHAppBookReflowPermitted = @"ReflowPermitted";
+NSString * const kSCHAppBookHasAudio = @"HasAudio";
+NSString * const kSCHAppBookHasStoryInteractions = @"HasStoryInteractions";
+NSString * const kSCHAppBookHasExtras = @"HasExtras";
+NSString * const kSCHAppBookLayoutStartsOnLeftSide = @"LayoutStartsOnLeftSide";
+NSString * const kSCHAppBookDRMVersion = @"DRMVersion";
+NSString * const kSCHAppBookXPSAuthor = @"XPSAuthor";
+NSString * const kSCHAppBookXPSTitle = @"XPSTitle";
+NSString * const kSCHAppBookXPSCategory = @"XPSCategory";
+NSString * const kSCHAppBookState = @"State";
+NSString * const kSCHAppBookCoverImageHeight = @"BookCoverHeight";
+NSString * const kSCHAppBookCoverImageWidth = @"BookCoverWidth";
+NSString * const kSCHAppBookCoverURL = @"BookCoverURL";
+NSString * const kSCHAppBookFileURL = @"BookFileURL";
+NSString * const kSCHAppBookTextFlowPageRanges = @"TextFlowPageRanges";
+NSString * const kSCHAppBookSmartZoomPageMarkers = @"SmartZoomPageMarkers";
+NSString * const kSCHAppBookLayoutPageEquivalentCount = @"LayoutPageEquivalentCount";
+NSString * const kSCHAppBookAudioBookReferences = @"AudioBookReferences";
+
+
+// Audio File keys
+NSString * const kSCHAppBookAudioFile = @"AudioFile";
+NSString * const kSCHAppBookTimingFile = @"TimingFile";
+
+// XPS Categories
+NSString * const kSCHAppBookYoungReader = @"YoungReader";
+NSString * const kSCHAppBookOldReader = @"OldReader";
+
+NSString * const kSCHAppBookCategoryPictureBook = @"Picture Book";
+NSString * const kSCHAppBookCategoryEarlyReader = @"Early Reader";
+NSString * const kSCHAppBookCategoryAdvancedReader = @"Advanced Reader";
+NSString * const kSCHAppBookCategoryChapterBook = @"Chapter Book";
+NSString * const kSCHAppBookCategoryNovelMiddleGrade = @"Novel - Middle Grade";
+NSString * const kSCHAppBookCategoryNovelYoungAdult = @"Novel - Young Adult";
+NSString * const kSCHAppBookCategoryGraphicNovel = @"Graphic Novel";
+NSString * const kSCHAppBookCategoryReference = @"Reference";
+NSString * const kSCHAppBookCategoryNonFictionEarly = @"Non-Fiction Early";
+NSString * const kSCHAppBookCategoryNonFictionAdvanced = @"Non-Fiction Advanced";
+
+NSString * const kSCHAppBook = @"SCHAppBook";
+
+NSString * const kSCHAppBookFetchWithContentIdentifier = @"fetchAppBookWithContentIdentifier";
+
+NSString * const kSCHAppBookEucalyptusCacheDir = @"libEucalyptusCache";
 
 @interface SCHAppBook()
 

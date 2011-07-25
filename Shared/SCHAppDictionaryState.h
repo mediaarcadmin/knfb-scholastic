@@ -9,7 +9,8 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-static NSString * const kSCHAppDictionaryState = @"SCHAppDictionaryState";
+// Constants
+extern NSString * const kSCHAppDictionaryState;
 
 @interface SCHAppDictionaryState : NSManagedObject {
 

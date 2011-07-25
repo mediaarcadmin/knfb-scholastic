@@ -9,7 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "NSNumber+ObjectTypes.h"
 
-static NSString * const kSCHBookIdentifierBookIdentifier = @"BookIdentifier";
+// Constants
+extern NSString * const kSCHBookIdentifierBookIdentifier;
 
 @interface SCHBookIdentifier : NSObject {}
 

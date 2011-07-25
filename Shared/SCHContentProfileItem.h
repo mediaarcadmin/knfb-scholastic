@@ -12,7 +12,8 @@
 @class SCHUserContentItem;
 @class SCHAppContentProfileItem;
 
-static NSString * const kSCHContentProfileItem = @"SCHContentProfileItem";
+// Constants
+extern NSString * const kSCHContentProfileItem;
 
 @interface SCHContentProfileItem :  SCHSyncEntity  
 {

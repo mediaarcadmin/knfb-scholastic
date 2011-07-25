@@ -11,6 +11,13 @@
 #import "SCHAnnotationsItem.h"
 #import "SCHPrivateAnnotations.h"
 
+// Constants
+NSString * const kSCHAnnotationsContentItem = @"SCHAnnotationsContentItem";
+
+NSString * const kSCHAnnotationsContentItemfetchAnnotationsContentItemsForBook = @"fetchAnnotationsContentItemsForBook";
+NSString * const kSCHAnnotationsContentItemCONTENT_IDENTIFIER = @"CONTENT_IDENTIFIER";
+NSString * const kSCHAnnotationsContentItemDRM_QUALIFIER = @"DRM_QUALIFIER";
+
 @implementation SCHAnnotationsContentItem 
 
 @dynamic Format;

@@ -12,7 +12,8 @@
 @class SCHPrivateAnnotations;
 @class SCHLocationBookmark;
 
-static NSString * const kSCHBookmark = @"SCHBookmark";
+// Constants
+extern NSString * const kSCHBookmark;
 
 @interface SCHBookmark :  SCHAnnotation  
 {

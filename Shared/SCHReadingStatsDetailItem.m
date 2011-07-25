@@ -10,6 +10,9 @@
 
 #import "SCHReadingStatsContentItem.h"
 
+// Constants
+NSString * const kSCHReadingStatsDetailItem = @"SCHReadingStatsDetailItem";
+
 @implementation SCHReadingStatsDetailItem
 
 @dynamic ProfileID;

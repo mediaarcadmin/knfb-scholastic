@@ -10,10 +10,11 @@
 
 @class SCHAnnotationsContentItem;
 
-static NSString * const kSCHAnnotationsItem = @"SCHAnnotationsItem";
+// Constants
+extern NSString * const kSCHAnnotationsItem;
 
-static NSString * const kSCHAnnotationsItemfetchAnnotationItemForProfile = @"fetchAnnotationItemForProfile";
-static NSString * const kSCHAnnotationsItemPROFILE_ID = @"PROFILE_ID";
+extern NSString * const kSCHAnnotationsItemfetchAnnotationItemForProfile;
+extern NSString * const kSCHAnnotationsItemPROFILE_ID;
 
 @interface SCHAnnotationsItem :  NSManagedObject  
 {

@@ -10,6 +10,12 @@
 
 #import "SCHAnnotationsContentItem.h"
 
+// Constants
+NSString * const kSCHAnnotationsItem = @"SCHAnnotationsItem";
+
+NSString * const kSCHAnnotationsItemfetchAnnotationItemForProfile = @"fetchAnnotationItemForProfile";
+NSString * const kSCHAnnotationsItemPROFILE_ID = @"PROFILE_ID";
+
 @implementation SCHAnnotationsItem 
 
 @dynamic ProfileID;

@@ -9,9 +9,10 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-static NSString * const kSCHAppState = @"SCHAppState";
+// Constants
+extern NSString * const kSCHAppState;
 
-static NSString * const kSCHAppStatefetchAppState = @"fetchAppState";
+extern NSString * const kSCHAppStatefetchAppState;
 
 @interface SCHAppState : NSManagedObject 
 {

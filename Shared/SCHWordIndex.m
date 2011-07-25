@@ -10,6 +10,9 @@
 
 #import "SCHLocationText.h"
 
+// Constants
+NSString * const kSCHWordIndex = @"SCHWordIndex";
+
 @implementation SCHWordIndex 
 
 @dynamic Start;

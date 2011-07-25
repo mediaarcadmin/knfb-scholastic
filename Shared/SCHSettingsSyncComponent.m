@@ -13,6 +13,9 @@
 #import "SCHLibreAccessWebService.h"
 #import "SCHUserSettingsItem.h"
 
+// Constants
+NSString * const SCHSettingsSyncComponentCompletedNotification = @"SCHSettingsSyncComponentCompletedNotification";
+
 @interface SCHSettingsSyncComponent ()
 
 - (void)updateUserSettings:(NSArray *)settingsList;

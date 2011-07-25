@@ -24,6 +24,10 @@
 #import "SCHLastPage.h"
 #import "SCHAppState.h"
 
+// Constants
+NSString * const SCHAnnotationSyncComponentCompletedNotification = @"SCHAnnotationSyncComponentCompletedNotification";
+NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotationSyncComponentCompletedProfileIDs";
+
 @interface SCHAnnotationSyncComponent ()
 
 - (BOOL)updateProfileContentAnnotations;

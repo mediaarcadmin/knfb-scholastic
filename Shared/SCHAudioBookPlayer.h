@@ -17,9 +17,10 @@
 typedef void (^WordBlock)(NSUInteger layoutPage, NSUInteger pageWordOffset);
 typedef void (^PageTurnBlock)(NSUInteger turnToLayoutPage);
 
-static NSString * const kSCHAudioBookPlayerErrorDomain = @"AudioBookPlayerErrorDomain";
-static NSInteger const kSCHAudioBookPlayerFileError = 2000;
-static NSInteger const kSCHAudioBookPlayerDataError = 2001;
+// Constants
+extern NSString * const kSCHAudioBookPlayerErrorDomain;
+extern NSInteger const kSCHAudioBookPlayerFileError;
+extern NSInteger const kSCHAudioBookPlayerDataError;
 
 @interface SCHAudioBookPlayer : NSObject <AVAudioPlayerDelegate>
 {

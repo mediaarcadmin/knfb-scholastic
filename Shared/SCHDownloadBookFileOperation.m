@@ -196,12 +196,6 @@
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
-    if ([self isCancelled] || [self processingState] == SCHBookProcessingStateDownloadPaused) {
-		[connection cancel];        
-        [self endOperation];
-		return;
-	}
-    
 	NSLog(@"Finished file %@.", [self.localPath lastPathComponent]);
 	
 	switch (self.fileType) {
@@ -224,6 +218,11 @@
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
+    // if there was an error may just have a partial file, so remove it
+	if (self.fileType == kSCHDownloadFileTypeCoverImage) {
+        [[NSFileManager defaultManager] removeItemAtPath:localPath error:nil];
+	}
+
     if ([self isCancelled] || [self processingState] == SCHBookProcessingStateDownloadPaused) {
 		[connection cancel];        
         [self endOperation];
