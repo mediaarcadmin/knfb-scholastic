@@ -89,6 +89,7 @@ NSString * const kSCHAppBookEucalyptusCacheDir = @"libEucalyptusCache";
 @dynamic BookCoverHeight;
 @dynamic AudioBookReferences;
 @dynamic OnDiskVersion;
+@dynamic ForceProcess;
 
 @synthesize diskVersionOutOfDate;
 
@@ -358,9 +359,11 @@ NSString * const kSCHAppBookEucalyptusCacheDir = @"libEucalyptusCache";
 
 - (BOOL)canOpenBookError:(NSError **)error 
 {
+    BOOL ret = NO;
+    
 	if ([self.State intValue] == SCHBookProcessingStateReadyToRead) {
-		return YES;
-	} else {
+		ret = YES;
+	} else if(error != NULL) {
         switch ([self.State intValue]) {
             case SCHBookProcessingStateUnableToAcquireLicense:
                 *error = [self errorWithCode:kSCHAppBookUnableToAcquireLicenseError];
@@ -378,8 +381,9 @@ NSString * const kSCHAppBookEucalyptusCacheDir = @"libEucalyptusCache";
                 *error = [self errorWithCode:kSCHAppBookStillBeingProcessedError];
                 break;
         }
-		return NO;
 	}
+    
+    return(ret);
 }
 
 - (CGSize)bookCoverImageSize

@@ -336,6 +336,7 @@ NSString * const SCHContentSyncComponentCompletedNotification = @"SCHContentSync
                                             inManagedObjectContext:self.managedObjectContext]];	
         [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"ID == %@", ret.ProfileID]];
         NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest error:nil];
+        [fetchRequest release];
         if([results count] > 0) {
             newAppContentProfileItem.ProfileItem = [results objectAtIndex:0];      
         }
