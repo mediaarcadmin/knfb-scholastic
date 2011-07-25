@@ -185,7 +185,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     [self.setupDelegate dismissSettingsForm];
 #else
     SCHDeregisterDeviceViewController *vc = [[SCHDeregisterDeviceViewController alloc] init];
-    vc.settingsDelegate = self.settingsDelegate;
+    vc.setupDelegate = self.setupDelegate;
     [self.navigationController pushViewController:vc animated:YES];
     [vc release];
 #endif
