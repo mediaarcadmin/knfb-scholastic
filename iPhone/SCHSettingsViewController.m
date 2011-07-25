@@ -176,6 +176,18 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     [super closeSettings];
 }
 
+// this is the SCHSetupDelegate for the SCHDeregisterDeviceViewController
+- (void)dismissSettingsForm
+{
+    [self.navigationController.parentViewController dismissModalViewControllerAnimated:YES];
+
+    // allow the previous close animation to complete before passing this up since the profileViewController's
+    // next behavious will be to open the login screen
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1*NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
+        [self.setupDelegate dismissSettingsForm];
+    });
+}
+
 #pragma mark - Actions
 
 - (IBAction)deregisterDevice:(id)sender 
@@ -185,7 +197,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     [self.setupDelegate dismissSettingsForm];
 #else
     SCHDeregisterDeviceViewController *vc = [[SCHDeregisterDeviceViewController alloc] init];
-    vc.setupDelegate = self.setupDelegate;
+    vc.setupDelegate = self;
     [self.navigationController pushViewController:vc animated:YES];
     [vc release];
 #endif
