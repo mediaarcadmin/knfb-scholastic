@@ -359,7 +359,7 @@ NSString *const kSCHAppBookErrorDomain  = @"com.knfb.scholastic.AppBookErrorDoma
             description = NSLocalizedString(@"The book is still being processed.", @"Still being processed error message from AppBook");
             break;
         case kSCHAppBookUnableToAcquireLicenseError:
-            description = NSLocalizedString(@"It has not been possible to acquire a DRM license for this book. Please make sure this device is authorised and connected to the internet and try again.", @"Decryption not available error message from AppBook");
+            description = NSLocalizedString(@"It has not been possible to acquire a DRM license for this book. Please make sure this device is authorized and connected to the internet and try again.", @"Decryption not available error message from AppBook");
             break;
         case kSCHAppBookDownloadFailedError:
             description = NSLocalizedString(@"There was a problem whilst downloading this book. Please make sure this device is connected to the internet and try again.", @"Download failed error message from AppBook");

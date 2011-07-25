@@ -1797,7 +1797,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
     NSMutableDictionary *item = [NSMutableDictionary dictionary];
     [item setValue:isbn forKey:kSCHLibreAccessWebServiceContentIdentifier];
     [item setValue:[NSNumber numberWithInt:LibreAccessServiceSvc_ContentIdentifierTypes_ISBN13] forKey:kSCHLibreAccessWebServiceContentIdentifierType];
-    [item setValue:[NSNumber numberWithInt:LibreAccessServiceSvc_drmqualifiers_FULL_WITH_DRM] forKey:kSCHLibreAccessWebServiceDRMQualifier];
+    [item setValue:[NSNumber numberWithInt:LibreAccessServiceSvc_drmqualifiers_FULL_NO_DRM] forKey:kSCHLibreAccessWebServiceDRMQualifier];
     [item setValue:@"XPS" forKey:kSCHLibreAccessWebServiceFormat];
     [item setValue:[NSArray arrayWithObject:profileList] forKey:kSCHLibreAccessWebServiceAssignedProfileList];
     

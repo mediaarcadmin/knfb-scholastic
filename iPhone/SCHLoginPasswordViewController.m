@@ -161,6 +161,11 @@
     [self setupAssetsForOrientation:toInterfaceOrientation];
 }
 
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+    [self.view endEditing:YES];
+}
+
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation
 {
     CGRect barFrame       = self.topBar.frame;
@@ -208,6 +213,8 @@
     containerFrame.size.height = containerMaxY - containerFrame.origin.y;
     self.topBar.frame = barFrame;
     self.containerView.frame = containerFrame;    
+    
+    self.scrollView.contentSize = containerFrame.size;
 }
 
 #pragma mark - Username and Password accessors
@@ -364,7 +371,7 @@
 
 - (void)keyboardWillHide:(NSNotification *) notification
 {
-    [self.scrollView setContentSize:CGSizeZero];
+    [self.scrollView setContentSize:self.containerView.frame.size];
 }
 
 @end
