@@ -398,15 +398,15 @@ enum LoginScreens {
 		NSError *error = [notification.userInfo objectForKey:kSCHAuthenticationManagerNSError];
 		if (error != nil) {
             NSString *localizedMessage = [NSString stringWithFormat:
-                                          NSLocalizedString(@"A problem occured. If this problem persists please contact support quoting\n\n '%@'", nil), 
+                                          NSLocalizedString(@"A problem occured. If this problem persists please contact support quoting:\n\n '%@'", nil), 
                                           [error localizedDescription]];                      
             LambdaAlert *alert = [[LambdaAlert alloc]
                                   initWithTitle:NSLocalizedString(@"Login Error", @"Login Error") 
                                   message:localizedMessage];
+            [alert addButtonWithTitle:NSLocalizedString(@"OK", @"OK") block:^{}];                        
             [alert addButtonWithTitle:NSLocalizedString(@"Retry", @"Retry") block:^{
                 [self performLogin];
             }];
-            [alert addButtonWithTitle:NSLocalizedString(@"OK", @"OK") block:^{}];            
             [alert show];
             [alert release];
         }	
