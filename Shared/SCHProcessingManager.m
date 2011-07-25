@@ -241,7 +241,7 @@ static SCHProcessingManager *sharedManager = nil;
 	if (book.processingState == SCHBookProcessingStateReadyToRead) {
 		needsProcessing = NO;
 	} else if (book.processingState == SCHBookProcessingStateReadyForBookFileDownload
-			   && spaceSaverMode == YES) {
+			   && spaceSaverMode == YES && [book.ForceProcess boolValue] == NO) {
 		needsProcessing = NO;
 	}
 	
@@ -558,7 +558,8 @@ static SCHProcessingManager *sharedManager = nil;
                 // if space saver mode is off, bump the book to the download state and start download
             case SCHBookProcessingStateDownloadPaused:
             case SCHBookProcessingStateReadyForBookFileDownload:
-                if (!spaceSaverMode) {
+                if (!spaceSaverMode || book.ForceProcess) {
+                    book.ForceProcess = [NSNumber numberWithBool:NO];                    
                     [book setProcessingState:SCHBookProcessingStateDownloadStarted];
                     [self processIdentifier:identifier];
                 }
@@ -669,6 +670,10 @@ static SCHProcessingManager *sharedManager = nil;
 		book.processingState == SCHBookProcessingStateUnableToAcquireLicense ||
         book.processingState == SCHBookProcessingStateURLsNotPopulated ||
         book.processingState == SCHBookProcessingStateDownloadFailed) {
+        if (book.processingState == SCHBookProcessingStateError ||
+            book.processingState == SCHBookProcessingStateDownloadFailed) {
+            book.ForceProcess = [NSNumber numberWithBool:YES];
+        }
         [book setProcessingState:SCHBookProcessingStateNoURLs];
 		[self redispatchIdentifier:identifier];
 	}

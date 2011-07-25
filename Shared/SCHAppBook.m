@@ -89,6 +89,7 @@ NSString * const kSCHAppBookEucalyptusCacheDir = @"libEucalyptusCache";
 @dynamic BookCoverHeight;
 @dynamic AudioBookReferences;
 @dynamic OnDiskVersion;
+@dynamic ForceProcess;
 
 @synthesize diskVersionOutOfDate;
 
