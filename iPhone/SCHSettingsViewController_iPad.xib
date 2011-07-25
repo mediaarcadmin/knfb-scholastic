@@ -2,9 +2,9 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1056</int>
-		<string key="IBDocument.SystemVersion">10J869</string>
+		<string key="IBDocument.SystemVersion">10K540</string>
 		<string key="IBDocument.InterfaceBuilderVersion">1306</string>
-		<string key="IBDocument.AppKitVersion">1038.35</string>
+		<string key="IBDocument.AppKitVersion">1038.36</string>
 		<string key="IBDocument.HIToolboxVersion">461.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -17,7 +17,6 @@
 			<string>IBUIToolbar</string>
 			<string>IBUILabel</string>
 			<string>IBUIButton</string>
-			<string>IBUISwitch</string>
 			<string>IBUIView</string>
 		</array>
 		<array key="IBDocument.PluginDependencies">
@@ -84,7 +83,7 @@
 								<reference key="NSSuperview" ref="453328712"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="739250521"/>
-								<object class="NSColor" key="IBUIBackgroundColor">
+								<object class="NSColor" key="IBUIBackgroundColor" id="82788531">
 									<int key="NSColorSpace">3</int>
 									<bytes key="NSWhite">MCAwAA</bytes>
 								</object>
@@ -155,7 +154,7 @@
 						<string key="NSFrame">{{111, 121}, {318, 51}}</string>
 						<reference key="NSSuperview" ref="715934819"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="319708791"/>
+						<reference key="NSNextKeyView" ref="275588657"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<int key="IBUIContentMode">7</int>
@@ -254,16 +253,16 @@
 					<object class="IBUILabel" id="319708791">
 						<reference key="NSNextResponder" ref="715934819"/>
 						<int key="NSvFlags">290</int>
-						<string key="NSFrame">{{175, 193}, {89, 27}}</string>
+						<string key="NSFrame">{{212, 194}, {143, 22}}</string>
 						<reference key="NSSuperview" ref="715934819"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="967787112"/>
+						<reference key="NSNextKeyView" ref="1012047803"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<int key="IBUIContentMode">7</int>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-						<string key="IBUIText">Space Saver</string>
+						<string key="IBUIText">Enable Space Saver</string>
 						<reference key="IBUIFont" ref="697363814"/>
 						<reference key="IBUITextColor" ref="974943671"/>
 						<nil key="IBUIHighlightedColor"/>
@@ -430,19 +429,6 @@
 							<string key="NSResourceName">admin-iphone-top-shadow.png</string>
 						</object>
 					</object>
-					<object class="IBUISwitch" id="967787112">
-						<reference key="NSNextResponder" ref="715934819"/>
-						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{272, 193}, {94, 27}}</string>
-						<reference key="NSSuperview" ref="715934819"/>
-						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="1012047803"/>
-						<bool key="IBUIOpaque">NO</bool>
-						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-						<int key="IBUIContentHorizontalAlignment">0</int>
-						<int key="IBUIContentVerticalAlignment">0</int>
-						<bool key="IBUIOn">YES</bool>
-					</object>
 					<object class="IBUIButton" id="884297116">
 						<reference key="NSNextResponder" ref="715934819"/>
 						<int key="NSvFlags">292</int>
@@ -506,6 +492,16 @@
 							<bytes key="NSRGB">MC4wNzExMTU4NTE0IDAuNjM2MjA5NDI4MyAxAA</bytes>
 						</object>
 						<reference key="IBUINormalTitleShadowColor" ref="578724973"/>
+					</object>
+					<object class="IBUIView" id="275588657">
+						<reference key="NSNextResponder" ref="715934819"/>
+						<int key="NSvFlags">292</int>
+						<string key="NSFrame">{{179, 189}, {32, 32}}</string>
+						<reference key="NSSuperview" ref="715934819"/>
+						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView" ref="319708791"/>
+						<reference key="IBUIBackgroundColor" ref="82788531"/>
+						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 					</object>
 				</array>
 				<string key="NSFrameSize">{540, 620}</string>
@@ -587,14 +583,6 @@
 					<int key="connectionID">74</int>
 				</object>
 				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">spaceSaverSwitch</string>
-						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="967787112"/>
-					</object>
-					<int key="connectionID">75</int>
-				</object>
-				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
 						<string key="label">manageBooks:</string>
 						<reference key="source" ref="915391528"/>
@@ -657,6 +645,14 @@
 					</object>
 					<int key="connectionID">82</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">spaceSaverSwitch</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="275588657"/>
+					</object>
+					<int key="connectionID">85</int>
+				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<array key="orderedObjects">
@@ -686,8 +682,6 @@
 							<reference ref="453328712"/>
 							<reference ref="915391528"/>
 							<reference ref="885291924"/>
-							<reference ref="319708791"/>
-							<reference ref="967787112"/>
 							<reference ref="1012047803"/>
 							<reference ref="1001415347"/>
 							<reference ref="884297116"/>
@@ -699,6 +693,8 @@
 							<reference ref="581454174"/>
 							<reference ref="48248895"/>
 							<reference ref="337091297"/>
+							<reference ref="319708791"/>
+							<reference ref="275588657"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -783,11 +779,6 @@
 						<reference key="parent" ref="715934819"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">58</int>
-						<reference key="object" ref="967787112"/>
-						<reference key="parent" ref="715934819"/>
-					</object>
-					<object class="IBObjectRecord">
 						<int key="objectID">59</int>
 						<reference key="object" ref="337091297"/>
 						<reference key="parent" ref="715934819"/>
@@ -842,6 +833,11 @@
 						<reference key="object" ref="1012047803"/>
 						<reference key="parent" ref="715934819"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">84</int>
+						<reference key="object" ref="275588657"/>
+						<reference key="parent" ref="715934819"/>
+					</object>
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
@@ -861,7 +857,6 @@
 				<string key="55.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="56.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="57.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-				<string key="58.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="59.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="60.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="61.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -873,12 +868,14 @@
 				<string key="68.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="70.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="83.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<string key="84.CustomClassName">SCHCheckbox</string>
+				<string key="84.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 			</dictionary>
 			<dictionary class="NSMutableDictionary" key="unlocalizedProperties"/>
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">83</int>
+			<int key="maxID">85</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -899,6 +896,14 @@
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">./Classes/SCHBaseSetupViewController.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">SCHCheckbox</string>
+					<string key="superclassName">UIControl</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/SCHCheckbox.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
@@ -961,7 +966,7 @@
 						<string key="deregisterDeviceButton">UIButton</string>
 						<string key="downloadDictionaryButton">UIButton</string>
 						<string key="manageBooksButton">UIButton</string>
-						<string key="spaceSaverSwitch">UISwitch</string>
+						<string key="spaceSaverSwitch">SCHCheckbox</string>
 						<string key="topBar">SCHCustomToolbar</string>
 						<string key="updateBooksButton">UIButton</string>
 					</dictionary>
@@ -984,7 +989,7 @@
 						</object>
 						<object class="IBToOneOutletInfo" key="spaceSaverSwitch">
 							<string key="name">spaceSaverSwitch</string>
-							<string key="candidateClassName">UISwitch</string>
+							<string key="candidateClassName">SCHCheckbox</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="topBar">
 							<string key="name">topBar</string>

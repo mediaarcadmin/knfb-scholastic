@@ -20,6 +20,7 @@
 #import "SCHRemoveDictionaryViewController.h"
 #import "AppDelegate_Shared.h"
 #import "SCHDeregisterDeviceViewController.h"
+#import "SCHCheckbox.h"
 
 extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
@@ -114,7 +115,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     [self setupAssetsForOrientation:self.interfaceOrientation];
     
     NSNumber *spaceSaver = [[NSUserDefaults standardUserDefaults] objectForKey:@"kSCHSpaceSaverMode"];
-    self.spaceSaverSwitch.on = [spaceSaver boolValue];
+    self.spaceSaverSwitch.selected = [spaceSaver boolValue];
     
     [self updateDictionaryButton];
 }
@@ -170,7 +171,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
 - (IBAction)dismissModalSettingsController:(id)sender
 {
-    [[NSUserDefaults standardUserDefaults] setBool:self.spaceSaverSwitch.on forKey:@"kSCHSpaceSaverMode"];
+    [[NSUserDefaults standardUserDefaults] setBool:self.spaceSaverSwitch.selected forKey:@"kSCHSpaceSaverMode"];
     [[NSUserDefaults standardUserDefaults] synchronize];
 
     [self.settingsDelegate dismissSettingsForm];

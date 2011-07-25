@@ -10,6 +10,7 @@
 #import "SCHBaseSetupViewController.h"
 
 @class SCHCustomToolbar;
+@class SCHCheckbox;
 @protocol SCHSettingsViewControllerDelegate; 
 
 @interface SCHSettingsViewController : SCHBaseSetupViewController <UIAlertViewDelegate>  
@@ -21,7 +22,7 @@
 @property (nonatomic, retain) IBOutlet UIButton *deregisterDeviceButton;
 @property (nonatomic, retain) IBOutlet UIButton *updateBooksButton;
 @property (nonatomic, retain) IBOutlet UIButton *downloadDictionaryButton;
-@property (nonatomic, retain) IBOutlet UISwitch *spaceSaverSwitch;
+@property (nonatomic, retain) IBOutlet SCHCheckbox *spaceSaverSwitch;
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, assign) id<SCHSettingsViewControllerDelegate> settingsDelegate;
 

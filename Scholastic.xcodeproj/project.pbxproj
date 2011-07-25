@@ -112,6 +112,8 @@
 		2894E80F13B09EC800AEAD79 /* storyinteraction-findinpage-wrong@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 2894E80513B09EC800AEAD79 /* storyinteraction-findinpage-wrong@2x~iphone.png */; };
 		2894E81413B0A67B00AEAD79 /* USAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293869712DF3A3300045B44 /* USAdditions.m */; };
 		2894E81513B0A68B00AEAD79 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C9F1A579133B83D100FD984C /* libxml2.dylib */; };
+		28986DD513DD4F120011B148 /* SCHCheckbox.m in Sources */ = {isa = PBXBuildFile; fileRef = 28986DD413DD4F120011B148 /* SCHCheckbox.m */; };
+		28986DD613DD4F120011B148 /* SCHCheckbox.m in Sources */ = {isa = PBXBuildFile; fileRef = 28986DD413DD4F120011B148 /* SCHCheckbox.m */; };
 		289ABFDC139FDCF100662AD7 /* SCHStoryInteractionMultipleChoiceText_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 520CD294139F84530018EA7E /* SCHStoryInteractionMultipleChoiceText_iPad.xib */; };
 		28A08CDE13950C01006FD008 /* SCHStoryInteraction.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A08CC713950C01006FD008 /* SCHStoryInteraction.m */; };
 		28A08CDF13950C01006FD008 /* SCHStoryInteraction.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A08CC713950C01006FD008 /* SCHStoryInteraction.m */; };
@@ -1670,6 +1672,8 @@
 		2894E80513B09EC800AEAD79 /* storyinteraction-findinpage-wrong@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-findinpage-wrong@2x~iphone.png"; sourceTree = "<group>"; };
 		2894E80613B09EC800AEAD79 /* storyinteraction-findinpage-correct~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-findinpage-correct~iphone.png"; sourceTree = "<group>"; };
 		2894E80713B09EC800AEAD79 /* storyinteraction-findinpage-correct@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-findinpage-correct@2x~iphone.png"; sourceTree = "<group>"; };
+		28986DD313DD4F120011B148 /* SCHCheckbox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHCheckbox.h; path = Shared/SCHCheckbox.h; sourceTree = "<group>"; };
+		28986DD413DD4F120011B148 /* SCHCheckbox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHCheckbox.m; path = Shared/SCHCheckbox.m; sourceTree = "<group>"; };
 		28A08CC613950C01006FD008 /* SCHStoryInteraction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteraction.h; sourceTree = "<group>"; };
 		28A08CC713950C01006FD008 /* SCHStoryInteraction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteraction.m; sourceTree = "<group>"; };
 		28A08CC813950C01006FD008 /* SCHStoryInteractionHotSpot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionHotSpot.h; sourceTree = "<group>"; };
@@ -4316,6 +4320,8 @@
 			children = (
 				C979D888138C2D9100581F7F /* SCHGradientView.h */,
 				C979D889138C2D9100581F7F /* SCHGradientView.m */,
+				28986DD313DD4F120011B148 /* SCHCheckbox.h */,
+				28986DD413DD4F120011B148 /* SCHCheckbox.m */,
 			);
 			name = "Utility Views";
 			sourceTree = "<group>";
@@ -6241,6 +6247,7 @@
 				28C7415B13D8A06700EEAB36 /* SCHBaseTextViewController.m in Sources */,
 				28C7416313D8A4E700EEAB36 /* SCHDeregisterDeviceViewController.m in Sources */,
 				28D67DF013D9B30500F715CD /* SCHRemoveDictionaryViewController.m in Sources */,
+				28986DD513DD4F120011B148 /* SCHCheckbox.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6538,6 +6545,7 @@
 				28C7415C13D8A06700EEAB36 /* SCHBaseTextViewController.m in Sources */,
 				28C7416413D8A4E700EEAB36 /* SCHDeregisterDeviceViewController.m in Sources */,
 				28D67DF113D9B30500F715CD /* SCHRemoveDictionaryViewController.m in Sources */,
+				28986DD613DD4F120011B148 /* SCHCheckbox.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
