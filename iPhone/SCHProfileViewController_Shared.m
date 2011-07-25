@@ -108,7 +108,9 @@ enum LoginScreens {
         [self endLoginSequence];
     };
     
-    self.settingsViewController.settingsDelegate = self;
+    self.setupBookshelvesViewController.setupDelegate = self;
+    self.downloadDictionaryViewController.setupDelegate = self;
+    self.settingsViewController.setupDelegate = self;
     self.settingsViewController.managedObjectContext = self.managedObjectContext;
 
     [self advanceToNextLoginStep];

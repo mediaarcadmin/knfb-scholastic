@@ -7,7 +7,7 @@
 //
 
 #import "SCHSettingsViewController.h"
-#import "SCHSettingsViewControllerDelegate.h"
+#import "SCHSetupDelegate.h"
 #import "SCHLoginPasswordViewController.h"
 #import "SCHCustomNavigationBar.h"
 #import "SCHCustomToolbar.h"
@@ -44,7 +44,6 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 @synthesize spaceSaverSwitch;
 @synthesize backgroundView;
 @synthesize managedObjectContext;
-@synthesize settingsDelegate;
 
 #pragma mark - Object lifecycle
 
@@ -174,8 +173,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 {
     [[NSUserDefaults standardUserDefaults] setBool:self.spaceSaverSwitch.selected forKey:@"kSCHSpaceSaverMode"];
     [[NSUserDefaults standardUserDefaults] synchronize];
-
-    [self.settingsDelegate dismissSettingsForm];
+    [super closeSettings];
 }
 
 #pragma mark - Actions
@@ -184,7 +182,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 {
 #if LOCALDEBUG
     [self resetLocalSettings];
-    [self.settingsDelegate dismissSettingsForm];
+    [self.setupDelegate dismissSettingsForm];
 #else
     SCHDeregisterDeviceViewController *vc = [[SCHDeregisterDeviceViewController alloc] init];
     vc.settingsDelegate = self.settingsDelegate;

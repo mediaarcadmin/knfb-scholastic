@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@protocol SCHSettingsViewControllerDelegate <NSObject>
+@protocol SCHSetupDelegate <NSObject>
 
 - (void)dismissSettingsForm;
 

@@ -9,7 +9,7 @@
 #import "SCHDeregisterDeviceViewController.h"
 #import "SCHAuthenticationManager.h"
 #import "SCHDrmSession.h"
-#import "SCHSettingsViewControllerDelegate.h"
+#import "SCHSetupDelegate.h"
 #import "SCHAuthenticationManagerProtected.h"
 
 @interface SCHDeregisterDeviceViewController ()

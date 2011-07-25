@@ -8,8 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol SCHSetupDelegate; 
 
 @interface SCHBaseSetupViewController : UIViewController {}
+
+@property (nonatomic, assign) id<SCHSetupDelegate> setupDelegate;
 
 // set the appropriate button background for a setup screen button
 - (void)setButtonBackground:(UIButton *)button;
