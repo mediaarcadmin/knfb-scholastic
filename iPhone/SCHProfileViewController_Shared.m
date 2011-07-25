@@ -371,7 +371,7 @@ enum LoginScreens {
 {
     if (self.loginScreen == kLoginScreenSetupBookshelves) {
         [self.setupBookshelvesViewController showActivity:YES];
-        [[SCHSyncManager sharedSyncManager] firstSync:NO];
+        [[SCHSyncManager sharedSyncManager] firstSync:YES];
     }
 }
 
@@ -390,9 +390,9 @@ enum LoginScreens {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kSCHAuthenticationManagerFailure object:nil];
 	
 	if ([notification.name isEqualToString:kSCHAuthenticationManagerSuccess]) {
-		[[SCHURLManager sharedURLManager] clear];
-		[[SCHSyncManager sharedSyncManager] clear];
-		[[SCHSyncManager sharedSyncManager] firstSync:NO];
+        [[SCHURLManager sharedURLManager] clear];
+        [[SCHSyncManager sharedSyncManager] clear];
+        [[SCHSyncManager sharedSyncManager] firstSync:YES];
 #if LOCALDEBUG
         [self advanceToNextLoginStep];
 #endif

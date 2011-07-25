@@ -46,6 +46,8 @@
 
 - (void)showActivity:(BOOL)activity
 {
+    [self view]; // ensure the view is loaded
+    
     if (activity) {
         [self.spinner startAnimating];
     } else {
