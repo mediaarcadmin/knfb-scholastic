@@ -230,10 +230,12 @@ enum LoginScreens {
     if (!isAuthenticated) {
         self.loginScreen = kLoginScreenPassword;
     }
+#if !LOCALDEBUG
     else if ([[self.fetchedResultsController sections] count] == 0 
              || [[[self.fetchedResultsController sections] objectAtIndex:0] numberOfObjects] == 0) {
         self.loginScreen = kLoginScreenSetupBookshelves;
     }
+#endif
     else if ([[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryProcessingState] == SCHDictionaryProcessingStateUserSetup) {
         self.loginScreen = kLoginScreenDownloadDictionary;
     }
@@ -371,7 +373,7 @@ enum LoginScreens {
 {
     if (self.loginScreen == kLoginScreenSetupBookshelves) {
         [self.setupBookshelvesViewController showActivity:YES];
-        [[SCHSyncManager sharedSyncManager] firstSync:NO];
+        [[SCHSyncManager sharedSyncManager] firstSync:YES];
     }
 }
 
@@ -390,9 +392,9 @@ enum LoginScreens {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kSCHAuthenticationManagerFailure object:nil];
 	
 	if ([notification.name isEqualToString:kSCHAuthenticationManagerSuccess]) {
-		[[SCHURLManager sharedURLManager] clear];
-		[[SCHSyncManager sharedSyncManager] clear];
-		[[SCHSyncManager sharedSyncManager] firstSync:NO];
+        [[SCHURLManager sharedURLManager] clear];
+        [[SCHSyncManager sharedSyncManager] clear];
+        [[SCHSyncManager sharedSyncManager] firstSync:YES];
 #if LOCALDEBUG
         [self advanceToNextLoginStep];
 #endif

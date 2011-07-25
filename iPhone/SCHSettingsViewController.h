@@ -12,6 +12,7 @@
 
 @class SCHCustomToolbar;
 @class SCHCheckbox;
+@class SCHUpdateBooksViewController;
 
 @interface SCHSettingsViewController : SCHBaseSetupViewController <UIAlertViewDelegate, SCHSetupDelegate>  
 {}
