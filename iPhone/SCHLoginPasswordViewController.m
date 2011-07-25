@@ -204,7 +204,7 @@ static const CGFloat kContentHeightLandscape = 380;
                 borderColor  = [UIColor SCHBlue1Color];
                 break;
             default:
-                toolbarImage = [UIImage imageNamed:@"admin-iphone-portrait-top-toolbar.png"];
+                toolbarImage = [UIImage imageNamed:@"settings-ipad-top-toolbar.png"];
                 borderColor  = [UIColor SCHRed3Color];
                 break;
         }

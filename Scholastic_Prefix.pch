@@ -10,8 +10,8 @@
     #import "UIColor+Scholastic.h"
 #endif
 
-#define SERVEROVERRIDE 1
-#define NONDRMAUTHENTICATION 0
+#define SERVEROVERRIDE 0
+#define NONDRMAUTHENTICATION 1
 #define DICTIONARY_DOWNLOAD_DISABLED 0
 
 // Stops all NSLog() functions executing under release builds

@@ -166,7 +166,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation
 {
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        [self.topBar setBackgroundImage:[UIImage imageNamed:@"admin-iphone-landscape-top-toolbar.png"]];
+        [self.topBar setBackgroundImage:[UIImage imageNamed:@"settings-ipad-top-toolbar.png"]];
         [self.backgroundView setImage:[UIImage imageNamed:@"plain-background-portrait.png"]];   
         [self.navigationController.view.layer setBorderColor:[UIColor SCHRed3Color].CGColor];
         [self.navigationController.view.layer setBorderWidth:2.0f];
