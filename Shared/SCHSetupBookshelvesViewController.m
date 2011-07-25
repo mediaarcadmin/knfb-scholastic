@@ -13,11 +13,13 @@
 
 @synthesize setupBookshelvesButton;
 @synthesize spinner;
+@synthesize topToolbar;
 
 - (void)releaseViewObjects
 {
     [setupBookshelvesButton release], setupBookshelvesButton = nil;
     [spinner release], spinner = nil;
+    [super releaseViewObjects];
 }
 
 - (void)dealloc

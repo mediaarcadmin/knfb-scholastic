@@ -118,7 +118,7 @@ static const CGFloat kContentHeightLandscape = 380;
         } else {
             bgImage = [UIImage imageNamed:@"button-login"];
         }
-        cellBGImage = [bgImage stretchableImageWithLeftCapWidth:10 topCapHeight:0];
+        cellBGImage = [bgImage stretchableImageWithLeftCapWidth:11 topCapHeight:0];
         [self.loginButton setBackgroundImage:cellBGImage forState:UIControlStateNormal];
     }
 }

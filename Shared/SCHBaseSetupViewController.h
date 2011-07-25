@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
+@class SCHCustomToolbar;
 
 @interface SCHBaseSetupViewController : UIViewController {}
 
@@ -19,5 +20,9 @@
 
 // close the entire settings dialog
 - (IBAction)closeSettings;
+
+@property (nonatomic, retain) IBOutlet SCHCustomToolbar *topToolbar;
+
+- (void)releaseViewObjects;
 
 @end

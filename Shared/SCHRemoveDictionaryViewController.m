@@ -16,6 +16,7 @@
 - (void)releaseViewObjects
 {
     [removeDictionaryButton release], removeDictionaryButton = nil;
+    [super releaseViewObjects];
 }
 
 - (void)dealloc
