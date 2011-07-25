@@ -9,7 +9,7 @@
 #import "SCHDeregisterDeviceViewController.h"
 #import "SCHAuthenticationManager.h"
 #import "SCHDrmSession.h"
-#import "SCHSettingsViewControllerDelegate.h"
+#import "SCHSetupDelegate.h"
 #import "SCHAuthenticationManagerProtected.h"
 
 @interface SCHDeregisterDeviceViewController ()
@@ -70,11 +70,6 @@
 }
 
 #pragma mark - Actions
-
-- (void)back:(id)sender
-{
-    [self.navigationController popViewControllerAnimated:YES];
-}
 
 - (void)deregister:(id)sender
 {

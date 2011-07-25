@@ -7,7 +7,7 @@
 //
 
 #import "SCHSettingsViewController.h"
-#import "SCHSettingsViewControllerDelegate.h"
+#import "SCHSetupDelegate.h"
 #import "SCHLoginPasswordViewController.h"
 #import "SCHCustomNavigationBar.h"
 #import "SCHCustomToolbar.h"
@@ -21,6 +21,7 @@
 #import "AppDelegate_Shared.h"
 #import "SCHDeregisterDeviceViewController.h"
 #import "SCHCheckbox.h"
+#import "SCHUpdateBooksViewController.h"
 
 extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
@@ -43,7 +44,6 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 @synthesize spaceSaverSwitch;
 @synthesize backgroundView;
 @synthesize managedObjectContext;
-@synthesize settingsDelegate;
 
 #pragma mark - Object lifecycle
 
@@ -173,8 +173,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 {
     [[NSUserDefaults standardUserDefaults] setBool:self.spaceSaverSwitch.selected forKey:@"kSCHSpaceSaverMode"];
     [[NSUserDefaults standardUserDefaults] synchronize];
-
-    [self.settingsDelegate dismissSettingsForm];
+    [super closeSettings];
 }
 
 #pragma mark - Actions
@@ -183,10 +182,10 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 {
 #if LOCALDEBUG
     [self resetLocalSettings];
-    [self.settingsDelegate dismissSettingsForm];
+    [self.setupDelegate dismissSettingsForm];
 #else
     SCHDeregisterDeviceViewController *vc = [[SCHDeregisterDeviceViewController alloc] init];
-    vc.settingsDelegate = self.settingsDelegate;
+    vc.setupDelegate = self.setupDelegate;
     [self.navigationController pushViewController:vc animated:YES];
     [vc release];
 #endif
@@ -212,10 +211,16 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
 - (IBAction)manageBooks:(id)sender
 {
+    // TODO correct URL
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.scholastic.com"]];
 }
 
 - (IBAction)updateBooks:(id)sender
 {
+    SCHUpdateBooksViewController *updateBooks = [[SCHUpdateBooksViewController alloc] init];
+    updateBooks.managedObjectContext = self.managedObjectContext;
+    [self.navigationController pushViewController:updateBooks animated:YES];
+    [updateBooks release];
 }
 
 - (IBAction)downloadDictionary:(id)sender

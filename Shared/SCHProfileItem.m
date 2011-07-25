@@ -141,7 +141,9 @@ NSString * const kSCHProfileItemDRM_QUALIFIER = @"DRM_QUALIFIER";
                 }];
                 
                 if(bookIndex != NSNotFound) {
-                    [books exchangeObjectAtIndex:i withObjectAtIndex:bookIndex];
+                    if ((i < [books count]) && (bookIndex < [books count])) {
+                        [books exchangeObjectAtIndex:i withObjectAtIndex:bookIndex];
+                    }
                 }
             }
         }

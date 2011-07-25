@@ -10,12 +10,15 @@
 #import <QuartzCore/QuartzCore.h>
 #import "SCHCustomToolbar.h"
 
+static const CGFloat kContentHeightLandscape = 380;
+
 #pragma mark - Class Extension
 
 @interface SCHLoginPasswordViewController ()
 
 - (void)releaseViewObjects;
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation;
+- (void)setupContentSizeForOrientation:(UIInterfaceOrientation)orientation;
 - (void)makeVisibleTextField:(UITextField *)textField;
 
 @end
@@ -125,6 +128,7 @@
     [super viewWillAppear:animated];
     [self stopShowingProgress];
     [self setupAssetsForOrientation:[[UIApplication sharedApplication] statusBarOrientation]];
+    [self setupContentSizeForOrientation:self.interfaceOrientation];
     [self clearFields];
 
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
@@ -159,6 +163,25 @@
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
     [self setupAssetsForOrientation:toInterfaceOrientation];
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+    [self.view endEditing:YES];
+    [self setupContentSizeForOrientation:self.interfaceOrientation];
+}
+
+- (void)setupContentSizeForOrientation:(UIInterfaceOrientation)orientation;
+{
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        if (UIInterfaceOrientationIsPortrait(orientation)) {
+            self.scrollView.contentSize = CGSizeZero;
+        } else {
+            self.scrollView.contentSize = CGSizeMake(self.containerView.bounds.size.width, kContentHeightLandscape);
+        }
+    } else {
+        self.scrollView.contentSize = CGSizeZero;
+    }    
 }
 
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation
@@ -208,6 +231,8 @@
     containerFrame.size.height = containerMaxY - containerFrame.origin.y;
     self.topBar.frame = barFrame;
     self.containerView.frame = containerFrame;    
+    
+    self.scrollView.contentSize = containerFrame.size;
 }
 
 #pragma mark - Username and Password accessors
@@ -359,12 +384,12 @@
 
 - (void)keyboardWillShow:(NSNotification *) notification
 {
-    [self.scrollView setContentSize:CGSizeMake(self.scrollView.frame.size.width, self.scrollView.frame.size.height * 1.5f)];
+    [self.scrollView setContentSize:CGSizeMake(self.scrollView.contentSize.width, MAX(self.containerView.frame.size.height, self.scrollView.contentSize.height) * 1.5f)];
 }
 
 - (void)keyboardWillHide:(NSNotification *) notification
 {
-    [self.scrollView setContentSize:CGSizeZero];
+    [self setupContentSizeForOrientation:self.interfaceOrientation];
 }
 
 @end

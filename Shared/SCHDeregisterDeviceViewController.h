@@ -10,7 +10,7 @@
 #import "SCHBaseSetupViewController.h"
 #import "SCHDrmRegistrationSessionDelegate.h"
 
-@protocol SCHSettingsViewControllerDelegate;
+@protocol SCHSetupDelegate;
 
 @interface SCHDeregisterDeviceViewController : SCHBaseSetupViewController <SCHDrmRegistrationSessionDelegate, UITextFieldDelegate> {}
 
@@ -19,9 +19,8 @@
 @property (nonatomic, retain) IBOutlet UIButton *deregisterButton;
 @property (nonatomic, retain) IBOutlet UIActivityIndicatorView *spinner;
 @property (nonatomic, retain) IBOutlet UIScrollView *scrollView; // iPhone only
-@property (nonatomic, assign) id<SCHSettingsViewControllerDelegate> settingsDelegate;
+@property (nonatomic, assign) id<SCHSetupDelegate> settingsDelegate;
 
-- (IBAction)back:(id)sender;
 - (IBAction)deregister:(id)sender;
 - (IBAction)forgotPassword:(id)sender;
 

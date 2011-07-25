@@ -25,16 +25,16 @@
     [self setButtonBackground:self.downlaodDictionaryButton];
 }
 
-- (void)back:(id)sender
+- (void)closeSettings
 {
     [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateUserDeclined];
-    [super back:sender];
+    [super closeSettings];
 }
 
 - (void)downloadDictionary:(id)sender
 {
     [[SCHDictionaryDownloadManager sharedDownloadManager] beginDictionaryDownload];
-    [self.navigationController.parentViewController dismissModalViewControllerAnimated:YES];
+    [super closeSettings];
 }
 
 @end

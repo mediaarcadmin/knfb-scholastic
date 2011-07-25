@@ -9,14 +9,14 @@
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
 #import "SCHProfileViewCell.h"
-#import "SCHSettingsViewControllerDelegate.h"
+#import "SCHSetupDelegate.h"
 
 @class SCHLoginPasswordViewController;
 @class SCHSetupBookshelvesViewController;
 @class SCHDownloadDictionaryViewController;
 @class SCHSettingsViewController;
 
-@interface SCHProfileViewController_Shared : UIViewController <NSFetchedResultsControllerDelegate, UITableViewDataSource, UITableViewDelegate, SCHProfileViewCellDelegate, SCHSettingsViewControllerDelegate> {}
+@interface SCHProfileViewController_Shared : UIViewController <NSFetchedResultsControllerDelegate, UITableViewDataSource, UITableViewDelegate, SCHProfileViewCellDelegate, SCHSetupDelegate> {}
 
 @property (nonatomic, retain) IBOutlet UINavigationController *modalNavigationController;
 @property (nonatomic, retain) IBOutlet SCHLoginPasswordViewController *loginPasswordController;

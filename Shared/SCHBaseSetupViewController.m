@@ -8,8 +8,11 @@
 
 #import <QuartzCore/QuartzCore.h>
 #import "SCHBaseSetupViewController.h"
+#import "SCHSetupDelegate.h"
 
 @implementation SCHBaseSetupViewController
+
+@synthesize setupDelegate;
 
 - (void)dealloc
 {
@@ -38,7 +41,12 @@
 
 - (void)back:(id)sender
 {
-    [self.navigationController.parentViewController dismissModalViewControllerAnimated:YES];
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)closeSettings
+{
+    [self.setupDelegate dismissSettingsForm];
 }
 
 @end

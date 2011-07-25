@@ -270,6 +270,8 @@ NSString * const SCHProfileSyncComponentCompletedNotification = @"SCHProfileSync
 
     SCHAnnotationsItem *newAnnotationsItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHAnnotationsItem inManagedObjectContext:self.managedObjectContext];
     newAnnotationsItem.ProfileID = newProfileItem.ID;
+    
+    NSLog(@"Added profile with screenname %@ and ID %@", newProfileItem.ScreenName, newProfileItem.ID);
 }
 
 - (void)syncProfile:(NSDictionary *)webProfile withProfile:(SCHProfileItem *)localProfile

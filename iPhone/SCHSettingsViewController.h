@@ -11,7 +11,6 @@
 
 @class SCHCustomToolbar;
 @class SCHCheckbox;
-@protocol SCHSettingsViewControllerDelegate; 
 
 @interface SCHSettingsViewController : SCHBaseSetupViewController <UIAlertViewDelegate>  
 {}
@@ -24,7 +23,6 @@
 @property (nonatomic, retain) IBOutlet UIButton *downloadDictionaryButton;
 @property (nonatomic, retain) IBOutlet SCHCheckbox *spaceSaverSwitch;
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
-@property (nonatomic, assign) id<SCHSettingsViewControllerDelegate> settingsDelegate;
 
 - (IBAction)dismissModalSettingsController:(id)sender;
 - (IBAction)manageBooks:(id)sender;

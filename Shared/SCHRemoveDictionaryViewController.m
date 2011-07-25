@@ -44,9 +44,4 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-- (void)back:(id)sender
-{
-    [self.navigationController popViewControllerAnimated:YES];
-}
-
 @end
