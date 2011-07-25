@@ -111,6 +111,7 @@ enum LoginScreens {
     };
     
     self.settingsViewController.settingsDelegate = self;
+    self.settingsViewController.managedObjectContext = self.managedObjectContext;
 
     [self advanceToNextLoginStep];
 }  

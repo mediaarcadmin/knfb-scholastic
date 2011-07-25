@@ -21,7 +21,6 @@
 @property (nonatomic, retain) IBOutlet UIScrollView *scrollView; // iPhone only
 @property (nonatomic, assign) id<SCHSettingsViewControllerDelegate> settingsDelegate;
 
-- (IBAction)back:(id)sender;
 - (IBAction)deregister:(id)sender;
 - (IBAction)forgotPassword:(id)sender;
 

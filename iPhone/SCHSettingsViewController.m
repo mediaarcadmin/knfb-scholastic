@@ -21,6 +21,7 @@
 #import "AppDelegate_Shared.h"
 #import "SCHDeregisterDeviceViewController.h"
 #import "SCHCheckbox.h"
+#import "SCHUpdateBooksViewController.h"
 
 extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
@@ -212,10 +213,16 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
 - (IBAction)manageBooks:(id)sender
 {
+    // TODO correct URL
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.scholastic.com"]];
 }
 
 - (IBAction)updateBooks:(id)sender
 {
+    SCHUpdateBooksViewController *updateBooks = [[SCHUpdateBooksViewController alloc] init];
+    updateBooks.managedObjectContext = self.managedObjectContext;
+    [self.navigationController pushViewController:updateBooks animated:YES];
+    [updateBooks release];
 }
 
 - (IBAction)downloadDictionary:(id)sender
