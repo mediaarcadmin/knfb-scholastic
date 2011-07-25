@@ -81,13 +81,11 @@
 
 - (void)setIdentifier:(SCHBookIdentifier *)newIdentifier
 {
+    NSLog(@"%p: Setting id to %@ (old value: %@)", self, newIdentifier, identifier);
+    
 	if ([newIdentifier isEqual:identifier]) {
         return;
     }
-    
-    NSLog(@"Attempting to set new id: %@ for old id: %@", newIdentifier, identifier);
-    
-
     
 //    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"SCHBookDownloadPercentageUpdate" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"SCHBookStateUpdate" object:nil];
@@ -139,13 +137,11 @@
     // if no identifier has been set, then we don't need to refresh the image
     if (!self.identifier) {
 //        NSLog(@"No identifier set. Clearing image.");
-        self.coverImageView.image = nil; 
-        self.currentImageName = nil;
+//        self.coverImageView.image = nil; 
+//        self.currentImageName = nil;
         return;
     }
     
-    dispatch_sync([SCHProcessingManager sharedProcessingManager].thumbnailAccessQueue, ^{
-        
         __block NSString *fullImagePath;
         __block NSString *thumbPath;
         __block SCHBookCurrentProcessingState bookState;
@@ -214,7 +210,6 @@
             [fullImagePath release];
             [thumbPath release];
         }
-    });
 }
 
 - (void)resizeElementsForThumbSize: (CGSize) thumbSize
