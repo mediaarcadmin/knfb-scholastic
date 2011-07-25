@@ -32,6 +32,8 @@
     [deregisterButton release], deregisterButton = nil;
     [scrollView release], scrollView = nil;
     [spinner release], spinner = nil;
+    
+    [super releaseViewObjects];
 }
 
 - (void)dealloc

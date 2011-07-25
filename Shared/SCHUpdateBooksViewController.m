@@ -32,6 +32,7 @@
     [booksTable release], booksTable = nil;
     [updateBooksButton release], updateBooksButton = nil;
     [estimatedDownloadTimeLabel release], estimatedDownloadTimeLabel = nil;
+    [super releaseViewObjects];
 }
 
 - (void)dealloc

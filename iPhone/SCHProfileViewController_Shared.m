@@ -230,10 +230,12 @@ enum LoginScreens {
     if (!isAuthenticated) {
         self.loginScreen = kLoginScreenPassword;
     }
+#if !LOCALDEBUG
     else if ([[self.fetchedResultsController sections] count] == 0 
              || [[[self.fetchedResultsController sections] objectAtIndex:0] numberOfObjects] == 0) {
         self.loginScreen = kLoginScreenSetupBookshelves;
     }
+#endif
     else if ([[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryProcessingState] == SCHDictionaryProcessingStateUserSetup) {
         self.loginScreen = kLoginScreenDownloadDictionary;
     }

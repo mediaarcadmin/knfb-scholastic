@@ -62,6 +62,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     [spaceSaverSwitch release], spaceSaverSwitch = nil;
     [backgroundView release], backgroundView = nil;
     [updateBooksViewController release], updateBooksViewController = nil;
+    [super releaseViewObjects];
 }
 
 - (void)dealloc 
