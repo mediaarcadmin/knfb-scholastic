@@ -15,6 +15,9 @@
 #import "SCHBookIdentifier.h"
 #import "SCHProcessingManager.h"
 
+// Constants
+NSString * const kSCHContentMetadataItem = @"SCHContentMetadataItem";
+
 static NSString * const kSCHContentMetadataItemAnnotationsItemProfileID = @"AnnotationsItem.ProfileID";
 
 @implementation SCHContentMetadataItem

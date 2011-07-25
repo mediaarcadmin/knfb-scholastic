@@ -11,6 +11,9 @@
 #import "SCHHighlight.h"
 #import "SCHWordIndex.h"
 
+// Constants
+NSString * const kSCHLocationText = @"SCHLocationText";
+
 @implementation SCHLocationText 
 
 @dynamic Page;

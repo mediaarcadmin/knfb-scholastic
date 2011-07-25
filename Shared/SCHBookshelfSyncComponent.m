@@ -18,6 +18,12 @@
 #import "SCHBookIdentifier.h"
 #import "SCHReadingStatsContentItem.h"
 
+// Constants
+NSString * const SCHBookshelfSyncComponentWillDeleteNotification = @"SCHBookshelfSyncComponentWillDeleteNotification";
+NSString * const SCHBookshelfSyncComponentDeletedBookIdentifiers = @"SCHBookshelfSyncComponentDeletedBookIdentifiers";
+NSString * const SCHBookshelfSyncComponentBookReceivedNotification = @"SCHBookshelfSyncComponentBookReceivedNotification";
+NSString * const SCHBookshelfSyncComponentCompletedNotification = @"SCHBookshelfSyncComponentCompletedNotification";
+
 @interface SCHBookshelfSyncComponent ()
 
 - (BOOL)updateContentMetadataItems;

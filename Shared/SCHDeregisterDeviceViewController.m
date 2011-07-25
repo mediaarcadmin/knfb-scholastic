@@ -71,11 +71,6 @@
 
 #pragma mark - Actions
 
-- (void)back:(id)sender
-{
-    [self.navigationController popViewControllerAnimated:YES];
-}
-
 - (void)deregister:(id)sender
 {
     if ([[SCHAuthenticationManager sharedAuthenticationManager] validatePassword:self.passwordField.text]) {

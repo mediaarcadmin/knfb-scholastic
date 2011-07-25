@@ -8,7 +8,8 @@
 
 #import <CoreData/CoreData.h>
 
-static NSString * const kSCHUserSettingsItem = @"SCHUserSettingsItem";
+// Constants
+extern NSString * const kSCHUserSettingsItem;
 
 @interface SCHUserSettingsItem :  NSManagedObject  
 {

@@ -14,8 +14,10 @@
 // set the appropriate button background for a setup screen button
 - (void)setButtonBackground:(UIButton *)button;
 
-// hook to 'back' button in toolbar
+// hook to 'back' button in toolbar; default behaviour pops the navigation controller
 - (IBAction)back:(id)sender;
 
+// close the entire settings dialog
+- (IBAction)closeSettings;
 
 @end

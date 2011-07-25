@@ -15,6 +15,11 @@
 #import "SCHAppProfile.h"
 #import "SCHAnnotationsItem.h"
 
+// Constants
+NSString * const SCHProfileSyncComponentWillDeleteNotification = @"SCHProfileSyncComponentWillDeleteNotification";
+NSString * const SCHProfileSyncComponentDeletedProfileIDs = @"SCHProfileSyncComponentDeletedProfileIDs";
+NSString * const SCHProfileSyncComponentCompletedNotification = @"SCHProfileSyncComponentCompletedNotification";
+
 @interface SCHProfileSyncComponent ()
 
 @property (retain, nonatomic) NSMutableArray *createdProfiles;

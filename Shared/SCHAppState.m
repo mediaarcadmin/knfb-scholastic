@@ -8,6 +8,10 @@
 
 #import "SCHAppState.h"
 
+// Constants
+NSString * const kSCHAppState = @"SCHAppState";
+
+NSString * const kSCHAppStatefetchAppState = @"fetchAppState";
 
 @implementation SCHAppState
 

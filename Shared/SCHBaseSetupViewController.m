@@ -38,6 +38,11 @@
 
 - (void)back:(id)sender
 {
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)closeSettings
+{
     [self.navigationController.parentViewController dismissModalViewControllerAnimated:YES];
 }
 

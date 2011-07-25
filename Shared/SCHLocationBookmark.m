@@ -9,6 +9,8 @@
 #import "SCHLocationBookmark.h"
 #import "SCHBookmark.h"
 
+// Constants
+NSString * const kSCHLocationBookmark = @"SCHLocationBookmark";
 
 @implementation SCHLocationBookmark
 @dynamic Page;

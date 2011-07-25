@@ -22,6 +22,11 @@
 #import "SCHAppContentProfileItem.h"
 #import "SCHBookIdentifier.h"
 
+// Constants
+NSString * const SCHContentSyncComponentWillDeleteNotification = @"SCHContentSyncComponentWillDeleteNotification";
+NSString * const SCHContentSyncComponentDeletedBookIdentifiers = @"SCHContentSyncComponentDeletedBookIdentifiers";
+NSString * const SCHContentSyncComponentCompletedNotification = @"SCHContentSyncComponentCompletedNotification";
+
 @interface SCHContentSyncComponent ()
 
 - (BOOL)updateUserContentItems;

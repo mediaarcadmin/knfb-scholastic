@@ -11,6 +11,11 @@
 #import "SCHProfileItem.h"
 #import "SCHBookIdentifier.h"
 
+// Constants
+NSString * const kSCHAppContentProfileItem = @"SCHAppContentProfileItem";
+
+NSString * const kSCHAppContentProfileItemOrder = @"Order";
+
 @implementation SCHAppContentProfileItem
 
 @dynamic DRMQualifier;

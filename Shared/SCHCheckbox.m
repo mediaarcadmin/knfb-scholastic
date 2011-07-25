@@ -62,6 +62,7 @@
 - (void)handleTap:(id)sender
 {
     self.selected = !self.selected;
+    [self sendActionsForControlEvents:UIControlEventValueChanged];
 }
 
 @end

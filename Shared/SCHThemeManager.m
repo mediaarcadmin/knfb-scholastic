@@ -13,6 +13,23 @@
 
 static SCHThemeManager *sharedThemeManager = nil;
 
+// Constants
+NSString * const kSCHThemeManagerThemeChangeNotification = @"SCHThemeManagerThemeChangeNotification";
+
+NSString * const kSCHThemeManagerDefault = @"Default";
+
+NSString * const kSCHThemeManagerImage = @"Image";
+
+NSString * const kSCHThemeManagerButtonImage = @"ButtonImage";
+NSString * const kSCHThemeManagerDoneButtonImage = @"DoneButtonImage";
+NSString * const kSCHThemeManagerNavigationBarImage = @"NavigationBarImage";
+NSString * const kSCHThemeManagerBackgroundImage = @"BackgroundImage";
+NSString * const kSCHThemeManagerShelfImage = @"ShelfImage";
+NSString * const kSCHThemeManagerHomeIcon = @"HomeIcon";
+NSString * const kSCHThemeManagerBooksIcon = @"BooksIcon";
+NSString * const kSCHThemeManagerThemeIcon = @"ThemeIcon";
+NSString * const kSCHThemeManagerColorForListBackground = @"ListBackgroundColor";
+
 static NSString * const kSCHThemeManagerDirectory = @"Themes";
 static NSString * const kSCHThemeManagerLandscapePostFix = @"-Landscape";
 static NSString * const kSCHThemeManageriPadPostFix = @"-iPad";

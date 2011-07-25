@@ -7,4 +7,5 @@
  *
  */
 
-static NSString * const kSCHUserDefaultsPerformedFirstSyncUpToBooks = @"PerformedFirstSyncUpToBooks";
+// Constants
+extern NSString * const kSCHUserDefaultsPerformedFirstSyncUpToBooks;

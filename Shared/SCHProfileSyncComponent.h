@@ -11,9 +11,10 @@
 #import "SCHSyncComponent.h"
 #import "NSNumber+ObjectTypes.h"
 
-static NSString * const SCHProfileSyncComponentWillDeleteNotification = @"SCHProfileSyncComponentWillDeleteNotification";
-static NSString * const SCHProfileSyncComponentDeletedProfileIDs = @"SCHProfileSyncComponentDeletedProfileIDs";
-static NSString * const SCHProfileSyncComponentCompletedNotification = @"SCHProfileSyncComponentCompletedNotification";
+// Constants
+extern NSString * const SCHProfileSyncComponentWillDeleteNotification;
+extern NSString * const SCHProfileSyncComponentDeletedProfileIDs;
+extern NSString * const SCHProfileSyncComponentCompletedNotification;
 
 @interface SCHProfileSyncComponent : SCHSyncComponent
 {

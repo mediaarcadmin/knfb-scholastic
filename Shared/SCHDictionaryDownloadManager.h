@@ -8,14 +8,15 @@
 
 #import <Foundation/Foundation.h>
 
-static NSString* const kSCHDictionaryDownloadPercentageUpdate = @"SCHDictionaryDownloadPercentageUpdate";
+// Constants
+extern NSString * const kSCHDictionaryDownloadPercentageUpdate;
 
-static NSString* const kSCHDictionaryStateChange = @"SCHDictionaryStateChange";
+extern NSString * const kSCHDictionaryStateChange;
 
-static int const kSCHDictionaryManifestEntryEntryTableBufferSize = 8192;
-static int const kSCHDictionaryManifestEntryWordFormTableBufferSize = 1024;
+extern int const kSCHDictionaryManifestEntryEntryTableBufferSize;
+extern int const kSCHDictionaryManifestEntryWordFormTableBufferSize;
 
-static char * const kSCHDictionaryManifestEntryColumnSeparator = "\t";
+extern char * const kSCHDictionaryManifestEntryColumnSeparator;
 
 typedef enum {
 	SCHDictionaryProcessingStateError = 0,

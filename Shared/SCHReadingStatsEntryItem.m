@@ -10,6 +10,9 @@
 
 #import "SCHReadingStatsContentItem.h"
 
+// Constants
+NSString * const kSCHReadingStatsEntryItem = @"SCHReadingStatsEntryItem";
+
 extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
 @interface SCHReadingStatsEntryItem (CoreDataGeneratedPrimitiveAccessors)

@@ -10,7 +10,8 @@
 
 @class SCHUserContentItem;
 
-static NSString * const kSCHOrderItem = @"SCHOrderItem";
+// Constants
+extern NSString * const kSCHOrderItem;
 
 @interface SCHOrderItem :  NSManagedObject  
 {

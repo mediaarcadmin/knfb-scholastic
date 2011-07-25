@@ -11,7 +11,8 @@
 
 @class SCHBookmark;
 
-static NSString * const kSCHLocationBookmark = @"SCHLocationBookmark";
+// Constants
+extern NSString * const kSCHLocationBookmark;
 
 @interface SCHLocationBookmark : NSManagedObject 
 {

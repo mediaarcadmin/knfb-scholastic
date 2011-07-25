@@ -20,6 +20,16 @@
 #import "SCHDictionaryAccessManager.h"
 #import "NSManagedObjectContext+Extensions.h"
 
+// Constants
+NSString * const kSCHDictionaryDownloadPercentageUpdate = @"SCHDictionaryDownloadPercentageUpdate";
+
+NSString * const kSCHDictionaryStateChange = @"SCHDictionaryStateChange";
+
+int const kSCHDictionaryManifestEntryEntryTableBufferSize = 8192;
+int const kSCHDictionaryManifestEntryWordFormTableBufferSize = 1024;
+
+char * const kSCHDictionaryManifestEntryColumnSeparator = "\t";
+
 #pragma mark Dictionary Version Class
 
 @implementation SCHDictionaryManifestEntry

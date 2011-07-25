@@ -12,6 +12,9 @@
 #import "UIColor+Extensions.h"
 #import "SCHBookPoint.h"
 
+// Constants
+NSString * const kSCHNote = @"SCHNote";
+
 @interface SCHNote (PrimitiveAccessors)
 
 @property (nonatomic, retain) NSString *primitiveColor;

@@ -13,9 +13,10 @@
 @class SCHContentProfileItem;
 @class SCHBookIdentifier;
 
-static NSString * const kSCHAppContentProfileItem = @"SCHAppContentProfileItem";
+// Constants
+extern NSString * const kSCHAppContentProfileItem;
 
-static NSString * const kSCHAppContentProfileItemOrder = @"Order";
+extern NSString * const kSCHAppContentProfileItemOrder;
 
 @interface SCHAppContentProfileItem : NSManagedObject {
 

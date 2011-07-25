@@ -15,6 +15,9 @@
 #import "SCHBookPoint.h"
 #import "SCHWordIndex.h"
 
+// Constants
+NSString * const kSCHHighlight = @"SCHHighlight";
+
 @interface SCHHighlight (PrimitiveAccessors)
 
 @property (nonatomic, retain) NSString *primitiveColor;

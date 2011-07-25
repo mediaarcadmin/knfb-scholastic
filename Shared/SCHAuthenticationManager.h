@@ -11,16 +11,17 @@
 #import "BITAPIProxyDelegate.h"
 #import "SCHDrmRegistrationSessionDelegate.h"
 
-static NSString * const kSCHAuthenticationManagerSuccess = @"AuthenticationManagerSuccess";
-static NSString * const kSCHAuthenticationManagerFailure = @"AuthenticationManagerFailure";
-static NSString * const kSCHAuthenticationManagerAToken = @"aToken";
-static NSString * const kSCHAuthenticationManagerOfflineMode = @"OfflineMode";
-static NSString * const SCHAuthenticationManagerDRMDeregistrationNotification = @"SCHAuthenticationManagerDRMDeregistrationNotification";
-static NSString * const kSCHAuthenticationManagerNSError = @"NSError";
+// Constants
+extern NSString * const kSCHAuthenticationManagerSuccess;
+extern NSString * const kSCHAuthenticationManagerFailure;
+extern NSString * const kSCHAuthenticationManagerAToken;
+extern NSString * const kSCHAuthenticationManagerOfflineMode;
+extern NSString * const SCHAuthenticationManagerDRMDeregistrationNotification;
+extern NSString * const kSCHAuthenticationManagerNSError;
 
-static NSString * const kSCHAuthenticationManagerErrorDomain = @"AuthenticationManagerErrorDomain";
-static NSInteger const kSCHAuthenticationManagerGeneralError = 2000;
-static NSInteger const kSCHAuthenticationManagerLoginError = 2001;
+extern NSString * const kSCHAuthenticationManagerErrorDomain;
+extern NSInteger const kSCHAuthenticationManagerGeneralError;
+extern NSInteger const kSCHAuthenticationManagerLoginError;
 
 extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
