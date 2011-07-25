@@ -405,7 +405,7 @@ enum LoginScreens {
             LambdaAlert *alert = [[LambdaAlert alloc]
                                   initWithTitle:NSLocalizedString(@"Login Error", @"Login Error") 
                                   message:localizedMessage];
-            [alert addButtonWithTitle:NSLocalizedString(@"OK", @"OK") block:^{}];                        
+            [alert addButtonWithTitle:NSLocalizedString(@"Cancel", @"Cancel") block:^{}];                        
             [alert addButtonWithTitle:NSLocalizedString(@"Retry", @"Retry") block:^{
                 [self performLogin];
             }];
