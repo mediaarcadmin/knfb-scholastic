@@ -19,7 +19,6 @@
 @property (nonatomic, retain) IBOutlet UIButton *deregisterButton;
 @property (nonatomic, retain) IBOutlet UIActivityIndicatorView *spinner;
 @property (nonatomic, retain) IBOutlet UIScrollView *scrollView; // iPhone only
-@property (nonatomic, assign) id<SCHSetupDelegate> settingsDelegate;
 
 - (IBAction)deregister:(id)sender;
 - (IBAction)forgotPassword:(id)sender;

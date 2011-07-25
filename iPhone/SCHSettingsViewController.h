@@ -8,11 +8,12 @@
 
 #import <UIKit/UIKit.h>
 #import "SCHBaseSetupViewController.h"
+#import "SCHSetupDelegate.h"
 
 @class SCHCustomToolbar;
 @class SCHCheckbox;
 
-@interface SCHSettingsViewController : SCHBaseSetupViewController <UIAlertViewDelegate>  
+@interface SCHSettingsViewController : SCHBaseSetupViewController <UIAlertViewDelegate, SCHSetupDelegate>  
 {}
 
 @property (nonatomic, retain) IBOutlet SCHCustomToolbar *topBar;

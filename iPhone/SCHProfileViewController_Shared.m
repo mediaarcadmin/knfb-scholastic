@@ -323,10 +323,7 @@ enum LoginScreens {
 
 - (void)dismissSettingsForm
 {
-    [super dismissModalViewControllerAnimated:YES];
-    
-    // allow the previous modal dialog to close before re-opening the login screen
-    [self performSelector:@selector(advanceToNextLoginStep) withObject:nil afterDelay:1.0];
+    [self advanceToNextLoginStep];
 }
 
 - (SCHLoginPasswordViewController *)parentPasswordController
@@ -396,7 +393,9 @@ enum LoginScreens {
 		[[SCHURLManager sharedURLManager] clear];
 		[[SCHSyncManager sharedSyncManager] clear];
 		[[SCHSyncManager sharedSyncManager] firstSync:NO];
+#if LOCALDEBUG
         [self advanceToNextLoginStep];
+#endif
 	} else {
 		NSError *error = [notification.userInfo objectForKey:kSCHAuthenticationManagerNSError];
 		if (error != nil) {

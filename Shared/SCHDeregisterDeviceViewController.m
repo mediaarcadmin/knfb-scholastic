@@ -18,7 +18,6 @@
 
 @implementation SCHDeregisterDeviceViewController
 
-@synthesize settingsDelegate;
 @synthesize promptLabel;
 @synthesize passwordField;
 @synthesize deregisterButton;
@@ -74,6 +73,7 @@
 - (void)deregister:(id)sender
 {
     if ([[SCHAuthenticationManager sharedAuthenticationManager] validatePassword:self.passwordField.text]) {
+        [self.spinner startAnimating];
         SCHDrmRegistrationSession* registrationSession = [[SCHDrmRegistrationSession alloc] init];
         registrationSession.delegate = self;	
         self.drmRegistrationSession = registrationSession;
@@ -113,9 +113,10 @@
 
 - (void)registrationSession:(SCHDrmRegistrationSession *)registrationSession didComplete:(NSString *)deviceKey
 {
+    [self.spinner stopAnimating];
     if (deviceKey == nil) {
         [[SCHAuthenticationManager sharedAuthenticationManager] clearAppProcessing];
-        [self.settingsDelegate dismissSettingsForm];
+        [self.setupDelegate dismissSettingsForm];
     } else {
         NSLog(@"Unknown DRM error: device key value returned from successful deregistration.");
     }
