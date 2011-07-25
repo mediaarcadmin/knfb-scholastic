@@ -9,9 +9,11 @@
 #import <QuartzCore/QuartzCore.h>
 #import "SCHBaseSetupViewController.h"
 #import "SCHCustomToolbar.h"
+#import "SCHSetupDelegate.h"
 
 @implementation SCHBaseSetupViewController
 
+@synthesize setupDelegate;
 @synthesize topToolbar;
 
 - (void)dealloc
@@ -55,7 +57,7 @@
 
 - (void)closeSettings
 {
-    [self.navigationController.parentViewController dismissModalViewControllerAnimated:YES];
+    [self.setupDelegate dismissSettingsForm];
 }
 
 @end

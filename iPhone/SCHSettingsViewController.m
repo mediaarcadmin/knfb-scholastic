@@ -7,7 +7,7 @@
 //
 
 #import "SCHSettingsViewController.h"
-#import "SCHSettingsViewControllerDelegate.h"
+#import "SCHSetupDelegate.h"
 #import "SCHLoginPasswordViewController.h"
 #import "SCHCustomNavigationBar.h"
 #import "SCHCustomToolbar.h"
@@ -44,7 +44,6 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 @synthesize spaceSaverSwitch;
 @synthesize backgroundView;
 @synthesize managedObjectContext;
-@synthesize settingsDelegate;
 
 #pragma mark - Object lifecycle
 
@@ -175,8 +174,19 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 {
     [[NSUserDefaults standardUserDefaults] setBool:self.spaceSaverSwitch.selected forKey:@"kSCHSpaceSaverMode"];
     [[NSUserDefaults standardUserDefaults] synchronize];
+    [super closeSettings];
+}
 
-    [self.settingsDelegate dismissSettingsForm];
+// this is the SCHSetupDelegate for the SCHDeregisterDeviceViewController
+- (void)dismissSettingsForm
+{
+    [self.navigationController.parentViewController dismissModalViewControllerAnimated:YES];
+
+    // allow the previous close animation to complete before passing this up since the profileViewController's
+    // next behavious will be to open the login screen
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1*NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
+        [self.setupDelegate dismissSettingsForm];
+    });
 }
 
 #pragma mark - Actions
@@ -185,10 +195,10 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 {
 #if LOCALDEBUG
     [self resetLocalSettings];
-    [self.settingsDelegate dismissSettingsForm];
+    [self.setupDelegate dismissSettingsForm];
 #else
     SCHDeregisterDeviceViewController *vc = [[SCHDeregisterDeviceViewController alloc] init];
-    vc.settingsDelegate = self.settingsDelegate;
+    vc.setupDelegate = self;
     [self.navigationController pushViewController:vc animated:YES];
     [vc release];
 #endif

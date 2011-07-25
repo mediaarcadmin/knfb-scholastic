@@ -272,6 +272,7 @@
         star.transform = CGAffineTransformRotate(CGAffineTransformMakeScale(scale, scale), angle);
         [self.pageImageView addSubview:star];
         [stars addObject:star];
+        [star release], star = nil;
     }
 
     [UIView animateWithDuration:0.7
