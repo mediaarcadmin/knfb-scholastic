@@ -10,7 +10,7 @@
     #import "UIColor+Scholastic.h"
 #endif
 
-#define SERVEROVERRIDE 0
+#define SERVEROVERRIDE 1
 #define NONDRMAUTHENTICATION 0
 #define DICTIONARY_DOWNLOAD_DISABLED 0
 
