@@ -44,18 +44,20 @@ extern NSString * const kSCHProcessingManagerConnectionBusy;
 
 // shared manager instance
 // FIXME: notes on duties - registers for events etc.
-+ (SCHProcessingManager *) sharedProcessingManager;
++ (SCHProcessingManager *)sharedProcessingManager;
 
 // user selection method
 - (void)userSelectedBookWithIdentifier:(SCHBookIdentifier *)identifier;
 - (void)userRequestedRetryForBookWithIdentifier:(SCHBookIdentifier *)identifier;
 
 // thumbnail requests
-- (BOOL) requestThumbImageForBookCover:(SCHAsyncBookCoverImageView *)bookCover size:(CGSize)size book:(SCHAppBook *)book;
+- (BOOL)requestThumbImageForBookCover:(SCHAsyncBookCoverImageView *)bookCover 
+                                 size:(CGSize)size 
+                                 book:(SCHAppBook *)book;
 
 // methods for processing
-- (BOOL) identifierIsProcessing: (SCHBookIdentifier *) identifier;
-- (void) setProcessing: (BOOL) processing forIdentifier: (SCHBookIdentifier *) identifier;
+- (BOOL)identifierIsProcessing:(SCHBookIdentifier *)identifier;
+- (void)setProcessing:(BOOL)processing forIdentifier:(SCHBookIdentifier *)identifier;
 
 // stop all the processing
 - (void)cancelAllOperations;
