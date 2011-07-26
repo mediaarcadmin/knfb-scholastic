@@ -25,6 +25,19 @@
 	return(color);
 }
 
+// A darkened version of SCHGrayColor - not in the eReader guide
++ (UIColor *)SCHGray2Color
+{
+    static dispatch_once_t pred;
+	static UIColor *color = nil;
+	
+    dispatch_once(&pred, ^{
+        color = [[UIColor colorWithRed:241.0/255.0*0.8 green:241.0/255.0*0.8 blue:242.0/255.0*0.8 alpha:1.0] retain];
+    });
+    
+	return(color);
+}
+
 // Hex: #d7f1ff R: 215 G: 241 B: 255 C: 14	M: 0 Y: 0 K: 0 PMS 552 C
 + (UIColor *)SCHLightBlue1Color
 {
