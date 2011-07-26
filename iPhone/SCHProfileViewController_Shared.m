@@ -20,6 +20,7 @@
 #import "SCHSyncManager.h"
 #import "SCHThemeManager.h"
 #import "SCHProfileSyncComponent.h"
+#import "SCHBookshelfSyncComponent.h"
 #import "SCHSetupBookshelvesViewController.h"
 #import "SCHDownloadDictionaryViewController.h"
 #import "SCHDictionaryDownloadManager.h"
@@ -104,6 +105,11 @@ enum LoginScreens {
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(profileSyncDidComplete:)
                                                  name:SCHProfileSyncComponentCompletedNotification
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(bookshelfSyncDidComplete:)
+                                                 name:SCHBookshelfSyncComponentCompletedNotification
                                                object:nil];
     
     [self.updatesBubble setAlpha:0];
@@ -396,6 +402,12 @@ enum LoginScreens {
         [self.setupBookshelvesViewController showActivity:NO];
         [self advanceToNextLoginStep];
     }
+}
+
+- (void)bookshelfSyncDidComplete:(NSNotification *)note
+{
+    [self.bookUpdates refresh];
+    [self checkForBookUpdates];
 }
 
 
