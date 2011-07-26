@@ -9,14 +9,15 @@
 #import <UIKit/UIKit.h>
 #import "SCHBaseSetupViewController.h"
 
+@class SCHBookUpdates;
+
 @interface SCHUpdateBooksViewController : SCHBaseSetupViewController <UITableViewDataSource, UITableViewDelegate> {}
 
 @property (nonatomic, retain) IBOutlet UITableView *booksTable;
 @property (nonatomic, retain) IBOutlet UIButton *updateBooksButton;
 @property (nonatomic, retain) IBOutlet UILabel *estimatedDownloadTimeLabel;
-@property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
+@property (nonatomic, retain) SCHBookUpdates *bookUpdates;
 
-- (BOOL)updatesAvailable;
 - (IBAction)updateBooks:(id)sender;
 
 @end

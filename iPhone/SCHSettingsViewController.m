@@ -21,6 +21,7 @@
 #import "AppDelegate_Shared.h"
 #import "SCHDeregisterDeviceViewController.h"
 #import "SCHCheckbox.h"
+#import "SCHBookUpdates.h"
 #import "SCHUpdateBooksViewController.h"
 #import "SCHBookshelfSyncComponent.h"
 
@@ -28,6 +29,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
 @interface SCHSettingsViewController()
 
+@property (nonatomic, retain) SCHBookUpdates *bookUpdates;
 @property (nonatomic, retain) SCHUpdateBooksViewController *updateBooksViewController;
 
 - (void)updateUpdateBooksButton;
@@ -45,6 +47,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 @synthesize deregisterDeviceButton;
 @synthesize downloadDictionaryButton;
 @synthesize spaceSaverSwitch;
+@synthesize bookUpdates;
 @synthesize updateBooksViewController;
 @synthesize managedObjectContext;
 
@@ -66,6 +69,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
+    [bookUpdates release], bookUpdates = nil;
 	[managedObjectContext release], managedObjectContext = nil;
     
     [self releaseViewObjects];
@@ -79,10 +83,11 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     [super viewDidLoad];
     
     NSAssert(self.managedObjectContext != nil, @"must set managedObjectContext before loading view");
-    SCHUpdateBooksViewController *updateBooks = [[SCHUpdateBooksViewController alloc] init];
-    updateBooks.managedObjectContext = self.managedObjectContext;
-    self.updateBooksViewController = updateBooks;
-    [updateBooks release];
+    bookUpdates = [[SCHBookUpdates alloc] init];
+    bookUpdates.managedObjectContext = self.managedObjectContext;
+    
+    updateBooksViewController = [[SCHUpdateBooksViewController alloc] init];
+    updateBooksViewController.bookUpdates = bookUpdates;
 
     [self.scrollView setContentSize:CGSizeMake(320, 416)];
 
@@ -142,7 +147,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
 - (void)updateUpdateBooksButton
 {
-    self.updateBooksButton.enabled = [self.updateBooksViewController updatesAvailable];
+    self.updateBooksButton.enabled = [self.bookUpdates areBookUpdatesAvailable];
 }
 
 - (void)updateDictionaryButton

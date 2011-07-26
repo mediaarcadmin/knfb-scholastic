@@ -20,22 +20,25 @@
 #import "SCHSyncManager.h"
 #import "SCHThemeManager.h"
 #import "SCHProfileSyncComponent.h"
+#import "SCHBookshelfSyncComponent.h"
 #import "SCHSetupBookshelvesViewController.h"
 #import "SCHDownloadDictionaryViewController.h"
 #import "SCHDictionaryDownloadManager.h"
 #import "LambdaAlert.h"
+#import "SCHBookUpdates.h"
 
 enum LoginScreens {
     kLoginScreenNone,
     kLoginScreenPassword,
     kLoginScreenSetupBookshelves,
-    kLoginScreenDownloadDictionary
+    kLoginScreenDownloadDictionary,
 };
 
 @interface SCHProfileViewController_Shared()  
 
 @property (nonatomic, assign) enum LoginScreens loginScreen;
 @property (nonatomic, retain) SCHLoginPasswordViewController *parentPasswordController; // Lazily instantiated
+@property (nonatomic, retain) SCHBookUpdates *bookUpdates;
 
 - (void)willEnterForeground:(NSNotification *)note;
 - (void)showLoginControllerWithAnimation:(BOOL)animated;
@@ -43,6 +46,8 @@ enum LoginScreens {
 - (void)advanceToNextLoginStep;
 - (void)endLoginSequence;
 - (void)performLogin;
+- (void)checkForBookUpdates;
+- (void)showUpdatesBubble:(BOOL)show;
 
 @end
 
@@ -58,6 +63,8 @@ enum LoginScreens {
 @synthesize downloadDictionaryViewController;
 @synthesize loginScreen;
 @synthesize parentPasswordController;
+@synthesize bookUpdates;
+@synthesize updatesBubble;
 
 #pragma mark - Object lifecycle
 
@@ -69,6 +76,7 @@ enum LoginScreens {
     [modalNavigationController release], modalNavigationController = nil;
     [profilePasswordController release], profilePasswordController = nil;
     [settingsViewController release], settingsViewController = nil;
+    [updatesBubble release], updatesBubble = nil;
 }
 
 - (void)dealloc 
@@ -78,6 +86,7 @@ enum LoginScreens {
     [fetchedResultsController_ release], fetchedResultsController_ = nil;
     [managedObjectContext_ release], managedObjectContext_ = nil;
     [parentPasswordController release], parentPasswordController = nil;
+    [bookUpdates release], bookUpdates = nil;
     
     [super dealloc];
 }
@@ -97,6 +106,13 @@ enum LoginScreens {
                                              selector:@selector(profileSyncDidComplete:)
                                                  name:SCHProfileSyncComponentCompletedNotification
                                                object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(bookshelfSyncDidComplete:)
+                                                 name:SCHBookshelfSyncComponentCompletedNotification
+                                               object:nil];
+    
+    [self.updatesBubble setAlpha:0];
 
     self.loginPasswordController.controllerType = kSCHControllerLoginView;
     self.loginPasswordController.actionBlock = ^{
@@ -244,6 +260,7 @@ enum LoginScreens {
         if (self.modalViewController != nil) {
             [self dismissModalViewControllerAnimated:YES];
         }
+        [self checkForBookUpdates];
     } else {
         dispatch_async(dispatch_get_main_queue(), ^{
             [self showLoginControllerWithAnimation:YES];
@@ -304,6 +321,7 @@ enum LoginScreens {
         [self.modalNavigationController setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
         [self.modalNavigationController setModalPresentationStyle:UIModalPresentationFormSheet];
         [self presentModalViewController:self.modalNavigationController animated:animated];
+        [self showUpdatesBubble:NO];
     }
 }
 
@@ -363,6 +381,7 @@ enum LoginScreens {
     [self.modalNavigationController setModalPresentationStyle:UIModalPresentationFormSheet];
     [self.modalNavigationController.navigationBar setTintColor:[UIColor SCHRed2Color]];
     [self presentModalViewController:self.modalNavigationController animated:YES];
+    [self showUpdatesBubble:NO];
 }
 
 #pragma mark - notifications
@@ -383,6 +402,12 @@ enum LoginScreens {
         [self.setupBookshelvesViewController showActivity:NO];
         [self advanceToNextLoginStep];
     }
+}
+
+- (void)bookshelfSyncDidComplete:(NSNotification *)note
+{
+    [self.bookUpdates refresh];
+    [self checkForBookUpdates];
 }
 
 
@@ -416,6 +441,25 @@ enum LoginScreens {
         }	
         [self.loginPasswordController stopShowingProgress];
 	}
+}
+
+#pragma mark - Book updates
+
+- (void)checkForBookUpdates
+{
+    if (!self.bookUpdates) {
+        self.bookUpdates = [[[SCHBookUpdates alloc] init] autorelease];
+        self.bookUpdates.managedObjectContext = self.managedObjectContext;
+    }
+    
+    [self showUpdatesBubble:[self.bookUpdates areBookUpdatesAvailable]];
+}
+
+- (void)showUpdatesBubble:(BOOL)show
+{
+    [UIView animateWithDuration:0.5 animations:^{
+        self.updatesBubble.alpha = show ? 1.0 : 0.0;
+    }];
 }
 
 @end
