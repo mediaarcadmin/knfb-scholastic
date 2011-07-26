@@ -1090,6 +1090,8 @@
 		C9B7EA7D13DEB28200BD5CB7 /* BookShelfErrorIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C9B7EA7A13DEB28200BD5CB7 /* BookShelfErrorIcon@2x.png */; };
 		C9B7EA7E13DEB28200BD5CB7 /* BookShelfErrorIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = C9B7EA7B13DEB28200BD5CB7 /* BookShelfErrorIcon.png */; };
 		C9B7EA7F13DEB28200BD5CB7 /* BookShelfErrorIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = C9B7EA7B13DEB28200BD5CB7 /* BookShelfErrorIcon.png */; };
+		C9B7EA8113DEB3FB00BD5CB7 /* login-ipad-top-toolbar.png in Resources */ = {isa = PBXBuildFile; fileRef = C9B7EA8013DEB3FB00BD5CB7 /* login-ipad-top-toolbar.png */; };
+		C9B7EA8213DEB3FB00BD5CB7 /* login-ipad-top-toolbar.png in Resources */ = {isa = PBXBuildFile; fileRef = C9B7EA8013DEB3FB00BD5CB7 /* login-ipad-top-toolbar.png */; };
 		C9BCD78B135DBF9E00AA42B3 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
 		C9C1D2D113B0AF3500441623 /* SCHBookShelfTableViewCell_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F86666A013AF8C370050979F /* SCHBookShelfTableViewCell_iPad.xib */; };
 		C9C1D2D213B0AF3600441623 /* SCHBookShelfTableViewCell_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F86666A013AF8C370050979F /* SCHBookShelfTableViewCell_iPad.xib */; };
@@ -2556,6 +2558,7 @@
 		C9B7EA0413DDBE1600BD5CB7 /* settings-ipad-top-toolbar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "settings-ipad-top-toolbar.png"; path = "Resources/UIAssets/settings-ipad-top-toolbar.png"; sourceTree = "<group>"; };
 		C9B7EA7A13DEB28200BD5CB7 /* BookShelfErrorIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BookShelfErrorIcon@2x.png"; path = "Resources/BookShelfErrorIcon@2x.png"; sourceTree = "<group>"; };
 		C9B7EA7B13DEB28200BD5CB7 /* BookShelfErrorIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BookShelfErrorIcon.png; path = Resources/BookShelfErrorIcon.png; sourceTree = "<group>"; };
+		C9B7EA8013DEB3FB00BD5CB7 /* login-ipad-top-toolbar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "login-ipad-top-toolbar.png"; path = "Resources/UIAssets/login-ipad-top-toolbar.png"; sourceTree = "<group>"; };
 		C9C1D29D13B0AD4B00441623 /* storyinteraction-bg-younger-notitle~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-bg-younger-notitle~ipad.png"; sourceTree = "<group>"; };
 		C9C1D29E13B0AD4C00441623 /* storyinteraction-bg-older-notitle~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-bg-older-notitle~ipad.png"; sourceTree = "<group>"; };
 		C9C1D56013B3C01A00441623 /* show-tools.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "show-tools.png"; sourceTree = "<group>"; };
@@ -4122,6 +4125,7 @@
 		C920DDED138A69B400F1583D /* Profile and Admin Views */ = {
 			isa = PBXGroup;
 			children = (
+				C9B7EA8013DEB3FB00BD5CB7 /* login-ipad-top-toolbar.png */,
 				C9B7EA0413DDBE1600BD5CB7 /* settings-ipad-top-toolbar.png */,
 				C9B7E91213DC620400BD5CB7 /* checkmark-on@2x.png */,
 				C9B7E91313DC620400BD5CB7 /* checkmark-on.png */,
@@ -5555,6 +5559,7 @@
 				C9B7EA0513DDBE1800BD5CB7 /* settings-ipad-top-toolbar.png in Resources */,
 				C9B7EA7C13DEB28200BD5CB7 /* BookShelfErrorIcon@2x.png in Resources */,
 				C9B7EA7E13DEB28200BD5CB7 /* BookShelfErrorIcon.png in Resources */,
+				C9B7EA8113DEB3FB00BD5CB7 /* login-ipad-top-toolbar.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6032,6 +6037,7 @@
 				C9B7EA0613DDBE1800BD5CB7 /* settings-ipad-top-toolbar.png in Resources */,
 				C9B7EA7D13DEB28200BD5CB7 /* BookShelfErrorIcon@2x.png in Resources */,
 				C9B7EA7F13DEB28200BD5CB7 /* BookShelfErrorIcon.png in Resources */,
+				C9B7EA8213DEB3FB00BD5CB7 /* login-ipad-top-toolbar.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
