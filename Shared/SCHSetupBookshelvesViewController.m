@@ -32,6 +32,12 @@
 {
     [super viewDidLoad];
     [self setButtonBackground:self.setupBookshelvesButton];
+    
+#if 0 // force a way out of this screen
+    [self.setupBookshelvesButton setTitle:@"EXIT" forState:UIControlStateNormal];
+    [self.setupBookshelvesButton addTarget:self.navigationController action:@selector(dismissModalViewControllerAnimated:) forControlEvents:UIControlEventTouchDown];
+#endif
+    
 }
 
 - (void)viewDidUnload

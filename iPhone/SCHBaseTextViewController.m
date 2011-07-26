@@ -7,11 +7,13 @@
 //
 
 #import "SCHBaseTextViewController.h"
+#import "SCHCustomToolbar.h"
 
 @implementation SCHBaseTextViewController
 
 @synthesize titleLabel;
 @synthesize textView;
+@synthesize topToolbar;
 
 - (id)init
 {
@@ -23,12 +25,20 @@
 {
     self.titleLabel = nil;
     self.textView = nil;
+    self.topToolbar = nil;
 }
 
 - (void)dealloc
 {
     [self releaseViewObjects];
     [super dealloc];
+}
+
+- (void)viewDidLoad
+{
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        [self.topToolbar setBackgroundImage:[UIImage imageNamed:@"settings-ipad-top-toolbar"]];
+    }
 }
 
 - (void)viewDidUnload

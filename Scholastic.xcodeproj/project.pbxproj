@@ -1092,6 +1092,14 @@
 		C9B7EA7F13DEB28200BD5CB7 /* BookShelfErrorIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = C9B7EA7B13DEB28200BD5CB7 /* BookShelfErrorIcon.png */; };
 		C9B7EA8113DEB3FB00BD5CB7 /* login-ipad-top-toolbar.png in Resources */ = {isa = PBXBuildFile; fileRef = C9B7EA8013DEB3FB00BD5CB7 /* login-ipad-top-toolbar.png */; };
 		C9B7EA8213DEB3FB00BD5CB7 /* login-ipad-top-toolbar.png in Resources */ = {isa = PBXBuildFile; fileRef = C9B7EA8013DEB3FB00BD5CB7 /* login-ipad-top-toolbar.png */; };
+		C9B7EAB313DEC99000BD5CB7 /* button-field-red@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C9B7EAB113DEC99000BD5CB7 /* button-field-red@2x.png */; };
+		C9B7EAB413DEC99000BD5CB7 /* button-field-red@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C9B7EAB113DEC99000BD5CB7 /* button-field-red@2x.png */; };
+		C9B7EAB513DEC99000BD5CB7 /* button-field-red.png in Resources */ = {isa = PBXBuildFile; fileRef = C9B7EAB213DEC99000BD5CB7 /* button-field-red.png */; };
+		C9B7EAB613DEC99000BD5CB7 /* button-field-red.png in Resources */ = {isa = PBXBuildFile; fileRef = C9B7EAB213DEC99000BD5CB7 /* button-field-red.png */; };
+		C9B7EAB913DED39C00BD5CB7 /* update-icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C9B7EAB713DED39C00BD5CB7 /* update-icon@2x.png */; };
+		C9B7EABA13DED39C00BD5CB7 /* update-icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C9B7EAB713DED39C00BD5CB7 /* update-icon@2x.png */; };
+		C9B7EABB13DED39C00BD5CB7 /* update-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = C9B7EAB813DED39C00BD5CB7 /* update-icon.png */; };
+		C9B7EABC13DED39C00BD5CB7 /* update-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = C9B7EAB813DED39C00BD5CB7 /* update-icon.png */; };
 		C9BCD78B135DBF9E00AA42B3 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
 		C9C1D2D113B0AF3500441623 /* SCHBookShelfTableViewCell_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F86666A013AF8C370050979F /* SCHBookShelfTableViewCell_iPad.xib */; };
 		C9C1D2D213B0AF3600441623 /* SCHBookShelfTableViewCell_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F86666A013AF8C370050979F /* SCHBookShelfTableViewCell_iPad.xib */; };
@@ -2559,6 +2567,10 @@
 		C9B7EA7A13DEB28200BD5CB7 /* BookShelfErrorIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BookShelfErrorIcon@2x.png"; path = "Resources/BookShelfErrorIcon@2x.png"; sourceTree = "<group>"; };
 		C9B7EA7B13DEB28200BD5CB7 /* BookShelfErrorIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BookShelfErrorIcon.png; path = Resources/BookShelfErrorIcon.png; sourceTree = "<group>"; };
 		C9B7EA8013DEB3FB00BD5CB7 /* login-ipad-top-toolbar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "login-ipad-top-toolbar.png"; path = "Resources/UIAssets/login-ipad-top-toolbar.png"; sourceTree = "<group>"; };
+		C9B7EAB113DEC99000BD5CB7 /* button-field-red@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "button-field-red@2x.png"; path = "Resources/UIAssets/button-field-red@2x.png"; sourceTree = "<group>"; };
+		C9B7EAB213DEC99000BD5CB7 /* button-field-red.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "button-field-red.png"; path = "Resources/UIAssets/button-field-red.png"; sourceTree = "<group>"; };
+		C9B7EAB713DED39C00BD5CB7 /* update-icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "update-icon@2x.png"; path = "Resources/UIAssets/update-icon@2x.png"; sourceTree = "<group>"; };
+		C9B7EAB813DED39C00BD5CB7 /* update-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "update-icon.png"; path = "Resources/UIAssets/update-icon.png"; sourceTree = "<group>"; };
 		C9C1D29D13B0AD4B00441623 /* storyinteraction-bg-younger-notitle~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-bg-younger-notitle~ipad.png"; sourceTree = "<group>"; };
 		C9C1D29E13B0AD4C00441623 /* storyinteraction-bg-older-notitle~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-bg-older-notitle~ipad.png"; sourceTree = "<group>"; };
 		C9C1D56013B3C01A00441623 /* show-tools.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "show-tools.png"; sourceTree = "<group>"; };
@@ -4125,6 +4137,8 @@
 		C920DDED138A69B400F1583D /* Profile and Admin Views */ = {
 			isa = PBXGroup;
 			children = (
+				C9B7EAB713DED39C00BD5CB7 /* update-icon@2x.png */,
+				C9B7EAB813DED39C00BD5CB7 /* update-icon.png */,
 				C9B7EA8013DEB3FB00BD5CB7 /* login-ipad-top-toolbar.png */,
 				C9B7EA0413DDBE1600BD5CB7 /* settings-ipad-top-toolbar.png */,
 				C9B7E91213DC620400BD5CB7 /* checkmark-on@2x.png */,
@@ -4139,6 +4153,8 @@
 				C9F5B9FB13916C62009DE113 /* button-go@2x.png */,
 				C979C6A6138C237C00581F7F /* button-field.png */,
 				C979C6A7138C237C00581F7F /* button-field@2x.png */,
+				C9B7EAB113DEC99000BD5CB7 /* button-field-red@2x.png */,
+				C9B7EAB213DEC99000BD5CB7 /* button-field-red.png */,
 				C979C6A0138C1F6300581F7F /* button-login@2x.png */,
 				C979C6A1138C1F6300581F7F /* button-login.png */,
 				C920DDF1138A6A7400F1583D /* admin-background-ipad-portrait.png */,
@@ -5560,6 +5576,10 @@
 				C9B7EA7C13DEB28200BD5CB7 /* BookShelfErrorIcon@2x.png in Resources */,
 				C9B7EA7E13DEB28200BD5CB7 /* BookShelfErrorIcon.png in Resources */,
 				C9B7EA8113DEB3FB00BD5CB7 /* login-ipad-top-toolbar.png in Resources */,
+				C9B7EAB313DEC99000BD5CB7 /* button-field-red@2x.png in Resources */,
+				C9B7EAB513DEC99000BD5CB7 /* button-field-red.png in Resources */,
+				C9B7EAB913DED39C00BD5CB7 /* update-icon@2x.png in Resources */,
+				C9B7EABB13DED39C00BD5CB7 /* update-icon.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6038,6 +6058,10 @@
 				C9B7EA7D13DEB28200BD5CB7 /* BookShelfErrorIcon@2x.png in Resources */,
 				C9B7EA7F13DEB28200BD5CB7 /* BookShelfErrorIcon.png in Resources */,
 				C9B7EA8213DEB3FB00BD5CB7 /* login-ipad-top-toolbar.png in Resources */,
+				C9B7EAB413DEC99000BD5CB7 /* button-field-red@2x.png in Resources */,
+				C9B7EAB613DEC99000BD5CB7 /* button-field-red.png in Resources */,
+				C9B7EABA13DED39C00BD5CB7 /* update-icon@2x.png in Resources */,
+				C9B7EABC13DED39C00BD5CB7 /* update-icon.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

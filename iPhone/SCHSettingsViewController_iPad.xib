@@ -136,7 +136,7 @@
 					<object class="IBUILabel" id="885291924">
 						<reference key="NSNextResponder" ref="715934819"/>
 						<int key="NSvFlags">290</int>
-						<string key="NSFrame">{{111, 121}, {318, 51}}</string>
+						<string key="NSFrame">{{117, 111}, {306, 60}}</string>
 						<reference key="NSSuperview" ref="715934819"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="275588657"/>
@@ -146,9 +146,9 @@
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 						<string key="IBUIText">Visit the Scholastic Book Club Web site to create bookshelves for your kids, assign books to bookshelves, or view reading reports.</string>
-						<object class="NSFont" key="IBUIFont" id="697363814">
-							<string key="NSName">Arial-BoldMT</string>
-							<double key="NSSize">14</double>
+						<object class="NSFont" key="IBUIFont" id="518455705">
+							<string key="NSName">ArialMT</string>
+							<double key="NSSize">13</double>
 							<int key="NSfFlags">16</int>
 						</object>
 						<object class="NSColor" key="IBUITextColor" id="974943671">
@@ -165,7 +165,7 @@
 					<object class="IBUILabel" id="48248895">
 						<reference key="NSNextResponder" ref="715934819"/>
 						<int key="NSvFlags">290</int>
-						<string key="NSFrame">{{92, 329}, {356, 20}}</string>
+						<string key="NSFrame">{{117, 325}, {306, 40}}</string>
 						<reference key="NSSuperview" ref="715934819"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="581454174"/>
@@ -175,11 +175,7 @@
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 						<string key="IBUIText">New versions of some of your eBooks may be available.</string>
-						<object class="NSFont" key="IBUIFont" id="518455705">
-							<string key="NSName">ArialMT</string>
-							<double key="NSSize">13</double>
-							<int key="NSfFlags">16</int>
-						</object>
+						<reference key="IBUIFont" ref="518455705"/>
 						<reference key="IBUITextColor" ref="974943671"/>
 						<nil key="IBUIHighlightedColor"/>
 						<int key="IBUIBaselineAdjustment">1</int>
@@ -191,7 +187,7 @@
 					<object class="IBUILabel" id="1012047803">
 						<reference key="NSNextResponder" ref="715934819"/>
 						<int key="NSvFlags">290</int>
-						<string key="NSFrame">{{92, 224}, {356, 32}}</string>
+						<string key="NSFrame">{{117, 208}, {306, 48}}</string>
 						<reference key="NSSuperview" ref="715934819"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="337091297"/>
@@ -200,7 +196,7 @@
 						<int key="IBUIContentMode">7</int>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-						<string key="IBUIText">Space Saver Mode allows you to download individual books - turn it off to automatically download all books</string>
+						<string key="IBUIText">If you choose this option new eBooks will not be downloaded to this device until someone wants to read them. This can save storage space.</string>
 						<reference key="IBUIFont" ref="518455705"/>
 						<reference key="IBUITextColor" ref="974943671"/>
 						<nil key="IBUIHighlightedColor"/>
@@ -213,7 +209,7 @@
 					<object class="IBUILabel" id="1001415347">
 						<reference key="NSNextResponder" ref="715934819"/>
 						<int key="NSvFlags">290</int>
-						<string key="NSFrame">{{28, 580}, {369, 32}}</string>
+						<string key="NSFrame">{{16, 585}, {369, 32}}</string>
 						<reference key="NSSuperview" ref="715934819"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="884297116"/>
@@ -238,7 +234,7 @@
 					<object class="IBUILabel" id="319708791">
 						<reference key="NSNextResponder" ref="715934819"/>
 						<int key="NSvFlags">290</int>
-						<string key="NSFrame">{{212, 194}, {143, 22}}</string>
+						<string key="NSFrame">{{202, 181}, {170, 27}}</string>
 						<reference key="NSSuperview" ref="715934819"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="1012047803"/>
@@ -248,7 +244,11 @@
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 						<string key="IBUIText">Enable Space Saver</string>
-						<reference key="IBUIFont" ref="697363814"/>
+						<object class="NSFont" key="IBUIFont">
+							<string key="NSName">Arial-BoldMT</string>
+							<double key="NSSize">16</double>
+							<int key="NSfFlags">16</int>
+						</object>
 						<reference key="IBUITextColor" ref="974943671"/>
 						<nil key="IBUIHighlightedColor"/>
 						<int key="IBUIBaselineAdjustment">1</int>
@@ -259,7 +259,7 @@
 					<object class="IBUIButton" id="915391528">
 						<reference key="NSNextResponder" ref="715934819"/>
 						<int key="NSvFlags">293</int>
-						<string key="NSFrame">{{110, 69}, {320, 48}}</string>
+						<string key="NSFrame">{{117, 65}, {306, 48}}</string>
 						<reference key="NSSuperview" ref="715934819"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="885291924"/>
@@ -294,7 +294,7 @@
 					<object class="IBUIButton" id="337091297">
 						<reference key="NSNextResponder" ref="715934819"/>
 						<int key="NSvFlags">293</int>
-						<string key="NSFrame">{{110, 277}, {320, 48}}</string>
+						<string key="NSFrame">{{117, 277}, {306, 48}}</string>
 						<reference key="NSSuperview" ref="715934819"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="48248895"/>
@@ -304,16 +304,20 @@
 						<int key="IBUIContentVerticalAlignment">0</int>
 						<reference key="IBUIFont" ref="128120762"/>
 						<string key="IBUITitleShadowOffset">{0, -1}</string>
-						<string key="IBUINormalTitle">Update my eBooks</string>
+						<string key="IBUINormalTitle">Update my eBooks        </string>
 						<reference key="IBUIHighlightedTitleColor" ref="154479267"/>
 						<reference key="IBUINormalTitleColor" ref="652926956"/>
 						<reference key="IBUINormalTitleShadowColor" ref="578724973"/>
+						<object class="NSCustomResource" key="IBUINormalImage">
+							<string key="NSClassName">NSImage</string>
+							<string key="NSResourceName">update-icon.png</string>
+						</object>
 						<reference key="IBUINormalBackgroundImage" ref="862203106"/>
 					</object>
 					<object class="IBUILabel" id="637386089">
 						<reference key="NSNextResponder" ref="715934819"/>
 						<int key="NSvFlags">290</int>
-						<string key="NSFrame">{{121, 429}, {300, 32}}</string>
+						<string key="NSFrame">{{117, 429}, {306, 32}}</string>
 						<reference key="NSSuperview" ref="715934819"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="1026999043"/>
@@ -335,7 +339,7 @@
 					<object class="IBUIButton" id="581454174">
 						<reference key="NSNextResponder" ref="715934819"/>
 						<int key="NSvFlags">293</int>
-						<string key="NSFrame">{{111, 377}, {320, 48}}</string>
+						<string key="NSFrame">{{117, 377}, {306, 48}}</string>
 						<reference key="NSSuperview" ref="715934819"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="637386089"/>
@@ -354,7 +358,7 @@
 					<object class="IBUILabel" id="168235999">
 						<reference key="NSNextResponder" ref="715934819"/>
 						<int key="NSvFlags">290</int>
-						<string key="NSFrame">{{85, 529}, {371, 20}}</string>
+						<string key="NSFrame">{{117, 526}, {301, 33}}</string>
 						<reference key="NSSuperview" ref="715934819"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="1001415347"/>
@@ -376,7 +380,7 @@
 					<object class="IBUIButton" id="1026999043">
 						<reference key="NSNextResponder" ref="715934819"/>
 						<int key="NSvFlags">293</int>
-						<string key="NSFrame">{{110, 475}, {320, 48}}</string>
+						<string key="NSFrame">{{117, 475}, {306, 48}}</string>
 						<reference key="NSSuperview" ref="715934819"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="168235999"/>
@@ -395,7 +399,7 @@
 					<object class="IBUIButton" id="884297116">
 						<reference key="NSNextResponder" ref="715934819"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{128, 562}, {182, 25}}</string>
+						<string key="NSFrame">{{128, 565}, {182, 25}}</string>
 						<reference key="NSSuperview" ref="715934819"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="25177763"/>
@@ -419,7 +423,7 @@
 					<object class="IBUIButton" id="25177763">
 						<reference key="NSNextResponder" ref="715934819"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{318, 562}, {94, 25}}</string>
+						<string key="NSFrame">{{318, 565}, {94, 25}}</string>
 						<reference key="NSSuperview" ref="715934819"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="502778851"/>
@@ -439,7 +443,7 @@
 					<object class="IBUIButton" id="502778851">
 						<reference key="NSNextResponder" ref="715934819"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{394, 583}, {119, 25}}</string>
+						<string key="NSFrame">{{382, 588}, {144, 25}}</string>
 						<reference key="NSSuperview" ref="715934819"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView"/>
@@ -448,7 +452,7 @@
 						<int key="IBUIContentHorizontalAlignment">0</int>
 						<int key="IBUIContentVerticalAlignment">0</int>
 						<reference key="IBUIFont" ref="150100408"/>
-						<string key="IBUINormalTitle">xxx@scholastic.com</string>
+						<string key="IBUINormalTitle">support@scholastic.com</string>
 						<reference key="IBUIHighlightedTitleColor" ref="154479267"/>
 						<object class="NSColor" key="IBUINormalTitleColor">
 							<int key="NSColorSpace">1</int>
@@ -459,7 +463,7 @@
 					<object class="IBUIView" id="275588657">
 						<reference key="NSNextResponder" ref="715934819"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{179, 189}, {32, 32}}</string>
+						<string key="NSFrame">{{169, 179}, {32, 32}}</string>
 						<reference key="NSSuperview" ref="715934819"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="319708791"/>
@@ -636,7 +640,6 @@
 						<array class="NSMutableArray" key="children">
 							<reference ref="453328712"/>
 							<reference ref="915391528"/>
-							<reference ref="885291924"/>
 							<reference ref="1012047803"/>
 							<reference ref="1001415347"/>
 							<reference ref="884297116"/>
@@ -650,6 +653,7 @@
 							<reference ref="337091297"/>
 							<reference ref="319708791"/>
 							<reference ref="275588657"/>
+							<reference ref="885291924"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -985,6 +989,7 @@
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
 			<string key="button-close.png">{18, 18}</string>
 			<string key="button-login-red.png">{23, 48}</string>
+			<string key="update-icon.png">{40, 27}</string>
 		</dictionary>
 		<string key="IBCocoaTouchPluginVersion">301</string>
 	</data>

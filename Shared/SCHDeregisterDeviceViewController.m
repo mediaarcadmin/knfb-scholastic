@@ -49,7 +49,7 @@
     [self setButtonBackground:self.deregisterButton];
     
     UIView *fillerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 8)];
-    UIImage *cellBGImage = [[UIImage imageNamed:@"button-field"] stretchableImageWithLeftCapWidth:15 topCapHeight:0];
+    UIImage *cellBGImage = [[UIImage imageNamed:@"button-field-red"] stretchableImageWithLeftCapWidth:15 topCapHeight:0];
     self.passwordField.background = cellBGImage;
     self.passwordField.leftViewMode = UITextFieldViewModeAlways;
     self.passwordField.leftView = fillerView;
