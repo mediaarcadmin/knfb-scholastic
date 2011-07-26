@@ -11,7 +11,8 @@
 
 @interface SCHDownloadDictionaryViewController : SCHBaseSetupViewController {}
 
-@property (nonatomic, retain) IBOutlet UIButton *downlaodDictionaryButton;
+@property (nonatomic, retain) IBOutletCollection(UILabel) NSArray *labels;
+@property (nonatomic, retain) IBOutlet UIButton *downloadDictionaryButton;
 
 - (IBAction)downloadDictionary:(id)sender;
 

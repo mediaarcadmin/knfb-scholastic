@@ -65,11 +65,6 @@
     [self releaseViewObjects];
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    return YES;
-}
-
 #pragma mark - Actions
 
 - (void)deregister:(id)sender

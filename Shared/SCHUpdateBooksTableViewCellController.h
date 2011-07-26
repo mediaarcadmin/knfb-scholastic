@@ -12,6 +12,8 @@
 @class SCHCheckbox;
 @class SCHAppBook;
 
+extern NSString * const kSCHBookUpdatedSuccessfullyNotification;
+
 @interface SCHUpdateBooksTableViewCellController : NSObject {}
 
 @property (nonatomic, retain) IBOutlet UITableViewCell *cell;

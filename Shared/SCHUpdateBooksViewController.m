@@ -29,6 +29,8 @@
 
 - (void)releaseViewObjects
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
     [booksTable release], booksTable = nil;
     [updateBooksButton release], updateBooksButton = nil;
     [estimatedDownloadTimeLabel release], estimatedDownloadTimeLabel = nil;
@@ -58,17 +60,17 @@
     self.booksTable.layer.borderColor = [[UIColor SCHGrayColor] CGColor];
     self.booksTable.separatorColor = [UIColor SCHGrayColor];
     self.booksTable.backgroundColor = [UIColor colorWithRed:0.969 green:0.969 blue:0.969 alpha:1.];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(bookUpdatedSuccessfully:)
+                                                 name:kSCHBookUpdatedSuccessfullyNotification
+                                               object:nil];
 }
 
 - (void)viewDidUnload
 {
     [super viewDidUnload];
     [self releaseViewObjects];
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    return YES;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -112,9 +114,17 @@
     tvc.cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (!tvc.cell) {
         [[NSBundle mainBundle] loadNibNamed:@"SCHUpdateBooksTableViewCell" owner:tvc options:nil];
+        tvc.cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     
     return tvc.cell;
+}
+
+#pragma mark - UITableViewDelegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:NO];
 }
 
 #pragma mark - NSFetchedResultsController
@@ -128,8 +138,13 @@
         [fetch setResultType:NSManagedObjectIDResultType];
         
         NSPredicate *statePred = [NSPredicate predicateWithFormat:@"State = %d", SCHBookProcessingStateReadyToRead];
+#ifdef LOCALDEBUG
+        // show all books in local files build
+        [fetch setPredicate:statePred];
+#else
         NSPredicate *versionPred = [NSPredicate predicateWithFormat:@"OnDiskVersion != ContentMetadataItem.Version"];
         [fetch setPredicate:[NSCompoundPredicate andPredicateWithSubpredicates:[NSArray arrayWithObjects:statePred, versionPred, nil]]];
+#endif
         
         NSFetchedResultsController *frc = [[NSFetchedResultsController alloc] initWithFetchRequest:fetch
                                                                               managedObjectContext:self.managedObjectContext
@@ -159,6 +174,22 @@
 - (void)updateBooks:(id)sender
 {
     [[self.cellControllers allValues] makeObjectsPerformSelector:@selector(startUpdateIfEnabled)];
+}
+
+#pragma mark - Notifications
+
+- (void)bookUpdatedSuccessfully:(NSNotification *)note
+{
+    NSError *error = nil;
+    if (![self.fetchedResultsController performFetch:&error]) {
+        NSLog(@"failed to fetch books for update: %@", error);
+    }
+    // automatically dismiss this view once all books are updated
+    if ([[self fetchedResultControllerSectionInfo] numberOfObjects] == 0) {
+        [self.navigationController popViewControllerAnimated:YES];
+    } else {
+        [self.booksTable reloadData];
+    }
 }
 
 @end
