@@ -212,6 +212,57 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
 - (IBAction)contactCustomerSupport:(id)sender
 {
+    if ([MFMailComposeViewController canSendMail]) {
+        MFMailComposeViewController *mfViewController = [[MFMailComposeViewController alloc] init];
+        mfViewController.mailComposeDelegate = self;
+        [mfViewController setToRecipients:[NSArray arrayWithObject:@"support@scholastic.com"]];
+        [mfViewController setSubject:[NSString stringWithFormat:@"Scholastic v%@ Support Request", [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]]];
+        [self presentModalViewController:mfViewController animated:YES];
+        [mfViewController release];
+    } else {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Unable to Send Email", @"Email error title")
+                                                        message:NSLocalizedString(@"This device is not set up to send email. Please configure an email account in Settings and try again", @"")
+                                                       delegate:nil
+                                              cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+                                              otherButtonTitles:nil];
+        [alert show];
+        [alert release];
+    }
+}
+
+#define MFMailComposeViewControllerDelegate
+
+- (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error {
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Scholastic Support Email", @"Support Email Alert title")
+                                                    message:@""
+                                                   delegate:nil 
+                                          cancelButtonTitle:@"ok" 
+                                          otherButtonTitles:nil];
+    
+    switch (result) {
+        case MFMailComposeResultCancelled:
+            [alert release];
+            [self dismissModalViewControllerAnimated:YES];
+            return;
+            break;
+        case MFMailComposeResultSaved:
+            alert.message = NSLocalizedString(@"Draft Saved", @"Draft Saved");
+            break;
+        case MFMailComposeResultSent:
+            alert.message = NSLocalizedString(@"Support Request Sent", @"Support Request Sent");
+            break;
+        case MFMailComposeResultFailed:
+            alert.message = NSLocalizedString(@"Support Request Failed", @"Support Request Failed");
+            break;
+        default:
+            alert.message = NSLocalizedString(@"Support Request Not Sent", @"Support Request Not Sent");
+            break;
+    }
+    
+    [self dismissModalViewControllerAnimated:YES];
+    
+    [alert show];
+    [alert release];
 }
 
 - (IBAction)manageBooks:(id)sender
