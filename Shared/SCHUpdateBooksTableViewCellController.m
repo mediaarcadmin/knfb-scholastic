@@ -20,6 +20,8 @@ enum {
     kSpinnerTag = 4,
 };
 
+NSString * const kSCHBookUpdatedSuccessfullyNotification = @"book-updated-successfully";
+
 @interface SCHUpdateBooksTableViewCellController ()
 
 @property (nonatomic, retain) NSManagedObjectID *bookObjectID;
@@ -62,6 +64,7 @@ enum {
         bookObjectID = [objectID retain];
         managedObjectContext = [moc retain];
         bookIdentifier = [[[self book] bookIdentifier] retain];
+        bookEnabledForUpdate = YES;
         
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(didUpdateBookState:)
@@ -112,10 +115,21 @@ enum {
 
 - (void)updateSpinner
 {
-    if ([[self book] processingState] != SCHBookProcessingStateReadyToRead) {
-        [self.spinner startAnimating];
-    } else {
-        [self.spinner stopAnimating];
+    SCHAppBook *book = [self book];
+    switch ([book processingState]) {
+        case SCHBookProcessingStateDownloadStarted:
+        case SCHBookProcessingStateReadyForAudioInfoParsing:
+        case SCHBookProcessingStateReadyForBookFileDownload:
+        case SCHBookProcessingStateReadyForLicenseAcquisition:
+        case SCHBookProcessingStateReadyForPagination:
+        case SCHBookProcessingStateReadyForRightsParsing:
+        case SCHBookProcessingStateReadyForSmartZoomPreParse:
+        case SCHBookProcessingStateReadyForTextFlowPreParse:
+            [self.spinner startAnimating];
+            break;
+        default:
+            [self.spinner stopAnimating];
+            break;
     }
 }
 
@@ -125,6 +139,10 @@ enum {
 {
     if ([[[note userInfo] objectForKey:@"bookIdentifier"] isEqual:self.bookIdentifier]) {
         [self updateSpinner];
+        
+        if (![[self book] diskVersionOutOfDate]) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:kSCHBookUpdatedSuccessfullyNotification object:self];
+        }
     }
 }
 
@@ -142,6 +160,7 @@ enum {
         [book setForcedProcessing:YES];
         [book setProcessingState:SCHBookProcessingStateReadyForBookFileDownload];
         [[SCHProcessingManager sharedProcessingManager] userSelectedBookWithIdentifier:[book bookIdentifier]];
+        [self.spinner startAnimating];
     }
 }
 

@@ -29,6 +29,8 @@
 
 - (void)releaseViewObjects
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
     [booksTable release], booksTable = nil;
     [updateBooksButton release], updateBooksButton = nil;
     [estimatedDownloadTimeLabel release], estimatedDownloadTimeLabel = nil;
@@ -58,6 +60,11 @@
     self.booksTable.layer.borderColor = [[UIColor SCHGrayColor] CGColor];
     self.booksTable.separatorColor = [UIColor SCHGrayColor];
     self.booksTable.backgroundColor = [UIColor colorWithRed:0.969 green:0.969 blue:0.969 alpha:1.];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(bookUpdatedSuccessfully:)
+                                                 name:kSCHBookUpdatedSuccessfullyNotification
+                                               object:nil];
 }
 
 - (void)viewDidUnload
@@ -112,9 +119,17 @@
     tvc.cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (!tvc.cell) {
         [[NSBundle mainBundle] loadNibNamed:@"SCHUpdateBooksTableViewCell" owner:tvc options:nil];
+        tvc.cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     
     return tvc.cell;
+}
+
+#pragma mark - UITableViewDelegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:NO];
 }
 
 #pragma mark - NSFetchedResultsController
@@ -159,6 +174,22 @@
 - (void)updateBooks:(id)sender
 {
     [[self.cellControllers allValues] makeObjectsPerformSelector:@selector(startUpdateIfEnabled)];
+}
+
+#pragma mark - Notifications
+
+- (void)bookUpdatedSuccessfully:(NSNotification *)note
+{
+    NSError *error = nil;
+    if (![self.fetchedResultsController performFetch:&error]) {
+        NSLog(@"failed to fetch books for update: %@", error);
+    }
+    // automatically dismiss this view once all books are updated
+    if ([[self fetchedResultControllerSectionInfo] numberOfObjects] == 0) {
+        [self.navigationController popViewControllerAnimated:YES];
+    } else {
+        [self.booksTable reloadData];
+    }
 }
 
 @end

@@ -383,7 +383,8 @@ static SCHProcessingManager *sharedManager = nil;
             [bookDownloadOp setMainThreadManagedObjectContext:self.managedObjectContext];
 			bookDownloadOp.fileType = kSCHDownloadFileTypeXPSBook;
 			bookDownloadOp.identifier = identifier;
-			bookDownloadOp.resume = YES;
+			bookDownloadOp.resume = ![book.ForceProcess boolValue];
+            [book setForcedProcessing:NO];
 			
 			// the book will be redispatched on completion
 			[bookDownloadOp setCompletionBlock:^{
@@ -559,7 +560,6 @@ static SCHProcessingManager *sharedManager = nil;
             case SCHBookProcessingStateDownloadPaused:
             case SCHBookProcessingStateReadyForBookFileDownload:
                 if (!spaceSaverMode || book.ForceProcess) {
-                    book.ForceProcess = [NSNumber numberWithBool:NO];                    
                     [book setProcessingState:SCHBookProcessingStateDownloadStarted];
                     [self processIdentifier:identifier];
                 }
