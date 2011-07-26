@@ -158,10 +158,10 @@
 
 - (void)setIdentifier:(SCHBookIdentifier *)newIdentifier
 {	
-	if ([newIdentifier isEqual:identifier]) {
-        return;
-    }
-    
+//	if ([newIdentifier isEqual:identifier]) {
+//        return;
+//    }
+//    
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"SCHBookDownloadPercentageUpdate" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"SCHBookStatusUpdate" object:nil];
     

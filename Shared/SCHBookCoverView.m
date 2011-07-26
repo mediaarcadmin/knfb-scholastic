@@ -20,6 +20,9 @@
 
 @property (nonatomic, retain) UIImageView *coverImageView;
 @property (nonatomic, retain) NSString *currentImageName;
+@property (nonatomic, retain) UIProgressView *progressView;
+@property (nonatomic, retain) UIView *bookTintView;
+@property (nonatomic, retain) UIImageView *newBadge;
 
 @end
 
@@ -31,6 +34,9 @@
 
 @synthesize coverImageView;
 @synthesize currentImageName;
+@synthesize progressView;
+@synthesize bookTintView;
+@synthesize newBadge;
 
 - (void)dealloc 
 {
@@ -38,6 +44,9 @@
 	[identifier release], identifier = nil;
     [currentImageName release], currentImageName = nil;
     [coverImageView release], coverImageView = nil;
+    [progressView release], progressView = nil;
+    [bookTintView release], bookTintView = nil;
+    [newBadge release], newBadge = nil;
     
 	[super dealloc];
 }
@@ -63,12 +72,24 @@
     // add the image view
     self.coverImageView = [[UIImageView alloc] initWithFrame:self.frame];
     [self addSubview:coverImageView];
-    [self bringSubviewToFront:coverImageView];
-    
+
     // no scaling of the cover view
 	self.coverImageView.contentMode = UIViewContentModeTopLeft;
 	self.clipsToBounds = YES;
     self.backgroundColor = [UIColor clearColor];
+
+    // add the tint view
+    self.bookTintView = [[UIView alloc] initWithFrame:self.frame];
+    [self.bookTintView setBackgroundColor:[UIColor colorWithRed:0.2f green:0.2f blue:0.2f alpha:0.6f]];
+    [self addSubview:self.bookTintView];
+    
+    // add a progress view
+    self.progressView = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleDefault];
+    [self addSubview:self.progressView];
+    
+//    // add the new graphic view
+//    self.newBadge = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@""
+    
     
 }
 
@@ -78,7 +99,7 @@
 //        return;
 //    }
     
-//    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"SCHBookDownloadPercentageUpdate" object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"SCHBookDownloadPercentageUpdate" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"SCHBookStateUpdate" object:nil];
     
     [identifier release];
@@ -86,11 +107,11 @@
     
     if (identifier) {
     
-//    [[NSNotificationCenter defaultCenter] addObserver:self
-//                                             selector:@selector(updatePercentage:) 
-//                                                 name:@"SCHBookDownloadPercentageUpdate" 
-//                                               object:nil];
-//    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(updateFileDownloadPercentage:) 
+                                                 name:@"SCHBookDownloadPercentageUpdate" 
+                                               object:nil];
+    
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(checkForImageUpdateFromNotification:)
                                                      name:@"SCHBookStateUpdate"
@@ -130,7 +151,9 @@
     if (!self.identifier) {
         return;
     }
-    
+
+    SCHBookIdentifier *localIdentifier = [self.identifier copy];
+
     // fetch book state and filename information
     __block NSString *fullImagePath;
     __block NSString *thumbPath;
@@ -148,8 +171,6 @@
         self.currentImageName = nil;
         return;
     }
-    
-    SCHBookIdentifier *localIdentifier = [self.identifier copy];
     
     // check to see if we're already using the right thumb image - if so, skip loading it
     if (self.currentImageName != nil && [self.currentImageName compare:thumbPath] == NSOrderedSame) {
@@ -215,8 +236,8 @@
             });
         }
         
-        [fullImagePath release];
-        [thumbPath release];
+//        [fullImagePath release];
+//        [thumbPath release];
     }
     
     [localIdentifier release];
@@ -226,12 +247,21 @@
 {
     // resize and position the thumb image view - the image view should never scale, and should always
     // be set to an integer value for positioning to avoid blurring
+    
+    CGRect coverFrame = CGRectMake(floor((self.frame.size.width - thumbSize.width)/2), self.topInset, thumbSize.width, thumbSize.height);
+    
     if (thumbSize.width + (self.leftRightInset * 2) == self.frame.size.width) {
-        self.coverImageView.frame = CGRectMake(self.leftRightInset, self.frame.size.height - thumbSize.height, thumbSize.width, thumbSize.height);
-    } else {
-        self.coverImageView.frame = CGRectMake(floor((self.frame.size.width - thumbSize.width)/2), self.topInset, thumbSize.width, thumbSize.height);
+        coverFrame = CGRectMake(self.leftRightInset, self.frame.size.height - thumbSize.height, thumbSize.width, thumbSize.height);
     }
     
+    self.coverImageView.frame = coverFrame;
+    self.bookTintView.frame = coverFrame;
+    
+    // resize and position the progress view
+    CGRect progressViewFrame = CGRectMake(10 + leftRightInset, self.frame.size.height - 32, self.frame.size.width - (leftRightInset * 2) - 20, 10);
+    NSLog(@"Progress view frame: %@", NSStringFromCGRect(progressViewFrame));
+    self.progressView.frame = progressViewFrame;
+
 }
 
 - (UIImage *)createImageWithSourcePath:(NSString *)sourcePath destinationPath:(NSString *)destinationPath 
@@ -305,6 +335,17 @@
     });
 
     return resizedImage;
+}
+
+// listen for file download progress
+- (void)updateFileDownloadPercentage:(NSNotification *)notification
+{
+    SCHBookIdentifier *bookIdentifier = [[notification userInfo] objectForKey:@"bookIdentifier"];
+    if ([bookIdentifier isEqual:self.identifier]) {
+//        float newPercentage = [(NSNumber *) [[notification userInfo] objectForKey:@"currentPercentage"] floatValue];
+//        [self.progressView setProgress:newPercentage];
+        [self.progressView setHidden:NO];
+    }
 }
 
 
