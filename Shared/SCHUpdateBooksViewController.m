@@ -55,10 +55,10 @@
 
     self.cellControllers = [NSMutableDictionary dictionary];
     
-    self.booksTable.layer.cornerRadius = 12;
-    self.booksTable.layer.borderWidth = 2;
-    self.booksTable.layer.borderColor = [[UIColor SCHGrayColor] CGColor];
-    self.booksTable.separatorColor = [UIColor SCHGrayColor];
+    self.booksTable.layer.cornerRadius = 10;
+    self.booksTable.layer.borderWidth = 1;
+    self.booksTable.layer.borderColor = [[UIColor SCHGray2Color] CGColor];
+    self.booksTable.separatorColor = [UIColor SCHGray2Color];
     self.booksTable.backgroundColor = [UIColor colorWithRed:0.969 green:0.969 blue:0.969 alpha:1.];
     
     [[NSNotificationCenter defaultCenter] addObserver:self

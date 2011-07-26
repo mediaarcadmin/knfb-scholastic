@@ -2,9 +2,9 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="7.10">
 	<data>
 		<int key="IBDocument.SystemTarget">1056</int>
-		<string key="IBDocument.SystemVersion">10K549</string>
+		<string key="IBDocument.SystemVersion">10J869</string>
 		<string key="IBDocument.InterfaceBuilderVersion">1306</string>
-		<string key="IBDocument.AppKitVersion">1038.36</string>
+		<string key="IBDocument.AppKitVersion">1038.35</string>
 		<string key="IBDocument.HIToolboxVersion">461.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -57,7 +57,7 @@
 									<object class="IBUILabel" id="646312544">
 										<reference key="NSNextResponder" ref="1053468844"/>
 										<int key="NSvFlags">290</int>
-										<string key="NSFrameSize">{212, 21}</string>
+										<string key="NSFrameSize">{216, 21}</string>
 										<reference key="NSSuperview" ref="1053468844"/>
 										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="1053468844"/>
@@ -89,7 +89,7 @@
 									<object class="IBUIView" id="719066571">
 										<reference key="NSNextResponder" ref="1053468844"/>
 										<int key="NSvFlags">291</int>
-										<string key="NSFrame">{{112, 0}, {100, 21}}</string>
+										<string key="NSFrame">{{116, 0}, {100, 21}}</string>
 										<reference key="NSSuperview" ref="1053468844"/>
 										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="968874376"/>
@@ -108,7 +108,7 @@
 							<object class="IBUIView" id="943690909">
 								<reference key="NSNextResponder" ref="927795669"/>
 								<int key="NSvFlags">289</int>
-								<string key="NSFrame">{{268, 6}, {32, 32}}</string>
+								<string key="NSFrame">{{272, 6}, {32, 32}}</string>
 								<reference key="NSSuperview" ref="927795669"/>
 								<reference key="NSWindow"/>
 								<reference key="IBUIBackgroundColor" ref="115715000"/>
@@ -118,7 +118,7 @@
 							<object class="IBUIActivityIndicatorView" id="968874376">
 								<reference key="NSNextResponder" ref="927795669"/>
 								<int key="NSvFlags">-2147483359</int>
-								<string key="NSFrame">{{240, 12}, {20, 20}}</string>
+								<string key="NSFrame">{{244, 12}, {20, 20}}</string>
 								<reference key="NSSuperview" ref="927795669"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="943690909"/>
