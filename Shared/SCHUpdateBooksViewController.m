@@ -73,11 +73,6 @@
     [self releaseViewObjects];
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    return YES;
-}
-
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
@@ -143,8 +138,13 @@
         [fetch setResultType:NSManagedObjectIDResultType];
         
         NSPredicate *statePred = [NSPredicate predicateWithFormat:@"State = %d", SCHBookProcessingStateReadyToRead];
+#ifdef LOCALDEBUG
+        // show all books in local files build
+        [fetch setPredicate:statePred];
+#else
         NSPredicate *versionPred = [NSPredicate predicateWithFormat:@"OnDiskVersion != ContentMetadataItem.Version"];
         [fetch setPredicate:[NSCompoundPredicate andPredicateWithSubpredicates:[NSArray arrayWithObjects:statePred, versionPred, nil]]];
+#endif
         
         NSFetchedResultsController *frc = [[NSFetchedResultsController alloc] initWithFetchRequest:fetch
                                                                               managedObjectContext:self.managedObjectContext
