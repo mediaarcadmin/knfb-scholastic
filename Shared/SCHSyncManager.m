@@ -177,9 +177,7 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
 {
 	NSDictionary *userInfo = [notification userInfo];
 	
-	if ([[userInfo valueForKey:kSCHAuthenticationManagerOfflineMode] boolValue] == NO) {
-		NSLog(@"Authenticated!");
-		
+	if ([[userInfo valueForKey:kSCHAuthenticationManagerOfflineMode] boolValue] == NO) {		
 		[self kickQueue];	
 	}
 }

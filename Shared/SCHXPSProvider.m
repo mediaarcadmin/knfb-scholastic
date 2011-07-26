@@ -13,6 +13,10 @@
 #import "SCHXPSURLProtocol.h"
 #import "KNFBXPSConstants.h"
 #import "SCHDrmSession.h"
+#import "SCHPageNumberProcessor.h"
+
+// Constants
+NSString * const KNFBXPSPageNumbersMetadataFile = @"/Documents/1/Other/KNFB/PageNumbers.xml";
 
 @interface SCHXPSProvider()
 
@@ -57,6 +61,20 @@
 		} 
 	} 
 	return drmDecrypter;
+}
+
+// returns a dictionary with the page number as the key or nil as an error
+- (NSDictionary *)pageNumbers:(NSRange)pageIndexRange error:(NSError **)error
+{
+    NSDictionary *ret = nil;
+    SCHPageNumberProcessor *pageNumberProcessor = [[SCHPageNumberProcessor alloc] init];
+
+    ret = [pageNumberProcessor pageNumbersFrom:[self dataForComponentAtPath:KNFBXPSPageNumbersMetadataFile]
+                            withPageIndexRange:pageIndexRange 
+                                         error:error];
+    [pageNumberProcessor release], pageNumberProcessor = nil;
+    
+    return(ret);
 }
 
 // Subclassed methods
