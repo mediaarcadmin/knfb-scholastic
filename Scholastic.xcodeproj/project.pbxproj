@@ -35,6 +35,8 @@
 		2811879113D9C490001522FE /* SCHRemoveDictionaryViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2811879013D9C490001522FE /* SCHRemoveDictionaryViewController~ipad.xib */; };
 		2811879213D9C490001522FE /* SCHRemoveDictionaryViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2811879013D9C490001522FE /* SCHRemoveDictionaryViewController~ipad.xib */; };
 		2819307D112F81BE00ECF9B4 /* Scholastic.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2819307C112F81BE00ECF9B4 /* Scholastic.xcdatamodeld */; };
+		281B74B013DEED4900BA157C /* SCHBookUpdates.m in Sources */ = {isa = PBXBuildFile; fileRef = 281B74AF13DEED4900BA157C /* SCHBookUpdates.m */; };
+		281B74B113DEED4900BA157C /* SCHBookUpdates.m in Sources */ = {isa = PBXBuildFile; fileRef = 281B74AF13DEED4900BA157C /* SCHBookUpdates.m */; };
 		2827824513A20FA200E968C1 /* NSArray+ViewSorting.m in Sources */ = {isa = PBXBuildFile; fileRef = 2827824413A20FA200E968C1 /* NSArray+ViewSorting.m */; };
 		2827824613A20FA200E968C1 /* NSArray+ViewSorting.m in Sources */ = {isa = PBXBuildFile; fileRef = 2827824413A20FA200E968C1 /* NSArray+ViewSorting.m */; };
 		2827827613A23DF100E968C1 /* SCHStoryInteractionWordScrambler_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2827827513A23DF100E968C1 /* SCHStoryInteractionWordScrambler_iPad.xib */; };
@@ -1635,6 +1637,8 @@
 		280D6A1713B1D6180032085D /* SCHStarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStarView.m; sourceTree = "<group>"; };
 		2811879013D9C490001522FE /* SCHRemoveDictionaryViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "SCHRemoveDictionaryViewController~ipad.xib"; path = "iPad/SCHRemoveDictionaryViewController~ipad.xib"; sourceTree = "<group>"; };
 		28194A6B13C1BF2600E3DBE2 /* AppDelegate_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate_Private.h; path = Shared/AppDelegate_Private.h; sourceTree = "<group>"; };
+		281B74AE13DEED4900BA157C /* SCHBookUpdates.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookUpdates.h; path = Shared/SCHBookUpdates.h; sourceTree = "<group>"; };
+		281B74AF13DEED4900BA157C /* SCHBookUpdates.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookUpdates.m; path = Shared/SCHBookUpdates.m; sourceTree = "<group>"; };
 		2827824313A20FA200E968C1 /* NSArray+ViewSorting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+ViewSorting.h"; sourceTree = "<group>"; };
 		2827824413A20FA200E968C1 /* NSArray+ViewSorting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+ViewSorting.m"; sourceTree = "<group>"; };
 		2827827513A23DF100E968C1 /* SCHStoryInteractionWordScrambler_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionWordScrambler_iPad.xib; sourceTree = "<group>"; };
@@ -4930,6 +4934,8 @@
 				52F15A1E1371A2CA0073941E /* SCHBookAnnotations.m */,
 				52985F7013C48D32009AD121 /* SCHBookStatistics.h */,
 				52985F7113C48D32009AD121 /* SCHBookStatistics.m */,
+				281B74AE13DEED4900BA157C /* SCHBookUpdates.h */,
+				281B74AF13DEED4900BA157C /* SCHBookUpdates.m */,
 			);
 			name = "Book Data";
 			sourceTree = "<group>";
@@ -6348,6 +6354,7 @@
 				28986DEB13DD701A0011B148 /* SCHUpdateBooksTableViewCellController.m in Sources */,
 				52162DA513DD763500D257C5 /* BITAPIError.m in Sources */,
 				52162DA913DD88C700D257C5 /* SCHUserDefaults.m in Sources */,
+				281B74B013DEED4900BA157C /* SCHBookUpdates.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6652,6 +6659,7 @@
 				28986DEC13DD701A0011B148 /* SCHUpdateBooksTableViewCellController.m in Sources */,
 				52162DA613DD763500D257C5 /* BITAPIError.m in Sources */,
 				52162DAA13DD88C700D257C5 /* SCHUserDefaults.m in Sources */,
+				281B74B113DEED4900BA157C /* SCHBookUpdates.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
