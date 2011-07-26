@@ -1101,13 +1101,13 @@
 		C9B7EABB13DED39C00BD5CB7 /* update-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = C9B7EAB813DED39C00BD5CB7 /* update-icon.png */; };
 		C9B7EABC13DED39C00BD5CB7 /* update-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = C9B7EAB813DED39C00BD5CB7 /* update-icon.png */; };
 		C9B7EABE13DEDBAC00BD5CB7 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9B7EABD13DEDBAB00BD5CB7 /* MessageUI.framework */; };
-		C9B7EAC013DEDBBD00BD5CB7 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9B7EABF13DEDBBC00BD5CB7 /* MessageUI.framework */; };
 		C9B7EAC413DEF29300BD5CB7 /* admin-updates-available@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C9B7EAC113DEF29200BD5CB7 /* admin-updates-available@2x~iphone.png */; };
 		C9B7EAC513DEF29300BD5CB7 /* admin-updates-available@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C9B7EAC113DEF29200BD5CB7 /* admin-updates-available@2x~iphone.png */; };
 		C9B7EAC613DEF29300BD5CB7 /* admin-updates-available~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C9B7EAC213DEF29300BD5CB7 /* admin-updates-available~iphone.png */; };
 		C9B7EAC713DEF29300BD5CB7 /* admin-updates-available~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C9B7EAC213DEF29300BD5CB7 /* admin-updates-available~iphone.png */; };
 		C9B7EAC813DEF29300BD5CB7 /* admin-updates-available~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C9B7EAC313DEF29300BD5CB7 /* admin-updates-available~ipad.png */; };
 		C9B7EAC913DEF29300BD5CB7 /* admin-updates-available~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C9B7EAC313DEF29300BD5CB7 /* admin-updates-available~ipad.png */; };
+		C9B7EACA13DEF5D000BD5CB7 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9B7EABD13DEDBAB00BD5CB7 /* MessageUI.framework */; };
 		C9BCD78B135DBF9E00AA42B3 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
 		C9C1D2D113B0AF3500441623 /* SCHBookShelfTableViewCell_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F86666A013AF8C370050979F /* SCHBookShelfTableViewCell_iPad.xib */; };
 		C9C1D2D213B0AF3600441623 /* SCHBookShelfTableViewCell_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F86666A013AF8C370050979F /* SCHBookShelfTableViewCell_iPad.xib */; };
@@ -2580,7 +2580,6 @@
 		C9B7EAB713DED39C00BD5CB7 /* update-icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "update-icon@2x.png"; path = "Resources/UIAssets/update-icon@2x.png"; sourceTree = "<group>"; };
 		C9B7EAB813DED39C00BD5CB7 /* update-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "update-icon.png"; path = "Resources/UIAssets/update-icon.png"; sourceTree = "<group>"; };
 		C9B7EABD13DEDBAB00BD5CB7 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
-		C9B7EABF13DEDBBC00BD5CB7 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		C9B7EAC113DEF29200BD5CB7 /* admin-updates-available@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "admin-updates-available@2x~iphone.png"; path = "Resources/UIAssets/admin-updates-available@2x~iphone.png"; sourceTree = "<group>"; };
 		C9B7EAC213DEF29300BD5CB7 /* admin-updates-available~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "admin-updates-available~iphone.png"; path = "Resources/UIAssets/admin-updates-available~iphone.png"; sourceTree = "<group>"; };
 		C9B7EAC313DEF29300BD5CB7 /* admin-updates-available~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "admin-updates-available~ipad.png"; path = "Resources/UIAssets/admin-updates-available~ipad.png"; sourceTree = "<group>"; };
@@ -2888,7 +2887,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C9B7EAC013DEDBBD00BD5CB7 /* MessageUI.framework in Frameworks */,
 				F8E2D3C013B9C7AC001E207B /* CoreText.framework in Frameworks */,
 				C9F1A4D6133B507100FD984C /* libPlayReadyPK.a in Frameworks */,
 				F8509F4812F063C900197EB5 /* libstdc++.6.dylib in Frameworks */,
@@ -2918,6 +2916,7 @@
 				C9ED56831343329400A25486 /* libiconv.dylib in Frameworks */,
 				C9EFB178134F4C8E00ADF905 /* libXpsSDKipad.a in Frameworks */,
 				523756AC13A254A900B38441 /* MediaPlayer.framework in Frameworks */,
+				C9B7EACA13DEF5D000BD5CB7 /* MessageUI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3486,7 +3485,6 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
-				C9B7EABF13DEDBBC00BD5CB7 /* MessageUI.framework */,
 				C9B7EABD13DEDBAB00BD5CB7 /* MessageUI.framework */,
 				C9261FBA1396FD90009FF459 /* Default-Landscape~ipad.png */,
 				C9261FB71396FD85009FF459 /* Default-Portrait~ipad.png */,
