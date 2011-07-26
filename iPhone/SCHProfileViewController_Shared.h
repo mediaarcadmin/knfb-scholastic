@@ -24,6 +24,7 @@
 @property (nonatomic, retain) IBOutlet SCHDownloadDictionaryViewController *downloadDictionaryViewController;
 @property (nonatomic, retain) IBOutlet SCHLoginPasswordViewController *profilePasswordController;
 @property (nonatomic, retain) IBOutlet SCHSettingsViewController *settingsViewController;
+@property (nonatomic, retain) IBOutlet UIImageView *updatesBubble;
 
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
