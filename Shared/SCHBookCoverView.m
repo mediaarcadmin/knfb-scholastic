@@ -55,7 +55,6 @@
 
 - (void)prepareForReuse
 {
-//    NSLog(@"Calling prepareForReuse on %p: %@ %@", self, self.currentImageName, self.identifier);
     self.identifier = nil;
 }
 
@@ -75,11 +74,9 @@
 
 - (void)setIdentifier:(SCHBookIdentifier *)newIdentifier
 {
-    NSLog(@"%p: Setting id to %@ (old value: %@)", self, newIdentifier, identifier);
-    
-	if ([newIdentifier isEqual:identifier]) {
-        return;
-    }
+//	if ([newIdentifier isEqual:identifier]) {
+//        return;
+//    }
     
 //    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"SCHBookDownloadPercentageUpdate" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"SCHBookStateUpdate" object:nil];
@@ -129,15 +126,12 @@
 
 - (void)refreshBookCoverView
 {
-//    NSLog(@"Refreshing book cover view...");
     // if no identifier has been set, then we don't need to refresh the image
     if (!self.identifier) {
-//        NSLog(@"No identifier set. Clearing image.");
-//        self.coverImageView.image = nil; 
-//        self.currentImageName = nil;
         return;
     }
     
+    // fetch book state and filename information
     __block NSString *fullImagePath;
     __block NSString *thumbPath;
     __block SCHBookCurrentProcessingState bookState;
@@ -149,7 +143,7 @@
     }];
     
     if (bookState <= SCHBookProcessingStateNoCoverImage) {
-        //        NSLog(@"Book does not have a cover image downloaded.");
+        // book does not have a cover image downloaded 
         self.coverImageView.image = nil;
         self.currentImageName = nil;
         return;
@@ -157,14 +151,14 @@
     
     SCHBookIdentifier *localIdentifier = [self.identifier copy];
     
+    // check to see if we're already using the right thumb image - if so, skip loading it
     if (self.currentImageName != nil && [self.currentImageName compare:thumbPath] == NSOrderedSame) {
-        NSLog(@"Already using the right thumbnail image.");
+//        NSLog(@"Already using the right thumbnail image.");
     } else {
         NSFileManager *threadLocalFileManager = [[[NSFileManager alloc] init] autorelease];
         
         // check to see if we have the thumb already cached
         if ([threadLocalFileManager fileExistsAtPath:thumbPath]) {
-            //            NSLog(@"Thumb exists. Loading image from cache.");
             // load the cached image
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                 
@@ -174,11 +168,10 @@
                 
                 dispatch_async(dispatch_get_main_queue(), ^{
                     
+                    // check if identifier changed while the thumb was loading
                     if ([self.identifier isEqual:localIdentifier]) {
                         self.coverImageView.image = thumbImage;
                         [self resizeElementsForThumbSize:thumbImage.size];
-                    } else {
-                        NSLog(@"******* Identifier changed (thumb loading).");
                     }
                 });
                 
@@ -186,26 +179,22 @@
             });
             
         } else {
-            //            NSLog(@"Thumb does not exist. Creating thumb.");
             // dispatch the thumbnail operation
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                 [fullImagePath retain];
                 [thumbPath retain];
 
-                if (![self.identifier isEqual:localIdentifier]) {
-                    NSLog(@"******* Identifier changed (thumb creation 1)");
-                } else {
-                    
+                // if the identifier changes, don't process the thumbnail
+                if ([self.identifier isEqual:localIdentifier]) {
                     
                     UIImage *thumbImage = nil;
                     [NSThread sleepForTimeInterval:5];
                     
+                    // check if the thumb has been created while queued
                     if ([threadLocalFileManager fileExistsAtPath:thumbPath]) {
-                        NSLog(@"Was going to create thumb, but it already exists. Loading instead.");
                         thumbImage = [UIImage imageWithContentsOfFile:thumbPath];
                         self.currentImageName = thumbPath;
                     } else {
-                        NSLog(@"Creating thumb.");
                         thumbImage = [self createImageWithSourcePath:fullImagePath destinationPath:thumbPath];
                         self.currentImageName = thumbPath;
                     }
@@ -214,13 +203,12 @@
                     [thumbPath release];
                     
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        //                    NSLog(@"Thumb created. Setting image.");
+                        // set the thumbnail
                         
+                        // first check if the identifier has changed; if so, don't set the processed thumbnail
                         if ([self.identifier isEqual:localIdentifier]) {
                             self.coverImageView.image = thumbImage;
                             [self resizeElementsForThumbSize:thumbImage.size];
-                        } else {
-                            NSLog(@"******* Identifier changed (thumb creation 2)");
                         }
                     });
                 }
@@ -236,6 +224,8 @@
 
 - (void)resizeElementsForThumbSize: (CGSize) thumbSize
 {
+    // resize and position the thumb image view - the image view should never scale, and should always
+    // be set to an integer value for positioning to avoid blurring
     if (thumbSize.width + (self.leftRightInset * 2) == self.frame.size.width) {
         self.coverImageView.frame = CGRectMake(self.leftRightInset, self.frame.size.height - thumbSize.height, thumbSize.width, thumbSize.height);
     } else {
@@ -318,6 +308,7 @@
 }
 
 
+// this method listens for updates to book state
 - (void)checkForImageUpdateFromNotification:(NSNotification *)notification
 {
     SCHBookIdentifier *bookIdentifier = [[notification userInfo] objectForKey:@"bookIdentifier"];
