@@ -227,7 +227,6 @@ NSString * const kSCHURLManagerFailure = @"URLManagerFailure";
     NSNumber *offlineMode = [userInfo valueForKey:kSCHAuthenticationManagerOfflineMode];
     
     if (offlineMode != nil && [offlineMode boolValue] == NO) {
-		NSLog(@"Authenticated!");
 		[self shakeTable];	
 	}
 }
