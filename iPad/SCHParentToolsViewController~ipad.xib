@@ -60,10 +60,10 @@
 									<object class="IBUITextField" id="153520013">
 										<reference key="NSNextResponder" ref="648396999"/>
 										<int key="NSvFlags">293</int>
-										<string key="NSFrame">{{130, 74}, {280, 48}}</string>
+										<string key="NSFrame">{{156, 70}, {228, 51}}</string>
 										<reference key="NSSuperview" ref="648396999"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView" ref="613104642"/>
+										<reference key="NSNextKeyView" ref="973468269"/>
 										<object class="NSColor" key="IBUIBackgroundColor" id="34117478">
 											<int key="NSColorSpace">3</int>
 											<bytes key="NSWhite">MCAwAA</bytes>
@@ -92,17 +92,17 @@
 										</object>
 										<object class="NSCustomResource" key="IBUIBackground">
 											<string key="NSClassName">NSImage</string>
-											<string key="NSResourceName">button-field.png</string>
+											<string key="NSResourceName">button-field-red.png</string>
 										</object>
 										<int key="IBUIClearButtonMode">1</int>
 									</object>
 									<object class="IBUIButton" id="613104642">
 										<reference key="NSNextResponder" ref="648396999"/>
 										<int key="NSvFlags">293</int>
-										<string key="NSFrame">{{20, 141}, {500, 22}}</string>
+										<string key="NSFrame">{{20, 214}, {500, 22}}</string>
 										<reference key="NSSuperview" ref="648396999"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView" ref="973468269"/>
+										<reference key="NSNextKeyView"/>
 										<bool key="IBUIOpaque">NO</bool>
 										<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 										<int key="IBUIContentHorizontalAlignment">0</int>
@@ -114,7 +114,7 @@
 										</object>
 										<bool key="IBUIAdjustsImageWhenHighlighted">NO</bool>
 										<bool key="IBUIAdjustsImageWhenDisabled">NO</bool>
-										<string key="IBUINormalTitle">Forgot your username or password?</string>
+										<string key="IBUINormalTitle">Forgot your password?</string>
 										<object class="NSColor" key="IBUIHighlightedTitleColor">
 											<int key="NSColorSpace">2</int>
 											<bytes key="NSRGB">MCAwLjY4MjM1Mjk0MTIgMC45MzcyNTQ5MDIAA</bytes>
@@ -131,10 +131,10 @@
 									<object class="IBUIButton" id="973468269">
 										<reference key="NSNextResponder" ref="648396999"/>
 										<int key="NSvFlags">293</int>
-										<string key="NSFrame">{{220, 183}, {100, 44}}</string>
+										<string key="NSFrame">{{220, 154}, {100, 44}}</string>
 										<reference key="NSSuperview" ref="648396999"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView"/>
+										<reference key="NSNextKeyView" ref="613104642"/>
 										<bool key="IBUIOpaque">NO</bool>
 										<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 										<int key="IBUIContentHorizontalAlignment">0</int>
@@ -177,7 +177,7 @@
 						<string key="NSFrame">{{0, 44}, {540, 576}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
+						<reference key="NSNextKeyView" ref="648396999"/>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">3</int>
 							<bytes key="NSWhite">MQA</bytes>
@@ -455,8 +455,8 @@
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="153520013"/>
-							<reference ref="973468269"/>
 							<reference ref="613104642"/>
+							<reference ref="973468269"/>
 						</object>
 						<reference key="parent" ref="584806677"/>
 						<string key="objectName">Scroll View</string>
@@ -748,7 +748,7 @@
 			<object class="NSArray" key="dict.sortedKeys">
 				<bool key="EncodedWithXMLCoder">YES</bool>
 				<string>button-close.png</string>
-				<string>button-field.png</string>
+				<string>button-field-red.png</string>
 				<string>button-login-red.png</string>
 			</object>
 			<object class="NSMutableArray" key="dict.values">

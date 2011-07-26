@@ -1089,6 +1089,24 @@
 		C9B7E91D13DC620400BD5CB7 /* checkmark-off.png in Resources */ = {isa = PBXBuildFile; fileRef = C9B7E91513DC620400BD5CB7 /* checkmark-off.png */; };
 		C9B7EA0513DDBE1800BD5CB7 /* settings-ipad-top-toolbar.png in Resources */ = {isa = PBXBuildFile; fileRef = C9B7EA0413DDBE1600BD5CB7 /* settings-ipad-top-toolbar.png */; };
 		C9B7EA0613DDBE1800BD5CB7 /* settings-ipad-top-toolbar.png in Resources */ = {isa = PBXBuildFile; fileRef = C9B7EA0413DDBE1600BD5CB7 /* settings-ipad-top-toolbar.png */; };
+		C9B7EA8113DEB3FB00BD5CB7 /* login-ipad-top-toolbar.png in Resources */ = {isa = PBXBuildFile; fileRef = C9B7EA8013DEB3FB00BD5CB7 /* login-ipad-top-toolbar.png */; };
+		C9B7EA8213DEB3FB00BD5CB7 /* login-ipad-top-toolbar.png in Resources */ = {isa = PBXBuildFile; fileRef = C9B7EA8013DEB3FB00BD5CB7 /* login-ipad-top-toolbar.png */; };
+		C9B7EAB313DEC99000BD5CB7 /* button-field-red@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C9B7EAB113DEC99000BD5CB7 /* button-field-red@2x.png */; };
+		C9B7EAB413DEC99000BD5CB7 /* button-field-red@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C9B7EAB113DEC99000BD5CB7 /* button-field-red@2x.png */; };
+		C9B7EAB513DEC99000BD5CB7 /* button-field-red.png in Resources */ = {isa = PBXBuildFile; fileRef = C9B7EAB213DEC99000BD5CB7 /* button-field-red.png */; };
+		C9B7EAB613DEC99000BD5CB7 /* button-field-red.png in Resources */ = {isa = PBXBuildFile; fileRef = C9B7EAB213DEC99000BD5CB7 /* button-field-red.png */; };
+		C9B7EAB913DED39C00BD5CB7 /* update-icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C9B7EAB713DED39C00BD5CB7 /* update-icon@2x.png */; };
+		C9B7EABA13DED39C00BD5CB7 /* update-icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C9B7EAB713DED39C00BD5CB7 /* update-icon@2x.png */; };
+		C9B7EABB13DED39C00BD5CB7 /* update-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = C9B7EAB813DED39C00BD5CB7 /* update-icon.png */; };
+		C9B7EABC13DED39C00BD5CB7 /* update-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = C9B7EAB813DED39C00BD5CB7 /* update-icon.png */; };
+		C9B7EABE13DEDBAC00BD5CB7 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9B7EABD13DEDBAB00BD5CB7 /* MessageUI.framework */; };
+		C9B7EAC013DEDBBD00BD5CB7 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9B7EABF13DEDBBC00BD5CB7 /* MessageUI.framework */; };
+		C9B7EAC413DEF29300BD5CB7 /* admin-updates-available@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C9B7EAC113DEF29200BD5CB7 /* admin-updates-available@2x~iphone.png */; };
+		C9B7EAC513DEF29300BD5CB7 /* admin-updates-available@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C9B7EAC113DEF29200BD5CB7 /* admin-updates-available@2x~iphone.png */; };
+		C9B7EAC613DEF29300BD5CB7 /* admin-updates-available~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C9B7EAC213DEF29300BD5CB7 /* admin-updates-available~iphone.png */; };
+		C9B7EAC713DEF29300BD5CB7 /* admin-updates-available~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C9B7EAC213DEF29300BD5CB7 /* admin-updates-available~iphone.png */; };
+		C9B7EAC813DEF29300BD5CB7 /* admin-updates-available~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C9B7EAC313DEF29300BD5CB7 /* admin-updates-available~ipad.png */; };
+		C9B7EAC913DEF29300BD5CB7 /* admin-updates-available~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C9B7EAC313DEF29300BD5CB7 /* admin-updates-available~ipad.png */; };
 		C9BCD78B135DBF9E00AA42B3 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
 		C9C1D2D113B0AF3500441623 /* SCHBookShelfTableViewCell_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F86666A013AF8C370050979F /* SCHBookShelfTableViewCell_iPad.xib */; };
 		C9C1D2D213B0AF3600441623 /* SCHBookShelfTableViewCell_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = F86666A013AF8C370050979F /* SCHBookShelfTableViewCell_iPad.xib */; };
@@ -2555,6 +2573,16 @@
 		C9B7E91413DC620400BD5CB7 /* checkmark-off@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "checkmark-off@2x.png"; path = "Resources/UIAssets/checkmark-off@2x.png"; sourceTree = "<group>"; };
 		C9B7E91513DC620400BD5CB7 /* checkmark-off.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "checkmark-off.png"; path = "Resources/UIAssets/checkmark-off.png"; sourceTree = "<group>"; };
 		C9B7EA0413DDBE1600BD5CB7 /* settings-ipad-top-toolbar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "settings-ipad-top-toolbar.png"; path = "Resources/UIAssets/settings-ipad-top-toolbar.png"; sourceTree = "<group>"; };
+		C9B7EA8013DEB3FB00BD5CB7 /* login-ipad-top-toolbar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "login-ipad-top-toolbar.png"; path = "Resources/UIAssets/login-ipad-top-toolbar.png"; sourceTree = "<group>"; };
+		C9B7EAB113DEC99000BD5CB7 /* button-field-red@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "button-field-red@2x.png"; path = "Resources/UIAssets/button-field-red@2x.png"; sourceTree = "<group>"; };
+		C9B7EAB213DEC99000BD5CB7 /* button-field-red.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "button-field-red.png"; path = "Resources/UIAssets/button-field-red.png"; sourceTree = "<group>"; };
+		C9B7EAB713DED39C00BD5CB7 /* update-icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "update-icon@2x.png"; path = "Resources/UIAssets/update-icon@2x.png"; sourceTree = "<group>"; };
+		C9B7EAB813DED39C00BD5CB7 /* update-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "update-icon.png"; path = "Resources/UIAssets/update-icon.png"; sourceTree = "<group>"; };
+		C9B7EABD13DEDBAB00BD5CB7 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		C9B7EABF13DEDBBC00BD5CB7 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		C9B7EAC113DEF29200BD5CB7 /* admin-updates-available@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "admin-updates-available@2x~iphone.png"; path = "Resources/UIAssets/admin-updates-available@2x~iphone.png"; sourceTree = "<group>"; };
+		C9B7EAC213DEF29300BD5CB7 /* admin-updates-available~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "admin-updates-available~iphone.png"; path = "Resources/UIAssets/admin-updates-available~iphone.png"; sourceTree = "<group>"; };
+		C9B7EAC313DEF29300BD5CB7 /* admin-updates-available~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "admin-updates-available~ipad.png"; path = "Resources/UIAssets/admin-updates-available~ipad.png"; sourceTree = "<group>"; };
 		C9C1D29D13B0AD4B00441623 /* storyinteraction-bg-younger-notitle~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-bg-younger-notitle~ipad.png"; sourceTree = "<group>"; };
 		C9C1D29E13B0AD4C00441623 /* storyinteraction-bg-older-notitle~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-bg-older-notitle~ipad.png"; sourceTree = "<group>"; };
 		C9C1D56013B3C01A00441623 /* show-tools.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "show-tools.png"; sourceTree = "<group>"; };
@@ -2808,6 +2836,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C9B7EABE13DEDBAC00BD5CB7 /* MessageUI.framework in Frameworks */,
 				523756AB13A2548E00B38441 /* MediaPlayer.framework in Frameworks */,
 				C9ED56821343328F00A25486 /* libiconv.dylib in Frameworks */,
 				C9ED566D1343322300A25486 /* libcss.a in Frameworks */,
@@ -2858,6 +2887,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C9B7EAC013DEDBBD00BD5CB7 /* MessageUI.framework in Frameworks */,
 				F8E2D3C013B9C7AC001E207B /* CoreText.framework in Frameworks */,
 				C9F1A4D6133B507100FD984C /* libPlayReadyPK.a in Frameworks */,
 				F8509F4812F063C900197EB5 /* libstdc++.6.dylib in Frameworks */,
@@ -3455,6 +3485,8 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				C9B7EABF13DEDBBC00BD5CB7 /* MessageUI.framework */,
+				C9B7EABD13DEDBAB00BD5CB7 /* MessageUI.framework */,
 				C9261FBA1396FD90009FF459 /* Default-Landscape~ipad.png */,
 				C9261FB71396FD85009FF459 /* Default-Portrait~ipad.png */,
 				2860E386111B897F00E27156 /* iPhone */,
@@ -4121,6 +4153,12 @@
 		C920DDED138A69B400F1583D /* Profile and Admin Views */ = {
 			isa = PBXGroup;
 			children = (
+				C9B7EAC113DEF29200BD5CB7 /* admin-updates-available@2x~iphone.png */,
+				C9B7EAC213DEF29300BD5CB7 /* admin-updates-available~iphone.png */,
+				C9B7EAC313DEF29300BD5CB7 /* admin-updates-available~ipad.png */,
+				C9B7EAB713DED39C00BD5CB7 /* update-icon@2x.png */,
+				C9B7EAB813DED39C00BD5CB7 /* update-icon.png */,
+				C9B7EA8013DEB3FB00BD5CB7 /* login-ipad-top-toolbar.png */,
 				C9B7EA0413DDBE1600BD5CB7 /* settings-ipad-top-toolbar.png */,
 				C9B7E91213DC620400BD5CB7 /* checkmark-on@2x.png */,
 				C9B7E91313DC620400BD5CB7 /* checkmark-on.png */,
@@ -4134,6 +4172,8 @@
 				C9F5B9FB13916C62009DE113 /* button-go@2x.png */,
 				C979C6A6138C237C00581F7F /* button-field.png */,
 				C979C6A7138C237C00581F7F /* button-field@2x.png */,
+				C9B7EAB113DEC99000BD5CB7 /* button-field-red@2x.png */,
+				C9B7EAB213DEC99000BD5CB7 /* button-field-red.png */,
 				C979C6A0138C1F6300581F7F /* button-login@2x.png */,
 				C979C6A1138C1F6300581F7F /* button-login.png */,
 				C920DDF1138A6A7400F1583D /* admin-background-ipad-portrait.png */,
@@ -5552,6 +5592,14 @@
 				28986DF213DD7DD80011B148 /* SCHUpdateBooksViewController~ipad.xib in Resources */,
 				28986DF513DD9BDE0011B148 /* SCHUpdateBooksViewController~iphone.xib in Resources */,
 				C9B7EA0513DDBE1800BD5CB7 /* settings-ipad-top-toolbar.png in Resources */,
+				C9B7EA8113DEB3FB00BD5CB7 /* login-ipad-top-toolbar.png in Resources */,
+				C9B7EAB313DEC99000BD5CB7 /* button-field-red@2x.png in Resources */,
+				C9B7EAB513DEC99000BD5CB7 /* button-field-red.png in Resources */,
+				C9B7EAB913DED39C00BD5CB7 /* update-icon@2x.png in Resources */,
+				C9B7EABB13DED39C00BD5CB7 /* update-icon.png in Resources */,
+				C9B7EAC413DEF29300BD5CB7 /* admin-updates-available@2x~iphone.png in Resources */,
+				C9B7EAC613DEF29300BD5CB7 /* admin-updates-available~iphone.png in Resources */,
+				C9B7EAC813DEF29300BD5CB7 /* admin-updates-available~ipad.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6027,6 +6075,14 @@
 				28986DF313DD7DD80011B148 /* SCHUpdateBooksViewController~ipad.xib in Resources */,
 				28986DF613DD9BDE0011B148 /* SCHUpdateBooksViewController~iphone.xib in Resources */,
 				C9B7EA0613DDBE1800BD5CB7 /* settings-ipad-top-toolbar.png in Resources */,
+				C9B7EA8213DEB3FB00BD5CB7 /* login-ipad-top-toolbar.png in Resources */,
+				C9B7EAB413DEC99000BD5CB7 /* button-field-red@2x.png in Resources */,
+				C9B7EAB613DEC99000BD5CB7 /* button-field-red.png in Resources */,
+				C9B7EABA13DED39C00BD5CB7 /* update-icon@2x.png in Resources */,
+				C9B7EABC13DED39C00BD5CB7 /* update-icon.png in Resources */,
+				C9B7EAC513DEF29300BD5CB7 /* admin-updates-available@2x~iphone.png in Resources */,
+				C9B7EAC713DEF29300BD5CB7 /* admin-updates-available~iphone.png in Resources */,
+				C9B7EAC913DEF29300BD5CB7 /* admin-updates-available~ipad.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

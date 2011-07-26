@@ -93,7 +93,14 @@ static const CGFloat kContentHeightLandscape = 380;
     }
     
     UIView *fillerView = nil;
-    UIImage *bgImage = [UIImage imageNamed:@"button-field"];
+    UIImage *bgImage;
+    
+    if (self.controllerType == kSCHControllerParentToolsView) {
+        bgImage = [UIImage imageNamed:@"button-field-red"];
+    } else {
+        bgImage = [UIImage imageNamed:@"button-field"];
+    }
+    
     UIImage *cellBGImage = [bgImage stretchableImageWithLeftCapWidth:15 topCapHeight:0];
     
     if (self.topField) {

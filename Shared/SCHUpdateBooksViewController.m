@@ -55,10 +55,10 @@
 
     self.cellControllers = [NSMutableDictionary dictionary];
     
-    self.booksTable.layer.cornerRadius = 12;
-    self.booksTable.layer.borderWidth = 2;
-    self.booksTable.layer.borderColor = [[UIColor SCHGrayColor] CGColor];
-    self.booksTable.separatorColor = [UIColor SCHGrayColor];
+    self.booksTable.layer.cornerRadius = 10;
+    self.booksTable.layer.borderWidth = 1;
+    self.booksTable.layer.borderColor = [[UIColor SCHGray2Color] CGColor];
+    self.booksTable.separatorColor = [UIColor SCHGray2Color];
     self.booksTable.backgroundColor = [UIColor colorWithRed:0.969 green:0.969 blue:0.969 alpha:1.];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -71,11 +71,6 @@
 {
     [super viewDidUnload];
     [self releaseViewObjects];
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    return YES;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -143,8 +138,13 @@
         [fetch setResultType:NSManagedObjectIDResultType];
         
         NSPredicate *statePred = [NSPredicate predicateWithFormat:@"State = %d", SCHBookProcessingStateReadyToRead];
+#ifdef LOCALDEBUG
+        // show all books in local files build
+        [fetch setPredicate:statePred];
+#else
         NSPredicate *versionPred = [NSPredicate predicateWithFormat:@"OnDiskVersion != ContentMetadataItem.Version"];
         [fetch setPredicate:[NSCompoundPredicate andPredicateWithSubpredicates:[NSArray arrayWithObjects:statePred, versionPred, nil]]];
+#endif
         
         NSFetchedResultsController *frc = [[NSFetchedResultsController alloc] initWithFetchRequest:fetch
                                                                               managedObjectContext:self.managedObjectContext

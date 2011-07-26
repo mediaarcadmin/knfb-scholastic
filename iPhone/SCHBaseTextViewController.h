@@ -8,11 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
+@class SCHCustomToolbar;
 
 @interface SCHBaseTextViewController : UIViewController {}
 
 @property (nonatomic, retain) IBOutlet UILabel *titleLabel;
 @property (nonatomic, retain) IBOutlet UIWebView *textView;
+@property (nonatomic, retain) IBOutlet SCHCustomToolbar *topToolbar;
 
 - (IBAction)back:(id)sender;
 
