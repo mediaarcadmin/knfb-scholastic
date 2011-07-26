@@ -221,7 +221,7 @@ enum LoginScreens {
     isAuthenticated = YES;
 #elif NONDRMAUTHENTICATION
 	SCHAuthenticationManager *authenticationManager = [SCHAuthenticationManager sharedAuthenticationManager];
-	isAuthenticated = [authenticationManager isAuthenticated];
+	isAuthenticated = [authenticationManager hasUsernameAndPassword];
 #else 
     NSString *deviceKey = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerDeviceKey];
     isAuthenticated = (deviceKey != nil);
