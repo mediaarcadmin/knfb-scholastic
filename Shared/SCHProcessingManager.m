@@ -33,20 +33,20 @@ NSString * const kSCHProcessingManagerConnectionBusy = @"SCHProcessingManagerCon
 
 @interface SCHProcessingManager()
 
-- (void) checkStateForAllBooks;
-- (BOOL) identifierNeedsProcessing: (SCHBookIdentifier *) identifier;
+- (void)checkStateForAllBooks;
+- (BOOL)identifierNeedsProcessing:(SCHBookIdentifier *)identifier;
 
-- (void) processIdentifier: (SCHBookIdentifier *) identifier;
-- (void) redispatchIdentifier: (SCHBookIdentifier *) identifier;
-- (void) checkAndDispatchThumbsForIdentifier: (SCHBookIdentifier *) identifier;
+- (void)processIdentifier:(SCHBookIdentifier *)identifier;
+- (void)redispatchIdentifier:(SCHBookIdentifier *)identifier;
+- (void)checkAndDispatchThumbsForIdentifier:(SCHBookIdentifier *)identifier;
 
 // fire notifications if there's a change in state between processing and not processing
-- (void) checkIfProcessing;
+- (void)checkIfProcessing;
 
 // background processing - called by the app delegate when the app
 // is put into or opened from the background
-- (void) enterBackground;
-- (void) enterForeground;
+- (void)enterBackground;
+- (void)enterForeground;
 
 // operation queues - local, web service and network (download) operations
 @property (readwrite, retain) NSOperationQueue *localProcessingQueue;
@@ -84,7 +84,7 @@ NSString * const kSCHProcessingManagerConnectionBusy = @"SCHProcessingManagerCon
 #pragma mark -
 #pragma mark Object Lifecycle
 
-- (void) dealloc
+- (void)dealloc
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	
@@ -98,7 +98,7 @@ NSString * const kSCHProcessingManagerConnectionBusy = @"SCHProcessingManagerCon
 	[super dealloc];
 }
 
-- (id) init
+- (id)init
 {
 	if ((self = [super init])) {
 		self.localProcessingQueue = [[[NSOperationQueue alloc] init] autorelease];
@@ -126,7 +126,7 @@ NSString * const kSCHProcessingManagerConnectionBusy = @"SCHProcessingManagerCon
 
 static SCHProcessingManager *sharedManager = nil;
 
-+ (SCHProcessingManager *) sharedProcessingManager
++ (SCHProcessingManager *)sharedProcessingManager
 {
 	if (sharedManager == nil) {
 		sharedManager = [[SCHProcessingManager alloc] init];
@@ -152,7 +152,7 @@ static SCHProcessingManager *sharedManager = nil;
 #pragma mark -
 #pragma mark Background Processing Methods
 
-- (void) enterBackground
+- (void)enterBackground
 {
     UIDevice* device = [UIDevice currentDevice];
     BOOL backgroundSupported = [device respondsToSelector:@selector(isMultitaskingSupported)] && device.multitaskingSupported;
@@ -194,7 +194,7 @@ static SCHProcessingManager *sharedManager = nil;
 	}
 }
 
-- (void) enterForeground
+- (void)enterForeground
 {
 	NSLog(@"Entering foreground - quitting background task.");
 	if(self.backgroundTask != UIBackgroundTaskInvalid) {
@@ -205,7 +205,7 @@ static SCHProcessingManager *sharedManager = nil;
 
 #pragma mark - Books State Check
 
-- (void) checkStateForAllBooks
+- (void)checkStateForAllBooks
 {
     NSAssert([NSThread isMainThread], @"checkStateForAllBooks must run on main thread");
     
@@ -229,7 +229,7 @@ static SCHProcessingManager *sharedManager = nil;
     [self checkIfProcessing];
 }
 
-- (BOOL) identifierNeedsProcessing: (SCHBookIdentifier *) identifier
+- (BOOL)identifierNeedsProcessing:(SCHBookIdentifier *)identifier
 {
     NSAssert([NSThread isMainThread], @"ISBNNeedsProcessing must run on main thread");
 
@@ -251,14 +251,14 @@ static SCHProcessingManager *sharedManager = nil;
 #pragma mark -
 #pragma mark Processing Book Tracking
 
-- (BOOL) identifierIsProcessing: (SCHBookIdentifier *) identifier
+- (BOOL)identifierIsProcessing:(SCHBookIdentifier *)identifier
 {
     @synchronized(self.currentlyProcessingIdentifiers) {
         return [self.currentlyProcessingIdentifiers containsObject:identifier];
     }
 }
 
-- (void) setProcessing: (BOOL) processing forIdentifier:(SCHBookIdentifier *)identifier
+- (void)setProcessing:(BOOL)processing forIdentifier:(SCHBookIdentifier *)identifier
 {
     @synchronized(self.currentlyProcessingIdentifiers) {
         if (processing) {
@@ -321,9 +321,8 @@ static SCHProcessingManager *sharedManager = nil;
 #pragma mark -
 #pragma mark Processing Methods
 
-- (void) processIdentifier:(SCHBookIdentifier *)identifier
+- (void)processIdentifier:(SCHBookIdentifier *)identifier
 {
-    
 	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:identifier inManagedObjectContext:self.managedObjectContext];
 	
 	NSLog(@"Processing state of %@ is %@", identifier, [book processingStateAsString]);
@@ -533,7 +532,7 @@ static SCHProcessingManager *sharedManager = nil;
 	
 }
 
-- (void) redispatchIdentifier:(SCHBookIdentifier *)identifier
+- (void)redispatchIdentifier:(SCHBookIdentifier *)identifier
 {    
     dispatch_block_t redispatchBlock = ^{
     
@@ -559,7 +558,7 @@ static SCHProcessingManager *sharedManager = nil;
                 // if space saver mode is off, bump the book to the download state and start download
             case SCHBookProcessingStateDownloadPaused:
             case SCHBookProcessingStateReadyForBookFileDownload:
-                if (!spaceSaverMode || book.ForceProcess) {
+                if (!spaceSaverMode || [book.ForceProcess boolValue] == YES) {
                     [book setProcessingState:SCHBookProcessingStateDownloadStarted];
                     [self processIdentifier:identifier];
                 }
@@ -583,7 +582,7 @@ static SCHProcessingManager *sharedManager = nil;
     
 }	
 
-- (void) checkIfProcessing
+- (void)checkIfProcessing
 {
     NSAssert([NSThread isMainThread], @"checkIfProcessing must be called on main thread");
     
@@ -629,7 +628,7 @@ static SCHProcessingManager *sharedManager = nil;
 	}
 }
 
-- (void) sendNotification: (NSString *) name
+- (void)sendNotification:(NSString *)name
 {
 	[[NSNotificationCenter defaultCenter] postNotificationName:name object:nil];
 }	
@@ -637,7 +636,7 @@ static SCHProcessingManager *sharedManager = nil;
 #pragma mark -
 #pragma mark User Selection Methods
 
-- (void) userSelectedBookWithIdentifier:(SCHBookIdentifier *)identifier
+- (void)userSelectedBookWithIdentifier:(SCHBookIdentifier *)identifier
 {
     NSAssert([NSThread isMainThread], @"userSelectedBookWithISBN: must be called on main thread");
 	
@@ -683,7 +682,9 @@ static SCHProcessingManager *sharedManager = nil;
 #pragma mark Image Thumbnail Requests
 
 // FIXME: could be moved to SCHBookInfo? 
-- (BOOL) requestThumbImageForBookCover:(SCHAsyncBookCoverImageView *)bookCover size:(CGSize)size book:(SCHAppBook *)book
+- (BOOL)requestThumbImageForBookCover:(SCHAsyncBookCoverImageView *)bookCover 
+                                 size:(CGSize)size 
+                                 book:(SCHAppBook *)book
 {	
 //	NSLog(@"Requesting thumb for %@, size %@", bookCover.isbn, NSStringFromCGSize(size));
 	@synchronized(self.thumbImageRequests) {
@@ -735,7 +736,7 @@ static SCHProcessingManager *sharedManager = nil;
 	}
 }
 
-- (void) checkAndDispatchThumbsForIdentifier:(SCHBookIdentifier *)identifier
+- (void)checkAndDispatchThumbsForIdentifier:(SCHBookIdentifier *)identifier
 {
 	// check if we have any outstanding requests for cover image thumbs
 	NSMutableArray *sizes = [self.thumbImageRequests objectForKey:identifier];
