@@ -30,7 +30,6 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
 @property (nonatomic, retain) SCHUpdateBooksViewController *updateBooksViewController;
 
-- (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation;
 - (void)updateUpdateBooksButton;
 - (void)updateDictionaryButton;
 - (void)releaseViewObjects;
@@ -40,13 +39,12 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
 @implementation SCHSettingsViewController
 
-@synthesize topBar;
+@synthesize scrollView;
 @synthesize manageBooksButton;
 @synthesize updateBooksButton;
 @synthesize deregisterDeviceButton;
 @synthesize downloadDictionaryButton;
 @synthesize spaceSaverSwitch;
-@synthesize backgroundView;
 @synthesize updateBooksViewController;
 @synthesize managedObjectContext;
 
@@ -54,13 +52,12 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
 - (void)releaseViewObjects
 {
-    [topBar release], topBar = nil;
+    [scrollView release], scrollView = nil;
     [manageBooksButton release], manageBooksButton = nil;
     [updateBooksButton release], updateBooksButton = nil;
     [deregisterDeviceButton release], deregisterDeviceButton = nil;
     [downloadDictionaryButton release], downloadDictionaryButton = nil;
     [spaceSaverSwitch release], spaceSaverSwitch = nil;
-    [backgroundView release], backgroundView = nil;
     [updateBooksViewController release], updateBooksViewController = nil;
     [super releaseViewObjects];
 }
@@ -86,7 +83,9 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     updateBooks.managedObjectContext = self.managedObjectContext;
     self.updateBooksViewController = updateBooks;
     [updateBooks release];
-    
+
+    [self.scrollView setContentSize:CGSizeMake(320, 416)];
+
     [self setButtonBackground:self.manageBooksButton];
     [self setButtonBackground:self.updateBooksButton];
     [self setButtonBackground:self.downloadDictionaryButton];
@@ -117,6 +116,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
                                                object:nil];
     
 #if LOCALDEBUG
+    [self.manageBooksButton setEnabled:NO];
     [self.deregisterDeviceButton setTitle:@"Reset Content and Settings" forState:UIControlStateNormal];
 #endif
 }
@@ -130,7 +130,6 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 - (void)viewWillAppear:(BOOL)animated 
 {
     [super viewWillAppear:animated];
-    [self setupAssetsForOrientation:self.interfaceOrientation];
     
     NSNumber *spaceSaver = [[NSUserDefaults standardUserDefaults] objectForKey:@"kSCHSpaceSaverMode"];
     self.spaceSaverSwitch.selected = [spaceSaver boolValue];
@@ -159,38 +158,6 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
         [self.downloadDictionaryButton setTitle:NSLocalizedString(@"Download Dictionary", @"download dictionary button title")
                                        forState:UIControlStateNormal];
     }
-}
-
-#pragma mark - Orientation methods
-
-- (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation
-{
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        [self.topBar setBackgroundImage:[UIImage imageNamed:@"settings-ipad-top-toolbar.png"]];
-        [self.backgroundView setImage:[UIImage imageNamed:@"plain-background-portrait.png"]];   
-        [self.navigationController.view.layer setBorderColor:[UIColor SCHRed3Color].CGColor];
-        [self.navigationController.view.layer setBorderWidth:2.0f];
-    } else {
-        if (UIInterfaceOrientationIsLandscape(orientation)) {
-            [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:
-             [UIImage imageNamed:@"admin-iphone-landscape-top-toolbar.png"]];
-            [self.backgroundView setImage:[UIImage imageNamed:@"plain-background-landscape.png"]];
-        } else {
-            [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:
-             [UIImage imageNamed:@"admin-iphone-portrait-top-toolbar.png"]];
-            [self.backgroundView setImage:[UIImage imageNamed:@"plain-background-portrait.png"]];   
-        }
-    }
-}
-
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
-{
-    [self setupAssetsForOrientation:toInterfaceOrientation];
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation 
-{
-    return(YES);
 }
 
 #pragma mark - Dismissal

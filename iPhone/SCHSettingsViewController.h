@@ -17,8 +17,7 @@
 @interface SCHSettingsViewController : SCHBaseSetupViewController <UIAlertViewDelegate, SCHSetupDelegate>  
 {}
 
-@property (nonatomic, retain) IBOutlet SCHCustomToolbar *topBar;
-@property (nonatomic, retain) IBOutlet UIImageView *backgroundView;
+@property (nonatomic, retain) IBOutlet UIScrollView *scrollView; // iPhone only
 @property (nonatomic, retain) IBOutlet UIButton *manageBooksButton;
 @property (nonatomic, retain) IBOutlet UIButton *deregisterDeviceButton;
 @property (nonatomic, retain) IBOutlet UIButton *updateBooksButton;
