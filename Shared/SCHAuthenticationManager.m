@@ -51,6 +51,7 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
 - (void)aTokenOnMainThread;
 - (void)authenticateWithUserNameOnMainThread:(NSValue *)parameters;
 - (void)hasUsernameAndPasswordOnMainThread:(NSValue *)returnValue;
+- (void)performDeregisterShutdown:(NSString *)token;
 
 @end
 
@@ -117,6 +118,18 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
     [drmRegistrationSession release], drmRegistrationSession = nil;
     
     [super dealloc];
+}
+
+#pragma mark - Accessor methods
+
+- (SCHDrmRegistrationSession *)drmRegistrationSession
+{
+    if(drmRegistrationSession == nil) {
+        drmRegistrationSession = [[SCHDrmRegistrationSession alloc] init];
+        drmRegistrationSession.delegate = self;   
+    }
+    
+    return(drmRegistrationSession);
 }
 
 #pragma mark - methods
@@ -306,27 +319,16 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
     }
 }
 
+// make sure you have de-registered prior to calling this 
 - (void)clearOnMainThread
 {
     NSString *username = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUsername];	
     
-    /* TODO:  We can't deregister without an authentication token, which we 
-     can't assume is available here; we have to authenticate the device.  But  
-     if we are clearing because we're going into local mode, then we're not 
-     to be in an authenticated state.
-     NSString *deviceKey = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerDeviceKey];	
-     if (deviceKey != nil && 
-     [[deviceKey stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {
-     // Get a token for deregistration.
-     [libreAccessWebService authenticateDevice:deviceKey forUserKey:nil];
-     }
-	[[NSUserDefaults standardUserDefaults] removeObjectForKey:kSCHAuthenticationManagerDeviceKey]; 
-     */
-    
-    
     self.aToken = nil;
-    self.tokenExpires = nil;    
-    
+    self.tokenExpires = nil;        
+
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:kSCHAuthenticationManagerDeviceKey];
+
     if (username != nil && 
         [[username stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {
         [SFHFKeychainUtils deleteItemForUsername:username andServiceName:kSCHAuthenticationManagerServiceName error:nil];
@@ -360,6 +362,19 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
                                                                                            forKey:kSCHAuthenticationManagerNSError]];		
 }
 
+- (void)performDeregisterShutdown:(NSString *)token
+{
+    if (token != nil) {
+        [self.drmRegistrationSession deregisterDevice:token];
+    } else {
+        [self clear];
+        [self clearAppProcessing];
+    }
+    [[NSNotificationCenter defaultCenter] postNotificationName:SCHAuthenticationManagerDRMDeregistrationNotification
+                                                        object:self 
+                                                      userInfo:nil];		        
+}
+
 #pragma mark - BITAPIProxy Delegate methods
 
 - (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result
@@ -368,29 +383,23 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
 		[self.libreAccessWebService tokenExchange:[result objectForKey:kSCHScholasticWebServicePToken] 
                                      forUser:[[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUsername]];
 	} else if([method compare:kSCHLibreAccessWebServiceTokenExchange] == NSOrderedSame) {	
-        if (![[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerDeviceKey]) {
-            self.drmRegistrationSession = [[[SCHDrmRegistrationSession alloc] init] autorelease];
-            drmRegistrationSession.delegate = self;
-            [drmRegistrationSession registerDevice:[result objectForKey:kSCHLibreAccessWebServiceAuthToken]];
+        NSNumber *deviceIsDeregistered = [result objectForKey:kSCHLibreAccessWebServiceDeviceIsDeregistered];        
+        if ([deviceIsDeregistered isKindOfClass:[NSNumber class]] == YES &&
+            [[result objectForKey:kSCHLibreAccessWebServiceDeviceIsDeregistered] boolValue] == YES) {
+            [self performDeregisterShutdown:self.aToken];
+        } else if (![[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerDeviceKey]) {
+            [self.drmRegistrationSession registerDevice:[result objectForKey:kSCHLibreAccessWebServiceAuthToken]];
         }        
 	} else if([method compare:kSCHLibreAccessWebServiceAuthenticateDevice] == NSOrderedSame ||
               [method compare:kSCHLibreAccessWebServiceRenewToken] == NSOrderedSame) {	
         self.aToken = nil;
         self.tokenExpires = nil;        
 
-        NSNumber *deviceIsDeregistered = [result objectForKey:kSCHLibreAccessWebServiceDeviceIsDeregistered];
-        if ([deviceIsDeregistered isKindOfClass:[NSNumber class]] == YES && [deviceIsDeregistered boolValue] == YES) {
-            //[[NSUserDefaults standardUserDefaults] removeObjectForKey:kSCHAuthenticationManagerDeviceKey];
-            // Someone has deregistered the device externally using parent tools, so we must complete 
-            // the process on the client.
-            if ( drmRegistrationSession == nil ) {
-                drmRegistrationSession = [[SCHDrmRegistrationSession alloc] init];
-                drmRegistrationSession.delegate = self;
-                [drmRegistrationSession deregisterDevice:[result objectForKey:kSCHLibreAccessWebServiceAuthToken]];
-            }
-            waitingOnResponse = NO;
-            [self postFailureWithError:[drmRegistrationSession drmError:kSCHDrmRegistrationError 
-                                                                message:@"Cannot process books because device has been deregistered."]];
+        NSNumber *deviceIsDeregistered = [result objectForKey:kSCHLibreAccessWebServiceDeviceIsDeregistered];        
+        if ([method isEqualToString:kSCHLibreAccessWebServiceAuthenticateDevice] == YES &&
+            [deviceIsDeregistered isKindOfClass:[NSNumber class]] == YES &&
+            [[result objectForKey:kSCHLibreAccessWebServiceDeviceIsDeregistered] boolValue] == YES) {
+            [self performDeregisterShutdown:[result objectForKey:kSCHLibreAccessWebServiceAuthToken]];
             return;
         } else {
             self.aToken = [result objectForKey:kSCHLibreAccessWebServiceAuthToken];
@@ -430,6 +439,8 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
     }
     else {
         // Successful deregistration
+        waitingOnResponse = NO;
+        [self clear];
         [self clearAppProcessing];
         [[NSNotificationCenter defaultCenter] postNotificationName:SCHAuthenticationManagerDRMDeregistrationNotification
                                                             object:self 
