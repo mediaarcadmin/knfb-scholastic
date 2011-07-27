@@ -105,7 +105,7 @@
 									<object class="IBUITextField" id="633725175">
 										<reference key="NSNextResponder" ref="627327703"/>
 										<int key="NSvFlags">293</int>
-										<string key="NSFrame">{{46, 142}, {228, 51}}</string>
+										<string key="NSFrame">{{46, 140}, {228, 51}}</string>
 										<reference key="NSSuperview" ref="627327703"/>
 										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="355416621"/>
@@ -305,7 +305,6 @@
 								<string key="NSFrameSize">{320, 7}</string>
 								<reference key="NSSuperview" ref="489633664"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
 								<reference key="IBUIBackgroundColor" ref="764302899"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -359,7 +358,7 @@
 										</object>
 									</object>
 								</object>
-								<string key="NSFrame">{{27, 0}, {260, 44}}</string>
+								<string key="NSFrame">{{30, 0}, {260, 44}}</string>
 								<reference key="NSSuperview" ref="804538622"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="840983109"/>
@@ -406,7 +405,7 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<object class="IBUIBarButtonItem" id="275472151">
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-								<float key="IBUIWidth">5</float>
+								<float key="IBUIWidth">11</float>
 								<reference key="IBUIToolbar" ref="804538622"/>
 								<int key="IBUISystemItemIdentifier">6</int>
 							</object>
@@ -650,12 +649,12 @@
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="930657782"/>
-							<reference ref="633725175"/>
 							<reference ref="355416621"/>
 							<reference ref="618785432"/>
 							<reference ref="253450082"/>
 							<reference ref="935261733"/>
 							<reference ref="295104663"/>
+							<reference ref="633725175"/>
 						</object>
 						<reference key="parent" ref="489633664"/>
 						<string key="objectName">Scroll View</string>
