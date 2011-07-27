@@ -8,7 +8,9 @@
 
 #import "SCHUpdateBooksViewController.h"
 #import "SCHUpdateBooksTableViewCellController.h"
+#import "SCHUpdateBooksTableViewCell.h"
 #import "SCHAppBook.h"
+#import "SCHBookIdentifier.h"
 #import "SCHBookUpdates.h"
 #import "UIColor+Scholastic.h"
 
@@ -36,6 +38,10 @@
 
 - (void)dealloc
 {
+    for (SCHUpdateBooksTableViewCellController *c in self.cellControllers) {
+        [c removeObserver:self forKeyPath:@"bookEnabledForUpdate"];
+    }
+    
     [bookUpdates release], bookUpdates = nil;
     [cellControllers release], cellControllers = nil;
     [self releaseViewObjects];
@@ -49,8 +55,6 @@
     [super viewDidLoad];
     [self setButtonBackground:self.updateBooksButton];
 
-    self.cellControllers = [NSMutableDictionary dictionary];
-    
     self.booksTable.layer.cornerRadius = 10;
     self.booksTable.layer.borderWidth = 1;
     self.booksTable.layer.borderColor = [[UIColor SCHGray2Color] CGColor];
@@ -72,6 +76,17 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+
+    self.cellControllers = [NSMutableDictionary dictionary];
+    for (SCHAppBook *book in [[self.bookUpdates availableBookUpdates] objects]) {
+        SCHBookIdentifier *bookIdentifier = [book bookIdentifier];
+        SCHUpdateBooksTableViewCellController *tvc = [[SCHUpdateBooksTableViewCellController alloc] initWithBookIdentifier:bookIdentifier
+                                                                                                    inManagedObjectContext:self.bookUpdates.managedObjectContext];
+        [tvc addObserver:self forKeyPath:@"bookEnabledForUpdate" options:NSKeyValueObservingOptionNew context:nil];
+        [self.cellControllers setObject:tvc forKey:bookIdentifier];
+        [tvc release];
+    }
+    
     [self.booksTable reloadData];
 }
 
@@ -84,26 +99,22 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [[self.bookUpdates managedObjectIDsForAvailableBookUpdates] numberOfObjects];
+    return [[self.bookUpdates availableBookUpdates] numberOfObjects];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *const CellIdentifier = @"UpdateBooksCell";
 
-    id<NSFetchedResultsSectionInfo> updates = [self.bookUpdates managedObjectIDsForAvailableBookUpdates];
-    NSManagedObjectID *bookObjectID = [[updates objects] objectAtIndex:indexPath.row];
-    SCHUpdateBooksTableViewCellController *tvc = [self.cellControllers objectForKey:bookObjectID];
-    if (!tvc) {
-        tvc = [[[SCHUpdateBooksTableViewCellController alloc] initWithBookObjectID:bookObjectID
-                                                            inManagedObjectContext:self.bookUpdates.managedObjectContext] autorelease];
-        [self.cellControllers setObject:tvc forKey:bookObjectID];
-    }
+    id<NSFetchedResultsSectionInfo> updates = [self.bookUpdates availableBookUpdates];
+    SCHAppBook *book = [[updates objects] objectAtIndex:indexPath.row];
+    SCHBookIdentifier *bookIdentifier = [book bookIdentifier];
+    SCHUpdateBooksTableViewCellController *tvc = [self.cellControllers objectForKey:bookIdentifier];
+    NSAssert(tvc != nil, @"cell controller not found for book %@", bookIdentifier);
     
-    tvc.cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    tvc.cell = (SCHUpdateBooksTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (!tvc.cell) {
         [[NSBundle mainBundle] loadNibNamed:@"SCHUpdateBooksTableViewCell" owner:tvc options:nil];
-        tvc.cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     
     return tvc.cell;
@@ -134,6 +145,19 @@
         [self.navigationController popViewControllerAnimated:YES];
     } else {
         [self.booksTable reloadData];
+    }
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    if ([keyPath isEqualToString:@"bookEnabledForUpdate"]) {
+        NSInteger enabledCount = 0;
+        for (SCHUpdateBooksTableViewCellController *c in [self.cellControllers allValues]) {
+            if (c.bookEnabledForUpdate) {
+                enabledCount++;
+            }
+        }
+        self.updateBooksButton.enabled = (enabledCount > 0);
     }
 }
 

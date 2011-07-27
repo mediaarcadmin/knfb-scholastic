@@ -7,116 +7,92 @@
 //
 
 #import "SCHUpdateBooksTableViewCellController.h"
+#import "SCHUpdateBooksTableViewCell.h"
 #import "SCHCheckbox.h"
-#import "SCHGradientView.h"
 #import "SCHAppBook.h"
-#import "SCHProcessingManager.h"
+#import "SCHBookManager.h"
 #import "SCHBookIdentifier.h"
-
-enum {
-    kBookTitleLabelTag = 1,
-    kBookTitleGradientTag = 2,
-    kEnableForUpdateCheckboxTag = 3,
-    kSpinnerTag = 4,
-};
+#import "SCHProcessingManager.h"
 
 NSString * const kSCHBookUpdatedSuccessfullyNotification = @"book-updated-successfully";
 
 @interface SCHUpdateBooksTableViewCellController ()
 
-@property (nonatomic, retain) NSManagedObjectID *bookObjectID;
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, retain) SCHBookIdentifier *bookIdentifier;
+@property (nonatomic, assign) NSInteger index;
 
 - (SCHAppBook *)book;
-- (void)updateSpinner;
+- (BOOL)spinnerStateForProcessingState:(SCHBookCurrentProcessingState)state;
 
 @end
 
 @implementation SCHUpdateBooksTableViewCellController
 
 @synthesize cell;
-@synthesize bookTitleLabel;
-@synthesize enableForUpdateCheckbox;
-@synthesize spinner;
 @synthesize bookEnabledForUpdate;
-@synthesize bookObjectID;
 @synthesize managedObjectContext;
 @synthesize bookIdentifier;
+@synthesize index;
 
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
     [cell release], cell = nil;
-    [bookTitleLabel release], bookTitleLabel = nil;
-    [enableForUpdateCheckbox release], enableForUpdateCheckbox = nil;
-    [spinner release], spinner = nil;
-    [bookObjectID release], bookObjectID = nil;
     [managedObjectContext release], managedObjectContext = nil;
     [bookIdentifier release], bookIdentifier = nil;
     [super dealloc];
 }
 
-- (id)initWithBookObjectID:(NSManagedObjectID *)objectID inManagedObjectContext:(NSManagedObjectContext *)moc
+- (id)initWithBookIdentifier:(SCHBookIdentifier *)identifier inManagedObjectContext:(NSManagedObjectContext *)moc
 {
     if ((self = [super init])) {
-        bookObjectID = [objectID retain];
         managedObjectContext = [moc retain];
-        bookIdentifier = [[[self book] bookIdentifier] retain];
+        bookIdentifier = [identifier retain];
         bookEnabledForUpdate = YES;
         
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(didUpdateBookState:)
                                                      name:@"SCHBookStateUpdate"
                                                    object:nil];
+        
+        static NSInteger maxIndex = 0;
+        self.index = maxIndex++;
     }
     return self;
 }
 
 - (SCHAppBook *)book
 {
-    NSError *error = nil;
-    SCHAppBook *book = (SCHAppBook *)[self.managedObjectContext existingObjectWithID:self.bookObjectID error:&error];
-    if (!book) {
-        NSLog(@"failed to fetch book with objectID: %@: %@", self.bookObjectID, error);
-    }
-    return book;
+    return [[SCHBookManager sharedBookManager] bookWithIdentifier:self.bookIdentifier inManagedObjectContext:self.managedObjectContext];
 }
 
-- (void)setCell:(UITableViewCell *)newCell
+- (void)setCell:(SCHUpdateBooksTableViewCell *)newCell
 {
-    if (cell != newCell) {
-        [cell release];
-        cell = [newCell retain];
-        self.bookTitleLabel = (UILabel *)[cell viewWithTag:kBookTitleLabelTag];
-        self.enableForUpdateCheckbox = (SCHCheckbox *)[cell viewWithTag:kEnableForUpdateCheckboxTag];
-        self.spinner = (UIActivityIndicatorView *)[cell viewWithTag:kSpinnerTag];
-        
-        SCHGradientView *gradientView = (SCHGradientView *)[cell viewWithTag:kBookTitleGradientTag];
-        CAGradientLayer *gradient = (CAGradientLayer *)[gradientView layer];
-        gradient.colors = [NSArray arrayWithObjects:
-                           (id)[[UIColor colorWithWhite:1 alpha:0] CGColor],
-                           (id)[[UIColor colorWithRed:0.969 green:0.969 blue:0.969 alpha:1.] CGColor],
-                           nil];
-        gradient.locations = [NSArray arrayWithObjects:
-                              [NSNumber numberWithFloat:0.0f],
-                              [NSNumber numberWithFloat:1.0f],
-                              nil];
-        gradient.startPoint = CGPointMake(0.0f, 0.5f);
-        gradient.endPoint = CGPointMake(1.0f, 0.5f);
+    if (!newCell) {
+        [cell release], cell = nil;
+        return;
     }
-    
-    self.bookTitleLabel.text = [self book].Title;
-    self.enableForUpdateCheckbox.selected = self.bookEnabledForUpdate;
-    
-    [self updateSpinner];
-}
 
-- (void)updateSpinner
-{
+    SCHUpdateBooksTableViewCell *oldCell = cell;
+    cell = [newCell retain];
+    [oldCell release];
+            
     SCHAppBook *book = [self book];
-    switch ([book processingState]) {
+    [cell bookTitleLabel].text = book.Title;
+    [cell enabledForUpdateCheckbox].selected = self.bookEnabledForUpdate;
+    [cell enableSpinner:[self spinnerStateForProcessingState:[book processingState]]];
+    
+    cell.onCheckboxUpdate = ^(BOOL enable) {
+        self.bookEnabledForUpdate = enable;
+        NSLog(@"%@ update=%d", self.bookIdentifier, self.bookEnabledForUpdate);
+    };
+}
+
+- (BOOL)spinnerStateForProcessingState:(SCHBookCurrentProcessingState)state
+{
+    switch (state) {
         case SCHBookProcessingStateDownloadStarted:
         case SCHBookProcessingStateReadyForAudioInfoParsing:
         case SCHBookProcessingStateReadyForBookFileDownload:
@@ -125,11 +101,9 @@ NSString * const kSCHBookUpdatedSuccessfullyNotification = @"book-updated-succes
         case SCHBookProcessingStateReadyForRightsParsing:
         case SCHBookProcessingStateReadyForSmartZoomPreParse:
         case SCHBookProcessingStateReadyForTextFlowPreParse:
-            [self.spinner startAnimating];
-            break;
+            return YES;
         default:
-            [self.spinner stopAnimating];
-            break;
+            return NO;
     }
 }
 
@@ -138,9 +112,10 @@ NSString * const kSCHBookUpdatedSuccessfullyNotification = @"book-updated-succes
 - (void)didUpdateBookState:(NSNotification *)note
 {
     if ([[[note userInfo] objectForKey:@"bookIdentifier"] isEqual:self.bookIdentifier]) {
-        [self updateSpinner];
-        
-        if (![[self book] diskVersionOutOfDate]) {
+        SCHAppBook *book = [self book];
+        [self.cell enableSpinner:[self spinnerStateForProcessingState:[book processingState]]];
+
+        if (![book diskVersionOutOfDate]) {
             [[NSNotificationCenter defaultCenter] postNotificationName:kSCHBookUpdatedSuccessfullyNotification object:self];
         }
     }
@@ -148,9 +123,8 @@ NSString * const kSCHBookUpdatedSuccessfullyNotification = @"book-updated-succes
 
 #pragma mark - Actions
 
-- (void)enableForUpdateChanged:(id)sender
+- (void)enableForUpdateChanged:(SCHCheckbox *)sender
 {
-    self.bookEnabledForUpdate = self.enableForUpdateCheckbox.selected;
 }
 
 - (void)startUpdateIfEnabled
@@ -160,7 +134,7 @@ NSString * const kSCHBookUpdatedSuccessfullyNotification = @"book-updated-succes
         [book setForcedProcessing:YES];
         [book setProcessingState:SCHBookProcessingStateReadyForBookFileDownload];
         [[SCHProcessingManager sharedProcessingManager] userSelectedBookWithIdentifier:[book bookIdentifier]];
-        [self.spinner startAnimating];
+        [self.cell enableSpinner:[self spinnerStateForProcessingState:[book processingState]]];
     }
 }
 
