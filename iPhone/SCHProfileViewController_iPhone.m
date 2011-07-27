@@ -195,7 +195,6 @@ static const CGFloat kProfilePhoneTableOffsetLandscape = 20.0f;
                 };
                 
                 [self presentModalViewController:self.profilePasswordController animated:YES];
-                [self.profilePasswordController.profileLabel setText:[profileItem bookshelfName:YES]];
             }
 #endif	
 		}	break;
