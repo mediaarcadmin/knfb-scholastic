@@ -86,7 +86,6 @@ NSString * const kSCHBookUpdatedSuccessfullyNotification = @"book-updated-succes
     
     cell.onCheckboxUpdate = ^(BOOL enable) {
         self.bookEnabledForUpdate = enable;
-        NSLog(@"%@ update=%d", self.bookIdentifier, self.bookEnabledForUpdate);
     };
 }
 
