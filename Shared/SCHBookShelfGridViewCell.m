@@ -8,7 +8,6 @@
 
 #import "SCHBookShelfGridViewCell.h"
 
-#import "SCHThumbnailFactory.h"
 #import "SCHAppBook.h"
 #import "SCHBookManager.h"
 #import "SCHBookCoverView.h"

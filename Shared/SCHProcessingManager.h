@@ -49,9 +49,6 @@ static NSString * const kSCHProcessingManagerConnectionBusy = @"SCHProcessingMan
 - (void)userSelectedBookWithIdentifier:(SCHBookIdentifier *)identifier;
 - (void)userRequestedRetryForBookWithIdentifier:(SCHBookIdentifier *)identifier;
 
-// thumbnail requests
-- (BOOL) requestThumbImageForBookCover:(SCHAsyncBookCoverImageView *)bookCover size:(CGSize)size book:(SCHAppBook *)book;
-
 // methods for processing
 - (BOOL) identifierIsProcessing: (SCHBookIdentifier *) identifier;
 - (void) setProcessing: (BOOL) processing forIdentifier: (SCHBookIdentifier *) identifier;
