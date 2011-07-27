@@ -387,13 +387,12 @@ enum LoginScreens {
     
     [passwordController setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
     [passwordController setModalPresentationStyle:UIModalPresentationFormSheet];
-    [self presentModalViewController:passwordController animated:YES];
 
     passwordController.cancelBlock = ^{
         [self dismissModalViewControllerAnimated:YES];
     };
     
-    passwordController.retainLoopSafeActionBlock = ^(NSString *topFieldString, NSString *bottomFieldString) {
+    passwordController.retainLoopSafeActionBlock = ^BOOL(NSString *topFieldString, NSString *bottomFieldString) {
         if ([profileItem validatePasswordWith:bottomFieldString] == NO) {
             UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") 
                                                                  message:NSLocalizedString(@"Incorrect password", nil)
@@ -402,10 +401,12 @@ enum LoginScreens {
                                                        otherButtonTitles:nil]; 
             [errorAlert show]; 
             [errorAlert release];
+            return NO;
         } else {
             [SCHThemeManager sharedThemeManager].appProfile = profileItem.AppProfile;
             [self pushBookshelvesControllerWithProfileItem:profileItem];            
             [self dismissModalViewControllerAnimated:YES];
+            return YES;
         }	
     };
     
@@ -420,14 +421,25 @@ enum LoginScreens {
 {
     SCHLoginPasswordViewController *passwordController = [[SCHLoginPasswordViewController alloc] initWithNibName:@"SCHSetProfilePasswordView" bundle:nil];
 
-    passwordController.retainLoopSafeActionBlock = ^(NSString *topFieldText, NSString *bottomFieldText) {
+    [passwordController setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
+    [passwordController setModalPresentationStyle:UIModalPresentationFormSheet];
+
+    passwordController.retainLoopSafeActionBlock = ^BOOL(NSString *topFieldText, NSString *bottomFieldText) {
         if ([topFieldText isEqualToString:bottomFieldText]) {
             [profileItem setRawPassword:topFieldText];
             [SCHThemeManager sharedThemeManager].appProfile = profileItem.AppProfile;
             [self pushBookshelvesControllerWithProfileItem:profileItem];
             [self dismissModalViewControllerAnimated:YES];
+            return YES;
         } else {
-            // TODO warn of mismatched passwords
+            UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") 
+                                                                 message:NSLocalizedString(@"The passwords do not match.", nil)
+                                                                delegate:nil 
+                                                       cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+                                                       otherButtonTitles:nil]; 
+            [errorAlert show];
+            [errorAlert release];
+            return NO;
         }
     };
     

@@ -36,7 +36,11 @@ typedef void(^SCHActionBlock)(void);
 // a block to be executed when performing the "Login" or "Go" action
 @property (nonatomic, copy) SCHActionBlock actionBlock;
 
-@property (nonatomic, copy) void (^retainLoopSafeActionBlock)(NSString *topFieldString, NSString *bottomFieldString);
+// A block to be executed when performing the "Login" or "Go" action; either set actionBlock or this property.
+// The difference is that this block passes copies of the entered strings, avoiding causing retain loops by
+// references to the loginViewController instance within the block. The block should also return NO to
+// clear the fields and refocus on the top one, or YES if the login form will be dismissed.
+@property (nonatomic, copy) BOOL (^retainLoopSafeActionBlock)(NSString *topFieldString, NSString *bottomFieldString);
 
 // a block to be executed when performing the "Cancel" action
 @property (nonatomic, copy) SCHActionBlock cancelBlock;

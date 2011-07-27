@@ -155,10 +155,7 @@ static const CGFloat kContentHeightLandscape = 380;
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    if (self.controllerType == kSCHControllerPasswordOnlyView ||
-        self.controllerType == kSCHControllerDoublePasswordView) {
-        [self.bottomField becomeFirstResponder];
-    }
+    [self.topField ?: self.bottomField becomeFirstResponder];
 }
 
 #pragma mark - Orientation
@@ -315,8 +312,12 @@ static const CGFloat kContentHeightLandscape = 380;
     if (self.actionBlock) {
         self.actionBlock();
     } else if (self.retainLoopSafeActionBlock) {
-        self.retainLoopSafeActionBlock(self.topField ? [NSString stringWithString:self.topField.text] : nil,
-                                       self.bottomField ? [NSString stringWithString:self.bottomField.text] : nil);
+        BOOL good = self.retainLoopSafeActionBlock(self.topField ? [NSString stringWithString:self.topField.text] : nil,
+                                                    self.bottomField ? [NSString stringWithString:self.bottomField.text] : nil);
+        if (!good) {
+            [self clearFields];
+            [self.topField ?: self.bottomField becomeFirstResponder];
+        }
     }
 }
 
