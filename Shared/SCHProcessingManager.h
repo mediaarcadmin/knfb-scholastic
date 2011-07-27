@@ -29,9 +29,9 @@ typedef enum {
 	SCHBookProcessingStateReadyForRightsParsing,      //  6
 	SCHBookProcessingStateReadyForAudioInfoParsing,   //  7
 	SCHBookProcessingStateReadyForTextFlowPreParse,   //  8
-    SCHBookProcessingStateReadyForSmartZoomPreParse,  // 10
-	SCHBookProcessingStateReadyForPagination,         // 11
-	SCHBookProcessingStateReadyToRead                 // 12
+    SCHBookProcessingStateReadyForSmartZoomPreParse,  //  9
+	SCHBookProcessingStateReadyForPagination,         // 10
+	SCHBookProcessingStateReadyToRead                 // 11
 } SCHBookCurrentProcessingState;
 
 static NSString * const kSCHProcessingManagerConnectionIdle = @"SCHProcessingManagerConnectionIdle";
