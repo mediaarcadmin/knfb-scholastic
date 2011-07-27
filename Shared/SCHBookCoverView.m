@@ -184,11 +184,9 @@
         
         [self refreshBookCoverView];
     } else {
+        // if we have no identifier, just hide ourselves until we do
         self.hidden = YES;
     }
-    
-
-
 }
 
 - (void)setNeedsDisplay
@@ -308,14 +306,13 @@
     }
 }
 
-// FIXME: need to turn off needsRefresh in deferredRefreshBookCoverView!
-
 - (void)deferredRefreshBookCoverView
 {
     NSLog(@"Actual refresh for %@", self.identifier);
     // if no identifier has been set, then we don't need to refresh the image
     if (!self.identifier) {
         self.showingPlaceholder = YES;
+        self.needsRefresh = NO;
         return;
     }
 
@@ -338,7 +335,7 @@
         self.coverImageView.image = nil;
         self.currentImageName = nil;
         self.showingPlaceholder = YES;
-        
+        self.needsRefresh = NO;
         return;
     }
     
@@ -352,8 +349,7 @@
         if ([threadLocalFileManager fileExistsAtPath:thumbPath]) {
             // load the cached image
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                
-                [thumbPath retain];
+
                 UIImage *thumbImage = [UIImage imageWithContentsOfFile:thumbPath];
                 self.currentImageName = thumbPath;
                 
@@ -367,14 +363,11 @@
                     }
                 });
                 
-                [thumbPath release];
             });
             
         } else {
             // dispatch the thumbnail operation
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                [fullImagePath retain];
-                [thumbPath retain];
+            dispatch_async([SCHProcessingManager sharedProcessingManager].thumbnailAccessQueue, ^{
 
                 // if the identifier changes, don't process the thumbnail
                 if ([self.identifier isEqual:localIdentifier]) {
@@ -390,9 +383,6 @@
                         thumbImage = [self createImageWithSourcePath:fullImagePath destinationPath:thumbPath];
                         self.currentImageName = thumbPath;
                     }
-                    
-                    [fullImagePath release];
-                    [thumbPath release];
                     
                     dispatch_async(dispatch_get_main_queue(), ^{
                         // set the thumbnail
@@ -410,6 +400,8 @@
     }
     
     [localIdentifier release];
+    self.needsRefresh = NO;
+
 }
 
 - (void)resizeElementsForThumbSize: (CGSize) thumbSize
@@ -514,73 +506,68 @@
 
 - (UIImage *)createImageWithSourcePath:(NSString *)sourcePath destinationPath:(NSString *)destinationPath 
 {
-    __block UIImage *resizedImage = nil;
+    UIImage *resizedImage = nil;
     
-    dispatch_sync([SCHProcessingManager sharedProcessingManager].thumbnailAccessQueue, ^{
-
-        // debug: make sure we're not running the image resizing on the main thread
-        NSAssert([NSThread currentThread] != [NSThread mainThread], @"Don't do image interpolation on the main thread!");
-        
-        NSURL *sourceURL = [NSURL fileURLWithPath:sourcePath];
-        
-        CGImageSourceRef src = CGImageSourceCreateWithURL((CFURLRef)sourceURL, NULL);
-        
-        
-        // get the main image properties without loading it into memory
-        CGFloat width = 0.0f, height = 0.0f;
-        CFDictionaryRef imageProperties = CGImageSourceCopyPropertiesAtIndex(src, 0, NULL);
-        if (imageProperties != NULL) {
-            CFNumberRef widthNum  = CFDictionaryGetValue(imageProperties, kCGImagePropertyPixelWidth);
-            if (widthNum != NULL) {
-                CFNumberGetValue(widthNum, kCFNumberFloatType, &width);
-            }
-            
-            CFNumberRef heightNum = CFDictionaryGetValue(imageProperties, kCGImagePropertyPixelHeight);
-            if (heightNum != NULL) {
-                CFNumberGetValue(heightNum, kCFNumberFloatType, &height);
-            }
-            
-            CFRelease(imageProperties);
+    // debug: make sure we're not running the image resizing on the main thread
+    NSAssert([NSThread currentThread] != [NSThread mainThread], @"Don't do image interpolation on the main thread!");
+    
+    NSURL *sourceURL = [NSURL fileURLWithPath:sourcePath];
+    
+    CGImageSourceRef src = CGImageSourceCreateWithURL((CFURLRef)sourceURL, NULL);
+    
+    
+    // get the main image properties without loading it into memory
+    CGFloat width = 0.0f, height = 0.0f;
+    CFDictionaryRef imageProperties = CGImageSourceCopyPropertiesAtIndex(src, 0, NULL);
+    if (imageProperties != NULL) {
+        CFNumberRef widthNum  = CFDictionaryGetValue(imageProperties, kCGImagePropertyPixelWidth);
+        if (widthNum != NULL) {
+            CFNumberGetValue(widthNum, kCFNumberFloatType, &width);
         }
         
-        CGSize frameSizeWithInsets = CGSizeMake(self.frame.size.width - (self.leftRightInset * 2), 
-                                                self.frame.size.height - self.topInset);
-        
-        CGFloat scale = 1.0f;
-        
-        if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)]) {
-            scale = [[UIScreen mainScreen] scale];
-            frameSizeWithInsets = CGSizeApplyAffineTransform(frameSizeWithInsets, CGAffineTransformMakeScale(scale, scale));
+        CFNumberRef heightNum = CFDictionaryGetValue(imageProperties, kCGImagePropertyPixelHeight);
+        if (heightNum != NULL) {
+            CFNumberGetValue(heightNum, kCFNumberFloatType, &height);
         }
         
-        NSInteger maxDimension = frameSizeWithInsets.height;
-        
-        if (width > height) {
-            maxDimension = frameSizeWithInsets.width;
-        }
-        
-        
-        NSDictionary* d = [NSDictionary dictionaryWithObjectsAndKeys:
-                           (id)kCFBooleanFalse, kCGImageSourceShouldAllowFloat,
-                           (id)kCFBooleanTrue, kCGImageSourceCreateThumbnailWithTransform,
-                           (id)kCFBooleanTrue, kCGImageSourceCreateThumbnailFromImageAlways,
-                           [NSNumber numberWithInt:maxDimension], kCGImageSourceThumbnailMaxPixelSize,
-                           nil];
-        
-        CGImageRef thumbnailRef = CGImageSourceCreateThumbnailAtIndex(src, 0, (CFDictionaryRef) d);
-        
-        resizedImage = [[UIImage alloc] initWithCGImage:thumbnailRef scale:scale orientation:UIImageOrientationUp];
-        
-        CGImageRelease(thumbnailRef);
-        CFRelease(src);
-        
-        if (resizedImage) {
-            NSData *pngData = UIImagePNGRepresentation(resizedImage);
-            [pngData writeToFile:destinationPath atomically:YES];
-//        NSLog(@"Success? %@", success?@"Yes":@"No");
-        }
-        
-    });
+        CFRelease(imageProperties);
+    }
+    
+    CGSize frameSizeWithInsets = CGSizeMake(self.frame.size.width - (self.leftRightInset * 2), 
+                                            self.frame.size.height - self.topInset);
+    
+    CGFloat scale = 1.0f;
+    
+    if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)]) {
+        scale = [[UIScreen mainScreen] scale];
+        frameSizeWithInsets = CGSizeApplyAffineTransform(frameSizeWithInsets, CGAffineTransformMakeScale(scale, scale));
+    }
+    
+    NSInteger maxDimension = frameSizeWithInsets.height;
+    
+    if (width > height) {
+        maxDimension = frameSizeWithInsets.width;
+    }
+    
+    
+    NSDictionary* d = [NSDictionary dictionaryWithObjectsAndKeys:
+                       (id)kCFBooleanFalse, kCGImageSourceShouldAllowFloat,
+                       (id)kCFBooleanTrue, kCGImageSourceCreateThumbnailWithTransform,
+                       (id)kCFBooleanTrue, kCGImageSourceCreateThumbnailFromImageAlways,
+                       [NSNumber numberWithInt:maxDimension], kCGImageSourceThumbnailMaxPixelSize,
+                       nil];
+    
+    CGImageRef thumbnailRef = CGImageSourceCreateThumbnailAtIndex(src, 0, (CFDictionaryRef) d);
+    
+    resizedImage = [[UIImage alloc] initWithCGImage:thumbnailRef scale:scale orientation:UIImageOrientationUp];
+    
+    CGImageRelease(thumbnailRef);
+    CFRelease(src);
+    
+    if (resizedImage) {
+        NSData *pngData = UIImagePNGRepresentation(resizedImage);
+        [pngData writeToFile:destinationPath atomically:YES];
+    }
 
     return resizedImage;
 }
