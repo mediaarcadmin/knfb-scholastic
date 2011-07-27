@@ -26,6 +26,8 @@
 #import "SCHDictionaryDownloadManager.h"
 #import "LambdaAlert.h"
 #import "SCHBookUpdates.h"
+#import "SCHAppProfile.h"
+#import "SCHBookIdentifier.h"
 
 enum LoginScreens {
     kLoginScreenNone,
@@ -50,16 +52,21 @@ enum LoginScreens {
 - (void)checkForBookUpdates;
 - (void)showUpdatesBubble:(BOOL)show;
 - (void)updatesBubbleTapped:(UIGestureRecognizer *)gr;
+- (void)obtainPasswordThenPushBookshelvesControllerWithProfileItem:(SCHProfileItem *)profileItem;
+- (void)queryPasswordBeforePushingBookshelvesControllerWithProfileItem:(SCHProfileItem *)profileItem;
+- (void)pushBookshelvesControllerWithProfileItem:(SCHProfileItem *)profileItem;
 
 @end
 
 @implementation SCHProfileViewController_Shared
 
+@synthesize tableView;
+@synthesize backgroundView;
+@synthesize headerView;
 @synthesize fetchedResultsController=fetchedResultsController_;
 @synthesize managedObjectContext=managedObjectContext_;
 @synthesize modalNavigationController;
 @synthesize loginPasswordController;
-@synthesize profilePasswordController;
 @synthesize settingsViewController;
 @synthesize setupBookshelvesViewController;
 @synthesize downloadDictionaryViewController;
@@ -73,11 +80,13 @@ enum LoginScreens {
 
 - (void)releaseViewObjects
 {
+    [tableView release], tableView = nil;
+    [backgroundView release], backgroundView = nil;
+    [headerView release], headerView = nil;
     [loginPasswordController release], loginPasswordController = nil;
     [setupBookshelvesViewController release], setupBookshelvesViewController = nil;
     [downloadDictionaryViewController release], downloadDictionaryViewController = nil;
     [modalNavigationController release], modalNavigationController = nil;
-    [profilePasswordController release], profilePasswordController = nil;
     [settingsViewController release], settingsViewController = nil;
     [updatesBubble release], updatesBubble = nil;
 }
@@ -120,11 +129,6 @@ enum LoginScreens {
     self.loginPasswordController.controllerType = kSCHControllerLoginView;
     self.loginPasswordController.actionBlock = ^{
         [self performLogin];
-    };
-    
-    self.profilePasswordController.controllerType = kSCHControllerPasswordOnlyView;
-    self.profilePasswordController.cancelBlock = ^{
-        [self endLoginSequence];
     };
     
     self.setupBookshelvesViewController.setupDelegate = self;
@@ -185,6 +189,24 @@ enum LoginScreens {
 }
 
 
+#pragma mark - SCHProfileViewCellDelegate
+
+- (void)profileViewCell:(SCHProfileViewCell *)cell didSelectAnimated:(BOOL)animated
+{
+    NSIndexPath *indexPath = cell.indexPath;
+    if (indexPath.section != 0) {
+        return;
+    }
+
+    SCHProfileItem *profileItem = [[self fetchedResultsController] objectAtIndexPath:indexPath];
+    if ([profileItem.ProfilePasswordRequired boolValue] == NO) {
+        [self pushBookshelvesControllerWithProfileItem:profileItem];            
+    } else if (![profileItem hasPassword]) {
+        [self obtainPasswordThenPushBookshelvesControllerWithProfileItem:profileItem];
+    } else {
+        [self queryPasswordBeforePushingBookshelvesControllerWithProfileItem:profileItem];
+    }
+}
 
 #pragma mark - Fetched results controller
 
@@ -236,6 +258,11 @@ enum LoginScreens {
     return fetchedResultsController_;
 }    
 
+- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller 
+{
+    // In the simplest, most efficient, case, reload the table view.
+    [self.tableView reloadData];
+}
 
 
 #pragma mark - Login sequence
@@ -350,6 +377,107 @@ enum LoginScreens {
         [self presentModalViewController:self.modalNavigationController animated:NO];
         [CATransaction commit];
     }
+}
+
+#pragma mark - Profile password
+
+- (void)queryPasswordBeforePushingBookshelvesControllerWithProfileItem:(SCHProfileItem *)profileItem
+{
+    SCHLoginPasswordViewController *passwordController = [[SCHLoginPasswordViewController alloc] initWithNibName:@"SCHProfilePasswordView" bundle:nil];
+    
+    [passwordController setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
+    [passwordController setModalPresentationStyle:UIModalPresentationFormSheet];
+    [self presentModalViewController:passwordController animated:YES];
+
+    passwordController.cancelBlock = ^{
+        [self dismissModalViewControllerAnimated:YES];
+    };
+    
+    passwordController.retainLoopSafeActionBlock = ^(NSString *topFieldString, NSString *bottomFieldString) {
+        if ([profileItem validatePasswordWith:bottomFieldString] == NO) {
+            UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") 
+                                                                 message:NSLocalizedString(@"Incorrect password", nil)
+                                                                delegate:nil 
+                                                       cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+                                                       otherButtonTitles:nil]; 
+            [errorAlert show]; 
+            [errorAlert release];
+        } else {
+            [SCHThemeManager sharedThemeManager].appProfile = profileItem.AppProfile;
+            [self pushBookshelvesControllerWithProfileItem:profileItem];            
+            [self dismissModalViewControllerAnimated:YES];
+        }	
+    };
+    
+    passwordController.controllerType = kSCHControllerPasswordOnlyView;
+    [passwordController.profileLabel setText:[profileItem bookshelfName:YES]];
+    
+    [self presentModalViewController:passwordController animated:YES];
+    [passwordController release];
+}
+
+- (void)obtainPasswordThenPushBookshelvesControllerWithProfileItem:(SCHProfileItem *)profileItem
+{
+    SCHLoginPasswordViewController *passwordController = [[SCHLoginPasswordViewController alloc] initWithNibName:@"SCHSetProfilePasswordView" bundle:nil];
+
+    passwordController.retainLoopSafeActionBlock = ^(NSString *topFieldText, NSString *bottomFieldText) {
+        if ([topFieldText isEqualToString:bottomFieldText]) {
+            [profileItem setRawPassword:topFieldText];
+            [SCHThemeManager sharedThemeManager].appProfile = profileItem.AppProfile;
+            [self pushBookshelvesControllerWithProfileItem:profileItem];
+            [self dismissModalViewControllerAnimated:YES];
+        } else {
+            // TODO warn of mismatched passwords
+        }
+    };
+    
+    passwordController.controllerType = kSCHControllerDoublePasswordView;
+    [passwordController.profileLabel setText:[profileItem bookshelfName:YES]];
+    [self presentModalViewController:passwordController animated:YES];
+    [passwordController release];
+}
+
+#pragma mark - Push bookshelves controller
+
+- (void)pushBookshelvesControllerWithProfileItem:(SCHProfileItem *)profileItem
+{
+	SCHBookShelfViewController *bookShelfViewController = [self newBookShelfViewController];
+    bookShelfViewController.profileItem = profileItem;
+    bookShelfViewController.managedObjectContext = self.managedObjectContext;
+    
+    SCHBookIdentifier *bookIdentifier = nil;
+    if (profileItem.AppProfile.AutomaticallyLaunchBook != nil) {
+        bookIdentifier = [[SCHBookIdentifier alloc] initWithEncodedString:profileItem.AppProfile.AutomaticallyLaunchBook];
+    }
+    if (bookIdentifier) {
+        NSError *error;
+        SCHReadingViewController *readingViewController = [bookShelfViewController openBook:bookIdentifier error:&error];
+        [bookIdentifier release];
+        
+        if (readingViewController) {
+            NSArray *viewControllers = [self.navigationController.viewControllers arrayByAddingObjectsFromArray:
+                                        [NSArray arrayWithObjects:bookShelfViewController, readingViewController, nil]];
+            [self.navigationController setViewControllers:(NSArray *)viewControllers animated:YES];
+        } else {
+            UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"This Book Could Not Be Opened", @"Could not open book") 
+                                                                 message:[error localizedDescription]
+                                                                delegate:nil 
+                                                       cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+                                                       otherButtonTitles:nil]; 
+            [errorAlert show]; 
+            [errorAlert release];
+        }
+        profileItem.AppProfile.AutomaticallyLaunchBook = nil;        
+    } else {
+        [self.navigationController pushViewController:bookShelfViewController animated:YES];
+    }
+	[bookShelfViewController release], bookShelfViewController = nil;
+}
+
+- (SCHBookShelfViewController *)newBookShelfViewController
+{
+    // must override
+    abort();
 }
 
 #pragma mark - settings

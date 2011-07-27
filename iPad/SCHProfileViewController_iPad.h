@@ -13,10 +13,7 @@
 
 @interface SCHProfileViewController_iPad : SCHProfileViewController_Shared <UITableViewDelegate> {}
 
-@property (nonatomic, retain) IBOutlet UITableView *tableView;
 @property (nonatomic, assign) SCHBookShelfViewController_iPad *bookshelfViewController;
-@property (nonatomic, retain) IBOutlet UIView *headerView;
 @property (nonatomic, retain) IBOutlet UIView *containerView;
-@property (nonatomic, retain) IBOutlet UIImageView *backgroundView;
 
 @end

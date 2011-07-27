@@ -38,18 +38,12 @@ static const CGFloat kProfilePhoneTableOffsetLandscape = 20.0f;
 
 @implementation SCHProfileViewController_iPhone
 
-@synthesize tableView;
-@synthesize backgroundView;
-@synthesize headerView;
 @synthesize settingsButton;
 
 #pragma mark - Object lifecycle
 
 - (void)releaseViewObjects
 {
-    [tableView release], tableView = nil;
-    [backgroundView release], backgroundView = nil;
-    [headerView release], headerView = nil;
     [settingsButton release], settingsButton = nil;
 }
 
@@ -73,7 +67,12 @@ static const CGFloat kProfilePhoneTableOffsetLandscape = 20.0f;
     
     self.navigationItem.title = NSLocalizedString(@"Back", @"");
     UIImageView *logoImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo.png"]];
-    logoImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin;
+    logoImageView.autoresizingMask = (UIViewAutoresizingFlexibleWidth
+                                      | UIViewAutoresizingFlexibleLeftMargin
+                                      | UIViewAutoresizingFlexibleRightMargin
+                                      | UIViewAutoresizingFlexibleHeight
+                                      | UIViewAutoresizingFlexibleBottomMargin
+                                      | UIViewAutoresizingFlexibleTopMargin);
     logoImageView.contentMode = UIViewContentModeScaleAspectFit;
     self.navigationItem.titleView = logoImageView;
     [logoImageView release];
@@ -121,96 +120,11 @@ static const CGFloat kProfilePhoneTableOffsetLandscape = 20.0f;
     [self setupAssetsForOrientation:toInterfaceOrientation];
 }
 
- 
-- (void)pushBookshelvesControllerWithProfileItem:(SCHProfileItem *)profileItem
+#pragma mark - Bookshelves view controllers
+
+- (SCHBookShelfViewController *)newBookShelfViewController
 {
-	SCHBookShelfViewController *bookShelfViewController = nil;
-
-    bookShelfViewController = [[SCHBookShelfViewController alloc] initWithNibName:NSStringFromClass([SCHBookShelfViewController class]) bundle:nil];
-    bookShelfViewController.profileItem = profileItem;
-    bookShelfViewController.managedObjectContext = self.managedObjectContext;
-    
-    if (profileItem.AppProfile.AutomaticallyLaunchBook != nil) {
-        SCHBookIdentifier *bookIdentifier = [[SCHBookIdentifier alloc] initWithEncodedString:profileItem.AppProfile.AutomaticallyLaunchBook];
-        
-        NSError *error;
-        SCHReadingViewController *readingViewController = [bookShelfViewController openBook:bookIdentifier error:&error];
-        [bookIdentifier release];
-        
-        if (readingViewController) {
-            NSArray *viewControllers = [self.navigationController.viewControllers arrayByAddingObjectsFromArray:
-                                        [NSArray arrayWithObjects:bookShelfViewController, readingViewController, nil]];
-            [self.navigationController setViewControllers:(NSArray *)viewControllers animated:YES];
-        } else {
-            UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"This Book Could Not Be Opened", @"Could not open book") 
-                                                                 message:[error localizedDescription]
-                                                                delegate:nil 
-                                                       cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-                                                       otherButtonTitles:nil]; 
-            [errorAlert show]; 
-            [errorAlert release];
-        }
-        
-        profileItem.AppProfile.AutomaticallyLaunchBook = nil;        
-    } else {
-        [self.navigationController pushViewController:bookShelfViewController animated:YES];
-    }
-    [bookShelfViewController release], bookShelfViewController = nil;        
+    return [[SCHBookShelfViewController alloc] initWithNibName:NSStringFromClass([SCHBookShelfViewController class]) bundle:nil];
 }
-
-#pragma mark - SCHProfileViewCellDelegate
-    
-- (void)profileViewCell:(SCHProfileViewCell *)cell didSelectAnimated:(BOOL)animated
-{
-    NSIndexPath *indexPath = cell.indexPath;	
-
-    switch (indexPath.section) {
-		case 0: {
-            
-            SCHProfileItem *profileItem = [[self fetchedResultsController] objectAtIndexPath:indexPath];
-#if LOCALDEBUG
-            // controller to view book shelf with books filtered to profile
-            [SCHThemeManager sharedThemeManager].appProfile = profileItem.AppProfile;                        
-            [self pushBookshelvesControllerWithProfileItem:profileItem];	
-#else
-            if ([profileItem.ProfilePasswordRequired boolValue] == NO) {
-                [self pushBookshelvesControllerWithProfileItem:profileItem];            
-            } else {
-                self.profilePasswordController.actionBlock = ^{
-                    
-                    if ([profileItem validatePasswordWith:[self.profilePasswordController password]] == NO) {
-                        UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") 
-                                                                             message:NSLocalizedString(@"Incorrect password", nil)
-                                                                            delegate:nil 
-                                                                   cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-                                                                   otherButtonTitles:nil]; 
-                        [errorAlert show]; 
-                        [errorAlert release];
-                    } else {
-                        [SCHThemeManager sharedThemeManager].appProfile = profileItem.AppProfile;
-                        [self.profilePasswordController dismissModalViewControllerAnimated:YES];	
-                        [self.profilePasswordController clearFields]; 
-                        [self pushBookshelvesControllerWithProfileItem:profileItem];            
-                    }	
-                };
-                
-                [self presentModalViewController:self.profilePasswordController animated:YES];
-                [self.profilePasswordController.profileLabel setText:[profileItem bookshelfName:YES]];
-            }
-#endif	
-		}	break;
-	}
-}
-
-#pragma mark - Fetched results controller delegate
-
-- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller 
-{
-    // In the simplest, most efficient, case, reload the table view.
-    [self.tableView reloadData];
-}
-
-
-
 
 @end

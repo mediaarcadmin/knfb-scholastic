@@ -11,9 +11,4 @@
 
 @interface SCHProfileViewController_iPhone : SCHProfileViewController_Shared <UITableViewDelegate> {}
 
-@property (nonatomic, retain) IBOutlet UITableView *tableView;
-@property (nonatomic, retain) IBOutlet UIImageView *backgroundView;
-@property (nonatomic, retain) IBOutlet UIView *headerView;
-
-
 @end

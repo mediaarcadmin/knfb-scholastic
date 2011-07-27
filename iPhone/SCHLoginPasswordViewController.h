@@ -36,6 +36,8 @@ typedef void(^SCHActionBlock)(void);
 // a block to be executed when performing the "Login" or "Go" action
 @property (nonatomic, copy) SCHActionBlock actionBlock;
 
+@property (nonatomic, copy) void (^retainLoopSafeActionBlock)(NSString *topFieldString, NSString *bottomFieldString);
+
 // a block to be executed when performing the "Cancel" action
 @property (nonatomic, copy) SCHActionBlock cancelBlock;
 

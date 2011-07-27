@@ -310,7 +310,7 @@
     dateComponents.year = -14;
 	olderProfileItem.Birthday = [gregorian dateByAddingComponents:dateComponents toDate:[NSDate date] options:0];
 	olderProfileItem.FirstName = @"Bookshelf #2";
-	olderProfileItem.ProfilePasswordRequired = [NSNumber numberWithBool:NO];
+	olderProfileItem.ProfilePasswordRequired = [NSNumber numberWithBool:YES];
 	olderProfileItem.Type = [NSNumber numberWithProfileType:kSCHProfileTypesCHILD];
 	olderProfileItem.ScreenName = @"Bookshelf #2";
 	olderProfileItem.AutoAssignContentToProfiles = [NSNumber numberWithBool:YES];

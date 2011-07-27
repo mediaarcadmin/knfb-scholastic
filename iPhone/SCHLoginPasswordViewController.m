@@ -30,6 +30,7 @@ static const CGFloat kContentHeightLandscape = 380;
 @synthesize controllerType;
 @synthesize actionBlock;
 @synthesize cancelBlock;
+@synthesize retainLoopSafeActionBlock;
 
 @synthesize topField;
 @synthesize bottomField;
@@ -62,6 +63,7 @@ static const CGFloat kContentHeightLandscape = 380;
 {
     [actionBlock release], actionBlock = nil;
     [cancelBlock release], cancelBlock = nil;
+    [retainLoopSafeActionBlock release], retainLoopSafeActionBlock = nil;
 	
     [self releaseViewObjects];    
     [super dealloc];
@@ -239,11 +241,9 @@ static const CGFloat kContentHeightLandscape = 380;
                 case kSCHControllerPasswordOnlyView:
                 case kSCHControllerDoublePasswordView:
                     [self.barSpacer setWidth:38];
-                    
                     break;
                 default:
                     [self.barSpacer setWidth:0];
-                    
                     break;
             }
         }
@@ -304,7 +304,7 @@ static const CGFloat kContentHeightLandscape = 380;
 
 - (IBAction)actionButtonAction:(id)sender
 {
-    NSAssert(self.actionBlock != nil, @"Action block must be set!");
+    NSAssert(self.actionBlock != nil || self.retainLoopSafeActionBlock != nil, @"Action block must be set!");
 
     [self.view endEditing:YES];
 
@@ -314,7 +314,10 @@ static const CGFloat kContentHeightLandscape = 380;
     
     if (self.actionBlock) {
         self.actionBlock();
-    }    
+    } else if (self.retainLoopSafeActionBlock) {
+        self.retainLoopSafeActionBlock(self.topField ? [NSString stringWithString:self.topField.text] : nil,
+                                       self.bottomField ? [NSString stringWithString:self.bottomField.text] : nil);
+    }
 }
 
 - (IBAction)cancelButtonAction:(id)sender

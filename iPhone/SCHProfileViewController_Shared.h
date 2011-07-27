@@ -15,14 +15,18 @@
 @class SCHSetupBookshelvesViewController;
 @class SCHDownloadDictionaryViewController;
 @class SCHSettingsViewController;
+@class SCHProfileItem;
+@class SCHBookShelfViewController;
 
 @interface SCHProfileViewController_Shared : UIViewController <NSFetchedResultsControllerDelegate, UITableViewDataSource, UITableViewDelegate, SCHProfileViewCellDelegate, SCHSetupDelegate> {}
 
+@property (nonatomic, retain) IBOutlet UITableView *tableView;
+@property (nonatomic, retain) IBOutlet UIImageView *backgroundView;
+@property (nonatomic, retain) IBOutlet UIView *headerView;
 @property (nonatomic, retain) IBOutlet UINavigationController *modalNavigationController;
 @property (nonatomic, retain) IBOutlet SCHLoginPasswordViewController *loginPasswordController;
 @property (nonatomic, retain) IBOutlet SCHSetupBookshelvesViewController *setupBookshelvesViewController;
 @property (nonatomic, retain) IBOutlet SCHDownloadDictionaryViewController *downloadDictionaryViewController;
-@property (nonatomic, retain) IBOutlet SCHLoginPasswordViewController *profilePasswordController;
 @property (nonatomic, retain) IBOutlet SCHSettingsViewController *settingsViewController;
 @property (nonatomic, retain) IBOutlet UIImageView *updatesBubble;
 
@@ -32,6 +36,8 @@
 // for use by subclass
 - (void)releaseViewObjects;
 - (void)pushSettingsController;
+
+- (SCHBookShelfViewController *)newBookShelfViewController;
 
 
 @end
