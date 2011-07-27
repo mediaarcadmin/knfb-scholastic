@@ -22,7 +22,8 @@
     
     // Get the marketing version from Info.plist.
     NSString* version = (NSString*)[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]; 
-    NSString* versionText = [NSString stringWithFormat:@"<p><center style=font-family:arial;font-size:35px;><i>Beta version %@</i></center><center style=font-family:arial;font-size:30px;>&copy; Scholastic Inc.  All rights reserved.</center></p>",version];  
+    NSString* buildnum = (NSString*)[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
+    NSString* versionText = [NSString stringWithFormat:@"<p><center style=font-family:arial;font-size:35px;><i>Version</i> %@ (%@)</center><center style=font-family:arial;font-size:30px;>&copy; Scholastic Inc.  All rights reserved.</center></p>",version, buildnum];  
     
     NSString* creditsText = [NSString stringWithContentsOfFile:[[[NSBundle mainBundle] resourcePath] stringByAppendingString:@"/credits.html"] encoding:NSUTF8StringEncoding error:NULL];
     NSString *resourcePath = [[[[NSBundle mainBundle] resourcePath]
