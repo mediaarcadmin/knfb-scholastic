@@ -154,6 +154,8 @@
     }
     
     showingPlaceholder = newShowingPlaceholder;
+    self.bookTintView.hidden = newShowingPlaceholder;
+    self.coverImageView.hidden = newShowingPlaceholder;
 }
 
 - (void)setIdentifier:(SCHBookIdentifier *)newIdentifier
@@ -210,12 +212,39 @@
         CGContextRef context = UIGraphicsGetCurrentContext();
         CGContextSaveGState(context);
 
-        CGFloat radius = 8.0f;
-        CGFloat inset = 10.0f;
+        CGFloat radius = 0;
+        CGFloat inset = 0;
+        NSInteger lineWidth = 0;
         
-        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-            radius = 6.0f;
-            inset = 4.0f;
+        switch (self.coverViewMode) {
+            case SCHBookCoverViewModeListView:
+            {
+                if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+                    lineWidth = 4;
+                    radius = 6.0f;
+                    inset = 4.0f;
+                } else {
+                    lineWidth = 4;
+                    radius = 8.0f;
+                    inset = 10.0f;
+                }
+                break;
+            }
+                
+            case SCHBookCoverViewModeGridView:
+            default:
+            {
+                if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+                    lineWidth = 8;
+                    radius = 6.0f;
+                    inset = 4.0f;
+                } else {
+                    lineWidth = 8;
+                    radius = 8.0f;
+                    inset = 10.0f;
+                }
+                break;
+            }
         }
         
         CGRect boundsRect = CGRectInset(rect, inset, inset);
@@ -235,7 +264,7 @@
         CGContextSetFillColorWithColor(context, [UIColor clearColor].CGColor);
 
         UIBezierPath *bezPath = [UIBezierPath bezierPathWithRoundedRect:boundsRect cornerRadius:radius];
-        [bezPath setLineWidth:8];
+        [bezPath setLineWidth:lineWidth];
         [bezPath setLineDash:kDashLengths count:2 phase:0];
         [bezPath stroke];    
 
@@ -325,8 +354,8 @@
                     // check if identifier changed while the thumb was loading
                     if ([self.identifier isEqual:localIdentifier]) {
                         self.coverImageView.image = thumbImage;
-                        [self resizeElementsForThumbSize:thumbImage.size];
                         self.showingPlaceholder = NO;
+                        [self resizeElementsForThumbSize:thumbImage.size];
                     }
                 });
                 
@@ -343,7 +372,7 @@
                 if ([self.identifier isEqual:localIdentifier]) {
                     
                     UIImage *thumbImage = nil;
-                    [NSThread sleepForTimeInterval:30];
+                    [NSThread sleepForTimeInterval:5];
                     
                     // check if the thumb has been created while queued
                     if ([threadLocalFileManager fileExistsAtPath:thumbPath]) {
@@ -363,8 +392,8 @@
                         // first check if the identifier has changed; if so, don't set the processed thumbnail
                         if ([self.identifier isEqual:localIdentifier]) {
                             self.coverImageView.image = thumbImage;
-                            [self resizeElementsForThumbSize:thumbImage.size];
                             self.showingPlaceholder = NO;
+                            [self resizeElementsForThumbSize:thumbImage.size];
                         }
                     });
                 }
