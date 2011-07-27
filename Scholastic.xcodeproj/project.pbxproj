@@ -3480,7 +3480,6 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
-				C9B7EABD13DEDBAB00BD5CB7 /* MessageUI.framework */,
 				C9261FBA1396FD90009FF459 /* Default-Landscape~ipad.png */,
 				C9261FB71396FD85009FF459 /* Default-Portrait~ipad.png */,
 				2860E386111B897F00E27156 /* iPhone */,
@@ -3524,6 +3523,7 @@
 				28A08D2013953393006FD008 /* libexpat.a */,
 				F8509EB712F0625100197EB5 /* libstdc++.6.dylib */,
 				C9F1A579133B83D100FD984C /* libxml2.dylib */,
+				C9B7EABD13DEDBAB00BD5CB7 /* MessageUI.framework */,
 				C95ECB44133A76C400D88768 /* Accelerate.framework */,
 				C95ECB4C133A77A500D88768 /* AudioToolbox.framework */,
 				526A8A501385143000101A96 /* AVFoundation.framework */,
