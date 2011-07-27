@@ -37,7 +37,6 @@
         NSFetchRequest *fetch = [[NSFetchRequest alloc] init];
         [fetch setEntity:[NSEntityDescription entityForName:@"SCHAppBook" inManagedObjectContext:self.managedObjectContext]];
         [fetch setSortDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"ContentMetadataItem.Title" ascending:YES]]];
-        [fetch setResultType:NSManagedObjectIDResultType];
         
         NSPredicate *statePred = [NSPredicate predicateWithFormat:@"State = %d", SCHBookProcessingStateReadyToRead];
 #ifdef LOCALDEBUG
@@ -70,10 +69,10 @@
 
 - (BOOL)areBookUpdatesAvailable
 {
-    return [[self managedObjectIDsForAvailableBookUpdates] numberOfObjects] > 0;
+    return [[self availableBookUpdates] numberOfObjects] > 0;
 }
 
-- (id<NSFetchedResultsSectionInfo>)managedObjectIDsForAvailableBookUpdates
+- (id<NSFetchedResultsSectionInfo>)availableBookUpdates
 {
     if (self.refreshNeeded) {
         [self refresh];

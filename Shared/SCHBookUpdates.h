@@ -19,7 +19,7 @@
 // YES if at least one book update is available
 - (BOOL)areBookUpdatesAvailable;
 
-// the set of NSManagedObjectIDs for the SCHAppBooks that can be updated
-- (id<NSFetchedResultsSectionInfo>)managedObjectIDsForAvailableBookUpdates;
+// the set of SCHAppBooks that can be updated
+- (id<NSFetchedResultsSectionInfo>)availableBookUpdates;
 
 @end

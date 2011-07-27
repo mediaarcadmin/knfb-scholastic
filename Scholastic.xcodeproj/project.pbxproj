@@ -96,6 +96,8 @@
 		286E21B213AC93CB00CB4232 /* DummyAVAudioPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 286E21B113AC93CB00CB4232 /* DummyAVAudioPlayer.m */; };
 		286E21B313AC954900CB4232 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 526A8A501385143000101A96 /* AVFoundation.framework */; };
 		286E21B413AD060E00CB4232 /* sfx_scratch.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F86DEC1513A21F2600053999 /* sfx_scratch.mp3 */; };
+		2873B04813E024BF008C9F0D /* SCHUpdateBooksTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2873B04713E024BF008C9F0D /* SCHUpdateBooksTableViewCell.m */; };
+		2873B04913E024BF008C9F0D /* SCHUpdateBooksTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2873B04713E024BF008C9F0D /* SCHUpdateBooksTableViewCell.m */; };
 		287ADE9F13BB7A1C00D03247 /* SCHCoreDataOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 287ADE9E13BB7A1B00D03247 /* SCHCoreDataOperation.m */; };
 		287ADEA013BB7A1C00D03247 /* SCHCoreDataOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 287ADE9E13BB7A1B00D03247 /* SCHCoreDataOperation.m */; };
 		288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
@@ -1684,6 +1686,8 @@
 		286E21B013AC93CB00CB4232 /* DummyAVAudioPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DummyAVAudioPlayer.h; sourceTree = "<group>"; };
 		286E21B113AC93CB00CB4232 /* DummyAVAudioPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DummyAVAudioPlayer.m; sourceTree = "<group>"; };
 		2870939E111907710040F596 /* Scholastic.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = Scholastic.xcdatamodel; sourceTree = "<group>"; };
+		2873B04613E024BF008C9F0D /* SCHUpdateBooksTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHUpdateBooksTableViewCell.h; path = Shared/SCHUpdateBooksTableViewCell.h; sourceTree = "<group>"; };
+		2873B04713E024BF008C9F0D /* SCHUpdateBooksTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHUpdateBooksTableViewCell.m; path = Shared/SCHUpdateBooksTableViewCell.m; sourceTree = "<group>"; };
 		287ADE9D13BB7A1B00D03247 /* SCHCoreDataOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHCoreDataOperation.h; path = Shared/SCHCoreDataOperation.h; sourceTree = "<group>"; };
 		287ADE9E13BB7A1B00D03247 /* SCHCoreDataOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHCoreDataOperation.m; path = Shared/SCHCoreDataOperation.m; sourceTree = "<group>"; };
 		288765FC0DF74451002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -3010,6 +3014,8 @@
 				28986DE913DD701A0011B148 /* SCHUpdateBooksTableViewCellController.h */,
 				28986DEA13DD701A0011B148 /* SCHUpdateBooksTableViewCellController.m */,
 				28986DE313DD6DF80011B148 /* SCHUpdateBooksTableViewCell.xib */,
+				2873B04613E024BF008C9F0D /* SCHUpdateBooksTableViewCell.h */,
+				2873B04713E024BF008C9F0D /* SCHUpdateBooksTableViewCell.m */,
 			);
 			name = "Update Books";
 			sourceTree = "<group>";
@@ -6351,6 +6357,7 @@
 				52162DA913DD88C700D257C5 /* SCHUserDefaults.m in Sources */,
 				281B74B013DEED4900BA157C /* SCHBookUpdates.m in Sources */,
 				526EA62E13DED0E400B080EF /* SCHPageNumberProcessor.m in Sources */,
+				2873B04813E024BF008C9F0D /* SCHUpdateBooksTableViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6658,6 +6665,7 @@
 				52162DAA13DD88C700D257C5 /* SCHUserDefaults.m in Sources */,
 				281B74B113DEED4900BA157C /* SCHBookUpdates.m in Sources */,
 				526EA62F13DED0E400B080EF /* SCHPageNumberProcessor.m in Sources */,
+				2873B04913E024BF008C9F0D /* SCHUpdateBooksTableViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

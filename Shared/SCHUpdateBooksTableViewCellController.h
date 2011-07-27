@@ -10,19 +10,17 @@
 
 @class SCHGradientView;
 @class SCHCheckbox;
-@class SCHAppBook;
+@class SCHBookIdentifier;
+@class SCHUpdateBooksTableViewCell;
 
 extern NSString * const kSCHBookUpdatedSuccessfullyNotification;
 
 @interface SCHUpdateBooksTableViewCellController : NSObject {}
 
-@property (nonatomic, retain) IBOutlet UITableViewCell *cell;
-@property (nonatomic, retain) IBOutlet UILabel *bookTitleLabel;
-@property (nonatomic, retain) IBOutlet SCHCheckbox *enableForUpdateCheckbox;
-@property (nonatomic, retain) IBOutlet UIActivityIndicatorView *spinner;
+@property (nonatomic, retain) IBOutlet SCHUpdateBooksTableViewCell *cell;
 @property (nonatomic, assign) BOOL bookEnabledForUpdate;
 
-- (id)initWithBookObjectID:(NSManagedObjectID *)objectID inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
+- (id)initWithBookIdentifier:(SCHBookIdentifier *)bookIdentifier inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
 
 - (IBAction)enableForUpdateChanged:(id)sender;
 - (void)startUpdateIfEnabled;
