@@ -21,6 +21,7 @@
 @synthesize topToolbar;
 @synthesize containerView;
 @synthesize backgroundView;
+@synthesize barSpacer;
 
 - (void)dealloc
 {
@@ -32,6 +33,7 @@
     [topToolbar release], topToolbar = nil;
     [containerView release], containerView = nil;
     [backgroundView release], backgroundView = nil;
+    [barSpacer release], barSpacer = nil;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -64,10 +66,12 @@
             [self.backgroundView setImage:[UIImage imageNamed:@"plain-background-landscape.png"]];
             [self.topToolbar setBackgroundImage:[UIImage imageNamed:@"admin-iphone-landscape-top-toolbar.png"]];
             barFrame.size.height = 32;
+            self.barSpacer.width = 38;
         } else {
             [self.backgroundView setImage:[UIImage imageNamed:@"plain-background-portrait.png"]];   
             [self.topToolbar setBackgroundImage:[UIImage imageNamed:@"admin-iphone-portrait-top-toolbar.png"]];
             barFrame.size.height = 44;
+            self.barSpacer.width = 0;
         }
 
         CGRect containerFrame = self.containerView.frame;

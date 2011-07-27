@@ -2,9 +2,9 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="7.10">
 	<data>
 		<int key="IBDocument.SystemTarget">1056</int>
-		<string key="IBDocument.SystemVersion">10K549</string>
+		<string key="IBDocument.SystemVersion">10J869</string>
 		<string key="IBDocument.InterfaceBuilderVersion">1306</string>
-		<string key="IBDocument.AppKitVersion">1038.36</string>
+		<string key="IBDocument.AppKitVersion">1038.35</string>
 		<string key="IBDocument.HIToolboxVersion">461.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -56,13 +56,13 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<object class="IBUIView" id="543086473">
 								<reference key="NSNextResponder" ref="721412764"/>
-								<int key="NSvFlags">272</int>
+								<int key="NSvFlags">274</int>
 								<object class="NSMutableArray" key="NSSubviews">
 									<bool key="EncodedWithXMLCoder">YES</bool>
 									<object class="IBUIImageView" id="320679730">
 										<reference key="NSNextResponder" ref="543086473"/>
-										<int key="NSvFlags">277</int>
-										<string key="NSFrame">{{0, -3}, {250, 38}}</string>
+										<int key="NSvFlags">274</int>
+										<string key="NSFrameSize">{260, 44}</string>
 										<reference key="NSSuperview" ref="543086473"/>
 										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="550636432"/>
@@ -75,7 +75,7 @@
 										</object>
 									</object>
 								</object>
-								<string key="NSFrame">{{67, 6}, {250, 32}}</string>
+								<string key="NSFrame">{{51, 0}, {260, 44}}</string>
 								<reference key="NSSuperview" ref="721412764"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="320679730"/>
@@ -96,7 +96,10 @@
 						<object class="NSMutableArray" key="IBUIItems">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<object class="IBUIBarButtonItem" id="543923478">
-								<string key="IBUITitle">Cancel</string>
+								<object class="NSCustomResource" key="IBUIImage">
+									<string key="NSClassName">NSImage</string>
+									<string key="NSResourceName">button-close.png</string>
+								</object>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<int key="IBUIStyle">1</int>
 								<reference key="IBUIToolbar" ref="721412764"/>
@@ -138,7 +141,7 @@
 								<string key="NSFrameSize">{320, 416}</string>
 								<reference key="NSSuperview" ref="550636432"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="627749786"/>
+								<reference key="NSNextKeyView" ref="655061707"/>
 								<object class="NSColor" key="IBUIBackgroundColor">
 									<int key="NSColorSpace">2</int>
 									<bytes key="NSRGB">MC40MTU2ODYyNzQ1IDAuODA3ODQzMTM3MyAwLjk2MDc4NDMxMzcAA</bytes>
@@ -152,7 +155,7 @@
 								<string key="NSFrameSize">{320, 7}</string>
 								<reference key="NSSuperview" ref="550636432"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
+								<reference key="NSNextKeyView" ref="627749786"/>
 								<object class="NSColor" key="IBUIBackgroundColor">
 									<int key="NSColorSpace">3</int>
 									<bytes key="NSWhite">MSAwAA</bytes>
@@ -329,7 +332,7 @@
 										<string key="NSFrame">{{265, 279}, {20, 20}}</string>
 										<reference key="NSSuperview" ref="627749786"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView" ref="655061707"/>
+										<reference key="NSNextKeyView"/>
 										<bool key="IBUIOpaque">NO</bool>
 										<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 										<int key="IBUIStyle">2</int>
@@ -483,6 +486,14 @@
 						<reference key="destination" ref="721412764"/>
 					</object>
 					<int key="connectionID">52</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">barSpacer</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="712834072"/>
+					</object>
+					<int key="connectionID">53</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -709,7 +720,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">52</int>
+			<int key="maxID">53</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -754,12 +765,14 @@
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>backgroundView</string>
+							<string>barSpacer</string>
 							<string>containerView</string>
 							<string>topToolbar</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>UIImageView</string>
+							<string>UIBarButtonItem</string>
 							<string>UIView</string>
 							<string>SCHCustomToolbar</string>
 						</object>
@@ -769,6 +782,7 @@
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>backgroundView</string>
+							<string>barSpacer</string>
 							<string>containerView</string>
 							<string>topToolbar</string>
 						</object>
@@ -777,6 +791,10 @@
 							<object class="IBToOneOutletInfo">
 								<string key="name">backgroundView</string>
 								<string key="candidateClassName">UIImageView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">barSpacer</string>
+								<string key="candidateClassName">UIBarButtonItem</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">containerView</string>
@@ -917,12 +935,14 @@
 			<object class="NSArray" key="dict.sortedKeys">
 				<bool key="EncodedWithXMLCoder">YES</bool>
 				<string>admin-iphone-top-shadow.png</string>
+				<string>button-close.png</string>
 				<string>button-login-red.png</string>
 				<string>logo.png</string>
 			</object>
 			<object class="NSMutableArray" key="dict.values">
 				<bool key="EncodedWithXMLCoder">YES</bool>
 				<string>{7, 7}</string>
+				<string>{18, 18}</string>
 				<string>{23, 48}</string>
 				<string>{293, 46}</string>
 			</object>

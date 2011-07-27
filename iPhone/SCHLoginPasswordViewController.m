@@ -225,11 +225,9 @@ static const CGFloat kContentHeightLandscape = 380;
             switch (self.controllerType) {
                 case kSCHControllerLoginView:
                     [self.barSpacer setWidth:11];
-                    
                     break;
                 default:
                     [self.barSpacer setWidth:0];
-                    
                     break;
             }
         } else {
@@ -238,8 +236,8 @@ static const CGFloat kContentHeightLandscape = 380;
             switch (self.controllerType) {
                 case kSCHControllerPasswordOnlyView:
                 case kSCHControllerDoublePasswordView:
+                case kSCHControllerParentToolsView:
                     [self.barSpacer setWidth:38];
-                    
                     break;
                 default:
                     [self.barSpacer setWidth:0];

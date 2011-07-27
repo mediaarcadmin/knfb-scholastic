@@ -16,6 +16,7 @@
 @property (nonatomic, retain) IBOutlet SCHCustomToolbar *topToolbar;
 @property (nonatomic, retain) IBOutlet UIView *containerView;
 @property (nonatomic, retain) IBOutlet UIImageView *backgroundView;
+@property (nonatomic, retain) IBOutlet UIBarButtonItem *barSpacer;
 @property (nonatomic, assign) id<SCHSetupDelegate> setupDelegate;
 
 // set the appropriate button background for a setup screen button

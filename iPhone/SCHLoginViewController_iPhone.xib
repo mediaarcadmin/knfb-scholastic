@@ -76,7 +76,7 @@
 									<object class="IBUILabel" id="930657782">
 										<reference key="NSNextResponder" ref="627327703"/>
 										<int key="NSvFlags">290</int>
-										<string key="NSFrame">{{20, 20}, {280, 44}}</string>
+										<string key="NSFrame">{{20, 29}, {280, 53}}</string>
 										<reference key="NSSuperview" ref="627327703"/>
 										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="618785432"/>
@@ -88,7 +88,7 @@
 										<string type="base64-UTF8" key="IBUIText">V2VsY29tZSB0byB0aGUKU2Nob2xhc3RpYyBlUmVhZGVyA</string>
 										<object class="NSFont" key="IBUIFont">
 											<string key="NSName">Arial-BoldMT</string>
-											<double key="NSSize">20</double>
+											<double key="NSSize">24</double>
 											<int key="NSfFlags">16</int>
 										</object>
 										<object class="NSColor" key="IBUITextColor">
@@ -105,7 +105,7 @@
 									<object class="IBUITextField" id="633725175">
 										<reference key="NSNextResponder" ref="627327703"/>
 										<int key="NSvFlags">293</int>
-										<string key="NSFrame">{{46, 140}, {228, 51}}</string>
+										<string key="NSFrame">{{46, 149}, {228, 51}}</string>
 										<reference key="NSSuperview" ref="627327703"/>
 										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="355416621"/>
@@ -143,7 +143,7 @@
 									<object class="IBUITextField" id="355416621">
 										<reference key="NSNextResponder" ref="627327703"/>
 										<int key="NSvFlags">293</int>
-										<string key="NSFrame">{{46, 199}, {228, 51}}</string>
+										<string key="NSFrame">{{46, 208}, {228, 51}}</string>
 										<reference key="NSSuperview" ref="627327703"/>
 										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="935261733"/>
@@ -172,7 +172,7 @@
 									<object class="IBUIButton" id="295104663">
 										<reference key="NSNextResponder" ref="627327703"/>
 										<int key="NSvFlags">293</int>
-										<string key="NSFrame">{{20, 326}, {280, 22}}</string>
+										<string key="NSFrame">{{20, 335}, {280, 22}}</string>
 										<reference key="NSSuperview" ref="627327703"/>
 										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="253450082"/>
@@ -204,7 +204,7 @@
 									<object class="IBUIButton" id="253450082">
 										<reference key="NSNextResponder" ref="627327703"/>
 										<int key="NSvFlags">293</int>
-										<string key="NSFrame">{{20, 351}, {280, 22}}</string>
+										<string key="NSFrame">{{20, 360}, {280, 22}}</string>
 										<reference key="NSSuperview" ref="627327703"/>
 										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="894831626"/>
@@ -229,7 +229,7 @@
 									<object class="IBUIButton" id="935261733">
 										<reference key="NSNextResponder" ref="627327703"/>
 										<int key="NSvFlags">293</int>
-										<string key="NSFrame">{{107, 265}, {106, 48}}</string>
+										<string key="NSFrame">{{107, 274}, {106, 48}}</string>
 										<reference key="NSSuperview" ref="627327703"/>
 										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="295104663"/>
@@ -261,7 +261,7 @@
 									<object class="IBUILabel" id="618785432">
 										<reference key="NSNextResponder" ref="627327703"/>
 										<int key="NSvFlags">290</int>
-										<string key="NSFrame">{{20, 83}, {280, 38}}</string>
+										<string key="NSFrame">{{20, 94}, {280, 38}}</string>
 										<reference key="NSSuperview" ref="627327703"/>
 										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="633725175"/>
@@ -305,6 +305,7 @@
 								<string key="NSFrameSize">{320, 7}</string>
 								<reference key="NSSuperview" ref="489633664"/>
 								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView"/>
 								<reference key="IBUIBackgroundColor" ref="764302899"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -637,9 +638,9 @@
 						<reference key="object" ref="489633664"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="627327703"/>
 							<reference ref="1012224117"/>
 							<reference ref="894831626"/>
+							<reference ref="627327703"/>
 						</object>
 						<reference key="parent" ref="191373211"/>
 					</object>
