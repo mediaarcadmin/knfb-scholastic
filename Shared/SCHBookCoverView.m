@@ -98,7 +98,7 @@
     // add the image view
     self.coverImageView = [[UIImageView alloc] initWithFrame:self.frame];
     self.coverImageView.layer.borderColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.3].CGColor;
-    self.coverImageView.layer.borderWidth = 2;
+    self.coverImageView.layer.borderWidth = 1;
     [self addSubview:self.coverImageView];
 
     // no scaling of the cover view
@@ -178,12 +178,22 @@
                                                  selector:@selector(checkForImageUpdateFromNotification:)
                                                      name:@"SCHBookStateUpdate"
                                                    object:nil];
+        self.hidden = NO;
+        self.coverImageView.image = nil;
+        self.currentImageName = nil;
+        
+        [self refreshBookCoverView];
+    } else {
+        self.hidden = YES;
     }
     
-    self.coverImageView.image = nil;
-    self.currentImageName = nil;
-    
-    [self refreshBookCoverView];
+
+
+}
+
+- (void)setNeedsDisplay
+{
+    [super setNeedsDisplay];
 }
 
 - (void)setTrashed:(BOOL)newTrashed
@@ -201,7 +211,11 @@
 - (void)setLoading:(BOOL)newLoading
 {
     loading = newLoading;
-    [self refreshBookCoverView];
+    if (self.loading) {
+        [self.activitySpinner startAnimating];
+    } else {
+        [self.activitySpinner stopAnimating];
+    }
 }
 
 #pragma mark - Drawing and positioning methods
@@ -326,12 +340,6 @@
         self.showingPlaceholder = YES;
         
         return;
-    }
-    
-    if (self.loading) {
-        [self.activitySpinner startAnimating];
-    } else {
-        [self.activitySpinner stopAnimating];
     }
     
     // check to see if we're already using the right thumb image - if so, skip loading it

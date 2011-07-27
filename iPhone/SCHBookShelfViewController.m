@@ -44,7 +44,6 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
 - (CGFloat)cellBorderSize;
 - (void)reloadData;
 
-// FIXME: this isn't really necessary
 - (IBAction)changeToListView:(UIButton *)sender;
 - (IBAction)changeToGridView:(UIButton *)sender;
 
@@ -550,7 +549,11 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
     }
     
     self.currentlyLoadingIndex = [indexPath row];
-    [self reloadData];
+    SCHBookShelfTableViewCell *cell = (SCHBookShelfTableViewCell *) [aTableView cellForRowAtIndexPath:indexPath];
+    [cell setLoading:YES];
+
+    
+    //[self reloadData];
   
     double delayInSeconds = 0.02;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
@@ -685,7 +688,9 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
     }
     
     self.currentlyLoadingIndex = index;
-    [self reloadData];
+    
+    SCHBookShelfGridViewCell *cell = (SCHBookShelfGridViewCell *) [aGridView cellAtGridIndex:index];
+    [cell setLoading:YES];
     
     double delayInSeconds = 0.02;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
