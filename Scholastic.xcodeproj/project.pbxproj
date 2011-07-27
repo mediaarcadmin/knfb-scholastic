@@ -460,14 +460,14 @@
 		52F15A1F1371A2CA0073941E /* SCHBookAnnotations.m in Sources */ = {isa = PBXBuildFile; fileRef = 52F15A1E1371A2CA0073941E /* SCHBookAnnotations.m */; };
 		52F15A201371A2CA0073941E /* SCHBookAnnotations.m in Sources */ = {isa = PBXBuildFile; fileRef = 52F15A1E1371A2CA0073941E /* SCHBookAnnotations.m */; };
 		A331E123136B26FC0008FCB1 /* SCHDrmSession.m in Sources */ = {isa = PBXBuildFile; fileRef = A33F7310136B050A00BAA101 /* SCHDrmSession.m */; };
-		A33477C413DF11E100768DC6 /* 9780545283502.NightOfTheLivingDummy.xps in Resources */ = {isa = PBXBuildFile; fileRef = A33477BC13DF11E100768DC6 /* 9780545283502.NightOfTheLivingDummy.xps */; };
-		A33477C513DF11E100768DC6 /* 9780545287012_r1.HalloweenParade.xps in Resources */ = {isa = PBXBuildFile; fileRef = A33477BD13DF11E100768DC6 /* 9780545287012_r1.HalloweenParade.xps */; };
-		A33477C613DF11E100768DC6 /* 9780545289726_r1.OlliesNewTricks.xps in Resources */ = {isa = PBXBuildFile; fileRef = A33477BE13DF11E100768DC6 /* 9780545289726_r1.OlliesNewTricks.xps */; };
-		A33477C713DF11E100768DC6 /* 9780545308656.6.StableMatesPatch.xps in Resources */ = {isa = PBXBuildFile; fileRef = A33477BF13DF11E100768DC6 /* 9780545308656.6.StableMatesPatch.xps */; };
-		A33477C813DF11E100768DC6 /* 9780545327619_r1.WhoWillCarveTheTurkey.xps in Resources */ = {isa = PBXBuildFile; fileRef = A33477C013DF11E100768DC6 /* 9780545327619_r1.WhoWillCarveTheTurkey.xps */; };
-		A33477C913DF11E100768DC6 /* 9780545345019_r1.AllieFinkleMovingDay.xps in Resources */ = {isa = PBXBuildFile; fileRef = A33477C113DF11E100768DC6 /* 9780545345019_r1.AllieFinkleMovingDay.xps */; };
-		A33477CA13DF11E100768DC6 /* 9780545366779.2.MazeOfBones.xps in Resources */ = {isa = PBXBuildFile; fileRef = A33477C213DF11E100768DC6 /* 9780545366779.2.MazeOfBones.xps */; };
-		A33477CB13DF11E100768DC6 /* 9780545368896_r1.TheHiddenStairs.xps in Resources */ = {isa = PBXBuildFile; fileRef = A33477C313DF11E100768DC6 /* 9780545368896_r1.TheHiddenStairs.xps */; };
+		A334780213DF206000768DC6 /* 9780545283502.NightOfTheLivingDummy.xps in Resources */ = {isa = PBXBuildFile; fileRef = A33477FA13DF206000768DC6 /* 9780545283502.NightOfTheLivingDummy.xps */; };
+		A334780313DF206000768DC6 /* 9780545287012_r1.HalloweenParade.xps in Resources */ = {isa = PBXBuildFile; fileRef = A33477FB13DF206000768DC6 /* 9780545287012_r1.HalloweenParade.xps */; };
+		A334780413DF206000768DC6 /* 9780545289726_r1.OlliesNewTricks.xps in Resources */ = {isa = PBXBuildFile; fileRef = A33477FC13DF206000768DC6 /* 9780545289726_r1.OlliesNewTricks.xps */; };
+		A334780513DF206000768DC6 /* 9780545308656.6.StableMatesPatch.xps in Resources */ = {isa = PBXBuildFile; fileRef = A33477FD13DF206000768DC6 /* 9780545308656.6.StableMatesPatch.xps */; };
+		A334780613DF206000768DC6 /* 9780545327619_r1.WhoWillCarveTheTurkey.xps in Resources */ = {isa = PBXBuildFile; fileRef = A33477FE13DF206000768DC6 /* 9780545327619_r1.WhoWillCarveTheTurkey.xps */; };
+		A334780713DF206000768DC6 /* 9780545345019_r1.AllieFinkleMovingDay.xps in Resources */ = {isa = PBXBuildFile; fileRef = A33477FF13DF206000768DC6 /* 9780545345019_r1.AllieFinkleMovingDay.xps */; };
+		A334780813DF206000768DC6 /* 9780545366779.2.MazeOfBones.xps in Resources */ = {isa = PBXBuildFile; fileRef = A334780013DF206000768DC6 /* 9780545366779.2.MazeOfBones.xps */; };
+		A334780913DF206000768DC6 /* 9780545368896_r1.TheHiddenStairs.xps in Resources */ = {isa = PBXBuildFile; fileRef = A334780113DF206000768DC6 /* 9780545368896_r1.TheHiddenStairs.xps */; };
 		A33F7311136B050A00BAA101 /* SCHDrmSession.m in Sources */ = {isa = PBXBuildFile; fileRef = A33F7310136B050A00BAA101 /* SCHDrmSession.m */; };
 		A35F45D5138D3A9000055D60 /* DRM in Resources */ = {isa = PBXBuildFile; fileRef = A35F45D4138D3A9000055D60 /* DRM */; };
 		A35F45D6138D3A9000055D60 /* DRM in Resources */ = {isa = PBXBuildFile; fileRef = A35F45D4138D3A9000055D60 /* DRM */; };
@@ -2051,14 +2051,14 @@
 		52F15A1D1371A2CA0073941E /* SCHBookAnnotations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookAnnotations.h; path = Shared/SCHBookAnnotations.h; sourceTree = "<group>"; };
 		52F15A1E1371A2CA0073941E /* SCHBookAnnotations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookAnnotations.m; path = Shared/SCHBookAnnotations.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Scholastic-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Scholastic-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
-		A33477BC13DF11E100768DC6 /* 9780545283502.NightOfTheLivingDummy.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = 9780545283502.NightOfTheLivingDummy.xps; path = "Shared/Debug Books/9780545283502.NightOfTheLivingDummy.xps"; sourceTree = "<group>"; };
-		A33477BD13DF11E100768DC6 /* 9780545287012_r1.HalloweenParade.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = 9780545287012_r1.HalloweenParade.xps; path = "Shared/Debug Books/9780545287012_r1.HalloweenParade.xps"; sourceTree = "<group>"; };
-		A33477BE13DF11E100768DC6 /* 9780545289726_r1.OlliesNewTricks.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = 9780545289726_r1.OlliesNewTricks.xps; path = "Shared/Debug Books/9780545289726_r1.OlliesNewTricks.xps"; sourceTree = "<group>"; };
-		A33477BF13DF11E100768DC6 /* 9780545308656.6.StableMatesPatch.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = 9780545308656.6.StableMatesPatch.xps; path = "Shared/Debug Books/9780545308656.6.StableMatesPatch.xps"; sourceTree = "<group>"; };
-		A33477C013DF11E100768DC6 /* 9780545327619_r1.WhoWillCarveTheTurkey.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = 9780545327619_r1.WhoWillCarveTheTurkey.xps; path = "Shared/Debug Books/9780545327619_r1.WhoWillCarveTheTurkey.xps"; sourceTree = "<group>"; };
-		A33477C113DF11E100768DC6 /* 9780545345019_r1.AllieFinkleMovingDay.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = 9780545345019_r1.AllieFinkleMovingDay.xps; path = "Shared/Debug Books/9780545345019_r1.AllieFinkleMovingDay.xps"; sourceTree = "<group>"; };
-		A33477C213DF11E100768DC6 /* 9780545366779.2.MazeOfBones.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = 9780545366779.2.MazeOfBones.xps; path = "Shared/Debug Books/9780545366779.2.MazeOfBones.xps"; sourceTree = "<group>"; };
-		A33477C313DF11E100768DC6 /* 9780545368896_r1.TheHiddenStairs.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = 9780545368896_r1.TheHiddenStairs.xps; path = "Shared/Debug Books/9780545368896_r1.TheHiddenStairs.xps"; sourceTree = "<group>"; };
+		A33477FA13DF206000768DC6 /* 9780545283502.NightOfTheLivingDummy.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = 9780545283502.NightOfTheLivingDummy.xps; path = "Shared/Debug Books/9780545283502.NightOfTheLivingDummy.xps"; sourceTree = "<group>"; };
+		A33477FB13DF206000768DC6 /* 9780545287012_r1.HalloweenParade.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = 9780545287012_r1.HalloweenParade.xps; path = "Shared/Debug Books/9780545287012_r1.HalloweenParade.xps"; sourceTree = "<group>"; };
+		A33477FC13DF206000768DC6 /* 9780545289726_r1.OlliesNewTricks.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = 9780545289726_r1.OlliesNewTricks.xps; path = "Shared/Debug Books/9780545289726_r1.OlliesNewTricks.xps"; sourceTree = "<group>"; };
+		A33477FD13DF206000768DC6 /* 9780545308656.6.StableMatesPatch.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = 9780545308656.6.StableMatesPatch.xps; path = "Shared/Debug Books/9780545308656.6.StableMatesPatch.xps"; sourceTree = "<group>"; };
+		A33477FE13DF206000768DC6 /* 9780545327619_r1.WhoWillCarveTheTurkey.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = 9780545327619_r1.WhoWillCarveTheTurkey.xps; path = "Shared/Debug Books/9780545327619_r1.WhoWillCarveTheTurkey.xps"; sourceTree = "<group>"; };
+		A33477FF13DF206000768DC6 /* 9780545345019_r1.AllieFinkleMovingDay.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = 9780545345019_r1.AllieFinkleMovingDay.xps; path = "Shared/Debug Books/9780545345019_r1.AllieFinkleMovingDay.xps"; sourceTree = "<group>"; };
+		A334780013DF206000768DC6 /* 9780545366779.2.MazeOfBones.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = 9780545366779.2.MazeOfBones.xps; path = "Shared/Debug Books/9780545366779.2.MazeOfBones.xps"; sourceTree = "<group>"; };
+		A334780113DF206000768DC6 /* 9780545368896_r1.TheHiddenStairs.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = 9780545368896_r1.TheHiddenStairs.xps; path = "Shared/Debug Books/9780545368896_r1.TheHiddenStairs.xps"; sourceTree = "<group>"; };
 		A33F730F136B050A00BAA101 /* SCHDrmSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHDrmSession.h; path = Shared/SCHDrmSession.h; sourceTree = "<group>"; };
 		A33F7310136B050A00BAA101 /* SCHDrmSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHDrmSession.m; path = Shared/SCHDrmSession.m; sourceTree = "<group>"; };
 		A35F45D4138D3A9000055D60 /* DRM */ = {isa = PBXFileReference; lastKnownFileType = folder; name = DRM; path = Resources/DRM; sourceTree = "<group>"; };
@@ -3486,7 +3486,6 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
-				C9B7EABD13DEDBAB00BD5CB7 /* MessageUI.framework */,
 				C9261FBA1396FD90009FF459 /* Default-Landscape~ipad.png */,
 				C9261FB71396FD85009FF459 /* Default-Portrait~ipad.png */,
 				2860E386111B897F00E27156 /* iPhone */,
@@ -3530,6 +3529,7 @@
 				28A08D2013953393006FD008 /* libexpat.a */,
 				F8509EB712F0625100197EB5 /* libstdc++.6.dylib */,
 				C9F1A579133B83D100FD984C /* libxml2.dylib */,
+				C9B7EABD13DEDBAB00BD5CB7 /* MessageUI.framework */,
 				C95ECB44133A76C400D88768 /* Accelerate.framework */,
 				C95ECB4C133A77A500D88768 /* AudioToolbox.framework */,
 				526A8A501385143000101A96 /* AVFoundation.framework */,
@@ -4689,14 +4689,14 @@
 		F8509E7512F0620D00197EB5 /* Debug Books */ = {
 			isa = PBXGroup;
 			children = (
-				A33477BC13DF11E100768DC6 /* 9780545283502.NightOfTheLivingDummy.xps */,
-				A33477BD13DF11E100768DC6 /* 9780545287012_r1.HalloweenParade.xps */,
-				A33477BE13DF11E100768DC6 /* 9780545289726_r1.OlliesNewTricks.xps */,
-				A33477BF13DF11E100768DC6 /* 9780545308656.6.StableMatesPatch.xps */,
-				A33477C013DF11E100768DC6 /* 9780545327619_r1.WhoWillCarveTheTurkey.xps */,
-				A33477C113DF11E100768DC6 /* 9780545345019_r1.AllieFinkleMovingDay.xps */,
-				A33477C213DF11E100768DC6 /* 9780545366779.2.MazeOfBones.xps */,
-				A33477C313DF11E100768DC6 /* 9780545368896_r1.TheHiddenStairs.xps */,
+				A33477FA13DF206000768DC6 /* 9780545283502.NightOfTheLivingDummy.xps */,
+				A33477FB13DF206000768DC6 /* 9780545287012_r1.HalloweenParade.xps */,
+				A33477FC13DF206000768DC6 /* 9780545289726_r1.OlliesNewTricks.xps */,
+				A33477FD13DF206000768DC6 /* 9780545308656.6.StableMatesPatch.xps */,
+				A33477FE13DF206000768DC6 /* 9780545327619_r1.WhoWillCarveTheTurkey.xps */,
+				A33477FF13DF206000768DC6 /* 9780545345019_r1.AllieFinkleMovingDay.xps */,
+				A334780013DF206000768DC6 /* 9780545366779.2.MazeOfBones.xps */,
+				A334780113DF206000768DC6 /* 9780545368896_r1.TheHiddenStairs.xps */,
 				52E4691E12F1D94E00ECC97A /* SCHLocalDebug.h */,
 				52E4691F12F1D94E00ECC97A /* SCHLocalDebug.m */,
 				F83D86B312FC070F00227031 /* SCHLocalDebugXPSReader.h */,
@@ -6069,14 +6069,14 @@
 				C9B7EAC513DEF29300BD5CB7 /* admin-updates-available@2x~iphone.png in Resources */,
 				C9B7EAC713DEF29300BD5CB7 /* admin-updates-available~iphone.png in Resources */,
 				C9B7EAC913DEF29300BD5CB7 /* admin-updates-available~ipad.png in Resources */,
-				A33477C413DF11E100768DC6 /* 9780545283502.NightOfTheLivingDummy.xps in Resources */,
-				A33477C513DF11E100768DC6 /* 9780545287012_r1.HalloweenParade.xps in Resources */,
-				A33477C613DF11E100768DC6 /* 9780545289726_r1.OlliesNewTricks.xps in Resources */,
-				A33477C713DF11E100768DC6 /* 9780545308656.6.StableMatesPatch.xps in Resources */,
-				A33477C813DF11E100768DC6 /* 9780545327619_r1.WhoWillCarveTheTurkey.xps in Resources */,
-				A33477C913DF11E100768DC6 /* 9780545345019_r1.AllieFinkleMovingDay.xps in Resources */,
-				A33477CA13DF11E100768DC6 /* 9780545366779.2.MazeOfBones.xps in Resources */,
-				A33477CB13DF11E100768DC6 /* 9780545368896_r1.TheHiddenStairs.xps in Resources */,
+				A334780213DF206000768DC6 /* 9780545283502.NightOfTheLivingDummy.xps in Resources */,
+				A334780313DF206000768DC6 /* 9780545287012_r1.HalloweenParade.xps in Resources */,
+				A334780413DF206000768DC6 /* 9780545289726_r1.OlliesNewTricks.xps in Resources */,
+				A334780513DF206000768DC6 /* 9780545308656.6.StableMatesPatch.xps in Resources */,
+				A334780613DF206000768DC6 /* 9780545327619_r1.WhoWillCarveTheTurkey.xps in Resources */,
+				A334780713DF206000768DC6 /* 9780545345019_r1.AllieFinkleMovingDay.xps in Resources */,
+				A334780813DF206000768DC6 /* 9780545366779.2.MazeOfBones.xps in Resources */,
+				A334780913DF206000768DC6 /* 9780545368896_r1.TheHiddenStairs.xps in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
