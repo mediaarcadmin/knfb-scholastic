@@ -361,6 +361,9 @@
 		526750D213290EE800063AC8 /* SCHURLManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 52322C33132693F500BB071D /* SCHURLManager.m */; };
 		526A8A5C1385166E00101A96 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 526A8A501385143000101A96 /* AVFoundation.framework */; };
 		526A8A5D1385167A00101A96 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 526A8A501385143000101A96 /* AVFoundation.framework */; };
+		526EA62E13DED0E400B080EF /* SCHPageNumberProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 526EA62D13DED0E400B080EF /* SCHPageNumberProcessor.m */; };
+		526EA62F13DED0E400B080EF /* SCHPageNumberProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 526EA62D13DED0E400B080EF /* SCHPageNumberProcessor.m */; };
+		526EA63013DED0E400B080EF /* SCHPageNumberProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 526EA62D13DED0E400B080EF /* SCHPageNumberProcessor.m */; };
 		527BBAE013A011D4000B407C /* SCHStoryInteractionControllerImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 527BBADE13A011D4000B407C /* SCHStoryInteractionControllerImage.m */; };
 		527BBAE113A011D4000B407C /* SCHStoryInteractionControllerImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 527BBADE13A011D4000B407C /* SCHStoryInteractionControllerImage.m */; };
 		527BBAE213A011D4000B407C /* SCHStoryInteractionImage_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 527BBADF13A011D4000B407C /* SCHStoryInteractionImage_iPhone.xib */; };
@@ -1096,10 +1099,6 @@
 		C9B7E91D13DC620400BD5CB7 /* checkmark-off.png in Resources */ = {isa = PBXBuildFile; fileRef = C9B7E91513DC620400BD5CB7 /* checkmark-off.png */; };
 		C9B7EA0513DDBE1800BD5CB7 /* settings-ipad-top-toolbar.png in Resources */ = {isa = PBXBuildFile; fileRef = C9B7EA0413DDBE1600BD5CB7 /* settings-ipad-top-toolbar.png */; };
 		C9B7EA0613DDBE1800BD5CB7 /* settings-ipad-top-toolbar.png in Resources */ = {isa = PBXBuildFile; fileRef = C9B7EA0413DDBE1600BD5CB7 /* settings-ipad-top-toolbar.png */; };
-		C9B7EA7C13DEB28200BD5CB7 /* BookShelfErrorIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C9B7EA7A13DEB28200BD5CB7 /* BookShelfErrorIcon@2x.png */; };
-		C9B7EA7D13DEB28200BD5CB7 /* BookShelfErrorIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C9B7EA7A13DEB28200BD5CB7 /* BookShelfErrorIcon@2x.png */; };
-		C9B7EA7E13DEB28200BD5CB7 /* BookShelfErrorIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = C9B7EA7B13DEB28200BD5CB7 /* BookShelfErrorIcon.png */; };
-		C9B7EA7F13DEB28200BD5CB7 /* BookShelfErrorIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = C9B7EA7B13DEB28200BD5CB7 /* BookShelfErrorIcon.png */; };
 		C9B7EA8113DEB3FB00BD5CB7 /* login-ipad-top-toolbar.png in Resources */ = {isa = PBXBuildFile; fileRef = C9B7EA8013DEB3FB00BD5CB7 /* login-ipad-top-toolbar.png */; };
 		C9B7EA8213DEB3FB00BD5CB7 /* login-ipad-top-toolbar.png in Resources */ = {isa = PBXBuildFile; fileRef = C9B7EA8013DEB3FB00BD5CB7 /* login-ipad-top-toolbar.png */; };
 		C9B7EAB313DEC99000BD5CB7 /* button-field-red@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C9B7EAB113DEC99000BD5CB7 /* button-field-red@2x.png */; };
@@ -1922,6 +1921,8 @@
 		5266D38E13007E27004E3AC6 /* SCHComponentProtected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHComponentProtected.h; path = Shared/SCHComponentProtected.h; sourceTree = "<group>"; };
 		526A8A501385143000101A96 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		526A8A5E1385182100101A96 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		526EA62C13DED0E400B080EF /* SCHPageNumberProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHPageNumberProcessor.h; path = Shared/SCHPageNumberProcessor.h; sourceTree = SOURCE_ROOT; };
+		526EA62D13DED0E400B080EF /* SCHPageNumberProcessor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHPageNumberProcessor.m; path = Shared/SCHPageNumberProcessor.m; sourceTree = SOURCE_ROOT; };
 		527BBADD13A011D4000B407C /* SCHStoryInteractionControllerImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionControllerImage.h; sourceTree = "<group>"; };
 		527BBADE13A011D4000B407C /* SCHStoryInteractionControllerImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionControllerImage.m; sourceTree = "<group>"; };
 		527BBADF13A011D4000B407C /* SCHStoryInteractionImage_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionImage_iPhone.xib; sourceTree = "<group>"; };
@@ -2576,8 +2577,6 @@
 		C9B7E91413DC620400BD5CB7 /* checkmark-off@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "checkmark-off@2x.png"; path = "Resources/UIAssets/checkmark-off@2x.png"; sourceTree = "<group>"; };
 		C9B7E91513DC620400BD5CB7 /* checkmark-off.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "checkmark-off.png"; path = "Resources/UIAssets/checkmark-off.png"; sourceTree = "<group>"; };
 		C9B7EA0413DDBE1600BD5CB7 /* settings-ipad-top-toolbar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "settings-ipad-top-toolbar.png"; path = "Resources/UIAssets/settings-ipad-top-toolbar.png"; sourceTree = "<group>"; };
-		C9B7EA7A13DEB28200BD5CB7 /* BookShelfErrorIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BookShelfErrorIcon@2x.png"; path = "Resources/BookShelfErrorIcon@2x.png"; sourceTree = "<group>"; };
-		C9B7EA7B13DEB28200BD5CB7 /* BookShelfErrorIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BookShelfErrorIcon.png; path = Resources/BookShelfErrorIcon.png; sourceTree = "<group>"; };
 		C9B7EA8013DEB3FB00BD5CB7 /* login-ipad-top-toolbar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "login-ipad-top-toolbar.png"; path = "Resources/UIAssets/login-ipad-top-toolbar.png"; sourceTree = "<group>"; };
 		C9B7EAB113DEC99000BD5CB7 /* button-field-red@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "button-field-red@2x.png"; path = "Resources/UIAssets/button-field-red@2x.png"; sourceTree = "<group>"; };
 		C9B7EAB213DEC99000BD5CB7 /* button-field-red.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "button-field-red.png"; path = "Resources/UIAssets/button-field-red.png"; sourceTree = "<group>"; };
@@ -3481,7 +3480,6 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
-				C9B7EABD13DEDBAB00BD5CB7 /* MessageUI.framework */,
 				C9261FBA1396FD90009FF459 /* Default-Landscape~ipad.png */,
 				C9261FB71396FD85009FF459 /* Default-Portrait~ipad.png */,
 				2860E386111B897F00E27156 /* iPhone */,
@@ -3525,6 +3523,7 @@
 				28A08D2013953393006FD008 /* libexpat.a */,
 				F8509EB712F0625100197EB5 /* libstdc++.6.dylib */,
 				C9F1A579133B83D100FD984C /* libxml2.dylib */,
+				C9B7EABD13DEDBAB00BD5CB7 /* MessageUI.framework */,
 				C95ECB44133A76C400D88768 /* Accelerate.framework */,
 				C95ECB4C133A77A500D88768 /* AudioToolbox.framework */,
 				526A8A501385143000101A96 /* AVFoundation.framework */,
@@ -4636,8 +4635,6 @@
 		F837018D13BB322F009B280D /* List View Icons */ = {
 			isa = PBXGroup;
 			children = (
-				C9B7EA7A13DEB28200BD5CB7 /* BookShelfErrorIcon@2x.png */,
-				C9B7EA7B13DEB28200BD5CB7 /* BookShelfErrorIcon.png */,
 				F8687ED513BA234100B59987 /* BookShelfNewIcon.png */,
 				F8048EA113C33B740060C6F5 /* BookShelfNewIcon@2x.png */,
 				F8048EA213C33B740060C6F5 /* BookShelfNewIcon~ipad.png */,
@@ -4709,6 +4706,8 @@
 				C9EFB28D134F782A00ADF905 /* SCHXPSProvider.m */,
 				C9EFB291134F795800ADF905 /* SCHXPSURLProtocol.h */,
 				C9EFB292134F795800ADF905 /* SCHXPSURLProtocol.m */,
+				526EA62C13DED0E400B080EF /* SCHPageNumberProcessor.h */,
+				526EA62D13DED0E400B080EF /* SCHPageNumberProcessor.m */,
 			);
 			name = "XPS Provider";
 			path = iPhone;
@@ -5581,8 +5580,6 @@
 				28986DF213DD7DD80011B148 /* SCHUpdateBooksViewController~ipad.xib in Resources */,
 				28986DF513DD9BDE0011B148 /* SCHUpdateBooksViewController~iphone.xib in Resources */,
 				C9B7EA0513DDBE1800BD5CB7 /* settings-ipad-top-toolbar.png in Resources */,
-				C9B7EA7C13DEB28200BD5CB7 /* BookShelfErrorIcon@2x.png in Resources */,
-				C9B7EA7E13DEB28200BD5CB7 /* BookShelfErrorIcon.png in Resources */,
 				C9B7EA8113DEB3FB00BD5CB7 /* login-ipad-top-toolbar.png in Resources */,
 				C9B7EAB313DEC99000BD5CB7 /* button-field-red@2x.png in Resources */,
 				C9B7EAB513DEC99000BD5CB7 /* button-field-red.png in Resources */,
@@ -6058,8 +6055,6 @@
 				28986DF313DD7DD80011B148 /* SCHUpdateBooksViewController~ipad.xib in Resources */,
 				28986DF613DD9BDE0011B148 /* SCHUpdateBooksViewController~iphone.xib in Resources */,
 				C9B7EA0613DDBE1800BD5CB7 /* settings-ipad-top-toolbar.png in Resources */,
-				C9B7EA7D13DEB28200BD5CB7 /* BookShelfErrorIcon@2x.png in Resources */,
-				C9B7EA7F13DEB28200BD5CB7 /* BookShelfErrorIcon.png in Resources */,
 				C9B7EA8213DEB3FB00BD5CB7 /* login-ipad-top-toolbar.png in Resources */,
 				C9B7EAB413DEC99000BD5CB7 /* button-field-red@2x.png in Resources */,
 				C9B7EAB613DEC99000BD5CB7 /* button-field-red.png in Resources */,
@@ -6355,6 +6350,7 @@
 				52162DA513DD763500D257C5 /* BITAPIError.m in Sources */,
 				52162DA913DD88C700D257C5 /* SCHUserDefaults.m in Sources */,
 				281B74B013DEED4900BA157C /* SCHBookUpdates.m in Sources */,
+				526EA62E13DED0E400B080EF /* SCHPageNumberProcessor.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6400,6 +6396,7 @@
 				284EF24613BC4CDF00F9BD5A /* SCHBookIdentifier.m in Sources */,
 				52162DA713DD763500D257C5 /* BITAPIError.m in Sources */,
 				52162DAB13DD88C700D257C5 /* SCHUserDefaults.m in Sources */,
+				526EA63013DED0E400B080EF /* SCHPageNumberProcessor.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6660,6 +6657,7 @@
 				52162DA613DD763500D257C5 /* BITAPIError.m in Sources */,
 				52162DAA13DD88C700D257C5 /* SCHUserDefaults.m in Sources */,
 				281B74B113DEED4900BA157C /* SCHBookUpdates.m in Sources */,
+				526EA62F13DED0E400B080EF /* SCHPageNumberProcessor.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -8,18 +8,24 @@
 
 #import "SCHBookUpdates.h"
 #import "SCHAppBook.h"
+#import "SCHBookIdentifier.h"
+#import "SCHBookManager.h"
 
 @interface SCHBookUpdates ()
 @property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
+@property (nonatomic, assign) BOOL refreshNeeded;
 @end
 
 @implementation SCHBookUpdates
 
 @synthesize managedObjectContext;
 @synthesize fetchedResultsController;
+@synthesize refreshNeeded;
 
 - (void)dealloc
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
     [managedObjectContext release], managedObjectContext = nil;
     [fetchedResultsController release], fetchedResultsController = nil;
     [super dealloc];
@@ -53,6 +59,11 @@
         [frc release];
         
         [self refresh];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(bookStateDidUpdate:)
+                                                     name:@"SCHBookStateUpdate"
+                                                   object:nil];
     }
     return fetchedResultsController;
 }
@@ -64,6 +75,10 @@
 
 - (id<NSFetchedResultsSectionInfo>)managedObjectIDsForAvailableBookUpdates
 {
+    if (self.refreshNeeded) {
+        [self refresh];
+    }
+    
     NSArray *sections = [self.fetchedResultsController sections];
     if ([sections count] == 0) {
         return nil;
@@ -77,6 +92,14 @@
     if (![self.fetchedResultsController performFetch:&error]) {
         NSLog(@"unable to refresh SCHBookUpdates: %@", error);
     }
+    self.refreshNeeded = NO;
+}
+
+#pragma mark - book state updates
+
+- (void)bookStateDidUpdate:(NSNotification *)note
+{
+    self.refreshNeeded = YES;
 }
 
 @end

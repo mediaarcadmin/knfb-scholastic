@@ -345,6 +345,8 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
 	[userInfo setObject:[NSNumber numberWithBool:offlineMode] 
                  forKey:kSCHAuthenticationManagerOfflineMode];
 	
+    NSLog(@"Authentication: %@", (offlineMode == YES ? @" offline" : @"successful!"));
+    
 	[[NSNotificationCenter defaultCenter] postNotificationName:kSCHAuthenticationManagerSuccess 
 														object:self 
 													  userInfo:userInfo];				

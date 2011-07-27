@@ -39,6 +39,7 @@ enum LoginScreens {
 @property (nonatomic, assign) enum LoginScreens loginScreen;
 @property (nonatomic, retain) SCHLoginPasswordViewController *parentPasswordController; // Lazily instantiated
 @property (nonatomic, retain) SCHBookUpdates *bookUpdates;
+@property (nonatomic, assign) BOOL updatesBubbleHiddenUntilNextSync;
 
 - (void)willEnterForeground:(NSNotification *)note;
 - (void)showLoginControllerWithAnimation:(BOOL)animated;
@@ -48,6 +49,7 @@ enum LoginScreens {
 - (void)performLogin;
 - (void)checkForBookUpdates;
 - (void)showUpdatesBubble:(BOOL)show;
+- (void)updatesBubbleTapped:(UIGestureRecognizer *)gr;
 
 @end
 
@@ -65,6 +67,7 @@ enum LoginScreens {
 @synthesize parentPasswordController;
 @synthesize bookUpdates;
 @synthesize updatesBubble;
+@synthesize updatesBubbleHiddenUntilNextSync;
 
 #pragma mark - Object lifecycle
 
@@ -107,12 +110,12 @@ enum LoginScreens {
                                                  name:SCHProfileSyncComponentCompletedNotification
                                                object:nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(bookshelfSyncDidComplete:)
-                                                 name:SCHBookshelfSyncComponentCompletedNotification
-                                               object:nil];
-    
     [self.updatesBubble setAlpha:0];
+    [self.updatesBubble setUserInteractionEnabled:YES];
+    self.updatesBubbleHiddenUntilNextSync = NO;
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(updatesBubbleTapped:)];
+    [self.updatesBubble addGestureRecognizer:tap];
+    [tap release];
 
     self.loginPasswordController.controllerType = kSCHControllerLoginView;
     self.loginPasswordController.actionBlock = ^{
@@ -172,6 +175,16 @@ enum LoginScreens {
     
     return(cell);
 }
+
+#pragma mark - scroll view delegate
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    self.updatesBubbleHiddenUntilNextSync = YES;
+    [self showUpdatesBubble:NO];
+}
+
+
 
 #pragma mark - Fetched results controller
 
@@ -404,13 +417,6 @@ enum LoginScreens {
     }
 }
 
-- (void)bookshelfSyncDidComplete:(NSNotification *)note
-{
-    [self.bookUpdates refresh];
-    [self checkForBookUpdates];
-}
-
-
 - (void)authenticationManager:(NSNotification *)notification
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kSCHAuthenticationManagerSuccess object:nil];
@@ -457,9 +463,23 @@ enum LoginScreens {
 
 - (void)showUpdatesBubble:(BOOL)show
 {
-    [UIView animateWithDuration:0.5 animations:^{
-        self.updatesBubble.alpha = show ? 1.0 : 0.0;
-    }];
+    if (self.updatesBubbleHiddenUntilNextSync) {
+        show = NO;
+    }
+    
+    [UIView animateWithDuration:0.5
+                          delay:0
+                        options:UIViewAnimationOptionAllowUserInteraction
+                     animations:^{
+                         self.updatesBubble.alpha = show ? 1.0 : 0.0;
+                     }
+                     completion:nil];
+}
+
+- (void)updatesBubbleTapped:(UIGestureRecognizer *)gr
+{
+    self.updatesBubbleHiddenUntilNextSync = YES;
+    [self showUpdatesBubble:NO];
 }
 
 @end
