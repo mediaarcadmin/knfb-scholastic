@@ -38,4 +38,4 @@
 "Bookshelf Removed" = "Bookshelf Removed";
 "Book Removed" = "Book Removed";
 "%@ has been removed" = "%@ has been removed";
-"A problem occured. If this problem persists please contact support quoting:\n\n '%@'" = "A problem occured. If this problem persists please contact support quoting:\n\n '%@'";
+"A problem occured. If this problem persists please contact support.\n\n '%@'" = "A problem occured. If this problem persists please contact support.\n\n '%@'";
