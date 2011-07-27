@@ -29,7 +29,7 @@
 #import "SCHContentProfileItem.h"
 
 static NSInteger const kSCHBookShelfViewControllerGridCellHeightPortrait = 138;
-static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
+static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
 
 @interface SCHBookShelfViewController () <UIGestureRecognizerDelegate>
 
