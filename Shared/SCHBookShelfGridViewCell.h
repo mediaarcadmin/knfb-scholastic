@@ -21,11 +21,9 @@
 @property (nonatomic, assign) BOOL trashed;
 @property (nonatomic, assign) BOOL isNewBook;
 
-//@property (nonatomic, retain) SCHAsyncBookCoverImageView *asyncImageView;
 @property (nonatomic, retain) SCHBookCoverView *bookCoverView;
 
 - (void)beginUpdates;
 - (void)endUpdates;
-//- (void)refreshCell;
 
 @end

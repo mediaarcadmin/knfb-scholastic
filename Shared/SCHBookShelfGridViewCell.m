@@ -15,11 +15,6 @@
 
 @interface SCHBookShelfGridViewCell ()
 
-//@property (nonatomic, assign) BOOL coalesceRefreshes;
-//@property (nonatomic, assign) BOOL needsRefresh;
-//
-//- (void)deferredRefreshCell;
-
 @end;
 
 @implementation SCHBookShelfGridViewCell
@@ -28,8 +23,6 @@
 @synthesize identifier;
 @synthesize trashed;
 @synthesize isNewBook;
-//@synthesize coalesceRefreshes;
-//@synthesize needsRefresh;
 
 #pragma mark - Object lifecycle
 
@@ -37,8 +30,8 @@
 {
 	if ((self = [super initWithFrame:frame reuseIdentifier:aReuseIdentifier])) {
         self.bookCoverView = [[SCHBookCoverView alloc] initWithFrame:CGRectZero];
-//        self.bookCoverView.backgroundColor = [UIColor orangeColor];
         self.bookCoverView.frame = CGRectMake(0, 0, self.frame.size.width - 4, self.frame.size.height - 22);
+
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
             self.bookCoverView.topInset = 0;
             self.bookCoverView.leftRightInset = 6;
@@ -46,6 +39,7 @@
             self.bookCoverView.topInset = 0;
             self.bookCoverView.leftRightInset = 0;
         }
+        
         [self.contentView addSubview:self.bookCoverView];
     }
 	
@@ -72,33 +66,13 @@
 
 - (void)beginUpdates
 {
-//    self.coalesceRefreshes = YES;
     [self.bookCoverView beginUpdates];
 }
 
 - (void)endUpdates
 {
-//    self.coalesceRefreshes = NO;
-//    if (self.needsRefresh) {
-//        [self deferredRefreshCell];
-//    }
     [self.bookCoverView endUpdates];
 }
-
-//- (void)refreshCell
-//{
-//    if (self.coalesceRefreshes) {
-//        self.needsRefresh = YES;
-//    } else {
-//        [self deferredRefreshCell];
-//    }
-//}
-//
-//- (void)deferredRefreshCell
-//{
-//    [self.bookCoverView deferredRefreshBookCoverView];
-//    self.needsRefresh = NO;
-//}	
 
 #pragma mark - Accessor methods
 
@@ -109,7 +83,6 @@
     
     [self.bookCoverView setIdentifier:self.identifier];
     [self.bookCoverView refreshBookCoverView];
-//    [self refreshCell];        
 }
 
 - (void)setTrashed:(BOOL)newTrashed

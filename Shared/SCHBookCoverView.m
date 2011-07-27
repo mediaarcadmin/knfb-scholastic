@@ -25,10 +25,10 @@
 @property (nonatomic, retain) UIView *bookTintView;
 @property (nonatomic, retain) UIImageView *newBadge;
 @property (nonatomic, retain) UIImageView *errorBadge;
-@property (nonatomic, retain) UIView *placeholderView;
 
 @property (nonatomic, assign) BOOL coalesceRefreshes;
 @property (nonatomic, assign) BOOL needsRefresh;
+@property (nonatomic, assign) BOOL showingPlaceholder;
 
 @end
 
@@ -46,9 +46,9 @@
 @synthesize errorBadge;
 @synthesize trashed;
 @synthesize isNewBook;
-@synthesize placeholderView;
 @synthesize coalesceRefreshes;
 @synthesize needsRefresh;
+@synthesize showingPlaceholder;
 
 #pragma mark - Initialisation and dealloc
 
@@ -62,7 +62,6 @@
     [bookTintView release], bookTintView = nil;
     [newBadge release], newBadge = nil;
     [errorBadge release], errorBadge = nil;
-    [placeholderView release], placeholderView = nil;
     
     
 	[super dealloc];
@@ -81,17 +80,6 @@
 
 - (void)initialiseView 
 {
-    self.backgroundColor = [UIColor orangeColor];
-    
-    // add the placeholder view
-    self.placeholderView = [[UIView alloc] initWithFrame:self.frame];
-    self.placeholderView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    self.placeholderView.layer.borderColor = [UIColor whiteColor].CGColor;
-    self.placeholderView.layer.borderWidth = 10;
-    self.placeholderView.layer.cornerRadius = 20;
-    self.placeholderView.backgroundColor = [UIColor clearColor];
-    [self addSubview:self.placeholderView];
-    
     // add the image view
     self.coverImageView = [[UIImageView alloc] initWithFrame:self.frame];
     self.coverImageView.layer.borderColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.3].CGColor;
@@ -123,6 +111,9 @@
     [self addSubview:self.errorBadge];
     self.errorBadge.hidden = YES;
     
+    // placeholder
+    self.showingPlaceholder = YES;
+    
 }
 
 #pragma mark - cell reuse and setters
@@ -130,6 +121,15 @@
 - (void)prepareForReuse
 {
     self.identifier = nil;
+}
+
+- (void)setShowingPlaceholder:(BOOL)newShowingPlaceholder
+{
+    if (showingPlaceholder != newShowingPlaceholder) {
+        [self setNeedsDisplay];
+    }
+    
+    showingPlaceholder = newShowingPlaceholder;
 }
 
 - (void)setIdentifier:(SCHBookIdentifier *)newIdentifier
@@ -173,6 +173,41 @@
 
 #pragma mark - Drawing and positioning methods
 
+- (void)drawRect:(CGRect)rect
+{
+    if (self.showingPlaceholder) {
+        CGContextRef context = UIGraphicsGetCurrentContext();
+        CGContextSaveGState(context);
+
+        CGFloat radius = 8.0f;
+        CGFloat inset = 10.0f;
+        
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+            radius = 6.0f;
+            inset = 4.0f;
+        }
+        
+        CGRect boundsRect = CGRectInset(rect, inset, inset);
+
+        CGFloat pathLength = (boundsRect.size.width * 2 + boundsRect.size.height * 2 - radius * 8) + (2 * M_PI * radius);
+        CGFloat dashLength = pathLength / 24;
+        
+        NSLog(@"Rect length: %f Path length: %f Dash length: %f", (boundsRect.size.width * 2) + (boundsRect.size.height * 2),pathLength, dashLength);
+        
+        CGFloat kDashLengths[2] = { dashLength, dashLength };
+
+        CGContextSetStrokeColorWithColor(context, [UIColor colorWithRed:0.8 green:0.8 blue:0.8 alpha:0.4].CGColor);
+        CGContextSetFillColorWithColor(context, [UIColor clearColor].CGColor);
+
+        UIBezierPath *bezPath = [UIBezierPath bezierPathWithRoundedRect:boundsRect cornerRadius:radius];
+        [bezPath setLineWidth:8];
+        [bezPath setLineDash:kDashLengths count:2 phase:0];
+        [bezPath stroke];    
+
+        CGContextRestoreGState(context);
+    }
+}
+
 - (void)beginUpdates
 {
     self.coalesceRefreshes = YES;
@@ -202,6 +237,7 @@
     NSLog(@"Actual refresh for %@", self.identifier);
     // if no identifier has been set, then we don't need to refresh the image
     if (!self.identifier) {
+        self.showingPlaceholder = YES;
         return;
     }
 
@@ -223,14 +259,10 @@
         // book does not have a cover image downloaded 
         self.coverImageView.image = nil;
         self.currentImageName = nil;
-
-        // resize the placeholder view to match the frame
-        self.placeholderView.hidden = NO;
+        self.showingPlaceholder = YES;
         
         return;
     }
-    
-    self.placeholderView.hidden = YES;
     
     // check to see if we're already using the right thumb image - if so, skip loading it
     if (self.currentImageName != nil && [self.currentImageName compare:thumbPath] == NSOrderedSame) {
@@ -253,6 +285,7 @@
                     if ([self.identifier isEqual:localIdentifier]) {
                         self.coverImageView.image = thumbImage;
                         [self resizeElementsForThumbSize:thumbImage.size];
+                        self.showingPlaceholder = NO;
                     }
                 });
                 
@@ -269,7 +302,7 @@
                 if ([self.identifier isEqual:localIdentifier]) {
                     
                     UIImage *thumbImage = nil;
-                    [NSThread sleepForTimeInterval:5];
+//                    [NSThread sleepForTimeInterval:30];
                     
                     // check if the thumb has been created while queued
                     if ([threadLocalFileManager fileExistsAtPath:thumbPath]) {
@@ -290,6 +323,7 @@
                         if ([self.identifier isEqual:localIdentifier]) {
                             self.coverImageView.image = thumbImage;
                             [self resizeElementsForThumbSize:thumbImage.size];
+                            self.showingPlaceholder = NO;
                         }
                     });
                 }
