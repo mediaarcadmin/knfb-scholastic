@@ -596,6 +596,8 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
     [gridCell beginUpdates];
 	[gridCell setIdentifier:[self.books objectAtIndex:index]];
     gridCell.trashed = [self.profileItem bookIsTrashedWithIdentifier:[self.books objectAtIndex:index]];
+    gridCell.isNewBook = [self.profileItem bookIsNewForProfileWithIdentifier:[self.books objectAtIndex:index]];
+
     [gridCell endUpdates];
 
 	return(gridCell);
@@ -787,7 +789,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 
 - (CGFloat)cellBorderSize
 {
-    return 20;
+    return 10;
 }
 
 @end

@@ -19,14 +19,13 @@
 
 @property (nonatomic, retain) SCHBookIdentifier *identifier;
 @property (nonatomic, assign) BOOL trashed;
+@property (nonatomic, assign) BOOL isNewBook;
 
 //@property (nonatomic, retain) SCHAsyncBookCoverImageView *asyncImageView;
 @property (nonatomic, retain) SCHBookCoverView *bookCoverView;
-@property (nonatomic, retain) UIView *thumbTintView;
-@property (nonatomic, retain) UIProgressView *progressView;
 
 - (void)beginUpdates;
 - (void)endUpdates;
-- (void)refreshCell;
+//- (void)refreshCell;
 
 @end

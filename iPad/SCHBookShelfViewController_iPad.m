@@ -21,8 +21,9 @@
 #import "NSNumber+ObjectTypes.h"
 #import "SCHAppProfile.h"
 
-static NSInteger const kSCHBookShelfViewControllerGridCellHeightPortrait_iPad = 254;
-static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape_iPad = 266;
+//static NSInteger const kSCHBookShelfViewControllerGridCellHeightPortrait_iPad = 254;
+static NSInteger const kSCHBookShelfViewControllerGridCellHeightPortrait_iPad = 224;
+static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape_iPad = 235;
 static NSInteger const kSCHBookShelfButtonPadding = 25;
 static NSInteger const kSCHBookShelfEdgePadding = 12;
 static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.0;
@@ -214,12 +215,12 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
 
 - (CGSize)cellSize
 {
-    return CGSizeMake(147,218);
+    return CGSizeMake(177,212);
 }
 
 - (CGFloat)cellBorderSize
 {
-    return 36;
+    return 10;
 }
 
 #pragma mark - Sort and Top Ten actions

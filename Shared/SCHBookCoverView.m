@@ -10,19 +10,25 @@
 #import "SCHAppBook.h"
 #import "SCHBookManager.h"
 #import <ImageIO/ImageIO.h>
+#import <QuartzCore/QuartzCore.h>
 
 @interface SCHBookCoverView ()
 
 - (void)initialiseView;
-- (void)performWithBook:(void (^)(SCHAppBook *))block;
 - (UIImage *)createImageWithSourcePath:(NSString *)sourcePath destinationPath:(NSString *)destinationPath;
 - (void)resizeElementsForThumbSize: (CGSize) thumbSize;
+- (void)deferredRefreshBookCoverView;
 
 @property (nonatomic, retain) UIImageView *coverImageView;
 @property (nonatomic, retain) NSString *currentImageName;
 @property (nonatomic, retain) UIProgressView *progressView;
 @property (nonatomic, retain) UIView *bookTintView;
 @property (nonatomic, retain) UIImageView *newBadge;
+@property (nonatomic, retain) UIImageView *errorBadge;
+@property (nonatomic, retain) UIView *placeholderView;
+
+@property (nonatomic, assign) BOOL coalesceRefreshes;
+@property (nonatomic, assign) BOOL needsRefresh;
 
 @end
 
@@ -37,6 +43,14 @@
 @synthesize progressView;
 @synthesize bookTintView;
 @synthesize newBadge;
+@synthesize errorBadge;
+@synthesize trashed;
+@synthesize isNewBook;
+@synthesize placeholderView;
+@synthesize coalesceRefreshes;
+@synthesize needsRefresh;
+
+#pragma mark - Initialisation and dealloc
 
 - (void)dealloc 
 {
@@ -47,6 +61,9 @@
     [progressView release], progressView = nil;
     [bookTintView release], bookTintView = nil;
     [newBadge release], newBadge = nil;
+    [errorBadge release], errorBadge = nil;
+    [placeholderView release], placeholderView = nil;
+    
     
 	[super dealloc];
 }
@@ -62,20 +79,27 @@
 	return self;
 }
 
-- (void)prepareForReuse
-{
-    self.identifier = nil;
-}
-
 - (void)initialiseView 
 {
+    self.backgroundColor = [UIColor orangeColor];
+    
+    // add the placeholder view
+    self.placeholderView = [[UIView alloc] initWithFrame:self.frame];
+    self.placeholderView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    self.placeholderView.layer.borderColor = [UIColor whiteColor].CGColor;
+    self.placeholderView.layer.borderWidth = 10;
+    self.placeholderView.layer.cornerRadius = 20;
+    self.placeholderView.backgroundColor = [UIColor clearColor];
+    [self addSubview:self.placeholderView];
+    
     // add the image view
     self.coverImageView = [[UIImageView alloc] initWithFrame:self.frame];
-    [self addSubview:coverImageView];
+    self.coverImageView.layer.borderColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.3].CGColor;
+    self.coverImageView.layer.borderWidth = 2;
+    [self addSubview:self.coverImageView];
 
     // no scaling of the cover view
 	self.coverImageView.contentMode = UIViewContentModeTopLeft;
-	self.clipsToBounds = YES;
     self.backgroundColor = [UIColor clearColor];
 
     // add the tint view
@@ -86,19 +110,30 @@
     // add a progress view
     self.progressView = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleDefault];
     [self addSubview:self.progressView];
+    self.progressView.hidden = YES;
     
-//    // add the new graphic view
-//    self.newBadge = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@""
+    // add the new graphic view
+    self.newBadge = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"BookShelfNewIcon"]];
+    [self addSubview:self.newBadge];
+    self.newBadge.hidden = YES;
     
+    // add the error badge
+    // FIXME: change this to the correct graphic.
+    self.errorBadge = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"BookShelfNewIcon"]];
+    [self addSubview:self.errorBadge];
+    self.errorBadge.hidden = YES;
     
+}
+
+#pragma mark - cell reuse and setters
+
+- (void)prepareForReuse
+{
+    self.identifier = nil;
 }
 
 - (void)setIdentifier:(SCHBookIdentifier *)newIdentifier
 {
-//	if ([newIdentifier isEqual:identifier]) {
-//        return;
-//    }
-    
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"SCHBookDownloadPercentageUpdate" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"SCHBookStateUpdate" object:nil];
     
@@ -106,12 +141,12 @@
     identifier = [newIdentifier retain];
     
     if (identifier) {
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(updateFileDownloadPercentage:) 
-                                                 name:@"SCHBookDownloadPercentageUpdate" 
-                                               object:nil];
-    
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(updateFileDownloadPercentage:) 
+                                                     name:@"SCHBookDownloadPercentageUpdate" 
+                                                   object:nil];
+        
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(checkForImageUpdateFromNotification:)
                                                      name:@"SCHBookStateUpdate"
@@ -122,31 +157,49 @@
     self.currentImageName = nil;
     
     [self refreshBookCoverView];
-
 }
 
-- (void)performWithBook:(void (^)(SCHAppBook *))block
+- (void)setTrashed:(BOOL)newTrashed
 {
-    if (!self.identifier || !block) {
-        return;
-    }
-    
-    dispatch_block_t accessBlock = ^{
-        NSManagedObjectContext *mainThreadContext = [(id)[[UIApplication sharedApplication] delegate] managedObjectContext];
-        SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.identifier inManagedObjectContext:mainThreadContext];
-        block(book);
-    };
-    
-    if ([NSThread isMainThread]) {
-        accessBlock();
-    } else {
-        dispatch_sync(dispatch_get_main_queue(), accessBlock);
-    }
+    trashed = newTrashed;
+    [self refreshBookCoverView];
 }
 
+- (void)setIsNewBook:(BOOL)newIsNewBook
+{
+    isNewBook = newIsNewBook;
+    [self refreshBookCoverView];
+}
+
+#pragma mark - Drawing and positioning methods
+
+- (void)beginUpdates
+{
+    self.coalesceRefreshes = YES;
+}
+
+- (void)endUpdates
+{
+    self.coalesceRefreshes = NO;
+    if (self.needsRefresh) {
+        [self deferredRefreshBookCoverView];
+    }
+}
 
 - (void)refreshBookCoverView
 {
+    if (self.coalesceRefreshes) {
+        self.needsRefresh = YES;
+        NSLog(@"Coalesced refresh for %@", self.identifier);
+    } else {
+        [self deferredRefreshBookCoverView];
+    }
+}
+
+
+- (void)deferredRefreshBookCoverView
+{
+    NSLog(@"Actual refresh for %@", self.identifier);
     // if no identifier has been set, then we don't need to refresh the image
     if (!self.identifier) {
         return;
@@ -155,22 +208,29 @@
     SCHBookIdentifier *localIdentifier = [self.identifier copy];
 
     // fetch book state and filename information
-    __block NSString *fullImagePath;
-    __block NSString *thumbPath;
-    __block SCHBookCurrentProcessingState bookState;
-    [self performWithBook:^(SCHAppBook *book) {
-        //        NSLog(@"Getting book information.");
-        bookState = [book processingState];
-        fullImagePath = [[book coverImagePath] retain];
-        thumbPath = [[book thumbPathForSize:CGSizeMake(self.frame.size.width - (self.leftRightInset * 2), self.frame.size.height - self.topInset)] retain];
-    }];
+    NSString *fullImagePath;
+    NSString *thumbPath;
+    SCHBookCurrentProcessingState bookState;
+    
+    NSManagedObjectContext *context = [(id)[[UIApplication sharedApplication] delegate] managedObjectContext];
+	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.identifier inManagedObjectContext:context];    
+    
+    bookState = [book processingState];
+    fullImagePath = [book coverImagePath];
+    thumbPath = [book thumbPathForSize:CGSizeMake(self.frame.size.width - (self.leftRightInset * 2), self.frame.size.height - self.topInset)];
     
     if (bookState <= SCHBookProcessingStateNoCoverImage) {
         // book does not have a cover image downloaded 
         self.coverImageView.image = nil;
         self.currentImageName = nil;
+
+        // resize the placeholder view to match the frame
+        self.placeholderView.hidden = NO;
+        
         return;
     }
+    
+    self.placeholderView.hidden = YES;
     
     // check to see if we're already using the right thumb image - if so, skip loading it
     if (self.currentImageName != nil && [self.currentImageName compare:thumbPath] == NSOrderedSame) {
@@ -235,9 +295,6 @@
                 }
             });
         }
-        
-//        [fullImagePath release];
-//        [thumbPath release];
     }
     
     [localIdentifier release];
@@ -259,10 +316,73 @@
     
     // resize and position the progress view
     CGRect progressViewFrame = CGRectMake(10 + leftRightInset, self.frame.size.height - 32, self.frame.size.width - (leftRightInset * 2) - 20, 10);
-    NSLog(@"Progress view frame: %@", NSStringFromCGRect(progressViewFrame));
     self.progressView.frame = progressViewFrame;
+    
+    // move the new image view to the right spot, the bottom right hand corner
+    CGPoint newCenter = CGPointMake(coverFrame.origin.x + coverFrame.size.width, coverFrame.origin.y + coverFrame.size.height - ceilf(self.newBadge.frame.size.height / 4));
+    
+    // make sure the badge isn't cut off
+    if (newCenter.x + (self.newBadge.frame.size.width / 2) > self.frame.size.width) {
+        float difference = newCenter.x + (self.newBadge.frame.size.width / 2) - self.frame.size.width;
+        newCenter.x = coverFrame.origin.x + coverFrame.size.width - difference;
+    }
+    
+    self.newBadge.center = newCenter;
+    
+    
+    // move the error badge to the centre of the cover
+    CGPoint errorCenter = CGPointMake(floorf(CGRectGetMidX(coverFrame)), floorf(CGRectGetMidY(coverFrame)));
+    self.errorBadge.center = errorCenter;
+    
+    NSManagedObjectContext *context = [(id)[[UIApplication sharedApplication] delegate] managedObjectContext];
+	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.identifier inManagedObjectContext:context];    
+    
+	[self setNeedsDisplay];
+    
+	// book status
+    if (self.trashed) {
+        self.bookTintView.hidden = NO;
+        self.progressView.hidden = YES;
+    } else {
+        switch ([book processingState]) {
+            case SCHBookProcessingStateDownloadStarted:
+            case SCHBookProcessingStateDownloadPaused:
+                self.bookTintView.hidden = NO;
+                self.progressView.hidden = NO;
+                self.errorBadge.hidden = YES;
+                [self.progressView setProgress:[book currentDownloadedPercentage]];            
+                break;
+            case SCHBookProcessingStateReadyToRead:
+                self.bookTintView.hidden = YES;
+                self.progressView.hidden = YES;
+                self.errorBadge.hidden = YES;
+                break;
+            case SCHBookProcessingStateError:
+            case SCHBookProcessingStateDownloadFailed:
+            case SCHBookProcessingStateURLsNotPopulated:
+            case SCHBookProcessingStateUnableToAcquireLicense:
+            case SCHBookProcessingStateBookVersionNotSupported:
+                self.bookTintView.hidden = NO;
+                self.progressView.hidden = YES;
+                self.errorBadge.hidden = NO;
+                break;
+            default:
+                self.bookTintView.hidden = NO;
+                self.progressView.hidden = YES;
+                self.errorBadge.hidden = YES;
+                break;
+        }
+    }	
+    
+    if (self.isNewBook && !self.trashed) {
+        self.newBadge.hidden = NO;
+    } else {
+        self.newBadge.hidden = YES;
+    }
 
 }
+
+#pragma mark - Thumbnail Creation
 
 - (UIImage *)createImageWithSourcePath:(NSString *)sourcePath destinationPath:(NSString *)destinationPath 
 {
@@ -337,13 +457,15 @@
     return resizedImage;
 }
 
+#pragma mark - Notification Methods
+
 // listen for file download progress
 - (void)updateFileDownloadPercentage:(NSNotification *)notification
 {
     SCHBookIdentifier *bookIdentifier = [[notification userInfo] objectForKey:@"bookIdentifier"];
     if ([bookIdentifier isEqual:self.identifier]) {
-//        float newPercentage = [(NSNumber *) [[notification userInfo] objectForKey:@"currentPercentage"] floatValue];
-//        [self.progressView setProgress:newPercentage];
+        float newPercentage = [(NSNumber *) [[notification userInfo] objectForKey:@"currentPercentage"] floatValue];
+        [self.progressView setProgress:newPercentage];
         [self.progressView setHidden:NO];
     }
 }
@@ -354,7 +476,7 @@
 {
     SCHBookIdentifier *bookIdentifier = [[notification userInfo] objectForKey:@"bookIdentifier"];
     if ([bookIdentifier isEqual:self.identifier]) {
-        [self refreshBookCoverView];
+        [self deferredRefreshBookCoverView];
     }
 }	
 
