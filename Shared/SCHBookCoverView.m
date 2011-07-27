@@ -25,6 +25,7 @@
 @property (nonatomic, retain) UIView *bookTintView;
 @property (nonatomic, retain) UIImageView *newBadge;
 @property (nonatomic, retain) UIImageView *errorBadge;
+@property (nonatomic, retain) UIActivityIndicatorView *activitySpinner;
 
 @property (nonatomic, assign) BOOL coalesceRefreshes;
 @property (nonatomic, assign) BOOL needsRefresh;
@@ -49,6 +50,9 @@
 @synthesize coalesceRefreshes;
 @synthesize needsRefresh;
 @synthesize showingPlaceholder;
+@synthesize coverViewMode;
+@synthesize loading;
+@synthesize activitySpinner;
 
 #pragma mark - Initialisation and dealloc
 
@@ -70,6 +74,17 @@
 - (id)initWithFrame:(CGRect)frame 
 {
     self = [super initWithFrame:frame];
+    
+	if (self) {
+		[self initialiseView];
+	}
+    
+	return self;
+}
+
+- (id)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
     
 	if (self) {
 		[self initialiseView];
@@ -114,6 +129,15 @@
     // placeholder
     self.showingPlaceholder = YES;
     
+    // spinner
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        self.activitySpinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    } else {
+        self.activitySpinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+    }
+    self.activitySpinner.hidesWhenStopped = YES;
+    [self.activitySpinner stopAnimating];
+    [self addSubview:self.activitySpinner];
 }
 
 #pragma mark - cell reuse and setters
@@ -137,8 +161,9 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"SCHBookDownloadPercentageUpdate" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"SCHBookStateUpdate" object:nil];
     
-    [identifier release];
+    SCHBookIdentifier *oldIdentifier = identifier;
     identifier = [newIdentifier retain];
+    [oldIdentifier release];
     
     if (identifier) {
         
@@ -171,6 +196,12 @@
     [self refreshBookCoverView];
 }
 
+- (void)setLoading:(BOOL)newLoading
+{
+    loading = newLoading;
+    [self refreshBookCoverView];
+}
+
 #pragma mark - Drawing and positioning methods
 
 - (void)drawRect:(CGRect)rect
@@ -192,11 +223,15 @@
         CGFloat pathLength = (boundsRect.size.width * 2 + boundsRect.size.height * 2 - radius * 8) + (2 * M_PI * radius);
         CGFloat dashLength = pathLength / 24;
         
-        NSLog(@"Rect length: %f Path length: %f Dash length: %f", (boundsRect.size.width * 2) + (boundsRect.size.height * 2),pathLength, dashLength);
+//        NSLog(@"Rect length: %f Path length: %f Dash length: %f", (boundsRect.size.width * 2) + (boundsRect.size.height * 2),pathLength, dashLength);
         
         CGFloat kDashLengths[2] = { dashLength, dashLength };
 
-        CGContextSetStrokeColorWithColor(context, [UIColor colorWithRed:0.8 green:0.8 blue:0.8 alpha:0.4].CGColor);
+        if (self.coverViewMode == SCHBookCoverViewModeGridView) {
+            CGContextSetStrokeColorWithColor(context, [UIColor colorWithRed:0.8 green:0.8 blue:0.8 alpha:0.4].CGColor);
+        } else {
+            CGContextSetStrokeColorWithColor(context, [UIColor colorWithRed:0.071 green:0.467 blue:0.643 alpha:0.4].CGColor);
+        }
         CGContextSetFillColorWithColor(context, [UIColor clearColor].CGColor);
 
         UIBezierPath *bezPath = [UIBezierPath bezierPathWithRoundedRect:boundsRect cornerRadius:radius];
@@ -225,12 +260,12 @@
 {
     if (self.coalesceRefreshes) {
         self.needsRefresh = YES;
-        NSLog(@"Coalesced refresh for %@", self.identifier);
     } else {
         [self deferredRefreshBookCoverView];
     }
 }
 
+// FIXME: need to turn off needsRefresh in deferredRefreshBookCoverView!
 
 - (void)deferredRefreshBookCoverView
 {
@@ -262,6 +297,12 @@
         self.showingPlaceholder = YES;
         
         return;
+    }
+    
+    if (self.loading) {
+        [self.activitySpinner startAnimating];
+    } else {
+        [self.activitySpinner stopAnimating];
     }
     
     // check to see if we're already using the right thumb image - if so, skip loading it
@@ -302,7 +343,7 @@
                 if ([self.identifier isEqual:localIdentifier]) {
                     
                     UIImage *thumbImage = nil;
-//                    [NSThread sleepForTimeInterval:30];
+                    [NSThread sleepForTimeInterval:30];
                     
                     // check if the thumb has been created while queued
                     if ([threadLocalFileManager fileExistsAtPath:thumbPath]) {
@@ -347,19 +388,35 @@
     
     self.coverImageView.frame = coverFrame;
     self.bookTintView.frame = coverFrame;
-    
+    self.activitySpinner.center = self.coverImageView.center;
+
     // resize and position the progress view
     CGRect progressViewFrame = CGRectMake(10 + leftRightInset, self.frame.size.height - 32, self.frame.size.width - (leftRightInset * 2) - 20, 10);
     self.progressView.frame = progressViewFrame;
     
     // move the new image view to the right spot, the bottom right hand corner
-    CGPoint newCenter = CGPointMake(coverFrame.origin.x + coverFrame.size.width, coverFrame.origin.y + coverFrame.size.height - ceilf(self.newBadge.frame.size.height / 4));
+    CGPoint newCenter = CGPointMake(coverFrame.origin.x + coverFrame.size.width, 
+                                    coverFrame.origin.y + coverFrame.size.height);
+    
+    if (self.coverViewMode == SCHBookCoverViewModeListView) {
+        newCenter.y = coverFrame.origin.y + coverFrame.size.height - ceilf(self.newBadge.frame.size.height / 2) + 5;
+    } else if (self.coverViewMode == SCHBookCoverViewModeGridView) {
+        newCenter.y = coverFrame.origin.y + coverFrame.size.height - ceilf(self.newBadge.frame.size.height / 4);
+    }
     
     // make sure the badge isn't cut off
     if (newCenter.x + (self.newBadge.frame.size.width / 2) > self.frame.size.width) {
         float difference = newCenter.x + (self.newBadge.frame.size.width / 2) - self.frame.size.width;
         newCenter.x = coverFrame.origin.x + coverFrame.size.width - difference;
     }
+    
+//    // in list view, check y as well
+////    if (self.coverViewMode == SCHBookCoverViewModeListView) {
+//        if (newCenter.y + (self.newBadge.frame.size.height / 2) > self.frame.size.height) {
+//            float difference = newCenter.y + (self.newBadge.frame.size.height / 2) - self.frame.size.height;
+//            newCenter.y = coverFrame.origin.y + coverFrame.size.height - difference;
+//        }
+////    }
     
     self.newBadge.center = newCenter;
     

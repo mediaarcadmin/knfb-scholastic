@@ -9,6 +9,11 @@
 #import <Foundation/Foundation.h>
 #import "SCHBookIdentifier.h"
 
+typedef enum {
+    SCHBookCoverViewModeGridView,
+    SCHBookCoverViewModeListView
+} SCHBookCoverViewMode;
+
 
 @interface SCHBookCoverView : UIView {
     
@@ -19,7 +24,8 @@
 @property (nonatomic, retain) SCHBookIdentifier *identifier;
 @property (nonatomic, assign) BOOL trashed;
 @property (nonatomic, assign) BOOL isNewBook;
-
+@property (nonatomic, assign) BOOL loading;
+@property (nonatomic, assign) SCHBookCoverViewMode coverViewMode;
 
 - (void)beginUpdates;
 - (void)endUpdates;

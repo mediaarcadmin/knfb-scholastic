@@ -23,6 +23,7 @@
 @synthesize identifier;
 @synthesize trashed;
 @synthesize isNewBook;
+@synthesize loading;
 
 #pragma mark - Object lifecycle
 
@@ -39,6 +40,8 @@
             self.bookCoverView.topInset = 0;
             self.bookCoverView.leftRightInset = 0;
         }
+        
+        self.bookCoverView.coverViewMode = SCHBookCoverViewModeGridView;
         
         [self.contentView addSubview:self.bookCoverView];
     }
@@ -95,6 +98,12 @@
 {
     isNewBook = newIsNewBook;
     self.bookCoverView.isNewBook = newIsNewBook;
+}
+
+- (void)setLoading:(BOOL)newLoading
+{
+    loading = newLoading;
+    self.bookCoverView.loading = newLoading;
 }
 
 @end

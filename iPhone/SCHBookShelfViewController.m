@@ -598,6 +598,12 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
     gridCell.trashed = [self.profileItem bookIsTrashedWithIdentifier:[self.books objectAtIndex:index]];
     gridCell.isNewBook = [self.profileItem bookIsNewForProfileWithIdentifier:[self.books objectAtIndex:index]];
 
+    if (self.currentlyLoadingIndex == index) {
+        gridCell.loading = YES;
+    } else {
+        gridCell.loading = NO;
+    }
+
     [gridCell endUpdates];
 
 	return(gridCell);
@@ -667,6 +673,10 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
         return;
     }
 
+    if (self.currentlyLoadingIndex != -1) {
+        return;
+    }
+
     SCHBookIdentifier *identifier = [self.books objectAtIndex:index];
     if ([self.profileItem bookIsTrashedWithIdentifier:identifier]) {
         [self.profileItem setTrashed:NO forBookWithIdentifier:identifier];
@@ -674,21 +684,20 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
         return;
     }
     
-    CGRect cellFrame = [aGridView frameForCellAtGridIndex:index];
-    UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-    spinner.center = CGPointMake(CGRectGetMidX(cellFrame), CGRectGetMidY(cellFrame));
-    [spinner startAnimating];
-    [aGridView addSubview:spinner];
+    self.currentlyLoadingIndex = index;
+    [self reloadData];
     
-    dispatch_async(dispatch_get_main_queue(), ^{
+    double delayInSeconds = 0.02;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
         NSError *error;
 
         SCHReadingViewController *readingController = [self openBook:[self.books objectAtIndex:index] error:&error];
         if (readingController != nil) {
-            if (self.sortType == kSCHBookSortTypeLastRead) {
-                self.updateShelfOnReturnToShelf = YES;
-            }            
+            self.updateShelfOnReturnToShelf = YES;
+
             [self.navigationController pushViewController:readingController animated:YES]; 
+            self.currentlyLoadingIndex = -1;
         } else {
             if (error && !([[error domain] isEqualToString:kSCHAppBookErrorDomain] && ([error code] == kSCHAppBookStillBeingProcessedError))) {
                 LambdaAlert *alert = [[LambdaAlert alloc]
@@ -703,9 +712,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
                 [alert release];
             }
         }
-        [spinner removeFromSuperview];
     });
-    [spinner release];
 }
 
 - (SCHReadingViewController *)openBook:(SCHBookIdentifier *)identifier error:(NSError **)error
