@@ -122,7 +122,7 @@
     
     // add the error badge
     // FIXME: change this to the correct graphic.
-    self.errorBadge = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"BookShelfNewIcon"]];
+    self.errorBadge = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"BookShelfErrorIcon"]];
     [self addSubview:self.errorBadge];
     self.errorBadge.hidden = YES;
     
@@ -180,6 +180,7 @@
                                                      name:@"SCHBookStateUpdate"
                                                    object:nil];
         self.coverImageView.image = nil;
+        self.coverImageView.hidden = YES;
         self.currentImageName = nil;
         
         [self refreshBookCoverView];
@@ -333,6 +334,7 @@
     if (bookState <= SCHBookProcessingStateNoCoverImage) {
         // book does not have a cover image downloaded 
         self.coverImageView.image = nil;
+        self.coverImageView.hidden = YES;
         self.currentImageName = nil;
         self.showingPlaceholder = YES;
         self.needsRefresh = NO;
@@ -358,6 +360,7 @@
                     // check if identifier changed while the thumb was loading
                     if ([self.identifier isEqual:localIdentifier]) {
                         self.coverImageView.image = thumbImage;
+                        self.coverImageView.hidden = NO;
                         self.showingPlaceholder = NO;
                         [self resizeElementsForThumbSize:thumbImage.size];
                     }
@@ -389,6 +392,7 @@
                         // first check if the identifier has changed; if so, don't set the processed thumbnail
                         if ([self.identifier isEqual:localIdentifier]) {
                             self.coverImageView.image = thumbImage;
+                            self.coverImageView.hidden = NO;
                             self.showingPlaceholder = NO;
                             [self resizeElementsForThumbSize:thumbImage.size];
                         }
