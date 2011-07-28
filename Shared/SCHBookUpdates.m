@@ -39,7 +39,7 @@
         [fetch setSortDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"ContentMetadataItem.Title" ascending:YES]]];
         
         NSPredicate *statePred = [NSPredicate predicateWithFormat:@"State = %d", SCHBookProcessingStateReadyToRead];
-#ifdef LOCALDEBUG
+#if LOCALDEBUG
         // show all books in local files build
         [fetch setPredicate:statePred];
 #else
