@@ -33,6 +33,7 @@ static const CGFloat kProfilePhoneTableOffsetLandscape = 20.0f;
 
 @property (nonatomic, retain) UIButton *settingsButton;
 @property (nonatomic, retain) UIBarButtonItem *barSpacer;
+@property (nonatomic, retain) UIView *logoContainer;
 
 @end
 
@@ -41,6 +42,7 @@ static const CGFloat kProfilePhoneTableOffsetLandscape = 20.0f;
 
 @synthesize settingsButton;
 @synthesize barSpacer;
+@synthesize logoContainer;
 
 #pragma mark - Object lifecycle
 
@@ -48,6 +50,7 @@ static const CGFloat kProfilePhoneTableOffsetLandscape = 20.0f;
 {
     [settingsButton release], settingsButton = nil;
     [barSpacer release], barSpacer = nil;
+    [logoContainer release], logoContainer = nil;
 }
 
 - (void)dealloc 
@@ -68,9 +71,8 @@ static const CGFloat kProfilePhoneTableOffsetLandscape = 20.0f;
     
     self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:self.settingsButton] autorelease];
     
-    CGRect logoFrame = CGRectMake(0, 0, 260, 44);
     UIImageView *logoImageView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo.png"]] autorelease];
-    logoImageView.frame = logoFrame;
+    logoImageView.frame = CGRectZero;
     logoImageView.autoresizingMask = (UIViewAutoresizingFlexibleWidth
                                       | UIViewAutoresizingFlexibleLeftMargin
                                       | UIViewAutoresizingFlexibleRightMargin
@@ -78,15 +80,9 @@ static const CGFloat kProfilePhoneTableOffsetLandscape = 20.0f;
                                       | UIViewAutoresizingFlexibleBottomMargin
                                       | UIViewAutoresizingFlexibleTopMargin);
     logoImageView.contentMode = UIViewContentModeScaleAspectFit;
-    UIView *container = [[[UIView alloc] initWithFrame:logoFrame] autorelease];
-    container.autoresizingMask = (UIViewAutoresizingFlexibleWidth
-                                  | UIViewAutoresizingFlexibleLeftMargin
-                                  | UIViewAutoresizingFlexibleRightMargin
-                                  | UIViewAutoresizingFlexibleHeight
-                                  | UIViewAutoresizingFlexibleBottomMargin
-                                  | UIViewAutoresizingFlexibleTopMargin);
-    
+    UIView *container = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
     [container addSubview:logoImageView];    
+    self.logoContainer = container;
     self.navigationItem.titleView = container;
     
     UIBarButtonItem *item = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil] autorelease];
@@ -113,8 +109,9 @@ static const CGFloat kProfilePhoneTableOffsetLandscape = 20.0f;
         [self.settingsButton setImage:[UIImage imageNamed:@"settings-landscape.png"] 
                              forState:UIControlStateNormal];
         [self.settingsButton sizeToFit];
-        [self.barSpacer setWidth:CGRectGetWidth(self.settingsButton.frame)];
+        [self.barSpacer setWidth:CGRectGetWidth(self.settingsButton.frame) + 7];
         [self.tableView setContentInset:UIEdgeInsetsMake(kProfilePhoneTableOffsetLandscape, 0, 0, 0)];
+        [self.logoContainer setFrame:CGRectMake(0, 0, 260, 32)];
     } else {
         [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:
          [UIImage imageNamed:@"admin-iphone-portrait-top-toolbar.png"]];
@@ -124,6 +121,7 @@ static const CGFloat kProfilePhoneTableOffsetLandscape = 20.0f;
         [self.settingsButton sizeToFit];
         [self.barSpacer setWidth:0];
         [self.tableView setContentInset:UIEdgeInsetsMake(kProfilePhoneTableOffsetPortrait, 0, 0, 0)];
+        [self.logoContainer setFrame:CGRectMake(0, 0, 260, 44)];
     }
     
 }
