@@ -87,4 +87,10 @@
     return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:@"gen_gotthemall.mp3"];
 }
 
+- (NSString *)dragYourFingerAudioPath
+{
+    // FIXME: no appropriate audio exists yet
+    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:@"gen_clickanddrag.mp3"];
+}
+
 @end

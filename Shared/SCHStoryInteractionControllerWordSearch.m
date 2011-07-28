@@ -17,6 +17,7 @@
 
 @property (nonatomic, retain) NSMutableArray *remainingWords;
 @property (nonatomic, retain) NSArray *wordViews;
+@property (nonatomic, assign) NSInteger tapCount;
 
 - (void)layoutWordViewsForPad;
 - (void)layoutWordViewsForPhone;
@@ -29,6 +30,7 @@
 @synthesize wordsContainerView;
 @synthesize remainingWords;
 @synthesize wordViews;
+@synthesize tapCount;
 
 - (void)dealloc
 {
@@ -99,6 +101,10 @@
         [self.remainingWords addObject:[word uppercaseString]];
     }
     
+    self.tapCount = 0;
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
+    [self.lettersContainerView addGestureRecognizer:tap];
+    [tap release];
 }
 
 - (void)layoutWordViewsForPad
@@ -233,6 +239,14 @@
     [self.lettersContainerView setUserInteractionEnabled:YES];
 }
 
+#pragma mark - Warn user about tapping
 
+- (void)handleTap:(UIGestureRecognizer *)tap
+{
+    if (++self.tapCount == 3) {
+        [self enqueueAudioWithPath:[(SCHStoryInteractionWordSearch *)self.storyInteraction dragYourFingerAudioPath] fromBundle:NO];
+        self.tapCount = 0;
+    }
+}
 
 @end

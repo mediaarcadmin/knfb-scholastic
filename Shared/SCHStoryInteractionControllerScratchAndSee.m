@@ -91,15 +91,13 @@ enum ScratchState {
     for (NSString *answer in [self currentQuestion].answers) {
         UIButton *button = [self.answerButtons objectAtIndex:i];
         [button setTitle:answer forState:UIControlStateNormal];
-        [button setHidden:YES];
+        [button setAlpha:0];
         ++i;
     }
     
     self.progressCoverImageView.image = [[UIImage imageNamed:@"progressbar-cover"] stretchableImageWithLeftCapWidth:16 topCapHeight:0];
-    
     self.progressImageView.image = [UIImage imageNamed:@"progressbar-fill"];
-    
-    self.progressView.hidden = NO;
+    self.progressView.alpha = 1;
 
     // get the current question
     if (self.delegate && [self.delegate respondsToSelector:@selector(currentQuestionForStoryInteraction)]) {
@@ -135,68 +133,83 @@ enum ScratchState {
     const BOOL iPad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
     const BOOL scratching = (self.scratchState == kScratchStateFirstScratch || self.scratchState == kScratchStateSecondScratch);
     
-    if (scratching) {
-        [self setTitle:NSLocalizedString(@"Scratch away the question mark to see the picture.", @"")];
-        if (self.scratchState == kScratchStateFirstScratch) {
-            UIImage *image = [self imageAtPath:[[self currentQuestion] imagePath]];
-            self.scratchView.answerImage = image;
-            [self setProgressViewForScratchCount:0];
+    CGFloat contentsHeight = scratching ? 282 : 380;
+    dispatch_block_t adjustments = ^{
+        if (scratching) {
+            [self setTitle:NSLocalizedString(@"Scratch away the question mark to see the picture.", @"")];
+            if (self.scratchState == kScratchStateFirstScratch) {
+                UIImage *image = [self imageAtPath:[[self currentQuestion] imagePath]];
+                self.scratchView.answerImage = image;
+                [self setProgressViewForScratchCount:0];
+            } else {
+                [self setProgressViewForScratchCount:kFirstScratchPointTarget];
+            }
+            self.scratchView.interactionEnabled = YES;
+            self.progressView.alpha = 1;
+            aLabel.alpha = 0;
+            bLabel.alpha = 0;
+            cLabel.alpha = 0;
         } else {
-            [self setProgressViewForScratchCount:kFirstScratchPointTarget];
+            [self setTitle:NSLocalizedString(@"What do you see?", @"")];
+            self.progressView.alpha = 0;
+            aLabel.alpha = 1;
+            bLabel.alpha = 1;
+            cLabel.alpha = 1;
         }
-        self.scratchView.interactionEnabled = YES;
-        self.progressView.hidden = NO;
-        aLabel.hidden = YES;
-        bLabel.hidden = YES;
-        cLabel.hidden = YES;
+    
+        NSInteger i = 0;
+        for (NSString *answer in [self currentQuestion].answers) {
+            UIImage *highlight;
+            UIButton *button = [self.answerButtons objectAtIndex:i];
+            
+            if (iPad == YES) {
+                [button setImage:[UIImage imageNamed:@"answer-blank"] forState:UIControlStateNormal];
+                if (i == [self currentQuestion].correctAnswer) {
+                    [button setImage:[UIImage imageNamed:@"answer-tick"] forState:UIControlStateSelected];
+                } else {
+                    [button setImage:[UIImage imageNamed:@"answer-cross"] forState:UIControlStateSelected];
+                }
+            }
+            
+            if (i == [self currentQuestion].correctAnswer) {
+                highlight = [[UIImage imageNamed:@"answer-button-green"] stretchableImageWithLeftCapWidth:10 topCapHeight:0];
+            } else {
+                highlight = [[UIImage imageNamed:@"answer-button-red"] stretchableImageWithLeftCapWidth:10 topCapHeight:0];
+            }
+            
+            [button setTitle:answer forState:UIControlStateNormal];
+            [button setTitleColor:(iPad ? [UIColor whiteColor] : [UIColor SCHBlue2Color]) forState:UIControlStateNormal];
+            [button setBackgroundImage:[(iPad == YES ? [UIImage imageNamed:@"answer-button-blue"] : [UIImage imageNamed:@"answer-button-yellow"]) stretchableImageWithLeftCapWidth:10 topCapHeight:0] forState:UIControlStateNormal];        
+            [button setBackgroundImage:[(iPad == YES ? [UIImage imageNamed:@"answer-button-blue"] : [UIImage imageNamed:@"answer-button-yellow"]) stretchableImageWithLeftCapWidth:10 topCapHeight:0] forState:UIControlStateSelected];        
+            [button setSelected:NO];
+            [button setAlpha:scratching ? 0 : 1];
+            [button setBackgroundImage:highlight forState:UIControlStateSelected];
+            ++i;
+        }
+        for (; i < [self.answerButtons count]; ++i) {
+            [[self.answerButtons objectAtIndex:i] setAlpha:0];
+        }
+    };
+
+    if (iPad) {
+        [self resizeCurrentViewToSize:CGSizeMake(self.contentsView.bounds.size.width, contentsHeight)
+             withAdditionalAnimations:adjustments];
     } else {
-        [self setTitle:NSLocalizedString(@"What do you see?", @"")];
-        self.progressView.hidden = YES;
-        aLabel.hidden = NO;
-        bLabel.hidden = NO;
-        cLabel.hidden = NO;
+        adjustments();
     }
     
-    NSInteger i = 0;
-    for (NSString *answer in [self currentQuestion].answers) {
-        UIImage *highlight;
-        UIButton *button = [self.answerButtons objectAtIndex:i];
-
-        if (iPad == YES) {
-            [button setImage:[UIImage imageNamed:@"answer-blank"] forState:UIControlStateNormal];
-            if (i == [self currentQuestion].correctAnswer) {
-                [button setImage:[UIImage imageNamed:@"answer-tick"] forState:UIControlStateSelected];
-            } else {
-                [button setImage:[UIImage imageNamed:@"answer-cross"] forState:UIControlStateSelected];
-            }
-        }
-        
-        if (i == [self currentQuestion].correctAnswer) {
-            highlight = [[UIImage imageNamed:@"answer-button-green"] stretchableImageWithLeftCapWidth:10 topCapHeight:0];
-        } else {
-            highlight = [[UIImage imageNamed:@"answer-button-red"] stretchableImageWithLeftCapWidth:10 topCapHeight:0];
-        }
-        
-        [button setTitle:answer forState:UIControlStateNormal];
-        [button setTitleColor:(iPad ? [UIColor whiteColor] : [UIColor SCHBlue2Color]) forState:UIControlStateNormal];
-        [button setBackgroundImage:[(iPad == YES ? [UIImage imageNamed:@"answer-button-blue"] : [UIImage imageNamed:@"answer-button-yellow"]) stretchableImageWithLeftCapWidth:10 topCapHeight:0] forState:UIControlStateNormal];        
-        [button setBackgroundImage:[(iPad == YES ? [UIImage imageNamed:@"answer-button-blue"] : [UIImage imageNamed:@"answer-button-yellow"]) stretchableImageWithLeftCapWidth:10 topCapHeight:0] forState:UIControlStateSelected];        
-        [button setSelected:NO];
-        [button setHidden:scratching];
-        [button setBackgroundImage:highlight forState:UIControlStateSelected];
-        ++i;
-    }
-    for (; i < [self.answerButtons count]; ++i) {
-        [[self.answerButtons objectAtIndex:i] setHidden:YES];
-    }
-
     self.simultaneousTapCount = 0;
 }
 
 - (void)askQuestion
 {
     self.controllerState = SCHStoryInteractionControllerStateAskingOpeningQuestion;
-    [self enqueueAudioWithPath:[(SCHStoryInteractionScratchAndSee *)self.storyInteraction whatDoYouSeeAudioPath] fromBundle:NO];
+
+    [self enqueueAudioWithPath:[(SCHStoryInteractionScratchAndSee *)self.storyInteraction whatDoYouSeeAudioPath] 
+                    fromBundle:NO 
+                    startDelay:0 
+        synchronizedStartBlock:nil
+          synchronizedEndBlock:nil];
     
     for (NSInteger i = 0; i < 3; ++i) {
         UIButton *button = [self.answerButtons objectAtIndex:i];
@@ -375,7 +388,7 @@ enum ScratchState {
             self.scratchState = kScratchStateSecondQuestionAttempt;
         }
         
-        self.progressView.hidden = YES;
+        self.progressView.alpha = 0;
         [self setupQuestion];
 
         aScratchView.interactionEnabled = NO;
