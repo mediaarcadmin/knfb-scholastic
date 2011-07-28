@@ -171,10 +171,14 @@
 							<object class="IBUILabel" id="151033623">
 								<reference key="NSNextResponder" ref="392821225"/>
 								<int key="NSvFlags">290</int>
-								<string key="NSFrame">{{20, 20}, {280, 103}}</string>
+								<string key="NSFrame">{{24, 18}, {272, 117}}</string>
 								<reference key="NSSuperview" ref="392821225"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="363073880"/>
+								<object class="NSColor" key="IBUIBackgroundColor" id="549077548">
+									<int key="NSColorSpace">1</int>
+									<bytes key="NSRGB">MCAwIDAgMAA</bytes>
+								</object>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<int key="IBUIContentMode">7</int>
@@ -184,7 +188,7 @@
 								<string key="IBUIText">The Scholastic eReader contains a rich dictionary built especially for kids. It includes definitions tailored to different ages and stages with complete audio readthroughs of all definitions for young kids.</string>
 								<object class="NSFont" key="IBUIFont">
 									<string key="NSName">Arial-BoldMT</string>
-									<double key="NSSize">14</double>
+									<double key="NSSize">15</double>
 									<int key="NSfFlags">16</int>
 								</object>
 								<object class="NSColor" key="IBUITextColor" id="683523935">
@@ -199,11 +203,12 @@
 							</object>
 							<object class="IBUILabel" id="363073880">
 								<reference key="NSNextResponder" ref="392821225"/>
-								<int key="NSvFlags">290</int>
-								<string key="NSFrame">{{20, 131}, {280, 81}}</string>
+								<int key="NSvFlags">258</int>
+								<string key="NSFrame">{{24, 140}, {272, 79}}</string>
 								<reference key="NSSuperview" ref="392821225"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="736782801"/>
+								<reference key="IBUIBackgroundColor" ref="549077548"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<int key="IBUIContentMode">7</int>
@@ -211,9 +216,9 @@
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<string key="IBUIText">This download is about 400MB. You can chose to download the dictionary at any time by going to Parent Tools from the eReader sign-in screen.</string>
-								<object class="NSFont" key="IBUIFont" id="647780519">
+								<object class="NSFont" key="IBUIFont" id="193584015">
 									<string key="NSName">ArialMT</string>
-									<double key="NSSize">14</double>
+									<double key="NSSize">15</double>
 									<int key="NSfFlags">16</int>
 								</object>
 								<reference key="IBUITextColor" ref="683523935"/>
@@ -225,11 +230,12 @@
 							</object>
 							<object class="IBUILabel" id="736782801">
 								<reference key="NSNextResponder" ref="392821225"/>
-								<int key="NSvFlags">290</int>
-								<string key="NSFrame">{{20, 220}, {280, 50}}</string>
+								<int key="NSvFlags">258</int>
+								<string key="NSFrame">{{24, 223}, {272, 50}}</string>
 								<reference key="NSSuperview" ref="392821225"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="1033711476"/>
+								<reference key="IBUIBackgroundColor" ref="549077548"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<int key="IBUIContentMode">7</int>
@@ -237,7 +243,7 @@
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<string key="IBUIText">The dictionary will download in the background while you continue to read.</string>
-								<reference key="IBUIFont" ref="647780519"/>
+								<reference key="IBUIFont" ref="193584015"/>
 								<reference key="IBUITextColor" ref="683523935"/>
 								<nil key="IBUIHighlightedColor"/>
 								<int key="IBUIBaselineAdjustment">1</int>
@@ -248,10 +254,9 @@
 							<object class="IBUIButton" id="1033711476">
 								<reference key="NSNextResponder" ref="392821225"/>
 								<int key="NSvFlags">293</int>
-								<string key="NSFrame">{{80, 300}, {161, 44}}</string>
+								<string key="NSFrame">{{80, 340}, {161, 48}}</string>
 								<reference key="NSSuperview" ref="392821225"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<int key="IBUIContentHorizontalAlignment">0</int>
@@ -495,12 +500,12 @@
 						<reference key="object" ref="392821225"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="1033711476"/>
-							<reference ref="736782801"/>
 							<reference ref="363073880"/>
 							<reference ref="151033623"/>
 							<reference ref="548582127"/>
 							<reference ref="943454659"/>
+							<reference ref="736782801"/>
+							<reference ref="1033711476"/>
 						</object>
 						<reference key="parent" ref="191373211"/>
 					</object>
@@ -595,7 +600,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">44</int>
+			<int key="maxID">45</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">

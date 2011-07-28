@@ -63,15 +63,22 @@
 {
    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
        CGFloat width = UIInterfaceOrientationIsLandscape(orientation) ? 440 : 280;
+       CGFloat gap = UIInterfaceOrientationIsLandscape(orientation) ? 8 : 18;
+       CGFloat yOffset = UIInterfaceOrientationIsLandscape(orientation) ? 16 : 30;
+       CGFloat buttonOffset = UIInterfaceOrientationIsLandscape(orientation) ? 0 : 16;
+
        [UIView animateWithDuration:0.25 animations:^{
-           CGFloat y = 20;
+           CGFloat y = yOffset;
            for (UILabel *label in self.labels) {
                CGSize size = [label.text sizeWithFont:label.font
                                     constrainedToSize:CGSizeMake(width, CGRectGetHeight(label.bounds))
                                         lineBreakMode:label.lineBreakMode];
                label.center = CGPointMake(label.center.x, floorf(y+size.height/2));
-               y += size.height + 15;
+               y += size.height + gap;
            }
+           
+           y += buttonOffset;
+           
            self.downloadDictionaryButton.center = CGPointMake(self.downloadDictionaryButton.center.x, floorf(y+CGRectGetHeight(self.downloadDictionaryButton.bounds)/2));
        }];
     }
