@@ -50,11 +50,6 @@ extern NSString * const kSCHProcessingManagerConnectionBusy;
 - (void)userSelectedBookWithIdentifier:(SCHBookIdentifier *)identifier;
 - (void)userRequestedRetryForBookWithIdentifier:(SCHBookIdentifier *)identifier;
 
-// thumbnail requests
-- (BOOL)requestThumbImageForBookCover:(SCHAsyncBookCoverImageView *)bookCover 
-                                 size:(CGSize)size 
-                                 book:(SCHAppBook *)book;
-
 // methods for processing
 - (BOOL)identifierIsProcessing:(SCHBookIdentifier *)identifier;
 - (void)setProcessing:(BOOL)processing forIdentifier:(SCHBookIdentifier *)identifier;
@@ -63,5 +58,9 @@ extern NSString * const kSCHProcessingManagerConnectionBusy;
 - (void)cancelAllOperations;
 // stop processing a book
 - (void)cancelAllOperationsForBookIndentifier:(SCHBookIdentifier *)bookIdentifier;
+
+// FIXME: locking queue for SCHBookCoverView, here temporarily for testings
+@property dispatch_queue_t thumbnailAccessQueue;
+
 
 @end

@@ -32,6 +32,7 @@ static const CGFloat kProfilePhoneTableOffsetLandscape = 20.0f;
 - (void)releaseViewObjects;
 
 @property (nonatomic, retain) UIButton *settingsButton;
+@property (nonatomic, retain) UIBarButtonItem *barSpacer;
 
 @end
 
@@ -39,12 +40,14 @@ static const CGFloat kProfilePhoneTableOffsetLandscape = 20.0f;
 @implementation SCHProfileViewController_iPhone
 
 @synthesize settingsButton;
+@synthesize barSpacer;
 
 #pragma mark - Object lifecycle
 
 - (void)releaseViewObjects
 {
     [settingsButton release], settingsButton = nil;
+    [barSpacer release], barSpacer = nil;
 }
 
 - (void)dealloc 
@@ -58,15 +61,16 @@ static const CGFloat kProfilePhoneTableOffsetLandscape = 20.0f;
 - (void)viewDidLoad 
 {
     [super viewDidLoad];
-	
+    
     self.settingsButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.settingsButton addTarget:self action:@selector(pushSettingsController) 
-             forControlEvents:UIControlEventTouchUpInside]; 
+                  forControlEvents:UIControlEventTouchUpInside]; 
     
     self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:self.settingsButton] autorelease];
     
-    self.navigationItem.title = NSLocalizedString(@"Back", @"");
-    UIImageView *logoImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo.png"]];
+    CGRect logoFrame = CGRectMake(0, 0, 260, 44);
+    UIImageView *logoImageView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo.png"]] autorelease];
+    logoImageView.frame = logoFrame;
     logoImageView.autoresizingMask = (UIViewAutoresizingFlexibleWidth
                                       | UIViewAutoresizingFlexibleLeftMargin
                                       | UIViewAutoresizingFlexibleRightMargin
@@ -74,8 +78,20 @@ static const CGFloat kProfilePhoneTableOffsetLandscape = 20.0f;
                                       | UIViewAutoresizingFlexibleBottomMargin
                                       | UIViewAutoresizingFlexibleTopMargin);
     logoImageView.contentMode = UIViewContentModeScaleAspectFit;
-    self.navigationItem.titleView = logoImageView;
-    [logoImageView release];
+    UIView *container = [[[UIView alloc] initWithFrame:logoFrame] autorelease];
+    container.autoresizingMask = (UIViewAutoresizingFlexibleWidth
+                                  | UIViewAutoresizingFlexibleLeftMargin
+                                  | UIViewAutoresizingFlexibleRightMargin
+                                  | UIViewAutoresizingFlexibleHeight
+                                  | UIViewAutoresizingFlexibleBottomMargin
+                                  | UIViewAutoresizingFlexibleTopMargin);
+    
+    [container addSubview:logoImageView];    
+    self.navigationItem.titleView = container;
+    
+    UIBarButtonItem *item = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil] autorelease];
+    self.barSpacer = item;
+    self.navigationItem.leftBarButtonItem = self.barSpacer;
     
     self.tableView.tableHeaderView = self.headerView;
 }  
@@ -97,6 +113,7 @@ static const CGFloat kProfilePhoneTableOffsetLandscape = 20.0f;
         [self.settingsButton setImage:[UIImage imageNamed:@"settings-landscape.png"] 
                              forState:UIControlStateNormal];
         [self.settingsButton sizeToFit];
+        [self.barSpacer setWidth:CGRectGetWidth(self.settingsButton.frame)];
         [self.tableView setContentInset:UIEdgeInsetsMake(kProfilePhoneTableOffsetLandscape, 0, 0, 0)];
     } else {
         [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:
@@ -105,8 +122,10 @@ static const CGFloat kProfilePhoneTableOffsetLandscape = 20.0f;
         [self.settingsButton setImage:[UIImage imageNamed:@"settings-portrait.png"] 
                              forState:UIControlStateNormal];
         [self.settingsButton sizeToFit];
+        [self.barSpacer setWidth:0];
         [self.tableView setContentInset:UIEdgeInsetsMake(kProfilePhoneTableOffsetPortrait, 0, 0, 0)];
     }
+    
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
