@@ -156,6 +156,8 @@
                  extent:(NSInteger)extent
              vertically:(BOOL)vertical
 {    
+    self.tapCount = 0;
+    
     SCHStoryInteractionWordSearch *wordSearch = (SCHStoryInteractionWordSearch *)self.storyInteraction;
     NSMutableString *selectedLetters = [NSMutableString string];
     for (int i = 0; i < extent; ++i) {
