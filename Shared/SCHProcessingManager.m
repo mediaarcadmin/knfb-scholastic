@@ -12,7 +12,6 @@
 #import "SCHBookURLRequestOperation.h"
 #import "SCHDownloadBookFileOperation.h"
 #import "SCHXPSCoverImageOperation.h"
-#import "SCHThumbnailOperation.h"
 #import "SCHRightsParsingOperation.h"
 #import "SCHAudioPreParseOperation.h"
 #import "SCHTextFlowPreParseOperation.h"
@@ -20,8 +19,6 @@
 #import "SCHFlowAnalysisOperation.h"
 #import "SCHLicenseAcquisitionOperation.h"
 #import "SCHBookManager.h"
-#import "SCHAsyncBookCoverImageView.h"
-#import "SCHThumbnailFactory.h"
 #import "SCHAppBook.h"
 #import "SCHBookIdentifier.h"
 
@@ -36,9 +33,8 @@ NSString * const kSCHProcessingManagerConnectionBusy = @"SCHProcessingManagerCon
 - (void)checkStateForAllBooks;
 - (BOOL)identifierNeedsProcessing:(SCHBookIdentifier *)identifier;
 
-- (void)processIdentifier:(SCHBookIdentifier *)identifier;
-- (void)redispatchIdentifier:(SCHBookIdentifier *)identifier;
-- (void)checkAndDispatchThumbsForIdentifier:(SCHBookIdentifier *)identifier;
+- (void) processIdentifier: (SCHBookIdentifier *) identifier;
+- (void) redispatchIdentifier: (SCHBookIdentifier *) identifier;
 
 // fire notifications if there's a change in state between processing and not processing
 - (void)checkIfProcessing;
@@ -52,15 +48,9 @@ NSString * const kSCHProcessingManagerConnectionBusy = @"SCHProcessingManagerCon
 @property (readwrite, retain) NSOperationQueue *localProcessingQueue;
 @property (readwrite, retain) NSOperationQueue *webServiceOperationQueue;
 @property (readwrite, retain) NSOperationQueue *networkOperationQueue;
-@property (readwrite, retain) NSOperationQueue *imageProcessingQueue;
 
 // the background task ID for background processing
 @property (nonatomic) UIBackgroundTaskIdentifier backgroundTask;
-
-// a dictionary holding the current thumbImageRequests
-// values are NSMutableArray objects holding multiple NSValue objects corresponding
-// to the size of the requested thumbnail
-@property (readwrite, retain) NSMutableDictionary *thumbImageRequests;
 
 // a list of book identifiers that are currently processing
 @property (readwrite, retain) NSMutableArray *currentlyProcessingIdentifiers;
@@ -74,12 +64,12 @@ NSString * const kSCHProcessingManagerConnectionBusy = @"SCHProcessingManagerCon
 
 @implementation SCHProcessingManager
 
-@synthesize localProcessingQueue, webServiceOperationQueue, networkOperationQueue, imageProcessingQueue;
+@synthesize localProcessingQueue, webServiceOperationQueue, networkOperationQueue;
 @synthesize backgroundTask;
-@synthesize thumbImageRequests;
 @synthesize currentlyProcessingIdentifiers;
 @synthesize connectionIsIdle, firedFirstBusyIdleNotification;
 @synthesize managedObjectContext;
+@synthesize thumbnailAccessQueue;
 
 #pragma mark -
 #pragma mark Object Lifecycle
@@ -91,10 +81,10 @@ NSString * const kSCHProcessingManagerConnectionBusy = @"SCHProcessingManagerCon
 	self.localProcessingQueue = nil;
 	self.webServiceOperationQueue = nil;
 	self.networkOperationQueue = nil;
-    self.imageProcessingQueue = nil;
-	self.thumbImageRequests = nil;
     self.currentlyProcessingIdentifiers = nil;
     self.managedObjectContext = nil;
+    dispatch_release(thumbnailAccessQueue);
+
 	[super dealloc];
 }
 
@@ -102,20 +92,20 @@ NSString * const kSCHProcessingManagerConnectionBusy = @"SCHProcessingManagerCon
 {
 	if ((self = [super init])) {
 		self.localProcessingQueue = [[[NSOperationQueue alloc] init] autorelease];
-		self.imageProcessingQueue = [[[NSOperationQueue alloc] init] autorelease];
 		self.webServiceOperationQueue = [[[NSOperationQueue alloc] init] autorelease];
 		self.networkOperationQueue = [[[NSOperationQueue alloc] init] autorelease];
 		
 		[self.localProcessingQueue setMaxConcurrentOperationCount:2];
-		[self.imageProcessingQueue setMaxConcurrentOperationCount:2];
 		[self.networkOperationQueue setMaxConcurrentOperationCount:3];
 		[self.webServiceOperationQueue setMaxConcurrentOperationCount:10];
 		
-		self.thumbImageRequests = [NSMutableDictionary dictionary];
         self.currentlyProcessingIdentifiers = [NSMutableArray array];
 		
 		self.connectionIsIdle = YES;
         self.firedFirstBusyIdleNotification = NO;
+        
+        self.thumbnailAccessQueue = dispatch_queue_create("com.scholastic.ThumbnailAccessQueue", NULL);
+
 	}
 	
 	return self;
@@ -159,7 +149,6 @@ static SCHProcessingManager *sharedManager = nil;
     if(backgroundSupported) {        
 		
 		if ((self.localProcessingQueue && [self.localProcessingQueue operationCount]) 
-			|| (self.imageProcessingQueue && [self.imageProcessingQueue operationCount])
 			|| (self.networkOperationQueue && [self.networkOperationQueue operationCount])
 			|| (self.webServiceOperationQueue && [self.webServiceOperationQueue operationCount])
 			) {
@@ -184,7 +173,6 @@ static SCHProcessingManager *sharedManager = nil;
 					[self.webServiceOperationQueue waitUntilAllOperationsAreFinished];
                     [self.networkOperationQueue waitUntilAllOperationsAreFinished];    
                     [self.localProcessingQueue waitUntilAllOperationsAreFinished];    
-                    [self.imageProcessingQueue waitUntilAllOperationsAreFinished];    
 					NSLog(@"operation queues are finished!");
                     [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTask];
                     self.backgroundTask = UIBackgroundTaskInvalid;
@@ -278,7 +266,6 @@ static SCHProcessingManager *sharedManager = nil;
         [self.webServiceOperationQueue cancelAllOperations];
         [self.networkOperationQueue cancelAllOperations];    
         [self.localProcessingQueue cancelAllOperations];    
-        [self.imageProcessingQueue cancelAllOperations];
         [self.currentlyProcessingIdentifiers removeAllObjects];
     }
 }
@@ -301,13 +288,6 @@ static SCHProcessingManager *sharedManager = nil;
         }
 
         for (SCHBookOperation *bookOperation in [self.localProcessingQueue operations]) {
-            if ([bookOperation.identifier isEqual:bookIdentifier] == YES) {
-                [bookOperation cancel];
-                break;
-            }
-        }
-
-        for (SCHBookOperation *bookOperation in [self.imageProcessingQueue operations]) {
             if ([bookOperation.identifier isEqual:bookIdentifier] == YES) {
                 [bookOperation cancel];
                 break;
@@ -567,10 +547,6 @@ static SCHProcessingManager *sharedManager = nil;
                 break;
         }
         
-        if (book.processingState > SCHBookProcessingStateNoCoverImage) {
-            [self checkAndDispatchThumbsForIdentifier:identifier];
-        }
-        
         [self checkIfProcessing];
     };
     
@@ -677,91 +653,4 @@ static SCHProcessingManager *sharedManager = nil;
 		[self redispatchIdentifier:identifier];
 	}
 }
-
-#pragma mark -
-#pragma mark Image Thumbnail Requests
-
-// FIXME: could be moved to SCHBookInfo? 
-- (BOOL)requestThumbImageForBookCover:(SCHAsyncBookCoverImageView *)bookCover 
-                                 size:(CGSize)size 
-                                 book:(SCHAppBook *)book
-{	
-//	NSLog(@"Requesting thumb for %@, size %@", bookCover.isbn, NSStringFromCGSize(size));
-	@synchronized(self.thumbImageRequests) {
-		
-		// check for an existing file
-		NSString *thumbPath = [book thumbPathForSize:size];
-		
-        NSFileManager *localFileManager = [[NSFileManager alloc] init];
-        
-		if ([localFileManager fileExistsAtPath:thumbPath]) {
-			bookCover.image = [SCHThumbnailFactory imageWithPath:thumbPath];
-            [localFileManager release];
-			return YES;
-		}
-        
-        [localFileManager release];
-			
-		// check for an existing request
-		NSMutableArray *sizes = [self.thumbImageRequests objectForKey:book.ContentIdentifier];
-		
-		if (sizes) {
-			for (NSValue *value in sizes) {
-				CGSize tmpSize = [value CGSizeValue];
-				
-				if (tmpSize.width == size.width && tmpSize.height == size.height) {
-					// found an existing request - don't need to enqueue another one
-					return NO;
-				}
-			}
-		}
-		
-		// if we didn't find an existing request, add a new one
-		NSValue *sizeValue = [NSValue valueWithCGSize:size];
-		
-		if (sizes) {
-			[sizes addObject:sizeValue];
-		} else {
-			sizes = [[NSMutableArray alloc] init];
-			[sizes addObject:sizeValue];
-			[self.thumbImageRequests setObject:sizes forKey:bookCover.identifier];
-			[sizes release];
-		}
-		
-        if (book.processingState > SCHBookProcessingStateNoCoverImage) {
-			[self checkAndDispatchThumbsForIdentifier:[book bookIdentifier]];
-		}
-		
-		return NO;
-	}
-}
-
-- (void)checkAndDispatchThumbsForIdentifier:(SCHBookIdentifier *)identifier
-{
-	// check if we have any outstanding requests for cover image thumbs
-	NSMutableArray *sizes = [self.thumbImageRequests objectForKey:identifier];
-	if (sizes) {
-		@synchronized(self.thumbImageRequests) {
-			for (NSValue *val in sizes) {
-				CGSize size = [val CGSizeValue];
-				SCHThumbnailOperation *thumbOp = [[SCHThumbnailOperation alloc] init];
-				thumbOp.identifier = identifier;
-				thumbOp.size = size;
-				thumbOp.flip = NO;
-				thumbOp.aspect = YES;
-                [thumbOp setMainThreadManagedObjectContext:self.managedObjectContext];
-                [thumbOp setQueuePriority:NSOperationQueuePriorityHigh];
-				
-				// add the operation to the local processing queue
-				[self.imageProcessingQueue addOperation:thumbOp];
-				[thumbOp release];
-				
-			}
-			
-			// remove all items from the tracking dictionary
-			[self.thumbImageRequests removeObjectForKey:identifier];
-		}
-    }
-}	
-
 @end

@@ -30,7 +30,7 @@
 #import "SCHAppContentProfileItem.h"
 
 static NSInteger const kSCHBookShelfViewControllerGridCellHeightPortrait = 138;
-static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
+static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
 
 @interface SCHBookShelfViewController () <UIGestureRecognizerDelegate>
 
@@ -46,7 +46,6 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 - (void)reloadData;
 - (void)save;
 
-// FIXME: this isn't really necessary
 - (IBAction)changeToListView:(UIButton *)sender;
 - (IBAction)changeToGridView:(UIButton *)sender;
 
@@ -209,7 +208,10 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
         [self changeToListView:nil];
     }
     
-    [self reloadData];
+    // FIXME: check to make sure that this is valid - reloadData is called from
+    // within the setBooks method, so don't need to call it twice?
+//    [self reloadData];
+    
 }
 
 - (void)viewDidUnload 
@@ -231,6 +233,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 
 - (void)reloadData
 {
+    NSLog(@"Calling reloadData on the grid view.");
     dispatch_async(dispatch_get_main_queue(), ^{
         if (![self.listTableView isHidden]) {
             [self.listTableView reloadData];
@@ -563,7 +566,11 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
     }
     
     self.currentlyLoadingIndex = [indexPath row];
-    [self reloadData];
+    SCHBookShelfTableViewCell *cell = (SCHBookShelfTableViewCell *) [aTableView cellForRowAtIndexPath:indexPath];
+    [cell setLoading:YES];
+
+    
+    //[self reloadData];
   
     double delayInSeconds = 0.02;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
@@ -610,6 +617,14 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 	[gridCell setIdentifier:[self.books objectAtIndex:index]];
     SCHAppContentProfileItem *appContentProfileItem = [self.profileItem appContentProfileItemForBookIdentifier:[self.books objectAtIndex:index]];
     gridCell.trashed = [appContentProfileItem.IsTrashed boolValue];
+    gridCell.isNewBook = [appContentProfileItem.IsNew boolValue];
+
+    if (self.currentlyLoadingIndex == index) {
+        gridCell.loading = YES;
+    } else {
+        gridCell.loading = NO;
+    }
+
     [gridCell endUpdates];
 
 	return(gridCell);
@@ -679,6 +694,10 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
         return;
     }
 
+    if (self.currentlyLoadingIndex != -1) {
+        return;
+    }
+
     SCHBookIdentifier *identifier = [self.books objectAtIndex:index];
     SCHAppContentProfileItem *appContentProfileItem = [self.profileItem appContentProfileItemForBookIdentifier:identifier];    
     if ([appContentProfileItem.IsTrashed boolValue]) {
@@ -688,21 +707,22 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
         return;
     }
     
-    CGRect cellFrame = [aGridView frameForCellAtGridIndex:index];
-    UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-    spinner.center = CGPointMake(CGRectGetMidX(cellFrame), CGRectGetMidY(cellFrame));
-    [spinner startAnimating];
-    [aGridView addSubview:spinner];
+    self.currentlyLoadingIndex = index;
     
-    dispatch_async(dispatch_get_main_queue(), ^{
+    SCHBookShelfGridViewCell *cell = (SCHBookShelfGridViewCell *) [aGridView cellAtGridIndex:index];
+    [cell setLoading:YES];
+    
+    double delayInSeconds = 0.02;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
         NSError *error;
 
         SCHReadingViewController *readingController = [self openBook:[self.books objectAtIndex:index] error:&error];
         if (readingController != nil) {
-            if (self.sortType == kSCHBookSortTypeLastRead) {
-                self.updateShelfOnReturnToShelf = YES;
-            }            
+            self.updateShelfOnReturnToShelf = YES;
+
             [self.navigationController pushViewController:readingController animated:YES]; 
+            self.currentlyLoadingIndex = -1;
         } else {
             if (error && !([[error domain] isEqualToString:kSCHAppBookErrorDomain] && ([error code] == kSCHAppBookStillBeingProcessedError))) {
                 LambdaAlert *alert = [[LambdaAlert alloc]
@@ -717,9 +737,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
                 [alert release];
             }
         }
-        [spinner removeFromSuperview];
     });
-    [spinner release];
 }
 
 - (SCHReadingViewController *)openBook:(SCHBookIdentifier *)identifier error:(NSError **)error
@@ -803,7 +821,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 150;
 
 - (CGFloat)cellBorderSize
 {
-    return 20;
+    return 10;
 }
 
 @end

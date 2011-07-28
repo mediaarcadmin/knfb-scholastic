@@ -1204,6 +1204,10 @@
 		C9F5BA0213918CE9009DE113 /* SCHProfilePasswordView~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9F5BA0013918CE8009DE113 /* SCHProfilePasswordView~iphone.xib */; };
 		C9FE8CFA13AA60D300D55181 /* answer-button-yellow~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C9FE8CF913AA60D300D55181 /* answer-button-yellow~ipad.png */; };
 		C9FE8CFB13AA60D300D55181 /* answer-button-yellow~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C9FE8CF913AA60D300D55181 /* answer-button-yellow~ipad.png */; };
+		F80060FB13D8892D001CA881 /* SCHBookCoverView.m in Sources */ = {isa = PBXBuildFile; fileRef = F80060FA13D88924001CA881 /* SCHBookCoverView.m */; };
+		F80060FC13D8892D001CA881 /* SCHBookCoverView.m in Sources */ = {isa = PBXBuildFile; fileRef = F80060FA13D88924001CA881 /* SCHBookCoverView.m */; };
+		F80060FE13D9CF76001CA881 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F80060FD13D9CF76001CA881 /* ImageIO.framework */; };
+		F80060FF13D9CF85001CA881 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F80060FD13D9CF76001CA881 /* ImageIO.framework */; };
 		F8048EA313C33B740060C6F5 /* BookShelfNewIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F8048EA113C33B740060C6F5 /* BookShelfNewIcon@2x.png */; };
 		F8048EA413C33B740060C6F5 /* BookShelfNewIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F8048EA113C33B740060C6F5 /* BookShelfNewIcon@2x.png */; };
 		F8048EA513C33B740060C6F5 /* BookShelfNewIcon~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F8048EA213C33B740060C6F5 /* BookShelfNewIcon~ipad.png */; };
@@ -1242,10 +1246,6 @@
 		F81C747B1344DC1200B1D9DB /* SCHFlowAnalysisOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F81C74791344DC1200B1D9DB /* SCHFlowAnalysisOperation.m */; };
 		F82D39BF131EA79100289FF3 /* SCHBookContents.m in Sources */ = {isa = PBXBuildFile; fileRef = F82D39B4131EA79100289FF3 /* SCHBookContents.m */; };
 		F82D39C5131EA79100289FF3 /* SCHBookContents.m in Sources */ = {isa = PBXBuildFile; fileRef = F82D39B4131EA79100289FF3 /* SCHBookContents.m */; };
-		F82D39D1131EA7C200289FF3 /* SCHAsyncBookCoverImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = F82D39CC131EA7C100289FF3 /* SCHAsyncBookCoverImageView.m */; };
-		F82D39D2131EA7C200289FF3 /* SCHThumbnailFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = F82D39CE131EA7C200289FF3 /* SCHThumbnailFactory.m */; };
-		F82D39D4131EA7C200289FF3 /* SCHAsyncBookCoverImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = F82D39CC131EA7C100289FF3 /* SCHAsyncBookCoverImageView.m */; };
-		F82D39D5131EA7C200289FF3 /* SCHThumbnailFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = F82D39CE131EA7C200289FF3 /* SCHThumbnailFactory.m */; };
 		F82D39D9131EA7D400289FF3 /* SCHBookShelfTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F82D39D8131EA7D400289FF3 /* SCHBookShelfTableViewCell.m */; };
 		F82D39DA131EA7D400289FF3 /* SCHBookShelfTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F82D39D8131EA7D400289FF3 /* SCHBookShelfTableViewCell.m */; };
 		F837018513BB2B7A009B280D /* SCHBookShelfTableViewCell_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = F837018413BB2B7A009B280D /* SCHBookShelfTableViewCell_iPhone.xib */; };
@@ -1440,8 +1440,6 @@
 		F878D6B1134498FB00DDB98B /* SCHRightsParsingOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F878D6A7134498FB00DDB98B /* SCHRightsParsingOperation.m */; };
 		F878D6B2134498FB00DDB98B /* SCHTextFlowPreParseOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F878D6A9134498FB00DDB98B /* SCHTextFlowPreParseOperation.m */; };
 		F878D6B3134498FB00DDB98B /* SCHTextFlowPreParseOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F878D6A9134498FB00DDB98B /* SCHTextFlowPreParseOperation.m */; };
-		F878D6B4134498FB00DDB98B /* SCHThumbnailOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F878D6AB134498FB00DDB98B /* SCHThumbnailOperation.m */; };
-		F878D6B5134498FB00DDB98B /* SCHThumbnailOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F878D6AB134498FB00DDB98B /* SCHThumbnailOperation.m */; };
 		F878D6B81344996400DDB98B /* SCHBookOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F878D6B71344996400DDB98B /* SCHBookOperation.m */; };
 		F878D6B91344996400DDB98B /* SCHBookOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F878D6B71344996400DDB98B /* SCHBookOperation.m */; };
 		F878D77C1344A1E400DDB98B /* SCHXPSCoverImageOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F878D77B1344A1E400DDB98B /* SCHXPSCoverImageOperation.m */; };
@@ -2644,6 +2642,9 @@
 		C9F5B9FB13916C62009DE113 /* button-go@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "button-go@2x.png"; path = "Resources/UIAssets/button-go@2x.png"; sourceTree = "<group>"; };
 		C9F5BA0013918CE8009DE113 /* SCHProfilePasswordView~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "SCHProfilePasswordView~iphone.xib"; sourceTree = "<group>"; };
 		C9FE8CF913AA60D300D55181 /* answer-button-yellow~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "answer-button-yellow~ipad.png"; sourceTree = "<group>"; };
+		F80060F913D88924001CA881 /* SCHBookCoverView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookCoverView.h; path = Shared/SCHBookCoverView.h; sourceTree = "<group>"; };
+		F80060FA13D88924001CA881 /* SCHBookCoverView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookCoverView.m; path = Shared/SCHBookCoverView.m; sourceTree = "<group>"; };
+		F80060FD13D9CF76001CA881 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		F8048EA113C33B740060C6F5 /* BookShelfNewIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BookShelfNewIcon@2x.png"; path = "Resources/BookShelfNewIcon@2x.png"; sourceTree = "<group>"; };
 		F8048EA213C33B740060C6F5 /* BookShelfNewIcon~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BookShelfNewIcon~ipad.png"; path = "Resources/BookShelfNewIcon~ipad.png"; sourceTree = "<group>"; };
 		F80A387513C1C37100D2B47C /* SampleIcon~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "SampleIcon~ipad.png"; path = "Resources/SampleIcon~ipad.png"; sourceTree = "<group>"; };
@@ -2666,10 +2667,6 @@
 		F81C74791344DC1200B1D9DB /* SCHFlowAnalysisOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHFlowAnalysisOperation.m; path = Shared/SCHFlowAnalysisOperation.m; sourceTree = "<group>"; };
 		F82D39B3131EA79100289FF3 /* SCHBookContents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookContents.h; path = Shared/SCHBookContents.h; sourceTree = "<group>"; };
 		F82D39B4131EA79100289FF3 /* SCHBookContents.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookContents.m; path = Shared/SCHBookContents.m; sourceTree = "<group>"; };
-		F82D39CB131EA7C100289FF3 /* SCHAsyncBookCoverImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAsyncBookCoverImageView.h; path = Shared/SCHAsyncBookCoverImageView.h; sourceTree = "<group>"; };
-		F82D39CC131EA7C100289FF3 /* SCHAsyncBookCoverImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHAsyncBookCoverImageView.m; path = Shared/SCHAsyncBookCoverImageView.m; sourceTree = "<group>"; };
-		F82D39CD131EA7C100289FF3 /* SCHThumbnailFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHThumbnailFactory.h; path = Shared/SCHThumbnailFactory.h; sourceTree = "<group>"; };
-		F82D39CE131EA7C200289FF3 /* SCHThumbnailFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHThumbnailFactory.m; path = Shared/SCHThumbnailFactory.m; sourceTree = "<group>"; };
 		F82D39D7131EA7D400289FF3 /* SCHBookShelfTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookShelfTableViewCell.h; path = Shared/SCHBookShelfTableViewCell.h; sourceTree = "<group>"; };
 		F82D39D8131EA7D400289FF3 /* SCHBookShelfTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookShelfTableViewCell.m; path = Shared/SCHBookShelfTableViewCell.m; sourceTree = "<group>"; };
 		F837018413BB2B7A009B280D /* SCHBookShelfTableViewCell_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SCHBookShelfTableViewCell_iPhone.xib; path = Shared/SCHBookShelfTableViewCell_iPhone.xib; sourceTree = "<group>"; };
@@ -2755,8 +2752,6 @@
 		F878D6A7134498FB00DDB98B /* SCHRightsParsingOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHRightsParsingOperation.m; path = Shared/SCHRightsParsingOperation.m; sourceTree = "<group>"; };
 		F878D6A8134498FB00DDB98B /* SCHTextFlowPreParseOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHTextFlowPreParseOperation.h; path = Shared/SCHTextFlowPreParseOperation.h; sourceTree = "<group>"; };
 		F878D6A9134498FB00DDB98B /* SCHTextFlowPreParseOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHTextFlowPreParseOperation.m; path = Shared/SCHTextFlowPreParseOperation.m; sourceTree = "<group>"; };
-		F878D6AA134498FB00DDB98B /* SCHThumbnailOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHThumbnailOperation.h; path = Shared/SCHThumbnailOperation.h; sourceTree = "<group>"; };
-		F878D6AB134498FB00DDB98B /* SCHThumbnailOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHThumbnailOperation.m; path = Shared/SCHThumbnailOperation.m; sourceTree = "<group>"; };
 		F878D6B61344996400DDB98B /* SCHBookOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookOperation.h; path = Shared/SCHBookOperation.h; sourceTree = "<group>"; };
 		F878D6B71344996400DDB98B /* SCHBookOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookOperation.m; path = Shared/SCHBookOperation.m; sourceTree = "<group>"; };
 		F878D77A1344A1E300DDB98B /* SCHXPSCoverImageOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHXPSCoverImageOperation.h; path = Shared/SCHXPSCoverImageOperation.h; sourceTree = "<group>"; };
@@ -2842,6 +2837,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C9B7EABE13DEDBAC00BD5CB7 /* MessageUI.framework in Frameworks */,
+				F80060FE13D9CF76001CA881 /* ImageIO.framework in Frameworks */,
 				523756AB13A2548E00B38441 /* MediaPlayer.framework in Frameworks */,
 				C9ED56821343328F00A25486 /* libiconv.dylib in Frameworks */,
 				C9ED566D1343322300A25486 /* libcss.a in Frameworks */,
@@ -2922,6 +2918,7 @@
 				C9EFB178134F4C8E00ADF905 /* libXpsSDKipad.a in Frameworks */,
 				523756AC13A254A900B38441 /* MediaPlayer.framework in Frameworks */,
 				C9B7EACA13DEF5D000BD5CB7 /* MessageUI.framework in Frameworks */,
+				F80060FF13D9CF85001CA881 /* ImageIO.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3531,6 +3528,7 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F80060FD13D9CF76001CA881 /* ImageIO.framework */,
 				C9ED56811343328F00A25486 /* libiconv.dylib */,
 				28A08D2013953393006FD008 /* libexpat.a */,
 				F8509EB712F0625100197EB5 /* libstdc++.6.dylib */,
@@ -4866,8 +4864,6 @@
 				F878D6A9134498FB00DDB98B /* SCHTextFlowPreParseOperation.m */,
 				C90AB9A4135495C5009DC49D /* SCHSmartZoomPreParseOperation.h */,
 				C90AB9A5135495C5009DC49D /* SCHSmartZoomPreParseOperation.m */,
-				F878D6AA134498FB00DDB98B /* SCHThumbnailOperation.h */,
-				F878D6AB134498FB00DDB98B /* SCHThumbnailOperation.m */,
 				F878D77A1344A1E300DDB98B /* SCHXPSCoverImageOperation.h */,
 				F878D77B1344A1E400DDB98B /* SCHXPSCoverImageOperation.m */,
 				F81C74781344DC1200B1D9DB /* SCHFlowAnalysisOperation.h */,
@@ -4958,10 +4954,8 @@
 		F8E29664130583A0009BD30D /* Image Processing */ = {
 			isa = PBXGroup;
 			children = (
-				F82D39CB131EA7C100289FF3 /* SCHAsyncBookCoverImageView.h */,
-				F82D39CC131EA7C100289FF3 /* SCHAsyncBookCoverImageView.m */,
-				F82D39CD131EA7C100289FF3 /* SCHThumbnailFactory.h */,
-				F82D39CE131EA7C200289FF3 /* SCHThumbnailFactory.m */,
+				F80060F913D88924001CA881 /* SCHBookCoverView.h */,
+				F80060FA13D88924001CA881 /* SCHBookCoverView.m */,
 			);
 			name = "Image Processing";
 			sourceTree = "<group>";
@@ -6189,8 +6183,6 @@
 				5233E0D813159CA80088F18C /* BITNetworkActivityManager.m in Sources */,
 				52E36769131D3ED200ACCBEE /* SCHBookshelfSyncComponent.m in Sources */,
 				F82D39C5131EA79100289FF3 /* SCHBookContents.m in Sources */,
-				F82D39D4131EA7C200289FF3 /* SCHAsyncBookCoverImageView.m in Sources */,
-				F82D39D5131EA7C200289FF3 /* SCHThumbnailFactory.m in Sources */,
 				F82D39DA131EA7D400289FF3 /* SCHBookShelfTableViewCell.m in Sources */,
 				52322C34132693F500BB071D /* SCHURLManager.m in Sources */,
 				F8C4C3FE1332594A0057420E /* SCHDictionaryDownloadManager.m in Sources */,
@@ -6208,7 +6200,6 @@
 				F878D6AE134498FB00DDB98B /* SCHDownloadBookFileOperation.m in Sources */,
 				F878D6B0134498FB00DDB98B /* SCHRightsParsingOperation.m in Sources */,
 				F878D6B2134498FB00DDB98B /* SCHTextFlowPreParseOperation.m in Sources */,
-				F878D6B4134498FB00DDB98B /* SCHThumbnailOperation.m in Sources */,
 				F878D6B81344996400DDB98B /* SCHBookOperation.m in Sources */,
 				F878D77C1344A1E400DDB98B /* SCHXPSCoverImageOperation.m in Sources */,
 				C9B08BC81344D34F001963D0 /* KNFBFlowEucBook.m in Sources */,
@@ -6359,6 +6350,7 @@
 				28D2AA0E13D6E8F700BEB359 /* SCHDownloadDictionaryViewController.m in Sources */,
 				28E6BCF113D72C7500A5C9E3 /* SCHBaseSetupViewController.m in Sources */,
 				2830DAC213D822B6001366D9 /* SCHNavigationControllerForModalForm.m in Sources */,
+				F80060FB13D8892D001CA881 /* SCHBookCoverView.m in Sources */,
 				28C7415B13D8A06700EEAB36 /* SCHBaseTextViewController.m in Sources */,
 				28C7416313D8A4E700EEAB36 /* SCHDeregisterDeviceViewController.m in Sources */,
 				28D67DF013D9B30500F715CD /* SCHRemoveDictionaryViewController.m in Sources */,
@@ -6497,8 +6489,6 @@
 				5233E0D913159CA80088F18C /* BITNetworkActivityManager.m in Sources */,
 				52E3676A131D3ED200ACCBEE /* SCHBookshelfSyncComponent.m in Sources */,
 				F82D39BF131EA79100289FF3 /* SCHBookContents.m in Sources */,
-				F82D39D1131EA7C200289FF3 /* SCHAsyncBookCoverImageView.m in Sources */,
-				F82D39D2131EA7C200289FF3 /* SCHThumbnailFactory.m in Sources */,
 				F82D39D9131EA7D400289FF3 /* SCHBookShelfTableViewCell.m in Sources */,
 				526750D213290EE800063AC8 /* SCHURLManager.m in Sources */,
 				F8C4C3FC1332594A0057420E /* SCHDictionaryDownloadManager.m in Sources */,
@@ -6516,7 +6506,6 @@
 				F878D6AF134498FB00DDB98B /* SCHDownloadBookFileOperation.m in Sources */,
 				F878D6B1134498FB00DDB98B /* SCHRightsParsingOperation.m in Sources */,
 				F878D6B3134498FB00DDB98B /* SCHTextFlowPreParseOperation.m in Sources */,
-				F878D6B5134498FB00DDB98B /* SCHThumbnailOperation.m in Sources */,
 				F878D6B91344996400DDB98B /* SCHBookOperation.m in Sources */,
 				F878D77D1344A1E400DDB98B /* SCHXPSCoverImageOperation.m in Sources */,
 				C9B08BC91344D34F001963D0 /* KNFBFlowEucBook.m in Sources */,
@@ -6667,6 +6656,7 @@
 				28D2AA0F13D6E8F700BEB359 /* SCHDownloadDictionaryViewController.m in Sources */,
 				28E6BCF213D72C7500A5C9E3 /* SCHBaseSetupViewController.m in Sources */,
 				2830DAC313D822B6001366D9 /* SCHNavigationControllerForModalForm.m in Sources */,
+				F80060FC13D8892D001CA881 /* SCHBookCoverView.m in Sources */,
 				28C7415C13D8A06700EEAB36 /* SCHBaseTextViewController.m in Sources */,
 				28C7416413D8A4E700EEAB36 /* SCHDeregisterDeviceViewController.m in Sources */,
 				28D67DF113D9B30500F715CD /* SCHRemoveDictionaryViewController.m in Sources */,
