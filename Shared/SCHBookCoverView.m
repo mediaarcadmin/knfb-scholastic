@@ -122,7 +122,7 @@
     
     // add the error badge
     // FIXME: change this to the correct graphic.
-    self.errorBadge = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"BookShelfNewIcon"]];
+    self.errorBadge = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"BookShelfErrorIcon"]];
     [self addSubview:self.errorBadge];
     self.errorBadge.hidden = YES;
     

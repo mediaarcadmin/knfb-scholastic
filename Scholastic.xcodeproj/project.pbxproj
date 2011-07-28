@@ -1366,6 +1366,10 @@
 		F859D998139F9D0E009DB54F /* SCHStoryInteractionScratchView.m in Sources */ = {isa = PBXBuildFile; fileRef = F859D997139F9D0E009DB54F /* SCHStoryInteractionScratchView.m */; };
 		F85C8CF71394FC42008DD042 /* SCHNotesCountView.m in Sources */ = {isa = PBXBuildFile; fileRef = F85C8CF61394FC42008DD042 /* SCHNotesCountView.m */; };
 		F85C8CF81394FC42008DD042 /* SCHNotesCountView.m in Sources */ = {isa = PBXBuildFile; fileRef = F85C8CF61394FC42008DD042 /* SCHNotesCountView.m */; };
+		F85C9D8C13E19CA8006F0546 /* BookShelfErrorIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = F85C9D8A13E19CA8006F0546 /* BookShelfErrorIcon.png */; };
+		F85C9D8D13E19CA8006F0546 /* BookShelfErrorIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = F85C9D8A13E19CA8006F0546 /* BookShelfErrorIcon.png */; };
+		F85C9D8E13E19CA8006F0546 /* BookShelfErrorIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F85C9D8B13E19CA8006F0546 /* BookShelfErrorIcon@2x.png */; };
+		F85C9D8F13E19CA8006F0546 /* BookShelfErrorIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F85C9D8B13E19CA8006F0546 /* BookShelfErrorIcon@2x.png */; };
 		F85E0309134F59E800E81D58 /* SCHCustomToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = F85E0308134F59E700E81D58 /* SCHCustomToolbar.m */; };
 		F85E030A134F59E800E81D58 /* SCHCustomToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = F85E0308134F59E700E81D58 /* SCHCustomToolbar.m */; };
 		F86433331381359000BEB8EB /* SCHProfileViewController_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = F8844BF7137D6654003D3014 /* SCHProfileViewController_iPad.m */; };
@@ -2704,6 +2708,8 @@
 		F859D997139F9D0E009DB54F /* SCHStoryInteractionScratchView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionScratchView.m; sourceTree = "<group>"; };
 		F85C8CF51394FC42008DD042 /* SCHNotesCountView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHNotesCountView.h; path = Shared/SCHNotesCountView.h; sourceTree = "<group>"; };
 		F85C8CF61394FC42008DD042 /* SCHNotesCountView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHNotesCountView.m; path = Shared/SCHNotesCountView.m; sourceTree = "<group>"; };
+		F85C9D8A13E19CA8006F0546 /* BookShelfErrorIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BookShelfErrorIcon.png; path = Resources/BookShelfErrorIcon.png; sourceTree = "<group>"; };
+		F85C9D8B13E19CA8006F0546 /* BookShelfErrorIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BookShelfErrorIcon@2x.png"; path = "Resources/BookShelfErrorIcon@2x.png"; sourceTree = "<group>"; };
 		F85E0307134F59E700E81D58 /* SCHCustomToolbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHCustomToolbar.h; path = Shared/SCHCustomToolbar.h; sourceTree = "<group>"; };
 		F85E0308134F59E700E81D58 /* SCHCustomToolbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHCustomToolbar.m; path = Shared/SCHCustomToolbar.m; sourceTree = "<group>"; };
 		F864333513813B0100BEB8EB /* SCHBookShelfViewController_iPad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookShelfViewController_iPad.h; path = iPad/SCHBookShelfViewController_iPad.h; sourceTree = "<group>"; };
@@ -4647,6 +4653,8 @@
 		F837018D13BB322F009B280D /* List View Icons */ = {
 			isa = PBXGroup;
 			children = (
+				F85C9D8A13E19CA8006F0546 /* BookShelfErrorIcon.png */,
+				F85C9D8B13E19CA8006F0546 /* BookShelfErrorIcon@2x.png */,
 				F8687ED513BA234100B59987 /* BookShelfNewIcon.png */,
 				F8048EA113C33B740060C6F5 /* BookShelfNewIcon@2x.png */,
 				F8048EA213C33B740060C6F5 /* BookShelfNewIcon~ipad.png */,
@@ -5598,6 +5606,8 @@
 				C9B7EAC813DEF29300BD5CB7 /* admin-updates-available~ipad.png in Resources */,
 				287262AA13E0621A0053CEDE /* SCHSetProfilePasswordView~iphone.xib in Resources */,
 				28456BC413E071B600BD3804 /* SCHSetProfilePasswordView~ipad.xib in Resources */,
+				F85C9D8C13E19CA8006F0546 /* BookShelfErrorIcon.png in Resources */,
+				F85C9D8E13E19CA8006F0546 /* BookShelfErrorIcon@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6083,6 +6093,8 @@
 				A334780913DF206000768DC6 /* 9780545368896_r1.TheHiddenStairs.xps in Resources */,
 				287262AB13E0621A0053CEDE /* SCHSetProfilePasswordView~iphone.xib in Resources */,
 				28456BC513E071B600BD3804 /* SCHSetProfilePasswordView~ipad.xib in Resources */,
+				F85C9D8D13E19CA8006F0546 /* BookShelfErrorIcon.png in Resources */,
+				F85C9D8F13E19CA8006F0546 /* BookShelfErrorIcon@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
