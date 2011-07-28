@@ -8,7 +8,7 @@
 
 #import "SCHBookShelfTableViewCell.h"
 #import "TTTAttributedLabel.h"
-#import "SCHAsyncBookCoverImageView.h"
+#import "SCHBookCoverView.h"
 #import "SCHAppBook.h"
 #import "SCHBookManager.h"
 #import "SCHBookIdentifier.h"
@@ -29,15 +29,12 @@ static NSInteger const CELL_ACTIVITY_SPINNER = 203;
 @interface SCHBookShelfTableViewCell ()
 
 @property (readonly) TTTAttributedLabel *textLabel;
-@property (readonly) SCHAsyncBookCoverImageView *bookCoverImageView;
-@property (readonly) UIImageView *newIndicatorIcon;
+@property (readonly) SCHBookCoverView *bookCoverView;
 @property (readonly) UIImageView *sampleAndSIIndicatorIcon;
-@property (readonly) UIView *bookTintView;
 @property (readonly) UIView *backgroundView;
 @property (readonly) UIButton *deleteButton;
 @property (readonly) UIView *thumbBackgroundView;
 @property (readonly) UIImageView *ruleImageView;
-@property (readonly) UIActivityIndicatorView *activitySpinner;
 @property (nonatomic, assign) BOOL coalesceRefreshes;
 @property (nonatomic, assign) BOOL needsRefresh;
 
@@ -66,15 +63,24 @@ static NSInteger const CELL_ACTIVITY_SPINNER = 203;
     if (self) {
         self.textLabel.backgroundColor = [UIColor clearColor];
         self.textLabel.text = [[[NSAttributedString alloc] initWithString:@""] autorelease];
-        self.bookCoverImageView.thumbSize = CGSizeMake(self.bookCoverImageView.frame.size.width, self.bookCoverImageView.frame.size.height);
         [self updateTheme];
         [self.deleteButton addTarget:self action:@selector(pressedDeleteButton:) forControlEvents:UIControlEventTouchUpInside];
         self.ruleImageView.image = [[UIImage imageNamed:@"ListViewRule"] stretchableImageWithLeftCapWidth:6 topCapHeight:0];
         self.lastCell = NO;
-                                    
+        
+        self.bookCoverView.coverViewMode = SCHBookCoverViewModeListView;
+        self.bookCoverView.topInset = 0;
+        self.bookCoverView.leftRightInset = 0;
+
     }
     
     return self;
+}
+
+- (void)prepareForReuse
+{
+    [self.bookCoverView prepareForReuse];
+    [super prepareForReuse];
 }
 
 - (void)dealloc 
@@ -89,10 +95,13 @@ static NSInteger const CELL_ACTIVITY_SPINNER = 203;
 - (void)beginUpdates
 {
     self.coalesceRefreshes = YES;
+    [self.bookCoverView beginUpdates];
 }
 
 - (void)endUpdates
 {
+    [self.bookCoverView endUpdates];
+    
     self.coalesceRefreshes = NO;
     if (self.needsRefresh) {
         [self deferredRefreshCell];
@@ -112,34 +121,19 @@ static NSInteger const CELL_ACTIVITY_SPINNER = 203;
 {
     NSAssert([NSThread isMainThread], @"must refreshCell on main thread");
     
+    [self.bookCoverView refreshBookCoverView];
+    
     SCHBookManager *bookManager = [SCHBookManager sharedBookManager];
    	SCHAppBook *book = [bookManager bookWithIdentifier:self.identifier inManagedObjectContext:bookManager.mainThreadManagedObjectContext];    
-	// image processing
-    [[SCHProcessingManager sharedProcessingManager] requestThumbImageForBookCover:self.bookCoverImageView
-                                                                             size:self.bookCoverImageView.thumbSize
-                                                                             book:book];
-   
+    
     if (self.trashed) {
-        self.bookTintView.hidden = NO;
         self.textLabel.alpha = 0.5f;
         self.deleteButton.hidden = YES;
         self.sampleAndSIIndicatorIcon.hidden = YES;
     } else {
-        // book status
-        switch ([book processingState]) {
-            case SCHBookProcessingStateReadyToRead:
-                self.bookTintView.hidden = YES;
-                break;
-            default:
-            {
-                self.bookTintView.hidden = NO;
-                break;
-            }
-        }
         self.textLabel.alpha = 1.0f;
         self.deleteButton.hidden = NO;
         self.sampleAndSIIndicatorIcon.hidden = NO;
-
     }
 
     [self setNeedsDisplay];
@@ -185,12 +179,6 @@ static NSInteger const CELL_ACTIVITY_SPINNER = 203;
     self.textLabel.backgroundColor = [UIColor clearColor];
     [attrString release];
     
-    if (self.isNewBook && !self.trashed) {
-        self.newIndicatorIcon.hidden = NO;
-    } else {
-        self.newIndicatorIcon.hidden = YES;
-    }
-    
     switch (book.bookFeatures) {
         case kSCHAppBookFeaturesNone:
         {
@@ -226,11 +214,11 @@ static NSInteger const CELL_ACTIVITY_SPINNER = 203;
         self.ruleImageView.hidden = NO;
     }
 
-    if (self.loading) {
-        [self.activitySpinner startAnimating];
-    } else {
-        [self.activitySpinner stopAnimating];
-    }
+//    if (self.loading) {
+//        [self.activitySpinner startAnimating];
+//    } else {
+//        [self.activitySpinner stopAnimating];
+//    }
     
     self.needsRefresh = NO;
 }
@@ -238,25 +226,6 @@ static NSInteger const CELL_ACTIVITY_SPINNER = 203;
 - (void)layoutSubviews 
 {
     [super layoutSubviews];
-    [UIView setAnimationsEnabled:NO];
-    
-    if (self.bookCoverImageView && !CGSizeEqualToSize(self.bookCoverImageView.coverSize, CGSizeZero)) {
-        
-        CGRect thumbTintFrame = self.bookTintView.frame;
-        
-        //NSLog(@"coversize: %@, trashed: %@", NSStringFromCGSize(self.bookCoverImageView.coverSize), self.trashed?@"Yes":@"No");
-        
-        thumbTintFrame.size.width = self.bookCoverImageView.coverSize.width;
-        thumbTintFrame.size.height = self.bookCoverImageView.coverSize.height;
-        
-        thumbTintFrame.origin.x = floorf((self.thumbBackgroundView.frame.size.width - thumbTintFrame.size.width) / 2);
-        thumbTintFrame.origin.y = floorf(self.bookCoverImageView.frame.size.height - thumbTintFrame.size.height);
-        
-        self.bookTintView.frame = thumbTintFrame;
-        //NSLog(@"Frame for cover: %@", NSStringFromCGRect(self.bookCoverImageView.frame));
-        //NSLog(@"Thumb tint frame: %@, visible: %@", NSStringFromCGRect(self.bookTintView.frame), self.bookTintView.hidden?@"No":@"Yes");
-    }
-    
 
     // code to centre the text label vertically
     CGRect frame = self.textLabel.frame;
@@ -268,8 +237,6 @@ static NSInteger const CELL_ACTIVITY_SPINNER = 203;
     
     frame.origin.y = ceilf(CGRectGetMidY(self.backgroundView.frame) - (textHeight / 2));
     self.textLabel.frame = frame;
-    
-    [UIView setAnimationsEnabled:YES];
 }
 
 
@@ -280,9 +247,11 @@ static NSInteger const CELL_ACTIVITY_SPINNER = 203;
 
 - (void)setIdentifier:(SCHBookIdentifier *)newIdentifier
 {	
+    [self.bookCoverView setIdentifier:newIdentifier];
+    
 	if (![newIdentifier isEqual:self.identifier]) {
         [[NSNotificationCenter defaultCenter] removeObserver:self name:@"SCHBookStatusUpdate" object:nil];
-        [[NSNotificationCenter defaultCenter] removeObserver:self name:@"SCHNewImageAvailable" object:nil];
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:kSCHThemeManagerThemeChangeNotification object:nil];
 
         [identifier release];
         identifier = [newIdentifier retain];
@@ -296,25 +265,27 @@ static NSInteger const CELL_ACTIVITY_SPINNER = 203;
                                                  selector:@selector(checkForCellUpdateFromNotification:)
                                                      name:@"SCHBookStateUpdate"
                                                    object:nil];
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(checkForCellUpdateFromNotification:)
-                                                     name:@"SCHNewImageAvailable"
-                                                   object:nil];
-        
-        [self.bookCoverImageView setIdentifier:self.identifier];
 	}
 }
 
 - (void)setTrashed:(BOOL)newTrashed
 {
     trashed = newTrashed;
+    [self.bookCoverView setTrashed:newTrashed];
     [self refreshCell];
 }
 
 - (void)setLoading:(BOOL)aLoading
 {
     loading = aLoading;
+    [self.bookCoverView setLoading:aLoading];
+    [self refreshCell];
+}
+
+- (void)setIsNewBook:(BOOL)newIsNewBook
+{
+    isNewBook = newIsNewBook;
+    [self.bookCoverView setIsNewBook:newIsNewBook];
     [self refreshCell];
 }
 
@@ -345,24 +316,14 @@ static NSInteger const CELL_ACTIVITY_SPINNER = 203;
     return (TTTAttributedLabel *)[self.contentView viewWithTag:CELL_TEXT_LABEL_TAG];
 }
 
-- (SCHAsyncBookCoverImageView *)bookCoverImageView
+- (SCHBookCoverView *)bookCoverView
 {
-    return (SCHAsyncBookCoverImageView *)[self.contentView viewWithTag:CELL_BOOK_COVER_VIEW_TAG];
-}
-
-- (UIImageView *)newIndicatorIcon
-{
-    return (UIImageView *)[self.contentView viewWithTag:CELL_NEW_INDICATOR_TAG];
+    return (SCHBookCoverView *)[self.contentView viewWithTag:CELL_BOOK_COVER_VIEW_TAG];
 }
 
 - (UIImageView *)sampleAndSIIndicatorIcon
 {
     return (UIImageView *)[self.contentView viewWithTag:CELL_SAMPLE_SI_INDICATOR_TAG];
-}
-
-- (UIView *)bookTintView
-{
-    return (UIImageView *)[self.contentView viewWithTag:CELL_BOOK_TINT_VIEW_TAG];
 }
 
 - (UIView *)backgroundView
@@ -383,11 +344,6 @@ static NSInteger const CELL_ACTIVITY_SPINNER = 203;
 - (UIImageView *)ruleImageView
 {
     return (UIImageView *)[self.contentView viewWithTag:CELL_RULE_IMAGE_VIEW];
-}
-
-- (UIActivityIndicatorView *)activitySpinner
-{
-    return (UIActivityIndicatorView *)[self.contentView viewWithTag:CELL_ACTIVITY_SPINNER];
 }
 
 

@@ -8,51 +8,50 @@
 
 #import "SCHBookShelfGridViewCell.h"
 
-#import "SCHThumbnailFactory.h"
 #import "SCHAppBook.h"
 #import "SCHBookManager.h"
-#import "SCHAsyncBookCoverImageView.h"
+#import "SCHBookCoverView.h"
 
 @interface SCHBookShelfGridViewCell ()
-
-@property (nonatomic, assign) BOOL coalesceRefreshes;
-@property (nonatomic, assign) BOOL needsRefresh;
-
-- (void)deferredRefreshCell;
 
 @end;
 
 @implementation SCHBookShelfGridViewCell
 
-@synthesize asyncImageView;
-@synthesize thumbTintView;
-@synthesize progressView;
+@synthesize bookCoverView;
 @synthesize identifier;
 @synthesize trashed;
-@synthesize coalesceRefreshes;
-@synthesize needsRefresh;
+@synthesize isNewBook;
+@synthesize loading;
 
 #pragma mark - Object lifecycle
 
 - (id)initWithFrame:(CGRect)frame reuseIdentifier:(NSString *)aReuseIdentifier 
 {
 	if ((self = [super initWithFrame:frame reuseIdentifier:aReuseIdentifier])) {
-                
-		self.asyncImageView = [SCHThumbnailFactory newAsyncImageWithSize:CGSizeMake(self.frame.size.width - 4, self.frame.size.height - 22)];
-		[self.asyncImageView setFrame:CGRectZero];        
-		[self.contentView addSubview:self.asyncImageView];
-		
-		self.thumbTintView = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
-		[self.thumbTintView setBackgroundColor:[UIColor colorWithRed:0.2f green:0.2f blue:0.2f alpha:0.6f]];
-        [self.thumbTintView setContentMode:UIViewContentModeBottom];
-		[self.contentView addSubview:self.thumbTintView];
-		
-		self.progressView = [[[UIProgressView alloc] initWithFrame:CGRectMake(10, self.frame.size.height - 42, self.frame.size.width - 20, 10)] autorelease];
-		[self.contentView addSubview:self.progressView];
-		self.progressView.hidden = NO;		
+        self.bookCoverView = [[SCHBookCoverView alloc] initWithFrame:CGRectZero];
+        self.bookCoverView.frame = CGRectMake(0, 0, self.frame.size.width - 4, self.frame.size.height - 22);
+
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            self.bookCoverView.topInset = 0;
+            self.bookCoverView.leftRightInset = 6;
+        } else {
+            self.bookCoverView.topInset = 0;
+            self.bookCoverView.leftRightInset = 0;
+        }
+        
+        self.bookCoverView.coverViewMode = SCHBookCoverViewModeGridView;
+        
+        [self.contentView addSubview:self.bookCoverView];
     }
 	
 	return(self);
+}
+
+- (void)prepareForReuse
+{
+    [self.bookCoverView prepareForReuse];
+    [super prepareForReuse];
 }
 
 - (void)dealloc 
@@ -60,156 +59,50 @@
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
     
-	[asyncImageView release], asyncImageView = nil;
-	[thumbTintView release], thumbTintView = nil;
-	[progressView release], progressView = nil;
+	[bookCoverView release], bookCoverView = nil;
     [identifier release], identifier = nil;
     [super dealloc];
 }
 
 #pragma mark - Drawing methods
 
-- (void)layoutSubviews 
-{
-    [super layoutSubviews];
-    [UIView setAnimationsEnabled:NO];
-
-	self.asyncImageView.frame = CGRectMake(2, 0, self.frame.size.width - 4, self.frame.size.height - 22);
-	if (self.progressView.hidden == NO) {
-        self.progressView.frame = CGRectMake(10, self.frame.size.height - 42, self.frame.size.width - 20, 10);
-    }
-    
-    if (asyncImageView && !CGSizeEqualToSize(self.asyncImageView.coverSize, CGSizeZero)) {
-    
-        CGRect thumbTintFrame = self.thumbTintView.frame;
-        
-        thumbTintFrame.size.width = self.asyncImageView.coverSize.width;
-        thumbTintFrame.size.height = self.asyncImageView.coverSize.height;
-        
-        thumbTintFrame.origin.x = (self.contentView.frame.size.width - thumbTintFrame.size.width) / 2;
-        thumbTintFrame.origin.y = self.asyncImageView.frame.size.height - thumbTintFrame.size.height;
-        
-        self.thumbTintView.frame = thumbTintFrame;
-    }
-    
-    [UIView setAnimationsEnabled:YES];
-}
-
 - (void)beginUpdates
 {
-    self.coalesceRefreshes = YES;
+    [self.bookCoverView beginUpdates];
 }
 
 - (void)endUpdates
 {
-    self.coalesceRefreshes = NO;
-    if (self.needsRefresh) {
-        [self deferredRefreshCell];
-    }
+    [self.bookCoverView endUpdates];
 }
-
-- (void)refreshCell
-{
-    if (self.coalesceRefreshes) {
-        self.needsRefresh = YES;
-    } else {
-        [self deferredRefreshCell];
-    }
-}
-
-- (void)deferredRefreshCell
-{
-    NSManagedObjectContext *context = [(id)[[UIApplication sharedApplication] delegate] managedObjectContext];
-	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.identifier inManagedObjectContext:context];    
-	// image processing
-    [[SCHProcessingManager sharedProcessingManager] requestThumbImageForBookCover:self.asyncImageView
-                                                                             size:self.asyncImageView.thumbSize
-                                                                             book:book];
-	[self setNeedsDisplay];
-    
-	// book status
-    if (self.trashed) {
-        self.thumbTintView.hidden = NO;
-        self.progressView.hidden = YES;
-    } else {
-        switch ([book processingState]) {
-            case SCHBookProcessingStateDownloadStarted:
-            case SCHBookProcessingStateDownloadPaused:
-                self.thumbTintView.hidden = NO;
-                self.progressView.hidden = NO;
-                [self.progressView setProgress:[book currentDownloadedPercentage]];            
-                break;
-            case SCHBookProcessingStateReadyToRead:
-                self.thumbTintView.hidden = YES;
-                self.progressView.hidden = YES;
-                break;
-            default:
-                self.thumbTintView.hidden = NO;
-                self.progressView.hidden = YES;
-                break;
-        }
-    }	
-	[self layoutSubviews];
-    self.needsRefresh = NO;
-}	
 
 #pragma mark - Accessor methods
 
 - (void)setIdentifier:(SCHBookIdentifier *)newIdentifier
 {	
-	if ([newIdentifier isEqual:identifier]) {
-        return;
-    }
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"SCHBookDownloadPercentageUpdate" object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"SCHBookStatusUpdate" object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"SCHNewImageAvailable" object:nil];
-    
     [identifier release];
     identifier = [newIdentifier retain];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(updatePercentage:) 
-                                                 name:@"SCHBookDownloadPercentageUpdate" 
-                                               object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(checkForCellUpdateFromNotification:)
-                                                 name:@"SCHBookStateUpdate"
-                                               object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(checkForCellUpdateFromNotification:)
-                                                 name:@"SCHNewImageAvailable"
-                                               object:nil];
-    
-    [self.asyncImageView setIdentifier:self.identifier];
-    [self refreshCell];        
+    [self.bookCoverView setIdentifier:self.identifier];
+    [self.bookCoverView refreshBookCoverView];
 }
 
 - (void)setTrashed:(BOOL)newTrashed
 {
     trashed = newTrashed;
-    [self refreshCell];
+    self.bookCoverView.trashed = newTrashed;
 }
 
-#pragma mark - Private methods
-
-- (void)checkForCellUpdateFromNotification:(NSNotification *)notification
+- (void)setIsNewBook:(BOOL)newIsNewBook
 {
-    SCHBookIdentifier *bookIdentifier = [[notification userInfo] objectForKey:@"bookIdentifier"];
-    if ([bookIdentifier isEqual:self.identifier]) {
-        [self refreshCell];
-    }
-}	
+    isNewBook = newIsNewBook;
+    self.bookCoverView.isNewBook = newIsNewBook;
+}
 
-- (void)updatePercentage:(NSNotification *)notification
+- (void)setLoading:(BOOL)newLoading
 {
-    SCHBookIdentifier *bookIdentifier = [[notification userInfo] objectForKey:@"bookIdentifier"];
-    if ([bookIdentifier isEqual:self.identifier]) {
-        float newPercentage = [(NSNumber *) [[notification userInfo] objectForKey:@"currentPercentage"] floatValue];
-        [self.progressView setProgress:newPercentage];
-        [self.progressView setHidden:NO];
-    }
+    loading = newLoading;
+    self.bookCoverView.loading = newLoading;
 }
 
 @end
