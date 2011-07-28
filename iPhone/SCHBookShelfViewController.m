@@ -617,8 +617,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
 	[gridCell setIdentifier:[self.books objectAtIndex:index]];
     SCHAppContentProfileItem *appContentProfileItem = [self.profileItem appContentProfileItemForBookIdentifier:[self.books objectAtIndex:index]];
     gridCell.trashed = [appContentProfileItem.IsTrashed boolValue];
-    gridCell.trashed = [self.profileItem bookIsTrashedWithIdentifier:[self.books objectAtIndex:index]];
-    gridCell.isNewBook = [self.profileItem bookIsNewForProfileWithIdentifier:[self.books objectAtIndex:index]];
+    gridCell.isNewBook = [appContentProfileItem.IsNew boolValue];
 
     if (self.currentlyLoadingIndex == index) {
         gridCell.loading = YES;
