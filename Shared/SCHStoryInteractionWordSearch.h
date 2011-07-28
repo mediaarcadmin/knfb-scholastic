@@ -43,4 +43,7 @@
 // XPS-relative path for 'you found them all'
 - (NSString *)audioPathForYouFoundThemAll;
 
+// XPSProvider-relative path for "To find a word, touch the first letter and drag your finger to the last letter"
+- (NSString *)dragYourFingerAudioPath;
+
 @end
