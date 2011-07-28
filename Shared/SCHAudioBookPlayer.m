@@ -16,6 +16,11 @@
 #import "KNFBXPSConstants.h"
 #import "SCHAppBook.h"
 
+// Constants
+NSString * const kSCHAudioBookPlayerErrorDomain = @"AudioBookPlayerErrorDomain";
+NSInteger const kSCHAudioBookPlayerFileError = 2000;
+NSInteger const kSCHAudioBookPlayerDataError = 2001;
+
 static NSTimeInterval const kSCHAudioBookPlayerMilliSecondsInASecond = 1000.0;
 static NSInteger const kSCHAudioBookPlayerWordTimerInterval = 4 * NSEC_PER_MSEC;
 static NSUInteger const kSCHAudioBookPlayerNoAudioLoaded = NSUIntegerMax;

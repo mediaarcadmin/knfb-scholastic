@@ -9,26 +9,28 @@
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
 #import "SCHProfileViewCell.h"
+#import "SCHSetupDelegate.h"
 
 @class SCHLoginPasswordViewController;
 @class SCHSetupBookshelvesViewController;
 @class SCHDownloadDictionaryViewController;
+@class SCHSettingsViewController;
 
-@interface SCHProfileViewController_Shared : UIViewController <NSFetchedResultsControllerDelegate, UITableViewDataSource, UITableViewDelegate, SCHProfileViewCellDelegate> {
-}
+@interface SCHProfileViewController_Shared : UIViewController <NSFetchedResultsControllerDelegate, UITableViewDataSource, UITableViewDelegate, SCHProfileViewCellDelegate, SCHSetupDelegate> {}
 
 @property (nonatomic, retain) IBOutlet UINavigationController *modalNavigationController;
 @property (nonatomic, retain) IBOutlet SCHLoginPasswordViewController *loginPasswordController;
 @property (nonatomic, retain) IBOutlet SCHSetupBookshelvesViewController *setupBookshelvesViewController;
 @property (nonatomic, retain) IBOutlet SCHDownloadDictionaryViewController *downloadDictionaryViewController;
+@property (nonatomic, retain) IBOutlet SCHLoginPasswordViewController *profilePasswordController;
+@property (nonatomic, retain) IBOutlet SCHSettingsViewController *settingsViewController;
 
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
 
 // for use by subclass
 - (void)releaseViewObjects;
-- (void)advanceToNextLoginStep;
-- (void)endLoginSequence;
-- (void)dismissKeyboard;
+- (void)pushSettingsController;
+
 
 @end

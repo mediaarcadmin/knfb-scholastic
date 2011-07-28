@@ -2,9 +2,9 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="7.10">
 	<data>
 		<int key="IBDocument.SystemTarget">1056</int>
-		<string key="IBDocument.SystemVersion">10K540</string>
+		<string key="IBDocument.SystemVersion">10J869</string>
 		<string key="IBDocument.InterfaceBuilderVersion">1306</string>
-		<string key="IBDocument.AppKitVersion">1038.36</string>
+		<string key="IBDocument.AppKitVersion">1038.35</string>
 		<string key="IBDocument.HIToolboxVersion">461.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -105,7 +105,7 @@
 									<object class="IBUITextField" id="633725175">
 										<reference key="NSNextResponder" ref="627327703"/>
 										<int key="NSvFlags">293</int>
-										<string key="NSFrame">{{20, 142}, {280, 48}}</string>
+										<string key="NSFrame">{{46, 142}, {228, 51}}</string>
 										<reference key="NSSuperview" ref="627327703"/>
 										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="355416621"/>
@@ -143,7 +143,7 @@
 									<object class="IBUITextField" id="355416621">
 										<reference key="NSNextResponder" ref="627327703"/>
 										<int key="NSvFlags">293</int>
-										<string key="NSFrame">{{20, 196}, {280, 48}}</string>
+										<string key="NSFrame">{{46, 199}, {228, 51}}</string>
 										<reference key="NSSuperview" ref="627327703"/>
 										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="935261733"/>
@@ -172,7 +172,7 @@
 									<object class="IBUIButton" id="295104663">
 										<reference key="NSNextResponder" ref="627327703"/>
 										<int key="NSvFlags">293</int>
-										<string key="NSFrame">{{20, 323}, {280, 22}}</string>
+										<string key="NSFrame">{{20, 326}, {280, 22}}</string>
 										<reference key="NSSuperview" ref="627327703"/>
 										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="253450082"/>
@@ -204,7 +204,7 @@
 									<object class="IBUIButton" id="253450082">
 										<reference key="NSNextResponder" ref="627327703"/>
 										<int key="NSvFlags">293</int>
-										<string key="NSFrame">{{20, 353}, {280, 22}}</string>
+										<string key="NSFrame">{{20, 351}, {280, 22}}</string>
 										<reference key="NSSuperview" ref="627327703"/>
 										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="894831626"/>
@@ -229,7 +229,7 @@
 									<object class="IBUIButton" id="935261733">
 										<reference key="NSNextResponder" ref="627327703"/>
 										<int key="NSvFlags">293</int>
-										<string key="NSFrame">{{110, 262}, {100, 44}}</string>
+										<string key="NSFrame">{{107, 265}, {106, 48}}</string>
 										<reference key="NSSuperview" ref="627327703"/>
 										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="295104663"/>
@@ -270,8 +270,12 @@
 										<int key="IBUIContentMode">7</int>
 										<bool key="IBUIUserInteractionEnabled">NO</bool>
 										<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-										<string key="IBUIText">To start reading, enter your Scholastic Book Clubs User Name and Password</string>
-										<reference key="IBUIFont" ref="996409264"/>
+										<string key="IBUIText">To start reading, enter your Scholastic Book Clubs User Name and Password.</string>
+										<object class="NSFont" key="IBUIFont">
+											<string key="NSName">Arial-BoldMT</string>
+											<double key="NSSize">15</double>
+											<int key="NSfFlags">16</int>
+										</object>
 										<object class="NSColor" key="IBUITextColor">
 											<int key="NSColorSpace">3</int>
 											<bytes key="NSWhite">MC4zMzMzMzMzMzMzAA</bytes>
@@ -281,6 +285,7 @@
 										<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 										<float key="IBUIMinimumFontSize">10</float>
 										<int key="IBUINumberOfLines">0</int>
+										<int key="IBUITextAlignment">1</int>
 									</object>
 								</object>
 								<string key="NSFrameSize">{320, 416}</string>
@@ -477,15 +482,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
-						<string key="label">openScholasticURLInSafari:</string>
-						<reference key="source" ref="295104663"/>
-						<reference key="destination" ref="372490531"/>
-						<int key="IBEventType">7</int>
-					</object>
-					<int key="connectionID">158</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchEventConnection" key="connection">
 						<string key="label">actionButtonAction:</string>
 						<reference key="source" ref="935261733"/>
 						<reference key="destination" ref="372490531"/>
@@ -540,6 +536,24 @@
 						<reference key="destination" ref="372490531"/>
 					</object>
 					<int key="connectionID">172</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">openScholasticUsernamePasswordURLInSafari:</string>
+						<reference key="source" ref="295104663"/>
+						<reference key="destination" ref="372490531"/>
+						<int key="IBEventType">7</int>
+					</object>
+					<int key="connectionID">176</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">openScholasticAccountURLInSafari:</string>
+						<reference key="source" ref="253450082"/>
+						<reference key="destination" ref="372490531"/>
+						<int key="IBEventType">7</int>
+					</object>
+					<int key="connectionID">177</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -802,7 +816,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">175</int>
+			<int key="maxID">177</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -824,9 +838,13 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>actionButtonAction:</string>
 							<string>cancelButtonAction:</string>
+							<string>openScholasticAccountURLInSafari:</string>
+							<string>openScholasticUsernamePasswordURLInSafari:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>id</string>
+							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 						</object>
@@ -837,6 +855,8 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>actionButtonAction:</string>
 							<string>cancelButtonAction:</string>
+							<string>openScholasticAccountURLInSafari:</string>
+							<string>openScholasticUsernamePasswordURLInSafari:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
@@ -846,6 +866,14 @@
 							</object>
 							<object class="IBActionInfo">
 								<string key="name">cancelButtonAction:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">openScholasticAccountURLInSafari:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">openScholasticUsernamePasswordURLInSafari:</string>
 								<string key="candidateClassName">id</string>
 							</object>
 						</object>
@@ -972,7 +1000,7 @@
 				<bool key="EncodedWithXMLCoder">YES</bool>
 				<string>{7, 7}</string>
 				<string>{31, 56}</string>
-				<string>{31, 48}</string>
+				<string>{31, 51}</string>
 				<string>{293, 46}</string>
 				<string>{320, 416}</string>
 			</object>

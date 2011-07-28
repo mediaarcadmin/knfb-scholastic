@@ -16,6 +16,10 @@
 #import "SCHBookManager.h"
 #import "SCHDictionaryEntry.h"
 
+// Constants
+NSString * const kSCHDictionaryYoungReader = @"YD";
+NSString * const kSCHDictionaryOlderReader = @"OD";
+
 @interface SCHDictionaryAccessManager ()
 
 @property (nonatomic, copy) NSString *youngDictionaryCSS;

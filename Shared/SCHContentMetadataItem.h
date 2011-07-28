@@ -15,7 +15,8 @@
 @class SCHBookIdentifier;
 @class SCHUserContentItem;
 
-static NSString * const kSCHContentMetadataItem = @"SCHContentMetadataItem";
+// Constants
+extern NSString * const kSCHContentMetadataItem;
 
 @interface SCHContentMetadataItem : SCHContentItem {
 
@@ -36,7 +37,6 @@ static NSString * const kSCHContentMetadataItem = @"SCHContentMetadataItem";
 
 @property (nonatomic, readonly) NSSet *AnnotationsContentItem;
 @property (nonatomic, readonly) SCHUserContentItem *UserContentItem;
-@property (nonatomic, readonly) SCHBookIdentifier *bookIdentifier;
 
 - (NSArray *)annotationsContentForProfile:(NSNumber *)profileID;
 - (void)deleteAllFiles;

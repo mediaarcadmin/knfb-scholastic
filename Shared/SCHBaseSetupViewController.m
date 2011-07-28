@@ -8,19 +8,33 @@
 
 #import <QuartzCore/QuartzCore.h>
 #import "SCHBaseSetupViewController.h"
+#import "SCHCustomToolbar.h"
+#import "SCHSetupDelegate.h"
 
 @implementation SCHBaseSetupViewController
+
+@synthesize setupDelegate;
+@synthesize topToolbar;
 
 - (void)dealloc
 {
     [super dealloc];
 }
 
+- (void)releaseViewObjects
+{
+    [topToolbar release], topToolbar = nil;
+}
+
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self.navigationController.view.layer setBorderColor:[UIColor SCHRed3Color].CGColor];
-    [self.navigationController.view.layer setBorderWidth:2.0f];
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        [self.navigationController.view.layer setBorderColor:[UIColor SCHRed3Color].CGColor];
+        [self.navigationController.view.layer setBorderWidth:2.0f];
+        [self.topToolbar setBackgroundImage:[UIImage imageNamed:@"settings-ipad-top-toolbar"]];
+    }
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -30,13 +44,20 @@
 
 - (void)setButtonBackground:(UIButton *)button
 {
-    UIImage *buttonBGImage = [[UIImage imageNamed:@"button-login-red"] stretchableImageWithLeftCapWidth:10 topCapHeight:0];
-    [button setBackgroundImage:buttonBGImage forState:UIControlStateNormal];
+    if (button) {
+        UIImage *buttonBGImage = [[UIImage imageNamed:@"button-login-red"] stretchableImageWithLeftCapWidth:11 topCapHeight:0];
+        [button setBackgroundImage:buttonBGImage forState:UIControlStateNormal];
+    }
 }
 
 - (void)back:(id)sender
 {
-    [self.navigationController.parentViewController dismissModalViewControllerAnimated:YES];
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)closeSettings
+{
+    [self.setupDelegate dismissSettingsForm];
 }
 
 @end

@@ -9,7 +9,56 @@
 #import "SCHAppBook.h"
 #import "SCHBookIdentifier.h"
 
-NSString *const kSCHAppBookErrorDomain  = @"com.knfb.scholastic.AppBookErrorDomain";
+// Constants
+NSString * const kSCHAppBookErrorDomain  = @"com.knfb.scholastic.AppBookErrorDomain";
+
+NSString * const kSCHAppBookProcessingState = @"SCHBookProcessingState";
+
+NSString * const kSCHAppBookTTSPermitted = @"TTSPermitted";
+NSString * const kSCHAppBookReflowPermitted = @"ReflowPermitted";
+NSString * const kSCHAppBookHasAudio = @"HasAudio";
+NSString * const kSCHAppBookHasStoryInteractions = @"HasStoryInteractions";
+NSString * const kSCHAppBookHasExtras = @"HasExtras";
+NSString * const kSCHAppBookLayoutStartsOnLeftSide = @"LayoutStartsOnLeftSide";
+NSString * const kSCHAppBookDRMVersion = @"DRMVersion";
+NSString * const kSCHAppBookXPSAuthor = @"XPSAuthor";
+NSString * const kSCHAppBookXPSTitle = @"XPSTitle";
+NSString * const kSCHAppBookXPSCategory = @"XPSCategory";
+NSString * const kSCHAppBookState = @"State";
+NSString * const kSCHAppBookCoverImageHeight = @"BookCoverHeight";
+NSString * const kSCHAppBookCoverImageWidth = @"BookCoverWidth";
+NSString * const kSCHAppBookCoverURL = @"BookCoverURL";
+NSString * const kSCHAppBookFileURL = @"BookFileURL";
+NSString * const kSCHAppBookTextFlowPageRanges = @"TextFlowPageRanges";
+NSString * const kSCHAppBookSmartZoomPageMarkers = @"SmartZoomPageMarkers";
+NSString * const kSCHAppBookLayoutPageEquivalentCount = @"LayoutPageEquivalentCount";
+NSString * const kSCHAppBookAudioBookReferences = @"AudioBookReferences";
+
+
+// Audio File keys
+NSString * const kSCHAppBookAudioFile = @"AudioFile";
+NSString * const kSCHAppBookTimingFile = @"TimingFile";
+
+// XPS Categories
+NSString * const kSCHAppBookYoungReader = @"YoungReader";
+NSString * const kSCHAppBookOldReader = @"OldReader";
+
+NSString * const kSCHAppBookCategoryPictureBook = @"Picture Book";
+NSString * const kSCHAppBookCategoryEarlyReader = @"Early Reader";
+NSString * const kSCHAppBookCategoryAdvancedReader = @"Advanced Reader";
+NSString * const kSCHAppBookCategoryChapterBook = @"Chapter Book";
+NSString * const kSCHAppBookCategoryNovelMiddleGrade = @"Novel - Middle Grade";
+NSString * const kSCHAppBookCategoryNovelYoungAdult = @"Novel - Young Adult";
+NSString * const kSCHAppBookCategoryGraphicNovel = @"Graphic Novel";
+NSString * const kSCHAppBookCategoryReference = @"Reference";
+NSString * const kSCHAppBookCategoryNonFictionEarly = @"Non-Fiction Early";
+NSString * const kSCHAppBookCategoryNonFictionAdvanced = @"Non-Fiction Advanced";
+
+NSString * const kSCHAppBook = @"SCHAppBook";
+
+NSString * const kSCHAppBookFetchWithContentIdentifier = @"fetchAppBookWithContentIdentifier";
+
+NSString * const kSCHAppBookEucalyptusCacheDir = @"libEucalyptusCache";
 
 @interface SCHAppBook()
 
@@ -40,6 +89,7 @@ NSString *const kSCHAppBookErrorDomain  = @"com.knfb.scholastic.AppBookErrorDoma
 @dynamic BookCoverHeight;
 @dynamic AudioBookReferences;
 @dynamic OnDiskVersion;
+@dynamic ForceProcess;
 
 @synthesize diskVersionOutOfDate;
 
@@ -309,9 +359,11 @@ NSString *const kSCHAppBookErrorDomain  = @"com.knfb.scholastic.AppBookErrorDoma
 
 - (BOOL)canOpenBookError:(NSError **)error 
 {
+    BOOL ret = NO;
+    
 	if ([self.State intValue] == SCHBookProcessingStateReadyToRead) {
-		return YES;
-	} else {
+		ret = YES;
+	} else if(error != NULL) {
         switch ([self.State intValue]) {
             case SCHBookProcessingStateUnableToAcquireLicense:
                 *error = [self errorWithCode:kSCHAppBookUnableToAcquireLicenseError];
@@ -329,8 +381,9 @@ NSString *const kSCHAppBookErrorDomain  = @"com.knfb.scholastic.AppBookErrorDoma
                 *error = [self errorWithCode:kSCHAppBookStillBeingProcessedError];
                 break;
         }
-		return NO;
 	}
+    
+    return(ret);
 }
 
 - (CGSize)bookCoverImageSize
@@ -348,6 +401,11 @@ NSString *const kSCHAppBookErrorDomain  = @"com.knfb.scholastic.AppBookErrorDoma
     }
 }
 
+- (void)setForcedProcessing:(BOOL)forceProcess
+{
+    self.ForceProcess = [NSNumber numberWithBool:forceProcess];
+}
+
 #pragma mark - Errors
 
 - (NSError *)errorWithCode:(NSInteger)code
@@ -359,7 +417,7 @@ NSString *const kSCHAppBookErrorDomain  = @"com.knfb.scholastic.AppBookErrorDoma
             description = NSLocalizedString(@"The book is still being processed.", @"Still being processed error message from AppBook");
             break;
         case kSCHAppBookUnableToAcquireLicenseError:
-            description = NSLocalizedString(@"It has not been possible to acquire a DRM license for this book. Please make sure this device is authorised and connected to the internet and try again.", @"Decryption not available error message from AppBook");
+            description = NSLocalizedString(@"It has not been possible to acquire a DRM license for this book. Please make sure this device is authorized and connected to the internet and try again.", @"Decryption not available error message from AppBook");
             break;
         case kSCHAppBookDownloadFailedError:
             description = NSLocalizedString(@"There was a problem whilst downloading this book. Please make sure this device is connected to the internet and try again.", @"Download failed error message from AppBook");

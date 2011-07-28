@@ -10,11 +10,15 @@
 
 #import "SCHUserContentItem.h"
 
+// Constants
+NSString * const kSCHContentProfileItem = @"SCHContentProfileItem";
+
 @implementation SCHContentProfileItem 
 
 @dynamic IsFavorite;
 @dynamic ProfileID;
 @dynamic LastPageLocation;
 @dynamic UserContentItem;
+@dynamic AppContentProfileItem;
 
 @end

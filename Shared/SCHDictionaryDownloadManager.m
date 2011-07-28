@@ -15,10 +15,20 @@
 #import "SCHDictionaryFileDownloadOperation.h"
 #import "SCHDictionaryFileUnzipOperation.h"
 #import "SCHDictionaryParseOperation.h"
-
 #import "SCHDictionaryWordForm.h"
 #import "SCHDictionaryEntry.h"
 #import "SCHDictionaryAccessManager.h"
+#import "NSManagedObjectContext+Extensions.h"
+
+// Constants
+NSString * const kSCHDictionaryDownloadPercentageUpdate = @"SCHDictionaryDownloadPercentageUpdate";
+
+NSString * const kSCHDictionaryStateChange = @"SCHDictionaryStateChange";
+
+int const kSCHDictionaryManifestEntryEntryTableBufferSize = 8192;
+int const kSCHDictionaryManifestEntryWordFormTableBufferSize = 1024;
+
+char * const kSCHDictionaryManifestEntryColumnSeparator = "\t";
 
 #pragma mark Dictionary Version Class
 
@@ -1327,6 +1337,55 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
     return rtn;
 }
 
+#pragma mark - user control
 
+- (void)beginDictionaryDownload
+{
+    SCHDictionaryProcessingState state = [self dictionaryProcessingState];
+    if (state == SCHDictionaryProcessingStateUserSetup || state == SCHDictionaryProcessingStateUserDeclined) {
+        [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateNeedsManifest];
+        [self checkOperatingState];
+    }
+}
+
+- (void)deleteDictionary
+{
+    SCHDictionaryProcessingState state = [self dictionaryProcessingState];
+    if (state == SCHDictionaryProcessingStateReady) {
+        
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+            
+            [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateDeleting];
+            
+            // remove dictionary files
+            NSError *error = nil;
+            if (![[NSFileManager defaultManager] removeItemAtPath:[self dictionaryDirectory] error:&error]) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"error alert title")
+                                                                    message:[error localizedDescription]
+                                                                   delegate:nil
+                                                          cancelButtonTitle:@"OK"
+                                                          otherButtonTitles:nil];
+                    [alert show];
+                    [alert release];
+                });
+            }
+            
+            // clear dictionary entries out of database
+            NSManagedObjectContext *managedObjectContext = [[NSManagedObjectContext alloc] init];
+            [managedObjectContext setPersistentStoreCoordinator:self.persistentStoreCoordinator];
+            
+            NSArray *entities = [NSArray arrayWithObjects:@"SCHDictionaryEntry", @"SCHDictionaryWordForm", @"SCHAppDictionaryState", nil];
+            for (NSString *entity in entities) {
+                if (![managedObjectContext BITemptyEntity:entity error:&error]) {
+                    NSLog(@"error removing %@: %@", entity, error);
+                }
+            }
+            
+            [managedObjectContext release];
+            [self threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateUserDeclined];
+        });
+    }
+}
 
 @end

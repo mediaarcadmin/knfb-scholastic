@@ -8,32 +8,35 @@
 
 #import "SCHBookStatistics.h"
 
-#import "SCHReadingStatsEntryItem.h"
-
 @interface SCHBookStatistics ()
 
-@property (nonatomic, retain) SCHReadingStatsEntryItem *readingStatsEntryItem;
+@property (nonatomic, assign) NSUInteger readingDuration;
+@property (nonatomic, assign) NSUInteger pagesRead;
+@property (nonatomic, assign) NSUInteger storyInteractions;
 
 @end
 
 @implementation SCHBookStatistics
 
-@synthesize readingStatsEntryItem;
+@synthesize readingDuration;
+@synthesize pagesRead;
+@synthesize storyInteractions;
+@synthesize dictionaryLookupsList;
 
 #pragma mark - Object lifecycle
 
-- (id)initWithReadingStatsEntryItem:(SCHReadingStatsEntryItem *)aReadingStatsEntryItem
+- (id)init
 {
     self = [super init];
     if (self) {
-        readingStatsEntryItem = [aReadingStatsEntryItem retain];
+        dictionaryLookupsList = [[NSMutableSet alloc] init];
     }
     return(self); 
 }
 
 - (void)dealloc 
 {
-    [readingStatsEntryItem release], readingStatsEntryItem = nil;
+    [dictionaryLookupsList release], dictionaryLookupsList = nil;
     
     [super dealloc];
 }
@@ -44,38 +47,29 @@
 {
     //NSLog(@"increaseReadingDurationBy %d", durationInSeconds);
    
-    self.readingStatsEntryItem.ReadingDuration = [NSNumber numberWithUnsignedInteger:
-                                                  [self.readingStatsEntryItem.ReadingDuration unsignedIntegerValue] + 
-                                                  durationInSeconds];
+    self.readingDuration += durationInSeconds;
 }
 
 - (void)increasePagesReadBy:(NSUInteger)pages
 {
     //NSLog(@"increasePagesReadBy %d", pages);
 
-    self.readingStatsEntryItem.PagesRead = [NSNumber numberWithUnsignedInteger:
-                                            [self.readingStatsEntryItem.PagesRead unsignedIntegerValue] + 
-                                            pages];
+    self.pagesRead += pages;
 }
 
-- (void)increaseStoryInteractionsBy:(NSUInteger)storyInteractions
+- (void)increaseStoryInteractionsBy:(NSUInteger)newStoryInteractions
 {
     //NSLog(@"increaseStoryInteractionsBy %d", storyInteractions);
 
-    self.readingStatsEntryItem.StoryInteractions = [NSNumber numberWithUnsignedInteger:
-                                                    [self.readingStatsEntryItem.StoryInteractions unsignedIntegerValue] + 
-                                                    storyInteractions];
+    self.storyInteractions += newStoryInteractions;
 }
 
 - (void)addToDictionaryLookup:(NSString *)word
 {
     //NSLog(@"addToDictionaryLookup %@", word);
 
-    if (word != nil) {
-        if (self.readingStatsEntryItem.DictionaryLookupsList == nil) {
-            self.readingStatsEntryItem.DictionaryLookupsList = [NSMutableSet set];
-        }
-        [self.readingStatsEntryItem.DictionaryLookupsList addObject:word];
+    if ([[word stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {
+        [self.dictionaryLookupsList addObject:word];
     }
 }
 

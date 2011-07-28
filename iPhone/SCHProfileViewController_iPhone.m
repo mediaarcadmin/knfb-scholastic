@@ -28,27 +28,20 @@ static const CGFloat kProfilePhoneTableOffsetLandscape = 20.0f;
 
 @interface SCHProfileViewController_iPhone() <UITableViewDelegate> 
 
-- (void)pushSettingsController;
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation;
 - (void)releaseViewObjects;
 
 @property (nonatomic, retain) UIButton *settingsButton;
-@property (nonatomic, retain) SCHLoginPasswordViewController *parentPasswordController; // Lazily instantiated
 
 @end
 
 
 @implementation SCHProfileViewController_iPhone
 
-@synthesize profilePasswordController;
 @synthesize tableView;
 @synthesize backgroundView;
 @synthesize headerView;
 @synthesize settingsButton;
-@synthesize settingsController;
-@synthesize loginController;
-@synthesize parentPasswordController;
-@synthesize setupBookshelvesViewController;
 
 #pragma mark - Object lifecycle
 
@@ -58,17 +51,11 @@ static const CGFloat kProfilePhoneTableOffsetLandscape = 20.0f;
     [backgroundView release], backgroundView = nil;
     [headerView release], headerView = nil;
     [settingsButton release], settingsButton = nil;
-    
-    [profilePasswordController release], profilePasswordController = nil;
-    [settingsController release], settingsController = nil;
-    [loginController release], loginController = nil;    
-    [setupBookshelvesViewController release], setupBookshelvesViewController = nil;
 }
 
 - (void)dealloc 
 {    
     [self releaseViewObjects];
-    [parentPasswordController release], parentPasswordController = nil;
     [super dealloc];
 }
 
@@ -92,43 +79,12 @@ static const CGFloat kProfilePhoneTableOffsetLandscape = 20.0f;
     [logoImageView release];
     
     self.tableView.tableHeaderView = self.headerView;
-    
-    self.loginController.controllerType = kSCHControllerLoginView;
-    self.loginController.actionBlock = ^{
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(authenticationManager:) name:kSCHAuthenticationManagerSuccess object:nil];			
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(authenticationManager:) name:kSCHAuthenticationManagerFailure object:nil];					
-        
-        [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithUserName:[self.loginController username] withPassword:[self.loginController password]];
-    };
-    
-    // block gets set when a row is selected
-    self.profilePasswordController.controllerType = kSCHControllerPasswordOnlyView;
 }  
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     [self setupAssetsForOrientation:self.interfaceOrientation];
-}
-
-- (void)viewDidAppear:(BOOL)animated 
-{
-    [super viewDidAppear:animated];
-}
-    
-- (void)performLogin
-{
-#if !LOCALDEBUG	
-#if NONDRMAUTHENTICATION
-	SCHAuthenticationManager *authenticationManager = [SCHAuthenticationManager sharedAuthenticationManager];
-	if ([authenticationManager isAuthenticated] == NO) {
-#else
-    NSString *deviceKey = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerDeviceKey];
-    if (!deviceKey) {         
-#endif
-		[self presentModalViewController:self.loginController animated:NO];	
-	}
-#endif        
 }
 
 #pragma mark - Orientation methods
@@ -202,41 +158,6 @@ static const CGFloat kProfilePhoneTableOffsetLandscape = 20.0f;
     [bookShelfViewController release], bookShelfViewController = nil;        
 }
 
-
-- (SCHLoginPasswordViewController *)parentPasswordController
-{
-    if (!parentPasswordController) {
-        parentPasswordController = [[[SCHLoginPasswordViewController alloc] initWithNibName:@"SCHParentToolsViewController_iPhone" bundle:nil] retain];
-        parentPasswordController.controllerType = kSCHControllerParentToolsView;
-    }
-    
-    return parentPasswordController;
-}
-
-- (void)pushSettingsController
-{
-    self.parentPasswordController.actionBlock = ^{
-        
-        if ([[SCHAuthenticationManager sharedAuthenticationManager] validatePassword:[self.parentPasswordController password]] == NO) {
-            UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") 
-                                                                 message:NSLocalizedString(@"Incorrect password", nil)
-                                                                delegate:nil 
-                                                       cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-                                                       otherButtonTitles:nil]; 
-            [errorAlert show]; 
-            [errorAlert release];
-        } else {
-            [self.parentPasswordController dismissModalViewControllerAnimated:YES];	
-            settingsController.managedObjectContext = self.managedObjectContext;
-            [self.navigationController pushViewController:self.settingsController animated:YES];
-        }
-        
-        [self.parentPasswordController clearFields]; 
-    };   
-    
-    [self presentModalViewController:self.parentPasswordController animated:YES];
-}
-
 #pragma mark - SCHProfileViewCellDelegate
     
 - (void)profileViewCell:(SCHProfileViewCell *)cell didSelectAnimated:(BOOL)animated
@@ -278,32 +199,6 @@ static const CGFloat kProfilePhoneTableOffsetLandscape = 20.0f;
             }
 #endif	
 		}	break;
-	}
-}
-
-#pragma mark - Authentication Manager
-
-- (void)authenticationManager:(NSNotification *)notification
-{
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	
-	if ([notification.name compare:kSCHAuthenticationManagerSuccess] == NSOrderedSame) {
-		[[SCHURLManager sharedURLManager] clear];
-		[[SCHSyncManager sharedSyncManager] clear];
-		[[SCHSyncManager sharedSyncManager] firstSync];
-		[self.loginController dismissModalViewControllerAnimated:YES];	
-	} else {
-		NSError *error = [notification.userInfo objectForKey:kSCHAuthenticationManagerNSError];
-		if (error!= nil) {
-			UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") 
-																 message:[error localizedDescription]
-																delegate:nil 
-													   cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-													   otherButtonTitles:nil]; 
-			[errorAlert show]; 
-			[errorAlert release];
-		}	
-        [self.loginController stopShowingProgress];
 	}
 }
 

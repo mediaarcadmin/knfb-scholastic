@@ -12,10 +12,9 @@
 
 #import "AuthenticateSvc.h"
 
-// ProcessRemote
-static NSString * const kSCHScholasticWebServiceProcessRemote = @"processRemote";
-static NSString * const kSCHScholasticWebServicePToken = @"pToken";
-
+// ProcessRemote Constants
+extern NSString * const kSCHScholasticWebServiceProcessRemote;
+extern NSString * const kSCHScholasticWebServicePToken;
 
 @interface SCHScholasticWebService : BITSOAPProxy <AuthenticateSoap11BindingResponseDelegate> 
 {

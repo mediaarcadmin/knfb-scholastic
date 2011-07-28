@@ -15,27 +15,28 @@
 @class NSManagedObjectContext;
 
 typedef enum {
-    SCHBookProcessingStateURLsNotPopulated = -5,
-    SCHBookProcessingStateDownloadFailed = -4,
-    SCHBookProcessingStateUnableToAcquireLicense = -3,
-	SCHBookProcessingStateError = -2,
-	SCHBookProcessingStateBookVersionNotSupported,    // -1
-	SCHBookProcessingStateNoURLs,                     //  0
-	SCHBookProcessingStateNoCoverImage,               //  1
-	SCHBookProcessingStateReadyForBookFileDownload,   //  2
-	SCHBookProcessingStateDownloadStarted,            //  3
-	SCHBookProcessingStateDownloadPaused,             //  4
-	SCHBookProcessingStateReadyForLicenseAcquisition, //  5
-	SCHBookProcessingStateReadyForRightsParsing,      //  6
-	SCHBookProcessingStateReadyForAudioInfoParsing,   //  7
-	SCHBookProcessingStateReadyForTextFlowPreParse,   //  8
-    SCHBookProcessingStateReadyForSmartZoomPreParse,  //  9
-	SCHBookProcessingStateReadyForPagination,         // 10
-	SCHBookProcessingStateReadyToRead                 // 11
+    SCHBookProcessingStateURLsNotPopulated           = -5,
+    SCHBookProcessingStateDownloadFailed             = -4,
+    SCHBookProcessingStateUnableToAcquireLicense     = -3,
+	SCHBookProcessingStateError                      = -2,
+	SCHBookProcessingStateBookVersionNotSupported    = -1,
+	SCHBookProcessingStateNoURLs                     = 0,
+	SCHBookProcessingStateNoCoverImage               = 1,
+	SCHBookProcessingStateReadyForBookFileDownload   = 2,
+	SCHBookProcessingStateDownloadStarted            = 3,
+	SCHBookProcessingStateDownloadPaused             = 4,
+	SCHBookProcessingStateReadyForLicenseAcquisition = 5,
+	SCHBookProcessingStateReadyForRightsParsing      = 6,
+	SCHBookProcessingStateReadyForAudioInfoParsing   = 7,
+	SCHBookProcessingStateReadyForTextFlowPreParse   = 8,
+    SCHBookProcessingStateReadyForSmartZoomPreParse  = 9,
+	SCHBookProcessingStateReadyForPagination         = 10,
+	SCHBookProcessingStateReadyToRead                = 11,
 } SCHBookCurrentProcessingState;
 
-static NSString * const kSCHProcessingManagerConnectionIdle = @"SCHProcessingManagerConnectionIdle";
-static NSString * const kSCHProcessingManagerConnectionBusy = @"SCHProcessingManagerConnectionBusy";
+// Constants
+extern NSString * const kSCHProcessingManagerConnectionIdle;
+extern NSString * const kSCHProcessingManagerConnectionBusy;
 
 @interface SCHProcessingManager : NSObject {}
 
@@ -43,15 +44,15 @@ static NSString * const kSCHProcessingManagerConnectionBusy = @"SCHProcessingMan
 
 // shared manager instance
 // FIXME: notes on duties - registers for events etc.
-+ (SCHProcessingManager *) sharedProcessingManager;
++ (SCHProcessingManager *)sharedProcessingManager;
 
 // user selection method
 - (void)userSelectedBookWithIdentifier:(SCHBookIdentifier *)identifier;
 - (void)userRequestedRetryForBookWithIdentifier:(SCHBookIdentifier *)identifier;
 
 // methods for processing
-- (BOOL) identifierIsProcessing: (SCHBookIdentifier *) identifier;
-- (void) setProcessing: (BOOL) processing forIdentifier: (SCHBookIdentifier *) identifier;
+- (BOOL)identifierIsProcessing:(SCHBookIdentifier *)identifier;
+- (void)setProcessing:(BOOL)processing forIdentifier:(SCHBookIdentifier *)identifier;
 
 // stop all the processing
 - (void)cancelAllOperations;

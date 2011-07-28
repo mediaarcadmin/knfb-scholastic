@@ -11,12 +11,12 @@
 
 #import "SCHContentItem.h"
 
-static NSString * const kSCHReadingStatsContentItem = @"SCHReadingStatsContentItem";
+// Constants
+extern NSString * const kSCHReadingStatsContentItem;
 
-static NSString * const kSCHReadingStatsContentItemFetchReadingStatsContentItemForBook = @"fetchReadingStatsContentItemForBook";
-static NSString * const kSCHReadingStatsContentItemCONTENT_IDENTIFIER = @"CONTENT_IDENTIFIER";;
-static NSString * const kSCHReadingStatsContentItemDRM_QUALIFIER = @"DRM_QUALIFIER";
-
+extern NSString * const kSCHReadingStatsContentItemFetchReadingStatsContentItemForBook;
+extern NSString * const kSCHReadingStatsContentItemCONTENT_IDENTIFIER;
+extern NSString * const kSCHReadingStatsContentItemDRM_QUALIFIER;
 
 @interface SCHReadingStatsContentItem : SCHContentItem 
 {

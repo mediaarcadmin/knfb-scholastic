@@ -14,6 +14,9 @@
 #import "SCHLastPage.h"
 #import "SCHNote.h"
 
+// Constants
+NSString * const kSCHPrivateAnnotations = @"SCHPrivateAnnotations";
+
 @implementation SCHPrivateAnnotations 
 
 @dynamic LastPage;

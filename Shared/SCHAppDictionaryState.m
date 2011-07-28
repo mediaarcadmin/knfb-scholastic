@@ -8,6 +8,8 @@
 
 #import "SCHAppDictionaryState.h"
 
+// Constants
+NSString * const kSCHAppDictionaryState = @"SCHAppDictionaryState";
 
 @implementation SCHAppDictionaryState
 @dynamic LastModified;

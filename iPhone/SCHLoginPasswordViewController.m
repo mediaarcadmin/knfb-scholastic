@@ -10,14 +10,16 @@
 #import <QuartzCore/QuartzCore.h>
 #import "SCHCustomToolbar.h"
 
+static const CGFloat kContentHeightLandscape = 380;
+
 #pragma mark - Class Extension
 
 @interface SCHLoginPasswordViewController ()
 
 - (void)releaseViewObjects;
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation;
+- (void)setupContentSizeForOrientation:(UIInterfaceOrientation)orientation;
 - (void)makeVisibleTextField:(UITextField *)textField;
-- (IBAction)openScholasticURLInSafari:(id)sender;
 
 @end
 
@@ -116,7 +118,7 @@
         } else {
             bgImage = [UIImage imageNamed:@"button-login"];
         }
-        cellBGImage = [bgImage stretchableImageWithLeftCapWidth:10 topCapHeight:0];
+        cellBGImage = [bgImage stretchableImageWithLeftCapWidth:11 topCapHeight:0];
         [self.loginButton setBackgroundImage:cellBGImage forState:UIControlStateNormal];
     }
 }
@@ -126,16 +128,19 @@
     [super viewWillAppear:animated];
     [self stopShowingProgress];
     [self setupAssetsForOrientation:[[UIApplication sharedApplication] statusBarOrientation]];
+    [self setupContentSizeForOrientation:self.interfaceOrientation];
     [self clearFields];
 
-    UIColor *borderColor;
-    if (self.controllerType == kSCHControllerParentToolsView) {
-        borderColor = [UIColor SCHRed2Color];
-    } else {
-        borderColor = [UIColor SCHBlue1Color];
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        UIColor *borderColor;
+        if (self.controllerType == kSCHControllerParentToolsView) {
+            borderColor = [UIColor SCHRed2Color];
+        } else {
+            borderColor = [UIColor SCHBlue3Color];
+        }
+        [self.navigationController.view.layer setBorderColor:borderColor.CGColor];
+        [self.navigationController.view.layer setBorderWidth:2.0f];
     }
-    [self.navigationController.view.layer setBorderColor:borderColor.CGColor];
-    [self.navigationController.view.layer setBorderWidth:2.0f];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -160,6 +165,25 @@
     [self setupAssetsForOrientation:toInterfaceOrientation];
 }
 
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+    [self.view endEditing:YES];
+    [self setupContentSizeForOrientation:self.interfaceOrientation];
+}
+
+- (void)setupContentSizeForOrientation:(UIInterfaceOrientation)orientation;
+{
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        if (UIInterfaceOrientationIsPortrait(orientation)) {
+            self.scrollView.contentSize = CGSizeZero;
+        } else {
+            self.scrollView.contentSize = CGSizeMake(self.containerView.bounds.size.width, kContentHeightLandscape);
+        }
+    } else {
+        self.scrollView.contentSize = CGSizeZero;
+    }    
+}
+
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation
 {
     CGRect barFrame       = self.topBar.frame;
@@ -180,7 +204,7 @@
                 borderColor  = [UIColor SCHBlue1Color];
                 break;
             default:
-                toolbarImage = [UIImage imageNamed:@"admin-iphone-portrait-top-toolbar.png"];
+                toolbarImage = [UIImage imageNamed:@"settings-ipad-top-toolbar.png"];
                 borderColor  = [UIColor SCHRed3Color];
                 break;
         }
@@ -207,6 +231,8 @@
     containerFrame.size.height = containerMaxY - containerFrame.origin.y;
     self.topBar.frame = barFrame;
     self.containerView.frame = containerFrame;    
+    
+    self.scrollView.contentSize = containerFrame.size;
 }
 
 #pragma mark - Username and Password accessors
@@ -277,9 +303,14 @@
     }
 }
 
-- (IBAction)openScholasticURLInSafari:(id)sender
+- (IBAction)openScholasticUsernamePasswordURLInSafari:(id)sender
 {
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://my.scholastic.com/sps_my_account/pwmgmt/ForgotPassword.jsp?AppType=COOL"]];
+}
+
+- (IBAction)openScholasticAccountURLInSafari:(id)sender
+{
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://my.scholastic.com/sps_my_account/accmgmt/GenericSignin.jsp?AppType=COOL"]];
 }
 
 #pragma mark - UITextFieldDelegate
@@ -353,12 +384,12 @@
 
 - (void)keyboardWillShow:(NSNotification *) notification
 {
-    [self.scrollView setContentSize:CGSizeMake(self.scrollView.frame.size.width, self.scrollView.frame.size.height * 1.5f)];
+    [self.scrollView setContentSize:CGSizeMake(self.scrollView.contentSize.width, MAX(self.containerView.frame.size.height, self.scrollView.contentSize.height) * 1.5f)];
 }
 
 - (void)keyboardWillHide:(NSNotification *) notification
 {
-    [self.scrollView setContentSize:CGSizeZero];
+    [self setupContentSizeForOrientation:self.interfaceOrientation];
 }
 
 @end

@@ -58,8 +58,8 @@
 		
 		self.connection = [NSURLConnection 
 						   connectionWithRequest:[NSURLRequest requestWithURL:
-//												  [NSURL URLWithString:@"http://10.0.10.6/~gordon/dictionary/UpdateManifest.xml"]]
-                                                [NSURL URLWithString:@"http://bits.blioreader.com/partners/Scholastic/SLInstall/QAStandard/UpdateManifest.xml"]]
+                                                  //[NSURL URLWithString:@"http://iMac.local/~neil/dictionary/UpdateManifest.xml"]]
+                                                  [NSURL URLWithString:@"http://bits.blioreader.com/partners/Scholastic/SLInstall/QAStandard/UpdateManifest.xml"]]
 						   delegate:self];
 		
         [self startOp];
@@ -71,8 +71,6 @@
 		}
         
         if (failure) {
-            //            [[SCHDictionaryManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateWaitingForNetwork];
-            
             [self finishOp];
             
             return;

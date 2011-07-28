@@ -11,7 +11,8 @@
 
 @class SCHReadingStatsContentItem;
 
-static NSString * const kSCHReadingStatsDetailItem = @"SCHReadingStatsDetailItem";
+// Constants
+extern NSString * const kSCHReadingStatsDetailItem;
 
 @interface SCHReadingStatsDetailItem : NSManagedObject 
 {

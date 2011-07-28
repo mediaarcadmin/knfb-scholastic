@@ -13,11 +13,12 @@
 @class SCHOrderItem;
 @class SCHBookIdentifier;
 
-static NSString * const kSCHUserContentItem = @"SCHUserContentItem";
+// Constants
+extern NSString * const kSCHUserContentItem;
 
-static NSString * const kSCHUserContentItemFetchWithContentIdentifier = @"fetchUserContentItemWithContentIdentifier";
-static NSString * const kSCHUserContentItemCONTENT_IDENTIFIER = @"CONTENT_IDENTIFIER";
-static NSString * const kSCHUserContentItemDRM_QUALIFIER = @"DRM_QUALIFIER";
+extern NSString * const kSCHUserContentItemFetchWithContentIdentifier;
+extern NSString * const kSCHUserContentItemCONTENT_IDENTIFIER;
+extern NSString * const kSCHUserContentItemDRM_QUALIFIER;
 
 @interface SCHUserContentItem :  SCHSyncEntity  
 {

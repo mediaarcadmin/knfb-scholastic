@@ -10,10 +10,11 @@
 @class SCHLibreAccessWebService;
 @class SCHDrmRegistrationSession;
 
-static NSString * const kSCHAuthenticationManagerUsername = @"AuthenticationManager.Username";
-static NSString * const kSCHAuthenticationManagerServiceName = @"Scholastic";
+// Constants
+extern NSString * const kSCHAuthenticationManagerUsername;
+extern NSString * const kSCHAuthenticationManagerServiceName;
 
-static NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute = 60.0;
+extern NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute;
 
 @interface SCHAuthenticationManager ()
 

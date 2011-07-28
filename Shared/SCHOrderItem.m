@@ -10,6 +10,9 @@
 
 #import "SCHUserContentItem.h"
 
+// Constants
+NSString * const kSCHOrderItem = @"SCHOrderItem";
+
 @implementation SCHOrderItem 
 
 @dynamic OrderID;

@@ -16,7 +16,7 @@ static NSInteger const kSCHDrmRegistrationError = 2002;
 static NSInteger const kSCHDrmDeregistrationError = 2003;
 static NSInteger const kSCHDrmLicenseAcquisitionError = 2004;
 
-#if SERVEROVERRIDE
+#if UATSERVER
 static NSString* const drmServerUrl = @"http://plr.uat.cld.libredigital.com/rightsmanager.asmx";
 #else
 static NSString* const drmServerUrl = @"http://plr.devint.cld.libredigital.com/rightsmanager.asmx";

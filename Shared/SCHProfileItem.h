@@ -10,7 +10,7 @@
 #import <CoreData/CoreData.h>
 #import "SCHSyncEntity.h"
 
-@class SCHAppBookOrder;
+@class SCHAppContentProfileItem;
 @class SCHAppProfile;
 @class SCHContentProfileItem;
 @class SCHPrivateAnnotations;
@@ -19,12 +19,13 @@
 @class SCHContentMetadataItem;
 @class SCHBookIdentifier;
 
-static NSString * const kSCHProfileItem = @"SCHProfileItem";
+// Constants
+extern NSString * const kSCHProfileItem;
 
-static NSString * const kSCHProfileItemFetchAnnotationsForProfileBook = @"fetchAnnotationsForProfileBook";
-static NSString * const kSCHProfileItemPROFILE_ID = @"PROFILE_ID";
-static NSString * const kSCHProfileItemCONTENT_IDENTIFIER = @"CONTENT_IDENTIFIER";
-static NSString * const kSCHProfileItemDRM_QUALIFIER = @"DRM_QUALIFIER";
+extern NSString * const kSCHProfileItemFetchAnnotationsForProfileBook;
+extern NSString * const kSCHProfileItemPROFILE_ID;
+extern NSString * const kSCHProfileItemCONTENT_IDENTIFIER;
+extern NSString * const kSCHProfileItemDRM_QUALIFIER;
 
 typedef enum {
     kSCHBookSortTypeUser,
@@ -52,36 +53,30 @@ typedef enum {
 @property (nonatomic, retain) NSString * UserKey;
 @property (nonatomic, retain) NSNumber * BookshelfStyle;
 @property (nonatomic, retain) NSString * LastName;
-@property (nonatomic, retain) NSSet* AppBookOrder;
 @property (nonatomic, retain) SCHAppProfile * AppProfile;
+@property (nonatomic, retain) NSSet * AppContentProfileItem;
 
 @property (nonatomic, readonly) NSSet *ContentProfileItem;
 @property (nonatomic, readonly) NSUInteger age;
 
+- (SCHAppContentProfileItem *)appContentProfileItemForBookIdentifier:(SCHBookIdentifier *)bookIdentifier;
 - (NSMutableArray *)allBookIdentifiers;
 - (SCHBookAnnotations *)annotationsForBook:(SCHBookIdentifier *)bookIdentifier;
-- (SCHBookStatistics *)newStatisticsForBook:(SCHBookIdentifier *)bookIdentifier;
+- (void)newStatistics:(SCHBookStatistics *)bookStatistics forBook:(SCHBookIdentifier *)bookIdentifier;
 - (void)saveBookOrder:(NSArray *)books;
-- (void)clearBookOrder;
 - (NSString *)bookshelfName:(BOOL)shortName;
 - (void)setRawPassword:(NSString *)value;
 - (BOOL)hasPassword;
 - (BOOL)validatePasswordWith:(NSString *)withPassword;
 
-- (BOOL)bookIsNewForProfileWithIdentifier:(SCHBookIdentifier *)identifier;
-- (void)setBookIsNew:(BOOL)isNew forBookWithIdentifier:(SCHBookIdentifier *)identifier;
-
-- (BOOL)bookIsTrashedWithIdentifier:(SCHBookIdentifier *)identifier;
-- (void)setTrashed:(BOOL)trashed forBookWithIdentifier:(SCHBookIdentifier *)identifier;
-
 @end
 
 @interface SCHProfileItem (CoreDataGeneratedAccessors)
 
-- (void)addAppBookOrderObject:(SCHAppBookOrder *)value;
-- (void)removeAppBookOrderObject:(SCHAppBookOrder *)value;
-- (void)addAppBookOrder:(NSSet *)value;
-- (void)removeAppBookOrder:(NSSet *)value;
+- (void)addAppContentProfileItemObject:(SCHAppContentProfileItem *)value;
+- (void)removeAppContentProfileItemObject:(SCHAppContentProfileItem *)value;
+- (void)addAppContentProfileItem:(NSSet *)value;
+- (void)removeAppContentProfileItem:(NSSet *)value;
 
 @end
 

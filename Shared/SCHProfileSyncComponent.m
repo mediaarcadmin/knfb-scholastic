@@ -15,6 +15,11 @@
 #import "SCHAppProfile.h"
 #import "SCHAnnotationsItem.h"
 
+// Constants
+NSString * const SCHProfileSyncComponentWillDeleteNotification = @"SCHProfileSyncComponentWillDeleteNotification";
+NSString * const SCHProfileSyncComponentDeletedProfileIDs = @"SCHProfileSyncComponentDeletedProfileIDs";
+NSString * const SCHProfileSyncComponentCompletedNotification = @"SCHProfileSyncComponentCompletedNotification";
+
 @interface SCHProfileSyncComponent ()
 
 @property (retain, nonatomic) NSMutableArray *createdProfiles;
@@ -265,6 +270,8 @@
 
     SCHAnnotationsItem *newAnnotationsItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHAnnotationsItem inManagedObjectContext:self.managedObjectContext];
     newAnnotationsItem.ProfileID = newProfileItem.ID;
+    
+    NSLog(@"Added profile with screenname %@ and ID %@", newProfileItem.ScreenName, newProfileItem.ID);
 }
 
 - (void)syncProfile:(NSDictionary *)webProfile withProfile:(SCHProfileItem *)localProfile

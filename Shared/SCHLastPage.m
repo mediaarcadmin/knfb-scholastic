@@ -8,6 +8,8 @@
 
 #import "SCHLastPage.h"
 
+// Constants
+NSString * const kSCHLastPage = @"SCHLastPage";
 
 @implementation SCHLastPage 
 

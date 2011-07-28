@@ -16,12 +16,14 @@
 #import "SCHProfileViewCell.h"
 #import "SCHCustomNavigationBar.h"
 #import "SCHAuthenticationManager.h"
+#import "SCHURLManager.h"
 #import "SCHSyncManager.h"
 #import "SCHThemeManager.h"
 #import "SCHProfileSyncComponent.h"
 #import "SCHSetupBookshelvesViewController.h"
 #import "SCHDownloadDictionaryViewController.h"
 #import "SCHDictionaryDownloadManager.h"
+#import "LambdaAlert.h"
 
 enum LoginScreens {
     kLoginScreenNone,
@@ -33,9 +35,14 @@ enum LoginScreens {
 @interface SCHProfileViewController_Shared()  
 
 @property (nonatomic, assign) enum LoginScreens loginScreen;
+@property (nonatomic, retain) SCHLoginPasswordViewController *parentPasswordController; // Lazily instantiated
 
 - (void)willEnterForeground:(NSNotification *)note;
 - (void)showLoginControllerWithAnimation:(BOOL)animated;
+- (void)dismissKeyboard;
+- (void)advanceToNextLoginStep;
+- (void)endLoginSequence;
+- (void)performLogin;
 
 @end
 
@@ -45,9 +52,12 @@ enum LoginScreens {
 @synthesize managedObjectContext=managedObjectContext_;
 @synthesize modalNavigationController;
 @synthesize loginPasswordController;
+@synthesize profilePasswordController;
+@synthesize settingsViewController;
 @synthesize setupBookshelvesViewController;
 @synthesize downloadDictionaryViewController;
 @synthesize loginScreen;
+@synthesize parentPasswordController;
 
 #pragma mark - Object lifecycle
 
@@ -57,6 +67,8 @@ enum LoginScreens {
     [setupBookshelvesViewController release], setupBookshelvesViewController = nil;
     [downloadDictionaryViewController release], downloadDictionaryViewController = nil;
     [modalNavigationController release], modalNavigationController = nil;
+    [profilePasswordController release], profilePasswordController = nil;
+    [settingsViewController release], settingsViewController = nil;
 }
 
 - (void)dealloc 
@@ -65,6 +77,7 @@ enum LoginScreens {
     
     [fetchedResultsController_ release], fetchedResultsController_ = nil;
     [managedObjectContext_ release], managedObjectContext_ = nil;
+    [parentPasswordController release], parentPasswordController = nil;
     
     [super dealloc];
 }
@@ -84,14 +97,25 @@ enum LoginScreens {
                                              selector:@selector(profileSyncDidComplete:)
                                                  name:SCHProfileSyncComponentCompletedNotification
                                                object:nil];
+
+    self.loginPasswordController.controllerType = kSCHControllerLoginView;
+    self.loginPasswordController.actionBlock = ^{
+        [self performLogin];
+    };
     
+    self.profilePasswordController.controllerType = kSCHControllerPasswordOnlyView;
+    self.profilePasswordController.cancelBlock = ^{
+        [self endLoginSequence];
+    };
+    
+    self.setupBookshelvesViewController.setupDelegate = self;
+    self.downloadDictionaryViewController.setupDelegate = self;
+    self.settingsViewController.setupDelegate = self;
+    self.settingsViewController.managedObjectContext = self.managedObjectContext;
+
     [self advanceToNextLoginStep];
 }  
 
-- (void)viewDidAppear:(BOOL)animated 
-{
-    [super viewDidAppear:animated];
-}
 
 #pragma mark - Table view data source
 
@@ -197,7 +221,7 @@ enum LoginScreens {
     isAuthenticated = YES;
 #elif NONDRMAUTHENTICATION
 	SCHAuthenticationManager *authenticationManager = [SCHAuthenticationManager sharedAuthenticationManager];
-	isAuthenticated = [authenticationManager isAuthenticated];
+	isAuthenticated = [authenticationManager hasUsernameAndPassword];
 #else 
     NSString *deviceKey = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerDeviceKey];
     isAuthenticated = (deviceKey != nil);
@@ -206,10 +230,12 @@ enum LoginScreens {
     if (!isAuthenticated) {
         self.loginScreen = kLoginScreenPassword;
     }
+#if !LOCALDEBUG
     else if ([[self.fetchedResultsController sections] count] == 0 
              || [[[self.fetchedResultsController sections] objectAtIndex:0] numberOfObjects] == 0) {
         self.loginScreen = kLoginScreenSetupBookshelves;
     }
+#endif
     else if ([[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryProcessingState] == SCHDictionaryProcessingStateUserSetup) {
         self.loginScreen = kLoginScreenDownloadDictionary;
     }
@@ -229,6 +255,15 @@ enum LoginScreens {
 {
     [self dismissModalViewControllerAnimated:YES];
     self.loginScreen = kLoginScreenNone;
+}
+
+- (void)performLogin
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(authenticationManager:) name:kSCHAuthenticationManagerSuccess object:nil];			
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(authenticationManager:) name:kSCHAuthenticationManagerFailure object:nil];					
+    
+    [self.loginPasswordController startShowingProgress];
+    [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithUserName:[self.loginPasswordController username] withPassword:[self.loginPasswordController password]];
 }
 
 - (void)showLoginControllerWithAnimation:(BOOL)animated
@@ -272,9 +307,62 @@ enum LoginScreens {
     }
 }
 
+
 - (void)dismissKeyboard
 {
-    // no-op by default
+    if ([[[UIDevice currentDevice] systemVersion] compare:@"4.3"] == NSOrderedAscending) {
+        // pre-4.3 only - we have to dismiss the modal form and represent it to get the
+        // keyboard to disappear; from 4.3-on the UINavigationController subclass takes
+        // care of this.
+        [CATransaction begin];
+        [self dismissModalViewControllerAnimated:NO];
+        [self presentModalViewController:self.modalNavigationController animated:NO];
+        [CATransaction commit];
+    }
+}
+
+#pragma mark - settings
+
+- (void)dismissSettingsForm
+{
+    [self advanceToNextLoginStep];
+}
+
+- (SCHLoginPasswordViewController *)parentPasswordController
+{
+    if (!parentPasswordController) {
+        parentPasswordController = [[[SCHLoginPasswordViewController alloc] initWithNibName:@"SCHParentToolsViewController" bundle:nil] retain];
+        parentPasswordController.controllerType = kSCHControllerParentToolsView;
+    }
+    
+    return parentPasswordController;
+}
+
+- (void)pushSettingsController
+{
+    self.parentPasswordController.actionBlock = ^{
+        
+        if ([[SCHAuthenticationManager sharedAuthenticationManager] validatePassword:[self.parentPasswordController password]] == NO) {
+            UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") 
+                                                                 message:NSLocalizedString(@"Incorrect password", nil)
+                                                                delegate:nil 
+                                                       cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+                                                       otherButtonTitles:nil]; 
+            [errorAlert show]; 
+            [errorAlert release];
+        } else {
+            [self dismissKeyboard];
+            [self.modalNavigationController pushViewController:self.settingsViewController animated:YES];
+        }
+        
+        [self.parentPasswordController clearFields]; 
+    };
+    
+    [self.modalNavigationController setViewControllers:[NSArray arrayWithObject:self.parentPasswordController]];
+    [self.modalNavigationController setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
+    [self.modalNavigationController setModalPresentationStyle:UIModalPresentationFormSheet];
+    [self.modalNavigationController.navigationBar setTintColor:[UIColor SCHRed2Color]];
+    [self presentModalViewController:self.modalNavigationController animated:YES];
 }
 
 #pragma mark - notifications
@@ -285,7 +373,7 @@ enum LoginScreens {
 {
     if (self.loginScreen == kLoginScreenSetupBookshelves) {
         [self.setupBookshelvesViewController showActivity:YES];
-        [[SCHSyncManager sharedSyncManager] firstSync];
+        [[SCHSyncManager sharedSyncManager] firstSync:YES];
     }
 }
 
@@ -295,6 +383,39 @@ enum LoginScreens {
         [self.setupBookshelvesViewController showActivity:NO];
         [self advanceToNextLoginStep];
     }
+}
+
+
+- (void)authenticationManager:(NSNotification *)notification
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kSCHAuthenticationManagerSuccess object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kSCHAuthenticationManagerFailure object:nil];
+	
+	if ([notification.name isEqualToString:kSCHAuthenticationManagerSuccess]) {
+        [[SCHURLManager sharedURLManager] clear];
+        [[SCHSyncManager sharedSyncManager] clear];
+        [[SCHSyncManager sharedSyncManager] firstSync:YES];
+#if LOCALDEBUG
+        [self advanceToNextLoginStep];
+#endif
+	} else {
+		NSError *error = [notification.userInfo objectForKey:kSCHAuthenticationManagerNSError];
+		if (error != nil) {
+            NSString *localizedMessage = [NSString stringWithFormat:
+                                          NSLocalizedString(@"A problem occured. If this problem persists please contact support quoting:\n\n '%@'", nil), 
+                                          [error localizedDescription]];                      
+            LambdaAlert *alert = [[LambdaAlert alloc]
+                                  initWithTitle:NSLocalizedString(@"Login Error", @"Login Error") 
+                                  message:localizedMessage];
+            [alert addButtonWithTitle:NSLocalizedString(@"Cancel", @"Cancel") block:^{}];                        
+            [alert addButtonWithTitle:NSLocalizedString(@"Retry", @"Retry") block:^{
+                [self performLogin];
+            }];
+            [alert show];
+            [alert release];
+        }	
+        [self.loginPasswordController stopShowingProgress];
+	}
 }
 
 @end

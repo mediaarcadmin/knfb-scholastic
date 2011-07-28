@@ -13,6 +13,9 @@
 #import "SCHLibreAccessWebService.h"
 #import "SCHReadingStatsDetailItem.h"
 
+// Constants
+NSString * const SCHReadingStatsSyncComponentCompletedNotification = @"SCHReadingStatsSyncComponentCompletedNotification";
+
 @implementation SCHReadingStatsSyncComponent
 
 - (BOOL)synchronize

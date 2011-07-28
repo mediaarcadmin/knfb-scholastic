@@ -9,6 +9,8 @@
 #import "SCHAppProfile.h"
 #import "SCHProfileItem.h"
 
+// Constants
+NSString * const kSCHAppProfile = @"SCHAppProfile";
 
 @implementation SCHAppProfile
 

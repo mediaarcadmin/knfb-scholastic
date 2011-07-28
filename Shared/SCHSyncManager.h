@@ -30,11 +30,10 @@
 - (void)clear;
 - (BOOL)havePerformedFirstSyncUpToBooks;
 
-- (void)firstSync;
+- (void)firstSync:(BOOL)syncNow;
 - (void)changeProfile;
 - (void)updateBookshelf;
 - (void)openDocument:(SCHUserContentItem *)userContentItem forProfile:(NSNumber *)profileID;
 - (void)closeDocument:(SCHUserContentItem *)userContentItem forProfile:(NSNumber *)profileID;
-- (void)exitParentalTools:(BOOL)syncNow;
 
 @end

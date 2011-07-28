@@ -8,14 +8,24 @@
 
 #import <UIKit/UIKit.h>
 
+@class SCHCustomToolbar;
+@protocol SCHSetupDelegate; 
 
 @interface SCHBaseSetupViewController : UIViewController {}
+
+@property (nonatomic, assign) id<SCHSetupDelegate> setupDelegate;
 
 // set the appropriate button background for a setup screen button
 - (void)setButtonBackground:(UIButton *)button;
 
-// hook to 'back' button in toolbar
+// hook to 'back' button in toolbar; default behaviour pops the navigation controller
 - (IBAction)back:(id)sender;
 
+// close the entire settings dialog
+- (IBAction)closeSettings;
+
+@property (nonatomic, retain) IBOutlet SCHCustomToolbar *topToolbar;
+
+- (void)releaseViewObjects;
 
 @end

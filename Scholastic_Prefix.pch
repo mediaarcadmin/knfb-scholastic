@@ -6,10 +6,11 @@
     #import <Foundation/Foundation.h>
     #import <UIKit/UIKit.h>
     #import <CoreData/CoreData.h>
+    #import <QuartzCore/QuartzCore.h>
     #import "UIColor+Scholastic.h"
 #endif
 
-#define SERVEROVERRIDE 1
+#define UATSERVER 1
 #define NONDRMAUTHENTICATION 0
 #define DICTIONARY_DOWNLOAD_DISABLED 0
 

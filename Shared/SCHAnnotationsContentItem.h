@@ -12,11 +12,12 @@
 @class SCHAnnotationsItem;
 @class SCHPrivateAnnotations;
 
-static NSString * const kSCHAnnotationsContentItem = @"SCHAnnotationsContentItem";
+// Constants
+extern NSString * const kSCHAnnotationsContentItem;
 
-static NSString * const kSCHAnnotationsContentItemfetchAnnotationsContentItemsForBook = @"fetchAnnotationsContentItemsForBook";
-static NSString * const kSCHAnnotationsContentItemCONTENT_IDENTIFIER = @"CONTENT_IDENTIFIER";
-static NSString * const kSCHAnnotationsContentItemDRM_QUALIFIER = @"DRM_QUALIFIER";
+extern NSString * const kSCHAnnotationsContentItemfetchAnnotationsContentItemsForBook;
+extern NSString * const kSCHAnnotationsContentItemCONTENT_IDENTIFIER;
+extern NSString * const kSCHAnnotationsContentItemDRM_QUALIFIER;
 
 @interface SCHAnnotationsContentItem :  SCHContentItem  
 {

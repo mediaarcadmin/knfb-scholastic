@@ -9,6 +9,9 @@
 #import "SCHBookIdentifier.h"
 #import "SCHLibreAccessWebService.h"
 
+// Constants
+NSString * const kSCHBookIdentifierBookIdentifier = @"BookIdentifier";
+
 @implementation SCHBookIdentifier
 
 @synthesize isbn;

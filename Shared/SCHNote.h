@@ -13,7 +13,8 @@
 @class SCHPrivateAnnotations;
 @class SCHBookPoint;
 
-static NSString * const kSCHNote = @"SCHNote";
+// Constants
+extern NSString * const kSCHNote;
 
 @interface SCHNote :  SCHAnnotation  
 {

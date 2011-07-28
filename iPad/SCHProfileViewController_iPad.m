@@ -7,19 +7,14 @@
 //
 
 #import "SCHProfileViewController_iPad.h"
-#import <QuartzCore/QuartzCore.h>
 #import "SCHBookshelfViewController_iPad.h"
 #import "SCHBookshelfViewController.h"
 #import "SCHProfileItem.h"
 #import "SCHLoginPasswordViewController.h"
 #import "SCHThemeManager.h"
-#import "SCHURLManager.h"
-#import "SCHSyncManager.h"
-#import "SCHBookManager.h"
 #import "SCHCustomNavigationBar.h"
 #import "SCHAppProfile.h"
 #import "SCHBookIdentifier.h"
-#import "SCHAuthenticationManager.h"
 
 static const CGFloat kProfilePadTableOffsetPortrait = 280.0f;
 static const CGFloat kProfilePadTableOffsetLandscape = 220.0f;
@@ -31,11 +26,9 @@ static const CGFloat kProfilePadTableOffsetLandscape = 220.0f;
 - (void)releaseViewObjects;
 - (void)pushBookshelvesControllerWithProfileItem:(SCHProfileItem *)profileItem;
 - (void)showProfilePasswordControllerWithAnimation:(BOOL)animated;
-- (void)pushSettingsController;
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation;
 
 @property (nonatomic, retain) UIButton *settingsButton;
-@property (nonatomic, retain) SCHLoginPasswordViewController *parentPasswordController; // Lazily instantiated
 
 @end
 
@@ -46,10 +39,7 @@ static const CGFloat kProfilePadTableOffsetLandscape = 220.0f;
 @synthesize headerView;
 @synthesize containerView;
 @synthesize backgroundView;
-@synthesize profilePasswordController;
-@synthesize settingsViewController;
 @synthesize settingsButton;
-@synthesize parentPasswordController;
 
 #pragma mark - Object lifecycle
 
@@ -61,16 +51,13 @@ static const CGFloat kProfilePadTableOffsetLandscape = 220.0f;
     [headerView release], headerView = nil;
     [containerView release], containerView = nil;
     [backgroundView release], backgroundView = nil;
-    [profilePasswordController release], profilePasswordController = nil;
     [settingsButton release], settingsButton = nil;
-    [settingsViewController release], settingsViewController = nil;
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)dealloc 
 {    
-    [parentPasswordController release], parentPasswordController = nil;
     [super dealloc];
 }
 
@@ -94,22 +81,6 @@ static const CGFloat kProfilePadTableOffsetLandscape = 220.0f;
     [self.settingsButton sizeToFit];
     
     self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:self.settingsButton] autorelease];
-    
-    self.loginPasswordController.controllerType = kSCHControllerLoginView;
-    self.loginPasswordController.actionBlock = ^{
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(authenticationManager:) name:kSCHAuthenticationManagerSuccess object:nil];			
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(authenticationManager:) name:kSCHAuthenticationManagerFailure object:nil];					
-
-        [self.loginPasswordController startShowingProgress];
-        [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithUserName:[self.loginPasswordController username] withPassword:[self.loginPasswordController password]];
-    };
-    
-    self.profilePasswordController.controllerType = kSCHControllerPasswordOnlyView;
-    self.profilePasswordController.cancelBlock = ^{
-        [self endLoginSequence];
-    };
-    
-    self.settingsViewController.settingsDelegate = self;
     
     self.tableView.tableHeaderView = self.headerView;
     [self.containerView addSubview:self.tableView];
@@ -159,69 +130,6 @@ static const CGFloat kProfilePadTableOffsetLandscape = 220.0f;
     [self.profilePasswordController setModalPresentationStyle:UIModalPresentationFormSheet];
     [self presentModalViewController:self.profilePasswordController animated:YES];
 
-}
-
-- (SCHLoginPasswordViewController *)parentPasswordController
-{
-    if (!parentPasswordController) {
-        parentPasswordController = [[[SCHLoginPasswordViewController alloc] initWithNibName:@"SCHParentToolsViewController_iPad" bundle:nil] retain];
-        parentPasswordController.controllerType = kSCHControllerParentToolsView;
-    }
-    
-    return parentPasswordController;
-}
-
-- (void)dismissKeyboard
-{
-    if ([[[UIDevice currentDevice] systemVersion] compare:@"4.3"] == NSOrderedAscending) {
-        // pre-4.3 only - we have to dismiss the modal form and represent it to get the
-        // keyboard to disappear; from 4.3-on the UINavigationController subclass takes
-        // care of this.
-        [CATransaction begin];
-        [self dismissModalViewControllerAnimated:NO];
-        [self presentModalViewController:self.modalNavigationController animated:NO];
-        [CATransaction commit];
-    }
-}
-
-#pragma SCHSettingsViewControllerDelegate
-
-- (void)dismissSettingsForm
-{
-    [super dismissModalViewControllerAnimated:YES];
-
-    // allow the previous modal dialog to close before re-opening the login screen
-    [self performSelector:@selector(advanceToNextLoginStep) withObject:nil afterDelay:1.0];
-}
-
-
-#pragma mark - settings
-
-- (void)pushSettingsController
-{
-    self.parentPasswordController.actionBlock = ^{
-        
-        if ([[SCHAuthenticationManager sharedAuthenticationManager] validatePassword:[self.parentPasswordController password]] == NO) {
-            UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") 
-                                                                 message:NSLocalizedString(@"Incorrect password", nil)
-                                                                delegate:nil 
-                                                       cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-                                                       otherButtonTitles:nil]; 
-            [errorAlert show]; 
-            [errorAlert release];
-        } else {
-            [self dismissKeyboard];
-            [self.modalNavigationController pushViewController:self.settingsViewController animated:YES];
-        }
-        
-        [self.parentPasswordController clearFields]; 
-    };
-    
-    [self.modalNavigationController setViewControllers:[NSArray arrayWithObject:self.parentPasswordController]];
-    [self.modalNavigationController setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
-    [self.modalNavigationController setModalPresentationStyle:UIModalPresentationFormSheet];
-    [self.modalNavigationController.navigationBar setTintColor:[UIColor SCHRed2Color]];
-    [self presentModalViewController:self.modalNavigationController animated:YES];
 }
 
 #pragma mark - SCHProfileViewCellDelegate
@@ -303,32 +211,6 @@ static const CGFloat kProfilePadTableOffsetLandscape = 220.0f;
         [self.navigationController pushViewController:bookShelfViewController animated:YES];
     }
 	[bookShelfViewController release], bookShelfViewController = nil;
-}
-
-#pragma mark - Authentication Manager
-
-- (void)authenticationManager:(NSNotification *)notification
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:kSCHAuthenticationManagerSuccess object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:kSCHAuthenticationManagerFailure object:nil];
-	
-	if ([notification.name compare:kSCHAuthenticationManagerSuccess] == NSOrderedSame) {
-		[[SCHURLManager sharedURLManager] clear];
-		[[SCHSyncManager sharedSyncManager] clear];
-		[[SCHSyncManager sharedSyncManager] firstSync];
-	} else {
-		NSError *error = [notification.userInfo objectForKey:kSCHAuthenticationManagerNSError];
-		if (error!= nil) {
-			UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") 
-																 message:[error localizedDescription]
-																delegate:nil 
-													   cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-													   otherButtonTitles:nil]; 
-			[errorAlert show]; 
-			[errorAlert release];
-		}	
-        [self.loginPasswordController stopShowingProgress];
-	}
 }
 
 #pragma mark - Fetched results controller delegate

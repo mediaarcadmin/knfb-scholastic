@@ -16,6 +16,10 @@
 #import "SCHUserContentItem.h"
 #import "SCHBookIdentifier.h"
 
+// Constants
+NSString * const kSCHURLManagerSuccess = @"URLManagerSuccess";
+NSString * const kSCHURLManagerFailure = @"URLManagerFailure";
+
 @interface SCHURLManager ()
 
 - (void)requestURLForBookOnMainThread:(SCHBookIdentifier *)bookIdentifier;
