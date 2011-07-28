@@ -41,7 +41,6 @@ enum LoginScreens {
 @property (nonatomic, assign) enum LoginScreens loginScreen;
 @property (nonatomic, retain) SCHLoginPasswordViewController *parentPasswordController; // Lazily instantiated
 @property (nonatomic, retain) SCHBookUpdates *bookUpdates;
-@property (nonatomic, assign) BOOL updatesBubbleHiddenUntilNextSync;
 
 - (void)willEnterForeground:(NSNotification *)note;
 - (void)showLoginControllerWithAnimation:(BOOL)animated;
@@ -74,7 +73,6 @@ enum LoginScreens {
 @synthesize parentPasswordController;
 @synthesize bookUpdates;
 @synthesize updatesBubble;
-@synthesize updatesBubbleHiddenUntilNextSync;
 
 #pragma mark - Object lifecycle
 
@@ -121,7 +119,6 @@ enum LoginScreens {
     
     [self.updatesBubble setAlpha:0];
     [self.updatesBubble setUserInteractionEnabled:YES];
-    self.updatesBubbleHiddenUntilNextSync = NO;
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(updatesBubbleTapped:)];
     [self.updatesBubble addGestureRecognizer:tap];
     [tap release];
@@ -184,7 +181,6 @@ enum LoginScreens {
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
-    self.updatesBubbleHiddenUntilNextSync = YES;
     [self showUpdatesBubble:NO];
 }
 
@@ -603,10 +599,6 @@ enum LoginScreens {
 
 - (void)showUpdatesBubble:(BOOL)show
 {
-    if (self.updatesBubbleHiddenUntilNextSync) {
-        show = NO;
-    }
-    
     [UIView animateWithDuration:0.5
                           delay:0
                         options:UIViewAnimationOptionAllowUserInteraction
@@ -618,8 +610,7 @@ enum LoginScreens {
 
 - (void)updatesBubbleTapped:(UIGestureRecognizer *)gr
 {
-    self.updatesBubbleHiddenUntilNextSync = YES;
-    [self showUpdatesBubble:NO];
+    [self pushSettingsController];
 }
 
 @end
