@@ -382,21 +382,25 @@
     [self presentInHostView:host withInterfaceOrientation:self.interfaceOrientation];
 }
 
-- (void)resizeCurrentViewToSize: (CGSize) newSize
+- (void)resizeCurrentViewToSize:(CGSize)newSize
+       withAdditionalAnimations:(dispatch_block_t)animationBlock
 {
+    // grow/shrink at the bottom
+    CGFloat verticalAdjustment = (newSize.height - CGRectGetHeight(self.contentsView.bounds)) / 2;
+    self.contentsView.bounds = CGRectMake(0, 0, newSize.width, newSize.height);
+    self.contentsView.center = CGPointMake(self.contentsView.center.x, self.contentsView.center.y-verticalAdjustment);
+
     dispatch_block_t setupViews = ^{
-        NSLog(@"Contents view frame: %@", NSStringFromCGRect(self.contentsView.frame));
-        self.contentsView.frame = CGRectMake(self.contentsView.frame.origin.x, self.contentsView.frame.origin.y, newSize.width, newSize.height);
         [self setupGeometryForContainerView:self.containerView
                              backgroundView:self.backgroundView
                                contentsView:self.contentsView
                                   titleView:self.titleView
                                 closeButton:self.closeButton
                             readAloudButton:self.readAloudButton];
-        NSLog(@"Contents view frame: %@", NSStringFromCGRect(self.contentsView.frame));
+        if (animationBlock) {
+            animationBlock();
+        }
     };
-    
-//    setupViews();
     
     [UIView animateWithDuration:0.3
                           delay:0
@@ -445,6 +449,7 @@
             CGSize size = [UIScreen mainScreen].bounds.size;  
             backgroundWidth = size.height;
             backgroundHeight = size.width;
+            // FIXME: should not be setting frame when transforms are used
             background.frame = CGRectIntegral(CGRectMake(0, 0, backgroundWidth, backgroundHeight));
             contents.frame = background.frame; 
             break;

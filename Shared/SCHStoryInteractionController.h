@@ -119,7 +119,7 @@ typedef enum
 - (void)presentNextView;
 
 // resize the existing content view
-- (void)resizeCurrentViewToSize: (CGSize) newSize;
+- (void)resizeCurrentViewToSize:(CGSize)newSize withAdditionalAnimations:(dispatch_block_t)animationBlock;
 
 // play the default audio sound for a button tap
 - (void)playDefaultButtonAudio;
