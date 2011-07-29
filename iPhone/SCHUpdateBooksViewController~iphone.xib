@@ -171,8 +171,8 @@
 							</object>
 							<object class="IBUITableView" id="897550597">
 								<reference key="NSNextResponder" ref="711748717"/>
-								<int key="NSvFlags">274</int>
-								<string key="NSFrame">{{20, 38}, {280, 306}}</string>
+								<int key="NSvFlags">277</int>
+								<string key="NSFrame">{{20, 39}, {280, 306}}</string>
 								<reference key="NSSuperview" ref="711748717"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="746869546"/>
@@ -193,7 +193,7 @@
 							<object class="IBUILabel" id="302918162">
 								<reference key="NSNextResponder" ref="711748717"/>
 								<int key="NSvFlags">295</int>
-								<string key="NSFrame">{{20, 9}, {280, 21}}</string>
+								<string key="NSFrame">{{20, 8}, {280, 28}}</string>
 								<reference key="NSSuperview" ref="711748717"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="897550597"/>
@@ -202,24 +202,26 @@
 								<int key="IBUIContentMode">7</int>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-								<string key="IBUIText">Updates are available for some of your eBooks</string>
+								<string key="IBUIText">Updates are available for your eBooks</string>
 								<object class="NSFont" key="IBUIFont">
 									<string key="NSName">Arial-BoldMT</string>
-									<double key="NSSize">17</double>
+									<double key="NSSize">15</double>
 									<int key="NSfFlags">16</int>
 								</object>
 								<object class="NSColor" key="IBUITextColor">
-									<int key="NSColorSpace">1</int>
-									<bytes key="NSRGB">MCAwIDAAA</bytes>
+									<int key="NSColorSpace">3</int>
+									<bytes key="NSWhite">MC4zMzMzMzMzMzMzAA</bytes>
 								</object>
 								<nil key="IBUIHighlightedColor"/>
 								<int key="IBUIBaselineAdjustment">1</int>
-								<float key="IBUIMinimumFontSize">10</float>
+								<float key="IBUIMinimumFontSize">14</float>
+								<int key="IBUINumberOfLines">2</int>
+								<int key="IBUITextAlignment">1</int>
 							</object>
 							<object class="IBUIButton" id="746869546">
 								<reference key="NSNextResponder" ref="711748717"/>
 								<int key="NSvFlags">269</int>
-								<string key="NSFrame">{{20, 352}, {280, 44}}</string>
+								<string key="NSFrame">{{20, 357}, {280, 48}}</string>
 								<reference key="NSSuperview" ref="711748717"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView"/>
