@@ -155,7 +155,9 @@ static const CGFloat kContentHeightLandscape = 380;
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    [self.topField ?: self.bottomField becomeFirstResponder];
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        [self.topField ?: self.bottomField becomeFirstResponder];
+    }
 }
 
 #pragma mark - Orientation
