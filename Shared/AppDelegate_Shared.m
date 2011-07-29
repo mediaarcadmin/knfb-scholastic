@@ -196,7 +196,7 @@ static NSString* const prModelCertFilename = @"iphonecert.dat";
     
     
 #if LOCALDEBUG
-	[[NSNotificationCenter defaultCenter] postNotificationName:SCHBookshelfSyncComponentCompletedNotification object:nil];
+	[[NSNotificationCenter defaultCenter] postNotificationName:SCHBookshelfSyncComponentDidCompleteNotification object:nil];
     [self performSelector:@selector(copyLocalFilesIfMissing) withObject:nil afterDelay:0.1f]; // Stop the watchdog from killing us on launch
 #endif
 	

@@ -14,7 +14,7 @@
 #import "SCHReadingStatsDetailItem.h"
 
 // Constants
-NSString * const SCHReadingStatsSyncComponentCompletedNotification = @"SCHReadingStatsSyncComponentCompletedNotification";
+NSString * const SCHReadingStatsSyncComponentDidCompleteNotification = @"SCHReadingStatsSyncComponentDidCompleteNotification";
 
 @implementation SCHReadingStatsSyncComponent
 
@@ -69,7 +69,7 @@ NSString * const SCHReadingStatsSyncComponentCompletedNotification = @"SCHReadin
 	NSLog(@"%@\n%@", method, result);
     
     [self clear];
-    [[NSNotificationCenter defaultCenter] postNotificationName:SCHReadingStatsSyncComponentCompletedNotification object:self];
+    [[NSNotificationCenter defaultCenter] postNotificationName:SCHReadingStatsSyncComponentDidCompleteNotification object:self];
     [super method:method didCompleteWithResult:nil];				    
 }
 

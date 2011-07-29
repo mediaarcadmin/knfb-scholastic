@@ -45,8 +45,8 @@
     if (self) {
         privateAnnotations = [aPrivateAnnotation retain];
         [[NSNotificationCenter defaultCenter] addObserver:self 
-                                                 selector:@selector(annotationSyncComponentCompletedNotification:) 
-                                                     name:SCHAnnotationSyncComponentCompletedNotification 
+                                                 selector:@selector(annotationSyncComponentDidCompleteNotification:) 
+                                                     name:SCHAnnotationSyncComponentDidCompleteNotification 
                                                    object:nil];        
     }
     return(self);

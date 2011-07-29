@@ -25,7 +25,7 @@
 #import "SCHAppState.h"
 
 // Constants
-NSString * const SCHAnnotationSyncComponentCompletedNotification = @"SCHAnnotationSyncComponentCompletedNotification";
+NSString * const SCHAnnotationSyncComponentDidCompleteNotification = @"SCHAnnotationSyncComponentDidCompleteNotification";
 NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotationSyncComponentCompletedProfileIDs";
 
 @interface SCHAnnotationSyncComponent ()
@@ -225,7 +225,7 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
         if ([self.annotations count] < 1) {
             [self setSyncDate:[NSDate date]];
         }
-        [[NSNotificationCenter defaultCenter] postNotificationName:SCHAnnotationSyncComponentCompletedNotification 
+        [[NSNotificationCenter defaultCenter] postNotificationName:SCHAnnotationSyncComponentDidCompleteNotification 
                                                             object:self 
                                                           userInfo:[NSDictionary dictionaryWithObject:profileID 
                                                                                                forKey:SCHAnnotationSyncComponentCompletedProfileIDs]];        

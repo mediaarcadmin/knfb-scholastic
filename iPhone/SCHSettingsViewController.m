@@ -112,7 +112,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(didCompleteSync:)
-                                                 name:SCHBookshelfSyncComponentCompletedNotification
+                                                 name:SCHBookshelfSyncComponentDidCompleteNotification
                                                object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self

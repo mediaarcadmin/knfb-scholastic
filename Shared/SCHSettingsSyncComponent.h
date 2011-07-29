@@ -11,7 +11,7 @@
 #import "SCHSyncComponent.h"
 
 // Constants
-extern NSString * const SCHSettingsSyncComponentCompletedNotification;
+extern NSString * const SCHSettingsSyncComponentDidCompleteNotification;
 
 @interface SCHSettingsSyncComponent : SCHSyncComponent
 {

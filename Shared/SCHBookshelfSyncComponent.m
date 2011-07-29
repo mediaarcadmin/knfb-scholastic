@@ -22,7 +22,7 @@
 NSString * const SCHBookshelfSyncComponentWillDeleteNotification = @"SCHBookshelfSyncComponentWillDeleteNotification";
 NSString * const SCHBookshelfSyncComponentDeletedBookIdentifiers = @"SCHBookshelfSyncComponentDeletedBookIdentifiers";
 NSString * const SCHBookshelfSyncComponentBookReceivedNotification = @"SCHBookshelfSyncComponentBookReceivedNotification";
-NSString * const SCHBookshelfSyncComponentCompletedNotification = @"SCHBookshelfSyncComponentCompletedNotification";
+NSString * const SCHBookshelfSyncComponentDidCompleteNotification = @"SCHBookshelfSyncComponentDidCompleteNotification";
 
 @interface SCHBookshelfSyncComponent ()
 
@@ -110,12 +110,12 @@ NSString * const SCHBookshelfSyncComponentCompletedNotification = @"SCHBookshelf
 			}
 			
 			if (requestCount < 1) {
-				[[NSNotificationCenter defaultCenter] postNotificationName:SCHBookshelfSyncComponentCompletedNotification object:self];
+				[[NSNotificationCenter defaultCenter] postNotificationName:SCHBookshelfSyncComponentDidCompleteNotification object:self];
 				[super method:method didCompleteWithResult:nil];				
 			}
 		} else {
 			NSLog(@"Book information received");		
-			[[NSNotificationCenter defaultCenter] postNotificationName:SCHBookshelfSyncComponentCompletedNotification object:self];
+			[[NSNotificationCenter defaultCenter] postNotificationName:SCHBookshelfSyncComponentDidCompleteNotification object:self];
 			[super method:method didCompleteWithResult:nil];				
 		}
 	}	

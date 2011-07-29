@@ -25,7 +25,7 @@
 // Constants
 NSString * const SCHContentSyncComponentWillDeleteNotification = @"SCHContentSyncComponentWillDeleteNotification";
 NSString * const SCHContentSyncComponentDeletedBookIdentifiers = @"SCHContentSyncComponentDeletedBookIdentifiers";
-NSString * const SCHContentSyncComponentCompletedNotification = @"SCHContentSyncComponentCompletedNotification";
+NSString * const SCHContentSyncComponentDidCompleteNotification = @"SCHContentSyncComponentDidCompleteNotification";
 
 @interface SCHContentSyncComponent ()
 
@@ -96,7 +96,7 @@ NSString * const SCHContentSyncComponentCompletedNotification = @"SCHContentSync
 		NSArray *content = [result objectForKey:kSCHLibreAccessWebServiceUserContentList];
 		
 		[self syncUserContentItems:content];
-		[[NSNotificationCenter defaultCenter] postNotificationName:SCHContentSyncComponentCompletedNotification object:self];
+		[[NSNotificationCenter defaultCenter] postNotificationName:SCHContentSyncComponentDidCompleteNotification object:self];
 		[super method:method didCompleteWithResult:nil];				
 	}
 }

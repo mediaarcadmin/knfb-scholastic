@@ -13,7 +13,7 @@
 // Constants
 extern NSString * const SCHContentSyncComponentWillDeleteNotification;
 extern NSString * const SCHContentSyncComponentDeletedBookIdentifiers;
-extern NSString * const SCHContentSyncComponentCompletedNotification;
+extern NSString * const SCHContentSyncComponentDidCompleteNotification;
 
 @interface SCHContentSyncComponent : SCHSyncComponent
 {

@@ -124,7 +124,7 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
     
     [[NSNotificationCenter defaultCenter] addObserver:self 
                                              selector:@selector(annotationSyncComponentCompletedNotification:) 
-                                                 name:SCHAnnotationSyncComponentCompletedNotification 
+                                                 name:SCHAnnotationSyncComponentDidCompleteNotification 
                                                object:nil];            
 }
 

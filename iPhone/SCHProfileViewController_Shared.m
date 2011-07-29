@@ -114,7 +114,7 @@ enum LoginScreens {
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(profileSyncDidComplete:)
-                                                 name:SCHProfileSyncComponentCompletedNotification
+                                                 name:SCHProfileSyncComponentDidCompleteNotification
                                                object:nil];
     
     [self.updatesBubble setAlpha:0];

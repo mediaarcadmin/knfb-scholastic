@@ -122,7 +122,7 @@ static SCHProcessingManager *sharedManager = nil;
 		sharedManager = [[SCHProcessingManager alloc] init];
 		[[NSNotificationCenter defaultCenter] addObserver:sharedManager 
 												 selector:@selector(checkStateForAllBooks) 
-													 name:SCHBookshelfSyncComponentCompletedNotification 
+													 name:SCHBookshelfSyncComponentDidCompleteNotification 
 												   object:nil];			
 		
 		[[NSNotificationCenter defaultCenter] addObserver:sharedManager 
