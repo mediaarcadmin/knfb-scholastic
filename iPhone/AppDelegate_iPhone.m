@@ -30,10 +30,14 @@ static NSTimeInterval const kAppDelegate_iPhoneSyncManagerWakeDelay = 5.0;
 {    
 	[super application:application didFinishLaunchingWithOptions:launchOptions];
 
-    SCHProfileViewController_iPhone *rootViewController = (SCHProfileViewController_iPhone *)[navigationController topViewController];
-    rootViewController.managedObjectContext = self.managedObjectContext;
+    if ([self isAuthenticated]) {
+        // skip the starter screen if already authenticated
+        SCHProfileViewController_iPhone *profileViewController = [[SCHProfileViewController_iPhone alloc] initWithNibName:@"SCHProfileViewController_iPhone" bundle:nil];
+        profileViewController.managedObjectContext = self.managedObjectContext;
+        [self.navigationController pushViewController:profileViewController animated:NO];
+        [profileViewController release];
+    }
 
-    // Add the navigation controller's view to the window and display.
     [self.window addSubview:navigationController.view];
     [self.window makeKeyAndVisible];
     

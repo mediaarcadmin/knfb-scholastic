@@ -7,6 +7,7 @@
 //
 
 #import "SCHProfileViewController_Shared.h"
+#import "AppDelegate_Shared.h"
 
 #import "SCHSettingsViewController.h"
 #import "SCHBookShelfViewController.h"
@@ -106,7 +107,7 @@ enum LoginScreens {
 - (void)viewDidLoad 
 {
     [super viewDidLoad];
-
+    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(willEnterForeground:)
                                                  name:UIApplicationWillEnterForegroundNotification
@@ -136,6 +137,15 @@ enum LoginScreens {
     [self advanceToNextLoginStep];
 }  
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+
+    // get rid of the back button; the only way back from here is via deregistration
+    UIView *empty = [[UIView alloc] initWithFrame:CGRectZero];
+    self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:empty] autorelease];
+    [empty release];
+}
 
 #pragma mark - Table view data source
 
@@ -267,28 +277,14 @@ enum LoginScreens {
 {
     self.loginScreen = kLoginScreenNone;
     
-    // check for authentication
-    BOOL isAuthenticated;
-#if LOCALDEBUG	
-    isAuthenticated = YES;
-#elif NONDRMAUTHENTICATION
-	SCHAuthenticationManager *authenticationManager = [SCHAuthenticationManager sharedAuthenticationManager];
-	isAuthenticated = [authenticationManager hasUsernameAndPassword];
-#else 
-    NSString *deviceKey = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerDeviceKey];
-    isAuthenticated = (deviceKey != nil);
-#endif
-    
-    if (!isAuthenticated) {
-        self.loginScreen = kLoginScreenPassword;
-    }
 #if !LOCALDEBUG
-    else if ([[self.fetchedResultsController sections] count] == 0 
+    if ([[self.fetchedResultsController sections] count] == 0 
              || [[[self.fetchedResultsController sections] objectAtIndex:0] numberOfObjects] == 0) {
         self.loginScreen = kLoginScreenSetupBookshelves;
     }
+    else
 #endif
-    else if ([[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryProcessingState] == SCHDictionaryProcessingStateUserSetup) {
+    if ([[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryProcessingState] == SCHDictionaryProcessingStateUserSetup) {
         self.loginScreen = kLoginScreenDownloadDictionary;
     }
     
@@ -492,7 +488,14 @@ enum LoginScreens {
 
 - (void)dismissSettingsForm
 {
-    [self advanceToNextLoginStep];
+    // check for deregistration
+    AppDelegate_Shared *appDelegate = (AppDelegate_Shared *)[[UIApplication sharedApplication] delegate];
+    if (![appDelegate isAuthenticated]) {
+        [self dismissModalViewControllerAnimated:YES];
+        [self.navigationController popViewControllerAnimated:NO];
+    } else {
+        [self advanceToNextLoginStep];
+    }
 }
 
 - (SCHLoginPasswordViewController *)parentPasswordController
