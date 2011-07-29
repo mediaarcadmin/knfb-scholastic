@@ -28,6 +28,7 @@
 #import "LambdaAlert.h"
 #import "SCHContentProfileItem.h"
 #import "SCHAppContentProfileItem.h"
+#import "SCHBookshelfSyncComponent.h"
 
 static NSInteger const kSCHBookShelfViewControllerGridCellHeightPortrait = 138;
 static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
@@ -41,6 +42,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
 
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation;
 - (void)updateTheme;
+- (void)showLoadingView:(BOOL)show;
 - (CGSize)cellSize;
 - (CGFloat)cellBorderSize;
 - (void)reloadData;
@@ -170,9 +172,9 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
 	[self.view bringSubviewToFront:self.loadingView];
 	
 	if (![[SCHSyncManager sharedSyncManager] havePerformedFirstSyncUpToBooks] && [[SCHSyncManager sharedSyncManager] isSynchronizing]) {
-		self.loadingView.hidden = NO;
+        [self showLoadingView:YES];
 	} else {
-		self.loadingView.hidden = YES;
+        [self showLoadingView:NO];
 	}
     
     self.navigationItem.title = [self.profileItem bookshelfName:YES];
@@ -301,6 +303,13 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
     self.themePickerContainer.title = @"";
     
 	[self presentModalViewController:self.themePickerContainer animated:YES];		
+}
+
+- (void)showLoadingView:(BOOL)show
+{
+    self.loadingView.hidden = !show;
+    self.listTableView.userInteractionEnabled = !show;
+    self.gridView.userInteractionEnabled = !show;
 }
 
 #pragma mark - Action methods
@@ -447,8 +456,12 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
     
     if (refreshBooks == YES) {
         self.books = [self.profileItem allBookIdentifiers];
-        self.loadingView.hidden = YES;  
-    }    
+    }   
+}
+
+- (void)bookshelfSyncComponentDidComplete:(NSNotification *)notification
+{
+    [self showLoadingView:NO];
 }
 
 #pragma mark - Core Data Table View Methods
