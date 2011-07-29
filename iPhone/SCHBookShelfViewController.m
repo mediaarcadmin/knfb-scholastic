@@ -168,6 +168,17 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
 												 name:NSManagedObjectContextDidSaveNotification
 											   object:nil];
 	
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(bookshelfSyncComponentDidComplete:)
+												 name:SCHBookshelfSyncComponentDidCompleteNotification
+											   object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(bookshelfSyncComponentDidFail:)
+												 name:SCHBookshelfSyncComponentDidFailNotification
+											   object:nil];
+
 	self.loadingView.layer.cornerRadius = 5.0f;
 	[self.view bringSubviewToFront:self.loadingView];
 	
@@ -461,6 +472,17 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
 
 - (void)bookshelfSyncComponentDidComplete:(NSNotification *)notification
 {
+    [self showLoadingView:NO];
+}
+
+- (void)bookshelfSyncComponentDidFail:(NSNotification *)notification
+{
+    LambdaAlert *alert = [[LambdaAlert alloc]
+                          initWithTitle:NSLocalizedString(@"Retrieving Bookshelf Failed", @"Retrieving Bookshelf Failed") 
+                          message:NSLocalizedString(@"Failed to retrieve the bookshelf, we will try again soon.", @"") ];
+    [alert addButtonWithTitle:NSLocalizedString(@"OK", @"OK") block:^{}];
+    [alert show];
+    [alert release];
     [self showLoadingView:NO];
 }
 
