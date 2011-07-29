@@ -20,11 +20,15 @@
 }
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;
+@property (nonatomic, readonly ) NSManagedObjectContext *managedObjectContext;
 
 - (NSURL *)applicationDocumentsDirectory;
 - (NSURL *)applicationSupportDocumentsDirectory;
 - (void)saveContext;
 - (void)checkForModeSwitch;
+
+// YES if we have user authentication credentials (regardless of build type)
+- (BOOL)isAuthenticated;
 
 // remove everything from the CoreData database
 - (void)clearDatabase;

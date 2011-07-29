@@ -414,8 +414,15 @@
     
     CGRect coverFrame = CGRectMake(floor((self.frame.size.width - thumbSize.width)/2), self.topInset, thumbSize.width, thumbSize.height);
     
+    // if the thumb is the full width of the view, then calculate differently
     if (thumbSize.width + (self.leftRightInset * 2) == self.frame.size.width) {
-        coverFrame = CGRectMake(self.leftRightInset, self.frame.size.height - thumbSize.height, thumbSize.width, thumbSize.height);
+        if (self.coverViewMode == SCHBookCoverViewModeGridView) {
+            // cover is attached to the bottom of the frame
+            coverFrame = CGRectMake(self.leftRightInset, self.frame.size.height - thumbSize.height, thumbSize.width, thumbSize.height);
+        } else if (self.coverViewMode == SCHBookCoverViewModeListView) {
+            // cover is centred in the frame
+            coverFrame = CGRectMake(self.leftRightInset, floorf((self.frame.size.height - thumbSize.height)/2), thumbSize.width, thumbSize.height);
+        }
     }
     
     self.coverImageView.frame = coverFrame;

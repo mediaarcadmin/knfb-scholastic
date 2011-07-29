@@ -37,6 +37,7 @@ static NSString* const prModelCertFilename = @"iphonecert.dat";
 @implementation AppDelegate_Shared
 
 @synthesize window;
+@synthesize managedObjectContext = managedObjectContext_;
 
 - (void)dealloc 
 {    
@@ -410,6 +411,25 @@ static NSString* const prModelCertFilename = @"iphonecert.dat";
     NSLog(@"Cleared local database! Exiting.");
     exit(0);
 }
+
+#pragma mark - Authentication check
+
+- (BOOL)isAuthenticated
+{
+    BOOL isAuthenticated;
+#if LOCALDEBUG	
+    isAuthenticated = YES;
+#elif NONDRMAUTHENTICATION
+	SCHAuthenticationManager *authenticationManager = [SCHAuthenticationManager sharedAuthenticationManager];
+	isAuthenticated = [authenticationManager hasUsernameAndPassword];
+#else 
+    NSString *deviceKey = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerDeviceKey];
+    isAuthenticated = (deviceKey != nil);
+#endif
+
+    return isAuthenticated;
+}
+
 
 @end
 
