@@ -12,6 +12,7 @@
 @interface SCHRemoveDictionaryViewController : SCHBaseSetupViewController {}
 
 @property (nonatomic, retain) IBOutlet UIButton *removeDictionaryButton;
+@property (nonatomic, retain) IBOutletCollection(UILabel) NSArray *labels;
 
 - (IBAction)removeDictionary:(id)sender;
 

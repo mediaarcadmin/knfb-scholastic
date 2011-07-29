@@ -273,8 +273,6 @@
 		28D67DEC13D9B28700F715CD /* SCHRemoveDictionaryViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28D67DEA13D9B28700F715CD /* SCHRemoveDictionaryViewController~iphone.xib */; };
 		28D67DF013D9B30500F715CD /* SCHRemoveDictionaryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D67DEE13D9B30500F715CD /* SCHRemoveDictionaryViewController.m */; };
 		28D67DF113D9B30500F715CD /* SCHRemoveDictionaryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D67DEE13D9B30500F715CD /* SCHRemoveDictionaryViewController.m */; };
-		28D67DF213D9B30500F715CD /* SCHRemoveDictionaryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28D67DEF13D9B30500F715CD /* SCHRemoveDictionaryViewController.xib */; };
-		28D67DF313D9B30500F715CD /* SCHRemoveDictionaryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28D67DEF13D9B30500F715CD /* SCHRemoveDictionaryViewController.xib */; };
 		28E6BCF113D72C7500A5C9E3 /* SCHBaseSetupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28E6BCF013D72C7500A5C9E3 /* SCHBaseSetupViewController.m */; };
 		28E6BCF213D72C7500A5C9E3 /* SCHBaseSetupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28E6BCF013D72C7500A5C9E3 /* SCHBaseSetupViewController.m */; };
 		28E9B97D13A0D51A0056874F /* SCHStoryInteractionTitleTwister_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28E9B97C13A0D51A0056874F /* SCHStoryInteractionTitleTwister_iPad.xib */; };
@@ -1838,7 +1836,6 @@
 		28D67DEA13D9B28700F715CD /* SCHRemoveDictionaryViewController~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "SCHRemoveDictionaryViewController~iphone.xib"; sourceTree = "<group>"; };
 		28D67DED13D9B30500F715CD /* SCHRemoveDictionaryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHRemoveDictionaryViewController.h; path = Shared/SCHRemoveDictionaryViewController.h; sourceTree = "<group>"; };
 		28D67DEE13D9B30500F715CD /* SCHRemoveDictionaryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHRemoveDictionaryViewController.m; path = Shared/SCHRemoveDictionaryViewController.m; sourceTree = "<group>"; };
-		28D67DEF13D9B30500F715CD /* SCHRemoveDictionaryViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SCHRemoveDictionaryViewController.xib; path = Shared/SCHRemoveDictionaryViewController.xib; sourceTree = "<group>"; };
 		28E6BCEF13D72C7500A5C9E3 /* SCHBaseSetupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBaseSetupViewController.h; path = Shared/SCHBaseSetupViewController.h; sourceTree = "<group>"; };
 		28E6BCF013D72C7500A5C9E3 /* SCHBaseSetupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBaseSetupViewController.m; path = Shared/SCHBaseSetupViewController.m; sourceTree = "<group>"; };
 		28E9B97C13A0D51A0056874F /* SCHStoryInteractionTitleTwister_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionTitleTwister_iPad.xib; sourceTree = "<group>"; };
@@ -3060,7 +3057,6 @@
 				28D2AA0D13D6E8F700BEB359 /* SCHDownloadDictionaryViewController.m */,
 				28D67DED13D9B30500F715CD /* SCHRemoveDictionaryViewController.h */,
 				28D67DEE13D9B30500F715CD /* SCHRemoveDictionaryViewController.m */,
-				28D67DEF13D9B30500F715CD /* SCHRemoveDictionaryViewController.xib */,
 			);
 			name = Dictionary;
 			sourceTree = "<group>";
@@ -5612,7 +5608,6 @@
 				284DE1E913D96924009FE14E /* SCHDeregisterDeviceViewController~ipad.xib in Resources */,
 				284DE23113D98D8B009FE14E /* SCHDownloadDictionaryViewController~iphone.xib in Resources */,
 				28D67DEB13D9B28700F715CD /* SCHRemoveDictionaryViewController~iphone.xib in Resources */,
-				28D67DF213D9B30500F715CD /* SCHRemoveDictionaryViewController.xib in Resources */,
 				2811879113D9C490001522FE /* SCHRemoveDictionaryViewController~ipad.xib in Resources */,
 				C9B7E90E13DC5D9E00BD5CB7 /* button-close@2x.png in Resources */,
 				C9B7E91013DC5D9E00BD5CB7 /* button-close.png in Resources */,
@@ -6093,7 +6088,6 @@
 				284DE1EA13D96924009FE14E /* SCHDeregisterDeviceViewController~ipad.xib in Resources */,
 				284DE23213D98D8B009FE14E /* SCHDownloadDictionaryViewController~iphone.xib in Resources */,
 				28D67DEC13D9B28700F715CD /* SCHRemoveDictionaryViewController~iphone.xib in Resources */,
-				28D67DF313D9B30500F715CD /* SCHRemoveDictionaryViewController.xib in Resources */,
 				2811879213D9C490001522FE /* SCHRemoveDictionaryViewController~ipad.xib in Resources */,
 				C9B7E90F13DC5D9E00BD5CB7 /* button-close@2x.png in Resources */,
 				C9B7E91113DC5D9E00BD5CB7 /* button-close.png in Resources */,
