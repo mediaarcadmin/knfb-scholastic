@@ -129,7 +129,7 @@
 					</object>
 					<object class="IBUIView" id="841522753">
 						<reference key="NSNextResponder" ref="191373211"/>
-						<int key="NSvFlags">292</int>
+						<int key="NSvFlags">274</int>
 						<object class="NSMutableArray" key="NSSubviews">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<object class="IBUIImageView" id="772262303">
@@ -171,19 +171,20 @@
 							<object class="IBUILabel" id="712909115">
 								<reference key="NSNextResponder" ref="841522753"/>
 								<int key="NSvFlags">290</int>
-								<string key="NSFrame">{{20, 124}, {280, 81}}</string>
+								<string key="NSFrame">{{24, 124}, {272, 81}}</string>
 								<reference key="NSSuperview" ref="841522753"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="556168744"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<int key="IBUIContentMode">7</int>
+								<int key="IBUITag">1</int>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<string key="IBUIText">If you choose to remove the dictionary, you can download it again at any time.</string>
 								<object class="NSFont" key="IBUIFont">
 									<string key="NSName">ArialMT</string>
-									<double key="NSSize">14</double>
+									<double key="NSSize">15</double>
 									<int key="NSfFlags">16</int>
 								</object>
 								<object class="NSColor" key="IBUITextColor" id="366798696">
@@ -199,19 +200,20 @@
 							<object class="IBUILabel" id="771352025">
 								<reference key="NSNextResponder" ref="841522753"/>
 								<int key="NSvFlags">290</int>
-								<string key="NSFrame">{{20, 13}, {280, 103}}</string>
+								<string key="NSFrame">{{24, 13}, {272, 103}}</string>
 								<reference key="NSSuperview" ref="841522753"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="712909115"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<int key="IBUIContentMode">7</int>
+								<int key="IBUITag">2</int>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<string key="IBUIText">The Scholastic dictionary uses about 400MB of storage space. If you remove the dictionary readers will no longer be able to look up words or hear definitions read out loud.</string>
 								<object class="NSFont" key="IBUIFont">
 									<string key="NSName">Arial-BoldMT</string>
-									<double key="NSSize">14</double>
+									<double key="NSSize">15</double>
 									<int key="NSfFlags">16</int>
 								</object>
 								<reference key="IBUITextColor" ref="366798696"/>
@@ -224,10 +226,9 @@
 							<object class="IBUIButton" id="556168744">
 								<reference key="NSNextResponder" ref="841522753"/>
 								<int key="NSvFlags">293</int>
-								<string key="NSFrame">{{80, 231}, {161, 44}}</string>
+								<string key="NSFrame">{{80, 231}, {161, 48}}</string>
 								<reference key="NSSuperview" ref="841522753"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<int key="IBUIContentHorizontalAlignment">0</int>
@@ -349,6 +350,24 @@
 						<reference key="destination" ref="509956745"/>
 					</object>
 					<int key="connectionID">24</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletCollectionConnection" key="connection">
+						<string key="label">labels</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="771352025"/>
+						<string key="cachedDesigntimeCollectionClassName">NSArray</string>
+					</object>
+					<int key="connectionID">25</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletCollectionConnection" key="connection">
+						<string key="label">labels</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="712909115"/>
+						<string key="cachedDesigntimeCollectionClassName">NSArray</string>
+					</object>
+					<int key="connectionID">26</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -536,7 +555,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">24</int>
+			<int key="maxID">26</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -658,6 +677,14 @@
 						<object class="IBToOneOutletInfo" key="NS.object.0">
 							<string key="name">removeDictionaryButton</string>
 							<string key="candidateClassName">UIButton</string>
+						</object>
+					</object>
+					<object class="NSMutableDictionary" key="toManyOutletInfosByName">
+						<string key="NS.key.0">labels</string>
+						<object class="IBToManyOutletInfo" key="NS.object.0">
+							<string key="name">labels</string>
+							<string key="candidateClassName">UILabel</string>
+							<string key="collectionClassName">NSArray</string>
 						</object>
 					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
