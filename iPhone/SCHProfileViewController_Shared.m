@@ -344,6 +344,8 @@
     if (![appDelegate isAuthenticated]) {
         [self dismissModalViewControllerAnimated:YES];
         [self.navigationController popViewControllerAnimated:NO];
+    } else {
+        [self dismissModalViewControllerAnimated:YES];
     }
 }
 
