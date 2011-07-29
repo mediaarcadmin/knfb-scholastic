@@ -112,6 +112,7 @@
 {
     [self.spinner stopAnimating];
     if (deviceKey == nil) {
+        [[SCHAuthenticationManager sharedAuthenticationManager] clear];
         [[SCHAuthenticationManager sharedAuthenticationManager] clearAppProcessing];
         [self.setupDelegate dismissSettingsForm];
     } else {

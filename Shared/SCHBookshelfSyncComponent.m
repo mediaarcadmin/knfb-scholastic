@@ -22,7 +22,8 @@
 NSString * const SCHBookshelfSyncComponentWillDeleteNotification = @"SCHBookshelfSyncComponentWillDeleteNotification";
 NSString * const SCHBookshelfSyncComponentDeletedBookIdentifiers = @"SCHBookshelfSyncComponentDeletedBookIdentifiers";
 NSString * const SCHBookshelfSyncComponentBookReceivedNotification = @"SCHBookshelfSyncComponentBookReceivedNotification";
-NSString * const SCHBookshelfSyncComponentCompletedNotification = @"SCHBookshelfSyncComponentCompletedNotification";
+NSString * const SCHBookshelfSyncComponentDidCompleteNotification = @"SCHBookshelfSyncComponentDidCompleteNotification";
+NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSyncComponentDidFailNotification";
 
 @interface SCHBookshelfSyncComponent ()
 
@@ -110,12 +111,14 @@ NSString * const SCHBookshelfSyncComponentCompletedNotification = @"SCHBookshelf
 			}
 			
 			if (requestCount < 1) {
-				[[NSNotificationCenter defaultCenter] postNotificationName:SCHBookshelfSyncComponentCompletedNotification object:self];
+				[[NSNotificationCenter defaultCenter] postNotificationName:SCHBookshelfSyncComponentDidCompleteNotification 
+                                                                    object:self];
 				[super method:method didCompleteWithResult:nil];				
 			}
 		} else {
 			NSLog(@"Book information received");		
-			[[NSNotificationCenter defaultCenter] postNotificationName:SCHBookshelfSyncComponentCompletedNotification object:self];
+			[[NSNotificationCenter defaultCenter] postNotificationName:SCHBookshelfSyncComponentDidCompleteNotification 
+                                                                object:self];
 			[super method:method didCompleteWithResult:nil];				
 		}
 	}	
@@ -126,6 +129,8 @@ NSString * const SCHBookshelfSyncComponentCompletedNotification = @"SCHBookshelf
 	if (self.useIndividualRequests == YES) {
 		requestCount--;
 	}
+    [[NSNotificationCenter defaultCenter] postNotificationName:SCHBookshelfSyncComponentDidFailNotification 
+                                                        object:self];
 
 	[super method:method didFailWithError:error requestInfo:requestInfo];
 }

@@ -35,6 +35,7 @@
 
 @synthesize clueLabel;
 @synthesize lettersContainerView;
+@synthesize hintButton;
 @synthesize letterViews;
 @synthesize letterTileSize;
 @synthesize letterPositions;
@@ -263,6 +264,7 @@
     for (SCHStoryInteractionDraggableView *source in self.letterViews) {
         [source setUserInteractionEnabled:NO];
     }
+    [hintButton setUserInteractionEnabled:NO];    
 }
 
 - (void)storyInteractionEnableUserInteraction
@@ -273,6 +275,7 @@
             [source setUserInteractionEnabled:YES];
         }
     }
+    [hintButton setUserInteractionEnabled:YES];
 }
 
 

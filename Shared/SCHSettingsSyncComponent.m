@@ -14,7 +14,8 @@
 #import "SCHUserSettingsItem.h"
 
 // Constants
-NSString * const SCHSettingsSyncComponentCompletedNotification = @"SCHSettingsSyncComponentCompletedNotification";
+NSString * const SCHSettingsSyncComponentDidCompleteNotification = @"SCHSettingsSyncComponentDidCompleteNotification";
+NSString * const SCHSettingsSyncComponentDidFailNotification = @"SCHSettingsSyncComponentDidFailNotification";
 
 @interface SCHSettingsSyncComponent ()
 
@@ -58,8 +59,16 @@ NSString * const SCHSettingsSyncComponentCompletedNotification = @"SCHSettingsSy
 - (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result
 {	
 	[self updateUserSettings:[result objectForKey:kSCHLibreAccessWebServiceUserSettingsList]];
-	[[NSNotificationCenter defaultCenter] postNotificationName:SCHSettingsSyncComponentCompletedNotification object:self];			
+	[[NSNotificationCenter defaultCenter] postNotificationName:SCHSettingsSyncComponentDidCompleteNotification object:self];			
 	[super method:method didCompleteWithResult:nil];	
+}
+
+- (void)method:(NSString *)method didFailWithError:(NSError *)error requestInfo:(NSDictionary *)requestInfo
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:SCHSettingsSyncComponentDidFailNotification 
+                                                        object:self];
+    
+	[super method:method didFailWithError:error requestInfo:requestInfo];
 }
 
 - (void)updateUserSettings:(NSArray *)settingsList
