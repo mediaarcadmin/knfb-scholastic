@@ -188,8 +188,6 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
 
 - (void)clearAppProcessing
 {
-    // removeObjectForKey does not change the value...
-    [[NSUserDefaults standardUserDefaults] setObject:nil forKey:kSCHAuthenticationManagerDeviceKey];
     [[SCHURLManager sharedURLManager] clear];
     [[SCHProcessingManager sharedProcessingManager] cancelAllOperations];                
     [[SCHSyncManager sharedSyncManager] clear];    
