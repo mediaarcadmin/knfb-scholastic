@@ -64,7 +64,7 @@
     [super dealloc];
 }
 
-- (void)annotationSyncComponentCompletedNotification:(NSNotification *)notification
+- (void)annotationSyncComponentDidCompleteNotification:(NSNotification *)notification
 {
     NSNumber *profileID = [notification.userInfo objectForKey:SCHAnnotationSyncComponentCompletedProfileIDs];
     
