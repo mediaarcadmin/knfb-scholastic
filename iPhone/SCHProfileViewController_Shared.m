@@ -312,8 +312,8 @@ enum LoginScreens {
 
 - (void)performLogin
 {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(authenticationManager:) name:kSCHAuthenticationManagerSuccess object:nil];			
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(authenticationManager:) name:kSCHAuthenticationManagerFailure object:nil];					
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(authenticationManager:) name:kSCHAuthenticationManagerDidSucceedNotification object:nil];			
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(authenticationManager:) name:kSCHAuthenticationManagerDidFailNotification object:nil];					
     
     [self.loginPasswordController startShowingProgress];
     [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithUserName:[self.loginPasswordController username] withPassword:[self.loginPasswordController password]];
@@ -555,10 +555,10 @@ enum LoginScreens {
 
 - (void)authenticationManager:(NSNotification *)notification
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:kSCHAuthenticationManagerSuccess object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:kSCHAuthenticationManagerFailure object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kSCHAuthenticationManagerDidSucceedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kSCHAuthenticationManagerDidFailNotification object:nil];
 	
-	if ([notification.name isEqualToString:kSCHAuthenticationManagerSuccess]) {
+	if ([notification.name isEqualToString:kSCHAuthenticationManagerDidSucceedNotification]) {
         [[SCHURLManager sharedURLManager] clear];
         [[SCHSyncManager sharedSyncManager] clear];
         [[SCHSyncManager sharedSyncManager] firstSync:YES];
