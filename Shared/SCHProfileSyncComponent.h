@@ -15,6 +15,7 @@
 extern NSString * const SCHProfileSyncComponentWillDeleteNotification;
 extern NSString * const SCHProfileSyncComponentDeletedProfileIDs;
 extern NSString * const SCHProfileSyncComponentDidCompleteNotification;
+extern NSString * const SCHProfileSyncComponentDidFailNotification;
 
 @interface SCHProfileSyncComponent : SCHSyncComponent
 {

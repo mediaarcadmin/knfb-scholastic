@@ -12,6 +12,7 @@
 
 // Constants
 extern NSString * const SCHAnnotationSyncComponentDidCompleteNotification;
+extern NSString * const SCHAnnotationSyncComponentDidFailNotification;
 extern NSString * const SCHAnnotationSyncComponentCompletedProfileIDs;
 
 @interface SCHAnnotationSyncComponent : SCHSyncComponent 

@@ -26,6 +26,7 @@
 NSString * const SCHContentSyncComponentWillDeleteNotification = @"SCHContentSyncComponentWillDeleteNotification";
 NSString * const SCHContentSyncComponentDeletedBookIdentifiers = @"SCHContentSyncComponentDeletedBookIdentifiers";
 NSString * const SCHContentSyncComponentDidCompleteNotification = @"SCHContentSyncComponentDidCompleteNotification";
+NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncComponentDidFailNotification";
 
 @interface SCHContentSyncComponent ()
 
@@ -96,9 +97,17 @@ NSString * const SCHContentSyncComponentDidCompleteNotification = @"SCHContentSy
 		NSArray *content = [result objectForKey:kSCHLibreAccessWebServiceUserContentList];
 		
 		[self syncUserContentItems:content];
-		[[NSNotificationCenter defaultCenter] postNotificationName:SCHContentSyncComponentDidCompleteNotification object:self];
+		[[NSNotificationCenter defaultCenter] postNotificationName:SCHContentSyncComponentDidCompleteNotification 
+                                                            object:self];
 		[super method:method didCompleteWithResult:nil];				
 	}
+}
+
+- (void)method:(NSString *)method didFailWithError:(NSError *)error requestInfo:(NSDictionary *)requestInfo
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:SCHContentSyncComponentDidFailNotification 
+                                                        object:self];            
+	[super method:method didFailWithError:error requestInfo:requestInfo];
 }
 
 - (BOOL)updateUserContentItems

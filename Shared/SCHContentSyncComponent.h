@@ -14,6 +14,7 @@
 extern NSString * const SCHContentSyncComponentWillDeleteNotification;
 extern NSString * const SCHContentSyncComponentDeletedBookIdentifiers;
 extern NSString * const SCHContentSyncComponentDidCompleteNotification;
+extern NSString * const SCHContentSyncComponentDidFailNotification;
 
 @interface SCHContentSyncComponent : SCHSyncComponent
 {

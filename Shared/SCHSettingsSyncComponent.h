@@ -12,6 +12,7 @@
 
 // Constants
 extern NSString * const SCHSettingsSyncComponentDidCompleteNotification;
+extern NSString * const SCHSettingsSyncComponentDidFailNotification;
 
 @interface SCHSettingsSyncComponent : SCHSyncComponent
 {
