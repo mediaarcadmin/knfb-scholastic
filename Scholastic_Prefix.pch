@@ -10,7 +10,7 @@
     #import "UIColor+Scholastic.h"
 #endif
 
-#define UATSERVER 1
+#define UATSERVER 0
 #define NONDRMAUTHENTICATION 0
 #define DICTIONARY_DOWNLOAD_DISABLED 0
 

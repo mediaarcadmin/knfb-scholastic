@@ -156,12 +156,29 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     self.downloadDictionaryButton.enabled = (state == SCHDictionaryProcessingStateUserSetup
                                              || state == SCHDictionaryProcessingStateUserDeclined
                                              || state == SCHDictionaryProcessingStateReady);
-    if (state == SCHDictionaryProcessingStateReady) {
-        [self.downloadDictionaryButton setTitle:NSLocalizedString(@"Remove Dictionary", @"remove dictionary button title")
-                                       forState:UIControlStateNormal];
-    } else {
-        [self.downloadDictionaryButton setTitle:NSLocalizedString(@"Download Dictionary", @"download dictionary button title")
-                                       forState:UIControlStateNormal];
+    
+    switch (state) {
+        case SCHDictionaryProcessingStateReady:
+            [self.downloadDictionaryButton setTitle:NSLocalizedString(@"Remove Dictionary", @"remove dictionary button title")
+                                           forState:UIControlStateNormal];
+
+            break;
+        case SCHDictionaryProcessingStateNeedsManifest:
+        case SCHDictionaryProcessingStateManifestVersionCheck:
+        case SCHDictionaryProcessingStateNeedsDownload:
+            [self.downloadDictionaryButton setTitle:NSLocalizedString(@"Downloading Dictionary...", @"Downloading dictionary button title")
+                                           forState:UIControlStateNormal];
+            break;
+        case SCHDictionaryProcessingStateNeedsUnzip:
+        case SCHDictionaryProcessingStateNeedsParse:
+            [self.downloadDictionaryButton setTitle:NSLocalizedString(@"Processing Dictionary...", @"Processing dictionary button title")
+                                           forState:UIControlStateNormal];
+            break;
+        default:
+            [self.downloadDictionaryButton setTitle:NSLocalizedString(@"Download Dictionary", @"download dictionary button title")
+                                           forState:UIControlStateNormal];
+
+            break;
     }
 }
 
@@ -174,18 +191,6 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     [super closeSettings];
 }
 
-// this is the SCHSetupDelegate for the SCHDeregisterDeviceViewController
-- (void)dismissSettingsForm
-{
-    [self.navigationController.parentViewController dismissModalViewControllerAnimated:YES];
-
-    // allow the previous close animation to complete before passing this up since the profileViewController's
-    // next behavious will be to open the login screen
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1*NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
-        [self.setupDelegate dismissSettingsForm];
-    });
-}
-
 #pragma mark - Actions
 
 - (IBAction)deregisterDevice:(id)sender 
@@ -195,7 +200,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     [self.setupDelegate dismissSettingsForm];
 #else
     SCHDeregisterDeviceViewController *vc = [[SCHDeregisterDeviceViewController alloc] init];
-    vc.setupDelegate = self;
+    vc.setupDelegate = self.setupDelegate;
     [self.navigationController pushViewController:vc animated:YES];
     [vc release];
 #endif

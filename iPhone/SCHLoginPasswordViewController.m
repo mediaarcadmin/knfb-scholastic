@@ -313,7 +313,9 @@ static const CGFloat kContentHeightLandscape = 380;
     } else if (self.retainLoopSafeActionBlock) {
         BOOL good = self.retainLoopSafeActionBlock(self.topField ? [NSString stringWithString:self.topField.text] : nil,
                                                     self.bottomField ? [NSString stringWithString:self.bottomField.text] : nil);
-        if (!good) {
+        if (good) {
+            [self startShowingProgress];
+        } else {
             [self clearFields];
             [self.topField ?: self.bottomField becomeFirstResponder];
         }
