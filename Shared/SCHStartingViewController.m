@@ -223,8 +223,8 @@ enum {
     };
     
     login.retainLoopSafeActionBlock = ^BOOL(NSString *username, NSString *password) {
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(authenticationManager:) name:kSCHAuthenticationManagerSuccess object:nil];			
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(authenticationManager:) name:kSCHAuthenticationManagerFailure object:nil];					
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(authenticationManager:) name:kSCHAuthenticationManagerDidSucceedNotification object:nil];			
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(authenticationManager:) name:kSCHAuthenticationManagerDidFailNotification object:nil];					
         [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithUserName:username withPassword:password];
         return YES;
     };
@@ -236,10 +236,10 @@ enum {
 
 - (void)authenticationManager:(NSNotification *)notification
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:kSCHAuthenticationManagerSuccess object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:kSCHAuthenticationManagerFailure object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kSCHAuthenticationManagerDidSucceedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kSCHAuthenticationManagerDidFailNotification object:nil];
 	
-	if ([notification.name isEqualToString:kSCHAuthenticationManagerSuccess]) {
+	if ([notification.name isEqualToString:kSCHAuthenticationManagerDidSucceedNotification]) {
         [self dismissModalViewControllerAnimated:YES];
         [self pushProfileView];
 	} else {
