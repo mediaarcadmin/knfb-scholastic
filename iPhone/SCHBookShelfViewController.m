@@ -208,6 +208,10 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
         [self changeToListView:nil];
     }
     
+    if ([[SCHSyncManager sharedSyncManager] isSynchronizing] == NO) {
+        [[SCHSyncManager sharedSyncManager] firstSync:NO];
+    }
+    
     // FIXME: check to make sure that this is valid - reloadData is called from
     // within the setBooks method, so don't need to call it twice?
 //    [self reloadData];
