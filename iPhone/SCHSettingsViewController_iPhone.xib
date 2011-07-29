@@ -154,7 +154,7 @@
 									<bool key="EncodedWithXMLCoder">YES</bool>
 									<object class="IBUILabel" id="556027502">
 										<reference key="NSNextResponder" ref="46868495"/>
-										<int key="NSvFlags">295</int>
+										<int key="NSvFlags">293</int>
 										<string key="NSFrame">{{20, 103}, {280, 48}}</string>
 										<reference key="NSSuperview" ref="46868495"/>
 										<reference key="NSWindow"/>
