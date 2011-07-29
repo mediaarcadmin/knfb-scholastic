@@ -10,13 +10,18 @@
 #import "SCHLoginPasswordViewController.h"
 #import "SCHProfileViewController_iPad.h"
 #import "SCHProfileViewController_iPhone.h"
+#import "SCHSetupBookshelvesViewController.h"
+#import "SCHDownloadDictionaryViewController.h"
+#import "SCHLoginPasswordViewController.h"
 #import "SCHStartingViewCell.h"
 #import "SCHCustomNavigationBar.h"
 #import "SCHAuthenticationManager.h"
+#import "SCHDictionaryDownloadManager.h"
 #import "SCHSyncManager.h"
 #import "SCHURLManager.h"
 #import "LambdaAlert.h"
 #import "AppDelegate_Shared.h"
+#import "SCHProfileSyncComponent.h"
 
 enum {
     kTableSectionSamples = 0,
@@ -35,10 +40,16 @@ enum {
 
 @interface SCHStartingViewController ()
 
+@property (nonatomic, retain) SCHProfileViewController_Shared *profileViewController;
+
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation;
 - (NSString *)sampleBookshelfTitleAtIndex:(NSInteger)index;
 - (void)openSampleBookshelfAtIndex:(NSInteger)index;
 - (void)showSignInForm;
+- (void)advanceToNextSignInForm;
+- (void)dismissKeyboard;
+
+- (SCHProfileViewController_Shared *)profileViewController;
 - (void)pushProfileView;
 
 @end
@@ -49,6 +60,8 @@ enum {
 @synthesize backgroundView;
 @synthesize samplesHeaderView;
 @synthesize signInHeaderView;
+@synthesize modalNavigationController;
+@synthesize profileViewController;
 
 - (void)releaseViewObjects
 {
@@ -56,10 +69,13 @@ enum {
     [backgroundView release], backgroundView = nil;
     [samplesHeaderView release], samplesHeaderView = nil;
     [signInHeaderView release], signInHeaderView = nil;
+    [modalNavigationController release], modalNavigationController = nil;
 }
 
 - (void)dealloc
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
     [self releaseViewObjects];
     [super dealloc];
 }
@@ -69,6 +85,17 @@ enum {
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(willEnterForeground:)
+                                                 name:UIApplicationWillEnterForegroundNotification
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(profileSyncDidComplete:)
+                                                 name:SCHProfileSyncComponentCompletedNotification
+                                               object:nil];
+    
 
     UIImageView *logoImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo"]];
     self.navigationItem.titleView = logoImageView;
@@ -229,9 +256,12 @@ enum {
         return YES;
     };
     
-    [login setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
-    [login setModalPresentationStyle:UIModalPresentationFormSheet];
-    [self presentModalViewController:login animated:YES];
+    [self.modalNavigationController setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
+    [self.modalNavigationController setModalPresentationStyle:UIModalPresentationFormSheet];
+    [self.modalNavigationController setViewControllers:[NSArray arrayWithObject:login]];
+    [self presentModalViewController:self.modalNavigationController animated:YES];
+    
+    [login release];
 }
 
 - (void)authenticationManager:(NSNotification *)notification
@@ -240,8 +270,9 @@ enum {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kSCHAuthenticationManagerFailure object:nil];
 	
 	if ([notification.name isEqualToString:kSCHAuthenticationManagerSuccess]) {
-        [self dismissModalViewControllerAnimated:YES];
-        [self pushProfileView];
+        [[SCHURLManager sharedURLManager] clear];
+        [[SCHSyncManager sharedSyncManager] clear];
+        [[SCHSyncManager sharedSyncManager] firstSync:YES];
 	} else {
 		NSError *error = [notification.userInfo objectForKey:kSCHAuthenticationManagerNSError];
 		if (error != nil) {
@@ -259,27 +290,110 @@ enum {
             [alert release];
         }	
         
-        SCHLoginPasswordViewController *login = (SCHLoginPasswordViewController *)self.modalViewController;
+        SCHLoginPasswordViewController *login = (SCHLoginPasswordViewController *)[self.modalNavigationController topViewController];
         [login stopShowingProgress];
 	}
 }
 
-- (void)pushProfileView
+- (void)advanceToNextSignInForm
 {
-    [[SCHURLManager sharedURLManager] clear];
-    [[SCHSyncManager sharedSyncManager] clear];
-    [[SCHSyncManager sharedSyncManager] firstSync:YES];
-
-    SCHProfileViewController_Shared *profile;
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        profile = [[SCHProfileViewController_iPad alloc] init];
-    } else {
-        profile = [[SCHProfileViewController_iPhone alloc] init];
+    UIViewController *next = nil;
+    
+#if !LOCALDEBUG
+    SCHProfileViewController_Shared *profile = [self profileViewController];
+    if ([[profile.fetchedResultsController sections] count] == 0 
+        || [[[profile.fetchedResultsController sections] objectAtIndex:0] numberOfObjects] == 0) {
+        SCHSetupBookshelvesViewController *setupBookshelves = [[SCHSetupBookshelvesViewController alloc] init];
+        setupBookshelves.setupDelegate = self;
+        next = setupBookshelves;
+    }
+    else
+#endif
+    if ([[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryProcessingState] == SCHDictionaryProcessingStateUserSetup) {
+        SCHDownloadDictionaryViewController *downloadDictionary = [[SCHDownloadDictionaryViewController alloc] init];
+        downloadDictionary.setupDelegate = self;
+        next = downloadDictionary;
     }
     
-    AppDelegate_Shared *appDelegate = (AppDelegate_Shared *)[[UIApplication sharedApplication] delegate];
-    profile.managedObjectContext = appDelegate.managedObjectContext;
-    [self.navigationController pushViewController:profile animated:NO];
+    if (next) {
+        [self dismissKeyboard];
+        [self.modalNavigationController pushViewController:next animated:YES];
+        [next release];
+    } else {
+        [self dismissSettingsForm];
+    }
+}
+
+- (void)dismissSettingsForm
+{
+    [self dismissModalViewControllerAnimated:YES];
+    [self pushProfileView];
+}
+
+- (void)dismissKeyboard
+{
+    if ([[[UIDevice currentDevice] systemVersion] compare:@"4.3"] == NSOrderedAscending) {
+        // pre-4.3 only - we have to dismiss the modal form and represent it to get the
+        // keyboard to disappear; from 4.3-on the UINavigationController subclass takes
+        // care of this.
+        [CATransaction begin];
+        [self dismissModalViewControllerAnimated:NO];
+        [self presentModalViewController:self.modalNavigationController animated:NO];
+        [CATransaction commit];
+    }
+}
+
+#pragma mark - Profile view
+
+- (SCHProfileViewController_Shared *)profileViewController
+{
+    if (!profileViewController) {
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            profileViewController = [[SCHProfileViewController_iPad alloc] init];
+        } else {
+            profileViewController = [[SCHProfileViewController_iPhone alloc] init];
+        }
+        
+        // access to the AppDelegate's managedObjectContext is deferred until we know we don't
+        // want to use the same database any more
+        AppDelegate_Shared *appDelegate = (AppDelegate_Shared *)[[UIApplication sharedApplication] delegate];
+        profileViewController.managedObjectContext = appDelegate.managedObjectContext;
+}
+    return profileViewController;
+}
+
+- (void)pushProfileView
+{    
+    [self.navigationController pushViewController:[self profileViewController] animated:NO];
+}
+
+#pragma mark - notifications
+
+// at the 'setup bookshelves' stage we punt the user over to Safari to set up their account;
+// when we come back, kick off a sync to pick up the new profiles
+- (void)willEnterForeground:(NSNotification *)note
+{
+    if ([self.modalNavigationController.topViewController isKindOfClass:[SCHSetupBookshelvesViewController class]]) {
+        SCHSetupBookshelvesViewController *vc = (SCHSetupBookshelvesViewController *)self.modalNavigationController.topViewController;
+        [vc showActivity:YES];
+        [[SCHSyncManager sharedSyncManager] firstSync:YES];
+    }
+}
+
+- (void)profileSyncDidComplete:(NSNotification *)note
+{
+    // we can get here directly from login screen...
+    if ([self.modalNavigationController.topViewController isKindOfClass:[SCHLoginPasswordViewController class]]) {
+        [self advanceToNextSignInForm];
+        return;
+    }
+    
+    // ... or from the setupBookshelves screen following a sync initiated by returning from background
+    if ([self.modalNavigationController.topViewController isKindOfClass:[SCHSetupBookshelvesViewController class]]) {
+        SCHSetupBookshelvesViewController *vc = (SCHSetupBookshelvesViewController *)self.modalNavigationController.topViewController;
+        [vc showActivity:NO];
+        [self advanceToNextSignInForm];
+    }
 }
 
 @end

@@ -7,7 +7,7 @@
 //
 
 #import "SCHSetupBookshelvesViewController.h"
-
+#import "SCHSetupDelegate.h"
 
 @implementation SCHSetupBookshelvesViewController
 
@@ -31,13 +31,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self setButtonBackground:self.setupBookshelvesButton];
-    
-#if 1 // force a way out of this screen
-    [self.setupBookshelvesButton setTitle:@"EXIT" forState:UIControlStateNormal];
-    [self.setupBookshelvesButton addTarget:self.navigationController action:@selector(dismissModalViewControllerAnimated:) forControlEvents:UIControlEventTouchDown];
-#endif
-    
+    [self setButtonBackground:self.setupBookshelvesButton];    
 }
 
 - (void)viewDidUnload
@@ -49,7 +43,8 @@
 - (void)setupBookshelves:(id)sender
 {
     // TODO: URL
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.scholastic.com"]];
+    //[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.scholastic.com"]];
+    [self.setupDelegate dismissSettingsForm];
 }
 
 - (void)showActivity:(BOOL)activity
