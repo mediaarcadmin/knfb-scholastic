@@ -179,7 +179,7 @@
 									<object class="IBUILabel" id="483998964">
 										<reference key="NSNextResponder" ref="627749786"/>
 										<int key="NSvFlags">290</int>
-										<string key="NSFrame">{{20, 20}, {280, 102}}</string>
+										<string key="NSFrame">{{24, 20}, {272, 141}}</string>
 										<reference key="NSSuperview" ref="627749786"/>
 										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="155635484"/>
@@ -188,10 +188,10 @@
 										<int key="IBUIContentMode">7</int>
 										<bool key="IBUIUserInteractionEnabled">NO</bool>
 										<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-										<string key="IBUIText">Deregistering this device means it can no longer be used to read your Scholastic eBooks. it will also no longer count against the number of devices you can use for reading. All books and settings will be removed.</string>
+										<string key="IBUIText">Deregistering this device means it can no longer be used to read your Scholastic eBooks. It will also no longer count against the maximum number of five devices you can use for reading. All books and settings will be removed.</string>
 										<object class="NSFont" key="IBUIFont">
 											<string key="NSName">Arial-BoldMT</string>
-											<double key="NSSize">14</double>
+											<double key="NSSize">15</double>
 											<int key="NSfFlags">16</int>
 										</object>
 										<object class="NSColor" key="IBUITextColor" id="18532674">
@@ -207,7 +207,7 @@
 									<object class="IBUIButton" id="1022055281">
 										<reference key="NSNextResponder" ref="627749786"/>
 										<int key="NSvFlags">293</int>
-										<string key="NSFrame">{{85, 267}, {161, 44}}</string>
+										<string key="NSFrame">{{85, 294}, {161, 44}}</string>
 										<reference key="NSSuperview" ref="627749786"/>
 										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="288453423"/>
@@ -242,7 +242,7 @@
 									<object class="IBUILabel" id="155635484">
 										<reference key="NSNextResponder" ref="627749786"/>
 										<int key="NSvFlags">290</int>
-										<string key="NSFrame">{{20, 130}, {280, 43}}</string>
+										<string key="NSFrame">{{20, 170}, {280, 43}}</string>
 										<reference key="NSSuperview" ref="627749786"/>
 										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="688531652"/>
@@ -268,7 +268,7 @@
 									<object class="IBUITextField" id="688531652">
 										<reference key="NSNextResponder" ref="627749786"/>
 										<int key="NSvFlags">293</int>
-										<string key="NSFrame">{{19, 181}, {280, 48}}</string>
+										<string key="NSFrame">{{51, 226}, {228, 51}}</string>
 										<reference key="NSSuperview" ref="627749786"/>
 										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="579452240"/>
@@ -295,12 +295,16 @@
 											<bool key="IBUISecureTextEntry">YES</bool>
 											<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 										</object>
+										<object class="NSCustomResource" key="IBUIBackground">
+											<string key="NSClassName">NSImage</string>
+											<string key="NSResourceName">button-field-red.png</string>
+										</object>
 										<int key="IBUIClearButtonMode">1</int>
 									</object>
 									<object class="IBUIButton" id="579452240">
 										<reference key="NSNextResponder" ref="627749786"/>
 										<int key="NSvFlags">293</int>
-										<string key="NSFrame">{{41, 237}, {237, 22}}</string>
+										<string key="NSFrame">{{47, 354}, {237, 22}}</string>
 										<reference key="NSSuperview" ref="627749786"/>
 										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="1022055281"/>
@@ -329,7 +333,7 @@
 									<object class="IBUIActivityIndicatorView" id="288453423">
 										<reference key="NSNextResponder" ref="627749786"/>
 										<int key="NSvFlags">-2147483359</int>
-										<string key="NSFrame">{{265, 279}, {20, 20}}</string>
+										<string key="NSFrame">{{265, 306}, {20, 20}}</string>
 										<reference key="NSSuperview" ref="627749786"/>
 										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView"/>
@@ -602,10 +606,10 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="288453423"/>
 							<reference ref="1022055281"/>
-							<reference ref="579452240"/>
 							<reference ref="688531652"/>
 							<reference ref="155635484"/>
 							<reference ref="483998964"/>
+							<reference ref="579452240"/>
 						</object>
 						<reference key="parent" ref="550636432"/>
 					</object>
@@ -936,6 +940,7 @@
 				<bool key="EncodedWithXMLCoder">YES</bool>
 				<string>admin-iphone-top-shadow.png</string>
 				<string>button-close.png</string>
+				<string>button-field-red.png</string>
 				<string>button-login-red.png</string>
 				<string>logo.png</string>
 			</object>
@@ -943,6 +948,7 @@
 				<bool key="EncodedWithXMLCoder">YES</bool>
 				<string>{7, 7}</string>
 				<string>{18, 18}</string>
+				<string>{31, 51}</string>
 				<string>{23, 48}</string>
 				<string>{293, 46}</string>
 			</object>

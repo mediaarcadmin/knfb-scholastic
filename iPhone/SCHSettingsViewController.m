@@ -156,12 +156,29 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     self.downloadDictionaryButton.enabled = (state == SCHDictionaryProcessingStateUserSetup
                                              || state == SCHDictionaryProcessingStateUserDeclined
                                              || state == SCHDictionaryProcessingStateReady);
-    if (state == SCHDictionaryProcessingStateReady) {
-        [self.downloadDictionaryButton setTitle:NSLocalizedString(@"Remove Dictionary", @"remove dictionary button title")
-                                       forState:UIControlStateNormal];
-    } else {
-        [self.downloadDictionaryButton setTitle:NSLocalizedString(@"Download Dictionary", @"download dictionary button title")
-                                       forState:UIControlStateNormal];
+    
+    switch (state) {
+        case SCHDictionaryProcessingStateReady:
+            [self.downloadDictionaryButton setTitle:NSLocalizedString(@"Remove Dictionary", @"remove dictionary button title")
+                                           forState:UIControlStateNormal];
+
+            break;
+        case SCHDictionaryProcessingStateNeedsManifest:
+        case SCHDictionaryProcessingStateManifestVersionCheck:
+        case SCHDictionaryProcessingStateNeedsDownload:
+            [self.downloadDictionaryButton setTitle:NSLocalizedString(@"Downloading Dictionary...", @"Downloading dictionary button title")
+                                           forState:UIControlStateNormal];
+            break;
+        case SCHDictionaryProcessingStateNeedsUnzip:
+        case SCHDictionaryProcessingStateNeedsParse:
+            [self.downloadDictionaryButton setTitle:NSLocalizedString(@"Processing Dictionary...", @"Processing dictionary button title")
+                                           forState:UIControlStateNormal];
+            break;
+        default:
+            [self.downloadDictionaryButton setTitle:NSLocalizedString(@"Download Dictionary", @"download dictionary button title")
+                                           forState:UIControlStateNormal];
+
+            break;
     }
 }
 
