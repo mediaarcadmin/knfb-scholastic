@@ -281,6 +281,10 @@
 										<reference key="IBUIHighlightedTitleColor" ref="829918602"/>
 										<reference key="IBUINormalTitleColor" ref="311316863"/>
 										<reference key="IBUINormalTitleShadowColor" ref="886941877"/>
+										<object class="NSCustomResource" key="IBUINormalImage">
+											<string key="NSClassName">NSImage</string>
+											<string key="NSResourceName">update-icon.png</string>
+										</object>
 										<reference key="IBUINormalBackgroundImage" ref="795003901"/>
 									</object>
 									<object class="IBUIButton" id="785488867">
@@ -1328,6 +1332,7 @@
 				<string>button-close.png</string>
 				<string>button-login-red.png</string>
 				<string>logo.png</string>
+				<string>update-icon.png</string>
 			</object>
 			<object class="NSMutableArray" key="dict.values">
 				<bool key="EncodedWithXMLCoder">YES</bool>
@@ -1335,6 +1340,7 @@
 				<string>{18, 18}</string>
 				<string>{23, 48}</string>
 				<string>{293, 46}</string>
+				<string>{40, 27}</string>
 			</object>
 		</object>
 		<string key="IBCocoaTouchPluginVersion">301</string>
