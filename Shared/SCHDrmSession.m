@@ -26,13 +26,14 @@ struct SCHDrmIVars {
 @property (nonatomic, assign) BOOL sessionInitialized;
 @property (nonatomic, retain) SCHBookIdentifier* bookID;
 @property (nonatomic, retain) SCHBookIdentifier* boundBookID;
+@property (nonatomic, retain) NSString* serverResponse;
 
 @end
 
 #pragma mark -
 @implementation SCHDrmSession 
 
-@synthesize sessionInitialized, bookID, boundBookID;
+@synthesize sessionInitialized, bookID, boundBookID, serverResponse;
 
 -(void) dealloc {
 	Drm_Uninitialize(drmIVars->drmAppContext); 
@@ -146,6 +147,25 @@ ErrorExit:
         guid->Data4[i] = 0;
 }
 
+// Instead of parsing...
+- (NSString*)getTagValue:(NSString*)xmlStr xmlTag:(NSString*)tag {
+	NSString* beginTag = @"&lt;";
+	beginTag = [[beginTag stringByAppendingString:tag] stringByAppendingString:@"&gt;"];
+	NSRange beginTagRange = [xmlStr rangeOfString:beginTag]; 
+	if ( beginTagRange.location != NSNotFound ) {
+		NSString* endTag = @"&lt;/";
+		endTag = [[endTag stringByAppendingString:tag] stringByAppendingString:@"&gt;"];
+		NSRange endTagRange = [xmlStr rangeOfString:endTag]; 
+		if ( endTagRange.location != NSNotFound ) {
+			NSRange valRange;
+			valRange.location = beginTagRange.location + beginTagRange.length;
+			valRange.length = endTagRange.location - valRange.location;
+			return [xmlStr substringWithRange:valRange];
+		}
+	}
+	return nil;
+}
+
 - (NSString*)getPriorityError:(DRM_RESULT)result {
 	if (result==DRM_E_SERVER_COMPUTER_LIMIT_REACHED || result==DRM_E_SERVER_DEVICE_LIMIT_REACHED) {
         return NSLocalizedString(@"You are at your limit of five registered devices.  You must deregister another device before you can register this one.",@"Device limit message.");
@@ -165,6 +185,9 @@ ErrorExit:
 	else if (result==DRM_E_LICENSENOTFOUND) {
 		return NSLocalizedString(@"This book is not licensed.",@"Missing license message.");
 	}
+    else if (result==DRM_E_XMLNOTFOUND) {
+        return [self getTagValue:self.serverResponse xmlTag:@"Message"];
+    }
 	return nil;
 }
 
@@ -207,25 +230,6 @@ ErrorExit:
         [self initialize];
     }
     return self;
-}
-
-// Instead of parsing...
-- (NSString*)getTagValue:(NSString*)xmlStr xmlTag:(NSString*)tag {
-	NSString* beginTag = @"&lt;";
-	beginTag = [[beginTag stringByAppendingString:tag] stringByAppendingString:@"&gt;"];
-	NSRange beginTagRange = [xmlStr rangeOfString:beginTag]; 
-	if ( beginTagRange.location != NSNotFound ) {
-		NSString* endTag = @"&lt;/";
-		endTag = [[endTag stringByAppendingString:tag] stringByAppendingString:@"&gt;"];
-		NSRange endTagRange = [xmlStr rangeOfString:endTag]; 
-		if ( endTagRange.location != NSNotFound ) {
-			NSRange valRange;
-			valRange.location = beginTagRange.location + beginTagRange.length;
-			valRange.length = endTagRange.location - valRange.location;
-			return [xmlStr substringWithRange:valRange];
-		}
-	}
-	return nil;
 }
 
 - (void)registerDevice:(NSString*)token {
@@ -480,6 +484,7 @@ ErrorExit:
 		pbResponse = (DRM_BYTE*)[drmResponse bytes];
 		cbResponse = [drmResponse length];
 		pbResponse[cbResponse] = '\0';
+        self.serverResponse = [NSString stringWithCString:(const char*)pbResponse encoding:NSUTF8StringEncoding];
 	}
 	if (self.isJoining) {
 		NSLog(@"DRM join domain response: %s",(unsigned char*)pbResponse);
@@ -506,7 +511,7 @@ ErrorExit:
 		NSLog(@"Success message from DRM server: %08X", dr2);
 		if (self.isJoining) {
 			// Retrieve the device ID.
-			NSString* deviceID = [self getTagValue:[NSString stringWithCString:(const char*)pbResponse encoding:NSUTF8StringEncoding]
+			NSString* deviceID = [self getTagValue:self.serverResponse  //[NSString stringWithCString:(const char*)pbResponse encoding:NSUTF8StringEncoding]
 										xmlTag:@"ClientId"];
 			[self callSuccessDelegate:deviceID];
 		}
