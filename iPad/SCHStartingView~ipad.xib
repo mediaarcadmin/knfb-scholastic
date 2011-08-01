@@ -129,16 +129,16 @@
 				<int key="NSvFlags">298</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
-					<object class="IBUIView" id="780536573">
+					<object class="IBUIView" id="684671453">
 						<reference key="NSNextResponder" ref="712199625"/>
 						<int key="NSvFlags">277</int>
 						<object class="NSMutableArray" key="NSSubviews">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<object class="IBUILabel" id="453518469">
-								<reference key="NSNextResponder" ref="780536573"/>
+								<reference key="NSNextResponder" ref="684671453"/>
 								<int key="NSvFlags">290</int>
 								<string key="NSFrameSize">{440, 26}</string>
-								<reference key="NSSuperview" ref="780536573"/>
+								<reference key="NSSuperview" ref="684671453"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="908116773"/>
 								<object class="NSColor" key="IBUIBackgroundColor" id="1007080006">
@@ -156,15 +156,20 @@
 									<double key="NSSize">22</double>
 									<int key="NSfFlags">16</int>
 								</object>
+								<object class="NSColor" key="IBUITextColor" id="414531536">
+									<int key="NSColorSpace">3</int>
+									<bytes key="NSWhite">MC4zMzMzMzMzMzMzAA</bytes>
+								</object>
 								<nil key="IBUIHighlightedColor"/>
 								<int key="IBUIBaselineAdjustment">1</int>
+								<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 								<float key="IBUIMinimumFontSize">10</float>
 							</object>
 							<object class="IBUILabel" id="908116773">
-								<reference key="NSNextResponder" ref="780536573"/>
+								<reference key="NSNextResponder" ref="684671453"/>
 								<int key="NSvFlags">290</int>
 								<string key="NSFrame">{{0, 26}, {440, 52}}</string>
-								<reference key="NSSuperview" ref="780536573"/>
+								<reference key="NSSuperview" ref="684671453"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView"/>
 								<reference key="IBUIBackgroundColor" ref="1007080006"/>
@@ -179,8 +184,10 @@
 									<double key="NSSize">17</double>
 									<int key="NSfFlags">16</int>
 								</object>
+								<reference key="IBUITextColor" ref="414531536"/>
 								<nil key="IBUIHighlightedColor"/>
 								<int key="IBUIBaselineAdjustment">1</int>
+								<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 								<float key="IBUIMinimumFontSize">10</float>
 								<int key="IBUINumberOfLines">0</int>
 							</object>
@@ -199,7 +206,7 @@
 				<string key="NSFrameSize">{768, 98}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
-				<reference key="NSNextKeyView" ref="780536573"/>
+				<reference key="NSNextKeyView" ref="684671453"/>
 				<reference key="IBUIBackgroundColor" ref="1007080006"/>
 				<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 			</object>
@@ -208,16 +215,16 @@
 				<int key="NSvFlags">298</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
-					<object class="IBUIView" id="782106771">
+					<object class="IBUIView" id="617002111">
 						<reference key="NSNextResponder" ref="771371832"/>
 						<int key="NSvFlags">277</int>
 						<object class="NSMutableArray" key="NSSubviews">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<object class="IBUILabel" id="513097889">
-								<reference key="NSNextResponder" ref="782106771"/>
+								<reference key="NSNextResponder" ref="617002111"/>
 								<int key="NSvFlags">290</int>
 								<string key="NSFrameSize">{440, 26}</string>
-								<reference key="NSSuperview" ref="782106771"/>
+								<reference key="NSSuperview" ref="617002111"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="188485885"/>
 								<reference key="IBUIBackgroundColor" ref="1007080006"/>
@@ -228,15 +235,17 @@
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 								<string key="IBUIText">Sign in</string>
 								<reference key="IBUIFont" ref="527153385"/>
+								<reference key="IBUITextColor" ref="414531536"/>
 								<nil key="IBUIHighlightedColor"/>
 								<int key="IBUIBaselineAdjustment">1</int>
+								<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 								<float key="IBUIMinimumFontSize">10</float>
 							</object>
 							<object class="IBUILabel" id="188485885">
-								<reference key="NSNextResponder" ref="782106771"/>
+								<reference key="NSNextResponder" ref="617002111"/>
 								<int key="NSvFlags">290</int>
 								<string key="NSFrame">{{0, 26}, {440, 80}}</string>
-								<reference key="NSSuperview" ref="782106771"/>
+								<reference key="NSSuperview" ref="617002111"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView"/>
 								<reference key="IBUIBackgroundColor" ref="1007080006"/>
@@ -247,8 +256,10 @@
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 								<string key="IBUIText">If you have a Scholastic Book Clubs user name and password, sign in here to buy eBooks or read eBooks you have already purchased.</string>
 								<reference key="IBUIFont" ref="12554104"/>
+								<reference key="IBUITextColor" ref="414531536"/>
 								<nil key="IBUIHighlightedColor"/>
 								<int key="IBUIBaselineAdjustment">1</int>
+								<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 								<float key="IBUIMinimumFontSize">10</float>
 								<int key="IBUINumberOfLines">0</int>
 							</object>
@@ -264,7 +275,7 @@
 				<string key="NSFrameSize">{768, 154}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
-				<reference key="NSNextKeyView" ref="782106771"/>
+				<reference key="NSNextKeyView" ref="617002111"/>
 				<reference key="IBUIBackgroundColor" ref="1007080006"/>
 				<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 			</object>
@@ -413,7 +424,7 @@
 						<reference key="object" ref="712199625"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="780536573"/>
+							<reference ref="684671453"/>
 						</object>
 						<reference key="parent" ref="0"/>
 						<string key="objectName">Samples Header</string>
@@ -423,7 +434,7 @@
 						<reference key="object" ref="771371832"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="782106771"/>
+							<reference ref="617002111"/>
 						</object>
 						<reference key="parent" ref="0"/>
 						<string key="objectName">Sign in Header</string>
@@ -444,7 +455,7 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">25</int>
-						<reference key="object" ref="780536573"/>
+						<reference key="object" ref="684671453"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="453518469"/>
@@ -456,16 +467,16 @@
 					<object class="IBObjectRecord">
 						<int key="objectID">9</int>
 						<reference key="object" ref="453518469"/>
-						<reference key="parent" ref="780536573"/>
+						<reference key="parent" ref="684671453"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">10</int>
 						<reference key="object" ref="908116773"/>
-						<reference key="parent" ref="780536573"/>
+						<reference key="parent" ref="684671453"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">26</int>
-						<reference key="object" ref="782106771"/>
+						<reference key="object" ref="617002111"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="188485885"/>
@@ -476,12 +487,12 @@
 					<object class="IBObjectRecord">
 						<int key="objectID">13</int>
 						<reference key="object" ref="513097889"/>
-						<reference key="parent" ref="782106771"/>
+						<reference key="parent" ref="617002111"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">12</int>
 						<reference key="object" ref="188485885"/>
-						<reference key="parent" ref="782106771"/>
+						<reference key="parent" ref="617002111"/>
 					</object>
 				</object>
 			</object>

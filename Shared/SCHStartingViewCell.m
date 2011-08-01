@@ -58,6 +58,10 @@ enum {
         [cellButton addTarget:self action:@selector(tapped:) forControlEvents:UIControlEventTouchUpInside];
         
         [self.contentView addSubview:cellButton];
+        
+        UIView *backView = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
+        backView.backgroundColor = [UIColor clearColor];
+        self.backgroundView = backView;
     }
     return self;
 }
