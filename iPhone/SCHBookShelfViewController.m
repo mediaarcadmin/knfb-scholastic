@@ -179,6 +179,11 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
 												 name:SCHBookshelfSyncComponentDidFailNotification
 											   object:nil];
 
+    [[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(bookshelfSyncComponentDidComplete:)
+												 name:SCHSyncManagerDidCompleteNotification
+											   object:nil];
+    
 	self.loadingView.layer.cornerRadius = 5.0f;
 	[self.view bringSubviewToFront:self.loadingView];
 	
@@ -467,6 +472,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
     
     if (refreshBooks == YES) {
         self.books = [self.profileItem allBookIdentifiers];
+        [self showLoadingView:NO];        
     }   
 }
 
