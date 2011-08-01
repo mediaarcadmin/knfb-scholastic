@@ -557,7 +557,7 @@
         
         NSInteger maxDimension = frameSizeWithInsets.height;
         
-        if (width > height) {
+        if (width >= height) {
             maxDimension = frameSizeWithInsets.width;
         }
         
