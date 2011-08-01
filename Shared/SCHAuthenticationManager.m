@@ -332,6 +332,7 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
         [SFHFKeychainUtils deleteItemForUsername:username andServiceName:kSCHAuthenticationManagerServiceName error:nil];
     }
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:kSCHAuthenticationManagerUsername];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 #pragma mark - Private methods

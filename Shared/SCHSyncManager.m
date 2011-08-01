@@ -18,6 +18,9 @@
 #import "SCHContentProfileItem.h"
 #import "SCHUserDefaults.h"
 
+// Constants
+NSString * const SCHSyncManagerDidCompleteNotification = @"SCHSyncManagerDidCompleteNotification";
+
 static NSTimeInterval const kSCHSyncManagerHeartbeatInterval = 30.0;
 static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
 
@@ -413,9 +416,12 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
 		} else {
 			NSLog(@"Kicked but already syncing %@", [syncComponent class]);
 		}
-	} // else {
-//		NSLog(@"Queue is empty");
-//	}
+	}  else {
+        [[NSNotificationCenter defaultCenter] postNotificationName:SCHSyncManagerDidCompleteNotification 
+                                                            object:self];        
+        
+        //		NSLog(@"Queue is empty");
+	}
 }
 
 @end
