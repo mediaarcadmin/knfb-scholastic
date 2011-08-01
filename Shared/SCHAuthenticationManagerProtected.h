@@ -27,6 +27,7 @@ extern NSTimeInterval const kSCHAuthenticationManagerSecondsInAMinute;
 
 - (void)authenticateOnMainThread;
 - (void)clearOnMainThread;
+- (void)clearAppProcessingOnMainThread;
 
 - (void)postSuccessWithOfflineMode:(BOOL)offlineMode;
 - (void)postFailureWithError:(NSError *)error;

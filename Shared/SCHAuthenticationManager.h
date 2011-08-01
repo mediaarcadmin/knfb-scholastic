@@ -38,6 +38,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 - (BOOL)validatePassword:(NSString *)password;
 - (void)authenticate;
 - (BOOL)hasUsernameAndPassword;
+- (void)performDeregistration;
 - (void)clear;
 - (void)clearAppProcessing;
 
