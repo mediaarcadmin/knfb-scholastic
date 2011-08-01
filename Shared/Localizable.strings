@@ -39,3 +39,5 @@
 "Book Removed" = "Book Removed";
 "%@ has been removed" = "%@ has been removed";
 "A problem occured. If this problem persists please contact support.\n\n '%@'" = "A problem occured. If this problem persists please contact support.\n\n '%@'";
+"Retrieving Bookshelf Failed" = "Retrieving Bookshelf Failed";
+"Failed to retrieve the bookshelf, we will try again soon." = "Failed to retrieve the bookshelf, we will try again soon.";

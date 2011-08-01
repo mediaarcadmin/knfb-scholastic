@@ -78,9 +78,9 @@ NSString * const kSCHURLManagerFailure = @"URLManagerFailure";
 		self.requestCount = 0;
 		
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(authenticationManager:) 
-													 name:kSCHAuthenticationManagerSuccess object:nil];					
+													 name:kSCHAuthenticationManagerDidSucceedNotification object:nil];					
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(authenticationManager:) 
-													 name:kSCHAuthenticationManagerFailure object:nil];							
+													 name:kSCHAuthenticationManagerDidFailNotification object:nil];							
 	}
 	
 	return(self);

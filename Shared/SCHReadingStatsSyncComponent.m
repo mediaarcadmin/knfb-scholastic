@@ -14,7 +14,8 @@
 #import "SCHReadingStatsDetailItem.h"
 
 // Constants
-NSString * const SCHReadingStatsSyncComponentCompletedNotification = @"SCHReadingStatsSyncComponentCompletedNotification";
+NSString * const SCHReadingStatsSyncComponentDidCompleteNotification = @"SCHReadingStatsSyncComponentDidCompleteNotification";
+NSString * const SCHReadingStatsSyncComponentDidFailNotification = @"SCHReadingStatsSyncComponentDidFailNotification";
 
 @implementation SCHReadingStatsSyncComponent
 
@@ -69,8 +70,17 @@ NSString * const SCHReadingStatsSyncComponentCompletedNotification = @"SCHReadin
 	NSLog(@"%@\n%@", method, result);
     
     [self clear];
-    [[NSNotificationCenter defaultCenter] postNotificationName:SCHReadingStatsSyncComponentCompletedNotification object:self];
+    [[NSNotificationCenter defaultCenter] postNotificationName:SCHReadingStatsSyncComponentDidCompleteNotification 
+                                                        object:self];
     [super method:method didCompleteWithResult:nil];				    
+}
+
+- (void)method:(NSString *)method didFailWithError:(NSError *)error requestInfo:(NSDictionary *)requestInfo
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:SCHReadingStatsSyncComponentDidFailNotification 
+                                                        object:self];
+    
+	[super method:method didFailWithError:error requestInfo:requestInfo];
 }
 
 @end

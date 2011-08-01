@@ -14,6 +14,7 @@
 
 @property (nonatomic, retain) IBOutlet UILabel *clueLabel;
 @property (nonatomic, retain) IBOutlet UIView *lettersContainerView;
+@property (nonatomic, retain) IBOutlet UIButton *hintButton;
 
 - (IBAction)hintButtonTapped:(id)sender;
 

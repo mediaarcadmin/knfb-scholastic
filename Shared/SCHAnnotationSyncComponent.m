@@ -25,7 +25,8 @@
 #import "SCHAppState.h"
 
 // Constants
-NSString * const SCHAnnotationSyncComponentCompletedNotification = @"SCHAnnotationSyncComponentCompletedNotification";
+NSString * const SCHAnnotationSyncComponentDidCompleteNotification = @"SCHAnnotationSyncComponentDidCompleteNotification";
+NSString * const SCHAnnotationSyncComponentDidFailNotification = @"SCHAnnotationSyncComponentDidFailNotification";
 NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotationSyncComponentCompletedProfileIDs";
 
 @interface SCHAnnotationSyncComponent ()
@@ -225,7 +226,7 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
         if ([self.annotations count] < 1) {
             [self setSyncDate:[NSDate date]];
         }
-        [[NSNotificationCenter defaultCenter] postNotificationName:SCHAnnotationSyncComponentCompletedNotification 
+        [[NSNotificationCenter defaultCenter] postNotificationName:SCHAnnotationSyncComponentDidCompleteNotification 
                                                             object:self 
                                                           userInfo:[NSDictionary dictionaryWithObject:profileID 
                                                                                                forKey:SCHAnnotationSyncComponentCompletedProfileIDs]];        
@@ -254,7 +255,12 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 
 - (void)method:(NSString *)method didFailWithError:(NSError *)error requestInfo:(NSDictionary *)requestInfo
 {
+    NSNumber *profileID = [[[self.annotations allKeys] sortedArrayUsingSelector:@selector(compare:)] objectAtIndex:0];
     [self.createdAnnotations removeAllObjects];
+    [[NSNotificationCenter defaultCenter] postNotificationName:SCHAnnotationSyncComponentDidFailNotification 
+                                                        object:self 
+                                                      userInfo:[NSDictionary dictionaryWithObject:profileID 
+                                                                                           forKey:SCHAnnotationSyncComponentCompletedProfileIDs]];            
 	[super method:method didFailWithError:error requestInfo:requestInfo];
 }
 

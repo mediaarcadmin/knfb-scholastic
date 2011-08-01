@@ -45,8 +45,8 @@
     if (self) {
         privateAnnotations = [aPrivateAnnotation retain];
         [[NSNotificationCenter defaultCenter] addObserver:self 
-                                                 selector:@selector(annotationSyncComponentCompletedNotification:) 
-                                                     name:SCHAnnotationSyncComponentCompletedNotification 
+                                                 selector:@selector(annotationSyncComponentDidCompleteNotification:) 
+                                                     name:SCHAnnotationSyncComponentDidCompleteNotification 
                                                    object:nil];        
     }
     return(self);
@@ -64,7 +64,7 @@
     [super dealloc];
 }
 
-- (void)annotationSyncComponentCompletedNotification:(NSNotification *)notification
+- (void)annotationSyncComponentDidCompleteNotification:(NSNotification *)notification
 {
     NSNumber *profileID = [notification.userInfo objectForKey:SCHAnnotationSyncComponentCompletedProfileIDs];
     

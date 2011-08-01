@@ -12,11 +12,11 @@
 #import "SCHDrmRegistrationSessionDelegate.h"
 
 // Constants
-extern NSString * const kSCHAuthenticationManagerSuccess;
-extern NSString * const kSCHAuthenticationManagerFailure;
+extern NSString * const kSCHAuthenticationManagerDidSucceedNotification;
+extern NSString * const kSCHAuthenticationManagerDidFailNotification;
 extern NSString * const kSCHAuthenticationManagerAToken;
 extern NSString * const kSCHAuthenticationManagerOfflineMode;
-extern NSString * const SCHAuthenticationManagerDRMDeregistrationNotification;
+extern NSString * const kSCHAuthenticationManagerDidDeregisterNotification;
 extern NSString * const kSCHAuthenticationManagerNSError;
 
 extern NSString * const kSCHAuthenticationManagerErrorDomain;

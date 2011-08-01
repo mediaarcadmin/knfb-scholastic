@@ -7,7 +7,7 @@
 //
 
 #import "SCHSetupBookshelvesViewController.h"
-
+#import "SCHSetupDelegate.h"
 
 @implementation SCHSetupBookshelvesViewController
 
@@ -49,7 +49,8 @@
 - (void)setupBookshelves:(id)sender
 {
     // TODO: URL
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.scholastic.com"]];
+    //[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.scholastic.com"]];
+    [self.setupDelegate dismissSettingsForm];
 }
 
 - (void)showActivity:(BOOL)activity

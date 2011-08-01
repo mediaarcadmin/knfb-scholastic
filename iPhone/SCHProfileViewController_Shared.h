@@ -11,9 +11,6 @@
 #import "SCHProfileViewCell.h"
 #import "SCHSetupDelegate.h"
 
-@class SCHLoginPasswordViewController;
-@class SCHSetupBookshelvesViewController;
-@class SCHDownloadDictionaryViewController;
 @class SCHSettingsViewController;
 @class SCHProfileItem;
 @class SCHBookShelfViewController;
@@ -24,9 +21,6 @@
 @property (nonatomic, retain) IBOutlet UIImageView *backgroundView;
 @property (nonatomic, retain) IBOutlet UIView *headerView;
 @property (nonatomic, retain) IBOutlet UINavigationController *modalNavigationController;
-@property (nonatomic, retain) IBOutlet SCHLoginPasswordViewController *loginPasswordController;
-@property (nonatomic, retain) IBOutlet SCHSetupBookshelvesViewController *setupBookshelvesViewController;
-@property (nonatomic, retain) IBOutlet SCHDownloadDictionaryViewController *downloadDictionaryViewController;
 @property (nonatomic, retain) IBOutlet SCHSettingsViewController *settingsViewController;
 @property (nonatomic, retain) IBOutlet UIImageView *updatesBubble;
 

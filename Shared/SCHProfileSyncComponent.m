@@ -18,7 +18,8 @@
 // Constants
 NSString * const SCHProfileSyncComponentWillDeleteNotification = @"SCHProfileSyncComponentWillDeleteNotification";
 NSString * const SCHProfileSyncComponentDeletedProfileIDs = @"SCHProfileSyncComponentDeletedProfileIDs";
-NSString * const SCHProfileSyncComponentCompletedNotification = @"SCHProfileSyncComponentCompletedNotification";
+NSString * const SCHProfileSyncComponentDidCompleteNotification = @"SCHProfileSyncComponentDidCompleteNotification";
+NSString * const SCHProfileSyncComponentDidFailNotification = @"SCHProfileSyncComponentDidFailNotification";
 
 @interface SCHProfileSyncComponent ()
 
@@ -104,7 +105,8 @@ NSString * const SCHProfileSyncComponentCompletedNotification = @"SCHProfileSync
 		}		
 	} else if([method compare:kSCHLibreAccessWebServiceGetUserProfiles] == NSOrderedSame) {
 		[self syncProfiles:[result objectForKey:kSCHLibreAccessWebServiceProfileList]];
-		[[NSNotificationCenter defaultCenter] postNotificationName:SCHProfileSyncComponentCompletedNotification object:self];		
+		[[NSNotificationCenter defaultCenter] postNotificationName:SCHProfileSyncComponentDidCompleteNotification 
+                                                            object:self];		
 		[super method:method didCompleteWithResult:nil];	
 	}	
 }
@@ -112,6 +114,8 @@ NSString * const SCHProfileSyncComponentCompletedNotification = @"SCHProfileSync
 - (void)method:(NSString *)method didFailWithError:(NSError *)error requestInfo:(NSDictionary *)requestInfo
 {
     [self.createdProfiles removeAllObjects];
+    [[NSNotificationCenter defaultCenter] postNotificationName:SCHProfileSyncComponentDidFailNotification 
+                                                        object:self];		    
 	[super method:method didFailWithError:error requestInfo:requestInfo];
 }
 

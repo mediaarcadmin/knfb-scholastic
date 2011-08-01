@@ -21,11 +21,11 @@
 #import "SCHNonDRMAuthenticationManager.h"
 
 // Constants
-NSString * const kSCHAuthenticationManagerSuccess = @"AuthenticationManagerSuccess";
-NSString * const kSCHAuthenticationManagerFailure = @"AuthenticationManagerFailure";
+NSString * const kSCHAuthenticationManagerDidSucceedNotification = @"SCHAuthenticationManagerDidSucceedNotification";
+NSString * const kSCHAuthenticationManagerDidFailNotification = @"SCHAuthenticationManagerDidFailNotification";
 NSString * const kSCHAuthenticationManagerAToken = @"aToken";
 NSString * const kSCHAuthenticationManagerOfflineMode = @"OfflineMode";
-NSString * const SCHAuthenticationManagerDRMDeregistrationNotification = @"SCHAuthenticationManagerDRMDeregistrationNotification";
+NSString * const kSCHAuthenticationManagerDidDeregisterNotification = @"SCHAuthenticationManagerDidDeregisterNotification";
 NSString * const kSCHAuthenticationManagerNSError = @"NSError";
 
 NSString * const kSCHAuthenticationManagerErrorDomain = @"AuthenticationManagerErrorDomain";
@@ -188,8 +188,6 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
 
 - (void)clearAppProcessing
 {
-    // removeObjectForKey does not change the value...
-    [[NSUserDefaults standardUserDefaults] setObject:nil forKey:kSCHAuthenticationManagerDeviceKey];
     [[SCHURLManager sharedURLManager] clear];
     [[SCHProcessingManager sharedProcessingManager] cancelAllOperations];                
     [[SCHSyncManager sharedSyncManager] clear];    
@@ -349,14 +347,14 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
 	
     NSLog(@"Authentication: %@", (offlineMode == YES ? @" offline" : @"successful!"));
     
-	[[NSNotificationCenter defaultCenter] postNotificationName:kSCHAuthenticationManagerSuccess 
+	[[NSNotificationCenter defaultCenter] postNotificationName:kSCHAuthenticationManagerDidSucceedNotification 
 														object:self 
 													  userInfo:userInfo];				
 }
 
 - (void)postFailureWithError:(NSError *)error
 {
-	[[NSNotificationCenter defaultCenter] postNotificationName:kSCHAuthenticationManagerFailure
+	[[NSNotificationCenter defaultCenter] postNotificationName:kSCHAuthenticationManagerDidFailNotification
 														object:self 
 													  userInfo:[NSDictionary dictionaryWithObject:error
                                                                                            forKey:kSCHAuthenticationManagerNSError]];		
@@ -368,11 +366,11 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
         [self.drmRegistrationSession deregisterDevice:token];
     } else {
         [self clear];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kSCHAuthenticationManagerDidDeregisterNotification
+                                                            object:self 
+                                                          userInfo:nil];		        
         [self clearAppProcessing];
     }
-    [[NSNotificationCenter defaultCenter] postNotificationName:SCHAuthenticationManagerDRMDeregistrationNotification
-                                                        object:self 
-                                                      userInfo:nil];		        
 }
 
 #pragma mark - BITAPIProxy Delegate methods
@@ -441,10 +439,10 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
         // Successful deregistration
         waitingOnResponse = NO;
         [self clear];
-        [self clearAppProcessing];
-        [[NSNotificationCenter defaultCenter] postNotificationName:SCHAuthenticationManagerDRMDeregistrationNotification
+        [[NSNotificationCenter defaultCenter] postNotificationName:kSCHAuthenticationManagerDidDeregisterNotification
                                                             object:self 
                                                           userInfo:nil];		        
+        [self clearAppProcessing];
     }
     self.drmRegistrationSession = nil;
 }

@@ -429,10 +429,6 @@
     self.bookTintView.frame = coverFrame;
     self.activitySpinner.center = self.coverImageView.center;
 
-    // resize and position the progress view
-    CGRect progressViewFrame = CGRectMake(10 + leftRightInset, self.frame.size.height - 32, self.frame.size.width - (leftRightInset * 2) - 20, 10);
-    self.progressView.frame = progressViewFrame;
-    
     // move the new image view to the right spot, the bottom right hand corner
     CGPoint newCenter = CGPointMake(coverFrame.origin.x + coverFrame.size.width, 
                                     coverFrame.origin.y + coverFrame.size.height);
@@ -459,6 +455,10 @@
     
     self.newBadge.center = newCenter;
     
+    // resize and position the progress view
+    NSLog(@"Progress view frame: %@", NSStringFromCGRect(self.progressView.frame));
+    CGRect progressViewFrame = CGRectMake(coverFrame.origin.x + 10, self.newBadge.frame.origin.y - 10, coverFrame.size.width - 20, self.progressView.frame.size.height);
+    self.progressView.frame = progressViewFrame;
     
     // move the error badge to the centre of the cover
     CGPoint errorCenter = CGPointMake(floorf(CGRectGetMidX(coverFrame)), floorf(CGRectGetMidY(coverFrame)));

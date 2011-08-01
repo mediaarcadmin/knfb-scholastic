@@ -376,7 +376,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(annotationChanges:)
-                                                     name:SCHAnnotationSyncComponentCompletedNotification
+                                                     name:SCHAnnotationSyncComponentDidCompleteNotification
                                                    object:nil];
         
         
