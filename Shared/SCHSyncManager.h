@@ -11,6 +11,9 @@
 
 #import "SCHComponentDelegate.h"
 
+// Constants
+extern NSString * const SCHSyncManagerDidCompleteNotification;
+
 @class SCHUserContentItem;
 
 @interface SCHSyncManager : NSObject <SCHComponentDelegate>
