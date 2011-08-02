@@ -224,7 +224,6 @@
 								<string key="NSFrame">{{20, 357}, {280, 48}}</string>
 								<reference key="NSSuperview" ref="711748717"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<int key="IBUIContentHorizontalAlignment">0</int>

@@ -289,7 +289,7 @@
 									</object>
 									<object class="IBUIActivityIndicatorView" id="328416546">
 										<reference key="NSNextResponder" ref="627327703"/>
-										<int key="NSvFlags">-2147483347</int>
+										<int key="NSvFlags">-2147483355</int>
 										<string key="NSFrame">{{221, 288}, {20, 20}}</string>
 										<reference key="NSSuperview" ref="627327703"/>
 										<reference key="NSWindow"/>
@@ -317,6 +317,7 @@
 								<string key="NSFrameSize">{320, 7}</string>
 								<reference key="NSSuperview" ref="489633664"/>
 								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView"/>
 								<reference key="IBUIBackgroundColor" ref="764302899"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -742,6 +743,7 @@
 					<string>147.IBEditorWindowLastContentRect</string>
 					<string>147.IBPluginDependency</string>
 					<string>148.IBPluginDependency</string>
+					<string>150.CustomClassName</string>
 					<string>150.IBPluginDependency</string>
 					<string>151.IBPluginDependency</string>
 					<string>152.CustomClassName</string>
@@ -774,6 +776,7 @@
 					<string>{{354, 412}, {320, 480}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<string>DebugScrollView</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>SCHUnderlinedButton</string>
@@ -811,6 +814,14 @@
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
 				<bool key="EncodedWithXMLCoder">YES</bool>
+				<object class="IBPartialClassDescription">
+					<string key="className">DebugScrollView</string>
+					<string key="superclassName">UIScrollView</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/DebugScrollView.h</string>
+					</object>
+				</object>
 				<object class="IBPartialClassDescription">
 					<string key="className">SCHCustomToolbar</string>
 					<string key="superclassName">UIToolbar</string>

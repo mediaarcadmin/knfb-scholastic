@@ -200,6 +200,7 @@
 								<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 								<float key="IBUIMinimumFontSize">10</float>
 								<int key="IBUINumberOfLines">0</int>
+								<int key="IBUITextAlignment">1</int>
 							</object>
 							<object class="IBUILabel" id="363073880">
 								<reference key="NSNextResponder" ref="392821225"/>
@@ -227,6 +228,7 @@
 								<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 								<float key="IBUIMinimumFontSize">10</float>
 								<int key="IBUINumberOfLines">0</int>
+								<int key="IBUITextAlignment">1</int>
 							</object>
 							<object class="IBUILabel" id="736782801">
 								<reference key="NSNextResponder" ref="392821225"/>
@@ -250,6 +252,7 @@
 								<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 								<float key="IBUIMinimumFontSize">10</float>
 								<int key="IBUINumberOfLines">0</int>
+								<int key="IBUITextAlignment">1</int>
 							</object>
 							<object class="IBUIButton" id="1033711476">
 								<reference key="NSNextResponder" ref="392821225"/>
