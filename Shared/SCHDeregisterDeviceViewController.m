@@ -12,8 +12,16 @@
 #import "SCHSetupDelegate.h"
 #import "SCHAuthenticationManagerProtected.h"
 
+static const CGFloat kDeregisterContentHeightLandscape = 380;
+
 @interface SCHDeregisterDeviceViewController ()
+
 @property (nonatomic, retain) SCHDrmRegistrationSession* drmRegistrationSession;
+@property (nonatomic, retain) UITextField *activeTextField;
+
+- (void)setupContentSizeForOrientation:(UIInterfaceOrientation)orientation;
+- (void)makeVisibleTextField:(UITextField *)textField;
+
 @end
 
 @implementation SCHDeregisterDeviceViewController
@@ -24,14 +32,20 @@
 @synthesize spinner;
 @synthesize scrollView;
 @synthesize drmRegistrationSession;
+@synthesize activeTextField;
 
 - (void)releaseViewObjects
 {
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        [[NSNotificationCenter defaultCenter] removeObserver:self];
+    }
+    
     [promptLabel release], promptLabel = nil;
     [passwordField release], passwordField = nil;
     [deregisterButton release], deregisterButton = nil;
     [scrollView release], scrollView = nil;
     [spinner release], spinner = nil;
+    [activeTextField release], activeTextField = nil;
     
     [super releaseViewObjects];
 }
@@ -57,6 +71,29 @@
 
     NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:kSCHAuthenticationManagerUsername];
     self.promptLabel.text = [NSString stringWithFormat:self.promptLabel.text, username];
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        [[NSNotificationCenter defaultCenter] addObserver:self 
+                                                 selector:@selector(keyboardWillShow:) 
+                                                     name:UIKeyboardWillShowNotification
+                                                   object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self 
+                                                 selector:@selector(keyboardDidShow:) 
+                                                     name:UIKeyboardDidShowNotification
+                                                   object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(keyboardWillHide:)
+                                                     name:UIKeyboardWillHideNotification
+                                                   object:nil];
+    }
+}
+
+- (void)viewWillAppear:(BOOL)animated 
+{
+    [super viewWillAppear:animated];
+    [self setupContentSizeForOrientation:self.interfaceOrientation];
 }
 
 - (void)viewDidUnload
@@ -92,18 +129,52 @@
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://my.scholastic.com/sps_my_account/pwmgmt/ForgotPassword.jsp?AppType=COOL"]];
 }
 
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+    [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+    [self.view endEditing:YES];
+    [self setupContentSizeForOrientation:self.interfaceOrientation];
+}
+
 #pragma mark - Text field delegate
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
+{    
+    if (self.activeTextField && (self.activeTextField != textField)) {
+        // We have swapped textFields with the keyboard showing
+        [self makeVisibleTextField:textField];
+    }
+    
+    self.activeTextField = textField;
+}
+
+- (void)makeVisibleTextField:(UITextField *)textField
 {
-    [self.scrollView setContentSize:CGSizeMake(CGRectGetWidth(self.view.bounds), 2*CGRectGetHeight(self.view.bounds))];
-    [self.scrollView setContentOffset:CGPointMake(0, CGRectGetMinY(self.promptLabel.frame)) animated:YES];
+    CGFloat textFieldCenterY    = CGRectGetMidY(textField.frame);
+    CGFloat scrollViewQuadrantY = CGRectGetMidY(self.scrollView.frame)/2.0f;
+    
+    if (textFieldCenterY > scrollViewQuadrantY) {
+        [self.scrollView setContentOffset:CGPointMake(0, textFieldCenterY - scrollViewQuadrantY) animated:YES];
+    }
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     [self deregister:nil];
     return NO;
+}
+
+- (void)setupContentSizeForOrientation:(UIInterfaceOrientation)orientation;
+{
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        if (UIInterfaceOrientationIsPortrait(orientation)) {
+            self.scrollView.contentSize = CGSizeZero;
+        } else {
+            self.scrollView.contentSize = CGSizeMake(self.containerView.bounds.size.width, kDeregisterContentHeightLandscape);
+        }
+    } else {
+        self.scrollView.contentSize = CGSizeZero;
+    }    
 }
 
 #pragma mark - DRM Registration Session Delegate methods
@@ -131,6 +202,26 @@
     [errorAlert show]; 
     [errorAlert release]; 
     self.drmRegistrationSession = nil;
+}
+
+#pragma mark - UIKeyboard Notifications
+
+- (void)keyboardDidShow:(NSNotification *) notification
+{
+    if (self.activeTextField) {
+        [self makeVisibleTextField:self.activeTextField];
+    }
+}
+
+- (void)keyboardWillShow:(NSNotification *) notification
+{
+    [self.scrollView setContentSize:CGSizeMake(self.scrollView.contentSize.width, MAX(self.containerView.frame.size.height, self.scrollView.contentSize.height) * 1.5f)];
+}
+
+- (void)keyboardWillHide:(NSNotification *) notification
+{
+    self.activeTextField = nil;
+    [self setupContentSizeForOrientation:self.interfaceOrientation];
 }
 
 @end

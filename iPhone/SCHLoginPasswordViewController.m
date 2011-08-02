@@ -16,6 +16,8 @@ static const CGFloat kContentHeightLandscape = 380;
 
 @interface SCHLoginPasswordViewController ()
 
+@property (nonatomic, retain) UITextField *activeTextField;
+
 - (void)releaseViewObjects;
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation;
 - (void)setupContentSizeForOrientation:(UIInterfaceOrientation)orientation;
@@ -41,13 +43,16 @@ static const CGFloat kContentHeightLandscape = 380;
 @synthesize containerView;
 @synthesize scrollView;
 @synthesize loginButton;
+@synthesize activeTextField;
 
 #pragma mark - Object Lifecycle
 
 - (void)releaseViewObjects
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        [[NSNotificationCenter defaultCenter] removeObserver:self];
+    }
+    
 	[topField release], topField = nil;
 	[bottomField release], bottomField = nil;
 	[spinner release], spinner = nil;
@@ -57,6 +62,7 @@ static const CGFloat kContentHeightLandscape = 380;
     [containerView release], containerView = nil;
     [scrollView release], scrollView = nil;
     [loginButton release], loginButton = nil;
+    [activeTextField release], activeTextField = nil;
 }
 
 - (void)dealloc 
@@ -86,6 +92,11 @@ static const CGFloat kContentHeightLandscape = 380;
         [[NSNotificationCenter defaultCenter] addObserver:self 
                                                  selector:@selector(keyboardWillShow:) 
                                                      name:UIKeyboardWillShowNotification
+                                                   object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self 
+                                                 selector:@selector(keyboardDidShow:) 
+                                                     name:UIKeyboardDidShowNotification
                                                    object:nil];
         
         [[NSNotificationCenter defaultCenter] addObserver:self
@@ -389,25 +400,28 @@ static const CGFloat kContentHeightLandscape = 380;
     CGFloat scrollViewQuadrantY = CGRectGetMidY(self.scrollView.frame)/2.0f;
     
     if (textFieldCenterY > scrollViewQuadrantY) {
-        [UIView animateWithDuration:0.3f 
-                              delay:0
-                            options:UIViewAnimationOptionAllowUserInteraction
-                         animations:^{
-                             [self.scrollView setContentOffset:CGPointMake(0, textFieldCenterY - scrollViewQuadrantY)];
-                         }
-                         completion:nil];
+        [self.scrollView setContentOffset:CGPointMake(0, textFieldCenterY - scrollViewQuadrantY) animated:YES];
     }
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
-{
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        // Perform on the next run of the run loop to allow keyboardWillShow to trigger
-        [self performSelector:@selector(makeVisibleTextField:) withObject:textField afterDelay:0.01f];
+{    
+    if (self.activeTextField && (self.activeTextField != textField)) {
+        // We have swapped textFields with the keyboard showing
+        [self makeVisibleTextField:textField];
     }
+    
+    self.activeTextField = textField;
 }
 
 #pragma mark - UIKeyboard Notifications
+
+- (void)keyboardDidShow:(NSNotification *) notification
+{
+    if (self.activeTextField) {
+        [self makeVisibleTextField:self.activeTextField];
+    }
+}
 
 - (void)keyboardWillShow:(NSNotification *) notification
 {
@@ -416,6 +430,7 @@ static const CGFloat kContentHeightLandscape = 380;
 
 - (void)keyboardWillHide:(NSNotification *) notification
 {
+    self.activeTextField = nil;
     [self setupContentSizeForOrientation:self.interfaceOrientation];
 }
 

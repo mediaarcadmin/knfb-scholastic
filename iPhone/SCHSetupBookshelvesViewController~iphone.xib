@@ -221,12 +221,12 @@
 							<object class="IBUIActivityIndicatorView" id="9896576">
 								<reference key="NSNextResponder" ref="1019933755"/>
 								<int key="NSvFlags">-2147483355</int>
-								<string key="NSFrame">{{142, 186}, {37, 37}}</string>
+								<string key="NSFrame">{{218, 144}, {20, 20}}</string>
 								<reference key="NSSuperview" ref="1019933755"/>
 								<reference key="NSWindow"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-								<int key="IBUIStyle">0</int>
+								<int key="IBUIStyle">2</int>
 							</object>
 						</object>
 						<string key="NSFrame">{{0, 44}, {320, 416}}</string>
