@@ -449,8 +449,7 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
         [[NSUserDefaults standardUserDefaults] setObject:deviceKey 
                                                   forKey:kSCHAuthenticationManagerDeviceKey];
         [libreAccessWebService authenticateDevice:deviceKey forUserKey:nil];
-    }
-    else {
+    } else {
         // Successful deregistration
         waitingOnResponse = NO;
         [[NSNotificationCenter defaultCenter] postNotificationName:kSCHAuthenticationManagerDidDeregisterNotification

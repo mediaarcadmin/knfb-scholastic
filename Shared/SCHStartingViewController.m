@@ -112,6 +112,7 @@ enum {
 {
     [super viewWillAppear:animated];
     [self setupAssetsForOrientation:self.interfaceOrientation];
+    [self.navigationController.navigationBar setAlpha:1.0f];
 }
 
 #pragma mark - Orientation methods
