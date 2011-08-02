@@ -98,7 +98,7 @@ enum {
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(authenticationManagerDidDeregister:)
-                                                 name:kSCHAuthenticationManagerDidDeregisterNotification
+                                                 name:SCHAuthenticationManagerDidDeregisterNotification
                                                object:nil];
 
     UIImageView *logoImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo"]];
@@ -255,8 +255,8 @@ enum {
     };
     
     login.retainLoopSafeActionBlock = ^BOOL(NSString *username, NSString *password) {
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(authenticationManager:) name:kSCHAuthenticationManagerDidSucceedNotification object:nil];			
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(authenticationManager:) name:kSCHAuthenticationManagerDidFailNotification object:nil];					
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(authenticationManager:) name:SCHAuthenticationManagerDidSucceedNotification object:nil];			
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(authenticationManager:) name:SCHAuthenticationManagerDidFailNotification object:nil];					
         [[SCHAuthenticationManager sharedAuthenticationManager] authenticateWithUserName:username withPassword:password];
         return YES;
     };
@@ -271,10 +271,10 @@ enum {
 
 - (void)authenticationManager:(NSNotification *)notification
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:kSCHAuthenticationManagerDidSucceedNotification object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:kSCHAuthenticationManagerDidFailNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:SCHAuthenticationManagerDidSucceedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:SCHAuthenticationManagerDidFailNotification object:nil];
 	
-	if ([notification.name isEqualToString:kSCHAuthenticationManagerDidSucceedNotification]) {
+	if ([notification.name isEqualToString:SCHAuthenticationManagerDidSucceedNotification]) {
         [[SCHURLManager sharedURLManager] clear];
         [[SCHSyncManager sharedSyncManager] clear];
         [[SCHSyncManager sharedSyncManager] firstSync:YES];

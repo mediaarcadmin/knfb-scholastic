@@ -8,15 +8,14 @@
 
 #import "SCHDeregisterDeviceViewController.h"
 #import "SCHAuthenticationManager.h"
-#import "SCHDrmSession.h"
 #import "SCHSetupDelegate.h"
 #import "SCHAuthenticationManagerProtected.h"
+#import "LambdaAlert.h"
 
 static const CGFloat kDeregisterContentHeightLandscape = 380;
 
 @interface SCHDeregisterDeviceViewController ()
 
-@property (nonatomic, retain) SCHDrmRegistrationSession* drmRegistrationSession;
 @property (nonatomic, retain) UITextField *activeTextField;
 
 - (void)setupContentSizeForOrientation:(UIInterfaceOrientation)orientation;
@@ -31,7 +30,6 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
 @synthesize deregisterButton;
 @synthesize spinner;
 @synthesize scrollView;
-@synthesize drmRegistrationSession;
 @synthesize activeTextField;
 
 - (void)releaseViewObjects
@@ -52,7 +50,6 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
 
 - (void)dealloc
 {
-    [drmRegistrationSession release], drmRegistrationSession = nil;
     [self releaseViewObjects];
     [super dealloc];
 }
@@ -87,6 +84,17 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
                                                  selector:@selector(keyboardWillHide:)
                                                      name:UIKeyboardWillHideNotification
                                                    object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(authenticationManagerDidDeregister:)
+                                                     name:SCHAuthenticationManagerDidDeregisterNotification
+                                                   object:nil];
+
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(authenticationManagerDidFailDeregistration:)
+                                                     name:SCHAuthenticationManagerDidFailDeregistrationNotification
+                                                   object:nil];
+
     }
 }
 
@@ -108,19 +116,14 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
 {
     if ([[SCHAuthenticationManager sharedAuthenticationManager] validatePassword:self.passwordField.text]) {
         [self.spinner startAnimating];
-        SCHDrmRegistrationSession* registrationSession = [[SCHDrmRegistrationSession alloc] init];
-        registrationSession.delegate = self;	
-        self.drmRegistrationSession = registrationSession;
-        [self.drmRegistrationSession deregisterDevice:[[SCHAuthenticationManager sharedAuthenticationManager] aToken]];
-        [registrationSession release]; 
+        [[SCHAuthenticationManager sharedAuthenticationManager] deregister];
     } else {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"error alert title")
-                                                        message:NSLocalizedString(@"The password was incorrect", @"")
-                                                       delegate:nil
-                                              cancelButtonTitle:NSLocalizedString(@"Try Again", @"try again button after password failure")
-                                              otherButtonTitles:nil];
+        LambdaAlert *alert = [[LambdaAlert alloc]
+                              initWithTitle:NSLocalizedString(@"Error", @"error alert title")
+                              message:NSLocalizedString(@"The password was incorrect", @"")];
+        [alert addButtonWithTitle:NSLocalizedString(@"Try Again", @"try again button after password failure") block:^{}];
         [alert show];
-        [alert release];
+        [alert release];        
     }
 }
 
@@ -177,31 +180,24 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
     }    
 }
 
-#pragma mark - DRM Registration Session Delegate methods
+#pragma mark - Deregistration Notification methods
 
-- (void)registrationSession:(SCHDrmRegistrationSession *)registrationSession didComplete:(NSString *)deviceKey
+- (void)authenticationManagerDidDeregister:(NSNotification *)notification
 {
     [self.spinner stopAnimating];
-    if (deviceKey == nil) {
-        [[SCHAuthenticationManager sharedAuthenticationManager] clear];
-        [[SCHAuthenticationManager sharedAuthenticationManager] clearAppProcessing];
-        [self.setupDelegate dismissSettingsForm];
-    } else {
-        NSLog(@"Unknown DRM error: device key value returned from successful deregistration.");
-    }
-    self.drmRegistrationSession = nil;
+    [self.setupDelegate dismissSettingsForm];
 }
 
-- (void)registrationSession:(SCHDrmRegistrationSession *)registrationSession didFailWithError:(NSError *)error
+
+- (void)authenticationManagerDidFailDeregistration:(NSNotification *)notification
 {
-	UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") 
-                                                         message:[error localizedDescription]
-                                                        delegate:nil 
-                                               cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-                                               otherButtonTitles:nil]; 
-    [errorAlert show]; 
-    [errorAlert release]; 
-    self.drmRegistrationSession = nil;
+    NSError *error = [[notification userInfo] objectForKey:kSCHAuthenticationManagerNSError];
+    LambdaAlert *alert = [[LambdaAlert alloc]
+                          initWithTitle:NSLocalizedString(@"Error", @"Error") 
+                          message:[error localizedDescription]];
+    [alert addButtonWithTitle:NSLocalizedString(@"OK", @"OK") block:^{}];
+    [alert show];
+    [alert release];
 }
 
 #pragma mark - UIKeyboard Notifications

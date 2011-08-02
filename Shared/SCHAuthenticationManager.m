@@ -21,11 +21,12 @@
 #import "SCHNonDRMAuthenticationManager.h"
 
 // Constants
-NSString * const kSCHAuthenticationManagerDidSucceedNotification = @"SCHAuthenticationManagerDidSucceedNotification";
-NSString * const kSCHAuthenticationManagerDidFailNotification = @"SCHAuthenticationManagerDidFailNotification";
+NSString * const SCHAuthenticationManagerDidSucceedNotification = @"SCHAuthenticationManagerDidSucceedNotification";
+NSString * const SCHAuthenticationManagerDidFailNotification = @"SCHAuthenticationManagerDidFailNotification";
 NSString * const kSCHAuthenticationManagerAToken = @"aToken";
 NSString * const kSCHAuthenticationManagerOfflineMode = @"OfflineMode";
-NSString * const kSCHAuthenticationManagerDidDeregisterNotification = @"SCHAuthenticationManagerDidDeregisterNotification";
+NSString * const SCHAuthenticationManagerDidDeregisterNotification = @"SCHAuthenticationManagerDidDeregisterNotification";
+NSString * const SCHAuthenticationManagerDidFailDeregistrationNotification = @"SCHAuthenticationManagerDidFailDeregistrationNotification";
 NSString * const kSCHAuthenticationManagerNSError = @"NSError";
 
 NSString * const kSCHAuthenticationManagerErrorDomain = @"AuthenticationManagerErrorDomain";
@@ -51,7 +52,7 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
 - (void)aTokenOnMainThread;
 - (void)authenticateWithUserNameOnMainThread:(NSValue *)parameters;
 - (void)hasUsernameAndPasswordOnMainThread:(NSValue *)returnValue;
-- (void)performDeregistrationOnMainThread:(NSString *)token;
+- (void)deregisterOnMainThread:(NSString *)token;
 
 @end
 
@@ -183,21 +184,21 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
 {
     [self performSelectorOnMainThread: @selector(clearOnMainThread) 
                            withObject:nil 
-                        waitUntilDone:NO];
+                        waitUntilDone:YES];
 }
 
 - (void)clearAppProcessing
 {
     [self performSelectorOnMainThread: @selector(clearAppProcessingOnMainThread) 
                            withObject:nil 
-                        waitUntilDone:NO];
+                        waitUntilDone:YES];
 }
 
-- (void)performDeregistration
+- (void)deregister
 {
-    [self performSelectorOnMainThread: @selector(performDeregistrationOnMainThread:) 
+    [self performSelectorOnMainThread: @selector(deregisterOnMainThread:) 
                            withObject:self.aToken 
-                        waitUntilDone:NO];
+                        waitUntilDone:YES];
 }
 
 #pragma mark - Accessor methods
@@ -362,25 +363,25 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
 	
     NSLog(@"Authentication: %@", (offlineMode == YES ? @" offline" : @"successful!"));
     
-	[[NSNotificationCenter defaultCenter] postNotificationName:kSCHAuthenticationManagerDidSucceedNotification 
+	[[NSNotificationCenter defaultCenter] postNotificationName:SCHAuthenticationManagerDidSucceedNotification 
 														object:self 
 													  userInfo:userInfo];				
 }
 
 - (void)postFailureWithError:(NSError *)error
 {
-	[[NSNotificationCenter defaultCenter] postNotificationName:kSCHAuthenticationManagerDidFailNotification
+	[[NSNotificationCenter defaultCenter] postNotificationName:SCHAuthenticationManagerDidFailNotification
 														object:self 
 													  userInfo:[NSDictionary dictionaryWithObject:error
                                                                                            forKey:kSCHAuthenticationManagerNSError]];		
 }
 
-- (void)performDeregistrationOnMainThread:(NSString *)token
+- (void)deregisterOnMainThread:(NSString *)token
 {
     if (token != nil) {
         [self.drmRegistrationSession deregisterDevice:token];
     } else {
-        [[NSNotificationCenter defaultCenter] postNotificationName:kSCHAuthenticationManagerDidDeregisterNotification
+        [[NSNotificationCenter defaultCenter] postNotificationName:SCHAuthenticationManagerDidDeregisterNotification
                                                             object:self 
                                                           userInfo:nil];		        
         [self clearOnMainThread];
@@ -399,7 +400,7 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
         NSNumber *deviceIsDeregistered = [result objectForKey:kSCHLibreAccessWebServiceDeviceIsDeregistered];        
         if ([deviceIsDeregistered isKindOfClass:[NSNumber class]] == YES &&
             [[result objectForKey:kSCHLibreAccessWebServiceDeviceIsDeregistered] boolValue] == YES) {
-            [self performDeregistrationOnMainThread:[result objectForKey:kSCHLibreAccessWebServiceAuthToken]];
+            [self deregisterOnMainThread:[result objectForKey:kSCHLibreAccessWebServiceAuthToken]];
         } else if (![[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerDeviceKey]) {
             [self.drmRegistrationSession registerDevice:[result objectForKey:kSCHLibreAccessWebServiceAuthToken]];
         }        
@@ -412,7 +413,7 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
         if ([method isEqualToString:kSCHLibreAccessWebServiceAuthenticateDevice] == YES &&
             [deviceIsDeregistered isKindOfClass:[NSNumber class]] == YES &&
             [[result objectForKey:kSCHLibreAccessWebServiceDeviceIsDeregistered] boolValue] == YES) {
-            [self performDeregistrationOnMainThread:[result objectForKey:kSCHLibreAccessWebServiceAuthToken]];
+            [self deregisterOnMainThread:[result objectForKey:kSCHLibreAccessWebServiceAuthToken]];
             return;
         } else {
             self.aToken = [result objectForKey:kSCHLibreAccessWebServiceAuthToken];
@@ -452,7 +453,7 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
     } else {
         // Successful deregistration
         waitingOnResponse = NO;
-        [[NSNotificationCenter defaultCenter] postNotificationName:kSCHAuthenticationManagerDidDeregisterNotification
+        [[NSNotificationCenter defaultCenter] postNotificationName:SCHAuthenticationManagerDidDeregisterNotification
                                                             object:self 
                                                           userInfo:nil];		        
         [self clearOnMainThread];
@@ -465,6 +466,9 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
 {
     NSLog(@"AuthenticationManager:DRM %@", [error description]);
 	waitingOnResponse = NO;
+    [[NSNotificationCenter defaultCenter] postNotificationName:SCHAuthenticationManagerDidDeregisterNotification
+                                                        object:self 
+                                                      userInfo:[NSDictionary dictionaryWithObject:error forKey:kSCHAuthenticationManagerNSError]];		        
 	[self postFailureWithError:error];       
     self.drmRegistrationSession = nil;
 }

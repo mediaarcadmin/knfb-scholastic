@@ -12,11 +12,12 @@
 #import "SCHDrmRegistrationSessionDelegate.h"
 
 // Constants
-extern NSString * const kSCHAuthenticationManagerDidSucceedNotification;
-extern NSString * const kSCHAuthenticationManagerDidFailNotification;
+extern NSString * const SCHAuthenticationManagerDidSucceedNotification;
+extern NSString * const SCHAuthenticationManagerDidFailNotification;
 extern NSString * const kSCHAuthenticationManagerAToken;
 extern NSString * const kSCHAuthenticationManagerOfflineMode;
-extern NSString * const kSCHAuthenticationManagerDidDeregisterNotification;
+extern NSString * const SCHAuthenticationManagerDidDeregisterNotification;
+extern NSString * const SCHAuthenticationManagerDidFailDeregistrationNotification;
 extern NSString * const kSCHAuthenticationManagerNSError;
 
 extern NSString * const kSCHAuthenticationManagerErrorDomain;
@@ -38,7 +39,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 - (BOOL)validatePassword:(NSString *)password;
 - (void)authenticate;
 - (BOOL)hasUsernameAndPassword;
-- (void)performDeregistration;
+- (void)deregister;
 - (void)clear;
 - (void)clearAppProcessing;
 
