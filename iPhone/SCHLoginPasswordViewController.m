@@ -223,18 +223,12 @@ static const CGFloat kContentHeightLandscape = 380;
         if (UIInterfaceOrientationIsPortrait(orientation)) {
             toolbarImage = [UIImage imageNamed:@"admin-iphone-portrait-top-toolbar.png"];
             barFrame.size.height = 44;
-            switch (self.controllerType) {
-                case kSCHControllerLoginView:
-                    [self.barSpacer setWidth:11];
-                    break;
-                default:
-                    [self.barSpacer setWidth:0];
-                    break;
-            }
+            [self.barSpacer setWidth:0];
         } else {
             toolbarImage = [UIImage imageNamed:@"admin-iphone-landscape-top-toolbar.png"];
             barFrame.size.height = 32;
             switch (self.controllerType) {
+                case kSCHControllerLoginView:
                 case kSCHControllerPasswordOnlyView:
                 case kSCHControllerDoublePasswordView:
                 case kSCHControllerParentToolsView:

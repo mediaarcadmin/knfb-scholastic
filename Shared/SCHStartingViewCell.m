@@ -9,7 +9,7 @@
 #import "SCHStartingViewCell.h"
 
 enum {
-    kCellButtonWidth_iPad = 400,
+    kCellButtonWidth_iPad = 440,
     kCellButtonWidth_iPhone = 280,
     kCellButtonTag = 1234
 };
@@ -37,7 +37,7 @@ enum {
         UIImage *cellBGImage = [[UIImage imageNamed:@"button-blue"] stretchableImageWithLeftCapWidth:15 topCapHeight:0];
         CGFloat cellButtonWidth = iPad ? kCellButtonWidth_iPad : kCellButtonWidth_iPhone;
         CGRect buttonFrame = CGRectMake(ceilf((CGRectGetWidth(self.contentView.bounds) - cellButtonWidth) / 2.0f), 
-                                        ceilf((CGRectGetHeight(self.contentView.bounds) - cellBGImage.size.height) / 2.0f), 
+                                        0, 
                                         cellButtonWidth, 
                                         cellBGImage.size.height);
         
@@ -58,6 +58,10 @@ enum {
         [cellButton addTarget:self action:@selector(tapped:) forControlEvents:UIControlEventTouchUpInside];
         
         [self.contentView addSubview:cellButton];
+        
+        UIView *backView = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
+        backView.backgroundColor = [UIColor clearColor];
+        self.backgroundView = backView;
     }
     return self;
 }

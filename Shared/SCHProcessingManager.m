@@ -622,6 +622,12 @@ static SCHProcessingManager *sharedManager = nil;
 	// (changing the state will cause the operation to cancel)
 	if (book.processingState == SCHBookProcessingStateDownloadStarted) {
         [book setProcessingState:SCHBookProcessingStateDownloadPaused];
+
+        NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
+                                  identifier, @"bookIdentifier",
+                                  nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"SCHBookStateUpdate" object:nil userInfo:userInfo];
+
 		return;
 	} 
 		
@@ -629,6 +635,12 @@ static SCHProcessingManager *sharedManager = nil;
 	if (book.processingState == SCHBookProcessingStateDownloadPaused ||
 		book.processingState == SCHBookProcessingStateReadyForBookFileDownload) {
 		[book setProcessingState:SCHBookProcessingStateDownloadStarted];
+        
+        NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
+                                  identifier, @"bookIdentifier",
+                                  nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"SCHBookStateUpdate" object:nil userInfo:userInfo];
+        
 		[self processIdentifier:identifier];
 	}
 	// otherwise ignore the touch

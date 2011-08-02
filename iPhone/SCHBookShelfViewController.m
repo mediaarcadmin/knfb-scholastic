@@ -47,6 +47,8 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
 - (CGFloat)cellBorderSize;
 - (void)reloadData;
 - (void)save;
+- (BOOL)canOpenBook:(SCHBookIdentifier *)identifier;
+
 
 - (IBAction)changeToListView:(UIButton *)sender;
 - (IBAction)changeToGridView:(UIButton *)sender;
@@ -611,10 +613,12 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
     }
     
     self.currentlyLoadingIndex = [indexPath row];
-    SCHBookShelfTableViewCell *cell = (SCHBookShelfTableViewCell *) [aTableView cellForRowAtIndexPath:indexPath];
-    [cell setLoading:YES];
 
-    
+    if ([self canOpenBook:identifier]) {
+        SCHBookShelfTableViewCell *cell = (SCHBookShelfTableViewCell *) [aTableView cellForRowAtIndexPath:indexPath];
+        [cell setLoading:YES];
+    }
+
     //[self reloadData];
   
     double delayInSeconds = 0.02;
@@ -625,6 +629,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
         SCHReadingViewController *readingController = [self openBook:[self.books objectAtIndex:[indexPath row]] error:&error];
         if (readingController != nil) {
             self.updateShelfOnReturnToShelf = YES;
+
             [self.navigationController pushViewController:readingController animated:YES]; 
             self.currentlyLoadingIndex = -1;
         } else {
@@ -641,6 +646,10 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
                 [alert release];
             }
         }
+        self.currentlyLoadingIndex = -1;
+
+        SCHBookShelfTableViewCell *cell = (SCHBookShelfTableViewCell *) [aTableView cellForRowAtIndexPath:indexPath];
+        [cell setLoading:NO];
     });
 }
 
@@ -753,9 +762,12 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
     }
     
     self.currentlyLoadingIndex = index;
+
+    if ([self canOpenBook:identifier]) {
+        SCHBookShelfGridViewCell *cell = (SCHBookShelfGridViewCell *) [aGridView cellAtGridIndex:index];
+        [cell setLoading:YES];
+    }
     
-    SCHBookShelfGridViewCell *cell = (SCHBookShelfGridViewCell *) [aGridView cellAtGridIndex:index];
-    [cell setLoading:YES];
     
     double delayInSeconds = 0.02;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
@@ -782,7 +794,26 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
                 [alert release];
             }
         }
+        
+        self.currentlyLoadingIndex = -1;
+        
+        SCHBookShelfGridViewCell *cell = (SCHBookShelfGridViewCell *) [aGridView cellAtGridIndex:index];
+        [cell setLoading:NO];
     });
+}
+
+- (BOOL)canOpenBook:(SCHBookIdentifier *)identifier
+{
+    SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:identifier inManagedObjectContext:self.managedObjectContext];
+    
+    NSError *error = nil;
+    BOOL canOpen = [book canOpenBookError:&error];
+    
+    if (canOpen && !error) {
+        return YES;
+    } else {
+        return NO;
+    }
 }
 
 - (SCHReadingViewController *)openBook:(SCHBookIdentifier *)identifier error:(NSError **)error

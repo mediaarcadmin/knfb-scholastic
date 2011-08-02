@@ -344,6 +344,8 @@
     // check to see if we're already using the right thumb image - if so, skip loading it
     if (self.currentImageName != nil && [self.currentImageName compare:thumbPath] == NSOrderedSame) {
 //        NSLog(@"Already using the right thumbnail image.");
+        // Using the correct image - just redo the user interface elements
+        [self resizeElementsForThumbSize:self.coverImageView.frame.size];
     } else {
         NSFileManager *threadLocalFileManager = [[[NSFileManager alloc] init] autorelease];
         
@@ -476,13 +478,23 @@
     } else {
         switch ([book processingState]) {
             case SCHBookProcessingStateDownloadStarted:
+                NSLog(@"Setting started.");
+                self.progressView.alpha = 1.0f;
+                self.bookTintView.hidden = NO;
+                self.progressView.hidden = NO;
+                self.errorBadge.hidden = YES;
+                [self.progressView setProgress:[book currentDownloadedPercentage]];            
+                break;
             case SCHBookProcessingStateDownloadPaused:
+                NSLog(@"Setting paused.");
+                self.progressView.alpha = 0.75f;
                 self.bookTintView.hidden = NO;
                 self.progressView.hidden = NO;
                 self.errorBadge.hidden = YES;
                 [self.progressView setProgress:[book currentDownloadedPercentage]];            
                 break;
             case SCHBookProcessingStateReadyToRead:
+                self.progressView.alpha = 1.0f;
                 self.bookTintView.hidden = YES;
                 self.progressView.hidden = YES;
                 self.errorBadge.hidden = YES;
@@ -492,11 +504,13 @@
             case SCHBookProcessingStateURLsNotPopulated:
             case SCHBookProcessingStateUnableToAcquireLicense:
             case SCHBookProcessingStateBookVersionNotSupported:
+                self.progressView.alpha = 1.0f;
                 self.bookTintView.hidden = NO;
                 self.progressView.hidden = YES;
                 self.errorBadge.hidden = NO;
                 break;
             default:
+                self.progressView.alpha = 1.0f;
                 self.bookTintView.hidden = NO;
                 self.progressView.hidden = YES;
                 self.errorBadge.hidden = YES;
@@ -557,7 +571,7 @@
         
         NSInteger maxDimension = frameSizeWithInsets.height;
         
-        if (width > height) {
+        if (width >= height) {
             maxDimension = frameSizeWithInsets.width;
         }
         

@@ -101,12 +101,12 @@
 											<bool key="EncodedWithXMLCoder">YES</bool>
 											<object class="IBUIView" id="965481907">
 												<reference key="NSNextResponder" ref="264148417"/>
-												<int key="NSvFlags">274</int>
+												<int key="NSvFlags">298</int>
 												<object class="NSMutableArray" key="NSSubviews">
 													<bool key="EncodedWithXMLCoder">YES</bool>
 													<object class="IBUIView" id="753226969">
 														<reference key="NSNextResponder" ref="965481907"/>
-														<int key="NSvFlags">274</int>
+														<int key="NSvFlags">298</int>
 														<string key="NSFrameSize">{62, 52}</string>
 														<reference key="NSSuperview" ref="965481907"/>
 														<reference key="NSWindow"/>
