@@ -430,57 +430,53 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
     BOOL refreshTable = NO;
     BOOL refreshBooks = NO;
     
-    if (self.profileItem != nil && self.profileItem.managedObjectContext != nil) {
-        // update the bookshelf name with the change
-        for (SCHProfileItem *object in [[notification userInfo] objectForKey:NSUpdatedObjectsKey]) {
-            if (object == self.profileItem) {
-                self.navigationItem.title = [object bookshelfName:YES];
-            }
+    // update the bookshelf name with the change
+    for (SCHProfileItem *object in [[notification userInfo] objectForKey:NSUpdatedObjectsKey]) {
+        if (object == self.profileItem) {
+            self.navigationItem.title = [object bookshelfName:YES];
         }
-        
-        // update any book information
-        for (SCHContentMetadataItem *object in [[notification userInfo] objectForKey:NSUpdatedObjectsKey]) {
-            if ([object isKindOfClass:[SCHContentMetadataItem class]] == YES) {
-                for (SCHBookIdentifier *bookIdentifer in self.books) {
-                    if ([bookIdentifer isEqual:[(id)object bookIdentifier]] == YES) {
-                        refreshTable = YES;
-                        break;                    
-                    }
-                }
-                if (refreshTable == YES) {
-                    [self reloadData];
-                    break;
-                }
-            }
-        }
-        
-        for (SCHContentProfileItem *object in [[notification userInfo] objectForKey:NSInsertedObjectsKey]) {
-            // check for new books on the shelf
-            if ([object isKindOfClass:[SCHContentProfileItem class]] == YES) {
-                if ([object.ProfileID isEqualToNumber:self.profileItem.ID] == YES) {
-                    refreshBooks = YES;
-                    break;
-                }
-            }
-        }
-        
-        if (refreshBooks == NO) {
-            // check for books removed from the shelf
-            for (SCHContentProfileItem *object in [[notification userInfo] objectForKey:NSDeletedObjectsKey]) {
-                if ([object isKindOfClass:[SCHContentProfileItem class]] == YES) {
-                    if ([object.ProfileID isEqualToNumber:self.profileItem.ID] == YES) {
-                        refreshBooks = YES;
-                        break;
-                    }
-                }
-            }
-        }
-        
-        if (refreshBooks == YES) {
-            self.books = [self.profileItem allBookIdentifiers];
-            [self showLoadingView:NO];        
-        }  
     }
+    
+    // update any book information
+    for (SCHContentMetadataItem *object in [[notification userInfo] objectForKey:NSUpdatedObjectsKey]) {
+        if ([object isKindOfClass:[SCHContentMetadataItem class]] == YES) {
+            for (SCHBookIdentifier *bookIdentifer in self.books) {
+                if ([bookIdentifer isEqual:[(id)object bookIdentifier]] == YES) {
+                    refreshTable = YES;
+                    break;                    
+                }
+            }
+            if (refreshTable == YES) {
+                [self reloadData];
+                break;
+            }
+        }
+    }
+    
+    for (SCHContentProfileItem *object in [[notification userInfo] objectForKey:NSInsertedObjectsKey]) {
+        // check for new books on the shelf
+        if ([object isKindOfClass:[SCHContentProfileItem class]] == YES) {
+            if ([object.ProfileID isEqualToNumber:self.profileItem.ID] == YES) {
+                refreshBooks = YES;
+                break;
+            }
+        }
+    }
+    
+    if (refreshBooks == NO) {
+        // check for books removed from the shelf
+        for (SCHContentProfileItem *object in [[notification userInfo] objectForKey:NSDeletedObjectsKey]) {
+            if ([object isKindOfClass:[SCHContentProfileItem class]] == YES) {
+                refreshBooks = YES;
+                break;
+            }
+        }
+    }
+    
+    if (refreshBooks == YES) {
+        self.books = [self.profileItem allBookIdentifiers];
+        [self showLoadingView:NO];        
+    }   
 }
 
 - (void)bookshelfSyncComponentDidComplete:(NSNotification *)notification
