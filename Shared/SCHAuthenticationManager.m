@@ -51,7 +51,7 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
 - (void)aTokenOnMainThread;
 - (void)authenticateWithUserNameOnMainThread:(NSValue *)parameters;
 - (void)hasUsernameAndPasswordOnMainThread:(NSValue *)returnValue;
-- (void)performDeregisterShutdown:(NSString *)token;
+- (void)performDeregistrationOnMainThread:(NSString *)token;
 
 @end
 
@@ -188,9 +188,16 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
 
 - (void)clearAppProcessing
 {
-    [[SCHURLManager sharedURLManager] clear];
-    [[SCHProcessingManager sharedProcessingManager] cancelAllOperations];                
-    [[SCHSyncManager sharedSyncManager] clear];    
+    [self performSelectorOnMainThread: @selector(clearAppProcessingOnMainThread) 
+                           withObject:nil 
+                        waitUntilDone:NO];
+}
+
+- (void)performDeregistration
+{
+    [self performSelectorOnMainThread: @selector(performDeregistrationOnMainThread:) 
+                           withObject:self.aToken 
+                        waitUntilDone:NO];
 }
 
 #pragma mark - Accessor methods
@@ -335,6 +342,13 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
+- (void)clearAppProcessingOnMainThread
+{
+    [[SCHURLManager sharedURLManager] clear];
+    [[SCHProcessingManager sharedProcessingManager] cancelAllOperations];                
+    [[SCHSyncManager sharedSyncManager] clear];    
+}
+
 #pragma mark - Private methods
 
 - (void)postSuccessWithOfflineMode:(BOOL)offlineMode
@@ -361,7 +375,7 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
                                                                                            forKey:kSCHAuthenticationManagerNSError]];		
 }
 
-- (void)performDeregisterShutdown:(NSString *)token
+- (void)performDeregistrationOnMainThread:(NSString *)token
 {
     if (token != nil) {
         [self.drmRegistrationSession deregisterDevice:token];
@@ -385,7 +399,7 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
         NSNumber *deviceIsDeregistered = [result objectForKey:kSCHLibreAccessWebServiceDeviceIsDeregistered];        
         if ([deviceIsDeregistered isKindOfClass:[NSNumber class]] == YES &&
             [[result objectForKey:kSCHLibreAccessWebServiceDeviceIsDeregistered] boolValue] == YES) {
-            [self performDeregisterShutdown:self.aToken];
+            [self performDeregistrationOnMainThread:self.aToken];
         } else if (![[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerDeviceKey]) {
             [self.drmRegistrationSession registerDevice:[result objectForKey:kSCHLibreAccessWebServiceAuthToken]];
         }        
@@ -398,7 +412,7 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
         if ([method isEqualToString:kSCHLibreAccessWebServiceAuthenticateDevice] == YES &&
             [deviceIsDeregistered isKindOfClass:[NSNumber class]] == YES &&
             [[result objectForKey:kSCHLibreAccessWebServiceDeviceIsDeregistered] boolValue] == YES) {
-            [self performDeregisterShutdown:[result objectForKey:kSCHLibreAccessWebServiceAuthToken]];
+            [self performDeregistrationOnMainThread:[result objectForKey:kSCHLibreAccessWebServiceAuthToken]];
             return;
         } else {
             self.aToken = [result objectForKey:kSCHLibreAccessWebServiceAuthToken];
