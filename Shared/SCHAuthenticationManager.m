@@ -380,11 +380,11 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
     if (token != nil) {
         [self.drmRegistrationSession deregisterDevice:token];
     } else {
-        [self clear];
         [[NSNotificationCenter defaultCenter] postNotificationName:kSCHAuthenticationManagerDidDeregisterNotification
                                                             object:self 
                                                           userInfo:nil];		        
-        [self clearAppProcessing];
+        [self clearOnMainThread];
+        [self clearAppProcessingOnMainThread];
     }
 }
 
@@ -399,7 +399,7 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
         NSNumber *deviceIsDeregistered = [result objectForKey:kSCHLibreAccessWebServiceDeviceIsDeregistered];        
         if ([deviceIsDeregistered isKindOfClass:[NSNumber class]] == YES &&
             [[result objectForKey:kSCHLibreAccessWebServiceDeviceIsDeregistered] boolValue] == YES) {
-            [self performDeregistrationOnMainThread:self.aToken];
+            [self performDeregistrationOnMainThread:[result objectForKey:kSCHLibreAccessWebServiceAuthToken]];
         } else if (![[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerDeviceKey]) {
             [self.drmRegistrationSession registerDevice:[result objectForKey:kSCHLibreAccessWebServiceAuthToken]];
         }        
@@ -453,11 +453,11 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
     else {
         // Successful deregistration
         waitingOnResponse = NO;
-        [self clear];
         [[NSNotificationCenter defaultCenter] postNotificationName:kSCHAuthenticationManagerDidDeregisterNotification
                                                             object:self 
                                                           userInfo:nil];		        
-        [self clearAppProcessing];
+        [self clearOnMainThread];
+        [self clearAppProcessingOnMainThread];
     }
     self.drmRegistrationSession = nil;
 }
