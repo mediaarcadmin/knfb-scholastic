@@ -466,7 +466,7 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
 {
     NSLog(@"AuthenticationManager:DRM %@", [error description]);
 	waitingOnResponse = NO;
-    [[NSNotificationCenter defaultCenter] postNotificationName:SCHAuthenticationManagerDidDeregisterNotification
+    [[NSNotificationCenter defaultCenter] postNotificationName:SCHAuthenticationManagerDidFailDeregistrationNotification
                                                         object:self 
                                                       userInfo:[NSDictionary dictionaryWithObject:error forKey:kSCHAuthenticationManagerNSError]];		        
 	[self postFailureWithError:error];       
