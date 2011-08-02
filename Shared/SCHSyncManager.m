@@ -22,7 +22,7 @@
 NSString * const SCHSyncManagerDidCompleteNotification = @"SCHSyncManagerDidCompleteNotification";
 
 static NSTimeInterval const kSCHSyncManagerHeartbeatInterval = 30.0;
-static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
+static NSTimeInterval const kSCHLastFirstSyncInterval = -30.0;
 
 @interface SCHSyncManager ()
 

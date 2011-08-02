@@ -728,7 +728,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
             [alert release];
             self.bookIdentifier = nil;
             if (self.modalViewController != nil) {
-                [self.modalViewController dismissModalViewControllerAnimated:YES];
+                [self.modalViewController dismissModalViewControllerAnimated:NO];
             }              
             [self.storyInteractionController removeFromHostView];
             [self popViewController:self];

@@ -412,10 +412,13 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
             [alert release];
             self.profileItem = nil;
             if (self.modalViewController != nil) {
-                [self.modalViewController dismissModalViewControllerAnimated:YES];
+                [self.modalViewController dismissModalViewControllerAnimated:NO];
             }            
-            // we could be viewing another controller so let's go to the root (profile) view
-            [self.navigationController popToRootViewControllerAnimated:YES];
+            // we could be viewing another controller so let's go to the profile view
+            if ([self.navigationController.viewControllers count] > 1) {
+                [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:1] 
+                                                                animated:NO];   
+            }
             break;
         }
     }
@@ -427,42 +430,32 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
     BOOL refreshTable = NO;
     BOOL refreshBooks = NO;
     
-    // update the bookshelf name with the change
-    for (SCHProfileItem *object in [[notification userInfo] objectForKey:NSUpdatedObjectsKey]) {
-        if (object == self.profileItem) {
-            self.navigationItem.title = [object bookshelfName:YES];
+    if (self.profileItem != nil && self.profileItem.managedObjectContext != nil) {
+        // update the bookshelf name with the change
+        for (SCHProfileItem *object in [[notification userInfo] objectForKey:NSUpdatedObjectsKey]) {
+            if (object == self.profileItem) {
+                self.navigationItem.title = [object bookshelfName:YES];
+            }
         }
-    }
-
-    // update any book information
-    for (SCHContentMetadataItem *object in [[notification userInfo] objectForKey:NSUpdatedObjectsKey]) {
-        if ([object isKindOfClass:[SCHContentMetadataItem class]] == YES) {
-            for (SCHBookIdentifier *bookIdentifer in self.books) {
-                if ([bookIdentifer isEqual:[(id)object bookIdentifier]] == YES) {
-                    refreshTable = YES;
-                    break;                    
+        
+        // update any book information
+        for (SCHContentMetadataItem *object in [[notification userInfo] objectForKey:NSUpdatedObjectsKey]) {
+            if ([object isKindOfClass:[SCHContentMetadataItem class]] == YES) {
+                for (SCHBookIdentifier *bookIdentifer in self.books) {
+                    if ([bookIdentifer isEqual:[(id)object bookIdentifier]] == YES) {
+                        refreshTable = YES;
+                        break;                    
+                    }
+                }
+                if (refreshTable == YES) {
+                    [self reloadData];
+                    break;
                 }
             }
-            if (refreshTable == YES) {
-                [self reloadData];
-                break;
-            }
         }
-    }
-    
-    for (SCHContentProfileItem *object in [[notification userInfo] objectForKey:NSInsertedObjectsKey]) {
-        // check for new books on the shelf
-        if ([object isKindOfClass:[SCHContentProfileItem class]] == YES) {
-            if ([object.ProfileID isEqualToNumber:self.profileItem.ID] == YES) {
-                refreshBooks = YES;
-                break;
-            }
-        }
-    }
-    
-    if (refreshBooks == NO) {
-        // check for books removed from the shelf
-        for (SCHContentProfileItem *object in [[notification userInfo] objectForKey:NSDeletedObjectsKey]) {
+        
+        for (SCHContentProfileItem *object in [[notification userInfo] objectForKey:NSInsertedObjectsKey]) {
+            // check for new books on the shelf
             if ([object isKindOfClass:[SCHContentProfileItem class]] == YES) {
                 if ([object.ProfileID isEqualToNumber:self.profileItem.ID] == YES) {
                     refreshBooks = YES;
@@ -470,12 +463,24 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
                 }
             }
         }
+        
+        if (refreshBooks == NO) {
+            // check for books removed from the shelf
+            for (SCHContentProfileItem *object in [[notification userInfo] objectForKey:NSDeletedObjectsKey]) {
+                if ([object isKindOfClass:[SCHContentProfileItem class]] == YES) {
+                    if ([object.ProfileID isEqualToNumber:self.profileItem.ID] == YES) {
+                        refreshBooks = YES;
+                        break;
+                    }
+                }
+            }
+        }
+        
+        if (refreshBooks == YES) {
+            self.books = [self.profileItem allBookIdentifiers];
+            [self showLoadingView:NO];        
+        }  
     }
-    
-    if (refreshBooks == YES) {
-        self.books = [self.profileItem allBookIdentifiers];
-        [self showLoadingView:NO];        
-    }   
 }
 
 - (void)bookshelfSyncComponentDidComplete:(NSNotification *)notification
@@ -485,13 +490,13 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
 
 - (void)bookshelfSyncComponentDidFail:(NSNotification *)notification
 {
+    [self showLoadingView:NO];    
     LambdaAlert *alert = [[LambdaAlert alloc]
                           initWithTitle:NSLocalizedString(@"Retrieving Bookshelf Failed", @"Retrieving Bookshelf Failed") 
                           message:NSLocalizedString(@"Failed to retrieve the bookshelf, we will try again soon.", @"") ];
     [alert addButtonWithTitle:NSLocalizedString(@"OK", @"OK") block:^{}];
     [alert show];
     [alert release];
-    [self showLoadingView:NO];
 }
 
 #pragma mark - Core Data Table View Methods

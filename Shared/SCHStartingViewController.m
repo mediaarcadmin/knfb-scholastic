@@ -96,6 +96,10 @@ enum {
                                                  name:SCHProfileSyncComponentDidCompleteNotification
                                                object:nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(authenticationManagerDidDeregister:)
+                                                 name:kSCHAuthenticationManagerDidDeregisterNotification
+                                               object:nil];
 
     UIImageView *logoImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo"]];
     self.navigationItem.titleView = logoImageView;
@@ -364,8 +368,18 @@ enum {
 }
 
 - (void)pushProfileView
-{    
-    [self.navigationController pushViewController:[self profileViewController] animated:NO];
+{   
+    BOOL alreadyInUse = NO;
+    
+    for (UIViewController *vc in self.navigationController.viewControllers) {
+        if (vc == [self profileViewController]) {
+            alreadyInUse = YES;
+            break;
+        }
+    }
+    if (alreadyInUse == NO) {
+        [self.navigationController pushViewController:[self profileViewController] animated:NO];
+    }
 }
 
 #pragma mark - notifications
@@ -395,6 +409,22 @@ enum {
         [vc showActivity:NO];
         [self advanceToNextSignInForm];
     }
+}
+
+- (void)authenticationManagerDidDeregister:(NSNotification *)notification
+{
+    if (self.modalViewController != nil) {
+        [self.modalViewController dismissModalViewControllerAnimated:NO];
+    }
+    
+    [self.navigationController popToRootViewControllerAnimated:NO];   
+    
+    LambdaAlert *alert = [[LambdaAlert alloc]
+                          initWithTitle:NSLocalizedString(@"Device Deregistered", @"Device Deregistered") 
+                          message:NSLocalizedString(@"This device has been deregistered. To read books, please register this device again.", @"") ];
+    [alert addButtonWithTitle:NSLocalizedString(@"OK", @"OK") block:^{}];
+    [alert show];
+    [alert release];    
 }
 
 @end

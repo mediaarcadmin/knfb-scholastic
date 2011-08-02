@@ -416,7 +416,7 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
             return;
         } else {
             self.aToken = [result objectForKey:kSCHLibreAccessWebServiceAuthToken];
-            NSInteger expiresIn = MAX(0, [[result objectForKey:kSCHLibreAccessWebServiceExpiresIn] integerValue] - 1);
+            NSInteger expiresIn = 1;//MAX(0, [[result objectForKey:kSCHLibreAccessWebServiceExpiresIn] integerValue] - 1);
             self.tokenExpires = [NSDate dateWithTimeIntervalSinceNow:expiresIn * kSCHAuthenticationManagerSecondsInAMinute];
         }
         
