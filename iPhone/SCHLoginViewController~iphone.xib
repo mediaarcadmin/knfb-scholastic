@@ -290,14 +290,14 @@
 									<object class="IBUIActivityIndicatorView" id="328416546">
 										<reference key="NSNextResponder" ref="627327703"/>
 										<int key="NSvFlags">-2147483347</int>
-										<string key="NSFrame">{{221, 279}, {37, 37}}</string>
+										<string key="NSFrame">{{221, 288}, {20, 20}}</string>
 										<reference key="NSSuperview" ref="627327703"/>
 										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="295104663"/>
 										<bool key="IBUIOpaque">NO</bool>
 										<int key="IBUIContentMode">4</int>
 										<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-										<int key="IBUIStyle">0</int>
+										<int key="IBUIStyle">2</int>
 									</object>
 								</object>
 								<string key="NSFrameSize">{320, 416}</string>
@@ -317,7 +317,6 @@
 								<string key="NSFrameSize">{320, 7}</string>
 								<reference key="NSSuperview" ref="489633664"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
 								<reference key="IBUIBackgroundColor" ref="764302899"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
