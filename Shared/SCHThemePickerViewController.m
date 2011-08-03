@@ -217,7 +217,7 @@ static NSTimeInterval const kSCHThemePickerViewControllerThemeTransitionAlpha = 
     NSString *theme = [[[SCHThemeManager sharedThemeManager] themeNames:NO] objectAtIndex:indexPath.row];
     
     cell.backgroundColor = [UIColor colorWithPatternImage:
-                            [[SCHThemeManager sharedThemeManager] imageForTheme:theme key:kSCHThemeManagerImage orientation:self.interfaceOrientation iPadSpecific:YES]];
+                            [[SCHThemeManager sharedThemeManager] imageForTheme:theme key:kSCHThemeManagerImage orientation:self.interfaceOrientation iPadQualifier:kSCHThemeManagerPadQualifierSuffix]];
     if ([theme isEqualToString:[SCHThemeManager sharedThemeManager].theme] == YES) {
         cell.accessoryView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"popoverTickLight"]] autorelease];
     } else {

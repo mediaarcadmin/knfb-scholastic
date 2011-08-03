@@ -78,12 +78,12 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
 - (void)setupToolbar
 {
     SCHThemeButton *themeButton = [SCHThemeButton buttonWithType:UIButtonTypeCustom];
-    [themeButton setThemeIcon:kSCHThemeManagerThemeIcon iPadSpecific:YES];
+    [themeButton setThemeIcon:kSCHThemeManagerThemeIcon iPadQualifier:kSCHThemeManagerPadQualifierSuffix];
     [themeButton sizeToFit];    
     [themeButton addTarget:self action:@selector(themeAction:) forControlEvents:UIControlEventTouchUpInside];
     
     SCHThemeButton *homeButton = [SCHThemeButton buttonWithType:UIButtonTypeCustom];
-    [homeButton setThemeIcon:kSCHThemeManagerHomeIcon iPadSpecific:YES];
+    [homeButton setThemeIcon:kSCHThemeManagerHomeIcon iPadQualifier:kSCHThemeManagerPadQualifierSuffix];
     [homeButton sizeToFit];    
     [homeButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];    
     
@@ -184,8 +184,10 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
 
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    [self.gridView setShelfImage:[[SCHThemeManager sharedThemeManager] imageForShelf:interfaceOrientation]];        
-    [self.view.layer setContents:(id)[[SCHThemeManager sharedThemeManager] imageForBackground:interfaceOrientation].CGImage];
+    [self.gridView setShelfImage:[[SCHThemeManager sharedThemeManager] imageForShelf:interfaceOrientation]];   
+    
+    [self.view.layer setContentsGravity:kCAGravityCenter]; // Needed to re-use bacgground graphics
+    [self.view.layer setContents:(id)[[SCHThemeManager sharedThemeManager] imageForBackground:UIInterfaceOrientationPortrait].CGImage]; // Note we re-use portrait
     [(SCHCustomNavigationBar *)self.navigationController.navigationBar updateTheme:interfaceOrientation];
     self.listTableView.backgroundColor = [[SCHThemeManager sharedThemeManager] colorForListBackground];
     self.listToggleView.backgroundColor = [[SCHThemeManager sharedThemeManager] colorForListBackground]; 

@@ -8,6 +8,13 @@
 
 #import <Foundation/Foundation.h>
 
+typedef enum 
+{
+	kSCHThemeManagerPadQualifierNone = 0,
+	kSCHThemeManagerPadQualifierSuffix,
+	kSCHThemeManagerPadQualifierRetina
+} SCHThemeManagerPadQualifier;
+
 // Constants
 extern NSString * const kSCHThemeManagerThemeChangeNotification;
 
@@ -41,12 +48,12 @@ extern NSString * const kSCHThemeManagerColorForListBackground;
                orientation:(UIInterfaceOrientation)orientation;
 - (UIImage *)imageForTheme:(NSString *)themeName key:(NSString *)key 
                orientation:(UIInterfaceOrientation)orientation
-              iPadSpecific:(BOOL)iPadSpecific;
+              iPadQualifier:(SCHThemeManagerPadQualifier)iPadQualifier;
 - (UIImage *)imageFor:(NSString *)imageTitle 
           orientation:(UIInterfaceOrientation)orientation;
 - (UIImage *)imageFor:(NSString *)imageTitle 
           orientation:(UIInterfaceOrientation)orientation 
-         iPadSpecific:(BOOL)iPadSpecific;
+         iPadQualifier:(SCHThemeManagerPadQualifier)iPadQualifier;
 - (UIImage *)imageForButton:(UIInterfaceOrientation)orientation;
 - (UIImage *)imageForDoneButton:(UIInterfaceOrientation)orientation;
 - (UIImage *)imageForNavigationBar:(UIInterfaceOrientation)orientation;

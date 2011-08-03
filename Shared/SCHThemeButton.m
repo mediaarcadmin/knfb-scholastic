@@ -16,7 +16,7 @@
 
 @property (nonatomic, copy) NSString *buttonKey;
 @property (nonatomic, copy) NSString *iconKey;
-@property (nonatomic, assign) BOOL iPadSpecific;
+@property (nonatomic, assign) BOOL iPadQualifier;
 
 @property (nonatomic, assign) NSInteger leftCapWidth;
 @property (nonatomic, assign) NSInteger topCapHeight;
@@ -27,7 +27,7 @@
 
 @synthesize buttonKey;
 @synthesize iconKey;
-@synthesize iPadSpecific;
+@synthesize iPadQualifier;
 @synthesize leftCapWidth;
 @synthesize topCapHeight;
 
@@ -44,10 +44,10 @@
 #pragma mark - methods
 
 - (void)setThemeButton:(NSString *)newButtonKey leftCapWidth:(NSInteger)newLeftCapWidth 
-          topCapHeight:(NSInteger)newTopCapHeight iPadSpecific:(BOOL)setiPadSpecific
+          topCapHeight:(NSInteger)newTopCapHeight iPadQualifier:(SCHThemeManagerPadQualifier)setiPadQualifier
 {
     self.buttonKey = newButtonKey;
-    self.iPadSpecific = setiPadSpecific;
+    self.iPadQualifier = setiPadQualifier;
     self.leftCapWidth = newLeftCapWidth;
     self.topCapHeight = newTopCapHeight;
     
@@ -72,13 +72,13 @@
 - (void)setThemeButton:(NSString *)newButtonKey leftCapWidth:(NSInteger)newLeftCapWidth 
           topCapHeight:(NSInteger)newTopCapHeight
 {
-    [self setThemeButton:newButtonKey leftCapWidth:newLeftCapWidth topCapHeight:newTopCapHeight iPadSpecific:NO];
+    [self setThemeButton:newButtonKey leftCapWidth:newLeftCapWidth topCapHeight:newTopCapHeight iPadQualifier:kSCHThemeManagerPadQualifierNone];
 }
 
-- (void)setThemeIcon:(NSString *)newIconKey iPadSpecific:(BOOL)setiPadSpecific
+- (void)setThemeIcon:(NSString *)newIconKey iPadQualifier:(SCHThemeManagerPadQualifier)setiPadQualifier
 {
     self.iconKey = newIconKey;
-    self.iPadSpecific = setiPadSpecific;
+    self.iPadQualifier = setiPadQualifier;
     
     if (self.iconKey == nil) {
         if (self.buttonKey == nil) {
@@ -100,7 +100,7 @@
 
 - (void)setThemeIcon:(NSString *)newIconKey
 {
-    [self setThemeIcon:newIconKey iPadSpecific:NO];
+    [self setThemeIcon:newIconKey iPadQualifier:kSCHThemeManagerPadQualifierNone];
 }
 
 #pragma mark - Private methods
@@ -117,7 +117,7 @@
     if (self.buttonKey != nil) {
         UIImage *image = [[[SCHThemeManager sharedThemeManager] imageFor:self.buttonKey 
                                                              orientation:orientation 
-                                                            iPadSpecific:self.iPadSpecific] 
+                                                            iPadQualifier:self.iPadQualifier] 
                           stretchableImageWithLeftCapWidth:self.leftCapWidth topCapHeight:self.topCapHeight];
         // heights change when going between portrait and landscape so we change them
         CGRect rect = self.frame;
@@ -128,7 +128,7 @@
     if (self.iconKey != nil) {
         UIImage *image = [[SCHThemeManager sharedThemeManager] imageFor:self.iconKey 
                                                              orientation:orientation
-                                                           iPadSpecific:self.iPadSpecific];
+                                                           iPadQualifier:self.iPadQualifier];
         // heights change when going between portrait and landscape so we change them
         CGRect rect = self.frame;
         rect.size.height = image.size.height;
