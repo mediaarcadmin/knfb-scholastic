@@ -9,25 +9,35 @@
 #import "SCHStoryInteractionControllerCardCollection.h"
 #import "SCHStoryInteractionCardCollection.h"
 #import "UIColor+Scholastic.h"
+#import "SCHAnimationDelegate.h"
 
 enum {
     kCardImageViewTag = 99
 };
 
 @interface SCHStoryInteractionControllerCardCollection ()
+
 @property (nonatomic, retain) UIImageView *selectedCardView;
 @property (nonatomic, retain) CATransformLayer *zoomCardLayer;
+@property (nonatomic, assign) BOOL showingFront;
+
+- (void)showZoomedCardButtons;
+- (void)hideZoomedCardButtons;
+
 @end
 
 @implementation SCHStoryInteractionControllerCardCollection
 
 @synthesize cardViews;
+@synthesize buttonsContainer;
 @synthesize selectedCardView;
 @synthesize zoomCardLayer;
+@synthesize showingFront;
 
 - (void)dealloc
 {
     [cardViews release], cardViews = nil;
+    [buttonsContainer release], buttonsContainer = nil;
     [zoomCardLayer release], zoomCardLayer = nil;
     [selectedCardView release], selectedCardView = nil;
     [super dealloc];
@@ -44,11 +54,20 @@ enum {
 - (void)setupViewAtIndex:(NSInteger)screenIndex
 {
     SCHStoryInteractionCardCollection *cardCollection = (SCHStoryInteractionCardCollection *)self.storyInteraction;
+
+    [self.buttonsContainer.superview bringSubviewToFront:self.buttonsContainer];
+    self.buttonsContainer.alpha = 0;
+    self.buttonsContainer.userInteractionEnabled = NO;
     
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(contentsViewTapped:)];
-    [self.contentsView addGestureRecognizer:tap];
-    [self.contentsView setUserInteractionEnabled:YES];
-    [tap release];
+    // enable 'depth' in the contents view so the flip animations look 3D
+    CATransform3D sublayerTransform = CATransform3DIdentity;
+    sublayerTransform.m34 = 1.0 / -2000;
+    self.contentsView.layer.sublayerTransform = sublayerTransform;
+    
+//    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(contentsViewTapped:)];
+//    [self.contentsView addGestureRecognizer:tap];
+//    [self.contentsView setUserInteractionEnabled:YES];
+//    [tap release];
     
     for (NSInteger i = 0, n = MIN([self.cardViews count], [cardCollection numberOfCards]); i < n; ++i) {
         UIView *cardView = [self.cardViews objectAtIndex:i];
@@ -73,14 +92,15 @@ enum {
     UIImage *frontImage = [self imageAtPath:[cardCollection imagePathForCardFrontAtIndex:tap.view.tag]];
 
     self.selectedCardView = (UIImageView *)[tap.view viewWithTag:kCardImageViewTag];
+    self.showingFront = YES;
 
-    CGFloat height = CGRectGetHeight(self.contentsView.bounds) - 40;
+    CGFloat height = CGRectGetHeight(self.contentsView.bounds) - 75;
     CGFloat width = height * CGRectGetWidth(self.selectedCardView.bounds) / CGRectGetHeight(self.selectedCardView.bounds);
     
     self.zoomCardLayer = [CATransformLayer layer];
-    self.zoomCardLayer.bounds = CGRectMake(0, 0, width, height);
-    self.zoomCardLayer.position = CGPointMake(CGRectGetMidX(self.contentsView.bounds), CGRectGetMidY(self.contentsView.bounds));
-    self.zoomCardLayer.zPosition = CGFLOAT_MAX;
+    self.zoomCardLayer.bounds = CGRectIntegral(CGRectMake(0, 0, width, height));
+    self.zoomCardLayer.position = CGPointMake(floorf(CGRectGetMidX(self.contentsView.bounds)),
+                                              floorf(CGRectGetMidY(self.contentsView.bounds)-CGRectGetHeight(self.buttonsContainer.bounds)/3));
     [self.contentsView.layer addSublayer:self.zoomCardLayer];
 
     CALayer *front = [CALayer layer];
@@ -118,6 +138,9 @@ enum {
     CAAnimationGroup *group = [CAAnimationGroup animation];
     group.animations = [NSArray arrayWithObjects:rotate, position, nil];
     group.duration = 0.5;
+    group.delegate = [SCHAnimationDelegate animationDelegateWithStopBlock:^(CAAnimation *animation, BOOL finished) {
+        [self showZoomedCardButtons];
+    }];
     
     [self.zoomCardLayer addAnimation:group forKey:@"zoomIn"];
 
@@ -132,6 +155,11 @@ enum {
 
 - (void)contentsViewTapped:(UITapGestureRecognizer *)tap
 {
+    [self zoomOut:nil];
+}
+
+- (void)zoomOut:(id)sender
+{
     if (self.zoomCardLayer == nil) {
         return;
     }
@@ -142,7 +170,7 @@ enum {
     CATransform3D flip = CATransform3DMakeRotation(M_PI, 0, 1, 0);
     
     CABasicAnimation *rotate = [CABasicAnimation animationWithKeyPath:@"transform"];
-    rotate.fromValue = [NSValue valueWithCATransform3D:CATransform3DIdentity];
+    rotate.fromValue = [NSValue valueWithCATransform3D:showingFront ? CATransform3DIdentity : flip];
     rotate.toValue = [NSValue valueWithCATransform3D:CATransform3DConcat(scale, flip)];
     
     CABasicAnimation *position = [CABasicAnimation animationWithKeyPath:@"position"];
@@ -152,24 +180,65 @@ enum {
     CAAnimationGroup *group = [CAAnimationGroup animation];
     group.animations = [NSArray arrayWithObjects:rotate, position, nil];
     group.duration = 0.5;
-    group.delegate = self;
+    group.delegate = [SCHAnimationDelegate animationDelegateWithStopBlock:^(CAAnimation *animation, BOOL finished) {
+        [CATransaction begin];
+        [CATransaction setDisableActions:YES];
+        self.selectedCardView.superview.hidden = NO;
+        [self.zoomCardLayer removeFromSuperlayer];
+        self.zoomCardLayer = nil;
+        self.selectedCardView = nil;
+        [CATransaction commit];
+    }];
     
     [self.zoomCardLayer addAnimation:group forKey:@"zoomOut"];
     
     [UIView animateWithDuration:0.2
                      animations:^{
+                         [self hideZoomedCardButtons];
                          for (UIView *view in self.cardViews) {
                              view.alpha = 1.0;
                          }
                      }];
 }
 
-- (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag
+- (void)flip:(UIButton *)sender
 {
-    self.selectedCardView.superview.hidden = NO;
-    [self.zoomCardLayer removeFromSuperlayer];
-    self.zoomCardLayer = nil;
-    self.selectedCardView = nil;
+    sender.enabled = NO;
+    self.showingFront = !self.showingFront;
+    
+    CATransform3D toTransform = self.showingFront ? CATransform3DIdentity : CATransform3DMakeRotation(M_PI, 0, 1, 0);
+
+    CABasicAnimation *flip = [CABasicAnimation animationWithKeyPath:@"transform"];
+    flip.fromValue = [NSValue valueWithCATransform3D:self.zoomCardLayer.transform];
+    flip.toValue = [NSValue valueWithCATransform3D:toTransform];
+    flip.duration = 0.5;
+    flip.delegate = [SCHAnimationDelegate animationDelegateWithStopBlock:^(CAAnimation *animation, BOOL finished) {
+        sender.enabled = YES;
+    }];
+    
+    self.zoomCardLayer.transform = toTransform;
+    [self.zoomCardLayer addAnimation:flip forKey:@"flip"];
 }
+
+- (void)showZoomedCardButtons
+{
+    self.buttonsContainer.center = CGPointMake(floorf(self.zoomCardLayer.position.x),
+                                               floorf(self.zoomCardLayer.position.y+CGRectGetHeight(self.zoomCardLayer.bounds)/2+CGRectGetHeight(self.buttonsContainer.bounds)/3) - 20);
+    self.buttonsContainer.userInteractionEnabled = YES;
+    self.buttonsContainer.layer.zPosition = 2000; // way in front of the card as it flips
+    
+    [UIView animateWithDuration:0.25 animations:^{
+        self.buttonsContainer.alpha = 1;
+    }];
+}
+
+- (void)hideZoomedCardButtons
+{
+    self.buttonsContainer.userInteractionEnabled = NO;
+    [UIView animateWithDuration:0.25 animations:^{
+        self.buttonsContainer.alpha = 0;
+    }];
+}
+
 
 @end

@@ -11,5 +11,9 @@
 @interface SCHStoryInteractionControllerCardCollection : SCHStoryInteractionController {}
 
 @property (nonatomic, retain) IBOutletCollection(UIView) NSArray *cardViews;
+@property (nonatomic, retain) IBOutlet UIView *buttonsContainer;
+
+- (IBAction)flip:(id)sender;
+- (IBAction)zoomOut:(id)sender;
 
 @end

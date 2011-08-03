@@ -281,8 +281,14 @@
 		28DAC0EA13E945AA00C0A97D /* SCHStoryInteractionControllerCardCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 28DAC0E813E945AA00C0A97D /* SCHStoryInteractionControllerCardCollection.m */; };
 		28DAC0EC13E945C800C0A97D /* SCHStoryInteractionCardCollection_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28DAC0EB13E945C800C0A97D /* SCHStoryInteractionCardCollection_iPad.xib */; };
 		28DAC0ED13E945C800C0A97D /* SCHStoryInteractionCardCollection_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28DAC0EB13E945C800C0A97D /* SCHStoryInteractionCardCollection_iPad.xib */; };
-		28DAC0EF13E94A7700C0A97D /* storyinteraction-card-collection-zoom.png in Resources */ = {isa = PBXBuildFile; fileRef = 28DAC0EE13E94A7700C0A97D /* storyinteraction-card-collection-zoom.png */; };
-		28DAC0F013E94A7700C0A97D /* storyinteraction-card-collection-zoom.png in Resources */ = {isa = PBXBuildFile; fileRef = 28DAC0EE13E94A7700C0A97D /* storyinteraction-card-collection-zoom.png */; };
+		28DAC0EF13E94A7700C0A97D /* storyinteraction-card-collection-zoom-in.png in Resources */ = {isa = PBXBuildFile; fileRef = 28DAC0EE13E94A7700C0A97D /* storyinteraction-card-collection-zoom-in.png */; };
+		28DAC0F013E94A7700C0A97D /* storyinteraction-card-collection-zoom-in.png in Resources */ = {isa = PBXBuildFile; fileRef = 28DAC0EE13E94A7700C0A97D /* storyinteraction-card-collection-zoom-in.png */; };
+		28DAC0F313E9899B00C0A97D /* storyinteraction-card-collection-flip.png in Resources */ = {isa = PBXBuildFile; fileRef = 28DAC0F113E9899B00C0A97D /* storyinteraction-card-collection-flip.png */; };
+		28DAC0F413E9899B00C0A97D /* storyinteraction-card-collection-flip.png in Resources */ = {isa = PBXBuildFile; fileRef = 28DAC0F113E9899B00C0A97D /* storyinteraction-card-collection-flip.png */; };
+		28DAC0F513E9899B00C0A97D /* storyinteraction-card-collection-zoom-out.png in Resources */ = {isa = PBXBuildFile; fileRef = 28DAC0F213E9899B00C0A97D /* storyinteraction-card-collection-zoom-out.png */; };
+		28DAC0F613E9899B00C0A97D /* storyinteraction-card-collection-zoom-out.png in Resources */ = {isa = PBXBuildFile; fileRef = 28DAC0F213E9899B00C0A97D /* storyinteraction-card-collection-zoom-out.png */; };
+		28DAC0F913E98C0500C0A97D /* SCHAnimationDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 28DAC0F813E98C0500C0A97D /* SCHAnimationDelegate.m */; };
+		28DAC0FA13E98C0500C0A97D /* SCHAnimationDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 28DAC0F813E98C0500C0A97D /* SCHAnimationDelegate.m */; };
 		28E6BCF113D72C7500A5C9E3 /* SCHBaseSetupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28E6BCF013D72C7500A5C9E3 /* SCHBaseSetupViewController.m */; };
 		28E6BCF213D72C7500A5C9E3 /* SCHBaseSetupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28E6BCF013D72C7500A5C9E3 /* SCHBaseSetupViewController.m */; };
 		28E9B97D13A0D51A0056874F /* SCHStoryInteractionTitleTwister_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28E9B97C13A0D51A0056874F /* SCHStoryInteractionTitleTwister_iPad.xib */; };
@@ -1853,7 +1859,11 @@
 		28DAC0E713E945AA00C0A97D /* SCHStoryInteractionControllerCardCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionControllerCardCollection.h; sourceTree = "<group>"; };
 		28DAC0E813E945AA00C0A97D /* SCHStoryInteractionControllerCardCollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionControllerCardCollection.m; sourceTree = "<group>"; };
 		28DAC0EB13E945C800C0A97D /* SCHStoryInteractionCardCollection_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionCardCollection_iPad.xib; sourceTree = "<group>"; };
-		28DAC0EE13E94A7700C0A97D /* storyinteraction-card-collection-zoom.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-card-collection-zoom.png"; sourceTree = "<group>"; };
+		28DAC0EE13E94A7700C0A97D /* storyinteraction-card-collection-zoom-in.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-card-collection-zoom-in.png"; sourceTree = "<group>"; };
+		28DAC0F113E9899B00C0A97D /* storyinteraction-card-collection-flip.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-card-collection-flip.png"; sourceTree = "<group>"; };
+		28DAC0F213E9899B00C0A97D /* storyinteraction-card-collection-zoom-out.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-card-collection-zoom-out.png"; sourceTree = "<group>"; };
+		28DAC0F713E98C0500C0A97D /* SCHAnimationDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHAnimationDelegate.h; sourceTree = "<group>"; };
+		28DAC0F813E98C0500C0A97D /* SCHAnimationDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHAnimationDelegate.m; sourceTree = "<group>"; };
 		28E6BCEF13D72C7500A5C9E3 /* SCHBaseSetupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBaseSetupViewController.h; path = Shared/SCHBaseSetupViewController.h; sourceTree = "<group>"; };
 		28E6BCF013D72C7500A5C9E3 /* SCHBaseSetupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBaseSetupViewController.m; path = Shared/SCHBaseSetupViewController.m; sourceTree = "<group>"; };
 		28E9B97C13A0D51A0056874F /* SCHStoryInteractionTitleTwister_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionTitleTwister_iPad.xib; sourceTree = "<group>"; };
@@ -2989,6 +2999,8 @@
 				286E213E13AB7EBF00CB4232 /* NSArray+Shuffling.m */,
 				28FFD4F013AF635F00F28637 /* SCHGeometry.h */,
 				28FFD4F113AF635F00F28637 /* SCHGeometry.m */,
+				28DAC0F713E98C0500C0A97D /* SCHAnimationDelegate.h */,
+				28DAC0F813E98C0500C0A97D /* SCHAnimationDelegate.m */,
 			);
 			name = Common;
 			sourceTree = "<group>";
@@ -3224,7 +3236,9 @@
 				5215349B13B08AB200131E37 /* storyinteraction-bg-older-notitle~iphone.png */,
 				5215349C13B08AB200131E37 /* storyinteraction-bg-older-notitle@2x~iphone.png */,
 				C9C1D29E13B0AD4C00441623 /* storyinteraction-bg-older-notitle~ipad.png */,
-				28DAC0EE13E94A7700C0A97D /* storyinteraction-card-collection-zoom.png */,
+				28DAC0EE13E94A7700C0A97D /* storyinteraction-card-collection-zoom-in.png */,
+				28DAC0F213E9899B00C0A97D /* storyinteraction-card-collection-zoom-out.png */,
+				28DAC0F113E9899B00C0A97D /* storyinteraction-card-collection-flip.png */,
 				C9AC869113AFAF75000ECDAE /* storyinteraction-lettertile-small~ipad.png */,
 				C9AC869213AFAF77000ECDAE /* storyinteraction-lettertile~ipad.png */,
 				C9AC869313AFAF7B000ECDAE /* storyinteraction-wordmatch-target~ipad.png */,
@@ -5676,7 +5690,9 @@
 				28C3D1AD13E2B33600931F5C /* SCHStartingView~ipad.xib in Resources */,
 				288A1C7F13E2E7EE009F56BA /* SCHStartingView~iphone.xib in Resources */,
 				28DAC0EC13E945C800C0A97D /* SCHStoryInteractionCardCollection_iPad.xib in Resources */,
-				28DAC0EF13E94A7700C0A97D /* storyinteraction-card-collection-zoom.png in Resources */,
+				28DAC0EF13E94A7700C0A97D /* storyinteraction-card-collection-zoom-in.png in Resources */,
+				28DAC0F313E9899B00C0A97D /* storyinteraction-card-collection-flip.png in Resources */,
+				28DAC0F513E9899B00C0A97D /* storyinteraction-card-collection-zoom-out.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6166,7 +6182,9 @@
 				28C3D1AE13E2B33600931F5C /* SCHStartingView~ipad.xib in Resources */,
 				288A1C8013E2E7EE009F56BA /* SCHStartingView~iphone.xib in Resources */,
 				28DAC0ED13E945C800C0A97D /* SCHStoryInteractionCardCollection_iPad.xib in Resources */,
-				28DAC0F013E94A7700C0A97D /* storyinteraction-card-collection-zoom.png in Resources */,
+				28DAC0F013E94A7700C0A97D /* storyinteraction-card-collection-zoom-in.png in Resources */,
+				28DAC0F413E9899B00C0A97D /* storyinteraction-card-collection-flip.png in Resources */,
+				28DAC0F613E9899B00C0A97D /* storyinteraction-card-collection-zoom-out.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6451,6 +6469,7 @@
 				28D81EE713E8413B00A2B25F /* SCHStoryInteractionPictureStarter.m in Sources */,
 				28D81EEC13E846CE00A2B25F /* SCHStoryInteractionCardCollection.m in Sources */,
 				28DAC0E913E945AA00C0A97D /* SCHStoryInteractionControllerCardCollection.m in Sources */,
+				28DAC0F913E98C0500C0A97D /* SCHAnimationDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6762,6 +6781,7 @@
 				28D81EE813E8413B00A2B25F /* SCHStoryInteractionPictureStarter.m in Sources */,
 				28D81EED13E846CE00A2B25F /* SCHStoryInteractionCardCollection.m in Sources */,
 				28DAC0EA13E945AA00C0A97D /* SCHStoryInteractionControllerCardCollection.m in Sources */,
+				28DAC0FA13E98C0500C0A97D /* SCHAnimationDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
