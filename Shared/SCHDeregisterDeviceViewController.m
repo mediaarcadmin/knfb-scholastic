@@ -8,12 +8,19 @@
 
 #import "SCHDeregisterDeviceViewController.h"
 #import "SCHAuthenticationManager.h"
-#import "SCHDrmSession.h"
 #import "SCHSetupDelegate.h"
 #import "SCHAuthenticationManagerProtected.h"
+#import "LambdaAlert.h"
+
+static const CGFloat kDeregisterContentHeightLandscape = 380;
 
 @interface SCHDeregisterDeviceViewController ()
-@property (nonatomic, retain) SCHDrmRegistrationSession* drmRegistrationSession;
+
+@property (nonatomic, retain) UITextField *activeTextField;
+
+- (void)setupContentSizeForOrientation:(UIInterfaceOrientation)orientation;
+- (void)makeVisibleTextField:(UITextField *)textField;
+
 @end
 
 @implementation SCHDeregisterDeviceViewController
@@ -23,22 +30,26 @@
 @synthesize deregisterButton;
 @synthesize spinner;
 @synthesize scrollView;
-@synthesize drmRegistrationSession;
+@synthesize activeTextField;
 
 - (void)releaseViewObjects
 {
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        [[NSNotificationCenter defaultCenter] removeObserver:self];
+    }
+    
     [promptLabel release], promptLabel = nil;
     [passwordField release], passwordField = nil;
     [deregisterButton release], deregisterButton = nil;
     [scrollView release], scrollView = nil;
     [spinner release], spinner = nil;
+    [activeTextField release], activeTextField = nil;
     
     [super releaseViewObjects];
 }
 
 - (void)dealloc
 {
-    [drmRegistrationSession release], drmRegistrationSession = nil;
     [self releaseViewObjects];
     [super dealloc];
 }
@@ -57,6 +68,40 @@
 
     NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:kSCHAuthenticationManagerUsername];
     self.promptLabel.text = [NSString stringWithFormat:self.promptLabel.text, username];
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        [[NSNotificationCenter defaultCenter] addObserver:self 
+                                                 selector:@selector(keyboardWillShow:) 
+                                                     name:UIKeyboardWillShowNotification
+                                                   object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self 
+                                                 selector:@selector(keyboardDidShow:) 
+                                                     name:UIKeyboardDidShowNotification
+                                                   object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(keyboardWillHide:)
+                                                     name:UIKeyboardWillHideNotification
+                                                   object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(authenticationManagerDidDeregister:)
+                                                     name:SCHAuthenticationManagerDidDeregisterNotification
+                                                   object:nil];
+
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(authenticationManagerDidFailDeregistration:)
+                                                     name:SCHAuthenticationManagerDidFailDeregistrationNotification
+                                                   object:nil];
+
+    }
+}
+
+- (void)viewWillAppear:(BOOL)animated 
+{
+    [super viewWillAppear:animated];
+    [self setupContentSizeForOrientation:self.interfaceOrientation];
 }
 
 - (void)viewDidUnload
@@ -71,19 +116,14 @@
 {
     if ([[SCHAuthenticationManager sharedAuthenticationManager] validatePassword:self.passwordField.text]) {
         [self.spinner startAnimating];
-        SCHDrmRegistrationSession* registrationSession = [[SCHDrmRegistrationSession alloc] init];
-        registrationSession.delegate = self;	
-        self.drmRegistrationSession = registrationSession;
-        [self.drmRegistrationSession deregisterDevice:[[SCHAuthenticationManager sharedAuthenticationManager] aToken]];
-        [registrationSession release]; 
+        [[SCHAuthenticationManager sharedAuthenticationManager] deregister];
     } else {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"error alert title")
-                                                        message:NSLocalizedString(@"The password was incorrect", @"")
-                                                       delegate:nil
-                                              cancelButtonTitle:NSLocalizedString(@"Try Again", @"try again button after password failure")
-                                              otherButtonTitles:nil];
+        LambdaAlert *alert = [[LambdaAlert alloc]
+                              initWithTitle:NSLocalizedString(@"Error", @"error alert title")
+                              message:NSLocalizedString(@"The password was incorrect", @"")];
+        [alert addButtonWithTitle:NSLocalizedString(@"Try Again", @"try again button after password failure") block:^{}];
         [alert show];
-        [alert release];
+        [alert release];        
     }
 }
 
@@ -92,12 +132,33 @@
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://my.scholastic.com/sps_my_account/pwmgmt/ForgotPassword.jsp?AppType=COOL"]];
 }
 
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+    [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+    [self.view endEditing:YES];
+    [self setupContentSizeForOrientation:self.interfaceOrientation];
+}
+
 #pragma mark - Text field delegate
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
+{    
+    if (self.activeTextField && (self.activeTextField != textField)) {
+        // We have swapped textFields with the keyboard showing
+        [self makeVisibleTextField:textField];
+    }
+    
+    self.activeTextField = textField;
+}
+
+- (void)makeVisibleTextField:(UITextField *)textField
 {
-    [self.scrollView setContentSize:CGSizeMake(CGRectGetWidth(self.view.bounds), 2*CGRectGetHeight(self.view.bounds))];
-    [self.scrollView setContentOffset:CGPointMake(0, CGRectGetMinY(self.promptLabel.frame)) animated:YES];
+    CGFloat textFieldCenterY    = CGRectGetMidY(textField.frame);
+    CGFloat scrollViewQuadrantY = CGRectGetMidY(self.scrollView.frame)/2.0f;
+    
+    if (textFieldCenterY > scrollViewQuadrantY) {
+        [self.scrollView setContentOffset:CGPointMake(0, textFieldCenterY - scrollViewQuadrantY) animated:YES];
+    }
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
@@ -106,31 +167,57 @@
     return NO;
 }
 
-#pragma mark - DRM Registration Session Delegate methods
-
-- (void)registrationSession:(SCHDrmRegistrationSession *)registrationSession didComplete:(NSString *)deviceKey
+- (void)setupContentSizeForOrientation:(UIInterfaceOrientation)orientation;
 {
-    [self.spinner stopAnimating];
-    if (deviceKey == nil) {
-        [[SCHAuthenticationManager sharedAuthenticationManager] clear];
-        [[SCHAuthenticationManager sharedAuthenticationManager] clearAppProcessing];
-        [self.setupDelegate dismissSettingsForm];
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        if (UIInterfaceOrientationIsPortrait(orientation)) {
+            self.scrollView.contentSize = CGSizeZero;
+        } else {
+            self.scrollView.contentSize = CGSizeMake(self.containerView.bounds.size.width, kDeregisterContentHeightLandscape);
+        }
     } else {
-        NSLog(@"Unknown DRM error: device key value returned from successful deregistration.");
-    }
-    self.drmRegistrationSession = nil;
+        self.scrollView.contentSize = CGSizeZero;
+    }    
 }
 
-- (void)registrationSession:(SCHDrmRegistrationSession *)registrationSession didFailWithError:(NSError *)error
+#pragma mark - Deregistration Notification methods
+
+- (void)authenticationManagerDidDeregister:(NSNotification *)notification
 {
-	UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") 
-                                                         message:[error localizedDescription]
-                                                        delegate:nil 
-                                               cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-                                               otherButtonTitles:nil]; 
-    [errorAlert show]; 
-    [errorAlert release]; 
-    self.drmRegistrationSession = nil;
+    [self.spinner stopAnimating];
+    [self.setupDelegate dismissSettingsForm];
+}
+
+
+- (void)authenticationManagerDidFailDeregistration:(NSNotification *)notification
+{
+    NSError *error = [[notification userInfo] objectForKey:kSCHAuthenticationManagerNSError];
+    LambdaAlert *alert = [[LambdaAlert alloc]
+                          initWithTitle:NSLocalizedString(@"Error", @"Error") 
+                          message:[error localizedDescription]];
+    [alert addButtonWithTitle:NSLocalizedString(@"OK", @"OK") block:^{}];
+    [alert show];
+    [alert release];
+}
+
+#pragma mark - UIKeyboard Notifications
+
+- (void)keyboardDidShow:(NSNotification *) notification
+{
+    if (self.activeTextField) {
+        [self makeVisibleTextField:self.activeTextField];
+    }
+}
+
+- (void)keyboardWillShow:(NSNotification *) notification
+{
+    [self.scrollView setContentSize:CGSizeMake(self.scrollView.contentSize.width, MAX(self.containerView.frame.size.height, self.scrollView.contentSize.height) * 1.5f)];
+}
+
+- (void)keyboardWillHide:(NSNotification *) notification
+{
+    self.activeTextField = nil;
+    [self setupContentSizeForOrientation:self.interfaceOrientation];
 }
 
 @end

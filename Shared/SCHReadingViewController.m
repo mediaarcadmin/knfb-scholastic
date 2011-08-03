@@ -94,6 +94,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 @property (nonatomic, retain) UIPopoverController *popover;
 
+@property (nonatomic, retain) SCHReadingNoteView *notesView;
 @property (nonatomic, retain) SCHNotesCountView *notesCountView;
 
 @property (nonatomic, retain) SCHBookStoryInteractions *bookStoryInteractions;
@@ -162,6 +163,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 @synthesize paperType;
 @synthesize layoutType;
 @synthesize popover;
+@synthesize notesView;
 @synthesize notesCountView;
 
 @synthesize optionsView;
@@ -231,12 +233,19 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 - (void)releaseViewObjects
 {
+    if (storyInteractionController != nil) {
+        [storyInteractionController removeFromHostView];
+    } else if (notesView != nil) {
+        [notesView removeFromView];
+    }
+    
     [titleLabel release], titleLabel = nil;
     [leftBarButtonItemContainer release], leftBarButtonItemContainer = nil;
     [youngerRightBarButtonItemContainer release], youngerRightBarButtonItemContainer = nil;
     [olderRightBarButtonItemContainer release], olderRightBarButtonItemContainer = nil;
     [backButton release], backButton = nil;
     [audioButtons release], audioButtons = nil;
+    [notesView release], notesView = nil;
     [notesCountView release], notesCountView = nil;
     [notesButton release], notesButton = nil;
     [storyInteractionsListButton release], storyInteractionsListButton = nil;
@@ -569,7 +578,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [self cancelInitialTimer];
     [super viewWillDisappear:animated];
     
-    [self.popover dismissPopoverAnimated:YES];
+    [self.popover dismissPopoverAnimated:NO];
     self.popover = nil;    
 }
 
@@ -719,7 +728,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
             [alert release];
             self.bookIdentifier = nil;
             if (self.modalViewController != nil) {
-                [self.modalViewController dismissModalViewControllerAnimated:YES];
+                [self.modalViewController dismissModalViewControllerAnimated:NO];
             }              
             [self.storyInteractionController removeFromHostView];
             [self popViewController:self];
@@ -2093,6 +2102,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     SCHReadingNoteView *aNotesView = [[SCHReadingNoteView alloc] initWithNote:note];
     aNotesView.delegate = self;
     [aNotesView showInView:self.view animated:YES];
+    self.notesView = aNotesView;
     [aNotesView release];
     
     [self setToolbarVisibility:NO animated:YES];
@@ -2128,7 +2138,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 #pragma mark - SCHNotesViewDelegate methods
 
-- (void)notesView:(SCHReadingNoteView *)notesView savedNote:(SCHNote *)note;
+- (void)notesView:(SCHReadingNoteView *)aNotesView savedNote:(SCHNote *)note;
 {
     NSLog(@"Saving note...");
     // a new object will already have been created and added to the data store
@@ -2136,15 +2146,16 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [self setToolbarVisibility:YES animated:YES];
     
     [self updateNotesCounter];
+    self.notesView = nil;    
 }
 
-- (void)notesViewCancelled:(SCHReadingNoteView *)notesView
+- (void)notesViewCancelled:(SCHReadingNoteView *)aNotesView
 {
     SCHBookAnnotations *bookAnnos = [self.profile annotationsForBook:self.bookIdentifier];
     
     // if we created the note but it's been cancelled, delete the note
-    if (notesView.newNote) {
-        [bookAnnos deleteNote:notesView.note];
+    if (aNotesView.newNote) {
+        [bookAnnos deleteNote:aNotesView.note];
         
         [self save];
     }
@@ -2152,6 +2163,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [self setToolbarVisibility:YES animated:YES];
     
     [self updateNotesCounter];
+    self.notesView = nil;
 }
 
 #pragma mark - SCHReadingInteractionsListControllerDelegate methods

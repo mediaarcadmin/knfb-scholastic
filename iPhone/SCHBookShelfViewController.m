@@ -412,10 +412,13 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
             [alert release];
             self.profileItem = nil;
             if (self.modalViewController != nil) {
-                [self.modalViewController dismissModalViewControllerAnimated:YES];
+                [self.modalViewController dismissModalViewControllerAnimated:NO];
             }            
-            // we could be viewing another controller so let's go to the root (profile) view
-            [self.navigationController popToRootViewControllerAnimated:YES];
+            // we could be viewing another controller so let's go to the profile view
+            if ([self.navigationController.viewControllers count] > 1) {
+                [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:1] 
+                                                                animated:NO];   
+            }
             break;
         }
     }
@@ -433,7 +436,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
             self.navigationItem.title = [object bookshelfName:YES];
         }
     }
-
+    
     // update any book information
     for (SCHContentMetadataItem *object in [[notification userInfo] objectForKey:NSUpdatedObjectsKey]) {
         if ([object isKindOfClass:[SCHContentMetadataItem class]] == YES) {
@@ -464,10 +467,8 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
         // check for books removed from the shelf
         for (SCHContentProfileItem *object in [[notification userInfo] objectForKey:NSDeletedObjectsKey]) {
             if ([object isKindOfClass:[SCHContentProfileItem class]] == YES) {
-                if ([object.ProfileID isEqualToNumber:self.profileItem.ID] == YES) {
-                    refreshBooks = YES;
-                    break;
-                }
+                refreshBooks = YES;
+                break;
             }
         }
     }
@@ -485,13 +486,13 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
 
 - (void)bookshelfSyncComponentDidFail:(NSNotification *)notification
 {
+    [self showLoadingView:NO];    
     LambdaAlert *alert = [[LambdaAlert alloc]
                           initWithTitle:NSLocalizedString(@"Retrieving Bookshelf Failed", @"Retrieving Bookshelf Failed") 
                           message:NSLocalizedString(@"Failed to retrieve the bookshelf, we will try again soon.", @"") ];
     [alert addButtonWithTitle:NSLocalizedString(@"OK", @"OK") block:^{}];
     [alert show];
     [alert release];
-    [self showLoadingView:NO];
 }
 
 #pragma mark - Core Data Table View Methods

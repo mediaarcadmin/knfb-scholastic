@@ -8,11 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import "SCHBaseSetupViewController.h"
-#import "SCHDrmRegistrationSessionDelegate.h"
 
 @protocol SCHSetupDelegate;
 
-@interface SCHDeregisterDeviceViewController : SCHBaseSetupViewController <SCHDrmRegistrationSessionDelegate, UITextFieldDelegate> {}
+@interface SCHDeregisterDeviceViewController : SCHBaseSetupViewController <UITextFieldDelegate> {}
 
 @property (nonatomic, retain) IBOutlet UILabel *promptLabel;
 @property (nonatomic, retain) IBOutlet UITextField *passwordField;

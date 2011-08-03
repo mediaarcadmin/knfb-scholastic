@@ -94,7 +94,7 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
 		
 		[[NSNotificationCenter defaultCenter] addObserver:self 
                                                  selector:@selector(authenticationManager:) 
-                                                     name:kSCHAuthenticationManagerDidSucceedNotification 
+                                                     name:SCHAuthenticationManagerDidSucceedNotification 
                                                    object:nil];					
 	}
 	

@@ -26,6 +26,7 @@
 - (id)initWithNote:(SCHNote *)aNote;
 - (void)showInView:(UIView *)view;
 - (void)showInView:(UIView *)view animated:(BOOL)animated;
+- (void)removeFromView;
 
 @end
 

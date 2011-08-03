@@ -53,7 +53,9 @@
     [self updateBookWithSuccess];
     return;
 #endif
-    [licenseAcquisitionSession acquireLicense:[[SCHAuthenticationManager sharedAuthenticationManager] aToken] bookID:self.identifier];
+    if ([SCHAuthenticationManager sharedAuthenticationManager].isAuthenticated == YES) {		
+        [licenseAcquisitionSession acquireLicense:[[SCHAuthenticationManager sharedAuthenticationManager] aToken] bookID:self.identifier];
+    }
 }
 
 #pragma mark - Book Updates

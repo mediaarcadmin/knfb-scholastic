@@ -178,7 +178,7 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
 {
     [super viewWillDisappear:animated];
 
-    [self.popover dismissPopoverAnimated:YES];
+    [self.popover dismissPopoverAnimated:NO];
     self.popover = nil;
 }
 
@@ -278,7 +278,7 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
             // if we need to authenticate then try again once we are
             [[NSNotificationCenter defaultCenter] addObserver:self 
                                                      selector:@selector(authenticationManager:) 
-                                                         name:kSCHAuthenticationManagerDidSucceedNotification 
+                                                         name:SCHAuthenticationManagerDidSucceedNotification 
                                                        object:nil];					            
         }
     }

@@ -98,6 +98,13 @@ static NSString * const SCHNotesViewExitToTopAnimation = @"SCHNotesViewExitToTop
     [self showInView:view animated:YES];
 }
 
+- (void)removeFromView
+{
+    [self.textView resignFirstResponder];
+    [self removeFromSuperview];
+    self.showInView = nil;    
+}
+
 - (void)layoutNote {
     CGRect newFrame;
     CGRect toolbarFrame;

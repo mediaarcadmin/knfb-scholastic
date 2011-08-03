@@ -28,11 +28,15 @@
 #import "SCHLastPage.h"
 #import "SCHPrivateAnnotations.h"
 #import "SCHAnnotationsContentItem.h"
+#import "SCHAppContentProfileItem.h"
 
 @interface SCHLocalDebug ()
 
 - (void)checkAndCopyLocalFilesToApplicationSupport:(NSString*)srcDir 
                                          deleteSrc:(BOOL)delete;
+- (SCHAppContentProfileItem *)addAppContentProfileItem:(SCHContentProfileItem *)contentProfileItem 
+                                                  from:(SCHContentMetadataItem *)contentMetadataItem 
+                                                    to:(SCHProfileItem *)profileItem;
 - (void)addAnnotationStructure:(SCHUserContentItem *)userContentItem 
                annotationsItem:(SCHAnnotationsItem *)annotationsItem;
 - (void)clearProfiles;
@@ -375,7 +379,10 @@
 		newContentProfileItem.IsFavorite = [NSNumber numberWithBool:YES];
         
         if ([newContentMetadataItem.FileName isEqualToString:@"9780545308656.6.StableMatesPatch"]) { // Add to both bookshelves
-            newContentProfileItem.ProfileID = [NSNumber numberWithInt:1];
+            newContentProfileItem.ProfileID = youngProfileItem.ID;
+            [self addAppContentProfileItem:newContentProfileItem 
+                                      from:newContentMetadataItem 
+                                        to:youngProfileItem];
             [self addAnnotationStructure:newUserContentItem annotationsItem:youngAnnotationsItem];
             [newUserContentItem addProfileListObject:newContentProfileItem];	
 
@@ -383,19 +390,28 @@
             newContentProfileItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHContentProfileItem inManagedObjectContext:self.managedObjectContext];			
             newContentProfileItem.LastModified = now;
             newContentProfileItem.IsFavorite = [NSNumber numberWithBool:YES];
-            newContentProfileItem.ProfileID = [NSNumber numberWithInt:2];
+            newContentProfileItem.ProfileID = olderProfileItem.ID;
+            [self addAppContentProfileItem:newContentProfileItem 
+                                      from:newContentMetadataItem 
+                                        to:olderProfileItem];            
             [self addAnnotationStructure:newUserContentItem annotationsItem:olderAnnotationsItem];            
             
             [newUserContentItem addProfileListObject:newContentProfileItem];
         } else if([newContentMetadataItem.FileName isEqualToString:@"9780545289726_r1.OlliesNewTricks"] || 
                   [newContentMetadataItem.FileName isEqualToString:@"9780545327619_r1.WhoWillCarveTheTurkey"] || 
                   [newContentMetadataItem.FileName isEqualToString:@"9780545287012_r1.HalloweenParade"]) { // Add to 1st bookshelf
-            newContentProfileItem.ProfileID = [NSNumber numberWithInt:1];
+            newContentProfileItem.ProfileID = youngProfileItem.ID;
+            [self addAppContentProfileItem:newContentProfileItem 
+                                      from:newContentMetadataItem 
+                                        to:youngProfileItem];
             [self addAnnotationStructure:newUserContentItem annotationsItem:youngAnnotationsItem];
             [newUserContentItem addProfileListObject:newContentProfileItem];	
 
         } else {  // Add to 2nd bookshelf
-            newContentProfileItem.ProfileID = [NSNumber numberWithInt:2];
+            newContentProfileItem.ProfileID = olderProfileItem.ID;
+            [self addAppContentProfileItem:newContentProfileItem 
+                                      from:newContentMetadataItem 
+                                        to:olderProfileItem];            
             [self addAnnotationStructure:newUserContentItem annotationsItem:olderAnnotationsItem];  
             [newUserContentItem addProfileListObject:newContentProfileItem];	
         }
@@ -426,6 +442,21 @@
 	// fire off processing
 	[[NSNotificationCenter defaultCenter] postNotificationName:SCHBookshelfSyncComponentDidCompleteNotification object:self];
 	
+}
+
+- (SCHAppContentProfileItem *)addAppContentProfileItem:(SCHContentProfileItem *)contentProfileItem 
+                                                  from:(SCHContentMetadataItem *)contentMetadataItem 
+                                                    to:(SCHProfileItem *)profileItem
+{
+    SCHAppContentProfileItem *ret = [NSEntityDescription insertNewObjectForEntityForName:kSCHAppContentProfileItem 
+                                                                                       inManagedObjectContext:self.managedObjectContext];    
+    
+    ret.ISBN = contentMetadataItem.ContentIdentifier;       
+    ret.DRMQualifier = contentMetadataItem.DRMQualifier;
+    ret.ContentProfileItem = contentProfileItem;
+    ret.ProfileItem = profileItem;
+    
+    return(ret);
 }
 
 - (void)addAnnotationStructure:(SCHUserContentItem *)userContentItem annotationsItem:(SCHAnnotationsItem *)annotationsItem
