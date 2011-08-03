@@ -34,6 +34,16 @@
     [super dealloc];
 }
 
+- (NSString *)title
+{
+    return @"Card Collection";
+}
+
+- (BOOL)isOlderStoryInteraction
+{
+    return YES;
+}
+
 - (NSString *)imagePathForHeader
 {
     return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:self.headerFilename];

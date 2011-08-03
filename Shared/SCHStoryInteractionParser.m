@@ -205,6 +205,12 @@ static NSString *extractXmlAttribute(const XML_Char **atts, const char *key)
     }
 }
 
+- (void)parseComplete:(SCHStoryInteractionParser *)parser
+{
+    self.cards = [NSArray arrayWithArray:parser.questions];
+    [super parseComplete:parser];
+}
+
 @end
 
 #pragma mark - HotSpot
