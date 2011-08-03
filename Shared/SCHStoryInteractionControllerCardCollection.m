@@ -29,6 +29,7 @@ enum {
 @implementation SCHStoryInteractionControllerCardCollection
 
 @synthesize cardViews;
+@synthesize perspectiveView;
 @synthesize buttonsContainer;
 @synthesize selectedCardView;
 @synthesize zoomCardLayer;
@@ -37,6 +38,7 @@ enum {
 - (void)dealloc
 {
     [cardViews release], cardViews = nil;
+    [perspectiveView release], perspectiveView = nil;
     [buttonsContainer release], buttonsContainer = nil;
     [zoomCardLayer release], zoomCardLayer = nil;
     [selectedCardView release], selectedCardView = nil;
@@ -59,10 +61,10 @@ enum {
     self.buttonsContainer.alpha = 0;
     self.buttonsContainer.userInteractionEnabled = NO;
     
-    // enable 'depth' in the contents view so the flip animations look 3D
+    // enable depth in the perspective view so the flip animations look 3D
     CATransform3D sublayerTransform = CATransform3DIdentity;
     sublayerTransform.m34 = 1.0 / -2000;
-    self.contentsView.layer.sublayerTransform = sublayerTransform;
+    self.perspectiveView.layer.sublayerTransform = sublayerTransform;
     
 //    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(contentsViewTapped:)];
 //    [self.contentsView addGestureRecognizer:tap];
@@ -101,7 +103,7 @@ enum {
     self.zoomCardLayer.bounds = CGRectIntegral(CGRectMake(0, 0, width, height));
     self.zoomCardLayer.position = CGPointMake(floorf(CGRectGetMidX(self.contentsView.bounds)),
                                               floorf(CGRectGetMidY(self.contentsView.bounds)-CGRectGetHeight(self.buttonsContainer.bounds)/3));
-    [self.contentsView.layer addSublayer:self.zoomCardLayer];
+    [self.perspectiveView.layer addSublayer:self.zoomCardLayer];
 
     CALayer *front = [CALayer layer];
     front.contents = (id)[frontImage CGImage];
@@ -190,6 +192,8 @@ enum {
         [CATransaction commit];
     }];
     
+    self.zoomCardLayer.transform = CATransform3DConcat(scale, flip);
+    self.zoomCardLayer.position = [self.selectedCardView convertPoint:self.selectedCardView.center toView:self.contentsView];
     [self.zoomCardLayer addAnimation:group forKey:@"zoomOut"];
     
     [UIView animateWithDuration:0.2
@@ -225,7 +229,6 @@ enum {
     self.buttonsContainer.center = CGPointMake(floorf(self.zoomCardLayer.position.x),
                                                floorf(self.zoomCardLayer.position.y+CGRectGetHeight(self.zoomCardLayer.bounds)/2+CGRectGetHeight(self.buttonsContainer.bounds)/3) - 20);
     self.buttonsContainer.userInteractionEnabled = YES;
-    self.buttonsContainer.layer.zPosition = 2000; // way in front of the card as it flips
     
     [UIView animateWithDuration:0.25 animations:^{
         self.buttonsContainer.alpha = 1;
