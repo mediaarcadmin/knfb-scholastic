@@ -207,7 +207,10 @@ enum {
 
 - (void)flip:(UIButton *)sender
 {
-    sender.enabled = NO;
+    if ([self.zoomCardLayer animationForKey:@"flip"] != nil) {
+        return;
+    }
+    
     self.showingFront = !self.showingFront;
     
     CATransform3D toTransform = self.showingFront ? CATransform3DIdentity : CATransform3DMakeRotation(M_PI, 0, 1, 0);
@@ -216,9 +219,6 @@ enum {
     flip.fromValue = [NSValue valueWithCATransform3D:self.zoomCardLayer.transform];
     flip.toValue = [NSValue valueWithCATransform3D:toTransform];
     flip.duration = 0.5;
-    flip.delegate = [SCHAnimationDelegate animationDelegateWithStopBlock:^(CAAnimation *animation, BOOL finished) {
-        sender.enabled = YES;
-    }];
     
     self.zoomCardLayer.transform = toTransform;
     [self.zoomCardLayer addAnimation:flip forKey:@"flip"];
