@@ -84,6 +84,7 @@ static void pageFileXMLParsingStartElementHandler(void *ctx, const XML_Char *nam
     
 - (void)updateBookWithSuccess;
 - (void)updateBookWithFailure;
+- (void)fireNotificationForPercentage:(float)percentage;
 
 @end
 
@@ -124,7 +125,13 @@ static void pageFileXMLParsingStartElementHandler(void *ctx, const XML_Char *nam
     }
     XML_ParserFree(pageRangeFileParser);
     
+    NSInteger item = 0;
+    
     for (KNFBTextFlowPageRange *pageRange in pageRangesSet) {
+        
+        [self fireNotificationForPercentage:(float)item/[pageRangesSet count]];
+        item++;
+        
         NSAutoreleasePool *innerPool = [[NSAutoreleasePool alloc] init];
         
         NSData *data = [xpsProvider dataForComponentAtPath:[KNFBXPSEncryptedTextFlowDir stringByAppendingPathComponent:[pageRange fileName]]];
@@ -166,9 +173,28 @@ static void pageFileXMLParsingStartElementHandler(void *ctx, const XML_Char *nam
     [xpsProvider reportReadingIfRequired];
     [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.identifier];
     
+    [self fireNotificationForPercentage:1.0f];
+
     [self updateBookWithSuccess];
-    
+
     [pool drain];
+}
+
+- (void)fireNotificationForPercentage:(float)percentage
+{
+    dispatch_sync(dispatch_get_main_queue(), ^{
+        if ([self isCancelled]) {
+            [self endOperation];
+            return;
+        }
+        
+        NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
+                                  [NSNumber numberWithFloat:percentage], @"currentPercentage",
+                                  self.identifier, @"bookIdentifier",
+                                  nil];
+
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"SCHBookTextFlowParsePercentageUpdate" object:nil userInfo:userInfo];
+    });
 }
 
 #pragma mark - Book Updates
