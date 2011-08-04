@@ -867,7 +867,8 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		[objects setObject:[self objectFromTranslate:anObject.authtoken] forKey:kSCHLibreAccessWebServiceAuthToken];
 		[objects setObject:[self objectFromTranslate:anObject.expiresIn] forKey:kSCHLibreAccessWebServiceExpiresIn];
 		[objects setObject:[self objectFromTranslate:anObject.deviceIsDeregistered] forKey:kSCHLibreAccessWebServiceDeviceIsDeregistered];
-        
+		[objects setObject:[self objectFromTranslate:anObject.userKey] forKey:kSCHLibreAccessWebServiceUserKey];        
+
 		ret = objects;				
 	}
 	
@@ -883,6 +884,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		
 		[objects setObject:[self objectFromTranslate:anObject.authtoken] forKey:kSCHLibreAccessWebServiceAuthToken];
 		[objects setObject:[self objectFromTranslate:anObject.expiresIn] forKey:kSCHLibreAccessWebServiceExpiresIn];
+		[objects setObject:[self objectFromTranslate:anObject.userKey] forKey:kSCHLibreAccessWebServiceUserKey];        
         
 		ret = objects;				
 	}

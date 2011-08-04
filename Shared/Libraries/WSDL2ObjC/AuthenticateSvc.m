@@ -335,7 +335,7 @@
 }
 + (AuthenticateSoap11Binding *)AuthenticateSoap11Binding
 {
-	return [[[AuthenticateSoap11Binding alloc] initWithAddress:@"https://esvcsqa.scholastic.com/SchWS/services/SPS/Authenticate.AuthenticateHttpsSoap11Endpoint/"] autorelease];
+	return [[[AuthenticateSoap11Binding alloc] initWithAddress:@"https://esvcsqa.scholastic.com/SchWS/services/SPS/Authenticate.AuthenticateHttpSoap11Endpoint/"] autorelease];
 }
 @end
 @implementation AuthenticateSoap11Binding
