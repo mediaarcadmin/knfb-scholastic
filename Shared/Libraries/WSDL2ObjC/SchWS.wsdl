@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:ns="http://sps.schws.scholastic.com" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://org.apache.axis2/xsd" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://sps.schws.scholastic.com">
+    <wsdl:documentation>Authenticate</wsdl:documentation>
+    <wsdl:types>
+        <xs:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://sps.schws.scholastic.com">
+            <xs:element name="processRemote">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="SPSWSXML" nillable="true" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="processRemoteResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="return" nillable="true" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:schema>
+    </wsdl:types>
+    <wsdl:message name="processRemoteRequest">
+        <wsdl:part name="parameters" element="ns:processRemote"/>
+    </wsdl:message>
+    <wsdl:message name="processRemoteResponse">
+        <wsdl:part name="parameters" element="ns:processRemoteResponse"/>
+    </wsdl:message>
+    <wsdl:portType name="AuthenticatePortType">
+        <wsdl:operation name="processRemote">
+            <wsdl:input message="ns:processRemoteRequest" wsaw:Action="urn:processRemote"/>
+            <wsdl:output message="ns:processRemoteResponse" wsaw:Action="urn:processRemoteResponse"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="AuthenticateSoap11Binding" type="ns:AuthenticatePortType">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+        <wsdl:operation name="processRemote">
+            <soap:operation soapAction="urn:processRemote" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:binding name="AuthenticateSoap12Binding" type="ns:AuthenticatePortType">
+        <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+        <wsdl:operation name="processRemote">
+            <soap12:operation soapAction="urn:processRemote" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:binding name="AuthenticateHttpBinding" type="ns:AuthenticatePortType">
+        <http:binding verb="POST"/>
+        <wsdl:operation name="processRemote">
+            <http:operation location="Authenticate/processRemote"/>
+            <wsdl:input>
+                <mime:content type="text/xml" part="processRemote"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml" part="processRemote"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="Authenticate">
+        <wsdl:port name="AuthenticateHttpsSoap11Endpoint" binding="ns:AuthenticateSoap11Binding">
+            <soap:address location="https://esvcsqa.scholastic.com/SchWS/services/SPS/Authenticate.AuthenticateHttpsSoap11Endpoint/"/>
+        </wsdl:port>
+        <wsdl:port name="AuthenticateHttpSoap11Endpoint" binding="ns:AuthenticateSoap11Binding">
+            <soap:address location="http://esvcsqa.scholastic.com/SchWS/services/SPS/Authenticate.AuthenticateHttpSoap11Endpoint/"/>
+        </wsdl:port>
+        <wsdl:port name="AuthenticateHttpsSoap12Endpoint" binding="ns:AuthenticateSoap12Binding">
+            <soap12:address location="https://esvcsqa.scholastic.com/SchWS/services/SPS/Authenticate.AuthenticateHttpsSoap12Endpoint/"/>
+        </wsdl:port>
+        <wsdl:port name="AuthenticateHttpSoap12Endpoint" binding="ns:AuthenticateSoap12Binding">
+            <soap12:address location="http://esvcsqa.scholastic.com/SchWS/services/SPS/Authenticate.AuthenticateHttpSoap12Endpoint/"/>
+        </wsdl:port>
+        <wsdl:port name="AuthenticateHttpEndpoint" binding="ns:AuthenticateHttpBinding">
+            <http:address location="http://esvcsqa.scholastic.com/SchWS/services/SPS/Authenticate.AuthenticateHttpEndpoint/"/>
+        </wsdl:port>
+        <wsdl:port name="AuthenticateHttpsEndpoint" binding="ns:AuthenticateHttpBinding">
+            <http:address location="https://esvcsqa.scholastic.com/SchWS/services/SPS/Authenticate.AuthenticateHttpsEndpoint/"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

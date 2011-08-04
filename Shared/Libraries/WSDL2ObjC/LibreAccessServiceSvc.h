@@ -110,7 +110,9 @@
 @class LibreAccessServiceSvc_AssignBooksToAllUsersBooksList;
 @class LibreAccessServiceSvc_AssignBooksToAllUsersBooksItem;
 @class LibreAccessServiceSvc_TokenExchange;
+@class LibreAccessServiceSvc_TokenExchangeEx;
 @class LibreAccessServiceSvc_TokenExchangeResponse;
+@class LibreAccessServiceSvc_TokenExchangeExResponse;
 @class LibreAccessServiceSvc_SharedTokenExchangeRequest;
 @class LibreAccessServiceSvc_SharedTokenExchangeResponse;
 @class LibreAccessServiceSvc_AuthenticateDeviceRequest;
@@ -297,6 +299,8 @@ typedef enum {
 	LibreAccessServiceSvc_ApplicationSettings_VERSION_INFO_EXPIRES,
 	LibreAccessServiceSvc_ApplicationSettings_UNREGISTERED_DEVICES_LIMIT,
 	LibreAccessServiceSvc_ApplicationSettings_DEACTIVATE_ON_DEREGISTER,
+	LibreAccessServiceSvc_ApplicationSettings_CONTENT_URL_TTL,
+	LibreAccessServiceSvc_ApplicationSettings_COVER_URL_TTL,
 } LibreAccessServiceSvc_ApplicationSettings;
 LibreAccessServiceSvc_ApplicationSettings LibreAccessServiceSvc_ApplicationSettings_enumFromString(NSString *string);
 NSString * LibreAccessServiceSvc_ApplicationSettings_stringFromEnum(LibreAccessServiceSvc_ApplicationSettings enumValue);
@@ -2554,6 +2558,31 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 /* attributes */
 - (NSDictionary *)attributes;
 @end
+@interface LibreAccessServiceSvc_TokenExchangeEx : NSObject <NSCoding> {
+/* elements */
+	NSString * ptoken;
+	NSNumber * vaid;
+	NSString * deviceKey;
+	NSString * impersonationkey;
+	NSString * UserName;
+/* attributes */
+}
+- (NSString *)nsPrefix;
+- (xmlNodePtr)xmlNodeForDoc:(xmlDocPtr)doc elementName:(NSString *)elName elementNSPrefix:(NSString *)elNSPrefix;
+- (void)addAttributesToNode:(xmlNodePtr)node;
+- (void)addElementsToNode:(xmlNodePtr)node;
++ (LibreAccessServiceSvc_TokenExchangeEx *)deserializeNode:(xmlNodePtr)cur;
+- (void)deserializeAttributesFromNode:(xmlNodePtr)cur;
+- (void)deserializeElementsFromNode:(xmlNodePtr)cur;
+/* elements */
+@property (nonatomic, retain) NSString * ptoken;
+@property (nonatomic, retain) NSNumber * vaid;
+@property (nonatomic, retain) NSString * deviceKey;
+@property (nonatomic, retain) NSString * impersonationkey;
+@property (nonatomic, retain) NSString * UserName;
+/* attributes */
+- (NSDictionary *)attributes;
+@end
 @interface LibreAccessServiceSvc_TokenExchangeResponse : NSObject <NSCoding> {
 /* elements */
 	NSString * authtoken;
@@ -2575,6 +2604,35 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 @property (nonatomic, retain) NSNumber * expiresIn;
 @property (nonatomic, retain) NSNumber * userType;
 @property (nonatomic, retain) USBoolean * deviceIsDeregistered;
+@property (nonatomic, retain) LibreAccessServiceSvc_StatusHolder * statusmessage;
+/* attributes */
+- (NSDictionary *)attributes;
+@end
+@interface LibreAccessServiceSvc_TokenExchangeExResponse : NSObject <NSCoding> {
+/* elements */
+	NSString * authtoken;
+	NSNumber * expiresIn;
+	NSString * userKey;
+	NSNumber * userType;
+	USBoolean * deviceIsDeregistered;
+	USBoolean * isNewUser;
+	LibreAccessServiceSvc_StatusHolder * statusmessage;
+/* attributes */
+}
+- (NSString *)nsPrefix;
+- (xmlNodePtr)xmlNodeForDoc:(xmlDocPtr)doc elementName:(NSString *)elName elementNSPrefix:(NSString *)elNSPrefix;
+- (void)addAttributesToNode:(xmlNodePtr)node;
+- (void)addElementsToNode:(xmlNodePtr)node;
++ (LibreAccessServiceSvc_TokenExchangeExResponse *)deserializeNode:(xmlNodePtr)cur;
+- (void)deserializeAttributesFromNode:(xmlNodePtr)cur;
+- (void)deserializeElementsFromNode:(xmlNodePtr)cur;
+/* elements */
+@property (nonatomic, retain) NSString * authtoken;
+@property (nonatomic, retain) NSNumber * expiresIn;
+@property (nonatomic, retain) NSString * userKey;
+@property (nonatomic, retain) NSNumber * userType;
+@property (nonatomic, retain) USBoolean * deviceIsDeregistered;
+@property (nonatomic, retain) USBoolean * isNewUser;
 @property (nonatomic, retain) LibreAccessServiceSvc_StatusHolder * statusmessage;
 /* attributes */
 - (NSDictionary *)attributes;
@@ -2613,6 +2671,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 	NSString * userhash;
 	NSNumber * userType;
 	USBoolean * deviceIsDeregistered;
+	USBoolean * isNewUser;
 	LibreAccessServiceSvc_StatusHolder * statusmessage;
 /* attributes */
 }
@@ -2631,6 +2690,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 @property (nonatomic, retain) NSString * userhash;
 @property (nonatomic, retain) NSNumber * userType;
 @property (nonatomic, retain) USBoolean * deviceIsDeregistered;
+@property (nonatomic, retain) USBoolean * isNewUser;
 @property (nonatomic, retain) LibreAccessServiceSvc_StatusHolder * statusmessage;
 /* attributes */
 - (NSDictionary *)attributes;
@@ -2661,6 +2721,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 	NSString * authtoken;
 	NSNumber * expiresIn;
 	USBoolean * deviceIsDeregistered;
+	NSString * userKey;
 	LibreAccessServiceSvc_StatusHolder * statusmessage;
 /* attributes */
 }
@@ -2675,6 +2736,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 @property (nonatomic, retain) NSString * authtoken;
 @property (nonatomic, retain) NSNumber * expiresIn;
 @property (nonatomic, retain) USBoolean * deviceIsDeregistered;
+@property (nonatomic, retain) NSString * userKey;
 @property (nonatomic, retain) LibreAccessServiceSvc_StatusHolder * statusmessage;
 /* attributes */
 - (NSDictionary *)attributes;
@@ -2700,6 +2762,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 /* elements */
 	NSString * authtoken;
 	NSNumber * expiresIn;
+	NSString * userKey;
 	LibreAccessServiceSvc_StatusHolder * statusmessage;
 /* attributes */
 }
@@ -2713,6 +2776,7 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 /* elements */
 @property (nonatomic, retain) NSString * authtoken;
 @property (nonatomic, retain) NSNumber * expiresIn;
+@property (nonatomic, retain) NSString * userKey;
 @property (nonatomic, retain) LibreAccessServiceSvc_StatusHolder * statusmessage;
 /* attributes */
 - (NSDictionary *)attributes;
@@ -4513,6 +4577,8 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 - (void)ListReadingStatisticsAggregateAsyncUsingParameters:(LibreAccessServiceSvc_ListReadingStatisticsAggregateRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate;
 - (LibreAccessServiceSoap11BindingResponse *)ListLastNWordsUsingParameters:(LibreAccessServiceSvc_ListLastNWordsRequest *)aParameters ;
 - (void)ListLastNWordsAsyncUsingParameters:(LibreAccessServiceSvc_ListLastNWordsRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate;
+- (LibreAccessServiceSoap11BindingResponse *)TokenExchangeExUsingBody:(LibreAccessServiceSvc_TokenExchangeEx *)aBody ;
+- (void)TokenExchangeExAsyncUsingBody:(LibreAccessServiceSvc_TokenExchangeEx *)aBody  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate;
 - (LibreAccessServiceSoap11BindingResponse *)DeviceLeftDomainUsingParameters:(LibreAccessServiceSvc_DeviceLeftDomainRequest *)aParameters ;
 - (void)DeviceLeftDomainAsyncUsingParameters:(LibreAccessServiceSvc_DeviceLeftDomainRequest *)aParameters  delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)responseDelegate;
 - (LibreAccessServiceSoap11BindingResponse *)ListReadBooksUsingParameters:(LibreAccessServiceSvc_ListReadBooksRequest *)aParameters ;
@@ -4743,6 +4809,14 @@ NSString * LibreAccessServiceSvc_aggregationPeriod_stringFromEnum(LibreAccessSer
 @property (nonatomic, retain) LibreAccessServiceSvc_ListLastNWordsRequest * parameters;
 - (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)aDelegate
 	parameters:(LibreAccessServiceSvc_ListLastNWordsRequest *)aParameters
+;
+@end
+@interface LibreAccessServiceSoap11Binding_TokenExchangeEx : LibreAccessServiceSoap11BindingOperation {
+	LibreAccessServiceSvc_TokenExchangeEx * body;
+}
+@property (nonatomic, retain) LibreAccessServiceSvc_TokenExchangeEx * body;
+- (id)initWithBinding:(LibreAccessServiceSoap11Binding *)aBinding delegate:(id<LibreAccessServiceSoap11BindingResponseDelegate>)aDelegate
+	body:(LibreAccessServiceSvc_TokenExchangeEx *)aBody
 ;
 @end
 @interface LibreAccessServiceSoap11Binding_DeviceLeftDomain : LibreAccessServiceSoap11BindingOperation {
