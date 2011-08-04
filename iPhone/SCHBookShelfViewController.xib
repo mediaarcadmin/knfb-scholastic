@@ -278,7 +278,7 @@
 						<string key="NSFrameSize">{320, 416}</string>
 						<reference key="NSSuperview" ref="509794933"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
+						<reference key="NSNextKeyView" ref="222914230"/>
 						<reference key="IBUIBackgroundColor" ref="672910984"/>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -292,6 +292,7 @@
 					<int key="NSColorSpace">1</int>
 					<bytes key="NSRGB">MSAwLjk0OTAxOTYxMDkgMAA</bytes>
 				</object>
+				<int key="IBUIContentMode">4</int>
 				<object class="IBUISimulatedStatusBarMetrics" key="IBUISimulatedStatusBarMetrics">
 					<int key="IBUIStatusBarStyle">2</int>
 				</object>
@@ -549,6 +550,14 @@
 					</object>
 					<int key="connectionID">77</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">backgroundView</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="509794933"/>
+					</object>
+					<int key="connectionID">91</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -757,6 +766,7 @@
 					<string>73.IBUIButtonInspectorSelectedStateConfigurationMetadataKey</string>
 					<string>74.IBPluginDependency</string>
 					<string>74.IBUIButtonInspectorSelectedStateConfigurationMetadataKey</string>
+					<string>8.CustomClassName</string>
 					<string>8.IBEditorWindowLastContentRect</string>
 					<string>8.IBPluginDependency</string>
 					<string>88.CustomClassName</string>
@@ -793,6 +803,7 @@
 					<real value="1"/>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<real value="1"/>
+					<string>UIImageView</string>
 					<string>{{439, 976}, {320, 398}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>SCHBookShelfShadowsView</string>
@@ -811,7 +822,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">88</int>
+			<int key="maxID">91</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -855,6 +866,7 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>backgroundView</string>
 							<string>customNavigationBar</string>
 							<string>gridButton</string>
 							<string>gridView</string>
@@ -868,6 +880,7 @@
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>UIImageView</string>
 							<string>SCHCustomNavigationBar</string>
 							<string>UIButton</string>
 							<string>SCHBookShelfGridView</string>
@@ -884,6 +897,7 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>backgroundView</string>
 							<string>customNavigationBar</string>
 							<string>gridButton</string>
 							<string>gridView</string>
@@ -897,6 +911,10 @@
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<object class="IBToOneOutletInfo">
+								<string key="name">backgroundView</string>
+								<string key="candidateClassName">UIImageView</string>
+							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">customNavigationBar</string>
 								<string key="candidateClassName">SCHCustomNavigationBar</string>

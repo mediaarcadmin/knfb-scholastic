@@ -186,8 +186,7 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
 {
     [self.gridView setShelfImage:[[SCHThemeManager sharedThemeManager] imageForShelf:interfaceOrientation]];   
     
-    [self.view.layer setContentsGravity:kCAGravityCenter]; // Needed to re-use bacgground graphics
-    [self.view.layer setContents:(id)[[SCHThemeManager sharedThemeManager] imageForBackground:UIInterfaceOrientationPortrait].CGImage]; // Note we re-use portrait
+    [self.backgroundView setImage:[[SCHThemeManager sharedThemeManager] imageForBackground:UIInterfaceOrientationPortrait]]; // Note we re-use portrait
     [(SCHCustomNavigationBar *)self.navigationController.navigationBar updateTheme:interfaceOrientation];
     self.listTableView.backgroundColor = [[SCHThemeManager sharedThemeManager] colorForListBackground];
     self.listToggleView.backgroundColor = [[SCHThemeManager sharedThemeManager] colorForListBackground]; 

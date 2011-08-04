@@ -79,6 +79,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
 @synthesize listViewCell;
 @synthesize managedObjectContext;
 @synthesize currentlyLoadingIndex;
+@synthesize backgroundView;
 
 #pragma mark - Object lifecycle
 
@@ -97,6 +98,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
     [listToggleView release], listToggleView = nil;
     [listTableCellNib release], listTableCellNib = nil;
     [gridViewToggleView release], gridViewToggleView = nil;
+    [backgroundView release], backgroundView = nil;
     
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
@@ -199,8 +201,6 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateTheme) name:kSCHThemeManagerThemeChangeNotification object:nil];              
     
-    [self setupAssetsForOrientation:self.interfaceOrientation];
-
     [self.listTableView setSeparatorColor:[UIColor clearColor]];
 
     CGRect listFrame = self.listTableView.tableHeaderView.frame;
@@ -275,8 +275,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
 {
     [self.gridView setShelfImage:[[SCHThemeManager sharedThemeManager] imageForShelf:interfaceOrientation]];       
     
-    [self.view.layer setContentsGravity:kCAGravityTopLeft]; // Needed to re-use bacgground graphics
-    [self.view.layer setContents:(id)[[SCHThemeManager sharedThemeManager] imageForBackground:UIInterfaceOrientationPortrait].CGImage]; // Note we re-use portrait
+    [self.backgroundView setImage:[[SCHThemeManager sharedThemeManager] imageForBackground:UIInterfaceOrientationPortrait]]; // Note we re-use portrait
     [(SCHCustomNavigationBar *)self.navigationController.navigationBar updateTheme:interfaceOrientation];
     self.listTableView.backgroundColor = [[SCHThemeManager sharedThemeManager] colorForListBackground];
     self.listToggleView.backgroundColor = [[SCHThemeManager sharedThemeManager] colorForListBackground]; 
