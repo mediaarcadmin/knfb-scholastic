@@ -12,9 +12,9 @@
 #import "SCHThemeButton.h"
 #import "SCHThemeImageView.h"
 #import "SCHCustomNavigationBar.h"
+#import "SCHBookShelfShadowsView.h"
 
 static NSTimeInterval const kSCHThemePickerViewControllerThemeTransitionDuration = 0.3;
-static NSTimeInterval const kSCHThemePickerViewControllerThemeTransitionAlpha = 0.7;
 
 @interface SCHThemePickerViewController ()
 
@@ -23,6 +23,8 @@ static NSTimeInterval const kSCHThemePickerViewControllerThemeTransitionAlpha = 
 @property (nonatomic, copy) NSString *lastTappedTheme;
 
 - (void)previewTheme:(NSString *)themeName;
+- (void)setThemeWithName:(NSString *)themeName forInterfaceOrientation:(UIInterfaceOrientation)orientation;
+- (void)setThemeForInterfaceOrientation:(UIInterfaceOrientation)orientation;
 
 @end
 
@@ -52,14 +54,53 @@ static NSTimeInterval const kSCHThemePickerViewControllerThemeTransitionAlpha = 
 
 #pragma mark - View lifecycle
 
+- (void)setThemeWithName:(NSString *)themeName forInterfaceOrientation:(UIInterfaceOrientation)orientation
+{
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        
+        SCHThemeManager *themeManager = [SCHThemeManager sharedThemeManager];
+        
+        [self.cancelButton setBackgroundImage:[[themeManager imageForTheme:themeName 
+                                                                       key:kSCHThemeManagerDoneButtonImage 
+                                                               orientation:orientation] stretchableImageWithLeftCapWidth:5 topCapHeight:0] 
+                                     forState:UIControlStateNormal];
+        
+        [self.doneButton setBackgroundImage:[[themeManager imageForTheme:themeName 
+                                                                     key:kSCHThemeManagerButtonImage 
+                                                             orientation:orientation] stretchableImageWithLeftCapWidth:5 topCapHeight:0] 
+                                   forState:UIControlStateNormal];
+        
+        [(SCHThemeImageView *)self.tableView.backgroundView setImage:[themeManager imageForTheme:themeName 
+                                                                                   key:kSCHThemeManagerBackgroundImage 
+                                                                           orientation:UIInterfaceOrientationPortrait]]; // Always use portrait
+        
+        [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:[themeManager 
+                                                                                               imageForTheme:themeName 
+                                                                                               key:kSCHThemeManagerNavigationBarImage 
+                                                                                               orientation:orientation]];
+    }
+}
+
+- (void)setThemeForInterfaceOrientation:(UIInterfaceOrientation)orientation
+{
+    NSString *themeName = self.lastTappedTheme ? : [[SCHThemeManager sharedThemeManager] theme];
+    [self setThemeWithName:themeName forInterfaceOrientation:orientation];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
         SCHThemeImageView *themeBackgroundView = [[[SCHThemeImageView alloc] initWithImage:nil] autorelease];
-        [themeBackgroundView setTheme:kSCHThemeManagerBackgroundImage];    
+        [themeBackgroundView setContentMode:UIViewContentModeCenter];
+        [themeBackgroundView setTheme:kSCHThemeManagerBackgroundImage];
         self.tableView.backgroundView = themeBackgroundView;
+        
+        SCHBookShelfShadowsView *shadows = [[SCHBookShelfShadowsView alloc] initWithFrame:themeBackgroundView.bounds];
+        [shadows setAutoresizingMask:UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth];
+        [themeBackgroundView addSubview:shadows];
+        [shadows release];
     
         self.cancelButton = [SCHThemeButton buttonWithType:UIButtonTypeCustom];
         [self.cancelButton setFrame:CGRectMake(0, 0, 60, 30)];
@@ -88,8 +129,8 @@ static NSTimeInterval const kSCHThemePickerViewControllerThemeTransitionAlpha = 
         [self.doneButton setThemeButton:kSCHThemeManagerButtonImage leftCapWidth:5 topCapHeight:0];
         [self.doneButton addTarget:self action:@selector(done) forControlEvents:UIControlEventTouchUpInside];    
         self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:doneButton] autorelease];
-        
         [(SCHCustomNavigationBar *)self.navigationController.navigationBar setTheme:kSCHThemeManagerNavigationBarImage];
+
     } else {
         UIView *backgroundView = [[UIView alloc] initWithFrame:CGRectZero];
         backgroundView.backgroundColor = [UIColor whiteColor];
@@ -105,14 +146,13 @@ static NSTimeInterval const kSCHThemePickerViewControllerThemeTransitionAlpha = 
 - (void)viewDidUnload
 {
     [super viewDidUnload];
-    
 	[self releaseViewObjects];
 }
 
 - (void)viewWillAppear:(BOOL)animated 
 {
     [super viewWillAppear:animated];
-    [(SCHCustomNavigationBar *)self.navigationController.navigationBar updateTheme];
+    [self setThemeForInterfaceOrientation:self.interfaceOrientation];
 }
 
 #pragma mark - Orientation methods
@@ -125,52 +165,14 @@ static NSTimeInterval const kSCHThemePickerViewControllerThemeTransitionAlpha = 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation 
                                 duration:(NSTimeInterval)duration
 {
-    if (self.lastTappedTheme == nil) {
-        [(SCHCustomNavigationBar *)self.navigationController.navigationBar updateTheme:toInterfaceOrientation];
-    } else {
-        [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:
-         [[SCHThemeManager sharedThemeManager] imageForTheme:self.lastTappedTheme 
-                                                         key:kSCHThemeManagerNavigationBarImage 
-                                                 orientation:self.interfaceOrientation]];
-    }
+    [self setThemeForInterfaceOrientation:toInterfaceOrientation];
 }
 
 #pragma mark - Private Methods
 
 - (void)previewTheme:(NSString *)themeName
 {
-    SCHThemeManager *themeManager = [SCHThemeManager sharedThemeManager];
-
-    [UIView animateWithDuration:kSCHThemePickerViewControllerThemeTransitionDuration delay:0.0 options:UIViewAnimationOptionCurveEaseIn | UIViewAnimationOptionAllowUserInteraction
-                     animations:^{
-                         self.tableView.backgroundView.alpha = kSCHThemePickerViewControllerThemeTransitionAlpha;
-                         self.navigationController.navigationBar.alpha = kSCHThemePickerViewControllerThemeTransitionAlpha;
-                     }
-                     completion:^(BOOL finished) {
-                         [self.cancelButton setBackgroundImage:[[themeManager imageForTheme:themeName 
-                                                                                        key:kSCHThemeManagerDoneButtonImage 
-                                                                                orientation:self.interfaceOrientation] stretchableImageWithLeftCapWidth:5 topCapHeight:0] 
-                                                      forState:UIControlStateNormal];
-                         [self.doneButton setBackgroundImage:[[themeManager imageForTheme:themeName 
-                                                                                      key:kSCHThemeManagerButtonImage 
-                                                                              orientation:self.interfaceOrientation] stretchableImageWithLeftCapWidth:5 topCapHeight:0] 
-                                                    forState:UIControlStateNormal];
-                         [(SCHThemeImageView *)self.tableView.backgroundView setImage:[themeManager imageForTheme:themeName 
-                                                                                                              key:kSCHThemeManagerBackgroundImage 
-                                                                                                      orientation:self.interfaceOrientation]];
-                         [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:[themeManager 
-                                                                                                                imageForTheme:themeName 
-                                                                                                                key:kSCHThemeManagerNavigationBarImage 
-                                                                                                                orientation:self.interfaceOrientation]];
-                         
-                         [UIView animateWithDuration:kSCHThemePickerViewControllerThemeTransitionDuration delay:0.0 options:UIViewAnimationOptionCurveEaseIn | UIViewAnimationOptionAllowUserInteraction
-                                          animations:^{
-                                              self.tableView.backgroundView.alpha = 1.0;
-                                              self.navigationController.navigationBar.alpha = 1.0;
-                                          }
-                                          completion:^(BOOL finished) {
-                                          }];                         
-                     }];    
+    [self setThemeWithName:themeName forInterfaceOrientation:self.interfaceOrientation];
 }
 
 #pragma mark - Action Methods

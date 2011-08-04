@@ -107,6 +107,7 @@
 
 - (void)updateTheme
 {
+    // TODO - please don't rely on statusBarOrientation to determine orientation. This should be explicitly passed.
     UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
     
     // override button sizes for iPad
