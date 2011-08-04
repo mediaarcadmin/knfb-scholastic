@@ -79,6 +79,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
 @synthesize listViewCell;
 @synthesize managedObjectContext;
 @synthesize currentlyLoadingIndex;
+@synthesize backgroundView;
 
 #pragma mark - Object lifecycle
 
@@ -97,6 +98,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
     [listToggleView release], listToggleView = nil;
     [listTableCellNib release], listTableCellNib = nil;
     [gridViewToggleView release], gridViewToggleView = nil;
+    [backgroundView release], backgroundView = nil;
     
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
@@ -127,13 +129,13 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
     self.sortType = [[[self.profileItem AppProfile] SortType] intValue];
     
     SCHThemeButton *button = [SCHThemeButton buttonWithType:UIButtonTypeCustom];
-    [button setThemeIcon:kSCHThemeManagerThemeIcon iPadSpecific:YES];
+    [button setThemeIcon:kSCHThemeManagerThemeIcon iPadQualifier:kSCHThemeManagerPadQualifierSuffix];
     [button sizeToFit];    
     [button addTarget:self action:@selector(changeTheme) forControlEvents:UIControlEventTouchUpInside];    
     self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:button] autorelease];
 
     button = [SCHThemeButton buttonWithType:UIButtonTypeCustom];
-    [button setThemeIcon:kSCHThemeManagerHomeIcon iPadSpecific:YES];
+    [button setThemeIcon:kSCHThemeManagerHomeIcon iPadQualifier:kSCHThemeManagerPadQualifierSuffix];
     [button sizeToFit];    
     [button addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];    
     self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:button] autorelease];
@@ -188,7 +190,7 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
     
 	self.loadingView.layer.cornerRadius = 5.0f;
 	[self.view bringSubviewToFront:self.loadingView];
-	
+    	
 	if (![[SCHSyncManager sharedSyncManager] havePerformedFirstSyncUpToBooks] && [[SCHSyncManager sharedSyncManager] isSynchronizing]) {
         [self showLoadingView:YES];
 	} else {
@@ -199,8 +201,6 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateTheme) name:kSCHThemeManagerThemeChangeNotification object:nil];              
     
-    [self setupAssetsForOrientation:self.interfaceOrientation];
-
     [self.listTableView setSeparatorColor:[UIColor clearColor]];
 
     CGRect listFrame = self.listTableView.tableHeaderView.frame;
@@ -273,8 +273,9 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
 // Note: this is overridden in the iPad subclass
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    [self.gridView setShelfImage:[[SCHThemeManager sharedThemeManager] imageForShelf:interfaceOrientation]];        
-    [self.view.layer setContents:(id)[[SCHThemeManager sharedThemeManager] imageForBackground:interfaceOrientation].CGImage];
+    [self.gridView setShelfImage:[[SCHThemeManager sharedThemeManager] imageForShelf:interfaceOrientation]];       
+    
+    [self.backgroundView setImage:[[SCHThemeManager sharedThemeManager] imageForBackground:UIInterfaceOrientationPortrait]]; // Note we re-use portrait
     [(SCHCustomNavigationBar *)self.navigationController.navigationBar updateTheme:interfaceOrientation];
     self.listTableView.backgroundColor = [[SCHThemeManager sharedThemeManager] colorForListBackground];
     self.listToggleView.backgroundColor = [[SCHThemeManager sharedThemeManager] colorForListBackground]; 

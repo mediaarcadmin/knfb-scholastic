@@ -147,7 +147,7 @@ static const CGFloat kContentHeightLandscape = 380;
 {
     [super viewWillAppear:animated];
     [self stopShowingProgress];
-    [self setupAssetsForOrientation:[[UIApplication sharedApplication] statusBarOrientation]];
+    [self setupAssetsForOrientation:self.interfaceOrientation];
     [self setupContentSizeForOrientation:self.interfaceOrientation];
     [self clearFields];
 
