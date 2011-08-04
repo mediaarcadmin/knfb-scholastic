@@ -55,6 +55,8 @@
 #endif
     if ([SCHAuthenticationManager sharedAuthenticationManager].isAuthenticated == YES) {		
         [licenseAcquisitionSession acquireLicense:[[SCHAuthenticationManager sharedAuthenticationManager] aToken] bookID:self.identifier];
+    } else {
+        [self setIsProcessing:NO];
     }
 }
 
