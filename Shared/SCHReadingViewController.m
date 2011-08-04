@@ -1076,13 +1076,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     }
 
     self.lastPageInteractionSoundPlayedOn = page;
-    
-    // if the audio book is playing, hide the story interaction button
-    if (totalInteractionCount < 1 || (self.audioBookPlayer && self.audioBookPlayer.playing)) {
-        [self setStoryInteractionButtonVisible:NO animated:YES withSound:playSounds];
-    } else {
-        [self setStoryInteractionButtonVisible:YES animated:YES withSound:playSounds];
-        
+    void(^buttonImageSelectionBlock)(void) = ^{
         NSString *imagePrefix = nil;
         
         if (self.youngerMode) {
@@ -1110,6 +1104,23 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         buttonFrame.size = [self.storyInteractionButton imageForState:UIControlStateNormal].size;
         buttonFrame.origin.x = CGRectGetWidth(self.storyInteractionButtonView.superview.frame) - buttonFrame.size.width;
         self.storyInteractionButtonView.frame = buttonFrame;
+    };
+    
+    // if the audio book is playing, hide the story interaction button
+    if (totalInteractionCount < 1 && (self.audioBookPlayer && self.audioBookPlayer.playing)) {
+        // No interactions, audio playing. Hiding button without animation
+        [self setStoryInteractionButtonVisible:NO animated:NO withSound:NO];
+    } else if (totalInteractionCount < 1) {
+        // No interactions. Hiding button with animation
+        [self setStoryInteractionButtonVisible:NO animated:YES withSound:playSounds];
+    } else if (totalInteractionCount >= 1 && (self.audioBookPlayer && self.audioBookPlayer.playing)) {
+        // Interactions while reading. Showing button without animation
+        [self setStoryInteractionButtonVisible:YES animated:NO withSound:NO];
+        buttonImageSelectionBlock();
+    } else {
+        // Interactions while not reading. Showing button with animation
+        [self setStoryInteractionButtonVisible:YES animated:YES withSound:playSounds];
+        buttonImageSelectionBlock();
     }
 }
 
@@ -1157,6 +1168,22 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
                 }
                                                 synchronizedStartBlock:nil
                                                   synchronizedEndBlock:nil];
+            }
+
+        } else {
+            // just show the button
+            void (^animationBlock)(void) = ^{
+                self.storyInteractionButtonView.alpha = 1.0f;
+            };
+            
+            if (animated) {
+                [UIView animateWithDuration:0.3f 
+                                      delay:0
+                                    options:UIViewAnimationOptionAllowUserInteraction
+                                 animations:animationBlock
+                                 completion:nil];
+            } else {
+                animationBlock();
             }
 
         }
@@ -1245,6 +1272,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         [self.storyInteractionController presentInHostView:self.navigationController.view withInterfaceOrientation:self.interfaceOrientation];
         
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+            [self setupStoryInteractionButtonForCurrentPagesAnimated:YES];
             [self setToolbarVisibility:NO animated:YES];
         }
     };
@@ -1535,9 +1563,17 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         }
         [self.queuedAudioPlayer cancelPlaybackExecutingSynchronizedBlocksImmediately:NO];
     }
-    
-    [self setStoryInteractionButtonVisible:NO animated:YES withSound:YES];
-    [self setToolbarVisibility:NO animated:YES];
+
+    // hide the toolbar if it's showing
+    if (self.toolbarsVisible) {
+        [self setToolbarVisibility:NO animated:YES];
+    }
+
+    if (self.audioBookPlayer && self.audioBookPlayer.playing) {
+        [self setStoryInteractionButtonVisible:NO animated:NO withSound:YES];
+    } else {
+        [self setStoryInteractionButtonVisible:NO animated:YES withSound:YES];
+    }
 }
 
 - (void)readingViewWillBeginUserInitiatedZooming:(SCHReadingView *)readingView
@@ -1997,27 +2033,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 		[UIView commitAnimations];
 	}
     
-    // hide/show story interactions stuff if necessary
-    NSInteger page = [self storyInteractionPageNumberFromPageIndex:[self firstPageIndexWithStoryInteractionsOnCurrentPages]];
-
-    BOOL excludeInteractionWithPage = NO;
-    if ([self.readingView isKindOfClass:[SCHFlowView class]]) {
-        excludeInteractionWithPage = YES;
-    }
-    
-    NSArray *storyInteractions = [self.bookStoryInteractions storyInteractionsForPage:page
-                                                         excludingInteractionWithPage:excludeInteractionWithPage];
-    int totalInteractionCount = [storyInteractions count];
-
-    if (!self.initialFadeTimer) {
-        if (totalInteractionCount < 1 || !visibility) {
-            [self setStoryInteractionButtonVisible:NO animated:YES withSound:NO];
-        } else if (totalInteractionCount >= 1 && !(self.audioBookPlayer && [self.audioBookPlayer playing])) {
-            [self setStoryInteractionButtonVisible:YES animated:YES withSound:NO];
-        }
-    }
-    
-    
     if (self.popover) {
         [self.popover dismissPopoverAnimated:YES];
         self.popover = nil;
@@ -2086,6 +2101,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     aNotesView.delegate = self;
     aNotesView.newNote = YES;
     
+    [self setupStoryInteractionButtonForCurrentPagesAnimated:YES];
     [self setToolbarVisibility:NO animated:YES];
     
     [aNotesView showInView:self.view animated:YES];
@@ -2105,6 +2121,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     self.notesView = aNotesView;
     [aNotesView release];
     
+    [self setupStoryInteractionButtonForCurrentPagesAnimated:YES];
     [self setToolbarVisibility:NO animated:YES];
     
 }
@@ -2143,6 +2160,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     NSLog(@"Saving note...");
     // a new object will already have been created and added to the data store
     [self save];    
+    [self setupStoryInteractionButtonForCurrentPagesAnimated:YES];
     [self setToolbarVisibility:YES animated:YES];
     
     [self updateNotesCounter];
@@ -2160,6 +2178,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         [self save];
     }
     
+    [self setupStoryInteractionButtonForCurrentPagesAnimated:YES];
     [self setToolbarVisibility:YES animated:YES];
     
     [self updateNotesCounter];
