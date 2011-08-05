@@ -11,6 +11,7 @@
 #import "SCHSetupDelegate.h"
 #import "SCHAuthenticationManagerProtected.h"
 #import "LambdaAlert.h"
+#import "SCHUnderlinedButton.h"
 
 static const CGFloat kDeregisterContentHeightLandscape = 380;
 
@@ -27,6 +28,7 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
 
 @synthesize promptLabel;
 @synthesize passwordField;
+@synthesize forgotPasswordURL;
 @synthesize deregisterButton;
 @synthesize spinner;
 @synthesize scrollView;
@@ -40,6 +42,7 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
     
     [promptLabel release], promptLabel = nil;
     [passwordField release], passwordField = nil;
+    [forgotPasswordURL release], forgotPasswordURL = nil;
     [deregisterButton release], deregisterButton = nil;
     [scrollView release], scrollView = nil;
     [spinner release], spinner = nil;
@@ -116,6 +119,7 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
 {
     if ([[SCHAuthenticationManager sharedAuthenticationManager] validatePassword:self.passwordField.text]) {
         [self.spinner startAnimating];
+        self.forgotPasswordURL.enabled = NO;
         [[SCHAuthenticationManager sharedAuthenticationManager] deregister];
     } else {
         LambdaAlert *alert = [[LambdaAlert alloc]
@@ -129,7 +133,9 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
 
 - (void)forgotPassword:(id)sender
 {
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://my.scholastic.com/sps_my_account/pwmgmt/ForgotPassword.jsp?AppType=COOL"]];
+    if (((SCHUnderlinedButton *)sender).enabled == YES) {
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://my.scholastic.com/sps_my_account/pwmgmt/ForgotPassword.jsp?AppType=COOL"]];
+    }
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
@@ -185,6 +191,7 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
 - (void)authenticationManagerDidDeregister:(NSNotification *)notification
 {
     [self.spinner stopAnimating];
+    self.forgotPasswordURL.enabled = YES;
     [self.setupDelegate dismissSettingsForm];
 }
 

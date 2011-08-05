@@ -300,6 +300,9 @@
 		5206FF2513744E7000FCE07C /* SCHAppProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = 5206FF2413744E7000FCE07C /* SCHAppProfile.m */; };
 		5206FF2613744E7000FCE07C /* SCHAppProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = 5206FF2413744E7000FCE07C /* SCHAppProfile.m */; };
 		520CD295139F84530018EA7E /* SCHStoryInteractionMultipleChoiceText_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 520CD294139F84530018EA7E /* SCHStoryInteractionMultipleChoiceText_iPad.xib */; };
+		520E7D5813EACB8800E5163B /* SCHCoreDataHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 520E7D5713EACB8800E5163B /* SCHCoreDataHelper.m */; };
+		520E7D5913EACB8800E5163B /* SCHCoreDataHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 520E7D5713EACB8800E5163B /* SCHCoreDataHelper.m */; };
+		520E7D5A13EACB8800E5163B /* SCHCoreDataHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 520E7D5713EACB8800E5163B /* SCHCoreDataHelper.m */; };
 		521399F013717BB10081FD3D /* SCHLocationBookmark.m in Sources */ = {isa = PBXBuildFile; fileRef = 521399EF13717BB10081FD3D /* SCHLocationBookmark.m */; };
 		521399F113717BB10081FD3D /* SCHLocationBookmark.m in Sources */ = {isa = PBXBuildFile; fileRef = 521399EF13717BB10081FD3D /* SCHLocationBookmark.m */; };
 		5215871D13A61F8200496572 /* SCHStoryInteractionStartingLetter_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = F86DEBFD13A21B6800053999 /* SCHStoryInteractionStartingLetter_iPhone.xib */; };
@@ -1900,6 +1903,8 @@
 		5206FF2313744E7000FCE07C /* SCHAppProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAppProfile.h; path = Shared/SCHAppProfile.h; sourceTree = "<group>"; };
 		5206FF2413744E7000FCE07C /* SCHAppProfile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHAppProfile.m; path = Shared/SCHAppProfile.m; sourceTree = "<group>"; };
 		520CD294139F84530018EA7E /* SCHStoryInteractionMultipleChoiceText_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionMultipleChoiceText_iPad.xib; sourceTree = "<group>"; };
+		520E7D5613EACB8800E5163B /* SCHCoreDataHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHCoreDataHelper.h; path = ../../../../../../Users/john/Projects/BitWink/Scholastic/Scholastic/Shared/SCHCoreDataHelper.h; sourceTree = "<group>"; };
+		520E7D5713EACB8800E5163B /* SCHCoreDataHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHCoreDataHelper.m; path = ../../../../../../Users/john/Projects/BitWink/Scholastic/Scholastic/Shared/SCHCoreDataHelper.m; sourceTree = "<group>"; };
 		521399EE13717BB10081FD3D /* SCHLocationBookmark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHLocationBookmark.h; path = Shared/SCHLocationBookmark.h; sourceTree = "<group>"; };
 		521399EF13717BB10081FD3D /* SCHLocationBookmark.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHLocationBookmark.m; path = Shared/SCHLocationBookmark.m; sourceTree = "<group>"; };
 		5215349B13B08AB200131E37 /* storyinteraction-bg-older-notitle~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-bg-older-notitle~iphone.png"; sourceTree = "<group>"; };
@@ -3561,6 +3566,8 @@
 				28EEC0491118E28000187D67 /* AppDelegate_Shared.h */,
 				28EEC04A1118E28000187D67 /* AppDelegate_Shared.m */,
 				28194A6B13C1BF2600E3DBE2 /* AppDelegate_Private.h */,
+				520E7D5613EACB8800E5163B /* SCHCoreDataHelper.h */,
+				520E7D5713EACB8800E5163B /* SCHCoreDataHelper.m */,
 				8D1107310486CEB800E47090 /* Scholastic-Info.plist */,
 				528A2CD212CCDD9E0053A343 /* Settings.bundle */,
 				528A2CD912CCDDB00053A343 /* Entitlements.plist */,
@@ -6540,6 +6547,7 @@
 				C9703A8F13E986690003C4D8 /* SCHBookShelfShadowsView.m in Sources */,
 				C9747CE413EBF98E003ADC71 /* KNFBXPSEPubInfoParserDelegate.m in Sources */,
 				C9747CE813EC12BB003ADC71 /* KNFBXPSPageNumbersParserDelegate.m in Sources */,
+				520E7D5813EACB8800E5163B /* SCHCoreDataHelper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6585,6 +6593,7 @@
 				284EF24613BC4CDF00F9BD5A /* SCHBookIdentifier.m in Sources */,
 				52162DA713DD763500D257C5 /* BITAPIError.m in Sources */,
 				52162DAB13DD88C700D257C5 /* SCHUserDefaults.m in Sources */,
+				520E7D5A13EACB8800E5163B /* SCHCoreDataHelper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6849,6 +6858,7 @@
 				C9703A9013E986690003C4D8 /* SCHBookShelfShadowsView.m in Sources */,
 				C9747CE513EBF98E003ADC71 /* KNFBXPSEPubInfoParserDelegate.m in Sources */,
 				C9747CE913EC12BB003ADC71 /* KNFBXPSPageNumbersParserDelegate.m in Sources */,
+				520E7D5913EACB8800E5163B /* SCHCoreDataHelper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

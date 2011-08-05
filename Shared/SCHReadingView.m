@@ -21,6 +21,8 @@
 #import <libEucalyptus/EucSelectorRange.h>
 #import "SCHDictionaryAccessManager.h"
 #import "SCHDictionaryDownloadManager.h"
+#import "AppDelegate_Shared.h"
+#import "SCHCoreDataHelper.h"
 
 @interface SCHReadingView()
 
@@ -84,7 +86,8 @@
         self.multipleTouchEnabled = YES;
         self.userInteractionEnabled = YES;
 
-        NSManagedObjectContext *moc = [(id)[[UIApplication sharedApplication] delegate] managedObjectContext];
+        AppDelegate_Shared *appDelegate = (AppDelegate_Shared *)[[UIApplication sharedApplication] delegate];    
+        NSManagedObjectContext *moc = appDelegate.coreDataHelper.managedObjectContext;
         xpsProvider = [[[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.identifier inManagedObjectContext:moc] retain];
         textFlow    = [[[SCHBookManager sharedBookManager] checkOutTextFlowForBookIdentifier:self.identifier inManagedObjectContext:moc] retain];
     }
