@@ -21,6 +21,7 @@
 #import "SCHBookManager.h"
 #import "SCHAppBook.h"
 #import "SCHBookIdentifier.h"
+#import "SCHUserDefaults.h"
 
 // Constants
 NSString * const kSCHProcessingManagerConnectionIdle = @"SCHProcessingManagerConnectionIdle";
@@ -224,7 +225,7 @@ static SCHProcessingManager *sharedManager = nil;
 	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:identifier inManagedObjectContext:self.managedObjectContext];
 
 	BOOL needsProcessing = YES;
-	BOOL spaceSaverMode = [[NSUserDefaults standardUserDefaults] boolForKey:@"kSCHSpaceSaverMode"];
+	BOOL spaceSaverMode = [[NSUserDefaults standardUserDefaults] boolForKey:kSCHUserDefaultsSpaceSaverMode];
 
 	if (book.processingState == SCHBookProcessingStateReadyToRead) {
 		needsProcessing = NO;
@@ -519,7 +520,7 @@ static SCHProcessingManager *sharedManager = nil;
         SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:identifier inManagedObjectContext:self.managedObjectContext];
         
         // check for space saver mode
-        BOOL spaceSaverMode = [[NSUserDefaults standardUserDefaults] boolForKey:@"kSCHSpaceSaverMode"];
+        BOOL spaceSaverMode = [[NSUserDefaults standardUserDefaults] boolForKey:kSCHUserDefaultsSpaceSaverMode];
         
         switch (book.processingState) {
                 // these book states always require additional processing actions

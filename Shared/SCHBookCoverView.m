@@ -11,6 +11,8 @@
 #import "SCHBookManager.h"
 #import <ImageIO/ImageIO.h>
 #import <QuartzCore/QuartzCore.h>
+#import "AppDelegate_Shared.h"
+#import "SCHCoreDataHelper.h"
 
 @interface SCHBookCoverView ()
 
@@ -332,7 +334,8 @@
     NSString *thumbPath;
     SCHBookCurrentProcessingState bookState;
     
-    NSManagedObjectContext *context = [(id)[[UIApplication sharedApplication] delegate] managedObjectContext];
+    AppDelegate_Shared *appDelegate = (AppDelegate_Shared *)[[UIApplication sharedApplication] delegate];    
+    NSManagedObjectContext *context = appDelegate.coreDataHelper.managedObjectContext;
 	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.identifier inManagedObjectContext:context];    
     
     bookState = [book processingState];
@@ -474,7 +477,8 @@
     CGPoint errorCenter = CGPointMake(floorf(CGRectGetMidX(coverFrame)), floorf(CGRectGetMidY(coverFrame)));
     self.errorBadge.center = errorCenter;
     
-    NSManagedObjectContext *context = [(id)[[UIApplication sharedApplication] delegate] managedObjectContext];
+    AppDelegate_Shared *appDelegate = (AppDelegate_Shared *)[[UIApplication sharedApplication] delegate];    
+    NSManagedObjectContext *context = appDelegate.coreDataHelper.managedObjectContext;
 	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.identifier inManagedObjectContext:context];    
     
 	[self setNeedsDisplay];

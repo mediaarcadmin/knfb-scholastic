@@ -8,9 +8,10 @@
 
 #import <Foundation/Foundation.h>
 #import "AppDelegate_Shared.h"
+#import "SCHCoreDataHelper.h"
 
 @interface AppDelegate_Shared (Private)
 
-@property (nonatomic, retain, readonly) NSManagedObjectContext *managedObjectContext;
+@property (nonatomic, retain) SCHCoreDataHelper *coreDataHelper;
 
 @end

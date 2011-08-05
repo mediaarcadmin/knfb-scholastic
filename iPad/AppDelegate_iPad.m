@@ -35,7 +35,7 @@ static NSTimeInterval const kAppDelegate_iPadSyncManagerWakeDelay = 5.0;
     if ([self isAuthenticated]) {
         // skip the starter screen if already authenticated
         SCHProfileViewController_iPad *profileViewController = [[SCHProfileViewController_iPad alloc] initWithNibName:@"SCHProfileViewController_iPad" bundle:nil];
-        profileViewController.managedObjectContext = self.managedObjectContext;
+        profileViewController.managedObjectContext = self.coreDataHelper.managedObjectContext;
         [self.navigationController pushViewController:profileViewController animated:NO];
         [profileViewController release];
     }

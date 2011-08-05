@@ -13,41 +13,122 @@
 #import "SCHAuthenticationManager.h"
 #import "SCHUserDefaults.h"
 #import "SCHURLManager.h"
-#import "SCHProcessingManager.h"
 #import "SCHDictionaryDownloadManager.h"
 #import "SCHDictionaryAccessManager.h"
 #import "SCHBookshelfSyncComponent.h"
 #import <CoreText/CoreText.h>
+#import "SCHUserContentItem.h"
 
 #if LOCALDEBUG
 #import "SCHLocalDebug.h"
 #endif
 
-static NSString * const kSCHClearLocalDebugMode = @"kSCHClearLocalDebugMode";
 static NSString* const wmModelCertFilename = @"devcerttemplate.dat";
 static NSString* const prModelCertFilename = @"iphonecert.dat";
 
 @interface AppDelegate_Shared ()
 
-@property (nonatomic, retain, readonly) NSManagedObjectModel *managedObjectModel;
-@property (nonatomic, retain, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
+- (void)setupUserDefaults;
+- (BOOL)createApplicationSupportDirectory;
+- (void)ensureCorrectCertsAvailable;
 
 @end
 
 @implementation AppDelegate_Shared
 
 @synthesize window;
-@synthesize managedObjectContext = managedObjectContext_;
+@synthesize coreDataHelper;
+
+#pragma mark - Application lifecycle
 
 - (void)dealloc 
 {    
-	[[NSNotificationCenter defaultCenter] removeObserver:managedObjectContext_];
-    [managedObjectContext_ release];
-    [managedObjectModel_ release];
-    [persistentStoreCoordinator_ release];
-    
-    [window release];
+    [coreDataHelper release], coreDataHelper = nil;
+    [window release], window = nil;
     [super dealloc];
+}
+
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions    
+{
+    if ([self createApplicationSupportDirectory] == NO) {
+		NSLog(@"Application Support directory could not be created.");
+	}
+  
+    [self setupUserDefaults];
+    
+    SCHBookManager *bookManager = [SCHBookManager sharedBookManager];
+    bookManager.persistentStoreCoordinator = self.coreDataHelper.persistentStoreCoordinator;
+    bookManager.mainThreadManagedObjectContext = self.coreDataHelper.managedObjectContext;
+    
+    SCHSyncManager *syncManager = [SCHSyncManager sharedSyncManager];
+	syncManager.managedObjectContext = self.coreDataHelper.managedObjectContext;
+	[syncManager start];
+	
+	SCHURLManager *urlManager = [SCHURLManager sharedURLManager];
+	urlManager.managedObjectContext = self.coreDataHelper.managedObjectContext;
+    
+	// instantiate the shared processing manager
+	[SCHProcessingManager sharedProcessingManager].managedObjectContext = self.coreDataHelper.managedObjectContext;
+    
+    // pre-warm Core Text
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSMutableDictionary *attributes = [NSMutableDictionary dictionary];
+        [attributes setObject:@"Arial" forKey:(id)kCTFontFamilyNameAttribute];
+        [attributes setObject:[NSNumber numberWithFloat:36.0f] forKey:(id)kCTFontSizeAttribute];
+        CTFontDescriptorRef fontDesc = CTFontDescriptorCreateWithAttributes((CFDictionaryRef)attributes);
+        CTFontRef matchingFont = CTFontCreateWithFontDescriptor(fontDesc, 36.0f, NULL);
+        CFRelease(matchingFont);
+        CFRelease(fontDesc);
+    });
+    
+    
+#if LOCALDEBUG
+	[[NSNotificationCenter defaultCenter] postNotificationName:SCHBookshelfSyncComponentDidCompleteNotification object:nil];
+    [self performSelector:@selector(copyLocalFilesIfMissing) withObject:nil afterDelay:0.1f]; // Stop the watchdog from killing us on launch
+#endif
+	
+    SCHDictionaryDownloadManager *ddm = [SCHDictionaryDownloadManager sharedDownloadManager];
+    ddm.mainThreadManagedObjectContext = self.coreDataHelper.managedObjectContext;
+    ddm.persistentStoreCoordinator = self.coreDataHelper.persistentStoreCoordinator;
+    [ddm checkIfUpdateNeeded];
+
+	// instantiate the shared dictionary access manager
+	SCHDictionaryAccessManager *dam = [SCHDictionaryAccessManager sharedAccessManager];
+    dam.mainThreadManagedObjectContext = self.coreDataHelper.managedObjectContext;
+    dam.persistentStoreCoordinator = self.coreDataHelper.persistentStoreCoordinator;
+	
+	[self ensureCorrectCertsAvailable];
+	
+	return YES;
+}	
+
+- (void)setupUserDefaults
+{
+    NSDictionary *appDefaults = [NSDictionary dictionaryWithObjectsAndKeys:
+								 [NSNumber numberWithBool:NO], kSCHUserDefaultsPerformedFirstSyncUpToBooks,
+								 [NSNumber numberWithBool:YES], kSCHUserDefaultsSpaceSaverMode,
+								 [NSNumber numberWithInteger:SCHCoreDataHelperStoreTypeStandard], kSCHUserDefaultsCoreDataStoreType, nil];
+    
+	[[NSUserDefaults standardUserDefaults] registerDefaults:appDefaults];
+}
+
+/**
+ Save changes in the application's managed object context before the application terminates.
+ */
+- (void)applicationWillTerminate:(UIApplication *)application 
+{
+    [self.coreDataHelper saveContext];
+}
+
+- (void)applicationDidEnterBackground:(UIApplication *)application 
+{
+    [self.coreDataHelper saveContext];
+}
+
+- (void)applicationWillEnterForeground:(UIApplication *)application 
+{
+    // when we enter the foreground, check to see if the dictionary needs updating
+    [[SCHDictionaryDownloadManager sharedDownloadManager] checkIfUpdateNeeded];
 }
 
 #pragma mark - Application directory functions
@@ -96,8 +177,6 @@ static NSString* const prModelCertFilename = @"iphonecert.dat";
 	}
 }
 
-#pragma mark - Application lifecycle
-
 - (void)ensureCorrectCertsAvailable 
 {
     // Copy DRM resources to writeable directory.
@@ -133,9 +212,9 @@ static NSString* const prModelCertFilename = @"iphonecert.dat";
 - (void)copyLocalFilesIfMissing
 {
 #if LOCALDEBUG    
-    NSManagedObjectContext *moc = [self managedObjectContext];
+    NSManagedObjectContext *moc = self.coreDataHelper.managedObjectContext;
     NSEntityDescription *entityDescription = [NSEntityDescription
-                                              entityForName:@"SCHUserContentItem" inManagedObjectContext:moc];
+                                              entityForName:kSCHUserContentItem inManagedObjectContext:moc];
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
     [request setEntity:entityDescription];
     
@@ -156,260 +235,18 @@ static NSString* const prModelCertFilename = @"iphonecert.dat";
     [localDebug release];
 #endif
 }
-
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions    
-{
-    if ([self createApplicationSupportDirectory] == NO) {
-		NSLog(@"Application Support directory could not be created.");
-	}
     
-	NSNumber *currentValue = [[NSUserDefaults standardUserDefaults] objectForKey:@"kSCHSpaceSaverMode"];
-	
-	if (!currentValue) {
-		[[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"kSCHSpaceSaverMode"];
-		[[NSUserDefaults standardUserDefaults] synchronize];
-	}
-    
-    SCHBookManager *bookManager = [SCHBookManager sharedBookManager];
-    bookManager.persistentStoreCoordinator = self.persistentStoreCoordinator;
-    bookManager.mainThreadManagedObjectContext = self.managedObjectContext;
-    
-    SCHSyncManager *syncManager = [SCHSyncManager sharedSyncManager];
-	syncManager.managedObjectContext = self.managedObjectContext;
-	[syncManager start];
-	
-	SCHURLManager *urlManager = [SCHURLManager sharedURLManager];
-	urlManager.managedObjectContext = self.managedObjectContext;
-    
-	// instantiate the shared processing manager
-	[SCHProcessingManager sharedProcessingManager].managedObjectContext = self.managedObjectContext;
-    
-    // pre-warm Core Text
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        NSMutableDictionary *attributes = [NSMutableDictionary dictionary];
-        [attributes setObject:@"Arial" forKey:(id)kCTFontFamilyNameAttribute];
-        [attributes setObject:[NSNumber numberWithFloat:36.0f] forKey:(id)kCTFontSizeAttribute];
-        CTFontDescriptorRef fontDesc = CTFontDescriptorCreateWithAttributes((CFDictionaryRef)attributes);
-        CTFontRef matchingFont = CTFontCreateWithFontDescriptor(fontDesc, 36.0f, NULL);
-        CFRelease(matchingFont);
-        CFRelease(fontDesc);
-    });
-    
-    
-#if LOCALDEBUG
-	[[NSNotificationCenter defaultCenter] postNotificationName:SCHBookshelfSyncComponentDidCompleteNotification object:nil];
-    [self performSelector:@selector(copyLocalFilesIfMissing) withObject:nil afterDelay:0.1f]; // Stop the watchdog from killing us on launch
-#endif
-	
-    SCHDictionaryDownloadManager *ddm = [SCHDictionaryDownloadManager sharedDownloadManager];
-    ddm.mainThreadManagedObjectContext = self.managedObjectContext;
-    ddm.persistentStoreCoordinator = self.persistentStoreCoordinator;
-    [ddm checkIfUpdateNeeded];
-
-	// instantiate the shared dictionary access manager
-	SCHDictionaryAccessManager *dam = [SCHDictionaryAccessManager sharedAccessManager];
-    dam.mainThreadManagedObjectContext = self.managedObjectContext;
-    dam.persistentStoreCoordinator = self.persistentStoreCoordinator;
-	
-	[self ensureCorrectCertsAvailable];
-	
-	return YES;
-}	
-
-/**
- Save changes in the application's managed object context before the application terminates.
- */
-- (void)applicationWillTerminate:(UIApplication *)application 
-{
-    [self saveContext];
-}
-
-
-- (void)applicationDidEnterBackground:(UIApplication *)application 
-{
-    [self saveContext];
-}
-
-- (void)applicationWillEnterForeground:(UIApplication *)application 
-{
-    // when we enter the foreground, check to see if the dictionary needs updating
-    [[SCHDictionaryDownloadManager sharedDownloadManager] checkIfUpdateNeeded];
-}
-
-- (void)saveContext 
-{    
-    NSError *error = nil;
-	NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
-    if (managedObjectContext != nil) {
-        if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error]) {
-            /*
-             Replace this implementation with code to handle the error appropriately.
-             
-             abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. If it is not possible to recover from the error, display an alert panel that instructs the user to quit the application by pressing the Home button.
-             */
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-            abort();
-        } 
-    }
-}    
-    
-- (void)mergeChangesFromContextDidSaveNotification:(NSNotification *)notification 
-{
-    if (notification.object != self.managedObjectContext) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [[self managedObjectContext] mergeChangesFromContextDidSaveNotification:notification];
-        });
-    }
-}
-
 #pragma mark - Core Data stack
 
-/**
- Returns the managed object context for the application.
- If the context doesn't already exist, it is created and bound to the persistent store coordinator for the application.
- */
-- (NSManagedObjectContext *)managedObjectContext {
-    
-    if (managedObjectContext_ != nil) {
-        return managedObjectContext_;
-    }
-    
-    NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
-    if (coordinator != nil) {
-        managedObjectContext_ = [[NSManagedObjectContext alloc] init];
-        [managedObjectContext_ setPersistentStoreCoordinator:coordinator];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mergeChangesFromContextDidSaveNotification:) name:NSManagedObjectContextDidSaveNotification object:nil];
-		
-    }
-    return managedObjectContext_;
-}
-
-/**
- Returns the managed object model for the application.
- If the model doesn't already exist, it is created from the application's model.
- */
-- (NSManagedObjectModel *)managedObjectModel 
-{    
-    if (managedObjectModel_ != nil) {
-        return managedObjectModel_;
-    }
-    NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"Scholastic" withExtension:@"momd"];
-    managedObjectModel_ = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];    
-    return managedObjectModel_;
-}
-
-- (NSURL *)storeURL
+- (SCHCoreDataHelper *)coreDataHelper
 {
-    return [[self applicationSupportDocumentsDirectory] URLByAppendingPathComponent:@"Scholastic.sqlite"];
-}
-
-/**
- Returns the persistent store coordinator for the application.
- If the coordinator doesn't already exist, it is created and the application's store added to it.
- */
-- (NSPersistentStoreCoordinator *)persistentStoreCoordinator 
-{    
-    if (persistentStoreCoordinator_ != nil) {
-        return persistentStoreCoordinator_;
+    if (coreDataHelper != nil) {
+        return(coreDataHelper);
     }
     
-    [self checkForModeSwitch];
-	
-    NSError *error = nil;
-    persistentStoreCoordinator_ = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
-    if (![persistentStoreCoordinator_ addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:[self storeURL] options:nil error:&error]) {
-        /*
-         Replace this implementation with code to handle the error appropriately.
-         
-         abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. If it is not possible to recover from the error, display an alert panel that instructs the user to quit the application by pressing the Home button.
-         
-         Typical reasons for an error here include:
-         * The persistent store is not accessible;
-         * The schema for the persistent store is incompatible with current managed object model.
-         Check the error message to determine what the actual problem was.
-         
-         
-         If the persistent store is not accessible, there is typically something wrong with the file path. Often, a file URL is pointing into the application's resources directory instead of a writeable directory.
-         
-         If you encounter schema incompatibility errors during development, you can reduce their frequency by:
-         * Simply deleting the existing store:
-         [[NSFileManager defaultManager] removeItemAtURL:storeURL error:nil]
-         
-         * Performing automatic lightweight migration by passing the following dictionary as the options parameter: 
-         [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithBool:YES],NSMigratePersistentStoresAutomaticallyOption, [NSNumber numberWithBool:YES], NSInferMappingModelAutomaticallyOption, nil];
-         
-         Lightweight migration will only work for a limited set of schema changes; consult "Core Data Model Versioning and Data Migration Programming Guide" for details.
-         
-         */
-
-        BOOL bailOut = NO;
-        
-        if ([error code] == NSPersistentStoreIncompatibleVersionHashError) {
-            NSLog(@"Your Core Data store is incompatible, we're gonna replace the store for you. You may need to re-populate it.");
-            [[NSFileManager defaultManager] removeItemAtURL:[self storeURL] error:nil];
-            if (![persistentStoreCoordinator_ addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:[self storeURL] options:nil error:&error]) {        
-                bailOut = YES;
-            }
-        } else {
-            bailOut = YES;
-        }
-
-        if (bailOut == YES) {
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-            abort();
-        }
-    }
+    coreDataHelper = [[SCHCoreDataHelper alloc] init];
     
-    return persistentStoreCoordinator_;
-}
-
-#pragma mark - Local Debug Mode
-
-- (void)checkForModeSwitch
-{
-	// check for change between local debug mode and normal network mode
-	NSDictionary *appDefaults = [NSDictionary dictionaryWithObjectsAndKeys:
-								 [NSNumber numberWithBool:NO], kSCHUserDefaultsPerformedFirstSyncUpToBooks, nil];
-	
-	[[NSUserDefaults standardUserDefaults] registerDefaults:appDefaults];		
-	
-	BOOL localDebugMode = NO;
-	
-#if LOCALDEBUG
-	localDebugMode = YES;
-#endif
-	
-	NSNumber *storedValue = (NSNumber *) [[NSUserDefaults standardUserDefaults] valueForKey:kSCHClearLocalDebugMode];
-	
-	if (storedValue) {
-		if ([storedValue boolValue] != localDebugMode) {
-			NSLog(@"Changed between local debug mode and network mode - deleting database & removing login details.");
-            [[NSFileManager defaultManager] removeItemAtURL:[self storeURL] error:nil];		
-            [[SCHAuthenticationManager sharedAuthenticationManager] clear];
-		}		
-		
-	}
-	
-	NSLog(@"Currently in %@.", localDebugMode?@"\"Local Debug Mode\"":@"\"Network Mode\"");
-	NSNumber *newValue = [NSNumber numberWithBool:localDebugMode];
-	[[NSUserDefaults standardUserDefaults] setObject:newValue forKey:kSCHClearLocalDebugMode];
-	[[NSUserDefaults standardUserDefaults] synchronize];
-}	
-
-#pragma mark - Database clear
-
-- (void)clearDatabase
-{
-    [managedObjectContext_ release], managedObjectContext_ = nil;
-    [persistentStoreCoordinator_ release], persistentStoreCoordinator_ = nil;
-    
-    NSError *error = nil;
-    if (![[NSFileManager defaultManager] removeItemAtURL:[self storeURL] error:&error]) {
-        NSLog(@"failed to remove database: %@", error);
-    }
-    
-    NSLog(@"Cleared local database! Exiting.");
-    exit(0);
+    return(coreDataHelper);
 }
 
 #pragma mark - Authentication check

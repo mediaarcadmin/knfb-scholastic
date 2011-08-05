@@ -22,6 +22,7 @@
 #import "LambdaAlert.h"
 #import "AppDelegate_Shared.h"
 #import "SCHProfileSyncComponent.h"
+#import "SCHCoreDataHelper.h"
 
 enum {
     kTableSectionSamples = 0,
@@ -362,7 +363,7 @@ enum {
         // access to the AppDelegate's managedObjectContext is deferred until we know we don't
         // want to use the same database any more
         AppDelegate_Shared *appDelegate = (AppDelegate_Shared *)[[UIApplication sharedApplication] delegate];
-        profileViewController.managedObjectContext = appDelegate.managedObjectContext;
+        profileViewController.managedObjectContext = appDelegate.coreDataHelper.managedObjectContext;
 }
     return profileViewController;
 }
