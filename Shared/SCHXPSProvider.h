@@ -18,8 +18,6 @@
 
 - (id)initWithBookIdentifier:(SCHBookIdentifier *)bookIdentifier xpsPath:(NSString *)xpsPath;
 
-- (NSDictionary *)pageNumbers:(NSRange)pageIndexRange error:(NSError **)error;
-
 // Scholastic convenience methods
 
 - (NSData *)coverThumbData;

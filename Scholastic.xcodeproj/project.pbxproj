@@ -373,9 +373,6 @@
 		526750D213290EE800063AC8 /* SCHURLManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 52322C33132693F500BB071D /* SCHURLManager.m */; };
 		526A8A5C1385166E00101A96 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 526A8A501385143000101A96 /* AVFoundation.framework */; };
 		526A8A5D1385167A00101A96 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 526A8A501385143000101A96 /* AVFoundation.framework */; };
-		526EA62E13DED0E400B080EF /* SCHPageNumberProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 526EA62D13DED0E400B080EF /* SCHPageNumberProcessor.m */; };
-		526EA62F13DED0E400B080EF /* SCHPageNumberProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 526EA62D13DED0E400B080EF /* SCHPageNumberProcessor.m */; };
-		526EA63013DED0E400B080EF /* SCHPageNumberProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 526EA62D13DED0E400B080EF /* SCHPageNumberProcessor.m */; };
 		527BBAE013A011D4000B407C /* SCHStoryInteractionControllerImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 527BBADE13A011D4000B407C /* SCHStoryInteractionControllerImage.m */; };
 		527BBAE113A011D4000B407C /* SCHStoryInteractionControllerImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 527BBADE13A011D4000B407C /* SCHStoryInteractionControllerImage.m */; };
 		527BBAE213A011D4000B407C /* SCHStoryInteractionImage_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 527BBADF13A011D4000B407C /* SCHStoryInteractionImage_iPhone.xib */; };
@@ -912,6 +909,10 @@
 		C9747CDF13EAEAC5003ADC71 /* Default.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C9747CD813EAEAC5003ADC71 /* Default.jpg */; };
 		C9747CE013EAEAC5003ADC71 /* Default@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C9747CD913EAEAC5003ADC71 /* Default@2x.jpg */; };
 		C9747CE113EAEAC5003ADC71 /* Default@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C9747CD913EAEAC5003ADC71 /* Default@2x.jpg */; };
+		C9747CE413EBF98E003ADC71 /* KNFBXPSEPubInfoParserDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C9747CE313EBF98E003ADC71 /* KNFBXPSEPubInfoParserDelegate.m */; };
+		C9747CE513EBF98E003ADC71 /* KNFBXPSEPubInfoParserDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C9747CE313EBF98E003ADC71 /* KNFBXPSEPubInfoParserDelegate.m */; };
+		C9747CE813EC12BB003ADC71 /* KNFBXPSPageNumbersParserDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C9747CE713EC12BB003ADC71 /* KNFBXPSPageNumbersParserDelegate.m */; };
+		C9747CE913EC12BB003ADC71 /* KNFBXPSPageNumbersParserDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C9747CE713EC12BB003ADC71 /* KNFBXPSPageNumbersParserDelegate.m */; };
 		C979C6A2138C1F6300581F7F /* button-login@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C979C6A0138C1F6300581F7F /* button-login@2x.png */; };
 		C979C6A3138C1F6300581F7F /* button-login@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C979C6A0138C1F6300581F7F /* button-login@2x.png */; };
 		C979C6A4138C1F6300581F7F /* button-login.png in Resources */ = {isa = PBXBuildFile; fileRef = C979C6A1138C1F6300581F7F /* button-login.png */; };
@@ -1982,8 +1983,6 @@
 		5266D38E13007E27004E3AC6 /* SCHComponentProtected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHComponentProtected.h; path = Shared/SCHComponentProtected.h; sourceTree = "<group>"; };
 		526A8A501385143000101A96 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		526A8A5E1385182100101A96 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
-		526EA62C13DED0E400B080EF /* SCHPageNumberProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHPageNumberProcessor.h; path = Shared/SCHPageNumberProcessor.h; sourceTree = SOURCE_ROOT; };
-		526EA62D13DED0E400B080EF /* SCHPageNumberProcessor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHPageNumberProcessor.m; path = Shared/SCHPageNumberProcessor.m; sourceTree = SOURCE_ROOT; };
 		527BBADD13A011D4000B407C /* SCHStoryInteractionControllerImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionControllerImage.h; sourceTree = "<group>"; };
 		527BBADE13A011D4000B407C /* SCHStoryInteractionControllerImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionControllerImage.m; sourceTree = "<group>"; };
 		527BBADF13A011D4000B407C /* SCHStoryInteractionImage_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionImage_iPhone.xib; sourceTree = "<group>"; };
@@ -2517,6 +2516,10 @@
 		C9747CD713EAEAC5003ADC71 /* Default-Portrait~ipad.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Default-Portrait~ipad.jpg"; sourceTree = "<group>"; };
 		C9747CD813EAEAC5003ADC71 /* Default.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Default.jpg; sourceTree = "<group>"; };
 		C9747CD913EAEAC5003ADC71 /* Default@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Default@2x.jpg"; sourceTree = "<group>"; };
+		C9747CE213EBF98E003ADC71 /* KNFBXPSEPubInfoParserDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KNFBXPSEPubInfoParserDelegate.h; path = XPS/KNFBXPSEPubInfoParserDelegate.h; sourceTree = "<group>"; };
+		C9747CE313EBF98E003ADC71 /* KNFBXPSEPubInfoParserDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KNFBXPSEPubInfoParserDelegate.m; path = XPS/KNFBXPSEPubInfoParserDelegate.m; sourceTree = "<group>"; };
+		C9747CE613EC12BB003ADC71 /* KNFBXPSPageNumbersParserDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KNFBXPSPageNumbersParserDelegate.h; path = XPS/KNFBXPSPageNumbersParserDelegate.h; sourceTree = "<group>"; };
+		C9747CE713EC12BB003ADC71 /* KNFBXPSPageNumbersParserDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KNFBXPSPageNumbersParserDelegate.m; path = XPS/KNFBXPSPageNumbersParserDelegate.m; sourceTree = "<group>"; };
 		C979C6A0138C1F6300581F7F /* button-login@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "button-login@2x.png"; path = "Resources/UIAssets/button-login@2x.png"; sourceTree = "<group>"; };
 		C979C6A1138C1F6300581F7F /* button-login.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "button-login.png"; path = "Resources/UIAssets/button-login.png"; sourceTree = "<group>"; };
 		C979C6A6138C237C00581F7F /* button-field.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "button-field.png"; path = "Resources/UIAssets/button-field.png"; sourceTree = "<group>"; };
@@ -4721,8 +4724,12 @@
 			children = (
 				C9EFB179134F4C9F00ADF905 /* KNFBZipArchive.m */,
 				C9EFB17A134F4C9F00ADF905 /* KNFBZipArchive.h */,
-				C9EFB17B134F4C9F00ADF905 /* KNFBXPSProvider.m */,
 				C9EFB17C134F4C9F00ADF905 /* KNFBXPSProvider.h */,
+				C9EFB17B134F4C9F00ADF905 /* KNFBXPSProvider.m */,
+				C9747CE213EBF98E003ADC71 /* KNFBXPSEPubInfoParserDelegate.h */,
+				C9747CE313EBF98E003ADC71 /* KNFBXPSEPubInfoParserDelegate.m */,
+				C9747CE613EC12BB003ADC71 /* KNFBXPSPageNumbersParserDelegate.h */,
+				C9747CE713EC12BB003ADC71 /* KNFBXPSPageNumbersParserDelegate.m */,
 				C9EFB17D134F4C9F00ADF905 /* KNFBXPSConstants.h */,
 				C9EFB17E134F4C9F00ADF905 /* KNFBXPSBitmapReleaseCallback.m */,
 				C9EFB17F134F4C9F00ADF905 /* KNFBXPSBitmapReleaseCallback.h */,
@@ -4845,8 +4852,6 @@
 				C9EFB28D134F782A00ADF905 /* SCHXPSProvider.m */,
 				C9EFB291134F795800ADF905 /* SCHXPSURLProtocol.h */,
 				C9EFB292134F795800ADF905 /* SCHXPSURLProtocol.m */,
-				526EA62C13DED0E400B080EF /* SCHPageNumberProcessor.h */,
-				526EA62D13DED0E400B080EF /* SCHPageNumberProcessor.m */,
 			);
 			name = "XPS Provider";
 			path = iPhone;
@@ -6529,11 +6534,12 @@
 				52162DA513DD763500D257C5 /* BITAPIError.m in Sources */,
 				52162DA913DD88C700D257C5 /* SCHUserDefaults.m in Sources */,
 				281B74B013DEED4900BA157C /* SCHBookUpdates.m in Sources */,
-				526EA62E13DED0E400B080EF /* SCHPageNumberProcessor.m in Sources */,
 				2873B04813E024BF008C9F0D /* SCHUpdateBooksTableViewCell.m in Sources */,
 				28C3D1A813E2B30300931F5C /* SCHStartingViewController.m in Sources */,
 				289699F313E2C55000B7E3DF /* SCHStartingViewCell.m in Sources */,
 				C9703A8F13E986690003C4D8 /* SCHBookShelfShadowsView.m in Sources */,
+				C9747CE413EBF98E003ADC71 /* KNFBXPSEPubInfoParserDelegate.m in Sources */,
+				C9747CE813EC12BB003ADC71 /* KNFBXPSPageNumbersParserDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6579,7 +6585,6 @@
 				284EF24613BC4CDF00F9BD5A /* SCHBookIdentifier.m in Sources */,
 				52162DA713DD763500D257C5 /* BITAPIError.m in Sources */,
 				52162DAB13DD88C700D257C5 /* SCHUserDefaults.m in Sources */,
-				526EA63013DED0E400B080EF /* SCHPageNumberProcessor.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6838,11 +6843,12 @@
 				52162DA613DD763500D257C5 /* BITAPIError.m in Sources */,
 				52162DAA13DD88C700D257C5 /* SCHUserDefaults.m in Sources */,
 				281B74B113DEED4900BA157C /* SCHBookUpdates.m in Sources */,
-				526EA62F13DED0E400B080EF /* SCHPageNumberProcessor.m in Sources */,
 				2873B04913E024BF008C9F0D /* SCHUpdateBooksTableViewCell.m in Sources */,
 				28C3D1A913E2B30300931F5C /* SCHStartingViewController.m in Sources */,
 				289699F413E2C55000B7E3DF /* SCHStartingViewCell.m in Sources */,
 				C9703A9013E986690003C4D8 /* SCHBookShelfShadowsView.m in Sources */,
+				C9747CE513EBF98E003ADC71 /* KNFBXPSEPubInfoParserDelegate.m in Sources */,
+				C9747CE913EC12BB003ADC71 /* KNFBXPSPageNumbersParserDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
