@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @class SCHCustomToolbar;
+@class SCHUnderlinedButton;
 
 typedef enum {
     // a login view - login and password fields
@@ -69,6 +70,8 @@ typedef void(^SCHActionBlock)(void);
 
 @property (nonatomic, retain) IBOutlet UITextField *topField;
 @property (nonatomic, retain) IBOutlet UITextField *bottomField;
+@property (nonatomic, retain) IBOutlet SCHUnderlinedButton *forgotUsernamePasswordURL;
+@property (nonatomic, retain) IBOutlet SCHUnderlinedButton *accountURL;
 @property (nonatomic, retain) IBOutlet UIButton *loginButton;
 
 // IBAction - the "Login" or "Go" button action

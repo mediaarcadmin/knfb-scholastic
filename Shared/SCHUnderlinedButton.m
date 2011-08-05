@@ -25,7 +25,8 @@
     CGContextRef contextRef = UIGraphicsGetCurrentContext();
     
     // set to same colour as text
-    if ([self isHighlighted] && self.titleLabel.highlightedTextColor) {
+    if ([self isHighlighted] && self.titleLabel.highlightedTextColor &&
+        self.enabled == YES) {
         CGContextSetStrokeColorWithColor(contextRef, self.titleLabel.highlightedTextColor.CGColor);
     } else {
         CGContextSetStrokeColorWithColor(contextRef, self.titleLabel.textColor.CGColor);

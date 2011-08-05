@@ -9,6 +9,7 @@
 #import "SCHLoginPasswordViewController.h"
 #import <QuartzCore/QuartzCore.h>
 #import "SCHCustomToolbar.h"
+#import "SCHUnderlinedButton.h"
 
 static const CGFloat kContentHeightLandscape = 380;
 
@@ -42,6 +43,8 @@ static const CGFloat kContentHeightLandscape = 380;
 @synthesize profileLabel;
 @synthesize containerView;
 @synthesize scrollView;
+@synthesize forgotUsernamePasswordURL;
+@synthesize accountURL;
 @synthesize loginButton;
 @synthesize activeTextField;
 
@@ -61,6 +64,8 @@ static const CGFloat kContentHeightLandscape = 380;
     [profileLabel release], profileLabel = nil;
     [containerView release], containerView = nil;
     [scrollView release], scrollView = nil;
+    [forgotUsernamePasswordURL release], forgotUsernamePasswordURL = nil;
+    [accountURL release], accountURL = nil;
     [loginButton release], loginButton = nil;
     [activeTextField release], activeTextField = nil;
 }
@@ -285,6 +290,8 @@ static const CGFloat kContentHeightLandscape = 380;
 	[self.bottomField resignFirstResponder];
     self.bottomField.enabled = NO;
     [spinner startAnimating];
+    self.forgotUsernamePasswordURL.enabled = NO;
+    self.accountURL.enabled = NO;
     self.loginButton.enabled = NO;
 }
 
@@ -293,6 +300,8 @@ static const CGFloat kContentHeightLandscape = 380;
     self.topField.enabled = YES;
     self.bottomField.enabled = YES;
     [spinner stopAnimating];
+    self.forgotUsernamePasswordURL.enabled = YES;
+    self.accountURL.enabled = YES;    
     self.loginButton.enabled = YES;
 }
 
@@ -343,12 +352,16 @@ static const CGFloat kContentHeightLandscape = 380;
 
 - (IBAction)openScholasticUsernamePasswordURLInSafari:(id)sender
 {
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://my.scholastic.com/sps_my_account/pwmgmt/ForgotPassword.jsp?AppType=COOL"]];
+    if (((SCHUnderlinedButton *)sender).enabled == YES) {
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://my.scholastic.com/sps_my_account/pwmgmt/ForgotPassword.jsp?AppType=COOL"]];
+    }
 }
 
 - (IBAction)openScholasticAccountURLInSafari:(id)sender
 {
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://my.scholastic.com/sps_my_account/accmgmt/GenericSignin.jsp?AppType=COOL"]];
+    if (((SCHUnderlinedButton *)sender).enabled == YES) {
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://my.scholastic.com/sps_my_account/accmgmt/GenericSignin.jsp?AppType=COOL"]];
+    }
 }
 
 #pragma mark - UITextFieldDelegate

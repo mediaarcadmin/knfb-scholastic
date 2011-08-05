@@ -2,9 +2,9 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="7.10">
 	<data>
 		<int key="IBDocument.SystemTarget">1056</int>
-		<string key="IBDocument.SystemVersion">10J869</string>
+		<string key="IBDocument.SystemVersion">10K549</string>
 		<string key="IBDocument.InterfaceBuilderVersion">1306</string>
-		<string key="IBDocument.AppKitVersion">1038.35</string>
+		<string key="IBDocument.AppKitVersion">1038.36</string>
 		<string key="IBDocument.HIToolboxVersion">461.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -347,7 +347,6 @@
 										<string key="NSFrame">{{331, 323}, {37, 37}}</string>
 										<reference key="NSSuperview" ref="135206302"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView"/>
 										<bool key="IBUIOpaque">NO</bool>
 										<int key="IBUIContentMode">4</int>
 										<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -516,6 +515,22 @@
 						<reference key="destination" ref="372490531"/>
 					</object>
 					<int key="connectionID">47</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">forgotUsernamePasswordURL</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="352382970"/>
+					</object>
+					<int key="connectionID">48</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">accountURL</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="262213976"/>
+					</object>
+					<int key="connectionID">49</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -740,7 +755,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">47</int>
+			<int key="maxID">49</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -806,9 +821,11 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>accountURL</string>
 							<string>barSpacer</string>
 							<string>bottomField</string>
 							<string>containerView</string>
+							<string>forgotUsernamePasswordURL</string>
 							<string>loginButton</string>
 							<string>profileLabel</string>
 							<string>scrollView</string>
@@ -818,9 +835,11 @@
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>SCHUnderlinedButton</string>
 							<string>UIBarButtonItem</string>
 							<string>UITextField</string>
 							<string>UIView</string>
+							<string>SCHUnderlinedButton</string>
 							<string>UIButton</string>
 							<string>UILabel</string>
 							<string>UIScrollView</string>
@@ -833,9 +852,11 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>accountURL</string>
 							<string>barSpacer</string>
 							<string>bottomField</string>
 							<string>containerView</string>
+							<string>forgotUsernamePasswordURL</string>
 							<string>loginButton</string>
 							<string>profileLabel</string>
 							<string>scrollView</string>
@@ -845,6 +866,10 @@
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<object class="IBToOneOutletInfo">
+								<string key="name">accountURL</string>
+								<string key="candidateClassName">SCHUnderlinedButton</string>
+							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">barSpacer</string>
 								<string key="candidateClassName">UIBarButtonItem</string>
@@ -856,6 +881,10 @@
 							<object class="IBToOneOutletInfo">
 								<string key="name">containerView</string>
 								<string key="candidateClassName">UIView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">forgotUsernamePasswordURL</string>
+								<string key="candidateClassName">SCHUnderlinedButton</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">loginButton</string>
