@@ -73,7 +73,9 @@
     [super dealloc];
 }
 
-- (id)initWithFrame:(CGRect)frame bookIdentifier:(SCHBookIdentifier *)bookIdentifier delegate:(id<SCHReadingViewDelegate>)newDelegate
+- (id)initWithFrame:(CGRect)frame bookIdentifier:(SCHBookIdentifier *)bookIdentifier 
+managedObjectContext:(NSManagedObjectContext *)managedObjectContext 
+           delegate:(id<SCHReadingViewDelegate>)newDelegate
 {
     self = [super initWithFrame:frame];
     if (self) {
@@ -86,10 +88,10 @@
         self.multipleTouchEnabled = YES;
         self.userInteractionEnabled = YES;
 
-        AppDelegate_Shared *appDelegate = (AppDelegate_Shared *)[[UIApplication sharedApplication] delegate];    
-        NSManagedObjectContext *moc = appDelegate.coreDataHelper.managedObjectContext;
-        xpsProvider = [[[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.identifier inManagedObjectContext:moc] retain];
-        textFlow    = [[[SCHBookManager sharedBookManager] checkOutTextFlowForBookIdentifier:self.identifier inManagedObjectContext:moc] retain];
+        xpsProvider = [[[SCHBookManager sharedBookManager] checkOutXPSProviderForBookIdentifier:self.identifier 
+                                                                         inManagedObjectContext:managedObjectContext] retain];
+        textFlow    = [[[SCHBookManager sharedBookManager] checkOutTextFlowForBookIdentifier:self.identifier 
+                                                                      inManagedObjectContext:managedObjectContext] retain];
     }
     return self;
 }

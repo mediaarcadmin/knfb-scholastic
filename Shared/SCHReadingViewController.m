@@ -1343,7 +1343,10 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     
     switch (newLayoutType) {
         case SCHReadingViewLayoutTypeFlow: {
-            SCHFlowView *flowView = [[SCHFlowView alloc] initWithFrame:self.view.bounds bookIdentifier:self.bookIdentifier delegate:self];
+            SCHFlowView *flowView = [[SCHFlowView alloc] initWithFrame:self.view.bounds 
+                                                        bookIdentifier:self.bookIdentifier 
+                                                  managedObjectContext:self.managedObjectContext 
+                                                              delegate:self];
             self.readingView = flowView;
             [self setDictionarySelectionMode];
 
@@ -1358,7 +1361,10 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
         }
         case SCHReadingViewLayoutTypeFixed: 
         default: {
-            SCHLayoutView *layoutView = [[SCHLayoutView alloc] initWithFrame:self.view.bounds bookIdentifier:self.bookIdentifier delegate:self];
+            SCHLayoutView *layoutView = [[SCHLayoutView alloc] initWithFrame:self.view.bounds 
+                                                              bookIdentifier:self.bookIdentifier 
+                                                        managedObjectContext:self.managedObjectContext                                          
+                                                                    delegate:self];
             self.readingView = layoutView;
             
             [self setDictionarySelectionMode];

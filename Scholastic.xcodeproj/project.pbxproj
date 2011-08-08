@@ -1289,6 +1289,8 @@
 		F81C74771344DA0700B1D9DB /* SCHFlowEucBook.m in Sources */ = {isa = PBXBuildFile; fileRef = F81C74751344DA0700B1D9DB /* SCHFlowEucBook.m */; };
 		F81C747A1344DC1200B1D9DB /* SCHFlowAnalysisOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F81C74791344DC1200B1D9DB /* SCHFlowAnalysisOperation.m */; };
 		F81C747B1344DC1200B1D9DB /* SCHFlowAnalysisOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F81C74791344DC1200B1D9DB /* SCHFlowAnalysisOperation.m */; };
+		F829E61713EFFC1600D77386 /* Scholastic_Sample.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = F829E61613EFFC1600D77386 /* Scholastic_Sample.sqlite */; };
+		F829E61813EFFC1600D77386 /* Scholastic_Sample.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = F829E61613EFFC1600D77386 /* Scholastic_Sample.sqlite */; };
 		F82D39BF131EA79100289FF3 /* SCHBookContents.m in Sources */ = {isa = PBXBuildFile; fileRef = F82D39B4131EA79100289FF3 /* SCHBookContents.m */; };
 		F82D39C5131EA79100289FF3 /* SCHBookContents.m in Sources */ = {isa = PBXBuildFile; fileRef = F82D39B4131EA79100289FF3 /* SCHBookContents.m */; };
 		F82D39D9131EA7D400289FF3 /* SCHBookShelfTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F82D39D8131EA7D400289FF3 /* SCHBookShelfTableViewCell.m */; };
@@ -2743,6 +2745,7 @@
 		F81C74751344DA0700B1D9DB /* SCHFlowEucBook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHFlowEucBook.m; path = Shared/SCHFlowEucBook.m; sourceTree = "<group>"; };
 		F81C74781344DC1200B1D9DB /* SCHFlowAnalysisOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHFlowAnalysisOperation.h; path = Shared/SCHFlowAnalysisOperation.h; sourceTree = "<group>"; };
 		F81C74791344DC1200B1D9DB /* SCHFlowAnalysisOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHFlowAnalysisOperation.m; path = Shared/SCHFlowAnalysisOperation.m; sourceTree = "<group>"; };
+		F829E61613EFFC1600D77386 /* Scholastic_Sample.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; name = Scholastic_Sample.sqlite; path = Resources/Scholastic_Sample.sqlite; sourceTree = "<group>"; };
 		F82D39B3131EA79100289FF3 /* SCHBookContents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookContents.h; path = Shared/SCHBookContents.h; sourceTree = "<group>"; };
 		F82D39B4131EA79100289FF3 /* SCHBookContents.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookContents.m; path = Shared/SCHBookContents.m; sourceTree = "<group>"; };
 		F82D39D7131EA7D400289FF3 /* SCHBookShelfTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookShelfTableViewCell.h; path = Shared/SCHBookShelfTableViewCell.h; sourceTree = "<group>"; };
@@ -3769,6 +3772,7 @@
 		528A2CCF12CCDC400053A343 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				F829E61613EFFC1600D77386 /* Scholastic_Sample.sqlite */,
 				F837018D13BB322F009B280D /* List View Icons */,
 				F86DEC0813A21F2600053999 /* Sounds */,
 				F8FF8D7F139513B000CD7B73 /* OldDictionary-additions.css */,
@@ -5757,6 +5761,7 @@
 				C9747CDC13EAEAC5003ADC71 /* Default-Portrait~ipad.jpg in Resources */,
 				C9747CDE13EAEAC5003ADC71 /* Default.jpg in Resources */,
 				C9747CE013EAEAC5003ADC71 /* Default@2x.jpg in Resources */,
+				F829E61713EFFC1600D77386 /* Scholastic_Sample.sqlite in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6263,6 +6268,7 @@
 				C9747CDD13EAEAC5003ADC71 /* Default-Portrait~ipad.jpg in Resources */,
 				C9747CDF13EAEAC5003ADC71 /* Default.jpg in Resources */,
 				C9747CE113EAEAC5003ADC71 /* Default@2x.jpg in Resources */,
+				F829E61813EFFC1600D77386 /* Scholastic_Sample.sqlite in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
