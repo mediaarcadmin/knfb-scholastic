@@ -88,6 +88,7 @@ typedef enum
 - (void)setPageTexture:(UIImage *)image isDark:(BOOL)isDark;
 
 - (NSString *)displayPageNumberForBookPoint:(SCHBookPoint *)bookPoint;
+- (NSString *)pageLabelForPageAtIndex:(NSUInteger)pageIndex;
 
 - (void)layoutPage:(NSUInteger *)layoutPage 
     pageWordOffset:(NSUInteger *)pageWordOffset 

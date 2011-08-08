@@ -464,10 +464,59 @@
     return [range autorelease];
 }
 
+- (NSString *)displayPageNumberForPageAtIndex:(NSUInteger)pageIndex
+{
+    NSString *displayPageNumber = nil;    
+
+    if ([self.xpsProvider respondsToSelector:@selector(displayPageNumberForPage:)]) {
+        displayPageNumber = [self.xpsProvider displayPageNumberForPage:pageIndex + 1];
+    }
+    
+    return displayPageNumber;
+        
+}
+
 - (NSString *)displayPageNumberForBookPoint:(SCHBookPoint *)bookPoint
 {    
     NSUInteger pageIndex = MAX(bookPoint.layoutPage, 1) - 1;
-    return [self.textFlow contentsTableViewController:nil displayPageNumberForPageIndex:pageIndex];
+    NSString *pageStr = [self displayPageNumberForPageAtIndex:pageIndex];
+    
+    if (!pageStr) {
+        pageStr = [self.textFlow contentsTableViewController:nil displayPageNumberForPageIndex:pageIndex];
+    }
+    
+    return pageStr;
+}
+
+- (NSString *)pageLabelForPageAtIndex:(NSUInteger)pageIndex
+{
+    NSString *pageStr = [self displayPageNumberForPageAtIndex:pageIndex];  
+    NSString *chapterName = nil;
+    
+    // Ignore chapter names if we have less than 2 sections in the TOC - it will never change!
+    if ([[self.textFlow tableOfContents] count] > 1) {
+        NSString *uuid = [self.textFlow sectionUuidForPageIndex:pageIndex];
+        chapterName = [self.textFlow contentsTableViewController:nil presentationNameAndSubTitleForSectionUuid:uuid].first;
+    }
+    
+    NSString *pageLabel = nil;
+    
+    if (chapterName) {
+        if (pageStr) {
+            pageLabel = [NSString stringWithFormat:NSLocalizedString(@"Page %@ \u2013 %@",@"Page label with page number and chapter (layout view)"), pageStr, chapterName];
+        } else {
+            pageLabel = [NSString stringWithFormat:@"%@", chapterName];
+        }
+    }
+    
+    if (!pageLabel) {
+        if (!pageStr) {
+            pageStr = [self.textFlow contentsTableViewController:nil displayPageNumberForPageIndex:pageIndex];
+        }
+        pageLabel = [NSString stringWithFormat:NSLocalizedString(@"Page %@ of %lu",@"Page label X of Y (page number (string) of page count) (layout view)"), pageStr, (unsigned long)self.pageCount];
+    }     
+    
+    return pageLabel;
 }
 
 #pragma mark -

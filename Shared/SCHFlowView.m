@@ -11,6 +11,7 @@
 #import "SCHFlowEucBook.h"
 #import "SCHBookPoint.h"
 #import "SCHBookRange.h"
+#import "KNFBTextFlow.h"
 #import "KNFBTextFlowParagraphSource.h"
 #import <libEucalyptus/EucBookView.h>
 #import <libEucalyptus/EucBUpeBook.h>
@@ -358,6 +359,32 @@ static void sortedHighlightRangePredicateInit() {
 - (NSString *)displayPageNumberForBookPoint:(SCHBookPoint *)bookPoint
 {
     return [self.eucBookView displayPageNumberForPageIndex:[self.eucBookView pageIndexForIndexPoint:[self.eucBook bookPageIndexPointFromBookPoint:bookPoint]]];
+}
+
+- (NSString *)pageLabelForPageAtIndex:(NSUInteger)pageIndex
+{
+    NSString *pageStr = [self.eucBookView displayPageNumberForPageIndex:pageIndex];    
+    
+    EucBookPageIndexPoint *indexPoint = [self.eucBookView indexPointForPageIndex:pageIndex];
+    NSString *chapterName = [self.eucBookView presentationNameAndSubTitleForIndexPoint:indexPoint].first;
+    
+    NSString *pageLabel = nil;
+    
+    if (chapterName) {
+        if (pageStr) {
+            pageLabel = [NSString stringWithFormat:NSLocalizedString(@"Page %@ \u2013 %@",@"Page label with page number and chapter (flow view)"), pageStr, chapterName];
+        } else {
+            pageLabel = [NSString stringWithFormat:@"%@", chapterName];
+        }
+    } else {
+        if (pageStr) {
+            pageLabel = [NSString stringWithFormat:NSLocalizedString(@"Page %@ of %lu",@"Page label X of Y (page number (string) of page count) (flow view)"), pageStr, (unsigned long)self.pageCount];
+        } else {
+            pageLabel = [NSString stringWithFormat:NSLocalizedString(@"Page %lu of %lu",@"Page label X of Y (page number (int) of page count) (flow view)"), pageIndex + 1, (unsigned long)self.pageCount];
+        }
+    }     
+    
+    return pageLabel;
 }
 
 #pragma mark - SCHReadingView methods
