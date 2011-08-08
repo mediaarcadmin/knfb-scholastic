@@ -28,15 +28,20 @@
     return @"Memory Match";
 }
 
+- (NSInteger)numberOfPairs
+{
+    return 12;
+}
+
 - (NSString *)audioPathForIntroduction
 {
     NSString *filename = [NSString stringWithFormat:@"%@_intro.mp3", self.ID];
     return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:filename];
 }
 
-- (NSInteger)numberOfPairs
+- (NSString *)audioPathForYouGotThemAll
 {
-    return 12;
+    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:@"gen_gotthemall.mp3"];
 }
 
 - (NSString *)imagePathForFirstOfPairAtIndex:(NSInteger)index

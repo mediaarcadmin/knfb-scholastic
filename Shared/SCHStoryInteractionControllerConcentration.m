@@ -14,14 +14,17 @@
 #import "NSArray+Shuffling.h"
 
 #define kTileGap 5
+#define kBorderWidth 2
+#define kCornerRadius 8
 
 @interface SCHStoryInteractionControllerConcentration ()
 
 @property (nonatomic, assign) NSInteger numberOfPairs;
+@property (nonatomic, assign) NSInteger numberOfPairsFound;
+@property (nonatomic, assign) NSInteger numberOfFlips;
 @property (nonatomic, assign) UIView *firstFlippedTile;
 
 - (void)setupPuzzleView;
-- (void)addLayerBorder:(CALayer *)layer;
 - (void)matchTile:(UIView *)tile withTile:(UIView *)tile;
 
 @end
@@ -31,7 +34,10 @@
 @synthesize levelButtons;
 @synthesize flipContainer;
 @synthesize flipCounterLabel;
+@synthesize startOverButton;
 @synthesize numberOfPairs;
+@synthesize numberOfPairsFound;
+@synthesize numberOfFlips;
 @synthesize firstFlippedTile;
 
 - (void)dealloc
@@ -39,6 +45,7 @@
     [levelButtons release], levelButtons = nil;
     [flipContainer release], flipContainer = nil;
     [flipCounterLabel release], flipCounterLabel = nil;
+    [startOverButton release], startOverButton = nil;
     [super dealloc];
 }
 
@@ -51,6 +58,18 @@
     }
 }
 
+- (void)storyInteractionDisableUserInteraction
+{
+    self.flipContainer.userInteractionEnabled = NO;
+    self.startOverButton.userInteractionEnabled = NO;
+}
+
+- (void)storyInteractionEnableUserInteraction
+{
+    self.flipContainer.userInteractionEnabled = YES;
+    self.startOverButton.userInteractionEnabled = YES;
+}
+
 #pragma mark - Difficulty selection
 
 - (void)levelButtonTapped:(id)sender
@@ -60,6 +79,23 @@
 }
 
 #pragma mark - Puzzle view
+
+- (CALayer *)layerWithImage:(UIImage *)image inSize:(CGSize)size
+{
+    CALayer *layer = [CALayer layer];
+    layer.bounds = (CGRect){CGPointZero, size};
+    layer.contents = (id)[image CGImage];
+    layer.contentsGravity = kCAGravityCenter;
+    layer.doubleSided = NO;
+
+    layer.borderWidth = kBorderWidth;
+    layer.borderColor = [[UIColor SCHOrange1Color] CGColor];
+    layer.cornerRadius = kCornerRadius;
+    layer.masksToBounds = YES;
+    layer.backgroundColor = layer.borderColor;
+
+    return layer;
+}
 
 - (void)setupPuzzleView
 {
@@ -77,7 +113,7 @@
     
     // TODO different tiles for each level
     UIImage *tileBackImage = [UIImage imageNamed:@"storyinteraction-concentration-tile-orange.png"];
-    CGSize tileSize = tileBackImage.size;
+    CGSize tileSize = CGSizeMake(tileBackImage.size.width+kBorderWidth*2, tileBackImage.size.height+kBorderWidth*2);
     
     CGSize layoutSize = CGSizeMake(tileSize.width*cols + kTileGap*(cols-1),
                                    tileSize.height*rows + kTileGap*(rows-1));
@@ -109,22 +145,14 @@
             tile.center = CGPointMake(floorf(left+(tileSize.width+kTileGap)*col+tileSize.width/2),
                                       floorf(top+(tileSize.height+kTileGap)*row+tileSize.height/2));
             tile.tag = index/2;
-            
-            CALayer *back = [CALayer layer];
+
+            CALayer *back = [self layerWithImage:tileBackImage inSize:tileSize];
             back.position = layerPosition;
-            back.bounds = tile.bounds;
-            back.contents = (id)[tileBackImage CGImage];
-            back.doubleSided = NO;
-            [self addLayerBorder:back];
             [tile.layer addSublayer:back];
             
-            CALayer *front = [CALayer layer];
-            front.position = back.position;
-            front.bounds = back.bounds;
+            CALayer *front = [self layerWithImage:image inSize:tileSize];
+            front.position = layerPosition;
             front.transform = CATransform3DMakeRotation(M_PI, 0, 1, 0);
-            front.contents = (id)[image CGImage];
-            front.doubleSided = NO;
-            [self addLayerBorder:front];
             [tile.layer addSublayer:front];
             
             [self.flipContainer addSubview:tile];
@@ -135,14 +163,9 @@
             [tile release];
         }
     }
-}
-
-- (void)addLayerBorder:(CALayer *)layer
-{
-    layer.borderWidth = 2;
-    layer.borderColor = [[UIColor SCHOrange1Color] CGColor];
-    layer.cornerRadius = 6;
-    layer.masksToBounds = YES;
+    
+    self.numberOfPairsFound = 0;
+    self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
 }
 
 - (void)startOverTapped:(id)sender
@@ -187,6 +210,16 @@
                         fromBundle:YES];
         [tile1 setUserInteractionEnabled:NO];
         [tile2 setUserInteractionEnabled:NO];
+        if (++self.numberOfPairsFound == self.numberOfPairs) {
+            [self enqueueAudioWithPath:[(SCHStoryInteractionConcentration *)self.storyInteraction audioPathForYouGotThemAll]
+                            fromBundle:NO
+                            startDelay:0
+                synchronizedStartBlock:nil
+                  synchronizedEndBlock:^{
+                      self.controllerState = SCHStoryInteractionControllerStateInteractionFinishedSuccessfully;
+                      [self removeFromHostView];
+                  }];
+        }
     } else {
         // flip the tiles back
         [self enqueueAudioWithPath:[self.storyInteraction storyInteractionWrongAnswerSoundFilename]
@@ -195,7 +228,7 @@
             synchronizedStartBlock:nil
               synchronizedEndBlock:^{
                   [tile1.layer addAnimation:[self flipAnimationFrom:M_PI to:0] forKey:@"flipBack"];
-                  [tile2.layer addAnimation:[self flipAnimationFrom:M_PI to:0] forKey:@"flipBacl"];
+                  [tile2.layer addAnimation:[self flipAnimationFrom:M_PI to:0] forKey:@"flipBack"];
                   tile1.layer.transform = CATransform3DIdentity;
                   tile2.layer.transform = CATransform3DIdentity;
               }];
