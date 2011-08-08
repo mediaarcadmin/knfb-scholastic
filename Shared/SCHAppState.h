@@ -19,5 +19,7 @@ extern NSString * const kSCHAppStatefetchAppState;
 }
 
 @property (nonatomic, retain) NSDate * LastAnnotationSync;
+@property (nonatomic, retain) NSNumber * ShouldDownloadBooks;
+@property (nonatomic, retain) NSNumber * ShouldSync;
 
 @end

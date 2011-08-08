@@ -24,6 +24,8 @@
 #import "SCHBookUpdates.h"
 #import "SCHUpdateBooksViewController.h"
 #import "SCHBookshelfSyncComponent.h"
+#import "SCHCoreDataHelper.h"
+#import "SCHUserDefaults.h"
 
 extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
@@ -136,7 +138,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 {
     [super viewWillAppear:animated];
     
-    NSNumber *spaceSaver = [[NSUserDefaults standardUserDefaults] objectForKey:@"kSCHSpaceSaverMode"];
+    NSNumber *spaceSaver = [[NSUserDefaults standardUserDefaults] objectForKey:kSCHUserDefaultsSpaceSaverMode];
     self.spaceSaverSwitch.selected = [spaceSaver boolValue];
     
     [self updateUpdateBooksButton];
@@ -186,7 +188,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
 - (IBAction)dismissModalSettingsController:(id)sender
 {
-    [[NSUserDefaults standardUserDefaults] setBool:self.spaceSaverSwitch.selected forKey:@"kSCHSpaceSaverMode"];
+    [[NSUserDefaults standardUserDefaults] setBool:self.spaceSaverSwitch.selected forKey:kSCHUserDefaultsSpaceSaverMode];
     [[NSUserDefaults standardUserDefaults] synchronize];
     [super closeSettings];
 }
@@ -306,7 +308,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     
 #if LOCALDEBUG
     AppDelegate_Shared *appDelegate = (AppDelegate_Shared *)[[UIApplication sharedApplication] delegate];
-    [appDelegate clearDatabase];
+    [appDelegate.coreDataHelper clearDatabase];
 #endif
 }
 

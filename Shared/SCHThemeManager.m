@@ -33,6 +33,7 @@ NSString * const kSCHThemeManagerColorForListBackground = @"ListBackgroundColor"
 static NSString * const kSCHThemeManagerDirectory = @"Themes";
 static NSString * const kSCHThemeManagerLandscapePostFix = @"-Landscape";
 static NSString * const kSCHThemeManageriPadPostFix = @"-iPad";
+static NSString * const kSCHThemeManagerRetinaSuffix = @"@2x";
 
 static NSString * const kSCHThemeManagerID = @"id";
 static NSString * const kSCHThemeManagerName = @"Name";
@@ -43,7 +44,7 @@ static NSString * const kSCHThemeManagerName = @"Name";
 @property (nonatomic, retain) NSDictionary *selectedTheme;
 
 - (NSString *)filePath:(NSString *)filePath orientation:(UIInterfaceOrientation)orientation;
-- (NSString *)filePath:(NSString *)filePath orientation:(UIInterfaceOrientation)orientation iPadSpecific:(BOOL)iPadSpecific;
+- (NSString *)filePath:(NSString *)filePath orientation:(UIInterfaceOrientation)orientation iPadQualifier:(SCHThemeManagerPadQualifier)iPadQualifier;
 
 @end
 
@@ -170,12 +171,12 @@ static NSString * const kSCHThemeManagerName = @"Name";
 
 - (UIImage *)imageForTheme:(NSString *)themeName key:(NSString *)key orientation:(UIInterfaceOrientation)orientation
 {
-    return [self imageForTheme:themeName key:key orientation:orientation iPadSpecific:NO];
+    return [self imageForTheme:themeName key:key orientation:orientation iPadQualifier:kSCHThemeManagerPadQualifierNone];
 }
 
 - (UIImage *)imageForTheme:(NSString *)themeName key:(NSString *)key 
                orientation:(UIInterfaceOrientation)orientation
-              iPadSpecific:(BOOL)iPadSpecific
+              iPadQualifier:(SCHThemeManagerPadQualifier)iPadQualifier
 {
     UIImage *ret = nil;
     
@@ -183,7 +184,7 @@ static NSString * const kSCHThemeManagerName = @"Name";
         if ([[dict objectForKey:kSCHThemeManagerName] isEqualToString:themeName] == YES) {
             ret = [UIImage imageNamed:[kSCHThemeManagerDirectory 
                                        stringByAppendingPathComponent:[self filePath:[dict objectForKey:key] 
-                                                                         orientation:orientation iPadSpecific:iPadSpecific]]];
+                                                                         orientation:orientation iPadQualifier:iPadQualifier]]];
             break;
         }
     }
@@ -197,10 +198,10 @@ static NSString * const kSCHThemeManagerName = @"Name";
                                 stringByAppendingPathComponent:[self filePath:[self.selectedTheme objectForKey:imageTitle] orientation:orientation]]]);
 }
 
-- (UIImage *)imageFor:(NSString *)imageTitle orientation:(UIInterfaceOrientation)orientation iPadSpecific:(BOOL)iPadSpecific
+- (UIImage *)imageFor:(NSString *)imageTitle orientation:(UIInterfaceOrientation)orientation iPadQualifier:(SCHThemeManagerPadQualifier)iPadQualifier
 {
     return([UIImage imageNamed:[kSCHThemeManagerDirectory 
-                                stringByAppendingPathComponent:[self filePath:[self.selectedTheme objectForKey:imageTitle] orientation:orientation iPadSpecific:iPadSpecific]]]);
+                                stringByAppendingPathComponent:[self filePath:[self.selectedTheme objectForKey:imageTitle] orientation:orientation iPadQualifier:iPadQualifier]]]);
 }
 
 - (UIImage *)imageForButton:(UIInterfaceOrientation)orientation
@@ -221,7 +222,7 @@ static NSString * const kSCHThemeManagerName = @"Name";
 {
     return([UIImage imageNamed:[kSCHThemeManagerDirectory 
                                 stringByAppendingPathComponent:[self filePath:[self.selectedTheme objectForKey:kSCHThemeManagerNavigationBarImage] 
-                                                                  orientation:orientation iPadSpecific:YES]]]);
+                                                                  orientation:orientation iPadQualifier:kSCHThemeManagerPadQualifierSuffix]]]);
     
 }
 
@@ -229,7 +230,7 @@ static NSString * const kSCHThemeManagerName = @"Name";
 {
     return([UIImage imageNamed:[kSCHThemeManagerDirectory 
                                 stringByAppendingPathComponent:[self filePath:[self.selectedTheme objectForKey:kSCHThemeManagerBackgroundImage] 
-                                                                  orientation:orientation iPadSpecific:YES]]]);
+                                                                  orientation:orientation iPadQualifier:kSCHThemeManagerPadQualifierRetina]]]);
 }
 
 - (UIImage *)imageForShelf:(UIInterfaceOrientation)orientation
@@ -237,7 +238,7 @@ static NSString * const kSCHThemeManagerName = @"Name";
     return([UIImage imageNamed:[kSCHThemeManagerDirectory 
                                 stringByAppendingPathComponent:[self filePath:[self.selectedTheme objectForKey:kSCHThemeManagerShelfImage]
                                                                   orientation:orientation
-                                                                 iPadSpecific:YES]]]);
+                                                                 iPadQualifier:kSCHThemeManagerPadQualifierSuffix]]]);
 }
 
 - (UIImage *)imageForHomeIcon:(UIInterfaceOrientation)orientation
@@ -270,25 +271,38 @@ static NSString * const kSCHThemeManagerName = @"Name";
 
 - (NSString *)filePath:(NSString *)filePath orientation:(UIInterfaceOrientation)orientation
 {
-    return [self filePath:filePath orientation:orientation iPadSpecific:NO];
+    return [self filePath:filePath orientation:orientation iPadQualifier:kSCHThemeManagerPadQualifierNone];
 }
 
-- (NSString *)filePath:(NSString *)filePath orientation:(UIInterfaceOrientation)orientation iPadSpecific:(BOOL)iPadSpecific
+- (NSString *)filePath:(NSString *)filePath orientation:(UIInterfaceOrientation)orientation iPadQualifier:(SCHThemeManagerPadQualifier)iPadQualifier
 {
     NSString *fullPath = nil;
+    NSString *trimmedPath = [filePath stringByDeletingPathExtension];
+    NSString *extension = [filePath pathExtension];
     
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone || !iPadSpecific) {
+    if (![extension length]) {
+        extension = @"png";
+    }
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone || (iPadQualifier == kSCHThemeManagerPadQualifierNone)) {
         if (UIInterfaceOrientationIsLandscape(orientation) == YES) {
-            fullPath = [NSString stringWithFormat:@"%@%@", filePath, kSCHThemeManagerLandscapePostFix];
+            fullPath = [NSString stringWithFormat:@"%@%@.%@", trimmedPath, kSCHThemeManagerLandscapePostFix, extension];
         } else {
-            fullPath = filePath;
+            fullPath = [NSString stringWithFormat:@"%@.%@", trimmedPath, extension];
         }
-    } else {
+    } else if (iPadQualifier == kSCHThemeManagerPadQualifierSuffix) {
         
         if (UIInterfaceOrientationIsLandscape(orientation) == YES) {
-            fullPath = [NSString stringWithFormat:@"%@%@%@", filePath, kSCHThemeManagerLandscapePostFix, kSCHThemeManageriPadPostFix];
+            fullPath = [NSString stringWithFormat:@"%@%@%@.%@", trimmedPath, kSCHThemeManagerLandscapePostFix, kSCHThemeManageriPadPostFix, extension];
         } else {
-            fullPath = [NSString stringWithFormat:@"%@%@", filePath, kSCHThemeManageriPadPostFix];
+            fullPath = [NSString stringWithFormat:@"%@%@.%@", trimmedPath, kSCHThemeManageriPadPostFix, extension];
+        }
+    } else if (iPadQualifier == kSCHThemeManagerPadQualifierRetina) {
+        
+        if (UIInterfaceOrientationIsLandscape(orientation) == YES) {
+            fullPath = [NSString stringWithFormat:@"%@%@%@.%@", trimmedPath, kSCHThemeManagerLandscapePostFix, kSCHThemeManagerRetinaSuffix, extension];
+        } else {
+            fullPath = [NSString stringWithFormat:@"%@%@.%@", trimmedPath, kSCHThemeManagerRetinaSuffix, extension];
         }
     }
     

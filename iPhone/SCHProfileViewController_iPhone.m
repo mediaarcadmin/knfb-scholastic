@@ -105,7 +105,7 @@ static const CGFloat kProfilePhoneTableOffsetLandscape = 20.0f;
     if (UIInterfaceOrientationIsLandscape(orientation)) {
         [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:
          [UIImage imageNamed:@"admin-iphone-landscape-top-toolbar.png"]];
-        [self.backgroundView setImage:[UIImage imageNamed:@"plain-background-landscape.png"]];
+        [self.backgroundView setImage:[UIImage imageNamed:@"plain-background-landscape.jpg"]];
         [self.settingsButton setImage:[UIImage imageNamed:@"settings-landscape.png"] 
                              forState:UIControlStateNormal];
         [self.settingsButton sizeToFit];
@@ -115,7 +115,7 @@ static const CGFloat kProfilePhoneTableOffsetLandscape = 20.0f;
     } else {
         [(SCHCustomNavigationBar *)self.navigationController.navigationBar setBackgroundImage:
          [UIImage imageNamed:@"admin-iphone-portrait-top-toolbar.png"]];
-        [self.backgroundView setImage:[UIImage imageNamed:@"plain-background-portrait.png"]];
+        [self.backgroundView setImage:[UIImage imageNamed:@"plain-background-portrait.jpg"]];
         [self.settingsButton setImage:[UIImage imageNamed:@"settings-portrait.png"] 
                              forState:UIControlStateNormal];
         [self.settingsButton sizeToFit];

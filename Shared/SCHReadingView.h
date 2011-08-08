@@ -64,7 +64,10 @@ typedef enum
 @property (nonatomic, assign) SCHReadingViewSelectionMode selectionMode;
 @property (nonatomic, retain, readonly) EucSelector *selector;
 
-- (id)initWithFrame:(CGRect)frame bookIdentifier:(SCHBookIdentifier *)bookIdentifier delegate:(id<SCHReadingViewDelegate>)delegate;
+- (id)initWithFrame:(CGRect)frame 
+     bookIdentifier:(SCHBookIdentifier *)bookIdentifier 
+managedObjectContext:(NSManagedObjectContext *)managedObjectContext 
+           delegate:(id<SCHReadingViewDelegate>)delegate;
 
 // Overridden methods
 // FIXME: change these to a protocol

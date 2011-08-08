@@ -22,6 +22,7 @@
 #import "LambdaAlert.h"
 #import "AppDelegate_Shared.h"
 #import "SCHProfileSyncComponent.h"
+#import "SCHCoreDataHelper.h"
 
 enum {
     kTableSectionSamples = 0,
@@ -127,11 +128,11 @@ enum {
     
     if (UIInterfaceOrientationIsLandscape(orientation)) {
         CGFloat offset = iPad ? kTableOffsetLandscape_iPad : kTableOffsetLandscape_iPhone;
-        [self.backgroundView setImage:[UIImage imageNamed:@"admin-background-ipad-landscape.png"]];
+        [self.backgroundView setImage:[UIImage imageNamed:@"plain-background-landscape.jpg"]];
         [self.starterTableView setContentInset:UIEdgeInsetsMake(offset, 0, 0, 0)];
     } else {
         CGFloat offset = iPad ? kTableOffsetPortrait_iPad : kTableOffsetPortrait_iPhone;
-        [self.backgroundView setImage:[UIImage imageNamed:@"admin-background-ipad-portrait.png"]];
+        [self.backgroundView setImage:[UIImage imageNamed:@"plain-background-portrait.jpg"]];
         [self.starterTableView setContentInset:UIEdgeInsetsMake(offset, 0, 0, 0)];
     }
     
@@ -362,7 +363,7 @@ enum {
         // access to the AppDelegate's managedObjectContext is deferred until we know we don't
         // want to use the same database any more
         AppDelegate_Shared *appDelegate = (AppDelegate_Shared *)[[UIApplication sharedApplication] delegate];
-        profileViewController.managedObjectContext = appDelegate.managedObjectContext;
+        profileViewController.managedObjectContext = appDelegate.coreDataHelper.managedObjectContext;
 }
     return profileViewController;
 }

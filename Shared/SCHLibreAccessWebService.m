@@ -867,7 +867,8 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		[objects setObject:[self objectFromTranslate:anObject.authtoken] forKey:kSCHLibreAccessWebServiceAuthToken];
 		[objects setObject:[self objectFromTranslate:anObject.expiresIn] forKey:kSCHLibreAccessWebServiceExpiresIn];
 		[objects setObject:[self objectFromTranslate:anObject.deviceIsDeregistered] forKey:kSCHLibreAccessWebServiceDeviceIsDeregistered];
-        
+		[objects setObject:[self objectFromTranslate:anObject.userKey] forKey:kSCHLibreAccessWebServiceUserKey];        
+
 		ret = objects;				
 	}
 	
@@ -883,6 +884,7 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		
 		[objects setObject:[self objectFromTranslate:anObject.authtoken] forKey:kSCHLibreAccessWebServiceAuthToken];
 		[objects setObject:[self objectFromTranslate:anObject.expiresIn] forKey:kSCHLibreAccessWebServiceExpiresIn];
+		[objects setObject:[self objectFromTranslate:anObject.userKey] forKey:kSCHLibreAccessWebServiceUserKey];        
         
 		ret = objects;				
 	}
@@ -1552,7 +1554,9 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
 		intoObject.action = [[self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceAction]] saveActionValue];
         if (intoObject.action != kSCHSaveActionsCreate) {
             intoObject.id_ = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceID]];
-		}
+		} else {
+            intoObject.id_ = [NSNumber numberWithInt:0];
+        }
 		intoObject.BookshelfStyle = [[object valueForKey:kSCHLibreAccessWebServiceBookshelfStyle] bookshelfStyleValue];
 		intoObject.storyInteractionEnabled = [self fromObjectTranslate:[object valueForKey:kSCHLibreAccessWebServiceStoryInteractionEnabled]];
 	}
@@ -1895,12 +1899,13 @@ static NSInteger const kSCHLibreAccessWebServiceVaid = 33;
     [item setValue:[NSDate date] forKey:kSCHLibreAccessWebServiceLastModified];
     [item setValue:@"John Doe" forKey:kSCHLibreAccessWebServiceScreenName];
     [item setValue:@"" forKey:kSCHLibreAccessWebServicePassword];
-    [item setValue:@"Key" forKey:kSCHLibreAccessWebServiceUserKey];
+//    [item setValue:@"Key" forKey:kSCHLibreAccessWebServiceUserKey];
     [item setValue:[NSNumber numberWithInt:LibreAccessServiceSvc_ProfileTypes_CHILD] forKey:kSCHLibreAccessWebServiceType];
     [item setValue:[NSNumber numberWithInt:0] forKey:kSCHLibreAccessWebServiceID];
     [item setValue:[NSNumber numberWithInt:LibreAccessServiceSvc_SaveActions_CREATE] forKey:kSCHLibreAccessWebServiceAction];
     [item setValue:[NSNumber numberWithInt:LibreAccessServiceSvc_BookshelfStyle_OLDER_CHILD] forKey:kSCHLibreAccessWebServiceBookshelfStyle];
     [item setValue:[NSNumber numberWithBool:YES] forKey:kSCHLibreAccessWebServiceStoryInteractionEnabled];
+    [item setValue:[NSNumber numberWithInt:LibreAccessServiceSvc_SaveActions_CREATE] forKey:kSCHLibreAccessWebServiceAction];
     
     [self performSelector:@selector(saveUserProfiles:) withObject:[NSArray arrayWithObject:item] afterDelay:0.1f];
     

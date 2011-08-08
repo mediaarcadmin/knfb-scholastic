@@ -98,7 +98,7 @@
 - (void)updateTheme:(UIInterfaceOrientation)interfaceOrientation
 {
     [self setBackgroundImage:[[SCHThemeManager sharedThemeManager] imageFor:self.imageKey
-                                                                orientation:interfaceOrientation iPadSpecific:YES]];
+                                                                orientation:interfaceOrientation iPadQualifier:kSCHThemeManagerPadQualifierSuffix]];
 }
 
 

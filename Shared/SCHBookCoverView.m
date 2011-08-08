@@ -11,6 +11,8 @@
 #import "SCHBookManager.h"
 #import <ImageIO/ImageIO.h>
 #import <QuartzCore/QuartzCore.h>
+#import "AppDelegate_Shared.h"
+#import "SCHCoreDataHelper.h"
 
 @interface SCHBookCoverView ()
 
@@ -160,6 +162,7 @@
 
 - (void)setIdentifier:(SCHBookIdentifier *)newIdentifier
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"SCHBookTextFlowParsePercentageUpdate" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"SCHBookDownloadPercentageUpdate" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"SCHBookStateUpdate" object:nil];
     
@@ -169,6 +172,13 @@
     
     if (identifier) {
         self.hidden = NO;
+        //SCHBookTextFlowParsePercentageUpdate
+        //updateTextflowPercentage
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(updateTextflowPercentage:) 
+                                                     name:@"SCHBookTextFlowParsePercentageUpdate" 
+                                                   object:nil];
         
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(updateFileDownloadPercentage:) 
@@ -324,7 +334,8 @@
     NSString *thumbPath;
     SCHBookCurrentProcessingState bookState;
     
-    NSManagedObjectContext *context = [(id)[[UIApplication sharedApplication] delegate] managedObjectContext];
+    AppDelegate_Shared *appDelegate = (AppDelegate_Shared *)[[UIApplication sharedApplication] delegate];    
+    NSManagedObjectContext *context = appDelegate.coreDataHelper.managedObjectContext;
 	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.identifier inManagedObjectContext:context];    
     
     bookState = [book processingState];
@@ -466,7 +477,8 @@
     CGPoint errorCenter = CGPointMake(floorf(CGRectGetMidX(coverFrame)), floorf(CGRectGetMidY(coverFrame)));
     self.errorBadge.center = errorCenter;
     
-    NSManagedObjectContext *context = [(id)[[UIApplication sharedApplication] delegate] managedObjectContext];
+    AppDelegate_Shared *appDelegate = (AppDelegate_Shared *)[[UIApplication sharedApplication] delegate];    
+    NSManagedObjectContext *context = appDelegate.coreDataHelper.managedObjectContext;
 	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.identifier inManagedObjectContext:context];    
     
 	[self setNeedsDisplay];
@@ -483,7 +495,7 @@
                 self.bookTintView.hidden = NO;
                 self.progressView.hidden = NO;
                 self.errorBadge.hidden = YES;
-                [self.progressView setProgress:[book currentDownloadedPercentage]];            
+                [self.progressView setProgress:[book currentDownloadedPercentage] * 0.8];            
                 break;
             case SCHBookProcessingStateDownloadPaused:
                 NSLog(@"Setting paused.");
@@ -491,7 +503,17 @@
                 self.bookTintView.hidden = NO;
                 self.progressView.hidden = NO;
                 self.errorBadge.hidden = YES;
-                [self.progressView setProgress:[book currentDownloadedPercentage]];            
+                [self.progressView setProgress:[book currentDownloadedPercentage] * 0.8];            
+                break;
+            case SCHBookProcessingStateReadyForLicenseAcquisition:
+            case SCHBookProcessingStateReadyForRightsParsing:
+            case SCHBookProcessingStateReadyForAudioInfoParsing:
+            case SCHBookProcessingStateReadyForTextFlowPreParse:
+                self.progressView.alpha = 1.0f;
+                self.bookTintView.hidden = NO;
+                self.progressView.hidden = NO;
+                self.errorBadge.hidden = YES;
+                [self.progressView setProgress:0.8];            
                 break;
             case SCHBookProcessingStateReadyToRead:
                 self.progressView.alpha = 1.0f;
@@ -509,6 +531,8 @@
                 self.progressView.hidden = YES;
                 self.errorBadge.hidden = NO;
                 break;
+            case SCHBookProcessingStateReadyForSmartZoomPreParse:
+            case SCHBookProcessingStateReadyForPagination:
             default:
                 self.progressView.alpha = 1.0f;
                 self.bookTintView.hidden = NO;
@@ -517,6 +541,15 @@
                 break;
         }
     }	
+    
+//    SCHBookProcessingStateReadyForLicenseAcquisition = 5,
+//	SCHBookProcessingStateReadyForRightsParsing      = 6,
+//	SCHBookProcessingStateReadyForAudioInfoParsing   = 7,
+//	SCHBookProcessingStateReadyForTextFlowPreParse   = 8,
+//    SCHBookProcessingStateReadyForSmartZoomPreParse  = 9,
+//	SCHBookProcessingStateReadyForPagination         = 10,
+//	SCHBookProcessingStateReadyToRead                = 11,
+
     
     if (self.isNewBook && !self.trashed) {
         self.newBadge.hidden = NO;
@@ -607,7 +640,18 @@
 {
     SCHBookIdentifier *bookIdentifier = [[notification userInfo] objectForKey:@"bookIdentifier"];
     if ([bookIdentifier isEqual:self.identifier]) {
-        float newPercentage = [(NSNumber *) [[notification userInfo] objectForKey:@"currentPercentage"] floatValue];
+        float newPercentage = 0.8 * [(NSNumber *) [[notification userInfo] objectForKey:@"currentPercentage"] floatValue];
+        [self.progressView setProgress:newPercentage];
+        [self.progressView setHidden:NO];
+    }
+}
+
+// listen for textflow progress
+- (void)updateTextflowPercentage:(NSNotification *)notification
+{
+    SCHBookIdentifier *bookIdentifier = [[notification userInfo] objectForKey:@"bookIdentifier"];
+    if ([bookIdentifier isEqual:self.identifier]) {
+        float newPercentage = 0.8 + (0.2 * [(NSNumber *) [[notification userInfo] objectForKey:@"currentPercentage"] floatValue]);
         [self.progressView setProgress:newPercentage];
         [self.progressView setHidden:NO];
     }

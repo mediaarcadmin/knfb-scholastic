@@ -57,18 +57,18 @@
 {
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         [self.topToolbar setBackgroundImage:[UIImage imageNamed:@"settings-ipad-top-toolbar.png"]];
-        [self.backgroundView setImage:[UIImage imageNamed:@"plain-background-portrait.png"]];   
+        [self.backgroundView setImage:[UIImage imageNamed:@"plain-background-portrait.jpg"]];   
         [self.navigationController.view.layer setBorderColor:[UIColor SCHRed3Color].CGColor];
         [self.navigationController.view.layer setBorderWidth:2.0f];
     } else {
         CGRect barFrame = self.topToolbar.frame;
         if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
-            [self.backgroundView setImage:[UIImage imageNamed:@"plain-background-landscape.png"]];
+            [self.backgroundView setImage:[UIImage imageNamed:@"plain-background-landscape.jpg"]];
             [self.topToolbar setBackgroundImage:[UIImage imageNamed:@"admin-iphone-landscape-top-toolbar.png"]];
             barFrame.size.height = 32;
             self.barSpacer.width = 38;
         } else {
-            [self.backgroundView setImage:[UIImage imageNamed:@"plain-background-portrait.png"]];   
+            [self.backgroundView setImage:[UIImage imageNamed:@"plain-background-portrait.jpg"]];   
             [self.topToolbar setBackgroundImage:[UIImage imageNamed:@"admin-iphone-portrait-top-toolbar.png"]];
             barFrame.size.height = 44;
             self.barSpacer.width = 0;

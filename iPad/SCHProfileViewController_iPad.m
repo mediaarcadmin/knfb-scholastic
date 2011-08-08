@@ -92,10 +92,10 @@ static const CGFloat kProfilePadTableOffsetLandscape = 220.0f;
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation
 {
     if (UIInterfaceOrientationIsLandscape(orientation)) {
-        [self.backgroundView setImage:[UIImage imageNamed:@"admin-background-ipad-landscape.png"]];
+        [self.backgroundView setImage:[UIImage imageNamed:@"plain-background-landscape.jpg"]];
         [self.tableView setContentInset:UIEdgeInsetsMake(kProfilePadTableOffsetLandscape, 0, 0, 0)];
     } else {
-        [self.backgroundView setImage:[UIImage imageNamed:@"admin-background-ipad-portrait.png"]];
+        [self.backgroundView setImage:[UIImage imageNamed:@"plain-background-portrait.jpg"]];
         [self.tableView setContentInset:UIEdgeInsetsMake(kProfilePadTableOffsetPortrait, 0, 0, 0)];
     }
     

@@ -110,7 +110,7 @@
     SCHAppBook *book = [[updates objects] objectAtIndex:indexPath.row];
     SCHBookIdentifier *bookIdentifier = [book bookIdentifier];
     SCHUpdateBooksTableViewCellController *tvc = [self.cellControllers objectForKey:bookIdentifier];
-    NSAssert(tvc != nil, @"cell controller not found for book %@", bookIdentifier);
+    //NSAssert(tvc != nil, @"cell controller not found for book %@", bookIdentifier);
     
     tvc.cell = (SCHUpdateBooksTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (!tvc.cell) {

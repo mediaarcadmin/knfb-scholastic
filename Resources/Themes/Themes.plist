@@ -3,10 +3,8 @@
 <plist version="1.0">
 <array>
 	<dict>
-		<key>ListBackgroundColor</key>
-		<string>a7d8fb</string>
 		<key>BackgroundImage</key>
-		<string>Blue/bookshelf-bg</string>
+		<string>Blue/bookshelf-bg-square.jpg</string>
 		<key>BooksIcon</key>
 		<string>Shared/icon-books</string>
 		<key>ButtonImage</key>
@@ -21,6 +19,8 @@
 		<integer>1</integer>
 		<key>Image</key>
 		<string>Blue/Blue</string>
+		<key>ListBackgroundColor</key>
+		<string>a7d8fb</string>
 		<key>Name</key>
 		<string>Blue</string>
 		<key>NavigationBarImage</key>
@@ -31,10 +31,8 @@
 		<string>Shared/icon-theme</string>
 	</dict>
 	<dict>
-		<key>ListBackgroundColor</key>
-		<string>def3d8</string>
 		<key>BackgroundImage</key>
-		<string>Snake Skin/bookshelf-bg</string>
+		<string>Snake Skin/bookshelf-bg-square.jpg</string>
 		<key>BooksIcon</key>
 		<string>Shared/icon-books</string>
 		<key>ButtonImage</key>
@@ -47,6 +45,8 @@
 		<integer>2</integer>
 		<key>Image</key>
 		<string>Snake Skin/Snake Skin</string>
+		<key>ListBackgroundColor</key>
+		<string>def3d8</string>
 		<key>Name</key>
 		<string>Snake Skin</string>
 		<key>NavigationBarImage</key>
@@ -57,10 +57,8 @@
 		<string>Shared/icon-theme</string>
 	</dict>
 	<dict>
-		<key>ListBackgroundColor</key>
-		<string>bde0f1</string>
 		<key>BackgroundImage</key>
-		<string>Waterdrops/bookshelf-bg</string>
+		<string>Waterdrops/bookshelf-bg-square.jpg</string>
 		<key>BooksIcon</key>
 		<string>Shared/icon-books</string>
 		<key>ButtonImage</key>
@@ -73,6 +71,8 @@
 		<integer>3</integer>
 		<key>Image</key>
 		<string>Waterdrops/Waterdrops</string>
+		<key>ListBackgroundColor</key>
+		<string>bde0f1</string>
 		<key>Name</key>
 		<string>Waterdrops</string>
 		<key>NavigationBarImage</key>
@@ -83,10 +83,8 @@
 		<string>Shared/icon-theme</string>
 	</dict>
 	<dict>
-		<key>ListBackgroundColor</key>
-		<string>d1ddfe</string>
 		<key>BackgroundImage</key>
-		<string>Starry Night/bookshelf-bg</string>
+		<string>Starry Night/bookshelf-bg-square.jpg</string>
 		<key>BooksIcon</key>
 		<string>Shared/icon-books</string>
 		<key>ButtonImage</key>
@@ -99,6 +97,8 @@
 		<integer>4</integer>
 		<key>Image</key>
 		<string>Starry Night/Starry Night</string>
+		<key>ListBackgroundColor</key>
+		<string>d1ddfe</string>
 		<key>Name</key>
 		<string>Starry Night</string>
 		<key>NavigationBarImage</key>
@@ -109,10 +109,8 @@
 		<string>Shared/icon-theme</string>
 	</dict>
 	<dict>
-		<key>ListBackgroundColor</key>
-		<string>d8d8d8</string>
 		<key>BackgroundImage</key>
-		<string>Fence/bookshelf-bg</string>
+		<string>Fence/bookshelf-bg-square.jpg</string>
 		<key>BooksIcon</key>
 		<string>Shared/icon-books</string>
 		<key>ButtonImage</key>
@@ -125,6 +123,8 @@
 		<integer>5</integer>
 		<key>Image</key>
 		<string>Fence/Fence</string>
+		<key>ListBackgroundColor</key>
+		<string>d8d8d8</string>
 		<key>Name</key>
 		<string>Fence</string>
 		<key>NavigationBarImage</key>
@@ -135,10 +135,8 @@
 		<string>Shared/icon-theme</string>
 	</dict>
 	<dict>
-		<key>ListBackgroundColor</key>
-		<string>c4f6fd</string>
 		<key>BackgroundImage</key>
-		<string>Grid/bookshelf-bg</string>
+		<string>Grid/bookshelf-bg-square.jpg</string>
 		<key>BooksIcon</key>
 		<string>Shared/icon-books</string>
 		<key>ButtonImage</key>
@@ -151,6 +149,8 @@
 		<integer>6</integer>
 		<key>Image</key>
 		<string>Grid/Grid</string>
+		<key>ListBackgroundColor</key>
+		<string>c4f6fd</string>
 		<key>Name</key>
 		<string>Grid</string>
 		<key>NavigationBarImage</key>
@@ -161,10 +161,8 @@
 		<string>Shared/icon-theme</string>
 	</dict>
 	<dict>
-		<key>ListBackgroundColor</key>
-		<string>fff4bb</string>
 		<key>BackgroundImage</key>
-		<string>Dots/bookshelf-bg</string>
+		<string>Dots/bookshelf-bg-square.jpg</string>
 		<key>BooksIcon</key>
 		<string>Shared/icon-books</string>
 		<key>ButtonImage</key>
@@ -177,6 +175,8 @@
 		<integer>7</integer>
 		<key>Image</key>
 		<string>Dots/Dots</string>
+		<key>ListBackgroundColor</key>
+		<string>fff4bb</string>
 		<key>Name</key>
 		<string>Dots</string>
 		<key>NavigationBarImage</key>

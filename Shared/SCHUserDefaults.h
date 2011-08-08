@@ -9,3 +9,6 @@
 
 // Constants
 extern NSString * const kSCHUserDefaultsPerformedFirstSyncUpToBooks;
+extern NSString * const kSCHUserDefaultsSpaceSaverMode;
+extern NSString * const kSCHUserDefaultsClearLocalDebugMode;
+extern NSString * const kSCHUserDefaultsCoreDataStoreType;
