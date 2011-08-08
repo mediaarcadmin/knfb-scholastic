@@ -149,12 +149,14 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {    
-    if (self.activeTextField && (self.activeTextField != textField)) {
-        // We have swapped textFields with the keyboard showing
-        [self makeVisibleTextField:textField];
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        if (self.activeTextField && (self.activeTextField != textField)) {
+            // We have swapped textFields with the keyboard showing
+            [self makeVisibleTextField:textField];
+        }
+        
+        self.activeTextField = textField;
     }
-    
-    self.activeTextField = textField;
 }
 
 - (void)makeVisibleTextField:(UITextField *)textField
