@@ -153,6 +153,11 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
     return 0;
 }
 
+- (NSString *)pageLabelForPageAtIndex:(NSUInteger)pageIndex
+{
+    return nil;
+}
+
 - (void)setPageTexture:(UIImage *)image isDark:(BOOL)isDark
 {
     return;

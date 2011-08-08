@@ -1816,10 +1816,9 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (void)updateScrubberLabel
 {
     if (self.currentPageIndex != NSUIntegerMax) {
-        NSString *localisedText = NSLocalizedString(@"Page %d of %d", @"Page %d of %d");
-        [self.pageLabel setText:[NSString stringWithFormat:localisedText, self.currentPageIndex + 1, [self.readingView pageCount]]];
+        [self.pageLabel setText:[self.readingView pageLabelForPageAtIndex:self.currentPageIndex]];
     } else {
-        NSString *localisedText = NSLocalizedString(@"%d%% of book", @"%d of book");
+        NSString *localisedText = NSLocalizedString(@"%d%% of book", @"%d%% of book");
         [self.pageLabel setText:[NSString stringWithFormat:localisedText, MAX((NSUInteger)(self.currentBookProgress * 100), 1)]];
     }  
     
