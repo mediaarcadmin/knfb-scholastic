@@ -213,6 +213,21 @@ static NSString *extractXmlAttribute(const XML_Char **atts, const char *key)
 
 @end
 
+#pragma mark - Concentration
+
+@implementation SCHStoryInteractionConcentration (Parse)
+
+- (void)startElement:(const XML_Char *)name attributes:(const XML_Char **)attributes parser:(SCHStoryInteractionParser *)parser
+{
+    if (strcmp(name, "Introduction") == 0) {
+        self.introduction = extractXmlAttribute(attributes, "Transcript");
+    } else {
+        [super startElement:name attributes:attributes parser:parser];
+    }
+}
+
+@end
+
 #pragma mark - HotSpot
 
 @implementation SCHStoryInteractionHotSpotQuestion (Parse)

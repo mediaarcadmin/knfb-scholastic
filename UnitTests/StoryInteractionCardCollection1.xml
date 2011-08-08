@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<SIConfigFile>
+    <StoryInteractions>
+        <StoryInteraction StoryInteractionType="CardCollection" ID="cc">
+            <DocumentPageNumber>228</DocumentPageNumber>
+            <Position>0,0</Position>
+            <header src="cc_header.png" />
+            <Cards>
+                <Card srcfront="cc_card1front.png" srcback="cc_card1back.png" />
+                <Card srcfront="cc_card2front.png" srcback="cc_card2back.png" />
+                <Card srcfront="cc_card3front.png" srcback="cc_card3back.png" />
+                <Card srcfront="cc_card4front.png" srcback="cc_card4back.png" />
+                <Card srcfront="cc_card5front.png" srcback="cc_card5back.png" />
+                <Card srcfront="cc_card6front.png" srcback="cc_card6back.png" />
+                <Card srcfront="cc_card7front.png" srcback="cc_card7back.png" />
+                <Card srcfront="cc_card8front.png" srcback="cc_card8back.png" />
+            </Cards>
+        </StoryInteraction>
+    </StoryInteractions>
+</SIConfigFile>

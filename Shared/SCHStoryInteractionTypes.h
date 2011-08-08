@@ -9,6 +9,7 @@
 #import "SCHStoryInteraction.h"
 #import "SCHStoryInteractionAboutYouQuiz.h"
 #import "SCHStoryInteractionCardCollection.h"
+#import "SCHStoryInteractionConcentration.h"
 #import "SCHStoryInteractionHotSpot.h"
 #import "SCHStoryInteractionImage.h"
 #import "SCHStoryInteractionJigsaw.h"

@@ -90,6 +90,45 @@
     }
 }
 
+- (void)testCardCollection
+{
+    NSArray *stories = [self parse:@"CardCollection1"];
+    STAssertEquals([stories count], 1U, @"incorrect story count");
+    STAssertTrue([[stories lastObject] isKindOfClass:[SCHStoryInteractionCardCollection class]], @"incorrect class");
+    
+    SCHStoryInteractionCardCollection *story = [stories lastObject];
+    STAssertEquals(story.documentPageNumber, 228, @"incorrect documentPageNumber");
+    STAssertEqualObjects([[story imagePathForHeader] lastPathComponent], @"cc_header.png", @"incorrect header filename");
+    
+    STAssertEquals([story numberOfCards], 8, @"incorrect number of cards");
+    for (NSInteger i = 0; i < [story numberOfCards]; ++i) {
+        NSString *frontFile = [NSString stringWithFormat:@"cc_card%dfront.png", i+1];
+        NSString *backFile = [NSString stringWithFormat:@"cc_card%dback.png", i+1];
+        STAssertEqualObjects([[story imagePathForCardFrontAtIndex:i] lastPathComponent], frontFile, @"incorrect card front image at index %d", i);
+        STAssertEqualObjects([[story imagePathForCardBackAtIndex:i] lastPathComponent], backFile, @"incorrect card back image at index %d", i);
+    }
+}
+
+- (void)testConcentration
+{
+    NSArray *stories = [self parse:@"Concentration1"];
+    STAssertEquals([stories count], 1U, @"incorrect story count");
+    STAssertTrue([[stories lastObject] isKindOfClass:[SCHStoryInteractionConcentration class]], @"incorrect class");
+
+    SCHStoryInteractionConcentration *story = [stories lastObject];
+    STAssertEquals(story.documentPageNumber, 3, @"incorrect documentPageNumber");
+    STAssertEqualObjects(story.introduction, @"Match the words with the pictures!", @"incorrect introduction");
+    STAssertEqualObjects([[story audioPathForIntroduction] lastPathComponent], @"cn1_intro.mp3", @"incorrect introduction audio");
+    STAssertEquals([story numberOfPairs], 12, @"incorrect number of pairs");
+    
+    for (NSInteger i = 0; i < [story numberOfPairs]; ++i) {
+        NSString *first = [NSString stringWithFormat:@"cn1_match%da.png", i+1];
+        NSString *second = [NSString stringWithFormat:@"cn1_match%db.png", i+1];
+        STAssertEqualObjects([[story imagePathForFirstOfPairAtIndex:i] lastPathComponent], first, @"incorrect first image at index %d", i);
+        STAssertEqualObjects([[story imagePathForSecondOfPairAtIndex:i] lastPathComponent], second, @"incorrect second image at index %d", i);
+    }
+}
+
 - (void)checkPath:(CGPathRef)path equalToCoordList:(NSString *)coordString
 {
     NSArray *coords = [coordString componentsSeparatedByString:@","];
