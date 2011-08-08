@@ -497,6 +497,32 @@
     }
 }
 
+- (void)testWordBird1
+{
+    NSArray *stories = [self parse:@"WordBird1"];
+    STAssertEquals([stories count], 1U, @"incorrect story count");
+    STAssertTrue([[stories lastObject] isKindOfClass:[SCHStoryInteractionWordBird class]], @"incorrect class");
+    
+    SCHStoryInteractionWordBird *story = [stories lastObject];
+    STAssertEquals(story.documentPageNumber, 4, @"incorrect documentPageNumber");
+    
+    struct {
+        NSString *word;
+        NSString *suffix;
+    } items[] = {
+        { @"SURF", @"surf" },
+        { @"STARFISH", @"starfish" }
+    };
+    NSInteger expectQuestionCount = sizeof(items)/sizeof(items[0]);
+    STAssertEquals([story questionCount], expectQuestionCount, @"incorrect questionCount");
+    
+    for (NSInteger i = 0; i < MIN(expectQuestionCount, [story questionCount]); ++i) {
+        SCHStoryInteractionWordBirdQuestion *q = [story.questions objectAtIndex:i];
+        STAssertEqualObjects(q.word, items[i].word, @"incorrect word at question %d", i);
+        STAssertEqualObjects(q.suffix, items[i].suffix, @"incorrect suffix at question %d", i);
+    }
+}
+
 - (void)testWordMatch1
 {
     NSArray *stories = [self parse:@"WordMatch1"];

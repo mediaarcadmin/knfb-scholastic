@@ -18,5 +18,11 @@
 
 @end
 
-@interface SCHStoryInteractionPictureStarterCustom : SCHStoryInteractionPictureStarter
+@interface SCHStoryInteractionPictureStarterCustom : SCHStoryInteractionPictureStarter {}
+@end
+
+@interface SCHStoryInteractionPictureStarterNewEnding : SCHStoryInteractionPictureStarter {}
+@end
+
+@interface SCHStoryInteractionPictureStarterFavorite : SCHStoryInteractionPictureStarter {}
 @end

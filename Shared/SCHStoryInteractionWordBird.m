@@ -1,0 +1,50 @@
+//
+//  SCHStoryInteractionWordBird.m
+//  Scholastic
+//
+//  Created by Neil Gall on 08/08/2011.
+//  Copyright 2011 BitWink. All rights reserved.
+//
+
+#import "SCHStoryInteractionWordBird.h"
+
+@implementation SCHStoryInteractionWordBirdQuestion
+
+@synthesize word;
+@synthesize suffix;
+
+- (void)dealloc
+{
+    [word release], word = nil;
+    [suffix release], suffix = nil;
+    [super dealloc];
+}
+
+@end
+
+@implementation SCHStoryInteractionWordBird
+
+@synthesize questions;
+
+- (void)dealloc
+{
+    [questions release], questions = nil;
+    [super dealloc];
+}
+
+- (NSInteger)questionCount
+{
+    return [self.questions count];
+}
+
+- (NSString *)title
+{
+    return @"Word Bird";
+}
+
+- (BOOL)isOlderStoryInteraction
+{
+    return NO;
+}
+
+@end

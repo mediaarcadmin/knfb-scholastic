@@ -656,7 +656,44 @@ static NSString *extractXmlAttribute(const XML_Char **atts, const char *key)
 
 @end
 
-#pragma mark - WordMatch
+#pragma mark - Word Bird
+
+@implementation SCHStoryInteractionWordBirdQuestion (Parser)
+
+- (void)startElement:(const XML_Char *)name attributes:(const XML_Char **)attributes parser:(SCHStoryInteractionParser *)parser
+{
+    if (strcmp(name, "Problem") == 0) {
+        self.word = extractXmlAttribute(attributes, "Transcript");
+        self.suffix = extractXmlAttribute(attributes, "suffix");
+    } else {
+        [super startElement:name attributes:attributes parser:parser];
+    }
+}
+
+@end
+
+@implementation SCHStoryInteractionWordBird (Parser)
+
+- (void)startElement:(const XML_Char *)name attributes:(const XML_Char **)attributes parser:(SCHStoryInteractionParser *)parser
+{
+    if (strcmp(name, "Problem") == 0) {
+        [parser beginQuestion:[SCHStoryInteractionWordBirdQuestion class]];
+        [parser.question startElement:name attributes:attributes parser:parser];
+        [parser endQuestion];
+    } else {
+        [super startElement:name attributes:attributes parser:parser];
+    }
+}
+
+- (void)parseComplete:(SCHStoryInteractionParser *)parser
+{
+    self.questions = [NSArray arrayWithArray:parser.questions];
+    [super parseComplete:parser];
+}
+
+@end
+
+#pragma mark - Word Match
 
 @implementation SCHStoryInteractionWordMatchQuestion (Parse)
 

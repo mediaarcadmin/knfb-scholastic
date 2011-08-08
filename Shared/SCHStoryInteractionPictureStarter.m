@@ -41,3 +41,9 @@
 
 @implementation SCHStoryInteractionPictureStarterCustom
 @end
+
+@implementation SCHStoryInteractionPictureStarterNewEnding
+@end
+
+@implementation SCHStoryInteractionPictureStarterFavorite
+@end
