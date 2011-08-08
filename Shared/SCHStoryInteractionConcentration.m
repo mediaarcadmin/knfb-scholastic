@@ -18,6 +18,16 @@
     [super dealloc];
 }
 
+- (BOOL)isOlderStoryInteraction
+{
+    return NO;
+}
+
+- (NSString *)title
+{
+    return @"Memory Match";
+}
+
 - (NSString *)audioPathForIntroduction
 {
     NSString *filename = [NSString stringWithFormat:@"%@_intro.mp3", self.ID];
