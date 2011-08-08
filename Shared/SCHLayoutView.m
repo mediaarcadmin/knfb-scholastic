@@ -149,9 +149,15 @@
     }
 }
 
-- (id)initWithFrame:(CGRect)frame bookIdentifier:(SCHBookIdentifier *)bookIdentifier delegate:(id<SCHReadingViewDelegate>)delegate
+- (id)initWithFrame:(CGRect)frame 
+     bookIdentifier:(SCHBookIdentifier *)bookIdentifier 
+managedObjectContext:(NSManagedObjectContext *)managedObjectContext 
+           delegate:(id<SCHReadingViewDelegate>)delegate
 {
-    self = [super initWithFrame:frame bookIdentifier:bookIdentifier delegate:delegate];
+    self = [super initWithFrame:frame 
+                 bookIdentifier:bookIdentifier 
+           managedObjectContext:managedObjectContext
+                       delegate:delegate];
     if (self) {        
         [self initialiseView];
     }
