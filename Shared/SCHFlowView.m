@@ -23,8 +23,6 @@
 #import <libEucalyptus/THPair.h>
 #import <libEucalyptus/EucConfiguration.h>
 #import <libEucalyptus/EucOTFIndex.h>
-#import "AppDelegate_Shared.h"
-#import "SCHCoreDataHelper.h"
 
 @interface SCHFlowView ()
 
