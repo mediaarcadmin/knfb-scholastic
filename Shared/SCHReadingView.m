@@ -21,8 +21,6 @@
 #import <libEucalyptus/EucSelectorRange.h>
 #import "SCHDictionaryAccessManager.h"
 #import "SCHDictionaryDownloadManager.h"
-#import "AppDelegate_Shared.h"
-#import "SCHCoreDataHelper.h"
 
 @interface SCHReadingView()
 
