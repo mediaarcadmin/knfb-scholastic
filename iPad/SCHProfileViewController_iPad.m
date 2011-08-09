@@ -41,8 +41,6 @@ static const CGFloat kProfilePadTableOffsetLandscape = 220.0f;
     [bookshelfViewController release], bookshelfViewController = nil;
     [containerView release], containerView = nil;
     [settingsButton release], settingsButton = nil;
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)dealloc 

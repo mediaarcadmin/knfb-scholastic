@@ -48,6 +48,7 @@ static const CGFloat kProfilePhoneTableOffsetLandscape = 20.0f;
 
 - (void)releaseViewObjects
 {
+    [super releaseViewObjects];
     [settingsButton release], settingsButton = nil;
     [barSpacer release], barSpacer = nil;
     [logoContainer release], logoContainer = nil;

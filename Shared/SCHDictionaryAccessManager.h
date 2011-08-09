@@ -12,8 +12,8 @@
 extern NSString* const kSCHDictionaryYoungReader;
 extern NSString* const kSCHDictionaryOlderReader;
 
-@interface SCHDictionaryAccessManager : NSObject {
-    
+@interface SCHDictionaryAccessManager : NSObject
+{    
 }
 
 @property dispatch_queue_t dictionaryAccessQueue;
@@ -21,21 +21,21 @@ extern NSString* const kSCHDictionaryOlderReader;
 @property (nonatomic, retain) NSManagedObjectContext *mainThreadManagedObjectContext;
 @property (nonatomic, retain) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 
-+ (SCHDictionaryAccessManager *) sharedAccessManager;
++ (SCHDictionaryAccessManager *)sharedAccessManager;
 
-- (void) updateOnReady;
+- (void)updateOnReady;
 
 // HTML definition for a word (uses YD/OD as category)
-- (NSString *) HTMLForWord: (NSString *) dictionaryWord category: (NSString *) category;
+- (NSString *)HTMLForWord:(NSString *)dictionaryWord category:(NSString *)category;
 
 // speak a word for a category
-- (void) speakWord: (NSString *) dictionaryWord category: (NSString *) category;
+- (void)speakWord:(NSString *)dictionaryWord category:(NSString *)category;
 
 // speak a word definition
-- (void) speakYoungerWordDefinition: (NSString *) dictionaryWord;
+- (void)speakYoungerWordDefinition:(NSString *)dictionaryWord;
 
 // stop all speaking
-- (void) stopAllSpeaking;
+- (void)stopAllSpeaking;
 
 
 @end

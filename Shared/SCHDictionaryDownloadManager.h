@@ -43,8 +43,8 @@ typedef enum {
 
 @class SCHAppDictionaryState;
 
-@interface SCHDictionaryDownloadManager : NSObject {
-
+@interface SCHDictionaryDownloadManager : NSObject
+{
 }
 
 @property (nonatomic, retain) NSManagedObjectContext *mainThreadManagedObjectContext;
@@ -57,13 +57,13 @@ typedef enum {
 // dictionary is currently processing
 @property BOOL isProcessing;
 
-+ (SCHDictionaryDownloadManager *) sharedDownloadManager;
++ (SCHDictionaryDownloadManager *)sharedDownloadManager;
 
 // the local dictionary directory
-- (NSString *) dictionaryDirectory;
+- (NSString *)dictionaryDirectory;
 
 // the location of the downloaded zip file
-- (NSString *) dictionaryZipPath;
+- (NSString *)dictionaryZipPath;
 
 // the location that the current version of the 
 // entry table/word form text files are stored
@@ -73,19 +73,19 @@ typedef enum {
 - (void)withAppDictionaryStatePerform:(void (^)(SCHAppDictionaryState *state))block;
 
 - (void)threadSafeUpdateDictionaryState:(SCHDictionaryProcessingState)processingState;
-- (SCHDictionaryProcessingState) dictionaryProcessingState;
+- (SCHDictionaryProcessingState)dictionaryProcessingState;
 
 // parsing methods called by the parsing operation
-- (void) initialParseEntryTable;
-- (void) initialParseWordFormTable;
-- (void) updateParseEntryTable;
-- (void) updateParseWordFormTable;
+- (void)initialParseEntryTable;
+- (void)initialParseWordFormTable;
+- (void)updateParseEntryTable;
+- (void)updateParseWordFormTable;
 
 // properties indicating wifi availability/if the connection is idle
 @property BOOL wifiAvailable;
 @property BOOL connectionIdle;
 
-- (void) checkIfUpdateNeeded;
+- (void)checkIfUpdateNeeded;
 
 // dictionary download control
 - (void)beginDictionaryDownload;
