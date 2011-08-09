@@ -105,7 +105,8 @@ enum {
     self.selectedCardView = (UIImageView *)[tap.view viewWithTag:kCardImageViewTag];
     self.showingFront = YES;
 
-    CGFloat height = CGRectGetHeight(self.contentsView.bounds) - 30;
+    CGFloat verticalSpace = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ? 30 : 20;
+    CGFloat height = CGRectGetHeight(self.contentsView.bounds) - verticalSpace;
     CGFloat width = height * CGRectGetWidth(self.selectedCardView.bounds) / CGRectGetHeight(self.selectedCardView.bounds);
     
     self.zoomCardLayer = [CATransformLayer layer];
