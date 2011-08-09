@@ -370,6 +370,7 @@ static const CGFloat kContentHeightLandscape = 380;
 {
     switch (self.controllerType) {
         case kSCHControllerLoginView:
+        case kSCHControllerDoublePasswordView:
         {
             if (textField == self.topField) {
                 [self.bottomField becomeFirstResponder];
@@ -399,7 +400,7 @@ static const CGFloat kContentHeightLandscape = 380;
             }
             return YES;
             break;
-        }
+        }            
         default:
             NSLog(@"Unknown controller mode!");
             return NO;
