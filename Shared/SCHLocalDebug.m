@@ -29,9 +29,11 @@
 #import "SCHPrivateAnnotations.h"
 #import "SCHAnnotationsContentItem.h"
 #import "SCHAppContentProfileItem.h"
+#import "SCHAppStateManager.h"
 
 @interface SCHLocalDebug ()
 
+- (void)setupAppState;
 - (void)checkAndCopyLocalFilesToApplicationSupport:(NSString*)srcDir 
                                          deleteSrc:(BOOL)delete;
 - (SCHAppContentProfileItem *)addAppContentProfileItem:(SCHContentProfileItem *)contentProfileItem 
@@ -164,7 +166,9 @@
 		runOnce = YES;
 		NSError *error = nil;
 		NSArray *xpsFiles = nil;
-		
+
+		[self setupAppState];
+        
         [self checkAndCopyLocalFilesToApplicationSupport:[[NSBundle mainBundle] bundlePath] deleteSrc:NO];
 		
 		NSArray  *applicationSupportPaths = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);
@@ -190,6 +194,15 @@
 	}
 }
 
+- (void)setupAppState
+{
+    SCHAppState *appState = [SCHAppStateManager sharedAppStateManager].appState;
+    
+    if (appState != nil) {        
+        appState.ShouldSync = [NSNumber numberWithBool:NO];
+        appState.ShouldDownloadBooks = [NSNumber numberWithBool:NO];
+    }
+}
 
 - (void)checkAndCopyLocalFilesToApplicationSupport:(NSString*)srcDir deleteSrc:(BOOL)delete
 {

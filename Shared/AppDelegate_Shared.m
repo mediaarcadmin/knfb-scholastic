@@ -52,8 +52,10 @@ static NSString* const prModelCertFilename = @"iphonecert.dat";
 {
     if ([self createApplicationSupportDirectory] == NO) {
 		NSLog(@"Application Support directory could not be created.");
-	}
-  
+	} else {
+        [self.coreDataHelper setupSampleStore];
+    }
+    
     [self setupUserDefaults];
     
     SCHBookManager *bookManager = [SCHBookManager sharedBookManager];
@@ -106,8 +108,7 @@ static NSString* const prModelCertFilename = @"iphonecert.dat";
 {
     NSDictionary *appDefaults = [NSDictionary dictionaryWithObjectsAndKeys:
 								 [NSNumber numberWithBool:NO], kSCHUserDefaultsPerformedFirstSyncUpToBooks,
-								 [NSNumber numberWithBool:YES], kSCHUserDefaultsSpaceSaverMode,
-								 [NSNumber numberWithInteger:SCHCoreDataHelperStoreTypeStandard], kSCHUserDefaultsCoreDataStoreType, nil];
+								 [NSNumber numberWithBool:YES], kSCHUserDefaultsSpaceSaverMode, nil];
     
 	[[NSUserDefaults standardUserDefaults] registerDefaults:appDefaults];
 }
