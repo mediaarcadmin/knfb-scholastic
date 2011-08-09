@@ -9,20 +9,26 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
+@class SCHAppState;
+
+// Constants
+extern NSString * const SCHCoreDataHelperManagedObjectContextDidChangeNotification;
+extern NSString * const SCHCoreDataHelperManagedObjectContext;
+
 typedef enum {
 	SCHCoreDataHelperStoreTypeStandard,
-    SCHCoreDataHelperStoreTypeSample,
-    SCHCoreDataHelperStoreTypeLocalFiles
+    SCHCoreDataHelperStoreTypeSample
 } SCHCoreDataHelperStoreType;
 
 @interface SCHCoreDataHelper : NSObject 
 {
 }
 
-@property (nonatomic, readonly) NSManagedObjectContext *managedObjectContext;
+@property (nonatomic, retain, readonly) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, readonly) NSManagedObjectModel *managedObjectModel;
 @property (nonatomic, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 
+- (void)setupSampleStore;
 - (void)setStoreType:(SCHCoreDataHelperStoreType)storeType;
 
 - (void)saveContext;
@@ -31,7 +37,5 @@ typedef enum {
 - (void)clearDatabase;
 
 - (BOOL)standardStore;
-- (BOOL)synchronise;
-- (BOOL)downloadBooks;
 
 @end

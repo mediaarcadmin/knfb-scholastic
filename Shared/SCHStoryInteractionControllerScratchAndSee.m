@@ -33,7 +33,7 @@ enum ScratchState {
 - (NSInteger)scratchPointTarget;
 
 - (void)nextQuestion;
-- (void)setupQuestion;
+- (void)setupQuestionAnimated:(BOOL)animated;
 - (void)correctAnswer:(NSInteger) selection;
 - (void)wrongAnswer:(NSInteger) selection;
 
@@ -105,7 +105,7 @@ enum ScratchState {
     }
     
     self.scratchState = kScratchStateFirstScratch;
-    [self setupQuestion];
+    [self setupQuestionAnimated:NO];
 }
 
 - (BOOL)shouldPlayQuestionAudioForViewAtIndex:(NSInteger)screenIndex
@@ -128,7 +128,7 @@ enum ScratchState {
     }
 }
 
-- (void)setupQuestion
+- (void)setupQuestionAnimated:(BOOL)animated
 {
     const BOOL iPad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
     const BOOL scratching = (self.scratchState == kScratchStateFirstScratch || self.scratchState == kScratchStateSecondScratch);
@@ -193,7 +193,7 @@ enum ScratchState {
 
     if (iPad) {
         [self resizeCurrentViewToSize:CGSizeMake(self.contentsView.bounds.size.width, contentsHeight)
-             withAdditionalAnimations:adjustments];
+             withAdditionalAdjustments:adjustments animated:animated];
     } else {
         adjustments();
     }
@@ -336,7 +336,7 @@ enum ScratchState {
                       [button setSelected:NO];
                       self.scratchState = kScratchStateSecondScratch;
                       self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
-                      [self setupQuestion];
+                      [self setupQuestionAnimated:YES];
                   }];
             break;
         }
@@ -350,7 +350,7 @@ enum ScratchState {
                       [button setSelected:NO];
                       self.scratchState = kScratchStateKeepTrying;
                       self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
-                      [self setupQuestion];
+                      [self setupQuestionAnimated:YES];
                   }];
             break;
         }
@@ -389,7 +389,7 @@ enum ScratchState {
         }
         
         self.progressView.alpha = 0;
-        [self setupQuestion];
+        [self setupQuestionAnimated:YES];
 
         aScratchView.interactionEnabled = NO;
 
