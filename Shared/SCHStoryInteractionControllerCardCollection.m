@@ -45,6 +45,12 @@ enum {
     [super dealloc];
 }
 
+
+- (BOOL)shouldPresentInPortraitOrientation
+{
+    return (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone);
+}
+
 - (void)setPurpleBorderOnLayer:(CALayer *)layer
 {
     layer.borderWidth = 2;
@@ -154,6 +160,7 @@ enum {
     CAAnimationGroup *group = [CAAnimationGroup animation];
     group.animations = [NSArray arrayWithObjects:rotate, position, nil];
     group.duration = 0.5;
+    group.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
     group.delegate = [SCHAnimationDelegate animationDelegateWithStopBlock:^(CAAnimation *animation, BOOL finished) {
         [self showZoomedCardButtons];
     }];
@@ -195,6 +202,7 @@ enum {
     CAAnimationGroup *group = [CAAnimationGroup animation];
     group.animations = [NSArray arrayWithObjects:rotate, position, nil];
     group.duration = 0.5;
+    group.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
     group.delegate = [SCHAnimationDelegate animationDelegateWithStopBlock:^(CAAnimation *animation, BOOL finished) {
         // replace the zooming layer with the original one in a single transaction
         [CATransaction begin];
@@ -242,6 +250,7 @@ enum {
     flip.fromValue = [NSValue valueWithCATransform3D:self.zoomCardLayer.transform];
     flip.toValue = [NSValue valueWithCATransform3D:toTransform];
     flip.duration = 0.5;
+    flip.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
     
     self.zoomCardLayer.transform = toTransform;
     [self.zoomCardLayer addAnimation:flip forKey:@"flip"];

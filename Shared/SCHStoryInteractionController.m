@@ -122,8 +122,6 @@
         return;
     }
 
-    NSLog(@"Changed state from %@ to %@", [self controllerStateAsString:controllerState], [self controllerStateAsString:newControllerState]);
-    
     controllerState = newControllerState;
 
     switch (controllerState) {
@@ -166,51 +164,6 @@
             break;
         }
     }
-}
-
-- (NSString *) controllerStateAsString: (SCHStoryInteractionControllerState) state
-{
-    NSString *returnVal = nil;
-    
-    switch (state) {
-        case SCHStoryInteractionControllerStateInitialised:
-        {
-            returnVal = @"Initialised";
-            break;
-        }   
-        case SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause:
-        {
-            returnVal = @"Reading Answer with Pause";
-            break;
-        }   
-        case SCHStoryInteractionControllerStateInteractionReadingAnswerWithoutPause:
-        {
-            returnVal = @"Reading Answer Without Pause";
-            break;
-        }   
-        case SCHStoryInteractionControllerStateAskingOpeningQuestion:
-        {
-            returnVal = @"Asking Opening Question with Pause";
-            break;
-        }   
-        case SCHStoryInteractionControllerStateInteractionFinishedSuccessfully:
-        {
-            returnVal = @"Finished Successfully";
-            break;
-        }   
-        case SCHStoryInteractionControllerStateInteractionInProgress:
-        {
-            returnVal = @"Started Interaction";
-            break;
-        }   
-        default:
-        {
-            returnVal = @"Unknown!";
-            break;
-        }   
-    }
-    
-    return returnVal;
 }
 
 - (void)presentInHostView:(UIView *)hostView withInterfaceOrientation:(UIInterfaceOrientation)aInterfaceOrientation
@@ -417,8 +370,12 @@
         readAloudPosition = CGPointMake(-13, 15);
     }
     
+    const BOOL shouldRotate = ([self shouldPresentInPortraitOrientation]
+                               ? UIInterfaceOrientationIsLandscape(self.interfaceOrientation)
+                               : UIInterfaceOrientationIsPortrait(self.interfaceOrientation));
+    
     CGRect superviewBounds = container.superview.bounds;
-    if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
+    if (shouldRotate) {
         container.transform = CGAffineTransformMakeRotation(-M_PI/2);
         container.bounds = CGRectIntegral(CGRectMake(0, 0, CGRectGetHeight(superviewBounds), CGRectGetWidth(superviewBounds)));
     } else {
@@ -789,6 +746,11 @@
 - (CGRect)overlaidTitleFrame
 {
     return CGRectZero;
+}
+
+- (BOOL)shouldPresentInPortraitOrientation
+{
+    return NO;
 }
 
 @end

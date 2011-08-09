@@ -24,8 +24,6 @@
 
 @end
 
-
-
 typedef enum
 {
     SCHStoryInteractionControllerStateInitialised,                          // the default initialised state
@@ -55,12 +53,6 @@ typedef enum
 // is not a UIViewController but relies on another view and controller as hosts.
 
 @interface SCHStoryInteractionController : NSObject <AVAudioPlayerDelegate, SCHStoryInteractionControllerStateReactions> {}
-
-// FIXME: remove this!
-- (NSString *) controllerStateAsString: (SCHStoryInteractionControllerState) state;
-
-
-
 
 // Unique Book Identifier
 @property (nonatomic, retain) SCHBookIdentifier *bookIdentifier;
@@ -183,6 +175,10 @@ typedef enum
 // when frameStyle == SCHStoryInteractionTitleOverlaysContents, the subclass can define
 // the frame for the overlaid title view
 - (CGRect)overlaidTitleFrame;
+
+// most story interactions are presented in landscape; override to return YES if the SI should be
+// presented in portrait orientation
+- (BOOL)shouldPresentInPortraitOrientation;
 
 // send then the nib is loaded and its view objects are attached to the container; similar
 // to viewDidLoad, but used a separate message name to avoid confusion.
