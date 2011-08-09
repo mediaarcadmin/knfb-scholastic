@@ -19,6 +19,7 @@
 #import "SCHDictionaryEntry.h"
 #import "SCHDictionaryAccessManager.h"
 #import "NSManagedObjectContext+Extensions.h"
+#import "SCHCoreDataHelper.h"
 
 // Constants
 NSString * const kSCHDictionaryDownloadPercentageUpdate = @"SCHDictionaryDownloadPercentageUpdate";
@@ -87,7 +88,7 @@ char * const kSCHDictionaryManifestEntryColumnSeparator = "\t";
 #pragma mark -
 #pragma mark Object Lifecycle
 
-- (void) dealloc
+- (void)dealloc
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	
@@ -99,7 +100,7 @@ char * const kSCHDictionaryManifestEntryColumnSeparator = "\t";
 	[super dealloc];
 }
 
-- (id) init
+- (id)init
 {
 	if ((self = [super init])) {
 		self.dictionaryDownloadQueue = [[NSOperationQueue alloc] init];
@@ -109,9 +110,21 @@ char * const kSCHDictionaryManifestEntryColumnSeparator = "\t";
 		self.connectionIdle = YES;
 		
 		self.wifiReach = [Reachability reachabilityForInternetConnection];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self 
+                                                 selector:@selector(coreDataHelperManagedObjectContextDidChangeNotification:) 
+                                                     name:SCHCoreDataHelperManagedObjectContextDidChangeNotification 
+                                                   object:nil];	        
     }
 	
 	return self;
+}
+
+#pragma mark - NSManagedObjectContext Changed Notification
+
+- (void)coreDataHelperManagedObjectContextDidChangeNotification:(NSNotification *)notification
+{
+    self.mainThreadManagedObjectContext = [[notification userInfo] objectForKey:SCHCoreDataHelperManagedObjectContext];
 }
 
 #pragma mark -
@@ -119,7 +132,7 @@ char * const kSCHDictionaryManifestEntryColumnSeparator = "\t";
 
 static SCHDictionaryDownloadManager *sharedManager = nil;
 
-+ (SCHDictionaryDownloadManager *) sharedDownloadManager
++ (SCHDictionaryDownloadManager *)sharedDownloadManager
 {
 	if (sharedManager == nil) {
 		sharedManager = [[SCHDictionaryDownloadManager alloc] init];
@@ -167,7 +180,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 #pragma mark -
 #pragma mark Background Processing Methods
 
-- (void) enterBackground
+- (void)enterBackground
 {
     UIDevice* device = [UIDevice currentDevice];
     BOOL backgroundSupported = [device respondsToSelector:@selector(isMultitaskingSupported)] && device.multitaskingSupported;
@@ -202,7 +215,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 	}
 }
 
-- (void) enterForeground
+- (void)enterForeground
 {
 	NSLog(@"Entering foreground - quitting background task.");
 	if(self.backgroundTask != UIBackgroundTaskInvalid) {
@@ -217,14 +230,14 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 #pragma mark -
 #pragma mark Reachability reactions
 
-- (void) reachabilityNotification: (NSNotification *) note
+- (void)reachabilityNotification:(NSNotification *)note
 {
 	Reachability* curReach = [note object];
 	NSParameterAssert([curReach isKindOfClass: [Reachability class]]);
 	[self reachabilityCheck:curReach];
 }
 
-- (void) reachabilityCheck: (Reachability *) curReach
+- (void)reachabilityCheck:(Reachability *)curReach
 {
 	NetworkStatus netStatus = [curReach currentReachabilityStatus];
 
@@ -251,7 +264,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 #pragma mark -
 #pragma mark Processing Manager reactions
 
-- (void) connectionBecameIdle: (NSNotification *) notification
+- (void)connectionBecameIdle:(NSNotification *)notification
 {
 	NSAssert([NSThread currentThread] == [NSThread mainThread], @"Not on main thread!");
 	NSLog(@"****************** Processing manager became idle! ******************");
@@ -259,7 +272,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 	[self checkOperatingState];
 }
 
-- (void) connectionBecameBusy: (NSNotification *) notification
+- (void)connectionBecameBusy:(NSNotification *)notification
 {
 	NSAssert([NSThread currentThread] == [NSThread mainThread], @"Not on main thread!");
 	NSLog(@"****************** Processing manager became busy! ******************");
@@ -270,7 +283,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 #pragma mark -
 #pragma mark Check Operating State
 
-- (void) checkOperatingState
+- (void)checkOperatingState
 {
     // Dictionary can be disabled using preprocessor flag
 #if DICTIONARY_DOWNLOAD_DISABLED
@@ -311,7 +324,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 #pragma mark -
 #pragma mark Processing Methods
 
-- (void) processDictionary
+- (void)processDictionary
 {
 	if ([NSThread currentThread] != [NSThread mainThread]) {
 		[self performSelectorOnMainThread:@selector(processDictionary) withObject:nil waitUntilDone:NO];
@@ -579,7 +592,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
     return dictionaryDirectory;
 }
 
-- (NSString *) dictionaryZipPath
+- (NSString *)dictionaryZipPath
 {
     if ([self dictionaryVersion] == nil) {
         return [[self dictionaryDirectory] 
@@ -594,7 +607,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 #pragma mark -
 #pragma mark Dictionary Version
 
-- (NSString *) dictionaryVersion
+- (NSString *)dictionaryVersion
 {
     __block NSString *version;
     [self withAppDictionaryStatePerform:^(SCHAppDictionaryState *state) {
@@ -603,7 +616,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
     return [version autorelease];
 }
 
-- (void) setDictionaryVersion:(NSString *) newVersion
+- (void)setDictionaryVersion:(NSString *)newVersion
 {
     [self withAppDictionaryStatePerform:^(SCHAppDictionaryState *state) {
         state.Version = newVersion;
@@ -613,7 +626,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 #pragma mark -
 #pragma mark Dictionary State
 
-- (void)threadSafeUpdateDictionaryState: (SCHDictionaryProcessingState) newState 
+- (void)threadSafeUpdateDictionaryState:(SCHDictionaryProcessingState)newState 
 {
     NSLog(@"Updating state to %d", newState);
     
@@ -623,7 +636,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
     }];
 }
 
-- (SCHDictionaryProcessingState) dictionaryProcessingState
+- (SCHDictionaryProcessingState)dictionaryProcessingState
 {
     __block SCHDictionaryProcessingState processingState;
     [self withAppDictionaryStatePerform:^(SCHAppDictionaryState *state) {
@@ -647,7 +660,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
 
 #pragma mark - Update Check
 
-- (void) checkIfUpdateNeeded
+- (void)checkIfUpdateNeeded
 {
     SCHDictionaryProcessingState state = [self dictionaryProcessingState];
     
@@ -814,9 +827,8 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
             } else {
                 NSLog(@"Added %d entries to base words.", savedItems);
             }
-            
-            [context release];
         }
+        [context release];            
     });
 }
 
@@ -944,13 +956,12 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
             } else {
                 NSLog(@"Added %d entries to word entries.", savedItems);
             }
-            
-            [context release];
         }
+        [context release];            
     });
 }
 
-- (void) updateParseEntryTable
+- (void)updateParseEntryTable
 {
     NSLog(@"Updating entry table...");
     
@@ -1117,7 +1128,7 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
     });
 }
 
-- (void) updateParseWordFormTable
+- (void)updateParseWordFormTable
 {
     
     NSLog(@"Updating word form table...");
@@ -1274,9 +1285,8 @@ static SCHDictionaryDownloadManager *sharedManager = nil;
             if (error) {
                 NSLog(@"Error while deleting word form update file: %@", [error localizedDescription]);
             }
-            
-            [context release];
         }
+        [context release];        
     });
 }
 
