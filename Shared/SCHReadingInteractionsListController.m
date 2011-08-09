@@ -230,7 +230,15 @@ static NSInteger const CELL_ACTIVITY_INDICATOR_TAG = 999;
     UILabel *subTitleLabel = (UILabel *) [cell viewWithTag:CELL_PAGE_LABEL_TAG];
     
     SCHStoryInteraction *storyInteraction = [[self.bookStoryInteractions allStoryInteractionsExcludingInteractionWithPage:self.excludeInteractionWithPage] objectAtIndex:indexPath.row];
-    titleLabel.text = [storyInteraction title];
+    
+    NSArray *storyInteractionsOfSameClass = [self.bookStoryInteractions storyInteractionsOfClass:[storyInteraction class]];
+    NSUInteger storyInteractionIndex = [storyInteractionsOfSameClass indexOfObject:storyInteraction];
+    
+    if ([storyInteractionsOfSameClass count] > 1) {
+        titleLabel.text = [NSString stringWithFormat:@"%@ %d", [storyInteraction title], storyInteractionIndex + 1];
+    } else {
+        titleLabel.text = [storyInteraction title];
+    }
     
     SCHBookPoint *interactionPoint = [self.delegate bookPointForStoryInteractionDocumentPageNumber:storyInteraction.documentPageNumber];
     
