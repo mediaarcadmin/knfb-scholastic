@@ -30,6 +30,7 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 {
 }
 
+// returns nil if the previous aToken expired
 @property (nonatomic, copy, readonly) NSString *aToken;
 @property (nonatomic, assign, readonly) BOOL isAuthenticated;
 

@@ -22,7 +22,7 @@
 #import "SCHBookmark.h"
 #import "SCHLocationBookmark.h"
 #import "SCHLastPage.h"
-#import "SCHAppState.h"
+#import "SCHAppStateManager.h"
 
 // Constants
 NSString * const SCHAnnotationSyncComponentDidCompleteNotification = @"SCHAnnotationSyncComponentDidCompleteNotification";
@@ -155,45 +155,23 @@ NSString * const SCHAnnotationSyncComponentCompletedProfileIDs = @"SCHAnnotation
 - (NSDate *)lastSyncDate
 {
     NSDate *ret = nil;
-    
-    NSEntityDescription *entityDescription = [NSEntityDescription 
-                                              entityForName:kSCHAppState
-                                              inManagedObjectContext:self.managedObjectContext];
-    NSFetchRequest *fetchRequest = [entityDescription.managedObjectModel 
-                                    fetchRequestTemplateForName:kSCHAppStatefetchAppState];
-    
-    NSArray *state = [self.managedObjectContext executeFetchRequest:fetchRequest error:nil];	
-    
-    if ([state count] > 0) {
-        ret = [self makeNullNil:[[state objectAtIndex:0] LastAnnotationSync]];
+    SCHAppState *appState = [SCHAppStateManager sharedAppStateManager].appState;
+        
+    if (appState != nil) {
+        ret = appState.LastAnnotationSync;
     }
-    
+            
     return(ret);
 }
 
 - (void)setSyncDate:(NSDate *)date
 {
-    SCHAppState *appState = nil;
+    SCHAppState *appState = [SCHAppStateManager sharedAppStateManager].appState;
     
-    NSEntityDescription *entityDescription = [NSEntityDescription 
-                                              entityForName:kSCHAppState
-                                              inManagedObjectContext:self.managedObjectContext];
-    NSFetchRequest *fetchRequest = [entityDescription.managedObjectModel 
-                                    fetchRequestTemplateForName:kSCHAppStatefetchAppState];
-    fetchRequest.returnsObjectsAsFaults = NO;
-    
-    NSArray *state = [self.managedObjectContext executeFetchRequest:fetchRequest error:nil];	
-    
-    if ([state count] > 0) {
-        appState = [state objectAtIndex:0];
-    } else {
-        appState = [NSEntityDescription insertNewObjectForEntityForName:kSCHAppState 
-                                                 inManagedObjectContext:self.managedObjectContext];
+    if (appState != nil) {
+        appState.LastAnnotationSync = date;
+        [self save];
     }
-    
-    appState.LastAnnotationSync = date;
-    
-    [self save];
 }
 
 - (void)method:(NSString *)method didCompleteWithResult:(NSDictionary *)result
