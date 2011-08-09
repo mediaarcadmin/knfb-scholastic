@@ -49,12 +49,15 @@
     [super dealloc];
 }
 
+- (BOOL)shouldPlayQuestionAudioForViewAtIndex:(NSInteger)screenIndex
+{
+    return screenIndex == 1;
+}
+
 - (void)setupViewAtIndex:(NSInteger)index
 {
-    switch (index) {
-        case 1:
-            [self setupPuzzleView];
-            break;
+    if (index == 1) {
+        [self setupPuzzleView];
     }
 }
 
@@ -100,6 +103,8 @@
 - (void)setupPuzzleView
 {
     SCHStoryInteractionConcentration *concentration = (SCHStoryInteractionConcentration *)self.storyInteraction;
+    
+    [self setTitle:[concentration introduction]];
     
     // enable perspective on the flip container
     CATransform3D sublayerTransform = CATransform3DIdentity;
@@ -165,12 +170,19 @@
     }
     
     self.numberOfPairsFound = 0;
-    self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
+    self.numberOfFlips = 0;
+}
+
+- (void)setNumberOfFlips:(NSInteger)newNumberOfFlips
+{
+    numberOfFlips = newNumberOfFlips;
+    self.flipCounterLabel.text = [NSString stringWithFormat:@"%d FLIPS", numberOfFlips];
 }
 
 - (void)startOverTapped:(id)sender
 {
-    
+    [self.flipContainer.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    [self presentNextView];
 }
 
 - (CAAnimation *)flipAnimationFrom:(CGFloat)fromAngle to:(CGFloat)toAngle
@@ -189,18 +201,26 @@
         return;
     }
     
+    BOOL match = (self.firstFlippedTile != nil);
+    if (!match) {
+        self.firstFlippedTile = tile;
+    }
+    self.controllerState = SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause;
+    
     CAAnimation *flip = [self flipAnimationFrom:0 to:M_PI];
     flip.delegate = [SCHAnimationDelegate animationDelegateWithStopBlock:^(CAAnimation *animation, BOOL finished) {
-        if (self.firstFlippedTile == nil) {
-            self.firstFlippedTile = tile;
-        } else {
+        if (match) {
             [self matchTile:self.firstFlippedTile withTile:tile];
             self.firstFlippedTile = nil;
+        } else {
+            self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
         }
     }];
     
     [tile.layer addAnimation:flip forKey:@"flip"];
     tile.layer.transform = CATransform3DMakeRotation(M_PI, 0, 1, 0);
+
+    self.numberOfFlips++;
 }
 
 - (void)matchTile:(UIView *)tile1 withTile:(UIView *)tile2
@@ -220,17 +240,19 @@
                       [self removeFromHostView];
                   }];
         }
+        self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
     } else {
         // flip the tiles back
         [self enqueueAudioWithPath:[self.storyInteraction storyInteractionWrongAnswerSoundFilename]
                         fromBundle:YES
                         startDelay:0
-            synchronizedStartBlock:nil
+         synchronizedStartBlock:nil
               synchronizedEndBlock:^{
                   [tile1.layer addAnimation:[self flipAnimationFrom:M_PI to:0] forKey:@"flipBack"];
                   [tile2.layer addAnimation:[self flipAnimationFrom:M_PI to:0] forKey:@"flipBack"];
                   tile1.layer.transform = CATransform3DIdentity;
                   tile2.layer.transform = CATransform3DIdentity;
+                  self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
               }];
     }
 }

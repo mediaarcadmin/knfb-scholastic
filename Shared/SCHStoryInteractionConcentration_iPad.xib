@@ -40,7 +40,7 @@
 			</object>
 			<object class="IBUIView" id="191373211">
 				<reference key="NSNextResponder"/>
-				<int key="NSvFlags">274</int>
+				<int key="NSvFlags">301</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<object class="IBUILabel" id="357736378">
@@ -295,8 +295,8 @@
 					</object>
 					<object class="IBUIView" id="918645225">
 						<reference key="NSNextResponder" ref="892273010"/>
-						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{20, 65}, {604, 415}}</string>
+						<int key="NSvFlags">301</int>
+						<string key="NSFrame">{{20, 65}, {604, 390}}</string>
 						<reference key="NSSuperview" ref="892273010"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView"/>
@@ -305,7 +305,7 @@
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 					</object>
 				</object>
-				<string key="NSFrameSize">{644, 500}</string>
+				<string key="NSFrameSize">{644, 475}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="787744147"/>

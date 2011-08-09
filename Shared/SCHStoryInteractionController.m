@@ -162,7 +162,7 @@
         }   
         case SCHStoryInteractionControllerStateInteractionInProgress:
         {
-            self.readAloudButton.enabled = YES;
+            self.readAloudButton.enabled = [self shouldPlayQuestionAudioForViewAtIndex:self.currentScreenIndex];
             [self storyInteractionEnableUserInteraction];
             break;
         }   
@@ -230,23 +230,14 @@
         [hostView addSubview:shade];
         [shade release];
     }
-    
-    BOOL askingOpeningQuestion = NO;
-    
+
+    NSString *questionAudioPath = [self audioPathForQuestion];
+
     if (self.containerView == nil) {
+        [self enqueueAudioWithPath:[storyInteraction storyInteractionOpeningSoundFilename] fromBundle:YES];        
+
         self.xpsProvider = [[SCHBookManager sharedBookManager] threadSafeCheckOutXPSProviderForBookIdentifier:self.bookIdentifier];
         
-        NSString *questionAudioPath = [self audioPathForQuestion];
-        [self enqueueAudioWithPath:[storyInteraction storyInteractionOpeningSoundFilename] fromBundle:YES];        
-        if (questionAudioPath && [self shouldPlayQuestionAudioForViewAtIndex:self.currentScreenIndex]) {
-//            [self enqueueAudioWithPath:questionAudioPath fromBundle:NO];  
-            [self enqueueAudioWithPath:questionAudioPath fromBundle:NO startDelay:0 synchronizedStartBlock:nil synchronizedEndBlock:^{
-                self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
-            }];
-            
-            askingOpeningQuestion = YES;
-        }        
-
         // set up the transparent full-size container to trap touch events before they get
         // to the underlying view; this effectively makes the story interaction modal
         UIView *container = [[UIView alloc] initWithFrame:hostView.bounds];
@@ -280,10 +271,6 @@
             [self.readAloudButton setImage:readAloudImage forState:UIControlStateNormal];
             [self.readAloudButton addTarget:self action:@selector(playAudioButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
             [container addSubview:self.readAloudButton];
-        }
-        
-        if (askingOpeningQuestion) {
-            self.controllerState = SCHStoryInteractionControllerStateAskingOpeningQuestion;
         }
         
         self.containerView = container;
@@ -348,8 +335,20 @@
     
     [self setTitle:[self.storyInteraction interactionViewTitle]];
     [self setupViewAtIndex:self.currentScreenIndex];
-    
-//    self.controllerState = newState;
+
+    if (questionAudioPath && [self shouldPlayQuestionAudioForViewAtIndex:self.currentScreenIndex]) {
+        [self enqueueAudioWithPath:questionAudioPath
+                        fromBundle:NO
+                        startDelay:0
+            synchronizedStartBlock:nil
+              synchronizedEndBlock:^{
+                  self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
+              }];
+        
+        self.controllerState = SCHStoryInteractionControllerStateAskingOpeningQuestion;
+    } else {
+        self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
+    }
 }
 
 - (void)setupTitle
