@@ -22,6 +22,7 @@
 #import "SCHAppBook.h"
 #import "SCHBookIdentifier.h"
 #import "SCHUserDefaults.h"
+#import "SCHCoreDataHelper.h"
 
 // Constants
 NSString * const kSCHProcessingManagerConnectionIdle = @"SCHProcessingManagerConnectionIdle";
@@ -79,11 +80,11 @@ NSString * const kSCHProcessingManagerConnectionBusy = @"SCHProcessingManagerCon
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	
-	self.localProcessingQueue = nil;
-	self.webServiceOperationQueue = nil;
-	self.networkOperationQueue = nil;
-    self.currentlyProcessingIdentifiers = nil;
-    self.managedObjectContext = nil;
+	[localProcessingQueue release], localProcessingQueue = nil;
+	[webServiceOperationQueue release], webServiceOperationQueue = nil;
+	[networkOperationQueue release], networkOperationQueue = nil;
+    [currentlyProcessingIdentifiers release], currentlyProcessingIdentifiers = nil;
+    [managedObjectContext release], managedObjectContext = nil;
     dispatch_release(thumbnailAccessQueue);
 
 	[super dealloc];
@@ -107,9 +108,20 @@ NSString * const kSCHProcessingManagerConnectionBusy = @"SCHProcessingManagerCon
         
         self.thumbnailAccessQueue = dispatch_queue_create("com.scholastic.ThumbnailAccessQueue", NULL);
 
+        [[NSNotificationCenter defaultCenter] addObserver:self 
+                                                 selector:@selector(coreDataHelperManagedObjectContextDidChangeNotification:) 
+                                                     name:SCHCoreDataHelperManagedObjectContextDidChangeNotification 
+                                                   object:nil];	        
 	}
 	
 	return self;
+}
+
+#pragma mark - NSManagedObjectContext Changed Notification
+
+- (void)coreDataHelperManagedObjectContextDidChangeNotification:(NSNotification *)notification
+{
+    self.managedObjectContext = [[notification userInfo] objectForKey:SCHCoreDataHelperManagedObjectContext];
 }
 
 #pragma mark -

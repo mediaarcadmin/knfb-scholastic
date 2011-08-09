@@ -15,6 +15,7 @@
 #import "SCHFlowEucBook.h"
 #import "SCHTextFlowParagraphSource.h"
 #import "SCHBookIdentifier.h"
+#import "SCHCoreDataHelper.h"
 
 @interface SCHBookManager ()
 
@@ -77,12 +78,19 @@ static NSDictionary *featureCompatibilityDictionary = nil;
 		cachedTextFlows = [[NSMutableDictionary alloc] init];
         cachedParagraphSources = [[NSMutableDictionary alloc] init];
         isbnManagedObjectCache = [[NSMutableDictionary alloc] init];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self 
+                                                 selector:@selector(coreDataHelperManagedObjectContextDidChangeNotification:) 
+                                                     name:SCHCoreDataHelperManagedObjectContextDidChangeNotification 
+                                                   object:nil];	        
     }
     return(self);
 }
 
 - (void)dealloc 
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
 	[threadSafeMutationLock release], threadSafeMutationLock = nil;
 	[cachedXPSProviders release], cachedXPSProviders = nil;
     [cachedEucBooks release], cachedEucBooks = nil;
@@ -91,6 +99,13 @@ static NSDictionary *featureCompatibilityDictionary = nil;
     [isbnManagedObjectCache release], isbnManagedObjectCache = nil;
     [mainThreadManagedObjectContext release], mainThreadManagedObjectContext = nil;
     [super dealloc];
+}
+
+#pragma mark - NSManagedObjectContext Changed Notification
+
+- (void)coreDataHelperManagedObjectContextDidChangeNotification:(NSNotification *)notification
+{
+    self.mainThreadManagedObjectContext = [[notification userInfo] objectForKey:SCHCoreDataHelperManagedObjectContext];
 }
 
 #pragma mark - Compatibility Checking
