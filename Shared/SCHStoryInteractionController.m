@@ -256,10 +256,10 @@
         background.contentMode = UIViewContentModeScaleToFill;
         [container addSubview:background];
         
-        UILabel *title = [[UILabel alloc] initWithFrame:CGRectZero];
-        title.backgroundColor = [UIColor clearColor];
         
         if (self.frameStyle != SCHStoryInteractionNoTitle) {
+            UILabel *title = [[UILabel alloc] initWithFrame:CGRectZero];
+            title.backgroundColor = [UIColor clearColor];            
             self.titleView = title;
             [self setupTitle];
             [background addSubview:title];
