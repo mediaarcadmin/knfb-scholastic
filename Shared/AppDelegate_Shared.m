@@ -53,7 +53,7 @@ static NSString* const prModelCertFilename = @"iphonecert.dat";
     if ([self createApplicationSupportDirectory] == NO) {
 		NSLog(@"Application Support directory could not be created.");
 	} else {
-        [self.coreDataHelper setupSampleStore];
+        [self.coreDataHelper setupSampleStores];
     }
     
     [self setupUserDefaults];

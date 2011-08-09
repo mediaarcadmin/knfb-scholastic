@@ -17,20 +17,28 @@
 NSString * const SCHCoreDataHelperManagedObjectContextDidChangeNotification = @"SCHCoreDataHelperManagedObjectContextDidChangeNotification";
 NSString * const SCHCoreDataHelperManagedObjectContext = @"SCHCoreDataHelperManagedObjectContext";
 
-static NSString * const kSCHCoreDataHelperStoreName = @"Scholastic.sqlite";
-static NSString * const kSCHCoreDataHelperSampleStoreName = @"Scholastic_Sample.sqlite";
+static NSString * const kSCHCoreDataHelperMainStoreConfiguration = @"Main";
+static NSString * const kSCHCoreDataHelperDictionaryStoreConfiguration = @"Dictionary";
+
+static NSString * const kSCHCoreDataHelperStandardStoreName = @"Scholastic.sqlite";
+static NSString * const kSCHCoreDataHelperDictionaryStoreName = @"Scholastic_Dictionary.sqlite";
+
+static NSString * const kSCHCoreDataHelperYoungerSampleStoreName = @"Scholastic_YoungerSample.sqlite";
+static NSString * const kSCHCoreDataHelperOlderSampleStoreName = @"Scholastic_OlderSample.sqlite";
 
 @interface SCHCoreDataHelper ()
 
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
-@property (nonatomic, retain) NSString *storeName;
 
-- (BOOL)sampleStoreExists;
-- (NSURL *)storeURL;
+- (BOOL)storeExists:(NSString *)storeName;
+- (void)setupSampleStore:(NSString *)storeName;
+- (void)addPersistentStore:(NSPersistentStoreCoordinator *)aPersistentStoreCoordinator 
+             configuration:(NSString *)configuration 
+                       url:(NSURL *)url;
+- (NSURL *)storeURL:(NSString *)storeName;
 - (void)checkForModeSwitch;
-- (NSPersistentStore *)currentPersistentStore;
-- (void)postStoreCreationForStandardStore;
-- (void)postStoreCreationForSampleStore;
+- (BOOL)switchPersistentStore:(NSString *)storeName;
+- (NSPersistentStore *)currentMainPersistentStore;
 
 @end
 
@@ -39,24 +47,13 @@ static NSString * const kSCHCoreDataHelperSampleStoreName = @"Scholastic_Sample.
 @synthesize managedObjectContext;
 @synthesize managedObjectModel;
 @synthesize persistentStoreCoordinator;
-@synthesize storeName;
 
 #pragma mark - Application lifecycle
-
-- (id)init
-{
-    self = [super init];
-    if (self) {
-        storeName = kSCHCoreDataHelperStoreName;
-    }
-    return(self);
-}
 
 - (void)dealloc 
 {    
 	[[NSNotificationCenter defaultCenter] removeObserver:managedObjectContext];
     
-    [storeName release], storeName = nil;
     [managedObjectContext release], managedObjectContext = nil;
     [managedObjectModel release], managedObjectModel = nil;
     [persistentStoreCoordinator release], persistentStoreCoordinator = nil;
@@ -66,29 +63,35 @@ static NSString * const kSCHCoreDataHelperSampleStoreName = @"Scholastic_Sample.
 
 #pragma mark - File methods
              
-- (BOOL)sampleStoreExists
+- (BOOL)storeExists:(NSString *)storeName
 {
     NSURL *applicationSupportDocumentsDirectory = [[[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask] lastObject];
-    NSURL *destinationSampleStoreURL = [applicationSupportDocumentsDirectory URLByAppendingPathComponent:kSCHCoreDataHelperSampleStoreName];    
+    NSURL *destinationSampleStoreURL = [applicationSupportDocumentsDirectory URLByAppendingPathComponent:storeName];    
     NSString *destinationSampleStorePath = [destinationSampleStoreURL path];
     
     return([[NSFileManager defaultManager] fileExistsAtPath:destinationSampleStorePath]);
 }
 
-- (void)setupSampleStore
+- (void)setupSampleStores
+{
+    [self setupSampleStore:kSCHCoreDataHelperYoungerSampleStoreName];
+    [self setupSampleStore:kSCHCoreDataHelperOlderSampleStoreName];    
+}
+
+- (void)setupSampleStore:(NSString *)storeName
 {    
-    if ([self sampleStoreExists] == NO) {
+    if ([self storeExists:storeName] == NO) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            NSString *sourceSampleStorePath = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:kSCHCoreDataHelperSampleStoreName];
+            NSString *sourceSampleStorePath = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:storeName];
             NSURL *applicationSupportDocumentsDirectory = [[[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask] lastObject];
-            NSURL *destinationSampleStoreURL = [applicationSupportDocumentsDirectory URLByAppendingPathComponent:kSCHCoreDataHelperSampleStoreName];    
+            NSURL *destinationSampleStoreURL = [applicationSupportDocumentsDirectory URLByAppendingPathComponent:storeName];    
             NSString *destinationSampleStorePath = [destinationSampleStoreURL path];
             
             NSError *error = nil;
 			if ([[NSFileManager defaultManager] copyItemAtPath:sourceSampleStorePath 
                                                         toPath:destinationSampleStorePath
                                                          error:&error] == NO) {
-                NSLog(@"Error copying Sample Data Store: %@, %@", error, [error userInfo]);
+                NSLog(@"Error copying %@ Sample Data Store: %@, %@", storeName, error, [error userInfo]);
             }            
         });
     }
@@ -155,10 +158,32 @@ static NSString * const kSCHCoreDataHelperSampleStoreName = @"Scholastic_Sample.
     }
     
     [self checkForModeSwitch];
-	
-    NSError *error = nil;
+	    
     persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
-    if (![persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:[self storeURL] options:nil error:&error]) {
+    [self addPersistentStore:persistentStoreCoordinator 
+               configuration:kSCHCoreDataHelperMainStoreConfiguration 
+                         url:[self storeURL:kSCHCoreDataHelperStandardStoreName]];
+    [self addPersistentStore:persistentStoreCoordinator 
+               configuration:kSCHCoreDataHelperDictionaryStoreConfiguration 
+                         url:[self storeURL:kSCHCoreDataHelperDictionaryStoreName]];
+        
+    // setup the appState
+    SCHAppStateManager *appStateManager = [SCHAppStateManager sharedAppStateManager];
+    appStateManager.managedObjectContext = self.managedObjectContext;
+    [appStateManager createAppStateIfNeeded];
+    
+    return(persistentStoreCoordinator);
+}
+
+- (void)addPersistentStore:(NSPersistentStoreCoordinator *)aPersistentStoreCoordinator 
+             configuration:(NSString *)configuration 
+                       url:(NSURL *)url
+{
+    NSError *error = nil;
+    NSDictionary *options = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithBool:YES], NSMigratePersistentStoresAutomaticallyOption,
+                             [NSNumber numberWithBool:YES], NSInferMappingModelAutomaticallyOption, nil];
+    
+    if ([aPersistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:configuration URL:url options:options error:&error] == nil) {
         /*
          Replace this implementation with code to handle the error appropriately.
          
@@ -186,9 +211,9 @@ static NSString * const kSCHCoreDataHelperSampleStoreName = @"Scholastic_Sample.
         BOOL bailOut = NO;
         
         if ([error code] == NSPersistentStoreIncompatibleVersionHashError) {
-            NSLog(@"Your Core Data store is incompatible, we're gonna replace the store for you. You may need to re-populate it.");
-            [[NSFileManager defaultManager] removeItemAtURL:[self storeURL] error:nil];
-            if (![persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:[self storeURL] options:nil error:&error]) {        
+            NSLog(@"Your %@ Core Data store is incompatible, we're gonna replace the store for you. You may need to re-populate it.", configuration);
+            [[NSFileManager defaultManager] removeItemAtURL:url error:nil];
+            if ([aPersistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:configuration URL:url options:options error:&error] == nil) {        
                 bailOut = YES;
             }
         } else {
@@ -200,13 +225,6 @@ static NSString * const kSCHCoreDataHelperSampleStoreName = @"Scholastic_Sample.
             abort();
         }
     }
-    
-    // setup the appState
-    SCHAppStateManager *appStateManager = [SCHAppStateManager sharedAppStateManager];
-    appStateManager.managedObjectContext = self.managedObjectContext;
-    [appStateManager createAppStateIfNeeded];
-    
-    return(persistentStoreCoordinator);
 }
 
 - (void)saveContext 
@@ -242,7 +260,7 @@ static NSString * const kSCHCoreDataHelperSampleStoreName = @"Scholastic_Sample.
 	if (storedValue) {
 		if ([storedValue boolValue] != localDebugMode) {
 			NSLog(@"Changed between local debug mode and network mode - deleting database & removing login details.");
-            [[NSFileManager defaultManager] removeItemAtURL:[self storeURL] error:nil];		
+            [[NSFileManager defaultManager] removeItemAtURL:[self storeURL:kSCHCoreDataHelperStandardStoreName] error:nil];		
             [[SCHAuthenticationManager sharedAuthenticationManager] clear];
 		}		
 		
@@ -254,10 +272,10 @@ static NSString * const kSCHCoreDataHelperSampleStoreName = @"Scholastic_Sample.
 	[[NSUserDefaults standardUserDefaults] synchronize];
 }	
 
-- (NSURL *)storeURL
+- (NSURL *)storeURL:(NSString *)storeName
 {
     NSURL *applicationSupportDocumentsDirectory = [[[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask] lastObject];
-    return [applicationSupportDocumentsDirectory URLByAppendingPathComponent:self.storeName];    
+    return [applicationSupportDocumentsDirectory URLByAppendingPathComponent:storeName];    
 }
 
 #pragma mark - Database clear
@@ -268,7 +286,7 @@ static NSString * const kSCHCoreDataHelperSampleStoreName = @"Scholastic_Sample.
     [persistentStoreCoordinator release], persistentStoreCoordinator = nil;
     
     NSError *error = nil;
-    if (![[NSFileManager defaultManager] removeItemAtURL:[self storeURL] error:&error]) {
+    if (![[NSFileManager defaultManager] removeItemAtURL:[self storeURL:kSCHCoreDataHelperStandardStoreName] error:&error]) {
         NSLog(@"failed to remove database: %@", error);
     }
     
@@ -276,91 +294,75 @@ static NSString * const kSCHCoreDataHelperSampleStoreName = @"Scholastic_Sample.
     exit(0);
 }
 
-- (BOOL)standardStore
-{
-    return YES;
-}
-
 - (void)setStoreType:(SCHCoreDataHelperStoreType)storeType
-{   
-    NSError *error = nil;
-    NSPersistentStore *currentStore = [self currentPersistentStore];
-    NSString *storeFileName = [[[[self persistentStoreCoordinator] URLForPersistentStore:currentStore] path] lastPathComponent];
-                                          
+{                                             
     switch (storeType) {
         default:
-        case SCHCoreDataHelperStoreTypeStandard:
-            if ([storeFileName isEqualToString:kSCHCoreDataHelperStoreName] == NO) {
-                self.storeName = kSCHCoreDataHelperStoreName;
-                [[self managedObjectContext] reset];
-                [[self persistentStoreCoordinator] removePersistentStore:currentStore 
-                                                                   error:&error];                
-                [persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType 
-                                                         configuration:nil 
-                                                                   URL:[self storeURL] 
-                                                               options:nil 
-                                                                 error:&error];
-                [[NSNotificationCenter defaultCenter] postNotificationName:SCHCoreDataHelperManagedObjectContextDidChangeNotification 
-                                                                    object:self 
-                                                                  userInfo:[NSDictionary dictionaryWithObject:[self managedObjectContext] 
-                                                                                                       forKey:SCHCoreDataHelperManagedObjectContext]];                                                                                                    
-                [self postStoreCreationForStandardStore];
+        case SCHCoreDataHelperStandardStore:
+            if ([self switchPersistentStore:kSCHCoreDataHelperStandardStoreName] == YES) {            
+                // post switch steps
+            }            
+            break;
+        case SCHCoreDataHelperYoungerSampleStore:
+            if ([self switchPersistentStore:kSCHCoreDataHelperYoungerSampleStoreName] == YES) {            
+                // post switch steps
             }
             break;
-        case SCHCoreDataHelperStoreTypeSample:
-            if ([storeFileName isEqualToString:kSCHCoreDataHelperSampleStoreName] == NO) {            
-                self.storeName = kSCHCoreDataHelperSampleStoreName;                
-                [[self managedObjectContext] reset];
-                [[self persistentStoreCoordinator] removePersistentStore:currentStore 
-                                                                   error:&error];  
-                self.managedObjectContext = nil;
-                [[self persistentStoreCoordinator] addPersistentStoreWithType:NSSQLiteStoreType 
-                                                                configuration:nil 
-                                                                          URL:[self storeURL] 
-                                                                      options:nil 
-                                                                        error:&error];                
-                [[NSNotificationCenter defaultCenter] postNotificationName:SCHCoreDataHelperManagedObjectContextDidChangeNotification 
-                                                                    object:self 
-                                                                  userInfo:[NSDictionary dictionaryWithObject:[self managedObjectContext] 
-                                                                                                       forKey:SCHCoreDataHelperManagedObjectContext]];                                                                                    
-                
-                [self postStoreCreationForSampleStore];
+        case SCHCoreDataHelperOlderSampleStore:
+            if ([self switchPersistentStore:kSCHCoreDataHelperOlderSampleStoreName] == YES) {            
+                // post switch steps
             }
-            break;
+            break;            
     }    
-    NSLog(@"Switched to %@", self.storeName);
 }
 
-// returns the name of the sqlite file
-- (NSPersistentStore *)currentPersistentStore
+- (BOOL)switchPersistentStore:(NSString *)storeName
 {
-    NSPersistentStore *ret = nil;
+    BOOL ret = NO;
+    NSPersistentStore *currentMainStore = [self currentMainPersistentStore];
+    NSString *storeFileName = [[[[self persistentStoreCoordinator] URLForPersistentStore:currentMainStore] path] lastPathComponent];
+    NSError *error = nil;
     
-    if ([self persistentStoreCoordinator] != nil) {
-        // when we switch we remove the old store so we will only have one
-        NSArray *stores = [[self persistentStoreCoordinator] persistentStores];
-        if ([stores count] > 0) {
-            ret = [stores objectAtIndex:0];
+    if ([storeFileName isEqualToString:storeName] == NO) {            
+        [[self managedObjectContext] reset];
+        [[self persistentStoreCoordinator] removePersistentStore:currentMainStore 
+                                                           error:&error];  
+        self.managedObjectContext = nil;
+        if ([[self persistentStoreCoordinator] addPersistentStoreWithType:NSSQLiteStoreType 
+                                                            configuration:kSCHCoreDataHelperMainStoreConfiguration 
+                                                                      URL:[self storeURL:storeName] 
+                                                                  options:nil 
+                                                                    error:&error] == nil){   
+            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+            abort();
         }
+
+        [[NSNotificationCenter defaultCenter] postNotificationName:SCHCoreDataHelperManagedObjectContextDidChangeNotification 
+                                                            object:self 
+                                                          userInfo:[NSDictionary dictionaryWithObject:[self managedObjectContext] 
+                                                                                               forKey:SCHCoreDataHelperManagedObjectContext]];
+        ret = YES;
     }
     
     return(ret);
 }
 
-- (void)postStoreCreationForStandardStore
+- (NSPersistentStore *)currentMainPersistentStore
 {
-#if LOCALDEBUG
-    NSLog(@"This is localDebug Mode"); 
+    NSPersistentStore *ret = nil;
     
-    // set the store type in appstate
-    // copy XPS files into place
-#else
-     // set the store type in appstate   
-#endif
-}
-
-- (void)postStoreCreationForSampleStore
-{
+    if ([self persistentStoreCoordinator] != nil) {
+        for (NSPersistentStore *store in [[self persistentStoreCoordinator] persistentStores]) {
+            if ([store.URL isEqual:[self storeURL:kSCHCoreDataHelperStandardStoreName]] == YES ||
+                [store.URL isEqual:[self storeURL:kSCHCoreDataHelperYoungerSampleStoreName]] == YES ||
+                [store.URL isEqual:[self storeURL:kSCHCoreDataHelperOlderSampleStoreName]] == YES) {
+                ret = store;
+                break;
+            }
+        }
+    }
+    
+    return(ret);
 }
 
 @end
