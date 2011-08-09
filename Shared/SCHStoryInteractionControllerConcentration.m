@@ -88,7 +88,11 @@
     CALayer *layer = [CALayer layer];
     layer.bounds = (CGRect){CGPointZero, size};
     layer.contents = (id)[image CGImage];
-    layer.contentsGravity = kCAGravityCenter;
+    if (image.size.width > size.width || image.size.height > size.height) {
+        layer.contentsGravity = kCAGravityResizeAspect;
+    } else {
+        layer.contentsGravity = kCAGravityCenter;
+    }
     layer.doubleSided = NO;
 
     layer.borderWidth = kBorderWidth;
