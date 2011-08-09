@@ -28,13 +28,7 @@
 @property (nonatomic, retain) SCHQueuedAudioPlayer *audioPlayer;
 @property (nonatomic, retain) UIView *shadeView;
 
-- (void)setupGeometryForContainerView:(UIView *)containerView
-                       backgroundView:(UIImageView *)backgroundView
-                         contentsView:(UIView *)contentsView
-                            titleView:(UIView *)titleView
-                          closeButton:(UIButton *)closeButton
-                      readAloudButton:(UIButton *)readAloudButton;
-
+- (void)setupGeometryForContentsView:(UIView *)contents contentsSize:(CGSize)contentsSize;
 - (CGSize)maximumContentsSize;
 - (UIImage *)backgroundImage;
 
@@ -304,12 +298,7 @@
     }
     
     dispatch_block_t setupViews = ^{
-        [self setupGeometryForContainerView:self.containerView
-                             backgroundView:self.backgroundView
-                               contentsView:newContentsView
-                                  titleView:self.titleView
-                                closeButton:self.closeButton
-                            readAloudButton:self.readAloudButton];
+        [self setupGeometryForContentsView:newContentsView contentsSize:newContentsView.bounds.size];
         self.contentsView.alpha = 0;
         newContentsView.alpha = 1;
         newContentsView.transform = CGAffineTransformIdentity;
@@ -382,40 +371,36 @@
     [self presentInHostView:host withInterfaceOrientation:self.interfaceOrientation];
 }
 
-- (void)resizeCurrentViewToSize:(CGSize)newSize
-       withAdditionalAnimations:(dispatch_block_t)animationBlock
+- (void)resizeCurrentViewToSize:(CGSize)newSize withAdditionalAdjustments:(dispatch_block_t)adjustmentBlock animated:(BOOL)animated
 {
-    // grow/shrink at the bottom
-    CGFloat verticalAdjustment = (newSize.height - CGRectGetHeight(self.contentsView.bounds)) / 2;
-    self.contentsView.bounds = CGRectMake(0, 0, newSize.width, newSize.height);
-    self.contentsView.center = CGPointMake(self.contentsView.center.x, self.contentsView.center.y-verticalAdjustment);
 
     dispatch_block_t setupViews = ^{
-        [self setupGeometryForContainerView:self.containerView
-                             backgroundView:self.backgroundView
-                               contentsView:self.contentsView
-                                  titleView:self.titleView
-                                closeButton:self.closeButton
-                            readAloudButton:self.readAloudButton];
-        if (animationBlock) {
-            animationBlock();
+        [self setupGeometryForContentsView:self.contentsView contentsSize:newSize];
+       
+        if (adjustmentBlock) {
+            adjustmentBlock();
         }
     };
     
-    [UIView animateWithDuration:0.3
-                          delay:0
-                        options:UIViewAnimationOptionCurveEaseInOut
-                     animations:setupViews
-                     completion:nil];
+    if (animated) {
+        [UIView animateWithDuration:0.3
+                              delay:0
+                            options:UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionBeginFromCurrentState
+                         animations:setupViews
+                         completion:nil];
+    } else {
+        setupViews();
+    }
 }
 
-- (void)setupGeometryForContainerView:(UIView *)container
-                       backgroundView:(UIImageView *)background
-                         contentsView:(UIView *)contents
-                            titleView:(UIView *)title
-                          closeButton:(UIButton *)close
-                      readAloudButton:(UIButton *)readAloud
+- (void)setupGeometryForContentsView:(UIView *)contents contentsSize:(CGSize)contentsSize
 {
+    UIView *container = self.containerView;
+    UIImageView *background = self.backgroundView;
+    UIView *title = self.titleView;
+    UIButton *close = self.closeButton;
+    UIButton *readAloud = self.readAloudButton;
+    
     BOOL iPad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
     UIEdgeInsets contentInsets;
     UIEdgeInsets titleInsets;
@@ -457,12 +442,13 @@
         case SCHStoryInteractionTitle: 
         case SCHStoryInteractionTransparentTitle:                            
         case SCHStoryInteractionNoTitle: {
-            backgroundWidth = MAX(background.image.size.width, CGRectGetWidth(contents.bounds) + contentInsets.left + contentInsets.right);
-            backgroundHeight = MAX(background.image.size.height, CGRectGetHeight(contents.bounds) + contentInsets.top + contentInsets.bottom);
+            backgroundWidth = MAX(background.image.size.width, contentsSize.width + contentInsets.left + contentInsets.right);
+            backgroundHeight = MAX(background.image.size.height, contentsSize.height + contentInsets.top + contentInsets.bottom);
             background.bounds = CGRectIntegral(CGRectMake(0, 0, backgroundWidth, backgroundHeight));
             background.center = CGPointMake(floorf(CGRectGetMidX(container.bounds)), floorf(CGRectGetMidY(container.bounds)));
-            contents.center = CGPointMake(floorf(backgroundWidth/2), floorf((backgroundHeight-contentInsets.top-contentInsets.bottom)/2+contentInsets.top));
             title.frame = UIEdgeInsetsInsetRect(CGRectMake(0, 0, backgroundWidth, contentInsets.top), titleInsets);
+            contents.bounds = CGRectMake(0, 0, contentsSize.width, contentsSize.height);
+            contents.center = CGPointMake(floorf(backgroundWidth/2), floorf((backgroundHeight-contentInsets.top-contentInsets.bottom)/2+contentInsets.top));
             break;
         }
         case SCHStoryInteractionTitleOverlaysContents: {
@@ -578,12 +564,8 @@
     if (!self.containerView.superview) {
         return;
     }
-    [self setupGeometryForContainerView:self.containerView
-                         backgroundView:self.backgroundView
-                           contentsView:self.contentsView
-                              titleView:self.titleView
-                            closeButton:self.closeButton
-                        readAloudButton:self.readAloudButton];
+    
+    [self setupGeometryForContentsView:self.contentsView contentsSize:self.contentsView.bounds.size];
 }
 
 - (BOOL)isLandscape
