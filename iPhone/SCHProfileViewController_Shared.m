@@ -269,11 +269,22 @@
 
     passwordController.retainLoopSafeActionBlock = ^BOOL(NSString *topFieldText, NSString *bottomFieldText) {
         if ([topFieldText isEqualToString:bottomFieldText]) {
-            [profileItem setRawPassword:topFieldText];
-            [SCHThemeManager sharedThemeManager].appProfile = profileItem.AppProfile;
-            [self pushBookshelvesControllerWithProfileItem:profileItem];
-            [self dismissModalViewControllerAnimated:YES];
-            return YES;
+            if ([topFieldText length] > 0) {
+                [profileItem setRawPassword:topFieldText];
+                [SCHThemeManager sharedThemeManager].appProfile = profileItem.AppProfile;
+                [self pushBookshelvesControllerWithProfileItem:profileItem];
+                [self dismissModalViewControllerAnimated:YES];
+                return YES;
+            } else {
+                UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") 
+                                                                     message:NSLocalizedString(@"The password cannot be blank.", nil)
+                                                                    delegate:nil 
+                                                           cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+                                                           otherButtonTitles:nil]; 
+                [errorAlert show];
+                [errorAlert release];
+                return NO;
+            }
         } else {
             UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") 
                                                                  message:NSLocalizedString(@"The passwords do not match.", nil)
