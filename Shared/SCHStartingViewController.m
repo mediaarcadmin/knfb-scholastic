@@ -258,10 +258,6 @@ typedef enum {
             break;
     }
     
-    [self.modalNavigationController setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
-    [self.modalNavigationController setModalPresentationStyle:UIModalPresentationFormSheet];
-    [self presentModalViewController:self.modalNavigationController animated:YES];    
-
     [self advanceToNextSignInForm];
 }
 
@@ -347,6 +343,11 @@ typedef enum {
     }
     
     if (next) {
+        if (self.modalViewController == nil) {
+            [self.modalNavigationController setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
+            [self.modalNavigationController setModalPresentationStyle:UIModalPresentationFormSheet];
+            [self presentModalViewController:self.modalNavigationController animated:YES];
+        }
         [self dismissKeyboard];
         [self.modalNavigationController pushViewController:next animated:YES];
         [next release];
