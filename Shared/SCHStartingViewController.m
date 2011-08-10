@@ -252,10 +252,11 @@ typedef enum {
     switch (index) {
         case SCHStartingViewControllerYoungerBookshelf: 
             [appDelegate.coreDataHelper setStoreType:SCHCoreDataHelperYoungerSampleStore];
+            break;
         case SCHStartingViewControllerOlderBookshelf: 
             [appDelegate.coreDataHelper setStoreType:SCHCoreDataHelperOlderSampleStore];
+            break;
     }
-    
     
     [self.modalNavigationController setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
     [self.modalNavigationController setModalPresentationStyle:UIModalPresentationFormSheet];
