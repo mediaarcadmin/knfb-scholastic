@@ -19,7 +19,8 @@ extern NSString * const SCHProfileSyncComponentDidFailNotification;
 
 @interface SCHProfileSyncComponent : SCHSyncComponent
 {
-
 }
+
+- (void)addProfile:(NSDictionary *)webProfile;
 
 @end
