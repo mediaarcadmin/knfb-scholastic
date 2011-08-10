@@ -235,13 +235,8 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
 {
     switch (self.selectionMode) {
         case SCHReadingViewSelectionModeYoungerDictionary:
-            self.selector.shouldTrackSingleTaps = YES;
-            self.selector.allowsInitialDragSelection = NO;
-            self.selector.shouldTrackSingleTapsOnHighights = NO;
-            self.selector.defaultSelectionColor = nil;
-            break;
         case SCHReadingViewSelectionModeOlderDictionary:
-            self.selector.shouldTrackSingleTaps = NO;
+            self.selector.shouldTrackSingleTaps = YES;
             self.selector.allowsInitialDragSelection = NO;
             self.selector.shouldTrackSingleTapsOnHighights = NO;
             self.selector.defaultSelectionColor = nil;
