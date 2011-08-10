@@ -269,6 +269,10 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
             
             [self kickQueue];	
         }
+    } else {
+        // used to kick off the processing manager so even though we're not
+        // syncing we still post the notification
+        [[NSNotificationCenter defaultCenter] postNotificationName:SCHBookshelfSyncComponentDidCompleteNotification object:nil];    
     }
 }
 
