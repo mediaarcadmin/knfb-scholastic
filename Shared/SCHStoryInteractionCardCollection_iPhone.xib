@@ -49,9 +49,28 @@
 						<int key="NSvFlags">301</int>
 						<object class="NSMutableArray" key="NSSubviews">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<object class="IBUIScrollView" id="669584908">
+							<object class="IBUIScrollView" id="848351409">
 								<reference key="NSNextResponder" ref="590676385"/>
 								<int key="NSvFlags">268</int>
+								<object class="NSMutableArray" key="NSSubviews">
+									<bool key="EncodedWithXMLCoder">YES</bool>
+									<object class="IBUIView" id="564116841">
+										<reference key="NSNextResponder" ref="848351409"/>
+										<int key="NSvFlags">301</int>
+										<string key="NSFrameSize">{300, 410}</string>
+										<reference key="NSSuperview" ref="848351409"/>
+										<reference key="NSWindow"/>
+										<string key="NSReuseIdentifierKey">_NS:180</string>
+										<object class="NSColor" key="IBUIBackgroundColor">
+											<int key="NSColorSpace">3</int>
+											<bytes key="NSWhite">MQA</bytes>
+											<object class="NSColorSpace" key="NSCustomColorSpace">
+												<int key="NSID">2</int>
+											</object>
+										</object>
+										<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+									</object>
+								</object>
 								<string key="NSFrameSize">{300, 410}</string>
 								<reference key="NSSuperview" ref="590676385"/>
 								<reference key="NSWindow"/>
@@ -67,12 +86,13 @@
 								<bool key="IBUIAlwaysBounceHorizontal">YES</bool>
 								<bool key="IBUIPagingEnabled">YES</bool>
 								<bool key="IBUIShowsVerticalScrollIndicator">NO</bool>
+								<float key="IBUIMaximumZoomScale">10</float>
 							</object>
 						</object>
 						<string key="NSFrameSize">{300, 410}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="669584908"/>
+						<reference key="NSNextKeyView" ref="848351409"/>
 						<string key="NSReuseIdentifierKey">_NS:180</string>
 						<reference key="IBUIBackgroundColor" ref="657472604"/>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -101,7 +121,7 @@
 								<string key="NSFrame">{{26, 127}, {40, 40}}</string>
 								<reference key="NSSuperview" ref="116995753"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="228156491"/>
+								<reference key="NSNextKeyView" ref="1048898741"/>
 								<string key="NSReuseIdentifierKey">_NS:544</string>
 								<reference key="IBUIBackgroundColor" ref="657472604"/>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -264,7 +284,7 @@
 								<string key="NSFrame">{{26, 127}, {40, 40}}</string>
 								<reference key="NSSuperview" ref="146218548"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="751686036"/>
+								<reference key="NSNextKeyView" ref="1037682467"/>
 								<string key="NSReuseIdentifierKey">_NS:544</string>
 								<reference key="IBUIBackgroundColor" ref="657472604"/>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -304,7 +324,7 @@
 								<string key="NSFrame">{{26, 127}, {40, 40}}</string>
 								<reference key="NSSuperview" ref="1037682467"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
+								<reference key="NSNextKeyView" ref="418343187"/>
 								<string key="NSReuseIdentifierKey">_NS:544</string>
 								<reference key="IBUIBackgroundColor" ref="657472604"/>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -326,7 +346,7 @@
 						<string key="NSFrame">{{247, 352}, {48, 48}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="402467759"/>
+						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:237</string>
 						<reference key="IBUIBackgroundColor" ref="657472604"/>
 						<bool key="IBUIOpaque">NO</bool>
@@ -361,7 +381,7 @@
 						<string key="NSFrame">{{5, 352}, {48, 48}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="1058257913"/>
+						<reference key="NSNextKeyView" ref="751686036"/>
 						<string key="NSReuseIdentifierKey">_NS:237</string>
 						<reference key="IBUIBackgroundColor" ref="657472604"/>
 						<bool key="IBUIOpaque">NO</bool>
@@ -380,13 +400,13 @@
 							<string key="NSResourceName">storyinteraction-card-collection-zoom-out.png</string>
 						</object>
 					</object>
-					<object class="IBUIButton" id="1058257913">
+					<object class="IBUIButton" id="1048898741">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{0, 184}, {25, 42}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="290131767"/>
+						<reference key="NSNextKeyView" ref="228156491"/>
 						<string key="NSReuseIdentifierKey">_NS:222</string>
 						<reference key="IBUIBackgroundColor" ref="657472604"/>
 						<bool key="IBUIOpaque">NO</bool>
@@ -405,13 +425,13 @@
 							<string key="NSResourceName">storyinteraction-card-collection-prev.png</string>
 						</object>
 					</object>
-					<object class="IBUIButton" id="290131767">
+					<object class="IBUIButton" id="418343187">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{275, 184}, {25, 42}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="1037682467"/>
+						<reference key="NSNextKeyView" ref="402467759"/>
 						<string key="NSReuseIdentifierKey">_NS:222</string>
 						<reference key="IBUIBackgroundColor" ref="657472604"/>
 						<bool key="IBUIOpaque">NO</bool>
@@ -529,7 +549,7 @@
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
 						<string key="label">previousCard:</string>
-						<reference key="source" ref="1058257913"/>
+						<reference key="source" ref="1048898741"/>
 						<reference key="destination" ref="372490531"/>
 						<int key="IBEventType">7</int>
 					</object>
@@ -538,7 +558,7 @@
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
 						<string key="label">nextCard:</string>
-						<reference key="source" ref="290131767"/>
+						<reference key="source" ref="418343187"/>
 						<reference key="destination" ref="372490531"/>
 						<int key="IBEventType">7</int>
 					</object>
@@ -547,7 +567,7 @@
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">delegate</string>
-						<reference key="source" ref="669584908"/>
+						<reference key="source" ref="848351409"/>
 						<reference key="destination" ref="372490531"/>
 					</object>
 					<int key="connectionID">82</int>
@@ -556,7 +576,7 @@
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">zoomedCardScrollView</string>
 						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="669584908"/>
+						<reference key="destination" ref="848351409"/>
 					</object>
 					<int key="connectionID">83</int>
 				</object>
@@ -564,7 +584,7 @@
 					<object class="IBCocoaTouchOutletCollectionConnection" key="connection">
 						<string key="label">zoomedCardButtons</string>
 						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="1058257913"/>
+						<reference key="destination" ref="1048898741"/>
 						<string key="cachedDesigntimeCollectionClassName">NSArray</string>
 					</object>
 					<int key="connectionID">84</int>
@@ -573,7 +593,7 @@
 					<object class="IBCocoaTouchOutletCollectionConnection" key="connection">
 						<string key="label">zoomedCardButtons</string>
 						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="290131767"/>
+						<reference key="destination" ref="418343187"/>
 						<string key="cachedDesigntimeCollectionClassName">NSArray</string>
 					</object>
 					<int key="connectionID">85</int>
@@ -595,6 +615,14 @@
 						<string key="cachedDesigntimeCollectionClassName">NSArray</string>
 					</object>
 					<int key="connectionID">87</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">scrollContentView</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="564116841"/>
+					</object>
+					<int key="connectionID">89</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -620,8 +648,8 @@
 							<reference ref="590676385"/>
 							<reference ref="751686036"/>
 							<reference ref="402467759"/>
-							<reference ref="1058257913"/>
-							<reference ref="290131767"/>
+							<reference ref="1048898741"/>
+							<reference ref="418343187"/>
 						</object>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -756,7 +784,7 @@
 						<reference key="object" ref="590676385"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="669584908"/>
+							<reference ref="848351409"/>
 						</object>
 						<reference key="parent" ref="191373211"/>
 						<string key="objectName">Perspective view</string>
@@ -768,7 +796,11 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">81</int>
-						<reference key="object" ref="669584908"/>
+						<reference key="object" ref="848351409"/>
+						<object class="NSMutableArray" key="children">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<reference ref="564116841"/>
+						</object>
 						<reference key="parent" ref="590676385"/>
 					</object>
 					<object class="IBObjectRecord">
@@ -785,13 +817,18 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">77</int>
-						<reference key="object" ref="1058257913"/>
+						<reference key="object" ref="1048898741"/>
 						<reference key="parent" ref="191373211"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">78</int>
-						<reference key="object" ref="290131767"/>
+						<reference key="object" ref="418343187"/>
 						<reference key="parent" ref="191373211"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">88</int>
+						<reference key="object" ref="564116841"/>
+						<reference key="parent" ref="848351409"/>
 					</object>
 				</object>
 			</object>
@@ -828,12 +865,14 @@
 					<string>77.IBPluginDependency</string>
 					<string>78.IBPluginDependency</string>
 					<string>81.IBPluginDependency</string>
+					<string>88.IBPluginDependency</string>
 				</object>
 				<object class="NSMutableArray" key="dict.values">
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<string>SCHStoryInteractionControllerCardCollection</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>UIResponder</string>
+					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -874,7 +913,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">87</int>
+			<int key="maxID">89</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -952,10 +991,12 @@
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>perspectiveView</string>
+							<string>scrollContentView</string>
 							<string>zoomedCardScrollView</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>UIView</string>
 							<string>UIView</string>
 							<string>UIScrollView</string>
 						</object>
@@ -965,12 +1006,17 @@
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>perspectiveView</string>
+							<string>scrollContentView</string>
 							<string>zoomedCardScrollView</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<object class="IBToOneOutletInfo">
 								<string key="name">perspectiveView</string>
+								<string key="candidateClassName">UIView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">scrollContentView</string>
 								<string key="candidateClassName">UIView</string>
 							</object>
 							<object class="IBToOneOutletInfo">

@@ -28,6 +28,7 @@ enum {
 - (CALayer *)cardLayerWithFront:(UIImage *)front back:(UIImage *)back size:(CGSize)size;
 - (void)showCardsInScrollViewAtIndex:(NSInteger)index;
 - (void)hideScrollView;
+- (void)updateZoomButtons;
 - (void)updateZoomedLayer;
 
 @end
@@ -38,6 +39,7 @@ enum {
 @synthesize perspectiveView;
 @synthesize zoomedCardButtons;
 @synthesize zoomedCardScrollView;
+@synthesize scrollContentView;
 @synthesize selectedCardView;
 @synthesize zoomCardLayer;
 @synthesize scrollSublayers;
@@ -48,6 +50,7 @@ enum {
     [perspectiveView release], perspectiveView = nil;
     [zoomedCardButtons release], zoomedCardButtons = nil;
     [zoomedCardScrollView release], zoomedCardScrollView = nil;
+    [scrollContentView release], scrollContentView = nil;
     [zoomCardLayer release], zoomCardLayer = nil;
     [selectedCardView release], selectedCardView = nil;
     [scrollSublayers release], scrollSublayers = nil;
@@ -103,7 +106,7 @@ enum {
 
 - (void)showZoomedCardButtons
 {
-    [UIView animateWithDuration:0.25
+    [UIView animateWithDuration:0.2
                           delay:0
                         options:UIViewAnimationOptionAllowUserInteraction
                      animations:^{
@@ -125,7 +128,7 @@ enum {
     };
     
     if (animated) {
-        [UIView animateWithDuration:0.25
+        [UIView animateWithDuration:0.2
                               delay:0
                             options:UIViewAnimationOptionAllowUserInteraction
                          animations:block
@@ -318,8 +321,8 @@ enum {
     CGPoint contentOffset = self.zoomedCardScrollView.contentOffset;
     CGFloat width = CGRectGetWidth(self.zoomedCardScrollView.bounds);
     NSInteger cardIndex = contentOffset.x / width;
-    contentOffset.x = (cardIndex-1) * width;
-    if (contentOffset.x >= 0) {
+    if (cardIndex > 0) {
+        contentOffset.x = (cardIndex-1) * width;
         [self.zoomedCardScrollView setContentOffset:contentOffset animated:YES];
     }
 }
@@ -329,8 +332,8 @@ enum {
     CGPoint contentOffset = self.zoomedCardScrollView.contentOffset;
     CGFloat width = CGRectGetWidth(self.zoomedCardScrollView.bounds);
     NSInteger cardIndex = contentOffset.x / width;
-    contentOffset.x = (cardIndex+1) * width;
-    if (contentOffset.x + width < self.zoomedCardScrollView.contentSize.width) {
+    if (cardIndex < [self.scrollSublayers count]-1) {
+        contentOffset.x = (cardIndex+1) * width;
         [self.zoomedCardScrollView setContentOffset:contentOffset animated:YES];
     }
 }
@@ -356,15 +359,19 @@ enum {
     for (NSInteger cardIndex = 0; cardIndex < numCards; ++cardIndex) {
         UIImage *frontImage = [self imageAtPath:[cardCollection imagePathForCardFrontAtIndex:cardIndex]];
         UIImage *backImage = [self imageAtPath:[cardCollection imagePathForCardBackAtIndex:cardIndex]];
+        if (!frontImage || !backImage) {
+            continue;
+        }
         CALayer *cardLayer = [self cardLayerWithFront:frontImage back:backImage size:cardSize];
         cardLayer.position = CGPointMake(x, y);
-        [self.zoomedCardScrollView.layer addSublayer:cardLayer];
+        [self.scrollContentView.layer addSublayer:cardLayer];
         [sublayers addObject:cardLayer];
         x += cardSize.width + gap;
     }
     
     self.scrollSublayers = [NSArray arrayWithArray:sublayers];
-    self.zoomedCardScrollView.contentSize = CGSizeMake((cardSize.width+gap)*numCards, cardSize.height);
+    self.zoomedCardScrollView.contentSize = CGSizeMake((cardSize.width+gap)*[sublayers count], cardSize.height);
+    self.scrollContentView.frame = (CGRect){CGPointZero, self.zoomedCardScrollView.contentSize};
 
     // replace zoom layer with scroller
     [self.zoomCardLayer removeFromSuperlayer];
@@ -389,6 +396,24 @@ enum {
     self.scrollSublayers = nil;
 }
 
+- (void)updateZoomButtons
+{
+    if (self.zoomedCardScrollView.zoomScale > 1.0) {
+        [self hideZoomedCardButtonsAnimated:YES];
+    } else {
+        [self showZoomedCardButtons];
+    }
+}
+
+- (void)updateZoomedLayer
+{
+    CGFloat width = CGRectGetWidth(self.zoomedCardScrollView.bounds);
+    NSInteger cardIndex = (self.zoomedCardScrollView.contentOffset.x + width/2) / width;
+    cardIndex = MAX(0, MIN([self.scrollSublayers count]-1, cardIndex));
+    self.zoomCardLayer = [self.scrollSublayers objectAtIndex:cardIndex];
+    self.selectedCardView = (UIImageView *)[[self.cardViews objectAtIndex:cardIndex] viewWithTag:kCardImageViewTag];
+}
+
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
     [self hideZoomedCardButtonsAnimated:YES];
@@ -397,29 +422,31 @@ enum {
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
     if (!decelerate) {
-        [self showZoomedCardButtons];
+        [self updateZoomButtons];
         [self updateZoomedLayer];
     }
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
-    [self showZoomedCardButtons];
+    [self updateZoomButtons];
     [self updateZoomedLayer];
 }
 
 - (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
 {
-    [self showZoomedCardButtons];
+    [self updateZoomButtons];
     [self updateZoomedLayer];
 }
 
-- (void)updateZoomedLayer
+- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
 {
-    CGFloat width = CGRectGetWidth(self.zoomedCardScrollView.bounds);
-    NSInteger cardIndex = (self.zoomedCardScrollView.contentOffset.x + width/2) / width;
-    self.zoomCardLayer = [self.scrollSublayers objectAtIndex:cardIndex];
-    self.selectedCardView = (UIImageView *)[[self.cardViews objectAtIndex:cardIndex] viewWithTag:kCardImageViewTag];
+    return self.scrollContentView;
+}
+
+- (void)scrollViewDidEndZooming:(UIScrollView *)scrollView withView:(UIView *)view atScale:(float)scale
+{
+    [self updateZoomButtons];
 }
 
 @end
