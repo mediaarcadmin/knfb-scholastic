@@ -106,7 +106,7 @@
 		
 		SCHLocalDebugXPSReader *provider = [[SCHLocalDebugXPSReader alloc] initWithPath:currentPath];
 		
-        newContentMetadataItem.DRMQualifier = [NSNumber numberWithDRMQualifier:kSCHDRMQualifiersNone];
+        newContentMetadataItem.DRMQualifier = [NSNumber numberWithDRMQualifier:kSCHDRMQualifiersFullNoDRM];
 		if (provider.ISBN != nil && [[provider.ISBN stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {
 			newContentMetadataItem.ContentIdentifierType = [NSNumber numberWithContentIdentifierType:kSCHContentItemContentIdentifierTypesISBN13];
 		} else {
@@ -130,7 +130,7 @@
 		
 		newUserContentItem.ContentIdentifier = newContentMetadataItem.ContentIdentifier;
 		newUserContentItem.ContentIdentifierType = newContentMetadataItem.ContentIdentifierType;
-		newUserContentItem.DRMQualifier = [NSNumber numberWithDRMQualifier:kSCHDRMQualifiersNone];
+		newUserContentItem.DRMQualifier = [NSNumber numberWithDRMQualifier:kSCHDRMQualifiersFullNoDRM];
         
         newContentProfileItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHContentProfileItem inManagedObjectContext:self.managedObjectContext];			
 		
@@ -356,7 +356,7 @@
 		
 		SCHLocalDebugXPSReader *provider = [[SCHLocalDebugXPSReader alloc] initWithPath:currentPath];
 		
-		newContentMetadataItem.DRMQualifier = [NSNumber numberWithDRMQualifier:kSCHDRMQualifiersNone];
+		newContentMetadataItem.DRMQualifier = [NSNumber numberWithDRMQualifier:kSCHDRMQualifiersFullNoDRM];
 		if (provider.ISBN != nil && [[provider.ISBN stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) {
 			newContentMetadataItem.ContentIdentifierType = [NSNumber numberWithContentIdentifierType:kSCHContentItemContentIdentifierTypesISBN13];
 		} else {
@@ -383,7 +383,7 @@
 		
 		newUserContentItem.ContentIdentifier = newContentMetadataItem.ContentIdentifier;
 		newUserContentItem.ContentIdentifierType = newContentMetadataItem.ContentIdentifierType;
-		newUserContentItem.DRMQualifier = [NSNumber numberWithDRMQualifier:kSCHDRMQualifiersNone];
+		newUserContentItem.DRMQualifier = [NSNumber numberWithDRMQualifier:kSCHDRMQualifiersFullNoDRM];
 
 		newContentProfileItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHContentProfileItem inManagedObjectContext:self.managedObjectContext];			
 		

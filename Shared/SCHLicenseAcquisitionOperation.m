@@ -10,9 +10,11 @@
 #import "SCHBookManager.h"
 #import "SCHAppBook.h"
 #import "SCHAuthenticationManager.h"
+#import "NSNumber+ObjectTypes.h"
 
 @interface SCHLicenseAcquisitionOperation ()
 
+- (BOOL)useDRM;
 - (void) updateBookWithSuccess;
 - (void) updateBookWithFailure;
 
@@ -36,28 +38,35 @@
 
 - (void)start
 {
-#if !LOCALDEBUG
-    licenseAcquisitionSession = [[SCHDrmLicenseAcquisitionSession alloc] initWithBook:self.identifier];
-    [licenseAcquisitionSession setDelegate:self];
-#endif    
+    if ([self useDRM] == YES) {
+        licenseAcquisitionSession = [[SCHDrmLicenseAcquisitionSession alloc] initWithBook:self.identifier];
+        [licenseAcquisitionSession setDelegate:self];
+    }
     [super start];
 }
 
 - (void)beginOperation
 { 
-#if LOCALDEBUG
-    [self updateBookWithSuccess];
-    return;
-#endif
-#if NONDRMAUTHENTICATION
-    [self updateBookWithSuccess];
-    return;
-#endif
-    if ([SCHAuthenticationManager sharedAuthenticationManager].isAuthenticated == YES) {		
-        [licenseAcquisitionSession acquireLicense:[[SCHAuthenticationManager sharedAuthenticationManager] aToken] bookID:self.identifier];
+    if ([self useDRM] == YES) {
+        if ([SCHAuthenticationManager sharedAuthenticationManager].isAuthenticated == YES) {		
+            [licenseAcquisitionSession acquireLicense:[[SCHAuthenticationManager sharedAuthenticationManager] aToken] bookID:self.identifier];
+        } else {
+            [self setIsProcessing:NO];
+        }
     } else {
-        [self setIsProcessing:NO];
+        [self updateBookWithSuccess];
     }
+}
+
+- (BOOL)useDRM
+{
+    __block BOOL useDRM = NO;
+    
+    [self performWithBook:^(SCHAppBook *book) {
+        useDRM = book.ContentMetadataItem.DRMQualifier == [NSNumber numberWithDRMQualifier:kSCHDRMQualifiersFullWithDRM];
+    }];
+    
+    return(useDRM);
 }
 
 #pragma mark - Book Updates

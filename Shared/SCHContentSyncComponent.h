@@ -18,8 +18,8 @@ extern NSString * const SCHContentSyncComponentDidFailNotification;
 
 @interface SCHContentSyncComponent : SCHSyncComponent
 {
-
 }
 
+- (void)addUserContentItem:(NSDictionary *)webUserContentItem;
 
 @end

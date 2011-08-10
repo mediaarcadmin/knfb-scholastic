@@ -19,9 +19,10 @@ extern NSString * const SCHBookshelfSyncComponentDidFailNotification;
 
 @interface SCHBookshelfSyncComponent : SCHSyncComponent
 {
-
 }
 
 @property (nonatomic, assign) BOOL useIndividualRequests;
+
+- (void)addContentMetadataItem:(NSDictionary *)webContentMetadataItem;
 
 @end
