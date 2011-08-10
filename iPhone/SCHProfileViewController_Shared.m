@@ -20,6 +20,7 @@
 #import "SCHBookUpdates.h"
 #import "SCHAppProfile.h"
 #import "SCHBookIdentifier.h"
+#import "SCHCoreDataHelper.h"
 
 @interface SCHProfileViewController_Shared()  
 
@@ -52,6 +53,8 @@
 
 - (void)releaseViewObjects
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
     [tableView release], tableView = nil;
     [backgroundView release], backgroundView = nil;
     [headerView release], headerView = nil;
@@ -84,9 +87,20 @@
     [self.updatesBubble addGestureRecognizer:tap];
     [tap release];
 
+    [[NSNotificationCenter defaultCenter] addObserver:self 
+                                             selector:@selector(coreDataHelperManagedObjectContextDidChangeNotification:) 
+                                                 name:SCHCoreDataHelperManagedObjectContextDidChangeNotification 
+                                               object:nil];	
+ 
     self.settingsViewController.setupDelegate = self;
     self.settingsViewController.managedObjectContext = self.managedObjectContext;
 }  
+
+- (void)viewDidUnload
+{
+    [super viewDidUnload];
+    [self releaseViewObjects];
+}
 
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -96,6 +110,22 @@
     UIView *empty = [[UIView alloc] initWithFrame:CGRectZero];
     self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:empty] autorelease];
     [empty release];
+}
+
+#pragma mark - NSManagedObjectContext Changed Notification
+
+- (void)coreDataHelperManagedObjectContextDidChangeNotification:(NSNotification *)notification
+{
+    self.managedObjectContext = [[notification userInfo] objectForKey:SCHCoreDataHelperManagedObjectContext];
+   
+	 if (self.settingsViewController != nil) {
+        self.settingsViewController.managedObjectContext = self.managedObjectContext;
+    }
+    if (self.bookUpdates != nil) {
+        self.bookUpdates.managedObjectContext = self.managedObjectContext;
+    }    
+
+    [self.tableView reloadData];
 }
 
 #pragma mark - Table view data source
@@ -269,11 +299,22 @@
 
     passwordController.retainLoopSafeActionBlock = ^BOOL(NSString *topFieldText, NSString *bottomFieldText) {
         if ([topFieldText isEqualToString:bottomFieldText]) {
-            [profileItem setRawPassword:topFieldText];
-            [SCHThemeManager sharedThemeManager].appProfile = profileItem.AppProfile;
-            [self pushBookshelvesControllerWithProfileItem:profileItem];
-            [self dismissModalViewControllerAnimated:YES];
-            return YES;
+            if ([topFieldText length] > 0) {
+                [profileItem setRawPassword:topFieldText];
+                [SCHThemeManager sharedThemeManager].appProfile = profileItem.AppProfile;
+                [self pushBookshelvesControllerWithProfileItem:profileItem];
+                [self dismissModalViewControllerAnimated:YES];
+                return YES;
+            } else {
+                UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") 
+                                                                     message:NSLocalizedString(@"The password cannot be blank.", nil)
+                                                                    delegate:nil 
+                                                           cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+                                                           otherButtonTitles:nil]; 
+                [errorAlert show];
+                [errorAlert release];
+                return NO;
+            }
         } else {
             UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") 
                                                                  message:NSLocalizedString(@"The passwords do not match.", nil)

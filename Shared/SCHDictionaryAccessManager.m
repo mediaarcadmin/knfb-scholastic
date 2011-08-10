@@ -15,6 +15,7 @@
 #import "SCHDictionaryWordForm.h"
 #import "SCHBookManager.h"
 #import "SCHDictionaryEntry.h"
+#import "SCHCoreDataHelper.h"
 
 // Constants
 NSString * const kSCHDictionaryYoungReader = @"YD";
@@ -29,8 +30,8 @@ NSString * const kSCHDictionaryOlderReader = @"OD";
 @property (nonatomic, retain) AVAudioPlayer *player;
 
 // SCHDictionaryEntry object for a word
-- (SCHDictionaryEntry *) entryForWord: (NSString *) dictionaryWord category: (NSString *) category;
-- (SCHDictionaryWordForm *) wordFormForBaseWord: (NSString *) baseWord category: (NSString *) category;
+- (SCHDictionaryEntry *)entryForWord:(NSString *)dictionaryWord category:(NSString *)category;
+- (SCHDictionaryWordForm *)wordFormForBaseWord:(NSString *)baseWord category:(NSString *)category;
 
 @end
 
@@ -50,7 +51,7 @@ NSString * const kSCHDictionaryOlderReader = @"OD";
 
 static SCHDictionaryAccessManager *sharedManager = nil;
 
-+ (SCHDictionaryAccessManager *) sharedAccessManager
++ (SCHDictionaryAccessManager *)sharedAccessManager
 {
 	if (sharedManager == nil) {
 		sharedManager = [[SCHDictionaryAccessManager alloc] init];
@@ -62,16 +63,20 @@ static SCHDictionaryAccessManager *sharedManager = nil;
 	return sharedManager;
 }
 
-//- (id) init
-//{
-//    if ((self = [super init])) {
-//        [self updateOnReady];
-//    }
-//    
-//    return self;
-//}
+- (id)init
+{
+    if ((self = [super init])) {
+        //        [self updateOnReady];
+        [[NSNotificationCenter defaultCenter] addObserver:self 
+                                                 selector:@selector(coreDataHelperManagedObjectContextDidChangeNotification:) 
+                                                     name:SCHCoreDataHelperManagedObjectContextDidChangeNotification 
+                                                   object:nil];	
+    }
+    
+    return(self);
+}
 
-- (void) dealloc
+- (void)dealloc
 {
     if (dictionaryAccessQueue) {
         dispatch_release(dictionaryAccessQueue);
@@ -88,7 +93,7 @@ static SCHDictionaryAccessManager *sharedManager = nil;
     [super dealloc];
 }
 
-- (void) updateOnReady
+- (void)updateOnReady
 {
     self.youngDictionaryCSS = [NSString stringWithContentsOfFile:[[[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryDirectory] stringByAppendingPathComponent:@"YoungDictionary.css"]
                                                         encoding:NSUTF8StringEncoding 
@@ -136,9 +141,16 @@ static SCHDictionaryAccessManager *sharedManager = nil;
     }
 }
 
+#pragma mark - NSManagedObjectContext Changed Notification
+
+- (void)coreDataHelperManagedObjectContextDidChangeNotification:(NSNotification *)notification
+{
+    self.mainThreadManagedObjectContext = [[notification userInfo] objectForKey:SCHCoreDataHelperManagedObjectContext];
+}
+
 #pragma mark - Dictionary Definition Methods
 
-- (SCHDictionaryEntry *) entryForWord: (NSString *) dictionaryWord category: (NSString *) category
+- (SCHDictionaryEntry *)entryForWord:(NSString *)dictionaryWord category:(NSString *)category
 {
     NSAssert([NSThread isMainThread], @"entryForWord must be called on main thread");
     
@@ -204,7 +216,7 @@ static SCHDictionaryAccessManager *sharedManager = nil;
     return entry;
 }
 
-- (SCHDictionaryWordForm *) wordFormForBaseWord: (NSString *) baseWord category: (NSString *) category
+- (SCHDictionaryWordForm *)wordFormForBaseWord:(NSString *)baseWord category:(NSString *)category
 {
     NSAssert([NSThread isMainThread], @"wordFormForBaseWord must be called on main thread");
     
@@ -258,7 +270,7 @@ static SCHDictionaryAccessManager *sharedManager = nil;
     return wordForm;
 }
 
-- (NSString *) HTMLForWord: (NSString *) dictionaryWord category: (NSString *) category
+- (NSString *)HTMLForWord:(NSString *)dictionaryWord category:(NSString *)category
 {
     NSAssert([NSThread isMainThread], @"HTMLForWord must be called on main thread");
     
@@ -398,7 +410,7 @@ static SCHDictionaryAccessManager *sharedManager = nil;
     return resultWithAdditions;
 }
 
-- (void) speakWord: (NSString *) dictionaryWord category: (NSString *) category
+- (void)speakWord:(NSString *)dictionaryWord category:(NSString *)category
 {
     
     if ([[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryProcessingState] != SCHDictionaryProcessingStateReady) {
@@ -472,7 +484,7 @@ static SCHDictionaryAccessManager *sharedManager = nil;
     
 }
 
-- (void) speakYoungerWordDefinition: (NSString *) dictionaryWord
+- (void)speakYoungerWordDefinition:(NSString *)dictionaryWord
 {
     if ([[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryProcessingState] != SCHDictionaryProcessingStateReady) {
         NSLog(@"Dictionary is not ready yet!");
@@ -510,7 +522,7 @@ static SCHDictionaryAccessManager *sharedManager = nil;
     
 }
 
-- (void) stopAllSpeaking
+- (void)stopAllSpeaking
 {
     [self.player stop];
     self.player = nil;

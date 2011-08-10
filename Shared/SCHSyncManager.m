@@ -17,6 +17,8 @@
 #import "SCHProfileItem.h"
 #import "SCHContentProfileItem.h"
 #import "SCHUserDefaults.h"
+#import "SCHAppStateManager.h"
+#import "SCHCoreDataHelper.h"
 
 // Constants
 NSString * const SCHSyncManagerDidCompleteNotification = @"SCHSyncManagerDidCompleteNotification";
@@ -32,6 +34,7 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
 - (NSMutableDictionary *)annotationContentItemFromUserContentItem:(SCHUserContentItem *)userContentItem;
 - (void)addToQueue:(SCHSyncComponent *)component;
 - (void)kickQueue;
+- (BOOL)shouldSync;
 
 @property (retain, nonatomic) NSTimer *timer;
 @property (retain, nonatomic) NSMutableArray *queue;
@@ -95,7 +98,13 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
 		[[NSNotificationCenter defaultCenter] addObserver:self 
                                                  selector:@selector(authenticationManager:) 
                                                      name:SCHAuthenticationManagerDidSucceedNotification 
-                                                   object:nil];					
+                                                   object:nil];		
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self 
+                                                 selector:@selector(coreDataHelperManagedObjectContextDidChangeNotification:) 
+                                                     name:SCHCoreDataHelperManagedObjectContextDidChangeNotification 
+                                                   object:nil];	
+        
 	}
 	
 	return(self);
@@ -149,6 +158,13 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
 - (BOOL)isQueueEmpty
 {
 	return([self.queue count] < 1);
+}
+
+#pragma mark - NSManagedObjectContext Changed Notification
+
+- (void)coreDataHelperManagedObjectContextDidChangeNotification:(NSNotification *)notification
+{
+    self.managedObjectContext = [[notification userInfo] objectForKey:SCHCoreDataHelperManagedObjectContext];
 }
 
 #pragma mark - Background Sync methods
@@ -210,72 +226,66 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
 // after login or opening the app, also coming out of background
 - (void)firstSync:(BOOL)syncNow;
 {
-#if LOCALDEBUG
-	return;
-#endif
-	
-    // reset if the date has been changed in a backward motion
-    if ([self.lastFirstSyncEnded compare:[NSDate date]] == NSOrderedDescending) {
-        self.lastFirstSyncEnded = nil;
-    }
-
-    if (syncNow == YES || self.lastFirstSyncEnded == nil || 
-        [self.lastFirstSyncEnded timeIntervalSinceNow] < kSCHLastFirstSyncInterval) {
-        NSLog(@"Scheduling First Sync");
-        
-        [self addToQueue:self.profileSyncComponent];
-        [self addToQueue:self.contentSyncComponent];
-        [self addToQueue:self.bookshelfSyncComponent];
-		
-        NSEntityDescription *entityDescription = [NSEntityDescription entityForName:kSCHProfileItem 
-                                                             inManagedObjectContext:self.managedObjectContext];
-        NSFetchRequest *request = [[NSFetchRequest alloc] init];
-        [request setEntity:entityDescription];
-        
-        NSError *error = nil;				
-        NSArray *profiles = [self.managedObjectContext executeFetchRequest:request error:&error];
-        for (SCHProfileItem *profileItem in profiles) {	
-            [self.annotationSyncComponent addProfile:[profileItem 
-                                                      valueForKey:kSCHLibreAccessWebServiceID] 
-                                           withBooks:[self bookAnnotationsFromProfile:profileItem]];	
-        }
-        [request release], request = nil;
-        
-        if ([self.annotationSyncComponent haveProfiles] == YES) {
-            [self addToQueue:self.annotationSyncComponent];		
+    if ([self shouldSync] == YES) {	
+        // reset if the date has been changed in a backward motion
+        if ([self.lastFirstSyncEnded compare:[NSDate date]] == NSOrderedDescending) {
+            self.lastFirstSyncEnded = nil;
         }
         
-        [self addToQueue:self.readingStatsSyncComponent];
-        [self addToQueue:self.settingsSyncComponent];
-        
-        [self kickQueue];	
+        if (syncNow == YES || self.lastFirstSyncEnded == nil || 
+            [self.lastFirstSyncEnded timeIntervalSinceNow] < kSCHLastFirstSyncInterval) {
+            NSLog(@"Scheduling First Sync");
+            
+            [self addToQueue:self.profileSyncComponent];
+            [self addToQueue:self.contentSyncComponent];
+            [self addToQueue:self.bookshelfSyncComponent];
+            
+            NSEntityDescription *entityDescription = [NSEntityDescription entityForName:kSCHProfileItem 
+                                                                 inManagedObjectContext:self.managedObjectContext];
+            NSFetchRequest *request = [[NSFetchRequest alloc] init];
+            [request setEntity:entityDescription];
+            
+            NSError *error = nil;				
+            NSArray *profiles = [self.managedObjectContext executeFetchRequest:request error:&error];
+            for (SCHProfileItem *profileItem in profiles) {	
+                [self.annotationSyncComponent addProfile:[profileItem 
+                                                          valueForKey:kSCHLibreAccessWebServiceID] 
+                                               withBooks:[self bookAnnotationsFromProfile:profileItem]];	
+            }
+            [request release], request = nil;
+            
+            if ([self.annotationSyncComponent haveProfiles] == YES) {
+                [self addToQueue:self.annotationSyncComponent];		
+            }
+            
+            [self addToQueue:self.readingStatsSyncComponent];
+            [self addToQueue:self.settingsSyncComponent];
+            
+            [self kickQueue];	
+        }
     }
 }
 
 - (void)changeProfile
 {
-#if LOCALDEBUG
-	return;
-#endif
-
-	NSLog(@"Scheduling Change Profile");
-	
-	[self addToQueue:self.profileSyncComponent];
-	
-	[self kickQueue];
+    if ([self shouldSync] == YES) {	
+        NSLog(@"Scheduling Change Profile");
+        
+        [self addToQueue:self.profileSyncComponent];
+        
+        [self kickQueue];
+    }
 }
 
 - (void)updateBookshelf
 {
-#if LOCALDEBUG
-	return;
-#endif
-
-	NSLog(@"Scheduling Update Bookshelf");
-	
-	[self addToQueue:self.bookshelfSyncComponent];
-	
-	[self kickQueue];
+    if ([self shouldSync] == YES) {	
+        NSLog(@"Scheduling Update Bookshelf");
+        
+        [self addToQueue:self.bookshelfSyncComponent];
+        
+        [self kickQueue];
+    }
 }
 
 - (NSMutableArray *)bookAnnotationsFromProfile:(SCHProfileItem *)profileItem  
@@ -327,18 +337,16 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
 - (void)openDocument:(SCHUserContentItem *)userContentItem 
           forProfile:(NSNumber *)profileID
 {
-#if LOCALDEBUG
-	return;
-#endif
-
-	NSLog(@"Scheduling Open Document");
-	
-    if (userContentItem != nil && profileID != nil) {
-        [self.annotationSyncComponent addProfile:profileID 
-                                       withBooks:[NSMutableArray arrayWithObject:[self annotationContentItemFromUserContentItem:userContentItem]]];	
-        [self addToQueue:self.annotationSyncComponent];
+    if ([self shouldSync] == YES) {	
+        NSLog(@"Scheduling Open Document");
         
-        [self kickQueue];
+        if (userContentItem != nil && profileID != nil) {
+            [self.annotationSyncComponent addProfile:profileID 
+                                           withBooks:[NSMutableArray arrayWithObject:[self annotationContentItemFromUserContentItem:userContentItem]]];	
+            [self addToQueue:self.annotationSyncComponent];
+            
+            [self kickQueue];
+        }
     }
 }
 
@@ -347,19 +355,18 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
     // save any changes first
     NSError *error = nil;
     [self.managedObjectContext save:&error];
-#if LOCALDEBUG
-	return;
-#endif
-
-	NSLog(@"Scheduling Close Document");
-	
-    if (userContentItem != nil && profileID != nil) {
-        [self.annotationSyncComponent addProfile:profileID 
-                                       withBooks:[NSMutableArray arrayWithObject:[self annotationContentItemFromUserContentItem:userContentItem]]];	
-        [self addToQueue:self.annotationSyncComponent];
-        [self addToQueue:self.readingStatsSyncComponent];
+    
+    if ([self shouldSync] == YES) {	
+        NSLog(@"Scheduling Close Document");
         
-        [self kickQueue];	
+        if (userContentItem != nil && profileID != nil) {
+            [self.annotationSyncComponent addProfile:profileID 
+                                           withBooks:[NSMutableArray arrayWithObject:[self annotationContentItemFromUserContentItem:userContentItem]]];	
+            [self addToQueue:self.annotationSyncComponent];
+            [self addToQueue:self.readingStatsSyncComponent];
+            
+            [self kickQueue];	
+        }
     }
 }
 
@@ -422,6 +429,18 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
         
         //		NSLog(@"Queue is empty");
 	}
+}
+
+- (BOOL)shouldSync
+{
+    BOOL ret = NO;
+    SCHAppState *appState = [SCHAppStateManager sharedAppStateManager].appState;
+    
+    if (appState != nil) {
+        ret = [appState.ShouldSync boolValue];        
+    }
+    
+    return(ret);    
 }
 
 @end

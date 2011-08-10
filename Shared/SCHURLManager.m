@@ -15,6 +15,7 @@
 #import "SCHContentMetadataItem.h"
 #import "SCHUserContentItem.h"
 #import "SCHBookIdentifier.h"
+#import "SCHCoreDataHelper.h"
 
 // Constants
 NSString * const kSCHURLManagerSuccess = @"URLManagerSuccess";
@@ -79,8 +80,14 @@ NSString * const kSCHURLManagerFailure = @"URLManagerFailure";
 		
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(authenticationManager:) 
 													 name:SCHAuthenticationManagerDidSucceedNotification object:nil];					
+
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(authenticationManager:) 
 													 name:SCHAuthenticationManagerDidFailNotification object:nil];							
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self 
+                                                 selector:@selector(coreDataHelperManagedObjectContextDidChangeNotification:) 
+                                                     name:SCHCoreDataHelperManagedObjectContextDidChangeNotification 
+                                                   object:nil];	
 	}
 	
 	return(self);
@@ -105,6 +112,13 @@ NSString * const kSCHURLManagerFailure = @"URLManagerFailure";
 - (void)clear
 {
     [self performSelectorOnMainThread:@selector(clearOnMainThread) withObject:nil waitUntilDone:NO];    
+}
+
+#pragma mark - NSManagedObjectContext Changed Notification
+
+- (void)coreDataHelperManagedObjectContextDidChangeNotification:(NSNotification *)notification
+{
+    self.managedObjectContext = [[notification userInfo] objectForKey:SCHCoreDataHelperManagedObjectContext];
 }
 
 #pragma mark - Private methods
