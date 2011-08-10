@@ -8,13 +8,16 @@
 
 #import "SCHStoryInteractionController.h"
 
-@interface SCHStoryInteractionControllerCardCollection : SCHStoryInteractionController {}
+@interface SCHStoryInteractionControllerCardCollection : SCHStoryInteractionController <UIScrollViewDelegate> {}
 
 @property (nonatomic, retain) IBOutletCollection(UIView) NSArray *cardViews;
+@property (nonatomic, retain) IBOutletCollection(UIButton) NSArray *zoomedCardButtons;
 @property (nonatomic, retain) IBOutlet UIView *perspectiveView;
-@property (nonatomic, retain) IBOutlet UIView *buttonsContainer;
+@property (nonatomic, retain) IBOutlet UIScrollView *zoomedCardScrollView;
 
 - (IBAction)flip:(id)sender;
 - (IBAction)zoomOut:(id)sender;
+- (IBAction)previousCard:(id)sender;
+- (IBAction)nextCard:(id)sender;
 
 @end

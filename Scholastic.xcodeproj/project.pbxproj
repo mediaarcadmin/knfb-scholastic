@@ -139,6 +139,10 @@
 		2888FE7D13A61CD300FF2FA8 /* SCHStoryInteractionTitleTwister_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2888FE7B13A61CD300FF2FA8 /* SCHStoryInteractionTitleTwister_iPhone.xib */; };
 		288A1C7F13E2E7EE009F56BA /* SCHStartingView~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 288A1C7E13E2E7EE009F56BA /* SCHStartingView~iphone.xib */; };
 		288A1C8013E2E7EE009F56BA /* SCHStartingView~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 288A1C7E13E2E7EE009F56BA /* SCHStartingView~iphone.xib */; };
+		288CE13713F272B60015AD44 /* storyinteraction-card-collection-next.png in Resources */ = {isa = PBXBuildFile; fileRef = 288CE13513F272B60015AD44 /* storyinteraction-card-collection-next.png */; };
+		288CE13813F272B60015AD44 /* storyinteraction-card-collection-next.png in Resources */ = {isa = PBXBuildFile; fileRef = 288CE13513F272B60015AD44 /* storyinteraction-card-collection-next.png */; };
+		288CE13913F272B60015AD44 /* storyinteraction-card-collection-prev.png in Resources */ = {isa = PBXBuildFile; fileRef = 288CE13613F272B60015AD44 /* storyinteraction-card-collection-prev.png */; };
+		288CE13A13F272B60015AD44 /* storyinteraction-card-collection-prev.png in Resources */ = {isa = PBXBuildFile; fileRef = 288CE13613F272B60015AD44 /* storyinteraction-card-collection-prev.png */; };
 		2891B71E13954355005FC4DD /* StoryInteractionMultipleChoiceText1.xml in Resources */ = {isa = PBXBuildFile; fileRef = 2891B71D13954355005FC4DD /* StoryInteractionMultipleChoiceText1.xml */; };
 		2891B72013954804005FC4DD /* StoryInteractionPopQuiz1.xml in Resources */ = {isa = PBXBuildFile; fileRef = 2891B71F13954804005FC4DD /* StoryInteractionPopQuiz1.xml */; };
 		2891B72213954CDC005FC4DD /* StoryInteractionScratchAndSee1.xml in Resources */ = {isa = PBXBuildFile; fileRef = 2891B72113954CDC005FC4DD /* StoryInteractionScratchAndSee1.xml */; };
@@ -1820,6 +1824,8 @@
 		288765FC0DF74451002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		2888FE7B13A61CD300FF2FA8 /* SCHStoryInteractionTitleTwister_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionTitleTwister_iPhone.xib; sourceTree = "<group>"; };
 		288A1C7E13E2E7EE009F56BA /* SCHStartingView~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "SCHStartingView~iphone.xib"; sourceTree = "<group>"; };
+		288CE13513F272B60015AD44 /* storyinteraction-card-collection-next.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-card-collection-next.png"; sourceTree = "<group>"; };
+		288CE13613F272B60015AD44 /* storyinteraction-card-collection-prev.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-card-collection-prev.png"; sourceTree = "<group>"; };
 		2891B71D13954355005FC4DD /* StoryInteractionMultipleChoiceText1.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = StoryInteractionMultipleChoiceText1.xml; sourceTree = "<group>"; };
 		2891B71F13954804005FC4DD /* StoryInteractionPopQuiz1.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = StoryInteractionPopQuiz1.xml; sourceTree = "<group>"; };
 		2891B72113954CDC005FC4DD /* StoryInteractionScratchAndSee1.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = StoryInteractionScratchAndSee1.xml; sourceTree = "<group>"; };
@@ -3405,6 +3411,8 @@
 				2866312513F01F940092A5DE /* storyinteraction-concentration-6-pairs.png */,
 				2866312E13F0200E0092A5DE /* storyinteraction-concentration-9-pairs.png */,
 				2866312F13F0200E0092A5DE /* storyinteraction-concentration-12-pairs.png */,
+				288CE13513F272B60015AD44 /* storyinteraction-card-collection-next.png */,
+				288CE13613F272B60015AD44 /* storyinteraction-card-collection-prev.png */,
 				2866313413F021650092A5DE /* storyinteraction-concentration-6-pairs-button.png */,
 				2866313513F021650092A5DE /* storyinteraction-concentration-9-pairs-button.png */,
 				2866313613F021650092A5DE /* storyinteraction-concentration-12-pairs-button.png */,
@@ -5926,7 +5934,7 @@
 				C9747CE013EAEAC5003ADC71 /* Default@2x.jpg in Resources */,
 				F829E61713EFFC1600D77386 /* Scholastic_YoungerSample.sqlite in Resources */,
 				52AFC2B113F167370016C4A1 /* Scholastic_OlderSample.sqlite in Resources */,
-				F829E61713EFFC1600D77386 /* Scholastic_Sample.sqlite in Resources */,
+				F829E61713EFFC1600D77386 /* Scholastic_YoungerSample.sqlite in Resources */,
 				2866312313F01D0E0092A5DE /* SCHStoryInteractionConcentration_iPad.xib in Resources */,
 				2866312813F01F940092A5DE /* storyinteraction-concentration-6-pairs.png in Resources */,
 				2866313013F0200E0092A5DE /* storyinteraction-concentration-9-pairs.png in Resources */,
@@ -5938,6 +5946,8 @@
 				28B1AA0913F142D5006F1F63 /* SCHStoryInteractionConcentration_iPhone.xib in Resources */,
 				28B1AA0C13F14635006F1F63 /* storyinteraction-concentration-tile-orange~iphone.png in Resources */,
 				28B1AA0F13F174EE006F1F63 /* SCHStoryInteractionCardCollection_iPhone.xib in Resources */,
+				288CE13713F272B60015AD44 /* storyinteraction-card-collection-next.png in Resources */,
+				288CE13913F272B60015AD44 /* storyinteraction-card-collection-prev.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6451,7 +6461,7 @@
 				C9747CE113EAEAC5003ADC71 /* Default@2x.jpg in Resources */,
 				F829E61813EFFC1600D77386 /* Scholastic_YoungerSample.sqlite in Resources */,
 				52AFC2B213F167370016C4A1 /* Scholastic_OlderSample.sqlite in Resources */,
-				F829E61813EFFC1600D77386 /* Scholastic_Sample.sqlite in Resources */,
+				F829E61813EFFC1600D77386 /* Scholastic_YoungerSample.sqlite in Resources */,
 				2866312413F01D0E0092A5DE /* SCHStoryInteractionConcentration_iPad.xib in Resources */,
 				2866312913F01F940092A5DE /* storyinteraction-concentration-6-pairs.png in Resources */,
 				2866313113F0200E0092A5DE /* storyinteraction-concentration-9-pairs.png in Resources */,
@@ -6464,6 +6474,8 @@
 				28B1AA0A13F142D5006F1F63 /* SCHStoryInteractionConcentration_iPhone.xib in Resources */,
 				28B1AA0D13F14635006F1F63 /* storyinteraction-concentration-tile-orange~iphone.png in Resources */,
 				28B1AA1013F174EE006F1F63 /* SCHStoryInteractionCardCollection_iPhone.xib in Resources */,
+				288CE13813F272B60015AD44 /* storyinteraction-card-collection-next.png in Resources */,
+				288CE13A13F272B60015AD44 /* storyinteraction-card-collection-prev.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

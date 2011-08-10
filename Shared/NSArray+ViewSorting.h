@@ -18,4 +18,8 @@
 // as all views in the array have a common superview, they will be sorted correctly.
 - (NSArray *)viewsSortedVertically;
 
+// Sort views in a grid in row-major order. All views must have the same superview.
+// The sorted order of overlapping views is undefined.
+- (NSArray *)viewsInRowMajorOrder;
+
 @end

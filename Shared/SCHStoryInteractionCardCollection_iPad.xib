@@ -153,7 +153,7 @@
 								<string key="NSFrame">{{51, 204}, {48, 48}}</string>
 								<reference key="NSSuperview" ref="621697733"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="227530063"/>
+								<reference key="NSNextKeyView" ref="70129140"/>
 								<string key="NSReuseIdentifierKey">_NS:544</string>
 								<reference key="IBUIBackgroundColor" ref="620910758"/>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -273,7 +273,7 @@
 								<string key="NSFrame">{{51, 204}, {48, 48}}</string>
 								<reference key="NSSuperview" ref="568420018"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
+								<reference key="NSNextKeyView" ref="857352935"/>
 								<string key="NSReuseIdentifierKey">_NS:544</string>
 								<reference key="IBUIBackgroundColor" ref="620910758"/>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -295,85 +295,71 @@
 						<string key="NSFrameSize">{650, 578}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="754904604"/>
+						<reference key="NSNextKeyView" ref="378095409"/>
 						<string key="NSReuseIdentifierKey">_NS:195</string>
 						<reference key="IBUIBackgroundColor" ref="620910758"/>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 					</object>
-					<object class="IBUIView" id="754904604">
+					<object class="IBUIButton" id="70129140">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">292</int>
-						<object class="NSMutableArray" key="NSSubviews">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<object class="IBUIButton" id="857352935">
-								<reference key="NSNextResponder" ref="754904604"/>
-								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{465, 0}, {65, 65}}</string>
-								<reference key="NSSuperview" ref="754904604"/>
-								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="378095409"/>
-								<string key="NSReuseIdentifierKey">_NS:237</string>
-								<reference key="IBUIBackgroundColor" ref="620910758"/>
-								<bool key="IBUIOpaque">NO</bool>
-								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-								<int key="IBUIContentHorizontalAlignment">0</int>
-								<int key="IBUIContentVerticalAlignment">0</int>
-								<object class="NSFont" key="IBUIFont" id="450291641">
-									<string key="NSName">Helvetica-Bold</string>
-									<double key="NSSize">15</double>
-									<int key="NSfFlags">16</int>
-								</object>
-								<object class="NSColor" key="IBUIHighlightedTitleColor" id="138328177">
-									<int key="NSColorSpace">3</int>
-									<bytes key="NSWhite">MQA</bytes>
-								</object>
-								<object class="NSColor" key="IBUINormalTitleColor">
-									<int key="NSColorSpace">1</int>
-									<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
-								</object>
-								<object class="NSColor" key="IBUINormalTitleShadowColor" id="705401789">
-									<int key="NSColorSpace">3</int>
-									<bytes key="NSWhite">MC41AA</bytes>
-								</object>
-								<object class="NSCustomResource" key="IBUINormalBackgroundImage">
-									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">storyinteraction-card-collection-flip.png</string>
-								</object>
-							</object>
-							<object class="IBUIButton" id="70129140">
-								<reference key="NSNextResponder" ref="754904604"/>
-								<int key="NSvFlags">292</int>
-								<string key="NSFrameSize">{65, 65}</string>
-								<reference key="NSSuperview" ref="754904604"/>
-								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="857352935"/>
-								<string key="NSReuseIdentifierKey">_NS:237</string>
-								<reference key="IBUIBackgroundColor" ref="620910758"/>
-								<bool key="IBUIOpaque">NO</bool>
-								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-								<int key="IBUIContentHorizontalAlignment">0</int>
-								<int key="IBUIContentVerticalAlignment">0</int>
-								<reference key="IBUIFont" ref="450291641"/>
-								<reference key="IBUIHighlightedTitleColor" ref="138328177"/>
-								<object class="NSColor" key="IBUINormalTitleColor">
-									<int key="NSColorSpace">1</int>
-									<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
-								</object>
-								<reference key="IBUINormalTitleShadowColor" ref="705401789"/>
-								<object class="NSCustomResource" key="IBUINormalBackgroundImage">
-									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">storyinteraction-card-collection-zoom-out.png</string>
-								</object>
-							</object>
-						</object>
-						<string key="NSFrame">{{60, 257}, {530, 65}}</string>
+						<string key="NSFrame">{{20, 502}, {65, 65}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="70129140"/>
-						<string key="NSReuseIdentifierKey">_NS:195</string>
+						<reference key="NSNextKeyView" ref="227530063"/>
+						<string key="NSReuseIdentifierKey">_NS:237</string>
 						<reference key="IBUIBackgroundColor" ref="620910758"/>
+						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+						<int key="IBUIContentHorizontalAlignment">0</int>
+						<int key="IBUIContentVerticalAlignment">0</int>
+						<object class="NSFont" key="IBUIFont" id="450291641">
+							<string key="NSName">Helvetica-Bold</string>
+							<double key="NSSize">15</double>
+							<int key="NSfFlags">16</int>
+						</object>
+						<object class="NSColor" key="IBUIHighlightedTitleColor" id="138328177">
+							<int key="NSColorSpace">3</int>
+							<bytes key="NSWhite">MQA</bytes>
+						</object>
+						<object class="NSColor" key="IBUINormalTitleColor">
+							<int key="NSColorSpace">1</int>
+							<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
+						</object>
+						<object class="NSColor" key="IBUINormalTitleShadowColor" id="705401789">
+							<int key="NSColorSpace">3</int>
+							<bytes key="NSWhite">MC41AA</bytes>
+						</object>
+						<object class="NSCustomResource" key="IBUINormalBackgroundImage">
+							<string key="NSClassName">NSImage</string>
+							<string key="NSResourceName">storyinteraction-card-collection-zoom-out.png</string>
+						</object>
+					</object>
+					<object class="IBUIButton" id="857352935">
+						<reference key="NSNextResponder" ref="191373211"/>
+						<int key="NSvFlags">292</int>
+						<string key="NSFrame">{{565, 502}, {65, 65}}</string>
+						<reference key="NSSuperview" ref="191373211"/>
+						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
+						<string key="NSReuseIdentifierKey">_NS:237</string>
+						<reference key="IBUIBackgroundColor" ref="620910758"/>
+						<bool key="IBUIOpaque">NO</bool>
+						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+						<int key="IBUIContentHorizontalAlignment">0</int>
+						<int key="IBUIContentVerticalAlignment">0</int>
+						<reference key="IBUIFont" ref="450291641"/>
+						<reference key="IBUIHighlightedTitleColor" ref="138328177"/>
+						<object class="NSColor" key="IBUINormalTitleColor">
+							<int key="NSColorSpace">1</int>
+							<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
+						</object>
+						<reference key="IBUINormalTitleShadowColor" ref="705401789"/>
+						<object class="NSCustomResource" key="IBUINormalBackgroundImage">
+							<string key="NSClassName">NSImage</string>
+							<string key="NSResourceName">storyinteraction-card-collection-flip.png</string>
+						</object>
 					</object>
 				</object>
 				<string key="NSFrameSize">{650, 578}</string>
@@ -461,19 +447,29 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">buttonsContainer</string>
-						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="754904604"/>
-					</object>
-					<int key="connectionID">40</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">perspectiveView</string>
 						<reference key="source" ref="372490531"/>
 						<reference key="destination" ref="530597355"/>
 					</object>
 					<int key="connectionID">42</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletCollectionConnection" key="connection">
+						<string key="label">zoomedCardButtons</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="70129140"/>
+						<string key="cachedDesigntimeCollectionClassName">NSArray</string>
+					</object>
+					<int key="connectionID">43</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletCollectionConnection" key="connection">
+						<string key="label">zoomedCardButtons</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="857352935"/>
+						<string key="cachedDesigntimeCollectionClassName">NSArray</string>
+					</object>
+					<int key="connectionID">44</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -497,7 +493,8 @@
 							<reference ref="227530063"/>
 							<reference ref="568420018"/>
 							<reference ref="530597355"/>
-							<reference ref="754904604"/>
+							<reference ref="70129140"/>
+							<reference ref="857352935"/>
 						</object>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -633,34 +630,21 @@
 						<reference key="parent" ref="769833327"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">41</int>
-						<reference key="object" ref="530597355"/>
-						<object class="NSMutableArray" key="children">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-						</object>
-						<reference key="parent" ref="191373211"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">39</int>
-						<reference key="object" ref="754904604"/>
-						<object class="NSMutableArray" key="children">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="70129140"/>
-							<reference ref="857352935"/>
-						</object>
-						<reference key="parent" ref="191373211"/>
-					</object>
-					<object class="IBObjectRecord">
 						<int key="objectID">34</int>
 						<reference key="object" ref="70129140"/>
-						<reference key="parent" ref="754904604"/>
+						<reference key="parent" ref="191373211"/>
 						<string key="objectName">Zoom out button</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">33</int>
 						<reference key="object" ref="857352935"/>
-						<reference key="parent" ref="754904604"/>
+						<reference key="parent" ref="191373211"/>
 						<string key="objectName">Flip button</string>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">41</int>
+						<reference key="object" ref="530597355"/>
+						<reference key="parent" ref="191373211"/>
 					</object>
 				</object>
 			</object>
@@ -692,7 +676,6 @@
 					<string>3.IBPluginDependency</string>
 					<string>33.IBPluginDependency</string>
 					<string>34.IBPluginDependency</string>
-					<string>39.IBPluginDependency</string>
 					<string>41.IBPluginDependency</string>
 					<string>9.IBPluginDependency</string>
 				</object>
@@ -701,7 +684,6 @@
 					<string>SCHStoryInteractionControllerCardCollection</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>UIResponder</string>
-					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -739,7 +721,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">42</int>
+			<int key="maxID">44</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -771,10 +753,14 @@
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>flip:</string>
+							<string>nextCard:</string>
+							<string>previousCard:</string>
 							<string>zoomOut:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>id</string>
+							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 						</object>
@@ -784,12 +770,22 @@
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>flip:</string>
+							<string>nextCard:</string>
+							<string>previousCard:</string>
 							<string>zoomOut:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<object class="IBActionInfo">
 								<string key="name">flip:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">nextCard:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">previousCard:</string>
 								<string key="candidateClassName">id</string>
 							</object>
 							<object class="IBActionInfo">
@@ -802,40 +798,53 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>buttonsContainer</string>
 							<string>perspectiveView</string>
+							<string>zoomedCardScrollView</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>UIView</string>
-							<string>UIView</string>
+							<string>UIScrollView</string>
 						</object>
 					</object>
 					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>buttonsContainer</string>
 							<string>perspectiveView</string>
+							<string>zoomedCardScrollView</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<object class="IBToOneOutletInfo">
-								<string key="name">buttonsContainer</string>
+								<string key="name">perspectiveView</string>
 								<string key="candidateClassName">UIView</string>
 							</object>
 							<object class="IBToOneOutletInfo">
-								<string key="name">perspectiveView</string>
-								<string key="candidateClassName">UIView</string>
+								<string key="name">zoomedCardScrollView</string>
+								<string key="candidateClassName">UIScrollView</string>
 							</object>
 						</object>
 					</object>
 					<object class="NSMutableDictionary" key="toManyOutletInfosByName">
-						<string key="NS.key.0">cardViews</string>
-						<object class="IBToManyOutletInfo" key="NS.object.0">
-							<string key="name">cardViews</string>
-							<string key="candidateClassName">UIView</string>
-							<string key="collectionClassName">NSArray</string>
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSArray" key="dict.sortedKeys">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>cardViews</string>
+							<string>zoomedCardButtons</string>
+						</object>
+						<object class="NSMutableArray" key="dict.values">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<object class="IBToManyOutletInfo">
+								<string key="name">cardViews</string>
+								<string key="candidateClassName">UIView</string>
+								<string key="collectionClassName">NSArray</string>
+							</object>
+							<object class="IBToManyOutletInfo">
+								<string key="name">zoomedCardButtons</string>
+								<string key="candidateClassName">UIButton</string>
+								<string key="collectionClassName">NSArray</string>
+							</object>
 						</object>
 					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
