@@ -323,7 +323,8 @@ static NSString * const kSCHCoreDataHelperOlderSampleStoreName = @"Scholastic_Ol
     NSString *storeFileName = [[[[self persistentStoreCoordinator] URLForPersistentStore:currentMainStore] path] lastPathComponent];
     NSError *error = nil;
     
-    if ([storeFileName isEqualToString:storeName] == NO) {            
+    if ([storeFileName isEqualToString:storeName] == NO) {
+        NSLog(@"Switching store from %@ to %@", storeFileName, storeName);        
         [[self managedObjectContext] reset];
         [[self persistentStoreCoordinator] removePersistentStore:currentMainStore 
                                                            error:&error];  
