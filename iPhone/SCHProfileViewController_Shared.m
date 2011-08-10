@@ -125,6 +125,7 @@
         self.bookUpdates.managedObjectContext = self.managedObjectContext;
     }    
 
+    self.fetchedResultsController = nil;
     [self.tableView reloadData];
 }
 

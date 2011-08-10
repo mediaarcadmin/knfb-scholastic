@@ -66,6 +66,10 @@ static NSString* const prModelCertFilename = @"iphonecert.dat";
 	syncManager.managedObjectContext = self.coreDataHelper.managedObjectContext;
 	[syncManager start];
 	
+    // uncomment to populate Store
+//    [[SCHSyncManager sharedSyncManager] populateYoungerSampleStore];
+//    [[SCHSyncManager sharedSyncManager] populateOlderSampleStore];
+    
 	SCHURLManager *urlManager = [SCHURLManager sharedURLManager];
 	urlManager.managedObjectContext = self.coreDataHelper.managedObjectContext;
     
