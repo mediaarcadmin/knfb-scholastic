@@ -48,7 +48,6 @@ typedef enum
 - (void)readingView:(SCHReadingView *)readingView hasSelectedWordForSpeaking:(NSString *)word;
 - (void)requestDictionaryForWord:(NSString *)word mode:(SCHReadingViewSelectionMode) mode;
 
-- (void)toggleToolbars;
 - (void)hideToolbars;
 
 @end

@@ -635,26 +635,9 @@ managedObjectContext:(NSManagedObjectContext *)managedObjectContext
 
 #pragma mark - Touch handling
 
-- (void)toggleToolbarsIfNoSelection
-{
-    // Don't toggle if the selector's up - just hide in that case.
-    if(!self.selector.selectedRange) {
-        [self.delegate toggleToolbars];
-    } else {
-        [self.delegate hideToolbars];
-    }
-}
-
 - (void)unhandledTapAtPoint:(CGPoint)piont
 {
-    // Don't toggle if the selector's up - just hide in that case.
-    if(!self.selector.selectedRange) {
-        // Wait until the next runloop cycle to see if the selector selects anything 
-        // in response to this tap. We don't want to display the toolbars if it does.
-        [self performSelector:@selector(toggleToolbarsIfNoSelection) withObject:nil afterDelay:0];
-    } else {
-        [self.delegate hideToolbars];
-    }
+    [self.delegate hideToolbars];
 }
 
 #pragma mark - Rotation
