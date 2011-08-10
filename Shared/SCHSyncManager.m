@@ -19,6 +19,7 @@
 #import "SCHUserDefaults.h"
 #import "SCHAppStateManager.h"
 #import "SCHCoreDataHelper.h"
+#import "SCHAppStateManager.h"
 
 // Constants
 NSString * const SCHSyncManagerDidCompleteNotification = @"SCHSyncManagerDidCompleteNotification";
@@ -35,6 +36,11 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
 - (void)addToQueue:(SCHSyncComponent *)component;
 - (void)kickQueue;
 - (BOOL)shouldSync;
+
+- (void)setAppState;
+- (NSDictionary *)profileItemWith:(NSString *)title 
+                              age:(NSUInteger)age 
+                        bookshelf:(SCHBookshelfStyles)bookshelf;
 
 @property (retain, nonatomic) NSTimer *timer;
 @property (retain, nonatomic) NSMutableArray *queue;
@@ -441,6 +447,78 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
     }
     
     return(ret);    
+}
+
+#pragma mark - Sample bookshelf population methods
+
+- (void)populateYoungerSampleStore
+{
+    NSError *error = nil;
+
+    [self setAppState];    
+    
+    [self.profileSyncComponent addProfile:[self profileItemWith:NSLocalizedString(@"Older kids' bookshelf (7+)", nil) 
+                                                            age:5 
+                                                      bookshelf:kSCHBookshelfStyleYoungChild]];
+    
+    if ([self.managedObjectContext save:&error] == NO) {
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        abort();
+    }     
+}
+
+- (void)populateOlderSampleStore
+{
+    NSError *error = nil;
+    
+    [self setAppState];    
+    
+    [self.profileSyncComponent addProfile:[self profileItemWith:NSLocalizedString(@"Younger kids' bookshelf (3-6)", nil) 
+                                                            age:14 
+                                                      bookshelf:kSCHBookshelfStyleOlderChild]];
+    
+    if ([self.managedObjectContext save:&error] == NO) {
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        abort();
+    }     
+}
+
+- (void)setAppState
+{
+    SCHAppState *appState = [SCHAppStateManager sharedAppStateManager].appState;
+    
+    appState.ShouldSync = [NSNumber numberWithBool:NO];
+    appState.ShouldDownloadBooks = [NSNumber numberWithBool:NO];
+}
+
+- (NSDictionary *)profileItemWith:(NSString *)title 
+                              age:(NSUInteger)age 
+                        bookshelf:(SCHBookshelfStyles)bookshelf
+{
+    NSMutableDictionary *ret = [NSMutableDictionary dictionary];
+    NSDate *dateNow = [NSDate date];
+    NSCalendar *gregorian = [[[NSCalendar alloc]
+                              initWithCalendarIdentifier:NSGregorianCalendar] autorelease];
+    NSDateComponents *dateComponents = [[[NSDateComponents alloc] init] autorelease];        
+
+    [ret setObject:[NSNumber numberWithBool:YES] forKey:kSCHLibreAccessWebServiceStoryInteractionEnabled];
+    [ret setObject:[NSNumber numberWithInt:1] forKey:kSCHLibreAccessWebServiceID];
+    [ret setObject:dateNow forKey:kSCHLibreAccessWebServiceLastPasswordModified];    
+    [ret setObject:@"" forKey:kSCHLibreAccessWebServicePassword]; 
+    dateComponents.year = -age;
+    [ret setObject:[gregorian dateByAddingComponents:dateComponents toDate:dateNow options:0] forKey:kSCHLibreAccessWebServiceBirthday];    
+    [ret setObject:title forKey:kSCHLibreAccessWebServiceFirstName];    
+    [ret setObject:[NSNumber numberWithBool:NO] forKey:kSCHLibreAccessWebServiceProfilePasswordRequired];    
+    [ret setObject:[NSNumber numberWithProfileType:kSCHProfileTypesCHILD] forKey:kSCHLibreAccessWebServiceType];        
+    [ret setObject:title forKey:kSCHLibreAccessWebServiceScreenName];        
+    [ret setObject:[NSNumber numberWithBool:YES] forKey:kSCHLibreAccessWebServiceAutoAssignContentToProfiles];        
+    [ret setObject:dateNow forKey:kSCHLibreAccessWebServiceLastScreenNameModified];            
+    [ret setObject:@"" forKey:kSCHLibreAccessWebServiceUserKey];            
+    [ret setObject:[NSNumber numberWithBookshelfStyle:bookshelf] forKey:kSCHLibreAccessWebServiceBookshelfStyle];                
+    [ret setObject:title forKey:kSCHLibreAccessWebServiceLastName];                
+    [ret setObject:dateNow forKey:kSCHLibreAccessWebServiceLastModified];                
+
+    return(ret);
 }
 
 @end
