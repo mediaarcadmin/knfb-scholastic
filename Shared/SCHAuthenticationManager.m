@@ -151,14 +151,16 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
 
 - (BOOL)validatePassword:(NSString *)password
 {
-#if LOCALDEBUG
-    return(YES);
-#else
-    NSString *storedUsername = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUsername];
-    NSString *storedPassword = [SFHFKeychainUtils getPasswordForUsername:storedUsername andServiceName:kSCHAuthenticationManagerServiceName error:nil];
-
-    return([password isEqualToString:storedPassword] == YES);
-#endif
+    BOOL ret = YES;
+    
+    if ([[SCHAppStateManager sharedAppStateManager] canAuthenticate] == YES) {
+        NSString *storedUsername = [[NSUserDefaults standardUserDefaults] stringForKey:kSCHAuthenticationManagerUsername];
+        NSString *storedPassword = [SFHFKeychainUtils getPasswordForUsername:storedUsername andServiceName:kSCHAuthenticationManagerServiceName error:nil];
+        
+        ret = ([password isEqualToString:storedPassword] == YES);
+    }
+    
+    return(ret);
 }
 
 - (void)authenticate
