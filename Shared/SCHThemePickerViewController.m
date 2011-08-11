@@ -83,6 +83,9 @@ static NSTimeInterval const kSCHThemePickerViewControllerThemeTransitionDuration
 
 - (void)setThemeForInterfaceOrientation:(UIInterfaceOrientation)orientation
 {
+    [self.cancelButton updateTheme:orientation];
+    [self.doneButton updateTheme:orientation];
+    
     NSString *themeName = self.lastTappedTheme ? : [[SCHThemeManager sharedThemeManager] theme];
     [self setThemeWithName:themeName forInterfaceOrientation:orientation];
 }

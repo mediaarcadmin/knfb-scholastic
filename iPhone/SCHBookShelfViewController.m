@@ -35,6 +35,8 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
 
 @interface SCHBookShelfViewController () <UIGestureRecognizerDelegate>
 
+@property (nonatomic, retain) SCHThemeButton *themeButton;
+@property (nonatomic, retain) SCHThemeButton *backButton;
 @property (nonatomic, assign) int moveToValue;
 @property (nonatomic, assign) BOOL updateShelfOnReturnToShelf;
 @property (nonatomic, assign) int currentlyLoadingIndex;
@@ -60,6 +62,8 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
 
 @implementation SCHBookShelfViewController
 
+@synthesize themeButton;
+@synthesize backButton;
 @synthesize listTableView;
 @synthesize listTableCellNib;
 @synthesize gridView;
@@ -92,6 +96,8 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
     
     [componentCache release], componentCache = nil;
     
+    [themeButton release], themeButton = nil;
+    [backButton release], backButton = nil;    
     [listTableView release], listTableView = nil;
     [gridButton release], gridButton = nil;
     [listButton release], listButton = nil;
@@ -128,17 +134,17 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
     
     self.sortType = [[[self.profileItem AppProfile] SortType] intValue];
     
-    SCHThemeButton *button = [SCHThemeButton buttonWithType:UIButtonTypeCustom];
-    [button setThemeIcon:kSCHThemeManagerThemeIcon iPadQualifier:kSCHThemeManagerPadQualifierSuffix];
-    [button sizeToFit];    
-    [button addTarget:self action:@selector(changeTheme) forControlEvents:UIControlEventTouchUpInside];    
-    self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:button] autorelease];
+    self.themeButton = [SCHThemeButton buttonWithType:UIButtonTypeCustom];
+    [self.themeButton setThemeIcon:kSCHThemeManagerThemeIcon iPadQualifier:kSCHThemeManagerPadQualifierSuffix];
+    [self.themeButton sizeToFit];    
+    [self.themeButton addTarget:self action:@selector(changeTheme) forControlEvents:UIControlEventTouchUpInside];    
+    self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:self.themeButton] autorelease];
 
-    button = [SCHThemeButton buttonWithType:UIButtonTypeCustom];
-    [button setThemeIcon:kSCHThemeManagerHomeIcon iPadQualifier:kSCHThemeManagerPadQualifierSuffix];
-    [button sizeToFit];    
-    [button addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];    
-    self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:button] autorelease];
+    self.backButton = [SCHThemeButton buttonWithType:UIButtonTypeCustom];
+    [self.backButton setThemeIcon:kSCHThemeManagerHomeIcon iPadQualifier:kSCHThemeManagerPadQualifierSuffix];
+    [self.backButton sizeToFit];    
+    [self.backButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];    
+    self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:self.backButton] autorelease];
     
     [(SCHCustomNavigationBar *)self.navigationController.navigationBar setTheme:kSCHThemeManagerNavigationBarImage];
     
@@ -274,6 +280,8 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     [self.gridView setShelfImage:[[SCHThemeManager sharedThemeManager] imageForShelf:interfaceOrientation]];       
+    [self.themeButton updateTheme:interfaceOrientation];
+    [self.backButton updateTheme:interfaceOrientation];
     
     [self.backgroundView setImage:[[SCHThemeManager sharedThemeManager] imageForBackground:UIInterfaceOrientationPortrait]]; // Note we re-use portrait
     [(SCHCustomNavigationBar *)self.navigationController.navigationBar updateTheme:interfaceOrientation];

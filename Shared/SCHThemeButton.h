@@ -19,5 +19,6 @@
           topCapHeight:(NSInteger)newTopCapHeight;
 - (void)setThemeIcon:(NSString *)newIconKey iPadQualifier:(SCHThemeManagerPadQualifier)iPadQualifier;
 - (void)setThemeIcon:(NSString *)newIconKey;
+- (void)updateTheme:(UIInterfaceOrientation)orientation;
 
 @end
