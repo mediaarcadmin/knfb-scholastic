@@ -19,6 +19,7 @@
         self.font = [UIFont fontWithName:@"Arial Black" size:35];
         self.backgroundColor = [UIColor clearColor];
         self.textAlignment = UITextAlignmentCenter;
+        self.adjustsFontSizeToFitWidth = YES;
     }
     return self;
 }

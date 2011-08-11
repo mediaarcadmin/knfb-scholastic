@@ -8,18 +8,18 @@
 
 #import "SCHStoryInteractionWordBirdLetterView.h"
 
-#define kLabelTag 123
-
 @implementation SCHStoryInteractionWordBirdLetterView
 
 + (SCHStoryInteractionWordBirdLetterView *)letter
 {
+    const BOOL iPad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
+    
     SCHStoryInteractionWordBirdLetterView *letter = [super buttonWithType:UIButtonTypeCustom];
     [letter setBackgroundColor:[UIColor clearColor]];
     [letter setBackgroundImage:[UIImage imageNamed:@"storyinteraction-lettertile"] forState:UIControlStateNormal];
     [letter setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [letter.titleLabel setTextAlignment:UITextAlignmentCenter];
-    [letter.titleLabel setFont:[UIFont fontWithName:@"Arial-BoldMT" size:30]];
+    [letter.titleLabel setFont:[UIFont fontWithName:@"Arial-BoldMT" size:iPad?30:25]];
     return letter;
 }
 

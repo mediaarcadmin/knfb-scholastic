@@ -314,6 +314,12 @@
 		28CD431013F4107600919F18 /* storyinteraction-lettertile-green~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 28CD430D13F4107600919F18 /* storyinteraction-lettertile-green~ipad.png */; };
 		28CD431113F4107600919F18 /* storyinteraction-lettertile-red~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 28CD430E13F4107600919F18 /* storyinteraction-lettertile-red~ipad.png */; };
 		28CD431213F4107600919F18 /* storyinteraction-lettertile-red~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 28CD430E13F4107600919F18 /* storyinteraction-lettertile-red~ipad.png */; };
+		28CD431413F41A5B00919F18 /* SCHStoryInteractionWordBird_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28CD431313F41A5B00919F18 /* SCHStoryInteractionWordBird_iPhone.xib */; };
+		28CD431513F41A5B00919F18 /* SCHStoryInteractionWordBird_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28CD431313F41A5B00919F18 /* SCHStoryInteractionWordBird_iPhone.xib */; };
+		28CD431813F41FAF00919F18 /* storyinteraction-lettertile-green~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 28CD431613F41FAF00919F18 /* storyinteraction-lettertile-green~iphone.png */; };
+		28CD431913F41FAF00919F18 /* storyinteraction-lettertile-green~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 28CD431613F41FAF00919F18 /* storyinteraction-lettertile-green~iphone.png */; };
+		28CD431A13F41FAF00919F18 /* storyinteraction-lettertile-red~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 28CD431713F41FAF00919F18 /* storyinteraction-lettertile-red~iphone.png */; };
+		28CD431B13F41FAF00919F18 /* storyinteraction-lettertile-red~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 28CD431713F41FAF00919F18 /* storyinteraction-lettertile-red~iphone.png */; };
 		28D050AE139CE93400D0C602 /* SCHStoryInteractionWhoSaidIt_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28D050AD139CE93400D0C602 /* SCHStoryInteractionWhoSaidIt_iPhone.xib */; };
 		28D050AF139CE93400D0C602 /* SCHStoryInteractionWhoSaidIt_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28D050AD139CE93400D0C602 /* SCHStoryInteractionWhoSaidIt_iPhone.xib */; };
 		28D2AA0A13D6E80D00BEB359 /* SCHDownloadDictionaryViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28D2AA0913D6E80D00BEB359 /* SCHDownloadDictionaryViewController~ipad.xib */; };
@@ -1970,6 +1976,9 @@
 		28CD430A13F3EAD300919F18 /* SCHStoryInteractionWordBirdLetterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionWordBirdLetterView.m; sourceTree = "<group>"; };
 		28CD430D13F4107600919F18 /* storyinteraction-lettertile-green~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-lettertile-green~ipad.png"; sourceTree = "<group>"; };
 		28CD430E13F4107600919F18 /* storyinteraction-lettertile-red~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-lettertile-red~ipad.png"; sourceTree = "<group>"; };
+		28CD431313F41A5B00919F18 /* SCHStoryInteractionWordBird_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionWordBird_iPhone.xib; sourceTree = "<group>"; };
+		28CD431613F41FAF00919F18 /* storyinteraction-lettertile-green~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-lettertile-green~iphone.png"; sourceTree = "<group>"; };
+		28CD431713F41FAF00919F18 /* storyinteraction-lettertile-red~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-lettertile-red~iphone.png"; sourceTree = "<group>"; };
 		28D050AD139CE93400D0C602 /* SCHStoryInteractionWhoSaidIt_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionWhoSaidIt_iPhone.xib; sourceTree = "<group>"; };
 		28D2AA0913D6E80D00BEB359 /* SCHDownloadDictionaryViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "SCHDownloadDictionaryViewController~ipad.xib"; path = "iPad/SCHDownloadDictionaryViewController~ipad.xib"; sourceTree = "<group>"; };
 		28D2AA0C13D6E8F700BEB359 /* SCHDownloadDictionaryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHDownloadDictionaryViewController.h; path = Shared/SCHDownloadDictionaryViewController.h; sourceTree = "<group>"; };
@@ -3196,6 +3205,7 @@
 				28CD42FE13F3D3EC00919F18 /* SCHStoryInteractionControllerWordBird.h */,
 				28CD42FF13F3D3EC00919F18 /* SCHStoryInteractionControllerWordBird.m */,
 				28CD430213F3D4C600919F18 /* SCHStoryInteractionWordBird_iPad.xib */,
+				28CD431313F41A5B00919F18 /* SCHStoryInteractionWordBird_iPhone.xib */,
 				28CD430513F3D71800919F18 /* SCHStoryInteractionWordBirdAnswerLetterView.h */,
 				28CD430613F3D71800919F18 /* SCHStoryInteractionWordBirdAnswerLetterView.m */,
 				28CD430913F3EAD300919F18 /* SCHStoryInteractionWordBirdLetterView.h */,
@@ -3521,9 +3531,11 @@
 				C9AC863C13AF6552000ECDAE /* storyinteraction-lettertile-small@2x~iphone.png */,
 				C9AC85EB13AE6AA1000ECDAE /* storyinteraction-lettertile~iphone.png */,
 				C9AC85EC13AE6AA9000ECDAE /* storyinteraction-lettertile@2x~iphone.png */,
-				C9AC869113AFAF75000ECDAE /* storyinteraction-lettertile-small~ipad.png */,
 				C9AC869213AFAF77000ECDAE /* storyinteraction-lettertile~ipad.png */,
+				C9AC869113AFAF75000ECDAE /* storyinteraction-lettertile-small~ipad.png */,
+				28CD431613F41FAF00919F18 /* storyinteraction-lettertile-green~iphone.png */,
 				28CD430D13F4107600919F18 /* storyinteraction-lettertile-green~ipad.png */,
+				28CD431713F41FAF00919F18 /* storyinteraction-lettertile-red~iphone.png */,
 				28CD430E13F4107600919F18 /* storyinteraction-lettertile-red~ipad.png */,
 				C9AC85F113AE7CE3000ECDAE /* storyinteraction-initialScratch~iphone.png */,
 				C9AC85F213AE7CEA000ECDAE /* storyinteraction-initialScratch@2x~iphone.png */,
@@ -5975,6 +5987,9 @@
 				28CD430313F3D4C600919F18 /* SCHStoryInteractionWordBird_iPad.xib in Resources */,
 				28CD430F13F4107600919F18 /* storyinteraction-lettertile-green~ipad.png in Resources */,
 				28CD431113F4107600919F18 /* storyinteraction-lettertile-red~ipad.png in Resources */,
+				28CD431413F41A5B00919F18 /* SCHStoryInteractionWordBird_iPhone.xib in Resources */,
+				28CD431813F41FAF00919F18 /* storyinteraction-lettertile-green~iphone.png in Resources */,
+				28CD431A13F41FAF00919F18 /* storyinteraction-lettertile-red~iphone.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6506,6 +6521,9 @@
 				28CD430413F3D4C600919F18 /* SCHStoryInteractionWordBird_iPad.xib in Resources */,
 				28CD431013F4107600919F18 /* storyinteraction-lettertile-green~ipad.png in Resources */,
 				28CD431213F4107600919F18 /* storyinteraction-lettertile-red~ipad.png in Resources */,
+				28CD431513F41A5B00919F18 /* SCHStoryInteractionWordBird_iPhone.xib in Resources */,
+				28CD431913F41FAF00919F18 /* storyinteraction-lettertile-green~iphone.png in Resources */,
+				28CD431B13F41FAF00919F18 /* storyinteraction-lettertile-red~iphone.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

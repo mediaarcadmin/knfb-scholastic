@@ -95,13 +95,14 @@ enum {
 
     NSInteger letterCount = [[self currentWord] length];
     NSMutableArray *letters = [NSMutableArray arrayWithCapacity:letterCount];
-    
-    CGFloat width = (kAnswerLetterWidth+kAnswerLetterGap)*letterCount;
+
+    CGFloat letterWidth = floorf(MIN(kAnswerLetterWidth, (CGRectGetWidth(self.answerContainer.bounds)-kAnswerLetterGap*2)/letterCount-kAnswerLetterGap));
+    CGFloat width = letterWidth*letterCount + kAnswerLetterGap*(letterCount-1);
     CGFloat left = (CGRectGetWidth(self.answerContainer.bounds)-width)/2;
     CGFloat top = (CGRectGetHeight(self.answerContainer.bounds)-kAnswerLetterHeight)/2;
     
     for (NSInteger letterIndex = 0; letterIndex < letterCount; ++letterIndex) {
-        CGRect frame = CGRectIntegral(CGRectMake(left + (kAnswerLetterWidth+kAnswerLetterGap)*letterIndex, top, kAnswerLetterWidth, kAnswerLetterHeight));
+        CGRect frame = CGRectIntegral(CGRectMake(left+(letterWidth+kAnswerLetterGap)*letterIndex, top, letterWidth, kAnswerLetterHeight));
         SCHStoryInteractionWordBirdAnswerLetterView *letterView = [[SCHStoryInteractionWordBirdAnswerLetterView alloc] initWithFrame:frame];
         letterView.textColor = answerColor;
         letterView.letter = ' ';
