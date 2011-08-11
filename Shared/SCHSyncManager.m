@@ -19,7 +19,6 @@
 #import "SCHUserDefaults.h"
 #import "SCHAppStateManager.h"
 #import "SCHCoreDataHelper.h"
-#import "SCHAppStateManager.h"
 
 // Constants
 NSString * const SCHSyncManagerDidCompleteNotification = @"SCHSyncManagerDidCompleteNotification";
