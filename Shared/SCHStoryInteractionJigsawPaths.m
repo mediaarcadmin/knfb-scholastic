@@ -76,6 +76,20 @@ static void jigsawEndElementHandler(void *userData, const XML_Char *name)
     return (CGPathRef)[self.paths objectAtIndex:pathIndex];
 }
 
+- (CGImageRef)maskOfSize:(CGSize)size fromPathAtIndex:(NSInteger)pathIndex
+{
+    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceGray();
+    CGContextRef context = CGBitmapContextCreate(NULL, size.width, size.height, 8, size.width, colorSpace, 0);
+    CGColorSpaceRelease(colorSpace);
+    CGContextScaleCTM(context, size.width, size.height); // path coords in (0.0, 1.0) range
+    CGContextSetRGBFillColor(context, 1, 1, 1, 1);
+    CGContextAddPath(context, [self pathAtIndex:pathIndex]);
+    CGContextFillPath(context);
+    CGImageRef mask = CGBitmapContextCreateImage(context);
+    CGContextRelease(context);
+    return mask;
+}
+
 #pragma mark - parsing
 
 - (void)startElement:(const XML_Char *)name attributes:(const XML_Char **)attributes
