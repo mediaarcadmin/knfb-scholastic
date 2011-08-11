@@ -253,15 +253,9 @@ NSString * const kSCHAppBookEucalyptusCacheDir = @"libEucalyptusCache";
 
 - (NSString *)xpsPath
 {
-#if LOCALDEBUG
-    return [NSString stringWithFormat:@"%@/%@.xps", 
-            [NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES) lastObject], 
-            self.ContentMetadataItem.FileName];
-#else
 	return [NSString stringWithFormat:@"%@/%@-%@.xps", 
 			[self cacheDirectory], 
 			self.ContentMetadataItem.ContentIdentifier, self.ContentMetadataItem.Version];
-#endif
 }
 
 - (NSString *)coverImagePath

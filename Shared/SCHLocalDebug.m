@@ -116,6 +116,7 @@
         [importedBooks addObject:provider.ISBN];
         
 		newContentMetadataItem.Author = provider.author;
+        newContentMetadataItem.Version = @"1";
 		newContentMetadataItem.FileSize = [NSNumber numberWithLongLong:provider.fileSize];
 		newContentMetadataItem.PageNumber = [NSNumber numberWithInteger:provider.pageCount];
 		newContentMetadataItem.Title = provider.title;
@@ -160,38 +161,27 @@
 
 - (void)setup
 {
-	static BOOL runOnce = NO;
-	
-	if (runOnce == NO) {
-		runOnce = YES;
+    static dispatch_once_t pred;
+    
+    dispatch_once(&pred, ^{
 		NSError *error = nil;
-		NSArray *xpsFiles = nil;
-
+        
 		[self setupAppState];
         
-        [self checkAndCopyLocalFilesToApplicationSupport:[[NSBundle mainBundle] bundlePath] deleteSrc:NO];
-		
-		NSArray  *applicationSupportPaths = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);
-		NSString *applicationSupportPath = ([applicationSupportPaths count] > 0) ? [applicationSupportPaths objectAtIndex:0] : nil;
-        NSArray *dirContents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:applicationSupportPath error:&error];
-		
+        NSArray *dirContents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:[[NSBundle mainBundle] bundlePath] error:&error];
 		if (error) {
 			NSLog(@"Error: %@", [error localizedDescription]);
 		}
 		
 		NSArray *xpsContents = [dirContents filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"self ENDSWITH '.xps'"]];
 		
-		NSMutableArray *trimmedXpsContents = [[NSMutableArray alloc] init];
+		NSMutableArray *trimmedXpsContents = [NSMutableArray arrayWithCapacity:[xpsContents count]];
 		for (NSString *item in xpsContents) {
 			[trimmedXpsContents addObject:[item stringByDeletingPathExtension]];
 		}
 		
-		xpsFiles = [NSArray arrayWithArray:trimmedXpsContents];
-		[trimmedXpsContents release];
-		
-		[self setupLocalDataWithXPSFiles:xpsFiles];		
-        
-	}
+		[self setupLocalDataWithXPSFiles:trimmedXpsContents];		
+    });
 }
 
 - (void)setupAppState
@@ -280,7 +270,6 @@
             }
 		}
 	}
-        
 }
 
 - (void)setupLocalDataWithXPSFiles:(NSArray *)XPSFiles
@@ -366,7 +355,7 @@
 		newContentMetadataItem.ContentIdentifier = provider.ISBN;
 
 		newContentMetadataItem.Author = provider.author;
-		//	newContentMetadataItem.Version = [self makeNullNil:[book objectForKey:kSCHLibreAccessWebServiceVersion]];
+		newContentMetadataItem.Version = @"1";
 		//newContentMetadataItem.Enhanced = [self makeNullNil:[book objectForKey:kSCHLibreAccessWebServiceEnhanced]];
 		newContentMetadataItem.FileSize = [NSNumber numberWithLongLong:provider.fileSize];
 		//	newContentMetadataItem.CoverURL = [self makeNullNil:[book objectForKey:kSCHLibreAccessWebServiceCoverURL]];
@@ -378,6 +367,14 @@
 		
 		[provider release];
 		
+        // copy the XPS file from the bundle
+        [[NSFileManager defaultManager] copyItemAtPath:currentPath 
+                                                toPath:[newContentMetadataItem.AppBook xpsPath] 
+                                                 error:&error];        
+        if (error) {
+            NSLog(@"Error copying XPS file from bundle: %@, %@", error, [error userInfo]);
+        }
+
 		newUserContentItem = [NSEntityDescription insertNewObjectForEntityForName:kSCHUserContentItem inManagedObjectContext:self.managedObjectContext];
 		
 		newUserContentItem.LastModified = now;
@@ -552,6 +549,7 @@
 		abort();
 	}	
 }
+
 - (id)makeNullNil:(id)object
 {
 	return(object == [NSNull null] ? nil : object);
