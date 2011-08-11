@@ -19,4 +19,7 @@
 
 @property (nonatomic, retain) NSArray *questions;
 
+- (NSString *)audioPathForLetter:(unichar)letter;
+- (NSString *)audioPathForNiceFlying;
+
 @end

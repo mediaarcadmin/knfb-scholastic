@@ -47,4 +47,18 @@
     return NO;
 }
 
+- (NSString *)audioPathForLetter:(unichar)letter
+{   
+    if (letter < L'A' || L'Z' < letter) {
+        return nil;
+    }
+    NSString *filename = [[NSString stringWithFormat:@"gen_%C.mp3", letter] lowercaseString];
+    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:filename];
+}
+
+- (NSString *)audioPathForNiceFlying
+{
+    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:@"gen_niceflying.mp3"];
+}
+
 @end
