@@ -12,7 +12,7 @@
 
 @interface SCHStoryInteractionJigsawPaths ()
 
-@property (nonatomic, assign) CGSize size;
+@property (nonatomic, assign) CGSize scale;
 @property (nonatomic, retain) NSMutableArray *paths;
 @property (nonatomic, assign) NSInteger canvasDepth;
 
@@ -26,7 +26,7 @@
 @implementation SCHStoryInteractionJigsawPaths
 
 @synthesize paths;
-@synthesize size;
+@synthesize scale;
 @synthesize canvasDepth;
 
 - (void)dealloc
@@ -66,11 +66,6 @@ static void jigsawEndElementHandler(void *userData, const XML_Char *name)
 
 #pragma mark - accessors
 
-- (CGSize)canvasSize
-{
-    return self.size;
-}
-
 - (NSInteger)numberOfPaths
 {
     return [self.paths count];
@@ -95,8 +90,7 @@ static void jigsawEndElementHandler(void *userData, const XML_Char *name)
                     height = atof(attributes[i+1]);
                 }
             }
-            self.size = CGSizeMake(width, height);
-            NSLog(@"canvas size=%@", NSStringFromCGSize(self.size));
+            self.scale = CGSizeMake(1.0f/width, 1.0f/height);
         }
         self.canvasDepth++;
     }
@@ -167,7 +161,7 @@ static void jigsawEndElementHandler(void *userData, const XML_Char *name)
     } else {
         CGFloat x = [[pointString substringToIndex:comma.location] floatValue];
         CGFloat y = [[pointString substringFromIndex:comma.location+comma.length] floatValue];
-        return CGPointMake(x, y);
+        return CGPointMake(x * self.scale.width, y * self.scale.height);
     }
 }
 

@@ -12,7 +12,6 @@
 
 - (id)initWithData:(NSData *)data;
 
-- (CGSize)canvasSize;
 - (NSInteger)numberOfPaths;
 - (CGPathRef)pathAtIndex:(NSInteger)pathIndex;
 
