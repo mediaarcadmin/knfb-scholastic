@@ -120,7 +120,7 @@
     SCHStoryInteractionConcentration *story = [stories lastObject];
     STAssertEquals(story.documentPageNumber, 3, @"incorrect documentPageNumber");
     STAssertEqualObjects(story.introduction, @"Match the words with the pictures!", @"incorrect introduction");
-    STAssertEqualObjects([[story audioPathForIntroduction] lastPathComponent], @"cn1_intro.mp3", @"incorrect introduction audio");
+    STAssertEqualObjects([[story audioPathForQuestion] lastPathComponent], @"cn1_intro.mp3", @"incorrect introduction audio");
     STAssertEquals([story numberOfPairs], 12, @"incorrect number of pairs");
     STAssertFalse([story isOlderStoryInteraction], @"should be a younger SI");
     STAssertEqualObjects([story title], @"Memory Match", @"incorrect title");

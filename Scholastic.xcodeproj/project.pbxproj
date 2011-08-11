@@ -156,6 +156,7 @@
 		2894E80F13B09EC800AEAD79 /* storyinteraction-findinpage-wrong@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 2894E80513B09EC800AEAD79 /* storyinteraction-findinpage-wrong@2x~iphone.png */; };
 		2894E81413B0A67B00AEAD79 /* USAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293869712DF3A3300045B44 /* USAdditions.m */; };
 		2894E81513B0A68B00AEAD79 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C9F1A579133B83D100FD984C /* libxml2.dylib */; };
+		2895A9B013F4373800D75448 /* SCHStoryInteractionJigsawPaths.m in Sources */ = {isa = PBXBuildFile; fileRef = 2898A0B013F42D9200618172 /* SCHStoryInteractionJigsawPaths.m */; };
 		289699F313E2C55000B7E3DF /* SCHStartingViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 289699F213E2C55000B7E3DF /* SCHStartingViewCell.m */; };
 		289699F413E2C55000B7E3DF /* SCHStartingViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 289699F213E2C55000B7E3DF /* SCHStartingViewCell.m */; };
 		28986DD513DD4F120011B148 /* SCHCheckbox.m in Sources */ = {isa = PBXBuildFile; fileRef = 28986DD413DD4F120011B148 /* SCHCheckbox.m */; };
@@ -170,6 +171,10 @@
 		28986DF313DD7DD80011B148 /* SCHUpdateBooksViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28986DF113DD7DD80011B148 /* SCHUpdateBooksViewController~ipad.xib */; };
 		28986DF513DD9BDE0011B148 /* SCHUpdateBooksViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28986DF413DD9BDE0011B148 /* SCHUpdateBooksViewController~iphone.xib */; };
 		28986DF613DD9BDE0011B148 /* SCHUpdateBooksViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28986DF413DD9BDE0011B148 /* SCHUpdateBooksViewController~iphone.xib */; };
+		2898A0B113F42D9200618172 /* SCHStoryInteractionJigsawPaths.m in Sources */ = {isa = PBXBuildFile; fileRef = 2898A0B013F42D9200618172 /* SCHStoryInteractionJigsawPaths.m */; };
+		2898A0B213F42D9200618172 /* SCHStoryInteractionJigsawPaths.m in Sources */ = {isa = PBXBuildFile; fileRef = 2898A0B013F42D9200618172 /* SCHStoryInteractionJigsawPaths.m */; };
+		2898A0B513F435C600618172 /* SCHStoryInteractionJigsawPathTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2898A0B413F435C600618172 /* SCHStoryInteractionJigsawPathTests.m */; };
+		2898A0B713F436B100618172 /* Puzzle-6pc.xaml in Resources */ = {isa = PBXBuildFile; fileRef = 2898A0B613F436B100618172 /* Puzzle-6pc.xaml */; };
 		289ABFDC139FDCF100662AD7 /* SCHStoryInteractionMultipleChoiceText_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 520CD294139F84530018EA7E /* SCHStoryInteractionMultipleChoiceText_iPad.xib */; };
 		28A08CDE13950C01006FD008 /* SCHStoryInteraction.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A08CC713950C01006FD008 /* SCHStoryInteraction.m */; };
 		28A08CDF13950C01006FD008 /* SCHStoryInteraction.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A08CC713950C01006FD008 /* SCHStoryInteraction.m */; };
@@ -1864,6 +1869,11 @@
 		28986DEA13DD701A0011B148 /* SCHUpdateBooksTableViewCellController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHUpdateBooksTableViewCellController.m; path = Shared/SCHUpdateBooksTableViewCellController.m; sourceTree = "<group>"; };
 		28986DF113DD7DD80011B148 /* SCHUpdateBooksViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "SCHUpdateBooksViewController~ipad.xib"; path = "iPad/SCHUpdateBooksViewController~ipad.xib"; sourceTree = "<group>"; };
 		28986DF413DD9BDE0011B148 /* SCHUpdateBooksViewController~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "SCHUpdateBooksViewController~iphone.xib"; sourceTree = "<group>"; };
+		2898A0AF13F42D9200618172 /* SCHStoryInteractionJigsawPaths.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionJigsawPaths.h; sourceTree = "<group>"; };
+		2898A0B013F42D9200618172 /* SCHStoryInteractionJigsawPaths.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionJigsawPaths.m; sourceTree = "<group>"; };
+		2898A0B313F435C600618172 /* SCHStoryInteractionJigsawPathTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionJigsawPathTests.h; sourceTree = "<group>"; };
+		2898A0B413F435C600618172 /* SCHStoryInteractionJigsawPathTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionJigsawPathTests.m; sourceTree = "<group>"; };
+		2898A0B613F436B100618172 /* Puzzle-6pc.xaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Puzzle-6pc.xaml"; sourceTree = "<group>"; };
 		28A08CC613950C01006FD008 /* SCHStoryInteraction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteraction.h; sourceTree = "<group>"; };
 		28A08CC713950C01006FD008 /* SCHStoryInteraction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteraction.m; sourceTree = "<group>"; };
 		28A08CC813950C01006FD008 /* SCHStoryInteractionHotSpot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionHotSpot.h; sourceTree = "<group>"; };
@@ -3193,6 +3203,8 @@
 			children = (
 				2815718F13EFDDC30071B73C /* SCHStoryInteractionJigsaw.h */,
 				2815719013EFDDC30071B73C /* SCHStoryInteractionJigsaw.m */,
+				2898A0AF13F42D9200618172 /* SCHStoryInteractionJigsawPaths.h */,
+				2898A0B013F42D9200618172 /* SCHStoryInteractionJigsawPaths.m */,
 			);
 			name = Jigsaw;
 			sourceTree = "<group>";
@@ -3329,6 +3341,8 @@
 				28A60F1A139676180090853E /* SCHStoryInteractionFullExampleTests.m */,
 				28E9B98513A0F6730056874F /* SCHStoryInteractionWordSearchTests.m */,
 				286E21A813AC851700CB4232 /* SCHQueuedAudioPlayerTests.m */,
+				2898A0B313F435C600618172 /* SCHStoryInteractionJigsawPathTests.h */,
+				2898A0B413F435C600618172 /* SCHStoryInteractionJigsawPathTests.m */,
 				286E21AA13AC88E100CB4232 /* Dummy Implementations */,
 				28A08D0013952CB4006FD008 /* Supporting Files */,
 			);
@@ -3363,6 +3377,7 @@
 				28A60F13139675AF0090853E /* StoryInteractionsFullExample2.xml */,
 				28A60F15139675C20090853E /* StoryInteractionsFullExample3.xml */,
 				28A60F17139675D80090853E /* StoryInteractionsFullExample4.xml */,
+				2898A0B613F436B100618172 /* Puzzle-6pc.xaml */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -6021,6 +6036,7 @@
 				2815719A13EFE95C0071B73C /* StoryInteractionWordBird1.xml in Resources */,
 				2866311B13F00F290092A5DE /* StoryInteractionConcentration1.xml in Resources */,
 				2866311D13F010990092A5DE /* StoryInteractionCardCollection1.xml in Resources */,
+				2898A0B713F436B100618172 /* Puzzle-6pc.xaml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6818,6 +6834,7 @@
 				28CD430013F3D3EC00919F18 /* SCHStoryInteractionControllerWordBird.m in Sources */,
 				28CD430713F3D71800919F18 /* SCHStoryInteractionWordBirdAnswerLetterView.m in Sources */,
 				28CD430B13F3EAD300919F18 /* SCHStoryInteractionWordBirdLetterView.m in Sources */,
+				2898A0B113F42D9200618172 /* SCHStoryInteractionJigsawPaths.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6863,6 +6880,8 @@
 				2815719F13EFEB880071B73C /* SCHStoryInteractionPictureStarter.m in Sources */,
 				286630E513EFFA8E0092A5DE /* SCHStoryInteractionSequencing.m in Sources */,
 				2866311813F00DB80092A5DE /* SCHStoryInteractionConcentration.m in Sources */,
+				2898A0B513F435C600618172 /* SCHStoryInteractionJigsawPathTests.m in Sources */,
+				2895A9B013F4373800D75448 /* SCHStoryInteractionJigsawPaths.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7139,6 +7158,7 @@
 				28CD430113F3D3EC00919F18 /* SCHStoryInteractionControllerWordBird.m in Sources */,
 				28CD430813F3D71800919F18 /* SCHStoryInteractionWordBirdAnswerLetterView.m in Sources */,
 				28CD430C13F3EAD300919F18 /* SCHStoryInteractionWordBirdLetterView.m in Sources */,
+				2898A0B213F42D9200618172 /* SCHStoryInteractionJigsawPaths.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
