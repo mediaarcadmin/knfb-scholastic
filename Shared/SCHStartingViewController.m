@@ -39,6 +39,11 @@ enum {
     kTableOffsetLandscape_iPhone = 0
 };
 
+typedef enum {
+	SCHStartingViewControllerYoungerBookshelf,
+    SCHStartingViewControllerOlderBookshelf
+} SCHStartingViewControllerBookshelf;
+
 @interface SCHStartingViewController ()
 
 @property (nonatomic, retain) SCHProfileViewController_Shared *profileViewController;
@@ -232,15 +237,28 @@ enum {
 - (NSString *)sampleBookshelfTitleAtIndex:(NSInteger)index
 {
     switch (index) {
-        case 0: return NSLocalizedString(@"Younger kids' bookshelf (3-6)", @"younger kids sample bookshelf name");
-        case 1: return NSLocalizedString(@"Older kids' bookshelf (7+)", @"older kids sample bookshelf name");
+        case SCHStartingViewControllerYoungerBookshelf: 
+            return NSLocalizedString(@"Younger kids' bookshelf (3-6)", @"younger kids sample bookshelf name");
+        case SCHStartingViewControllerOlderBookshelf: 
+            return NSLocalizedString(@"Older kids' bookshelf (7+)", @"older kids sample bookshelf name");
     }
     return nil;
 }
 
 - (void)openSampleBookshelfAtIndex:(NSInteger)index
 {
+    AppDelegate_Shared *appDelegate = (AppDelegate_Shared *)[[UIApplication sharedApplication] delegate];
+
+    switch (index) {
+        case SCHStartingViewControllerYoungerBookshelf: 
+            [appDelegate.coreDataHelper setStoreType:SCHCoreDataHelperYoungerSampleStore];
+            break;
+        case SCHStartingViewControllerOlderBookshelf: 
+            [appDelegate.coreDataHelper setStoreType:SCHCoreDataHelperOlderSampleStore];
+            break;
+    }
     
+    [self advanceToNextSignInForm];
 }
 
 
@@ -248,6 +266,9 @@ enum {
 
 - (void)showSignInForm
 {
+    AppDelegate_Shared *appDelegate = (AppDelegate_Shared *)[[UIApplication sharedApplication] delegate];
+    [appDelegate.coreDataHelper setStoreType:SCHCoreDataHelperStandardStore];
+
     SCHLoginPasswordViewController *login = [[SCHLoginPasswordViewController alloc] initWithNibName:@"SCHLoginViewController" bundle:nil];
     login.controllerType = kSCHControllerLoginView;
     
@@ -322,6 +343,11 @@ enum {
     }
     
     if (next) {
+        if (self.modalViewController == nil) {
+            [self.modalNavigationController setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
+            [self.modalNavigationController setModalPresentationStyle:UIModalPresentationFormSheet];
+            [self presentModalViewController:self.modalNavigationController animated:YES];
+        }
         [self dismissKeyboard];
         [self.modalNavigationController pushViewController:next animated:YES];
         [next release];

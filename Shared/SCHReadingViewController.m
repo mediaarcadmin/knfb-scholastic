@@ -173,7 +173,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 @synthesize flowFixedSegmentedControls;
 @synthesize storyInteractionButton;
 @synthesize storyInteractionButtonView;
-@synthesize youngerToolbarToggleView;
+@synthesize toolbarToggleView;
 @synthesize notesButton;
 @synthesize storyInteractionsListButton;
 @synthesize pageSlider;
@@ -264,7 +264,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     [flowFixedSegmentedControls release], flowFixedSegmentedControls = nil;
     [storyInteractionButton release], storyInteractionButton = nil;
     [storyInteractionButtonView release], storyInteractionButtonView = nil;
-    [youngerToolbarToggleView release], youngerToolbarToggleView = nil;
+    [toolbarToggleView release], toolbarToggleView = nil;
     
     [readingView release], readingView = nil;
 }
@@ -487,14 +487,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
                                                            userInfo:nil
                                                             repeats:NO];
     [self startFadeTimer];
-
-    
-    if (self.youngerMode) {
-        
-    } else {
-        self.youngerToolbarToggleView.hidden = YES;
-    }
-    
     
     CGFloat containerHeight = CGRectGetHeight(self.navigationController.navigationBar.bounds);
     
@@ -1031,7 +1023,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     }
 }
 
-- (IBAction)youngerToolbarButtonAction:(id)sender {
+- (IBAction)toggleToolbarButtonAction:(id)sender {
     // Setting highlight stops the flicker
     [self pauseAudioPlayback];
     
@@ -1711,20 +1703,6 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 
 #pragma mark - SCHReadingViewDelegate Toolbars methods
 
-// these methods are called from the reading view
-- (void)toggleToolbars
-{
-    // if we're in younger mode, and we're hiding toolbars, ignore the touch
-    if (self.youngerMode && !self.toolbarsVisible) {
-        return;
-    }
-    
-    // if we're in younger mode and we're showing toolbars, hide them
-    // also if we're in older mode, the touch hides and shows.
-    [self pauseAudioPlayback];
-    [self toggleToolbarVisibility];
-}
-
 - (void)hideToolbars
 {
     [self setToolbarVisibility:NO animated:YES];
@@ -1974,14 +1952,12 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     
     if (self.toolbarsVisible) {
 		[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
-        self.youngerToolbarToggleView.alpha = 0.0f;
+        self.toolbarToggleView.alpha = 0.0f;
         [self.readingView dismissReadingViewAdornments];
 
 	} else {
 		[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
-         if (youngerMode) {
-             self.youngerToolbarToggleView.alpha = 1.0f;
-         }
+        self.toolbarToggleView.alpha = 1.0f;
 	}
     
 
@@ -1995,15 +1971,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 	if (self.toolbarsVisible) {
         [self.navigationController.navigationBar setAlpha:1.0f];
         [self.scrubberToolbar setAlpha:1.0f];
-        if (youngerMode) {
-//            CGRect frame = self.youngerToolbarToggleView.frame;
-//            if (frame.origin.y == (self.view.frame.size.height - frame.size.height)) {
-//                // button is at the bottom, move it up
-//                frame.origin.y -= self.scrubberToolbar.frame.size.height;
-//                self.youngerToolbarToggleView.frame = frame;
-//            }
-            //self.youngerToolbarToggleView.alpha = 0.0f;
-        } else {
+        if (!self.youngerMode) {
             [self.olderBottomToolbar setAlpha:1.0f];
         }
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
@@ -2014,15 +1982,7 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 	} else {
         [self.navigationController.navigationBar setAlpha:0.0f];
         [self.scrubberToolbar setAlpha:0.0f];
-        if (youngerMode) {
-//            CGRect frame = self.youngerToolbarToggleView.frame;
-//            if (frame.origin.y == (self.view.frame.size.height - frame.size.height - self.scrubberToolbar.frame.size.height)) {
-//                // button is at the top, move it up
-//                frame.origin.y += self.scrubberToolbar.frame.size.height;
-//                self.youngerToolbarToggleView.frame = frame;
-//            }
-            self.youngerToolbarToggleView.alpha = 1.0f;
-        } else {
+        if (!self.youngerMode) {
             [self.olderBottomToolbar setAlpha:0.0f];
         }
         

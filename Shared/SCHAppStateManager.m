@@ -80,13 +80,23 @@
 {
     NSError *error = nil;
     
-    [NSEntityDescription insertNewObjectForEntityForName:kSCHAppState 
-                                  inManagedObjectContext:self.managedObjectContext];
+    NSEntityDescription *entityDescription = [NSEntityDescription 
+                                              entityForName:kSCHAppState
+                                              inManagedObjectContext:self.managedObjectContext];
+    NSFetchRequest *fetchRequest = [entityDescription.managedObjectModel 
+                                    fetchRequestTemplateForName:kSCHAppStatefetchAppState];
     
-    if ([self.managedObjectContext save:&error] == NO) {
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        abort();
-    }     
+    NSArray *state = [self.managedObjectContext executeFetchRequest:fetchRequest error:nil];	
+    
+    if ([state count] < 1) {
+        [NSEntityDescription insertNewObjectForEntityForName:kSCHAppState 
+                                      inManagedObjectContext:self.managedObjectContext];
+        
+        if ([self.managedObjectContext save:&error] == NO) {
+            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+            abort();
+        }     
+    }
 }
 
 - (BOOL)canDownloadBooks

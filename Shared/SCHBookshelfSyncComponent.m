@@ -32,7 +32,6 @@ NSString * const SCHBookshelfSyncComponentDidFailNotification = @"SCHBookshelfSy
 - (NSArray *)localContentMetadataItems;
 - (NSArray *)localUserContentItems;
 - (void)syncContentMetadataItems:(NSArray *)contentMetadataList;
-- (void)addContentMetadataItem:(NSDictionary *)webContentMetadataItem;
 - (void)syncContentMetadataItem:(NSDictionary *)webContentMetadataItem
         withContentMetadataItem:(SCHContentMetadataItem *)localContentMetadataItem;
 - (void)deleteAnnotationsForBook:(SCHBookIdentifier *)identifier;

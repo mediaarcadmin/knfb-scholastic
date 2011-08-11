@@ -216,6 +216,7 @@
             self.readAloudButton = [UIButton buttonWithType:UIButtonTypeCustom];
             self.readAloudButton.bounds = (CGRect){ CGPointZero, readAloudImage.size };
             [self.readAloudButton setImage:readAloudImage forState:UIControlStateNormal];
+            [self.readAloudButton setImage:readAloudImage forState:UIControlStateDisabled];
             [self.readAloudButton addTarget:self action:@selector(playAudioButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
             [container addSubview:self.readAloudButton];
         }

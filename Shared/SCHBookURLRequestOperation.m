@@ -27,23 +27,37 @@
 
 - (void)beginOperation
 {
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(urlSuccess:) name:kSCHURLManagerSuccess object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(urlFailure:) name:kSCHURLManagerFailure object:nil];
-	
-	[[SCHURLManager sharedURLManager] requestURLForBook:self.identifier];
+    __block BOOL haveContentURL = NO;
+    
+    [self performWithBookAndSave:^(SCHAppBook *book) {
+        haveContentURL = book.ContentMetadataItem.ContentURL != nil;
+        if (haveContentURL == YES) {
+            [book setValue:book.ContentMetadataItem.CoverURL forKey:kSCHAppBookCoverURL];
+            [book setValue:book.ContentMetadataItem.ContentURL forKey:kSCHAppBookFileURL];                    
+        }
+    }];
 
-	do {
-		[[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
-	} while (!self.finished);
-	
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	
+    if (haveContentURL == YES) {
+        [self setProcessingState:SCHBookProcessingStateNoCoverImage];
+        [self endOperation];
+    } else {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(urlSuccess:) name:kSCHURLManagerSuccess object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(urlFailure:) name:kSCHURLManagerFailure object:nil];
+        
+        [[SCHURLManager sharedURLManager] requestURLForBook:self.identifier];
+        
+        do {
+            [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
+        } while (!self.finished);
+        
+        [[NSNotificationCenter defaultCenter] removeObserver:self];
+    }        
     [self setIsProcessing:NO];
 }
 
 #pragma mark - SCHURLManager Notifications
 
-- (void)urlSuccess:(NSNotification *) notification
+- (void)urlSuccess:(NSNotification *)notification
 {
     if (self.isCancelled) {
         [self endOperation];

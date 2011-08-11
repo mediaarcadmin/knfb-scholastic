@@ -380,7 +380,6 @@
 		52298A9012F0EF5600BBBCE6 /* SCHSyncEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A7012F0EF5600BBBCE6 /* SCHSyncEntity.m */; };
 		52298A9112F0EF5600BBBCE6 /* SCHBookmark.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A7212F0EF5600BBBCE6 /* SCHBookmark.m */; };
 		52298A9212F0EF5600BBBCE6 /* SCHContentItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A7412F0EF5600BBBCE6 /* SCHContentItem.m */; };
-		52298A9312F0EF5600BBBCE6 /* SCHProfileStatusItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A7612F0EF5600BBBCE6 /* SCHProfileStatusItem.m */; };
 		52298A9412F0EF5600BBBCE6 /* SCHAnnotationsContentItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A7812F0EF5600BBBCE6 /* SCHAnnotationsContentItem.m */; };
 		52298A9512F0EF5600BBBCE6 /* SCHAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A7A12F0EF5600BBBCE6 /* SCHAnnotation.m */; };
 		52298A9712F0EF5600BBBCE6 /* SCHProfileItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A7E12F0EF5600BBBCE6 /* SCHProfileItem.m */; };
@@ -1393,7 +1392,6 @@
 		F837C6AD12F1799600833448 /* SCHLocationGraphics.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A8212F0EF5600BBBCE6 /* SCHLocationGraphics.m */; };
 		F837C6AE12F179A600833448 /* SCHOrderItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6A12F0EF5600BBBCE6 /* SCHOrderItem.m */; };
 		F837C6AF12F179A800833448 /* SCHProfileItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A7E12F0EF5600BBBCE6 /* SCHProfileItem.m */; };
-		F837C6B012F179A900833448 /* SCHProfileStatusItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A7612F0EF5600BBBCE6 /* SCHProfileStatusItem.m */; };
 		F837C6B112F179AD00833448 /* SCHSyncEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A7012F0EF5600BBBCE6 /* SCHSyncEntity.m */; };
 		F837C6B212F179AE00833448 /* SCHUserContentItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6812F0EF5600BBBCE6 /* SCHUserContentItem.m */; };
 		F837C6B312F179AF00833448 /* SCHUserSettingsItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 52298A6012F0EF5600BBBCE6 /* SCHUserSettingsItem.m */; };
@@ -2027,8 +2025,6 @@
 		52298A7212F0EF5600BBBCE6 /* SCHBookmark.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookmark.m; path = Shared/SCHBookmark.m; sourceTree = "<group>"; };
 		52298A7312F0EF5600BBBCE6 /* SCHContentItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHContentItem.h; path = Shared/SCHContentItem.h; sourceTree = "<group>"; };
 		52298A7412F0EF5600BBBCE6 /* SCHContentItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHContentItem.m; path = Shared/SCHContentItem.m; sourceTree = "<group>"; };
-		52298A7512F0EF5600BBBCE6 /* SCHProfileStatusItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHProfileStatusItem.h; path = Shared/SCHProfileStatusItem.h; sourceTree = "<group>"; };
-		52298A7612F0EF5600BBBCE6 /* SCHProfileStatusItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHProfileStatusItem.m; path = Shared/SCHProfileStatusItem.m; sourceTree = "<group>"; };
 		52298A7712F0EF5600BBBCE6 /* SCHAnnotationsContentItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAnnotationsContentItem.h; path = Shared/SCHAnnotationsContentItem.h; sourceTree = "<group>"; };
 		52298A7812F0EF5600BBBCE6 /* SCHAnnotationsContentItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHAnnotationsContentItem.m; path = Shared/SCHAnnotationsContentItem.m; sourceTree = "<group>"; };
 		52298A7912F0EF5600BBBCE6 /* SCHAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAnnotation.h; path = Shared/SCHAnnotation.h; sourceTree = "<group>"; };
@@ -3890,8 +3886,6 @@
 				5200EFEB12F6CFE400BAC355 /* SCHPrivateAnnotations.m */,
 				52298A7D12F0EF5600BBBCE6 /* SCHProfileItem.h */,
 				52298A7E12F0EF5600BBBCE6 /* SCHProfileItem.m */,
-				52298A7512F0EF5600BBBCE6 /* SCHProfileStatusItem.h */,
-				52298A7612F0EF5600BBBCE6 /* SCHProfileStatusItem.m */,
 				5248E10A13C4858900FA2CDC /* SCHReadingStatsContentItem.h */,
 				5248E10B13C4858900FA2CDC /* SCHReadingStatsContentItem.m */,
 				5248E10E13C4858900FA2CDC /* SCHReadingStatsDetailItem.h */,
@@ -6549,7 +6543,6 @@
 				52298A9012F0EF5600BBBCE6 /* SCHSyncEntity.m in Sources */,
 				52298A9112F0EF5600BBBCE6 /* SCHBookmark.m in Sources */,
 				52298A9212F0EF5600BBBCE6 /* SCHContentItem.m in Sources */,
-				52298A9312F0EF5600BBBCE6 /* SCHProfileStatusItem.m in Sources */,
 				52298A9412F0EF5600BBBCE6 /* SCHAnnotationsContentItem.m in Sources */,
 				52298A9512F0EF5600BBBCE6 /* SCHAnnotation.m in Sources */,
 				52298A9712F0EF5600BBBCE6 /* SCHProfileItem.m in Sources */,
@@ -6867,7 +6860,6 @@
 				F837C6AD12F1799600833448 /* SCHLocationGraphics.m in Sources */,
 				F837C6AE12F179A600833448 /* SCHOrderItem.m in Sources */,
 				F837C6AF12F179A800833448 /* SCHProfileItem.m in Sources */,
-				F837C6B012F179A900833448 /* SCHProfileStatusItem.m in Sources */,
 				F837C6B112F179AD00833448 /* SCHSyncEntity.m in Sources */,
 				F837C6B212F179AE00833448 /* SCHUserContentItem.m in Sources */,
 				F837C6B312F179AF00833448 /* SCHUserSettingsItem.m in Sources */,
