@@ -17,6 +17,7 @@
 #import "SCHURLManager.h"
 #import "SCHProcessingManager.h"                
 #import "SCHSyncManager.h"
+#import "SCHAppStateManager.h"
 
 #import "SCHNonDRMAuthenticationManager.h"
 
@@ -216,8 +217,15 @@ typedef struct AuthenticateWithUserNameParameters AuthenticateWithUserNameParame
 
 - (BOOL)isAuthenticated
 {
-	return(self.aToken != nil && 
-           [[self.aToken stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0);
+    BOOL ret = YES;
+    
+    if([[SCHAppStateManager sharedAppStateManager] canAuthenticate] == YES) {
+        ret = (self.aToken != nil && 
+               [[self.aToken stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0);
+        
+    }
+    
+    return(ret);
 }
 
 #pragma mark - Private methods

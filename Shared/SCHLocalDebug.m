@@ -201,6 +201,7 @@
     if (appState != nil) {        
         appState.ShouldSync = [NSNumber numberWithBool:NO];
         appState.ShouldDownloadBooks = [NSNumber numberWithBool:NO];
+        appState.ShouldAuthenticate = [NSNumber numberWithBool:NO];        
     }
 }
 
