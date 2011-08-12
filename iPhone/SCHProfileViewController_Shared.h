@@ -32,6 +32,6 @@
 - (void)pushSettingsController;
 
 - (SCHBookShelfViewController *)newBookShelfViewController;
-
+- (void)pushBookshelvesControllerWithProfileItem:(SCHProfileItem *)profileItem;
 
 @end
