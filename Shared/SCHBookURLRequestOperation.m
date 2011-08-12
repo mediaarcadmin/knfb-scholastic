@@ -28,9 +28,13 @@
 - (void)beginOperation
 {
     __block BOOL haveContentURL = NO;
-    
-    [self performWithBookAndSave:^(SCHAppBook *book) {
+
+    // sync call to find out if we have a contentURL
+    [self performWithBook:^(SCHAppBook *book) {
         haveContentURL = book.ContentMetadataItem.ContentURL != nil;
+    }];
+
+    [self performWithBookAndSave:^(SCHAppBook *book) {
         if (haveContentURL == YES) {
             [book setValue:book.ContentMetadataItem.CoverURL forKey:kSCHAppBookCoverURL];
             [book setValue:book.ContentMetadataItem.ContentURL forKey:kSCHAppBookFileURL];                    
