@@ -328,7 +328,7 @@ typedef enum {
 {
     UIViewController *next = nil;
     
-    if ([[[SCHAppStateManager sharedAppStateManager] appState].DataStoreType isEqualToNumber:[NSNumber numberWithDataStoreType:kSCHDataStoreTypesLocalDebug]] == NO) {
+    if ([[SCHAppStateManager sharedAppStateManager] isLocalDebugStore] == NO) {
         SCHProfileViewController_Shared *profile = [self profileViewController];
         if ([[profile.fetchedResultsController sections] count] == 0 
             || [[[profile.fetchedResultsController sections] objectAtIndex:0] numberOfObjects] == 0) {
