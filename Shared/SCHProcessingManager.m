@@ -343,7 +343,7 @@ static SCHProcessingManager *sharedManager = nil;
 			// *** Book has no full sized cover image ***
 		case SCHBookProcessingStateNoCoverImage:
 		{	
-            if ([[SCHAppStateManager sharedAppStateManager] canAuthenticate] == NO) { 
+            if ([[SCHAppStateManager sharedAppStateManager] canDownloadBooks] == NO) { 
                 // create cover image download operation
                 SCHXPSCoverImageOperation *downloadImageOp = [[SCHXPSCoverImageOperation alloc] init];
                 [downloadImageOp setMainThreadManagedObjectContext:self.managedObjectContext];
