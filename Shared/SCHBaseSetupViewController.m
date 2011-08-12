@@ -96,6 +96,15 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
+- (void)setEnablesBackButton:(BOOL)enablesBackButton
+{
+    UIBarButtonItem *item = (UIBarButtonItem *)[self.topToolbar.items objectAtIndex:0];
+    
+    if (item != nil) {
+        item.enabled = enablesBackButton;
+    }
+}
+
 - (void)closeSettings
 {
     [self.setupDelegate dismissSettingsForm];

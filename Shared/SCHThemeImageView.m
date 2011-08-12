@@ -12,8 +12,6 @@
 
 @interface SCHThemeImageView ()
 
-- (void)updateTheme;
-
 @property (nonatomic, copy) NSString *imageKey;
 
 @end
@@ -41,20 +39,25 @@
         [[NSNotificationCenter defaultCenter] removeObserver:self];        
         self.image = nil;
     } else {
-        [self updateTheme];
+        [self updateTheme:[[UIApplication sharedApplication] statusBarOrientation]];
         [[NSNotificationCenter defaultCenter] addObserver:self 
-                                                 selector:@selector(updateTheme) 
+                                                 selector:@selector(themeManagerThemeChangeNotification) 
                                                      name:kSCHThemeManagerThemeChangeNotification 
                                                    object:nil];                
     }
 }
 
-#pragma mark - Private methods
-
-- (void)updateTheme
+- (void)updateTheme:(UIInterfaceOrientation)orientation
 {
     self.image = [[SCHThemeManager sharedThemeManager] imageFor:self.imageKey 
-                                                    orientation:[[UIApplication sharedApplication] statusBarOrientation]];
+                                                    orientation:orientation];
+}
+
+#pragma mark - Notification methods
+
+- (void)themeManagerThemeChangeNotification
+{
+    [self updateTheme:[[UIApplication sharedApplication] statusBarOrientation]];
 }
 
 @end

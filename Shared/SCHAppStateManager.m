@@ -123,6 +123,18 @@
     return(ret);
 }
 
+- (BOOL)canAuthenticate
+{
+    BOOL ret = NO;
+    SCHAppState *appState = [self appState];
+    
+    if (appState != nil) {
+        ret = [appState.ShouldAuthenticate boolValue];
+    }
+    
+    return(ret);    
+}
+
 #pragma mark - NSManagedObjectContext Changed Notification
 
 - (void)coreDataHelperManagedObjectContextDidChangeNotification:(NSNotification *)notification

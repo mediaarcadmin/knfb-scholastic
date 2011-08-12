@@ -19,7 +19,6 @@
 #import "SCHUserDefaults.h"
 #import "SCHAppStateManager.h"
 #import "SCHCoreDataHelper.h"
-#import "SCHAppStateManager.h"
 
 // Constants
 NSString * const SCHSyncManagerDidCompleteNotification = @"SCHSyncManagerDidCompleteNotification";
@@ -537,6 +536,7 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
     
     appState.ShouldSync = [NSNumber numberWithBool:NO];
     appState.ShouldDownloadBooks = [NSNumber numberWithBool:YES];
+    appState.ShouldAuthenticate = [NSNumber numberWithBool:NO];
 }
 
 - (NSDictionary *)profileItemWith:(NSString *)title 

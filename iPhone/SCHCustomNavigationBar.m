@@ -14,6 +14,7 @@
 
 @property (nonatomic, retain) UIImageView *backgroundView;
 @property (nonatomic, copy) NSString *imageKey;
+@property (nonatomic, assign) BOOL iPadQualifier;
 
 @end 
 
@@ -22,6 +23,7 @@
 @synthesize backgroundImage;
 @synthesize backgroundView;
 @synthesize imageKey;
+@synthesize iPadQualifier;
 
 #pragma mark - Object lifecycle
 
@@ -73,33 +75,39 @@
 }
 
 - (void)setTheme:(NSString *)newImageKey
+   iPadQualifier:(SCHThemeManagerPadQualifier)setiPadQualifier
 {
     self.imageKey = newImageKey;
+    self.iPadQualifier = setiPadQualifier;
     if (self.imageKey == nil) {
         [[NSNotificationCenter defaultCenter] removeObserver:self];
         [self setBackgroundImage:nil];
     } else {
-        [self updateTheme];
+        [self updateTheme:[[UIApplication sharedApplication] statusBarOrientation]];
         [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(updateTheme)
+                                                 selector:@selector(themeManagerThemeChangeNotification)
                                                      name:kSCHThemeManagerThemeChangeNotification
                                                    object:nil];
     }
 }
 
-#pragma mark - Protected methods
-
-- (void)updateTheme
+- (void)setTheme:(NSString *)newImageKey
 {
-    [self setBackgroundImage:[[SCHThemeManager sharedThemeManager] imageFor:self.imageKey
-                                                                orientation:[[UIApplication sharedApplication] statusBarOrientation]]];
+    [self setTheme:newImageKey iPadQualifier:kSCHThemeManagerPadQualifierNone];
 }
 
 - (void)updateTheme:(UIInterfaceOrientation)interfaceOrientation
 {
     [self setBackgroundImage:[[SCHThemeManager sharedThemeManager] imageFor:self.imageKey
-                                                                orientation:interfaceOrientation iPadQualifier:kSCHThemeManagerPadQualifierSuffix]];
+                                                                orientation:interfaceOrientation 
+                                                              iPadQualifier:self.iPadQualifier]];
 }
 
+#pragma mark - Notification methods
+     
+- (void)themeManagerThemeChangeNotification
+{
+    [self updateTheme:[[UIApplication sharedApplication] statusBarOrientation]];
+}
 
 @end

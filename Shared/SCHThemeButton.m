@@ -12,8 +12,6 @@
 
 @interface SCHThemeButton ()
 
-- (void)updateTheme;
-
 @property (nonatomic, copy) NSString *buttonKey;
 @property (nonatomic, copy) NSString *iconKey;
 @property (nonatomic, assign) BOOL iPadQualifier;
@@ -43,8 +41,10 @@
 
 #pragma mark - methods
 
-- (void)setThemeButton:(NSString *)newButtonKey leftCapWidth:(NSInteger)newLeftCapWidth 
-          topCapHeight:(NSInteger)newTopCapHeight iPadQualifier:(SCHThemeManagerPadQualifier)setiPadQualifier
+- (void)setThemeButton:(NSString *)newButtonKey 
+          leftCapWidth:(NSInteger)newLeftCapWidth 
+          topCapHeight:(NSInteger)newTopCapHeight 
+         iPadQualifier:(SCHThemeManagerPadQualifier)setiPadQualifier
 {
     self.buttonKey = newButtonKey;
     self.iPadQualifier = setiPadQualifier;
@@ -57,25 +57,26 @@
         }
         [self setBackgroundImage:nil forState:UIControlStateNormal];    
     } else {
-        [self updateTheme];
+        [self updateTheme:[[UIApplication sharedApplication] statusBarOrientation]];
         [[NSNotificationCenter defaultCenter] addObserver:self 
-                                                 selector:@selector(updateTheme) 
+                                                 selector:@selector(themeManagerThemeChangeNotification) 
                                                      name:kSCHThemeManagerThemeChangeNotification 
-                                                   object:nil]; 
-        [[NSNotificationCenter defaultCenter] addObserver:self 
-                                                 selector:@selector(updateTheme) 
-                                                     name:UIApplicationDidChangeStatusBarOrientationNotification 
                                                    object:nil]; 
     }
 }
 
-- (void)setThemeButton:(NSString *)newButtonKey leftCapWidth:(NSInteger)newLeftCapWidth 
+- (void)setThemeButton:(NSString *)newButtonKey 
+          leftCapWidth:(NSInteger)newLeftCapWidth 
           topCapHeight:(NSInteger)newTopCapHeight
 {
-    [self setThemeButton:newButtonKey leftCapWidth:newLeftCapWidth topCapHeight:newTopCapHeight iPadQualifier:kSCHThemeManagerPadQualifierNone];
+    [self setThemeButton:newButtonKey 
+            leftCapWidth:newLeftCapWidth 
+            topCapHeight:newTopCapHeight 
+           iPadQualifier:kSCHThemeManagerPadQualifierNone];
 }
 
-- (void)setThemeIcon:(NSString *)newIconKey iPadQualifier:(SCHThemeManagerPadQualifier)setiPadQualifier
+- (void)setThemeIcon:(NSString *)newIconKey 
+       iPadQualifier:(SCHThemeManagerPadQualifier)setiPadQualifier
 {
     self.iconKey = newIconKey;
     self.iPadQualifier = setiPadQualifier;
@@ -86,15 +87,11 @@
         }
         [self setImage:nil forState:UIControlStateNormal];
     } else {
-        [self updateTheme];
+        [self updateTheme:[[UIApplication sharedApplication] statusBarOrientation]];
         [[NSNotificationCenter defaultCenter] addObserver:self 
-                                                 selector:@selector(updateTheme) 
+                                                 selector:@selector(themeManagerThemeChangeNotification) 
                                                      name:kSCHThemeManagerThemeChangeNotification 
-                                                   object:nil];                
-        [[NSNotificationCenter defaultCenter] addObserver:self 
-                                                 selector:@selector(updateTheme) 
-                                                     name:UIApplicationDidChangeStatusBarOrientationNotification 
-                                                   object:nil];         
+                                                   object:nil];                      
     }
 }
 
@@ -103,13 +100,8 @@
     [self setThemeIcon:newIconKey iPadQualifier:kSCHThemeManagerPadQualifierNone];
 }
 
-#pragma mark - Private methods
-
-- (void)updateTheme
+- (void)updateTheme:(UIInterfaceOrientation)orientation
 {
-    // TODO - please don't rely on statusBarOrientation to determine orientation. This should be explicitly passed.
-    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
-    
     // override button sizes for iPad
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         orientation = UIInterfaceOrientationPortrait;
@@ -118,8 +110,9 @@
     if (self.buttonKey != nil) {
         UIImage *image = [[[SCHThemeManager sharedThemeManager] imageFor:self.buttonKey 
                                                              orientation:orientation 
-                                                            iPadQualifier:self.iPadQualifier] 
-                          stretchableImageWithLeftCapWidth:self.leftCapWidth topCapHeight:self.topCapHeight];
+                                                           iPadQualifier:self.iPadQualifier] 
+                          stretchableImageWithLeftCapWidth:self.leftCapWidth 
+                          topCapHeight:self.topCapHeight];
         // heights change when going between portrait and landscape so we change them
         CGRect rect = self.frame;
         rect.size.height = image.size.height;
@@ -128,8 +121,8 @@
     }
     if (self.iconKey != nil) {
         UIImage *image = [[SCHThemeManager sharedThemeManager] imageFor:self.iconKey 
-                                                             orientation:orientation
-                                                           iPadQualifier:self.iPadQualifier];
+                                                            orientation:orientation
+                                                          iPadQualifier:self.iPadQualifier];
         // heights change when going between portrait and landscape so we change them
         CGRect rect = self.frame;
         rect.size.height = image.size.height;
@@ -139,4 +132,11 @@
     }    
 }
 
+#pragma mark - Notification methods
+
+- (void)themeManagerThemeChangeNotification
+{
+    [self updateTheme:[[UIApplication sharedApplication] statusBarOrientation]];
+}
+    
 @end

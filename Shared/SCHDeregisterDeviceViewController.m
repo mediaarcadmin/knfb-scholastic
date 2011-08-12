@@ -119,6 +119,7 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
 {
     if ([[SCHAuthenticationManager sharedAuthenticationManager] validatePassword:self.passwordField.text]) {
         [self.spinner startAnimating];
+        [self setEnablesBackButton:NO];
         self.forgotPasswordURL.enabled = NO;
         [[SCHAuthenticationManager sharedAuthenticationManager] deregister];
     } else {
@@ -193,10 +194,10 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
 - (void)authenticationManagerDidDeregister:(NSNotification *)notification
 {
     [self.spinner stopAnimating];
+    [self setEnablesBackButton:YES];
     self.forgotPasswordURL.enabled = YES;
     [self.setupDelegate dismissSettingsForm];
 }
-
 
 - (void)authenticationManagerDidFailDeregistration:(NSNotification *)notification
 {
