@@ -17,7 +17,6 @@
 #import "SCHProcessingManager.h"
 #import "SCHDictionaryDownloadManager.h"
 #import "SCHRemoveDictionaryViewController.h"
-#import "AppDelegate_Shared.h"
 #import "SCHDeregisterDeviceViewController.h"
 #import "SCHCheckbox.h"
 #import "SCHBookUpdates.h"
@@ -25,6 +24,7 @@
 #import "SCHBookshelfSyncComponent.h"
 #import "SCHCoreDataHelper.h"
 #import "SCHUserDefaults.h"
+#import "SCHAppStateManager.h"
 
 extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
@@ -121,10 +121,10 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
                                                  name:kSCHDictionaryStateChange
                                                object:nil];
     
-#if LOCALDEBUG
-    [self.manageBooksButton setEnabled:NO];
-    [self.deregisterDeviceButton setTitle:@"Reset Content and Settings" forState:UIControlStateNormal];
-#endif
+    if ([[SCHAppStateManager sharedAppStateManager] canAuthenticate] == NO) {
+        [self.manageBooksButton setEnabled:NO];
+        [self.deregisterDeviceButton setTitle:@"Reset Content and Settings" forState:UIControlStateNormal];
+    }
 }
 
 - (void)viewDidUnload 
@@ -196,15 +196,15 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
 
 - (IBAction)deregisterDevice:(id)sender 
 {
-#if LOCALDEBUG
-    [self resetLocalSettings];
-    [self.setupDelegate dismissSettingsForm];
-#else
-    SCHDeregisterDeviceViewController *vc = [[SCHDeregisterDeviceViewController alloc] init];
-    vc.setupDelegate = self.setupDelegate;
-    [self.navigationController pushViewController:vc animated:YES];
-    [vc release];
-#endif
+    if ([[SCHAppStateManager sharedAppStateManager] canAuthenticate] == NO) {
+        [self resetLocalSettings];
+        [self.setupDelegate dismissSettingsForm];
+    } else {
+        SCHDeregisterDeviceViewController *vc = [[SCHDeregisterDeviceViewController alloc] init];
+        vc.setupDelegate = self.setupDelegate;
+        [self.navigationController pushViewController:vc animated:YES];
+        [vc release];
+    }
 }
 
 - (IBAction)showPrivacyPolicy:(id)sender
@@ -305,10 +305,11 @@ extern NSString * const kSCHAuthenticationManagerDeviceKey;
     [NSUserDefaults resetStandardUserDefaults];
     [[SCHDictionaryDownloadManager sharedDownloadManager] threadSafeUpdateDictionaryState:SCHDictionaryProcessingStateUserSetup];
     
-#if LOCALDEBUG
-    AppDelegate_Shared *appDelegate = (AppDelegate_Shared *)[[UIApplication sharedApplication] delegate];
-    [appDelegate.coreDataHelper clearDatabase];
-#endif
+    if ([[SCHAppStateManager sharedAppStateManager] canAuthenticate] == NO) {
+        [[SCHURLManager sharedURLManager] clear];
+        [[SCHProcessingManager sharedProcessingManager] cancelAllOperations];                
+        [[SCHSyncManager sharedSyncManager] clear];
+    }
 }
 
 #pragma mark - notifications

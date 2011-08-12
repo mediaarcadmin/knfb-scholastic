@@ -25,5 +25,8 @@
 - (BOOL)canDownloadBooks;
 - (BOOL)canSync;
 - (BOOL)canAuthenticate;
+- (BOOL)isStandardStore;
+- (BOOL)isSampleStore;
+- (BOOL)isLocalDebugStore;
 
 @end

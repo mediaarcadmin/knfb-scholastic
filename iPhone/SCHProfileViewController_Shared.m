@@ -32,7 +32,6 @@
 - (void)updatesBubbleTapped:(UIGestureRecognizer *)gr;
 - (void)obtainPasswordThenPushBookshelvesControllerWithProfileItem:(SCHProfileItem *)profileItem;
 - (void)queryPasswordBeforePushingBookshelvesControllerWithProfileItem:(SCHProfileItem *)profileItem;
-- (void)pushBookshelvesControllerWithProfileItem:(SCHProfileItem *)profileItem;
 
 @end
 
@@ -50,6 +49,18 @@
 @synthesize updatesBubble;
 
 #pragma mark - Object lifecycle
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        [[NSNotificationCenter defaultCenter] addObserver:self 
+                                                 selector:@selector(coreDataHelperManagedObjectContextDidChangeNotification:) 
+                                                     name:SCHCoreDataHelperManagedObjectContextDidChangeNotification 
+                                                   object:nil];	
+    }
+    return(self);
+}
 
 - (void)releaseViewObjects
 {
@@ -86,11 +97,6 @@
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(updatesBubbleTapped:)];
     [self.updatesBubble addGestureRecognizer:tap];
     [tap release];
-
-    [[NSNotificationCenter defaultCenter] addObserver:self 
-                                             selector:@selector(coreDataHelperManagedObjectContextDidChangeNotification:) 
-                                                 name:SCHCoreDataHelperManagedObjectContextDidChangeNotification 
-                                               object:nil];	
  
     self.settingsViewController.setupDelegate = self;
     self.settingsViewController.managedObjectContext = self.managedObjectContext;

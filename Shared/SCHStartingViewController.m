@@ -328,7 +328,7 @@ typedef enum {
 {
     UIViewController *next = nil;
     
-    if ([[[SCHAppStateManager sharedAppStateManager] appState].DataStoreType isEqualToNumber:[NSNumber numberWithDataStoreType:kSCHDataStoreTypesLocalDebug]] == NO) {
+    if ([[SCHAppStateManager sharedAppStateManager] isLocalDebugStore] == NO) {
         SCHProfileViewController_Shared *profile = [self profileViewController];
         if ([[profile.fetchedResultsController sections] count] == 0 
             || [[[profile.fetchedResultsController sections] objectAtIndex:0] numberOfObjects] == 0) {
@@ -399,15 +399,24 @@ typedef enum {
 - (void)pushProfileView
 {   
     BOOL alreadyInUse = NO;
+    SCHProfileViewController_Shared *profile = [self profileViewController];
     
     for (UIViewController *vc in self.navigationController.viewControllers) {
-        if (vc == [self profileViewController]) {
+        if (vc == profile) {
             alreadyInUse = YES;
             break;
         }
     }
     if (alreadyInUse == NO) {
-        [self.navigationController pushViewController:[self profileViewController] animated:NO];
+        [self.navigationController pushViewController:profile animated:NO];
+    }
+    if ([[SCHAppStateManager sharedAppStateManager] isSampleStore] == YES &&
+        [[profile.fetchedResultsController sections] count] > 0 &&
+        [[[profile.fetchedResultsController sections] objectAtIndex:0] numberOfObjects] > 0) {
+        SCHProfileItem *profileItem = [profile.fetchedResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+        if(profileItem != nil) {
+            [profile pushBookshelvesControllerWithProfileItem:profileItem];
+        }
     }
 }
 
