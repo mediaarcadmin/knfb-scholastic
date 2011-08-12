@@ -278,22 +278,6 @@ static NSString * const kSCHCoreDataHelperOlderSampleStoreName = @"Scholastic_Ol
     return [applicationSupportDocumentsDirectory URLByAppendingPathComponent:storeName];    
 }
 
-#pragma mark - Database clear
-
-- (void)clearDatabase
-{
-    [managedObjectContext release], managedObjectContext = nil;
-    [persistentStoreCoordinator release], persistentStoreCoordinator = nil;
-    
-    NSError *error = nil;
-    if (![[NSFileManager defaultManager] removeItemAtURL:[self storeURL:kSCHCoreDataHelperStandardStoreName] error:&error]) {
-        NSLog(@"failed to remove database: %@", error);
-    }
-    
-    NSLog(@"Cleared local database! Exiting.");
-    exit(0);
-}
-
 - (void)setStoreType:(SCHCoreDataHelperStoreType)storeType
 {                                             
     switch (storeType) {
