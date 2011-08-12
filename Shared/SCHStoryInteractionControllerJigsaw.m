@@ -12,11 +12,13 @@
 #import "SCHStoryInteractionJigsawPreviewView.h"
 #import "SCHStoryInteractionJigsawPieceView.h"
 #import "NSArray+ViewSorting.h"
+#import "SCHGeometry.h"
 
 enum {
     kPreviewImageTag = 1000,
     kSpinnerTag = 1001,
-    kPieceMargin = 5
+    kPieceMargin = 5,
+    kSnapDistanceSq = 900
 };
 
 @interface SCHStoryInteractionControllerJigsaw ()
@@ -217,8 +219,11 @@ enum {
     for (SCHStoryInteractionJigsawPieceView *piece in self.jigsawPieceViews) {
         CGPoint center = piece.center;
         piece.center = CGPointMake(center.x+CGRectGetMinX(self.puzzleBackground.frame), center.y+CGRectGetMinY(self.puzzleBackground.frame));
+        piece.solutionPosition = piece.center;
         piece.homePosition = [[homePositions objectAtIndex:pieceIndex] CGPointValue];
         piece.transform = puzzleTransform;
+        piece.snappedTransform = CGAffineTransformIdentity;
+        piece.delegate = self;
         [self.contentsView addSubview:piece];
         pieceIndex++;
         maxPieceWidth = MAX(maxPieceWidth, CGRectGetWidth(piece.bounds));
@@ -244,10 +249,6 @@ enum {
                      completion:nil];
 }
 
-- (void)addPoint:(CGFloat)x :(CGFloat)y toArray:(NSMutableArray *)array
-{
-}
-
 - (NSArray *)homePositionsForPuzzle
 {
     const CGRect bounds = self.contentsView.bounds;
@@ -267,13 +268,37 @@ enum {
     
     NSInteger piecesOnTopAndBottom = self.numberOfPieces/2-piecesOnSides;
     for (NSInteger i = 0; i < piecesOnTopAndBottom; ++i) {
-        const CGFloat x = CGRectGetWidth(bounds)/(piecesOnTopAndBottom+1)*(i+1);
+        const CGFloat x = CGRectGetMinX(puzzle)+CGRectGetWidth(puzzle)/(piecesOnTopAndBottom+1)*(i+1);
         add(x, CGRectGetMinY(bounds)+CGRectGetMinY(puzzle)/2);
         add(x, CGRectGetMaxY(bounds)-CGRectGetMinY(puzzle)/2);
     }
     
     NSAssert(self.numberOfPieces == [positions count], @"wrong number of positions");
     return positions;
+}
+
+#pragma mark - draggable delegate
+
+- (void)draggableViewDidStartDrag:(SCHStoryInteractionDraggableView *)draggableView
+{
+}
+
+- (void)draggableView:(SCHStoryInteractionDraggableView *)draggableView didMoveToPosition:(CGPoint)position
+{
+    SCHStoryInteractionJigsawPieceView *piece = (SCHStoryInteractionJigsawPieceView *)draggableView;
+    if (SCHCGPointDistanceSq(position, piece.solutionPosition) > kSnapDistanceSq) {
+        [piece moveToHomePosition];
+    }
+}
+
+- (BOOL)draggableView:(SCHStoryInteractionDraggableView *)draggableView shouldSnapFromPosition:(CGPoint)position toPosition:(CGPoint *)snapPosition
+{
+    SCHStoryInteractionJigsawPieceView *piece = (SCHStoryInteractionJigsawPieceView *)draggableView;
+    if (SCHCGPointDistanceSq(position, piece.solutionPosition) < kSnapDistanceSq) {
+        *snapPosition = piece.solutionPosition;
+        return YES;
+    }
+    return NO;
 }
 
 @end

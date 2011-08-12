@@ -29,6 +29,8 @@ enum DragState {
 @property (nonatomic, assign) BOOL tapSupported;
 @property (nonatomic, assign) BOOL shouldStartDragSupported;
 @property (nonatomic, assign) enum DragState dragState;
+@property (nonatomic, assign) CGAffineTransform preDragTransform;
+@property (nonatomic, assign) BOOL isSnapped;
 
 - (void)beginDrag;
 - (void)endDragWithTouch:(UITouch *)touch cancelled:(BOOL)cancelled;
@@ -48,6 +50,9 @@ enum DragState {
 @synthesize shouldStartDragSupported;
 @synthesize dragState;
 @synthesize lockedInPlace;
+@synthesize snappedTransform;
+@synthesize preDragTransform;
+@synthesize isSnapped;
 
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
@@ -135,6 +140,9 @@ enum DragState {
     CGPoint snapPoint;
     if (self.delegate && [self.delegate draggableView:self shouldSnapFromPosition:self.center toPosition:&snapPoint]) {
         self.center = snapPoint;
+        self.isSnapped = YES;
+    } else {
+        self.isSnapped = NO;
     }
 }
 
@@ -154,6 +162,7 @@ enum DragState {
 {
     self.dragState = kDragStateDragging;
     self.dragOrigin = self.center;
+    self.preDragTransform = self.transform;
     [self.superview bringSubviewToFront:self];
     [UIView animateWithDuration:0.25f 
                           delay:0
@@ -176,7 +185,7 @@ enum DragState {
                               delay:0
                             options:UIViewAnimationOptionAllowUserInteraction
                          animations:^{
-                             self.transform = CGAffineTransformIdentity;
+                             self.transform = self.isSnapped ? self.snappedTransform : self.preDragTransform;
                              self.alpha = 1;
                              if (cancelled) {
                                  self.center = self.dragOrigin;

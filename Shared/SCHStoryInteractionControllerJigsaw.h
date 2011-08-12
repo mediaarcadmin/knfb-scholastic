@@ -7,10 +7,11 @@
 //
 
 #import "SCHStoryInteractionController.h"
+#import "SCHStoryInteractionDraggableView.h"
 
 @class SCHStoryInteractionJigsawPreviewView;
 
-@interface SCHStoryInteractionControllerJigsaw : SCHStoryInteractionController
+@interface SCHStoryInteractionControllerJigsaw : SCHStoryInteractionController <SCHStoryInteractionDraggableViewDelegate> {}
 
 @property (nonatomic, retain) IBOutletCollection(UIButton) NSArray *choosePuzzleButtons;
 @property (nonatomic, retain) IBOutlet SCHStoryInteractionJigsawPreviewView *puzzleBackground;

@@ -11,5 +11,6 @@
 @interface SCHStoryInteractionJigsawPieceView : SCHStoryInteractionDraggableView
 
 @property (nonatomic, assign) CGImageRef image;
+@property (nonatomic, assign) CGPoint solutionPosition;
 
 @end

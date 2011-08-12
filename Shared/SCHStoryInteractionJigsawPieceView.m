@@ -11,6 +11,7 @@
 @implementation SCHStoryInteractionJigsawPieceView
 
 @synthesize image;
+@synthesize solutionPosition;
 
 - (void)dealloc
 {

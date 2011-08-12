@@ -28,6 +28,9 @@
 // optional delegate for this draggable
 @property (nonatomic, assign) NSObject<SCHStoryInteractionDraggableViewDelegate> *delegate;
 
+// an alternative transform to use when this view snaps into position
+@property (nonatomic, assign) CGAffineTransform snappedTransform;
+
 // home position for this draggable
 @property (nonatomic, assign) CGPoint homePosition;
 
