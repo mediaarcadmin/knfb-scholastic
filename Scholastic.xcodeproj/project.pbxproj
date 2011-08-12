@@ -6056,7 +6056,6 @@
 				C9747CE013EAEAC5003ADC71 /* Default@2x.jpg in Resources */,
 				F829E61713EFFC1600D77386 /* Scholastic_YoungerSample.sqlite in Resources */,
 				52AFC2B113F167370016C4A1 /* Scholastic_OlderSample.sqlite in Resources */,
-				F829E61713EFFC1600D77386 /* Scholastic_YoungerSample.sqlite in Resources */,
 				2866312313F01D0E0092A5DE /* SCHStoryInteractionConcentration_iPad.xib in Resources */,
 				2866312813F01F940092A5DE /* storyinteraction-concentration-6-pairs.png in Resources */,
 				2866313013F0200E0092A5DE /* storyinteraction-concentration-9-pairs.png in Resources */,
