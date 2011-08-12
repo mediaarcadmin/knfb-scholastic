@@ -175,6 +175,30 @@
 		2898A0B213F42D9200618172 /* SCHStoryInteractionJigsawPaths.m in Sources */ = {isa = PBXBuildFile; fileRef = 2898A0B013F42D9200618172 /* SCHStoryInteractionJigsawPaths.m */; };
 		2898A0B513F435C600618172 /* SCHStoryInteractionJigsawPathTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2898A0B413F435C600618172 /* SCHStoryInteractionJigsawPathTests.m */; };
 		2898A0B713F436B100618172 /* Puzzle-6pc.xaml in Resources */ = {isa = PBXBuildFile; fileRef = 2898A0B613F436B100618172 /* Puzzle-6pc.xaml */; };
+		289A2B1F13F505B80047EE45 /* SCHStoryInteractionControllerJigsaw.m in Sources */ = {isa = PBXBuildFile; fileRef = 289A2B1E13F505B80047EE45 /* SCHStoryInteractionControllerJigsaw.m */; };
+		289A2B2013F505B80047EE45 /* SCHStoryInteractionControllerJigsaw.m in Sources */ = {isa = PBXBuildFile; fileRef = 289A2B1E13F505B80047EE45 /* SCHStoryInteractionControllerJigsaw.m */; };
+		289A2B2213F5085B0047EE45 /* SCHStoryInteractionJigsaw_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 289A2B2113F5085B0047EE45 /* SCHStoryInteractionJigsaw_iPad.xib */; };
+		289A2B2313F5085B0047EE45 /* SCHStoryInteractionJigsaw_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 289A2B2113F5085B0047EE45 /* SCHStoryInteractionJigsaw_iPad.xib */; };
+		289A2B2A13F509FB0047EE45 /* storyinteraction-jigsaw-6-pieces-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 289A2B2413F509FB0047EE45 /* storyinteraction-jigsaw-6-pieces-button.png */; };
+		289A2B2B13F509FB0047EE45 /* storyinteraction-jigsaw-6-pieces-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 289A2B2413F509FB0047EE45 /* storyinteraction-jigsaw-6-pieces-button.png */; };
+		289A2B2C13F509FB0047EE45 /* storyinteraction-jigsaw-6-pieces.png in Resources */ = {isa = PBXBuildFile; fileRef = 289A2B2513F509FB0047EE45 /* storyinteraction-jigsaw-6-pieces.png */; };
+		289A2B2D13F509FB0047EE45 /* storyinteraction-jigsaw-6-pieces.png in Resources */ = {isa = PBXBuildFile; fileRef = 289A2B2513F509FB0047EE45 /* storyinteraction-jigsaw-6-pieces.png */; };
+		289A2B2E13F509FB0047EE45 /* storyinteraction-jigsaw-12-pieces-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 289A2B2613F509FB0047EE45 /* storyinteraction-jigsaw-12-pieces-button.png */; };
+		289A2B2F13F509FB0047EE45 /* storyinteraction-jigsaw-12-pieces-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 289A2B2613F509FB0047EE45 /* storyinteraction-jigsaw-12-pieces-button.png */; };
+		289A2B3013F509FB0047EE45 /* storyinteraction-jigsaw-12-pieces.png in Resources */ = {isa = PBXBuildFile; fileRef = 289A2B2713F509FB0047EE45 /* storyinteraction-jigsaw-12-pieces.png */; };
+		289A2B3113F509FB0047EE45 /* storyinteraction-jigsaw-12-pieces.png in Resources */ = {isa = PBXBuildFile; fileRef = 289A2B2713F509FB0047EE45 /* storyinteraction-jigsaw-12-pieces.png */; };
+		289A2B3213F509FB0047EE45 /* storyinteraction-jigsaw-20-pieces-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 289A2B2813F509FB0047EE45 /* storyinteraction-jigsaw-20-pieces-button.png */; };
+		289A2B3313F509FB0047EE45 /* storyinteraction-jigsaw-20-pieces-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 289A2B2813F509FB0047EE45 /* storyinteraction-jigsaw-20-pieces-button.png */; };
+		289A2B3413F509FB0047EE45 /* storyinteraction-jigsaw-20-pieces.png in Resources */ = {isa = PBXBuildFile; fileRef = 289A2B2913F509FB0047EE45 /* storyinteraction-jigsaw-20-pieces.png */; };
+		289A2B3513F509FB0047EE45 /* storyinteraction-jigsaw-20-pieces.png in Resources */ = {isa = PBXBuildFile; fileRef = 289A2B2913F509FB0047EE45 /* storyinteraction-jigsaw-20-pieces.png */; };
+		289A2B3813F511EC0047EE45 /* SCHStoryInteractionJigsawPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = 289A2B3713F511EC0047EE45 /* SCHStoryInteractionJigsawPreviewView.m */; };
+		289A2B3913F511EC0047EE45 /* SCHStoryInteractionJigsawPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = 289A2B3713F511EC0047EE45 /* SCHStoryInteractionJigsawPreviewView.m */; };
+		289A2B3D13F5140A0047EE45 /* Puzzle-6pc.xaml in Resources */ = {isa = PBXBuildFile; fileRef = 289A2B3A13F5140A0047EE45 /* Puzzle-6pc.xaml */; };
+		289A2B3E13F5140A0047EE45 /* Puzzle-6pc.xaml in Resources */ = {isa = PBXBuildFile; fileRef = 289A2B3A13F5140A0047EE45 /* Puzzle-6pc.xaml */; };
+		289A2B3F13F5140A0047EE45 /* Puzzle-12pc.xaml in Resources */ = {isa = PBXBuildFile; fileRef = 289A2B3B13F5140A0047EE45 /* Puzzle-12pc.xaml */; };
+		289A2B4013F5140A0047EE45 /* Puzzle-12pc.xaml in Resources */ = {isa = PBXBuildFile; fileRef = 289A2B3B13F5140A0047EE45 /* Puzzle-12pc.xaml */; };
+		289A2B4113F5140A0047EE45 /* Puzzle-20pc.xaml in Resources */ = {isa = PBXBuildFile; fileRef = 289A2B3C13F5140A0047EE45 /* Puzzle-20pc.xaml */; };
+		289A2B4213F5140A0047EE45 /* Puzzle-20pc.xaml in Resources */ = {isa = PBXBuildFile; fileRef = 289A2B3C13F5140A0047EE45 /* Puzzle-20pc.xaml */; };
 		289ABFDC139FDCF100662AD7 /* SCHStoryInteractionMultipleChoiceText_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 520CD294139F84530018EA7E /* SCHStoryInteractionMultipleChoiceText_iPad.xib */; };
 		28A08CDE13950C01006FD008 /* SCHStoryInteraction.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A08CC713950C01006FD008 /* SCHStoryInteraction.m */; };
 		28A08CDF13950C01006FD008 /* SCHStoryInteraction.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A08CC713950C01006FD008 /* SCHStoryInteraction.m */; };
@@ -1874,6 +1898,20 @@
 		2898A0B313F435C600618172 /* SCHStoryInteractionJigsawPathTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionJigsawPathTests.h; sourceTree = "<group>"; };
 		2898A0B413F435C600618172 /* SCHStoryInteractionJigsawPathTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionJigsawPathTests.m; sourceTree = "<group>"; };
 		2898A0B613F436B100618172 /* Puzzle-6pc.xaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Puzzle-6pc.xaml"; sourceTree = "<group>"; };
+		289A2B1D13F505B80047EE45 /* SCHStoryInteractionControllerJigsaw.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionControllerJigsaw.h; sourceTree = "<group>"; };
+		289A2B1E13F505B80047EE45 /* SCHStoryInteractionControllerJigsaw.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionControllerJigsaw.m; sourceTree = "<group>"; };
+		289A2B2113F5085B0047EE45 /* SCHStoryInteractionJigsaw_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionJigsaw_iPad.xib; sourceTree = "<group>"; };
+		289A2B2413F509FB0047EE45 /* storyinteraction-jigsaw-6-pieces-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-jigsaw-6-pieces-button.png"; sourceTree = "<group>"; };
+		289A2B2513F509FB0047EE45 /* storyinteraction-jigsaw-6-pieces.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-jigsaw-6-pieces.png"; sourceTree = "<group>"; };
+		289A2B2613F509FB0047EE45 /* storyinteraction-jigsaw-12-pieces-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-jigsaw-12-pieces-button.png"; sourceTree = "<group>"; };
+		289A2B2713F509FB0047EE45 /* storyinteraction-jigsaw-12-pieces.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-jigsaw-12-pieces.png"; sourceTree = "<group>"; };
+		289A2B2813F509FB0047EE45 /* storyinteraction-jigsaw-20-pieces-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-jigsaw-20-pieces-button.png"; sourceTree = "<group>"; };
+		289A2B2913F509FB0047EE45 /* storyinteraction-jigsaw-20-pieces.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-jigsaw-20-pieces.png"; sourceTree = "<group>"; };
+		289A2B3613F511EC0047EE45 /* SCHStoryInteractionJigsawPreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionJigsawPreviewView.h; sourceTree = "<group>"; };
+		289A2B3713F511EC0047EE45 /* SCHStoryInteractionJigsawPreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionJigsawPreviewView.m; sourceTree = "<group>"; };
+		289A2B3A13F5140A0047EE45 /* Puzzle-6pc.xaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Puzzle-6pc.xaml"; sourceTree = "<group>"; };
+		289A2B3B13F5140A0047EE45 /* Puzzle-12pc.xaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Puzzle-12pc.xaml"; sourceTree = "<group>"; };
+		289A2B3C13F5140A0047EE45 /* Puzzle-20pc.xaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Puzzle-20pc.xaml"; sourceTree = "<group>"; };
 		28A08CC613950C01006FD008 /* SCHStoryInteraction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteraction.h; sourceTree = "<group>"; };
 		28A08CC713950C01006FD008 /* SCHStoryInteraction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteraction.m; sourceTree = "<group>"; };
 		28A08CC813950C01006FD008 /* SCHStoryInteractionHotSpot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionHotSpot.h; sourceTree = "<group>"; };
@@ -3205,6 +3243,11 @@
 				2815719013EFDDC30071B73C /* SCHStoryInteractionJigsaw.m */,
 				2898A0AF13F42D9200618172 /* SCHStoryInteractionJigsawPaths.h */,
 				2898A0B013F42D9200618172 /* SCHStoryInteractionJigsawPaths.m */,
+				289A2B1D13F505B80047EE45 /* SCHStoryInteractionControllerJigsaw.h */,
+				289A2B1E13F505B80047EE45 /* SCHStoryInteractionControllerJigsaw.m */,
+				289A2B2113F5085B0047EE45 /* SCHStoryInteractionJigsaw_iPad.xib */,
+				289A2B3613F511EC0047EE45 /* SCHStoryInteractionJigsawPreviewView.h */,
+				289A2B3713F511EC0047EE45 /* SCHStoryInteractionJigsawPreviewView.m */,
 			);
 			name = Jigsaw;
 			sourceTree = "<group>";
@@ -3566,6 +3609,12 @@
 				2894E80713B09EC800AEAD79 /* storyinteraction-findinpage-correct@2x~iphone.png */,
 				F8DB746813A0DDA2006E8D06 /* progressbar-cover.png */,
 				F8DB746313A0DCC3006E8D06 /* progressbar-fill.png */,
+				289A2B2413F509FB0047EE45 /* storyinteraction-jigsaw-6-pieces-button.png */,
+				289A2B2513F509FB0047EE45 /* storyinteraction-jigsaw-6-pieces.png */,
+				289A2B2613F509FB0047EE45 /* storyinteraction-jigsaw-12-pieces-button.png */,
+				289A2B2713F509FB0047EE45 /* storyinteraction-jigsaw-12-pieces.png */,
+				289A2B2813F509FB0047EE45 /* storyinteraction-jigsaw-20-pieces-button.png */,
+				289A2B2913F509FB0047EE45 /* storyinteraction-jigsaw-20-pieces.png */,
 			);
 			name = StoryInteractions;
 			path = Resources/UIAssets/StoryInteractions;
@@ -4037,6 +4086,9 @@
 				C908D881133F941100661718 /* booktexture-nocover.png */,
 				C9C1D56013B3C01A00441623 /* show-tools.png */,
 				C9C1D56113B3C01A00441623 /* show-tools@2x.png */,
+				289A2B3A13F5140A0047EE45 /* Puzzle-6pc.xaml */,
+				289A2B3B13F5140A0047EE45 /* Puzzle-12pc.xaml */,
+				289A2B3C13F5140A0047EE45 /* Puzzle-20pc.xaml */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -6005,6 +6057,16 @@
 				28CD431413F41A5B00919F18 /* SCHStoryInteractionWordBird_iPhone.xib in Resources */,
 				28CD431813F41FAF00919F18 /* storyinteraction-lettertile-green~iphone.png in Resources */,
 				28CD431A13F41FAF00919F18 /* storyinteraction-lettertile-red~iphone.png in Resources */,
+				289A2B2213F5085B0047EE45 /* SCHStoryInteractionJigsaw_iPad.xib in Resources */,
+				289A2B2A13F509FB0047EE45 /* storyinteraction-jigsaw-6-pieces-button.png in Resources */,
+				289A2B2C13F509FB0047EE45 /* storyinteraction-jigsaw-6-pieces.png in Resources */,
+				289A2B2E13F509FB0047EE45 /* storyinteraction-jigsaw-12-pieces-button.png in Resources */,
+				289A2B3013F509FB0047EE45 /* storyinteraction-jigsaw-12-pieces.png in Resources */,
+				289A2B3213F509FB0047EE45 /* storyinteraction-jigsaw-20-pieces-button.png in Resources */,
+				289A2B3413F509FB0047EE45 /* storyinteraction-jigsaw-20-pieces.png in Resources */,
+				289A2B3D13F5140A0047EE45 /* Puzzle-6pc.xaml in Resources */,
+				289A2B3F13F5140A0047EE45 /* Puzzle-12pc.xaml in Resources */,
+				289A2B4113F5140A0047EE45 /* Puzzle-20pc.xaml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6540,6 +6602,16 @@
 				28CD431513F41A5B00919F18 /* SCHStoryInteractionWordBird_iPhone.xib in Resources */,
 				28CD431913F41FAF00919F18 /* storyinteraction-lettertile-green~iphone.png in Resources */,
 				28CD431B13F41FAF00919F18 /* storyinteraction-lettertile-red~iphone.png in Resources */,
+				289A2B2313F5085B0047EE45 /* SCHStoryInteractionJigsaw_iPad.xib in Resources */,
+				289A2B2B13F509FB0047EE45 /* storyinteraction-jigsaw-6-pieces-button.png in Resources */,
+				289A2B2D13F509FB0047EE45 /* storyinteraction-jigsaw-6-pieces.png in Resources */,
+				289A2B2F13F509FB0047EE45 /* storyinteraction-jigsaw-12-pieces-button.png in Resources */,
+				289A2B3113F509FB0047EE45 /* storyinteraction-jigsaw-12-pieces.png in Resources */,
+				289A2B3313F509FB0047EE45 /* storyinteraction-jigsaw-20-pieces-button.png in Resources */,
+				289A2B3513F509FB0047EE45 /* storyinteraction-jigsaw-20-pieces.png in Resources */,
+				289A2B3E13F5140A0047EE45 /* Puzzle-6pc.xaml in Resources */,
+				289A2B4013F5140A0047EE45 /* Puzzle-12pc.xaml in Resources */,
+				289A2B4213F5140A0047EE45 /* Puzzle-20pc.xaml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6835,6 +6907,8 @@
 				28CD430713F3D71800919F18 /* SCHStoryInteractionWordBirdAnswerLetterView.m in Sources */,
 				28CD430B13F3EAD300919F18 /* SCHStoryInteractionWordBirdLetterView.m in Sources */,
 				2898A0B113F42D9200618172 /* SCHStoryInteractionJigsawPaths.m in Sources */,
+				289A2B1F13F505B80047EE45 /* SCHStoryInteractionControllerJigsaw.m in Sources */,
+				289A2B3813F511EC0047EE45 /* SCHStoryInteractionJigsawPreviewView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7159,6 +7233,8 @@
 				28CD430813F3D71800919F18 /* SCHStoryInteractionWordBirdAnswerLetterView.m in Sources */,
 				28CD430C13F3EAD300919F18 /* SCHStoryInteractionWordBirdLetterView.m in Sources */,
 				2898A0B213F42D9200618172 /* SCHStoryInteractionJigsawPaths.m in Sources */,
+				289A2B2013F505B80047EE45 /* SCHStoryInteractionControllerJigsaw.m in Sources */,
+				289A2B3913F511EC0047EE45 /* SCHStoryInteractionJigsawPreviewView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

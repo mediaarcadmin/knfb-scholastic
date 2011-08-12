@@ -10,6 +10,11 @@
 
 @implementation SCHStoryInteractionJigsaw
 
+- (id)init
+{
+    return [super init];
+}
+
 - (NSString *)title
 {
     return @"Jigsaw";
@@ -18,6 +23,22 @@
 - (BOOL)isOlderStoryInteraction
 {
     return NO;
+}
+
+- (NSString *)imagePathForPuzzle
+{
+    NSString *filename = [NSString stringWithFormat:@"%@_medium.png", self.ID];
+    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:filename];
+}
+
+- (NSString *)audioPathForQuestion
+{
+    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:@"gen_chooseyourpuzzle.mp3"];
+}
+
+- (NSString *)audioPathForClickPuzzleToStart
+{
+    return [KNFBXPSStoryInteractionsDirectory stringByAppendingPathComponent:@"gen_clickthepuzzle.mp3"];
 }
 
 @end

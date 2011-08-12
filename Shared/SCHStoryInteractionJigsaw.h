@@ -9,4 +9,9 @@
 #import "SCHStoryInteraction.h"
 
 @interface SCHStoryInteractionJigsaw : SCHStoryInteraction {}
+
+- (NSString *)imagePathForPuzzle;
+
+- (NSString *)audioPathForClickPuzzleToStart;
+
 @end

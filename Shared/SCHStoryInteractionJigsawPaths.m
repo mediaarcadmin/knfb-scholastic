@@ -76,18 +76,34 @@ static void jigsawEndElementHandler(void *userData, const XML_Char *name)
     return (CGPathRef)[self.paths objectAtIndex:pathIndex];
 }
 
-- (CGImageRef)maskOfSize:(CGSize)size fromPathAtIndex:(NSInteger)pathIndex
+- (CGImageRef)maskFromPathAtIndex:(NSInteger)pathIndex forPuzzleSize:(CGSize)size
 {
+    const size_t width = (size_t)ceil(size.width);
+    const size_t height = (size_t)ceil(size.height);
     CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceGray();
-    CGContextRef context = CGBitmapContextCreate(NULL, size.width, size.height, 8, size.width, colorSpace, 0);
+    CGContextRef context = CGBitmapContextCreate(NULL, width, height, 8, width, colorSpace, 0);
     CGColorSpaceRelease(colorSpace);
-    CGContextScaleCTM(context, size.width, size.height); // path coords in (0.0, 1.0) range
+    CGContextScaleCTM(context, width, height);
     CGContextSetRGBFillColor(context, 1, 1, 1, 1);
     CGContextAddPath(context, [self pathAtIndex:pathIndex]);
     CGContextFillPath(context);
     CGImageRef mask = CGBitmapContextCreateImage(context);
     CGContextRelease(context);
-    return mask;
+    
+    CGRect submaskRect = [self boundsOfPieceAtIndex:pathIndex forPuzzleSize:size];
+    CGImageRef submask = CGImageCreateWithImageInRect(mask, submaskRect);
+    CGImageRelease(mask);
+    
+    NSLog(@"created mask size=%lu,%lu from rect %@", CGImageGetWidth(submask), CGImageGetHeight(submask), NSStringFromCGRect(submaskRect));
+    return submask;
+}
+
+- (CGRect)boundsOfPieceAtIndex:(NSInteger)pathIndex forPuzzleSize:(CGSize)size
+{
+    CGRect bounds = CGPathGetBoundingBox([self pathAtIndex:pathIndex]);
+    CGRect scaled = CGRectApplyAffineTransform(bounds, CGAffineTransformMakeScale(size.width, size.height));
+    scaled.origin.y = size.height - CGRectGetMaxY(scaled);
+    return scaled;
 }
 
 #pragma mark - parsing

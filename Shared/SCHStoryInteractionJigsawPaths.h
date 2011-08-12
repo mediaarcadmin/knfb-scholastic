@@ -20,6 +20,9 @@
 
 // return a new CGImageRef containing an alpha-mask from the loaded path at
 // the requested index.
-- (CGImageRef)maskOfSize:(CGSize)size fromPathAtIndex:(NSInteger)pathIndex;
+- (CGImageRef)maskFromPathAtIndex:(NSInteger)pathIndex forPuzzleSize:(CGSize)size;
+
+// bounds of a piece in the overall puzzle image
+- (CGRect)boundsOfPieceAtIndex:(NSInteger)pathIndex forPuzzleSize:(CGSize)size;
 
 @end
