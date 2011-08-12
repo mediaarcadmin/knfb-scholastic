@@ -61,10 +61,16 @@ typedef enum {
 } SCHUserSettingsTypes;
 
 typedef enum {
-	TopFavoritesTypesNone = 0,
-	TopFavoritesTypeseReaderCategory,
-	TopFavoritesTypeseReaderCategoryClass,
+	kSCHTopFavoritesTypesNone = 0,
+	kSCHTopFavoritesTypeseReaderCategory,
+	kSCHTopFavoritesTypeseReaderCategoryClass,
 } SCHTopFavoritesTypes;
+
+typedef enum {
+	kSCHDataStoreTypesStandard,
+	kSCHDataStoreTypesSample,
+	kSCHDataStoreTypesLocalDebug,    
+} SCHDataStoreTypes;
 
 @interface NSNumber (ObjectTypes)
 
@@ -103,5 +109,9 @@ typedef enum {
 + (NSNumber *)numberWithTopFavoritesType:(SCHTopFavoritesTypes)value;
 - (id)initWithTopFavoritesType:(SCHTopFavoritesTypes)value;
 - (SCHTopFavoritesTypes)topFavoritesTypeValue;
+
++ (NSNumber *)numberWithDataStoreType:(SCHDataStoreTypes)value;
+- (id)initWithDataStoreType:(SCHDataStoreTypes)value;
+- (SCHDataStoreTypes)dataStoreTypeValue;
 
 @end

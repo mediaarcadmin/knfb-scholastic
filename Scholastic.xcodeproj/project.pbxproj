@@ -537,6 +537,7 @@
 		52C489CC1369AC4200460876 /* UIColor+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52C489CA1369AC4200460876 /* UIColor+Extensions.m */; };
 		52C7F8721377DEE800DB08C9 /* SCHAppState.m in Sources */ = {isa = PBXBuildFile; fileRef = 52C7F8711377DEE800DB08C9 /* SCHAppState.m */; };
 		52C7F8731377DEE800DB08C9 /* SCHAppState.m in Sources */ = {isa = PBXBuildFile; fileRef = 52C7F8711377DEE800DB08C9 /* SCHAppState.m */; };
+		52D438E013F521EE00D51FDA /* SCH3DView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2866314313F03C140092A5DE /* SCH3DView.m */; };
 		52D612B812E4650B0033DA92 /* NSNumber+ObjectTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D612B712E4650B0033DA92 /* NSNumber+ObjectTypes.m */; };
 		52DAE4F813ABA0970003560E /* popoverTick.png in Resources */ = {isa = PBXBuildFile; fileRef = 52DAE4F713ABA0970003560E /* popoverTick.png */; };
 		52DAE4F913ABA0970003560E /* popoverTick.png in Resources */ = {isa = PBXBuildFile; fileRef = 52DAE4F713ABA0970003560E /* popoverTick.png */; };
@@ -6909,6 +6910,7 @@
 				2898A0B113F42D9200618172 /* SCHStoryInteractionJigsawPaths.m in Sources */,
 				289A2B1F13F505B80047EE45 /* SCHStoryInteractionControllerJigsaw.m in Sources */,
 				289A2B3813F511EC0047EE45 /* SCHStoryInteractionJigsawPreviewView.m in Sources */,
+				52D438E013F521EE00D51FDA /* SCH3DView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -9,7 +9,6 @@
 #import "SCHSettingsViewController.h"
 #import "SCHSetupDelegate.h"
 #import "SCHLoginPasswordViewController.h"
-#import "SCHCustomNavigationBar.h"
 #import "SCHCustomToolbar.h"
 #import "SCHURLManager.h"
 #import "SCHSyncManager.h"

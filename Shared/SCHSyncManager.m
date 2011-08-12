@@ -19,7 +19,6 @@
 #import "SCHUserDefaults.h"
 #import "SCHAppStateManager.h"
 #import "SCHCoreDataHelper.h"
-#import "SCHAppStateManager.h"
 
 // Constants
 NSString * const SCHSyncManagerDidCompleteNotification = @"SCHSyncManagerDidCompleteNotification";
@@ -478,14 +477,14 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
                                             bookshelf:kSCHBookshelfStyleYoungChild];
     [self.profileSyncComponent addProfile:profileItem];
 
-    NSDictionary *book = [self contentMetaDataItemWith:@"9780545323024"
-                                                 title:@"Clifford's Good Deeds"
-                                                author:@"Norman Bridwell"
-                                            pageNumber:34
-                                              fileSize:9283741
-                                              coverURL:@"http://Johns-iMac.local/~john/CliffordCoverArt.jpg"
-                                            contentURL:@"http://Johns-iMac.local/~john/Clifford.xps"
-                                              enhanced:YES];
+    NSDictionary *book = [self contentMetaDataItemWith:@"0-393-05158-7"
+                                                 title:@"A Christmas Carol"
+                                                author:@"Charles Dickens"
+                                            pageNumber:1
+                                              fileSize:862109
+                                              coverURL:@"http://bitwink.com/private/ChristmasCarol.jpg"
+                                            contentURL:@"http://bitwink.com/private/ChristmasCarol.xps"
+                                              enhanced:NO];
     
     [self.contentSyncComponent addUserContentItem:[self userContentItemWith:[book objectForKey:kSCHLibreAccessWebServiceContentIdentifier]
                                                                   profielID:[profileItem objectForKey:kSCHLibreAccessWebServiceID]]];
@@ -510,14 +509,14 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
                                             bookshelf:kSCHBookshelfStyleOlderChild];
     [self.profileSyncComponent addProfile:profileItem];
     
-    NSDictionary *book = [self contentMetaDataItemWith:@"9780545323024"
-                                                 title:@"Clifford's Good Deeds"
-                                                author:@"Norman Bridwell"
-                                            pageNumber:34
-                                              fileSize:9283741
-                                              coverURL:@"http://Johns-iMac.local/~john/CliffordCoverArt.jpg"
-                                            contentURL:@"http://Johns-iMac.local/~john/Clifford.xps"
-                                              enhanced:YES];
+    NSDictionary *book = [self contentMetaDataItemWith:@"978-0-14-143960-0"
+                                                 title:@"A Tale of Two Cities"
+                                                author:@"Charles Dickens"
+                                            pageNumber:1
+                                              fileSize:4023944
+                                              coverURL:@"http://bitwink.com/private/ATaleOfTwoCities.jpg"
+                                            contentURL:@"http://bitwink.com/private/ATaleOfTwoCities.xps"
+                                              enhanced:NO];
     
     
     [self.contentSyncComponent addUserContentItem:[self userContentItemWith:[book objectForKey:kSCHLibreAccessWebServiceContentIdentifier] 
@@ -537,6 +536,8 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
     
     appState.ShouldSync = [NSNumber numberWithBool:NO];
     appState.ShouldDownloadBooks = [NSNumber numberWithBool:YES];
+    appState.ShouldAuthenticate = [NSNumber numberWithBool:NO];
+    appState.DataStoreType = [NSNumber numberWithDataStoreType:kSCHDataStoreTypesSample];
 }
 
 - (NSDictionary *)profileItemWith:(NSString *)title 

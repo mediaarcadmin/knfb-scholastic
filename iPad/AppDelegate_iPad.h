@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import "AppDelegate_Shared.h"
-#import "SCHCustomNavigationBar.h"
 
 @class SCHProfileViewController_iPad;
 

@@ -10,6 +10,7 @@
 #import "SCHAppBook.h"
 #import "SCHBookIdentifier.h"
 #import "SCHBookManager.h"
+#import "SCHAppStateManager.h"
 
 @interface SCHBookUpdates ()
 @property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
@@ -39,13 +40,13 @@
         [fetch setSortDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"ContentMetadataItem.Title" ascending:YES]]];
         
         NSPredicate *statePred = [NSPredicate predicateWithFormat:@"State = %d", SCHBookProcessingStateReadyToRead];
-#if LOCALDEBUG
-        // show all books in local files build
-        [fetch setPredicate:statePred];
-#else
-        NSPredicate *versionPred = [NSPredicate predicateWithFormat:@"OnDiskVersion != ContentMetadataItem.Version"];
-        [fetch setPredicate:[NSCompoundPredicate andPredicateWithSubpredicates:[NSArray arrayWithObjects:statePred, versionPred, nil]]];
-#endif
+        if ([[SCHAppStateManager sharedAppStateManager] canSync] == NO) {
+            // show all books
+            [fetch setPredicate:statePred];
+        } else {
+            NSPredicate *versionPred = [NSPredicate predicateWithFormat:@"OnDiskVersion != ContentMetadataItem.Version"];
+            [fetch setPredicate:[NSCompoundPredicate andPredicateWithSubpredicates:[NSArray arrayWithObjects:statePred, versionPred, nil]]];
+        }
         
         NSFetchedResultsController *frc = [[NSFetchedResultsController alloc] initWithFetchRequest:fetch
                                                                               managedObjectContext:self.managedObjectContext

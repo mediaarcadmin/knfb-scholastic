@@ -66,9 +66,12 @@ static NSString* const prModelCertFilename = @"iphonecert.dat";
 	syncManager.managedObjectContext = self.coreDataHelper.managedObjectContext;
 	[syncManager start];
 	
-    // uncomment to populate Store
-//    [[SCHSyncManager sharedSyncManager] populateYoungerSampleStore];
-//    [[SCHSyncManager sharedSyncManager] populateOlderSampleStore];
+    // Uncomment to populate Store
+    // N.B. you must clean build and uncomment these population methods one at a time and break immediately afterwards.
+    // Whilst broken copy the Scholastic.sqlite database to either Scholastic_YoungerSample.sqlite or Scholastic_OlderSample.sqlite
+    // Depending on which was uncommented
+    //[[SCHSyncManager sharedSyncManager] populateYoungerSampleStore];
+    //[[SCHSyncManager sharedSyncManager] populateOlderSampleStore];
     
 	SCHURLManager *urlManager = [SCHURLManager sharedURLManager];
 	urlManager.managedObjectContext = self.coreDataHelper.managedObjectContext;

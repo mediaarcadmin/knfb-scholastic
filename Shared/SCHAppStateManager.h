@@ -24,5 +24,6 @@
 - (void)createAppStateIfNeeded;
 - (BOOL)canDownloadBooks;
 - (BOOL)canSync;
+- (BOOL)canAuthenticate;
 
 @end
