@@ -1495,6 +1495,8 @@
 		F87B6E2F1398ED65005CC0FA /* SCHBookShelfSortPopoverTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = F87B6E2C1398ED65005CC0FA /* SCHBookShelfSortPopoverTableView.m */; };
 		F87B6E301398ED65005CC0FA /* SCHBookShelfSortPopoverTableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F87B6E2D1398ED65005CC0FA /* SCHBookShelfSortPopoverTableView.xib */; };
 		F87B6E311398ED65005CC0FA /* SCHBookShelfSortPopoverTableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F87B6E2D1398ED65005CC0FA /* SCHBookShelfSortPopoverTableView.xib */; };
+		F87E39A613F4393E00F21FAE /* BookSISampleTab~iPad.png in Resources */ = {isa = PBXBuildFile; fileRef = F87E39A513F4393E00F21FAE /* BookSISampleTab~iPad.png */; };
+		F87E39A713F4393E00F21FAE /* BookSISampleTab~iPad.png in Resources */ = {isa = PBXBuildFile; fileRef = F87E39A513F4393E00F21FAE /* BookSISampleTab~iPad.png */; };
 		F8844BEF137D5F88003D3014 /* SCHProfileViewController_iPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = F8844BEE137D5F88003D3014 /* SCHProfileViewController_iPhone.m */; };
 		F8844BF0137D5F88003D3014 /* SCHProfileViewController_iPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = F8844BEE137D5F88003D3014 /* SCHProfileViewController_iPhone.m */; };
 		F8844BF9137D6655003D3014 /* SCHProfileViewController_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = F8844BF7137D6654003D3014 /* SCHProfileViewController_iPad.m */; };
@@ -1581,6 +1583,10 @@
 		F8E2D3D213B9CB8A001E207B /* TTTAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = F8E2D3D013B9CB8A001E207B /* TTTAttributedLabel.m */; };
 		F8EDE542138561390079BFD8 /* SCHReadingNoteView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8EDE541138561390079BFD8 /* SCHReadingNoteView.m */; };
 		F8EDE543138561390079BFD8 /* SCHReadingNoteView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8EDE541138561390079BFD8 /* SCHReadingNoteView.m */; };
+		F8EF094913F4157F00A47D5D /* BookSampleTab~iPad.png in Resources */ = {isa = PBXBuildFile; fileRef = F8EF094813F4157F00A47D5D /* BookSampleTab~iPad.png */; };
+		F8EF094A13F4157F00A47D5D /* BookSampleTab~iPad.png in Resources */ = {isa = PBXBuildFile; fileRef = F8EF094813F4157F00A47D5D /* BookSampleTab~iPad.png */; };
+		F8EF094C13F4299D00A47D5D /* BookSITab~iPad.png in Resources */ = {isa = PBXBuildFile; fileRef = F8EF094B13F4299D00A47D5D /* BookSITab~iPad.png */; };
+		F8EF094D13F4299D00A47D5D /* BookSITab~iPad.png in Resources */ = {isa = PBXBuildFile; fileRef = F8EF094B13F4299D00A47D5D /* BookSITab~iPad.png */; };
 		F8FAF2F313F12F20009C7E9F /* SCHAppStateManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F8FAF2F213F12F20009C7E9F /* SCHAppStateManager.m */; };
 		F8FAF2F413F12F20009C7E9F /* SCHAppStateManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F8FAF2F213F12F20009C7E9F /* SCHAppStateManager.m */; };
 		F8FF8D81139513B000CD7B73 /* OldDictionary-additions.css in Resources */ = {isa = PBXBuildFile; fileRef = F8FF8D7F139513B000CD7B73 /* OldDictionary-additions.css */; };
@@ -2836,6 +2842,7 @@
 		F87B6E2B1398ED65005CC0FA /* SCHBookShelfSortPopoverTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookShelfSortPopoverTableView.h; path = Shared/SCHBookShelfSortPopoverTableView.h; sourceTree = "<group>"; };
 		F87B6E2C1398ED65005CC0FA /* SCHBookShelfSortPopoverTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookShelfSortPopoverTableView.m; path = Shared/SCHBookShelfSortPopoverTableView.m; sourceTree = "<group>"; };
 		F87B6E2D1398ED65005CC0FA /* SCHBookShelfSortPopoverTableView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SCHBookShelfSortPopoverTableView.xib; path = Shared/SCHBookShelfSortPopoverTableView.xib; sourceTree = "<group>"; };
+		F87E39A513F4393E00F21FAE /* BookSISampleTab~iPad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BookSISampleTab~iPad.png"; path = "Resources/BookSISampleTab~iPad.png"; sourceTree = "<group>"; };
 		F8844BED137D5F88003D3014 /* SCHProfileViewController_iPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHProfileViewController_iPhone.h; sourceTree = "<group>"; };
 		F8844BEE137D5F88003D3014 /* SCHProfileViewController_iPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHProfileViewController_iPhone.m; sourceTree = "<group>"; };
 		F8844BF6137D6654003D3014 /* SCHProfileViewController_iPad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHProfileViewController_iPad.h; path = iPad/SCHProfileViewController_iPad.h; sourceTree = SOURCE_ROOT; };
@@ -2906,6 +2913,8 @@
 		F8E2D3D013B9CB8A001E207B /* TTTAttributedLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TTTAttributedLabel.m; path = Shared/Libraries/TTTAttributedLabel/TTTAttributedLabel.m; sourceTree = "<group>"; };
 		F8EDE540138561390079BFD8 /* SCHReadingNoteView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHReadingNoteView.h; path = Shared/SCHReadingNoteView.h; sourceTree = "<group>"; };
 		F8EDE541138561390079BFD8 /* SCHReadingNoteView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHReadingNoteView.m; path = Shared/SCHReadingNoteView.m; sourceTree = "<group>"; };
+		F8EF094813F4157F00A47D5D /* BookSampleTab~iPad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BookSampleTab~iPad.png"; path = "Resources/BookSampleTab~iPad.png"; sourceTree = "<group>"; };
+		F8EF094B13F4299D00A47D5D /* BookSITab~iPad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "BookSITab~iPad.png"; path = "Resources/BookSITab~iPad.png"; sourceTree = "<group>"; };
 		F8FAF2F113F12F20009C7E9F /* SCHAppStateManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAppStateManager.h; path = Shared/SCHAppStateManager.h; sourceTree = "<group>"; };
 		F8FAF2F213F12F20009C7E9F /* SCHAppStateManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHAppStateManager.m; path = Shared/SCHAppStateManager.m; sourceTree = "<group>"; };
 		F8FF8D7F139513B000CD7B73 /* OldDictionary-additions.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; name = "OldDictionary-additions.css"; path = "Resources/OldDictionary-additions.css"; sourceTree = "<group>"; };
@@ -4783,6 +4792,9 @@
 		F837018D13BB322F009B280D /* List View Icons */ = {
 			isa = PBXGroup;
 			children = (
+				F87E39A513F4393E00F21FAE /* BookSISampleTab~iPad.png */,
+				F8EF094B13F4299D00A47D5D /* BookSITab~iPad.png */,
+				F8EF094813F4157F00A47D5D /* BookSampleTab~iPad.png */,
 				F85C9D8A13E19CA8006F0546 /* BookShelfErrorIcon.png */,
 				F85C9D8B13E19CA8006F0546 /* BookShelfErrorIcon@2x.png */,
 				F8687ED513BA234100B59987 /* BookShelfNewIcon.png */,
@@ -5756,6 +5768,9 @@
 				C9747CE013EAEAC5003ADC71 /* Default@2x.jpg in Resources */,
 				F829E61713EFFC1600D77386 /* Scholastic_YoungerSample.sqlite in Resources */,
 				52AFC2B113F167370016C4A1 /* Scholastic_OlderSample.sqlite in Resources */,
+				F8EF094913F4157F00A47D5D /* BookSampleTab~iPad.png in Resources */,
+				F8EF094C13F4299D00A47D5D /* BookSITab~iPad.png in Resources */,
+				F87E39A613F4393E00F21FAE /* BookSISampleTab~iPad.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6263,6 +6278,9 @@
 				C9747CE113EAEAC5003ADC71 /* Default@2x.jpg in Resources */,
 				F829E61813EFFC1600D77386 /* Scholastic_YoungerSample.sqlite in Resources */,
 				52AFC2B213F167370016C4A1 /* Scholastic_OlderSample.sqlite in Resources */,
+				F8EF094A13F4157F00A47D5D /* BookSampleTab~iPad.png in Resources */,
+				F8EF094D13F4299D00A47D5D /* BookSITab~iPad.png in Resources */,
+				F87E39A713F4393E00F21FAE /* BookSISampleTab~iPad.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
