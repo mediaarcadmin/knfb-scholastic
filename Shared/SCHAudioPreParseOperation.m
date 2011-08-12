@@ -77,7 +77,9 @@
 			[[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
 		} while (!self.parsingComplete);
 		
-	}
+	} else {
+        NSLog(@"Could not pre-parse Audio because Audio file did not exist at path: %@.", KNFBXPSAudiobookReferencesFile);
+    }
 	
     [self setProcessingState:(self.success ? SCHBookProcessingStateReadyForTextFlowPreParse : SCHBookProcessingStateBookVersionNotSupported)];
     
