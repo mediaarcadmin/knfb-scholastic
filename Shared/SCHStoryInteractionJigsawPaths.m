@@ -93,8 +93,7 @@ static void jigsawEndElementHandler(void *userData, const XML_Char *name)
     CGRect submaskRect = [self boundsOfPieceAtIndex:pathIndex forPuzzleSize:size];
     CGImageRef submask = CGImageCreateWithImageInRect(mask, submaskRect);
     CGImageRelease(mask);
-    
-    NSLog(@"created mask size=%lu,%lu from rect %@", CGImageGetWidth(submask), CGImageGetHeight(submask), NSStringFromCGRect(submaskRect));
+
     return submask;
 }
 

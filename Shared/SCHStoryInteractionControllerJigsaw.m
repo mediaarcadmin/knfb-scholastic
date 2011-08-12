@@ -10,11 +10,13 @@
 #import "SCHStoryInteractionJigsawPaths.h"
 #import "SCHStoryInteractionJigsaw.h"
 #import "SCHStoryInteractionJigsawPreviewView.h"
+#import "SCHStoryInteractionJigsawPieceView.h"
 #import "NSArray+ViewSorting.h"
 
 enum {
     kPreviewImageTag = 1000,
     kSpinnerTag = 1001,
+    kPieceMargin = 5
 };
 
 @interface SCHStoryInteractionControllerJigsaw ()
@@ -28,6 +30,7 @@ enum {
 - (void)setupChoosePuzzleView;
 - (void)setupPuzzleView;
 - (void)beginPuzzleInteraction;
+- (NSArray *)homePositionsForPuzzle;
 
 @end
 
@@ -112,40 +115,28 @@ enum {
     return jigsawPaths;
 }
 
-- (NSArray *)jigsawPieceViewsForPuzzleSize:(CGSize)puzzleSize
+- (void)generateJigsawPiecesForPuzzleSize:(CGSize)puzzleSize yieldBlock:(void(^)(CGImageRef image, CGRect frame))yield
 {
-    NSMutableArray *pieces = [NSMutableArray arrayWithCapacity:self.numberOfPieces];
     SCHStoryInteractionJigsawPaths *paths = [self jigsawPaths];
     NSString *imagePath = [(SCHStoryInteractionJigsaw *)self.storyInteraction imagePathForPuzzle];
     CGImageRef puzzleImage = [[self imageAtPath:imagePath] CGImage];
     CGSize puzzleImageSize = CGSizeMake(CGImageGetWidth(puzzleImage), CGImageGetHeight(puzzleImage));
     
-    NSLog(@"puzzleImageSize=%@", NSStringFromCGSize(puzzleImageSize));
-    
     for (NSInteger pieceIndex = 0; pieceIndex < self.numberOfPieces; ++pieceIndex) {
         // get a rectangular sub-image of the puzzle image
         CGRect pieceRect = [paths boundsOfPieceAtIndex:pieceIndex forPuzzleSize:puzzleImageSize];
-        CGRect pieceBounds = (CGRect){CGPointZero, pieceRect.size};
         CGImageRef pieceImage = CGImageCreateWithImageInRect(puzzleImage, pieceRect);
 
-        NSLog(@"piece %d rect=%@ bounds=%@ image=%lu,%lu", pieceIndex, NSStringFromCGRect(pieceRect), NSStringFromCGRect(pieceBounds),
-              CGImageGetWidth(pieceImage), CGImageGetHeight(pieceImage));
-        
         // create a new piece image by clipping this to the piece mask
         CGImageRef pieceMask = [paths maskFromPathAtIndex:pieceIndex forPuzzleSize:puzzleImageSize];
         CGImageRef maskedImage = CGImageCreateWithMask(pieceImage, pieceMask);
         CGImageRelease(pieceMask);
-
-        // create an image view for this image and frame it within the target puzzle frame
-        UIImageView *pieceView = [[UIImageView alloc] initWithImage:[UIImage imageWithCGImage:maskedImage]];
-        pieceView.frame = [paths boundsOfPieceAtIndex:pieceIndex forPuzzleSize:puzzleSize];
-        [pieces addObject:pieceView];
-        [pieceView release];
+        
+        CGRect pieceFrame = [paths boundsOfPieceAtIndex:pieceIndex forPuzzleSize:puzzleSize];
+        yield(maskedImage, pieceFrame);
 
         CGImageRelease(maskedImage);
     }
-    
-    return pieces;
 }
 
 - (void)setupPuzzleView
@@ -166,9 +157,22 @@ enum {
     [preview release];
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
-        NSArray *views = [self jigsawPieceViewsForPuzzleSize:frame.size];
+        NSMutableArray *pieces = [NSMutableArray arrayWithCapacity:self.numberOfPieces];
+
+        [self generateJigsawPiecesForPuzzleSize:self.puzzleBackground.bounds.size yieldBlock:^(CGImageRef image, CGRect frame) {
+            CGImageRetain(image);
+            dispatch_async(dispatch_get_main_queue(), ^{
+                // create an image view for this image and frame it within the target puzzle frame
+                SCHStoryInteractionJigsawPieceView *pieceView = [[SCHStoryInteractionJigsawPieceView alloc] initWithFrame:frame];
+                pieceView.image = image;
+                [pieces addObject:pieceView];
+                [pieceView release];
+                CGImageRelease(image);
+            });
+        }];
+        
         dispatch_async(dispatch_get_main_queue(), ^{
-            self.jigsawPieceViews = views;
+            self.jigsawPieceViews = pieces;
             
             // if there's a spinner on the view, the user has already tapped to begin
             UIActivityIndicatorView *spinner = (UIActivityIndicatorView *)[self.contentsView viewWithTag:kSpinnerTag];
@@ -187,6 +191,7 @@ enum {
         UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithFrame:CGRectZero];
         spinner.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhiteLarge;
         spinner.center = CGPointMake(CGRectGetMidX(self.contentsView.bounds), CGRectGetMidY(self.contentsView.bounds));
+        spinner.bounds = CGRectMake(0,0,37,37);
         [self.contentsView addSubview:spinner];
         [spinner startAnimating];
         [spinner release];
@@ -202,15 +207,73 @@ enum {
     [self.puzzleBackground setEdgeColor:[UIColor colorWithWhite:0.8 alpha:0.5]];
     
     UIView *preview = [self.contentsView viewWithTag:kPreviewImageTag];
-    CGRect frame = preview.frame;
+    CGAffineTransform puzzleTransform = CGAffineTransformMakeScale(CGRectGetWidth(preview.bounds)/CGRectGetWidth(self.puzzleBackground.bounds),
+                                                                   CGRectGetHeight(preview.bounds)/CGRectGetHeight(self.puzzleBackground.bounds));
     [preview removeFromSuperview];
     
-    for (UIImageView *piece in self.jigsawPieceViews) {
+    NSArray *homePositions = [self homePositionsForPuzzle];
+    NSInteger pieceIndex = 0;
+    CGFloat maxPieceWidth = 0, maxPieceHeight = 0;
+    for (SCHStoryInteractionJigsawPieceView *piece in self.jigsawPieceViews) {
         CGPoint center = piece.center;
-        piece.center = CGPointMake(center.x+frame.origin.x, center.y+frame.origin.y);
+        piece.center = CGPointMake(center.x+CGRectGetMinX(self.puzzleBackground.frame), center.y+CGRectGetMinY(self.puzzleBackground.frame));
+        piece.homePosition = [[homePositions objectAtIndex:pieceIndex] CGPointValue];
+        piece.transform = puzzleTransform;
         [self.contentsView addSubview:piece];
+        pieceIndex++;
+        maxPieceWidth = MAX(maxPieceWidth, CGRectGetWidth(piece.bounds));
+        maxPieceHeight = MAX(maxPieceHeight, CGRectGetHeight(piece.bounds));
     }
     
+    // scale the pieces down to fit in the margins around the puzzle background
+    CGFloat scale = MIN(CGRectGetMinX(self.puzzleBackground.frame) / (maxPieceWidth + kPieceMargin),
+                        CGRectGetMinY(self.puzzleBackground.frame) / (maxPieceHeight + kPieceMargin));
+    CGAffineTransform pieceTransform = CGAffineTransformMakeScale(scale, scale);
+    [self.puzzleBackground setTransform:puzzleTransform];
+
+    [UIView animateWithDuration:0.5
+                          delay:0
+                        options:UIViewAnimationCurveEaseInOut
+                     animations:^{
+                         self.puzzleBackground.transform = CGAffineTransformIdentity;
+                         for (SCHStoryInteractionJigsawPieceView *piece in self.jigsawPieceViews) {
+                             [piece moveToHomePosition];
+                             [piece setTransform:pieceTransform];
+                         }
+                     }
+                     completion:nil];
+}
+
+- (void)addPoint:(CGFloat)x :(CGFloat)y toArray:(NSMutableArray *)array
+{
+}
+
+- (NSArray *)homePositionsForPuzzle
+{
+    const CGRect bounds = self.contentsView.bounds;
+    const CGRect puzzle = self.puzzleBackground.frame;
+    
+    NSMutableArray *positions = [NSMutableArray arrayWithCapacity:6];
+    void (^add)(CGFloat,CGFloat) = ^(CGFloat x, CGFloat y) {
+        [positions addObject:[NSValue valueWithCGPoint:CGPointMake(floorf(x), floorf(y))]];
+    };
+
+    NSInteger piecesOnSides = self.numberOfPieces/3;
+    for (NSInteger i = 0; i < piecesOnSides; ++i) {
+        const CGFloat y = CGRectGetHeight(bounds)/(piecesOnSides+1)*(i+1);
+        add(CGRectGetMinX(bounds)+CGRectGetMinX(puzzle)/2, y);
+        add(CGRectGetMaxX(bounds)-CGRectGetMinX(puzzle)/2, y);
+    }
+    
+    NSInteger piecesOnTopAndBottom = self.numberOfPieces/2-piecesOnSides;
+    for (NSInteger i = 0; i < piecesOnTopAndBottom; ++i) {
+        const CGFloat x = CGRectGetWidth(bounds)/(piecesOnTopAndBottom+1)*(i+1);
+        add(x, CGRectGetMinY(bounds)+CGRectGetMinY(puzzle)/2);
+        add(x, CGRectGetMaxY(bounds)-CGRectGetMinY(puzzle)/2);
+    }
+    
+    NSAssert(self.numberOfPieces == [positions count], @"wrong number of positions");
+    return positions;
 }
 
 @end

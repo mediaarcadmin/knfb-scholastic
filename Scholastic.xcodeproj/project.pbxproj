@@ -134,6 +134,8 @@
 		2873B04913E024BF008C9F0D /* SCHUpdateBooksTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2873B04713E024BF008C9F0D /* SCHUpdateBooksTableViewCell.m */; };
 		287ADE9F13BB7A1C00D03247 /* SCHCoreDataOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 287ADE9E13BB7A1B00D03247 /* SCHCoreDataOperation.m */; };
 		287ADEA013BB7A1C00D03247 /* SCHCoreDataOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 287ADE9E13BB7A1B00D03247 /* SCHCoreDataOperation.m */; };
+		287D771B13F55C8000C76070 /* SCHStoryInteractionJigsawPieceView.m in Sources */ = {isa = PBXBuildFile; fileRef = 287D771A13F55C8000C76070 /* SCHStoryInteractionJigsawPieceView.m */; };
+		287D771C13F55C8000C76070 /* SCHStoryInteractionJigsawPieceView.m in Sources */ = {isa = PBXBuildFile; fileRef = 287D771A13F55C8000C76070 /* SCHStoryInteractionJigsawPieceView.m */; };
 		288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
 		2888FE7C13A61CD300FF2FA8 /* SCHStoryInteractionTitleTwister_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2888FE7B13A61CD300FF2FA8 /* SCHStoryInteractionTitleTwister_iPhone.xib */; };
 		2888FE7D13A61CD300FF2FA8 /* SCHStoryInteractionTitleTwister_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2888FE7B13A61CD300FF2FA8 /* SCHStoryInteractionTitleTwister_iPhone.xib */; };
@@ -1867,6 +1869,8 @@
 		2873B04713E024BF008C9F0D /* SCHUpdateBooksTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHUpdateBooksTableViewCell.m; path = Shared/SCHUpdateBooksTableViewCell.m; sourceTree = "<group>"; };
 		287ADE9D13BB7A1B00D03247 /* SCHCoreDataOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHCoreDataOperation.h; path = Shared/SCHCoreDataOperation.h; sourceTree = "<group>"; };
 		287ADE9E13BB7A1B00D03247 /* SCHCoreDataOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHCoreDataOperation.m; path = Shared/SCHCoreDataOperation.m; sourceTree = "<group>"; };
+		287D771913F55C7F00C76070 /* SCHStoryInteractionJigsawPieceView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionJigsawPieceView.h; sourceTree = "<group>"; };
+		287D771A13F55C8000C76070 /* SCHStoryInteractionJigsawPieceView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionJigsawPieceView.m; sourceTree = "<group>"; };
 		288765FC0DF74451002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		2888FE7B13A61CD300FF2FA8 /* SCHStoryInteractionTitleTwister_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionTitleTwister_iPhone.xib; sourceTree = "<group>"; };
 		288A1C7E13E2E7EE009F56BA /* SCHStartingView~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "SCHStartingView~iphone.xib"; sourceTree = "<group>"; };
@@ -3249,6 +3253,8 @@
 				289A2B2113F5085B0047EE45 /* SCHStoryInteractionJigsaw_iPad.xib */,
 				289A2B3613F511EC0047EE45 /* SCHStoryInteractionJigsawPreviewView.h */,
 				289A2B3713F511EC0047EE45 /* SCHStoryInteractionJigsawPreviewView.m */,
+				287D771913F55C7F00C76070 /* SCHStoryInteractionJigsawPieceView.h */,
+				287D771A13F55C8000C76070 /* SCHStoryInteractionJigsawPieceView.m */,
 			);
 			name = Jigsaw;
 			sourceTree = "<group>";
@@ -6911,6 +6917,7 @@
 				289A2B1F13F505B80047EE45 /* SCHStoryInteractionControllerJigsaw.m in Sources */,
 				289A2B3813F511EC0047EE45 /* SCHStoryInteractionJigsawPreviewView.m in Sources */,
 				52D438E013F521EE00D51FDA /* SCH3DView.m in Sources */,
+				287D771B13F55C8000C76070 /* SCHStoryInteractionJigsawPieceView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7237,6 +7244,7 @@
 				2898A0B213F42D9200618172 /* SCHStoryInteractionJigsawPaths.m in Sources */,
 				289A2B2013F505B80047EE45 /* SCHStoryInteractionControllerJigsaw.m in Sources */,
 				289A2B3913F511EC0047EE45 /* SCHStoryInteractionJigsawPreviewView.m in Sources */,
+				287D771C13F55C8000C76070 /* SCHStoryInteractionJigsawPieceView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
