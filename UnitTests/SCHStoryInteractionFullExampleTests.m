@@ -75,6 +75,7 @@
      [SCHStoryInteractionAboutYouQuiz class],
      [SCHStoryInteractionWordScrambler class],
      [SCHStoryInteractionTitleTwister class],
+     [SCHStoryInteractionCardCollection class],
      nil];
 }
 
@@ -95,6 +96,7 @@
 - (void)testFullExample3
 {
     [self checkFile:@"FullExample3" hasStories:
+     [SCHStoryInteractionPictureStarterCustom class],
      [SCHStoryInteractionScratchAndSee class],
      [SCHStoryInteractionWordMatch class],
      [SCHStoryInteractionStartingLetter class],
@@ -106,6 +108,7 @@
 - (void)testFullExample4
 {
     [self checkFile:@"FullExample4" hasStories:
+     [SCHStoryInteractionPictureStarterNewEnding class],
      [SCHStoryInteractionWordMatch class],
      [SCHStoryInteractionScratchAndSee class],
      [SCHStoryInteractionWordSearch class],

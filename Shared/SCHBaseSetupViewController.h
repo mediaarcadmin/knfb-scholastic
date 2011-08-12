@@ -24,6 +24,7 @@
 
 // hook to 'back' button in toolbar; default behaviour pops the navigation controller
 - (IBAction)back:(id)sender;
+- (void)setEnablesBackButton:(BOOL)enablesBackButton;
 
 // close the entire settings dialog
 - (IBAction)closeSettings;

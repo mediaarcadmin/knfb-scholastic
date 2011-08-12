@@ -23,6 +23,7 @@
 #import "SCHBookIdentifier.h"
 #import "SCHUserDefaults.h"
 #import "SCHCoreDataHelper.h"
+#import "SCHAppStateManager.h"
 
 // Constants
 NSString * const kSCHProcessingManagerConnectionIdle = @"SCHProcessingManagerConnectionIdle";
@@ -342,29 +343,34 @@ static SCHProcessingManager *sharedManager = nil;
 			// *** Book has no full sized cover image ***
 		case SCHBookProcessingStateNoCoverImage:
 		{	
-#if LOCALDEBUG
-			// create cover image download operation
-			SCHXPSCoverImageOperation *downloadImageOp = [[SCHXPSCoverImageOperation alloc] init];
-            [downloadImageOp setMainThreadManagedObjectContext:self.managedObjectContext];
-			downloadImageOp.identifier = identifier;
-			
-#else
-			// create cover image download operation
-			SCHDownloadBookFileOperation *downloadImageOp = [[SCHDownloadBookFileOperation alloc] init];
-            [downloadImageOp setMainThreadManagedObjectContext:self.managedObjectContext];
-			downloadImageOp.fileType = kSCHDownloadFileTypeCoverImage;
-			downloadImageOp.identifier = identifier;
-			downloadImageOp.resume = NO;
-#endif		
-            
-			// the book will be redispatched on completion
-			[downloadImageOp setCompletionBlock:^{
-				[self redispatchIdentifier:identifier];
-			}];
-			
-			// add the operation to the network download queue
-			[self.networkOperationQueue addOperation:downloadImageOp];
-			[downloadImageOp release];
+            if ([[SCHAppStateManager sharedAppStateManager] canDownloadBooks] == NO) { 
+                // create cover image download operation
+                SCHXPSCoverImageOperation *downloadImageOp = [[SCHXPSCoverImageOperation alloc] init];
+                [downloadImageOp setMainThreadManagedObjectContext:self.managedObjectContext];
+                downloadImageOp.identifier = identifier;
+                // the book will be redispatched on completion
+                [downloadImageOp setCompletionBlock:^{
+                    [self redispatchIdentifier:identifier];
+                }];
+                // add the operation to the network download queue
+                [self.networkOperationQueue addOperation:downloadImageOp];
+                [downloadImageOp release];                
+            } else {			
+                // create cover image download operation
+                SCHDownloadBookFileOperation *downloadImageOp = [[SCHDownloadBookFileOperation alloc] init];
+                [downloadImageOp setMainThreadManagedObjectContext:self.managedObjectContext];
+                downloadImageOp.fileType = kSCHDownloadFileTypeCoverImage;
+                downloadImageOp.identifier = identifier;
+                downloadImageOp.resume = NO;
+                // the book will be redispatched on completion
+                [downloadImageOp setCompletionBlock:^{
+                    [self redispatchIdentifier:identifier];
+                }];
+                // add the operation to the network download queue
+                [self.networkOperationQueue addOperation:downloadImageOp];
+                [downloadImageOp release];                
+            }
+            			
 			return;
 		}	
 			// *** Book file needs downloading ***

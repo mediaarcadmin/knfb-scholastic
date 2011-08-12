@@ -90,6 +90,49 @@
     }
 }
 
+- (void)testCardCollection
+{
+    NSArray *stories = [self parse:@"CardCollection1"];
+    STAssertEquals([stories count], 1U, @"incorrect story count");
+    STAssertTrue([[stories lastObject] isKindOfClass:[SCHStoryInteractionCardCollection class]], @"incorrect class");
+    
+    SCHStoryInteractionCardCollection *story = [stories lastObject];
+    STAssertEquals(story.documentPageNumber, 228, @"incorrect documentPageNumber");
+    STAssertEqualObjects([[story imagePathForHeader] lastPathComponent], @"cc_header.png", @"incorrect header filename");
+    STAssertTrue([story isOlderStoryInteraction], @"should be an older SI");
+    STAssertEqualObjects([story title], @"Card Collection", @"incorrect title");
+    
+    STAssertEquals([story numberOfCards], 8, @"incorrect number of cards");
+    for (NSInteger i = 0; i < [story numberOfCards]; ++i) {
+        NSString *frontFile = [NSString stringWithFormat:@"cc_card%dfront.png", i+1];
+        NSString *backFile = [NSString stringWithFormat:@"cc_card%dback.png", i+1];
+        STAssertEqualObjects([[story imagePathForCardFrontAtIndex:i] lastPathComponent], frontFile, @"incorrect card front image at index %d", i);
+        STAssertEqualObjects([[story imagePathForCardBackAtIndex:i] lastPathComponent], backFile, @"incorrect card back image at index %d", i);
+    }
+}
+
+- (void)testConcentration
+{
+    NSArray *stories = [self parse:@"Concentration1"];
+    STAssertEquals([stories count], 1U, @"incorrect story count");
+    STAssertTrue([[stories lastObject] isKindOfClass:[SCHStoryInteractionConcentration class]], @"incorrect class");
+
+    SCHStoryInteractionConcentration *story = [stories lastObject];
+    STAssertEquals(story.documentPageNumber, 3, @"incorrect documentPageNumber");
+    STAssertEqualObjects(story.introduction, @"Match the words with the pictures!", @"incorrect introduction");
+    STAssertEqualObjects([[story audioPathForQuestion] lastPathComponent], @"cn1_intro.mp3", @"incorrect introduction audio");
+    STAssertEquals([story numberOfPairs], 12, @"incorrect number of pairs");
+    STAssertFalse([story isOlderStoryInteraction], @"should be a younger SI");
+    STAssertEqualObjects([story title], @"Memory Match", @"incorrect title");
+    
+    for (NSInteger i = 0; i < [story numberOfPairs]; ++i) {
+        NSString *first = [NSString stringWithFormat:@"cn1_match%da.png", i+1];
+        NSString *second = [NSString stringWithFormat:@"cn1_match%db.png", i+1];
+        STAssertEqualObjects([[story imagePathForFirstOfPairAtIndex:i] lastPathComponent], first, @"incorrect first image at index %d", i);
+        STAssertEqualObjects([[story imagePathForSecondOfPairAtIndex:i] lastPathComponent], second, @"incorrect second image at index %d", i);
+    }
+}
+
 - (void)checkPath:(CGPathRef)path equalToCoordList:(NSString *)coordString
 {
     NSArray *coords = [coordString componentsSeparatedByString:@","];
@@ -494,6 +537,32 @@
         SCHStoryInteractionWhoSaidItStatement *s = [story.statements objectAtIndex:i];
         STAssertEqualObjects(s.source, expect[i].source, @"incorrect source for statement %d", i+1);
         STAssertEqualObjects(s.text, expect[i].statement, @"incorrect text for statement %d", i+1);
+    }
+}
+
+- (void)testWordBird1
+{
+    NSArray *stories = [self parse:@"WordBird1"];
+    STAssertEquals([stories count], 1U, @"incorrect story count");
+    STAssertTrue([[stories lastObject] isKindOfClass:[SCHStoryInteractionWordBird class]], @"incorrect class");
+    
+    SCHStoryInteractionWordBird *story = [stories lastObject];
+    STAssertEquals(story.documentPageNumber, 4, @"incorrect documentPageNumber");
+    
+    struct {
+        NSString *word;
+        NSString *suffix;
+    } items[] = {
+        { @"SURF", @"surf" },
+        { @"STARFISH", @"starfish" }
+    };
+    NSInteger expectQuestionCount = sizeof(items)/sizeof(items[0]);
+    STAssertEquals([story questionCount], expectQuestionCount, @"incorrect questionCount");
+    
+    for (NSInteger i = 0; i < MIN(expectQuestionCount, [story questionCount]); ++i) {
+        SCHStoryInteractionWordBirdQuestion *q = [story.questions objectAtIndex:i];
+        STAssertEqualObjects(q.word, items[i].word, @"incorrect word at question %d", i);
+        STAssertEqualObjects(q.suffix, items[i].suffix, @"incorrect suffix at question %d", i);
     }
 }
 

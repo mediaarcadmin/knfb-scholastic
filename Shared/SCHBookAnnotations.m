@@ -20,6 +20,7 @@
 #import "SCHLocationGraphics.h"
 #import "SCHWordIndex.h"
 #import "SCHBookRange.h"
+#import "SCHAppStateManager.h"
 
 @interface SCHBookAnnotations ()
 
@@ -99,13 +100,13 @@
 
 - (void)deleteBookmark:(SCHBookmark *)bookmark
 {
-#if LOCALDEBUG
-    [self.privateAnnotations removeBookmarksObject:bookmark];
-#else
-    if (bookmark.isDeleted == NO) {
-        [bookmark syncDelete];    
+    if ([[SCHAppStateManager sharedAppStateManager] canSync] == NO) {
+        [self.privateAnnotations removeBookmarksObject:bookmark];
+    } else {
+        if (bookmark.isDeleted == NO) {
+            [bookmark syncDelete];    
+        }
     }
-#endif
 }
 
 - (NSArray *)highlightsForPage:(NSUInteger)page
@@ -150,13 +151,13 @@
 
 - (void)deleteHighlight:(SCHHighlight *)highlight
 {
-#if LOCALDEBUG
-    [self.privateAnnotations removeHighlightsObject:highlight];
-#else
-    if (highlight.isDeleted == NO) {
-        [highlight syncDelete];
+    if ([[SCHAppStateManager sharedAppStateManager] canSync] == NO) {
+        [self.privateAnnotations removeHighlightsObject:highlight];
+    } else {
+        if (highlight.isDeleted == NO) {
+            [highlight syncDelete];
+        }
     }
-#endif
 }
 
 - (NSArray *)notes
@@ -178,13 +179,13 @@
 
 - (void)deleteNote:(SCHNote *)note
 {
-#if LOCALDEBUG
-    [self.privateAnnotations removeNotesObject:note];
-#else
-    if (note.isDeleted == NO) {
-        [note syncDelete];
+    if ([[SCHAppStateManager sharedAppStateManager] canSync] == NO) {
+        [self.privateAnnotations removeNotesObject:note];
+    } else {
+        if (note.isDeleted == NO) {
+            [note syncDelete];
+        }
     }
-#endif
 }
 
 - (SCHLastPage *)lastPage

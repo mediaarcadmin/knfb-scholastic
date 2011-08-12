@@ -122,8 +122,6 @@
         return;
     }
 
-    NSLog(@"Changed state from %@ to %@", [self controllerStateAsString:controllerState], [self controllerStateAsString:newControllerState]);
-    
     controllerState = newControllerState;
 
     switch (controllerState) {
@@ -156,7 +154,7 @@
         }   
         case SCHStoryInteractionControllerStateInteractionInProgress:
         {
-            self.readAloudButton.enabled = YES;
+            self.readAloudButton.enabled = [self shouldPlayQuestionAudioForViewAtIndex:self.currentScreenIndex];
             [self storyInteractionEnableUserInteraction];
             break;
         }   
@@ -166,51 +164,6 @@
             break;
         }
     }
-}
-
-- (NSString *) controllerStateAsString: (SCHStoryInteractionControllerState) state
-{
-    NSString *returnVal = nil;
-    
-    switch (state) {
-        case SCHStoryInteractionControllerStateInitialised:
-        {
-            returnVal = @"Initialised";
-            break;
-        }   
-        case SCHStoryInteractionControllerStateInteractionReadingAnswerWithPause:
-        {
-            returnVal = @"Reading Answer with Pause";
-            break;
-        }   
-        case SCHStoryInteractionControllerStateInteractionReadingAnswerWithoutPause:
-        {
-            returnVal = @"Reading Answer Without Pause";
-            break;
-        }   
-        case SCHStoryInteractionControllerStateAskingOpeningQuestion:
-        {
-            returnVal = @"Asking Opening Question with Pause";
-            break;
-        }   
-        case SCHStoryInteractionControllerStateInteractionFinishedSuccessfully:
-        {
-            returnVal = @"Finished Successfully";
-            break;
-        }   
-        case SCHStoryInteractionControllerStateInteractionInProgress:
-        {
-            returnVal = @"Started Interaction";
-            break;
-        }   
-        default:
-        {
-            returnVal = @"Unknown!";
-            break;
-        }   
-    }
-    
-    return returnVal;
 }
 
 - (void)presentInHostView:(UIView *)hostView withInterfaceOrientation:(UIInterfaceOrientation)aInterfaceOrientation
@@ -224,23 +177,14 @@
         [hostView addSubview:shade];
         [shade release];
     }
-    
-    BOOL askingOpeningQuestion = NO;
-    
+
+    NSString *questionAudioPath = [self audioPathForQuestion];
+
     if (self.containerView == nil) {
+        [self enqueueAudioWithPath:[storyInteraction storyInteractionOpeningSoundFilename] fromBundle:YES];        
+
         self.xpsProvider = [[SCHBookManager sharedBookManager] threadSafeCheckOutXPSProviderForBookIdentifier:self.bookIdentifier];
         
-        NSString *questionAudioPath = [self audioPathForQuestion];
-        [self enqueueAudioWithPath:[storyInteraction storyInteractionOpeningSoundFilename] fromBundle:YES];        
-        if (questionAudioPath && [self shouldPlayQuestionAudioForViewAtIndex:self.currentScreenIndex]) {
-//            [self enqueueAudioWithPath:questionAudioPath fromBundle:NO];  
-            [self enqueueAudioWithPath:questionAudioPath fromBundle:NO startDelay:0 synchronizedStartBlock:nil synchronizedEndBlock:^{
-                self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
-            }];
-            
-            askingOpeningQuestion = YES;
-        }        
-
         // set up the transparent full-size container to trap touch events before they get
         // to the underlying view; this effectively makes the story interaction modal
         UIView *container = [[UIView alloc] initWithFrame:hostView.bounds];
@@ -275,10 +219,6 @@
             [self.readAloudButton setImage:readAloudImage forState:UIControlStateDisabled];
             [self.readAloudButton addTarget:self action:@selector(playAudioButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
             [container addSubview:self.readAloudButton];
-        }
-        
-        if (askingOpeningQuestion) {
-            self.controllerState = SCHStoryInteractionControllerStateAskingOpeningQuestion;
         }
         
         self.containerView = container;
@@ -338,8 +278,20 @@
     
     [self setTitle:[self.storyInteraction interactionViewTitle]];
     [self setupViewAtIndex:self.currentScreenIndex];
-    
-//    self.controllerState = newState;
+
+    if (questionAudioPath && [self shouldPlayQuestionAudioForViewAtIndex:self.currentScreenIndex]) {
+        [self enqueueAudioWithPath:questionAudioPath
+                        fromBundle:NO
+                        startDelay:0
+            synchronizedStartBlock:nil
+              synchronizedEndBlock:^{
+                  self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
+              }];
+        
+        self.controllerState = SCHStoryInteractionControllerStateAskingOpeningQuestion;
+    } else {
+        self.controllerState = SCHStoryInteractionControllerStateInteractionInProgress;
+    }
 }
 
 - (void)setupTitle
@@ -419,8 +371,12 @@
         readAloudPosition = CGPointMake(-13, 15);
     }
     
+    const BOOL shouldRotate = ([self shouldPresentInPortraitOrientation]
+                               ? UIInterfaceOrientationIsLandscape(self.interfaceOrientation)
+                               : UIInterfaceOrientationIsPortrait(self.interfaceOrientation));
+    
     CGRect superviewBounds = container.superview.bounds;
-    if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
+    if (shouldRotate) {
         container.transform = CGAffineTransformMakeRotation(-M_PI/2);
         container.bounds = CGRectIntegral(CGRectMake(0, 0, CGRectGetHeight(superviewBounds), CGRectGetWidth(superviewBounds)));
     } else {
@@ -791,6 +747,11 @@
 - (CGRect)overlaidTitleFrame
 {
     return CGRectZero;
+}
+
+- (BOOL)shouldPresentInPortraitOrientation
+{
+    return NO;
 }
 
 @end

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<SIConfigFile>
+    <StoryInteractions>
+		<StoryInteraction StoryInteractionType="WordBird" ID="wb1">
+			<DocumentPageNumber>4</DocumentPageNumber>
+			<Problem Transcript="SURF" suffix="surf" />
+			<Problem Transcript="STARFISH" suffix="starfish" />
+		</StoryInteraction>
+    </StoryInteractions>
+</SIConfigFile>

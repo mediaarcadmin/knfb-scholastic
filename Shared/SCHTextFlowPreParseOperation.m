@@ -107,6 +107,10 @@ static void pageFileXMLParsingStartElementHandler(void *ctx, const XML_Char *nam
         [self updateBookWithFailure];
         [xpsProvider reportReadingIfRequired];
         [[SCHBookManager sharedBookManager] checkInXPSProviderForBookIdentifier:self.identifier];
+
+        [self setProcessingState:SCHBookProcessingStateReadyForSmartZoomPreParse];
+        [self setIsProcessing:NO];
+        [self endOperation];
         
         [pool drain];
         return;

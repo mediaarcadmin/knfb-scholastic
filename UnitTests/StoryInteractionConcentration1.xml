@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<SIConfigFile>
+    <StoryInteractions>
+        <StoryInteraction StoryInteractionType="Concentration" ID="cn1">
+            <DocumentPageNumber>3</DocumentPageNumber>
+            <Introduction Transcript="Match the words with the pictures!" />
+        </StoryInteraction>
+    </StoryInteractions>
+</SIConfigFile>

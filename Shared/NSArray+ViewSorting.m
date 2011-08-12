@@ -53,4 +53,17 @@ static UIView *commonSuperview(UIView *v1, UIView *v2)
     }];
 }
 
+- (NSArray *)viewsInRowMajorOrder
+{
+    return [self sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+        CGRect r1 = [(UIView *)obj1 frame];
+        CGRect r2 = [(UIView *)obj2 frame];
+        if (CGRectGetMaxY(r1) < CGRectGetMinY(r2)) return NSOrderedAscending;
+        if (CGRectGetMinY(r1) > CGRectGetMaxY(r2)) return NSOrderedDescending;
+        if (CGRectGetMaxX(r1) < CGRectGetMinX(r2)) return NSOrderedAscending;
+        if (CGRectGetMinX(r1) > CGRectGetMaxX(r2)) return NSOrderedDescending;
+        return NSOrderedSame;
+    }];
+}
+
 @end

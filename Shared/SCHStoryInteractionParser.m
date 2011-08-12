@@ -176,6 +176,58 @@ static NSString *extractXmlAttribute(const XML_Char **atts, const char *key)
 
 @end
 
+#pragma mark - Card Collection
+
+@implementation SCHStoryInteractionCardCollectionCard (Parse)
+
+- (void)startElement:(const XML_Char *)name attributes:(const XML_Char **)attributes parser:(SCHStoryInteractionParser *)parser
+{
+    if (strcmp(name, "Card") == 0) {
+        self.frontFilename = extractXmlAttribute(attributes, "srcfront");
+        self.backFilename = extractXmlAttribute(attributes, "srcback");
+    }
+}
+
+@end
+
+@implementation SCHStoryInteractionCardCollection (Parse)
+
+- (void)startElement:(const XML_Char *)name attributes:(const XML_Char **)attributes parser:(SCHStoryInteractionParser *)parser
+{
+    if (strcmp(name, "Card") == 0) {
+        [parser beginQuestion:[SCHStoryInteractionCardCollectionCard class]];
+        [parser.question startElement:name attributes:attributes parser:parser];
+        [parser endQuestion];
+    } else if (strcmp(name, "header") == 0) {
+        self.headerFilename = extractXmlAttribute(attributes, "src");
+    } else {
+        [super startElement:name attributes:attributes parser:parser];
+    }
+}
+
+- (void)parseComplete:(SCHStoryInteractionParser *)parser
+{
+    self.cards = [NSArray arrayWithArray:parser.questions];
+    [super parseComplete:parser];
+}
+
+@end
+
+#pragma mark - Concentration
+
+@implementation SCHStoryInteractionConcentration (Parse)
+
+- (void)startElement:(const XML_Char *)name attributes:(const XML_Char **)attributes parser:(SCHStoryInteractionParser *)parser
+{
+    if (strcmp(name, "Introduction") == 0) {
+        self.introduction = extractXmlAttribute(attributes, "Transcript");
+    } else {
+        [super startElement:name attributes:attributes parser:parser];
+    }
+}
+
+@end
+
 #pragma mark - HotSpot
 
 @implementation SCHStoryInteractionHotSpotQuestion (Parse)
@@ -355,6 +407,27 @@ static NSString *extractXmlAttribute(const XML_Char **atts, const char *key)
 - (void)parseComplete:(SCHStoryInteractionParser *)parser
 {
     self.questions = [NSArray arrayWithArray:parser.questions];
+    [super parseComplete:parser];
+}
+
+@end
+
+#pragma mark - Picture Starter
+
+@implementation SCHStoryInteractionPictureStarterCustom (Parse)
+
+- (void)startElement:(const XML_Char *)name attributes:(const XML_Char **)attributes parser:(SCHStoryInteractionParser *)parser
+{
+    if (strcmp(name, "Introduction") == 0) {
+        [parser.array addObject:extractXmlAttribute(attributes, "Transcript")];
+    } else {
+        [super startElement:name attributes:attributes parser:parser];
+    }
+}
+
+- (void)parseComplete:(SCHStoryInteractionParser *)parser
+{
+    self.introductions = [NSArray arrayWithArray:parser.array];
     [super parseComplete:parser];
 }
 
@@ -598,7 +671,44 @@ static NSString *extractXmlAttribute(const XML_Char **atts, const char *key)
 
 @end
 
-#pragma mark - WordMatch
+#pragma mark - Word Bird
+
+@implementation SCHStoryInteractionWordBirdQuestion (Parser)
+
+- (void)startElement:(const XML_Char *)name attributes:(const XML_Char **)attributes parser:(SCHStoryInteractionParser *)parser
+{
+    if (strcmp(name, "Problem") == 0) {
+        self.word = extractXmlAttribute(attributes, "Transcript");
+        self.suffix = extractXmlAttribute(attributes, "suffix");
+    } else {
+        [super startElement:name attributes:attributes parser:parser];
+    }
+}
+
+@end
+
+@implementation SCHStoryInteractionWordBird (Parser)
+
+- (void)startElement:(const XML_Char *)name attributes:(const XML_Char **)attributes parser:(SCHStoryInteractionParser *)parser
+{
+    if (strcmp(name, "Problem") == 0) {
+        [parser beginQuestion:[SCHStoryInteractionWordBirdQuestion class]];
+        [parser.question startElement:name attributes:attributes parser:parser];
+        [parser endQuestion];
+    } else {
+        [super startElement:name attributes:attributes parser:parser];
+    }
+}
+
+- (void)parseComplete:(SCHStoryInteractionParser *)parser
+{
+    self.questions = [NSArray arrayWithArray:parser.questions];
+    [super parseComplete:parser];
+}
+
+@end
+
+#pragma mark - Word Match
 
 @implementation SCHStoryInteractionWordMatchQuestion (Parse)
 
@@ -676,7 +786,7 @@ static NSString *extractXmlAttribute(const XML_Char **atts, const char *key)
 
 @end
 
-#pragma mark -
+#pragma mark - Word Search
 
 @implementation SCHStoryInteractionWordSearch (Parse)
 
@@ -725,7 +835,7 @@ static NSString *extractXmlAttribute(const XML_Char **atts, const char *key)
 
 @end
 
-#pragma mark -
+#pragma mark - Parser
 
 @implementation SCHStoryInteractionParser
 

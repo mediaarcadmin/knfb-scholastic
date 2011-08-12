@@ -146,4 +146,19 @@
 	return([self intValue]);		
 }
 
++ (NSNumber *)numberWithDataStoreType:(SCHDataStoreTypes)value
+{
+	return([NSNumber numberWithInt:value]);			    
+}
+
+- (id)initWithDataStoreType:(SCHDataStoreTypes)value
+{
+	return([self initWithInt:value]);		    
+}
+
+- (SCHDataStoreTypes)dataStoreTypeValue
+{
+	return([self intValue]);    
+}
+
 @end

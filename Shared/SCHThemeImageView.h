@@ -14,5 +14,6 @@
 }
 
 - (void)setTheme:(NSString *)newImageKey;
+- (void)updateTheme:(UIInterfaceOrientation)orientation;
 
 @end

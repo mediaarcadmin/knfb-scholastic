@@ -18,5 +18,7 @@ NSString * const kSCHAppStatefetchAppState = @"fetchAppState";
 @dynamic LastAnnotationSync;
 @dynamic ShouldDownloadBooks;
 @dynamic ShouldSync;
+@dynamic ShouldAuthenticate;
+@dynamic DataStoreType;
 
 @end

@@ -23,6 +23,8 @@
 #import "AppDelegate_Shared.h"
 #import "SCHProfileSyncComponent.h"
 #import "SCHCoreDataHelper.h"
+#import "SCHAppStateManager.h"
+#import "NSNumber+ObjectTypes.h"
 
 enum {
     kTableSectionSamples = 0,
@@ -326,17 +328,17 @@ typedef enum {
 {
     UIViewController *next = nil;
     
-#if !LOCALDEBUG
-    SCHProfileViewController_Shared *profile = [self profileViewController];
-    if ([[profile.fetchedResultsController sections] count] == 0 
-        || [[[profile.fetchedResultsController sections] objectAtIndex:0] numberOfObjects] == 0) {
-        SCHSetupBookshelvesViewController *setupBookshelves = [[SCHSetupBookshelvesViewController alloc] init];
-        setupBookshelves.setupDelegate = self;
-        next = setupBookshelves;
+    if ([[[SCHAppStateManager sharedAppStateManager] appState].DataStoreType isEqualToNumber:[NSNumber numberWithDataStoreType:kSCHDataStoreTypesLocalDebug]] == NO) {
+        SCHProfileViewController_Shared *profile = [self profileViewController];
+        if ([[profile.fetchedResultsController sections] count] == 0 
+            || [[[profile.fetchedResultsController sections] objectAtIndex:0] numberOfObjects] == 0) {
+            SCHSetupBookshelvesViewController *setupBookshelves = [[SCHSetupBookshelvesViewController alloc] init];
+            setupBookshelves.setupDelegate = self;
+            next = setupBookshelves;
+        }
     }
-    else
-#endif
-    if ([[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryProcessingState] == SCHDictionaryProcessingStateUserSetup) {
+
+    if (next == nil && [[SCHDictionaryDownloadManager sharedDownloadManager] dictionaryProcessingState] == SCHDictionaryProcessingStateUserSetup) {
         SCHDownloadDictionaryViewController *downloadDictionary = [[SCHDownloadDictionaryViewController alloc] init];
         downloadDictionary.setupDelegate = self;
         next = downloadDictionary;
