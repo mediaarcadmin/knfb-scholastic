@@ -39,7 +39,7 @@ static NSString * const kSCHTopFavoritesComponentCategoryYoungAdults = @"Young A
 	
 	NSMutableDictionary *favoriteItem = [NSMutableDictionary dictionary];
 	[favoriteItem setObject:[NSNumber numberWithBool:NO] forKey:kSCHLibreAccessWebServiceAssignedBooksOnly];
-	[favoriteItem setObject:[NSNumber numberWithTopFavoritesType:TopFavoritesTypeseReaderCategoryClass] forKey:kSCHLibreAccessWebServiceTopFavoritesType];
+	[favoriteItem setObject:[NSNumber numberWithTopFavoritesType:kSCHTopFavoritesTypeseReaderCategoryClass] forKey:kSCHLibreAccessWebServiceTopFavoritesType];
 
     if (ageInYears < 7) {
         [favoriteItem setObject:kSCHTopFavoritesComponentCategoryPictureBooks forKey:kSCHLibreAccessWebServiceTopFavoritesTypeValue];        
