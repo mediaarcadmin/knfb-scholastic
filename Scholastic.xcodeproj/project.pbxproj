@@ -558,8 +558,6 @@
 		52E334F71303049C002F3011 /* SCHTopPicksBookShelfViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E334F51303049B002F3011 /* SCHTopPicksBookShelfViewController.m */; };
 		52E36769131D3ED200ACCBEE /* SCHBookshelfSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E36768131D3ED200ACCBEE /* SCHBookshelfSyncComponent.m */; };
 		52E3676A131D3ED200ACCBEE /* SCHBookshelfSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E36768131D3ED200ACCBEE /* SCHBookshelfSyncComponent.m */; };
-		52E4692012F1D94E00ECC97A /* SCHLocalDebug.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E4691F12F1D94E00ECC97A /* SCHLocalDebug.m */; };
-		52E4697512F1F33200ECC97A /* SCHLocalDebug.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E4691F12F1D94E00ECC97A /* SCHLocalDebug.m */; };
 		52E622F41358385D00245CA7 /* Themes in Resources */ = {isa = PBXBuildFile; fileRef = 52E622F31358385D00245CA7 /* Themes */; };
 		52E622F51358385D00245CA7 /* Themes in Resources */ = {isa = PBXBuildFile; fileRef = 52E622F31358385D00245CA7 /* Themes */; };
 		52E622FB13584EBF00245CA7 /* SCHThemeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E622FA13584EBE00245CA7 /* SCHThemeManager.m */; };
@@ -2268,8 +2266,6 @@
 		52E3355A1303F71F002F3011 /* SCHComponentDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHComponentDelegate.h; path = Shared/SCHComponentDelegate.h; sourceTree = "<group>"; };
 		52E36767131D3ED200ACCBEE /* SCHBookshelfSyncComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookshelfSyncComponent.h; path = Shared/SCHBookshelfSyncComponent.h; sourceTree = "<group>"; };
 		52E36768131D3ED200ACCBEE /* SCHBookshelfSyncComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookshelfSyncComponent.m; path = Shared/SCHBookshelfSyncComponent.m; sourceTree = "<group>"; };
-		52E4691E12F1D94E00ECC97A /* SCHLocalDebug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHLocalDebug.h; path = Shared/SCHLocalDebug.h; sourceTree = "<group>"; };
-		52E4691F12F1D94E00ECC97A /* SCHLocalDebug.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHLocalDebug.m; path = Shared/SCHLocalDebug.m; sourceTree = "<group>"; };
 		52E622F31358385D00245CA7 /* Themes */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Themes; path = Resources/Themes; sourceTree = "<group>"; };
 		52E622F913584EBE00245CA7 /* SCHThemeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHThemeManager.h; path = Shared/SCHThemeManager.h; sourceTree = "<group>"; };
 		52E622FA13584EBE00245CA7 /* SCHThemeManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHThemeManager.m; path = Shared/SCHThemeManager.m; sourceTree = "<group>"; };
@@ -5137,8 +5133,6 @@
 				A33477FF13DF206000768DC6 /* 9780545345019_r1.AllieFinkleMovingDay.xps */,
 				A334780013DF206000768DC6 /* 9780545366779.2.MazeOfBones.xps */,
 				A334780113DF206000768DC6 /* 9780545368896_r1.TheHiddenStairs.xps */,
-				52E4691E12F1D94E00ECC97A /* SCHLocalDebug.h */,
-				52E4691F12F1D94E00ECC97A /* SCHLocalDebug.m */,
 				F83D86B312FC070F00227031 /* SCHLocalDebugXPSReader.h */,
 				F83D86B412FC070F00227031 /* SCHLocalDebugXPSReader.m */,
 			);
@@ -6713,7 +6707,6 @@
 				52298A9712F0EF5600BBBCE6 /* SCHProfileItem.m in Sources */,
 				52298A9912F0EF5600BBBCE6 /* SCHLocationGraphics.m in Sources */,
 				52298A9B12F0EF5600BBBCE6 /* SCHHighlight.m in Sources */,
-				52E4692012F1D94E00ECC97A /* SCHLocalDebug.m in Sources */,
 				5200EFF112F6CFE400BAC355 /* SCHPrivateAnnotations.m in Sources */,
 				5200EFF512F6D00B00BAC355 /* SCHeReaderCategories.m in Sources */,
 				52AD966E12F9B1B40099FB88 /* SCHAnnotationsItem.m in Sources */,
@@ -7039,7 +7032,6 @@
 				F837C6B212F179AE00833448 /* SCHUserContentItem.m in Sources */,
 				F837C6B312F179AF00833448 /* SCHUserSettingsItem.m in Sources */,
 				F837C6B412F179B100833448 /* SCHWordIndex.m in Sources */,
-				52E4697512F1F33200ECC97A /* SCHLocalDebug.m in Sources */,
 				5200EFEE12F6CFE400BAC355 /* SCHPrivateAnnotations.m in Sources */,
 				5200EFF412F6D00B00BAC355 /* SCHeReaderCategories.m in Sources */,
 				F8CD24F612F97E62001C748B /* SCHBookManager.m in Sources */,

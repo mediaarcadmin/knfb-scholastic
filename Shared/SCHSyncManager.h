@@ -18,7 +18,6 @@ extern NSString * const SCHSyncManagerDidCompleteNotification;
 
 @interface SCHSyncManager : NSObject <SCHComponentDelegate>
 {	
-
 }
 
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
@@ -38,6 +37,9 @@ extern NSString * const SCHSyncManagerDidCompleteNotification;
 - (void)updateBookshelf;
 - (void)openDocument:(SCHUserContentItem *)userContentItem forProfile:(NSNumber *)profileID;
 - (void)closeDocument:(SCHUserContentItem *)userContentItem forProfile:(NSNumber *)profileID;
+
+// check for Local Debug and Import populating
+- (void)checkPopulations;
 
 // for populating Sample Stores
 - (void)populateYoungerSampleStore;
