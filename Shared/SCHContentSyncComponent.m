@@ -32,7 +32,6 @@ NSString * const SCHContentSyncComponentDidFailNotification = @"SCHContentSyncCo
 
 - (BOOL)updateUserContentItems;
 
-- (NSArray *)localUserContentItems;
 - (void)syncUserContentItems:(NSArray *)userContentList;
 - (void)addAnnotationStructure:(SCHUserContentItem *)userContentItem 
                     forProfile:(SCHContentProfileItem *)contentProfileItem;
