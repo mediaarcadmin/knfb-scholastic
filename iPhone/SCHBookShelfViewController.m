@@ -29,6 +29,7 @@
 #import "SCHContentProfileItem.h"
 #import "SCHAppContentProfileItem.h"
 #import "SCHBookshelfSyncComponent.h"
+#import "SCHAppStateManager.h"
 
 static NSInteger const kSCHBookShelfViewControllerGridCellHeightPortrait = 138;
 static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
@@ -343,7 +344,11 @@ static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape = 131;
 
 - (IBAction)back
 {
-    [self.navigationController popViewControllerAnimated:YES];
+    if ([[SCHAppStateManager sharedAppStateManager] isSampleStore] == YES) {
+        [self.navigationController popToRootViewControllerAnimated:NO];        
+    } else {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
     
     self.profileItem.AppProfile.ShowListView = [NSNumber numberWithBool:self.listTableView.hidden == NO];
 }

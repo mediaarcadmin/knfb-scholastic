@@ -71,7 +71,6 @@ static NSInteger const CELL_ACTIVITY_SPINNER = 203;
         self.bookCoverView.coverViewMode = SCHBookCoverViewModeListView;
         self.bookCoverView.topInset = 0;
         self.bookCoverView.leftRightInset = 0;
-
     }
     
     return self;

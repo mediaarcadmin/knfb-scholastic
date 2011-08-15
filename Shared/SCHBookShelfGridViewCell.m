@@ -34,7 +34,7 @@
 
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
             self.bookCoverView.topInset = 0;
-            self.bookCoverView.leftRightInset = 6;
+            self.bookCoverView.leftRightInset = 40;
         } else {
             self.bookCoverView.topInset = 0;
             self.bookCoverView.leftRightInset = 0;

@@ -10,6 +10,8 @@
 
 #import "SCHSyncComponent.h"
 
+@class SCHContentMetadataItem;
+
 // Constants
 extern NSString * const SCHBookshelfSyncComponentWillDeleteNotification;
 extern NSString * const SCHBookshelfSyncComponentDeletedBookIdentifiers;
@@ -23,6 +25,6 @@ extern NSString * const SCHBookshelfSyncComponentDidFailNotification;
 
 @property (nonatomic, assign) BOOL useIndividualRequests;
 
-- (void)addContentMetadataItem:(NSDictionary *)webContentMetadataItem;
+- (SCHContentMetadataItem *)addContentMetadataItem:(NSDictionary *)webContentMetadataItem;
 
 @end

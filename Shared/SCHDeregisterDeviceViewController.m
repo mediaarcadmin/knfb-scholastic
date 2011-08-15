@@ -118,10 +118,21 @@ static const CGFloat kDeregisterContentHeightLandscape = 380;
 - (void)deregister:(id)sender
 {
     if ([[SCHAuthenticationManager sharedAuthenticationManager] validatePassword:self.passwordField.text]) {
-        [self.spinner startAnimating];
-        [self setEnablesBackButton:NO];
-        self.forgotPasswordURL.enabled = NO;
-        [[SCHAuthenticationManager sharedAuthenticationManager] deregister];
+        if ([[SCHAuthenticationManager sharedAuthenticationManager] isAuthenticated] == YES) {
+            [self.spinner startAnimating];
+            [self setEnablesBackButton:NO];
+            self.forgotPasswordURL.enabled = NO;
+            [[SCHAuthenticationManager sharedAuthenticationManager] deregister];            
+
+        } else {
+            [[SCHAuthenticationManager sharedAuthenticationManager] authenticate];
+            LambdaAlert *alert = [[LambdaAlert alloc]
+                                  initWithTitle:NSLocalizedString(@"Error", @"error alert title")
+                                  message:NSLocalizedString(@"Waiting for the server, please try again in a moment. If this problem persists please contact support.", nil)];
+            [alert addButtonWithTitle:NSLocalizedString(@"Try Again", @"try again button after no authentication") block:^{}];
+            [alert show];
+            [alert release];        
+        }
     } else {
         LambdaAlert *alert = [[LambdaAlert alloc]
                               initWithTitle:NSLocalizedString(@"Error", @"error alert title")

@@ -10,6 +10,7 @@
 
 #import <CoreData/CoreData.h>
 #import "SCHCoreDataHelper.h"
+#import "NSNumber+ObjectTypes.h"
 
 @implementation SCHAppStateManager
 
@@ -133,6 +134,21 @@
     }
     
     return(ret);    
+}
+
+- (BOOL)isStandardStore
+{
+    return([[self appState].DataStoreType isEqualToNumber:[NSNumber numberWithDataStoreType:kSCHDataStoreTypesSample]]);
+}
+
+- (BOOL)isSampleStore
+{
+    return([[self appState].DataStoreType isEqualToNumber:[NSNumber numberWithDataStoreType:kSCHDataStoreTypesSample]]);
+}
+
+- (BOOL)isLocalDebugStore
+{
+    return([[self appState].DataStoreType isEqualToNumber:[NSNumber numberWithDataStoreType:kSCHDataStoreTypesLocalDebug]]);
 }
 
 #pragma mark - NSManagedObjectContext Changed Notification

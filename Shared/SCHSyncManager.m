@@ -19,6 +19,8 @@
 #import "SCHUserDefaults.h"
 #import "SCHAppStateManager.h"
 #import "SCHCoreDataHelper.h"
+#import "SCHLocalDebugXPSReader.h"
+#import "SCHAppBook.h"
 
 // Constants
 NSString * const SCHSyncManagerDidCompleteNotification = @"SCHSyncManagerDidCompleteNotification";
@@ -36,8 +38,12 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
 - (void)kickQueue;
 - (BOOL)shouldSync;
 
-- (void)setAppState;
-- (NSDictionary *)profileItemWith:(NSString *)title 
+- (void)populateLocalDebugStore;
+- (void)populateFromImport;
+- (void)setAppStateForSample;
+- (void)setAppStateForLocalDebug;
+- (NSDictionary *)profileItemWith:(NSInteger)profileID
+                            title:(NSString *)title 
                          password:(NSString *)password
                               age:(NSUInteger)age 
                         bookshelf:(SCHBookshelfStyles)bookshelf;
@@ -46,11 +52,15 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
                                    author:(NSString *)author
                                pageNumber:(NSInteger)pageNumber
                                  fileSize:(long long)fileSize
+                              drmQualifer:(SCHDRMQualifiers)drmQualifer
                                  coverURL:(NSString *)coverURL
                                contentURL:(NSString *)contentURL
                                  enhanced:(BOOL)enhanced;
 - (NSDictionary *)userContentItemWith:(NSString *)contentIdentifier 
-                            profielID:(NSNumber *)profileID;
+                          drmQualifer:(SCHDRMQualifiers)drmQualifer
+                            profileIDs:(NSArray *)profileIDs;
+- (NSArray *)listXPSFilesFrom:(NSString *)directory;
+- (void)populateBook:(NSString *)xpsFilePath profileIDs:(NSArray *)profileIDs;
 
 @property (retain, nonatomic) NSTimer *timer;
 @property (retain, nonatomic) NSMutableArray *queue;
@@ -463,15 +473,141 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
     return(ret);    
 }
 
+#pragma mark - Population methods
+
+- (void)checkPopulations
+{
+	BOOL localDebugMode = NO;
+    
+#if LOCALDEBUG    
+    localDebugMode = YES;
+#endif         
+ 
+    // check for change between local debug mode and normal network mode	
+    if ((localDebugMode == YES && [[SCHAppStateManager sharedAppStateManager] isLocalDebugStore] == NO) ||
+        (localDebugMode == NO && [[SCHAppStateManager sharedAppStateManager] isLocalDebugStore] == YES)) {
+        NSLog(@"Changed between local debug mode and network mode - deleting database & removing login details.");        
+        [self clear];
+        [[SCHAuthenticationManager sharedAuthenticationManager] clear];
+    }
+    
+	if (localDebugMode == YES) {        
+        [self populateLocalDebugStore];        
+        [self populateFromImport];
+    } 
+    
+    NSLog(@"Currently in %@.", localDebugMode ? @"Local Debug Mode" : @"Network Mode");
+}
+
+- (void)populateLocalDebugStore
+{
+    if ([[self.contentSyncComponent localUserContentItems] count] < 1) {
+        NSLog(@"Copying local files as none present in database");
+        NSError *error = nil;
+        
+        [self setAppStateForLocalDebug];
+        
+        NSDictionary *youngerProfileItem = [self profileItemWith:1
+                                                           title:NSLocalizedString(@"Bookshelf #1", nil) 
+                                                        password:@"pass"                                 
+                                                             age:5 
+                                                       bookshelf:kSCHBookshelfStyleYoungChild];
+        [self.profileSyncComponent addProfile:youngerProfileItem];
+        
+        NSDictionary *olderProfileItem = [self profileItemWith:2
+                                                         title:NSLocalizedString(@"Bookshelf #2", nil) 
+                                                      password:@"pass"                                 
+                                                           age:14 
+                                                     bookshelf:kSCHBookshelfStyleOlderChild];
+        [self.profileSyncComponent addProfile:olderProfileItem];
+        
+        for (NSString *xpsFilePath in [self listXPSFilesFrom:[[NSBundle mainBundle] bundlePath]]) {
+            if ([[xpsFilePath lastPathComponent] isEqualToString:@"9780545308656.6.StableMatesPatch.xps"]) { 
+                // Add to both bookshelves
+                [self populateBook:xpsFilePath profileIDs:[NSArray arrayWithObjects:[youngerProfileItem  objectForKey:kSCHLibreAccessWebServiceID], 
+                                                           [olderProfileItem  objectForKey:kSCHLibreAccessWebServiceID], nil]];
+            } else if([[xpsFilePath lastPathComponent] isEqualToString:@"9780545289726_r1.OlliesNewTricks.xps"] || 
+                      [[xpsFilePath lastPathComponent] isEqualToString:@"9780545327619_r1.WhoWillCarveTheTurkey.xps"] || 
+                      [[xpsFilePath lastPathComponent] isEqualToString:@"9780545287012_r1.HalloweenParade.xps"]) { 
+                // Add to 1st bookshelf
+                [self populateBook:xpsFilePath profileIDs:[NSArray arrayWithObject:[youngerProfileItem objectForKey:kSCHLibreAccessWebServiceID]]];
+            } else {  
+                // Add to 2nd bookshelf
+                [self populateBook:xpsFilePath profileIDs:[NSArray arrayWithObject:[olderProfileItem objectForKey:kSCHLibreAccessWebServiceID]]];
+            }
+        }
+        
+        if ([self.managedObjectContext save:&error] == NO) {
+            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+            abort();
+        }         
+        
+        // fire off processing
+        [[NSNotificationCenter defaultCenter] postNotificationName:SCHBookshelfSyncComponentDidCompleteNotification object:self];
+    }
+}
+
+- (void)setAppStateForLocalDebug
+{
+    SCHAppState *appState = [SCHAppStateManager sharedAppStateManager].appState;
+    
+    appState.ShouldSync = [NSNumber numberWithBool:NO];
+    appState.ShouldDownloadBooks = [NSNumber numberWithBool:NO];
+    appState.ShouldAuthenticate = [NSNumber numberWithBool:NO];
+    appState.DataStoreType = [NSNumber numberWithDataStoreType:kSCHDataStoreTypesLocalDebug];    
+}
+
+- (void)populateFromImport
+{
+    NSError *error = nil;
+    NSArray * documentDirectorys = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString* documentDirectory = ([documentDirectorys count] > 0) ? [documentDirectorys objectAtIndex:0] : nil;
+
+    if (documentDirectory != nil) {
+        for (NSString *xpsFilePath in [self listXPSFilesFrom:documentDirectory]) {
+            // use the first profile which we expect to be profileID 1
+            [self populateBook:xpsFilePath profileIDs:[NSArray arrayWithObject:[NSNumber numberWithInteger:1]]];
+        }
+        
+        if ([self.managedObjectContext save:&error] == NO) {
+            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+            abort();
+        }         
+        
+        // fire off processing
+        [[NSNotificationCenter defaultCenter] postNotificationName:SCHBookshelfSyncComponentDidCompleteNotification object:self];
+    }
+}
+
+- (NSArray *)listXPSFilesFrom:(NSString *)directory
+{
+    NSMutableArray *ret = nil;
+    NSError *error = nil;
+    
+    NSArray *directoryContents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:directory 
+                                                                                     error:&error];	
+	if (error != nil) {
+		NSLog(@"Error retreiving XPS files: %@", [error localizedDescription]);
+	} else {
+        ret = [NSMutableArray arrayWithCapacity:[directoryContents count]];
+        for (NSString *fileName in [directoryContents filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"self ENDSWITH '.xps'"]]) {
+            [ret addObject:[directory stringByAppendingPathComponent:fileName]];
+        }        
+    }
+    
+    return(ret);
+}
+
 #pragma mark - Sample bookshelf population methods
 
 - (void)populateYoungerSampleStore
 {
     NSError *error = nil;
 
-    [self setAppState];    
+    [self setAppStateForSample];    
     
-    NSDictionary *profileItem = [self profileItemWith:NSLocalizedString(@"Younger kids' bookshelf (3-6)", nil) 
+    NSDictionary *profileItem = [self profileItemWith:1
+                                                title:NSLocalizedString(@"Younger kids' bookshelf (3-6)", nil) 
                                              password:@"pass"                                 
                                                   age:5 
                                             bookshelf:kSCHBookshelfStyleYoungChild];
@@ -482,12 +618,14 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
                                                 author:@"Charles Dickens"
                                             pageNumber:1
                                               fileSize:862109
+                                           drmQualifer:kSCHDRMQualifiersSample
                                               coverURL:@"http://bitwink.com/private/ChristmasCarol.jpg"
                                             contentURL:@"http://bitwink.com/private/ChristmasCarol.xps"
                                               enhanced:NO];
     
     [self.contentSyncComponent addUserContentItem:[self userContentItemWith:[book objectForKey:kSCHLibreAccessWebServiceContentIdentifier]
-                                                                  profielID:[profileItem objectForKey:kSCHLibreAccessWebServiceID]]];
+                                                                drmQualifer:[[book objectForKey:kSCHLibreAccessWebServiceDRMQualifier] DRMQualifier]
+                                                                  profileIDs:[profileItem objectForKey:kSCHLibreAccessWebServiceID]]];
 
     [self.bookshelfSyncComponent addContentMetadataItem:book];
     
@@ -501,9 +639,10 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
 {
     NSError *error = nil;
     
-    [self setAppState];    
+    [self setAppStateForSample];    
     
-    NSDictionary *profileItem = [self profileItemWith:NSLocalizedString(@"Older kids' bookshelf (7+)", nil) 
+    NSDictionary *profileItem = [self profileItemWith:1
+                                                title:NSLocalizedString(@"Older kids' bookshelf (7+)", nil) 
                                              password:@"pass"
                                                   age:14 
                                             bookshelf:kSCHBookshelfStyleOlderChild];
@@ -514,13 +653,15 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
                                                 author:@"Charles Dickens"
                                             pageNumber:1
                                               fileSize:4023944
+                                           drmQualifer:kSCHDRMQualifiersSample
                                               coverURL:@"http://bitwink.com/private/ATaleOfTwoCities.jpg"
                                             contentURL:@"http://bitwink.com/private/ATaleOfTwoCities.xps"
                                               enhanced:NO];
     
     
     [self.contentSyncComponent addUserContentItem:[self userContentItemWith:[book objectForKey:kSCHLibreAccessWebServiceContentIdentifier] 
-                                                                  profielID:[profileItem objectForKey:kSCHLibreAccessWebServiceID]]];
+                                                                drmQualifer:[[book objectForKey:kSCHLibreAccessWebServiceDRMQualifier] DRMQualifier]
+                                                                  profileIDs:[NSArray arrayWithObject:[profileItem objectForKey:kSCHLibreAccessWebServiceID]]]];
      
     [self.bookshelfSyncComponent addContentMetadataItem:book];
 
@@ -530,7 +671,7 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
     }     
 }
 
-- (void)setAppState
+- (void)setAppStateForSample
 {
     SCHAppState *appState = [SCHAppStateManager sharedAppStateManager].appState;
     
@@ -540,7 +681,10 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
     appState.DataStoreType = [NSNumber numberWithDataStoreType:kSCHDataStoreTypesSample];
 }
 
-- (NSDictionary *)profileItemWith:(NSString *)title 
+#pragma mark - Core Data population methods
+
+- (NSDictionary *)profileItemWith:(NSInteger)profileID
+                            title:(NSString *)title 
                          password:(NSString *)password
                               age:(NSUInteger)age 
                         bookshelf:(SCHBookshelfStyles)bookshelf
@@ -552,7 +696,7 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
     NSDateComponents *dateComponents = [[[NSDateComponents alloc] init] autorelease];        
 
     [ret setObject:[NSNumber numberWithBool:YES] forKey:kSCHLibreAccessWebServiceStoryInteractionEnabled];
-    [ret setObject:[NSNumber numberWithInt:1] forKey:kSCHLibreAccessWebServiceID];
+    [ret setObject:[NSNumber numberWithInteger:profileID] forKey:kSCHLibreAccessWebServiceID];
     [ret setObject:dateNow forKey:kSCHLibreAccessWebServiceLastPasswordModified];    
     [ret setObject:password forKey:kSCHLibreAccessWebServicePassword]; 
     dateComponents.year = -age;
@@ -576,6 +720,7 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
                                    author:(NSString *)author
                                pageNumber:(NSInteger)pageNumber
                                  fileSize:(long long)fileSize
+                              drmQualifer:(SCHDRMQualifiers)drmQualifer
                                  coverURL:(NSString *)coverURL
                                contentURL:(NSString *)contentURL
                                  enhanced:(BOOL)enhanced
@@ -590,42 +735,82 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
     [ret setObject:@"1" forKey:kSCHLibreAccessWebServiceVersion];
     [ret setObject:[NSNumber numberWithInteger:pageNumber] forKey:kSCHLibreAccessWebServicePageNumber];
     [ret setObject:[NSNumber numberWithLongLong:fileSize] forKey:kSCHLibreAccessWebServiceFileSize];
-    [ret setObject:[NSNumber numberWithDRMQualifier:kSCHDRMQualifiersSample] forKey:kSCHLibreAccessWebServiceDRMQualifier];
-    [ret setObject:coverURL forKey:kSCHLibreAccessWebServiceCoverURL];
-    [ret setObject:contentURL forKey:kSCHLibreAccessWebServiceContentURL];
+    [ret setObject:[NSNumber numberWithDRMQualifier:drmQualifer] forKey:kSCHLibreAccessWebServiceDRMQualifier];
+    [ret setObject:(coverURL == nil ? (id)[NSNull null] : coverURL) forKey:kSCHLibreAccessWebServiceCoverURL];
+    [ret setObject:(contentURL == nil ? (id)[NSNull null] : contentURL) forKey:kSCHLibreAccessWebServiceContentURL];
     [ret setObject:[NSNull null] forKey:kSCHLibreAccessWebServiceeReaderCategories];
     [ret setObject:[NSNumber numberWithBool:enhanced] forKey:kSCHLibreAccessWebServiceEnhanced];
 
     return(ret);    
 }
 
-- (NSDictionary *)userContentItemWith:(NSString *)contentIdentifier 
-                            profielID:(NSNumber *)profileID
+- (NSDictionary *)userContentItemWith:(NSString *)contentIdentifier
+                          drmQualifer:(SCHDRMQualifiers)drmQualifer
+                            profileIDs:(NSArray *)profileIDs
 {
     NSMutableDictionary *ret = [NSMutableDictionary dictionary];    
     NSDate *dateNow = [NSDate date];
 
-    NSMutableDictionary *profileList = [NSMutableDictionary dictionary];
-    [profileList setObject:profileID forKey:kSCHLibreAccessWebServiceProfileID];        
-    [profileList setObject:[NSNumber numberWithBool:NO] forKey:kSCHLibreAccessWebServiceIsFavorite];        
-    [profileList setObject:[NSNumber numberWithInteger:0] forKey:kSCHLibreAccessWebServiceLastPageLocation];            
-    [profileList setObject:dateNow forKey:kSCHLibreAccessWebServiceLastModified];        
-    
-    NSMutableDictionary *orderList = [NSMutableDictionary dictionary];
-    [orderList setObject:@"1" forKey:kSCHLibreAccessWebServiceOrderID];        
-    [orderList setObject:dateNow forKey:kSCHLibreAccessWebServiceOrderDate];        
+    NSMutableArray *profileList = [NSMutableArray arrayWithCapacity:[profileIDs count]];
+    NSMutableArray *orderList = [NSMutableArray arrayWithCapacity:[profileIDs count]];    
+    NSInteger orderID = 1;
+    for (NSNumber *profileID in profileIDs) {
+        NSMutableDictionary *profileItem = [NSMutableDictionary dictionary];
+        [profileItem setObject:profileID forKey:kSCHLibreAccessWebServiceProfileID];        
+        [profileItem setObject:[NSNumber numberWithBool:NO] forKey:kSCHLibreAccessWebServiceIsFavorite];        
+        [profileItem setObject:[NSNumber numberWithInteger:0] forKey:kSCHLibreAccessWebServiceLastPageLocation];            
+        [profileItem setObject:dateNow forKey:kSCHLibreAccessWebServiceLastModified];        
+        
+        [profileList addObject:profileItem];
+        
+        NSMutableDictionary *orderItem = [NSMutableDictionary dictionary];
+        [orderItem setObject:[NSString stringWithFormat:@"%lx", orderID++] forKey:kSCHLibreAccessWebServiceOrderID];        
+        [orderItem setObject:dateNow forKey:kSCHLibreAccessWebServiceOrderDate];                
+    }
 
     [ret setObject:contentIdentifier forKey:kSCHLibreAccessWebServiceContentIdentifier];
     [ret setObject:[NSNumber numberWithContentIdentifierType:kSCHContentItemContentIdentifierTypesISBN13] forKey:kSCHLibreAccessWebServiceContentIdentifierType];
-    [ret setObject:[NSNumber numberWithDRMQualifier:kSCHDRMQualifiersSample] forKey:kSCHLibreAccessWebServiceDRMQualifier];
+    [ret setObject:[NSNumber numberWithDRMQualifier:drmQualifer] forKey:kSCHLibreAccessWebServiceDRMQualifier];
     [ret setObject:@"XPS" forKey:kSCHLibreAccessWebServiceFormat];
     [ret setObject:@"1" forKey:kSCHLibreAccessWebServiceVersion];    
-    [ret setObject:[NSArray arrayWithObject:profileList] forKey:kSCHLibreAccessWebServiceProfileList];
-    [ret setObject:[NSArray arrayWithObject:orderList] forKey:kSCHLibreAccessWebServiceOrderList];        
+    [ret setObject:profileList forKey:kSCHLibreAccessWebServiceProfileList];
+    [ret setObject:orderList forKey:kSCHLibreAccessWebServiceOrderList];        
     [ret setObject:dateNow forKey:kSCHLibreAccessWebServiceLastModified];
     [ret setObject:[NSNumber numberWithBool:NO] forKey:kSCHLibreAccessWebServiceDefaultAssignment];
     
     return(ret);    
+}
+
+- (void)populateBook:(NSString *)xpsFilePath profileIDs:(NSArray *)profileIDs
+{
+    NSError *error = nil;
+    SCHLocalDebugXPSReader *localDebugXPSReader = [[SCHLocalDebugXPSReader alloc] initWithPath:xpsFilePath];
+    NSDictionary *book = [self contentMetaDataItemWith:localDebugXPSReader.ISBN
+                                                 title:localDebugXPSReader.title
+                                                author:localDebugXPSReader.author
+                                            pageNumber:localDebugXPSReader.pageCount
+                                              fileSize:localDebugXPSReader.fileSize
+                                           drmQualifer:kSCHDRMQualifiersFullNoDRM
+                                              coverURL:nil
+                                            contentURL:nil
+                                              enhanced:NO];
+    
+    [self.contentSyncComponent addUserContentItem:[self userContentItemWith:[book objectForKey:kSCHLibreAccessWebServiceContentIdentifier] 
+                                                                drmQualifer:[[book objectForKey:kSCHLibreAccessWebServiceDRMQualifier] DRMQualifierValue]                                                    
+                                                                 profileIDs:profileIDs]];
+    SCHContentMetadataItem *newContentMetadataItem = [self.bookshelfSyncComponent addContentMetadataItem:book];
+    newContentMetadataItem.FileName = @"9780545283502.NightOfTheLivingDummy.xps";
+    // copy the XPS file from the bundle
+    [[NSFileManager defaultManager] copyItemAtPath:xpsFilePath 
+                                            toPath:[newContentMetadataItem.AppBook xpsPath] 
+                                             error:&error];        
+    if (error != nil) {
+        NSLog(@"Error copying XPS file from bundle: %@, %@", error, [error userInfo]);
+    }
+    
+    newContentMetadataItem.AppBook.State = [NSNumber numberWithInt:SCHBookProcessingStateNoCoverImage];
+    
+    [localDebugXPSReader release], localDebugXPSReader = nil;
 }
 
 @end

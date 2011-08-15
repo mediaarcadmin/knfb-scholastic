@@ -18,10 +18,7 @@
 #import "SCHBookshelfSyncComponent.h"
 #import <CoreText/CoreText.h>
 #import "SCHUserContentItem.h"
-
-#if LOCALDEBUG
-#import "SCHLocalDebug.h"
-#endif
+#import "SCHAppStateManager.h"
 
 static NSString* const wmModelCertFilename = @"devcerttemplate.dat";
 static NSString* const prModelCertFilename = @"iphonecert.dat";
@@ -90,10 +87,7 @@ static NSString* const prModelCertFilename = @"iphonecert.dat";
         CFRelease(fontDesc);
     });
     
-    
-#if LOCALDEBUG
-    [self performSelector:@selector(copyLocalFilesIfMissing) withObject:nil afterDelay:0.1f]; // Stop the watchdog from killing us on launch
-#endif
+    [[SCHSyncManager sharedSyncManager] performSelector:@selector(checkPopulations) withObject:nil afterDelay:0.1f]; // Stop the watchdog from killing us on launch
 	
     SCHDictionaryDownloadManager *ddm = [SCHDictionaryDownloadManager sharedDownloadManager];
     ddm.mainThreadManagedObjectContext = self.coreDataHelper.managedObjectContext;
@@ -215,33 +209,6 @@ static NSString* const prModelCertFilename = @"iphonecert.dat";
 	}
 	NSLog(@"Copied DRM certificates to Application Support directory.");
 }
-
-- (void)copyLocalFilesIfMissing
-{
-#if LOCALDEBUG    
-    NSManagedObjectContext *moc = self.coreDataHelper.managedObjectContext;
-    NSEntityDescription *entityDescription = [NSEntityDescription
-                                              entityForName:kSCHUserContentItem inManagedObjectContext:moc];
-    NSFetchRequest *request = [[NSFetchRequest alloc] init];
-    [request setEntity:entityDescription];
-    
-    NSError *error = nil;
-    NSArray *books = [moc executeFetchRequest:request error:&error];
-    [request release];
-    
-    SCHLocalDebug *localDebug = [[SCHLocalDebug alloc] init];
-    localDebug.managedObjectContext = moc;
-    if (![books count])
-    {
-        NSLog(@"Copying local files as none present in database");
-        [localDebug setup];
-    } else {
-        NSLog(@"Not copying local files as already present in database");
-        [localDebug checkImports];
-    }
-    [localDebug release];
-#endif
-}
     
 #pragma mark - Core Data stack
 
@@ -258,6 +225,8 @@ static NSString* const prModelCertFilename = @"iphonecert.dat";
 
 #pragma mark - Authentication check
 
+// If you want to know if a call to LibreAccess will succeed then use 
+// SCHAuthenticationManager:isAuthenticated instead
 - (BOOL)isAuthenticated
 {
     BOOL isAuthenticated;

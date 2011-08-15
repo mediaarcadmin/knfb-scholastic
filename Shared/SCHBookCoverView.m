@@ -27,6 +27,7 @@
 @property (nonatomic, retain) UIView *bookTintView;
 @property (nonatomic, retain) UIImageView *newBadge;
 @property (nonatomic, retain) UIImageView *errorBadge;
+@property (nonatomic, retain) UIImageView *rightSideTab;
 @property (nonatomic, retain) UIActivityIndicatorView *activitySpinner;
 
 @property (nonatomic, assign) BOOL coalesceRefreshes;
@@ -55,6 +56,7 @@
 @synthesize coverViewMode;
 @synthesize loading;
 @synthesize activitySpinner;
+@synthesize rightSideTab;
 
 #pragma mark - Initialisation and dealloc
 
@@ -68,7 +70,7 @@
     [bookTintView release], bookTintView = nil;
     [newBadge release], newBadge = nil;
     [errorBadge release], errorBadge = nil;
-    
+    [rightSideTab release], rightSideTab = nil;
     
 	[super dealloc];
 }
@@ -116,17 +118,19 @@
     self.progressView = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleDefault];
     [self addSubview:self.progressView];
     self.progressView.hidden = YES;
+
+    // right side tab - only for iPad!
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        self.rightSideTab = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"BookSampleTab"]];
+        self.rightSideTab.hidden = YES;
+        self.rightSideTab.contentMode = UIViewContentModeRight;
+        [self addSubview:self.rightSideTab];
+    }
     
     // add the new graphic view
     self.newBadge = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"BookShelfNewIcon"]];
     [self addSubview:self.newBadge];
     self.newBadge.hidden = YES;
-    
-    // add the error badge
-    // FIXME: change this to the correct graphic.
-    self.errorBadge = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"BookShelfErrorIcon"]];
-    [self addSubview:self.errorBadge];
-    self.errorBadge.hidden = YES;
     
     // placeholder
     self.showingPlaceholder = YES;
@@ -140,6 +144,11 @@
     self.activitySpinner.hidesWhenStopped = YES;
     [self.activitySpinner stopAnimating];
     [self addSubview:self.activitySpinner];
+    
+    // add the error badge - on top of everything else
+    self.errorBadge = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"BookShelfErrorIcon"]];
+    [self addSubview:self.errorBadge];
+    self.errorBadge.hidden = YES;
 }
 
 #pragma mark - cell reuse and setters
@@ -340,7 +349,30 @@
     
     bookState = [book processingState];
     fullImagePath = [book coverImagePath];
-    thumbPath = [book thumbPathForSize:CGSizeMake(self.frame.size.width - (self.leftRightInset * 2), self.frame.size.height - self.topInset)];
+    
+    CGSize thumbSize = CGSizeMake(self.frame.size.width - (self.leftRightInset * 2), 
+                                  self.frame.size.height - self.topInset);
+    
+    // if there's a tab to show, make the thumb image smaller
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad 
+        && self.coverViewMode == SCHBookCoverViewModeGridView) {
+        switch (book.bookFeatures) {
+            case kSCHAppBookFeaturesSample:
+            case kSCHAppBookFeaturesStoryInteractions:
+            case kSCHAppBookFeaturesSampleWithStoryInteractions:
+            {
+                thumbSize.width -= 30;
+                break;
+            }   
+            case kSCHAppBookFeaturesNone:
+            default:
+            {
+                break;
+            }   
+        }
+    }
+
+    thumbPath = [book thumbPathForSize:thumbSize];
     
     if (bookState <= SCHBookProcessingStateNoCoverImage) {
         // book does not have a cover image downloaded 
@@ -422,13 +454,19 @@
 
 - (void)resizeElementsForThumbSize: (CGSize) thumbSize
 {
+    // fetch the book details
+    AppDelegate_Shared *appDelegate = (AppDelegate_Shared *)[[UIApplication sharedApplication] delegate];    
+    NSManagedObjectContext *context = appDelegate.coreDataHelper.managedObjectContext;
+	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.identifier inManagedObjectContext:context];    
+    
     // resize and position the thumb image view - the image view should never scale, and should always
     // be set to an integer value for positioning to avoid blurring
     
     CGRect coverFrame = CGRectMake(floor((self.frame.size.width - thumbSize.width)/2), self.topInset, thumbSize.width, thumbSize.height);
     
-    // if the thumb is the full width of the view, then calculate differently
-    if (thumbSize.width + (self.leftRightInset * 2) == self.frame.size.width) {
+    // if the thumb is not the full height of the view, then calculate differently
+    // (cases where the thumb is wider than it is high)
+    if (thumbSize.height != self.frame.size.height) {
         if (self.coverViewMode == SCHBookCoverViewModeGridView) {
             // cover is attached to the bottom of the frame
             coverFrame = CGRectMake(self.leftRightInset, self.frame.size.height - thumbSize.height, thumbSize.width, thumbSize.height);
@@ -452,34 +490,28 @@
         newCenter.y = coverFrame.origin.y + coverFrame.size.height - ceilf(self.newBadge.frame.size.height / 4);
     }
     
-    // make sure the badge isn't cut off
+    // make sure the new badge isn't cut off
     if (newCenter.x + (self.newBadge.frame.size.width / 2) > self.frame.size.width) {
         float difference = newCenter.x + (self.newBadge.frame.size.width / 2) - self.frame.size.width;
         newCenter.x = coverFrame.origin.x + coverFrame.size.width - difference;
     }
     
-//    // in list view, check y as well
-////    if (self.coverViewMode == SCHBookCoverViewModeListView) {
-//        if (newCenter.y + (self.newBadge.frame.size.height / 2) > self.frame.size.height) {
-//            float difference = newCenter.y + (self.newBadge.frame.size.height / 2) - self.frame.size.height;
-//            newCenter.y = coverFrame.origin.y + coverFrame.size.height - difference;
-//        }
-////    }
+    CGPoint errorCenter = newCenter;
+
+    // make sure the error badge isn't cut off
+    if (errorCenter.x + (self.errorBadge.frame.size.width / 2) > self.frame.size.width) {
+        float difference = errorCenter.x + (self.errorBadge.frame.size.width / 2) - self.frame.size.width;
+        errorCenter.x = coverFrame.origin.x + coverFrame.size.width - difference;
+    }
     
     self.newBadge.center = newCenter;
-    
+    self.errorBadge.center = errorCenter;
+
     // resize and position the progress view
     NSLog(@"Progress view frame: %@", NSStringFromCGRect(self.progressView.frame));
     CGRect progressViewFrame = CGRectMake(coverFrame.origin.x + 10, self.newBadge.frame.origin.y - 10, coverFrame.size.width - 20, self.progressView.frame.size.height);
     self.progressView.frame = progressViewFrame;
     
-    // move the error badge to the centre of the cover
-    CGPoint errorCenter = CGPointMake(floorf(CGRectGetMidX(coverFrame)), floorf(CGRectGetMidY(coverFrame)));
-    self.errorBadge.center = errorCenter;
-    
-    AppDelegate_Shared *appDelegate = (AppDelegate_Shared *)[[UIApplication sharedApplication] delegate];    
-    NSManagedObjectContext *context = appDelegate.coreDataHelper.managedObjectContext;
-	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:self.identifier inManagedObjectContext:context];    
     
 	[self setNeedsDisplay];
     
@@ -542,19 +574,67 @@
         }
     }	
     
-//    SCHBookProcessingStateReadyForLicenseAcquisition = 5,
-//	SCHBookProcessingStateReadyForRightsParsing      = 6,
-//	SCHBookProcessingStateReadyForAudioInfoParsing   = 7,
-//	SCHBookProcessingStateReadyForTextFlowPreParse   = 8,
-//    SCHBookProcessingStateReadyForSmartZoomPreParse  = 9,
-//	SCHBookProcessingStateReadyForPagination         = 10,
-//	SCHBookProcessingStateReadyToRead                = 11,
-
     
-    if (self.isNewBook && !self.trashed) {
+    if (self.isNewBook && !self.trashed && self.errorBadge.hidden == YES) {
         self.newBadge.hidden = NO;
     } else {
         self.newBadge.hidden = YES;
+    }
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad 
+        && self.coverViewMode == SCHBookCoverViewModeGridView) {
+        switch (book.bookFeatures) {
+            case kSCHAppBookFeaturesNone:
+            {
+                self.rightSideTab.image = nil;
+                self.rightSideTab.hidden = YES;
+                break;
+            }   
+            case kSCHAppBookFeaturesStoryInteractions:
+            {
+                self.rightSideTab.image = [UIImage imageNamed:@"BookSITab"];
+                CGRect frame = self.rightSideTab.frame;
+                frame.origin.x = coverFrame.origin.x + coverFrame.size.width + 6;
+                frame.origin.y = floorf(coverFrame.origin.y);
+                frame.size.height = coverFrame.size.height;
+                self.rightSideTab.frame = frame;
+                
+                self.rightSideTab.hidden = NO;
+                break;
+            }   
+            case kSCHAppBookFeaturesSampleWithStoryInteractions:
+            {
+                self.rightSideTab.image = [UIImage imageNamed:@"BookSISampleTab"];
+                CGRect frame = self.rightSideTab.frame;
+                frame.origin.x = coverFrame.origin.x + coverFrame.size.width + 4;
+                frame.origin.y = floorf(coverFrame.origin.y);
+                frame.size.height = coverFrame.size.height;
+                self.rightSideTab.frame = frame;
+                
+                self.rightSideTab.hidden = NO;
+                break;
+            }   
+
+            case kSCHAppBookFeaturesSample:
+            {
+                self.rightSideTab.image = [UIImage imageNamed:@"BookSampleTab"];
+                CGRect frame = self.rightSideTab.frame;
+                frame.origin.x = coverFrame.origin.x + coverFrame.size.width;
+                frame.origin.y = floorf(coverFrame.origin.y);
+                frame.size.height = coverFrame.size.height;
+                self.rightSideTab.frame = frame;
+
+                self.rightSideTab.hidden = NO;
+                break;
+            }   
+            default:
+            {
+                NSLog(@"Warning: unknown type for book features.");
+                self.rightSideTab.image = nil;
+                self.rightSideTab.hidden = YES;
+                break;
+            }
+        }
     }
 
 }

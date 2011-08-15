@@ -23,7 +23,7 @@
 
 //static NSInteger const kSCHBookShelfViewControllerGridCellHeightPortrait_iPad = 254;
 static NSInteger const kSCHBookShelfViewControllerGridCellHeightPortrait_iPad = 224;
-static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape_iPad = 235;
+static NSInteger const kSCHBookShelfViewControllerGridCellHeightLandscape_iPad = 225;
 static NSInteger const kSCHBookShelfButtonPadding = 25;
 static NSInteger const kSCHBookShelfEdgePadding = 12;
 static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.0;
@@ -216,7 +216,7 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
 
 - (CGSize)cellSize
 {
-    return CGSizeMake(177,212);
+    return CGSizeMake(236,209);
 }
 
 - (CGFloat)cellBorderSize

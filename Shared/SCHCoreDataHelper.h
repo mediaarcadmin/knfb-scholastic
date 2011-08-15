@@ -34,7 +34,4 @@ typedef enum {
 
 - (void)saveContext;
 
-// remove everything from the CoreData database
-- (void)clearDatabase;
-
 @end
