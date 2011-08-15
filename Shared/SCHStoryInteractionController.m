@@ -246,7 +246,7 @@
     };
     
     if (self.contentsView != nil) {
-        // animate the transition between screens
+        // on iPad, animate the transition between screens
         NSAssert([self frameStyleForViewAtIndex:self.currentScreenIndex] != SCHStoryInteractionTitleOverlaysContents, @"can't have multiple views with SCHStoryInteractionTitleOverlaysContents");
         UIView *oldContentsView = self.contentsView;
         newContentsView.alpha = 0;
@@ -254,11 +254,17 @@
                                                                CGRectGetHeight(oldContentsView.bounds)/CGRectGetHeight(newContentsView.bounds));
         newContentsView.center = oldContentsView.center;
         [self.backgroundView addSubview:newContentsView];
-        [UIView animateWithDuration:0.3
-                         animations:setupViews
-                         completion:^(BOOL finished) {
-                             [oldContentsView removeFromSuperview];
-                         }];
+        
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            [UIView animateWithDuration:0.3
+                             animations:setupViews
+                             completion:^(BOOL finished) {
+                                 [oldContentsView removeFromSuperview];
+                             }];
+        } else {
+            setupViews();
+            [oldContentsView removeFromSuperview];
+        }
     } else {
         setupViews();
         if ([self frameStyleForViewAtIndex:self.currentScreenIndex] == SCHStoryInteractionTitleOverlaysContents) {

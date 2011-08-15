@@ -103,6 +103,9 @@ enum {
                          for (SCHStoryInteractionJigsawPieceView_iPhone *piece in self.jigsawPieceViews) {
                              piece.center = CGPointMake(piece.homePosition.x+scrollerOrigin.x, piece.homePosition.y+scrollerOrigin.y);
                              piece.transform = pieceTransform;
+                             if (piece.center.y > CGRectGetHeight(self.puzzlePieceScroller.bounds)) {
+                                 piece.alpha = 0;
+                             }
                          }
                      }
                      completion:^(BOOL finished) {
@@ -110,6 +113,7 @@ enum {
                              [piece removeFromSuperview];
                              [self.puzzlePieceScroller addSubview:piece];
                              piece.center = piece.homePosition;
+                             piece.alpha = 1;
                          }
                          self.puzzlePieceScroller.contentSize = CGSizeMake(CGRectGetWidth(self.puzzlePieceScroller.bounds),
                                                                            kPieceHeightInScroller*self.numberOfPieces);
