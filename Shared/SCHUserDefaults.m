@@ -11,4 +11,3 @@
 // Constants
 NSString * const kSCHUserDefaultsPerformedFirstSyncUpToBooks = @"PerformedFirstSyncUpToBooks";
 NSString * const kSCHUserDefaultsSpaceSaverMode = @"SpaceSaverMode";
-NSString * const kSCHUserDefaultsClearLocalDebugMode = @"ClearLocalDebugMode";
