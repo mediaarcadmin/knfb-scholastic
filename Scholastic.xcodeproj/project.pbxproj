@@ -92,18 +92,6 @@
 		2866312113F01C700092A5DE /* SCHStoryInteractionControllerConcentration.m in Sources */ = {isa = PBXBuildFile; fileRef = 2866311F13F01C700092A5DE /* SCHStoryInteractionControllerConcentration.m */; };
 		2866312313F01D0E0092A5DE /* SCHStoryInteractionConcentration_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2866312213F01D0E0092A5DE /* SCHStoryInteractionConcentration_iPad.xib */; };
 		2866312413F01D0E0092A5DE /* SCHStoryInteractionConcentration_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2866312213F01D0E0092A5DE /* SCHStoryInteractionConcentration_iPad.xib */; };
-		2866312813F01F940092A5DE /* storyinteraction-concentration-6-pairs.png in Resources */ = {isa = PBXBuildFile; fileRef = 2866312513F01F940092A5DE /* storyinteraction-concentration-6-pairs.png */; };
-		2866312913F01F940092A5DE /* storyinteraction-concentration-6-pairs.png in Resources */ = {isa = PBXBuildFile; fileRef = 2866312513F01F940092A5DE /* storyinteraction-concentration-6-pairs.png */; };
-		2866313013F0200E0092A5DE /* storyinteraction-concentration-9-pairs.png in Resources */ = {isa = PBXBuildFile; fileRef = 2866312E13F0200E0092A5DE /* storyinteraction-concentration-9-pairs.png */; };
-		2866313113F0200E0092A5DE /* storyinteraction-concentration-9-pairs.png in Resources */ = {isa = PBXBuildFile; fileRef = 2866312E13F0200E0092A5DE /* storyinteraction-concentration-9-pairs.png */; };
-		2866313213F0200E0092A5DE /* storyinteraction-concentration-12-pairs.png in Resources */ = {isa = PBXBuildFile; fileRef = 2866312F13F0200E0092A5DE /* storyinteraction-concentration-12-pairs.png */; };
-		2866313313F0200E0092A5DE /* storyinteraction-concentration-12-pairs.png in Resources */ = {isa = PBXBuildFile; fileRef = 2866312F13F0200E0092A5DE /* storyinteraction-concentration-12-pairs.png */; };
-		2866313713F021650092A5DE /* storyinteraction-concentration-6-pairs-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 2866313413F021650092A5DE /* storyinteraction-concentration-6-pairs-button.png */; };
-		2866313813F021650092A5DE /* storyinteraction-concentration-6-pairs-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 2866313413F021650092A5DE /* storyinteraction-concentration-6-pairs-button.png */; };
-		2866313913F021650092A5DE /* storyinteraction-concentration-9-pairs-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 2866313513F021650092A5DE /* storyinteraction-concentration-9-pairs-button.png */; };
-		2866313A13F021650092A5DE /* storyinteraction-concentration-9-pairs-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 2866313513F021650092A5DE /* storyinteraction-concentration-9-pairs-button.png */; };
-		2866313B13F021650092A5DE /* storyinteraction-concentration-12-pairs-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 2866313613F021650092A5DE /* storyinteraction-concentration-12-pairs-button.png */; };
-		2866313C13F021650092A5DE /* storyinteraction-concentration-12-pairs-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 2866313613F021650092A5DE /* storyinteraction-concentration-12-pairs-button.png */; };
 		2866313E13F02ABA0092A5DE /* storyinteraction-concentration-tile-orange~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 2866313D13F02ABA0092A5DE /* storyinteraction-concentration-tile-orange~ipad.png */; };
 		2866313F13F02ABA0092A5DE /* storyinteraction-concentration-tile-orange~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 2866313D13F02ABA0092A5DE /* storyinteraction-concentration-tile-orange~ipad.png */; };
 		2866314413F03C140092A5DE /* SCH3DView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2866314313F03C140092A5DE /* SCH3DView.m */; };
@@ -177,18 +165,6 @@
 		289A2B2013F505B80047EE45 /* SCHStoryInteractionControllerJigsaw.m in Sources */ = {isa = PBXBuildFile; fileRef = 289A2B1E13F505B80047EE45 /* SCHStoryInteractionControllerJigsaw.m */; };
 		289A2B2213F5085B0047EE45 /* SCHStoryInteractionJigsaw_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 289A2B2113F5085B0047EE45 /* SCHStoryInteractionJigsaw_iPad.xib */; };
 		289A2B2313F5085B0047EE45 /* SCHStoryInteractionJigsaw_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 289A2B2113F5085B0047EE45 /* SCHStoryInteractionJigsaw_iPad.xib */; };
-		289A2B2A13F509FB0047EE45 /* storyinteraction-jigsaw-6-pieces-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 289A2B2413F509FB0047EE45 /* storyinteraction-jigsaw-6-pieces-button.png */; };
-		289A2B2B13F509FB0047EE45 /* storyinteraction-jigsaw-6-pieces-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 289A2B2413F509FB0047EE45 /* storyinteraction-jigsaw-6-pieces-button.png */; };
-		289A2B2C13F509FB0047EE45 /* storyinteraction-jigsaw-6-pieces.png in Resources */ = {isa = PBXBuildFile; fileRef = 289A2B2513F509FB0047EE45 /* storyinteraction-jigsaw-6-pieces.png */; };
-		289A2B2D13F509FB0047EE45 /* storyinteraction-jigsaw-6-pieces.png in Resources */ = {isa = PBXBuildFile; fileRef = 289A2B2513F509FB0047EE45 /* storyinteraction-jigsaw-6-pieces.png */; };
-		289A2B2E13F509FB0047EE45 /* storyinteraction-jigsaw-12-pieces-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 289A2B2613F509FB0047EE45 /* storyinteraction-jigsaw-12-pieces-button.png */; };
-		289A2B2F13F509FB0047EE45 /* storyinteraction-jigsaw-12-pieces-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 289A2B2613F509FB0047EE45 /* storyinteraction-jigsaw-12-pieces-button.png */; };
-		289A2B3013F509FB0047EE45 /* storyinteraction-jigsaw-12-pieces.png in Resources */ = {isa = PBXBuildFile; fileRef = 289A2B2713F509FB0047EE45 /* storyinteraction-jigsaw-12-pieces.png */; };
-		289A2B3113F509FB0047EE45 /* storyinteraction-jigsaw-12-pieces.png in Resources */ = {isa = PBXBuildFile; fileRef = 289A2B2713F509FB0047EE45 /* storyinteraction-jigsaw-12-pieces.png */; };
-		289A2B3213F509FB0047EE45 /* storyinteraction-jigsaw-20-pieces-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 289A2B2813F509FB0047EE45 /* storyinteraction-jigsaw-20-pieces-button.png */; };
-		289A2B3313F509FB0047EE45 /* storyinteraction-jigsaw-20-pieces-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 289A2B2813F509FB0047EE45 /* storyinteraction-jigsaw-20-pieces-button.png */; };
-		289A2B3413F509FB0047EE45 /* storyinteraction-jigsaw-20-pieces.png in Resources */ = {isa = PBXBuildFile; fileRef = 289A2B2913F509FB0047EE45 /* storyinteraction-jigsaw-20-pieces.png */; };
-		289A2B3513F509FB0047EE45 /* storyinteraction-jigsaw-20-pieces.png in Resources */ = {isa = PBXBuildFile; fileRef = 289A2B2913F509FB0047EE45 /* storyinteraction-jigsaw-20-pieces.png */; };
 		289A2B3813F511EC0047EE45 /* SCHStoryInteractionJigsawPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = 289A2B3713F511EC0047EE45 /* SCHStoryInteractionJigsawPreviewView.m */; };
 		289A2B3913F511EC0047EE45 /* SCHStoryInteractionJigsawPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = 289A2B3713F511EC0047EE45 /* SCHStoryInteractionJigsawPreviewView.m */; };
 		289A2B3D13F5140A0047EE45 /* Puzzle-6pc.xaml in Resources */ = {isa = PBXBuildFile; fileRef = 289A2B3A13F5140A0047EE45 /* Puzzle-6pc.xaml */; };
@@ -668,6 +644,70 @@
 		C91E99DA13F930F8004F8062 /* storyinteraction-card-collection-prev~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C91E99BF13F930F8004F8062 /* storyinteraction-card-collection-prev~iphone.png */; };
 		C91E99DB13F930F8004F8062 /* storyinteraction-card-collection-prev@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C91E99C013F930F8004F8062 /* storyinteraction-card-collection-prev@2x~iphone.png */; };
 		C91E99DC13F930F8004F8062 /* storyinteraction-card-collection-prev@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C91E99C013F930F8004F8062 /* storyinteraction-card-collection-prev@2x~iphone.png */; };
+		C91E99FB13F94514004F8062 /* storyinteraction-concentration-12-pairs~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C91E99F413F94511004F8062 /* storyinteraction-concentration-12-pairs~ipad.png */; };
+		C91E99FC13F94514004F8062 /* storyinteraction-concentration-12-pairs~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C91E99F413F94511004F8062 /* storyinteraction-concentration-12-pairs~ipad.png */; };
+		C91E99FD13F94514004F8062 /* storyinteraction-concentration-6-pairs~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C91E99F513F94511004F8062 /* storyinteraction-concentration-6-pairs~ipad.png */; };
+		C91E99FE13F94514004F8062 /* storyinteraction-concentration-6-pairs~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C91E99F513F94511004F8062 /* storyinteraction-concentration-6-pairs~ipad.png */; };
+		C91E99FF13F94514004F8062 /* storyinteraction-concentration-9-pairs~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C91E99F613F94512004F8062 /* storyinteraction-concentration-9-pairs~ipad.png */; };
+		C91E9A0013F94514004F8062 /* storyinteraction-concentration-9-pairs~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C91E99F613F94512004F8062 /* storyinteraction-concentration-9-pairs~ipad.png */; };
+		C91E9A0113F94514004F8062 /* storyinteraction-concentration-6-pairs~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C91E99F713F94512004F8062 /* storyinteraction-concentration-6-pairs~iphone.png */; };
+		C91E9A0213F94514004F8062 /* storyinteraction-concentration-6-pairs~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C91E99F713F94512004F8062 /* storyinteraction-concentration-6-pairs~iphone.png */; };
+		C91E9A0313F94514004F8062 /* storyinteraction-concentration-6-pairs@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C91E99F813F94512004F8062 /* storyinteraction-concentration-6-pairs@2x~iphone.png */; };
+		C91E9A0413F94514004F8062 /* storyinteraction-concentration-6-pairs@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C91E99F813F94512004F8062 /* storyinteraction-concentration-6-pairs@2x~iphone.png */; };
+		C91E9A0513F94514004F8062 /* storyinteraction-concentration-9-pairs~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C91E99F913F94513004F8062 /* storyinteraction-concentration-9-pairs~iphone.png */; };
+		C91E9A0613F94514004F8062 /* storyinteraction-concentration-9-pairs~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C91E99F913F94513004F8062 /* storyinteraction-concentration-9-pairs~iphone.png */; };
+		C91E9A0713F94514004F8062 /* storyinteraction-concentration-9-pairs@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C91E99FA13F94513004F8062 /* storyinteraction-concentration-9-pairs@2x~iphone.png */; };
+		C91E9A0813F94514004F8062 /* storyinteraction-concentration-9-pairs@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C91E99FA13F94513004F8062 /* storyinteraction-concentration-9-pairs@2x~iphone.png */; };
+		C91E9A0D13F9671A004F8062 /* storyinteraction-concentration-6-pairs-button~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C91E9A0913F96717004F8062 /* storyinteraction-concentration-6-pairs-button~iphone.png */; };
+		C91E9A0E13F9671A004F8062 /* storyinteraction-concentration-6-pairs-button~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C91E9A0913F96717004F8062 /* storyinteraction-concentration-6-pairs-button~iphone.png */; };
+		C91E9A0F13F9671A004F8062 /* storyinteraction-concentration-6-pairs-button@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C91E9A0A13F96718004F8062 /* storyinteraction-concentration-6-pairs-button@2x~iphone.png */; };
+		C91E9A1013F9671A004F8062 /* storyinteraction-concentration-6-pairs-button@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C91E9A0A13F96718004F8062 /* storyinteraction-concentration-6-pairs-button@2x~iphone.png */; };
+		C91E9A1113F9671A004F8062 /* storyinteraction-concentration-9-pairs-button~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C91E9A0B13F96719004F8062 /* storyinteraction-concentration-9-pairs-button~iphone.png */; };
+		C91E9A1213F9671A004F8062 /* storyinteraction-concentration-9-pairs-button~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C91E9A0B13F96719004F8062 /* storyinteraction-concentration-9-pairs-button~iphone.png */; };
+		C91E9A1313F9671A004F8062 /* storyinteraction-concentration-9-pairs-button@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C91E9A0C13F9671A004F8062 /* storyinteraction-concentration-9-pairs-button@2x~iphone.png */; };
+		C91E9A1413F9671A004F8062 /* storyinteraction-concentration-9-pairs-button@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C91E9A0C13F9671A004F8062 /* storyinteraction-concentration-9-pairs-button@2x~iphone.png */; };
+		C91E9A1B13F9673A004F8062 /* storyinteraction-jigsaw-20-pieces-button~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C91E9A1513F96738004F8062 /* storyinteraction-jigsaw-20-pieces-button~iphone.png */; };
+		C91E9A1C13F9673A004F8062 /* storyinteraction-jigsaw-20-pieces-button~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C91E9A1513F96738004F8062 /* storyinteraction-jigsaw-20-pieces-button~iphone.png */; };
+		C91E9A1D13F9673A004F8062 /* storyinteraction-jigsaw-20-pieces-button@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C91E9A1613F96738004F8062 /* storyinteraction-jigsaw-20-pieces-button@2x~iphone.png */; };
+		C91E9A1E13F9673A004F8062 /* storyinteraction-jigsaw-20-pieces-button@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C91E9A1613F96738004F8062 /* storyinteraction-jigsaw-20-pieces-button@2x~iphone.png */; };
+		C91E9A1F13F9673A004F8062 /* storyinteraction-jigsaw-6-pieces-button~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C91E9A1713F96739004F8062 /* storyinteraction-jigsaw-6-pieces-button~iphone.png */; };
+		C91E9A2013F9673A004F8062 /* storyinteraction-jigsaw-6-pieces-button~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C91E9A1713F96739004F8062 /* storyinteraction-jigsaw-6-pieces-button~iphone.png */; };
+		C91E9A2113F9673A004F8062 /* storyinteraction-jigsaw-6-pieces-button@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C91E9A1813F96739004F8062 /* storyinteraction-jigsaw-6-pieces-button@2x~iphone.png */; };
+		C91E9A2213F9673A004F8062 /* storyinteraction-jigsaw-6-pieces-button@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C91E9A1813F96739004F8062 /* storyinteraction-jigsaw-6-pieces-button@2x~iphone.png */; };
+		C91E9A2313F9673A004F8062 /* storyinteraction-jigsaw-12-pieces-button~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C91E9A1913F96739004F8062 /* storyinteraction-jigsaw-12-pieces-button~iphone.png */; };
+		C91E9A2413F9673A004F8062 /* storyinteraction-jigsaw-12-pieces-button~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C91E9A1913F96739004F8062 /* storyinteraction-jigsaw-12-pieces-button~iphone.png */; };
+		C91E9A2513F9673A004F8062 /* storyinteraction-jigsaw-12-pieces-button@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C91E9A1A13F9673A004F8062 /* storyinteraction-jigsaw-12-pieces-button@2x~iphone.png */; };
+		C91E9A2613F9673A004F8062 /* storyinteraction-jigsaw-12-pieces-button@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C91E9A1A13F9673A004F8062 /* storyinteraction-jigsaw-12-pieces-button@2x~iphone.png */; };
+		C91E9A2A13F96BA9004F8062 /* storyinteraction-jigsaw-12-pieces-button~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C91E9A2713F96BA6004F8062 /* storyinteraction-jigsaw-12-pieces-button~ipad.png */; };
+		C91E9A2B13F96BA9004F8062 /* storyinteraction-jigsaw-12-pieces-button~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C91E9A2713F96BA6004F8062 /* storyinteraction-jigsaw-12-pieces-button~ipad.png */; };
+		C91E9A2C13F96BA9004F8062 /* storyinteraction-jigsaw-20-pieces-button~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C91E9A2813F96BA7004F8062 /* storyinteraction-jigsaw-20-pieces-button~ipad.png */; };
+		C91E9A2D13F96BA9004F8062 /* storyinteraction-jigsaw-20-pieces-button~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C91E9A2813F96BA7004F8062 /* storyinteraction-jigsaw-20-pieces-button~ipad.png */; };
+		C91E9A2E13F96BA9004F8062 /* storyinteraction-jigsaw-6-pieces-button~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C91E9A2913F96BA8004F8062 /* storyinteraction-jigsaw-6-pieces-button~ipad.png */; };
+		C91E9A2F13F96BA9004F8062 /* storyinteraction-jigsaw-6-pieces-button~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C91E9A2913F96BA8004F8062 /* storyinteraction-jigsaw-6-pieces-button~ipad.png */; };
+		C91E9A3313F96C2C004F8062 /* storyinteraction-concentration-6-pairs-button~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C91E9A3013F96C29004F8062 /* storyinteraction-concentration-6-pairs-button~ipad.png */; };
+		C91E9A3413F96C2C004F8062 /* storyinteraction-concentration-6-pairs-button~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C91E9A3013F96C29004F8062 /* storyinteraction-concentration-6-pairs-button~ipad.png */; };
+		C91E9A3513F96C2C004F8062 /* storyinteraction-concentration-12-pairs-button~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C91E9A3113F96C2A004F8062 /* storyinteraction-concentration-12-pairs-button~ipad.png */; };
+		C91E9A3613F96C2C004F8062 /* storyinteraction-concentration-12-pairs-button~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C91E9A3113F96C2A004F8062 /* storyinteraction-concentration-12-pairs-button~ipad.png */; };
+		C91E9A3713F96C2C004F8062 /* storyinteraction-concentration-9-pairs-button~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C91E9A3213F96C2B004F8062 /* storyinteraction-concentration-9-pairs-button~ipad.png */; };
+		C91E9A3813F96C2C004F8062 /* storyinteraction-concentration-9-pairs-button~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C91E9A3213F96C2B004F8062 /* storyinteraction-concentration-9-pairs-button~ipad.png */; };
+		C91E9A4213F96F80004F8062 /* storyinteraction-jigsaw-6-pieces~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C91E9A3913F96F6D004F8062 /* storyinteraction-jigsaw-6-pieces~iphone.png */; };
+		C91E9A4313F96F80004F8062 /* storyinteraction-jigsaw-6-pieces~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C91E9A3913F96F6D004F8062 /* storyinteraction-jigsaw-6-pieces~iphone.png */; };
+		C91E9A4413F96F80004F8062 /* storyinteraction-jigsaw-12-pieces~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C91E9A3A13F96F6F004F8062 /* storyinteraction-jigsaw-12-pieces~iphone.png */; };
+		C91E9A4513F96F80004F8062 /* storyinteraction-jigsaw-12-pieces~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C91E9A3A13F96F6F004F8062 /* storyinteraction-jigsaw-12-pieces~iphone.png */; };
+		C91E9A4613F96F80004F8062 /* storyinteraction-jigsaw-20-pieces~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C91E9A3B13F96F70004F8062 /* storyinteraction-jigsaw-20-pieces~iphone.png */; };
+		C91E9A4713F96F80004F8062 /* storyinteraction-jigsaw-20-pieces~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C91E9A3B13F96F70004F8062 /* storyinteraction-jigsaw-20-pieces~iphone.png */; };
+		C91E9A4813F96F80004F8062 /* storyinteraction-jigsaw-20-pieces@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C91E9A3C13F96F72004F8062 /* storyinteraction-jigsaw-20-pieces@2x~iphone.png */; };
+		C91E9A4913F96F80004F8062 /* storyinteraction-jigsaw-20-pieces@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C91E9A3C13F96F72004F8062 /* storyinteraction-jigsaw-20-pieces@2x~iphone.png */; };
+		C91E9A4A13F96F80004F8062 /* storyinteraction-jigsaw-12-pieces@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C91E9A3D13F96F76004F8062 /* storyinteraction-jigsaw-12-pieces@2x~iphone.png */; };
+		C91E9A4B13F96F80004F8062 /* storyinteraction-jigsaw-12-pieces@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C91E9A3D13F96F76004F8062 /* storyinteraction-jigsaw-12-pieces@2x~iphone.png */; };
+		C91E9A4C13F96F80004F8062 /* storyinteraction-jigsaw-6-pieces@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C91E9A3E13F96F77004F8062 /* storyinteraction-jigsaw-6-pieces@2x~iphone.png */; };
+		C91E9A4D13F96F80004F8062 /* storyinteraction-jigsaw-6-pieces@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C91E9A3E13F96F77004F8062 /* storyinteraction-jigsaw-6-pieces@2x~iphone.png */; };
+		C91E9A4E13F96F80004F8062 /* storyinteraction-jigsaw-20-pieces~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C91E9A3F13F96F79004F8062 /* storyinteraction-jigsaw-20-pieces~ipad.png */; };
+		C91E9A4F13F96F80004F8062 /* storyinteraction-jigsaw-20-pieces~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C91E9A3F13F96F79004F8062 /* storyinteraction-jigsaw-20-pieces~ipad.png */; };
+		C91E9A5013F96F80004F8062 /* storyinteraction-jigsaw-12-pieces~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C91E9A4013F96F7A004F8062 /* storyinteraction-jigsaw-12-pieces~ipad.png */; };
+		C91E9A5113F96F80004F8062 /* storyinteraction-jigsaw-12-pieces~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C91E9A4013F96F7A004F8062 /* storyinteraction-jigsaw-12-pieces~ipad.png */; };
+		C91E9A5213F96F80004F8062 /* storyinteraction-jigsaw-6-pieces~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C91E9A4113F96F7E004F8062 /* storyinteraction-jigsaw-6-pieces~ipad.png */; };
+		C91E9A5313F96F80004F8062 /* storyinteraction-jigsaw-6-pieces~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C91E9A4113F96F7E004F8062 /* storyinteraction-jigsaw-6-pieces~ipad.png */; };
 		C920DB0B1385226C00F1583D /* SCHWordTimingProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = C920DB061385226C00F1583D /* SCHWordTimingProcessor.m */; };
 		C920DB0C1385226C00F1583D /* SCHWordTimingProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = C920DB061385226C00F1583D /* SCHWordTimingProcessor.m */; };
 		C920DB0D1385226C00F1583D /* SCHAudioBookPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = C920DB091385226C00F1583D /* SCHAudioBookPlayer.m */; };
@@ -1853,12 +1893,6 @@
 		2866311E13F01C700092A5DE /* SCHStoryInteractionControllerConcentration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionControllerConcentration.h; sourceTree = "<group>"; };
 		2866311F13F01C700092A5DE /* SCHStoryInteractionControllerConcentration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionControllerConcentration.m; sourceTree = "<group>"; };
 		2866312213F01D0E0092A5DE /* SCHStoryInteractionConcentration_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionConcentration_iPad.xib; sourceTree = "<group>"; };
-		2866312513F01F940092A5DE /* storyinteraction-concentration-6-pairs.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-concentration-6-pairs.png"; sourceTree = "<group>"; };
-		2866312E13F0200E0092A5DE /* storyinteraction-concentration-9-pairs.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-concentration-9-pairs.png"; sourceTree = "<group>"; };
-		2866312F13F0200E0092A5DE /* storyinteraction-concentration-12-pairs.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-concentration-12-pairs.png"; sourceTree = "<group>"; };
-		2866313413F021650092A5DE /* storyinteraction-concentration-6-pairs-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-concentration-6-pairs-button.png"; sourceTree = "<group>"; };
-		2866313513F021650092A5DE /* storyinteraction-concentration-9-pairs-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-concentration-9-pairs-button.png"; sourceTree = "<group>"; };
-		2866313613F021650092A5DE /* storyinteraction-concentration-12-pairs-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-concentration-12-pairs-button.png"; sourceTree = "<group>"; };
 		2866313D13F02ABA0092A5DE /* storyinteraction-concentration-tile-orange~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-concentration-tile-orange~ipad.png"; sourceTree = "<group>"; };
 		2866314213F03C130092A5DE /* SCH3DView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCH3DView.h; sourceTree = "<group>"; };
 		2866314313F03C140092A5DE /* SCH3DView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCH3DView.m; sourceTree = "<group>"; };
@@ -1920,12 +1954,6 @@
 		289A2B1D13F505B80047EE45 /* SCHStoryInteractionControllerJigsaw.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionControllerJigsaw.h; sourceTree = "<group>"; };
 		289A2B1E13F505B80047EE45 /* SCHStoryInteractionControllerJigsaw.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionControllerJigsaw.m; sourceTree = "<group>"; };
 		289A2B2113F5085B0047EE45 /* SCHStoryInteractionJigsaw_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionJigsaw_iPad.xib; sourceTree = "<group>"; };
-		289A2B2413F509FB0047EE45 /* storyinteraction-jigsaw-6-pieces-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-jigsaw-6-pieces-button.png"; sourceTree = "<group>"; };
-		289A2B2513F509FB0047EE45 /* storyinteraction-jigsaw-6-pieces.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-jigsaw-6-pieces.png"; sourceTree = "<group>"; };
-		289A2B2613F509FB0047EE45 /* storyinteraction-jigsaw-12-pieces-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-jigsaw-12-pieces-button.png"; sourceTree = "<group>"; };
-		289A2B2713F509FB0047EE45 /* storyinteraction-jigsaw-12-pieces.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-jigsaw-12-pieces.png"; sourceTree = "<group>"; };
-		289A2B2813F509FB0047EE45 /* storyinteraction-jigsaw-20-pieces-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-jigsaw-20-pieces-button.png"; sourceTree = "<group>"; };
-		289A2B2913F509FB0047EE45 /* storyinteraction-jigsaw-20-pieces.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-jigsaw-20-pieces.png"; sourceTree = "<group>"; };
 		289A2B3613F511EC0047EE45 /* SCHStoryInteractionJigsawPreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionJigsawPreviewView.h; sourceTree = "<group>"; };
 		289A2B3713F511EC0047EE45 /* SCHStoryInteractionJigsawPreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionJigsawPreviewView.m; sourceTree = "<group>"; };
 		289A2B3A13F5140A0047EE45 /* Puzzle-6pc.xaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Puzzle-6pc.xaml"; sourceTree = "<group>"; };
@@ -2511,6 +2539,38 @@
 		C91E99BE13F930F8004F8062 /* storyinteraction-card-collection-next@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-card-collection-next@2x~iphone.png"; sourceTree = "<group>"; };
 		C91E99BF13F930F8004F8062 /* storyinteraction-card-collection-prev~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-card-collection-prev~iphone.png"; sourceTree = "<group>"; };
 		C91E99C013F930F8004F8062 /* storyinteraction-card-collection-prev@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-card-collection-prev@2x~iphone.png"; sourceTree = "<group>"; };
+		C91E99F413F94511004F8062 /* storyinteraction-concentration-12-pairs~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-concentration-12-pairs~ipad.png"; sourceTree = "<group>"; };
+		C91E99F513F94511004F8062 /* storyinteraction-concentration-6-pairs~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-concentration-6-pairs~ipad.png"; sourceTree = "<group>"; };
+		C91E99F613F94512004F8062 /* storyinteraction-concentration-9-pairs~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-concentration-9-pairs~ipad.png"; sourceTree = "<group>"; };
+		C91E99F713F94512004F8062 /* storyinteraction-concentration-6-pairs~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-concentration-6-pairs~iphone.png"; sourceTree = "<group>"; };
+		C91E99F813F94512004F8062 /* storyinteraction-concentration-6-pairs@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-concentration-6-pairs@2x~iphone.png"; sourceTree = "<group>"; };
+		C91E99F913F94513004F8062 /* storyinteraction-concentration-9-pairs~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-concentration-9-pairs~iphone.png"; sourceTree = "<group>"; };
+		C91E99FA13F94513004F8062 /* storyinteraction-concentration-9-pairs@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-concentration-9-pairs@2x~iphone.png"; sourceTree = "<group>"; };
+		C91E9A0913F96717004F8062 /* storyinteraction-concentration-6-pairs-button~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-concentration-6-pairs-button~iphone.png"; sourceTree = "<group>"; };
+		C91E9A0A13F96718004F8062 /* storyinteraction-concentration-6-pairs-button@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-concentration-6-pairs-button@2x~iphone.png"; sourceTree = "<group>"; };
+		C91E9A0B13F96719004F8062 /* storyinteraction-concentration-9-pairs-button~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-concentration-9-pairs-button~iphone.png"; sourceTree = "<group>"; };
+		C91E9A0C13F9671A004F8062 /* storyinteraction-concentration-9-pairs-button@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-concentration-9-pairs-button@2x~iphone.png"; sourceTree = "<group>"; };
+		C91E9A1513F96738004F8062 /* storyinteraction-jigsaw-20-pieces-button~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-jigsaw-20-pieces-button~iphone.png"; sourceTree = "<group>"; };
+		C91E9A1613F96738004F8062 /* storyinteraction-jigsaw-20-pieces-button@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-jigsaw-20-pieces-button@2x~iphone.png"; sourceTree = "<group>"; };
+		C91E9A1713F96739004F8062 /* storyinteraction-jigsaw-6-pieces-button~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-jigsaw-6-pieces-button~iphone.png"; sourceTree = "<group>"; };
+		C91E9A1813F96739004F8062 /* storyinteraction-jigsaw-6-pieces-button@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-jigsaw-6-pieces-button@2x~iphone.png"; sourceTree = "<group>"; };
+		C91E9A1913F96739004F8062 /* storyinteraction-jigsaw-12-pieces-button~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-jigsaw-12-pieces-button~iphone.png"; sourceTree = "<group>"; };
+		C91E9A1A13F9673A004F8062 /* storyinteraction-jigsaw-12-pieces-button@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-jigsaw-12-pieces-button@2x~iphone.png"; sourceTree = "<group>"; };
+		C91E9A2713F96BA6004F8062 /* storyinteraction-jigsaw-12-pieces-button~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-jigsaw-12-pieces-button~ipad.png"; sourceTree = "<group>"; };
+		C91E9A2813F96BA7004F8062 /* storyinteraction-jigsaw-20-pieces-button~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-jigsaw-20-pieces-button~ipad.png"; sourceTree = "<group>"; };
+		C91E9A2913F96BA8004F8062 /* storyinteraction-jigsaw-6-pieces-button~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-jigsaw-6-pieces-button~ipad.png"; sourceTree = "<group>"; };
+		C91E9A3013F96C29004F8062 /* storyinteraction-concentration-6-pairs-button~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-concentration-6-pairs-button~ipad.png"; sourceTree = "<group>"; };
+		C91E9A3113F96C2A004F8062 /* storyinteraction-concentration-12-pairs-button~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-concentration-12-pairs-button~ipad.png"; sourceTree = "<group>"; };
+		C91E9A3213F96C2B004F8062 /* storyinteraction-concentration-9-pairs-button~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-concentration-9-pairs-button~ipad.png"; sourceTree = "<group>"; };
+		C91E9A3913F96F6D004F8062 /* storyinteraction-jigsaw-6-pieces~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-jigsaw-6-pieces~iphone.png"; sourceTree = "<group>"; };
+		C91E9A3A13F96F6F004F8062 /* storyinteraction-jigsaw-12-pieces~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-jigsaw-12-pieces~iphone.png"; sourceTree = "<group>"; };
+		C91E9A3B13F96F70004F8062 /* storyinteraction-jigsaw-20-pieces~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-jigsaw-20-pieces~iphone.png"; sourceTree = "<group>"; };
+		C91E9A3C13F96F72004F8062 /* storyinteraction-jigsaw-20-pieces@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-jigsaw-20-pieces@2x~iphone.png"; sourceTree = "<group>"; };
+		C91E9A3D13F96F76004F8062 /* storyinteraction-jigsaw-12-pieces@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-jigsaw-12-pieces@2x~iphone.png"; sourceTree = "<group>"; };
+		C91E9A3E13F96F77004F8062 /* storyinteraction-jigsaw-6-pieces@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-jigsaw-6-pieces@2x~iphone.png"; sourceTree = "<group>"; };
+		C91E9A3F13F96F79004F8062 /* storyinteraction-jigsaw-20-pieces~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-jigsaw-20-pieces~ipad.png"; sourceTree = "<group>"; };
+		C91E9A4013F96F7A004F8062 /* storyinteraction-jigsaw-12-pieces~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-jigsaw-12-pieces~ipad.png"; sourceTree = "<group>"; };
+		C91E9A4113F96F7E004F8062 /* storyinteraction-jigsaw-6-pieces~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-jigsaw-6-pieces~ipad.png"; sourceTree = "<group>"; };
 		C920DB061385226C00F1583D /* SCHWordTimingProcessor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHWordTimingProcessor.m; path = Shared/SCHWordTimingProcessor.m; sourceTree = "<group>"; };
 		C920DB071385226C00F1583D /* SCHWordTimingProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHWordTimingProcessor.h; path = Shared/SCHWordTimingProcessor.h; sourceTree = "<group>"; };
 		C920DB081385226C00F1583D /* SCHAudioBookPlayerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAudioBookPlayerDelegate.h; path = Shared/SCHAudioBookPlayerDelegate.h; sourceTree = "<group>"; };
@@ -3545,12 +3605,20 @@
 				5215349B13B08AB200131E37 /* storyinteraction-bg-older-notitle~iphone.png */,
 				5215349C13B08AB200131E37 /* storyinteraction-bg-older-notitle@2x~iphone.png */,
 				C9C1D29E13B0AD4C00441623 /* storyinteraction-bg-older-notitle~ipad.png */,
-				2866312513F01F940092A5DE /* storyinteraction-concentration-6-pairs.png */,
-				2866312E13F0200E0092A5DE /* storyinteraction-concentration-9-pairs.png */,
-				2866312F13F0200E0092A5DE /* storyinteraction-concentration-12-pairs.png */,
-				2866313413F021650092A5DE /* storyinteraction-concentration-6-pairs-button.png */,
-				2866313513F021650092A5DE /* storyinteraction-concentration-9-pairs-button.png */,
-				2866313613F021650092A5DE /* storyinteraction-concentration-12-pairs-button.png */,
+				C91E9A0913F96717004F8062 /* storyinteraction-concentration-6-pairs-button~iphone.png */,
+				C91E9A0A13F96718004F8062 /* storyinteraction-concentration-6-pairs-button@2x~iphone.png */,
+				C91E9A0B13F96719004F8062 /* storyinteraction-concentration-9-pairs-button~iphone.png */,
+				C91E9A0C13F9671A004F8062 /* storyinteraction-concentration-9-pairs-button@2x~iphone.png */,
+				C91E9A3013F96C29004F8062 /* storyinteraction-concentration-6-pairs-button~ipad.png */,
+				C91E9A3113F96C2A004F8062 /* storyinteraction-concentration-12-pairs-button~ipad.png */,
+				C91E9A3213F96C2B004F8062 /* storyinteraction-concentration-9-pairs-button~ipad.png */,
+				C91E99F413F94511004F8062 /* storyinteraction-concentration-12-pairs~ipad.png */,
+				C91E99F513F94511004F8062 /* storyinteraction-concentration-6-pairs~ipad.png */,
+				C91E99F613F94512004F8062 /* storyinteraction-concentration-9-pairs~ipad.png */,
+				C91E99F713F94512004F8062 /* storyinteraction-concentration-6-pairs~iphone.png */,
+				C91E99F813F94512004F8062 /* storyinteraction-concentration-6-pairs@2x~iphone.png */,
+				C91E99F913F94513004F8062 /* storyinteraction-concentration-9-pairs~iphone.png */,
+				C91E99FA13F94513004F8062 /* storyinteraction-concentration-9-pairs@2x~iphone.png */,
 				2866313D13F02ABA0092A5DE /* storyinteraction-concentration-tile-orange~ipad.png */,
 				28B1AA0B13F14635006F1F63 /* storyinteraction-concentration-tile-orange~iphone.png */,
 				C9AC869313AFAF7B000ECDAE /* storyinteraction-wordmatch-target~ipad.png */,
@@ -3652,12 +3720,24 @@
 				2894E80713B09EC800AEAD79 /* storyinteraction-findinpage-correct@2x~iphone.png */,
 				F8DB746813A0DDA2006E8D06 /* progressbar-cover.png */,
 				F8DB746313A0DCC3006E8D06 /* progressbar-fill.png */,
-				289A2B2413F509FB0047EE45 /* storyinteraction-jigsaw-6-pieces-button.png */,
-				289A2B2513F509FB0047EE45 /* storyinteraction-jigsaw-6-pieces.png */,
-				289A2B2613F509FB0047EE45 /* storyinteraction-jigsaw-12-pieces-button.png */,
-				289A2B2713F509FB0047EE45 /* storyinteraction-jigsaw-12-pieces.png */,
-				289A2B2813F509FB0047EE45 /* storyinteraction-jigsaw-20-pieces-button.png */,
-				289A2B2913F509FB0047EE45 /* storyinteraction-jigsaw-20-pieces.png */,
+				C91E9A1513F96738004F8062 /* storyinteraction-jigsaw-20-pieces-button~iphone.png */,
+				C91E9A1613F96738004F8062 /* storyinteraction-jigsaw-20-pieces-button@2x~iphone.png */,
+				C91E9A1713F96739004F8062 /* storyinteraction-jigsaw-6-pieces-button~iphone.png */,
+				C91E9A1813F96739004F8062 /* storyinteraction-jigsaw-6-pieces-button@2x~iphone.png */,
+				C91E9A1913F96739004F8062 /* storyinteraction-jigsaw-12-pieces-button~iphone.png */,
+				C91E9A1A13F9673A004F8062 /* storyinteraction-jigsaw-12-pieces-button@2x~iphone.png */,
+				C91E9A2713F96BA6004F8062 /* storyinteraction-jigsaw-12-pieces-button~ipad.png */,
+				C91E9A2813F96BA7004F8062 /* storyinteraction-jigsaw-20-pieces-button~ipad.png */,
+				C91E9A2913F96BA8004F8062 /* storyinteraction-jigsaw-6-pieces-button~ipad.png */,
+				C91E9A3913F96F6D004F8062 /* storyinteraction-jigsaw-6-pieces~iphone.png */,
+				C91E9A3A13F96F6F004F8062 /* storyinteraction-jigsaw-12-pieces~iphone.png */,
+				C91E9A3B13F96F70004F8062 /* storyinteraction-jigsaw-20-pieces~iphone.png */,
+				C91E9A3C13F96F72004F8062 /* storyinteraction-jigsaw-20-pieces@2x~iphone.png */,
+				C91E9A3D13F96F76004F8062 /* storyinteraction-jigsaw-12-pieces@2x~iphone.png */,
+				C91E9A3E13F96F77004F8062 /* storyinteraction-jigsaw-6-pieces@2x~iphone.png */,
+				C91E9A3F13F96F79004F8062 /* storyinteraction-jigsaw-20-pieces~ipad.png */,
+				C91E9A4013F96F7A004F8062 /* storyinteraction-jigsaw-12-pieces~ipad.png */,
+				C91E9A4113F96F7E004F8062 /* storyinteraction-jigsaw-6-pieces~ipad.png */,
 			);
 			name = StoryInteractions;
 			path = Resources/UIAssets/StoryInteractions;
@@ -6079,12 +6159,6 @@
 				C9747CE013EAEAC5003ADC71 /* Default@2x.jpg in Resources */,
 				52AFC2B113F167370016C4A1 /* Scholastic_OlderSample.sqlite in Resources */,
 				2866312313F01D0E0092A5DE /* SCHStoryInteractionConcentration_iPad.xib in Resources */,
-				2866312813F01F940092A5DE /* storyinteraction-concentration-6-pairs.png in Resources */,
-				2866313013F0200E0092A5DE /* storyinteraction-concentration-9-pairs.png in Resources */,
-				2866313213F0200E0092A5DE /* storyinteraction-concentration-12-pairs.png in Resources */,
-				2866313713F021650092A5DE /* storyinteraction-concentration-6-pairs-button.png in Resources */,
-				2866313913F021650092A5DE /* storyinteraction-concentration-9-pairs-button.png in Resources */,
-				2866313B13F021650092A5DE /* storyinteraction-concentration-12-pairs-button.png in Resources */,
 				2866313E13F02ABA0092A5DE /* storyinteraction-concentration-tile-orange~ipad.png in Resources */,
 				28B1AA0913F142D5006F1F63 /* SCHStoryInteractionConcentration_iPhone.xib in Resources */,
 				28B1AA0C13F14635006F1F63 /* storyinteraction-concentration-tile-orange~iphone.png in Resources */,
@@ -6096,18 +6170,9 @@
 				28CD431813F41FAF00919F18 /* storyinteraction-lettertile-green~iphone.png in Resources */,
 				28CD431A13F41FAF00919F18 /* storyinteraction-lettertile-red~iphone.png in Resources */,
 				289A2B2213F5085B0047EE45 /* SCHStoryInteractionJigsaw_iPad.xib in Resources */,
-				289A2B2A13F509FB0047EE45 /* storyinteraction-jigsaw-6-pieces-button.png in Resources */,
-				289A2B2C13F509FB0047EE45 /* storyinteraction-jigsaw-6-pieces.png in Resources */,
-				289A2B2E13F509FB0047EE45 /* storyinteraction-jigsaw-12-pieces-button.png in Resources */,
-				289A2B3013F509FB0047EE45 /* storyinteraction-jigsaw-12-pieces.png in Resources */,
-				289A2B3213F509FB0047EE45 /* storyinteraction-jigsaw-20-pieces-button.png in Resources */,
-				289A2B3413F509FB0047EE45 /* storyinteraction-jigsaw-20-pieces.png in Resources */,
 				289A2B3D13F5140A0047EE45 /* Puzzle-6pc.xaml in Resources */,
 				289A2B3F13F5140A0047EE45 /* Puzzle-12pc.xaml in Resources */,
 				289A2B4113F5140A0047EE45 /* Puzzle-20pc.xaml in Resources */,
-				F8EF094913F4157F00A47D5D /* BookSampleTab~iPad.png in Resources */,
-				F8EF094C13F4299D00A47D5D /* BookSITab~iPad.png in Resources */,
-				F87E39A613F4393E00F21FAE /* BookSISampleTab~iPad.png in Resources */,
 				C91E99C113F930F8004F8062 /* storyinteraction-card-collection-flip~ipad.png in Resources */,
 				C91E99C313F930F8004F8062 /* storyinteraction-card-collection-zoom-out~ipad.png in Resources */,
 				C91E99C513F930F8004F8062 /* storyinteraction-card-collection-zoom-in~ipad.png in Resources */,
@@ -6123,6 +6188,38 @@
 				C91E99D913F930F8004F8062 /* storyinteraction-card-collection-prev~iphone.png in Resources */,
 				C91E99DB13F930F8004F8062 /* storyinteraction-card-collection-prev@2x~iphone.png in Resources */,
 				52FB890B13F90E50006E5413 /* Scholastic_YoungerSample.sqlite in Resources */,
+				C91E99FB13F94514004F8062 /* storyinteraction-concentration-12-pairs~ipad.png in Resources */,
+				C91E99FD13F94514004F8062 /* storyinteraction-concentration-6-pairs~ipad.png in Resources */,
+				C91E99FF13F94514004F8062 /* storyinteraction-concentration-9-pairs~ipad.png in Resources */,
+				C91E9A0113F94514004F8062 /* storyinteraction-concentration-6-pairs~iphone.png in Resources */,
+				C91E9A0313F94514004F8062 /* storyinteraction-concentration-6-pairs@2x~iphone.png in Resources */,
+				C91E9A0513F94514004F8062 /* storyinteraction-concentration-9-pairs~iphone.png in Resources */,
+				C91E9A0713F94514004F8062 /* storyinteraction-concentration-9-pairs@2x~iphone.png in Resources */,
+				C91E9A0D13F9671A004F8062 /* storyinteraction-concentration-6-pairs-button~iphone.png in Resources */,
+				C91E9A0F13F9671A004F8062 /* storyinteraction-concentration-6-pairs-button@2x~iphone.png in Resources */,
+				C91E9A1113F9671A004F8062 /* storyinteraction-concentration-9-pairs-button~iphone.png in Resources */,
+				C91E9A1313F9671A004F8062 /* storyinteraction-concentration-9-pairs-button@2x~iphone.png in Resources */,
+				C91E9A1B13F9673A004F8062 /* storyinteraction-jigsaw-20-pieces-button~iphone.png in Resources */,
+				C91E9A1D13F9673A004F8062 /* storyinteraction-jigsaw-20-pieces-button@2x~iphone.png in Resources */,
+				C91E9A1F13F9673A004F8062 /* storyinteraction-jigsaw-6-pieces-button~iphone.png in Resources */,
+				C91E9A2113F9673A004F8062 /* storyinteraction-jigsaw-6-pieces-button@2x~iphone.png in Resources */,
+				C91E9A2313F9673A004F8062 /* storyinteraction-jigsaw-12-pieces-button~iphone.png in Resources */,
+				C91E9A2513F9673A004F8062 /* storyinteraction-jigsaw-12-pieces-button@2x~iphone.png in Resources */,
+				C91E9A2A13F96BA9004F8062 /* storyinteraction-jigsaw-12-pieces-button~ipad.png in Resources */,
+				C91E9A2C13F96BA9004F8062 /* storyinteraction-jigsaw-20-pieces-button~ipad.png in Resources */,
+				C91E9A2E13F96BA9004F8062 /* storyinteraction-jigsaw-6-pieces-button~ipad.png in Resources */,
+				C91E9A3313F96C2C004F8062 /* storyinteraction-concentration-6-pairs-button~ipad.png in Resources */,
+				C91E9A3513F96C2C004F8062 /* storyinteraction-concentration-12-pairs-button~ipad.png in Resources */,
+				C91E9A3713F96C2C004F8062 /* storyinteraction-concentration-9-pairs-button~ipad.png in Resources */,
+				C91E9A4213F96F80004F8062 /* storyinteraction-jigsaw-6-pieces~iphone.png in Resources */,
+				C91E9A4413F96F80004F8062 /* storyinteraction-jigsaw-12-pieces~iphone.png in Resources */,
+				C91E9A4613F96F80004F8062 /* storyinteraction-jigsaw-20-pieces~iphone.png in Resources */,
+				C91E9A4813F96F80004F8062 /* storyinteraction-jigsaw-20-pieces@2x~iphone.png in Resources */,
+				C91E9A4A13F96F80004F8062 /* storyinteraction-jigsaw-12-pieces@2x~iphone.png in Resources */,
+				C91E9A4C13F96F80004F8062 /* storyinteraction-jigsaw-6-pieces@2x~iphone.png in Resources */,
+				C91E9A4E13F96F80004F8062 /* storyinteraction-jigsaw-20-pieces~ipad.png in Resources */,
+				C91E9A5013F96F80004F8062 /* storyinteraction-jigsaw-12-pieces~ipad.png in Resources */,
+				C91E9A5213F96F80004F8062 /* storyinteraction-jigsaw-6-pieces~ipad.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6634,12 +6731,6 @@
 				C9747CE113EAEAC5003ADC71 /* Default@2x.jpg in Resources */,
 				52AFC2B213F167370016C4A1 /* Scholastic_OlderSample.sqlite in Resources */,
 				2866312413F01D0E0092A5DE /* SCHStoryInteractionConcentration_iPad.xib in Resources */,
-				2866312913F01F940092A5DE /* storyinteraction-concentration-6-pairs.png in Resources */,
-				2866313113F0200E0092A5DE /* storyinteraction-concentration-9-pairs.png in Resources */,
-				2866313313F0200E0092A5DE /* storyinteraction-concentration-12-pairs.png in Resources */,
-				2866313813F021650092A5DE /* storyinteraction-concentration-6-pairs-button.png in Resources */,
-				2866313A13F021650092A5DE /* storyinteraction-concentration-9-pairs-button.png in Resources */,
-				2866313C13F021650092A5DE /* storyinteraction-concentration-12-pairs-button.png in Resources */,
 				2866313F13F02ABA0092A5DE /* storyinteraction-concentration-tile-orange~ipad.png in Resources */,
 				2866314513F03F450092A5DE /* 9780545289726_r1.OlliesNewTricks.xps in Resources */,
 				28B1AA0A13F142D5006F1F63 /* SCHStoryInteractionConcentration_iPhone.xib in Resources */,
@@ -6652,18 +6743,9 @@
 				28CD431913F41FAF00919F18 /* storyinteraction-lettertile-green~iphone.png in Resources */,
 				28CD431B13F41FAF00919F18 /* storyinteraction-lettertile-red~iphone.png in Resources */,
 				289A2B2313F5085B0047EE45 /* SCHStoryInteractionJigsaw_iPad.xib in Resources */,
-				289A2B2B13F509FB0047EE45 /* storyinteraction-jigsaw-6-pieces-button.png in Resources */,
-				289A2B2D13F509FB0047EE45 /* storyinteraction-jigsaw-6-pieces.png in Resources */,
-				289A2B2F13F509FB0047EE45 /* storyinteraction-jigsaw-12-pieces-button.png in Resources */,
-				289A2B3113F509FB0047EE45 /* storyinteraction-jigsaw-12-pieces.png in Resources */,
-				289A2B3313F509FB0047EE45 /* storyinteraction-jigsaw-20-pieces-button.png in Resources */,
-				289A2B3513F509FB0047EE45 /* storyinteraction-jigsaw-20-pieces.png in Resources */,
 				289A2B3E13F5140A0047EE45 /* Puzzle-6pc.xaml in Resources */,
 				289A2B4013F5140A0047EE45 /* Puzzle-12pc.xaml in Resources */,
 				289A2B4213F5140A0047EE45 /* Puzzle-20pc.xaml in Resources */,
-				F8EF094A13F4157F00A47D5D /* BookSampleTab~iPad.png in Resources */,
-				F8EF094D13F4299D00A47D5D /* BookSITab~iPad.png in Resources */,
-				F87E39A713F4393E00F21FAE /* BookSISampleTab~iPad.png in Resources */,
 				C91E99C213F930F8004F8062 /* storyinteraction-card-collection-flip~ipad.png in Resources */,
 				C91E99C413F930F8004F8062 /* storyinteraction-card-collection-zoom-out~ipad.png in Resources */,
 				C91E99C613F930F8004F8062 /* storyinteraction-card-collection-zoom-in~ipad.png in Resources */,
@@ -6679,6 +6761,38 @@
 				C91E99DA13F930F8004F8062 /* storyinteraction-card-collection-prev~iphone.png in Resources */,
 				C91E99DC13F930F8004F8062 /* storyinteraction-card-collection-prev@2x~iphone.png in Resources */,
 				52FB890C13F90E50006E5413 /* Scholastic_YoungerSample.sqlite in Resources */,
+				C91E99FC13F94514004F8062 /* storyinteraction-concentration-12-pairs~ipad.png in Resources */,
+				C91E99FE13F94514004F8062 /* storyinteraction-concentration-6-pairs~ipad.png in Resources */,
+				C91E9A0013F94514004F8062 /* storyinteraction-concentration-9-pairs~ipad.png in Resources */,
+				C91E9A0213F94514004F8062 /* storyinteraction-concentration-6-pairs~iphone.png in Resources */,
+				C91E9A0413F94514004F8062 /* storyinteraction-concentration-6-pairs@2x~iphone.png in Resources */,
+				C91E9A0613F94514004F8062 /* storyinteraction-concentration-9-pairs~iphone.png in Resources */,
+				C91E9A0813F94514004F8062 /* storyinteraction-concentration-9-pairs@2x~iphone.png in Resources */,
+				C91E9A0E13F9671A004F8062 /* storyinteraction-concentration-6-pairs-button~iphone.png in Resources */,
+				C91E9A1013F9671A004F8062 /* storyinteraction-concentration-6-pairs-button@2x~iphone.png in Resources */,
+				C91E9A1213F9671A004F8062 /* storyinteraction-concentration-9-pairs-button~iphone.png in Resources */,
+				C91E9A1413F9671A004F8062 /* storyinteraction-concentration-9-pairs-button@2x~iphone.png in Resources */,
+				C91E9A1C13F9673A004F8062 /* storyinteraction-jigsaw-20-pieces-button~iphone.png in Resources */,
+				C91E9A1E13F9673A004F8062 /* storyinteraction-jigsaw-20-pieces-button@2x~iphone.png in Resources */,
+				C91E9A2013F9673A004F8062 /* storyinteraction-jigsaw-6-pieces-button~iphone.png in Resources */,
+				C91E9A2213F9673A004F8062 /* storyinteraction-jigsaw-6-pieces-button@2x~iphone.png in Resources */,
+				C91E9A2413F9673A004F8062 /* storyinteraction-jigsaw-12-pieces-button~iphone.png in Resources */,
+				C91E9A2613F9673A004F8062 /* storyinteraction-jigsaw-12-pieces-button@2x~iphone.png in Resources */,
+				C91E9A2B13F96BA9004F8062 /* storyinteraction-jigsaw-12-pieces-button~ipad.png in Resources */,
+				C91E9A2D13F96BA9004F8062 /* storyinteraction-jigsaw-20-pieces-button~ipad.png in Resources */,
+				C91E9A2F13F96BA9004F8062 /* storyinteraction-jigsaw-6-pieces-button~ipad.png in Resources */,
+				C91E9A3413F96C2C004F8062 /* storyinteraction-concentration-6-pairs-button~ipad.png in Resources */,
+				C91E9A3613F96C2C004F8062 /* storyinteraction-concentration-12-pairs-button~ipad.png in Resources */,
+				C91E9A3813F96C2C004F8062 /* storyinteraction-concentration-9-pairs-button~ipad.png in Resources */,
+				C91E9A4313F96F80004F8062 /* storyinteraction-jigsaw-6-pieces~iphone.png in Resources */,
+				C91E9A4513F96F80004F8062 /* storyinteraction-jigsaw-12-pieces~iphone.png in Resources */,
+				C91E9A4713F96F80004F8062 /* storyinteraction-jigsaw-20-pieces~iphone.png in Resources */,
+				C91E9A4913F96F80004F8062 /* storyinteraction-jigsaw-20-pieces@2x~iphone.png in Resources */,
+				C91E9A4B13F96F80004F8062 /* storyinteraction-jigsaw-12-pieces@2x~iphone.png in Resources */,
+				C91E9A4D13F96F80004F8062 /* storyinteraction-jigsaw-6-pieces@2x~iphone.png in Resources */,
+				C91E9A4F13F96F80004F8062 /* storyinteraction-jigsaw-20-pieces~ipad.png in Resources */,
+				C91E9A5113F96F80004F8062 /* storyinteraction-jigsaw-12-pieces~ipad.png in Resources */,
+				C91E9A5313F96F80004F8062 /* storyinteraction-jigsaw-6-pieces~ipad.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
