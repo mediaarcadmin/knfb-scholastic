@@ -225,6 +225,8 @@ static NSString* const prModelCertFilename = @"iphonecert.dat";
 
 #pragma mark - Authentication check
 
+// If you want to know if a call to LibreAccess will succeed then use 
+// SCHAuthenticationManager:isAuthenticated instead
 - (BOOL)isAuthenticated
 {
     BOOL isAuthenticated;
