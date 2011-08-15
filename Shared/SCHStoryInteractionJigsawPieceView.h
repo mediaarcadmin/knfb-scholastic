@@ -13,4 +13,6 @@
 @property (nonatomic, assign) CGImageRef image;
 @property (nonatomic, assign) CGPoint solutionPosition;
 
+- (BOOL)isInCorrectPosition;
+
 @end

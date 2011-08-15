@@ -7,6 +7,7 @@
 //
 
 #import "SCHStoryInteractionJigsawPieceView.h"
+#import "SCHGeometry.h"
 
 @implementation SCHStoryInteractionJigsawPieceView
 
@@ -36,6 +37,27 @@
         CGContextScaleCTM(context, 1, -1);
         CGContextDrawImage(context, self.bounds, self.image);
     }
+}
+
+- (BOOL)isInCorrectPosition
+{
+    static const CGFloat kSnapDistanceSq = 900;
+    return SCHCGPointDistanceSq(self.center, self.solutionPosition) < kSnapDistanceSq;
+}
+
+- (void)beginDrag
+{
+    [super beginDrag];
+    self.layer.shadowColor = [[UIColor blackColor] CGColor];
+    self.layer.shadowRadius = 8;
+    self.layer.shadowOpacity = 0.8;
+}
+
+- (void)endDragWithTouch:(UITouch *)touch cancelled:(BOOL)cancelled
+{
+    [super endDragWithTouch:touch cancelled:cancelled];
+    self.layer.shadowRadius = 0;
+    self.layer.shadowOpacity = 0;
 }
 
 @end

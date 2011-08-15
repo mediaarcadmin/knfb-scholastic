@@ -12,13 +12,12 @@
 #import "SCHStoryInteractionJigsawPreviewView.h"
 #import "SCHStoryInteractionJigsawPieceView.h"
 #import "NSArray+ViewSorting.h"
+#import "NSArray+Shuffling.h"
 #import "SCHGeometry.h"
 
 enum {
     kPreviewImageTag = 1000,
-    kSpinnerTag = 1001,
     kPieceMargin = 5,
-    kSnapDistanceSq = 900
 };
 
 @interface SCHStoryInteractionControllerJigsaw ()
@@ -33,6 +32,7 @@ enum {
 - (void)setupPuzzleView;
 - (void)beginPuzzleInteraction;
 - (NSArray *)homePositionsForPuzzle;
+- (void)checkForCompletion;
 
 @end
 
@@ -78,7 +78,15 @@ enum {
     }
 }
 
-#pragma mark - Choose Puzzle View
+- (SCHFrameStyle)frameStyleForViewAtIndex:(NSInteger)viewIndex
+{
+    if (viewIndex == 0) {
+        return SCHStoryInteractionTitle;
+    }
+    return SCHStoryInteractionNoTitle;
+}
+
+#pragma mark - choose puzzle View
 
 - (void)setupChoosePuzzleView
 {
@@ -89,9 +97,10 @@ enum {
 {
     self.numberOfPieces = sender.tag;
     [self presentNextView];
+    [self cancelQueuedAudio];
 }
 
-#pragma mark - Puzzle View
+#pragma mark - preview View
 
 - (UIImage *)puzzleImage
 {
@@ -117,90 +126,101 @@ enum {
     return jigsawPaths;
 }
 
-- (void)generateJigsawPiecesForPuzzleSize:(CGSize)puzzleSize yieldBlock:(void(^)(CGImageRef image, CGRect frame))yield
+- (void)generateJigsawPiecesFromImage:(CGImageRef)puzzleImage yieldBlock:(void(^)(CGImageRef image, CGRect frame))yield
 {
     SCHStoryInteractionJigsawPaths *paths = [self jigsawPaths];
-    NSString *imagePath = [(SCHStoryInteractionJigsaw *)self.storyInteraction imagePathForPuzzle];
-    CGImageRef puzzleImage = [[self imageAtPath:imagePath] CGImage];
-    CGSize puzzleImageSize = CGSizeMake(CGImageGetWidth(puzzleImage), CGImageGetHeight(puzzleImage));
+    CGSize puzzleSize = CGSizeMake(CGImageGetWidth(puzzleImage), CGImageGetHeight(puzzleImage));
     
+    // cut out individual pieces from scaled image
     for (NSInteger pieceIndex = 0; pieceIndex < self.numberOfPieces; ++pieceIndex) {
         // get a rectangular sub-image of the puzzle image
-        CGRect pieceRect = [paths boundsOfPieceAtIndex:pieceIndex forPuzzleSize:puzzleImageSize];
+        CGRect pieceRect = CGRectIntegral([paths boundsOfPieceAtIndex:pieceIndex forPuzzleSize:puzzleSize]);
         CGImageRef pieceImage = CGImageCreateWithImageInRect(puzzleImage, pieceRect);
 
         // create a new piece image by clipping this to the piece mask
-        CGImageRef pieceMask = [paths maskFromPathAtIndex:pieceIndex forPuzzleSize:puzzleImageSize];
+        CGImageRef pieceMask = [paths maskFromPathAtIndex:pieceIndex forPuzzleSize:puzzleSize];
         CGImageRef maskedImage = CGImageCreateWithMask(pieceImage, pieceMask);
         CGImageRelease(pieceMask);
+        CGImageRelease(pieceImage);
         
-        CGRect pieceFrame = [paths boundsOfPieceAtIndex:pieceIndex forPuzzleSize:puzzleSize];
+        CGRect pieceFrame = CGRectIntegral([paths boundsOfPieceAtIndex:pieceIndex forPuzzleSize:puzzleSize]);
         yield(maskedImage, pieceFrame);
 
         CGImageRelease(maskedImage);
     }
 }
 
-- (void)setupPuzzleView
+- (SCHStoryInteractionJigsawPreviewView *)puzzlePreviewWithFrame:(CGRect)frame;
 {
-    [self.puzzleBackground setAlpha:0];
-    
-    CGRect frame = CGRectInset(self.contentsView.bounds, 30, 10);
     SCHStoryInteractionJigsawPreviewView *preview = [[SCHStoryInteractionJigsawPreviewView alloc] initWithFrame:frame];
-    preview.paths = [self jigsawPaths];
     preview.image = [self puzzleImage];
     preview.edgeColor = [UIColor whiteColor];
     preview.tag = kPreviewImageTag;
+    return [preview autorelease];
+}
+
+- (CGImageRef)scaleImage:(CGImageRef)image toSize:(CGSize)size
+{
+    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+    CGContextRef context = CGBitmapContextCreate(NULL, size.width, size.height, 8, size.width*4, colorSpace, kCGImageAlphaPremultipliedLast);
+    CGColorSpaceRelease(colorSpace);
+    CGContextDrawImage(context, (CGRect){CGPointZero, size}, image);
+    CGImageRef scaledImage = CGBitmapContextCreateImage(context);
+    CGContextRelease(context);
+    return scaledImage;
+}
+
+- (void)setupPuzzleView
+{
+    [[self.contentsView viewWithTag:kPreviewImageTag] removeFromSuperview];
+    [self.puzzleBackground setAlpha:0];
+    
+    CGRect frame = CGRectInset(self.contentsView.bounds, 30, 10);
+    SCHStoryInteractionJigsawPreviewView *preview = [self puzzlePreviewWithFrame:frame];
+    preview.paths = [self jigsawPaths];
     [self.contentsView addSubview:preview];
-    
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(previewTapped:)];
-    [preview addGestureRecognizer:tap];
-    [tap release];
-    [preview release];
-    
+        
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        NSString *imagePath = [(SCHStoryInteractionJigsaw *)self.storyInteraction imagePathForPuzzle];
+        UIImage *puzzleImage = [self imageAtPath:imagePath];
+
+        CGRect puzzleFrame = SCHAspectFitSizeInTargetRect(puzzleImage.size, self.puzzleBackground.frame);
+        self.puzzleBackground.frame = puzzleFrame;
+        
+        CGImageRef scaledPuzzleImage = [self scaleImage:[puzzleImage CGImage] toSize:puzzleFrame.size];
         NSMutableArray *pieces = [NSMutableArray arrayWithCapacity:self.numberOfPieces];
 
-        [self generateJigsawPiecesForPuzzleSize:self.puzzleBackground.bounds.size yieldBlock:^(CGImageRef image, CGRect frame) {
-            CGImageRetain(image);
+        [self generateJigsawPiecesFromImage:scaledPuzzleImage yieldBlock:^(CGImageRef pieceImage, CGRect frame) {
+            CGImageRetain(pieceImage);
             dispatch_async(dispatch_get_main_queue(), ^{
                 // create an image view for this image and frame it within the target puzzle frame
                 SCHStoryInteractionJigsawPieceView *pieceView = [[SCHStoryInteractionJigsawPieceView alloc] initWithFrame:frame];
-                pieceView.image = image;
+                pieceView.image = pieceImage;
                 [pieces addObject:pieceView];
                 [pieceView release];
-                CGImageRelease(image);
+                CGImageRelease(pieceImage);
             });
         }];
+        
+        CGImageRelease(scaledPuzzleImage);
         
         dispatch_async(dispatch_get_main_queue(), ^{
             self.jigsawPieceViews = pieces;
             
-            // if there's a spinner on the view, the user has already tapped to begin
-            UIActivityIndicatorView *spinner = (UIActivityIndicatorView *)[self.contentsView viewWithTag:kSpinnerTag];
-            if (spinner != nil) {
-                [spinner removeFromSuperview];
-                [self beginPuzzleInteraction];
-            }
+            // enable taps on the preview
+            UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(previewTapped:)];
+            [preview addGestureRecognizer:tap];
+            [tap release];
         });
     });
 }
 
 - (void)previewTapped:(id)sender
 {
-    // if the pieces aren't ready yet, show a spinner until they are
-    if (self.jigsawPieceViews == nil) {
-        UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithFrame:CGRectZero];
-        spinner.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhiteLarge;
-        spinner.center = CGPointMake(CGRectGetMidX(self.contentsView.bounds), CGRectGetMidY(self.contentsView.bounds));
-        spinner.bounds = CGRectMake(0,0,37,37);
-        [self.contentsView addSubview:spinner];
-        [spinner startAnimating];
-        [spinner release];
-    } else {
-        [self beginPuzzleInteraction];
-    }
+    [self beginPuzzleInteraction];
 }
+
+#pragma mark - puzzle interaction
 
 - (void)beginPuzzleInteraction
 {
@@ -222,6 +242,7 @@ enum {
         piece.solutionPosition = piece.center;
         piece.homePosition = [[homePositions objectAtIndex:pieceIndex] CGPointValue];
         piece.transform = puzzleTransform;
+        piece.dragTransform = CGAffineTransformIdentity;
         piece.snappedTransform = CGAffineTransformIdentity;
         piece.delegate = self;
         [self.contentsView addSubview:piece];
@@ -236,6 +257,7 @@ enum {
     CGAffineTransform pieceTransform = CGAffineTransformMakeScale(scale, scale);
     [self.puzzleBackground setTransform:puzzleTransform];
 
+    [self enqueueAudioWithPath:@"sfx_breakpuzzle.mp3" fromBundle:YES];
     [UIView animateWithDuration:0.5
                           delay:0
                         options:UIViewAnimationCurveEaseInOut
@@ -274,31 +296,77 @@ enum {
     }
     
     NSAssert(self.numberOfPieces == [positions count], @"wrong number of positions");
-    return positions;
+    return [positions shuffled];
+}
+
+- (void)checkForCompletion
+{
+    NSInteger correctPieces = 0;
+    for (SCHStoryInteractionJigsawPieceView *piece in self.jigsawPieceViews) {
+        if ([piece isInCorrectPosition]) {
+            correctPieces++;
+        }
+    }
+    if (correctPieces == [self.jigsawPieceViews count]) {
+        [self enqueueAudioWithPath:@"sfx_winround.mp3" fromBundle:YES];
+
+        CGRect frame = self.puzzleBackground.frame;
+        [self.jigsawPieceViews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+        self.jigsawPieceViews = nil;
+
+        SCHStoryInteractionJigsawPreviewView *completed = [self puzzlePreviewWithFrame:frame];
+        [self.contentsView addSubview:completed];
+        [UIView animateWithDuration:0.5
+                         animations:^{
+                             completed.frame = CGRectInset(self.contentsView.bounds, 10, 30);
+                         }];
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.5*NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+            [self presentNextView];
+        });
+    }
 }
 
 #pragma mark - draggable delegate
 
 - (void)draggableViewDidStartDrag:(SCHStoryInteractionDraggableView *)draggableView
 {
-}
-
-- (void)draggableView:(SCHStoryInteractionDraggableView *)draggableView didMoveToPosition:(CGPoint)position
-{
-    SCHStoryInteractionJigsawPieceView *piece = (SCHStoryInteractionJigsawPieceView *)draggableView;
-    if (SCHCGPointDistanceSq(position, piece.solutionPosition) > kSnapDistanceSq) {
-        [piece moveToHomePosition];
-    }
+    [self enqueueAudioWithPath:@"sfx_pickup.mp3" fromBundle:YES];
 }
 
 - (BOOL)draggableView:(SCHStoryInteractionDraggableView *)draggableView shouldSnapFromPosition:(CGPoint)position toPosition:(CGPoint *)snapPosition
 {
     SCHStoryInteractionJigsawPieceView *piece = (SCHStoryInteractionJigsawPieceView *)draggableView;
-    if (SCHCGPointDistanceSq(position, piece.solutionPosition) < kSnapDistanceSq) {
+    if ([piece isInCorrectPosition]) {
         *snapPosition = piece.solutionPosition;
         return YES;
     }
     return NO;
+}
+
+- (void)draggableView:(SCHStoryInteractionDraggableView *)draggableView didMoveToPosition:(CGPoint)position
+{
+    SCHStoryInteractionJigsawPieceView *piece = (SCHStoryInteractionJigsawPieceView *)draggableView;
+    if ([piece isInCorrectPosition]) {
+        [self enqueueAudioWithPath:@"sfx_dropOK.mp3"
+                        fromBundle:YES
+                        startDelay:0
+            synchronizedStartBlock:nil
+              synchronizedEndBlock:^{
+                  [self checkForCompletion];
+              }];
+    } else {
+        [piece moveToHomePosition];
+        [self enqueueAudioWithPath:@"sfx_dropNo.mp3" fromBundle:YES];
+    }
+}
+
+#pragma mark - play again
+
+- (void)playAgain:(id)sender
+{
+    self.jigsawPaths = nil;
+    [self presentNextView];
 }
 
 @end

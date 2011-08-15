@@ -28,7 +28,10 @@
 // optional delegate for this draggable
 @property (nonatomic, assign) NSObject<SCHStoryInteractionDraggableViewDelegate> *delegate;
 
-// an alternative transform to use when this view snaps into position
+// an alternative transform to use when this view is being dragged. default is 10% zoom
+@property (nonatomic, assign) CGAffineTransform dragTransform;
+
+// an alternative transform to use when this view snaps into position. default is identity transform
 @property (nonatomic, assign) CGAffineTransform snappedTransform;
 
 // home position for this draggable
@@ -38,5 +41,9 @@
 @property (nonatomic, assign) BOOL lockedInPlace;
 
 - (void)moveToHomePosition;
+
+// can be overridden in subclasses, but ensure super is called
+- (void)beginDrag;
+- (void)endDragWithTouch:(UITouch *)touch cancelled:(BOOL)cancelled;
 
 @end

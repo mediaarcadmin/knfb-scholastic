@@ -26,3 +26,16 @@ void SCHCGPathApplyBlock(CGPathRef path, void (^block)(const CGPathElement *))
 {
     CGPathApply(path, block, blockApplier);
 }
+
+CGRect SCHAspectFitSizeInTargetRect(CGSize sourceSize, CGRect targetRect)
+{
+    CGFloat xscale = targetRect.size.width / sourceSize.width;
+    CGFloat yscale = targetRect.size.height / sourceSize.height;
+    CGFloat scale = MIN(xscale, yscale);
+    CGFloat width = sourceSize.width*scale;
+    CGFloat height = sourceSize.height*scale;
+    return CGRectMake(targetRect.origin.x+(targetRect.size.width-width)/2,
+                      targetRect.origin.y+(targetRect.size.height-height)/2,
+                      width, height);
+}
+
