@@ -6,10 +6,10 @@
 //  Copyright 2011 BitWink. All rights reserved.
 //
 
-#import "SCHStoryInteractionJigsawPieceView.h"
+#import "SCHStoryInteractionJigsawPieceView_iPad.h"
 #import "SCHGeometry.h"
 
-@implementation SCHStoryInteractionJigsawPieceView
+@implementation SCHStoryInteractionJigsawPieceView_iPad
 
 @synthesize image;
 @synthesize solutionPosition;

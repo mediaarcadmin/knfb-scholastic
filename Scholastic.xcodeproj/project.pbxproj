@@ -80,6 +80,18 @@
 		285BE71F13AA05FC0023E6BE /* storyinteraction-read-aloud.png in Resources */ = {isa = PBXBuildFile; fileRef = 285BE71A13AA05FA0023E6BE /* storyinteraction-read-aloud.png */; };
 		285BE72013AA05FC0023E6BE /* storyinteraction-read-aloud@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 285BE71B13AA05FB0023E6BE /* storyinteraction-read-aloud@2x.png */; };
 		285BE72113AA05FC0023E6BE /* storyinteraction-read-aloud@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 285BE71B13AA05FB0023E6BE /* storyinteraction-read-aloud@2x.png */; };
+		286000F613F955A6005C6AEB /* SCHDragFromScrollViewGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 286000F513F955A6005C6AEB /* SCHDragFromScrollViewGestureRecognizer.m */; };
+		286000F713F955A6005C6AEB /* SCHDragFromScrollViewGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 286000F513F955A6005C6AEB /* SCHDragFromScrollViewGestureRecognizer.m */; };
+		286000F913F9561D005C6AEB /* SCHStoryInteractionJigsaw_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 286000F813F9561D005C6AEB /* SCHStoryInteractionJigsaw_iPhone.xib */; };
+		286000FA13F9561D005C6AEB /* SCHStoryInteractionJigsaw_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 286000F813F9561D005C6AEB /* SCHStoryInteractionJigsaw_iPhone.xib */; };
+		286000FC13F95E55005C6AEB /* storyinteraction-jigsaw-scroller-bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 286000FB13F95E55005C6AEB /* storyinteraction-jigsaw-scroller-bg.png */; };
+		286000FD13F95E55005C6AEB /* storyinteraction-jigsaw-scroller-bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 286000FB13F95E55005C6AEB /* storyinteraction-jigsaw-scroller-bg.png */; };
+		2860010013F96A6A005C6AEB /* SCHStoryInteractionControllerJigsaw_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = 286000FF13F96A69005C6AEB /* SCHStoryInteractionControllerJigsaw_iPad.m */; };
+		2860010113F96A6A005C6AEB /* SCHStoryInteractionControllerJigsaw_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = 286000FF13F96A69005C6AEB /* SCHStoryInteractionControllerJigsaw_iPad.m */; };
+		2860010413F96CFC005C6AEB /* SCHStoryInteractionControllerJigsaw_iPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 2860010313F96CFC005C6AEB /* SCHStoryInteractionControllerJigsaw_iPhone.m */; };
+		2860010513F96CFC005C6AEB /* SCHStoryInteractionControllerJigsaw_iPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 2860010313F96CFC005C6AEB /* SCHStoryInteractionControllerJigsaw_iPhone.m */; };
+		2860010813F9782C005C6AEB /* SCHStoryInteractionJigsawPieceView_iPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 2860010713F9782C005C6AEB /* SCHStoryInteractionJigsawPieceView_iPhone.m */; };
+		2860010913F9782C005C6AEB /* SCHStoryInteractionJigsawPieceView_iPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 2860010713F9782C005C6AEB /* SCHStoryInteractionJigsawPieceView_iPhone.m */; };
 		2860E38A111B897F00E27156 /* AppDelegate_iPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 2860E388111B897F00E27156 /* AppDelegate_iPhone.m */; };
 		2860E38B111B897F00E27156 /* MainWindow_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2860E389111B897F00E27156 /* MainWindow_iPhone.xib */; };
 		286630E513EFFA8E0092A5DE /* SCHStoryInteractionSequencing.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A60EF31396713C0090853E /* SCHStoryInteractionSequencing.m */; };
@@ -134,8 +146,8 @@
 		2873B04913E024BF008C9F0D /* SCHUpdateBooksTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2873B04713E024BF008C9F0D /* SCHUpdateBooksTableViewCell.m */; };
 		287ADE9F13BB7A1C00D03247 /* SCHCoreDataOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 287ADE9E13BB7A1B00D03247 /* SCHCoreDataOperation.m */; };
 		287ADEA013BB7A1C00D03247 /* SCHCoreDataOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 287ADE9E13BB7A1B00D03247 /* SCHCoreDataOperation.m */; };
-		287D771B13F55C8000C76070 /* SCHStoryInteractionJigsawPieceView.m in Sources */ = {isa = PBXBuildFile; fileRef = 287D771A13F55C8000C76070 /* SCHStoryInteractionJigsawPieceView.m */; };
-		287D771C13F55C8000C76070 /* SCHStoryInteractionJigsawPieceView.m in Sources */ = {isa = PBXBuildFile; fileRef = 287D771A13F55C8000C76070 /* SCHStoryInteractionJigsawPieceView.m */; };
+		287D771B13F55C8000C76070 /* SCHStoryInteractionJigsawPieceView_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = 287D771A13F55C8000C76070 /* SCHStoryInteractionJigsawPieceView_iPad.m */; };
+		287D771C13F55C8000C76070 /* SCHStoryInteractionJigsawPieceView_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = 287D771A13F55C8000C76070 /* SCHStoryInteractionJigsawPieceView_iPad.m */; };
 		288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
 		2888FE7C13A61CD300FF2FA8 /* SCHStoryInteractionTitleTwister_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2888FE7B13A61CD300FF2FA8 /* SCHStoryInteractionTitleTwister_iPhone.xib */; };
 		2888FE7D13A61CD300FF2FA8 /* SCHStoryInteractionTitleTwister_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2888FE7B13A61CD300FF2FA8 /* SCHStoryInteractionTitleTwister_iPhone.xib */; };
@@ -173,8 +185,8 @@
 		2898A0B213F42D9200618172 /* SCHStoryInteractionJigsawPaths.m in Sources */ = {isa = PBXBuildFile; fileRef = 2898A0B013F42D9200618172 /* SCHStoryInteractionJigsawPaths.m */; };
 		2898A0B513F435C600618172 /* SCHStoryInteractionJigsawPathTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2898A0B413F435C600618172 /* SCHStoryInteractionJigsawPathTests.m */; };
 		2898A0B713F436B100618172 /* Puzzle-6pc.xaml in Resources */ = {isa = PBXBuildFile; fileRef = 2898A0B613F436B100618172 /* Puzzle-6pc.xaml */; };
-		289A2B1F13F505B80047EE45 /* SCHStoryInteractionControllerJigsaw.m in Sources */ = {isa = PBXBuildFile; fileRef = 289A2B1E13F505B80047EE45 /* SCHStoryInteractionControllerJigsaw.m */; };
-		289A2B2013F505B80047EE45 /* SCHStoryInteractionControllerJigsaw.m in Sources */ = {isa = PBXBuildFile; fileRef = 289A2B1E13F505B80047EE45 /* SCHStoryInteractionControllerJigsaw.m */; };
+		289A2B1F13F505B80047EE45 /* SCHStoryInteractionControllerJigsaw_Common.m in Sources */ = {isa = PBXBuildFile; fileRef = 289A2B1E13F505B80047EE45 /* SCHStoryInteractionControllerJigsaw_Common.m */; };
+		289A2B2013F505B80047EE45 /* SCHStoryInteractionControllerJigsaw_Common.m in Sources */ = {isa = PBXBuildFile; fileRef = 289A2B1E13F505B80047EE45 /* SCHStoryInteractionControllerJigsaw_Common.m */; };
 		289A2B2213F5085B0047EE45 /* SCHStoryInteractionJigsaw_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 289A2B2113F5085B0047EE45 /* SCHStoryInteractionJigsaw_iPad.xib */; };
 		289A2B2313F5085B0047EE45 /* SCHStoryInteractionJigsaw_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 289A2B2113F5085B0047EE45 /* SCHStoryInteractionJigsaw_iPad.xib */; };
 		289A2B2A13F509FB0047EE45 /* storyinteraction-jigsaw-6-pieces-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 289A2B2413F509FB0047EE45 /* storyinteraction-jigsaw-6-pieces-button.png */; };
@@ -1843,6 +1855,17 @@
 		285BE70E13A9FC920023E6BE /* storyinteraction-bolt-younger@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-bolt-younger@2x.png"; sourceTree = "<group>"; };
 		285BE71A13AA05FA0023E6BE /* storyinteraction-read-aloud.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-read-aloud.png"; sourceTree = "<group>"; };
 		285BE71B13AA05FB0023E6BE /* storyinteraction-read-aloud@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-read-aloud@2x.png"; sourceTree = "<group>"; };
+		286000F413F9559B005C6AEB /* SCHDragFromScrollViewGestureRecognizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHDragFromScrollViewGestureRecognizer.h; sourceTree = "<group>"; };
+		286000F513F955A6005C6AEB /* SCHDragFromScrollViewGestureRecognizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHDragFromScrollViewGestureRecognizer.m; sourceTree = "<group>"; };
+		286000F813F9561D005C6AEB /* SCHStoryInteractionJigsaw_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionJigsaw_iPhone.xib; sourceTree = "<group>"; };
+		286000FB13F95E55005C6AEB /* storyinteraction-jigsaw-scroller-bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-jigsaw-scroller-bg.png"; sourceTree = "<group>"; };
+		286000FE13F96A69005C6AEB /* SCHStoryInteractionControllerJigsaw_iPad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionControllerJigsaw_iPad.h; sourceTree = "<group>"; };
+		286000FF13F96A69005C6AEB /* SCHStoryInteractionControllerJigsaw_iPad.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionControllerJigsaw_iPad.m; sourceTree = "<group>"; };
+		2860010213F96CFB005C6AEB /* SCHStoryInteractionControllerJigsaw_iPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionControllerJigsaw_iPhone.h; sourceTree = "<group>"; };
+		2860010313F96CFC005C6AEB /* SCHStoryInteractionControllerJigsaw_iPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionControllerJigsaw_iPhone.m; sourceTree = "<group>"; };
+		2860010613F9782B005C6AEB /* SCHStoryInteractionJigsawPieceView_iPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionJigsawPieceView_iPhone.h; sourceTree = "<group>"; };
+		2860010713F9782C005C6AEB /* SCHStoryInteractionJigsawPieceView_iPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionJigsawPieceView_iPhone.m; sourceTree = "<group>"; };
+		2860010A13F97854005C6AEB /* SCHStoryInteractionJigsawPieceView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionJigsawPieceView.h; sourceTree = "<group>"; };
 		2860E387111B897F00E27156 /* AppDelegate_iPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate_iPhone.h; sourceTree = "<group>"; };
 		2860E388111B897F00E27156 /* AppDelegate_iPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate_iPhone.m; sourceTree = "<group>"; };
 		2860E389111B897F00E27156 /* MainWindow_iPhone.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainWindow_iPhone.xib; sourceTree = "<group>"; };
@@ -1885,8 +1908,8 @@
 		2873B04713E024BF008C9F0D /* SCHUpdateBooksTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHUpdateBooksTableViewCell.m; path = Shared/SCHUpdateBooksTableViewCell.m; sourceTree = "<group>"; };
 		287ADE9D13BB7A1B00D03247 /* SCHCoreDataOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHCoreDataOperation.h; path = Shared/SCHCoreDataOperation.h; sourceTree = "<group>"; };
 		287ADE9E13BB7A1B00D03247 /* SCHCoreDataOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHCoreDataOperation.m; path = Shared/SCHCoreDataOperation.m; sourceTree = "<group>"; };
-		287D771913F55C7F00C76070 /* SCHStoryInteractionJigsawPieceView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionJigsawPieceView.h; sourceTree = "<group>"; };
-		287D771A13F55C8000C76070 /* SCHStoryInteractionJigsawPieceView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionJigsawPieceView.m; sourceTree = "<group>"; };
+		287D771913F55C7F00C76070 /* SCHStoryInteractionJigsawPieceView_iPad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionJigsawPieceView_iPad.h; sourceTree = "<group>"; };
+		287D771A13F55C8000C76070 /* SCHStoryInteractionJigsawPieceView_iPad.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionJigsawPieceView_iPad.m; sourceTree = "<group>"; };
 		288765FC0DF74451002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		2888FE7B13A61CD300FF2FA8 /* SCHStoryInteractionTitleTwister_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionTitleTwister_iPhone.xib; sourceTree = "<group>"; };
 		288A1C7E13E2E7EE009F56BA /* SCHStartingView~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "SCHStartingView~iphone.xib"; sourceTree = "<group>"; };
@@ -1917,8 +1940,8 @@
 		2898A0B313F435C600618172 /* SCHStoryInteractionJigsawPathTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionJigsawPathTests.h; sourceTree = "<group>"; };
 		2898A0B413F435C600618172 /* SCHStoryInteractionJigsawPathTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionJigsawPathTests.m; sourceTree = "<group>"; };
 		2898A0B613F436B100618172 /* Puzzle-6pc.xaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Puzzle-6pc.xaml"; sourceTree = "<group>"; };
-		289A2B1D13F505B80047EE45 /* SCHStoryInteractionControllerJigsaw.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionControllerJigsaw.h; sourceTree = "<group>"; };
-		289A2B1E13F505B80047EE45 /* SCHStoryInteractionControllerJigsaw.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionControllerJigsaw.m; sourceTree = "<group>"; };
+		289A2B1D13F505B80047EE45 /* SCHStoryInteractionControllerJigsaw_Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHStoryInteractionControllerJigsaw_Common.h; sourceTree = "<group>"; };
+		289A2B1E13F505B80047EE45 /* SCHStoryInteractionControllerJigsaw_Common.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHStoryInteractionControllerJigsaw_Common.m; sourceTree = "<group>"; };
 		289A2B2113F5085B0047EE45 /* SCHStoryInteractionJigsaw_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SCHStoryInteractionJigsaw_iPad.xib; sourceTree = "<group>"; };
 		289A2B2413F509FB0047EE45 /* storyinteraction-jigsaw-6-pieces-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-jigsaw-6-pieces-button.png"; sourceTree = "<group>"; };
 		289A2B2513F509FB0047EE45 /* storyinteraction-jigsaw-6-pieces.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "storyinteraction-jigsaw-6-pieces.png"; sourceTree = "<group>"; };
@@ -3275,13 +3298,23 @@
 				2815719013EFDDC30071B73C /* SCHStoryInteractionJigsaw.m */,
 				2898A0AF13F42D9200618172 /* SCHStoryInteractionJigsawPaths.h */,
 				2898A0B013F42D9200618172 /* SCHStoryInteractionJigsawPaths.m */,
-				289A2B1D13F505B80047EE45 /* SCHStoryInteractionControllerJigsaw.h */,
-				289A2B1E13F505B80047EE45 /* SCHStoryInteractionControllerJigsaw.m */,
+				289A2B1D13F505B80047EE45 /* SCHStoryInteractionControllerJigsaw_Common.h */,
+				289A2B1E13F505B80047EE45 /* SCHStoryInteractionControllerJigsaw_Common.m */,
+				286000FE13F96A69005C6AEB /* SCHStoryInteractionControllerJigsaw_iPad.h */,
+				286000FF13F96A69005C6AEB /* SCHStoryInteractionControllerJigsaw_iPad.m */,
+				2860010213F96CFB005C6AEB /* SCHStoryInteractionControllerJigsaw_iPhone.h */,
+				2860010313F96CFC005C6AEB /* SCHStoryInteractionControllerJigsaw_iPhone.m */,
+				286000F813F9561D005C6AEB /* SCHStoryInteractionJigsaw_iPhone.xib */,
 				289A2B2113F5085B0047EE45 /* SCHStoryInteractionJigsaw_iPad.xib */,
 				289A2B3613F511EC0047EE45 /* SCHStoryInteractionJigsawPreviewView.h */,
 				289A2B3713F511EC0047EE45 /* SCHStoryInteractionJigsawPreviewView.m */,
-				287D771913F55C7F00C76070 /* SCHStoryInteractionJigsawPieceView.h */,
-				287D771A13F55C8000C76070 /* SCHStoryInteractionJigsawPieceView.m */,
+				2860010A13F97854005C6AEB /* SCHStoryInteractionJigsawPieceView.h */,
+				287D771913F55C7F00C76070 /* SCHStoryInteractionJigsawPieceView_iPad.h */,
+				287D771A13F55C8000C76070 /* SCHStoryInteractionJigsawPieceView_iPad.m */,
+				2860010613F9782B005C6AEB /* SCHStoryInteractionJigsawPieceView_iPhone.h */,
+				2860010713F9782C005C6AEB /* SCHStoryInteractionJigsawPieceView_iPhone.m */,
+				286000F413F9559B005C6AEB /* SCHDragFromScrollViewGestureRecognizer.h */,
+				286000F513F955A6005C6AEB /* SCHDragFromScrollViewGestureRecognizer.m */,
 			);
 			name = Jigsaw;
 			sourceTree = "<group>";
@@ -3658,6 +3691,7 @@
 				289A2B2713F509FB0047EE45 /* storyinteraction-jigsaw-12-pieces.png */,
 				289A2B2813F509FB0047EE45 /* storyinteraction-jigsaw-20-pieces-button.png */,
 				289A2B2913F509FB0047EE45 /* storyinteraction-jigsaw-20-pieces.png */,
+				286000FB13F95E55005C6AEB /* storyinteraction-jigsaw-scroller-bg.png */,
 			);
 			name = StoryInteractions;
 			path = Resources/UIAssets/StoryInteractions;
@@ -6120,6 +6154,8 @@
 				C91E99D913F930F8004F8062 /* storyinteraction-card-collection-prev~iphone.png in Resources */,
 				C91E99DB13F930F8004F8062 /* storyinteraction-card-collection-prev@2x~iphone.png in Resources */,
 				52FB890B13F90E50006E5413 /* Scholastic_YoungerSample.sqlite in Resources */,
+				286000F913F9561D005C6AEB /* SCHStoryInteractionJigsaw_iPhone.xib in Resources */,
+				286000FC13F95E55005C6AEB /* storyinteraction-jigsaw-scroller-bg.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6673,6 +6709,8 @@
 				C91E99DA13F930F8004F8062 /* storyinteraction-card-collection-prev~iphone.png in Resources */,
 				C91E99DC13F930F8004F8062 /* storyinteraction-card-collection-prev@2x~iphone.png in Resources */,
 				52FB890C13F90E50006E5413 /* Scholastic_YoungerSample.sqlite in Resources */,
+				286000FA13F9561D005C6AEB /* SCHStoryInteractionJigsaw_iPhone.xib in Resources */,
+				286000FD13F95E55005C6AEB /* storyinteraction-jigsaw-scroller-bg.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6967,10 +7005,14 @@
 				28CD430713F3D71800919F18 /* SCHStoryInteractionWordBirdAnswerLetterView.m in Sources */,
 				28CD430B13F3EAD300919F18 /* SCHStoryInteractionWordBirdLetterView.m in Sources */,
 				2898A0B113F42D9200618172 /* SCHStoryInteractionJigsawPaths.m in Sources */,
-				289A2B1F13F505B80047EE45 /* SCHStoryInteractionControllerJigsaw.m in Sources */,
+				289A2B1F13F505B80047EE45 /* SCHStoryInteractionControllerJigsaw_Common.m in Sources */,
 				289A2B3813F511EC0047EE45 /* SCHStoryInteractionJigsawPreviewView.m in Sources */,
 				52D438E013F521EE00D51FDA /* SCH3DView.m in Sources */,
-				287D771B13F55C8000C76070 /* SCHStoryInteractionJigsawPieceView.m in Sources */,
+				287D771B13F55C8000C76070 /* SCHStoryInteractionJigsawPieceView_iPad.m in Sources */,
+				286000F613F955A6005C6AEB /* SCHDragFromScrollViewGestureRecognizer.m in Sources */,
+				2860010013F96A6A005C6AEB /* SCHStoryInteractionControllerJigsaw_iPad.m in Sources */,
+				2860010413F96CFC005C6AEB /* SCHStoryInteractionControllerJigsaw_iPhone.m in Sources */,
+				2860010813F9782C005C6AEB /* SCHStoryInteractionJigsawPieceView_iPhone.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7294,9 +7336,13 @@
 				28CD430813F3D71800919F18 /* SCHStoryInteractionWordBirdAnswerLetterView.m in Sources */,
 				28CD430C13F3EAD300919F18 /* SCHStoryInteractionWordBirdLetterView.m in Sources */,
 				2898A0B213F42D9200618172 /* SCHStoryInteractionJigsawPaths.m in Sources */,
-				289A2B2013F505B80047EE45 /* SCHStoryInteractionControllerJigsaw.m in Sources */,
+				289A2B2013F505B80047EE45 /* SCHStoryInteractionControllerJigsaw_Common.m in Sources */,
 				289A2B3913F511EC0047EE45 /* SCHStoryInteractionJigsawPreviewView.m in Sources */,
-				287D771C13F55C8000C76070 /* SCHStoryInteractionJigsawPieceView.m in Sources */,
+				287D771C13F55C8000C76070 /* SCHStoryInteractionJigsawPieceView_iPad.m in Sources */,
+				286000F713F955A6005C6AEB /* SCHDragFromScrollViewGestureRecognizer.m in Sources */,
+				2860010113F96A6A005C6AEB /* SCHStoryInteractionControllerJigsaw_iPad.m in Sources */,
+				2860010513F96CFC005C6AEB /* SCHStoryInteractionControllerJigsaw_iPhone.m in Sources */,
+				2860010913F9782C005C6AEB /* SCHStoryInteractionJigsawPieceView_iPhone.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
