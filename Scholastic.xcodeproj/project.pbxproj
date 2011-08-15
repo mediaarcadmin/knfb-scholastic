@@ -1394,14 +1394,6 @@
 		F82D39C5131EA79100289FF3 /* SCHBookContents.m in Sources */ = {isa = PBXBuildFile; fileRef = F82D39B4131EA79100289FF3 /* SCHBookContents.m */; };
 		F82D39D9131EA7D400289FF3 /* SCHBookShelfTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F82D39D8131EA7D400289FF3 /* SCHBookShelfTableViewCell.m */; };
 		F82D39DA131EA7D400289FF3 /* SCHBookShelfTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F82D39D8131EA7D400289FF3 /* SCHBookShelfTableViewCell.m */; };
-		F82E3BBD13F9289A000B67A4 /* BookSampleTable~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F82E3BB913F9289A000B67A4 /* BookSampleTable~ipad.png */; };
-		F82E3BBE13F9289A000B67A4 /* BookSampleTable~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F82E3BB913F9289A000B67A4 /* BookSampleTable~ipad.png */; };
-		F82E3BBF13F9289A000B67A4 /* BookShelfErrorIcon~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F82E3BBA13F9289A000B67A4 /* BookShelfErrorIcon~ipad.png */; };
-		F82E3BC013F9289A000B67A4 /* BookShelfErrorIcon~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F82E3BBA13F9289A000B67A4 /* BookShelfErrorIcon~ipad.png */; };
-		F82E3BC113F9289A000B67A4 /* BookSISampleTab~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F82E3BBB13F9289A000B67A4 /* BookSISampleTab~ipad.png */; };
-		F82E3BC213F9289A000B67A4 /* BookSISampleTab~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F82E3BBB13F9289A000B67A4 /* BookSISampleTab~ipad.png */; };
-		F82E3BC313F9289A000B67A4 /* BookSITab~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F82E3BBC13F9289A000B67A4 /* BookSITab~ipad.png */; };
-		F82E3BC413F9289A000B67A4 /* BookSITab~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F82E3BBC13F9289A000B67A4 /* BookSITab~ipad.png */; };
 		F837018513BB2B7A009B280D /* SCHBookShelfTableViewCell_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = F837018413BB2B7A009B280D /* SCHBookShelfTableViewCell_iPhone.xib */; };
 		F837018613BB2B7A009B280D /* SCHBookShelfTableViewCell_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = F837018413BB2B7A009B280D /* SCHBookShelfTableViewCell_iPhone.xib */; };
 		F837018913BB2F51009B280D /* ListViewTrashCan.png in Resources */ = {isa = PBXBuildFile; fileRef = F837018713BB2F51009B280D /* ListViewTrashCan.png */; };
@@ -6082,9 +6074,6 @@
 				289A2B3D13F5140A0047EE45 /* Puzzle-6pc.xaml in Resources */,
 				289A2B3F13F5140A0047EE45 /* Puzzle-12pc.xaml in Resources */,
 				289A2B4113F5140A0047EE45 /* Puzzle-20pc.xaml in Resources */,
-				F8EF094913F4157F00A47D5D /* BookSampleTab~iPad.png in Resources */,
-				F8EF094C13F4299D00A47D5D /* BookSITab~iPad.png in Resources */,
-				F87E39A613F4393E00F21FAE /* BookSISampleTab~iPad.png in Resources */,
 				52FB890B13F90E50006E5413 /* Scholastic_YoungerSample.sqlite in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -6629,9 +6618,6 @@
 				289A2B3E13F5140A0047EE45 /* Puzzle-6pc.xaml in Resources */,
 				289A2B4013F5140A0047EE45 /* Puzzle-12pc.xaml in Resources */,
 				289A2B4213F5140A0047EE45 /* Puzzle-20pc.xaml in Resources */,
-				F8EF094A13F4157F00A47D5D /* BookSampleTab~iPad.png in Resources */,
-				F8EF094D13F4299D00A47D5D /* BookSITab~iPad.png in Resources */,
-				F87E39A713F4393E00F21FAE /* BookSISampleTab~iPad.png in Resources */,
 				52FB890C13F90E50006E5413 /* Scholastic_YoungerSample.sqlite in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
