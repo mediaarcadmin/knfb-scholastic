@@ -50,29 +50,29 @@ enum DragState {
 @synthesize shouldStartDragSupported;
 @synthesize dragState;
 @synthesize lockedInPlace;
+@synthesize dragTransform;
 @synthesize snappedTransform;
 @synthesize preDragTransform;
 @synthesize isSnapped;
 
+- (void)setup
+{
+    self.lockedInPlace = NO;
+    self.dragTransform = CGAffineTransformMakeScale(1.1f, 1.1f);
+    self.snappedTransform = CGAffineTransformIdentity;
+}
+
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
     self = [super initWithCoder:aDecoder];
-    
-    if (self) {
-        self.lockedInPlace = NO;
-    }
-    
+    [self setup];
     return self;
 }
 
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
-    
-    if (self) {
-        self.lockedInPlace = NO;
-    }
-    
+    [self setup];
     return self;
 }
 
@@ -168,7 +168,7 @@ enum DragState {
                           delay:0
                         options:UIViewAnimationOptionAllowUserInteraction
                      animations:^{
-                         self.transform = CGAffineTransformMakeScale(1.1, 1.1);
+                         self.transform = self.dragTransform;
                          self.alpha = 0.8;
                      }
                      completion:nil];

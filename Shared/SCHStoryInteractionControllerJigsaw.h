@@ -17,5 +17,6 @@
 @property (nonatomic, retain) IBOutlet SCHStoryInteractionJigsawPreviewView *puzzleBackground;
 
 - (IBAction)choosePuzzle:(id)sender;
+- (IBAction)playAgain:(id)sender;
 
 @end

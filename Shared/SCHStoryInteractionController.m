@@ -169,7 +169,7 @@
 - (void)presentInHostView:(UIView *)hostView withInterfaceOrientation:(UIInterfaceOrientation)aInterfaceOrientation
 {
     // dim the host view
-    if (self.frameStyle != SCHStoryInteractionTitleOverlaysContents && self.shadeView == nil) {
+    if ([self frameStyleForViewAtIndex:self.currentScreenIndex] != SCHStoryInteractionTitleOverlaysContents && self.shadeView == nil) {
         UIView *shade = [[UIView alloc] initWithFrame:hostView.bounds];
         shade.backgroundColor = [UIColor colorWithWhite:0 alpha:0.5];
         shade.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
@@ -190,12 +190,11 @@
         UIView *container = [[UIView alloc] initWithFrame:hostView.bounds];
         container.userInteractionEnabled = YES;
         
-        UIImageView *background = [[UIImageView alloc] initWithImage:[self backgroundImage]];
+        UIImageView *background = [[UIImageView alloc] initWithFrame:CGRectZero];
         background.contentMode = UIViewContentModeScaleToFill;
         [container addSubview:background];
         
-        
-        if (self.frameStyle != SCHStoryInteractionNoTitle) {
+        if ([self frameStyleForViewAtIndex:self.currentScreenIndex] != SCHStoryInteractionNoTitle) {
             UILabel *title = [[UILabel alloc] initWithFrame:CGRectZero];
             title.backgroundColor = [UIColor clearColor];            
             self.titleView = title;
@@ -243,11 +242,12 @@
         self.contentsView.alpha = 0;
         newContentsView.alpha = 1;
         newContentsView.transform = CGAffineTransformIdentity;
+        self.backgroundView.image = [self backgroundImage];
     };
     
     if (self.contentsView != nil) {
         // animate the transition between screens
-        NSAssert(self.frameStyle != SCHStoryInteractionTitleOverlaysContents, @"can't have multiple views with SCHStoryInteractionTitleOverlaysContents");
+        NSAssert([self frameStyleForViewAtIndex:self.currentScreenIndex] != SCHStoryInteractionTitleOverlaysContents, @"can't have multiple views with SCHStoryInteractionTitleOverlaysContents");
         UIView *oldContentsView = self.contentsView;
         newContentsView.alpha = 0;
         newContentsView.transform = CGAffineTransformMakeScale(CGRectGetWidth(oldContentsView.bounds)/CGRectGetWidth(newContentsView.bounds),
@@ -261,7 +261,7 @@
                          }];
     } else {
         setupViews();
-        if (self.frameStyle == SCHStoryInteractionTitleOverlaysContents) {
+        if ([self frameStyleForViewAtIndex:self.currentScreenIndex] == SCHStoryInteractionTitleOverlaysContents) {
             [self.containerView addSubview:newContentsView];
             [self.backgroundView setUserInteractionEnabled:NO];
         } else {
@@ -322,11 +322,16 @@
     UIView *host = [self.containerView superview];
     self.currentScreenIndex = (self.currentScreenIndex + 1) % [self.nibObjects count];
     [self presentInHostView:host withInterfaceOrientation:self.interfaceOrientation];
+
+    if ([self frameStyleForViewAtIndex:self.currentScreenIndex] == SCHStoryInteractionNoTitle) {
+        [self.titleView setHidden:YES];
+    } else {
+        [self.titleView setHidden:NO];
+    }
 }
 
 - (void)resizeCurrentViewToSize:(CGSize)newSize withAdditionalAdjustments:(dispatch_block_t)adjustmentBlock animated:(BOOL)animated
 {
-
     dispatch_block_t setupViews = ^{
         [self setupGeometryForContentsView:self.contentsView contentsSize:newSize];
        
@@ -353,6 +358,7 @@
     UIView *title = self.titleView;
     UIButton *close = self.closeButton;
     UIButton *readAloud = self.readAloudButton;
+    SCHFrameStyle currentFrameStyle = [self frameStyleForViewAtIndex:self.currentScreenIndex];
     
     BOOL iPad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
     UIEdgeInsets contentInsets;
@@ -360,12 +366,12 @@
     CGPoint closePosition;     // relative to top-left corner
     CGPoint readAloudPosition; // relative to top-right corner
     if (iPad) {
-        contentInsets = UIEdgeInsetsMake((self.frameStyle == SCHStoryInteractionNoTitle ? 40 : 130), 40, 40, 40);
+        contentInsets = UIEdgeInsetsMake((currentFrameStyle == SCHStoryInteractionNoTitle ? 40 : 130), 40, 40, 40);
         titleInsets = UIEdgeInsetsMake(45, 65, 21, 65);
         closePosition = [self.storyInteraction isOlderStoryInteraction] ? CGPointMake(3, -8) : CGPointMake(9, -17);
         readAloudPosition = CGPointMake(-5, 5);
     } else {
-        contentInsets = UIEdgeInsetsMake((self.frameStyle == SCHStoryInteractionNoTitle ? 5 : 70), 5, 5, 5);
+        contentInsets = UIEdgeInsetsMake((currentFrameStyle == SCHStoryInteractionNoTitle ? 5 : 70), 5, 5, 5);
         titleInsets = UIEdgeInsetsMake(5, 55, 5, 55);
         closePosition = CGPointMake(10, 7);
         readAloudPosition = CGPointMake(-13, 15);
@@ -386,7 +392,7 @@
     container.center = CGPointMake(floor(CGRectGetMidX(superviewBounds)), floor(CGRectGetMidY(superviewBounds)));
     
     CGFloat backgroundWidth, backgroundHeight;
-    switch (self.frameStyle) {
+    switch ([self frameStyleForViewAtIndex:self.currentScreenIndex]) {
         case SCHStoryInteractionFullScreen: {
             CGSize size = [UIScreen mainScreen].bounds.size;  
             backgroundWidth = size.height;
@@ -443,10 +449,11 @@
 
 - (CGSize)maximumContentsSize
 {
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad || self.frameStyle == SCHStoryInteractionFullScreen) {
+    SCHFrameStyle currentFrameStyle = [self frameStyleForViewAtIndex:self.currentScreenIndex];
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad || currentFrameStyle == SCHStoryInteractionFullScreen) {
         return [UIScreen mainScreen].bounds.size; 
     }
-    switch (self.frameStyle) {
+    switch (currentFrameStyle) {
         case SCHStoryInteractionNoTitle:
             return CGSizeMake(315.0, 470.0);
         case SCHStoryInteractionTitle:
@@ -459,7 +466,7 @@
 - (UIImage *)backgroundImage
 {
     NSString *suffix;
-    switch (self.frameStyle) {
+    switch ([self frameStyleForViewAtIndex:self.currentScreenIndex]) {
         case SCHStoryInteractionFullScreen:
             return nil;
         case SCHStoryInteractionNoTitle:
@@ -508,7 +515,7 @@
                              self.containerView.center = CGPointMake(superviewCenter.x-portraitOffset, superviewCenter.y+portraitOffset);
                          }
                          self.containerView.bounds = CGRectIntegral(superviewBounds);
-                         if (self.frameStyle != SCHStoryInteractionTitleOverlaysContents) {
+                         if ([self frameStyleForViewAtIndex:self.currentScreenIndex] != SCHStoryInteractionTitleOverlaysContents) {
                              self.backgroundView.center = superviewCenter;
                          }
                      }
@@ -742,6 +749,11 @@
 - (SCHFrameStyle)frameStyle
 {
     return(SCHStoryInteractionTitle);
+}
+
+- (SCHFrameStyle)frameStyleForViewAtIndex:(NSInteger)viewIndex
+{
+    return self.frameStyle;
 }
 
 - (CGRect)overlaidTitleFrame

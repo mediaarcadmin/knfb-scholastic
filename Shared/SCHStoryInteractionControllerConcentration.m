@@ -146,7 +146,6 @@
             } else {
                 image = [self imageAtPath:[concentration imagePathForFirstOfPairAtIndex:index/2]];
             }
-            NSAssert(image != nil, @"didn't find image at index %d", index);
             
             SCH3DView *tile = [[SCH3DView alloc] initWithFrame:CGRectZero];
             tile.backgroundColor = [UIColor clearColor];

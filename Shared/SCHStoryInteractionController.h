@@ -169,8 +169,11 @@ typedef enum
 
 #pragma mark - subclass overrides
 
-// The frame styling used
+// The frame styling used (deprecated; use frameStyleForViewAtIndex: instead
 @property (nonatomic, readonly) SCHFrameStyle frameStyle;
+
+// frame-style for a view in the nib
+- (SCHFrameStyle)frameStyleForViewAtIndex:(NSInteger)viewIndex;
 
 // when frameStyle == SCHStoryInteractionTitleOverlaysContents, the subclass can define
 // the frame for the overlaid title view
