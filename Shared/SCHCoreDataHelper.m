@@ -36,7 +36,6 @@ static NSString * const kSCHCoreDataHelperOlderSampleStoreName = @"Scholastic_Ol
              configuration:(NSString *)configuration 
                        url:(NSURL *)url;
 - (NSURL *)storeURL:(NSString *)storeName;
-- (void)checkForModeSwitch;
 - (BOOL)switchPersistentStore:(NSString *)storeName;
 - (NSPersistentStore *)currentMainPersistentStore;
 
@@ -156,8 +155,6 @@ static NSString * const kSCHCoreDataHelperOlderSampleStoreName = @"Scholastic_Ol
     if (persistentStoreCoordinator != nil) {
         return(persistentStoreCoordinator);
     }
-    
-    [self checkForModeSwitch];
 	    
     persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
     [self addPersistentStore:persistentStoreCoordinator 
@@ -243,34 +240,6 @@ static NSString * const kSCHCoreDataHelperOlderSampleStoreName = @"Scholastic_Ol
         } 
     }
 }    
-
-#pragma mark - Local Debug Mode
-
-- (void)checkForModeSwitch
-{
-	// check for change between local debug mode and normal network mode	
-	BOOL localDebugMode = NO;
-	
-#if LOCALDEBUG
-	localDebugMode = YES;
-#endif
-	
-	NSNumber *storedValue = (NSNumber *) [[NSUserDefaults standardUserDefaults] valueForKey:kSCHUserDefaultsClearLocalDebugMode];
-
-	if (storedValue) {
-		if ([storedValue boolValue] != localDebugMode) {
-			NSLog(@"Changed between local debug mode and network mode - deleting database & removing login details.");
-            [[NSFileManager defaultManager] removeItemAtURL:[self storeURL:kSCHCoreDataHelperStandardStoreName] error:nil];		
-            [[SCHAuthenticationManager sharedAuthenticationManager] clear];
-		}		
-		
-	}
-	
-	NSLog(@"Currently in %@.", localDebugMode?@"\"Local Debug Mode\"":@"\"Network Mode\"");
-	NSNumber *newValue = [NSNumber numberWithBool:localDebugMode];
-	[[NSUserDefaults standardUserDefaults] setObject:newValue forKey:kSCHUserDefaultsClearLocalDebugMode];
-	[[NSUserDefaults standardUserDefaults] synchronize];
-}	
 
 - (NSURL *)storeURL:(NSString *)storeName
 {
