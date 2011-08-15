@@ -143,11 +143,9 @@
 						<int key="IBUIContentHorizontalAlignment">0</int>
 						<int key="IBUIContentVerticalAlignment">0</int>
 						<reference key="IBUIFont" ref="427498576"/>
+						<string key="IBUINormalTitle">6 Pieces</string>
 						<reference key="IBUIHighlightedTitleColor" ref="9542242"/>
-						<object class="NSColor" key="IBUINormalTitleColor">
-							<int key="NSColorSpace">1</int>
-							<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
-						</object>
+						<reference key="IBUINormalTitleColor" ref="9542242"/>
 						<reference key="IBUINormalTitleShadowColor" ref="134555393"/>
 						<object class="NSCustomResource" key="IBUINormalBackgroundImage">
 							<string key="NSClassName">NSImage</string>
@@ -168,11 +166,9 @@
 						<int key="IBUIContentHorizontalAlignment">0</int>
 						<int key="IBUIContentVerticalAlignment">0</int>
 						<reference key="IBUIFont" ref="427498576"/>
+						<string key="IBUINormalTitle">12 Pieces</string>
 						<reference key="IBUIHighlightedTitleColor" ref="9542242"/>
-						<object class="NSColor" key="IBUINormalTitleColor">
-							<int key="NSColorSpace">1</int>
-							<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
-						</object>
+						<reference key="IBUINormalTitleColor" ref="9542242"/>
 						<reference key="IBUINormalTitleShadowColor" ref="134555393"/>
 						<object class="NSCustomResource" key="IBUINormalBackgroundImage">
 							<string key="NSClassName">NSImage</string>
@@ -193,11 +189,9 @@
 						<int key="IBUIContentHorizontalAlignment">0</int>
 						<int key="IBUIContentVerticalAlignment">0</int>
 						<reference key="IBUIFont" ref="427498576"/>
+						<string key="IBUINormalTitle">20 Pieces</string>
 						<reference key="IBUIHighlightedTitleColor" ref="9542242"/>
-						<object class="NSColor" key="IBUINormalTitleColor">
-							<int key="NSColorSpace">1</int>
-							<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
-						</object>
+						<reference key="IBUINormalTitleColor" ref="9542242"/>
 						<reference key="IBUINormalTitleShadowColor" ref="134555393"/>
 						<object class="NSCustomResource" key="IBUINormalBackgroundImage">
 							<string key="NSClassName">NSImage</string>
@@ -237,6 +231,19 @@
 						</object>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 					</object>
+					<object class="IBUIScrollView" id="40334439">
+						<reference key="NSNextResponder" ref="37129005"/>
+						<int key="NSvFlags">268</int>
+						<string key="NSFrame">{{12, 57}, {76, 231}}</string>
+						<reference key="NSSuperview" ref="37129005"/>
+						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView" ref="46892452"/>
+						<string key="NSReuseIdentifierKey">_NS:174</string>
+						<reference key="IBUIBackgroundColor" ref="9542242"/>
+						<bool key="IBUIClipsSubviews">YES</bool>
+						<bool key="IBUIMultipleTouchEnabled">YES</bool>
+						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+					</object>
 					<object class="IBUIImageView" id="796036056">
 						<reference key="NSNextResponder" ref="37129005"/>
 						<int key="NSvFlags">292</int>
@@ -245,24 +252,13 @@
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="40334439"/>
 						<string key="NSReuseIdentifierKey">_NS:541</string>
+						<reference key="IBUIBackgroundColor" ref="336042527"/>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<object class="NSCustomResource" key="IBUIImage">
 							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">storyinteraction-jigsaw-scroller-bg.png</string>
+							<string key="NSResourceName">storyinteraction-jigsaw-scroller-overlay.png</string>
 						</object>
-					</object>
-					<object class="IBUIScrollView" id="40334439">
-						<reference key="NSNextResponder" ref="37129005"/>
-						<int key="NSvFlags">268</int>
-						<string key="NSFrame">{{10, 55}, {80, 235}}</string>
-						<reference key="NSSuperview" ref="37129005"/>
-						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="46892452"/>
-						<string key="NSReuseIdentifierKey">_NS:174</string>
-						<bool key="IBUIClipsSubviews">YES</bool>
-						<bool key="IBUIMultipleTouchEnabled">YES</bool>
-						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 					</object>
 				</object>
 				<string key="NSFrameSize">{470, 310}</string>
@@ -467,9 +463,9 @@
 						<reference key="object" ref="37129005"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="796036056"/>
 							<reference ref="46892452"/>
 							<reference ref="40334439"/>
+							<reference ref="796036056"/>
 						</object>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -527,8 +523,11 @@
 					<string>3.IBPluginDependency</string>
 					<string>4.IBPluginDependency</string>
 					<string>5.IBPluginDependency</string>
+					<string>6.CustomClassName</string>
 					<string>6.IBPluginDependency</string>
+					<string>7.CustomClassName</string>
 					<string>7.IBPluginDependency</string>
+					<string>8.CustomClassName</string>
 					<string>8.IBPluginDependency</string>
 				</object>
 				<object class="NSMutableArray" key="dict.values">
@@ -549,8 +548,11 @@
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<string>SCHStretchableImageButton</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<string>SCHStretchableImageButton</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<string>SCHStretchableImageButton</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				</object>
 			</object>
@@ -686,7 +688,7 @@
 				<string>storyinteraction-jigsaw-20-pieces.png</string>
 				<string>storyinteraction-jigsaw-6-pieces-button.png</string>
 				<string>storyinteraction-jigsaw-6-pieces.png</string>
-				<string>storyinteraction-jigsaw-scroller-bg.png</string>
+				<string>storyinteraction-jigsaw-scroller-overlay.png</string>
 			</object>
 			<object class="NSMutableArray" key="dict.values">
 				<bool key="EncodedWithXMLCoder">YES</bool>
@@ -697,7 +699,7 @@
 				<string>{234, 176}</string>
 				<string>{185, 56}</string>
 				<string>{234, 176}</string>
-				<string>{80, 240}</string>
+				<string>{16, 16}</string>
 			</object>
 		</object>
 		<string key="IBCocoaTouchPluginVersion">534</string>

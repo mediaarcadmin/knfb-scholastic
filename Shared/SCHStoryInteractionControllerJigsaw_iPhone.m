@@ -94,6 +94,7 @@ enum {
     CGFloat scale = (CGRectGetWidth(self.puzzlePieceScroller.bounds) - kPieceMargin) / maxPieceWidth;
     CGAffineTransform pieceTransform = CGAffineTransformMakeScale(scale, scale);
     CGPoint scrollerOrigin = self.puzzlePieceScroller.frame.origin;
+    [self.puzzlePieceScroller setContentOffset:CGPointZero animated:NO];
     
     [UIView animateWithDuration:0.5
                           delay:0
