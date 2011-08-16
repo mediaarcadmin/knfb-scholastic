@@ -62,6 +62,7 @@ NSString * const kSCHProcessingManagerConnectionBusy = @"SCHProcessingManagerCon
 @property BOOL firedFirstBusyIdleNotification;
 
 - (BOOL)spaceSaverMode;
+- (void)postBookStateUpdate:(SCHBookIdentifier *)identifier;
 
 @end
 
@@ -649,10 +650,7 @@ static SCHProcessingManager *sharedManager = nil;
 	if (book.processingState == SCHBookProcessingStateDownloadStarted) {
         [book setProcessingState:SCHBookProcessingStateDownloadPaused];
 
-        NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
-                                  identifier, @"bookIdentifier",
-                                  nil];
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"SCHBookStateUpdate" object:nil userInfo:userInfo];
+        [self postBookStateUpdate:identifier];
 
 		return;
 	} 
@@ -662,10 +660,7 @@ static SCHProcessingManager *sharedManager = nil;
 		book.processingState == SCHBookProcessingStateReadyForBookFileDownload) {
 		[book setProcessingState:SCHBookProcessingStateDownloadStarted];
         
-        NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
-                                  identifier, @"bookIdentifier",
-                                  nil];
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"SCHBookStateUpdate" object:nil userInfo:userInfo];
+        [self postBookStateUpdate:identifier];
         
 		[self processIdentifier:identifier];
 	}
@@ -679,16 +674,32 @@ static SCHProcessingManager *sharedManager = nil;
 	
 	SCHAppBook *book = [[SCHBookManager sharedBookManager] bookWithIdentifier:identifier inManagedObjectContext:self.managedObjectContext];
 
-    if (book.processingState == SCHBookProcessingStateError ||
-		book.processingState == SCHBookProcessingStateUnableToAcquireLicense ||
-        book.processingState == SCHBookProcessingStateURLsNotPopulated ||
-        book.processingState == SCHBookProcessingStateDownloadFailed) {
+    if (book.processingState == SCHBookProcessingStateUnableToAcquireLicense) {
+        book.ForceProcess = [NSNumber numberWithBool:YES];
+        [book setProcessingState:SCHBookProcessingStateReadyForBookFileDownload];
+        [self postBookStateUpdate:identifier];
+        [self redispatchIdentifier:identifier];
+    } else if (book.processingState == SCHBookProcessingStateError ||
+               book.processingState == SCHBookProcessingStateURLsNotPopulated ||
+               book.processingState == SCHBookProcessingStateDownloadFailed) {
         if (book.processingState == SCHBookProcessingStateError ||
             book.processingState == SCHBookProcessingStateDownloadFailed) {
             book.ForceProcess = [NSNumber numberWithBool:YES];
         }
-        [book setProcessingState:SCHBookProcessingStateNoURLs];
-		[self redispatchIdentifier:identifier];
-	}
+        [book setProcessingState:SCHBookProcessingStateNoURLs];       
+        [self redispatchIdentifier:identifier];
+    }
 }
+
+- (void)postBookStateUpdate:(SCHBookIdentifier *)identifier
+{
+    if (identifier != nil) {
+        NSDictionary *userInfo = [NSDictionary dictionaryWithObject:identifier 
+                                                             forKey:@"bookIdentifier"];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"SCHBookStateUpdate" 
+                                                            object:nil 
+                                                          userInfo:userInfo];    
+    }
+}
+
 @end
