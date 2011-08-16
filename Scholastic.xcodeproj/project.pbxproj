@@ -521,8 +521,8 @@
 		52AD9D72130000570099FB88 /* SCHProfileSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9D6A130000570099FB88 /* SCHProfileSyncComponent.m */; };
 		52AD9D73130000570099FB88 /* SCHReadingStatsSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9D6C130000570099FB88 /* SCHReadingStatsSyncComponent.m */; };
 		52AD9D74130000570099FB88 /* SCHSettingsSyncComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AD9D6E130000570099FB88 /* SCHSettingsSyncComponent.m */; };
-		52AFC2B113F167370016C4A1 /* Scholastic_OlderSample.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 52AFC2B013F167370016C4A1 /* Scholastic_OlderSample.sqlite */; };
-		52AFC2B213F167370016C4A1 /* Scholastic_OlderSample.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 52AFC2B013F167370016C4A1 /* Scholastic_OlderSample.sqlite */; };
+		52AFC2B113F167370016C4A1 /* Scholastic_Sample.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 52AFC2B013F167370016C4A1 /* Scholastic_Sample.sqlite */; };
+		52AFC2B213F167370016C4A1 /* Scholastic_Sample.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 52AFC2B013F167370016C4A1 /* Scholastic_Sample.sqlite */; };
 		52BAFB69135DAB8600C2AFF3 /* SCHThemeImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 52BAFB68135DAB8600C2AFF3 /* SCHThemeImageView.m */; };
 		52BAFB6A135DAB8600C2AFF3 /* SCHThemeImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 52BAFB68135DAB8600C2AFF3 /* SCHThemeImageView.m */; };
 		52C489CB1369AC4200460876 /* UIColor+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 52C489CA1369AC4200460876 /* UIColor+Extensions.m */; };
@@ -560,8 +560,6 @@
 		52EF579712EDBE6E00E374F7 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 52EF579612EDBE6E00E374F7 /* SFHFKeychainUtils.m */; };
 		52F15A1F1371A2CA0073941E /* SCHBookAnnotations.m in Sources */ = {isa = PBXBuildFile; fileRef = 52F15A1E1371A2CA0073941E /* SCHBookAnnotations.m */; };
 		52F15A201371A2CA0073941E /* SCHBookAnnotations.m in Sources */ = {isa = PBXBuildFile; fileRef = 52F15A1E1371A2CA0073941E /* SCHBookAnnotations.m */; };
-		52FB890B13F90E50006E5413 /* Scholastic_YoungerSample.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 52FB890A13F90E50006E5413 /* Scholastic_YoungerSample.sqlite */; };
-		52FB890C13F90E50006E5413 /* Scholastic_YoungerSample.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 52FB890A13F90E50006E5413 /* Scholastic_YoungerSample.sqlite */; };
 		A331E123136B26FC0008FCB1 /* SCHDrmSession.m in Sources */ = {isa = PBXBuildFile; fileRef = A33F7310136B050A00BAA101 /* SCHDrmSession.m */; };
 		A334780213DF206000768DC6 /* 9780545283502.NightOfTheLivingDummy.xps in Resources */ = {isa = PBXBuildFile; fileRef = A33477FA13DF206000768DC6 /* 9780545283502.NightOfTheLivingDummy.xps */; };
 		A334780313DF206000768DC6 /* 9780545287012_r1.HalloweenParade.xps in Resources */ = {isa = PBXBuildFile; fileRef = A33477FB13DF206000768DC6 /* 9780545287012_r1.HalloweenParade.xps */; };
@@ -2254,7 +2252,7 @@
 		52AD9D6D130000570099FB88 /* SCHSettingsSyncComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHSettingsSyncComponent.h; path = Shared/SCHSettingsSyncComponent.h; sourceTree = "<group>"; };
 		52AD9D6E130000570099FB88 /* SCHSettingsSyncComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHSettingsSyncComponent.m; path = Shared/SCHSettingsSyncComponent.m; sourceTree = "<group>"; };
 		52AD9D9813000CAA0099FB88 /* SCHSyncComponentProtected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHSyncComponentProtected.h; path = Shared/SCHSyncComponentProtected.h; sourceTree = "<group>"; };
-		52AFC2B013F167370016C4A1 /* Scholastic_OlderSample.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; name = Scholastic_OlderSample.sqlite; path = Resources/Scholastic_OlderSample.sqlite; sourceTree = "<group>"; };
+		52AFC2B013F167370016C4A1 /* Scholastic_Sample.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; name = Scholastic_Sample.sqlite; path = Resources/Scholastic_Sample.sqlite; sourceTree = "<group>"; };
 		52BAFB67135DAB8600C2AFF3 /* SCHThemeImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHThemeImageView.h; path = Shared/SCHThemeImageView.h; sourceTree = "<group>"; };
 		52BAFB68135DAB8600C2AFF3 /* SCHThemeImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHThemeImageView.m; path = Shared/SCHThemeImageView.m; sourceTree = "<group>"; };
 		52BF57B21352F3FC00B5066E /* SCHAuthenticationManagerProtected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHAuthenticationManagerProtected.h; path = Shared/SCHAuthenticationManagerProtected.h; sourceTree = "<group>"; };
@@ -2290,7 +2288,6 @@
 		52EF579612EDBE6E00E374F7 /* SFHFKeychainUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFHFKeychainUtils.m; sourceTree = "<group>"; };
 		52F15A1D1371A2CA0073941E /* SCHBookAnnotations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHBookAnnotations.h; path = Shared/SCHBookAnnotations.h; sourceTree = "<group>"; };
 		52F15A1E1371A2CA0073941E /* SCHBookAnnotations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHBookAnnotations.m; path = Shared/SCHBookAnnotations.m; sourceTree = "<group>"; };
-		52FB890A13F90E50006E5413 /* Scholastic_YoungerSample.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; name = Scholastic_YoungerSample.sqlite; path = Resources/Scholastic_YoungerSample.sqlite; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Scholastic-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Scholastic-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 		A33477FA13DF206000768DC6 /* 9780545283502.NightOfTheLivingDummy.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = 9780545283502.NightOfTheLivingDummy.xps; path = "Shared/Debug Books/9780545283502.NightOfTheLivingDummy.xps"; sourceTree = "<group>"; };
 		A33477FB13DF206000768DC6 /* 9780545287012_r1.HalloweenParade.xps */ = {isa = PBXFileReference; lastKnownFileType = file; name = 9780545287012_r1.HalloweenParade.xps; path = "Shared/Debug Books/9780545287012_r1.HalloweenParade.xps"; sourceTree = "<group>"; };
@@ -4085,8 +4082,7 @@
 		528A2CCF12CCDC400053A343 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				52FB890A13F90E50006E5413 /* Scholastic_YoungerSample.sqlite */,
-				52AFC2B013F167370016C4A1 /* Scholastic_OlderSample.sqlite */,
+				52AFC2B013F167370016C4A1 /* Scholastic_Sample.sqlite */,
 				F837018D13BB322F009B280D /* List View Icons */,
 				F86DEC0813A21F2600053999 /* Sounds */,
 				F8FF8D7F139513B000CD7B73 /* OldDictionary-additions.css */,
@@ -6077,7 +6073,7 @@
 				C9747CDC13EAEAC5003ADC71 /* Default-Portrait~ipad.jpg in Resources */,
 				C9747CDE13EAEAC5003ADC71 /* Default.jpg in Resources */,
 				C9747CE013EAEAC5003ADC71 /* Default@2x.jpg in Resources */,
-				52AFC2B113F167370016C4A1 /* Scholastic_OlderSample.sqlite in Resources */,
+				52AFC2B113F167370016C4A1 /* Scholastic_Sample.sqlite in Resources */,
 				2866312313F01D0E0092A5DE /* SCHStoryInteractionConcentration_iPad.xib in Resources */,
 				2866312813F01F940092A5DE /* storyinteraction-concentration-6-pairs.png in Resources */,
 				2866313013F0200E0092A5DE /* storyinteraction-concentration-9-pairs.png in Resources */,
@@ -6122,7 +6118,6 @@
 				C91E99D713F930F8004F8062 /* storyinteraction-card-collection-next@2x~iphone.png in Resources */,
 				C91E99D913F930F8004F8062 /* storyinteraction-card-collection-prev~iphone.png in Resources */,
 				C91E99DB13F930F8004F8062 /* storyinteraction-card-collection-prev@2x~iphone.png in Resources */,
-				52FB890B13F90E50006E5413 /* Scholastic_YoungerSample.sqlite in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6632,7 +6627,7 @@
 				C9747CDD13EAEAC5003ADC71 /* Default-Portrait~ipad.jpg in Resources */,
 				C9747CDF13EAEAC5003ADC71 /* Default.jpg in Resources */,
 				C9747CE113EAEAC5003ADC71 /* Default@2x.jpg in Resources */,
-				52AFC2B213F167370016C4A1 /* Scholastic_OlderSample.sqlite in Resources */,
+				52AFC2B213F167370016C4A1 /* Scholastic_Sample.sqlite in Resources */,
 				2866312413F01D0E0092A5DE /* SCHStoryInteractionConcentration_iPad.xib in Resources */,
 				2866312913F01F940092A5DE /* storyinteraction-concentration-6-pairs.png in Resources */,
 				2866313113F0200E0092A5DE /* storyinteraction-concentration-9-pairs.png in Resources */,
@@ -6678,7 +6673,6 @@
 				C91E99D813F930F8004F8062 /* storyinteraction-card-collection-next@2x~iphone.png in Resources */,
 				C91E99DA13F930F8004F8062 /* storyinteraction-card-collection-prev~iphone.png in Resources */,
 				C91E99DC13F930F8004F8062 /* storyinteraction-card-collection-prev@2x~iphone.png in Resources */,
-				52FB890C13F90E50006E5413 /* Scholastic_YoungerSample.sqlite in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

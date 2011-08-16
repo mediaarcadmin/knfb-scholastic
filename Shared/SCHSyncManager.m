@@ -600,55 +600,45 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
 
 #pragma mark - Sample bookshelf population methods
 
-- (void)populateYoungerSampleStore
+- (void)populateSampleStore
 {
     NSError *error = nil;
 
     [self setAppStateForSample];    
-    
-    NSDictionary *profileItem = [self profileItemWith:1
+
+    // Younger bookshelf    
+    NSDictionary *youngerProfileItem = [self profileItemWith:1
                                                 title:NSLocalizedString(@"Younger kids' bookshelf (3-6)", nil) 
                                              password:@"pass"                                 
                                                   age:5 
                                             bookshelf:kSCHBookshelfStyleYoungChild];
-    [self.profileSyncComponent addProfile:profileItem];
+    [self.profileSyncComponent addProfile:youngerProfileItem];
+    
+    NSDictionary *youngerBook = [self contentMetaDataItemWith:@"0-393-05158-7"
+                                                      title:@"A Christmas Carol"
+                                                     author:@"Charles Dickens"
+                                                 pageNumber:1
+                                                   fileSize:862109
+                                                drmQualifer:kSCHDRMQualifiersSample
+                                                   coverURL:@"http://bitwink.com/private/ChristmasCarol.jpg"
+                                                 contentURL:@"http://bitwink.com/private/ChristmasCarol.xps"
+                                                   enhanced:NO];
 
-    NSDictionary *book = [self contentMetaDataItemWith:@"0-393-05158-7"
-                                                 title:@"A Christmas Carol"
-                                                author:@"Charles Dickens"
-                                            pageNumber:1
-                                              fileSize:862109
-                                           drmQualifer:kSCHDRMQualifiersSample
-                                              coverURL:@"http://bitwink.com/private/ChristmasCarol.jpg"
-                                            contentURL:@"http://bitwink.com/private/ChristmasCarol.xps"
-                                              enhanced:NO];
-    
-    [self.contentSyncComponent addUserContentItem:[self userContentItemWith:[book objectForKey:kSCHLibreAccessWebServiceContentIdentifier]
-                                                                drmQualifer:[[book objectForKey:kSCHLibreAccessWebServiceDRMQualifier] DRMQualifier]
-                                                                  profileIDs:[profileItem objectForKey:kSCHLibreAccessWebServiceID]]];
+    [self.contentSyncComponent addUserContentItem:[self userContentItemWith:[youngerBook objectForKey:kSCHLibreAccessWebServiceContentIdentifier]
+                                                                drmQualifer:[[youngerBook objectForKey:kSCHLibreAccessWebServiceDRMQualifier] DRMQualifierValue]
+                                                                  profileIDs:[NSArray arrayWithObject:[youngerProfileItem objectForKey:kSCHLibreAccessWebServiceID]]]];
 
-    [self.bookshelfSyncComponent addContentMetadataItem:book];
-    
-    if ([self.managedObjectContext save:&error] == NO) {
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        abort();
-    }     
-}
+    [self.bookshelfSyncComponent addContentMetadataItem:youngerBook];
 
-- (void)populateOlderSampleStore
-{
-    NSError *error = nil;
+    // Older bookshelf    
+    NSDictionary *olderProfileItem = [self profileItemWith:2
+                                                     title:NSLocalizedString(@"Older kids' bookshelf (7+)", nil) 
+                                                  password:@"pass"
+                                                       age:14 
+                                                 bookshelf:kSCHBookshelfStyleOlderChild];
+    [self.profileSyncComponent addProfile:olderProfileItem];
     
-    [self setAppStateForSample];    
-    
-    NSDictionary *profileItem = [self profileItemWith:1
-                                                title:NSLocalizedString(@"Older kids' bookshelf (7+)", nil) 
-                                             password:@"pass"
-                                                  age:14 
-                                            bookshelf:kSCHBookshelfStyleOlderChild];
-    [self.profileSyncComponent addProfile:profileItem];
-    
-    NSDictionary *book = [self contentMetaDataItemWith:@"978-0-14-143960-0"
+    NSDictionary *olderBook = [self contentMetaDataItemWith:@"978-0-14-143960-0"
                                                  title:@"A Tale of Two Cities"
                                                 author:@"Charles Dickens"
                                             pageNumber:1
@@ -657,13 +647,12 @@ static NSTimeInterval const kSCHLastFirstSyncInterval = -300.0;
                                               coverURL:@"http://bitwink.com/private/ATaleOfTwoCities.jpg"
                                             contentURL:@"http://bitwink.com/private/ATaleOfTwoCities.xps"
                                               enhanced:NO];
+
+    [self.contentSyncComponent addUserContentItem:[self userContentItemWith:[olderBook objectForKey:kSCHLibreAccessWebServiceContentIdentifier] 
+                                                                drmQualifer:[[olderBook objectForKey:kSCHLibreAccessWebServiceDRMQualifier] DRMQualifierValue]
+                                                                 profileIDs:[NSArray arrayWithObject:[olderProfileItem objectForKey:kSCHLibreAccessWebServiceID]]]];
     
-    
-    [self.contentSyncComponent addUserContentItem:[self userContentItemWith:[book objectForKey:kSCHLibreAccessWebServiceContentIdentifier] 
-                                                                drmQualifer:[[book objectForKey:kSCHLibreAccessWebServiceDRMQualifier] DRMQualifier]
-                                                                  profileIDs:[NSArray arrayWithObject:[profileItem objectForKey:kSCHLibreAccessWebServiceID]]]];
-     
-    [self.bookshelfSyncComponent addContentMetadataItem:book];
+    [self.bookshelfSyncComponent addContentMetadataItem:olderBook];
 
     if ([self.managedObjectContext save:&error] == NO) {
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);

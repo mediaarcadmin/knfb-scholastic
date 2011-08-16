@@ -25,6 +25,7 @@
 #import "SCHCoreDataHelper.h"
 #import "SCHAppStateManager.h"
 #import "NSNumber+ObjectTypes.h"
+#import "SCHProfileItem.h"
 
 enum {
     kTableSectionSamples = 0,
@@ -49,6 +50,7 @@ typedef enum {
 @interface SCHStartingViewController ()
 
 @property (nonatomic, retain) SCHProfileViewController_Shared *profileViewController;
+@property (nonatomic, assign) SCHStartingViewControllerBookshelf sampleBookshelf;
 
 - (void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation;
 - (NSString *)sampleBookshelfTitleAtIndex:(NSInteger)index;
@@ -70,6 +72,7 @@ typedef enum {
 @synthesize signInHeaderView;
 @synthesize modalNavigationController;
 @synthesize profileViewController;
+@synthesize sampleBookshelf;
 
 - (void)releaseViewObjects
 {
@@ -253,16 +256,17 @@ typedef enum {
 
     switch (index) {
         case SCHStartingViewControllerYoungerBookshelf: 
-            [appDelegate.coreDataHelper setStoreType:SCHCoreDataHelperYoungerSampleStore];
+            [appDelegate.coreDataHelper setStoreType:SCHCoreDataHelperSampleStore];
+            self.sampleBookshelf = SCHStartingViewControllerYoungerBookshelf;
             break;
         case SCHStartingViewControllerOlderBookshelf: 
-            [appDelegate.coreDataHelper setStoreType:SCHCoreDataHelperOlderSampleStore];
+            [appDelegate.coreDataHelper setStoreType:SCHCoreDataHelperSampleStore];
+            self.sampleBookshelf = SCHStartingViewControllerOlderBookshelf;
             break;
     }
     
     [self advanceToNextSignInForm];
 }
-
 
 #pragma mark - Sign In
 
@@ -410,13 +414,13 @@ typedef enum {
     if (alreadyInUse == NO) {
         [self.navigationController pushViewController:profile animated:NO];
     }
-    if ([[SCHAppStateManager sharedAppStateManager] isSampleStore] == YES &&
-        [[profile.fetchedResultsController sections] count] > 0 &&
-        [[[profile.fetchedResultsController sections] objectAtIndex:0] numberOfObjects] > 0) {
-        SCHProfileItem *profileItem = [profile.fetchedResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-        if(profileItem != nil) {
-            [profile pushBookshelvesControllerWithProfileItem:profileItem];
-        }
+    if ([[SCHAppStateManager sharedAppStateManager] isSampleStore] == YES) {
+        for (SCHProfileItem *item in [profile.fetchedResultsController fetchedObjects]) {
+            if ([item.ID integerValue] == sampleBookshelf + 1) {    // added 1 to convert from index to profileID
+                [profile pushBookshelvesControllerWithProfileItem:item animated:NO];
+                break;
+            }
+        }    
     }
 }
 

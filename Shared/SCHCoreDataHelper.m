@@ -23,15 +23,13 @@ static NSString * const kSCHCoreDataHelperDictionaryStoreConfiguration = @"Dicti
 static NSString * const kSCHCoreDataHelperStandardStoreName = @"Scholastic.sqlite";
 static NSString * const kSCHCoreDataHelperDictionaryStoreName = @"Scholastic_Dictionary.sqlite";
 
-static NSString * const kSCHCoreDataHelperYoungerSampleStoreName = @"Scholastic_YoungerSample.sqlite";
-static NSString * const kSCHCoreDataHelperOlderSampleStoreName = @"Scholastic_OlderSample.sqlite";
+static NSString * const kSCHCoreDataHelperSampleStoreName = @"Scholastic_Sample.sqlite";
 
 @interface SCHCoreDataHelper ()
 
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 
 - (BOOL)storeExists:(NSString *)storeName;
-- (void)setupSampleStore:(NSString *)storeName;
 - (void)addPersistentStore:(NSPersistentStoreCoordinator *)aPersistentStoreCoordinator 
              configuration:(NSString *)configuration 
                        url:(NSURL *)url;
@@ -71,26 +69,20 @@ static NSString * const kSCHCoreDataHelperOlderSampleStoreName = @"Scholastic_Ol
     return([[NSFileManager defaultManager] fileExistsAtPath:destinationSampleStorePath]);
 }
 
-- (void)setupSampleStores
-{
-    [self setupSampleStore:kSCHCoreDataHelperYoungerSampleStoreName];
-    [self setupSampleStore:kSCHCoreDataHelperOlderSampleStoreName];    
-}
-
-- (void)setupSampleStore:(NSString *)storeName
-{    
-    if ([self storeExists:storeName] == NO) {
+- (void)setupSampleStore
+{  
+    if ([self storeExists:kSCHCoreDataHelperSampleStoreName] == NO) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            NSString *sourceSampleStorePath = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:storeName];
+            NSString *sourceSampleStorePath = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:kSCHCoreDataHelperSampleStoreName];
             NSURL *applicationSupportDocumentsDirectory = [[[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask] lastObject];
-            NSURL *destinationSampleStoreURL = [applicationSupportDocumentsDirectory URLByAppendingPathComponent:storeName];    
+            NSURL *destinationSampleStoreURL = [applicationSupportDocumentsDirectory URLByAppendingPathComponent:kSCHCoreDataHelperSampleStoreName];    
             NSString *destinationSampleStorePath = [destinationSampleStoreURL path];
             
             NSError *error = nil;
 			if ([[NSFileManager defaultManager] copyItemAtPath:sourceSampleStorePath 
                                                         toPath:destinationSampleStorePath
                                                          error:&error] == NO) {
-                NSLog(@"Error copying %@ Sample Data Store: %@, %@", storeName, error, [error userInfo]);
+                NSLog(@"Error copying Sample Data Store: %@, %@", error, [error userInfo]);
             }            
         });
     }
@@ -256,16 +248,11 @@ static NSString * const kSCHCoreDataHelperOlderSampleStoreName = @"Scholastic_Ol
                 // post switch steps
             }            
             break;
-        case SCHCoreDataHelperYoungerSampleStore:
-            if ([self switchPersistentStore:kSCHCoreDataHelperYoungerSampleStoreName] == YES) {            
+        case SCHCoreDataHelperSampleStore:
+            if ([self switchPersistentStore:kSCHCoreDataHelperSampleStoreName] == YES) {            
                 // post switch steps
             }
             break;
-        case SCHCoreDataHelperOlderSampleStore:
-            if ([self switchPersistentStore:kSCHCoreDataHelperOlderSampleStoreName] == YES) {            
-                // post switch steps
-            }
-            break;            
     }    
 }
 
@@ -308,8 +295,7 @@ static NSString * const kSCHCoreDataHelperOlderSampleStoreName = @"Scholastic_Ol
     if ([self persistentStoreCoordinator] != nil) {
         for (NSPersistentStore *store in [[self persistentStoreCoordinator] persistentStores]) {
             if ([store.URL isEqual:[self storeURL:kSCHCoreDataHelperStandardStoreName]] == YES ||
-                [store.URL isEqual:[self storeURL:kSCHCoreDataHelperYoungerSampleStoreName]] == YES ||
-                [store.URL isEqual:[self storeURL:kSCHCoreDataHelperOlderSampleStoreName]] == YES) {
+                [store.URL isEqual:[self storeURL:kSCHCoreDataHelperSampleStoreName]] == YES) {
                 ret = store;
                 break;
             }
