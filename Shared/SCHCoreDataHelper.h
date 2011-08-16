@@ -17,8 +17,7 @@ extern NSString * const SCHCoreDataHelperManagedObjectContext;
 
 typedef enum {
 	SCHCoreDataHelperStandardStore,
-    SCHCoreDataHelperYoungerSampleStore,
-    SCHCoreDataHelperOlderSampleStore    
+    SCHCoreDataHelperSampleStore,
 } SCHCoreDataHelperStoreType;
 
 @interface SCHCoreDataHelper : NSObject 
@@ -29,7 +28,7 @@ typedef enum {
 @property (nonatomic, readonly) NSManagedObjectModel *managedObjectModel;
 @property (nonatomic, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 
-- (void)setupSampleStores;
+- (void)setupSampleStore;
 - (void)setStoreType:(SCHCoreDataHelperStoreType)storeType;
 
 - (void)saveContext;

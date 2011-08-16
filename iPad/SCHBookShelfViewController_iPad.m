@@ -20,6 +20,7 @@
 #import "SCHProfileItem.h"
 #import "NSNumber+ObjectTypes.h"
 #import "SCHAppProfile.h"
+#import "SCHAppStateManager.h"
 
 //static NSInteger const kSCHBookShelfViewControllerGridCellHeightPortrait_iPad = 254;
 static NSInteger const kSCHBookShelfViewControllerGridCellHeightPortrait_iPad = 224;
@@ -87,18 +88,20 @@ static NSTimeInterval const kSCHBookShelfViewControllerTopTenRefreshTime = -600.
     [homeButton sizeToFit];    
     [homeButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];    
     
-    self.topTenPicksButton = [SCHThemeButton buttonWithType:UIButtonTypeCustom];
-    [self.topTenPicksButton setFrame:CGRectMake(0, 0, 120, 30)];
-    [self.topTenPicksButton setTitle:NSLocalizedString(@"Top 10 Picks", @"") forState:UIControlStateNormal];
-    [self.topTenPicksButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [self.topTenPicksButton setTitleColor:[UIColor colorWithWhite:1 alpha:0.5f] forState:UIControlStateHighlighted];
-    [self.topTenPicksButton setReversesTitleShadowWhenHighlighted:YES];
-    
-    self.topTenPicksButton.titleLabel.font = [UIFont boldSystemFontOfSize:14];
-    self.topTenPicksButton.titleLabel.shadowOffset = CGSizeMake(0, -1);
-    
-    [self.topTenPicksButton setThemeButton:kSCHThemeManagerButtonImage leftCapWidth:5 topCapHeight:0];
-    [self.topTenPicksButton addTarget:self action:@selector(topTenAction:) forControlEvents:UIControlEventTouchUpInside];    
+    if ([[SCHAppStateManager sharedAppStateManager] canAuthenticate] == YES) {
+        self.topTenPicksButton = [SCHThemeButton buttonWithType:UIButtonTypeCustom];
+        [self.topTenPicksButton setFrame:CGRectMake(0, 0, 120, 30)];
+        [self.topTenPicksButton setTitle:NSLocalizedString(@"Top 10 Picks", @"") forState:UIControlStateNormal];
+        [self.topTenPicksButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [self.topTenPicksButton setTitleColor:[UIColor colorWithWhite:1 alpha:0.5f] forState:UIControlStateHighlighted];
+        [self.topTenPicksButton setReversesTitleShadowWhenHighlighted:YES];
+        
+        self.topTenPicksButton.titleLabel.font = [UIFont boldSystemFontOfSize:14];
+        self.topTenPicksButton.titleLabel.shadowOffset = CGSizeMake(0, -1);
+        
+        [self.topTenPicksButton setThemeButton:kSCHThemeManagerButtonImage leftCapWidth:5 topCapHeight:0];
+        [self.topTenPicksButton addTarget:self action:@selector(topTenAction:) forControlEvents:UIControlEventTouchUpInside];    
+    }
     
     UIView *containerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.topTenPicksButton.frame) + kSCHBookShelfButtonPadding + CGRectGetWidth(themeButton.frame) + kSCHBookShelfEdgePadding, CGRectGetHeight(themeButton.frame))];
     [containerView addSubview:self.topTenPicksButton];

@@ -138,7 +138,7 @@
 
 - (BOOL)isStandardStore
 {
-    return([[self appState].DataStoreType isEqualToNumber:[NSNumber numberWithDataStoreType:kSCHDataStoreTypesSample]]);
+    return([[self appState].DataStoreType isEqualToNumber:[NSNumber numberWithDataStoreType:kSCHDataStoreTypesStandard]]);
 }
 
 - (BOOL)isSampleStore

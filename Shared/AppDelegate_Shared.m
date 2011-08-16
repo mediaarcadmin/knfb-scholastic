@@ -50,7 +50,7 @@ static NSString* const prModelCertFilename = @"iphonecert.dat";
     if ([self createApplicationSupportDirectory] == NO) {
 		NSLog(@"Application Support directory could not be created.");
 	} else {
-        [self.coreDataHelper setupSampleStores];
+        [self.coreDataHelper setupSampleStore];
     }
     
     [self setupUserDefaults];
@@ -63,12 +63,10 @@ static NSString* const prModelCertFilename = @"iphonecert.dat";
 	syncManager.managedObjectContext = self.coreDataHelper.managedObjectContext;
 	[syncManager start];
 	
-    // Uncomment to populate Store
-    // N.B. you must clean build and uncomment these population methods one at a time and break immediately afterwards.
-    // Whilst broken copy the Scholastic.sqlite database to either Scholastic_YoungerSample.sqlite or Scholastic_OlderSample.sqlite
-    // Depending on which was uncommented
-    //[[SCHSyncManager sharedSyncManager] populateYoungerSampleStore];
-    //[[SCHSyncManager sharedSyncManager] populateOlderSampleStore];
+    // You must clean the app from the simulator and uncomment the population 
+    // method then break immediately afterwards. Whilst broken copy the 
+    // Scholastic.sqlite database to Scholastic_Sample.sqlite
+	// [[SCHSyncManager sharedSyncManager] populateSampleStore];
     
 	SCHURLManager *urlManager = [SCHURLManager sharedURLManager];
 	urlManager.managedObjectContext = self.coreDataHelper.managedObjectContext;

@@ -194,7 +194,7 @@
 
     SCHProfileItem *profileItem = [[self fetchedResultsController] objectAtIndexPath:indexPath];
     if ([profileItem.ProfilePasswordRequired boolValue] == NO) {
-        [self pushBookshelvesControllerWithProfileItem:profileItem];            
+        [self pushBookshelvesControllerWithProfileItem:profileItem animated:YES];            
     } else if (![profileItem hasPassword]) {
         [self obtainPasswordThenPushBookshelvesControllerWithProfileItem:profileItem];
     } else {
@@ -284,7 +284,7 @@
             return NO;
         } else {
             [SCHThemeManager sharedThemeManager].appProfile = profileItem.AppProfile;
-            [self pushBookshelvesControllerWithProfileItem:profileItem];            
+            [self pushBookshelvesControllerWithProfileItem:profileItem animated:YES];            
             [self dismissModalViewControllerAnimated:YES];
             return YES;
         }	
@@ -309,7 +309,7 @@
             if ([topFieldText length] > 0) {
                 [profileItem setRawPassword:topFieldText];
                 [SCHThemeManager sharedThemeManager].appProfile = profileItem.AppProfile;
-                [self pushBookshelvesControllerWithProfileItem:profileItem];
+                [self pushBookshelvesControllerWithProfileItem:profileItem animated:YES];
                 [self dismissModalViewControllerAnimated:YES];
                 return YES;
             } else {
@@ -342,7 +342,8 @@
 
 #pragma mark - Push bookshelves controller
 
-- (void)pushBookshelvesControllerWithProfileItem:(SCHProfileItem *)profileItem
+- (void)pushBookshelvesControllerWithProfileItem:(SCHProfileItem *)profileItem 
+                                        animated:(BOOL)animated
 {
 	SCHBookShelfViewController *bookShelfViewController = [self newBookShelfViewController];
     bookShelfViewController.profileItem = profileItem;
@@ -360,7 +361,7 @@
         if (readingViewController) {
             NSArray *viewControllers = [self.navigationController.viewControllers arrayByAddingObjectsFromArray:
                                         [NSArray arrayWithObjects:bookShelfViewController, readingViewController, nil]];
-            [self.navigationController setViewControllers:(NSArray *)viewControllers animated:YES];
+            [self.navigationController setViewControllers:(NSArray *)viewControllers animated:animated];
         } else {
             UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"This Book Could Not Be Opened", @"Could not open book") 
                                                                  message:[error localizedDescription]
@@ -372,7 +373,7 @@
         }
         profileItem.AppProfile.AutomaticallyLaunchBook = nil;        
     } else {
-        [self.navigationController pushViewController:bookShelfViewController animated:YES];
+        [self.navigationController pushViewController:bookShelfViewController animated:animated];
     }
 	[bookShelfViewController release], bookShelfViewController = nil;
 }
