@@ -470,6 +470,18 @@
 		528A2CDB12CCDE070053A343 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 528A2CDA12CCDE070053A343 /* Localizable.strings */; };
 		528A2D6012CDE39C0053A343 /* SCHProfileViewController_Shared.m in Sources */ = {isa = PBXBuildFile; fileRef = 528A2D5F12CDE39C0053A343 /* SCHProfileViewController_Shared.m */; };
 		528A2D6212CDE3B10053A343 /* SCHProfileViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 528A2D6112CDE3B10053A343 /* SCHProfileViewController_iPhone.xib */; };
+		528C615813FAA46200D033F8 /* icon-help.png in Resources */ = {isa = PBXBuildFile; fileRef = 528C615613FAA46200D033F8 /* icon-help.png */; };
+		528C615913FAA46200D033F8 /* icon-help.png in Resources */ = {isa = PBXBuildFile; fileRef = 528C615613FAA46200D033F8 /* icon-help.png */; };
+		528C615A13FAA46200D033F8 /* icon-help@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 528C615713FAA46200D033F8 /* icon-help@2x.png */; };
+		528C615B13FAA46200D033F8 /* icon-help@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 528C615713FAA46200D033F8 /* icon-help@2x.png */; };
+		528C615F13FAA57200D033F8 /* SCHHelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 528C615D13FAA56C00D033F8 /* SCHHelpViewController.m */; };
+		528C616013FAA57200D033F8 /* SCHHelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 528C615D13FAA56C00D033F8 /* SCHHelpViewController.m */; };
+		528C616113FAA57200D033F8 /* SCHHelpViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 528C615E13FAA56F00D033F8 /* SCHHelpViewController.xib */; };
+		528C616213FAA57200D033F8 /* SCHHelpViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 528C615E13FAA56F00D033F8 /* SCHHelpViewController.xib */; };
+		528C616713FAAB4B00D033F8 /* youngerHelpVideo.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 528C616513FAAB4B00D033F8 /* youngerHelpVideo.mp4 */; };
+		528C616813FAAB4B00D033F8 /* youngerHelpVideo.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 528C616513FAAB4B00D033F8 /* youngerHelpVideo.mp4 */; };
+		528C616913FAAB4B00D033F8 /* olderHelpVideo.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 528C616613FAAB4B00D033F8 /* olderHelpVideo.mp4 */; };
+		528C616A13FAAB4B00D033F8 /* olderHelpVideo.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 528C616613FAAB4B00D033F8 /* olderHelpVideo.mp4 */; };
 		529385B512DF231800045B44 /* SCHSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 529385B312DF231800045B44 /* SCHSettingsViewController.m */; };
 		529385B612DF231800045B44 /* SCHSettingsViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 529385B412DF231800045B44 /* SCHSettingsViewController_iPad.xib */; };
 		5293869C12DF3A3300045B44 /* AuthenticateSvc.m in Sources */ = {isa = PBXBuildFile; fileRef = 5293868F12DF3A3300045B44 /* AuthenticateSvc.m */; };
@@ -2241,6 +2253,13 @@
 		528A2D5E12CDE39C0053A343 /* SCHProfileViewController_Shared.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHProfileViewController_Shared.h; path = iPhone/SCHProfileViewController_Shared.h; sourceTree = "<group>"; };
 		528A2D5F12CDE39C0053A343 /* SCHProfileViewController_Shared.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHProfileViewController_Shared.m; path = iPhone/SCHProfileViewController_Shared.m; sourceTree = "<group>"; };
 		528A2D6112CDE3B10053A343 /* SCHProfileViewController_iPhone.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SCHProfileViewController_iPhone.xib; sourceTree = "<group>"; };
+		528C615613FAA46200D033F8 /* icon-help.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-help.png"; path = "Resources/UIAssets/FromPSD/icon-help.png"; sourceTree = "<group>"; };
+		528C615713FAA46200D033F8 /* icon-help@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-help@2x.png"; path = "Resources/UIAssets/FromPSD/icon-help@2x.png"; sourceTree = "<group>"; };
+		528C615C13FAA56A00D033F8 /* SCHHelpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHHelpViewController.h; path = Shared/SCHHelpViewController.h; sourceTree = "<group>"; };
+		528C615D13FAA56C00D033F8 /* SCHHelpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHHelpViewController.m; path = Shared/SCHHelpViewController.m; sourceTree = "<group>"; };
+		528C615E13FAA56F00D033F8 /* SCHHelpViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SCHHelpViewController.xib; path = Shared/SCHHelpViewController.xib; sourceTree = "<group>"; };
+		528C616513FAAB4B00D033F8 /* youngerHelpVideo.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = youngerHelpVideo.mp4; path = "Shared/Debug Books/Goosebumps/Documents/1/Other/KNFB/Extras/youngerHelpVideo.mp4"; sourceTree = "<group>"; };
+		528C616613FAAB4B00D033F8 /* olderHelpVideo.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = olderHelpVideo.mp4; path = "Shared/Debug Books/Shiver/Documents/1/Other/KNFB/Extras/olderHelpVideo.mp4"; sourceTree = "<group>"; };
 		529385B212DF231800045B44 /* SCHSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCHSettingsViewController.h; path = iPhone/SCHSettingsViewController.h; sourceTree = "<group>"; };
 		529385B312DF231800045B44 /* SCHSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCHSettingsViewController.m; path = iPhone/SCHSettingsViewController.m; sourceTree = "<group>"; };
 		529385B412DF231800045B44 /* SCHSettingsViewController_iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = SCHSettingsViewController_iPad.xib; path = iPhone/SCHSettingsViewController_iPad.xib; sourceTree = "<group>"; };
@@ -3983,6 +4002,7 @@
 		28EEBF621118D79A00187D67 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				528C616313FAA5D300D033F8 /* Help */,
 				28C3D19D13E2B2BC00931F5C /* Starting View */,
 				28C7416713D8A50700EEAB36 /* About Views */,
 				C97228421392B27E008605E8 /* Settings Controller */,
@@ -4211,6 +4231,7 @@
 		528A2CCF12CCDC400053A343 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				528C616413FAAA9D00D033F8 /* Help */,
 				52AFC2B013F167370016C4A1 /* Scholastic_Sample.sqlite */,
 				F837018D13BB322F009B280D /* List View Icons */,
 				F86DEC0813A21F2600053999 /* Sounds */,
@@ -4300,6 +4321,25 @@
 			children = (
 			);
 			name = BlioLib;
+			sourceTree = "<group>";
+		};
+		528C616313FAA5D300D033F8 /* Help */ = {
+			isa = PBXGroup;
+			children = (
+				528C615C13FAA56A00D033F8 /* SCHHelpViewController.h */,
+				528C615D13FAA56C00D033F8 /* SCHHelpViewController.m */,
+				528C615E13FAA56F00D033F8 /* SCHHelpViewController.xib */,
+			);
+			name = Help;
+			sourceTree = "<group>";
+		};
+		528C616413FAAA9D00D033F8 /* Help */ = {
+			isa = PBXGroup;
+			children = (
+				528C616513FAAB4B00D033F8 /* youngerHelpVideo.mp4 */,
+				528C616613FAAB4B00D033F8 /* olderHelpVideo.mp4 */,
+			);
+			name = Help;
 			sourceTree = "<group>";
 		};
 		5293868D12DF3A3300045B44 /* WSDL2ObjC */ = {
@@ -4675,6 +4715,8 @@
 		C920DD3E13897B3B00F1583D /* Reading View Toolbar Icons */ = {
 			isa = PBXGroup;
 			children = (
+				528C615613FAA46200D033F8 /* icon-help.png */,
+				528C615713FAA46200D033F8 /* icon-help@2x.png */,
 				C920DD5D1389861700F1583D /* icon-books-landscape.png */,
 				C920DD5E1389861700F1583D /* icon-books-landscape@2x.png */,
 				C920DD5F1389861700F1583D /* icon-books.png */,
@@ -6274,6 +6316,11 @@
 				F81CA38213FAB230006EF9D6 /* BookSISampleTabHorizontal~ipad.png in Resources */,
 				F81CA38413FAB230006EF9D6 /* BookSITabHorizontal~ipad.png in Resources */,
 				F81CA38613FAB230006EF9D6 /* BookSampleTabHorizontal~ipad.png in Resources */,
+				528C615813FAA46200D033F8 /* icon-help.png in Resources */,
+				528C615A13FAA46200D033F8 /* icon-help@2x.png in Resources */,
+				528C616113FAA57200D033F8 /* SCHHelpViewController.xib in Resources */,
+				528C616713FAAB4B00D033F8 /* youngerHelpVideo.mp4 in Resources */,
+				528C616913FAAB4B00D033F8 /* olderHelpVideo.mp4 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6853,6 +6900,11 @@
 				F81CA38313FAB230006EF9D6 /* BookSISampleTabHorizontal~ipad.png in Resources */,
 				F81CA38513FAB230006EF9D6 /* BookSITabHorizontal~ipad.png in Resources */,
 				F81CA38713FAB230006EF9D6 /* BookSampleTabHorizontal~ipad.png in Resources */,
+				528C615913FAA46200D033F8 /* icon-help.png in Resources */,
+				528C615B13FAA46200D033F8 /* icon-help@2x.png in Resources */,
+				528C616213FAA57200D033F8 /* SCHHelpViewController.xib in Resources */,
+				528C616813FAAB4B00D033F8 /* youngerHelpVideo.mp4 in Resources */,
+				528C616A13FAAB4B00D033F8 /* olderHelpVideo.mp4 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7155,6 +7207,7 @@
 				2860010013F96A6A005C6AEB /* SCHStoryInteractionControllerJigsaw_iPad.m in Sources */,
 				2860010413F96CFC005C6AEB /* SCHStoryInteractionControllerJigsaw_iPhone.m in Sources */,
 				2860010813F9782C005C6AEB /* SCHStoryInteractionJigsawPieceView_iPhone.m in Sources */,
+				528C615F13FAA57200D033F8 /* SCHHelpViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7485,6 +7538,7 @@
 				2860010113F96A6A005C6AEB /* SCHStoryInteractionControllerJigsaw_iPad.m in Sources */,
 				2860010513F96CFC005C6AEB /* SCHStoryInteractionControllerJigsaw_iPhone.m in Sources */,
 				2860010913F9782C005C6AEB /* SCHStoryInteractionJigsawPieceView_iPhone.m in Sources */,
+				528C616013FAA57200D033F8 /* SCHHelpViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

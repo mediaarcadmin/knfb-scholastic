@@ -98,6 +98,7 @@ managedObjectContext:(NSManagedObjectContext *)moc
 - (IBAction)settingsAction:(UIButton *)sender;
 - (IBAction)popViewController:(id)sender;
 - (IBAction)audioPlayAction:(id)sender;
+- (IBAction)helpAction:(id)sender;
 - (IBAction)paperTypeSegmentChanged:(UISegmentedControl *)segControl;
 
 @end

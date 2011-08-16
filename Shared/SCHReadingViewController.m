@@ -40,6 +40,8 @@
 #import "SCHAnnotationSyncComponent.h"
 #import "LambdaAlert.h"
 #import "SCHAppContentProfileItem.h"
+#import "SCHHelpViewController.h"
+#import "SCHUserDefaults.h"
 
 // constants
 NSString *const kSCHReadingViewErrorDomain  = @"com.knfb.scholastic.ReadingViewErrorDomain";
@@ -125,6 +127,8 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
 - (void)jumpToLastPageLocation;
 - (void)jumpToBookPoint:(SCHBookPoint *)bookPoint animated:(BOOL)animated; 
 - (void)jumpToCurrentPlaceInBookAnimated:(BOOL)animated;
+
+- (void)presentHelp;
 
 - (void)setDictionarySelectionMode;
 
@@ -574,6 +578,21 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     self.popover = nil;    
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    if (youngerMode == YES) {
+        if ([[NSUserDefaults standardUserDefaults] boolForKey:kSCHUserDefaultsYoungerHelpVideoFirstPlay] == YES) {
+            [self presentHelp];
+        }
+    } else {
+        if ([[NSUserDefaults standardUserDefaults] boolForKey:kSCHUserDefaultsOlderHelpVideoFirstPlay] == YES) {
+            [self presentHelp];
+        }
+    }
+}
+
 #pragma mark - Rotation
 
 -(void)setupAssetsForOrientation:(UIInterfaceOrientation)orientation
@@ -879,6 +898,34 @@ static const CGFloat kReadingViewBackButtonPadding = 7.0f;
     if (self.optionsView.superview) {
         [self.optionsView removeFromSuperview];
     }    
+}
+
+- (IBAction)helpAction:(id)sender
+{
+    NSLog(@"Help action");
+
+    if (self.optionsView.superview) {
+        [self.optionsView removeFromSuperview];
+    }
+
+    [self presentHelp];
+    
+    [self pauseAudioPlayback];        
+}
+
+- (void)presentHelp
+{
+    SCHHelpViewController *helpViewController = [[SCHHelpViewController alloc] initWithNibName:nil 
+                                                                                        bundle:nil
+                                                                                   youngerMode:self.youngerMode];
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        helpViewController.modalPresentationStyle = UIModalPresentationFormSheet;
+        helpViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    }
+    
+    [self.navigationController presentModalViewController:helpViewController animated:YES];
+    [helpViewController release];
 }
 
 - (IBAction)storyInteractionAction:(id)sender
